@@ -1,0 +1,10 @@
+1. Allow dual config of yaml & json.
+This is because some developers hate yml and prefer json. 
+It's relatively cheap to convert a yaml config to boost.json internally and it'll be a good example for boost.json. 
+Conversions boost.json -> C++ will also allow us to use describe.
+
+2. use sql to dump extracted data.
+The data exctraced by clang should be dumped into an sql database, to be queried later.
+This way we can write a asciidoc plugin in ruby, that just queries the DB, e.g.
+
+mr-dox-reference::../boost_json.sqlite
