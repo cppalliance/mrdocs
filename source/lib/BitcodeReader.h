@@ -68,7 +68,7 @@ private:
   llvm::Expected<std::unique_ptr<Info>> readBlockToInfo(unsigned ID);
 
   llvm::BitstreamCursor &Stream;
-  std::optional<llvm::BitstreamBlockInfo> BlockInfo;
+  llvm::Optional<llvm::BitstreamBlockInfo> BlockInfo;
   FieldId CurrentReferenceField;
 };
 
