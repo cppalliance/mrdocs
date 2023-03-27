@@ -17,7 +17,6 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 
-#include "Javadoc.h"
 #include <clang/AST/Type.h>
 #include <clang/Basic/Specifiers.h>
 #include <clang/Tooling/StandaloneExecution.h>
@@ -47,6 +46,27 @@ enum class InfoType {
     IT_function,
     IT_enum,
     IT_typedef
+};
+
+/** A single verbatim block.
+*/
+struct VerbatimBlock
+{
+    std::string text;
+};
+
+/** A complete javadoc attached to a declaration
+*/
+struct Javadoc
+{
+    /** The brief description.
+    */
+    llvm::SmallString<32> brief;
+
+    /** The detailed description.
+    */
+    //llvm::SmallString<32> desc; // asciidoc
+    std::string desc; // asciidoc
 };
 
 // A representation of a parsed comment.

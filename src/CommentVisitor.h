@@ -12,7 +12,6 @@
 #ifndef MRDOX_COMMENT_VISITOR_HPP
 #define MRDOX_COMMENT_VISITOR_HPP
 
-#include "Javadoc.h"
 #include "Representation.h"
 #include <clang/AST/ASTContext.h>
 
