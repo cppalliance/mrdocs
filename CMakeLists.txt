@@ -25,7 +25,7 @@ project(
     VERSION 1.0.0
     DESCRIPTION "C++ Documentation Tool"
     HOMEPAGE_URL "https://github.com/cppalliance/mrdox"
-    LANGUAGES CXX C
+    LANGUAGES C CXX
 )
 
 #-------------------------------------------------
