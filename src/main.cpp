@@ -48,6 +48,8 @@
 #include <mutex>
 #include <string>
 
+#include <clang/Tooling/JSONCompilationDatabase.h>
+
 using namespace clang::ast_matchers;
 using namespace clang::tooling;
 using namespace clang;
@@ -104,8 +106,9 @@ enum OutputFormatTy {
 
 static llvm::cl::opt<OutputFormatTy>
 FormatEnum("format", llvm::cl::desc("Format for outputted docs."),
-    llvm::cl::values(clEnumValN(OutputFormatTy::yaml, "yaml",
-        "Documentation in YAML format."),
+    llvm::cl::values(
+        clEnumValN(OutputFormatTy::yaml, "yaml",
+            "Documentation in YAML format."),
         clEnumValN(OutputFormatTy::md, "md",
             "Documentation in MD format."),
         clEnumValN(OutputFormatTy::adoc, "adoc",
