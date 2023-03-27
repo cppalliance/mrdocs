@@ -26,12 +26,15 @@ static_assert(
 
 namespace mrdox {
 
+//------------------------------------------------
+
+void
 FunctionOverloads::
-FunctionOverloads(
+insert(
     clang::doc::FunctionInfo I)
-    : name(I.Name)
 {
-    list.emplace_back(std::move(I));
+    assert(I.Name == name);
+    v_.emplace_back(std::move(I));
 }
 
 void
@@ -39,82 +42,67 @@ FunctionOverloads::
 merge(
     FunctionOverloads&& other)
 {
-    //if(this->name.empty())
-        //this->name = std::move(other.name);
-    //if(other.name != this->name)
-        //return;
-    clang::doc::reduceChildren(list, std::move(other.list));
+    clang::doc::reduceChildren(
+        v_, std::move(other.v_));
+}
+
+FunctionOverloads::
+FunctionOverloads(
+    clang::doc::FunctionInfo I)
+    : name(I.Name)
+{
+    v_.emplace_back(std::move(I));
 }
 
 //------------------------------------------------
 
 void
-ScopedFunctions::
+FunctionList::
 insert(
     clang::doc::FunctionInfo I)
 {
-    auto& v = overloads[I.Access];
-    auto it = find(v, I.Name);
-    if(it != v.end())
+    //assert(I.Access == access);
+    auto it = find(I.Name);
+    if(it != end())
     {
         // new function
-        v.emplace_back(std::move(I));
+        it->insert(std::move(I));
         return;
     }
 
     // overloaded function
-    v.emplace_back(std::move(I));
+    v_.emplace_back(std::move(I));
 }
 
 void
-ScopedFunctions::
+FunctionList::
 merge(
-    ScopedFunctions&& other)
+    FunctionList&& other)
 {
-    for(std::size_t i = 0; i < 4; ++i)
+    for(auto& v : *this)
     {
-        auto& v0 = overloads[i];
-        auto& v1 = other.overloads[i];
-        for(auto& fo : v0)
-        {
-            auto it = other.find(v1, fo.name);
-            if(it == v1.end())
-                continue;
-            fo.merge(std::move(*it));
-            v1.erase(it);
-        }
-        for(auto& fo : v1)
-            v0.emplace_back(std::move(fo));
+        auto it = other.find(v.name);
+        if(it == other.end())
+            continue;
+        v.merge(std::move(*it));
+        other.v_.erase(it);
     }
-}
-
-ScopedFunctions::
-ScopedFunctions()
-{
-    overloads.resize(4);
+    for(auto& v : other)
+        v_.emplace_back(std::move(v));
+    other.v_.clear();
 }
 
 auto
-ScopedFunctions::
+FunctionList::
 find(
-    Functions& v,
     llvm::StringRef name) noexcept ->
-        Functions::iterator
+        iterator
 {
-    auto it = v.begin();
-    for(;it != v.end(); ++it)
+    auto it = begin();
+    for(;it != end(); ++it)
         if(it->name == name)
             return it;
-    return v.end();
-}
-
-auto
-ScopedFunctions::
-find(
-    clang::doc::FunctionInfo const& I) noexcept ->
-        Functions::iterator
-{
-    return find(overloads[I.Access], I.Name);
+    return it;
 }
 
 } // mrdox

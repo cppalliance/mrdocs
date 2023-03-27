@@ -28,6 +28,11 @@
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Path.h"
 
+static_assert(clang::AccessSpecifier::AS_public == 0);
+static_assert(clang::AccessSpecifier::AS_protected == 1);
+static_assert(clang::AccessSpecifier::AS_private == 2);
+static_assert(clang::AccessSpecifier::AS_none == 3);
+
 namespace clang {
 namespace doc {
 
@@ -187,9 +192,16 @@ void SymbolInfo::merge(SymbolInfo&& Other) {
     mergeBase(std::move(Other));
 }
 
-NamespaceInfo::NamespaceInfo(
-    SymbolID USR, StringRef Name, StringRef Path)
+NamespaceInfo::
+NamespaceInfo(
+    SymbolID USR,
+    StringRef Name,
+    StringRef Path)
     : Info(InfoType::IT_namespace, USR, Name, Path)
+    // VFALCO Shouldn't this be AS_none? But
+    //        the Bitcode writer expects the
+    //        default to be AS_public...
+    , Children(clang::AccessSpecifier::AS_public)
 {
 }
 
@@ -202,7 +214,6 @@ merge(NamespaceInfo&& Other)
     reduceChildren(Children.Namespaces, std::move(Other.Children.Namespaces));
     reduceChildren(Children.Records, std::move(Other.Children.Records));
     Children.functions.merge(std::move(Other.Children.functions));
-    reduceChildren(Children.Functions, std::move(Other.Children.Functions));
     reduceChildren(Children.Enums, std::move(Other.Children.Enums));
     reduceChildren(Children.Typedefs, std::move(Other.Children.Typedefs));
     mergeBase(std::move(Other));
@@ -214,6 +225,7 @@ RecordInfo(
     StringRef Name,
     StringRef Path)
     : SymbolInfo(InfoType::IT_record, USR, Name, Path)
+    , scope()
 {
 }
 
@@ -233,7 +245,6 @@ void RecordInfo::merge(RecordInfo&& Other) {
     // Reduce children if necessary.
     reduceChildren(Children.Records, std::move(Other.Children.Records));
     Children.functions.merge(std::move(Other.Children.functions));
-    reduceChildren(Children.Functions, std::move(Other.Children.Functions));
     reduceChildren(Children.Enums, std::move(Other.Children.Enums));
     reduceChildren(Children.Typedefs, std::move(Other.Children.Typedefs));
     SymbolInfo::merge(std::move(Other));

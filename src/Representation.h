@@ -161,6 +161,8 @@ struct Reference {
 // Holds the children of a record or namespace.
 struct ScopeChildren
 {
+    clang::AccessSpecifier access;
+
     // Namespaces and Records are references because they will be properly
     // documented in their own info, while the entirety of Functions and Enums are
     // included here because they should not have separate documentation from
@@ -170,10 +172,46 @@ struct ScopeChildren
     // this general for all possible container types reduces code complexity.
     std::vector<Reference> Namespaces;
     std::vector<Reference> Records;
-    mrdox::ScopedFunctions functions;
-    std::vector<FunctionInfo> Functions;
+    mrdox::FunctionList functions;
     std::vector<EnumInfo> Enums;
     std::vector<TypedefInfo> Typedefs;
+
+    ScopeChildren(
+        clang::AccessSpecifier access_ =
+            clang::AccessSpecifier::AS_public) noexcept
+        : access(access_)
+        , functions(access_)
+    {
+    }
+};
+
+/// A scope's elements with access control
+struct AccessScope
+{
+    ScopeChildren& pub;
+    ScopeChildren& prot;
+    ScopeChildren& priv;
+
+    ScopeChildren&
+    get(clang::AccessSpecifier access)
+    {
+        assert(access != clang::AccessSpecifier::AS_none);
+        return v_[access];
+    }
+
+    AccessScope() noexcept
+        : pub(v_[0])
+        , prot(v_[1])
+        , priv(v_[2])
+        , v_{
+            clang::AccessSpecifier::AS_public,
+            clang::AccessSpecifier::AS_protected,
+            clang::AccessSpecifier::AS_private}
+    {
+    }
+
+private:
+    ScopeChildren v_[3];
 };
 
 // A base struct for TypeInfos
@@ -255,6 +293,7 @@ struct MemberTypeInfo : public FieldTypeInfo
             std::tie(Other.Type, Other.Name, Other.Access, Other.Description);
     }
 
+    // VFALCO Why public?
     // Access level associated with this info (public, protected, private, none).
     // AS_public is set as default because the bitcode writer requires the enum
     // with value 0 to be used as the default.
@@ -345,14 +384,14 @@ struct Info
 struct NamespaceInfo
     : public Info
 {
+    ScopeChildren Children;
+
     NamespaceInfo(
         SymbolID USR = SymbolID(),
         StringRef Name = StringRef(),
         StringRef Path = StringRef());
 
     void merge(NamespaceInfo&& I);
-
-    ScopeChildren Children;
 };
 
 // Info for symbols.
@@ -430,8 +469,7 @@ struct RecordInfo
     llvm::SmallVector<MemberTypeInfo, 4>
         Members;                             // List of info about record members.
     llvm::SmallVector<Reference, 4> Parents; // List of base/parent records
-    // (does not include virtual
-    // parents).
+    // (does not include virtual parents).
     llvm::SmallVector<Reference, 4>
         VirtualParents; // List of virtual base/parent records.
 
@@ -440,6 +478,7 @@ struct RecordInfo
     // attributes
 
     ScopeChildren Children;
+    AccessScope scope;
 };
 
 // Info for typedef and using statements.
@@ -519,7 +558,9 @@ struct EnumInfo : public SymbolInfo {
     llvm::SmallVector<EnumValueInfo, 4> Members; // List of enum members.
 };
 
-struct Index : public Reference {
+struct Index
+    : public Reference
+{
     Index() = default;
     Index(StringRef Name) : Reference(SymbolID(), Name) {}
     Index(StringRef Name, StringRef JumpToSection)
@@ -544,7 +585,8 @@ struct Index : public Reference {
 llvm::Expected<std::unique_ptr<Info>>
 mergeInfos(std::vector<std::unique_ptr<Info>>& Values);
 
-struct ClangDocContext {
+struct ClangDocContext
+{
     ClangDocContext() = default;
     ClangDocContext(tooling::ExecutionContext* ECtx, StringRef ProjectName,
         bool PublicOnly, StringRef OutDirectory, StringRef SourceRoot,
@@ -552,13 +594,13 @@ struct ClangDocContext {
         std::vector<std::string> UserStylesheets,
         std::vector<std::string> JsScripts);
     tooling::ExecutionContext* ECtx;
-    std::string ProjectName; // Name of project clang-doc is documenting.
-    bool PublicOnly; // Indicates if only public declarations are documented.
-    std::string OutDirectory; // Directory for outputting generated files.
-    std::string SourceRoot;   // Directory where processed files are stored. Links
-    // to definition locations will only be generated if
-    // the file is in this dir.
-// URL of repository that hosts code used for links to definition locations.
+    std::string ProjectName;    // Name of project clang-doc is documenting.
+    bool PublicOnly;            // Indicates if only public declarations are documented.
+    std::string OutDirectory;   // Directory for outputting generated files.
+    std::string SourceRoot;     // Directory where processed files are stored. Links
+                                // to definition locations will only be generated if
+                                // the file is in this dir.
+    // URL of repository that hosts code used for links to definition locations.
     std::optional<std::string> RepositoryUrl;
     // Path of CSS stylesheets that will be copied to OutDirectory and used to
     // style all HTML files.

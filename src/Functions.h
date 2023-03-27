@@ -15,23 +15,58 @@
 #include "Types.h"
 #include <clang/Basic/Specifiers.h>
 #include <vector>
-#include <map>
 
 namespace mrdox {
+
+//------------------------------------------------
+
+template<class ValueType>
+class List
+{
+    using list_type = std::vector<ValueType>;
+
+public:
+    using value_type = typename list_type::value_type;
+    using reference = typename list_type::reference;
+    using iterator = typename list_type::iterator;
+    using const_reference = typename list_type::const_reference;
+    using const_iterator = typename list_type::const_iterator;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+
+    bool empty() const noexcept { return v_.empty(); }
+    size_type size() const noexcept { return v_.size(); }
+    iterator begin() noexcept { return v_.begin(); }
+    iterator end() noexcept { return v_.end(); }
+    const_iterator begin() const noexcept { return v_.begin(); }
+    const_iterator end() const noexcept { return v_.end(); }
+    reference front() { return v_.front(); }
+    reference back() { return v_.back(); }
+    const_reference front() const { return v_.front(); }
+    const_reference back() const { return v_.back(); }
+    reference operator[](std::size_t i) { return v_[i]; }
+    const_reference operator[](std::size_t i) const { return v_[i]; }
+
+protected:
+    List() = default;
+    List(List&&) noexcept = default;
+    List& operator=(
+        List&&) noexcept = default;
+
+    list_type v_;
+};
 
 //------------------------------------------------
 
 /** A list of overloads for a function.
 */
 struct FunctionOverloads
+    : List<clang::doc::FunctionInfo>
 {
     /// The name of the function.
     UnqualifiedName name;
 
-    /// The list of overloads.
-    FunctionInfos list;
-
-    // Combine other into this.
+    void insert(clang::doc::FunctionInfo I);
     void merge(FunctionOverloads&& other);
 
     FunctionOverloads(
@@ -44,37 +79,27 @@ struct FunctionOverloads
 
 //------------------------------------------------
 
-/** A list of functions, possibly overloaded,
+/** A list of functions, each with possible overloads.
 */
-using Functions = std::vector<FunctionOverloads>;
-
-//------------------------------------------------
-
-/** A list of functions in a scope.
-*/
-struct ScopedFunctions
+struct FunctionList
+    : List<FunctionOverloads>
 {
-    // Array of functions grouped by Access
-    std::vector<Functions> overloads;
+    clang::AccessSpecifier access;
 
     void insert(clang::doc::FunctionInfo I);
-    void merge(ScopedFunctions&& other);
+    void merge(FunctionList&& other);
 
-    ScopedFunctions();
-    ScopedFunctions(
-        ScopedFunctions&&) noexcept = default;
+    FunctionList(
+        FunctionList&&) noexcept = default;
+    FunctionList(
+        clang::AccessSpecifier access_ =
+            clang::AccessSpecifier::AS_public) noexcept
+        : access(access_)
+    {
+    }
 
 private:
-    auto
-    find(
-        Functions& v,
-        llvm::StringRef name) noexcept ->
-            Functions::iterator;
-
-    auto
-    find(
-        clang::doc::FunctionInfo const& I) noexcept ->
-        Functions::iterator;
+    iterator find(llvm::StringRef name) noexcept;
 };
 
 //------------------------------------------------

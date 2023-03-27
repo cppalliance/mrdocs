@@ -160,7 +160,8 @@ Example usage for a project using a compile commands database:
     auto Executor = clang::tooling::createExecutorFromCommandLineArgs(
         argc, argv, ClangDocCategory, Overview);
 
-    if (!Executor) {
+    if (!Executor)
+    {
         llvm::errs() << toString(Executor.takeError()) << "\n";
         return 1;
     }
@@ -175,7 +176,7 @@ Example usage for a project using a compile commands database:
     }
 
     ArgumentsAdjuster ArgAdjuster;
-    if (!DoxygenOnly)
+    if (! DoxygenOnly)
         ArgAdjuster = combineAdjusters(
             getInsertArgumentAdjuster("-fparse-all-comments",
                 tooling::ArgumentInsertPosition::END),

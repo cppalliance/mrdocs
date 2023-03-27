@@ -18,26 +18,14 @@
 
 //------------------------------------------------
 
-namespace mrdox {
-
-} // mrdox
-
-//------------------------------------------------
-
 using namespace llvm;
 
 namespace clang {
 namespace doc {
 
+//
 // Asciidoc generation
-
-// Return t as fixed-width Asciidoc text
-std::string
-fixed(
-    Twine const& t)
-{
-    return "`" + t.str() + "`";
-}
+//
 
 std::string
 genEmphasis(
@@ -90,7 +78,10 @@ section(
     unsigned int level,
     raw_ostream& os)
 {
-    os << std::string(level, '=') + " " + Text << "\n";
+    os <<
+        std::string(level, '=') << " " <<
+            Text << "\n"
+        "\n";
 }
 
 void
@@ -230,112 +221,10 @@ genMarkdown(
 }
 
 //------------------------------------------------
-
-namespace adoc {
-
-template<class T>
-class list
-{
-    T const& t_;
-
-public:
-    explicit
-    list(T const& t) noexcept
-        : t_(t)
-    {
-    }
-
-    friend
-    llvm::raw_ostream&
-    operator<<(
-        llvm::raw_ostream& os,
-        T const& t)
-    {
-        os <<
-            "[cols=2]\n" <<
-            "|===\n";
-
-        if(t.empty())
-        {
-            os <<
-                "|===\n"
-                "\n";
-            return os;
-        }
-    }
-};
-
-} // adoc
-
-//------------------------------------------------
-
-//------------------------------------------------
 //
 // Functions
 //
 //------------------------------------------------
-
-void
-listFunctions(
-    ClangDocContext const& CDCtx,
-    llvm::StringRef label,
-    mrdox::Functions const& v,
-    llvm::raw_ostream& os)
-{
-    if(v.empty())
-        return;
-
-    section(label, 2, os);
-    os <<
-        "[cols=2]\n" <<
-        "|===\n" <<
-        "|Name\n" <<
-        "|Description\n" <<
-        "\n";
-    os <<
-        "|`" << v.front().name << "`\n" <<
-        "| brief \n";
-    for(std::size_t i = 1; i < v.size(); ++i)
-    {
-        auto const& f = v[i];
-        os <<
-            "\n" <<
-            "|`" << f.name << "`\n" <<
-            "| brief \n";
-    }
-    os <<
-        "|===\n" <<
-        "\n";
-}
-
-void
-listFunctions(
-    ClangDocContext const& CDCtx,
-    llvm::StringRef label,
-    mrdox::ScopedFunctions const& fns,
-    llvm::raw_ostream& os)
-{
-    listFunctions(
-        CDCtx,
-        "Public Functions",
-        fns.overloads[clang::AccessSpecifier::AS_public],
-        os);
-    listFunctions(
-        CDCtx,
-        "Protected Functions",
-        fns.overloads[clang::AccessSpecifier::AS_protected],
-        os);
-    listFunctions(
-        CDCtx,
-        "Private Functions",
-        fns.overloads[clang::AccessSpecifier::AS_private],
-        os);
-    listFunctions(
-        CDCtx,
-        "Functions",
-        fns.overloads[clang::AccessSpecifier::AS_none],
-        os);
-}
 
 //------------------------------------------------
 //
@@ -389,20 +278,211 @@ genMarkdown(
 }
 
 //------------------------------------------------
-//
-// NamespaceInfo
-//
-//------------------------------------------------
+
+void
+listNamespaces(
+    ClangDocContext const& CDCtx,
+    std::vector<Reference> const& v,
+    llvm::raw_ostream& os)
+{
+    if(v.empty())
+        return;
+
+    section("Namespaces", 2, os);
+    os <<
+        "[cols=2]\n" <<
+        "|===\n" <<
+        "|Name\n" <<
+        "|Description\n" <<
+        "\n";
+    os <<
+        "|`";
+    llvm::SmallString<64> BasePath = v.front().getRelativeFilePath("");
+    writeNameLink(BasePath, v.front(), os);
+    os << "`\n" <<
+        "|\n";
+    for(std::size_t i = 1; i < v.size(); ++i)
+    {
+        auto const& I = v[i];
+        BasePath= I.getRelativeFilePath("");
+        os <<
+            "\n" <<
+            "|`";
+        writeNameLink(BasePath, I, os);
+        os <<
+            "`\n" <<
+            "|\n";
+    }
+    os <<
+        "|===\n" <<
+        "\n";
+}
+
+void
+listClasses(
+    ClangDocContext const& CDCtx,
+    std::vector<Reference> const& v,
+    llvm::raw_ostream& os)
+{
+    if(v.empty())
+        return;
+
+    section("Classes", 2, os);
+    os <<
+        "[cols=2]\n" <<
+        "|===\n" <<
+        "|Name\n" <<
+        "|Description\n" <<
+        "\n";
+    os <<
+        "|`";
+    llvm::SmallString<64> BasePath = v.front().getRelativeFilePath("");
+    writeNameLink(BasePath, v.front(), os);
+    os << "`\n" <<
+        "|\n";
+    for(std::size_t i = 1; i < v.size(); ++i)
+    {
+        auto const& I = v[i];
+        BasePath= I.getRelativeFilePath("");
+        os <<
+            "\n" <<
+            "|`";
+        writeNameLink(BasePath, I, os);
+        os <<
+            "`\n" <<
+            "|\n";
+    }
+    os <<
+        "|===\n" <<
+        "\n";
+}
+
+void
+listFunctions(
+    ClangDocContext const& CDCtx,
+    llvm::StringRef label,
+    mrdox::FunctionList const& v,
+    llvm::raw_ostream& os)
+{
+    if(v.empty())
+        return;
+
+    section(label, 2, os);
+    os <<
+        "[cols=2]\n" <<
+        "|===\n" <<
+        "|Name\n" <<
+        "|Description\n" <<
+        "\n";
+    os <<
+        "|`" << v.front().name << "`\n" <<
+        "|" << v.front().front().javadoc.brief <<
+        "\n";
+    for(std::size_t i = 1; i < v.size(); ++i)
+    {
+        auto const& f = v[i];
+        os <<
+            "\n" <<
+            "|`" << f.name << "`\n" <<
+            "|" << f.front().javadoc.brief <<
+            "\n";
+    }
+    os <<
+        "|===\n" <<
+        "\n";
+}
+
+void
+listConstants(
+    ClangDocContext const& CDCtx,
+    std::vector<EnumInfo> const& v,
+    llvm::raw_ostream& os)
+{
+    if(v.empty())
+        return;
+
+    section("Constants", 2, os);
+    os <<
+        "[cols=2]\n" <<
+        "|===\n" <<
+        "|Name\n" <<
+        "|Description\n" <<
+        "\n";
+    os <<
+        "|`" << v.front().Name << "`\n" <<
+        "|" << v.front().javadoc.brief <<
+        "\n";
+    for(std::size_t i = 1; i < v.size(); ++i)
+    {
+        auto const& I = v[i];
+        os <<
+            "\n" <<
+            "|`" << I.Name << "`\n" <<
+            "|" << I.javadoc.brief <<
+            "\n";
+    }
+    os <<
+        "|===\n" <<
+        "\n";
+}
+
+void
+listTypedefs(
+    ClangDocContext const& CDCtx,
+    std::vector<TypedefInfo> const& v,
+    llvm::raw_ostream& os)
+{
+    if(v.empty())
+        return;
+
+    section("Typedefs", 2, os);
+    os <<
+        "[cols=2]\n" <<
+        "|===\n" <<
+        "|Name\n" <<
+        "|Description\n" <<
+        "\n";
+    os <<
+        "|`" << v.front().Name << "`\n" <<
+        "|" << v.front().javadoc.brief <<
+        "\n";
+    for(std::size_t i = 1; i < v.size(); ++i)
+    {
+        auto const& I = v[i];
+        os <<
+            "\n" <<
+            "|`" << I.Name << "`\n" <<
+            "|" << I.javadoc.brief <<
+            "\n";
+    }
+    os <<
+        "|===\n" <<
+        "\n";
+}
+
+void
+listScope(
+    ClangDocContext const& CDCtx,
+    ScopeChildren const& scope,
+    llvm::raw_ostream& os)
+{
+    listNamespaces(CDCtx, scope.Namespaces, os);
+    listClasses(CDCtx, scope.Records, os);
+    listFunctions(CDCtx, "Functions", scope.functions, os);
+    listConstants(CDCtx, scope.Enums, os);
+    listTypedefs(CDCtx, scope.Typedefs, os);
+}
+
 
 void
 listFunction(
     ClangDocContext const& CDCtx,
-    FunctionInfo const& fi,
+    FunctionInfo const& I,
     llvm::raw_ostream& os)
 {
     os <<
-        "|`" << makeDecl(fi) <<"`\n" <<
-        "|" << fi.javadoc.brief << "\n";
+        "|`" << I.Name <<"`\n" <<
+        "|" << I.javadoc.brief << "\n";
 }
 
 void
@@ -458,17 +538,22 @@ emitFunction(
             I.javadoc.desc;
 }
 
+//------------------------------------------------
+//
+// NamespaceInfo
+//
+//------------------------------------------------
+
 void
-genMarkdown(
+makeNamespacePage(
     ClangDocContext const& CDCtx,
     NamespaceInfo const& I,
     llvm::raw_ostream& os)
 {
-    if (I.Name == "")
-        section("Global Namespace", 1, os);
+    if(I.Name == "")
+        section("(global namespace)", 1, os);
     else
         section("namespace " + I.Name, 1, os);
-    writeNewLine(os);
 
     if (!I.Description.empty())
     {
@@ -479,48 +564,7 @@ genMarkdown(
 
     llvm::SmallString<64> BasePath = I.getRelativeFilePath("");
 
-    if (!I.Children.Namespaces.empty())
-    {
-        section("Namespaces", 2, os);
-        for (const auto& R : I.Children.Namespaces) {
-            os << "* ";
-            writeNameLink(BasePath, R, os);
-            os << "\n";
-        }
-        writeNewLine(os);
-    }
-
-    if( ! I.Children.Records.empty() ||
-        ! I.Children.Typedefs.empty())
-    {
-        section("Types", 2, os);
-        for (const auto& R : I.Children.Records)
-        {
-            os << "* ";
-            writeNameLink(BasePath, R, os);
-            os << "\n";
-        }
-        for (const auto& R : I.Children.Typedefs)
-            os << "* " << R.Name << "\n";
-        writeNewLine(os);
-    }
-
-    listFunctions(CDCtx, "Functions", I.Children.functions, os);
-    //listFunctions(CDCtx, "Functions", I.Children.Functions, os);
-
-#if 0
-    for(auto const& fi : I.Children.Functions)
-    {
-        emitFunction(CDCtx, fi, os);
-    }
-#endif
-
-    if (!I.Children.Enums.empty()) {
-        section("Enums", 2, os);
-        for (const auto& E : I.Children.Enums)
-            genMarkdown(CDCtx, E, os);
-        writeNewLine(os);
-    }
+    listScope(CDCtx, I.Children, os);
 }
 
 //------------------------------------------------
@@ -566,38 +610,10 @@ genMarkdown(
         writeNewLine(os);
     }
 
-    if (!I.Members.empty())
-    {
-        section("Data Members", 2, os);
-        for (const auto& Member : I.Members) {
-            std::string Access = getAccessSpelling(Member.Access).str();
-            if (Access != "")
-                writeLine(Access + " " + Member.Type.Name + " " + Member.Name, os);
-            else
-                writeLine(Member.Type.Name + " " + Member.Name, os);
-        }
-        writeNewLine(os);
-    }
-
-    if (!I.Children.Records.empty())
-    {
-        section("Types", 2, os);
-        for (const auto& R : I.Children.Records)
-            writeLine(R.Name, os);
-        writeNewLine(os);
-    }
-
     // VFALCO STATIC MEMBER FUNCTIONS
 
-    listFunctions(CDCtx, "Member Functions", I.Children.functions, os);
-
-    if (!I.Children.Enums.empty())
-    {
-        section("Enums", 2, os);
-        for (const auto& E : I.Children.Enums)
-            genMarkdown(CDCtx, E, os);
-        writeNewLine(os);
-    }
+    //listFunctions(CDCtx, "Member Functions", I.Children.functions, os);
+    listScope(CDCtx, I.Children, os);
 
     if(! I.javadoc.desc.empty())
     {
@@ -802,7 +818,7 @@ generateDocForInfo(
     switch (I->IT)
     {
     case InfoType::IT_namespace:
-        genMarkdown(CDCtx, *static_cast<clang::doc::NamespaceInfo*>(I), os);
+        makeNamespacePage(CDCtx, *static_cast<clang::doc::NamespaceInfo*>(I), os);
         break;
     case InfoType::IT_record:
         genMarkdown(CDCtx, *static_cast<clang::doc::RecordInfo*>(I), os);
