@@ -190,11 +190,10 @@ Example usage for a project using a compile commands database:
     llvm::sys::path::native(ClangDocPath, NativeClangDocPath);
     llvm::SmallString<128> AssetsPath;
     AssetsPath = llvm::sys::path::parent_path(NativeClangDocPath);
-    llvm::sys::path::append(AssetsPath, "..", "share", "clang");
+    llvm::sys::path::append(AssetsPath, "..", "..", "assets");
     llvm::SmallString<128> DefaultStylesheet;
     llvm::sys::path::native(AssetsPath, DefaultStylesheet);
-    llvm::sys::path::append(DefaultStylesheet,
-                            "clang-doc-default-stylesheet.css");
+    llvm::sys::path::append(DefaultStylesheet, "styles.css");
     llvm::SmallString<128> IndexJS;
     llvm::sys::path::native(AssetsPath, IndexJS);
     llvm::sys::path::append(IndexJS, "index.js");
