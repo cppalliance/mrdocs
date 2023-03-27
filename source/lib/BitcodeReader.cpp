@@ -94,7 +94,7 @@ llvm::Error decodeRecord(const Record& R, TagTypeKind& Field,
     }
 }
 
-llvm::Error decodeRecord(const Record& R, std::optional<Location>& Field,
+llvm::Error decodeRecord(const Record& R, llvm::Optional<Location>& Field,
     llvm::StringRef Blob) {
     if (R[0] > INT_MAX)
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
@@ -1046,7 +1046,7 @@ validateStream()
 }
 
 llvm::Error ClangDocBitcodeReader::readBlockInfoBlock() {
-    Expected<std::optional<llvm::BitstreamBlockInfo>> MaybeBlockInfo =
+    Expected<llvm::Optional<llvm::BitstreamBlockInfo>> MaybeBlockInfo =
         Stream.ReadBlockInfoBlock();
     if (!MaybeBlockInfo)
         return MaybeBlockInfo.takeError();
