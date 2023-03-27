@@ -10,6 +10,7 @@
 //
 
 #include "Serialize.h"
+#include "CommentVisitor.h"
 #include "BitcodeWriter.h"
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -71,129 +72,6 @@ llvm::SmallString<128> getInfoRelativePath(const Decl *D) {
   return getInfoRelativePath(Namespaces);
 }
 
-class ClangDocCommentVisitor
-    : public ConstCommentVisitor<ClangDocCommentVisitor> {
-public:
-  ClangDocCommentVisitor(CommentInfo &CI) : CurrentCI(CI) {}
-
-  void parseComment(const comments::Comment *C);
-
-  void visitTextComment(const TextComment *C);
-  void visitInlineCommandComment(const InlineCommandComment *C);
-  void visitHTMLStartTagComment(const HTMLStartTagComment *C);
-  void visitHTMLEndTagComment(const HTMLEndTagComment *C);
-  void visitBlockCommandComment(const BlockCommandComment *C);
-  void visitParamCommandComment(const ParamCommandComment *C);
-  void visitTParamCommandComment(const TParamCommandComment *C);
-  void visitVerbatimBlockComment(const VerbatimBlockComment *C);
-  void visitVerbatimBlockLineComment(const VerbatimBlockLineComment *C);
-  void visitVerbatimLineComment(const VerbatimLineComment *C);
-
-private:
-  std::string getCommandName(unsigned CommandID) const;
-  bool isWhitespaceOnly(StringRef S) const;
-
-  CommentInfo &CurrentCI;
-};
-
-void ClangDocCommentVisitor::parseComment(const comments::Comment *C) {
-  CurrentCI.Kind = C->getCommentKindName();
-  ConstCommentVisitor<ClangDocCommentVisitor>::visit(C);
-  for (comments::Comment *Child :
-       llvm::make_range(C->child_begin(), C->child_end())) {
-    CurrentCI.Children.emplace_back(std::make_unique<CommentInfo>());
-    ClangDocCommentVisitor Visitor(*CurrentCI.Children.back());
-    Visitor.parseComment(Child);
-  }
-}
-
-void
-ClangDocCommentVisitor::
-visitTextComment(
-    TextComment const* c)
-{
-    // Trim leading whitespace
-    auto s = c->getText().ltrim();
-    if(! isWhitespaceOnly(s))
-        CurrentCI.Text = s;
-}
-
-void ClangDocCommentVisitor::visitInlineCommandComment(
-    const InlineCommandComment *C) {
-  CurrentCI.Name = getCommandName(C->getCommandID());
-  for (unsigned I = 0, E = C->getNumArgs(); I != E; ++I)
-    CurrentCI.Args.push_back(C->getArgText(I));
-}
-
-void ClangDocCommentVisitor::visitHTMLStartTagComment(
-    const HTMLStartTagComment *C) {
-  CurrentCI.Name = C->getTagName();
-  CurrentCI.SelfClosing = C->isSelfClosing();
-  for (unsigned I = 0, E = C->getNumAttrs(); I < E; ++I) {
-    const HTMLStartTagComment::Attribute &Attr = C->getAttr(I);
-    CurrentCI.AttrKeys.push_back(Attr.Name);
-    CurrentCI.AttrValues.push_back(Attr.Value);
-  }
-}
-
-void ClangDocCommentVisitor::visitHTMLEndTagComment(
-    const HTMLEndTagComment *C) {
-  CurrentCI.Name = C->getTagName();
-  CurrentCI.SelfClosing = true;
-}
-
-void ClangDocCommentVisitor::visitBlockCommandComment(
-    const BlockCommandComment *C) {
-  CurrentCI.Name = getCommandName(C->getCommandID());
-  for (unsigned I = 0, E = C->getNumArgs(); I < E; ++I)
-    CurrentCI.Args.push_back(C->getArgText(I));
-}
-
-void ClangDocCommentVisitor::visitParamCommandComment(
-    const ParamCommandComment *C) {
-  CurrentCI.Direction =
-      ParamCommandComment::getDirectionAsString(C->getDirection());
-  CurrentCI.Explicit = C->isDirectionExplicit();
-  if (C->hasParamName())
-    CurrentCI.ParamName = C->getParamNameAsWritten();
-}
-
-void ClangDocCommentVisitor::visitTParamCommandComment(
-    const TParamCommandComment *C) {
-  if (C->hasParamName())
-    CurrentCI.ParamName = C->getParamNameAsWritten();
-}
-
-void ClangDocCommentVisitor::visitVerbatimBlockComment(
-    const VerbatimBlockComment *C) {
-  CurrentCI.Name = getCommandName(C->getCommandID());
-  CurrentCI.CloseName = C->getCloseName();
-}
-
-void ClangDocCommentVisitor::visitVerbatimBlockLineComment(
-    const VerbatimBlockLineComment *C) {
-  if (!isWhitespaceOnly(C->getText()))
-    CurrentCI.Text = C->getText();
-}
-
-void ClangDocCommentVisitor::visitVerbatimLineComment(
-    const VerbatimLineComment *C) {
-  if (!isWhitespaceOnly(C->getText()))
-    CurrentCI.Text = C->getText();
-}
-
-bool ClangDocCommentVisitor::isWhitespaceOnly(llvm::StringRef S) const {
-  return llvm::all_of(S, isspace);
-}
-
-std::string ClangDocCommentVisitor::getCommandName(unsigned CommandID) const {
-  const CommandInfo *Info = CommandTraits::getBuiltinCommandInfo(CommandID);
-  if (Info)
-    return Info->Name;
-  // TODO: Add parsing for \file command.
-  return "<not a builtin command>";
-}
-
 // Serializing functions.
 
 std::string getSourceCode(const Decl *D, const SourceRange &R) {
@@ -226,9 +104,13 @@ std::string serialize(std::unique_ptr<Info> &I) {
   }
 }
 
-static void parseFullComment(const FullComment *C, CommentInfo &CI) {
-  ClangDocCommentVisitor Visitor(CI);
-  Visitor.parseComment(C);
+void
+parseFullComment(
+    FullComment const* c,
+    CommentInfo& ci)
+{
+    CommentVisitor Visitor(ci);
+    Visitor.parseComment(c);
 }
 
 static SymbolID getUSRForDecl(const Decl *D) {
