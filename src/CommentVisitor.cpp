@@ -17,6 +17,7 @@
 #include <clang/AST/CommentVisitor.h>
 #pragma warning(pop)
 #endif
+//#include <clang/AST/CommentCommandInfo.inc>
 
 namespace clang {
 namespace doc {
@@ -116,37 +117,44 @@ visitParagraphComment(
         {
             // First ParagraphComment starts the brief.
             in_brief_ = true;
+            return false;
         }
-        else
-        {
-            // Subsequent ParagraphComment ends the brief.
-            in_brief_ = false;
-            brief_done_ = true;
-        }
-    }
-    return false;
-}
 
+        // Subsequent ParagraphComment ends the brief.
+        in_brief_ = false;
+        brief_done_ = true;
+    }
+
+    //auto const n0 = jd_.desc.size();
+    parseChildren(c);
+    //if(jd_.desc.size() > n0)
+        jd_.desc.push_back('\n');
+    return true;
+}
+    
 bool
 CommentVisitor::
 visitTextComment(
     TextComment const* c)
 {
     llvm::StringRef s = c->getText();
-    if(! isWhitespaceOnly(s))
-        ci_->Text = s;
-    // VFALCO do we want brief to have the whitespace?
     if(in_brief_)
     {
         if(jd_.brief.empty())
-            s = s.ltrim(); // "\n\v\f\r"
-        jd_.brief += s;
+            s = s.ltrim();
+        else
+            jd_.brief.push_back(' ');
+        jd_.brief.append(s.rtrim());
+        jd_.brief.push_back('\n');
     }
     else
     {
-        if(jd_.desc.empty())
-            s = s.ltrim(); // "\n\v\f\r"
-        jd_.desc += s;
+        s = s.ltrim().rtrim();
+        if(! s.empty())
+        {
+            jd_.desc.append(s);
+            jd_.desc.push_back('\n');
+        }
     }
     return false;
 }
@@ -156,6 +164,47 @@ CommentVisitor::
 visitInlineCommandComment(
     InlineCommandComment const* c)
 {
+    auto const id = c->getCommandID();
+    auto const ci = ctx_.getCommentCommandTraits().getBuiltinCommandInfo(id);
+    if(! ci)
+    {
+        // VFALCO Proper error handling
+        llvm::errs() << "unknown command @" <<
+            getCommandName(id) << "\n";
+        return false;
+    }
+    if(c->getNumArgs() != ci->NumArgs)
+    {
+        // VFALCO Proper error handling
+        llvm::errs() <<
+            "wrong number of arguments for @" <<
+                getCommandName(c->getCommandID()) << "\n";
+        return false;
+    }
+
+    if(in_brief_)
+    {
+        // ignore inline commands in brief
+        jd_.brief += c->getArgText(0);
+        return false;
+    }
+
+    llvm::raw_string_ostream os(jd_.desc);
+    switch(id)
+    {
+    case CommandTraits::KnownCommandIDs::KCI_a:
+    case CommandTraits::KnownCommandIDs::KCI_e:
+    case CommandTraits::KnownCommandIDs::KCI_em:
+        // italic
+        os << "_" << c->getArgText(0) << "_";
+        break;
+    case CommandTraits::KnownCommandIDs::KCI_anchor:
+    {
+        break;
+    }
+    default:
+        break;
+    }
     ci_->Name = getCommandName(c->getCommandID());
     for (unsigned I = 0, E = c->getNumArgs(); I != E; ++I)
         ci_->Args.push_back(c->getArgText(I));
@@ -193,12 +242,20 @@ CommentVisitor::
 visitBlockCommandComment(
     BlockCommandComment const* c)
 {
-    switch(c->getCommandID())
+    auto const id = c->getCommandID();
+    //auto const ci = ctx_.getCommentCommandTraits().getBuiltinCommandInfo(id);
+    switch(id)
     {
+    case CommandTraits::KnownCommandIDs::KCI_brief:
+        break;
     case CommandTraits::KnownCommandIDs::KCI_code:
         break;
     case CommandTraits::KnownCommandIDs::KCI_endcode:
         break;
+    case CommandTraits::KnownCommandIDs::KCI_par:
+    {
+        break;
+    }
     default:
         break;
     }
@@ -287,8 +344,24 @@ CommentVisitor::
 visitVerbatimLineComment(
     VerbatimLineComment const* c)
 {
-    if (!isWhitespaceOnly(c->getText()))
-        ci_->Text = c->getText();
+    auto const id = c->getCommandID();
+    //auto const ci = ctx_.getCommentCommandTraits().getBuiltinCommandInfo(id);
+    auto const arg = c->getText().ltrim().rtrim();
+    switch(id)
+    {
+    case CommandTraits::KnownCommandIDs::KCI_defgroup:
+    {
+        auto p = arg;
+        break;
+    }
+    case CommandTraits::KnownCommandIDs::KCI_ingroup:
+    {
+        auto p = arg;
+        break;
+    }
+    default:
+        break;
+    }
     return false;
 }
 

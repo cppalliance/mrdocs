@@ -63,16 +63,16 @@ genReferenceList(
 void
 writeLine(
     Twine const& Text,
-    raw_ostream& OS)
+    raw_ostream& os)
 {
-    OS << Text << "\n";
+    os << Text << "\n";
 }
 
 void
 writeNewLine(
-    raw_ostream& OS)
+    raw_ostream& os)
 {
-    OS << "\n";
+    os << "\n";
 }
 
 // Write Asciidoc document header
@@ -88,77 +88,78 @@ void
 section(
     Twine const &Text,
     unsigned int level,
-    raw_ostream& OS)
+    raw_ostream& os)
 {
-    OS << std::string(level, '=') + " " + Text << "\n";
+    os << std::string(level, '=') + " " + Text << "\n";
 }
 
 void
 writeFileDefinition(
     ClangDocContext const& CDCtx,
     const Location& L,
-    raw_ostream& OS)
+    raw_ostream& os)
 {
     // VFALCO FIXME
 #if 0
     if (!CDCtx.RepositoryUrl) {
-        OS << "*Defined at " << L.Filename << "#" << std::to_string(L.LineNumber)
+        os << "*Defined at " << L.Filename << "#" << std::to_string(L.LineNumber)
             << "*";
     }
     else {
-        OS << "*Defined at [" << L.Filename << "#" << std::to_string(L.LineNumber)
+        os << "*Defined at [" << L.Filename << "#" << std::to_string(L.LineNumber)
             << "](" << StringRef{ *CDCtx.RepositoryUrl }
             << llvm::sys::path::relative_path(L.Filename) << "#"
             << std::to_string(L.LineNumber) << ")"
             << "*";
     }
-    OS << "\n";
-    OS << "\n";
+    os << "\n";
+    os << "\n";
 #endif
 }
 
 void
 writeDescription(
     CommentInfo const& I,
-    raw_ostream& OS)
+    raw_ostream& os)
 {
+#if 0
     if (I.Kind == "FullComment")
     {
         for (const auto& Child : I.Children)
-            writeDescription(*Child, OS);
+            writeDescription(*Child, os);
     }
     else if (I.Kind == "ParagraphComment") {
         for (const auto& Child : I.Children)
-            writeDescription(*Child, OS);
-        writeNewLine(OS);
+            writeDescription(*Child, os);
+        writeNewLine(os);
     }
     else if (I.Kind == "BlockCommandComment") {
-        OS << genEmphasis(I.Name);
+        os << genEmphasis(I.Name);
         for (const auto& Child : I.Children)
-            writeDescription(*Child, OS);
+            writeDescription(*Child, os);
     }
     else if (I.Kind == "InlineCommandComment") {
-        OS << genEmphasis(I.Name) << " " << I.Text;
+        os << genEmphasis(I.Name) << " " << I.Text;
     }
     else if (I.Kind == "ParamCommandComment") {
         std::string Direction = I.Explicit ? (" " + I.Direction).str() : "";
-        OS << genEmphasis(I.ParamName) << I.Text << Direction << "\n";
+        os << genEmphasis(I.ParamName) << I.Text << Direction << "\n";
     }
     else if (I.Kind == "TParamCommandComment") {
         std::string Direction = I.Explicit ? (" " + I.Direction).str() : "";
-        OS << genEmphasis(I.ParamName) << I.Text << Direction << "\n";
+        os << genEmphasis(I.ParamName) << I.Text << Direction << "\n";
     }
     else if (I.Kind == "VerbatimBlockComment") {
         for (const auto& Child : I.Children)
-            writeDescription(*Child, OS);
+            writeDescription(*Child, os);
     }
     else if (I.Kind == "VerbatimBlockLineComment") {
-        OS << I.Text;
-        writeNewLine(OS);
+        os << I.Text;
+        writeNewLine(os);
     }
     else if (I.Kind == "VerbatimLineComment") {
-        OS << I.Text;
-        writeNewLine(OS);
+        os << I.Text;
+        writeNewLine(os);
     }
     else if (I.Kind == "HTMLStartTagComment") {
         if (I.AttrKeys.size() != I.AttrValues.size())
@@ -169,31 +170,32 @@ writeDescription(
             Attrs << " \"" << I.AttrKeys[Idx] << "=" << I.AttrValues[Idx] << "\"";
 
         std::string CloseTag = I.SelfClosing ? "/>" : ">";
-        writeLine("<" + I.Name + Attrs.str() + CloseTag, OS);
+        writeLine("<" + I.Name + Attrs.str() + CloseTag, os);
     }
     else if (I.Kind == "HTMLEndTagComment") {
-        writeLine("</" + I.Name + ">", OS);
+        writeLine("</" + I.Name + ">", os);
     }
     else if (I.Kind == "TextComment") {
-        OS << I.Text;
+        os << I.Text;
     }
     else {
-        OS << "Unknown comment kind: " << I.Kind << ".\n";
+        os << "Unknown comment kind: " << I.Kind << ".\n";
     }
+#endif
 }
 
 void
 writeNameLink(
     StringRef const &CurrentPath,
     const Reference& R,
-    llvm::raw_ostream& OS)
+    llvm::raw_ostream& os)
 {
     llvm::SmallString<64> Path = R.getRelativeFilePath(CurrentPath);
     // Paths in Markdown use POSIX separators.
     llvm::sys::path::native(Path, llvm::sys::path::Style::posix);
     llvm::sys::path::append(Path, llvm::sys::path::Style::posix,
         R.getFileBaseName() + ".adoc");
-    OS << "xref:" << Path << "#" << R.Name << "[" << R.Name << "]";
+    os << "xref:" << Path << "#" << R.Name << "[" << R.Name << "]";
 }
 
 //------------------------------------------------
@@ -206,25 +208,25 @@ void
 genMarkdown(
     const ClangDocContext& CDCtx,
     const EnumInfo& I,
-    llvm::raw_ostream& OS)
+    llvm::raw_ostream& os)
 {
     if (I.Scoped)
-        writeLine("| enum class " + I.Name + " |", OS);
+        writeLine("| enum class " + I.Name + " |", os);
     else
-        writeLine("| enum " + I.Name + " |", OS);
-    writeLine("--", OS);
+        writeLine("| enum " + I.Name + " |", os);
+    writeLine("--", os);
 
     std::string Buffer;
     llvm::raw_string_ostream Members(Buffer);
     if (!I.Members.empty())
         for (const auto& N : I.Members)
             Members << "| " << N.Name << " |\n";
-    writeLine(Members.str(), OS);
+    writeLine(Members.str(), os);
     if (I.DefLoc)
-        writeFileDefinition(CDCtx, *I.DefLoc, OS);
+        writeFileDefinition(CDCtx, *I.DefLoc, os);
 
     for (const auto& C : I.Description)
-        writeDescription(C, OS);
+        writeDescription(C, os);
 }
 
 //------------------------------------------------
@@ -244,7 +246,7 @@ makeDecl(
         os << I.Name << "()";
         return s;
     }
-    os << "(" <<
+    os << I.Name << "(" <<
         I.Params.front().Type.Name << " " <<
         I.Params.front().Name;
     for(std::size_t i = 1; i < I.Params.size(); ++i)
@@ -259,23 +261,23 @@ void
 genMarkdown(
     ClangDocContext const& CDCtx,
     FunctionInfo const& I,
-    llvm::raw_ostream& OS)
+    llvm::raw_ostream& os)
 {
     std::string Buffer = makeDecl(I);
 
     std::string Access = getAccessSpelling(I.Access).str();
     if(! Access.empty())
         Access.push_back(' ');
-    OS <<
+    os <<
         "|`" << Access << Buffer;
 
     if (I.DefLoc)
-        writeFileDefinition(CDCtx, *I.DefLoc, OS);
+        writeFileDefinition(CDCtx, *I.DefLoc, os);
 
-    OS << "|";
+    os << "|";
     for (const auto& C : I.Description)
-        writeDescription(C, OS);
-    OS << "\n";
+        writeDescription(C, os);
+    os << "\n";
 }
 
 //------------------------------------------------
@@ -298,13 +300,14 @@ listFunction(
 void
 listFunctions(
     ClangDocContext const& CDCtx,
+    llvm::StringRef label,
     std::vector<FunctionInfo> const& v,
     llvm::raw_ostream& os)
 {
     if(v.empty())
         return;
 
-    section("Functions", 2, os);
+    section(label, 2, os);
     os <<
         "[cols=2]\n" <<
         "|===\n" <<
@@ -325,56 +328,83 @@ listFunctions(
         "\n";
 }
 
+// Write a complete FunctionInfo page
+void
+emitFunction(
+    ClangDocContext const& CDCtx,
+    FunctionInfo const& I,
+    llvm::raw_ostream& os)
+{
+    os <<
+        "== " << I.Name << "\n" <<
+        I.javadoc.brief << "\n" <<
+        "=== Synopsis\n"
+        "[,cpp]\n"
+        "----\n" <<
+        makeDecl(I) << "\n" <<
+        "----\n" <<
+        "\n";
+    if(! I.javadoc.desc.empty())
+        os <<
+            "=== Description\n" <<
+            I.javadoc.desc;
+}
+
 void
 genMarkdown(
     ClangDocContext const& CDCtx,
     NamespaceInfo const& I,
-    llvm::raw_ostream& OS)
+    llvm::raw_ostream& os)
 {
     if (I.Name == "")
-        section("Global Namespace", 1, OS);
+        section("Global Namespace", 1, os);
     else
-        section("namespace " + I.Name, 1, OS);
-    writeNewLine(OS);
+        section("namespace " + I.Name, 1, os);
+    writeNewLine(os);
 
     if (!I.Description.empty())
     {
         for (const auto& C : I.Description)
-            writeDescription(C, OS);
-        writeNewLine(OS);
+            writeDescription(C, os);
+        writeNewLine(os);
     }
 
     llvm::SmallString<64> BasePath = I.getRelativeFilePath("");
 
     if (!I.Children.Namespaces.empty())
     {
-        section("Namespaces", 2, OS);
+        section("Namespaces", 2, os);
         for (const auto& R : I.Children.Namespaces) {
-            OS << "* ";
-            writeNameLink(BasePath, R, OS);
-            OS << "\n";
+            os << "* ";
+            writeNameLink(BasePath, R, os);
+            os << "\n";
         }
-        writeNewLine(OS);
+        writeNewLine(os);
     }
 
     if (!I.Children.Records.empty())
     {
-        section("Types", 2, OS);
+        section("Types", 2, os);
         for (const auto& R : I.Children.Records) {
-            OS << "* ";
-            writeNameLink(BasePath, R, OS);
-            OS << "\n";
+            os << "* ";
+            writeNameLink(BasePath, R, os);
+            os << "\n";
         }
-        writeNewLine(OS);
+        writeNewLine(os);
     }
 
-    listFunctions(CDCtx, I.Children.Functions, OS);
+    listFunctions(CDCtx, "Functions", I.Children.Functions, os);
+
+    for(auto const& fi : I.Children.Functions)
+    {
+        emitFunction(CDCtx, fi, os);
+    }
 
     if (!I.Children.Enums.empty()) {
-        section("Enums", 2, OS);
+        section("Enums", 2, os);
         for (const auto& E : I.Children.Enums)
-            genMarkdown(CDCtx, E, OS);
-        writeNewLine(OS);
+            genMarkdown(CDCtx, E, os);
+        writeNewLine(os);
     }
 }
 
@@ -386,28 +416,19 @@ genMarkdown(
 
 void
 genMarkdown(
-    ClangDocContext const &CDCtx,
-    const RecordInfo& I,
-    llvm::raw_ostream& OS)
+    ClangDocContext const& CDCtx,
+    RecordInfo const& I,
+    llvm::raw_ostream& os)
 {
-//if(I.Name == "circular_buffer") __debugbreak();
-    document_header(I.Name, OS);
+    document_header(I.Name, os);
 
-    // VFALCO Calculate this robustly
-    std::vector<std::unique_ptr<
-        CommentInfo>> const* javadoc = nullptr;
+    os <<
+        I.javadoc.brief << "\n" <<
+        "\n";
 
-    if(! I.Description.empty())
-    {
-        javadoc = &I.Description.front().Children;
-        if(javadoc->size() > 0)
-            writeDescription(*javadoc->front(), OS);
-        writeNewLine(OS);
-    }
+    section("Synopsis", 2, os);
 
-    section("Synopsis", 2, OS);
-
-    OS << 
+    os << 
         "[,cpp]\n" <<
         "----\n" <<
         getTagType(I.TagType) << " " << I.Name << ";\n" <<
@@ -415,77 +436,59 @@ genMarkdown(
         "\n";
 
     if (I.DefLoc)
-        writeFileDefinition(CDCtx, *I.DefLoc, OS);
+        writeFileDefinition(CDCtx, *I.DefLoc, os);
 
     std::string Parents = genReferenceList(I.Parents);
     std::string VParents = genReferenceList(I.VirtualParents);
     if (!Parents.empty() || !VParents.empty())
     {
         if (Parents.empty())
-            writeLine("Inherits from " + VParents, OS);
+            writeLine("Inherits from " + VParents, os);
         else if (VParents.empty())
-            writeLine("Inherits from " + Parents, OS);
+            writeLine("Inherits from " + Parents, os);
         else
-            writeLine("Inherits from " + Parents + ", " + VParents, OS);
-        writeNewLine(OS);
+            writeLine("Inherits from " + Parents + ", " + VParents, os);
+        writeNewLine(os);
     }
 
     if (!I.Members.empty())
     {
-        section("Data Members", 2, OS);
+        section("Data Members", 2, os);
         for (const auto& Member : I.Members) {
             std::string Access = getAccessSpelling(Member.Access).str();
             if (Access != "")
-                writeLine(Access + " " + Member.Type.Name + " " + Member.Name, OS);
+                writeLine(Access + " " + Member.Type.Name + " " + Member.Name, os);
             else
-                writeLine(Member.Type.Name + " " + Member.Name, OS);
+                writeLine(Member.Type.Name + " " + Member.Name, os);
         }
-        writeNewLine(OS);
+        writeNewLine(os);
     }
 
     if (!I.Children.Records.empty())
     {
-        section("Types", 2, OS);
+        section("Types", 2, os);
         for (const auto& R : I.Children.Records)
-            writeLine(R.Name, OS);
-        writeNewLine(OS);
+            writeLine(R.Name, os);
+        writeNewLine(os);
     }
 
     // VFALCO STATIC MEMBER FUNCTIONS
 
-    if (!I.Children.Functions.empty())
-    {
-        section("Member Functions", 2, OS);
-        listFunctions(CDCtx, I.Children.Functions, OS);
-        /*
-        OS <<
-            "[cols=2*]\n"
-            "!===\n" <<
-            "|Name\n"
-            "|Description\n";
-        for (const auto& F : I.Children.Functions)
-            genMarkdown(CDCtx, F, OS);
-        OS <<
-            "!===\n"
-            "\n";
-        */
-    }
+    listFunctions(CDCtx, "Member Functions", I.Children.Functions, os);
 
     if (!I.Children.Enums.empty())
     {
-        section("Enums", 2, OS);
+        section("Enums", 2, os);
         for (const auto& E : I.Children.Enums)
-            genMarkdown(CDCtx, E, OS);
-        writeNewLine(OS);
+            genMarkdown(CDCtx, E, os);
+        writeNewLine(os);
     }
 
-    if( javadoc &&
-        javadoc->size() > 1)
+    if(! I.javadoc.desc.empty())
     {
-        section("Description", 2, OS);
-        for(std::size_t i = 0; i < javadoc->size(); ++i)
-            writeDescription(*(*javadoc)[i], OS);
-        writeNewLine(OS);
+        section("Description", 2, os);
+        os << I.javadoc.desc << "\n" <<
+            "\n";
     }
 }
 
@@ -499,7 +502,7 @@ void
 genMarkdown(
     ClangDocContext const &CDCtx,
     TypedefInfo const& I,
-    llvm::raw_ostream& OS)
+    llvm::raw_ostream& os)
 {
     // TODO support typedefs in markdown.
 }
@@ -508,14 +511,14 @@ genMarkdown(
 
 void
 serializeReference(
-    llvm::raw_fd_ostream& OS,
+    llvm::raw_fd_ostream& os,
     Index& I,
     int Level)
 {
     // Write out the heading level starting at ##
-    OS << "##" << std::string(Level, '#') << " ";
-    writeNameLink("", I, OS);
-    OS << "\n";
+    os << "##" << std::string(Level, '#') << " ";
+    writeNameLink("", I, os);
+    os << "\n";
 }
 
 // emit all_files.adoc
@@ -527,20 +530,20 @@ serializeIndex(
     llvm::SmallString<128> FilePath;
     llvm::sys::path::native(CDCtx.OutDirectory, FilePath);
     llvm::sys::path::append(FilePath, "all_files.adoc");
-    llvm::raw_fd_ostream OS(FilePath, FileErr, llvm::sys::fs::OF_None);
+    llvm::raw_fd_ostream os(FilePath, FileErr, llvm::sys::fs::OF_None);
     if (FileErr)
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "error creating index file: " +
             FileErr.message());
 
     CDCtx.Idx.sort();
-    OS << "# All Files";
+    os << "# All Files";
     if (!CDCtx.ProjectName.empty())
-        OS << " for " << CDCtx.ProjectName;
-    OS << "\n";
+        os << " for " << CDCtx.ProjectName;
+    os << "\n";
 
     for (auto C : CDCtx.Idx.Children)
-        serializeReference(OS, C, 0);
+        serializeReference(os, C, 0);
 
     return llvm::Error::success();
 }
@@ -554,13 +557,13 @@ genIndex(
     llvm::SmallString<128> FilePath;
     llvm::sys::path::native(CDCtx.OutDirectory, FilePath);
     llvm::sys::path::append(FilePath, "index.adoc");
-    llvm::raw_fd_ostream OS(FilePath, FileErr, llvm::sys::fs::OF_None);
+    llvm::raw_fd_ostream os(FilePath, FileErr, llvm::sys::fs::OF_None);
     if (FileErr)
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "error creating index file: " +
             FileErr.message());
     CDCtx.Idx.sort();
-    OS << "# " << CDCtx.ProjectName << " C/C++ Reference\n";
+    os << "# " << CDCtx.ProjectName << " C/C++ Reference\n";
     for (auto C : CDCtx.Idx.Children) {
         if (!C.Children.empty()) {
             const char* Type;
@@ -583,10 +586,10 @@ genIndex(
             case InfoType::IT_default:
                 Type = "Other";
             }
-            OS << "* " << Type << ": [" << C.Name << "](";
+            os << "* " << Type << ": [" << C.Name << "](";
             if (!C.Path.empty())
-                OS << C.Path << "/";
-            OS << C.Name << ")\n";
+                os << C.Path << "/";
+            os << C.Name << ")\n";
         }
     }
     return llvm::Error::success();
@@ -617,7 +620,7 @@ public:
     llvm::Error
     generateDocForInfo(
         Info* I,
-        llvm::raw_ostream& OS,
+        llvm::raw_ostream& os,
         ClangDocContext const& CDCtx) override;
 };
 
@@ -678,25 +681,25 @@ llvm::Error
 AsciidocGenerator::
 generateDocForInfo(
     Info* I,
-    llvm::raw_ostream& OS,
+    llvm::raw_ostream& os,
     const ClangDocContext& CDCtx)
 {
     switch (I->IT)
     {
     case InfoType::IT_namespace:
-        genMarkdown(CDCtx, *static_cast<clang::doc::NamespaceInfo*>(I), OS);
+        genMarkdown(CDCtx, *static_cast<clang::doc::NamespaceInfo*>(I), os);
         break;
     case InfoType::IT_record:
-        genMarkdown(CDCtx, *static_cast<clang::doc::RecordInfo*>(I), OS);
+        genMarkdown(CDCtx, *static_cast<clang::doc::RecordInfo*>(I), os);
         break;
     case InfoType::IT_enum:
-        genMarkdown(CDCtx, *static_cast<clang::doc::EnumInfo*>(I), OS);
+        genMarkdown(CDCtx, *static_cast<clang::doc::EnumInfo*>(I), os);
         break;
     case InfoType::IT_function:
-        genMarkdown(CDCtx, *static_cast<clang::doc::FunctionInfo*>(I), OS);
+        genMarkdown(CDCtx, *static_cast<clang::doc::FunctionInfo*>(I), os);
         break;
     case InfoType::IT_typedef:
-        genMarkdown(CDCtx, *static_cast<clang::doc::TypedefInfo*>(I), OS);
+        genMarkdown(CDCtx, *static_cast<clang::doc::TypedefInfo*>(I), os);
         break;
     case InfoType::IT_default:
         return createStringError(llvm::inconvertibleErrorCode(),
