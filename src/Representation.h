@@ -17,6 +17,7 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 
+#include "Functions.h"
 #include <clang/AST/Type.h>
 #include <clang/Basic/Specifiers.h>
 #include <clang/Tooling/StandaloneExecution.h>
@@ -26,6 +27,7 @@
 #include <array>
 #include <optional>
 #include <string>
+#include <vector>
 
 namespace clang {
 namespace doc {
@@ -157,7 +159,8 @@ struct Reference {
 };
 
 // Holds the children of a record or namespace.
-struct ScopeChildren {
+struct ScopeChildren
+{
     // Namespaces and Records are references because they will be properly
     // documented in their own info, while the entirety of Functions and Enums are
     // included here because they should not have separate documentation from
@@ -167,6 +170,7 @@ struct ScopeChildren {
     // this general for all possible container types reduces code complexity.
     std::vector<Reference> Namespaces;
     std::vector<Reference> Records;
+    mrdox::ScopedFunctions functions;
     std::vector<FunctionInfo> Functions;
     std::vector<EnumInfo> Enums;
     std::vector<TypedefInfo> Typedefs;
@@ -287,17 +291,28 @@ struct Location
     bool IsFileInRootDir = false; // Indicates if file is inside root directory
 };
 
-/// A base struct for Infos.
+//------------------------------------------------
+
+/** Common properties of all symbols
+*/
 struct Info
 {
-    Info(InfoType IT = InfoType::IT_default, SymbolID USR = SymbolID(),
-        StringRef Name = StringRef(), StringRef Path = StringRef())
-        : USR(USR), IT(IT), Name(Name), Path(Path) {}
-
-    Info(const Info& Other) = delete;
+    virtual ~Info() = default;
+    Info(Info const &Other) = delete;
     Info(Info&& Other) = default;
 
-    virtual ~Info() = default;
+    explicit
+    Info(
+        InfoType IT = InfoType::IT_default,
+        SymbolID USR = SymbolID(),
+        StringRef Name = StringRef(),
+        StringRef Path = StringRef())
+        : USR(USR)
+        , IT(IT)
+        , Name(Name)
+        , Path(Path)
+    {
+    }
 
     SymbolID USR =
         SymbolID(); // Unique identifier for the decl described by this Info.
@@ -324,6 +339,8 @@ struct Info
     llvm::SmallString<16> getFileBaseName() const;
 };
 
+//------------------------------------------------
+
 // Info for namespaces.
 struct NamespaceInfo
     : public Info
@@ -339,10 +356,17 @@ struct NamespaceInfo
 };
 
 // Info for symbols.
-struct SymbolInfo : public Info {
-    SymbolInfo(InfoType IT, SymbolID USR = SymbolID(),
-        StringRef Name = StringRef(), StringRef Path = StringRef())
-        : Info(IT, USR, Name, Path) {}
+struct SymbolInfo
+    : public Info
+{
+    SymbolInfo(
+        InfoType IT,
+        SymbolID USR = SymbolID(),
+        StringRef Name = StringRef(),
+        StringRef Path = StringRef())
+        : Info(IT, USR, Name, Path)
+    {
+    }
 
     void merge(SymbolInfo&& I);
 
@@ -379,7 +403,9 @@ struct FunctionInfo : public SymbolInfo {
 // TODO: Expand to allow for documenting templating, inheritance access,
 // friend classes
 // Info for types.
-struct RecordInfo : public SymbolInfo {
+struct RecordInfo
+    : public SymbolInfo
+{
     RecordInfo(SymbolID USR = SymbolID(), StringRef Name = StringRef(),
         StringRef Path = StringRef());
 
@@ -417,9 +443,14 @@ struct RecordInfo : public SymbolInfo {
 };
 
 // Info for typedef and using statements.
-struct TypedefInfo : public SymbolInfo {
-    TypedefInfo(SymbolID USR = SymbolID())
-        : SymbolInfo(InfoType::IT_typedef, USR) {}
+struct TypedefInfo
+    : public SymbolInfo
+{
+    TypedefInfo(
+        SymbolID USR = SymbolID())
+        : SymbolInfo(InfoType::IT_typedef, USR)
+    {
+    }
 
     void merge(TypedefInfo&& I);
 

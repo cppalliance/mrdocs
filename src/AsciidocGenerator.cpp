@@ -230,6 +230,114 @@ genMarkdown(
 }
 
 //------------------------------------------------
+
+namespace adoc {
+
+template<class T>
+class list
+{
+    T const& t_;
+
+public:
+    explicit
+    list(T const& t) noexcept
+        : t_(t)
+    {
+    }
+
+    friend
+    llvm::raw_ostream&
+    operator<<(
+        llvm::raw_ostream& os,
+        T const& t)
+    {
+        os <<
+            "[cols=2]\n" <<
+            "|===\n";
+
+        if(t.empty())
+        {
+            os <<
+                "|===\n"
+                "\n";
+            return os;
+        }
+    }
+};
+
+} // adoc
+
+//------------------------------------------------
+
+//------------------------------------------------
+//
+// Functions
+//
+//------------------------------------------------
+
+void
+listFunctions(
+    ClangDocContext const& CDCtx,
+    llvm::StringRef label,
+    mrdox::Functions const& v,
+    llvm::raw_ostream& os)
+{
+    if(v.empty())
+        return;
+
+    section(label, 2, os);
+    os <<
+        "[cols=2]\n" <<
+        "|===\n" <<
+        "|Name\n" <<
+        "|Description\n" <<
+        "\n";
+    os <<
+        "|`" << v.front().name << "`\n" <<
+        "| brief \n";
+    for(std::size_t i = 1; i < v.size(); ++i)
+    {
+        auto const& f = v[i];
+        os <<
+            "\n" <<
+            "|`" << f.name << "`\n" <<
+            "| brief \n";
+    }
+    os <<
+        "|===\n" <<
+        "\n";
+}
+
+void
+listFunctions(
+    ClangDocContext const& CDCtx,
+    llvm::StringRef label,
+    mrdox::ScopedFunctions const& fns,
+    llvm::raw_ostream& os)
+{
+    listFunctions(
+        CDCtx,
+        "Public Functions",
+        fns.overloads[clang::AccessSpecifier::AS_public],
+        os);
+    listFunctions(
+        CDCtx,
+        "Protected Functions",
+        fns.overloads[clang::AccessSpecifier::AS_protected],
+        os);
+    listFunctions(
+        CDCtx,
+        "Private Functions",
+        fns.overloads[clang::AccessSpecifier::AS_private],
+        os);
+    listFunctions(
+        CDCtx,
+        "Functions",
+        fns.overloads[clang::AccessSpecifier::AS_none],
+        os);
+}
+
+//------------------------------------------------
 //
 // FunctionInfo
 //
@@ -382,23 +490,30 @@ genMarkdown(
         writeNewLine(os);
     }
 
-    if (!I.Children.Records.empty())
+    if( ! I.Children.Records.empty() ||
+        ! I.Children.Typedefs.empty())
     {
         section("Types", 2, os);
-        for (const auto& R : I.Children.Records) {
+        for (const auto& R : I.Children.Records)
+        {
             os << "* ";
             writeNameLink(BasePath, R, os);
             os << "\n";
         }
+        for (const auto& R : I.Children.Typedefs)
+            os << "* " << R.Name << "\n";
         writeNewLine(os);
     }
 
-    listFunctions(CDCtx, "Functions", I.Children.Functions, os);
+    listFunctions(CDCtx, "Functions", I.Children.functions, os);
+    //listFunctions(CDCtx, "Functions", I.Children.Functions, os);
 
+#if 0
     for(auto const& fi : I.Children.Functions)
     {
         emitFunction(CDCtx, fi, os);
     }
+#endif
 
     if (!I.Children.Enums.empty()) {
         section("Enums", 2, os);
@@ -474,7 +589,7 @@ genMarkdown(
 
     // VFALCO STATIC MEMBER FUNCTIONS
 
-    listFunctions(CDCtx, "Member Functions", I.Children.Functions, os);
+    listFunctions(CDCtx, "Member Functions", I.Children.functions, os);
 
     if (!I.Children.Enums.empty())
     {

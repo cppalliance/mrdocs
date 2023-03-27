@@ -451,36 +451,36 @@ template <typename T> llvm::Expected<CommentInfo*> getCommentInfo(T I) {
         "invalid type cannot contain CommentInfo");
 }
 
-template <> llvm::Expected<CommentInfo*> getCommentInfo(FunctionInfo* I) {
+template<> llvm::Expected<CommentInfo*> getCommentInfo(FunctionInfo* I) {
     return &I->Description.emplace_back();
 }
 
-template <> llvm::Expected<CommentInfo*> getCommentInfo(NamespaceInfo* I) {
+template<> llvm::Expected<CommentInfo*> getCommentInfo(NamespaceInfo* I) {
     return &I->Description.emplace_back();
 }
 
-template <> llvm::Expected<CommentInfo*> getCommentInfo(RecordInfo* I) {
+template<> llvm::Expected<CommentInfo*> getCommentInfo(RecordInfo* I) {
     return &I->Description.emplace_back();
 }
 
-template <> llvm::Expected<CommentInfo*> getCommentInfo(MemberTypeInfo* I) {
+template<> llvm::Expected<CommentInfo*> getCommentInfo(MemberTypeInfo* I) {
     return &I->Description.emplace_back();
 }
 
-template <> llvm::Expected<CommentInfo*> getCommentInfo(EnumInfo* I) {
+template<> llvm::Expected<CommentInfo*> getCommentInfo(EnumInfo* I) {
     return &I->Description.emplace_back();
 }
 
-template <> llvm::Expected<CommentInfo*> getCommentInfo(TypedefInfo* I) {
+template<> llvm::Expected<CommentInfo*> getCommentInfo(TypedefInfo* I) {
     return &I->Description.emplace_back();
 }
 
-template <> llvm::Expected<CommentInfo*> getCommentInfo(CommentInfo* I) {
+template<> llvm::Expected<CommentInfo*> getCommentInfo(CommentInfo* I) {
     I->Children.emplace_back(std::make_unique<CommentInfo>());
     return I->Children.back().get();
 }
 
-template <>
+template<>
 llvm::Expected<CommentInfo*> getCommentInfo(std::unique_ptr<CommentInfo>& I) {
     return getCommentInfo(I.get());
 }
@@ -494,32 +494,32 @@ llvm::Error addTypeInfo(T I, TTypeInfo&& TI) {
         "invalid type cannot contain TypeInfo");
 }
 
-template <> llvm::Error addTypeInfo(RecordInfo* I, MemberTypeInfo&& T) {
+template<> llvm::Error addTypeInfo(RecordInfo* I, MemberTypeInfo&& T) {
     I->Members.emplace_back(std::move(T));
     return llvm::Error::success();
 }
 
-template <> llvm::Error addTypeInfo(BaseRecordInfo* I, MemberTypeInfo&& T) {
+template<> llvm::Error addTypeInfo(BaseRecordInfo* I, MemberTypeInfo&& T) {
     I->Members.emplace_back(std::move(T));
     return llvm::Error::success();
 }
 
-template <> llvm::Error addTypeInfo(FunctionInfo* I, TypeInfo&& T) {
+template<> llvm::Error addTypeInfo(FunctionInfo* I, TypeInfo&& T) {
     I->ReturnType = std::move(T);
     return llvm::Error::success();
 }
 
-template <> llvm::Error addTypeInfo(FunctionInfo* I, FieldTypeInfo&& T) {
+template<> llvm::Error addTypeInfo(FunctionInfo* I, FieldTypeInfo&& T) {
     I->Params.emplace_back(std::move(T));
     return llvm::Error::success();
 }
 
-template <> llvm::Error addTypeInfo(EnumInfo* I, TypeInfo&& T) {
+template<> llvm::Error addTypeInfo(EnumInfo* I, TypeInfo&& T) {
     I->BaseType = std::move(T);
     return llvm::Error::success();
 }
 
-template <> llvm::Error addTypeInfo(TypedefInfo* I, TypeInfo&& T) {
+template<> llvm::Error addTypeInfo(TypedefInfo* I, TypeInfo&& T) {
     I->Underlying = std::move(T);
     return llvm::Error::success();
 }
@@ -529,7 +529,7 @@ template <typename T> llvm::Error addReference(T I, Reference&& R, FieldId F) {
         "invalid type cannot contain Reference");
 }
 
-template <> llvm::Error addReference(TypeInfo* I, Reference&& R, FieldId F) {
+template<> llvm::Error addReference(TypeInfo* I, Reference&& R, FieldId F) {
     switch (F) {
     case FieldId::F_type:
         I->Type = std::move(R);
@@ -540,7 +540,7 @@ template <> llvm::Error addReference(TypeInfo* I, Reference&& R, FieldId F) {
     }
 }
 
-template <>
+template<>
 llvm::Error addReference(FieldTypeInfo* I, Reference&& R, FieldId F) {
     switch (F) {
     case FieldId::F_type:
@@ -552,7 +552,7 @@ llvm::Error addReference(FieldTypeInfo* I, Reference&& R, FieldId F) {
     }
 }
 
-template <>
+template<>
 llvm::Error addReference(MemberTypeInfo* I, Reference&& R, FieldId F) {
     switch (F) {
     case FieldId::F_type:
@@ -564,7 +564,7 @@ llvm::Error addReference(MemberTypeInfo* I, Reference&& R, FieldId F) {
     }
 }
 
-template <> llvm::Error addReference(EnumInfo* I, Reference&& R, FieldId F) {
+template<> llvm::Error addReference(EnumInfo* I, Reference&& R, FieldId F) {
     switch (F) {
     case FieldId::F_namespace:
         I->Namespace.emplace_back(std::move(R));
@@ -575,7 +575,7 @@ template <> llvm::Error addReference(EnumInfo* I, Reference&& R, FieldId F) {
     }
 }
 
-template <> llvm::Error addReference(TypedefInfo* I, Reference&& R, FieldId F) {
+template<> llvm::Error addReference(TypedefInfo* I, Reference&& R, FieldId F) {
     switch (F) {
     case FieldId::F_namespace:
         I->Namespace.emplace_back(std::move(R));
@@ -586,7 +586,7 @@ template <> llvm::Error addReference(TypedefInfo* I, Reference&& R, FieldId F) {
     }
 }
 
-template <>
+template<>
 llvm::Error addReference(NamespaceInfo* I, Reference&& R, FieldId F) {
     switch (F) {
     case FieldId::F_namespace:
@@ -604,7 +604,7 @@ llvm::Error addReference(NamespaceInfo* I, Reference&& R, FieldId F) {
     }
 }
 
-template <>
+template<>
 llvm::Error addReference(FunctionInfo* I, Reference&& R, FieldId F) {
     switch (F) {
     case FieldId::F_namespace:
@@ -619,7 +619,7 @@ llvm::Error addReference(FunctionInfo* I, Reference&& R, FieldId F) {
     }
 }
 
-template <> llvm::Error addReference(RecordInfo* I, Reference&& R, FieldId F) {
+template<> llvm::Error addReference(RecordInfo* I, Reference&& R, FieldId F) {
     switch (F) {
     case FieldId::F_namespace:
         I->Namespace.emplace_back(std::move(R));
@@ -646,80 +646,173 @@ void addChild(T I, ChildInfoType&& R) {
 }
 
 // Namespace children:
-template <> void addChild(NamespaceInfo* I, FunctionInfo&& R) {
-    I->Children.Functions.emplace_back(std::move(R));
+template<>
+void
+addChild(
+    NamespaceInfo* I,
+    FunctionInfo&& R)
+{
+    I->Children.functions.insert(std::move(R));
+    //I->Children.Functions.emplace_back(std::move(R));
 }
-template <> void addChild(NamespaceInfo* I, EnumInfo&& R) {
+
+template<>
+void
+addChild(
+    NamespaceInfo* I,
+    EnumInfo&& R)
+{
     I->Children.Enums.emplace_back(std::move(R));
 }
-template <> void addChild(NamespaceInfo* I, TypedefInfo&& R) {
+
+template<>
+void
+addChild(
+    NamespaceInfo* I,
+    TypedefInfo&& R)
+{
     I->Children.Typedefs.emplace_back(std::move(R));
 }
 
 // Record children:
-template <> void addChild(RecordInfo* I, FunctionInfo&& R) {
-    I->Children.Functions.emplace_back(std::move(R));
+template<>
+void
+addChild(
+    RecordInfo* I,
+    FunctionInfo&& R)
+{
+    I->Children.functions.insert(std::move(R));
+    //I->Children.Functions.emplace_back(std::move(R));
 }
-template <> void addChild(RecordInfo* I, EnumInfo&& R) {
+
+template<>
+void
+addChild(
+    RecordInfo* I,
+    EnumInfo&& R)
+{
     I->Children.Enums.emplace_back(std::move(R));
 }
-template <> void addChild(RecordInfo* I, TypedefInfo&& R) {
+
+template<>
+void
+addChild(
+    RecordInfo* I,
+    TypedefInfo&& R)
+{
     I->Children.Typedefs.emplace_back(std::move(R));
 }
 
 // Other types of children:
-template <> void addChild(EnumInfo* I, EnumValueInfo&& R) {
+template<>
+void
+addChild(
+    EnumInfo* I,
+    EnumValueInfo&& R)
+{
     I->Members.emplace_back(std::move(R));
 }
-template <> void addChild(RecordInfo* I, BaseRecordInfo&& R) {
+
+template<>
+void
+addChild(
+    RecordInfo* I,
+    BaseRecordInfo&& R)
+{
     I->Bases.emplace_back(std::move(R));
 }
-template <> void addChild(BaseRecordInfo* I, FunctionInfo&& R) {
-    I->Children.Functions.emplace_back(std::move(R));
+
+template<>
+void
+addChild(
+    BaseRecordInfo* I,
+    FunctionInfo&& R)
+{
+    I->Children.functions.insert(std::move(R));
+    //I->Children.Functions.emplace_back(std::move(R));
 }
 
 // TemplateParam children. These go into either a TemplateInfo (for template
 // parameters) or TemplateSpecializationInfo (for the specialization's
 // parameters).
-template <typename T> void addTemplateParam(T I, TemplateParamInfo&& P) {
+template<typename T>
+void
+addTemplateParam(
+    T I,
+    TemplateParamInfo&& P)
+{
     llvm::errs() << "invalid container for template parameter";
     exit(1);
 }
-template <> void addTemplateParam(TemplateInfo* I, TemplateParamInfo&& P) {
+template<> void addTemplateParam(TemplateInfo* I, TemplateParamInfo&& P) {
     I->Params.emplace_back(std::move(P));
 }
-template <>
-void addTemplateParam(TemplateSpecializationInfo* I, TemplateParamInfo&& P) {
+
+template<>
+void
+addTemplateParam(
+    TemplateSpecializationInfo* I,
+    TemplateParamInfo&& P)
+{
     I->Params.emplace_back(std::move(P));
 }
 
 // Template info. These apply to either records or functions.
-template <typename T> void addTemplate(T I, TemplateInfo&& P) {
+template<typename T>
+void
+addTemplate(
+    T I,
+    TemplateInfo&& P)
+{
     llvm::errs() << "invalid container for template info";
     exit(1);
 }
-template <> void addTemplate(RecordInfo* I, TemplateInfo&& P) {
+
+template<>
+void
+addTemplate(
+    RecordInfo* I,
+    TemplateInfo&& P)
+{
     I->Template.emplace(std::move(P));
 }
-template <> void addTemplate(FunctionInfo* I, TemplateInfo&& P) {
+
+template<>
+void
+addTemplate(
+    FunctionInfo* I,
+    TemplateInfo&& P)
+{
     I->Template.emplace(std::move(P));
 }
 
 // Template specializations go only into template records.
 template <typename T>
-void addTemplateSpecialization(T I, TemplateSpecializationInfo&& TSI) {
+void
+addTemplateSpecialization(
+    T I,
+    TemplateSpecializationInfo&& TSI)
+{
     llvm::errs() << "invalid container for template specialization info";
     exit(1);
 }
-template <>
-void addTemplateSpecialization(TemplateInfo* I,
-    TemplateSpecializationInfo&& TSI) {
+
+template<>
+void
+addTemplateSpecialization(
+    TemplateInfo* I,
+    TemplateSpecializationInfo&& TSI)
+{
     I->Specialization.emplace(std::move(TSI));
 }
 
 // Read records from bitcode into a given info.
 template <typename T>
-llvm::Error ClangDocBitcodeReader::readRecord(unsigned ID, T I) {
+llvm::Error
+ClangDocBitcodeReader::
+readRecord(
+    unsigned ID, T I)
+{
     Record R;
     llvm::StringRef Blob;
     llvm::Expected<unsigned> MaybeRecID = Stream.readRecord(ID, R, &Blob);
@@ -728,7 +821,7 @@ llvm::Error ClangDocBitcodeReader::readRecord(unsigned ID, T I) {
     return parseRecord(R, MaybeRecID.get(), Blob, I);
 }
 
-template <>
+template<>
 llvm::Error ClangDocBitcodeReader::readRecord(unsigned ID, Reference* I) {
     Record R;
     llvm::StringRef Blob;
@@ -769,8 +862,12 @@ llvm::Error ClangDocBitcodeReader::readBlock(unsigned ID, T I) {
     }
 }
 
-template <typename T>
-llvm::Error ClangDocBitcodeReader::readSubBlock(unsigned ID, T I) {
+template<typename T>
+llvm::Error
+ClangDocBitcodeReader::
+readSubBlock(
+    unsigned ID, T I)
+{
     switch (ID) {
     // Blocks can only have certain types of sub blocks.
     case BI_JAVADOC_BLOCK_ID:
