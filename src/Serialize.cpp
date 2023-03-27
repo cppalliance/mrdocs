@@ -107,9 +107,15 @@ void ClangDocCommentVisitor::parseComment(const comments::Comment *C) {
   }
 }
 
-void ClangDocCommentVisitor::visitTextComment(const TextComment *C) {
-  if (!isWhitespaceOnly(C->getText()))
-    CurrentCI.Text = C->getText();
+void
+ClangDocCommentVisitor::
+visitTextComment(
+    TextComment const* c)
+{
+    // Trim leading whitespace
+    auto s = c->getText().ltrim();
+    if(! isWhitespaceOnly(s))
+        CurrentCI.Text = s;
 }
 
 void ClangDocCommentVisitor::visitInlineCommandComment(

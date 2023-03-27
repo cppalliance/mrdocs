@@ -98,6 +98,7 @@ Used for links to definition locations.)"),
 enum OutputFormatTy {
   md,
   yaml,
+  adoc,
   html,
 };
 
@@ -107,6 +108,8 @@ static llvm::cl::opt<OutputFormatTy>
                                            "Documentation in YAML format."),
                                 clEnumValN(OutputFormatTy::md, "md",
                                            "Documentation in MD format."),
+                                clEnumValN(OutputFormatTy::adoc, "adoc",
+                                           "Documentation in Asciidoc format."),
                                 clEnumValN(OutputFormatTy::html, "html",
                                            "Documentation in HTML format.")),
                llvm::cl::init(OutputFormatTy::yaml),
@@ -118,6 +121,8 @@ std::string getFormatString() {
     return "yaml";
   case OutputFormatTy::md:
     return "md";
+  case OutputFormatTy::adoc:
+    return "adoc";
   case OutputFormatTy::html:
     return "html";
   }
