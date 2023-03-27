@@ -64,6 +64,7 @@ enum BlockId {
   BI_RECORD_BLOCK_ID,
   BI_BASE_RECORD_BLOCK_ID,
   BI_FUNCTION_BLOCK_ID,
+  BI_JAVADOC_BLOCK_ID,
   BI_COMMENT_BLOCK_ID,
   BI_REFERENCE_BLOCK_ID,
   BI_TEMPLATE_BLOCK_ID,
@@ -84,6 +85,8 @@ enum RecordId {
   FUNCTION_LOCATION,
   FUNCTION_ACCESS,
   FUNCTION_IS_METHOD,
+  JAVADOC_BRIEF,
+  JAVADOC_DESC,
   COMMENT_KIND,
   COMMENT_TEXT,
   COMMENT_NAME,
@@ -176,6 +179,7 @@ public:
   void emitBlock(const TypedefInfo &B);
   void emitBlock(const FieldTypeInfo &B);
   void emitBlock(const MemberTypeInfo &T);
+  void emitBlock(Javadoc const& jd);
   void emitBlock(const CommentInfo &B);
   void emitBlock(const TemplateInfo &T);
   void emitBlock(const TemplateSpecializationInfo &T);

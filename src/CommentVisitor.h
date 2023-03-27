@@ -12,50 +12,23 @@
 #ifndef MRDOX_COMMENT_VISITOR_HPP
 #define MRDOX_COMMENT_VISITOR_HPP
 
+#include "Javadoc.h"
 #include "Representation.h"
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
-#include <clang/AST/Comment.h>
-#include <clang/AST/CommentVisitor.h>
-#pragma warning(pop)
-#endif
+#include <clang/AST/ASTContext.h>
 
 namespace clang {
 namespace doc {
-namespace serialize {
 
-// VFALCO refactor this
-using namespace comments;
+/** Parse a FullComment
+*/
+void
+parseComment(
+    comments::FullComment const* c,
+    ASTContext& ctx,
+    Javadoc& javadoc,
+    CommentInfo& ci);
 
-class CommentVisitor
-    : public ConstCommentVisitor<CommentVisitor>
-{
-public:
-  CommentVisitor(CommentInfo &CI) : CurrentCI(CI) {}
-
-  void parseComment(const comments::Comment *C);
-
-  void visitTextComment(const TextComment *C);
-  void visitInlineCommandComment(const InlineCommandComment *C);
-  void visitHTMLStartTagComment(const HTMLStartTagComment *C);
-  void visitHTMLEndTagComment(const HTMLEndTagComment *C);
-  void visitBlockCommandComment(const BlockCommandComment *C);
-  void visitParamCommandComment(const ParamCommandComment *C);
-  void visitTParamCommandComment(const TParamCommandComment *C);
-  void visitVerbatimBlockComment(const VerbatimBlockComment *C);
-  void visitVerbatimBlockLineComment(const VerbatimBlockLineComment *C);
-  void visitVerbatimLineComment(const VerbatimLineComment *C);
-
-private:
-  std::string getCommandName(unsigned CommandID) const;
-  bool isWhitespaceOnly(StringRef S) const;
-
-  CommentInfo &CurrentCI;
-};
-
-} // namespace serialize
-} // namespace doc
-} // namespace clang
+} // doc
+} // clang
 
 #endif

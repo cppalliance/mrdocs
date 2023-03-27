@@ -190,7 +190,8 @@ void Reference::merge(Reference &&Other) {
     Path = Other.Path;
 }
 
-void Info::mergeBase(Info &&Other) {
+void Info::mergeBase(Info &&Other)
+{
   assert(mergeable(Other));
   if (USR == EmptySID)
     USR = Other.USR;
@@ -206,6 +207,10 @@ void Info::mergeBase(Info &&Other) {
   llvm::sort(Description);
   auto Last = std::unique(Description.begin(), Description.end());
   Description.erase(Last, Description.end());
+  if( javadoc.brief.empty())
+      javadoc.brief = std::move(Other.javadoc.brief);
+  if( javadoc.desc.empty())
+      javadoc.desc = std::move(Other.javadoc.desc);
 }
 
 bool Info::mergeable(const Info &Other) {

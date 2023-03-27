@@ -104,15 +104,6 @@ std::string serialize(std::unique_ptr<Info> &I) {
   }
 }
 
-void
-parseFullComment(
-    FullComment const* c,
-    CommentInfo& ci)
-{
-    CommentVisitor Visitor(ci);
-    Visitor.parseComment(c);
-}
-
 static SymbolID getUSRForDecl(const Decl *D) {
   llvm::SmallString<128> USR;
   if (index::generateUSRForDecl(D, USR))
@@ -405,7 +396,7 @@ static void populateInfo(Info &I, const T *D, const FullComment *C,
   populateParentNamespaces(I.Namespace, D, IsInAnonymousNamespace);
   if (C) {
     I.Description.emplace_back();
-    parseFullComment(C, I.Description.back());
+    parseComment(C, D->getASTContext(), I.javadoc, I.Description.back());
   }
 }
 
@@ -451,7 +442,10 @@ static void populateFunctionInfo(FunctionInfo &I, const FunctionDecl *D,
   }
 }
 
-static void populateMemberTypeInfo(MemberTypeInfo &I, const FieldDecl *D) {
+static void populateMemberTypeInfo(
+    MemberTypeInfo &I,
+    const FieldDecl *D)
+{
   assert(D && "Expect non-null FieldDecl in populateMemberTypeInfo");
 
   ASTContext& Context = D->getASTContext();
@@ -464,7 +458,7 @@ static void populateMemberTypeInfo(MemberTypeInfo &I, const FieldDecl *D) {
   Comment->setAttached();
   if (comments::FullComment* fc = Comment->parse(Context, nullptr, D)) {
     I.Description.emplace_back();
-    parseFullComment(fc, I.Description.back());
+    parseComment(fc, Context, I.javadoc, I.Description.back());
   }
 }
 

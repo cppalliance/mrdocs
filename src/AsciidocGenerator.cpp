@@ -16,6 +16,14 @@
 #include "llvm/Support/Path.h"
 #include <string>
 
+//------------------------------------------------
+
+namespace mrdox {
+
+} // mrdox
+
+//------------------------------------------------
+
 using namespace llvm;
 
 namespace clang {
@@ -225,31 +233,41 @@ genMarkdown(
 //
 //------------------------------------------------
 
+std::string
+makeDecl(
+    FunctionInfo const& I)
+{
+    std::string s;
+    llvm::raw_string_ostream os(s);
+    if(I.Params.empty())
+    {
+        os << I.Name << "()";
+        return s;
+    }
+    os << "(" <<
+        I.Params.front().Type.Name << " " <<
+        I.Params.front().Name;
+    for(std::size_t i = 1; i < I.Params.size(); ++i)
+        os << ", " <<
+            I.Params.front().Type.Name << " " <<
+            I.Params.front().Name;
+    os << ")";
+    return s;
+}
+
 void
 genMarkdown(
     ClangDocContext const& CDCtx,
     FunctionInfo const& I,
     llvm::raw_ostream& OS)
 {
-    std::string Buffer;
-    llvm::raw_string_ostream Stream(Buffer);
-    bool First = true;
-    for (const auto& N : I.Params) {
-        if (!First)
-            Stream << ", ";
-        Stream << N.Type.Name + " " + N.Name;
-        First = false;
-    }
+    std::string Buffer = makeDecl(I);
 
     std::string Access = getAccessSpelling(I.Access).str();
     if(! Access.empty())
         Access.push_back(' ');
     OS <<
-        "|`" << Access << I.Name;
-    if(! Stream.str().empty())
-        OS << "( " << Stream.str() << " )`\n";
-    else
-        OS << "()`\n";
+        "|`" << Access << Buffer;
 
     if (I.DefLoc)
         writeFileDefinition(CDCtx, *I.DefLoc, OS);
@@ -265,6 +283,47 @@ genMarkdown(
 // NamespaceInfo
 //
 //------------------------------------------------
+
+void
+listFunction(
+    ClangDocContext const& CDCtx,
+    FunctionInfo const& fi,
+    llvm::raw_ostream& os)
+{
+    os <<
+        "|`" << makeDecl(fi) <<"`\n" <<
+        "|" << fi.javadoc.brief << "\n";
+}
+
+void
+listFunctions(
+    ClangDocContext const& CDCtx,
+    std::vector<FunctionInfo> const& v,
+    llvm::raw_ostream& os)
+{
+    if(v.empty())
+        return;
+
+    section("Functions", 2, os);
+    os <<
+        "[cols=2]\n" <<
+        "|===\n" <<
+        "|Name\n" <<
+        "|Description\n" <<
+        "\n";
+    if(! v.empty())
+    {
+        listFunction(CDCtx, v.front(), os);
+        for(std::size_t i = 1; i < v.size(); ++i)
+        {
+            os << "\n";
+            listFunction(CDCtx, v[i], os);
+        }
+    }
+    os <<
+        "|===\n" <<
+        "\n";
+}
 
 void
 genMarkdown(
@@ -309,13 +368,8 @@ genMarkdown(
         writeNewLine(OS);
     }
 
-    if (!I.Children.Functions.empty())
-    {
-        section("Functions", 2, OS);
-        for (const auto& F : I.Children.Functions)
-            genMarkdown(CDCtx, F, OS);
-        writeNewLine(OS);
-    }
+    listFunctions(CDCtx, I.Children.Functions, OS);
+
     if (!I.Children.Enums.empty()) {
         section("Enums", 2, OS);
         for (const auto& E : I.Children.Enums)
@@ -402,6 +456,8 @@ genMarkdown(
     if (!I.Children.Functions.empty())
     {
         section("Member Functions", 2, OS);
+        listFunctions(CDCtx, I.Children.Functions, OS);
+        /*
         OS <<
             "[cols=2*]\n"
             "!===\n" <<
@@ -412,6 +468,7 @@ genMarkdown(
         OS <<
             "!===\n"
             "\n";
+        */
     }
 
     if (!I.Children.Enums.empty())

@@ -56,8 +56,8 @@ static llvm::cl::extrahelp CommonHelp(CommonOptionsParser::HelpMessage);
 static llvm::cl::OptionCategory ClangDocCategory("clang-doc options");
 
 static llvm::cl::opt<std::string>
-    ProjectName("project-name", llvm::cl::desc("Name of project."),
-                llvm::cl::cat(ClangDocCategory));
+ProjectName("project-name", llvm::cl::desc("Name of project."),
+    llvm::cl::cat(ClangDocCategory));
 
 static llvm::cl::opt<bool> IgnoreMappingFailures(
     "ignore-map-errors",
@@ -65,13 +65,13 @@ static llvm::cl::opt<bool> IgnoreMappingFailures(
     llvm::cl::init(true), llvm::cl::cat(ClangDocCategory));
 
 static llvm::cl::opt<std::string>
-    OutDirectory("output",
-                 llvm::cl::desc("Directory for outputting generated files."),
-                 llvm::cl::init("docs"), llvm::cl::cat(ClangDocCategory));
+OutDirectory("output",
+    llvm::cl::desc("Directory for outputting generated files."),
+    llvm::cl::init("docs"), llvm::cl::cat(ClangDocCategory));
 
 static llvm::cl::opt<bool>
-    PublicOnly("public", llvm::cl::desc("Document only public declarations."),
-               llvm::cl::init(false), llvm::cl::cat(ClangDocCategory));
+PublicOnly("public", llvm::cl::desc("Document only public declarations."),
+    llvm::cl::init(false), llvm::cl::cat(ClangDocCategory));
 
 static llvm::cl::opt<bool> DoxygenOnly(
     "doxygen",
@@ -87,46 +87,46 @@ static llvm::cl::opt<std::string> SourceRoot("source-root", llvm::cl::desc(R"(
 Directory where processed files are stored.
 Links to definition locations will only be
 generated if the file is in this dir.)"),
-                                             llvm::cl::cat(ClangDocCategory));
+llvm::cl::cat(ClangDocCategory));
 
 static llvm::cl::opt<std::string>
-    RepositoryUrl("repository", llvm::cl::desc(R"(
+RepositoryUrl("repository", llvm::cl::desc(R"(
 URL of repository that hosts code.
 Used for links to definition locations.)"),
-                  llvm::cl::cat(ClangDocCategory));
+llvm::cl::cat(ClangDocCategory));
 
 enum OutputFormatTy {
-  md,
-  yaml,
-  adoc,
-  html,
+    md,
+    yaml,
+    adoc,
+    html,
 };
 
 static llvm::cl::opt<OutputFormatTy>
-    FormatEnum("format", llvm::cl::desc("Format for outputted docs."),
-               llvm::cl::values(clEnumValN(OutputFormatTy::yaml, "yaml",
-                                           "Documentation in YAML format."),
-                                clEnumValN(OutputFormatTy::md, "md",
-                                           "Documentation in MD format."),
-                                clEnumValN(OutputFormatTy::adoc, "adoc",
-                                           "Documentation in Asciidoc format."),
-                                clEnumValN(OutputFormatTy::html, "html",
-                                           "Documentation in HTML format.")),
-               llvm::cl::init(OutputFormatTy::yaml),
-               llvm::cl::cat(ClangDocCategory));
+FormatEnum("format", llvm::cl::desc("Format for outputted docs."),
+    llvm::cl::values(clEnumValN(OutputFormatTy::yaml, "yaml",
+        "Documentation in YAML format."),
+        clEnumValN(OutputFormatTy::md, "md",
+            "Documentation in MD format."),
+        clEnumValN(OutputFormatTy::adoc, "adoc",
+            "Documentation in Asciidoc format."),
+        clEnumValN(OutputFormatTy::html, "html",
+            "Documentation in HTML format.")),
+    llvm::cl::init(OutputFormatTy::yaml),
+    llvm::cl::cat(ClangDocCategory));
 
 std::string getFormatString() {
-  switch (FormatEnum) {
-  case OutputFormatTy::yaml:
-    return "yaml";
-  case OutputFormatTy::md:
-    return "md";
-  case OutputFormatTy::adoc:
-    return "adoc";
-  case OutputFormatTy::html:
-    return "html";
-  }
-  llvm_unreachable("Unknown OutputFormatTy");
+    switch (FormatEnum) {
+    case OutputFormatTy::yaml:
+        return "yaml";
+    case OutputFormatTy::md:
+        return "md";
+    case OutputFormatTy::adoc:
+        return "adoc";
+    case OutputFormatTy::html:
+        return "html";
+    }
+    llvm_unreachable("Unknown OutputFormatTy");
 }
 
 // This function isn't referenced outside its translation unit, but it
@@ -134,16 +134,16 @@ std::string getFormatString() {
 // GetMainExecutable (since some platforms don't support taking the
 // address of main, and some platforms can't implement GetMainExecutable
 // without being given the address of a function in the main executable).
-std::string GetExecutablePath(const char *Argv0, void *MainAddr) {
-  return llvm::sys::fs::getMainExecutable(Argv0, MainAddr);
+std::string GetExecutablePath(const char* Argv0, void* MainAddr) {
+    return llvm::sys::fs::getMainExecutable(Argv0, MainAddr);
 }
 
-int main(int argc, const char **argv) {
-  llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-  std::error_code OK;
+int main(int argc, const char** argv) {
+    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
+    std::error_code OK;
 
-  const char *Overview =
-    R"(Generates documentation from source code and comments.
+    const char* Overview =
+        R"(Generates documentation from source code and comments.
 
 Example usage for files without flags (default):
 
@@ -154,161 +154,161 @@ Example usage for a project using a compile commands database:
   $ clang-doc --executor=all-TUs compile_commands.json
 )";
 
-  auto Executor = clang::tooling::createExecutorFromCommandLineArgs(
-      argc, argv, ClangDocCategory, Overview);
+    auto Executor = clang::tooling::createExecutorFromCommandLineArgs(
+        argc, argv, ClangDocCategory, Overview);
 
-  if (!Executor) {
-    llvm::errs() << toString(Executor.takeError()) << "\n";
-    return 1;
-  }
-
-  // Fail early if an invalid format was provided.
-  std::string Format = getFormatString();
-  llvm::outs() << "Emiting docs in " << Format << " format.\n";
-  auto G = doc::findGeneratorByName(Format);
-  if (!G) {
-    llvm::errs() << toString(G.takeError()) << "\n";
-    return 1;
-  }
-
-  ArgumentsAdjuster ArgAdjuster;
-  if (!DoxygenOnly)
-    ArgAdjuster = combineAdjusters(
-        getInsertArgumentAdjuster("-fparse-all-comments",
-                                  tooling::ArgumentInsertPosition::END),
-        ArgAdjuster);
-
-  clang::doc::ClangDocContext CDCtx = {
-      Executor->get()->getExecutionContext(),
-      ProjectName,
-      PublicOnly,
-      OutDirectory,
-      SourceRoot,
-      RepositoryUrl,
-      {UserStylesheets.begin(), UserStylesheets.end()},
-      {"index.js", "index_json.js"}};
-
-  if (Format == "html") {
-    void *MainAddr = (void *)(intptr_t)GetExecutablePath;
-    std::string ClangDocPath = GetExecutablePath(argv[0], MainAddr);
-    llvm::SmallString<128> NativeClangDocPath;
-    llvm::sys::path::native(ClangDocPath, NativeClangDocPath);
-    llvm::SmallString<128> AssetsPath;
-    AssetsPath = llvm::sys::path::parent_path(NativeClangDocPath);
-    llvm::sys::path::append(AssetsPath, "..", "..", "assets");
-    llvm::SmallString<128> DefaultStylesheet;
-    llvm::sys::path::native(AssetsPath, DefaultStylesheet);
-    llvm::sys::path::append(DefaultStylesheet, "styles.css");
-    llvm::SmallString<128> IndexJS;
-    llvm::sys::path::native(AssetsPath, IndexJS);
-    llvm::sys::path::append(IndexJS, "index.js");
-    CDCtx.UserStylesheets.insert(CDCtx.UserStylesheets.begin(),
-                                 std::string(DefaultStylesheet.str()));
-    CDCtx.FilesToCopy.emplace_back(IndexJS.str());
-  }
-
-  // Mapping phase
-  llvm::outs() << "Mapping decls...\n";
-  auto Err =
-      Executor->get()->execute(doc::newMapperActionFactory(CDCtx), ArgAdjuster);
-  if (Err) {
-    if (IgnoreMappingFailures)
-      llvm::errs() << "Error mapping decls in files. Clang-doc will ignore "
-                      "these files and continue:\n"
-                   << toString(std::move(Err)) << "\n";
-    else {
-      llvm::errs() << toString(std::move(Err)) << "\n";
-      return 1;
+    if (!Executor) {
+        llvm::errs() << toString(Executor.takeError()) << "\n";
+        return 1;
     }
-  }
 
-  // Collect values into output by key.
-  // In ToolResults, the Key is the hashed USR and the value is the
-  // bitcode-encoded representation of the Info object.
-  llvm::outs() << "Collecting infos...\n";
-  llvm::StringMap<std::vector<StringRef>> USRToBitcode;
-  Executor->get()->getToolResults()->forEachResult(
-      [&](StringRef Key, StringRef Value) {
-        auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());
-        R.first->second.emplace_back(Value);
-      });
+    // Fail early if an invalid format was provided.
+    std::string Format = getFormatString();
+    llvm::outs() << "Emiting docs in " << Format << " format.\n";
+    auto G = doc::findGeneratorByName(Format);
+    if (!G) {
+        llvm::errs() << toString(G.takeError()) << "\n";
+        return 1;
+    }
 
-  // Collects all Infos according to their unique USR value. This map is added
-  // to from the thread pool below and is protected by the USRToInfoMutex.
-  llvm::sys::Mutex USRToInfoMutex;
-  llvm::StringMap<std::unique_ptr<doc::Info>> USRToInfo;
+    ArgumentsAdjuster ArgAdjuster;
+    if (!DoxygenOnly)
+        ArgAdjuster = combineAdjusters(
+            getInsertArgumentAdjuster("-fparse-all-comments",
+                tooling::ArgumentInsertPosition::END),
+            ArgAdjuster);
 
-  // First reducing phase (reduce all decls into one info per decl).
-  llvm::outs() << "Reducing " << USRToBitcode.size() << " infos...\n";
-  std::atomic<bool> Error;
-  Error = false;
-  llvm::sys::Mutex IndexMutex;
-  // ExecutorConcurrency is a flag exposed by AllTUsExecution.h
-  llvm::ThreadPool Pool(llvm::hardware_concurrency(ExecutorConcurrency));
-  for (auto &Group : USRToBitcode) {
-    Pool.async([&]() {
-      std::vector<std::unique_ptr<doc::Info>> Infos;
+    clang::doc::ClangDocContext CDCtx = {
+        Executor->get()->getExecutionContext(),
+        ProjectName,
+        PublicOnly,
+        OutDirectory,
+        SourceRoot,
+        RepositoryUrl,
+        {UserStylesheets.begin(), UserStylesheets.end()},
+        {"index.js", "index_json.js"} };
 
-      for (auto &Bitcode : Group.getValue()) {
-        llvm::BitstreamCursor Stream(Bitcode);
-        doc::ClangDocBitcodeReader Reader(Stream);
-        auto ReadInfos = Reader.readBitcode();
-        if (!ReadInfos) {
-          llvm::errs() << toString(ReadInfos.takeError()) << "\n";
-          Error = true;
-          return;
+    if (Format == "html") {
+        void* MainAddr = (void*)(intptr_t)GetExecutablePath;
+        std::string ClangDocPath = GetExecutablePath(argv[0], MainAddr);
+        llvm::SmallString<128> NativeClangDocPath;
+        llvm::sys::path::native(ClangDocPath, NativeClangDocPath);
+        llvm::SmallString<128> AssetsPath;
+        AssetsPath = llvm::sys::path::parent_path(NativeClangDocPath);
+        llvm::sys::path::append(AssetsPath, "..", "..", "assets");
+        llvm::SmallString<128> DefaultStylesheet;
+        llvm::sys::path::native(AssetsPath, DefaultStylesheet);
+        llvm::sys::path::append(DefaultStylesheet, "styles.css");
+        llvm::SmallString<128> IndexJS;
+        llvm::sys::path::native(AssetsPath, IndexJS);
+        llvm::sys::path::append(IndexJS, "index.js");
+        CDCtx.UserStylesheets.insert(CDCtx.UserStylesheets.begin(),
+            std::string(DefaultStylesheet.str()));
+        CDCtx.FilesToCopy.emplace_back(IndexJS.str());
+    }
+
+    // Mapping phase
+    llvm::outs() << "Mapping decls...\n";
+    auto Err =
+        Executor->get()->execute(doc::newMapperActionFactory(CDCtx), ArgAdjuster);
+    if (Err) {
+        if (IgnoreMappingFailures)
+            llvm::errs() << "Error mapping decls in files. Clang-doc will ignore "
+            "these files and continue:\n"
+            << toString(std::move(Err)) << "\n";
+        else {
+            llvm::errs() << toString(std::move(Err)) << "\n";
+            return 1;
         }
-        std::move(ReadInfos->begin(), ReadInfos->end(),
-                  std::back_inserter(Infos));
-      }
+    }
 
-      auto Reduced = doc::mergeInfos(Infos);
-      if (!Reduced) {
-        llvm::errs() << llvm::toString(Reduced.takeError());
-        return;
-      }
+    // Collect values into output by key.
+    // In ToolResults, the Key is the hashed USR and the value is the
+    // bitcode-encoded representation of the Info object.
+    llvm::outs() << "Collecting infos...\n";
+    llvm::StringMap<std::vector<StringRef>> USRToBitcode;
+    Executor->get()->getToolResults()->forEachResult(
+        [&](StringRef Key, StringRef Value) {
+            auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());
+            R.first->second.emplace_back(Value);
+        });
 
-      // Add a reference to this Info in the Index
-      {
-        std::lock_guard<llvm::sys::Mutex> Guard(IndexMutex);
-        clang::doc::Generator::addInfoToIndex(CDCtx.Idx, Reduced.get().get());
-      }
+    // Collects all Infos according to their unique USR value. This map is added
+    // to from the thread pool below and is protected by the USRToInfoMutex.
+    llvm::sys::Mutex USRToInfoMutex;
+    llvm::StringMap<std::unique_ptr<doc::Info>> USRToInfo;
 
-      // Save in the result map (needs a lock due to threaded access).
-      {
-        std::lock_guard<llvm::sys::Mutex> Guard(USRToInfoMutex);
-        USRToInfo[Group.getKey()] = std::move(Reduced.get());
-      }
-    });
-  }
+    // First reducing phase (reduce all decls into one info per decl).
+    llvm::outs() << "Reducing " << USRToBitcode.size() << " infos...\n";
+    std::atomic<bool> Error;
+    Error = false;
+    llvm::sys::Mutex IndexMutex;
+    // ExecutorConcurrency is a flag exposed by AllTUsExecution.h
+    llvm::ThreadPool Pool(llvm::hardware_concurrency(ExecutorConcurrency));
+    //llvm::ThreadPool Pool(llvm::hardware_concurrency(1));
+    for (auto& Group : USRToBitcode) {
+        Pool.async([&]() {
+            std::vector<std::unique_ptr<doc::Info>> Infos;
 
-  Pool.wait();
+            for (auto& Bitcode : Group.getValue()) {
+                llvm::BitstreamCursor Stream(Bitcode);
+                doc::ClangDocBitcodeReader Reader(Stream);
+                auto ReadInfos = Reader.readBitcode();
+                if (!ReadInfos) {
+                    llvm::errs() << toString(ReadInfos.takeError()) << "\n";
+                    Error = true;
+                    return;
+                }
+                std::move(ReadInfos->begin(), ReadInfos->end(),
+                    std::back_inserter(Infos));
+            }
 
-  if (Error)
-    return 1;
+            auto Reduced = doc::mergeInfos(Infos);
+            if (!Reduced) {
+                llvm::errs() << llvm::toString(Reduced.takeError());
+                return;
+            }
 
-  // Ensure the root output directory exists.
-  if (std::error_code Err = llvm::sys::fs::create_directories(OutDirectory);
-      Err != std::error_code()) {
-    llvm::errs() << "Failed to create directory '" << OutDirectory << "'\n";
-    return 1;
-  }
+            // Add a reference to this Info in the Index
+            {
+                std::lock_guard<llvm::sys::Mutex> Guard(IndexMutex);
+                clang::doc::Generator::addInfoToIndex(CDCtx.Idx, Reduced.get().get());
+            }
 
-  // Run the generator.
-  llvm::outs() << "Generating docs...\n";
-  if (auto Err =
-          G->get()->generateDocs(OutDirectory, std::move(USRToInfo), CDCtx)) {
-    llvm::errs() << toString(std::move(Err)) << "\n";
-    return 1;
-  }
+            // Save in the result map (needs a lock due to threaded access).
+            {
+                std::lock_guard<llvm::sys::Mutex> Guard(USRToInfoMutex);
+                USRToInfo[Group.getKey()] = std::move(Reduced.get());
+            }
+            });
+    }
 
-  llvm::outs() << "Generating assets for docs...\n";
-  Err = G->get()->createResources(CDCtx);
-  if (Err) {
-    llvm::errs() << toString(std::move(Err)) << "\n";
-    return 1;
-  }
+    Pool.wait();
 
-  return 0;
+    if (Error)
+        return 1;
+
+    // Ensure the root output directory exists.
+    if (std::error_code Err = llvm::sys::fs::create_directories(OutDirectory);
+        Err != std::error_code()) {
+        llvm::errs() << "Failed to create directory '" << OutDirectory << "'\n";
+        return 1;
+    }
+
+    // Run the generator.
+    llvm::outs() << "Generating docs...\n";
+    if (auto Err =
+        G->get()->generateDocs(OutDirectory, std::move(USRToInfo), CDCtx)) {
+        llvm::errs() << toString(std::move(Err)) << "\n";
+        return 1;
+    }
+
+    llvm::outs() << "Generating assets for docs...\n";
+    Err = G->get()->createResources(CDCtx);
+    if (Err) {
+        llvm::errs() << toString(std::move(Err)) << "\n";
+        return 1;
+    }
+
+    return 0;
 }
-

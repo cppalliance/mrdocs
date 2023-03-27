@@ -17,12 +17,13 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 
-#include "clang/AST/Type.h"
-#include "clang/Basic/Specifiers.h"
-#include "clang/Tooling/StandaloneExecution.h"
-#include "llvm/ADT/APSInt.h"
-#include "llvm/ADT/SmallVector.h"
-#include "llvm/ADT/StringExtras.h"
+#include "Javadoc.h"
+#include <clang/AST/Type.h>
+#include <clang/Basic/Specifiers.h>
+#include <clang/Tooling/StandaloneExecution.h>
+#include <llvm/ADT/APSInt.h>
+#include <llvm/ADT/SmallVector.h>
+#include <llvm/ADT/StringExtras.h>
 #include <array>
 #include <optional>
 #include <string>
@@ -49,7 +50,8 @@ enum class InfoType {
 };
 
 // A representation of a parsed comment.
-struct CommentInfo {
+struct CommentInfo
+{
     CommentInfo() = default;
     CommentInfo(CommentInfo& Other) = delete;
     CommentInfo(CommentInfo&& Other) = default;
@@ -63,12 +65,12 @@ struct CommentInfo {
     // the vector.
     bool operator<(const CommentInfo& Other) const;
 
-    SmallString<16>
-        Kind; // Kind of comment (FullComment, ParagraphComment, TextComment,
-    // InlineCommandComment, HTMLStartTagComment, HTMLEndTagComment,
-    // BlockCommandComment, ParamCommandComment,
-    // TParamCommandComment, VerbatimBlockComment,
-    // VerbatimBlockLineComment, VerbatimLineComment).
+    SmallString<16> Kind;
+        // Kind of comment (FullComment, ParagraphComment, TextComment,
+        // InlineCommandComment, HTMLStartTagComment, HTMLEndTagComment,
+        // BlockCommandComment, ParamCommandComment,
+        // TParamCommandComment, VerbatimBlockComment,
+        // VerbatimBlockLineComment, VerbatimLineComment).
     SmallString<64> Text;      // Text of the comment.
     SmallString<16> Name;      // Name of the comment (for Verbatim and HTML).
     SmallString<8> Direction;  // Parameter direction (for (T)ParamCommand).
@@ -218,7 +220,8 @@ struct FieldTypeInfo : public TypeInfo {
 };
 
 // Info for member types.
-struct MemberTypeInfo : public FieldTypeInfo {
+struct MemberTypeInfo : public FieldTypeInfo
+{
     MemberTypeInfo() = default;
     MemberTypeInfo(const TypeInfo& TI, StringRef Name, AccessSpecifier Access)
         : FieldTypeInfo(TI, Name), Access(Access) {}
@@ -234,10 +237,12 @@ struct MemberTypeInfo : public FieldTypeInfo {
     // (AS_public = 0, AS_protected = 1, AS_private = 2, AS_none = 3)
     AccessSpecifier Access = AccessSpecifier::AS_public;
 
+    Javadoc javadoc;
     std::vector<CommentInfo> Description; // Comment description of this field.
 };
 
-struct Location {
+struct Location
+{
     Location(int LineNumber = 0, StringRef Filename = StringRef(),
         bool IsFileInRootDir = false)
         : LineNumber(LineNumber), Filename(Filename),
@@ -263,7 +268,8 @@ struct Location {
 };
 
 /// A base struct for Infos.
-struct Info {
+struct Info
+{
     Info(InfoType IT = InfoType::IT_default, SymbolID USR = SymbolID(),
         StringRef Name = StringRef(), StringRef Path = StringRef())
         : USR(USR), IT(IT), Name(Name), Path(Path) {}
@@ -279,7 +285,10 @@ struct Info {
     SmallString<16> Name;                     // Unqualified name of the decl.
     llvm::SmallVector<Reference, 4>
         Namespace; // List of parent namespaces for this decl.
+
+    Javadoc javadoc;
     std::vector<CommentInfo> Description; // Comment description of this decl.
+
     llvm::SmallString<128> Path;          // Path of directory where the clang-doc
     // generated file will be saved
 
