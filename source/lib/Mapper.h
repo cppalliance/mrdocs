@@ -30,32 +30,46 @@ using namespace clang::tooling;
 namespace clang {
 namespace doc {
 
-class MapASTVisitor : public clang::RecursiveASTVisitor<MapASTVisitor>,
-                      public ASTConsumer {
+class MapASTVisitor
+    : public clang::RecursiveASTVisitor<MapASTVisitor>
+    , public ASTConsumer
+{
 public:
-  explicit MapASTVisitor(ASTContext *Ctx, ClangDocContext CDCtx)
-      : CDCtx(CDCtx) {}
+    explicit MapASTVisitor(ASTContext* Ctx, ClangDocContext CDCtx)
+        : CDCtx(CDCtx) {}
 
-  void HandleTranslationUnit(ASTContext &Context) override;
-  bool VisitNamespaceDecl(const NamespaceDecl *D);
-  bool VisitRecordDecl(const RecordDecl *D);
-  bool VisitEnumDecl(const EnumDecl *D);
-  bool VisitCXXMethodDecl(const CXXMethodDecl *D);
-  bool VisitFunctionDecl(const FunctionDecl *D);
-  bool VisitTypedefDecl(const TypedefDecl *D);
-  bool VisitTypeAliasDecl(const TypeAliasDecl *D);
+    void HandleTranslationUnit(ASTContext& Context) override;
+    bool VisitNamespaceDecl(NamespaceDecl const* D);
+    bool VisitRecordDecl(RecordDecl const* D);
+    bool VisitEnumDecl(EnumDecl const* D);
+    bool VisitCXXMethodDecl(CXXMethodDecl const* D);
+    bool VisitFunctionDecl(FunctionDecl const* D);
+    bool VisitTypedefDecl(TypedefDecl const* D);
+    bool VisitTypeAliasDecl(TypeAliasDecl const* D);
 
 private:
-  template <typename T> bool mapDecl(const T *D);
+    template
+    <typename T>
+    bool mapDecl(T const* D);
 
-  int getLine(const NamedDecl *D, const ASTContext &Context) const;
-  llvm::SmallString<128> getFile(const NamedDecl *D, const ASTContext &Context,
-                                 StringRef RootDir,
-                                 bool &IsFileInRootDir) const;
-  comments::FullComment *getComment(const NamedDecl *D,
-                                    const ASTContext &Context) const;
+    int
+    getLine(
+        NamedDecl const* D,
+        ASTContext const& Context) const;
 
-  ClangDocContext CDCtx;
+    llvm::SmallString<128>
+    getFile(
+        NamedDecl const* D, 
+        ASTContext const& Context,
+        StringRef RootDir,
+        bool& IsFileInRootDir) const;
+
+    comments::FullComment*
+    getComment(
+        NamedDecl const* D,
+        ASTContext const& Context) const;
+
+    ClangDocContext CDCtx;
 };
 
 } // namespace doc

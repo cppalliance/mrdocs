@@ -72,7 +72,7 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
 )
 
 file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS
-    source/mrdox/mrdox.cpp
+    source/tool/mrdox.cpp
 )
 
 file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS
@@ -155,14 +155,19 @@ target_link_libraries(
     PRIVATE
     mrdox_lib)
 
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tool PREFIX "" FILES ${TOOL_SOURCES})
+#set_property(TARGET mrdox PROPERTY OUTPUT_NAME mrdox)
+
+#-------------------------------------------------
+
 target_include_directories(
     mrdox
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/source/mrdox
+#    ${LLVM_INCLUDE_DIRS}
+#    ${CLANG_INCLUDE_DIRS}
+    ${PROJECT_SOURCE_DIR}/include
 )
-
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/mrdox PREFIX "" FILES ${TOOL_SOURCES})
 
 #-------------------------------------------------
 #
@@ -175,18 +180,13 @@ add_executable(
     ${TEST_SOURCES}
 )
 
-target_link_libraries(
-    mrdox_tests
-    PRIVATE
-    mrdox_lib)
-
 target_include_directories(
     mrdox_tests
     PRIVATE
+    ${LLVM_INCLUDE_DIRS}
+    ${CLANG_INCLUDE_DIRS}
+    ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/source/tests
 )
-
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tests PREFIX "" FILES ${TEST_SOURCES})
 
 #-------------------------------------------------

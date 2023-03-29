@@ -558,17 +558,41 @@ struct EnumInfo : public SymbolInfo {
     llvm::SmallVector<EnumValueInfo, 4> Members; // List of enum members.
 };
 
+//------------------------------------------------
+
 struct Index
     : public Reference
 {
     Index() = default;
-    Index(StringRef Name) : Reference(SymbolID(), Name) {}
-    Index(StringRef Name, StringRef JumpToSection)
-        : Reference(SymbolID(), Name), JumpToSection(JumpToSection) {}
-    Index(SymbolID USR, StringRef Name, InfoType IT, StringRef Path)
-        : Reference(USR, Name, IT, Name, Path) {}
+    Index(
+        StringRef Name)
+        : Reference(SymbolID(), Name)
+    {
+    }
+
+    Index(
+        StringRef Name,
+        StringRef JumpToSection)
+        : Reference(SymbolID(), Name),
+        JumpToSection(JumpToSection)
+    {
+    }
+
+    Index(
+        SymbolID USR,
+        StringRef Name,
+        InfoType IT,
+        StringRef Path)
+        : Reference(USR, Name, IT, Name, Path)
+    {
+    }
+
     // This is used to look for a USR in a vector of Indexes using std::find
-    bool operator==(const SymbolID& Other) const { return USR == Other; }
+    bool operator==(const SymbolID& Other) const
+    {
+        return USR == Other;
+    }
+
     bool operator<(const Index& Other) const;
 
     std::optional<SmallString<16>> JumpToSection;
