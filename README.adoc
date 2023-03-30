@@ -1,0 +1,8 @@
+# Mr. Dox
+
+## Submodules
+
+To work locally without the need to clone
+the submodule either don't clone it, or
+run "git submodule deinit -all" to remove
+a local clone.
