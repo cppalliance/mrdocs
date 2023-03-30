@@ -100,8 +100,16 @@ void Generator::addInfoToIndex(Index &Idx, const doc::Info *Info) {
 
 // This anchor is used to force the linker to link in the generated object file
 // and thus register the generators.
+//
+// VFALCO REDO THIS it spreads out the generator
+//        particulars across too many separate source files.
+//
 extern volatile int AsciidocGeneratorAnchorSource;
 static int LLVM_ATTRIBUTE_UNUSED AsciidocGeneratorAnchorDest =
+    AsciidocGeneratorAnchorSource;
+
+extern volatile int XMLGeneratorAnchorSource;
+static int LLVM_ATTRIBUTE_UNUSED XMLGeneratorAnchorDest =
     AsciidocGeneratorAnchorSource;
 
 } // namespace doc

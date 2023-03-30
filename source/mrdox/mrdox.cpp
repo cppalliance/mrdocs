@@ -48,72 +48,114 @@
 #include <mutex>
 #include <string>
 
-#include <clang/Tooling/JSONCompilationDatabase.h>
-
 using namespace clang::ast_matchers;
 using namespace clang::tooling;
 using namespace clang;
 
-static llvm::cl::extrahelp CommonHelp(CommonOptionsParser::HelpMessage);
-static llvm::cl::OptionCategory ClangDocCategory("clang-doc options");
+// VFALCO GARBAGE
+extern void force_xml_generator_linkage();
 
-static llvm::cl::opt<std::string>
-ProjectName("project-name", llvm::cl::desc("Name of project."),
+static
+llvm::cl::extrahelp
+CommonHelp(
+    CommonOptionsParser::HelpMessage);
+
+static
+llvm::cl::OptionCategory
+ClangDocCategory("clang-doc options");
+
+static
+llvm::cl::opt<std::string>
+ProjectName(
+    "project-name",
+    llvm::cl::desc("Name of project."),
     llvm::cl::cat(ClangDocCategory));
 
-static llvm::cl::opt<bool> IgnoreMappingFailures(
-    "ignore-map-errors",
-    llvm::cl::desc("Continue if files are not mapped correctly."),
-    llvm::cl::init(true), llvm::cl::cat(ClangDocCategory));
+static
+llvm::cl::opt<bool>
+    IgnoreMappingFailures(
+        "ignore-map-errors",
+        llvm::cl::desc("Continue if files are not mapped correctly."),
+        llvm::cl::init(true),
+        llvm::cl::cat(ClangDocCategory));
 
-static llvm::cl::opt<std::string>
-OutDirectory("output",
+static
+llvm::cl::opt<std::string>
+OutDirectory(
+    "output",
     llvm::cl::desc("Directory for outputting generated files."),
-    llvm::cl::init("docs"), llvm::cl::cat(ClangDocCategory));
+    llvm::cl::init("docs"),
+    llvm::cl::cat(ClangDocCategory));
 
-static llvm::cl::opt<bool>
-PublicOnly("public", llvm::cl::desc("Document only public declarations."),
-    llvm::cl::init(false), llvm::cl::cat(ClangDocCategory));
+static
+llvm::cl::opt<bool>
+PublicOnly(
+    "public",
+    llvm::cl::desc("Document only public declarations."),
+    llvm::cl::init(false),
+    llvm::cl::cat(ClangDocCategory));
 
-static llvm::cl::opt<bool> DoxygenOnly(
+static
+llvm::cl::opt<bool>
+DoxygenOnly(
     "doxygen",
     llvm::cl::desc("Use only doxygen-style comments to generate docs."),
-    llvm::cl::init(false), llvm::cl::cat(ClangDocCategory));
+    llvm::cl::init(false),
+    llvm::cl::cat(ClangDocCategory));
 
-static llvm::cl::list<std::string> UserStylesheets(
-    "stylesheets", llvm::cl::CommaSeparated,
+static
+llvm::cl::list<std::string>
+UserStylesheets(
+    "stylesheets",
+    llvm::cl::CommaSeparated,
     llvm::cl::desc("CSS stylesheets to extend the default styles."),
     llvm::cl::cat(ClangDocCategory));
 
-static llvm::cl::opt<std::string> SourceRoot("source-root", llvm::cl::desc(R"(
+static
+llvm::cl::opt<std::string>
+SourceRoot(
+    "source-root", llvm::cl::desc(R"(
 Directory where processed files are stored.
 Links to definition locations will only be
 generated if the file is in this dir.)"),
-llvm::cl::cat(ClangDocCategory));
-
-static llvm::cl::opt<std::string>
-RepositoryUrl("repository", llvm::cl::desc(R"(
-URL of repository that hosts code.
-Used for links to definition locations.)"),
-llvm::cl::cat(ClangDocCategory));
-
-enum OutputFormatTy {
-    adoc,
-};
-
-static llvm::cl::opt<OutputFormatTy>
-FormatEnum("format", llvm::cl::desc("Format for outputted docs."),
-    llvm::cl::values(
-        clEnumValN(OutputFormatTy::adoc, "adoc",
-            "Documentation in Asciidoc format.")
-    ),
-    llvm::cl::init(OutputFormatTy::adoc),
     llvm::cl::cat(ClangDocCategory));
 
-std::string getFormatString() {
-    switch (FormatEnum) {
+static
+llvm::cl::opt<std::string>
+RepositoryUrl(
+    "repository", llvm::cl::desc(R"(
+URL of repository that hosts code.
+Used for links to definition locations.)"),
+    llvm::cl::cat(ClangDocCategory));
+
+enum OutputFormatTy
+{
+    adoc,
+    xml
+};
+
+static
+llvm::cl::opt<OutputFormatTy>
+FormatEnum(
+    "format",
+    llvm::cl::desc("Format for outputted docs."),
+    llvm::cl::values(
+        clEnumValN(OutputFormatTy::adoc, "adoc",
+            "Documentation in Asciidoc format."),
+        clEnumValN(OutputFormatTy::xml, "xml",
+            "Documentation in XML format.")),
+    llvm::cl::init(OutputFormatTy::adoc), // default value
+    llvm::cl::cat(ClangDocCategory));
+
+std::string
+getFormatString()
+{
+    switch (FormatEnum)
+    {
     case OutputFormatTy::adoc:
         return "adoc";
+    case OutputFormatTy::xml:
+        return "xml";
     }
     llvm_unreachable("Unknown OutputFormatTy");
 }
@@ -123,11 +165,20 @@ std::string getFormatString() {
 // GetMainExecutable (since some platforms don't support taking the
 // address of main, and some platforms can't implement GetMainExecutable
 // without being given the address of a function in the main executable).
-std::string GetExecutablePath(const char* Argv0, void* MainAddr) {
+std::string
+GetExecutablePath(
+    const char* Argv0,
+    void* MainAddr)
+{
     return llvm::sys::fs::getMainExecutable(Argv0, MainAddr);
 }
 
-int main(int argc, const char** argv) {
+int
+main(int argc, const char** argv)
+{
+    // VFALCO GARBAGE
+    force_xml_generator_linkage();
+
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     std::error_code OK;
 
@@ -232,7 +283,8 @@ Example usage for a project using a compile commands database:
     llvm::outs() << "Collecting infos...\n";
     llvm::StringMap<std::vector<StringRef>> USRToBitcode;
     Executor->get()->getToolResults()->forEachResult(
-        [&](StringRef Key, StringRef Value) {
+        [&](StringRef Key, StringRef Value)
+        {
             auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());
             R.first->second.emplace_back(Value);
         });

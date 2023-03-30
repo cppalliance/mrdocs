@@ -23,6 +23,8 @@ using namespace llvm;
 namespace clang {
 namespace doc {
 
+namespace {
+
 //
 // Asciidoc generation
 //
@@ -856,6 +858,8 @@ createResources(
 
     return llvm::Error::success();
 }
+
+} // (anon)
 
 static
 GeneratorRegistry::

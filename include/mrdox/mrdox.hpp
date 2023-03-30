@@ -12,7 +12,15 @@
 #ifndef MRDOX_MRDOX_HPP
 #define MRDOX_MRDOX_HPP
 
+#include <llvm/ADT/StringRef.h>
+#include <llvm/ADT/Twine.h>
+#include "llvm/Support/Error.h"
+
 namespace mrdox {
+
+llvm::Expected<llvm::Twine>
+renderXML(
+    llvm::StringRef path);
 
 } // mrdox
 
