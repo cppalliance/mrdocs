@@ -200,13 +200,13 @@ Example usage for a project using a compile commands database:
   $ clang-doc --executor=all-TUs compile_commands.json
 )";
 
-    auto Executor = clang::tooling::createExecutorFromCommandLineArgs(
-        argc, argv, ClangDocCategory, Overview);
+    clang::mrdox::ClangDocContext CDCtx;
 
-    if (!Executor)
+    if(llvm::Error err = clang::tooling::createExecutorFromCommandLineArgs(
+        argc, argv, ClangDocCategory, Overview).moveInto(CDCtx.Executor))
     {
-        llvm::errs() << toString(Executor.takeError()) << "\n";
-        return 1;
+        llvm::errs() << err << "\n";
+        return EXIT_FAILURE;
     }
 
     // Fail early if an invalid format was provided.
@@ -225,13 +225,12 @@ Example usage for a project using a compile commands database:
                 tooling::ArgumentInsertPosition::END),
             ArgAdjuster);
 
-    clang::mrdox::ClangDocContext CDCtx = {
-        Executor->get()->getExecutionContext(),
-        ProjectName,
-        PublicOnly,
-        OutDirectory,
-        SourceRoot,
-        RepositoryUrl};
+    CDCtx.ECtx = CDCtx.Executor->getExecutionContext(),
+    CDCtx.ProjectName = ProjectName;
+    CDCtx.PublicOnly = PublicOnly;
+    CDCtx.OutDirectory = OutDirectory;
+    CDCtx.SourceRoot = SourceRoot;
+    CDCtx.RepositoryUrl = RepositoryUrl;
 
     //--------------------------------------------
     //
@@ -241,7 +240,7 @@ Example usage for a project using a compile commands database:
 
     {
         llvm::outs() << "Mapping decls...\n";
-        auto Err = Executor->get()->execute(
+        auto Err = CDCtx.Executor->execute(
             mrdox::newMapperActionFactory(CDCtx),
             ArgAdjuster);
         if(Err)
@@ -267,7 +266,7 @@ Example usage for a project using a compile commands database:
     // bitcode-encoded representation of the Info object.
     llvm::outs() << "Collecting infos...\n";
     llvm::StringMap<std::vector<StringRef>> USRToBitcode;
-    Executor->get()->getToolResults()->forEachResult(
+    CDCtx.Executor->getToolResults()->forEachResult(
         [&](StringRef Key, StringRef Value)
         {
             auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());

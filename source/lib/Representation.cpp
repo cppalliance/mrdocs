@@ -360,6 +360,14 @@ void Index::sort() {
 }
 
 ClangDocContext::
+ClangDocContext()
+{
+    llvm::SmallString<128> SourceRootDir;
+    llvm::sys::fs::current_path(SourceRootDir);
+    SourceRoot = std::string(SourceRootDir.str());
+}
+
+ClangDocContext::
 ClangDocContext(
     tooling::ExecutionContext* ECtx,
     StringRef ProjectName,

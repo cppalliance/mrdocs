@@ -635,6 +635,8 @@ struct ClangDocContext
     ClangDocContext& operator=(
         ClangDocContext&&) = delete;
 
+    ClangDocContext();
+
     ClangDocContext(
         tooling::ExecutionContext* ECtx,
         StringRef ProjectName,
@@ -642,6 +644,8 @@ struct ClangDocContext
         StringRef OutDirectory,
         StringRef SourceRoot,
         StringRef RepositoryUrl);
+
+    std::unique_ptr<tooling::ToolExecutor> Executor;
 
     tooling::ExecutionContext* ECtx;
 
