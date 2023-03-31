@@ -28,6 +28,9 @@
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Path.h"
 
+#include <atomic>
+#include <mutex>
+
 static_assert(clang::AccessSpecifier::AS_public == 0);
 static_assert(clang::AccessSpecifier::AS_protected == 1);
 static_assert(clang::AccessSpecifier::AS_private == 2);

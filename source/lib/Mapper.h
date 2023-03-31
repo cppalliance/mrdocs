@@ -38,7 +38,7 @@ public:
     explicit
     MapASTVisitor(
         ASTContext* Ctx,
-        ClangDocContext CDCtx)
+        ClangDocContext& CDCtx)
         : CDCtx(CDCtx)
     {
     }
@@ -53,8 +53,7 @@ public:
     bool VisitTypeAliasDecl(TypeAliasDecl const* D);
 
 private:
-    template
-    <typename T>
+    template <typename T>
     bool mapDecl(T const* D);
 
     int
@@ -74,7 +73,7 @@ private:
         NamedDecl const* D,
         ASTContext const& Context) const;
 
-    ClangDocContext CDCtx;
+    ClangDocContext& CDCtx;
 };
 
 } // namespace mrdox

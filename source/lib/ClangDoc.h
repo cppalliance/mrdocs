@@ -29,12 +29,12 @@ namespace mrdox {
 std::unique_ptr<
     clang::FrontendAction>
 makeFrontendAction(
-    ClangDocContext CDCtx);
+    ClangDocContext& CDCtx);
 
 std::unique_ptr<
     tooling::FrontendActionFactory>
 newMapperActionFactory(
-    ClangDocContext CDCtx);
+    ClangDocContext& CDCtx);
 
 } // namespace mrdox
 } // namespace clang

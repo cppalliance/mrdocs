@@ -626,25 +626,47 @@ struct Index
 llvm::Expected<std::unique_ptr<Info>>
 mergeInfos(std::vector<std::unique_ptr<Info>>& Values);
 
+/** State information for a complete run of the tool
+*/
 struct ClangDocContext
 {
-    ClangDocContext() = default;
-    ClangDocContext(tooling::ExecutionContext* ECtx, StringRef ProjectName,
-        bool PublicOnly, StringRef OutDirectory, StringRef SourceRoot,
+    ClangDocContext(
+        ClangDocContext&&) = delete;
+    ClangDocContext& operator=(
+        ClangDocContext&&) = delete;
+
+    ClangDocContext(
+        tooling::ExecutionContext* ECtx,
+        StringRef ProjectName,
+        bool PublicOnly,
+        StringRef OutDirectory,
+        StringRef SourceRoot,
         StringRef RepositoryUrl);
+
     tooling::ExecutionContext* ECtx;
-    std::string ProjectName;    // Name of project clang-doc is documenting.
-    bool PublicOnly;            // Indicates if only public declarations are documented.
-    std::string OutDirectory;   // Directory for outputting generated files.
-    std::string SourceRoot;     // Directory where processed files are stored. Links
-                                // to definition locations will only be generated if
-                                // the file is in this dir.
-    // URL of repository that hosts code used for links to definition locations.
+
+    // Name of project being documented.
+    std::string ProjectName;
+
+    // Indicates if only public declarations are documented.
+    bool PublicOnly;
+
+    // Directory for outputting generated files.
+    std::string OutDirectory;
+
+    // Directory where processed files are stored. Links
+    // to definition locations will only be generated if
+    // the file is in this dir.
+    std::string SourceRoot;     
+                                                      
+    // URL of repository that hosts code used
+    // for links to definition locations.
     std::optional<std::string> RepositoryUrl;
+
     Index Idx;
 };
 
 } // namespace mrdox
 } // namespace clang
 
-#endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
+#endif

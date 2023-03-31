@@ -36,7 +36,7 @@ struct action
 {
     explicit
     action(
-        ClangDocContext CDCtx)
+        ClangDocContext& CDCtx)
         : CDCtx(CDCtx)
     {
     }
@@ -51,7 +51,7 @@ struct action
     }
 
 private:
-    ClangDocContext CDCtx;
+    ClangDocContext& CDCtx;
 };
 
 //------------------------------------------------
@@ -61,7 +61,7 @@ struct factory
 {
     explicit
     factory(
-        ClangDocContext CDCtx)
+        ClangDocContext& CDCtx)
         : CDCtx(CDCtx)
     {
     }
@@ -72,7 +72,7 @@ struct factory
         return std::make_unique<action>(CDCtx);
     }
         
-    ClangDocContext CDCtx;
+    ClangDocContext& CDCtx;
 };
 
 } // (anon)
@@ -82,7 +82,7 @@ struct factory
 std::unique_ptr<
     clang::FrontendAction>
 makeFrontendAction(
-    ClangDocContext CDCtx)
+    ClangDocContext& CDCtx)
 {
     return std::make_unique<action>(CDCtx);
 }
@@ -90,7 +90,7 @@ makeFrontendAction(
 std::unique_ptr<
     tooling::FrontendActionFactory>
 newMapperActionFactory(
-    ClangDocContext CDCtx)
+    ClangDocContext& CDCtx)
 {
     return std::make_unique<factory>(CDCtx);
 }
