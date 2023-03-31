@@ -16,7 +16,7 @@
 #include <optional>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 using Record = llvm::SmallVector<uint64_t, 1024>;
 
@@ -1142,5 +1142,5 @@ ClangDocBitcodeReader::readBitcode() {
     return std::move(Infos);
 }
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang

@@ -23,7 +23,7 @@
 #include "llvm/Support/Error.h"
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 void
 MapASTVisitor::
@@ -177,5 +177,5 @@ getFile(NamedDecl const* D,
     return File;
 }
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang

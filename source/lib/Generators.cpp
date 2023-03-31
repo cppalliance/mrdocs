@@ -11,10 +11,10 @@
 
 #include "Generators.h"
 
-LLVM_INSTANTIATE_REGISTRY(clang::doc::GeneratorRegistry)
+LLVM_INSTANTIATE_REGISTRY(clang::mrdox::GeneratorRegistry)
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 llvm::Expected<std::unique_ptr<Generator>>
 findGeneratorByName(llvm::StringRef Format) {
@@ -59,7 +59,7 @@ llvm::Error Generator::createResources(ClangDocContext &CDCtx) {
 //           |--X
 // If the references to the namespaces do not exist, they will be created. If
 // the references already exist, the same one will be used.
-void Generator::addInfoToIndex(Index &Idx, const doc::Info *Info) {
+void Generator::addInfoToIndex(Index &Idx, const mrdox::Info *Info) {
   // Index pointer that will be moving through Idx until the first parent
   // namespace of Info (where the reference has to be inserted) is found.
   Index *I = &Idx;
@@ -112,5 +112,5 @@ extern volatile int XMLGeneratorAnchorSource;
 static int LLVM_ATTRIBUTE_UNUSED XMLGeneratorAnchorDest =
     AsciidocGeneratorAnchorSource;
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang

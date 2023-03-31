@@ -28,7 +28,7 @@
 #include <vector>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 // Current version number of clang-doc bitcode.
 // Should be bumped when removing or changing BlockIds, RecordIds, or
@@ -243,7 +243,7 @@ private:
   AbbreviationMap Abbrevs;
 };
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang
 
 #endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEWRITER_H

@@ -20,7 +20,7 @@
 //#include <clang/AST/CommentCommandInfo.inc>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 namespace serialize {
 
 using namespace clang::comments;
@@ -397,7 +397,7 @@ parseComment(
     Javadoc& javadoc,
     CommentInfo& ci)
 {
-    clang::doc::serialize::CommentVisitor v(*c, ctx, javadoc);
+    clang::mrdox::serialize::CommentVisitor v(*c, ctx, javadoc);
     v.parse(c, ci);
 
     // debugging
@@ -409,5 +409,5 @@ parseComment(
     */
 }
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang

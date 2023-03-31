@@ -15,7 +15,7 @@
 #include <Representation.h>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 SymbolID const EmptySID = SymbolID();
 template <typename T>
@@ -66,7 +66,7 @@ reduceChildren(
     }
 }
 
-} // doc
+} // mrdox
 } // clang
 
 

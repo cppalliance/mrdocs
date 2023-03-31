@@ -27,7 +27,7 @@
 #include <optional>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 // Class to read bitstream into an InfoSet collection
 class ClangDocBitcodeReader {
@@ -72,7 +72,7 @@ private:
   FieldId CurrentReferenceField;
 };
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang
 
 #endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEREADER_H

@@ -17,7 +17,7 @@
 #include <vector>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 //------------------------------------------------
 
@@ -105,7 +105,7 @@ private:
 
 //------------------------------------------------
 
-} // doc
+} // mrdox
 } // clang
 
 #endif

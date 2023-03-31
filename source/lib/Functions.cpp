@@ -14,7 +14,7 @@
 #include "Representation.h"
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 // we assume that there are 4 access controls
 static_assert(
@@ -106,6 +106,6 @@ find(
     return it;
 }
 
-} // doc
+} // mrdox
 } // clang
 

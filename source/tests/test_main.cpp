@@ -8,7 +8,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "ClangDoc.h"
+#include "Representation.h"
 #include <mrdox/mrdox.hpp>
+#include <clang/tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/FileSystem.h>
@@ -23,7 +26,11 @@
 // of the XML generator, which must match exactly.
 
 namespace clang {
-namespace doc {
+namespace mrdox {
+
+namespace {
+
+//------------------------------------------------
 
 int
 do_main(int argc, const char** argv)
@@ -83,6 +90,16 @@ do_main(int argc, const char** argv)
             continue;
         }
 
+        llvm::StringRef cppCode;
+        auto cppResult = llvm::MemoryBuffer::getFile(cppPath, true);
+        if(! cppResult)
+        {
+            llvm::errs() <<
+                cppResult.getError().message() << ": \"" << xmlPath << "\"\n";
+            return EXIT_FAILURE;
+        }
+        cppCode = cppResult->get()->getBuffer();
+
         llvm::StringRef expectedXml;
         auto xmlResult = llvm::MemoryBuffer::getFile(xmlPath, true);
         if(! xmlResult)
@@ -93,18 +110,49 @@ do_main(int argc, const char** argv)
         }
         expectedXml = xmlResult->get()->getBuffer();
 
-        auto const result = renderXML(cppPath);
+        {
+#if 0
+            auto Executor =
+                clang::tooling::createExecutorFromCommandLineArgs(
+                    1,
+                    "tests",
+                    "cat",
+                    "overview");
 
+            if (!Executor)
+            {
+                llvm::errs() << toString(Executor.takeError()) << "\n";
+                return 1;
+            }
+            clang::mrdox::ClangDocContext CDCtx = {
+                Executor->get()->getExecutionContext(),
+                "tests",
+                false,
+                ".",
+                ".",
+                ".",
+                {},
+                {} };
+
+            bool success = clang::tooling::runToolOnCode(
+                makeFrontendAction(CDCtx), cppCode, cppPath);
+            if(! success)
+                llvm::errs() <<
+                    "Frontend action failed\n";
+#endif
+        }
     }
 
     return EXIT_SUCCESS;
 }
 
-} // doc
+} // (anon)
+
+} // mrdox
 } // clang
 
 int
 main(int argc, const char** argv)
 {
-    return clang::doc::do_main(argc, argv);
+    return clang::mrdox::do_main(argc, argv);
 }

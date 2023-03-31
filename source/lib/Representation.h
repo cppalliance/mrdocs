@@ -30,7 +30,7 @@
 #include <vector>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 // SHA1'd hash of a USR.
 using SymbolID = std::array<uint8_t, 20>;
@@ -239,25 +239,21 @@ struct TypeInfo {
 */
 struct TemplateParamInfo
 {
-    enum class Kind
-    {
-        Class,
-        Typename,
-        Nttp
-    };
-
     TemplateParamInfo() = default;
 
+    explicit
     TemplateParamInfo(
-        //StringRef Name,
+        NamedDecl const& ND);
+
+    TemplateParamInfo(
+        Decl const& D,
+        TemplateArgument const &Arg);
+
+    TemplateParamInfo(
         StringRef Contents)
         : Contents(Contents)
     {
     }
-
-    Kind kind = Kind::Class;
-
-    //SmallString<16> Name;
 
     // The literal contents of the code for that specifies this template parameter
     // for this declaration. Typical values will be "class T" and
@@ -635,9 +631,7 @@ struct ClangDocContext
     ClangDocContext() = default;
     ClangDocContext(tooling::ExecutionContext* ECtx, StringRef ProjectName,
         bool PublicOnly, StringRef OutDirectory, StringRef SourceRoot,
-        StringRef RepositoryUrl,
-        std::vector<std::string> UserStylesheets,
-        std::vector<std::string> JsScripts);
+        StringRef RepositoryUrl);
     tooling::ExecutionContext* ECtx;
     std::string ProjectName;    // Name of project clang-doc is documenting.
     bool PublicOnly;            // Indicates if only public declarations are documented.
@@ -647,17 +641,10 @@ struct ClangDocContext
                                 // the file is in this dir.
     // URL of repository that hosts code used for links to definition locations.
     std::optional<std::string> RepositoryUrl;
-    // Path of CSS stylesheets that will be copied to OutDirectory and used to
-    // style all HTML files.
-    std::vector<std::string> UserStylesheets;
-    // JavaScript files that will be imported in allHTML file.
-    std::vector<std::string> JsScripts;
-    // Other files that should be copied to OutDirectory, besides UserStylesheets.
-    std::vector<std::string> FilesToCopy;
     Index Idx;
 };
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang
 
 #endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H

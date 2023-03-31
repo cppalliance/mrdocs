@@ -28,15 +28,20 @@ using namespace clang::comments;
 using namespace clang::tooling;
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 class MapASTVisitor
     : public clang::RecursiveASTVisitor<MapASTVisitor>
     , public ASTConsumer
 {
 public:
-    explicit MapASTVisitor(ASTContext* Ctx, ClangDocContext CDCtx)
-        : CDCtx(CDCtx) {}
+    explicit
+    MapASTVisitor(
+        ASTContext* Ctx,
+        ClangDocContext CDCtx)
+        : CDCtx(CDCtx)
+    {
+    }
 
     void HandleTranslationUnit(ASTContext& Context) override;
     bool VisitNamespaceDecl(NamespaceDecl const* D);
@@ -72,7 +77,7 @@ private:
     ClangDocContext CDCtx;
 };
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang
 
 #endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_MAPPER_H

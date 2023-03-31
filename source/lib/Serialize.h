@@ -32,7 +32,7 @@
 using namespace clang::comments;
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 namespace serialize {
 
 // The first element will contain the relevant information about the declaration
@@ -82,7 +82,7 @@ SymbolID hashUSR(llvm::StringRef USR);
 std::string serialize(std::unique_ptr<Info> &I);
 
 } // namespace serialize
-} // namespace doc
+} // namespace mrdox
 } // namespace clang
 
 #endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H

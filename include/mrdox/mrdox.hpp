@@ -17,13 +17,13 @@
 #include "llvm/Support/Error.h"
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 llvm::Expected<llvm::Twine>
 renderXML(
     llvm::StringRef fileName);
 
-} // doc
+} // mrdox
 } // clang
 
 #endif

@@ -27,7 +27,7 @@
 using clang::comments::FullComment;
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 namespace serialize {
 
 SymbolID hashUSR(llvm::StringRef USR) {
@@ -55,7 +55,7 @@ static void populateMemberTypeInfo(MemberTypeInfo& I, const FieldDecl* D);
 // }
 // }
 llvm::SmallString<128>
-getInfoRelativePath(const llvm::SmallVectorImpl<doc::Reference>& Namespaces) {
+getInfoRelativePath(const llvm::SmallVectorImpl<mrdox::Reference>& Namespaces) {
     llvm::SmallString<128> Path;
     for (auto R = Namespaces.rbegin(), E = Namespaces.rend(); R != E; ++R)
         llvm::sys::path::append(Path, R->Name);
@@ -383,24 +383,9 @@ void PopulateTemplateParameters(std::optional<TemplateInfo>& TemplateInfo,
         }
         for (const NamedDecl* ND : *ParamList)
         {
-            TemplateInfo->Params.emplace_back(
-                getSourceCode(ND, ND->getSourceRange()));
+            TemplateInfo->Params.emplace_back(*ND);
         }
     }
-}
-
-TemplateParamInfo
-TemplateArgumentToInfo(
-    clang::Decl const* D,
-    TemplateArgument const & Arg)
-{
-    // The TemplateArgument's pretty printing
-    // handles all the normal cases well enough
-    // for our requirements.
-    std::string Str;
-    llvm::raw_string_ostream Stream(Str);
-    Arg.print(PrintingPolicy(D->getLangOpts()), Stream, false);
-    return TemplateParamInfo(Str);
 }
 
 template <typename T>
@@ -451,7 +436,7 @@ static void populateFunctionInfo(FunctionInfo& I, const FunctionDecl* D,
         // Template parameters to the specialization.
         if (FTSI->TemplateArguments) {
             for (const TemplateArgument& Arg : FTSI->TemplateArguments->asArray()) {
-                Specialization.Params.push_back(TemplateArgumentToInfo(D, Arg));
+                Specialization.Params.emplace_back(*D, Arg);
             }
         }
     }
@@ -615,7 +600,7 @@ emitInfo(const RecordDecl* D, const FullComment* FC, int LineNumber,
         }
         else {
             for (const TemplateArgument& Arg : CTSD->getTemplateArgs().asArray()) {
-                Specialization.Params.push_back(TemplateArgumentToInfo(D, Arg));
+                Specialization.Params.emplace_back(*D, Arg);
             }
         }
     }
@@ -736,5 +721,5 @@ emitInfo(const EnumDecl* D, const FullComment* FC, int LineNumber,
 }
 
 } // namespace serialize
-} // namespace doc
+} // namespace mrdox
 } // namespace clang

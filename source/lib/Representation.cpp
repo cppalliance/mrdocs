@@ -34,7 +34,7 @@ static_assert(clang::AccessSpecifier::AS_private == 2);
 static_assert(clang::AccessSpecifier::AS_none == 3);
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 // Dispatch function.
 llvm::Expected<std::unique_ptr<Info>>
@@ -111,7 +111,7 @@ calculateRelativeFilePath(const InfoType& Type, const StringRef& Path,
 
     // Namespace references have a Path to the parent namespace, but
     // the file is actually in the subdirectory for the namespace.
-    if (Type == doc::InfoType::IT_namespace)
+    if (Type == mrdox::InfoType::IT_namespace)
         llvm::sys::path::append(FilePath, Name);
 
     return llvm::sys::path::relative_path(FilePath);
@@ -356,19 +356,25 @@ void Index::sort() {
         C.sort();
 }
 
-ClangDocContext::ClangDocContext(tooling::ExecutionContext* ECtx,
-    StringRef ProjectName, bool PublicOnly,
-    StringRef OutDirectory, StringRef SourceRoot,
-    StringRef RepositoryUrl,
-    std::vector<std::string> UserStylesheets,
-    std::vector<std::string> JsScripts)
-    : ECtx(ECtx), ProjectName(ProjectName), PublicOnly(PublicOnly),
-    OutDirectory(OutDirectory), UserStylesheets(UserStylesheets),
-    JsScripts(JsScripts) {
+ClangDocContext::
+ClangDocContext(
+    tooling::ExecutionContext* ECtx,
+    StringRef ProjectName,
+    bool PublicOnly,
+    StringRef OutDirectory,
+    StringRef SourceRoot,
+    StringRef RepositoryUrl)
+    : ECtx(ECtx)
+    , ProjectName(ProjectName)
+    , PublicOnly(PublicOnly)
+    , OutDirectory(OutDirectory)
+{
     llvm::SmallString<128> SourceRootDir(SourceRoot);
     if (SourceRoot.empty())
+    {
         // If no SourceRoot was provided the current path is used as the default
         llvm::sys::fs::current_path(SourceRootDir);
+    }
     this->SourceRoot = std::string(SourceRootDir.str());
     if (!RepositoryUrl.empty()) {
         this->RepositoryUrl = std::string(RepositoryUrl);
@@ -378,5 +384,5 @@ ClangDocContext::ClangDocContext(tooling::ExecutionContext* ECtx,
     }
 }
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang

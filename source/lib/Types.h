@@ -16,7 +16,7 @@
 #include <vector>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 struct FunctionInfo;
 
@@ -26,7 +26,7 @@ using UnqualifiedName = llvm::SmallString<16>;
 /// A list of zero or more functions
 using FunctionInfos = std::vector<FunctionInfo>;
 
-} // doc
+} // mrdox
 } // clang
 
 #endif

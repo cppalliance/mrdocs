@@ -21,7 +21,7 @@
 #include "clang/Frontend/FrontendAction.h"
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 namespace {
 
@@ -80,6 +80,14 @@ struct factory
 //------------------------------------------------
 
 std::unique_ptr<
+    clang::FrontendAction>
+makeFrontendAction(
+    ClangDocContext CDCtx)
+{
+    return std::make_unique<action>(CDCtx);
+}
+
+std::unique_ptr<
     tooling::FrontendActionFactory>
 newMapperActionFactory(
     ClangDocContext CDCtx)
@@ -87,5 +95,5 @@ newMapperActionFactory(
     return std::make_unique<factory>(CDCtx);
 }
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang

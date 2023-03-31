@@ -13,6 +13,7 @@
 
 #include "Generators.h"
 #include "Representation.h"
+#include "clang/Tooling/Tooling.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/Path.h"
@@ -36,7 +37,7 @@
 //------------------------------------------------
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 namespace {
 
@@ -109,12 +110,12 @@ namespace fs = llvm::sys::fs;
 namespace path = llvm::sys::path;
 
 class XMLGenerator
-    : public clang::doc::Generator
+    : public clang::mrdox::Generator
 {
 
 public:
     using InfoMap = llvm::StringMap<
-        std::unique_ptr<doc::Info>>;
+        std::unique_ptr<mrdox::Info>>;
 
     static char const* Format;
 
@@ -130,9 +131,9 @@ public:
 
     llvm::Error
     generateDocForInfo(
-        clang::doc::Info* I,
+        clang::mrdox::Info* I,
         llvm::raw_ostream& os,
-        clang::doc::ClangDocContext const& CDCtx) override;
+        clang::mrdox::ClangDocContext const& CDCtx) override;
 
 private:
     using Attrs =
@@ -236,9 +237,9 @@ createResources(
 llvm::Error
 XMLGenerator::
 generateDocForInfo(
-    clang::doc::Info* I,
+    clang::mrdox::Info* I,
     llvm::raw_ostream& os,
-    clang::doc::ClangDocContext const& CDCtx)
+    clang::mrdox::ClangDocContext const& CDCtx)
 {
     return llvm::Error::success();
 }
@@ -528,11 +529,6 @@ renderXML(
             "not a .cpp file");
     llvm::SmallString<256> dir(
         path::parent_path(fileName));
-#if 0
-    tooling::FixedCompilationDatabase cdb(
-        dir, 
-#endif
-
 
     return llvm::Twine();
 }
@@ -551,7 +547,7 @@ xmlGenerator(
 volatile int XMLGeneratorAnchorSource = 0;
 
 using namespace llvm;
-} // doc
+} // mrdox
 } // clang
 
 void
@@ -559,5 +555,5 @@ force_xml_generator_linkage()
 {
     // VFALCO This whole business of disappearing
     //        TUs needs to be refactored.
-    clang::doc::XMLGeneratorAnchorSource++;
+    clang::mrdox::XMLGeneratorAnchorSource++;
 }

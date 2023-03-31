@@ -173,6 +173,12 @@ GetExecutablePath(
     return llvm::sys::fs::getMainExecutable(Argv0, MainAddr);
 }
 
+//------------------------------------------------
+
+
+
+//------------------------------------------------
+
 int
 main(int argc, const char** argv)
 {
@@ -206,7 +212,7 @@ Example usage for a project using a compile commands database:
     // Fail early if an invalid format was provided.
     std::string Format = getFormatString();
     llvm::outs() << "Emiting docs in " << Format << " format.\n";
-    auto G = doc::findGeneratorByName(Format);
+    auto G = mrdox::findGeneratorByName(Format);
     if (!G) {
         llvm::errs() << toString(G.takeError()) << "\n";
         return 1;
@@ -219,34 +225,13 @@ Example usage for a project using a compile commands database:
                 tooling::ArgumentInsertPosition::END),
             ArgAdjuster);
 
-    clang::doc::ClangDocContext CDCtx = {
+    clang::mrdox::ClangDocContext CDCtx = {
         Executor->get()->getExecutionContext(),
         ProjectName,
         PublicOnly,
         OutDirectory,
         SourceRoot,
-        RepositoryUrl,
-        {UserStylesheets.begin(), UserStylesheets.end()},
-        {"index.js", "index_json.js"} };
-
-    if (Format == "html") {
-        void* MainAddr = (void*)(intptr_t)GetExecutablePath;
-        std::string ClangDocPath = GetExecutablePath(argv[0], MainAddr);
-        llvm::SmallString<128> NativeClangDocPath;
-        llvm::sys::path::native(ClangDocPath, NativeClangDocPath);
-        llvm::SmallString<128> AssetsPath;
-        AssetsPath = llvm::sys::path::parent_path(NativeClangDocPath);
-        llvm::sys::path::append(AssetsPath, "..", "..", "assets");
-        llvm::SmallString<128> DefaultStylesheet;
-        llvm::sys::path::native(AssetsPath, DefaultStylesheet);
-        llvm::sys::path::append(DefaultStylesheet, "styles.css");
-        llvm::SmallString<128> IndexJS;
-        llvm::sys::path::native(AssetsPath, IndexJS);
-        llvm::sys::path::append(IndexJS, "index.js");
-        CDCtx.UserStylesheets.insert(CDCtx.UserStylesheets.begin(),
-            std::string(DefaultStylesheet.str()));
-        CDCtx.FilesToCopy.emplace_back(IndexJS.str());
-    }
+        RepositoryUrl};
 
     //--------------------------------------------
     //
@@ -257,7 +242,7 @@ Example usage for a project using a compile commands database:
     {
         llvm::outs() << "Mapping decls...\n";
         auto Err = Executor->get()->execute(
-            doc::newMapperActionFactory(CDCtx),
+            mrdox::newMapperActionFactory(CDCtx),
             ArgAdjuster);
         if(Err)
         {
@@ -292,7 +277,7 @@ Example usage for a project using a compile commands database:
     // Collects all Infos according to their unique USR value. This map is added
     // to from the thread pool below and is protected by the USRToInfoMutex.
     llvm::sys::Mutex USRToInfoMutex;
-    llvm::StringMap<std::unique_ptr<doc::Info>> USRToInfo;
+    llvm::StringMap<std::unique_ptr<mrdox::Info>> USRToInfo;
 
     // First reducing phase (reduce all decls into one info per decl).
     llvm::outs() << "Reducing " << USRToBitcode.size() << " infos...\n";
@@ -304,11 +289,11 @@ Example usage for a project using a compile commands database:
     //llvm::ThreadPool Pool(llvm::hardware_concurrency(1));
     for (auto& Group : USRToBitcode) {
         Pool.async([&]() {
-            std::vector<std::unique_ptr<doc::Info>> Infos;
+            std::vector<std::unique_ptr<mrdox::Info>> Infos;
 
             for (auto& Bitcode : Group.getValue()) {
                 llvm::BitstreamCursor Stream(Bitcode);
-                doc::ClangDocBitcodeReader Reader(Stream);
+                mrdox::ClangDocBitcodeReader Reader(Stream);
                 auto ReadInfos = Reader.readBitcode();
                 if (!ReadInfos) {
                     llvm::errs() << toString(ReadInfos.takeError()) << "\n";
@@ -319,7 +304,7 @@ Example usage for a project using a compile commands database:
                     std::back_inserter(Infos));
             }
 
-            auto Reduced = doc::mergeInfos(Infos);
+            auto Reduced = mrdox::mergeInfos(Infos);
             if (!Reduced) {
                 llvm::errs() << llvm::toString(Reduced.takeError());
                 return;
@@ -328,7 +313,7 @@ Example usage for a project using a compile commands database:
             // Add a reference to this Info in the Index
             {
                 std::lock_guard<llvm::sys::Mutex> Guard(IndexMutex);
-                clang::doc::Generator::addInfoToIndex(CDCtx.Idx, Reduced.get().get());
+                clang::mrdox::Generator::addInfoToIndex(CDCtx.Idx, Reduced.get().get());
             }
 
             // Save in the result map (needs a lock due to threaded access).

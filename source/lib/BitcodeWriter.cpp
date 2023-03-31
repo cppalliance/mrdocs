@@ -14,7 +14,7 @@
 #include <initializer_list>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 // Empty SymbolID for comparison, so we don't have to construct one every time.
 static const SymbolID EmptySID = SymbolID();
@@ -662,19 +662,19 @@ void ClangDocBitcodeWriter::emitBlock(const TemplateParamInfo& T) {
 bool ClangDocBitcodeWriter::dispatchInfoForWrite(Info* I) {
     switch (I->IT) {
     case InfoType::IT_namespace:
-        emitBlock(*static_cast<clang::doc::NamespaceInfo*>(I));
+        emitBlock(*static_cast<clang::mrdox::NamespaceInfo*>(I));
         break;
     case InfoType::IT_record:
-        emitBlock(*static_cast<clang::doc::RecordInfo*>(I));
+        emitBlock(*static_cast<clang::mrdox::RecordInfo*>(I));
         break;
     case InfoType::IT_enum:
-        emitBlock(*static_cast<clang::doc::EnumInfo*>(I));
+        emitBlock(*static_cast<clang::mrdox::EnumInfo*>(I));
         break;
     case InfoType::IT_function:
-        emitBlock(*static_cast<clang::doc::FunctionInfo*>(I));
+        emitBlock(*static_cast<clang::mrdox::FunctionInfo*>(I));
         break;
     case InfoType::IT_typedef:
-        emitBlock(*static_cast<clang::doc::TypedefInfo*>(I));
+        emitBlock(*static_cast<clang::mrdox::TypedefInfo*>(I));
         break;
     default:
         llvm::errs() << "Unexpected info, unable to write.\n";
@@ -683,5 +683,5 @@ bool ClangDocBitcodeWriter::dispatchInfoForWrite(Info* I) {
     return false;
 }
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang

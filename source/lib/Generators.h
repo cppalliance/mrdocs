@@ -20,7 +20,7 @@
 #include "llvm/Support/Registry.h"
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 // Abstract base class for generators.
 // This is expected to be implemented and exposed via the GeneratorRegistry.
@@ -32,7 +32,7 @@ public:
   // format.
   virtual llvm::Error
   generateDocs(StringRef RootDir,
-               llvm::StringMap<std::unique_ptr<doc::Info>> Infos,
+               llvm::StringMap<std::unique_ptr<mrdox::Info>> Infos,
                const ClangDocContext &CDCtx) = 0;
 
   // This function writes a file with the index previously constructed.
@@ -45,7 +45,7 @@ public:
   virtual llvm::Error generateDocForInfo(Info *I, llvm::raw_ostream &OS,
                                          const ClangDocContext &CDCtx) = 0;
 
-  static void addInfoToIndex(Index &Idx, const doc::Info *Info);
+  static void addInfoToIndex(Index &Idx, const mrdox::Info *Info);
 };
 
 typedef llvm::Registry<Generator> GeneratorRegistry;
@@ -55,7 +55,7 @@ findGeneratorByName(llvm::StringRef Format);
 
 std::string getTagType(TagTypeKind AS);
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang
 
 #endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H

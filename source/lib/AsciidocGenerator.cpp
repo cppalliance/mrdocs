@@ -21,7 +21,7 @@
 using namespace llvm;
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 namespace {
 
@@ -743,7 +743,7 @@ public:
     llvm::Error
     generateDocs(
         StringRef RootDir,
-        llvm::StringMap<std::unique_ptr<doc::Info>> Infos,
+        llvm::StringMap<std::unique_ptr<mrdox::Info>> Infos,
         ClangDocContext const& CDCtx) override;
 
     llvm::Error
@@ -764,16 +764,16 @@ llvm::Error
 AsciidocGenerator::
 generateDocs(
     StringRef RootDir,
-    llvm::StringMap<std::unique_ptr<doc::Info>> Infos,
+    llvm::StringMap<std::unique_ptr<mrdox::Info>> Infos,
     ClangDocContext const& CDCtx)
 {
     // Track which directories we already tried to create.
     llvm::StringSet<> CreatedDirs;
 
     // Collect all output by file name and create the necessary directories.
-    llvm::StringMap<std::vector<doc::Info*>> FileToInfos;
+    llvm::StringMap<std::vector<mrdox::Info*>> FileToInfos;
     for (const auto& Group : Infos) {
-        doc::Info* Info = Group.getValue().get();
+        mrdox::Info* Info = Group.getValue().get();
 
         llvm::SmallString<128> Path;
         llvm::sys::path::native(RootDir, Path);
@@ -820,19 +820,19 @@ generateDocForInfo(
     switch (I->IT)
     {
     case InfoType::IT_namespace:
-        makeNamespacePage(CDCtx, *static_cast<clang::doc::NamespaceInfo*>(I), os);
+        makeNamespacePage(CDCtx, *static_cast<clang::mrdox::NamespaceInfo*>(I), os);
         break;
     case InfoType::IT_record:
-        genMarkdown(CDCtx, *static_cast<clang::doc::RecordInfo*>(I), os);
+        genMarkdown(CDCtx, *static_cast<clang::mrdox::RecordInfo*>(I), os);
         break;
     case InfoType::IT_enum:
-        genMarkdown(CDCtx, *static_cast<clang::doc::EnumInfo*>(I), os);
+        genMarkdown(CDCtx, *static_cast<clang::mrdox::EnumInfo*>(I), os);
         break;
     case InfoType::IT_function:
-        genMarkdown(CDCtx, *static_cast<clang::doc::FunctionInfo*>(I), os);
+        genMarkdown(CDCtx, *static_cast<clang::mrdox::FunctionInfo*>(I), os);
         break;
     case InfoType::IT_typedef:
-        genMarkdown(CDCtx, *static_cast<clang::doc::TypedefInfo*>(I), os);
+        genMarkdown(CDCtx, *static_cast<clang::mrdox::TypedefInfo*>(I), os);
         break;
     case InfoType::IT_default:
         return createStringError(llvm::inconvertibleErrorCode(),
@@ -871,5 +871,5 @@ Add<AsciidocGenerator> Asciidoc(
 // file and thus register the generator.
 volatile int AsciidocGeneratorAnchorSource = 0;
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang

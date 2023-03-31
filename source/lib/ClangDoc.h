@@ -16,22 +16,27 @@
 // ExecutionContext.
 //
 
-#ifndef MRFOX_FRONTEND_TOOL
-#define MRFOX_FRONTEND_TOOL
+#ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H
+#define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H
 
 #include "Representation.h"
 
 #include "clang/Tooling/Tooling.h"
 
 namespace clang {
-namespace doc {
+namespace mrdox {
+
+std::unique_ptr<
+    clang::FrontendAction>
+makeFrontendAction(
+    ClangDocContext CDCtx);
 
 std::unique_ptr<
     tooling::FrontendActionFactory>
 newMapperActionFactory(
     ClangDocContext CDCtx);
 
-} // namespace doc
+} // namespace mrdox
 } // namespace clang
 
 #endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H

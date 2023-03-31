@@ -16,7 +16,7 @@
 #include <clang/AST/ASTContext.h>
 
 namespace clang {
-namespace doc {
+namespace mrdox {
 
 /** Parse a FullComment
 */
@@ -27,7 +27,7 @@ parseComment(
     Javadoc& javadoc,
     CommentInfo& ci);
 
-} // doc
+} // mrdox
 } // clang
 
 #endif
