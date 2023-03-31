@@ -51,7 +51,7 @@ do_main(int argc, const char** argv)
         llvm::SmallString<128> xmlPath(name);
         path::remove_dots(cppPath, true);
         path::remove_dots(xmlPath, true);
-        if(path::extension(name).equals_insensitive("cpp"))
+        if(path::extension(name).equals_insensitive(".cpp"))
         {
             if(! fs::is_regular_file(name))
             {
@@ -68,7 +68,7 @@ do_main(int argc, const char** argv)
                 return EXIT_FAILURE;
             }
         }
-        else if(path::extension(name).equals_insensitive("xml"))
+        else if(path::extension(name).equals_insensitive(".xml"))
         {
             path::replace_extension(cppPath, "cpp");
             if( ! fs::exists(cppPath) ||

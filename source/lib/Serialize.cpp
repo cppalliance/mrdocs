@@ -381,17 +381,22 @@ void PopulateTemplateParameters(std::optional<TemplateInfo>& TemplateInfo,
         if (!TemplateInfo) {
             TemplateInfo.emplace();
         }
-        for (const NamedDecl* ND : *ParamList) {
+        for (const NamedDecl* ND : *ParamList)
+        {
             TemplateInfo->Params.emplace_back(
                 getSourceCode(ND, ND->getSourceRange()));
         }
     }
 }
 
-TemplateParamInfo TemplateArgumentToInfo(const clang::Decl* D,
-    const TemplateArgument& Arg) {
-    // The TemplateArgument's pretty printing handles all the normal cases
-    // well enough for our requirements.
+TemplateParamInfo
+TemplateArgumentToInfo(
+    clang::Decl const* D,
+    TemplateArgument const & Arg)
+{
+    // The TemplateArgument's pretty printing
+    // handles all the normal cases well enough
+    // for our requirements.
     std::string Str;
     llvm::raw_string_ostream Stream(Str);
     Arg.print(PrintingPolicy(D->getLangOpts()), Stream, false);

@@ -18,9 +18,90 @@
 #include "llvm/Support/Path.h"
 
 //------------------------------------------------
+/*
+    DTD
+
+    Tags
+        ns          namespace
+        udt         class, struct, union
+        fn
+        en
+        ty
+
+    Attributes
+        n           name
+        r           return type
+        a           Access
+*/
+//------------------------------------------------
 
 namespace clang {
 namespace doc {
+
+namespace {
+
+//------------------------------------------------
+
+struct escape
+{
+    explicit
+    escape(
+        llvm::StringRef const& s) noexcept
+        : s_(s)
+    {
+    }
+
+    friend
+    llvm::raw_ostream&
+    operator<<(
+        llvm::raw_ostream& os,
+        escape const& t)
+    {
+        std::size_t pos = 0;
+        auto const size = t.s_.size();
+        while(pos < size)
+        {
+        unescaped:
+            auto const found = t.s_.find_first_of("<>&'\"", pos);
+            if(found == llvm::StringRef::npos)
+            {
+                os.write(t.s_.data() + pos, t.s_.size() - pos);
+                break;
+            }
+            os.write(t.s_.data() + pos, found - pos);
+            pos = found;
+            while(pos < size)
+            {
+                auto const c = t.s_[pos];
+                switch(c)
+                {
+                case '<':
+                    os.write("&lt;", 4);
+                    break;
+                case '>':
+                    os.write("&gt;", 4);
+                    break;
+                case '&':
+                    os.write("&amp;", 5);
+                    break;
+                case '\'':
+                    os.write("&apos;", 6);
+                    break;
+                case '\"':
+                    os.write("&quot;", 6);
+                    break;
+                default:
+                    goto unescaped;
+                }
+                ++pos;
+            }
+        }
+        return os;
+    }
+
+private:
+    llvm::StringRef s_;
+};
 
 //------------------------------------------------
 
@@ -69,16 +150,15 @@ private:
     void writeTag(llvm::StringRef);
     void writeTag(llvm::StringRef, Attrs);
 
-    void writeHeader();
-    void write(NamespaceInfo const& I);
-    void write(RecordInfo const& I);
-    void write(FunctionInfo const& I);
-    void write(EnumInfo const& I);
-    void write(TypedefInfo const& I);
-    void write(FunctionOverloads const& fns);
-    void write(FunctionList const& fnList);
-    void write(std::vector<EnumInfo> const& v);
-    void write(std::vector<TypedefInfo> const& v);
+    void writeNamespace(NamespaceInfo const& I);
+    void writeRecord(RecordInfo const& I);
+    void writeFunction(FunctionInfo const& I);
+    void writeEnum(EnumInfo const& I);
+    void writeTypedef(TypedefInfo const& I);
+    void writeOverloads(FunctionOverloads const& fns);
+    void writeFunctions(FunctionList const& fnList);
+    void writeEnums(std::vector<EnumInfo> const& v);
+    void writeTypedefs(std::vector<TypedefInfo> const& v);
 
     void writeNamespaces(std::vector<Reference> const& v);
     void writeRecords(std::vector<Reference> const& v);
@@ -87,6 +167,9 @@ private:
     llvm::raw_fd_ostream* os_ = nullptr;
     InfoMap const* infos_ = nullptr;
 };
+
+//------------------------------------------------
+
 
 //------------------------------------------------
 
@@ -120,10 +203,21 @@ generateDocs(
         return llvm::createStringError(
             ec,
             "output file could not be opened");
-    os_ = &os;
-    writeHeader();
     level_ = {};
-    write(*ns);
+    os_ = &os;
+#if 0
+    *os_ <<
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
+        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
+        "<mrdox>\n";
+#endif
+    writeNamespace(*ns);
+#if 0
+    *os_ <<
+        "</mrdox>\n";
+#endif
+    // VFALCO the error handling needs to be
+    //        propagated through all write functions
     if(os_->error())
         return llvm::createStringError(
             ec,
@@ -174,7 +268,6 @@ openTag(
 {
     *os_ << level_ << '<' << tag << ">\n";
     level_.push_back(' ');
-    level_.push_back(' ');
 }
 
 void
@@ -187,9 +280,8 @@ openTag(
     for(auto const& attr : init)
         *os_ <<
             ' ' << attr.first << '=' <<
-            "\"" << attr.second << "\"";
+            "\"" << escape(attr.second) << "\"";
     *os_ << ">\n";
-    level_.push_back(' ');
     level_.push_back(' ');
 }
 
@@ -198,7 +290,6 @@ XMLGenerator::
 closeTag(
     llvm::StringRef tag)
 {
-    level_.pop_back();
     level_.pop_back();
     *os_ << level_ << "</" << tag << ">\n";
 }
@@ -221,7 +312,7 @@ writeTag(
     for(auto const& attr : init)
         *os_ <<
             ' ' << attr.first << '=' <<
-            "\"" << attr.second << "\"";
+            "\"" << escape(attr.second) << "\"";
     *os_ << "/>\n";
 }
 
@@ -229,97 +320,117 @@ writeTag(
 
 void
 XMLGenerator::
-writeHeader()
-{
-    *os_ <<
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
-        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n";
-}
-
-void
-XMLGenerator::
-write(
+writeNamespace(
     NamespaceInfo const& I)
 {
-    openTag("namespace", {
-        { "name", I.Name }
+    openTag(
+        "ns", {
+        { "n", I.Name }
         });
     writeNamespaces(I.Children.Namespaces);
     writeRecords(I.Children.Records);
-    write(I.Children.functions);
-    write(I.Children.Enums);
-    write(I.Children.Typedefs);
-    closeTag("namespace");
+    writeFunctions(I.Children.functions);
+    writeEnums(I.Children.Enums);
+    writeTypedefs(I.Children.Typedefs);
+    closeTag("ns");
 }
 
 //------------------------------------------------
 
 void
 XMLGenerator::
-write(
+writeRecord(
     RecordInfo const& I)
 {
-    openTag("compound", {
-        { "name", I.Name },
-        { "type", getTagType(I.TagType) }
+    openTag(
+        "udt", {
+        { "n", I.Name },
+        { "t", getTagType(I.TagType) }
         });
     writeNamespaces(I.Children.Namespaces);
     writeRecords(I.Children.Records);
-    write(I.Children.functions);
-    write(I.Children.Enums);
-    write(I.Children.Typedefs);
-    closeTag("compound");
+    writeFunctions(I.Children.functions);
+    writeEnums(I.Children.Enums);
+    writeTypedefs(I.Children.Typedefs);
+    closeTag("udt");
 }
 //------------------------------------------------
 
+static
+llvm::StringRef
+toString(
+    AccessSpecifier access)
+{
+    switch(access)
+    {
+    case AccessSpecifier::AS_public:
+        return "0";
+    case AccessSpecifier::AS_protected:
+        return "1";
+    case AccessSpecifier::AS_private:
+        return "2";
+    case AccessSpecifier::AS_none:
+    default:
+        return "3";
+    }
+}
+
 void
 XMLGenerator::
-write(
+writeFunction(
     FunctionInfo const& I)
 {
-    openTag("function", {
-        { "name", I.Name },
-        { "returns", I.ReturnType.Type.Name }
+    openTag("fn", {
+        { "n", I.Name },
+        { "r", I.ReturnType.Type.Name },
+        { "a", toString(I.Access) }
         });
+    if(I.Template)
+    {
+        for(TemplateParamInfo const& tp : I.Template->Params)
+            writeTag(
+                "tp", {
+                { "n", tp.Contents }
+                });
+    }
     for(FieldTypeInfo const& p : I.Params)
-        writeTag("param", {
-            { "name", p.Name },
-            { "type", p.Type.Name }
+        writeTag("p", {
+            { "n", p.Name },
+            { "t", p.Type.Name }
             });
-
-    closeTag("function");
+    closeTag("fn");
 }
 
 //------------------------------------------------
 
 void
 XMLGenerator::
-write(
+writeEnum(
     EnumInfo const& I)
 {
-    openTag("enum", {
-        { "name", I.Name },
+    openTag("en", {
+        { "n", I.Name },
         });
     for(auto const& v : I.Members)
     {
         writeTag("value", {
-            { "name", v.Name },
-            { "value", v.Value },
+            { "n", v.Name },
+            { "v", v.Value },
             });
     }
-
-    closeTag("enum");
+    closeTag("en");
 }
 
 //------------------------------------------------
 
 void
 XMLGenerator::
-write(
+writeTypedef(
     TypedefInfo const& I)
 {
-    writeTag("typedef", {
-        { "name", I.Name }
+    writeTag(
+        "ty", {
+        { "n", I.Name }
         });
 }
 
@@ -327,38 +438,38 @@ write(
 
 void
 XMLGenerator::
-write(
+writeOverloads(
     FunctionOverloads const& fns)
 {
     for(auto const& fn : fns)
-        write(fn);
+        writeFunction(fn);
 }
 
 void
 XMLGenerator::
-write(
+writeFunctions(
     FunctionList const& fnList)
 {
     for(auto const& fns : fnList)
-        write(fns);
+        writeOverloads(fns);
 }
 
 void
 XMLGenerator::
-write(
+writeEnums(
     std::vector<EnumInfo> const& v)
 {
     for(auto const& I : v)
-        write(I);
+        writeEnum(I);
 }
 
 void
 XMLGenerator::
-write(
+writeTypedefs(
     std::vector<TypedefInfo> const& v)
 {
     for(auto const& I : v)
-        write(I);
+        writeTypedef(I);
 }
 
 //------------------------------------------------
@@ -374,8 +485,9 @@ writeNamespaces(
         auto it = infos_->find(
             llvm::toHex(llvm::toStringRef(ref.USR)));
         assert(it != infos_->end());
-        write(*static_cast<NamespaceInfo const*>(
-            it->second.get()));
+        writeNamespace(
+            *static_cast<NamespaceInfo const*>(
+                it->second.get()));
     }
 }
 
@@ -390,8 +502,9 @@ writeRecords(
         auto it = infos_->find(
             llvm::toHex(llvm::toStringRef(ref.USR)));
         assert(it != infos_->end());
-        write(*static_cast<RecordInfo const*>(
-            it->second.get()));
+        writeRecord(
+            *static_cast<RecordInfo const*>(
+                it->second.get()));
     }
 }
 
@@ -401,12 +514,26 @@ char const*
 XMLGenerator::
 Format = "xml";
 
+} // (anon)
+
 //------------------------------------------------
 
 llvm::Expected<llvm::Twine>
 renderXML(
-    llvm::StringRef path)
+    llvm::StringRef fileName)
 {
+    if(! path::extension(fileName).equals_insensitive(".cpp"))
+        return llvm::createStringError(
+            llvm::inconvertibleErrorCode(),
+            "not a .cpp file");
+    llvm::SmallString<256> dir(
+        path::parent_path(fileName));
+#if 0
+    tooling::FixedCompilationDatabase cdb(
+        dir, 
+#endif
+
+
     return llvm::Twine();
 }
 

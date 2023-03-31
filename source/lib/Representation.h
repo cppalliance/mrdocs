@@ -234,9 +234,30 @@ struct TypeInfo {
 // This is a very simple serialization of the text of the source code of the
 // template parameter. It is saved in a struct so there is a place to add the
 // name and default values in the future if needed.
-struct TemplateParamInfo {
+//
+/** A tempalte parameter.
+*/
+struct TemplateParamInfo
+{
+    enum class Kind
+    {
+        Class,
+        Typename,
+        Nttp
+    };
+
     TemplateParamInfo() = default;
-    explicit TemplateParamInfo(StringRef Contents) : Contents(Contents) {}
+
+    TemplateParamInfo(
+        //StringRef Name,
+        StringRef Contents)
+        : Contents(Contents)
+    {
+    }
+
+    Kind kind = Kind::Class;
+
+    //SmallString<16> Name;
 
     // The literal contents of the code for that specifies this template parameter
     // for this declaration. Typical values will be "class T" and

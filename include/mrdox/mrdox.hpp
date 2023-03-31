@@ -21,7 +21,7 @@ namespace doc {
 
 llvm::Expected<llvm::Twine>
 renderXML(
-    llvm::StringRef path);
+    llvm::StringRef fileName);
 
 } // doc
 } // clang
