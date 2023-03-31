@@ -363,7 +363,7 @@ void
 listFunctions(
     ClangDocContext const& CDCtx,
     llvm::StringRef label,
-    mrdox::FunctionList const& v,
+    FunctionList const& v,
     llvm::raw_ostream& os)
 {
     if(v.empty())

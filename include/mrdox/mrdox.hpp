@@ -16,12 +16,14 @@
 #include <llvm/ADT/Twine.h>
 #include "llvm/Support/Error.h"
 
-namespace mrdox {
+namespace clang {
+namespace doc {
 
 llvm::Expected<llvm::Twine>
 renderXML(
     llvm::StringRef path);
 
-} // mrdox
+} // doc
+} // clang
 
 #endif

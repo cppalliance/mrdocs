@@ -16,7 +16,8 @@
 #include <clang/Basic/Specifiers.h>
 #include <vector>
 
-namespace mrdox {
+namespace clang {
+namespace doc {
 
 //------------------------------------------------
 
@@ -61,12 +62,12 @@ protected:
 /** A list of overloads for a function.
 */
 struct FunctionOverloads
-    : List<clang::doc::FunctionInfo>
+    : List<FunctionInfo>
 {
     /// The name of the function.
     UnqualifiedName name;
 
-    void insert(clang::doc::FunctionInfo I);
+    void insert(FunctionInfo I);
     void merge(FunctionOverloads&& other);
 
     FunctionOverloads(
@@ -74,7 +75,7 @@ struct FunctionOverloads
     FunctionOverloads& operator=(
         FunctionOverloads&&) noexcept = default;
     FunctionOverloads(
-        clang::doc::FunctionInfo I);
+        FunctionInfo I);
 };
 
 //------------------------------------------------
@@ -86,7 +87,7 @@ struct FunctionList
 {
     clang::AccessSpecifier access;
 
-    void insert(clang::doc::FunctionInfo I);
+    void insert(FunctionInfo I);
     void merge(FunctionList&& other);
 
     FunctionList(
@@ -104,6 +105,7 @@ private:
 
 //------------------------------------------------
 
-} // mrdox
+} // doc
+} // clang
 
 #endif

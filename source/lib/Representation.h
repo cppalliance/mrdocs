@@ -172,7 +172,7 @@ struct ScopeChildren
     // this general for all possible container types reduces code complexity.
     std::vector<Reference> Namespaces;
     std::vector<Reference> Records;
-    mrdox::FunctionList functions;
+    FunctionList functions;
     std::vector<EnumInfo> Enums;
     std::vector<TypedefInfo> Typedefs;
 

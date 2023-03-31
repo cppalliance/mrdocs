@@ -75,8 +75,8 @@ private:
     void write(FunctionInfo const& I);
     void write(EnumInfo const& I);
     void write(TypedefInfo const& I);
-    void write(mrdox::FunctionOverloads const& fns);
-    void write(mrdox::FunctionList const& fnList);
+    void write(FunctionOverloads const& fns);
+    void write(FunctionList const& fnList);
     void write(std::vector<EnumInfo> const& v);
     void write(std::vector<TypedefInfo> const& v);
 
@@ -328,7 +328,7 @@ write(
 void
 XMLGenerator::
 write(
-    mrdox::FunctionOverloads const& fns)
+    FunctionOverloads const& fns)
 {
     for(auto const& fn : fns)
         write(fn);
@@ -337,7 +337,7 @@ write(
 void
 XMLGenerator::
 write(
-    mrdox::FunctionList const& fnList)
+    FunctionList const& fnList)
 {
     for(auto const& fns : fnList)
         write(fns);
@@ -401,12 +401,7 @@ char const*
 XMLGenerator::
 Format = "xml";
 
-} // doc
-} // clang
-
 //------------------------------------------------
-
-namespace mrdox {
 
 llvm::Expected<llvm::Twine>
 renderXML(
@@ -415,20 +410,12 @@ renderXML(
     return llvm::Twine();
 }
 
-} // mrdox
-
 //------------------------------------------------
 
-using namespace llvm;
-
-namespace clang {
-namespace doc {
-
 static
-clang::doc::GeneratorRegistry::Add<
-    clang::doc::XMLGenerator>
+GeneratorRegistry::Add<XMLGenerator>
 xmlGenerator(
-    clang::doc::XMLGenerator::Format,
+    XMLGenerator::Format,
     "Generator for XML output.");
 
 // This anchor is used to force the linker
@@ -436,8 +423,9 @@ xmlGenerator(
 // thus register the generator.
 volatile int XMLGeneratorAnchorSource = 0;
 
-}
-}
+using namespace llvm;
+} // doc
+} // clang
 
 void
 force_xml_generator_linkage()

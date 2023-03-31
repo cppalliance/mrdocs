@@ -13,26 +13,21 @@
 #define MRDOX_TYPES_HPP
 
 #include <llvm/ADT/SmallString.h>
+#include <vector>
 
 namespace clang {
 namespace doc {
+
 struct FunctionInfo;
-} // doc
-} // clang
-
-//------------------------------------------------
-
-namespace mrdox {
-
-namespace doc = clang::doc;
 
 /// The string used for unqualified names
 using UnqualifiedName = llvm::SmallString<16>;
 
 /// A list of zero or more functions
-using FunctionInfos = std::vector<doc::FunctionInfo>;
+using FunctionInfos = std::vector<FunctionInfo>;
 
-} // mrdox
+} // doc
+} // clang
 
 #endif
 

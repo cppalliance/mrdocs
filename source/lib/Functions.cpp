@@ -13,25 +13,26 @@
 #include "Reduce.h"
 #include "Representation.h"
 
+namespace clang {
+namespace doc {
+
 // we assume that there are 4 access controls
 static_assert(
-    clang::AccessSpecifier::AS_none >
-    clang::AccessSpecifier::AS_private);
+    AccessSpecifier::AS_none >
+    AccessSpecifier::AS_private);
 static_assert(
-    clang::AccessSpecifier::AS_none >
-    clang::AccessSpecifier::AS_protected);
+    AccessSpecifier::AS_none >
+    AccessSpecifier::AS_protected);
 static_assert(
-    clang::AccessSpecifier::AS_none >
-    clang::AccessSpecifier::AS_public);
-
-namespace mrdox {
+    AccessSpecifier::AS_none >
+    AccessSpecifier::AS_public);
 
 //------------------------------------------------
 
 void
 FunctionOverloads::
 insert(
-    clang::doc::FunctionInfo I)
+    FunctionInfo I)
 {
     assert(I.Name == name);
     v_.emplace_back(std::move(I));
@@ -42,13 +43,13 @@ FunctionOverloads::
 merge(
     FunctionOverloads&& other)
 {
-    clang::doc::reduceChildren(
+    reduceChildren(
         v_, std::move(other.v_));
 }
 
 FunctionOverloads::
 FunctionOverloads(
-    clang::doc::FunctionInfo I)
+    FunctionInfo I)
     : name(I.Name)
 {
     v_.emplace_back(std::move(I));
@@ -59,7 +60,7 @@ FunctionOverloads(
 void
 FunctionList::
 insert(
-    clang::doc::FunctionInfo I)
+    FunctionInfo I)
 {
     //assert(I.Access == access);
     auto it = find(I.Name);
@@ -105,4 +106,6 @@ find(
     return it;
 }
 
-} // mrdox
+} // doc
+} // clang
+

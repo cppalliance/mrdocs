@@ -22,9 +22,8 @@
 // and a .xml file containing the expected output
 // of the XML generator, which must match exactly.
 
-// Our namespace insulates us from any unexpected
-// declarations thrown in the global namespace.
-namespace mrdox {
+namespace clang {
+namespace doc {
 
 int
 do_main(int argc, const char** argv)
@@ -94,17 +93,18 @@ do_main(int argc, const char** argv)
         }
         expectedXml = xmlResult->get()->getBuffer();
 
-        auto const result = mrdox::renderXML(cppPath);
+        auto const result = renderXML(cppPath);
 
     }
 
     return EXIT_SUCCESS;
 }
 
-} // mrdox
+} // doc
+} // clang
 
 int
 main(int argc, const char** argv)
 {
-    return mrdox::do_main(argc, argv);
+    return clang::doc::do_main(argc, argv);
 }
