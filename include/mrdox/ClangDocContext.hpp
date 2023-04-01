@@ -64,6 +64,8 @@ struct ClangDocContext
     std::unique_ptr<Generator> G;
 
     Index Idx;
+
+    llvm::StringMap<std::unique_ptr<mrdox::Info>> USRToInfo;
 };
 
 //------------------------------------------------
@@ -82,15 +84,15 @@ setupContext(
     ClangDocContext& CDCtx,
     llvm::SmallVector<llvm::StringRef, 16> const& args);
 
-/** Run the mapping phase.
+/** Build the internal index of the program under analysis.
 
-    This is the first step for processing docs.
+    This must happen before generating docs.
 */
 llvm::Error
-executeMapping(
+buildIndex(
     ClangDocContext& CDCtx);
 
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang
 
 #endif

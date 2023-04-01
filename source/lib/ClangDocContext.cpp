@@ -9,10 +9,15 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "BitcodeReader.h"
+#include "BitcodeWriter.h"
 #include "Generators.h"
 #include "ClangDoc.h"
 #include <mrdox/ClangDocContext.hpp>
+#include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
+#include <llvm/Support/Mutex.h>
+#include <llvm/Support/ThreadPool.h>
 
 namespace clang {
 namespace mrdox {
@@ -204,26 +209,109 @@ setupContext(
 
 //------------------------------------------------
 
-// Mapping phase
-
 llvm::Error
-executeMapping(
+buildIndex(
     ClangDocContext& CDCtx)
 {
-    llvm::outs() << "Mapping decls...\n";
-    auto Err = CDCtx.Executor->execute(
-        newMapperActionFactory(CDCtx),
-        CDCtx.ArgAdjuster);
-    if(Err)
+    //
+    // Mapping phase
+    //
     {
-        if(! CDCtx.IgnoreMappingFailures)
-            return Err;
+        llvm::outs() << "Mapping declarations\n";
+        auto Err = CDCtx.Executor->execute(
+            newMapperActionFactory(CDCtx),
+            CDCtx.ArgAdjuster);
+        if(Err)
+        {
+            if(! CDCtx.IgnoreMappingFailures)
+            {
+                llvm::errs() <<
+                    "Mapping failure: " << Err << "\n";
+                return Err;
+            }
 
-        llvm::errs() <<
-            "Error mapping decls in files. mrdox will ignore "
-            "these files and continue:\n" <<
-            toString(std::move(Err)) << "\n";
+            llvm::errs() <<
+                "GotFailure mapping decls in files. mrdox will ignore "
+                "these files and continue:\n" <<
+                toString(std::move(Err)) << "\n";
+        }
     }
+
+    // Collect values into output by key.
+    // In ToolResults, the Key is the hashed USR and the value is the
+    // bitcode-encoded representation of the Info object.
+    llvm::outs() << "Collecting symbols\n";
+    llvm::StringMap<std::vector<StringRef>> USRToBitcode;
+    CDCtx.Executor->getToolResults()->forEachResult(
+        [&](StringRef Key, StringRef Value)
+        {
+            auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());
+            R.first->second.emplace_back(Value);
+        });
+
+    // Collects all Infos according to their unique USR value. This map is added
+    // to from the thread pool below and is protected by the USRToInfoMutex.
+    llvm::sys::Mutex USRToInfoMutex;
+
+    // First reducing phase (reduce all decls into one info per decl).
+    llvm::outs() << "Reducing " << USRToBitcode.size() << " declarations\n";
+    std::atomic<bool> GotFailure;
+    GotFailure = false;
+    llvm::sys::Mutex IndexMutex;
+    // ExecutorConcurrency is a flag exposed by AllTUsExecution.h
+    llvm::ThreadPool Pool(llvm::hardware_concurrency(tooling::ExecutorConcurrency));
+    for (auto& Group : USRToBitcode)
+    {
+        Pool.async([&]()
+        {
+            std::vector<std::unique_ptr<mrdox::Info>> Infos;
+
+            for (auto& Bitcode : Group.getValue())
+            {
+                llvm::BitstreamCursor Stream(Bitcode);
+                mrdox::ClangDocBitcodeReader Reader(Stream);
+                auto ReadInfos = Reader.readBitcode();
+                if (!ReadInfos)
+                {
+                    llvm::errs() << toString(ReadInfos.takeError()) << "\n";
+                    GotFailure = true;
+                    return;
+                }
+                std::move(
+                    ReadInfos->begin(),
+                    ReadInfos->end(),
+                    std::back_inserter(Infos));
+            }
+
+            auto Reduced = mrdox::mergeInfos(Infos);
+            if (!Reduced)
+            {
+                // VFALCO What about GotFailure?
+                llvm::errs() << llvm::toString(Reduced.takeError());
+                return;
+            }
+
+            // Add a reference to this Info in the Index
+            {
+                std::lock_guard<llvm::sys::Mutex> Guard(IndexMutex);
+                clang::mrdox::Generator::addInfoToIndex(CDCtx.Idx, Reduced.get().get());
+            }
+
+            // Save in the result map (needs a lock due to threaded access).
+            {
+                std::lock_guard<llvm::sys::Mutex> Guard(USRToInfoMutex);
+                CDCtx.USRToInfo[Group.getKey()] = std::move(Reduced.get());
+            }
+        });
+    }
+
+    Pool.wait();
+
+    if (GotFailure)
+        return llvm::createStringError(
+            llvm::inconvertibleErrorCode(),
+            "an error occurred");
+
     return llvm::Error::success();
 }
 
