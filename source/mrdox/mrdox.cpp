@@ -55,111 +55,6 @@ using namespace clang;
 // VFALCO GARBAGE
 extern void force_xml_generator_linkage();
 
-static
-llvm::cl::extrahelp
-CommonHelp(
-    CommonOptionsParser::HelpMessage);
-
-static
-llvm::cl::OptionCategory
-ClangDocCategory("clang-doc options");
-
-static
-llvm::cl::opt<std::string>
-ProjectName(
-    "project-name",
-    llvm::cl::desc("Name of project."),
-    llvm::cl::cat(ClangDocCategory));
-
-static
-llvm::cl::opt<bool>
-    IgnoreMappingFailures(
-        "ignore-map-errors",
-        llvm::cl::desc("Continue if files are not mapped correctly."),
-        llvm::cl::init(true),
-        llvm::cl::cat(ClangDocCategory));
-
-static
-llvm::cl::opt<std::string>
-OutDirectory(
-    "output",
-    llvm::cl::desc("Directory for outputting generated files."),
-    llvm::cl::init("docs"),
-    llvm::cl::cat(ClangDocCategory));
-
-static
-llvm::cl::opt<bool>
-PublicOnly(
-    "public",
-    llvm::cl::desc("Document only public declarations."),
-    llvm::cl::init(false),
-    llvm::cl::cat(ClangDocCategory));
-
-static
-llvm::cl::opt<bool>
-DoxygenOnly(
-    "doxygen",
-    llvm::cl::desc("Use only doxygen-style comments to generate docs."),
-    llvm::cl::init(false),
-    llvm::cl::cat(ClangDocCategory));
-
-static
-llvm::cl::list<std::string>
-UserStylesheets(
-    "stylesheets",
-    llvm::cl::CommaSeparated,
-    llvm::cl::desc("CSS stylesheets to extend the default styles."),
-    llvm::cl::cat(ClangDocCategory));
-
-static
-llvm::cl::opt<std::string>
-SourceRoot(
-    "source-root", llvm::cl::desc(R"(
-Directory where processed files are stored.
-Links to definition locations will only be
-generated if the file is in this dir.)"),
-    llvm::cl::cat(ClangDocCategory));
-
-static
-llvm::cl::opt<std::string>
-RepositoryUrl(
-    "repository", llvm::cl::desc(R"(
-URL of repository that hosts code.
-Used for links to definition locations.)"),
-    llvm::cl::cat(ClangDocCategory));
-
-enum OutputFormatTy
-{
-    adoc,
-    xml
-};
-
-static
-llvm::cl::opt<OutputFormatTy>
-FormatEnum(
-    "format",
-    llvm::cl::desc("Format for outputted docs."),
-    llvm::cl::values(
-        clEnumValN(OutputFormatTy::adoc, "adoc",
-            "Documentation in Asciidoc format."),
-        clEnumValN(OutputFormatTy::xml, "xml",
-            "Documentation in XML format.")),
-    llvm::cl::init(OutputFormatTy::adoc), // default value
-    llvm::cl::cat(ClangDocCategory));
-
-std::string
-getFormatString()
-{
-    switch (FormatEnum)
-    {
-    case OutputFormatTy::adoc:
-        return "adoc";
-    case OutputFormatTy::xml:
-        return "xml";
-    }
-    llvm_unreachable("Unknown OutputFormatTy");
-}
-
 // This function isn't referenced outside its translation unit, but it
 // can't use the "static" keyword because its address is used for
 // GetMainExecutable (since some platforms don't support taking the
@@ -188,49 +83,12 @@ main(int argc, const char** argv)
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     std::error_code OK;
 
-    const char* Overview =
-        R"(Generates documentation from source code and comments.
-
-Example usage for files without flags (default):
-
-  $ clang-doc File1.cpp File2.cpp ... FileN.cpp
-
-Example usage for a project using a compile commands database:
-
-  $ clang-doc --executor=all-TUs compile_commands.json
-)";
-
     clang::mrdox::ClangDocContext CDCtx;
-
-    if(llvm::Error err = clang::tooling::createExecutorFromCommandLineArgs(
-        argc, argv, ClangDocCategory, Overview).moveInto(CDCtx.Executor))
+    if(llvm::Error err = setupContext(CDCtx, argc, argv))
     {
         llvm::errs() << err << "\n";
         return EXIT_FAILURE;
     }
-
-    // Fail early if an invalid format was provided.
-    std::string Format = getFormatString();
-    llvm::outs() << "Emiting docs in " << Format << " format.\n";
-    auto G = mrdox::findGeneratorByName(Format);
-    if (!G) {
-        llvm::errs() << toString(G.takeError()) << "\n";
-        return 1;
-    }
-
-    ArgumentsAdjuster ArgAdjuster;
-    if (! DoxygenOnly)
-        ArgAdjuster = combineAdjusters(
-            getInsertArgumentAdjuster("-fparse-all-comments",
-                tooling::ArgumentInsertPosition::END),
-            ArgAdjuster);
-
-    CDCtx.ECtx = CDCtx.Executor->getExecutionContext(),
-    CDCtx.ProjectName = ProjectName;
-    CDCtx.PublicOnly = PublicOnly;
-    CDCtx.OutDirectory = OutDirectory;
-    CDCtx.SourceRoot = SourceRoot;
-    CDCtx.RepositoryUrl = RepositoryUrl;
 
     //--------------------------------------------
     //
@@ -242,10 +100,10 @@ Example usage for a project using a compile commands database:
         llvm::outs() << "Mapping decls...\n";
         auto Err = CDCtx.Executor->execute(
             mrdox::newMapperActionFactory(CDCtx),
-            ArgAdjuster);
+            CDCtx.ArgAdjuster);
         if(Err)
         {
-            if(! IgnoreMappingFailures)
+            if(! CDCtx.IgnoreMappingFailures)
             {
                 llvm::errs() <<
                     toString(std::move(Err)) << "\n";
@@ -329,16 +187,16 @@ Example usage for a project using a compile commands database:
         return 1;
 
     // Ensure the root output directory exists.
-    if (std::error_code Err = llvm::sys::fs::create_directories(OutDirectory);
+    if (std::error_code Err = llvm::sys::fs::create_directories(CDCtx.OutDirectory);
         Err != std::error_code()) {
-        llvm::errs() << "Failed to create directory '" << OutDirectory << "'\n";
+        llvm::errs() << "Failed to create directory '" << CDCtx.OutDirectory << "'\n";
         return 1;
     }
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
     if (auto Err =
-        G->get()->generateDocs(OutDirectory, std::move(USRToInfo), CDCtx)) {
+        CDCtx.G->generateDocs(CDCtx.OutDirectory, std::move(USRToInfo), CDCtx)) {
         llvm::errs() << toString(std::move(Err)) << "\n";
         return 1;
     }
@@ -348,7 +206,7 @@ Example usage for a project using a compile commands database:
     //
     {
         llvm::outs() << "Generating assets for docs...\n";
-        auto Err = G->get()->createResources(CDCtx);
+        auto Err = CDCtx.G->createResources(CDCtx);
         if (Err) {
             llvm::errs() << toString(std::move(Err)) << "\n";
             return EXIT_FAILURE;

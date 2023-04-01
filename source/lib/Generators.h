@@ -16,12 +16,13 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H
 
 #include "Representation.h"
-#include <mrdox/ClangDocContext.hpp>
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Registry.h"
 
 namespace clang {
 namespace mrdox {
+
+struct ClangDocContext;
 
 // Abstract base class for generators.
 // This is expected to be implemented and exposed via the GeneratorRegistry.

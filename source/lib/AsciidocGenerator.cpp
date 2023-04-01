@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include <mrdox/ClangDocContext.hpp>
 #include "Generators.h"
 #include "Representation.h"
 #include "llvm/ADT/StringRef.h"

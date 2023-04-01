@@ -13,6 +13,7 @@
 
 #include "Generators.h"
 #include "Representation.h"
+#include <mrdox/ClangDocContext.hpp>
 #include "clang/Tooling/Tooling.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/FileSystem.h"
