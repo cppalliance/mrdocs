@@ -20,6 +20,9 @@
 #include <llvm/Support/raw_ostream.h>
 #include <cstdlib>
 
+// VFALCO GARBAGE
+extern void force_xml_generator_linkage();
+
 // Each test comes as a pair of files.
 // A .cpp file containing valid declarations,
 // and a .xml file containing the expected output
@@ -35,6 +38,9 @@ namespace {
 int
 do_main(int argc, const char** argv)
 {
+    // VFALCO GARBAGE
+    force_xml_generator_linkage();
+
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
