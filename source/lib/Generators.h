@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-// Generator classes for converting declaration information into documentation
-// in a specified format.
+// Generator classes for converting declaration
+// information into documentation in a specified format.
 
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H

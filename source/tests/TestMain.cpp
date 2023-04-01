@@ -41,7 +41,17 @@ do_main(int argc, const char** argv)
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
 
     ClangDocContext CDCtx;
+#if 0
+    if(llvm::Error err = setupContext(CDCtx, {
+        argv[0],
+        "--doxygen",
+        "--public",
+        "--executor=all-TUs",
+        "--format=xml"
+        }))
+#else
     if(llvm::Error err = setupContext(CDCtx, argc, argv))
+#endif
     {
         llvm::errs() << "test failure: " << err << "\n";
         return EXIT_FAILURE;
@@ -117,11 +127,19 @@ do_main(int argc, const char** argv)
         }
         expectedXml = xmlResult->get()->getBuffer();
 
+#if 0
         bool success = clang::tooling::runToolOnCode(
             makeFrontendAction(CDCtx), cppCode, cppPath);
         if(! success)
             llvm::errs() <<
                 "Frontend action failed\n";
+#else
+        if(llvm::Error err = buildIndex(CDCtx))
+        {
+            llvm::errs() << err << "\n";
+            return EXIT_FAILURE;
+        }
+#endif
     }
 
     return EXIT_SUCCESS;
