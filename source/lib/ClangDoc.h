@@ -20,8 +20,8 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H
 
 #include "Representation.h"
-
-#include "clang/Tooling/Tooling.h"
+#include <mrdox/ClangDocContext.hpp>
+#include <clang/Tooling/Tooling.h>
 
 namespace clang {
 namespace mrdox {

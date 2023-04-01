@@ -21,6 +21,7 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_MAPPER_H
 
 #include "Representation.h"
+#include <mrdox/ClangDocContext.hpp>
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/Tooling/Execution.h"
 

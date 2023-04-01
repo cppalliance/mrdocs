@@ -25,6 +25,7 @@
 
 #include "Reduce.h"
 #include "Representation.h"
+#include <mrdox/ClangDocContext.hpp>
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Path.h"
 
@@ -359,41 +360,5 @@ void Index::sort() {
         C.sort();
 }
 
-ClangDocContext::
-ClangDocContext()
-{
-    llvm::SmallString<128> SourceRootDir;
-    llvm::sys::fs::current_path(SourceRootDir);
-    SourceRoot = std::string(SourceRootDir.str());
-}
-
-ClangDocContext::
-ClangDocContext(
-    tooling::ExecutionContext* ECtx,
-    StringRef ProjectName,
-    bool PublicOnly,
-    StringRef OutDirectory,
-    StringRef SourceRoot,
-    StringRef RepositoryUrl)
-    : ECtx(ECtx)
-    , ProjectName(ProjectName)
-    , PublicOnly(PublicOnly)
-    , OutDirectory(OutDirectory)
-{
-    llvm::SmallString<128> SourceRootDir(SourceRoot);
-    if (SourceRoot.empty())
-    {
-        // If no SourceRoot was provided the current path is used as the default
-        llvm::sys::fs::current_path(SourceRootDir);
-    }
-    this->SourceRoot = std::string(SourceRootDir.str());
-    if (!RepositoryUrl.empty()) {
-        this->RepositoryUrl = std::string(RepositoryUrl);
-        if (!RepositoryUrl.empty() && RepositoryUrl.find("http://") != 0 &&
-            RepositoryUrl.find("https://") != 0)
-            this->RepositoryUrl->insert(0, "https://");
-    }
-}
-
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang

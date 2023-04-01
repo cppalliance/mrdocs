@@ -115,11 +115,9 @@ target_include_directories(
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source/lib>" # VFALCO THIS IS HACK, FIX ASAP
-    ${LLVM_INCLUDE_DIRS} # VFALCO THIS SHOULD PROBABLY BE PRIVATE?
-    ${CLANG_INCLUDE_DIRS} # VFALCO THIS SHOULD PROBABLY BE PRIVATE?
+    ${LLVM_INCLUDE_DIRS}
+    ${CLANG_INCLUDE_DIRS}
     PRIVATE
-    #${LLVM_INCLUDE_DIRS}
-    #${CLANG_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/source/lib
 )
 
@@ -137,7 +135,7 @@ target_link_libraries(
 )
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdox PREFIX "" FILES ${LIB_INCLUDES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include PREFIX "" FILES ${LIB_INCLUDES})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/lib PREFIX "source" FILES ${LIB_SOURCES})
 
 #-------------------------------------------------

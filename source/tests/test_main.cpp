@@ -110,6 +110,8 @@ do_main(int argc, const char** argv)
         }
         expectedXml = xmlResult->get()->getBuffer();
 
+        ClangDocContext CDCtx;
+
         {
 #if 0
             auto Executor =
