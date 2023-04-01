@@ -113,15 +113,12 @@ class XMLGenerator
 {
 
 public:
-    using InfoMap = llvm::StringMap<
-        std::unique_ptr<mrdox::Info>>;
-
     static char const* Format;
 
     llvm::Error
     generateDocs(
         llvm::StringRef RootDir,
-        InfoMap Infos,
+        InfoMap const& Infos,
         ClangDocContext const& CDCtx) override;
 
     llvm::Error
@@ -177,7 +174,7 @@ llvm::Error
 XMLGenerator::
 generateDocs(
     llvm::StringRef RootDir,
-    InfoMap Infos,
+    InfoMap const& Infos,
     ClangDocContext const& CDCtx)
 {
     llvm::SmallString<256> filename(CDCtx.OutDirectory);

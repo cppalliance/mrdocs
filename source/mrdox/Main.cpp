@@ -97,18 +97,23 @@ main(int argc, const char** argv)
     //--------------------------------------------
 
     // Ensure the root output directory exists.
-    if (std::error_code Err = llvm::sys::fs::create_directories(CDCtx.OutDirectory);
-        Err != std::error_code()) {
+    if (std::error_code Err =
+            llvm::sys::fs::create_directories(CDCtx.OutDirectory);
+                Err != std::error_code())
+    {
         llvm::errs() << "Failed to create directory '" << CDCtx.OutDirectory << "'\n";
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if (auto Err =
-        CDCtx.G->generateDocs(CDCtx.OutDirectory, std::move(CDCtx.USRToInfo), CDCtx)) {
+    if(auto Err = CDCtx.G->generateDocs(
+        CDCtx.OutDirectory,
+        std::move(CDCtx.USRToInfo),
+        CDCtx))
+    {
         llvm::errs() << toString(std::move(Err)) << "\n";
-        return 1;
+        return EXIT_FAILURE;
     }
 
     //

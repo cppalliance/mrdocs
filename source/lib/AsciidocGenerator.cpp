@@ -744,7 +744,7 @@ public:
     llvm::Error
     generateDocs(
         StringRef RootDir,
-        llvm::StringMap<std::unique_ptr<mrdox::Info>> Infos,
+        InfoMap const& Infos,
         ClangDocContext const& CDCtx) override;
 
     llvm::Error
@@ -765,7 +765,7 @@ llvm::Error
 AsciidocGenerator::
 generateDocs(
     StringRef RootDir,
-    llvm::StringMap<std::unique_ptr<mrdox::Info>> Infos,
+    InfoMap const& Infos,
     ClangDocContext const& CDCtx)
 {
     // Track which directories we already tried to create.

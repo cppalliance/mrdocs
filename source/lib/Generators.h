@@ -24,32 +24,50 @@ namespace mrdox {
 
 struct ClangDocContext;
 
-// Abstract base class for generators.
-// This is expected to be implemented and exposed via the GeneratorRegistry.
-class Generator {
+/** The representation of the source code under analysis.
+*/
+using InfoMap = llvm::StringMap<
+    std::unique_ptr<mrdox::Info>>;
+
+class Generator
+{
 public:
-  virtual ~Generator() = default;
+    virtual ~Generator() = default;
 
-  // Write out the decl info for the objects in the given map in the specified
-  // format.
-  virtual llvm::Error
-  generateDocs(StringRef RootDir,
-               llvm::StringMap<std::unique_ptr<mrdox::Info>> Infos,
-               const ClangDocContext &CDCtx) = 0;
+    // Write out the decl info for the objects in
+    // the given map in the specified format.
+    virtual
+    llvm::Error
+    generateDocs(
+        StringRef RootDir,
+        InfoMap const& Infos,
+        ClangDocContext const& CDCtx) = 0;
 
-  // This function writes a file with the index previously constructed.
-  // It can be overwritten by any of the inherited generators.
-  // If the override method wants to run this it should call
-  // Generator::createResources(CDCtx);
-  virtual llvm::Error createResources(ClangDocContext &CDCtx);
+    // This function writes a file with the index previously constructed.
+    // It can be overwritten by any of the inherited generators.
+    // If the override method wants to run this it should call
+    // Generator::createResources(CDCtx);
+    virtual
+    llvm::Error
+    createResources(
+        ClangDocContext& CDCtx);
 
-  // Write out one specific decl info to the destination stream.
-  virtual llvm::Error generateDocForInfo(Info *I, llvm::raw_ostream &OS,
-                                         const ClangDocContext &CDCtx) = 0;
+    // Write out one specific decl info to the destination stream.
+    virtual
+    llvm::Error
+    generateDocForInfo(
+        Info* I, // VFALCO Why not const?
+        llvm::raw_ostream& OS,
+        ClangDocContext const& CDCtx) = 0;
 
-  static void addInfoToIndex(Index &Idx, const mrdox::Info *Info);
+    static
+    void
+    addInfoToIndex(
+        Index& Idx,
+        mrdox::Info const* Info);
 };
 
+// VFALCO a global?
 typedef llvm::Registry<Generator> GeneratorRegistry;
 
 llvm::Expected<std::unique_ptr<Generator>>
@@ -60,4 +78,4 @@ std::string getTagType(TagTypeKind AS);
 } // namespace mrdox
 } // namespace clang
 
-#endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H
+#endif
