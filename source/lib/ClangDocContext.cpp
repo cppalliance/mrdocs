@@ -10,6 +10,7 @@
 //
 
 #include "Generators.h"
+#include "ClangDoc.h"
 #include <mrdox/ClangDocContext.hpp>
 #include <clang/Tooling/CommonOptionsParser.h>
 
@@ -198,6 +199,31 @@ setupContext(
     CDCtx.RepositoryUrl = RepositoryUrl;
     CDCtx.IgnoreMappingFailures = IgnoreMappingFailures;
     CDCtx.OutDirectory = OutDirectory;
+    return llvm::Error::success();
+}
+
+//------------------------------------------------
+
+// Mapping phase
+
+llvm::Error
+executeMapping(
+    ClangDocContext& CDCtx)
+{
+    llvm::outs() << "Mapping decls...\n";
+    auto Err = CDCtx.Executor->execute(
+        newMapperActionFactory(CDCtx),
+        CDCtx.ArgAdjuster);
+    if(Err)
+    {
+        if(! CDCtx.IgnoreMappingFailures)
+            return Err;
+
+        llvm::errs() <<
+            "Error mapping decls in files. mrdox will ignore "
+            "these files and continue:\n" <<
+            toString(std::move(Err)) << "\n";
+    }
     return llvm::Error::success();
 }
 

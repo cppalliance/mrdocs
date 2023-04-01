@@ -90,31 +90,12 @@ main(int argc, const char** argv)
         return EXIT_FAILURE;
     }
 
-    //--------------------------------------------
-    //
     // Mapping phase
-    //
-    //--------------------------------------------
-
+    if(llvm::Error err = executeMapping(CDCtx))
     {
-        llvm::outs() << "Mapping decls...\n";
-        auto Err = CDCtx.Executor->execute(
-            mrdox::newMapperActionFactory(CDCtx),
-            CDCtx.ArgAdjuster);
-        if(Err)
-        {
-            if(! CDCtx.IgnoreMappingFailures)
-            {
-                llvm::errs() <<
-                    toString(std::move(Err)) << "\n";
-                return EXIT_FAILURE;
-            }
-
-            llvm::errs() <<
-                "Error mapping decls in files. Clang-doc will ignore "
-                "these files and continue:\n" <<
-                toString(std::move(Err)) << "\n";
-        }
+        llvm::errs() <<
+            toString(std::move(err)) << "\n";
+        return EXIT_FAILURE;
     }
 
     //--------------------------------------------

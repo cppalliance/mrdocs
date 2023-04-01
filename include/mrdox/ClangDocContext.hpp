@@ -66,6 +66,8 @@ struct ClangDocContext
     Index Idx;
 };
 
+//------------------------------------------------
+
 /** Set up a docs context from command line arguments.
 */
 llvm::Error
@@ -79,6 +81,14 @@ llvm::Error
 setupContext(
     ClangDocContext& CDCtx,
     llvm::SmallVector<llvm::StringRef, 16> const& args);
+
+/** Run the mapping phase.
+
+    This is the first step for processing docs.
+*/
+llvm::Error
+executeMapping(
+    ClangDocContext& CDCtx);
 
 } // namespace mrdox
 } // namespace clang
