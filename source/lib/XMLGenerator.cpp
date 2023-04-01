@@ -9,15 +9,13 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/mrdox.hpp>
-
 #include "Generators.h"
 #include "Representation.h"
 #include <mrdox/ClangDocContext.hpp>
-#include "clang/Tooling/Tooling.h"
-#include "llvm/ADT/StringRef.h"
-#include "llvm/Support/FileSystem.h"
-#include "llvm/Support/Path.h"
+#include <clang/Tooling/Tooling.h>
+#include <llvm/ADT/StringRef.h>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Path.h>
 
 //------------------------------------------------
 /*
@@ -520,6 +518,7 @@ Format = "xml";
 
 //------------------------------------------------
 
+#if 0
 llvm::Expected<llvm::Twine>
 renderXML(
     llvm::StringRef fileName)
@@ -533,6 +532,7 @@ renderXML(
 
     return llvm::Twine();
 }
+#endif
 
 //------------------------------------------------
 

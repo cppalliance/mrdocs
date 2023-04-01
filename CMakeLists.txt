@@ -72,7 +72,9 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
 )
 
 file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS
-    source/mrdox/mrdox.cpp
+    source/mrdox/*.h
+    source/mrdox/*.hpp
+    source/mrdox/*.cpp
 )
 
 file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS

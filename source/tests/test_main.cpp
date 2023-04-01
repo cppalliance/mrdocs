@@ -10,7 +10,7 @@
 
 #include "ClangDoc.h"
 #include "Representation.h"
-#include <mrdox/mrdox.hpp>
+#include <mrdox/ClangDocContext.hpp>
 #include <clang/tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Signals.h>
@@ -39,6 +39,13 @@ do_main(int argc, const char** argv)
     namespace path = llvm::sys::path;
 
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
+
+    ClangDocContext CDCtx;
+    if(llvm::Error err = setupContext(CDCtx, argc, argv))
+    {
+        llvm::errs() << "test failure: " << err << "\n";
+        return EXIT_FAILURE;
+    }
 
     for(int i = 1; i < argc; ++i)
     {
@@ -110,39 +117,11 @@ do_main(int argc, const char** argv)
         }
         expectedXml = xmlResult->get()->getBuffer();
 
-        ClangDocContext CDCtx;
-
-        {
-#if 0
-            auto Executor =
-                clang::tooling::createExecutorFromCommandLineArgs(
-                    1,
-                    "tests",
-                    "cat",
-                    "overview");
-
-            if (!Executor)
-            {
-                llvm::errs() << toString(Executor.takeError()) << "\n";
-                return 1;
-            }
-            clang::mrdox::ClangDocContext CDCtx = {
-                Executor->get()->getExecutionContext(),
-                "tests",
-                false,
-                ".",
-                ".",
-                ".",
-                {},
-                {} };
-
-            bool success = clang::tooling::runToolOnCode(
-                makeFrontendAction(CDCtx), cppCode, cppPath);
-            if(! success)
-                llvm::errs() <<
-                    "Frontend action failed\n";
-#endif
-        }
+        bool success = clang::tooling::runToolOnCode(
+            makeFrontendAction(CDCtx), cppCode, cppPath);
+        if(! success)
+            llvm::errs() <<
+                "Frontend action failed\n";
     }
 
     return EXIT_SUCCESS;
