@@ -77,22 +77,6 @@ PublicOnly(
     llvm::cl::cat(MrDoxCategory));
 
 static
-llvm::cl::opt<bool>
-DoxygenOnly(
-    "doxygen",
-    llvm::cl::desc("Use only doxygen-style comments to generate docs."),
-    llvm::cl::init(false),
-    llvm::cl::cat(MrDoxCategory));
-
-static
-llvm::cl::list<std::string>
-UserStylesheets(
-    "stylesheets",
-    llvm::cl::CommaSeparated,
-    llvm::cl::desc("CSS stylesheets to extend the default styles."),
-    llvm::cl::cat(MrDoxCategory));
-
-static
 llvm::cl::opt<std::string>
 SourceRoot(
     "source-root", llvm::cl::desc(R"(
@@ -184,17 +168,19 @@ setupContext(
 
     // Fail early if an invalid format was provided.
     std::string Format = getFormatString();
-    llvm::outs() << "Emiting docs in " << Format << " format.\n";
+    llvm::outs() << "Emitting docs in " << Format << " format.\n";
     if(llvm::Error err =
         mrdox::findGeneratorByName(Format).moveInto(CDCtx.G))
         return err;
 
+    /*
     if (! DoxygenOnly)
         CDCtx.ArgAdjuster = tooling::combineAdjusters(
             getInsertArgumentAdjuster(
                 "-fparse-all-comments",
                 tooling::ArgumentInsertPosition::END),
             CDCtx.ArgAdjuster);
+    */
 
     CDCtx.ECtx = CDCtx.Executor->getExecutionContext(),
     CDCtx.ProjectName = ProjectName;
@@ -210,33 +196,37 @@ setupContext(
 //------------------------------------------------
 
 llvm::Error
-buildIndex(
+doMapping(
     ClangDocContext& CDCtx)
 {
     //
     // Mapping phase
     //
+    llvm::outs() << "Mapping declarations\n";
+    auto Err = CDCtx.Executor->execute(
+        newMapperActionFactory(CDCtx),
+        CDCtx.ArgAdjuster);
+    if(Err)
     {
-        llvm::outs() << "Mapping declarations\n";
-        auto Err = CDCtx.Executor->execute(
-            newMapperActionFactory(CDCtx),
-            CDCtx.ArgAdjuster);
-        if(Err)
+        if(! CDCtx.IgnoreMappingFailures)
         {
-            if(! CDCtx.IgnoreMappingFailures)
-            {
-                llvm::errs() <<
-                    "Mapping failure: " << Err << "\n";
-                return Err;
-            }
-
             llvm::errs() <<
-                "GotFailure mapping decls in files. mrdox will ignore "
-                "these files and continue:\n" <<
-                toString(std::move(Err)) << "\n";
+                "Mapping failure: " << Err << "\n";
+            return Err;
         }
-    }
 
+        llvm::errs() <<
+            "GotFailure mapping decls in files. mrdox will ignore "
+            "these files and continue:\n" <<
+            toString(std::move(Err)) << "\n";
+    }
+    return llvm::Error::success();
+}
+
+llvm::Error
+buildIndex(
+    ClangDocContext& CDCtx)
+{
     // Collect values into output by key.
     // In ToolResults, the Key is the hashed USR and the value is the
     // bitcode-encoded representation of the Info object.

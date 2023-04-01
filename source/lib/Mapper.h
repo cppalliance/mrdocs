@@ -38,7 +38,6 @@ class MapASTVisitor
 public:
     explicit
     MapASTVisitor(
-        ASTContext* Ctx,
         ClangDocContext& CDCtx)
         : CDCtx(CDCtx)
     {
@@ -77,7 +76,7 @@ private:
     ClangDocContext& CDCtx;
 };
 
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang
 
-#endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_MAPPER_H
+#endif

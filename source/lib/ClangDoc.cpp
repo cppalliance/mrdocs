@@ -46,8 +46,7 @@ struct action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<MapASTVisitor>(
-            &Compiler.getASTContext(), CDCtx);
+        return std::make_unique<MapASTVisitor>(CDCtx);
     }
 
 private:

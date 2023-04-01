@@ -9,6 +9,7 @@
 //
 
 #include "ClangDoc.h"
+#include "Mapper.h"
 #include "Representation.h"
 #include <mrdox/ClangDocContext.hpp>
 #include <clang/tooling/Tooling.h>
@@ -44,20 +45,14 @@ do_main(int argc, const char** argv)
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
+    std::vector<std::string> Args;
+    for(auto i = 0; i < argc; ++i)
+        Args.push_back(argv[i]);
+
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
 
     ClangDocContext CDCtx;
-#if 0
-    if(llvm::Error err = setupContext(CDCtx, {
-        argv[0],
-        "--doxygen",
-        "--public",
-        "--executor=all-TUs",
-        "--format=xml"
-        }))
-#else
     if(llvm::Error err = setupContext(CDCtx, argc, argv))
-#endif
     {
         llvm::errs() << "test failure: " << err << "\n";
         return EXIT_FAILURE;
@@ -133,19 +128,17 @@ do_main(int argc, const char** argv)
         }
         expectedXml = xmlResult->get()->getBuffer();
 
-#if 0
-        bool success = clang::tooling::runToolOnCode(
-            makeFrontendAction(CDCtx), cppCode, cppPath);
-        if(! success)
-            llvm::errs() <<
-                "Frontend action failed\n";
-#else
+        std::unique_ptr<ASTUnit> astUnit =
+            clang::tooling::buildASTFromCodeWithArgs(cppCode, Args);
+        MapASTVisitor visitor(CDCtx);
+        visitor.HandleTranslationUnit(astUnit->getASTContext());
         if(llvm::Error err = buildIndex(CDCtx))
         {
-            llvm::errs() << err << "\n";
+            llvm::errs() <<
+                toString(std::move(err)) << "\n";
             return EXIT_FAILURE;
         }
-#endif
+        auto x = EXIT_SUCCESS;
     }
 
     return EXIT_SUCCESS;

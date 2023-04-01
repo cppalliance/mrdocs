@@ -84,6 +84,10 @@ setupContext(
     ClangDocContext& CDCtx,
     llvm::SmallVector<llvm::StringRef, 16> const& args);
 
+llvm::Error
+doMapping(
+    ClangDocContext& CDCtx);
+
 /** Build the internal index of the program under analysis.
 
     This must happen before generating docs.
