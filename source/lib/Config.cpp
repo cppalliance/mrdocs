@@ -216,7 +216,7 @@ doMapping(
         }
 
         llvm::errs() <<
-            "GotFailure mapping decls in files. mrdox will ignore "
+            "Error mapping decls in files. mrdox will ignore "
             "these files and continue:\n" <<
             toString(std::move(Err)) << "\n";
     }
@@ -225,7 +225,7 @@ doMapping(
 
 llvm::Error
 buildIndex(
-    Config& cfg,
+    Config const& cfg,
     Corpus& corpus)
 {
     // Collect values into output by key.

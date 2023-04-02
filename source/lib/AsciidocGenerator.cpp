@@ -747,7 +747,7 @@ public:
     llvm::Error
     generateDocs(
         StringRef RootDir,
-        InfoMap const& Infos,
+        Corpus const& corpus,
         Config const& cfg) override;
 
     llvm::Error
@@ -769,7 +769,7 @@ llvm::Error
 AsciidocGenerator::
 generateDocs(
     StringRef RootDir,
-    InfoMap const& Infos,
+    Corpus const& corpus,
     Config const& cfg)
 {
     // Track which directories we already tried to create.
@@ -777,7 +777,8 @@ generateDocs(
 
     // Collect all output by file name and create the necessary directories.
     llvm::StringMap<std::vector<mrdox::Info*>> FileToInfos;
-    for (const auto& Group : Infos) {
+    for (const auto& Group : corpus.USRToInfo)
+    {
         mrdox::Info* Info = Group.getValue().get();
 
         llvm::SmallString<128> Path;

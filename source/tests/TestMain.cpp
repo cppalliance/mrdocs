@@ -129,7 +129,7 @@ do_main(int argc, const char** argv)
         expectedXml = xmlResult->get()->getBuffer();
 
         std::unique_ptr<ASTUnit> astUnit =
-            clang::tooling::buildASTFromCodeWithArgs(cppCode, Args);
+            clang::tooling::buildASTFromCodeWithArgs(cppCode, {});
         MapASTVisitor visitor(cfg);
         visitor.HandleTranslationUnit(astUnit->getASTContext());
         Corpus corpus;

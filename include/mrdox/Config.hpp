@@ -90,7 +90,7 @@ doMapping(
 */
 llvm::Error
 buildIndex(
-    Config& cfg,
+    Config const& cfg,
     Corpus& corpus);
 
 } // mrdox

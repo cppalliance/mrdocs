@@ -118,7 +118,7 @@ main(int argc, const char** argv)
     llvm::outs() << "Generating docs...\n";
     if(auto Err = cfg.G->generateDocs(
         cfg.OutDirectory,
-        std::move(corpus.USRToInfo),
+        corpus,
         cfg))
     {
         llvm::errs() << toString(std::move(Err)) << "\n";

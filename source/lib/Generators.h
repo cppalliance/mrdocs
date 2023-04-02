@@ -41,7 +41,7 @@ public:
     llvm::Error
     generateDocs(
         StringRef RootDir,
-        InfoMap const& Infos,
+        Corpus const& corpus,
         Config const& cfg) = 0;
 
     // This function writes a file with the index previously constructed.

@@ -10,6 +10,7 @@
 //
 
 #include "Generators.h"
+#include "Mapper.h"
 #include "Representation.h"
 #include <mrdox/Config.hpp>
 #include <clang/Tooling/Tooling.h>
@@ -55,53 +56,58 @@ struct escape
     llvm::raw_ostream&
     operator<<(
         llvm::raw_ostream& os,
-        escape const& t)
-    {
-        std::size_t pos = 0;
-        auto const size = t.s_.size();
-        while(pos < size)
-        {
-        unescaped:
-            auto const found = t.s_.find_first_of("<>&'\"", pos);
-            if(found == llvm::StringRef::npos)
-            {
-                os.write(t.s_.data() + pos, t.s_.size() - pos);
-                break;
-            }
-            os.write(t.s_.data() + pos, found - pos);
-            pos = found;
-            while(pos < size)
-            {
-                auto const c = t.s_[pos];
-                switch(c)
-                {
-                case '<':
-                    os.write("&lt;", 4);
-                    break;
-                case '>':
-                    os.write("&gt;", 4);
-                    break;
-                case '&':
-                    os.write("&amp;", 5);
-                    break;
-                case '\'':
-                    os.write("&apos;", 6);
-                    break;
-                case '\"':
-                    os.write("&quot;", 6);
-                    break;
-                default:
-                    goto unescaped;
-                }
-                ++pos;
-            }
-        }
-        return os;
-    }
+        escape const& t);
 
 private:
     llvm::StringRef s_;
 };
+
+llvm::raw_ostream&
+operator<<(
+    llvm::raw_ostream& os,
+    escape const& t)
+{
+    std::size_t pos = 0;
+    auto const size = t.s_.size();
+    while(pos < size)
+    {
+    unescaped:
+        auto const found = t.s_.find_first_of("<>&'\"", pos);
+        if(found == llvm::StringRef::npos)
+        {
+            os.write(t.s_.data() + pos, t.s_.size() - pos);
+            break;
+        }
+        os.write(t.s_.data() + pos, found - pos);
+        pos = found;
+        while(pos < size)
+        {
+            auto const c = t.s_[pos];
+            switch(c)
+            {
+            case '<':
+                os.write("&lt;", 4);
+                break;
+            case '>':
+                os.write("&gt;", 4);
+                break;
+            case '&':
+                os.write("&amp;", 5);
+                break;
+            case '\'':
+                os.write("&apos;", 6);
+                break;
+            case '\"':
+                os.write("&quot;", 6);
+                break;
+            default:
+                goto unescaped;
+            }
+            ++pos;
+        }
+    }
+    return os;
+}
 
 //------------------------------------------------
 
@@ -115,10 +121,32 @@ class XMLGenerator
 public:
     static char const* Format;
 
+    XMLGenerator()
+        : cfg_([]() -> Config&
+        {
+            static Config c;
+            return c;
+        }())
+    {
+    }
+
+    explicit
+    XMLGenerator(
+        Config const& cfg) noexcept
+        : cfg_(cfg)
+    {
+    }
+
+    bool
+    render(
+        std::string& xml,
+        Corpus const& corpus,
+        Config const& cfg);
+
     llvm::Error
     generateDocs(
         llvm::StringRef RootDir,
-        InfoMap const& Infos,
+        Corpus const& corpus,
         Config const& cfg) override;
 
     llvm::Error
@@ -155,22 +183,48 @@ private:
 
     void writeNamespaces(std::vector<Reference> const& v);
     void writeRecords(std::vector<Reference> const& v);
-    
+ 
+    Config const& cfg_;
     std::string level_;
-    llvm::raw_fd_ostream* os_ = nullptr;
+    llvm::raw_ostream* os_ = nullptr;
     InfoMap const* infos_ = nullptr;
 };
 
 //------------------------------------------------
 
-
-//------------------------------------------------
+bool
+XMLGenerator::
+render(
+    std::string& xml,
+    Corpus const& corpus,
+    Config const& cfg)
+{
+    xml.clear();
+    infos_ = &corpus.USRToInfo;
+    auto const ns = findGlobalNamespace();
+    assert(ns != nullptr);
+    llvm::raw_string_ostream os(xml);
+    os_ = &os;
+    level_ = {};
+#if 0
+    *os_ <<
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
+        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
+        "<mrdox>\n";
+#endif
+    writeNamespace(*ns);
+#if 0
+    *os_ <<
+        "</mrdox>\n";
+#endif
+    return true;
+}
 
 llvm::Error
 XMLGenerator::
 generateDocs(
     llvm::StringRef RootDir,
-    InfoMap const& Infos,
+    Corpus const& corpus,
     Config const& cfg)
 {
     llvm::SmallString<256> filename(cfg.OutDirectory);
@@ -184,7 +238,7 @@ generateDocs(
         return llvm::createStringError(
             llvm::inconvertibleErrorCode(),
             "Output file is not regular");
-    infos_ = &Infos;
+    infos_ = &corpus.USRToInfo;
     auto const ns = findGlobalNamespace();
     if(! ns)
         return llvm::createStringError(
@@ -211,7 +265,7 @@ generateDocs(
 #endif
     // VFALCO the error handling needs to be
     //        propagated through all write functions
-    if(os_->error())
+    if(os.error())
         return llvm::createStringError(
             ec,
             "output stream failure");
@@ -503,26 +557,29 @@ Format = "xml";
 
 //------------------------------------------------
 
-#if 0
-llvm::Expected<llvm::Twine>
-renderXML(
-    llvm::StringRef fileName)
+bool
+renderCodeAsXML(
+    std::string& xml,
+    llvm::StringRef cppCode,
+    Config const& cfg)
 {
-    if(! path::extension(fileName).equals_insensitive(".cpp"))
-        return llvm::createStringError(
-            llvm::inconvertibleErrorCode(),
-            "not a .cpp file");
-    llvm::SmallString<256> dir(
-        path::parent_path(fileName));
+    std::unique_ptr<ASTUnit> astUnit =
+    clang::tooling::buildASTFromCodeWithArgs(cppCode, {});
+    MapASTVisitor visitor(cfg);
+    visitor.HandleTranslationUnit(astUnit->getASTContext());
+    Corpus corpus;
+    if(llvm::Error err = buildIndex(cfg, corpus))
+        return ! err;
+    XMLGenerator(cfg).render(xml, corpus, cfg);
 
-    return llvm::Twine();
+    return true;
 }
-#endif
 
 //------------------------------------------------
 
 static
-GeneratorRegistry::Add<XMLGenerator>
+GeneratorRegistry::
+Add<XMLGenerator>
 xmlGenerator(
     XMLGenerator::Format,
     "Generator for XML output.");

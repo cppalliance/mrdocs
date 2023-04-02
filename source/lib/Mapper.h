@@ -38,7 +38,7 @@ class MapASTVisitor
 public:
     explicit
     MapASTVisitor(
-        Config& cfg)
+        Config const& cfg)
         : cfg(cfg)
     {
     }
@@ -73,7 +73,7 @@ private:
         NamedDecl const* D,
         ASTContext const& Context) const;
 
-    Config& cfg;
+    Config const& cfg;
 };
 
 } // mrdox
