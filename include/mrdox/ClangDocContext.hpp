@@ -63,9 +63,9 @@ struct ClangDocContext
 
     std::unique_ptr<Generator> G;
 
-    Index Idx;
+    //Index Idx;
 
-    llvm::StringMap<std::unique_ptr<mrdox::Info>> USRToInfo;
+    //llvm::StringMap<std::unique_ptr<mrdox::Info>> USRToInfo;
 };
 
 //------------------------------------------------
@@ -94,7 +94,8 @@ doMapping(
 */
 llvm::Error
 buildIndex(
-    ClangDocContext& CDCtx);
+    ClangDocContext& CDCtx,
+    Corpus& corpus);
 
 } // mrdox
 } // clang

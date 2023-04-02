@@ -132,13 +132,13 @@ do_main(int argc, const char** argv)
             clang::tooling::buildASTFromCodeWithArgs(cppCode, Args);
         MapASTVisitor visitor(CDCtx);
         visitor.HandleTranslationUnit(astUnit->getASTContext());
-        if(llvm::Error err = buildIndex(CDCtx))
+        Corpus corpus;
+        if(llvm::Error err = buildIndex(CDCtx, corpus))
         {
             llvm::errs() <<
                 toString(std::move(err)) << "\n";
             return EXIT_FAILURE;
         }
-        auto x = EXIT_SUCCESS;
     }
 
     return EXIT_SUCCESS;

@@ -10,6 +10,7 @@
 //
 
 #include <mrdox/ClangDocContext.hpp>
+#include <mrdox/Corpus.hpp>
 #include "Generators.h"
 #include "Representation.h"
 #include "llvm/ADT/StringRef.h"
@@ -658,7 +659,8 @@ serializeReference(
 // emit all_files.adoc
 llvm::Error
 serializeIndex(
-    ClangDocContext& CDCtx)
+    ClangDocContext& CDCtx,
+    Corpus& corpus)
 {
     std::error_code FileErr;
     llvm::SmallString<128> FilePath;
@@ -670,13 +672,13 @@ serializeIndex(
             "error creating index file: " +
             FileErr.message());
 
-    CDCtx.Idx.sort();
+    corpus.Idx.sort();
     os << "# All Files";
     if (!CDCtx.ProjectName.empty())
         os << " for " << CDCtx.ProjectName;
     os << "\n";
 
-    for (auto C : CDCtx.Idx.Children)
+    for (auto C : corpus.Idx.Children)
         serializeReference(os, C, 0);
 
     return llvm::Error::success();
@@ -685,7 +687,8 @@ serializeIndex(
 // emit index.adoc
 llvm::Error
 genIndex(
-    ClangDocContext& CDCtx)
+    ClangDocContext& CDCtx,
+    Corpus& corpus)
 {
     std::error_code FileErr;
     llvm::SmallString<128> FilePath;
@@ -696,9 +699,9 @@ genIndex(
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "error creating index file: " +
             FileErr.message());
-    CDCtx.Idx.sort();
+    corpus.Idx.sort();
     os << "# " << CDCtx.ProjectName << " C/C++ Reference\n";
-    for (auto C : CDCtx.Idx.Children) {
+    for (auto C : corpus.Idx.Children) {
         if (!C.Children.empty()) {
             const char* Type;
             switch (C.RefType) {
@@ -749,7 +752,8 @@ public:
 
     llvm::Error
     createResources(
-        ClangDocContext& CDCtx) override;
+        ClangDocContext& CDCtx,
+        Corpus& corpus) override;
 
     llvm::Error
     generateDocForInfo(
@@ -845,15 +849,16 @@ generateDocForInfo(
 llvm::Error
 AsciidocGenerator::
 createResources(
-    ClangDocContext& CDCtx)
+    ClangDocContext& CDCtx,
+    Corpus& corpus)
 {
     // Write an all_files.adoc
-    auto Err = serializeIndex(CDCtx);
+    auto Err = serializeIndex(CDCtx, corpus);
     if (Err)
         return Err;
 
     // Generate the index page.
-    Err = genIndex(CDCtx);
+    Err = genIndex(CDCtx, corpus);
     if (Err)
         return Err;
 

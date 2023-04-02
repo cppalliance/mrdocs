@@ -15,6 +15,7 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H
 
+#include <mrdox/Corpus.hpp>
 #include "Representation.h"
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Registry.h"
@@ -50,7 +51,8 @@ public:
     virtual
     llvm::Error
     createResources(
-        ClangDocContext& CDCtx);
+        ClangDocContext& CDCtx,
+        Corpus& corpus);
 
     // Write out one specific decl info to the destination stream.
     virtual

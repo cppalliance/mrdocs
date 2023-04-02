@@ -1024,17 +1024,21 @@ ClangDocBitcodeReader::skipUntilRecordOrBlock(unsigned& BlockOrRecordID) {
     llvm_unreachable("Premature stream end.");
 }
 
-llvm::Error ClangDocBitcodeReader::validateStream() {
+llvm::Error
+ClangDocBitcodeReader::
+validateStream()
+{
     if (Stream.AtEndOfStream())
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "premature end of stream");
 
     // Sniff for the signature.
-    for (int Idx = 0; Idx != 4; ++Idx) {
+    for (int i = 0; i != 4; ++i)
+    {
         Expected<llvm::SimpleBitstreamCursor::word_t> MaybeRead = Stream.Read(8);
         if (!MaybeRead)
             return MaybeRead.takeError();
-        else if (MaybeRead.get() != BitCodeConstants::Signature[Idx])
+        else if (MaybeRead.get() != BitCodeConstants::Signature[i])
             return llvm::createStringError(llvm::inconvertibleErrorCode(),
                 "invalid bitcode signature");
     }

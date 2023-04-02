@@ -95,7 +95,8 @@ main(int argc, const char** argv)
 
     // Build the internal representation of
     // the C++ declarations to be documented.
-    if(llvm::Error err = buildIndex(CDCtx))
+    clang::mrdox::Corpus corpus;
+    if(llvm::Error err = buildIndex(CDCtx, corpus))
     {
         llvm::errs() <<
             toString(std::move(err)) << "\n";
@@ -117,7 +118,7 @@ main(int argc, const char** argv)
     llvm::outs() << "Generating docs...\n";
     if(auto Err = CDCtx.G->generateDocs(
         CDCtx.OutDirectory,
-        std::move(CDCtx.USRToInfo),
+        std::move(corpus.USRToInfo),
         CDCtx))
     {
         llvm::errs() << toString(std::move(Err)) << "\n";
@@ -129,7 +130,7 @@ main(int argc, const char** argv)
     //
     {
         llvm::outs() << "Generating assets for docs...\n";
-        auto Err = CDCtx.G->createResources(CDCtx);
+        auto Err = CDCtx.G->createResources(CDCtx, corpus);
         if (Err) {
             llvm::errs() << toString(std::move(Err)) << "\n";
             return EXIT_FAILURE;

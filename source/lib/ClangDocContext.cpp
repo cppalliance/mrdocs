@@ -225,7 +225,8 @@ doMapping(
 
 llvm::Error
 buildIndex(
-    ClangDocContext& CDCtx)
+    ClangDocContext& CDCtx,
+    Corpus& corpus)
 {
     // Collect values into output by key.
     // In ToolResults, the Key is the hashed USR and the value is the
@@ -284,13 +285,13 @@ buildIndex(
             // Add a reference to this Info in the Index
             {
                 std::lock_guard<llvm::sys::Mutex> Guard(IndexMutex);
-                clang::mrdox::Generator::addInfoToIndex(CDCtx.Idx, Reduced.get().get());
+                clang::mrdox::Generator::addInfoToIndex(corpus.Idx, Reduced.get().get());
             }
 
             // Save in the result map (needs a lock due to threaded access).
             {
                 std::lock_guard<llvm::sys::Mutex> Guard(USRToInfoMutex);
-                CDCtx.USRToInfo[Group.getKey()] = std::move(Reduced.get());
+                corpus.USRToInfo[Group.getKey()] = std::move(Reduced.get());
             }
         });
     }

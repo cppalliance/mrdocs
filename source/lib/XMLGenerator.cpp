@@ -122,10 +122,6 @@ public:
         ClangDocContext const& CDCtx) override;
 
     llvm::Error
-    createResources(
-        ClangDocContext& CDCtx) override;
-
-    llvm::Error
     generateDocForInfo(
         clang::mrdox::Info* I,
         llvm::raw_ostream& os,
@@ -219,14 +215,6 @@ generateDocs(
         return llvm::createStringError(
             ec,
             "output stream failure");
-    return llvm::Error::success();
-}
-
-llvm::Error
-XMLGenerator::
-createResources(
-    ClangDocContext& CDCtx)
-{
     return llvm::Error::success();
 }
 
