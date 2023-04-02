@@ -52,18 +52,18 @@ mapDecl(T const* D)
         return true;
     bool IsFileInRootDir;
     llvm::SmallString<128> File =
-        getFile(D, D->getASTContext(), CDCtx.SourceRoot, IsFileInRootDir);
+        getFile(D, D->getASTContext(), cfg.SourceRoot, IsFileInRootDir);
     auto I = serialize::emitInfo(D, getComment(D, D->getASTContext()),
         getLine(D, D->getASTContext()), File,
-        IsFileInRootDir, CDCtx.PublicOnly);
+        IsFileInRootDir, cfg.PublicOnly);
 
     // A null in place of I indicates that the serializer is skipping this decl
     // for some reason (e.g. we're only reporting public decls).
     if (I.first)
-        CDCtx.ECtx->reportResult(llvm::toHex(llvm::toStringRef(I.first->USR)),
+        cfg.ECtx->reportResult(llvm::toHex(llvm::toStringRef(I.first->USR)),
             serialize::serialize(I.first));
     if (I.second)
-        CDCtx.ECtx->reportResult(llvm::toHex(llvm::toStringRef(I.second->USR)),
+        cfg.ECtx->reportResult(llvm::toHex(llvm::toStringRef(I.second->USR)),
             serialize::serialize(I.second));
     return true;
 }

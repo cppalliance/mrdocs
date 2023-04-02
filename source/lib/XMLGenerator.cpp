@@ -11,7 +11,7 @@
 
 #include "Generators.h"
 #include "Representation.h"
-#include <mrdox/ClangDocContext.hpp>
+#include <mrdox/Config.hpp>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
@@ -119,13 +119,13 @@ public:
     generateDocs(
         llvm::StringRef RootDir,
         InfoMap const& Infos,
-        ClangDocContext const& CDCtx) override;
+        Config const& cfg) override;
 
     llvm::Error
     generateDocForInfo(
         clang::mrdox::Info* I,
         llvm::raw_ostream& os,
-        clang::mrdox::ClangDocContext const& CDCtx) override;
+        clang::mrdox::Config const& cfg) override;
 
 private:
     using Attrs =
@@ -171,9 +171,9 @@ XMLGenerator::
 generateDocs(
     llvm::StringRef RootDir,
     InfoMap const& Infos,
-    ClangDocContext const& CDCtx)
+    Config const& cfg)
 {
-    llvm::SmallString<256> filename(CDCtx.OutDirectory);
+    llvm::SmallString<256> filename(cfg.OutDirectory);
     if(! fs::is_directory(filename))
         return llvm::createStringError(
             llvm::inconvertibleErrorCode(),
@@ -223,7 +223,7 @@ XMLGenerator::
 generateDocForInfo(
     clang::mrdox::Info* I,
     llvm::raw_ostream& os,
-    clang::mrdox::ClangDocContext const& CDCtx)
+    clang::mrdox::Config const& cfg)
 {
     return llvm::Error::success();
 }

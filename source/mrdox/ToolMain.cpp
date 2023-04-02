@@ -78,15 +78,15 @@ main(int argc, const char** argv)
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     std::error_code OK;
 
-    clang::mrdox::ClangDocContext CDCtx;
-    if(llvm::Error err = setupContext(CDCtx, argc, argv))
+    clang::mrdox::Config cfg;
+    if(llvm::Error err = setupContext(cfg, argc, argv))
     {
         llvm::errs() << err << "\n";
         return EXIT_FAILURE;
     }
 
     // Extract the AST first
-    if(llvm::Error err = doMapping(CDCtx))
+    if(llvm::Error err = doMapping(cfg))
     {
         llvm::errs() <<
             toString(std::move(err)) << "\n";
@@ -96,7 +96,7 @@ main(int argc, const char** argv)
     // Build the internal representation of
     // the C++ declarations to be documented.
     clang::mrdox::Corpus corpus;
-    if(llvm::Error err = buildIndex(CDCtx, corpus))
+    if(llvm::Error err = buildIndex(cfg, corpus))
     {
         llvm::errs() <<
             toString(std::move(err)) << "\n";
@@ -107,19 +107,19 @@ main(int argc, const char** argv)
 
     // Ensure the root output directory exists.
     if (std::error_code Err =
-            llvm::sys::fs::create_directories(CDCtx.OutDirectory);
+            llvm::sys::fs::create_directories(cfg.OutDirectory);
                 Err != std::error_code())
     {
-        llvm::errs() << "Failed to create directory '" << CDCtx.OutDirectory << "'\n";
+        llvm::errs() << "Failed to create directory '" << cfg.OutDirectory << "'\n";
         return EXIT_FAILURE;
     }
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if(auto Err = CDCtx.G->generateDocs(
-        CDCtx.OutDirectory,
+    if(auto Err = cfg.G->generateDocs(
+        cfg.OutDirectory,
         std::move(corpus.USRToInfo),
-        CDCtx))
+        cfg))
     {
         llvm::errs() << toString(std::move(Err)) << "\n";
         return EXIT_FAILURE;
@@ -130,7 +130,7 @@ main(int argc, const char** argv)
     //
     {
         llvm::outs() << "Generating assets for docs...\n";
-        auto Err = CDCtx.G->createResources(CDCtx, corpus);
+        auto Err = cfg.G->createResources(cfg, corpus);
         if (Err) {
             llvm::errs() << toString(std::move(Err)) << "\n";
             return EXIT_FAILURE;

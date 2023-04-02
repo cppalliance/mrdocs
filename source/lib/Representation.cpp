@@ -25,7 +25,7 @@
 
 #include "Reduce.h"
 #include "Representation.h"
-#include <mrdox/ClangDocContext.hpp>
+#include <mrdox/Config.hpp>
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Path.h"
 

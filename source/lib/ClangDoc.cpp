@@ -26,7 +26,7 @@ namespace mrdox {
 namespace {
 
 // VFALCO It looks like each created action needs
-//        its own copy of the ClangDocContext?
+//        its own copy of the Config?
 //        Maybe because of concurrency.
 
 //------------------------------------------------
@@ -36,8 +36,8 @@ struct action
 {
     explicit
     action(
-        ClangDocContext& CDCtx)
-        : CDCtx(CDCtx)
+        Config& cfg)
+        : cfg(cfg)
     {
     }
 
@@ -46,11 +46,11 @@ struct action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<MapASTVisitor>(CDCtx);
+        return std::make_unique<MapASTVisitor>(cfg);
     }
 
 private:
-    ClangDocContext& CDCtx;
+    Config& cfg;
 };
 
 //------------------------------------------------
@@ -60,18 +60,18 @@ struct factory
 {
     explicit
     factory(
-        ClangDocContext& CDCtx)
-        : CDCtx(CDCtx)
+        Config& cfg)
+        : cfg(cfg)
     {
     }
 
     std::unique_ptr<FrontendAction>
     create() override
     {
-        return std::make_unique<action>(CDCtx);
+        return std::make_unique<action>(cfg);
     }
         
-    ClangDocContext& CDCtx;
+    Config& cfg;
 };
 
 } // (anon)
@@ -81,17 +81,17 @@ struct factory
 std::unique_ptr<
     clang::FrontendAction>
 makeFrontendAction(
-    ClangDocContext& CDCtx)
+    Config& cfg)
 {
-    return std::make_unique<action>(CDCtx);
+    return std::make_unique<action>(cfg);
 }
 
 std::unique_ptr<
     tooling::FrontendActionFactory>
 newMapperActionFactory(
-    ClangDocContext& CDCtx)
+    Config& cfg)
 {
-    return std::make_unique<factory>(CDCtx);
+    return std::make_unique<factory>(cfg);
 }
 
 } // namespace mrdox

@@ -21,14 +21,19 @@ namespace mrdox {
 */
 struct Corpus
 {
+    Corpus() = default;
     Corpus(Corpus const&) = delete;
     Corpus& operator=(Corpus const&) = delete;
 
-    Corpus() = default;
-
     Index Idx;
 
-    llvm::StringMap<std::unique_ptr<mrdox::Info>> USRToInfo;
+    /** Table of Info keyed on USR.
+
+        A USRs is a string that provide an
+        unambiguous reference to a symbol.
+    */
+    llvm::StringMap<
+        std::unique_ptr<mrdox::Info>> USRToInfo;
 };
 
 } // mrdox

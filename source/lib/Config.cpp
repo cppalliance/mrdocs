@@ -13,7 +13,7 @@
 #include "BitcodeWriter.h"
 #include "Generators.h"
 #include "ClangDoc.h"
-#include <mrdox/ClangDocContext.hpp>
+#include <mrdox/Config.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/Mutex.h>
@@ -129,8 +129,8 @@ getFormatString()
 
 //------------------------------------------------
 
-ClangDocContext::
-ClangDocContext()
+Config::
+Config()
 {
     llvm::SmallString<128> SourceRootDir;
     llvm::sys::fs::current_path(SourceRootDir);
@@ -139,18 +139,18 @@ ClangDocContext()
 
 llvm::Error
 setupContext(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     int argc, const char** argv)
 {
     llvm::SmallVector<llvm::StringRef, 16> args;
     for(int i = 0; i < argc; ++i)
         args.push_back(argv[i]);
-    return setupContext(CDCtx, args);
+    return setupContext(cfg, args);
 }
 
 llvm::Error
 setupContext(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     llvm::SmallVector<llvm::StringRef, 16> const& args)
 {
     llvm::SmallVector<char const*> argv;
@@ -161,7 +161,7 @@ setupContext(
         argc,
         argv.begin(),
         MrDoxCategory,
-        Overview).moveInto(CDCtx.Executor))
+        Overview).moveInto(cfg.Executor))
     {
         return err;
     }
@@ -170,26 +170,26 @@ setupContext(
     std::string Format = getFormatString();
     llvm::outs() << "Emitting docs in " << Format << " format.\n";
     if(llvm::Error err =
-        mrdox::findGeneratorByName(Format).moveInto(CDCtx.G))
+        mrdox::findGeneratorByName(Format).moveInto(cfg.G))
         return err;
 
     /*
     if (! DoxygenOnly)
-        CDCtx.ArgAdjuster = tooling::combineAdjusters(
+        cfg.ArgAdjuster = tooling::combineAdjusters(
             getInsertArgumentAdjuster(
                 "-fparse-all-comments",
                 tooling::ArgumentInsertPosition::END),
-            CDCtx.ArgAdjuster);
+            cfg.ArgAdjuster);
     */
 
-    CDCtx.ECtx = CDCtx.Executor->getExecutionContext(),
-    CDCtx.ProjectName = ProjectName;
-    CDCtx.PublicOnly = PublicOnly;
-    CDCtx.OutDirectory = OutDirectory;
-    CDCtx.SourceRoot = SourceRoot;
-    CDCtx.RepositoryUrl = RepositoryUrl;
-    CDCtx.IgnoreMappingFailures = IgnoreMappingFailures;
-    CDCtx.OutDirectory = OutDirectory;
+    cfg.ECtx = cfg.Executor->getExecutionContext(),
+    cfg.ProjectName = ProjectName;
+    cfg.PublicOnly = PublicOnly;
+    cfg.OutDirectory = OutDirectory;
+    cfg.SourceRoot = SourceRoot;
+    cfg.RepositoryUrl = RepositoryUrl;
+    cfg.IgnoreMappingFailures = IgnoreMappingFailures;
+    cfg.OutDirectory = OutDirectory;
     return llvm::Error::success();
 }
 
@@ -197,18 +197,18 @@ setupContext(
 
 llvm::Error
 doMapping(
-    ClangDocContext& CDCtx)
+    Config& cfg)
 {
     //
     // Mapping phase
     //
     llvm::outs() << "Mapping declarations\n";
-    auto Err = CDCtx.Executor->execute(
-        newMapperActionFactory(CDCtx),
-        CDCtx.ArgAdjuster);
+    auto Err = cfg.Executor->execute(
+        newMapperActionFactory(cfg),
+        cfg.ArgAdjuster);
     if(Err)
     {
-        if(! CDCtx.IgnoreMappingFailures)
+        if(! cfg.IgnoreMappingFailures)
         {
             llvm::errs() <<
                 "Mapping failure: " << Err << "\n";
@@ -225,7 +225,7 @@ doMapping(
 
 llvm::Error
 buildIndex(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     Corpus& corpus)
 {
     // Collect values into output by key.
@@ -233,7 +233,7 @@ buildIndex(
     // bitcode-encoded representation of the Info object.
     llvm::outs() << "Collecting symbols\n";
     llvm::StringMap<std::vector<StringRef>> USRToBitcode;
-    CDCtx.Executor->getToolResults()->forEachResult(
+    cfg.Executor->getToolResults()->forEachResult(
         [&](StringRef Key, StringRef Value)
         {
             auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());

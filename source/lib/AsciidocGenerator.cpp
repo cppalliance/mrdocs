@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/ClangDocContext.hpp>
+#include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include "Generators.h"
 #include "Representation.h"
@@ -90,19 +90,19 @@ section(
 
 void
 writeFileDefinition(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     const Location& L,
     raw_ostream& os)
 {
     // VFALCO FIXME
 #if 0
-    if (!CDCtx.RepositoryUrl) {
+    if (!cfg.RepositoryUrl) {
         os << "*Defined at " << L.Filename << "#" << std::to_string(L.LineNumber)
             << "*";
     }
     else {
         os << "*Defined at [" << L.Filename << "#" << std::to_string(L.LineNumber)
-            << "](" << StringRef{ *CDCtx.RepositoryUrl }
+            << "](" << StringRef{ *cfg.RepositoryUrl }
             << llvm::sys::path::relative_path(L.Filename) << "#"
             << std::to_string(L.LineNumber) << ")"
             << "*";
@@ -201,7 +201,7 @@ writeNameLink(
 
 void
 genMarkdown(
-    const ClangDocContext& CDCtx,
+    const Config& cfg,
     const EnumInfo& I,
     llvm::raw_ostream& os)
 {
@@ -218,7 +218,7 @@ genMarkdown(
             Members << "| " << N.Name << " |\n";
     writeLine(Members.str(), os);
     if (I.DefLoc)
-        writeFileDefinition(CDCtx, *I.DefLoc, os);
+        writeFileDefinition(cfg, *I.DefLoc, os);
 
     for (const auto& C : I.Description)
         writeDescription(C, os);
@@ -260,7 +260,7 @@ makeDecl(
 
 void
 genMarkdown(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     FunctionInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -273,7 +273,7 @@ genMarkdown(
         "|`" << Access << Buffer;
 
     if (I.DefLoc)
-        writeFileDefinition(CDCtx, *I.DefLoc, os);
+        writeFileDefinition(cfg, *I.DefLoc, os);
 
     os << "|";
     for (const auto& C : I.Description)
@@ -285,7 +285,7 @@ genMarkdown(
 
 void
 listNamespaces(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     std::vector<Reference> const& v,
     llvm::raw_ostream& os)
 {
@@ -324,7 +324,7 @@ listNamespaces(
 
 void
 listClasses(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     std::vector<Reference> const& v,
     llvm::raw_ostream& os)
 {
@@ -363,7 +363,7 @@ listClasses(
 
 void
 listFunctions(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     llvm::StringRef label,
     FunctionList const& v,
     llvm::raw_ostream& os)
@@ -398,7 +398,7 @@ listFunctions(
 
 void
 listConstants(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     std::vector<EnumInfo> const& v,
     llvm::raw_ostream& os)
 {
@@ -432,7 +432,7 @@ listConstants(
 
 void
 listTypedefs(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     std::vector<TypedefInfo> const& v,
     llvm::raw_ostream& os)
 {
@@ -466,21 +466,21 @@ listTypedefs(
 
 void
 listScope(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     ScopeChildren const& scope,
     llvm::raw_ostream& os)
 {
-    listNamespaces(CDCtx, scope.Namespaces, os);
-    listClasses(CDCtx, scope.Records, os);
-    listFunctions(CDCtx, "Functions", scope.functions, os);
-    listConstants(CDCtx, scope.Enums, os);
-    listTypedefs(CDCtx, scope.Typedefs, os);
+    listNamespaces(cfg, scope.Namespaces, os);
+    listClasses(cfg, scope.Records, os);
+    listFunctions(cfg, "Functions", scope.functions, os);
+    listConstants(cfg, scope.Enums, os);
+    listTypedefs(cfg, scope.Typedefs, os);
 }
 
 
 void
 listFunction(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     FunctionInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -491,7 +491,7 @@ listFunction(
 
 void
 listFunctions(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     llvm::StringRef label,
     std::vector<FunctionInfo> const& v,
     llvm::raw_ostream& os)
@@ -508,11 +508,11 @@ listFunctions(
         "\n";
     if(! v.empty())
     {
-        listFunction(CDCtx, v.front(), os);
+        listFunction(cfg, v.front(), os);
         for(std::size_t i = 1; i < v.size(); ++i)
         {
             os << "\n";
-            listFunction(CDCtx, v[i], os);
+            listFunction(cfg, v[i], os);
         }
     }
     os <<
@@ -523,7 +523,7 @@ listFunctions(
 // Write a complete FunctionInfo page
 void
 emitFunction(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     FunctionInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -550,7 +550,7 @@ emitFunction(
 
 void
 makeNamespacePage(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     NamespaceInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -568,7 +568,7 @@ makeNamespacePage(
 
     llvm::SmallString<64> BasePath = I.getRelativeFilePath("");
 
-    listScope(CDCtx, I.Children, os);
+    listScope(cfg, I.Children, os);
 }
 
 //------------------------------------------------
@@ -579,7 +579,7 @@ makeNamespacePage(
 
 void
 genMarkdown(
-    ClangDocContext const& CDCtx,
+    Config const& cfg,
     RecordInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -599,7 +599,7 @@ genMarkdown(
         "\n";
 
     if (I.DefLoc)
-        writeFileDefinition(CDCtx, *I.DefLoc, os);
+        writeFileDefinition(cfg, *I.DefLoc, os);
 
     std::string Parents = genReferenceList(I.Parents);
     std::string VParents = genReferenceList(I.VirtualParents);
@@ -616,8 +616,8 @@ genMarkdown(
 
     // VFALCO STATIC MEMBER FUNCTIONS
 
-    //listFunctions(CDCtx, "Member Functions", I.Children.functions, os);
-    listScope(CDCtx, I.Children, os);
+    //listFunctions(cfg, "Member Functions", I.Children.functions, os);
+    listScope(cfg, I.Children, os);
 
     if(! I.javadoc.desc.empty())
     {
@@ -635,7 +635,7 @@ genMarkdown(
 
 void
 genMarkdown(
-    ClangDocContext const &CDCtx,
+    Config const &cfg,
     TypedefInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -659,12 +659,12 @@ serializeReference(
 // emit all_files.adoc
 llvm::Error
 serializeIndex(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     Corpus& corpus)
 {
     std::error_code FileErr;
     llvm::SmallString<128> FilePath;
-    llvm::sys::path::native(CDCtx.OutDirectory, FilePath);
+    llvm::sys::path::native(cfg.OutDirectory, FilePath);
     llvm::sys::path::append(FilePath, "all_files.adoc");
     llvm::raw_fd_ostream os(FilePath, FileErr, llvm::sys::fs::OF_None);
     if (FileErr)
@@ -674,8 +674,8 @@ serializeIndex(
 
     corpus.Idx.sort();
     os << "# All Files";
-    if (!CDCtx.ProjectName.empty())
-        os << " for " << CDCtx.ProjectName;
+    if (!cfg.ProjectName.empty())
+        os << " for " << cfg.ProjectName;
     os << "\n";
 
     for (auto C : corpus.Idx.Children)
@@ -687,12 +687,12 @@ serializeIndex(
 // emit index.adoc
 llvm::Error
 genIndex(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     Corpus& corpus)
 {
     std::error_code FileErr;
     llvm::SmallString<128> FilePath;
-    llvm::sys::path::native(CDCtx.OutDirectory, FilePath);
+    llvm::sys::path::native(cfg.OutDirectory, FilePath);
     llvm::sys::path::append(FilePath, "index.adoc");
     llvm::raw_fd_ostream os(FilePath, FileErr, llvm::sys::fs::OF_None);
     if (FileErr)
@@ -700,7 +700,7 @@ genIndex(
             "error creating index file: " +
             FileErr.message());
     corpus.Idx.sort();
-    os << "# " << CDCtx.ProjectName << " C/C++ Reference\n";
+    os << "# " << cfg.ProjectName << " C/C++ Reference\n";
     for (auto C : corpus.Idx.Children) {
         if (!C.Children.empty()) {
             const char* Type;
@@ -748,18 +748,18 @@ public:
     generateDocs(
         StringRef RootDir,
         InfoMap const& Infos,
-        ClangDocContext const& CDCtx) override;
+        Config const& cfg) override;
 
     llvm::Error
     createResources(
-        ClangDocContext& CDCtx,
+        Config& cfg,
         Corpus& corpus) override;
 
     llvm::Error
     generateDocForInfo(
         Info* I,
         llvm::raw_ostream& os,
-        ClangDocContext const& CDCtx) override;
+        Config const& cfg) override;
 };
 
 char const*
@@ -770,7 +770,7 @@ AsciidocGenerator::
 generateDocs(
     StringRef RootDir,
     InfoMap const& Infos,
-    ClangDocContext const& CDCtx)
+    Config const& cfg)
 {
     // Track which directories we already tried to create.
     llvm::StringSet<> CreatedDirs;
@@ -806,7 +806,7 @@ generateDocs(
         }
 
         for (const auto& Info : Group.getValue()) {
-            if (llvm::Error Err = generateDocForInfo(Info, InfoOS, CDCtx)) {
+            if (llvm::Error Err = generateDocForInfo(Info, InfoOS, cfg)) {
                 return Err;
             }
         }
@@ -820,24 +820,24 @@ AsciidocGenerator::
 generateDocForInfo(
     Info* I,
     llvm::raw_ostream& os,
-    const ClangDocContext& CDCtx)
+    const Config& cfg)
 {
     switch (I->IT)
     {
     case InfoType::IT_namespace:
-        makeNamespacePage(CDCtx, *static_cast<clang::mrdox::NamespaceInfo*>(I), os);
+        makeNamespacePage(cfg, *static_cast<clang::mrdox::NamespaceInfo*>(I), os);
         break;
     case InfoType::IT_record:
-        genMarkdown(CDCtx, *static_cast<clang::mrdox::RecordInfo*>(I), os);
+        genMarkdown(cfg, *static_cast<clang::mrdox::RecordInfo*>(I), os);
         break;
     case InfoType::IT_enum:
-        genMarkdown(CDCtx, *static_cast<clang::mrdox::EnumInfo*>(I), os);
+        genMarkdown(cfg, *static_cast<clang::mrdox::EnumInfo*>(I), os);
         break;
     case InfoType::IT_function:
-        genMarkdown(CDCtx, *static_cast<clang::mrdox::FunctionInfo*>(I), os);
+        genMarkdown(cfg, *static_cast<clang::mrdox::FunctionInfo*>(I), os);
         break;
     case InfoType::IT_typedef:
-        genMarkdown(CDCtx, *static_cast<clang::mrdox::TypedefInfo*>(I), os);
+        genMarkdown(cfg, *static_cast<clang::mrdox::TypedefInfo*>(I), os);
         break;
     case InfoType::IT_default:
         return createStringError(llvm::inconvertibleErrorCode(),
@@ -849,16 +849,16 @@ generateDocForInfo(
 llvm::Error
 AsciidocGenerator::
 createResources(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     Corpus& corpus)
 {
     // Write an all_files.adoc
-    auto Err = serializeIndex(CDCtx, corpus);
+    auto Err = serializeIndex(cfg, corpus);
     if (Err)
         return Err;
 
     // Generate the index page.
-    Err = genIndex(CDCtx, corpus);
+    Err = genIndex(cfg, corpus);
     if (Err)
         return Err;
 

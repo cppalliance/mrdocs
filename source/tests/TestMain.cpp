@@ -11,7 +11,7 @@
 #include "ClangDoc.h"
 #include "Mapper.h"
 #include "Representation.h"
-#include <mrdox/ClangDocContext.hpp>
+#include <mrdox/Config.hpp>
 #include <clang/tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Signals.h>
@@ -51,8 +51,8 @@ do_main(int argc, const char** argv)
 
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
 
-    ClangDocContext CDCtx;
-    if(llvm::Error err = setupContext(CDCtx, argc, argv))
+    Config cfg;
+    if(llvm::Error err = setupContext(cfg, argc, argv))
     {
         llvm::errs() << "test failure: " << err << "\n";
         return EXIT_FAILURE;
@@ -130,10 +130,10 @@ do_main(int argc, const char** argv)
 
         std::unique_ptr<ASTUnit> astUnit =
             clang::tooling::buildASTFromCodeWithArgs(cppCode, Args);
-        MapASTVisitor visitor(CDCtx);
+        MapASTVisitor visitor(cfg);
         visitor.HandleTranslationUnit(astUnit->getASTContext());
         Corpus corpus;
-        if(llvm::Error err = buildIndex(CDCtx, corpus))
+        if(llvm::Error err = buildIndex(cfg, corpus))
         {
             llvm::errs() <<
                 toString(std::move(err)) << "\n";

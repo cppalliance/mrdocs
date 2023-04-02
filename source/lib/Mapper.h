@@ -21,7 +21,7 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_MAPPER_H
 
 #include "Representation.h"
-#include <mrdox/ClangDocContext.hpp>
+#include <mrdox/Config.hpp>
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/Tooling/Execution.h"
 
@@ -38,8 +38,8 @@ class MapASTVisitor
 public:
     explicit
     MapASTVisitor(
-        ClangDocContext& CDCtx)
-        : CDCtx(CDCtx)
+        Config& cfg)
+        : cfg(cfg)
     {
     }
 
@@ -73,7 +73,7 @@ private:
         NamedDecl const* D,
         ASTContext const& Context) const;
 
-    ClangDocContext& CDCtx;
+    Config& cfg;
 };
 
 } // mrdox

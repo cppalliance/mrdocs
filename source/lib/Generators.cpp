@@ -48,7 +48,7 @@ std::string getTagType(TagTypeKind AS) {
 llvm::Error
 Generator::
 createResources(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     Corpus& corpus)
 {
     return llvm::Error::success();

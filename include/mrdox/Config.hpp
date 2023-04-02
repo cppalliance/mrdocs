@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_CLANGDOCCONTEXT_HPP
-#define MRDOX_CLANGDOCCONTEXT_HPP
+#ifndef MRDOX_CONFIG_HPP
+#define MRDOX_CONFIG_HPP
 
 #include "Generators.h"
 #include "Representation.h"
@@ -24,16 +24,16 @@
 namespace clang {
 namespace mrdox {
 
-/** State information for a complete run of the tool
-*/
-struct ClangDocContext
-{
-    ClangDocContext(
-        ClangDocContext&&) = delete;
-    ClangDocContext& operator=(
-        ClangDocContext&&) = delete;
+/** Configuration used to generate the Corpus and Docs
 
-    ClangDocContext();
+    This contains all the settings applied from the
+    command line and the YML file (if any).
+*/
+struct Config
+{
+    Config();
+    Config(Config&&) = delete;
+    Config& operator=(Config&&) = delete;
 
     std::unique_ptr<tooling::ToolExecutor> Executor;
 
@@ -62,10 +62,6 @@ struct ClangDocContext
     bool IgnoreMappingFailures = false;
 
     std::unique_ptr<Generator> G;
-
-    //Index Idx;
-
-    //llvm::StringMap<std::unique_ptr<mrdox::Info>> USRToInfo;
 };
 
 //------------------------------------------------
@@ -74,19 +70,19 @@ struct ClangDocContext
 */
 llvm::Error
 setupContext(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     int argc, const char** argv);
 
 /** Set up a docs context from command line arguments.
 */
 llvm::Error
 setupContext(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     llvm::SmallVector<llvm::StringRef, 16> const& args);
 
 llvm::Error
 doMapping(
-    ClangDocContext& CDCtx);
+    Config& cfg);
 
 /** Build the internal index of the program under analysis.
 
@@ -94,7 +90,7 @@ doMapping(
 */
 llvm::Error
 buildIndex(
-    ClangDocContext& CDCtx,
+    Config& cfg,
     Corpus& corpus);
 
 } // mrdox

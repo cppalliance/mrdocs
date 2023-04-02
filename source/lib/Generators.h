@@ -23,7 +23,7 @@
 namespace clang {
 namespace mrdox {
 
-struct ClangDocContext;
+struct Config;
 
 /** The representation of the source code under analysis.
 */
@@ -42,16 +42,16 @@ public:
     generateDocs(
         StringRef RootDir,
         InfoMap const& Infos,
-        ClangDocContext const& CDCtx) = 0;
+        Config const& cfg) = 0;
 
     // This function writes a file with the index previously constructed.
     // It can be overwritten by any of the inherited generators.
     // If the override method wants to run this it should call
-    // Generator::createResources(CDCtx);
+    // Generator::createResources(cfg);
     virtual
     llvm::Error
     createResources(
-        ClangDocContext& CDCtx,
+        Config& cfg,
         Corpus& corpus);
 
     // Write out one specific decl info to the destination stream.
@@ -60,7 +60,7 @@ public:
     generateDocForInfo(
         Info* I, // VFALCO Why not const?
         llvm::raw_ostream& OS,
-        ClangDocContext const& CDCtx) = 0;
+        Config const& cfg) = 0;
 
     static
     void
