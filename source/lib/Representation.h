@@ -111,20 +111,40 @@ struct CommentInfo
         Children; // List of child comments for this CommentInfo.
 };
 
-struct Reference {
+struct Reference
+{
     // This variant (that takes no qualified name parameter) uses the Name as the
     // QualName (very useful in unit tests to reduce verbosity). This can't use an
     // empty string to indicate the default because we need to accept the empty
     // string as a valid input for the global namespace (it will have
     // "GlobalNamespace" as the name, but an empty QualName).
-    Reference(SymbolID USR = SymbolID(), StringRef Name = StringRef(),
+    Reference(
+        SymbolID USR = SymbolID(),
+        StringRef Name = StringRef(),
         InfoType IT = InfoType::IT_default)
-        : USR(USR), Name(Name), QualName(Name), RefType(IT) {}
-    Reference(SymbolID USR, StringRef Name, InfoType IT, StringRef QualName,
-        StringRef Path = StringRef())
-        : USR(USR), Name(Name), QualName(QualName), RefType(IT), Path(Path) {}
+        : USR(USR)
+        , Name(Name)
+        , QualName(Name)
+        , RefType(IT)
+    {
+    }
 
-    bool operator==(const Reference& Other) const {
+    Reference(
+        SymbolID USR,
+        StringRef Name,
+        InfoType IT,
+        StringRef QualName,
+        StringRef Path = StringRef())
+        : USR(USR)
+        , Name(Name)
+        , QualName(QualName)
+        , RefType(IT)
+        , Path(Path)
+    {
+    }
+
+    bool operator==(const Reference& Other) const
+    {
         return std::tie(USR, Name, QualName, RefType) ==
             std::tie(Other.USR, Other.Name, QualName, Other.RefType);
     }
@@ -151,10 +171,10 @@ struct Reference {
     SmallString<16> QualName;
 
     InfoType RefType = InfoType::IT_default; // Indicates the type of this
-    // Reference (namespace, record,
-    // function, enum, default).
-// Path of directory where the clang-doc generated file will be saved
-// (possibly unresolved)
+    // Reference (namespace, record, function, enum, default).
+
+    // Path of directory where the mrdox generated file will be saved
+    // (possibly unresolved)
     llvm::SmallString<128> Path;
 };
 
@@ -215,7 +235,8 @@ private:
 };
 
 // A base struct for TypeInfos
-struct TypeInfo {
+struct TypeInfo
+{
     TypeInfo() = default;
     TypeInfo(const Reference& R) : Type(R) {}
 

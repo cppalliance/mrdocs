@@ -25,19 +25,16 @@ namespace mrdox {
 
 namespace {
 
-// VFALCO It looks like each created action needs
-//        its own copy of the Config?
-//        Maybe because of concurrency.
-
 //------------------------------------------------
 
 struct action
     : public clang::ASTFrontendAction
 {
-    explicit
     action(
-        Config& cfg)
-        : cfg(cfg)
+        Corpus& corpus,
+        Config const& cfg) noexcept
+        : corpus_(corpus)
+        , cfg_(cfg)
     {
     }
 
@@ -46,11 +43,12 @@ struct action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<MapASTVisitor>(cfg);
+        return std::make_unique<MapASTVisitor>(corpus_, cfg_);
     }
 
 private:
-    Config& cfg;
+    Corpus& corpus_;
+    Config const& cfg_;
 };
 
 //------------------------------------------------
@@ -58,20 +56,23 @@ private:
 struct factory
     : public tooling::FrontendActionFactory
 {
-    explicit
     factory(
-        Config& cfg)
-        : cfg(cfg)
+        Corpus& corpus,
+        Config const& cfg) noexcept
+        : corpus_(corpus)
+        , cfg_(cfg)
     {
     }
 
     std::unique_ptr<FrontendAction>
     create() override
     {
-        return std::make_unique<action>(cfg);
+        return std::make_unique<action>(corpus_, cfg_);
     }
-        
-    Config& cfg;
+
+private:
+    Corpus& corpus_;
+    Config const& cfg_;
 };
 
 } // (anon)
@@ -81,18 +82,20 @@ struct factory
 std::unique_ptr<
     clang::FrontendAction>
 makeFrontendAction(
-    Config& cfg)
+    Corpus& corpus,
+    Config const& cfg)
 {
-    return std::make_unique<action>(cfg);
+    return std::make_unique<action>(corpus, cfg);
 }
 
 std::unique_ptr<
     tooling::FrontendActionFactory>
 newMapperActionFactory(
-    Config& cfg)
+    Corpus& corpus,
+    Config const& cfg)
 {
-    return std::make_unique<factory>(cfg);
+    return std::make_unique<factory>(corpus, cfg);
 }
 
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang

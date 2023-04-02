@@ -197,14 +197,15 @@ setupContext(
 
 llvm::Error
 doMapping(
-    Config& cfg)
+    Corpus& corpus,
+    Config const& cfg)
 {
     //
     // Mapping phase
     //
     llvm::outs() << "Mapping declarations\n";
     auto Err = cfg.Executor->execute(
-        newMapperActionFactory(cfg),
+        newMapperActionFactory(corpus, cfg),
         cfg.ArgAdjuster);
     if(Err)
     {
@@ -225,8 +226,8 @@ doMapping(
 
 llvm::Error
 buildIndex(
-    Config const& cfg,
-    Corpus& corpus)
+    Corpus& corpus,
+    Config const& cfg)
 {
     // Collect values into output by key.
     // In ToolResults, the Key is the hashed USR and the value is the

@@ -564,13 +564,17 @@ renderCodeAsXML(
     Config const& cfg)
 {
     std::unique_ptr<ASTUnit> astUnit =
-    clang::tooling::buildASTFromCodeWithArgs(cppCode, {});
-    MapASTVisitor visitor(cfg);
-    visitor.HandleTranslationUnit(astUnit->getASTContext());
+        clang::tooling::buildASTFromCodeWithArgs(cppCode, {});
     Corpus corpus;
-    if(llvm::Error err = buildIndex(cfg, corpus))
+    MapASTVisitor visitor(corpus, cfg);
+    visitor.HandleTranslationUnit(astUnit->getASTContext());
+    if(llvm::Error err = buildIndex(corpus, cfg))
         return ! err;
-    return XMLGenerator(cfg).render(xml, corpus, cfg);
+    bool success = XMLGenerator(cfg).render(xml, corpus, cfg);
+    // VFALCO oops, cfg.Executor->getToolResults()
+    //              holds information from the previous corpus...
+    //cfg.Executor->getToolResults()->
+    return success;
 }
 
 //------------------------------------------------

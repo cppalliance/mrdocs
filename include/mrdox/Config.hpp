@@ -82,7 +82,8 @@ setupContext(
 
 llvm::Error
 doMapping(
-    Config& cfg);
+    Corpus& corpus,
+    Config const& cfg);
 
 /** Build the internal index of the program under analysis.
 
@@ -90,8 +91,8 @@ doMapping(
 */
 llvm::Error
 buildIndex(
-    Config const& cfg,
-    Corpus& corpus);
+    Corpus& corpus,
+    Config const& cfg);
 
 } // mrdox
 } // clang

@@ -38,8 +38,10 @@ class MapASTVisitor
 public:
     explicit
     MapASTVisitor(
+        Corpus& corpus,
         Config const& cfg)
-        : cfg(cfg)
+        : corpus_(corpus)
+        , cfg_(cfg)
     {
     }
 
@@ -73,7 +75,8 @@ private:
         NamedDecl const* D,
         ASTContext const& Context) const;
 
-    Config const& cfg;
+    Corpus& corpus_;
+    Config const& cfg_;
 };
 
 } // mrdox

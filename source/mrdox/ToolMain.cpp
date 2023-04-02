@@ -85,8 +85,10 @@ main(int argc, const char** argv)
         return EXIT_FAILURE;
     }
 
+    clang::mrdox::Corpus corpus;
+
     // Extract the AST first
-    if(llvm::Error err = doMapping(cfg))
+    if(llvm::Error err = doMapping(corpus, cfg))
     {
         llvm::errs() <<
             toString(std::move(err)) << "\n";
@@ -95,8 +97,7 @@ main(int argc, const char** argv)
 
     // Build the internal representation of
     // the C++ declarations to be documented.
-    clang::mrdox::Corpus corpus;
-    if(llvm::Error err = buildIndex(cfg, corpus))
+    if(llvm::Error err = buildIndex(corpus, cfg))
     {
         llvm::errs() <<
             toString(std::move(err)) << "\n";

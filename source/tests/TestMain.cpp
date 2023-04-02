@@ -20,6 +20,7 @@
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/raw_ostream.h>
+#include <atomic>
 #include <cstdlib>
 
 // VFALCO GARBAGE
@@ -34,6 +35,11 @@ namespace clang {
 namespace mrdox {
 
 namespace {
+
+void
+testDir()
+{
+}
 
 //------------------------------------------------
 
@@ -59,12 +65,15 @@ do_main(int argc, const char** argv)
         return EXIT_FAILURE;
     }
 
+    std::atomic<bool> gotFailure = false;
+
     std::string xml;
     for(int i = 1; i < argc; ++i)
     {
         std::error_code ec;
         llvm::SmallString<256> dir(argv[i]);
         path::remove_dots(dir, true);
+        fs::recursive_directory_iterator const end{};
         fs::recursive_directory_iterator iter(dir, ec, false);
         if(ec)
         {
@@ -73,71 +82,89 @@ do_main(int argc, const char** argv)
                 dir << "\"\n";
             return EXIT_FAILURE;
         }
-        auto const& name = iter->path();
-        llvm::SmallString<128> cppPath(name);
-        llvm::SmallString<128> xmlPath(name);
-        path::remove_dots(cppPath, true);
-        path::remove_dots(xmlPath, true);
-        if(path::extension(name).equals_insensitive(".cpp"))
+        while(iter != end)
         {
-            if(! fs::is_regular_file(name))
             {
-                llvm::errs() <<
-                    "invalid file: \"" << name << "\"\n";
-                return EXIT_FAILURE;
+                auto const& name = iter->path();
+                llvm::SmallString<128> cppPath(name);
+                llvm::SmallString<128> xmlPath(name);
+                path::remove_dots(cppPath, true);
+                path::remove_dots(xmlPath, true);
+                if(path::extension(name).equals_insensitive(".cpp"))
+                {
+                    if(! fs::is_regular_file(name))
+                    {
+                        llvm::errs() <<
+                            "invalid file: \"" << name << "\"\n";
+                        return EXIT_FAILURE;
+                    }
+                    path::replace_extension(xmlPath, "xml");
+                    if( ! fs::exists(xmlPath) ||
+                        ! fs::is_regular_file(xmlPath))
+                    {
+                        llvm::errs() <<
+                            "missing or invalid file: \"" << xmlPath << "\"\n";
+                        return EXIT_FAILURE;
+                    }
+                }
+                else if(path::extension(name).equals_insensitive(".xml"))
+                {
+                    path::replace_extension(cppPath, "cpp");
+                    if( ! fs::exists(cppPath) ||
+                        ! fs::is_regular_file(cppPath))
+                    {
+                        llvm::errs() <<
+                            "missing or invalid file: \"" << cppPath << "\"\n";
+                        return EXIT_FAILURE;
+                    }
+
+                    // don't process the same test twice
+                    goto loop;
+                }
+                else
+                {
+                    // not .cpp or .xml
+                    goto loop;
+                }
+
+                llvm::StringRef cppCode;
+                auto cppResult = llvm::MemoryBuffer::getFile(cppPath, true);
+                if(! cppResult)
+                {
+                    llvm::errs() <<
+                        cppResult.getError().message() << ": \"" << xmlPath << "\"\n";
+                    return EXIT_FAILURE;
+                }
+                cppCode = cppResult->get()->getBuffer();
+
+                llvm::StringRef expectedXml;
+                auto xmlResult = llvm::MemoryBuffer::getFile(xmlPath, true);
+                if(! xmlResult)
+                {
+                    llvm::errs() <<
+                        xmlResult.getError().message() << ": \"" << xmlPath << "\"\n";
+                    return EXIT_FAILURE;
+                }
+                expectedXml = xmlResult->get()->getBuffer();
+
+                if(! renderCodeAsXML(xml, cppCode, cfg))
+                    return EXIT_FAILURE;
+
+                if(xml != expectedXml)
+                {
+                    gotFailure = true;
+                    llvm::errs() <<
+                        "Failed: \"" << xmlPath << "\", got\n" <<
+                        xml;
+                }
             }
-            path::replace_extension(xmlPath, "xml");
-            if( ! fs::exists(xmlPath) ||
-                ! fs::is_regular_file(xmlPath))
-            {
-                llvm::errs() <<
-                    "missing or invalid file: \"" << xmlPath << "\"\n";
-                return EXIT_FAILURE;
-            }
+        loop:
+            iter.increment(ec);
         }
-        else if(path::extension(name).equals_insensitive(".xml"))
-        {
-            path::replace_extension(cppPath, "cpp");
-            if( ! fs::exists(cppPath) ||
-                ! fs::is_regular_file(cppPath))
-            {
-                llvm::errs() <<
-                    "missing or invalid file: \"" << cppPath << "\"\n";
-                return EXIT_FAILURE;
-            }
-
-            // don't process the same test twice
-            continue;
-        }
-
-        llvm::StringRef cppCode;
-        auto cppResult = llvm::MemoryBuffer::getFile(cppPath, true);
-        if(! cppResult)
-        {
-            llvm::errs() <<
-                cppResult.getError().message() << ": \"" << xmlPath << "\"\n";
-            return EXIT_FAILURE;
-        }
-        cppCode = cppResult->get()->getBuffer();
-
-        llvm::StringRef expectedXml;
-        auto xmlResult = llvm::MemoryBuffer::getFile(xmlPath, true);
-        if(! xmlResult)
-        {
-            llvm::errs() <<
-                xmlResult.getError().message() << ": \"" << xmlPath << "\"\n";
-            return EXIT_FAILURE;
-        }
-        expectedXml = xmlResult->get()->getBuffer();
-
-        if(! renderCodeAsXML(xml, cppCode, cfg))
-            return EXIT_FAILURE;
-
-        if(xml != expectedXml)
-            llvm::errs() <<
-                "Failed: \"" << xmlPath << "\"\n";
     }
 
+    if(gotFailure)
+        return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
 

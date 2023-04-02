@@ -29,12 +29,14 @@ namespace mrdox {
 std::unique_ptr<
     clang::FrontendAction>
 makeFrontendAction(
-    Config& cfg);
+    Corpus& corpus,
+    Config const& cfg);
 
 std::unique_ptr<
     tooling::FrontendActionFactory>
 newMapperActionFactory(
-    Config& cfg);
+    Corpus& corpus,
+    Config const& cfg);
 
 } // namespace mrdox
 } // namespace clang

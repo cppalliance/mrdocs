@@ -11,6 +11,7 @@
 
 #include "Mapper.h"
 #include "BitcodeWriter.h"
+#include "Error.hpp"
 #include "Serialize.h"
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -52,18 +53,20 @@ mapDecl(T const* D)
         return true;
     bool IsFileInRootDir;
     llvm::SmallString<128> File =
-        getFile(D, D->getASTContext(), cfg.SourceRoot, IsFileInRootDir);
+        getFile(D, D->getASTContext(), cfg_.SourceRoot, IsFileInRootDir);
     auto I = serialize::emitInfo(D, getComment(D, D->getASTContext()),
         getLine(D, D->getASTContext()), File,
-        IsFileInRootDir, cfg.PublicOnly);
+        IsFileInRootDir, cfg_.PublicOnly);
 
     // A null in place of I indicates that the serializer is skipping this decl
     // for some reason (e.g. we're only reporting public decls).
     if (I.first)
-        cfg.ECtx->reportResult(llvm::toHex(llvm::toStringRef(I.first->USR)),
+        cfg_.ECtx->reportResult(
+            llvm::toHex(llvm::toStringRef(I.first->USR)),
             serialize::serialize(I.first));
     if (I.second)
-        cfg.ECtx->reportResult(llvm::toHex(llvm::toStringRef(I.second->USR)),
+        cfg_.ECtx->reportResult(
+            llvm::toHex(llvm::toStringRef(I.second->USR)),
             serialize::serialize(I.second));
     return true;
 }
