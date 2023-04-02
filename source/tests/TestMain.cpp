@@ -12,6 +12,7 @@
 #include "Mapper.h"
 #include "Representation.h"
 #include <mrdox/Config.hpp>
+#include <mrdox/XML.hpp>
 #include <clang/tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Signals.h>
@@ -58,6 +59,7 @@ do_main(int argc, const char** argv)
         return EXIT_FAILURE;
     }
 
+    std::string xml;
     for(int i = 1; i < argc; ++i)
     {
         std::error_code ec;
@@ -128,17 +130,12 @@ do_main(int argc, const char** argv)
         }
         expectedXml = xmlResult->get()->getBuffer();
 
-        std::unique_ptr<ASTUnit> astUnit =
-            clang::tooling::buildASTFromCodeWithArgs(cppCode, {});
-        MapASTVisitor visitor(cfg);
-        visitor.HandleTranslationUnit(astUnit->getASTContext());
-        Corpus corpus;
-        if(llvm::Error err = buildIndex(cfg, corpus))
-        {
-            llvm::errs() <<
-                toString(std::move(err)) << "\n";
+        if(! renderCodeAsXML(xml, cppCode, cfg))
             return EXIT_FAILURE;
-        }
+
+        if(xml != expectedXml)
+            llvm::errs() <<
+                "Failed: \"" << xmlPath << "\"\n";
     }
 
     return EXIT_SUCCESS;

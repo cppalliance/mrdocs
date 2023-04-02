@@ -1,0 +1,11 @@
+<ns n="">
+ <fn n="f1" r="void" a="3">
+  <tp n="class T"/>
+ </fn>
+ <fn n="f2" r="void" a="3">
+  <tp n="typename U"/>
+ </fn>
+ <fn n="f3" r="void" a="3">
+  <tp n="int N"/>
+ </fn>
+</ns>

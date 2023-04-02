@@ -570,9 +570,7 @@ renderCodeAsXML(
     Corpus corpus;
     if(llvm::Error err = buildIndex(cfg, corpus))
         return ! err;
-    XMLGenerator(cfg).render(xml, corpus, cfg);
-
-    return true;
+    return XMLGenerator(cfg).render(xml, corpus, cfg);
 }
 
 //------------------------------------------------
