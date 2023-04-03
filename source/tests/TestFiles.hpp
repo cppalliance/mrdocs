@@ -12,8 +12,8 @@
 #define MRDOX_TESTS_TESTFILES_HPP
 
 #include <mrdox/Reporter.hpp>
-#include <clang/tooling/CompilationDatabase.h>
-#include <clang/tooling/Tooling.h>
+#include <clang/Tooling/CompilationDatabase.h>
+#include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>
 
 namespace clang {

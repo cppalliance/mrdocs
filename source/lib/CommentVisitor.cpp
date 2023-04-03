@@ -9,12 +9,14 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "CommentVisitor.h "
+#include "CommentVisitor.h"
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
+#endif
 #include <clang/AST/Comment.h>
 #include <clang/AST/CommentVisitor.h>
+#ifdef _MSC_VER
 #pragma warning(pop)
 #endif
 //#include <clang/AST/CommentCommandInfo.inc>
@@ -131,7 +133,7 @@ visitParagraphComment(
         jd_.desc.push_back('\n');
     return true;
 }
-    
+
 bool
 CommentVisitor::
 visitTextComment(
@@ -346,17 +348,17 @@ visitVerbatimLineComment(
 {
     auto const id = c->getCommandID();
     //auto const ci = ctx_.getCommentCommandTraits().getBuiltinCommandInfo(id);
-    auto const arg = c->getText().ltrim().rtrim();
+    // auto const arg = c->getText().ltrim().rtrim();
     switch(id)
     {
     case CommandTraits::KnownCommandIDs::KCI_defgroup:
     {
-        auto p = arg;
+        // auto p = arg;
         break;
     }
     case CommandTraits::KnownCommandIDs::KCI_ingroup:
     {
-        auto p = arg;
+        // auto p = arg;
         break;
     }
     default:
