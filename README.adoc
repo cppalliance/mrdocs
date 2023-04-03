@@ -1,8 +1,32 @@
 # Mr. Dox
 
-## Submodules
+## Install
 
-To work locally without the need to clone
-the submodule either don't clone it, or
-run "git submodule deinit -all" to remove
-a local clone.
+This library depends on a recent version of LLVM.
+Here are the instructions to install LVVM with the settings required by this project.
+
+[source,bash]
+----
+git clone https://github.com/llvm/llvm-project.git
+cd llvm-project
+git checkout 731264b0c2af7aa46bd39625202a99e06cfccff9
+cmake -S llvm -B build -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_BUILD_TYPE=Release -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=/path/to/llvm+clang
+cd build
+cmake --build . -j <threads>
+cmake --install .
+----
+
+Once LLVM is available in `/path/to/llvm+clang`, you can build and install mrdox with:
+
+[source,bash]
+----
+git clone https://github.com/cppalliance/mrdox
+cd mrdox
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LLVM_ROOT=/path/to/llvm+clang -D Clang_ROOT=/path/to/llvm+clang
+cd build
+cmake --build . -j <threads>
+cmake --install .
+----
+
+
+

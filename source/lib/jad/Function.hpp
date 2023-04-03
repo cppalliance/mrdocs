@@ -79,9 +79,9 @@ struct FunctionOverloads
     FunctionOverloads(FunctionInfo I);
 
     FunctionOverloads(
-        FunctionOverloads&&) noexcept = default;
+        FunctionOverloads&&) = default;
     FunctionOverloads& operator=(
-        FunctionOverloads&&) noexcept = default;
+        FunctionOverloads&&) = default;
 };
 
 //------------------------------------------------

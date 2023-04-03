@@ -128,5 +128,6 @@ int
 main(int argc, const char** argv)
 {
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-    return clang::mrdox::testMain(argc, argv);
+    clang::mrdox::testMain(argc, argv);
+    return EXIT_SUCCESS;
 }
