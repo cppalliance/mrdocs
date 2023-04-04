@@ -403,7 +403,7 @@ XMLGenerator::
 writeFunction(
     FunctionInfo const& I)
 {
-    openTag("func", {
+    openTag("function", {
         { "name", I.Name },
         { "USR", toBase64(I.USR) },
         { "access", toString(I.Access) }
@@ -428,7 +428,7 @@ writeFunction(
             { "t", p.Type.Name }
             });
     writeLoc(I.Loc);
-    closeTag("func");
+    closeTag("function");
 }
 
 void

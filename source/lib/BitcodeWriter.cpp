@@ -444,7 +444,10 @@ void ClangDocBitcodeWriter::emitBlock(const Reference& R, FieldId Field) {
     emitRecord((unsigned)Field, REFERENCE_FIELD);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const TypeInfo& T) {
+void
+ClangDocBitcodeWriter::
+emitBlock(TypeInfo const& T)
+{
     StreamSubBlockGuard Block(Stream, BI_TYPE_BLOCK_ID);
     emitBlock(T.Type, FieldId::F_type);
 }

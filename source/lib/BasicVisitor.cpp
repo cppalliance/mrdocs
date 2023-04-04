@@ -125,18 +125,6 @@ bool
 BasicVisitor::
 VisitTypedefDecl(TypedefDecl const* D)
 {
-#if 0
-    TypeDecl const* td = D;
-    Type const* ty = td->getTypeForDecl();
-    ty->getAsCXXRecordDecl();
-
-    /*
-    for(auto const& t : D->redecls())
-    {
-        llvm::outs() << "\n";
-    }
-    */
-#endif
     return mapDecl(D);
 }
 
