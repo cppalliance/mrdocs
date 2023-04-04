@@ -25,6 +25,8 @@ struct Corpus
     Corpus(Corpus const&) = delete;
     Corpus& operator=(Corpus const&) = delete;
 
+    std::unique_ptr<tooling::ToolExecutor> executor;
+
     Index Idx;
 
     /** Table of Info keyed on USR.

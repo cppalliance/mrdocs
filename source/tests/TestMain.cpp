@@ -13,6 +13,7 @@
 #include "Representation.h"
 #include <mrdox/Config.hpp>
 #include <mrdox/XML.hpp>
+#include <clang/tooling/CompilationDatabase.h>
 #include <clang/tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Signals.h>
@@ -34,29 +35,212 @@ extern void force_xml_generator_linkage();
 namespace clang {
 namespace mrdox {
 
-namespace {
+namespace fs = llvm::sys::fs;
+namespace path = llvm::sys::path;
 
-void
-testDir()
+//------------------------------------------------
+//
+// Generally Helpful Utilties
+//
+//------------------------------------------------
+
+/** Used to check and report errors uniformly.
+*/
+struct Reporter
 {
+    bool failed = false;
+
+    bool
+    success(
+        llvm::StringRef what,
+        std::error_code const& ec)
+    {
+        if(! ec)
+            return true;
+        llvm::errs() <<
+            what << ": " << ec.message() << "\n";
+        failed = true;
+        return false;
+    }
+
+    bool
+    success(
+        llvm::StringRef what,
+        llvm::Error& err)
+    {
+        if(! err)
+            return true;
+        llvm::errs() <<
+            what << ": " << toString(std::move(err)) << "\n";
+        failed = true;
+        return false;
+    }
+};
+
+/** Return command line arguments as a vector of strings.
+*/
+std::vector<std::string>
+makeVectorOfArgs(int argc, const char** argv)
+{
+    std::vector<std::string> result;
+    result.reserve(argc);
+    for(int i = 0; i < argc; ++i)
+        result.push_back(argv[i]);
+    return result;
+}
+
+/** Return an executor from a vector of arguments.
+*/
+llvm::Expected<std::unique_ptr<ToolExecutor>>
+createExecutor(
+    std::vector<std::string> const& args,
+    llvm::cl::OptionCategory& category,
+    char const* overview)
+{
+    std::vector<const char*> argv;
+    argv.reserve(args.size());
+    for(auto const& arg : args)
+        argv.push_back(arg.data());
+    int argc = static_cast<int>(argv.size());
+    return clang::tooling::createExecutorFromCommandLineArgs(
+        argc, argv.data(), category, overview);
 }
 
 //------------------------------------------------
 
-int
-do_main(int argc, const char** argv)
+/** Compilation database where files come in pairs of C++ and XML.
+*/
+class TestCompilationDatabase
+    : public clang::tooling::CompilationDatabase
 {
+    std::vector<CompileCommand> cc_;
+
+public:
+    TestCompilationDatabase() = default;
+
+    bool
+    addDirectory(
+        llvm::StringRef path,
+        Reporter& R)
+    {
+        std::error_code ec;
+        llvm::SmallString<256> dir(path);
+        path::remove_dots(dir, true);
+        fs::directory_iterator const end{};
+        fs::directory_iterator iter(dir, ec, false);
+        if(! R.success("addDirectory", ec))
+            return false;
+        while(iter != end)
+        {
+            if(iter->type() == fs::file_type::directory_file)
+            {
+                addDirectory(iter->path(), R);
+            }
+            else if(
+                iter->type() == fs::file_type::regular_file &&
+                path::extension(iter->path()).equals_insensitive(".cpp"))
+            {
+                llvm::SmallString<256> output(iter->path());
+                path::replace_extension(output, "xml");
+                std::vector<std::string> commandLine = {
+                    "clang",
+                    iter->path()
+                };
+                cc_.emplace_back(
+                    dir,
+                    iter->path(),
+                    std::move(commandLine),
+                    output);
+                cc_.back().Heuristic = "unit test";
+
+            }
+            else
+            {
+                // we don't handle this type
+            }
+            iter.increment(ec);
+            if(! R.success("increment", ec))
+                return false;
+        }
+        return true;
+    }
+
+    std::vector<CompileCommand>
+    getCompileCommands(
+        llvm::StringRef FilePath) const override
+    {
+        std::vector<CompileCommand> result;
+        for(auto const& cc : cc_)
+            if(FilePath.equals(cc.Filename))
+                result.push_back(cc);
+        return result;
+    }
+
+    virtual
+    std::vector<std::string>
+    getAllFiles() const override
+    {
+        std::vector<std::string> result;
+        result.reserve(cc_.size());
+        for(auto const& cc : cc_)
+            result.push_back(cc.Filename);
+        return result;
+    }
+
+    std::vector<CompileCommand>
+    getAllCompileCommands() const override
+    {
+        return cc_;
+    }
+};
+
+//------------------------------------------------
+
+static
+const char* toolOverview =
+R"(Runs tests on input files and checks the results,
+
+Example:
+    $ mrdox_tests *( DIR | FILE.cpp )
+)";
+
+static
+llvm::cl::extrahelp
+commonHelp(
+    tooling::CommonOptionsParser::HelpMessage);
+
+static
+llvm::cl::OptionCategory
+toolCategory("mrdox_tests options");
+
+//------------------------------------------------
+
+int
+testMain(int argc, const char** argv)
+{
+    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
+
     // VFALCO GARBAGE
     force_xml_generator_linkage();
 
-    namespace fs = llvm::sys::fs;
-    namespace path = llvm::sys::path;
+    Reporter R;
+
+    TestCompilationDatabase db;
+    for(int i = 1; i < argc; ++i)
+        db.addDirectory(argv[i], R);
+
+    auto args = makeVectorOfArgs(argc, argv);
+    args.push_back("--executor=all-TUs");
+    std::unique_ptr<ToolExecutor> executor;
+    if(llvm::Error err = createExecutor(
+        args, toolCategory, toolOverview).moveInto(executor))
+    {
+        return EXIT_FAILURE;
+    }
 
     std::vector<std::string> Args;
     for(auto i = 0; i < argc; ++i)
         Args.push_back(argv[i]);
-
-    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
 
     Config cfg;
     if(llvm::Error err = setupContext(cfg, argc, argv))
@@ -64,8 +248,6 @@ do_main(int argc, const char** argv)
         llvm::errs() << "test failure: " << err << "\n";
         return EXIT_FAILURE;
     }
-
-    std::atomic<bool> gotFailure = false;
 
     std::string xml;
     for(int i = 1; i < argc; ++i)
@@ -152,7 +334,7 @@ do_main(int argc, const char** argv)
 
                 if(xml != expectedXml)
                 {
-                    gotFailure = true;
+                    R.failed = true;
                     llvm::errs() <<
                         "Failed: \"" << xmlPath << "\", got\n" <<
                         xml;
@@ -163,12 +345,10 @@ do_main(int argc, const char** argv)
         }
     }
 
-    if(gotFailure)
+    if(R.failed)
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
-
-} // (anon)
 
 } // mrdox
 } // clang
@@ -176,5 +356,5 @@ do_main(int argc, const char** argv)
 int
 main(int argc, const char** argv)
 {
-    return clang::mrdox::do_main(argc, argv);
+    return clang::mrdox::testMain(argc, argv);
 }
