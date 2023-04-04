@@ -96,8 +96,6 @@ toolCategory("mrdox_tests options");
 int
 testMain(int argc, const char** argv)
 {
-    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-
     // VFALCO GARBAGE
     force_xml_generator_linkage();
     Reporter R;
@@ -129,5 +127,6 @@ testMain(int argc, const char** argv)
 int
 main(int argc, const char** argv)
 {
+    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     return clang::mrdox::testMain(argc, argv);
 }

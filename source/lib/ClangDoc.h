@@ -27,12 +27,6 @@ namespace clang {
 namespace mrdox {
 
 std::unique_ptr<
-    clang::FrontendAction>
-makeFrontendAction(
-    Corpus& corpus,
-    Config const& cfg);
-
-std::unique_ptr<
     tooling::FrontendActionFactory>
 newMapperActionFactory(
     Corpus& corpus,

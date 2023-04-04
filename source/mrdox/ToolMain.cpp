@@ -43,12 +43,15 @@
 #include <mutex>
 #include <string>
 
-using namespace clang::ast_matchers;
-using namespace clang::tooling;
-using namespace clang;
-
 // VFALCO GARBAGE
 extern void force_xml_generator_linkage();
+
+namespace clang {
+namespace mrdox {
+
+//using namespace clang::ast_matchers;
+using namespace clang::tooling;
+using namespace clang;
 
 // This function isn't referenced outside its translation unit, but it
 // can't use the "static" keyword because its address is used for
@@ -65,21 +68,12 @@ GetExecutablePath(
 
 //------------------------------------------------
 
-namespace clang {
-namespace mrdox {
-
-} // mrdox
-} // clang
-
-//------------------------------------------------
-
 int
-main(int argc, const char** argv)
+toolMain(int argc, const char** argv)
 {
     // VFALCO GARBAGE
     force_xml_generator_linkage();
 
-    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     std::error_code OK;
 
     clang::mrdox::Config cfg;
@@ -143,4 +137,15 @@ main(int argc, const char** argv)
     }
 
     return EXIT_SUCCESS;
+}
+
+} // mrdox
+} // clang
+
+//------------------------------------------------
+
+int main(int argc, char const** argv)
+{
+    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
+    return clang::mrdox::toolMain(argc, argv);
 }

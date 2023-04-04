@@ -80,15 +80,6 @@ private:
 //------------------------------------------------
 
 std::unique_ptr<
-    clang::FrontendAction>
-makeFrontendAction(
-    Corpus& corpus,
-    Config const& cfg)
-{
-    return std::make_unique<action>(corpus, cfg);
-}
-
-std::unique_ptr<
     tooling::FrontendActionFactory>
 newMapperActionFactory(
     Corpus& corpus,
