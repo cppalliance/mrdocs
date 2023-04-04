@@ -14,20 +14,16 @@
 
 #include <mrdox/Config.hpp>
 #include <llvm/ADT/StringRef.h>
+#include <llvm/Support/Error.h>
 #include <string>
 
 namespace clang {
 namespace mrdox {
 
-// Algorithms for rendering the corpus as XML.
-// The XML output is unaffected by the structure
-// of the input data and thus, represents a
-// canonical form.
-
-bool
-renderCodeAsXML(
+void
+renderToXMLString(
     std::string& xml,
-    llvm::StringRef cppCode,
+    Corpus const& corpus,
     Config const& cfg);
 
 } // mrdox

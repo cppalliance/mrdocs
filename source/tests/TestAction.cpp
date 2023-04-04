@@ -10,6 +10,9 @@
 
 #include "TestAction.hpp"
 #include <mrdox/Config.hpp>
+#include <mrdox/XML.hpp>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Path.h>
 
 namespace clang {
 namespace mrdox {
@@ -18,30 +21,46 @@ void
 TestAction::
 EndSourceFileAction()
 {
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
     Corpus corpus;
     if(! R_.success(buildIndex(corpus, results_, cfg_)))
         return;
-#if 0
-bool
-renderCodeAsXML(
-    std::string& xml,
-    llvm::StringRef cppCode,
-    Config const& cfg)
-{
-    std::unique_ptr<ASTUnit> astUnit =
-        clang::tooling::buildASTFromCodeWithArgs(cppCode, {});
-    Corpus corpus;
-    CorpusVisitor visitor(corpus, cfg);
-    visitor.HandleTranslationUnit(astUnit->getASTContext());
-    if(llvm::Error err = buildIndex(corpus, cfg))
-        return ! err;
-    bool success = XMLGenerator(cfg).render(xml, corpus, cfg);
-    // VFALCO oops, cfg.Executor->getToolResults()
-    //              holds information from the previous corpus...
-    //cfg.Executor->getToolResults()->
-    return success;
-}
-#endif
+    std::string xml;
+    renderToXMLString(xml, corpus, cfg_);
+    llvm::SmallString<256> xmlPath(this->getCurrentFile());
+    path::replace_extension(xmlPath, "xml");
+    std::error_code ec;
+    fs::file_status stat;
+    ec = fs::status(xmlPath, stat, false);
+    if(ec == std::errc::no_such_file_or_directory)
+    {
+        // create the xml file and write to it
+    }
+    else if(R_.success(ec))
+    {
+        if(stat.type() == fs::file_type::regular_file)
+        {
+            std::unique_ptr<llvm::MemoryBuffer> pb;
+            if(! R_.success(pb, llvm::MemoryBuffer::getFile(xmlPath, true)))
+                return;
+            if(xml != pb->getBuffer())
+            {
+                llvm::errs() <<
+                    "File: \"" << this->getCurrentFile() << "\" failed.\n"
+                    "Expected:\n" <<
+                    pb->getBuffer() << "\n" <<
+                    "Got:\n" <<
+                    xml << "\n";
+                R_.test_failure();
+            }
+        }
+        else
+        {
+            // VFALCO report that it is not a regular file
+        }
+    }
 }
 
 } // mrdox

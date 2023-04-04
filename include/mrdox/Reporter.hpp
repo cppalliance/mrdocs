@@ -30,7 +30,25 @@ struct Reporter
         return failed_;
     }
 
+    void test_failure()
+    {
+        failed_ = true;
+    }
+
     bool success(llvm::Error&& err);
+    bool success(std::error_code const& ec);
+
+    template<class T>
+    bool
+    success(T& t, llvm::ErrorOr<T>&& ev)
+    {
+        if(ev)
+        {
+            t = std::move(ev.get());
+            return true;
+        }
+        return false;
+    }
 
     bool
     success(

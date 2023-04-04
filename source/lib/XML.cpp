@@ -555,34 +555,20 @@ char const*
 XMLGenerator::
 Format = "xml";
 
-/** A visitor which keeps its own map of tool results.
-*/
-class TestVisitor
-    : public BasicVisitor
-{
-    TestVisitor& corpus_;
-    tooling::InMemoryToolResults results_;
-
-public:
-    TestVisitor(
-        TestVisitor& corpus,
-        Config const& cfg) noexcept
-        : BasicVisitor(cfg)
-        , corpus_(corpus)
-    {
-    }
-
-private:
-    void
-    reportResult(
-        StringRef Key,
-        StringRef Value) override
-    {
-        results_.addResult(Key, Value);
-    }
-};
-
 } // (anon)
+
+//------------------------------------------------
+
+void
+renderToXMLString(
+    std::string& xml,
+    Corpus const& corpus,
+    Config const& cfg)
+{
+    XMLGenerator G(cfg);
+    G.render(xml, corpus, cfg);
+    //return llvm::Error::success();
+}
 
 //------------------------------------------------
 

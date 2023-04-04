@@ -31,6 +31,18 @@ success(llvm::Error&& err)
 
 bool
 Reporter::
+success(std::error_code const& ec)
+{
+    if(! ec)
+        return true;
+    // VFALCO TODO Source file, line number, and what
+    llvm::errs() << ec.message() << "\n";
+    failed_ = true;
+    return false;
+}
+
+bool
+Reporter::
 success(
     llvm::StringRef what,
     std::error_code const& ec)
