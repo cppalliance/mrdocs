@@ -14,6 +14,7 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/XML.hpp>
 #include <clang/tooling/CompilationDatabase.h>
+#include <clang/tooling/StandaloneExecution.h>
 #include <clang/tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Signals.h>
@@ -93,6 +94,7 @@ makeVectorOfArgs(int argc, const char** argv)
 */
 llvm::Expected<std::unique_ptr<ToolExecutor>>
 createExecutor(
+    tooling::CompilationDatabase const& compilations,
     std::vector<std::string> const& args,
     llvm::cl::OptionCategory& category,
     char const* overview)
@@ -102,8 +104,20 @@ createExecutor(
     for(auto const& arg : args)
         argv.push_back(arg.data());
     int argc = static_cast<int>(argv.size());
-    return clang::tooling::createExecutorFromCommandLineArgs(
-        argc, argv.data(), category, overview);
+#if 0
+    auto OptionsParser = CommonOptionsParser::create(
+        argc, argv.data(), category, llvm::cl::ZeroOrMore, overview);
+    if (!OptionsParser)
+        return OptionsParser.takeError();
+#endif
+    auto executor = std::make_unique<
+        tooling::StandaloneToolExecutor>(
+            compilations, llvm::ArrayRef<std::string>{} );
+    if (!executor)
+        return llvm::make_error<llvm::StringError>(
+            "could not create StandaloneToolExecutor",
+            llvm::inconvertibleErrorCode());
+    return executor;
 }
 
 //------------------------------------------------
@@ -225,15 +239,16 @@ testMain(int argc, const char** argv)
 
     Reporter R;
 
-    TestCompilationDatabase db;
+    TestCompilationDatabase compilations;
     for(int i = 1; i < argc; ++i)
-        db.addDirectory(argv[i], R);
+        compilations.addDirectory(argv[i], R);
+
 
     auto args = makeVectorOfArgs(argc, argv);
-    args.push_back("--executor=all-TUs");
+    args.push_back("--executor=standalone");
     std::unique_ptr<ToolExecutor> executor;
     if(llvm::Error err = createExecutor(
-        args, toolCategory, toolOverview).moveInto(executor))
+        compilations, args, toolCategory, toolOverview).moveInto(executor))
     {
         return EXIT_FAILURE;
     }
