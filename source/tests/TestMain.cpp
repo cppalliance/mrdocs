@@ -10,6 +10,7 @@
 
 #include "ClangDoc.h"
 #include "Representation.h"
+#include "TestAction.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/XML.hpp>
 #include <clang/tooling/CompilationDatabase.h>
@@ -78,6 +79,8 @@ struct Reporter
     }
 };
 
+//------------------------------------------------
+
 /** Return command line arguments as a vector of strings.
 */
 std::vector<std::string>
@@ -112,7 +115,8 @@ createExecutor(
 #endif
     auto executor = std::make_unique<
         tooling::StandaloneToolExecutor>(
-            compilations, llvm::ArrayRef<std::string>{} );
+            compilations,
+            compilations.getAllFiles());
     if (!executor)
         return llvm::make_error<llvm::StringError>(
             "could not create StandaloneToolExecutor",
@@ -258,12 +262,11 @@ testMain(int argc, const char** argv)
         Args.push_back(argv[i]);
 
     Config cfg;
-    if(llvm::Error err = setupConfig(cfg, argc, argv))
-    {
-        llvm::errs() << "test failure: " << err << "\n";
-        return EXIT_FAILURE;
-    }
 
+    llvm::Error err = executor->execute(std::make_unique<TestFactory>(cfg));
+    R.success("execute", err);
+
+#if 0
     std::string xml;
     for(int i = 1; i < argc; ++i)
     {
@@ -359,6 +362,7 @@ testMain(int argc, const char** argv)
             iter.increment(ec);
         }
     }
+#endif
 
     if(R.failed)
         return EXIT_FAILURE;

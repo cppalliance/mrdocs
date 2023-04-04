@@ -13,10 +13,12 @@
 #include "CorpusVisitor.hpp"
 #include "Representation.h"
 #include <mrdox/Config.hpp>
+#include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
+#include <llvm/Support/YAMLParser.h>
 
 //------------------------------------------------
 /*
@@ -552,6 +554,33 @@ writeRecords(
 char const*
 XMLGenerator::
 Format = "xml";
+
+/** A visitor which keeps its own map of tool results.
+*/
+class TestVisitor
+    : public BasicVisitor
+{
+    TestVisitor& corpus_;
+    tooling::InMemoryToolResults results_;
+
+public:
+    TestVisitor(
+        TestVisitor& corpus,
+        Config const& cfg) noexcept
+        : BasicVisitor(cfg)
+        , corpus_(corpus)
+    {
+    }
+
+private:
+    void
+    reportResult(
+        StringRef Key,
+        StringRef Value) override
+    {
+        results_.addResult(Key, Value);
+    }
+};
 
 } // (anon)
 

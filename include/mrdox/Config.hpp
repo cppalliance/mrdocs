@@ -45,7 +45,7 @@ struct Config
     std::string ProjectName;
 
     // Indicates if only public declarations are documented.
-    bool PublicOnly;
+    bool PublicOnly = true;
 
     // Directory for outputting generated files.
     std::string OutDirectory;
