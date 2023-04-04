@@ -8,23 +8,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "ClangDoc.h"
-#include "Representation.h"
+#include "TestFiles.hpp"
 #include "TestAction.hpp"
-#include <mrdox/Config.hpp>
-#include <mrdox/Reporter.hpp>
-#include <mrdox/XML.hpp>
-#include <clang/tooling/CompilationDatabase.h>
-#include <clang/tooling/StandaloneExecution.h>
-#include <clang/tooling/Tooling.h>
-#include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Signals.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/MemoryBuffer.h>
-#include <llvm/Support/Path.h>
-#include <llvm/Support/raw_ostream.h>
-#include <atomic>
-#include <cstdlib>
 
 // VFALCO GARBAGE
 extern void force_xml_generator_linkage();
@@ -36,10 +22,6 @@ extern void force_xml_generator_linkage();
 
 namespace clang {
 namespace mrdox {
-
-namespace fs = llvm::sys::fs;
-namespace path = llvm::sys::path;
-using namespace tooling;
 
 //------------------------------------------------
 //
@@ -63,7 +45,7 @@ makeVectorOfArgs(int argc, const char** argv)
 */
 llvm::Expected<std::unique_ptr<tooling::ToolExecutor>>
 createExecutor(
-    tooling::CompilationDatabase const& compilations,
+    tooling::CompilationDatabase const& files,
     std::vector<std::string> const& args,
     llvm::cl::OptionCategory& category,
     char const* overview)
@@ -81,8 +63,8 @@ createExecutor(
 #endif
     auto executor = std::make_unique<
         tooling::StandaloneToolExecutor>(
-            compilations,
-            compilations.getAllFiles());
+            files,
+            files.getAllFiles());
     if (!executor)
         return llvm::make_error<llvm::StringError>(
             "could not create StandaloneToolExecutor",
@@ -92,100 +74,12 @@ createExecutor(
 
 //------------------------------------------------
 
-/** Compilation database where files come in pairs of C++ and XML.
-*/
-class TestCompilationDatabase
-    : public clang::tooling::CompilationDatabase
-{
-    std::vector<CompileCommand> cc_;
-
-public:
-    TestCompilationDatabase() = default;
-
-    bool
-    addDirectory(
-        llvm::StringRef path,
-        Reporter& R)
-    {
-        std::error_code ec;
-        llvm::SmallString<256> dir(path);
-        path::remove_dots(dir, true);
-        fs::directory_iterator const end{};
-        fs::directory_iterator iter(dir, ec, false);
-        if(! R.success("addDirectory", ec))
-            return false;
-        while(iter != end)
-        {
-            if(iter->type() == fs::file_type::directory_file)
-            {
-                addDirectory(iter->path(), R);
-            }
-            else if(
-                iter->type() == fs::file_type::regular_file &&
-                path::extension(iter->path()).equals_insensitive(".cpp"))
-            {
-                llvm::SmallString<256> output(iter->path());
-                path::replace_extension(output, "xml");
-                std::vector<std::string> commandLine = {
-                    "clang",
-                    iter->path()
-                };
-                cc_.emplace_back(
-                    dir,
-                    iter->path(),
-                    std::move(commandLine),
-                    output);
-                cc_.back().Heuristic = "unit test";
-
-            }
-            else
-            {
-                // we don't handle this type
-            }
-            iter.increment(ec);
-            if(! R.success("increment", ec))
-                return false;
-        }
-        return true;
-    }
-
-    std::vector<CompileCommand>
-    getCompileCommands(
-        llvm::StringRef FilePath) const override
-    {
-        std::vector<CompileCommand> result;
-        for(auto const& cc : cc_)
-            if(FilePath.equals(cc.Filename))
-                result.push_back(cc);
-        return result;
-    }
-
-    virtual
-    std::vector<std::string>
-    getAllFiles() const override
-    {
-        std::vector<std::string> result;
-        result.reserve(cc_.size());
-        for(auto const& cc : cc_)
-            result.push_back(cc.Filename);
-        return result;
-    }
-
-    std::vector<CompileCommand>
-    getAllCompileCommands() const override
-    {
-        return cc_;
-    }
-};
-
-//------------------------------------------------
-
 static
 const char* toolOverview =
-R"(Runs tests on input files and checks the results,
+R"(Run tests from input files and report the results.
 
 Example:
-    $ mrdox_tests *( DIR | FILE.cpp )
+    $ mrdox_tests *( DIR )
 )";
 
 static
@@ -206,130 +100,24 @@ testMain(int argc, const char** argv)
 
     // VFALCO GARBAGE
     force_xml_generator_linkage();
-
     Reporter R;
-
-    TestCompilationDatabase compilations;
+    TestFiles files;
     for(int i = 1; i < argc; ++i)
-        compilations.addDirectory(argv[i], R);
-
-
+        files.addDirectory(argv[i], R);
     auto args = makeVectorOfArgs(argc, argv);
     args.push_back("--executor=standalone");
-    std::unique_ptr<ToolExecutor> executor;
+    std::unique_ptr<tooling::ToolExecutor> executor;
     if(llvm::Error err = createExecutor(
-        compilations, args, toolCategory, toolOverview).moveInto(executor))
+        files, args, toolCategory, toolOverview).moveInto(executor))
     {
         return EXIT_FAILURE;
     }
-
     std::vector<std::string> Args;
     for(auto i = 0; i < argc; ++i)
         Args.push_back(argv[i]);
-
     Config cfg;
-
     llvm::Error err = executor->execute(std::make_unique<TestFactory>(cfg, R));
     R.success("execute", err);
-
-#if 0
-    std::string xml;
-    for(int i = 1; i < argc; ++i)
-    {
-        std::error_code ec;
-        llvm::SmallString<256> dir(argv[i]);
-        path::remove_dots(dir, true);
-        fs::recursive_directory_iterator const end{};
-        fs::recursive_directory_iterator iter(dir, ec, false);
-        if(ec)
-        {
-            llvm::errs() <<
-                ec.message() << ": \"" <<
-                dir << "\"\n";
-            return EXIT_FAILURE;
-        }
-        while(iter != end)
-        {
-            {
-                auto const& name = iter->path();
-                llvm::SmallString<128> cppPath(name);
-                llvm::SmallString<128> xmlPath(name);
-                path::remove_dots(cppPath, true);
-                path::remove_dots(xmlPath, true);
-                if(path::extension(name).equals_insensitive(".cpp"))
-                {
-                    if(! fs::is_regular_file(name))
-                    {
-                        llvm::errs() <<
-                            "invalid file: \"" << name << "\"\n";
-                        return EXIT_FAILURE;
-                    }
-                    path::replace_extension(xmlPath, "xml");
-                    if( ! fs::exists(xmlPath) ||
-                        ! fs::is_regular_file(xmlPath))
-                    {
-                        llvm::errs() <<
-                            "missing or invalid file: \"" << xmlPath << "\"\n";
-                        return EXIT_FAILURE;
-                    }
-                }
-                else if(path::extension(name).equals_insensitive(".xml"))
-                {
-                    path::replace_extension(cppPath, "cpp");
-                    if( ! fs::exists(cppPath) ||
-                        ! fs::is_regular_file(cppPath))
-                    {
-                        llvm::errs() <<
-                            "missing or invalid file: \"" << cppPath << "\"\n";
-                        return EXIT_FAILURE;
-                    }
-
-                    // don't process the same test twice
-                    goto loop;
-                }
-                else
-                {
-                    // not .cpp or .xml
-                    goto loop;
-                }
-
-                llvm::StringRef cppCode;
-                auto cppResult = llvm::MemoryBuffer::getFile(cppPath, true);
-                if(! cppResult)
-                {
-                    llvm::errs() <<
-                        cppResult.getError().message() << ": \"" << xmlPath << "\"\n";
-                    return EXIT_FAILURE;
-                }
-                cppCode = cppResult->get()->getBuffer();
-
-                llvm::StringRef expectedXml;
-                auto xmlResult = llvm::MemoryBuffer::getFile(xmlPath, true);
-                if(! xmlResult)
-                {
-                    llvm::errs() <<
-                        xmlResult.getError().message() << ": \"" << xmlPath << "\"\n";
-                    return EXIT_FAILURE;
-                }
-                expectedXml = xmlResult->get()->getBuffer();
-
-                if(! renderCodeAsXML(xml, cppCode, cfg))
-                    return EXIT_FAILURE;
-
-                if(xml != expectedXml)
-                {
-                    R.failed = true;
-                    llvm::errs() <<
-                        "Failed: \"" << xmlPath << "\", got\n" <<
-                        xml;
-                }
-            }
-        loop:
-            iter.increment(ec);
-        }
-    }
-#endif
-
     if(R.failed())
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
