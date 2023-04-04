@@ -9,7 +9,6 @@
 //
 
 #include "ClangDoc.h"
-#include "Mapper.h"
 #include "Representation.h"
 #include <mrdox/Config.hpp>
 #include <mrdox/XML.hpp>
@@ -38,6 +37,7 @@ namespace mrdox {
 
 namespace fs = llvm::sys::fs;
 namespace path = llvm::sys::path;
+using namespace tooling;
 
 //------------------------------------------------
 //
@@ -92,7 +92,7 @@ makeVectorOfArgs(int argc, const char** argv)
 
 /** Return an executor from a vector of arguments.
 */
-llvm::Expected<std::unique_ptr<ToolExecutor>>
+llvm::Expected<std::unique_ptr<tooling::ToolExecutor>>
 createExecutor(
     tooling::CompilationDatabase const& compilations,
     std::vector<std::string> const& args,
@@ -103,8 +103,8 @@ createExecutor(
     argv.reserve(args.size());
     for(auto const& arg : args)
         argv.push_back(arg.data());
-    int argc = static_cast<int>(argv.size());
 #if 0
+    int argc = static_cast<int>(argv.size());
     auto OptionsParser = CommonOptionsParser::create(
         argc, argv.data(), category, llvm::cl::ZeroOrMore, overview);
     if (!OptionsParser)
@@ -258,7 +258,7 @@ testMain(int argc, const char** argv)
         Args.push_back(argv[i]);
 
     Config cfg;
-    if(llvm::Error err = setupContext(cfg, argc, argv))
+    if(llvm::Error err = setupConfig(cfg, argc, argv))
     {
         llvm::errs() << "test failure: " << err << "\n";
         return EXIT_FAILURE;

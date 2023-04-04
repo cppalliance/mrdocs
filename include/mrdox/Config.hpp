@@ -69,14 +69,14 @@ struct Config
 /** Set up a docs context from command line arguments.
 */
 llvm::Error
-setupContext(
+setupConfig(
     Config& cfg,
     int argc, const char** argv);
 
 /** Set up a docs context from command line arguments.
 */
 llvm::Error
-setupContext(
+setupConfig(
     Config& cfg,
     llvm::SmallVector<llvm::StringRef, 16> const& args);
 

@@ -10,7 +10,7 @@
 //
 
 #include "Generators.h"
-#include "Mapper.h"
+#include "CorpusVisitor.hpp"
 #include "Representation.h"
 #include <mrdox/Config.hpp>
 #include <clang/Tooling/Tooling.h>
@@ -566,7 +566,7 @@ renderCodeAsXML(
     std::unique_ptr<ASTUnit> astUnit =
         clang::tooling::buildASTFromCodeWithArgs(cppCode, {});
     Corpus corpus;
-    MapASTVisitor visitor(corpus, cfg);
+    CorpusVisitor visitor(corpus, cfg);
     visitor.HandleTranslationUnit(astUnit->getASTContext());
     if(llvm::Error err = buildIndex(corpus, cfg))
         return ! err;

@@ -16,7 +16,7 @@
 //
 
 #include "ClangDoc.h"
-#include "Mapper.h"
+#include "CorpusVisitor.hpp"
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/Frontend/FrontendAction.h"
 
@@ -43,7 +43,7 @@ struct action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<MapASTVisitor>(corpus_, cfg_);
+        return std::make_unique<CorpusVisitor>(corpus_, cfg_);
     }
 
 private:

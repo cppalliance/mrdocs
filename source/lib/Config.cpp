@@ -138,18 +138,18 @@ Config()
 }
 
 llvm::Error
-setupContext(
+setupConfig(
     Config& cfg,
     int argc, const char** argv)
 {
     llvm::SmallVector<llvm::StringRef, 16> args;
     for(int i = 0; i < argc; ++i)
         args.push_back(argv[i]);
-    return setupContext(cfg, args);
+    return setupConfig(cfg, args);
 }
 
 llvm::Error
-setupContext(
+setupConfig(
     Config& cfg,
     llvm::SmallVector<llvm::StringRef, 16> const& args)
 {

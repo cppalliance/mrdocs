@@ -65,7 +65,11 @@ GetExecutablePath(
 
 //------------------------------------------------
 
+namespace clang {
+namespace mrdox {
 
+} // mrdox
+} // clang
 
 //------------------------------------------------
 
@@ -79,7 +83,7 @@ main(int argc, const char** argv)
     std::error_code OK;
 
     clang::mrdox::Config cfg;
-    if(llvm::Error err = setupContext(cfg, argc, argv))
+    if(llvm::Error err = setupConfig(cfg, argc, argv))
     {
         llvm::errs() << err << "\n";
         return EXIT_FAILURE;

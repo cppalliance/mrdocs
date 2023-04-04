@@ -9,10 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Mapper.h"
 #include "BitcodeWriter.h"
 #include "Error.hpp"
 #include "Serialize.h"
+#include <mrdox/BasicVisitor.hpp>
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
@@ -27,7 +27,7 @@ namespace clang {
 namespace mrdox {
 
 void
-MapASTVisitor::
+BasicVisitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
@@ -36,7 +36,7 @@ HandleTranslationUnit(
 
 template<typename T>
 bool
-MapASTVisitor::
+BasicVisitor::
 mapDecl(T const* D)
 {
     // If we're looking a decl not in user files, skip this decl.
@@ -61,18 +61,19 @@ mapDecl(T const* D)
     // A null in place of I indicates that the serializer is skipping this decl
     // for some reason (e.g. we're only reporting public decls).
     if (I.first)
-        cfg_.ECtx->reportResult(
+        reportResult(
             llvm::toHex(llvm::toStringRef(I.first->USR)),
             serialize::serialize(I.first));
     if (I.second)
-        cfg_.ECtx->reportResult(
+        reportResult(
             llvm::toHex(llvm::toStringRef(I.second->USR)),
             serialize::serialize(I.second));
+
     return true;
 }
 
 bool
-MapASTVisitor::
+BasicVisitor::
 VisitNamespaceDecl(
     NamespaceDecl const* D)
 {
@@ -80,7 +81,7 @@ VisitNamespaceDecl(
 }
 
 bool
-MapASTVisitor::
+BasicVisitor::
 VisitRecordDecl(
     RecordDecl const* D)
 {
@@ -88,7 +89,7 @@ VisitRecordDecl(
 }
 
 bool
-MapASTVisitor::
+BasicVisitor::
 VisitEnumDecl(
     EnumDecl const* D)
 {
@@ -96,7 +97,7 @@ VisitEnumDecl(
 }
 
 bool
-MapASTVisitor::
+BasicVisitor::
 VisitCXXMethodDecl(
     CXXMethodDecl const* D)
 {
@@ -104,7 +105,7 @@ VisitCXXMethodDecl(
 }
 
 bool
-MapASTVisitor::
+BasicVisitor::
 VisitFunctionDecl(
     FunctionDecl const* D)
 {
@@ -115,21 +116,21 @@ VisitFunctionDecl(
 }
 
 bool
-MapASTVisitor::
+BasicVisitor::
 VisitTypedefDecl(TypedefDecl const* D)
 {
     return mapDecl(D);
 }
 
 bool
-MapASTVisitor::
+BasicVisitor::
 VisitTypeAliasDecl(TypeAliasDecl const* D)
 {
     return mapDecl(D);
 }
 
 comments::FullComment*
-MapASTVisitor::
+BasicVisitor::
 getComment(
     NamedDecl const* D,
     ASTContext const& Context) const
@@ -145,7 +146,7 @@ getComment(
 }
 
 int
-MapASTVisitor::
+BasicVisitor::
 getLine(
     NamedDecl const* D,
     ASTContext const& Context) const
@@ -155,7 +156,7 @@ getLine(
 }
 
 llvm::SmallString<128>
-MapASTVisitor::
+BasicVisitor::
 getFile(NamedDecl const* D,
     ASTContext const& Context,
     llvm::StringRef RootDir,

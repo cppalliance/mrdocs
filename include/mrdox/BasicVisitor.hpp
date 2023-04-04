@@ -17,34 +17,34 @@
 // key is the declaration's USR and the value is the serialized bitcode.
 //
 
-#ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_MAPPER_H
-#define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_MAPPER_H
+#ifndef MRDOX_BASIC_VISITOR_HPP
+#define MRDOX_BASIC_VISITOR_HPP
 
 #include "Representation.h"
 #include <mrdox/Config.hpp>
-#include "clang/AST/RecursiveASTVisitor.h"
-#include "clang/Tooling/Execution.h"
-
-using namespace clang::comments;
-using namespace clang::tooling;
+#include <clang/AST/ASTConsumer.h>
+#include <clang/AST/RecursiveASTVisitor.h>
+#include <utility>
 
 namespace clang {
 namespace mrdox {
 
-class MapASTVisitor
-    : public clang::RecursiveASTVisitor<MapASTVisitor>
+class BasicVisitor
+    : public RecursiveASTVisitor<BasicVisitor>
     , public ASTConsumer
 {
+protected:
+    Config const& cfg_;
+
 public:
     explicit
-    MapASTVisitor(
-        Corpus& corpus,
-        Config const& cfg)
-        : corpus_(corpus)
-        , cfg_(cfg)
+    BasicVisitor(
+        Config const& cfg) noexcept
+        : cfg_(cfg)
     {
     }
 
+    // private
     void HandleTranslationUnit(ASTContext& Context) override;
     bool VisitNamespaceDecl(NamespaceDecl const* D);
     bool VisitRecordDecl(RecordDecl const* D);
@@ -55,6 +55,8 @@ public:
     bool VisitTypeAliasDecl(TypeAliasDecl const* D);
 
 private:
+    virtual void reportResult(StringRef Key, StringRef Value) = 0;
+
     template <typename T>
     bool mapDecl(T const* D);
 
@@ -74,9 +76,6 @@ private:
     getComment(
         NamedDecl const* D,
         ASTContext const& Context) const;
-
-    Corpus& corpus_;
-    Config const& cfg_;
 };
 
 } // mrdox
