@@ -12,9 +12,11 @@
 #include "Generators.h"
 #include "CorpusVisitor.hpp"
 #include "Representation.h"
+#include "base64.hpp"
 #include <mrdox/Config.hpp>
 #include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
+#include <llvm/ADT/StringExtras.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -164,28 +166,50 @@ private:
                 llvm::StringRef,
                 llvm::StringRef>>;
 
-    NamespaceInfo const*
-    findGlobalNamespace();
+    //--------------------------------------------
+
+    void writeNamespaces(std::vector<Reference> const& v);
+    void writeNamespace(NamespaceInfo const& I);
+    void writeRecords(std::vector<Reference> const& v);
+    void writeRecord(RecordInfo const& I);
+    void writeFunctionList(FunctionList const& fnList);
+    void writeFunctionOverloads(FunctionOverloads const& fns);
+    void writeFunction(FunctionInfo const& I);
+    void writeEnums(std::vector<EnumInfo> const& v);
+    void writeEnum(EnumInfo const& I);
+    void writeTypedefs(std::vector<TypedefInfo> const& v);
+    void writeTypedef(TypedefInfo const& I);
+
+    //--------------------------------------------
+
+    void writeInfoPart(Info const& I);
+    void writeNamespaceList(llvm::SmallVector<Reference, 4> const& v);
+    void writeRef(Reference const& ref);
+    void writeLoc(llvm::ArrayRef<Location> const& loc);
+    void writeLoc(std::optional<Location> const& loc);
+
+    //--------------------------------------------
 
     void openTag(llvm::StringRef);
     void openTag(llvm::StringRef, Attrs);
     void closeTag(llvm::StringRef);
     void writeTag(llvm::StringRef);
     void writeTag(llvm::StringRef, Attrs);
+    void writeTagLine(llvm::StringRef tag, llvm::StringRef value);
+    void writeTagLine(llvm::StringRef tag, llvm::StringRef value, Attrs);
 
-    void writeNamespace(NamespaceInfo const& I);
-    void writeRecord(RecordInfo const& I);
-    void writeFunction(FunctionInfo const& I);
-    void writeEnum(EnumInfo const& I);
-    void writeTypedef(TypedefInfo const& I);
-    void writeOverloads(FunctionOverloads const& fns);
-    void writeFunctions(FunctionList const& fnList);
-    void writeEnums(std::vector<EnumInfo> const& v);
-    void writeTypedefs(std::vector<TypedefInfo> const& v);
+    //--------------------------------------------
 
-    void writeNamespaces(std::vector<Reference> const& v);
-    void writeRecords(std::vector<Reference> const& v);
- 
+    std::string toString(SymbolID const& id);
+    llvm::StringRef toString(AccessSpecifier access);
+
+    //--------------------------------------------
+
+    NamespaceInfo const*
+    findGlobalNamespace();
+
+    //--------------------------------------------
+
     Config const& cfg_;
     std::string level_;
     llvm::raw_ostream* os_ = nullptr;
@@ -286,21 +310,243 @@ generateDocForInfo(
 
 //------------------------------------------------
 
-NamespaceInfo const*
+void
 XMLGenerator::
-findGlobalNamespace()
+writeNamespaces(
+    std::vector<Reference> const& v)
 {
-    for(auto const& g : *infos_)
+    for(auto const& ref : v)
     {
-        auto const& inf = *g.getValue().get();
-        if( inf.Name == "" &&
-            inf.IT == InfoType::IT_namespace)
-            return static_cast<
-                NamespaceInfo const*>(&inf);
+        assert(ref.RefType == InfoType::IT_namespace);
+        auto it = infos_->find(
+            llvm::toHex(llvm::toStringRef(ref.USR)));
+        assert(it != infos_->end());
+        writeNamespace(
+            *static_cast<NamespaceInfo const*>(
+                it->second.get()));
     }
-
-    return nullptr;
 }
+
+void
+XMLGenerator::
+writeNamespace(
+    NamespaceInfo const& I)
+{
+    openTag("namespace", {
+        { "name", I.Name },
+        { "USR", toBase64(I.USR) } });
+    writeInfoPart(I);
+    writeNamespaces(I.Children.Namespaces);
+    writeRecords(I.Children.Records);
+    writeFunctionList(I.Children.functions);
+    writeEnums(I.Children.Enums);
+    writeTypedefs(I.Children.Typedefs);
+    closeTag("namespace");
+}
+
+void
+XMLGenerator::
+writeRecords(
+    std::vector<Reference> const& v)
+{
+    for(auto const& ref : v)
+    {
+        assert(ref.RefType == InfoType::IT_record);
+        auto it = infos_->find(
+            llvm::toHex(llvm::toStringRef(ref.USR)));
+        assert(it != infos_->end());
+        writeRecord(
+            *static_cast<RecordInfo const*>(
+                it->second.get()));
+    }
+}
+
+void
+XMLGenerator::
+writeRecord(
+    RecordInfo const& I)
+{
+    openTag( "compound", {
+        { "name", I.Name },
+        { "USR", toBase64(I.USR) },
+        { "tag", getTagType(I.TagType) },
+        });
+    writeInfoPart(I);
+    writeNamespaces(I.Children.Namespaces);
+    writeRecords(I.Children.Records);
+    writeFunctionList(I.Children.functions);
+    writeEnums(I.Children.Enums);
+    writeTypedefs(I.Children.Typedefs);
+    closeTag("compound");
+}
+
+void
+XMLGenerator::
+writeFunctionList(
+    FunctionList const& fnList)
+{
+    for(auto const& fns : fnList)
+        writeFunctionOverloads(fns);
+}
+
+void
+XMLGenerator::
+writeFunctionOverloads(
+    FunctionOverloads const& fns)
+{
+    for(auto const& fn : fns)
+        writeFunction(fn);
+}
+
+void
+XMLGenerator::
+writeFunction(
+    FunctionInfo const& I)
+{
+    openTag("func", {
+        { "name", I.Name },
+        { "USR", toBase64(I.USR) },
+        { "access", toString(I.Access) }
+        });
+    writeInfoPart(I);
+    writeTagLine("return",
+        I.ReturnType.Type.Name, {
+            { "usr", toString(I.ReturnType.Type.USR) }
+        });
+    writeRef(I.ReturnType.Type);
+    if(I.Template)
+    {
+        for(TemplateParamInfo const& tp : I.Template->Params)
+            writeTag(
+                "tp", {
+                { "n", tp.Contents }
+                });
+    }
+    for(FieldTypeInfo const& p : I.Params)
+        writeTag("p", {
+            { "n", p.Name },
+            { "t", p.Type.Name }
+            });
+    writeLoc(I.Loc);
+    closeTag("func");
+}
+
+void
+XMLGenerator::
+writeEnums(
+    std::vector<EnumInfo> const& v)
+{
+    for(auto const& I : v)
+        writeEnum(I);
+}
+
+void
+XMLGenerator::
+writeEnum(
+    EnumInfo const& I)
+{
+    openTag("enum", {
+        { "name", I.Name },
+        { "USR", toBase64(I.USR) },
+        });
+    writeInfoPart(I);
+    for(auto const& v : I.Members)
+    {
+        writeTag("value", {
+            { "n", v.Name },
+            { "v", v.Value },
+            });
+    }
+    writeLoc(I.Loc);
+    closeTag("enum");
+}
+
+void
+XMLGenerator::
+writeTypedefs(
+    std::vector<TypedefInfo> const& v)
+{
+    for(auto const& I : v)
+        writeTypedef(I);
+}
+
+void
+XMLGenerator::
+writeTypedef(
+    TypedefInfo const& I)
+{
+    openTag("typedef", {
+        { "name", I.Name },
+        { "USR", toBase64(I.USR) }
+        });
+    writeInfoPart(I);
+    writeTagLine("qualname", I.Underlying.Type.QualName);
+    writeLoc(I.DefLoc);
+    closeTag("typedef");
+}
+
+//------------------------------------------------
+
+void
+XMLGenerator::
+writeInfoPart(
+    Info const& I)
+{
+    writeTagLine("type", std::to_string(static_cast<int>(I.IT)));
+    writeNamespaceList(I.Namespace);
+}
+
+void
+XMLGenerator::
+writeNamespaceList(
+    llvm::SmallVector<Reference, 4> const& v)
+{
+    for(auto const& ns : v)
+        writeTagLine("ns", ns.QualName);
+}
+
+void
+XMLGenerator::
+writeRef(
+    Reference const& ref)
+{
+    openTag("ref", {
+        { "usr", toString(ref.USR) }
+        });
+    //writeTagLine("relpath", ref.getRelativeFilePath());
+    writeTagLine("basename",
+        ref.getFileBaseName());
+    writeTagLine("name", ref.Name);
+    writeTagLine("qual", ref.QualName);
+    writeTagLine("type", std::to_string(static_cast<int>(ref.RefType)));
+    writeTagLine("path", ref.Path);
+    closeTag("ref");
+}
+
+void
+XMLGenerator::
+writeLoc(
+    llvm::ArrayRef<Location> const& loc)
+{
+    if(loc.size() > 0)
+        *os_ << level_ <<
+            "<file>" << escape(loc[0].Filename) <<
+            "</file><line>" << std::to_string(loc[0].LineNumber) <<
+            "</line>\n";
+}
+
+void
+XMLGenerator::
+writeLoc(
+    std::optional<Location> const& opt)
+{
+    if(! opt)
+        return;
+    Location const& loc(*opt);
+    writeLoc(llvm::ArrayRef<Location>(&loc, &loc+1));
+}
+
+//------------------------------------------------
 
 void
 XMLGenerator::
@@ -357,48 +603,47 @@ writeTag(
     *os_ << "/>\n";
 }
 
-//------------------------------------------------
+void
+XMLGenerator::
+writeTagLine(
+    llvm::StringRef tag,
+    llvm::StringRef value)
+{
+    *os_ << level_ <<
+        "<" << tag << ">" <<
+        escape(value) <<
+        "</" << tag << ">" <<
+        "\n";
+}
 
 void
 XMLGenerator::
-writeNamespace(
-    NamespaceInfo const& I)
+writeTagLine(
+    llvm::StringRef tag,
+    llvm::StringRef value,
+    Attrs init)
 {
-    openTag(
-        "ns", {
-        { "n", I.Name }
-        });
-    writeNamespaces(I.Children.Namespaces);
-    writeRecords(I.Children.Records);
-    writeFunctions(I.Children.functions);
-    writeEnums(I.Children.Enums);
-    writeTypedefs(I.Children.Typedefs);
-    closeTag("ns");
+    *os_ << level_ <<
+        "<" << tag;
+    for(auto const& attr : init)
+        *os_ <<
+            ' ' << attr.first << '=' <<
+            "\"" << escape(attr.second) << "\"";
+    *os_ << ">" << escape(value) << "</" << tag << ">" << "\n";
 }
 
 //------------------------------------------------
 
-void
+std::string
 XMLGenerator::
-writeRecord(
-    RecordInfo const& I)
+toString(
+    SymbolID const& id)
 {
-    openTag(
-        "udt", {
-        { "n", I.Name },
-        { "t", getTagType(I.TagType) }
-        });
-    writeNamespaces(I.Children.Namespaces);
-    writeRecords(I.Children.Records);
-    writeFunctions(I.Children.functions);
-    writeEnums(I.Children.Enums);
-    writeTypedefs(I.Children.Typedefs);
-    closeTag("udt");
+    return toBase64(id);
 }
-//------------------------------------------------
 
-static
 llvm::StringRef
+XMLGenerator::
 toString(
     AccessSpecifier access)
 {
@@ -416,137 +661,22 @@ toString(
     }
 }
 
-void
-XMLGenerator::
-writeFunction(
-    FunctionInfo const& I)
-{
-    openTag("fn", {
-        { "n", I.Name },
-        { "r", I.ReturnType.Type.Name },
-        { "a", toString(I.Access) }
-        });
-    if(I.Template)
-    {
-        for(TemplateParamInfo const& tp : I.Template->Params)
-            writeTag(
-                "tp", {
-                { "n", tp.Contents }
-                });
-    }
-    for(FieldTypeInfo const& p : I.Params)
-        writeTag("p", {
-            { "n", p.Name },
-            { "t", p.Type.Name }
-            });
-    closeTag("fn");
-}
-
 //------------------------------------------------
 
-void
+NamespaceInfo const*
 XMLGenerator::
-writeEnum(
-    EnumInfo const& I)
+findGlobalNamespace()
 {
-    openTag("en", {
-        { "n", I.Name },
-        });
-    for(auto const& v : I.Members)
+    for(auto const& g : *infos_)
     {
-        writeTag("value", {
-            { "n", v.Name },
-            { "v", v.Value },
-            });
+        auto const& inf = *g.getValue().get();
+        if( inf.Name == "" &&
+            inf.IT == InfoType::IT_namespace)
+            return static_cast<
+                NamespaceInfo const*>(&inf);
     }
-    closeTag("en");
-}
 
-//------------------------------------------------
-
-void
-XMLGenerator::
-writeTypedef(
-    TypedefInfo const& I)
-{
-    writeTag(
-        "ty", {
-        { "n", I.Name }
-        });
-}
-
-//------------------------------------------------
-
-void
-XMLGenerator::
-writeOverloads(
-    FunctionOverloads const& fns)
-{
-    for(auto const& fn : fns)
-        writeFunction(fn);
-}
-
-void
-XMLGenerator::
-writeFunctions(
-    FunctionList const& fnList)
-{
-    for(auto const& fns : fnList)
-        writeOverloads(fns);
-}
-
-void
-XMLGenerator::
-writeEnums(
-    std::vector<EnumInfo> const& v)
-{
-    for(auto const& I : v)
-        writeEnum(I);
-}
-
-void
-XMLGenerator::
-writeTypedefs(
-    std::vector<TypedefInfo> const& v)
-{
-    for(auto const& I : v)
-        writeTypedef(I);
-}
-
-//------------------------------------------------
-
-void
-XMLGenerator::
-writeNamespaces(
-    std::vector<Reference> const& v)
-{
-    for(auto const& ref : v)
-    {
-        assert(ref.RefType == InfoType::IT_namespace);
-        auto it = infos_->find(
-            llvm::toHex(llvm::toStringRef(ref.USR)));
-        assert(it != infos_->end());
-        writeNamespace(
-            *static_cast<NamespaceInfo const*>(
-                it->second.get()));
-    }
-}
-
-void
-XMLGenerator::
-writeRecords(
-    std::vector<Reference> const& v)
-{
-    for(auto const& ref : v)
-    {
-        assert(ref.RefType == InfoType::IT_record);
-        auto it = infos_->find(
-            llvm::toHex(llvm::toStringRef(ref.USR)));
-        assert(it != infos_->end());
-        writeRecord(
-            *static_cast<RecordInfo const*>(
-                it->second.get()));
-    }
+    return nullptr;
 }
 
 //------------------------------------------------

@@ -54,9 +54,13 @@ mapDecl(T const* D)
     bool IsFileInRootDir;
     llvm::SmallString<128> File =
         getFile(D, D->getASTContext(), cfg_.SourceRoot, IsFileInRootDir);
-    auto I = serialize::emitInfo(D, getComment(D, D->getASTContext()),
-        getLine(D, D->getASTContext()), File,
-        IsFileInRootDir, cfg_.PublicOnly);
+    auto I = serialize::emitInfo(
+        D,
+        getComment(D, D->getASTContext()),
+        getLine(D, D->getASTContext()),
+        File,
+        IsFileInRootDir,
+        cfg_.PublicOnly);
 
     // A null in place of I indicates that the serializer is skipping this decl
     // for some reason (e.g. we're only reporting public decls).
@@ -115,10 +119,24 @@ VisitFunctionDecl(
     return mapDecl(D);
 }
 
+// https://github.com/llvm/llvm-project/blob/466d554dcab39c3d42fe0c5b588b795e0e4b9d0d/clang/include/clang/AST/Type.h#L1566
+
 bool
 BasicVisitor::
 VisitTypedefDecl(TypedefDecl const* D)
 {
+#if 0
+    TypeDecl const* td = D;
+    Type const* ty = td->getTypeForDecl();
+    ty->getAsCXXRecordDecl();
+
+    /*
+    for(auto const& t : D->redecls())
+    {
+        llvm::outs() << "\n";
+    }
+    */
+#endif
     return mapDecl(D);
 }
 

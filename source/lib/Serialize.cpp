@@ -142,24 +142,56 @@ TypeInfo getTypeInfoForType(const QualType& T) {
         T.getAsString(), getInfoRelativePath(TD)));
 }
 
-static bool isPublic(const clang::AccessSpecifier AS,
-    const clang::Linkage Link) {
+static
+bool
+isPublic(
+    clang::AccessSpecifier const AS,
+    clang::Linkage const Link)
+{
     if (AS == clang::AccessSpecifier::AS_private)
         return false;
-    else if ((Link == clang::Linkage::ModuleLinkage) ||
-        (Link == clang::Linkage::ExternalLinkage))
+    if (Link == clang::Linkage::ModuleLinkage ||
+        Link == clang::Linkage::ExternalLinkage)
         return true;
-    return false; // otherwise, linkage is some form of internal linkage
+    // some form of internal linkage
+    return false; 
 }
 
-static bool shouldSerializeInfo(bool PublicOnly, bool IsInAnonymousNamespace,
-    const NamedDecl* D) {
+static
+bool
+shouldSerializeInfo(
+    bool PublicOnly,
+    bool IsInAnonymousNamespace,
+    NamedDecl const* D)
+{
     bool IsAnonymousNamespace = false;
-    if (const auto* N = dyn_cast<NamespaceDecl>(D))
+    if(auto const* N = dyn_cast<NamespaceDecl>(D))
         IsAnonymousNamespace = N->isAnonymousNamespace();
     return !PublicOnly ||
         (!IsInAnonymousNamespace && !IsAnonymousNamespace &&
             isPublic(D->getAccessUnsafe(), D->getLinkageInternal()));
+}
+
+// handles TypedefDecl and TypeAliasDecl
+static
+bool
+shouldSerializeInfo(
+    bool PublicOnly,
+    bool IsInAnonymousNamespace,
+    TypedefNameDecl const* D)
+{
+    if(! PublicOnly)
+        return true;
+    if(IsInAnonymousNamespace)
+        return false;
+    if(auto const* N = dyn_cast<NamespaceDecl>(D))
+    {
+        if(N->isAnonymousNamespace())
+            return false;
+    }
+    if(D->getAccessUnsafe() == AccessSpecifier::AS_private)
+        return false;
+    return true;
 }
 
 // The InsertChild functions insert the given info into the given scope using
@@ -611,9 +643,17 @@ emitInfo(const RecordDecl* D, const FullComment* FC, int LineNumber,
     return { std::move(I), std::move(Parent) };
 }
 
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const FunctionDecl* D, const FullComment* FC, int LineNumber,
-    llvm::StringRef File, bool IsFileInRootDir, bool PublicOnly) {
+std::pair<
+    std::unique_ptr<Info>,
+    std::unique_ptr<Info>>
+emitInfo(
+    FunctionDecl const* D,
+    FullComment const* FC,
+    int LineNumber,
+    llvm::StringRef File,
+    bool IsFileInRootDir,
+    bool PublicOnly)
+{
     FunctionInfo Func;
     bool IsInAnonymousNamespace = false;
     populateFunctionInfo(Func, D, FC, LineNumber, File, IsFileInRootDir,
@@ -655,9 +695,17 @@ emitInfo(const CXXMethodDecl* D, const FullComment* FC, int LineNumber,
     return { nullptr, MakeAndInsertIntoParent<FunctionInfo&&>(std::move(Func)) };
 }
 
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const TypedefDecl* D, const FullComment* FC, int LineNumber,
-    StringRef File, bool IsFileInRootDir, bool PublicOnly) {
+std::pair<
+    std::unique_ptr<Info>,
+    std::unique_ptr<Info>>
+emitInfo(
+    const TypedefDecl* D,
+    const FullComment* FC,
+    int LineNumber,
+    StringRef File,
+    bool IsFileInRootDir,
+    bool PublicOnly)
+{
     TypedefInfo Info;
 
     bool IsInAnonymousNamespace = false;
@@ -681,9 +729,17 @@ emitInfo(const TypedefDecl* D, const FullComment* FC, int LineNumber,
 
 // A type alias is a C++ "using" declaration for a type. It gets mapped to a
 // TypedefInfo with the IsUsing flag set.
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const TypeAliasDecl* D, const FullComment* FC, int LineNumber,
-    StringRef File, bool IsFileInRootDir, bool PublicOnly) {
+std::pair<
+    std::unique_ptr<Info>,
+    std::unique_ptr<Info>>
+emitInfo(
+    const TypeAliasDecl* D,
+    const FullComment* FC,
+    int LineNumber,
+    StringRef File,
+    bool IsFileInRootDir,
+    bool PublicOnly)
+{
     TypedefInfo Info;
 
     bool IsInAnonymousNamespace = false;
