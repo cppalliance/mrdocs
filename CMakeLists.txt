@@ -11,8 +11,8 @@
 cmake_minimum_required(VERSION 3.25.2)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-set(CMAKE_MSVC_RUNTIME_LIBRARY
-    "MultiThreadedDLL" CACHE STRING "")
+# VFALCO this is to link optimized llvm for debug builds
+#set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL" CACHE STRING "")
 
 #-------------------------------------------------
 
@@ -53,9 +53,9 @@ if(MSVC)
         /MP             # multi-processor compilation
         /EHsc           # C++ Exception handling
     )
-    add_definitions(
-        -D_ITERATOR_DEBUG_LEVEL=0
-    )
+    #add_definitions(
+        #-D_ITERATOR_DEBUG_LEVEL=0
+    #)
 endif()
 
 #-------------------------------------------------
