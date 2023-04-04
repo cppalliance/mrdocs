@@ -44,7 +44,7 @@ public:
     {
     }
 
-    // private
+//private:
     void HandleTranslationUnit(ASTContext& Context) override;
     bool VisitNamespaceDecl(NamespaceDecl const* D);
     bool VisitRecordDecl(RecordDecl const* D);

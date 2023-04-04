@@ -227,6 +227,7 @@ doMapping(
 llvm::Error
 buildIndex(
     Corpus& corpus,
+    tooling::ToolResults& toolResults,
     Config const& cfg)
 {
     // Collect values into output by key.
@@ -234,7 +235,7 @@ buildIndex(
     // bitcode-encoded representation of the Info object.
     llvm::outs() << "Collecting symbols\n";
     llvm::StringMap<std::vector<StringRef>> USRToBitcode;
-    cfg.Executor->getToolResults()->forEachResult(
+    toolResults.forEachResult(
         [&](StringRef Key, StringRef Value)
         {
             auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());

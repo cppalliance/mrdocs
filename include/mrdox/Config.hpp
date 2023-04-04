@@ -92,6 +92,7 @@ doMapping(
 llvm::Error
 buildIndex(
     Corpus& corpus,
+    tooling::ToolResults& toolResults,
     Config const& cfg);
 
 } // mrdox

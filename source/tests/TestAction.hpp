@@ -12,6 +12,8 @@
 #define MRDOX_TEST_TEST_VISITOR_HPP
 
 #include <mrdox/BasicVisitor.hpp>
+#include <mrdox/Corpus.hpp>
+#include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>
 
 namespace clang {
@@ -23,10 +25,13 @@ namespace mrdox {
 */
 struct TestVisitor : public BasicVisitor
 {
-    explicit
     TestVisitor(
-        Config const& cfg) noexcept
+        tooling::InMemoryToolResults& results,
+        Config const& cfg,
+        Reporter& R) noexcept
         : BasicVisitor(cfg)
+        , results_(results)
+        , R_(R)
     {
     }
 
@@ -39,53 +44,66 @@ private:
         results_.addResult(Key, Value);
     }
 
-    tooling::InMemoryToolResults results_;
+    tooling::InMemoryToolResults& results_;
+    Reporter& R_;
 };
 
 //------------------------------------------------
 
+/** Frontend action to run the test visitor.
+*/
 struct TestAction
     : public clang::ASTFrontendAction
 {
-    explicit
     TestAction(
-        Config const& cfg) noexcept
+        Config const& cfg,
+        Reporter& R) noexcept
         : cfg_(cfg)
+        , R_(R)
     {
     }
 
+private:
     std::unique_ptr<clang::ASTConsumer>
     CreateASTConsumer(
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<TestVisitor>(cfg_);
+        return std::make_unique<TestVisitor>(results_, cfg_, R_);
     }
+
+    void EndSourceFileAction();
 
 private:
     Config const& cfg_;
+    tooling::InMemoryToolResults results_;
+    Reporter& R_;
 };
 
 //------------------------------------------------
 
+/** Factory boilerplate for creating test actions.
+*/
 struct TestFactory
     : public tooling::FrontendActionFactory
 {
-    explicit
     TestFactory(
-        Config const& cfg) noexcept
+        Config const& cfg,
+        Reporter& R) noexcept
         : cfg_(cfg)
+        , R_(R)
     {
     }
 
     std::unique_ptr<FrontendAction>
     create() override
     {
-        return std::make_unique<TestAction>(cfg_);
+        return std::make_unique<TestAction>(cfg_, R_);
     }
 
 private:
     Config const& cfg_;
+    Reporter& R_;
 };
 
 } // mrdox

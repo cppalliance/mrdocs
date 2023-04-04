@@ -101,7 +101,7 @@ main(int argc, const char** argv)
 
     // Build the internal representation of
     // the C++ declarations to be documented.
-    if(llvm::Error err = buildIndex(corpus, cfg))
+    if(llvm::Error err = buildIndex(corpus, *cfg.Executor->getToolResults(), cfg))
     {
         llvm::errs() <<
             toString(std::move(err)) << "\n";

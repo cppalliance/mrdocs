@@ -12,6 +12,7 @@
 #include "Representation.h"
 #include "TestAction.hpp"
 #include <mrdox/Config.hpp>
+#include <mrdox/Reporter.hpp>
 #include <mrdox/XML.hpp>
 #include <clang/tooling/CompilationDatabase.h>
 #include <clang/tooling/StandaloneExecution.h>
@@ -44,41 +45,6 @@ using namespace tooling;
 //
 // Generally Helpful Utilties
 //
-//------------------------------------------------
-
-/** Used to check and report errors uniformly.
-*/
-struct Reporter
-{
-    bool failed = false;
-
-    bool
-    success(
-        llvm::StringRef what,
-        std::error_code const& ec)
-    {
-        if(! ec)
-            return true;
-        llvm::errs() <<
-            what << ": " << ec.message() << "\n";
-        failed = true;
-        return false;
-    }
-
-    bool
-    success(
-        llvm::StringRef what,
-        llvm::Error& err)
-    {
-        if(! err)
-            return true;
-        llvm::errs() <<
-            what << ": " << toString(std::move(err)) << "\n";
-        failed = true;
-        return false;
-    }
-};
-
 //------------------------------------------------
 
 /** Return command line arguments as a vector of strings.
@@ -263,7 +229,7 @@ testMain(int argc, const char** argv)
 
     Config cfg;
 
-    llvm::Error err = executor->execute(std::make_unique<TestFactory>(cfg));
+    llvm::Error err = executor->execute(std::make_unique<TestFactory>(cfg, R));
     R.success("execute", err);
 
 #if 0
@@ -364,7 +330,7 @@ testMain(int argc, const char** argv)
     }
 #endif
 
-    if(R.failed)
+    if(R.failed())
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }

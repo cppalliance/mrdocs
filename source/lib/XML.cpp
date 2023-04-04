@@ -586,28 +586,6 @@ private:
 
 //------------------------------------------------
 
-bool
-renderCodeAsXML(
-    std::string& xml,
-    llvm::StringRef cppCode,
-    Config const& cfg)
-{
-    std::unique_ptr<ASTUnit> astUnit =
-        clang::tooling::buildASTFromCodeWithArgs(cppCode, {});
-    Corpus corpus;
-    CorpusVisitor visitor(corpus, cfg);
-    visitor.HandleTranslationUnit(astUnit->getASTContext());
-    if(llvm::Error err = buildIndex(corpus, cfg))
-        return ! err;
-    bool success = XMLGenerator(cfg).render(xml, corpus, cfg);
-    // VFALCO oops, cfg.Executor->getToolResults()
-    //              holds information from the previous corpus...
-    //cfg.Executor->getToolResults()->
-    return success;
-}
-
-//------------------------------------------------
-
 static
 GeneratorRegistry::
 Add<XMLGenerator>
