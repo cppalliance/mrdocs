@@ -477,6 +477,45 @@ static void populateSymbolInfo(SymbolInfo& I, const T* D, const FullComment* C,
         I.Loc.emplace_back(LineNumber, Filename, IsFileInRootDir);
 }
 
+//------------------------------------------------
+
+/** Generate the USR without canonicalizing first.
+*/
+bool
+makeUSR(
+    QualType const& qt,
+    ASTContext& ctx,
+    SmallVectorImpl<char>& buf)
+{
+    if(qt.isNull())
+        return true;
+    //qt = qt.getCanonicalType();
+
+    //USRGenerator UG(&Ctx, Buf);
+  //UG.VisitType(T);
+  //return UG.ignoreResults();
+    return true;
+}
+
+
+static
+TypeInfo
+makeTypeInfo(
+    QualType T,
+    ASTContext& Ctx)
+{
+    auto T_ = T.getCanonicalType();
+    llvm::SmallString<64> Buf;
+    index::generateUSRForType(T, Ctx, Buf);
+    TypeInfo ti;
+    ti.Type.USR;
+    ti.Type.Name;
+    ti.Type.QualName;
+    ti.Type.RefType;
+    ti.Type.Path;
+    return ti;
+}
+
 static
 void
 populateFunctionInfo(
@@ -493,16 +532,13 @@ populateFunctionInfo(
         LineNumber, Filename,
         IsFileInRootDir,
         IsInAnonymousNamespace);
-    {
-        llvm::SmallString<32> tmp;
-        index::generateUSRForType(
-            D->getReturnType(),
-            D->getASTContext(),
-            tmp);
-        auto s = xml::toBase64(hashUSR(tmp));
-        auto s2 = s;
-    }
+#if 0
     I.ReturnType = getTypeInfoForType(D->getReturnType());
+#else
+    I.ReturnType = makeTypeInfo(
+        D->getReturnType(),
+        D->getASTContext());
+#endif
     parseParameters(I, D);
 
     PopulateTemplateParameters(I.Template, D);

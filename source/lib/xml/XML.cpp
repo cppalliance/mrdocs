@@ -95,11 +95,14 @@ class XMLGenerator
 
     std::string toString(SymbolID const& id);
     llvm::StringRef toString(AccessSpecifier access);
-
-    //--------------------------------------------
-
-    NamespaceInfo const*
-    findGlobalNamespace();
+    NamespaceInfo const* findGlobalNamespace();
+#ifndef NDEBUG
+    void assertExists(Info const& I);
+#else
+    void assertExists(Info const&) const noexcept
+    {
+    }
+#endif
 
     //--------------------------------------------
 
@@ -173,9 +176,7 @@ writeRecords(
         auto it = infos_->find(
             llvm::toHex(llvm::toStringRef(ref.USR)));
         assert(it != infos_->end());
-        write(
-            *static_cast<RecordInfo const*>(
-                it->second.get()));
+        write(*static_cast<RecordInfo const*>(it->second.get()));
     }
 }
 
@@ -222,6 +223,8 @@ XMLGenerator::
 write(
     NamespaceInfo const& I)
 {
+    assertExists(I);
+
     assert(I.IT == InfoType::IT_namespace);
     openTag("namespace", {
         { "name", I.Name },
@@ -241,6 +244,8 @@ XMLGenerator::
 write(
     RecordInfo const& I)
 {
+    assertExists(I);
+
     llvm::StringRef tag;
     switch(I.TagType)
     {
@@ -267,6 +272,8 @@ XMLGenerator::
 write(
     FunctionInfo const& I)
 {
+    //assertExists(I);
+
     openTag("function", {
         { "name", I.Name },
         { "access", toString(I.Access) },
@@ -318,6 +325,8 @@ XMLGenerator::
 write(
     EnumInfo const& I)
 {
+    assertExists(I);
+
     openTag("enum", {
         { "name", I.Name },
         { "usr", toBase64(I.USR) },
@@ -338,9 +347,11 @@ XMLGenerator::
 write(
     TypedefInfo const& I)
 {
+    //assertExists(I);
+
     openTag("typedef", {
         { "name", I.Name },
-        { "usr", toBase64(I.USR) }
+        { "usr", toString(I.USR) }
         });
     writeSymbolInfo(I);
     writeTagLine("qualname", I.Underlying.Type.QualName);
@@ -407,6 +418,8 @@ XMLGenerator::
 writeInfo(
     Info const& I)
 {
+// VFALCO for now...
+return;
     writeTagLine("extract-name", I.extractName());
     writeTagLine("rel-path", I.getRelativeFilePath(cfg_.SourceRoot));
     writeTagLine("base-name", I.getFileBaseName());
@@ -437,6 +450,8 @@ XMLGenerator::
 write(
     Location const& loc)
 {
+// VFALCO For now..
+return;
     *os_ << level_ <<
         "<file>" << escape(loc.Filename) <<
         "</file><line>" << std::to_string(loc.LineNumber) <<
@@ -588,6 +603,17 @@ findGlobalNamespace()
     }
 
     return nullptr;
+}
+
+void
+XMLGenerator::
+assertExists(
+    Info const& I)
+{
+    auto it = infos_->find(llvm::toHex(llvm::toStringRef(I.USR)));
+    assert(it != infos_->end());
+    if(it != infos_->end())
+        assert(it->second.get() == &I);
 }
 
 llvm::StringRef

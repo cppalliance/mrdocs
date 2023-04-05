@@ -32,7 +32,7 @@ struct BaseRecordInfo;
 // TODO: Expand to allow for documenting templating, inheritance access,
 // friend classes
 // Info for types.
-struct RecordInfo : public SymbolInfo
+struct RecordInfo : SymbolInfo
 {
     RecordInfo(
         SymbolID USR = SymbolID(),
