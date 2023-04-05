@@ -41,7 +41,8 @@ struct FunctionInfo;
 struct Info;
 struct TypedefInfo;
 
-enum class InfoType {
+enum class InfoType
+{
     IT_default,
     IT_namespace,
     IT_record,
@@ -256,7 +257,7 @@ struct TypeInfo
 // template parameter. It is saved in a struct so there is a place to add the
 // name and default values in the future if needed.
 //
-/** A tempalte parameter.
+/** A template parameter.
 */
 struct TemplateParamInfo
 {
@@ -400,18 +401,29 @@ struct Info
     {
     }
 
-    SymbolID USR =
-        SymbolID(); // Unique identifier for the decl described by this Info.
-    const InfoType IT = InfoType::IT_default; // InfoType of this particular Info.
-    SmallString<16> Name;                     // Unqualified name of the decl.
-    llvm::SmallVector<Reference, 4>
-        Namespace; // List of parent namespaces for this decl.
+    /** Unique identifier for the declaration.
+    */
+    SymbolID USR = SymbolID();
+
+    /** Kind of declaration.
+    */
+    InfoType const IT = InfoType::IT_default;
+
+    /** Unqualified name.
+    */
+    SmallString<16> Name;
+
+    /** In-order List of parent namespaces.
+    */
+    llvm::SmallVector<Reference, 4> Namespace;
 
     Javadoc javadoc;
-    std::vector<CommentInfo> Description; // Comment description of this decl.
+    // Comment description of this decl.
+    std::vector<CommentInfo> Description;
 
-    llvm::SmallString<128> Path;          // Path of directory where the clang-doc
+    // Path of directory where the clang-doc
     // generated file will be saved
+    llvm::SmallString<128> Path;          
 
     void mergeBase(Info&& I);
     bool mergeable(const Info& Other);
@@ -419,7 +431,7 @@ struct Info
     llvm::SmallString<16> extractName() const;
 
     /// Returns the file path for this Info relative to CurrentPath.
-    llvm::SmallString<64> getRelativeFilePath(const StringRef& CurrentPath) const;
+    llvm::SmallString<64> getRelativeFilePath(llvm::StringRef const& CurrentPath) const;
 
     /// Returns the basename that should be used for this Info.
     llvm::SmallString<16> getFileBaseName() const;

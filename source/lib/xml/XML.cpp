@@ -407,7 +407,6 @@ write(
     openTag("typedef", {
         { "name", I.Name },
         { "usr", toBase64(I.USR) }
-        //{ "usr", toBase64(I.Underlying.Type.USR) }
         });
     writeSymbolInfo(I);
     writeTagLine("qualname", I.Underlying.Type.QualName);
