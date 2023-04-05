@@ -450,7 +450,14 @@ static void populateFunctionInfo(FunctionInfo& I, const FunctionDecl* D,
     bool& IsInAnonymousNamespace) {
     populateSymbolInfo(I, D, FC, LineNumber, Filename, IsFileInRootDir,
         IsInAnonymousNamespace);
+
     I.ReturnType = getTypeInfoForType(D->getReturnType());
+    {
+        // VFALCO generate the correct USR
+        SmallVector<char> buf;
+        index::generateUSRForType(D->getReturnType(), D->getASTContext(), buf);
+        I.ReturnType.Type.USR = hashUSR(llvm::StringRef(buf.data(), buf.size()));
+    }
     parseParameters(I, D);
 
     PopulateTemplateParameters(I.Template, D);

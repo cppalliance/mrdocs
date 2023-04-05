@@ -410,10 +410,12 @@ writeFunction(
         });
     writeInfoPart(I);
     writeTagLine("return",
-        I.ReturnType.Type.Name, {
+        //I.ReturnType.Type.Name, {
+        I.ReturnType.Type.QualName, {
+            //{ "usr", toString(I.ReturnType.Type.USR) }
             { "usr", toString(I.ReturnType.Type.USR) }
         });
-    writeRef(I.ReturnType.Type);
+    //writeRef(I.ReturnType.Type);
     if(I.Template)
     {
         for(TemplateParamInfo const& tp : I.Template->Params)
@@ -478,9 +480,11 @@ writeTypedef(
     openTag("typedef", {
         { "name", I.Name },
         { "USR", toBase64(I.USR) }
+        //{ "USR", toBase64(I.Underlying.Type.USR) }
         });
     writeInfoPart(I);
     writeTagLine("qualname", I.Underlying.Type.QualName);
+    writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
     writeLoc(I.DefLoc);
     closeTag("typedef");
 }
@@ -528,6 +532,7 @@ XMLGenerator::
 writeLoc(
     llvm::ArrayRef<Location> const& loc)
 {
+    return;
     if(loc.size() > 0)
         *os_ << level_ <<
             "<file>" << escape(loc[0].Filename) <<
@@ -540,6 +545,7 @@ XMLGenerator::
 writeLoc(
     std::optional<Location> const& opt)
 {
+    return;
     if(! opt)
         return;
     Location const& loc(*opt);
