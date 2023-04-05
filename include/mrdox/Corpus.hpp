@@ -12,7 +12,8 @@
 #ifndef MRDOX_CORPUS_HPP
 #define MRDOX_CORPUS_HPP
 
-#include "Representation.h"
+#include "jad/Index.hpp"
+#include <clang/Tooling/Execution.h>
 
 namespace clang {
 namespace mrdox {

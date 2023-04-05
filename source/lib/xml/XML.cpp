@@ -12,7 +12,9 @@
 #include "Generators.h"
 #include "CorpusVisitor.hpp"
 #include "Representation.h"
-#include "base64.hpp"
+#include "jad/Namespace.hpp"
+#include "xml/base64.hpp"
+#include "xml/escape.hpp"
 #include <mrdox/Config.hpp>
 #include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
@@ -26,78 +28,7 @@
 
 namespace clang {
 namespace mrdox {
-
-namespace {
-
-//------------------------------------------------
-
-struct escape
-{
-    explicit
-    escape(
-        llvm::StringRef const& s) noexcept
-        : s_(s)
-    {
-    }
-
-    friend
-    llvm::raw_ostream&
-    operator<<(
-        llvm::raw_ostream& os,
-        escape const& t);
-
-private:
-    llvm::StringRef s_;
-};
-
-llvm::raw_ostream&
-operator<<(
-    llvm::raw_ostream& os,
-    escape const& t)
-{
-    std::size_t pos = 0;
-    auto const size = t.s_.size();
-    while(pos < size)
-    {
-    unescaped:
-        auto const found = t.s_.find_first_of("<>&'\"", pos);
-        if(found == llvm::StringRef::npos)
-        {
-            os.write(t.s_.data() + pos, t.s_.size() - pos);
-            break;
-        }
-        os.write(t.s_.data() + pos, found - pos);
-        pos = found;
-        while(pos < size)
-        {
-            auto const c = t.s_[pos];
-            switch(c)
-            {
-            case '<':
-                os.write("&lt;", 4);
-                break;
-            case '>':
-                os.write("&gt;", 4);
-                break;
-            case '&':
-                os.write("&amp;", 5);
-                break;
-            case '\'':
-                os.write("&apos;", 6);
-                break;
-            case '\"':
-                os.write("&quot;", 6);
-                break;
-            default:
-                goto unescaped;
-            }
-            ++pos;
-        }
-    }
-    return os;
-}
-
-//------------------------------------------------
+namespace xml {
 
 namespace fs = llvm::sys::fs;
 namespace path = llvm::sys::path;
@@ -764,7 +695,7 @@ char const*
 XMLGenerator::
 Format = "xml";
 
-} // (anon)
+} // xml
 
 //------------------------------------------------
 
@@ -774,7 +705,7 @@ renderToXMLString(
     Corpus const& corpus,
     Config const& cfg)
 {
-    XMLGenerator G(cfg);
+    xml::XMLGenerator G(cfg);
     G.render(xml, corpus, cfg);
     //return llvm::Error::success();
 }
@@ -783,9 +714,9 @@ renderToXMLString(
 
 static
 GeneratorRegistry::
-Add<XMLGenerator>
+Add<xml::XMLGenerator>
 xmlGenerator(
-    XMLGenerator::Format,
+    xml::XMLGenerator::Format,
     "Generator for XML output.");
 
 // This anchor is used to force the linker

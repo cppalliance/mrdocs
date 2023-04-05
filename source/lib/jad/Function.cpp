@@ -9,9 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Functions.h"
 #include "Reduce.h"
 #include "Representation.h"
+#include "jad/Function.hpp"
 
 namespace clang {
 namespace mrdox {

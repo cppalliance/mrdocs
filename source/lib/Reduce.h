@@ -12,12 +12,14 @@
 #ifndef MRDOX_REDUCE_HPP
 #define MRDOX_REDUCE_HPP
 
-#include <Representation.h>
+#include "jad/Info.hpp"
+#include <llvm/Support/Error.h>
+#include <memory>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
 
-SymbolID const EmptySID = SymbolID();
 template <typename T>
 llvm::Expected<std::unique_ptr<Info>>
 reduce(

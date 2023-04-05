@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_BASE64_HPP
-#define MRDOX_BASE64_HPP
+#ifndef MRDOX_XML_BASE64_HPP
+#define MRDOX_XML_BASE64_HPP
 
 #include <array>
 #include <cstdint>
@@ -18,10 +18,12 @@
 
 namespace clang {
 namespace mrdox {
+namespace xml {
 
 std::string toBase64(std::array<uint8_t, 20> const& v);
 
-} // clang
+} // xml
 } // mrdox
+} // clang
 
 #endif

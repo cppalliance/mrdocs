@@ -9,25 +9,34 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TYPES_HPP
-#define MRDOX_TYPES_HPP
+#ifndef MRDOX_JAD_TYPES_HPP
+#define MRDOX_JAD_TYPES_HPP
 
-#include <llvm/ADT/SmallString.h>
-#include <vector>
+#include <array>
 
 namespace clang {
 namespace mrdox {
 
-struct FunctionInfo;
+/** A unique identifier for a symbol.
 
-/// The string used for unqualified names
-using UnqualifiedName = llvm::SmallString<16>;
+    This is calculated as the SHA1 digest of the USR.
+*/
+using SymbolID = std::array<uint8_t, 20>;
 
-/// A list of zero or more functions
-using FunctionInfos = std::vector<FunctionInfo>;
+// Empty SymbolID for comparison, so we don't have to construct one every time.
+inline SymbolID const EmptySID = SymbolID();
+
+enum class InfoType
+{
+    IT_default,
+    IT_namespace,
+    IT_record,
+    IT_function,
+    IT_enum,
+    IT_typedef
+};
 
 } // mrdox
 } // clang
 
 #endif
-

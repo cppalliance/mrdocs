@@ -9,10 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Config.hpp>
-#include <mrdox/Corpus.hpp>
 #include "Generators.h"
 #include "Representation.h"
+#include "jad/Namespace.hpp"
+#include <mrdox/Config.hpp>
+#include <mrdox/Corpus.hpp>
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/Path.h"

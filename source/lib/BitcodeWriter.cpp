@@ -16,9 +16,6 @@
 namespace clang {
 namespace mrdox {
 
-// Empty SymbolID for comparison, so we don't have to construct one every time.
-static const SymbolID EmptySID = SymbolID();
-
 // Since id enums are not zero-indexed, we need to transform the given id into
 // its associated index.
 struct BlockIdToIndexFunctor {

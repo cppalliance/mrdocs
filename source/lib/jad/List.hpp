@@ -9,17 +9,14 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_FUNCTIONS_HPP
-#define MRDOX_FUNCTIONS_HPP
+#ifndef MRDOX_JAD_LIST_HPP
+#define MRDOX_JAD_LIST_HPP
 
-#include "Types.h"
-#include <clang/Basic/Specifiers.h>
+#include <cstdint>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
-
-//------------------------------------------------
 
 template<class ValueType>
 class List
@@ -56,54 +53,6 @@ protected:
 
     list_type v_;
 };
-
-//------------------------------------------------
-
-/** A list of overloads for a function.
-*/
-struct FunctionOverloads
-    : List<FunctionInfo>
-{
-    /// The name of the function.
-    UnqualifiedName name;
-
-    void insert(FunctionInfo I);
-    void merge(FunctionOverloads&& other);
-
-    FunctionOverloads(
-        FunctionOverloads&&) noexcept = default;
-    FunctionOverloads& operator=(
-        FunctionOverloads&&) noexcept = default;
-    FunctionOverloads(
-        FunctionInfo I);
-};
-
-//------------------------------------------------
-
-/** A list of functions, each with possible overloads.
-*/
-struct FunctionList
-    : List<FunctionOverloads>
-{
-    clang::AccessSpecifier access;
-
-    void insert(FunctionInfo I);
-    void merge(FunctionList&& other);
-
-    FunctionList(
-        FunctionList&&) noexcept = default;
-    FunctionList(
-        clang::AccessSpecifier access_ =
-            clang::AccessSpecifier::AS_public) noexcept
-        : access(access_)
-    {
-    }
-
-private:
-    iterator find(llvm::StringRef name) noexcept;
-};
-
-//------------------------------------------------
 
 } // mrdox
 } // clang
