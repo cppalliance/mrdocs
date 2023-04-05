@@ -24,6 +24,8 @@
 #include "llvm/ADT/StringExtras.h"
 #include "llvm/Support/SHA1.h"
 
+#include "xml/base64.hpp"
+
 using clang::comments::FullComment;
 
 namespace clang {
@@ -132,23 +134,27 @@ static RecordDecl* getRecordDeclForType(const QualType& T) {
     return nullptr;
 }
 
-TypeInfo getTypeInfoForType(const QualType& T) {
-    const TagDecl* TD = getTagDeclForType(T);
+TypeInfo
+getTypeInfoForType(
+    QualType const& T)
+{
+    TagDecl const* TD = getTagDeclForType(T);
     if (!TD)
-        return TypeInfo(Reference(SymbolID(), T.getAsString()));
-
+        return TypeInfo(Reference(
+            SymbolID(), T.getAsString()));
     InfoType IT;
-    if (dyn_cast<EnumDecl>(TD)) {
+    if (dyn_cast<EnumDecl>(TD))
         IT = InfoType::IT_enum;
-    }
-    else if (dyn_cast<RecordDecl>(TD)) {
+    else if (dyn_cast<RecordDecl>(TD))
         IT = InfoType::IT_record;
-    }
-    else {
+    else
         IT = InfoType::IT_default;
-    }
-    return TypeInfo(Reference(getUSRForDecl(TD), TD->getNameAsString(), IT,
-        T.getAsString(), getInfoRelativePath(TD)));
+    return TypeInfo(Reference(
+        getUSRForDecl(TD),
+        TD->getNameAsString(),
+        IT,
+        T.getAsString(),
+        getInfoRelativePath(TD)));
 }
 
 static
@@ -471,13 +477,31 @@ static void populateSymbolInfo(SymbolInfo& I, const T* D, const FullComment* C,
         I.Loc.emplace_back(LineNumber, Filename, IsFileInRootDir);
 }
 
-static void populateFunctionInfo(FunctionInfo& I, const FunctionDecl* D,
-    const FullComment* FC, int LineNumber,
-    StringRef Filename, bool IsFileInRootDir,
-    bool& IsInAnonymousNamespace) {
-    populateSymbolInfo(I, D, FC, LineNumber, Filename, IsFileInRootDir,
+static
+void
+populateFunctionInfo(
+    FunctionInfo& I,
+    FunctionDecl const* D,
+    FullComment const* FC,
+    int LineNumber,
+    StringRef Filename,
+    bool IsFileInRootDir,
+    bool& IsInAnonymousNamespace)
+{
+    populateSymbolInfo(
+        I, D, FC,
+        LineNumber, Filename,
+        IsFileInRootDir,
         IsInAnonymousNamespace);
-
+    {
+        llvm::SmallString<32> tmp;
+        index::generateUSRForType(
+            D->getReturnType(),
+            D->getASTContext(),
+            tmp);
+        auto s = xml::toBase64(hashUSR(tmp));
+        auto s2 = s;
+    }
     I.ReturnType = getTypeInfoForType(D->getReturnType());
     parseParameters(I, D);
 

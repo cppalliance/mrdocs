@@ -16,6 +16,7 @@
 #include "xml/base64.hpp"
 #include "xml/escape.hpp"
 #include <mrdox/Config.hpp>
+#include <clang/Index/USRGeneration.h>
 #include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/StringExtras.h>
@@ -36,6 +37,11 @@ namespace path = llvm::sys::path;
 class XMLGenerator
     : public clang::mrdox::Generator
 {
+    Config const& cfg_;
+    std::string level_;
+    llvm::raw_ostream* os_ = nullptr;
+    InfoMap const* infos_ = nullptr;
+
     using Attrs =
         std::initializer_list<
             std::pair<
@@ -62,19 +68,16 @@ class XMLGenerator
     //--------------------------------------------
 
     void write(llvm::ArrayRef<FieldTypeInfo> const& v);
-
-    //--------------------------------------------
-
     void write(FieldTypeInfo const& I);
+    void writeNamespaceRefs(llvm::SmallVector<Reference, 4> const& v);
     void write(Reference const& ref);
 
     //--------------------------------------------
 
     void writeInfo(Info const& I);
     void writeSymbolInfo(SymbolInfo const& I);
-    void writeList(llvm::SmallVector<Reference, 4> const& v);
-    void writeLoc(llvm::ArrayRef<Location> const& loc);
-    void writeLoc(std::optional<Location> const& loc);
+    void write(llvm::ArrayRef<Location> const& locs);
+    void write(Location const& loc);
 
     //--------------------------------------------
 
@@ -85,6 +88,8 @@ class XMLGenerator
     void writeTag(llvm::StringRef, Attrs);
     void writeTagLine(llvm::StringRef tag, llvm::StringRef value);
     void writeTagLine(llvm::StringRef tag, llvm::StringRef value, Attrs);
+    void indent();
+    void outdent();
 
     //--------------------------------------------
 
@@ -99,13 +104,6 @@ class XMLGenerator
     //--------------------------------------------
 
     static llvm::StringRef toString(InfoType) noexcept;
-
-    //--------------------------------------------
-
-    Config const& cfg_;
-    std::string level_;
-    llvm::raw_ostream* os_ = nullptr;
-    InfoMap const* infos_ = nullptr;
 
 public:
     static char const* Format;
@@ -275,14 +273,20 @@ write(
         { "usr", toBase64(I.USR) }
         });
     writeSymbolInfo(I);
-
-#if 1
-    
     writeTag("return", {
         { "name", I.ReturnType.Type.Name },
         { "usr", toString(I.ReturnType.Type.USR) }
         });
-#else
+
+
+#if 0
+    writeTag("return", {
+        { "name", I.ReturnType.Type.Name },
+        { "usr", toString(I.ReturnType.Type.USR) }
+        });
+#endif
+
+#if 0
     auto it = infos_->find(llvm::toHex(llvm::toStringRef(
         I.ReturnType.Type.USR)));
     assert(it != infos_->end());
@@ -326,7 +330,6 @@ write(
             { "value", v.Value },
             });
     }
-    writeLoc(I.Loc);
     closeTag("enum");
 }
 
@@ -342,7 +345,6 @@ write(
     writeSymbolInfo(I);
     writeTagLine("qualname", I.Underlying.Type.QualName);
     writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
-    writeLoc(I.DefLoc);
     closeTag("typedef");
 }
 
@@ -357,8 +359,6 @@ write(
         write(I);
 }
 
-//------------------------------------------------
-
 void
 XMLGenerator::
 write(FieldTypeInfo const& I)
@@ -371,6 +371,15 @@ write(FieldTypeInfo const& I)
         { "reftype", toString(I.Type.RefType) },
         { "usr", toString(I.Type.USR) }
         });
+}
+
+void
+XMLGenerator::
+writeNamespaceRefs(
+    llvm::SmallVector<Reference, 4> const& v)
+{
+    for(auto const& ns : v)
+        writeTagLine("ns", ns.QualName);
 }
 
 void
@@ -398,6 +407,9 @@ XMLGenerator::
 writeInfo(
     Info const& I)
 {
+    writeTagLine("extract-name", I.extractName());
+    writeTagLine("rel-path", I.getRelativeFilePath(cfg_.SourceRoot));
+    writeTagLine("base-name", I.getFileBaseName());
 }
 
 void
@@ -406,42 +418,29 @@ writeSymbolInfo(
     SymbolInfo const& I)
 {
     writeInfo(I);
-    // I.DefLoc
-    // I.Loc[]
+    if(I.DefLoc)
+        write(*I.DefLoc);
+    write(I.Loc);
 }
 
 void
 XMLGenerator::
-writeList(
-    llvm::SmallVector<Reference, 4> const& v)
+write(
+    llvm::ArrayRef<Location> const& locs)
 {
-    for(auto const& ns : v)
-        writeTagLine("ns", ns.QualName);
+    for(auto const& loc : locs)
+        write(loc);
 }
 
 void
 XMLGenerator::
-writeLoc(
-    llvm::ArrayRef<Location> const& loc)
+write(
+    Location const& loc)
 {
-    return;
-    if(loc.size() > 0)
-        *os_ << level_ <<
-            "<file>" << escape(loc[0].Filename) <<
-            "</file><line>" << std::to_string(loc[0].LineNumber) <<
-            "</line>\n";
-}
-
-void
-XMLGenerator::
-writeLoc(
-    std::optional<Location> const& opt)
-{
-    return;
-    if(! opt)
-        return;
-    Location const& loc(*opt);
-    writeLoc(llvm::ArrayRef<Location>(&loc, &loc+1));
+    *os_ << level_ <<
+        "<file>" << escape(loc.Filename) <<
+        "</file><line>" << std::to_string(loc.LineNumber) <<
+        "</line>\n";
 }
 
 //------------------------------------------------
@@ -452,7 +451,7 @@ openTag(
     llvm::StringRef tag)
 {
     *os_ << level_ << '<' << tag << ">\n";
-    level_.push_back(' ');
+    indent();
 }
 
 void
@@ -467,7 +466,7 @@ openTag(
             ' ' << attr.first << '=' <<
             "\"" << escape(attr.second) << "\"";
     *os_ << ">\n";
-    level_.push_back(' ');
+    indent();
 }
 
 void
@@ -475,7 +474,7 @@ XMLGenerator::
 closeTag(
     llvm::StringRef tag)
 {
-    level_.pop_back();
+    outdent();
     *os_ << level_ << "</" << tag << ">\n";
 }
 
@@ -528,6 +527,20 @@ writeTagLine(
             ' ' << attr.first << '=' <<
             "\"" << escape(attr.second) << "\"";
     *os_ << ">" << escape(value) << "</" << tag << ">" << "\n";
+}
+
+void
+XMLGenerator::
+indent()
+{
+    level_.append("    ");
+}
+
+void
+XMLGenerator::
+outdent()
+{
+    level_.resize(level_.size() - 4);
 }
 
 //------------------------------------------------
