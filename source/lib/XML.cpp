@@ -318,9 +318,6 @@ write(
         { "usr", toBase64(I.USR) }
         });
     writeSymbolInfo(I);
-    //writeTagLine("fullname", I.FullName);
-    //writeTagLine("typedef", std::to_string(I.IsTypeDef));
-    //write(I.Members);
     writeRecords(I.Children.Records);
     write(I.Children.functions);
     write(I.Children.Enums);
