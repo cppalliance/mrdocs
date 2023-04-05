@@ -23,7 +23,7 @@
 #include "jad/Location.hpp"
 #include "jad/Namespace.hpp"
 #include "jad/Reference.hpp"
-#include "jad/ScopeChildren.hpp"
+#include "jad/Scope.hpp"
 #include "jad/Symbol.hpp"
 #include "jad/Types.hpp"
 #include <clang/AST/Type.h>

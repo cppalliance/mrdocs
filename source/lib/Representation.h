@@ -23,7 +23,7 @@
 #include "jad/Namespace.hpp"
 #include "jad/Record.hpp"
 #include "jad/Reference.hpp"
-#include "jad/ScopeChildren.hpp"
+#include "jad/Scope.hpp"
 #include "jad/Symbol.hpp"
 #include "jad/TemplateParam.hpp"
 #include "jad/Type.hpp"

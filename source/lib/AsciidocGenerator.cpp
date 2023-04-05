@@ -468,7 +468,7 @@ listTypedefs(
 void
 listScope(
     Config const& cfg,
-    ScopeChildren const& scope,
+    Scope const& scope,
     llvm::raw_ostream& os)
 {
     listNamespaces(cfg, scope.Namespaces, os);

@@ -17,7 +17,7 @@
 #ifndef MRDOX_JAD_ACCESSSCOPE_HPP
 #define MRDOX_JAD_ACCESSSCOPE_HPP
 
-#include "jad/ScopeChildren.hpp"
+#include "jad/Scope.hpp"
 #include <clang/Basic/Specifiers.h>
 
 namespace clang {
@@ -27,11 +27,11 @@ namespace mrdox {
 */
 struct AccessScope
 {
-    ScopeChildren& pub;
-    ScopeChildren& prot;
-    ScopeChildren& priv;
+    Scope& pub;
+    Scope& prot;
+    Scope& priv;
 
-    ScopeChildren&
+    Scope&
     get(clang::AccessSpecifier access)
     {
         assert(access != clang::AccessSpecifier::AS_none);
@@ -50,7 +50,7 @@ struct AccessScope
     }
 
 private:
-    ScopeChildren v_[3];
+    Scope v_[3];
 };
 
 } // mrdox

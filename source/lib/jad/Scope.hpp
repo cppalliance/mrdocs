@@ -9,13 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-//
-// This file defines the internal representations of different declaration
-// types for the clang-doc tool.
-//
-
-#ifndef MRDOX_JAD_SCOPECHILDREN_HPP
-#define MRDOX_JAD_SCOPECHILDREN_HPP
+#ifndef MRDOX_JAD_SCOPE_HPP
+#define MRDOX_JAD_SCOPE_HPP
 
 #include "jad/Enum.hpp"
 #include "jad/Function.hpp"
@@ -31,7 +26,7 @@ struct TypedefInfo;
 
 /** A container for the declaration in a namespace.
 */
-struct ScopeChildren
+struct Scope
 {
     // VFALCO REMOVE
     clang::AccessSpecifier access;
@@ -49,7 +44,7 @@ struct ScopeChildren
     std::vector<EnumInfo> Enums;
     std::vector<TypedefInfo> Typedefs;
 
-    ScopeChildren(
+    Scope(
         clang::AccessSpecifier access_ =
             clang::AccessSpecifier::AS_public) noexcept
         : access(access_)

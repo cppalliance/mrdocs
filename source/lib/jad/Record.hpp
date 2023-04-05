@@ -15,7 +15,7 @@
 #include "jad/AccessScope.hpp"
 #include "jad/MemberType.hpp"
 #include "jad/Reference.hpp"
-#include "jad/ScopeChildren.hpp"
+#include "jad/Scope.hpp"
 #include "jad/Symbol.hpp"
 #include "jad/Template.hpp"
 #include "jad/Types.hpp"
@@ -64,8 +64,8 @@ struct RecordInfo : public SymbolInfo
 
     std::vector<BaseRecordInfo> Bases;              // List of base/parent records; this includes inherited methods and attributes
 
-    ScopeChildren Children;
-    AccessScope scope;
+    Scope Children;
+    //AccessScope scope;
 };
 
 //------------------------------------------------

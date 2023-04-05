@@ -215,31 +215,31 @@ shouldSerializeInfo(
 // refer to them.
 //
 // See MakeAndInsertIntoParent().
-static void InsertChild(ScopeChildren& Scope, const NamespaceInfo& Info) {
-    Scope.Namespaces.emplace_back(Info.USR, Info.Name, InfoType::IT_namespace,
+static void InsertChild(Scope& scope, const NamespaceInfo& Info) {
+    scope.Namespaces.emplace_back(Info.USR, Info.Name, InfoType::IT_namespace,
         Info.Name, getInfoRelativePath(Info.Namespace));
 }
 
-static void InsertChild(ScopeChildren& Scope, const RecordInfo& Info) {
-    Scope.Records.emplace_back(Info.USR, Info.Name, InfoType::IT_record,
+static void InsertChild(Scope& scope, const RecordInfo& Info) {
+    scope.Records.emplace_back(Info.USR, Info.Name, InfoType::IT_record,
         Info.Name, getInfoRelativePath(Info.Namespace));
 }
 
-static void InsertChild(ScopeChildren& Scope, EnumInfo Info) {
-    Scope.Enums.push_back(std::move(Info));
+static void InsertChild(Scope& scope, EnumInfo Info) {
+    scope.Enums.push_back(std::move(Info));
 }
 
 static
 void
 InsertChild(
-    ScopeChildren& Scope,
+    Scope& scope,
     FunctionInfo Info)
 {
-    Scope.functions.insert(std::move(Info));
+    scope.functions.insert(std::move(Info));
 }
 
-static void InsertChild(ScopeChildren& Scope, TypedefInfo Info) {
-    Scope.Typedefs.push_back(std::move(Info));
+static void InsertChild(Scope& scope, TypedefInfo Info) {
+    scope.Typedefs.push_back(std::move(Info));
 }
 
 // Creates a parent of the correct type for the given child and inserts it into

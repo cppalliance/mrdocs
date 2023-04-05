@@ -23,7 +23,6 @@ RecordInfo(
     StringRef Name,
     StringRef Path)
     : SymbolInfo(InfoType::IT_record, USR, Name, Path)
-    , scope()
 {
 }
 

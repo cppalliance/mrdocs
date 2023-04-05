@@ -13,7 +13,7 @@
 #define MRDOX_JAD_NAMESPACE_HPP
 
 #include "jad/Info.hpp"
-#include "jad/ScopeChildren.hpp"
+#include "jad/Scope.hpp"
 
 namespace clang {
 namespace mrdox {
@@ -23,7 +23,7 @@ namespace mrdox {
 struct NamespaceInfo
     : public Info
 {
-    ScopeChildren Children;
+    Scope Children;
 
     NamespaceInfo(
         SymbolID USR = SymbolID(),
