@@ -74,7 +74,7 @@ find_package(Clang REQUIRED CONFIG)
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(HandleLLVMOptions)
 add_definitions(${LLVM_DEFINITIONS})
-llvm_map_components_to_libnames(llvm_libs)
+llvm_map_components_to_libnames(llvm_libs support core irreader)
 unset(CMAKE_FOLDER)
 
 if (LLVM_FOUND)
