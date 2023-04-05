@@ -89,8 +89,12 @@ template <typename T> static std::string serialize(T& I) {
     return Buffer.str().str();
 }
 
-std::string serialize(std::unique_ptr<Info>& I) {
-    switch (I->IT) {
+std::string
+serialize(
+    std::unique_ptr<Info>& I)
+{
+    switch (I->IT)
+    {
     case InfoType::IT_namespace:
         return serialize(*static_cast<NamespaceInfo*>(I.get()));
     case InfoType::IT_record:
@@ -99,12 +103,17 @@ std::string serialize(std::unique_ptr<Info>& I) {
         return serialize(*static_cast<EnumInfo*>(I.get()));
     case InfoType::IT_function:
         return serialize(*static_cast<FunctionInfo*>(I.get()));
+    //case InfoType::IT_typedef:
+        //return serialize(*static_cast<TypedefInfo*>(I.get()));
     default:
         return "";
     }
 }
 
-static SymbolID getUSRForDecl(const Decl* D) {
+static
+SymbolID
+getUSRForDecl(
+    Decl const* D){
     llvm::SmallString<128> USR;
     if (index::generateUSRForDecl(D, USR))
         return SymbolID();
@@ -420,17 +429,35 @@ void PopulateTemplateParameters(std::optional<TemplateInfo>& TemplateInfo,
     }
 }
 
-template <typename T>
-static void populateInfo(Info& I, const T* D, const FullComment* C,
-    bool& IsInAnonymousNamespace) {
+//------------------------------------------------
+
+template<typename T>
+static
+void
+populateInfo(
+    Info& I,
+    T const* D,
+    FullComment const* C,
+    bool& IsInAnonymousNamespace)
+{
     I.USR = getUSRForDecl(D);
     I.Name = D->getNameAsString();
-    populateParentNamespaces(I.Namespace, D, IsInAnonymousNamespace);
-    if (C) {
+    populateParentNamespaces(
+        I.Namespace,
+        D,
+        IsInAnonymousNamespace);
+    if(C)
+    {
         I.Description.emplace_back();
-        parseComment(C, D->getASTContext(), I.javadoc, I.Description.back());
+        parseComment(
+            C,
+            D->getASTContext(),
+            I.javadoc,
+            I.Description.back());
     }
 }
+
+//------------------------------------------------
 
 template <typename T>
 static void populateSymbolInfo(SymbolInfo& I, const T* D, const FullComment* C,
@@ -734,14 +761,17 @@ emitInfo(
     return { nullptr, MakeAndInsertIntoParent<TypedefInfo&&>(std::move(Info)) };
 }
 
-// A type alias is a C++ "using" declaration for a type. It gets mapped to a
-// TypedefInfo with the IsUsing flag set.
+//------------------------------------------------
+
+// A type alias is a C++ "using" declaration for a
+// type. It gets mapped to a TypedefInfo with the
+// IsUsing flag set.
 std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
 emitInfo(
-    const TypeAliasDecl* D,
-    const FullComment* FC,
+    TypeAliasDecl const* D,
+    FullComment const* FC,
     int LineNumber,
     StringRef File,
     bool IsFileInRootDir,
