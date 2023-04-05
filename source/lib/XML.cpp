@@ -283,7 +283,7 @@ write(
     std::vector<TypedefInfo> const& v)
 {
     for(auto const& I : v)
-        writeInfo(I);
+        write(I);
 }
 
 //------------------------------------------------
@@ -293,9 +293,9 @@ XMLGenerator::
 write(
     NamespaceInfo const& I)
 {
-    openTag("scope", {
+    assert(I.IT == InfoType::IT_namespace);
+    openTag("namespace", {
         { "name", I.Name },
-        { "tag", toString(I.IT) },
         { "usr", toBase64(I.USR) }
         });
     writeInfo(I);
@@ -304,7 +304,7 @@ write(
     write(I.Children.functions);
     write(I.Children.Enums);
     write(I.Children.Typedefs);
-    closeTag("scope");
+    closeTag("namespace");
 }
 
 void
@@ -312,9 +312,17 @@ XMLGenerator::
 write(
     RecordInfo const& I)
 {
-    openTag( "scope", {
+    llvm::StringRef tag;
+    switch(I.TagType)
+    {
+    case TagTypeKind::TTK_Struct: tag = "struct"; break;
+    case TagTypeKind::TTK_Class: tag = "class"; break;
+    case TagTypeKind::TTK_Union: tag = "union"; break;
+    default:
+        llvm_unreachable("unexpected TagType");
+    }
+    openTag(tag, {
         { "name", I.Name },
-        { "tag", getTagType(I.TagType) },
         { "usr", toBase64(I.USR) }
         });
     writeSymbolInfo(I);
@@ -322,7 +330,7 @@ write(
     write(I.Children.functions);
     write(I.Children.Enums);
     write(I.Children.Typedefs);
-    closeTag("scope");
+    closeTag(tag);
 }
 
 void
@@ -336,11 +344,24 @@ write(
         { "usr", toBase64(I.USR) }
         });
     writeSymbolInfo(I);
-    writeTagLine("return",
-        //I.ReturnType.Type.Name, {
-        I.ReturnType.Type.QualName, {
-            { "usr", toString(I.ReturnType.Type.USR) }
+
+#if 1
+    
+    writeTag("return", {
+        { "name", I.ReturnType.Type.Name },
+        { "usr", toString(I.ReturnType.Type.USR) }
         });
+#else
+    auto it = infos_->find(llvm::toHex(llvm::toStringRef(
+        I.ReturnType.Type.USR)));
+    assert(it != infos_->end());
+    Info const& inf = *it->second.get();
+    writeTag("return", {
+        { "name", inf.Name },
+        { "usr", toString(inf.USR) }
+        });
+#endif
+
     write(I.Params);
 #if 0
     //writeRef(I.ReturnType.Type);

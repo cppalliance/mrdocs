@@ -125,7 +125,6 @@ bool
 BasicVisitor::
 VisitTypedefDecl(TypedefDecl const* D)
 {
-    //QualType qt = D->getASTContext().getTypedefType(D);
     return mapDecl(D);
 }
 
@@ -133,7 +132,6 @@ bool
 BasicVisitor::
 VisitTypeAliasDecl(TypeAliasDecl const* D)
 {
-    //QualType qt = D->getASTContext().getTypedefType(D);
     return mapDecl(D);
 }
 
