@@ -450,8 +450,6 @@ XMLGenerator::
 write(
     Location const& loc)
 {
-// VFALCO For now..
-return;
     *os_ << level_ <<
         "<file>" << escape(loc.Filename) <<
         "</file><line>" << std::to_string(loc.LineNumber) <<

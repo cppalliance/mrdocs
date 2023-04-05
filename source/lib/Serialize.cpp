@@ -497,7 +497,7 @@ makeUSR(
     return true;
 }
 
-
+/*
 static
 TypeInfo
 makeTypeInfo(
@@ -515,6 +515,7 @@ makeTypeInfo(
     ti.Type.Path;
     return ti;
 }
+*/
 
 static
 void
@@ -532,8 +533,10 @@ populateFunctionInfo(
         LineNumber, Filename,
         IsFileInRootDir,
         IsInAnonymousNamespace);
-#if 0
-    I.ReturnType = getTypeInfoForType(D->getReturnType());
+#if 1
+    QualType const qt = D->getReturnType();
+    std::string s = qt.getAsString();
+    I.ReturnType = getTypeInfoForType(qt);
 #else
     I.ReturnType = makeTypeInfo(
         D->getReturnType(),
