@@ -182,6 +182,10 @@ private:
 
     //--------------------------------------------
 
+    void write(FieldTypeInfo const& I);
+
+    //--------------------------------------------
+
     void writeInfoPart(Info const& I);
     void writeNamespaceList(llvm::SmallVector<Reference, 4> const& v);
     void writeRef(Reference const& ref);
@@ -412,7 +416,6 @@ writeFunction(
     writeTagLine("return",
         //I.ReturnType.Type.Name, {
         I.ReturnType.Type.QualName, {
-            //{ "usr", toString(I.ReturnType.Type.USR) }
             { "usr", toString(I.ReturnType.Type.USR) }
         });
     //writeRef(I.ReturnType.Type);
@@ -487,6 +490,15 @@ writeTypedef(
     writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
     writeLoc(I.DefLoc);
     closeTag("typedef");
+}
+
+//------------------------------------------------
+
+void
+XMLGenerator::
+write(
+    FieldTypeInfo const& I)
+{
 }
 
 //------------------------------------------------

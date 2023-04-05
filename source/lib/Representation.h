@@ -301,11 +301,20 @@ struct TemplateInfo {
 };
 
 // Info for field types.
-struct FieldTypeInfo : public TypeInfo {
+struct FieldTypeInfo
+    : public TypeInfo
+{
     FieldTypeInfo() = default;
-    FieldTypeInfo(const TypeInfo& TI, StringRef Name = StringRef(),
+
+    FieldTypeInfo(
+        TypeInfo const& TI,
+        StringRef Name = StringRef(),
         StringRef DefaultValue = StringRef())
-        : TypeInfo(TI), Name(Name), DefaultValue(DefaultValue) {}
+        : TypeInfo(TI)
+        , Name(Name)
+        , DefaultValue(DefaultValue)
+    {
+    }
 
     bool operator==(const FieldTypeInfo& Other) const {
         return std::tie(Type, Name, DefaultValue) ==
