@@ -603,6 +603,7 @@ findGlobalNamespace()
     return nullptr;
 }
 
+#ifndef NDEBUG
 void
 XMLGenerator::
 assertExists(
@@ -613,6 +614,7 @@ assertExists(
     if(it != infos_->end())
         assert(it->second.get() == &I);
 }
+#endif
 
 llvm::StringRef
 XMLGenerator::
