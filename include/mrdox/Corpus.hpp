@@ -13,6 +13,7 @@
 #define MRDOX_CORPUS_HPP
 
 #include "jad/Index.hpp"
+#include <mrdox/Config.hpp>
 #include <clang/Tooling/Execution.h>
 
 namespace clang {
@@ -26,7 +27,9 @@ struct Corpus
     Corpus(Corpus const&) = delete;
     Corpus& operator=(Corpus const&) = delete;
 
-    std::unique_ptr<tooling::ToolExecutor> executor;
+    // In ToolResults, the Key is the hashed USR and the value is the
+    // bitcode-encoded representation of the Info object.
+    tooling::InMemoryToolResults toolResults;
 
     Index Idx;
 
@@ -38,6 +41,27 @@ struct Corpus
     llvm::StringMap<
         std::unique_ptr<mrdox::Info>> USRToInfo;
 };
+
+/*
+llvm::Expected<Corpus>
+buildCorpus(
+    Config const& config
+    Reporter& R);
+*/
+
+llvm::Error
+doMapping(
+    Corpus& corpus,
+    Config const& cfg);
+
+/** Build the internal index of the program under analysis.
+
+    This must happen before generating docs.
+*/
+llvm::Error
+buildIndex(
+    Corpus& corpus,
+    Config const& cfg);
 
 } // mrdox
 } // clang

@@ -9,18 +9,15 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "CorpusVisitor.hpp"
+#ifndef MRDOX_RESULT_HPP
+#define MRDOX_RESULT_HPP
 
 namespace clang {
 namespace mrdox {
 
-void
-CorpusVisitor::
-reportResult(
-    StringRef Key, StringRef Value)
-{
-    cfg_.ECtx->reportResult(Key, Value);
-}
+//------------------------------------------------
 
 } // mrdox
 } // clang
+
+#endif

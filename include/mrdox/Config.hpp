@@ -39,8 +39,6 @@ struct Config
 
     tooling::ArgumentsAdjuster ArgAdjuster;
 
-    tooling::ExecutionContext* ECtx;
-
     // Name of project being documented.
     std::string ProjectName;
 
@@ -63,37 +61,6 @@ struct Config
 
     std::unique_ptr<Generator> G;
 };
-
-//------------------------------------------------
-
-/** Set up a docs context from command line arguments.
-*/
-llvm::Error
-setupConfig(
-    Config& cfg,
-    int argc, const char** argv);
-
-/** Set up a docs context from command line arguments.
-*/
-llvm::Error
-setupConfig(
-    Config& cfg,
-    llvm::SmallVector<llvm::StringRef, 16> const& args);
-
-llvm::Error
-doMapping(
-    Corpus& corpus,
-    Config const& cfg);
-
-/** Build the internal index of the program under analysis.
-
-    This must happen before generating docs.
-*/
-llvm::Error
-buildIndex(
-    Corpus& corpus,
-    tooling::ToolResults& toolResults,
-    Config const& cfg);
 
 } // mrdox
 } // clang

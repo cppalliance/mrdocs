@@ -15,8 +15,8 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H
 
-#include <mrdox/Corpus.hpp>
 #include "Representation.h"
+#include "jad/Index.hpp"
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Registry.h"
 
@@ -24,6 +24,7 @@ namespace clang {
 namespace mrdox {
 
 struct Config;
+struct Corpus;
 
 /** The representation of the source code under analysis.
 */

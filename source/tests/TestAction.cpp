@@ -24,11 +24,10 @@ EndSourceFileAction()
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    Corpus corpus;
-    if(! R_.success(buildIndex(corpus, results_, cfg_)))
+    if(! R_.success(buildIndex(corpus_, cfg_)))
         return;
     std::string xml;
-    renderToXMLString(xml, corpus, cfg_);
+    renderToXMLString(xml, corpus_, cfg_);
     llvm::SmallString<256> xmlPath(this->getCurrentFile());
     path::replace_extension(xmlPath, "xml");
     std::error_code ec;
@@ -65,4 +64,3 @@ EndSourceFileAction()
 
 } // mrdox
 } // clang
-

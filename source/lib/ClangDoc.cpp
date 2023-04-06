@@ -16,9 +16,9 @@
 //
 
 #include "ClangDoc.h"
-#include "CorpusVisitor.hpp"
-#include "clang/Frontend/CompilerInstance.h"
-#include "clang/Frontend/FrontendAction.h"
+#include <mrdox/Visitor.hpp>
+#include <clang/Frontend/CompilerInstance.h>
+#include <clang/Frontend/FrontendAction.h>
 
 namespace clang {
 namespace mrdox {
@@ -43,7 +43,7 @@ struct action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<CorpusVisitor>(corpus_, cfg_);
+        return std::make_unique<Visitor>(corpus_, cfg_);
     }
 
 private:

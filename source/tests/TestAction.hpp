@@ -11,49 +11,17 @@
 #ifndef MRDOX_TEST_TEST_VISITOR_HPP
 #define MRDOX_TEST_TEST_VISITOR_HPP
 
-#include <mrdox/BasicVisitor.hpp>
 #include <mrdox/Corpus.hpp>
+#include <mrdox/Visitor.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>
 
 namespace clang {
 namespace mrdox {
 
-//------------------------------------------------
-
-/** A Visitor which stores tool results in a local map
+/** Frontend test action to run the visitor.
 */
-struct TestVisitor : public BasicVisitor
-{
-    TestVisitor(
-        tooling::InMemoryToolResults& results,
-        Config const& cfg,
-        Reporter& R) noexcept
-        : BasicVisitor(cfg)
-        , results_(results)
-        , R_(R)
-    {
-    }
-
-private:
-    void
-    reportResult(
-        llvm::StringRef Key,
-        llvm::StringRef Value) override
-    {
-        results_.addResult(Key, Value);
-    }
-
-    tooling::InMemoryToolResults& results_;
-    Reporter& R_;
-};
-
-//------------------------------------------------
-
-/** Frontend action to run the test visitor.
-*/
-struct TestAction
-    : public clang::ASTFrontendAction
+struct TestAction : clang::ASTFrontendAction
 {
     TestAction(
         Config const& cfg,
@@ -69,14 +37,14 @@ private:
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<TestVisitor>(results_, cfg_, R_);
+        return std::make_unique<Visitor>(corpus_, cfg_);
     }
 
     void EndSourceFileAction();
 
 private:
     Config const& cfg_;
-    tooling::InMemoryToolResults results_;
+    Corpus corpus_;
     Reporter& R_;
 };
 

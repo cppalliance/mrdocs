@@ -12,7 +12,7 @@
 #include "BitcodeWriter.h"
 #include "Error.hpp"
 #include "Serialize.h"
-#include <mrdox/BasicVisitor.hpp>
+#include <mrdox/Visitor.hpp>
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
@@ -27,16 +27,24 @@ namespace clang {
 namespace mrdox {
 
 void
-BasicVisitor::
+Visitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
     TraverseDecl(Context.getTranslationUnitDecl());
 }
 
+void
+Visitor::
+reportResult(
+    StringRef Key, StringRef Value)
+{
+    corpus_.toolResults.addResult(Key, Value);
+}
+
 template<typename T>
 bool
-BasicVisitor::
+Visitor::
 mapDecl(T const* D)
 {
     // If we're looking a decl not in user files, skip this decl.
@@ -77,7 +85,7 @@ mapDecl(T const* D)
 }
 
 bool
-BasicVisitor::
+Visitor::
 VisitNamespaceDecl(
     NamespaceDecl const* D)
 {
@@ -85,7 +93,7 @@ VisitNamespaceDecl(
 }
 
 bool
-BasicVisitor::
+Visitor::
 VisitRecordDecl(
     RecordDecl const* D)
 {
@@ -93,7 +101,7 @@ VisitRecordDecl(
 }
 
 bool
-BasicVisitor::
+Visitor::
 VisitEnumDecl(
     EnumDecl const* D)
 {
@@ -101,7 +109,7 @@ VisitEnumDecl(
 }
 
 bool
-BasicVisitor::
+Visitor::
 VisitCXXMethodDecl(
     CXXMethodDecl const* D)
 {
@@ -109,7 +117,7 @@ VisitCXXMethodDecl(
 }
 
 bool
-BasicVisitor::
+Visitor::
 VisitFunctionDecl(
     FunctionDecl const* D)
 {
@@ -122,21 +130,21 @@ VisitFunctionDecl(
 // https://github.com/llvm/llvm-project/blob/466d554dcab39c3d42fe0c5b588b795e0e4b9d0d/clang/include/clang/AST/Type.h#L1566
 
 bool
-BasicVisitor::
+Visitor::
 VisitTypedefDecl(TypedefDecl const* D)
 {
     return mapDecl(D);
 }
 
 bool
-BasicVisitor::
+Visitor::
 VisitTypeAliasDecl(TypeAliasDecl const* D)
 {
     return mapDecl(D);
 }
 
 comments::FullComment*
-BasicVisitor::
+Visitor::
 getComment(
     NamedDecl const* D,
     ASTContext const& Context) const
@@ -152,7 +160,7 @@ getComment(
 }
 
 int
-BasicVisitor::
+Visitor::
 getLine(
     NamedDecl const* D,
     ASTContext const& Context) const
@@ -162,7 +170,7 @@ getLine(
 }
 
 llvm::SmallString<128>
-BasicVisitor::
+Visitor::
 getFile(NamedDecl const* D,
     ASTContext const& Context,
     llvm::StringRef RootDir,
@@ -187,5 +195,5 @@ getFile(NamedDecl const* D,
     return File;
 }
 
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang

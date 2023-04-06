@@ -133,15 +133,15 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/lib PREFIX "source" FILES $
 #-------------------------------------------------
 
 file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS
-    source/mrdox/*.cpp
-    source/mrdox/*.hpp)
+    source/tool/*.cpp
+    source/tool/*.hpp)
 
 add_executable(mrdox ${TOOL_SOURCES})
 target_link_libraries(mrdox PRIVATE mrdox_lib)
-target_include_directories(mrdox PRIVATE ${PROJECT_SOURCE_DIR}/source/mrdox)
+target_include_directories(mrdox PRIVATE ${PROJECT_SOURCE_DIR}/source/tool)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/mrdox PREFIX "" FILES ${TOOL_SOURCES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tool PREFIX "" FILES ${TOOL_SOURCES})
 
 #-------------------------------------------------
 #

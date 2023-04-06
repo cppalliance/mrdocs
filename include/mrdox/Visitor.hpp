@@ -17,11 +17,12 @@
 // key is the declaration's USR and the value is the serialized bitcode.
 //
 
-#ifndef MRDOX_BASIC_VISITOR_HPP
-#define MRDOX_BASIC_VISITOR_HPP
+#ifndef MRDOX_VISITOR_HPP
+#define MRDOX_VISITOR_HPP
 
 #include "Representation.h"
 #include <mrdox/Config.hpp>
+#include <mrdox/Corpus.hpp>
 #include <clang/AST/ASTConsumer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <utility>
@@ -29,18 +30,19 @@
 namespace clang {
 namespace mrdox {
 
-class BasicVisitor
-    : public RecursiveASTVisitor<BasicVisitor>
+class Visitor
+    : public RecursiveASTVisitor<Visitor>
     , public ASTConsumer
 {
-protected:
+    Corpus& corpus_;
     Config const& cfg_;
 
 public:
-    explicit
-    BasicVisitor(
+    Visitor(
+        Corpus& corpus,
         Config const& cfg) noexcept
-        : cfg_(cfg)
+        : corpus_(corpus)
+        , cfg_(cfg)
     {
     }
 
@@ -55,7 +57,7 @@ public:
     bool VisitTypeAliasDecl(TypeAliasDecl const* D);
 
 private:
-    virtual void reportResult(StringRef Key, StringRef Value) = 0;
+    void reportResult(StringRef Key, StringRef Value);
 
     template <typename T>
     bool mapDecl(T const* D);

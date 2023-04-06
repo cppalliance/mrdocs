@@ -2,7 +2,6 @@
 
 This worked for me:
 
-```
 # From Administrator CMD.EXE,
 # after running vcvars64.bat
 
@@ -14,6 +13,3 @@ cmake --install . --prefix "C:\Users\vinnie\src\llvm-install\Debug" --config Deb
 
 # MrDox
 cmake -G "Visual Studio 17 2022" -A x64 -B bin64 -DCMAKE_PREFIX_PATH="C:\Users\vinnie\src\llvm-install\RelWithDebInfo" -DCMAKE_TOOLCHAIN_FILE="C:\Users\vinnie\src\mrdox\toolchain.cmake"
-```
-cmake --build . --config RelWithDebInfo
-cmake --install . --prefix path\to\install\RelWithDebInfo" --config RelWithDebInfo
