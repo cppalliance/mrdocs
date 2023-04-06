@@ -35,25 +35,22 @@ option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 #
 #-------------------------------------------------
 
-function(get_llvm_dir_for_build_type build_type output_var)
-  if(${build_type} STREQUAL "Debug")
-    set(llvm_dir ${LLVM_DEBUG_PATH})
-  elseif(${build_type} STREQUAL "DebugRel")
-    set(llvm_dir ${LLVM_DEBUGREL_PATH})
-  elseif(${build_type} STREQUAL "RelWithDebInfo")
-    set(llvm_dir ${LLVM_RELWITHDEBINFO_PATH})
-  else()
-    message(FATAL_ERROR "Unsupported build type: ${build_type}")
-  endif()
+set(LLVM_CONFIG_PATH_DEBUG "" CACHE PATH "Path to LLVM Debug installation")
+set(LLVM_CONFIG_PATH_RELEASE "" CACHE PATH "Path to LLVM Release installation")
+set(LLVM_CONFIG_PATH_RELWITHDEBINFO "" CACHE PATH "Path to LLVM RelWithDebInfo installation")
 
-  set(${output_var} ${llvm_dir} PARENT_SCOPE)
-endfunction()
-
-get_llvm_dir_for_build_type(${CMAKE_BUILD_TYPE} LLVM_DIR)
+if(NOT LLVM_CONFIG_PATH_DEBUG OR NOT LLVM_CONFIG_PATH_RELEASE OR NOT LLVM_CONFIG_PATH_RELWITHDEBINFO)
+    message(FATAL_ERROR "Please provide paths to LLVM installations for Debug, Release, and RelWithDebInfo configurations")
+endif()
 
 set(CMAKE_FOLDER Dependencies)
 
-find_package(LLVM REQUIRED CONFIG PATHS ${LLVM_DIR})
+find_package(LLVM REQUIRED CONFIG
+    PATHS
+        $<$<CONFIG:Debug>:${LLVM_CONFIG_PATH_DEBUG}>
+        $<$<CONFIG:Release>:${LLVM_CONFIG_PATH_RELEASE}>
+        $<$<CONFIG:RelWithDebInfo>:${LLVM_CONFIG_PATH_RELWITHDEBINFO}>
+)
 find_package(Clang REQUIRED CONFIG PATHS ${LLVM_DIR})
 
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
