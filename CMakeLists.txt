@@ -35,15 +35,27 @@ option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 #
 #-------------------------------------------------
 
+function(get_llvm_dir_for_build_type build_type output_var)
+  if(${build_type} STREQUAL "Debug")
+    set(llvm_dir ${LLVM_DEBUG_PATH})
+  elseif(${build_type} STREQUAL "DebugRel")
+    set(llvm_dir ${LLVM_DEBUGREL_PATH})
+  elseif(${build_type} STREQUAL "RelWithDebInfo")
+    set(llvm_dir ${LLVM_RELWITHDEBINFO_PATH})
+  else()
+    message(FATAL_ERROR "Unsupported build type: ${build_type}")
+  endif()
+
+  set(${output_var} ${llvm_dir} PARENT_SCOPE)
+endfunction()
+
+get_llvm_dir_for_build_type(${CMAKE_BUILD_TYPE} LLVM_DIR)
+
 set(CMAKE_FOLDER Dependencies)
-find_package(LLVM REQUIRED CONFIG)
-if (LLVM_FOUND)
-    message(STATUS "LLVM found in ${LLVM_INCLUDE_DIRS}")
-endif ()
-find_package(Clang REQUIRED CONFIG)
-if (Clang_FOUND)
-    message(STATUS "Clang found in ${CLANG_INCLUDE_DIRS}")
-endif ()
+
+find_package(LLVM REQUIRED CONFIG PATHS ${LLVM_DIR})
+find_package(Clang REQUIRED CONFIG PATHS ${LLVM_DIR})
+
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 unset(CMAKE_FOLDER)
 
