@@ -72,14 +72,14 @@ CommonHelp(
 
 static
 llvm::cl::OptionCategory
-MrDoxCategory("mrdox options");
+ToolCategory("mrdox options");
 
 static
 llvm::cl::opt<std::string>
 ProjectName(
     "project-name",
     llvm::cl::desc("Name of project."),
-    llvm::cl::cat(MrDoxCategory));
+    llvm::cl::cat(ToolCategory));
 
 static
 llvm::cl::opt<bool>
@@ -87,7 +87,7 @@ llvm::cl::opt<bool>
         "ignore-map-errors",
         llvm::cl::desc("Continue if files are not mapped correctly."),
         llvm::cl::init(true),
-        llvm::cl::cat(MrDoxCategory));
+        llvm::cl::cat(ToolCategory));
 
 static
 llvm::cl::opt<std::string>
@@ -95,7 +95,7 @@ OutDirectory(
     "output",
     llvm::cl::desc("Directory for outputting generated files."),
     llvm::cl::init("docs"),
-    llvm::cl::cat(MrDoxCategory));
+    llvm::cl::cat(ToolCategory));
 
 static
 llvm::cl::opt<bool>
@@ -103,7 +103,7 @@ PublicOnly(
     "public",
     llvm::cl::desc("Document only public declarations."),
     llvm::cl::init(false),
-    llvm::cl::cat(MrDoxCategory));
+    llvm::cl::cat(ToolCategory));
 
 static
 llvm::cl::opt<std::string>
@@ -112,7 +112,7 @@ SourceRoot(
 Directory where processed files are stored.
 Links to definition locations will only be
 generated if the file is in this dir.)"),
-    llvm::cl::cat(MrDoxCategory));
+    llvm::cl::cat(ToolCategory));
 
 static
 llvm::cl::opt<std::string>
@@ -120,7 +120,7 @@ RepositoryUrl(
     "repository", llvm::cl::desc(R"(
 URL of repository that hosts code.
 Used for links to definition locations.)"),
-    llvm::cl::cat(MrDoxCategory));
+    llvm::cl::cat(ToolCategory));
 
 enum OutputFormatTy
 {
@@ -139,7 +139,7 @@ FormatEnum(
         clEnumValN(OutputFormatTy::xml, "xml",
             "Documentation in XML format.")),
     llvm::cl::init(OutputFormatTy::adoc), // default value
-    llvm::cl::cat(MrDoxCategory));
+    llvm::cl::cat(ToolCategory));
 
 std::string
 getFormatString()
@@ -172,7 +172,7 @@ setupConfig(
     // create executor
     {
         Result rv = clang::tooling::createExecutorFromCommandLineArgs(
-            argc, argv.begin(), MrDoxCategory, Overview);
+            argc, argv.begin(), ToolCategory, Overview);
         if(! rv)
         {
             R.fail("createExecutorFromCommandLineArgs", rv);
@@ -238,6 +238,16 @@ toolMain(int argc, const char** argv)
     Reporter R;
     ErrorCode ec;
 
+    {
+        Result rv = tooling::CommonOptionsParser::create(
+            argc, argv, ToolCategory, llvm::cl::OneOrMore, Overview);
+        if(! rv)
+        {
+            R.fail("CommonOptionsParser::create", rv);
+            return EXIT_FAILURE;
+        }
+
+    }
     if(! setupConfig(cfg, argc, argv, R))
         return EXIT_FAILURE;
 

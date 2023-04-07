@@ -16,9 +16,42 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Errors.hpp>
 #include <clang/Tooling/Execution.h>
+#include <mutex>
 
 namespace clang {
 namespace mrdox {
+
+class ThreadSafeToolResults
+    : public tooling::ToolResults
+{
+public:
+    void
+    addResult(
+        llvm::StringRef Key,
+        llvm::StringRef Value) override
+    {
+        std::unique_lock<std::mutex> LockGuard(Mutex);
+        Results.addResult(Key, Value);
+    }
+
+    std::vector<std::pair<llvm::StringRef, llvm::StringRef>>
+    AllKVResults() override
+    {
+        return Results.AllKVResults();
+    }
+
+    void
+    forEachResult(
+        llvm::function_ref<void(
+            llvm::StringRef Key, llvm::StringRef Value)> Callback) override
+    {
+        Results.forEachResult(Callback);
+    }
+
+private:
+    tooling::InMemoryToolResults Results;
+    std::mutex Mutex;
+};
 
 /** The collection of declarations in extracted form.
 */
@@ -30,7 +63,7 @@ struct Corpus
 
     // In ToolResults, the Key is the hashed USR and the value is the
     // bitcode-encoded representation of the Info object.
-    tooling::InMemoryToolResults toolResults;
+    ThreadSafeToolResults toolResults;
 
     Index Idx;
 

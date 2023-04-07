@@ -325,8 +325,6 @@ XMLGenerator::
 write(
     EnumInfo const& I)
 {
-    assertExists(I);
-
     openTag("enum", {
         { "name", I.Name },
         { "usr", toBase64(I.USR) },
