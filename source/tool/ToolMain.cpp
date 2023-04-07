@@ -41,8 +41,6 @@
 #include <llvm/Support/Process.h>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/raw_ostream.h>
-#include <atomic>
-#include <mutex>
 #include <string>
 
 // VFALCO GARBAGE
@@ -170,22 +168,29 @@ setupConfig(
     for(auto const& s : args)
         argv.push_back(s.data());
     int argc = argv.size();
-    Result rv = clang::tooling::createExecutorFromCommandLineArgs(
-        argc, argv.begin(), MrDoxCategory, Overview);
-    if(! rv)
+
+    // create executor
     {
-        R.fail("createExecutorFromCommandLineArgs", rv);
-        return false;
+        Result rv = clang::tooling::createExecutorFromCommandLineArgs(
+            argc, argv.begin(), MrDoxCategory, Overview);
+        if(! rv)
+        {
+            R.fail("createExecutorFromCommandLineArgs", rv);
+            return false;
+        }
+        cfg.Executor = std::move(*rv);
     }
-    cfg.Executor = std::move(*rv);
 
     // Fail early if an invalid format was provided.
     std::string Format = getFormatString();
-    llvm::outs() << "Emitting docs in " << Format << " format.\n";
-    if(llvm::Error err =
-        mrdox::findGeneratorByName(Format).moveInto(cfg.G))
     {
-        return false;
+        Result rv = findGeneratorByName(Format);
+        if(! rv)
+        {
+            R.fail("findGeneratorByName", rv);
+            return false;
+        }
+        cfg.G = std::move(*rv);
     }
 
     /*

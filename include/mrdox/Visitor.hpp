@@ -30,6 +30,10 @@
 namespace clang {
 namespace mrdox {
 
+/** Traverses an AST and stores the nodes in a table.
+
+    An object of this type 
+*/
 class Visitor
     : public RecursiveASTVisitor<Visitor>
     , public ASTConsumer

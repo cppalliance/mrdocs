@@ -14,6 +14,7 @@
 
 #include "jad/Index.hpp"
 #include <mrdox/Config.hpp>
+#include <mrdox/Errors.hpp>
 #include <clang/Tooling/Execution.h>
 
 namespace clang {
@@ -42,12 +43,12 @@ struct Corpus
         std::unique_ptr<mrdox::Info>> USRToInfo;
 };
 
-/*
-llvm::Expected<Corpus>
-buildCorpus(
-    Config const& config
-    Reporter& R);
+/** Return a Corpus built using the specified configuration.
 */
+Result<Corpus>
+buildCorpus(
+    Config const& config,
+    Reporter& R);
 
 llvm::Error
 doMapping(
