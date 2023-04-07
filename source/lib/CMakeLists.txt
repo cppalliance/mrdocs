@@ -22,15 +22,7 @@ add_clang_library(clangDoc
 
 clang_target_link_libraries(clangDoc
   PRIVATE
-  clangAnalysis
-  clangAST
-  clangASTMatchers
-  clangBasic
-  clangFrontend
-  clangIndex
-  clangLex
-  clangTooling
-  clangToolingCore
+    ${clang_libs}
   )
 
 add_subdirectory(tool)
