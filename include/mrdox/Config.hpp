@@ -15,6 +15,8 @@
 #include "Generators.h"
 #include "Representation.h"
 #include <clang/Tooling/ArgumentsAdjusters.h>
+#include <clang/Tooling/CommonOptionsParser.h>
+#include <clang/Tooling/CompilationDatabase.h>
 #include <clang/Tooling/Execution.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
@@ -35,6 +37,8 @@ struct Config
     Config();
     Config(Config&&) = delete;
     Config& operator=(Config&&) = delete;
+
+    std::unique_ptr<tooling::CommonOptionsParser> options;
 
     std::unique_ptr<tooling::ToolExecutor> Executor;
 
@@ -59,8 +63,6 @@ struct Config
     llvm::Optional<std::string> RepositoryUrl;
 
     bool IgnoreMappingFailures = false;
-
-    std::unique_ptr<Generator> G;
 };
 
 } // mrdox

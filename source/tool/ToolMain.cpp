@@ -30,7 +30,9 @@
 #include <clang/ASTMatchers/ASTMatchersInternal.h>
 #include <clang/Driver/Options.h>
 #include <clang/Frontend/FrontendActions.h>
+#include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
+#include <clang/Tooling/JSONCompilationDatabase.h>
 #include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/APFloat.h>
@@ -41,6 +43,7 @@
 #include <llvm/Support/Process.h>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/raw_ostream.h>
+#include <memory>
 #include <string>
 
 // VFALCO GARBAGE
@@ -56,13 +59,10 @@ namespace {
 const char* Overview =
 R"(Generates documentation from source code and comments.
 
-Example usage for files without flags (default):
+Examples
 
-  $ mrdox File1.cpp File2.cpp ... FileN.cpp
-
-Example usage for a project using a compile commands database:
-
-  $ mrdox --executor=all-TUs compile_commands.json
+  $ mrdox mrdox.yml
+  $ mrdox --output ./docs mrdox.yml
 )";
 
 static
@@ -73,13 +73,6 @@ CommonHelp(
 static
 llvm::cl::OptionCategory
 ToolCategory("mrdox options");
-
-static
-llvm::cl::opt<std::string>
-ProjectName(
-    "project-name",
-    llvm::cl::desc("Name of project."),
-    llvm::cl::cat(ToolCategory));
 
 static
 llvm::cl::opt<bool>
@@ -94,32 +87,7 @@ llvm::cl::opt<std::string>
 OutDirectory(
     "output",
     llvm::cl::desc("Directory for outputting generated files."),
-    llvm::cl::init("docs"),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<bool>
-PublicOnly(
-    "public",
-    llvm::cl::desc("Document only public declarations."),
-    llvm::cl::init(false),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<std::string>
-SourceRoot(
-    "source-root", llvm::cl::desc(R"(
-Directory where processed files are stored.
-Links to definition locations will only be
-generated if the file is in this dir.)"),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<std::string>
-RepositoryUrl(
-    "repository", llvm::cl::desc(R"(
-URL of repository that hosts code.
-Used for links to definition locations.)"),
+    llvm::cl::init("."),
     llvm::cl::cat(ToolCategory));
 
 enum OutputFormatTy
@@ -158,75 +126,6 @@ getFormatString()
 
 //------------------------------------------------
 
-bool
-setupConfig(
-    Config& cfg,
-    llvm::SmallVectorImpl<llvm::StringRef> const& args,
-    Reporter& R)
-{
-    llvm::SmallVector<char const*> argv;
-    for(auto const& s : args)
-        argv.push_back(s.data());
-    int argc = argv.size();
-
-    // create executor
-    {
-        Result rv = clang::tooling::createExecutorFromCommandLineArgs(
-            argc, argv.begin(), ToolCategory, Overview);
-        if(! rv)
-        {
-            R.fail("createExecutorFromCommandLineArgs", rv);
-            return false;
-        }
-        cfg.Executor = std::move(*rv);
-    }
-
-    // Fail early if an invalid format was provided.
-    std::string Format = getFormatString();
-    {
-        Result rv = findGeneratorByName(Format);
-        if(! rv)
-        {
-            R.fail("findGeneratorByName", rv);
-            return false;
-        }
-        cfg.G = std::move(*rv);
-    }
-
-    /*
-    if (! DoxygenOnly)
-        cfg.ArgAdjuster = tooling::combineAdjusters(
-            getInsertArgumentAdjuster(
-                "-fparse-all-comments",
-                tooling::ArgumentInsertPosition::END),
-            cfg.ArgAdjuster);
-    */
-
-    cfg.ProjectName = ProjectName;
-    cfg.PublicOnly = PublicOnly;
-    cfg.OutDirectory = OutDirectory;
-    cfg.SourceRoot = SourceRoot;
-    cfg.RepositoryUrl = RepositoryUrl;
-    cfg.IgnoreMappingFailures = IgnoreMappingFailures;
-    cfg.OutDirectory = OutDirectory;
-
-    return true;
-}
-
-bool
-setupConfig(
-    Config& cfg,
-    int argc, const char** argv,
-    Reporter& R)
-{
-    llvm::SmallVector<llvm::StringRef, 16> args;
-    for(int i = 0; i < argc; ++i)
-        args.push_back(argv[i]);
-    return setupConfig(cfg, args, R);
-}
-
-//------------------------------------------------
-
 int
 toolMain(int argc, const char** argv)
 {
@@ -238,6 +137,7 @@ toolMain(int argc, const char** argv)
     Reporter R;
     ErrorCode ec;
 
+    // parse command line options
     {
         Result rv = tooling::CommonOptionsParser::create(
             argc, argv, ToolCategory, llvm::cl::OneOrMore, Overview);
@@ -246,10 +146,38 @@ toolMain(int argc, const char** argv)
             R.fail("CommonOptionsParser::create", rv);
             return EXIT_FAILURE;
         }
-
+        cfg.options = std::make_unique<tooling::CommonOptionsParser>(std::move(*rv));
     }
-    if(! setupConfig(cfg, argc, argv, R))
-        return EXIT_FAILURE;
+
+    /*
+    if (! DoxygenOnly)
+        cfg.ArgAdjuster = tooling::combineAdjusters(
+            getInsertArgumentAdjuster(
+                "-fparse-all-comments",
+                tooling::ArgumentInsertPosition::END),
+            cfg.ArgAdjuster);
+    */
+
+    cfg.PublicOnly = true;
+    cfg.OutDirectory = OutDirectory;
+    cfg.IgnoreMappingFailures = IgnoreMappingFailures;
+
+    // create the executor
+    cfg.Executor = std::make_unique<tooling::AllTUsToolExecutor>(
+        cfg.options->getCompilations(), 0);
+
+    // create the generator
+    std::unique_ptr<Generator> G;
+    {
+        std::string Format = getFormatString();
+        Result rv = findGeneratorByName(Format);
+        if(! rv)
+        {
+            R.fail("findGeneratorByName", rv);
+            return false;
+        }
+        G = std::move(*rv);
+    }
 
     // Extract the AST first
     if(llvm::Error err = doMapping(corpus, cfg))
@@ -281,7 +209,7 @@ toolMain(int argc, const char** argv)
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if(auto Err = cfg.G->generateDocs(
+    if(auto Err = G->generateDocs(
         cfg.OutDirectory,
         corpus,
         cfg))
@@ -295,7 +223,7 @@ toolMain(int argc, const char** argv)
     //
     {
         llvm::outs() << "Generating assets for docs...\n";
-        auto Err = cfg.G->createResources(cfg, corpus);
+        auto Err = G->createResources(cfg, corpus);
         if (Err) {
             llvm::errs() << toString(std::move(Err)) << "\n";
             return EXIT_FAILURE;
