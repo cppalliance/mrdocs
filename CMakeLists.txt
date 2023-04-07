@@ -99,6 +99,19 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     source/lib/*.cpp
     source/lib/*.natvis)
 
+if (CLANG_SIMPLE_LIBS)
+    set(clang_libs LLVM clang clang-cpp)
+else()
+    set(clang_libs
+        clangAST
+        clangBasic
+        clangFrontend
+        clangIndex
+        clangTooling
+        clangToolingCore
+        clangToolingInclusions)
+endif()
+
 add_library(mrdox_lib ${LIB_INCLUDES} ${LIB_SOURCES})
 target_compile_features(mrdox_lib PUBLIC cxx_std_20)
 target_include_directories(mrdox_lib PUBLIC
@@ -110,17 +123,10 @@ target_include_directories(mrdox_lib PUBLIC
     PRIVATE
     "${PROJECT_SOURCE_DIR}/source/lib")
 
-target_link_libraries(
-    mrdox_lib
+target_link_libraries(mrdox_lib
     PUBLIC
     ${llvm_libs}
-    clangAST
-    clangBasic
-    clangFrontend
-    clangIndex
-    clangTooling
-    clangToolingCore
-    clangToolingInclusions)
+    ${clang_libs})
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include PREFIX "" FILES ${LIB_INCLUDES})
@@ -138,7 +144,10 @@ file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS
 
 add_executable(mrdox ${TOOL_SOURCES})
 target_link_libraries(mrdox PRIVATE mrdox_lib)
-target_include_directories(mrdox PRIVATE ${PROJECT_SOURCE_DIR}/source/tool)
+
+target_include_directories(mrdox
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/source/tool)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tool PREFIX "" FILES ${TOOL_SOURCES})
@@ -154,7 +163,7 @@ file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS
     source/tests/*.hpp)
 enable_testing()
 add_executable(mrdox_tests ${TEST_SOURCES})
-target_link_libraries(mrdox_tests PRIVATE mrdox_lib)
+target_link_libraries(mrdox_tests PRIVATE mrdox_lib ${llvm_libs})
 target_include_directories(mrdox_tests PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
 add_test(NAME mrdox_tests COMMAND mrdox_tests "${CMAKE_CURRENT_SOURCE_DIR}/testfiles")
 add_test(NAME mrdox_tests_bare COMMAND mrdox_tests "${CMAKE_CURRENT_SOURCE_DIR}/testfiles/bare")
