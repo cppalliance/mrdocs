@@ -144,11 +144,11 @@ testMain(int argc, const char** argv)
                 output = llvm::SmallString<32>(output_)]
             {
                 SingleFile db(dir, file, output);
-                tooling::StandaloneToolExecutor executor(
+                tooling::StandaloneToolExecutor ex(
                     db, { std::string(file) });
                 Corpus corpus;
-                llvm::Error err = executor.execute(
-                    std::make_unique<TestFactory>(cfg, R));
+                llvm::Error err = ex.execute(
+                    std::make_unique<TestFactory>(ex, cfg, R));
                 if(! err)
                 {
                 }

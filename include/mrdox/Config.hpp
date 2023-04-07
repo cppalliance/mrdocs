@@ -40,8 +40,6 @@ struct Config
 
     std::unique_ptr<tooling::CommonOptionsParser> options;
 
-    std::unique_ptr<tooling::ToolExecutor> Executor;
-
     tooling::ArgumentsAdjuster ArgAdjuster;
 
     // Name of project being documented.

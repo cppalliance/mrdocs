@@ -27,13 +27,13 @@ namespace {
 
 //------------------------------------------------
 
-struct action
+struct Action
     : public clang::ASTFrontendAction
 {
-    action(
-        Corpus& corpus,
+    Action(
+        tooling::ExecutionContext& exc,
         Config const& cfg) noexcept
-        : corpus_(corpus)
+        : exc_(exc)
         , cfg_(cfg)
     {
     }
@@ -43,23 +43,23 @@ struct action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<Visitor>(corpus_, cfg_);
+        return std::make_unique<Visitor>(exc_, cfg_);
     }
 
 private:
-    Corpus& corpus_;
+    tooling::ExecutionContext& exc_;
     Config const& cfg_;
 };
 
 //------------------------------------------------
 
-struct factory
+struct Factory
     : public tooling::FrontendActionFactory
 {
-    factory(
-        Corpus& corpus,
+    Factory(
+        tooling::ExecutionContext& exc,
         Config const& cfg) noexcept
-        : corpus_(corpus)
+        : exc_(exc)
         , cfg_(cfg)
     {
     }
@@ -67,11 +67,11 @@ struct factory
     std::unique_ptr<FrontendAction>
     create() override
     {
-        return std::make_unique<action>(corpus_, cfg_);
+        return std::make_unique<Action>(exc_, cfg_);
     }
 
 private:
-    Corpus& corpus_;
+    tooling::ExecutionContext& exc_;
     Config const& cfg_;
 };
 
@@ -79,13 +79,12 @@ private:
 
 //------------------------------------------------
 
-std::unique_ptr<
-    tooling::FrontendActionFactory>
-newMapperActionFactory(
-    Corpus& corpus,
+std::unique_ptr<tooling::FrontendActionFactory>
+makeToolFactory(
+    tooling::ExecutionContext& exc,
     Config const& cfg)
 {
-    return std::make_unique<factory>(corpus, cfg);
+    return std::make_unique<Factory>(exc, cfg);
 }
 
 } // mrdox

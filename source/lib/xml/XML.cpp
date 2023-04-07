@@ -15,6 +15,7 @@
 #include "xml/base64.hpp"
 #include "xml/escape.hpp"
 #include <mrdox/Config.hpp>
+#include <mrdox/Corpus.hpp>
 #include <mrdox/Visitor.hpp>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Tooling/Execution.h>

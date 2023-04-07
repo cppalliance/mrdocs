@@ -22,7 +22,7 @@
 
 #include "Representation.h"
 #include <mrdox/Config.hpp>
-#include <mrdox/Corpus.hpp>
+#include <clang/Tooling/Execution.h>
 #include <clang/AST/ASTConsumer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <utility>
@@ -38,14 +38,14 @@ class Visitor
     : public RecursiveASTVisitor<Visitor>
     , public ASTConsumer
 {
-    Corpus& corpus_;
+    tooling::ExecutionContext& exc_;
     Config const& cfg_;
 
 public:
     Visitor(
-        Corpus& corpus,
+        tooling::ExecutionContext& exc,
         Config const& cfg) noexcept
-        : corpus_(corpus)
+        : exc_(exc)
         , cfg_(cfg)
     {
     }
@@ -61,8 +61,6 @@ public:
     bool VisitTypeAliasDecl(TypeAliasDecl const* D);
 
 private:
-    void reportResult(StringRef Key, StringRef Value);
-
     template <typename T>
     bool mapDecl(T const* D);
 

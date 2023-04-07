@@ -34,14 +34,6 @@ HandleTranslationUnit(
     TraverseDecl(Context.getTranslationUnitDecl());
 }
 
-void
-Visitor::
-reportResult(
-    StringRef Key, StringRef Value)
-{
-    corpus_.toolResults->addResult(Key, Value);
-}
-
 template<typename T>
 bool
 Visitor::
@@ -73,11 +65,11 @@ mapDecl(T const* D)
     // A null in place of I indicates that the serializer is skipping this decl
     // for some reason (e.g. we're only reporting public decls).
     if (I.first)
-        reportResult(
+        exc_.reportResult(
             llvm::toHex(llvm::toStringRef(I.first->USR)),
             serialize::serialize(I.first));
     if (I.second)
-        reportResult(
+        exc_.reportResult(
             llvm::toHex(llvm::toStringRef(I.second->USR)),
             serialize::serialize(I.second));
 

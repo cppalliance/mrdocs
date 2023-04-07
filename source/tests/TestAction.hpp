@@ -24,9 +24,11 @@ namespace mrdox {
 struct TestAction : clang::ASTFrontendAction
 {
     TestAction(
+        tooling::ToolExecutor& ex,
         Config const& cfg,
         Reporter& R) noexcept
-        : cfg_(cfg)
+        : ex_(ex)
+        , cfg_(cfg)
         , R_(R)
     {
     }
@@ -37,14 +39,14 @@ private:
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<Visitor>(corpus_, cfg_);
+        return std::make_unique<Visitor>(*ex_.getExecutionContext(), cfg_);
     }
 
     void EndSourceFileAction();
 
 private:
+    tooling::ToolExecutor& ex_;
     Config const& cfg_;
-    Corpus corpus_;
     Reporter& R_;
 };
 
@@ -56,9 +58,11 @@ struct TestFactory
     : public tooling::FrontendActionFactory
 {
     TestFactory(
+        tooling::ToolExecutor& ex,
         Config const& cfg,
         Reporter& R) noexcept
-        : cfg_(cfg)
+        : ex_(ex)
+        , cfg_(cfg)
         , R_(R)
     {
     }
@@ -66,10 +70,11 @@ struct TestFactory
     std::unique_ptr<FrontendAction>
     create() override
     {
-        return std::make_unique<TestAction>(cfg_, R_);
+        return std::make_unique<TestAction>(ex_, cfg_, R_);
     }
 
 private:
+    tooling::ToolExecutor& ex_;
     Config const& cfg_;
     Reporter& R_;
 };

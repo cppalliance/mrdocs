@@ -19,20 +19,19 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H
 
-#include "Representation.h"
 #include <mrdox/Config.hpp>
+#include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
 
 namespace clang {
 namespace mrdox {
 
-std::unique_ptr<
-    tooling::FrontendActionFactory>
-newMapperActionFactory(
-    Corpus& corpus,
+std::unique_ptr<tooling::FrontendActionFactory>
+makeToolFactory(
+    tooling::ExecutionContext& exc,
     Config const& cfg);
 
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang
 
-#endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H
+#endif

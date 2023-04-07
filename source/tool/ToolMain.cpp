@@ -133,7 +133,6 @@ toolMain(int argc, const char** argv)
     force_xml_generator_linkage();
 
     Config cfg;
-    Corpus corpus;
     Reporter R;
     ErrorCode ec;
 
@@ -163,7 +162,7 @@ toolMain(int argc, const char** argv)
     cfg.IgnoreMappingFailures = IgnoreMappingFailures;
 
     // create the executor
-    cfg.Executor = std::make_unique<tooling::AllTUsToolExecutor>(
+    auto ex = std::make_unique<tooling::AllTUsToolExecutor>(
         cfg.options->getCompilations(), 0);
 
     // create the generator
@@ -179,22 +178,9 @@ toolMain(int argc, const char** argv)
         G = std::move(*rv);
     }
 
-    // Extract the AST first
-    if(llvm::Error err = doMapping(corpus, cfg))
-    {
-        llvm::errs() <<
-            toString(std::move(err)) << "\n";
+    auto rv = buildCorpus(*ex, cfg, R);
+    if(! rv)
         return EXIT_FAILURE;
-    }
-
-    // Build the internal representation of
-    // the C++ declarations to be documented.
-    if(llvm::Error err = buildIndex(corpus, cfg))
-    {
-        llvm::errs() <<
-            toString(std::move(err)) << "\n";
-        return EXIT_FAILURE;
-    }
 
     //--------------------------------------------
 
@@ -211,7 +197,7 @@ toolMain(int argc, const char** argv)
     llvm::outs() << "Generating docs...\n";
     if(auto Err = G->generateDocs(
         cfg.OutDirectory,
-        corpus,
+        *rv,
         cfg))
     {
         llvm::errs() << toString(std::move(Err)) << "\n";
@@ -223,7 +209,7 @@ toolMain(int argc, const char** argv)
     //
     {
         llvm::outs() << "Generating assets for docs...\n";
-        auto Err = G->createResources(cfg, corpus);
+        auto Err = G->createResources(cfg, *rv);
         if (Err) {
             llvm::errs() << toString(std::move(Err)) << "\n";
             return EXIT_FAILURE;

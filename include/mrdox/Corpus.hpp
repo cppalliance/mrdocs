@@ -25,18 +25,9 @@ namespace mrdox {
 */
 struct Corpus
 {
-    Corpus();
-    Corpus(Corpus const&) = delete;
+    Corpus() = default;
+    Corpus(Corpus&&) noexcept = default;
     Corpus& operator=(Corpus const&) = delete;
-
-    /** Holds the results of visiting the AST.
-
-        This is a table of key/value pairs where
-        the key is the SHA1 digest of the USR and
-        the value is the bitcode-encoded representation
-        of the Info object.
-    */
-    std::unique_ptr<tooling::ToolResults> toolResults;
 
     Index Idx;
 
@@ -49,26 +40,11 @@ struct Corpus
         std::unique_ptr<mrdox::Info>> USRToInfo;
 };
 
-/** Return a Corpus built using the specified configuration.
-*/
-Result<Corpus>
+std::unique_ptr<Corpus>
 buildCorpus(
-    Config const& config,
+    tooling::ToolExecutor& ex,
+    Config const& cfg,
     Reporter& R);
-
-llvm::Error
-doMapping(
-    Corpus& corpus,
-    Config const& cfg);
-
-/** Build the internal index of the program under analysis.
-
-    This must happen before generating docs.
-*/
-llvm::Error
-buildIndex(
-    Corpus& corpus,
-    Config const& cfg);
 
 } // mrdox
 } // clang

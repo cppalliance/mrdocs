@@ -22,101 +22,55 @@
 namespace clang {
 namespace mrdox {
 
-namespace {
-
-class ThreadSafeToolResults
-    : public tooling::ToolResults
-{
-public:
-    void
-    addResult(
-        llvm::StringRef Key,
-        llvm::StringRef Value) override
-    {
-        std::unique_lock<std::mutex> LockGuard(Mutex);
-        Results.addResult(Key, Value);
-    }
-
-    std::vector<std::pair<llvm::StringRef, llvm::StringRef>>
-    AllKVResults() override
-    {
-        return Results.AllKVResults();
-    }
-
-    void
-    forEachResult(
-        llvm::function_ref<void(
-            llvm::StringRef Key, llvm::StringRef Value)> Callback) override
-    {
-        Results.forEachResult(Callback);
-    }
-
-private:
-    tooling::InMemoryToolResults Results;
-    std::mutex Mutex;
-};
-
-} // (anon)
-
 //------------------------------------------------
 
-Corpus::
-Corpus()
-    : toolResults(std::make_unique<ThreadSafeToolResults>())
+std::unique_ptr<Corpus>
+buildCorpus(
+    tooling::ToolExecutor& ex,
+    Config const& cfg,
+    Reporter& R)
 {
-}
+    Corpus corpus;
 
-//------------------------------------------------
-
-llvm::Error
-doMapping(
-    Corpus& corpus,
-    Config const& cfg)
-{
-    //
-    // Mapping phase
+    // Traverse the AST for all translation
+    // units and emit serializd bitcode into
+    // tool results. This operation happens
+    // on a thread pool.
     //
     llvm::outs() << "Mapping declarations\n";
-    auto Err = cfg.Executor->execute(
-        newMapperActionFactory(corpus, cfg),
+    llvm::Error err = ex.execute(
+        makeToolFactory(*ex.getExecutionContext(), cfg),
         cfg.ArgAdjuster);
-    if(Err)
+    if(err)
     {
         if(! cfg.IgnoreMappingFailures)
         {
             llvm::errs() <<
-                "Mapping failure: " << Err << "\n";
-            return Err;
+                "Mapping failure: " << toString(std::move(err)) << "\n";
+            return nullptr;
         }
 
         llvm::errs() <<
             "Error mapping decls in files. mrdox will ignore "
             "these files and continue:\n" <<
-            toString(std::move(Err)) << "\n";
+            toString(std::move(err)) << "\n";
     }
-    return llvm::Error::success();
-}
 
-llvm::Error
-buildIndex(
-    Corpus& corpus,
-    Config const& cfg)
-{
-/*  Collect all symbols. The result is a vector of
-    one or more bitcodes for each symbol. These will
-    be merged later.
-*/
+    // Collect the symbols. Each symbol will have
+    // a vector of one or more bitcodes. These will
+    // be merged later.
     llvm::outs() << "Collecting symbols\n";
     llvm::StringMap<std::vector<StringRef>> USRToBitcode;
-    corpus.toolResults->forEachResult(
+    ex.getToolResults()->forEachResult(
         [&](StringRef Key, StringRef Value)
         {
             auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());
             R.first->second.emplace_back(Value);
         });
 
-    // Collects all Infos according to their unique USR value. This map is added
-    // to from the thread pool below and is protected by the USRToInfoMutex.
+    // Collects all Infos according to their unique
+    // USR value. This map is added to from the thread
+    // pool below and is protected by this mutex.
     llvm::sys::Mutex USRToInfoMutex;
 
     // First reducing phase (reduce all decls into one info per decl).
@@ -124,18 +78,18 @@ buildIndex(
     std::atomic<bool> GotFailure;
     GotFailure = false;
     llvm::sys::Mutex IndexMutex;
-    // ExecutorConcurrency is a flag exposed by AllTUsExecution.h
+    // VFALCO Should this concurrency be a command line option?
     llvm::ThreadPool Pool(llvm::hardware_concurrency(tooling::ExecutorConcurrency));
     for (auto& Group : USRToBitcode)
     {
         Pool.async([&]()
         {
-            std::vector<std::unique_ptr<mrdox::Info>> Infos;
+            std::vector<std::unique_ptr<Info>> Infos;
 
             for (auto& Bitcode : Group.getValue())
             {
                 llvm::BitstreamCursor Stream(Bitcode);
-                mrdox::ClangDocBitcodeReader Reader(Stream);
+                ClangDocBitcodeReader Reader(Stream);
                 auto ReadInfos = Reader.readBitcode();
                 if (!ReadInfos)
                 {
@@ -149,7 +103,7 @@ buildIndex(
                     std::back_inserter(Infos));
             }
 
-            auto Reduced = mrdox::mergeInfos(Infos);
+            auto Reduced = mergeInfos(Infos);
             if (!Reduced)
             {
                 // VFALCO What about GotFailure?
@@ -160,7 +114,7 @@ buildIndex(
             // Add a reference to this Info in the Index
             {
                 std::lock_guard<llvm::sys::Mutex> Guard(IndexMutex);
-                clang::mrdox::Generator::addInfoToIndex(corpus.Idx, Reduced.get().get());
+                Generator::addInfoToIndex(corpus.Idx, Reduced.get().get());
             }
 
             // Save in the result map (needs a lock due to threaded access).
@@ -174,11 +128,13 @@ buildIndex(
     Pool.wait();
 
     if (GotFailure)
-        return llvm::createStringError(
+    {
+        R.fail("buildCorpus", llvm::createStringError(
             llvm::inconvertibleErrorCode(),
-            "an error occurred");
+            "an error occurred"));
+    }
 
-    return llvm::Error::success();
+    return std::make_unique<Corpus>(std::move(corpus));
 }
 
 } // mrdox
