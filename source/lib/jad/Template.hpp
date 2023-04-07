@@ -13,6 +13,7 @@
 #define MRDOX_JAD_TEMPLATE_HPP
 
 #include "jad/TemplateParam.hpp"
+#include <llvm/ADT/Optional.h>
 
 namespace clang {
 namespace mrdox {
@@ -34,7 +35,7 @@ struct TemplateInfo
     std::vector<TemplateParamInfo> Params;
 
     // Set when this is a specialization of another record/function.
-    std::optional<TemplateSpecializationInfo> Specialization;
+    llvm::Optional<TemplateSpecializationInfo> Specialization;
 };
 
 } // mrdox

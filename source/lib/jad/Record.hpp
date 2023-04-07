@@ -20,8 +20,8 @@
 #include "jad/Template.hpp"
 #include "jad/Types.hpp"
 #include <clang/AST/Type.h>
+#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
-#include <optional>
 #include <vector>
 
 namespace clang {
@@ -49,7 +49,7 @@ struct RecordInfo : SymbolInfo
     llvm::SmallString<16> FullName;
 
     // When present, this record is a template or specialization.
-    std::optional<TemplateInfo> Template;
+    llvm::Optional<TemplateInfo> Template;
 
     // Indicates if the record was declared using a typedef. Things like anonymous
     // structs in a typedef:

@@ -16,6 +16,7 @@
 #include "Representation.h"
 #include <clang/Tooling/ArgumentsAdjusters.h>
 #include <clang/Tooling/Execution.h>
+#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringRef.h>
 #include <memory>
@@ -55,7 +56,7 @@ struct Config
                                                       
     // URL of repository that hosts code used
     // for links to definition locations.
-    std::optional<std::string> RepositoryUrl;
+    llvm::Optional<std::string> RepositoryUrl;
 
     bool IgnoreMappingFailures = false;
 

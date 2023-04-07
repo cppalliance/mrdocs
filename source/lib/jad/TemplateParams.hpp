@@ -30,10 +30,10 @@
 #include <clang/Basic/Specifiers.h>
 #include <clang/Tooling/StandaloneExecution.h>
 #include <llvm/ADT/APSInt.h>
+#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringExtras.h>
 #include <array>
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -108,7 +108,7 @@ struct TemplateInfo {
     std::vector<TemplateParamInfo> Params;
 
     // Set when this is a specialization of another record/function.
-    std::optional<TemplateSpecializationInfo> Specialization;
+    llvm::Optional<TemplateSpecializationInfo> Specialization;
 };
 
 // Info for field types.
@@ -187,7 +187,7 @@ struct FunctionInfo : public SymbolInfo {
     SmallString<16> FullName;
 
     // When present, this function is a template or specialization.
-    std::optional<TemplateInfo> Template;
+    llvm::Optional<TemplateInfo> Template;
 };
 
 // TODO: Expand to allow for documenting templating, inheritance access,
@@ -209,7 +209,7 @@ struct RecordInfo
     SmallString<16> FullName;
 
     // When present, this record is a template or specialization.
-    std::optional<TemplateInfo> Template;
+    llvm::Optional<TemplateInfo> Template;
 
     // Indicates if the record was declared using a typedef. Things like anonymous
     // structs in a typedef:
@@ -304,7 +304,7 @@ struct EnumInfo : public SymbolInfo {
     // Set to nonempty to the type when this is an explicitly typed enum. For
     //   enum Foo : short { ... };
     // this will be "short".
-    std::optional<TypeInfo> BaseType;
+    llvm::Optional<TypeInfo> BaseType;
 
     llvm::SmallVector<EnumValueInfo, 4> Members; // List of enum members.
 };

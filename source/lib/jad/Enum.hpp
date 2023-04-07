@@ -19,10 +19,10 @@
 
 #include "jad/Symbol.hpp"
 #include "jad/Type.hpp"
+#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringRef.h>
-#include <optional>
 #include <utility>
 
 namespace clang {
@@ -85,7 +85,7 @@ struct EnumInfo : SymbolInfo
     // Set to nonempty to the type when this is an explicitly typed enum. For
     //   enum Foo : short { ... };
     // this will be "short".
-    std::optional<TypeInfo> BaseType;
+    llvm::Optional<TypeInfo> BaseType;
 
     llvm::SmallVector<EnumValueInfo, 4> Members; // List of enum members.
 };

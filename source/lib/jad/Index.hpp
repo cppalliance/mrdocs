@@ -14,10 +14,10 @@
 
 #include "jad/Info.hpp"
 #include "jad/Reference.hpp"
+#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
-#include <optional>
 #include <vector>
 
 namespace clang {
@@ -58,7 +58,7 @@ struct Index : Reference
 
     bool operator<(const Index& Other) const;
 
-    std::optional<llvm::SmallString<16>> JumpToSection;
+    llvm::Optional<llvm::SmallString<16>> JumpToSection;
     std::vector<Index> Children;
 
     void sort();

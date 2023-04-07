@@ -19,9 +19,9 @@
 #include "jad/Template.hpp"
 #include "jad/Types.hpp"
 #include <clang/Basic/Specifiers.h>
+#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>
-#include <optional>
 #include <vector>
 
 namespace clang {
@@ -58,7 +58,7 @@ struct FunctionInfo : SymbolInfo
     SmallString<16> FullName;
 
     // When present, this function is a template or specialization.
-    std::optional<TemplateInfo> Template;
+    llvm::Optional<TemplateInfo> Template;
 };
 
 /// A list of zero or more functions

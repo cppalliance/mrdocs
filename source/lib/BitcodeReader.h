@@ -24,7 +24,6 @@
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/Bitstream/BitstreamReader.h"
 #include "llvm/Support/Error.h"
-#include <optional>
 
 namespace clang {
 namespace mrdox {
