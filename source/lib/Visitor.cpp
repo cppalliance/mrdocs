@@ -39,7 +39,7 @@ Visitor::
 reportResult(
     StringRef Key, StringRef Value)
 {
-    corpus_.toolResults.addResult(Key, Value);
+    corpus_.toolResults->addResult(Key, Value);
 }
 
 template<typename T>

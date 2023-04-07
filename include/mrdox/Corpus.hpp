@@ -21,49 +21,22 @@
 namespace clang {
 namespace mrdox {
 
-class ThreadSafeToolResults
-    : public tooling::ToolResults
-{
-public:
-    void
-    addResult(
-        llvm::StringRef Key,
-        llvm::StringRef Value) override
-    {
-        std::unique_lock<std::mutex> LockGuard(Mutex);
-        Results.addResult(Key, Value);
-    }
-
-    std::vector<std::pair<llvm::StringRef, llvm::StringRef>>
-    AllKVResults() override
-    {
-        return Results.AllKVResults();
-    }
-
-    void
-    forEachResult(
-        llvm::function_ref<void(
-            llvm::StringRef Key, llvm::StringRef Value)> Callback) override
-    {
-        Results.forEachResult(Callback);
-    }
-
-private:
-    tooling::InMemoryToolResults Results;
-    std::mutex Mutex;
-};
-
 /** The collection of declarations in extracted form.
 */
 struct Corpus
 {
-    Corpus() = default;
+    Corpus();
     Corpus(Corpus const&) = delete;
     Corpus& operator=(Corpus const&) = delete;
 
-    // In ToolResults, the Key is the hashed USR and the value is the
-    // bitcode-encoded representation of the Info object.
-    ThreadSafeToolResults toolResults;
+    /** Holds the results of visiting the AST.
+
+        This is a table of key/value pairs where
+        the key is the SHA1 digest of the USR and
+        the value is the bitcode-encoded representation
+        of the Info object.
+    */
+    std::unique_ptr<tooling::ToolResults> toolResults;
 
     Index Idx;
 

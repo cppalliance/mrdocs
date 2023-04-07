@@ -22,6 +22,50 @@
 namespace clang {
 namespace mrdox {
 
+namespace {
+
+class ThreadSafeToolResults
+    : public tooling::ToolResults
+{
+public:
+    void
+    addResult(
+        llvm::StringRef Key,
+        llvm::StringRef Value) override
+    {
+        std::unique_lock<std::mutex> LockGuard(Mutex);
+        Results.addResult(Key, Value);
+    }
+
+    std::vector<std::pair<llvm::StringRef, llvm::StringRef>>
+    AllKVResults() override
+    {
+        return Results.AllKVResults();
+    }
+
+    void
+    forEachResult(
+        llvm::function_ref<void(
+            llvm::StringRef Key, llvm::StringRef Value)> Callback) override
+    {
+        Results.forEachResult(Callback);
+    }
+
+private:
+    tooling::InMemoryToolResults Results;
+    std::mutex Mutex;
+};
+
+} // (anon)
+
+//------------------------------------------------
+
+Corpus::
+Corpus()
+    : toolResults(std::make_unique<ThreadSafeToolResults>())
+{
+}
+
 //------------------------------------------------
 
 llvm::Error
@@ -58,10 +102,13 @@ buildIndex(
     Corpus& corpus,
     Config const& cfg)
 {
-    // Collect values into output by key.
+/*  Collect all symbols. The result is a vector of
+    one or more bitcodes for each symbol. These will
+    be merged later.
+*/
     llvm::outs() << "Collecting symbols\n";
     llvm::StringMap<std::vector<StringRef>> USRToBitcode;
-    corpus.toolResults.forEachResult(
+    corpus.toolResults->forEachResult(
         [&](StringRef Key, StringRef Value)
         {
             auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());
@@ -133,7 +180,6 @@ buildIndex(
 
     return llvm::Error::success();
 }
-
 
 } // mrdox
 } // clang
