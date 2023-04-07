@@ -14,7 +14,7 @@
 
 #include "jad/Info.hpp"
 #include "jad/Location.hpp"
-#include <optional>
+#include "llvm/ADT/Optional.h"
 
 namespace clang {
 namespace mrdox {
@@ -35,7 +35,7 @@ struct SymbolInfo
 
     void merge(SymbolInfo&& I);
 
-    std::optional<Location> DefLoc;     // Location where this decl is defined.
+    llvm::Optional<Location> DefLoc;     // Location where this decl is defined.
     llvm::SmallVector<Location, 2> Loc; // Locations where this decl is declared.
 };
 
