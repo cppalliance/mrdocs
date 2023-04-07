@@ -124,6 +124,14 @@ URL of repository that hosts code.
 Used for links to definition locations.)"),
     llvm::cl::cat(MrDoxCategory));
 
+static
+llvm::cl::opt<std::string>
+    ConfigPath(
+    "config-file",
+    llvm::cl::desc(R"(The config filename relative to the repository root)"),
+    llvm::cl::init(".mrdox.yaml"),
+    llvm::cl::cat(MrDoxCategory));
+
 enum OutputFormatTy
 {
     adoc,
@@ -197,14 +205,14 @@ setupConfig(
             cfg.ArgAdjuster);
     */
 
-    cfg.ProjectName = ProjectName;
-    cfg.PublicOnly = PublicOnly;
-    cfg.OutDirectory = OutDirectory;
-    cfg.SourceRoot = SourceRoot;
+    cfg.ProjectName   = ProjectName.getValue();
+    cfg.PublicOnly    = PublicOnly;
+    cfg.OutDirectory  = OutDirectory.getValue();
+    cfg.SourceRoot    = SourceRoot.getValue();
     cfg.RepositoryUrl = RepositoryUrl;
     cfg.IgnoreMappingFailures = IgnoreMappingFailures;
-    cfg.OutDirectory = OutDirectory;
-
+    cfg.OutDirectory  = OutDirectory.getValue();
+    cfg.load(ConfigPath);
     return true;
 }
 

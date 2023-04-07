@@ -16,9 +16,11 @@
 #include "Representation.h"
 #include <clang/Tooling/ArgumentsAdjusters.h>
 #include <clang/Tooling/Execution.h>
+#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringRef.h>
 #include <memory>
+#include <source_location>
 #include <string>
 
 namespace clang {
@@ -51,15 +53,22 @@ struct Config
     // Directory where processed files are stored. Links
     // to definition locations will only be generated if
     // the file is in this dir.
-    std::string SourceRoot;     
+    std::string SourceRoot;
                                                       
     // URL of repository that hosts code used
     // for links to definition locations.
-    std::optional<std::string> RepositoryUrl;
+    llvm::Optional<std::string> RepositoryUrl;
 
     bool IgnoreMappingFailures = false;
 
+    struct filter { std::vector<std::string> include, exclude; };
+
+    filter namespaces, files, entities;
+
     std::unique_ptr<Generator> G;
+
+    std::error_code load(const std::string & name = ".mrdox.yaml",
+                         const std::source_location & loc = std::source_location::current());
 };
 
 } // mrdox
