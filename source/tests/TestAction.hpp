@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TEST_TEST_VISITOR_HPP
-#define MRDOX_TEST_TEST_VISITOR_HPP
+#ifndef MRDOX_TEST_TEST_ACTION_HPP
+#define MRDOX_TEST_TEST_ACTION_HPP
 
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Visitor.hpp>
