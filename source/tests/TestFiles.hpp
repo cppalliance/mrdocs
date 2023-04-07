@@ -11,7 +11,7 @@
 #ifndef MRDOX_TESTS_TESTFILES_HPP
 #define MRDOX_TESTS_TESTFILES_HPP
 
-#include <mrdox/Reporter.hpp>
+#include <mrdox/Errors.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <clang/Tooling/Tooling.h>
 #include <llvm/ADT/StringRef.h>

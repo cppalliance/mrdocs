@@ -13,7 +13,7 @@
 
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Visitor.hpp>
-#include <mrdox/Reporter.hpp>
+#include <mrdox/Errors.hpp>
 #include <clang/Tooling/Execution.h>
 
 namespace clang {

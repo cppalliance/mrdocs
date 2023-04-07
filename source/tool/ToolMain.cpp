@@ -23,8 +23,7 @@
 #include "Generators.h"
 #include "Representation.h"
 #include <mrdox/Corpus.hpp>
-#include <mrdox/ErrorCode.hpp>
-#include <mrdox/Reporter.hpp>
+#include <mrdox/Errors.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Decl.h>
 #include <clang/ASTMatchers/ASTMatchFinder.h>
@@ -171,14 +170,14 @@ setupConfig(
     for(auto const& s : args)
         argv.push_back(s.data());
     int argc = argv.size();
-    if(llvm::Error err = clang::tooling::createExecutorFromCommandLineArgs(
-        argc,
-        argv.begin(),
-        MrDoxCategory,
-        Overview).moveInto(cfg.Executor))
+    Result rv = clang::tooling::createExecutorFromCommandLineArgs(
+        argc, argv.begin(), MrDoxCategory, Overview);
+    if(! rv)
     {
+        R.fail("createExecutorFromCommandLineArgs", rv);
         return false;
     }
+    cfg.Executor = std::move(*rv);
 
     // Fail early if an invalid format was provided.
     std::string Format = getFormatString();
