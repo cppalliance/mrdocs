@@ -12,7 +12,7 @@
 #ifndef MRDOX_ERRORS_HPP
 #define MRDOX_ERRORS_HPP
 
-#include <mrdox/detail/access.hpp>
+#include <mrdox/detail/Errors.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/raw_ostream.h>
 #include <cassert>
@@ -23,13 +23,6 @@
 
 namespace clang {
 namespace mrdox {
-
-//------------------------------------------------
-
-// VFALCO CLEAN UP THIS HACK!
-namespace detail {
-CONST_FUNCTION_ACCESS(callGetPtr, llvm::Error, getPtr, llvm::ErrorInfoBase*);
-} // detail
 
 //------------------------------------------------
 //
@@ -48,7 +41,7 @@ class ErrorCode
     llvm::ErrorInfoBase const*
     getPtr(llvm::Error const& e) noexcept
     {
-        return access::callFunction<detail::callGetPtr>(e);
+        return llvm::Expected<llvm::ErrorCodeAccess>::getPtr(e);
     }
 
     static
@@ -218,7 +211,7 @@ public:
 
     /** Constructor.
     */
-    template<class T>
+    //template<class T>
     Result(llvm::Expected<T>&& ex)
     {
         construct(std::move(ex));
