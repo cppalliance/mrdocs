@@ -13,7 +13,12 @@
 #define MRDOX_CONFIG_HPP
 
 #include <clang/Tooling/ArgumentsAdjusters.h>
+#include <clang/Tooling/Execution.h>
 #include <llvm/ADT/Optional.h>
+#include <llvm/ADT/SmallVector.h>
+#include <llvm/ADT/StringRef.h>
+#include <memory>
+#include <source_location>
 #include <string>
 
 namespace clang {
@@ -26,10 +31,6 @@ namespace mrdox {
 */
 struct Config
 {
-    Config() = default;
-    Config(Config&&) = delete;
-    Config& operator=(Config&&) = delete;
-
     /** Adjustments to tool command line, applied during execute.
     */
     tooling::ArgumentsAdjuster ArgAdjuster;
@@ -49,11 +50,27 @@ struct Config
     // the file is in this dir.
     std::string SourceRoot;     
 
+                                                      
     // URL of repository that hosts code used
     // for links to definition locations.
     llvm::Optional<std::string> RepositoryUrl;
 
     bool IgnoreMappingFailures = false;
+
+    Config();
+    Config(Config&&) = delete;
+    Config& operator=(Config&&) = delete;
+
+public:
+    struct filter { std::vector<std::string> include, exclude; };
+
+    filter namespaces, files, entities;
+
+    std::error_code
+    load(
+        const std::string & name,
+        const std::source_location & loc =
+        std::source_location::current());
 };
 
 } // mrdox

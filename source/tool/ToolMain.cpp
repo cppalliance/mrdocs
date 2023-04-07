@@ -71,6 +71,31 @@ OutDirectory(
 
 static
 llvm::cl::opt<std::string>
+SourceRoot(
+    "source-root", llvm::cl::desc(R"(
+Directory where processed files are stored.
+Links to definition locations will only be
+generated if the file is in this dir.)"),
+    llvm::cl::cat(ToolCategory));
+
+static
+llvm::cl::opt<std::string>
+RepositoryUrl(
+    "repository", llvm::cl::desc(R"(
+URL of repository that hosts code.
+Used for links to definition locations.)"),
+    llvm::cl::cat(ToolCategory));
+
+static
+llvm::cl::opt<std::string>
+    ConfigPath(
+    "config-file",
+    llvm::cl::desc(R"(The config filename relative to the repository root)"),
+    llvm::cl::init("mrdox.yaml"),
+    llvm::cl::cat(ToolCategory));
+
+static
+llvm::cl::opt<std::string>
 FormatType(
     "format",
     llvm::cl::desc("Format for outputted docs (\"adoc\" or \"xml\")."),
@@ -109,6 +134,8 @@ toolMain(int argc, const char** argv)
     cfg.PublicOnly = true;
     cfg.OutDirectory = OutDirectory;
     cfg.IgnoreMappingFailures = IgnoreMappingFailures;
+
+    cfg.load(ConfigPath);
 
     // create the executor
     auto ex = std::make_unique<tooling::AllTUsToolExecutor>(
