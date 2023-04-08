@@ -8,10 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "TestAction.hpp"
+#include <mrdox/XML.hpp>
 #include <mrdox/Errors.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CompilationDatabase.h>
+#include <clang/Tooling/StandaloneExecution.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/Twine.h>
 #include <llvm/Support/Signals.h>
@@ -122,6 +123,48 @@ visitDirectory(
     return true;
 }
 
+void
+testResult(
+    Corpus const& corpus,
+    Config const& cfg,
+    llvm::StringRef file,
+    llvm::StringRef out,
+    Reporter& R)
+{
+    std::string xml;
+    renderToXMLString(xml, corpus, cfg);
+    std::error_code ec;
+    fs::file_status stat;
+    ec = fs::status(out, stat, false);
+    if(ec == std::errc::no_such_file_or_directory)
+    {
+        // create the xml file and write to it
+    }
+    else if(! R.failed("fs::status", ec))
+    {
+        if(stat.type() == fs::file_type::regular_file)
+        {
+            auto bufferResult = llvm::MemoryBuffer::getFile(out, true);
+            if(R.failed("MemoryBuffer::getFile", bufferResult))
+                return;
+            if(xml != bufferResult->get()->getBuffer())
+            {
+                llvm::errs() <<
+                    "File: \"" << file << "\" failed.\n"
+                    "Expected:\n" <<
+                    bufferResult->get()->getBuffer() << "\n" <<
+                    "Got:\n" <<
+                    xml << "\n";
+                R.testFailed();
+            }
+        }
+        else
+        {
+            // VFALCO report that it is not a regular file
+        }
+    }
+}
+
 //------------------------------------------------
 
 int
@@ -147,12 +190,9 @@ testMain(int argc, const char** argv)
                 SingleFile db(dir, file, out);
                 tooling::StandaloneToolExecutor ex(
                     db, { std::string(file) });
-                Corpus corpus;
-                llvm::Error err = ex.execute(
-                    std::make_unique<TestFactory>(ex, cfg, R));
-                if(! err)
-                {
-                }
+                auto corpus = Corpus::build(ex, cfg, R);
+                if(corpus)
+                    testResult(*corpus, cfg, file, out, R);
             });
         });
     }

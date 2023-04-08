@@ -13,6 +13,7 @@
 #define MRDOX_XML_HPP
 
 #include <mrdox/Config.hpp>
+#include <mrdox/Corpus.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
 #include <string>

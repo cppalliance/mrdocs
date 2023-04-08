@@ -132,7 +132,8 @@ build(
     Config const& cfg,
     Reporter& R)
 {
-    Corpus corpus;
+    auto up = std::unique_ptr<Corpus>(new Corpus);
+    Corpus& corpus = *up;
 
     // Traverse the AST for all translation
     // units and emit serializd bitcode into
@@ -153,8 +154,8 @@ build(
         }
 
         llvm::errs() <<
-            "Error mapping decls in files. mrdox will ignore "
-            "these files and continue:\n" <<
+            "Error mapping decls in files. "
+            "MrDox will ignore these files and continue:\n" <<
             toString(std::move(err)) << "\n";
     }
 
@@ -265,7 +266,7 @@ build(
             });
     }
 
-    return std::make_unique<Corpus>(std::move(corpus));
+    return std::move(up);
 }
 
 } // mrdox

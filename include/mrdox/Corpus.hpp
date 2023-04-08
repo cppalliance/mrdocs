@@ -16,6 +16,7 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Errors.hpp>
 #include <clang/Tooling/Execution.h>
+#include <llvm/Support/Mutex.h>
 
 namespace clang {
 namespace mrdox {
@@ -24,10 +25,6 @@ namespace mrdox {
 */
 struct Corpus
 {
-    Corpus() = default;
-    Corpus(Corpus&&) noexcept = default;
-    Corpus& operator=(Corpus const&) = delete;
-
     /** Index of all emitted symbols.
     */
     Index Idx;
@@ -107,6 +104,13 @@ struct Corpus
         tooling::ToolExecutor& ex,
         Config const& cfg,
         Reporter& R);
+
+private:
+    Corpus() = default;
+
+    llvm::sys::Mutex infoMutex;
+    llvm::sys::Mutex allResultsMutex;
+    llvm::sys::Mutex indexMutexMutex;
 };
 
 } // mrdox
