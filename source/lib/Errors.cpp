@@ -21,7 +21,7 @@ namespace mrdox {
 
 static
 llvm::StringRef
-prettyFilePath(
+prettyFile(
     llvm::StringRef fullPath,
     llvm::SmallVectorImpl<char>& temp)
 {
@@ -72,26 +72,9 @@ toString(
     llvm::SmallString<256> temp;
     llvm::raw_string_ostream os(s);
     os <<
-        prettyFilePath(loc.file_name(), temp) <<
+        prettyFile(loc.file_name(), temp) <<
         "(" << loc.line() << ")";
     return s;
-}
-
-void
-ErrorCode::
-write(
-    llvm::raw_ostream& os) const
-{
-    os << toString(loc_) << ": " << message() << "\n";
-}
-
-void
-ErrorCode::
-throwFrom(
-    std::source_location const& loc) const
-{
-    // VFALCO we could attach loc to the exception
-    throw std::system_error(ec_);
 }
 
 //------------------------------------------------
@@ -102,68 +85,17 @@ throwFrom(
 
 void
 Reporter::
-fail(
+print(
     llvm::StringRef what,
-    ErrorCode const& ec)
+    llvm::Error&& err,
+    std::source_location const& loc)
 {
+    failed_ = true;
+    llvm::SmallString<340> temp;
     llvm::errs() <<
-        what << " failed: " <<
-        ec.message() << "\n" <<
-        "at " << toString(ec.where()) << "\n";
-}
-
-//------------------------------------------------
-
-bool
-Reporter::
-success(llvm::Error&& err)
-{
-    if(! err)
-        return true;
-    // VFALCO TODO Source file, line number, and what
-    llvm::errs() << toString(std::move(err)) << "\n";
-    failed_ = true;
-    return false;
-}
-
-bool
-Reporter::
-success(std::error_code const& ec)
-{
-    if(! ec)
-        return true;
-    // VFALCO TODO Source file, line number, and what
-    llvm::errs() << ec.message() << "\n";
-    failed_ = true;
-    return false;
-}
-
-bool
-Reporter::
-success(
-    llvm::StringRef what,
-    std::error_code const& ec)
-{
-    if(! ec)
-        return true;
-    llvm::errs() <<
-        what << ": " << ec.message() << "\n";
-    failed_ = true;
-    return false;
-}
-
-bool
-Reporter::
-success(
-    llvm::StringRef what,
-    llvm::Error& err)
-{
-    if(! err)
-        return true;
-    llvm::errs() <<
-        what << ": " << toString(std::move(err)) << "\n";
-    failed_ = true;
-    return false;
+        what << ": " << toString(std::move(err)) << "\n" <<
+        "at " << prettyFile(loc.file_name(), temp) <<
+            "(" << loc.line() << ")\n";
 }
 
 } // mrdox

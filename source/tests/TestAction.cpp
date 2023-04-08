@@ -38,22 +38,22 @@ EndSourceFileAction()
     {
         // create the xml file and write to it
     }
-    else if(R_.success(ec))
+    else if(! R_.failed("fs::status", ec))
     {
         if(stat.type() == fs::file_type::regular_file)
         {
-            std::unique_ptr<llvm::MemoryBuffer> pb;
-            if(! R_.success(pb, llvm::MemoryBuffer::getFile(xmlPath, true)))
+            auto bufferResult = llvm::MemoryBuffer::getFile(xmlPath, true);
+            if(R_.failed("MemoryBuffer::getFile", bufferResult))
                 return;
-            if(xml != pb->getBuffer())
+            if(xml != bufferResult->get()->getBuffer())
             {
                 llvm::errs() <<
                     "File: \"" << this->getCurrentFile() << "\" failed.\n"
                     "Expected:\n" <<
-                    pb->getBuffer() << "\n" <<
+                    bufferResult->get()->getBuffer() << "\n" <<
                     "Got:\n" <<
                     xml << "\n";
-                R_.test_failure();
+                R_.testFailed();
             }
         }
         else

@@ -19,32 +19,14 @@
 // representation to the desired output format.
 //
 
-#include "ClangDoc.h"
 #include "Generators.h"
-#include "Representation.h"
+#include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Errors.hpp>
-#include <clang/AST/AST.h>
-#include <clang/AST/Decl.h>
-#include <clang/ASTMatchers/ASTMatchFinder.h>
-#include <clang/ASTMatchers/ASTMatchersInternal.h>
-#include <clang/Driver/Options.h>
-#include <clang/Frontend/FrontendActions.h>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
-#include <clang/Tooling/JSONCompilationDatabase.h>
-#include <clang/Tooling/Execution.h>
-#include <clang/Tooling/Tooling.h>
-#include <llvm/ADT/APFloat.h>
 #include <llvm/Support/CommandLine.h>
-#include <llvm/Support/Error.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
-#include <llvm/Support/Process.h>
 #include <llvm/Support/Signals.h>
-#include <llvm/Support/raw_ostream.h>
-#include <memory>
-#include <string>
 
 // VFALCO GARBAGE
 extern void force_xml_generator_linkage();
@@ -134,19 +116,12 @@ toolMain(int argc, const char** argv)
 
     Config cfg;
     Reporter R;
-    ErrorCode ec;
 
     // parse command line options
-    {
-        Result rv = tooling::CommonOptionsParser::create(
-            argc, argv, ToolCategory, llvm::cl::OneOrMore, Overview);
-        if(! rv)
-        {
-            R.fail("CommonOptionsParser::create", rv);
-            return EXIT_FAILURE;
-        }
-        cfg.options = std::make_unique<tooling::CommonOptionsParser>(std::move(*rv));
-    }
+    auto optionsResult = tooling::CommonOptionsParser::create(
+        argc, argv, ToolCategory, llvm::cl::OneOrMore, Overview);
+    if(R.failed("CommonOptionsParser::create", optionsResult))
+        return EXIT_FAILURE;
 
     /*
     if (! DoxygenOnly)
@@ -163,21 +138,14 @@ toolMain(int argc, const char** argv)
 
     // create the executor
     auto ex = std::make_unique<tooling::AllTUsToolExecutor>(
-        cfg.options->getCompilations(), 0);
+        optionsResult->getCompilations(), 0);
 
     // create the generator
-    std::unique_ptr<Generator> G;
-    {
-        std::string Format = getFormatString();
-        Result rv = findGeneratorByName(Format);
-        if(! rv)
-        {
-            R.fail("findGeneratorByName", rv);
-            return false;
-        }
-        G = std::move(*rv);
-    }
+    auto generatorResult = findGeneratorByName(getFormatString());
+    if(R.failed("findGeneratorByName", generatorResult))
+        return EXIT_FAILURE;
 
+    // Run the tool, this can take a while
     auto rv = buildCorpus(*ex, cfg, R);
     if(! rv)
         return EXIT_FAILURE;
@@ -192,10 +160,9 @@ toolMain(int argc, const char** argv)
         llvm::errs() << "Failed to create directory '" << cfg.OutDirectory << "'\n";
         return EXIT_FAILURE;
     }
-
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if(auto Err = G->generateDocs(
+    if(auto Err = generatorResult->get()->generateDocs(
         cfg.OutDirectory,
         *rv,
         cfg))
@@ -209,14 +176,14 @@ toolMain(int argc, const char** argv)
     //
     {
         llvm::outs() << "Generating assets for docs...\n";
-        auto Err = G->createResources(cfg, *rv);
+        auto Err = generatorResult->get()->createResources(cfg, *rv);
         if (Err) {
             llvm::errs() << toString(std::move(Err)) << "\n";
             return EXIT_FAILURE;
         }
     }
 
-    return EXIT_SUCCESS;
+    return R.getExitCode();
 }
 
 } // mrdox

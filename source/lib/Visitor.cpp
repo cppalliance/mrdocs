@@ -10,7 +10,6 @@
 //
 
 #include "BitcodeWriter.h"
-#include "Error.hpp"
 #include "Serialize.h"
 #include <mrdox/Visitor.hpp>
 #ifdef _MSC_VER

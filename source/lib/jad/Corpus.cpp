@@ -127,11 +127,12 @@ buildCorpus(
 
     Pool.wait();
 
-    if (GotFailure)
+    if(GotFailure)
     {
-        R.fail("buildCorpus", llvm::createStringError(
-            llvm::inconvertibleErrorCode(),
-            "an error occurred"));
+        R.failed("buildCorpus",
+            llvm::createStringError(
+                llvm::inconvertibleErrorCode(),
+                "an error occurred"));
     }
 
     return std::make_unique<Corpus>(std::move(corpus));

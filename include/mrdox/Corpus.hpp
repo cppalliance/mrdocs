@@ -16,7 +16,6 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Errors.hpp>
 #include <clang/Tooling/Execution.h>
-#include <mutex>
 
 namespace clang {
 namespace mrdox {
@@ -29,6 +28,8 @@ struct Corpus
     Corpus(Corpus&&) noexcept = default;
     Corpus& operator=(Corpus const&) = delete;
 
+    /** Index of all emitted symbols.
+    */
     Index Idx;
 
     /** Table of Info keyed on USR.
@@ -36,10 +37,11 @@ struct Corpus
         A USRs is a string that provide an
         unambiguous reference to a symbol.
     */
-    llvm::StringMap<
-        std::unique_ptr<mrdox::Info>> USRToInfo;
+    llvm::StringMap<std::unique_ptr<Info>> USRToInfo;
 };
 
+/** Build the intermediate representation of the code being documented.
+*/
 std::unique_ptr<Corpus>
 buildCorpus(
     tooling::ToolExecutor& ex,

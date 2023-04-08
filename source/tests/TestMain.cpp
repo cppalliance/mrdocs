@@ -8,7 +8,6 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "TestFiles.hpp"
 #include "TestAction.hpp"
 #include <mrdox/Errors.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
@@ -74,6 +73,7 @@ public:
         return { cc_.front() };
     }
 };
+
 //------------------------------------------------
 
 namespace fs = llvm::sys::fs;
@@ -87,13 +87,14 @@ visitDirectory(
     F const& f)
 {
     std::error_code ec;
-    llvm::SmallString<256> out;
-    llvm::SmallString<256> dir(dirPath);
+    llvm::SmallString<32> dir(dirPath);
+    llvm::SmallString<32> out;
+    auto const& cdir(dir);
+
     path::remove_dots(dir, true);
     fs::directory_iterator const end{};
     fs::directory_iterator iter(dir, ec, false);
-    llvm::StringRef const cdir(dir);
-    if(! R.success("visitDirectory", ec))
+    if(R.failed("visitDirectory", ec))
         return false;
     while(iter != end)
     {
@@ -115,7 +116,7 @@ visitDirectory(
             // we don't handle this type
         }
         iter.increment(ec);
-        if(! R.success("increment", ec))
+        if(R.failed("fs::directory_iterator::increment", ec))
             return false;
     }
     return true;
@@ -136,14 +137,14 @@ testMain(int argc, const char** argv)
             llvm::StringRef(argv[i]), R,
         [&](llvm::StringRef dir_,
             llvm::StringRef file_,
-            llvm::StringRef output_)
+            llvm::StringRef out_)
         {
             Pool.async([&cfg, &R,
-                dir = llvm::SmallString<32>(dir_),
-                file = llvm::SmallString<32>(file_),
-                output = llvm::SmallString<32>(output_)]
+                dir = dir_.str(),
+                file = file_.str(),
+                out = out_.str()]
             {
-                SingleFile db(dir, file, output);
+                SingleFile db(dir, file, out);
                 tooling::StandaloneToolExecutor ex(
                     db, { std::string(file) });
                 Corpus corpus;
@@ -156,7 +157,7 @@ testMain(int argc, const char** argv)
         });
     }
     Pool.wait();
-    return EXIT_SUCCESS;
+    return R.getExitCode();
 }
 
 } // mrdox

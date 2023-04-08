@@ -23,6 +23,7 @@
 // on members on the forward declaration, but would have the class name).
 //
 
+#include "jad/Index.hpp"
 #include "Reduce.h"
 #include "Representation.h"
 #include "jad/Namespace.hpp"

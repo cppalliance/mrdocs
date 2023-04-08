@@ -12,16 +12,8 @@
 #ifndef MRDOX_CONFIG_HPP
 #define MRDOX_CONFIG_HPP
 
-#include "Generators.h"
-#include "Representation.h"
 #include <clang/Tooling/ArgumentsAdjusters.h>
-#include <clang/Tooling/CommonOptionsParser.h>
-#include <clang/Tooling/CompilationDatabase.h>
-#include <clang/Tooling/Execution.h>
 #include <llvm/ADT/Optional.h>
-#include <llvm/ADT/SmallVector.h>
-#include <llvm/ADT/StringRef.h>
-#include <memory>
 #include <string>
 
 namespace clang {
@@ -29,20 +21,21 @@ namespace mrdox {
 
 /** Configuration used to generate the Corpus and Docs
 
-    This contains all the settings applied from the
-    command line and the YML file (if any).
+    This contains all the settings applied from
+    the command line and the YML file (if any).
 */
 struct Config
 {
-    Config();
+    Config() = default;
     Config(Config&&) = delete;
     Config& operator=(Config&&) = delete;
 
-    std::unique_ptr<tooling::CommonOptionsParser> options;
-
+    /** Adjustments to tool command line, applied during execute.
+    */
     tooling::ArgumentsAdjuster ArgAdjuster;
 
-    // Name of project being documented.
+    /** Name of project being documented.
+    */
     std::string ProjectName;
 
     // Indicates if only public declarations are documented.
@@ -55,7 +48,7 @@ struct Config
     // to definition locations will only be generated if
     // the file is in this dir.
     std::string SourceRoot;     
-                                                      
+
     // URL of repository that hosts code used
     // for links to definition locations.
     llvm::Optional<std::string> RepositoryUrl;
