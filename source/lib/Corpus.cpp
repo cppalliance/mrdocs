@@ -24,6 +24,10 @@ namespace clang {
 namespace mrdox {
 
 //------------------------------------------------
+//
+// Observers
+//
+//------------------------------------------------
 
 Info const*
 Corpus::
@@ -47,6 +51,28 @@ at(
 }
 
 //------------------------------------------------
+//
+// Implementation
+//
+//------------------------------------------------
+
+void
+Corpus::
+insert(std::unique_ptr<Info> Ip)
+{
+    auto const& I = *Ip;
+
+    // Store the Info in the result map
+    {
+        std::lock_guard<llvm::sys::Mutex> Guard(infoMutex);
+        USRToInfo[llvm::toStringRef(I.USR)] = std::move(Ip);
+    }
+
+    // Add a reference to this Info in the Index
+    insertIntoIndex(I);
+
+
+}
 
 // A function to add a reference to Info in Idx.
 // Given an Info X with the following namespaces: [B,A]; a reference to X will
@@ -60,9 +86,11 @@ at(
 // the references already exist, the same one will be used.
 void
 Corpus::
-insert(
+insertIntoIndex(
     Info const& I)
 {
+    std::lock_guard<llvm::sys::Mutex> Guard(indexMutex);
+
     // Index pointer that will be moving through Idx until the first parent
     // namespace of Info (where the reference has to be inserted) is found.
     Index* pi = &Idx;
@@ -135,11 +163,10 @@ build(
     auto up = std::unique_ptr<Corpus>(new Corpus);
     Corpus& corpus = *up;
 
-    // Traverse the AST for all translation
-    // units and emit serializd bitcode into
-    // tool results. This operation happens
-    // on a thread pool.
-    //
+    // Traverse the AST for all translation units
+    // and emit serializd bitcode into tool results.
+    // This operation happens ona thread pool.
+
     llvm::outs() << "Mapping declarations\n";
     llvm::Error err = ex.execute(
         makeToolFactory(*ex.getExecutionContext(), cfg),
@@ -162,6 +189,7 @@ build(
     // Collect the symbols. Each symbol will have
     // a vector of one or more bitcodes. These will
     // be merged later.
+
     llvm::outs() << "Collecting symbols\n";
     llvm::StringMap<std::vector<StringRef>> USRToBitcode;
     ex.getToolResults()->forEachResult(
@@ -187,8 +215,10 @@ build(
     {
         Pool.async([&]()
         {
+            // One or more Info for the same symbol ID
             std::vector<std::unique_ptr<Info>> Infos;
 
+            // Each Bitcode can have multiple Infos
             for (auto& Bitcode : Group.getValue())
             {
                 llvm::BitstreamCursor Stream(Bitcode);
@@ -206,25 +236,17 @@ build(
                     std::back_inserter(Infos));
             }
 
-            auto Reduced = mergeInfos(Infos);
-            if (!Reduced)
+            auto mergeResult = mergeInfos(Infos);
+            if(!mergeResult)
             {
                 // VFALCO What about GotFailure?
-                llvm::errs() << llvm::toString(Reduced.takeError());
+                llvm::errs() << llvm::toString(mergeResult.takeError());
                 return;
             }
 
-            // Add a reference to this Info in the Index
-            {
-                std::lock_guard<llvm::sys::Mutex> Guard(IndexMutex);
-                corpus.insert(*Reduced.get().get());
-            }
-
-            // Save in the result map (needs a lock due to threaded access).
-            {
-                std::lock_guard<llvm::sys::Mutex> Guard(USRToInfoMutex);
-                corpus.USRToInfo[Group.getKey()] = std::move(Reduced.get());
-            }
+            std::unique_ptr<Info> Ip(mergeResult.get().release());
+            assert(Group.getKey() == llvm::toStringRef(Ip->USR));
+            corpus.insert(std::move(Ip));
         });
     }
 

@@ -37,9 +37,10 @@ struct Corpus
     */
     std::vector<SymbolID> allSymbols;
 
+public:
     //--------------------------------------------
     //
-    // Functions
+    // Observers
     //
     //--------------------------------------------
 
@@ -80,14 +81,32 @@ struct Corpus
         return static_cast<T const&>(I);
     }
 
-    /** Insert Info into the index
+    //--------------------------------------------
+    //
+    // Implementation
+    //
+    //--------------------------------------------
+private:
+    /** Insert this element and all its children into the Corpus.
+
+        @par Thread Safety
+        May be called concurrently.
     */
-    void
-    insert(
-        Info const& I);
+    void insert(std::unique_ptr<Info> Ip);
+
+    /** Insert Info into the index
+
+        @par Thread Safety
+        May be called concurrently.
+    */
+    void insertIntoIndex(Info const& I);
 
     //--------------------------------------------
-
+    //
+    // Static Functions
+    //
+    //--------------------------------------------
+public:
     /** Store the Info in the tool results, keyed by SymbolID.
     */
     static
@@ -109,8 +128,8 @@ private:
     Corpus() = default;
 
     llvm::sys::Mutex infoMutex;
+    llvm::sys::Mutex indexMutex;
     llvm::sys::Mutex allResultsMutex;
-    llvm::sys::Mutex indexMutexMutex;
 };
 
 } // mrdox
