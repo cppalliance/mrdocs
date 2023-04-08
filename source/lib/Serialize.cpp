@@ -30,7 +30,6 @@ using clang::comments::FullComment;
 
 namespace clang {
 namespace mrdox {
-namespace serialize {
 
 SymbolID hashUSR(llvm::StringRef USR) {
     return llvm::SHA1::hash(arrayRefFromStringRef(USR));
@@ -869,6 +868,5 @@ emitInfo(const EnumDecl* D, const FullComment* FC, int LineNumber,
     return { nullptr, MakeAndInsertIntoParent<EnumInfo&&>(std::move(Enum)) };
 }
 
-} // namespace serialize
 } // namespace mrdox
 } // namespace clang

@@ -24,7 +24,6 @@
 
 namespace clang {
 namespace mrdox {
-namespace serialize {
 
 using namespace clang::comments;
 
@@ -389,8 +388,6 @@ getCommandName(
     return "<not a builtin command>";
 }
 
-} // namespace serialize
-
 //------------------------------------------------
 
 void
@@ -400,7 +397,7 @@ parseComment(
     Javadoc& javadoc,
     CommentInfo& ci)
 {
-    clang::mrdox::serialize::CommentVisitor v(*c, ctx, javadoc);
+    clang::mrdox::CommentVisitor v(*c, ctx, javadoc);
     v.parse(c, ci);
 
     // debugging

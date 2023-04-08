@@ -33,7 +33,6 @@ using namespace clang::comments;
 
 namespace clang {
 namespace mrdox {
-namespace serialize {
 
 // The first element will contain the relevant information about the declaration
 // passed as parameter.
@@ -81,7 +80,6 @@ SymbolID hashUSR(llvm::StringRef USR);
 
 std::string serialize(Info const& I);
 
-} // serialize
 } // mrdox
 } // clang
 

@@ -148,7 +148,7 @@ reportResult(
 {
     exc.reportResult(
         llvm::toStringRef(I.USR),
-        serialize::serialize(I));
+        serialize(I));
 }
 
 //------------------------------------------------

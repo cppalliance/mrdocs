@@ -54,7 +54,7 @@ mapDecl(T const* D)
     bool IsFileInRootDir;
     llvm::SmallString<128> File =
         getFile(D, D->getASTContext(), cfg_.SourceRoot, IsFileInRootDir);
-    auto I = serialize::emitInfo(
+    auto I = emitInfo(
         D,
         getComment(D, D->getASTContext()),
         getLine(D, D->getASTContext()),
