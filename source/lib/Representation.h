@@ -17,7 +17,6 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 
-#include "AccessScope.hpp"
 #include "Info.hpp"
 #include "Location.hpp"
 #include "Namespace.hpp"

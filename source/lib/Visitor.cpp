@@ -50,11 +50,15 @@ mapDecl(T const* D)
     llvm::SmallString<128> USR;
     // If there is an error generating a USR for the decl, skip this decl.
     if (index::generateUSRForDecl(D, USR))
+    {
+        // VFALCO report this, it seems to never happen
         return true;
+    }
+
     bool IsFileInRootDir;
     llvm::SmallString<128> File =
         getFile(D, D->getASTContext(), cfg_.SourceRoot, IsFileInRootDir);
-    auto I = serialize::emitInfo(
+    auto I = emitInfo(
         D,
         getComment(D, D->getASTContext()),
         getLine(D, D->getASTContext()),

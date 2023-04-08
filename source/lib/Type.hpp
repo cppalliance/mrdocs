@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_TYPE_HPP
-#define MRDOX_JAD_TYPE_HPP
+#ifndef MRDOX_TYPE_HPP
+#define MRDOX_TYPE_HPP
 
 #include "Reference.hpp"
 

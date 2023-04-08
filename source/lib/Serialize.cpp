@@ -30,7 +30,6 @@ using clang::comments::FullComment;
 
 namespace clang {
 namespace mrdox {
-namespace serialize {
 
 SymbolID hashUSR(llvm::StringRef USR) {
     return llvm::SHA1::hash(arrayRefFromStringRef(USR));
@@ -83,7 +82,11 @@ std::string getSourceCode(const Decl* D, const SourceRange& R) {
         .str();
 }
 
-template <typename T> static std::string serialize(T& I) {
+template <typename T>
+static
+std::string
+serialize(T& I)
+{
     SmallString<2048> Buffer;
     llvm::BitstreamWriter Stream(Buffer);
     ClangDocBitcodeWriter Writer(Stream);
@@ -214,17 +217,34 @@ shouldSerializeInfo(
 // refer to them.
 //
 // See MakeAndInsertIntoParent().
-static void InsertChild(Scope& scope, const NamespaceInfo& Info) {
-    scope.Namespaces.emplace_back(Info.USR, Info.Name, InfoType::IT_namespace,
+static
+void
+InsertChild(
+    Scope& scope,
+    NamespaceInfo const& Info)
+{
+    scope.Namespaces.emplace_back(
+        Info.USR, Info.Name, InfoType::IT_namespace,
         Info.Name, getInfoRelativePath(Info.Namespace));
 }
 
-static void InsertChild(Scope& scope, const RecordInfo& Info) {
-    scope.Records.emplace_back(Info.USR, Info.Name, InfoType::IT_record,
+static
+void
+InsertChild(
+    Scope& scope,
+    RecordInfo const& Info)
+{
+    scope.Records.emplace_back(
+        Info.USR, Info.Name, InfoType::IT_record,
         Info.Name, getInfoRelativePath(Info.Namespace));
 }
 
-static void InsertChild(Scope& scope, EnumInfo Info) {
+static
+void
+InsertChild(
+    Scope& scope,
+    EnumInfo Info)
+{
     scope.Enums.push_back(std::move(Info));
 }
 
@@ -232,12 +252,19 @@ static
 void
 InsertChild(
     Scope& scope,
-    FunctionInfo Info)
+    FunctionInfo const& Info)
 {
-    scope.Functions.emplace_back(std::move(Info));
+    scope.Functions.emplace_back(
+        Info.USR, Info.Name, InfoType::IT_function,
+        Info.Name, getInfoRelativePath(Info.Namespace));
 }
 
-static void InsertChild(Scope& scope, TypedefInfo Info) {
+static
+void
+InsertChild(
+    Scope& scope,
+    TypedefInfo Info)
+{
     scope.Typedefs.push_back(std::move(Info));
 }
 
@@ -255,16 +282,21 @@ static void InsertChild(Scope& scope, TypedefInfo Info) {
 // Otherwise, specify an rvalue reference <EnumInfo&&> and move into the
 // parameter. Since each variant is used once, it's not worth having a more
 // elaborate system to automatically deduce this information.
-template <typename ChildType>
-std::unique_ptr<Info> MakeAndInsertIntoParent(ChildType Child) {
-    if (Child.Namespace.empty()) {
+template<class ChildType>
+std::unique_ptr<Info>
+MakeAndInsertIntoParent(
+    ChildType Child)
+{
+    if (Child.Namespace.empty())
+    {
         // Insert into unnamed parent namespace.
         auto ParentNS = std::make_unique<NamespaceInfo>();
         InsertChild(ParentNS->Children, std::forward<ChildType>(Child));
         return ParentNS;
     }
 
-    switch (Child.Namespace[0].RefType) {
+    switch (Child.Namespace[0].RefType)
+    {
     case InfoType::IT_namespace: {
         auto ParentNS = std::make_unique<NamespaceInfo>();
         ParentNS->USR = Child.Namespace[0].USR;
@@ -297,8 +329,12 @@ std::unique_ptr<Info> MakeAndInsertIntoParent(ChildType Child) {
 //    will be private because the inheritance is private. This is the AS that
 //    this function calculates. FirstAS is the inheritance mode and SecondAS is
 //    the AS of the attribute / method.
-static AccessSpecifier getFinalAccessSpecifier(AccessSpecifier FirstAS,
-    AccessSpecifier SecondAS) {
+static
+AccessSpecifier
+getFinalAccessSpecifier(
+    AccessSpecifier FirstAS,
+    AccessSpecifier SecondAS)
+{
     if (FirstAS == AccessSpecifier::AS_none ||
         SecondAS == AccessSpecifier::AS_none)
         return AccessSpecifier::AS_none;
@@ -313,9 +349,16 @@ static AccessSpecifier getFinalAccessSpecifier(AccessSpecifier FirstAS,
 
 // The Access parameter is only provided when parsing the field of an inherited
 // record, the access specification of the field depends on the inheritance mode
-static void parseFields(RecordInfo& I, const RecordDecl* D, bool PublicOnly,
-    AccessSpecifier Access = AccessSpecifier::AS_public) {
-    for (const FieldDecl* F : D->fields()) {
+static
+void
+parseFields(
+    RecordInfo& I,
+    const RecordDecl* D,
+    bool PublicOnly,
+    AccessSpecifier Access = AccessSpecifier::AS_public)
+{
+    for (const FieldDecl* F : D->fields())
+    {
         if (!shouldSerializeInfo(PublicOnly, /*IsInAnonymousNamespace=*/false, F))
             continue;
 
@@ -329,8 +372,14 @@ static void parseFields(RecordInfo& I, const RecordDecl* D, bool PublicOnly,
     }
 }
 
-static void parseEnumerators(EnumInfo& I, const EnumDecl* D) {
-    for (const EnumConstantDecl* E : D->enumerators()) {
+static
+void
+parseEnumerators(
+    EnumInfo& I,
+    const EnumDecl* D)
+{
+    for (const EnumConstantDecl* E : D->enumerators())
+    {
         std::string ValueExpr;
         if (const Expr* InitExpr = E->getInitExpr())
             ValueExpr = getSourceCode(D, InitExpr->getSourceRange());
@@ -465,10 +514,17 @@ populateInfo(
 //------------------------------------------------
 
 template <typename T>
-static void populateSymbolInfo(SymbolInfo& I, const T* D, const FullComment* C,
-    int LineNumber, StringRef Filename,
+static
+void
+populateSymbolInfo(
+    SymbolInfo& I,
+    T const* D,
+    FullComment const* C,
+    int LineNumber,
+    StringRef Filename,
     bool IsFileInRootDir,
-    bool& IsInAnonymousNamespace) {
+    bool& IsInAnonymousNamespace)
+{
     populateInfo(I, D, C, IsInAnonymousNamespace);
     if (D->isThisDeclarationADefinition())
         I.DefLoc.emplace(LineNumber, Filename, IsFileInRootDir);
@@ -477,44 +533,6 @@ static void populateSymbolInfo(SymbolInfo& I, const T* D, const FullComment* C,
 }
 
 //------------------------------------------------
-
-/** Generate the USR without canonicalizing first.
-*/
-bool
-makeUSR(
-    QualType const& qt,
-    ASTContext& ctx,
-    SmallVectorImpl<char>& buf)
-{
-    if(qt.isNull())
-        return true;
-    //qt = qt.getCanonicalType();
-
-    //USRGenerator UG(&Ctx, Buf);
-  //UG.VisitType(T);
-  //return UG.ignoreResults();
-    return true;
-}
-
-/*
-static
-TypeInfo
-makeTypeInfo(
-    QualType T,
-    ASTContext& Ctx)
-{
-    auto T_ = T.getCanonicalType();
-    llvm::SmallString<64> Buf;
-    index::generateUSRForType(T, Ctx, Buf);
-    TypeInfo ti;
-    ti.Type.USR;
-    ti.Type.Name;
-    ti.Type.QualName;
-    ti.Type.RefType;
-    ti.Type.Path;
-    return ti;
-}
-*/
 
 static
 void
@@ -532,22 +550,17 @@ populateFunctionInfo(
         LineNumber, Filename,
         IsFileInRootDir,
         IsInAnonymousNamespace);
-#if 1
     QualType const qt = D->getReturnType();
     std::string s = qt.getAsString();
     I.ReturnType = getTypeInfoForType(qt);
-#else
-    I.ReturnType = makeTypeInfo(
-        D->getReturnType(),
-        D->getASTContext());
-#endif
     parseParameters(I, D);
 
     PopulateTemplateParameters(I.Template, D);
 
     // Handle function template specializations.
     if (const FunctionTemplateSpecializationInfo* FTSI =
-        D->getTemplateSpecializationInfo()) {
+        D->getTemplateSpecializationInfo())
+    {
         if (!I.Template)
             I.Template.emplace();
         I.Template->Specialization.emplace();
@@ -556,15 +569,20 @@ populateFunctionInfo(
         Specialization.SpecializationOf = getUSRForDecl(FTSI->getTemplate());
 
         // Template parameters to the specialization.
-        if (FTSI->TemplateArguments) {
-            for (const TemplateArgument& Arg : FTSI->TemplateArguments->asArray()) {
+        if (FTSI->TemplateArguments)
+        {
+            for (const TemplateArgument& Arg :
+                    FTSI->TemplateArguments->asArray())
+            {
                 Specialization.Params.emplace_back(*D, Arg);
             }
         }
     }
 }
 
-static void populateMemberTypeInfo(
+static
+void
+populateMemberTypeInfo(
     MemberTypeInfo& I,
     const FieldDecl* D)
 {
@@ -578,41 +596,55 @@ static void populateMemberTypeInfo(
         return;
 
     Comment->setAttached();
-    if (comments::FullComment* fc = Comment->parse(Context, nullptr, D)) {
+    if (comments::FullComment* fc = Comment->parse(Context, nullptr, D))
+    {
         I.Description.emplace_back();
         parseComment(fc, Context, I.javadoc, I.Description.back());
     }
 }
 
-static void
-parseBases(RecordInfo& I, const CXXRecordDecl* D, bool IsFileInRootDir,
-    bool PublicOnly, bool IsParent,
-    AccessSpecifier ParentAccess = AccessSpecifier::AS_public) {
+static
+void
+parseBases(
+    RecordInfo& I,
+    CXXRecordDecl const* D,
+    bool IsFileInRootDir,
+    bool PublicOnly,
+    bool IsParent,
+    AccessSpecifier ParentAccess = AccessSpecifier::AS_public)
+{
     // Don't parse bases if this isn't a definition.
     if (!D->isThisDeclarationADefinition())
         return;
-    for (const CXXBaseSpecifier& B : D->bases()) {
-        if (const RecordType* Ty = B.getType()->getAs<RecordType>()) {
+    for (const CXXBaseSpecifier& B : D->bases())
+    {
+        if (const RecordType* Ty = B.getType()->getAs<RecordType>())
+        {
             if (const CXXRecordDecl* Base =
-                cast_or_null<CXXRecordDecl>(Ty->getDecl()->getDefinition())) {
+                cast_or_null<CXXRecordDecl>(Ty->getDecl()->getDefinition()))
+            {
                 // Initialized without USR and name, this will be set in the following
                 // if-else stmt.
                 BaseRecordInfo BI(
                     {}, "", getInfoRelativePath(Base), B.isVirtual(),
                     getFinalAccessSpecifier(ParentAccess, B.getAccessSpecifier()),
                     IsParent);
-                if (const auto* Ty = B.getType()->getAs<TemplateSpecializationType>()) {
+                if (const auto* Ty = B.getType()->getAs<TemplateSpecializationType>())
+                {
                     const TemplateDecl* D = Ty->getTemplateName().getAsTemplateDecl();
                     BI.USR = getUSRForDecl(D);
                     BI.Name = B.getType().getAsString();
                 }
-                else {
+                else
+                {
                     BI.USR = getUSRForDecl(Base);
                     BI.Name = Base->getNameAsString();
                 }
                 parseFields(BI, Base, PublicOnly, BI.Access);
                 for (const auto& Decl : Base->decls())
-                    if (const auto* MD = dyn_cast<CXXMethodDecl>(Decl)) {
+                {
+                    if (const auto* MD = dyn_cast<CXXMethodDecl>(Decl))
+                    {
                         // Don't serialize private methods
                         if (MD->getAccessUnsafe() == AccessSpecifier::AS_private ||
                             !MD->isUserProvided())
@@ -628,8 +660,15 @@ parseBases(RecordInfo& I, const CXXRecordDecl* D, bool IsFileInRootDir,
                             IsInAnonymousNamespace);
                         FI.Access =
                             getFinalAccessSpecifier(BI.Access, MD->getAccessUnsafe());
-                        BI.Children.Functions.emplace_back(std::move(FI));
+                        //BI.Children.Functions.emplace_back(std::move(FI));
+                        BI.Children.Functions.emplace_back(
+                            FI.USR,
+                            FI.Name,
+                            InfoType::IT_function,
+                            FI.Name,
+                            FI.Path);
                     }
+                }
                 I.Bases.emplace_back(std::move(BI));
                 // Call this function recursively to get the inherited classes of
                 // this base; these new bases will also get stored in the original
@@ -641,18 +680,25 @@ parseBases(RecordInfo& I, const CXXRecordDecl* D, bool IsFileInRootDir,
     }
 }
 
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const NamespaceDecl* D, const FullComment* FC, int LineNumber,
-    llvm::StringRef File, bool IsFileInRootDir, bool PublicOnly) {
+std::pair<
+    std::unique_ptr<Info>,
+    std::unique_ptr<Info>>
+emitInfo(
+    NamespaceDecl const* D,
+    FullComment const* FC,
+    int LineNumber,
+    llvm::StringRef File,
+    bool IsFileInRootDir,
+    bool PublicOnly)
+{
     auto I = std::make_unique<NamespaceInfo>();
     bool IsInAnonymousNamespace = false;
     populateInfo(*I, D, FC, IsInAnonymousNamespace);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
-    I->Name = D->isAnonymousNamespace()
-        ? llvm::SmallString<16>("@nonymous_namespace")
-        : I->Name;
+    if(D->isAnonymousNamespace())
+        I->Name = "@nonymous_namespace";
     I->Path = getInfoRelativePath(I->Namespace);
     if (I->Namespace.empty() && I->USR == SymbolID())
         return { std::unique_ptr<Info>{std::move(I)}, nullptr };
@@ -662,9 +708,17 @@ emitInfo(const NamespaceDecl* D, const FullComment* FC, int LineNumber,
     return { std::move(I), MakeAndInsertIntoParent<const NamespaceInfo&>(*I) };
 }
 
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const RecordDecl* D, const FullComment* FC, int LineNumber,
-    llvm::StringRef File, bool IsFileInRootDir, bool PublicOnly) {
+std::pair<
+    std::unique_ptr<Info>,
+    std::unique_ptr<Info>>
+emitInfo(
+    RecordDecl const* D,
+    FullComment const* FC,
+    int LineNumber,
+    llvm::StringRef File,
+    bool IsFileInRootDir,
+    bool PublicOnly)
+{
     auto I = std::make_unique<RecordInfo>();
     bool IsInAnonymousNamespace = false;
     populateSymbolInfo(*I, D, FC, LineNumber, File, IsFileInRootDir,
@@ -674,8 +728,10 @@ emitInfo(const RecordDecl* D, const FullComment* FC, int LineNumber,
 
     I->TagType = D->getTagKind();
     parseFields(*I, D, PublicOnly);
-    if (const auto* C = dyn_cast<CXXRecordDecl>(D)) {
-        if (const TypedefNameDecl* TD = C->getTypedefNameForAnonDecl()) {
+    if (const auto* C = dyn_cast<CXXRecordDecl>(D))
+    {
+        if (const TypedefNameDecl* TD = C->getTypedefNameForAnonDecl())
+        {
             I->Name = TD->getNameAsString();
             I->IsTypeDef = true;
         }
@@ -688,7 +744,8 @@ emitInfo(const RecordDecl* D, const FullComment* FC, int LineNumber,
     PopulateTemplateParameters(I->Template, D);
 
     // Full and partial specializations.
-    if (auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D)) {
+    if (auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
+    {
         if (!I->Template)
             I->Template.emplace();
         I->Template->Specialization.emplace();
@@ -696,11 +753,13 @@ emitInfo(const RecordDecl* D, const FullComment* FC, int LineNumber,
 
         // What this is a specialization of.
         auto SpecOf = CTSD->getSpecializedTemplateOrPartial();
-        if (SpecOf.is<ClassTemplateDecl*>()) {
+        if (SpecOf.is<ClassTemplateDecl*>())
+        {
             Specialization.SpecializationOf =
                 getUSRForDecl(SpecOf.get<ClassTemplateDecl*>());
         }
-        else if (SpecOf.is<ClassTemplatePartialSpecializationDecl*>()) {
+        else if (SpecOf.is<ClassTemplatePartialSpecializationDecl*>())
+        {
             Specialization.SpecializationOf =
                 getUSRForDecl(SpecOf.get<ClassTemplatePartialSpecializationDecl*>());
         }
@@ -711,26 +770,30 @@ emitInfo(const RecordDecl* D, const FullComment* FC, int LineNumber,
         // placeholder names rather than the names the user typed that match the
         // template parameters.
         if (const ClassTemplatePartialSpecializationDecl* CTPSD =
-            dyn_cast<ClassTemplatePartialSpecializationDecl>(D)) {
+            dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
+        {
             if (const ASTTemplateArgumentListInfo* AsWritten =
-                CTPSD->getTemplateArgsAsWritten()) {
+                CTPSD->getTemplateArgsAsWritten())
+            {
                 for (unsigned i = 0; i < AsWritten->getNumTemplateArgs(); i++) {
                     Specialization.Params.emplace_back(
                         getSourceCode(D, (*AsWritten)[i].getSourceRange()));
                 }
             }
         }
-        else {
-            for (const TemplateArgument& Arg : CTSD->getTemplateArgs().asArray()) {
+        else
+        {
+            for (const TemplateArgument& Arg : CTSD->getTemplateArgs().asArray())
+            {
                 Specialization.Params.emplace_back(*D, Arg);
             }
         }
     }
 
-    // Records are inserted into the parent by reference, so we need to return
-    // both the parent and the record itself.
-    auto Parent = MakeAndInsertIntoParent<const RecordInfo&>(*I);
-    return { std::move(I), std::move(Parent) };
+    // Functions are inserted into the parent by
+    // reference, so we need to return both the
+    // parent and the record itself.
+    return { std::move(I), MakeAndInsertIntoParent<const RecordInfo&>(*I) };
 }
 
 std::pair<
@@ -744,53 +807,64 @@ emitInfo(
     bool IsFileInRootDir,
     bool PublicOnly)
 {
-    FunctionInfo Func;
+    auto up = std::make_unique<FunctionInfo>();
     bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(Func, D, FC, LineNumber, File, IsFileInRootDir,
+    populateFunctionInfo(*up, D, FC, LineNumber, File, IsFileInRootDir,
         IsInAnonymousNamespace);
-    Func.Access = clang::AccessSpecifier::AS_none;
+    up->Access = clang::AccessSpecifier::AS_none;
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
-    // Info is wrapped in its parent scope so is returned in the second position.
-    return { nullptr, MakeAndInsertIntoParent<FunctionInfo&&>(std::move(Func)) };
-}
-
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const CXXMethodDecl* D, const FullComment* FC, int LineNumber,
-    llvm::StringRef File, bool IsFileInRootDir, bool PublicOnly) {
-    FunctionInfo Func;
-    bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(Func, D, FC, LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace);
-    if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
-        return {};
-
-    Func.IsMethod = true;
-
-    const NamedDecl* Parent = nullptr;
-    if (const auto* SD =
-        dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
-        Parent = SD->getSpecializedTemplate();
-    else
-        Parent = D->getParent();
-
-    SymbolID ParentUSR = getUSRForDecl(Parent);
-    Func.Parent =
-        Reference{ ParentUSR, Parent->getNameAsString(), InfoType::IT_record,
-                  Parent->getQualifiedNameAsString() };
-    Func.Access = D->getAccess();
-
-    // Info is wrapped in its parent scope so is returned in the second position.
-    return { nullptr, MakeAndInsertIntoParent<FunctionInfo&&>(std::move(Func)) };
+    // Functions are inserted into the parent by
+    // reference, so we need to return both the
+    // parent and the record itself.
+    return { std::move(up), MakeAndInsertIntoParent<FunctionInfo const&>(*up) };
 }
 
 std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
 emitInfo(
-    const TypedefDecl* D,
-    const FullComment* FC,
+    CXXMethodDecl const* D,
+    FullComment const* FC,
+    int LineNumber,
+    llvm::StringRef File,
+    bool IsFileInRootDir,
+    bool PublicOnly)
+{
+    auto up = std::make_unique<FunctionInfo>();
+    bool IsInAnonymousNamespace = false;
+    populateFunctionInfo(*up, D, FC, LineNumber, File, IsFileInRootDir,
+        IsInAnonymousNamespace);
+    if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
+        return {};
+
+    up->IsMethod = true;
+
+    const NamedDecl* Parent = nullptr;
+    if (const auto* SD = dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
+        Parent = SD->getSpecializedTemplate();
+    else
+        Parent = D->getParent();
+
+    SymbolID ParentUSR = getUSRForDecl(Parent);
+    up->Parent = Reference{
+        ParentUSR, Parent->getNameAsString(), InfoType::IT_record,
+            Parent->getQualifiedNameAsString() };
+    up->Access = D->getAccess();
+
+    // Functions are inserted into the parent by
+    // reference, so we need to return both the
+    // parent and the record itself.
+    return { std::move(up), MakeAndInsertIntoParent<FunctionInfo const&>(*up) };
+}
+
+std::pair<
+    std::unique_ptr<Info>,
+    std::unique_ptr<Info>>
+emitInfo(
+    TypedefDecl const* D,
+    FullComment const* FC,
     int LineNumber,
     StringRef File,
     bool IsFileInRootDir,
@@ -805,7 +879,8 @@ emitInfo(
 
     Info.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
     Info.Underlying = getTypeInfoForType(D->getUnderlyingType());
-    if (Info.Underlying.Type.Name.empty()) {
+    if (Info.Underlying.Type.Name.empty())
+    {
         // Typedef for an unnamed type. This is like "typedef struct { } Foo;"
         // The record serializer explicitly checks for this syntax and constructs
         // a record with that name, so we don't want to emit a duplicate here.
@@ -848,9 +923,17 @@ emitInfo(
     return { nullptr, MakeAndInsertIntoParent<TypedefInfo&&>(std::move(Info)) };
 }
 
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const EnumDecl* D, const FullComment* FC, int LineNumber,
-    llvm::StringRef File, bool IsFileInRootDir, bool PublicOnly) {
+std::pair<
+    std::unique_ptr<Info>,
+    std::unique_ptr<Info>>
+emitInfo(
+    EnumDecl const* D,
+    FullComment const* FC,
+    int LineNumber,
+    llvm::StringRef File,
+    bool IsFileInRootDir,
+    bool PublicOnly)
+{
     EnumInfo Enum;
     bool IsInAnonymousNamespace = false;
     populateSymbolInfo(Enum, D, FC, LineNumber, File, IsFileInRootDir,
@@ -859,7 +942,8 @@ emitInfo(const EnumDecl* D, const FullComment* FC, int LineNumber,
         return {};
 
     Enum.Scoped = D->isScoped();
-    if (D->isFixed()) {
+    if (D->isFixed())
+    {
         auto Name = D->getIntegerType().getAsString();
         Enum.BaseType = TypeInfo(Name, Name);
     }
@@ -869,6 +953,5 @@ emitInfo(const EnumDecl* D, const FullComment* FC, int LineNumber,
     return { nullptr, MakeAndInsertIntoParent<EnumInfo&&>(std::move(Enum)) };
 }
 
-} // namespace serialize
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang

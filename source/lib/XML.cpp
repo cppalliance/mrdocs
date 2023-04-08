@@ -54,7 +54,7 @@ class XMLGenerator
 
     void writeNamespaces(std::vector<Reference> const& v);
     void writeRecords(std::vector<Reference> const& v);
-    void write(std::vector<FunctionInfo> const& v);
+    void writeFunctions(std::vector<Reference> const& v);
     void write(std::vector<EnumInfo> const& v);
     void write(std::vector<TypedefInfo> const& v);
 
@@ -174,11 +174,11 @@ writeRecords(
 
 void
 XMLGenerator::
-write(
-    std::vector<FunctionInfo> const& v)
+writeFunctions(
+    std::vector<Reference> const& v)
 {
-    for(auto const& fn : v)
-        write(fn);
+    for(auto const& ref : v)
+        write(corpus_->get<FunctionInfo>(ref.USR));
 }
 
 void
@@ -215,7 +215,7 @@ write(
     writeInfo(I);
     writeNamespaces(I.Children.Namespaces);
     writeRecords(I.Children.Records);
-    write(I.Children.Functions);
+    writeFunctions(I.Children.Functions);
     write(I.Children.Enums);
     write(I.Children.Typedefs);
     closeTag("namespace");
@@ -243,7 +243,7 @@ write(
         });
     writeSymbolInfo(I);
     writeRecords(I.Children.Records);
-    write(I.Children.Functions);
+    writeFunctions(I.Children.Functions);
     write(I.Children.Enums);
     write(I.Children.Typedefs);
     closeTag(tag);
@@ -554,7 +554,7 @@ NamespaceInfo const*
 XMLGenerator::
 findGlobalNamespace()
 {
-    for(auto const& g : corpus_->USRToInfo)
+    for(auto const& g : corpus_->InfoMap)
     {
         auto const& inf = *g.getValue().get();
         if( inf.Name == "" &&

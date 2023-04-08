@@ -155,48 +155,56 @@ enum class FieldId {
   F_vparent,
   F_type,
   F_child_namespace,
-  F_child_record
+  F_child_record,
+  F_child_function
 };
 
-class ClangDocBitcodeWriter {
+class ClangDocBitcodeWriter
+{
 public:
-  ClangDocBitcodeWriter(llvm::BitstreamWriter &Stream) : Stream(Stream) {
-    emitHeader();
-    emitBlockInfoBlock();
-    emitVersionBlock();
-  }
+    ClangDocBitcodeWriter(
+        llvm::BitstreamWriter &Stream)
+        : Stream(Stream)
+    {
+        emitHeader();
+        emitBlockInfoBlock();
+        emitVersionBlock();
+    }
 
-  // Write a specific info to a bitcode stream.
-  bool dispatchInfoForWrite(Info *I);
+    // Write a specific info to a bitcode stream.
+    bool dispatchInfoForWrite(Info *I);
 
-  // Block emission of different info types.
-  void emitBlock(const NamespaceInfo &I);
-  void emitBlock(const RecordInfo &I);
-  void emitBlock(const BaseRecordInfo &I);
-  void emitBlock(const FunctionInfo &I);
-  void emitBlock(const EnumInfo &I);
-  void emitBlock(const EnumValueInfo &I);
-  void emitBlock(const TypeInfo &B);
-  void emitBlock(const TypedefInfo &B);
-  void emitBlock(const FieldTypeInfo &B);
-  void emitBlock(const MemberTypeInfo &T);
-  void emitBlock(Javadoc const& jd);
-  void emitBlock(const CommentInfo &B);
-  void emitBlock(const TemplateInfo &T);
-  void emitBlock(const TemplateSpecializationInfo &T);
-  void emitBlock(const TemplateParamInfo &T);
-  void emitBlock(const Reference &B, FieldId F);
+    // Block emission of different info types.
+    void emitBlock(const NamespaceInfo &I);
+    void emitBlock(const RecordInfo &I);
+    void emitBlock(const BaseRecordInfo &I);
+    void emitBlock(const FunctionInfo &I);
+    void emitBlock(const EnumInfo &I);
+    void emitBlock(const EnumValueInfo &I);
+    void emitBlock(const TypeInfo &B);
+    void emitBlock(const TypedefInfo &B);
+    void emitBlock(const FieldTypeInfo &B);
+    void emitBlock(const MemberTypeInfo &T);
+    void emitBlock(Javadoc const& jd);
+    void emitBlock(const CommentInfo &B);
+    void emitBlock(const TemplateInfo &T);
+    void emitBlock(const TemplateSpecializationInfo &T);
+    void emitBlock(const TemplateParamInfo &T);
+    void emitBlock(const Reference &B, FieldId F);
 
 private:
-  class AbbreviationMap {
-    llvm::DenseMap<unsigned, unsigned> Abbrevs;
+    class AbbreviationMap
+    {
+        llvm::DenseMap<unsigned, unsigned> Abbrevs;
+    public:
+        AbbreviationMap()
+            : Abbrevs(RecordIdCount)
+        {
+        }
 
-  public:
-    AbbreviationMap() : Abbrevs(RecordIdCount) {}
-
-    void add(RecordId RID, unsigned AbbrevID);
-    unsigned get(RecordId RID) const;
-  };
+        void add(RecordId RID, unsigned AbbrevID);
+        unsigned get(RecordId RID) const;
+    };
 
   class StreamSubBlockGuard {
     llvm::BitstreamWriter &Stream;
@@ -244,7 +252,7 @@ private:
   AbbreviationMap Abbrevs;
 };
 
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang
 
-#endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEWRITER_H
+#endif

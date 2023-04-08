@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_REFERENCE_HPP
-#define MRDOX_JAD_REFERENCE_HPP
+#ifndef MRDOX_REFERENCE_HPP
+#define MRDOX_REFERENCE_HPP
 
 #include "Types.hpp"
 #include <llvm/ADT/SmallString.h>

@@ -366,12 +366,13 @@ void
 listFunctions(
     Config const& cfg,
     llvm::StringRef label,
-    std::vector<FunctionInfo> const& v,
+    std::vector<Reference> const& v,
     llvm::raw_ostream& os)
 {
     if(v.empty())
         return;
-
+#if 0
+    FunctionInfo const* I;
     section(label, 2, os);
     os <<
         "[cols=2]\n" <<
@@ -395,6 +396,7 @@ listFunctions(
     os <<
         "|===\n" <<
         "\n";
+#endif
 }
 
 void
@@ -747,7 +749,7 @@ generateDocs(
 
     // Collect all output by file name and create the necessary directories.
     llvm::StringMap<std::vector<mrdox::Info*>> FileToInfos;
-    for (const auto& Group : corpus.USRToInfo)
+    for (const auto& Group : corpus.InfoMap)
     {
         mrdox::Info* Info = Group.getValue().get();
 

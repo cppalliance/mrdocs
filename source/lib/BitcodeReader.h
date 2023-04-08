@@ -29,46 +29,47 @@ namespace clang {
 namespace mrdox {
 
 // Class to read bitstream into an InfoSet collection
-class ClangDocBitcodeReader {
+class ClangDocBitcodeReader
+{
 public:
-  ClangDocBitcodeReader(llvm::BitstreamCursor &Stream) : Stream(Stream) {}
+    ClangDocBitcodeReader(llvm::BitstreamCursor &Stream) : Stream(Stream) {}
 
-  // Main entry point, calls readBlock to read each block in the given stream.
-  llvm::Expected<std::vector<std::unique_ptr<Info>>> readBitcode();
+    // Main entry point, calls readBlock to read each block in the given stream.
+    llvm::Expected<std::vector<std::unique_ptr<Info>>> readBitcode();
 
 private:
-  enum class Cursor { BadBlock = 1, Record, BlockEnd, BlockBegin };
+    enum class Cursor { BadBlock = 1, Record, BlockEnd, BlockBegin };
 
-  // Top level parsing
-  llvm::Error validateStream();
-  llvm::Error readVersion();
-  llvm::Error readBlockInfoBlock();
+    // Top level parsing
+    llvm::Error validateStream();
+    llvm::Error readVersion();
+    llvm::Error readBlockInfoBlock();
 
-  // Read a block of records into a single Info struct, calls readRecord on each
-  // record found.
-  template <typename T> llvm::Error readBlock(unsigned ID, T I);
+    // Read a block of records into a single Info struct, calls readRecord on each
+    // record found.
+    template <typename T> llvm::Error readBlock(unsigned ID, T I);
 
-  // Step through a block of records to find the next data field.
-  template <typename T> llvm::Error readSubBlock(unsigned ID, T I);
+    // Step through a block of records to find the next data field.
+    template <typename T> llvm::Error readSubBlock(unsigned ID, T I);
 
-  // Read record data into the given Info data field, calling the appropriate
-  // parseRecord functions to parse and store the data.
-  template <typename T> llvm::Error readRecord(unsigned ID, T I);
+    // Read record data into the given Info data field, calling the appropriate
+    // parseRecord functions to parse and store the data.
+    template <typename T> llvm::Error readRecord(unsigned ID, T I);
 
-  // Allocate the relevant type of info and add read data to the object.
-  template <typename T>
-  llvm::Expected<std::unique_ptr<Info>> createInfo(unsigned ID);
+    // Allocate the relevant type of info and add read data to the object.
+    template <typename T>
+    llvm::Expected<std::unique_ptr<Info>> createInfo(unsigned ID);
 
-  // Helper function to step through blocks to find and dispatch the next record
-  // or block to be read.
-  Cursor skipUntilRecordOrBlock(unsigned &BlockOrRecordID);
+    // Helper function to step through blocks to find and dispatch the next record
+    // or block to be read.
+    Cursor skipUntilRecordOrBlock(unsigned &BlockOrRecordID);
 
-  // Helper function to set up the appropriate type of Info.
-  llvm::Expected<std::unique_ptr<Info>> readBlockToInfo(unsigned ID);
+    // Helper function to set up the appropriate type of Info.
+    llvm::Expected<std::unique_ptr<Info>> readBlockToInfo(unsigned ID);
 
-  llvm::BitstreamCursor &Stream;
-  llvm::Optional<llvm::BitstreamBlockInfo> BlockInfo;
-  FieldId CurrentReferenceField;
+    llvm::BitstreamCursor &Stream;
+    llvm::Optional<llvm::BitstreamBlockInfo> BlockInfo;
+    FieldId CurrentReferenceField;
 };
 
 } // namespace mrdox

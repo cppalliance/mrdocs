@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_INFO_HPP
-#define MRDOX_JAD_INFO_HPP
+#ifndef MRDOX_INFO_HPP
+#define MRDOX_INFO_HPP
 
 #include "Javadoc.hpp"
 #include "Reference.hpp"

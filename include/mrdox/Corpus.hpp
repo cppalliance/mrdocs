@@ -31,9 +31,9 @@ struct Corpus
 
     /** Table of Info keyed on Symbol ID.
     */
-    llvm::StringMap<std::unique_ptr<Info>> USRToInfo;
+    llvm::StringMap<std::unique_ptr<Info>> InfoMap;
 
-    /** List of everything
+    /** List of all symbols.
     */
     std::vector<SymbolID> allSymbols;
 

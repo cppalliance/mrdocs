@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_LOCATION_HPP
-#define MRDOX_JAD_LOCATION_HPP
+#ifndef MRDOX_LOCATION_HPP
+#define MRDOX_LOCATION_HPP
 
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>

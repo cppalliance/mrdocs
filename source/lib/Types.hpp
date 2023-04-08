@@ -9,13 +9,47 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_TYPES_HPP
-#define MRDOX_JAD_TYPES_HPP
+#ifndef MRDOX_TYPES_HPP
+#define MRDOX_TYPES_HPP
 
 #include <array>
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
+
+/*
+    Definitions
+
+    Metadata
+
+    Symbol
+        A string which identifies C++ language
+        entities: namespace, function, variable,
+        class, struct, union, member function,
+        type alias,
+
+    ----------------------------------------------
+
+    NamespaceInfo
+    FunctionInfo
+    EnumInfo
+    RecordInfo
+    TypedefInfo
+        (VarDecl?)
+
+    namespace, function, enum,
+    class, struct, union,
+    typedef, type alias, variable
+
+    ----------------------------------------------
+
+    clang-check
+        https://godbolt.org/z/3cbd3qG4Y
+*/
+
+//------------------------------------------------
 
 /** A unique identifier for a symbol.
 

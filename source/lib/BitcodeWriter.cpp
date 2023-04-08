@@ -18,91 +18,118 @@ namespace mrdox {
 
 // Since id enums are not zero-indexed, we need to transform the given id into
 // its associated index.
-struct BlockIdToIndexFunctor {
+struct BlockIdToIndexFunctor
+{
     using argument_type = unsigned;
     unsigned operator()(unsigned ID) const { return ID - BI_FIRST; }
 };
 
-struct RecordIdToIndexFunctor {
+struct RecordIdToIndexFunctor
+{
     using argument_type = unsigned;
     unsigned operator()(unsigned ID) const { return ID - RI_FIRST; }
 };
 
 using AbbrevDsc = void (*)(std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev);
 
-static void AbbrevGen(std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev,
-    const std::initializer_list<llvm::BitCodeAbbrevOp> Ops) {
+static void AbbrevGen(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev,
+    const std::initializer_list<llvm::BitCodeAbbrevOp> Ops)
+{
     for (const auto& Op : Ops)
         Abbrev->Add(Op);
 }
 
-static void BoolAbbrev(std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev) {
-    AbbrevGen(Abbrev,
-        {// 0. Boolean
-         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Fixed,
-                               BitCodeConstants::BoolSize) });
+static void BoolAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. Boolean
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::BoolSize) });
 }
 
-static void IntAbbrev(std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev) {
-    AbbrevGen(Abbrev,
-        {// 0. Fixed-size integer
-         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Fixed,
-                               BitCodeConstants::IntSize) });
+static void IntAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. Fixed-size integer
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::IntSize) });
 }
 
-static void SymbolIDAbbrev(std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev) {
-    AbbrevGen(Abbrev,
-        {// 0. Fixed-size integer (length of the sha1'd USR)
-         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Fixed,
-                               BitCodeConstants::USRLengthSize),
-                               // 1. Fixed-size array of Char6 (USR)
-                               llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
-                               llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Fixed,
-                                                     BitCodeConstants::USRBitLengthSize) });
+static void SymbolIDAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. Fixed-size integer (length of the sha1'd USR)
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::USRLengthSize),
+        // 1. Fixed-size array of Char6 (USR)
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::USRBitLengthSize) });
 }
 
-static void StringAbbrev(std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev) {
-    AbbrevGen(Abbrev,
-        {// 0. Fixed-size integer (length of the following string)
-         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Fixed,
-                               BitCodeConstants::StringLengthSize),
-                               // 1. The string blob
-                               llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
+static void StringAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. Fixed-size integer (length of the following string)
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::StringLengthSize),
+        // 1. The string blob
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
 }
 
 // Assumes that the file will not have more than 65535 lines.
-static void LocationAbbrev(std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev) {
-    AbbrevGen(
-        Abbrev,
-        {// 0. Fixed-size integer (line number)
-         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Fixed,
-                               BitCodeConstants::LineNumberSize),
-                               // 1. Boolean (IsFileInRootDir)
-                               llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Fixed,
-                                                     BitCodeConstants::BoolSize),
-                                                     // 2. Fixed-size integer (length of the following string (filename))
-                                                     llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Fixed,
-                                                                           BitCodeConstants::StringLengthSize),
-                                                                           // 3. The string blob
-                                                                           llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
+static void LocationAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. Fixed-size integer (line number)
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::LineNumberSize),
+        // 1. Boolean (IsFileInRootDir)
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::BoolSize),
+        // 2. Fixed-size integer (length of the following string (filename))
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::StringLengthSize),
+        // 3. The string blob
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
 }
 
-struct RecordIdDsc {
+struct RecordIdDsc
+{
     llvm::StringRef Name;
     AbbrevDsc Abbrev = nullptr;
 
     RecordIdDsc() = default;
     RecordIdDsc(llvm::StringRef Name, AbbrevDsc Abbrev)
-        : Name(Name), Abbrev(Abbrev) {}
+        : Name(Name), Abbrev(Abbrev)
+    {
+    }
 
     // Is this 'description' valid?
-    operator bool() const {
+    operator bool() const
+    {
         return Abbrev != nullptr && Name.data() != nullptr && !Name.empty();
     }
 };
 
-static const llvm::IndexedMap<llvm::StringRef, BlockIdToIndexFunctor>
-BlockIdNameMap = []() {
+static
+llvm::IndexedMap<llvm::StringRef, BlockIdToIndexFunctor> const
+BlockIdNameMap = []()
+{
     llvm::IndexedMap<llvm::StringRef, BlockIdToIndexFunctor> BlockIdNameMap;
     BlockIdNameMap.resize(BlockIdCount);
 
@@ -133,8 +160,10 @@ BlockIdNameMap = []() {
     return BlockIdNameMap;
 }();
 
-static const llvm::IndexedMap<RecordIdDsc, RecordIdToIndexFunctor>
-RecordIdNameMap = []() {
+static
+llvm::IndexedMap<RecordIdDsc, RecordIdToIndexFunctor> const
+RecordIdNameMap = []()
+{
     llvm::IndexedMap<RecordIdDsc, RecordIdToIndexFunctor> RecordIdNameMap;
     RecordIdNameMap.resize(RecordIdCount);
 
@@ -203,7 +232,8 @@ RecordIdNameMap = []() {
         {TYPEDEF_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}} };
     assert(Inits.size() == RecordIdCount);
-    for (const auto& Init : Inits) {
+    for (const auto& Init : Inits)
+    {
         RecordIdNameMap[Init.first] = Init.second;
         assert((Init.second.Name.size() + 1) <= BitCodeConstants::RecordSize);
     }
@@ -211,7 +241,8 @@ RecordIdNameMap = []() {
     return RecordIdNameMap;
 }();
 
-static const std::vector<std::pair<BlockId, std::vector<RecordId>>>
+static
+std::vector<std::pair<BlockId, std::vector<RecordId>>> const
 RecordsByBlock{
     // Version Block
     {BI_VERSION_BLOCK_ID, {VERSION}},
@@ -268,14 +299,22 @@ RecordsByBlock{
 
 constexpr unsigned char BitCodeConstants::Signature[];
 
-void ClangDocBitcodeWriter::AbbreviationMap::add(RecordId RID,
-    unsigned AbbrevID) {
+void
+ClangDocBitcodeWriter::
+AbbreviationMap::
+add(RecordId RID,
+    unsigned AbbrevID)
+{
     assert(RecordIdNameMap[RID] && "Unknown RecordId.");
     assert((Abbrevs.find(RID) == Abbrevs.end()) && "Abbreviation already added.");
     Abbrevs[RID] = AbbrevID;
 }
 
-unsigned ClangDocBitcodeWriter::AbbreviationMap::get(RecordId RID) const {
+unsigned
+ClangDocBitcodeWriter::
+AbbreviationMap::
+get(RecordId RID) const
+{
     assert(RecordIdNameMap[RID] && "Unknown RecordId.");
     assert((Abbrevs.find(RID) != Abbrevs.end()) && "Unknown abbreviation.");
     return Abbrevs.lookup(RID);
@@ -285,18 +324,27 @@ unsigned ClangDocBitcodeWriter::AbbreviationMap::get(RecordId RID) const {
 
 /// Emits the magic number header to check that its the right format,
 /// in this case, 'DOCS'.
-void ClangDocBitcodeWriter::emitHeader() {
+void
+ClangDocBitcodeWriter::
+emitHeader()
+{
     for (char C : BitCodeConstants::Signature)
         Stream.Emit((unsigned)C, BitCodeConstants::SignatureBitSize);
 }
 
-void ClangDocBitcodeWriter::emitVersionBlock() {
+void
+ClangDocBitcodeWriter::
+emitVersionBlock()
+{
     StreamSubBlockGuard Block(Stream, BI_VERSION_BLOCK_ID);
     emitRecord(VersionNumber, VERSION);
 }
 
 /// Emits a block ID and the block name to the BLOCKINFO block.
-void ClangDocBitcodeWriter::emitBlockID(BlockId BID) {
+void
+ClangDocBitcodeWriter::
+emitBlockID(BlockId BID)
+{
     const auto& BlockIdName = BlockIdNameMap[BID];
     assert(BlockIdName.data() && BlockIdName.size() && "Unknown BlockId.");
 
@@ -309,7 +357,10 @@ void ClangDocBitcodeWriter::emitBlockID(BlockId BID) {
 }
 
 /// Emits a record name to the BLOCKINFO block.
-void ClangDocBitcodeWriter::emitRecordID(RecordId ID) {
+void
+ClangDocBitcodeWriter::
+emitRecordID(RecordId ID)
+{
     assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     prepRecordData(ID);
     Record.append(RecordIdNameMap[ID].Name.begin(),
@@ -319,7 +370,11 @@ void ClangDocBitcodeWriter::emitRecordID(RecordId ID) {
 
 // Abbreviations
 
-void ClangDocBitcodeWriter::emitAbbrev(RecordId ID, BlockId Block) {
+void
+ClangDocBitcodeWriter::
+emitAbbrev(
+    RecordId ID, BlockId Block)
+{
     assert(RecordIdNameMap[ID] && "Unknown abbreviation.");
     auto Abbrev = std::make_shared<llvm::BitCodeAbbrev>();
     Abbrev->Add(llvm::BitCodeAbbrevOp(ID));
@@ -329,7 +384,12 @@ void ClangDocBitcodeWriter::emitAbbrev(RecordId ID, BlockId Block) {
 
 // Records
 
-void ClangDocBitcodeWriter::emitRecord(const SymbolID& Sym, RecordId ID) {
+void
+ClangDocBitcodeWriter::
+emitRecord(
+    SymbolID const& Sym,
+    RecordId ID)
+{
     assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     assert(RecordIdNameMap[ID].Abbrev == &SymbolIDAbbrev &&
         "Abbrev type mismatch.");
@@ -341,7 +401,11 @@ void ClangDocBitcodeWriter::emitRecord(const SymbolID& Sym, RecordId ID) {
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
-void ClangDocBitcodeWriter::emitRecord(llvm::StringRef Str, RecordId ID) {
+void
+ClangDocBitcodeWriter::
+emitRecord(
+    llvm::StringRef Str, RecordId ID)
+{
     assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     assert(RecordIdNameMap[ID].Abbrev == &StringAbbrev &&
         "Abbrev type mismatch.");
@@ -352,7 +416,11 @@ void ClangDocBitcodeWriter::emitRecord(llvm::StringRef Str, RecordId ID) {
     Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, Str);
 }
 
-void ClangDocBitcodeWriter::emitRecord(const Location& Loc, RecordId ID) {
+void
+ClangDocBitcodeWriter::
+emitRecord(
+    Location const& Loc, RecordId ID)
+{
     assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     assert(RecordIdNameMap[ID].Abbrev == &LocationAbbrev &&
         "Abbrev type mismatch.");
@@ -366,7 +434,11 @@ void ClangDocBitcodeWriter::emitRecord(const Location& Loc, RecordId ID) {
     Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, Loc.Filename);
 }
 
-void ClangDocBitcodeWriter::emitRecord(bool Val, RecordId ID) {
+void
+ClangDocBitcodeWriter::
+emitRecord(
+    bool Val, RecordId ID)
+{
     assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     assert(RecordIdNameMap[ID].Abbrev == &BoolAbbrev && "Abbrev type mismatch.");
     if (!prepRecordData(ID, Val))
@@ -375,7 +447,11 @@ void ClangDocBitcodeWriter::emitRecord(bool Val, RecordId ID) {
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
-void ClangDocBitcodeWriter::emitRecord(int Val, RecordId ID) {
+void
+ClangDocBitcodeWriter::
+emitRecord(
+    int Val, RecordId ID)
+{
     assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
     if (!prepRecordData(ID, Val))
@@ -385,7 +461,11 @@ void ClangDocBitcodeWriter::emitRecord(int Val, RecordId ID) {
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
-void ClangDocBitcodeWriter::emitRecord(unsigned Val, RecordId ID) {
+void
+ClangDocBitcodeWriter::
+emitRecord(
+    unsigned Val, RecordId ID)
+{
     assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
     if (!prepRecordData(ID, Val))
@@ -395,9 +475,19 @@ void ClangDocBitcodeWriter::emitRecord(unsigned Val, RecordId ID) {
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
-void ClangDocBitcodeWriter::emitRecord(const TemplateInfo& Templ) {}
+void
+ClangDocBitcodeWriter::
+emitRecord(
+    const TemplateInfo& Templ)
+{
+    // VFALCO What's going on here? Missing code?
+}
 
-bool ClangDocBitcodeWriter::prepRecordData(RecordId ID, bool ShouldEmit) {
+bool
+ClangDocBitcodeWriter::
+prepRecordData(
+    RecordId ID, bool ShouldEmit)
+{
     assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     if (!ShouldEmit)
         return false;
@@ -408,20 +498,29 @@ bool ClangDocBitcodeWriter::prepRecordData(RecordId ID, bool ShouldEmit) {
 
 // BlockInfo Block
 
-void ClangDocBitcodeWriter::emitBlockInfoBlock() {
+void
+ClangDocBitcodeWriter::
+emitBlockInfoBlock()
+{
     Stream.EnterBlockInfoBlock();
-    for (const auto& Block : RecordsByBlock) {
+    for (const auto& Block : RecordsByBlock)
+    {
         assert(Block.second.size() < (1U << BitCodeConstants::SubblockIDSize));
         emitBlockInfo(Block.first, Block.second);
     }
     Stream.ExitBlock();
 }
 
-void ClangDocBitcodeWriter::emitBlockInfo(BlockId BID,
-    const std::vector<RecordId>& RIDs) {
+void
+ClangDocBitcodeWriter::
+emitBlockInfo(
+    BlockId BID,
+    std::vector<RecordId> const& RIDs)
+{
     assert(RIDs.size() < (1U << BitCodeConstants::SubblockIDSize));
     emitBlockID(BID);
-    for (RecordId RID : RIDs) {
+    for (RecordId RID : RIDs)
+    {
         emitRecordID(RID);
         emitAbbrev(RID, BID);
     }
@@ -429,7 +528,11 @@ void ClangDocBitcodeWriter::emitBlockInfo(BlockId BID,
 
 // Block emission
 
-void ClangDocBitcodeWriter::emitBlock(const Reference& R, FieldId Field) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    Reference const& R, FieldId Field)
+{
     if (R.USR == EmptySID && R.Name.empty())
         return;
     StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
@@ -443,13 +546,18 @@ void ClangDocBitcodeWriter::emitBlock(const Reference& R, FieldId Field) {
 
 void
 ClangDocBitcodeWriter::
-emitBlock(TypeInfo const& T)
+emitBlock(
+    TypeInfo const& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TYPE_BLOCK_ID);
     emitBlock(T.Type, FieldId::F_type);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const TypedefInfo& T) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    TypedefInfo const& T)
+{
     StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
     emitRecord(T.USR, TYPEDEF_USR);
     emitRecord(T.Name, TYPEDEF_NAME);
@@ -464,14 +572,22 @@ void ClangDocBitcodeWriter::emitBlock(const TypedefInfo& T) {
     emitBlock(T.Underlying);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const FieldTypeInfo& T) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    FieldTypeInfo const& T)
+{
     StreamSubBlockGuard Block(Stream, BI_FIELD_TYPE_BLOCK_ID);
     emitBlock(T.Type, FieldId::F_type);
     emitRecord(T.Name, FIELD_TYPE_NAME);
     emitRecord(T.DefaultValue, FIELD_DEFAULT_VALUE);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const MemberTypeInfo& T) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    MemberTypeInfo const& T)
+{
     StreamSubBlockGuard Block(Stream, BI_MEMBER_TYPE_BLOCK_ID);
     emitBlock(T.Type, FieldId::F_type);
     emitRecord(T.Name, MEMBER_TYPE_NAME);
@@ -491,16 +607,23 @@ emitBlock(
     emitRecord(jd.desc, JAVADOC_DESC);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const CommentInfo& I) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    CommentInfo const& I)
+{
     StreamSubBlockGuard Block(Stream, BI_COMMENT_BLOCK_ID);
-    for (const auto& L : std::vector<std::pair<llvm::StringRef, RecordId>>{
+    for (auto const& L : std::vector<std::pair<
+        llvm::StringRef, RecordId>>{
              {I.Kind, COMMENT_KIND},
              {I.Text, COMMENT_TEXT},
              {I.Name, COMMENT_NAME},
              {I.Direction, COMMENT_DIRECTION},
              {I.ParamName, COMMENT_PARAMNAME},
              {I.CloseName, COMMENT_CLOSENAME} })
-             emitRecord(L.first, L.second);
+    {
+        emitRecord(L.first, L.second);
+    }
     emitRecord(I.SelfClosing, COMMENT_SELFCLOSING);
     emitRecord(I.Explicit, COMMENT_EXPLICIT);
     for (const auto& A : I.AttrKeys)
@@ -513,7 +636,11 @@ void ClangDocBitcodeWriter::emitBlock(const CommentInfo& I) {
         emitBlock(*C);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const NamespaceInfo& I) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    NamespaceInfo const& I)
+{
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
     emitRecord(I.USR, NAMESPACE_USR);
     emitRecord(I.Name, NAMESPACE_NAME);
@@ -528,41 +655,18 @@ void ClangDocBitcodeWriter::emitBlock(const NamespaceInfo& I) {
     for (const auto& C : I.Children.Records)
         emitBlock(C, FieldId::F_child_record);
     for (auto const& C : I.Children.Functions)
-        emitBlock(C);
+        emitBlock(C, FieldId::F_child_function);
     for (const auto& C : I.Children.Enums)
         emitBlock(C);
     for (const auto& C : I.Children.Typedefs)
         emitBlock(C);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const EnumInfo& I) {
-    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
-    emitRecord(I.USR, ENUM_USR);
-    emitRecord(I.Name, ENUM_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    emitBlock(I.javadoc);
-    for (const auto& CI : I.Description)
-        emitBlock(CI);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, ENUM_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, ENUM_LOCATION);
-    emitRecord(I.Scoped, ENUM_SCOPED);
-    if (I.BaseType)
-        emitBlock(*I.BaseType);
-    for (const auto& N : I.Members)
-        emitBlock(N);
-}
-
-void ClangDocBitcodeWriter::emitBlock(const EnumValueInfo& I) {
-    StreamSubBlockGuard Block(Stream, BI_ENUM_VALUE_BLOCK_ID);
-    emitRecord(I.Name, ENUM_VALUE_NAME);
-    emitRecord(I.Value, ENUM_VALUE_VALUE);
-    emitRecord(I.ValueExpr, ENUM_VALUE_EXPR);
-}
-
-void ClangDocBitcodeWriter::emitBlock(const RecordInfo& I) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    RecordInfo const& I)
+{
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
     emitRecord(I.USR, RECORD_USR);
     emitRecord(I.Name, RECORD_NAME);
@@ -589,7 +693,7 @@ void ClangDocBitcodeWriter::emitBlock(const RecordInfo& I) {
     for (const auto& C : I.Children.Records)
         emitBlock(C, FieldId::F_child_record);
     for (auto const& C : I.Children.Functions)
-        emitBlock(C);
+        emitBlock(C, FieldId::F_child_function);
     for (const auto& C : I.Children.Enums)
         emitBlock(C);
     for (const auto& C : I.Children.Typedefs)
@@ -598,7 +702,11 @@ void ClangDocBitcodeWriter::emitBlock(const RecordInfo& I) {
         emitBlock(*I.Template);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const BaseRecordInfo& I) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    BaseRecordInfo const& I)
+{
     StreamSubBlockGuard Block(Stream, BI_BASE_RECORD_BLOCK_ID);
     emitRecord(I.USR, BASE_RECORD_USR);
     emitRecord(I.Name, BASE_RECORD_NAME);
@@ -609,11 +717,13 @@ void ClangDocBitcodeWriter::emitBlock(const BaseRecordInfo& I) {
     emitRecord(I.IsParent, BASE_RECORD_IS_PARENT);
     for (const auto& M : I.Members)
         emitBlock(M);
-    for (auto const& C : I.Children.Functions)
-        emitBlock(C);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const FunctionInfo& I) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    FunctionInfo const& I)
+{
     StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
     emitRecord(I.USR, FUNCTION_USR);
     emitRecord(I.Name, FUNCTION_NAME);
@@ -636,7 +746,46 @@ void ClangDocBitcodeWriter::emitBlock(const FunctionInfo& I) {
         emitBlock(*I.Template);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const TemplateInfo& T) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    EnumInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
+    emitRecord(I.USR, ENUM_USR);
+    emitRecord(I.Name, ENUM_NAME);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    emitBlock(I.javadoc);
+    for (const auto& CI : I.Description)
+        emitBlock(CI);
+    if (I.DefLoc)
+        emitRecord(*I.DefLoc, ENUM_DEFLOCATION);
+    for (const auto& L : I.Loc)
+        emitRecord(L, ENUM_LOCATION);
+    emitRecord(I.Scoped, ENUM_SCOPED);
+    if (I.BaseType)
+        emitBlock(*I.BaseType);
+    for (const auto& N : I.Members)
+        emitBlock(N);
+}
+
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    EnumValueInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_ENUM_VALUE_BLOCK_ID);
+    emitRecord(I.Name, ENUM_VALUE_NAME);
+    emitRecord(I.Value, ENUM_VALUE_VALUE);
+    emitRecord(I.ValueExpr, ENUM_VALUE_EXPR);
+}
+
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    TemplateInfo const& T)
+{
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_BLOCK_ID);
     for (const auto& P : T.Params)
         emitBlock(P);
@@ -644,31 +793,43 @@ void ClangDocBitcodeWriter::emitBlock(const TemplateInfo& T) {
         emitBlock(*T.Specialization);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const TemplateSpecializationInfo& T) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    TemplateSpecializationInfo const& T)
+{
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_SPECIALIZATION_BLOCK_ID);
     emitRecord(T.SpecializationOf, TEMPLATE_SPECIALIZATION_OF);
     for (const auto& P : T.Params)
         emitBlock(P);
 }
 
-void ClangDocBitcodeWriter::emitBlock(const TemplateParamInfo& T) {
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    TemplateParamInfo const& T)
+{
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_PARAM_BLOCK_ID);
     emitRecord(T.Contents, TEMPLATE_PARAM_CONTENTS);
 }
 
-bool ClangDocBitcodeWriter::dispatchInfoForWrite(Info* I) {
-    switch (I->IT) {
+bool
+ClangDocBitcodeWriter::
+dispatchInfoForWrite(Info* I)
+{
+    switch (I->IT)
+    {
     case InfoType::IT_namespace:
         emitBlock(*static_cast<clang::mrdox::NamespaceInfo*>(I));
         break;
     case InfoType::IT_record:
         emitBlock(*static_cast<clang::mrdox::RecordInfo*>(I));
         break;
-    case InfoType::IT_enum:
-        emitBlock(*static_cast<clang::mrdox::EnumInfo*>(I));
-        break;
     case InfoType::IT_function:
         emitBlock(*static_cast<clang::mrdox::FunctionInfo*>(I));
+        break;
+    case InfoType::IT_enum:
+        emitBlock(*static_cast<clang::mrdox::EnumInfo*>(I));
         break;
     case InfoType::IT_typedef:
         emitBlock(*static_cast<clang::mrdox::TypedefInfo*>(I));
@@ -680,5 +841,5 @@ bool ClangDocBitcodeWriter::dispatchInfoForWrite(Info* I) {
     return false;
 }
 
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang

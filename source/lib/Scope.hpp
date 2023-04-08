@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_SCOPE_HPP
-#define MRDOX_JAD_SCOPE_HPP
+#ifndef MRDOX_SCOPE_HPP
+#define MRDOX_SCOPE_HPP
 
 #include "Enum.hpp"
 #include "Function.hpp"
@@ -40,7 +40,7 @@ struct Scope
     // this general for all possible container types reduces code complexity.
     std::vector<Reference> Namespaces;
     std::vector<Reference> Records;
-    std::vector<FunctionInfo> Functions;
+    std::vector<Reference> Functions;
     std::vector<EnumInfo> Enums;
     std::vector<TypedefInfo> Typedefs;
 

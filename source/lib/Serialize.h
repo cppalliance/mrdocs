@@ -29,11 +29,8 @@
 #include <string>
 #include <vector>
 
-using namespace clang::comments;
-
 namespace clang {
 namespace mrdox {
-namespace serialize {
 
 // The first element will contain the relevant information about the declaration
 // passed as parameter.
@@ -45,31 +42,31 @@ namespace serialize {
 // its parent scope. For NamespaceDecl and RecordDecl both elements are not
 // nullptr.
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const NamespaceDecl *D, const FullComment *FC, int LineNumber,
+emitInfo(const NamespaceDecl *D, const comments::FullComment *FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const RecordDecl *D, const FullComment *FC, int LineNumber,
+emitInfo(const RecordDecl *D, const comments::FullComment *FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const EnumDecl *D, const FullComment *FC, int LineNumber,
+emitInfo(const EnumDecl *D, const comments::FullComment *FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const FunctionDecl *D, const FullComment *FC, int LineNumber,
+emitInfo(const FunctionDecl *D, const comments::FullComment *FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const CXXMethodDecl *D, const FullComment *FC, int LineNumber,
+emitInfo(const CXXMethodDecl *D, const comments::FullComment *FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const TypedefDecl *D, const FullComment *FC, int LineNumber,
+emitInfo(const TypedefDecl *D, const comments::FullComment *FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const TypeAliasDecl *D, const FullComment *FC, int LineNumber,
+emitInfo(const TypeAliasDecl *D, const comments::FullComment *FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly);
 
 // Function to hash a given USR value for storage.
@@ -81,7 +78,6 @@ SymbolID hashUSR(llvm::StringRef USR);
 
 std::string serialize(Info const& I);
 
-} // serialize
 } // mrdox
 } // clang
 

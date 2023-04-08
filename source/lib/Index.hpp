@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_INDEX_HPP
-#define MRDOX_JAD_INDEX_HPP
+#ifndef MRDOX_INDEX_HPP
+#define MRDOX_INDEX_HPP
 
 #include "Info.hpp"
 #include "Reference.hpp"
