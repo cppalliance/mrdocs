@@ -23,6 +23,8 @@ namespace mrdox {
 struct NamespaceInfo
     : public Info
 {
+    static constexpr InfoType type_id = InfoType::IT_namespace;
+
     Scope Children;
 
     NamespaceInfo(

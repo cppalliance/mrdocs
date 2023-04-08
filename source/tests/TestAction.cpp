@@ -24,7 +24,7 @@ EndSourceFileAction()
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    auto rv = buildCorpus(ex_, cfg_, R_);
+    auto rv = Corpus::build(ex_, cfg_, R_);
     if(! rv)
         return;
     std::string xml;

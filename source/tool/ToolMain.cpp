@@ -146,7 +146,7 @@ toolMain(int argc, const char** argv)
         return EXIT_FAILURE;
 
     // Run the tool, this can take a while
-    auto rv = buildCorpus(*ex, cfg, R);
+    auto rv = Corpus::build(*ex, cfg, R);
     if(! rv)
         return EXIT_FAILURE;
 

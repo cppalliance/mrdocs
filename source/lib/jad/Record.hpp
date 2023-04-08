@@ -34,6 +34,8 @@ struct BaseRecordInfo;
 // Info for types.
 struct RecordInfo : SymbolInfo
 {
+    static constexpr InfoType type_id = InfoType::IT_record;
+
     RecordInfo(
         SymbolID USR = SymbolID(),
         llvm::StringRef Name = llvm::StringRef(),

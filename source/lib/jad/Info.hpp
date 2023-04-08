@@ -90,6 +90,8 @@ struct Info
         std::string& temp) const;
 };
 
+//------------------------------------------------
+
 llvm::SmallString<64>
 calculateRelativeFilePath(
     InfoType const& Type,

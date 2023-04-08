@@ -92,21 +92,20 @@ template <typename T> static std::string serialize(T& I) {
 }
 
 std::string
-serialize(
-    std::unique_ptr<Info>& I)
+serialize(Info const& I)
 {
-    switch (I->IT)
+    switch (I.IT)
     {
     case InfoType::IT_namespace:
-        return serialize(*static_cast<NamespaceInfo*>(I.get()));
+        return serialize(*static_cast<NamespaceInfo const*>(&I));
     case InfoType::IT_record:
-        return serialize(*static_cast<RecordInfo*>(I.get()));
+        return serialize(*static_cast<RecordInfo const*>(&I));
     case InfoType::IT_enum:
-        return serialize(*static_cast<EnumInfo*>(I.get()));
+        return serialize(*static_cast<EnumInfo const*>(&I));
     case InfoType::IT_function:
-        return serialize(*static_cast<FunctionInfo*>(I.get()));
+        return serialize(*static_cast<FunctionInfo const*>(&I));
     //case InfoType::IT_typedef:
-        //return serialize(*static_cast<TypedefInfo*>(I.get()));
+        //return serialize(*static_cast<TypedefInfo const*>(&I));
     default:
         return "";
     }

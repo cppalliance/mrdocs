@@ -11,6 +11,7 @@
 
 #include "BitcodeWriter.h"
 #include "Serialize.h"
+#include <mrdox/Corpus.hpp>
 #include <mrdox/Visitor.hpp>
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -18,9 +19,9 @@
 #include <clang/AST/Comment.h>
 #pragma warning(pop)
 #endif
-#include "clang/Index/USRGeneration.h"
-#include "llvm/ADT/StringExtras.h"
-#include "llvm/Support/Error.h"
+#include <clang/Index/USRGeneration.h>
+#include <llvm/ADT/StringExtras.h>
+#include <llvm/Support/Error.h>
 
 namespace clang {
 namespace mrdox {
@@ -64,13 +65,9 @@ mapDecl(T const* D)
     // A null in place of I indicates that the serializer is skipping this decl
     // for some reason (e.g. we're only reporting public decls).
     if (I.first)
-        exc_.reportResult(
-            llvm::toHex(llvm::toStringRef(I.first->USR)),
-            serialize::serialize(I.first));
+        Corpus::reportResult(exc_, *I.first);
     if (I.second)
-        exc_.reportResult(
-            llvm::toHex(llvm::toStringRef(I.second->USR)),
-            serialize::serialize(I.second));
+        Corpus::reportResult(exc_, *I.second);
 
     return true;
 }

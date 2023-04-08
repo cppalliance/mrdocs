@@ -79,10 +79,10 @@ emitInfo(const TypeAliasDecl *D, const FullComment *FC, int LineNumber,
 // memory (vs storing USRs directly).
 SymbolID hashUSR(llvm::StringRef USR);
 
-std::string serialize(std::unique_ptr<Info> &I);
+std::string serialize(Info const& I);
 
-} // namespace serialize
-} // namespace mrdox
-} // namespace clang
+} // serialize
+} // mrdox
+} // clang
 
 #endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H

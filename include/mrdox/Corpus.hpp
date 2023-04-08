@@ -32,10 +32,7 @@ struct Corpus
     */
     Index Idx;
 
-    /** Table of Info keyed on USR.
-
-        A USRs is a string that provide an
-        unambiguous reference to a symbol.
+    /** Table of Info keyed on Symbol ID.
     */
     llvm::StringMap<std::unique_ptr<Info>> USRToInfo;
 
@@ -44,27 +41,73 @@ struct Corpus
     std::vector<SymbolID> allSymbols;
 
     //--------------------------------------------
+    //
+    // Functions
+    //
+    //--------------------------------------------
 
-    /** Return a pointer to the Info with the matching USR, or nullptr.
+    /** Return a pointer to the Info with the specified symbol ID, or nullptr.
     */
     Info const*
     find(
         SymbolID const& id) const noexcept;
 
+    /** Return true if an Info with the specified symbol ID exists.
+    */
+    bool
+    exists(SymbolID const& id) const noexcept
+    {
+        return find(id) != nullptr;
+    }
+
+    /** Return the Info with the specified symbol ID.
+
+        If the id does not exist, the behavior is undefined.
+    */
+    Info const&
+    at(
+        SymbolID const& id) const noexcept;
+
+    /** Return the T with the specified symbol ID.
+
+        If the id does not exist, or the type of the
+        Info doesn't match T, the behavior is undefined.
+    */
+    template<class T>
+    T const&
+    get(
+        SymbolID const& id) const noexcept
+    {
+        auto const& I = at(id);
+        assert(I.IT == T::type_id);
+        return static_cast<T const&>(I);
+    }
+
     /** Insert Info into the index
     */
     void
     insert(
-        Info const* I);
-};
+        Info const& I);
 
-/** Build the intermediate representation of the code being documented.
-*/
-std::unique_ptr<Corpus>
-buildCorpus(
-    tooling::ToolExecutor& ex,
-    Config const& cfg,
-    Reporter& R);
+    //--------------------------------------------
+
+    /** Store the Info in the tool results, keyed by SymbolID.
+    */
+    static
+    void
+    reportResult(
+        tooling::ExecutionContext& exc,
+        Info const& I);
+
+    /** Build the intermediate representation of the code being documented.
+    */
+    static
+    std::unique_ptr<Corpus>
+    build(
+        tooling::ToolExecutor& ex,
+        Config const& cfg,
+        Reporter& R);
+};
 
 } // mrdox
 } // clang

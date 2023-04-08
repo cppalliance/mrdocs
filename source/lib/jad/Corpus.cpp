@@ -11,8 +11,9 @@
 
 #include "BitcodeReader.h"
 #include "BitcodeWriter.h"
-#include "Generators.h"
 #include "ClangDoc.h"
+#include "Generators.h"
+#include "Serialize.h"
 #include <mrdox/Corpus.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
@@ -21,6 +22,29 @@
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
+
+Info const*
+Corpus::
+find(
+    SymbolID const& id) const noexcept
+{
+    auto it = USRToInfo.find(llvm::toStringRef(id));
+    if(it != USRToInfo.end())
+        return it->second.get();
+    return nullptr;
+}
+
+Info const&
+Corpus::
+at(
+    SymbolID const& id) const noexcept
+{
+    auto it = USRToInfo.find(llvm::toStringRef(id));
+    assert(it != USRToInfo.end());
+    return *it->second.get();
+}
 
 //------------------------------------------------
 
@@ -37,14 +61,14 @@ namespace mrdox {
 void
 Corpus::
 insert(
-    Info const* I)
+    Info const& I)
 {
     // Index pointer that will be moving through Idx until the first parent
     // namespace of Info (where the reference has to be inserted) is found.
     Index* pi = &Idx;
     // The Namespace vector includes the upper-most namespace at the end so the
     // loop will start from the end to find each of the namespaces.
-    for (const auto& R : llvm::reverse(I->Namespace))
+    for (const auto& R : llvm::reverse(I.Namespace))
     {
         // Look for the current namespace in the children of the index pi is
         // pointing.
@@ -65,12 +89,12 @@ insert(
     // Look for Info in the vector where it is supposed to be; it could already
     // exist if it is a parent namespace of an Info already passed to this
     // function.
-    auto It = llvm::find(pi->Children, I->USR);
+    auto It = llvm::find(pi->Children, I.USR);
     if (It == pi->Children.end())
     {
         // If it is not in the vector it is inserted
-        pi->Children.emplace_back(I->USR, I->extractName(), I->IT,
-            I->Path);
+        pi->Children.emplace_back(I.USR, I.extractName(), I.IT,
+            I.Path);
     }
     else
     {
@@ -78,29 +102,32 @@ insert(
         // because if the Info was included by a namespace it may not have those
         // values.
         if (It->Path.empty())
-            It->Path = I->Path;
+            It->Path = I.Path;
         if (It->Name.empty())
-            It->Name = I->extractName();
+            It->Name = I.extractName();
     }
 
-    allSymbols.emplace_back(I->USR);
+    allSymbols.emplace_back(I.USR);
 }
 
-Info const*
+//------------------------------------------------
+
+void
 Corpus::
-find(
-    SymbolID const& id) const noexcept
+reportResult(
+    tooling::ExecutionContext& exc,
+    Info const& I)
 {
-    auto it = USRToInfo.find(llvm::toHex(llvm::toStringRef(id)));
-    if(it != USRToInfo.end())
-        return it->second.get();
-    return nullptr;
+    exc.reportResult(
+        llvm::toStringRef(I.USR),
+        serialize::serialize(I));
 }
 
 //------------------------------------------------
 
 std::unique_ptr<Corpus>
-buildCorpus(
+Corpus::
+build(
     tooling::ToolExecutor& ex,
     Config const& cfg,
     Reporter& R)
@@ -189,7 +216,7 @@ buildCorpus(
             // Add a reference to this Info in the Index
             {
                 std::lock_guard<llvm::sys::Mutex> Guard(IndexMutex);
-                corpus.insert(Reduced.get().get());
+                corpus.insert(*Reduced.get().get());
             }
 
             // Save in the result map (needs a lock due to threaded access).
@@ -222,8 +249,8 @@ buildCorpus(
             [&](SymbolID const& id0,
                 SymbolID const& id1) noexcept
             {
-                auto s0 = corpus.find(id0)->getFullyQualifiedName(temp[0]);
-                auto s1 = corpus.find(id1)->getFullyQualifiedName(temp[1]);
+                auto s0 = corpus.at(id0).getFullyQualifiedName(temp[0]);
+                auto s1 = corpus.at(id1).getFullyQualifiedName(temp[1]);
                 int rv = s0.compare_insensitive(s1);
                 if(rv < 0)
                     return true;

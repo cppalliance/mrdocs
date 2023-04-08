@@ -34,6 +34,8 @@ using UnqualifiedName = llvm::SmallString<16>;
 // Info for functions.
 struct FunctionInfo : SymbolInfo
 {
+    static constexpr InfoType type_id = InfoType::IT_function;
+
     explicit
     FunctionInfo(
         SymbolID USR = SymbolID())

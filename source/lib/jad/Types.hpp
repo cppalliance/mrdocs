@@ -20,6 +20,8 @@ namespace mrdox {
 /** A unique identifier for a symbol.
 
     This is calculated as the SHA1 digest of the USR.
+    A USRs is a string that provide an unambiguous
+    reference to a symbol.
 */
 using SymbolID = std::array<uint8_t, 20>;
 

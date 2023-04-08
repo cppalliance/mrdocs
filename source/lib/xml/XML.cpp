@@ -146,11 +146,10 @@ writeAllSymbols()
     std::string temp;
     for(auto const& id : corpus_->allSymbols)
     {
-        auto const I = corpus_->find(id);
-        assert(I != nullptr);
+        auto const& I = corpus_->at(id);
         writeTag("symbol", {
-            { "name", I->getFullyQualifiedName(temp) },
-            { "usr", toBase64(I->USR) }
+            { "name", I.getFullyQualifiedName(temp) },
+            { "usr", toBase64(I.USR) }
             });
     }
     closeTag("all");
@@ -164,14 +163,7 @@ writeNamespaces(
     std::vector<Reference> const& v)
 {
     for(auto const& ref : v)
-    {
-        assert(ref.RefType == InfoType::IT_namespace);
-        auto it = corpus_->USRToInfo.find(
-            llvm::toHex(llvm::toStringRef(ref.USR)));
-        assert(it != corpus_->USRToInfo.end());
-        write(*static_cast<NamespaceInfo const*>(
-            it->second.get()));
-    }
+        write(corpus_->get<NamespaceInfo>(ref.USR));
 }
 
 void
@@ -180,13 +172,7 @@ writeRecords(
     std::vector<Reference> const& v)
 {
     for(auto const& ref : v)
-    {
-        assert(ref.RefType == InfoType::IT_record);
-        auto it = corpus_->USRToInfo.find(
-            llvm::toHex(llvm::toStringRef(ref.USR)));
-        assert(it != corpus_->USRToInfo.end());
-        write(*static_cast<RecordInfo const*>(it->second.get()));
-    }
+        write(corpus_->get<RecordInfo>(ref.USR));
 }
 
 void
@@ -234,7 +220,6 @@ write(
 {
     assertExists(I);
 
-    assert(I.IT == InfoType::IT_namespace);
     openTag("namespace", {
         { "name", I.Name },
         { "usr", toBase64(I.USR) }
@@ -315,6 +300,8 @@ XMLGenerator::
 write(
     EnumInfo const& I)
 {
+    //assertExists(I);
+
     openTag("enum", {
         { "name", I.Name },
         { "usr", toBase64(I.USR) },
@@ -597,10 +584,7 @@ XMLGenerator::
 assertExists(
     Info const& I)
 {
-    auto it = corpus_->USRToInfo.find(llvm::toHex(llvm::toStringRef(I.USR)));
-    assert(it != corpus_->USRToInfo.end());
-    if(it != corpus_->USRToInfo.end())
-        assert(it->second.get() == &I);
+    assert(corpus_->exists(I.USR));
 }
 #endif
 
