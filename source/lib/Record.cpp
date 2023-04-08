@@ -44,7 +44,7 @@ merge(RecordInfo&& Other)
         VirtualParents = std::move(Other.VirtualParents);
     // Reduce children if necessary.
     reduceChildren(Children.Records, std::move(Other.Children.Records));
-    Children.functions.merge(std::move(Other.Children.functions));
+    reduceChildren(Children.Functions, std::move(Other.Children.Functions));
     reduceChildren(Children.Enums, std::move(Other.Children.Enums));
     reduceChildren(Children.Typedefs, std::move(Other.Children.Typedefs));
     SymbolInfo::merge(std::move(Other));

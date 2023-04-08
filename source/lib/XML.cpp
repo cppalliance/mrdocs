@@ -54,8 +54,7 @@ class XMLGenerator
 
     void writeNamespaces(std::vector<Reference> const& v);
     void writeRecords(std::vector<Reference> const& v);
-    void write(FunctionList const& fnList);
-    void write(FunctionOverloads const& fns);
+    void write(std::vector<FunctionInfo> const& v);
     void write(std::vector<EnumInfo> const& v);
     void write(std::vector<TypedefInfo> const& v);
 
@@ -176,18 +175,9 @@ writeRecords(
 void
 XMLGenerator::
 write(
-    FunctionList const& fnList)
+    std::vector<FunctionInfo> const& v)
 {
-    for(auto const& fns : fnList)
-        write(fns);
-}
-
-void
-XMLGenerator::
-write(
-    FunctionOverloads const& fns)
-{
-    for(auto const& fn : fns)
+    for(auto const& fn : v)
         write(fn);
 }
 
@@ -225,7 +215,7 @@ write(
     writeInfo(I);
     writeNamespaces(I.Children.Namespaces);
     writeRecords(I.Children.Records);
-    write(I.Children.functions);
+    write(I.Children.Functions);
     write(I.Children.Enums);
     write(I.Children.Typedefs);
     closeTag("namespace");
@@ -253,7 +243,7 @@ write(
         });
     writeSymbolInfo(I);
     writeRecords(I.Children.Records);
-    write(I.Children.functions);
+    write(I.Children.Functions);
     write(I.Children.Enums);
     write(I.Children.Typedefs);
     closeTag(tag);

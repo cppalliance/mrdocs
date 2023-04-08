@@ -234,7 +234,7 @@ InsertChild(
     Scope& scope,
     FunctionInfo Info)
 {
-    scope.functions.insert(std::move(Info));
+    scope.Functions.emplace_back(std::move(Info));
 }
 
 static void InsertChild(Scope& scope, TypedefInfo Info) {
@@ -628,7 +628,7 @@ parseBases(RecordInfo& I, const CXXRecordDecl* D, bool IsFileInRootDir,
                             IsInAnonymousNamespace);
                         FI.Access =
                             getFinalAccessSpecifier(BI.Access, MD->getAccessUnsafe());
-                        BI.Children.functions.insert(std::move(FI));
+                        BI.Children.Functions.emplace_back(std::move(FI));
                     }
                 I.Bases.emplace_back(std::move(BI));
                 // Call this function recursively to get the inherited classes of

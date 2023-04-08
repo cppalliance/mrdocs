@@ -527,9 +527,8 @@ void ClangDocBitcodeWriter::emitBlock(const NamespaceInfo& I) {
         emitBlock(C, FieldId::F_child_namespace);
     for (const auto& C : I.Children.Records)
         emitBlock(C, FieldId::F_child_record);
-    for (auto const& f : I.Children.functions)
-        for (auto const& C : f)
-            emitBlock(C);
+    for (auto const& C : I.Children.Functions)
+        emitBlock(C);
     for (const auto& C : I.Children.Enums)
         emitBlock(C);
     for (const auto& C : I.Children.Typedefs)
@@ -589,9 +588,8 @@ void ClangDocBitcodeWriter::emitBlock(const RecordInfo& I) {
         emitBlock(PB);
     for (const auto& C : I.Children.Records)
         emitBlock(C, FieldId::F_child_record);
-    for (auto const& f : I.Children.functions)
-        for (auto const& C : f)
-            emitBlock(C);
+    for (auto const& C : I.Children.Functions)
+        emitBlock(C);
     for (const auto& C : I.Children.Enums)
         emitBlock(C);
     for (const auto& C : I.Children.Typedefs)
@@ -611,9 +609,8 @@ void ClangDocBitcodeWriter::emitBlock(const BaseRecordInfo& I) {
     emitRecord(I.IsParent, BASE_RECORD_IS_PARENT);
     for (const auto& M : I.Members)
         emitBlock(M);
-    for (auto const& f : I.Children.functions)
-        for (auto const& C : f)
-            emitBlock(C);
+    for (auto const& C : I.Children.Functions)
+        emitBlock(C);
 }
 
 void ClangDocBitcodeWriter::emitBlock(const FunctionInfo& I) {

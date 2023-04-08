@@ -651,7 +651,7 @@ addChild(
     NamespaceInfo* I,
     FunctionInfo&& R)
 {
-    I->Children.functions.insert(std::move(R));
+    I->Children.Functions.emplace_back(std::move(R));
 }
 
 template<>
@@ -679,7 +679,7 @@ addChild(
     RecordInfo* I,
     FunctionInfo&& R)
 {
-    I->Children.functions.insert(std::move(R));
+    I->Children.Functions.emplace_back(std::move(R));
 }
 
 template<>
@@ -725,7 +725,7 @@ addChild(
     BaseRecordInfo* I,
     FunctionInfo&& R)
 {
-    I->Children.functions.insert(std::move(R));
+    I->Children.Functions.emplace_back(std::move(R));
 }
 
 // TemplateParam children. These go into either a TemplateInfo (for template

@@ -40,7 +40,7 @@ merge(NamespaceInfo&& Other)
     // Reduce children if necessary.
     reduceChildren(Children.Namespaces, std::move(Other.Children.Namespaces));
     reduceChildren(Children.Records, std::move(Other.Children.Records));
-    Children.functions.merge(std::move(Other.Children.functions));
+    reduceChildren(Children.Functions, std::move(Other.Children.Functions));
     reduceChildren(Children.Enums, std::move(Other.Children.Enums));
     reduceChildren(Children.Typedefs, std::move(Other.Children.Typedefs));
     mergeBase(std::move(Other));

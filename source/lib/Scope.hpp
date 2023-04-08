@@ -40,7 +40,7 @@ struct Scope
     // this general for all possible container types reduces code complexity.
     std::vector<Reference> Namespaces;
     std::vector<Reference> Records;
-    FunctionList functions;
+    std::vector<FunctionInfo> Functions;
     std::vector<EnumInfo> Enums;
     std::vector<TypedefInfo> Typedefs;
 
@@ -48,7 +48,6 @@ struct Scope
         clang::AccessSpecifier access_ =
             clang::AccessSpecifier::AS_public) noexcept
         : access(access_)
-        , functions(access_)
     {
     }
 };

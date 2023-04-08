@@ -366,7 +366,7 @@ void
 listFunctions(
     Config const& cfg,
     llvm::StringRef label,
-    FunctionList const& v,
+    std::vector<FunctionInfo> const& v,
     llvm::raw_ostream& os)
 {
     if(v.empty())
@@ -380,16 +380,16 @@ listFunctions(
         "|Description\n" <<
         "\n";
     os <<
-        "|`" << v.front().name << "`\n" <<
-        "|" << v.front().front().javadoc.brief <<
+        "|`" << v.front().Name << "`\n" <<
+        "|" << v.front().javadoc.brief <<
         "\n";
     for(std::size_t i = 1; i < v.size(); ++i)
     {
         auto const& f = v[i];
         os <<
             "\n" <<
-            "|`" << f.name << "`\n" <<
-            "|" << f.front().javadoc.brief <<
+            "|`" << f.Name << "`\n" <<
+            "|" << f.javadoc.brief <<
             "\n";
     }
     os <<
@@ -473,7 +473,7 @@ listScope(
 {
     listNamespaces(cfg, scope.Namespaces, os);
     listClasses(cfg, scope.Records, os);
-    listFunctions(cfg, "Functions", scope.functions, os);
+    listFunctions(cfg, "Functions", scope.Functions, os);
     listConstants(cfg, scope.Enums, os);
     listTypedefs(cfg, scope.Typedefs, os);
 }
@@ -488,37 +488,6 @@ listFunction(
     os <<
         "|`" << I.Name <<"`\n" <<
         "|" << I.javadoc.brief << "\n";
-}
-
-void
-listFunctions(
-    Config const& cfg,
-    llvm::StringRef label,
-    std::vector<FunctionInfo> const& v,
-    llvm::raw_ostream& os)
-{
-    if(v.empty())
-        return;
-
-    section(label, 2, os);
-    os <<
-        "[cols=2]\n" <<
-        "|===\n" <<
-        "|Name\n" <<
-        "|Description\n" <<
-        "\n";
-    if(! v.empty())
-    {
-        listFunction(cfg, v.front(), os);
-        for(std::size_t i = 1; i < v.size(); ++i)
-        {
-            os << "\n";
-            listFunction(cfg, v[i], os);
-        }
-    }
-    os <<
-        "|===\n" <<
-        "\n";
 }
 
 // Write a complete FunctionInfo page

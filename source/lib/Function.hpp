@@ -63,54 +63,6 @@ struct FunctionInfo : SymbolInfo
     llvm::Optional<TemplateInfo> Template;
 };
 
-/// A list of zero or more functions
-using FunctionInfos = std::vector<FunctionInfo>;
-
-//------------------------------------------------
-
-/** A list of overloads for a function.
-*/
-struct FunctionOverloads
-    : List<FunctionInfo>
-{
-    /// The name of the function.
-    UnqualifiedName name;
-
-    void insert(FunctionInfo I);
-    void merge(FunctionOverloads&& other);
-    FunctionOverloads(FunctionInfo I);
-
-    FunctionOverloads(
-        FunctionOverloads&&) = default;
-    FunctionOverloads& operator=(
-        FunctionOverloads&&) = default;
-};
-
-//------------------------------------------------
-
-/** A list of functions, each with possible overloads.
-*/
-struct FunctionList
-    : List<FunctionOverloads>
-{
-    clang::AccessSpecifier access;
-
-    void insert(FunctionInfo I);
-    void merge(FunctionList&& other);
-
-    FunctionList(
-        FunctionList&&) noexcept = default;
-    FunctionList(
-        clang::AccessSpecifier access_ =
-            clang::AccessSpecifier::AS_public) noexcept
-        : access(access_)
-    {
-    }
-
-private:
-    iterator find(llvm::StringRef name) noexcept;
-};
-
 //------------------------------------------------
 
 } // mrdox
