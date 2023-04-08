@@ -20,6 +20,7 @@
 #include <llvm/ADT/SmallVector.h>
 #include <array>
 #include <vector>
+#include <string>
 
 namespace clang {
 namespace mrdox {
@@ -28,23 +29,6 @@ namespace mrdox {
 */
 struct Info
 {
-    virtual ~Info() = default;
-    Info(Info const &Other) = delete;
-    Info(Info&& Other) = default;
-
-    explicit
-    Info(
-        InfoType IT = InfoType::IT_default,
-        SymbolID USR = SymbolID(),
-        llvm::StringRef Name = llvm::StringRef(),
-        llvm::StringRef Path = llvm::StringRef())
-        : USR(USR)
-        , IT(IT)
-        , Name(Name)
-        , Path(Path)
-    {
-    }
-
     /** Unique identifier for the declaration.
     */
     SymbolID USR = SymbolID();
@@ -69,9 +53,24 @@ struct Info
     // generated file will be saved
     llvm::SmallString<128> Path;          
 
-    //
-    //---
-    //
+    //--------------------------------------------
+
+    virtual ~Info() = default;
+    Info(Info const &Other) = delete;
+    Info(Info&& Other) = default;
+
+    explicit
+    Info(
+        InfoType IT = InfoType::IT_default,
+        SymbolID USR = SymbolID(),
+        llvm::StringRef Name = llvm::StringRef(),
+        llvm::StringRef Path = llvm::StringRef())
+        : USR(USR)
+        , IT(IT)
+        , Name(Name)
+        , Path(Path)
+    {
+    }
 
     bool mergeable(const Info& Other);
     void mergeBase(Info&& I);
@@ -83,6 +82,12 @@ struct Info
 
     /// Returns the basename that should be used for this Info.
     llvm::SmallString<16> getFileBaseName() const;
+
+    /** Return the fully qualified name.
+    */
+    llvm::StringRef
+    getFullyQualifiedName(
+        std::string& temp) const;
 };
 
 llvm::SmallString<64>

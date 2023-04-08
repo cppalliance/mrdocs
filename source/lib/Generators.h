@@ -62,12 +62,6 @@ public:
         Info* I, // VFALCO Why not const?
         llvm::raw_ostream& OS,
         Config const& cfg) = 0;
-
-    static
-    void
-    addInfoToIndex(
-        Index& Idx,
-        mrdox::Info const* Info);
 };
 
 // VFALCO a global?

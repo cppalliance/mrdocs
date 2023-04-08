@@ -146,5 +146,21 @@ calculateRelativeFilePath(
     return path::relative_path(FilePath);
 }
 
+llvm::StringRef
+Info::
+getFullyQualifiedName(
+    std::string& temp) const
+{
+    temp.clear();
+    for(auto const& ns : llvm::reverse(Namespace))
+    {
+        temp.append(ns.Name.data(), ns.Name.size());
+        temp.append("::");
+    }
+    auto s = extractName();
+    temp.append(s.data(), s.size());
+    return temp;
+}
+
 } // mrdox
 } // clang

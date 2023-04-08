@@ -38,10 +38,10 @@ namespace path = llvm::sys::path;
 class XMLGenerator
     : public clang::mrdox::Generator
 {
-    Config const& cfg_;
+    Corpus const* corpus_ = nullptr;
+    Config const* cfg_ = nullptr;
     std::string level_;
     llvm::raw_ostream* os_ = nullptr;
-    InfoMap const* infos_ = nullptr;
 
     using Attrs =
         std::initializer_list<
@@ -49,8 +49,10 @@ class XMLGenerator
                 llvm::StringRef,
                 llvm::StringRef>>;
 
+    void writeAllSymbols();
+
     //--------------------------------------------
-    
+
     void writeNamespaces(std::vector<Reference> const& v);
     void writeRecords(std::vector<Reference> const& v);
     void write(FunctionList const& fnList);
@@ -112,21 +114,7 @@ class XMLGenerator
 public:
     static char const* Format;
 
-    XMLGenerator()
-        : cfg_([]() -> Config&
-        {
-            static Config c;
-            return c;
-        }())
-    {
-    }
-
-    explicit
-    XMLGenerator(
-        Config const& cfg) noexcept
-        : cfg_(cfg)
-    {
-    }
+    llvm::Error render(llvm::raw_ostream& os);
 
     bool
     render(
@@ -152,15 +140,35 @@ public:
 
 void
 XMLGenerator::
+writeAllSymbols()
+{
+    openTag("all");
+    std::string temp;
+    for(auto const& id : corpus_->allSymbols)
+    {
+        auto const I = corpus_->find(id);
+        assert(I != nullptr);
+        writeTag("symbol", {
+            { "name", I->getFullyQualifiedName(temp) },
+            { "usr", toBase64(I->USR) }
+            });
+    }
+    closeTag("all");
+}
+
+//------------------------------------------------
+
+void
+XMLGenerator::
 writeNamespaces(
     std::vector<Reference> const& v)
 {
     for(auto const& ref : v)
     {
         assert(ref.RefType == InfoType::IT_namespace);
-        auto it = infos_->find(
+        auto it = corpus_->USRToInfo.find(
             llvm::toHex(llvm::toStringRef(ref.USR)));
-        assert(it != infos_->end());
+        assert(it != corpus_->USRToInfo.end());
         write(*static_cast<NamespaceInfo const*>(
             it->second.get()));
     }
@@ -174,9 +182,9 @@ writeRecords(
     for(auto const& ref : v)
     {
         assert(ref.RefType == InfoType::IT_record);
-        auto it = infos_->find(
+        auto it = corpus_->USRToInfo.find(
             llvm::toHex(llvm::toStringRef(ref.USR)));
-        assert(it != infos_->end());
+        assert(it != corpus_->USRToInfo.end());
         write(*static_cast<RecordInfo const*>(it->second.get()));
     }
 }
@@ -286,28 +294,9 @@ write(
         { "usr", toString(I.ReturnType.Type.USR) }
         });
 
-
-#if 0
-    writeTag("return", {
-        { "name", I.ReturnType.Type.Name },
-        { "usr", toString(I.ReturnType.Type.USR) }
-        });
-#endif
-
-#if 0
-    auto it = infos_->find(llvm::toHex(llvm::toStringRef(
-        I.ReturnType.Type.USR)));
-    assert(it != infos_->end());
-    Info const& inf = *it->second.get();
-    writeTag("return", {
-        { "name", inf.Name },
-        { "usr", toString(inf.USR) }
-        });
-#endif
-
     write(I.Params);
-#if 0
-    //writeRef(I.ReturnType.Type);
+
+    write(I.ReturnType.Type);
     if(I.Template)
     {
         for(TemplateParamInfo const& tp : I.Template->Params)
@@ -316,8 +305,8 @@ write(
                 { "n", tp.Contents }
                 });
     }
-    writeLoc(I.Loc);
-#endif
+    write(I.Loc);
+
     closeTag("function");
 }
 
@@ -420,7 +409,7 @@ writeInfo(
 // VFALCO for now...
 return;
     writeTagLine("extract-name", I.extractName());
-    writeTagLine("rel-path", I.getRelativeFilePath(cfg_.SourceRoot));
+    writeTagLine("rel-path", I.getRelativeFilePath(cfg_->SourceRoot));
     writeTagLine("base-name", I.getFileBaseName());
 }
 
@@ -590,7 +579,7 @@ NamespaceInfo const*
 XMLGenerator::
 findGlobalNamespace()
 {
-    for(auto const& g : *infos_)
+    for(auto const& g : corpus_->USRToInfo)
     {
         auto const& inf = *g.getValue().get();
         if( inf.Name == "" &&
@@ -608,9 +597,9 @@ XMLGenerator::
 assertExists(
     Info const& I)
 {
-    auto it = infos_->find(llvm::toHex(llvm::toStringRef(I.USR)));
-    assert(it != infos_->end());
-    if(it != infos_->end())
+    auto it = corpus_->USRToInfo.find(llvm::toHex(llvm::toStringRef(I.USR)));
+    assert(it != corpus_->USRToInfo.end());
+    if(it != corpus_->USRToInfo.end())
         assert(it->second.get() == &I);
 }
 #endif
@@ -635,7 +624,33 @@ toString(
 
 //------------------------------------------------
 
-//------------------------------------------------
+llvm::Error
+XMLGenerator::
+render(
+    llvm::raw_ostream& os)
+{
+    auto const ns = findGlobalNamespace();
+    if(! ns)
+        return llvm::createStringError(
+            llvm::inconvertibleErrorCode(),
+            "not found: (global namespace)");
+
+    os_ = &os;
+    level_ = {};
+#if 0
+    *os_ <<
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
+        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
+        "<mrdox>\n";
+#endif
+    writeAllSymbols();
+    write(*ns);
+#if 0
+    *os_ <<
+        "</mrdox>\n";
+#endif
+    return llvm::Error::success();
+}
 
 bool
 XMLGenerator::
@@ -645,23 +660,12 @@ render(
     Config const& cfg)
 {
     xml.clear();
-    infos_ = &corpus.USRToInfo;
-    auto const ns = findGlobalNamespace();
-    assert(ns != nullptr);
+    corpus_ = &corpus;
+    cfg_ = &cfg;
     llvm::raw_string_ostream os(xml);
-    os_ = &os;
-    level_ = {};
-#if 0
-    *os_ <<
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
-        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
-        "<mrdox>\n";
-#endif
-    write(*ns);
-#if 0
-    *os_ <<
-        "</mrdox>\n";
-#endif
+    llvm::Error err = render(os);
+    if(err)
+        return false;
     return true;
 }
 
@@ -672,6 +676,8 @@ generateDocs(
     Corpus const& corpus,
     Config const& cfg)
 {
+    corpus_ = &corpus;
+    cfg_ = &cfg;
     llvm::SmallString<256> filename(cfg.OutDirectory);
     if(! fs::is_directory(filename))
         return llvm::createStringError(
@@ -683,31 +689,15 @@ generateDocs(
         return llvm::createStringError(
             llvm::inconvertibleErrorCode(),
             "Output file is not regular");
-    infos_ = &corpus.USRToInfo;
-    auto const ns = findGlobalNamespace();
-    if(! ns)
-        return llvm::createStringError(
-            llvm::inconvertibleErrorCode(),
-            "not found: (global namespace)");
     std::error_code ec;
     llvm::raw_fd_ostream os(filename, ec);
     if(ec)
         return llvm::createStringError(
             ec,
             "output file could not be opened");
-    level_ = {};
-    os_ = &os;
-#if 0
-    *os_ <<
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
-        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
-        "<mrdox>\n";
-#endif
-    write(*ns);
-#if 0
-    *os_ <<
-        "</mrdox>\n";
-#endif
+    llvm::Error err = render(os);
+    if(err)
+        return err;
     // VFALCO the error handling needs to be
     //        propagated through all write functions
     if(os.error())
@@ -743,7 +733,7 @@ renderToXMLString(
     Corpus const& corpus,
     Config const& cfg)
 {
-    xml::XMLGenerator G(cfg);
+    xml::XMLGenerator G;
     G.render(xml, corpus, cfg);
     //return llvm::Error::success();
 }

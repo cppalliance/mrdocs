@@ -24,6 +24,81 @@ namespace mrdox {
 
 //------------------------------------------------
 
+// A function to add a reference to Info in Idx.
+// Given an Info X with the following namespaces: [B,A]; a reference to X will
+// be added in the children of a reference to B, which should be also a child of
+// a reference to A, where A is a child of Idx.
+//   Idx
+//    |-- A
+//        |--B
+//           |--X
+// If the references to the namespaces do not exist, they will be created. If
+// the references already exist, the same one will be used.
+void
+Corpus::
+insert(
+    Info const* I)
+{
+    // Index pointer that will be moving through Idx until the first parent
+    // namespace of Info (where the reference has to be inserted) is found.
+    Index* pi = &Idx;
+    // The Namespace vector includes the upper-most namespace at the end so the
+    // loop will start from the end to find each of the namespaces.
+    for (const auto& R : llvm::reverse(I->Namespace))
+    {
+        // Look for the current namespace in the children of the index pi is
+        // pointing.
+        auto It = llvm::find(pi->Children, R.USR);
+        if (It != pi->Children.end())
+        {
+            // If it is found, just change pi to point the namespace reference found.
+            pi = &*It;
+        }
+        else
+        {
+            // If it is not found a new reference is created
+            pi->Children.emplace_back(R.USR, R.Name, R.RefType, R.Path);
+            // pi is updated with the reference of the new namespace reference
+            pi = &pi->Children.back();
+        }
+    }
+    // Look for Info in the vector where it is supposed to be; it could already
+    // exist if it is a parent namespace of an Info already passed to this
+    // function.
+    auto It = llvm::find(pi->Children, I->USR);
+    if (It == pi->Children.end())
+    {
+        // If it is not in the vector it is inserted
+        pi->Children.emplace_back(I->USR, I->extractName(), I->IT,
+            I->Path);
+    }
+    else
+    {
+        // If it not in the vector we only check if Path and Name are not empty
+        // because if the Info was included by a namespace it may not have those
+        // values.
+        if (It->Path.empty())
+            It->Path = I->Path;
+        if (It->Name.empty())
+            It->Name = I->extractName();
+    }
+
+    allSymbols.emplace_back(I->USR);
+}
+
+Info const*
+Corpus::
+find(
+    SymbolID const& id) const noexcept
+{
+    auto it = USRToInfo.find(llvm::toHex(llvm::toStringRef(id)));
+    if(it != USRToInfo.end())
+        return it->second.get();
+    return nullptr;
+}
+
+//------------------------------------------------
+
 std::unique_ptr<Corpus>
 buildCorpus(
     tooling::ToolExecutor& ex,
@@ -114,7 +189,7 @@ buildCorpus(
             // Add a reference to this Info in the Index
             {
                 std::lock_guard<llvm::sys::Mutex> Guard(IndexMutex);
-                Generator::addInfoToIndex(corpus.Idx, Reduced.get().get());
+                corpus.insert(Reduced.get().get());
             }
 
             // Save in the result map (needs a lock due to threaded access).
@@ -133,6 +208,29 @@ buildCorpus(
             llvm::createStringError(
                 llvm::inconvertibleErrorCode(),
                 "an error occurred"));
+    }
+
+    //
+    // Finish up
+    //
+
+    // Sort allSymbols by fully qualified name
+    {
+        std::string temp[2];
+        llvm::sort(
+            corpus.allSymbols,
+            [&](SymbolID const& id0,
+                SymbolID const& id1) noexcept
+            {
+                auto s0 = corpus.find(id0)->getFullyQualifiedName(temp[0]);
+                auto s1 = corpus.find(id1)->getFullyQualifiedName(temp[1]);
+                int rv = s0.compare_insensitive(s1);
+                if(rv < 0)
+                    return true;
+                if(rv > 0)
+                    return false;
+                return s0.compare(s1) < 0;
+            });
     }
 
     return std::make_unique<Corpus>(std::move(corpus));

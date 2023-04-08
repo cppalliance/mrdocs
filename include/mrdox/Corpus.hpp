@@ -38,6 +38,24 @@ struct Corpus
         unambiguous reference to a symbol.
     */
     llvm::StringMap<std::unique_ptr<Info>> USRToInfo;
+
+    /** List of everything
+    */
+    std::vector<SymbolID> allSymbols;
+
+    //--------------------------------------------
+
+    /** Return a pointer to the Info with the matching USR, or nullptr.
+    */
+    Info const*
+    find(
+        SymbolID const& id) const noexcept;
+
+    /** Insert Info into the index
+    */
+    void
+    insert(
+        Info const* I);
 };
 
 /** Build the intermediate representation of the code being documented.
