@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_NAMESPACE_HPP
-#define MRDOX_JAD_NAMESPACE_HPP
+#ifndef MRDOX_NAMESPACE_HPP
+#define MRDOX_NAMESPACE_HPP
 
 #include "Info.hpp"
 #include "Scope.hpp"

@@ -14,8 +14,8 @@
 // types for the clang-doc tool.
 //
 
-#ifndef MRDOX_JAD_FIELDTYPE_HPP
-#define MRDOX_JAD_FIELDTYPE_HPP
+#ifndef MRDOX_FIELDTYPE_HPP
+#define MRDOX_FIELDTYPE_HPP
 
 #include "Type.hpp"
 #include <llvm/ADT/SmallString.h>

@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_MEMBERTYPE_HPP
-#define MRDOX_JAD_MEMBERTYPE_HPP
+#ifndef MRDOX_MEMBERTYPE_HPP
+#define MRDOX_MEMBERTYPE_HPP
 
 #include "AccessScope.hpp"
 #include "FieldType.hpp"

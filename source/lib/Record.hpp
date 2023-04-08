@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_RECORD_HPP
-#define MRDOX_JAD_RECORD_HPP
+#ifndef MRDOX_RECORD_HPP
+#define MRDOX_RECORD_HPP
 
 #include "AccessScope.hpp"
 #include "MemberType.hpp"

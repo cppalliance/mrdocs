@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_TEMPLATE_HPP
-#define MRDOX_JAD_TEMPLATE_HPP
+#ifndef MRDOX_TEMPLATE_HPP
+#define MRDOX_TEMPLATE_HPP
 
 #include "TemplateParam.hpp"
 #include <llvm/ADT/Optional.h>

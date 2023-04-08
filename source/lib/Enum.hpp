@@ -14,8 +14,8 @@
 // types for the clang-doc tool.
 //
 
-#ifndef MRDOX_JAD_ENUM_HPP
-#define MRDOX_JAD_ENUM_HPP
+#ifndef MRDOX_ENUM_HPP
+#define MRDOX_ENUM_HPP
 
 #include "Symbol.hpp"
 #include "Type.hpp"

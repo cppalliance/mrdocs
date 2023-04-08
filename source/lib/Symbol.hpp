@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_SYMBOL_HPP
-#define MRDOX_JAD_SYMBOL_HPP
+#ifndef MRDOX_SYMBOL_HPP
+#define MRDOX_SYMBOL_HPP
 
 #include "Info.hpp"
 #include "Location.hpp"

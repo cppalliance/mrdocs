@@ -14,8 +14,8 @@
 // types for the clang-doc tool.
 //
 
-#ifndef MRDOX_JAD_TEMPLATEPARAM_HPP
-#define MRDOX_JAD_TEMPLATEPARAM_HPP
+#ifndef MRDOX_TEMPLATEPARAM_HPP
+#define MRDOX_TEMPLATEPARAM_HPP
 
 #include <clang/AST/Decl.h>
 #include <clang/AST/Type.h>

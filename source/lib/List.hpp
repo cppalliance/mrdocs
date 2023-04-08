@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_LIST_HPP
-#define MRDOX_JAD_LIST_HPP
+#ifndef MRDOX_LIST_HPP
+#define MRDOX_LIST_HPP
 
 #include <cstdint>
 #include <vector>

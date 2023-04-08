@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_SCOPE_HPP
-#define MRDOX_JAD_SCOPE_HPP
+#ifndef MRDOX_SCOPE_HPP
+#define MRDOX_SCOPE_HPP
 
 #include "Enum.hpp"
 #include "Function.hpp"

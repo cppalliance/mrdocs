@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAD_TYPEDEF_HPP
-#define MRDOX_JAD_TYPEDEF_HPP
+#ifndef MRDOX_TYPEDEF_HPP
+#define MRDOX_TYPEDEF_HPP
 
 #include "Symbol.hpp"
 #include "Type.hpp"

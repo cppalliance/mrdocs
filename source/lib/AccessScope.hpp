@@ -14,8 +14,8 @@
 // types for the clang-doc tool.
 //
 
-#ifndef MRDOX_JAD_ACCESSSCOPE_HPP
-#define MRDOX_JAD_ACCESSSCOPE_HPP
+#ifndef MRDOX_ACCESSSCOPE_HPP
+#define MRDOX_ACCESSSCOPE_HPP
 
 #include "Scope.hpp"
 #include <clang/Basic/Specifiers.h>
