@@ -16,7 +16,7 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_GENERATOR_H
 
 #include "Representation.h"
-#include "jad/Index.hpp"
+#include "Index.hpp"
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Registry.h"
 

@@ -11,7 +11,7 @@
 
 #include "Reduce.h"
 //#include "Representation.h"
-#include "jad/Namespace.hpp"
+#include "Namespace.hpp"
 #include <mrdox/Config.hpp>
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Path.h"

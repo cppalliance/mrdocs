@@ -229,6 +229,11 @@ build(
 
     Pool.wait();
 
+    llvm::outs() <<
+        "Collected " << corpus.USRToInfo.size() << " symbols.\n";
+    for(auto const& it : corpus.USRToInfo)
+        llvm::outs() << it.second.get()->Name << "\n";
+
     if(GotFailure)
     {
         R.failed("buildCorpus",

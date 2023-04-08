@@ -24,7 +24,7 @@
 #include "llvm/ADT/StringExtras.h"
 #include "llvm/Support/SHA1.h"
 
-#include "xml/base64.hpp"
+#include "base64.hpp"
 
 using clang::comments::FullComment;
 

@@ -12,7 +12,7 @@
 #ifndef MRDOX_JAD_TYPE_HPP
 #define MRDOX_JAD_TYPE_HPP
 
-#include "jad/Reference.hpp"
+#include "Reference.hpp"
 
 namespace clang {
 namespace mrdox {

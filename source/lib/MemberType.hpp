@@ -12,10 +12,10 @@
 #ifndef MRDOX_JAD_MEMBERTYPE_HPP
 #define MRDOX_JAD_MEMBERTYPE_HPP
 
-#include "jad/AccessScope.hpp"
-#include "jad/FieldType.hpp"
-#include "jad/Function.hpp"
-#include "jad/Javadoc.hpp"
+#include "AccessScope.hpp"
+#include "FieldType.hpp"
+#include "Function.hpp"
+#include "Javadoc.hpp"
 
 namespace clang {
 namespace mrdox {

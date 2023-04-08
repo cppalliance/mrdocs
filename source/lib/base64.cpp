@@ -9,11 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "xml/base64.hpp"
+#include "base64.hpp"
 
 namespace clang {
 namespace mrdox {
-namespace xml {
 
 static
 char const*
@@ -94,6 +93,5 @@ toBase64(
     return s;
 }
 
-} // xml
 } // mrdox
 } // clang

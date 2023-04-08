@@ -12,7 +12,7 @@
 #ifndef MRDOX_CORPUS_HPP
 #define MRDOX_CORPUS_HPP
 
-#include "jad/Index.hpp"
+#include "Index.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Errors.hpp>
 #include <clang/Tooling/Execution.h>

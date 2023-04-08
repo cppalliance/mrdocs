@@ -11,9 +11,9 @@
 
 #include "Generators.h"
 #include "Representation.h"
-#include "jad/Namespace.hpp"
-#include "xml/base64.hpp"
-#include "xml/escape.hpp"
+#include "Namespace.hpp"
+#include "base64.hpp"
+#include "escape.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Visitor.hpp>
@@ -30,7 +30,6 @@
 
 namespace clang {
 namespace mrdox {
-namespace xml {
 
 namespace fs = llvm::sys::fs;
 namespace path = llvm::sys::path;
@@ -123,17 +122,16 @@ public:
         Config const& cfg);
 
     llvm::Error
-    generateDocs(
-        llvm::StringRef RootDir,
-        Corpus const& corpus,
-        Config const& cfg) override;
-
-    llvm::Error
     generateDocForInfo(
         clang::mrdox::Info* I,
         llvm::raw_ostream& os,
         clang::mrdox::Config const& cfg) override;
 
+    llvm::Error
+    generateDocs(
+        llvm::StringRef RootDir,
+        Corpus const& corpus,
+        Config const& cfg) override;
 };
 
 //------------------------------------------------
@@ -655,6 +653,16 @@ render(
 
 llvm::Error
 XMLGenerator::
+generateDocForInfo(
+    clang::mrdox::Info* I,
+    llvm::raw_ostream& os,
+    clang::mrdox::Config const& cfg)
+{
+    return llvm::Error::success();
+}
+
+llvm::Error
+XMLGenerator::
 generateDocs(
     llvm::StringRef RootDir,
     Corpus const& corpus,
@@ -691,23 +699,11 @@ generateDocs(
     return llvm::Error::success();
 }
 
-llvm::Error
-XMLGenerator::
-generateDocForInfo(
-    clang::mrdox::Info* I,
-    llvm::raw_ostream& os,
-    clang::mrdox::Config const& cfg)
-{
-    return llvm::Error::success();
-}
-
 //------------------------------------------------
 
 char const*
 XMLGenerator::
 Format = "xml";
-
-} // xml
 
 //------------------------------------------------
 
@@ -717,7 +713,7 @@ renderToXMLString(
     Corpus const& corpus,
     Config const& cfg)
 {
-    xml::XMLGenerator G;
+    XMLGenerator G;
     G.render(xml, corpus, cfg);
     //return llvm::Error::success();
 }
@@ -726,9 +722,9 @@ renderToXMLString(
 
 static
 GeneratorRegistry::
-Add<xml::XMLGenerator>
+Add<XMLGenerator>
 xmlGenerator(
-    xml::XMLGenerator::Format,
+    XMLGenerator::Format,
     "Generator for XML output.");
 
 // This anchor is used to force the linker

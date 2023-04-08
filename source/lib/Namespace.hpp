@@ -12,8 +12,8 @@
 #ifndef MRDOX_JAD_NAMESPACE_HPP
 #define MRDOX_JAD_NAMESPACE_HPP
 
-#include "jad/Info.hpp"
-#include "jad/Scope.hpp"
+#include "Info.hpp"
+#include "Scope.hpp"
 
 namespace clang {
 namespace mrdox {

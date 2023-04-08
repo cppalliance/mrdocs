@@ -12,13 +12,13 @@
 #ifndef MRDOX_JAD_RECORD_HPP
 #define MRDOX_JAD_RECORD_HPP
 
-#include "jad/AccessScope.hpp"
-#include "jad/MemberType.hpp"
-#include "jad/Reference.hpp"
-#include "jad/Scope.hpp"
-#include "jad/Symbol.hpp"
-#include "jad/Template.hpp"
-#include "jad/Types.hpp"
+#include "AccessScope.hpp"
+#include "MemberType.hpp"
+#include "Reference.hpp"
+#include "Scope.hpp"
+#include "Symbol.hpp"
+#include "Template.hpp"
+#include "Types.hpp"
 #include <clang/AST/Type.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>

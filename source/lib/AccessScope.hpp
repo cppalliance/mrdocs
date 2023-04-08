@@ -17,7 +17,7 @@
 #ifndef MRDOX_JAD_ACCESSSCOPE_HPP
 #define MRDOX_JAD_ACCESSSCOPE_HPP
 
-#include "jad/Scope.hpp"
+#include "Scope.hpp"
 #include <clang/Basic/Specifiers.h>
 
 namespace clang {

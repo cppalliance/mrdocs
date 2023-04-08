@@ -12,12 +12,12 @@
 #ifndef MRDOX_FUNCTIONS_HPP
 #define MRDOX_FUNCTIONS_HPP
 
-#include "jad/FieldType.hpp"
-#include "jad/Function.hpp"
-#include "jad/List.hpp"
-#include "jad/Symbol.hpp"
-#include "jad/Template.hpp"
-#include "jad/Types.hpp"
+#include "FieldType.hpp"
+#include "Function.hpp"
+#include "List.hpp"
+#include "Symbol.hpp"
+#include "Template.hpp"
+#include "Types.hpp"
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>

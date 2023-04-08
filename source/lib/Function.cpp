@@ -11,7 +11,7 @@
 
 #include "Reduce.h"
 #include "Representation.h"
-#include "jad/Function.hpp"
+#include "Function.hpp"
 
 namespace clang {
 namespace mrdox {

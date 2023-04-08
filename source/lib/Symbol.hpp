@@ -12,8 +12,8 @@
 #ifndef MRDOX_JAD_SYMBOL_HPP
 #define MRDOX_JAD_SYMBOL_HPP
 
-#include "jad/Info.hpp"
-#include "jad/Location.hpp"
+#include "Info.hpp"
+#include "Location.hpp"
 #include "llvm/ADT/Optional.h"
 
 namespace clang {

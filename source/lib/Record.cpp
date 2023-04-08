@@ -10,7 +10,7 @@
 //
 
 #include "Reduce.h"
-#include "jad/Record.hpp"
+#include "Record.hpp"
 #include <cassert>
 #include <utility>
 

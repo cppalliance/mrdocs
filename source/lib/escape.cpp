@@ -9,11 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "xml/escape.hpp"
+#include "escape.hpp"
 
 namespace clang {
 namespace mrdox {
-namespace xml {
 
 void
 escape::
@@ -61,6 +60,5 @@ write(
     }
 }
 
-} // xml
 } // mrdox
 } // clang

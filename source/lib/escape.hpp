@@ -17,7 +17,6 @@
 
 namespace clang {
 namespace mrdox {
-namespace xml {
 
 /** Manipulator to apply XML escaping to output.
 */
@@ -46,7 +45,6 @@ private:
     llvm::StringRef s_;
 };
 
-} // xml
 } // mrdox
 } // clang
 

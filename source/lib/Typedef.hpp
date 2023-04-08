@@ -12,8 +12,8 @@
 #ifndef MRDOX_JAD_TYPEDEF_HPP
 #define MRDOX_JAD_TYPEDEF_HPP
 
-#include "jad/Symbol.hpp"
-#include "jad/Type.hpp"
+#include "Symbol.hpp"
+#include "Type.hpp"
 
 namespace clang {
 namespace mrdox {

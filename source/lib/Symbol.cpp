@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "jad/Symbol.hpp"
+#include "Symbol.hpp"
 #include <llvm/ADT/STLExtras.h>
 #include <cassert>
 

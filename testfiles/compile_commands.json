@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "C:/Users/Vinnie/src/mrdox/testfiles/",
+    "command": "clang -std=c++14 -fsyntax-only \"C:/Users/Vinnie/src/mrdox/testfiles/1.cpp\"",
+    "file": "C:/Users/Vinnie/src/mrdox/testfiles/1.cpp"
+  }
+]

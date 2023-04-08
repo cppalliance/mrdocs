@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "jad/Info.hpp"
-#include "jad/Reference.hpp"
+#include "Info.hpp"
+#include "Reference.hpp"
 
 namespace clang {
 namespace mrdox {

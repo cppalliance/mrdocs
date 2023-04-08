@@ -12,7 +12,7 @@
 #ifndef MRDOX_JAD_TEMPLATE_HPP
 #define MRDOX_JAD_TEMPLATE_HPP
 
-#include "jad/TemplateParam.hpp"
+#include "TemplateParam.hpp"
 #include <llvm/ADT/Optional.h>
 
 namespace clang {

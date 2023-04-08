@@ -18,11 +18,9 @@
 
 namespace clang {
 namespace mrdox {
-namespace xml {
 
 std::string toBase64(std::array<uint8_t, 20> const& v);
 
-} // xml
 } // mrdox
 } // clang
 

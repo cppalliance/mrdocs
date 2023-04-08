@@ -17,7 +17,7 @@
 #ifndef MRDOX_JAD_FIELDTYPE_HPP
 #define MRDOX_JAD_FIELDTYPE_HPP
 
-#include "jad/Type.hpp"
+#include "Type.hpp"
 #include <llvm/ADT/SmallString.h>
 #include <utility>
 

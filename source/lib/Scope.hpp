@@ -12,9 +12,9 @@
 #ifndef MRDOX_JAD_SCOPE_HPP
 #define MRDOX_JAD_SCOPE_HPP
 
-#include "jad/Enum.hpp"
-#include "jad/Function.hpp"
-#include "jad/Typedef.hpp"
+#include "Enum.hpp"
+#include "Function.hpp"
+#include "Typedef.hpp"
 
 #include <vector>
 

@@ -12,8 +12,8 @@
 #ifndef MRDOX_JAD_INDEX_HPP
 #define MRDOX_JAD_INDEX_HPP
 
-#include "jad/Info.hpp"
-#include "jad/Reference.hpp"
+#include "Info.hpp"
+#include "Reference.hpp"
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>

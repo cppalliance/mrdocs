@@ -11,7 +11,7 @@
 
 #include "Generators.h"
 #include "Representation.h"
-#include "jad/Namespace.hpp"
+#include "Namespace.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include "llvm/ADT/StringRef.h"

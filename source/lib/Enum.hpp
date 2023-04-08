@@ -17,8 +17,8 @@
 #ifndef MRDOX_JAD_ENUM_HPP
 #define MRDOX_JAD_ENUM_HPP
 
-#include "jad/Symbol.hpp"
-#include "jad/Type.hpp"
+#include "Symbol.hpp"
+#include "Type.hpp"
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>

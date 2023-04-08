@@ -12,7 +12,7 @@
 #ifndef MRDOX_REDUCE_HPP
 #define MRDOX_REDUCE_HPP
 
-#include "jad/Info.hpp"
+#include "Info.hpp"
 #include <llvm/Support/Error.h>
 #include <memory>
 #include <vector>

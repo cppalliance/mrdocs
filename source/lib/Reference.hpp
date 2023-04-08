@@ -12,7 +12,7 @@
 #ifndef MRDOX_JAD_REFERENCE_HPP
 #define MRDOX_JAD_REFERENCE_HPP
 
-#include "jad/Types.hpp"
+#include "Types.hpp"
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <utility>

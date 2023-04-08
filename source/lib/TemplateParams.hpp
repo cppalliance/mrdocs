@@ -18,14 +18,14 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 
 #include "Functions.h"
-#include "jad/AccessScope.hpp"
-#include "jad/Info.hpp"
-#include "jad/Location.hpp"
-#include "jad/Namespace.hpp"
-#include "jad/Reference.hpp"
-#include "jad/Scope.hpp"
-#include "jad/Symbol.hpp"
-#include "jad/Types.hpp"
+#include "AccessScope.hpp"
+#include "Info.hpp"
+#include "Location.hpp"
+#include "Namespace.hpp"
+#include "Reference.hpp"
+#include "Scope.hpp"
+#include "Symbol.hpp"
+#include "Types.hpp"
 #include <clang/AST/Type.h>
 #include <clang/Basic/Specifiers.h>
 #include <clang/Tooling/StandaloneExecution.h>
