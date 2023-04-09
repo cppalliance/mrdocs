@@ -507,8 +507,6 @@ parseRecord(
         return decodeRecord(R, I->USR, Blob);
     case REFERENCE_NAME:
         return decodeRecord(R, I->Name, Blob);
-    case REFERENCE_QUAL_NAME:
-        return decodeRecord(R, I->QualName, Blob);
     case REFERENCE_TYPE:
         return decodeRecord(R, I->RefType, Blob);
     case REFERENCE_PATH:

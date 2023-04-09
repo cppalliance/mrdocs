@@ -21,7 +21,7 @@ SymbolInfo::
 merge(
     SymbolInfo&& Other)
 {
-    assert(mergeable(Other));
+    assert(canMerge(Other));
     if (!DefLoc)
         DefLoc = std::move(Other.DefLoc);
     // Unconditionally extend the list of locations, since we want all of them.

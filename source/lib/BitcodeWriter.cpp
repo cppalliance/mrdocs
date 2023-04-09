@@ -221,7 +221,6 @@ RecordIdNameMap = []()
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
-        {REFERENCE_QUAL_NAME, {"QualName", &StringAbbrev}},
         {REFERENCE_TYPE, {"RefType", &IntAbbrev}},
         {REFERENCE_PATH, {"Path", &StringAbbrev}},
         {REFERENCE_FIELD, {"Field", &IntAbbrev}},
@@ -287,7 +286,7 @@ RecordsByBlock{
         FUNCTION_ACCESS, FUNCTION_IS_METHOD}},
     // Reference Block
     {BI_REFERENCE_BLOCK_ID,
-        {REFERENCE_USR, REFERENCE_NAME, REFERENCE_QUAL_NAME, REFERENCE_TYPE,
+        {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE,
         REFERENCE_PATH, REFERENCE_FIELD}},
     // Template Blocks.
     {BI_TEMPLATE_BLOCK_ID, {}},
@@ -538,7 +537,6 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
     emitRecord(R.USR, REFERENCE_USR);
     emitRecord(R.Name, REFERENCE_NAME);
-    emitRecord(R.QualName, REFERENCE_QUAL_NAME);
     emitRecord((unsigned)R.RefType, REFERENCE_TYPE);
     emitRecord(R.Path, REFERENCE_PATH);
     emitRecord((unsigned)Field, REFERENCE_FIELD);

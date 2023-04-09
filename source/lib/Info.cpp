@@ -20,7 +20,7 @@ namespace mrdox {
 
 bool
 Info::
-mergeable(
+canMerge(
     Info const& Other)
 {
     return
@@ -33,7 +33,7 @@ Info::
 mergeBase(
     Info&& Other)
 {
-    assert(mergeable(Other));
+    assert(canMerge(Other));
     if (USR == EmptySID)
         USR = Other.USR;
     if (Name == "")

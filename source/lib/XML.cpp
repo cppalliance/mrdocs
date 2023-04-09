@@ -338,7 +338,6 @@ write(
         { I.USR }
         });
     writeSymbolInfo(I);
-    writeTagLine("qualname", I.Underlying.Type.QualName);
     if(I.Underlying.Type.USR != EmptySID)
         writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
     closeTag("typedef");
@@ -363,7 +362,6 @@ write(FieldTypeInfo const& I)
         { "name", I.Name },
         { "default", I.DefaultValue, ! I.DefaultValue.empty() },
         { "type", I.Type.Name },
-        { "qualname", I.Type.QualName },
         { "reftype", toString(I.Type.RefType) },
         { I.Type.USR }
         });
@@ -375,7 +373,7 @@ writeNamespaceRefs(
     llvm::SmallVector<Reference, 4> const& v)
 {
     for(auto const& ns : v)
-        writeTagLine("ns", ns.QualName);
+        writeTagLine("ns", ns.Name);
 }
 
 void
@@ -390,7 +388,6 @@ write(
     writeTagLine("basename",
         I.getFileBaseName());
     writeTagLine("name", I.Name);
-    writeTagLine("qual", I.QualName);
     writeTagLine("tag", std::to_string(static_cast<int>(I.RefType)));
     writeTagLine("path", I.Path);
     //closeTag("ref");

@@ -35,7 +35,7 @@ getFileBaseName() const
 
 bool
 Reference::
-mergeable(
+canMerge(
     Reference const& Other)
 {
     return
@@ -48,7 +48,7 @@ Reference::
 merge(
     Reference&& Other)
 {
-    assert(mergeable(Other));
+    assert(canMerge(Other));
     if (Name.empty())
         Name = Other.Name;
     if (Path.empty())

@@ -155,7 +155,6 @@ getTypeInfoForType(
         getUSRForDecl(TD),
         TD->getNameAsString(),
         IT,
-        T.getAsString(),
         getInfoRelativePath(TD)));
 }
 
@@ -224,8 +223,10 @@ InsertChild(
     NamespaceInfo const& Info)
 {
     scope.Namespaces.emplace_back(
-        Info.USR, Info.Name, InfoType::IT_namespace,
-        Info.Name, getInfoRelativePath(Info.Namespace));
+        Info.USR,
+        Info.Name,
+        InfoType::IT_namespace,
+        getInfoRelativePath(Info.Namespace));
 }
 
 static
@@ -235,17 +236,10 @@ InsertChild(
     RecordInfo const& Info)
 {
     scope.Records.emplace_back(
-        Info.USR, Info.Name, InfoType::IT_record,
-        Info.Name, getInfoRelativePath(Info.Namespace));
-}
-
-static
-void
-InsertChild(
-    Scope& scope,
-    EnumInfo Info)
-{
-    scope.Enums.push_back(std::move(Info));
+        Info.USR,
+        Info.Name,
+        InfoType::IT_record,
+        getInfoRelativePath(Info.Namespace));
 }
 
 static
@@ -255,8 +249,19 @@ InsertChild(
     FunctionInfo const& Info)
 {
     scope.Functions.emplace_back(
-        Info.USR, Info.Name, InfoType::IT_function,
-        Info.Name, getInfoRelativePath(Info.Namespace));
+        Info.USR,
+        Info.Name,
+        InfoType::IT_function,
+        getInfoRelativePath(Info.Namespace));
+}
+
+static
+void
+InsertChild(
+    Scope& scope,
+    EnumInfo Info)
+{
+    scope.Enums.push_back(std::move(Info));
 }
 
 static
@@ -414,8 +419,7 @@ static void parseBases(RecordInfo& I, const CXXRecordDecl* D) {
         }
         else if (const RecordDecl* P = getRecordDeclForType(B.getType()))
             I.Parents.emplace_back(getUSRForDecl(P), P->getNameAsString(),
-                InfoType::IT_record, P->getQualifiedNameAsString(),
-                getInfoRelativePath(P));
+                InfoType::IT_record, getInfoRelativePath(P));
         else
             I.Parents.emplace_back(SymbolID(), B.getType().getAsString());
     }
@@ -423,16 +427,20 @@ static void parseBases(RecordInfo& I, const CXXRecordDecl* D) {
         if (const RecordDecl* P = getRecordDeclForType(B.getType()))
             I.VirtualParents.emplace_back(
                 getUSRForDecl(P), P->getNameAsString(), InfoType::IT_record,
-                P->getQualifiedNameAsString(), getInfoRelativePath(P));
+                    getInfoRelativePath(P));
         else
             I.VirtualParents.emplace_back(SymbolID(), B.getType().getAsString());
     }
 }
 
 template <typename T>
-static void
-populateParentNamespaces(llvm::SmallVector<Reference, 4>& Namespaces,
-    const T* D, bool& IsInAnonymousNamespace) {
+static
+void
+populateParentNamespaces(
+    llvm::SmallVector<Reference, 4>& Namespaces,
+    const T* D,
+    bool& IsInAnonymousNamespace)
+{
     const DeclContext* DC = D->getDeclContext();
     do {
         if (const auto* N = dyn_cast<NamespaceDecl>(DC)) {
@@ -660,12 +668,10 @@ parseBases(
                             IsInAnonymousNamespace);
                         FI.Access =
                             getFinalAccessSpecifier(BI.Access, MD->getAccessUnsafe());
-                        //BI.Children.Functions.emplace_back(std::move(FI));
                         BI.Children.Functions.emplace_back(
                             FI.USR,
                             FI.Name,
                             InfoType::IT_function,
-                            FI.Name,
                             FI.Path);
                     }
                 }

@@ -99,7 +99,7 @@ bool CommentInfo::operator<(const CommentInfo& Other) const {
 }
 
 void EnumInfo::merge(EnumInfo&& Other) {
-    assert(mergeable(Other));
+    assert(canMerge(Other));
     if (!Scoped)
         Scoped = Other.Scoped;
     if (Members.empty())
@@ -108,7 +108,7 @@ void EnumInfo::merge(EnumInfo&& Other) {
 }
 
 void FunctionInfo::merge(FunctionInfo&& Other) {
-    assert(mergeable(Other));
+    assert(canMerge(Other));
     if (!IsMethod)
         IsMethod = Other.IsMethod;
     if (!Access)
@@ -125,7 +125,7 @@ void FunctionInfo::merge(FunctionInfo&& Other) {
 }
 
 void TypedefInfo::merge(TypedefInfo&& Other) {
-    assert(mergeable(Other));
+    assert(canMerge(Other));
     if (!IsUsing)
         IsUsing = Other.IsUsing;
     if (Underlying.Type.Name == "")

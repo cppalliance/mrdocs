@@ -36,7 +36,7 @@ void
 NamespaceInfo::
 merge(NamespaceInfo&& Other)
 {
-    assert(mergeable(Other));
+    assert(canMerge(Other));
     // Reduce children if necessary.
     reduceChildren(Children.Namespaces, std::move(Other.Children.Namespaces));
     reduceChildren(Children.Records, std::move(Other.Children.Records));

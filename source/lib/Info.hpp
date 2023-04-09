@@ -72,7 +72,7 @@ struct Info
     {
     }
 
-    bool mergeable(const Info& Other);
+    bool canMerge(const Info& Other);
     void mergeBase(Info&& I);
 
     llvm::SmallString<16> extractName() const;

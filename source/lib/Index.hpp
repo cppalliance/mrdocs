@@ -46,7 +46,7 @@ struct Index : Reference
         llvm::StringRef Name,
         InfoType IT,
         llvm::StringRef Path)
-        : Reference(USR, Name, IT, Name, Path)
+        : Reference(USR, Name, IT, Path)
     {
     }
 

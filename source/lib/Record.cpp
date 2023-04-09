@@ -30,7 +30,7 @@ void
 RecordInfo::
 merge(RecordInfo&& Other)
 {
-    assert(mergeable(Other));
+    assert(canMerge(Other));
     if (!TagType)
         TagType = Other.TagType;
     IsTypeDef = IsTypeDef || Other.IsTypeDef;

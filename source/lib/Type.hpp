@@ -33,10 +33,9 @@ struct TypeInfo
         llvm::StringRef Name,
         llvm::StringRef Path = llvm::StringRef())
         : Type(
-            SymbolID(),
+            EmptySID,
             Name,
             InfoType::IT_default,
-            Name,
             Path)
     {
     }
