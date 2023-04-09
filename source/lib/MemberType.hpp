@@ -12,7 +12,6 @@
 #ifndef MRDOX_MEMBERTYPE_HPP
 #define MRDOX_MEMBERTYPE_HPP
 
-#include "AccessScope.hpp"
 #include "FieldType.hpp"
 #include "Function.hpp"
 #include "Javadoc.hpp"
