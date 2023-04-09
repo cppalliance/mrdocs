@@ -42,11 +42,31 @@ class XMLGenerator
     std::string level_;
     llvm::raw_ostream* os_ = nullptr;
 
-    using Attrs =
-        std::initializer_list<
-            std::pair<
-                llvm::StringRef,
-                llvm::StringRef>>;
+    struct Attr
+    {
+        llvm::StringRef name;
+        std::string value;
+        bool pred;
+
+        Attr(
+            llvm::StringRef name_,
+            llvm::StringRef value_,
+            bool pred_ = true) noexcept
+            : name(name_)
+            , value(value_)
+            , pred(pred_)
+        {
+        }
+
+        Attr(SymbolID USR)
+            : name("usr")
+            , value(toBase64(USR))
+            , pred(USR != EmptySID)
+        {
+        }
+    };
+
+    using Attrs = std::initializer_list<Attr>;
 
     void writeAllSymbols();
 
@@ -89,6 +109,7 @@ class XMLGenerator
     void writeTag(llvm::StringRef, Attrs);
     void writeTagLine(llvm::StringRef tag, llvm::StringRef value);
     void writeTagLine(llvm::StringRef tag, llvm::StringRef value, Attrs);
+    void writeAttrs(Attrs attrs);
     void indent();
     void outdent();
 
@@ -146,7 +167,7 @@ writeAllSymbols()
         auto const& I = corpus_->at(id);
         writeTag("symbol", {
             { "name", I.getFullyQualifiedName(temp) },
-            { "usr", toBase64(I.USR) }
+            { I.USR }
             });
     }
     closeTag("all");
@@ -210,7 +231,7 @@ write(
 
     openTag("namespace", {
         { "name", I.Name },
-        { "usr", toBase64(I.USR) }
+        { I.USR }
         });
     writeInfo(I);
     writeNamespaces(I.Children.Namespaces);
@@ -239,7 +260,7 @@ write(
     }
     openTag(tag, {
         { "name", I.Name },
-        { "usr", toBase64(I.USR) }
+        { I.USR }
         });
     writeSymbolInfo(I);
     writeRecords(I.Children.Records);
@@ -259,12 +280,12 @@ write(
     openTag("function", {
         { "name", I.Name },
         { "access", toString(I.Access) },
-        { "usr", toBase64(I.USR) }
+        { I.USR }
         });
     writeSymbolInfo(I);
     writeTag("return", {
         { "name", I.ReturnType.Type.Name },
-        { "usr", toString(I.ReturnType.Type.USR) }
+        { I.ReturnType.Type.USR }
         });
 
     write(I.Params);
@@ -292,7 +313,7 @@ write(
 
     openTag("enum", {
         { "name", I.Name },
-        { "usr", toBase64(I.USR) },
+        { I.USR }
         });
     writeInfo(I);
     for(auto const& v : I.Members)
@@ -314,7 +335,7 @@ write(
 
     openTag("typedef", {
         { "name", I.Name },
-        { "usr", toString(I.USR) }
+        { I.USR }
         });
     writeSymbolInfo(I);
     writeTagLine("qualname", I.Underlying.Type.QualName);
@@ -343,7 +364,7 @@ write(FieldTypeInfo const& I)
         { "type", I.Type.Name },
         { "qualname", I.Type.QualName },
         { "reftype", toString(I.Type.RefType) },
-        { "usr", toString(I.Type.USR) }
+        { I.Type.USR }
         });
 }
 
@@ -434,13 +455,10 @@ void
 XMLGenerator::
 openTag(
     llvm::StringRef tag,
-    Attrs init)
+    Attrs attrs)
 {
     *os_ << level_ << '<' << tag;
-    for(auto const& attr : init)
-        *os_ <<
-            ' ' << attr.first << '=' <<
-            "\"" << escape(attr.second) << "\"";
+    writeAttrs(attrs);
     *os_ << ">\n";
     indent();
 }
@@ -466,13 +484,10 @@ void
 XMLGenerator::
 writeTag(
     llvm::StringRef tag,
-    Attrs init)
+    Attrs attrs)
 {
     *os_ << level_ << "<" << tag;
-    for(auto const& attr : init)
-        *os_ <<
-            ' ' << attr.first << '=' <<
-            "\"" << escape(attr.second) << "\"";
+    writeAttrs(attrs);
     *os_ << "/>\n";
 }
 
@@ -494,15 +509,23 @@ XMLGenerator::
 writeTagLine(
     llvm::StringRef tag,
     llvm::StringRef value,
-    Attrs init)
+    Attrs attrs)
 {
-    *os_ << level_ <<
-        "<" << tag;
-    for(auto const& attr : init)
-        *os_ <<
-            ' ' << attr.first << '=' <<
-            "\"" << escape(attr.second) << "\"";
+    *os_ << level_ << "<" << tag;
+    writeAttrs(attrs);
     *os_ << ">" << escape(value) << "</" << tag << ">" << "\n";
+}
+
+void
+XMLGenerator::
+writeAttrs(
+    Attrs attrs)
+{
+    for(auto const& attr : attrs)
+        if(attr.pred)
+            *os_ <<
+                ' ' << attr.name << '=' <<
+                "\"" << escape(attr.value) << "\"";
 }
 
 void
