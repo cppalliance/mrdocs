@@ -19,17 +19,14 @@
 // representation to the desired output format.
 //
 
-#include "Generators.h"
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Errors.hpp>
+#include <mrdox/Generator.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/Signals.h>
-
-// VFALCO GARBAGE
-extern void force_xml_generator_linkage();
 
 namespace clang {
 namespace mrdox {
@@ -72,37 +69,13 @@ OutDirectory(
     llvm::cl::init("."),
     llvm::cl::cat(ToolCategory));
 
-enum OutputFormatTy
-{
-    adoc,
-    xml
-};
-
 static
-llvm::cl::opt<OutputFormatTy>
-FormatEnum(
+llvm::cl::opt<std::string>
+FormatType(
     "format",
-    llvm::cl::desc("Format for outputted docs."),
-    llvm::cl::values(
-        clEnumValN(OutputFormatTy::adoc, "adoc",
-            "Documentation in Asciidoc format."),
-        clEnumValN(OutputFormatTy::xml, "xml",
-            "Documentation in XML format.")),
-    llvm::cl::init(OutputFormatTy::adoc), // default value
+    llvm::cl::desc("Format for outputted docs (\"adoc\" or \"xml\")."),
+    llvm::cl::init("adoc"),
     llvm::cl::cat(ToolCategory));
-
-std::string
-getFormatString()
-{
-    switch (FormatEnum)
-    {
-    case OutputFormatTy::adoc:
-        return "adoc";
-    case OutputFormatTy::xml:
-        return "xml";
-    }
-    llvm_unreachable("Unknown OutputFormatTy");
-}
 
 } // (anon)
 
@@ -111,8 +84,9 @@ getFormatString()
 int
 toolMain(int argc, const char** argv)
 {
-    // VFALCO GARBAGE
-    force_xml_generator_linkage();
+    std::vector<std::unique_ptr<Generator>> formats;
+    formats.emplace_back(makeXMLGenerator());
+    formats.emplace_back(makeAsciidocGenerator());
 
     Config cfg;
     Reporter R;
@@ -141,47 +115,34 @@ toolMain(int argc, const char** argv)
         optionsResult->getCompilations(), 0);
 
     // create the generator
-    auto generatorResult = findGeneratorByName(getFormatString());
-    if(R.failed("findGeneratorByName", generatorResult))
-        return EXIT_FAILURE;
+    Generator const* gen;
+    {
+        auto it = std::find_if(
+            formats.begin(), formats.end(),
+            [](std::unique_ptr<Generator> const& up)
+            {
+                return up->extension().equals_insensitive(FormatType.getValue());
+            });
+        if(it == formats.end())
+        {
+            llvm::Error err = llvm::createStringError(
+                llvm::inconvertibleErrorCode(),
+                "unknown format");
+            R.failed("FormatType", err);
+            return R.getExitCode();
+        }
+        gen = it->get();
+    }
 
     // Run the tool, this can take a while
     auto rv = Corpus::build(*ex, cfg, R);
     if(! rv)
         return EXIT_FAILURE;
 
-    //--------------------------------------------
-
-    // Ensure the root output directory exists.
-    if (std::error_code Err =
-            llvm::sys::fs::create_directories(cfg.OutDirectory);
-                Err != std::error_code())
-    {
-        llvm::errs() << "Failed to create directory '" << cfg.OutDirectory << "'\n";
-        return EXIT_FAILURE;
-    }
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if(auto Err = generatorResult->get()->generateDocs(
-        cfg.OutDirectory,
-        *rv,
-        cfg))
-    {
-        llvm::errs() << toString(std::move(Err)) << "\n";
+    if(! gen->build(cfg.OutDirectory, *rv, cfg, R))
         return EXIT_FAILURE;
-    }
-
-    //
-    // Generate assets
-    //
-    {
-        llvm::outs() << "Generating assets for docs...\n";
-        auto Err = generatorResult->get()->createResources(cfg, *rv);
-        if (Err) {
-            llvm::errs() << toString(std::move(Err)) << "\n";
-            return EXIT_FAILURE;
-        }
-    }
 
     return R.getExitCode();
 }

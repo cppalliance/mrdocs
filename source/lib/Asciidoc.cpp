@@ -9,24 +9,173 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Generators.h"
-#include "Representation.h"
-#include "Namespace.hpp"
-#include <mrdox/Config.hpp>
-#include <mrdox/Corpus.hpp>
-#include "llvm/ADT/StringRef.h"
-#include "llvm/Support/FileSystem.h"
-#include "llvm/Support/Path.h"
-#include <string>
-
-//------------------------------------------------
-
-using namespace llvm;
+#include "Asciidoc.hpp"
 
 namespace clang {
 namespace mrdox {
 
 namespace {
+
+//------------------------------------------------
+//
+// AsciidocGenerator
+//
+//------------------------------------------------
+
+#if 0
+bool
+AsciidocGenerator::
+build(
+    llvm::StringRef rootPath,
+    Corpus const& corpus,
+    Config const& cfg,
+    Reporter& R) const
+{
+#if 0
+    // Track which directories we already tried to create.
+    llvm::StringSet<> CreatedDirs;
+
+    // Collect all output by file name and create the necessary directories.
+    llvm::StringMap<std::vector<mrdox::Info*>> FileToInfos;
+    for (const auto& Group : corpus.InfoMap)
+    {
+        mrdox::Info* Info = Group.getValue().get();
+
+        llvm::SmallString<128> Path;
+        llvm::sys::path::native(RootDir, Path);
+        llvm::sys::path::append(Path, Info->getRelativeFilePath(""));
+        if (!CreatedDirs.contains(Path)) {
+            if (std::error_code Err = llvm::sys::fs::create_directories(Path);
+                Err != std::error_code()) {
+                return llvm::createStringError(Err, "Failed to create directory '%s'.",
+                    Path.c_str());
+            }
+            CreatedDirs.insert(Path);
+        }
+
+        llvm::sys::path::append(Path, Info->getFileBaseName() + ".adoc");
+        FileToInfos[Path].push_back(Info);
+    }
+
+    for (const auto& Group : FileToInfos) {
+        std::error_code FileErr;
+        llvm::raw_fd_ostream InfoOS(Group.getKey(), FileErr,
+            llvm::sys::fs::OF_None);
+        if (FileErr) {
+            return llvm::createStringError(FileErr, "Error opening file '%s'",
+                Group.getKey().str().c_str());
+        }
+
+        for (const auto& Info : Group.getValue()) {
+            if (llvm::Error Err = generateDocForInfo(Info, InfoOS, cfg)) {
+                return Err;
+            }
+        }
+    }
+#endif
+    return true;
+}
+#endif
+
+bool
+AsciidocGenerator::
+buildOne(
+    llvm::StringRef fileName,
+    Corpus const& corpus,
+    Config const& cfg,
+    Reporter& R) const
+{
+    namespace fs = llvm::sys::fs;
+
+    std::error_code ec;
+    llvm::raw_fd_ostream os(
+        fileName,
+        ec,
+        fs::CD_CreateAlways,
+        fs::FA_Write,
+        fs::OF_None);
+    if(ec)
+    {
+        R.failed("llvm::raw_fd_ostream", ec);
+        return false;
+    }
+
+    Writer w(corpus, cfg, R);
+    return w.buildOne(os);
+}
+
+bool
+AsciidocGenerator::
+buildString(
+    std::string& dest,
+    Corpus const& corpus,
+    Config const& config,
+    Reporter& R) const
+{
+    dest.clear();
+    llvm::raw_string_ostream os(dest);
+    Writer w(corpus, config, R);
+    return w.buildOne(os);
+}
+
+//------------------------------------------------
+
+#if 0
+llvm::Error
+AsciidocGenerator::
+generateDocForInfo(
+    Info* I,
+    llvm::raw_ostream& os,
+    const Config& cfg)
+{
+    switch (I->IT)
+    {
+    case InfoType::IT_namespace:
+        makeNamespacePage(cfg, *static_cast<clang::mrdox::NamespaceInfo*>(I), os);
+        break;
+    case InfoType::IT_record:
+        genMarkdown(cfg, *static_cast<clang::mrdox::RecordInfo*>(I), os);
+        break;
+    case InfoType::IT_enum:
+        genMarkdown(cfg, *static_cast<clang::mrdox::EnumInfo*>(I), os);
+        break;
+    case InfoType::IT_function:
+        genMarkdown(cfg, *static_cast<clang::mrdox::FunctionInfo*>(I), os);
+        break;
+    case InfoType::IT_typedef:
+        genMarkdown(cfg, *static_cast<clang::mrdox::TypedefInfo*>(I), os);
+        break;
+    case InfoType::IT_default:
+        return llvm::createStringError(llvm::inconvertibleErrorCode(),
+            "unexpected InfoType");
+    }
+    return llvm::Error::success();
+}
+#endif
+
+//------------------------------------------------
+//
+// Writer
+//
+//------------------------------------------------
+
+bool
+Writer::
+build(
+    llvm::StringRef rootDir)
+{
+    return true;
+}
+
+bool
+Writer::
+buildOne(
+    llvm::raw_ostream& os)
+{
+    return true;
+}
+
+//------------------------------------------------
 
 //
 // Asciidoc generation
@@ -704,151 +853,15 @@ genIndex(
     return llvm::Error::success();
 }
 
-//------------------------------------------------
-//
-// Generator
-//
-//------------------------------------------------
-
-/// Generator for Markdown documentation.
-class AsciidocGenerator : public Generator
-{
-public:
-    static char const* Format;
-
-    llvm::Error
-    generateDocs(
-        StringRef RootDir,
-        Corpus const& corpus,
-        Config const& cfg) override;
-
-    llvm::Error
-    createResources(
-        Config& cfg,
-        Corpus& corpus) override;
-
-    llvm::Error
-    generateDocForInfo(
-        Info* I,
-        llvm::raw_ostream& os,
-        Config const& cfg) override;
-};
-
-char const*
-AsciidocGenerator::Format = "adoc";
-
-llvm::Error
-AsciidocGenerator::
-generateDocs(
-    StringRef RootDir,
-    Corpus const& corpus,
-    Config const& cfg)
-{
-    // Track which directories we already tried to create.
-    llvm::StringSet<> CreatedDirs;
-
-    // Collect all output by file name and create the necessary directories.
-    llvm::StringMap<std::vector<mrdox::Info*>> FileToInfos;
-    for (const auto& Group : corpus.InfoMap)
-    {
-        mrdox::Info* Info = Group.getValue().get();
-
-        llvm::SmallString<128> Path;
-        llvm::sys::path::native(RootDir, Path);
-        llvm::sys::path::append(Path, Info->getRelativeFilePath(""));
-        if (!CreatedDirs.contains(Path)) {
-            if (std::error_code Err = llvm::sys::fs::create_directories(Path);
-                Err != std::error_code()) {
-                return llvm::createStringError(Err, "Failed to create directory '%s'.",
-                    Path.c_str());
-            }
-            CreatedDirs.insert(Path);
-        }
-
-        llvm::sys::path::append(Path, Info->getFileBaseName() + ".adoc");
-        FileToInfos[Path].push_back(Info);
-    }
-
-    for (const auto& Group : FileToInfos) {
-        std::error_code FileErr;
-        llvm::raw_fd_ostream InfoOS(Group.getKey(), FileErr,
-            llvm::sys::fs::OF_None);
-        if (FileErr) {
-            return llvm::createStringError(FileErr, "Error opening file '%s'",
-                Group.getKey().str().c_str());
-        }
-
-        for (const auto& Info : Group.getValue()) {
-            if (llvm::Error Err = generateDocForInfo(Info, InfoOS, cfg)) {
-                return Err;
-            }
-        }
-    }
-
-    return llvm::Error::success();
-}
-
-llvm::Error
-AsciidocGenerator::
-generateDocForInfo(
-    Info* I,
-    llvm::raw_ostream& os,
-    const Config& cfg)
-{
-    switch (I->IT)
-    {
-    case InfoType::IT_namespace:
-        makeNamespacePage(cfg, *static_cast<clang::mrdox::NamespaceInfo*>(I), os);
-        break;
-    case InfoType::IT_record:
-        genMarkdown(cfg, *static_cast<clang::mrdox::RecordInfo*>(I), os);
-        break;
-    case InfoType::IT_enum:
-        genMarkdown(cfg, *static_cast<clang::mrdox::EnumInfo*>(I), os);
-        break;
-    case InfoType::IT_function:
-        genMarkdown(cfg, *static_cast<clang::mrdox::FunctionInfo*>(I), os);
-        break;
-    case InfoType::IT_typedef:
-        genMarkdown(cfg, *static_cast<clang::mrdox::TypedefInfo*>(I), os);
-        break;
-    case InfoType::IT_default:
-        return createStringError(llvm::inconvertibleErrorCode(),
-            "unexpected InfoType");
-    }
-    return llvm::Error::success();
-}
-
-llvm::Error
-AsciidocGenerator::
-createResources(
-    Config& cfg,
-    Corpus& corpus)
-{
-    // Write an all_files.adoc
-    auto Err = serializeIndex(cfg, corpus);
-    if (Err)
-        return Err;
-
-    // Generate the index page.
-    Err = genIndex(cfg, corpus);
-    if (Err)
-        return Err;
-
-    return llvm::Error::success();
-}
-
 } // (anon)
 
-static
-GeneratorRegistry::
-Add<AsciidocGenerator> Asciidoc(
-    AsciidocGenerator::Format,
-    "Generator for Asciidoc output.");
+//------------------------------------------------
 
-// This anchor is used to force the linker to link in the generated object
-// file and thus register the generator.
-volatile int AsciidocGeneratorAnchorSource = 0;
+std::unique_ptr<Generator>
+makeAsciidocGenerator()
+{
+    return std::make_unique<AsciidocGenerator>();
+}
 
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang

@@ -8,8 +8,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/XML.hpp>
+#include <mrdox/Corpus.hpp>
 #include <mrdox/Errors.hpp>
+#include <mrdox/Generator.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <clang/Tooling/StandaloneExecution.h>
@@ -131,10 +132,15 @@ testResult(
     Config const& cfg,
     llvm::StringRef file,
     llvm::StringRef out,
+    Generator const& gen,
     Reporter& R)
 {
     std::string xml;
-    renderToXMLString(xml, corpus, cfg);
+    if(! gen.buildString(xml, corpus, cfg, R))
+    {
+        R.testFailed();
+        return;
+    }
     std::error_code ec;
     fs::file_status stat;
     ec = fs::status(out, stat, false);
@@ -187,6 +193,8 @@ testMain(int argc, const char** argv)
 {
     Config cfg;
     Reporter R;
+    auto const gen = makeXMLGenerator();
+
     llvm::ThreadPool Pool(llvm::hardware_concurrency(
         tooling::ExecutorConcurrency));
     for(int i = 1; i < argc; ++i)
@@ -197,7 +205,7 @@ testMain(int argc, const char** argv)
             llvm::StringRef file_,
             llvm::StringRef out_)
         {
-            Pool.async([&cfg, &R,
+            Pool.async([&cfg, &R, &gen,
                 dir = dir_.str(),
                 file = file_.str(),
                 out = out_.str()]
@@ -207,7 +215,7 @@ testMain(int argc, const char** argv)
                     db, { std::string(file) });
                 auto corpus = Corpus::build(ex, cfg, R);
                 if(corpus)
-                    testResult(*corpus, cfg, file, out, R);
+                    testResult(*corpus, cfg, file, out, *gen, R);
             });
         });
     }

@@ -9,162 +9,113 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Generators.h"
-#include "Representation.h"
-#include "Namespace.hpp"
-#include "base64.hpp"
-#include "escape.hpp"
-#include <mrdox/Config.hpp>
-#include <mrdox/Corpus.hpp>
-#include <mrdox/Visitor.hpp>
-#include <clang/Index/USRGeneration.h>
-#include <clang/Tooling/Execution.h>
-#include <clang/Tooling/Tooling.h>
-#include <llvm/ADT/StringExtras.h>
-#include <llvm/ADT/StringRef.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
-#include <llvm/Support/YAMLParser.h>
-
-//------------------------------------------------
+#include "XML.hpp"
 
 namespace clang {
 namespace mrdox {
 
-namespace fs = llvm::sys::fs;
-namespace path = llvm::sys::path;
+namespace {
 
-class XMLGenerator
-    : public clang::mrdox::Generator
+//------------------------------------------------
+//
+// XMLGenerator
+//
+//------------------------------------------------
+
+bool
+XMLGenerator::
+buildOne(
+    llvm::StringRef fileName,
+    Corpus const& corpus,
+    Config const& cfg,
+    Reporter& R) const
 {
-    Corpus const* corpus_ = nullptr;
-    Config const* cfg_ = nullptr;
-    std::string level_;
-    llvm::raw_ostream* os_ = nullptr;
+    namespace fs = llvm::sys::fs;
 
-    struct Attr
+    std::error_code ec;
+    llvm::raw_fd_ostream os(
+        fileName,
+        ec,
+        fs::CD_CreateAlways,
+        fs::FA_Write,
+        fs::OF_None);
+    if(ec)
     {
-        llvm::StringRef name;
-        std::string value;
-        bool pred;
-
-        Attr(
-            llvm::StringRef name_,
-            llvm::StringRef value_,
-            bool pred_ = true) noexcept
-            : name(name_)
-            , value(value_)
-            , pred(pred_)
-        {
-        }
-
-        Attr(SymbolID USR)
-            : name("usr")
-            , value(toBase64(USR))
-            , pred(USR != EmptySID)
-        {
-        }
-    };
-
-    using Attrs = std::initializer_list<Attr>;
-
-    void writeAllSymbols();
-
-    //--------------------------------------------
-
-    void writeNamespaces(std::vector<Reference> const& v);
-    void writeRecords(std::vector<Reference> const& v);
-    void writeFunctions(std::vector<Reference> const& v);
-    void write(std::vector<EnumInfo> const& v);
-    void write(std::vector<TypedefInfo> const& v);
-
-    //--------------------------------------------
-
-    void write(NamespaceInfo const& I);
-    void write(RecordInfo const& I);
-    void write(FunctionInfo const& I);
-    void write(EnumInfo const& I);
-    void write(TypedefInfo const& I);
-
-    //--------------------------------------------
-
-    void write(llvm::ArrayRef<FieldTypeInfo> const& v);
-    void write(FieldTypeInfo const& I);
-    void writeNamespaceRefs(llvm::SmallVector<Reference, 4> const& v);
-    void write(Reference const& ref);
-
-    //--------------------------------------------
-
-    void writeInfo(Info const& I);
-    void writeSymbolInfo(SymbolInfo const& I);
-    void write(llvm::ArrayRef<Location> const& locs);
-    void write(Location const& loc);
-
-    //--------------------------------------------
-
-    void openTag(llvm::StringRef);
-    void openTag(llvm::StringRef, Attrs);
-    void closeTag(llvm::StringRef);
-    void writeTag(llvm::StringRef);
-    void writeTag(llvm::StringRef, Attrs);
-    void writeTagLine(llvm::StringRef tag, llvm::StringRef value);
-    void writeTagLine(llvm::StringRef tag, llvm::StringRef value, Attrs);
-    void writeAttrs(Attrs attrs);
-    void indent();
-    void outdent();
-
-    //--------------------------------------------
-
-    std::string toString(SymbolID const& id);
-    llvm::StringRef toString(AccessSpecifier access);
-    NamespaceInfo const* findGlobalNamespace();
-#ifndef NDEBUG
-    void assertExists(Info const& I);
-#else
-    void assertExists(Info const&) const noexcept
-    {
+        R.failed("llvm::raw_fd_ostream", ec);
+        return false;
     }
+
+    Writer w(corpus, cfg, R);
+    return w.build(os);
+}
+
+bool
+XMLGenerator::
+buildString(
+    std::string& dest,
+    Corpus const& corpus,
+    Config const& config,
+    Reporter& R) const
+{
+    dest.clear();
+    llvm::raw_string_ostream os(dest);
+    Writer w(corpus, config, R);
+    return w.build(os);
+}
+
+//------------------------------------------------
+//
+// Writer
+//
+//------------------------------------------------
+
+bool
+Writer::
+build(
+    llvm::raw_ostream& os)
+{
+    auto const ns = findGlobalNamespace();
+    if(! ns)
+    {
+#if 0
+        auto err = llvm::createStringError(
+            llvm::inconvertibleErrorCode(),
+            "not found: (global namespace)");
+        R_.failed("findGlobalNamespace", err);
+        return false;
+#else
+        // VFALCO This needs cleaning up
+        return true;
 #endif
-
-    //--------------------------------------------
-
-    static llvm::StringRef toString(InfoType) noexcept;
-
-public:
-    static char const* Format;
-
-    llvm::Error render(llvm::raw_ostream& os);
-
-    bool
-    render(
-        std::string& xml,
-        Corpus const& corpus,
-        Config const& cfg);
-
-    llvm::Error
-    generateDocForInfo(
-        clang::mrdox::Info* I,
-        llvm::raw_ostream& os,
-        clang::mrdox::Config const& cfg) override;
-
-    llvm::Error
-    generateDocs(
-        llvm::StringRef RootDir,
-        Corpus const& corpus,
-        Config const& cfg) override;
-};
+    }
+    os_ = &os;
+    level_ = {};
+#if 0
+    *os_ <<
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
+        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
+        "<mrdox>\n";
+#endif
+    writeAllSymbols();
+    write(*ns);
+#if 0
+    *os_ <<
+        "</mrdox>\n";
+#endif
+    return true;
+}
 
 //------------------------------------------------
 
 void
-XMLGenerator::
+Writer::
 writeAllSymbols()
 {
     openTag("all");
     std::string temp;
-    for(auto const& id : corpus_->allSymbols)
+    for(auto const& id : corpus_.allSymbols)
     {
-        auto const& I = corpus_->at(id);
+        auto const& I = corpus_.at(id);
         writeTag("symbol", {
             { "name", I.getFullyQualifiedName(temp) },
             { I.USR }
@@ -176,34 +127,34 @@ writeAllSymbols()
 //------------------------------------------------
 
 void
-XMLGenerator::
+Writer::
 writeNamespaces(
     std::vector<Reference> const& v)
 {
     for(auto const& ref : v)
-        write(corpus_->get<NamespaceInfo>(ref.USR));
+        write(corpus_.get<NamespaceInfo>(ref.USR));
 }
 
 void
-XMLGenerator::
+Writer::
 writeRecords(
     std::vector<Reference> const& v)
 {
     for(auto const& ref : v)
-        write(corpus_->get<RecordInfo>(ref.USR));
+        write(corpus_.get<RecordInfo>(ref.USR));
 }
 
 void
-XMLGenerator::
+Writer::
 writeFunctions(
     std::vector<Reference> const& v)
 {
     for(auto const& ref : v)
-        write(corpus_->get<FunctionInfo>(ref.USR));
+        write(corpus_.get<FunctionInfo>(ref.USR));
 }
 
 void
-XMLGenerator::
+Writer::
 write(
     std::vector<EnumInfo> const& v)
 {
@@ -212,7 +163,7 @@ write(
 }
 
 void
-XMLGenerator::
+Writer::
 write(
     std::vector<TypedefInfo> const& v)
 {
@@ -223,7 +174,7 @@ write(
 //------------------------------------------------
 
 void
-XMLGenerator::
+Writer::
 write(
     NamespaceInfo const& I)
 {
@@ -243,7 +194,7 @@ write(
 }
 
 void
-XMLGenerator::
+Writer::
 write(
     RecordInfo const& I)
 {
@@ -271,7 +222,7 @@ write(
 }
 
 void
-XMLGenerator::
+Writer::
 write(
     FunctionInfo const& I)
 {
@@ -305,7 +256,7 @@ write(
 }
 
 void
-XMLGenerator::
+Writer::
 write(
     EnumInfo const& I)
 {
@@ -327,7 +278,7 @@ write(
 }
 
 void
-XMLGenerator::
+Writer::
 write(
     TypedefInfo const& I)
 {
@@ -346,7 +297,7 @@ write(
 //------------------------------------------------
 
 void
-XMLGenerator::
+Writer::
 write(
     llvm::ArrayRef<FieldTypeInfo> const& v)
 {
@@ -355,7 +306,7 @@ write(
 }
 
 void
-XMLGenerator::
+Writer::
 write(FieldTypeInfo const& I)
 {
     writeTag("param", {
@@ -368,7 +319,7 @@ write(FieldTypeInfo const& I)
 }
 
 void
-XMLGenerator::
+Writer::
 writeNamespaceRefs(
     llvm::SmallVector<Reference, 4> const& v)
 {
@@ -377,7 +328,7 @@ writeNamespaceRefs(
 }
 
 void
-XMLGenerator::
+Writer::
 write(
     Reference const& I)
 {
@@ -396,19 +347,19 @@ write(
 //------------------------------------------------
 
 void
-XMLGenerator::
+Writer::
 writeInfo(
     Info const& I)
 {
     writeTagLine("extract-name", I.extractName());
-    auto relPath = I.getRelativeFilePath(cfg_->SourceRoot);
+    auto relPath = I.getRelativeFilePath(config_.SourceRoot);
     if(! relPath.empty())
         writeTagLine("rel-path", relPath);
     writeTagLine("base-name", I.getFileBaseName());
 }
 
 void
-XMLGenerator::
+Writer::
 writeSymbolInfo(
     SymbolInfo const& I)
 {
@@ -419,7 +370,7 @@ writeSymbolInfo(
 }
 
 void
-XMLGenerator::
+Writer::
 write(
     llvm::ArrayRef<Location> const& locs)
 {
@@ -428,7 +379,7 @@ write(
 }
 
 void
-XMLGenerator::
+Writer::
 write(
     Location const& loc)
 {
@@ -441,7 +392,7 @@ write(
 //------------------------------------------------
 
 void
-XMLGenerator::
+Writer::
 openTag(
     llvm::StringRef tag)
 {
@@ -450,7 +401,7 @@ openTag(
 }
 
 void
-XMLGenerator::
+Writer::
 openTag(
     llvm::StringRef tag,
     Attrs attrs)
@@ -462,7 +413,7 @@ openTag(
 }
 
 void
-XMLGenerator::
+Writer::
 closeTag(
     llvm::StringRef tag)
 {
@@ -471,7 +422,7 @@ closeTag(
 }
 
 void
-XMLGenerator::
+Writer::
 writeTag(
     llvm::StringRef tag)
 {
@@ -479,7 +430,7 @@ writeTag(
 }
 
 void
-XMLGenerator::
+Writer::
 writeTag(
     llvm::StringRef tag,
     Attrs attrs)
@@ -490,7 +441,7 @@ writeTag(
 }
 
 void
-XMLGenerator::
+Writer::
 writeTagLine(
     llvm::StringRef tag,
     llvm::StringRef value)
@@ -503,7 +454,7 @@ writeTagLine(
 }
 
 void
-XMLGenerator::
+Writer::
 writeTagLine(
     llvm::StringRef tag,
     llvm::StringRef value,
@@ -515,7 +466,7 @@ writeTagLine(
 }
 
 void
-XMLGenerator::
+Writer::
 writeAttrs(
     Attrs attrs)
 {
@@ -527,14 +478,14 @@ writeAttrs(
 }
 
 void
-XMLGenerator::
+Writer::
 indent()
 {
     level_.append("    ");
 }
 
 void
-XMLGenerator::
+Writer::
 outdent()
 {
     level_.resize(level_.size() - 4);
@@ -543,7 +494,7 @@ outdent()
 //------------------------------------------------
 
 std::string
-XMLGenerator::
+Writer::
 toString(
     SymbolID const& id)
 {
@@ -551,7 +502,7 @@ toString(
 }
 
 llvm::StringRef
-XMLGenerator::
+Writer::
 toString(
     AccessSpecifier access)
 {
@@ -572,33 +523,31 @@ toString(
 //------------------------------------------------
 
 NamespaceInfo const*
-XMLGenerator::
+Writer::
 findGlobalNamespace()
 {
-    for(auto const& g : corpus_->InfoMap)
+    auto p = corpus_.find(EmptySID);
+    if(p != nullptr)
     {
-        auto const& inf = *g.getValue().get();
-        if( inf.Name == "" &&
-            inf.IT == InfoType::IT_namespace)
-            return static_cast<
-                NamespaceInfo const*>(&inf);
+        assert(p->Name.empty());
+        assert(p->IT == InfoType::IT_namespace);
+        return static_cast<NamespaceInfo const*>(p);
     }
-
     return nullptr;
 }
 
 #ifndef NDEBUG
 void
-XMLGenerator::
+Writer::
 assertExists(
     Info const& I)
 {
-    assert(corpus_->exists(I.USR));
+    assert(corpus_.exists(I.USR));
 }
 #endif
 
 llvm::StringRef
-XMLGenerator::
+Writer::
 toString(
     InfoType it) noexcept
 {
@@ -618,52 +567,7 @@ toString(
 //------------------------------------------------
 
 llvm::Error
-XMLGenerator::
-render(
-    llvm::raw_ostream& os)
-{
-    auto const ns = findGlobalNamespace();
-    if(! ns)
-        return llvm::createStringError(
-            llvm::inconvertibleErrorCode(),
-            "not found: (global namespace)");
-
-    os_ = &os;
-    level_ = {};
-#if 0
-    *os_ <<
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
-        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
-        "<mrdox>\n";
-#endif
-    writeAllSymbols();
-    write(*ns);
-#if 0
-    *os_ <<
-        "</mrdox>\n";
-#endif
-    return llvm::Error::success();
-}
-
-bool
-XMLGenerator::
-render(
-    std::string& xml,
-    Corpus const& corpus,
-    Config const& cfg)
-{
-    xml.clear();
-    corpus_ = &corpus;
-    cfg_ = &cfg;
-    llvm::raw_string_ostream os(xml);
-    llvm::Error err = render(os);
-    if(err)
-        return false;
-    return true;
-}
-
-llvm::Error
-XMLGenerator::
+Writer::
 generateDocForInfo(
     clang::mrdox::Info* I,
     llvm::raw_ostream& os,
@@ -672,85 +576,15 @@ generateDocForInfo(
     return llvm::Error::success();
 }
 
-llvm::Error
-XMLGenerator::
-generateDocs(
-    llvm::StringRef RootDir,
-    Corpus const& corpus,
-    Config const& cfg)
+} // (anon)
+
+//------------------------------------------------
+
+std::unique_ptr<Generator>
+makeXMLGenerator()
 {
-    corpus_ = &corpus;
-    cfg_ = &cfg;
-    llvm::SmallString<256> filename(cfg.OutDirectory);
-    if(! fs::is_directory(filename))
-        return llvm::createStringError(
-            llvm::inconvertibleErrorCode(),
-            "OutDirectory is not a directory");
-    path::append(filename, "index.xml");
-    if( fs::exists(filename) &&
-        ! fs::is_regular_file(filename))
-        return llvm::createStringError(
-            llvm::inconvertibleErrorCode(),
-            "Output file is not regular");
-    std::error_code ec;
-    llvm::raw_fd_ostream os(filename, ec);
-    if(ec)
-        return llvm::createStringError(
-            ec,
-            "output file could not be opened");
-    llvm::Error err = render(os);
-    if(err)
-        return err;
-    // VFALCO the error handling needs to be
-    //        propagated through all write functions
-    if(os.error())
-        return llvm::createStringError(
-            ec,
-            "output stream failure");
-    return llvm::Error::success();
+    return std::make_unique<XMLGenerator>();
 }
 
-//------------------------------------------------
-
-char const*
-XMLGenerator::
-Format = "xml";
-
-//------------------------------------------------
-
-void
-renderToXMLString(
-    std::string& xml,
-    Corpus const& corpus,
-    Config const& cfg)
-{
-    XMLGenerator G;
-    G.render(xml, corpus, cfg);
-    //return llvm::Error::success();
-}
-
-//------------------------------------------------
-
-static
-GeneratorRegistry::
-Add<XMLGenerator>
-xmlGenerator(
-    XMLGenerator::Format,
-    "Generator for XML output.");
-
-// This anchor is used to force the linker
-// to link in the generated object file and
-// thus register the generator.
-volatile int XMLGeneratorAnchorSource = 0;
-
-using namespace llvm;
 } // mrdox
 } // clang
-
-void
-force_xml_generator_linkage()
-{
-    // VFALCO This whole business of disappearing
-    //        TUs needs to be refactored.
-    clang::mrdox::XMLGeneratorAnchorSource++;
-}

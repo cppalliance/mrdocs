@@ -12,7 +12,6 @@
 #include "BitcodeReader.h"
 #include "BitcodeWriter.h"
 #include "ClangDoc.h"
-#include "Generators.h"
 #include "Serialize.h"
 #include <mrdox/Corpus.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
