@@ -20,6 +20,7 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H
 
 #include <mrdox/Config.hpp>
+#include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
 
@@ -29,7 +30,8 @@ namespace mrdox {
 std::unique_ptr<tooling::FrontendActionFactory>
 makeToolFactory(
     tooling::ExecutionContext& exc,
-    Config const& config);
+    Config const& config,
+    Reporter& R);
 
 } // mrdox
 } // clang

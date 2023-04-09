@@ -27,8 +27,10 @@ struct NamespaceInfo
 
     Scope Children;
 
+    NamespaceInfo();
+
     NamespaceInfo(
-        SymbolID USR = SymbolID(),
+        SymbolID USR,
         llvm::StringRef Name = llvm::StringRef(),
         llvm::StringRef Path = llvm::StringRef());
 

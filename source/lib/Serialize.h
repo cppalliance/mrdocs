@@ -19,11 +19,12 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
 
 #include "Representation.h"
-#include "clang/AST/AST.h"
+#include <mrdox/Reporter.hpp>
+#include <clang/AST/AST.h>
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
-#include "clang/AST/CommentVisitor.h"
+#include <clang/AST/CommentVisitor.h>
 #pragma warning(pop)
 #endif
 #include <string>
@@ -43,31 +44,31 @@ namespace mrdox {
 // nullptr.
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
 emitInfo(const NamespaceDecl *D, const comments::FullComment *FC, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly);
+         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
 emitInfo(const RecordDecl *D, const comments::FullComment *FC, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly);
+         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
 emitInfo(const EnumDecl *D, const comments::FullComment *FC, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly);
+         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
 emitInfo(const FunctionDecl *D, const comments::FullComment *FC, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly);
+         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
 emitInfo(const CXXMethodDecl *D, const comments::FullComment *FC, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly);
+         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
 emitInfo(const TypedefDecl *D, const comments::FullComment *FC, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly);
+         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
 emitInfo(const TypeAliasDecl *D, const comments::FullComment *FC, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly);
+         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 // Function to hash a given USR value for storage.
 // As USRs (Unified Symbol Resolution) could be large, especially for functions

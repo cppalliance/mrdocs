@@ -10,7 +10,7 @@
 //
 
 #include "CommentVisitor.h"
-
+#include <mrdox/Reporter.hpp>
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
@@ -35,9 +35,11 @@ public:
     CommentVisitor(
         comments::FullComment const& fc,
         clang::ASTContext& ctx,
-        Javadoc& javadoc)
+        Javadoc& javadoc,
+        Reporter& R)
         : ctx_(ctx)
         , jd_(javadoc)
+        , R_(R)
     {
     }
 
@@ -62,11 +64,14 @@ private:
 
     clang::ASTContext& ctx_;
     Javadoc& jd_;
+    Reporter& R_;
     CommentInfo* ci_ = nullptr;
     std::string verbatim_;
     bool in_brief_ = false;
     bool brief_done_ = false;
 };
+
+//------------------------------------------------
 
 void
 CommentVisitor::
@@ -302,8 +307,8 @@ visitVerbatimBlockComment(
         {
             // VFALCO Report an error on the file and line
             clang::SourceLocation loc = c->getEndLoc();
-            llvm::outs() <<
-                "Error: wrong closing tag '" << c->getCloseName() << "'\n";
+            //R_.failed("visitVerbatimBlockComment", 
+                //"Error: wrong closing tag '" << c->getCloseName() << "'\n";
             // VFALCO this is broken
             if(loc.isValid())
                 loc.print(llvm::outs(), ctx_.getSourceManager());
@@ -395,18 +400,11 @@ parseComment(
     comments::FullComment const* c,
     ASTContext& ctx,
     Javadoc& javadoc,
-    CommentInfo& ci)
+    CommentInfo& ci,
+    Reporter& R)
 {
-    clang::mrdox::CommentVisitor v(*c, ctx, javadoc);
+    clang::mrdox::CommentVisitor v(*c, ctx, javadoc, R);
     v.parse(c, ci);
-
-    // debugging
-    /*
-    llvm::outs() <<
-        "javadoc.brief = '" << javadoc.brief << "'\n" <<
-        "javadoc.desc  = '" << javadoc.desc << "'\n" <<
-        "\n";
-    */
 }
 
 } // namespace mrdox

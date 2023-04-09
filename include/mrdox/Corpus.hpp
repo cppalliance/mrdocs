@@ -14,7 +14,7 @@
 
 #include "Index.hpp"
 #include <mrdox/Config.hpp>
-#include <mrdox/Errors.hpp>
+#include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
 
@@ -118,6 +118,7 @@ public:
     /** Build the intermediate representation of the code being documented.
     */
     static
+    [[nodiscard]]
     std::unique_ptr<Corpus>
     build(
         tooling::ToolExecutor& ex,

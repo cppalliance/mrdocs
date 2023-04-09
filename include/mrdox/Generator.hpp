@@ -17,7 +17,7 @@
 
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Errors.hpp>
+#include <mrdox/Reporter.hpp>
 #include <llvm/ADT/StringRef.h>
 
 namespace clang {

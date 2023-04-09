@@ -9,7 +9,7 @@
 //
 
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Errors.hpp>
+#include <mrdox/Reporter.hpp>
 #include <mrdox/Generator.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CompilationDatabase.h>
@@ -98,8 +98,11 @@ visitDirectory(
     path::remove_dots(dir, true);
     fs::directory_iterator const end{};
     fs::directory_iterator iter(dir, ec, false);
-    if(R.failed("visitDirectory", ec))
+    if(ec)
+    {
+        R.failed("visitDirectory", ec);
         return false;
+    }
     while(iter != end)
     {
         if(iter->type() == fs::file_type::directory_file)
@@ -120,8 +123,11 @@ visitDirectory(
             // we don't handle this type
         }
         iter.increment(ec);
-        if(R.failed("fs::directory_iterator::increment", ec))
+        if(ec)
+        {
+            R.failed("fs::directory_iterator::increment", ec);
             return false;
+        }
     }
     return true;
 }
@@ -160,42 +166,48 @@ testResult(
             R.testFailed();
         }
     }
-    else if(! R.failed("fs::status", ec))
+    else if(ec)
     {
-        if(stat.type() == fs::file_type::regular_file)
+        R.failed("fs::status", ec);
+        return;
+    }
+    if(stat.type() == fs::file_type::regular_file)
+    {
+        auto bufferResult = llvm::MemoryBuffer::getFile(out, false);
+        if(! bufferResult)
         {
-            auto bufferResult = llvm::MemoryBuffer::getFile(out, false);
-            if(R.failed("MemoryBuffer::getFile", bufferResult))
-                return;
-            std::string_view got(bufferResult->get()->getBuffer());
-            if(xml != bufferResult->get()->getBuffer())
-            {
-                llvm::errs() <<
-                    "File: \"" << file << "\" failed.\n"
-                    "Expected:\n" <<
-                    bufferResult->get()->getBuffer() << "\n" <<
-                    "Got:\n" <<
-                    xml << "\n";
-                R.testFailed();
-            }
+            R.failed("MemoryBuffer::getFile", bufferResult);
+            return;
         }
-        else
+        std::string_view got(bufferResult->get()->getBuffer());
+        if(xml != bufferResult->get()->getBuffer())
         {
-            // VFALCO report that it is not a regular file
+            R.errs(
+                "File: \"", file, "\" failed.\n",
+                "Expected:\n",
+                bufferResult->get()->getBuffer(), "\n",
+                "Got:\n", xml, "\n");
+            R.testFailed();
         }
+    }
+    else
+    {
+        // VFALCO report that it is not a regular file
     }
 }
 
 //------------------------------------------------
 
-int
-testMain(int argc, const char** argv)
+void
+testMain(
+    int argc, const char** argv,
+    Reporter& R)
 {
     namespace path = llvm::sys::path;
 
     Config config;
-    Reporter R;
- 
+
+    // Add all command line arguments as include paths
     for(int i = 1; i < argc; ++i)
     {
         llvm::SmallString<0> s(argv[i]);
@@ -229,7 +241,6 @@ testMain(int argc, const char** argv)
         });
     }
     Pool.wait();
-    return R.getExitCode();
 }
 
 } // mrdox
@@ -239,5 +250,7 @@ int
 main(int argc, const char** argv)
 {
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-    return clang::mrdox::testMain(argc, argv);
+    clang::mrdox::Reporter R;
+    clang::mrdox::testMain(argc, argv, R);
+    return R.getExitCode();
 }

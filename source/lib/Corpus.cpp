@@ -168,7 +168,7 @@ build(
 
     llvm::outs() << "Mapping declarations\n";
     llvm::Error err = ex.execute(
-        makeToolFactory(*ex.getExecutionContext(), config),
+        makeToolFactory(*ex.getExecutionContext(), config, R),
         config.ArgAdjuster);
     if(err)
     {
@@ -223,9 +223,9 @@ build(
                 llvm::BitstreamCursor Stream(Bitcode);
                 ClangDocBitcodeReader Reader(Stream);
                 auto ReadInfos = Reader.readBitcode();
-                if (!ReadInfos)
+                if(! ReadInfos)
                 {
-                    llvm::errs() << toString(ReadInfos.takeError()) << "\n";
+                    R.failed("Reader.readBitcode", ReadInfos.takeError());
                     GotFailure = true;
                     return;
                 }
@@ -239,7 +239,7 @@ build(
             if(!mergeResult)
             {
                 // VFALCO What about GotFailure?
-                llvm::errs() << llvm::toString(mergeResult.takeError());
+                R.failed("mergeInfos", mergeResult.takeError());
                 return;
             }
 

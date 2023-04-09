@@ -21,7 +21,7 @@
 
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Errors.hpp>
+#include <mrdox/Reporter.hpp>
 #include <mrdox/Generator.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
@@ -89,37 +89,32 @@ OutDirectory(
 
 //------------------------------------------------
 
-int
-toolMain(int argc, const char** argv)
+void
+toolMain(
+    int argc, const char** argv,
+    Reporter& R)
 {
     std::vector<std::unique_ptr<Generator>> formats;
     formats.emplace_back(makeXMLGenerator());
     formats.emplace_back(makeAsciidocGenerator());
 
     Config config;
-    Reporter R;
 
     // parse command line options
     auto optionsResult = tooling::CommonOptionsParser::create(
         argc, argv, ToolCategory, llvm::cl::OneOrMore, Overview);
-    if(R.failed("CommonOptionsParser::create", optionsResult))
-        return EXIT_FAILURE;
-
-    /*
-    if (! DoxygenOnly)
-        config.ArgAdjuster = tooling::combineAdjusters(
-            getInsertArgumentAdjuster(
-                "-fparse-all-comments",
-                tooling::ArgumentInsertPosition::END),
-            config.ArgAdjuster);
-    */
+    if(! optionsResult)
+    {
+        R.failed("CommonOptionsParser::create", optionsResult);
+        return;
+    }
 
     config.PublicOnly = true;
     config.OutDirectory = OutDirectory;
     config.IgnoreMappingFailures = IgnoreMappingFailures;
 
     if(! config.loadFromFile(ConfigPath, R))
-        return EXIT_FAILURE;
+        return;
 
     // create the executor
     auto ex = std::make_unique<tooling::AllTUsToolExecutor>(
@@ -139,8 +134,8 @@ toolMain(int argc, const char** argv)
             llvm::Error err = llvm::createStringError(
                 llvm::inconvertibleErrorCode(),
                 "unknown format");
-            R.failed("FormatType", err);
-            return R.getExitCode();
+            R.failed("find the generator", err);
+            return;
         }
         gen = it->get();
     }
@@ -148,14 +143,12 @@ toolMain(int argc, const char** argv)
     // Run the tool, this can take a while
     auto rv = Corpus::build(*ex, config, R);
     if(! rv)
-        return EXIT_FAILURE;
+        return;
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
     if(! gen->build(config.OutDirectory, *rv, config, R))
-        return EXIT_FAILURE;
-
-    return R.getExitCode();
+        return;
 }
 
 } // mrdox
@@ -166,5 +159,7 @@ toolMain(int argc, const char** argv)
 int main(int argc, char const** argv)
 {
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-    return clang::mrdox::toolMain(argc, argv);
+    clang::mrdox::Reporter R;
+    clang::mrdox::toolMain(argc, argv, R);
+    return R.getExitCode();
 }

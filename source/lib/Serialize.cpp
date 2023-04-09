@@ -40,7 +40,7 @@ static void
 populateParentNamespaces(llvm::SmallVector<Reference, 4>& Namespaces,
     const T* D, bool& IsAnonymousNamespace);
 
-static void populateMemberTypeInfo(MemberTypeInfo& I, const FieldDecl* D);
+static void populateMemberTypeInfo(MemberTypeInfo& I, const FieldDecl* D, Reporter& R);
 
 // A function to extract the appropriate relative path for a given info's
 // documentation. The path returned is a composite of the parent namespaces.
@@ -360,7 +360,8 @@ parseFields(
     RecordInfo& I,
     const RecordDecl* D,
     bool PublicOnly,
-    AccessSpecifier Access = AccessSpecifier::AS_public)
+    AccessSpecifier Access,
+    Reporter& R)
 {
     for (const FieldDecl* F : D->fields())
     {
@@ -373,7 +374,7 @@ parseFields(
             getTypeInfoForType(F->getTypeSourceInfo()->getType()),
             F->getNameAsString(),
             getFinalAccessSpecifier(Access, F->getAccessUnsafe()));
-        populateMemberTypeInfo(NewMember, F);
+        populateMemberTypeInfo(NewMember, F, R);
     }
 }
 
@@ -500,7 +501,8 @@ populateInfo(
     Info& I,
     T const* D,
     FullComment const* C,
-    bool& IsInAnonymousNamespace)
+    bool& IsInAnonymousNamespace,
+    Reporter& R)
 {
     I.USR = getUSRForDecl(D);
     I.Name = D->getNameAsString();
@@ -515,7 +517,8 @@ populateInfo(
             C,
             D->getASTContext(),
             I.javadoc,
-            I.Description.back());
+            I.Description.back(),
+            R);
     }
 }
 
@@ -531,9 +534,10 @@ populateSymbolInfo(
     int LineNumber,
     StringRef Filename,
     bool IsFileInRootDir,
-    bool& IsInAnonymousNamespace)
+    bool& IsInAnonymousNamespace,
+    Reporter& R)
 {
-    populateInfo(I, D, C, IsInAnonymousNamespace);
+    populateInfo(I, D, C, IsInAnonymousNamespace, R);
     if (D->isThisDeclarationADefinition())
         I.DefLoc.emplace(LineNumber, Filename, IsFileInRootDir);
     else
@@ -551,13 +555,15 @@ populateFunctionInfo(
     int LineNumber,
     StringRef Filename,
     bool IsFileInRootDir,
-    bool& IsInAnonymousNamespace)
+    bool& IsInAnonymousNamespace,
+    Reporter& R)
 {
     populateSymbolInfo(
         I, D, FC,
         LineNumber, Filename,
         IsFileInRootDir,
-        IsInAnonymousNamespace);
+        IsInAnonymousNamespace,
+        R);
     QualType const qt = D->getReturnType();
     std::string s = qt.getAsString();
     I.ReturnType = getTypeInfoForType(qt);
@@ -592,7 +598,8 @@ static
 void
 populateMemberTypeInfo(
     MemberTypeInfo& I,
-    const FieldDecl* D)
+    const FieldDecl* D,
+    Reporter& R)
 {
     assert(D && "Expect non-null FieldDecl in populateMemberTypeInfo");
 
@@ -607,7 +614,7 @@ populateMemberTypeInfo(
     if (comments::FullComment* fc = Comment->parse(Context, nullptr, D))
     {
         I.Description.emplace_back();
-        parseComment(fc, Context, I.javadoc, I.Description.back());
+        parseComment(fc, Context, I.javadoc, I.Description.back(), R);
     }
 }
 
@@ -619,7 +626,8 @@ parseBases(
     bool IsFileInRootDir,
     bool PublicOnly,
     bool IsParent,
-    AccessSpecifier ParentAccess = AccessSpecifier::AS_public)
+    AccessSpecifier ParentAccess,
+    Reporter& R)
 {
     // Don't parse bases if this isn't a definition.
     if (!D->isThisDeclarationADefinition())
@@ -648,7 +656,7 @@ parseBases(
                     BI.USR = getUSRForDecl(Base);
                     BI.Name = Base->getNameAsString();
                 }
-                parseFields(BI, Base, PublicOnly, BI.Access);
+                parseFields(BI, Base, PublicOnly, BI.Access, R);
                 for (const auto& Decl : Base->decls())
                 {
                     if (const auto* MD = dyn_cast<CXXMethodDecl>(Decl))
@@ -665,7 +673,7 @@ parseBases(
                         bool IsInAnonymousNamespace;
                         populateFunctionInfo(FI, MD, /*FullComment=*/{}, /*LineNumber=*/{},
                             /*FileName=*/{}, IsFileInRootDir,
-                            IsInAnonymousNamespace);
+                            IsInAnonymousNamespace, R);
                         FI.Access =
                             getFinalAccessSpecifier(BI.Access, MD->getAccessUnsafe());
                         BI.Children.Functions.emplace_back(
@@ -680,7 +688,7 @@ parseBases(
                 // this base; these new bases will also get stored in the original
                 // RecordInfo: I.
                 parseBases(I, Base, IsFileInRootDir, PublicOnly, false,
-                    I.Bases.back().Access);
+                    I.Bases.back().Access, R);
             }
         }
     }
@@ -695,11 +703,12 @@ emitInfo(
     int LineNumber,
     llvm::StringRef File,
     bool IsFileInRootDir,
-    bool PublicOnly)
+    bool PublicOnly,
+    Reporter& R)
 {
     auto I = std::make_unique<NamespaceInfo>();
     bool IsInAnonymousNamespace = false;
-    populateInfo(*I, D, FC, IsInAnonymousNamespace);
+    populateInfo(*I, D, FC, IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -723,17 +732,18 @@ emitInfo(
     int LineNumber,
     llvm::StringRef File,
     bool IsFileInRootDir,
-    bool PublicOnly)
+    bool PublicOnly,
+    Reporter& R)
 {
     auto I = std::make_unique<RecordInfo>();
     bool IsInAnonymousNamespace = false;
     populateSymbolInfo(*I, D, FC, LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace);
+        IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
     I->TagType = D->getTagKind();
-    parseFields(*I, D, PublicOnly);
+    parseFields(*I, D, PublicOnly, AccessSpecifier::AS_public, R);
     if (const auto* C = dyn_cast<CXXRecordDecl>(D))
     {
         if (const TypedefNameDecl* TD = C->getTypedefNameForAnonDecl())
@@ -743,7 +753,7 @@ emitInfo(
         }
         // TODO: remove first call to parseBases, that function should be deleted
         parseBases(*I, C);
-        parseBases(*I, C, IsFileInRootDir, PublicOnly, true);
+        parseBases(*I, C, IsFileInRootDir, PublicOnly, true, AccessSpecifier::AS_public, R);
     }
     I->Path = getInfoRelativePath(I->Namespace);
 
@@ -811,12 +821,13 @@ emitInfo(
     int LineNumber,
     llvm::StringRef File,
     bool IsFileInRootDir,
-    bool PublicOnly)
+    bool PublicOnly,
+    Reporter& R)
 {
     auto up = std::make_unique<FunctionInfo>();
     bool IsInAnonymousNamespace = false;
     populateFunctionInfo(*up, D, FC, LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace);
+        IsInAnonymousNamespace, R);
     up->Access = clang::AccessSpecifier::AS_none;
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
@@ -836,12 +847,13 @@ emitInfo(
     int LineNumber,
     llvm::StringRef File,
     bool IsFileInRootDir,
-    bool PublicOnly)
+    bool PublicOnly,
+    Reporter& R)
 {
     auto up = std::make_unique<FunctionInfo>();
     bool IsInAnonymousNamespace = false;
     populateFunctionInfo(*up, D, FC, LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace);
+        IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -874,12 +886,13 @@ emitInfo(
     int LineNumber,
     StringRef File,
     bool IsFileInRootDir,
-    bool PublicOnly)
+    bool PublicOnly,
+    Reporter& R)
 {
     TypedefInfo Info;
 
     bool IsInAnonymousNamespace = false;
-    populateInfo(Info, D, FC, IsInAnonymousNamespace);
+    populateInfo(Info, D, FC, IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -912,12 +925,13 @@ emitInfo(
     int LineNumber,
     StringRef File,
     bool IsFileInRootDir,
-    bool PublicOnly)
+    bool PublicOnly,
+    Reporter& R)
 {
     TypedefInfo Info;
 
     bool IsInAnonymousNamespace = false;
-    populateInfo(Info, D, FC, IsInAnonymousNamespace);
+    populateInfo(Info, D, FC, IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -938,12 +952,13 @@ emitInfo(
     int LineNumber,
     llvm::StringRef File,
     bool IsFileInRootDir,
-    bool PublicOnly)
+    bool PublicOnly,
+    Reporter& R)
 {
     EnumInfo Enum;
     bool IsInAnonymousNamespace = false;
     populateSymbolInfo(Enum, D, FC, LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace);
+        IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 

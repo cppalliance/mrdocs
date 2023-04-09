@@ -103,7 +103,8 @@ mapDecl(T const* D)
         getLine(D, D->getASTContext()),
         filePath,
         IsFileInRootDir,
-        config_.PublicOnly);
+        config_.PublicOnly,
+        R_);
 
     // A null in place of I indicates that the serializer is skipping this decl
     // for some reason (e.g. we're only reporting public decls).

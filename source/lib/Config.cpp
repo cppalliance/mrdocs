@@ -55,6 +55,7 @@ filterSourceFile(
     llvm::StringRef filePath,
     llvm::SmallVectorImpl<char>& prefixPath) const noexcept
 {
+    return false;
     namespace path = llvm::sys::path;
 
     llvm::SmallString<32> temp;

@@ -22,6 +22,7 @@
 
 #include "Representation.h"
 #include <mrdox/Config.hpp>
+#include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>
 #include <clang/AST/ASTConsumer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
@@ -48,6 +49,7 @@ class Visitor
     bool handleTranslationUnit_ = false;
     tooling::ExecutionContext& exc_;
     Config const& config_;
+    Reporter& R_;
     std::unordered_map<
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
@@ -55,9 +57,11 @@ class Visitor
 public:
     Visitor(
         tooling::ExecutionContext& exc,
-        Config const& config) noexcept
+        Config const& config,
+        Reporter& R) noexcept
         : exc_(exc)
         , config_(config)
+        , R_(R)
     {
     }
 
