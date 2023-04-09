@@ -15,8 +15,10 @@
 #include <clang/Tooling/StandaloneExecution.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/Twine.h>
+#include <llvm/Support/Program.h>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/ThreadPool.h>
+#include <string_view>
 #include <vector>
 
 // Each test comes as a pair of files.
@@ -139,14 +141,27 @@ testResult(
     if(ec == std::errc::no_such_file_or_directory)
     {
         // create the xml file and write to it
+        llvm::raw_fd_ostream os(out, ec, llvm::sys::fs::OF_None);
+        if(! ec)
+        {
+            os << xml;
+        }
+        else
+        {
+            llvm::errs() <<
+                "Writing \"" << out << "\" failed: " <<
+                ec.message() << "\n";
+            R.testFailed();
+        }
     }
     else if(! R.failed("fs::status", ec))
     {
         if(stat.type() == fs::file_type::regular_file)
         {
-            auto bufferResult = llvm::MemoryBuffer::getFile(out, true);
+            auto bufferResult = llvm::MemoryBuffer::getFile(out, false);
             if(R.failed("MemoryBuffer::getFile", bufferResult))
                 return;
+            std::string_view got(bufferResult->get()->getBuffer());
             if(xml != bufferResult->get()->getBuffer())
             {
                 llvm::errs() <<
@@ -207,11 +222,5 @@ int
 main(int argc, const char** argv)
 {
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-    // VFALCO return success until the tests work
-#if 0
     return clang::mrdox::testMain(argc, argv);
-#else
-    clang::mrdox::testMain(argc, argv);
-    return EXIT_SUCCESS;
-#endif
 }

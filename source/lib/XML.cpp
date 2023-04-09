@@ -339,7 +339,8 @@ write(
         });
     writeSymbolInfo(I);
     writeTagLine("qualname", I.Underlying.Type.QualName);
-    writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
+    if(I.Underlying.Type.USR != EmptySID)
+        writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
     closeTag("typedef");
 }
 
@@ -360,7 +361,7 @@ write(FieldTypeInfo const& I)
 {
     writeTag("param", {
         { "name", I.Name },
-        { "default", I.DefaultValue },
+        { "default", I.DefaultValue, ! I.DefaultValue.empty() },
         { "type", I.Type.Name },
         { "qualname", I.Type.QualName },
         { "reftype", toString(I.Type.RefType) },
@@ -402,10 +403,10 @@ XMLGenerator::
 writeInfo(
     Info const& I)
 {
-// VFALCO for now...
-return;
     writeTagLine("extract-name", I.extractName());
-    writeTagLine("rel-path", I.getRelativeFilePath(cfg_->SourceRoot));
+    auto relPath = I.getRelativeFilePath(cfg_->SourceRoot);
+    if(! relPath.empty())
+        writeTagLine("rel-path", relPath);
     writeTagLine("base-name", I.getFileBaseName());
 }
 

@@ -1,0 +1,14 @@
+<all>
+    <symbol name="GlobalNamespace"/>
+    <symbol name="N" usr="rjlMNXAaWNMkQYMTJzRA1DR0DiE="/>
+</all>
+<namespace name="">
+    <extract-name>GlobalNamespace</extract-name>
+    <rel-path>GlobalNamespace</rel-path>
+    <base-name>index</base-name>
+    <namespace name="N" usr="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
+        <extract-name>N</extract-name>
+        <rel-path>N</rel-path>
+        <base-name>index</base-name>
+    </namespace>
+</namespace>
