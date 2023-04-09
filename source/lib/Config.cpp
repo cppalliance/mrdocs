@@ -10,6 +10,9 @@
 //
 
 #include <mrdox/Config.hpp>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/MemoryBuffer.h>
+#include <llvm/Support/Path.h>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
@@ -18,10 +21,9 @@ struct llvm::yaml::MappingTraits<
     clang::mrdox::Config::filter>
 {
     static void mapping(
-        IO &io, clang::mrdox::Config::filter &f)
+        IO &io, clang::mrdox::Config::filter& f)
     {
-        io.mapOptional("include", f.include);
-        io.mapOptional("exclude", f.exclude);
+        io.mapOptional("exclude", f);
     }
 };
 
@@ -38,6 +40,7 @@ struct llvm::yaml::MappingTraits<
         io.mapOptional("project-name", f.ProjectName);
         io.mapOptional("public-only",  f.PublicOnly);
         io.mapOptional("output-dir",   f.OutDirectory);
+        io.mapOptional("include",      f.includePaths);
     }
 };
 
@@ -46,58 +49,92 @@ struct llvm::yaml::MappingTraits<
 namespace clang {
 namespace mrdox {
 
-Config::
-Config()
-{
-    if (auto p = ::getenv("MRDOX_REPOSITORY_URL"))
-        RepositoryUrl.emplace(p);
-    else if (auto q = ::getenv("DRONE_REMOTE_URL"))
-        RepositoryUrl.emplace(q);
-}
-
 bool
 Config::
-filterFile(
+filterSourceFile(
     llvm::StringRef filePath,
     llvm::SmallVectorImpl<char>& prefixPath) const noexcept
 {
     namespace path = llvm::sys::path;
 
-    for(auto const s : includePaths)
+    llvm::SmallString<32> temp;
+    for(auto const& s : includePaths)
     {
-        if(filePath.starts_with(s))
+        temp = filePath;
+        if(path::replace_path_prefix(temp, s, ""))
         {
-            prefixPath = s;
-            if(! path::is_separator(prefixPath.back()))
-            {
-                auto const sep = path::get_separator();
-                prefixPath.insert(prefixPath.end(),
-                    sep.begin(), sep.end());
-            }
+            prefixPath.assign(s.begin(), s.end());
             return false;
         }
     }
     return true;
 }
 
-std::error_code
-Config::
-load(
-    const std::string & name,
-    const std::source_location & loc)
+// Make the path end in a separator
+static
+void
+makeDirsy(
+    llvm::SmallVectorImpl<char>& s)
 {
-#if 0
-    auto ct = llvm::MemoryBuffer::getFile(SourceRoot + "/" + name);
-    if (!ct)
-        return ct.getError();
+    namespace path = llvm::sys::path;
+    if(! path::is_separator(s.back()))
+    {
+        auto const sep = path::get_separator();
+        s.insert(s.end(), sep.begin(), sep.end());
+    }
+}
 
-    llvm::yaml::Input yin{**ct};
+bool
+Config::
+loadFromFile(
+    llvm::StringRef filePath,
+    Reporter& R)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
 
+    // get absolute path to config file
+    configPath = filePath;
+    fs::make_absolute(configPath);
+
+    // Read the YAML file and apply to this
+    auto fileText = llvm::MemoryBuffer::getFile(configPath);
+    if(! fileText)
+    {
+        R.failed("llvm::MemoryBuffer::getFile", fileText);
+        return false;
+    }
+    llvm::yaml::Input yin(**fileText);
     yin >> *this;
-    if ( yin.error() )
-        return yin.error();
-#endif
-    return {};
+    std::error_code ec = yin.error();
+    if(ec)
+    {
+        R.failed("llvm::yaml::Input::operator>>", ec);
+        return false;
+    }
+
+    // change configPath to the directory
+    path::remove_filename(configPath);
+    path::remove_dots(configPath, true);
+
+    // make includePaths absolute
+    {
+        llvm::SmallString<128> temp;
+        for(auto& s : includePaths)
+        {
+            if(path::is_absolute(s))
+                continue;
+            temp.clear();
+            path::append(temp, configPath, s);
+            // separator at the end is required
+            // for replace_path_prefix to work
+            path::remove_dots(temp, true);
+            makeDirsy(temp);
+            s.assign(temp.begin(), temp.end());
+        }
+    }
+
+    return true;
 }
 
 } // mrdox

@@ -41,7 +41,7 @@ R"(Generates documentation from source code and comments.
 Examples
 
   $ mrdox mrdox.yml
-  $ mrdox --output ./docs mrdox.yml
+  $ mrdox --config=mrdox.yml --output ./docs
 )";
 
 static
@@ -52,6 +52,22 @@ CommonHelp(
 static
 llvm::cl::OptionCategory
 ToolCategory("mrdox options");
+
+static
+llvm::cl::opt<std::string>
+    ConfigPath(
+    "config",
+    llvm::cl::desc(R"(The config filename relative to the repository root)"),
+    llvm::cl::init("mrdox.yaml"),
+    llvm::cl::cat(ToolCategory));
+
+static
+llvm::cl::opt<std::string>
+FormatType(
+    "format",
+    llvm::cl::desc("Format for outputted docs (\"adoc\" or \"xml\")."),
+    llvm::cl::init("adoc"),
+    llvm::cl::cat(ToolCategory));
 
 static
 llvm::cl::opt<bool>
@@ -67,22 +83,6 @@ OutDirectory(
     "output",
     llvm::cl::desc("Directory for outputting generated files."),
     llvm::cl::init("."),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<std::string>
-    ConfigPath(
-    "config-file",
-    llvm::cl::desc(R"(The config filename relative to the repository root)"),
-    llvm::cl::init("mrdox.yaml"),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<std::string>
-FormatType(
-    "format",
-    llvm::cl::desc("Format for outputted docs (\"adoc\" or \"xml\")."),
-    llvm::cl::init("adoc"),
     llvm::cl::cat(ToolCategory));
 
 } // (anon)
@@ -118,7 +118,8 @@ toolMain(int argc, const char** argv)
     config.OutDirectory = OutDirectory;
     config.IgnoreMappingFailures = IgnoreMappingFailures;
 
-    config.load(ConfigPath);
+    if(! config.loadFromFile(ConfigPath, R))
+        return EXIT_FAILURE;
 
     // create the executor
     auto ex = std::make_unique<tooling::AllTUsToolExecutor>(

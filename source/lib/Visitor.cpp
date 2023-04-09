@@ -70,7 +70,7 @@ mapDecl(T const* D)
         // new element
         filePath = loc.getFilename();
         FileFilter& ff = result.first->second;
-        ff.exclude = config_.filterFile(filePath, ff.prefix);
+        ff.exclude = config_.filterSourceFile(filePath, ff.prefix);
         if(ff.exclude)
             return true;
         path::replace_path_prefix(filePath, ff.prefix, "");

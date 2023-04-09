@@ -12,6 +12,7 @@
 #ifndef MRDOX_CONFIG_HPP
 #define MRDOX_CONFIG_HPP
 
+#include <mrdox/Errors.hpp>
 #include <clang/Tooling/ArgumentsAdjusters.h>
 #include <clang/Tooling/Execution.h>
 #include <llvm/ADT/Optional.h>
@@ -31,6 +32,10 @@ namespace mrdox {
 */
 struct Config
 {
+    /** The root path from which all relative paths are calculated.
+    */
+    llvm::SmallString<16> configPath;
+
     /** Adjustments to tool command line, applied during execute.
     */
     tooling::ArgumentsAdjuster ArgAdjuster;
@@ -48,7 +53,7 @@ struct Config
     // Directory where processed files are stored. Links
     // to definition locations will only be generated if
     // the file is in this dir.
-    std::vector<llvm::SmallString<0>> includePaths;
+    std::vector<std::string> includePaths;
                                                       
     // URL of repository that hosts code used
     // for links to definition locations.
@@ -57,7 +62,7 @@ struct Config
     bool IgnoreMappingFailures = false;
 
 public:
-    Config();
+    Config() = default;
     Config(Config&&) = delete;
     Config& operator=(Config&&) = delete;
 
@@ -68,7 +73,7 @@ public:
         should be be removed for matching files.
     */
     bool
-    filterFile(
+    filterSourceFile(
         llvm::StringRef filePath,
         llvm::SmallVectorImpl<char>& prefixPath) const noexcept;
 
@@ -77,11 +82,10 @@ public:
 
     filter namespaces, files, entities;
 
-    std::error_code
-    load(
-        const std::string & name,
-        const std::source_location & loc =
-        std::source_location::current());
+    bool
+    loadFromFile(
+        llvm::StringRef filePath,
+        Reporter& R);
 };
 
 } // mrdox
