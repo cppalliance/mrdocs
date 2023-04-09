@@ -80,14 +80,6 @@ generated if the file is in this dir.)"),
 
 static
 llvm::cl::opt<std::string>
-RepositoryUrl(
-    "repository", llvm::cl::desc(R"(
-URL of repository that hosts code.
-Used for links to definition locations.)"),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<std::string>
     ConfigPath(
     "config-file",
     llvm::cl::desc(R"(The config filename relative to the repository root)"),
@@ -113,7 +105,7 @@ toolMain(int argc, const char** argv)
     formats.emplace_back(makeXMLGenerator());
     formats.emplace_back(makeAsciidocGenerator());
 
-    Config cfg;
+    Config config;
     Reporter R;
 
     // parse command line options
@@ -124,18 +116,18 @@ toolMain(int argc, const char** argv)
 
     /*
     if (! DoxygenOnly)
-        cfg.ArgAdjuster = tooling::combineAdjusters(
+        config.ArgAdjuster = tooling::combineAdjusters(
             getInsertArgumentAdjuster(
                 "-fparse-all-comments",
                 tooling::ArgumentInsertPosition::END),
-            cfg.ArgAdjuster);
+            config.ArgAdjuster);
     */
 
-    cfg.PublicOnly = true;
-    cfg.OutDirectory = OutDirectory;
-    cfg.IgnoreMappingFailures = IgnoreMappingFailures;
+    config.PublicOnly = true;
+    config.OutDirectory = OutDirectory;
+    config.IgnoreMappingFailures = IgnoreMappingFailures;
 
-    cfg.load(ConfigPath);
+    config.load(ConfigPath);
 
     // create the executor
     auto ex = std::make_unique<tooling::AllTUsToolExecutor>(
@@ -162,13 +154,13 @@ toolMain(int argc, const char** argv)
     }
 
     // Run the tool, this can take a while
-    auto rv = Corpus::build(*ex, cfg, R);
+    auto rv = Corpus::build(*ex, config, R);
     if(! rv)
         return EXIT_FAILURE;
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if(! gen->build(cfg.OutDirectory, *rv, cfg, R))
+    if(! gen->build(config.OutDirectory, *rv, config, R))
         return EXIT_FAILURE;
 
     return R.getExitCode();

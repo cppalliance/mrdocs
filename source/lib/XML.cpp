@@ -27,7 +27,7 @@ XMLGenerator::
 buildOne(
     llvm::StringRef fileName,
     Corpus const& corpus,
-    Config const& cfg,
+    Config const& config,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;
@@ -45,7 +45,7 @@ buildOne(
         return false;
     }
 
-    Writer w(corpus, cfg, R);
+    Writer w(corpus, config, R);
     return w.build(os);
 }
 
@@ -571,7 +571,7 @@ Writer::
 generateDocForInfo(
     clang::mrdox::Info* I,
     llvm::raw_ostream& os,
-    clang::mrdox::Config const& cfg)
+    clang::mrdox::Config const& config)
 {
     return llvm::Error::success();
 }

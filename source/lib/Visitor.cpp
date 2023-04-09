@@ -31,6 +31,8 @@ Visitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
+    assert(! handleTranslationUnit_);
+    handleTranslationUnit_ = true;
     TraverseDecl(Context.getTranslationUnitDecl());
 }
 
@@ -39,32 +41,47 @@ bool
 Visitor::
 mapDecl(T const* D)
 {
-    // If we're looking a decl not in user files, skip this decl.
-    if (D->getASTContext().getSourceManager().isInSystemHeader(D->getLocation()))
-        return true;
+    clang::SourceManager const& sm =
+        D->getASTContext().getSourceManager();
+    clang::SourceLocation const loc = D->getLocation();
 
-    // Skip function-internal decls.
-    if (D->getParentFunctionOrMethod())
-        return true;
-
-    llvm::SmallString<128> USR;
-    // If there is an error generating a USR for the decl, skip this decl.
-    if (index::generateUSRForDecl(D, USR))
+    if(sm.isInSystemHeader(loc))
     {
-        // VFALCO report this, it seems to never happen
+        // skip system header
         return true;
+    }
+
+    if (D->getParentFunctionOrMethod())
+    {
+        // skip function-local declarations
+        return true;
+    }
+
+    llvm::SmallString<128> filePath;
+    filePath = sm.getPresumedLoc(D->getBeginLoc()).getFilename();
+    if(config_.shouldSkipFile(filePath))
+        return true;
+
+    // If there is an error generating a USR for the decl, skip this decl.
+    {
+        llvm::SmallString<128> USR;
+        if (index::generateUSRForDecl(D, USR))
+        {
+            // VFALCO report this, it seems to never happen
+            return true;
+        }
     }
 
     bool IsFileInRootDir;
     llvm::SmallString<128> File =
-        getFile(D, D->getASTContext(), cfg_.SourceRoot, IsFileInRootDir);
+        getFile(D, D->getASTContext(), config_.SourceRoot, IsFileInRootDir);
     auto I = emitInfo(
         D,
         getComment(D, D->getASTContext()),
         getLine(D, D->getASTContext()),
         File,
         IsFileInRootDir,
-        cfg_.PublicOnly);
+        config_.PublicOnly);
 
     // A null in place of I indicates that the serializer is skipping this decl
     // for some reason (e.g. we're only reporting public decls).

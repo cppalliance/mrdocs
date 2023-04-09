@@ -28,7 +28,7 @@ AsciidocGenerator::
 build(
     llvm::StringRef rootPath,
     Corpus const& corpus,
-    Config const& cfg,
+    Config const& config,
     Reporter& R) const
 {
 #if 0
@@ -67,7 +67,7 @@ build(
         }
 
         for (const auto& Info : Group.getValue()) {
-            if (llvm::Error Err = generateDocForInfo(Info, InfoOS, cfg)) {
+            if (llvm::Error Err = generateDocForInfo(Info, InfoOS, config)) {
                 return Err;
             }
         }
@@ -82,7 +82,7 @@ AsciidocGenerator::
 buildOne(
     llvm::StringRef fileName,
     Corpus const& corpus,
-    Config const& cfg,
+    Config const& config,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;
@@ -100,7 +100,7 @@ buildOne(
         return false;
     }
 
-    Writer w(corpus, cfg, R);
+    Writer w(corpus, config, R);
     return w.buildOne(os);
 }
 
@@ -126,24 +126,24 @@ AsciidocGenerator::
 generateDocForInfo(
     Info* I,
     llvm::raw_ostream& os,
-    const Config& cfg)
+    const Config& config)
 {
     switch (I->IT)
     {
     case InfoType::IT_namespace:
-        makeNamespacePage(cfg, *static_cast<clang::mrdox::NamespaceInfo*>(I), os);
+        makeNamespacePage(config, *static_cast<clang::mrdox::NamespaceInfo*>(I), os);
         break;
     case InfoType::IT_record:
-        genMarkdown(cfg, *static_cast<clang::mrdox::RecordInfo*>(I), os);
+        genMarkdown(config, *static_cast<clang::mrdox::RecordInfo*>(I), os);
         break;
     case InfoType::IT_enum:
-        genMarkdown(cfg, *static_cast<clang::mrdox::EnumInfo*>(I), os);
+        genMarkdown(config, *static_cast<clang::mrdox::EnumInfo*>(I), os);
         break;
     case InfoType::IT_function:
-        genMarkdown(cfg, *static_cast<clang::mrdox::FunctionInfo*>(I), os);
+        genMarkdown(config, *static_cast<clang::mrdox::FunctionInfo*>(I), os);
         break;
     case InfoType::IT_typedef:
-        genMarkdown(cfg, *static_cast<clang::mrdox::TypedefInfo*>(I), os);
+        genMarkdown(config, *static_cast<clang::mrdox::TypedefInfo*>(I), os);
         break;
     case InfoType::IT_default:
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
@@ -240,19 +240,19 @@ section(
 
 void
 writeFileDefinition(
-    Config const& cfg,
+    Config const& config,
     const Location& L,
     raw_ostream& os)
 {
     // VFALCO FIXME
 #if 0
-    if (!cfg.RepositoryUrl) {
+    if (!config.RepositoryUrl) {
         os << "*Defined at " << L.Filename << "#" << std::to_string(L.LineNumber)
             << "*";
     }
     else {
         os << "*Defined at [" << L.Filename << "#" << std::to_string(L.LineNumber)
-            << "](" << StringRef{ *cfg.RepositoryUrl }
+            << "](" << StringRef{ *config.RepositoryUrl }
             << llvm::sys::path::relative_path(L.Filename) << "#"
             << std::to_string(L.LineNumber) << ")"
             << "*";
@@ -351,7 +351,7 @@ writeNameLink(
 
 void
 genMarkdown(
-    const Config& cfg,
+    const Config& config,
     const EnumInfo& I,
     llvm::raw_ostream& os)
 {
@@ -368,7 +368,7 @@ genMarkdown(
             Members << "| " << N.Name << " |\n";
     writeLine(Members.str(), os);
     if (I.DefLoc)
-        writeFileDefinition(cfg, *I.DefLoc, os);
+        writeFileDefinition(config, *I.DefLoc, os);
 
     for (const auto& C : I.Description)
         writeDescription(C, os);
@@ -410,7 +410,7 @@ makeDecl(
 
 void
 genMarkdown(
-    Config const& cfg,
+    Config const& config,
     FunctionInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -423,7 +423,7 @@ genMarkdown(
         "|`" << Access << Buffer;
 
     if (I.DefLoc)
-        writeFileDefinition(cfg, *I.DefLoc, os);
+        writeFileDefinition(config, *I.DefLoc, os);
 
     os << "|";
     for (const auto& C : I.Description)
@@ -435,7 +435,7 @@ genMarkdown(
 
 void
 listNamespaces(
-    Config const& cfg,
+    Config const& config,
     std::vector<Reference> const& v,
     llvm::raw_ostream& os)
 {
@@ -474,7 +474,7 @@ listNamespaces(
 
 void
 listClasses(
-    Config const& cfg,
+    Config const& config,
     std::vector<Reference> const& v,
     llvm::raw_ostream& os)
 {
@@ -513,7 +513,7 @@ listClasses(
 
 void
 listFunctions(
-    Config const& cfg,
+    Config const& config,
     llvm::StringRef label,
     std::vector<Reference> const& v,
     llvm::raw_ostream& os)
@@ -550,7 +550,7 @@ listFunctions(
 
 void
 listConstants(
-    Config const& cfg,
+    Config const& config,
     std::vector<EnumInfo> const& v,
     llvm::raw_ostream& os)
 {
@@ -584,7 +584,7 @@ listConstants(
 
 void
 listTypedefs(
-    Config const& cfg,
+    Config const& config,
     std::vector<TypedefInfo> const& v,
     llvm::raw_ostream& os)
 {
@@ -618,21 +618,21 @@ listTypedefs(
 
 void
 listScope(
-    Config const& cfg,
+    Config const& config,
     Scope const& scope,
     llvm::raw_ostream& os)
 {
-    listNamespaces(cfg, scope.Namespaces, os);
-    listClasses(cfg, scope.Records, os);
-    listFunctions(cfg, "Functions", scope.Functions, os);
-    listConstants(cfg, scope.Enums, os);
-    listTypedefs(cfg, scope.Typedefs, os);
+    listNamespaces(config, scope.Namespaces, os);
+    listClasses(config, scope.Records, os);
+    listFunctions(config, "Functions", scope.Functions, os);
+    listConstants(config, scope.Enums, os);
+    listTypedefs(config, scope.Typedefs, os);
 }
 
 
 void
 listFunction(
-    Config const& cfg,
+    Config const& config,
     FunctionInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -644,7 +644,7 @@ listFunction(
 // Write a complete FunctionInfo page
 void
 emitFunction(
-    Config const& cfg,
+    Config const& config,
     FunctionInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -671,7 +671,7 @@ emitFunction(
 
 void
 makeNamespacePage(
-    Config const& cfg,
+    Config const& config,
     NamespaceInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -689,7 +689,7 @@ makeNamespacePage(
 
     llvm::SmallString<64> BasePath = I.getRelativeFilePath("");
 
-    listScope(cfg, I.Children, os);
+    listScope(config, I.Children, os);
 }
 
 //------------------------------------------------
@@ -700,7 +700,7 @@ makeNamespacePage(
 
 void
 genMarkdown(
-    Config const& cfg,
+    Config const& config,
     RecordInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -720,7 +720,7 @@ genMarkdown(
         "\n";
 
     if (I.DefLoc)
-        writeFileDefinition(cfg, *I.DefLoc, os);
+        writeFileDefinition(config, *I.DefLoc, os);
 
     std::string Parents = genReferenceList(I.Parents);
     std::string VParents = genReferenceList(I.VirtualParents);
@@ -737,8 +737,8 @@ genMarkdown(
 
     // VFALCO STATIC MEMBER FUNCTIONS
 
-    //listFunctions(cfg, "Member Functions", I.Children.functions, os);
-    listScope(cfg, I.Children, os);
+    //listFunctions(config, "Member Functions", I.Children.functions, os);
+    listScope(config, I.Children, os);
 
     if(! I.javadoc.desc.empty())
     {
@@ -756,7 +756,7 @@ genMarkdown(
 
 void
 genMarkdown(
-    Config const &cfg,
+    Config const &config,
     TypedefInfo const& I,
     llvm::raw_ostream& os)
 {
@@ -780,12 +780,12 @@ serializeReference(
 // emit all_files.adoc
 llvm::Error
 serializeIndex(
-    Config& cfg,
+    Config& config,
     Corpus& corpus)
 {
     std::error_code FileErr;
     llvm::SmallString<128> FilePath;
-    llvm::sys::path::native(cfg.OutDirectory, FilePath);
+    llvm::sys::path::native(config.OutDirectory, FilePath);
     llvm::sys::path::append(FilePath, "all_files.adoc");
     llvm::raw_fd_ostream os(FilePath, FileErr, llvm::sys::fs::OF_None);
     if (FileErr)
@@ -795,8 +795,8 @@ serializeIndex(
 
     corpus.Idx.sort();
     os << "# All Files";
-    if (!cfg.ProjectName.empty())
-        os << " for " << cfg.ProjectName;
+    if (!config.ProjectName.empty())
+        os << " for " << config.ProjectName;
     os << "\n";
 
     for (auto C : corpus.Idx.Children)
@@ -808,12 +808,12 @@ serializeIndex(
 // emit index.adoc
 llvm::Error
 genIndex(
-    Config& cfg,
+    Config& config,
     Corpus& corpus)
 {
     std::error_code FileErr;
     llvm::SmallString<128> FilePath;
-    llvm::sys::path::native(cfg.OutDirectory, FilePath);
+    llvm::sys::path::native(config.OutDirectory, FilePath);
     llvm::sys::path::append(FilePath, "index.adoc");
     llvm::raw_fd_ostream os(FilePath, FileErr, llvm::sys::fs::OF_None);
     if (FileErr)
@@ -821,7 +821,7 @@ genIndex(
             "error creating index file: " +
             FileErr.message());
     corpus.Idx.sort();
-    os << "# " << cfg.ProjectName << " C/C++ Reference\n";
+    os << "# " << config.ProjectName << " C/C++ Reference\n";
     for (auto C : corpus.Idx.Children) {
         if (!C.Children.empty()) {
             const char* Type;

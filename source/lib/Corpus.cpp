@@ -156,7 +156,7 @@ std::unique_ptr<Corpus>
 Corpus::
 build(
     tooling::ToolExecutor& ex,
-    Config const& cfg,
+    Config const& config,
     Reporter& R)
 {
     auto up = std::unique_ptr<Corpus>(new Corpus);
@@ -168,11 +168,11 @@ build(
 
     llvm::outs() << "Mapping declarations\n";
     llvm::Error err = ex.execute(
-        makeToolFactory(*ex.getExecutionContext(), cfg),
-        cfg.ArgAdjuster);
+        makeToolFactory(*ex.getExecutionContext(), config),
+        config.ArgAdjuster);
     if(err)
     {
-        if(! cfg.IgnoreMappingFailures)
+        if(! config.IgnoreMappingFailures)
         {
             llvm::errs() <<
                 "Mapping failure: " << toString(std::move(err)) << "\n";

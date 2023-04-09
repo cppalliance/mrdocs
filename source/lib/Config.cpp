@@ -64,6 +64,14 @@ Config()
         RepositoryUrl.emplace(q);
 }
 
+bool
+Config::
+shouldSkipFile(
+    llvm::StringRef filePath) const noexcept
+{
+    return false;
+}
+
 std::error_code
 Config::
 load(

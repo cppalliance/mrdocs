@@ -32,9 +32,9 @@ struct Action
 {
     Action(
         tooling::ExecutionContext& exc,
-        Config const& cfg) noexcept
+        Config const& config) noexcept
         : exc_(exc)
-        , cfg_(cfg)
+        , config_(config)
     {
     }
 
@@ -43,12 +43,12 @@ struct Action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<Visitor>(exc_, cfg_);
+        return std::make_unique<Visitor>(exc_, config_);
     }
 
 private:
     tooling::ExecutionContext& exc_;
-    Config const& cfg_;
+    Config const& config_;
 };
 
 //------------------------------------------------
@@ -58,21 +58,21 @@ struct Factory
 {
     Factory(
         tooling::ExecutionContext& exc,
-        Config const& cfg) noexcept
+        Config const& config) noexcept
         : exc_(exc)
-        , cfg_(cfg)
+        , config_(config)
     {
     }
 
     std::unique_ptr<FrontendAction>
     create() override
     {
-        return std::make_unique<Action>(exc_, cfg_);
+        return std::make_unique<Action>(exc_, config_);
     }
 
 private:
     tooling::ExecutionContext& exc_;
-    Config const& cfg_;
+    Config const& config_;
 };
 
 } // (anon)
@@ -82,9 +82,9 @@ private:
 std::unique_ptr<tooling::FrontendActionFactory>
 makeToolFactory(
     tooling::ExecutionContext& exc,
-    Config const& cfg)
+    Config const& config)
 {
-    return std::make_unique<Factory>(exc, cfg);
+    return std::make_unique<Factory>(exc, config);
 }
 
 } // mrdox

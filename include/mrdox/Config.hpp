@@ -48,8 +48,7 @@ struct Config
     // Directory where processed files are stored. Links
     // to definition locations will only be generated if
     // the file is in this dir.
-    std::string SourceRoot;     
-
+    std::string SourceRoot;
                                                       
     // URL of repository that hosts code used
     // for links to definition locations.
@@ -57,9 +56,12 @@ struct Config
 
     bool IgnoreMappingFailures = false;
 
+public:
     Config();
     Config(Config&&) = delete;
     Config& operator=(Config&&) = delete;
+
+    bool shouldSkipFile(llvm::StringRef filePath) const noexcept;
 
 public:
     struct filter { std::vector<std::string> include, exclude; };

@@ -21,7 +21,7 @@ Generator::
 build(
     StringRef rootPath,
     Corpus const& corpus,
-    Config const& cfg,
+    Config const& config,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;
@@ -30,7 +30,7 @@ build(
     // If we are given a filename with the correct
     // extension then just build the docs as one file.
     if(path::extension(rootPath).compare_insensitive(path::extension(rootPath)))
-        return buildOne(rootPath, corpus, cfg, R);
+        return buildOne(rootPath, corpus, config, R);
 
     // Create the directory if needed
     fs::file_status status;
@@ -58,11 +58,11 @@ build(
         llvm::SmallString<512> fileName(rootPath);
         path::append(fileName, "index");
         path::replace_extension(fileName, extension());
-        return buildOne(fileName, corpus, cfg, R);
+        return buildOne(fileName, corpus, config, R);
     }
 
     // Build as one file
-    return buildOne(rootPath, corpus, cfg, R);
+    return buildOne(rootPath, corpus, config, R);
 }
 
 //------------------------------------------------

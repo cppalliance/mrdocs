@@ -129,14 +129,14 @@ visitDirectory(
 void
 testResult(
     Corpus const& corpus,
-    Config const& cfg,
+    Config const& config,
     llvm::StringRef file,
     llvm::StringRef out,
     Generator const& gen,
     Reporter& R)
 {
     std::string xml;
-    if(! gen.buildString(xml, corpus, cfg, R))
+    if(! gen.buildString(xml, corpus, config, R))
     {
         R.testFailed();
         return;
@@ -191,7 +191,7 @@ testResult(
 int
 testMain(int argc, const char** argv)
 {
-    Config cfg;
+    Config config;
     Reporter R;
     auto const gen = makeXMLGenerator();
 
@@ -205,7 +205,7 @@ testMain(int argc, const char** argv)
             llvm::StringRef file_,
             llvm::StringRef out_)
         {
-            Pool.async([&cfg, &R, &gen,
+            Pool.async([&config, &R, &gen,
                 dir = dir_.str(),
                 file = file_.str(),
                 out = out_.str()]
@@ -213,9 +213,9 @@ testMain(int argc, const char** argv)
                 SingleFile db(dir, file, out);
                 tooling::StandaloneToolExecutor ex(
                     db, { std::string(file) });
-                auto corpus = Corpus::build(ex, cfg, R);
+                auto corpus = Corpus::build(ex, config, R);
                 if(corpus)
-                    testResult(*corpus, cfg, file, out, *gen, R);
+                    testResult(*corpus, config, file, out, *gen, R);
             });
         });
     }

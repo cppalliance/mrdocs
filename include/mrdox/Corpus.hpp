@@ -121,7 +121,7 @@ public:
     std::unique_ptr<Corpus>
     build(
         tooling::ToolExecutor& ex,
-        Config const& cfg,
+        Config const& config,
         Reporter& R);
 
 private:

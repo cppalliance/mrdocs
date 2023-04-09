@@ -38,15 +38,16 @@ class Visitor
     : public RecursiveASTVisitor<Visitor>
     , public ASTConsumer
 {
+    bool handleTranslationUnit_ = false;
     tooling::ExecutionContext& exc_;
-    Config const& cfg_;
+    Config const& config_;
 
 public:
     Visitor(
         tooling::ExecutionContext& exc,
-        Config const& cfg) noexcept
+        Config const& config) noexcept
         : exc_(exc)
-        , cfg_(cfg)
+        , config_(config)
     {
     }
 

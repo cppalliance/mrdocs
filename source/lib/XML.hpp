@@ -50,7 +50,7 @@ struct XMLGenerator : Generator
     buildOne(
         llvm::StringRef fileName,
         Corpus const& corpus,
-        Config const& cfg,
+        Config const& config,
         Reporter& R) const override;
 
     bool
@@ -163,7 +163,7 @@ public:
     generateDocForInfo(
         Info* I,
         llvm::raw_ostream& os,
-        Config const& cfg);
+        Config const& config);
 };
 
 //------------------------------------------------

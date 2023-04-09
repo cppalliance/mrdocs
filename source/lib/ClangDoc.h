@@ -29,7 +29,7 @@ namespace mrdox {
 std::unique_ptr<tooling::FrontendActionFactory>
 makeToolFactory(
     tooling::ExecutionContext& exc,
-    Config const& cfg);
+    Config const& config);
 
 } // mrdox
 } // clang
