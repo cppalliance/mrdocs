@@ -82,7 +82,11 @@ std::string getSourceCode(const Decl* D, const SourceRange& R) {
         .str();
 }
 
-template <typename T> static std::string serialize(T& I) {
+template <typename T>
+static
+std::string
+serialize(T& I)
+{
     SmallString<2048> Buffer;
     llvm::BitstreamWriter Stream(Buffer);
     ClangDocBitcodeWriter Writer(Stream);
@@ -213,17 +217,34 @@ shouldSerializeInfo(
 // refer to them.
 //
 // See MakeAndInsertIntoParent().
-static void InsertChild(Scope& scope, const NamespaceInfo& Info) {
-    scope.Namespaces.emplace_back(Info.USR, Info.Name, InfoType::IT_namespace,
+static
+void
+InsertChild(
+    Scope& scope,
+    NamespaceInfo const& Info)
+{
+    scope.Namespaces.emplace_back(
+        Info.USR, Info.Name, InfoType::IT_namespace,
         Info.Name, getInfoRelativePath(Info.Namespace));
 }
 
-static void InsertChild(Scope& scope, const RecordInfo& Info) {
-    scope.Records.emplace_back(Info.USR, Info.Name, InfoType::IT_record,
+static
+void
+InsertChild(
+    Scope& scope,
+    RecordInfo const& Info)
+{
+    scope.Records.emplace_back(
+        Info.USR, Info.Name, InfoType::IT_record,
         Info.Name, getInfoRelativePath(Info.Namespace));
 }
 
-static void InsertChild(Scope& scope, EnumInfo Info) {
+static
+void
+InsertChild(
+    Scope& scope,
+    EnumInfo Info)
+{
     scope.Enums.push_back(std::move(Info));
 }
 
@@ -231,12 +252,19 @@ static
 void
 InsertChild(
     Scope& scope,
-    FunctionInfo Info)
+    FunctionInfo const& Info)
 {
-    scope.Functions.emplace_back(std::move(Info));
+    scope.Functions.emplace_back(
+        Info.USR, Info.Name, InfoType::IT_function,
+        Info.Name, getInfoRelativePath(Info.Namespace));
 }
 
-static void InsertChild(Scope& scope, TypedefInfo Info) {
+static
+void
+InsertChild(
+    Scope& scope,
+    TypedefInfo Info)
+{
     scope.Typedefs.push_back(std::move(Info));
 }
 
@@ -254,16 +282,21 @@ static void InsertChild(Scope& scope, TypedefInfo Info) {
 // Otherwise, specify an rvalue reference <EnumInfo&&> and move into the
 // parameter. Since each variant is used once, it's not worth having a more
 // elaborate system to automatically deduce this information.
-template <typename ChildType>
-std::unique_ptr<Info> MakeAndInsertIntoParent(ChildType Child) {
-    if (Child.Namespace.empty()) {
+template<class ChildType>
+std::unique_ptr<Info>
+MakeAndInsertIntoParent(
+    ChildType Child)
+{
+    if (Child.Namespace.empty())
+    {
         // Insert into unnamed parent namespace.
         auto ParentNS = std::make_unique<NamespaceInfo>();
         InsertChild(ParentNS->Children, std::forward<ChildType>(Child));
         return ParentNS;
     }
 
-    switch (Child.Namespace[0].RefType) {
+    switch (Child.Namespace[0].RefType)
+    {
     case InfoType::IT_namespace: {
         auto ParentNS = std::make_unique<NamespaceInfo>();
         ParentNS->USR = Child.Namespace[0].USR;
@@ -296,8 +329,12 @@ std::unique_ptr<Info> MakeAndInsertIntoParent(ChildType Child) {
 //    will be private because the inheritance is private. This is the AS that
 //    this function calculates. FirstAS is the inheritance mode and SecondAS is
 //    the AS of the attribute / method.
-static AccessSpecifier getFinalAccessSpecifier(AccessSpecifier FirstAS,
-    AccessSpecifier SecondAS) {
+static
+AccessSpecifier
+getFinalAccessSpecifier(
+    AccessSpecifier FirstAS,
+    AccessSpecifier SecondAS)
+{
     if (FirstAS == AccessSpecifier::AS_none ||
         SecondAS == AccessSpecifier::AS_none)
         return AccessSpecifier::AS_none;
@@ -312,9 +349,16 @@ static AccessSpecifier getFinalAccessSpecifier(AccessSpecifier FirstAS,
 
 // The Access parameter is only provided when parsing the field of an inherited
 // record, the access specification of the field depends on the inheritance mode
-static void parseFields(RecordInfo& I, const RecordDecl* D, bool PublicOnly,
-    AccessSpecifier Access = AccessSpecifier::AS_public) {
-    for (const FieldDecl* F : D->fields()) {
+static
+void
+parseFields(
+    RecordInfo& I,
+    const RecordDecl* D,
+    bool PublicOnly,
+    AccessSpecifier Access = AccessSpecifier::AS_public)
+{
+    for (const FieldDecl* F : D->fields())
+    {
         if (!shouldSerializeInfo(PublicOnly, /*IsInAnonymousNamespace=*/false, F))
             continue;
 
@@ -328,8 +372,14 @@ static void parseFields(RecordInfo& I, const RecordDecl* D, bool PublicOnly,
     }
 }
 
-static void parseEnumerators(EnumInfo& I, const EnumDecl* D) {
-    for (const EnumConstantDecl* E : D->enumerators()) {
+static
+void
+parseEnumerators(
+    EnumInfo& I,
+    const EnumDecl* D)
+{
+    for (const EnumConstantDecl* E : D->enumerators())
+    {
         std::string ValueExpr;
         if (const Expr* InitExpr = E->getInitExpr())
             ValueExpr = getSourceCode(D, InitExpr->getSourceRange());
@@ -557,7 +607,7 @@ static
 void
 parseBases(
     RecordInfo& I,
-    const CXXRecordDecl* D,
+    CXXRecordDecl const* D,
     bool IsFileInRootDir,
     bool PublicOnly,
     bool IsParent,
@@ -610,7 +660,13 @@ parseBases(
                             IsInAnonymousNamespace);
                         FI.Access =
                             getFinalAccessSpecifier(BI.Access, MD->getAccessUnsafe());
-                        BI.Children.Functions.emplace_back(std::move(FI));
+                        //BI.Children.Functions.emplace_back(std::move(FI));
+                        BI.Children.Functions.emplace_back(
+                            FI.USR,
+                            FI.Name,
+                            InfoType::IT_function,
+                            FI.Name,
+                            FI.Path);
                     }
                 }
                 I.Bases.emplace_back(std::move(BI));
@@ -734,10 +790,10 @@ emitInfo(
         }
     }
 
-    // Records are inserted into the parent by reference, so we need to return
-    // both the parent and the record itself.
-    auto Parent = MakeAndInsertIntoParent<const RecordInfo&>(*I);
-    return { std::move(I), std::move(Parent) };
+    // Functions are inserted into the parent by
+    // reference, so we need to return both the
+    // parent and the record itself.
+    return { std::move(I), MakeAndInsertIntoParent<const RecordInfo&>(*I) };
 }
 
 std::pair<
@@ -751,16 +807,18 @@ emitInfo(
     bool IsFileInRootDir,
     bool PublicOnly)
 {
-    FunctionInfo Func;
+    auto up = std::make_unique<FunctionInfo>();
     bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(Func, D, FC, LineNumber, File, IsFileInRootDir,
+    populateFunctionInfo(*up, D, FC, LineNumber, File, IsFileInRootDir,
         IsInAnonymousNamespace);
-    Func.Access = clang::AccessSpecifier::AS_none;
+    up->Access = clang::AccessSpecifier::AS_none;
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
-    // Info is wrapped in its parent scope so is returned in the second position.
-    return { nullptr, MakeAndInsertIntoParent<FunctionInfo&&>(std::move(Func)) };
+    // Functions are inserted into the parent by
+    // reference, so we need to return both the
+    // parent and the record itself.
+    return { std::move(up), MakeAndInsertIntoParent<FunctionInfo const&>(*up) };
 }
 
 std::pair<
@@ -774,30 +832,31 @@ emitInfo(
     bool IsFileInRootDir,
     bool PublicOnly)
 {
-    FunctionInfo Func;
+    auto up = std::make_unique<FunctionInfo>();
     bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(Func, D, FC, LineNumber, File, IsFileInRootDir,
+    populateFunctionInfo(*up, D, FC, LineNumber, File, IsFileInRootDir,
         IsInAnonymousNamespace);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
-    Func.IsMethod = true;
+    up->IsMethod = true;
 
     const NamedDecl* Parent = nullptr;
-    if (const auto* SD =
-        dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
+    if (const auto* SD = dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
         Parent = SD->getSpecializedTemplate();
     else
         Parent = D->getParent();
 
     SymbolID ParentUSR = getUSRForDecl(Parent);
-    Func.Parent = Reference{
+    up->Parent = Reference{
         ParentUSR, Parent->getNameAsString(), InfoType::IT_record,
             Parent->getQualifiedNameAsString() };
-    Func.Access = D->getAccess();
+    up->Access = D->getAccess();
 
-    // Info is wrapped in its parent scope so is returned in the second position.
-    return { nullptr, MakeAndInsertIntoParent<FunctionInfo&&>(std::move(Func)) };
+    // Functions are inserted into the parent by
+    // reference, so we need to return both the
+    // parent and the record itself.
+    return { std::move(up), MakeAndInsertIntoParent<FunctionInfo const&>(*up) };
 }
 
 std::pair<

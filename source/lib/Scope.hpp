@@ -40,7 +40,7 @@ struct Scope
     // this general for all possible container types reduces code complexity.
     std::vector<Reference> Namespaces;
     std::vector<Reference> Records;
-    std::vector<FunctionInfo> Functions;
+    std::vector<Reference> Functions;
     std::vector<EnumInfo> Enums;
     std::vector<TypedefInfo> Typedefs;
 

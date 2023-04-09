@@ -18,12 +18,14 @@ namespace mrdox {
 
 // Since id enums are not zero-indexed, we need to transform the given id into
 // its associated index.
-struct BlockIdToIndexFunctor {
+struct BlockIdToIndexFunctor
+{
     using argument_type = unsigned;
     unsigned operator()(unsigned ID) const { return ID - BI_FIRST; }
 };
 
-struct RecordIdToIndexFunctor {
+struct RecordIdToIndexFunctor
+{
     using argument_type = unsigned;
     unsigned operator()(unsigned ID) const { return ID - RI_FIRST; }
 };
@@ -478,6 +480,7 @@ ClangDocBitcodeWriter::
 emitRecord(
     const TemplateInfo& Templ)
 {
+    // VFALCO What's going on here? Missing code?
 }
 
 bool
@@ -635,7 +638,8 @@ emitBlock(
 
 void
 ClangDocBitcodeWriter::
-emitBlock(NamespaceInfo const& I)
+emitBlock(
+    NamespaceInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
     emitRecord(I.USR, NAMESPACE_USR);
@@ -651,11 +655,95 @@ emitBlock(NamespaceInfo const& I)
     for (const auto& C : I.Children.Records)
         emitBlock(C, FieldId::F_child_record);
     for (auto const& C : I.Children.Functions)
-        emitBlock(C);
+        emitBlock(C, FieldId::F_child_function);
     for (const auto& C : I.Children.Enums)
         emitBlock(C);
     for (const auto& C : I.Children.Typedefs)
         emitBlock(C);
+}
+
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    RecordInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
+    emitRecord(I.USR, RECORD_USR);
+    emitRecord(I.Name, RECORD_NAME);
+    emitRecord(I.Path, RECORD_PATH);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    emitBlock(I.javadoc);
+    for (const auto& CI : I.Description)
+        emitBlock(CI);
+    if (I.DefLoc)
+        emitRecord(*I.DefLoc, RECORD_DEFLOCATION);
+    for (const auto& L : I.Loc)
+        emitRecord(L, RECORD_LOCATION);
+    emitRecord(I.TagType, RECORD_TAG_TYPE);
+    emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
+    for (const auto& N : I.Members)
+        emitBlock(N);
+    for (const auto& P : I.Parents)
+        emitBlock(P, FieldId::F_parent);
+    for (const auto& P : I.VirtualParents)
+        emitBlock(P, FieldId::F_vparent);
+    for (const auto& PB : I.Bases)
+        emitBlock(PB);
+    for (const auto& C : I.Children.Records)
+        emitBlock(C, FieldId::F_child_record);
+    for (auto const& C : I.Children.Functions)
+        emitBlock(C, FieldId::F_child_function);
+    for (const auto& C : I.Children.Enums)
+        emitBlock(C);
+    for (const auto& C : I.Children.Typedefs)
+        emitBlock(C);
+    if (I.Template)
+        emitBlock(*I.Template);
+}
+
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    BaseRecordInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_BASE_RECORD_BLOCK_ID);
+    emitRecord(I.USR, BASE_RECORD_USR);
+    emitRecord(I.Name, BASE_RECORD_NAME);
+    emitRecord(I.Path, BASE_RECORD_PATH);
+    emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
+    emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
+    emitRecord(I.Access, BASE_RECORD_ACCESS);
+    emitRecord(I.IsParent, BASE_RECORD_IS_PARENT);
+    for (const auto& M : I.Members)
+        emitBlock(M);
+}
+
+void
+ClangDocBitcodeWriter::
+emitBlock(
+    FunctionInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
+    emitRecord(I.USR, FUNCTION_USR);
+    emitRecord(I.Name, FUNCTION_NAME);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    emitBlock(I.javadoc);
+    for (const auto& CI : I.Description)
+        emitBlock(CI);
+    emitRecord(I.Access, FUNCTION_ACCESS);
+    emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
+    if (I.DefLoc)
+        emitRecord(*I.DefLoc, FUNCTION_DEFLOCATION);
+    for (const auto& L : I.Loc)
+        emitRecord(L, FUNCTION_LOCATION);
+    emitBlock(I.Parent, FieldId::F_parent);
+    emitBlock(I.ReturnType);
+    for (const auto& N : I.Params)
+        emitBlock(N);
+    if (I.Template)
+        emitBlock(*I.Template);
 }
 
 void
@@ -695,91 +783,8 @@ emitBlock(
 
 void
 ClangDocBitcodeWriter::
-emitBlock(RecordInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
-    emitRecord(I.USR, RECORD_USR);
-    emitRecord(I.Name, RECORD_NAME);
-    emitRecord(I.Path, RECORD_PATH);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    emitBlock(I.javadoc);
-    for (const auto& CI : I.Description)
-        emitBlock(CI);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, RECORD_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, RECORD_LOCATION);
-    emitRecord(I.TagType, RECORD_TAG_TYPE);
-    emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
-    for (const auto& N : I.Members)
-        emitBlock(N);
-    for (const auto& P : I.Parents)
-        emitBlock(P, FieldId::F_parent);
-    for (const auto& P : I.VirtualParents)
-        emitBlock(P, FieldId::F_vparent);
-    for (const auto& PB : I.Bases)
-        emitBlock(PB);
-    for (const auto& C : I.Children.Records)
-        emitBlock(C, FieldId::F_child_record);
-    for (auto const& C : I.Children.Functions)
-        emitBlock(C);
-    for (const auto& C : I.Children.Enums)
-        emitBlock(C);
-    for (const auto& C : I.Children.Typedefs)
-        emitBlock(C);
-    if (I.Template)
-        emitBlock(*I.Template);
-}
-
-void
-ClangDocBitcodeWriter::
-emitBlock(BaseRecordInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_BASE_RECORD_BLOCK_ID);
-    emitRecord(I.USR, BASE_RECORD_USR);
-    emitRecord(I.Name, BASE_RECORD_NAME);
-    emitRecord(I.Path, BASE_RECORD_PATH);
-    emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
-    emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
-    emitRecord(I.Access, BASE_RECORD_ACCESS);
-    emitRecord(I.IsParent, BASE_RECORD_IS_PARENT);
-    for (const auto& M : I.Members)
-        emitBlock(M);
-    for (auto const& C : I.Children.Functions)
-        emitBlock(C);
-}
-
-void
-ClangDocBitcodeWriter::
 emitBlock(
-    FunctionInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
-    emitRecord(I.USR, FUNCTION_USR);
-    emitRecord(I.Name, FUNCTION_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    emitBlock(I.javadoc);
-    for (const auto& CI : I.Description)
-        emitBlock(CI);
-    emitRecord(I.Access, FUNCTION_ACCESS);
-    emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, FUNCTION_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, FUNCTION_LOCATION);
-    emitBlock(I.Parent, FieldId::F_parent);
-    emitBlock(I.ReturnType);
-    for (const auto& N : I.Params)
-        emitBlock(N);
-    if (I.Template)
-        emitBlock(*I.Template);
-}
-
-void
-ClangDocBitcodeWriter::
-emitBlock(TemplateInfo const& T)
+    TemplateInfo const& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_BLOCK_ID);
     for (const auto& P : T.Params)
@@ -820,11 +825,11 @@ dispatchInfoForWrite(Info* I)
     case InfoType::IT_record:
         emitBlock(*static_cast<clang::mrdox::RecordInfo*>(I));
         break;
-    case InfoType::IT_enum:
-        emitBlock(*static_cast<clang::mrdox::EnumInfo*>(I));
-        break;
     case InfoType::IT_function:
         emitBlock(*static_cast<clang::mrdox::FunctionInfo*>(I));
+        break;
+    case InfoType::IT_enum:
+        emitBlock(*static_cast<clang::mrdox::EnumInfo*>(I));
         break;
     case InfoType::IT_typedef:
         emitBlock(*static_cast<clang::mrdox::TypedefInfo*>(I));
