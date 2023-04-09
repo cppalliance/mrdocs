@@ -649,9 +649,8 @@ emitInfo(const NamespaceDecl* D, const FullComment* FC, int LineNumber,
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
-    I->Name = D->isAnonymousNamespace()
-        ? llvm::SmallString<16>("@nonymous_namespace")
-        : I->Name;
+    if(D->isAnonymousNamespace())
+        I->Name = "@nonymous_namespace";
     I->Path = getInfoRelativePath(I->Namespace);
     if (I->Namespace.empty() && I->USR == SymbolID())
         return { std::unique_ptr<Info>{std::move(I)}, nullptr };
