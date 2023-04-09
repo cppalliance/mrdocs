@@ -225,7 +225,7 @@ build(
                 auto ReadInfos = Reader.readBitcode();
                 if(! ReadInfos)
                 {
-                    R.failed("Reader.readBitcode", ReadInfos.takeError());
+                    R.failed(ReadInfos.takeError());
                     GotFailure = true;
                     return;
                 }

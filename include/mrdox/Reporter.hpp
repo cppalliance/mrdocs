@@ -46,6 +46,11 @@ struct Reporter
         return EXIT_FAILURE;
     }
 
+    /** Report a non-successful Error
+    */
+    void
+    failed(llvm::Error&& err);
+
     /** Report the failure of an action.
 
         @param action   The operation which failed.
@@ -101,6 +106,11 @@ struct Reporter
         std::lock_guard<llvm::sys::Mutex> lock(m_);
         llvm::errs() << s << '\n';
     }
+
+    static
+    llvm::StringRef
+    makeString(
+        std::source_location const& loc);
 
 private:
     /** Return a string formatted from arguments.
@@ -185,10 +195,6 @@ private:
     {
         os << makeString(loc);
     }
-
-    llvm::StringRef
-    makeString(
-        std::source_location const& loc) const;
 
 private:
     llvm::sys::Mutex mutable m_;

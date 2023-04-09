@@ -25,10 +25,17 @@ namespace mrdox {
 //
 //------------------------------------------------
 
+void
+Reporter::
+failed(llvm::Error&& err)
+{
+    errs("error: ", std::move(err));
+}
+
 llvm::StringRef
 Reporter::
 makeString(
-    std::source_location const& loc) const
+    std::source_location const& loc)
 {
     namespace path = llvm::sys::path;
 

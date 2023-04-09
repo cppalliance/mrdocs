@@ -10,9 +10,10 @@
 //
 
 #include "BitcodeReader.h"
-#include "llvm/ADT/IndexedMap.h"
-#include "llvm/Support/Error.h"
-#include "llvm/Support/raw_ostream.h"
+#include <mrdox/Error.hpp>
+#include <llvm/ADT/IndexedMap.h>
+#include <llvm/Support/Error.h>
+#include <llvm/Support/raw_ostream.h>
 
 namespace clang {
 namespace mrdox {
@@ -47,8 +48,7 @@ decodeRecord(
     llvm::StringRef Blob)
 {
     if (R[0] != BitCodeConstants::USRHashSize)
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "incorrect USR size");
+        return makeError("incorrect USR size");
 
     // First position in the record is the length of the following array, so we
     // copy the following elements to the field.
@@ -74,8 +74,7 @@ decodeRecord(
     llvm::StringRef Blob)
 {
     if (R[0] > INT_MAX)
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "integer too large to parse");
+        return makeError("integer too large to parse");
     Field = (int)R[0];
     return llvm::Error::success();
 }
@@ -95,8 +94,7 @@ decodeRecord(
         Field = (AccessSpecifier)R[0];
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid value for AccessSpecifier");
+        return makeError("invalid value for AccessSpecifier");
     }
 }
 
@@ -116,8 +114,7 @@ decodeRecord(
         Field = (TagTypeKind)R[0];
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid value for TagTypeKind");
+        return makeError("invalid value for TagTypeKind");
     }
 }
 
@@ -128,8 +125,7 @@ decodeRecord(
     llvm::StringRef Blob)
 {
     if (R[0] > INT_MAX)
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "integer too large to parse");
+        return makeError("integer too large to parse");
     Field.emplace((int)R[0], Blob, (bool)R[1]);
     return llvm::Error::success();
 }
@@ -151,8 +147,7 @@ decodeRecord(
         Field = IT;
         return llvm::Error::success();
     }
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "invalid value for InfoType");
+    return makeError("invalid value for InfoType");
 }
 
 llvm::Error
@@ -174,8 +169,7 @@ decodeRecord(
         Field = F;
         return llvm::Error::success();
     }
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "invalid value for FieldId");
+    return makeError("invalid value for FieldId");
 }
 
 llvm::Error
@@ -195,8 +189,7 @@ decodeRecord(
     llvm::StringRef Blob)
 {
     if (R[0] > INT_MAX)
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "integer too large to parse");
+        return makeError("integer too large to parse");
     Field.emplace_back((int)R[0], Blob, (bool)R[1]);
     return llvm::Error::success();
 }
@@ -210,8 +203,7 @@ parseRecord(
 {
     if (ID == VERSION && R[0] == VersionNo)
         return llvm::Error::success();
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "mismatched bitcode version number");
+    return makeError("mismatched bitcode version number");
 }
 
 llvm::Error
@@ -230,8 +222,7 @@ parseRecord(
     case NAMESPACE_PATH:
         return decodeRecord(R, I->Path, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for NamespaceInfo");
+        return makeError("invalid field for NamespaceInfo");
     }
 }
 
@@ -259,8 +250,7 @@ parseRecord(
     case RECORD_IS_TYPE_DEF:
         return decodeRecord(R, I->IsTypeDef, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for RecordInfo");
+        return makeError("invalid field for RecordInfo");
     }
 }
 
@@ -288,8 +278,7 @@ parseRecord(
     case BASE_RECORD_IS_PARENT:
         return decodeRecord(R, I->IsParent, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for BaseRecordInfo");
+        return makeError("invalid field for BaseRecordInfo");
     }
 }
 
@@ -315,8 +304,7 @@ parseRecord(
     case FUNCTION_IS_METHOD:
         return decodeRecord(R, I->IsMethod, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for FunctionInfo");
+        return makeError("invalid field for FunctionInfo");
     }
 }
 
@@ -340,8 +328,7 @@ parseRecord(
     case ENUM_SCOPED:
         return decodeRecord(R, I->Scoped, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for EnumInfo");
+        return makeError("invalid field for EnumInfo");
     }
 }
 
@@ -361,8 +348,7 @@ parseRecord(
     case ENUM_VALUE_EXPR:
         return decodeRecord(R, I->ValueExpr, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for EnumValueInfo");
+        return makeError("invalid field for EnumValueInfo");
     }
 }
 
@@ -384,8 +370,7 @@ parseRecord(
     case TYPEDEF_IS_USING:
         return decodeRecord(R, I->IsUsing, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for TypedefInfo");
+        return makeError("invalid field for TypedefInfo");
     }
 }
 
@@ -413,8 +398,7 @@ parseRecord(
     case FIELD_DEFAULT_VALUE:
         return decodeRecord(R, I->DefaultValue, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for TypeInfo");
+        return makeError("invalid field for TypeInfo");
     }
 }
 
@@ -432,8 +416,7 @@ parseRecord(
     case MEMBER_TYPE_ACCESS:
         return decodeRecord(R, I->Access, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for MemberTypeInfo");
+        return makeError("invalid field for MemberTypeInfo");
     }
 }
 
@@ -451,8 +434,7 @@ parseRecord(
     case JAVADOC_DESC:
         return decodeRecord(R, jd->desc, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for Javadoc");
+        return makeError("invalid field for Javadoc");
     }
 }
 
@@ -488,8 +470,7 @@ parseRecord(
     case COMMENT_EXPLICIT:
         return decodeRecord(R, I->Explicit, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for CommentInfo");
+        return makeError("invalid field for CommentInfo");
     }
 }
 
@@ -514,8 +495,7 @@ parseRecord(
     case REFERENCE_FIELD:
         return decodeRecord(R, F, Blob);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid field for Reference");
+        return makeError("invalid field for Reference");
     }
 }
 
@@ -527,8 +507,7 @@ parseRecord(
     TemplateInfo* I)
 {
     // Currently there are no child records of TemplateInfo (only child blocks).
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "invalid field for TemplateParamInfo");
+    return makeError("invalid field for TemplateParamInfo");
 }
 
 llvm::Error
@@ -540,8 +519,7 @@ parseRecord(
 {
     if (ID == TEMPLATE_SPECIALIZATION_OF)
         return decodeRecord(R, I->SpecializationOf, Blob);
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "invalid field for TemplateParamInfo");
+    return makeError("invalid field for TemplateParamInfo");
 }
 
 llvm::Error
@@ -553,8 +531,7 @@ parseRecord(
 {
     if (ID == TEMPLATE_PARAM_CONTENTS)
         return decodeRecord(R, I->Contents, Blob);
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "invalid field for TemplateParamInfo");
+    return makeError("invalid field for TemplateParamInfo");
 }
 
 //------------------------------------------------
@@ -562,8 +539,7 @@ parseRecord(
 llvm::Expected<Javadoc*>
 getJavadoc(...)
 {
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "invalid type cannot contain Javadoc");
+    return makeError("invalid type cannot contain Javadoc");
 }
 
 llvm::Expected<Javadoc*>
@@ -581,8 +557,7 @@ getJavadoc(MemberTypeInfo* I)
 //------------------------------------------------
 
 template <typename T> llvm::Expected<CommentInfo*> getCommentInfo(T I) {
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "invalid type cannot contain CommentInfo");
+    return makeError("invalid type cannot contain CommentInfo");
 }
 
 template<> llvm::Expected<CommentInfo*> getCommentInfo(FunctionInfo* I) {
@@ -627,8 +602,7 @@ llvm::Error
 addTypeInfo(
     T I, TTypeInfo&& TI)
 {
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "invalid type cannot contain TypeInfo");
+    return makeError("invalid type cannot contain TypeInfo");
 }
 
 template<> llvm::Error addTypeInfo(RecordInfo* I, MemberTypeInfo&& T) {
@@ -668,8 +642,7 @@ addReference(
     Reference&& R,
     FieldId F)
 {
-    return llvm::createStringError(llvm::inconvertibleErrorCode(),
-        "invalid type cannot contain Reference");
+    return makeError("invalid type cannot contain Reference");
 }
 
 template<>
@@ -685,8 +658,7 @@ addReference(
         I->Type = std::move(R);
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid type cannot contain Reference");
+        return makeError("invalid type cannot contain Reference");
     }
 }
 
@@ -702,8 +674,7 @@ addReference(
         I->Type = std::move(R);
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid type cannot contain Reference");
+        return makeError("invalid type cannot contain Reference");
     }
 }
 
@@ -720,8 +691,7 @@ addReference(
         I->Type = std::move(R);
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid type cannot contain Reference");
+        return makeError("invalid type cannot contain Reference");
     }
 }
 
@@ -738,8 +708,7 @@ addReference(
         I->Namespace.emplace_back(std::move(R));
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid type cannot contain Reference");
+        return makeError("invalid type cannot contain Reference");
     }
 }
 
@@ -756,8 +725,7 @@ addReference(
         I->Namespace.emplace_back(std::move(R));
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid type cannot contain Reference");
+        return makeError("invalid type cannot contain Reference");
     }
 }
 
@@ -783,8 +751,7 @@ addReference(
         I->Children.Functions.emplace_back(std::move(R));
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid type cannot contain Reference");
+        return makeError("invalid type cannot contain Reference");
     }
 }
 
@@ -804,8 +771,7 @@ addReference(
         I->Parent = std::move(R);
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid type cannot contain Reference");
+        return makeError("invalid type cannot contain Reference");
     }
 }
 
@@ -834,8 +800,7 @@ addReference(
         I->Children.Functions.emplace_back(std::move(R));
         return llvm::Error::success();
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid type cannot contain Reference");
+        return makeError("invalid type cannot contain Reference");
     }
 }
 
@@ -1033,8 +998,7 @@ readBlock(unsigned ID, T I)
         switch (Res)
         {
         case Cursor::BadBlock:
-            return llvm::createStringError(llvm::inconvertibleErrorCode(),
-                "bad block found");
+            return makeError("bad block found");
         case Cursor::BlockEnd:
             return llvm::Error::success();
         case Cursor::BlockBegin:
@@ -1173,8 +1137,7 @@ readSubBlock(
         return llvm::Error::success();
     }
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "invalid subblock type");
+        return makeError("invalid subblock type");
     }
 }
 
@@ -1236,8 +1199,7 @@ ClangDocBitcodeReader::
 validateStream()
 {
     if (Stream.AtEndOfStream())
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "premature end of stream");
+        return makeError("premature end of stream");
 
     // Sniff for the signature.
     for (int i = 0; i != 4; ++i)
@@ -1246,8 +1208,7 @@ validateStream()
         if (!MaybeRead)
             return MaybeRead.takeError();
         else if (MaybeRead.get() != BitCodeConstants::Signature[i])
-            return llvm::createStringError(llvm::inconvertibleErrorCode(),
-                "invalid bitcode signature");
+            return makeError("invalid bitcode signature");
     }
     return llvm::Error::success();
 }
@@ -1262,8 +1223,7 @@ readBlockInfoBlock()
         return MaybeBlockInfo.takeError();
     BlockInfo = MaybeBlockInfo.get();
     if (!BlockInfo)
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "unable to parse BlockInfoBlock");
+        return makeError("unable to parse BlockInfoBlock");
     Stream.setBlockInfo(&*BlockInfo);
     return llvm::Error::success();
 }
@@ -1296,8 +1256,7 @@ readBlockToInfo(
     case BI_TYPEDEF_BLOCK_ID:
         return createInfo<TypedefInfo>(ID);
     default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "cannot create info");
+        return makeError("cannot create info");
     }
 }
 
@@ -1316,8 +1275,7 @@ ClangDocBitcodeReader::readBitcode()
         if (!MaybeCode)
             return MaybeCode.takeError();
         if (MaybeCode.get() != llvm::bitc::ENTER_SUBBLOCK)
-            return llvm::createStringError(llvm::inconvertibleErrorCode(),
-                "no blocks in input");
+            return makeError("no blocks in input");
         Expected<unsigned> MaybeID = Stream.ReadSubBlockID();
         if (!MaybeID)
             return MaybeID.takeError();
@@ -1330,8 +1288,7 @@ ClangDocBitcodeReader::readBitcode()
         case BI_JAVADOC_BLOCK_ID:
         case BI_COMMENT_BLOCK_ID:
         case BI_REFERENCE_BLOCK_ID:
-            return llvm::createStringError(llvm::inconvertibleErrorCode(),
-                "invalid top level block");
+            return makeError("invalid top level block");
         case BI_NAMESPACE_BLOCK_ID:
         case BI_RECORD_BLOCK_ID:
         case BI_FUNCTION_BLOCK_ID:
