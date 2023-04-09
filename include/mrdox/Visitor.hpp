@@ -26,6 +26,7 @@
 #include <clang/AST/ASTConsumer.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <utility>
+#include <unordered_map>
 
 namespace clang {
 namespace mrdox {
@@ -38,9 +39,18 @@ class Visitor
     : public RecursiveASTVisitor<Visitor>
     , public ASTConsumer
 {
+    struct FileFilter
+    {
+        llvm::SmallString<0> prefix;
+        bool exclude = true;
+    };
+
     bool handleTranslationUnit_ = false;
     tooling::ExecutionContext& exc_;
     Config const& config_;
+    std::unordered_map<
+        clang::SourceLocation::UIntTy,
+        FileFilter> fileFilter_;
 
 public:
     Visitor(

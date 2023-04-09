@@ -352,9 +352,11 @@ writeInfo(
     Info const& I)
 {
     writeTagLine("extract-name", I.extractName());
+#if 0
     auto relPath = I.getRelativeFilePath(config_.SourceRoot);
     if(! relPath.empty())
         writeTagLine("rel-path", relPath);
+#endif
     writeTagLine("base-name", I.getFileBaseName());
 }
 

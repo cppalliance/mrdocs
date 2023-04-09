@@ -48,7 +48,7 @@ struct Config
     // Directory where processed files are stored. Links
     // to definition locations will only be generated if
     // the file is in this dir.
-    std::string SourceRoot;
+    std::vector<llvm::SmallString<0>> includePaths;
                                                       
     // URL of repository that hosts code used
     // for links to definition locations.
@@ -61,7 +61,16 @@ public:
     Config(Config&&) = delete;
     Config& operator=(Config&&) = delete;
 
-    bool shouldSkipFile(llvm::StringRef filePath) const noexcept;
+    /** Returns true if the file should be skipped.
+
+        If the file is not skipped, then prefixPath
+        is set to the portion of the file path which
+        should be be removed for matching files.
+    */
+    bool
+    filterFile(
+        llvm::StringRef filePath,
+        llvm::SmallVectorImpl<char>& prefixPath) const noexcept;
 
 public:
     struct filter { std::vector<std::string> include, exclude; };

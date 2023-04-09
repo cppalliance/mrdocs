@@ -71,15 +71,6 @@ OutDirectory(
 
 static
 llvm::cl::opt<std::string>
-SourceRoot(
-    "source-root", llvm::cl::desc(R"(
-Directory where processed files are stored.
-Links to definition locations will only be
-generated if the file is in this dir.)"),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<std::string>
     ConfigPath(
     "config-file",
     llvm::cl::desc(R"(The config filename relative to the repository root)"),

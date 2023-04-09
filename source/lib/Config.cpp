@@ -49,15 +49,6 @@ namespace mrdox {
 Config::
 Config()
 {
-    if (auto p = ::getenv("MRDOX_SOURCE_ROOT"))
-        SourceRoot = p;
-    else
-    {
-        llvm::SmallString<128> SourceRootDir;
-        llvm::sys::fs::current_path(SourceRootDir);
-        SourceRoot = SourceRootDir.c_str();
-    }
-
     if (auto p = ::getenv("MRDOX_REPOSITORY_URL"))
         RepositoryUrl.emplace(p);
     else if (auto q = ::getenv("DRONE_REMOTE_URL"))
@@ -66,10 +57,27 @@ Config()
 
 bool
 Config::
-shouldSkipFile(
-    llvm::StringRef filePath) const noexcept
+filterFile(
+    llvm::StringRef filePath,
+    llvm::SmallVectorImpl<char>& prefixPath) const noexcept
 {
-    return false;
+    namespace path = llvm::sys::path;
+
+    for(auto const s : includePaths)
+    {
+        if(filePath.starts_with(s))
+        {
+            prefixPath = s;
+            if(! path::is_separator(prefixPath.back()))
+            {
+                auto const sep = path::get_separator();
+                prefixPath.insert(prefixPath.end(),
+                    sep.begin(), sep.end());
+            }
+            return false;
+        }
+    }
+    return true;
 }
 
 std::error_code
@@ -78,6 +86,7 @@ load(
     const std::string & name,
     const std::source_location & loc)
 {
+#if 0
     auto ct = llvm::MemoryBuffer::getFile(SourceRoot + "/" + name);
     if (!ct)
         return ct.getError();
@@ -87,7 +96,7 @@ load(
     yin >> *this;
     if ( yin.error() )
         return yin.error();
-
+#endif
     return {};
 }
 

@@ -191,10 +191,19 @@ testResult(
 int
 testMain(int argc, const char** argv)
 {
+    namespace path = llvm::sys::path;
+
     Config config;
     Reporter R;
-    auto const gen = makeXMLGenerator();
+ 
+    for(int i = 1; i < argc; ++i)
+    {
+        llvm::SmallString<0> s(argv[i]);
+        path::remove_dots(s, true);
+        config.includePaths.emplace_back(std::move(s));
+    }
 
+    auto const gen = makeXMLGenerator();
     llvm::ThreadPool Pool(llvm::hardware_concurrency(
         tooling::ExecutorConcurrency));
     for(int i = 1; i < argc; ++i)

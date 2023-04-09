@@ -22,6 +22,7 @@
 #include <clang/Index/USRGeneration.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Error.h>
+#include <llvm/Support/Path.h>
 
 namespace clang {
 namespace mrdox {
@@ -41,26 +42,48 @@ bool
 Visitor::
 mapDecl(T const* D)
 {
+    namespace path = llvm::sys::path;
+
     clang::SourceManager const& sm =
         D->getASTContext().getSourceManager();
-    clang::SourceLocation const loc = D->getLocation();
 
-    if(sm.isInSystemHeader(loc))
+    if(sm.isInSystemHeader(D->getLocation()))
     {
         // skip system header
         return true;
     }
 
-    if (D->getParentFunctionOrMethod())
+    if(D->getParentFunctionOrMethod())
     {
         // skip function-local declarations
         return true;
     }
 
-    llvm::SmallString<128> filePath;
-    filePath = sm.getPresumedLoc(D->getBeginLoc()).getFilename();
-    if(config_.shouldSkipFile(filePath))
-        return true;
+    llvm::SmallString<512> filePath;
+    clang::PresumedLoc const loc =
+        sm.getPresumedLoc(D->getBeginLoc());
+    auto result = fileFilter_.emplace(
+        loc.getIncludeLoc().getRawEncoding(),
+        FileFilter());
+    if(result.second)
+    {
+        // new element
+        filePath = loc.getFilename();
+        FileFilter& ff = result.first->second;
+        ff.exclude = config_.filterFile(filePath, ff.prefix);
+        if(ff.exclude)
+            return true;
+        path::replace_path_prefix(filePath, ff.prefix, "");
+    }
+    else
+    {
+        // existing element
+        FileFilter const& ff = result.first->second;
+        if(ff.exclude)
+            return true;
+        filePath = loc.getFilename();
+        path::replace_path_prefix(filePath, ff.prefix, "");
+    }
 
     // If there is an error generating a USR for the decl, skip this decl.
     {
@@ -72,14 +95,13 @@ mapDecl(T const* D)
         }
     }
 
-    bool IsFileInRootDir;
-    llvm::SmallString<128> File =
-        getFile(D, D->getASTContext(), config_.SourceRoot, IsFileInRootDir);
+    // VFALCO is this right?
+    bool const IsFileInRootDir = true;
     auto I = emitInfo(
         D,
         getComment(D, D->getASTContext()),
         getLine(D, D->getASTContext()),
-        File,
+        filePath,
         IsFileInRootDir,
         config_.PublicOnly);
 
@@ -176,32 +198,6 @@ getLine(
 {
     return Context.getSourceManager().getPresumedLoc(
         D->getBeginLoc()).getLine();
-}
-
-llvm::SmallString<128>
-Visitor::
-getFile(NamedDecl const* D,
-    ASTContext const& Context,
-    llvm::StringRef RootDir,
-    bool& IsFileInRootDir) const
-{
-    llvm::SmallString<128> File(
-        Context.getSourceManager()
-            .getPresumedLoc(D->getBeginLoc())
-            .getFilename());
-    IsFileInRootDir = false;
-    if (RootDir.empty() || !File.startswith(RootDir))
-        return File;
-    IsFileInRootDir = true;
-    llvm::SmallString<128> Prefix(RootDir);
-    // replace_path_prefix removes the exact prefix provided. The result of
-    // calling that function on ("A/B/C.c", "A/B", "") would be "/C.c", which
-    // starts with a / that is not needed. This is why we fix Prefix so it always
-    // ends with a / and the result has the desired format.
-    if (!llvm::sys::path::is_separator(Prefix.back()))
-        Prefix += llvm::sys::path::get_separator();
-    llvm::sys::path::replace_path_prefix(File, Prefix, "");
-    return File;
 }
 
 } // mrdox
