@@ -145,9 +145,9 @@ reportResult(
     tooling::ExecutionContext& exc,
     Info const& I)
 {
+    std::string s = serialize(I);
     exc.reportResult(
-        llvm::toStringRef(I.USR),
-        serialize(I));
+        llvm::toStringRef(I.USR), std::move(s));
 }
 
 //------------------------------------------------

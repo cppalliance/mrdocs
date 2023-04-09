@@ -133,7 +133,7 @@ visitDirectory(
 }
 
 void
-testResult(
+performTest(
     Corpus const& corpus,
     Config const& config,
     llvm::StringRef file,
@@ -205,42 +205,48 @@ testMain(
 {
     namespace path = llvm::sys::path;
 
-    Config config;
-
-    // Add all command line arguments as include paths
+    // Each command line argument is processed
+    // as a directory which will be iterated
+    // recursively for tests.
     for(int i = 1; i < argc; ++i)
     {
-        llvm::SmallString<0> s(argv[i]);
-        path::remove_dots(s, true);
-        config.includePaths.emplace_back(std::move(s));
-    }
-
-    auto const gen = makeXMLGenerator();
-    llvm::ThreadPool Pool(llvm::hardware_concurrency(
-        tooling::ExecutorConcurrency));
-    for(int i = 1; i < argc; ++i)
-    {
-        visitDirectory(
-            llvm::StringRef(argv[i]), R,
-        [&](llvm::StringRef dir_,
-            llvm::StringRef file_,
-            llvm::StringRef out_)
+        Config config;
         {
-            Pool.async([&config, &R, &gen,
-                dir = dir_.str(),
-                file = file_.str(),
-                out = out_.str()]
+            llvm::SmallString<0> s(argv[i]);
+            path::remove_dots(s, true);
+            config.includePaths.emplace_back(std::move(s));
+        }
+
+        // Use the include path for the configPath
+        config.configPath = config.includePaths[0];
+
+        auto const gen = makeXMLGenerator();
+        llvm::ThreadPool Pool(llvm::hardware_concurrency(
+            tooling::ExecutorConcurrency));
+        for(int i = 1; i < argc; ++i)
+        {
+            visitDirectory(
+                llvm::StringRef(argv[i]), R,
+            [&](llvm::StringRef dir_,
+                llvm::StringRef file_,
+                llvm::StringRef out_)
             {
-                SingleFile db(dir, file, out);
-                tooling::StandaloneToolExecutor ex(
-                    db, { std::string(file) });
-                auto corpus = Corpus::build(ex, config, R);
-                if(corpus)
-                    testResult(*corpus, config, file, out, *gen, R);
+                Pool.async([&config, &R, &gen,
+                    dir = dir_.str(),
+                    file = file_.str(),
+                    out = out_.str()]
+                {
+                    SingleFile db(dir, file, out);
+                    tooling::StandaloneToolExecutor ex(
+                        db, { std::string(file) });
+                    auto corpus = Corpus::build(ex, config, R);
+                    if(corpus)
+                        performTest(*corpus, config, file, out, *gen, R);
+                });
             });
-        });
+        }
+        Pool.wait();
     }
-    Pool.wait();
 }
 
 } // mrdox
@@ -250,6 +256,7 @@ int
 main(int argc, const char** argv)
 {
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
+
     clang::mrdox::Reporter R;
     clang::mrdox::testMain(argc, argv, R);
     return R.getExitCode();

@@ -49,28 +49,6 @@ struct llvm::yaml::MappingTraits<
 namespace clang {
 namespace mrdox {
 
-bool
-Config::
-filterSourceFile(
-    llvm::StringRef filePath,
-    llvm::SmallVectorImpl<char>& prefixPath) const noexcept
-{
-    return false;
-    namespace path = llvm::sys::path;
-
-    llvm::SmallString<32> temp;
-    for(auto const& s : includePaths)
-    {
-        temp = filePath;
-        if(path::replace_path_prefix(temp, s, ""))
-        {
-            prefixPath.assign(s.begin(), s.end());
-            return false;
-        }
-    }
-    return true;
-}
-
 // Make the path end in a separator
 static
 void
@@ -83,6 +61,28 @@ makeDirsy(
         auto const sep = path::get_separator();
         s.insert(s.end(), sep.begin(), sep.end());
     }
+}
+
+bool
+Config::
+filterSourceFile(
+    llvm::StringRef filePath,
+    llvm::SmallVectorImpl<char>& prefixPath) const noexcept
+{
+    namespace path = llvm::sys::path;
+
+    llvm::SmallString<32> temp;
+    for(auto const& s : includePaths)
+    {
+        temp = filePath;
+        if(path::replace_path_prefix(temp, s, ""))
+        {
+            prefixPath.assign(s.begin(), s.end());
+            makeDirsy(prefixPath);
+            return false;
+        }
+    }
+    return true;
 }
 
 bool

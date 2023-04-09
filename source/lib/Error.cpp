@@ -11,6 +11,7 @@
 
 #include <mrdox/Error.hpp>
 #include <mrdox/Reporter.hpp>
+#include <utility>
 
 namespace clang {
 namespace mrdox {
@@ -20,16 +21,16 @@ namespace {
 class ErrorInfoPlus
     : public llvm::ErrorInfo<ErrorInfoPlus>
 {
-    std::string what_;
+    std::string action_;
     std::source_location loc_;
 
 public:
     static char ID;
 
     ErrorInfoPlus(
-        llvm::StringRef what,
+        std::string action,
         std::source_location loc)
-        : what_(what)
+        : action_(std::move(action))
         , loc_(loc)
     {
     }
@@ -38,7 +39,7 @@ public:
     log(
         llvm::raw_ostream &os) const override
     {
-        os << what_ << " at " << Reporter::makeString(loc_);
+        os << action_ << " at " << Reporter::makeString(loc_);
     }
 
     std::error_code
@@ -60,10 +61,19 @@ char ErrorInfoPlus::ID{};
 
 llvm::Error
 makeError(
-    llvm::StringRef what,
+    std::string action,
     std::source_location loc)
 {
-    return llvm::make_error<ErrorInfoPlus>(what, loc);
+    return llvm::make_error<ErrorInfoPlus>(std::move(action), loc);
+}
+
+llvm::Error
+makeError(
+    std::string action,
+    std::string because,
+    std::source_location loc)
+{
+    return llvm::make_error<ErrorInfoPlus>(std::move(action), loc);
 }
 
 } // mrdox
