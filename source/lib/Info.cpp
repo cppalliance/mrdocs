@@ -106,6 +106,7 @@ getRelativeFilePath(
         IT, Path, extractName(), CurrentPath);
 }
 
+/*
 llvm::SmallString<16>
 Info::
 getFileBaseName() const
@@ -114,6 +115,7 @@ getFileBaseName() const
         return llvm::SmallString<16>("index");
     return extractName();
 }
+*/
 
 //------------------------------------------------
 

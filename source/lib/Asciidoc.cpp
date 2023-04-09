@@ -338,8 +338,8 @@ writeNameLink(
     llvm::SmallString<64> Path = R.getRelativeFilePath(CurrentPath);
     // Paths in Markdown use POSIX separators.
     llvm::sys::path::native(Path, llvm::sys::path::Style::posix);
-    llvm::sys::path::append(Path, llvm::sys::path::Style::posix,
-        R.getFileBaseName() + ".adoc");
+    //llvm::sys::path::append(Path, llvm::sys::path::Style::posix, R.getFileBaseName() + ".adoc");
+    llvm::sys::path::append(Path, llvm::sys::path::Style::posix, R.Name + ".adoc");
     os << "xref:" << Path << "#" << R.Name << "[" << R.Name << "]";
 }
 

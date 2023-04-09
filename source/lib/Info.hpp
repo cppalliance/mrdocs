@@ -81,7 +81,7 @@ struct Info
     llvm::SmallString<64> getRelativeFilePath(llvm::StringRef const& CurrentPath) const;
 
     /// Returns the basename that should be used for this Info.
-    llvm::SmallString<16> getFileBaseName() const;
+    //llvm::SmallString<16> getFileBaseName() const;
 
     /** Return the fully qualified name.
     */

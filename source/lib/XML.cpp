@@ -336,8 +336,7 @@ write(
         //{ "usr", toString(ref.USR) }
         //});
     //writeTagLine("relpath", ref.getRelativeFilePath());
-    writeTagLine("basename",
-        I.getFileBaseName());
+    //writeTagLine("basename",I.getFileBaseName());
     writeTagLine("name", I.Name);
     writeTagLine("tag", std::to_string(static_cast<int>(I.RefType)));
     writeTagLine("path", I.Path);
@@ -351,13 +350,13 @@ Writer::
 writeInfo(
     Info const& I)
 {
-    writeTagLine("extract-name", I.extractName());
 #if 0
+    writeTagLine("extract-name", I.extractName());
     auto relPath = I.getRelativeFilePath(config_.SourceRoot);
     if(! relPath.empty())
         writeTagLine("rel-path", relPath);
-#endif
     writeTagLine("base-name", I.getFileBaseName());
+#endif
 }
 
 void

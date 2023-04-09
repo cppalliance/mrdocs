@@ -24,6 +24,7 @@ getRelativeFilePath(
         RefType, Path, Name, CurrentPath);
 }
 
+/*
 llvm::SmallString<16>
 Reference::
 getFileBaseName() const
@@ -32,6 +33,7 @@ getFileBaseName() const
         return llvm::SmallString<16>("index");
     return Name;
 }
+*/
 
 bool
 Reference::

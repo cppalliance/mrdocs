@@ -3,10 +3,6 @@
     <symbol name="N" usr="rjlMNXAaWNMkQYMTJzRA1DR0DiE="/>
 </all>
 <namespace name="">
-    <extract-name>GlobalNamespace</extract-name>
-    <base-name>index</base-name>
     <namespace name="N" usr="rjlMNXAaWNMkQYMTJzRA1DR0DiE=">
-        <extract-name>N</extract-name>
-        <base-name>index</base-name>
     </namespace>
 </namespace>

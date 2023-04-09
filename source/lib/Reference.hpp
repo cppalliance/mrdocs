@@ -86,7 +86,7 @@ struct Reference
     llvm::SmallString<64> getRelativeFilePath(llvm::StringRef const& CurrentPath) const;
 
     /// Returns the basename that should be used for this Reference.
-    llvm::SmallString<16> getFileBaseName() const;
+    //llvm::SmallString<16> getFileBaseName() const;
 };
 
 } // mrdox
