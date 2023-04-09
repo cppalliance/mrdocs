@@ -554,7 +554,7 @@ NamespaceInfo const*
 XMLGenerator::
 findGlobalNamespace()
 {
-    for(auto const& g : corpus_->USRToInfo)
+    for(auto const& g : corpus_->InfoMap)
     {
         auto const& inf = *g.getValue().get();
         if( inf.Name == "" &&

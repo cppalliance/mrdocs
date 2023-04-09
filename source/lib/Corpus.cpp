@@ -34,8 +34,8 @@ Corpus::
 find(
     SymbolID const& id) const noexcept
 {
-    auto it = USRToInfo.find(llvm::toStringRef(id));
-    if(it != USRToInfo.end())
+    auto it = InfoMap.find(llvm::toStringRef(id));
+    if(it != InfoMap.end())
         return it->second.get();
     return nullptr;
 }
@@ -45,8 +45,8 @@ Corpus::
 at(
     SymbolID const& id) const noexcept
 {
-    auto it = USRToInfo.find(llvm::toStringRef(id));
-    assert(it != USRToInfo.end());
+    auto it = InfoMap.find(llvm::toStringRef(id));
+    assert(it != InfoMap.end());
     return *it->second.get();
 }
 
@@ -65,13 +65,13 @@ insert(std::unique_ptr<Info> Ip)
     // Store the Info in the result map
     {
         std::lock_guard<llvm::sys::Mutex> Guard(infoMutex);
-        USRToInfo[llvm::toStringRef(I.USR)] = std::move(Ip);
+        InfoMap[llvm::toStringRef(I.USR)] = std::move(Ip);
     }
 
     // Add a reference to this Info in the Index
     insertIntoIndex(I);
 
-
+    // Visit children
 }
 
 // A function to add a reference to Info in Idx.
@@ -253,7 +253,7 @@ build(
     Pool.wait();
 
     llvm::outs() <<
-        "Collected " << corpus.USRToInfo.size() << " symbols.\n";
+        "Collected " << corpus.InfoMap.size() << " symbols.\n";
 
     if(GotFailure)
     {

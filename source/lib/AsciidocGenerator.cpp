@@ -747,7 +747,7 @@ generateDocs(
 
     // Collect all output by file name and create the necessary directories.
     llvm::StringMap<std::vector<mrdox::Info*>> FileToInfos;
-    for (const auto& Group : corpus.USRToInfo)
+    for (const auto& Group : corpus.InfoMap)
     {
         mrdox::Info* Info = Group.getValue().get();
 
