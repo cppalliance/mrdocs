@@ -43,13 +43,13 @@ public:
     }
 
     std::error_code
-    convertToErrorCode() const
+    convertToErrorCode() const override
     {
         return llvm::inconvertibleErrorCode();
     }
 
     void const*
-    dynamicClassID() const
+    dynamicClassID() const override
     {
         return this;
     }

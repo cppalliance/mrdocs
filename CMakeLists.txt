@@ -14,12 +14,8 @@
 #
 #-------------------------------------------------
 
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.13)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-# VFALCO this is to link optimized llvm for debug builds
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL" CACHE STRING "")
-
 project(
     MrDox
     VERSION 1.0.0
@@ -28,39 +24,14 @@ project(
     LANGUAGES CXX C
 )
 
-#-------------------------------------------------
-#
-# Toolchain settings
-#
-#-------------------------------------------------
-
 set(BUILD_SHARED_LIBS OFF CACHE STRING "")
 set(CMAKE_CXX_EXTENSIONS OFF CACHE STRING "")
+# VFALCO this is to link optimized llvm for debug builds
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL" CACHE STRING "")
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON CACHE STRING "")
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL ON CACHE STRING "")
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO ON CACHE STRING "")
-
-# Windows, Win64
-if(WIN32)
-    add_definitions(
-        -D_WIN32_WINNT=0x0601
-        -D_CRT_SECURE_NO_WARNINGS
-        -D_SILENCE_CXX20_CISO646_REMOVED_WARNING
-    )
-endif()
-
-# cl.exe
-if(MSVC)
-    add_compile_options(
-        /permissive-    # strict C++
-        /W4             # enable all warnings
-        /MP             # multi-processor compilation
-        /EHsc           # C++ Exception handling
-    )
-    add_definitions(
-        -D_ITERATOR_DEBUG_LEVEL=0
-    )
-endif()
+option(MRDOX_BUILD_TESTS "Build tests" ON)
 
 #-------------------------------------------------
 #
@@ -77,32 +48,36 @@ add_definitions(${LLVM_DEFINITIONS})
 llvm_map_components_to_libnames(llvm_libs support core irreader)
 unset(CMAKE_FOLDER)
 
-if (LLVM_FOUND)
-    message(STATUS "LLVM found in ${LLVM_INCLUDE_DIRS}")
-endif ()
-if (Clang_FOUND)
-    message(STATUS "Clang found in ${CLANG_INCLUDE_DIRS}")
-endif ()
-
 #-------------------------------------------------
 #
 # Library
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE LIB_INCLUDES CONFIGURE_DEPENDS
-    include/*.hpp)
-
+file(GLOB_RECURSE LIB_INCLUDES CONFIGURE_DEPENDS include/*.hpp)
 file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     source/lib/*.h
     source/lib/*.hpp
     source/lib/*.cpp
     source/lib/*.natvis)
 
+add_library(mrdox_lib ${LIB_INCLUDES} ${LIB_SOURCES})
+target_compile_features(mrdox_lib PUBLIC cxx_std_20)
+target_include_directories(mrdox_lib PUBLIC
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
+    # VFALCO source/lib shouldn't be here it is a hack
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source/lib>")
+
+# LLVM
+target_link_libraries(mrdox_lib PUBLIC ${llvm_libs})
+target_include_directories(mrdox_lib SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
+
+# Clang
 if (CLANG_SIMPLE_LIBS)
-    set(clang_libs LLVM clang clang-cpp)
+    target_link_libraries(mrdox_lib PUBLIC LLVM clang clang-cpp)
 else()
-    set(clang_libs
+    target_link_libraries(mrdox_lib
+        PUBLIC
         clangAST
         clangBasic
         clangFrontend
@@ -111,25 +86,36 @@ else()
         clangToolingCore
         clangToolingInclusions)
 endif()
+target_include_directories(mrdox_lib SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
 
-add_library(mrdox_lib ${LIB_INCLUDES} ${LIB_SOURCES})
-target_compile_features(mrdox_lib PUBLIC cxx_std_20)
-target_include_directories(mrdox_lib PUBLIC
-    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
-    # VFALCO source/lib shouldn't be here it is a hack
-    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source/lib>"
-    ${LLVM_INCLUDE_DIRS}
-    ${CLANG_INCLUDE_DIRS}
-    PRIVATE
-    "${PROJECT_SOURCE_DIR}/source/lib")
-
-target_link_libraries(mrdox_lib
-    PUBLIC
-    ${llvm_libs}
-    ${clang_libs})
+# Windows, Win64
+if (WIN32)
+    target_compile_definitions(
+        mrdox_lib
+        PUBLIC
+        -D_WIN32_WINNT=0x0601
+        -D_CRT_SECURE_NO_WARNINGS
+        -D_SILENCE_CXX20_CISO646_REMOVED_WARNING
+    )
+    get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
+    if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
+        target_compile_definitions(mrdox_lib PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
+        target_compile_options(mrdox_lib PUBLIC /MD)
+    endif()
+    if(MSVC)
+        target_compile_options(
+            mrdox_lib
+            PUBLIC
+            /permissive-    # strict C++
+            /W4             # enable all warnings
+            /MP             # multi-processor compilation
+            /EHsc           # C++ Exception handling
+        )
+    endif()
+endif ()
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include PREFIX "" FILES ${LIB_INCLUDES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${LIB_INCLUDES})
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/lib PREFIX "source" FILES ${LIB_SOURCES})
 
 #-------------------------------------------------
@@ -138,19 +124,13 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/lib PREFIX "source" FILES $
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS
-    source/tool/*.cpp
-    source/tool/*.hpp)
-
+file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS source/tool/*.cpp source/tool/*.hpp)
 add_executable(mrdox ${TOOL_SOURCES})
 target_link_libraries(mrdox PRIVATE mrdox_lib)
-
-target_include_directories(mrdox
-    PRIVATE
-    ${PROJECT_SOURCE_DIR}/source/tool)
+target_include_directories(mrdox PRIVATE source/tool)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tool PREFIX "" FILES ${TOOL_SOURCES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL_SOURCES})
 
 #-------------------------------------------------
 #
@@ -158,16 +138,16 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tool PREFIX "" FILES ${TOOL
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS
-    source/tests/*.cpp
-    source/tests/*.hpp)
-enable_testing()
-add_executable(mrdox_tests ${TEST_SOURCES})
-target_link_libraries(mrdox_tests PRIVATE mrdox_lib ${llvm_libs})
-target_include_directories(mrdox_tests PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
-add_test(NAME mrdox_tests COMMAND mrdox_tests "${CMAKE_CURRENT_SOURCE_DIR}/testfiles")
-add_test(NAME mrdox_tests_bare COMMAND mrdox_tests "${CMAKE_CURRENT_SOURCE_DIR}/testfiles/bare")
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tests PREFIX "" FILES ${TEST_SOURCES})
+if (MRDOX_BUILD_TESTS)
+    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/tests/*.cpp source/tests/*.hpp)
+    enable_testing()
+    add_executable(mrdox_tests ${TEST_SOURCES})
+    target_link_libraries(mrdox_tests PRIVATE mrdox_lib ${llvm_libs})
+    target_include_directories(mrdox_tests PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
+    add_test(NAME mrdox_tests COMMAND mrdox_tests "${CMAKE_CURRENT_SOURCE_DIR}/testfiles")
+    add_test(NAME mrdox_tests_bare COMMAND mrdox_tests "${CMAKE_CURRENT_SOURCE_DIR}/testfiles/bare")
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tests PREFIX "source" FILES ${TEST_SOURCES})
+endif()
 
 #-------------------------------------------------

@@ -1,6 +1,6 @@
-# Mr. Dox
+= Mr. Dox
 
-## Install
+== Install
 
 This library depends on a recent version of LLVM.
 Here are the instructions to install LVVM with the settings required by this project.
@@ -28,17 +28,21 @@ cmake --build . -j <threads>
 cmake --install .
 ----
 
+== Comparison
+
 === Doxygen:
+
 * tries to work for many languages
 * use the inferior libclang API
 * old program with lots of technical debt
 * not written by me
 
 === MrDox:
+
 * narrow and deep focus on C++ only
 * uses clang's unstable libtooling API:
 ** Understands ALL C++: if clang can compile it, MrDox knows about it
 ** This includes up to C++20 and even experimental things in C++23
-* brand new program with no technical debt
+* brand-new program with no technical debt
 * written by me
 

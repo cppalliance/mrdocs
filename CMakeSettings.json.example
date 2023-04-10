@@ -1,0 +1,36 @@
+{
+  "configurations": [
+    {
+      "name": "Debug",
+      "generator": "Visual Studio 17 2022 Win64",
+      "configurationType": "Debug",
+      "buildRoot": "${workspaceRoot}/build/cmake-msvc/${name}",
+      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\Debug\"",
+      "buildCommandArgs": ""
+    },
+    {
+      "name": "DebugWithRel",
+      "generator": "Visual Studio 17 2022 Win64",
+      "configurationType": "Debug",
+      "buildRoot": "${workspaceRoot}/build/cmake-msvc/${name}",
+      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\RelWithDebInfo\"",
+      "buildCommandArgs": ""
+    },
+    {
+      "name": "RelWithDebInfo",
+      "generator": "Visual Studio 17 2022 Win64",
+      "configurationType": "RelWithDebInfo",
+      "buildRoot": "${workspaceRoot}/build/cmake-msvc/${name}",
+      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\RelWithDebInfo\"",
+      "buildCommandArgs": ""
+    },
+    {
+      "name": "Release",
+      "generator": "Visual Studio 17 2022 Win64",
+      "configurationType": "Release",
+      "buildRoot": "${workspaceRoot}/build/cmake-msvc/${name}",
+      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\Release\"",
+      "buildCommandArgs": ""
+    }
+  ]
+}
