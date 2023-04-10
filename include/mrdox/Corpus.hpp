@@ -118,8 +118,8 @@ public:
 
     /** Build the intermediate representation of the code being documented.
     */
-    static
     [[nodiscard]]
+    static
     std::unique_ptr<Corpus>
     build(
         tooling::ToolExecutor& ex,
