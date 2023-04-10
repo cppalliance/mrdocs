@@ -66,6 +66,7 @@ struct Reporter
             std::source_location::current())
     {
         errs(action, " failed: ", std::move(e), " at ", loc);
+        failed_ = true;
     }
 
     /** Report a unit test failure.

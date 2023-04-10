@@ -31,6 +31,7 @@ Reporter::
 failed(llvm::Error&& err)
 {
     errs("error: ", std::move(err));
+    failed_ = true;
 }
 
 llvm::StringRef
