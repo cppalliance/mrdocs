@@ -26,10 +26,12 @@
 namespace clang {
 namespace mrdox {
 
-namespace {
-
-struct AsciidocGenerator : Generator
+class AsciidocGenerator
+    : public Generator
 {
+public:
+    class Writer;
+
     llvm::StringRef
     name() const noexcept override
     {
@@ -64,23 +66,12 @@ struct AsciidocGenerator : Generator
         Corpus const& corpus,
         Config const& config,
         Reporter& R) const override;
-
-    bool
-    build(
-        llvm::raw_ostream& os,
-        Corpus const& corpus,
-        Config const& config,
-        Reporter& R) const;
 };
 
 //------------------------------------------------
 
-class Writer
+class AsciidocGenerator::Writer
 {
-    Corpus const& corpus_;
-    Config const& config_;
-    Reporter& R_;
-
 public:
     Writer(
         Corpus const& corpus,
@@ -92,12 +83,37 @@ public:
     {
     }
 
-    bool build(llvm::StringRef rootDir);
+    void write(llvm::StringRef rootDir);
+    void writeOne(llvm::raw_ostream& os);
 
-    bool buildOne(llvm::raw_ostream& os);
+    void writeAllSymbols();
+
+    void write(FunctionInfo const& I);
+
+    struct FormalParam;
+    void write(FormalParam const& p, llvm::raw_ostream& os);
+    FormalParam formalParam(FieldTypeInfo const& ft);
+
+    struct TypeName;
+    void write(TypeName const& tn, llvm::raw_ostream& os);
+    TypeName typeName(TypeInfo const& ti);
+
+    void openSection(llvm::StringRef name);
+    void closeSection();
+
+private:
+    struct Section
+    {
+        int level = 0;
+        std::string markup;
+    };
+
+    Corpus const& corpus_;
+    Config const& config_;
+    Reporter& R_;
+    llvm::raw_ostream* os_ = nullptr;
+    Section sect_;
 };
-
-} // (anon)
 
 } // mrdox
 } // clang

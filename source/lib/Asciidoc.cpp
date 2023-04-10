@@ -14,8 +14,6 @@
 namespace clang {
 namespace mrdox {
 
-namespace {
-
 //------------------------------------------------
 //
 // AsciidocGenerator
@@ -101,7 +99,8 @@ buildOne(
     }
 
     Writer w(corpus, config, R);
-    return w.buildOne(os);
+    w.writeOne(os);
+    return ! os.has_error();
 }
 
 bool
@@ -115,43 +114,9 @@ buildString(
     dest.clear();
     llvm::raw_string_ostream os(dest);
     Writer w(corpus, config, R);
-    return w.buildOne(os);
+    w.writeOne(os);
+    return true;
 }
-
-//------------------------------------------------
-
-#if 0
-llvm::Error
-AsciidocGenerator::
-generateDocForInfo(
-    Info* I,
-    llvm::raw_ostream& os,
-    const Config& config)
-{
-    switch (I->IT)
-    {
-    case InfoType::IT_namespace:
-        makeNamespacePage(config, *static_cast<clang::mrdox::NamespaceInfo*>(I), os);
-        break;
-    case InfoType::IT_record:
-        genMarkdown(config, *static_cast<clang::mrdox::RecordInfo*>(I), os);
-        break;
-    case InfoType::IT_enum:
-        genMarkdown(config, *static_cast<clang::mrdox::EnumInfo*>(I), os);
-        break;
-    case InfoType::IT_function:
-        genMarkdown(config, *static_cast<clang::mrdox::FunctionInfo*>(I), os);
-        break;
-    case InfoType::IT_typedef:
-        genMarkdown(config, *static_cast<clang::mrdox::TypedefInfo*>(I), os);
-        break;
-    case InfoType::IT_default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "unexpected InfoType");
-    }
-    return llvm::Error::success();
-}
-#endif
 
 //------------------------------------------------
 //
@@ -159,23 +124,220 @@ generateDocForInfo(
 //
 //------------------------------------------------
 
-bool
+void
+AsciidocGenerator::
 Writer::
-build(
+write(
     llvm::StringRef rootDir)
 {
-    return true;
 }
 
-bool
+void
+AsciidocGenerator::
 Writer::
-buildOne(
+writeOne(
     llvm::raw_ostream& os)
 {
-    return true;
+    os_ = &os;
+    openSection("Reference");
+    writeAllSymbols();
+    closeSection();
 }
 
 //------------------------------------------------
+
+void
+AsciidocGenerator::
+Writer::
+writeAllSymbols()
+{
+    for(auto const& id : corpus_.allSymbols)
+    {
+        auto const& I = corpus_.at(id);
+        switch(I.IT)
+        {
+        case InfoType::IT_function:
+            write(static_cast<FunctionInfo const&>(I));
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+//------------------------------------------------
+
+struct AsciidocGenerator::Writer::
+    FormalParam
+{
+    FieldTypeInfo const& I;
+    Writer& w;
+
+    friend
+    llvm::raw_ostream&
+    operator<<(
+        llvm::raw_ostream& os,
+        FormalParam const& t)
+    {
+        t.w.write(t, os);
+        return os;
+    }
+};
+
+struct AsciidocGenerator::Writer::
+    TypeName
+{
+    TypeInfo const& I;
+    Writer& w;
+
+    friend
+    llvm::raw_ostream&
+    operator<<(
+        llvm::raw_ostream& os,
+        TypeName const& t)
+    {
+        t.w.write(t, os);
+        return os;
+    }
+};
+
+//------------------------------------------------
+
+void
+AsciidocGenerator::
+Writer::
+write(
+    FunctionInfo const& I)
+{
+    openSection(I.Name);
+    *os_ << I.javadoc.brief << "\n\n";
+
+    openSection("Synopsis");
+    *os_ <<
+        "Located in <" <<
+        I.Loc[0].Filename << ">\n" <<
+        "[,cpp]\n"
+        "----\n";
+
+    // params
+    if(! I.Params.empty())
+    {
+        *os_ <<
+            typeName(I.ReturnType) << '\n' <<
+            I.Name << "(\n"
+            "    " << formalParam(I.Params[0]);
+        for(std::size_t i = 1; i < I.Params.size(); ++i)
+        {
+            *os_ << ",\n"
+                "    " << formalParam(I.Params[i]);
+        }
+        *os_ << ");\n";
+    }
+    else
+    {
+        *os_ << I.Name << "();" << "\n";
+    }
+
+    *os_ <<
+        "----\n";
+    closeSection();
+
+    if(! I.javadoc.desc.empty())
+    {
+        *os_ << "\n";
+        openSection("Description");
+        *os_ << I.javadoc.desc << "\n";
+        closeSection();
+    }
+
+    closeSection();
+}
+
+//------------------------------------------------
+
+void
+AsciidocGenerator::
+Writer::
+write(
+    FormalParam const& t,
+    llvm::raw_ostream& os)
+{
+    assert(&os == os_);
+    auto const& I = t.I;
+    *os_ << I.Type.Name << ' ' << I.Name;
+}
+
+auto
+AsciidocGenerator::
+Writer::
+formalParam(
+    FieldTypeInfo const& t) ->
+        FormalParam
+{
+    return FormalParam{ t, *this };
+}
+
+//------------------------------------------------
+
+void
+AsciidocGenerator::
+Writer::
+write(
+    TypeName const& t,
+    llvm::raw_ostream& os)
+{
+    assert(&os == os_);
+    if(t.I.Type.USR == EmptySID)
+    {
+        *os_ << t.I.Type.Name;
+        return;
+    }
+    auto const& I = corpus_.get<RecordInfo>(t.I.Type.USR);
+    // VFALCO add namespace qualifiers if I is in
+    //        a different namesapce
+    *os_ << I.Name;
+}
+
+auto
+AsciidocGenerator::
+Writer::
+typeName(
+    TypeInfo const& t) ->
+        TypeName
+{
+    return TypeName{ t, *this };
+}
+
+//------------------------------------------------
+
+void
+AsciidocGenerator::
+Writer::
+openSection(
+    llvm::StringRef name)
+{
+    sect_.level++;
+    if(sect_.level <= 6)
+        sect_.markup.push_back('=');
+    *os_ << sect_.markup << ' ' << name << "\n\n";
+}
+
+void
+AsciidocGenerator::
+Writer::
+closeSection()
+{
+    assert(sect_.level > 0);
+    if(sect_.level <= 6)
+        sect_.markup.pop_back();
+    sect_.level--;
+}
+
+//------------------------------------------------
+//------------------------------------------------
+//------------------------------------------------
+
+#if 0
 
 //
 // Asciidoc generation
@@ -183,7 +345,7 @@ buildOne(
 
 std::string
 genEmphasis(
-    Twine const& t)
+    llvm::Twine const& t)
 {
     return "*" + t.str() + "*";
 }
@@ -853,7 +1015,7 @@ genIndex(
     return llvm::Error::success();
 }
 
-} // (anon)
+#endif
 
 //------------------------------------------------
 
