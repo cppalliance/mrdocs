@@ -66,6 +66,7 @@ struct Generator
         llvm::StringRef rootPath,
         Corpus const& corpus,
         Config const& config,
+        const std::string & fileName,
         Reporter& R) const;
 
     /** Build single-file documentation from the corpus and configuration.

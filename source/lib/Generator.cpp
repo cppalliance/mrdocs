@@ -22,6 +22,7 @@ build(
     StringRef rootPath,
     Corpus const& corpus,
     Config const& config,
+    const std::string & FileName,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;
@@ -56,8 +57,9 @@ build(
     if(fs::is_directory(rootPath))
     {
         llvm::SmallString<512> fileName(rootPath);
-        path::append(fileName, "index");
-        path::replace_extension(fileName, extension());
+        path::append(fileName, FileName);
+        if (!path::has_extension(fileName))
+          path::replace_extension(fileName, extension());
         return buildOne(fileName, corpus, config, R);
     }
 

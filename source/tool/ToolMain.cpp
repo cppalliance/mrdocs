@@ -85,6 +85,14 @@ OutDirectory(
     llvm::cl::init("."),
     llvm::cl::cat(ToolCategory));
 
+static
+llvm::cl::opt<std::string>
+Filename(
+    "filename",
+    llvm::cl::desc("Filename of the main output. Suffix will be added if not present."),
+    llvm::cl::init("index"),
+    llvm::cl::cat(ToolCategory));
+
 } // (anon)
 
 //------------------------------------------------
@@ -147,7 +155,7 @@ toolMain(
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if(! gen->build(config.OutDirectory, *rv, config, R))
+    if(! gen->build(config.OutDirectory, *rv, config, Filename, R))
         return;
 }
 
