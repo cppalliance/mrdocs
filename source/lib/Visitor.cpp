@@ -106,8 +106,9 @@ mapDecl(T const* D)
         config_.PublicOnly,
         R_);
 
-    // A null in place of I indicates that the serializer is skipping this decl
-    // for some reason (e.g. we're only reporting public decls).
+    // A null in place of I indicates that the
+    // serializer is skipping this decl for some
+    // reason (e.g. we're only reporting public decls).
     if (I.first)
         Corpus::reportResult(exc_, *I.first);
     if (I.second)
@@ -158,8 +159,6 @@ VisitFunctionDecl(
         return true;
     return mapDecl(D);
 }
-
-// https://github.com/llvm/llvm-project/blob/466d554dcab39c3d42fe0c5b588b795e0e4b9d0d/clang/include/clang/AST/Type.h#L1566
 
 bool
 Visitor::

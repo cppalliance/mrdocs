@@ -46,7 +46,7 @@ buildOne(
     }
 
     Writer w(corpus, config, R);
-    return w.build(os);
+    return w.write(os);
 }
 
 bool
@@ -60,7 +60,7 @@ buildString(
     dest.clear();
     llvm::raw_string_ostream os(dest);
     Writer w(corpus, config, R);
-    return w.build(os);
+    return w.write(os);
 }
 
 //------------------------------------------------
@@ -69,9 +69,20 @@ buildString(
 //
 //------------------------------------------------
 
+Writer::
+Writer(
+    Corpus const& corpus,
+    Config const& config,
+    Reporter& R) noexcept
+    : corpus_(corpus)
+    , config_(config)
+    , R_(R)
+{
+}
+
 bool
 Writer::
-build(
+write(
     llvm::raw_ostream& os)
 {
     auto const ns = findGlobalNamespace();
@@ -178,8 +189,6 @@ Writer::
 write(
     NamespaceInfo const& I)
 {
-    assertExists(I);
-
     openTag("namespace", {
         { "name", I.Name },
         { I.USR }
@@ -198,8 +207,6 @@ Writer::
 write(
     RecordInfo const& I)
 {
-    assertExists(I);
-
     llvm::StringRef tag;
     switch(I.TagType)
     {
@@ -226,11 +233,9 @@ Writer::
 write(
     FunctionInfo const& I)
 {
-    //assertExists(I);
-
     openTag("function", {
         { "name", I.Name },
-        { "access", toString(I.Access) },
+        { I.Access },
         { I.USR }
         });
     writeSymbolInfo(I);
@@ -238,9 +243,7 @@ write(
         { "name", I.ReturnType.Type.Name },
         { I.ReturnType.Type.USR }
         });
-
     write(I.Params);
-
     write(I.ReturnType.Type);
     if(I.Template)
     {
@@ -250,7 +253,6 @@ write(
                 { "n", tp.Contents }
                 });
     }
-    write(I.Loc);
 
     closeTag("function");
 }
@@ -260,8 +262,6 @@ Writer::
 write(
     EnumInfo const& I)
 {
-    //assertExists(I);
-
     openTag("enum", {
         { "name", I.Name },
         { I.USR }
@@ -282,16 +282,34 @@ Writer::
 write(
     TypedefInfo const& I)
 {
-    //assertExists(I);
-
+    writeSymbolInfo(I);
     openTag("typedef", {
         { "name", I.Name },
         { I.USR }
         });
-    writeSymbolInfo(I);
     if(I.Underlying.Type.USR != EmptySID)
         writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
     closeTag("typedef");
+}
+
+void
+Writer::
+writeSymbolInfo(
+    SymbolInfo const& I)
+{
+    writeInfo(I);
+    // VFALCO Why so many Location?
+    if(I.DefLoc)
+        write(*I.DefLoc);
+    for(auto const& loc : I.Loc)
+        write(loc);
+}
+
+void
+Writer::
+writeInfo(
+    Info const& I)
+{
 }
 
 //------------------------------------------------
@@ -337,9 +355,9 @@ write(
         //});
     //writeTagLine("relpath", ref.getRelativeFilePath());
     //writeTagLine("basename",I.getFileBaseName());
-    writeTagLine("name", I.Name);
-    writeTagLine("tag", std::to_string(static_cast<int>(I.RefType)));
-    writeTagLine("path", I.Path);
+    //writeTagLine("name", I.Name);
+    //writeTagLine("tag", std::to_string(static_cast<int>(I.RefType)));
+    //writeTagLine("path", I.Path);
     //closeTag("ref");
 }
 
@@ -347,47 +365,12 @@ write(
 
 void
 Writer::
-writeInfo(
-    Info const& I)
-{
-#if 0
-    writeTagLine("extract-name", I.extractName());
-    auto relPath = I.getRelativeFilePath(config_.SourceRoot);
-    if(! relPath.empty())
-        writeTagLine("rel-path", relPath);
-    writeTagLine("base-name", I.getFileBaseName());
-#endif
-}
-
-void
-Writer::
-writeSymbolInfo(
-    SymbolInfo const& I)
-{
-    writeInfo(I);
-    if(I.DefLoc)
-        write(*I.DefLoc);
-    write(I.Loc);
-}
-
-void
-Writer::
-write(
-    llvm::ArrayRef<Location> const& locs)
-{
-    for(auto const& loc : locs)
-        write(loc);
-}
-
-void
-Writer::
 write(
     Location const& loc)
 {
-    *os_ << level_ <<
-        "<file>" << escape(loc.Filename) <<
-        "</file><line>" << std::to_string(loc.LineNumber) <<
-        "</line>\n";
+    writeTag("file", {
+        { "path", loc.Filename },
+        { "line", std::to_string(loc.LineNumber) }});
 }
 
 //------------------------------------------------
@@ -494,6 +477,22 @@ outdent()
 
 //------------------------------------------------
 
+NamespaceInfo const*
+Writer::
+findGlobalNamespace()
+{
+    auto p = corpus_.find(EmptySID);
+    if(p != nullptr)
+    {
+        assert(p->Name.empty());
+        assert(p->IT == InfoType::IT_namespace);
+        return static_cast<NamespaceInfo const*>(p);
+    }
+    return nullptr;
+}
+
+//------------------------------------------------
+
 std::string
 Writer::
 toString(
@@ -521,32 +520,6 @@ toString(
     }
 }
 
-//------------------------------------------------
-
-NamespaceInfo const*
-Writer::
-findGlobalNamespace()
-{
-    auto p = corpus_.find(EmptySID);
-    if(p != nullptr)
-    {
-        assert(p->Name.empty());
-        assert(p->IT == InfoType::IT_namespace);
-        return static_cast<NamespaceInfo const*>(p);
-    }
-    return nullptr;
-}
-
-#ifndef NDEBUG
-void
-Writer::
-assertExists(
-    Info const& I)
-{
-    assert(corpus_.exists(I.USR));
-}
-#endif
-
 llvm::StringRef
 Writer::
 toString(
@@ -566,16 +539,6 @@ toString(
 }
 
 //------------------------------------------------
-
-llvm::Error
-Writer::
-generateDocForInfo(
-    clang::mrdox::Info* I,
-    llvm::raw_ostream& os,
-    clang::mrdox::Config const& config)
-{
-    return llvm::Error::success();
-}
 
 } // (anon)
 

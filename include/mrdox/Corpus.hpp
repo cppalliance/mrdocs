@@ -23,8 +23,9 @@ namespace mrdox {
 
 /** The collection of declarations in extracted form.
 */
-struct Corpus
+class Corpus
 {
+public:
     /** Index of all emitted symbols.
     */
     Index Idx;

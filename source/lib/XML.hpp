@@ -72,19 +72,59 @@ class Writer
     llvm::raw_ostream* os_ = nullptr;
 
 public:
+    struct Attr;
+    using Attrs = std::initializer_list<Attr>;
+
     Writer(
         Corpus const& corpus,
         Config const& config,
-        Reporter& R) noexcept
-        : corpus_(corpus)
-        , config_(config)
-        , R_(R)
-    {
-    }
+        Reporter& R) noexcept;
 
-    bool build(llvm::raw_ostream& os);
+    bool write(llvm::raw_ostream& os);
 
-public:
+    void writeAllSymbols();
+
+    void writeNamespaces(std::vector<Reference> const& v);
+    void writeRecords(std::vector<Reference> const& v);
+    void writeFunctions(std::vector<Reference> const& v);
+    void write(std::vector<EnumInfo> const& v);
+    void write(std::vector<TypedefInfo> const& v);
+
+    void write(NamespaceInfo const& I);
+    void write(RecordInfo const& I);
+    void write(FunctionInfo const& I);
+    void write(EnumInfo const& I);
+    void write(TypedefInfo const& I);
+    void writeSymbolInfo(SymbolInfo const& I);
+    void writeInfo(Info const& I);
+
+    void write(llvm::ArrayRef<FieldTypeInfo> const& v);
+    void write(FieldTypeInfo const& I);
+    void writeNamespaceRefs(llvm::SmallVector<Reference, 4> const& v);
+    void write(Reference const& ref);
+
+
+    void write(Location const& loc);
+
+    void openTag(llvm::StringRef);
+    void openTag(llvm::StringRef, Attrs);
+    void closeTag(llvm::StringRef);
+    void writeTag(llvm::StringRef);
+    void writeTag(llvm::StringRef, Attrs);
+    void writeTagLine(llvm::StringRef tag, llvm::StringRef value);
+    void writeTagLine(llvm::StringRef tag, llvm::StringRef value, Attrs);
+    void writeAttrs(Attrs attrs);
+    void indent();
+    void outdent();
+
+    NamespaceInfo const* findGlobalNamespace();
+
+    static std::string toString(SymbolID const& id);
+    static llvm::StringRef toString(AccessSpecifier access);
+    static llvm::StringRef toString(InfoType) noexcept;
+
+    //--------------------------------------------
+
     struct Attr
     {
         llvm::StringRef name;
@@ -107,63 +147,15 @@ public:
             , pred(USR != EmptySID)
         {
         }
+
+        Attr(AccessSpecifier access) noexcept
+            : name("access")
+            , value(toString(access))
+            , pred(access != AccessSpecifier::AS_none)
+        {
+        }
     };
 
-    using Attrs = std::initializer_list<Attr>;
-
-public:
-    void writeAllSymbols();
-
-    void writeNamespaces(std::vector<Reference> const& v);
-    void writeRecords(std::vector<Reference> const& v);
-    void writeFunctions(std::vector<Reference> const& v);
-    void write(std::vector<EnumInfo> const& v);
-    void write(std::vector<TypedefInfo> const& v);
-
-    void write(NamespaceInfo const& I);
-    void write(RecordInfo const& I);
-    void write(FunctionInfo const& I);
-    void write(EnumInfo const& I);
-    void write(TypedefInfo const& I);
-
-    void write(llvm::ArrayRef<FieldTypeInfo> const& v);
-    void write(FieldTypeInfo const& I);
-    void writeNamespaceRefs(llvm::SmallVector<Reference, 4> const& v);
-    void write(Reference const& ref);
-
-    void writeInfo(Info const& I);
-    void writeSymbolInfo(SymbolInfo const& I);
-    void write(llvm::ArrayRef<Location> const& locs);
-    void write(Location const& loc);
-
-    void openTag(llvm::StringRef);
-    void openTag(llvm::StringRef, Attrs);
-    void closeTag(llvm::StringRef);
-    void writeTag(llvm::StringRef);
-    void writeTag(llvm::StringRef, Attrs);
-    void writeTagLine(llvm::StringRef tag, llvm::StringRef value);
-    void writeTagLine(llvm::StringRef tag, llvm::StringRef value, Attrs);
-    void writeAttrs(Attrs attrs);
-    void indent();
-    void outdent();
-
-    std::string toString(SymbolID const& id);
-    llvm::StringRef toString(AccessSpecifier access);
-    NamespaceInfo const* findGlobalNamespace();
-#ifndef NDEBUG
-    void assertExists(Info const& I);
-#else
-    void assertExists(Info const&) const noexcept
-    {
-    }
-#endif
-    static llvm::StringRef toString(InfoType) noexcept;
-
-    llvm::Error
-    generateDocForInfo(
-        Info* I,
-        llvm::raw_ostream& os,
-        Config const& config);
 };
 
 //------------------------------------------------

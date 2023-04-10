@@ -19,10 +19,15 @@
 namespace clang {
 namespace mrdox {
 
-// Info for symbols.
-struct SymbolInfo
-    : public Info
+/** Base class for Info that have source locations.
+*/
+struct SymbolInfo : Info
 {
+    llvm::Optional<Location> DefLoc;     // Location where this decl is defined.
+    llvm::SmallVector<Location, 2> Loc; // Locations where this decl is declared.
+
+    //--------------------------------------------
+
     explicit
     SymbolInfo(
         InfoType IT,
@@ -34,9 +39,6 @@ struct SymbolInfo
     }
 
     void merge(SymbolInfo&& I);
-
-    llvm::Optional<Location> DefLoc;     // Location where this decl is defined.
-    llvm::SmallVector<Location, 2> Loc; // Locations where this decl is declared.
 };
 
 } // mrdox

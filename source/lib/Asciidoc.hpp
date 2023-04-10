@@ -71,12 +71,6 @@ struct AsciidocGenerator : Generator
         Corpus const& corpus,
         Config const& config,
         Reporter& R) const;
-
-    llvm::Error
-    generateDocForInfo(
-        Info* I,
-        llvm::raw_ostream& os,
-        Config const& config);
 };
 
 //------------------------------------------------

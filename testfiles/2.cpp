@@ -1,5 +1,0 @@
-/** brief
-
-    desc
-*/
-namespace N {}
