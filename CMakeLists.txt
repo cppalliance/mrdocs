@@ -151,3 +151,11 @@ if (MRDOX_BUILD_TESTS)
 endif()
 
 #-------------------------------------------------
+
+# test run
+include(mrdox.cmake)
+mrdox(reference.adoc testfiles/mrdox.yml testfiles/1.cpp)
+mrdox(reference.xml  testfiles/mrdox.yml testfiles/1.cpp)
+
+add_custom_target(reference_adoc DEPENDS reference.adoc)
+add_custom_target(reference_xml  DEPENDS reference.xml)
