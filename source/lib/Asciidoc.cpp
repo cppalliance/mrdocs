@@ -156,6 +156,9 @@ writeAllSymbols()
         auto const& I = corpus_.at(id);
         switch(I.IT)
         {
+        case InfoType::IT_record:
+            write(static_cast<RecordInfo const&>(I));
+            break;
         case InfoType::IT_function:
             write(static_cast<FunctionInfo const&>(I));
             break;
@@ -201,6 +204,58 @@ struct AsciidocGenerator::Writer::
     }
 };
 
+void
+AsciidocGenerator::
+Writer::
+write(
+    RecordInfo const& I)
+{
+    openSection(I.Name);
+    *os_ << I.javadoc.brief << "\n\n";
+
+    // Synopsis
+    openSection("Synopsis");
+    *os_ <<
+        "Located in <" << getLocation(I).Filename << ">\n" <<
+        "[,cpp]\n"
+        "----\n" <<
+        toString(I.TagType) << " " << I.Name;
+    if(! I.Parents.empty())
+    {
+        *os_ << "\n    : ";
+        writeBase(corpus_.get<RecordInfo>(I.Parents[0].USR));
+        for(std::size_t i = 1; i < I.Parents.size(); ++i)
+        {
+            *os_ << "\n    , ";
+            writeBase(corpus_.get<RecordInfo>(I.Parents[i].USR));
+        }
+    }
+    *os_ <<
+        ";\n"
+        "----\n";
+    closeSection();
+
+    // Description
+    if(! I.javadoc.desc.empty())
+    {
+        *os_ << "\n";
+        openSection("Description");
+        *os_ << I.javadoc.desc << "\n";
+        closeSection();
+    }
+
+    closeSection();
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeBase(
+    RecordInfo const& I)
+{
+    *os_ << I.Name;
+}
+
 //------------------------------------------------
 
 void
@@ -212,10 +267,10 @@ write(
     openSection(I.Name);
     *os_ << I.javadoc.brief << "\n\n";
 
+    // Synopsis
     openSection("Synopsis");
     *os_ <<
-        "Located in <" <<
-        I.Loc[0].Filename << ">\n" <<
+        "Located in <" << getLocation(I).Filename << ">\n" <<
         "[,cpp]\n"
         "----\n";
 
@@ -235,7 +290,9 @@ write(
     }
     else
     {
-        *os_ << I.Name << "();" << "\n";
+        *os_ <<
+            typeName(I.ReturnType) << '\n' <<
+            I.Name << "();" << "\n";
     }
 
     *os_ <<
@@ -331,6 +388,39 @@ closeSection()
     if(sect_.level <= 6)
         sect_.markup.pop_back();
     sect_.level--;
+}
+
+//------------------------------------------------
+
+Location const&
+AsciidocGenerator::
+Writer::
+getLocation(
+    SymbolInfo const& I)
+{
+    if(I.DefLoc.has_value())
+        return *I.DefLoc;
+    if(! I.Loc.empty())
+        return I.Loc[0];
+    static Location const missing{};
+    return missing;
+}
+
+llvm::StringRef
+AsciidocGenerator::
+Writer::
+toString(TagTypeKind k) noexcept
+{
+    switch(k)
+    {
+    case TagTypeKind::TTK_Struct: return "struct";
+    case TagTypeKind::TTK_Interface: return "__interface";
+    case TagTypeKind::TTK_Union: return "union";
+    case TagTypeKind::TTK_Class: return "class";
+    case TagTypeKind::TTK_Enum: return "enum";
+    default:
+        llvm_unreachable("unknown TagTypeKind");
+    }
 }
 
 //------------------------------------------------

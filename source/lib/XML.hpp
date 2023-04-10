@@ -121,7 +121,7 @@ public:
 
     static std::string toString(SymbolID const& id);
     static llvm::StringRef toString(AccessSpecifier access);
-    static llvm::StringRef toString(InfoType) noexcept;
+    //static llvm::StringRef toString(InfoType) noexcept;
 
     //--------------------------------------------
 

@@ -331,7 +331,6 @@ write(FieldTypeInfo const& I)
         { "name", I.Name },
         { "default", I.DefaultValue, ! I.DefaultValue.empty() },
         { "type", I.Type.Name },
-        { "reftype", toString(I.Type.RefType) },
         { I.Type.USR }
         });
 }
@@ -520,6 +519,7 @@ toString(
     }
 }
 
+/*
 llvm::StringRef
 Writer::
 toString(
@@ -537,6 +537,7 @@ toString(
         llvm_unreachable("unknown InfoType");
     }
 }
+*/
 
 //------------------------------------------------
 

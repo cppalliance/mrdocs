@@ -88,6 +88,9 @@ public:
 
     void writeAllSymbols();
 
+    void write(RecordInfo const& I);
+    void writeBase(RecordInfo const& I);
+
     void write(FunctionInfo const& I);
 
     struct FormalParam;
@@ -100,6 +103,9 @@ public:
 
     void openSection(llvm::StringRef name);
     void closeSection();
+
+    static Location const& getLocation(SymbolInfo const& I);
+    static llvm::StringRef toString(TagTypeKind k) noexcept;
 
 private:
     struct Section
