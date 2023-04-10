@@ -23,7 +23,8 @@ struct llvm::yaml::MappingTraits<
     static void mapping(
         IO &io, clang::mrdox::Config::filter& f)
     {
-        io.mapOptional("exclude", f);
+        io.mapOptional("include", f.include);
+        io.mapOptional("exclude", f.exclude);
     }
 };
 
@@ -102,7 +103,7 @@ loadFromFile(
     auto fileText = llvm::MemoryBuffer::getFile(configPath);
     if(! fileText)
     {
-        R.failed("llvm::MemoryBuffer::getFile", fileText);
+        R.failed("llvm::MemoryBuffer::getFile", configPath);
         return false;
     }
     llvm::yaml::Input yin(**fileText);
