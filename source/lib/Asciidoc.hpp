@@ -89,7 +89,7 @@ public:
     void writeAllSymbols();
 
     void write(RecordInfo const& I);
-    void writeBase(RecordInfo const& I);
+    void writeBase(BaseRecordInfo const& I);
 
     void write(FunctionInfo const& I);
 

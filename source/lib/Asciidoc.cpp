@@ -153,7 +153,7 @@ writeAllSymbols()
 {
     for(auto const& id : corpus_.allSymbols)
     {
-        auto const& I = corpus_.at(id);
+        auto const& I = corpus_.get<Info>(id);
         switch(I.IT)
         {
         case InfoType::IT_record:
@@ -220,14 +220,14 @@ write(
         "[,cpp]\n"
         "----\n" <<
         toString(I.TagType) << " " << I.Name;
-    if(! I.Parents.empty())
+    if(! I.Bases.empty())
     {
         *os_ << "\n    : ";
-        writeBase(corpus_.get<RecordInfo>(I.Parents[0].USR));
-        for(std::size_t i = 1; i < I.Parents.size(); ++i)
+        writeBase(I.Bases[0]);
+        for(std::size_t i = 1; i < I.Bases.size(); ++i)
         {
             *os_ << "\n    , ";
-            writeBase(corpus_.get<RecordInfo>(I.Parents[i].USR));
+            writeBase(I.Bases[i]);
         }
     }
     *os_ <<
@@ -251,9 +251,9 @@ void
 AsciidocGenerator::
 Writer::
 writeBase(
-    RecordInfo const& I)
+    BaseRecordInfo const& I)
 {
-    *os_ << I.Name;
+    *os_ << I.FullName;
 }
 
 //------------------------------------------------
@@ -349,10 +349,16 @@ write(
         *os_ << t.I.Type.Name;
         return;
     }
-    auto const& I = corpus_.get<RecordInfo>(t.I.Type.USR);
-    // VFALCO add namespace qualifiers if I is in
-    //        a different namesapce
-    *os_ << I.Name;
+    auto p = corpus_.find<RecordInfo>(t.I.Type.USR);
+    if(p != nullptr)
+    {
+        // VFALCO add namespace qualifiers if I is in
+        //        a different namesapce
+        *os_ << p->Path << "::" << p->Name;
+        return;
+    }
+    auto const& T = t.I.Type;
+    *os_ << T.Path << "::" << T.Name;
 }
 
 auto

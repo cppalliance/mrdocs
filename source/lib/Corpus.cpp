@@ -24,33 +24,6 @@ namespace mrdox {
 
 //------------------------------------------------
 //
-// Observers
-//
-//------------------------------------------------
-
-Info const*
-Corpus::
-find(
-    SymbolID const& id) const noexcept
-{
-    auto it = InfoMap.find(llvm::toStringRef(id));
-    if(it != InfoMap.end())
-        return it->second.get();
-    return nullptr;
-}
-
-Info const&
-Corpus::
-at(
-    SymbolID const& id) const noexcept
-{
-    auto it = InfoMap.find(llvm::toStringRef(id));
-    assert(it != InfoMap.end());
-    return *it->second.get();
-}
-
-//------------------------------------------------
-//
 // Implementation
 //
 //------------------------------------------------
@@ -274,8 +247,8 @@ build(
             [&](SymbolID const& id0,
                 SymbolID const& id1) noexcept
             {
-                auto s0 = corpus.at(id0).getFullyQualifiedName(temp[0]);
-                auto s1 = corpus.at(id1).getFullyQualifiedName(temp[1]);
+                auto s0 = corpus.get<Info>(id0).getFullyQualifiedName(temp[0]);
+                auto s1 = corpus.get<Info>(id1).getFullyQualifiedName(temp[1]);
                 int rv = s0.compare_insensitive(s1);
                 if(rv < 0)
                     return true;

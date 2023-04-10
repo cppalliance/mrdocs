@@ -95,6 +95,7 @@ public:
     void write(FunctionInfo const& I);
     void write(EnumInfo const& I);
     void write(TypedefInfo const& I);
+    void write(BaseRecordInfo const& I);
     void writeSymbolInfo(SymbolInfo const& I);
     void writeInfo(Info const& I);
 

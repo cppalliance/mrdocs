@@ -101,18 +101,14 @@ write(
     }
     os_ = &os;
     level_ = {};
-#if 0
     *os_ <<
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
         "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
         "<mrdox>\n";
-#endif
     writeAllSymbols();
     write(*ns);
-#if 0
     *os_ <<
         "</mrdox>\n";
-#endif
     return true;
 }
 
@@ -126,7 +122,7 @@ writeAllSymbols()
     std::string temp;
     for(auto const& id : corpus_.allSymbols)
     {
-        auto const& I = corpus_.at(id);
+        auto const& I = corpus_.get<Info>(id);
         writeTag("symbol", {
             { "name", I.getFullyQualifiedName(temp) },
             { I.USR }
@@ -221,6 +217,8 @@ write(
         { I.USR }
         });
     writeSymbolInfo(I);
+    for(auto const& t : I.Bases)
+        write(t);
     writeRecords(I.Children.Records);
     writeFunctions(I.Children.Functions);
     write(I.Children.Enums);
@@ -290,6 +288,19 @@ write(
     if(I.Underlying.Type.USR != EmptySID)
         writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
     closeTag("typedef");
+}
+
+void
+Writer::
+write(
+    BaseRecordInfo const& I)
+{
+    writeTag("base", {
+        { "name", I.Name },
+        { I.USR }});
+    if(! corpus_.exists(I.USR))
+        return;
+    auto const& B = corpus_.get<RecordInfo>(I.USR);
 }
 
 void
@@ -464,14 +475,14 @@ void
 Writer::
 indent()
 {
-    level_.append("    ");
+    level_.append("  ");
 }
 
 void
 Writer::
 outdent()
 {
-    level_.resize(level_.size() - 4);
+    level_.resize(level_.size() - 2);
 }
 
 //------------------------------------------------
@@ -480,12 +491,11 @@ NamespaceInfo const*
 Writer::
 findGlobalNamespace()
 {
-    auto p = corpus_.find(EmptySID);
+    auto p = corpus_.find<NamespaceInfo>(EmptySID);
     if(p != nullptr)
     {
         assert(p->Name.empty());
-        assert(p->IT == InfoType::IT_namespace);
-        return static_cast<NamespaceInfo const*>(p);
+        return p;
     }
     return nullptr;
 }

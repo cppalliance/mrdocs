@@ -17,9 +17,17 @@
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
+#include <type_traits>
 
 namespace clang {
 namespace mrdox {
+
+struct Info;
+struct NamespaceInfo;
+struct RecordInfo;
+struct FunctionInfo;
+struct EnumInfo;
+struct TypedefInfo;
 
 /** The collection of declarations in extracted form.
 */
@@ -45,41 +53,53 @@ public:
     //
     //--------------------------------------------
 
-    /** Return a pointer to the Info with the specified symbol ID, or nullptr.
-    */
-    Info const*
-    find(
-        SymbolID const& id) const noexcept;
-
     /** Return true if an Info with the specified symbol ID exists.
     */
     bool
     exists(SymbolID const& id) const noexcept
     {
-        return find(id) != nullptr;
+        return find<Info>(id) != nullptr;
+    }
+
+    /** Return a pointer to the Info with the specified symbol ID, or nullptr.
+    */
+    template<class T>
+    T const*
+    find(
+        SymbolID const& id) const noexcept
+    {
+        auto it = InfoMap.find(llvm::toStringRef(id));
+        if(it != InfoMap.end())
+        {
+            auto const t = static_cast<
+                T const*>(it->getValue().get());
+            if constexpr(std::is_same_v<T, NamespaceInfo>)
+                assert(t->IT == InfoType::IT_namespace);
+            else if constexpr(std::is_same_v<T, RecordInfo>)
+                assert(t->IT == InfoType::IT_record);
+            else if constexpr(std::is_same_v<T, FunctionInfo>)
+                assert(t->IT == InfoType::IT_function);
+            else if constexpr(std::is_same_v<T, EnumInfo>)
+                assert(t->IT == InfoType::IT_enum);
+            else if constexpr(std::is_same_v<T, TypedefInfo>)
+                assert(t->IT == InfoType::IT_typedef);
+            return t;
+        }
+        return nullptr;
     }
 
     /** Return the Info with the specified symbol ID.
 
         If the id does not exist, the behavior is undefined.
     */
-    Info const&
-    at(
-        SymbolID const& id) const noexcept;
-
-    /** Return the T with the specified symbol ID.
-
-        If the id does not exist, or the type of the
-        Info doesn't match T, the behavior is undefined.
-    */
     template<class T>
     T const&
     get(
         SymbolID const& id) const noexcept
     {
-        auto const& I = at(id);
-        assert(I.IT == T::type_id);
-        return static_cast<T const&>(I);
+        auto p = find<T>(id);
+        assert(p != nullptr);
+        return *p;
     }
 
     //--------------------------------------------
