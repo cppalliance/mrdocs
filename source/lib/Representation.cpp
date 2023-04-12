@@ -23,45 +23,14 @@
 // on members on the forward declaration, but would have the class name).
 //
 
-#include "Index.hpp"
-#include "Reduce.h"
 #include "Representation.h"
 #include "Namespace.hpp"
 #include <mrdox/Config.hpp>
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Path.h"
 
-static_assert(clang::AccessSpecifier::AS_public == 0);
-static_assert(clang::AccessSpecifier::AS_protected == 1);
-static_assert(clang::AccessSpecifier::AS_private == 2);
-static_assert(clang::AccessSpecifier::AS_none == 3);
-
 namespace clang {
 namespace mrdox {
-
-// Dispatch function.
-llvm::Expected<std::unique_ptr<Info>>
-mergeInfos(std::vector<std::unique_ptr<Info>>& Values) {
-    if (Values.empty() || !Values[0])
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "no info values to merge");
-
-    switch (Values[0]->IT) {
-    case InfoType::IT_namespace:
-        return reduce<NamespaceInfo>(Values);
-    case InfoType::IT_record:
-        return reduce<RecordInfo>(Values);
-    case InfoType::IT_enum:
-        return reduce<EnumInfo>(Values);
-    case InfoType::IT_function:
-        return reduce<FunctionInfo>(Values);
-    case InfoType::IT_typedef:
-        return reduce<TypedefInfo>(Values);
-    default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "unexpected info type");
-    }
-}
 
 bool CommentInfo::operator==(const CommentInfo& Other) const {
     auto FirstCI = std::tie(Kind, Text, Name, Direction, ParamName, CloseName,
@@ -140,34 +109,6 @@ BaseRecordInfo::BaseRecordInfo(SymbolID USR, StringRef Name, StringRef Path,
     bool IsParent)
     : RecordInfo(USR, Name, Path), IsVirtual(IsVirtual), Access(Access),
     IsParent(IsParent) {}
-
-// Order is based on the Name attribute:
-// case insensitive order
-bool
-Index::operator<(const Index& Other) const {
-    // Loop through each character of both strings
-    for (unsigned I = 0; I < Name.size() && I < Other.Name.size(); ++I) {
-        // Compare them after converting both to lower case
-        int D = tolower(Name[I]) - tolower(Other.Name[I]);
-        if (D == 0)
-            continue;
-        return D < 0;
-    }
-    // If both strings have the size it means they would be equal if changed to
-    // lower case. In here, lower case will be smaller than upper case
-    // Example: string < stRing = true
-    // This is the opposite of how operator < handles strings
-    if (Name.size() == Other.Name.size())
-        return Name > Other.Name;
-    // If they are not the same size; the shorter string is smaller
-    return Name.size() < Other.Name.size();
-}
-
-void Index::sort() {
-    llvm::sort(Children);
-    for (auto& C : Children)
-        C.sort();
-}
 
 } // mrdox
 } // clang
