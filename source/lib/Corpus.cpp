@@ -23,6 +23,12 @@
 namespace clang {
 namespace mrdox {
 
+struct Corpus::Temps
+{
+    std::string s0;
+    std::string s1;
+};
+
 //------------------------------------------------
 //
 // Modifiers
@@ -159,10 +165,15 @@ Corpus::
 canonicalize(
     Reporter& R)
 {
-    if(is_canonical_)
+    if(isCanonical_)
         return true;
-
-    is_canonical_ = true;
+    auto p = find<NamespaceInfo>(EmptySID);
+    // VFALCO report
+    Temps t;
+    R.outs("Canonicalizing...");
+    if(! canonicalize(*p, t, R))
+        return false;
+    isCanonical_ = true;
     return true;
 }
 
@@ -269,7 +280,7 @@ void
 Corpus::
 insert(std::unique_ptr<Info> Ip)
 {
-    assert(! is_canonical_);
+    assert(! isCanonical_);
 
     auto const& I = *Ip;
 
@@ -300,7 +311,7 @@ Corpus::
 insertIntoIndex(
     Info const& I)
 {
-    assert(! is_canonical_);
+    assert(! isCanonical_);
 
     std::lock_guard<llvm::sys::Mutex> Guard(allSymbolsMutex);
 
@@ -352,6 +363,161 @@ insertIntoIndex(
     allSymbols.emplace_back(I.USR);
 }
 
+//------------------------------------------------
+
+bool
+Corpus::
+canonicalize(
+    NamespaceInfo& I,
+    Temps& t,
+    Reporter& R)
+{
+    if(! canonicalize(I.Children, t, R))
+        return false;
+    return true;
+}
+
+bool
+Corpus::
+canonicalize(
+    RecordInfo& I,
+    Temps& t,
+    Reporter& R)
+{
+    return true;
+}
+
+bool
+Corpus::
+canonicalize(
+    FunctionInfo& I,
+    Temps& t,
+    Reporter& R)
+{
+    return true;
+}
+
+bool
+Corpus::
+canonicalize(
+    EnumInfo& I,
+    Temps& t,
+    Reporter& R)
+{
+    return true;
+}
+
+bool
+Corpus::
+canonicalize(
+    TypedefInfo& I,
+    Temps& t,
+    Reporter& R)
+{
+    return true;
+}
+
+bool
+Corpus::
+canonicalize(
+    Scope& I,
+    Temps& t,
+    Reporter& R)
+{
+    std::sort(
+        I.Namespaces.begin(),
+        I.Namespaces.end(),
+        [this, &t](Reference& ref0, Reference& ref1)
+        {
+            return symbolCompare(
+                get<Info>(ref0.USR).getFullyQualifiedName(t.s0),
+                get<Info>(ref1.USR).getFullyQualifiedName(t.s1));
+        });
+    std::sort(
+        I.Records.begin(),
+        I.Records.end(),
+        [this, &t](Reference& ref0, Reference& ref1)
+        {
+            return symbolCompare(
+                get<Info>(ref0.USR).getFullyQualifiedName(t.s0),
+                get<Info>(ref1.USR).getFullyQualifiedName(t.s1));
+        });
+    std::sort(
+        I.Functions.begin(),
+        I.Functions.end(),
+        [this, &t](Reference& ref0, Reference& ref1)
+        {
+            return symbolCompare(
+                get<Info>(ref0.USR).getFullyQualifiedName(t.s0),
+                get<Info>(ref1.USR).getFullyQualifiedName(t.s1));
+        });
+    // These seem to be non-copyable
+#if 0
+    std::sort(
+        I.Enums.begin(),
+        I.Enums.end(),
+        [this, &t](EnumInfo& I0, EnumInfo& I1)
+        {
+            return symbolCompare(
+                I0.getFullyQualifiedName(t.s0),
+                I1.getFullyQualifiedName(t.s1));
+        });
+    std::sort(
+        I.Typedefs.begin(),
+        I.Typedefs.end(),
+        [this, &t](TypedefInfo& I0, TypedefInfo& I1)
+        {
+            return symbolCompare(
+                I0.getFullyQualifiedName(t.s0),
+                I1.getFullyQualifiedName(t.s1));
+        });
+#endif
+    for(auto& ref : I.Namespaces)
+        if(! canonicalize(get<NamespaceInfo>(ref.USR), t, R))
+            return false;
+    for(auto& ref : I.Records)
+        if(! canonicalize(get<RecordInfo>(ref.USR), t, R))
+            return false;
+    for(auto& ref : I.Functions)
+        if(! canonicalize(get<FunctionInfo>(ref.USR), t, R))
+            return false;
+    for(auto& J: I.Enums)
+        if(! canonicalize(J, t, R))
+            return false;
+    for(auto& J: I.Typedefs)
+        if(! canonicalize(J, t, R))
+            return false;
+    return true;
+}
+
+bool
+Corpus::
+canonicalize(
+    std::vector<Reference>& list,
+    Temps& t,
+    Reporter& R)
+{
+    std::sort(
+        list.begin(),
+        list.end(),
+        [this, &t](Reference& ref0, Reference& ref1)
+        {
+            return symbolCompare(
+                get<Info>(ref0.USR).getFullyQualifiedName(t.s0),
+                get<Info>(ref1.USR).getFullyQualifiedName(t.s1));
+        });
+    return true;
+}
+
+bool
+Corpus::
+canonicalize(
+    llvm::SmallVectorImpl<MemberTypeInfo>& list,
+    Temps& t,
+    Reporter& R)
+{
+    return true;
+}
 
 } // mrdox
 } // clang

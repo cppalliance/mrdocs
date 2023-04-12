@@ -18,11 +18,14 @@
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
 #include <type_traits>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
 
 struct Info;
+struct Scope;
+struct MemberTypeInfo;
 struct NamespaceInfo;
 struct RecordInfo;
 struct FunctionInfo;
@@ -120,28 +123,29 @@ public:
     /** Return a pointer to the Info with the specified symbol ID, or nullptr.
     */
     template<class T>
+    T*
+    find(
+        SymbolID const& id) noexcept;
+
+    /** Return a pointer to the Info with the specified symbol ID, or nullptr.
+    */
+    template<class T>
     T const*
     find(
-        SymbolID const& id) const noexcept
+        SymbolID const& id) const noexcept;
+
+    /** Return the Info with the specified symbol ID.
+
+        If the id does not exist, the behavior is undefined.
+    */
+    template<class T>
+    T&
+    get(
+        SymbolID const& id) noexcept
     {
-        auto it = InfoMap.find(llvm::toStringRef(id));
-        if(it != InfoMap.end())
-        {
-            auto const t = static_cast<
-                T const*>(it->getValue().get());
-            if constexpr(std::is_same_v<T, NamespaceInfo>)
-                assert(t->IT == InfoType::IT_namespace);
-            else if constexpr(std::is_same_v<T, RecordInfo>)
-                assert(t->IT == InfoType::IT_record);
-            else if constexpr(std::is_same_v<T, FunctionInfo>)
-                assert(t->IT == InfoType::IT_function);
-            else if constexpr(std::is_same_v<T, EnumInfo>)
-                assert(t->IT == InfoType::IT_enum);
-            else if constexpr(std::is_same_v<T, TypedefInfo>)
-                assert(t->IT == InfoType::IT_typedef);
-            return t;
-        }
-        return nullptr;
+        auto p = find<T>(id);
+        assert(p != nullptr);
+        return *p;
     }
 
     /** Return the Info with the specified symbol ID.
@@ -159,6 +163,8 @@ public:
     }
 
 private:
+    struct Temps;
+
     //--------------------------------------------
     //
     // Implementation
@@ -179,13 +185,79 @@ private:
     */
     void insertIntoIndex(Info const& I);
 
+    bool canonicalize(NamespaceInfo& I, Temps& t, Reporter& R);
+    bool canonicalize(RecordInfo& I, Temps& t, Reporter& R);
+    bool canonicalize(FunctionInfo& I, Temps& t, Reporter& R);
+    bool canonicalize(EnumInfo& I, Temps& t, Reporter& R);
+    bool canonicalize(TypedefInfo& I, Temps& t, Reporter& R);
+    bool canonicalize(Scope& I, Temps& t, Reporter& R);
+    bool canonicalize(std::vector<Reference>& list, Temps& t, Reporter& R);
+    bool canonicalize(llvm::SmallVectorImpl<MemberTypeInfo>& list, Temps& t, Reporter& R);
+
+
+
 private:
     Corpus() = default;
 
     llvm::sys::Mutex infoMutex;
     llvm::sys::Mutex allSymbolsMutex;
-    bool is_canonical_ = false;
+    bool isCanonical_ = false;
 };
+
+//------------------------------------------------
+
+template<class T>
+T*
+Corpus::
+find(
+    SymbolID const& id) noexcept
+{
+    auto it = InfoMap.find(llvm::toStringRef(id));
+    if(it != InfoMap.end())
+    {
+        auto const t = static_cast<T*>(it->getValue().get());
+        if constexpr(std::is_same_v<T, NamespaceInfo>)
+            assert(t->IT == InfoType::IT_namespace);
+        else if constexpr(std::is_same_v<T, RecordInfo>)
+            assert(t->IT == InfoType::IT_record);
+        else if constexpr(std::is_same_v<T, FunctionInfo>)
+            assert(t->IT == InfoType::IT_function);
+        else if constexpr(std::is_same_v<T, EnumInfo>)
+            assert(t->IT == InfoType::IT_enum);
+        else if constexpr(std::is_same_v<T, TypedefInfo>)
+            assert(t->IT == InfoType::IT_typedef);
+        return t;
+    }
+    return nullptr;
+}
+
+/** Return a pointer to the Info with the specified symbol ID, or nullptr.
+*/
+template<class T>
+T const*
+Corpus::
+find(
+    SymbolID const& id) const noexcept
+{
+    auto it = InfoMap.find(llvm::toStringRef(id));
+    if(it != InfoMap.end())
+    {
+        auto const t = static_cast<
+            T const*>(it->getValue().get());
+        if constexpr(std::is_same_v<T, NamespaceInfo>)
+            assert(t->IT == InfoType::IT_namespace);
+        else if constexpr(std::is_same_v<T, RecordInfo>)
+            assert(t->IT == InfoType::IT_record);
+        else if constexpr(std::is_same_v<T, FunctionInfo>)
+            assert(t->IT == InfoType::IT_function);
+        else if constexpr(std::is_same_v<T, EnumInfo>)
+            assert(t->IT == InfoType::IT_enum);
+        else if constexpr(std::is_same_v<T, TypedefInfo>)
+            assert(t->IT == InfoType::IT_typedef);
+        return t;
+    }
+    return nullptr;
+}
 
 } // mrdox
 } // clang
