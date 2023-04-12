@@ -430,8 +430,6 @@ toString(TagTypeKind k) noexcept
     case TagTypeKind::TTK_Union: return "union";
     case TagTypeKind::TTK_Class: return "class";
     case TagTypeKind::TTK_Enum: return "enum";
-    default:
-        llvm_unreachable("unknown TagTypeKind");
     }
 }
 

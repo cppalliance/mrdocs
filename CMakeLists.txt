@@ -33,6 +33,12 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL ON CACHE STRING "")
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO ON CACHE STRING "")
 option(MRDOX_BUILD_TESTS "Build tests" ON)
 
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(MRDOX_GCC ON)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang$")
+    set(MRDOX_CLANG ON)
+endif()
+
 #-------------------------------------------------
 #
 # Dependencies
@@ -112,6 +118,13 @@ if (WIN32)
             /EHsc           # C++ Exception handling
         )
     endif()
+endif ()
+
+if (MRDOX_CLANG)
+    target_compile_options(
+        mrdox_lib
+        PUBLIC
+        -Wno-unused-private-field)
 endif ()
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)

@@ -49,6 +49,33 @@ public:
 public:
     //--------------------------------------------
     //
+    // Static Functions
+    //
+    //--------------------------------------------
+
+    /** Store the Info in the tool results, keyed by SymbolID.
+    */
+    static
+    void
+    reportResult(
+        tooling::ExecutionContext& exc,
+        Info const& I);
+
+    /** Build the intermediate representation of the code being documented.
+
+        @par R The diagnostic reporting object to
+        use for delivering errors and information.
+    */
+    [[nodiscard]]
+    static
+    std::unique_ptr<Corpus>
+    build(
+        tooling::ToolExecutor& ex,
+        Config const& config,
+        Reporter& R);
+
+    //--------------------------------------------
+    //
     // Observers
     //
     //--------------------------------------------
@@ -102,9 +129,11 @@ public:
         return *p;
     }
 
+    //--------------------------------------------
     //
     // Modifiers
     //
+    //--------------------------------------------
 
     /** Canonicalize the contents of the object.
 
@@ -117,12 +146,13 @@ public:
     bool
     canonicalize(Reporter& R);
 
+private:
     //--------------------------------------------
     //
     // Implementation
     //
     //--------------------------------------------
-private:
+
     /** Insert this element and all its children into the Corpus.
 
         @par Thread Safety
@@ -136,33 +166,6 @@ private:
         May be called concurrently.
     */
     void insertIntoIndex(Info const& I);
-
-    //--------------------------------------------
-    //
-    // Static Functions
-    //
-    //--------------------------------------------
-public:
-    /** Store the Info in the tool results, keyed by SymbolID.
-    */
-    static
-    void
-    reportResult(
-        tooling::ExecutionContext& exc,
-        Info const& I);
-
-    /** Build the intermediate representation of the code being documented.
-
-        @par R The diagnostic reporting object to
-        use for delivering errors and information.
-    */
-    [[nodiscard]]
-    static
-    std::unique_ptr<Corpus>
-    build(
-        tooling::ToolExecutor& ex,
-        Config const& config,
-        Reporter& R);
 
 private:
     Corpus() = default;

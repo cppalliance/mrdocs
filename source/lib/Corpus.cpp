@@ -189,16 +189,10 @@ build(
             R.first->second.emplace_back(Value);
         });
 
-    // Collects all Infos according to their unique
-    // USR value. This map is added to from the thread
-    // pool below and is protected by this mutex.
-    llvm::sys::Mutex USRToInfoMutex;
-
     // First reducing phase (reduce all decls into one info per decl).
     llvm::outs() << "Reducing " << USRToBitcode.size() << " declarations\n";
     std::atomic<bool> GotFailure;
     GotFailure = false;
-    llvm::sys::Mutex IndexMutex;
     // VFALCO Should this concurrency be a command line option?
     llvm::ThreadPool Pool(llvm::hardware_concurrency(tooling::ExecutorConcurrency));
     for (auto& Group : USRToBitcode)
@@ -276,7 +270,7 @@ build(
             });
     }
 
-    return std::move(up);
+    return up;
 }
 
 } // mrdox
