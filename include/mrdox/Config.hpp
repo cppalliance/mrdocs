@@ -48,7 +48,7 @@ struct Config
     // Directory for outputting generated files.
     std::string OutDirectory;
 
-    // Directory where processed files are stored. Links
+    // Directory where input files are stored. Links
     // to definition locations will only be generated if
     // the file is in this dir.
     std::vector<std::string> includePaths;

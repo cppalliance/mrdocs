@@ -50,14 +50,14 @@ struct XMLGenerator : Generator
     bool
     buildOne(
         llvm::StringRef fileName,
-        Corpus const& corpus,
+        Corpus& corpus,
         Config const& config,
         Reporter& R) const override;
 
     bool
     buildString(
         std::string& dest,
-        Corpus const& corpus,
+        Corpus& corpus,
         Config const& config,
         Reporter& R) const override;
 };

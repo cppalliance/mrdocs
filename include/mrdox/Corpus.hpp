@@ -102,6 +102,21 @@ public:
         return *p;
     }
 
+    //
+    // Modifiers
+    //
+
+    /** Canonicalize the contents of the object.
+
+        @return true upon success.
+
+        @par R The diagnostic reporting object to
+        use for delivering errors and information.
+    */
+    [[nodiscard]]
+    bool
+    canonicalize(Reporter& R);
+
     //--------------------------------------------
     //
     // Implementation
@@ -137,6 +152,9 @@ public:
         Info const& I);
 
     /** Build the intermediate representation of the code being documented.
+
+        @par R The diagnostic reporting object to
+        use for delivering errors and information.
     */
     [[nodiscard]]
     static
@@ -150,8 +168,8 @@ private:
     Corpus() = default;
 
     llvm::sys::Mutex infoMutex;
-    llvm::sys::Mutex indexMutex;
-    llvm::sys::Mutex allResultsMutex;
+    llvm::sys::Mutex allSymbolsMutex;
+    bool is_canonical_ = false;
 };
 
 } // mrdox

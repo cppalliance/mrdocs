@@ -58,35 +58,89 @@ struct Generator
         with a suitable filename calculated from the
         root directory and the generator's extension.
 
+        @par Thread Safety
+        @li Different `corpus` object: may be called concurrently.
+        @li Same `corpus` object: may not be called concurrently.
+
         @return `true` upon success.
+
+        @par outputPath The path to a directory for
+        emitting multi-file output, or the path of
+        a filename with the generator's extension
+        to emit output as a single file.
+
+        @par corpus The symbols to emit. The
+        generator may modify the contents of
+        the object before returning.
+
+        @par config The configuration to use.
+
+        @par R The diagnostic reporting object to
+        use for delivering errors and information.
     */
     virtual
     bool
     build(
-        llvm::StringRef rootPath,
-        Corpus const& corpus,
+        llvm::StringRef outputPath,
+        Corpus& corpus,
         Config const& config,
         Reporter& R) const;
 
     /** Build single-file documentation from the corpus and configuration.
 
+        @par Thread Safety
+        @li Different `corpus` object: may be called concurrently.
+        @li Same `corpus` object: may not be called concurrently.
+
         @return `true` upon success.
+
+        @par fileName The path to the file
+        which will be created or reset to hold
+        the generated results.
+
+        @par corpus The symbols to emit. The
+        generator may modify the contents of
+        the object before returning.
+
+        @par config The configuration to use.
+
+        @par R The diagnostic reporting object to
+        use for delivering errors and information.
     */
     virtual
     bool
     buildOne(
         llvm::StringRef fileName,
-        Corpus const& corpus,
+        Corpus& corpus,
         Config const& config,
         Reporter& R) const = 0;
 
     /** Build a string containing the single-file documentation.
+
+        @par Thread Safety
+        @li Different `corpus` object: may be called concurrently.
+        @li Same `corpus` object: may not be called concurrently.
+
+        @return `true` upon success.
+
+        @par dest The string to hold the result.
+        For the duration of the call, this must
+        not be accessed by any other threads.
+
+        @par corpus The symbols to emit. The
+        generator may modify the contents of
+        the object before returning.
+
+        @par config The configuration to use.
+
+        @par R The diagnostic reporting object to
+        use for delivering errors and information.
     */
     virtual
     bool
     buildString(
         std::string& dest,
-        Corpus const& corpus,
+        Corpus& corpus,
         Config const& config,
         Reporter& R) const = 0;
 };

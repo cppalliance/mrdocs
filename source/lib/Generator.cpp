@@ -19,8 +19,8 @@ namespace mrdox {
 bool
 Generator::
 build(
-    StringRef rootPath,
-    Corpus const& corpus,
+    StringRef outputPath,
+    Corpus& corpus,
     Config const& config,
     Reporter& R) const
 {
@@ -29,15 +29,15 @@ build(
 
     // If we are given a filename with the correct
     // extension then just build the docs as one file.
-    if(path::extension(rootPath).compare_insensitive(path::extension(rootPath)))
-        return buildOne(rootPath, corpus, config, R);
+    if(path::extension(outputPath).compare_insensitive(path::extension(outputPath)))
+        return buildOne(outputPath, corpus, config, R);
 
     // Create the directory if needed
     fs::file_status status;
-    std::error_code ec = fs::status(rootPath, status);
+    std::error_code ec = fs::status(outputPath, status);
     if(ec == std::errc::no_such_file_or_directory)
     {
-        ec = fs::create_directories(rootPath, false);
+        ec = fs::create_directories(outputPath, false);
         if(ec)
         {
             R.failed("fs::create_directories", ec);
@@ -52,17 +52,17 @@ build(
 
     // If we are given an existing directory,
     // then build a single-page file there with
-    // a default filename (e.g. "index.adoc").
-    if(fs::is_directory(rootPath))
+    // a default filename (e.g. "reference.adoc").
+    if(fs::is_directory(outputPath))
     {
-        llvm::SmallString<512> fileName(rootPath);
-        path::append(fileName, "index");
+        llvm::SmallString<512> fileName(outputPath);
+        path::append(fileName, "reference");
         path::replace_extension(fileName, extension());
         return buildOne(fileName, corpus, config, R);
     }
 
     // Build as one file
-    return buildOne(rootPath, corpus, config, R);
+    return buildOne(outputPath, corpus, config, R);
 }
 
 } // mrdox

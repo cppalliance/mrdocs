@@ -26,7 +26,7 @@ bool
 XMLGenerator::
 buildOne(
     llvm::StringRef fileName,
-    Corpus const& corpus,
+    Corpus& corpus,
     Config const& config,
     Reporter& R) const
 {
@@ -45,6 +45,8 @@ buildOne(
         return false;
     }
 
+    if(! corpus.canonicalize(R))
+        return false;
     Writer w(corpus, config, R);
     return w.write(os);
 }
@@ -53,12 +55,15 @@ bool
 XMLGenerator::
 buildString(
     std::string& dest,
-    Corpus const& corpus,
+    Corpus& corpus,
     Config const& config,
     Reporter& R) const
 {
     dest.clear();
     llvm::raw_string_ostream os(dest);
+
+    if(! corpus.canonicalize(R))
+        return false;
     Writer w(corpus, config, R);
     return w.write(os);
 }

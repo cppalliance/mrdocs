@@ -159,7 +159,7 @@ struct Tester
 
     void
     performTest(
-        Corpus const& corpus,
+        Corpus& corpus,
         llvm::StringRef inputPath,
         llvm::SmallVectorImpl<char>& outputPathStr)
     {

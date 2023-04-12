@@ -18,9 +18,22 @@
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/ThreadPool.h>
+#include <cassert>
 
 namespace clang {
 namespace mrdox {
+
+bool
+Corpus::
+canonicalize(
+    Reporter& R)
+{
+    if(is_canonical_)
+        return true;
+
+    is_canonical_ = true;
+    return true;
+}
 
 //------------------------------------------------
 //
@@ -32,6 +45,8 @@ void
 Corpus::
 insert(std::unique_ptr<Info> Ip)
 {
+    assert(! is_canonical_);
+
     auto const& I = *Ip;
 
     // Store the Info in the result map
@@ -61,7 +76,9 @@ Corpus::
 insertIntoIndex(
     Info const& I)
 {
-    std::lock_guard<llvm::sys::Mutex> Guard(indexMutex);
+    assert(! is_canonical_);
+
+    std::lock_guard<llvm::sys::Mutex> Guard(allSymbolsMutex);
 
     // Index pointer that will be moving through Idx until the first parent
     // namespace of Info (where the reference has to be inserted) is found.
@@ -107,6 +124,7 @@ insertIntoIndex(
             It->Name = I.extractName();
     }
 
+    // also insert into allSymbols
     allSymbols.emplace_back(I.USR);
 }
 
