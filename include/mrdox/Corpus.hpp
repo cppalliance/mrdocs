@@ -49,17 +49,9 @@ public:
 public:
     //--------------------------------------------
     //
-    // Static Functions
+    // Modifiers
     //
     //--------------------------------------------
-
-    /** Store the Info in the tool results, keyed by SymbolID.
-    */
-    static
-    void
-    reportResult(
-        tooling::ExecutionContext& exc,
-        Info const& I);
 
     /** Build the intermediate representation of the code being documented.
 
@@ -74,11 +66,48 @@ public:
         Config const& config,
         Reporter& R);
 
+    /** Canonicalize the contents of the object.
+
+        @return true upon success.
+
+        @par R The diagnostic reporting object to
+        use for delivering errors and information.
+    */
+    [[nodiscard]]
+    bool
+    canonicalize(Reporter& R);
+
+    /** Sort an array of Info by fully qualified name
+    */
+
+    /** Store the Info in the tool results, keyed by SymbolID.
+    */
+    static
+    void
+    reportResult(
+        tooling::ExecutionContext& exc,
+        Info const& I);
+
     //--------------------------------------------
     //
     // Observers
     //
     //--------------------------------------------
+
+    /** Return true if s0 is less than s1.
+
+        This function returns true if the string
+        s0 is less than the string s1. The comparison
+        is first made without regard to case, unless
+        the strings compare equal and then they
+        are compared with lowercase letters coming
+        before uppercase letters.
+    */
+    static
+    bool
+    symbolCompare(
+        llvm::StringRef symbolName0,
+        llvm::StringRef symbolName1) noexcept;
 
     /** Return true if an Info with the specified symbol ID exists.
     */
@@ -128,23 +157,6 @@ public:
         assert(p != nullptr);
         return *p;
     }
-
-    //--------------------------------------------
-    //
-    // Modifiers
-    //
-    //--------------------------------------------
-
-    /** Canonicalize the contents of the object.
-
-        @return true upon success.
-
-        @par R The diagnostic reporting object to
-        use for delivering errors and information.
-    */
-    [[nodiscard]]
-    bool
-    canonicalize(Reporter& R);
 
 private:
     //--------------------------------------------
