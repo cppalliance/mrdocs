@@ -65,25 +65,5 @@ build(
     return buildOne(rootPath, corpus, config, R);
 }
 
-//------------------------------------------------
-
-std::string
-getTagType(TagTypeKind AS)
-{
-    switch (AS) {
-    case TagTypeKind::TTK_Class:
-        return "class";
-    case TagTypeKind::TTK_Union:
-        return "union";
-    case TagTypeKind::TTK_Interface:
-        return "interface";
-    case TagTypeKind::TTK_Struct:
-        return "struct";
-    case TagTypeKind::TTK_Enum:
-        return "enum";
-    }
-    llvm_unreachable("Unknown TagTypeKind");
-}
-
 } // mrdox
 } // clang

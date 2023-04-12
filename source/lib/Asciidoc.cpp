@@ -10,6 +10,7 @@
 //
 
 #include "Asciidoc.hpp"
+#include <clang/Basic/Specifiers.h>
 
 namespace clang {
 namespace mrdox {
@@ -253,7 +254,7 @@ Writer::
 writeBase(
     BaseRecordInfo const& I)
 {
-    *os_ << I.FullName;
+    *os_ << clang::getAccessSpelling(I.Access) << " " << I.Name;
 }
 
 //------------------------------------------------
@@ -973,7 +974,7 @@ genMarkdown(
     os << 
         "[,cpp]\n" <<
         "----\n" <<
-        getTagType(I.TagType) << " " << I.Name << ";\n" <<
+        clang::TypeWithKeyword::getTagTypeKindName(I.TagType) << " " << I.Name << ";\n" <<
         "----\n" <<
         "\n";
 

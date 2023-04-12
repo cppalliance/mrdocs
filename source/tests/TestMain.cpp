@@ -80,127 +80,161 @@ public:
 
 //------------------------------------------------
 
-namespace fs = llvm::sys::fs;
-namespace path = llvm::sys::path;
-
-template<class F>
-bool
-visitDirectory(
-    llvm::StringRef dirPath,
-    Reporter& R,
-    F const& f)
+struct Tester
 {
-    std::error_code ec;
-    llvm::SmallString<32> dir(dirPath);
-    llvm::SmallString<32> out;
-    auto const& cdir(dir);
+    Config const& config_;
+    std::unique_ptr<Generator> xmlGen;
+    std::unique_ptr<Generator> adocGen;
+    Reporter& R_;
 
-    path::remove_dots(dir, true);
-    fs::directory_iterator const end{};
-    fs::directory_iterator iter(dir, ec, false);
-    if(ec)
+    explicit
+    Tester(
+        Config const& config,
+        Reporter &R)
+        : config_(config)
+        , xmlGen(makeXMLGenerator())
+        , adocGen(makeAsciidocGenerator())
+        , R_(R)
     {
-        R.failed("visitDirectory", ec);
-        return false;
     }
-    while(iter != end)
+
+    bool
+    testDirectory(
+        llvm::SmallString<340> dirPath,
+        llvm::ThreadPool& threadPool)
     {
-        if(iter->type() == fs::file_type::directory_file)
-        {
-            if(! visitDirectory(iter->path(), R, f))
-                return false;
-        }
-        else if(
-            iter->type() == fs::file_type::regular_file &&
-            path::extension(iter->path()).equals_insensitive(".cpp"))
-        {
-            out = iter->path();
-            path::replace_extension(out, "xml");
-            f(cdir, iter->path(), out);
-        }
-        else
-        {
-            // we don't handle this type
-        }
-        iter.increment(ec);
+        namespace fs = llvm::sys::fs;
+        namespace path = llvm::sys::path;
+
+        std::error_code ec;
+        llvm::SmallString<32> outputPath;
+        path::remove_dots(dirPath, true);
+        fs::directory_iterator const end{};
+
+        fs::directory_iterator iter(dirPath, ec, false);
         if(ec)
         {
-            R.failed("fs::directory_iterator::increment", ec);
+            R_.failed("visitDirectory", ec);
             return false;
         }
-    }
-    return true;
-}
 
-void
-performTest(
-    Corpus const& corpus,
-    Config const& config,
-    llvm::StringRef file,
-    llvm::StringRef out,
-    Generator const& gen,
-    Reporter& R)
-{
-    std::string xml;
-    if(! gen.buildString(xml, corpus, config, R))
-    {
-        R.testFailed();
-        return;
-    }
-    std::error_code ec;
-    fs::file_status stat;
-    ec = fs::status(out, stat, false);
-    if(ec == std::errc::no_such_file_or_directory)
-    {
-        // create the xml file and write to it
-        llvm::raw_fd_ostream os(out, ec, llvm::sys::fs::OF_None);
-        if(! ec)
+        while(iter != end)
         {
-            os << xml;
+            if(iter->type() == fs::file_type::directory_file)
+            {
+                if(! testDirectory(llvm::StringRef(iter->path()), threadPool))
+                    return false;
+            }
+            else if(
+                iter->type() == fs::file_type::regular_file &&
+                path::extension(iter->path()).equals_insensitive(".cpp"))
+            {
+                outputPath = iter->path();
+                path::replace_extension(outputPath, "xml");
+                threadPool.async([this,
+                    dirPath,
+                    inputPath = llvm::SmallString<0>(iter->path()),
+                    outputPath = llvm::SmallString<340>(outputPath)]() mutable
+                    {
+                        SingleFile db(dirPath, inputPath, outputPath);
+                        tooling::StandaloneToolExecutor ex(db, { std::string(inputPath) });
+                        auto corpus = Corpus::build(ex, config_, R_);
+                        if(corpus)
+                            performTest(*corpus, inputPath, outputPath);
+                    });
+            }
+            else
+            {
+                // we don't handle this type
+            }
+            iter.increment(ec);
+            if(ec)
+            {
+                R_.failed("fs::directory_iterator::increment", ec);
+                return false;
+            }
         }
-        else
+        return true;
+    }
+
+    void
+    performTest(
+        Corpus const& corpus,
+        llvm::StringRef inputPath,
+        llvm::SmallVectorImpl<char>& outputPathStr)
+    {
+        namespace fs = llvm::sys::fs;
+        namespace path = llvm::sys::path;
+
+        llvm::StringRef outputPath;
+        outputPath = { outputPathStr.data(), outputPathStr.size() };
+
+        std::string xmlString;
+        if(! xmlGen->buildString(xmlString, corpus, config_, R_))
         {
-            llvm::errs() <<
-                "Writing \"" << out << "\" failed: " <<
-                ec.message() << "\n";
-            R.testFailed();
+            R_.testFailed();
+            return;
         }
-    }
-    else if(ec)
-    {
-        R.failed("fs::status", ec);
-        return;
-    }
-    if(stat.type() == fs::file_type::regular_file)
-    {
-        auto bufferResult = llvm::MemoryBuffer::getFile(out, false);
+        std::error_code ec;
+        fs::file_status stat;
+        ec = fs::status(outputPathStr, stat, false);
+        if(ec == std::errc::no_such_file_or_directory)
+        {
+            // create the xml file and write to it
+            llvm::raw_fd_ostream os(outputPath, ec, llvm::sys::fs::OF_None);
+            if(! ec)
+            {
+                os << xmlString;
+            }
+            else
+            {
+                llvm::errs() <<
+                    "Writing \"" << outputPath << "\" failed: " <<
+                    ec.message() << "\n";
+                R_.testFailed();
+            }
+        }
+        else if(ec)
+        {
+            R_.failed("fs::status", ec);
+            return;
+        }
+        if(stat.type() != fs::file_type::regular_file)
+        {
+            R_.failed("'%s' is not a regular file", outputPath);
+            return;
+        }
+        auto bufferResult = llvm::MemoryBuffer::getFile(outputPath, false);
         if(! bufferResult)
         {
-            R.failed("MemoryBuffer::getFile", bufferResult);
+            R_.failed("MemoryBuffer::getFile", bufferResult);
             return;
         }
         std::string_view got(bufferResult->get()->getBuffer());
-        if(xml != bufferResult->get()->getBuffer())
+        if(xmlString != bufferResult->get()->getBuffer())
         {
-            R.errs(
-                "File: \"", file, "\" failed.\n",
+            R_.errs(
+                "File: \"", inputPath, "\" failed.\n",
                 "Expected:\n",
                 bufferResult->get()->getBuffer(), "\n",
-                "Got:\n", xml, "\n");
-            R.testFailed();
+                "Got:\n", xmlString, "\n");
+            R_.testFailed();
+        }
+
+        if(adocGen)
+        {
+            path::replace_extension(outputPathStr, adocGen->extension());
+            outputPath = { outputPathStr.data(), outputPathStr.size() };
+            adocGen->buildOne(outputPath, corpus, config_, R_);
         }
     }
-    else
-    {
-        // VFALCO report that it is not a regular file
-    }
-}
+};
 
 //------------------------------------------------
 
 void
 testMain(
-    int argc, const char** argv,
+    int argc, const char* const* argv,
     Reporter& R)
 {
     namespace path = llvm::sys::path;
@@ -216,36 +250,22 @@ testMain(
             path::remove_dots(s, true);
             config.includePaths.emplace_back(std::move(s));
         }
-
         // Use the include path for the configPath
         config.configPath = config.includePaths[0];
 
-        auto const gen = makeXMLGenerator();
-        llvm::ThreadPool Pool(llvm::hardware_concurrency(
-            tooling::ExecutorConcurrency));
-        for(int i = 1; i < argc; ++i)
-        {
-            visitDirectory(
-                llvm::StringRef(argv[i]), R,
-            [&](llvm::StringRef dir_,
-                llvm::StringRef file_,
-                llvm::StringRef out_)
-            {
-                Pool.async([&config, &R, &gen,
-                    dir = dir_.str(),
-                    file = file_.str(),
-                    out = out_.str()]
-                {
-                    SingleFile db(dir, file, out);
-                    tooling::StandaloneToolExecutor ex(
-                        db, { std::string(file) });
-                    auto corpus = Corpus::build(ex, config, R);
-                    if(corpus)
-                        performTest(*corpus, config, file, out, *gen, R);
-                });
-            });
-        }
-        Pool.wait();
+        // We need a different config for each directory
+        // passed on the command line, and thus each must
+        // also have a separate Tester.
+        Tester tester(config, R);
+        llvm::StringRef s(argv[i]);
+        llvm::SmallString<340> dirPath(s);
+        path::remove_dots(dirPath, true);
+        llvm::ThreadPool threadPool(
+            llvm::hardware_concurrency(
+                tooling::ExecutorConcurrency));
+        if(! tester.testDirectory(llvm::StringRef(argv[i]), threadPool))
+            break;
+        threadPool.wait();
     }
 }
 

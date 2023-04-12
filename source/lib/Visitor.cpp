@@ -11,6 +11,7 @@
 
 #include "BitcodeWriter.h"
 #include "Serialize.h"
+#include "utility.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Visitor.hpp>
 #ifdef _MSC_VER
@@ -84,6 +85,7 @@ mapDecl(T const* D)
         filePath = loc.getFilename();
         path::replace_path_prefix(filePath, ff.prefix, "");
     }
+    convert_to_slash(filePath);
 
     // If there is an error generating a USR for the decl, skip this decl.
     {

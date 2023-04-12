@@ -203,15 +203,8 @@ Writer::
 write(
     RecordInfo const& I)
 {
-    llvm::StringRef tag;
-    switch(I.TagType)
-    {
-    case TagTypeKind::TTK_Struct: tag = "struct"; break;
-    case TagTypeKind::TTK_Class: tag = "class"; break;
-    case TagTypeKind::TTK_Union: tag = "union"; break;
-    default:
-        llvm_unreachable("unexpected TagType");
-    }
+    llvm::StringRef tag =
+        clang::TypeWithKeyword::getTagTypeKindName(I.TagType);
     openTag(tag, {
         { "name", I.Name },
         { I.USR }
@@ -297,10 +290,11 @@ write(
 {
     writeTag("base", {
         { "name", I.Name },
-        { I.USR }});
+        { I.USR },
+        { I.Access },
+        { "modifier", "virtual", I.IsVirtual } });
     if(! corpus_.exists(I.USR))
         return;
-    auto const& B = corpus_.get<RecordInfo>(I.USR);
 }
 
 void
@@ -309,11 +303,10 @@ writeSymbolInfo(
     SymbolInfo const& I)
 {
     writeInfo(I);
-    // VFALCO Why so many Location?
     if(I.DefLoc)
-        write(*I.DefLoc);
+        write(*I.DefLoc, true);
     for(auto const& loc : I.Loc)
-        write(loc);
+        write(loc, false);
 }
 
 void
@@ -376,11 +369,13 @@ write(
 void
 Writer::
 write(
-    Location const& loc)
+    Location const& loc,
+    bool def)
 {
     writeTag("file", {
         { "path", loc.Filename },
-        { "line", std::to_string(loc.LineNumber) }});
+        { "line", std::to_string(loc.LineNumber) },
+        { "class", "def", def } });
 }
 
 //------------------------------------------------
@@ -508,25 +503,6 @@ toString(
     SymbolID const& id)
 {
     return toBase64(id);
-}
-
-llvm::StringRef
-Writer::
-toString(
-    AccessSpecifier access)
-{
-    switch(access)
-    {
-    case AccessSpecifier::AS_public:
-        return "public";
-    case AccessSpecifier::AS_protected:
-        return "protected";
-    case AccessSpecifier::AS_private:
-        return "private";
-    case AccessSpecifier::AS_none:
-    default:
-        return "none";
-    }
 }
 
 /*

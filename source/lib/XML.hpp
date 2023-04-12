@@ -17,6 +17,7 @@
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Generator.hpp>
 #include <mrdox/Visitor.hpp>
+#include <clang/Basic/Specifiers.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
@@ -104,8 +105,7 @@ public:
     void writeNamespaceRefs(llvm::SmallVector<Reference, 4> const& v);
     void write(Reference const& ref);
 
-
-    void write(Location const& loc);
+    void write(Location const& loc, bool def = false);
 
     void openTag(llvm::StringRef);
     void openTag(llvm::StringRef, Attrs);
@@ -121,7 +121,6 @@ public:
     NamespaceInfo const* findGlobalNamespace();
 
     static std::string toString(SymbolID const& id);
-    static llvm::StringRef toString(AccessSpecifier access);
     //static llvm::StringRef toString(InfoType) noexcept;
 
     //--------------------------------------------
@@ -151,7 +150,7 @@ public:
 
         Attr(AccessSpecifier access) noexcept
             : name("access")
-            , value(toString(access))
+            , value(clang::getAccessSpelling(access))
             , pred(access != AccessSpecifier::AS_none)
         {
         }

@@ -94,11 +94,6 @@ struct Generator
 extern std::unique_ptr<Generator> makeXMLGenerator();
 extern std::unique_ptr<Generator> makeAsciidocGenerator();
 
-//------------------------------------------------
-
-// VFALCO This does not belong here
-std::string getTagType(TagTypeKind AS);
-
 } // mrdox
 } // clang
 

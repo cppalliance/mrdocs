@@ -14,12 +14,10 @@
 
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/ArgumentsAdjusters.h>
-#include <clang/Tooling/Execution.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringRef.h>
 #include <memory>
-#include <source_location>
 #include <string>
 
 namespace clang {

@@ -687,8 +687,14 @@ parseBases(
                 // Call this function recursively to get the inherited classes of
                 // this base; these new bases will also get stored in the original
                 // RecordInfo: I.
+                //
+                // VFALCO Commented this out because we only want to show immediate
+                //        bases. Alternatively, the generator could check IsParent
+                //
+            #if 0
                 parseBases(I, Base, IsFileInRootDir, PublicOnly, false,
                     I.Bases.back().Access, R);
+            #endif
             }
         }
     }
