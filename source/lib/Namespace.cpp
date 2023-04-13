@@ -26,10 +26,6 @@ NamespaceInfo()
         EmptySID,
         "",
         "")
-    // VFALCO Shouldn't this be AS_none? But
-    //        the Bitcode writer expects the
-    //        default to be AS_public...
-    , Children(clang::AccessSpecifier::AS_public)
 {
 }
 
@@ -39,10 +35,6 @@ NamespaceInfo(
     StringRef Name,
     StringRef Path)
     : Info(InfoType::IT_namespace, USR, Name, Path)
-    // VFALCO Shouldn't this be AS_none? But
-    //        the Bitcode writer expects the
-    //        default to be AS_public...
-    , Children(clang::AccessSpecifier::AS_public)
 {
 }
 

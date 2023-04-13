@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_FUNCTIONS_HPP
-#define MRDOX_FUNCTIONS_HPP
+#ifndef MRDOX_FUNCTION_HPP
+#define MRDOX_FUNCTION_HPP
 
 #include "FieldType.hpp"
-#include "Function.hpp"
+#include <mrdox/Function.hpp>
 #include "List.hpp"
 #include "Symbol.hpp"
 #include "Template.hpp"

@@ -18,6 +18,7 @@
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
+#if 0
 template<>
 struct llvm::yaml::MappingTraits<
     clang::mrdox::Config::filter>
@@ -28,21 +29,24 @@ struct llvm::yaml::MappingTraits<
         io.mapOptional("exclude", f);
     }
 };
+#endif
 
 template<>
 struct llvm::yaml::MappingTraits<
     clang::mrdox::Config>
 {
     static void mapping(
-        IO &io, clang::mrdox::Config &f)
+        IO& io, clang::mrdox::Config& config)
     {
-        io.mapOptional("namespaces",   f.namespaces);
-        io.mapOptional("files",        f.files);
-        io.mapOptional("entities",     f.entities);
-        io.mapOptional("project-name", f.ProjectName);
-        io.mapOptional("public-only",  f.PublicOnly);
-        io.mapOptional("output-dir",   f.OutDirectory);
-        io.mapOptional("include",      f.sourceRoot_);
+#if 0
+        io.mapOptional("namespaces",   config.namespaces);
+        io.mapOptional("files",        config.files);
+        io.mapOptional("entities",     config.entities);
+        io.mapOptional("project-name", config.ProjectName);
+        io.mapOptional("public-only",  config.PublicOnly);
+        io.mapOptional("output-dir",   config.OutDirectory);
+#endif
+        io.mapOptional("source-root",      config.sourceRoot_);
     }
 };
 

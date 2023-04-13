@@ -153,8 +153,8 @@ toolMain(
 int main(int argc, char const** argv)
 {
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
+    
     clang::mrdox::Reporter R;
     clang::mrdox::toolMain(argc, argv, R);
-
     return R.getExitCode();
 }

@@ -26,6 +26,8 @@
 namespace clang {
 namespace mrdox {
 
+struct OverloadSet;
+
 class AsciidocGenerator
     : public Generator
 {
@@ -92,6 +94,9 @@ public:
     void writeBase(BaseRecordInfo const& I);
 
     void write(FunctionInfo const& I);
+    void write(
+        llvm::StringRef sectionName,
+        std::vector<OverloadSet> const& list);
 
     struct FormalParam;
     void write(FormalParam const& p, llvm::raw_ostream& os);

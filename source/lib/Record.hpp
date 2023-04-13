@@ -14,7 +14,7 @@
 
 #include "MemberType.hpp"
 #include "Reference.hpp"
-#include "Scope.hpp"
+#include <mrdox/Scope.hpp>
 #include "Symbol.hpp"
 #include "Template.hpp"
 #include "Types.hpp"

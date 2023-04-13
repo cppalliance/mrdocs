@@ -10,6 +10,7 @@
 //
 
 #include "Asciidoc.hpp"
+#include <mrdox/OverloadSet.hpp>
 #include <clang/Basic/Specifiers.h>
 
 namespace clang {
@@ -250,33 +251,47 @@ write(
     // Data Members
 
     // Member Functions
+
     {
-        std::vector<FunctionInfo const*> v;
-        v.reserve(I.Children.Functions.size());
-        for(auto const& ref : I.Children.Functions)
-        {
-            auto const& J = corpus_.get<FunctionInfo>(ref.USR);
-            if(J.Access == AccessSpecifier::AS_public)
-                v.push_back(&J);
-        }
-        if(! v.empty())
+        // public
+        auto list = makeOverloadSet(corpus_, I.Children,
+            [](FunctionInfo const& I)
+            {
+                return I.Access == AccessSpecifier::AS_public;
+            });
+        if(! list.empty())
         {
             *os_ << "\n";
-            openSection("Member Functions");
-            *os_ <<
-            "[cols=2]\n" <<
-                "|===\n" <<
-                "|Name\n" <<
-                "|Description\n" <<
-                "\n";
-            for(auto const& J : v)
-                *os_ <<
-                    "|`" << J->Name << "`\n" <<
-                    "| " << J->javadoc.brief << "\n";
-            *os_ <<
-                "|===\n" <<
-                "\n";
-            closeSection();                
+            write("Member Functions", list);
+        }
+    }
+
+    {
+        // protected
+        auto list = makeOverloadSet(corpus_, I.Children,
+            [](FunctionInfo const& I)
+            {
+                return I.Access == AccessSpecifier::AS_protected;
+            });
+        if(! list.empty())
+        {
+            *os_ << "\n";
+            write("Protected Member Functions", list);
+        }
+    }
+
+    if(! config_.PublicOnly)
+    {
+        // private
+        auto list = makeOverloadSet(corpus_, I.Children,
+            [](FunctionInfo const& I)
+            {
+                return I.Access == AccessSpecifier::AS_private;
+            });
+        if(! list.empty())
+        {
+            *os_ << "\n";
+            write("Private Member Functions", list);
         }
     }
 
@@ -343,6 +358,34 @@ write(
         closeSection();
     }
 
+    closeSection();
+}
+
+void
+AsciidocGenerator::
+Writer::
+write(
+    llvm::StringRef sectionName,
+    std::vector<OverloadSet> const& list)
+{
+    openSection(sectionName);
+    *os_ <<
+        "[,cols=2]\n" <<
+        "|===\n" <<
+        "|Name\n" <<
+        "|Description\n" <<
+        "\n";
+    for(auto const& J : list)
+    {
+        *os_ <<
+            "|`" << J.name << "`\n" <<
+            "|";
+        for(auto const& K : J.list)
+            *os_ << K->javadoc.brief << "\n";
+    }   
+    *os_ <<
+        "|===\n" <<
+        "\n";
     closeSection();
 }
 

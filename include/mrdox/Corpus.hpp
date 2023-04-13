@@ -161,7 +161,7 @@ public:
         assert(p != nullptr);
         return *p;
     }
-
+    
 private:
     struct Temps;
 

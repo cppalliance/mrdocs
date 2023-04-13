@@ -49,7 +49,7 @@ threadSafePrint(
     std::lock_guard<llvm::sys::Mutex> lock(m_);
     os << s << '\n';
     if(n)
-        *n++;
+        (*n)++;
 }
 
 std::string&

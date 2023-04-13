@@ -22,7 +22,7 @@
 #include "Namespace.hpp"
 #include "Record.hpp"
 #include "Reference.hpp"
-#include "Scope.hpp"
+#include <mrdox/Scope.hpp>
 #include "Symbol.hpp"
 #include "TemplateParam.hpp"
 #include "Type.hpp"

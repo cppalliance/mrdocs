@@ -13,9 +13,8 @@
 #define MRDOX_SCOPE_HPP
 
 #include "Enum.hpp"
-#include "Function.hpp"
 #include "Typedef.hpp"
-
+#include <mrdox/Function.hpp>
 #include <vector>
 
 namespace clang {
@@ -28,9 +27,6 @@ struct TypedefInfo;
 */
 struct Scope
 {
-    // VFALCO REMOVE
-    clang::AccessSpecifier access;
-
     // Namespaces and Records are references because they will be properly
     // documented in their own info, while the entirety of Functions and Enums are
     // included here because they should not have separate documentation from
@@ -43,13 +39,6 @@ struct Scope
     std::vector<Reference> Functions;
     std::vector<EnumInfo> Enums;
     std::vector<TypedefInfo> Typedefs;
-
-    Scope(
-        clang::AccessSpecifier access_ =
-            clang::AccessSpecifier::AS_public) noexcept
-        : access(access_)
-    {
-    }
 };
 
 } // mrdox

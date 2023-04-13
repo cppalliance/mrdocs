@@ -9,13 +9,27 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Reduce.h"
-#include "Representation.h"
-#include <mrdox/Function.hpp>
+#include <functional>
 
 namespace clang {
 namespace mrdox {
 
+class Corpus;
+struct FunctionInfo;
+
+//------------------------------------------------
+
+struct OverloadSet
+{
+    llvm::StringRef name;
+    std::vector<FunctionInfo const*> list;
+};
+
+std::vector<OverloadSet>
+makeOverloadSet(
+    Corpus const& corpus,
+    Scope const& scope,
+    std::function<bool(FunctionInfo const&)> filter);
+
 } // mrdox
 } // clang
-

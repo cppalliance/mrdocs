@@ -13,7 +13,7 @@
 #define MRDOX_MEMBERTYPE_HPP
 
 #include "FieldType.hpp"
-#include "Function.hpp"
+#include <mrdox/Function.hpp>
 #include "Javadoc.hpp"
 
 namespace clang {
