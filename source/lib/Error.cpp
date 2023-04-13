@@ -60,17 +60,8 @@ char ErrorInfoPlus::ID{};
 } // (anon)
 
 llvm::Error
-makeError(
+makeErrorString(
     std::string action,
-    std::source_location loc)
-{
-    return llvm::make_error<ErrorInfoPlus>(std::move(action), loc);
-}
-
-llvm::Error
-makeError(
-    std::string action,
-    std::string because,
     std::source_location loc)
 {
     return llvm::make_error<ErrorInfoPlus>(std::move(action), loc);

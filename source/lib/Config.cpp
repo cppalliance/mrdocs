@@ -94,7 +94,7 @@ setSourceRoot(
     {
         std::error_code ec = fs::make_absolute(temp);
         if(ec)
-            return makeError_("fs::make_absolute got '", ec, "'");
+            return makeError("fs::make_absolute got '", ec, "'");
     }
 
     path::remove_dots(temp, true);
