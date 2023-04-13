@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<all>
+  <symbol name="GlobalNamespace"/>
+  <symbol name="GlobalNamespace::a" usr="bJjlANSkHT9fMIOJb+7rnfl9B2Q="/>
+  <symbol name="GlobalNamespace::A" usr="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+  <symbol name="GlobalNamespace::b" usr="x22+jYd1xB7rz7rTGsgmwOre390="/>
+  <symbol name="GlobalNamespace::B" usr="3JsK1DO0O+wZhv+0meptQrbs3fY="/>
+  <symbol name="GlobalNamespace::ba" usr="DnCAWz4yn8cUKkg886MMQcSEBhg="/>
+  <symbol name="GlobalNamespace::bA" usr="o++ChozQVnJgKoS41uCm96LOP14="/>
+  <symbol name="GlobalNamespace::Ba" usr="r32UJws/5rQHSwieW9XcY/Lu30k="/>
+  <symbol name="GlobalNamespace::Bx" usr="64sjs/NcKpvextfuwbtyP/VMOJk="/>
+</all>
+<namespace name="">
+  <struct name="a" usr="bJjlANSkHT9fMIOJb+7rnfl9B2Q=">
+    <file path="decl-only/canonical_1.cpp" line="5" class="def"/>
+  </struct>
+  <struct name="A" usr="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file path="decl-only/canonical_1.cpp" line="4" class="def"/>
+  </struct>
+  <struct name="b" usr="x22+jYd1xB7rz7rTGsgmwOre390=">
+    <file path="decl-only/canonical_1.cpp" line="3" class="def"/>
+  </struct>
+  <struct name="B" usr="3JsK1DO0O+wZhv+0meptQrbs3fY=">
+    <file path="decl-only/canonical_1.cpp" line="2" class="def"/>
+  </struct>
+  <struct name="ba" usr="DnCAWz4yn8cUKkg886MMQcSEBhg=">
+    <file path="decl-only/canonical_1.cpp" line="9" class="def"/>
+  </struct>
+  <struct name="bA" usr="o++ChozQVnJgKoS41uCm96LOP14=">
+    <file path="decl-only/canonical_1.cpp" line="7" class="def"/>
+  </struct>
+  <struct name="Ba" usr="r32UJws/5rQHSwieW9XcY/Lu30k=">
+    <file path="decl-only/canonical_1.cpp" line="6" class="def"/>
+  </struct>
+  <struct name="Bx" usr="64sjs/NcKpvextfuwbtyP/VMOJk=">
+    <file path="decl-only/canonical_1.cpp" line="8" class="def"/>
+  </struct>
+</namespace>
+</mrdox>

@@ -247,6 +247,39 @@ write(
         closeSection();
     }
 
+    // Data Members
+
+    // Member Functions
+    {
+        std::vector<FunctionInfo const*> v;
+        v.reserve(I.Children.Functions.size());
+        for(auto const& ref : I.Children.Functions)
+        {
+            auto const& J = corpus_.get<FunctionInfo>(ref.USR);
+            if(J.Access == AccessSpecifier::AS_public)
+                v.push_back(&J);
+        }
+        if(! v.empty())
+        {
+            *os_ << "\n";
+            openSection("Member Functions");
+            *os_ <<
+            "[cols=2]\n" <<
+                "|===\n" <<
+                "|Name\n" <<
+                "|Description\n" <<
+                "\n";
+            for(auto const& J : v)
+                *os_ <<
+                    "|`" << J->Name << "`\n" <<
+                    "| " << J->javadoc.brief << "\n";
+            *os_ <<
+                "|===\n" <<
+                "\n";
+            closeSection();                
+        }
+    }
+
     closeSection();
 }
 

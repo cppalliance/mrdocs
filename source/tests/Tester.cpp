@@ -104,10 +104,13 @@ checkOneFile(
     {
         // create the xml file and write to it
         llvm::raw_fd_ostream os(outputPath, ec, llvm::sys::fs::OF_None);
-        if(R_.error(ec, "write the file '", outputPath, "'"))
+        if(R_.error(ec, "open the file '", outputPath, "' for writing"))
+            return;
+        os << xmlString;
+        if(R_.error(os.error(), "write the file '", outputPath, "'"))
             return;
     }
-    else if(! R_.error(ec, "call fs::status on '", outputPathStr, "'"))
+    else if(R_.error(ec, "call fs::status on '", outputPathStr, "'"))
         return;
     if(stat.type() != fs::file_type::regular_file)
         return R_.failed("'", outputPath, "' is not a regular file");
