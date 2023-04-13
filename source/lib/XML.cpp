@@ -39,11 +39,8 @@ buildOne(
         fs::CD_CreateAlways,
         fs::FA_Write,
         fs::OF_None);
-    if(ec)
-    {
-        R.failed("llvm::raw_fd_ostream", ec);
+    if(R.error(ec, "open a stream for '", fileName, "'"))
         return false;
-    }
 
     if(! corpus.canonicalize(R))
         return false;
@@ -90,19 +87,11 @@ Writer::
 write(
     llvm::raw_ostream& os)
 {
-    auto const ns = findGlobalNamespace();
+    auto const ns = corpus_.find<NamespaceInfo>(EmptySID);
     if(! ns)
     {
-#if 0
-        auto err = llvm::createStringError(
-            llvm::inconvertibleErrorCode(),
-            "not found: (global namespace)");
-        R_.failed("findGlobalNamespace", err);
+        R_.print("find the global namespace");
         return false;
-#else
-        // VFALCO This needs cleaning up
-        return true;
-#endif
     }
     os_ = &os;
     level_ = {};
@@ -483,21 +472,6 @@ Writer::
 outdent()
 {
     level_.resize(level_.size() - 2);
-}
-
-//------------------------------------------------
-
-NamespaceInfo const*
-Writer::
-findGlobalNamespace()
-{
-    auto p = corpus_.find<NamespaceInfo>(EmptySID);
-    if(p != nullptr)
-    {
-        assert(p->Name.empty());
-        return p;
-    }
-    return nullptr;
 }
 
 //------------------------------------------------

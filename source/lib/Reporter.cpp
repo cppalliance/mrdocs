@@ -12,7 +12,6 @@
 #include <mrdox/Reporter.hpp>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringRef.h>
-//#include <llvm/Support/Format.h>
 #include <llvm/Support/Path.h>
 #include <string>
 #include <string_view>
@@ -26,12 +25,15 @@ namespace mrdox {
 //
 //------------------------------------------------
 
-void
+int
 Reporter::
-failed(llvm::Error&& err)
+getExitCode() const noexcept
 {
-    errs("error: ", std::move(err));
-    failed_ = true;
+    if(failed_)
+        return EXIT_FAILURE;
+    if(errorCount_ > 0)
+        return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }
 
 llvm::StringRef
@@ -75,6 +77,30 @@ makeString(
     temp.append(std::to_string(loc.line()));
     temp.push_back(')');
     return temp;
+}
+
+//------------------------------------------------
+
+void
+Reporter::
+threadSafePrint(
+    llvm::raw_fd_ostream& os,
+    llvm::StringRef s,
+    std::size_t* n)
+
+{
+    std::lock_guard<llvm::sys::Mutex> lock(m_);
+    os << s << '\n';
+    if(n)
+        *n++;
+}
+
+std::string&
+Reporter::
+temp_string()
+{
+    static thread_local std::string s;
+    return s;
 }
 
 } // mrdox

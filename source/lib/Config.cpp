@@ -100,19 +100,12 @@ loadFromFile(
 
     // Read the YAML file and apply to this
     auto fileText = llvm::MemoryBuffer::getFile(configPath);
-    if(! fileText)
-    {
-        R.failed("llvm::MemoryBuffer::getFile", fileText);
+    if(R.error(fileText, "read the file '", configPath, "'"))
         return false;
-    }
     llvm::yaml::Input yin(**fileText);
     yin >> *this;
-    std::error_code ec = yin.error();
-    if(ec)
-    {
-        R.failed("llvm::yaml::Input::operator>>", ec);
+    if(R.error(yin.error(), "parse the YAML file"))
         return false;
-    }
 
     // change configPath to the directory
     path::remove_filename(configPath);

@@ -38,17 +38,11 @@ build(
     if(ec == std::errc::no_such_file_or_directory)
     {
         ec = fs::create_directories(outputPath, false);
-        if(ec)
-        {
-            R.failed("fs::create_directories", ec);
+        if(R.error(ec, "create directories in '", outputPath, "'"))
             return false;
-        }
     }
-    else if(ec)
-    {
-        R.failed("fs::status", ec);
+    if(R.error(ec, "call fs::status on '", outputPath, "'"))
         return false;
-    }
 
     // If we are given an existing directory,
     // then build a single-page file there with

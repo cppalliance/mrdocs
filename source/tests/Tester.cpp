@@ -35,17 +35,14 @@ checkDirRecursively(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    std::error_code ec;
     llvm::SmallString<32> outputPath;
     path::remove_dots(dirPath, true);
     fs::directory_iterator const end{};
 
+    std::error_code ec;
     fs::directory_iterator iter(dirPath, ec, false);
-    if(ec)
-    {
-        R_.failed("visitDirectory", ec);
+    if(R_.error(ec, "iterate the directory '", dirPath, '.'))
         return false;
-    }
 
     while(iter != end)
     {
@@ -78,11 +75,8 @@ checkDirRecursively(
             // we don't handle this type
         }
         iter.increment(ec);
-        if(ec)
-        {
-            R_.failed("fs::directory_iterator::increment", ec);
+        if(R_.error(ec, "iterate the directory '", dirPath, '.'))
             return false;
-        }
     }
     return true;
 }
@@ -102,10 +96,7 @@ checkOneFile(
 
     std::string xmlString;
     if(! xmlGen->buildString(xmlString, corpus, config_, R_))
-    {
-        R_.testFailed();
         return;
-    }
     std::error_code ec;
     fs::file_status stat;
     ec = fs::status(outputPathStr, stat, false);
@@ -113,38 +104,20 @@ checkOneFile(
     {
         // create the xml file and write to it
         llvm::raw_fd_ostream os(outputPath, ec, llvm::sys::fs::OF_None);
-        if(! ec)
-        {
-            os << xmlString;
-        }
-        else
-        {
-            llvm::errs() <<
-                "Writing \"" << outputPath << "\" failed: " <<
-                ec.message() << "\n";
-            R_.testFailed();
-        }
+        if(R_.error(ec, "write the file '", outputPath, "'"))
+            return;
     }
-    else if(ec)
-    {
-        R_.failed("fs::status", ec);
+    else if(! R_.error(ec, "call fs::status on '", outputPathStr, "'"))
         return;
-    }
     if(stat.type() != fs::file_type::regular_file)
-    {
-        R_.failed("'%s' is not a regular file", outputPath);
-        return;
-    }
+        return R_.failed("'", outputPath, "' is not a regular file");
     auto bufferResult = llvm::MemoryBuffer::getFile(outputPath, false);
-    if(! bufferResult)
-    {
-        R_.failed("MemoryBuffer::getFile", bufferResult);
+    if(R_.error(bufferResult, "read the file '", outputPath, "'"))
         return;
-    }
     std::string_view got(bufferResult->get()->getBuffer());
     if(xmlString != bufferResult->get()->getBuffer())
     {
-        R_.errs(
+        R_.print(
             "File: \"", inputPath, "\" failed.\n",
             "Expected:\n",
             bufferResult->get()->getBuffer(), "\n",

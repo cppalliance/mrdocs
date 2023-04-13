@@ -118,8 +118,6 @@ public:
     void indent();
     void outdent();
 
-    NamespaceInfo const* findGlobalNamespace();
-
     static std::string toString(SymbolID const& id);
     //static llvm::StringRef toString(InfoType) noexcept;
 

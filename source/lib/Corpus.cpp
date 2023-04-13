@@ -102,7 +102,7 @@ build(
                 auto ReadInfos = Reader.readBitcode();
                 if(! ReadInfos)
                 {
-                    R.failed(ReadInfos.takeError());
+                    R.failed(ReadInfos.takeError(), "read bitcode");
                     GotFailure = true;
                     return;
                 }
@@ -113,10 +113,9 @@ build(
             }
 
             auto mergeResult = mergeInfos(Infos);
-            if(!mergeResult)
+            if(R.error(mergeResult, "merge metadata"))
             {
                 // VFALCO What about GotFailure?
-                R.failed("mergeInfos", mergeResult.takeError());
                 return;
             }
 
@@ -133,10 +132,8 @@ build(
 
     if(GotFailure)
     {
-        R.failed("buildCorpus",
-            llvm::createStringError(
-                llvm::inconvertibleErrorCode(),
-                "an error occurred"));
+        R.print("Failed building Corpus");
+        return nullptr;
     }
 
     //
@@ -168,9 +165,14 @@ canonicalize(
     if(isCanonical_)
         return true;
     auto p = find<NamespaceInfo>(EmptySID);
-    // VFALCO report
+    if(! p)
+    {
+        R.failed("find global namespace");
+        return false;
+    }
+
     Temps t;
-    R.outs("Canonicalizing...");
+    R.print("Canonicalizing...");
     if(! canonicalize(*p, t, R))
         return false;
     isCanonical_ = true;

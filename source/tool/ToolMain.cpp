@@ -103,11 +103,8 @@ toolMain(
     // parse command line options
     auto optionsResult = tooling::CommonOptionsParser::create(
         argc, argv, ToolCategory, llvm::cl::OneOrMore, Overview);
-    if(! optionsResult)
-    {
-        R.failed("CommonOptionsParser::create", optionsResult);
+    if(R.error(optionsResult, "calculate command line options"))
         return;
-    }
 
     config.PublicOnly = true;
     config.OutDirectory = OutDirectory;
@@ -131,10 +128,7 @@ toolMain(
             });
         if(it == formats.end())
         {
-            llvm::Error err = llvm::createStringError(
-                llvm::inconvertibleErrorCode(),
-                "unknown format");
-            R.failed("find the generator", err);
+            R.print("find the generator for '", FormatType.getValue(), "'");
             return;
         }
         gen = it->get();

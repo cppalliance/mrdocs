@@ -93,11 +93,8 @@ buildOne(
         fs::CD_CreateAlways,
         fs::FA_Write,
         fs::OF_None);
-    if(ec)
-    {
-        R.failed("llvm::raw_fd_ostream", ec);
+    if(R.error(ec, "open the stream for '", fileName, "'"))
         return false;
-    }
 
     if(! corpus.canonicalize(R))
         return false;

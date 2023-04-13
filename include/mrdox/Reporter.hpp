@@ -13,10 +13,10 @@
 #define MRDOX_REPORTER_HPP
 
 #include <llvm/Support/Error.h>
+#include <llvm/Support/Format.h>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/raw_ostream.h>
 #include <cassert>
-#include <new>
 #include <source_location>
 #include <string>
 #include <string_view>
@@ -38,36 +38,69 @@ struct Reporter
 {
     /** Return a suitable exit code.
     */
-    int
-    getExitCode() const noexcept
-    {
-        if(! failed_)
-            return EXIT_SUCCESS;
-        return EXIT_FAILURE;
-    }
+    int getExitCode() const noexcept;
 
-    /** Report a non-successful Error
+    /** Print formatted output.
+
+        @param arg0, args The values to write.
     */
+    template<class Arg0, class... Args>
     void
-    failed(llvm::Error&& err);
+    print(
+        Arg0&& arg, Args&&... args);
 
     /** Report the failure of an action.
 
-        @param action   The operation which failed.
-        @param e        The object which holds the error.
-        @param loc      The location where the report is called.
+        @param arg0, args The values to write.
     */
-    template<class E>
+    template<class Arg0, class... Args>
     void
     failed(
-        llvm::StringRef action,
+        Arg0&& arg, Args&&... args);
+
+    /** Return true and report a message if an error is indicated.
+
+        The error object `e` is inspected for a failure
+        condition. If `e` does not contain a failure,
+        then this function returns `false`. Otherwise
+        the function emits a diagnostic message to the
+        error channel and returns `true`.
+
+        @par Output
+        The diagnostic message will always have the form:
+        @code
+        error: couldn't %1 because %2
+        @endcode
+        The first string is formed from the `actionFormat`
+        parameter and the variadic list of arguments,
+        while the second string is formed from the error
+        object.
+
+        If source location information is available, it
+        is reported on additional indented lines following
+        the diagnostic message.
+
+        @par Effects
+        The number of errors seen by the reporter
+        is incremented by one.
+
+        @return true if `e` indicates a failure.
+
+        @param e The error object to inspect.
+
+        @param arg0, args The values to write.
+    */
+    template<
+        class E,
+        class Arg0, class... Args>
+    [[nodiscard]]
+    bool
+    error(
         E&& e,
-        std::source_location const& loc =
-            std::source_location::current())
-    {
-        errs(action, " failed: ", std::move(e), " at ", loc);
-        failed_ = true;
-    }
+        Arg0&& arg0,
+        Args&&... args);
+
+    //--------------------------------------------
 
     /** Report a unit test failure.
 
@@ -80,127 +113,150 @@ struct Reporter
         failed_ = true;
     }
 
-    /** Write a formatted string to outputs.
-
-        @par Thread Safety
-        May be called concurrently.
-    */
-    template<class... Args>
-    void
-    outs(Args&&... args) const
-    {
-        llvm::StringRef s = format(std::forward<Args>(args)...);
-        std::lock_guard<llvm::sys::Mutex> lock(m_);
-        llvm::errs() << s << '\n';
-    }
-
-    /** Write a formatted string to errors.
-
-        @par Thread Safety
-        May be called concurrently.
-    */
-    template<class... Args>
-    void
-    errs(Args&&... args) const
-    {
-        llvm::StringRef s = format(std::forward<Args>(args)...);
-        std::lock_guard<llvm::sys::Mutex> lock(m_);
-        llvm::errs() << s << '\n';
-    }
-
     static
     llvm::StringRef
     makeString(
         std::source_location const& loc);
 
 private:
-    /** Return a string formatted from arguments.
+    //--------------------------------------------
 
-        @par Thread Safety
-        May be called concurrently.
-    */
-    template<class... Args>
-    llvm::StringRef
-    format(
-        Args&&... args) const
+    template<class T>
+    static bool isFailure(llvm::Expected<T>& e) noexcept
     {
-        static thread_local std::string temp;
-        temp.clear();
-        llvm::raw_string_ostream os(temp);
-        format_impl(os, std::forward<Args>(args)...);
-        return llvm::StringRef(temp.data(), temp.size());
-    }
-
-    /** Format arguments into an output stream.
-    */
-    template<class Arg0, class... Args>
-    void
-    format_impl(
-        llvm::raw_string_ostream& os,
-        Arg0&& arg0,
-        Args&&... args) const
-    {
-        format_one(os, std::forward<Arg0>(arg0));
-        if constexpr(sizeof...(args) > 0)
-            format_impl(os, std::forward<Args>(args)...);
+        return ! e.operator bool();
     }
 
     template<class T>
-    void
-    format_one(
-        llvm::raw_string_ostream& os,
-        T const& t) const
+    static bool isFailure(llvm::ErrorOr<T>& e) noexcept
     {
-        os << t;
+        return ! e.operator bool();
     }
 
-    void
-    format_one(
-        llvm::raw_string_ostream& os,
-        std::error_code const& ec) const
+    static bool isFailure(std::error_code const& ec) noexcept
     {
-        os << ec.message();
-    }
-
-    void
-    format_one(
-        llvm::raw_string_ostream& os,
-        llvm::Error&& err) const
-    {
-        //err.operator bool(); // VFALCO?
-        os << toString(std::move(err));
+        return ec.operator bool();
     }
 
     template<class T>
-    void
-    format_one(
-        llvm::raw_string_ostream& os,
-        llvm::Expected<T>&& ex) const
+    auto&& nice(T&& t) const
     {
-        format_one(os, ex.takeError());
+        return std::forward<T>(t);
     }
 
     template<class T>
-    void
-    format_one(
-        llvm::raw_string_ostream& os,
-        llvm::ErrorOr<T>&& eor) const
+    auto nice(llvm::Expected<T>& e) const
     {
-        format_one(os, eor.getError());
+        return nice(e.takeError());
+    }
+
+    template<class T>
+    auto nice(llvm::Expected<T>&& e) const
+    {
+        return nice(e.takeError());
+    }
+
+    template<class T>
+    auto nice(llvm::ErrorOr<T>& e) const
+    {
+        return nice(e.takeError());
+    }
+
+    template<class T>
+    auto nice(llvm::ErrorOr<T>&& e) const
+    {
+        return nice(e.getError());
+    }
+
+    auto nice(std::error_code&& ec) const
+    {
+        return ec.message();
+    }
+
+    auto nice(std::error_code const& ec) const
+    {
+        return ec.message();
     }
 
     void
-    format_one(
-        llvm::raw_string_ostream& os,
-        std::source_location const& loc) const
-    {
-        os << makeString(loc);
-    }
+    threadSafePrint(
+        llvm::raw_fd_ostream& os,
+        llvm::StringRef s,
+        std::size_t* n = nullptr);
+
+    static std::string& temp_string();
 
 private:
     llvm::sys::Mutex mutable m_;
+    std::size_t errorCount_ = 0;
     bool failed_ = false;
 };
+
+//------------------------------------------------
+
+template<
+    class Arg0, class... Args>
+void
+Reporter::
+print(
+    Arg0&& arg,
+    Args&&... args)
+{
+    auto& temp = temp_string();
+    temp.clear();
+    {
+        llvm::raw_string_ostream os(temp);
+        os << std::forward<Arg0>(arg);
+        (os << ... << nice(std::forward<Args>(args)));
+    }
+    threadSafePrint(llvm::outs(), temp, nullptr);
+}
+
+template<
+    class Arg0, class... Args>
+void
+Reporter::
+failed(
+    Arg0&& arg,
+    Args&&... args)
+{
+    auto& temp = temp_string();
+    temp.clear();
+    {
+        llvm::raw_string_ostream os(temp);
+        os << "error: Couldn't ";
+        os << std::forward<Arg0>(arg);
+        (os << ... << nice(std::forward<Args>(args)));
+        os << ".";
+    }
+    threadSafePrint(llvm::errs(), temp, &errorCount_);
+}
+
+template<
+    class E,
+    class Arg0, class... Args>
+bool
+Reporter::
+error(
+    E&& e,
+    Arg0&& arg,
+    Args&&... args)
+{
+    if(! isFailure(e))
+        return false;
+    auto& temp = temp_string();
+    temp.clear();
+    {
+        llvm::raw_string_ostream os(temp);
+        os << "error: Couldn't ";
+        os << std::forward<Arg0>(arg);
+        (os << ... << nice(std::forward<Args>(args)));
+        os << " because " <<
+            nice(std::move(e)) << '.';
+    }
+    threadSafePrint(llvm::errs(), temp, &errorCount_);
+    return true;
+}
 
 } // mrdox
 } // clang
