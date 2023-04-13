@@ -9,7 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "utility.hpp"
 #include <mrdox/Config.hpp>
+#include <mrdox/Error.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/Path.h>
@@ -40,7 +42,7 @@ struct llvm::yaml::MappingTraits<
         io.mapOptional("project-name", f.ProjectName);
         io.mapOptional("public-only",  f.PublicOnly);
         io.mapOptional("output-dir",   f.OutDirectory);
-        io.mapOptional("include",      f.includePaths);
+        io.mapOptional("include",      f.sourceRoot_);
     }
 };
 
@@ -49,19 +51,11 @@ struct llvm::yaml::MappingTraits<
 namespace clang {
 namespace mrdox {
 
-// Make the path end in a separator
-static
-void
-makeDirsy(
-    llvm::SmallVectorImpl<char>& s)
-{
-    namespace path = llvm::sys::path;
-    if(! path::is_separator(s.back()))
-    {
-        auto const sep = path::get_separator();
-        s.insert(s.end(), sep.begin(), sep.end());
-    }
-}
+//------------------------------------------------
+//
+// Observers
+//
+//------------------------------------------------
 
 bool
 Config::
@@ -72,18 +66,47 @@ filterSourceFile(
     namespace path = llvm::sys::path;
 
     llvm::SmallString<32> temp;
-    for(auto const& s : includePaths)
-    {
-        temp = filePath;
-        if(path::replace_path_prefix(temp, s, ""))
-        {
-            prefixPath.assign(s.begin(), s.end());
-            makeDirsy(prefixPath);
-            return false;
-        }
-    }
-    return true;
+    temp = filePath;
+    if(! path::replace_path_prefix(temp, sourceRoot_, ""))
+        return true;
+
+    prefixPath.assign(sourceRoot_.begin(), sourceRoot_.end());
+    makeDirsy(prefixPath);
+    return false;
 }
+
+//------------------------------------------------
+//
+// Modifiers
+//
+//------------------------------------------------
+
+llvm::Error
+Config::
+setSourceRoot(
+    llvm::StringRef dirPath)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    llvm::SmallString<0> temp(dirPath);
+    if(! path::is_absolute(sourceRoot_))
+    {
+        std::error_code ec = fs::make_absolute(temp);
+        if(ec)
+            return makeError_("fs::make_absolute got '", ec, "'");
+    }
+
+    path::remove_dots(temp, true);
+
+    // This is required for filterSourceFile to work
+    makeDirsy(temp);
+    sourceRoot_ = temp.str();
+
+    return llvm::Error::success();
+}
+
+//------------------------------------------------
 
 bool
 Config::
@@ -111,21 +134,16 @@ loadFromFile(
     path::remove_filename(configPath);
     path::remove_dots(configPath, true);
 
-    // make includePaths absolute
+    // make sourceRoot absolute
+    if(! path::is_absolute(sourceRoot_))
     {
         llvm::SmallString<128> temp;
-        for(auto& s : includePaths)
-        {
-            if(path::is_absolute(s))
-                continue;
-            temp.clear();
-            path::append(temp, configPath, s);
-            // separator at the end is required
-            // for replace_path_prefix to work
-            path::remove_dots(temp, true);
-            makeDirsy(temp);
-            s.assign(temp.begin(), temp.end());
-        }
+        path::append(temp, configPath, sourceRoot_);
+        // separator at the end is required
+        // for replace_path_prefix to work
+        path::remove_dots(temp, true);
+        makeDirsy(temp);
+        sourceRoot_.assign(temp.begin(), temp.end());
     }
 
     return true;

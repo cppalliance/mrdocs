@@ -12,6 +12,7 @@
 #ifndef MRDOX_REPORTER_HPP
 #define MRDOX_REPORTER_HPP
 
+#include <mrdox/detail/nice.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Format.h>
 #include <llvm/Support/Mutex.h>
@@ -90,6 +91,7 @@ struct Reporter
 
         @param arg0, args The values to write.
     */
+    /** @{ */
     template<
         class E,
         class Arg0, class... Args>
@@ -99,6 +101,17 @@ struct Reporter
         E&& e,
         Arg0&& arg0,
         Args&&... args);
+
+    template<
+        class E,
+        class Arg0, class... Args>
+    [[nodiscard]]
+    bool
+    error(
+        E& e,
+        Arg0&& arg0,
+        Args&&... args);
+    /** @} */
 
     //--------------------------------------------
 
@@ -113,69 +126,29 @@ struct Reporter
         failed_ = true;
     }
 
-    static
-    llvm::StringRef
-    makeString(
-        std::source_location const& loc);
-
 private:
     //--------------------------------------------
 
     template<class T>
-    static bool isFailure(llvm::Expected<T>& e) noexcept
+    static bool isFailure(llvm::Expected<T>&& e) noexcept
     {
         return ! e.operator bool();
     }
 
     template<class T>
-    static bool isFailure(llvm::ErrorOr<T>& e) noexcept
+    static bool isFailure(llvm::ErrorOr<T>&& e) noexcept
     {
         return ! e.operator bool();
     }
 
-    static bool isFailure(std::error_code const& ec) noexcept
+    static bool isFailure(llvm::Error&& e) noexcept
+    {
+        return ! e.operator bool();
+    }
+
+    static bool isFailure(std::error_code&& ec) noexcept
     {
         return ec.operator bool();
-    }
-
-    template<class T>
-    auto&& nice(T&& t) const
-    {
-        return std::forward<T>(t);
-    }
-
-    template<class T>
-    auto nice(llvm::Expected<T>& e) const
-    {
-        return nice(e.takeError());
-    }
-
-    template<class T>
-    auto nice(llvm::Expected<T>&& e) const
-    {
-        return nice(e.takeError());
-    }
-
-    template<class T>
-    auto nice(llvm::ErrorOr<T>& e) const
-    {
-        return nice(e.takeError());
-    }
-
-    template<class T>
-    auto nice(llvm::ErrorOr<T>&& e) const
-    {
-        return nice(e.getError());
-    }
-
-    auto nice(std::error_code&& ec) const
-    {
-        return ec.message();
-    }
-
-    auto nice(std::error_code const& ec) const
-    {
-        return ec.message();
     }
 
     void
@@ -202,11 +175,12 @@ print(
     Arg0&& arg,
     Args&&... args)
 {
+    using detail::nice;
     auto& temp = temp_string();
     temp.clear();
     {
         llvm::raw_string_ostream os(temp);
-        os << std::forward<Arg0>(arg);
+        os << nice(std::forward<Arg0>(arg));
         (os << ... << nice(std::forward<Args>(args)));
     }
     threadSafePrint(llvm::outs(), temp, nullptr);
@@ -220,12 +194,13 @@ failed(
     Arg0&& arg,
     Args&&... args)
 {
+    using detail::nice;
     auto& temp = temp_string();
     temp.clear();
     {
         llvm::raw_string_ostream os(temp);
         os << "error: Couldn't ";
-        os << std::forward<Arg0>(arg);
+        os << nice(std::forward<Arg0>(arg));
         (os << ... << nice(std::forward<Args>(args)));
         os << ".";
     }
@@ -239,23 +214,39 @@ bool
 Reporter::
 error(
     E&& e,
-    Arg0&& arg,
+    Arg0&& arg0,
     Args&&... args)
 {
-    if(! isFailure(e))
+    using detail::nice;
+    if(! isFailure(std::forward<E>(e)))
         return false;
     auto& temp = temp_string();
     temp.clear();
     {
         llvm::raw_string_ostream os(temp);
         os << "error: Couldn't ";
-        os << std::forward<Arg0>(arg);
+        os << nice(std::forward<Arg0>(arg0));
         (os << ... << nice(std::forward<Args>(args)));
-        os << " because " <<
-            nice(std::move(e)) << '.';
+        os << " because " << nice(std::forward<E>(e)) << '.';
     }
     threadSafePrint(llvm::errs(), temp, &errorCount_);
     return true;
+}
+
+template<
+    class E,
+    class Arg0, class... Args>
+bool
+Reporter::
+error(
+    E& e,
+    Arg0&& arg0,
+    Args&&... args)
+{
+    return error(
+        std::move(e),
+        std::forward<Arg0>(arg0),
+        std::forward<Args>(args)...);
 }
 
 } // mrdox

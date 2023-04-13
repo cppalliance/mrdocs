@@ -24,5 +24,17 @@ convert_to_slash(
     return llvm::StringRef(path.data(), path.size());
 }
 
+void
+makeDirsy(
+    llvm::SmallVectorImpl<char>& s)
+{
+    namespace path = llvm::sys::path;
+    if(! path::is_separator(s.back()))
+    {
+        auto const sep = path::get_separator();
+        s.insert(s.end(), sep.begin(), sep.end());
+    }
+}
+
 } // mrdox
 } // clang

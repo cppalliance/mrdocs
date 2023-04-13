@@ -39,7 +39,7 @@ public:
     log(
         llvm::raw_ostream &os) const override
     {
-        os << action_ << " at " << Reporter::makeString(loc_);
+        os << action_ << " at " << detail::nice(loc_);
     }
 
     std::error_code

@@ -28,13 +28,12 @@ testMain(
     for(int i = 1; i < argc; ++i)
     {
         Config config;
-        {
-            llvm::SmallString<0> s(argv[i]);
-            path::remove_dots(s, true);
-            config.includePaths.emplace_back(std::move(s));
-        }
+        if(R.error(config.setSourceRoot(argv[i]),
+            "set the source root to '", argv[i], "'"))
+            return;
+
         // Use the include path for the configPath
-        config.configPath = config.includePaths[0];
+        config.configPath = config.sourceRoot();
 
         // We need a different config for each directory
         // passed on the command line, and thus each must

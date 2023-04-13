@@ -29,6 +29,12 @@ convert_to_slash(
     llvm::sys::path::Style style =
         llvm::sys::path::Style::native);
 
+/** Append a separator if not already present.
+*/
+void
+makeDirsy(
+    llvm::SmallVectorImpl<char>& s);
+
 } // mrdox
 } // clang
 

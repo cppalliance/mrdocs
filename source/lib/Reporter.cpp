@@ -36,49 +36,6 @@ getExitCode() const noexcept
     return EXIT_SUCCESS;
 }
 
-llvm::StringRef
-Reporter::
-makeString(
-    std::source_location const& loc)
-{
-    namespace path = llvm::sys::path;
-
-    static thread_local llvm::SmallString<0> temp;
-
-    llvm::StringRef fileName(loc.file_name());
-    auto it = path::rbegin(fileName);
-    auto const end = path::rend(fileName);
-    if(it == end)
-    {
-        temp.clear();
-        return {};
-    }
-    for(;;)
-    {
-        // VFALCO This assumes the directory
-        //        layout of the source files.
-        if( *it == "source" ||
-            *it == "include")
-        {
-            temp.assign(
-                it->data(),
-                fileName.end());
-            break;
-        }
-        ++it;
-        if(it == end)
-        {
-            temp = fileName;
-            break;
-        }
-    }
-    path::remove_dots(temp, true);
-    temp.push_back('(');
-    temp.append(std::to_string(loc.line()));
-    temp.push_back(')');
-    return temp;
-}
-
 //------------------------------------------------
 
 void

@@ -17,8 +17,16 @@
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringRef.h>
+#include <llvm/Support/YAMLTraits.h>
 #include <memory>
 #include <string>
+
+namespace llvm {
+namespace yaml {
+template<class T>
+struct MappingTraits;
+} // yaml
+} // llvm
 
 namespace clang {
 namespace mrdox {
@@ -28,8 +36,14 @@ namespace mrdox {
     This contains all the settings applied from
     the command line and the YML file (if any).
 */
-struct Config
+class Config
 {
+    template<class T>
+    friend struct llvm::yaml::MappingTraits;
+
+    std::string sourceRoot_;
+
+public:
     /** The root path from which all relative paths are calculated.
     */
     llvm::SmallString<16> configPath;
@@ -47,12 +61,7 @@ struct Config
 
     // Directory for outputting generated files.
     std::string OutDirectory;
-
-    // Directory where input files are stored. Links
-    // to definition locations will only be generated if
-    // the file is in this dir.
-    std::vector<std::string> includePaths;
-                                                      
+                                                     
     // URL of repository that hosts code used
     // for links to definition locations.
     llvm::Optional<std::string> RepositoryUrl;
@@ -64,6 +73,18 @@ public:
     Config(Config&&) = delete;
     Config& operator=(Config&&) = delete;
 
+    //--------------------------------------------
+    //
+    // Observers
+    //
+    //--------------------------------------------
+
+    llvm::StringRef
+    sourceRoot() const noexcept
+    {
+        return sourceRoot_;
+    }
+
     /** Returns true if the file should be skipped.
 
         If the file is not skipped, then prefixPath
@@ -74,6 +95,22 @@ public:
     filterSourceFile(
         llvm::StringRef filePath,
         llvm::SmallVectorImpl<char>& prefixPath) const noexcept;
+
+    //--------------------------------------------
+    //
+    // Modifiers
+    //
+    //--------------------------------------------
+
+    /** Set the directory where the input files are stored.
+
+        Symbol documentation will not be emitted unless
+        the corresponding source file is a child of this
+        directory.
+    */
+    llvm::Error
+    setSourceRoot(
+        llvm::StringRef dirPath);
 
 public:
     struct filter { std::vector<std::string> include, exclude; };

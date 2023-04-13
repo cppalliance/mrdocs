@@ -12,6 +12,7 @@
 #ifndef MRDOX_ERROR_HPP
 #define MRDOX_ERROR_HPP
 
+#include <mrdox/detail/nice.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
 #include <source_location>
@@ -49,6 +50,32 @@ makeError(
     std::string because,
     std::source_location loc =
         std::source_location::current());
+
+template<class Arg0, class... Args>
+struct makeError_ : llvm::Error
+{
+    makeError_(
+        Arg0&& arg0,
+        Args&&... args,
+        std::source_location loc =
+            std::source_location::current())
+        : llvm::Error(
+            [&]
+            {
+                using detail::nice;
+                std::string temp;
+                llvm::raw_string_ostream os(temp);
+                os << nice(std::forward<Arg0>(arg0));
+                (os << ... << nice(std::forward<Args>(args)));
+                os << ' ' << nice(loc);
+                return makeError(temp, loc);
+            }())
+    {
+    }
+};
+
+template<class Arg0, class... Args>
+makeError_(Arg0&&, Args&&...) -> makeError_<Arg0, Args...>;
 
 //------------------------------------------------
 
