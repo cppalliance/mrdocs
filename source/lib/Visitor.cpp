@@ -12,8 +12,8 @@
 #include "BitcodeWriter.h"
 #include "Serialize.h"
 #include "utility.hpp"
+#include "Visitor.hpp"
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Visitor.hpp>
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
@@ -28,13 +28,22 @@
 namespace clang {
 namespace mrdox {
 
+/*  An instance of Visitor runs on one translation unit.
+*/
 void
 Visitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
-    assert(! handleTranslationUnit_);
-    handleTranslationUnit_ = true;
+#if 0
+    llvm::Optional<llvm::StringRef> path = 
+        Context.getSourceManager().getNonBuiltinFilenameForID(
+            Context.getSourceManager().getMainFileID());
+    if(path)
+    {
+        llvm::StringRef s = *path;
+    }
+#endif
     TraverseDecl(Context.getTranslationUnitDecl());
 }
 
@@ -66,26 +75,33 @@ mapDecl(T const* D)
     auto result = fileFilter_.emplace(
         loc.getIncludeLoc().getRawEncoding(),
         FileFilter());
-    if(result.second)
+    if(! result.second)
     {
-        // new element
-        filePath = loc.getFilename();
-        FileFilter& ff = result.first->second;
-        ff.exclude = config_.filterSourceFile(filePath, ff.prefix);
-        if(ff.exclude)
-            return true;
+        // cached filter entry already exists
+        FileFilter const& ff = result.first->second;
+        if(! ff.include)
+            return false;
+        filePath = loc.getFilename(); // native
+        convert_to_slash(filePath);
+        // VFALCO we could assert that the prefix
+        //        matches and just lop off the
+        //        first ff.prefix.size() characters.
         path::replace_path_prefix(filePath, ff.prefix, "");
     }
     else
     {
-        // existing element
-        FileFilter const& ff = result.first->second;
-        if(ff.exclude)
-            return true;
+        // new element
         filePath = loc.getFilename();
+        convert_to_slash(filePath);
+        FileFilter& ff = result.first->second;
+        ff.include = config_.shouldVisitFile(filePath, ff.prefix);
+        if(! ff.include)
+            return false;
+        // VFALCO we could assert that the prefix
+        //        matches and just lop off the
+        //        first ff.prefix.size() characters.
         path::replace_path_prefix(filePath, ff.prefix, "");
     }
-    convert_to_slash(filePath);
 
     // If there is an error generating a USR for the decl, skip this decl.
     {

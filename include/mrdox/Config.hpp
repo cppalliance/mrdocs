@@ -17,6 +17,7 @@
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringRef.h>
+#include <llvm/Support/Error.h>
 #include <llvm/Support/YAMLTraits.h>
 #include <memory>
 #include <string>
@@ -35,18 +36,45 @@ namespace mrdox {
 
     This contains all the settings applied from
     the command line and the YML file (if any).
+    A configuration is always connected to a
+    particular directory from which absolute paths
+    are calculated from relative paths.
 */
 class Config
 {
     template<class T>
     friend struct llvm::yaml::MappingTraits;
 
+    struct Options;
+
+    llvm::SmallString<0> configDir_;
     std::string sourceRoot_;
+    std::vector<std::string> inputFileFilter_;
+
+    explicit Config(llvm::StringRef configDir);
 
 public:
-    /** The root path from which all relative paths are calculated.
+    /** Return a defaulted Config using an existing directory.
+
+        @param dirPath The path to the directory.
+        If this is relative, an absolute path will
+        be calculated from the current directory.
     */
-    llvm::SmallString<16> configPath;
+    static
+    llvm::Expected<std::unique_ptr<Config>>
+    createAtDirectory(
+        llvm::StringRef dirPath);
+
+    /** Return a Config loaded from the specified YAML file.
+    */
+    static
+    llvm::Expected<std::unique_ptr<Config>>
+    loadFromFile(
+        llvm::StringRef filePath);
+
+    //
+    // VFALCO these naked data members are temporary...
+    //
 
     /** Adjustments to tool command line, applied during execute.
     */
@@ -69,7 +97,6 @@ public:
     bool IgnoreMappingFailures = false;
 
 public:
-    Config() = default;
     Config(Config&&) = delete;
     Config& operator=(Config&&) = delete;
 
@@ -79,22 +106,44 @@ public:
     //
     //--------------------------------------------
 
+    /** Return the full path to the configuration directory.
+
+        The returned path will always be POSIX
+        style and have a trailing separator.
+    */
+    llvm::StringRef
+    configDir() const noexcept
+    {
+        return configDir_;
+    }
+
+    /** Return the full path to the source root directory.
+
+        The returned path will always be POSIX
+        style and have a trailing separator.
+    */
     llvm::StringRef
     sourceRoot() const noexcept
     {
         return sourceRoot_;
     }
 
-    /** Returns true if the file should be skipped.
+    /** Returns true if the file should be visited.
 
-        If the file is not skipped, then prefixPath
-        is set to the portion of the file path which
+        If the file is visited, then prefix is
+        set to the portion of the file path which
         should be be removed for matching files.
+
+        @param filePath The posix-style full path
+        to the file being processed.
+
+        @param prefix The prefix which should be
+        removed from subsequent matches.
     */
     bool
-    filterSourceFile(
+    shouldVisitFile(
         llvm::StringRef filePath,
-        llvm::SmallVectorImpl<char>& prefixPath) const noexcept;
+        llvm::SmallVectorImpl<char>& prefix) const noexcept;
 
     //--------------------------------------------
     //
@@ -112,15 +161,11 @@ public:
     setSourceRoot(
         llvm::StringRef dirPath);
 
-public:
-    struct filter { std::vector<std::string> include, exclude; };
-
-    filter namespaces, files, entities;
-
-    bool
-    loadFromFile(
-        llvm::StringRef filePath,
-        Reporter& R);
+    /** Set the filter for including translation units.
+    */
+    llvm::Error
+    setInputFileFilter(
+        std::vector<std::string> const& list);
 };
 
 } // mrdox

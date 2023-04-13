@@ -98,20 +98,19 @@ toolMain(
     formats.emplace_back(makeXMLGenerator());
     formats.emplace_back(makeAsciidocGenerator());
 
-    Config config;
-
     // parse command line options
     auto optionsResult = tooling::CommonOptionsParser::create(
         argc, argv, ToolCategory, llvm::cl::OneOrMore, Overview);
     if(R.error(optionsResult, "calculate command line options"))
         return;
 
-    config.PublicOnly = true;
-    config.OutDirectory = OutDirectory;
-    config.IgnoreMappingFailures = IgnoreMappingFailures;
+    auto config = Config::loadFromFile(ConfigPath);
+    if(! config)
+        return (void)R.error(config, "load config file '", ConfigPath, "'");
 
-    if(! config.loadFromFile(ConfigPath, R))
-        return;
+    (*config)->PublicOnly = true;
+    (*config)->OutDirectory = OutDirectory;
+    (*config)->IgnoreMappingFailures = IgnoreMappingFailures;
 
     // create the executor
     auto ex = std::make_unique<tooling::AllTUsToolExecutor>(
@@ -135,13 +134,13 @@ toolMain(
     }
 
     // Run the tool, this can take a while
-    auto rv = Corpus::build(*ex, config, R);
+    auto rv = Corpus::build(*ex, **config, R);
     if(! rv)
         return;
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if(! gen->build(config.OutDirectory, *rv, config, R))
+    if(! gen->build((*config)->OutDirectory, *rv, **config, R))
         return;
 }
 

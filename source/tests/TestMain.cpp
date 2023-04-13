@@ -27,18 +27,18 @@ testMain(
     // recursively for tests.
     for(int i = 1; i < argc; ++i)
     {
-        Config config;
-        if(R.error(config.setSourceRoot(argv[i]),
-            "set the source root to '", argv[i], "'"))
-            return;
+        auto config = Config::createAtDirectory(argv[i]);
+        if(! config)
+            return (void)R.error(config, "create config at directory '", argv[i], "'");
 
-        // Use the include path for the configPath
-        config.configPath = config.sourceRoot();
+        // Set source root to config dir
+        if(auto err = (*config)->setSourceRoot((*config)->configDir()))
+            return (void)R.error(err, "set source root to '", (*config)->configDir(), "'");
 
         // We need a different config for each directory
         // passed on the command line, and thus each must
         // also have a separate Tester.
-        Tester tester(config, R);
+        Tester tester(**config, R);
         llvm::StringRef s(argv[i]);
         llvm::SmallString<340> dirPath(s);
         path::remove_dots(dirPath, true);

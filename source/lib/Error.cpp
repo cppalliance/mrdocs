@@ -61,10 +61,10 @@ char ErrorInfoPlus::ID{};
 
 llvm::Error
 makeErrorString(
-    std::string action,
+    std::string reason,
     std::source_location loc)
 {
-    return llvm::make_error<ErrorInfoPlus>(std::move(action), loc);
+    return llvm::make_error<ErrorInfoPlus>(std::move(reason), loc);
 }
 
 } // mrdox

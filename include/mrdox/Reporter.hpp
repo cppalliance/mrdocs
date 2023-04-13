@@ -143,7 +143,7 @@ private:
 
     static bool isFailure(llvm::Error&& e) noexcept
     {
-        return ! e.operator bool();
+        return e.operator bool();
     }
 
     static bool isFailure(std::error_code&& ec) noexcept

@@ -16,7 +16,7 @@
 //
 
 #include "ClangDoc.h"
-#include <mrdox/Visitor.hpp>
+#include "Visitor.hpp"
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Frontend/FrontendAction.h>
 

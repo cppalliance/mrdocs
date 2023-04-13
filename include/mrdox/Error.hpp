@@ -23,14 +23,14 @@ namespace mrdox {
 
 /** Return an Error with descriptive information.
 
-    @param action A phrase describing the attempted action.
+    @param reason A phrase describing the cause of the failure.
 
     @param loc The source location where the failure occurred.
 */
 [[nodiscard]]
 llvm::Error
 makeErrorString(
-    std::string action,
+    std::string reason,
     std::source_location loc =
         std::source_location::current());
 

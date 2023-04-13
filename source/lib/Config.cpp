@@ -18,13 +18,28 @@
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
+namespace clang {
+namespace mrdox {
+
+struct Config::Options
+{
+    struct filter { std::vector<std::string> include, exclude; };
+    filter namespaces, files, entities;
+
+    std::string source_root;
+    std::vector<std::string> input_include;
+};
+
+} // mrdox
+} // clang
+
 #if 0
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::Config::filter>
+    clang::mrdox::Config::Options::filter>
 {
     static void mapping(
-        IO &io, clang::mrdox::Config::filter& f)
+        IO &io, clang::mrdox::Config::Options::filter& f)
     {
         io.mapOptional("exclude", f);
     }
@@ -33,20 +48,13 @@ struct llvm::yaml::MappingTraits<
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::Config>
+    clang::mrdox::Config::Options>
 {
     static void mapping(
-        IO& io, clang::mrdox::Config& config)
+        IO& io, clang::mrdox::Config::Options& opt)
     {
-#if 0
-        io.mapOptional("namespaces",   config.namespaces);
-        io.mapOptional("files",        config.files);
-        io.mapOptional("entities",     config.entities);
-        io.mapOptional("project-name", config.ProjectName);
-        io.mapOptional("public-only",  config.PublicOnly);
-        io.mapOptional("output-dir",   config.OutDirectory);
-#endif
-        io.mapOptional("source-root",      config.sourceRoot_);
+        io.mapOptional("source-root",  opt.source_root);
+        io.mapOptional("input",        opt.input_include);
     }
 };
 
@@ -54,6 +62,70 @@ struct llvm::yaml::MappingTraits<
 
 namespace clang {
 namespace mrdox {
+
+Config::
+Config(
+    llvm::StringRef configDir)
+    : configDir_(configDir)
+{
+}
+
+llvm::Expected<std::unique_ptr<Config>>
+Config::
+createAtDirectory(
+    llvm::StringRef dirPath)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    llvm::SmallString<0> s(dirPath);
+    std::error_code ec = fs::make_absolute(s);
+    if(ec)
+        return makeError("fs::make_absolute('", s, "') returned ", ec.message());
+    path::remove_dots(s, true);
+    makeDirsy(s);
+    convert_to_slash(s);
+    return std::unique_ptr<Config>(new Config(s));
+}
+
+llvm::Expected<std::unique_ptr<Config>>
+Config::
+loadFromFile(
+    llvm::StringRef filePath)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    // check filePath is a regular file
+    fs::file_status stat;
+    if(auto ec = fs::status(filePath, stat))
+        return makeError("fs::status('", filePath, "') returned ", ec.message());
+    if(stat.type() != fs::file_type::regular_file)
+        return makeError("path '", filePath, "' is not a regular file");
+
+    // create initial config at config dir
+    llvm::SmallString<0> s(filePath);
+    path::remove_filename(s);
+    llvm::Expected<std::unique_ptr<Config>> config = createAtDirectory(s);
+
+    // Read the YAML file into Options
+    Options opt;
+    auto fileText = llvm::MemoryBuffer::getFile(filePath);
+    if(! fileText)
+        return makeError(fileText.getError().message(), " when loading file '", filePath, "' ");
+    {
+        llvm::yaml::Input yin(**fileText);
+        yin >> opt;
+        if(auto ec = yin.error())
+            return makeError(ec.message(), " when parsing file '", filePath, "' ");
+    }
+
+    // apply opt to Config
+    if(auto err = (*config)->setSourceRoot(opt.source_root))
+        return err;
+
+    return config;
+}
 
 //------------------------------------------------
 //
@@ -63,7 +135,7 @@ namespace mrdox {
 
 bool
 Config::
-filterSourceFile(
+shouldVisitFile(
     llvm::StringRef filePath,
     llvm::SmallVectorImpl<char>& prefixPath) const noexcept
 {
@@ -72,11 +144,11 @@ filterSourceFile(
     llvm::SmallString<32> temp;
     temp = filePath;
     if(! path::replace_path_prefix(temp, sourceRoot_, ""))
-        return true;
+        return false;
 
     prefixPath.assign(sourceRoot_.begin(), sourceRoot_.end());
     makeDirsy(prefixPath);
-    return false;
+    return true;
 }
 
 //------------------------------------------------
@@ -101,56 +173,29 @@ setSourceRoot(
             return makeError("fs::make_absolute got '", ec, "'");
     }
 
-    path::remove_dots(temp, true);
+    path::remove_dots(temp, true, path::Style::posix);
 
     // This is required for filterSourceFile to work
-    makeDirsy(temp);
+    makeDirsy(temp, path::Style::posix);
     sourceRoot_ = temp.str();
 
     return llvm::Error::success();
 }
 
-//------------------------------------------------
-
-bool
+llvm::Error
 Config::
-loadFromFile(
-    llvm::StringRef filePath,
-    Reporter& R)
+setInputFileFilter(
+    std::vector<std::string> const& list)
 {
-    namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    // get absolute path to config file
-    configPath = filePath;
-    fs::make_absolute(configPath);
-
-    // Read the YAML file and apply to this
-    auto fileText = llvm::MemoryBuffer::getFile(configPath);
-    if(R.error(fileText, "read the file '", configPath, "'"))
-        return false;
-    llvm::yaml::Input yin(**fileText);
-    yin >> *this;
-    if(R.error(yin.error(), "parse the YAML file"))
-        return false;
-
-    // change configPath to the directory
-    path::remove_filename(configPath);
-    path::remove_dots(configPath, true);
-
-    // make sourceRoot absolute
-    if(! path::is_absolute(sourceRoot_))
+    for(auto const& s0 : list)
     {
-        llvm::SmallString<128> temp;
-        path::append(temp, configPath, sourceRoot_);
-        // separator at the end is required
-        // for replace_path_prefix to work
-        path::remove_dots(temp, true);
-        makeDirsy(temp);
-        sourceRoot_.assign(temp.begin(), temp.end());
+        std::string s;
+        if(path::is_absolute(s0))
+            s = path::convert_to_slash(s0);
     }
-
-    return true;
+    return llvm::Error::success();
 }
 
 } // mrdox

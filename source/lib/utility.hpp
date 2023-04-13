@@ -33,7 +33,9 @@ convert_to_slash(
 */
 void
 makeDirsy(
-    llvm::SmallVectorImpl<char>& s);
+    llvm::SmallVectorImpl<char>& s,
+    llvm::sys::path::Style style =
+        llvm::sys::path::Style::native);
 
 } // mrdox
 } // clang

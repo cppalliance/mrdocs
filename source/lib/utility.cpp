@@ -26,12 +26,13 @@ convert_to_slash(
 
 void
 makeDirsy(
-    llvm::SmallVectorImpl<char>& s)
+    llvm::SmallVectorImpl<char>& s,
+    llvm::sys::path::Style style)
 {
     namespace path = llvm::sys::path;
-    if(! path::is_separator(s.back()))
+    if(! path::is_separator(s.back(), style))
     {
-        auto const sep = path::get_separator();
+        auto const sep = path::get_separator(style);
         s.insert(s.end(), sep.begin(), sep.end());
     }
 }

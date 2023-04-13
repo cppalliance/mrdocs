@@ -43,10 +43,9 @@ class Visitor
     struct FileFilter
     {
         llvm::SmallString<0> prefix;
-        bool exclude = true;
+        bool include = true;
     };
 
-    bool handleTranslationUnit_ = false;
     tooling::ExecutionContext& exc_;
     Config const& config_;
     Reporter& R_;

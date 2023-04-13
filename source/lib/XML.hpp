@@ -9,14 +9,14 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Representation.h"
-#include "Namespace.hpp"
 #include "base64.hpp"
 #include "escape.hpp"
+#include "Namespace.hpp"
+#include "Representation.h"
+#include "Visitor.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Generator.hpp>
-#include <mrdox/Visitor.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Tooling/Execution.h>
