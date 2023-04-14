@@ -17,6 +17,34 @@ namespace mrdox {
 class Corpus;
 struct FunctionInfo;
 
+/*
+    struct OverloadSet
+    {
+        struct Overloads
+        {
+            llvm::StringRef name;
+            std::vector<FunctionInfo const*> overloads;
+        };
+
+        AccessSpecifier access; // public, protected, private
+        std::vector<Overloads> list;
+    };
+
+    void
+    BasicWriter::
+    writeClass(
+        ClassInfo const& I)
+    {
+        beginClass( I.TagType, I.Name );
+        //...
+        OverloadSet list = buildOverloadSet(
+            I.Children.Functions, AccessSpecifier::AS_public );
+        writeOverloadSet( list );
+        //
+        endClass();
+    }
+*/
+
 //------------------------------------------------
 
 struct OverloadSet

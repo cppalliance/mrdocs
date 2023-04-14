@@ -13,7 +13,7 @@
 #define MRDOX_SOURCE_ASCIIDOC_HPP
 
 #include "Representation.h"
-#include "Namespace.hpp"
+#include <mrdox/Namespace.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Generator.hpp>

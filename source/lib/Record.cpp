@@ -10,7 +10,7 @@
 //
 
 #include "Reduce.h"
-#include "Record.hpp"
+#include <mrdox/Record.hpp>
 #include <cassert>
 #include <utility>
 

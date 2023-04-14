@@ -9,7 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Info.hpp"
+#include <mrdox/Info.hpp>
+#include <mrdox/Record.hpp>
+#include <clang/AST/Type.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -162,6 +164,30 @@ getFullyQualifiedName(
     auto s = extractName();
     temp.append(s.data(), s.size());
     return temp;
+}
+
+llvm::StringRef
+Info::
+symbolType() const noexcept
+{
+    switch(this->IT)
+    {
+    case InfoType::IT_default:
+        return "default";
+    case InfoType::IT_namespace:
+        return "namespace";
+    case InfoType::IT_record:
+        return clang::TypeWithKeyword::getTagTypeKindName(
+            static_cast<RecordInfo const*>(this)->TagType);
+    case InfoType::IT_function:
+        return "function";
+    case InfoType::IT_enum:
+        return "enum";
+    case InfoType::IT_typedef:
+        return "typedef";
+    default:
+        llvm_unreachable("unknown InfoType");
+    }
 }
 
 } // mrdox

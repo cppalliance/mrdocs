@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Info.hpp"
+#include <mrdox/Info.hpp>
 #include "Reference.hpp"
 
 namespace clang {

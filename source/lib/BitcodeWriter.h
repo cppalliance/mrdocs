@@ -19,7 +19,7 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEWRITER_H
 
 #include "Representation.h"
-#include "Namespace.hpp"
+#include <mrdox/Namespace.hpp>
 #include "clang/AST/AST.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/SmallVector.h"

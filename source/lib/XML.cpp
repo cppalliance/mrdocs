@@ -14,8 +14,6 @@
 namespace clang {
 namespace mrdox {
 
-namespace {
-
 //------------------------------------------------
 //
 // XMLGenerator
@@ -45,7 +43,8 @@ buildOne(
     if(! corpus.canonicalize(R))
         return false;
     Writer w(corpus, config, R);
-    return w.write(os);
+    w.write(os);
+    return true;
 }
 
 bool
@@ -62,7 +61,8 @@ buildString(
     if(! corpus.canonicalize(R))
         return false;
     Writer w(corpus, config, R);
-    return w.write(os);
+    w.write(os);
+    return true;
 }
 
 //------------------------------------------------
@@ -71,130 +71,95 @@ buildString(
 //
 //------------------------------------------------
 
+XMLGenerator::
 Writer::
 Writer(
     Corpus const& corpus,
     Config const& config,
     Reporter& R) noexcept
-    : corpus_(corpus)
-    , config_(config)
-    , R_(R)
+    : RecursiveWriter(corpus, config, R)
 {
-}
-
-bool
-Writer::
-write(
-    llvm::raw_ostream& os)
-{
-    auto const ns = corpus_.find<NamespaceInfo>(EmptySID);
-    if(! ns)
-    {
-        R_.print("find the global namespace");
-        return false;
-    }
-    os_ = &os;
-    level_ = {};
-    *os_ <<
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
-        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
-        "<mrdox>\n";
-    writeAllSymbols();
-    write(*ns);
-    *os_ <<
-        "</mrdox>\n";
-    return true;
 }
 
 //------------------------------------------------
 
 void
+XMLGenerator::
 Writer::
-writeAllSymbols()
+beginDoc()
+{
+    os() <<
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
+        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
+        "<mrdox>\n";
+}
+
+void
+XMLGenerator::
+Writer::
+endDoc()
+{
+    os() <<
+        "</mrdox>\n";
+}
+
+//------------------------------------------------
+
+void
+XMLGenerator::
+Writer::
+writeAllSymbols(
+    std::vector<AllSymbol> const& list)
 {
     openTag("all");
-    std::string temp;
-    for(auto const& id : corpus_.allSymbols)
-    {
-        auto const& I = corpus_.get<Info>(id);
+    adjustNesting(1);
+    for(auto const& I : list)
         writeTag("symbol", {
-            { "name", I.getFullyQualifiedName(temp) },
-            { I.USR }
-            });
-    }
+            { "name", I.fqName },
+            { "tag", I.symbolType },
+            { I.id } });
+    adjustNesting(-1);
     closeTag("all");
 }
 
 //------------------------------------------------
 
 void
+XMLGenerator::
 Writer::
-writeNamespaces(
-    std::vector<Reference> const& v)
-{
-    for(auto const& ref : v)
-        write(corpus_.get<NamespaceInfo>(ref.USR));
-}
-
-void
-Writer::
-writeRecords(
-    std::vector<Reference> const& v)
-{
-    for(auto const& ref : v)
-        write(corpus_.get<RecordInfo>(ref.USR));
-}
-
-void
-Writer::
-writeFunctions(
-    std::vector<Reference> const& v)
-{
-    for(auto const& ref : v)
-        write(corpus_.get<FunctionInfo>(ref.USR));
-}
-
-void
-Writer::
-write(
-    std::vector<EnumInfo> const& v)
-{
-    for(auto const& I : v)
-        write(I);
-}
-
-void
-Writer::
-write(
-    std::vector<TypedefInfo> const& v)
-{
-    for(auto const& I : v)
-        write(I);
-}
-
-//------------------------------------------------
-
-void
-Writer::
-write(
+beginNamespace(
     NamespaceInfo const& I)
 {
     openTag("namespace", {
         { "name", I.Name },
         { I.USR }
         });
-    writeInfo(I);
-    writeNamespaces(I.Children.Namespaces);
-    writeRecords(I.Children.Records);
-    writeFunctions(I.Children.Functions);
-    write(I.Children.Enums);
-    write(I.Children.Typedefs);
-    closeTag("namespace");
 }
 
 void
+XMLGenerator::
 Writer::
-write(
+writeNamespace(
+    NamespaceInfo const& I)
+{
+    writeInfo(I);
+}
+
+void
+XMLGenerator::
+Writer::
+endNamespace(
+    NamespaceInfo const& I)
+{
+    closeTag("namespace");
+}
+
+//------------------------------------------------
+
+void
+XMLGenerator::
+Writer::
+beginRecord(
     RecordInfo const& I)
 {
     llvm::StringRef tag =
@@ -203,19 +168,38 @@ write(
         { "name", I.Name },
         { I.USR }
         });
-    writeSymbolInfo(I);
-    for(auto const& t : I.Bases)
-        write(t);
-    writeRecords(I.Children.Records);
-    writeFunctions(I.Children.Functions);
-    write(I.Children.Enums);
-    write(I.Children.Typedefs);
-    closeTag(tag);
 }
 
 void
+XMLGenerator::
 Writer::
-write(
+writeRecord(
+    RecordInfo const& I)
+{
+    writeInfo(I);
+    writeSymbol(I);
+    for(auto const& t : I.Bases)
+        writeBaseRecord(t);
+    // VFALCO data members?
+}
+
+void
+XMLGenerator::
+Writer::
+endRecord(
+    RecordInfo const& I)
+{
+    llvm::StringRef tag =
+        clang::TypeWithKeyword::getTagTypeKindName(I.TagType);
+    closeTag(tag);
+}
+
+//------------------------------------------------
+
+void
+XMLGenerator::
+Writer::
+beginFunction(
     FunctionInfo const& I)
 {
     openTag("function", {
@@ -223,107 +207,136 @@ write(
         { I.Access },
         { I.USR }
         });
-    writeSymbolInfo(I);
+}
+
+void
+XMLGenerator::
+Writer::
+writeFunction(
+    FunctionInfo const& I)
+{
+    writeInfo(I);
+    writeSymbol(I);
     writeTag("return", {
         { "name", I.ReturnType.Type.Name },
         { I.ReturnType.Type.USR }
         });
-    write(I.Params);
-    write(I.ReturnType.Type);
+    for(auto const& J : I.Params)
+        writeParam(J);
     if(I.Template)
-    {
-        for(TemplateParamInfo const& tp : I.Template->Params)
-            writeTag(
-                "tp", {
-                { "n", tp.Contents }
-                });
-    }
-
-    closeTag("function");
+        for(TemplateParamInfo const& J : I.Template->Params)
+            writeTemplateParam(J);
 }
 
 void
+XMLGenerator::
 Writer::
-write(
+endFunction(
+    FunctionInfo const& I)
+{
+    closeTag("function");
+}
+
+//------------------------------------------------
+
+void
+XMLGenerator::
+Writer::
+writeEnum(
     EnumInfo const& I)
 {
     openTag("enum", {
         { "name", I.Name },
         { I.USR }
         });
+    adjustNesting(1);
     writeInfo(I);
     for(auto const& v : I.Members)
-    {
         writeTag("element", {
             { "name", v.Name },
             { "value", v.Value },
             });
-    }
+    adjustNesting(-1);
     closeTag("enum");
 }
 
 void
+XMLGenerator::
 Writer::
-write(
+writeTypedef(
     TypedefInfo const& I)
 {
-    writeSymbolInfo(I);
     openTag("typedef", {
         { "name", I.Name },
         { I.USR }
         });
+    adjustNesting(1);
+    writeInfo(I);
+    writeSymbol(I);
     if(I.Underlying.Type.USR != EmptySID)
         writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
+    adjustNesting(-1);
     closeTag("typedef");
 }
 
-void
-Writer::
-write(
-    BaseRecordInfo const& I)
-{
-    writeTag("base", {
-        { "name", I.Name },
-        { I.USR },
-        { I.Access },
-        { "modifier", "virtual", I.IsVirtual } });
-    if(! corpus_.exists(I.USR))
-        return;
-}
+//------------------------------------------------
 
 void
-Writer::
-writeSymbolInfo(
-    SymbolInfo const& I)
-{
-    writeInfo(I);
-    if(I.DefLoc)
-        write(*I.DefLoc, true);
-    for(auto const& loc : I.Loc)
-        write(loc, false);
-}
-
-void
+XMLGenerator::
 Writer::
 writeInfo(
     Info const& I)
 {
 }
 
-//------------------------------------------------
-
 void
+XMLGenerator::
 Writer::
-write(
-    llvm::ArrayRef<FieldTypeInfo> const& v)
+writeSymbol(
+    SymbolInfo const& I)
 {
-    for(auto const& I : v)
-        write(I);
+    if(I.DefLoc)
+        writeLocation(*I.DefLoc, true);
+    for(auto const& loc : I.Loc)
+        writeLocation(loc, false);
 }
 
 void
+XMLGenerator::
 Writer::
-write(FieldTypeInfo const& I)
+writeLocation(
+    Location const& loc,
+    bool def)
+{
+    writeTag("file", {
+        { "path", loc.Filename },
+        { "line", std::to_string(loc.LineNumber) },
+        { "class", "def", def } });
+}
+
+void
+XMLGenerator::
+Writer::
+writeBaseRecord(
+    BaseRecordInfo const& I)
+{
+    writeTag("base", {
+        { "name", I.Name },
+        { I.Access },
+        { "modifier", "virtual", I.IsVirtual },
+        { I.USR } });
+    if(! corpus_.exists(I.USR))
+    {
+        // e,g. for std::true_type
+        return;
+    }
+}
+
+void
+XMLGenerator::
+Writer::
+writeParam(
+    FieldTypeInfo const& I)
 {
     writeTag("param", {
         { "name", I.Name },
@@ -334,149 +347,117 @@ write(FieldTypeInfo const& I)
 }
 
 void
+XMLGenerator::
 Writer::
-writeNamespaceRefs(
-    llvm::SmallVector<Reference, 4> const& v)
+writeTemplateParam(
+    TemplateParamInfo const& I)
 {
-    for(auto const& ns : v)
-        writeTagLine("ns", ns.Name);
-}
-
-void
-Writer::
-write(
-    Reference const& I)
-{
-    //openTag("ref", {
-        //{ "usr", toString(ref.USR) }
-        //});
-    //writeTagLine("relpath", ref.getRelativeFilePath());
-    //writeTagLine("basename",I.getFileBaseName());
-    //writeTagLine("name", I.Name);
-    //writeTagLine("tag", std::to_string(static_cast<int>(I.RefType)));
-    //writeTagLine("path", I.Path);
-    //closeTag("ref");
+    writeTag(
+        "tparam", {
+        { "decl", I.Contents }
+        });
 }
 
 //------------------------------------------------
 
 void
-Writer::
-write(
-    Location const& loc,
-    bool def)
-{
-    writeTag("file", {
-        { "path", loc.Filename },
-        { "line", std::to_string(loc.LineNumber) },
-        { "class", "def", def } });
-}
-
-//------------------------------------------------
-
-void
+XMLGenerator::
 Writer::
 openTag(
     llvm::StringRef tag)
 {
-    *os_ << level_ << '<' << tag << ">\n";
-    indent();
+    indent() << '<' << tag << ">\n";
 }
 
 void
+XMLGenerator::
 Writer::
 openTag(
     llvm::StringRef tag,
     Attrs attrs)
 {
-    *os_ << level_ << '<' << tag;
+    indent() << '<' << tag;
     writeAttrs(attrs);
-    *os_ << ">\n";
-    indent();
+    os() << ">\n";
 }
 
 void
+XMLGenerator::
 Writer::
 closeTag(
     llvm::StringRef tag)
 {
-    outdent();
-    *os_ << level_ << "</" << tag << ">\n";
+    indent() << "</" << tag << ">\n";
 }
 
 void
+XMLGenerator::
 Writer::
 writeTag(
     llvm::StringRef tag)
 {
-    *os_ << level_ << "<" << tag << "/>\n";
+    indent() << "<" << tag << "/>\n";
 }
 
 void
+XMLGenerator::
 Writer::
 writeTag(
     llvm::StringRef tag,
     Attrs attrs)
 {
-    *os_ << level_ << "<" << tag;
+    indent() << "<" << tag;
     writeAttrs(attrs);
-    *os_ << "/>\n";
+    os() << "/>\n";
 }
 
 void
+XMLGenerator::
 Writer::
 writeTagLine(
     llvm::StringRef tag,
     llvm::StringRef value)
 {
-    *os_ << level_ <<
+    indent() <<
         "<" << tag << ">" <<
         escape(value) <<
-        "</" << tag << ">" <<
+        "</" << tag << ">"
         "\n";
 }
 
 void
+XMLGenerator::
 Writer::
 writeTagLine(
     llvm::StringRef tag,
     llvm::StringRef value,
     Attrs attrs)
 {
-    *os_ << level_ << "<" << tag;
+    indent() << "<" << tag;
     writeAttrs(attrs);
-    *os_ << ">" << escape(value) << "</" << tag << ">" << "\n";
+    os() << ">" <<
+        escape(value) <<
+        "</" << tag << ">"
+        "\n";
 }
 
 void
+XMLGenerator::
 Writer::
 writeAttrs(
     Attrs attrs)
 {
     for(auto const& attr : attrs)
         if(attr.pred)
-            *os_ <<
+            os() <<
                 ' ' << attr.name << '=' <<
                 "\"" << escape(attr.value) << "\"";
-}
-
-void
-Writer::
-indent()
-{
-    level_.append("  ");
-}
-
-void
-Writer::
-outdent()
-{
-    level_.resize(level_.size() - 2);
 }
 
 //------------------------------------------------
 
 std::string
+XMLGenerator::
 Writer::
 toString(
     SymbolID const& id)
@@ -484,8 +465,8 @@ toString(
     return toBase64(id);
 }
 
-/*
 llvm::StringRef
+XMLGenerator::
 Writer::
 toString(
     InfoType it) noexcept
@@ -502,11 +483,6 @@ toString(
         llvm_unreachable("unknown InfoType");
     }
 }
-*/
-
-//------------------------------------------------
-
-} // (anon)
 
 //------------------------------------------------
 

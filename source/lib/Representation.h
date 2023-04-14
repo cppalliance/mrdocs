@@ -17,10 +17,10 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 
-#include "Info.hpp"
+#include <mrdox/Info.hpp>
 #include "Location.hpp"
-#include "Namespace.hpp"
-#include "Record.hpp"
+#include <mrdox/Namespace.hpp>
+#include <mrdox/Record.hpp>
 #include "Reference.hpp"
 #include <mrdox/Scope.hpp>
 #include "Symbol.hpp"

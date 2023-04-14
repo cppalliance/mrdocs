@@ -24,7 +24,7 @@
 //
 
 #include "Representation.h"
-#include "Namespace.hpp"
+#include <mrdox/Namespace.hpp>
 #include <mrdox/Config.hpp>
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Path.h"

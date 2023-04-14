@@ -9,14 +9,17 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#ifndef MRDOX_SOURCE_XML_HPP
+#define MRDOX_SOURCE_XML_HPP
+
 #include "base64.hpp"
 #include "escape.hpp"
-#include "Namespace.hpp"
 #include "Representation.h"
-#include "Visitor.hpp"
+#include <mrdox/Namespace.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Generator.hpp>
+#include <mrdox/RecursiveWriter.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Tooling/Execution.h>
@@ -29,12 +32,14 @@
 namespace clang {
 namespace mrdox {
 
-namespace {
+struct Reporter;
 
 //------------------------------------------------
 
 struct XMLGenerator : Generator
 {
+    class Writer;
+
     llvm::StringRef
     name() const noexcept override
     {
@@ -64,14 +69,9 @@ struct XMLGenerator : Generator
 
 //------------------------------------------------
 
-class Writer
+class XMLGenerator::Writer
+    : public RecursiveWriter
 {
-    Corpus const& corpus_;
-    Config const& config_;
-    Reporter& R_;
-    std::string level_;
-    llvm::raw_ostream* os_ = nullptr;
-
 public:
     struct Attr;
     using Attrs = std::initializer_list<Attr>;
@@ -81,31 +81,32 @@ public:
         Config const& config,
         Reporter& R) noexcept;
 
-    bool write(llvm::raw_ostream& os);
+    virtual void beginDoc() override;
+    virtual void endDoc() override;
 
-    void writeAllSymbols();
+    void writeAllSymbols(std::vector<AllSymbol> const& list) override;
 
-    void writeNamespaces(std::vector<Reference> const& v);
-    void writeRecords(std::vector<Reference> const& v);
-    void writeFunctions(std::vector<Reference> const& v);
-    void write(std::vector<EnumInfo> const& v);
-    void write(std::vector<TypedefInfo> const& v);
+    void beginNamespace(NamespaceInfo const& I) override;
+    void writeNamespace(NamespaceInfo const& I) override;
+    void endNamespace(NamespaceInfo const& I) override;
 
-    void write(NamespaceInfo const& I);
-    void write(RecordInfo const& I);
-    void write(FunctionInfo const& I);
-    void write(EnumInfo const& I);
-    void write(TypedefInfo const& I);
-    void write(BaseRecordInfo const& I);
-    void writeSymbolInfo(SymbolInfo const& I);
+    void beginRecord(RecordInfo const& I) override;
+    void writeRecord(RecordInfo const& I) override;
+    void endRecord(RecordInfo const& I) override;
+
+    void beginFunction(FunctionInfo const& I) override;
+    void writeFunction(FunctionInfo const& I) override;
+    void endFunction(FunctionInfo const& I) override;
+
+    void writeEnum(EnumInfo const& I) override;
+    void writeTypedef(TypedefInfo const& I) override;
+
     void writeInfo(Info const& I);
-
-    void write(llvm::ArrayRef<FieldTypeInfo> const& v);
-    void write(FieldTypeInfo const& I);
-    void writeNamespaceRefs(llvm::SmallVector<Reference, 4> const& v);
-    void write(Reference const& ref);
-
-    void write(Location const& loc, bool def = false);
+    void writeSymbol(SymbolInfo const& I);
+    void writeLocation(Location const& loc, bool def = false);
+    void writeBaseRecord(BaseRecordInfo const& I);
+    void writeParam(FieldTypeInfo const& I);
+    void writeTemplateParam(TemplateParamInfo const& I);
 
     void openTag(llvm::StringRef);
     void openTag(llvm::StringRef, Attrs);
@@ -115,11 +116,9 @@ public:
     void writeTagLine(llvm::StringRef tag, llvm::StringRef value);
     void writeTagLine(llvm::StringRef tag, llvm::StringRef value, Attrs);
     void writeAttrs(Attrs attrs);
-    void indent();
-    void outdent();
 
     static std::string toString(SymbolID const& id);
-    //static llvm::StringRef toString(InfoType) noexcept;
+    static llvm::StringRef toString(InfoType) noexcept;
 
     //--------------------------------------------
 
@@ -139,26 +138,25 @@ public:
         {
         }
 
-        Attr(SymbolID USR)
-            : name("usr")
-            , value(toBase64(USR))
-            , pred(USR != EmptySID)
-        {
-        }
-
         Attr(AccessSpecifier access) noexcept
             : name("access")
             , value(clang::getAccessSpelling(access))
             , pred(access != AccessSpecifier::AS_none)
         {
         }
-    };
 
+        Attr(SymbolID USR)
+            : name("id")
+            , value(toString(USR))
+            , pred(USR != EmptySID)
+        {
+        }
+    };
 };
 
 //------------------------------------------------
 
-} // (anon)
-
 } // mrdox
 } // clang
+
+#endif

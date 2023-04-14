@@ -12,7 +12,7 @@
 #ifndef MRDOX_INDEX_HPP
 #define MRDOX_INDEX_HPP
 
-#include "Info.hpp"
+#include <mrdox/Info.hpp>
 #include "Reference.hpp"
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>

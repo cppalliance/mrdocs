@@ -88,6 +88,22 @@ struct Info
     llvm::StringRef
     getFullyQualifiedName(
         std::string& temp) const;
+
+    /** Return a string representing the symbol type.
+
+        This will be one of:
+
+        @li default
+        @li namespace
+        @li class
+        @li struct
+        @li union
+        @li function
+        @li enum
+        @li typedef
+    */
+    llvm::StringRef
+    symbolType() const noexcept;
 };
 
 //------------------------------------------------

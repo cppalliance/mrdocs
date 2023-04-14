@@ -12,7 +12,7 @@
 #ifndef MRDOX_SYMBOL_HPP
 #define MRDOX_SYMBOL_HPP
 
-#include "Info.hpp"
+#include <mrdox/Info.hpp>
 #include "Location.hpp"
 #include "llvm/ADT/Optional.h"
 

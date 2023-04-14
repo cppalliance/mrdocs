@@ -12,7 +12,7 @@
 #ifndef MRDOX_NAMESPACE_HPP
 #define MRDOX_NAMESPACE_HPP
 
-#include "Info.hpp"
+#include <mrdox/Info.hpp>
 #include <mrdox/Scope.hpp>
 
 namespace clang {
