@@ -28,6 +28,7 @@ struct Config::Options
 
     std::string source_root;
     std::vector<std::string> input_include;
+    bool verbose = true;
 };
 
 } // mrdox
@@ -53,6 +54,7 @@ struct llvm::yaml::MappingTraits<
     static void mapping(
         IO& io, clang::mrdox::Config::Options& opt)
     {
+        io.mapOptional("verbose",      opt.verbose);
         io.mapOptional("source-root",  opt.source_root);
         io.mapOptional("input",        opt.input_include);
     }
@@ -121,6 +123,7 @@ loadFromFile(
     }
 
     // apply opt to Config
+    (*config)->setVerbose(opt.verbose);
     if(auto err = (*config)->setSourceRoot(opt.source_root))
         return err;
 
@@ -166,7 +169,7 @@ setSourceRoot(
     namespace path = llvm::sys::path;
 
     llvm::SmallString<0> temp(dirPath);
-    if(! path::is_absolute(sourceRoot_))
+    if(! path::is_absolute(sourceRoot_, path::Style::posix))
     {
         std::error_code ec = fs::make_absolute(temp);
         if(ec)

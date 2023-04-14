@@ -36,6 +36,15 @@ struct TypedefInfo;
 */
 class Corpus
 {
+    Config const& config_;
+
+    explicit
+    Corpus(
+        Config const& config) noexcept
+        : config_(config)
+    {
+    }
+
 public:
     /** Index of all emitted symbols.
     */
@@ -58,7 +67,10 @@ public:
 
     /** Build the intermediate representation of the code being documented.
 
-        @par R The diagnostic reporting object to
+        @param config The configuration, whose lifetime
+        must extend until the corpus is destroyed.
+
+        @param R The diagnostic reporting object to
         use for delivering errors and information.
     */
     [[nodiscard]]
@@ -73,7 +85,7 @@ public:
 
         @return true upon success.
 
-        @par R The diagnostic reporting object to
+        @param R The diagnostic reporting object to
         use for delivering errors and information.
     */
     [[nodiscard]]
@@ -173,14 +185,14 @@ private:
 
     /** Insert this element and all its children into the Corpus.
 
-        @par Thread Safety
+        @param Thread Safety
         May be called concurrently.
     */
     void insert(std::unique_ptr<Info> Ip);
 
     /** Insert Info into the index
 
-        @par Thread Safety
+        @param Thread Safety
         May be called concurrently.
     */
     void insertIntoIndex(Info const& I);
@@ -197,8 +209,6 @@ private:
 
 
 private:
-    Corpus() = default;
-
     llvm::sys::Mutex infoMutex;
     llvm::sys::Mutex allSymbolsMutex;
     bool isCanonical_ = false;

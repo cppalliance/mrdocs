@@ -50,6 +50,7 @@ class Config
     llvm::SmallString<0> configDir_;
     std::string sourceRoot_;
     std::vector<std::string> inputFileFilter_;
+    bool verbose_ = true;
 
     explicit Config(llvm::StringRef configDir);
 
@@ -106,6 +107,14 @@ public:
     //
     //--------------------------------------------
 
+    /** Return true if tools should show progress.
+    */
+    bool
+    verbose() const noexcept
+    {
+        return verbose_;
+    }
+
     /** Return the full path to the configuration directory.
 
         The returned path will always be POSIX
@@ -150,6 +159,15 @@ public:
     // Modifiers
     //
     //--------------------------------------------
+
+    /** Set whether tools should show progress.
+    */
+    void
+    setVerbose(
+        bool verbose) noexcept
+    {
+        verbose_ = verbose;
+    }
 
     /** Set the directory where the input files are stored.
 

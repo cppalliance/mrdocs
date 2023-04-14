@@ -42,14 +42,15 @@ build(
     Config const& config,
     Reporter& R)
 {
-    auto up = std::unique_ptr<Corpus>(new Corpus);
+    auto up = std::unique_ptr<Corpus>(new Corpus(config));
     Corpus& corpus = *up;
 
     // Traverse the AST for all translation units
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
 
-    llvm::outs() << "Mapping declarations\n";
+    if(config.verbose())
+        llvm::outs() << "Mapping declarations\n";
     llvm::Error err = ex.execute(
         makeToolFactory(*ex.getExecutionContext(), config, R),
         config.ArgAdjuster);
@@ -72,7 +73,8 @@ build(
     // a vector of one or more bitcodes. These will
     // be merged later.
 
-    llvm::outs() << "Collecting symbols\n";
+    if(config.verbose())
+        llvm::outs() << "Collecting symbols\n";
     llvm::StringMap<std::vector<StringRef>> USRToBitcode;
     ex.getToolResults()->forEachResult(
         [&](StringRef Key, StringRef Value)
@@ -82,7 +84,8 @@ build(
         });
 
     // First reducing phase (reduce all decls into one info per decl).
-    llvm::outs() << "Reducing " << USRToBitcode.size() << " declarations\n";
+    if(config.verbose())
+        llvm::outs() << "Reducing " << USRToBitcode.size() << " declarations\n";
     std::atomic<bool> GotFailure;
     GotFailure = false;
     // VFALCO Should this concurrency be a command line option?
@@ -127,8 +130,9 @@ build(
 
     Pool.wait();
 
-    llvm::outs() <<
-        "Collected " << corpus.InfoMap.size() << " symbols.\n";
+    if(config.verbose())
+        llvm::outs() << "Collected " <<
+            corpus.InfoMap.size() << " symbols.\n";
 
     if(GotFailure)
     {
@@ -172,7 +176,8 @@ canonicalize(
     }
 
     Temps t;
-    R.print("Canonicalizing...");
+    if(config_.verbose())
+        R.print("Canonicalizing...");
     if(! canonicalize(*p, t, R))
         return false;
     isCanonical_ = true;

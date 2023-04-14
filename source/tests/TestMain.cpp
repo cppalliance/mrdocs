@@ -35,6 +35,8 @@ testMain(
         if(auto err = (*config)->setSourceRoot((*config)->configDir()))
             return (void)R.error(err, "set source root to '", (*config)->configDir(), "'");
 
+        (*config)->setVerbose(false);
+
         // We need a different config for each directory
         // passed on the command line, and thus each must
         // also have a separate Tester.
