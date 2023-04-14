@@ -82,6 +82,10 @@ public:
         AllSymbol(Info const& I);
     };
 
+    /** Destructor.
+    */
+    ~RecursiveWriter() = default;
+
     /** Constructor.
     */
     RecursiveWriter(

@@ -101,31 +101,42 @@ checkOneFile(
     if(ec == std::errc::no_such_file_or_directory)
     {
         // create the xml file and write to it
+        R_.reportTestFailure();
         llvm::raw_fd_ostream os(outputPath, ec, llvm::sys::fs::OF_None);
         if(R_.error(ec, "open the file '", outputPath, "' for writing"))
             return;
         os << xmlString;
         if(R_.error(os.error(), "write the file '", outputPath, "'"))
             return;
+        R_.reportError();
+        // keep going, to write the other files
     }
     else if(R_.error(ec, "call fs::status on '", outputPathStr, "'"))
-        return;
-    if(stat.type() != fs::file_type::regular_file)
-        return R_.failed("'", outputPath, "' is not a regular file");
-    auto bufferResult = llvm::MemoryBuffer::getFile(outputPath, false);
-    if(R_.error(bufferResult, "read the file '", outputPath, "'"))
-        return;
-    std::string_view good(bufferResult->get()->getBuffer());
-    if(xmlString != good)
     {
-        R_.print(
-            "File: \"", inputPath, "\" failed.\n",
-            "Expected:\n",
-            good, "\n",
-            "Got:\n", xmlString, "\n");
-        R_.testFailed();
+        return;
     }
-
+    else if(stat.type() != fs::file_type::regular_file)
+    {
+        R_.failed("Couldn't open '", outputPath, "' because it is not a regular file");
+        return;
+    }
+    else
+    {
+        // perform test
+        auto bufferResult = llvm::MemoryBuffer::getFile(outputPath, false);
+        if(R_.error(bufferResult, "read the file '", outputPath, "'"))
+            return;
+        std::string_view good(bufferResult->get()->getBuffer());
+        if(xmlString != good)
+        {
+            R_.print(
+                "File: \"", inputPath, "\" failed.\n",
+                "Expected:\n",
+                good, "\n",
+                "Got:\n", xmlString, "\n");
+            R_.reportTestFailure();
+        }
+    }
     if(adocGen)
     {
         path::replace_extension(outputPathStr, adocGen->extension());

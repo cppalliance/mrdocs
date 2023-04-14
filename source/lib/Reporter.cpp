@@ -29,9 +29,9 @@ int
 Reporter::
 getExitCode() const noexcept
 {
-    if(failed_)
-        return EXIT_FAILURE;
     if(errorCount_ > 0)
+        return EXIT_FAILURE;
+    if(testFailureCount_ > 0)
         return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
@@ -58,6 +58,24 @@ temp_string()
 {
     static thread_local std::string s;
     return s;
+}
+
+//------------------------------------------------
+
+void
+Reporter::
+reportError()
+{
+    std::lock_guard<llvm::sys::Mutex> lock(m_);
+    ++errorCount_;
+}
+
+void
+Reporter::
+reportTestFailure()
+{
+    std::lock_guard<llvm::sys::Mutex> lock(m_);
+    ++testFailureCount_;
 }
 
 } // mrdox

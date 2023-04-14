@@ -2,11 +2,11 @@
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
 <all>
-  <symbol name="f" usr="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
-  <symbol name="GlobalNamespace"/>
+  <symbol name="f" tag="function" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+  <symbol name="GlobalNamespace" tag="namespace"/>
 </all>
 <namespace name="">
-  <function name="f" usr="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file path="decl-only/attributes_1.cpp" line="2"/>
     <return name="_Bool"/>
   </function>
