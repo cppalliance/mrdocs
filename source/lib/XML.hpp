@@ -69,6 +69,8 @@ struct XMLGenerator : Generator
 
 //------------------------------------------------
 
+/** A writer which outputs XML.
+*/
 class XMLGenerator::Writer
     : public RecursiveWriter
 {
@@ -81,8 +83,8 @@ public:
         Config const& config,
         Reporter& R) noexcept;
 
-    virtual void beginDoc() override;
-    virtual void endDoc() override;
+    void beginDoc() override;
+    void endDoc() override;
 
     void writeAllSymbols(std::vector<AllSymbol> const& list) override;
 

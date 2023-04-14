@@ -34,6 +34,19 @@ struct Scope;
 
 //------------------------------------------------
 
+/** An abstract writer for recursive output formats.
+
+    The implementation visits the global namespace
+    and then each child namespace recursively. The
+    scope for each namespace is also iterated and
+    emitted. Subclasses should override the relevant
+    visitation functions (the default implementations
+    do nothing).
+
+    This base class is suitable for writing a single
+    file using a recursive syntax such as that found
+    in XML, HTML, or JSON.
+*/
 class RecursiveWriter
 {
     llvm::raw_fd_ostream* fd_os_ = nullptr;
@@ -50,6 +63,8 @@ protected:
     void adjustNesting(int levels);
 
 public:
+    /** Describes an item in the list of all symbols.
+    */
     struct AllSymbol
     {
         /** The fully qualified name of this symbol.
@@ -67,13 +82,19 @@ public:
         AllSymbol(Info const& I);
     };
 
+    /** Constructor.
+    */
     RecursiveWriter(
         Corpus const& corpus,
         Config const& config,
         Reporter& R) noexcept;
 
+    /** Write the contents of the corpus to the output stream.
+    */
+    /** @{ */
     void write(llvm::raw_fd_ostream& os);
     void write(llvm::raw_string_ostream& os);
+    /** @} */
 
     /** Called to open and close the document.
 
