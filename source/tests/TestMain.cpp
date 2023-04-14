@@ -32,8 +32,7 @@ testMain(
             return (void)R.error(config, "create config at directory '", argv[i], "'");
 
         // Set source root to config dir
-        if(auto err = (*config)->setSourceRoot((*config)->configDir()))
-            return (void)R.error(err, "set source root to '", (*config)->configDir(), "'");
+        (*config)->setSourceRoot((*config)->configDir());
 
         (*config)->setVerbose(false);
 

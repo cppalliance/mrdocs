@@ -49,11 +49,11 @@ class Config
 
     llvm::SmallString<0> configDir_;
     std::string sourceRoot_;
-    std::vector<std::string> inputFileFilter_;
+    std::vector<llvm::SmallString<0>> inputFileIncludes_;
     bool verbose_ = true;
 
     llvm::SmallString<0>
-    makeAbsolute(llvm::StringRef relPath);
+    normalizePath(llvm::StringRef pathName);
 
     explicit Config(llvm::StringRef configDir);
 
@@ -193,14 +193,14 @@ public:
 
         @param dirPath The directory.
     */
-    llvm::Error
+    void
     setSourceRoot(
         llvm::StringRef dirPath);
 
     /** Set the filter for including translation units.
     */
-    llvm::Error
-    setInputFileFilter(
+    void
+    setInputFileIncludes(
         std::vector<std::string> const& list);
 };
 

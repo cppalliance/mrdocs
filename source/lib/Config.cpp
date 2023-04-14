@@ -23,29 +23,29 @@ namespace mrdox {
 
 struct Config::Options
 {
-    struct filter { std::vector<std::string> include, exclude; };
-    filter namespaces, files, entities;
+    struct FileFilter
+    {
+        std::vector<std::string> include;
+    };
 
-    std::string source_root;
-    std::vector<std::string> input_include;
     bool verbose = true;
+    std::string source_root;
+    FileFilter input;
 };
 
 } // mrdox
 } // clang
 
-#if 0
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::Config::Options::filter>
+    clang::mrdox::Config::Options::FileFilter>
 {
-    static void mapping(
-        IO &io, clang::mrdox::Config::Options::filter& f)
+    static void mapping(IO &io,
+        clang::mrdox::Config::Options::FileFilter& f)
     {
-        io.mapOptional("exclude", f);
+        io.mapOptional("include", f.include);
     }
 };
-#endif
 
 template<>
 struct llvm::yaml::MappingTraits<
@@ -56,7 +56,7 @@ struct llvm::yaml::MappingTraits<
     {
         io.mapOptional("verbose",      opt.verbose);
         io.mapOptional("source-root",  opt.source_root);
-        io.mapOptional("input",        opt.input_include);
+        io.mapOptional("input",        opt.input);
     }
 };
 
@@ -69,15 +69,24 @@ namespace mrdox {
 
 llvm::SmallString<0>
 Config::
-makeAbsolute(llvm::StringRef relPath)
+normalizePath(
+    llvm::StringRef pathName)
 {
-    namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    if(path::is_absolute(relPath))
-        return relPath;
-    llvm::SmallString<0> result(configDir());
-    path::append(result, relPath);
+    llvm::SmallString<0> result;
+    if(! path::is_absolute(pathName))
+    {
+        result = configDir();
+        path::append(result, path::Style::posix, pathName);
+        path::remove_dots(result, true, path::Style::posix);
+    }
+    else
+    {
+        result = pathName;
+        path::remove_dots(result, true);
+        convert_to_slash(result);
+    }
     return result;
 }
 
@@ -140,8 +149,8 @@ loadFromFile(
 
     // apply opt to Config
     (*config)->setVerbose(opt.verbose);
-    if(auto err = (*config)->setSourceRoot(opt.source_root))
-        return err;
+    (*config)->setSourceRoot(opt.source_root);
+    (*config)->setInputFileIncludes(opt.input.include);
 
     return config;
 }
@@ -157,7 +166,12 @@ Config::
 shouldVisitTU(
     llvm::StringRef filePath) const noexcept
 {
-    return true;
+    if(inputFileIncludes_.empty())
+        return true;
+    for(auto const& s : inputFileIncludes_)
+        if(filePath == s)
+            return true;
+    return false;
 }
 
 bool
@@ -183,36 +197,27 @@ shouldVisitFile(
 //
 //------------------------------------------------
 
-llvm::Error
+void
 Config::
 setSourceRoot(
     llvm::StringRef dirPath)
 {
-    namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    auto temp = makeAbsolute(dirPath);
-    path::remove_dots(temp, true, path::Style::posix);
-    convert_to_slash(temp);
+    auto temp = normalizePath(dirPath);
     makeDirsy(temp, path::Style::posix);
     sourceRoot_ = temp.str();
-    return llvm::Error::success();
 }
 
-llvm::Error
+void
 Config::
-setInputFileFilter(
+setInputFileIncludes(
     std::vector<std::string> const& list)
 {
     namespace path = llvm::sys::path;
 
     for(auto const& s0 : list)
-    {
-        std::string s;
-        if(path::is_absolute(s0))
-            s = path::convert_to_slash(s0);
-    }
-    return llvm::Error::success();
+        inputFileIncludes_.push_back(normalizePath(s0));
 }
 
 } // mrdox
