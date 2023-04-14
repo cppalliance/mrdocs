@@ -65,6 +65,22 @@ struct llvm::yaml::MappingTraits<
 namespace clang {
 namespace mrdox {
 
+//------------------------------------------------
+
+llvm::SmallString<0>
+Config::
+makeAbsolute(llvm::StringRef relPath)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    if(path::is_absolute(relPath))
+        return relPath;
+    llvm::SmallString<0> result(configDir());
+    path::append(result, relPath);
+    return result;
+}
+
 Config::
 Config(
     llvm::StringRef configDir)
@@ -138,6 +154,14 @@ loadFromFile(
 
 bool
 Config::
+shouldVisitTU(
+    llvm::StringRef filePath) const noexcept
+{
+    return true;
+}
+
+bool
+Config::
 shouldVisitFile(
     llvm::StringRef filePath,
     llvm::SmallVectorImpl<char>& prefixPath) const noexcept
@@ -146,9 +170,8 @@ shouldVisitFile(
 
     llvm::SmallString<32> temp;
     temp = filePath;
-    if(! path::replace_path_prefix(temp, sourceRoot_, ""))
+    if(! path::replace_path_prefix(temp, sourceRoot_, "", path::Style::posix))
         return false;
-
     prefixPath.assign(sourceRoot_.begin(), sourceRoot_.end());
     makeDirsy(prefixPath);
     return true;
@@ -168,20 +191,11 @@ setSourceRoot(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    llvm::SmallString<0> temp(dirPath);
-    if(! path::is_absolute(sourceRoot_, path::Style::posix))
-    {
-        std::error_code ec = fs::make_absolute(temp);
-        if(ec)
-            return makeError("fs::make_absolute got '", ec, "'");
-    }
-
+    auto temp = makeAbsolute(dirPath);
     path::remove_dots(temp, true, path::Style::posix);
-
-    // This is required for filterSourceFile to work
+    convert_to_slash(temp);
     makeDirsy(temp, path::Style::posix);
     sourceRoot_ = temp.str();
-
     return llvm::Error::success();
 }
 

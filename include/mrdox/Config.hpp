@@ -52,6 +52,9 @@ class Config
     std::vector<std::string> inputFileFilter_;
     bool verbose_ = true;
 
+    llvm::SmallString<0>
+    makeAbsolute(llvm::StringRef relPath);
+
     explicit Config(llvm::StringRef configDir);
 
 public:
@@ -137,6 +140,15 @@ public:
         return sourceRoot_;
     }
 
+    /** Returns true if the translation unit should be visited.
+
+        @param filePath The posix-style full path
+        to the file being processed.
+    */
+    bool
+    shouldVisitTU(
+        llvm::StringRef filePath) const noexcept;
+
     /** Returns true if the file should be visited.
 
         If the file is visited, then prefix is
@@ -174,6 +186,12 @@ public:
         Symbol documentation will not be emitted unless
         the corresponding source file is a child of this
         directory.
+
+        If the specified directory is relative, then
+        the full path will be computed relative to
+        @ref configDir().
+
+        @param dirPath The directory.
     */
     llvm::Error
     setSourceRoot(

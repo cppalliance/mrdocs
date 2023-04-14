@@ -30,6 +30,8 @@ convert_to_slash(
         llvm::sys::path::Style::native);
 
 /** Append a separator if not already present.
+
+    This is required for llvm::sys::path::append to work.
 */
 void
 makeDirsy(

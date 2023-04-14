@@ -35,16 +35,16 @@ Visitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
-#if 0
-    llvm::Optional<llvm::StringRef> path = 
+    llvm::Optional<llvm::StringRef> filePath = 
         Context.getSourceManager().getNonBuiltinFilenameForID(
             Context.getSourceManager().getMainFileID());
-    if(path)
+    if(filePath)
     {
-        llvm::StringRef s = *path;
+        llvm::SmallString<0> s(*filePath);
+        convert_to_slash(s);
+        if(config_.shouldVisitTU(s))
+            TraverseDecl(Context.getTranslationUnitDecl());
     }
-#endif
-    TraverseDecl(Context.getTranslationUnitDecl());
 }
 
 template<typename T>
@@ -80,7 +80,7 @@ mapDecl(T const* D)
         // cached filter entry already exists
         FileFilter const& ff = result.first->second;
         if(! ff.include)
-            return false;
+            return true;
         filePath = loc.getFilename(); // native
         convert_to_slash(filePath);
         // VFALCO we could assert that the prefix
@@ -96,7 +96,7 @@ mapDecl(T const* D)
         FileFilter& ff = result.first->second;
         ff.include = config_.shouldVisitFile(filePath, ff.prefix);
         if(! ff.include)
-            return false;
+            return true;
         // VFALCO we could assert that the prefix
         //        matches and just lop off the
         //        first ff.prefix.size() characters.
