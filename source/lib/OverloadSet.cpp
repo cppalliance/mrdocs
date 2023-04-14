@@ -48,9 +48,10 @@ makeOverloadSet(
         if( it == list.end() ||
             (*it)->Name != (*it0)->Name)
         {
-            result.emplace_back((*it0)->Name,
-                std::vector<FunctionInfo const*>(
-                    it0, it));
+            result.emplace_back(
+                OverloadSet{
+                    (*it0)->Name,
+                    std::vector<FunctionInfo const*>(it0, it)});
             it0 = it;
         }
     }

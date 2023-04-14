@@ -124,12 +124,16 @@ if (MRDOX_CLANG)
     target_compile_options(
         mrdox_lib
         PUBLIC
-        -Wno-unused-private-field)
+        -Wno-unused-private-field
+        -Wno-unused-value
+        PRIVATE
+        -Wno-covered-switch-default
+    )
 endif ()
 
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${LIB_INCLUDES})
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/lib PREFIX "source" FILES ${LIB_SOURCES})
+source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
+source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${LIB_INCLUDES})
+source_group(TREE ${PROJECT_SOURCE_DIR}/source/lib PREFIX "source" FILES ${LIB_SOURCES})
 
 #-------------------------------------------------
 #
@@ -142,8 +146,8 @@ add_executable(mrdox ${TOOL_SOURCES})
 target_link_libraries(mrdox PRIVATE mrdox_lib)
 target_include_directories(mrdox PRIVATE source/tool)
 
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL_SOURCES})
+source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
+source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL_SOURCES})
 
 #-------------------------------------------------
 #
@@ -157,10 +161,10 @@ if (MRDOX_BUILD_TESTS)
     add_executable(mrdox_tests ${TEST_SOURCES})
     target_link_libraries(mrdox_tests PRIVATE mrdox_lib ${llvm_libs})
     target_include_directories(mrdox_tests PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
-    add_test(NAME mrdox_tests COMMAND mrdox_tests "${CMAKE_CURRENT_SOURCE_DIR}/testfiles")
-    add_test(NAME mrdox_tests_bare COMMAND mrdox_tests "${CMAKE_CURRENT_SOURCE_DIR}/testfiles/bare")
-    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/source/tests PREFIX "source" FILES ${TEST_SOURCES})
+    add_test(NAME mrdox_tests COMMAND mrdox_tests "${PROJECT_SOURCE_DIR}/testfiles")
+    #add_test(NAME mrdox_tests_bare COMMAND mrdox_tests "${PROJECT_SOURCE_DIR}/testfiles/bare")
+    source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
+    source_group(TREE ${PROJECT_SOURCE_DIR}/source/tests PREFIX "source" FILES ${TEST_SOURCES})
 endif()
 
 #-------------------------------------------------

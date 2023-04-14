@@ -49,7 +49,8 @@ struct makeError : llvm::Error
                 std::string temp;
                 llvm::raw_string_ostream os(temp);
                 os << nice(std::forward<Arg0>(arg0));
-                (os << ... << nice(std::forward<Args>(args)));
+                if constexpr(sizeof...(args) > 0)
+                    (os << ... << nice(std::forward<Args>(args)));
                 os << ' ' << nice(loc);
                 return makeErrorString(std::move(temp), loc);
             }())

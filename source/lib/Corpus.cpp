@@ -14,6 +14,7 @@
 #include "ClangDoc.h"
 #include "Serialize.h"
 #include <mrdox/Corpus.hpp>
+#include <mrdox/Error.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/Mutex.h>
@@ -35,57 +36,45 @@ struct Corpus::Temps
 //
 //------------------------------------------------
 
-std::unique_ptr<Corpus>
+llvm::Expected<std::unique_ptr<Corpus>>
 Corpus::
 build(
     tooling::ToolExecutor& ex,
     Config const& config,
     Reporter& R)
 {
-    auto up = std::unique_ptr<Corpus>(new Corpus(config));
-    Corpus& corpus = *up;
+    std::unique_ptr<Corpus> corpus(new Corpus(config));
 
     // Traverse the AST for all translation units
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
-
     if(config.verbose())
-        llvm::outs() << "Mapping declarations\n";
-    llvm::Error err = ex.execute(
+        R.print("Mapping declarations");
+    if(auto err = ex.execute(
         makeToolFactory(*ex.getExecutionContext(), config, R),
-        config.ArgAdjuster);
-    if(err)
+        config.ArgAdjuster))
     {
         if(! config.IgnoreMappingFailures)
-        {
-            llvm::errs() <<
-                "Mapping failure: " << toString(std::move(err)) << "\n";
-            return nullptr;
-        }
-
-        llvm::errs() <<
-            "Error mapping decls in files. "
-            "MrDox will ignore these files and continue:\n" <<
-            toString(std::move(err)) << "\n";
+            return err;
+        R.print("warning: mapping failed because ", toString(std::move(err)));
     }
 
     // Collect the symbols. Each symbol will have
     // a vector of one or more bitcodes. These will
     // be merged later.
-
     if(config.verbose())
-        llvm::outs() << "Collecting symbols\n";
+        R.print("Collecting symbols");
     llvm::StringMap<std::vector<StringRef>> USRToBitcode;
     ex.getToolResults()->forEachResult(
         [&](StringRef Key, StringRef Value)
         {
-            auto R = USRToBitcode.try_emplace(Key, std::vector<StringRef>());
-            R.first->second.emplace_back(Value);
+            auto result = USRToBitcode.try_emplace(Key, std::vector<StringRef>());
+            result.first->second.emplace_back(Value);
         });
 
     // First reducing phase (reduce all decls into one info per decl).
     if(config.verbose())
-        llvm::outs() << "Reducing " << USRToBitcode.size() << " declarations\n";
+        R.print("Reducing ", USRToBitcode.size(), " declarations");
     std::atomic<bool> GotFailure;
     GotFailure = false;
     // VFALCO Should this concurrency be a command line option?
@@ -102,43 +91,38 @@ build(
             {
                 llvm::BitstreamCursor Stream(Bitcode);
                 ClangDocBitcodeReader Reader(Stream);
-                auto ReadInfos = Reader.readBitcode();
-                if(! ReadInfos)
+                auto infos = Reader.readBitcode();
+                if(R.error(infos, "read bitcode"))
                 {
-                    R.failed(ReadInfos.takeError(), "read bitcode");
                     GotFailure = true;
                     return;
                 }
                 std::move(
-                    ReadInfos->begin(),
-                    ReadInfos->end(),
+                    infos->begin(),
+                    infos->end(),
                     std::back_inserter(Infos));
             }
 
-            auto mergeResult = mergeInfos(Infos);
-            if(R.error(mergeResult, "merge metadata"))
+            auto merged = mergeInfos(Infos);
+            if(R.error(merged, "merge metadata"))
             {
-                // VFALCO What about GotFailure?
+                GotFailure = true;
                 return;
             }
 
-            std::unique_ptr<Info> Ip(mergeResult.get().release());
-            assert(Group.getKey() == llvm::toStringRef(Ip->USR));
-            corpus.insert(std::move(Ip));
+            std::unique_ptr<Info> I(merged.get().release());
+            assert(Group.getKey() == llvm::toStringRef(I->USR));
+            corpus->insert(std::move(I));
         });
     }
 
     Pool.wait();
 
     if(config.verbose())
-        llvm::outs() << "Collected " <<
-            corpus.InfoMap.size() << " symbols.\n";
+        R.print("Collected ", corpus->InfoMap.size(), " symbols.\n");
 
     if(GotFailure)
-    {
-        R.print("Failed building Corpus");
-        return nullptr;
-    }
+        return makeErrorString("one or more errors occurred");
 
     //
     // Finish up
@@ -148,17 +132,17 @@ build(
     {
         std::string temp[2];
         llvm::sort(
-            corpus.allSymbols,
+            corpus->allSymbols,
             [&](SymbolID const& id0,
                 SymbolID const& id1) noexcept
             {
-                auto s0 = corpus.get<Info>(id0).getFullyQualifiedName(temp[0]);
-                auto s1 = corpus.get<Info>(id1).getFullyQualifiedName(temp[1]);
+                auto s0 = corpus->get<Info>(id0).getFullyQualifiedName(temp[0]);
+                auto s1 = corpus->get<Info>(id1).getFullyQualifiedName(temp[1]);
                 return symbolCompare(s0, s1);
             });
     }
 
-    return up;
+    return corpus;
 }
 
 bool
@@ -203,31 +187,12 @@ reportResult(
 
 static
 constexpr
-char
-isalpha(char c) noexcept
-{
-    return ((unsigned int)(c | 32) - 97) < 26U;
-}
-
-static
-constexpr
 unsigned char
 tolower(char c) noexcept
 {
     auto uc = static_cast<unsigned char>(c);
     if(uc >= 'A' && uc <= 'Z')
         return uc + 32;
-    return uc;
-}
-
-static
-constexpr
-unsigned char
-toupper(char c) noexcept
-{
-    auto uc = static_cast<unsigned char>(c);
-    if(uc >= 'a' && uc <= 'z')
-        return uc - 32;
     return uc;
 }
 

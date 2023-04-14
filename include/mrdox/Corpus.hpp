@@ -75,7 +75,7 @@ public:
     */
     [[nodiscard]]
     static
-    std::unique_ptr<Corpus>
+    llvm::Expected<std::unique_ptr<Corpus>>
     build(
         tooling::ToolExecutor& ex,
         Config const& config,

@@ -134,13 +134,13 @@ toolMain(
     }
 
     // Run the tool, this can take a while
-    auto rv = Corpus::build(*ex, **config, R);
-    if(! rv)
+    auto corpus = Corpus::build(*ex, **config, R);
+    if(R.error(corpus, "build the documentation corpus"))
         return;
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if(! gen->build((*config)->OutDirectory, *rv, **config, R))
+    if(! gen->build((*config)->OutDirectory, **corpus, **config, R))
         return;
 }
 

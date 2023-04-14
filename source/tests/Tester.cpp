@@ -35,11 +35,10 @@ checkDirRecursively(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
+    std::error_code ec;
     llvm::SmallString<32> outputPath;
     path::remove_dots(dirPath, true);
     fs::directory_iterator const end{};
-
-    std::error_code ec;
     fs::directory_iterator iter(dirPath, ec, false);
     if(R_.error(ec, "iterate the directory '", dirPath, '.'))
         return false;
@@ -48,8 +47,7 @@ checkDirRecursively(
     {
         if(iter->type() == fs::file_type::directory_file)
         {
-            if(! checkDirRecursively(llvm::StringRef(iter->path()), threadPool))
-                return false;
+            checkDirRecursively(llvm::StringRef(iter->path()), threadPool);
         }
         else if(
             iter->type() == fs::file_type::regular_file &&
@@ -66,8 +64,8 @@ checkDirRecursively(
                     SingleFile db(dirPath, inputPath, outputPath);
                     tooling::StandaloneToolExecutor ex(db, { std::string(inputPath) });
                     auto corpus = Corpus::build(ex, config_, R_);
-                    if(corpus)
-                        checkOneFile(*corpus, inputPath, outputPath);
+                    if(! R_.error(corpus, "build corpus for '", inputPath, "'"))
+                        checkOneFile(**corpus, inputPath, outputPath);
                 });
         }
         else
@@ -117,13 +115,13 @@ checkOneFile(
     auto bufferResult = llvm::MemoryBuffer::getFile(outputPath, false);
     if(R_.error(bufferResult, "read the file '", outputPath, "'"))
         return;
-    std::string_view got(bufferResult->get()->getBuffer());
-    if(xmlString != bufferResult->get()->getBuffer())
+    std::string_view good(bufferResult->get()->getBuffer());
+    if(xmlString != good)
     {
         R_.print(
             "File: \"", inputPath, "\" failed.\n",
             "Expected:\n",
-            bufferResult->get()->getBuffer(), "\n",
+            good, "\n",
             "Got:\n", xmlString, "\n");
         R_.testFailed();
     }

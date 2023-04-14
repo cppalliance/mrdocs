@@ -181,7 +181,8 @@ print(
     {
         llvm::raw_string_ostream os(temp);
         os << nice(std::forward<Arg0>(arg));
-        (os << ... << nice(std::forward<Args>(args)));
+        if constexpr(sizeof...(args) > 0)
+            (os << ... << nice(std::forward<Args>(args)));
     }
     threadSafePrint(llvm::outs(), temp, nullptr);
 }
@@ -201,7 +202,8 @@ failed(
         llvm::raw_string_ostream os(temp);
         os << "error: Couldn't ";
         os << nice(std::forward<Arg0>(arg));
-        (os << ... << nice(std::forward<Args>(args)));
+        if constexpr(sizeof...(args) > 0)
+            (os << ... << nice(std::forward<Args>(args)));
         os << ".";
     }
     threadSafePrint(llvm::errs(), temp, &errorCount_);
@@ -226,7 +228,8 @@ error(
         llvm::raw_string_ostream os(temp);
         os << "error: Couldn't ";
         os << nice(std::forward<Arg0>(arg0));
-        (os << ... << nice(std::forward<Args>(args)));
+        if constexpr(sizeof...(args) > 0)
+            (os << ... << nice(std::forward<Args>(args)));
         os << " because " << nice(std::forward<E>(e)) << '.';
     }
     threadSafePrint(llvm::errs(), temp, &errorCount_);
