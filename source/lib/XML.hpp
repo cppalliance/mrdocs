@@ -28,6 +28,7 @@
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
+#include <initializer_list>
 
 namespace clang {
 namespace mrdox {
@@ -75,18 +76,20 @@ class XMLGenerator::Writer
     : public RecursiveWriter
 {
 public:
-    struct Attr;
-    using Attrs = std::initializer_list<Attr>;
-
     Writer(
+        llvm::raw_ostream& os,
         Corpus const& corpus,
         Config const& config,
         Reporter& R) noexcept;
 
-    void beginDoc() override;
-    void endDoc() override;
+private:
+    struct Attr;
+    using Attrs = std::initializer_list<Attr>;
 
     void writeAllSymbols(std::vector<AllSymbol> const& list) override;
+
+    void beginFile() override;
+    void endFile() override;
 
     void beginNamespace(NamespaceInfo const& I) override;
     void writeNamespace(NamespaceInfo const& I) override;

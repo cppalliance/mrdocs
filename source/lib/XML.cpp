@@ -42,8 +42,8 @@ buildOne(
 
     if(! corpus.canonicalize(R))
         return false;
-    Writer w(corpus, config, R);
-    w.write(os);
+    Writer w(os, corpus, config, R);
+    w.write();
     return true;
 }
 
@@ -60,24 +60,25 @@ buildString(
 
     if(! corpus.canonicalize(R))
         return false;
-    Writer w(corpus, config, R);
-    w.write(os);
+    Writer w(os, corpus, config, R);
+    w.write();
     return true;
 }
 
 //------------------------------------------------
 //
-// Writer
+// RecursiveWriter
 //
 //------------------------------------------------
 
 XMLGenerator::
 Writer::
 Writer(
+    llvm::raw_ostream& os,
     Corpus const& corpus,
     Config const& config,
     Reporter& R) noexcept
-    : RecursiveWriter(corpus, config, R)
+    : RecursiveWriter(os, corpus, config, R)
 {
 }
 
@@ -86,9 +87,9 @@ Writer(
 void
 XMLGenerator::
 Writer::
-beginDoc()
+beginFile()
 {
-    os() <<
+    os_ <<
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
         "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
         "<mrdox>\n";
@@ -97,9 +98,9 @@ beginDoc()
 void
 XMLGenerator::
 Writer::
-endDoc()
+endFile()
 {
-    os() <<
+    os_ <<
         "</mrdox>\n";
 }
 
@@ -378,7 +379,7 @@ openTag(
 {
     indent() << '<' << tag;
     writeAttrs(attrs);
-    os() << ">\n";
+    os_ << ">\n";
 }
 
 void
@@ -408,7 +409,7 @@ writeTag(
 {
     indent() << "<" << tag;
     writeAttrs(attrs);
-    os() << "/>\n";
+    os_ << "/>\n";
 }
 
 void
@@ -435,7 +436,7 @@ writeTagLine(
 {
     indent() << "<" << tag;
     writeAttrs(attrs);
-    os() << ">" <<
+    os_ << ">" <<
         escape(value) <<
         "</" << tag << ">"
         "\n";
@@ -449,7 +450,7 @@ writeAttrs(
 {
     for(auto const& attr : attrs)
         if(attr.pred)
-            os() <<
+            os_ <<
                 ' ' << attr.name << '=' <<
                 "\"" << escape(attr.value) << "\"";
 }

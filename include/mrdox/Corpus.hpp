@@ -124,6 +124,17 @@ public:
         llvm::StringRef symbolName0,
         llvm::StringRef symbolName1) noexcept;
 
+    /** Return the ID of the global namespace.
+    */
+    static
+    SymbolID
+    globalNamespaceID() noexcept;
+
+    /** Return the metadata for the global namespace.
+    */
+    NamespaceInfo const&
+    globalNamespace() const noexcept;
+
     /** Return true if an Info with the specified symbol ID exists.
     */
     bool

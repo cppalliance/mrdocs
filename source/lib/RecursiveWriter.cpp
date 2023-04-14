@@ -36,18 +36,9 @@ AllSymbol(
 
 llvm::raw_ostream&
 RecursiveWriter::
-os() noexcept
-{
-    if(fd_os_)
-        return *fd_os_;
-    return *str_os_;
-}
-
-llvm::raw_ostream&
-RecursiveWriter::
 indent()
 {
-    return os() << indentString_;
+    return os_ << indentString_;
 }
 
 void
@@ -70,48 +61,38 @@ adjustNesting(int levels)
 
 RecursiveWriter::
 RecursiveWriter(
+    llvm::raw_ostream& os,
     Corpus const& corpus,
     Config const& config,
     Reporter& R) noexcept
-    : corpus_(corpus)
+    : os_(os)
+    , corpus_(corpus)
     , config_(config)
     , R_(R)
 {
-}
-
-void
-RecursiveWriter::
-write(llvm::raw_fd_ostream& os)
-{
-    fd_os_ = &os;
-    beginDoc();
-    writeAllSymbols(makeAllSymbols());
-    visit(corpus_.get<NamespaceInfo>(EmptySID));
-    endDoc();
-}
-
-void
-RecursiveWriter::
-write(llvm::raw_string_ostream& os)
-{
-    str_os_ = &os;
-    beginDoc();
-    writeAllSymbols(makeAllSymbols());
-    visit(corpus_.get<NamespaceInfo>(EmptySID));
-    endDoc();
 }
 
 //------------------------------------------------
 
 void
 RecursiveWriter::
-beginDoc()
+write()
+{
+    beginFile();
+    writeAllSymbols(makeAllSymbols());
+    visit(corpus_.get<NamespaceInfo>(EmptySID));
+    endFile();
+}
+
+void
+RecursiveWriter::
+beginFile()
 {
 }
 
 void
 RecursiveWriter::
-endDoc()
+endFile()
 {
 }
 
@@ -229,6 +210,18 @@ visit(
 void
 RecursiveWriter::
 visit(
+    FunctionInfo const& I)
+{
+    beginFunction(I);
+    adjustNesting(1);
+    writeFunction(I);
+    adjustNesting(-1);
+    endFunction(I);
+}
+
+void
+RecursiveWriter::
+visit(
     Scope const& I)
 {
     for(auto const& ref : I.Namespaces)
@@ -241,18 +234,6 @@ visit(
         writeEnum(J);
     for(auto const& J : I.Typedefs)
         writeTypedef(J);
-}
-
-void
-RecursiveWriter::
-visit(
-    FunctionInfo const& I)
-{
-    beginFunction(I);
-    adjustNesting(1);
-    writeFunction(I);
-    adjustNesting(-1);
-    endFunction(I);
 }
 
 auto

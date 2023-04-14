@@ -49,18 +49,24 @@ struct Scope;
 */
 class RecursiveWriter
 {
-    llvm::raw_fd_ostream* fd_os_ = nullptr;
-    llvm::raw_string_ostream* str_os_ = nullptr;
     std::string indentString_;
 
 protected:
+    llvm::raw_ostream& os_;
     Corpus const& corpus_;
     Config const& config_;
     Reporter& R_;
 
-    llvm::raw_ostream& os() noexcept;
     llvm::raw_ostream& indent();
     void adjustNesting(int levels);
+
+    /** Constructor.
+    */
+    RecursiveWriter(
+        llvm::raw_ostream& os,
+        Corpus const& corpus,
+        Config const& config,
+        Reporter& R) noexcept;
 
 public:
     /** Describes an item in the list of all symbols.
@@ -79,36 +85,20 @@ public:
         */
         SymbolID id;
 
+        /** Constructor.
+        */
         AllSymbol(Info const& I);
     };
 
     /** Destructor.
     */
-    ~RecursiveWriter() = default;
+    virtual ~RecursiveWriter() = default;
 
-    /** Constructor.
+    /** Write the contents of the corpus.
     */
-    RecursiveWriter(
-        Corpus const& corpus,
-        Config const& config,
-        Reporter& R) noexcept;
+    void write();
 
-    /** Write the contents of the corpus to the output stream.
-    */
-    /** @{ */
-    void write(llvm::raw_fd_ostream& os);
-    void write(llvm::raw_string_ostream& os);
-    /** @} */
-
-    /** Called to open and close the document.
-
-        The default implementation does nothing.
-    */
-    /** @{ */
-    virtual void beginDoc();
-    virtual void endDoc();
-    /** @} */
-
+protected:
     /** Called to write all symbols.
 
         Each element contains the fully qualified
@@ -116,6 +106,15 @@ public:
         canonicalized by a visual sort on symbol.
     */
     virtual void writeAllSymbols(std::vector<AllSymbol> const& list);
+
+    /** Called to open and close the document.
+
+        The default implementation does nothing.
+    */
+    /** @{ */
+    virtual void beginFile();
+    virtual void endFile();
+    /** @} */
 
     /** Called to open or close a scope.
 
@@ -142,8 +141,8 @@ public:
 private:
     void visit(NamespaceInfo const&);
     void visit(RecordInfo const&);
-    void visit(Scope const&);
     void visit(FunctionInfo const&);
+    void visit(Scope const&);
 
     std::vector<AllSymbol> makeAllSymbols();
 };

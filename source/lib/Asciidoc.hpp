@@ -16,6 +16,7 @@
 #include <mrdox/Namespace.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
+#include <mrdox/FlatWriter.hpp>
 #include <mrdox/Generator.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
@@ -46,14 +47,12 @@ public:
         return "adoc";
     }
 
-#if 0
     bool
     build(
         llvm::StringRef rootPath,
-        Corpus const& corpus,
+        Corpus& corpus,
         Config const& config,
         Reporter& R) const override;
-#endif
 
     bool
     buildOne(
@@ -73,57 +72,52 @@ public:
 //------------------------------------------------
 
 class AsciidocGenerator::Writer
+    : public FlatWriter
 {
-public:
-    Writer(
-        Corpus const& corpus,
-        Config const& config,
-        Reporter& R) noexcept
-        : corpus_(corpus)
-        , config_(config)
-        , R_(R)
-    {
-    }
-
-    void write(llvm::StringRef rootDir);
-    void writeOne(llvm::raw_ostream& os);
-
-    void writeAllSymbols();
-
-    void write(RecordInfo const& I);
-    void writeBase(BaseRecordInfo const& I);
-
-    void write(FunctionInfo const& I);
-    void write(
-        llvm::StringRef sectionName,
-        std::vector<OverloadSet> const& list);
-
-    struct FormalParam;
-    void write(FormalParam const& p, llvm::raw_ostream& os);
-    FormalParam formalParam(FieldTypeInfo const& ft);
-
-    struct TypeName;
-    void write(TypeName const& tn, llvm::raw_ostream& os);
-    TypeName typeName(TypeInfo const& ti);
-
-    void openSection(llvm::StringRef name);
-    void closeSection();
-
-    static Location const& getLocation(SymbolInfo const& I);
-    static llvm::StringRef toString(TagTypeKind k) noexcept;
-
-private:
     struct Section
     {
         int level = 0;
         std::string markup;
     };
 
-    Corpus const& corpus_;
-    Config const& config_;
-    Reporter& R_;
-    llvm::raw_ostream* os_ = nullptr;
     Section sect_;
+
+public:
+    Writer(
+        llvm::raw_ostream& os,
+        Corpus const& corpus,
+        Config const& config,
+        Reporter& R) noexcept;
+
+    void beginFile();
+    void endFile();
+
+    struct FormalParam;
+    struct TypeName;
+
+    void writeFormalParam(FormalParam const& p, llvm::raw_ostream& os);
+    void writeTypeName(TypeName const& tn, llvm::raw_ostream& os);
+
+protected:
+    void writeRecord(RecordInfo const& I) override;
+    void writeFunction(FunctionInfo const& I) override;
+    void writeEnum(EnumInfo const& I) override;
+    void writeTypedef(TypedefInfo const& I) override;
+
+    void writeBase(BaseRecordInfo const& I);
+    void writeOverloadSet(
+        llvm::StringRef sectionName,
+        std::vector<OverloadSet> const& list);
+
+    FormalParam formalParam(FieldTypeInfo const& ft);
+    TypeName typeName(TypeInfo const& ti);
+
+    void openTitle(llvm::StringRef name);
+    void openSection(llvm::StringRef name);
+    void closeSection();
+
+    static Location const& getLocation(SymbolInfo const& I);
+    static llvm::StringRef toString(TagTypeKind k) noexcept;
 };
 
 } // mrdox

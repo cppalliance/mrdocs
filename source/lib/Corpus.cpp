@@ -242,6 +242,20 @@ do_tiebreak:
     return s_cmp < 0;
 }
 
+SymbolID
+Corpus::
+globalNamespaceID() noexcept
+{
+    return EmptySID;
+}
+
+NamespaceInfo const&
+Corpus::
+globalNamespace() const noexcept
+{
+    return get<NamespaceInfo>(globalNamespaceID());
+}
+
 //------------------------------------------------
 //
 // Implementation
