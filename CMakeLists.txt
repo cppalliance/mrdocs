@@ -189,10 +189,26 @@ if (MRDOX_BUILD_TESTS)
     target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
     target_include_directories(mrdox-test PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
     add_test(NAME mrdox-test COMMAND mrdox-test
-        "${PROJECT_SOURCE_DIR}/tests/old-tests"
-    )
+            "${PROJECT_SOURCE_DIR}/tests/old-tests"
+            )
     source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
     source_group(TREE ${PROJECT_SOURCE_DIR}/source/tests PREFIX "source" FILES ${TEST_SOURCES})
+
+    if (CMAKE_EXPORT_COMPILE_COMMANDS)
+        # test run
+        include(mrdox.cmake)
+        set(TESTFILES
+                testfiles/decl-only/attributes_1.cpp
+                testfiles/decl-only/canonical_1.cpp
+                testfiles/decl-only/record_1.cpp
+                testfiles/decl-only/record_2.cpp)
+
+        mrdox(FORMAT adoc CONFIG mrdox.yml SOURCES ${TESTFILES})
+        mrdox(FORMAT xml  CONFIG mrdox.yml SOURCES ${TESTFILES})
+
+        add_custom_target(reference_adoc DEPENDS reference.adoc)
+        add_custom_target(reference_xml  DEPENDS reference.xml)
+    endif()
 endif()
 
 #-------------------------------------------------
