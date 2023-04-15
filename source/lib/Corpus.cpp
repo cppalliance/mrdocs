@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "ClangDoc.hpp"
+#include "ast/FrontendAction.hpp"
 #include "ast/BitcodeReader.hpp"
 #include "ast/BitcodeWriter.hpp"
 #include "ast/Serialize.hpp"
@@ -60,8 +60,6 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
     }
 }
 
-
-
 //------------------------------------------------
 //
 // Modifiers
@@ -83,7 +81,8 @@ build(
     if(config.verbose())
         R.print("Mapping declarations");
     if(auto err = ex.execute(
-        makeToolFactory(*ex.getExecutionContext(), config, R),
+        makeFrontendActionFactory(
+            *ex.getExecutionContext(), config, R),
         config.ArgAdjuster))
     {
         if(! config.IgnoreMappingFailures)

@@ -9,26 +9,22 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-//
-// This file exposes a method to create the FrontendActionFactory for the
-// clang-doc tool. The factory runs the clang-doc mapper on a given set of
-// source code files, storing the results key-value pairs in its
-// ExecutionContext.
-//
-
-#ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H
-#define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_CLANGDOC_H
+#ifndef MRDOX_FRONTEND_ACTION_HPP
+#define MRDOX_FRONTEND_ACTION_HPP
 
 #include <mrdox/Config.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
+#include <memory>
 
 namespace clang {
 namespace mrdox {
 
+/** Return a factory used to visit the AST nodes.
+*/
 std::unique_ptr<tooling::FrontendActionFactory>
-makeToolFactory(
+makeFrontendActionFactory(
     tooling::ExecutionContext& exc,
     Config const& config,
     Reporter& R);

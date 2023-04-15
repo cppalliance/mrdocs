@@ -69,10 +69,12 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
 
 add_library(mrdox_lib ${LIB_INCLUDES} ${LIB_SOURCES})
 target_compile_features(mrdox_lib PUBLIC cxx_std_20)
-target_include_directories(mrdox_lib PUBLIC
+target_include_directories(mrdox_lib
+    PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
-    # VFALCO source/lib shouldn't be here it is a hack
-    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source/lib>")
+    PRIVATE
+    "${PROJECT_SOURCE_DIR}/source/lib/"
+)
 
 # LLVM
 target_link_libraries(mrdox_lib PUBLIC ${llvm_libs})

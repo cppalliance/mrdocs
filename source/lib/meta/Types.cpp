@@ -10,6 +10,7 @@
 //
 
 #include <mrdox/meta/Types.hpp>
+#include <climits>
 
 namespace clang {
 namespace mrdox {

@@ -9,19 +9,98 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "BitcodeWriter.hpp"
-#include "Serialize.hpp"
 #include "utility.hpp"
-#include "Visitor.hpp"
-//#include "ast/clangASTComment.hpp"
+#include "ast/BitcodeWriter.hpp"
+#include "ast/Serialize.hpp"
+#include "ast/FrontendAction.hpp"
 #include <mrdox/Corpus.hpp>
 #include <clang/Index/USRGeneration.h>
+#include <clang/AST/RecursiveASTVisitor.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 
+#if 0
+#include <mrdox/MetadataFwd.hpp>
+#include <clang/AST/ASTConsumer.h>
+#include <utility>
+#include <unordered_map>
+#endif
+
+//
+// This file implements the Mapper piece of the clang-doc tool. It implements
+// a RecursiveASTVisitor to look at each declaration and populate the info
+// into the internal representation. Each seen declaration is serialized to
+// to bitcode and written out to the ExecutionContext as a KV pair where the
+// key is the declaration's USR and the value is the serialized bitcode.
+//
+
 namespace clang {
 namespace mrdox {
+
+/** Visits AST and converts it to our metadata.
+*/
+class Visitor
+    : public RecursiveASTVisitor<Visitor>
+    , public ASTConsumer
+{
+    struct FileFilter
+    {
+        llvm::SmallString<0> prefix;
+        bool include = true;
+    };
+
+    tooling::ExecutionContext& exc_;
+    Config const& config_;
+    Reporter& R_;
+    std::unordered_map<
+        clang::SourceLocation::UIntTy,
+        FileFilter> fileFilter_;
+
+public:
+    Visitor(
+        tooling::ExecutionContext& exc,
+        Config const& config,
+        Reporter& R) noexcept
+        : exc_(exc)
+        , config_(config)
+        , R_(R)
+    {
+    }
+
+//private:
+    void HandleTranslationUnit(ASTContext& Context) override;
+    bool VisitNamespaceDecl(NamespaceDecl const* D);
+    bool VisitRecordDecl(RecordDecl const* D);
+    bool VisitEnumDecl(EnumDecl const* D);
+    bool VisitCXXMethodDecl(CXXMethodDecl const* D);
+    bool VisitFunctionDecl(FunctionDecl const* D);
+    bool VisitTypedefDecl(TypedefDecl const* D);
+    bool VisitTypeAliasDecl(TypeAliasDecl const* D);
+
+private:
+    template <typename T>
+    bool mapDecl(T const* D);
+
+    int
+    getLine(
+        NamedDecl const* D,
+        ASTContext const& Context) const;
+
+    llvm::SmallString<128>
+    getFile(
+        NamedDecl const* D, 
+        ASTContext const& Context,
+        StringRef RootDir,
+        bool& IsFileInRootDir) const;
+
+    comments::FullComment*
+    getComment(
+        NamedDecl const* D,
+        ASTContext const& Context) const;
+};
+
+//------------------------------------------------
 
 /*  An instance of Visitor runs on one translation unit.
 */
@@ -211,6 +290,72 @@ getLine(
 {
     return Context.getSourceManager().getPresumedLoc(
         D->getBeginLoc()).getLine();
+}
+
+//------------------------------------------------
+
+namespace {
+
+struct Action
+    : public clang::ASTFrontendAction
+{
+    Action(
+        tooling::ExecutionContext& exc,
+        Config const& config,
+        Reporter& R) noexcept
+        : exc_(exc)
+        , config_(config)
+        , R_(R)
+    {
+    }
+
+    std::unique_ptr<clang::ASTConsumer>
+    CreateASTConsumer(
+        clang::CompilerInstance& Compiler,
+        llvm::StringRef InFile) override
+    {
+        return std::make_unique<Visitor>(exc_, config_, R_);
+    }
+
+private:
+    tooling::ExecutionContext& exc_;
+    Config const& config_;
+    Reporter& R_;
+};
+
+struct Factory : tooling::FrontendActionFactory
+{
+    Factory(
+        tooling::ExecutionContext& exc,
+        Config const& config,
+        Reporter& R) noexcept
+        : exc_(exc)
+        , config_(config)
+        , R_(R)
+    {
+    }
+
+    std::unique_ptr<FrontendAction>
+    create() override
+    {
+        return std::make_unique<Action>(exc_, config_, R_);
+    }
+
+private:
+    tooling::ExecutionContext& exc_;
+    Config const& config_;
+    Reporter& R_;
+};
+
+} // (anon)
+
+std::unique_ptr<tooling::FrontendActionFactory>
+makeFrontendActionFactory(
+    tooling::ExecutionContext& exc,
+    Config const& config,
+    Reporter& R)
+{
+    return std::make_unique<Factory>(exc, config, R);
 }
 
 } // mrdox
