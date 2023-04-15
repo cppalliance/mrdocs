@@ -12,6 +12,7 @@
 #include "Serialize.h"
 #include "CommentVisitor.h"
 #include "BitcodeWriter.h"
+#include <mrdox/Metadata.hpp>
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types

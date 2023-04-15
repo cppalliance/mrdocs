@@ -17,7 +17,7 @@
 // of the XML generator, which must match exactly.
 
 #include <mrdox/Config.hpp>
-#include <mrdox/Generator.hpp>
+#include <mrdox/format/Generator.hpp>
 #include <mrdox/Reporter.hpp>
 #include <llvm/Support/ThreadPool.h>
 #include <memory>

@@ -12,9 +12,9 @@
 #ifndef MRDOX_SOURCE_XML_HPP
 #define MRDOX_SOURCE_XML_HPP
 
-#include <mrdox/ForwardDecls.hpp>
-#include <mrdox/Generator.hpp>
-#include <mrdox/RecursiveWriter.hpp>
+#include <mrdox/MetadataFwd.hpp>
+#include <mrdox/format/Generator.hpp>
+#include <mrdox/format/RecursiveWriter.hpp>
 
 namespace clang {
 namespace mrdox {

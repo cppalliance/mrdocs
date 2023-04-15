@@ -10,6 +10,7 @@
 //
 
 #include "BitcodeWriter.h"
+#include <mrdox/Metadata.hpp>
 #include "llvm/ADT/IndexedMap.h"
 #include <initializer_list>
 

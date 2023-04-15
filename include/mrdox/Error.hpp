@@ -13,8 +13,8 @@
 #define MRDOX_ERROR_HPP
 
 #include <mrdox/detail/nice.hpp>
-#include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
+#include <llvm/Support/raw_ostream.h>
 #include <source_location>
 #include <string>
 

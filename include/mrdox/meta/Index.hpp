@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_INDEX_HPP
-#define MRDOX_INDEX_HPP
+#ifndef MRDOX_META_INDEX_HPP
+#define MRDOX_META_INDEX_HPP
 
-#include <mrdox/Info.hpp>
-#include "Reference.hpp"
+#include <mrdox/meta/Info.hpp>
+#include <mrdox/meta/Reference.hpp>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
@@ -63,12 +63,6 @@ struct Index : Reference
 
     void sort();
 };
-
-// A standalone function to call to merge a vector of infos into one.
-// This assumes that all infos in the vector are of the same type, and will fail
-// if they are different.
-llvm::Expected<std::unique_ptr<Info>>
-mergeInfos(std::vector<std::unique_ptr<Info>>& Values);
 
 } // mrdox
 } // clang

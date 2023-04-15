@@ -12,12 +12,11 @@
 #ifndef MRDOX_FUNCTION_HPP
 #define MRDOX_FUNCTION_HPP
 
-#include <mrdox/FieldType.hpp>
-#include <mrdox/Function.hpp>
-#include "List.hpp"
-#include <mrdox/Symbol.hpp>
-#include <mrdox/Template.hpp>
-#include <mrdox/Types.hpp>
+#include <mrdox/meta/FieldType.hpp>
+#include <mrdox/meta/Function.hpp>
+#include <mrdox/meta/Symbol.hpp>
+#include <mrdox/meta/Template.hpp>
+#include <mrdox/meta/Types.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>

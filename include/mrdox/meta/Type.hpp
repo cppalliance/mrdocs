@@ -9,10 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TYPE_HPP
-#define MRDOX_TYPE_HPP
+#ifndef MRDOX_META_TYPE_HPP
+#define MRDOX_META_TYPE_HPP
 
-#include "Reference.hpp"
+#include <mrdox/meta/Reference.hpp>
 
 namespace clang {
 namespace mrdox {

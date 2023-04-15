@@ -9,31 +9,24 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_FORWARD_DECLS_HPP
-#define MRDOX_FORWARD_DECLS_HPP
+#include <mrdox/meta/Typedef.hpp>
+#include <cassert>
 
 namespace clang {
 namespace mrdox {
 
-class Config;
-class Corpus;
-
-struct BaseRecordInfo;
-struct EnumInfo;
-struct FieldTypeInfo;
-struct FunctionInfo;
-struct Info;
-struct Location;
-struct NamespaceInfo;
-struct RecordInfo;
-struct Scope;
-struct SymbolInfo;
-struct TemplateParamInfo;
-struct TypedefInfo;
-
-struct Reporter;
+void
+TypedefInfo::
+merge(
+    TypedefInfo&& Other)
+{
+    assert(canMerge(Other));
+    if (!IsUsing)
+        IsUsing = Other.IsUsing;
+    if (Underlying.Type.Name == "")
+        Underlying = Other.Underlying;
+    SymbolInfo::merge(std::move(Other));
+}
 
 } // mrdox
 } // clang
-
-#endif

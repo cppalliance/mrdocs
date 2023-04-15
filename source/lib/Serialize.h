@@ -18,7 +18,7 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
 
-#include "Representation.h"
+#include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/AST/AST.h>
 #ifdef _MSC_VER

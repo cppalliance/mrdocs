@@ -9,12 +9,13 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SYMBOL_HPP
-#define MRDOX_SYMBOL_HPP
+#ifndef MRDOX_META_SYMBOL_HPP
+#define MRDOX_META_SYMBOL_HPP
 
-#include <mrdox/Info.hpp>
-#include <mrdox/Location.hpp>
-#include "llvm/ADT/Optional.h"
+#include <mrdox/meta/Info.hpp>
+#include <mrdox/meta/Location.hpp>
+#include <llvm/ADT/Optional.h>
+#include <llvm/ADT/SmallVector.h>
 
 namespace clang {
 namespace mrdox {

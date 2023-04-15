@@ -10,7 +10,8 @@
 //
 
 #include "Asciidoc.hpp"
-#include <mrdox/OverloadSet.hpp>
+#include <mrdox/Metadata.hpp>
+#include <mrdox/format/OverloadSet.hpp>
 #include <clang/Basic/Specifiers.h>
 
 namespace clang {

@@ -12,19 +12,26 @@
 #ifndef MRDOX_METADATA_HPP
 #define MRDOX_METADATA_HPP
 
-#include "Representation.h"
+// All headers related to
+// metadata extracted from AST
 
-#include <mrdox/Config.hpp>
-#include <mrdox/Corpus.hpp>
-#include <mrdox/Function.hpp>
-#include <mrdox/Info.hpp>
-#include <mrdox/Namespace.hpp>
-#include <mrdox/Scope.hpp>
-#include <mrdox/Symbol.hpp>
-#include <mrdox/Template.hpp>
-#include <mrdox/TemplateParam.hpp>
-#include <mrdox/Type.hpp>
-#include <mrdox/Typedef.hpp>
-#include <mrdox/Types.hpp>
+#include <mrdox/meta/Enum.hpp>
+#include <mrdox/meta/FieldType.hpp>
+#include <mrdox/meta/Function.hpp>
+#include <mrdox/meta/Index.hpp>
+#include <mrdox/meta/Info.hpp>
+#include <mrdox/meta/Javadoc.hpp>
+#include <mrdox/meta/Location.hpp>
+#include <mrdox/meta/MemberType.hpp>
+#include <mrdox/meta/Namespace.hpp>
+#include <mrdox/meta/Record.hpp>
+#include <mrdox/meta/Reference.hpp>
+#include <mrdox/meta/Scope.hpp>
+#include <mrdox/meta/Symbol.hpp>
+#include <mrdox/meta/Template.hpp>
+#include <mrdox/meta/TemplateParam.hpp>
+#include <mrdox/meta/Type.hpp>
+#include <mrdox/meta/Typedef.hpp>
+#include <mrdox/meta/Types.hpp>
 
 #endif

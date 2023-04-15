@@ -9,12 +9,12 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_MEMBERTYPE_HPP
-#define MRDOX_MEMBERTYPE_HPP
+#ifndef MRDOX_META_MEMBERTYPE_HPP
+#define MRDOX_META_MEMBERTYPE_HPP
 
-#include <mrdox/FieldType.hpp>
-#include <mrdox/Function.hpp>
-#include "Javadoc.hpp"
+#include <mrdox/meta/Javadoc.hpp>
+#include <mrdox/meta/FieldType.hpp>
+#include <mrdox/meta/Function.hpp>
 
 namespace clang {
 namespace mrdox {

@@ -12,13 +12,27 @@
 #ifndef MRDOX_REDUCE_HPP
 #define MRDOX_REDUCE_HPP
 
-#include <mrdox/Info.hpp>
+#include <mrdox/meta/Info.hpp>
 #include <llvm/Support/Error.h>
 #include <memory>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
+
+//
+// This file defines the merging of different types of infos. The data in the
+// calling Info is preserved during a merge unless that field is empty or
+// default. In that case, the data from the parameter Info is used to replace
+// the empty or default data.
+//
+// For most fields, the first decl seen provides the data. Exceptions to this
+// include the location and description fields, which are collections of data on
+// all decls related to a given definition. All other fields are ignored in new
+// decls unless the first seen decl didn't, for whatever reason, incorporate
+// data on that field (e.g. a forward declared class wouldn't have information
+// on members on the forward declaration, but would have the class name).
+//
 
 template <typename T>
 llvm::Expected<std::unique_ptr<Info>>

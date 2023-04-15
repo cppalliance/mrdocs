@@ -22,7 +22,7 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Reporter.hpp>
-#include <mrdox/Generator.hpp>
+#include <mrdox/format/Generator.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/CommandLine.h>

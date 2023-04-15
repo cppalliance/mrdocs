@@ -20,8 +20,8 @@
 #ifndef MRDOX_VISITOR_HPP
 #define MRDOX_VISITOR_HPP
 
-#include "Representation.h"
 #include <mrdox/Config.hpp>
+#include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>
 #include <clang/AST/ASTConsumer.h>

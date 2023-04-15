@@ -9,13 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/FlatWriter.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Namespace.hpp>
-#include <mrdox/Record.hpp>
-#include <mrdox/Reporter.hpp>
-#include <mrdox/Scope.hpp>
+#include <mrdox/Metadata.hpp>
+#include <mrdox/format/FlatWriter.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <cassert>
 

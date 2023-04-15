@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_JAVADOC_HPP
-#define MRDOX_JAVADOC_HPP
+#ifndef MRDOX_META_JAVADOC_HPP
+#define MRDOX_META_JAVADOC_HPP
 
 #include <llvm/ADT/SmallString.h>
 #include <string>

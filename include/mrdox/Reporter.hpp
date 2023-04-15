@@ -14,24 +14,16 @@
 
 #include <mrdox/detail/nice.hpp>
 #include <llvm/Support/Error.h>
-#include <llvm/Support/Format.h>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/raw_ostream.h>
 #include <cassert>
 #include <source_location>
 #include <string>
-#include <string_view>
 #include <system_error>
 #include <type_traits>
 
 namespace clang {
 namespace mrdox {
-
-//------------------------------------------------
-//
-// Reporter
-//
-//------------------------------------------------
 
 /** Used to check and report errors uniformly.
 */

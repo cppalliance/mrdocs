@@ -9,13 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/RecursiveWriter.hpp>
+#include <mrdox/format/RecursiveWriter.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Namespace.hpp>
-#include <mrdox/Record.hpp>
+#include <mrdox/Metadata.hpp>
 #include <mrdox/Reporter.hpp>
-#include <mrdox/Scope.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <cassert>
 

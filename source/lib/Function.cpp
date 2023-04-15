@@ -9,12 +9,32 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Reduce.h"
-#include "Representation.h"
-#include <mrdox/Function.hpp>
+#include <mrdox/meta/Function.hpp>
+#include <utility>
 
 namespace clang {
 namespace mrdox {
+
+void
+FunctionInfo::
+merge(
+    FunctionInfo&& Other)
+{
+    assert(canMerge(Other));
+    if (!IsMethod)
+        IsMethod = Other.IsMethod;
+    if (!Access)
+        Access = Other.Access;
+    if (ReturnType.Type.USR == EmptySID && ReturnType.Type.Name == "")
+        ReturnType = std::move(Other.ReturnType);
+    if (Parent.USR == EmptySID && Parent.Name == "")
+        Parent = std::move(Other.Parent);
+    if (Params.empty())
+        Params = std::move(Other.Params);
+    SymbolInfo::merge(std::move(Other));
+    if (!Template)
+        Template = Other.Template;
+}
 
 } // mrdox
 } // clang

@@ -12,12 +12,11 @@
 #ifndef MRDOX_SOURCE_ASCIIDOC_HPP
 #define MRDOX_SOURCE_ASCIIDOC_HPP
 
-#include "Representation.h"
-#include <mrdox/Namespace.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
-#include <mrdox/FlatWriter.hpp>
-#include <mrdox/Generator.hpp>
+#include <mrdox/MetadataFwd.hpp>
+#include <mrdox/format/FlatWriter.hpp>
+#include <mrdox/format/Generator.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>

@@ -9,19 +9,15 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SCOPE_HPP
-#define MRDOX_SCOPE_HPP
+#ifndef MRDOX_META_SCOPE_HPP
+#define MRDOX_META_SCOPE_HPP
 
-#include "Enum.hpp"
-#include <mrdox/Typedef.hpp>
-#include <mrdox/Function.hpp>
+#include <mrdox/meta/Enum.hpp>
+#include <mrdox/meta/Typedef.hpp>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
-
-struct Reference;
-struct TypedefInfo;
 
 /** A container for the declaration in a namespace.
 */

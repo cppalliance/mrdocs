@@ -9,43 +9,18 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#ifndef MRDOX_META_OVERLOADSET_HPP
+#define MRDOX_META_OVERLOADSET_HPP
+
+#include <mrdox/meta/Function.hpp>
+#include <llvm/ADT/StringRef.h>
 #include <functional>
 
 namespace clang {
 namespace mrdox {
 
 class Corpus;
-struct FunctionInfo;
-
-/*
-    struct OverloadSet
-    {
-        struct Overloads
-        {
-            llvm::StringRef name;
-            std::vector<FunctionInfo const*> overloads;
-        };
-
-        AccessSpecifier access; // public, protected, private
-        std::vector<Overloads> list;
-    };
-
-    void
-    BasicWriter::
-    writeClass(
-        ClassInfo const& I)
-    {
-        beginClass( I.TagType, I.Name );
-        //...
-        OverloadSet list = buildOverloadSet(
-            I.Children.Functions, AccessSpecifier::AS_public );
-        writeOverloadSet( list );
-        //
-        endClass();
-    }
-*/
-
-//------------------------------------------------
+struct Scope;
 
 struct OverloadSet
 {
@@ -61,3 +36,5 @@ makeOverloadSet(
 
 } // mrdox
 } // clang
+
+#endif

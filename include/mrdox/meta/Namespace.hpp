@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_NAMESPACE_HPP
-#define MRDOX_NAMESPACE_HPP
+#ifndef MRDOX_META_NAMESPACE_HPP
+#define MRDOX_META_NAMESPACE_HPP
 
-#include <mrdox/Info.hpp>
-#include <mrdox/Scope.hpp>
+#include <mrdox/meta/Info.hpp>
+#include <mrdox/meta/Scope.hpp>
 
 namespace clang {
 namespace mrdox {

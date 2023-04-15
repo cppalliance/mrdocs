@@ -12,7 +12,7 @@
 #ifndef MRDOX_COMMENT_VISITOR_HPP
 #define MRDOX_COMMENT_VISITOR_HPP
 
-#include "Representation.h"
+#include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/AST/ASTContext.h>
 

@@ -9,15 +9,15 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_RECORD_HPP
-#define MRDOX_RECORD_HPP
+#ifndef MRDOX_META_RECORD_HPP
+#define MRDOX_META_RECORD_HPP
 
-#include "MemberType.hpp"
-#include "Reference.hpp"
-#include <mrdox/Scope.hpp>
-#include <mrdox/Symbol.hpp>
-#include <mrdox/Template.hpp>
-#include <mrdox/Types.hpp>
+#include <mrdox/meta/MemberType.hpp>
+#include <mrdox/meta/Reference.hpp>
+#include <mrdox/meta/Scope.hpp>
+#include <mrdox/meta/Symbol.hpp>
+#include <mrdox/meta/Template.hpp>
+#include <mrdox/meta/Types.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>

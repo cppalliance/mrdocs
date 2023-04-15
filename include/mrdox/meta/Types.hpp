@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TYPES_HPP
-#define MRDOX_TYPES_HPP
+#ifndef MRDOX_META_TYPES_HPP
+#define MRDOX_META_TYPES_HPP
 
 #include <array>
 

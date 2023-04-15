@@ -9,10 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_REFERENCE_HPP
-#define MRDOX_REFERENCE_HPP
+#ifndef MRDOX_META_REFERENCE_HPP
+#define MRDOX_META_REFERENCE_HPP
 
-#include <mrdox/Types.hpp>
+#include <mrdox/meta/Types.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <utility>

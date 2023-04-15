@@ -11,6 +11,7 @@
 
 #include "BitcodeReader.h"
 #include <mrdox/Error.hpp>
+#include <mrdox/Metadata.hpp>
 #include <llvm/ADT/IndexedMap.h>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/raw_ostream.h>

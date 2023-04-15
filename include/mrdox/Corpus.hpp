@@ -12,9 +12,11 @@
 #ifndef MRDOX_CORPUS_HPP
 #define MRDOX_CORPUS_HPP
 
-#include "Index.hpp"
 #include <mrdox/Config.hpp>
+#include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
+#include <mrdox/meta/Index.hpp>
+#include <mrdox/meta/Types.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
 #include <type_traits>
@@ -22,15 +24,6 @@
 
 namespace clang {
 namespace mrdox {
-
-struct Info;
-struct Scope;
-struct MemberTypeInfo;
-struct NamespaceInfo;
-struct RecordInfo;
-struct FunctionInfo;
-struct EnumInfo;
-struct TypedefInfo;
 
 /** The collection of declarations in extracted form.
 */
@@ -216,8 +209,6 @@ private:
     bool canonicalize(Scope& I, Temps& t, Reporter& R);
     bool canonicalize(std::vector<Reference>& list, Temps& t, Reporter& R);
     bool canonicalize(llvm::SmallVectorImpl<MemberTypeInfo>& list, Temps& t, Reporter& R);
-
-
 
 private:
     llvm::sys::Mutex infoMutex;

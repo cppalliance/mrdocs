@@ -9,15 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-//
-// This file defines the internal representations of different declaration
-// types for the clang-doc tool.
-//
+#ifndef MRDOX_META_FIELDTYPE_HPP
+#define MRDOX_META_FIELDTYPE_HPP
 
-#ifndef MRDOX_FIELDTYPE_HPP
-#define MRDOX_FIELDTYPE_HPP
-
-#include <mrdox/Type.hpp>
+#include <mrdox/meta/Type.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <utility>
 

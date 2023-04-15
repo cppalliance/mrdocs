@@ -10,8 +10,7 @@
 //
 
 #include "Reduce.h"
-//#include "Representation.h"
-#include <mrdox/Namespace.hpp>
+#include <mrdox/meta/Namespace.hpp>
 #include <mrdox/Config.hpp>
 #include "llvm/Support/Error.h"
 #include "llvm/Support/Path.h"

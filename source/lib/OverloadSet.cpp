@@ -10,9 +10,9 @@
 //
 
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Function.hpp>
-#include <mrdox/OverloadSet.hpp>
-#include <mrdox/Scope.hpp>
+#include <mrdox/format/OverloadSet.hpp>
+#include <mrdox/meta/Function.hpp>
+#include <mrdox/meta/Scope.hpp>
 
 namespace clang {
 namespace mrdox {

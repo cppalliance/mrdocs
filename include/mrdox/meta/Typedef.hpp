@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TYPEDEF_HPP
-#define MRDOX_TYPEDEF_HPP
+#ifndef MRDOX_META_TYPEDEF_HPP
+#define MRDOX_META_TYPEDEF_HPP
 
-#include <mrdox/Symbol.hpp>
-#include <mrdox/Type.hpp>
+#include <mrdox/meta/Symbol.hpp>
+#include <mrdox/meta/Type.hpp>
 
 namespace clang {
 namespace mrdox {

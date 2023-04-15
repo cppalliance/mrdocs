@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Info.hpp>
-#include "Reference.hpp"
+#include <mrdox/meta/Info.hpp>
+#include <mrdox/meta/Reference.hpp>
 
 namespace clang {
 namespace mrdox {

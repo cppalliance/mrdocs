@@ -9,10 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_RECURSIVE_WRITER_HPP
-#define MRDOX_RECURSIVE_WRITER_HPP
+#ifndef MRDOX_RECURSIVEWRITER_HPP
+#define MRDOX_RECURSIVEWRITER_HPP
 
-#include <mrdox/Info.hpp>
+#include <mrdox/MetadataFwd.hpp>
+#include <mrdox/meta/Types.hpp>
 #include <mrdox/Reporter.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
@@ -21,16 +22,8 @@
 namespace clang {
 namespace mrdox {
 
-//------------------------------------------------
-
 class Corpus;
 class Config;
-struct NamespaceInfo;
-struct RecordInfo;
-struct FunctionInfo;
-struct EnumInfo;
-struct TypedefInfo;
-struct Scope;
 
 //------------------------------------------------
 

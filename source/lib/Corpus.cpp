@@ -12,9 +12,11 @@
 #include "BitcodeReader.h"
 #include "BitcodeWriter.h"
 #include "ClangDoc.h"
+#include "Reduce.h"
 #include "Serialize.h"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Error.hpp>
+#include <mrdox/Metadata.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/Mutex.h>
@@ -29,6 +31,36 @@ struct Corpus::Temps
     std::string s0;
     std::string s1;
 };
+
+// A standalone function to call to merge a vector of infos into one.
+// This assumes that all infos in the vector are of the same type, and will fail
+// if they are different.
+// Dispatch function.
+llvm::Expected<std::unique_ptr<Info>>
+mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
+{
+    if (Values.empty() || !Values[0])
+        return llvm::createStringError(llvm::inconvertibleErrorCode(),
+            "no info values to merge");
+
+    switch (Values[0]->IT) {
+    case InfoType::IT_namespace:
+        return reduce<NamespaceInfo>(Values);
+    case InfoType::IT_record:
+        return reduce<RecordInfo>(Values);
+    case InfoType::IT_enum:
+        return reduce<EnumInfo>(Values);
+    case InfoType::IT_function:
+        return reduce<FunctionInfo>(Values);
+    case InfoType::IT_typedef:
+        return reduce<TypedefInfo>(Values);
+    default:
+        return llvm::createStringError(llvm::inconvertibleErrorCode(),
+            "unexpected info type");
+    }
+}
+
+
 
 //------------------------------------------------
 //

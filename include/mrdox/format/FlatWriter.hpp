@@ -9,11 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_FLAT_WRITER_HPP
-#define MRDOX_FLAT_WRITER_HPP
+#ifndef MRDOX_FLATWRITER_HPP
+#define MRDOX_FLATWRITER_HPP
 
-#include <mrdox/Info.hpp>
-#include <mrdox/Reporter.hpp>
+#include <mrdox/MetadataFwd.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
 #include <string>

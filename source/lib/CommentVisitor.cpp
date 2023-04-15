@@ -11,6 +11,7 @@
 
 #include "CommentVisitor.h"
 #include <mrdox/Reporter.hpp>
+#include <mrdox/meta/Javadoc.hpp>
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types

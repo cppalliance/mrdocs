@@ -12,9 +12,9 @@
 #ifndef MRDOX_INFO_HPP
 #define MRDOX_INFO_HPP
 
-#include "Javadoc.hpp"
-#include "Reference.hpp"
-#include <mrdox/Types.hpp>
+#include <mrdox/meta/Javadoc.hpp>
+#include <mrdox/meta/Reference.hpp>
+#include <mrdox/meta/Types.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>

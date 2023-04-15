@@ -9,10 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TEMPLATE_HPP
-#define MRDOX_TEMPLATE_HPP
+#ifndef MRDOX_META_TEMPLATE_HPP
+#define MRDOX_META_TEMPLATE_HPP
 
-#include <mrdox/TemplateParam.hpp>
+#include <mrdox/meta/TemplateParam.hpp>
 #include <llvm/ADT/Optional.h>
 
 namespace clang {

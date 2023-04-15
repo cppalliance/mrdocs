@@ -9,41 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Index.hpp"
-#include "Reduce.h"
-#include "Representation.h"
-#include <mrdox/Namespace.hpp>
-//#include <mrdox/Config.hpp>
-//#include <llvm/Support/Error.h>
-//#include <llvm/Support/Path.h>
+#include <mrdox/meta/Index.hpp>
+#include <mrdox/meta/Namespace.hpp>
 
 namespace clang {
 namespace mrdox {
-
-// Dispatch function.
-llvm::Expected<std::unique_ptr<Info>>
-mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
-{
-    if (Values.empty() || !Values[0])
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "no info values to merge");
-
-    switch (Values[0]->IT) {
-    case InfoType::IT_namespace:
-        return reduce<NamespaceInfo>(Values);
-    case InfoType::IT_record:
-        return reduce<RecordInfo>(Values);
-    case InfoType::IT_enum:
-        return reduce<EnumInfo>(Values);
-    case InfoType::IT_function:
-        return reduce<FunctionInfo>(Values);
-    case InfoType::IT_typedef:
-        return reduce<TypedefInfo>(Values);
-    default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "unexpected info type");
-    }
-}
 
 // Order is based on the Name attribute:
 // case insensitive order

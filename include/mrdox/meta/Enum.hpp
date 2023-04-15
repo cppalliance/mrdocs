@@ -14,11 +14,11 @@
 // types for the clang-doc tool.
 //
 
-#ifndef MRDOX_ENUM_HPP
-#define MRDOX_ENUM_HPP
+#ifndef MRDOX_META_ENUM_HPP
+#define MRDOX_META_ENUM_HPP
 
-#include <mrdox/Symbol.hpp>
-#include <mrdox/Type.hpp>
+#include <mrdox/meta/Symbol.hpp>
+#include <mrdox/meta/Type.hpp>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>
