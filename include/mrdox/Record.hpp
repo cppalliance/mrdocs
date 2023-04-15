@@ -15,9 +15,9 @@
 #include "MemberType.hpp"
 #include "Reference.hpp"
 #include <mrdox/Scope.hpp>
-#include "Symbol.hpp"
-#include "Template.hpp"
-#include "Types.hpp"
+#include <mrdox/Symbol.hpp>
+#include <mrdox/Template.hpp>
+#include <mrdox/Types.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>

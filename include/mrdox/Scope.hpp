@@ -13,7 +13,7 @@
 #define MRDOX_SCOPE_HPP
 
 #include "Enum.hpp"
-#include "Typedef.hpp"
+#include <mrdox/Typedef.hpp>
 #include <mrdox/Function.hpp>
 #include <vector>
 

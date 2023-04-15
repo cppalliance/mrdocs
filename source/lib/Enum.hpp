@@ -17,8 +17,8 @@
 #ifndef MRDOX_ENUM_HPP
 #define MRDOX_ENUM_HPP
 
-#include "Symbol.hpp"
-#include "Type.hpp"
+#include <mrdox/Symbol.hpp>
+#include <mrdox/Type.hpp>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>

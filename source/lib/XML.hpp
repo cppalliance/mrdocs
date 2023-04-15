@@ -12,14 +12,16 @@
 #ifndef MRDOX_SOURCE_XML_HPP
 #define MRDOX_SOURCE_XML_HPP
 
+#include <mrdox/ForwardDecls.hpp>
+#include <mrdox/Generator.hpp>
+#include <mrdox/RecursiveWriter.hpp>
+#if 0
 #include "base64.hpp"
 #include "escape.hpp"
 #include "Representation.h"
 #include <mrdox/Namespace.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Generator.hpp>
-#include <mrdox/RecursiveWriter.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Tooling/Execution.h>
@@ -29,11 +31,11 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <initializer_list>
+#endif
 
 namespace clang {
 namespace mrdox {
 
-struct Reporter;
 
 //------------------------------------------------
 
@@ -126,6 +128,8 @@ private:
     static llvm::StringRef toString(InfoType) noexcept;
 
     //--------------------------------------------
+
+    struct escape;
 
     struct Attr
     {

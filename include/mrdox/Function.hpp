@@ -15,9 +15,9 @@
 #include "FieldType.hpp"
 #include <mrdox/Function.hpp>
 #include "List.hpp"
-#include "Symbol.hpp"
-#include "Template.hpp"
-#include "Types.hpp"
+#include <mrdox/Symbol.hpp>
+#include <mrdox/Template.hpp>
+#include <mrdox/Types.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>

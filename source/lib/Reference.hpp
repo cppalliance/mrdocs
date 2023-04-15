@@ -12,7 +12,7 @@
 #ifndef MRDOX_REFERENCE_HPP
 #define MRDOX_REFERENCE_HPP
 
-#include "Types.hpp"
+#include <mrdox/Types.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <utility>

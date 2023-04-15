@@ -12,8 +12,8 @@
 #ifndef MRDOX_TYPEDEF_HPP
 #define MRDOX_TYPEDEF_HPP
 
-#include "Symbol.hpp"
-#include "Type.hpp"
+#include <mrdox/Symbol.hpp>
+#include <mrdox/Type.hpp>
 
 namespace clang {
 namespace mrdox {

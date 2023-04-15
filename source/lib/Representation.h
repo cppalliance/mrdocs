@@ -17,19 +17,21 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_REPRESENTATION_H
 
+#include "Reference.hpp"
+
+#include <mrdox/Location.hpp>
+#include <mrdox/Symbol.hpp>
+#include <mrdox/TemplateParam.hpp>
+#include <mrdox/Type.hpp>
+#include <mrdox/Types.hpp>
 #include <mrdox/Info.hpp>
-#include "Location.hpp"
 #include <mrdox/Namespace.hpp>
 #include <mrdox/Record.hpp>
-#include "Reference.hpp"
 #include <mrdox/Scope.hpp>
-#include "Symbol.hpp"
-#include "TemplateParam.hpp"
-#include "Type.hpp"
-#include "Types.hpp"
 #include <clang/AST/Type.h>
+#include <clang/AST/ASTContext.h>
 #include <clang/Basic/Specifiers.h>
-#include <clang/Tooling/StandaloneExecution.h>
+//#include <clang/Tooling/StandaloneExecution.h>
 #include <llvm/ADT/APSInt.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringExtras.h>

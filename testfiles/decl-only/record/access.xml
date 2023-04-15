@@ -15,35 +15,35 @@
 </all>
 <namespace name="">
   <class name="C0" id="sTaqkoFcVbtntbfpe777v5/pWL0=">
-    <file path="decl-only/record_2.cpp" line="10" class="def"/>
+    <file path="decl-only/record/access.cpp" line="10" class="def"/>
     <function name="f1" access="protected" id="EyRDT2mXtRNmcISD2rsC6/mLusw=">
-      <file path="decl-only/record_2.cpp" line="14"/>
+      <file path="decl-only/record/access.cpp" line="14"/>
       <return name="void"/>
     </function>
     <function name="f2" access="public" id="ZOAAp99eH9zKUZqx0JzW6AuhRTQ=">
-      <file path="decl-only/record_2.cpp" line="16"/>
+      <file path="decl-only/record/access.cpp" line="16"/>
       <return name="void"/>
     </function>
   </class>
   <struct name="S0" id="u38+snleg17KL7EQuD9FV1Z8b9E=">
-    <file path="decl-only/record_2.cpp" line="1" class="def"/>
+    <file path="decl-only/record/access.cpp" line="1" class="def"/>
     <function name="f0" access="public" id="STTnU4grbgOl2xPE6okWC57zruc=">
-      <file path="decl-only/record_2.cpp" line="3"/>
+      <file path="decl-only/record/access.cpp" line="3"/>
       <return name="void"/>
     </function>
     <function name="f1" access="protected" id="IaPeEIwn9q94M3MuwxsB3qhBOSE=">
-      <file path="decl-only/record_2.cpp" line="5"/>
+      <file path="decl-only/record/access.cpp" line="5"/>
       <return name="void"/>
     </function>
   </struct>
   <union name="U0" id="SHIJWZPzfYtLVfe/rzFAmeVpANk=">
-    <file path="decl-only/record_2.cpp" line="19" class="def"/>
+    <file path="decl-only/record/access.cpp" line="19" class="def"/>
     <function name="f0" access="public" id="eY4R9etszWK2H42p4kWNm5XfpnE=">
-      <file path="decl-only/record_2.cpp" line="21"/>
+      <file path="decl-only/record/access.cpp" line="21"/>
       <return name="void"/>
     </function>
     <function name="f1" access="protected" id="KjiG7Uufpmd65dhiSV+Jv2RjgHA=">
-      <file path="decl-only/record_2.cpp" line="23"/>
+      <file path="decl-only/record/access.cpp" line="23"/>
       <return name="void"/>
     </function>
   </union>

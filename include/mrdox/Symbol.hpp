@@ -13,7 +13,7 @@
 #define MRDOX_SYMBOL_HPP
 
 #include <mrdox/Info.hpp>
-#include "Location.hpp"
+#include <mrdox/Location.hpp>
 #include "llvm/ADT/Optional.h"
 
 namespace clang {

@@ -9,7 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "base64.hpp"
 #include "XML.hpp"
+#include <mrdox/Metadata.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -69,6 +71,83 @@ buildString(
 //
 // RecursiveWriter
 //
+//------------------------------------------------
+
+/** Manipulator to apply XML escaping to output.
+*/
+struct XMLGenerator::Writer::escape
+{
+    explicit
+    escape(
+        llvm::StringRef const& s) noexcept
+        : s_(s)
+    {
+    }
+
+    friend
+    llvm::raw_ostream&
+    operator<<(
+        llvm::raw_ostream& os,
+        escape const& t)
+    {
+        t.write(os);
+        return os;
+    }
+
+private:
+    void write(llvm::raw_ostream& os) const;
+
+    llvm::StringRef s_;
+};
+
+void
+XMLGenerator::
+Writer::
+escape::
+write(
+    llvm::raw_ostream& os) const
+{
+    std::size_t pos = 0;
+    auto const size = s_.size();
+    while(pos < size)
+    {
+    unescaped:
+        auto const found = s_.find_first_of("<>&'\"", pos);
+        if(found == llvm::StringRef::npos)
+        {
+            os.write(s_.data() + pos, s_.size() - pos);
+            break;
+        }
+        os.write(s_.data() + pos, found - pos);
+        pos = found;
+        while(pos < size)
+        {
+            auto const c = s_[pos];
+            switch(c)
+            {
+            case '<':
+                os.write("&lt;", 4);
+                break;
+            case '>':
+                os.write("&gt;", 4);
+                break;
+            case '&':
+                os.write("&amp;", 5);
+                break;
+            case '\'':
+                os.write("&apos;", 6);
+                break;
+            case '\"':
+                os.write("&quot;", 6);
+                break;
+            default:
+                goto unescaped;
+            }
+            ++pos;
+        }
+    }
+}
+
 //------------------------------------------------
 
 XMLGenerator::

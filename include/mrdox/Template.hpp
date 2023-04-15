@@ -12,7 +12,7 @@
 #ifndef MRDOX_TEMPLATE_HPP
 #define MRDOX_TEMPLATE_HPP
 
-#include "TemplateParam.hpp"
+#include <mrdox/TemplateParam.hpp>
 #include <llvm/ADT/Optional.h>
 
 namespace clang {

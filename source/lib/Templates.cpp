@@ -10,6 +10,7 @@
 //
 
 #include "Representation.h"
+#include <clang/AST/TemplateBase.h>
 #include <clang/Lex/Lexer.h>
 
 namespace clang {

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<all>
+  <symbol name="GlobalNamespace" tag="namespace"/>
+  <symbol name="GlobalNamespace::T" tag="struct" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+</all>
+<namespace name="">
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="decl-only/namespace/variables.cpp" line="7" class="def"/>
+  </struct>
+</namespace>
+</mrdox>

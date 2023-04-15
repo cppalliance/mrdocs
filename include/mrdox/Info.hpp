@@ -14,7 +14,7 @@
 
 #include "Javadoc.hpp"
 #include "Reference.hpp"
-#include "Types.hpp"
+#include <mrdox/Types.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>

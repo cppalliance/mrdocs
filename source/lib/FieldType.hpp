@@ -17,7 +17,7 @@
 #ifndef MRDOX_FIELDTYPE_HPP
 #define MRDOX_FIELDTYPE_HPP
 
-#include "Type.hpp"
+#include <mrdox/Type.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <utility>
 

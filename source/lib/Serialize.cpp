@@ -22,6 +22,7 @@
 #include "clang/Lex/Lexer.h"
 #include "llvm/ADT/Hashing.h"
 #include "llvm/ADT/StringExtras.h"
+#include "llvm/Support/Path.h"
 #include "llvm/Support/SHA1.h"
 
 #include "base64.hpp"
