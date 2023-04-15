@@ -18,11 +18,83 @@
 //===----------------------------------------------------------------------===//
 
 #include "SymbolDocumentation.hpp"
-#include "clang/AST/CommentVisitor.h"
-#include "llvm/Support/JSON.h"
+#include <clang/AST/CommentVisitor.h>
+#include <clang/AST/CommentCommandTraits.h>
+#include <llvm/Support/JSON.h>
+
+/*
+    Comment Types
+
+    Comment
+        abstract base for all comments
+
+        FullComment : Comment
+            The entire extracted comment(s) attached to a declaration.
+
+        InlineContentComment : Comment
+            contained within a block, abstract
+
+            TextComment : InlineContentComment
+                plain text
+
+            InlineCommandComment : InlineContentComment
+                command with args as inline content
+
+            HTMLTagComment : InlineContentComment
+                Abstract class for opening and closing HTML tags, inline content
+
+                HTMLStartTagComment : HTMLTagComment
+                    opening HTML tag with attributes.
+
+                HTMLEndTagComment : HTMLTagComment
+                     closing HTML tag.
+
+        BlockContentComment : Comment
+            Block content (contains inline content). abstract
+
+            ParagraphComment : BlockContentComment
+                A single paragraph that contains inline content.
+
+            BlockCommandComment : BlockContentComment
+                zero or more word-like arguments, then a paragraph
+
+                ParamCommandComment : BlockCommandComment
+                    describes a parameter
+
+                TParamCommandComment : BlockCommandComment
+                    describes a template parameter.
+
+                VerbatimBlockComment : BlockCommandComment
+                    A verbatim block command (e. g., preformatted code). Verbatim
+                    block has an opening and a closing command and contains multiple
+                    lines of text (VerbatimBlockLineComment nodes).
+
+                VerbatimLineComment : BlockCommandComment
+                    A verbatim line command.  Verbatim line has an opening command,
+                    a single line of text (up to the newline after the opening command)
+                    and has no closing command.
+
+        VerbatimBlockLineComment : Comment
+            A line of text contained in a verbatim block.
+*/
+/*
+    BlockCommandComment
+        Always has one child of type ParagraphComment child?
+*/
 
 namespace clang {
+
+#if 0
+namespace comments {
+#include <clang/AST/CommentCommandInfo.inc>
+} // comments
+#endif
+
 namespace mrdox {
+
+namespace {
+
+using namespace comments;
 
 void ensureUTF8(std::string& Str)
 {
@@ -37,28 +109,190 @@ void ensureUTF8(llvm::MutableArrayRef<std::string> Strings)
     }
 }
 
+template<class T, class R, class... Args>
+void
+visit_children(
+    ConstCommentVisitor<T, R, Args...>& visitor,
+    Comment const& C)
+{
+    for(auto const* it = C.child_begin();
+        it != C.child_end();
+        ++it)
+    {
+        visitor.visit(*it);
+    }
+}
+
 //------------------------------------------------
 
-class BlockCommentToString
-    : public comments::ConstCommentVisitor<BlockCommentToString>
+/** Visitor which applies inline text styling commands.
+*/
+struct InlineStyler
 {
-public:
-    BlockCommentToString(std::string& Out, const ASTContext& Ctx)
-        : Out(Out), Ctx(Ctx)
+    explicit
+    InlineStyler(
+        llvm::raw_string_ostream& os)
+        : os_(os)
     {
     }
 
-    void visitParagraphComment(const comments::ParagraphComment* C)
+    bool
+    handleInlineStyle(
+        InlineCommandComment const* C)
     {
-        for (const auto* Child = C->child_begin(); Child != C->child_end();
-            ++Child) {
-            visit(*Child);
+        char const SurroundWith = [C]
+        {
+            switch (C->getRenderKind())
+            {
+            case InlineCommandComment::RenderKind::RenderMonospaced:
+                return '`';
+            case InlineCommandComment::RenderKind::RenderBold:
+                return '*';
+            case InlineCommandComment::RenderKind::RenderEmphasized:
+                return '_';
+            default:
+                return char(0);
+            }
+        }();
+
+        // VFALCO note, mixing styles must be done
+        // in the correct order. This is canonical:
+        //
+        //      `*_monospace bold italic phrase_*`
+        //      ``**__char__**``acter``**__s__**``
+        //
+        // See: https://docs.asciidoctor.org/asciidoc/latest/text/italic/#mixing-italic-with-other-formatting
+        //
+        // It looks like the clang parser does not
+        // emit nested styles, so only one inline
+        // style command can be applied per args.
+        //
+
+        if(SurroundWith != 0)
+            os_ << " " << SurroundWith;
+        for (unsigned I = 0; I < C->getNumArgs(); ++I)
+        {
+            // VFALCO args whose characters match
+            // in SurroundWith need to be escaepd
+            os_ << C->getArgText(I);
+        }
+        if(SurroundWith != 0)
+            os_ << SurroundWith;
+        return true;
+    }
+
+private:
+    llvm::raw_string_ostream& os_;
+};
+
+//------------------------------------------------
+
+/** Visitor for the first paragraph in a FullComment.
+
+    This will represent:
+
+    @li The implicit brief if no explicit brief command is found,
+
+    @li A regular paragraph containing an explicit
+        brief and the surrounding paragraphs as
+        exposition.
+*/
+struct FirstParagraph
+    : ConstCommentVisitor<FirstParagraph>
+    , InlineStyler
+{
+    explicit
+    FirstParagraph(
+        std::string& s,
+        ASTContext const& ctx)
+        : InlineStyler(os_)
+        , s_(s)
+        , os_(s_)
+        , ctx_(ctx)
+    {
+    }
+
+    ~FirstParagraph()
+    {
+        // clear the string if it
+        // only consists of whitespace
+        llvm::StringRef s(s_);
+        s = s.ltrim();
+        if(! s.empty())
+            s_.erase(0, s_.size() - s.size()),
+            s_.clear();
+    }
+
+    void
+    start(
+        ParagraphComment const* C)
+    {
+        visit_children(*this, *C);
+    }
+
+    void visitTextComment(
+        TextComment const* C)
+    {
+        // If this is the very first node, the
+        // paragraph has no doxygen command,
+        // so there will be a leading space -> Trim it
+        // Otherwise just trim trailing space
+        if (s_.empty())
+            s_.append(C->getText().trim());
+        else
+            s_.append(C->getText().rtrim());
+    }
+
+    void
+    visitInlineCommandComment(
+        InlineCommandComment const* C)
+    {
+        if(handleInlineStyle(C))
+            return;
+    }
+
+    void
+    visitBlockCommandComment(
+        BlockCommandComment const* B)
+    {
+        auto const* cmd = ctx_
+            .getCommentCommandTraits()
+            .getCommandInfo(B->getCommandID());
+        if( cmd != nullptr &&
+            cmd->IsBriefCommand)
+        {
+            // handle brief
+            gotBrief_ = true;
         }
     }
 
-    void visitBlockCommandComment(const comments::BlockCommandComment* B)
+private:
+    std::string& s_;
+    llvm::raw_string_ostream os_;
+    bool gotBrief_ = false;
+    ASTContext const& ctx_;
+
+};
+
+//------------------------------------------------
+
+class BlockCommentToString
+    : public ConstCommentVisitor<BlockCommentToString>
+{
+public:
+    BlockCommentToString(std::string& os_, const ASTContext& Ctx)
+        : os_(os_), Ctx(Ctx)
     {
-        Out << (B->getCommandMarker() == (comments::CommandMarkerKind::CMK_At)
+    }
+
+    void visitParagraphComment(const ParagraphComment* C)
+    {
+        visit_children(*this, *C);
+    }
+
+    void visitBlockCommandComment(const BlockCommandComment* B)
+    {
+        os_ << (B->getCommandMarker() == (CommandMarkerKind::CMK_At)
             ? '@'
             : '\\')
             << B->getCommandName(Ctx.getCommentCommandTraits());
@@ -66,67 +300,91 @@ public:
         visit(B->getParagraph());
     }
 
-    void visitTextComment(const comments::TextComment* C)
+    void visitTextComment(const TextComment* C)
     {
         // If this is the very first node, the paragraph has no doxygen command,
         // so there will be a leading space -> Trim it
         // Otherwise just trim trailing space
-        if (Out.str().empty())
-            Out << C->getText().trim();
+        if (os_.str().empty())
+            os_ << C->getText().trim();
         else
-            Out << C->getText().rtrim();
+            os_ << C->getText().rtrim();
     }
 
-    void visitInlineCommandComment(const comments::InlineCommandComment* C)
+    void visitInlineCommandComment(const InlineCommandComment* C)
     {
         const std::string SurroundWith = [C]
         {
             switch (C->getRenderKind()) {
-            case comments::InlineCommandComment::RenderKind::RenderMonospaced:
+            case InlineCommandComment::RenderKind::RenderMonospaced:
                 return "`";
-            case comments::InlineCommandComment::RenderKind::RenderBold:
+            case InlineCommandComment::RenderKind::RenderBold:
                 return "**";
-            case comments::InlineCommandComment::RenderKind::RenderEmphasized:
+            case InlineCommandComment::RenderKind::RenderEmphasized:
                 return "*";
             default:
                 return "";
             }
         }();
 
-        Out << " " << SurroundWith;
+        os_ << " " << SurroundWith;
         for (unsigned I = 0; I < C->getNumArgs(); ++I) {
-            Out << C->getArgText(I);
+            os_ << C->getArgText(I);
         }
-        Out << SurroundWith;
+        os_ << SurroundWith;
     }
 
 private:
-    llvm::raw_string_ostream Out;
+    llvm::raw_string_ostream os_;
     const ASTContext& Ctx;
 };
 
 //------------------------------------------------
 
-class CommentToSymbolDocumentation
-    : public comments::ConstCommentVisitor<CommentToSymbolDocumentation>
+struct RawCommentVisitor
+    : ConstCommentVisitor<RawCommentVisitor>
 {
-public:
-    CommentToSymbolDocumentation(const RawComment& RC, const ASTContext& Ctx,
-        const Decl* D, SymbolDocumentation& Doc)
-        : FullComment(RC.parse(Ctx, nullptr, D)), Output(Doc), Ctx(Ctx)
+    RawCommentVisitor(
+        SymbolDocumentation& Doc,
+        RawComment const& RC,
+        ASTContext const& Ctx,
+        Decl const* D)
+        : Output(Doc)
+        , Ctx(Ctx)
     {
-        Doc.CommentText =
-            RC.getFormattedText(Ctx.getSourceManager(), Ctx.getDiagnostics());
+        // Doc.CommentText = RC.getFormattedText(Ctx.getSourceManager(), Ctx.getDiagnostics());
+        FullComment* fullComment(RC.parse(Ctx, nullptr, D));
 
-        for (auto* Block : FullComment->getBlocks())
+        // Special case: the first paragraph is the
+        // implicit brief if no @brief command is found.
+        auto const& blocks = fullComment->getBlocks();
+        BlockContentComment const* const* it = blocks.begin();
+        if(it == blocks.end())
+            return;
+        if(auto paragraphComment = dyn_cast<ParagraphComment>(*it))
         {
-            visit(Block);
+            std::string text;
+            FirstParagraph visitor(text, Ctx);
+            visitor.start(paragraphComment);
+            ++it;
+        }
+        for(;it != blocks.end(); ++it)
+        {
+            visit(*it);
         }
     }
 
-    void visitBlockCommandComment(const comments::BlockCommandComment* B)
+    void
+    visitInlineContentComment(
+        InlineContentComment const* C)
     {
-        const llvm::StringRef CommandName =
+    }
+
+    void
+    visitBlockCommandComment(
+        BlockCommandComment const* B)
+    {
+        llvm::StringRef const CommandName =
             B->getCommandName(Ctx.getCommentCommandTraits());
 
         // Visit B->getParagraph() for commands that we have special fields for,
@@ -158,12 +416,12 @@ public:
         }
     }
 
-    void visitParagraphComment(const comments::ParagraphComment* P)
+    void visitParagraphComment(const ParagraphComment* P)
     {
         BlockCommentToString(Output.Description, Ctx).visit(P);
     }
 
-    void visitParamCommandComment(const comments::ParamCommandComment* P)
+    void visitParamCommandComment(const ParamCommandComment* P)
     {
         if (P->hasParamName() && P->hasNonWhitespaceParagraph()) {
             ParameterDocumentation Doc;
@@ -174,30 +432,166 @@ public:
     }
 
 private:
-    comments::FullComment* FullComment;
     SymbolDocumentation& Output;
-    const ASTContext& Ctx;
+    ASTContext const& Ctx;
 };
+
+template<class Pred>
+void
+dumpCommandTraits(
+    char const* title,
+    llvm::raw_ostream& os,
+    Pred&& pred)
+{
+    using namespace comments;
+
+    std::vector<CommandInfo const*> list;
+    list.reserve(CommandTraits::KCI_Last);
+    for(std::size_t id = 0; id < CommandTraits::KCI_Last; ++id)
+    {
+        auto const& cmd = *CommandTraits::getBuiltinCommandInfo(id);
+        if(pred(cmd))
+            list.push_back(&cmd);
+    }
+    std::sort(list.begin(), list.end(),
+        []( CommandInfo const* cmd0,
+            CommandInfo const* cmd1)
+        {
+            llvm::StringRef s0(cmd0->Name);
+            llvm::StringRef s1(cmd1->Name);
+            return s0.compare(s1) < 0;
+        });
+    for(auto const& cmd : list)
+    {
+        if(title)
+        {
+            os << '\n' << title << '\n';
+            title = nullptr;
+        }
+        os << '\\' << cmd->Name;
+        if(cmd->EndCommandName && cmd->EndCommandName[0])
+            os << ", \\" << cmd->EndCommandName << "\\";
+        if(cmd->NumArgs > 0)
+            os << " [" << std::to_string(cmd->NumArgs) << "]";
+
+    #if 0
+        if(cmd->IsInlineCommand)
+            os << " inline";
+        if(cmd->IsBlockCommand)
+            os << " block";
+        if(cmd->IsVerbatimBlockCommand)
+            os << " verbatim";
+        if(cmd->IsVerbatimBlockEndCommand)
+            os << " verbatim-end";
+        if(cmd->IsVerbatimLineCommand)
+            os << " verbatim-line";
+    #endif
+
+        if(cmd->IsBriefCommand)
+            os << " brief";
+        if(cmd->IsReturnsCommand)
+            os << " returns";
+        if(cmd->IsParamCommand)
+            os << " param";
+        if(cmd->IsTParamCommand)
+            os << " tparam";
+        if(cmd->IsThrowsCommand)
+            os << " throws";
+        if(cmd->IsDeprecatedCommand)
+            os << " deprecated";
+        if(cmd->IsHeaderfileCommand)
+            os << " header";
+        if(cmd->IsBlockCommand)
+        {
+            if(cmd->IsEmptyParagraphAllowed)
+                os << " empty-ok";
+            else
+                os << " no-empty";
+        }
+        if(cmd->IsDeclarationCommand)
+            os << " decl";
+        if(cmd->IsFunctionDeclarationCommand)
+            os << " fn-decl";
+        if(cmd->IsRecordLikeDetailCommand)
+            os << " record-detail";
+        if(cmd->IsRecordLikeDeclarationCommand)
+            os << " record-decl";
+        if(cmd->IsUnknownCommand)
+            os << " unknown";
+        os << '\n';
+    }
+}
+
+} // (anon)
 
 //------------------------------------------------
 
+void
+dumpCommentTypes()
+{
+    auto& os = llvm::outs();
+
+    #define COMMENT(Type, Base) os << #Type << " : " << #Base << '\n';
+    //#define COMMENT_RANGE(Base, First, Last)
+    //#define LAST_COMMENT_RANGE(Base, First, Last)
+    //#define ABSTRACT_COMMENT(Type, Base) os << #Type << #Base << '\n';
+    #include <clang/AST/CommentNodes.inc>
+    os << "\n\n";
+}
+
+void
+dumpCommentCommands()
+{
+    auto& os = llvm::outs();
+
+    dumpCommandTraits(
+        "Inline Commands\n"
+        "---------------", os,
+        [](CommandInfo const& cmd) -> bool
+        {
+            return cmd.IsInlineCommand;
+        });
+
+    dumpCommandTraits(
+        "Block Commands\n"
+        "--------------", os,
+        [](CommandInfo const& cmd) -> bool
+        {
+            return cmd.IsBlockCommand;
+        });
+
+    dumpCommandTraits(
+        "Verbatim Commands\n"
+        "-----------------", os,
+        [](CommandInfo const& cmd) -> bool
+        {
+            return
+                cmd.IsVerbatimBlockCommand ||
+                cmd.IsVerbatimBlockEndCommand ||
+                cmd.IsVerbatimLineCommand;
+        });
+}
+
 SymbolDocumentation
 parseDoxygenComment(
-    const RawComment& RC,
-    const ASTContext& Ctx,
-    const Decl* D)
+    RawComment const& RC,
+    ASTContext const& Ctx,
+    Decl const* D)
 {
     SymbolDocumentation Doc;
-    CommentToSymbolDocumentation(RC, Ctx, D, Doc);
 
-    // Clang requires source to be UTF-8, but doesn't enforce this in comments.
+    RawCommentVisitor visitor(Doc, RC, Ctx, D);
+
+    // Clang requires source to be UTF-8,
+    // but doesn't enforce this in comments.
     ensureUTF8(Doc.Brief);
     ensureUTF8(Doc.Returns);
 
     ensureUTF8(Doc.Notes);
     ensureUTF8(Doc.Warnings);
 
-    for (auto& Param : Doc.Parameters) {
+    for (auto& Param : Doc.Parameters)
+    {
         ensureUTF8(Param.Name);
         ensureUTF8(Param.Description);
     }

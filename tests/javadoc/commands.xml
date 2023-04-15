@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<all>
+  <symbol name="f1" tag="function" id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
+  <symbol name="GlobalNamespace" tag="namespace"/>
+</all>
+<namespace name="">
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file path="commands.cpp" line="8"/>
+    <return name="void"/>
+  </function>
+</namespace>
+</mrdox>

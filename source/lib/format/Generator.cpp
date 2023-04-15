@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "Commands.hpp"
 #include <mrdox/format/Generator.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>

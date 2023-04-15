@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "Commands.hpp"
 #include "utility.hpp"
 #include "ast/BitcodeWriter.hpp"
 #include "ast/Serialize.hpp"
@@ -109,6 +110,8 @@ Visitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
+    initCustomCommentCommands(Context);
+
     llvm::Optional<llvm::StringRef> filePath = 
         Context.getSourceManager().getNonBuiltinFilenameForID(
             Context.getSourceManager().getMainFileID());

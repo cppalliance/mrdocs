@@ -89,6 +89,10 @@ public:
   std::string CommentText;
 };
 
+/** Write information about the current CommentCommand array to llvm::outs()
+*/
+void dumpCommentCommands();
+
 /// @param RC the comment to parse
 /// @param D the declaration that \p RC belongs to
 /// @return parsed doxgen documentation.

@@ -15,6 +15,9 @@
 namespace clang {
 namespace mrdox {
 
+extern void dumpCommentTypes();
+extern void dumpCommentCommands();
+
 void
 testMain(
     int argc, const char* const* argv,
@@ -61,7 +64,12 @@ main(int argc, const char** argv)
 {
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
 
-    clang::mrdox::Reporter R;
-    clang::mrdox::testMain(argc, argv, R);
+    using namespace clang::mrdox;
+    Reporter R;
+    testMain(argc, argv, R);
+
+    //dumpCommentTypes();
+    //dumpCommentCommands();
+
     return R.getExitCode();
 }

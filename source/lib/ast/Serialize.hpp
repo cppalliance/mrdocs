@@ -82,10 +82,6 @@ preEmitInfo(
         raw->setAttached();
         doc = parseDoxygenComment(*raw, D->getASTContext(), D);
     }
-    if(! doc.Description.empty())
-    {
-        doc.Description.size();
-    }
 
     return emitInfo(D, std::forward<Args>(args)...);
 }

@@ -12,8 +12,10 @@
 #ifndef MRDOX_META_JAVADOC_HPP
 #define MRDOX_META_JAVADOC_HPP
 
+#include <mrdox/meta/List.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <string>
+#include <utility>
 
 namespace clang {
 namespace mrdox {
@@ -61,18 +63,151 @@ struct CommentInfo
     std::vector<std::unique_ptr<CommentInfo>> Children; // List of child comments for this CommentInfo.
 };
 
-/** A complete javadoc attached to a declaration
+//------------------------------------------------
+
+/** A processed Javadoc-style comment attached to a declaration.
 */
 struct Javadoc
 {
-    /** The brief description.
-    */
-    llvm::SmallString<32> brief;
+    using String = std::string;
 
-    /** The detailed description.
+    enum class Kind
+    {
+        text,
+        code,
+        styledText,
+        paragraph
+    };
+
+    /** This is a variant-like list element.
     */
-    //llvm::SmallString<32> desc; // asciidoc
-    std::string desc; // asciidoc
+    struct Node
+    {
+        Kind const kind;
+
+        explicit Node(Kind kind_) noexcept
+            : kind(kind_)
+        {
+        }
+    };
+
+    /** A string of plain text.
+    */
+    struct Text : Node
+    {
+        String text;
+
+        explicit
+        Text(
+            String text_,
+            Kind kind_ = Kind::text)
+            : Node(kind_)
+            , text(std::move(text))
+        {
+        }
+    };
+
+    /** A string of plain text representing source code.
+    */
+    struct Code : Text
+    {
+        // VFALCO this can have a language (e.g. C++),
+        //        and we can emit attributes in the generator.
+
+        explicit
+        Code(
+            String text_)
+            : Text(std::move(text_), Kind::code)
+        {
+        }
+    };
+
+    /** A text style.
+    */
+    enum class Style
+    {
+        mono,
+        bold,
+        italic
+    };
+
+    /** A piece of style text.
+    */
+    struct StyledText : Text
+    {
+        Style style;
+
+        StyledText(
+            String text,
+            Style style_)
+            : Text(std::move(text), Kind::styledText)
+            , style(style_)
+        {
+        }
+    };
+
+    /** A sequence of text nodes.
+    */
+    struct Paragraph : Node
+    {
+        Paragraph()
+            : Node(Kind::paragraph)
+        {
+        }
+
+        List<Text> list;
+    };
+
+    // VFALCO LEGACY
+    llvm::SmallString<32> brief;
+    std::string desc;
+
+    //---
+
+    ~Javadoc()
+    {
+        if(brief_)
+            delete brief_;
+    }
+
+    Javadoc() = default;
+
+    Paragraph const*
+    getBrief() const noexcept
+    {
+        return brief_;
+    }
+
+    List<Node> const&
+    getNodes() const noexcept
+    {
+        return list_;
+    }
+
+    /** Append a node to the documentation comment.,
+    */
+    template<class Child>
+    void
+    append(Child&& node)
+    {
+        static_assert(std::is_base_of<Node, Child>);
+
+        list_.emplace_back<Child>(std::forward<Child>(node));
+    }
+
+    /** Append a brief to the documentation comment.,
+    */
+    void
+    append_brief(Paragraph&& paragraph)
+    {
+        assert(brief_ == nullptr);
+        brief_ = new Paragraph(std::move(paragraph));
+    }
+
+private:
+    List<Node> list_;
+
+    Paragraph const* brief_ = nullptr;
 };
 
 } // mrdox
