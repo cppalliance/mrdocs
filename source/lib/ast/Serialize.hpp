@@ -18,15 +18,11 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
 
+#include "clangASTComment.hpp"
+#include "SymbolDocumentation.hpp"
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/AST/AST.h>
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
-#include <clang/AST/CommentVisitor.h>
-#pragma warning(pop)
-#endif
 #include <string>
 #include <vector>
 
@@ -69,6 +65,30 @@ emitInfo(const TypedefDecl *D, const comments::FullComment *FC, int LineNumber,
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
 emitInfo(const TypeAliasDecl *D, const comments::FullComment *FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
+
+
+template<class Decl, class... Args>
+std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
+preEmitInfo(
+    Decl const* D,
+    Args&&... args)
+{
+    // TODO investigate whether we can use ASTContext::getCommentForDecl instead
+    // of this logic. See also similar code in Mapper.cpp.
+    RawComment* raw = D->getASTContext().getRawCommentForDeclNoCache(D);
+    SymbolDocumentation doc;
+    if(raw)
+    {
+        raw->setAttached();
+        doc = parseDoxygenComment(*raw, D->getASTContext(), D);
+    }
+    if(! doc.Description.empty())
+    {
+        doc.Description.size();
+    }
+
+    return emitInfo(D, std::forward<Args>(args)...);
+}
 
 // Function to hash a given USR value for storage.
 // As USRs (Unified Symbol Resolution) could be large, especially for functions

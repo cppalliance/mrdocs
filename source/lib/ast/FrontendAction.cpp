@@ -189,7 +189,7 @@ mapDecl(T const* D)
 
     // VFALCO is this right?
     bool const IsFileInRootDir = true;
-    auto I = emitInfo(
+    auto I = preEmitInfo(
         D,
         getComment(D, D->getASTContext()),
         getLine(D, D->getASTContext()),

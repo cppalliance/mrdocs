@@ -600,12 +600,14 @@ populateMemberTypeInfo(
     ASTContext& Context = D->getASTContext();
     // TODO investigate whether we can use ASTContext::getCommentForDecl instead
     // of this logic. See also similar code in Mapper.cpp.
-    RawComment* Comment = Context.getRawCommentForDeclNoCache(D);
-    if (!Comment)
+    RawComment* raw = Context.getRawCommentForDeclNoCache(D);
+    if (!raw)
         return;
 
-    Comment->setAttached();
-    if (comments::FullComment* fc = Comment->parse(Context, nullptr, D))
+    // VFALCO Why?
+    raw->setAttached();
+
+    if (comments::FullComment* fc = raw->parse(Context, nullptr, D))
     {
         I.Description.emplace_back();
         parseComment(fc, Context, I.javadoc, I.Description.back(), R);

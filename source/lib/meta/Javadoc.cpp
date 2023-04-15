@@ -18,38 +18,48 @@
 namespace clang {
 namespace mrdox {
 
-bool CommentInfo::operator==(const CommentInfo& Other) const {
-    auto FirstCI = std::tie(Kind, Text, Name, Direction, ParamName, CloseName,
-        SelfClosing, Explicit, AttrKeys, AttrValues, Args);
-    auto SecondCI =
-        std::tie(Other.Kind, Other.Text, Other.Name, Other.Direction,
-            Other.ParamName, Other.CloseName, Other.SelfClosing,
-            Other.Explicit, Other.AttrKeys, Other.AttrValues, Other.Args);
-
+bool
+CommentInfo::
+operator==(
+    CommentInfo const& Other) const
+{
+    auto FirstCI = std::tie(
+        Kind, Text, Name, Direction,
+        ParamName, CloseName, SelfClosing,
+        Explicit, AttrKeys, AttrValues, Args);
+    auto SecondCI = std::tie(
+        Other.Kind, Other.Text, Other.Name, Other.Direction,
+        Other.ParamName, Other.CloseName, Other.SelfClosing,
+        Other.Explicit, Other.AttrKeys, Other.AttrValues, Other.Args);
     if (FirstCI != SecondCI || Children.size() != Other.Children.size())
         return false;
-
-    return std::equal(Children.begin(), Children.end(), Other.Children.begin(),
+    return std::equal(
+        Children.begin(), Children.end(),
+        Other.Children.begin(),
         llvm::deref<std::equal_to<>>{});
 }
 
-bool CommentInfo::operator<(const CommentInfo& Other) const {
-    auto FirstCI = std::tie(Kind, Text, Name, Direction, ParamName, CloseName,
-        SelfClosing, Explicit, AttrKeys, AttrValues, Args);
-    auto SecondCI =
-        std::tie(Other.Kind, Other.Text, Other.Name, Other.Direction,
-            Other.ParamName, Other.CloseName, Other.SelfClosing,
-            Other.Explicit, Other.AttrKeys, Other.AttrValues, Other.Args);
-
+bool
+CommentInfo::
+operator<(
+    CommentInfo const& Other) const
+{
+    auto FirstCI = std::tie(
+        Kind, Text, Name, Direction,
+        ParamName, CloseName, SelfClosing,
+        Explicit, AttrKeys, AttrValues, Args);
+    auto SecondCI = std::tie(
+        Other.Kind, Other.Text, Other.Name, Other.Direction,
+        Other.ParamName, Other.CloseName, Other.SelfClosing,
+        Other.Explicit, Other.AttrKeys, Other.AttrValues, Other.Args);
     if (FirstCI < SecondCI)
         return true;
-
     if (FirstCI == SecondCI) {
         return std::lexicographical_compare(
-            Children.begin(), Children.end(), Other.Children.begin(),
-            Other.Children.end(), llvm::deref<std::less<>>());
+            Children.begin(), Children.end(),
+            Other.Children.begin(), Other.Children.end(),
+            llvm::deref<std::less<>>());
     }
-
     return false;
 }
 
