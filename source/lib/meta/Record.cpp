@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Reduce.h"
+#include "Reduce.hpp"
 #include <mrdox/meta/Record.hpp>
 #include <cassert>
 #include <utility>

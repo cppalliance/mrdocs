@@ -9,9 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "BitcodeWriter.h"
+#include "BitcodeWriter.hpp"
 #include <mrdox/Metadata.hpp>
-#include "llvm/ADT/IndexedMap.h"
+#include <llvm/ADT/IndexedMap.h>
 #include <initializer_list>
 
 namespace clang {

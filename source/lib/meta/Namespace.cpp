@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Reduce.h"
+#include "Reduce.hpp"
 #include <mrdox/meta/Namespace.hpp>
 #include <mrdox/Config.hpp>
-#include "llvm/Support/Error.h"
-#include "llvm/Support/Path.h"
+#include <llvm/Support/Error.h>
+#include <llvm/Support/Path.h>
 
 namespace clang {
 namespace mrdox {

@@ -19,11 +19,11 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEWRITER_H
 
 #include <mrdox/MetadataFwd.hpp>
-#include "clang/AST/AST.h"
-#include "llvm/ADT/DenseMap.h"
-#include "llvm/ADT/SmallVector.h"
-#include "llvm/ADT/StringRef.h"
-#include "llvm/Bitstream/BitstreamWriter.h"
+#include <clang/AST/AST.h>
+#include <llvm/ADT/DenseMap.h>
+#include <llvm/ADT/SmallVector.h>
+#include <llvm/ADT/StringRef.h>
+#include <llvm/Bitstream/BitstreamWriter.h>
 #include <initializer_list>
 #include <vector>
 

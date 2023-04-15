@@ -9,24 +9,16 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Serialize.h"
-#include "CommentVisitor.h"
-#include "BitcodeWriter.h"
+#include "Serialize.hpp"
+#include "CommentVisitor.hpp"
+#include "BitcodeWriter.hpp"
 #include <mrdox/Metadata.hpp>
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
-#include <clang/AST/Comment.h>
-#pragma warning(pop)
-#endif
-#include "clang/Index/USRGeneration.h"
-#include "clang/Lex/Lexer.h"
-#include "llvm/ADT/Hashing.h"
-#include "llvm/ADT/StringExtras.h"
-#include "llvm/Support/Path.h"
-#include "llvm/Support/SHA1.h"
-
-#include "base64.hpp"
+#include <clang/Index/USRGeneration.h>
+#include <clang/Lex/Lexer.h>
+#include <llvm/ADT/Hashing.h>
+#include <llvm/ADT/StringExtras.h>
+#include <llvm/Support/Path.h>
+#include <llvm/Support/SHA1.h>
 
 using clang::comments::FullComment;
 

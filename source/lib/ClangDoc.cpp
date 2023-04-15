@@ -15,8 +15,8 @@
 // FrontendActionFactory.
 //
 
-#include "ClangDoc.h"
-#include "Visitor.hpp"
+#include "ClangDoc.hpp"
+#include "ast/Visitor.hpp"
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Frontend/FrontendAction.h>
 

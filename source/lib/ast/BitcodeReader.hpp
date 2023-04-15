@@ -18,7 +18,7 @@
 #ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEREADER_H
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEREADER_H
 
-#include "BitcodeWriter.h"
+#include "BitcodeWriter.hpp"
 #include <clang/AST/AST.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/Bitstream/BitstreamReader.h>

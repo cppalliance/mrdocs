@@ -57,7 +57,7 @@ namespace mrdox {
     A USRs is a string that provide an unambiguous
     reference to a symbol.
 */
-using SymbolID = std::array<uint8_t, 20>;
+using SymbolID = std::array<unsigned char, 20>;
 
 // Empty SymbolID for comparison, so we don't have to construct one every time.
 inline SymbolID const EmptySID = SymbolID();

@@ -9,19 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "CommentVisitor.h"
+#include "CommentVisitor.hpp"
+#include "clangASTComment.hpp"
 #include <mrdox/Reporter.hpp>
 #include <mrdox/meta/Javadoc.hpp>
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
-#endif
-#include <clang/AST/Comment.h>
-#include <clang/AST/CommentVisitor.h>
-#ifdef _MSC_VER
-#pragma warning(pop)
-#endif
-//#include <clang/AST/CommentCommandInfo.inc>
 
 namespace clang {
 namespace mrdox {

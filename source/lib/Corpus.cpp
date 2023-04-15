@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "BitcodeReader.h"
-#include "BitcodeWriter.h"
-#include "ClangDoc.h"
-#include "Reduce.h"
-#include "Serialize.h"
+#include "ClangDoc.hpp"
+#include "ast/BitcodeReader.hpp"
+#include "ast/BitcodeWriter.hpp"
+#include "ast/Serialize.hpp"
+#include "meta/Reduce.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>

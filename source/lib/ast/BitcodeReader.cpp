@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "BitcodeReader.h"
+#include "BitcodeReader.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/IndexedMap.h>
