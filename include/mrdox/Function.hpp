@@ -12,7 +12,7 @@
 #ifndef MRDOX_FUNCTION_HPP
 #define MRDOX_FUNCTION_HPP
 
-#include "FieldType.hpp"
+#include <mrdox/FieldType.hpp>
 #include <mrdox/Function.hpp>
 #include "List.hpp"
 #include <mrdox/Symbol.hpp>

@@ -104,10 +104,15 @@ protected:
     void writeEnum(EnumInfo const& I) override;
     void writeTypedef(TypedefInfo const& I) override;
 
+    void writeLocation(Location const&);
     void writeBase(BaseRecordInfo const& I);
     void writeOverloadSet(
         llvm::StringRef sectionName,
         std::vector<OverloadSet> const& list);
+    void writeMemberTypes(
+        llvm::StringRef sectionName,
+        llvm::SmallVectorImpl<MemberTypeInfo> const& list,
+        AccessSpecifier access);
 
     FormalParam formalParam(FieldTypeInfo const& ft);
     TypeName typeName(TypeInfo const& ti);

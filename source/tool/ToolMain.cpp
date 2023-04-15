@@ -108,7 +108,6 @@ toolMain(
     if(! config)
         return (void)R.error(config, "load config file '", ConfigPath, "'");
 
-    (*config)->PublicOnly = true;
     (*config)->OutDirectory = OutDirectory;
     (*config)->IgnoreMappingFailures = IgnoreMappingFailures;
 

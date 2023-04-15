@@ -51,6 +51,7 @@ class Config
     std::string sourceRoot_;
     std::vector<llvm::SmallString<0>> inputFileIncludes_;
     bool verbose_ = true;
+    bool includePrivate_ = false;
 
     llvm::SmallString<0>
     normalizePath(llvm::StringRef pathName);
@@ -87,9 +88,6 @@ public:
     /** Name of project being documented.
     */
     std::string ProjectName;
-
-    // Indicates if only public declarations are documented.
-    bool PublicOnly = true;
 
     // Directory for outputting generated files.
     std::string OutDirectory;
@@ -140,6 +138,14 @@ public:
         return sourceRoot_;
     }
 
+    /** Return true if private members are documented.
+    */
+    bool
+    includePrivate() const noexcept
+    {
+        return includePrivate_;
+    }
+
     /** Returns true if the translation unit should be visited.
 
         @param filePath The posix-style full path
@@ -179,6 +185,15 @@ public:
         bool verbose) noexcept
     {
         verbose_ = verbose;
+    }
+
+    /** Set whether or not to include private members.
+    */
+    void
+    setIncludePrivate(
+        bool includePrivate) noexcept
+    {
+        includePrivate_ = includePrivate;
     }
 
     /** Set the directory where the input files are stored.

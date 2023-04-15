@@ -255,7 +255,7 @@ RecordsByBlock{
         COMMENT_EXPLICIT, COMMENT_ATTRKEY, COMMENT_ATTRVAL, COMMENT_ARG}},
     // Type Block
     {BI_TYPE_BLOCK_ID, {}},
-    // FieldType Block
+    // <mrdox/FieldType.hpp> Block
     {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE}},
     // MemberType Block
     {BI_MEMBER_TYPE_BLOCK_ID, {MEMBER_TYPE_NAME, MEMBER_TYPE_ACCESS}},

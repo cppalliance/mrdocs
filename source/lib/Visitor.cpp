@@ -121,7 +121,7 @@ mapDecl(T const* D)
         getLine(D, D->getASTContext()),
         filePath,
         IsFileInRootDir,
-        config_.PublicOnly,
+        ! config_.includePrivate(),
         R_);
 
     // A null in place of I indicates that the

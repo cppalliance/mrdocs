@@ -258,9 +258,11 @@ writeRecord(
 {
     writeInfo(I);
     writeSymbol(I);
-    for(auto const& t : I.Bases)
-        writeBaseRecord(t);
+    for(auto const& J : I.Bases)
+        writeBaseRecord(J);
     // VFALCO data members?
+    for(auto const& J : I.Members)
+        writeMemberType(J);
 }
 
 void
@@ -436,6 +438,20 @@ writeTemplateParam(
         "tparam", {
         { "decl", I.Contents }
         });
+}
+
+void
+XMLGenerator::
+Writer::
+writeMemberType(
+    MemberTypeInfo const& I)
+{
+    writeTag("data", {
+        { "name", I.Name },
+        { "type", I.Type.Name },
+        { "value", I.DefaultValue, ! I.DefaultValue.empty() },
+        { I.Access },
+        { I.Type.USR } });
 }
 
 //------------------------------------------------

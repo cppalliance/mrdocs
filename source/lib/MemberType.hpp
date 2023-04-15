@@ -12,7 +12,7 @@
 #ifndef MRDOX_MEMBERTYPE_HPP
 #define MRDOX_MEMBERTYPE_HPP
 
-#include "FieldType.hpp"
+#include <mrdox/FieldType.hpp>
 #include <mrdox/Function.hpp>
 #include "Javadoc.hpp"
 
@@ -20,7 +20,9 @@ namespace clang {
 namespace mrdox {
 
 // Info for member types.
-struct MemberTypeInfo : public FieldTypeInfo
+struct MemberTypeInfo
+    : FieldTypeInfo
+    //, SymbolInfo
 {
     MemberTypeInfo() = default;
     

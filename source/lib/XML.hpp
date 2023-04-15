@@ -15,27 +15,9 @@
 #include <mrdox/ForwardDecls.hpp>
 #include <mrdox/Generator.hpp>
 #include <mrdox/RecursiveWriter.hpp>
-#if 0
-#include "base64.hpp"
-#include "escape.hpp"
-#include "Representation.h"
-#include <mrdox/Namespace.hpp>
-#include <mrdox/Config.hpp>
-#include <mrdox/Corpus.hpp>
-#include <clang/Basic/Specifiers.h>
-#include <clang/Index/USRGeneration.h>
-#include <clang/Tooling/Execution.h>
-#include <clang/Tooling/Tooling.h>
-#include <llvm/ADT/StringExtras.h>
-#include <llvm/ADT/StringRef.h>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
-#include <initializer_list>
-#endif
 
 namespace clang {
 namespace mrdox {
-
 
 //------------------------------------------------
 
@@ -114,6 +96,7 @@ private:
     void writeBaseRecord(BaseRecordInfo const& I);
     void writeParam(FieldTypeInfo const& I);
     void writeTemplateParam(TemplateParamInfo const& I);
+    void writeMemberType(MemberTypeInfo const& I);
 
     void openTag(llvm::StringRef);
     void openTag(llvm::StringRef, Attrs);

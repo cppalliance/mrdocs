@@ -190,8 +190,7 @@ beginFile()
 {
     openTitle("Reference");
     os_ <<
-        ":role: mrdox\n"
-        "\n";
+        ":role: mrdox\n";
 }
 
 void
@@ -240,9 +239,9 @@ writeRecord(
 
     // Synopsis
     openSection("Synopsis");
+    writeLocation(getLocation(I));
     os_ <<
         "\n" <<
-        "Located in <" << getLocation(I).Filename << ">\n" <<
         "[,cpp]\n"
         "----\n" <<
         toString(I.TagType) << " " << I.Name;
@@ -261,7 +260,6 @@ writeRecord(
         "----\n";
     closeSection();
 
-    // Description
     if(! I.javadoc.desc.empty())
     {
         os_ << "\n";
@@ -270,52 +268,44 @@ writeRecord(
         closeSection();
     }
 
-    // Data Members
+    writeMemberTypes(
+        "Data Members",
+        I.Members,
+        AccessSpecifier::AS_public);
 
-    // Member Functions
-
-    {
-        // public
-        auto list = makeOverloadSet(corpus_, I.Children,
+    writeOverloadSet(
+        "Member Functions",
+        makeOverloadSet(corpus_, I.Children,
             [](FunctionInfo const& I)
             {
                 return I.Access == AccessSpecifier::AS_public;
-            });
-        if(! list.empty())
-        {
-            os_ << "\n";
-            writeOverloadSet("Member Functions", list);
-        }
-    }
+            }));
 
-    {
-        // protected
-        auto list = makeOverloadSet(corpus_, I.Children,
+    writeMemberTypes(
+        "Protected Data Members",
+        I.Members,
+        AccessSpecifier::AS_protected);
+
+    writeOverloadSet(
+        "Protected Member Functions",
+        makeOverloadSet(corpus_, I.Children,
             [](FunctionInfo const& I)
             {
                 return I.Access == AccessSpecifier::AS_protected;
-            });
-        if(! list.empty())
-        {
-            os_ << "\n";
-            writeOverloadSet("Protected Member Functions", list);
-        }
-    }
+            }));
 
-    if(! config_.PublicOnly)
-    {
-        // private
-        auto list = makeOverloadSet(corpus_, I.Children,
+    writeMemberTypes(
+        "Private Data Members",
+        I.Members,
+        AccessSpecifier::AS_private);
+
+    writeOverloadSet(
+        "Private Member Functions",
+        makeOverloadSet(corpus_, I.Children,
             [](FunctionInfo const& I)
             {
                 return I.Access == AccessSpecifier::AS_private;
-            });
-        if(! list.empty())
-        {
-            os_ << "\n";
-            writeOverloadSet("Private Member Functions", list);
-        }
-    }
+            }));
 
     closeSection();
 }
@@ -331,8 +321,9 @@ writeFunction(
 
     // Synopsis
     openSection("Synopsis");
+    writeLocation(getLocation(I));
     os_ <<
-        "Located in <" << getLocation(I).Filename << ">\n" <<
+        "\n"
         "[,cpp]\n"
         "----\n";
 
@@ -393,6 +384,16 @@ writeTypedef(
 void
 AsciidocGenerator::
 Writer::
+writeLocation(Location const& loc)
+{
+    os_ <<
+        "\n"
+        "`#include <" << loc.Filename << ">`\n";
+}
+
+void
+AsciidocGenerator::
+Writer::
 writeBase(
     BaseRecordInfo const& I)
 {
@@ -406,12 +407,14 @@ writeOverloadSet(
     llvm::StringRef sectionName,
     std::vector<OverloadSet> const& list)
 {
+    if(list.empty())
+        return;
     openSection(sectionName);
     os_ <<
+        "\n"
         "[,cols=2]\n" <<
         "|===\n" <<
-        "|Name\n" <<
-        "|Description\n" <<
+        "|Name |Description\n" <<
         "\n";
     for(auto const& J : list)
     {
@@ -420,6 +423,48 @@ writeOverloadSet(
             "|";
         for(auto const& K : J.list)
             os_ << K->javadoc.brief << "\n";
+    }   
+    os_ <<
+        "|===\n" <<
+        "\n";
+    closeSection();
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeMemberTypes(
+    llvm::StringRef sectionName,
+    llvm::SmallVectorImpl<MemberTypeInfo> const& list,
+    AccessSpecifier access)
+{
+    if(list.empty())
+        return;
+
+    auto it = list.begin();
+    for(;;)
+    {
+        if(it == list.end())
+            return;
+        if(it->Access == access)
+            break;
+        ++it;
+    }
+    openSection(sectionName);
+    os_ <<
+        "\n"
+        "[,cols=2]\n" <<
+        "|===\n" <<
+        "|Name |Description\n" <<
+        "\n";
+    for(;it != list.end(); ++it)
+    {
+        if(it->Access != access)
+            continue;
+        os_ <<
+            "|`" << it->Name << "`\n" <<
+            "|";
+        os_ << it->javadoc.brief << "\n";
     }   
     os_ <<
         "|===\n" <<

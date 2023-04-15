@@ -29,6 +29,7 @@ struct Config::Options
     };
 
     bool verbose = true;
+    bool include_private = false;
     std::string source_root;
     FileFilter input;
 };
@@ -55,6 +56,7 @@ struct llvm::yaml::MappingTraits<
         IO& io, clang::mrdox::Config::Options& opt)
     {
         io.mapOptional("verbose",      opt.verbose);
+        io.mapOptional("private",      opt.include_private);
         io.mapOptional("source-root",  opt.source_root);
         io.mapOptional("input",        opt.input);
     }
@@ -149,6 +151,7 @@ loadFromFile(
 
     // apply opt to Config
     (*config)->setVerbose(opt.verbose);
+    (*config)->setIncludePrivate(opt.include_private);
     (*config)->setSourceRoot(opt.source_root);
     (*config)->setInputFileIncludes(opt.input.include);
 
