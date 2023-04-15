@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<all>
+  <symbol name="GlobalNamespace" tag="namespace"/>
+  <symbol name="GlobalNamespace::C0" tag="class" id="sTaqkoFcVbtntbfpe777v5/pWL0="/>
+  <symbol name="GlobalNamespace::C0::f1" tag="function" id="EyRDT2mXtRNmcISD2rsC6/mLusw="/>
+  <symbol name="GlobalNamespace::C0::f2" tag="function" id="ZOAAp99eH9zKUZqx0JzW6AuhRTQ="/>
+  <symbol name="GlobalNamespace::S0" tag="struct" id="u38+snleg17KL7EQuD9FV1Z8b9E="/>
+  <symbol name="GlobalNamespace::S0::f0" tag="function" id="STTnU4grbgOl2xPE6okWC57zruc="/>
+  <symbol name="GlobalNamespace::S0::f1" tag="function" id="IaPeEIwn9q94M3MuwxsB3qhBOSE="/>
+  <symbol name="GlobalNamespace::U0" tag="union" id="SHIJWZPzfYtLVfe/rzFAmeVpANk="/>
+  <symbol name="GlobalNamespace::U0::f0" tag="function" id="eY4R9etszWK2H42p4kWNm5XfpnE="/>
+  <symbol name="GlobalNamespace::U0::f1" tag="function" id="KjiG7Uufpmd65dhiSV+Jv2RjgHA="/>
+</all>
+<namespace name="">
+  <class name="C0" id="sTaqkoFcVbtntbfpe777v5/pWL0=">
+    <file path="record/access.cpp" line="12" class="def"/>
+    <function name="f1" access="protected" id="EyRDT2mXtRNmcISD2rsC6/mLusw=">
+      <file path="record/access.cpp" line="16"/>
+      <return name="void"/>
+    </function>
+    <function name="f2" access="public" id="ZOAAp99eH9zKUZqx0JzW6AuhRTQ=">
+      <file path="record/access.cpp" line="18"/>
+      <return name="void"/>
+    </function>
+  </class>
+  <struct name="S0" id="u38+snleg17KL7EQuD9FV1Z8b9E=">
+    <file path="record/access.cpp" line="3" class="def"/>
+    <function name="f0" access="public" id="STTnU4grbgOl2xPE6okWC57zruc=">
+      <file path="record/access.cpp" line="5"/>
+      <return name="void"/>
+    </function>
+    <function name="f1" access="protected" id="IaPeEIwn9q94M3MuwxsB3qhBOSE=">
+      <file path="record/access.cpp" line="7"/>
+      <return name="void"/>
+    </function>
+  </struct>
+  <union name="U0" id="SHIJWZPzfYtLVfe/rzFAmeVpANk=">
+    <file path="record/access.cpp" line="21" class="def"/>
+    <function name="f0" access="public" id="eY4R9etszWK2H42p4kWNm5XfpnE=">
+      <file path="record/access.cpp" line="23"/>
+      <return name="void"/>
+    </function>
+    <function name="f1" access="protected" id="KjiG7Uufpmd65dhiSV+Jv2RjgHA=">
+      <file path="record/access.cpp" line="25"/>
+      <return name="void"/>
+    </function>
+  </union>
+</namespace>
+</mrdox>

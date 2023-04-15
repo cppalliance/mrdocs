@@ -1,3 +1,5 @@
+// access specifiers
+
 struct S0
 {
     void f0();

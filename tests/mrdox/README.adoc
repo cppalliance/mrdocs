@@ -1,0 +1,6 @@
+= Tests: MrDox
+
+This directory contains the input files used when
+testing the mrdox command line tool using the code
+in the CMakeLists.txt
+

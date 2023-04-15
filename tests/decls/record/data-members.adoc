@@ -1,0 +1,182 @@
+= Reference
+:role: mrdox
+
+== T
+
+=== Synopsis
+
+`#include <record/data-members.cpp>`
+
+[,cpp]
+----
+struct T;
+----
+
+=== Data Members
+
+[,cols=2]
+|===
+|Name |Description
+
+|`i`
+|
+|`j`
+|
+|===
+
+
+== U
+
+=== Synopsis
+
+`#include <record/data-members.cpp>`
+
+[,cpp]
+----
+struct U;
+----
+
+=== Data Members
+
+[,cols=2]
+|===
+|Name |Description
+
+|`t`
+|
+|===
+
+
+== V
+
+=== Synopsis
+
+`#include <record/data-members.cpp>`
+
+[,cpp]
+----
+class V;
+----
+
+=== Protected Data Members
+
+[,cols=2]
+|===
+|Name |Description
+
+|`j`
+|
+|===
+
+
+== W
+
+=== Synopsis
+
+`#include <record/data-members.cpp>`
+
+[,cpp]
+----
+struct W;
+----
+
+=== Data Members
+
+[,cols=2]
+|===
+|Name |Description
+
+|`buf`
+|
+|===
+
+
+== T
+
+=== Synopsis
+
+`#include <record/data-members.cpp>`
+
+[,cpp]
+----
+struct T;
+----
+
+=== Data Members
+
+[,cols=2]
+|===
+|Name |Description
+
+|`i`
+|
+|`j`
+|
+|===
+
+
+== U
+
+=== Synopsis
+
+`#include <record/data-members.cpp>`
+
+[,cpp]
+----
+struct U;
+----
+
+=== Data Members
+
+[,cols=2]
+|===
+|Name |Description
+
+|`t`
+|
+|===
+
+
+== V
+
+=== Synopsis
+
+`#include <record/data-members.cpp>`
+
+[,cpp]
+----
+class V;
+----
+
+=== Protected Data Members
+
+[,cols=2]
+|===
+|Name |Description
+
+|`j`
+|
+|===
+
+
+== W
+
+=== Synopsis
+
+`#include <record/data-members.cpp>`
+
+[,cpp]
+----
+struct W;
+----
+
+=== Data Members
+
+[,cols=2]
+|===
+|Name |Description
+
+|`buf`
+|
+|===
+

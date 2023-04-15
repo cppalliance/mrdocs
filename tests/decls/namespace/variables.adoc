@@ -1,0 +1,24 @@
+= Reference
+:role: mrdox
+
+== T
+
+=== Synopsis
+
+`#include <namespace/variables.cpp>`
+
+[,cpp]
+----
+struct T;
+----
+
+== T
+
+=== Synopsis
+
+`#include <namespace/variables.cpp>`
+
+[,cpp]
+----
+struct T;
+----

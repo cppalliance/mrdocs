@@ -98,7 +98,7 @@ buildOne(
         ec,
         fs::CD_CreateAlways,
         fs::FA_Write,
-        fs::OF_None);
+        fs::OF_Text);
     if(R.error(ec, "open the stream for '", fileName, "'"))
         return false;
 

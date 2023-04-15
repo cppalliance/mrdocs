@@ -1,3 +1,5 @@
+// data members
+
 struct T
 {
     int i;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<all>
+  <symbol name="GlobalNamespace" tag="namespace"/>
+  <symbol name="GlobalNamespace::T" tag="struct" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+  <symbol name="GlobalNamespace::U" tag="struct" id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
+  <symbol name="GlobalNamespace::V" tag="class" id="9kzYwt0WPztMEDUaFxul1Jvqqs8="/>
+  <symbol name="GlobalNamespace::W" tag="struct" id="6OhcFM3BV6KlrvmfpsljaMHxpdA="/>
+</all>
+<namespace name="">
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="record/data-members.cpp" line="3" class="def"/>
+    <data name="i" type="int" access="public"/>
+    <data name="j" type="double" access="public"/>
+  </struct>
+  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+    <file path="record/data-members.cpp" line="9" class="def"/>
+    <data name="t" type="T" access="public" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+  </struct>
+  <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
+    <file path="record/data-members.cpp" line="14" class="def"/>
+    <data name="j" type="unsigned long" access="protected"/>
+  </class>
+  <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
+    <file path="record/data-members.cpp" line="23" class="def"/>
+    <data name="buf" type="char[64]" access="public"/>
+  </struct>
+</namespace>
+</mrdox>

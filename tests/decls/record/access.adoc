@@ -1,0 +1,284 @@
+= Reference
+:role: mrdox
+
+== C0
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+class C0;
+----
+
+=== Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f2`
+|
+|===
+
+
+=== Protected Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f1`
+|
+|===
+
+
+== S0
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+struct S0;
+----
+
+=== Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f0`
+|
+|===
+
+
+=== Protected Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f1`
+|
+|===
+
+
+== U0
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+union U0;
+----
+
+=== Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f0`
+|
+|===
+
+
+=== Protected Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f1`
+|
+|===
+
+
+== C0
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+class C0;
+----
+
+=== Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f2`
+|
+|===
+
+
+=== Protected Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f1`
+|
+|===
+
+
+== f1
+
+
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+void
+f1();
+----
+
+== f2
+
+
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+void
+f2();
+----
+
+== S0
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+struct S0;
+----
+
+=== Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f0`
+|
+|===
+
+
+=== Protected Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f1`
+|
+|===
+
+
+== f0
+
+
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+void
+f0();
+----
+
+== f1
+
+
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+void
+f1();
+----
+
+== U0
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+union U0;
+----
+
+=== Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f0`
+|
+|===
+
+
+=== Protected Member Functions
+
+[,cols=2]
+|===
+|Name |Description
+
+|`f1`
+|
+|===
+
+
+== f0
+
+
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+void
+f0();
+----
+
+== f1
+
+
+
+=== Synopsis
+
+`#include <record/access.cpp>`
+
+[,cpp]
+----
+void
+f1();
+----

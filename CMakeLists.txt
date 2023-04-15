@@ -163,8 +163,10 @@ if (MRDOX_BUILD_TESTS)
     add_executable(mrdox_tests ${TEST_SOURCES})
     target_link_libraries(mrdox_tests PRIVATE mrdox_lib ${llvm_libs})
     target_include_directories(mrdox_tests PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
-    add_test(NAME mrdox_tests COMMAND mrdox_tests "${PROJECT_SOURCE_DIR}/testfiles")
-    #add_test(NAME mrdox_tests_bare COMMAND mrdox_tests "${PROJECT_SOURCE_DIR}/testfiles/bare")
+    add_test(NAME mrdox_tests COMMAND mrdox_tests
+        "${PROJECT_SOURCE_DIR}/tests/decls"
+        "${PROJECT_SOURCE_DIR}/tests/javadoc"
+    )
     source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
     source_group(TREE ${PROJECT_SOURCE_DIR}/source/tests PREFIX "source" FILES ${TEST_SOURCES})
 endif()
