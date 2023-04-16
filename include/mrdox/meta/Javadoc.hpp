@@ -102,7 +102,7 @@ struct Javadoc
             String text_,
             Kind kind_ = Kind::text)
             : Node(kind_)
-            , text(std::move(text))
+            , text(std::move(text_))
         {
         }
     };
@@ -190,7 +190,7 @@ struct Javadoc
     void
     append(Child&& node)
     {
-        static_assert(std::is_base_of<Node, Child>);
+        static_assert(std::is_base_of_v<Node, Child>);
 
         list_.emplace_back<Child>(std::forward<Child>(node));
     }

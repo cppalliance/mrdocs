@@ -83,13 +83,6 @@
 */
 
 namespace clang {
-
-#if 0
-namespace comments {
-#include <clang/AST/CommentCommandInfo.inc>
-} // comments
-#endif
-
 namespace mrdox {
 
 namespace {
@@ -125,9 +118,29 @@ visit_children(
 
 //------------------------------------------------
 
+/** Base class for visitors.
+
+    We use virtual functions this way to allow
+    mix-ins and composition to allow inherited
+    visitation behavior (such as for styled text).
+*/
+struct BasicVisitor
+    : ConstCommentVisitor<BasicVisitor, bool>
+{
+public:
+    // default implementation returns handled=false
+#define COMMENT(Type, Base) \
+    virtual bool visit##Type(Type const*) { return false; }
+#include <clang/AST/CommentNodes.inc>
+#undef COMMENT
+};
+
+//------------------------------------------------
+
 /** Visitor which applies inline text styling commands.
 */
 struct InlineStyler
+    : virtual BasicVisitor
 {
     explicit
     InlineStyler(
@@ -136,9 +149,8 @@ struct InlineStyler
     {
     }
 
-    bool
-    handleInlineStyle(
-        InlineCommandComment const* C)
+    bool visitInlineCommandComment(
+        InlineCommandComment const* C) override
     {
         char const SurroundWith = [C]
         {
@@ -198,7 +210,7 @@ private:
         exposition.
 */
 struct FirstParagraph
-    : ConstCommentVisitor<FirstParagraph>
+    : virtual BasicVisitor
     , InlineStyler
 {
     explicit
@@ -230,7 +242,7 @@ struct FirstParagraph
         visit_children(*this, *C);
     }
 
-    void visitTextComment(
+    bool visitTextComment(
         TextComment const* C)
     {
         // If this is the very first node, the
@@ -241,17 +253,10 @@ struct FirstParagraph
             s_.append(C->getText().trim());
         else
             s_.append(C->getText().rtrim());
+        return true;
     }
 
-    void
-    visitInlineCommandComment(
-        InlineCommandComment const* C)
-    {
-        if(handleInlineStyle(C))
-            return;
-    }
-
-    void
+    bool
     visitBlockCommandComment(
         BlockCommandComment const* B)
     {
@@ -264,6 +269,7 @@ struct FirstParagraph
             // handle brief
             gotBrief_ = true;
         }
+        return true;
     }
 
 private:
@@ -271,13 +277,12 @@ private:
     llvm::raw_string_ostream os_;
     bool gotBrief_ = false;
     ASTContext const& ctx_;
-
 };
 
 //------------------------------------------------
 
-class BlockCommentToString
-    : public ConstCommentVisitor<BlockCommentToString>
+struct BlockCommentToString
+    : ConstCommentVisitor<BlockCommentToString>
 {
 public:
     BlockCommentToString(std::string& os_, const ASTContext& Ctx)
@@ -532,10 +537,9 @@ dumpCommentTypes()
     auto& os = llvm::outs();
 
     #define COMMENT(Type, Base) os << #Type << " : " << #Base << '\n';
-    //#define COMMENT_RANGE(Base, First, Last)
-    //#define LAST_COMMENT_RANGE(Base, First, Last)
-    //#define ABSTRACT_COMMENT(Type, Base) os << #Type << #Base << '\n';
     #include <clang/AST/CommentNodes.inc>
+    #undef COMMENT
+
     os << "\n\n";
 }
 
