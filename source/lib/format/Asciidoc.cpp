@@ -234,10 +234,9 @@ writeRecord(
     RecordInfo const& I)
 {
     openSection(I.Name);
-    if(auto brief = I.javadoc.getBrief())
-    {
-        // print it
-    }
+
+    // Brief
+    writeBrief(I.javadoc.getBrief());
 
     // Synopsis
     openSection("Synopsis");
@@ -262,13 +261,8 @@ writeRecord(
         "----\n";
     closeSection();
 
-    //if(! I.javadoc.desc.empty())
-    {
-        os_ << "\n";
-        openSection("Description");
-        //os_ << I.javadoc.desc << "\n";
-        closeSection();
-    }
+    // Description
+    writeDescription(I.javadoc.getBlocks());
 
     writeMemberTypes(
         "Data Members",
@@ -318,8 +312,11 @@ Writer::
 writeFunction(
     FunctionInfo const& I)
 {
+return;
     openSection(I.Name);
-    //os_ << I.javadoc.brief << "\n\n";
+
+    // Brief
+    writeBrief(I.javadoc.getBrief());
 
     // Synopsis
     openSection("Synopsis");
@@ -328,6 +325,9 @@ writeFunction(
         "\n"
         "[,cpp]\n"
         "----\n";
+
+    // Description
+    writeDescription(I.javadoc.getBlocks());
 
     // params
     if(! I.Params.empty())
@@ -371,6 +371,16 @@ Writer::
 writeEnum(
     EnumInfo const& I)
 {
+return;
+    openSection(I.Name);
+
+    // Brief
+    writeBrief(I.javadoc.getBrief());
+
+    // Description
+    writeDescription(I.javadoc.getBlocks());
+
+    closeSection();
 }
 
 void
@@ -379,6 +389,16 @@ Writer::
 writeTypedef(
     TypedefInfo const& I)
 {
+return;
+    openSection(I.Name);
+
+    // Brief
+    writeBrief(I.javadoc.getBrief());
+
+    // Description
+    writeDescription(I.javadoc.getBlocks());
+
+    closeSection();
 }
 
 //------------------------------------------------
@@ -474,6 +494,181 @@ writeMemberTypes(
         "|===\n" <<
         "\n";
     closeSection();
+}
+
+//------------------------------------------------
+
+void
+AsciidocGenerator::
+Writer::
+writeBrief(
+    Javadoc::Paragraph const* node)
+{
+    if(! node)
+        return;
+    if(node->empty())
+        return;
+    writeNode(*node);
+}
+    
+void
+AsciidocGenerator::
+Writer::
+writeDescription(
+    List<Javadoc::Block> const& list)
+{
+    if(list.empty())
+        return;
+    os_ << "\n";
+    openSection("Description");
+    writeNodes(list);
+    closeSection();
+}
+
+//------------------------------------------------
+
+template<class T>
+void
+AsciidocGenerator::
+Writer::
+writeNodes(
+    List<T> const& list)
+{
+    if(list.empty())
+        return;
+    for(auto const& node : list)
+        writeNode(node);
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeNode(
+    Javadoc::Node const& node)
+{
+    switch(node.kind)
+    {
+    case Javadoc::Kind::text:
+        writeNode(static_cast<Javadoc::Text const&>(node));
+        return;
+    case Javadoc::Kind::styled:
+        writeNode(static_cast<Javadoc::StyledText const&>(node));
+        return;
+#if 0
+    case Javadoc::Node::block:
+        writeNode(static_cast<Javadoc::Block const&>(node));
+        return;
+#endif
+    case Javadoc::Kind::brief:
+    case Javadoc::Kind::paragraph:
+        writeNode(static_cast<Javadoc::Paragraph const&>(node));
+        return;
+    case Javadoc::Kind::admonition:
+        writeNode(static_cast<Javadoc::Admonition const&>(node));
+        return;
+    case Javadoc::Kind::code:
+        writeNode(static_cast<Javadoc::Code const&>(node));
+        return;
+    case Javadoc::Kind::param:
+        writeNode(static_cast<Javadoc::Param const&>(node));
+        return;
+    case Javadoc::Kind::tparam:
+        writeNode(static_cast<Javadoc::TParam const&>(node));
+        return;
+    case Javadoc::Kind::returns:
+        writeNode(static_cast<Javadoc::Returns const&>(node));
+        return;
+    default:
+        llvm_unreachable("unknown kind");
+    }
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeNode(
+    Javadoc::Text const& node)
+{
+    os_ << node.text << '\n';
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeNode(
+    Javadoc::StyledText const& node)
+{
+    switch(node.style)
+    {
+    case Javadoc::Style::bold:
+        os_ << '*' << node.text << '*';
+        break;
+    case Javadoc::Style::mono:
+        os_ << '`' << node.text << '`';
+        break;
+    case Javadoc::Style::italic:
+        os_ << '_' << node.text << '_';
+        break;
+    default:
+        os_ << node.text;
+        break;
+    }
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeNode(
+    Javadoc::Paragraph const& node)
+{
+    writeNodes(node.list);
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeNode(
+    Javadoc::Admonition const& node)
+{
+    writeNodes(node.list);
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeNode(
+    Javadoc::Code const& node)
+{
+    os_ <<
+        "[,cpp]\n"
+        "----\n";
+    writeNodes(node.list);
+    os_ <<
+        "----\n";
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeNode(
+    Javadoc::Param const& node)
+{
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeNode(
+    Javadoc::TParam const& node)
+{
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeNode(
+    Javadoc::Returns const& node)
+{
 }
 
 //------------------------------------------------

@@ -113,6 +113,21 @@ protected:
         llvm::SmallVectorImpl<MemberTypeInfo> const& list,
         AccessSpecifier access);
 
+    void writeBrief(Javadoc::Paragraph const* node);
+    void writeDescription(List<Javadoc::Block> const& list);
+
+    template<class T>
+    void writeNodes(List<T> const& list);
+    void writeNode(Javadoc::Node const& node);
+    void writeNode(Javadoc::Text const& node);
+    void writeNode(Javadoc::StyledText const& node);
+    void writeNode(Javadoc::Paragraph const& node);
+    void writeNode(Javadoc::Admonition const& node);
+    void writeNode(Javadoc::Code const& node);
+    void writeNode(Javadoc::Param const& node);
+    void writeNode(Javadoc::TParam const& node);
+    void writeNode(Javadoc::Returns const& node);
+
     FormalParam formalParam(FieldTypeInfo const& ft);
     TypeName typeName(TypeInfo const& ti);
 
