@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <iterator>
+#include <memory>
 #include <typeinfo>
 #include <utility>
 
@@ -161,8 +162,9 @@ public:
     std::strong_ordering
     operator<=>(List const& other) const noexcept;
 
-    template<class Pred>
-    bool erase_first_of_if(Pred&& pred) noexcept;
+    template<class U = T, class Pred>
+    std::shared_ptr<U const>
+    extract_first_of(Pred&& pred) noexcept;
 
     template<class U>
     U& emplace_back(U&& u);
@@ -271,7 +273,7 @@ public:
 
     pointer operator->() const noexcept
     {
-        return reinterpret_cast<T const*>(it_->get());
+        return reinterpret_cast<pointer>(it_->get());
     }
 
     reference operator*() const noexcept
@@ -524,40 +526,42 @@ operator<=>(
 }
 
 template<class T>
-template<class Pred>
-bool
+template<class U, class Pred>
+std::shared_ptr<U const>
 List<T>::
-erase_first_of_if(
+extract_first_of(
     Pred&& pred) noexcept
 {
     if(empty())
-        return false;
-    if(pred(*(reinterpret_cast<
-        T const*>(head_->get()))))
+        return nullptr;
+    if(pred(*reinterpret_cast<pointer>(head_->get())))
     {
+        auto result = std::make_shared<U>(std::move(
+            *reinterpret_cast<U*>(head_->get())));
         head_ = head_->next;
         if(head_ == &end_)
             tail_ = &end_;
         --size_;
-        return true;
+        return result;
     }
     auto prev = head_;
     auto it = head_->next;
     while(it != &end_)
     {
-        if(pred(*reinterpret_cast<
-            T const*>(it->get())))
+        if(pred(*reinterpret_cast<pointer>(it->get())))
         {
+            auto result = std::make_shared<U>(std::move(
+                *reinterpret_cast<U*>(it->get())));
             prev->next = it->next;
             if(it == tail_)
                 tail_ = prev;
             --size_;
-            return true;
+            return result;
         }
         prev = it;
         it = it->next;
     }
-    return false;
+    return nullptr;
 }
 
 template<class T>

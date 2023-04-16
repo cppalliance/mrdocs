@@ -38,44 +38,17 @@ static_assert(std::is_move_constructible_v<Javadoc::Code>);
 
 //------------------------------------------------
 
-Javadoc::Paragraph const Javadoc::s_empty_;
-
-Javadoc::
-Javadoc() noexcept
-    : brief_(&s_empty_)
-{
-}
-
 Javadoc::
 Javadoc(
     List<Block> blocks,
     List<Param> params,
     List<TParam> tparams,
     Returns returns)
-    : brief_(&s_empty_)
-    , blocks_(std::move(blocks))
+    : blocks_(std::move(blocks))
     , params_(std::move(params))
     , tparams_(std::move(tparams))
     , returns_(std::move(returns))
 {
-}
-
-auto
-Javadoc::
-getBrief() const noexcept ->
-    Paragraph const*
-{
-    Paragraph const* first = nullptr;
-    for(auto const& block : blocks_)
-    {
-        if(block.kind == Kind::brief)
-            return static_cast<Paragraph const*>(&block);
-        if( block.kind == Kind::paragraph && ! first)
-            first = static_cast<Paragraph const*>(&block);
-    }
-    if(first == nullptr)
-        first = &s_empty_;
-    return first;
 }
 
 void
@@ -89,6 +62,30 @@ merge(Javadoc& other)
         returns_ = std::move(other.returns_);
 }
 
+void
+Javadoc::
+calculateBrief()
+{
+    Paragraph* brief = nullptr;
+    for(auto& block : blocks_)
+    {
+        if(block.kind == Kind::brief)
+        {
+            brief = static_cast<Paragraph*>(&block);
+            break;
+        }
+        if(block.kind == Kind::paragraph && ! brief)
+            brief = static_cast<Paragraph*>(&block);
+    }
+    if(brief != nullptr)
+    {
+        brief_ = blocks_.extract_first_of<Paragraph>(
+            [this, brief](Block& block)
+            {
+                return brief == &block;
+            });
+    }
+}
 
 } // mrdox
 } // clang

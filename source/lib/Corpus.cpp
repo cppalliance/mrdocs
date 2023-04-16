@@ -309,18 +309,21 @@ insert(std::unique_ptr<Info> Ip)
 {
     assert(! isCanonical_);
 
-    auto const& I = *Ip;
+    auto& I = *Ip;
 
+    // Clean up the javadoc
+    I.javadoc.calculateBrief();
+
+    // Add a reference to this Info in the Index
+    insertIntoIndex(I);
+
+    // This has to come last because we move Ip.
     // Store the Info in the result map
     {
         std::lock_guard<llvm::sys::Mutex> Guard(infoMutex);
         InfoMap[llvm::toStringRef(I.USR)] = std::move(Ip);
     }
-
-    // Add a reference to this Info in the Index
-    insertIntoIndex(I);
-
-    // Visit children
+    // CANNOT touch I or Ip here!
 }
 
 // A function to add a reference to Info in Idx.

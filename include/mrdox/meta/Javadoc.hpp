@@ -259,7 +259,10 @@ struct Javadoc
     //---
 
     Paragraph const*
-    getBrief() const noexcept;
+    getBrief() const noexcept
+    {
+        return brief_.get();
+    }
 
     List<Block> const&
     getBlocks() const noexcept
@@ -287,7 +290,7 @@ struct Javadoc
 
     //---
 
-    Javadoc() noexcept;
+    Javadoc() = default;
 
     /** Constructor
     */
@@ -324,12 +327,11 @@ struct Javadoc
     }
 
     void merge(Javadoc& other);
+    void calculateBrief();
 
 //private:
 public: // VFALCO sigh...
-    static Paragraph const s_empty_;
-
-    Paragraph const* brief_;
+    std::shared_ptr<Paragraph const> brief_;
     List<Block> blocks_;
     List<Param> params_;
     List<TParam> tparams_;

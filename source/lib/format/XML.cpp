@@ -222,7 +222,6 @@ Writer::
 writeNamespace(
     NamespaceInfo const& I)
 {
-    writeInfo(I);
 }
 
 void
@@ -462,7 +461,7 @@ XMLGenerator::
 Writer::
 writeJavadoc(Javadoc const& jd)
 {
-    openTag("javadoc");
+    openTag("doc");
     adjustNesting(1);
     if(auto brief = jd.getBrief())
         writeBrief(*brief);
@@ -471,7 +470,7 @@ writeJavadoc(Javadoc const& jd)
     writeNodes(jd.getParams());
     writeNodes(jd.getTParams());
     adjustNesting(-1);
-    closeTag("javadoc");
+    closeTag("doc");
 }
 
 template<class T>
@@ -546,7 +545,7 @@ writeText(
         "<text";
     writeAttrs({
         { "class", tag, ! tag.empty() } });
-    os_ << '>' << text.text << "&#13" << "</text>\n";
+    os_ << '>' << text.text << "</text>\n";
 }
 
 void
@@ -582,7 +581,9 @@ writeParagraph(
 {
     openTag("para", {
         { "class", tag, ! tag.empty() }});
+    adjustNesting(1);
     writeNodes(para.list);
+    adjustNesting(-1);
     closeTag("para");
 }
 
