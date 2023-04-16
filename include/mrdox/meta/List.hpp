@@ -22,16 +22,20 @@
 namespace clang {
 namespace mrdox {
 
-/** An append-only list of variants
-*/
-template<class T>
-class List
+class ListBase
 {
+protected:
     template<class U>
     struct Item;
     struct Node;
     struct End;
+};
 
+/** An append-only list of variants
+*/
+template<class T>
+class List : public ListBase
+{
 public:
     using value_type = T;
     using size_type = std::size_t;
@@ -54,6 +58,9 @@ public:
     ~List();
     List() noexcept;
     List(List&& other) noexcept;
+
+    template<class U>
+    List(List<U>&& other) noexcept;
 
     // VFALCO unfortunately due to TypedefInfo and
     // EnumInfo, a copy constructor is required.
@@ -99,14 +106,13 @@ private:
 
 //------------------------------------------------
 
-template<class T>
-struct List<T>::Node
+struct ListBase::Node
 {
     Node* next;
 
     virtual ~Node() = default;
-    virtual T* get() noexcept = 0;
-    virtual T const* get() const noexcept = 0;
+    virtual void* get() noexcept = 0;
+    virtual void const* get() const noexcept = 0;
     virtual std::type_info const* id() const noexcept = 0;
     virtual std::strong_ordering compare(
         Node const*) const noexcept = 0;
@@ -120,21 +126,20 @@ struct List<T>::Node
     }
 };
 
-template<class T>
-struct List<T>::End : Node
+struct ListBase::End : Node
 {
     End()
         : Node(nullptr)
     {
     }
 
-    T* get() noexcept override
+    void* get() noexcept override
     {
         unreachable();
         return nullptr;
     }
 
-    T const* get() const noexcept override
+    void const* get() const noexcept override
     {
         unreachable();
         return nullptr;
@@ -166,9 +171,8 @@ private:
     }
 };
 
-template<class T>
 template<class U>
-struct List<T>::Item : Node
+struct ListBase::Item : Node
 {
     static constexpr std::type_info const* id_ = &typeid(U);
 
@@ -180,12 +184,12 @@ struct List<T>::Item : Node
     {
     }
 
-    T* get() noexcept override
+    void* get() noexcept override
     {
         return &u_;
     }
 
-    T const* get() const noexcept override
+    void const* get() const noexcept override
     {
         return &u_;
     }
@@ -202,7 +206,7 @@ struct List<T>::Item : Node
             return std::strong_ordering::less;
         if(std::less<void const*>()(other->id(), id_))
             return std::strong_ordering::greater;
-        return u_ <=> *static_cast<U const*>(other->get());
+        return u_ <=> *reinterpret_cast<U const*>(other->get());
     }
 
     Node* copy(Node* next) const override
@@ -212,6 +216,8 @@ struct List<T>::Item : Node
 
     U u_;
 };
+
+//------------------------------------------------
 
 template<class T>
 template<bool isConst>
@@ -253,12 +259,12 @@ public:
 
     pointer operator->() const noexcept
     {
-        return it_->get();
+        return reinterpret_cast<T const*>(it_->get());
     }
 
     reference operator*() const noexcept
     {
-        return *(it_->get());
+        return *operator->();
     }
 
     template<bool IsConst_>
@@ -275,7 +281,7 @@ public:
         return it_ != it.it_;
     }
 };
-    
+
 //--------------------------------------------
 
 template<class T>
@@ -310,6 +316,25 @@ List(List&& other) noexcept
         head_ = &end_;
         tail_ = &end_;
     }
+}
+
+template<class T>
+template<class U>
+List<T>::
+List(List<U>&& other) noexcept
+    : size_(other.size_)
+{
+    if(size_ == 0)
+    {
+        head_ = &end_;
+        tail_ = &end_;
+        return;
+    }
+
+    tail_->next = &end_;
+    other.size_ = 0;
+    other.head_ = &end_;
+    other.tail_ = &end_;
 }
 
 template<class T>
@@ -460,7 +485,8 @@ erase_first_of_if(
 {
     if(empty())
         return false;
-    if(pred(*head_->get()))
+    if(pred(*(reinterpret_cast<
+        T const*>(head_->get()))))
     {
         head_ = head_->next;
         if(head_ == &end_)
@@ -472,7 +498,8 @@ erase_first_of_if(
     auto it = head_->next;
     while(it != &end_)
     {
-        if(pred(*it->get()))
+        if(pred(*reinterpret_cast<
+            T const*>(it->get())))
         {
             prev->next = it->next;
             if(it == tail_)
