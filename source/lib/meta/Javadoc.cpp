@@ -95,7 +95,7 @@ calculateBrief()
     if(brief != nullptr)
     {
         brief_ = blocks_.extract_first_of<Paragraph>(
-            [this, brief](Block& block)
+            [brief](Block& block)
             {
                 return brief == &block;
             });

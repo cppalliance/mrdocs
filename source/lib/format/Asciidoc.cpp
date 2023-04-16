@@ -236,7 +236,10 @@ writeRecord(
 
     // Synopsis
     openSection("Synopsis");
-    writeLocation(getLocation(I));
+
+    writeLocation(I);
+
+    // Declaration
     os_ <<
         "\n" <<
         "[,cpp]\n"
@@ -315,7 +318,9 @@ writeFunction(
 
     // Synopsis
     openSection("Synopsis");
-    writeLocation(getLocation(I));
+
+    writeLocation(I);
+
     os_ <<
         "\n"
         "[,cpp]\n"
@@ -355,11 +360,12 @@ Writer::
 writeEnum(
     EnumInfo const& I)
 {
-return;
     openSection(I.Name);
 
     // Brief
     writeBrief(I.javadoc.getBrief());
+
+    writeLocation(I);
 
     // Description
     writeDescription(I.javadoc.getBlocks());
@@ -373,11 +379,12 @@ Writer::
 writeTypedef(
     TypedefInfo const& I)
 {
-return;
     openSection(I.Name);
 
     // Brief
     writeBrief(I.javadoc.getBrief());
+
+    writeLocation(I);
 
     // Description
     writeDescription(I.javadoc.getBlocks());
@@ -491,7 +498,27 @@ writeBrief(
         return;
     if(node->empty())
         return;
+    os_ << '\n';
     writeNode(*node);
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeLocation(
+    SymbolInfo const& I)
+{
+    Location const* loc = nullptr;
+    if(I.DefLoc.has_value())
+        loc = &*I.DefLoc;
+    else if(! I.Loc.empty())
+        loc = &I.Loc[0];
+    os_ <<
+        "\n"
+        "#include <"
+        "file:///" << loc->Filename <<
+        "[" << loc->Filename << "]" <<
+        ">\n";
 }
     
 void

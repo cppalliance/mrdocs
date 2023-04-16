@@ -2,11 +2,11 @@
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
 <all>
-  <symbol name="GlobalNamespace" tag="namespace"/>
-  <symbol name="GlobalNamespace::T" tag="struct" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
-  <symbol name="GlobalNamespace::U" tag="struct" id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
-  <symbol name="GlobalNamespace::V" tag="class" id="9kzYwt0WPztMEDUaFxul1Jvqqs8="/>
-  <symbol name="GlobalNamespace::W" tag="struct" id="6OhcFM3BV6KlrvmfpsljaMHxpdA="/>
+  <symbol name="" tag="namespace"/>
+  <symbol name="T" tag="struct" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+  <symbol name="U" tag="struct" id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
+  <symbol name="V" tag="class" id="9kzYwt0WPztMEDUaFxul1Jvqqs8="/>
+  <symbol name="W" tag="struct" id="6OhcFM3BV6KlrvmfpsljaMHxpdA="/>
 </all>
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">

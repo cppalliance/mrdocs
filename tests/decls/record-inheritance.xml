@@ -2,22 +2,22 @@
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
 <all>
-  <symbol name="GlobalNamespace" tag="namespace"/>
-  <symbol name="GlobalNamespace::C0" tag="class" id="sTaqkoFcVbtntbfpe777v5/pWL0="/>
-  <symbol name="GlobalNamespace::C1" tag="class" id="tm2khHa6qZM0lj1f7IwBdxVxDgE="/>
-  <symbol name="GlobalNamespace::C2" tag="class" id="a3f8uSFf+Hih/eqmCQtqTCDw3EY="/>
-  <symbol name="GlobalNamespace::C3" tag="class" id="5eVHvnJpHGl0uaFQWGNZbAUi+rA="/>
-  <symbol name="GlobalNamespace::C4" tag="class" id="TwgjmiSc5xz28SnTBuPcppQrwcY="/>
-  <symbol name="GlobalNamespace::C5" tag="class" id="+FCicEQuRpyoPB1uYTGhWVcrlcE="/>
-  <symbol name="GlobalNamespace::C6" tag="class" id="KS3H76wGd00jB2pnPVvaBxXfMk8="/>
-  <symbol name="GlobalNamespace::C7" tag="class" id="RoJyFLcF4tn+I7Xvlv0H+vBkIE4="/>
-  <symbol name="GlobalNamespace::S0" tag="struct" id="u38+snleg17KL7EQuD9FV1Z8b9E="/>
-  <symbol name="GlobalNamespace::S1" tag="struct" id="Tu+ql/Sdpk31DKHwwD/67uI3OZE="/>
-  <symbol name="GlobalNamespace::S2" tag="struct" id="SjrYNgntOvtz+y7yw+WmqLzVdW0="/>
-  <symbol name="GlobalNamespace::S3" tag="struct" id="ftBcWCAw4uNtak9kOXMXaOe13YU="/>
-  <symbol name="GlobalNamespace::S4" tag="struct" id="OkKbIK8En3Y5FbOBQVeHnAsZ0aY="/>
-  <symbol name="GlobalNamespace::S5" tag="struct" id="HQ5z8M+Q3IIXdW9oiD6jtd0TL94="/>
-  <symbol name="GlobalNamespace::U0" tag="union" id="SHIJWZPzfYtLVfe/rzFAmeVpANk="/>
+  <symbol name="" tag="namespace"/>
+  <symbol name="C0" tag="class" id="sTaqkoFcVbtntbfpe777v5/pWL0="/>
+  <symbol name="C1" tag="class" id="tm2khHa6qZM0lj1f7IwBdxVxDgE="/>
+  <symbol name="C2" tag="class" id="a3f8uSFf+Hih/eqmCQtqTCDw3EY="/>
+  <symbol name="C3" tag="class" id="5eVHvnJpHGl0uaFQWGNZbAUi+rA="/>
+  <symbol name="C4" tag="class" id="TwgjmiSc5xz28SnTBuPcppQrwcY="/>
+  <symbol name="C5" tag="class" id="+FCicEQuRpyoPB1uYTGhWVcrlcE="/>
+  <symbol name="C6" tag="class" id="KS3H76wGd00jB2pnPVvaBxXfMk8="/>
+  <symbol name="C7" tag="class" id="RoJyFLcF4tn+I7Xvlv0H+vBkIE4="/>
+  <symbol name="S0" tag="struct" id="u38+snleg17KL7EQuD9FV1Z8b9E="/>
+  <symbol name="S1" tag="struct" id="Tu+ql/Sdpk31DKHwwD/67uI3OZE="/>
+  <symbol name="S2" tag="struct" id="SjrYNgntOvtz+y7yw+WmqLzVdW0="/>
+  <symbol name="S3" tag="struct" id="ftBcWCAw4uNtak9kOXMXaOe13YU="/>
+  <symbol name="S4" tag="struct" id="OkKbIK8En3Y5FbOBQVeHnAsZ0aY="/>
+  <symbol name="S5" tag="struct" id="HQ5z8M+Q3IIXdW9oiD6jtd0TL94="/>
+  <symbol name="U0" tag="union" id="SHIJWZPzfYtLVfe/rzFAmeVpANk="/>
 </all>
 <namespace name="">
   <class name="C0" id="sTaqkoFcVbtntbfpe777v5/pWL0=">

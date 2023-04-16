@@ -1,7 +1,9 @@
-build/
-temp/
 .idea/
 .vs/
 .vscode/
 CMakeSettings.json
+build/
+temp/
 test/
+tests/decls/*.adoc
+tests/javadoc/*.adoc

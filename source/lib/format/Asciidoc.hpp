@@ -114,6 +114,7 @@ protected:
         AccessSpecifier access);
 
     void writeBrief(Javadoc::Paragraph const* node);
+    void writeLocation(SymbolInfo const& I);
     void writeDescription(List<Javadoc::Block> const& list);
 
     template<class T>

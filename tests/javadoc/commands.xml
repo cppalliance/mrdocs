@@ -2,11 +2,12 @@
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
 <all>
+  <symbol name="" tag="namespace"/>
   <symbol name="f1" tag="function" id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
-  <symbol name="GlobalNamespace" tag="namespace"/>
 </all>
 <namespace name="">
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file path="commands.cpp" line="8"/>
     <doc>
       <para class="brief">
         <text>brief</text>
@@ -15,7 +16,6 @@
         <text>mrdox hello</text>
       </para>
     </doc>
-    <file path="commands.cpp" line="8"/>
   </function>
 </namespace>
 </mrdox>

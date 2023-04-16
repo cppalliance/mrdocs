@@ -438,6 +438,7 @@ canonicalize(
     Reporter& R)
 {
     I.javadoc.calculateBrief();
+    canonicalize(I.Children, t, R);
     canonicalize(I.Members, t, R);
     return true;
 }
