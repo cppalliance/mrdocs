@@ -10,6 +10,7 @@
 //
 
 #include "BitcodeWriter.hpp"
+#include "ast/ParseJavadoc.hpp"
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/IndexedMap.h>
 #include <initializer_list>
@@ -117,17 +118,6 @@ static void LocationAbbrev(
         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
 }
 
-static void ListAbbrev(
-    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
-{
-    AbbrevGen(Abbrev, {
-        // 0. Fixed-size integer (Kind)
-        llvm::BitCodeAbbrevOp(
-            llvm::BitCodeAbbrevOp::Fixed,
-            BitCodeConstants::IntSize)
-        });
-}
-
 struct RecordIdDsc
 {
     llvm::StringRef Name;
@@ -192,7 +182,6 @@ RecordIdNameMap = []()
     // improvise
     static const std::vector<std::pair<RecordId, RecordIdDsc>> Inits = {
         {VERSION, {"Version", &IntAbbrev}},
-        {JAVADOC_DUMMY, {"Dummy", &BoolAbbrev}},
         {JAVADOC_LIST_KIND, {"JavadocListKind", &IntAbbrev}},
         {JAVADOC_NODE_KIND, {"JavadocNodeKind", &IntAbbrev}},
         {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
@@ -263,7 +252,7 @@ RecordsByBlock{
     {BI_VERSION_BLOCK_ID, {VERSION}},
     // Javadoc Block
     {BI_JAVADOC_BLOCK_ID,
-        {JAVADOC_DUMMY}},
+        {}},
     // List<Javadoc::Node> Block
     {BI_JAVADOC_LIST_BLOCK_ID,
         {JAVADOC_LIST_KIND}},
@@ -582,15 +571,12 @@ BitcodeWriter::
 emitBlock(
     Javadoc const& jd)
 {
+    //dumpJavadoc(jd);
     StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
-    bool dummy = true;
-    emitRecord(dummy, JAVADOC_DUMMY);
-#if 0
     emitBlock(jd.getBlocks());
     emitBlock(jd.getParams());
     emitBlock(jd.getTParams());
     emitBlock(jd.getReturns());
-#endif
 }
 
 template<class T>
@@ -599,6 +585,7 @@ BitcodeWriter::
 emitBlock(
     List<T> const& list)
 {
+    StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_BLOCK_ID);
     Javadoc::Kind listKind = Javadoc::Kind::block;
     if constexpr(std::is_same_v<T, Javadoc::Block>)
         listKind = Javadoc::Kind::block;
@@ -606,9 +593,6 @@ emitBlock(
         listKind = Javadoc::Kind::param;
     else if constexpr(std::is_same_v<T, Javadoc::TParam>)
         listKind = Javadoc::Kind::tparam;
-    else
-        static_assert("unknown kind");
-    StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_BLOCK_ID);
     emitRecord(listKind, JAVADOC_LIST_KIND);
     for(Javadoc::Node const& node : list)
         emitBlock(node);
@@ -867,61 +851,6 @@ emitRecord(
     TemplateInfo const& Templ)
 {
     // VFALCO What's going on here? Missing code?
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    Javadoc::Text const& node)
-{
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::StyledText const& node)
-{
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Paragraph const& node)
-{
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Brief const& node)
-{
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Admonition const& node)
-{
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Code const& node)
-{
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Returns const& node)
-{
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Param const& node)
-{
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::TParam const& node)
-{
 }
 
 bool

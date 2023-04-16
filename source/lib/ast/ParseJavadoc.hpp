@@ -16,7 +16,7 @@
 
 namespace clang {
 
-class ASTDContext;
+class ASTContext;
 class Decl;
 class RawComment;
 

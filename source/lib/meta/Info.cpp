@@ -44,10 +44,6 @@ mergeBase(
         Path = Other.Path;
     if (Namespace.empty())
         Namespace = std::move(Other.Namespace);
-    if (javadoc.brief.empty())
-        javadoc.brief = std::move(Other.javadoc.brief);
-    if (javadoc.desc.empty())
-        javadoc.desc = std::move(Other.javadoc.desc);
     // Unconditionally extend the blocks
     // since each decl may have a comment.
     javadoc.merge(Other.javadoc);

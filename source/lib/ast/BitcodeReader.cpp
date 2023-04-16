@@ -10,6 +10,7 @@
 //
 
 #include "BitcodeIDs.hpp"
+#include "ast/ParseJavadoc.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Reporter.hpp>
@@ -186,6 +187,7 @@ decodeRecord(
     return makeError("invalid value for FieldId");
 }
 
+#if 0
 llvm::Error
 decodeRecord(
     Record const& R,
@@ -195,6 +197,7 @@ decodeRecord(
     Field.push_back(Blob);
     return llvm::Error::success();
 }
+#endif
 
 llvm::Error
 decodeRecord(
@@ -700,20 +703,45 @@ private:
     llvm::Error parseRecord(Record const& R, unsigned ID,
         llvm::StringRef Blob, Javadoc* I);
 
-    struct ListParseTarget
+    struct CurrentNodeList
     {
         Javadoc::Kind kind;
-        List<Javadoc::Block> blocks;
-        List<Javadoc::Param> params;
-        List<Javadoc::TParam> tparams;
-        Javadoc::Returns returns;
+        List<Javadoc::Node> list;
+
+        explicit
+        CurrentNodeList(
+            CurrentNodeList*& stack) noexcept
+            : prev_(stack)
+            , nodes_(stack)
+        {
+            nodes_ = this;
+        }
+
+        ~CurrentNodeList()
+        {
+            nodes_ = prev_;
+        }
+
+        bool isTopLevel() const noexcept
+        {
+            return prev_ == nullptr;
+        }
+
+        Javadoc::Node& parent()
+        {
+            return prev_->list.back();
+        }
+
+    private:
+        CurrentNodeList* prev_;
+        CurrentNodeList*& nodes_;
     };
 
     llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, ListParseTarget* I);
+        llvm::StringRef Blob, CurrentNodeList* I);
 
     llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, std::unique_ptr<Javadoc::Node>* I);
+        llvm::StringRef Blob, List<Javadoc::Node>* I);
 
     // Helper function to step through blocks to find and dispatch the next record
     // or block to be read.
@@ -724,6 +752,8 @@ private:
     llvm::BitstreamCursor &Stream;
     llvm::Optional<llvm::BitstreamBlockInfo> BlockInfo;
     FieldId CurrentReferenceField;
+    Javadoc* javadoc_ = nullptr;
+    CurrentNodeList* nodes_ = nullptr;
 };
 
 //------------------------------------------------
@@ -914,35 +944,108 @@ readSubBlock(
         auto rv = getJavadoc(I);
         if(! rv)
             return rv.takeError();
-        if(auto err = readBlock(ID, rv.get()))
+        auto saved = javadoc_;
+        assert(saved == nullptr);
+        javadoc_ = rv.get();
+        auto err = readBlock(ID, javadoc_);
+        javadoc_ = saved;
+        if(err)
             return err;
         return llvm::Error::success();
     }
 
     case BI_JAVADOC_LIST_BLOCK_ID:
     {
-        auto rv = getJavadoc(I);
-        if(! rv)
-            return rv.takeError();
-        ListParseTarget J;
+        assert(javadoc_);
+        CurrentNodeList J(nodes_);
         if(auto err = readBlock(ID, &J))
             return err;
-        *rv.get() = Javadoc(
-            std::move(J.blocks),
-            std::move(J.params),
-            std::move(J.tparams),
-            std::move(J.returns));
+        if(J.isTopLevel())
+        {
+//llvm::outs() << "BEFORE\n";
+//dumpJavadoc(*javadoc_);
+//llvm::outs() << "INCOMING\n";
+//dumpJavadoc(Javadoc(List<Javadoc::Block>(J.list), {}, {}, {}));
+            if(J.kind == Javadoc::Kind::block)
+                javadoc_->blocks_.splice_back(J.list);
+                //javadoc_->blocks_ = std::move(J.list);
+            else if(J.kind == Javadoc::Kind::param)
+                javadoc_->params_.splice_back(J.list);
+                //javadoc_->params_ = std::move(J.list);
+            else if(J.kind == Javadoc::Kind::tparam)
+                javadoc_->tparams_.splice_back(J.list);
+                //javadoc_->tparams_ = std::move(J.list);
+            else
+                return makeError("wrong node kind");
+//llvm::outs() << "AFTER\n";
+//dumpJavadoc(*javadoc_);
+            return llvm::Error::success();
+        }
+        else
+        {
+            switch(J.parent().kind)
+            {
+            case Javadoc::Kind::paragraph:
+            case Javadoc::Kind::brief:
+            case Javadoc::Kind::admonition:
+            case Javadoc::Kind::code:
+            case Javadoc::Kind::returns:
+            {
+                auto& parent = static_cast<Javadoc::Paragraph&>(J.parent());
+                parent.list.splice_back(J.list);
+                return llvm::Error::success(); 
+            }
+            case Javadoc::Kind::param:
+            {
+                auto& parent = static_cast<Javadoc::Param&>(J.parent());
+                parent.details.list.splice_back(J.list);
+                return llvm::Error::success(); 
+            }
+            case Javadoc::Kind::tparam:
+            {
+                auto& parent = static_cast<Javadoc::TParam&>(J.parent());
+                parent.details.list.splice_back(J.list);
+                return llvm::Error::success(); 
+            }
+            //case Javadoc::Kind::block
+            default:
+                return makeError("wrong node kind");
+            }
+        }
         return llvm::Error::success();
     }
 
     case BI_JAVADOC_NODE_BLOCK_ID:
     {
-        std::unique_ptr<Javadoc::Node> J;
-        if (auto Err = readBlock(ID, &J))
-            return Err;
-        if(J.get() != nullptr)
+        // when nodes_ == nullptr we have
+        // a top-level non-list node
+        if(nodes_ != nullptr)
+        {
+             if(auto err = readBlock(ID, &nodes_->list))
+                return err;
             return llvm::Error::success();
-        return llvm::Error::success();
+        }
+
+        // hack to read one node
+        CurrentNodeList J(nodes_);
+        if(auto err = readBlock(ID, &J.list))
+            return err;
+        if(J.list.size() > 1)
+            return makeError("too many items in list");
+        // VFALCO This is the problem where we have
+        // a Returns for every Javadoc no matter if
+        // it is empty or not.
+        if(J.list.empty())
+            return llvm::Error::success();
+        auto kind = J.list.back().kind;
+        if(kind == Javadoc::Kind::returns)
+        {
+            // VFALCO should we splice?
+            javadoc_->returns_ = std::move(static_cast<
+                Javadoc::Returns&>(J.list.back()));
+            return llvm::Error::success();
+        }
+        return makeError("wrong kind in list");
     }
 
     case BI_TYPE_BLOCK_ID:
@@ -1384,17 +1487,10 @@ parseRecord(
     llvm::StringRef Blob,
     Javadoc* I)
 {
-    switch(ID)
-    {
-    case JAVADOC_DUMMY:
-    {
-        if(auto err = decodeRecord(R, I->dummy, Blob))
-            return err;
-        return llvm::Error::success();
-    }
-    default:
-        return makeError("invalid ID for Javadoc");
-    }
+    // VFALCO we will never get here since the
+    // javadoc block doesn't have any records,
+    // only sub-blocks.
+    return makeError("invalid ID for Javadoc");
 }
 
 llvm::Error
@@ -1403,10 +1499,11 @@ parseRecord(
     Record const& R,
     unsigned ID,
     llvm::StringRef blob,
-    ListParseTarget* I)
+    CurrentNodeList* I)
 {
     switch (ID)
     {
+    case JAVADOC_NODE_KIND:
     case JAVADOC_LIST_KIND:
     {
         assert(I != nullptr);
@@ -1425,73 +1522,64 @@ parseRecord(
     Record const& R,
     unsigned ID,
     llvm::StringRef blob,
-    std::unique_ptr<Javadoc::Node>* I)
+    List<Javadoc::Node>* I)
 {
     switch (ID)
     {
     case JAVADOC_NODE_KIND:
     {
         Javadoc::Kind kind;
-        assert(*I == nullptr);
         if(auto err = decodeRecord(R, kind, blob))
             return err;
-        if(*I == nullptr)
+        switch(kind)
         {
-            switch(kind)
-            {
-            case Javadoc::Kind::text:
-                *I = std::make_unique<Javadoc::Text>();
-                break;
-            case Javadoc::Kind::styled:
-                *I = std::make_unique<Javadoc::StyledText>();
-                break;
-            case Javadoc::Kind::paragraph:
-                *I = std::make_unique<Javadoc::Paragraph>();
-                break;
-            case Javadoc::Kind::brief:
-                *I = std::make_unique<Javadoc::Brief>();
-                break;
-            case Javadoc::Kind::admonition:
-                *I = std::make_unique<Javadoc::Admonition>();
-                break;
-            case Javadoc::Kind::code:
-                *I = std::make_unique<Javadoc::Code>();
-                break;
-            case Javadoc::Kind::returns:
-                *I = std::make_unique<Javadoc::Returns>();
-                break;
-            case Javadoc::Kind::param:
-                *I = std::make_unique<Javadoc::Param>();
-                break;
-            case Javadoc::Kind::tparam:
-                *I = std::make_unique<Javadoc::TParam>();
-                break;
-            default:
-                llvm_unreachable("unknown kind");
-            }
+        case Javadoc::Kind::text:
+            I->emplace_back(Javadoc::Text());
+            return llvm::Error::success();
+        case Javadoc::Kind::styled:
+            I->emplace_back(Javadoc::StyledText());
+            return llvm::Error::success();
+        case Javadoc::Kind::paragraph:
+            I->emplace_back(Javadoc::Paragraph());
+            return llvm::Error::success();
+        case Javadoc::Kind::brief:
+            I->emplace_back(Javadoc::Brief());
+            return llvm::Error::success();
+        case Javadoc::Kind::admonition:
+            I->emplace_back(Javadoc::Admonition());
+            return llvm::Error::success();
+        case Javadoc::Kind::code:
+            I->emplace_back(Javadoc::Code());
+            return llvm::Error::success();
+        case Javadoc::Kind::returns:
+            I->emplace_back(Javadoc::Returns());
+            return llvm::Error::success();
+        case Javadoc::Kind::param:
+            I->emplace_back(Javadoc::Param());
+            return llvm::Error::success();
+        case Javadoc::Kind::tparam:
+            I->emplace_back(Javadoc::TParam());
+            return llvm::Error::success();
+        default:
+            llvm_unreachable("unknown kind");
         }
-        return llvm::Error::success();
     }
     case JAVADOC_NODE_STRING:
     {
-        switch((*I)->kind)
+        switch(I->back().kind)
         {
         case Javadoc::Kind::text:
         case Javadoc::Kind::styled:
-            return decodeRecord(R, static_cast<Javadoc::Text*>(
-                I->get())->text, blob);
+            return decodeRecord(R, static_cast<
+                Javadoc::Text&>(I->back()).text, blob);
 
         case Javadoc::Kind::param:
-        {
-            auto J = static_cast<Javadoc::Param*>(I->get());
-            return decodeRecord(R, J->name, blob);
-        }
+            return decodeRecord(R, static_cast<
+                Javadoc::Param&>(I->back()).name, blob);
 
         case Javadoc::Kind::tparam:
-        {
-            auto J = static_cast<Javadoc::TParam*>(I->get());
-            return decodeRecord(R, J->name, blob);
-        }
+            return decodeRecord(R, static_cast<
+                Javadoc::TParam&>(I->back()).name, blob);
 
         default:
             return makeError("invalid record for node");
@@ -1500,13 +1588,11 @@ parseRecord(
 
     case JAVADOC_NODE_STYLE:
     {
-        switch((*I)->kind)
+        switch(I->back().kind)
         {
         case Javadoc::Kind::styled:
-        {
-            auto J = static_cast<Javadoc::StyledText*>(I->get());
-            return decodeRecord(R, J->style, blob);
-        }
+            return decodeRecord(R, static_cast<
+                Javadoc::StyledText&>(I->back()).style, blob);
 
         default:
             return makeError("invalid record for node");
@@ -1515,13 +1601,11 @@ parseRecord(
 
     case JAVADOC_NODE_ADMONISH:
     {
-        switch((*I)->kind)
+        switch(I->back().kind)
         {
         case Javadoc::Kind::admonition:
-        {
-            auto J = static_cast<Javadoc::Admonition*>(I->get());
-            return decodeRecord(R, J->style, blob);
-        }
+            return decodeRecord(R, static_cast<
+                Javadoc::Admonition&>(I->back()).style, blob);
 
         default:
             return makeError("invalid record for node");

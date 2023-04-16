@@ -38,7 +38,7 @@ buildOne(
         ec,
         fs::CD_CreateAlways,
         fs::FA_Write,
-        fs::OF_TextWithCRLF);
+        fs::OF_None);
     if(R.error(ec, "open a stream for '", fileName, "'"))
         return false;
 
@@ -464,8 +464,10 @@ writeJavadoc(Javadoc const& jd)
 {
     openTag("javadoc");
     adjustNesting(1);
-    writeBrief(*jd.getBrief());
-    writeParagraph(jd.getReturns(), "returns");
+    if(auto brief = jd.getBrief())
+        writeBrief(*brief);
+    writeReturns(jd.getReturns());
+    writeNodes(jd.getBlocks());
     writeNodes(jd.getParams());
     writeNodes(jd.getTParams());
     adjustNesting(-1);
@@ -540,12 +542,11 @@ writeText(
     Javadoc::Text const& text,
     llvm::StringRef tag)
 {
-    openTag("text", {
-        { "class", tag, ! tag.empty() }});
-    adjustNesting(1);
-    indent() << text.text;
-    adjustNesting(-1);
-    closeTag("para");
+    indent() <<
+        "<text";
+    writeAttrs({
+        { "class", tag, ! tag.empty() } });
+    os_ << '>' << text.text << "&#13" << "</text>\n";
 }
 
 void

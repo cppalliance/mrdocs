@@ -87,6 +87,35 @@ namespace {
 
 using namespace comments;
 
+//------------------------------------------------
+
+template<class U, class T>
+struct Scope
+{
+    Scope(
+        U& u,
+        T*& t0) noexcept
+        : t0_(t0)
+        , pt_(t0)
+    {
+        pt_ = &u;
+    }
+
+    ~Scope()
+    {
+        pt_ = t0_;
+    }
+
+private:
+    T* t0_;
+    T*& pt_;
+};
+
+template<class U, class T>
+Scope(U&, T*&) -> Scope<T, T>;
+
+//------------------------------------------------
+
 class JavadocVisitor
     : public ConstCommentVisitor<JavadocVisitor>
 {
@@ -312,31 +341,6 @@ public:
     }
 
 private:
-    template<class U, class T>
-    struct Scope
-    {
-        Scope(
-            U& u,
-            T*& t0) noexcept
-            : t0_(t0)
-            , pt_(t0)
-        {
-            pt_ = &u;
-        }
-
-        ~Scope()
-        {
-            pt_ = t0_;
-        }
-
-    private:
-        T* t0_;
-        T*& pt_;
-    };
-
-    template<class U, class T>
-    Scope(U&, T*&) -> Scope<T, T>;
-
     FullComment const* FC_;
     ASTContext const& ctx_;
     List<Javadoc::Block> blocks_;

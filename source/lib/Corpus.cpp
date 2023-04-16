@@ -23,6 +23,8 @@
 
 #include <cassert>
 
+//#define NO_ASYNC
+
 namespace clang {
 namespace mrdox {
 
@@ -95,7 +97,8 @@ build(
     // be merged later.
     if(config.verbose())
         R.print("Collecting symbols");
-    llvm::StringMap<std::vector<StringRef>> USRToBitcode;
+    using USRToBitcodeType = llvm::StringMap<std::vector<StringRef>>;
+    USRToBitcodeType USRToBitcode;
     ex.getToolResults()->forEachResult(
         [&](StringRef Key, StringRef Value)
         {
@@ -110,15 +113,18 @@ build(
     GotFailure = false;
     // VFALCO Should this concurrency be a command line option?
     llvm::ThreadPool Pool(llvm::hardware_concurrency(tooling::ExecutorConcurrency));
-    for (auto& Group : USRToBitcode)
+    for (USRToBitcodeType::MapEntryTy& Group : USRToBitcode)
     {
-        Pool.async([&]()
+#ifndef NO_ASYNC
+        Pool.async(
+#endif
+        [&, &MyGroup = Group]()
         {
             // One or more Info for the same symbol ID
             std::vector<std::unique_ptr<Info>> Infos;
 
             // Each Bitcode can have multiple Infos
-            for (auto& Bitcode : Group.getValue())
+            for (auto& Bitcode : MyGroup.getValue())
             {
                 llvm::BitstreamCursor Stream(Bitcode);
                 auto infos = readBitcode(Stream, R);
@@ -143,7 +149,12 @@ build(
             std::unique_ptr<Info> I(merged.get().release());
             assert(Group.getKey() == llvm::toStringRef(I->USR));
             corpus->insert(std::move(I));
-        });
+        }
+#ifdef NO_ASYNC
+        ();
+#else
+        );
+#endif
     }
 
     Pool.wait();

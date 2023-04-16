@@ -83,17 +83,7 @@ public:
     void emitRecord(SymbolID const& Str, RecordId ID);
     void emitRecord(Location const& Loc, RecordId ID);
     void emitRecord(Reference const& Ref, RecordId ID);
-
     void emitRecord(TemplateInfo const& Templ);
-    void emitRecord(Javadoc::Text const& node);
-    void emitRecord(Javadoc::StyledText const& node);
-    void emitRecord(Javadoc::Paragraph const& node);
-    void emitRecord(Javadoc::Brief const& node);
-    void emitRecord(Javadoc::Admonition const& node);
-    void emitRecord(Javadoc::Code const& node);
-    void emitRecord(Javadoc::Returns const& node);
-    void emitRecord(Javadoc::Param const& node);
-    void emitRecord(Javadoc::TParam const& node);
 
     bool prepRecordData(RecordId ID, bool ShouldEmit = true);
 

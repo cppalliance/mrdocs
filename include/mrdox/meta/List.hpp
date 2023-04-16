@@ -22,6 +22,8 @@
 namespace clang {
 namespace mrdox {
 
+//------------------------------------------------
+
 class ListBase
 {
 protected:
@@ -30,81 +32,6 @@ protected:
     struct Node;
     struct End;
 };
-
-/** An append-only list of variants
-*/
-template<class T>
-class List : public ListBase
-{
-public:
-    using value_type = T;
-    using size_type = std::size_t;
-    using difference_type = std::ptrdiff_t;
-    using pointer = value_type*;
-    using reference = value_type&;
-    using const_pointer = value_type const*;
-    using const_reference = value_type const&;
-
-    //--------------------------------------------
-
-    template<bool isConst>
-    class iterator_impl;
-  
-    using iterator = iterator_impl<false>;
-    using const_iterator = iterator_impl<true>;
-
-    //--------------------------------------------
-
-    ~List();
-    List() noexcept;
-    List(List&& other) noexcept;
-
-    template<class U>
-    List(List<U>&& other) noexcept;
-
-    // VFALCO unfortunately due to TypedefInfo and
-    // EnumInfo, a copy constructor is required.
-    // This needs to be fixed.
-    List(List const& other);
-
-    List& operator=(List&& other) noexcept;
-    List& operator=(List const& other);
-
-    iterator begin() noexcept;
-    iterator end() noexcept;
-    const_iterator begin() const noexcept;
-    const_iterator end() const noexcept;
-    const_iterator cbegin() const noexcept;
-    const_iterator cend() const noexcept;
-
-    bool empty() const noexcept;
-    std::size_t size() const noexcept;
-    void clear() noexcept;
-
-    std::strong_ordering
-    operator<=>(List const& other) const noexcept;
-
-    template<class Pred>
-    bool erase_first_of_if(Pred&& pred) noexcept;
-
-    template<class U>
-    U& emplace_back(U&& u);
-
-    template<class U>
-    void splice_back(List<U>& other);
-
-    void swap(List& other);
-
-private:
-    void append(Node* node);
-
-    std::size_t size_ = 0;
-    Node* head_ = nullptr;
-    Node* tail_ = nullptr;
-    End end_;
-};
-
-//------------------------------------------------
 
 struct ListBase::Node
 {
@@ -170,6 +97,91 @@ private:
         llvm_unreachable("pure virtual called");
     }
 };
+
+//------------------------------------------------
+
+/** An append-only list of variants
+*/
+template<class T>
+class List : public ListBase
+{
+    template<class U>
+    friend class List;
+
+public:
+    using value_type = T;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using pointer = value_type*;
+    using reference = value_type&;
+    using const_pointer = value_type const*;
+    using const_reference = value_type const&;
+
+    //--------------------------------------------
+
+    template<bool isConst>
+    class iterator_impl;
+  
+    using iterator = iterator_impl<false>;
+    using const_iterator = iterator_impl<true>;
+
+    //--------------------------------------------
+
+    ~List();
+    List() noexcept;
+
+    template<class U>
+    List(List<U>&& other) noexcept;
+    List(List&& other) noexcept;
+
+    // VFALCO unfortunately due to TypedefInfo and
+    // EnumInfo, a copy constructor is required.
+    // This needs to be fixed.
+    template<class U>
+    List(List<U> const& other);
+    List(List const& other);
+
+    List& operator=(List&& other) noexcept;
+    List& operator=(List const& other);
+
+    iterator begin() noexcept;
+    iterator end() noexcept;
+    const_iterator begin() const noexcept;
+    const_iterator end() const noexcept;
+    const_iterator cbegin() const noexcept;
+    const_iterator cend() const noexcept;
+
+    bool empty() const noexcept;
+    std::size_t size() const noexcept;
+    T const& back() const noexcept;
+    T& back() noexcept;
+
+    void clear() noexcept;
+
+    std::strong_ordering
+    operator<=>(List const& other) const noexcept;
+
+    template<class Pred>
+    bool erase_first_of_if(Pred&& pred) noexcept;
+
+    template<class U>
+    U& emplace_back(U&& u);
+
+    template<class U>
+    void splice_back(List<U>& other);
+
+    void swap(List& other);
+
+private:
+    void append(Node* node);
+
+    std::size_t size_;
+    Node* head_;
+    Node* tail_;
+    End end_;
+};
+
+//------------------------------------------------
 
 template<class U>
 struct ListBase::Item : Node
@@ -294,28 +306,10 @@ List<T>::
 template<class T>
 List<T>::
 List() noexcept
-    : head_(&end_)
+    : size_(0)
+    , head_(&end_)
     , tail_(&end_)
 {
-}
-
-template<class T>
-List<T>::
-List(List&& other) noexcept
-{
-    if(! other.empty())
-    {
-        head_ = other.head_;
-        tail_ = other.tail_;
-        tail_->next = &end_;
-        other.head_ = &other.end_;
-        other.tail_ = &other.end_;
-    }
-    else
-    {
-        head_ = &end_;
-        tail_ = &end_;
-    }
 }
 
 template<class T>
@@ -331,16 +325,52 @@ List(List<U>&& other) noexcept
         return;
     }
 
+    head_ = other.head_;
+    tail_ = other.tail_;
     tail_->next = &end_;
     other.size_ = 0;
-    other.head_ = &end_;
-    other.tail_ = &end_;
+    other.head_ = &other.end_;
+    other.tail_ = &other.end_;
+}
+
+template<class T>
+List<T>::
+List(List&& other) noexcept
+    : size_(other.size_)
+{
+    if(size_ == 0)
+    {
+        head_ = &end_;
+        tail_ = &end_;
+        return;
+    }
+
+    head_ = other.head_;
+    tail_ = other.tail_;
+    tail_->next = &end_;
+    other.size_ = 0;
+    other.head_ = &other.end_;
+    other.tail_ = &other.end_;
+}
+
+template<class T>
+template<class U>
+List<T>::
+List(List<U> const& other)
+    : size_(0)
+    , head_(&end_)
+    , tail_(&end_)
+{
+    for(auto it = other.head_;
+            it != &other.end_; it = it->next)
+        append(it->copy(&end_));
 }
 
 template<class T>
 List<T>::
 List(List const& other)
-    : head_(&end_)
+    : size_(0)
+    , head_(&end_)
     , tail_(&end_)
 {
     for(auto it = other.head_;
@@ -441,6 +471,22 @@ size() const noexcept
 }
 
 template<class T>
+T const&
+List<T>::
+back() const noexcept
+{
+    return *reinterpret_cast<T const*>(tail_->get());
+}
+
+template<class T>
+T&
+List<T>::
+back() noexcept
+{
+    return *reinterpret_cast<T*>(tail_->get());
+}
+
+template<class T>
 void
 List<T>::
 clear() noexcept
@@ -451,6 +497,7 @@ clear() noexcept
         delete it;
         it = next;
     }
+    size_ = 0;
 }
 
 template<class T>
@@ -536,20 +583,19 @@ splice_back(
 {
     if(other.empty())
         return;
-    auto it = other.head_;
-    while(it != &other.end_)
+    if(empty())
     {
-        auto next = it->next;
-        append(it);
-        it = next;
+        *this = std::move(other);
+        return;
     }
     size_ += other.size_;
+    tail_->next = other.head_;
+    tail_ = other.tail_;
+    tail_->next = &end_;
     other.size_ = 0;
     other.head_ = &other.end_;
     other.tail_ = &other.end_;
-    tail_ = &end_;
 }
-
 
 template<class T>
 void
@@ -561,28 +607,30 @@ swap(List& other)
         if(empty())
             return;
 
+        std::swap(size_, other.size_);
         other.head_ = head_;
         other.tail_ = tail_;
         other.tail_->next = &other.end_;
         head_ = &end_;
         tail_ = &end_;
+        return;
     }
-    else if(empty())
+    if(empty())
     {
+        std::swap(size_, other.size_);
         head_ = other.head_;
         tail_ = other.tail_;
         tail_->next = &end_;
         other.head_ = &other.end_;
-        other.tail_ = other.tail_;
+        other.tail_ = &other.end_;
+        return;
     }
-    else
-    {
-        std::swap(head_, other.head_);
-        std::swap(tail_, other.tail_);
-        tail_->next = &end_;
-        other.tail_->next = &other.end_;
-    }
+
     std::swap(size_, other.size_);
+    std::swap(head_, other.head_);
+    std::swap(tail_, other.tail_);
+    tail_->next = &end_;
+    other.tail_->next = &other.end_;
 }
 
 template<class T>

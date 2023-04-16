@@ -6,7 +6,20 @@
   <symbol name="GlobalNamespace" tag="namespace"/>
 </all>
 <namespace name="">
+  <javadoc>
+  </javadoc>
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <javadoc>
+      <para class="brief">
+      <text>brief&#13</text>
+      </para>
+      <para>
+      <text>brief&#13</text>
+      </para>
+      <para>
+      <text>mrdox hello&#13</text>
+      </para>
+    </javadoc>
     <file path="commands.cpp" line="8"/>
     <return name="void"/>
   </function>

@@ -102,7 +102,7 @@ checkOneFile(
     {
         // create the xml file and write to it
         R_.reportTestFailure();
-        llvm::raw_fd_ostream os(outputPath, ec, llvm::sys::fs::OF_TextWithCRLF);
+        llvm::raw_fd_ostream os(outputPath, ec, llvm::sys::fs::OF_None);
         if(R_.error(ec, "open the file '", outputPath, "' for writing"))
             return;
         os << xmlString;

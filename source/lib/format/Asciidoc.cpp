@@ -98,7 +98,7 @@ buildOne(
         ec,
         fs::CD_CreateAlways,
         fs::FA_Write,
-        fs::OF_TextWithCRLF);
+        fs::OF_None);
     if(R.error(ec, "open the stream for '", fileName, "'"))
         return false;
 
@@ -234,9 +234,10 @@ writeRecord(
     RecordInfo const& I)
 {
     openSection(I.Name);
-    if(! I.javadoc.brief.empty())
-        os_ <<
-            I.javadoc.brief << "\n";
+    if(auto brief = I.javadoc.getBrief())
+    {
+        // print it
+    }
 
     // Synopsis
     openSection("Synopsis");
@@ -261,11 +262,11 @@ writeRecord(
         "----\n";
     closeSection();
 
-    if(! I.javadoc.desc.empty())
+    //if(! I.javadoc.desc.empty())
     {
         os_ << "\n";
         openSection("Description");
-        os_ << I.javadoc.desc << "\n";
+        //os_ << I.javadoc.desc << "\n";
         closeSection();
     }
 
@@ -318,7 +319,7 @@ writeFunction(
     FunctionInfo const& I)
 {
     openSection(I.Name);
-    os_ << I.javadoc.brief << "\n\n";
+    //os_ << I.javadoc.brief << "\n\n";
 
     // Synopsis
     openSection("Synopsis");
@@ -353,11 +354,11 @@ writeFunction(
         "----\n";
     closeSection();
 
-    if(! I.javadoc.desc.empty())
+    //if(! I.javadoc.desc.empty())
     {
         os_ << "\n";
         openSection("Description");
-        os_ << I.javadoc.desc << "\n";
+        //os_ << I.javadoc.desc << "\n";
         closeSection();
     }
 
@@ -422,8 +423,10 @@ writeOverloadSet(
         os_ <<
             "|`" << J.name << "`\n" <<
             "|";
+#if 0
         for(auto const& K : J.list)
             os_ << K->javadoc.brief << "\n";
+#endif
     }   
     os_ <<
         "|===\n" <<
@@ -465,7 +468,7 @@ writeMemberTypes(
         os_ <<
             "|`" << it->Name << "`\n" <<
             "|";
-        os_ << it->javadoc.brief << "\n";
+        //os_ << it->javadoc.brief << "\n";
     }   
     os_ <<
         "|===\n" <<

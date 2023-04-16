@@ -256,10 +256,6 @@ struct Javadoc
         }
     };
 
-    // VFALCO LEGACY
-    llvm::SmallString<32> brief;
-    std::string desc;
-
     //---
 
     Paragraph const*
@@ -329,9 +325,8 @@ struct Javadoc
 
     void merge(Javadoc& other);
 
-bool dummy = false;
-
-private:
+//private:
+public: // VFALCO sigh...
     static Paragraph const s_empty_;
 
     Paragraph const* brief_;
