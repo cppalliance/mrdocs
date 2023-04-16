@@ -69,13 +69,14 @@ buildString(
 
 //------------------------------------------------
 //
-// RecursiveWriter
+// Writer
 //
 //------------------------------------------------
 
 /** Manipulator to apply XML escaping to output.
 */
-struct XMLGenerator::Writer::escape
+struct XMLGenerator::Writer::
+    escape
 {
     explicit
     escape(
@@ -522,15 +523,16 @@ writeNode(
     case Javadoc::Kind::code:
         writeCode(static_cast<Javadoc::Code const&>(node));
         break;
-    case Javadoc::Kind::returns:
-        writeReturns(static_cast<Javadoc::Returns const&>(node));
-        break;
     case Javadoc::Kind::param:
         writeParam(static_cast<Javadoc::Param const&>(node));
         break;
     case Javadoc::Kind::tparam:
         writeTParam(static_cast<Javadoc::TParam const&>(node));
         break;
+    case Javadoc::Kind::returns:
+        // VFALCO Should never go through here
+        //writeReturns(static_cast<Javadoc::Returns const&>(node));
+        //break;
     default:
         llvm_unreachable("unknown kind");
     }
@@ -558,7 +560,7 @@ writeText(
         "<text";
     writeAttrs({
         { "class", tag, ! tag.empty() } });
-    os_ << '>' << text.text << "</text>\n";
+    os_ << '>' << escape(text.text) << "</text>\n";
 }
 
 void

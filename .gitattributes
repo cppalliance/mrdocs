@@ -1,0 +1,3 @@
+temp/**.xml  text eol=lf
+test/**.xml  text eol=lf
+tests/**.xml text eol=lf

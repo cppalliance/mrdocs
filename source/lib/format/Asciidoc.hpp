@@ -118,6 +118,8 @@ protected:
 
     template<class T>
     void writeNodes(List<T> const& list);
+    //void writeNodes(List<Javadoc::Text> const& list);
+
     void writeNode(Javadoc::Node const& node);
     void writeNode(Javadoc::Text const& node);
     void writeNode(Javadoc::StyledText const& node);

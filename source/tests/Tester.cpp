@@ -12,6 +12,8 @@
 #include "SingleFile.hpp"
 #include <clang/Tooling/StandaloneExecution.h>
 
+#define NO_ASYNC
+
 namespace clang {
 namespace mrdox {
 
@@ -55,18 +57,27 @@ checkDirRecursively(
         {
             outputPath = iter->path();
             path::replace_extension(outputPath, "xml");
-            threadPool.async([
+#ifndef NO_ASYNC
+            threadPool.async(
+#endif
+                [
                 this,
                 dirPath,
                 inputPath = llvm::SmallString<0>(iter->path()),
-                outputPath = llvm::SmallString<340>(outputPath)]() mutable
+                outputPath = llvm::SmallString<340>(outputPath)
+                    ]() mutable
                 {
                     SingleFile db(dirPath, inputPath, outputPath);
                     tooling::StandaloneToolExecutor ex(db, { std::string(inputPath) });
                     auto corpus = Corpus::build(ex, config_, R_);
                     if(! R_.error(corpus, "build corpus for '", inputPath, "'"))
                         checkOneFile(**corpus, inputPath, outputPath);
-                });
+                }
+#ifndef NO_ASYNC
+            );
+#else
+            ();
+#endif
         }
         else
         {

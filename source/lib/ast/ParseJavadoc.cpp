@@ -177,8 +177,8 @@ public:
         if(para_->list.empty())
             s = C->getText().ltrim().rtrim();
         else
-            s = C->getText().ltrim().rtrim();
-            //s = C->getText().rtrim();
+            s = C->getText().rtrim();
+            //s = C->getText().ltrim().rtrim();
         para_->list.emplace_back(Javadoc::Text(
             ensureUTF8(s.str())));
     }

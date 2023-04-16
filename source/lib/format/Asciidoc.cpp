@@ -523,7 +523,7 @@ writeNodes(
 {
     if(list.empty())
         return;
-    for(auto const& node : list)
+    for(Javadoc::Node const& node : list)
         writeNode(node);
 }
 
@@ -588,16 +588,16 @@ writeNode(
     switch(node.style)
     {
     case Javadoc::Style::bold:
-        os_ << '*' << node.text << '*';
+        os_ << '*' << node.text << "*\n";
         break;
     case Javadoc::Style::mono:
-        os_ << '`' << node.text << '`';
+        os_ << '`' << node.text << "`\n";
         break;
     case Javadoc::Style::italic:
-        os_ << '_' << node.text << '_';
+        os_ << '_' << node.text << "_\n";
         break;
     default:
-        os_ << node.text;
+        os_ << node.text << '\n';
         break;
     }
 }
