@@ -29,22 +29,23 @@ struct Javadoc
 
     enum class Kind : int
     {
-        text,
-        styledText,
+        text = 1, // needed by bitstream
+        styled,
+        block, // used by bitcodes
         paragraph,
         brief,
         admonition,
         code,
-        returns,
         param,
-        tparam
+        tparam,
+        returns
     };
 
     /** A text style.
     */
-    enum class Style
+    enum class Style : int
     {
-        none,
+        none = 1, // needed by bitstream
         mono,
         bold,
         italic
@@ -52,8 +53,9 @@ struct Javadoc
 
     /** An admonishment style.
     */
-    enum class Admonish
+    enum class Admonish : int
     {
+        none = 1, // needed by bitstream
         note,
         tip,
         important,
@@ -85,7 +87,7 @@ struct Javadoc
 
         explicit
         Text(
-            String text_)
+            String text_ = String())
             : Node(Kind::text)
             , text(std::move(text_))
         {
@@ -110,9 +112,9 @@ struct Javadoc
         auto operator<=>(StyledText const&) const noexcept = default;
 
         StyledText(
-            String text,
-            Style style_)
-            : Text(std::move(text), Kind::styledText)
+            String text = String(),
+            Style style_ = Style::none)
+            : Text(std::move(text), Kind::styled)
             , style(style_)
         {
         }
@@ -181,7 +183,8 @@ struct Javadoc
         auto operator<=>(Admonition const&) const noexcept = default;
 
         explicit
-        Admonition(Admonish style_)
+        Admonition(
+            Admonish style_ = Admonish::none)
             : Paragraph(Kind::admonition)
             , style(style_)
         {
@@ -203,18 +206,6 @@ struct Javadoc
         }
     };
 
-    /** Documentation for a function return type
-    */
-    struct Returns : Paragraph
-    {
-        auto operator<=>(Returns const&) const noexcept = default;
-
-        Returns()
-            : Paragraph(Kind::returns)
-        {
-        }
-    };
-
     /** Documentation for a function parameter
     */
     struct Param : Block
@@ -225,8 +216,8 @@ struct Javadoc
         auto operator<=>(Param const&) const noexcept = default;
 
         Param(
-            String name_,
-            Paragraph details_)
+            String name_ = String(),
+            Paragraph details_ = Paragraph())
             : Block(Kind::param)
             , name(std::move(name_))
             , details(std::move(details_))
@@ -244,11 +235,23 @@ struct Javadoc
         auto operator<=>(TParam const&) const noexcept = default;
 
         TParam(
-            String name_,
-            Paragraph details_)
+            String name_ = String(),
+            Paragraph details_ = Paragraph())
             : Block(Kind::param)
             , name(std::move(name_))
             , details(std::move(details_))
+        {
+        }
+    };
+
+    /** Documentation for a function return type
+    */
+    struct Returns : Paragraph
+    {
+        auto operator<=>(Returns const&) const noexcept = default;
+
+        Returns()
+            : Paragraph(Kind::returns)
         {
         }
     };
@@ -325,6 +328,8 @@ struct Javadoc
     }
 
     void merge(Javadoc& other);
+
+bool dummy = false;
 
 private:
     static Paragraph const s_empty_;

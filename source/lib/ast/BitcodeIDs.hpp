@@ -36,7 +36,6 @@ struct BitCodeConstants
     static constexpr unsigned USRLengthSize = 6U;
     static constexpr unsigned USRBitLengthSize = 8U;
     static constexpr unsigned USRHashSize = 20;
-    static constexpr unsigned JavadocKindSize = 1U;
     static constexpr unsigned char Signature[4] = {'D', 'O', 'C', 'S'};
 };
 
@@ -59,6 +58,8 @@ enum BlockId
     BI_BASE_RECORD_BLOCK_ID,
     BI_FUNCTION_BLOCK_ID,
     BI_JAVADOC_BLOCK_ID,
+    BI_JAVADOC_LIST_BLOCK_ID,
+    BI_JAVADOC_NODE_BLOCK_ID,
     BI_REFERENCE_BLOCK_ID,
     BI_TEMPLATE_BLOCK_ID,
     BI_TEMPLATE_SPECIALIZATION_BLOCK_ID,
@@ -79,7 +80,12 @@ enum RecordId
     FUNCTION_LOCATION,
     FUNCTION_ACCESS,
     FUNCTION_IS_METHOD,
+    JAVADOC_DUMMY,
+    JAVADOC_LIST_KIND,
     JAVADOC_NODE_KIND,
+    JAVADOC_NODE_STRING,
+    JAVADOC_NODE_STYLE,
+    JAVADOC_NODE_ADMONISH,
     FIELD_TYPE_NAME,
     FIELD_DEFAULT_VALUE,
     MEMBER_TYPE_NAME,

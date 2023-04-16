@@ -81,7 +81,7 @@ public:
     bool erase_first_of_if(Pred&& pred) noexcept;
 
     template<class U>
-    iterator emplace_back(U&& u);
+    U& emplace_back(U&& u);
 
     template<class U>
     void splice_back(List<U>& other);
@@ -210,7 +210,6 @@ struct List<T>::Item : Node
         return new Item(next, u_);
     }
 
-private:
     U u_;
 };
 
@@ -492,13 +491,13 @@ template<class U>
 auto
 List<T>::
 emplace_back(U&& u) ->
-    iterator
+    U&
 {
     static_assert(std::is_convertible_v<U*, T*>);
 
     auto item = new Item<U>(&end_, std::forward<U>(u));
     append(item);
-    return iterator(item);
+    return item->u_;
 }
 
 template<class T>

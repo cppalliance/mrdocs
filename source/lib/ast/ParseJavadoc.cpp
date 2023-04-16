@@ -207,12 +207,7 @@ public:
         Javadoc::Paragraph para;
         Scope scope(para, para_);
         visit_children(this, C);
-        bool wasEmpty = para.list.empty();
         auto it = blocks_.emplace_back(std::move(para));
-        assert(! blocks_.empty());
-        assert(it->kind == Javadoc::Kind::paragraph);
-        Javadoc::Paragraph const& para2 = static_cast<Javadoc::Paragraph const&>(*it);
-        assert(wasEmpty || ! para2.list.empty());
     }
 
     void
@@ -338,6 +333,9 @@ private:
         T* t0_;
         T*& pt_;
     };
+
+    template<class U, class T>
+    Scope(U&, T*&) -> Scope<T, T>;
 
     FullComment const* FC_;
     ASTContext const& ctx_;
@@ -595,7 +593,7 @@ void dumpNode(
     case Javadoc::Kind::text:
         dump(os, static_cast<Javadoc::Text const&>(node));
         break;
-    case Javadoc::Kind::styledText:
+    case Javadoc::Kind::styled:
         dump(os, static_cast<Javadoc::StyledText const&>(node));
         break;
     case Javadoc::Kind::paragraph:

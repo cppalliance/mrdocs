@@ -496,7 +496,7 @@ writeNode(
     case Javadoc::Kind::text:
         writeText(static_cast<Javadoc::Text const&>(node));
         break;
-    case Javadoc::Kind::styledText:
+    case Javadoc::Kind::styled:
         writeStyledText(static_cast<Javadoc::StyledText const&>(node));
         break;
     case Javadoc::Kind::paragraph:

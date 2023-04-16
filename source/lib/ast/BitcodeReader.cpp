@@ -27,6 +27,10 @@ namespace mrdox {
 namespace {
 
 //------------------------------------------------
+//
+// decodeRecord
+//
+//------------------------------------------------
 
 using Record = llvm::SmallVector<uint64_t, 1024>;
 
@@ -201,6 +205,21 @@ decodeRecord(
     if (R[0] > INT_MAX)
         return makeError("integer too large to parse");
     Field.emplace_back((int)R[0], Blob, (bool)R[1]);
+    return llvm::Error::success();
+}
+
+template<class Enum, class =
+    std::enable_if_t<std::is_enum_v<Enum>>>
+llvm::Error
+decodeRecord(
+    Record const& R,
+    Enum& value,
+    llvm::StringRef blob)
+{
+    std::underlying_type_t<Enum> temp;
+    if(auto err = decodeRecord(R, temp, blob))
+        return err;
+    value = static_cast<Enum>(temp);
     return llvm::Error::success();
 }
 
@@ -670,20 +689,20 @@ private:
         llvm::StringRef Blob, FieldTypeInfo* I);
     llvm::Error parseRecord(Record const& R, unsigned ID,
         llvm::StringRef Blob, MemberTypeInfo* I);
-    llvm::Error parseRecord(const Record& R, unsigned ID,
+    llvm::Error parseRecord(Record const& R, unsigned ID,
         llvm::StringRef Blob, Reference* I, FieldId& F);
-    llvm::Error parseRecord(const Record& R, unsigned ID,
+    llvm::Error parseRecord(Record const& R, unsigned ID,
         llvm::StringRef Blob, TemplateInfo* I);
-    llvm::Error parseRecord(const Record& R, unsigned ID,
+    llvm::Error parseRecord(Record const& R, unsigned ID,
         llvm::StringRef Blob, TemplateSpecializationInfo* I);
-    llvm::Error parseRecord(const Record& R, unsigned ID,
+    llvm::Error parseRecord(Record const& R, unsigned ID,
         llvm::StringRef Blob, TemplateParamInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, Javadoc* I);
 
-    struct JavadocCtorParams
+    struct ListParseTarget
     {
-        llvm::SmallString<32> brief;
-        std::string desc;
-
+        Javadoc::Kind kind;
         List<Javadoc::Block> blocks;
         List<Javadoc::Param> params;
         List<Javadoc::TParam> tparams;
@@ -691,17 +710,10 @@ private:
     };
 
     llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, JavadocCtorParams* init);
+        llvm::StringRef Blob, ListParseTarget* I);
 
-    template<class T>
-    llvm::Error
-    parseRecord(
-        Record const& R,
-        unsigned ID,
-        llvm::StringRef Blob,
-        List<T>* list);
-
-    // Used to construct a Javadoc
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, std::unique_ptr<Javadoc::Node>* I);
 
     // Helper function to step through blocks to find and dispatch the next record
     // or block to be read.
@@ -746,6 +758,8 @@ getInfos()
         case BI_FIELD_TYPE_BLOCK_ID:
         case BI_MEMBER_TYPE_BLOCK_ID:
         case BI_JAVADOC_BLOCK_ID:
+        case BI_JAVADOC_LIST_BLOCK_ID:
+        case BI_JAVADOC_NODE_BLOCK_ID:
         case BI_REFERENCE_BLOCK_ID:
             return makeError("invalid top level block");
         case BI_NAMESPACE_BLOCK_ID:
@@ -856,8 +870,8 @@ llvm::Error
 BitcodeReader::
 readBlock(unsigned ID, T I)
 {
-    if (llvm::Error Err = Stream.EnterSubBlock(ID))
-        return Err;
+    if (auto err = Stream.EnterSubBlock(ID))
+        return err;
 
     for(;;)
     {
@@ -900,16 +914,34 @@ readSubBlock(
         auto rv = getJavadoc(I);
         if(! rv)
             return rv.takeError();
-        JavadocCtorParams init;
-        if (auto Err = readBlock(ID, &init))
-            return Err;
-        rv.get()->brief = init.brief;
-        rv.get()->desc = init.desc;
+        if(auto err = readBlock(ID, rv.get()))
+            return err;
+        return llvm::Error::success();
+    }
+
+    case BI_JAVADOC_LIST_BLOCK_ID:
+    {
+        auto rv = getJavadoc(I);
+        if(! rv)
+            return rv.takeError();
+        ListParseTarget J;
+        if(auto err = readBlock(ID, &J))
+            return err;
         *rv.get() = Javadoc(
-            std::move(init.blocks),
-            std::move(init.params),
-            std::move(init.tparams),
-            std::move(init.returns));
+            std::move(J.blocks),
+            std::move(J.params),
+            std::move(J.tparams),
+            std::move(J.returns));
+        return llvm::Error::success();
+    }
+
+    case BI_JAVADOC_NODE_BLOCK_ID:
+    {
+        std::unique_ptr<Javadoc::Node> J;
+        if (auto Err = readBlock(ID, &J))
+            return Err;
+        if(J.get() != nullptr)
+            return llvm::Error::success();
         return llvm::Error::success();
     }
 
@@ -1015,7 +1047,8 @@ template <typename T>
 llvm::Error
 BitcodeReader::
 readRecord(
-    unsigned ID, T I)
+    unsigned ID,
+    T I)
 {
     Record R;
     llvm::StringRef Blob;
@@ -1279,18 +1312,6 @@ parseRecord(
     }
 }
 
-template<class T>
-llvm::Error
-BitcodeReader::
-parseRecord(
-    Record const& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    List<T>* list)
-{
-    return llvm::Error::success();
-}
-
 llvm::Error
 BitcodeReader::
 parseRecord(
@@ -1345,7 +1366,7 @@ parseRecord(
 llvm::Error
 BitcodeReader::
 parseRecord(
-    const Record& R,
+    Record const& R,
     unsigned ID,
     llvm::StringRef Blob,
     TemplateParamInfo* I)
@@ -1361,15 +1382,152 @@ parseRecord(
     Record const& R,
     unsigned ID,
     llvm::StringRef Blob,
-    JavadocCtorParams* init)
+    Javadoc* I)
+{
+    switch(ID)
+    {
+    case JAVADOC_DUMMY:
+    {
+        if(auto err = decodeRecord(R, I->dummy, Blob))
+            return err;
+        return llvm::Error::success();
+    }
+    default:
+        return makeError("invalid ID for Javadoc");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    Record const& R,
+    unsigned ID,
+    llvm::StringRef blob,
+    ListParseTarget* I)
+{
+    switch (ID)
+    {
+    case JAVADOC_LIST_KIND:
+    {
+        assert(I != nullptr);
+        if(auto err = decodeRecord(R, I->kind, blob))
+            return err;
+        return llvm::Error::success();
+    }
+    default:
+        return makeError("invalid field for List");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    Record const& R,
+    unsigned ID,
+    llvm::StringRef blob,
+    std::unique_ptr<Javadoc::Node>* I)
 {
     switch (ID)
     {
     case JAVADOC_NODE_KIND:
     {
-        int kind;
-        return decodeRecord(R, kind, Blob);
+        Javadoc::Kind kind;
+        assert(*I == nullptr);
+        if(auto err = decodeRecord(R, kind, blob))
+            return err;
+        if(*I == nullptr)
+        {
+            switch(kind)
+            {
+            case Javadoc::Kind::text:
+                *I = std::make_unique<Javadoc::Text>();
+                break;
+            case Javadoc::Kind::styled:
+                *I = std::make_unique<Javadoc::StyledText>();
+                break;
+            case Javadoc::Kind::paragraph:
+                *I = std::make_unique<Javadoc::Paragraph>();
+                break;
+            case Javadoc::Kind::brief:
+                *I = std::make_unique<Javadoc::Brief>();
+                break;
+            case Javadoc::Kind::admonition:
+                *I = std::make_unique<Javadoc::Admonition>();
+                break;
+            case Javadoc::Kind::code:
+                *I = std::make_unique<Javadoc::Code>();
+                break;
+            case Javadoc::Kind::returns:
+                *I = std::make_unique<Javadoc::Returns>();
+                break;
+            case Javadoc::Kind::param:
+                *I = std::make_unique<Javadoc::Param>();
+                break;
+            case Javadoc::Kind::tparam:
+                *I = std::make_unique<Javadoc::TParam>();
+                break;
+            default:
+                llvm_unreachable("unknown kind");
+            }
+        }
+        return llvm::Error::success();
     }
+    case JAVADOC_NODE_STRING:
+    {
+        switch((*I)->kind)
+        {
+        case Javadoc::Kind::text:
+        case Javadoc::Kind::styled:
+            return decodeRecord(R, static_cast<Javadoc::Text*>(
+                I->get())->text, blob);
+
+        case Javadoc::Kind::param:
+        {
+            auto J = static_cast<Javadoc::Param*>(I->get());
+            return decodeRecord(R, J->name, blob);
+        }
+
+        case Javadoc::Kind::tparam:
+        {
+            auto J = static_cast<Javadoc::TParam*>(I->get());
+            return decodeRecord(R, J->name, blob);
+        }
+
+        default:
+            return makeError("invalid record for node");
+        }
+    }
+
+    case JAVADOC_NODE_STYLE:
+    {
+        switch((*I)->kind)
+        {
+        case Javadoc::Kind::styled:
+        {
+            auto J = static_cast<Javadoc::StyledText*>(I->get());
+            return decodeRecord(R, J->style, blob);
+        }
+
+        default:
+            return makeError("invalid record for node");
+        }
+    }
+
+    case JAVADOC_NODE_ADMONISH:
+    {
+        switch((*I)->kind)
+        {
+        case Javadoc::Kind::admonition:
+        {
+            auto J = static_cast<Javadoc::Admonition*>(I->get());
+            return decodeRecord(R, J->style, blob);
+        }
+
+        default:
+            return makeError("invalid record for node");
+        }
+    }
+
     default:
         return makeError("invalid field for Javadoc");
     }

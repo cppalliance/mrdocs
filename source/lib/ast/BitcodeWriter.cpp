@@ -17,25 +17,33 @@
 namespace clang {
 namespace mrdox {
 
+//------------------------------------------------
+
 // Since id enums are not zero-indexed, we need to transform the given id into
 // its associated index.
 struct BlockIdToIndexFunctor
 {
     using argument_type = unsigned;
-    unsigned operator()(unsigned ID) const { return ID - BI_FIRST; }
+    unsigned operator()(unsigned ID) const
+    {
+        return ID - BI_FIRST;
+    }
 };
 
 struct RecordIdToIndexFunctor
 {
     using argument_type = unsigned;
-    unsigned operator()(unsigned ID) const { return ID - RI_FIRST; }
+    unsigned operator()(unsigned ID) const 
+    {
+        return ID - RI_FIRST;
+    }
 };
 
 using AbbrevDsc = void (*)(std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev);
 
 static void AbbrevGen(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev,
-    const std::initializer_list<llvm::BitCodeAbbrevOp> Ops)
+    std::initializer_list<llvm::BitCodeAbbrevOp> Ops)
 {
     for (const auto& Op : Ops)
         Abbrev->Add(Op);
@@ -109,14 +117,14 @@ static void LocationAbbrev(
         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
 }
 
-static void NodeAbbrev(
+static void ListAbbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
 {
     AbbrevGen(Abbrev, {
-        // 0. Fixed-size integer (Kind size)
+        // 0. Fixed-size integer (Kind)
         llvm::BitCodeAbbrevOp(
             llvm::BitCodeAbbrevOp::Fixed,
-            BitCodeConstants::JavadocKindSize)
+            BitCodeConstants::IntSize)
         });
 }
 
@@ -160,6 +168,8 @@ BlockIdNameMap = []()
         {BI_BASE_RECORD_BLOCK_ID, "BaseRecordBlock"},
         {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
         {BI_JAVADOC_BLOCK_ID, "JavadocBlock"},
+        {BI_JAVADOC_LIST_BLOCK_ID, "JavadocListBlock"},
+        {BI_JAVADOC_NODE_BLOCK_ID, "JavadocNodeBlock"},
         {BI_REFERENCE_BLOCK_ID, "ReferenceBlock"},
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
         {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, "TemplateSpecializationBlock"},
@@ -182,7 +192,12 @@ RecordIdNameMap = []()
     // improvise
     static const std::vector<std::pair<RecordId, RecordIdDsc>> Inits = {
         {VERSION, {"Version", &IntAbbrev}},
-        {JAVADOC_NODE_KIND, {"NodeKind", &IntAbbrev}},
+        {JAVADOC_DUMMY, {"Dummy", &BoolAbbrev}},
+        {JAVADOC_LIST_KIND, {"JavadocListKind", &IntAbbrev}},
+        {JAVADOC_NODE_KIND, {"JavadocNodeKind", &IntAbbrev}},
+        {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
+        {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &IntAbbrev}},
+        {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &IntAbbrev}},
         {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
         {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
@@ -239,6 +254,8 @@ RecordIdNameMap = []()
     return RecordIdNameMap;
 }();
 
+//------------------------------------------------
+
 static
 std::vector<std::pair<BlockId, std::vector<RecordId>>> const
 RecordsByBlock{
@@ -246,7 +263,14 @@ RecordsByBlock{
     {BI_VERSION_BLOCK_ID, {VERSION}},
     // Javadoc Block
     {BI_JAVADOC_BLOCK_ID,
-        {JAVADOC_NODE_KIND}},
+        {JAVADOC_DUMMY}},
+    // List<Javadoc::Node> Block
+    {BI_JAVADOC_LIST_BLOCK_ID,
+        {JAVADOC_LIST_KIND}},
+    // Javadoc::Node Block
+    {BI_JAVADOC_NODE_BLOCK_ID,
+        {JAVADOC_NODE_KIND, JAVADOC_NODE_STRING, JAVADOC_NODE_STYLE,
+         JAVADOC_NODE_ADMONISH}},
     // Type Block
     {BI_TYPE_BLOCK_ID, {}},
     // <mrdox/FieldType.hpp> Block
@@ -288,30 +312,47 @@ RecordsByBlock{
         {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, {TEMPLATE_SPECIALIZATION_OF}}
 };
 
-// AbbreviationMap
+//------------------------------------------------
 
-constexpr unsigned char BitCodeConstants::Signature[];
-
-void
 BitcodeWriter::
-AbbreviationMap::
-add(RecordId RID,
-    unsigned AbbrevID)
+BitcodeWriter(
+    llvm::BitstreamWriter &Stream)
+    : Stream(Stream)
 {
-    assert(RecordIdNameMap[RID] && "Unknown RecordId.");
-    assert((Abbrevs.find(RID) == Abbrevs.end()) && "Abbreviation already added.");
-    Abbrevs[RID] = AbbrevID;
+    emitHeader();
+    emitBlockInfoBlock();
+    emitVersionBlock();
 }
 
-unsigned
+bool
 BitcodeWriter::
-AbbreviationMap::
-get(RecordId RID) const
+dispatchInfoForWrite(Info const* I)
 {
-    assert(RecordIdNameMap[RID] && "Unknown RecordId.");
-    assert((Abbrevs.find(RID) != Abbrevs.end()) && "Unknown abbreviation.");
-    return Abbrevs.lookup(RID);
+    switch (I->IT)
+    {
+    case InfoType::IT_namespace:
+        emitBlock(*static_cast<NamespaceInfo const*>(I));
+        break;
+    case InfoType::IT_record:
+        emitBlock(*static_cast<RecordInfo const*>(I));
+        break;
+    case InfoType::IT_function:
+        emitBlock(*static_cast<FunctionInfo const*>(I));
+        break;
+    case InfoType::IT_enum:
+        emitBlock(*static_cast<EnumInfo const*>(I));
+        break;
+    case InfoType::IT_typedef:
+        emitBlock(*static_cast<TypedefInfo const*>(I));
+        break;
+    default:
+        llvm::errs() << "Unexpected info, unable to write.\n";
+        return true;
+    }
+    return false;
 }
+
+//------------------------------------------------
 
 // Validation and Overview Blocks
 
@@ -324,238 +365,6 @@ emitHeader()
     for (char C : BitCodeConstants::Signature)
         Stream.Emit((unsigned)C, BitCodeConstants::SignatureBitSize);
 }
-
-void
-BitcodeWriter::
-emitVersionBlock()
-{
-    StreamSubBlockGuard Block(Stream, BI_VERSION_BLOCK_ID);
-    emitRecord(VersionNumber, VERSION);
-}
-
-/// Emits a block ID and the block name to the BLOCKINFO block.
-void
-BitcodeWriter::
-emitBlockID(BlockId BID)
-{
-    const auto& BlockIdName = BlockIdNameMap[BID];
-    assert(BlockIdName.data() && BlockIdName.size() && "Unknown BlockId.");
-
-    Record.clear();
-    Record.push_back(BID);
-    Stream.EmitRecord(llvm::bitc::BLOCKINFO_CODE_SETBID, Record);
-    Stream.EmitRecord(llvm::bitc::BLOCKINFO_CODE_BLOCKNAME,
-        ArrayRef<unsigned char>(BlockIdName.bytes_begin(),
-            BlockIdName.bytes_end()));
-}
-
-/// Emits a record name to the BLOCKINFO block.
-void
-BitcodeWriter::
-emitRecordID(RecordId ID)
-{
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    prepRecordData(ID);
-    Record.append(RecordIdNameMap[ID].Name.begin(),
-        RecordIdNameMap[ID].Name.end());
-    Stream.EmitRecord(llvm::bitc::BLOCKINFO_CODE_SETRECORDNAME, Record);
-}
-
-// Abbreviations
-
-void
-BitcodeWriter::
-emitAbbrev(
-    RecordId ID, BlockId Block)
-{
-    assert(RecordIdNameMap[ID] && "Unknown abbreviation.");
-    auto Abbrev = std::make_shared<llvm::BitCodeAbbrev>();
-    Abbrev->Add(llvm::BitCodeAbbrevOp(ID));
-    RecordIdNameMap[ID].Abbrev(Abbrev);
-    Abbrevs.add(ID, Stream.EmitBlockInfoAbbrev(Block, std::move(Abbrev)));
-}
-
-// Records
-
-void
-BitcodeWriter::
-emitRecord(
-    SymbolID const& Sym,
-    RecordId ID)
-{
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &SymbolIDAbbrev &&
-        "Abbrev type mismatch.");
-    if (!prepRecordData(ID, Sym != EmptySID))
-        return;
-    assert(Sym.size() == 20);
-    Record.push_back(Sym.size());
-    Record.append(Sym.begin(), Sym.end());
-    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    llvm::StringRef Str, RecordId ID)
-{
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &StringAbbrev &&
-        "Abbrev type mismatch.");
-    if (!prepRecordData(ID, !Str.empty()))
-        return;
-    assert(Str.size() < (1U << BitCodeConstants::StringLengthSize));
-    Record.push_back(Str.size());
-    Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, Str);
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    Location const& Loc, RecordId ID)
-{
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &LocationAbbrev &&
-        "Abbrev type mismatch.");
-    if (!prepRecordData(ID, true))
-        return;
-    // FIXME: Assert that the line number
-    // is of the appropriate size.
-    Record.push_back(Loc.LineNumber);
-    assert(Loc.Filename.size() < (1U << BitCodeConstants::StringLengthSize));
-    Record.push_back(Loc.IsFileInRootDir);
-    Record.push_back(Loc.Filename.size());
-    Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, Loc.Filename);
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    bool Val, RecordId ID)
-{
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &BoolAbbrev && "Abbrev type mismatch.");
-    if (!prepRecordData(ID, Val))
-        return;
-    Record.push_back(Val);
-    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    int Val, RecordId ID)
-{
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
-    if (!prepRecordData(ID, Val))
-        return;
-    // FIXME: Assert that the integer is of the appropriate size.
-    Record.push_back(Val);
-    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    unsigned Val, RecordId ID)
-{
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
-    if (!prepRecordData(ID, Val))
-        return;
-    assert(Val < (1U << BitCodeConstants::IntSize));
-    Record.push_back(Val);
-    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    TemplateInfo const& Templ)
-{
-    // VFALCO What's going on here? Missing code?
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    Javadoc::Text const& node)
-{
-    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::StyledText const& node)
-{
-    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Paragraph const& node)
-{
-    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
-    emitBlock(node.list);
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Brief const& node)
-{
-    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Admonition const& node)
-{
-    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Code const& node)
-{
-    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Returns const& node)
-{
-    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::Param const& node)
-{
-    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
-}
-
-void
-BitcodeWriter::
-emitRecord(Javadoc::TParam const& node)
-{
-    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
-}
-
-bool
-BitcodeWriter::
-prepRecordData(
-    RecordId ID, bool ShouldEmit)
-{
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    if (!ShouldEmit)
-        return false;
-    Record.clear();
-    Record.push_back(ID);
-    return true;
-}
-
-// BlockInfo Block
 
 void
 BitcodeWriter::
@@ -572,17 +381,10 @@ emitBlockInfoBlock()
 
 void
 BitcodeWriter::
-emitBlockInfo(
-    BlockId BID,
-    std::vector<RecordId> const& RIDs)
+emitVersionBlock()
 {
-    assert(RIDs.size() < (1U << BitCodeConstants::SubblockIDSize));
-    emitBlockID(BID);
-    for (RecordId RID : RIDs)
-    {
-        emitRecordID(RID);
-        emitAbbrev(RID, BID);
-    }
+    StreamSubBlockGuard Block(Stream, BI_VERSION_BLOCK_ID);
+    emitRecord(VersionNumber, VERSION);
 }
 
 //------------------------------------------------
@@ -696,16 +498,34 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    Reference const& R, FieldId Field)
+    EnumInfo const& I)
 {
-    if (R.USR == EmptySID && R.Name.empty())
-        return;
-    StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
-    emitRecord(R.USR, REFERENCE_USR);
-    emitRecord(R.Name, REFERENCE_NAME);
-    emitRecord((unsigned)R.RefType, REFERENCE_TYPE);
-    emitRecord(R.Path, REFERENCE_PATH);
-    emitRecord((unsigned)Field, REFERENCE_FIELD);
+    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
+    emitRecord(I.USR, ENUM_USR);
+    emitRecord(I.Name, ENUM_NAME);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    emitBlock(I.javadoc);
+    if (I.DefLoc)
+        emitRecord(*I.DefLoc, ENUM_DEFLOCATION);
+    for (const auto& L : I.Loc)
+        emitRecord(L, ENUM_LOCATION);
+    emitRecord(I.Scoped, ENUM_SCOPED);
+    if (I.BaseType)
+        emitBlock(*I.BaseType);
+    for (const auto& N : I.Members)
+        emitBlock(N);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    EnumValueInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_ENUM_VALUE_BLOCK_ID);
+    emitRecord(I.Name, ENUM_VALUE_NAME);
+    emitRecord(I.Value, ENUM_VALUE_VALUE);
+    emitRecord(I.ValueExpr, ENUM_VALUE_EXPR);
 }
 
 void
@@ -763,102 +583,388 @@ emitBlock(
     Javadoc const& jd)
 {
     StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
-    //emitBlock(jd.getBlocks());
-    auto brief = jd.getBrief();
-    if(brief)
-    {
-        emitRecord(*brief);
-    }
+    bool dummy = true;
+    emitRecord(dummy, JAVADOC_DUMMY);
 #if 0
-    emitRecord(jd.getReturns());
+    emitBlock(jd.getBlocks());
     emitBlock(jd.getParams());
     emitBlock(jd.getTParams());
+    emitBlock(jd.getReturns());
 #endif
-    //dumpJavadoc(jd);
-/*
-    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
-    emitRecord(I.USR, ENUM_USR);
-    emitRecord(I.Name, ENUM_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-*/
 }
 
 template<class T>
 void
 BitcodeWriter::
-emitBlock(List<T> const& list)
+emitBlock(
+    List<T> const& list)
 {
-    //StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_ID);
+    Javadoc::Kind listKind = Javadoc::Kind::block;
+    if constexpr(std::is_same_v<T, Javadoc::Block>)
+        listKind = Javadoc::Kind::block;
+    else if constexpr(std::is_same_v<T, Javadoc::Param>)
+        listKind = Javadoc::Kind::param;
+    else if constexpr(std::is_same_v<T, Javadoc::TParam>)
+        listKind = Javadoc::Kind::tparam;
+    else
+        static_assert("unknown kind");
+    StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_BLOCK_ID);
+    emitRecord(listKind, JAVADOC_LIST_KIND);
     for(Javadoc::Node const& node : list)
+        emitBlock(node);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    Javadoc::Node const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_JAVADOC_NODE_BLOCK_ID);
+    emitRecord(I.kind, JAVADOC_NODE_KIND);
+    switch(I.kind)
     {
-        switch(node.kind)
-        {
-        case Javadoc::Kind::text:
-            emitRecord(static_cast<Javadoc::Text const&>(node));
-            break;
-        case Javadoc::Kind::styledText:
-            emitRecord(static_cast<Javadoc::StyledText const&>(node));
-            break;
-        case Javadoc::Kind::paragraph:
-            emitRecord(static_cast<Javadoc::Paragraph const&>(node));
-            break;
-        case Javadoc::Kind::brief:
-            emitRecord(static_cast<Javadoc::Brief const&>(node));
-            break;
-        case Javadoc::Kind::admonition:
-            emitRecord(static_cast<Javadoc::Admonition const&>(node));
-            break;
-        case Javadoc::Kind::code:
-            emitRecord(static_cast<Javadoc::Code const&>(node));
-            break;
-        case Javadoc::Kind::returns:
-            emitRecord(static_cast<Javadoc::Returns const&>(node));
-            break;
-        case Javadoc::Kind::param:
-            emitRecord(static_cast<Javadoc::Param const&>(node));
-            break;
-        case Javadoc::Kind::tparam:
-            emitRecord(static_cast<Javadoc::TParam const&>(node));
-            break;
-        default:
-            llvm_unreachable("unknown kind");
-            break;
-        }
+    case Javadoc::Kind::text:
+    {
+        auto const& J = static_cast<Javadoc::Text const&>(I);
+        emitRecord(J.text, JAVADOC_NODE_STRING);
+        break;
+    }
+    case Javadoc::Kind::styled:
+    {
+        auto const& J = static_cast<Javadoc::StyledText const&>(I);
+        emitRecord(J.style, JAVADOC_NODE_STYLE);
+        emitRecord(J.text, JAVADOC_NODE_STRING);
+        break;
+    }
+    case Javadoc::Kind::paragraph:
+    {
+        auto const& J = static_cast<Javadoc::Paragraph const&>(I);
+        emitBlock(J.list);
+        break;
+    }
+    case Javadoc::Kind::brief:
+    {
+        auto const& J = static_cast<Javadoc::Brief const&>(I);
+        emitBlock(J.list);
+        break;
+    }
+    case Javadoc::Kind::admonition:
+    {
+        auto const& J = static_cast<Javadoc::Admonition const&>(I);
+        emitRecord(J.style, JAVADOC_NODE_ADMONISH);
+        emitBlock(J.list);
+        break;
+    }
+    case Javadoc::Kind::code:
+    {
+        auto const& J = static_cast<Javadoc::Code const&>(I);
+        emitBlock(J.list);
+        break;
+    }
+    case Javadoc::Kind::returns:
+    {
+        auto const& J = static_cast<Javadoc::Returns const&>(I);
+        emitBlock(J.list);
+        break;
+    }
+    case Javadoc::Kind::param:
+    {
+        auto const& J = static_cast<Javadoc::Param const&>(I);
+        emitRecord(J.name, JAVADOC_NODE_STRING);
+        emitBlock(J.details);
+        break;
+    }
+    case Javadoc::Kind::tparam:
+    {
+        auto const& J = static_cast<Javadoc::TParam const&>(I);
+        emitRecord(J.name, JAVADOC_NODE_STRING);
+        emitBlock(J.details);
+        break;
+    }
+    default:
+        llvm_unreachable("unknown kind");
+        break;
+    }
+}
+
+// AbbreviationMap
+
+constexpr unsigned char BitCodeConstants::Signature[];
+
+void
+BitcodeWriter::
+AbbreviationMap::
+add(RecordId RID,
+    unsigned AbbrevID)
+{
+    assert(RecordIdNameMap[RID] && "Unknown RecordId.");
+    assert((Abbrevs.find(RID) == Abbrevs.end()) && "Abbreviation already added.");
+    Abbrevs[RID] = AbbrevID;
+}
+
+unsigned
+BitcodeWriter::
+AbbreviationMap::
+get(RecordId RID) const
+{
+    assert(RecordIdNameMap[RID] && "Unknown RecordId.");
+    assert((Abbrevs.find(RID) != Abbrevs.end()) && "Unknown abbreviation.");
+    return Abbrevs.lookup(RID);
+}
+
+/// Emits a block ID and the block name to the BLOCKINFO block.
+void
+BitcodeWriter::
+emitBlockID(BlockId BID)
+{
+    const auto& BlockIdName = BlockIdNameMap[BID];
+    assert(BlockIdName.data() && BlockIdName.size() && "Unknown BlockId.");
+
+    Record.clear();
+    Record.push_back(BID);
+    Stream.EmitRecord(llvm::bitc::BLOCKINFO_CODE_SETBID, Record);
+    Stream.EmitRecord(llvm::bitc::BLOCKINFO_CODE_BLOCKNAME,
+        ArrayRef<unsigned char>(BlockIdName.bytes_begin(),
+            BlockIdName.bytes_end()));
+}
+
+/// Emits a record name to the BLOCKINFO block.
+void
+BitcodeWriter::
+emitRecordID(RecordId ID)
+{
+    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    prepRecordData(ID);
+    Record.append(RecordIdNameMap[ID].Name.begin(),
+        RecordIdNameMap[ID].Name.end());
+    Stream.EmitRecord(llvm::bitc::BLOCKINFO_CODE_SETRECORDNAME, Record);
+}
+
+// Abbreviations
+
+void
+BitcodeWriter::
+emitAbbrev(
+    RecordId ID, BlockId Block)
+{
+    assert(RecordIdNameMap[ID] && "Unknown abbreviation.");
+    auto Abbrev = std::make_shared<llvm::BitCodeAbbrev>();
+    Abbrev->Add(llvm::BitCodeAbbrevOp(ID));
+    RecordIdNameMap[ID].Abbrev(Abbrev);
+    Abbrevs.add(ID, Stream.EmitBlockInfoAbbrev(Block, std::move(Abbrev)));
+}
+
+//------------------------------------------------
+//
+// emitRecord
+//
+//------------------------------------------------
+
+template<class Enum, class>
+void
+BitcodeWriter::
+emitRecord(
+    Enum value, RecordId ID)
+{
+    emitRecord(static_cast<std::underlying_type_t<Enum>>(value), ID);
+}
+
+void
+BitcodeWriter::
+emitRecord(
+    SymbolID const& Sym,
+    RecordId ID)
+{
+    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    assert(RecordIdNameMap[ID].Abbrev == &SymbolIDAbbrev &&
+        "Abbrev type mismatch.");
+    if (!prepRecordData(ID, Sym != EmptySID))
+        return;
+    assert(Sym.size() == 20);
+    Record.push_back(Sym.size());
+    Record.append(Sym.begin(), Sym.end());
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
+}
+
+void
+BitcodeWriter::
+emitRecord(
+    llvm::StringRef Str, RecordId ID)
+{
+    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    assert(RecordIdNameMap[ID].Abbrev == &StringAbbrev &&
+        "Abbrev type mismatch.");
+    if (!prepRecordData(ID, !Str.empty()))
+        return;
+    assert(Str.size() < (1U << BitCodeConstants::StringLengthSize));
+    Record.push_back(Str.size());
+    Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, Str);
+}
+
+void
+BitcodeWriter::
+emitRecord(
+    Location const& Loc, RecordId ID)
+{
+    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    assert(RecordIdNameMap[ID].Abbrev == &LocationAbbrev &&
+        "Abbrev type mismatch.");
+    if (!prepRecordData(ID, true))
+        return;
+    // FIXME: Assert that the line number
+    // is of the appropriate size.
+    Record.push_back(Loc.LineNumber);
+    assert(Loc.Filename.size() < (1U << BitCodeConstants::StringLengthSize));
+    Record.push_back(Loc.IsFileInRootDir);
+    Record.push_back(Loc.Filename.size());
+    Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, Loc.Filename);
+}
+
+void
+BitcodeWriter::
+emitRecord(
+    bool Val, RecordId ID)
+{
+    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    assert(RecordIdNameMap[ID].Abbrev == &BoolAbbrev && "Abbrev type mismatch.");
+    if (!prepRecordData(ID, Val))
+        return;
+    Record.push_back(Val);
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
+}
+
+void
+BitcodeWriter::
+emitRecord(
+    int Val, RecordId ID)
+{
+    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
+    if (!prepRecordData(ID, Val))
+        return;
+    // FIXME: Assert that the integer is of the appropriate size.
+    Record.push_back(Val);
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
+}
+
+void
+BitcodeWriter::
+emitRecord(
+    unsigned Val, RecordId ID)
+{
+    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
+    if (!prepRecordData(ID, Val))
+        return;
+    assert(Val < (1U << BitCodeConstants::IntSize));
+    Record.push_back(Val);
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
+}
+
+void
+BitcodeWriter::
+emitRecord(
+    TemplateInfo const& Templ)
+{
+    // VFALCO What's going on here? Missing code?
+}
+
+void
+BitcodeWriter::
+emitRecord(
+    Javadoc::Text const& node)
+{
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::StyledText const& node)
+{
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Paragraph const& node)
+{
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Brief const& node)
+{
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Admonition const& node)
+{
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Code const& node)
+{
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Returns const& node)
+{
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Param const& node)
+{
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::TParam const& node)
+{
+}
+
+bool
+BitcodeWriter::
+prepRecordData(
+    RecordId ID, bool ShouldEmit)
+{
+    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    if (!ShouldEmit)
+        return false;
+    Record.clear();
+    Record.push_back(ID);
+    return true;
+}
+
+void
+BitcodeWriter::
+emitBlockInfo(
+    BlockId BID,
+    std::vector<RecordId> const& RIDs)
+{
+    assert(RIDs.size() < (1U << BitCodeConstants::SubblockIDSize));
+    emitBlockID(BID);
+    for (RecordId RID : RIDs)
+    {
+        emitRecordID(RID);
+        emitAbbrev(RID, BID);
     }
 }
 
 void
 BitcodeWriter::
 emitBlock(
-    EnumInfo const& I)
+    Reference const& R, FieldId Field)
 {
-    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
-    emitRecord(I.USR, ENUM_USR);
-    emitRecord(I.Name, ENUM_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    emitBlock(I.javadoc);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, ENUM_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, ENUM_LOCATION);
-    emitRecord(I.Scoped, ENUM_SCOPED);
-    if (I.BaseType)
-        emitBlock(*I.BaseType);
-    for (const auto& N : I.Members)
-        emitBlock(N);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    EnumValueInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_ENUM_VALUE_BLOCK_ID);
-    emitRecord(I.Name, ENUM_VALUE_NAME);
-    emitRecord(I.Value, ENUM_VALUE_VALUE);
-    emitRecord(I.ValueExpr, ENUM_VALUE_EXPR);
+    if (R.USR == EmptySID && R.Name.empty())
+        return;
+    StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
+    emitRecord(R.USR, REFERENCE_USR);
+    emitRecord(R.Name, REFERENCE_NAME);
+    emitRecord((unsigned)R.RefType, REFERENCE_TYPE);
+    emitRecord(R.Path, REFERENCE_PATH);
+    emitRecord((unsigned)Field, REFERENCE_FIELD);
 }
 
 void
@@ -891,34 +997,6 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_PARAM_BLOCK_ID);
     emitRecord(T.Contents, TEMPLATE_PARAM_CONTENTS);
-}
-
-bool
-BitcodeWriter::
-dispatchInfoForWrite(Info const* I)
-{
-    switch (I->IT)
-    {
-    case InfoType::IT_namespace:
-        emitBlock(*static_cast<NamespaceInfo const*>(I));
-        break;
-    case InfoType::IT_record:
-        emitBlock(*static_cast<RecordInfo const*>(I));
-        break;
-    case InfoType::IT_function:
-        emitBlock(*static_cast<FunctionInfo const*>(I));
-        break;
-    case InfoType::IT_enum:
-        emitBlock(*static_cast<EnumInfo const*>(I));
-        break;
-    case InfoType::IT_typedef:
-        emitBlock(*static_cast<TypedefInfo const*>(I));
-        break;
-    default:
-        llvm::errs() << "Unexpected info, unable to write.\n";
-        return true;
-    }
-    return false;
 }
 
 /** Write an Info variant to the bitstream.

@@ -34,24 +34,57 @@ namespace mrdox {
 
 class BitcodeWriter
 {
-    // Emission of validation and overview blocks.
+public:
+    explicit
+    BitcodeWriter(llvm::BitstreamWriter &Stream);
+
+    // Write a specific info to a bitcode stream.
+    bool dispatchInfoForWrite(Info const* I);
+
     void emitHeader();
+    void emitBlockInfoBlock();
     void emitVersionBlock();
+
+    // Block emission of different info types.
+    void emitBlock(NamespaceInfo const& I);
+    void emitBlock(RecordInfo const& I);
+    void emitBlock(BaseRecordInfo const& I);
+    void emitBlock(FunctionInfo const& I);
+    void emitBlock(EnumInfo const& I);
+    void emitBlock(EnumValueInfo const& I);
+    void emitBlock(TypeInfo const& B);
+    void emitBlock(TypedefInfo const& B);
+    void emitBlock(FieldTypeInfo const& B);
+    void emitBlock(MemberTypeInfo const& T);
+    void emitBlock(Javadoc const& jd);
+    template<class T>
+    void emitBlock(List<T> const& list);
+    void emitBlock(Javadoc::Node const& I);
+    void emitBlock(TemplateInfo const& T);
+    void emitBlock(TemplateSpecializationInfo const& T);
+    void emitBlock(TemplateParamInfo const& T);
+    void emitBlock(Reference const& B, FieldId F);
+
+    // Emission of validation and overview blocks.
     void emitRecordID(RecordId ID);
     void emitBlockID(BlockId ID);
-    void emitBlockInfoBlock();
     void emitBlockInfo(BlockId BID, const std::vector<RecordId> &RIDs);
 
     // Emission of individual record types.
+
+    template<class Enum, class =
+        std::enable_if_t<std::is_enum_v<Enum>>>
+    void emitRecord(Enum value, RecordId ID);
+
+    void emitRecord(bool Value, RecordId ID);
+    void emitRecord(int Value, RecordId ID);
+    void emitRecord(unsigned Value, RecordId ID);
     void emitRecord(StringRef Str, RecordId ID);
     void emitRecord(SymbolID const& Str, RecordId ID);
     void emitRecord(Location const& Loc, RecordId ID);
     void emitRecord(Reference const& Ref, RecordId ID);
-    void emitRecord(bool Value, RecordId ID);
-    void emitRecord(int Value, RecordId ID);
-    void emitRecord(unsigned Value, RecordId ID);
-    void emitRecord(TemplateInfo const& Templ);
 
+    void emitRecord(TemplateInfo const& Templ);
     void emitRecord(Javadoc::Text const& node);
     void emitRecord(Javadoc::StyledText const& node);
     void emitRecord(Javadoc::Paragraph const& node);
@@ -66,39 +99,6 @@ class BitcodeWriter
 
     // Emission of appropriate abbreviation type.
     void emitAbbrev(RecordId ID, BlockId Block);
-
-public:
-    BitcodeWriter(
-        llvm::BitstreamWriter &Stream)
-        : Stream(Stream)
-    {
-        emitHeader();
-        emitBlockInfoBlock();
-        emitVersionBlock();
-    }
-
-    // Write a specific info to a bitcode stream.
-    bool dispatchInfoForWrite(Info const* I);
-
-    // Block emission of different info types.
-
-    void emitBlock(NamespaceInfo const& I);
-    void emitBlock(RecordInfo const& I);
-    void emitBlock(BaseRecordInfo const& I);
-    void emitBlock(FunctionInfo const& I);
-    void emitBlock(EnumInfo const& I);
-    void emitBlock(EnumValueInfo const& I);
-    void emitBlock(TypeInfo const& B);
-    void emitBlock(TypedefInfo const& B);
-    void emitBlock(FieldTypeInfo const& B);
-    void emitBlock(MemberTypeInfo const& T);
-    void emitBlock(Javadoc const& jd);
-    template<class T>
-    void emitBlock(List<T> const& list);
-    void emitBlock(TemplateInfo const& T);
-    void emitBlock(TemplateSpecializationInfo const& T);
-    void emitBlock(TemplateParamInfo const& T);
-    void emitBlock(Reference const& B, FieldId F);
 
 private:
     class AbbreviationMap

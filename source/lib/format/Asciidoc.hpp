@@ -88,8 +88,8 @@ public:
         Config const& config,
         Reporter& R) noexcept;
 
-    void beginFile();
-    void endFile();
+    void beginFile() override;
+    void endFile() override;
 
     struct FormalParam;
     struct TypeName;
