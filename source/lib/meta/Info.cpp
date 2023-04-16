@@ -44,20 +44,12 @@ mergeBase(
         Path = Other.Path;
     if (Namespace.empty())
         Namespace = std::move(Other.Namespace);
-    // Unconditionally extend the description,
-    // since each decl may have a comment.
-    std::move(
-        Other.Description.begin(),
-        Other.Description.end(),
-        std::back_inserter(Description));
-    llvm::sort(Description);
-    auto Last = std::unique(
-        Description.begin(), Description.end());
-    Description.erase(Last, Description.end());
     if (javadoc.brief.empty())
         javadoc.brief = std::move(Other.javadoc.brief);
     if (javadoc.desc.empty())
         javadoc.desc = std::move(Other.javadoc.desc);
+    // Unconditionally extend the blocks
+    // since each decl may have a comment.
     javadoc.merge(Other.javadoc);
 }
 

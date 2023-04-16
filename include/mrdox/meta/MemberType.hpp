@@ -40,8 +40,8 @@ struct MemberTypeInfo
         MemberTypeInfo const& Other) const
     {
         return
-            std::tie(Type, Name, Access, Description) ==
-            std::tie(Other.Type, Other.Name, Other.Access, Other.Description);
+            std::tie(Type, Name, Access, javadoc) ==
+            std::tie(Other.Type, Other.Name, Other.Access, Other.javadoc);
     }
 
     // VFALCO Why public?
@@ -52,7 +52,6 @@ struct MemberTypeInfo
     AccessSpecifier Access = AccessSpecifier::AS_public;
 
     Javadoc javadoc;
-    std::vector<CommentInfo> Description; // Comment description of this field.
 };
 
 } // mrdox

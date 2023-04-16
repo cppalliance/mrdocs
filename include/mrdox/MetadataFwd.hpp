@@ -21,7 +21,6 @@ namespace clang {
 namespace mrdox {
 
 struct BaseRecordInfo;
-struct CommentInfo;
 struct EnumValueInfo;
 struct EnumInfo;
 struct FieldTypeInfo;

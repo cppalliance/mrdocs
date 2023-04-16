@@ -45,9 +45,9 @@ struct Info
     */
     llvm::SmallVector<Reference, 4> Namespace;
 
-    // Comment description of this decl.
+    /** The extracted javadoc for this declaration.
+    */
     Javadoc javadoc;
-    std::vector<CommentInfo> Description;
 
     // Path of directory where the clang-doc
     // generated file will be saved
