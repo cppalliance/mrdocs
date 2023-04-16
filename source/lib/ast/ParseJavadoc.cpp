@@ -118,10 +118,10 @@ class JavadocVisitor
 
 public:
     JavadocVisitor(
-        RawComment const& RC,
+        RawComment const* RC,
         ASTContext const& ctx,
         Decl const* D)
-        : FC_(RC.parse(ctx, nullptr, D))
+        : FC_(RC->parse(ctx, nullptr, D))
         , ctx_(ctx)
     {
     }
@@ -661,7 +661,7 @@ dumpJavadoc(
 
 Javadoc
 parseJavadoc(
-    RawComment const& RC,
+    RawComment const* RC,
     ASTContext const& Ctx,
     Decl const* D)
 {

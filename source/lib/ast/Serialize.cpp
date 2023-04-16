@@ -20,10 +20,10 @@
 #include <llvm/Support/Path.h>
 #include <llvm/Support/SHA1.h>
 
-using clang::comments::FullComment;
-
 namespace clang {
 namespace mrdox {
+
+using clang::comments::FullComment;
 
 SymbolID hashUSR(llvm::StringRef USR) {
     return llvm::SHA1::hash(arrayRefFromStringRef(USR));
@@ -699,8 +699,9 @@ parseBases(
 std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
-emitInfo(
+buildInfo(
     NamespaceDecl const* D,
+    Javadoc jd,
     FullComment const* FC,
     int LineNumber,
     llvm::StringRef File,
@@ -728,8 +729,9 @@ emitInfo(
 std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
-emitInfo(
+buildInfo(
     RecordDecl const* D,
+    Javadoc jd,
     FullComment const* FC,
     int LineNumber,
     llvm::StringRef File,
@@ -817,8 +819,9 @@ emitInfo(
 std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
-emitInfo(
+buildInfo(
     FunctionDecl const* D,
+    Javadoc jd,
     FullComment const* FC,
     int LineNumber,
     llvm::StringRef File,
@@ -843,8 +846,9 @@ emitInfo(
 std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
-emitInfo(
+buildInfo(
     CXXMethodDecl const* D,
+    Javadoc jd,
     FullComment const* FC,
     int LineNumber,
     llvm::StringRef File,
@@ -882,8 +886,9 @@ emitInfo(
 std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
-emitInfo(
+buildInfo(
     TypedefDecl const* D,
+    Javadoc jd,
     FullComment const* FC,
     int LineNumber,
     StringRef File,
@@ -921,8 +926,9 @@ emitInfo(
 std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
-emitInfo(
+buildInfo(
     TypeAliasDecl const* D,
+    Javadoc jd,
     FullComment const* FC,
     int LineNumber,
     StringRef File,
@@ -948,8 +954,9 @@ emitInfo(
 std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
-emitInfo(
+buildInfo(
     EnumDecl const* D,
+    Javadoc jd,
     FullComment const* FC,
     int LineNumber,
     llvm::StringRef File,

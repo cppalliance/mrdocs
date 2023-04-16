@@ -33,7 +33,7 @@ parseComment(
 */
 Javadoc
 parseJavadoc(
-    RawComment const& RC,
+    RawComment const* RC,
     ASTContext const& Ctx,
     Decl const* D);
 

@@ -39,50 +39,54 @@ namespace mrdox {
 // its parent scope. For NamespaceDecl and RecordDecl both elements are not
 // nullptr.
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const NamespaceDecl *D, const comments::FullComment *FC, int LineNumber,
+buildInfo(NamespaceDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const RecordDecl *D, const comments::FullComment *FC, int LineNumber,
+buildInfo(RecordDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const EnumDecl *D, const comments::FullComment *FC, int LineNumber,
+buildInfo(EnumDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const FunctionDecl *D, const comments::FullComment *FC, int LineNumber,
+buildInfo(FunctionDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const CXXMethodDecl *D, const comments::FullComment *FC, int LineNumber,
+buildInfo(CXXMethodDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const TypedefDecl *D, const comments::FullComment *FC, int LineNumber,
+buildInfo(TypedefDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-emitInfo(const TypeAliasDecl *D, const comments::FullComment *FC, int LineNumber,
+buildInfo(TypeAliasDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
-
 
 template<class Decl, class... Args>
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-preEmitInfo(
+std::pair<
+    std::unique_ptr<Info>,
+    std::unique_ptr<Info>>
+buildInfoPair(
     Decl const* D,
     Args&&... args)
 {
-    // TODO investigate whether we can use ASTContext::getCommentForDecl instead
-    // of this logic. See also similar code in Mapper.cpp.
-    RawComment* raw = D->getASTContext().getRawCommentForDeclNoCache(D);
-    if(raw)
+    Javadoc jd;
+
+    // TODO investigate whether we can use
+    // ASTContext::getCommentForDecl instead of
+    // this logic. See also similar code in Mapper.cpp.
+    RawComment* RC = D->getASTContext().getRawCommentForDeclNoCache(D);
+    if(RC)
     {
-        raw->setAttached();
-        auto jd = parseJavadoc(*raw, D->getASTContext(), D);
+        RC->setAttached();
+        jd = parseJavadoc(RC, D->getASTContext(), D);
     }
 
-    return emitInfo(D, std::forward<Args>(args)...);
+    return buildInfo(D, std::move(jd), std::forward<Args>(args)...);
 }
 
 // Function to hash a given USR value for storage.
