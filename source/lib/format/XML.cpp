@@ -486,10 +486,10 @@ writeJavadoc(Javadoc const& jd)
     adjustNesting(1);
     if(auto brief = jd.getBrief())
         writeBrief(brief);
+    writeNodes(jd.getBlocks());
     writeReturns(jd.getReturns());
     writeNodes(jd.getParams());
     writeNodes(jd.getTParams());
-    writeNodes(jd.getBlocks());
     adjustNesting(-1);
     closeTag("doc");
 }

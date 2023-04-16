@@ -51,7 +51,7 @@ visit(
     switch(I.IT)
     {
     case InfoType::IT_namespace:
-        visit(*static_cast<NamespaceInfo const*>(&I));
+        //visit(*static_cast<NamespaceInfo const*>(&I));
         break;
     case InfoType::IT_record:
         visit(*static_cast<RecordInfo const*>(&I));
