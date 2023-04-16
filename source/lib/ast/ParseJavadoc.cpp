@@ -175,9 +175,10 @@ public:
         // so we will trim the leading space.
         // Otherwise just trim trailing space
         if(para_->list.empty())
-            s = C->getText().ltrim();
+            s = C->getText().ltrim().rtrim();
         else
-            s = C->getText().rtrim();
+            s = C->getText().ltrim().rtrim();
+            //s = C->getText().rtrim();
         para_->list.emplace_back(Javadoc::Text(
             ensureUTF8(s.str())));
     }

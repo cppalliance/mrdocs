@@ -312,7 +312,6 @@ Writer::
 writeFunction(
     FunctionInfo const& I)
 {
-return;
     openSection(I.Name);
 
     // Brief
@@ -325,11 +324,6 @@ return;
         "\n"
         "[,cpp]\n"
         "----\n";
-
-    // Description
-    writeDescription(I.javadoc.getBlocks());
-
-    // params
     if(! I.Params.empty())
     {
         os_ <<
@@ -349,18 +343,12 @@ return;
             typeName(I.ReturnType) << '\n' <<
             I.Name << "();" << "\n";
     }
-
     os_ <<
         "----\n";
     closeSection();
 
-    //if(! I.javadoc.desc.empty())
-    {
-        os_ << "\n";
-        openSection("Description");
-        //os_ << I.javadoc.desc << "\n";
-        closeSection();
-    }
+    // Description
+    writeDescription(I.javadoc.getBlocks());
 
     closeSection();
 }
@@ -443,10 +431,8 @@ writeOverloadSet(
         os_ <<
             "|`" << J.name << "`\n" <<
             "|";
-#if 0
         for(auto const& K : J.list)
-            os_ << K->javadoc.brief << "\n";
-#endif
+            writeBrief(K->javadoc.getBrief());
     }   
     os_ <<
         "|===\n" <<
@@ -462,6 +448,7 @@ writeMemberTypes(
     llvm::SmallVectorImpl<MemberTypeInfo> const& list,
     AccessSpecifier access)
 {
+return;
     if(list.empty())
         return;
 

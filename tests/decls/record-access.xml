@@ -14,57 +14,31 @@
   <symbol name="GlobalNamespace::U0::f1" tag="function" id="KjiG7Uufpmd65dhiSV+Jv2RjgHA="/>
 </all>
 <namespace name="">
-  <javadoc>
-  </javadoc>
   <class name="C0" id="sTaqkoFcVbtntbfpe777v5/pWL0=">
-    <javadoc>
-    </javadoc>
     <file path="record-access.cpp" line="12" class="def"/>
     <function name="f1" access="protected" id="EyRDT2mXtRNmcISD2rsC6/mLusw=">
-      <javadoc>
-      </javadoc>
       <file path="record-access.cpp" line="16"/>
-      <return name="void"/>
     </function>
     <function name="f2" access="public" id="ZOAAp99eH9zKUZqx0JzW6AuhRTQ=">
-      <javadoc>
-      </javadoc>
       <file path="record-access.cpp" line="18"/>
-      <return name="void"/>
     </function>
   </class>
   <struct name="S0" id="u38+snleg17KL7EQuD9FV1Z8b9E=">
-    <javadoc>
-    </javadoc>
     <file path="record-access.cpp" line="3" class="def"/>
     <function name="f0" access="public" id="STTnU4grbgOl2xPE6okWC57zruc=">
-      <javadoc>
-      </javadoc>
       <file path="record-access.cpp" line="5"/>
-      <return name="void"/>
     </function>
     <function name="f1" access="protected" id="IaPeEIwn9q94M3MuwxsB3qhBOSE=">
-      <javadoc>
-      </javadoc>
       <file path="record-access.cpp" line="7"/>
-      <return name="void"/>
     </function>
   </struct>
   <union name="U0" id="SHIJWZPzfYtLVfe/rzFAmeVpANk=">
-    <javadoc>
-    </javadoc>
     <file path="record-access.cpp" line="21" class="def"/>
     <function name="f0" access="public" id="eY4R9etszWK2H42p4kWNm5XfpnE=">
-      <javadoc>
-      </javadoc>
       <file path="record-access.cpp" line="23"/>
-      <return name="void"/>
     </function>
     <function name="f1" access="protected" id="KjiG7Uufpmd65dhiSV+Jv2RjgHA=">
-      <javadoc>
-      </javadoc>
       <file path="record-access.cpp" line="25"/>
-      <return name="void"/>
     </function>
   </union>
 </namespace>

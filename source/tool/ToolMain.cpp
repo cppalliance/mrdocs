@@ -28,6 +28,14 @@
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/Signals.h>
 
+#if 0
+#if defined(_MSC_VER) && ! defined(NDEBUG)
+#define WIN32_LEAN_AND_MEAN
+#include <debugapi.h>
+#include <crtdbg.h>
+#endif
+#endif
+
 namespace clang {
 namespace mrdox {
 
@@ -150,6 +158,15 @@ toolMain(
 
 int main(int argc, char const** argv)
 {
+#if 0
+#if defined(_MSC_VER) && ! defined(NDEBUG)
+    int flags = _CrtSetDbgFlag(
+        _CRTDBG_REPORT_FLAG);
+    flags |= _CRTDBG_LEAK_CHECK_DF;
+    _CrtSetDbgFlag(flags);
+#endif
+#endif
+
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     
     clang::mrdox::Reporter R;

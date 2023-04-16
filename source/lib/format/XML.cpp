@@ -298,15 +298,26 @@ writeFunction(
 {
     writeInfo(I);
     writeSymbol(I);
-    writeTag("return", {
-        { "name", I.ReturnType.Type.Name },
-        { I.ReturnType.Type.USR }
-        });
+    writeReturnType(I.ReturnType);
     for(auto const& J : I.Params)
         writeParam(J);
     if(I.Template)
         for(TemplateParamInfo const& J : I.Template->Params)
             writeTemplateParam(J);
+}
+
+void
+XMLGenerator::
+Writer::
+writeReturnType(
+    TypeInfo const& I)
+{
+    if(I.Type.Name == "void")
+        return;
+    writeTag("return", {
+        { "name", I.Type.Name },
+        { I.Type.USR }
+        });
 }
 
 void
@@ -461,6 +472,8 @@ XMLGenerator::
 Writer::
 writeJavadoc(Javadoc const& jd)
 {
+    if(jd.empty())
+        return;
     openTag("doc");
     adjustNesting(1);
     if(auto brief = jd.getBrief())

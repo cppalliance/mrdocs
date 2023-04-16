@@ -536,12 +536,14 @@ extract_first_of(
         return nullptr;
     if(pred(*reinterpret_cast<pointer>(head_->get())))
     {
+        auto node = head_;
         auto result = std::make_shared<U>(std::move(
             *reinterpret_cast<U*>(head_->get())));
         head_ = head_->next;
         if(head_ == &end_)
             tail_ = &end_;
         --size_;
+        delete node;
         return result;
     }
     auto prev = head_;
@@ -550,12 +552,14 @@ extract_first_of(
     {
         if(pred(*reinterpret_cast<pointer>(it->get())))
         {
+            auto node = it;
             auto result = std::make_shared<U>(std::move(
                 *reinterpret_cast<U*>(it->get())));
             prev->next = it->next;
             if(it == tail_)
                 tail_ = prev;
             --size_;
+            delete node;
             return result;
         }
         prev = it;

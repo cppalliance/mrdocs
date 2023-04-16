@@ -98,6 +98,7 @@ private:
     void writeTemplateParam(TemplateParamInfo const& I);
     void writeMemberType(MemberTypeInfo const& I);
 
+    void writeReturnType(TypeInfo const& I);
     void writeJavadoc(Javadoc const& jd);
 
     template<class T>

@@ -51,6 +51,19 @@ Javadoc(
 {
 }
 
+bool
+Javadoc::
+empty() const noexcept
+{
+    if( ! brief_ &&
+        blocks_.empty() &&
+        params_.empty() &&
+        tparams_.empty() &&
+        returns_.empty())
+        return true;
+    return false;
+}
+
 void
 Javadoc::
 merge(Javadoc& other)

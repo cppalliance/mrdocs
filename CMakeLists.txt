@@ -39,6 +39,22 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang$")
     set(MRDOX_CLANG ON)
 endif()
 
+if (WIN32)
+    add_definitions(
+        -D_WIN32_WINNT=0x0601
+        -D_CRT_SECURE_NO_WARNINGS
+        -D_SILENCE_CXX20_CISO646_REMOVED_WARNING)
+    if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win32") # 32-bit
+        add_compile_options(
+            /arch:SSE2
+        )
+    elseif("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win64") # 64-bit
+        add_compile_options(
+            /arch:AMD64
+        )
+    endif()
+endif()
+
 #-------------------------------------------------
 #
 # Dependencies

@@ -6,11 +6,7 @@
   <symbol name="GlobalNamespace::T" tag="struct" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
 </all>
 <namespace name="">
-  <javadoc>
-  </javadoc>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <javadoc>
-    </javadoc>
     <file path="ns-variables.cpp" line="7" class="def"/>
   </struct>
 </namespace>

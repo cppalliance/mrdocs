@@ -258,6 +258,11 @@ struct Javadoc
 
     //---
 
+    /** Return true if this is empty
+    */
+    bool
+    empty() const noexcept;
+
     Paragraph const*
     getBrief() const noexcept
     {
