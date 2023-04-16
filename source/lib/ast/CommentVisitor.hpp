@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_COMMENT_VISITOR_HPP
-#define MRDOX_COMMENT_VISITOR_HPP
+#ifndef MRDOX_COMMENTVISITOR_HPP
+#define MRDOX_COMMENTVISITOR_HPP
 
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
@@ -28,6 +28,14 @@ parseComment(
     Javadoc& javadoc,
     CommentInfo& ci,
     Reporter& R);
+
+/** Build metadata for a doxygen-style javadoc comment.
+*/
+Javadoc
+parseJavadoc(
+    RawComment const& RC,
+    ASTContext const& Ctx,
+    Decl const* D);
 
 } // mrdox
 } // clang

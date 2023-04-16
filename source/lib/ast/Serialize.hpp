@@ -19,7 +19,7 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
 
 #include "clangASTComment.hpp"
-#include "SymbolDocumentation.hpp"
+#include "CommentVisitor.hpp"
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/AST/AST.h>
@@ -76,11 +76,10 @@ preEmitInfo(
     // TODO investigate whether we can use ASTContext::getCommentForDecl instead
     // of this logic. See also similar code in Mapper.cpp.
     RawComment* raw = D->getASTContext().getRawCommentForDeclNoCache(D);
-    SymbolDocumentation doc;
     if(raw)
     {
         raw->setAttached();
-        doc = parseDoxygenComment(*raw, D->getASTContext(), D);
+        auto jd = parseJavadoc(*raw, D->getASTContext(), D);
     }
 
     return emitInfo(D, std::forward<Args>(args)...);

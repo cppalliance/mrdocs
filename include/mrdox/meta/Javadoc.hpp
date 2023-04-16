@@ -14,6 +14,7 @@
 
 #include <mrdox/meta/List.hpp>
 #include <llvm/ADT/SmallString.h>
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -76,14 +77,41 @@ struct Javadoc
         text,
         code,
         styledText,
-        paragraph
+        paragraph,
+        admonition,
+        returns,
+        param,
+        tparam
+    };
+
+    /** A text style.
+    */
+    enum class Style
+    {
+        none,
+        mono,
+        bold,
+        italic
+    };
+
+    /** An admonishment style.
+    */
+    enum class Admonish
+    {
+        note,
+        tip,
+        important,
+        caution,
+        warning
     };
 
     /** This is a variant-like list element.
     */
     struct Node
     {
-        Kind const kind;
+        Kind kind;
+
+        auto operator<=>(Node const&) const noexcept = default;
 
         explicit Node(Kind kind_) noexcept
             : kind(kind_)
@@ -97,38 +125,24 @@ struct Javadoc
     {
         String text;
 
+        auto operator<=>(Text const&) const noexcept = default;
+
         explicit
         Text(
+            String text_)
+            : Node(Kind::text)
+            , text(std::move(text_))
+        {
+        }
+
+    protected:
+        Text(
             String text_,
-            Kind kind_ = Kind::text)
+            Kind kind_)
             : Node(kind_)
             , text(std::move(text_))
         {
         }
-    };
-
-    /** A string of plain text representing source code.
-    */
-    struct Code : Text
-    {
-        // VFALCO this can have a language (e.g. C++),
-        //        and we can emit attributes in the generator.
-
-        explicit
-        Code(
-            String text_)
-            : Text(std::move(text_), Kind::code)
-        {
-        }
-    };
-
-    /** A text style.
-    */
-    enum class Style
-    {
-        mono,
-        bold,
-        italic
     };
 
     /** A piece of style text.
@@ -136,6 +150,8 @@ struct Javadoc
     struct StyledText : Text
     {
         Style style;
+
+        auto operator<=>(StyledText const&) const noexcept = default;
 
         StyledText(
             String text,
@@ -146,16 +162,129 @@ struct Javadoc
         }
     };
 
+    /** A piece of block content
+
+        The top level is a list of blocks.
+    */
+    struct Block : Node
+    {
+        auto operator<=>(Block const&) const noexcept = default;
+
+    protected:
+        explicit
+        Block(Kind kind_) noexcept
+            : Node(kind_)
+        {
+        }
+    };
+
     /** A sequence of text nodes.
     */
-    struct Paragraph : Node
+    struct Paragraph : Block
     {
+        List<Text> list;
+
+        bool empty() const noexcept
+        {
+            return list.empty();
+        }
+
+        auto operator<=>(Paragraph const&) const noexcept = default;
+
         Paragraph()
-            : Node(Kind::paragraph)
+            : Block(Kind::paragraph)
         {
         }
 
+    protected:
+        explicit
+        Paragraph(Kind kind) noexcept
+            : Block(kind)
+        {
+        }
+    };
+
+    /** Documentation for an admonition
+    */
+    struct Admonition : Paragraph
+    {
+        Admonish style;
+
+        auto operator<=>(Admonition const&) const noexcept = default;
+
+        explicit
+        Admonition(Admonish style_)
+            : Paragraph(Kind::admonition)
+            , style(style_)
+        {
+        }
+    };
+
+    /** Documentation for a function return type
+    */
+    struct Returns : Paragraph
+    {
+        auto operator<=>(Returns const&) const noexcept = default;
+
+        Returns()
+            : Paragraph(Kind::returns)
+        {
+        }
+    };
+
+    /** Documentation for a function parameter
+    */
+    struct Param : Block
+    {
+        String name;
+        Paragraph details;
+
+        auto operator<=>(Param const&) const noexcept = default;
+
+        Param(
+            String name_,
+            Paragraph details_)
+            : Block(Kind::param)
+            , name(std::move(name_))
+            , details(std::move(details_))
+        {
+        }
+    };
+
+    /** Documentation for a template parameter
+    */
+    struct TParam : Block
+    {
+        String name;
+        Paragraph details;
+
+        auto operator<=>(TParam const&) const noexcept = default;
+
+        TParam(
+            String name_,
+            Paragraph details_)
+            : Block(Kind::param)
+            , name(std::move(name_))
+            , details(std::move(details_))
+        {
+        }
+    };
+
+    /** Preformatted source code.
+    */
+    struct Code : Block
+    {
+        // VFALCO we can add a language (e.g. C++),
+        //        then emit attributes in the generator.
+
         List<Text> list;
+
+        auto operator<=>(Code const&) const noexcept = default;
+
+        Code()
+            : Block(Kind::code)
+        {
+        }
     };
 
     // VFALCO LEGACY
@@ -164,50 +293,82 @@ struct Javadoc
 
     //---
 
-    ~Javadoc()
+    Paragraph const&
+    getBrief() const noexcept
     {
-        if(brief_)
-            delete brief_;
+        return *brief_;
     }
+
+    List<Block> const&
+    getBlocks() const noexcept
+    {
+        return blocks_;
+    }
+
+    Returns const&
+    getReturns() const noexcept
+    {
+        return returns_;
+    }
+
+    List<Param> const&
+    getParams() const noexcept
+    {
+        return params_;
+    }
+
+    List<TParam> const&
+    getTParams() const noexcept
+    {
+        return tparams_;
+    }
+
+    //---
 
     Javadoc() = default;
 
-    Paragraph const*
-    getBrief() const noexcept
-    {
-        return brief_;
-    }
+    /** Constructor
+    */
+    Javadoc(
+        Paragraph brief,
+        List<Block> blocks,
+        List<Param> params,
+        List<TParam> tparams,
+        Returns returns);
 
-    List<Node> const&
-    getNodes() const noexcept
-    {
-        return list_;
-    }
+    bool operator<(Javadoc const&) const noexcept;
+    bool operator==(Javadoc const&) const noexcept;
 
     /** Append a node to the documentation comment.,
     */
     template<class Child>
     void
-    append(Child&& node)
+    emplace_back(Child&& node)
     {
         static_assert(std::is_base_of_v<Node, Child>);
 
-        list_.emplace_back<Child>(std::forward<Child>(node));
+        blocks_.emplace_back<Child>(std::forward<Child>(node));
     }
 
-    /** Append a brief to the documentation comment.,
-    */
     void
-    append_brief(Paragraph&& paragraph)
+    emplace_back(Param param)
     {
-        assert(brief_ == nullptr);
-        brief_ = new Paragraph(std::move(paragraph));
+        params_.emplace_back(std::move(param));
+    }
+
+    void
+    emplace_back(TParam tparam)
+    {
+        tparams_.emplace_back(std::move(tparam));
     }
 
 private:
-    List<Node> list_;
-
-    Paragraph const* brief_ = nullptr;
+    std::shared_ptr<
+        Paragraph const> brief_;
+    List<Block> blocks_;
+    List<Param> params_;
+    List<TParam> tparams_;
+    Returns returns_;
 };
 
 } // mrdox

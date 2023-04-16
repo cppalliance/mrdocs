@@ -18,6 +18,24 @@
 namespace clang {
 namespace mrdox {
 
+static_assert(std::is_copy_constructible_v<Javadoc::Node>);
+static_assert(std::is_copy_constructible_v<Javadoc::Text>);
+static_assert(std::is_copy_constructible_v<Javadoc::StyledText>);
+static_assert(std::is_copy_constructible_v<Javadoc::Block>);
+static_assert(std::is_copy_constructible_v<Javadoc::Paragraph>);
+static_assert(std::is_copy_constructible_v<Javadoc::Param>);
+static_assert(std::is_copy_constructible_v<Javadoc::TParam>);
+static_assert(std::is_copy_constructible_v<Javadoc::Code>);
+
+static_assert(std::is_move_constructible_v<Javadoc::Node>);
+static_assert(std::is_move_constructible_v<Javadoc::Text>);
+static_assert(std::is_move_constructible_v<Javadoc::StyledText>);
+static_assert(std::is_move_constructible_v<Javadoc::Block>);
+static_assert(std::is_move_constructible_v<Javadoc::Paragraph>);
+static_assert(std::is_move_constructible_v<Javadoc::Param>);
+static_assert(std::is_move_constructible_v<Javadoc::TParam>);
+static_assert(std::is_move_constructible_v<Javadoc::Code>);
+
 bool
 CommentInfo::
 operator==(
@@ -61,6 +79,41 @@ operator<(
             llvm::deref<std::less<>>());
     }
     return false;
+}
+
+//------------------------------------------------
+
+Javadoc::
+Javadoc(
+    Paragraph brief,
+    List<Block> blocks,
+    List<Param> params,
+    List<TParam> tparams,
+    Returns returns)
+    : blocks_(std::move(blocks))
+    , params_(std::move(params))
+    , tparams_(std::move(tparams))
+    , returns_(std::move(returns))
+{
+    if(! brief.list.empty())
+    {
+        brief_ = std::make_shared<Paragraph>(std::move(brief));
+        return;
+    }
+
+    // first paragraph is implicit brief
+    if(! blocks_.erase_first_of_if(
+        [&](Block& block)
+        {
+            if(block.kind != Kind::paragraph)
+                return false;
+            brief_ = std::make_shared<Paragraph>(std::move(
+                static_cast<Paragraph&>(block)));
+            return true;
+        }))
+    {
+        brief_ = std::make_shared<Paragraph>();
+    }
 }
 
 } // mrdox

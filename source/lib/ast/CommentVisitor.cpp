@@ -399,5 +399,6 @@ parseComment(
     v.parse(c, ci);
 }
 
-} // namespace mrdox
-} // namespace clang
+} // mrdox
+} // clang
+

@@ -4,3 +4,4 @@ temp/
 .vs/
 .vscode/
 CMakeSettings.json
+test/
