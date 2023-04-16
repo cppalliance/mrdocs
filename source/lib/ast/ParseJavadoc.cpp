@@ -9,11 +9,12 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "CommentVisitor.hpp"
+#include "clangASTComment.hpp"
 #include "ParseJavadoc.hpp"
 #include <mrdox/meta/Javadoc.hpp>
-#include <clang/AST/CommentVisitor.h>
 #include <clang/AST/CommentCommandTraits.h>
+#include <clang/AST/ASTContext.h>
+#include <clang/AST/RawCommentList.h>
 #include <llvm/Support/JSON.h>
 #include <cassert>
 

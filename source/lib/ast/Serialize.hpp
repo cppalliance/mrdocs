@@ -40,31 +40,31 @@ namespace mrdox {
 // its parent scope. For NamespaceDecl and RecordDecl both elements are not
 // nullptr.
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(NamespaceDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
+buildInfo(NamespaceDecl const* D, Javadoc jd, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(RecordDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
+buildInfo(RecordDecl const* D, Javadoc jd, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(EnumDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
+buildInfo(EnumDecl const* D, Javadoc jd, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(FunctionDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
+buildInfo(FunctionDecl const* D, Javadoc jd, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(CXXMethodDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
+buildInfo(CXXMethodDecl const* D, Javadoc jd, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(TypedefDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
+buildInfo(TypedefDecl const* D, Javadoc jd, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(TypeAliasDecl const* D, Javadoc jd, comments::FullComment const* FC, int LineNumber,
+buildInfo(TypeAliasDecl const* D, Javadoc jd, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 template<class Decl, class... Args>

@@ -226,44 +226,6 @@ getJavadoc(MemberTypeInfo* I)
 
 //------------------------------------------------
 
-template <typename T> llvm::Expected<CommentInfo*> getCommentInfo(T I) {
-    return makeError("invalid type cannot contain CommentInfo");
-}
-
-template<> llvm::Expected<CommentInfo*> getCommentInfo(FunctionInfo* I) {
-    return &I->Description.emplace_back();
-}
-
-template<> llvm::Expected<CommentInfo*> getCommentInfo(NamespaceInfo* I) {
-    return &I->Description.emplace_back();
-}
-
-template<> llvm::Expected<CommentInfo*> getCommentInfo(RecordInfo* I) {
-    return &I->Description.emplace_back();
-}
-
-template<> llvm::Expected<CommentInfo*> getCommentInfo(MemberTypeInfo* I) {
-    return &I->Description.emplace_back();
-}
-
-template<> llvm::Expected<CommentInfo*> getCommentInfo(EnumInfo* I) {
-    return &I->Description.emplace_back();
-}
-
-template<> llvm::Expected<CommentInfo*> getCommentInfo(TypedefInfo* I) {
-    return &I->Description.emplace_back();
-}
-
-template<> llvm::Expected<CommentInfo*> getCommentInfo(CommentInfo* I) {
-    I->Children.emplace_back(std::make_unique<CommentInfo>());
-    return I->Children.back().get();
-}
-
-template<>
-llvm::Expected<CommentInfo*> getCommentInfo(std::unique_ptr<CommentInfo>& I) {
-    return getCommentInfo(I.get());
-}
-
 // When readSubBlock encounters a TypeInfo sub-block, it calls addTypeInfo on
 // the parent block to set it. The template specializations define what to do
 // for each supported parent block.
@@ -709,8 +671,6 @@ private:
     llvm::Error parseRecord(Record const& R, unsigned ID,
         llvm::StringRef Blob, MemberTypeInfo* I);
     llvm::Error parseRecord(const Record& R, unsigned ID,
-        llvm::StringRef Blob, CommentInfo* I);
-    llvm::Error parseRecord(const Record& R, unsigned ID,
         llvm::StringRef Blob, Reference* I, FieldId& F);
     llvm::Error parseRecord(const Record& R, unsigned ID,
         llvm::StringRef Blob, TemplateInfo* I);
@@ -786,7 +746,6 @@ getInfos()
         case BI_FIELD_TYPE_BLOCK_ID:
         case BI_MEMBER_TYPE_BLOCK_ID:
         case BI_JAVADOC_BLOCK_ID:
-        case BI_COMMENT_BLOCK_ID:
         case BI_REFERENCE_BLOCK_ID:
             return makeError("invalid top level block");
         case BI_NAMESPACE_BLOCK_ID:
@@ -954,15 +913,6 @@ readSubBlock(
         return llvm::Error::success();
     }
 
-    case BI_COMMENT_BLOCK_ID:
-    {
-        auto Comment = getCommentInfo(I);
-        if (!Comment)
-            return Comment.takeError();
-        if (auto Err = readBlock(ID, Comment.get()))
-            return Err;
-        return llvm::Error::success();
-    }
     case BI_TYPE_BLOCK_ID:
     {
         TypeInfo TI;
@@ -1339,43 +1289,6 @@ parseRecord(
     List<T>* list)
 {
     return llvm::Error::success();
-}
-
-llvm::Error
-BitcodeReader::
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    CommentInfo* I)
-{
-    switch (ID)
-    {
-    case COMMENT_KIND:
-        return decodeRecord(R, I->Kind, Blob);
-    case COMMENT_TEXT:
-        return decodeRecord(R, I->Text, Blob);
-    case COMMENT_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case COMMENT_DIRECTION:
-        return decodeRecord(R, I->Direction, Blob);
-    case COMMENT_PARAMNAME:
-        return decodeRecord(R, I->ParamName, Blob);
-    case COMMENT_CLOSENAME:
-        return decodeRecord(R, I->CloseName, Blob);
-    case COMMENT_ATTRKEY:
-        return decodeRecord(R, I->AttrKeys, Blob);
-    case COMMENT_ATTRVAL:
-        return decodeRecord(R, I->AttrValues, Blob);
-    case COMMENT_ARG:
-        return decodeRecord(R, I->Args, Blob);
-    case COMMENT_SELFCLOSING:
-        return decodeRecord(R, I->SelfClosing, Blob);
-    case COMMENT_EXPLICIT:
-        return decodeRecord(R, I->Explicit, Blob);
-    default:
-        return makeError("invalid field for CommentInfo");
-    }
 }
 
 llvm::Error

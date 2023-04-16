@@ -95,7 +95,6 @@ public:
     void emitBlock(Javadoc const& jd);
     template<class T>
     void emitBlock(List<T> const& list);
-    void emitBlock(CommentInfo const& B);
     void emitBlock(TemplateInfo const& T);
     void emitBlock(TemplateSpecializationInfo const& T);
     void emitBlock(TemplateParamInfo const& T);

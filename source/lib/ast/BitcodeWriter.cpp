@@ -160,7 +160,6 @@ BlockIdNameMap = []()
         {BI_BASE_RECORD_BLOCK_ID, "BaseRecordBlock"},
         {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
         {BI_JAVADOC_BLOCK_ID, "JavadocBlock"},
-        {BI_COMMENT_BLOCK_ID, "CommentBlock"},
         {BI_REFERENCE_BLOCK_ID, "ReferenceBlock"},
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
         {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, "TemplateSpecializationBlock"},
@@ -184,17 +183,6 @@ RecordIdNameMap = []()
     static const std::vector<std::pair<RecordId, RecordIdDsc>> Inits = {
         {VERSION, {"Version", &IntAbbrev}},
         {JAVADOC_NODE_KIND, {"NodeKind", &IntAbbrev}},
-        {COMMENT_KIND, {"Kind", &StringAbbrev}},
-        {COMMENT_TEXT, {"Text", &StringAbbrev}},
-        {COMMENT_NAME, {"Name", &StringAbbrev}},
-        {COMMENT_DIRECTION, {"Direction", &StringAbbrev}},
-        {COMMENT_PARAMNAME, {"ParamName", &StringAbbrev}},
-        {COMMENT_CLOSENAME, {"CloseName", &StringAbbrev}},
-        {COMMENT_SELFCLOSING, {"SelfClosing", &BoolAbbrev}},
-        {COMMENT_EXPLICIT, {"Explicit", &BoolAbbrev}},
-        {COMMENT_ATTRKEY, {"AttrKey", &StringAbbrev}},
-        {COMMENT_ATTRVAL, {"AttrVal", &StringAbbrev}},
-        {COMMENT_ARG, {"Arg", &StringAbbrev}},
         {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
         {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
@@ -259,11 +247,6 @@ RecordsByBlock{
     // Javadoc Block
     {BI_JAVADOC_BLOCK_ID,
         {JAVADOC_NODE_KIND}},
-    // Comment Block
-    {BI_COMMENT_BLOCK_ID,
-        {COMMENT_KIND, COMMENT_TEXT, COMMENT_NAME, COMMENT_DIRECTION,
-        COMMENT_PARAMNAME, COMMENT_CLOSENAME, COMMENT_SELFCLOSING,
-        COMMENT_EXPLICIT, COMMENT_ATTRKEY, COMMENT_ATTRVAL, COMMENT_ARG}},
     // Type Block
     {BI_TYPE_BLOCK_ID, {}},
     // <mrdox/FieldType.hpp> Block
@@ -618,8 +601,6 @@ emitBlock(
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
     emitBlock(I.javadoc);
-    for (const auto& CI : I.Description)
-        emitBlock(CI);
     for (const auto& C : I.Children.Namespaces)
         emitBlock(C, FieldId::F_child_namespace);
     for (const auto& C : I.Children.Records)
@@ -644,8 +625,6 @@ emitBlock(
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
     emitBlock(I.javadoc);
-    for (const auto& CI : I.Description)
-        emitBlock(CI);
     if (I.DefLoc)
         emitRecord(*I.DefLoc, RECORD_DEFLOCATION);
     for (const auto& L : I.Loc)
@@ -700,8 +679,6 @@ emitBlock(
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
     emitBlock(I.javadoc);
-    for (const auto& CI : I.Description)
-        emitBlock(CI);
     emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
     if (I.DefLoc)
@@ -751,8 +728,6 @@ emitBlock(
     for (const auto& N : T.Namespace)
         emitBlock(N, FieldId::F_namespace);
     emitBlock(T.javadoc);
-    for (const auto& CI : T.Description)
-        emitBlock(CI);
     if (T.DefLoc)
         emitRecord(*T.DefLoc, TYPEDEF_DEFLOCATION);
     emitRecord(T.IsUsing, TYPEDEF_IS_USING);
@@ -780,8 +755,6 @@ emitBlock(
     emitRecord(T.Name, MEMBER_TYPE_NAME);
     emitRecord(T.Access, MEMBER_TYPE_ACCESS);
     emitBlock(T.javadoc);
-    for (const auto& CI : T.Description)
-        emitBlock(CI);
 }
 
 void
@@ -858,35 +831,6 @@ emitBlock(List<T> const& list)
 void
 BitcodeWriter::
 emitBlock(
-    CommentInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_COMMENT_BLOCK_ID);
-    for (auto const& L : std::vector<std::pair<
-        llvm::StringRef, RecordId>>{
-             {I.Kind, COMMENT_KIND},
-             {I.Text, COMMENT_TEXT},
-             {I.Name, COMMENT_NAME},
-             {I.Direction, COMMENT_DIRECTION},
-             {I.ParamName, COMMENT_PARAMNAME},
-             {I.CloseName, COMMENT_CLOSENAME} })
-    {
-        emitRecord(L.first, L.second);
-    }
-    emitRecord(I.SelfClosing, COMMENT_SELFCLOSING);
-    emitRecord(I.Explicit, COMMENT_EXPLICIT);
-    for (const auto& A : I.AttrKeys)
-        emitRecord(A, COMMENT_ATTRKEY);
-    for (const auto& A : I.AttrValues)
-        emitRecord(A, COMMENT_ATTRVAL);
-    for (const auto& A : I.Args)
-        emitRecord(A, COMMENT_ARG);
-    for (const auto& C : I.Children)
-        emitBlock(*C);
-}
-
-void
-BitcodeWriter::
-emitBlock(
     EnumInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
@@ -895,8 +839,6 @@ emitBlock(
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
     emitBlock(I.javadoc);
-    for (const auto& CI : I.Description)
-        emitBlock(CI);
     if (I.DefLoc)
         emitRecord(*I.DefLoc, ENUM_DEFLOCATION);
     for (const auto& L : I.Loc)

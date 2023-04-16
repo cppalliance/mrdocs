@@ -93,11 +93,6 @@ private:
         ASTContext const& Context,
         StringRef RootDir,
         bool& IsFileInRootDir) const;
-
-    comments::FullComment*
-    getComment(
-        NamedDecl const* D,
-        ASTContext const& Context) const;
 };
 
 //------------------------------------------------
@@ -194,7 +189,6 @@ mapDecl(T const* D)
 
     auto I = buildInfoPair(
         D,
-        getComment(D, D->getASTContext()),
         getLine(D, D->getASTContext()),
         filePath,
         IsFileInRootDir,
@@ -267,22 +261,6 @@ Visitor::
 VisitTypeAliasDecl(TypeAliasDecl const* D)
 {
     return mapDecl(D);
-}
-
-comments::FullComment*
-Visitor::
-getComment(
-    NamedDecl const* D,
-    ASTContext const& Context) const
-{
-    RawComment* Comment = Context.getRawCommentForDeclNoCache(D);
-    // FIXME: Move setAttached to the initial comment parsing.
-    if (Comment)
-    {
-        Comment->setAttached();
-        return Comment->parse(Context, nullptr, D);
-    }
-    return nullptr;
 }
 
 int
