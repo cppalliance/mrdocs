@@ -11,7 +11,7 @@
 
 #include "ast/FrontendAction.hpp"
 #include "ast/BitcodeReader.hpp"
-#include "ast/BitcodeWriter.hpp"
+//#include "ast/BitcodeWriter.hpp"
 #include "ast/Serialize.hpp"
 #include "meta/Reduce.hpp"
 #include <mrdox/Corpus.hpp>
@@ -121,8 +121,7 @@ build(
             for (auto& Bitcode : Group.getValue())
             {
                 llvm::BitstreamCursor Stream(Bitcode);
-                ClangDocBitcodeReader Reader(Stream);
-                auto infos = Reader.readBitcode();
+                auto infos = readBitcode(Stream, R);
                 if(R.error(infos, "read bitcode"))
                 {
                     GotFailure = true;

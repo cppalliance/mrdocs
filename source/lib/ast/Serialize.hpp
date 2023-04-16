@@ -19,9 +19,10 @@
 #define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
 
 #include "clangASTComment.hpp"
-#include "CommentVisitor.hpp"
+#include "ParseJavadoc.hpp"
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
+#include <mrdox/meta/Javadoc.hpp>
 #include <clang/AST/AST.h>
 #include <string>
 #include <vector>

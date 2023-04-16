@@ -83,38 +83,57 @@ operator<(
 
 //------------------------------------------------
 
+Javadoc::Paragraph const Javadoc::s_empty_;
+
+Javadoc::
+Javadoc() noexcept
+    : brief_(&s_empty_)
+{
+}
+
 Javadoc::
 Javadoc(
-    Paragraph brief,
     List<Block> blocks,
     List<Param> params,
     List<TParam> tparams,
     Returns returns)
-    : blocks_(std::move(blocks))
+    : brief_(&s_empty_)
+    , blocks_(std::move(blocks))
     , params_(std::move(params))
     , tparams_(std::move(tparams))
     , returns_(std::move(returns))
 {
-    if(! brief.list.empty())
-    {
-        brief_ = std::make_shared<Paragraph>(std::move(brief));
-        return;
-    }
-
-    // first paragraph is implicit brief
-    if(! blocks_.erase_first_of_if(
-        [&](Block& block)
-        {
-            if(block.kind != Kind::paragraph)
-                return false;
-            brief_ = std::make_shared<Paragraph>(std::move(
-                static_cast<Paragraph&>(block)));
-            return true;
-        }))
-    {
-        brief_ = std::make_shared<Paragraph>();
-    }
 }
+
+auto
+Javadoc::
+getBrief() const noexcept ->
+    Paragraph const*
+{
+    Paragraph const* first = nullptr;
+    for(auto const& block : blocks_)
+    {
+        if(block.kind == Kind::brief)
+            return static_cast<Paragraph const*>(&block);
+        if( block.kind == Kind::paragraph && ! first)
+            first = static_cast<Paragraph const*>(&block);
+    }
+    if(first == nullptr)
+        first = &s_empty_;
+    return first;
+}
+
+void
+Javadoc::
+merge(Javadoc& other)
+{
+    blocks_.splice_back(other.blocks_);
+    params_.splice_back(other.params_);
+    tparams_.splice_back(other.tparams_);
+    if( returns_.empty())
+        returns_ = std::move(other.returns_);
+}
+
 
 } // mrdox
 } // clang

@@ -10,14 +10,22 @@
 //
 
 #include "BitcodeReader.hpp"
+#include "BitcodeWriter.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
+#include <clang/AST/AST.h>
 #include <llvm/ADT/IndexedMap.h>
-#include <llvm/Support/Error.h>
-#include <llvm/Support/raw_ostream.h>
+#include <llvm/ADT/Optional.h>
+#include <llvm/ADT/SmallVector.h>
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
+
+namespace {
+
+//------------------------------------------------
 
 using Record = llvm::SmallVector<uint64_t, 1024>;
 
@@ -193,346 +201,6 @@ decodeRecord(
         return makeError("integer too large to parse");
     Field.emplace_back((int)R[0], Blob, (bool)R[1]);
     return llvm::Error::success();
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    const unsigned VersionNo)
-{
-    if (ID == VERSION && R[0] == VersionNo)
-        return llvm::Error::success();
-    return makeError("mismatched bitcode version number");
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    NamespaceInfo* I)
-{
-    switch (ID)
-    {
-    case NAMESPACE_USR:
-        return decodeRecord(R, I->USR, Blob);
-    case NAMESPACE_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case NAMESPACE_PATH:
-        return decodeRecord(R, I->Path, Blob);
-    default:
-        return makeError("invalid field for NamespaceInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    RecordInfo* I)
-{
-    switch (ID)
-    {
-    case RECORD_USR:
-        return decodeRecord(R, I->USR, Blob);
-    case RECORD_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case RECORD_PATH:
-        return decodeRecord(R, I->Path, Blob);
-    case RECORD_DEFLOCATION:
-        return decodeRecord(R, I->DefLoc, Blob);
-    case RECORD_LOCATION:
-        return decodeRecord(R, I->Loc, Blob);
-    case RECORD_TAG_TYPE:
-        return decodeRecord(R, I->TagType, Blob);
-    case RECORD_IS_TYPE_DEF:
-        return decodeRecord(R, I->IsTypeDef, Blob);
-    default:
-        return makeError("invalid field for RecordInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    BaseRecordInfo* I)
-{
-    switch (ID)
-    {
-    case BASE_RECORD_USR:
-        return decodeRecord(R, I->USR, Blob);
-    case BASE_RECORD_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case BASE_RECORD_PATH:
-        return decodeRecord(R, I->Path, Blob);
-    case BASE_RECORD_TAG_TYPE:
-        return decodeRecord(R, I->TagType, Blob);
-    case BASE_RECORD_IS_VIRTUAL:
-        return decodeRecord(R, I->IsVirtual, Blob);
-    case BASE_RECORD_ACCESS:
-        return decodeRecord(R, I->Access, Blob);
-    case BASE_RECORD_IS_PARENT:
-        return decodeRecord(R, I->IsParent, Blob);
-    default:
-        return makeError("invalid field for BaseRecordInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    FunctionInfo* I)
-{
-    switch (ID)
-    {
-    case FUNCTION_USR:
-        return decodeRecord(R, I->USR, Blob);
-    case FUNCTION_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case FUNCTION_DEFLOCATION:
-        return decodeRecord(R, I->DefLoc, Blob);
-    case FUNCTION_LOCATION:
-        return decodeRecord(R, I->Loc, Blob);
-    case FUNCTION_ACCESS:
-        return decodeRecord(R, I->Access, Blob);
-    case FUNCTION_IS_METHOD:
-        return decodeRecord(R, I->IsMethod, Blob);
-    default:
-        return makeError("invalid field for FunctionInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    EnumInfo* I)
-{
-    switch (ID)
-    {
-    case ENUM_USR:
-        return decodeRecord(R, I->USR, Blob);
-    case ENUM_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case ENUM_DEFLOCATION:
-        return decodeRecord(R, I->DefLoc, Blob);
-    case ENUM_LOCATION:
-        return decodeRecord(R, I->Loc, Blob);
-    case ENUM_SCOPED:
-        return decodeRecord(R, I->Scoped, Blob);
-    default:
-        return makeError("invalid field for EnumInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    EnumValueInfo* I)
-{
-    switch (ID)
-    {
-    case ENUM_VALUE_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case ENUM_VALUE_VALUE:
-        return decodeRecord(R, I->Value, Blob);
-    case ENUM_VALUE_EXPR:
-        return decodeRecord(R, I->ValueExpr, Blob);
-    default:
-        return makeError("invalid field for EnumValueInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    TypedefInfo* I)
-{
-    switch (ID)
-    {
-    case TYPEDEF_USR:
-        return decodeRecord(R, I->USR, Blob);
-    case TYPEDEF_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case TYPEDEF_DEFLOCATION:
-        return decodeRecord(R, I->DefLoc, Blob);
-    case TYPEDEF_IS_USING:
-        return decodeRecord(R, I->IsUsing, Blob);
-    default:
-        return makeError("invalid field for TypedefInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    TypeInfo* I)
-{
-    return llvm::Error::success();
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    FieldTypeInfo* I)
-{
-    switch (ID)
-    {
-    case FIELD_TYPE_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case FIELD_DEFAULT_VALUE:
-        return decodeRecord(R, I->DefaultValue, Blob);
-    default:
-        return makeError("invalid field for TypeInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    MemberTypeInfo* I)
-{
-    switch (ID)
-    {
-    case MEMBER_TYPE_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case MEMBER_TYPE_ACCESS:
-        return decodeRecord(R, I->Access, Blob);
-    default:
-        return makeError("invalid field for MemberTypeInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    Record const& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    Javadoc* jd)
-{
-    switch (ID)
-    {
-    case JAVADOC_BRIEF:
-        return decodeRecord(R, jd->brief, Blob);
-    case JAVADOC_DESC:
-        return decodeRecord(R, jd->desc, Blob);
-    default:
-        return makeError("invalid field for Javadoc");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    CommentInfo* I)
-{
-    switch (ID)
-    {
-    case COMMENT_KIND:
-        return decodeRecord(R, I->Kind, Blob);
-    case COMMENT_TEXT:
-        return decodeRecord(R, I->Text, Blob);
-    case COMMENT_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case COMMENT_DIRECTION:
-        return decodeRecord(R, I->Direction, Blob);
-    case COMMENT_PARAMNAME:
-        return decodeRecord(R, I->ParamName, Blob);
-    case COMMENT_CLOSENAME:
-        return decodeRecord(R, I->CloseName, Blob);
-    case COMMENT_ATTRKEY:
-        return decodeRecord(R, I->AttrKeys, Blob);
-    case COMMENT_ATTRVAL:
-        return decodeRecord(R, I->AttrValues, Blob);
-    case COMMENT_ARG:
-        return decodeRecord(R, I->Args, Blob);
-    case COMMENT_SELFCLOSING:
-        return decodeRecord(R, I->SelfClosing, Blob);
-    case COMMENT_EXPLICIT:
-        return decodeRecord(R, I->Explicit, Blob);
-    default:
-        return makeError("invalid field for CommentInfo");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    Reference* I,
-    FieldId& F)
-{
-    switch (ID)
-    {
-    case REFERENCE_USR:
-        return decodeRecord(R, I->USR, Blob);
-    case REFERENCE_NAME:
-        return decodeRecord(R, I->Name, Blob);
-    case REFERENCE_TYPE:
-        return decodeRecord(R, I->RefType, Blob);
-    case REFERENCE_PATH:
-        return decodeRecord(R, I->Path, Blob);
-    case REFERENCE_FIELD:
-        return decodeRecord(R, F, Blob);
-    default:
-        return makeError("invalid field for Reference");
-    }
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    TemplateInfo* I)
-{
-    // Currently there are no child records of TemplateInfo (only child blocks).
-    return makeError("invalid field for TemplateParamInfo");
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    TemplateSpecializationInfo* I)
-{
-    if (ID == TEMPLATE_SPECIALIZATION_OF)
-        return decodeRecord(R, I->SpecializationOf, Blob);
-    return makeError("invalid field for TemplateParamInfo");
-}
-
-llvm::Error
-parseRecord(
-    const Record& R,
-    unsigned ID,
-    llvm::StringRef Blob,
-    TemplateParamInfo* I)
-{
-    if (ID == TEMPLATE_PARAM_CONTENTS)
-        return decodeRecord(R, I->Contents, Blob);
-    return makeError("invalid field for TemplateParamInfo");
 }
 
 //------------------------------------------------
@@ -952,40 +620,280 @@ addTemplateSpecialization(
     I->Specialization.emplace(std::move(TSI));
 }
 
-// Read records from bitcode into a given info.
-template <typename T>
-llvm::Error
-ClangDocBitcodeReader::
-readRecord(
-    unsigned ID, T I)
+//------------------------------------------------
+
+// Class to read bitstream into an InfoSet collection
+class BitcodeReader
 {
-    Record R;
-    llvm::StringRef Blob;
-    llvm::Expected<unsigned> MaybeRecID = Stream.readRecord(ID, R, &Blob);
-    if (!MaybeRecID)
-        return MaybeRecID.takeError();
-    return parseRecord(R, MaybeRecID.get(), Blob, I);
+public:
+    BitcodeReader(
+        llvm::BitstreamCursor& Stream,
+        Reporter& R)
+        : R_(R)
+        , Stream(Stream)
+    {
+    }
+
+    // Main entry point, calls readBlock to read each block in the given stream.
+    llvm::Expected<
+        std::vector<std::unique_ptr<Info>>>
+    getInfos();
+
+private:
+    enum class Cursor
+    {
+        BadBlock = 1,
+        Record,
+        BlockEnd,
+        BlockBegin
+    };
+
+    llvm::Error validateStream();
+    llvm::Error readBlockInfoBlock();
+
+    /** Read the next Info
+
+        Calls createInfo after casting.
+    */
+    llvm::Expected<std::unique_ptr<Info>>
+    readBlockToInfo(unsigned ID);
+
+    /** Return T from reading the stream.
+    */
+    template <typename T>
+    llvm::Expected<std::unique_ptr<Info>>
+    createInfo(unsigned ID);
+
+    /** Read a single block.
+
+        Calls readRecord on each record found.
+    */
+    template<typename T>
+    llvm::Error
+    readBlock(unsigned ID, T I);
+
+    // Step through a block of records to find the next data field.
+    template<typename T>
+    llvm::Error
+    readSubBlock(unsigned ID, T I);
+
+    /** Read a record into a data field.
+
+        This calls parseRecord after casting.
+    */
+    template<typename T>
+    llvm::Error
+    readRecord(unsigned ID, T I);
+
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, const unsigned VersionNo);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, NamespaceInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, RecordInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, BaseRecordInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, FunctionInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, EnumInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, EnumValueInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, TypedefInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, TypeInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, FieldTypeInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, MemberTypeInfo* I);
+    llvm::Error parseRecord(const Record& R, unsigned ID,
+        llvm::StringRef Blob, CommentInfo* I);
+    llvm::Error parseRecord(const Record& R, unsigned ID,
+        llvm::StringRef Blob, Reference* I, FieldId& F);
+    llvm::Error parseRecord(const Record& R, unsigned ID,
+        llvm::StringRef Blob, TemplateInfo* I);
+    llvm::Error parseRecord(const Record& R, unsigned ID,
+        llvm::StringRef Blob, TemplateSpecializationInfo* I);
+    llvm::Error parseRecord(const Record& R, unsigned ID,
+        llvm::StringRef Blob, TemplateParamInfo* I);
+
+    struct JavadocCtorParams
+    {
+        llvm::SmallString<32> brief;
+        std::string desc;
+
+        List<Javadoc::Block> blocks;
+        List<Javadoc::Param> params;
+        List<Javadoc::TParam> tparams;
+        Javadoc::Returns returns;
+    };
+
+    llvm::Error parseRecord(Record const& R, unsigned ID,
+        llvm::StringRef Blob, JavadocCtorParams* init);
+
+    template<class T>
+    llvm::Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob,
+        List<T>* list);
+
+    // Used to construct a Javadoc
+
+    // Helper function to step through blocks to find and dispatch the next record
+    // or block to be read.
+    Cursor skipUntilRecordOrBlock(unsigned &BlockOrRecordID);
+
+private:
+    Reporter& R_;
+    llvm::BitstreamCursor &Stream;
+    llvm::Optional<llvm::BitstreamBlockInfo> BlockInfo;
+    FieldId CurrentReferenceField;
+};
+
+//------------------------------------------------
+
+// Entry point
+llvm::Expected<
+    std::vector<std::unique_ptr<Info>>>
+BitcodeReader::
+getInfos()
+{
+    std::vector<std::unique_ptr<Info>> Infos;
+    if (auto Err = validateStream())
+        return std::move(Err);
+
+    // Read the top level blocks.
+    while (!Stream.AtEndOfStream())
+    {
+        Expected<unsigned> MaybeCode = Stream.ReadCode();
+        if (!MaybeCode)
+            return MaybeCode.takeError();
+        if (MaybeCode.get() != llvm::bitc::ENTER_SUBBLOCK)
+            return makeError("no blocks in input");
+        Expected<unsigned> MaybeID = Stream.ReadSubBlockID();
+        if (!MaybeID)
+            return MaybeID.takeError();
+        unsigned ID = MaybeID.get();
+        switch (ID)
+        {
+        // NamedType and Comment blocks should
+        // not appear at the top level
+        case BI_TYPE_BLOCK_ID:
+        case BI_FIELD_TYPE_BLOCK_ID:
+        case BI_MEMBER_TYPE_BLOCK_ID:
+        case BI_JAVADOC_BLOCK_ID:
+        case BI_COMMENT_BLOCK_ID:
+        case BI_REFERENCE_BLOCK_ID:
+            return makeError("invalid top level block");
+        case BI_NAMESPACE_BLOCK_ID:
+        case BI_RECORD_BLOCK_ID:
+        case BI_FUNCTION_BLOCK_ID:
+        case BI_ENUM_BLOCK_ID:
+        case BI_TYPEDEF_BLOCK_ID:
+        {
+            auto InfoOrErr = readBlockToInfo(ID);
+            if (!InfoOrErr)
+                return InfoOrErr.takeError();
+            Infos.emplace_back(std::move(InfoOrErr.get()));
+            continue;
+        }
+        case BI_VERSION_BLOCK_ID:
+            if (auto Err = readBlock(ID, VersionNumber))
+                return std::move(Err);
+            continue;
+        case llvm::bitc::BLOCKINFO_BLOCK_ID:
+            if (auto Err = readBlockInfoBlock())
+                return std::move(Err);
+            continue;
+        default:
+            if (llvm::Error Err = Stream.SkipBlock()) {
+                // FIXME this drops the error on the floor.
+                consumeError(std::move(Err));
+            }
+            continue;
+        }
+    }
+    return std::move(Infos);
 }
 
-template<>
+//------------------------------------------------
+
 llvm::Error
-ClangDocBitcodeReader::
-readRecord(
-    unsigned ID,
-    Reference* I)
+BitcodeReader::
+validateStream()
 {
-    Record R;
-    llvm::StringRef Blob;
-    llvm::Expected<unsigned> MaybeRecID = Stream.readRecord(ID, R, &Blob);
-    if (!MaybeRecID)
-        return MaybeRecID.takeError();
-    return parseRecord(R, MaybeRecID.get(), Blob, I, CurrentReferenceField);
+    if (Stream.AtEndOfStream())
+        return makeError("premature end of stream");
+
+    // Sniff for the signature.
+    for (int i = 0; i != 4; ++i)
+    {
+        Expected<llvm::SimpleBitstreamCursor::word_t> MaybeRead = Stream.Read(8);
+        if (!MaybeRead)
+            return MaybeRead.takeError();
+        else if (MaybeRead.get() != BitCodeConstants::Signature[i])
+            return makeError("invalid bitcode signature");
+    }
+    return llvm::Error::success();
 }
+
+llvm::Error
+BitcodeReader::
+readBlockInfoBlock()
+{
+    Expected<llvm::Optional<llvm::BitstreamBlockInfo>> MaybeBlockInfo =
+        Stream.ReadBlockInfoBlock();
+    if (!MaybeBlockInfo)
+        return MaybeBlockInfo.takeError();
+    BlockInfo = MaybeBlockInfo.get();
+    if (!BlockInfo)
+        return makeError("unable to parse BlockInfoBlock");
+    Stream.setBlockInfo(&*BlockInfo);
+    return llvm::Error::success();
+}
+
+llvm::Expected<std::unique_ptr<Info>>
+BitcodeReader::
+readBlockToInfo(
+    unsigned ID)
+{
+    switch (ID)
+    {
+    case BI_NAMESPACE_BLOCK_ID:
+        return createInfo<NamespaceInfo>(ID);
+    case BI_RECORD_BLOCK_ID:
+        return createInfo<RecordInfo>(ID);
+    case BI_FUNCTION_BLOCK_ID:
+        return createInfo<FunctionInfo>(ID);
+    case BI_ENUM_BLOCK_ID:
+        return createInfo<EnumInfo>(ID);
+    case BI_TYPEDEF_BLOCK_ID:
+        return createInfo<TypedefInfo>(ID);
+    default:
+        return makeError("cannot create info");
+    }
+}
+
+template <typename T>
+llvm::Expected<std::unique_ptr<Info>>
+BitcodeReader::
+createInfo(unsigned ID)
+{
+    std::unique_ptr<Info> I = std::make_unique<T>();
+    if (auto Err = readBlock(ID, static_cast<T*>(I.get())))
+        return std::move(Err);
+    return std::unique_ptr<Info>{std::move(I)};
+}
+
+//------------------------------------------------
 
 // Read a block of records into a single info.
 template <typename T>
 llvm::Error
-ClangDocBitcodeReader::
+BitcodeReader::
 readBlock(unsigned ID, T I)
 {
     if (llvm::Error Err = Stream.EnterSubBlock(ID))
@@ -1003,7 +911,8 @@ readBlock(unsigned ID, T I)
         case Cursor::BlockEnd:
             return llvm::Error::success();
         case Cursor::BlockBegin:
-            if (llvm::Error Err = readSubBlock(BlockOrCode, I)) {
+            if (llvm::Error Err = readSubBlock(BlockOrCode, I))
+            {
                 if (llvm::Error Skipped = Stream.SkipBlock())
                     return joinErrors(std::move(Err), std::move(Skipped));
                 return Err;
@@ -1019,20 +928,28 @@ readBlock(unsigned ID, T I)
 
 template<typename T>
 llvm::Error
-ClangDocBitcodeReader::
+BitcodeReader::
 readSubBlock(
     unsigned ID, T I)
 {
+    // Blocks can only have certain types of sub blocks.
     switch (ID)
     {
-    // Blocks can only have certain types of sub blocks.
     case BI_JAVADOC_BLOCK_ID:
     {
         auto rv = getJavadoc(I);
         if(! rv)
             return rv.takeError();
-        if (auto Err = readBlock(ID, rv.get()))
+        JavadocCtorParams init;
+        if (auto Err = readBlock(ID, &init))
             return Err;
+        rv.get()->brief = init.brief;
+        rv.get()->desc = init.desc;
+        *rv.get() = Javadoc(
+            std::move(init.blocks),
+            std::move(init.params),
+            std::move(init.tparams),
+            std::move(init.returns));
         return llvm::Error::success();
     }
 
@@ -1142,8 +1059,412 @@ readSubBlock(
     }
 }
 
+// Read records from bitcode into a given info.
+template <typename T>
+llvm::Error
+BitcodeReader::
+readRecord(
+    unsigned ID, T I)
+{
+    Record R;
+    llvm::StringRef Blob;
+    llvm::Expected<unsigned> MaybeRecID = Stream.readRecord(ID, R, &Blob);
+    if (!MaybeRecID)
+        return MaybeRecID.takeError();
+    return parseRecord(R, MaybeRecID.get(), Blob, I);
+}
+
+template<>
+llvm::Error
+BitcodeReader::
+readRecord(
+    unsigned ID,
+    Reference* I)
+{
+    Record R;
+    llvm::StringRef Blob;
+    llvm::Expected<unsigned> MaybeRecID = Stream.readRecord(ID, R, &Blob);
+    if (!MaybeRecID)
+        return MaybeRecID.takeError();
+    return parseRecord(R, MaybeRecID.get(), Blob, I, CurrentReferenceField);
+}
+
+//------------------------------------------------
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    const unsigned VersionNo)
+{
+    if (ID == VERSION && R[0] == VersionNo)
+        return llvm::Error::success();
+    return makeError("mismatched bitcode version number");
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    NamespaceInfo* I)
+{
+    switch (ID)
+    {
+    case NAMESPACE_USR:
+        return decodeRecord(R, I->USR, Blob);
+    case NAMESPACE_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case NAMESPACE_PATH:
+        return decodeRecord(R, I->Path, Blob);
+    default:
+        return makeError("invalid field for NamespaceInfo");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    RecordInfo* I)
+{
+    switch (ID)
+    {
+    case RECORD_USR:
+        return decodeRecord(R, I->USR, Blob);
+    case RECORD_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case RECORD_PATH:
+        return decodeRecord(R, I->Path, Blob);
+    case RECORD_DEFLOCATION:
+        return decodeRecord(R, I->DefLoc, Blob);
+    case RECORD_LOCATION:
+        return decodeRecord(R, I->Loc, Blob);
+    case RECORD_TAG_TYPE:
+        return decodeRecord(R, I->TagType, Blob);
+    case RECORD_IS_TYPE_DEF:
+        return decodeRecord(R, I->IsTypeDef, Blob);
+    default:
+        return makeError("invalid field for RecordInfo");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    BaseRecordInfo* I)
+{
+    switch (ID)
+    {
+    case BASE_RECORD_USR:
+        return decodeRecord(R, I->USR, Blob);
+    case BASE_RECORD_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case BASE_RECORD_PATH:
+        return decodeRecord(R, I->Path, Blob);
+    case BASE_RECORD_TAG_TYPE:
+        return decodeRecord(R, I->TagType, Blob);
+    case BASE_RECORD_IS_VIRTUAL:
+        return decodeRecord(R, I->IsVirtual, Blob);
+    case BASE_RECORD_ACCESS:
+        return decodeRecord(R, I->Access, Blob);
+    case BASE_RECORD_IS_PARENT:
+        return decodeRecord(R, I->IsParent, Blob);
+    default:
+        return makeError("invalid field for BaseRecordInfo");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    FunctionInfo* I)
+{
+    switch (ID)
+    {
+    case FUNCTION_USR:
+        return decodeRecord(R, I->USR, Blob);
+    case FUNCTION_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case FUNCTION_DEFLOCATION:
+        return decodeRecord(R, I->DefLoc, Blob);
+    case FUNCTION_LOCATION:
+        return decodeRecord(R, I->Loc, Blob);
+    case FUNCTION_ACCESS:
+        return decodeRecord(R, I->Access, Blob);
+    case FUNCTION_IS_METHOD:
+        return decodeRecord(R, I->IsMethod, Blob);
+    default:
+        return makeError("invalid field for FunctionInfo");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    EnumInfo* I)
+{
+    switch (ID)
+    {
+    case ENUM_USR:
+        return decodeRecord(R, I->USR, Blob);
+    case ENUM_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case ENUM_DEFLOCATION:
+        return decodeRecord(R, I->DefLoc, Blob);
+    case ENUM_LOCATION:
+        return decodeRecord(R, I->Loc, Blob);
+    case ENUM_SCOPED:
+        return decodeRecord(R, I->Scoped, Blob);
+    default:
+        return makeError("invalid field for EnumInfo");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    EnumValueInfo* I)
+{
+    switch (ID)
+    {
+    case ENUM_VALUE_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case ENUM_VALUE_VALUE:
+        return decodeRecord(R, I->Value, Blob);
+    case ENUM_VALUE_EXPR:
+        return decodeRecord(R, I->ValueExpr, Blob);
+    default:
+        return makeError("invalid field for EnumValueInfo");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    TypedefInfo* I)
+{
+    switch (ID)
+    {
+    case TYPEDEF_USR:
+        return decodeRecord(R, I->USR, Blob);
+    case TYPEDEF_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case TYPEDEF_DEFLOCATION:
+        return decodeRecord(R, I->DefLoc, Blob);
+    case TYPEDEF_IS_USING:
+        return decodeRecord(R, I->IsUsing, Blob);
+    default:
+        return makeError("invalid field for TypedefInfo");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    TypeInfo* I)
+{
+    return llvm::Error::success();
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    FieldTypeInfo* I)
+{
+    switch (ID)
+    {
+    case FIELD_TYPE_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case FIELD_DEFAULT_VALUE:
+        return decodeRecord(R, I->DefaultValue, Blob);
+    default:
+        return makeError("invalid field for TypeInfo");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    MemberTypeInfo* I)
+{
+    switch (ID)
+    {
+    case MEMBER_TYPE_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case MEMBER_TYPE_ACCESS:
+        return decodeRecord(R, I->Access, Blob);
+    default:
+        return makeError("invalid field for MemberTypeInfo");
+    }
+}
+
+template<class T>
+llvm::Error
+BitcodeReader::
+parseRecord(
+    Record const& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    List<T>* list)
+{
+    return llvm::Error::success();
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    CommentInfo* I)
+{
+    switch (ID)
+    {
+    case COMMENT_KIND:
+        return decodeRecord(R, I->Kind, Blob);
+    case COMMENT_TEXT:
+        return decodeRecord(R, I->Text, Blob);
+    case COMMENT_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case COMMENT_DIRECTION:
+        return decodeRecord(R, I->Direction, Blob);
+    case COMMENT_PARAMNAME:
+        return decodeRecord(R, I->ParamName, Blob);
+    case COMMENT_CLOSENAME:
+        return decodeRecord(R, I->CloseName, Blob);
+    case COMMENT_ATTRKEY:
+        return decodeRecord(R, I->AttrKeys, Blob);
+    case COMMENT_ATTRVAL:
+        return decodeRecord(R, I->AttrValues, Blob);
+    case COMMENT_ARG:
+        return decodeRecord(R, I->Args, Blob);
+    case COMMENT_SELFCLOSING:
+        return decodeRecord(R, I->SelfClosing, Blob);
+    case COMMENT_EXPLICIT:
+        return decodeRecord(R, I->Explicit, Blob);
+    default:
+        return makeError("invalid field for CommentInfo");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    Reference* I,
+    FieldId& F)
+{
+    switch (ID)
+    {
+    case REFERENCE_USR:
+        return decodeRecord(R, I->USR, Blob);
+    case REFERENCE_NAME:
+        return decodeRecord(R, I->Name, Blob);
+    case REFERENCE_TYPE:
+        return decodeRecord(R, I->RefType, Blob);
+    case REFERENCE_PATH:
+        return decodeRecord(R, I->Path, Blob);
+    case REFERENCE_FIELD:
+        return decodeRecord(R, F, Blob);
+    default:
+        return makeError("invalid field for Reference");
+    }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    TemplateInfo* I)
+{
+    // Currently there are no child records of TemplateInfo (only child blocks).
+    return makeError("invalid field for TemplateParamInfo");
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    TemplateSpecializationInfo* I)
+{
+    if (ID == TEMPLATE_SPECIALIZATION_OF)
+        return decodeRecord(R, I->SpecializationOf, Blob);
+    return makeError("invalid field for TemplateParamInfo");
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    const Record& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    TemplateParamInfo* I)
+{
+    if (ID == TEMPLATE_PARAM_CONTENTS)
+        return decodeRecord(R, I->Contents, Blob);
+    return makeError("invalid field for TemplateParamInfo");
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    Record const& R,
+    unsigned ID,
+    llvm::StringRef Blob,
+    JavadocCtorParams* init)
+{
+    switch (ID)
+    {
+    case JAVADOC_NODE_KIND:
+    {
+        int kind;
+        return decodeRecord(R, kind, Blob);
+    }
+    default:
+        return makeError("invalid field for Javadoc");
+    }
+}
+
+//------------------------------------------------
+
 auto
-ClangDocBitcodeReader::
+BitcodeReader::
 skipUntilRecordOrBlock(
     unsigned& BlockOrRecordID) ->
         Cursor
@@ -1195,130 +1516,19 @@ skipUntilRecordOrBlock(
     llvm_unreachable("Premature stream end.");
 }
 
-llvm::Error
-ClangDocBitcodeReader::
-validateStream()
+//------------------------------------------------
+
+} // (anon)
+
+// Calls readBlock to read each block in the given stream.
+llvm::Expected<
+    std::vector<std::unique_ptr<Info>>>
+readBitcode(
+    llvm::BitstreamCursor &Stream,
+    Reporter& R)
 {
-    if (Stream.AtEndOfStream())
-        return makeError("premature end of stream");
-
-    // Sniff for the signature.
-    for (int i = 0; i != 4; ++i)
-    {
-        Expected<llvm::SimpleBitstreamCursor::word_t> MaybeRead = Stream.Read(8);
-        if (!MaybeRead)
-            return MaybeRead.takeError();
-        else if (MaybeRead.get() != BitCodeConstants::Signature[i])
-            return makeError("invalid bitcode signature");
-    }
-    return llvm::Error::success();
-}
-
-llvm::Error
-ClangDocBitcodeReader::
-readBlockInfoBlock()
-{
-    Expected<llvm::Optional<llvm::BitstreamBlockInfo>> MaybeBlockInfo =
-        Stream.ReadBlockInfoBlock();
-    if (!MaybeBlockInfo)
-        return MaybeBlockInfo.takeError();
-    BlockInfo = MaybeBlockInfo.get();
-    if (!BlockInfo)
-        return makeError("unable to parse BlockInfoBlock");
-    Stream.setBlockInfo(&*BlockInfo);
-    return llvm::Error::success();
-}
-
-template <typename T>
-llvm::Expected<std::unique_ptr<Info>>
-ClangDocBitcodeReader::createInfo(unsigned ID)
-{
-    std::unique_ptr<Info> I = std::make_unique<T>();
-    if (auto Err = readBlock(ID, static_cast<T*>(I.get())))
-        return std::move(Err);
-    return std::unique_ptr<Info>{std::move(I)};
-}
-
-llvm::Expected<std::unique_ptr<Info>>
-ClangDocBitcodeReader::
-readBlockToInfo(
-    unsigned ID)
-{
-    switch (ID)
-    {
-    case BI_NAMESPACE_BLOCK_ID:
-        return createInfo<NamespaceInfo>(ID);
-    case BI_RECORD_BLOCK_ID:
-        return createInfo<RecordInfo>(ID);
-    case BI_FUNCTION_BLOCK_ID:
-        return createInfo<FunctionInfo>(ID);
-    case BI_ENUM_BLOCK_ID:
-        return createInfo<EnumInfo>(ID);
-    case BI_TYPEDEF_BLOCK_ID:
-        return createInfo<TypedefInfo>(ID);
-    default:
-        return makeError("cannot create info");
-    }
-}
-
-// Entry point
-llvm::Expected<std::vector<std::unique_ptr<Info>>>
-ClangDocBitcodeReader::readBitcode()
-{
-    std::vector<std::unique_ptr<Info>> Infos;
-    if (auto Err = validateStream())
-        return std::move(Err);
-
-    // Read the top level blocks.
-    while (!Stream.AtEndOfStream())
-    {
-        Expected<unsigned> MaybeCode = Stream.ReadCode();
-        if (!MaybeCode)
-            return MaybeCode.takeError();
-        if (MaybeCode.get() != llvm::bitc::ENTER_SUBBLOCK)
-            return makeError("no blocks in input");
-        Expected<unsigned> MaybeID = Stream.ReadSubBlockID();
-        if (!MaybeID)
-            return MaybeID.takeError();
-        unsigned ID = MaybeID.get();
-        switch (ID) {
-            // NamedType and Comment blocks should not appear at the top level
-        case BI_TYPE_BLOCK_ID:
-        case BI_FIELD_TYPE_BLOCK_ID:
-        case BI_MEMBER_TYPE_BLOCK_ID:
-        case BI_JAVADOC_BLOCK_ID:
-        case BI_COMMENT_BLOCK_ID:
-        case BI_REFERENCE_BLOCK_ID:
-            return makeError("invalid top level block");
-        case BI_NAMESPACE_BLOCK_ID:
-        case BI_RECORD_BLOCK_ID:
-        case BI_FUNCTION_BLOCK_ID:
-        case BI_ENUM_BLOCK_ID:
-        case BI_TYPEDEF_BLOCK_ID:
-        {
-            auto InfoOrErr = readBlockToInfo(ID);
-            if (!InfoOrErr)
-                return InfoOrErr.takeError();
-            Infos.emplace_back(std::move(InfoOrErr.get()));
-            continue;
-        }
-        case BI_VERSION_BLOCK_ID:
-            if (auto Err = readBlock(ID, VersionNumber))
-                return std::move(Err);
-            continue;
-        case llvm::bitc::BLOCKINFO_BLOCK_ID:
-            if (auto Err = readBlockInfoBlock())
-                return std::move(Err);
-            continue;
-        default:
-            if (llvm::Error Err = Stream.SkipBlock()) {
-                // FIXME this drops the error on the floor.
-                consumeError(std::move(Err));
-            }
-            continue;
-        }
-    }
-    return std::move(Infos);
+    BitcodeReader reader(Stream, R);
+    return reader.getInfos();
 }
 
 } // mrdox

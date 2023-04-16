@@ -15,64 +15,28 @@
 // generates the set of infos that it represents.
 //
 
-#ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEREADER_H
-#define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEREADER_H
+#ifndef MRDOX_SOURCE_AST_BITCODEREADER_HPP
+#define MRDOX_SOURCE_AST_BITCODEREADER_HPP
 
-#include "BitcodeWriter.hpp"
-#include <clang/AST/AST.h>
-#include <llvm/ADT/SmallVector.h>
-#include <llvm/Bitstream/BitstreamReader.h>
+#include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Reporter.hpp>
 #include <llvm/Support/Error.h>
-#include <llvm/ADT/Optional.h>
+#include <llvm/Bitstream/BitstreamReader.h>
+#include <memory>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
 
-// Class to read bitstream into an InfoSet collection
-class ClangDocBitcodeReader
-{
-public:
-    ClangDocBitcodeReader(llvm::BitstreamCursor &Stream) : Stream(Stream) {}
+/** Return an array of Info read from a Bitstream.
+*/
+llvm::Expected<
+    std::vector<std::unique_ptr<Info>>>
+readBitcode(
+    llvm::BitstreamCursor& Stream,
+    Reporter& R);
 
-    // Main entry point, calls readBlock to read each block in the given stream.
-    llvm::Expected<std::vector<std::unique_ptr<Info>>> readBitcode();
+} // mrdox
+} // clang
 
-private:
-    enum class Cursor { BadBlock = 1, Record, BlockEnd, BlockBegin };
-
-    // Top level parsing
-    llvm::Error validateStream();
-    llvm::Error readVersion();
-    llvm::Error readBlockInfoBlock();
-
-    // Read a block of records into a single Info struct, calls readRecord on each
-    // record found.
-    template <typename T> llvm::Error readBlock(unsigned ID, T I);
-
-    // Step through a block of records to find the next data field.
-    template <typename T> llvm::Error readSubBlock(unsigned ID, T I);
-
-    // Read record data into the given Info data field, calling the appropriate
-    // parseRecord functions to parse and store the data.
-    template <typename T> llvm::Error readRecord(unsigned ID, T I);
-
-    // Allocate the relevant type of info and add read data to the object.
-    template <typename T>
-    llvm::Expected<std::unique_ptr<Info>> createInfo(unsigned ID);
-
-    // Helper function to step through blocks to find and dispatch the next record
-    // or block to be read.
-    Cursor skipUntilRecordOrBlock(unsigned &BlockOrRecordID);
-
-    // Helper function to set up the appropriate type of Info.
-    llvm::Expected<std::unique_ptr<Info>> readBlockToInfo(unsigned ID);
-
-    llvm::BitstreamCursor &Stream;
-    llvm::Optional<llvm::BitstreamBlockInfo> BlockInfo;
-    FieldId CurrentReferenceField;
-};
-
-} // namespace mrdox
-} // namespace clang
-
-#endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_BITCODEREADER_H
+#endif

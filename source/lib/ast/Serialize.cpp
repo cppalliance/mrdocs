@@ -10,8 +10,9 @@
 //
 
 #include "Serialize.hpp"
-#include "CommentVisitor.hpp"
 #include "BitcodeWriter.hpp"
+#include "CommentVisitor.hpp"
+#include "ParseJavadoc.hpp"
 #include <mrdox/Metadata.hpp>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
@@ -83,7 +84,7 @@ serialize(T& I)
 {
     SmallString<2048> Buffer;
     llvm::BitstreamWriter Stream(Buffer);
-    ClangDocBitcodeWriter Writer(Stream);
+    BitcodeWriter Writer(Stream);
     Writer.emitBlock(I);
     return Buffer.str().str();
 }
@@ -494,6 +495,7 @@ void
 populateInfo(
     Info& I,
     T const* D,
+    Javadoc jd,
     FullComment const* C,
     bool& IsInAnonymousNamespace,
     Reporter& R)
@@ -504,6 +506,7 @@ populateInfo(
         I.Namespace,
         D,
         IsInAnonymousNamespace);
+    I.javadoc = std::move(jd);
     if(C)
     {
         I.Description.emplace_back();
@@ -524,6 +527,7 @@ void
 populateSymbolInfo(
     SymbolInfo& I,
     T const* D,
+    Javadoc jd,
     FullComment const* C,
     int LineNumber,
     StringRef Filename,
@@ -531,7 +535,7 @@ populateSymbolInfo(
     bool& IsInAnonymousNamespace,
     Reporter& R)
 {
-    populateInfo(I, D, C, IsInAnonymousNamespace, R);
+    populateInfo(I, D, std::move(jd), C, IsInAnonymousNamespace, R);
     if (D->isThisDeclarationADefinition())
         I.DefLoc.emplace(LineNumber, Filename, IsFileInRootDir);
     else
@@ -545,6 +549,7 @@ void
 populateFunctionInfo(
     FunctionInfo& I,
     FunctionDecl const* D,
+    Javadoc jd,
     FullComment const* FC,
     int LineNumber,
     StringRef Filename,
@@ -553,7 +558,7 @@ populateFunctionInfo(
     Reporter& R)
 {
     populateSymbolInfo(
-        I, D, FC,
+        I, D, std::move(jd), FC,
         LineNumber, Filename,
         IsFileInRootDir,
         IsInAnonymousNamespace,
@@ -603,7 +608,6 @@ populateMemberTypeInfo(
     RawComment* raw = Context.getRawCommentForDeclNoCache(D);
     if (!raw)
         return;
-
     // VFALCO Why?
     raw->setAttached();
 
@@ -667,7 +671,7 @@ parseBases(
                         // reference, its value is not relevant in here so it's not used
                         // anywhere besides the function call.
                         bool IsInAnonymousNamespace;
-                        populateFunctionInfo(FI, MD, /*FullComment=*/{}, /*LineNumber=*/{},
+                        populateFunctionInfo(FI, MD, Javadoc(), /*FullComment=*/{}, /*LineNumber=*/{},
                             /*FileName=*/{}, IsFileInRootDir,
                             IsInAnonymousNamespace, R);
                         FI.Access =
@@ -711,7 +715,7 @@ buildInfo(
 {
     auto I = std::make_unique<NamespaceInfo>();
     bool IsInAnonymousNamespace = false;
-    populateInfo(*I, D, FC, IsInAnonymousNamespace, R);
+    populateInfo(*I, D, std::move(jd), FC, IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -741,7 +745,7 @@ buildInfo(
 {
     auto I = std::make_unique<RecordInfo>();
     bool IsInAnonymousNamespace = false;
-    populateSymbolInfo(*I, D, FC, LineNumber, File, IsFileInRootDir,
+    populateSymbolInfo(*I, D, std::move(jd), FC, LineNumber, File, IsFileInRootDir,
         IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
@@ -831,7 +835,7 @@ buildInfo(
 {
     auto up = std::make_unique<FunctionInfo>();
     bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(*up, D, FC, LineNumber, File, IsFileInRootDir,
+    populateFunctionInfo(*up, D, std::move(jd), FC, LineNumber, File, IsFileInRootDir,
         IsInAnonymousNamespace, R);
     up->Access = clang::AccessSpecifier::AS_none;
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
@@ -858,7 +862,7 @@ buildInfo(
 {
     auto up = std::make_unique<FunctionInfo>();
     bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(*up, D, FC, LineNumber, File, IsFileInRootDir,
+    populateFunctionInfo(*up, D, std::move(jd), FC, LineNumber, File, IsFileInRootDir,
         IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
@@ -899,7 +903,7 @@ buildInfo(
     TypedefInfo Info;
 
     bool IsInAnonymousNamespace = false;
-    populateInfo(Info, D, FC, IsInAnonymousNamespace, R);
+    populateInfo(Info, D, std::move(jd), FC, IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -939,7 +943,7 @@ buildInfo(
     TypedefInfo Info;
 
     bool IsInAnonymousNamespace = false;
-    populateInfo(Info, D, FC, IsInAnonymousNamespace, R);
+    populateInfo(Info, D, std::move(jd), FC, IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -966,7 +970,7 @@ buildInfo(
 {
     EnumInfo Enum;
     bool IsInAnonymousNamespace = false;
-    populateSymbolInfo(Enum, D, FC, LineNumber, File, IsFileInRootDir,
+    populateSymbolInfo(Enum, D, std::move(jd), FC, LineNumber, File, IsFileInRootDir,
         IsInAnonymousNamespace, R);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};

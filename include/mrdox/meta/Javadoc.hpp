@@ -72,11 +72,12 @@ struct Javadoc
 {
     using String = std::string;
 
-    enum class Kind
+    enum class Kind : int
     {
         text,
         styledText,
         paragraph,
+        brief,
         admonition,
         code,
         returns,
@@ -191,7 +192,7 @@ struct Javadoc
 
         auto operator<=>(Paragraph const&) const noexcept = default;
 
-        Paragraph()
+        Paragraph() noexcept
             : Block(Kind::paragraph)
         {
         }
@@ -200,6 +201,18 @@ struct Javadoc
         explicit
         Paragraph(Kind kind) noexcept
             : Block(kind)
+        {
+        }
+    };
+
+    /** The brief description
+    */
+    struct Brief : Paragraph
+    {
+        auto operator<=>(Brief const&) const noexcept = default;
+
+        Brief() noexcept
+            : Paragraph(Kind::brief)
         {
         }
     };
@@ -291,11 +304,8 @@ struct Javadoc
 
     //---
 
-    std::shared_ptr<Paragraph> const&
-    getBrief() const noexcept
-    {
-        return brief_;
-    }
+    Paragraph const*
+    getBrief() const noexcept;
 
     List<Block> const&
     getBlocks() const noexcept
@@ -323,12 +333,11 @@ struct Javadoc
 
     //---
 
-    Javadoc() = default;
+    Javadoc() noexcept;
 
     /** Constructor
     */
     Javadoc(
-        Paragraph brief,
         List<Block> blocks,
         List<Param> params,
         List<TParam> tparams,
@@ -360,8 +369,12 @@ struct Javadoc
         tparams_.emplace_back(std::move(tparam));
     }
 
+    void merge(Javadoc& other);
+
 private:
-    std::shared_ptr<Paragraph> brief_;
+    static Paragraph const s_empty_;
+
+    Paragraph const* brief_;
     List<Block> blocks_;
     List<Param> params_;
     List<TParam> tparams_;

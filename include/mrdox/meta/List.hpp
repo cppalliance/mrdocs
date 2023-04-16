@@ -83,6 +83,9 @@ public:
     template<class U>
     iterator emplace_back(U&& u);
 
+    template<class U>
+    void splice_back(List<U>& other);
+
     void swap(List& other);
 
 private:
@@ -497,6 +500,30 @@ emplace_back(U&& u) ->
     append(item);
     return iterator(item);
 }
+
+template<class T>
+template<class U>
+void
+List<T>::
+splice_back(
+    List<U>& other)
+{
+    if(other.empty())
+        return;
+    auto it = other.head_;
+    while(it != &other.end_)
+    {
+        auto next = it->next;
+        append(it);
+        it = next;
+    }
+    size_ += other.size_;
+    other.size_ = 0;
+    other.head_ = &other.end_;
+    other.tail_ = &other.end_;
+    tail_ = &end_;
+}
+
 
 template<class T>
 void

@@ -109,6 +109,17 @@ static void LocationAbbrev(
         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
 }
 
+static void NodeAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. Fixed-size integer (Kind size)
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::JavadocKindSize)
+        });
+}
+
 struct RecordIdDsc
 {
     llvm::StringRef Name;
@@ -172,8 +183,7 @@ RecordIdNameMap = []()
     // improvise
     static const std::vector<std::pair<RecordId, RecordIdDsc>> Inits = {
         {VERSION, {"Version", &IntAbbrev}},
-        {JAVADOC_BRIEF, {"Kind", &StringAbbrev}},
-        {JAVADOC_DESC, {"Kind", &StringAbbrev}},
+        {JAVADOC_NODE_KIND, {"NodeKind", &IntAbbrev}},
         {COMMENT_KIND, {"Kind", &StringAbbrev}},
         {COMMENT_TEXT, {"Text", &StringAbbrev}},
         {COMMENT_NAME, {"Name", &StringAbbrev}},
@@ -248,7 +258,7 @@ RecordsByBlock{
     {BI_VERSION_BLOCK_ID, {VERSION}},
     // Javadoc Block
     {BI_JAVADOC_BLOCK_ID,
-        {JAVADOC_BRIEF, JAVADOC_DESC}},
+        {JAVADOC_NODE_KIND}},
     // Comment Block
     {BI_COMMENT_BLOCK_ID,
         {COMMENT_KIND, COMMENT_TEXT, COMMENT_NAME, COMMENT_DIRECTION,
@@ -300,7 +310,7 @@ RecordsByBlock{
 constexpr unsigned char BitCodeConstants::Signature[];
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 AbbreviationMap::
 add(RecordId RID,
     unsigned AbbrevID)
@@ -311,7 +321,7 @@ add(RecordId RID,
 }
 
 unsigned
-ClangDocBitcodeWriter::
+BitcodeWriter::
 AbbreviationMap::
 get(RecordId RID) const
 {
@@ -325,7 +335,7 @@ get(RecordId RID) const
 /// Emits the magic number header to check that its the right format,
 /// in this case, 'DOCS'.
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitHeader()
 {
     for (char C : BitCodeConstants::Signature)
@@ -333,7 +343,7 @@ emitHeader()
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitVersionBlock()
 {
     StreamSubBlockGuard Block(Stream, BI_VERSION_BLOCK_ID);
@@ -342,7 +352,7 @@ emitVersionBlock()
 
 /// Emits a block ID and the block name to the BLOCKINFO block.
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlockID(BlockId BID)
 {
     const auto& BlockIdName = BlockIdNameMap[BID];
@@ -358,7 +368,7 @@ emitBlockID(BlockId BID)
 
 /// Emits a record name to the BLOCKINFO block.
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitRecordID(RecordId ID)
 {
     assert(RecordIdNameMap[ID] && "Unknown RecordId.");
@@ -371,7 +381,7 @@ emitRecordID(RecordId ID)
 // Abbreviations
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitAbbrev(
     RecordId ID, BlockId Block)
 {
@@ -385,7 +395,7 @@ emitAbbrev(
 // Records
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitRecord(
     SymbolID const& Sym,
     RecordId ID)
@@ -402,7 +412,7 @@ emitRecord(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitRecord(
     llvm::StringRef Str, RecordId ID)
 {
@@ -417,7 +427,7 @@ emitRecord(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitRecord(
     Location const& Loc, RecordId ID)
 {
@@ -426,7 +436,8 @@ emitRecord(
         "Abbrev type mismatch.");
     if (!prepRecordData(ID, true))
         return;
-    // FIXME: Assert that the line number is of the appropriate size.
+    // FIXME: Assert that the line number
+    // is of the appropriate size.
     Record.push_back(Loc.LineNumber);
     assert(Loc.Filename.size() < (1U << BitCodeConstants::StringLengthSize));
     Record.push_back(Loc.IsFileInRootDir);
@@ -435,7 +446,7 @@ emitRecord(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitRecord(
     bool Val, RecordId ID)
 {
@@ -448,7 +459,7 @@ emitRecord(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitRecord(
     int Val, RecordId ID)
 {
@@ -462,7 +473,7 @@ emitRecord(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitRecord(
     unsigned Val, RecordId ID)
 {
@@ -476,15 +487,80 @@ emitRecord(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitRecord(
-    const TemplateInfo& Templ)
+    TemplateInfo const& Templ)
 {
     // VFALCO What's going on here? Missing code?
 }
 
+void
+BitcodeWriter::
+emitRecord(
+    Javadoc::Text const& node)
+{
+    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::StyledText const& node)
+{
+    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Paragraph const& node)
+{
+    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
+    emitBlock(node.list);
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Brief const& node)
+{
+    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Admonition const& node)
+{
+    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Code const& node)
+{
+    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Returns const& node)
+{
+    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::Param const& node)
+{
+    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
+}
+
+void
+BitcodeWriter::
+emitRecord(Javadoc::TParam const& node)
+{
+    emitRecord(static_cast<int>(node.kind), JAVADOC_NODE_KIND);
+}
+
 bool
-ClangDocBitcodeWriter::
+BitcodeWriter::
 prepRecordData(
     RecordId ID, bool ShouldEmit)
 {
@@ -499,7 +575,7 @@ prepRecordData(
 // BlockInfo Block
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlockInfoBlock()
 {
     Stream.EnterBlockInfoBlock();
@@ -512,7 +588,7 @@ emitBlockInfoBlock()
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlockInfo(
     BlockId BID,
     std::vector<RecordId> const& RIDs)
@@ -526,117 +602,12 @@ emitBlockInfo(
     }
 }
 
+//------------------------------------------------
+
 // Block emission
 
 void
-ClangDocBitcodeWriter::
-emitBlock(
-    Reference const& R, FieldId Field)
-{
-    if (R.USR == EmptySID && R.Name.empty())
-        return;
-    StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
-    emitRecord(R.USR, REFERENCE_USR);
-    emitRecord(R.Name, REFERENCE_NAME);
-    emitRecord((unsigned)R.RefType, REFERENCE_TYPE);
-    emitRecord(R.Path, REFERENCE_PATH);
-    emitRecord((unsigned)Field, REFERENCE_FIELD);
-}
-
-void
-ClangDocBitcodeWriter::
-emitBlock(
-    TypeInfo const& T)
-{
-    StreamSubBlockGuard Block(Stream, BI_TYPE_BLOCK_ID);
-    emitBlock(T.Type, FieldId::F_type);
-}
-
-void
-ClangDocBitcodeWriter::
-emitBlock(
-    TypedefInfo const& T)
-{
-    StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
-    emitRecord(T.USR, TYPEDEF_USR);
-    emitRecord(T.Name, TYPEDEF_NAME);
-    for (const auto& N : T.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    emitBlock(T.javadoc);
-    for (const auto& CI : T.Description)
-        emitBlock(CI);
-    if (T.DefLoc)
-        emitRecord(*T.DefLoc, TYPEDEF_DEFLOCATION);
-    emitRecord(T.IsUsing, TYPEDEF_IS_USING);
-    emitBlock(T.Underlying);
-}
-
-void
-ClangDocBitcodeWriter::
-emitBlock(
-    FieldTypeInfo const& T)
-{
-    StreamSubBlockGuard Block(Stream, BI_FIELD_TYPE_BLOCK_ID);
-    emitBlock(T.Type, FieldId::F_type);
-    emitRecord(T.Name, FIELD_TYPE_NAME);
-    emitRecord(T.DefaultValue, FIELD_DEFAULT_VALUE);
-}
-
-void
-ClangDocBitcodeWriter::
-emitBlock(
-    MemberTypeInfo const& T)
-{
-    StreamSubBlockGuard Block(Stream, BI_MEMBER_TYPE_BLOCK_ID);
-    emitBlock(T.Type, FieldId::F_type);
-    emitRecord(T.Name, MEMBER_TYPE_NAME);
-    emitRecord(T.Access, MEMBER_TYPE_ACCESS);
-    emitBlock(T.javadoc);
-    for (const auto& CI : T.Description)
-        emitBlock(CI);
-}
-
-void
-ClangDocBitcodeWriter::
-emitBlock(
-    Javadoc const& jd)
-{
-    StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
-    emitRecord(jd.brief, JAVADOC_BRIEF);
-    emitRecord(jd.desc, JAVADOC_DESC);
-}
-
-void
-ClangDocBitcodeWriter::
-emitBlock(
-    CommentInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_COMMENT_BLOCK_ID);
-    for (auto const& L : std::vector<std::pair<
-        llvm::StringRef, RecordId>>{
-             {I.Kind, COMMENT_KIND},
-             {I.Text, COMMENT_TEXT},
-             {I.Name, COMMENT_NAME},
-             {I.Direction, COMMENT_DIRECTION},
-             {I.ParamName, COMMENT_PARAMNAME},
-             {I.CloseName, COMMENT_CLOSENAME} })
-    {
-        emitRecord(L.first, L.second);
-    }
-    emitRecord(I.SelfClosing, COMMENT_SELFCLOSING);
-    emitRecord(I.Explicit, COMMENT_EXPLICIT);
-    for (const auto& A : I.AttrKeys)
-        emitRecord(A, COMMENT_ATTRKEY);
-    for (const auto& A : I.AttrValues)
-        emitRecord(A, COMMENT_ATTRVAL);
-    for (const auto& A : I.Args)
-        emitRecord(A, COMMENT_ARG);
-    for (const auto& C : I.Children)
-        emitBlock(*C);
-}
-
-void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlock(
     NamespaceInfo const& I)
 {
@@ -662,7 +633,7 @@ emitBlock(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlock(
     RecordInfo const& I)
 {
@@ -702,7 +673,7 @@ emitBlock(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlock(
     BaseRecordInfo const& I)
 {
@@ -719,7 +690,7 @@ emitBlock(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlock(
     FunctionInfo const& I)
 {
@@ -746,7 +717,175 @@ emitBlock(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
+emitBlock(
+    Reference const& R, FieldId Field)
+{
+    if (R.USR == EmptySID && R.Name.empty())
+        return;
+    StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
+    emitRecord(R.USR, REFERENCE_USR);
+    emitRecord(R.Name, REFERENCE_NAME);
+    emitRecord((unsigned)R.RefType, REFERENCE_TYPE);
+    emitRecord(R.Path, REFERENCE_PATH);
+    emitRecord((unsigned)Field, REFERENCE_FIELD);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    TypeInfo const& T)
+{
+    StreamSubBlockGuard Block(Stream, BI_TYPE_BLOCK_ID);
+    emitBlock(T.Type, FieldId::F_type);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    TypedefInfo const& T)
+{
+    StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
+    emitRecord(T.USR, TYPEDEF_USR);
+    emitRecord(T.Name, TYPEDEF_NAME);
+    for (const auto& N : T.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    emitBlock(T.javadoc);
+    for (const auto& CI : T.Description)
+        emitBlock(CI);
+    if (T.DefLoc)
+        emitRecord(*T.DefLoc, TYPEDEF_DEFLOCATION);
+    emitRecord(T.IsUsing, TYPEDEF_IS_USING);
+    emitBlock(T.Underlying);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    FieldTypeInfo const& T)
+{
+    StreamSubBlockGuard Block(Stream, BI_FIELD_TYPE_BLOCK_ID);
+    emitBlock(T.Type, FieldId::F_type);
+    emitRecord(T.Name, FIELD_TYPE_NAME);
+    emitRecord(T.DefaultValue, FIELD_DEFAULT_VALUE);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    MemberTypeInfo const& T)
+{
+    StreamSubBlockGuard Block(Stream, BI_MEMBER_TYPE_BLOCK_ID);
+    emitBlock(T.Type, FieldId::F_type);
+    emitRecord(T.Name, MEMBER_TYPE_NAME);
+    emitRecord(T.Access, MEMBER_TYPE_ACCESS);
+    emitBlock(T.javadoc);
+    for (const auto& CI : T.Description)
+        emitBlock(CI);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    Javadoc const& jd)
+{
+    StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
+    //emitBlock(jd.getBlocks());
+    auto brief = jd.getBrief();
+    if(brief)
+    {
+        emitRecord(*brief);
+    }
+#if 0
+    emitRecord(jd.getReturns());
+    emitBlock(jd.getParams());
+    emitBlock(jd.getTParams());
+#endif
+    //dumpJavadoc(jd);
+/*
+    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
+    emitRecord(I.USR, ENUM_USR);
+    emitRecord(I.Name, ENUM_NAME);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+*/
+}
+
+template<class T>
+void
+BitcodeWriter::
+emitBlock(List<T> const& list)
+{
+    //StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_ID);
+    for(Javadoc::Node const& node : list)
+    {
+        switch(node.kind)
+        {
+        case Javadoc::Kind::text:
+            emitRecord(static_cast<Javadoc::Text const&>(node));
+            break;
+        case Javadoc::Kind::styledText:
+            emitRecord(static_cast<Javadoc::StyledText const&>(node));
+            break;
+        case Javadoc::Kind::paragraph:
+            emitRecord(static_cast<Javadoc::Paragraph const&>(node));
+            break;
+        case Javadoc::Kind::brief:
+            emitRecord(static_cast<Javadoc::Brief const&>(node));
+            break;
+        case Javadoc::Kind::admonition:
+            emitRecord(static_cast<Javadoc::Admonition const&>(node));
+            break;
+        case Javadoc::Kind::code:
+            emitRecord(static_cast<Javadoc::Code const&>(node));
+            break;
+        case Javadoc::Kind::returns:
+            emitRecord(static_cast<Javadoc::Returns const&>(node));
+            break;
+        case Javadoc::Kind::param:
+            emitRecord(static_cast<Javadoc::Param const&>(node));
+            break;
+        case Javadoc::Kind::tparam:
+            emitRecord(static_cast<Javadoc::TParam const&>(node));
+            break;
+        default:
+            llvm_unreachable("unknown kind");
+            break;
+        }
+    }
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    CommentInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_COMMENT_BLOCK_ID);
+    for (auto const& L : std::vector<std::pair<
+        llvm::StringRef, RecordId>>{
+             {I.Kind, COMMENT_KIND},
+             {I.Text, COMMENT_TEXT},
+             {I.Name, COMMENT_NAME},
+             {I.Direction, COMMENT_DIRECTION},
+             {I.ParamName, COMMENT_PARAMNAME},
+             {I.CloseName, COMMENT_CLOSENAME} })
+    {
+        emitRecord(L.first, L.second);
+    }
+    emitRecord(I.SelfClosing, COMMENT_SELFCLOSING);
+    emitRecord(I.Explicit, COMMENT_EXPLICIT);
+    for (const auto& A : I.AttrKeys)
+        emitRecord(A, COMMENT_ATTRKEY);
+    for (const auto& A : I.AttrValues)
+        emitRecord(A, COMMENT_ATTRVAL);
+    for (const auto& A : I.Args)
+        emitRecord(A, COMMENT_ARG);
+    for (const auto& C : I.Children)
+        emitBlock(*C);
+}
+
+void
+BitcodeWriter::
 emitBlock(
     EnumInfo const& I)
 {
@@ -770,7 +909,7 @@ emitBlock(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlock(
     EnumValueInfo const& I)
 {
@@ -781,7 +920,7 @@ emitBlock(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlock(
     TemplateInfo const& T)
 {
@@ -793,7 +932,7 @@ emitBlock(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlock(
     TemplateSpecializationInfo const& T)
 {
@@ -804,7 +943,7 @@ emitBlock(
 }
 
 void
-ClangDocBitcodeWriter::
+BitcodeWriter::
 emitBlock(
     TemplateParamInfo const& T)
 {
@@ -813,7 +952,7 @@ emitBlock(
 }
 
 bool
-ClangDocBitcodeWriter::
+BitcodeWriter::
 dispatchInfoForWrite(Info* I)
 {
     switch (I->IT)

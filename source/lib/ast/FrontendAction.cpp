@@ -11,7 +11,6 @@
 
 #include "Commands.hpp"
 #include "utility.hpp"
-#include "ast/BitcodeWriter.hpp"
 #include "ast/Serialize.hpp"
 #include "ast/FrontendAction.hpp"
 #include <mrdox/Corpus.hpp>

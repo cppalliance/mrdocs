@@ -58,6 +58,7 @@ mergeBase(
         javadoc.brief = std::move(Other.javadoc.brief);
     if (javadoc.desc.empty())
         javadoc.desc = std::move(Other.javadoc.desc);
+    javadoc.merge(Other.javadoc);
 }
 
 llvm::SmallString<16>

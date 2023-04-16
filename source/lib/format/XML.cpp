@@ -464,7 +464,7 @@ writeJavadoc(Javadoc const& jd)
 {
     openTag("javadoc");
     adjustNesting(1);
-    writeBrief(jd.getBrief());
+    writeBrief(*jd.getBrief());
     writeParagraph(jd.getReturns(), "returns");
     writeNodes(jd.getParams());
     writeNodes(jd.getTParams());
@@ -526,13 +526,11 @@ void
 XMLGenerator::
 Writer::
 writeBrief(
-    std::shared_ptr<Javadoc::Paragraph> const& brief)
+    Javadoc::Paragraph const& brief)
 {
-    if(! brief)
+    if(brief.empty())
         return;
-    if(brief->empty())
-        return;
-    writeParagraph(*brief, "brief");
+    writeParagraph(brief, "brief");
 }
 
 void
@@ -631,6 +629,8 @@ Writer::
 writeReturns(
     Javadoc::Returns const& returns)
 {
+    if(returns.empty())
+        return;
     openTag("returns");
     adjustNesting(1);
     writeNodes(returns.list);

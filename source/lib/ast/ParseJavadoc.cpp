@@ -9,15 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-//===--- SymbolDocumentation.cpp ==-------------------------------*- C++-*-===//
-//
-// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
-// See https://llvm.org/LICENSE.txt for license information.
-// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-//
-//===----------------------------------------------------------------------===//
-
 #include "CommentVisitor.hpp"
+#include "ParseJavadoc.hpp"
 #include <mrdox/meta/Javadoc.hpp>
 #include <clang/AST/CommentVisitor.h>
 #include <clang/AST/CommentCommandTraits.h>
@@ -131,7 +124,6 @@ public:
         visit(FC_);
 
         return Javadoc(
-            std::move(brief_),
             std::move(blocks_),
             std::move(params_),
             std::move(tparams_),
@@ -237,8 +229,10 @@ public:
         }
         if(cmd->IsBriefCommand)
         {
-            Scope scope(brief_, para_);
+            Javadoc::Brief brief;
+            Scope scope(brief, para_);
             visit_children(this, C->getParagraph());
+            blocks_.emplace_back(std::move(brief));
             return;
         }
         if(cmd->IsReturnsCommand)
@@ -252,6 +246,7 @@ public:
             Javadoc::Admonition para(Javadoc::Admonish::note);
             Scope scope(para, para_);
             visit_children(this, C->getParagraph());
+            blocks_.emplace_back(std::move(para));
             return;
         }
         if(cmd->getID() == CommandTraits::KCI_warning)
@@ -259,6 +254,7 @@ public:
             Javadoc::Admonition para(Javadoc::Admonish::warning);
             Scope scope(para, para_);
             visit_children(this, C->getParagraph());
+            blocks_.emplace_back(std::move(para));
             return;
         }
     }
@@ -344,7 +340,6 @@ private:
 
     FullComment const* FC_;
     ASTContext const& ctx_;
-    Javadoc::Paragraph brief_;
     List<Javadoc::Block> blocks_;
     List<Javadoc::Param> params_;
     List<Javadoc::TParam> tparams_;
