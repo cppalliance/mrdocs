@@ -560,7 +560,7 @@ writeText(
         "<text";
     writeAttrs({
         { "class", tag, ! tag.empty() } });
-    os_ << '>' << escape(text.text) << "</text>\n";
+    os_ << '>' << escape(text.string) << "</text>\n";
 }
 
 void
@@ -597,7 +597,7 @@ writeParagraph(
     openTag("para", {
         { "class", tag, ! tag.empty() }});
     adjustNesting(1);
-    writeNodes(para.list);
+    writeNodes(para.children);
     adjustNesting(-1);
     closeTag("para");
 }
@@ -650,7 +650,7 @@ writeReturns(
         return;
     openTag("returns");
     adjustNesting(1);
-    writeNodes(returns.list);
+    writeNodes(returns.children);
     adjustNesting(-1);
     closeTag("returns");
 }
@@ -664,7 +664,7 @@ writeParam(
     openTag("param", {
         { "name", param.name, ! param.name.empty() }});
     adjustNesting(1);
-    writeNodes(param.details.list);
+    writeNodes(param.children);
     adjustNesting(-1);
     closeTag("param");
 }
@@ -678,7 +678,7 @@ writeTParam(
     openTag("tparam", {
         { "name", tparam.name, ! tparam.name.empty() }});
     adjustNesting(1);
-    writeNodes(tparam.details.list);
+    writeNodes(tparam.children);
     adjustNesting(-1);
     closeTag("tparam");
 }

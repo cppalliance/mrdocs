@@ -706,7 +706,7 @@ private:
     struct CurrentNodeList
     {
         Javadoc::Kind kind;
-        List<Javadoc::Node> list;
+        List<Javadoc::Node> children;
 
         explicit
         CurrentNodeList(
@@ -729,7 +729,7 @@ private:
 
         Javadoc::Node& parent()
         {
-            return prev_->list.back();
+            return prev_->children.back();
         }
 
     private:
@@ -965,16 +965,16 @@ readSubBlock(
 //llvm::outs() << "BEFORE\n";
 //dumpJavadoc(*javadoc_);
 //llvm::outs() << "INCOMING\n";
-//dumpJavadoc(Javadoc(List<Javadoc::Block>(J.list), {}, {}, {}));
+//dumpJavadoc(Javadoc(List<Javadoc::Block>(J.children), {}, {}, {}));
             if(J.kind == Javadoc::Kind::block)
-                javadoc_->blocks_.splice_back(J.list);
-                //javadoc_->blocks_ = std::move(J.list);
+                javadoc_->blocks_.splice_back(J.children);
+                //javadoc_->blocks_ = std::move(J.children);
             else if(J.kind == Javadoc::Kind::param)
-                javadoc_->params_.splice_back(J.list);
-                //javadoc_->params_ = std::move(J.list);
+                javadoc_->params_.splice_back(J.children);
+                //javadoc_->params_ = std::move(J.children);
             else if(J.kind == Javadoc::Kind::tparam)
-                javadoc_->tparams_.splice_back(J.list);
-                //javadoc_->tparams_ = std::move(J.list);
+                javadoc_->tparams_.splice_back(J.children);
+                //javadoc_->tparams_ = std::move(J.children);
             else
                 return makeError("wrong node kind");
 //llvm::outs() << "AFTER\n";
@@ -992,19 +992,19 @@ readSubBlock(
             case Javadoc::Kind::returns:
             {
                 auto& parent = static_cast<Javadoc::Paragraph&>(J.parent());
-                parent.list.splice_back(J.list);
+                parent.children.splice_back(J.children);
                 return llvm::Error::success(); 
             }
             case Javadoc::Kind::param:
             {
                 auto& parent = static_cast<Javadoc::Param&>(J.parent());
-                parent.details.list.splice_back(J.list);
+                parent.children.splice_back(J.children);
                 return llvm::Error::success(); 
             }
             case Javadoc::Kind::tparam:
             {
                 auto& parent = static_cast<Javadoc::TParam&>(J.parent());
-                parent.details.list.splice_back(J.list);
+                parent.children.splice_back(J.children);
                 return llvm::Error::success(); 
             }
             //case Javadoc::Kind::block
@@ -1021,28 +1021,28 @@ readSubBlock(
         // a top-level non-list node
         if(nodes_ != nullptr)
         {
-             if(auto err = readBlock(ID, &nodes_->list))
+             if(auto err = readBlock(ID, &nodes_->children))
                 return err;
             return llvm::Error::success();
         }
 
         // hack to read one node
         CurrentNodeList J(nodes_);
-        if(auto err = readBlock(ID, &J.list))
+        if(auto err = readBlock(ID, &J.children))
             return err;
-        if(J.list.size() > 1)
+        if(J.children.size() > 1)
             return makeError("too many items in list");
         // VFALCO This is the problem where we have
         // a Returns for every Javadoc no matter if
         // it is empty or not.
-        if(J.list.empty())
+        if(J.children.empty())
             return llvm::Error::success();
-        auto kind = J.list.back().kind;
+        auto kind = J.children.back().kind;
         if(kind == Javadoc::Kind::returns)
         {
             // VFALCO should we splice?
             javadoc_->returns_ = std::move(static_cast<
-                Javadoc::Returns&>(J.list.back()));
+                Javadoc::Returns&>(J.children.back()));
             return llvm::Error::success();
         }
         return makeError("wrong kind in list");
@@ -1571,7 +1571,7 @@ parseRecord(
         case Javadoc::Kind::text:
         case Javadoc::Kind::styled:
             return decodeRecord(R, static_cast<
-                Javadoc::Text&>(I->back()).text, blob);
+                Javadoc::Text&>(I->back()).string, blob);
 
         case Javadoc::Kind::param:
             return decodeRecord(R, static_cast<

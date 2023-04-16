@@ -63,6 +63,8 @@ struct Javadoc
         warning
     };
 
+    //--------------------------------------------
+
     /** This is a variant-like list element.
     */
     struct Node
@@ -81,24 +83,24 @@ struct Javadoc
     */
     struct Text : Node
     {
-        String text;
+        String string;
 
         auto operator<=>(Text const&) const noexcept = default;
 
         explicit
         Text(
-            String text_ = String())
+            String string_ = String())
             : Node(Kind::text)
-            , text(std::move(text_))
+            , string(std::move(string_))
         {
         }
 
     protected:
         Text(
-            String text_,
+            String string_,
             Kind kind_)
             : Node(kind_)
-            , text(std::move(text_))
+            , string(std::move(string_))
         {
         }
     };
@@ -112,9 +114,9 @@ struct Javadoc
         auto operator<=>(StyledText const&) const noexcept = default;
 
         StyledText(
-            String text = String(),
+            String string_ = String(),
             Style style_ = Style::none)
-            : Text(std::move(text), Kind::styled)
+            : Text(std::move(string_), Kind::styled)
             , style(style_)
         {
         }
@@ -140,11 +142,11 @@ struct Javadoc
     */
     struct Paragraph : Block
     {
-        List<Text> list;
+        List<Text> children;
 
         bool empty() const noexcept
         {
-            return list.empty();
+            return children.empty();
         }
 
         auto operator<=>(Paragraph const&) const noexcept = default;
@@ -155,9 +157,11 @@ struct Javadoc
         }
 
     protected:
-        explicit
-        Paragraph(Kind kind) noexcept
+        Paragraph(
+            Kind kind,
+            List<Text> children_ = {})
             : Block(kind)
+            , children(std::move(children_))
         {
         }
     };
@@ -208,38 +212,38 @@ struct Javadoc
 
     /** Documentation for a function parameter
     */
-    struct Param : Block
+    struct Param : Paragraph
     {
         String name;
-        Paragraph details;
 
         auto operator<=>(Param const&) const noexcept = default;
 
         Param(
             String name_ = String(),
             Paragraph details_ = Paragraph())
-            : Block(Kind::param)
+            : Paragraph(
+                Kind::param,
+                std::move(details_.children))
             , name(std::move(name_))
-            , details(std::move(details_))
         {
         }
     };
 
     /** Documentation for a template parameter
     */
-    struct TParam : Block
+    struct TParam : Paragraph
     {
         String name;
-        Paragraph details;
 
         auto operator<=>(TParam const&) const noexcept = default;
 
         TParam(
             String name_ = String(),
             Paragraph details_ = Paragraph())
-            : Block(Kind::param)
+            : Paragraph(
+                Kind::tparam,
+                std::move(details_.children))
             , name(std::move(name_))
-            , details(std::move(details_))
         {
         }
     };
@@ -256,7 +260,20 @@ struct Javadoc
         }
     };
 
-    //---
+    //--------------------------------------------
+
+    Javadoc() = default;
+
+    /** Constructor
+    */
+    Javadoc(
+        List<Block> blocks,
+        List<Param> params,
+        List<TParam> tparams,
+        Returns returns);
+
+    bool operator<(Javadoc const&) const noexcept;
+    bool operator==(Javadoc const&) const noexcept;
 
     /** Return true if this is empty
     */
@@ -292,21 +309,6 @@ struct Javadoc
     {
         return tparams_;
     }
-
-    //---
-
-    Javadoc() = default;
-
-    /** Constructor
-    */
-    Javadoc(
-        List<Block> blocks,
-        List<Param> params,
-        List<TParam> tparams,
-        Returns returns);
-
-    bool operator<(Javadoc const&) const noexcept;
-    bool operator==(Javadoc const&) const noexcept;
 
     /** Append a node to the documentation comment.,
     */

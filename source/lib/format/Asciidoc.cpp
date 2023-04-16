@@ -576,7 +576,7 @@ Writer::
 writeNode(
     Javadoc::Text const& node)
 {
-    os_ << node.text << '\n';
+    os_ << node.string << '\n';
 }
 
 void
@@ -588,16 +588,16 @@ writeNode(
     switch(node.style)
     {
     case Javadoc::Style::bold:
-        os_ << '*' << node.text << "*\n";
+        os_ << '*' << node.string << "*\n";
         break;
     case Javadoc::Style::mono:
-        os_ << '`' << node.text << "`\n";
+        os_ << '`' << node.string << "`\n";
         break;
     case Javadoc::Style::italic:
-        os_ << '_' << node.text << "_\n";
+        os_ << '_' << node.string << "_\n";
         break;
     default:
-        os_ << node.text << '\n';
+        os_ << node.string << '\n';
         break;
     }
 }
@@ -608,7 +608,7 @@ Writer::
 writeNode(
     Javadoc::Paragraph const& node)
 {
-    writeNodes(node.list);
+    writeNodes(node.children);
 }
 
 void
@@ -617,7 +617,7 @@ Writer::
 writeNode(
     Javadoc::Admonition const& node)
 {
-    writeNodes(node.list);
+    writeNodes(node.children);
 }
 
 void
@@ -629,7 +629,7 @@ writeNode(
     os_ <<
         "[,cpp]\n"
         "----\n";
-    writeNodes(node.list);
+    writeNodes(node.children);
     os_ <<
         "----\n";
 }

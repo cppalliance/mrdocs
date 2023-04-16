@@ -174,12 +174,12 @@ public:
         // paragraph has no doxygen command,
         // so we will trim the leading space.
         // Otherwise just trim trailing space
-        if(para_->list.empty())
+        if(para_->children.empty())
             s = C->getText().ltrim().rtrim();
         else
             s = C->getText().rtrim();
             //s = C->getText().ltrim().rtrim();
-        para_->list.emplace_back(Javadoc::Text(
+        para_->children.emplace_back(Javadoc::Text(
             ensureUTF8(s.str())));
     }
 
@@ -218,10 +218,10 @@ public:
             s.append(C->getArgText(i));
 
         if(style != Javadoc::Style::none)
-            para_->list.emplace_back(
+            para_->children.emplace_back(
                 Javadoc::StyledText(std::move(s), style));
         else
-            para_->list.emplace_back(
+            para_->children.emplace_back(
                 Javadoc::Text(std::move(s)));
     }
 
@@ -337,7 +337,7 @@ public:
     void visitVerbatimBlockLineComment(
         VerbatimBlockLineComment const* C)
     {
-        code_->list.emplace_back(
+        code_->children.emplace_back(
             Javadoc::Text(C->getText().str()));
     }
 
@@ -506,7 +506,7 @@ dump(
     llvm::raw_ostream& os,
     Javadoc::Text const& t)
 {
-    os << t.text << '\n';
+    os << t.string << '\n';
 }
 
 void
@@ -523,7 +523,7 @@ dump(
     default:
         llvm_unreachable("unknown Style");
     }
-    os << c << t.text << c;
+    os << c << t.string << c;
 }
 
 void
@@ -531,7 +531,7 @@ dump(
     llvm::raw_ostream& os,
     Javadoc::Paragraph const& t)
 {
-    dump(os, t.list);
+    dump(os, t.children);
 }
 
 void
@@ -550,7 +550,7 @@ dump(
     default:
         llvm_unreachable("unknown style");
     }
-    dump(os, t.list);
+    dump(os, t.children);
 }
 
 void
@@ -561,7 +561,7 @@ dump(
     os <<
         "    @param " <<
         param.name << ' ';
-    dump(os, param.details);
+    dump(os, param.children);
     os << '\n';
 }
 
@@ -573,7 +573,7 @@ dump(
     os <<
         "    @tparam " <<
         tparam.name << ' ';
-    dump(os, tparam.details);
+    dump(os, tparam.children);
     os << '\n';
 }
 
@@ -584,7 +584,7 @@ dump(
 {
     os <<
         "    @code\n";
-    dump(os, code.list);
+    dump(os, code.children);
     os <<
         "    @endcode\n";
 }

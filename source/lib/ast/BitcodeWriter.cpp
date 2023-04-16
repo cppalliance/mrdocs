@@ -610,59 +610,59 @@ emitBlock(
     case Javadoc::Kind::text:
     {
         auto const& J = static_cast<Javadoc::Text const&>(I);
-        emitRecord(J.text, JAVADOC_NODE_STRING);
+        emitRecord(J.string, JAVADOC_NODE_STRING);
         break;
     }
     case Javadoc::Kind::styled:
     {
         auto const& J = static_cast<Javadoc::StyledText const&>(I);
         emitRecord(J.style, JAVADOC_NODE_STYLE);
-        emitRecord(J.text, JAVADOC_NODE_STRING);
+        emitRecord(J.string, JAVADOC_NODE_STRING);
         break;
     }
     case Javadoc::Kind::paragraph:
     {
         auto const& J = static_cast<Javadoc::Paragraph const&>(I);
-        emitBlock(J.list);
+        emitBlock(J.children);
         break;
     }
     case Javadoc::Kind::brief:
     {
         auto const& J = static_cast<Javadoc::Brief const&>(I);
-        emitBlock(J.list);
+        emitBlock(J.children);
         break;
     }
     case Javadoc::Kind::admonition:
     {
         auto const& J = static_cast<Javadoc::Admonition const&>(I);
         emitRecord(J.style, JAVADOC_NODE_ADMONISH);
-        emitBlock(J.list);
+        emitBlock(J.children);
         break;
     }
     case Javadoc::Kind::code:
     {
         auto const& J = static_cast<Javadoc::Code const&>(I);
-        emitBlock(J.list);
+        emitBlock(J.children);
         break;
     }
     case Javadoc::Kind::returns:
     {
         auto const& J = static_cast<Javadoc::Returns const&>(I);
-        emitBlock(J.list);
+        emitBlock(J.children);
         break;
     }
     case Javadoc::Kind::param:
     {
         auto const& J = static_cast<Javadoc::Param const&>(I);
         emitRecord(J.name, JAVADOC_NODE_STRING);
-        emitBlock(J.details);
+        emitBlock(J.children);
         break;
     }
     case Javadoc::Kind::tparam:
     {
         auto const& J = static_cast<Javadoc::TParam const&>(I);
         emitRecord(J.name, JAVADOC_NODE_STRING);
-        emitBlock(J.details);
+        emitBlock(J.children);
         break;
     }
     default:
