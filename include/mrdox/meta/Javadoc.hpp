@@ -272,69 +272,154 @@ struct Javadoc
         List<TParam> tparams,
         Returns returns);
 
+    /** Comparison
+
+        These are used internally to impose a
+        total ordering, and not visible in the
+        output format.
+    */
+    /** @{ */
     bool operator<(Javadoc const&) const noexcept;
     bool operator==(Javadoc const&) const noexcept;
+    /* @} */
 
     /** Return true if this is empty
     */
     bool
     empty() const noexcept;
 
+    /** Return the brief, or nullptr if there is none.
+
+        This function should only be called
+        after calculateBrief() has been invoked.
+    */
     Paragraph const*
     getBrief() const noexcept
     {
         return brief_.get();
     }
 
+    /** Return the list of top level blocks.
+    */
     List<Block> const&
     getBlocks() const noexcept
     {
         return blocks_;
     }
 
+    /** Return a paragraph describing the return value.
+    */
     Returns const&
     getReturns() const noexcept
     {
         return returns_;
     }
 
+    /** Return the list of param commands
+    */
     List<Param> const&
     getParams() const noexcept
     {
         return params_;
     }
 
+    /** Return the list of tparam commands
+    */
     List<TParam> const&
     getTParams() const noexcept
     {
         return tparams_;
     }
 
-    /** Append a node to the documentation comment.,
+    //--------------------------------------------
+
+    /** Merge other into this.
+
+        This is used to combine separate doc
+        comments which are semantically attached
+        to the same symbol.
     */
-    template<class Child>
-    void
-    emplace_back(Child&& node)
-    {
-        static_assert(std::is_base_of_v<Node, Child>);
-
-        blocks_.emplace_back<Child>(std::forward<Child>(node));
-    }
-
-    void
-    emplace_back(Param param)
-    {
-        params_.emplace_back(std::move(param));
-    }
-
-    void
-    emplace_back(TParam tparam)
-    {
-        tparams_.emplace_back(std::move(tparam));
-    }
-
     void merge(Javadoc& other);
+
+    /** Calculate the brief.
+
+        The implementation calls this function once,
+        after all doc comments have been merged
+        and attached, to calculate the brief as
+        follows:
+
+        @li Sets the brief to the first paragraph
+            in which a "brief" command exists, or
+
+        @li Sets the first paragraph as the brief if
+            no "brief" is found.
+
+        @li Otherwise, the brief is set to a
+            null pointer to indicate absence.
+    */
     void calculateBrief();
+
+    //--------------------------------------------
+
+    /** These are used to bottleneck all insertions.
+    */
+    /** @{ */
+    template<class T, class U>
+    static
+    void
+    append(List<T>& list, List<U>&& other) noexcept
+    {
+        list.splice_back(std::move(other));
+    }
+
+    template<class T, class Child>
+    static
+    void
+    append(List<T>& list, Child&& child)
+    {
+        list.emplace_back(
+            std::forward<Child>(child));
+    }
+
+    template<class Parent, class Child>
+    static
+    void
+    append(Parent& parent, Child&& child)
+    {
+        append(parent.children,
+            std::forward<Child>(child));
+    }
+
+    template<class Child>
+    static
+    void
+    append(Paragraph& parent, Child&& child)
+    {
+        append(parent.children,
+            std::forward<Child>(child));
+    }
+    /** @} */
+
+    /** Add a top level element to the doc comment.
+    */
+    /** @{ */
+    void append(Block node)
+    {
+        append(blocks_, std::move(node));
+    }
+    
+    void append(Param node)
+    {
+        append(params_, std::move(node));
+    }
+
+    void append(TParam node)
+    {
+        append(tparams_, std::move(node));
+    }
+    /** @} */
+
+    //--------------------------------------------
 
 //private:
 public: // VFALCO sigh...
@@ -342,6 +427,7 @@ public: // VFALCO sigh...
     List<Block> blocks_;
     List<Param> params_;
     List<TParam> tparams_;
+    std::shared_ptr<Returns const> returns_ptr_;
     Returns returns_;
 };
 

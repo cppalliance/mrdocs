@@ -466,7 +466,9 @@ populateParentNamespaces(
     // record because that record matches the previous condition mentioned.
     if ((Namespaces.empty() && isa<RecordDecl>(D)) ||
         (!Namespaces.empty() && Namespaces.back().RefType == InfoType::IT_record))
-        Namespaces.emplace_back(SymbolID(), "GlobalNamespace",
+        Namespaces.emplace_back(
+            SymbolID(),
+            "", //"GlobalNamespace",
             InfoType::IT_namespace);
 }
 

@@ -967,14 +967,11 @@ readSubBlock(
 //llvm::outs() << "INCOMING\n";
 //dumpJavadoc(Javadoc(List<Javadoc::Block>(J.children), {}, {}, {}));
             if(J.kind == Javadoc::Kind::block)
-                javadoc_->blocks_.splice_back(J.children);
-                //javadoc_->blocks_ = std::move(J.children);
+                Javadoc::append(javadoc_->blocks_, std::move(J.children));
             else if(J.kind == Javadoc::Kind::param)
-                javadoc_->params_.splice_back(J.children);
-                //javadoc_->params_ = std::move(J.children);
+                Javadoc::append(javadoc_->params_, std::move(J.children));
             else if(J.kind == Javadoc::Kind::tparam)
-                javadoc_->tparams_.splice_back(J.children);
-                //javadoc_->tparams_ = std::move(J.children);
+                Javadoc::append(javadoc_->tparams_, std::move(J.children));
             else
                 return makeError("wrong node kind");
 //llvm::outs() << "AFTER\n";
@@ -992,19 +989,19 @@ readSubBlock(
             case Javadoc::Kind::returns:
             {
                 auto& parent = static_cast<Javadoc::Paragraph&>(J.parent());
-                parent.children.splice_back(J.children);
+                Javadoc::append(parent.children, std::move(J.children));
                 return llvm::Error::success(); 
             }
             case Javadoc::Kind::param:
             {
                 auto& parent = static_cast<Javadoc::Param&>(J.parent());
-                parent.children.splice_back(J.children);
+                Javadoc::append(parent.children, std::move(J.children));
                 return llvm::Error::success(); 
             }
             case Javadoc::Kind::tparam:
             {
                 auto& parent = static_cast<Javadoc::TParam&>(J.parent());
-                parent.children.splice_back(J.children);
+                Javadoc::append(parent.children, std::move(J.children));
                 return llvm::Error::success(); 
             }
             //case Javadoc::Kind::block
@@ -1534,31 +1531,31 @@ parseRecord(
         switch(kind)
         {
         case Javadoc::Kind::text:
-            I->emplace_back(Javadoc::Text());
+            Javadoc::append(*I, Javadoc::Text());
             return llvm::Error::success();
         case Javadoc::Kind::styled:
-            I->emplace_back(Javadoc::StyledText());
+            Javadoc::append(*I, Javadoc::StyledText());
             return llvm::Error::success();
         case Javadoc::Kind::paragraph:
-            I->emplace_back(Javadoc::Paragraph());
+            Javadoc::append(*I, Javadoc::Paragraph());
             return llvm::Error::success();
         case Javadoc::Kind::brief:
-            I->emplace_back(Javadoc::Brief());
+            Javadoc::append(*I, Javadoc::Brief());
             return llvm::Error::success();
         case Javadoc::Kind::admonition:
-            I->emplace_back(Javadoc::Admonition());
+            Javadoc::append(*I, Javadoc::Admonition());
             return llvm::Error::success();
         case Javadoc::Kind::code:
-            I->emplace_back(Javadoc::Code());
+            Javadoc::append(*I, Javadoc::Code());
             return llvm::Error::success();
         case Javadoc::Kind::returns:
-            I->emplace_back(Javadoc::Returns());
+            Javadoc::append(*I, Javadoc::Returns());
             return llvm::Error::success();
         case Javadoc::Kind::param:
-            I->emplace_back(Javadoc::Param());
+            Javadoc::append(*I, Javadoc::Param());
             return llvm::Error::success();
         case Javadoc::Kind::tparam:
-            I->emplace_back(Javadoc::TParam());
+            Javadoc::append(*I, Javadoc::TParam());
             return llvm::Error::success();
         default:
             llvm_unreachable("unknown kind");

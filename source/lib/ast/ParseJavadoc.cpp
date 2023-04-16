@@ -179,8 +179,11 @@ public:
         else
             s = C->getText().rtrim();
             //s = C->getText().ltrim().rtrim();
-        para_->children.emplace_back(Javadoc::Text(
-            ensureUTF8(s.str())));
+
+        // VFALCO Figure out why we get empty TextComment
+        if(! s.empty())
+            Javadoc::append(*para_,
+                Javadoc::Text(ensureUTF8(s.str())));
     }
 
     void visitInlineCommandComment(
@@ -218,10 +221,10 @@ public:
             s.append(C->getArgText(i));
 
         if(style != Javadoc::Style::none)
-            para_->children.emplace_back(
+            Javadoc::append(*para_,
                 Javadoc::StyledText(std::move(s), style));
         else
-            para_->children.emplace_back(
+            Javadoc::append(*para_,
                 Javadoc::Text(std::move(s)));
     }
 
@@ -237,7 +240,9 @@ public:
         Javadoc::Paragraph para;
         Scope scope(para, para_);
         visit_children(this, C);
-        auto it = blocks_.emplace_back(std::move(para));
+        // VFALCO Figure out why we get empty ParagraphComment
+        if(! para.empty())
+            Javadoc::append(blocks_, std::move(para));
     }
 
     void
@@ -258,7 +263,7 @@ public:
             Javadoc::Brief brief;
             Scope scope(brief, para_);
             visit_children(this, C->getParagraph());
-            blocks_.emplace_back(std::move(brief));
+            Javadoc::append(blocks_, std::move(brief));
             return;
         }
         if(cmd->IsReturnsCommand)
@@ -272,7 +277,7 @@ public:
             Javadoc::Admonition para(Javadoc::Admonish::note);
             Scope scope(para, para_);
             visit_children(this, C->getParagraph());
-            blocks_.emplace_back(std::move(para));
+            Javadoc::append(blocks_, std::move(para));
             return;
         }
         if(cmd->getID() == CommandTraits::KCI_warning)
@@ -280,7 +285,7 @@ public:
             Javadoc::Admonition para(Javadoc::Admonish::warning);
             Scope scope(para, para_);
             visit_children(this, C->getParagraph());
-            blocks_.emplace_back(std::move(para));
+            Javadoc::append(blocks_, std::move(para));
             return;
         }
     }
@@ -324,7 +329,7 @@ public:
         Scope scope(code, code_);
         //if(C->hasNonWhitespaceParagraph())
         visit_children(this, C);
-        blocks_.emplace_back(std::move(code));
+        Javadoc::append(blocks_, std::move(code));
     }
 
     void visitVerbatimLineComment(
@@ -337,7 +342,7 @@ public:
     void visitVerbatimBlockLineComment(
         VerbatimBlockLineComment const* C)
     {
-        code_->children.emplace_back(
+        Javadoc::append(*code_,
             Javadoc::Text(C->getText().str()));
     }
 

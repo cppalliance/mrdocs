@@ -293,14 +293,19 @@ Writer::
 writeFunction(
     FunctionInfo const& I)
 {
-    writeInfo(I);
+    // location
     writeSymbol(I);
+    // return type
     writeReturnType(I.ReturnType);
+    // parameters
     for(auto const& J : I.Params)
         writeParam(J);
+    // template parameters
     if(I.Template)
         for(TemplateParamInfo const& J : I.Template->Params)
             writeTemplateParam(J);
+    // doc comment
+    writeJavadoc(I.javadoc);
 }
 
 void
@@ -482,9 +487,9 @@ writeJavadoc(Javadoc const& jd)
     if(auto brief = jd.getBrief())
         writeBrief(brief);
     writeReturns(jd.getReturns());
-    writeNodes(jd.getBlocks());
     writeNodes(jd.getParams());
     writeNodes(jd.getTParams());
+    writeNodes(jd.getBlocks());
     adjustNesting(-1);
     closeTag("doc");
 }

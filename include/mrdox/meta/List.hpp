@@ -170,7 +170,7 @@ public:
     U& emplace_back(U&& u);
 
     template<class U>
-    void splice_back(List<U>& other);
+    void splice_back(List<U>&& other) noexcept;
 
     void swap(List& other);
 
@@ -587,7 +587,7 @@ template<class U>
 void
 List<T>::
 splice_back(
-    List<U>& other)
+    List<U>&& other) noexcept
 {
     if(other.empty())
         return;

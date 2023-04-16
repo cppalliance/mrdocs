@@ -55,12 +55,14 @@ bool
 Javadoc::
 empty() const noexcept
 {
-    if( ! brief_ &&
+    if( (! brief_) &&
         blocks_.empty() &&
         params_.empty() &&
         tparams_.empty() &&
         returns_.empty())
+    {
         return true;
+    }
     return false;
 }
 
@@ -68,9 +70,9 @@ void
 Javadoc::
 merge(Javadoc& other)
 {
-    blocks_.splice_back(other.blocks_);
-    params_.splice_back(other.params_);
-    tparams_.splice_back(other.tparams_);
+    append(blocks_, std::move(other.blocks_));
+    append(params_, std::move(other.params_));
+    append(tparams_, std::move(other.tparams_));
     if( returns_.empty())
         returns_ = std::move(other.returns_);
 }

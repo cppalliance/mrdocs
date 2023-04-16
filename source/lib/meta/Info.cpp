@@ -68,7 +68,7 @@ extractName() const
         // The case of anonymous namespaces is taken care of in serialization,
         // so here we can safely assume an unnamed namespace is the global
         // one.
-        return llvm::SmallString<16>("GlobalNamespace");
+        return {}; //return llvm::SmallString<16>("GlobalNamespace");
     case InfoType::IT_record:
         return llvm::SmallString<16>("@nonymous_record_" +
             toHex(llvm::toStringRef(USR)));
