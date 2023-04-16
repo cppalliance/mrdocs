@@ -109,10 +109,6 @@ protected:
     virtual void endFile();
     /** @} */
 
-    /** Called to open or close a scope.
-
-        The default implementation does nothing.
-    */
     /** @{ */
     virtual void beginNamespace(NamespaceInfo const& I);
     virtual void writeNamespace(NamespaceInfo const& I);

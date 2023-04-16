@@ -75,10 +75,10 @@ struct Javadoc
     enum class Kind
     {
         text,
-        code,
         styledText,
         paragraph,
         admonition,
+        code,
         returns,
         param,
         tparam
@@ -220,6 +220,21 @@ struct Javadoc
         }
     };
 
+    /** Preformatted source code.
+    */
+    struct Code : Paragraph
+    {
+        // VFALCO we can add a language (e.g. C++),
+        //        then emit attributes in the generator.
+
+        auto operator<=>(Code const&) const noexcept = default;
+
+        Code()
+            : Paragraph(Kind::code)
+        {
+        }
+    };
+
     /** Documentation for a function return type
     */
     struct Returns : Paragraph
@@ -270,33 +285,16 @@ struct Javadoc
         }
     };
 
-    /** Preformatted source code.
-    */
-    struct Code : Block
-    {
-        // VFALCO we can add a language (e.g. C++),
-        //        then emit attributes in the generator.
-
-        List<Text> list;
-
-        auto operator<=>(Code const&) const noexcept = default;
-
-        Code()
-            : Block(Kind::code)
-        {
-        }
-    };
-
     // VFALCO LEGACY
     llvm::SmallString<32> brief;
     std::string desc;
 
     //---
 
-    Paragraph const&
+    std::shared_ptr<Paragraph> const&
     getBrief() const noexcept
     {
-        return *brief_;
+        return brief_;
     }
 
     List<Block> const&
@@ -363,8 +361,7 @@ struct Javadoc
     }
 
 private:
-    std::shared_ptr<
-        Paragraph const> brief_;
+    std::shared_ptr<Paragraph> brief_;
     List<Block> blocks_;
     List<Param> params_;
     List<TParam> tparams_;

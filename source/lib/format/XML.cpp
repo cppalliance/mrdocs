@@ -38,7 +38,7 @@ buildOne(
         ec,
         fs::CD_CreateAlways,
         fs::FA_Write,
-        fs::OF_Text);
+        fs::OF_TextWithCRLF);
     if(R.error(ec, "open a stream for '", fileName, "'"))
         return false;
 
@@ -369,6 +369,7 @@ Writer::
 writeInfo(
     Info const& I)
 {
+    writeJavadoc(I.javadoc);
 }
 
 void
@@ -452,6 +453,217 @@ writeMemberType(
         { "value", I.DefaultValue, ! I.DefaultValue.empty() },
         { I.Access },
         { I.Type.USR } });
+}
+
+//------------------------------------------------
+
+void
+XMLGenerator::
+Writer::
+writeJavadoc(Javadoc const& jd)
+{
+    openTag("javadoc");
+    adjustNesting(1);
+    writeBrief(jd.getBrief());
+    writeParagraph(jd.getReturns(), "returns");
+    writeNodes(jd.getParams());
+    writeNodes(jd.getTParams());
+    adjustNesting(-1);
+    closeTag("javadoc");
+}
+
+template<class T>
+void
+XMLGenerator::
+Writer::
+writeNodes(
+    List<T> const& list)
+{
+    if(list.empty())
+        return;
+    for(auto const& node : list)
+        writeNode(node);
+}
+
+void
+XMLGenerator::
+Writer::
+writeNode(
+    Javadoc::Node const& node)
+{
+    switch(node.kind)
+    {
+    case Javadoc::Kind::text:
+        writeText(static_cast<Javadoc::Text const&>(node));
+        break;
+    case Javadoc::Kind::styledText:
+        writeStyledText(static_cast<Javadoc::StyledText const&>(node));
+        break;
+    case Javadoc::Kind::paragraph:
+        writeParagraph(static_cast<Javadoc::Paragraph const&>(node));
+        break;
+    case Javadoc::Kind::admonition:
+        writeAdmonition(static_cast<Javadoc::Admonition const&>(node));
+        break;
+    case Javadoc::Kind::code:
+        writeCode(static_cast<Javadoc::Code const&>(node));
+        break;
+    case Javadoc::Kind::returns:
+        writeReturns(static_cast<Javadoc::Returns const&>(node));
+        break;
+    case Javadoc::Kind::param:
+        writeParam(static_cast<Javadoc::Param const&>(node));
+        break;
+    case Javadoc::Kind::tparam:
+        writeTParam(static_cast<Javadoc::TParam const&>(node));
+        break;
+    default:
+        llvm_unreachable("unknown kind");
+    }
+}
+
+void
+XMLGenerator::
+Writer::
+writeBrief(
+    std::shared_ptr<Javadoc::Paragraph> const& brief)
+{
+    if(! brief)
+        return;
+    if(brief->empty())
+        return;
+    writeParagraph(*brief, "brief");
+}
+
+void
+XMLGenerator::
+Writer::
+writeText(
+    Javadoc::Text const& text,
+    llvm::StringRef tag)
+{
+    openTag("text", {
+        { "class", tag, ! tag.empty() }});
+    adjustNesting(1);
+    indent() << text.text;
+    adjustNesting(-1);
+    closeTag("para");
+}
+
+void
+XMLGenerator::
+Writer::
+writeStyledText(
+    Javadoc::StyledText const& text)
+{
+    llvm::StringRef tag;
+    switch(text.style)
+    {
+    case Javadoc::Style::bold:
+        tag = "bold";
+        break;
+    case Javadoc::Style::italic:
+        tag = "italic";
+        break;
+    case Javadoc::Style::mono:
+        tag = "mono";
+        break;
+    default:
+        llvm_unreachable("unknown style");
+    }
+    writeText(text, tag);
+}
+
+void
+XMLGenerator::
+Writer::
+writeParagraph(
+    Javadoc::Paragraph const& para,
+    llvm::StringRef tag)
+{
+    openTag("para", {
+        { "class", tag, ! tag.empty() }});
+    writeNodes(para.list);
+    closeTag("para");
+}
+
+void
+XMLGenerator::
+Writer::
+writeAdmonition(
+    Javadoc::Admonition const& admonition)
+{
+    llvm::StringRef tag;
+    switch(admonition.style)
+    {
+    case Javadoc::Admonish::note:
+        tag = "note";
+        break;
+    case Javadoc::Admonish::tip:
+        tag = "tip";
+        break;
+    case Javadoc::Admonish::important:
+        tag = "important";
+        break;
+    case Javadoc::Admonish::caution:
+        tag = "caution";
+        break;
+    case Javadoc::Admonish::warning:
+        tag = "warning";
+        break;
+    default:
+        llvm_unreachable("unknown style");
+    }
+    writeParagraph(admonition, tag);
+}
+
+void
+XMLGenerator::
+Writer::
+writeCode(Javadoc::Code const& code)
+{
+    writeParagraph(code, "code");
+}
+
+void
+XMLGenerator::
+Writer::
+writeReturns(
+    Javadoc::Returns const& returns)
+{
+    openTag("returns");
+    adjustNesting(1);
+    writeNodes(returns.list);
+    adjustNesting(-1);
+    closeTag("returns");
+}
+
+void
+XMLGenerator::
+Writer::
+writeParam(
+    Javadoc::Param const& param)
+{
+    openTag("param", {
+        { "name", param.name, ! param.name.empty() }});
+    adjustNesting(1);
+    writeNodes(param.details.list);
+    adjustNesting(-1);
+    closeTag("param");
+}
+
+void
+XMLGenerator::
+Writer::
+writeTParam(
+    Javadoc::TParam const& tparam)
+{
+    openTag("tparam", {
+        { "name", tparam.name, ! tparam.name.empty() }});
+    adjustNesting(1);
+    writeNodes(tparam.details.list);
+    adjustNesting(-1);
+    closeTag("tparam");
 }
 
 //------------------------------------------------

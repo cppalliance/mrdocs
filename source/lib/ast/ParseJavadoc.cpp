@@ -621,6 +621,7 @@ void dumpNode(
         llvm_unreachable("unknown Kind");
     }
 }
+
 void
 dumpJavadoc(
     Javadoc const& jd)
@@ -630,7 +631,8 @@ dumpJavadoc(
     std::lock_guard<llvm::sys::Mutex> lock(m);
 
     os << "/** ";
-    dump(os, jd.getBrief());
+    if(jd.getBrief())
+        dump(os, *jd.getBrief());
     os << '\n';
 
     if(! jd.getBlocks().empty())

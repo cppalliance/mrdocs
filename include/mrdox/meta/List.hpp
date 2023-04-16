@@ -446,7 +446,7 @@ operator<=>(
         ++it0;
         ++it1;
     }
-    return std::strong_ordering::equal;
+    return std::strong_ordering::equivalent;
 }
 
 template<class T>

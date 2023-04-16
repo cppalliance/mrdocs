@@ -98,6 +98,21 @@ private:
     void writeTemplateParam(TemplateParamInfo const& I);
     void writeMemberType(MemberTypeInfo const& I);
 
+    void writeJavadoc(Javadoc const& jd);
+
+    template<class T>
+    void writeNodes(List<T> const& list);
+    void writeNode(Javadoc::Node const& node);
+    void writeBrief(std::shared_ptr<Javadoc::Paragraph> const& brief);
+    void writeText(Javadoc::Text const& text, llvm::StringRef tag = "");
+    void writeStyledText(Javadoc::StyledText const& text);
+    void writeParagraph(Javadoc::Paragraph const& para, llvm::StringRef tag = "");
+    void writeAdmonition(Javadoc::Admonition const& admonition);
+    void writeCode(Javadoc::Code const& code);
+    void writeReturns(Javadoc::Returns const& returns);
+    void writeParam(Javadoc::Param const& param);
+    void writeTParam(Javadoc::TParam const& tparam);
+
     void openTag(llvm::StringRef);
     void openTag(llvm::StringRef, Attrs);
     void closeTag(llvm::StringRef);
