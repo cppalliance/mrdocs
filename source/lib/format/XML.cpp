@@ -42,8 +42,6 @@ buildOne(
     if(R.error(ec, "open a stream for '", fileName, "'"))
         return false;
 
-    if(! corpus.canonicalize(R))
-        return false;
     Writer w(os, corpus, config, R);
     w.write();
     return true;
@@ -60,8 +58,6 @@ buildString(
     dest.clear();
     llvm::raw_string_ostream os(dest);
 
-    if(! corpus.canonicalize(R))
-        return false;
     Writer w(os, corpus, config, R);
     w.write();
     return true;
@@ -359,6 +355,12 @@ Writer::
 writeTypedef(
     TypedefInfo const& I)
 {
+    if(I.Name == "error_category")
+    {
+        adjustNesting(1);
+        adjustNesting(-1);
+    }
+
     openTag("typedef", {
         { "name", I.Name },
         { I.USR }
@@ -433,7 +435,7 @@ writeParam(
     FieldTypeInfo const& I)
 {
     writeTag("param", {
-        { "name", I.Name },
+        { "name", I.Name, ! I.Name.empty() },
         { "default", I.DefaultValue, ! I.DefaultValue.empty() },
         { "type", I.Type.Name },
         { I.Type.USR }
@@ -478,7 +480,7 @@ writeJavadoc(Javadoc const& jd)
     openTag("doc");
     adjustNesting(1);
     if(auto brief = jd.getBrief())
-        writeBrief(*brief);
+        writeBrief(brief);
     writeReturns(jd.getReturns());
     writeNodes(jd.getBlocks());
     writeNodes(jd.getParams());
@@ -542,11 +544,13 @@ void
 XMLGenerator::
 Writer::
 writeBrief(
-    Javadoc::Paragraph const& brief)
+    Javadoc::Paragraph const* brief)
 {
-    if(brief.empty())
+    if(! brief)
         return;
-    writeParagraph(brief, "brief");
+    if(brief->empty())
+        return;
+    writeParagraph(*brief, "brief");
 }
 
 void

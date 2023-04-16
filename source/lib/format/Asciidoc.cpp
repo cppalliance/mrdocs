@@ -102,8 +102,6 @@ buildOne(
     if(R.error(ec, "open the stream for '", fileName, "'"))
         return false;
 
-    if(! corpus.canonicalize(R))
-        return false;
     Writer w(os, corpus, config, R);
     w.beginFile();
     w.visitAllSymbols();
@@ -122,8 +120,6 @@ buildString(
     dest.clear();
     llvm::raw_string_ostream os(dest);
 
-    if(! corpus.canonicalize(R))
-        return false;
     Writer w(os, corpus, config, R);
     w.beginFile();
     w.visitAllSymbols();

@@ -169,44 +169,10 @@ build(
     // Finish up
     //
 
-    // Sort allSymbols by fully qualified name
-    {
-        std::string temp[2];
-        llvm::sort(
-            corpus->allSymbols,
-            [&](SymbolID const& id0,
-                SymbolID const& id1) noexcept
-            {
-                auto s0 = corpus->get<Info>(id0).getFullyQualifiedName(temp[0]);
-                auto s1 = corpus->get<Info>(id1).getFullyQualifiedName(temp[1]);
-                return symbolCompare(s0, s1);
-            });
-    }
+    if(! corpus->canonicalize(R))
+        return makeError("canonicalization failed");
 
     return corpus;
-}
-
-bool
-Corpus::
-canonicalize(
-    Reporter& R)
-{
-    if(isCanonical_)
-        return true;
-    auto p = find<NamespaceInfo>(EmptySID);
-    if(! p)
-    {
-        R.failed("find global namespace");
-        return false;
-    }
-
-    Temps t;
-    if(config_.verbose())
-        R.print("Canonicalizing...");
-    if(! canonicalize(*p, t, R))
-        return false;
-    isCanonical_ = true;
-    return true;
 }
 
 void
@@ -311,8 +277,17 @@ insert(std::unique_ptr<Info> Ip)
 
     auto& I = *Ip;
 
+    // VFALCO Better to do this in canonicalize
     // Clean up the javadoc
+    /*
     I.javadoc.calculateBrief();
+    if(I.IT == InfoType::IT_record)
+    {
+        auto& J = static_cast<RecordInfo&>(I);
+        for(auto& K : J.Members)
+            K.javadoc.calculateBrief();
+    }
+    */
 
     // Add a reference to this Info in the Index
     insertIntoIndex(I);
@@ -397,11 +372,59 @@ insertIntoIndex(
 
 bool
 Corpus::
+canonicalize(Reporter& R)
+{
+    if(isCanonical_)
+        return true;
+    auto p = find<NamespaceInfo>(EmptySID);
+    if(! p)
+    {
+        R.failed("find global namespace");
+        return false;
+    }
+
+    if(config_.verbose())
+        R.print("Canonicalizing...");
+
+    Temps t;
+
+    if(! canonicalize(*p, t, R))
+        return false;
+
+    if(! canonicalize(allSymbols, t, R))
+        return false;
+
+    isCanonical_ = true;
+    return true;
+}
+
+bool
+Corpus::
+canonicalize(
+    std::vector<SymbolID>& list, Temps& t, Reporter& R)
+{
+    // Sort by fully qualified name
+    llvm::sort(
+        list,
+        [&](SymbolID const& id0,
+            SymbolID const& id1) noexcept
+        {
+            auto s0 = get<Info>(id0).getFullyQualifiedName(t.s0);
+            auto s1 = get<Info>(id1).getFullyQualifiedName(t.s1);
+            return symbolCompare(s0, s1);
+        });
+    return true;
+}
+
+
+bool
+Corpus::
 canonicalize(
     NamespaceInfo& I,
     Temps& t,
     Reporter& R)
 {
+    I.javadoc.calculateBrief();
     if(! canonicalize(I.Children, t, R))
         return false;
     return true;
@@ -414,6 +437,8 @@ canonicalize(
     Temps& t,
     Reporter& R)
 {
+    I.javadoc.calculateBrief();
+    canonicalize(I.Members, t, R);
     return true;
 }
 
@@ -424,6 +449,7 @@ canonicalize(
     Temps& t,
     Reporter& R)
 {
+    I.javadoc.calculateBrief();
     return true;
 }
 
@@ -434,6 +460,7 @@ canonicalize(
     Temps& t,
     Reporter& R)
 {
+    I.javadoc.calculateBrief();
     return true;
 }
 
@@ -444,6 +471,7 @@ canonicalize(
     Temps& t,
     Reporter& R)
 {
+    I.javadoc.calculateBrief();
     return true;
 }
 
@@ -546,6 +574,8 @@ canonicalize(
     Temps& t,
     Reporter& R)
 {
+    for(auto J : list)
+        J.javadoc.calculateBrief();
     return true;
 }
 

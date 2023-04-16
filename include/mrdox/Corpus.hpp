@@ -74,17 +74,6 @@ public:
         Config const& config,
         Reporter& R);
 
-    /** Canonicalize the contents of the object.
-
-        @return true upon success.
-
-        @param R The diagnostic reporting object to
-        use for delivering errors and information.
-    */
-    [[nodiscard]]
-    bool
-    canonicalize(Reporter& R);
-
     /** Sort an array of Info by fully qualified name
     */
 
@@ -201,6 +190,17 @@ private:
     */
     void insertIntoIndex(Info const& I);
 
+    /** Canonicalize the contents of the object.
+
+        @return true upon success.
+
+        @param R The diagnostic reporting object to
+        use for delivering errors and information.
+    */
+    [[nodiscard]]
+    bool canonicalize(Reporter& R);
+
+    bool canonicalize(std::vector<SymbolID>& list, Temps& t, Reporter& R);
     bool canonicalize(NamespaceInfo& I, Temps& t, Reporter& R);
     bool canonicalize(RecordInfo& I, Temps& t, Reporter& R);
     bool canonicalize(FunctionInfo& I, Temps& t, Reporter& R);
