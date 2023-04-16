@@ -18,23 +18,8 @@
 #ifndef MRDOX_SOURCE_AST_BITCODEREADER_HPP
 #define MRDOX_SOURCE_AST_BITCODEREADER_HPP
 
-#include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Reporter.hpp>
-#include <llvm/Support/Error.h>
-#include <llvm/Bitstream/BitstreamReader.h>
-#include <memory>
-#include <vector>
-
 namespace clang {
 namespace mrdox {
-
-/** Return an array of Info read from a Bitstream.
-*/
-llvm::Expected<
-    std::vector<std::unique_ptr<Info>>>
-readBitcode(
-    llvm::BitstreamCursor& Stream,
-    Reporter& R);
 
 } // mrdox
 } // clang

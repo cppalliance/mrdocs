@@ -10,8 +10,7 @@
 //
 
 #include "ast/FrontendAction.hpp"
-#include "ast/BitcodeReader.hpp"
-//#include "ast/BitcodeWriter.hpp"
+#include "ast/Bitcode.hpp"
 #include "ast/Serialize.hpp"
 #include "meta/Reduce.hpp"
 #include <mrdox/Corpus.hpp>
@@ -21,6 +20,7 @@
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/ThreadPool.h>
+
 #include <cassert>
 
 namespace clang {

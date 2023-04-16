@@ -953,30 +953,41 @@ emitBlock(
 
 bool
 BitcodeWriter::
-dispatchInfoForWrite(Info* I)
+dispatchInfoForWrite(Info const* I)
 {
     switch (I->IT)
     {
     case InfoType::IT_namespace:
-        emitBlock(*static_cast<clang::mrdox::NamespaceInfo*>(I));
+        emitBlock(*static_cast<NamespaceInfo const*>(I));
         break;
     case InfoType::IT_record:
-        emitBlock(*static_cast<clang::mrdox::RecordInfo*>(I));
+        emitBlock(*static_cast<RecordInfo const*>(I));
         break;
     case InfoType::IT_function:
-        emitBlock(*static_cast<clang::mrdox::FunctionInfo*>(I));
+        emitBlock(*static_cast<FunctionInfo const*>(I));
         break;
     case InfoType::IT_enum:
-        emitBlock(*static_cast<clang::mrdox::EnumInfo*>(I));
+        emitBlock(*static_cast<EnumInfo const*>(I));
         break;
     case InfoType::IT_typedef:
-        emitBlock(*static_cast<clang::mrdox::TypedefInfo*>(I));
+        emitBlock(*static_cast<TypedefInfo const*>(I));
         break;
     default:
         llvm::errs() << "Unexpected info, unable to write.\n";
         return true;
     }
     return false;
+}
+
+/** Write an Info variant to the bitstream.
+*/
+void
+writeBitcode(
+    Info const& I,
+    llvm::BitstreamWriter& Stream)
+{
+    BitcodeWriter writer(Stream);
+    writer.dispatchInfoForWrite(&I);
 }
 
 } // mrdox

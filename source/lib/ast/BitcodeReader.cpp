@@ -9,14 +9,15 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "BitcodeReader.hpp"
-#include "BitcodeWriter.hpp"
+#include "BitcodeIDs.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Reporter.hpp>
 #include <clang/AST/AST.h>
 #include <llvm/ADT/IndexedMap.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
+#include <llvm/Bitstream/BitstreamReader.h>
 
 namespace clang {
 namespace mrdox {
