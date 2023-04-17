@@ -108,12 +108,16 @@ protected:
     void writeOverloadSet(
         llvm::StringRef sectionName,
         std::vector<OverloadSet> const& list);
-    void writeMemberTypes(
+    void writeNestedTypes(
+        llvm::StringRef sectionName,
+        std::vector<TypedefInfo> const& list,
+        AccessSpecifier access);
+    void writeDataMembers(
         llvm::StringRef sectionName,
         llvm::SmallVectorImpl<MemberTypeInfo> const& list,
         AccessSpecifier access);
 
-    void writeBrief(Javadoc::Paragraph const* node);
+    void writeBrief(Javadoc::Paragraph const* node, bool withNewline = true);
     void writeLocation(SymbolInfo const& I);
     void writeDescription(List<Javadoc::Block> const& list);
 

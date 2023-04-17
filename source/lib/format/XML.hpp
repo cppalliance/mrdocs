@@ -104,15 +104,15 @@ private:
     template<class T>
     void writeNodes(List<T> const& list);
     void writeNode(Javadoc::Node const& node);
-    void writeBrief(Javadoc::Paragraph const* brief);
-    void writeText(Javadoc::Text const& text, llvm::StringRef tag = "");
-    void writeStyledText(Javadoc::StyledText const& text);
-    void writeParagraph(Javadoc::Paragraph const& para, llvm::StringRef tag = "");
-    void writeAdmonition(Javadoc::Admonition const& admonition);
-    void writeCode(Javadoc::Code const& code);
-    void writeReturns(Javadoc::Returns const& returns);
-    void writeParam(Javadoc::Param const& param);
-    void writeTParam(Javadoc::TParam const& tparam);
+    void writeBrief(Javadoc::Paragraph const* node);
+    void writeText(Javadoc::Text const& node);
+    void writeStyledText(Javadoc::StyledText const& node);
+    void writeParagraph(Javadoc::Paragraph const& node, llvm::StringRef tag = "");
+    void writeAdmonition(Javadoc::Admonition const& node);
+    void writeCode(Javadoc::Code const& node);
+    void writeReturns(Javadoc::Returns const& node);
+    void writeParam(Javadoc::Param const& node);
+    void writeTParam(Javadoc::TParam const& node);
 
     void openTag(llvm::StringRef);
     void openTag(llvm::StringRef, Attrs);

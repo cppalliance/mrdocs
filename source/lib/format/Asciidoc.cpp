@@ -237,6 +237,7 @@ writeRecord(
     // Synopsis
     openSection("Synopsis");
 
+    // Location
     writeLocation(I);
 
     // Declaration
@@ -263,11 +264,19 @@ writeRecord(
     // Description
     writeDescription(I.javadoc.getBlocks());
 
-    writeMemberTypes(
+    // Nested Types
+    writeNestedTypes(
+        "Types",
+        I.Children.Typedefs,
+        AccessSpecifier::AS_public);
+
+    // Data Members
+    writeDataMembers(
         "Data Members",
         I.Members,
         AccessSpecifier::AS_public);
 
+    // Member Functions
     writeOverloadSet(
         "Member Functions",
         makeOverloadSet(corpus_, I.Children,
@@ -276,11 +285,13 @@ writeRecord(
                 return I.Access == AccessSpecifier::AS_public;
             }));
 
-    writeMemberTypes(
+    // Data Members (protected)
+    writeDataMembers(
         "Protected Data Members",
         I.Members,
         AccessSpecifier::AS_protected);
 
+    // Member Functiosn (protected)
     writeOverloadSet(
         "Protected Member Functions",
         makeOverloadSet(corpus_, I.Children,
@@ -289,11 +300,13 @@ writeRecord(
                 return I.Access == AccessSpecifier::AS_protected;
             }));
 
-    writeMemberTypes(
+    // Data Members (private)
+    writeDataMembers(
         "Private Data Members",
         I.Members,
         AccessSpecifier::AS_private);
 
+    // Member Functions (private)
     writeOverloadSet(
         "Private Member Functions",
         makeOverloadSet(corpus_, I.Children,
@@ -434,8 +447,18 @@ writeOverloadSet(
         os_ <<
             "|`" << J.name << "`\n" <<
             "|";
-        for(auto const& K : J.list)
-            writeBrief(K->javadoc.getBrief());
+        if(! J.list.empty())
+        {
+            for(auto const& K : J.list)
+            {
+                writeBrief(K->javadoc.getBrief(), false);
+                os_ << '\n';
+            }
+        }
+        else
+        {
+            os_ << '\n';
+        }
     }   
     os_ <<
         "|===\n" <<
@@ -446,12 +469,57 @@ writeOverloadSet(
 void
 AsciidocGenerator::
 Writer::
-writeMemberTypes(
+writeNestedTypes(
+    llvm::StringRef sectionName,
+    std::vector<TypedefInfo> const& list,
+    AccessSpecifier access)
+{
+    if(list.empty())
+        return;
+    auto it = list.begin();
+#if 0
+    for(;;)
+    {
+        if(it == list.end())
+            return;
+        if(it->Access == access)
+            break;
+        ++it;
+    }
+#endif
+    openSection(sectionName);
+    os_ <<
+        "\n"
+        "[,cols=2]\n" <<
+        "|===\n" <<
+        "|Name |Description\n" <<
+        "\n";
+    for(;it != list.end(); ++it)
+    {
+#if 0
+        if(it->Access != access)
+            continue;
+#endif
+        os_ <<
+            "|`" << it->Name << "`\n" <<
+            "|";
+        writeBrief(it->javadoc.getBrief(), false);
+        os_ << '\n';
+    }   
+    os_ <<
+        "|===\n" <<
+        "\n";
+    closeSection();
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeDataMembers(
     llvm::StringRef sectionName,
     llvm::SmallVectorImpl<MemberTypeInfo> const& list,
     AccessSpecifier access)
 {
-return;
     if(list.empty())
         return;
 
@@ -478,7 +546,8 @@ return;
         os_ <<
             "|`" << it->Name << "`\n" <<
             "|";
-        //os_ << it->javadoc.brief << "\n";
+        writeBrief(it->javadoc.getBrief(), false);
+        os_ << '\n';
     }   
     os_ <<
         "|===\n" <<
@@ -492,13 +561,15 @@ void
 AsciidocGenerator::
 Writer::
 writeBrief(
-    Javadoc::Paragraph const* node)
+    Javadoc::Paragraph const* node,
+    bool withNewline)
 {
     if(! node)
         return;
     if(node->empty())
         return;
-    os_ << '\n';
+    if(withNewline)
+        os_ << '\n';
     writeNode(*node);
 }
 
@@ -529,8 +600,9 @@ writeDescription(
 {
     if(list.empty())
         return;
-    os_ << "\n";
+    //os_ << '\n';
     openSection("Description");
+    os_ << '\n';
     writeNodes(list);
     closeSection();
 }

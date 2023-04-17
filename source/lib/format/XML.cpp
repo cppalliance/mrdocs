@@ -549,37 +549,39 @@ void
 XMLGenerator::
 Writer::
 writeBrief(
-    Javadoc::Paragraph const* brief)
+    Javadoc::Paragraph const* node)
 {
-    if(! brief)
+    if(! node)
         return;
-    if(brief->empty())
+    if(node->empty())
         return;
-    writeParagraph(*brief, "brief");
+    openTag("brief");
+    adjustNesting(1);
+    writeNodes(node->children);
+    adjustNesting(-1);
+    closeTag("brief");
 }
 
 void
 XMLGenerator::
 Writer::
 writeText(
-    Javadoc::Text const& text,
-    llvm::StringRef tag)
+    Javadoc::Text const& node)
 {
     indent() <<
-        "<text";
-    writeAttrs({
-        { "class", tag, ! tag.empty() } });
-    os_ << '>' << escape(text.string) << "</text>\n";
+        "<text>" <<
+        escape(node.string) <<
+        "</text>\n";
 }
 
 void
 XMLGenerator::
 Writer::
 writeStyledText(
-    Javadoc::StyledText const& text)
+    Javadoc::StyledText const& node)
 {
     llvm::StringRef tag;
-    switch(text.style)
+    switch(node.style)
     {
     case Javadoc::Style::bold:
         tag = "bold";
@@ -593,7 +595,10 @@ writeStyledText(
     default:
         llvm_unreachable("unknown style");
     }
-    writeText(text, tag);
+    os_ <<
+        '<' << tag << '>' <<
+        node.string <<
+        '<' << tag << '>';
 }
 
 void
@@ -646,7 +651,17 @@ XMLGenerator::
 Writer::
 writeCode(Javadoc::Code const& code)
 {
-    writeParagraph(code, "code");
+    if(code.children.empty())
+    {
+        indent() << "<code/>\n";
+        return;
+    }
+
+    openTag("code");
+    adjustNesting(1);
+    writeNodes(code.children);
+    adjustNesting(-1);
+    closeTag("code");
 }
 
 void

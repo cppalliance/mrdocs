@@ -41,7 +41,6 @@ endif()
 
 if (WIN32)
     add_definitions(
-        -D_WIN32_WINNT=0x0601
         -D_CRT_SECURE_NO_WARNINGS
         -D_SILENCE_CXX20_CISO646_REMOVED_WARNING)
     if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win32") # 32-bit

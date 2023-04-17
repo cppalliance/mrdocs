@@ -9,18 +9,9 @@
 //
 
 #include "Tester.hpp"
+#include <mrdox/Debug.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/Signals.h>
-
-#if 0
-#if defined(_MSC_VER) && ! defined(NDEBUG)
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <debugapi.h>
-#include <crtdbg.h>
-#include <sstream>
-#endif
-#endif
 
 namespace clang {
 namespace mrdox {
@@ -72,23 +63,15 @@ testMain(
 int
 main(int argc, const char** argv)
 {
-#if 0
-#if defined(_MSC_VER) && ! defined(NDEBUG)
-    int flags = _CrtSetDbgFlag(
-        _CRTDBG_REPORT_FLAG);
-    flags |= _CRTDBG_LEAK_CHECK_DF;
-    _CrtSetDbgFlag(flags);
-#endif
-#endif
-
+    clang::mrdox::debugEnableRedirecton();
+    clang::mrdox::debugEnableHeapChecking();
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
 
-    using namespace clang::mrdox;
-    Reporter R;
-    testMain(argc, argv, R);
+    clang::mrdox::Reporter R;
+    clang::mrdox::testMain(argc, argv, R);
 
-    //dumpCommentTypes();
-    //dumpCommentCommands();
+    //clang::mrdox::dumpCommentTypes();
+    //clang::mrdox::dumpCommentCommands();
 
     return R.getExitCode();
 }

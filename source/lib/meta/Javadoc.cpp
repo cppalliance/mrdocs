@@ -81,6 +81,7 @@ void
 Javadoc::
 calculateBrief()
 {
+return;
     Paragraph* brief = nullptr;
     for(auto& block : blocks_)
     {

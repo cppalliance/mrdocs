@@ -129,14 +129,13 @@ class JavadocVisitor
         return s;
     }
 
-    template<class T, class R, class... Args>
-    static void visit_children(
-        ConstCommentVisitor<T, R, Args...>* visitor,
+    template<class... Args>
+    void visitChildren(
         Comment const* C)
     {
         for(auto const* it = C->child_begin();
                 it != C->child_end(); ++it)
-            visitor->visit(*it);
+            visit(*it);
     }
 
 public:
@@ -163,27 +162,46 @@ public:
     void visitComment(
         Comment const* C)
     {
-        visit_children(this, C);
+        visitChildren(C);
     }
 
     void visitTextComment(
         TextComment const* C)
     {
-        llvm::StringRef s;
+        llvm::StringRef s = C->getText();
         // If this is the very first node, the
         // paragraph has no doxygen command,
         // so we will trim the leading space.
         // Otherwise just trim trailing space
+#if 0
         if(para_->children.empty())
-            s = C->getText().ltrim().rtrim();
+            s = s.ltrim().rtrim();
         else
-            s = C->getText().rtrim();
-            //s = C->getText().ltrim().rtrim();
+            s = s.rtrim();
+            //s = s.ltrim().rtrim();
+#endif
 
         // VFALCO Figure out why we get empty TextComment
-        if(! s.empty())
+        //if(! s.empty())
             Javadoc::append(*para_,
                 Javadoc::Text(ensureUTF8(s.str())));
+    }
+
+    void visitHTMLTagComment(
+        HTMLTagComment const* C)
+    {
+        visitChildren(C);
+    }
+
+    void visitHTMLStartTagComment(
+        HTMLStartTagComment const* C)
+    {
+        visitChildren(C);
+    }
+
+    void HTMLEndTagComment(
+        HTMLStartTagComment const* C)
+    {
     }
 
     void visitInlineCommandComment(
@@ -236,10 +254,10 @@ public:
         ParagraphComment const* C)
     {
         if(para_)
-            return visit_children(this, C);
+            return visitChildren(C);
         Javadoc::Paragraph para;
         Scope scope(para, para_);
-        visit_children(this, C);
+        visitChildren(C);
         // VFALCO Figure out why we get empty ParagraphComment
         if(! para.empty())
             Javadoc::append(blocks_, std::move(para));
@@ -262,21 +280,21 @@ public:
         {
             Javadoc::Brief brief;
             Scope scope(brief, para_);
-            visit_children(this, C->getParagraph());
+            visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::move(brief));
             return;
         }
         if(cmd->IsReturnsCommand)
         {
             Scope scope(returns_, para_);
-            visit_children(this, C->getParagraph());
+            visitChildren(C->getParagraph());
             return;
         }
         if(cmd->getID() == CommandTraits::KCI_note)
         {
             Javadoc::Admonition para(Javadoc::Admonish::note);
             Scope scope(para, para_);
-            visit_children(this, C->getParagraph());
+            visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::move(para));
             return;
         }
@@ -284,7 +302,7 @@ public:
         {
             Javadoc::Admonition para(Javadoc::Admonish::warning);
             Scope scope(para, para_);
-            visit_children(this, C->getParagraph());
+            visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::move(para));
             return;
         }
@@ -301,7 +319,7 @@ public:
             name = "@anon";
         Scope scope(para, para_);
         //if(C->hasNonWhitespaceParagraph())
-        visit_children(this, C->getParagraph());
+        visitChildren(C->getParagraph());
         params_.emplace_back(Javadoc::Param(
             std::move(name), std::move(para)));
     }
@@ -317,7 +335,7 @@ public:
             name = "@anon";
         Scope scope(para, para_);
         //if(C->hasNonWhitespaceParagraph())
-        visit_children(this, C->getParagraph());
+        visitChildren(C->getParagraph());
         tparams_.emplace_back(Javadoc::TParam(
             std::move(name), std::move(para)));
     }
@@ -328,7 +346,7 @@ public:
         Javadoc::Code code;
         Scope scope(code, code_);
         //if(C->hasNonWhitespaceParagraph())
-        visit_children(this, C);
+        visitChildren(C);
         Javadoc::append(blocks_, std::move(code));
     }
 
