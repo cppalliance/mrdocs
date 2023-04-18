@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_XML_HPP
-#define MRDOX_SOURCE_XML_HPP
+#ifndef MRDOX_SOURCE_FORMAT_XML_HPP
+#define MRDOX_SOURCE_FORMAT_XML_HPP
 
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/format/Generator.hpp>

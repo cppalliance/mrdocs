@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "base64.hpp"
 #include "XML.hpp"
+#include "format/base64.hpp"
 #include <mrdox/Metadata.hpp>
 
 namespace clang {

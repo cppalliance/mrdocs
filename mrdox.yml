@@ -1,0 +1,6 @@
+verbose: false
+private: true
+source-root: include
+input:
+  include:
+    #- ../src/ipv4_address.cpp
