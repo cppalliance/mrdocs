@@ -26,23 +26,25 @@ namespace {
 class debug_streambuf
     : public std::stringbuf
 {
-    std::ostream& os_;
     bool dbg_;
+    std::ostream& os_;
+    std::streambuf* sb_;
 
     void
     write(char const* s)
     {
         if(dbg_)
             ::OutputDebugStringA(s);
-        os_ << s;
+        sb_->sputn(s, std::strlen(s));
     }
 
 public:
     explicit
     debug_streambuf(
         std::ostream& os)
-        : os_(os)
-        , dbg_(::IsDebuggerPresent() != 0)
+        : dbg_(::IsDebuggerPresent() != 0)
+        , os_(os)
+        , sb_(dbg_ ? os.rdbuf(this) : os.rdbuf())
     {
     }
 
@@ -66,9 +68,6 @@ debugEnableRedirecton()
 {
     static debug_streambuf out(std::cout);
     static debug_streambuf err(std::cerr);
-
-    std::cout.rdbuf(&out);
-    std::cerr.rdbuf(&err);
 }
 
 void

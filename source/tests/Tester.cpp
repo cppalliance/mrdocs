@@ -12,7 +12,7 @@
 #include "SingleFile.hpp"
 #include <clang/Tooling/StandaloneExecution.h>
 
-#define NO_ASYNC
+//#define NO_ASYNC
 
 namespace clang {
 namespace mrdox {

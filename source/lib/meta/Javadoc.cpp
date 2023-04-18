@@ -18,23 +18,19 @@
 namespace clang {
 namespace mrdox {
 
-static_assert(std::is_copy_constructible_v<Javadoc::Node>);
-static_assert(std::is_copy_constructible_v<Javadoc::Text>);
-static_assert(std::is_copy_constructible_v<Javadoc::StyledText>);
-static_assert(std::is_copy_constructible_v<Javadoc::Block>);
-static_assert(std::is_copy_constructible_v<Javadoc::Paragraph>);
-static_assert(std::is_copy_constructible_v<Javadoc::Param>);
-static_assert(std::is_copy_constructible_v<Javadoc::TParam>);
-static_assert(std::is_copy_constructible_v<Javadoc::Code>);
+template<class T>
+concept a_Node =
+    std::is_copy_constructible_v<T> &&
+    std::three_way_comparable<T>;
 
-static_assert(std::is_move_constructible_v<Javadoc::Node>);
-static_assert(std::is_move_constructible_v<Javadoc::Text>);
-static_assert(std::is_move_constructible_v<Javadoc::StyledText>);
-static_assert(std::is_move_constructible_v<Javadoc::Block>);
-static_assert(std::is_move_constructible_v<Javadoc::Paragraph>);
-static_assert(std::is_move_constructible_v<Javadoc::Param>);
-static_assert(std::is_move_constructible_v<Javadoc::TParam>);
-static_assert(std::is_move_constructible_v<Javadoc::Code>);
+static_assert(a_Node<Javadoc::Node>);
+static_assert(a_Node<Javadoc::Text>);
+static_assert(a_Node<Javadoc::StyledText>);
+static_assert(a_Node<Javadoc::Block>);
+static_assert(a_Node<Javadoc::Paragraph>);
+static_assert(a_Node<Javadoc::Param>);
+static_assert(a_Node<Javadoc::TParam>);
+static_assert(a_Node<Javadoc::Code>);
 
 //------------------------------------------------
 
@@ -66,15 +62,40 @@ empty() const noexcept
     return false;
 }
 
+bool
+Javadoc::
+operator==(
+    Javadoc const& other) const noexcept
+{
+    return 
+        blocks_ == other.blocks_ &&
+        params_ == other.params_ &&
+        tparams_ == other.tparams_ &&
+        returns_ == other.returns_;
+}
+
+bool
+Javadoc::
+operator!=(
+    Javadoc const& other) const noexcept
+{
+    return !(*this == other);
+}
+
 void
 Javadoc::
-merge(Javadoc& other)
+merge(Javadoc&& other)
 {
-    append(blocks_, std::move(other.blocks_));
-    append(params_, std::move(other.params_));
-    append(tparams_, std::move(other.tparams_));
-    if( returns_.empty())
-        returns_ = std::move(other.returns_);
+    // Unconditionally extend the blocks
+    // since each decl may have a comment.
+    if(other != *this)
+    {
+        append(blocks_, std::move(other.blocks_));
+        append(params_, std::move(other.params_));
+        append(tparams_, std::move(other.tparams_));
+        if( returns_.empty())
+            returns_ = std::move(other.returns_);
+    }
 }
 
 void

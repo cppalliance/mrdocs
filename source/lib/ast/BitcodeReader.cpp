@@ -9,31 +9,16 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "BitcodeIDs.hpp"
-#include "ast/ParseJavadoc.hpp"
-#include <mrdox/Error.hpp>
-#include <mrdox/Metadata.hpp>
-#include <mrdox/Reporter.hpp>
-#include <clang/AST/AST.h>
-#include <llvm/ADT/IndexedMap.h>
-#include <llvm/ADT/Optional.h>
-#include <llvm/ADT/SmallVector.h>
-#include <llvm/Bitstream/BitstreamReader.h>
+#include "BitcodeReader.hpp"
 
 namespace clang {
 namespace mrdox {
-
-//------------------------------------------------
-
-namespace {
 
 //------------------------------------------------
 //
 // decodeRecord
 //
 //------------------------------------------------
-
-using Record = llvm::SmallVector<uint64_t, 1024>;
 
 // This implements decode for SmallString.
 llvm::Error
@@ -88,6 +73,7 @@ decodeRecord(
     int& Field,
     llvm::StringRef Blob)
 {
+    Field = 0;
     if (R[0] > INT_MAX)
         return makeError("integer too large to parse");
     Field = (int)R[0];
@@ -109,6 +95,7 @@ decodeRecord(
         Field = (AccessSpecifier)R[0];
         return llvm::Error::success();
     default:
+        Field = AS_none;
         return makeError("invalid value for AccessSpecifier");
     }
 }
@@ -129,6 +116,7 @@ decodeRecord(
         Field = (TagTypeKind)R[0];
         return llvm::Error::success();
     default:
+        Field = TTK_Struct;
         return makeError("invalid value for TagTypeKind");
     }
 }
@@ -162,6 +150,7 @@ decodeRecord(
         Field = IT;
         return llvm::Error::success();
     }
+    Field = InfoType::IT_default;
     return makeError("invalid value for InfoType");
 }
 
@@ -184,6 +173,7 @@ decodeRecord(
         Field = F;
         return llvm::Error::success();
     }
+    Field = FieldId::F_default;
     return makeError("invalid value for FieldId");
 }
 
@@ -607,157 +597,6 @@ addTemplateSpecialization(
 
 //------------------------------------------------
 
-// Class to read bitstream into an InfoSet collection
-class BitcodeReader
-{
-public:
-    BitcodeReader(
-        llvm::BitstreamCursor& Stream,
-        Reporter& R)
-        : R_(R)
-        , Stream(Stream)
-    {
-    }
-
-    // Main entry point, calls readBlock to read each block in the given stream.
-    llvm::Expected<
-        std::vector<std::unique_ptr<Info>>>
-    getInfos();
-
-private:
-    enum class Cursor
-    {
-        BadBlock = 1,
-        Record,
-        BlockEnd,
-        BlockBegin
-    };
-
-    llvm::Error validateStream();
-    llvm::Error readBlockInfoBlock();
-
-    /** Read the next Info
-
-        Calls createInfo after casting.
-    */
-    llvm::Expected<std::unique_ptr<Info>>
-    readBlockToInfo(unsigned ID);
-
-    /** Return T from reading the stream.
-    */
-    template <typename T>
-    llvm::Expected<std::unique_ptr<Info>>
-    createInfo(unsigned ID);
-
-    /** Read a single block.
-
-        Calls readRecord on each record found.
-    */
-    template<typename T>
-    llvm::Error
-    readBlock(unsigned ID, T I);
-
-    // Step through a block of records to find the next data field.
-    template<typename T>
-    llvm::Error
-    readSubBlock(unsigned ID, T I);
-
-    /** Read a record into a data field.
-
-        This calls parseRecord after casting.
-    */
-    template<typename T>
-    llvm::Error
-    readRecord(unsigned ID, T I);
-
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, const unsigned VersionNo);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, NamespaceInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, RecordInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, BaseRecordInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, FunctionInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, EnumInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, EnumValueInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TypedefInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TypeInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, FieldTypeInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, MemberTypeInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, Reference* I, FieldId& F);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TemplateInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TemplateSpecializationInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TemplateParamInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, Javadoc* I);
-
-    struct CurrentNodeList
-    {
-        Javadoc::Kind kind;
-        List<Javadoc::Node> children;
-
-        explicit
-        CurrentNodeList(
-            CurrentNodeList*& stack) noexcept
-            : prev_(stack)
-            , nodes_(stack)
-        {
-            nodes_ = this;
-        }
-
-        ~CurrentNodeList()
-        {
-            nodes_ = prev_;
-        }
-
-        bool isTopLevel() const noexcept
-        {
-            return prev_ == nullptr;
-        }
-
-        Javadoc::Node& parent()
-        {
-            return prev_->children.back();
-        }
-
-    private:
-        CurrentNodeList* prev_;
-        CurrentNodeList*& nodes_;
-    };
-
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, CurrentNodeList* I);
-
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, List<Javadoc::Node>* I);
-
-    // Helper function to step through blocks to find and dispatch the next record
-    // or block to be read.
-    Cursor skipUntilRecordOrBlock(unsigned &BlockOrRecordID);
-
-private:
-    Reporter& R_;
-    llvm::BitstreamCursor &Stream;
-    llvm::Optional<llvm::BitstreamBlockInfo> BlockInfo;
-    FieldId CurrentReferenceField;
-    Javadoc* javadoc_ = nullptr;
-    CurrentNodeList* nodes_ = nullptr;
-};
-
-//------------------------------------------------
-
 // Entry point
 llvm::Expected<
     std::vector<std::unique_ptr<Info>>>
@@ -788,7 +627,7 @@ getInfos()
         case BI_FIELD_TYPE_BLOCK_ID:
         case BI_MEMBER_TYPE_BLOCK_ID:
         case BI_JAVADOC_BLOCK_ID:
-        case BI_JAVADOC_LIST_BLOCK_ID:
+        case BI_JAVADOC_NODELIST_BLOCK_ID:
         case BI_JAVADOC_NODE_BLOCK_ID:
         case BI_REFERENCE_BLOCK_ID:
             return makeError("invalid top level block");
@@ -944,105 +783,32 @@ readSubBlock(
         auto rv = getJavadoc(I);
         if(! rv)
             return rv.takeError();
-        auto saved = javadoc_;
-        assert(saved == nullptr);
-        javadoc_ = rv.get();
-        auto err = readBlock(ID, javadoc_);
-        javadoc_ = saved;
-        if(err)
+        AnyNodeList J(nodes_);
+        if(auto err = J.setKind(Javadoc::Kind::block)) // because Javadoc::blocks_
             return err;
-        return llvm::Error::success();
-    }
-
-    case BI_JAVADOC_LIST_BLOCK_ID:
-    {
-        assert(javadoc_);
-        CurrentNodeList J(nodes_);
         if(auto err = readBlock(ID, &J))
             return err;
-        if(J.isTopLevel())
-        {
-//llvm::outs() << "BEFORE\n";
-//dumpJavadoc(*javadoc_);
-//llvm::outs() << "INCOMING\n";
-//dumpJavadoc(Javadoc(List<Javadoc::Block>(J.children), {}, {}, {}));
-            if(J.kind == Javadoc::Kind::block)
-                Javadoc::append(javadoc_->blocks_, std::move(J.children));
-            else if(J.kind == Javadoc::Kind::param)
-                Javadoc::append(javadoc_->params_, std::move(J.children));
-            else if(J.kind == Javadoc::Kind::tparam)
-                Javadoc::append(javadoc_->tparams_, std::move(J.children));
-            else
-                return makeError("wrong node kind");
-//llvm::outs() << "AFTER\n";
-//dumpJavadoc(*javadoc_);
-            return llvm::Error::success();
-        }
-        else
-        {
-            switch(J.parent().kind)
-            {
-            case Javadoc::Kind::paragraph:
-            case Javadoc::Kind::brief:
-            case Javadoc::Kind::admonition:
-            case Javadoc::Kind::code:
-            case Javadoc::Kind::returns:
-            {
-                auto& parent = static_cast<Javadoc::Paragraph&>(J.parent());
-                Javadoc::append(parent.children, std::move(J.children));
-                return llvm::Error::success(); 
-            }
-            case Javadoc::Kind::param:
-            {
-                auto& parent = static_cast<Javadoc::Param&>(J.parent());
-                Javadoc::append(parent.children, std::move(J.children));
-                return llvm::Error::success(); 
-            }
-            case Javadoc::Kind::tparam:
-            {
-                auto& parent = static_cast<Javadoc::TParam&>(J.parent());
-                Javadoc::append(parent.children, std::move(J.children));
-                return llvm::Error::success(); 
-            }
-            //case Javadoc::Kind::block
-            default:
-                return makeError("wrong node kind");
-            }
-        }
-        return llvm::Error::success();
+        return J.spliceInto(rv.get()->blocks_);
+    }
+
+    case BI_JAVADOC_NODELIST_BLOCK_ID:
+    {
+        if(! nodes_)
+            return makeError("unexpected sub-block");
+        AnyNodeList J(nodes_);
+        if(auto err = readBlock(ID, &J))
+            return err;
+        return J.spliceIntoParent();
     }
 
     case BI_JAVADOC_NODE_BLOCK_ID:
     {
-        // when nodes_ == nullptr we have
-        // a top-level non-list node
-        if(nodes_ != nullptr)
-        {
-             if(auto err = readBlock(ID, &nodes_->children))
-                return err;
-            return llvm::Error::success();
-        }
-
-        // hack to read one node
-        CurrentNodeList J(nodes_);
-        if(auto err = readBlock(ID, &J.children))
+        // read a Node and append it to nodes_
+        if(! nodes_)
+            return makeError("unexpected sub-block");
+        if(auto err = readBlock(ID, &nodes_->getNodes()))
             return err;
-        if(J.children.size() > 1)
-            return makeError("too many items in list");
-        // VFALCO This is the problem where we have
-        // a Returns for every Javadoc no matter if
-        // it is empty or not.
-        if(J.children.empty())
-            return llvm::Error::success();
-        auto kind = J.children.back().kind;
-        if(kind == Javadoc::Kind::returns)
-        {
-            // VFALCO should we splice?
-            javadoc_->returns_ = std::move(static_cast<
-                Javadoc::Returns&>(J.children.back()));
-            return llvm::Error::success();
-        }
-        return makeError("wrong kind in list");
+        return llvm::Error::success();
     }
 
     case BI_TYPE_BLOCK_ID:
@@ -1481,32 +1247,18 @@ BitcodeReader::
 parseRecord(
     Record const& R,
     unsigned ID,
-    llvm::StringRef Blob,
-    Javadoc* I)
-{
-    // VFALCO we will never get here since the
-    // javadoc block doesn't have any records,
-    // only sub-blocks.
-    return makeError("invalid ID for Javadoc");
-}
-
-llvm::Error
-BitcodeReader::
-parseRecord(
-    Record const& R,
-    unsigned ID,
     llvm::StringRef blob,
-    CurrentNodeList* I)
+    AnyNodeList* I)
 {
     switch (ID)
     {
-    case JAVADOC_NODE_KIND:
     case JAVADOC_LIST_KIND:
     {
         assert(I != nullptr);
-        if(auto err = decodeRecord(R, I->kind, blob))
+        Javadoc::Kind kind;
+        if(auto err = decodeRecord(R, kind, blob))
             return err;
-        return llvm::Error::success();
+        return I->setKind(kind);
     }
     default:
         return makeError("invalid field for List");
@@ -1519,7 +1271,7 @@ parseRecord(
     Record const& R,
     unsigned ID,
     llvm::StringRef blob,
-    List<Javadoc::Node>* I)
+    AnyNodeList::Nodes* I)
 {
     switch (ID)
     {
@@ -1528,85 +1280,28 @@ parseRecord(
         Javadoc::Kind kind;
         if(auto err = decodeRecord(R, kind, blob))
             return err;
-        switch(kind)
-        {
-        case Javadoc::Kind::text:
-            Javadoc::append(*I, Javadoc::Text());
-            return llvm::Error::success();
-        case Javadoc::Kind::styled:
-            Javadoc::append(*I, Javadoc::StyledText());
-            return llvm::Error::success();
-        case Javadoc::Kind::paragraph:
-            Javadoc::append(*I, Javadoc::Paragraph());
-            return llvm::Error::success();
-        case Javadoc::Kind::brief:
-            Javadoc::append(*I, Javadoc::Brief());
-            return llvm::Error::success();
-        case Javadoc::Kind::admonition:
-            Javadoc::append(*I, Javadoc::Admonition());
-            return llvm::Error::success();
-        case Javadoc::Kind::code:
-            Javadoc::append(*I, Javadoc::Code());
-            return llvm::Error::success();
-        case Javadoc::Kind::returns:
-            Javadoc::append(*I, Javadoc::Returns());
-            return llvm::Error::success();
-        case Javadoc::Kind::param:
-            Javadoc::append(*I, Javadoc::Param());
-            return llvm::Error::success();
-        case Javadoc::Kind::tparam:
-            Javadoc::append(*I, Javadoc::TParam());
-            return llvm::Error::success();
-        default:
-            llvm_unreachable("unknown kind");
-        }
+        return I->appendChild(kind);
     }
+
     case JAVADOC_NODE_STRING:
     {
-        switch(I->back().kind)
-        {
-        case Javadoc::Kind::text:
-        case Javadoc::Kind::styled:
-            return decodeRecord(R, static_cast<
-                Javadoc::Text&>(I->back()).string, blob);
-
-        case Javadoc::Kind::param:
-            return decodeRecord(R, static_cast<
-                Javadoc::Param&>(I->back()).name, blob);
-
-        case Javadoc::Kind::tparam:
-            return decodeRecord(R, static_cast<
-                Javadoc::TParam&>(I->back()).name, blob);
-
-        default:
-            return makeError("invalid record for node");
-        }
+        return I->setString(blob);
     }
 
     case JAVADOC_NODE_STYLE:
     {
-        switch(I->back().kind)
-        {
-        case Javadoc::Kind::styled:
-            return decodeRecord(R, static_cast<
-                Javadoc::StyledText&>(I->back()).style, blob);
-
-        default:
-            return makeError("invalid record for node");
-        }
+        Javadoc::Style style;
+        if(auto err = decodeRecord(R, style, blob))
+            return err;
+        return I->setStyle(style);
     }
 
     case JAVADOC_NODE_ADMONISH:
     {
-        switch(I->back().kind)
-        {
-        case Javadoc::Kind::admonition:
-            return decodeRecord(R, static_cast<
-                Javadoc::Admonition&>(I->back()).style, blob);
-
-        default:
-            return makeError("invalid record for node");
-        }
+        Javadoc::Admonish admonish;
+        if(auto err = decodeRecord(R, admonish, blob))
+            return err;
+        return I->setAdmonish(admonish);
     }
 
     default:
@@ -1670,8 +1365,6 @@ skipUntilRecordOrBlock(
 }
 
 //------------------------------------------------
-
-} // (anon)
 
 // Calls readBlock to read each block in the given stream.
 llvm::Expected<

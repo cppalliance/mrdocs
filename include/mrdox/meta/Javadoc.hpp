@@ -71,7 +71,8 @@ struct Javadoc
     {
         Kind kind;
 
-        auto operator<=>(Node const&) const noexcept = default;
+        auto operator<=>(Node const&
+            ) const noexcept = default;
 
         explicit Node(Kind kind_) noexcept
             : kind(kind_)
@@ -85,7 +86,10 @@ struct Javadoc
     {
         String string;
 
-        auto operator<=>(Text const&) const noexcept = default;
+        static constexpr Kind static_kind = Kind::text;
+
+        auto operator<=>(Text const&
+            ) const noexcept = default;
 
         explicit
         Text(
@@ -111,7 +115,8 @@ struct Javadoc
     {
         Style style;
 
-        auto operator<=>(StyledText const&) const noexcept = default;
+        auto operator<=>(StyledText const&
+            ) const noexcept = default;
 
         StyledText(
             String string_ = String(),
@@ -128,7 +133,10 @@ struct Javadoc
     */
     struct Block : Node
     {
-        auto operator<=>(Block const&) const noexcept = default;
+        static constexpr Kind static_kind = Kind::block;
+
+        auto operator<=>(Block const&
+            ) const noexcept = default;
 
     protected:
         explicit
@@ -149,7 +157,8 @@ struct Javadoc
             return children.empty();
         }
 
-        auto operator<=>(Paragraph const&) const noexcept = default;
+        auto operator<=>(Paragraph const&
+            ) const noexcept = default;
 
         Paragraph() noexcept
             : Block(Kind::paragraph)
@@ -170,7 +179,8 @@ struct Javadoc
     */
     struct Brief : Paragraph
     {
-        auto operator<=>(Brief const&) const noexcept = default;
+        auto operator<=>(Brief const&
+            ) const noexcept = default;
 
         Brief() noexcept
             : Paragraph(Kind::brief)
@@ -184,7 +194,8 @@ struct Javadoc
     {
         Admonish style;
 
-        auto operator<=>(Admonition const&) const noexcept = default;
+        auto operator<=>(Admonition const&
+            ) const noexcept = default;
 
         explicit
         Admonition(
@@ -202,7 +213,8 @@ struct Javadoc
         // VFALCO we can add a language (e.g. C++),
         //        then emit attributes in the generator.
 
-        auto operator<=>(Code const&) const noexcept = default;
+        auto operator<=>(Code const&
+            ) const noexcept = default;
 
         Code()
             : Paragraph(Kind::code)
@@ -216,7 +228,8 @@ struct Javadoc
     {
         String name;
 
-        auto operator<=>(Param const&) const noexcept = default;
+        auto operator<=>(Param const&
+            ) const noexcept = default;
 
         Param(
             String name_ = String(),
@@ -235,7 +248,8 @@ struct Javadoc
     {
         String name;
 
-        auto operator<=>(TParam const&) const noexcept = default;
+        auto operator<=>(TParam const&
+            ) const noexcept = default;
 
         TParam(
             String name_ = String(),
@@ -252,7 +266,8 @@ struct Javadoc
     */
     struct Returns : Paragraph
     {
-        auto operator<=>(Returns const&) const noexcept = default;
+        auto operator<=>(Returns const&
+            ) const noexcept = default;
 
         Returns()
             : Paragraph(Kind::returns)
@@ -271,17 +286,6 @@ struct Javadoc
         List<Param> params,
         List<TParam> tparams,
         Returns returns);
-
-    /** Comparison
-
-        These are used internally to impose a
-        total ordering, and not visible in the
-        output format.
-    */
-    /** @{ */
-    bool operator<(Javadoc const&) const noexcept;
-    bool operator==(Javadoc const&) const noexcept;
-    /* @} */
 
     /** Return true if this is empty
     */
@@ -333,13 +337,24 @@ struct Javadoc
 
     //--------------------------------------------
 
+    /** Comparison
+
+        These are used internally to impose a
+        total ordering, and not visible in the
+        output format.
+    */
+    /** @{ */
+    bool operator==(Javadoc const&) const noexcept;
+    bool operator!=(Javadoc const&) const noexcept;
+    /* @} */
+
     /** Merge other into this.
 
         This is used to combine separate doc
         comments which are semantically attached
         to the same symbol.
     */
-    void merge(Javadoc& other);
+    void merge(Javadoc&& other);
 
     /** Calculate the brief.
 

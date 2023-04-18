@@ -21,18 +21,18 @@
   <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
     <file path="para-1.cpp" line="27"/>
     <doc>
-      <para class="brief">
-        <text>brief</text>
-      </para>
       <para>
-        <text>a</text>
       </para>
+      <text> brief</text>
       <para>
-        <text>b</text>
       </para>
+      <text>    a</text>
       <para>
-        <text>c</text>
       </para>
+      <text>    b </text>
+      <para>
+      </para>
+      <text>    c </text>
     </doc>
   </function>
 </namespace>

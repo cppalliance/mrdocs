@@ -9,15 +9,15 @@
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file path="para-2.cpp" line="10"/>
     <doc>
-      <para class="brief">
-        <text>brief</text>
-      </para>
       <para>
-        <text>a</text>
-        <text> b</text>
-        <text>  c</text>
-        <text>   d</text>
       </para>
+      <text> brief</text>
+      <para>
+      </para>
+      <text>a</text>
+      <text> b</text>
+      <text>  c</text>
+      <text>   d</text>
     </doc>
   </function>
 </namespace>

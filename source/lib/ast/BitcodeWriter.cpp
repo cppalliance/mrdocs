@@ -158,7 +158,7 @@ BlockIdNameMap = []()
         {BI_BASE_RECORD_BLOCK_ID, "BaseRecordBlock"},
         {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
         {BI_JAVADOC_BLOCK_ID, "JavadocBlock"},
-        {BI_JAVADOC_LIST_BLOCK_ID, "JavadocListBlock"},
+        {BI_JAVADOC_NODELIST_BLOCK_ID, "JavadocNodeListBlock"},
         {BI_JAVADOC_NODE_BLOCK_ID, "JavadocNodeBlock"},
         {BI_REFERENCE_BLOCK_ID, "ReferenceBlock"},
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
@@ -254,7 +254,7 @@ RecordsByBlock{
     {BI_JAVADOC_BLOCK_ID,
         {}},
     // List<Javadoc::Node> Block
-    {BI_JAVADOC_LIST_BLOCK_ID,
+    {BI_JAVADOC_NODELIST_BLOCK_ID,
         {JAVADOC_LIST_KIND}},
     // Javadoc::Node Block
     {BI_JAVADOC_NODE_BLOCK_ID,
@@ -574,9 +574,9 @@ emitBlock(
     //dumpJavadoc(jd);
     StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
     emitBlock(jd.getBlocks());
-    emitBlock(jd.getParams());
-    emitBlock(jd.getTParams());
-    emitBlock(jd.getReturns());
+    //emitBlock(jd.getParams());
+    //emitBlock(jd.getTParams());
+    //emitBlock(jd.getReturns());
 }
 
 template<class T>
@@ -585,15 +585,8 @@ BitcodeWriter::
 emitBlock(
     List<T> const& list)
 {
-    StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_BLOCK_ID);
-    Javadoc::Kind listKind = Javadoc::Kind::block;
-    if constexpr(std::is_same_v<T, Javadoc::Block>)
-        listKind = Javadoc::Kind::block;
-    else if constexpr(std::is_same_v<T, Javadoc::Param>)
-        listKind = Javadoc::Kind::param;
-    else if constexpr(std::is_same_v<T, Javadoc::TParam>)
-        listKind = Javadoc::Kind::tparam;
-    emitRecord(listKind, JAVADOC_LIST_KIND);
+    StreamSubBlockGuard Block(Stream, BI_JAVADOC_NODELIST_BLOCK_ID);
+    emitRecord(T::static_kind, JAVADOC_LIST_KIND);
     for(Javadoc::Node const& node : list)
         emitBlock(node);
 }

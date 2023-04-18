@@ -44,9 +44,7 @@ mergeBase(
         Path = Other.Path;
     if (Namespace.empty())
         Namespace = std::move(Other.Namespace);
-    // Unconditionally extend the blocks
-    // since each decl may have a comment.
-    javadoc.merge(Other.javadoc);
+    javadoc.merge(std::move(Other.javadoc));
 }
 
 llvm::SmallString<16>
