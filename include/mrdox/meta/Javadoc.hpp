@@ -135,13 +135,23 @@ struct Javadoc
     {
         static constexpr Kind static_kind = Kind::block;
 
+        List<Text> children;
+
+        bool empty() const noexcept
+        {
+            return children.empty();
+        }
+
         auto operator<=>(Block const&
             ) const noexcept = default;
 
     protected:
         explicit
-        Block(Kind kind_) noexcept
+        Block(
+            Kind kind_,
+            List<Text> children_ = {}) noexcept
             : Node(kind_)
+            , children(std::move(children_))
         {
         }
     };
@@ -150,13 +160,6 @@ struct Javadoc
     */
     struct Paragraph : Block
     {
-        List<Text> children;
-
-        bool empty() const noexcept
-        {
-            return children.empty();
-        }
-
         auto operator<=>(Paragraph const&
             ) const noexcept = default;
 
@@ -166,11 +169,11 @@ struct Javadoc
         }
 
     protected:
+        explicit
         Paragraph(
             Kind kind,
             List<Text> children_ = {})
-            : Block(kind)
-            , children(std::move(children_))
+            : Block(kind, std::move(children_))
         {
         }
     };

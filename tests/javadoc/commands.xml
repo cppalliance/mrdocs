@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
-<all>
+<symbols>
   <symbol name="" tag="namespace"/>
   <symbol name="f1" tag="function" id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
-</all>
+</symbols>
 <namespace name="">
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file path="commands.cpp" line="8"/>
     <doc>
       <para>
+        <text> brief</text>
       </para>
-      <text> brief</text>
       <para>
+        <text>    mrdox hello</text>
       </para>
-      <text>    mrdox hello</text>
     </doc>
   </function>
 </namespace>

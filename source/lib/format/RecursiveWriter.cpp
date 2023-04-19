@@ -32,6 +32,54 @@ AllSymbol(
 
 //------------------------------------------------
 
+RecursiveWriter::
+RecursiveWriter(
+    llvm::raw_ostream& os,
+    Corpus const& corpus,
+    Config const& config,
+    Reporter& R) noexcept
+    : os_(os)
+    , corpus_(corpus)
+    , config_(config)
+    , R_(R)
+{
+}
+
+//------------------------------------------------
+
+void
+RecursiveWriter::
+visitScope(
+    Scope const& I)
+{
+    for(auto const& ref : I.Namespaces)
+        visitNamespace(corpus_.get<NamespaceInfo>(ref.USR));
+    for(auto const& ref : I.Records)
+        visitRecord(corpus_.get<RecordInfo>(ref.USR));
+    for(auto const& ref : I.Functions)
+        visitFunction(corpus_.get<FunctionInfo>(ref.USR));
+    for(auto const& J : I.Typedefs)
+        visitTypedef(J);
+    for(auto const& J : I.Enums)
+        visitEnum(J);
+}
+
+//------------------------------------------------
+
+auto
+RecursiveWriter::
+makeAllSymbols() ->
+    std::vector<AllSymbol>
+{
+    std::vector<AllSymbol> list;
+    list.reserve(corpus_.allSymbols.size());
+    for(auto const& id : corpus_.allSymbols)
+        list.emplace_back(corpus_.get<Info>(id));
+    return list;
+}
+
+//------------------------------------------------
+
 llvm::raw_ostream&
 RecursiveWriter::
 indent()
@@ -53,197 +101,6 @@ adjustNesting(int levels)
         assert(n <= indentString_.size());
         indentString_.resize(indentString_.size() - n);
     }
-}
-
-//------------------------------------------------
-
-RecursiveWriter::
-RecursiveWriter(
-    llvm::raw_ostream& os,
-    Corpus const& corpus,
-    Config const& config,
-    Reporter& R) noexcept
-    : os_(os)
-    , corpus_(corpus)
-    , config_(config)
-    , R_(R)
-{
-}
-
-//------------------------------------------------
-
-void
-RecursiveWriter::
-write()
-{
-    beginFile();
-    writeAllSymbols(makeAllSymbols());
-    visit(corpus_.get<NamespaceInfo>(EmptySID));
-    endFile();
-}
-
-void
-RecursiveWriter::
-beginFile()
-{
-}
-
-void
-RecursiveWriter::
-endFile()
-{
-}
-
-void
-RecursiveWriter::
-writeAllSymbols(
-    std::vector<AllSymbol> const&)
-{
-}
-
-void
-RecursiveWriter::
-beginNamespace(
-    NamespaceInfo const& I)
-{
-}
-
-void
-RecursiveWriter::
-writeNamespace(
-    NamespaceInfo const& I)
-{
-}
-
-void
-RecursiveWriter::
-endNamespace(
-    NamespaceInfo const& I)
-{
-}
-
-void
-RecursiveWriter::
-beginRecord(
-    RecordInfo const& I)
-{
-}
-
-void
-RecursiveWriter::
-writeRecord(
-    RecordInfo const& I)
-{
-}
-
-void
-RecursiveWriter::
-endRecord(
-    RecordInfo const& I)
-{
-}
-
-void
-RecursiveWriter::
-beginFunction(
-    FunctionInfo const& I)
-{
-}
-
-void
-RecursiveWriter::
-writeFunction(
-    FunctionInfo const& I)
-{
-}
-
-void
-RecursiveWriter::
-endFunction(
-    FunctionInfo const& I)
-{
-}
-
-void
-RecursiveWriter::
-writeEnum(
-    EnumInfo const& I)
-{
-}
-void
-RecursiveWriter::
-writeTypedef(
-    TypedefInfo const& I)
-{
-}
-
-//------------------------------------------------
-
-void
-RecursiveWriter::
-visit(
-    NamespaceInfo const& I)
-{
-    beginNamespace(I);
-    adjustNesting(1);
-    writeNamespace(I);
-    visit(I.Children);
-    adjustNesting(-1);
-    endNamespace(I);
-}
-
-void
-RecursiveWriter::
-visit(
-    RecordInfo const& I)
-{
-    beginRecord(I);
-    adjustNesting(1);
-    writeRecord(I);
-    visit(I.Children);
-    adjustNesting(-1);
-    endRecord(I);
-}
-
-void
-RecursiveWriter::
-visit(
-    FunctionInfo const& I)
-{
-    beginFunction(I);
-    adjustNesting(1);
-    writeFunction(I);
-    adjustNesting(-1);
-    endFunction(I);
-}
-
-void
-RecursiveWriter::
-visit(
-    Scope const& I)
-{
-    for(auto const& ref : I.Namespaces)
-        visit(corpus_.get<NamespaceInfo>(ref.USR));
-    for(auto const& ref : I.Records)
-        visit(corpus_.get<RecordInfo>(ref.USR));
-    for(auto const& ref : I.Functions)
-        visit(corpus_.get<FunctionInfo>(ref.USR));
-    for(auto const& J : I.Enums)
-        writeEnum(J);
-    for(auto const& J : I.Typedefs)
-        writeTypedef(J);
-}
-
-auto
-RecursiveWriter::
-makeAllSymbols() ->
-    std::vector<AllSymbol>
-{
-    std::vector<AllSymbol> list;
-    list.reserve(corpus_.allSymbols.size());
-    for(auto const& id : corpus_.allSymbols)
-        list.emplace_back(corpus_.get<Info>(id));
-    return list;
 }
 
 } // mrdox

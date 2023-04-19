@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
-<all>
+<symbols>
   <symbol name="" tag="namespace"/>
   <symbol name="C0" tag="class" id="sTaqkoFcVbtntbfpe777v5/pWL0="/>
   <symbol name="C0::f1" tag="function" id="EyRDT2mXtRNmcISD2rsC6/mLusw="/>
@@ -12,7 +12,7 @@
   <symbol name="U0" tag="union" id="SHIJWZPzfYtLVfe/rzFAmeVpANk="/>
   <symbol name="U0::f0" tag="function" id="eY4R9etszWK2H42p4kWNm5XfpnE="/>
   <symbol name="U0::f1" tag="function" id="KjiG7Uufpmd65dhiSV+Jv2RjgHA="/>
-</all>
+</symbols>
 <namespace name="">
   <class name="C0" id="sTaqkoFcVbtntbfpe777v5/pWL0=">
     <file path="record-access.cpp" line="12" class="def"/>

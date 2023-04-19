@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
-<all>
+<symbols>
   <symbol name="" tag="namespace"/>
   <symbol name="f1" tag="function" id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
   <symbol name="f2" tag="function" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM="/>
   <symbol name="f3" tag="function" id="khwJweIqd5FuWAg8T+l+GEljQVc="/>
   <symbol name="f4" tag="function" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E="/>
-</all>
+</symbols>
 <namespace name="">
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file path="para-1.cpp" line="5"/>
@@ -22,17 +22,17 @@
     <file path="para-1.cpp" line="27"/>
     <doc>
       <para>
+        <text> brief</text>
       </para>
-      <text> brief</text>
       <para>
+        <text>    a</text>
       </para>
-      <text>    a</text>
       <para>
+        <text>    b </text>
       </para>
-      <text>    b </text>
       <para>
+        <text>    c </text>
       </para>
-      <text>    c </text>
     </doc>
   </function>
 </namespace>

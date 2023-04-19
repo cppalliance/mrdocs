@@ -60,35 +60,33 @@ class XMLGenerator::Writer
     : public RecursiveWriter
 {
 public:
+    struct Attr;
+
+    struct Attrs
+    {
+        std::initializer_list<Attr> init_;
+        Attrs() = default;
+        Attrs(std::initializer_list<Attr> init);
+        friend llvm::raw_ostream& operator<<(
+            llvm::raw_ostream& os, Attrs const& attrs);
+    };
+
     Writer(
         llvm::raw_ostream& os,
         Corpus const& corpus,
         Config const& config,
         Reporter& R) noexcept;
 
+    void write();
+
 private:
-    struct Attr;
-    using Attrs = std::initializer_list<Attr>;
+    void writeAllSymbols();
 
-    void writeAllSymbols(std::vector<AllSymbol> const& list) override;
-
-    void beginFile() override;
-    void endFile() override;
-
-    void beginNamespace(NamespaceInfo const& I) override;
-    void writeNamespace(NamespaceInfo const& I) override;
-    void endNamespace(NamespaceInfo const& I) override;
-
-    void beginRecord(RecordInfo const& I) override;
-    void writeRecord(RecordInfo const& I) override;
-    void endRecord(RecordInfo const& I) override;
-
-    void beginFunction(FunctionInfo const& I) override;
-    void writeFunction(FunctionInfo const& I) override;
-    void endFunction(FunctionInfo const& I) override;
-
-    void writeEnum(EnumInfo const& I) override;
-    void writeTypedef(TypedefInfo const& I) override;
+    void visitNamespace(NamespaceInfo const&) override;
+    void visitRecord(RecordInfo const&) override;
+    void visitFunction(FunctionInfo const&) override;
+    void visitTypedef(TypedefInfo const& I) override;
+    void visitEnum(EnumInfo const& I) override;
 
     void writeInfo(Info const& I);
     void writeSymbol(SymbolInfo const& I);
@@ -97,7 +95,6 @@ private:
     void writeParam(FieldTypeInfo const& I);
     void writeTemplateParam(TemplateParamInfo const& I);
     void writeMemberType(MemberTypeInfo const& I);
-
     void writeReturnType(TypeInfo const& I);
     void writeJavadoc(Javadoc const& jd);
 
@@ -114,52 +111,14 @@ private:
     void writeParam(Javadoc::Param const& node);
     void writeTParam(Javadoc::TParam const& node);
 
-    void openTag(llvm::StringRef);
-    void openTag(llvm::StringRef, Attrs);
+    void openTag(llvm::StringRef, Attrs = {});
     void closeTag(llvm::StringRef);
-    void writeTag(llvm::StringRef);
-    void writeTag(llvm::StringRef, Attrs);
-    void writeTagLine(llvm::StringRef tag, llvm::StringRef value);
-    void writeTagLine(llvm::StringRef tag, llvm::StringRef value, Attrs);
-    void writeAttrs(Attrs attrs);
+    void writeTag(llvm::StringRef tag,
+        llvm::StringRef value = {}, Attrs = {});
 
     static std::string toString(SymbolID const& id);
     static llvm::StringRef toString(InfoType) noexcept;
-
-    //--------------------------------------------
-
-    struct escape;
-
-    struct Attr
-    {
-        llvm::StringRef name;
-        std::string value;
-        bool pred;
-
-        Attr(
-            llvm::StringRef name_,
-            llvm::StringRef value_,
-            bool pred_ = true) noexcept
-            : name(name_)
-            , value(value_)
-            , pred(pred_)
-        {
-        }
-
-        Attr(AccessSpecifier access) noexcept
-            : name("access")
-            , value(clang::getAccessSpelling(access))
-            , pred(access != AccessSpecifier::AS_none)
-        {
-        }
-
-        Attr(SymbolID USR)
-            : name("id")
-            , value(toString(USR))
-            , pred(USR != EmptySID)
-        {
-        }
-    };
+    static llvm::StringRef toString(Javadoc::Style style) noexcept;
 };
 
 //------------------------------------------------

@@ -50,9 +50,6 @@ protected:
     Config const& config_;
     Reporter& R_;
 
-    llvm::raw_ostream& indent();
-    void adjustNesting(int levels);
-
     /** Constructor.
     */
     RecursiveWriter(
@@ -61,7 +58,10 @@ protected:
         Config const& config,
         Reporter& R) noexcept;
 
-public:
+    /** Destructor.
+    */
+    virtual ~RecursiveWriter() = default;
+
     /** Describes an item in the list of all symbols.
     */
     struct AllSymbol
@@ -83,57 +83,17 @@ public:
         AllSymbol(Info const& I);
     };
 
-    /** Destructor.
-    */
-    virtual ~RecursiveWriter() = default;
+    virtual void visitNamespace(NamespaceInfo const&) = 0;
+    virtual void visitRecord(RecordInfo const&) = 0;
+    virtual void visitFunction(FunctionInfo const&) = 0;
+    virtual void visitTypedef(TypedefInfo const& I) = 0;
+    virtual void visitEnum(EnumInfo const& I) = 0;
 
-    /** Write the contents of the corpus.
-    */
-    void write();
-
-protected:
-    /** Called to write all symbols.
-
-        Each element contains the fully qualified
-        name and the type of symbol. The list is
-        canonicalized by a visual sort on symbol.
-    */
-    virtual void writeAllSymbols(std::vector<AllSymbol> const& list);
-
-    /** Called to open and close the document.
-
-        The default implementation does nothing.
-    */
-    /** @{ */
-    virtual void beginFile();
-    virtual void endFile();
-    /** @} */
-
-    /** @{ */
-    virtual void beginNamespace(NamespaceInfo const& I);
-    virtual void writeNamespace(NamespaceInfo const& I);
-    virtual void endNamespace(NamespaceInfo const& I);
-
-    virtual void beginRecord(RecordInfo const& I);
-    virtual void writeRecord(RecordInfo const& I);
-    virtual void endRecord(RecordInfo const& I);
-
-    virtual void beginFunction(FunctionInfo const& I);
-    virtual void writeFunction(FunctionInfo const& I);
-    virtual void endFunction(FunctionInfo const& I);
-
-    virtual void writeEnum(EnumInfo const& I);
-
-    virtual void writeTypedef(TypedefInfo const& I);
-    /** @} */
-
-private:
-    void visit(NamespaceInfo const&);
-    void visit(RecordInfo const&);
-    void visit(FunctionInfo const&);
-    void visit(Scope const&);
-
+    void visitScope(Scope const&);
     std::vector<AllSymbol> makeAllSymbols();
+
+    llvm::raw_ostream& indent();
+    void adjustNesting(int levels);
 };
 
 } // mrdox

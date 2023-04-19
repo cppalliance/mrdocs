@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
-<all>
+<symbols>
   <symbol name="" tag="namespace"/>
   <symbol name="C0" tag="class" id="sTaqkoFcVbtntbfpe777v5/pWL0="/>
   <symbol name="C1" tag="class" id="tm2khHa6qZM0lj1f7IwBdxVxDgE="/>
@@ -18,7 +18,7 @@
   <symbol name="S4" tag="struct" id="OkKbIK8En3Y5FbOBQVeHnAsZ0aY="/>
   <symbol name="S5" tag="struct" id="HQ5z8M+Q3IIXdW9oiD6jtd0TL94="/>
   <symbol name="U0" tag="union" id="SHIJWZPzfYtLVfe/rzFAmeVpANk="/>
-</all>
+</symbols>
 <namespace name="">
   <class name="C0" id="sTaqkoFcVbtntbfpe777v5/pWL0=">
     <file path="record-inheritance.cpp" line="2" class="def"/>

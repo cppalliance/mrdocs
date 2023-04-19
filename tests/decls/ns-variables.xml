@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
-<all>
+<symbols>
   <symbol name="" tag="namespace"/>
   <symbol name="T" tag="struct" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
-</all>
+</symbols>
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="ns-variables.cpp" line="7" class="def"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
-<all>
+<symbols>
   <symbol name="" tag="namespace"/>
   <symbol name="T" tag="struct" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
   <symbol name="T::f1" tag="function" id="9sznTZ3/SXQNZpCsoMG8KWGLuEc="/>
@@ -10,7 +10,7 @@
   <symbol name="T::g1" tag="function" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA="/>
   <symbol name="T::g2" tag="function" id="flHl59B/bdRwuiNeh3sHqCycic0="/>
   <symbol name="T::g3" tag="function" id="DKxv4h+rP37b0u6O1qbB+u416ZY="/>
-</all>
+</symbols>
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="record-1.cpp" line="1" class="def"/>
@@ -29,11 +29,11 @@
       <file path="record-1.cpp" line="15"/>
       <doc>
         <para>
+          <text> brief-g1</text>
         </para>
-        <text> brief-g1</text>
         <para>
+          <text>        desc</text>
         </para>
-        <text>        desc</text>
       </doc>
     </function>
     <function name="g2" access="protected" id="flHl59B/bdRwuiNeh3sHqCycic0=">
@@ -41,11 +41,11 @@
       <return name="int"/>
       <doc>
         <para>
+          <text> brief-g2</text>
         </para>
-        <text> brief-g2</text>
         <para>
+          <text>        </text>
         </para>
-        <text>        </text>
       </doc>
     </function>
     <function name="g3" access="protected" id="DKxv4h+rP37b0u6O1qbB+u416ZY=">
@@ -54,11 +54,11 @@
       <param name="x" type="int"/>
       <doc>
         <para>
+          <text> brief-g3</text>
         </para>
-        <text> brief-g3</text>
         <para>
+          <text>        </text>
         </para>
-        <text>        </text>
       </doc>
     </function>
     <typedef name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">

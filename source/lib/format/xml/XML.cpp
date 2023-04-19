@@ -16,6 +16,89 @@
 namespace clang {
 namespace mrdox {
 
+namespace {
+
+//------------------------------------------------
+//
+// escape
+//
+//------------------------------------------------
+
+/** Manipulator to apply XML escaping to output.
+*/
+struct escape
+{
+    explicit
+    escape(
+        llvm::StringRef const& s) noexcept
+        : s_(s)
+    {
+    }
+
+    friend
+    llvm::raw_ostream&
+    operator<<(
+        llvm::raw_ostream& os,
+        escape const& t)
+    {
+        t.write(os);
+        return os;
+    }
+
+private:
+    void write(llvm::raw_ostream& os) const;
+
+    llvm::StringRef s_;
+};
+
+void
+escape::
+write(
+    llvm::raw_ostream& os) const
+{
+    std::size_t pos = 0;
+    auto const size = s_.size();
+    while(pos < size)
+    {
+    unescaped:
+        auto const found = s_.find_first_of("<>&'\"", pos);
+        if(found == llvm::StringRef::npos)
+        {
+            os.write(s_.data() + pos, s_.size() - pos);
+            break;
+        }
+        os.write(s_.data() + pos, found - pos);
+        pos = found;
+        while(pos < size)
+        {
+            auto const c = s_[pos];
+            switch(c)
+            {
+            case '<':
+                os.write("&lt;", 4);
+                break;
+            case '>':
+                os.write("&gt;", 4);
+                break;
+            case '&':
+                os.write("&amp;", 5);
+                break;
+            case '\'':
+                os.write("&apos;", 6);
+                break;
+            case '\"':
+                os.write("&quot;", 6);
+                break;
+            default:
+                goto unescaped;
+            }
+            ++pos;
+        }
+    }
+}
+
+} // (anon)
+
 //------------------------------------------------
 //
 // XMLGenerator
@@ -65,86 +148,68 @@ buildString(
 
 //------------------------------------------------
 //
-// Writer
+// Attrs
 //
 //------------------------------------------------
 
-/** Manipulator to apply XML escaping to output.
-*/
 struct XMLGenerator::Writer::
-    escape
+    Attr
 {
-    explicit
-    escape(
-        llvm::StringRef const& s) noexcept
-        : s_(s)
+    llvm::StringRef name;
+    std::string value;
+    bool pred;
+
+    Attr(
+        llvm::StringRef name_,
+        llvm::StringRef value_,
+        bool pred_ = true) noexcept
+        : name(name_)
+        , value(value_)
+        , pred(pred_)
     {
     }
 
-    friend
-    llvm::raw_ostream&
-    operator<<(
-        llvm::raw_ostream& os,
-        escape const& t)
+    Attr(AccessSpecifier access) noexcept
+        : name("access")
+        , value(clang::getAccessSpelling(access))
+        , pred(access != AccessSpecifier::AS_none)
     {
-        t.write(os);
-        return os;
     }
 
-private:
-    void write(llvm::raw_ostream& os) const;
-
-    llvm::StringRef s_;
+    Attr(SymbolID USR)
+        : name("id")
+        , value(toString(USR))
+        , pred(USR != EmptySID)
+    {
+    }
 };
 
-void
 XMLGenerator::
 Writer::
-escape::
-write(
-    llvm::raw_ostream& os) const
+Attrs::
+Attrs(
+    std::initializer_list<Attr> init)
+    : init_(init)
 {
-    std::size_t pos = 0;
-    auto const size = s_.size();
-    while(pos < size)
-    {
-    unescaped:
-        auto const found = s_.find_first_of("<>&'\"", pos);
-        if(found == llvm::StringRef::npos)
-        {
-            os.write(s_.data() + pos, s_.size() - pos);
-            break;
-        }
-        os.write(s_.data() + pos, found - pos);
-        pos = found;
-        while(pos < size)
-        {
-            auto const c = s_[pos];
-            switch(c)
-            {
-            case '<':
-                os.write("&lt;", 4);
-                break;
-            case '>':
-                os.write("&gt;", 4);
-                break;
-            case '&':
-                os.write("&amp;", 5);
-                break;
-            case '\'':
-                os.write("&apos;", 6);
-                break;
-            case '\"':
-                os.write("&quot;", 6);
-                break;
-            default:
-                goto unescaped;
-            }
-            ++pos;
-        }
-    }
 }
 
+llvm::raw_ostream&
+operator<<(
+    llvm::raw_ostream& os,
+    XMLGenerator::Writer::Attrs const& attrs)
+{
+    for(auto const& attr : attrs.init_)
+        if(attr.pred)
+            os <<
+                ' ' << attr.name << '=' <<
+                "\"" << escape(attr.value) << "\"";
+    return os;
+}
+
+//------------------------------------------------
+//
+// Writer
+//
 //------------------------------------------------
 
 XMLGenerator::
@@ -158,24 +223,17 @@ Writer(
 {
 }
 
-//------------------------------------------------
-
 void
 XMLGenerator::
 Writer::
-beginFile()
+write()
 {
     os_ <<
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
         "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
         "<mrdox>\n";
-}
-
-void
-XMLGenerator::
-Writer::
-endFile()
-{
+    writeAllSymbols();
+    visitNamespace(corpus_.globalNamespace());
     os_ <<
         "</mrdox>\n";
 }
@@ -185,18 +243,18 @@ endFile()
 void
 XMLGenerator::
 Writer::
-writeAllSymbols(
-    std::vector<AllSymbol> const& list)
+writeAllSymbols()
 {
-    openTag("all");
-    adjustNesting(1);
+    auto list = makeAllSymbols();
+    openTag("symbols");
     for(auto const& I : list)
-        writeTag("symbol", {
+    {
+        writeTag("symbol", {}, {
             { "name", I.fqName },
             { "tag", I.symbolType },
             { I.id } });
-    adjustNesting(-1);
-    closeTag("all");
+    }
+    closeTag("symbols");
 }
 
 //------------------------------------------------
@@ -204,29 +262,19 @@ writeAllSymbols(
 void
 XMLGenerator::
 Writer::
-beginNamespace(
+visitNamespace(
     NamespaceInfo const& I)
 {
     openTag("namespace", {
         { "name", I.Name },
         { I.USR }
         });
-}
 
-void
-XMLGenerator::
-Writer::
-writeNamespace(
-    NamespaceInfo const& I)
-{
-}
+    writeInfo(I);
+    writeJavadoc(I.javadoc);
 
-void
-XMLGenerator::
-Writer::
-endNamespace(
-    NamespaceInfo const& I)
-{
+    visitScope(I.Children);
+
     closeTag("namespace");
 }
 
@@ -235,7 +283,7 @@ endNamespace(
 void
 XMLGenerator::
 Writer::
-beginRecord(
+visitRecord(
     RecordInfo const& I)
 {
     llvm::StringRef tag =
@@ -244,14 +292,7 @@ beginRecord(
         { "name", I.Name },
         { I.USR }
         });
-}
 
-void
-XMLGenerator::
-Writer::
-writeRecord(
-    RecordInfo const& I)
-{
     writeInfo(I);
     writeSymbol(I);
     for(auto const& J : I.Bases)
@@ -259,16 +300,10 @@ writeRecord(
     // VFALCO data members?
     for(auto const& J : I.Members)
         writeMemberType(J);
-}
+    writeJavadoc(I.javadoc);
 
-void
-XMLGenerator::
-Writer::
-endRecord(
-    RecordInfo const& I)
-{
-    llvm::StringRef tag =
-        clang::TypeWithKeyword::getTagTypeKindName(I.TagType);
+    visitScope(I.Children);
+
     closeTag(tag);
 }
 
@@ -277,7 +312,7 @@ endRecord(
 void
 XMLGenerator::
 Writer::
-beginFunction(
+visitFunction(
     FunctionInfo const& I)
 {
     openTag("function", {
@@ -285,49 +320,17 @@ beginFunction(
         { I.Access },
         { I.USR }
         });
-}
 
-void
-XMLGenerator::
-Writer::
-writeFunction(
-    FunctionInfo const& I)
-{
-    // location
+    writeInfo(I);
     writeSymbol(I);
-    // return type
     writeReturnType(I.ReturnType);
-    // parameters
     for(auto const& J : I.Params)
         writeParam(J);
-    // template parameters
     if(I.Template)
         for(TemplateParamInfo const& J : I.Template->Params)
             writeTemplateParam(J);
-    // doc comment
     writeJavadoc(I.javadoc);
-}
 
-void
-XMLGenerator::
-Writer::
-writeReturnType(
-    TypeInfo const& I)
-{
-    if(I.Type.Name == "void")
-        return;
-    writeTag("return", {
-        { "name", I.Type.Name },
-        { I.Type.USR }
-        });
-}
-
-void
-XMLGenerator::
-Writer::
-endFunction(
-    FunctionInfo const& I)
-{
     closeTag("function");
 }
 
@@ -336,47 +339,43 @@ endFunction(
 void
 XMLGenerator::
 Writer::
-writeEnum(
+visitTypedef(
+    TypedefInfo const& I)
+{
+    openTag("typedef", {
+        { "name", I.Name },
+        { I.USR }
+        });
+
+    writeInfo(I);
+    writeSymbol(I);
+    if(I.Underlying.Type.USR != EmptySID)
+        writeTag("qualusr", toBase64(I.Underlying.Type.USR));
+    writeJavadoc(I.javadoc);
+
+    closeTag("typedef");
+}
+
+void
+XMLGenerator::
+Writer::
+visitEnum(
     EnumInfo const& I)
 {
     openTag("enum", {
         { "name", I.Name },
         { I.USR }
         });
-    adjustNesting(1);
+
     writeInfo(I);
     for(auto const& v : I.Members)
-        writeTag("element", {
+        writeTag("element", {}, {
             { "name", v.Name },
             { "value", v.Value },
             });
-    adjustNesting(-1);
+    writeJavadoc(I.javadoc);
+
     closeTag("enum");
-}
-
-void
-XMLGenerator::
-Writer::
-writeTypedef(
-    TypedefInfo const& I)
-{
-    if(I.Name == "error_category")
-    {
-        adjustNesting(1);
-        adjustNesting(-1);
-    }
-
-    openTag("typedef", {
-        { "name", I.Name },
-        { I.USR }
-        });
-    adjustNesting(1);
-    writeInfo(I);
-    writeSymbol(I);
-    if(I.Underlying.Type.USR != EmptySID)
-        writeTagLine("qualusr", toBase64(I.Underlying.Type.USR));
-    adjustNesting(-1);
-    closeTag("typedef");
 }
 
 //------------------------------------------------
@@ -387,7 +386,12 @@ Writer::
 writeInfo(
     Info const& I)
 {
-    writeJavadoc(I.javadoc);
+#if 0
+    std::string temp;
+    indent() << "<path>" << I.Path << "</path>\n";
+    indent() << "<ename>" << I.extractName() << "</ename>\n";
+    indent() << "<fqn>" << I.getFullyQualifiedName(temp) << "</fqn>\n";
+#endif
 }
 
 void
@@ -409,7 +413,7 @@ writeLocation(
     Location const& loc,
     bool def)
 {
-    writeTag("file", {
+    writeTag("file", {}, {
         { "path", loc.Filename },
         { "line", std::to_string(loc.LineNumber) },
         { "class", "def", def } });
@@ -421,7 +425,7 @@ Writer::
 writeBaseRecord(
     BaseRecordInfo const& I)
 {
-    writeTag("base", {
+    writeTag("base", {}, {
         { "name", I.Name },
         { I.Access },
         { "modifier", "virtual", I.IsVirtual },
@@ -439,12 +443,11 @@ Writer::
 writeParam(
     FieldTypeInfo const& I)
 {
-    writeTag("param", {
+    writeTag("param", {}, {
         { "name", I.Name, ! I.Name.empty() },
         { "default", I.DefaultValue, ! I.DefaultValue.empty() },
         { "type", I.Type.Name },
-        { I.Type.USR }
-        });
+        { I.Type.USR } });
 }
 
 void
@@ -453,8 +456,7 @@ Writer::
 writeTemplateParam(
     TemplateParamInfo const& I)
 {
-    writeTag(
-        "tparam", {
+    writeTag("tparam", {}, {
         { "decl", I.Contents }
         });
 }
@@ -465,12 +467,26 @@ Writer::
 writeMemberType(
     MemberTypeInfo const& I)
 {
-    writeTag("data", {
+    writeTag("data", {}, {
         { "name", I.Name },
         { "type", I.Type.Name },
         { "value", I.DefaultValue, ! I.DefaultValue.empty() },
         { I.Access },
         { I.Type.USR } });
+}
+
+void
+XMLGenerator::
+Writer::
+writeReturnType(
+    TypeInfo const& I)
+{
+    if(I.Type.Name == "void")
+        return;
+    writeTag("return", {}, {
+        { "name", I.Type.Name },
+        { I.Type.USR }
+        });
 }
 
 //------------------------------------------------
@@ -483,14 +499,12 @@ writeJavadoc(Javadoc const& jd)
     if(jd.empty())
         return;
     openTag("doc");
-    adjustNesting(1);
     if(auto brief = jd.getBrief())
         writeBrief(brief);
     writeNodes(jd.getBlocks());
     writeReturns(jd.getReturns());
     writeNodes(jd.getParams());
     writeNodes(jd.getTParams());
-    adjustNesting(-1);
     closeTag("doc");
 }
 
@@ -537,9 +551,8 @@ writeNode(
         writeTParam(static_cast<Javadoc::TParam const&>(node));
         break;
     case Javadoc::Kind::returns:
-        // VFALCO Should never go through here
-        //writeReturns(static_cast<Javadoc::Returns const&>(node));
-        //break;
+        writeReturns(static_cast<Javadoc::Returns const&>(node));
+        break;
     default:
         llvm_unreachable("unknown kind");
     }
@@ -556,9 +569,7 @@ writeBrief(
     if(node->empty())
         return;
     openTag("brief");
-    adjustNesting(1);
     writeNodes(node->children);
-    adjustNesting(-1);
     closeTag("brief");
 }
 
@@ -580,25 +591,7 @@ Writer::
 writeStyledText(
     Javadoc::StyledText const& node)
 {
-    llvm::StringRef tag;
-    switch(node.style)
-    {
-    case Javadoc::Style::bold:
-        tag = "bold";
-        break;
-    case Javadoc::Style::italic:
-        tag = "italic";
-        break;
-    case Javadoc::Style::mono:
-        tag = "mono";
-        break;
-    default:
-        llvm_unreachable("unknown style");
-    }
-    os_ <<
-        '<' << tag << '>' <<
-        node.string <<
-        '<' << tag << '>';
+    writeTag(toString(node.style), node.string);
 }
 
 void
@@ -610,9 +603,7 @@ writeParagraph(
 {
     openTag("para", {
         { "class", tag, ! tag.empty() }});
-    adjustNesting(1);
     writeNodes(para.children);
-    adjustNesting(-1);
     closeTag("para");
 }
 
@@ -658,9 +649,7 @@ writeCode(Javadoc::Code const& code)
     }
 
     openTag("code");
-    adjustNesting(1);
     writeNodes(code.children);
-    adjustNesting(-1);
     closeTag("code");
 }
 
@@ -673,9 +662,7 @@ writeReturns(
     if(returns.empty())
         return;
     openTag("returns");
-    adjustNesting(1);
     writeNodes(returns.children);
-    adjustNesting(-1);
     closeTag("returns");
 }
 
@@ -687,9 +674,7 @@ writeParam(
 {
     openTag("param", {
         { "name", param.name, ! param.name.empty() }});
-    adjustNesting(1);
     writeNodes(param.children);
-    adjustNesting(-1);
     closeTag("param");
 }
 
@@ -701,9 +686,7 @@ writeTParam(
 {
     openTag("tparam", {
         { "name", tparam.name, ! tparam.name.empty() }});
-    adjustNesting(1);
     writeNodes(tparam.children);
-    adjustNesting(-1);
     closeTag("tparam");
 }
 
@@ -713,21 +696,11 @@ void
 XMLGenerator::
 Writer::
 openTag(
-    llvm::StringRef tag)
-{
-    indent() << '<' << tag << ">\n";
-}
-
-void
-XMLGenerator::
-Writer::
-openTag(
     llvm::StringRef tag,
     Attrs attrs)
 {
-    indent() << '<' << tag;
-    writeAttrs(attrs);
-    os_ << ">\n";
+    indent() << '<' << tag << attrs << ">\n";
+    adjustNesting(1);
 }
 
 void
@@ -736,6 +709,7 @@ Writer::
 closeTag(
     llvm::StringRef tag)
 {
+    adjustNesting(-1);
     indent() << "</" << tag << ">\n";
 }
 
@@ -743,64 +717,20 @@ void
 XMLGenerator::
 Writer::
 writeTag(
-    llvm::StringRef tag)
-{
-    indent() << "<" << tag << "/>\n";
-}
-
-void
-XMLGenerator::
-Writer::
-writeTag(
-    llvm::StringRef tag,
-    Attrs attrs)
-{
-    indent() << "<" << tag;
-    writeAttrs(attrs);
-    os_ << "/>\n";
-}
-
-void
-XMLGenerator::
-Writer::
-writeTagLine(
-    llvm::StringRef tag,
-    llvm::StringRef value)
-{
-    indent() <<
-        "<" << tag << ">" <<
-        escape(value) <<
-        "</" << tag << ">"
-        "\n";
-}
-
-void
-XMLGenerator::
-Writer::
-writeTagLine(
     llvm::StringRef tag,
     llvm::StringRef value,
     Attrs attrs)
 {
-    indent() << "<" << tag;
-    writeAttrs(attrs);
-    os_ << ">" <<
-        escape(value) <<
-        "</" << tag << ">"
-        "\n";
-}
+    if(value.empty())
+    {
+        indent() << "<" << tag << attrs << "/>\n";
+        return;
+    }
 
-void
-XMLGenerator::
-Writer::
-writeAttrs(
-    Attrs attrs)
-{
-    for(auto const& attr : attrs)
-        if(attr.pred)
-            os_ <<
-                ' ' << attr.name << '=' <<
-                "\"" << escape(attr.value) << "\"";
+    indent() <<
+        "<" << tag << attrs << ">" <<
+        escape(value) <<
+        "</" << tag << ">\n";
 }
 
 //------------------------------------------------
@@ -830,6 +760,27 @@ toString(
     case InfoType::IT_typedef:    return "typedef";
     default:
         llvm_unreachable("unknown InfoType");
+    }
+}
+
+llvm::StringRef
+XMLGenerator::
+Writer::
+toString(
+    Javadoc::Style style) noexcept
+{
+    llvm::StringRef s;
+    switch(style)
+    {
+    case Javadoc::Style::bold: return "bold";
+    case Javadoc::Style::mono: return "mono";
+    case Javadoc::Style::italic: return "italic";
+
+    // should never get here
+    case Javadoc::Style::none: return "";
+
+    default:
+        llvm_unreachable("unknown style");
     }
 }
 

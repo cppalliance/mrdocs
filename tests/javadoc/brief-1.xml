@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
-<all>
+<symbols>
   <symbol name="" tag="namespace"/>
   <symbol name="f5" tag="function" id="RnDTZyCZuSqydMEPutN0yG4E/xg="/>
   <symbol name="f6" tag="function" id="NEkWCLiknLGzCD6JnXuBTSAAne8="/>
-</all>
+</symbols>
 <namespace name="">
   <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
     <file path="brief-1.cpp" line="30"/>
     <doc>
       <para>
+        <text> brief </text>
+        <bold>bold</bold>
+        <text> it</text>
+        <text>continues to the line.</text>
       </para>
-      <text> brief </text>
-<bold>bold<bold>      <text> it</text>
-      <text>continues to the line.</text>
     </doc>
   </function>
   <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
     <file path="brief-1.cpp" line="39"/>
     <doc>
       <para>
+        <text> brief</text>
       </para>
-      <text> brief</text>
       <para>
+        <text>    many lined</text>
+        <text>    </text>
+        <bold>bold</bold>
+        <text>    what will</text>
+        <text>    happen?</text>
       </para>
-      <text>    many lined</text>
-      <text>    </text>
-<bold>bold<bold>      <text>    what will</text>
-      <text>    happen?</text>
     </doc>
   </function>
 </namespace>

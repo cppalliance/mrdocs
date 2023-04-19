@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
-<all>
+<symbols>
   <symbol name="" tag="namespace"/>
   <symbol name="a" tag="struct" id="bJjlANSkHT9fMIOJb+7rnfl9B2Q="/>
   <symbol name="A" tag="struct" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
@@ -11,7 +11,7 @@
   <symbol name="bA" tag="struct" id="o++ChozQVnJgKoS41uCm96LOP14="/>
   <symbol name="Ba" tag="struct" id="r32UJws/5rQHSwieW9XcY/Lu30k="/>
   <symbol name="Bx" tag="struct" id="64sjs/NcKpvextfuwbtyP/VMOJk="/>
-</all>
+</symbols>
 <namespace name="">
   <struct name="a" id="bJjlANSkHT9fMIOJb+7rnfl9B2Q=">
     <file path="canonical_1.cpp" line="5" class="def"/>

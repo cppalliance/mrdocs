@@ -48,6 +48,7 @@ public:
         AnyNodeList*& stack) noexcept;
 
     Nodes& getNodes();
+    bool isTopLevel() const noexcept;
     llvm::Error setKind(Javadoc::Kind kind);
 
     template<class T>
@@ -136,6 +137,14 @@ getNodes() ->
     };
     static ErrorNodes nodes;
     return nodes;
+}
+
+inline
+bool
+AnyNodeList::
+isTopLevel() const noexcept
+{
+    return prev_ == nullptr;
 }
 
 inline
@@ -321,7 +330,13 @@ NodesImpl<T>::
 spliceBack(
     ListNodes&& nodes) noexcept
 {
-    list.spliceBack(std::move(nodes));
+    if constexpr(std::derived_from<T, Javadoc::Block>)
+    {
+        list.back().children.spliceBack(std::move(nodes));
+    }
+    else
+    {
+    }
 }
 
 } // mrdox

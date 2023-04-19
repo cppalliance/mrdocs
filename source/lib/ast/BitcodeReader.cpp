@@ -780,25 +780,27 @@ readSubBlock(
     {
     case BI_JAVADOC_BLOCK_ID:
     {
+        assert(javadoc_ == nullptr);
+        if(nodes_)
+            return makeError("unexpected sub-block");
         auto rv = getJavadoc(I);
         if(! rv)
             return rv.takeError();
-        AnyNodeList J(nodes_);
-        if(auto err = J.setKind(Javadoc::Kind::block)) // because Javadoc::blocks_
+        javadoc_ = rv.get();
+        if(auto err = readBlock(ID, javadoc_))
             return err;
-        if(auto err = readBlock(ID, &J))
-            return err;
-        return J.spliceInto(rv.get()->blocks_);
+        javadoc_ = nullptr;
+        return llvm::Error::success();
     }
 
     case BI_JAVADOC_NODELIST_BLOCK_ID:
     {
-        if(! nodes_)
-            return makeError("unexpected sub-block");
         AnyNodeList J(nodes_);
         if(auto err = readBlock(ID, &J))
             return err;
-        return J.spliceIntoParent();
+        if(! J.isTopLevel())
+            return J.spliceIntoParent();
+        return J.spliceInto(javadoc_->blocks_);
     }
 
     case BI_JAVADOC_NODE_BLOCK_ID:
@@ -1263,6 +1265,19 @@ parseRecord(
     default:
         return makeError("invalid field for List");
     }
+}
+
+llvm::Error
+BitcodeReader::
+parseRecord(
+    Record const& R,
+    unsigned ID,
+    llvm::StringRef blob,
+    Javadoc* I)
+{
+    // VFALCO Should never get here because this
+    // only contains sub-blocks and no records (yet).
+    return makeError("unexpected record");
 }
 
 llvm::Error

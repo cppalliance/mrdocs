@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
-<all>
+<symbols>
   <symbol name="" tag="namespace"/>
   <symbol name="T" tag="struct" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
   <symbol name="U" tag="struct" id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
   <symbol name="V" tag="class" id="9kzYwt0WPztMEDUaFxul1Jvqqs8="/>
   <symbol name="W" tag="struct" id="6OhcFM3BV6KlrvmfpsljaMHxpdA="/>
-</all>
+</symbols>
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="record-data.cpp" line="3" class="def"/>
