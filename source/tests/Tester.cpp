@@ -97,7 +97,7 @@ checkOneFile(
     outputPath = { outputPathStr.data(), outputPathStr.size() };
 
     std::string xmlString;
-    if(! xmlGen->buildString(xmlString, corpus, *config_, R_))
+    if(! xmlGen->buildString(xmlString, corpus, R_))
         return;
     std::error_code ec;
     fs::file_status stat;
@@ -145,7 +145,7 @@ checkOneFile(
     {
         path::replace_extension(outputPathStr, adocGen->extension());
         outputPath = { outputPathStr.data(), outputPathStr.size() };
-        adocGen->buildOne(outputPath, corpus,*config_, R_);
+        adocGen->buildOne(outputPath, corpus, R_);
     }
 }
 

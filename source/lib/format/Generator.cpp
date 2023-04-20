@@ -22,7 +22,6 @@ Generator::
 build(
     StringRef outputPath,
     Corpus& corpus,
-    Config const& config,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;
@@ -31,7 +30,7 @@ build(
     // If we are given a filename with the correct
     // extension then just build the docs as one file.
     if(path::extension(outputPath).compare_insensitive(path::extension(outputPath)))
-        return buildOne(outputPath, corpus, config, R);
+        return buildOne(outputPath, corpus, R);
 
     // Create the directory if needed
     fs::file_status status;
@@ -53,11 +52,11 @@ build(
         llvm::SmallString<512> fileName(outputPath);
         path::append(fileName, "reference");
         path::replace_extension(fileName, extension());
-        return buildOne(fileName, corpus, config, R);
+        return buildOne(fileName, corpus, R);
     }
 
     // Build as one file
-    return buildOne(outputPath, corpus, config, R);
+    return buildOne(outputPath, corpus, R);
 }
 
 } // mrdox

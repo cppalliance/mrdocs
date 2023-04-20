@@ -54,21 +54,18 @@ public:
     build(
         llvm::StringRef rootPath,
         Corpus& corpus,
-        Config const& config,
         Reporter& R) const override;
 
     bool
     buildOne(
         llvm::StringRef fileName,
         Corpus& corpus,
-        Config const& config,
         Reporter& R) const override;
 
     bool
     buildString(
         std::string& dest,
         Corpus& corpus,
-        Config const& config,
         Reporter& R) const override;
 };
 
@@ -90,7 +87,6 @@ public:
         llvm::raw_ostream& os,
         llvm::StringRef filePath,
         Corpus const& corpus,
-        Config const& config,
         Reporter& R) noexcept;
 
     void write();

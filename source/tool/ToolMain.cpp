@@ -148,7 +148,7 @@ toolMain(
 
     // Run the generator.
     llvm::outs() << "Generating docs...\n";
-    if(! gen->build((*config)->OutDirectory, **corpus, **config, R))
+    if(! gen->build((*config)->OutDirectory, **corpus, R))
         return;
 }
 

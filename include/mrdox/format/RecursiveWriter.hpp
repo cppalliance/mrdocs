@@ -47,7 +47,6 @@ class RecursiveWriter
 protected:
     llvm::raw_ostream& os_;
     Corpus const& corpus_;
-    Config const& config_;
     Reporter& R_;
 
     /** Constructor.
@@ -55,7 +54,6 @@ protected:
     RecursiveWriter(
         llvm::raw_ostream& os,
         Corpus const& corpus,
-        Config const& config,
         Reporter& R) noexcept;
 
     /** Destructor.

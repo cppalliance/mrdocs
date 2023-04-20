@@ -24,12 +24,10 @@ FlatWriter(
     llvm::raw_ostream& os,
     llvm::StringRef filePath,
     Corpus const& corpus,
-    Config const& config,
     Reporter& R) noexcept
     : os_(os)
     , filePath_(filePath)
     , corpus_(corpus)
-    , config_(config)
     , R_(R)
 {
 }

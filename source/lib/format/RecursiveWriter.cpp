@@ -36,11 +36,9 @@ RecursiveWriter::
 RecursiveWriter(
     llvm::raw_ostream& os,
     Corpus const& corpus,
-    Config const& config,
     Reporter& R) noexcept
     : os_(os)
     , corpus_(corpus)
-    , config_(config)
     , R_(R)
 {
 }

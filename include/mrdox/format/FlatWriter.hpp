@@ -45,7 +45,6 @@ protected:
     llvm::StringRef filePath_;
 
     Corpus const& corpus_;
-    Config const& config_;
     Reporter& R_;
 
     /** Constructor.
@@ -54,7 +53,6 @@ protected:
         llvm::raw_ostream& os,
         llvm::StringRef filePath,
         Corpus const& corpus,
-        Config const& config,
         Reporter& R) noexcept;
 
 public:

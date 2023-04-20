@@ -110,7 +110,6 @@ XMLGenerator::
 buildOne(
     llvm::StringRef fileName,
     Corpus& corpus,
-    Config const& config,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;
@@ -125,7 +124,7 @@ buildOne(
     if(R.error(ec, "open a stream for '", fileName, "'"))
         return false;
 
-    Writer w(os, corpus, config, R);
+    Writer w(os, corpus, R);
     w.write();
     return true;
 }
@@ -135,13 +134,12 @@ XMLGenerator::
 buildString(
     std::string& dest,
     Corpus& corpus,
-    Config const& config,
     Reporter& R) const
 {
     dest.clear();
     llvm::raw_string_ostream os(dest);
 
-    Writer w(os, corpus, config, R);
+    Writer w(os, corpus, R);
     w.write();
     return true;
 }
@@ -217,9 +215,8 @@ Writer::
 Writer(
     llvm::raw_ostream& os,
     Corpus const& corpus,
-    Config const& config,
     Reporter& R) noexcept
-    : RecursiveWriter(os, corpus, config, R)
+    : RecursiveWriter(os, corpus, R)
 {
 }
 

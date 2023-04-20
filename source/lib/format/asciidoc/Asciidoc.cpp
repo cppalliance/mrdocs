@@ -112,8 +112,7 @@ namespace {
 struct PageBuilder : CorpusVisitor
 {
     PageBuilder(
-        Corpus const& corpus,
-        Config const& config) noexcept
+        Corpus const& corpus) noexcept
         : CorpusVisitor(corpus)
     {
     }
@@ -179,7 +178,7 @@ void
 AsciidocGenerator::
 calculatePages() const
 {
-//    PageBuilder builder(corpus_);
+    //PageBuilder builder(corpus_);
 
 
 }
@@ -190,7 +189,6 @@ AsciidocGenerator::
 build(
     llvm::StringRef rootPath,
     Corpus& corpus,
-    Config const& config,
     Reporter& R) const
 {
     namespace path = llvm::sys::path;
@@ -242,7 +240,7 @@ build(
 
     llvm::SmallString<0> fileName(rootPath);
     path::append(fileName, "reference.adoc");
-    return buildOne(fileName, corpus, config, R);
+    return buildOne(fileName, corpus, R);
 #endif
 }
 
@@ -251,7 +249,6 @@ AsciidocGenerator::
 buildOne(
     llvm::StringRef fileName,
     Corpus& corpus,
-    Config const& config,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;
@@ -266,7 +263,7 @@ buildOne(
     if(R.error(ec, "open the stream for '", fileName, "'"))
         return false;
 
-    Writer w(os, fileName, corpus, config, R);
+    Writer w(os, fileName, corpus, R);
     w.beginFile();
     w.visitAllSymbols();
     w.endFile();
@@ -278,13 +275,12 @@ AsciidocGenerator::
 buildString(
     std::string& dest,
     Corpus& corpus,
-    Config const& config,
     Reporter& R) const
 {
     dest.clear();
     llvm::raw_string_ostream os(dest);
 
-    Writer w(os, "", corpus, config, R);
+    Writer w(os, "", corpus, R);
     w.beginFile();
     w.visitAllSymbols();
     w.endFile();
@@ -339,9 +335,8 @@ Writer(
     llvm::raw_ostream& os,
     llvm::StringRef filePath,
     Corpus const& corpus,
-    Config const& config,
     Reporter& R) noexcept
-    : FlatWriter(os, filePath, corpus, config, R)
+    : FlatWriter(os, filePath, corpus, R)
 {
 }
 

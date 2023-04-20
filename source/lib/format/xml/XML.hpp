@@ -41,14 +41,12 @@ struct XMLGenerator : Generator
     buildOne(
         llvm::StringRef fileName,
         Corpus& corpus,
-        Config const& config,
         Reporter& R) const override;
 
     bool
     buildString(
         std::string& dest,
         Corpus& corpus,
-        Config const& config,
         Reporter& R) const override;
 };
 
@@ -74,7 +72,6 @@ public:
     Writer(
         llvm::raw_ostream& os,
         Corpus const& corpus,
-        Config const& config,
         Reporter& R) noexcept;
 
     void write();
