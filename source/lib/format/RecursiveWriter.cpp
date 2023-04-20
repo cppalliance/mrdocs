@@ -72,8 +72,8 @@ makeAllSymbols() ->
     std::vector<AllSymbol>
 {
     std::vector<AllSymbol> list;
-    list.reserve(corpus_.allSymbols.size());
-    for(auto const& id : corpus_.allSymbols)
+    list.reserve(corpus_.allSymbols().size());
+    for(auto const& id : corpus_.allSymbols())
         list.emplace_back(corpus_.get<Info>(id));
     return list;
 }

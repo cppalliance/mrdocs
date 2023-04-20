@@ -64,6 +64,28 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
 
 //------------------------------------------------
 //
+// Observers
+//
+//------------------------------------------------
+
+/** Return the metadata for the global namespace.
+*/
+NamespaceInfo const&
+Corpus::
+globalNamespace() const noexcept
+{
+    return get<NamespaceInfo>(globalNamespaceID());
+}
+
+bool
+Corpus::
+exists(SymbolID const& id) const noexcept
+{
+    return find<Info>(id) != nullptr;
+}
+
+//------------------------------------------------
+//
 // Modifiers
 //
 //------------------------------------------------
@@ -72,22 +94,22 @@ llvm::Expected<std::unique_ptr<Corpus>>
 Corpus::
 build(
     tooling::ToolExecutor& ex,
-    Config const& config,
+    std::shared_ptr<Config const> config,
     Reporter& R)
 {
-    std::unique_ptr<Corpus> corpus(new Corpus(config));
+    std::unique_ptr<Corpus> corpus(new Corpus(std::move(config)));
 
     // Traverse the AST for all translation units
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
-    if(config.verbose())
+    if(corpus->config()->verbose())
         R.print("Mapping declarations");
     if(auto err = ex.execute(
         makeFrontendActionFactory(
-            *ex.getExecutionContext(), config, R),
-        config.ArgAdjuster))
+            *ex.getExecutionContext(), *corpus->config(), R),
+        corpus->config()->ArgAdjuster))
     {
-        if(! config.IgnoreMappingFailures)
+        if(! corpus->config()->IgnoreMappingFailures)
             return err;
         R.print("warning: mapping failed because ", toString(std::move(err)));
     }
@@ -95,7 +117,7 @@ build(
     // Collect the symbols. Each symbol will have
     // a vector of one or more bitcodes. These will
     // be merged later.
-    if(config.verbose())
+    if(corpus->config()->verbose())
         R.print("Collecting symbols");
     using USRToBitcodeType = llvm::StringMap<std::vector<StringRef>>;
     USRToBitcodeType USRToBitcode;
@@ -107,7 +129,7 @@ build(
         });
 
     // First reducing phase (reduce all decls into one info per decl).
-    if(config.verbose())
+    if(corpus->config()->verbose())
         R.print("Reducing ", USRToBitcode.size(), " declarations");
     std::atomic<bool> GotFailure;
     GotFailure = false;
@@ -159,7 +181,7 @@ build(
 
     Pool.wait();
 
-    if(config.verbose())
+    if(corpus->config()->verbose())
         R.print("Collected ", corpus->InfoMap.size(), " symbols.\n");
 
     if(GotFailure)
@@ -247,20 +269,6 @@ do_tiebreak:
     if (s0.size() != s1.size())
         return s0.size() < s1.size();
     return s_cmp < 0;
-}
-
-SymbolID
-Corpus::
-globalNamespaceID() noexcept
-{
-    return EmptySID;
-}
-
-NamespaceInfo const&
-Corpus::
-globalNamespace() const noexcept
-{
-    return get<NamespaceInfo>(globalNamespaceID());
 }
 
 //------------------------------------------------
@@ -365,7 +373,7 @@ insertIntoIndex(
     }
 
     // also insert into allSymbols
-    allSymbols.emplace_back(I.USR);
+    allSymbols_.emplace_back(I.USR);
 }
 
 //------------------------------------------------
@@ -383,7 +391,7 @@ canonicalize(Reporter& R)
         return false;
     }
 
-    if(config_.verbose())
+    if(config_->verbose())
         R.print("Canonicalizing...");
 
     Temps t;
@@ -391,7 +399,7 @@ canonicalize(Reporter& R)
     if(! canonicalize(*p, t, R))
         return false;
 
-    if(! canonicalize(allSymbols, t, R))
+    if(! canonicalize(allSymbols_, t, R))
         return false;
 
     isCanonical_ = true;

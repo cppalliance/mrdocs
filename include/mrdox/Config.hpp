@@ -99,9 +99,6 @@ public:
     bool IgnoreMappingFailures = false;
 
 public:
-    Config(Config&&) = delete;
-    Config& operator=(Config&&) = delete;
-
     //--------------------------------------------
     //
     // Observers

@@ -32,6 +32,7 @@ class AsciidocGenerator
     : public Generator
 {
 public:
+    struct Pages;
     class Writer;
 
     llvm::StringRef
@@ -45,6 +46,9 @@ public:
     {
         return "adoc";
     }
+
+    void
+    calculatePages() const;
 
     bool
     build(
@@ -84,10 +88,12 @@ class AsciidocGenerator::Writer
 public:
     Writer(
         llvm::raw_ostream& os,
+        llvm::StringRef filePath,
         Corpus const& corpus,
         Config const& config,
         Reporter& R) noexcept;
 
+    void write();
     void beginFile() override;
     void endFile() override;
 
@@ -103,7 +109,6 @@ protected:
     void writeEnum(EnumInfo const& I) override;
     void writeTypedef(TypedefInfo const& I) override;
 
-    void writeLocation(Location const&);
     void writeBase(BaseRecordInfo const& I);
     void writeOverloadSet(
         llvm::StringRef sectionName,
@@ -123,8 +128,6 @@ protected:
 
     template<class T>
     void writeNodes(List<T> const& list);
-    //void writeNodes(List<Javadoc::Text> const& list);
-
     void writeNode(Javadoc::Node const& node);
     void writeNode(Javadoc::Text const& node);
     void writeNode(Javadoc::StyledText const& node);
@@ -142,7 +145,6 @@ protected:
     void openSection(llvm::StringRef name);
     void closeSection();
 
-    static Location const& getLocation(SymbolInfo const& I);
     static llvm::StringRef toString(TagTypeKind k) noexcept;
 };
 

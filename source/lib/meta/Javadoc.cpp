@@ -98,6 +98,36 @@ merge(Javadoc&& other)
     }
 }
 
+auto
+Javadoc::
+findBrief() const noexcept ->
+    List<Block>::const_iterator
+{
+    auto it = blocks_.begin();
+    auto first = blocks_.end();
+    for(;it != blocks_.end(); ++it)
+    {
+        if(it->kind == Kind::brief)
+            return it;
+        if( it->kind == Kind::paragraph &&
+            first == blocks_.end())
+        {
+            first = it;
+            ++it;
+            goto got_first;
+        }
+    }
+    return blocks_.end();
+got_first:
+    while(it != blocks_.end())
+    {
+        if(it->kind == Kind::brief)
+            return it;
+        ++it;
+    }
+    return first;
+}
+
 void
 Javadoc::
 calculateBrief()

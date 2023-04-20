@@ -19,9 +19,171 @@ namespace mrdox {
 
 //------------------------------------------------
 //
+// Pages
+//
+//------------------------------------------------
+
+struct CorpusVisitor
+{
+    Corpus const& corpus_;
+
+    explicit
+    CorpusVisitor(
+        Corpus const& corpus) noexcept
+        : corpus_(corpus)
+    {
+    }
+
+    void
+    visit(SymbolID id)
+    {
+        auto I = corpus_.find<Info>(id);
+        assert(I);
+        switch(I->IT)
+        {
+        default:
+        case InfoType::IT_default:
+            llvm_unreachable("unknown type");
+        case InfoType::IT_namespace:
+            return visit(*static_cast<NamespaceInfo const*>(I));
+        case InfoType::IT_record:
+            return visit(*static_cast<RecordInfo const*>(I));
+        case InfoType::IT_function:
+            return visit(*static_cast<FunctionInfo const*>(I));
+        case InfoType::IT_enum:
+            return visit(*static_cast<EnumInfo const*>(I));
+        case InfoType::IT_typedef:
+            return visit(*static_cast<TypedefInfo const*>(I));
+        }
+    }
+
+    virtual
+    void
+    visit(Scope const& scope)
+    {
+        for(auto const& ref : scope.Namespaces)
+            visit(ref.USR);
+        for(auto const& ref : scope.Records)
+            visit(ref.USR);
+        for(auto const& ref : scope.Functions)
+            visit(ref.USR);
+        for(auto const& symbol : scope.Typedefs)
+            visit(symbol);
+        for(auto const& symbol : scope.Enums)
+            visit(symbol);
+    }
+
+    virtual
+    void
+    visit(NamespaceInfo const& symbol)
+    {
+        visit(symbol.Children);
+    }
+
+    virtual
+    void
+    visit(RecordInfo const& symbol)
+    {
+    }
+
+    virtual
+    void
+    visit(FunctionInfo const& symbol)
+    {
+    }
+
+    virtual
+    void
+    visit(EnumInfo const& symbol)
+    {
+    }
+
+    virtual
+    void
+    visit(TypedefInfo const& symbol)
+    {
+    }
+};
+
+//------------------------------------------------
+
+namespace {
+
+struct PageBuilder : CorpusVisitor
+{
+    PageBuilder(
+        Corpus const& corpus,
+        Config const& config) noexcept
+        : CorpusVisitor(corpus)
+    {
+    }
+
+    void
+    build()
+    {
+        this->CorpusVisitor::visit(corpus_.globalNamespace());
+    }
+
+    void
+    visit(RecordInfo const& symbol) override
+    {
+    }
+
+    void
+    visit(FunctionInfo const& symbol) override
+    {
+    }
+
+    void
+    visit(EnumInfo const& symbol) override
+    {
+    }
+
+    void
+    visit(TypedefInfo const& symbol) override
+    {
+    }
+};
+
+} // (anon)
+
+//------------------------------------------------
+//
 // AsciidocGenerator
 //
 //------------------------------------------------
+
+/*
+    Pages are as follows:
+
+    Class
+    Class Template
+    Class Template Specialization 
+    OverloadSet
+    Nested Class
+    Free Function
+    Variable/Constant
+    Typedef
+    Enum
+
+    Page name:
+
+    /{namespace}/{symbol}.html
+*/
+struct AsciidocGenerator::
+    Pages
+{
+};
+
+void
+AsciidocGenerator::
+calculatePages() const
+{
+//    PageBuilder builder(corpus_);
+
+
+}
+
 
 bool
 AsciidocGenerator::
@@ -76,6 +238,8 @@ build(
     }
     return true;
 #else
+    calculatePages();
+
     llvm::SmallString<0> fileName(rootPath);
     path::append(fileName, "reference.adoc");
     return buildOne(fileName, corpus, config, R);
@@ -102,7 +266,7 @@ buildOne(
     if(R.error(ec, "open the stream for '", fileName, "'"))
         return false;
 
-    Writer w(os, corpus, config, R);
+    Writer w(os, fileName, corpus, config, R);
     w.beginFile();
     w.visitAllSymbols();
     w.endFile();
@@ -120,7 +284,7 @@ buildString(
     dest.clear();
     llvm::raw_string_ostream os(dest);
 
-    Writer w(os, corpus, config, R);
+    Writer w(os, "", corpus, config, R);
     w.beginFile();
     w.visitAllSymbols();
     w.endFile();
@@ -129,7 +293,7 @@ buildString(
 
 //------------------------------------------------
 //
-// FlatWriter
+// Writer
 //
 //------------------------------------------------
 
@@ -173,10 +337,18 @@ AsciidocGenerator::
 Writer::
 Writer(
     llvm::raw_ostream& os,
+    llvm::StringRef filePath,
     Corpus const& corpus,
     Config const& config,
     Reporter& R) noexcept
-    : FlatWriter(os, corpus, config, R)
+    : FlatWriter(os, filePath, corpus, config, R)
+{
+}
+
+void
+AsciidocGenerator::
+Writer::
+write()
 {
 }
 
@@ -410,16 +582,6 @@ writeTypedef(
 void
 AsciidocGenerator::
 Writer::
-writeLocation(Location const& loc)
-{
-    os_ <<
-        "\n"
-        "`#include <" << loc.Filename << ">`\n";
-}
-
-void
-AsciidocGenerator::
-Writer::
 writeBase(
     BaseRecordInfo const& I)
 {
@@ -584,14 +746,39 @@ writeLocation(
         loc = &*I.DefLoc;
     else if(! I.Loc.empty())
         loc = &I.Loc[0];
-    os_ <<
-        "\n"
-        "#include <"
-        "file:///" << loc->Filename <<
-        "[" << loc->Filename << "]" <<
-        ">\n";
+
+    std::string url;
+    //--------------------------------------------
+    llvm::raw_string_ostream os(url);
+
+    // relative href
+#if 1
+    os << "link:" << loc->Filename;
+#else
+    os << "file:///" << loc->Filename;
+#endif
+    //--------------------------------------------
+
+    switch(I.IT)
+    {
+    default:
+    case InfoType::IT_function:
+        os_ <<
+            "\n"
+            "Declared in " << url <<
+            "[" << loc->Filename << "]" <<
+            "\n";
+        break;
+    case InfoType::IT_record:
+        os_ <<
+            "\n"
+            "`#include <" << url <<
+            "[" << loc->Filename << "]" <<
+            ">`\n";
+        break;
+    }
 }
-    
+
 void
 AsciidocGenerator::
 Writer::
@@ -831,20 +1018,6 @@ closeSection()
 }
 
 //------------------------------------------------
-
-Location const&
-AsciidocGenerator::
-Writer::
-getLocation(
-    SymbolInfo const& I)
-{
-    if(I.DefLoc.has_value())
-        return *I.DefLoc;
-    if(! I.Loc.empty())
-        return I.Loc[0];
-    static Location const missing{};
-    return missing;
-}
 
 llvm::StringRef
 AsciidocGenerator::

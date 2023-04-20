@@ -19,6 +19,7 @@
 #include <mrdox/meta/Types.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
+#include <memory>
 #include <type_traits>
 #include <vector>
 
@@ -29,67 +30,28 @@ namespace mrdox {
 */
 class Corpus
 {
-    Config const& config_;
-
     explicit
     Corpus(
-        Config const& config) noexcept
-        : config_(config)
+        std::shared_ptr<Config const> config) noexcept
+        : config_(std::move(config))
     {
     }
 
 public:
-    /** Index of all emitted symbols.
-    */
-    Index Idx;
-
-    /** Table of Info keyed on Symbol ID.
-    */
-    llvm::StringMap<std::unique_ptr<Info>> InfoMap;
-
-    /** List of all symbols.
-    */
-    std::vector<SymbolID> allSymbols;
-
-public:
-    //--------------------------------------------
-    //
-    // Modifiers
-    //
-    //--------------------------------------------
-
-    /** Build the intermediate representation of the code being documented.
-
-        @param config The configuration, whose lifetime
-        must extend until the corpus is destroyed.
-
-        @param R The diagnostic reporting object to
-        use for delivering errors and information.
-    */
-    [[nodiscard]]
-    static
-    llvm::Expected<std::unique_ptr<Corpus>>
-    build(
-        tooling::ToolExecutor& ex,
-        Config const& config,
-        Reporter& R);
-
-    /** Sort an array of Info by fully qualified name
-    */
-
-    /** Store the Info in the tool results, keyed by SymbolID.
-    */
-    static
-    void
-    reportResult(
-        tooling::ExecutionContext& exc,
-        Info const& I);
-
     //--------------------------------------------
     //
     // Observers
     //
     //--------------------------------------------
+
+    /** Return the ID of the global namespace.
+    */
+    static
+    SymbolID
+    globalNamespaceID() noexcept
+    {
+        return EmptySID;
+    }
 
     /** Return true if s0 is less than s1.
 
@@ -106,11 +68,13 @@ public:
         llvm::StringRef symbolName0,
         llvm::StringRef symbolName1) noexcept;
 
-    /** Return the ID of the global namespace.
+    /** Return the Config used to generate this corpus.
     */
-    static
-    SymbolID
-    globalNamespaceID() noexcept;
+    std::shared_ptr<Config const> const&
+    config() const noexcept
+    {
+        return config_;
+    }
 
     /** Return the metadata for the global namespace.
     */
@@ -119,11 +83,7 @@ public:
 
     /** Return true if an Info with the specified symbol ID exists.
     */
-    bool
-    exists(SymbolID const& id) const noexcept
-    {
-        return find<Info>(id) != nullptr;
-    }
+    bool exists(SymbolID const& id) const noexcept;
 
     /** Return a pointer to the Info with the specified symbol ID, or nullptr.
     */
@@ -166,7 +126,55 @@ public:
         assert(p != nullptr);
         return *p;
     }
-    
+
+    /** Return the list of all uniquely identified symbols.
+    */
+    std::vector<SymbolID> const&
+    allSymbols() const noexcept
+    {
+        return allSymbols_;
+    }
+
+    //--------------------------------------------
+    //
+    // Modifiers
+    //
+    //--------------------------------------------
+
+    /** Build the intermediate representation of the code being documented.
+
+        @param config A shared pointer to the configuration.
+
+        @param R The diagnostic reporting object to
+        use for delivering errors and information.
+    */
+    [[nodiscard]]
+    static
+    llvm::Expected<std::unique_ptr<Corpus>>
+    build(
+        tooling::ToolExecutor& ex,
+        std::shared_ptr<Config const> config,
+        Reporter& R);
+
+    [[nodiscard]]
+    static
+    llvm::Expected<std::unique_ptr<Corpus>>
+    build(
+        tooling::ToolExecutor& ex,
+        Config const& config,
+        Reporter& R)
+    {
+        return build(ex, std::make_shared<Config const>(config), R);
+    }
+
+    /** Store the Info in the tool results, keyed by SymbolID.
+    */
+    static
+    void
+    reportResult(
+        tooling::ExecutionContext& exc,
+        Info const& I);
+
 private:
     struct Temps;
 
@@ -211,6 +219,17 @@ private:
     bool canonicalize(llvm::SmallVectorImpl<MemberTypeInfo>& list, Temps& t, Reporter& R);
 
 private:
+    std::shared_ptr<Config const> config_;
+
+    // Index of all emitted symbols.
+    Index Idx;
+
+    // Table of Info keyed on Symbol ID.
+    llvm::StringMap<std::unique_ptr<Info>> InfoMap;
+
+    // list of all symbols
+    std::vector<SymbolID> allSymbols_;
+
     llvm::sys::Mutex infoMutex;
     llvm::sys::Mutex allSymbolsMutex;
     bool isCanonical_ = false;

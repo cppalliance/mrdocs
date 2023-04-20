@@ -359,6 +359,9 @@ struct Javadoc
     */
     void merge(Javadoc&& other);
 
+    List<Block>::const_iterator
+    findBrief() const noexcept;
+
     /** Calculate the brief.
 
         The implementation calls this function once,
@@ -425,7 +428,7 @@ struct Javadoc
     {
         append(blocks_, std::move(node));
     }
-    
+
     void append(Param node)
     {
         append(params_, std::move(node));

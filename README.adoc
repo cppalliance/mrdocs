@@ -3,7 +3,7 @@
 == Install
 
 This library depends on a recent version of LLVM.
-Here are the instructions to install LVVM with the settings required by this project.
+Here are the instructions to install LLVM with the settings required by this project.
 
 [source,bash]
 ----

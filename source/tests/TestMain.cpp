@@ -39,6 +39,7 @@ testMain(
         (*config)->setSourceRoot((*config)->configDir());
 
         (*config)->setVerbose(false);
+        (*config)->setIncludePrivate(true);
 
         // We need a different config for each directory
         // passed on the command line, and thus each must
