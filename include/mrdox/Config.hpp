@@ -19,6 +19,7 @@
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/YAMLTraits.h>
+#include <functional>
 #include <memory>
 #include <string>
 
@@ -45,6 +46,7 @@ class Config
     template<class T>
     friend struct llvm::yaml::MappingTraits;
 
+    class Impl;
     struct Options;
 
     llvm::SmallString<0> configDir_;
@@ -56,9 +58,12 @@ class Config
     llvm::SmallString<0>
     normalizePath(llvm::StringRef pathName);
 
+protected:
     explicit Config(llvm::StringRef configDir);
 
 public:
+    virtual ~Config() = default;
+
     /** Return a defaulted Config using an existing directory.
 
         @param dirPath The path to the directory.
@@ -66,14 +71,14 @@ public:
         be calculated from the current directory.
     */
     static
-    llvm::Expected<std::unique_ptr<Config>>
+    llvm::Expected<std::shared_ptr<Config>>
     createAtDirectory(
         llvm::StringRef dirPath);
 
     /** Return a Config loaded from the specified YAML file.
     */
     static
-    llvm::Expected<std::unique_ptr<Config>>
+    llvm::Expected<std::shared_ptr<Config>>
     loadFromFile(
         llvm::StringRef filePath);
 
@@ -99,6 +104,10 @@ public:
     bool IgnoreMappingFailures = false;
 
 public:
+    /** A resource for running submitted work, possibly concurrent.
+    */
+    class WorkGroup;
+
     //--------------------------------------------
     //
     // Observers
@@ -169,6 +178,21 @@ public:
         llvm::StringRef filePath,
         llvm::SmallVectorImpl<char>& prefix) const noexcept;
 
+    /** Call a function for each element of a range.
+
+        The function is invoked with a reference
+        to each element of the container using the
+        concurrency specified in the configuration.
+
+        This function must not be called concurrently,
+        despite being marked `const`.
+    */
+    template<class Range, class UnaryFunction>
+    void
+    parallelForEach(
+        Range&& range,
+        UnaryFunction const& f) const;
+
     //--------------------------------------------
     //
     // Modifiers
@@ -215,6 +239,54 @@ public:
     setInputFileIncludes(
         std::vector<std::string> const& list);
 };
+
+//------------------------------------------------
+
+class Config::WorkGroup
+{
+public:
+    explicit
+    WorkGroup(Config const& config);
+
+    /** Post work to the work group.
+    */
+    void post(std::function<void(void)>);
+
+    /** Wait for all posted work in the work group to complete.
+    */
+    void wait();
+
+private:
+    friend class Config::Impl;
+
+    struct Base
+    {
+        virtual ~Base() = default;
+    };
+
+    class Impl;
+
+    Config::Impl const& config_;
+    std::unique_ptr<Base> impl_;
+};
+
+//------------------------------------------------
+
+template<class Range, class UnaryFunction>
+void
+Config::
+parallelForEach(
+    Range&& range,
+    UnaryFunction const& f) const
+{
+    WorkGroup wg(*this);
+    for(auto&& element : range)
+        wg.post([&f, &element]
+            {
+                f(element);
+            });
+    wg.wait();
+}
 
 } // mrdox
 } // clang

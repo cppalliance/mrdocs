@@ -142,7 +142,7 @@ toolMain(
     }
 
     // Run the tool, this can take a while
-    auto corpus = Corpus::build(*ex, **config, R);
+    auto corpus = Corpus::build(*ex, *config, R);
     if(R.error(corpus, "build the documentation corpus"))
         return;
 

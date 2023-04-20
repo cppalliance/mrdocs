@@ -156,17 +156,6 @@ public:
         std::shared_ptr<Config const> config,
         Reporter& R);
 
-    [[nodiscard]]
-    static
-    llvm::Expected<std::unique_ptr<Corpus>>
-    build(
-        tooling::ToolExecutor& ex,
-        Config const& config,
-        Reporter& R)
-    {
-        return build(ex, std::make_shared<Config const>(config), R);
-    }
-
     /** Store the Info in the tool results, keyed by SymbolID.
     */
     static

@@ -19,7 +19,7 @@ namespace mrdox {
 
 Tester::
 Tester(
-    Config const& config,
+    std::shared_ptr<Config> const& config,
     Reporter &R)
     : config_(config)
     , xmlGen(makeXMLGenerator())
@@ -28,11 +28,11 @@ Tester(
 {
 }
 
-bool
+void
 Tester::
 checkDirRecursively(
     llvm::SmallString<340> dirPath,
-    llvm::ThreadPool& threadPool)
+    Config::WorkGroup& workGroup)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -43,13 +43,14 @@ checkDirRecursively(
     fs::directory_iterator const end{};
     fs::directory_iterator iter(dirPath, ec, false);
     if(R_.error(ec, "iterate the directory '", dirPath, '.'))
-        return false;
+        return;
 
     while(iter != end)
     {
         if(iter->type() == fs::file_type::directory_file)
         {
-            checkDirRecursively(llvm::StringRef(iter->path()), threadPool);
+            checkDirRecursively(
+                llvm::StringRef(iter->path()), workGroup);
         }
         else if(
             iter->type() == fs::file_type::regular_file &&
@@ -57,9 +58,7 @@ checkDirRecursively(
         {
             outputPath = iter->path();
             path::replace_extension(outputPath, "xml");
-#ifndef NO_ASYNC
-            threadPool.async(
-#endif
+            workGroup.post(
                 [
                 this,
                 dirPath,
@@ -72,12 +71,7 @@ checkDirRecursively(
                     auto corpus = Corpus::build(ex, config_, R_);
                     if(! R_.error(corpus, "build corpus for '", inputPath, "'"))
                         checkOneFile(**corpus, inputPath, outputPath);
-                }
-#ifndef NO_ASYNC
-            );
-#else
-            ();
-#endif
+                });
         }
         else
         {
@@ -85,9 +79,8 @@ checkDirRecursively(
         }
         iter.increment(ec);
         if(R_.error(ec, "iterate the directory '", dirPath, '.'))
-            return false;
+            return;
     }
-    return true;
 }
 
 void
@@ -104,7 +97,7 @@ checkOneFile(
     outputPath = { outputPathStr.data(), outputPathStr.size() };
 
     std::string xmlString;
-    if(! xmlGen->buildString(xmlString, corpus, config_, R_))
+    if(! xmlGen->buildString(xmlString, corpus, *config_, R_))
         return;
     std::error_code ec;
     fs::file_status stat;
@@ -152,7 +145,7 @@ checkOneFile(
     {
         path::replace_extension(outputPathStr, adocGen->extension());
         outputPath = { outputPathStr.data(), outputPathStr.size() };
-        adocGen->buildOne(outputPath, corpus, config_, R_);
+        adocGen->buildOne(outputPath, corpus,*config_, R_);
     }
 }
 

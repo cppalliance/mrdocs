@@ -27,7 +27,7 @@ namespace mrdox {
 
 class Tester
 {
-    Config const& config_;
+    std::shared_ptr<Config> config_;
     std::unique_ptr<Generator> xmlGen;
     std::unique_ptr<Generator> adocGen;
     Reporter& R_;
@@ -35,13 +35,13 @@ class Tester
 public:
     explicit
     Tester(
-        Config const& config,
+        std::shared_ptr<Config> const& config,
         Reporter &R);
 
-    bool
+    void
     checkDirRecursively(
         llvm::SmallString<340> dirPath,
-        llvm::ThreadPool& threadPool);
+        Config::WorkGroup& workGroup);
 
     void
     checkOneFile(

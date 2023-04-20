@@ -12,11 +12,17 @@
 #include "utility.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Error.hpp>
+#include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/Path.h>
+#include <llvm/Support/ThreadPool.h>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
+
+//------------------------------------------------
+
+// Options from YAML
 
 namespace clang {
 namespace mrdox {
@@ -68,6 +74,87 @@ namespace clang {
 namespace mrdox {
 
 //------------------------------------------------
+//
+// Config::WorkGroup
+//
+//------------------------------------------------
+
+class Config::WorkGroup::
+    Impl : public Base
+{
+public:
+    explicit
+    Impl(
+        llvm::ThreadPool& threadPool)
+        : group_(threadPool)
+    {
+    }
+
+    llvm::ThreadPoolTaskGroup group_;
+};
+
+//------------------------------------------------
+//
+// Config::Impl
+//
+//------------------------------------------------
+
+class Config::Impl : public Config
+{
+    llvm::ThreadPool mutable threadPool_;
+    bool doAsync_ = true;
+
+    friend class WorkGroup;
+
+public:
+    explicit
+    Impl(
+        llvm::StringRef configDir)
+        : Config(configDir)
+        // VFALCO Should this concurrency be a command line option?
+        , threadPool_(
+            llvm::hardware_concurrency(
+                tooling::ExecutorConcurrency))
+    {
+    }
+};
+
+//------------------------------------------------
+
+Config::
+WorkGroup::
+WorkGroup(
+    Config const& config)
+    : config_(static_cast<Config::Impl const&>(config))
+    , impl_(std::make_unique<Impl>(const_cast<
+        llvm::ThreadPool&>(config_.threadPool_)))
+{
+}
+
+void
+Config::
+WorkGroup::
+post(
+    std::function<void(void)> f)
+{
+    auto& impl = static_cast<Impl&>(*impl_);
+    if(config_.doAsync_)
+        impl.group_.async(std::move(f));
+    else
+        f();
+}
+
+void
+Config::
+WorkGroup::
+wait()
+{
+    auto& impl = static_cast<Impl&>(*impl_);
+    if(config_.doAsync_)
+        impl.group_.wait();
+}
+
+//------------------------------------------------
 
 llvm::SmallString<0>
 Config::
@@ -99,7 +186,7 @@ Config(
 {
 }
 
-llvm::Expected<std::unique_ptr<Config>>
+llvm::Expected<std::shared_ptr<Config>>
 Config::
 createAtDirectory(
     llvm::StringRef dirPath)
@@ -108,16 +195,15 @@ createAtDirectory(
     namespace path = llvm::sys::path;
 
     llvm::SmallString<0> s(dirPath);
-    std::error_code ec = fs::make_absolute(s);
-    if(ec)
+    if(auto ec = fs::make_absolute(s))
         return makeError("fs::make_absolute('", s, "') returned ", ec.message());
     path::remove_dots(s, true);
     makeDirsy(s);
     convert_to_slash(s);
-    return std::unique_ptr<Config>(new Config(s));
+    return std::make_shared<Config::Impl>(s);
 }
 
-llvm::Expected<std::unique_ptr<Config>>
+llvm::Expected<std::shared_ptr<Config>>
 Config::
 loadFromFile(
     llvm::StringRef filePath)
@@ -135,7 +221,9 @@ loadFromFile(
     // create initial config at config dir
     llvm::SmallString<0> s(filePath);
     path::remove_filename(s);
-    llvm::Expected<std::unique_ptr<Config>> config = createAtDirectory(s);
+    auto config = createAtDirectory(s);
+    if(! config)
+        return config.takeError();
 
     // Read the YAML file into Options
     Options opt;

@@ -16,14 +16,9 @@
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
-#include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/Mutex.h>
-#include <llvm/Support/ThreadPool.h>
-
 #include <cassert>
-
-//#define NO_ASYNC
 
 namespace clang {
 namespace mrdox {
@@ -133,20 +128,17 @@ build(
         R.print("Reducing ", USRToBitcode.size(), " declarations");
     std::atomic<bool> GotFailure;
     GotFailure = false;
-    // VFALCO Should this concurrency be a command line option?
-    llvm::ThreadPool Pool(llvm::hardware_concurrency(tooling::ExecutorConcurrency));
-    for (USRToBitcodeType::MapEntryTy& Group : USRToBitcode)
-    {
-#ifndef NO_ASYNC
-        Pool.async(
-#endif
-        [&, &MyGroup = Group]()
+
+    //for (USRToBitcodeType::MapEntryTy& Group : USRToBitcode)
+    corpus->config()->parallelForEach(
+        USRToBitcode,
+        [&](USRToBitcodeType::MapEntryTy& Group)
         {
             // One or more Info for the same symbol ID
             std::vector<std::unique_ptr<Info>> Infos;
 
             // Each Bitcode can have multiple Infos
-            for (auto& Bitcode : MyGroup.getValue())
+            for (auto& Bitcode : Group.getValue())
             {
                 llvm::BitstreamCursor Stream(Bitcode);
                 auto infos = readBitcode(Stream, R);
@@ -171,15 +163,7 @@ build(
             std::unique_ptr<Info> I(merged.get().release());
             assert(Group.getKey() == llvm::toStringRef(I->USR));
             corpus->insert(std::move(I));
-        }
-#ifdef NO_ASYNC
-        ();
-#else
-        );
-#endif
-    }
-
-    Pool.wait();
+        });
 
     if(corpus->config()->verbose())
         R.print("Collected ", corpus->InfoMap.size(), " symbols.\n");

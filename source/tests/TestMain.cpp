@@ -12,6 +12,7 @@
 #include <mrdox/Debug.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/Signals.h>
+#include <llvm/Support/ThreadPool.h>
 
 namespace clang {
 namespace mrdox {
@@ -31,7 +32,8 @@ testMain(
     // recursively for tests.
     for(int i = 1; i < argc; ++i)
     {
-        auto config = Config::createAtDirectory(argv[i]);
+        auto config = Config::createAtDirectory(
+            argv[i]);
         if(! config)
             return (void)R.error(config, "create config at directory '", argv[i], "'");
 
@@ -44,17 +46,16 @@ testMain(
         // We need a different config for each directory
         // passed on the command line, and thus each must
         // also have a separate Tester.
-        Tester tester(**config, R);
+        Tester tester(*config, R);
         llvm::StringRef s(argv[i]);
         llvm::SmallString<340> dirPath(s);
         path::remove_dots(dirPath, true);
-        llvm::ThreadPool threadPool(
-            llvm::hardware_concurrency(
-                tooling::ExecutorConcurrency));
-        if(! tester.checkDirRecursively(
-                llvm::StringRef(argv[i]), threadPool))
-            break;
-        threadPool.wait();
+
+        Config::WorkGroup workGroup(**config);
+        tester.checkDirRecursively(
+            llvm::StringRef(argv[i]),
+            workGroup);
+        workGroup.wait();
     }
 }
 
