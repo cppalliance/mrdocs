@@ -115,6 +115,8 @@ struct Javadoc
     {
         Style style;
 
+        static constexpr Kind static_kind = Kind::styled;
+
         auto operator<=>(StyledText const&
             ) const noexcept = default;
 
@@ -160,6 +162,8 @@ struct Javadoc
     */
     struct Paragraph : Block
     {
+        static constexpr Kind static_kind = Kind::paragraph;
+
         auto operator<=>(Paragraph const&
             ) const noexcept = default;
 
@@ -182,6 +186,8 @@ struct Javadoc
     */
     struct Brief : Paragraph
     {
+        static constexpr Kind static_kind = Kind::brief;
+
         auto operator<=>(Brief const&
             ) const noexcept = default;
 
@@ -216,6 +222,8 @@ struct Javadoc
         // VFALCO we can add a language (e.g. C++),
         //        then emit attributes in the generator.
 
+        static constexpr Kind static_kind = Kind::code;
+
         auto operator<=>(Code const&
             ) const noexcept = default;
 
@@ -230,6 +238,8 @@ struct Javadoc
     struct Param : Paragraph
     {
         String name;
+
+        static constexpr Kind static_kind = Kind::param;
 
         auto operator<=>(Param const&
             ) const noexcept = default;
@@ -251,16 +261,13 @@ struct Javadoc
     {
         String name;
 
+        static constexpr Kind static_kind = Kind::tparam;
+
         auto operator<=>(TParam const&
             ) const noexcept = default;
 
-        TParam(
-            String name_ = String(),
-            Paragraph details_ = Paragraph())
-            : Paragraph(
-                Kind::tparam,
-                std::move(details_.children))
-            , name(std::move(name_))
+        TParam()
+            : Paragraph(Kind::tparam)
         {
         }
     };
@@ -269,6 +276,8 @@ struct Javadoc
     */
     struct Returns : Paragraph
     {
+        static constexpr Kind static_kind = Kind::returns;
+
         auto operator<=>(Returns const&
             ) const noexcept = default;
 
@@ -415,7 +424,6 @@ struct Javadoc
 private:
     std::shared_ptr<Paragraph const> brief_;
     List<Block> blocks_;
-    Returns returns_;
 };
 
 } // mrdox

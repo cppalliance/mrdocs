@@ -282,8 +282,10 @@ public:
         }
         if(cmd->IsReturnsCommand)
         {
-            Scope scope(returns_, para_);
+            Javadoc::Returns returns;
+            Scope scope(returns, para_);
             visitChildren(C->getParagraph());
+            Javadoc::append(blocks_, std::move(returns));
             return;
         }
         if(cmd->getID() == CommandTraits::KCI_note)
@@ -307,40 +309,36 @@ public:
     void visitParamCommandComment(
         ParamCommandComment const* C)
     {
-        Javadoc::String name;
-        Javadoc::Paragraph para;
+        Javadoc::Param param;
         if(C->hasParamName())
-            name = ensureUTF8(C->getParamNameAsWritten().str());
+            param.name = ensureUTF8(C->getParamNameAsWritten().str());
         else
-            name = "@anon";
-        Scope scope(para, para_);
+            param.name = "@anon";
+        Scope scope(param, para_);
         //if(C->hasNonWhitespaceParagraph())
         visitChildren(C->getParagraph());
-        params_.emplace_back(Javadoc::Param(
-            std::move(name), std::move(para)));
+        Javadoc::append(blocks_, std::move(param));
     }
 
     void visitTParamCommandComment(
         TParamCommandComment const* C)
     {
-        Javadoc::String name;
-        Javadoc::Paragraph para;
+        Javadoc::TParam tparam;
         if(C->hasParamName())
-            name = ensureUTF8(C->getParamNameAsWritten().str());
+            tparam.name = ensureUTF8(C->getParamNameAsWritten().str());
         else
-            name = "@anon";
-        Scope scope(para, para_);
+            tparam.name = "@anon";
+        Scope scope(tparam, para_);
         //if(C->hasNonWhitespaceParagraph())
         visitChildren(C->getParagraph());
-        tparams_.emplace_back(Javadoc::TParam(
-            std::move(name), std::move(para)));
+        Javadoc::append(blocks_, std::move(tparam));
     }
 
     void visitVerbatimBlockComment(
         VerbatimBlockComment const* C)
     {
         Javadoc::Code code;
-        Scope scope(code, code_);
+        Scope scope(code, para_);
         //if(C->hasNonWhitespaceParagraph())
         visitChildren(C);
         Javadoc::append(blocks_, std::move(code));
@@ -356,7 +354,7 @@ public:
     void visitVerbatimBlockLineComment(
         VerbatimBlockLineComment const* C)
     {
-        Javadoc::append(*code_,
+        Javadoc::append(*para_,
             Javadoc::Text(C->getText().str()));
     }
 
@@ -365,10 +363,7 @@ private:
     ASTContext const& ctx_;
     List<Javadoc::Block> blocks_;
     List<Javadoc::Param> params_;
-    List<Javadoc::TParam> tparams_;
-    Javadoc::Returns returns_;
     Javadoc::Paragraph* para_ = nullptr;
-    Javadoc::Code* code_ = nullptr;
     llvm::raw_string_ostream* os_ = nullptr;
 };
 

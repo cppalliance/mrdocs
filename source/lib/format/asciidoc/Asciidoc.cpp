@@ -27,6 +27,8 @@ struct CorpusVisitor
 {
     Corpus const& corpus_;
 
+    virtual ~CorpusVisitor() = default;
+
     explicit
     CorpusVisitor(
         Corpus const& corpus) noexcept

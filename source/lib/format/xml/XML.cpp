@@ -763,7 +763,6 @@ Writer::
 toString(
     Javadoc::Style style) noexcept
 {
-    llvm::StringRef s;
     switch(style)
     {
     case Javadoc::Style::bold: return "bold";

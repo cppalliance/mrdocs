@@ -627,7 +627,7 @@ getInfos()
         case BI_FIELD_TYPE_BLOCK_ID:
         case BI_MEMBER_TYPE_BLOCK_ID:
         case BI_JAVADOC_BLOCK_ID:
-        case BI_JAVADOC_NODELIST_BLOCK_ID:
+        case BI_JAVADOC_LIST_BLOCK_ID:
         case BI_JAVADOC_NODE_BLOCK_ID:
         case BI_REFERENCE_BLOCK_ID:
             return makeError("invalid top level block");
@@ -793,7 +793,7 @@ readSubBlock(
         return llvm::Error::success();
     }
 
-    case BI_JAVADOC_NODELIST_BLOCK_ID:
+    case BI_JAVADOC_LIST_BLOCK_ID:
     {
         AnyNodeList J(nodes_);
         if(auto err = readBlock(ID, &J))

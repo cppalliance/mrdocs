@@ -46,6 +46,9 @@
         <para>
           <text>        </text>
         </para>
+        <returns>
+          <text> the number 2</text>
+        </returns>
       </doc>
     </function>
     <function name="g3" access="protected" id="DKxv4h+rP37b0u6O1qbB+u416ZY=">
@@ -59,6 +62,13 @@
         <para>
           <text>        </text>
         </para>
+        <returns>
+          <text> the separator</text>
+          <text>        </text>
+        </returns>
+        <param name="x">
+          <text> any old number</text>
+        </param>
       </doc>
     </function>
     <typedef name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">

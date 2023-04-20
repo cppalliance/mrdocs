@@ -275,6 +275,29 @@ setString(
         node.string = string.str();
         return llvm::Error::success();
     }
+    else if constexpr(std::derived_from<T, Javadoc::Block>)
+    {
+        switch(list.back().kind)
+        {
+        case Javadoc::Kind::param:
+        {
+            auto& node = static_cast<Javadoc::Param&>(list.back());
+            node.name = string.str();
+            return llvm::Error::success();
+        }
+        case Javadoc::Kind::tparam:
+        {
+            auto& node = static_cast<Javadoc::TParam&>(list.back());
+            node.name = string.str();
+            return llvm::Error::success();
+        }
+        default:
+            break;
+        }
+    }
+#if 0
+    // VFALCO This was for when the top level Javadoc
+    // has separate lists for Param and TParam
     else if constexpr(std::derived_from<T, Javadoc::Param>)
     {
         auto& node = static_cast<Javadoc::Param&>(list.back());
@@ -287,10 +310,8 @@ setString(
         node.name = string.str();
         return llvm::Error::success();
     }
-    else
-    {
-        return makeError("string on wrong kind");
-    }
+#endif
+    return makeError("string on wrong kind");
 }
 
 template<class T>
