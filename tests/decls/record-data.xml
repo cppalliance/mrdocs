@@ -20,7 +20,9 @@
   </struct>
   <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
     <file path="record-data.cpp" line="14" class="def"/>
+    <data name="i" type="int" access="private"/>
     <data name="j" type="unsigned long" access="protected"/>
+    <data name="k" type="double" access="private"/>
   </class>
   <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
     <file path="record-data.cpp" line="23" class="def"/>

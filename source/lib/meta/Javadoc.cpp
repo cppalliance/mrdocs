@@ -10,8 +10,6 @@
 //
 
 #include <mrdox/meta/Javadoc.hpp>
-#include <mrdox/meta/Namespace.hpp>
-#include <mrdox/Config.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 
@@ -36,14 +34,8 @@ static_assert(a_Node<Javadoc::Code>);
 
 Javadoc::
 Javadoc(
-    List<Block> blocks,
-    List<Param> params,
-    List<TParam> tparams,
-    Returns returns)
+    List<Block> blocks)
     : blocks_(std::move(blocks))
-    , params_(std::move(params))
-    , tparams_(std::move(tparams))
-    , returns_(std::move(returns))
 {
 }
 
@@ -51,11 +43,8 @@ bool
 Javadoc::
 empty() const noexcept
 {
-    if( (! brief_) &&
-        blocks_.empty() &&
-        params_.empty() &&
-        tparams_.empty() &&
-        returns_.empty())
+    if( ! brief_ &&
+        blocks_.empty())
     {
         return true;
     }
@@ -67,11 +56,7 @@ Javadoc::
 operator==(
     Javadoc const& other) const noexcept
 {
-    return 
-        blocks_ == other.blocks_ &&
-        params_ == other.params_ &&
-        tparams_ == other.tparams_ &&
-        returns_ == other.returns_;
+    return blocks_ == other.blocks_;
 }
 
 bool
@@ -89,13 +74,7 @@ merge(Javadoc&& other)
     // Unconditionally extend the blocks
     // since each decl may have a comment.
     if(other != *this)
-    {
         append(blocks_, std::move(other.blocks_));
-        append(params_, std::move(other.params_));
-        append(tparams_, std::move(other.tparams_));
-        if( returns_.empty())
-            returns_ = std::move(other.returns_);
-    }
 }
 
 auto

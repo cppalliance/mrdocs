@@ -499,9 +499,6 @@ writeJavadoc(Javadoc const& jd)
     if(auto brief = jd.getBrief())
         writeBrief(brief);
     writeNodes(jd.getBlocks());
-    writeReturns(jd.getReturns());
-    writeNodes(jd.getParams());
-    writeNodes(jd.getTParams());
     closeTag("doc");
 }
 

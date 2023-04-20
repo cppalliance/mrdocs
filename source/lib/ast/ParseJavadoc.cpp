@@ -152,11 +152,7 @@ public:
     {
         visit(FC_);
 
-        return Javadoc(
-            std::move(blocks_),
-            std::move(params_),
-            std::move(tparams_),
-            std::move(returns_));
+        return Javadoc(std::move(blocks_));
     }
 
     void visitComment(
@@ -659,24 +655,6 @@ dumpJavadoc(
 
     if(! jd.getBlocks().empty())
         dump(os, jd.getBlocks());
-
-    if(! jd.getReturns().empty())
-    {
-        os << "    @returns ";
-        dump(os, jd.getReturns());
-    }
-
-    if(! jd.getParams().empty())
-    {
-        os << '\n';
-        dump(os, jd.getParams());
-    }
-
-    if(! jd.getTParams().empty())
-    {
-        os << '\n';
-        dump(os, jd.getTParams());
-    }
 
     os <<
         "*/\n"

@@ -800,7 +800,7 @@ readSubBlock(
             return err;
         if(! J.isTopLevel())
             return J.spliceIntoParent();
-        return J.spliceInto(javadoc_->blocks_);
+        return J.spliceInto(javadoc_->getBlocks());
     }
 
     case BI_JAVADOC_NODE_BLOCK_ID:

@@ -284,11 +284,9 @@ struct Javadoc
 
     /** Constructor
     */
+    explicit
     Javadoc(
-        List<Block> blocks,
-        List<Param> params,
-        List<TParam> tparams,
-        Returns returns);
+        List<Block> blocks);
 
     /** Return true if this is empty
     */
@@ -314,28 +312,12 @@ struct Javadoc
         return blocks_;
     }
 
-    /** Return a paragraph describing the return value.
-    */
-    Returns const&
-    getReturns() const noexcept
+    // VFALCO This is unfortunately necessary for
+    //        the deserialization from bitcode...
+    List<Block>&
+    getBlocks() noexcept
     {
-        return returns_;
-    }
-
-    /** Return the list of param commands
-    */
-    List<Param> const&
-    getParams() const noexcept
-    {
-        return params_;
-    }
-
-    /** Return the list of tparam commands
-    */
-    List<TParam> const&
-    getTParams() const noexcept
-    {
-        return tparams_;
+        return blocks_;
     }
 
     //--------------------------------------------
@@ -423,32 +405,16 @@ struct Javadoc
 
     /** Add a top level element to the doc comment.
     */
-    /** @{ */
     void append(Block node)
     {
         append(blocks_, std::move(node));
     }
 
-    void append(Param node)
-    {
-        append(params_, std::move(node));
-    }
-
-    void append(TParam node)
-    {
-        append(tparams_, std::move(node));
-    }
-    /** @} */
-
     //--------------------------------------------
 
-//private:
-public: // VFALCO sigh...
+private:
     std::shared_ptr<Paragraph const> brief_;
     List<Block> blocks_;
-    List<Param> params_;
-    List<TParam> tparams_;
-    std::shared_ptr<Returns const> returns_ptr_;
     Returns returns_;
 };
 
