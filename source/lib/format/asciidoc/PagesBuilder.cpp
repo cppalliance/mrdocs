@@ -9,6 +9,7 @@
 //
 
 #include "PagesBuilder.hpp"
+#include "format/radix.hpp"
 #include <mrdox/Metadata.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -57,7 +58,6 @@ visit(
     namespace path = llvm::sys::path;
 
     auto saved = filePrefix_;
-    path::append(filePrefix_, I.Name);
     corpus_.visit(I.Children, *this);
     filePrefix_ = saved;
 }
@@ -70,7 +70,8 @@ visit(
     namespace path = llvm::sys::path;
 
     auto filePath = filePrefix_;
-    path::append(filePath, I.Name);
+    llvm::SmallString<0> temp;
+    path::append(filePath, toBaseFN(temp, I.USR));
     path::replace_extension(filePath, "adoc");
     pages.emplace_back(std::move(filePath));
 
@@ -109,7 +110,8 @@ visit(
     namespace path = llvm::sys::path;
 
     auto filePath = filePrefix_;
-    path::append(filePath, I.Name);
+    llvm::SmallString<0> temp;
+    path::append(filePath, toBaseFN(temp, I.USR));
     path::replace_extension(filePath, "adoc");
     pages.emplace_back(std::move(filePath));
 }
@@ -122,7 +124,8 @@ visit(
     namespace path = llvm::sys::path;
 
     auto filePath = filePrefix_;
-    path::append(filePath, I.Name);
+    llvm::SmallString<0> temp;
+    path::append(filePath, toBaseFN(temp, I.USR));
     path::replace_extension(filePath, "adoc");
     pages.emplace_back(std::move(filePath));
 }

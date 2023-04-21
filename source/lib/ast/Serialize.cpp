@@ -906,7 +906,6 @@ build(
         return {};
     I.TagType = D->getTagKind();
     I.Path = getInfoRelativePath(I.Namespace);
-
     parseFields(I, D, PublicOnly, AccessSpecifier::AS_public, R_);
     if(auto const* C = dyn_cast<CXXRecordDecl>(D))
     {

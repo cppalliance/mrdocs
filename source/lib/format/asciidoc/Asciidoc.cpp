@@ -76,8 +76,8 @@ build(
     }
     return true;
 #else
-    //PagesBuilder builder(corpus);
-    //builder.scan();
+    PagesBuilder builder(corpus);
+    builder.scan();
 
     llvm::SmallString<0> fileName(rootPath);
     path::append(fileName, "reference.adoc");

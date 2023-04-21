@@ -43,6 +43,10 @@ HandleTranslationUnit(
     if(! config_.shouldVisitTU(s))
         return;
 
+    //mc_.reset(MicrosoftMangleContext::create(
+    //mc_.reset(ItaniumMangleContext::create(
+        //Context, Context.getDiagnostics()));
+
     TraverseDecl(Context.getTranslationUnitDecl());
 }
 
@@ -117,6 +121,7 @@ mapDecl(T const* D)
 
     auto res = serialize(
         D,
+        *mc_,
         getLine(D, D->getASTContext()),
         filePath,
         IsFileInRootDir,
@@ -172,9 +177,29 @@ VisitEnumDecl(
 
 bool
 ASTVisitor::
+VisitCXXDestructorDecl(
+    CXXDestructorDecl const* D)
+{
+    return mapDecl(D);
+}
+
+bool
+ASTVisitor::
+VisitCXXConstructorDecl(
+    CXXConstructorDecl const* D)
+{
+    return mapDecl(D);
+}
+
+bool
+ASTVisitor::
 VisitCXXMethodDecl(
     CXXMethodDecl const* D)
 {
+    // Don't visit twice
+    if( isa<CXXDestructorDecl>(D) ||
+        isa<CXXConstructorDecl>(D))
+        return true;
     return mapDecl(D);
 }
 

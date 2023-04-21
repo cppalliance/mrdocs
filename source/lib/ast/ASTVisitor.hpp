@@ -9,11 +9,12 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_AST_FRONTENDACTION_HPP
-#define MRDOX_SOURCE_AST_FRONTENDACTION_HPP
+#ifndef MRDOX_SOURCE_AST_ASTVISITOR_HPP
+#define MRDOX_SOURCE_AST_ASTVISITOR_HPP
 
 #include <mrdox/Config.hpp>
 #include <mrdox/Reporter.hpp>
+#include <clang/AST/Mangle.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Tooling/Execution.h>
 #include <unordered_map>
@@ -49,6 +50,7 @@ class ASTVisitor
     std::unordered_map<
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
+    std::unique_ptr<MangleContext> mc_;
 
 public:
     ASTVisitor(
@@ -67,6 +69,8 @@ public:
     bool VisitCXXRecordDecl(CXXRecordDecl const* D);
     bool VisitRecordDecl(RecordDecl const* D);
     bool VisitEnumDecl(EnumDecl const* D);
+    bool VisitCXXDestructorDecl(CXXDestructorDecl const* D);
+    bool VisitCXXConstructorDecl(CXXConstructorDecl const* D);
     bool VisitCXXMethodDecl(CXXMethodDecl const* D);
     bool VisitFunctionDecl(FunctionDecl const* D);
     bool VisitTypedefDecl(TypedefDecl const* D);

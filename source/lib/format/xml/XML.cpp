@@ -10,7 +10,7 @@
 //
 
 #include "XML.hpp"
-#include "format/base64.hpp"
+#include "format/radix.hpp"
 #include <mrdox/Metadata.hpp>
 
 namespace clang {

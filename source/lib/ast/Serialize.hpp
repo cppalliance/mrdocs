@@ -18,6 +18,7 @@
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/AST/AST.h>
+#include <clang/AST/Mangle.h>
 #include <string>
 #include <utility>
 #include <vector>
@@ -48,6 +49,7 @@ namespace detail {
 class Serializer
 {
 public:
+    MangleContext& mc;
     Config const& config_;
     Reporter& R_;
     bool PublicOnly;
@@ -56,10 +58,14 @@ public:
     bool IsFileInRootDir;
 
     Serializer(
-        int LineNumber_, StringRef File_,
-        bool IsFileInRootDir_, Config const& config,
+        MangleContext& mc_,
+        int LineNumber_,
+        StringRef File_,
+        bool IsFileInRootDir_,
+        Config const& config,
         Reporter& R)
-        : LineNumber(LineNumber_)
+        : mc(mc_)
+        , LineNumber(LineNumber_)
         , File(File_)
         , IsFileInRootDir(IsFileInRootDir_)
         , config_(config)
@@ -84,12 +90,21 @@ public:
 template<class Decl>
 SerializeResult
 serialize(
-    Decl const* D, int LineNumber, StringRef File,
-    bool IsFileInRootDir, Config const& config,
+    Decl const* D,
+    MangleContext& mc,
+    int LineNumber,
+    StringRef File,
+    bool IsFileInRootDir,
+    Config const& config,
     Reporter& R)
 {
-    return detail::Serializer(LineNumber, File,
-        IsFileInRootDir, config, R).build(D);
+    return detail::Serializer(
+        mc,
+        LineNumber,
+        File,
+        IsFileInRootDir,
+        config,
+        R).build(D);
 }
 
 } // mrdox
