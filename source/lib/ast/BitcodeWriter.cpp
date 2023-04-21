@@ -345,8 +345,8 @@ dispatchInfoForWrite(Info const* I)
 
 // Validation and Overview Blocks
 
-/// Emits the magic number header to check that its the right format,
-/// in this case, 'DOCS'.
+/// Emits the magic number header to check
+/// that its the right format, in this case, 'DOCS'.
 void
 BitcodeWriter::
 emitHeader()

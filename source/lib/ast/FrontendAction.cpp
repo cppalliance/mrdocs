@@ -116,22 +116,22 @@ mapDecl(T const* D)
     // VFALCO is this right?
     bool const IsFileInRootDir = true;
 
-    Serializer sr(
+    auto res = serialize(
+        D,
         getLine(D, D->getASTContext()),
         filePath,
         IsFileInRootDir,
         config_,
         R_);
-    auto I = sr.buildInfoPair(D);
 
-    // A null in place of I indicates that the
-    // serializer is skipping this decl for some
-    // reason (e.g. we're only reporting public decls).
-    if (I.first)
-        Corpus::reportResult(ex_, I.first->USR, serialize(*I.first));
-    if (I.second)
-        Corpus::reportResult(ex_, I.second->USR, serialize(*I.second));
-
+    // An empty serialized declaration means that
+    // the serializer is skipping this declaration
+    // for some reason. For example it is private,
+    // or the declaration is enclosed in the parent.
+    if(! res.first.empty())
+        Corpus::reportResult(ex_, res.first.id, std::move(res.first.bitcode));
+    if(! res.second.empty())
+        Corpus::reportResult(ex_, res.second.id, std::move(res.second.bitcode));
     return true;
 }
 

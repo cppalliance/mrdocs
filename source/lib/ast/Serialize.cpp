@@ -19,190 +19,58 @@
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/SHA1.h>
+#include <cassert>
 
 namespace clang {
 namespace mrdox {
 
+//------------------------------------------------
+
 // Function to hash a given USR value for storage.
-// As USRs (Unified Symbol Resolution) could be large, especially for functions
-// with long type arguments, we use 160-bits SHA1(USR) values to
-// guarantee the uniqueness of symbols while using a relatively small amount of
-// memory (vs storing USRs directly).
-SymbolID
-hashUSR(
-    llvm::StringRef USR)
-{
-    return llvm::SHA1::hash(arrayRefFromStringRef(USR));
-}
-
-template <typename T>
-static
-void
-populateParentNamespaces(
-    llvm::SmallVector<Reference, 4>& Namespaces,
-    const T* D,
-    bool& IsAnonymousNamespace);
-
-static
-void
-populateMemberTypeInfo(
-    MemberTypeInfo& I,
-    const FieldDecl* D,
-    Reporter& R);
-
-// A function to extract the appropriate relative path for a given info's
-// documentation. The path returned is a composite of the parent namespaces.
+// As USRs (Unified Symbol Resolution) could be
+// large, especially for functions with long type
+// arguments, we use 160-bits SHA1(USR) values to
+// guarantee the uniqueness of symbols while using
+// a relatively small amount of memory (vs storing
+// USRs directly).
 //
-// Example: Given the below, the directory path for class C info will be
-// <root>/A/B
-//
-// namespace A {
-// namespace B {
-//
-// class C {};
-//
-// }
-// }
-llvm::SmallString<128>
-getInfoRelativePath(
-    llvm::SmallVectorImpl<mrdox::Reference> const& Namespaces)
-{
-    llvm::SmallString<128> Path;
-    for (auto R = Namespaces.rbegin(), E = Namespaces.rend(); R != E; ++R)
-        llvm::sys::path::append(Path, R->Name);
-    return Path;
-}
-
-llvm::SmallString<128>
-getInfoRelativePath(const Decl* D)
-{
-    llvm::SmallVector<Reference, 4> Namespaces;
-    // The third arg in populateParentNamespaces is a boolean passed by reference,
-    // its value is not relevant in here so it's not used anywhere besides the
-    // function call
-    bool B = true;
-    populateParentNamespaces(Namespaces, D, B);
-    return getInfoRelativePath(Namespaces);
-}
-
-// Serializing functions.
-
-static
-std::string
-getSourceCode(
-    Decl const* D,
-    SourceRange const& R)
-{
-    return Lexer::getSourceText(CharSourceRange::getTokenRange(R),
-        D->getASTContext().getSourceManager(),
-        D->getASTContext().getLangOpts())
-        .str();
-}
-
-template<typename T>
-static
-std::string
-serialize(T& I)
-{
-    SmallString<2048> Buffer;
-    llvm::BitstreamWriter Stream(Buffer);
-    BitcodeWriter Writer(Stream);
-    Writer.emitBlock(I);
-    return Buffer.str().str();
-}
-
-std::string
-serialize(Info const& I)
-{
-    switch (I.IT)
-    {
-    case InfoType::IT_namespace:
-        return serialize(*static_cast<NamespaceInfo const*>(&I));
-    case InfoType::IT_record:
-        return serialize(*static_cast<RecordInfo const*>(&I));
-    case InfoType::IT_enum:
-        return serialize(*static_cast<EnumInfo const*>(&I));
-    case InfoType::IT_function:
-        return serialize(*static_cast<FunctionInfo const*>(&I));
-    //case InfoType::IT_typedef:
-        //return serialize(*static_cast<TypedefInfo const*>(&I));
-    default:
-        return "";
-    }
-}
-
 static
 SymbolID
 getUSRForDecl(
-    Decl const* D){
+    Decl const* D)
+{
     llvm::SmallString<128> USR;
-    if (index::generateUSRForDecl(D, USR))
+    if(index::generateUSRForDecl(D, USR))
         return SymbolID();
-    return hashUSR(USR);
+    return llvm::SHA1::hash(arrayRefFromStringRef(USR));
 }
 
-static TagDecl* getTagDeclForType(const QualType& T) {
-    if (const TagDecl* D = T->getAsTagDecl())
-        return D->getDefinition();
-    return nullptr;
-}
-
-static RecordDecl* getRecordDeclForType(const QualType& T) {
-    if (const RecordDecl* D = T->getAsRecordDecl())
-        return D->getDefinition();
-    return nullptr;
-}
-
-TypeInfo
-getTypeInfoForType(
-    QualType const& T)
-{
-    TagDecl const* TD = getTagDeclForType(T);
-    if (!TD)
-        return TypeInfo(Reference(
-            SymbolID(), T.getAsString()));
-    InfoType IT;
-    if (dyn_cast<EnumDecl>(TD))
-        IT = InfoType::IT_enum;
-    else if (dyn_cast<RecordDecl>(TD))
-        IT = InfoType::IT_record;
-    else
-        IT = InfoType::IT_default;
-    return TypeInfo(Reference(
-        getUSRForDecl(TD),
-        TD->getNameAsString(),
-        IT,
-        getInfoRelativePath(TD)));
-}
-
-static
-bool
-isPublic(
-    clang::AccessSpecifier const AS,
-    clang::Linkage const Link)
-{
-    if (AS == clang::AccessSpecifier::AS_private)
-        return false;
-    if (Link == clang::Linkage::ModuleLinkage ||
-        Link == clang::Linkage::ExternalLinkage)
-        return true;
-    // some form of internal linkage
-    return false; 
-}
+//------------------------------------------------
 
 static
 bool
 shouldSerializeInfo(
     bool PublicOnly,
     bool IsInAnonymousNamespace,
-    NamedDecl const* D)
+    NamedDecl const* D) noexcept
 {
-    bool IsAnonymousNamespace = false;
+    if(! PublicOnly)
+        return true;
+    if(IsInAnonymousNamespace)
+        return false;
     if(auto const* N = dyn_cast<NamespaceDecl>(D))
-        IsAnonymousNamespace = N->isAnonymousNamespace();
-    return !PublicOnly ||
-        (!IsInAnonymousNamespace && !IsAnonymousNamespace &&
-            isPublic(D->getAccessUnsafe(), D->getLinkageInternal()));
+        if(N->isAnonymousNamespace())
+            return false;
+    // bool isPublic()
+    AccessSpecifier access = D->getAccessUnsafe();
+    if(access == AccessSpecifier::AS_private)
+        return false;
+    Linkage linkage = D->getLinkageInternal();
+    if(linkage == Linkage::ModuleLinkage ||
+        linkage == Linkage::ExternalLinkage)
+        return true;
+    // some form of internal linkage
+    return false; 
 }
 
 // handles TypedefDecl and TypeAliasDecl
@@ -218,13 +86,341 @@ shouldSerializeInfo(
     if(IsInAnonymousNamespace)
         return false;
     if(auto const* N = dyn_cast<NamespaceDecl>(D))
-    {
         if(N->isAnonymousNamespace())
             return false;
-    }
     if(D->getAccessUnsafe() == AccessSpecifier::AS_private)
         return false;
     return true;
+}
+
+//------------------------------------------------
+
+static
+void
+getParentNamespaces(
+    llvm::SmallVector<Reference, 4>& Namespaces,
+    Decl const* D,
+    bool& IsInAnonymousNamespace)
+{
+    IsInAnonymousNamespace = false;
+    DeclContext const* DC = D->getDeclContext();
+    do
+    {
+        if(auto const* N = dyn_cast<NamespaceDecl>(DC))
+        {
+            std::string Namespace;
+            if(N->isAnonymousNamespace())
+            {
+                Namespace = "@nonymous_namespace";
+                IsInAnonymousNamespace = true;
+            }
+            else
+            {
+                Namespace = N->getNameAsString();
+            }
+            Namespaces.emplace_back(
+                getUSRForDecl(N),
+                Namespace,
+                InfoType::IT_namespace,
+                N->getQualifiedNameAsString());
+        }
+        else if(auto const* N = dyn_cast<RecordDecl>(DC))
+        {
+            Namespaces.emplace_back(
+                getUSRForDecl(N),
+                N->getNameAsString(),
+                InfoType::IT_record,
+                N->getQualifiedNameAsString());
+        }
+        else if(auto const* N = dyn_cast<FunctionDecl>(DC))
+        {
+            Namespaces.emplace_back(
+                getUSRForDecl(N),
+                N->getNameAsString(),
+                InfoType::IT_function,
+                N->getQualifiedNameAsString());
+        }
+        else if(auto const* N = dyn_cast<EnumDecl>(DC))
+        {
+            Namespaces.emplace_back(
+                getUSRForDecl(N),
+                N->getNameAsString(),
+                InfoType::IT_enum,
+                N->getQualifiedNameAsString());
+        }
+    }
+    while((DC = DC->getParent()));
+
+    // The global namespace should be added to the
+    // list of namespaces if the decl corresponds to
+    // a Record and if it doesn't have any namespace
+    // (because this means it's in the global namespace).
+    // Also if its outermost namespace is a record because
+    // that record matches the previous condition mentioned.
+    if((Namespaces.empty() && isa<RecordDecl>(D)) ||
+        (!Namespaces.empty() && Namespaces.back().RefType == InfoType::IT_record))
+    {
+        Namespaces.emplace_back(
+            EmptySID,
+            "", //"GlobalNamespace",
+            InfoType::IT_namespace);
+    }
+}
+
+//------------------------------------------------
+
+// A function to extract the appropriate relative path for a given info's
+// documentation. The path returned is a composite of the parent namespaces.
+//
+// Example: Given the below, the directory path for class C info will be
+// <root>/A/B
+//
+// namespace A {
+// namespace B {
+//
+// class C {};
+//
+// }
+// }
+static
+llvm::SmallString<128>
+getInfoRelativePath(
+    llvm::SmallVectorImpl<mrdox::Reference> const& Namespaces)
+{
+    llvm::SmallString<128> Path;
+    for(auto R = Namespaces.rbegin(), E = Namespaces.rend(); R != E; ++R)
+        llvm::sys::path::append(Path, R->Name);
+    return Path;
+}
+
+static
+llvm::SmallString<128>
+getInfoRelativePath(const Decl* D)
+{
+    llvm::SmallVector<Reference, 4> Namespaces;
+    // The third arg in getParentNamespaces is a boolean passed by reference,
+    // its value is not relevant in here so it's not used anywhere besides the
+    // function call
+    bool B = true;
+    getParentNamespaces(Namespaces, D, B);
+    return getInfoRelativePath(Namespaces);
+}
+
+static
+std::string
+getSourceCode(
+    Decl const* D,
+    SourceRange const& R)
+{
+    return Lexer::getSourceText(CharSourceRange::getTokenRange(R),
+        D->getASTContext().getSourceManager(),
+        D->getASTContext().getLangOpts())
+        .str();
+}
+
+//------------------------------------------------
+
+static
+TagDecl*
+getTagDeclForType(
+    QualType const& T)
+{
+    if(TagDecl const* D = T->getAsTagDecl())
+        return D->getDefinition();
+    return nullptr;
+}
+
+static
+RecordDecl*
+getRecordDeclForType(
+    QualType const& T)
+{
+    if(RecordDecl const* D = T->getAsRecordDecl())
+        return D->getDefinition();
+    return nullptr;
+}
+
+static
+TypeInfo
+getTypeInfoForType(
+    QualType const& T)
+{
+    TagDecl const* TD = getTagDeclForType(T);
+    if(!TD)
+        return TypeInfo(Reference(EmptySID, T.getAsString()));
+    InfoType IT;
+    if(dyn_cast<EnumDecl>(TD))
+        IT = InfoType::IT_enum;
+    else if(dyn_cast<RecordDecl>(TD))
+        IT = InfoType::IT_record;
+    else
+        IT = InfoType::IT_default;
+    return TypeInfo(Reference(
+        getUSRForDecl(TD),
+        TD->getNameAsString(),
+        IT,
+        getInfoRelativePath(TD)));
+}
+
+static
+void
+parseParameters(
+    FunctionInfo& I,
+    FunctionDecl const* D)
+{
+    for(ParmVarDecl const* P : D->parameters())
+    {
+        FieldTypeInfo& FieldInfo = I.Params.emplace_back(
+            getTypeInfoForType(P->getOriginalType()),
+            P->getNameAsString());
+        FieldInfo.DefaultValue = getSourceCode(
+            D, P->getDefaultArgRange());
+    }
+}
+
+void
+getTemplateParams(
+    llvm::Optional<TemplateInfo>& TemplateInfo,
+    const Decl* D)
+{
+    if(TemplateParameterList const* ParamList =
+        D->getDescribedTemplateParams())
+    {
+        if(!TemplateInfo)
+        {
+            TemplateInfo.emplace();
+        }
+        for(const NamedDecl* ND : *ParamList)
+        {
+            TemplateInfo->Params.emplace_back(*ND);
+        }
+    }
+}
+
+//------------------------------------------------
+//
+// Info
+//
+//------------------------------------------------
+
+static
+bool
+getInfo(
+    Serializer& sr,
+    Info& I,
+    NamedDecl const* D)
+{
+    bool IsInAnonymousNamespace;
+    getParentNamespaces(
+        I.Namespace, D, IsInAnonymousNamespace);
+    if(! shouldSerializeInfo(
+        sr.PublicOnly, IsInAnonymousNamespace, D))
+        return false;
+    I.USR = getUSRForDecl(D);
+    I.Name = D->getNameAsString();
+    // VFALCO investigate whether we can use
+    // ASTContext::getCommentForDecl instead
+    RawComment* RC =
+        D->getASTContext().getRawCommentForDeclNoCache(D);
+    if(RC)
+    {
+        RC->setAttached();
+        I.javadoc = parseJavadoc(RC, D->getASTContext(), D);
+    }
+    return true;
+}
+
+//------------------------------------------------
+//
+// SymbolInfo
+//
+//------------------------------------------------
+
+// The member function isThisDeclarationADefinition
+// is non-virtual and only exists for certain concrete
+// AST types, so we make this a function template.
+template<class Decl>
+static
+bool
+getSymbolInfo(
+    Serializer& sr,
+    SymbolInfo& I,
+    Decl const* D)
+{
+    if(! getInfo(sr, I, D))
+        return false;
+    if(D->isThisDeclarationADefinition())
+        I.DefLoc.emplace(sr.LineNumber, sr.File, sr.IsFileInRootDir);
+    else
+        I.Loc.emplace_back(sr.LineNumber, sr.File, sr.IsFileInRootDir);
+    return true;
+}
+
+//------------------------------------------------
+//
+// FunctionInfo
+//
+//------------------------------------------------
+
+static
+bool
+getFunctionInfo(
+    Serializer& sr,
+    FunctionInfo& I,
+    FunctionDecl const* D)
+{
+    if(! getSymbolInfo(sr, I, D))
+        return false;
+    QualType const qt = D->getReturnType();
+    std::string s = qt.getAsString();
+    I.ReturnType = getTypeInfoForType(qt);
+    parseParameters(I, D);
+
+    getTemplateParams(I.Template, D);
+
+    // Handle function template specializations.
+    if(FunctionTemplateSpecializationInfo const* FTSI =
+        D->getTemplateSpecializationInfo())
+    {
+        if(!I.Template)
+            I.Template.emplace();
+        I.Template->Specialization.emplace();
+        auto& Specialization = *I.Template->Specialization;
+
+        Specialization.SpecializationOf = getUSRForDecl(FTSI->getTemplate());
+
+        // Template parameters to the specialization.
+        if(FTSI->TemplateArguments)
+        {
+            for(TemplateArgument const& Arg :
+                    FTSI->TemplateArguments->asArray())
+            {
+                Specialization.Params.emplace_back(*D, Arg);
+            }
+        }
+    }
+    return true;
+}
+
+//------------------------------------------------
+
+static
+void
+getMemberTypeInfo(
+    MemberTypeInfo& I,
+    const FieldDecl* D,
+    Reporter& R);
+
+template<typename T>
+static
+SerializedDecl
+serialize(T& I)
+{
+    SmallString<2048> Buffer;
+    llvm::BitstreamWriter Stream(Buffer);
+    BitcodeWriter Writer(Stream);
+    Writer.emitBlock(I);
+    return { I.USR, Buffer.str().str() };
 }
 
 // The InsertChild functions insert the given info into the given scope using
@@ -309,9 +505,9 @@ std::unique_ptr<Info>
 MakeAndInsertIntoParent(
     ChildType Child)
 {
-    if (Child.Namespace.empty())
+    if(Child.Namespace.empty())
     {
-        // Insert into unnamed parent namespace.
+        // Insert into global namespace.
         auto ParentNS = std::make_unique<NamespaceInfo>();
         InsertChild(ParentNS->Children, std::forward<ChildType>(Child));
         return ParentNS;
@@ -357,13 +553,13 @@ getFinalAccessSpecifier(
     AccessSpecifier FirstAS,
     AccessSpecifier SecondAS)
 {
-    if (FirstAS == AccessSpecifier::AS_none ||
+    if(FirstAS == AccessSpecifier::AS_none ||
         SecondAS == AccessSpecifier::AS_none)
         return AccessSpecifier::AS_none;
-    if (FirstAS == AccessSpecifier::AS_private ||
+    if(FirstAS == AccessSpecifier::AS_private ||
         SecondAS == AccessSpecifier::AS_private)
         return AccessSpecifier::AS_private;
-    if (FirstAS == AccessSpecifier::AS_protected ||
+    if(FirstAS == AccessSpecifier::AS_protected ||
         SecondAS == AccessSpecifier::AS_protected)
         return AccessSpecifier::AS_protected;
     return AccessSpecifier::AS_public;
@@ -380,9 +576,9 @@ parseFields(
     AccessSpecifier Access,
     Reporter& R)
 {
-    for (const FieldDecl* F : D->fields())
+    for(const FieldDecl* F : D->fields())
     {
-        if (!shouldSerializeInfo(PublicOnly, /*IsInAnonymousNamespace=*/false, F))
+        if(!shouldSerializeInfo(PublicOnly, /*IsInAnonymousNamespace=*/false, F))
             continue;
 
         // Use getAccessUnsafe so that we just get the default AS_none if it's not
@@ -391,7 +587,7 @@ parseFields(
             getTypeInfoForType(F->getTypeSourceInfo()->getType()),
             F->getNameAsString(),
             getFinalAccessSpecifier(Access, F->getAccessUnsafe()));
-        populateMemberTypeInfo(NewMember, F, R);
+        getMemberTypeInfo(NewMember, F, R);
     }
 }
 
@@ -401,10 +597,10 @@ parseEnumerators(
     EnumInfo& I,
     const EnumDecl* D)
 {
-    for (const EnumConstantDecl* E : D->enumerators())
+    for(const EnumConstantDecl* E : D->enumerators())
     {
         std::string ValueExpr;
-        if (const Expr* InitExpr = E->getInitExpr())
+        if(const Expr* InitExpr = E->getInitExpr())
             ValueExpr = getSourceCode(D, InitExpr->getSourceRange());
 
         SmallString<16> ValueStr;
@@ -413,100 +609,60 @@ parseEnumerators(
     }
 }
 
-static void parseParameters(FunctionInfo& I, const FunctionDecl* D) {
-    for (const ParmVarDecl* P : D->parameters()) {
-        FieldTypeInfo& FieldInfo = I.Params.emplace_back(
-            getTypeInfoForType(P->getOriginalType()), P->getNameAsString());
-        FieldInfo.DefaultValue = getSourceCode(D, P->getDefaultArgRange());
-    }
-}
-
 // TODO: Remove the serialization of Parents and VirtualParents, this
 // information is also extracted in the other definition of parseBases.
-static void parseBases(RecordInfo& I, const CXXRecordDecl* D) {
-    // Don't parse bases if this isn't a definition.
-    if (!D->isThisDeclarationADefinition())
-        return;
-    for (const CXXBaseSpecifier& B : D->bases()) {
-        if (B.isVirtual())
-            continue;
-        if (const auto* Ty = B.getType()->getAs<TemplateSpecializationType>()) {
-            const TemplateDecl* D = Ty->getTemplateName().getAsTemplateDecl();
-            I.Parents.emplace_back(getUSRForDecl(D), B.getType().getAsString(),
-                InfoType::IT_record, B.getType().getAsString());
-        }
-        else if (const RecordDecl* P = getRecordDeclForType(B.getType()))
-            I.Parents.emplace_back(getUSRForDecl(P), P->getNameAsString(),
-                InfoType::IT_record, getInfoRelativePath(P));
-        else
-            I.Parents.emplace_back(SymbolID(), B.getType().getAsString());
-    }
-    for (const CXXBaseSpecifier& B : D->vbases()) {
-        if (const RecordDecl* P = getRecordDeclForType(B.getType()))
-            I.VirtualParents.emplace_back(
-                getUSRForDecl(P), P->getNameAsString(), InfoType::IT_record,
-                    getInfoRelativePath(P));
-        else
-            I.VirtualParents.emplace_back(SymbolID(), B.getType().getAsString());
-    }
-}
-
-template <typename T>
 static
 void
-populateParentNamespaces(
-    llvm::SmallVector<Reference, 4>& Namespaces,
-    const T* D,
-    bool& IsInAnonymousNamespace)
+parseBases(
+    RecordInfo& I,
+    CXXRecordDecl const* D)
 {
-    const DeclContext* DC = D->getDeclContext();
-    do {
-        if (const auto* N = dyn_cast<NamespaceDecl>(DC)) {
-            std::string Namespace;
-            if (N->isAnonymousNamespace()) {
-                Namespace = "@nonymous_namespace";
-                IsInAnonymousNamespace = true;
-            }
-            else
-                Namespace = N->getNameAsString();
-            Namespaces.emplace_back(getUSRForDecl(N), Namespace,
-                InfoType::IT_namespace,
-                N->getQualifiedNameAsString());
-        }
-        else if (const auto* N = dyn_cast<RecordDecl>(DC))
-            Namespaces.emplace_back(getUSRForDecl(N), N->getNameAsString(),
-                InfoType::IT_record,
-                N->getQualifiedNameAsString());
-        else if (const auto* N = dyn_cast<FunctionDecl>(DC))
-            Namespaces.emplace_back(getUSRForDecl(N), N->getNameAsString(),
-                InfoType::IT_function,
-                N->getQualifiedNameAsString());
-        else if (const auto* N = dyn_cast<EnumDecl>(DC))
-            Namespaces.emplace_back(getUSRForDecl(N), N->getNameAsString(),
-                InfoType::IT_enum, N->getQualifiedNameAsString());
-    } while ((DC = DC->getParent()));
-    // The global namespace should be added to the list of namespaces if the decl
-    // corresponds to a Record and if it doesn't have any namespace (because this
-    // means it's in the global namespace). Also if its outermost namespace is a
-    // record because that record matches the previous condition mentioned.
-    if ((Namespaces.empty() && isa<RecordDecl>(D)) ||
-        (!Namespaces.empty() && Namespaces.back().RefType == InfoType::IT_record))
-        Namespaces.emplace_back(
-            SymbolID(),
-            "", //"GlobalNamespace",
-            InfoType::IT_namespace);
-}
-
-void PopulateTemplateParameters(llvm::Optional<TemplateInfo>& TemplateInfo,
-    const clang::Decl* D) {
-    if (const TemplateParameterList* ParamList =
-        D->getDescribedTemplateParams()) {
-        if (!TemplateInfo) {
-            TemplateInfo.emplace();
-        }
-        for (const NamedDecl* ND : *ParamList)
+    // Don't parse bases if this isn't a definition.
+    if(!D->isThisDeclarationADefinition())
+        return;
+    for(const CXXBaseSpecifier& B : D->bases())
+    {
+        if(B.isVirtual())
+            continue;
+        if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
         {
-            TemplateInfo->Params.emplace_back(*ND);
+            TemplateDecl const* D = Ty->getTemplateName().getAsTemplateDecl();
+            I.Parents.emplace_back(
+                getUSRForDecl(D),
+                B.getType().getAsString(),
+                InfoType::IT_record,
+                B.getType().getAsString());
+        }
+        else if(RecordDecl const* P = getRecordDeclForType(B.getType()))
+        {
+            I.Parents.emplace_back(
+                getUSRForDecl(P),
+                P->getNameAsString(),
+                InfoType::IT_record,
+                getInfoRelativePath(P));
+        }
+        else
+        {
+            I.Parents.emplace_back(
+                EmptySID,
+                B.getType().getAsString());
+        }
+    }
+    for(CXXBaseSpecifier const& B : D->vbases())
+    {
+        if(RecordDecl const* P = getRecordDeclForType(B.getType()))
+        {
+            I.VirtualParents.emplace_back(
+                getUSRForDecl(P),
+                P->getNameAsString(),
+                InfoType::IT_record,
+                getInfoRelativePath(P));
+        }
+        else
+        {
+            I.VirtualParents.emplace_back(
+                EmptySID,
+                B.getType().getAsString());
         }
     }
 }
@@ -516,7 +672,7 @@ void PopulateTemplateParameters(llvm::Optional<TemplateInfo>& TemplateInfo,
 template<typename T>
 static
 void
-populateInfo(
+getInfo(
     Info& I,
     T const* D,
     Javadoc jd,
@@ -525,7 +681,7 @@ populateInfo(
 {
     I.USR = getUSRForDecl(D);
     I.Name = D->getNameAsString();
-    populateParentNamespaces(
+    getParentNamespaces(
         I.Namespace,
         D,
         IsInAnonymousNamespace);
@@ -537,7 +693,7 @@ populateInfo(
 template <typename T>
 static
 void
-populateSymbolInfo(
+getSymbolInfo(
     SymbolInfo& I,
     T const* D,
     Javadoc jd,
@@ -547,8 +703,8 @@ populateSymbolInfo(
     bool& IsInAnonymousNamespace,
     Reporter& R)
 {
-    populateInfo(I, D, std::move(jd), IsInAnonymousNamespace, R);
-    if (D->isThisDeclarationADefinition())
+    getInfo(I, D, std::move(jd), IsInAnonymousNamespace, R);
+    if(D->isThisDeclarationADefinition())
         I.DefLoc.emplace(LineNumber, Filename, IsFileInRootDir);
     else
         I.Loc.emplace_back(LineNumber, Filename, IsFileInRootDir);
@@ -558,7 +714,7 @@ populateSymbolInfo(
 
 static
 void
-populateFunctionInfo(
+getFunctionInfo(
     FunctionInfo& I,
     FunctionDecl const* D,
     Javadoc jd,
@@ -568,7 +724,7 @@ populateFunctionInfo(
     bool& IsInAnonymousNamespace,
     Reporter& R)
 {
-    populateSymbolInfo(
+    getSymbolInfo(
         I, D, std::move(jd),
         LineNumber, Filename,
         IsFileInRootDir,
@@ -579,13 +735,13 @@ populateFunctionInfo(
     I.ReturnType = getTypeInfoForType(qt);
     parseParameters(I, D);
 
-    PopulateTemplateParameters(I.Template, D);
+    getTemplateParams(I.Template, D);
 
     // Handle function template specializations.
-    if (const FunctionTemplateSpecializationInfo* FTSI =
+    if(const FunctionTemplateSpecializationInfo* FTSI =
         D->getTemplateSpecializationInfo())
     {
-        if (!I.Template)
+        if(!I.Template)
             I.Template.emplace();
         I.Template->Specialization.emplace();
         auto& Specialization = *I.Template->Specialization;
@@ -593,9 +749,9 @@ populateFunctionInfo(
         Specialization.SpecializationOf = getUSRForDecl(FTSI->getTemplate());
 
         // Template parameters to the specialization.
-        if (FTSI->TemplateArguments)
+        if(FTSI->TemplateArguments)
         {
-            for (const TemplateArgument& Arg :
+            for(const TemplateArgument& Arg :
                     FTSI->TemplateArguments->asArray())
             {
                 Specialization.Params.emplace_back(*D, Arg);
@@ -606,16 +762,16 @@ populateFunctionInfo(
 
 static
 void
-populateMemberTypeInfo(
+getMemberTypeInfo(
     MemberTypeInfo& I,
     const FieldDecl* D,
     Reporter& R)
 {
-    assert(D && "Expect non-null FieldDecl in populateMemberTypeInfo");
+    assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
 
     ASTContext& Context = D->getASTContext();
-    // TODO investigate whether we can use ASTContext::getCommentForDecl instead
-    // of this logic. See also similar code in Mapper.cpp.
+    // VFALCO investigate whether we can use
+    // ASTContext::getCommentForDecl instead of this logic. 
     RawComment* RC = Context.getRawCommentForDeclNoCache(D);
     if(RC)
     {
@@ -636,13 +792,13 @@ parseBases(
     Reporter& R)
 {
     // Don't parse bases if this isn't a definition.
-    if (!D->isThisDeclarationADefinition())
+    if(!D->isThisDeclarationADefinition())
         return;
-    for (const CXXBaseSpecifier& B : D->bases())
+    for(const CXXBaseSpecifier& B : D->bases())
     {
-        if (const RecordType* Ty = B.getType()->getAs<RecordType>())
+        if(const RecordType* Ty = B.getType()->getAs<RecordType>())
         {
-            if (const CXXRecordDecl* Base =
+            if(const CXXRecordDecl* Base =
                 cast_or_null<CXXRecordDecl>(Ty->getDecl()->getDefinition()))
             {
                 // Initialized without USR and name, this will be set in the following
@@ -651,7 +807,7 @@ parseBases(
                     {}, "", getInfoRelativePath(Base), B.isVirtual(),
                     getFinalAccessSpecifier(ParentAccess, B.getAccessSpecifier()),
                     IsParent);
-                if (const auto* Ty = B.getType()->getAs<TemplateSpecializationType>())
+                if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
                 {
                     const TemplateDecl* D = Ty->getTemplateName().getAsTemplateDecl();
                     BI.USR = getUSRForDecl(D);
@@ -663,21 +819,21 @@ parseBases(
                     BI.Name = Base->getNameAsString();
                 }
                 parseFields(BI, Base, PublicOnly, BI.Access, R);
-                for (const auto& Decl : Base->decls())
+                for(auto const& Decl : Base->decls())
                 {
-                    if (const auto* MD = dyn_cast<CXXMethodDecl>(Decl))
+                    if(auto const* MD = dyn_cast<CXXMethodDecl>(Decl))
                     {
                         // Don't serialize private methods
-                        if (MD->getAccessUnsafe() == AccessSpecifier::AS_private ||
+                        if(MD->getAccessUnsafe() == AccessSpecifier::AS_private ||
                             !MD->isUserProvided())
                             continue;
                         FunctionInfo FI;
                         FI.IsMethod = true;
-                        // The seventh arg in populateFunctionInfo is a boolean passed by
+                        // The seventh arg in getFunctionInfo is a boolean passed by
                         // reference, its value is not relevant in here so it's not used
                         // anywhere besides the function call.
                         bool IsInAnonymousNamespace;
-                        populateFunctionInfo(FI, MD, Javadoc(), /*LineNumber=*/{},
+                        getFunctionInfo(FI, MD, Javadoc(), /*LineNumber=*/{},
                             /*FileName=*/{}, IsFileInRootDir,
                             IsInAnonymousNamespace, R);
                         FI.Access =
@@ -706,75 +862,98 @@ parseBases(
     }
 }
 
-auto
+//------------------------------------------------
+
+SerializeResult
 Serializer::
-buildInfo(
-    NamespaceDecl const* D) ->
-        value_type
+build(
+    NamespaceDecl const* D)
 {
-    auto I = std::make_unique<NamespaceInfo>();
-    bool IsInAnonymousNamespace = false;
-    populateInfo(*I, D, std::move(jd_), IsInAnonymousNamespace, R_);
-    if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
+    NamespaceInfo I;
+    if(! getInfo(*this, I, D))
         return {};
 
     if(D->isAnonymousNamespace())
-        I->Name = "@nonymous_namespace";
-    I->Path = getInfoRelativePath(I->Namespace);
-    if (I->Namespace.empty() && I->USR == SymbolID())
-        return { std::unique_ptr<Info>{std::move(I)}, nullptr };
+        I.Name = "@nonymous_namespace";
+    I.Path = getInfoRelativePath(I.Namespace);
 
-    // Namespaces are inserted into the parent by reference, so we need to return
-    // both the parent and the record itself.
-    return { std::move(I), MakeAndInsertIntoParent<const NamespaceInfo&>(*I) };
+    if(I.Namespace.empty() && I.USR == EmptySID)
+    {
+        // Global namespace has no parent.
+        return { serialize(I) };
+    }
+
+    // Namespaces are inserted into the parent by
+    // reference, so we need to return both the
+    // parent and the record itself.
+    NamespaceInfo P;
+    if(I.Namespace.empty())
+    {
+        // In global namespace
+        assert(P.USR == EmptySID);
+        InsertChild(P.Children, I);
+    }
+    else
+    {
+        // namespace can only have a namespace as parent
+        assert(I.Namespace[0].RefType == InfoType::IT_namespace);
+        P.USR = I.Namespace[0].USR;
+        InsertChild(P.Children, I);
+    }
+    return { serialize(I), serialize(P) };
 }
 
-auto
+SerializeResult
 Serializer::
-buildInfo(
-    CXXRecordDecl const* D) ->
-        value_type
+build(
+    CXXRecordDecl const* D)
 {
-    auto I = std::make_unique<RecordInfo>();
-    bool IsInAnonymousNamespace = false;
-    populateSymbolInfo(*I, D, std::move(jd_), LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace, R_);
-    if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
+    RecordInfo I;
+    if(! getSymbolInfo(*this, I, D))
         return {};
+    I.TagType = D->getTagKind();
+    I.Path = getInfoRelativePath(I.Namespace);
 
-    I->TagType = D->getTagKind();
-    parseFields(*I, D, PublicOnly, AccessSpecifier::AS_public, R_);
-    if (const auto* C = dyn_cast<CXXRecordDecl>(D))
+    parseFields(I, D, PublicOnly, AccessSpecifier::AS_public, R_);
+    if(auto const* C = dyn_cast<CXXRecordDecl>(D))
     {
-        if (const TypedefNameDecl* TD = C->getTypedefNameForAnonDecl())
+        if(TypedefNameDecl const* TD = C->getTypedefNameForAnonDecl())
         {
-            I->Name = TD->getNameAsString();
-            I->IsTypeDef = true;
+            I.Name = TD->getNameAsString();
+            I.IsTypeDef = true;
         }
-        // TODO: remove first call to parseBases, that function should be deleted
-        parseBases(*I, C);
-        parseBases(*I, C, IsFileInRootDir, PublicOnly, true, AccessSpecifier::AS_public, R_);
-    }
-    I->Path = getInfoRelativePath(I->Namespace);
+        // VFALCO: remove first call to parseBases,
+        // that function should be deleted
+        parseBases(I, C); // VFALCO WHY?
 
-    PopulateTemplateParameters(I->Template, D);
+        parseBases(
+            I,
+            C,
+            IsFileInRootDir,
+            PublicOnly,
+            true,
+            AccessSpecifier::AS_public,
+            R_);
+    }
+
+    getTemplateParams(I.Template, D);
 
     // Full and partial specializations.
-    if (auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
+    if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
     {
-        if (!I->Template)
-            I->Template.emplace();
-        I->Template->Specialization.emplace();
-        auto& Specialization = *I->Template->Specialization;
+        if(!I.Template)
+            I.Template.emplace();
+        I.Template->Specialization.emplace();
+        auto& Specialization = *I.Template->Specialization;
 
         // What this is a specialization of.
         auto SpecOf = CTSD->getSpecializedTemplateOrPartial();
-        if (SpecOf.is<ClassTemplateDecl*>())
+        if(SpecOf.is<ClassTemplateDecl*>())
         {
             Specialization.SpecializationOf =
                 getUSRForDecl(SpecOf.get<ClassTemplateDecl*>());
         }
-        else if (SpecOf.is<ClassTemplatePartialSpecializationDecl*>())
+        else if(SpecOf.is<ClassTemplatePartialSpecializationDecl*>())
         {
             Specialization.SpecializationOf =
                 getUSRForDecl(SpecOf.get<ClassTemplatePartialSpecializationDecl*>());
@@ -785,13 +964,14 @@ buildInfo(
         // because the non-explicit template parameters will have generated internal
         // placeholder names rather than the names the user typed that match the
         // template parameters.
-        if (const ClassTemplatePartialSpecializationDecl* CTPSD =
+        if(ClassTemplatePartialSpecializationDecl const* CTPSD =
             dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
         {
-            if (const ASTTemplateArgumentListInfo* AsWritten =
+            if(ASTTemplateArgumentListInfo const* AsWritten =
                 CTPSD->getTemplateArgsAsWritten())
             {
-                for (unsigned i = 0; i < AsWritten->getNumTemplateArgs(); i++) {
+                for(unsigned i = 0; i < AsWritten->getNumTemplateArgs(); i++)
+                {
                     Specialization.Params.emplace_back(
                         getSourceCode(D, (*AsWritten)[i].getSourceRange()));
                 }
@@ -799,7 +979,7 @@ buildInfo(
         }
         else
         {
-            for (const TemplateArgument& Arg : CTSD->getTemplateArgs().asArray())
+            for(TemplateArgument const& Arg : CTSD->getTemplateArgs().asArray())
             {
                 Specialization.Params.emplace_back(*D, Arg);
             }
@@ -809,139 +989,213 @@ buildInfo(
     // Functions are inserted into the parent by
     // reference, so we need to return both the
     // parent and the record itself.
-    return { std::move(I), MakeAndInsertIntoParent<const RecordInfo&>(*I) };
-}
-
-auto
-Serializer::
-buildInfo(
-    FunctionDecl const* D) ->
-        value_type
-{
-    auto up = std::make_unique<FunctionInfo>();
-    bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(*up, D, std::move(jd_), LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace, R_);
-    up->Access = clang::AccessSpecifier::AS_none;
-    if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
-        return {};
-
-    // Functions are inserted into the parent by
-    // reference, so we need to return both the
-    // parent and the record itself.
-    return { std::move(up), MakeAndInsertIntoParent<FunctionInfo const&>(*up) };
-}
-
-auto
-Serializer::
-buildInfo(
-    CXXMethodDecl const* D) ->
-        value_type
-{
-    auto up = std::make_unique<FunctionInfo>();
-    bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(*up, D, std::move(jd_), LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace, R_);
-    if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
-        return {};
-
-    up->IsMethod = true;
-
-    const NamedDecl* Parent = nullptr;
-    if (const auto* SD = dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
-        Parent = SD->getSpecializedTemplate();
-    else
-        Parent = D->getParent();
-
-    SymbolID ParentUSR = getUSRForDecl(Parent);
-    up->Parent = Reference{
-        ParentUSR, Parent->getNameAsString(), InfoType::IT_record,
-            Parent->getQualifiedNameAsString() };
-    up->Access = D->getAccess();
-
-    // Functions are inserted into the parent by
-    // reference, so we need to return both the
-    // parent and the record itself.
-    return { std::move(up), MakeAndInsertIntoParent<FunctionInfo const&>(*up) };
-}
-
-auto
-Serializer::
-buildInfo(
-    TypedefDecl const* D) ->
-        value_type
-{
-    TypedefInfo Info;
-
-    bool IsInAnonymousNamespace = false;
-    populateInfo(Info, D, std::move(jd_), IsInAnonymousNamespace, R_);
-    if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
-        return {};
-
-    Info.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
-    Info.Underlying = getTypeInfoForType(D->getUnderlyingType());
-    if (Info.Underlying.Type.Name.empty())
+    if( I.Namespace.empty() ||
+        I.Namespace[0].RefType == InfoType::IT_namespace)
     {
-        // Typedef for an unnamed type. This is like "typedef struct { } Foo;"
-        // The record serializer explicitly checks for this syntax and constructs
-        // a record with that name, so we don't want to emit a duplicate here.
+        NamespaceInfo P;
+        if(! I.Namespace.empty())
+            P.USR = I.Namespace[0].USR;
+        else
+            assert(P.USR == EmptySID);
+        InsertChild(P.Children, I);
+        return { serialize(I), serialize(P) };
+    }
+    assert(I.Namespace[0].RefType == InfoType::IT_record);
+
+    RecordInfo P;
+    P.USR = I.Namespace[0].USR;
+    InsertChild(P.Children, I);
+    return { serialize(I), serialize(P) };
+}
+
+SerializeResult
+Serializer::
+build(
+    CXXMethodDecl const* D)
+{
+    FunctionInfo I;
+    if(! getFunctionInfo(*this, I, D))
+        return {};
+    I.IsMethod = true;
+    NamedDecl const* PD = nullptr;
+    if(auto const* SD = dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
+        PD = SD->getSpecializedTemplate();
+    else
+        PD = D->getParent();
+    SymbolID ParentID = getUSRForDecl(PD);
+    I.Parent = Reference{
+        ParentID,
+        PD->getNameAsString(),
+        InfoType::IT_record,
+        PD->getQualifiedNameAsString()};
+    I.Access = D->getAccess();
+
+    // Functions are inserted into the parent by
+    // reference, so we need to return both the
+    // parent and the record itself.
+    assert(I.Namespace[0].RefType == InfoType::IT_record);
+    RecordInfo P;
+    P.USR = I.Namespace[0].USR;
+    InsertChild(P.Children, I);
+    return { serialize(I), serialize(P) };
+}
+
+SerializeResult
+Serializer::
+build(
+    FunctionDecl  const* D)
+{
+    FunctionInfo I;
+    if(! getFunctionInfo(*this, I, D))
+        return {};
+    I.Access = AccessSpecifier::AS_none;
+
+    // Functions are inserted into the parent by
+    // reference, so we need to return both the
+    // parent and the record itself.
+    NamespaceInfo P;
+    if(I.Namespace.empty())
+    {
+        // In global namespace
+        assert(P.USR == EmptySID);
+        InsertChild(P.Children, I);
+    }
+    else
+    {
+        // free function can only have a namespace as parent
+        assert(I.Namespace[0].RefType == InfoType::IT_namespace);
+        P.USR = I.Namespace[0].USR;
+        InsertChild(P.Children, I);
+    }
+    return { serialize(I), serialize(P) };
+}
+
+SerializeResult
+Serializer::
+build(
+    TypedefDecl const* D)
+{
+    TypedefInfo I;
+    if(! getInfo(*this, I, D))
+        return {};
+    I.Underlying = getTypeInfoForType(D->getUnderlyingType());
+    if(I.Underlying.Type.Name.empty())
+    {
+        // Typedef for an unnamed type. This is like
+        // "typedef struct { } Foo;". The record serializer
+        // explicitly checks for this syntax and constructs
+        // a record with that name, so we don't want to emit
+        // a duplicate here.
         return {};
     }
-    Info.IsUsing = false;
+    I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+    I.IsUsing = false;
 
-    // Info is wrapped in its parent scope so is returned in the second position.
-    return { nullptr, MakeAndInsertIntoParent<TypedefInfo&&>(std::move(Info)) };
+    // Info is wrapped in its parent scope
+    // so is returned in the second position.
+    // VFALCO The position doesn't matter...
+    if( I.Namespace.empty() ||
+        I.Namespace[0].RefType == InfoType::IT_namespace)
+    {
+        NamespaceInfo P;
+        if(! I.Namespace.empty())
+            P.USR = I.Namespace[0].USR;
+        else
+            assert(P.USR == EmptySID);
+        P.Children.Typedefs.emplace_back(std::move(I));
+        return { {}, serialize(P) };
+    }
+    assert(I.Namespace[0].RefType == InfoType::IT_record);
+
+    RecordInfo P;
+    P.USR = I.Namespace[0].USR;
+    P.Children.Typedefs.emplace_back(std::move(I));
+    return { {}, serialize(P) };
 }
 
-//------------------------------------------------
-
-// A type alias is a C++ "using" declaration for a
-// type. It gets mapped to a TypedefInfo with the
-// IsUsing flag set.
-auto
+// VFALCO This is basically a copy of the typedef
+// builder except IsUsing=true, we need to refactor
+// these.
+//
+SerializeResult
 Serializer::
-buildInfo(
-    TypeAliasDecl const* D) ->
-        value_type
+build(
+    TypeAliasDecl const* D)
 {
-    TypedefInfo Info;
-
-    bool IsInAnonymousNamespace = false;
-    populateInfo(Info, D, std::move(jd_), IsInAnonymousNamespace, R_);
-    if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
+    TypedefInfo I;
+    if(! getInfo(*this, I, D))
         return {};
+    I.Underlying = getTypeInfoForType(D->getUnderlyingType());
+    if(I.Underlying.Type.Name.empty())
+    {
+        // Typedef for an unnamed type. This is like
+        // "typedef struct { } Foo;". The record serializer
+        // explicitly checks for this syntax and constructs
+        // a record with that name, so we don't want to emit
+        // a duplicate here.
+        return {};
+    }
+    I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+    I.IsUsing = true;
 
-    Info.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
-    Info.Underlying = getTypeInfoForType(D->getUnderlyingType());
-    Info.IsUsing = true;
+    // Info is wrapped in its parent scope
+    // so is returned in the second position.
+    // VFALCO The position doesn't matter...
+    if( I.Namespace.empty() ||
+        I.Namespace[0].RefType == InfoType::IT_namespace)
+    {
+        NamespaceInfo P;
+        if(! I.Namespace.empty())
+            P.USR = I.Namespace[0].USR;
+        else
+            assert(P.USR == EmptySID);
+        P.Children.Typedefs.emplace_back(std::move(I));
+        return { {}, serialize(P) };
+    }
+    assert(I.Namespace[0].RefType == InfoType::IT_record);
 
-    // Info is wrapped in its parent scope so is returned in the second position.
-    return { nullptr, MakeAndInsertIntoParent<TypedefInfo&&>(std::move(Info)) };
+    RecordInfo P;
+    P.USR = I.Namespace[0].USR;
+    P.Children.Typedefs.emplace_back(std::move(I));
+    return { {}, serialize(P) };
 }
 
-auto
+SerializeResult
 Serializer::
-buildInfo(
-    EnumDecl const* D) ->
-        value_type
+build(
+    EnumDecl const* D)
 {
-    EnumInfo Enum;
-    bool IsInAnonymousNamespace = false;
-    populateSymbolInfo(Enum, D, std::move(jd_), LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace, R_);
-    if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
+    EnumInfo I;
+    if(! getSymbolInfo(*this, I, D))
         return {};
-
-    Enum.Scoped = D->isScoped();
-    if (D->isFixed())
+    I.Scoped = D->isScoped();
+    if(D->isFixed())
     {
         auto Name = D->getIntegerType().getAsString();
-        Enum.BaseType = TypeInfo(Name, Name);
+        I.BaseType = TypeInfo(Name, Name);
     }
-    parseEnumerators(Enum, D);
+    parseEnumerators(I, D);
 
-    // Info is wrapped in its parent scope so is returned in the second position.
-    return { nullptr, MakeAndInsertIntoParent<EnumInfo&&>(std::move(Enum)) };
+    // Info is wrapped in its parent scope
+    // so is returned in the second position.
+    // VFALCO The position doesn't matter...
+    if( I.Namespace.empty() ||
+        I.Namespace[0].RefType == InfoType::IT_namespace)
+    {
+        NamespaceInfo P;
+        if(! I.Namespace.empty())
+            P.USR = I.Namespace[0].USR;
+        else
+            assert(P.USR == EmptySID);
+        P.Children.Enums.emplace_back(std::move(I));
+        return { {}, serialize(P) };
+    }
+    assert(I.Namespace[0].RefType == InfoType::IT_record);
+
+    RecordInfo P;
+    P.USR = I.Namespace[0].USR;
+    P.Children.Enums.emplace_back(std::move(I));
+    return { {}, serialize(P) };
 }
 
 } // mrdox

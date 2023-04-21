@@ -36,7 +36,7 @@ struct BitCodeConstants
     static constexpr unsigned USRLengthSize = 6U;
     static constexpr unsigned USRBitLengthSize = 8U;
     static constexpr unsigned USRHashSize = 20;
-    static constexpr unsigned char Signature[4] = {'D', 'O', 'C', 'S'};
+    static constexpr unsigned char Signature[4] = {'M', 'R', 'D', 'X'};
 };
 
 /** List of block identifiers.
