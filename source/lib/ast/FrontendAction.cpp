@@ -11,8 +11,8 @@
 
 #include "Commands.hpp"
 #include "utility.hpp"
-#include "ast/Serialize.hpp"
-#include "ast/FrontendAction.hpp"
+#include "Serialize.hpp"
+#include "FrontendAction.hpp"
 #include <mrdox/Corpus.hpp>
 #include <clang/Index/USRGeneration.h>
 #include <clang/AST/RecursiveASTVisitor.h>
@@ -20,21 +20,12 @@
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 
-//
-// This file implements the Mapper piece of the clang-doc tool. It implements
-// a RecursiveASTVisitor to look at each declaration and populate the info
-// into the internal representation. Each seen declaration is serialized to
-// to bitcode and written out to the ExecutionContext as a KV pair where the
-// key is the declaration's USR and the value is the serialized bitcode.
-//
-
 namespace clang {
 namespace mrdox {
 
 //------------------------------------------------
 
-/*  An instance of Visitor runs on one translation unit.
-*/
+// An instance of Visitor runs on one translation unit.
 void
 Visitor::
 HandleTranslationUnit(
@@ -45,13 +36,15 @@ HandleTranslationUnit(
     llvm::Optional<llvm::StringRef> filePath = 
         Context.getSourceManager().getNonBuiltinFilenameForID(
             Context.getSourceManager().getMainFileID());
-    if(filePath)
-    {
-        llvm::SmallString<0> s(*filePath);
-        convert_to_slash(s);
-        if(config_.shouldVisitTU(s))
-            TraverseDecl(Context.getTranslationUnitDecl());
-    }
+    if(! filePath)
+        return;
+
+    llvm::SmallString<0> s(*filePath);
+    convert_to_slash(s);
+    if(! config_.shouldVisitTU(s))
+        return;
+
+    TraverseDecl(Context.getTranslationUnitDecl());
 }
 
 template<typename T>
@@ -123,21 +116,21 @@ mapDecl(T const* D)
     // VFALCO is this right?
     bool const IsFileInRootDir = true;
 
-    auto I = buildInfoPair(
-        D,
+    Serializer sr(
         getLine(D, D->getASTContext()),
         filePath,
         IsFileInRootDir,
-        ! config_.includePrivate(),
+        config_,
         R_);
+    auto I = sr.buildInfoPair(D);
 
     // A null in place of I indicates that the
     // serializer is skipping this decl for some
     // reason (e.g. we're only reporting public decls).
     if (I.first)
-        Corpus::reportResult(ex_, *I.first);
+        Corpus::reportResult(ex_, I.first->USR, serialize(*I.first));
     if (I.second)
-        Corpus::reportResult(ex_, *I.second);
+        Corpus::reportResult(ex_, I.second->USR, serialize(*I.second));
 
     return true;
 }

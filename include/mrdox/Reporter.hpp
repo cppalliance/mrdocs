@@ -27,8 +27,9 @@ namespace mrdox {
 
 /** Used to check and report errors uniformly.
 */
-struct Reporter
+class Reporter
 {
+public:
     /** Return a suitable exit code.
     */
     int getExitCode() const noexcept;

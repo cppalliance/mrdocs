@@ -20,6 +20,7 @@
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
 #include <memory>
+#include <string>
 #include <type_traits>
 #include <vector>
 
@@ -176,13 +177,20 @@ public:
         std::shared_ptr<Config const> config,
         Reporter& R);
 
-    /** Store the Info in the tool results, keyed by SymbolID.
+    /** Store a key/value pair in the tool results.
+
+        This function inserts the bitcode for the
+        specified symbol ID into the tool results
+        of the execution context.
+
+        Each symbol ID can have multiple bitcodes.
     */
     static
     void
     reportResult(
         tooling::ExecutionContext& exc,
-        Info const& I);
+        SymbolID id,
+        std::string bitcode);
 
 private:
     struct Temps;

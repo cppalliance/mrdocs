@@ -9,17 +9,12 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-//
-// This file implements the serializing functions fro the clang-doc tool. Given
-// a particular declaration, it collects the appropriate information and returns
-// a serialized bitcode string for the declaration.
-//
-
-#ifndef LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
-#define LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
+#ifndef MRDOX_SOURCE_AST_SERIALIZE_HPP
+#define MRDOX_SOURCE_AST_SERIALIZE_HPP
 
 #include "clangASTComment.hpp"
 #include "ParseJavadoc.hpp"
+#include <mrdox/Config.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <mrdox/meta/Javadoc.hpp>
@@ -30,76 +25,132 @@
 namespace clang {
 namespace mrdox {
 
-// The first element will contain the relevant information about the declaration
-// passed as parameter.
-// The second element will contain the relevant information about the
-// declaration's parent, it can be a NamespaceInfo or RecordInfo.
-// Both elements can be nullptrs if the declaration shouldn't be handled.
-// When the declaration is handled, the first element will be a nullptr for
-// EnumDecl, FunctionDecl and CXXMethodDecl; they are only returned wrapped in
-// its parent scope. For NamespaceDecl and RecordDecl both elements are not
-// nullptr.
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(NamespaceDecl const* D, Javadoc jd, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
+// VFALCO THIS SHOULD BE OBSOLETE
+std::string serialize(Info const& I);
 
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(CXXRecordDecl const* D, Javadoc jd, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
-
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(EnumDecl const* D, Javadoc jd, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
-
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(FunctionDecl const* D, Javadoc jd, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
-
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(CXXMethodDecl const* D, Javadoc jd, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
-
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(TypedefDecl const* D, Javadoc jd, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
-
-std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(TypeAliasDecl const* D, Javadoc jd, int LineNumber,
-         StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
-
-template<class Decl, class... Args>
-std::pair<
-    std::unique_ptr<Info>,
-    std::unique_ptr<Info>>
-buildInfoPair(
-    Decl const* D,
-    Args&&... args)
+/** Holds a serialized declaration.
+*/
+struct SerializedDecl
 {
-    Javadoc jd;
+    SymbolID id;
+    std::string bitcode;
 
-    // TODO investigate whether we can use
-    // ASTContext::getCommentForDecl instead of
-    // this logic. See also similar code in Mapper.cpp.
-    RawComment* RC = D->getASTContext().getRawCommentForDeclNoCache(D);
-    if(RC)
+    bool empty() const noexcept
     {
-        RC->setAttached();
-        jd = parseJavadoc(RC, D->getASTContext(), D);
+        return bitcode.empty();
+    }
+};
+
+/** Holds the result of serializing a Decl.
+
+    This can result in two bitcodes. One for
+    the declaration itself, and possibly one
+    for the parent which is referenced by the
+    decl.
+*/
+struct SerializeResult
+{
+    SerializedDecl first;
+    SerializedDecl second;
+};
+
+class Serializer
+{
+    Config const& config_;
+    Reporter& R_;
+    bool PublicOnly;
+    int LineNumber;
+    StringRef File;
+    bool IsFileInRootDir;
+    Javadoc jd_;
+
+public:
+    Serializer(
+        int LineNumber_,
+        StringRef File_,
+        bool IsFileInRootDir_,
+        Config const& config,
+        Reporter& R)
+        : LineNumber(LineNumber_)
+        , File(File_)
+        , IsFileInRootDir(IsFileInRootDir_)
+        , config_(config)
+        , R_(R)
+        , PublicOnly(! config_.includePrivate())
+    {
     }
 
-    return buildInfo(D, std::move(jd), std::forward<Args>(args)...);
+    using value_type = std::pair<
+        std::unique_ptr<Info>, std::unique_ptr<Info>>;
+
+    // The first element will contain the relevant information about the declaration
+    // passed as parameter.
+    // The second element will contain the relevant information about the
+    // declaration's parent, it can be a NamespaceInfo or RecordInfo.
+    // Both elements can be nullptrs if the declaration shouldn't be handled.
+    // When the declaration is handled, the first element will be a nullptr for
+    // EnumDecl, FunctionDecl and CXXMethodDecl; they are only returned wrapped in
+    // its parent scope. For NamespaceDecl and RecordDecl both elements are not
+    // nullptr.
+
+    value_type buildInfo(NamespaceDecl const* D);
+    value_type buildInfo(CXXRecordDecl const* D);
+    value_type buildInfo(EnumDecl      const* D);
+    value_type buildInfo(FunctionDecl  const* D);
+    value_type buildInfo(CXXMethodDecl const* D);
+    value_type buildInfo(TypedefDecl   const* D);
+    value_type buildInfo(TypeAliasDecl const* D);
+
+    template<class Decl>
+    value_type
+    buildInfoPair(
+        Decl const* D)
+    {
+        Javadoc jd;
+
+        // TODO investigate whether we can use
+        // ASTContext::getCommentForDecl instead of
+        // this logic. See also similar code in Mapper.cpp.
+        RawComment* RC = D->getASTContext().getRawCommentForDeclNoCache(D);
+        if(RC)
+        {
+            RC->setAttached();
+            jd_ = parseJavadoc(RC, D->getASTContext(), D);
+        }
+
+        return buildInfo(D);
+    }
+
+    SerializeResult build(NamespaceDecl const* D);
+    SerializeResult build(CXXRecordDecl const* D);
+    SerializeResult build(EnumDecl      const* D);
+    SerializeResult build(FunctionDecl  const* D);
+    SerializeResult build(CXXMethodDecl const* D);
+    SerializeResult build(TypedefDecl   const* D);
+    SerializeResult build(TypeAliasDecl const* D);
+};
+
+template<class Decl>
+std::array<SerializedDecl, 2>
+serialize(
+    Decl const* D,
+    int LineNumber,
+    StringRef File,
+    bool IsFileInRootDir,
+    Config const& config,
+    Reporter& R)
+{
+    Serializer sr(
+        LineNumber,
+        File,
+        IsFileInRootDir,
+        config,
+        R);
+    return sr.build(D);
 }
-
-// Function to hash a given USR value for storage.
-// As USRs (Unified Symbol Resolution) could be large, especially for functions
-// with long type arguments, we use 160-bits SHA1(USR) values to
-// guarantee the uniqueness of symbols while using a relatively small amount of
-// memory (vs storing USRs directly).
-SymbolID hashUSR(llvm::StringRef USR);
-
-std::string serialize(Info const& I);
 
 } // mrdox
 } // clang
 
-#endif // LLVM_CLANG_TOOLS_EXTRA_CLANG_DOC_SERIALIZE_H
+#endif
+

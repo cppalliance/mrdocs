@@ -23,16 +23,32 @@
 namespace clang {
 namespace mrdox {
 
-SymbolID hashUSR(llvm::StringRef USR) {
+// Function to hash a given USR value for storage.
+// As USRs (Unified Symbol Resolution) could be large, especially for functions
+// with long type arguments, we use 160-bits SHA1(USR) values to
+// guarantee the uniqueness of symbols while using a relatively small amount of
+// memory (vs storing USRs directly).
+SymbolID
+hashUSR(
+    llvm::StringRef USR)
+{
     return llvm::SHA1::hash(arrayRefFromStringRef(USR));
 }
 
 template <typename T>
-static void
-populateParentNamespaces(llvm::SmallVector<Reference, 4>& Namespaces,
-    const T* D, bool& IsAnonymousNamespace);
+static
+void
+populateParentNamespaces(
+    llvm::SmallVector<Reference, 4>& Namespaces,
+    const T* D,
+    bool& IsAnonymousNamespace);
 
-static void populateMemberTypeInfo(MemberTypeInfo& I, const FieldDecl* D, Reporter& R);
+static
+void
+populateMemberTypeInfo(
+    MemberTypeInfo& I,
+    const FieldDecl* D,
+    Reporter& R);
 
 // A function to extract the appropriate relative path for a given info's
 // documentation. The path returned is a composite of the parent namespaces.
@@ -48,14 +64,18 @@ static void populateMemberTypeInfo(MemberTypeInfo& I, const FieldDecl* D, Report
 // }
 // }
 llvm::SmallString<128>
-getInfoRelativePath(const llvm::SmallVectorImpl<mrdox::Reference>& Namespaces) {
+getInfoRelativePath(
+    llvm::SmallVectorImpl<mrdox::Reference> const& Namespaces)
+{
     llvm::SmallString<128> Path;
     for (auto R = Namespaces.rbegin(), E = Namespaces.rend(); R != E; ++R)
         llvm::sys::path::append(Path, R->Name);
     return Path;
 }
 
-llvm::SmallString<128> getInfoRelativePath(const Decl* D) {
+llvm::SmallString<128>
+getInfoRelativePath(const Decl* D)
+{
     llvm::SmallVector<Reference, 4> Namespaces;
     // The third arg in populateParentNamespaces is a boolean passed by reference,
     // its value is not relevant in here so it's not used anywhere besides the
@@ -67,14 +87,19 @@ llvm::SmallString<128> getInfoRelativePath(const Decl* D) {
 
 // Serializing functions.
 
-std::string getSourceCode(const Decl* D, const SourceRange& R) {
+static
+std::string
+getSourceCode(
+    Decl const* D,
+    SourceRange const& R)
+{
     return Lexer::getSourceText(CharSourceRange::getTokenRange(R),
         D->getASTContext().getSourceManager(),
         D->getASTContext().getLangOpts())
         .str();
 }
 
-template <typename T>
+template<typename T>
 static
 std::string
 serialize(T& I)
@@ -681,21 +706,15 @@ parseBases(
     }
 }
 
-std::pair<
-    std::unique_ptr<Info>,
-    std::unique_ptr<Info>>
+auto
+Serializer::
 buildInfo(
-    NamespaceDecl const* D,
-    Javadoc jd,
-    int LineNumber,
-    llvm::StringRef File,
-    bool IsFileInRootDir,
-    bool PublicOnly,
-    Reporter& R)
+    NamespaceDecl const* D) ->
+        value_type
 {
     auto I = std::make_unique<NamespaceInfo>();
     bool IsInAnonymousNamespace = false;
-    populateInfo(*I, D, std::move(jd), IsInAnonymousNamespace, R);
+    populateInfo(*I, D, std::move(jd_), IsInAnonymousNamespace, R_);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -710,27 +729,21 @@ buildInfo(
     return { std::move(I), MakeAndInsertIntoParent<const NamespaceInfo&>(*I) };
 }
 
-std::pair<
-    std::unique_ptr<Info>,
-    std::unique_ptr<Info>>
+auto
+Serializer::
 buildInfo(
-    CXXRecordDecl const* D,
-    Javadoc jd,
-    int LineNumber,
-    llvm::StringRef File,
-    bool IsFileInRootDir,
-    bool PublicOnly,
-    Reporter& R)
+    CXXRecordDecl const* D) ->
+        value_type
 {
     auto I = std::make_unique<RecordInfo>();
     bool IsInAnonymousNamespace = false;
-    populateSymbolInfo(*I, D, std::move(jd), LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace, R);
+    populateSymbolInfo(*I, D, std::move(jd_), LineNumber, File, IsFileInRootDir,
+        IsInAnonymousNamespace, R_);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
     I->TagType = D->getTagKind();
-    parseFields(*I, D, PublicOnly, AccessSpecifier::AS_public, R);
+    parseFields(*I, D, PublicOnly, AccessSpecifier::AS_public, R_);
     if (const auto* C = dyn_cast<CXXRecordDecl>(D))
     {
         if (const TypedefNameDecl* TD = C->getTypedefNameForAnonDecl())
@@ -740,7 +753,7 @@ buildInfo(
         }
         // TODO: remove first call to parseBases, that function should be deleted
         parseBases(*I, C);
-        parseBases(*I, C, IsFileInRootDir, PublicOnly, true, AccessSpecifier::AS_public, R);
+        parseBases(*I, C, IsFileInRootDir, PublicOnly, true, AccessSpecifier::AS_public, R_);
     }
     I->Path = getInfoRelativePath(I->Namespace);
 
@@ -799,22 +812,16 @@ buildInfo(
     return { std::move(I), MakeAndInsertIntoParent<const RecordInfo&>(*I) };
 }
 
-std::pair<
-    std::unique_ptr<Info>,
-    std::unique_ptr<Info>>
+auto
+Serializer::
 buildInfo(
-    FunctionDecl const* D,
-    Javadoc jd,
-    int LineNumber,
-    llvm::StringRef File,
-    bool IsFileInRootDir,
-    bool PublicOnly,
-    Reporter& R)
+    FunctionDecl const* D) ->
+        value_type
 {
     auto up = std::make_unique<FunctionInfo>();
     bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(*up, D, std::move(jd), LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace, R);
+    populateFunctionInfo(*up, D, std::move(jd_), LineNumber, File, IsFileInRootDir,
+        IsInAnonymousNamespace, R_);
     up->Access = clang::AccessSpecifier::AS_none;
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
@@ -825,22 +832,16 @@ buildInfo(
     return { std::move(up), MakeAndInsertIntoParent<FunctionInfo const&>(*up) };
 }
 
-std::pair<
-    std::unique_ptr<Info>,
-    std::unique_ptr<Info>>
+auto
+Serializer::
 buildInfo(
-    CXXMethodDecl const* D,
-    Javadoc jd,
-    int LineNumber,
-    llvm::StringRef File,
-    bool IsFileInRootDir,
-    bool PublicOnly,
-    Reporter& R)
+    CXXMethodDecl const* D) ->
+        value_type
 {
     auto up = std::make_unique<FunctionInfo>();
     bool IsInAnonymousNamespace = false;
-    populateFunctionInfo(*up, D, std::move(jd), LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace, R);
+    populateFunctionInfo(*up, D, std::move(jd_), LineNumber, File, IsFileInRootDir,
+        IsInAnonymousNamespace, R_);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -864,22 +865,16 @@ buildInfo(
     return { std::move(up), MakeAndInsertIntoParent<FunctionInfo const&>(*up) };
 }
 
-std::pair<
-    std::unique_ptr<Info>,
-    std::unique_ptr<Info>>
+auto
+Serializer::
 buildInfo(
-    TypedefDecl const* D,
-    Javadoc jd,
-    int LineNumber,
-    StringRef File,
-    bool IsFileInRootDir,
-    bool PublicOnly,
-    Reporter& R)
+    TypedefDecl const* D) ->
+        value_type
 {
     TypedefInfo Info;
 
     bool IsInAnonymousNamespace = false;
-    populateInfo(Info, D, std::move(jd), IsInAnonymousNamespace, R);
+    populateInfo(Info, D, std::move(jd_), IsInAnonymousNamespace, R_);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -903,22 +898,16 @@ buildInfo(
 // A type alias is a C++ "using" declaration for a
 // type. It gets mapped to a TypedefInfo with the
 // IsUsing flag set.
-std::pair<
-    std::unique_ptr<Info>,
-    std::unique_ptr<Info>>
+auto
+Serializer::
 buildInfo(
-    TypeAliasDecl const* D,
-    Javadoc jd,
-    int LineNumber,
-    StringRef File,
-    bool IsFileInRootDir,
-    bool PublicOnly,
-    Reporter& R)
+    TypeAliasDecl const* D) ->
+        value_type
 {
     TypedefInfo Info;
 
     bool IsInAnonymousNamespace = false;
-    populateInfo(Info, D, std::move(jd), IsInAnonymousNamespace, R);
+    populateInfo(Info, D, std::move(jd_), IsInAnonymousNamespace, R_);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 
@@ -930,22 +919,16 @@ buildInfo(
     return { nullptr, MakeAndInsertIntoParent<TypedefInfo&&>(std::move(Info)) };
 }
 
-std::pair<
-    std::unique_ptr<Info>,
-    std::unique_ptr<Info>>
+auto
+Serializer::
 buildInfo(
-    EnumDecl const* D,
-    Javadoc jd,
-    int LineNumber,
-    llvm::StringRef File,
-    bool IsFileInRootDir,
-    bool PublicOnly,
-    Reporter& R)
+    EnumDecl const* D) ->
+        value_type
 {
     EnumInfo Enum;
     bool IsInAnonymousNamespace = false;
-    populateSymbolInfo(Enum, D, std::move(jd), LineNumber, File, IsFileInRootDir,
-        IsInAnonymousNamespace, R);
+    populateSymbolInfo(Enum, D, std::move(jd_), LineNumber, File, IsFileInRootDir,
+        IsInAnonymousNamespace, R_);
     if (!shouldSerializeInfo(PublicOnly, IsInAnonymousNamespace, D))
         return {};
 

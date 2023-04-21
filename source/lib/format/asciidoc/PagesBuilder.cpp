@@ -69,12 +69,6 @@ visit(
 {
     namespace path = llvm::sys::path;
 
-    int i = 0;
-    if(I.Name == "ipv4_address")
-    {
-        i = 1;
-    }
-
     auto filePath = filePrefix_;
     path::append(filePath, I.Name);
     path::replace_extension(filePath, "adoc");
@@ -97,7 +91,7 @@ visit(
     auto filePath = filePrefix_;
     path::append(filePath, I.name);
     path::replace_extension(filePath, "adoc");
-    pages.emplace_back(std::move(filePath));
+    pages.emplace_back(Page(filePath));
 }
 
 void

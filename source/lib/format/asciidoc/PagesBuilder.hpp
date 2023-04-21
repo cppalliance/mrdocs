@@ -26,6 +26,13 @@ public:
     struct Page
     {
         llvm::SmallString<0> fileName;
+
+        explicit
+        Page(
+            llvm::StringRef s)
+            : fileName(s)
+        {
+        }
     };
 
     std::vector<Page> pages;

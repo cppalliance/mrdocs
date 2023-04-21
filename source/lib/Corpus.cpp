@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "ast/Bitcode.hpp"
-#include "ast/Serialize.hpp"
+#include "FrontendAction.hpp"
+#include "Bitcode.hpp"
 #include "meta/Reduce.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Error.hpp>
@@ -21,16 +21,6 @@
 
 namespace clang {
 namespace mrdox {
-
-// VFALCO This is in FrontendAction.cpp
-/** Return a factory used to visit the AST nodes.
-*/
-std::unique_ptr<tooling::FrontendActionFactory>
-extern
-makeFrontendActionFactory(
-    tooling::ExecutionContext& exc,
-    Config const& config,
-    Reporter& R);
 
 struct Corpus::Temps
 {
@@ -284,11 +274,11 @@ void
 Corpus::
 reportResult(
     tooling::ExecutionContext& exc,
-    Info const& I)
+    SymbolID id,
+    std::string bitcode)
 {
-    std::string s = serialize(I);
     exc.reportResult(
-        llvm::toStringRef(I.USR), std::move(s));
+        llvm::toStringRef(id), std::move(bitcode));
 }
 
 //------------------------------------------------

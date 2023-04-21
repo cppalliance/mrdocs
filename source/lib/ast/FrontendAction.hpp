@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_FRONTENDACTION_HPP
-#define MRDOX_FRONTENDACTION_HPP
+#ifndef MRDOX_SOURCE_AST_FRONTENDACTION_HPP
+#define MRDOX_SOURCE_AST_FRONTENDACTION_HPP
 
 #include <mrdox/Config.hpp>
 #include <mrdox/Reporter.hpp>
@@ -21,7 +21,17 @@
 namespace clang {
 namespace mrdox {
 
-/** Visits AST and converts it to our metadata.
+/** Convert AST to our metadata and serialize to bitcode.
+
+    An instance of this object visits the AST
+    for exactly one translation unit. The AST is
+    converted into our metadata, and this metadata
+    is then serialized into bitcode. The resulting
+    bitcode is inserted into the tool results,
+    keyed by USR. Each USR can have multiple
+    serialized bitcodes, as the same declaration
+    in a particular include file can be seen by
+    more than one translation unit.
 */
 class Visitor
     : public RecursiveASTVisitor<Visitor>
