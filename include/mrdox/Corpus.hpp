@@ -16,9 +16,10 @@
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <mrdox/meta/Index.hpp>
-#include <mrdox/meta/Types.hpp>
+#include <mrdox/meta/Symbols.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
+#include <cassert>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -31,98 +32,42 @@ namespace mrdox {
 */
 class Corpus
 {
-    explicit
-    Corpus(
-        std::shared_ptr<Config const> config) noexcept
-        : config_(std::move(config))
-    {
-    }
-
 public:
-    struct Visitor
-    {
-        virtual ~Visitor() = default;
-        virtual void visit(NamespaceInfo const&) {}
-        virtual void visit(RecordInfo const&) {}
-        virtual void visit(FunctionOverloads const&) {}
-        virtual void visit(FunctionInfo const&) {}
-        virtual void visit(EnumInfo const&) {}
-        virtual void visit(TypedefInfo const&) {}
-    };
+    virtual ~Corpus() = default;
 
     //--------------------------------------------
-    //
-    // Observers
-    //
-    //--------------------------------------------
-
-    /** Return the ID of the global namespace.
-    */
-    static
-    SymbolID
-    globalNamespaceID() noexcept
-    {
-        return EmptySID;
-    }
-
-    /** Return true if s0 is less than s1.
-
-        This function returns true if the string
-        s0 is less than the string s1. The comparison
-        is first made without regard to case, unless
-        the strings compare equal and then they
-        are compared with lowercase letters coming
-        before uppercase letters.
-    */
-    static
-    bool
-    symbolCompare(
-        llvm::StringRef symbolName0,
-        llvm::StringRef symbolName1) noexcept;
 
     /** Return the Config used to generate this corpus.
     */
+    virtual
     std::shared_ptr<Config const> const&
-    config() const noexcept
-    {
-        return config_;
-    }
+    config() const noexcept = 0;
+
+    /** Return the list of all uniquely identified symbols.
+    */
+    virtual
+    std::vector<SymbolID> const&
+    allSymbols() const noexcept = 0;
 
     /** Return the metadata for the global namespace.
     */
     NamespaceInfo const&
     globalNamespace() const noexcept;
 
+    /** Return the Info with the matching ID, or nullptr.
+    */
+    /** @{ */
+    virtual Info* find(SymbolID const& id) noexcept = 0;
+    virtual Info const* find(SymbolID const& id) const noexcept = 0;
+    /** @} */
+
     /** Return true if an Info with the specified symbol ID exists.
     */
-    bool exists(SymbolID const& id) const noexcept;
-
-    /** Return a pointer to the Info with the specified symbol ID, or nullptr.
-    */
-    template<class T>
-    T*
-    find(
-        SymbolID const& id) noexcept;
-
-    /** Return a pointer to the Info with the specified symbol ID, or nullptr.
-    */
-    template<class T>
-    T const*
-    find(
-        SymbolID const& id) const noexcept;
-
-    /** Return the Info with the specified symbol ID.
-
-        If the id does not exist, the behavior is undefined.
-    */
-    template<class T>
-    T&
-    get(
-        SymbolID const& id) noexcept
+    bool
+    exists(
+        SymbolID const& id) const noexcept
     {
-        auto p = find<T>(id);
-        assert(p != nullptr);
-        return *p;
+        return find(id) != nullptr;
     }
 
     /** Return the Info with the specified symbol ID.
@@ -132,20 +77,22 @@ public:
     template<class T>
     T const&
     get(
-        SymbolID const& id) const noexcept
-    {
-        auto p = find<T>(id);
-        assert(p != nullptr);
-        return *p;
-    }
+        SymbolID const& id) const noexcept;
 
-    /** Return the list of all uniquely identified symbols.
+    //--------------------------------------------
+
+    /** Base class used to visit elements of the corpus.
     */
-    std::vector<SymbolID> const&
-    allSymbols() const noexcept
+    struct Visitor
     {
-        return allSymbols_;
-    }
+        virtual ~Visitor() = default;
+        virtual void visit(NamespaceInfo const&) {}
+        virtual void visit(RecordInfo const&) {}
+        virtual void visit(Overloads const&) {}
+        virtual void visit(FunctionInfo const&) {}
+        virtual void visit(EnumInfo const&) {}
+        virtual void visit(TypedefInfo const&) {}
+    };
 
     /** Visit the specified symbol ID or node.
     */
@@ -157,12 +104,8 @@ public:
     /** @} */
 
     //--------------------------------------------
-    //
-    // Modifiers
-    //
-    //--------------------------------------------
 
-    /** Build the intermediate representation of the code being documented.
+    /** Build metadata for a set of translation units.
 
         @param config A shared pointer to the configuration.
 
@@ -176,135 +119,30 @@ public:
         tooling::ToolExecutor& ex,
         std::shared_ptr<Config const> config,
         Reporter& R);
-
-    /** Store a key/value pair in the tool results.
-
-        This function inserts the bitcode for the
-        specified symbol ID into the tool results
-        of the execution context.
-
-        Each symbol ID can have multiple bitcodes.
-    */
-    static
-    void
-    reportResult(
-        tooling::ExecutionContext& exc,
-        SymbolID id,
-        std::string bitcode);
-
-private:
-    struct Temps;
-
-    //--------------------------------------------
-    //
-    // Implementation
-    //
-    //--------------------------------------------
-
-    /** Insert this element and all its children into the Corpus.
-
-        @param Thread Safety
-        May be called concurrently.
-    */
-    void insert(std::unique_ptr<Info> Ip);
-
-    /** Insert Info into the index
-
-        @param Thread Safety
-        May be called concurrently.
-    */
-    void insertIntoIndex(Info const& I);
-
-    /** Canonicalize the contents of the object.
-
-        @return true upon success.
-
-        @param R The diagnostic reporting object to
-        use for delivering errors and information.
-    */
-    [[nodiscard]]
-    bool canonicalize(Reporter& R);
-
-    bool canonicalize(std::vector<SymbolID>& list, Temps& t, Reporter& R);
-    bool canonicalize(NamespaceInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(RecordInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(FunctionInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(EnumInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(TypedefInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(Scope& I, Temps& t, Reporter& R);
-    bool canonicalize(std::vector<Reference>& list, Temps& t, Reporter& R);
-    bool canonicalize(llvm::SmallVectorImpl<MemberTypeInfo>& list, Temps& t, Reporter& R);
-
-private:
-    std::shared_ptr<Config const> config_;
-
-    // Index of all emitted symbols.
-    Index Idx;
-
-    // Table of Info keyed on Symbol ID.
-    llvm::StringMap<std::unique_ptr<Info>> InfoMap;
-
-    // list of all symbols
-    std::vector<SymbolID> allSymbols_;
-
-    llvm::sys::Mutex infoMutex;
-    llvm::sys::Mutex allSymbolsMutex;
-    bool isCanonical_ = false;
 };
 
 //------------------------------------------------
 
 template<class T>
-T*
+T const&
 Corpus::
-find(
-    SymbolID const& id) noexcept
-{
-    auto it = InfoMap.find(llvm::toStringRef(id));
-    if(it != InfoMap.end())
-    {
-        auto const t = static_cast<T*>(it->getValue().get());
-        if constexpr(std::is_same_v<T, NamespaceInfo>)
-            assert(t->IT == InfoType::IT_namespace);
-        else if constexpr(std::is_same_v<T, RecordInfo>)
-            assert(t->IT == InfoType::IT_record);
-        else if constexpr(std::is_same_v<T, FunctionInfo>)
-            assert(t->IT == InfoType::IT_function);
-        else if constexpr(std::is_same_v<T, EnumInfo>)
-            assert(t->IT == InfoType::IT_enum);
-        else if constexpr(std::is_same_v<T, TypedefInfo>)
-            assert(t->IT == InfoType::IT_typedef);
-        return t;
-    }
-    return nullptr;
-}
-
-/** Return a pointer to the Info with the specified symbol ID, or nullptr.
-*/
-template<class T>
-T const*
-Corpus::
-find(
+get(
     SymbolID const& id) const noexcept
 {
-    auto it = InfoMap.find(llvm::toStringRef(id));
-    if(it != InfoMap.end())
-    {
-        auto const t = static_cast<
-            T const*>(it->getValue().get());
-        if constexpr(std::is_same_v<T, NamespaceInfo>)
-            assert(t->IT == InfoType::IT_namespace);
-        else if constexpr(std::is_same_v<T, RecordInfo>)
-            assert(t->IT == InfoType::IT_record);
-        else if constexpr(std::is_same_v<T, FunctionInfo>)
-            assert(t->IT == InfoType::IT_function);
-        else if constexpr(std::is_same_v<T, EnumInfo>)
-            assert(t->IT == InfoType::IT_enum);
-        else if constexpr(std::is_same_v<T, TypedefInfo>)
-            assert(t->IT == InfoType::IT_typedef);
-        return t;
-    }
-    return nullptr;
+    auto I = find(id);
+    assert(I != nullptr);
+    auto const t = static_cast<T const*>(I);
+    if constexpr(std::is_same_v<T, NamespaceInfo>)
+        assert(t->IT == InfoType::IT_namespace);
+    else if constexpr(std::is_same_v<T, RecordInfo>)
+        assert(t->IT == InfoType::IT_record);
+    else if constexpr(std::is_same_v<T, FunctionInfo>)
+        assert(t->IT == InfoType::IT_function);
+    else if constexpr(std::is_same_v<T, EnumInfo>)
+        assert(t->IT == InfoType::IT_enum);
+    else if constexpr(std::is_same_v<T, TypedefInfo>)
+        assert(t->IT == InfoType::IT_typedef);
+    return *t;
 }
 
 } // mrdox

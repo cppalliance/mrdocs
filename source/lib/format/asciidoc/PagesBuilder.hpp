@@ -47,7 +47,7 @@ public:
 
     void visit(NamespaceInfo const&) override;
     void visit(RecordInfo const&) override;
-    void visit(FunctionOverloads const&) override;
+    void visit(Overloads const&) override;
     void visit(FunctionInfo const&) override;
     void visit(TypedefInfo const&) override;
     void visit(EnumInfo const&) override;

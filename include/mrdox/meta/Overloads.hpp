@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_META_FUNCTIONOVERLOADS_HPP
-#define MRDOX_META_FUNCTIONOVERLOADS_HPP
+#ifndef MRDOX_META_OVERLOADS_HPP
+#define MRDOX_META_OVERLOADS_HPP
 
 #include <mrdox/meta/Function.hpp>
 #include <clang/Basic/Specifiers.h>
@@ -24,7 +24,7 @@ struct Scope;
 
 /** A list of overloads for one function name.
 */
-struct FunctionOverloads
+struct Overloads
 {
     llvm::StringRef name;
     std::vector<FunctionInfo const*> list;
@@ -32,7 +32,7 @@ struct FunctionOverloads
 
 /** A set of unique function names in a scope
 */
-struct FunctionOverloadsSet
+struct OverloadsSet
 {
     /** The access control of this scope.
     */
@@ -40,11 +40,13 @@ struct FunctionOverloadsSet
 
     /** The list of function overloads in the scope.
     */
-    std::vector<FunctionOverloads> list;
+    std::vector<Overloads> list;
 };
 
-FunctionOverloadsSet
-makeFunctionOverloadsSet(
+/** Create an overload set for all functions in a scope.
+*/
+OverloadsSet
+makeOverloadsSet(
     Corpus const& corpus,
     Scope const& scope,
     AccessSpecifier access);

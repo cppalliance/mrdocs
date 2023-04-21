@@ -12,22 +12,16 @@
 #ifndef MRDOX_SOURCE_PARSEJAVADOC_HPP
 #define MRDOX_SOURCE_PARSEJAVADOC_HPP
 
+#include <clang/AST/Decl.h>
+#include "clangASTComment.hpp"
+#include <clang/AST/ASTContext.h>
 #include <mrdox/meta/Javadoc.hpp>
 
 namespace clang {
-
-class ASTContext;
-class Decl;
-class RawComment;
-
 namespace mrdox {
 
-struct Javadoc;
-
-void
-dumpJavadoc(
-    Javadoc const& jd);
-
+/** Return a complete javadoc object for a raw comment.
+*/
 Javadoc
 parseJavadoc(
     RawComment const* RC,

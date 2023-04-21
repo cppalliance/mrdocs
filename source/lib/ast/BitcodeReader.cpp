@@ -1381,13 +1381,14 @@ skipUntilRecordOrBlock(
 
 //------------------------------------------------
 
-// Calls readBlock to read each block in the given stream.
+// Calls readBlock to read each block in the given bitcode.
 llvm::Expected<
     std::vector<std::unique_ptr<Info>>>
 readBitcode(
-    llvm::BitstreamCursor &Stream,
+    llvm::StringRef bitcode,
     Reporter& R)
 {
+    llvm::BitstreamCursor Stream(bitcode);
     BitcodeReader reader(Stream, R);
     return reader.getInfos();
 }

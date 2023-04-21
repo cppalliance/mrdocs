@@ -9,11 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "ASTVisitor.hpp"
 #include "Commands.hpp"
 #include "utility.hpp"
 #include "Serialize.hpp"
-#include "FrontendAction.hpp"
-#include <mrdox/Corpus.hpp>
 #include <clang/Index/USRGeneration.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <llvm/ADT/StringExtras.h>
@@ -27,7 +26,7 @@ namespace mrdox {
 
 // An instance of Visitor runs on one translation unit.
 void
-Visitor::
+ASTVisitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
@@ -49,7 +48,7 @@ HandleTranslationUnit(
 
 template<typename T>
 bool
-Visitor::
+ASTVisitor::
 mapDecl(T const* D)
 {
     namespace path = llvm::sys::path;
@@ -129,14 +128,14 @@ mapDecl(T const* D)
     // for some reason. For example it is private,
     // or the declaration is enclosed in the parent.
     if(! res.first.empty())
-        Corpus::reportResult(ex_, res.first.id, std::move(res.first.bitcode));
+        insertBitcode(ex_, std::move(res.first));
     if(! res.second.empty())
-        Corpus::reportResult(ex_, res.second.id, std::move(res.second.bitcode));
+        insertBitcode(ex_, std::move(res.second));
     return true;
 }
 
 bool
-Visitor::
+ASTVisitor::
 VisitNamespaceDecl(
     NamespaceDecl const* D)
 {
@@ -144,7 +143,7 @@ VisitNamespaceDecl(
 }
 
 bool
-Visitor::
+ASTVisitor::
 VisitCXXRecordDecl(
     CXXRecordDecl const* D)
 {
@@ -152,7 +151,7 @@ VisitCXXRecordDecl(
 }
 
 bool
-Visitor::
+ASTVisitor::
 VisitRecordDecl(
     RecordDecl const* D)
 {
@@ -164,7 +163,7 @@ VisitRecordDecl(
 }
 
 bool
-Visitor::
+ASTVisitor::
 VisitEnumDecl(
     EnumDecl const* D)
 {
@@ -172,7 +171,7 @@ VisitEnumDecl(
 }
 
 bool
-Visitor::
+ASTVisitor::
 VisitCXXMethodDecl(
     CXXMethodDecl const* D)
 {
@@ -180,7 +179,7 @@ VisitCXXMethodDecl(
 }
 
 bool
-Visitor::
+ASTVisitor::
 VisitFunctionDecl(
     FunctionDecl const* D)
 {
@@ -191,21 +190,21 @@ VisitFunctionDecl(
 }
 
 bool
-Visitor::
+ASTVisitor::
 VisitTypedefDecl(TypedefDecl const* D)
 {
     return mapDecl(D);
 }
 
 bool
-Visitor::
+ASTVisitor::
 VisitTypeAliasDecl(TypeAliasDecl const* D)
 {
     return mapDecl(D);
 }
 
 int
-Visitor::
+ASTVisitor::
 getLine(
     NamedDecl const* D,
     ASTContext const& Context) const
@@ -236,7 +235,7 @@ struct Action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<Visitor>(ex_, config_, R_);
+        return std::make_unique<ASTVisitor>(ex_, config_, R_);
     }
 
 private:

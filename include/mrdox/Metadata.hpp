@@ -18,7 +18,7 @@
 #include <mrdox/meta/Enum.hpp>
 #include <mrdox/meta/FieldType.hpp>
 #include <mrdox/meta/Function.hpp>
-#include <mrdox/meta/FunctionOverloads.hpp>
+#include <mrdox/meta/Overloads.hpp>
 #include <mrdox/meta/Index.hpp>
 #include <mrdox/meta/Info.hpp>
 #include <mrdox/meta/Javadoc.hpp>
@@ -29,10 +29,10 @@
 #include <mrdox/meta/Reference.hpp>
 #include <mrdox/meta/Scope.hpp>
 #include <mrdox/meta/Symbol.hpp>
+#include <mrdox/meta/Symbols.hpp>
 #include <mrdox/meta/Template.hpp>
 #include <mrdox/meta/TemplateParam.hpp>
 #include <mrdox/meta/Type.hpp>
 #include <mrdox/meta/Typedef.hpp>
-#include <mrdox/meta/Types.hpp>
 
 #endif

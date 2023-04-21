@@ -11,19 +11,19 @@
 
 #include <mrdox/Corpus.hpp>
 #include <mrdox/meta/Function.hpp>
-#include <mrdox/meta/FunctionOverloads.hpp>
+#include <mrdox/meta/Overloads.hpp>
 #include <mrdox/meta/Scope.hpp>
 
 namespace clang {
 namespace mrdox {
 
-FunctionOverloadsSet
-makeFunctionOverloadsSet(
+OverloadsSet
+makeOverloadsSet(
     Corpus const& corpus,
     Scope const& scope,
     AccessSpecifier access)
 {
-    FunctionOverloadsSet result;
+    OverloadsSet result;
     result.access = access;
 
     std::vector<FunctionInfo const*> temp;
@@ -52,7 +52,7 @@ makeFunctionOverloadsSet(
             (*it)->Name != (*it0)->Name)
         {
             result.list.emplace_back(
-                FunctionOverloads{
+                Overloads{
                     (*it0)->Name,
                     std::vector<FunctionInfo const*>(it0, it)});
             it0 = it;

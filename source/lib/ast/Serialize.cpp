@@ -10,7 +10,7 @@
 //
 
 #include "Serialize.hpp"
-#include "BitcodeWriter.hpp"
+#include "Bitcode.hpp"
 #include "ParseJavadoc.hpp"
 #include <mrdox/Metadata.hpp>
 #include <clang/Index/USRGeneration.h>
@@ -23,6 +23,8 @@
 
 namespace clang {
 namespace mrdox {
+
+namespace detail {
 
 //------------------------------------------------
 
@@ -161,7 +163,7 @@ getParentNamespaces(
         (!Namespaces.empty() && Namespaces.back().RefType == InfoType::IT_record))
     {
         Namespaces.emplace_back(
-            EmptySID,
+            globalNamespaceID,
             "", //"GlobalNamespace",
             InfoType::IT_namespace);
     }
@@ -408,19 +410,30 @@ static
 void
 getMemberTypeInfo(
     MemberTypeInfo& I,
-    const FieldDecl* D,
-    Reporter& R);
+    FieldDecl const* D,
+    Reporter& R)
+{
+    assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
+
+    ASTContext& Context = D->getASTContext();
+    // VFALCO investigate whether we can use
+    // ASTContext::getCommentForDecl instead of this logic. 
+    RawComment* RC = Context.getRawCommentForDeclNoCache(D);
+    if(RC)
+    {
+        RC->setAttached();
+        I.javadoc = parseJavadoc(RC, D->getASTContext(), D);
+    }
+}
+
+//------------------------------------------------
 
 template<typename T>
 static
-SerializedDecl
+Bitcode
 serialize(T& I)
 {
-    SmallString<2048> Buffer;
-    llvm::BitstreamWriter Stream(Buffer);
-    BitcodeWriter Writer(Stream);
-    Writer.emitBlock(I);
-    return { I.USR, Buffer.str().str() };
+    return { I.USR, writeBitcode(I).str().str() };
 }
 
 // The InsertChild functions insert the given info into the given scope using
@@ -644,7 +657,7 @@ parseBases(
         else
         {
             I.Parents.emplace_back(
-                EmptySID,
+                globalNamespaceID,
                 B.getType().getAsString());
         }
     }
@@ -661,7 +674,7 @@ parseBases(
         else
         {
             I.VirtualParents.emplace_back(
-                EmptySID,
+                globalNamespaceID,
                 B.getType().getAsString());
         }
     }
@@ -762,26 +775,6 @@ getFunctionInfo(
 
 static
 void
-getMemberTypeInfo(
-    MemberTypeInfo& I,
-    const FieldDecl* D,
-    Reporter& R)
-{
-    assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
-
-    ASTContext& Context = D->getASTContext();
-    // VFALCO investigate whether we can use
-    // ASTContext::getCommentForDecl instead of this logic. 
-    RawComment* RC = Context.getRawCommentForDeclNoCache(D);
-    if(RC)
-    {
-        RC->setAttached();
-        I.javadoc = parseJavadoc(RC, D->getASTContext(), D);
-    }
-}
-
-static
-void
 parseBases(
     RecordInfo& I,
     CXXRecordDecl const* D,
@@ -877,10 +870,10 @@ build(
         I.Name = "@nonymous_namespace";
     I.Path = getInfoRelativePath(I.Namespace);
 
-    if(I.Namespace.empty() && I.USR == EmptySID)
+    if(I.Namespace.empty() && I.USR == globalNamespaceID)
     {
         // Global namespace has no parent.
-        return { serialize(I) };
+        return { serialize(I), {} };
     }
 
     // Namespaces are inserted into the parent by
@@ -890,7 +883,7 @@ build(
     if(I.Namespace.empty())
     {
         // In global namespace
-        assert(P.USR == EmptySID);
+        assert(P.USR == globalNamespaceID);
         InsertChild(P.Children, I);
     }
     else
@@ -996,7 +989,7 @@ build(
         if(! I.Namespace.empty())
             P.USR = I.Namespace[0].USR;
         else
-            assert(P.USR == EmptySID);
+            assert(P.USR == globalNamespaceID);
         InsertChild(P.Children, I);
         return { serialize(I), serialize(P) };
     }
@@ -1057,7 +1050,7 @@ build(
     if(I.Namespace.empty())
     {
         // In global namespace
-        assert(P.USR == EmptySID);
+        assert(P.USR == globalNamespaceID);
         InsertChild(P.Children, I);
     }
     else
@@ -1101,7 +1094,7 @@ build(
         if(! I.Namespace.empty())
             P.USR = I.Namespace[0].USR;
         else
-            assert(P.USR == EmptySID);
+            assert(P.USR == globalNamespaceID);
         P.Children.Typedefs.emplace_back(std::move(I));
         return { {}, serialize(P) };
     }
@@ -1148,7 +1141,7 @@ build(
         if(! I.Namespace.empty())
             P.USR = I.Namespace[0].USR;
         else
-            assert(P.USR == EmptySID);
+            assert(P.USR == globalNamespaceID);
         P.Children.Typedefs.emplace_back(std::move(I));
         return { {}, serialize(P) };
     }
@@ -1186,7 +1179,7 @@ build(
         if(! I.Namespace.empty())
             P.USR = I.Namespace[0].USR;
         else
-            assert(P.USR == EmptySID);
+            assert(P.USR == globalNamespaceID);
         P.Children.Enums.emplace_back(std::move(I));
         return { {}, serialize(P) };
     }
@@ -1197,6 +1190,8 @@ build(
     P.Children.Enums.emplace_back(std::move(I));
     return { {}, serialize(P) };
 }
+
+} // detail
 
 } // mrdox
 } // clang

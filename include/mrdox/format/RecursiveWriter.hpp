@@ -13,7 +13,7 @@
 #define MRDOX_RECURSIVEWRITER_HPP
 
 #include <mrdox/MetadataFwd.hpp>
-#include <mrdox/meta/Types.hpp>
+#include <mrdox/meta/Symbols.hpp>
 #include <mrdox/Reporter.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>

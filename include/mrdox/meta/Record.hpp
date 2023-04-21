@@ -17,7 +17,7 @@
 #include <mrdox/meta/Scope.hpp>
 #include <mrdox/meta/Symbol.hpp>
 #include <mrdox/meta/Template.hpp>
-#include <mrdox/meta/Types.hpp>
+#include <mrdox/meta/Symbols.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>

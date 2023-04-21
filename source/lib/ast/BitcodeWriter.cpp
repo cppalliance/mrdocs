@@ -878,7 +878,7 @@ BitcodeWriter::
 emitBlock(
     Reference const& R, FieldId Field)
 {
-    if (R.USR == EmptySID && R.Name.empty())
+    if (R.USR == globalNamespaceID && R.Name.empty())
         return;
     StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
     emitRecord(R.USR, REFERENCE_USR);
@@ -920,15 +920,17 @@ emitBlock(
     emitRecord(T.Contents, TEMPLATE_PARAM_CONTENTS);
 }
 
-/** Write an Info variant to the bitstream.
+/** Write an Info variant to the buffer as bitcode.
 */
-void
+llvm::SmallString<2048>
 writeBitcode(
-    Info const& I,
-    llvm::BitstreamWriter& Stream)
+    Info const& I)
 {
+    SmallString<2048> Buffer;
+    llvm::BitstreamWriter Stream(Buffer);
     BitcodeWriter writer(Stream);
     writer.dispatchInfoForWrite(&I);
+    return Buffer;
 }
 
 } // mrdox

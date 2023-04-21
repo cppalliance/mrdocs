@@ -15,7 +15,7 @@
 // Forward declarations for all types
 // related to metadata extracted from AST
 
-#include <mrdox/meta/Types.hpp>
+#include <mrdox/meta/Symbols.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -25,8 +25,8 @@ struct EnumValueInfo;
 struct EnumInfo;
 struct FieldTypeInfo;
 struct FunctionInfo;
-struct FunctionOverloads;
-struct FunctionOverloadsSet;
+struct Overloads;
+struct OverloadsSet;
 struct Index;
 struct Info;
 struct Javadoc;

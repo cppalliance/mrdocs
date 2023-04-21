@@ -104,7 +104,7 @@ protected:
     void writeBase(BaseRecordInfo const& I);
     void writeFunctionOverloads(
         llvm::StringRef sectionName,
-        FunctionOverloadsSet const& set);
+        OverloadsSet const& set);
     void writeNestedTypes(
         llvm::StringRef sectionName,
         std::vector<TypedefInfo> const& list,

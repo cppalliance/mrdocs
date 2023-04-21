@@ -44,7 +44,7 @@ scan()
     std::sort(pages.begin(), pages.end(),
         [](Page& p0, Page& p1)
         {
-            return Corpus::symbolCompare(
+            return compareSymbolNames(
                 p0.fileName, p1.fileName);
         });
 }
@@ -84,7 +84,7 @@ visit(
 void
 PagesBuilder::
 visit(
-    FunctionOverloads const& I)
+    Overloads const& I)
 {
     namespace path = llvm::sys::path;
 

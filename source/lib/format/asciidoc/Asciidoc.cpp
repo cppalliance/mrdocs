@@ -12,7 +12,7 @@
 #include "Asciidoc.hpp"
 #include "PagesBuilder.hpp"
 #include <mrdox/Metadata.hpp>
-#include <mrdox/meta/FunctionOverloads.hpp>
+#include <mrdox/meta/Overloads.hpp>
 #include <clang/Basic/Specifiers.h>
 
 namespace clang {
@@ -287,7 +287,7 @@ writeRecord(
     // Member Functions
     writeFunctionOverloads(
         "Member Functions",
-        makeFunctionOverloadsSet(corpus_, I.Children,
+        makeOverloadsSet(corpus_, I.Children,
             AccessSpecifier::AS_public));
 
     // Data Members (protected)
@@ -299,7 +299,7 @@ writeRecord(
     // Member Functiosn (protected)
     writeFunctionOverloads(
         "Protected Member Functions",
-        makeFunctionOverloadsSet(corpus_, I.Children,
+        makeOverloadsSet(corpus_, I.Children,
                 AccessSpecifier::AS_protected));
 
     // Data Members (private)
@@ -311,7 +311,7 @@ writeRecord(
     // Member Functions (private)
     writeFunctionOverloads(
         "Private Member Functions",
-        makeFunctionOverloadsSet(corpus_, I.Children,
+        makeOverloadsSet(corpus_, I.Children,
             AccessSpecifier::AS_private));
 
     closeSection();
@@ -420,7 +420,7 @@ AsciidocGenerator::
 Writer::
 writeFunctionOverloads(
     llvm::StringRef sectionName,
-    FunctionOverloadsSet const& set)
+    OverloadsSet const& set)
 {
     if(set.list.empty())
         return;
@@ -776,17 +776,17 @@ writeTypeName(
     TypeName const& t,
     llvm::raw_ostream& os)
 {
-    if(t.I.Type.USR == EmptySID)
+    if(t.I.Type.USR == globalNamespaceID)
     {
         os_ << t.I.Type.Name;
         return;
     }
-    auto p = corpus_.find<RecordInfo>(t.I.Type.USR);
-    if(p != nullptr)
+    if(corpus_.exists(t.I.Type.USR))
     {
+        auto const& J = corpus_.get<RecordInfo>(t.I.Type.USR);
         // VFALCO add namespace qualifiers if I is in
         //        a different namesapce
-        os_ << p->Path << "::" << p->Name;
+        os_ << J.Path << "::" << J.Name;
         return;
     }
     auto const& T = t.I.Type;

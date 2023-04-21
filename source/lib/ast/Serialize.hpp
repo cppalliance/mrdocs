@@ -13,34 +13,24 @@
 #define MRDOX_SOURCE_AST_SERIALIZE_HPP
 
 #include "clangASTComment.hpp"
-#include "ParseJavadoc.hpp"
+#include "Bitcode.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
-#include <mrdox/meta/Javadoc.hpp>
 #include <clang/AST/AST.h>
 #include <string>
 #include <utility>
 #include <vector>
 
+/*  The serialization algorithm takes as input a
+    typed AST node, and produces as output a pair
+    of one or two Bitcode objects. A bitcode
+    contains the metadata for a given symbol ID,
+    serialized as bitcode.
+*/
+
 namespace clang {
 namespace mrdox {
-
-// VFALCO THIS SHOULD BE OBSOLETE
-std::string serialize(Info const& I);
-
-/** Holds a serialized declaration.
-*/
-struct SerializedDecl
-{
-    SymbolID id;
-    std::string bitcode;
-
-    bool empty() const noexcept
-    {
-        return bitcode.empty();
-    }
-};
 
 /** Holds the result of serializing a Decl.
 
@@ -49,12 +39,12 @@ struct SerializedDecl
     for the parent which is referenced by the
     decl.
 */
-struct SerializeResult
-{
-    SerializedDecl first;
-    SerializedDecl second;
-};
+using SerializeResult = std::pair<Bitcode, Bitcode>;
 
+namespace detail {
+
+/** State information used during serialization to bitcode.
+*/
 class Serializer
 {
 public:
@@ -64,13 +54,10 @@ public:
     int LineNumber;
     StringRef File;
     bool IsFileInRootDir;
-    Javadoc jd_;
 
     Serializer(
-        int LineNumber_,
-        StringRef File_,
-        bool IsFileInRootDir_,
-        Config const& config,
+        int LineNumber_, StringRef File_,
+        bool IsFileInRootDir_, Config const& config,
         Reporter& R)
         : LineNumber(LineNumber_)
         , File(File_)
@@ -90,23 +77,19 @@ public:
     SerializeResult build(EnumDecl      const* D);
 };
 
+} // detail
+
+/** Return a serialized result for an AST Node.
+*/
 template<class Decl>
 SerializeResult
 serialize(
-    Decl const* D,
-    int LineNumber,
-    StringRef File,
-    bool IsFileInRootDir,
-    Config const& config,
+    Decl const* D, int LineNumber, StringRef File,
+    bool IsFileInRootDir, Config const& config,
     Reporter& R)
 {
-    Serializer sr(
-        LineNumber,
-        File,
-        IsFileInRootDir,
-        config,
-        R);
-    return sr.build(D);
+    return detail::Serializer(LineNumber, File,
+        IsFileInRootDir, config, R).build(D);
 }
 
 } // mrdox

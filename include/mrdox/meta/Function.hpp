@@ -16,7 +16,7 @@
 #include <mrdox/meta/Function.hpp>
 #include <mrdox/meta/Symbol.hpp>
 #include <mrdox/meta/Template.hpp>
-#include <mrdox/meta/Types.hpp>
+#include <mrdox/meta/Symbols.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>

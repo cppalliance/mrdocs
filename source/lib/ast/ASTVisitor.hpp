@@ -33,8 +33,8 @@ namespace mrdox {
     in a particular include file can be seen by
     more than one translation unit.
 */
-class Visitor
-    : public RecursiveASTVisitor<Visitor>
+class ASTVisitor
+    : public RecursiveASTVisitor<ASTVisitor>
     , public ASTConsumer
 {
     struct FileFilter
@@ -51,7 +51,7 @@ class Visitor
         FileFilter> fileFilter_;
 
 public:
-    Visitor(
+    ASTVisitor(
         tooling::ExecutionContext& ex,
         Config const& config,
         Reporter& R) noexcept
