@@ -9,7 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "ast/FrontendAction.hpp"
 #include "ast/Bitcode.hpp"
 #include "ast/Serialize.hpp"
 #include "meta/Reduce.hpp"
@@ -22,6 +21,16 @@
 
 namespace clang {
 namespace mrdox {
+
+// VFALCO This is in FrontendAction.cpp
+/** Return a factory used to visit the AST nodes.
+*/
+std::unique_ptr<tooling::FrontendActionFactory>
+extern
+makeFrontendActionFactory(
+    tooling::ExecutionContext& exc,
+    Config const& config,
+    Reporter& R);
 
 struct Corpus::Temps
 {

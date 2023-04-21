@@ -714,7 +714,7 @@ std::pair<
     std::unique_ptr<Info>,
     std::unique_ptr<Info>>
 buildInfo(
-    RecordDecl const* D,
+    CXXRecordDecl const* D,
     Javadoc jd,
     int LineNumber,
     llvm::StringRef File,

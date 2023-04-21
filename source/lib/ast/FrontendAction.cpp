@@ -31,63 +31,6 @@
 namespace clang {
 namespace mrdox {
 
-/** Visits AST and converts it to our metadata.
-*/
-class Visitor
-    : public RecursiveASTVisitor<Visitor>
-    , public ASTConsumer
-{
-    struct FileFilter
-    {
-        llvm::SmallString<0> prefix;
-        bool include = true;
-    };
-
-    tooling::ExecutionContext& exc_;
-    Config const& config_;
-    Reporter& R_;
-    std::unordered_map<
-        clang::SourceLocation::UIntTy,
-        FileFilter> fileFilter_;
-
-public:
-    Visitor(
-        tooling::ExecutionContext& exc,
-        Config const& config,
-        Reporter& R) noexcept
-        : exc_(exc)
-        , config_(config)
-        , R_(R)
-    {
-    }
-
-//private:
-    void HandleTranslationUnit(ASTContext& Context) override;
-    bool VisitNamespaceDecl(NamespaceDecl const* D);
-    bool VisitRecordDecl(RecordDecl const* D);
-    bool VisitEnumDecl(EnumDecl const* D);
-    bool VisitCXXMethodDecl(CXXMethodDecl const* D);
-    bool VisitFunctionDecl(FunctionDecl const* D);
-    bool VisitTypedefDecl(TypedefDecl const* D);
-    bool VisitTypeAliasDecl(TypeAliasDecl const* D);
-
-private:
-    template <typename T>
-    bool mapDecl(T const* D);
-
-    int
-    getLine(
-        NamedDecl const* D,
-        ASTContext const& Context) const;
-
-    llvm::SmallString<128>
-    getFile(
-        NamedDecl const* D, 
-        ASTContext const& Context,
-        StringRef RootDir,
-        bool& IsFileInRootDir) const;
-};
-
 //------------------------------------------------
 
 /*  An instance of Visitor runs on one translation unit.
@@ -192,9 +135,9 @@ mapDecl(T const* D)
     // serializer is skipping this decl for some
     // reason (e.g. we're only reporting public decls).
     if (I.first)
-        Corpus::reportResult(exc_, *I.first);
+        Corpus::reportResult(ex_, *I.first);
     if (I.second)
-        Corpus::reportResult(exc_, *I.second);
+        Corpus::reportResult(ex_, *I.second);
 
     return true;
 }
@@ -209,10 +152,22 @@ VisitNamespaceDecl(
 
 bool
 Visitor::
+VisitCXXRecordDecl(
+    CXXRecordDecl const* D)
+{
+    return mapDecl(D);
+}
+
+bool
+Visitor::
 VisitRecordDecl(
     RecordDecl const* D)
 {
-    return mapDecl(D);
+    // Don't visit CXXRecordDecl twice
+    if (isa<CXXRecordDecl>(D))
+        return true;
+    //return mapDecl(D);
+    llvm_unreachable("C record in C++?");
 }
 
 bool
@@ -277,7 +232,7 @@ struct Action
         tooling::ExecutionContext& exc,
         Config const& config,
         Reporter& R) noexcept
-        : exc_(exc)
+        : ex_(exc)
         , config_(config)
         , R_(R)
     {
@@ -288,11 +243,11 @@ struct Action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<Visitor>(exc_, config_, R_);
+        return std::make_unique<Visitor>(ex_, config_, R_);
     }
 
 private:
-    tooling::ExecutionContext& exc_;
+    tooling::ExecutionContext& ex_;
     Config const& config_;
     Reporter& R_;
 };
@@ -303,7 +258,7 @@ struct Factory : tooling::FrontendActionFactory
         tooling::ExecutionContext& exc,
         Config const& config,
         Reporter& R) noexcept
-        : exc_(exc)
+        : ex_(exc)
         , config_(config)
         , R_(R)
     {
@@ -312,11 +267,11 @@ struct Factory : tooling::FrontendActionFactory
     std::unique_ptr<FrontendAction>
     create() override
     {
-        return std::make_unique<Action>(exc_, config_, R_);
+        return std::make_unique<Action>(ex_, config_, R_);
     }
 
 private:
-    tooling::ExecutionContext& exc_;
+    tooling::ExecutionContext& ex_;
     Config const& config_;
     Reporter& R_;
 };

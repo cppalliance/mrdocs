@@ -44,7 +44,7 @@ buildInfo(NamespaceDecl const* D, Javadoc jd, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
-buildInfo(RecordDecl const* D, Javadoc jd, int LineNumber,
+buildInfo(CXXRecordDecl const* D, Javadoc jd, int LineNumber,
          StringRef File, bool IsFileInRootDir, bool PublicOnly, Reporter& R);
 
 std::pair<std::unique_ptr<Info>, std::unique_ptr<Info>>
