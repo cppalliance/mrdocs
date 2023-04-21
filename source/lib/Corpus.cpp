@@ -80,6 +80,96 @@ exists(SymbolID const& id) const noexcept
 }
 
 //------------------------------------------------
+
+void
+Corpus::
+visit(SymbolID id, Visitor& f) const
+{
+    visit(get<Info>(id), f);
+}
+
+void
+Corpus::
+visit(Scope const& I, Visitor& f) const
+{
+    for(auto const& ref : I.Namespaces)
+        visit(get<NamespaceInfo>(ref.USR), f);
+    for(auto const& ref : I.Records)
+        visit(get<RecordInfo>(ref.USR), f);
+    for(auto const& ref : I.Functions)
+        visit(get<FunctionInfo>(ref.USR), f);
+    for(auto const& J : I.Typedefs)
+        visit(J, f);
+    for(auto const& J : I.Enums)
+        visit(J, f);
+}
+
+void
+Corpus::
+visitWithOverloads(
+    Scope const& I, Visitor& f) const
+{
+    for(auto const& ref : I.Namespaces)
+        visit(get<NamespaceInfo>(ref.USR), f);
+    for(auto const& ref : I.Records)
+        visit(get<RecordInfo>(ref.USR), f);
+    if(I.isNamespaceScope)
+    {
+        // VFALCO Should this be AS_public
+        auto const set = makeFunctionOverloadsSet(
+            *this, I, AccessSpecifier::AS_none);
+        for(auto const& functionOverloads : set.list)
+            f.visit(functionOverloads);
+    }
+    else
+    {
+        {
+            auto const& set = makeFunctionOverloadsSet(
+                *this, I, AccessSpecifier::AS_public);
+            for(auto const& functionOverloads : set.list)
+                f.visit(functionOverloads);
+        }
+        {
+            auto const& set = makeFunctionOverloadsSet(
+                *this, I, AccessSpecifier::AS_protected);
+            for(auto const& functionOverloads : set.list)
+                f.visit(functionOverloads);
+        }
+        {
+            auto const& set = makeFunctionOverloadsSet(
+                *this, I, AccessSpecifier::AS_private);
+            for(auto const& functionOverloads : set.list)
+                f.visit(functionOverloads);
+        }
+    }
+    for(auto const& J : I.Typedefs)
+        visit(J, f);
+    for(auto const& J : I.Enums)
+        visit(J, f);
+}
+
+void
+Corpus::
+visit(Info const& I, Visitor& f) const
+{
+    switch(I.IT)
+    {
+    case InfoType::IT_namespace:
+        return f.visit(static_cast<NamespaceInfo const&>(I));
+    case InfoType::IT_record:
+        return f.visit(static_cast<RecordInfo const&>(I));
+    case InfoType::IT_function:
+        return f.visit(static_cast<FunctionInfo const&>(I));
+    case InfoType::IT_typedef:
+        return f.visit(static_cast<TypedefInfo const&>(I));
+    case InfoType::IT_enum:
+        return f.visit(static_cast<EnumInfo const&>(I));
+    default:
+        llvm_unreachable("wrong InfoType for viist");
+    }
+}
+
+//------------------------------------------------
 //
 // Modifiers
 //

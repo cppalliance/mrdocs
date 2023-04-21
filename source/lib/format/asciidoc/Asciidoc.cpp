@@ -10,8 +10,9 @@
 //
 
 #include "Asciidoc.hpp"
+#include "PagesBuilder.hpp"
 #include <mrdox/Metadata.hpp>
-#include <mrdox/format/OverloadSet.hpp>
+#include <mrdox/meta/FunctionOverloads.hpp>
 #include <clang/Basic/Specifiers.h>
 
 namespace clang {
@@ -19,172 +20,9 @@ namespace mrdox {
 
 //------------------------------------------------
 //
-// Pages
-//
-//------------------------------------------------
-
-struct CorpusVisitor
-{
-    Corpus const& corpus_;
-
-    virtual ~CorpusVisitor() = default;
-
-    explicit
-    CorpusVisitor(
-        Corpus const& corpus) noexcept
-        : corpus_(corpus)
-    {
-    }
-
-    void
-    visit(SymbolID id)
-    {
-        auto I = corpus_.find<Info>(id);
-        assert(I);
-        switch(I->IT)
-        {
-        default:
-        case InfoType::IT_default:
-            llvm_unreachable("unknown type");
-        case InfoType::IT_namespace:
-            return visit(*static_cast<NamespaceInfo const*>(I));
-        case InfoType::IT_record:
-            return visit(*static_cast<RecordInfo const*>(I));
-        case InfoType::IT_function:
-            return visit(*static_cast<FunctionInfo const*>(I));
-        case InfoType::IT_enum:
-            return visit(*static_cast<EnumInfo const*>(I));
-        case InfoType::IT_typedef:
-            return visit(*static_cast<TypedefInfo const*>(I));
-        }
-    }
-
-    virtual
-    void
-    visit(Scope const& scope)
-    {
-        for(auto const& ref : scope.Namespaces)
-            visit(ref.USR);
-        for(auto const& ref : scope.Records)
-            visit(ref.USR);
-        for(auto const& ref : scope.Functions)
-            visit(ref.USR);
-        for(auto const& symbol : scope.Typedefs)
-            visit(symbol);
-        for(auto const& symbol : scope.Enums)
-            visit(symbol);
-    }
-
-    virtual
-    void
-    visit(NamespaceInfo const& symbol)
-    {
-        visit(symbol.Children);
-    }
-
-    virtual
-    void
-    visit(RecordInfo const& symbol)
-    {
-    }
-
-    virtual
-    void
-    visit(FunctionInfo const& symbol)
-    {
-    }
-
-    virtual
-    void
-    visit(EnumInfo const& symbol)
-    {
-    }
-
-    virtual
-    void
-    visit(TypedefInfo const& symbol)
-    {
-    }
-};
-
-//------------------------------------------------
-
-namespace {
-
-struct PageBuilder : CorpusVisitor
-{
-    PageBuilder(
-        Corpus const& corpus) noexcept
-        : CorpusVisitor(corpus)
-    {
-    }
-
-    void
-    build()
-    {
-        this->CorpusVisitor::visit(corpus_.globalNamespace());
-    }
-
-    void
-    visit(RecordInfo const& symbol) override
-    {
-    }
-
-    void
-    visit(FunctionInfo const& symbol) override
-    {
-    }
-
-    void
-    visit(EnumInfo const& symbol) override
-    {
-    }
-
-    void
-    visit(TypedefInfo const& symbol) override
-    {
-    }
-};
-
-} // (anon)
-
-//------------------------------------------------
-//
 // AsciidocGenerator
 //
 //------------------------------------------------
-
-/*
-    Pages are as follows:
-
-    Class
-    Class Template
-    Class Template Specialization 
-    OverloadSet
-    Nested Class
-    Free Function
-    Variable/Constant
-    Typedef
-    Enum
-
-    Page name:
-
-    /{namespace}/{symbol}.html
-*/
-struct AsciidocGenerator::
-    Pages
-{
-};
-
-void
-AsciidocGenerator::
-calculatePages() const
-{
-    //PageBuilder builder(corpus_);
-
-
-}
-
 
 bool
 AsciidocGenerator::
@@ -238,7 +76,8 @@ build(
     }
     return true;
 #else
-    calculatePages();
+    //PagesBuilder builder(corpus);
+    //builder.scan();
 
     llvm::SmallString<0> fileName(rootPath);
     path::append(fileName, "reference.adoc");
@@ -446,13 +285,10 @@ writeRecord(
         AccessSpecifier::AS_public);
 
     // Member Functions
-    writeOverloadSet(
+    writeFunctionOverloads(
         "Member Functions",
-        makeOverloadSet(corpus_, I.Children,
-            [](FunctionInfo const& I)
-            {
-                return I.Access == AccessSpecifier::AS_public;
-            }));
+        makeFunctionOverloadsSet(corpus_, I.Children,
+            AccessSpecifier::AS_public));
 
     // Data Members (protected)
     writeDataMembers(
@@ -461,13 +297,10 @@ writeRecord(
         AccessSpecifier::AS_protected);
 
     // Member Functiosn (protected)
-    writeOverloadSet(
+    writeFunctionOverloads(
         "Protected Member Functions",
-        makeOverloadSet(corpus_, I.Children,
-            [](FunctionInfo const& I)
-            {
-                return I.Access == AccessSpecifier::AS_protected;
-            }));
+        makeFunctionOverloadsSet(corpus_, I.Children,
+                AccessSpecifier::AS_protected));
 
     // Data Members (private)
     writeDataMembers(
@@ -476,13 +309,10 @@ writeRecord(
         AccessSpecifier::AS_private);
 
     // Member Functions (private)
-    writeOverloadSet(
+    writeFunctionOverloads(
         "Private Member Functions",
-        makeOverloadSet(corpus_, I.Children,
-            [](FunctionInfo const& I)
-            {
-                return I.Access == AccessSpecifier::AS_private;
-            }));
+        makeFunctionOverloadsSet(corpus_, I.Children,
+            AccessSpecifier::AS_private));
 
     closeSection();
 }
@@ -588,11 +418,11 @@ writeBase(
 void
 AsciidocGenerator::
 Writer::
-writeOverloadSet(
+writeFunctionOverloads(
     llvm::StringRef sectionName,
-    std::vector<OverloadSet> const& list)
+    FunctionOverloadsSet const& set)
 {
-    if(list.empty())
+    if(set.list.empty())
         return;
     openSection(sectionName);
     os_ <<
@@ -601,7 +431,7 @@ writeOverloadSet(
         "|===\n" <<
         "|Name |Description\n" <<
         "\n";
-    for(auto const& J : list)
+    for(auto const& J : set.list)
     {
         os_ <<
             "|`" << J.name << "`\n" <<

@@ -53,6 +53,8 @@ struct Info
     // generated file will be saved
     llvm::SmallString<128> Path;          
 
+    llvm::SmallString<128> mangledName;
+
     //--------------------------------------------
 
     virtual ~Info() = default;

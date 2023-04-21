@@ -32,7 +32,6 @@ class AsciidocGenerator
     : public Generator
 {
 public:
-    struct Pages;
     class Writer;
 
     llvm::StringRef
@@ -46,9 +45,6 @@ public:
     {
         return "adoc";
     }
-
-    void
-    calculatePages() const;
 
     bool
     build(
@@ -106,9 +102,9 @@ protected:
     void writeTypedef(TypedefInfo const& I) override;
 
     void writeBase(BaseRecordInfo const& I);
-    void writeOverloadSet(
+    void writeFunctionOverloads(
         llvm::StringRef sectionName,
-        std::vector<OverloadSet> const& list);
+        FunctionOverloadsSet const& set);
     void writeNestedTypes(
         llvm::StringRef sectionName,
         std::vector<TypedefInfo> const& list,

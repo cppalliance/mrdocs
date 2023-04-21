@@ -25,6 +25,7 @@ NamespaceInfo()
         EmptySID,
         "",
         "")
+    , Children(true)
 {
 }
 
@@ -34,6 +35,7 @@ NamespaceInfo(
     StringRef Name,
     StringRef Path)
     : Info(InfoType::IT_namespace, USR, Name, Path)
+    , Children(true)
 {
 }
 

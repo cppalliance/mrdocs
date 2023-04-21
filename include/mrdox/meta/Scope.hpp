@@ -12,8 +12,9 @@
 #ifndef MRDOX_META_SCOPE_HPP
 #define MRDOX_META_SCOPE_HPP
 
-#include <mrdox/meta/Enum.hpp>
+#include <mrdox/meta/Reference.hpp>
 #include <mrdox/meta/Typedef.hpp>
+#include <mrdox/meta/Enum.hpp>
 #include <vector>
 
 namespace clang {
@@ -23,6 +24,8 @@ namespace mrdox {
 */
 struct Scope
 {
+    bool isNamespaceScope = true;
+
     // Namespaces and Records are references because they will be properly
     // documented in their own info, while the entirety of Functions and Enums are
     // included here because they should not have separate documentation from
@@ -33,8 +36,15 @@ struct Scope
     std::vector<Reference> Namespaces;
     std::vector<Reference> Records;
     std::vector<Reference> Functions;
-    std::vector<EnumInfo> Enums;
     std::vector<TypedefInfo> Typedefs;
+    std::vector<EnumInfo> Enums;
+
+    explicit
+    Scope(
+        bool isNamespaceScope_) noexcept
+        : isNamespaceScope(isNamespaceScope_)
+    {
+    }
 };
 
 } // mrdox

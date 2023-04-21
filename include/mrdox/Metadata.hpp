@@ -18,6 +18,7 @@
 #include <mrdox/meta/Enum.hpp>
 #include <mrdox/meta/FieldType.hpp>
 #include <mrdox/meta/Function.hpp>
+#include <mrdox/meta/FunctionOverloads.hpp>
 #include <mrdox/meta/Index.hpp>
 #include <mrdox/meta/Info.hpp>
 #include <mrdox/meta/Javadoc.hpp>

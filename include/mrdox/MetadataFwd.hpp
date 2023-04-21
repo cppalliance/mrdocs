@@ -25,6 +25,8 @@ struct EnumValueInfo;
 struct EnumInfo;
 struct FieldTypeInfo;
 struct FunctionInfo;
+struct FunctionOverloads;
+struct FunctionOverloadsSet;
 struct Index;
 struct Info;
 struct Javadoc;

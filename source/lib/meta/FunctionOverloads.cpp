@@ -10,52 +10,55 @@
 //
 
 #include <mrdox/Corpus.hpp>
-#include <mrdox/format/OverloadSet.hpp>
 #include <mrdox/meta/Function.hpp>
+#include <mrdox/meta/FunctionOverloads.hpp>
 #include <mrdox/meta/Scope.hpp>
 
 namespace clang {
 namespace mrdox {
 
-std::vector<OverloadSet>
-makeOverloadSet(
+FunctionOverloadsSet
+makeFunctionOverloadsSet(
     Corpus const& corpus,
     Scope const& scope,
-    std::function<bool(FunctionInfo const&)> filter)
+    AccessSpecifier access)
 {
-    std::vector<OverloadSet> result;
-    std::vector<FunctionInfo const*> list;
-    list.reserve(scope.Functions.size());
+    FunctionOverloadsSet result;
+    result.access = access;
+
+    std::vector<FunctionInfo const*> temp;
+    temp.reserve(scope.Functions.size());
     for(auto const& ref : scope.Functions)
     {
         auto const& I = corpus.get<FunctionInfo>(ref.USR);
-        if(filter(I))
-            list.push_back(&I);
+        if(I.Access == access)
+            temp.push_back(&I);
     }
-    if(list.empty())
-        return {};
-    std::sort(list.begin(), list.end(),
+    if(temp.empty())
+        return result;
+
+    std::sort(temp.begin(), temp.end(),
         []( FunctionInfo const* f0,
             FunctionInfo const* f1)
         {
             return f0->Name < f1->Name;
         });
-    auto it0 = list.begin();
+    auto it0 = temp.begin();
     auto it = it0;
     do
     {
         ++it;
-        if( it == list.end() ||
+        if( it == temp.end() ||
             (*it)->Name != (*it0)->Name)
         {
-            result.emplace_back(
-                OverloadSet{
+            result.list.emplace_back(
+                FunctionOverloads{
                     (*it0)->Name,
                     std::vector<FunctionInfo const*>(it0, it)});
             it0 = it;
         }
     }
-    while(it != list.end());
+    while(it != temp.end());
     return result;
 }
 

@@ -20,13 +20,6 @@
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 
-#if 0
-#include <mrdox/MetadataFwd.hpp>
-#include <clang/AST/ASTConsumer.h>
-#include <utility>
-#include <unordered_map>
-#endif
-
 //
 // This file implements the Mapper piece of the clang-doc tool. It implements
 // a RecursiveASTVisitor to look at each declaration and populate the info

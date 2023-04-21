@@ -38,6 +38,17 @@ class Corpus
     }
 
 public:
+    struct Visitor
+    {
+        virtual ~Visitor() = default;
+        virtual void visit(NamespaceInfo const&) {}
+        virtual void visit(RecordInfo const&) {}
+        virtual void visit(FunctionOverloads const&) {}
+        virtual void visit(FunctionInfo const&) {}
+        virtual void visit(EnumInfo const&) {}
+        virtual void visit(TypedefInfo const&) {}
+    };
+
     //--------------------------------------------
     //
     // Observers
@@ -134,6 +145,15 @@ public:
     {
         return allSymbols_;
     }
+
+    /** Visit the specified symbol ID or node.
+    */
+    /** @{ */
+    void visit(SymbolID id, Visitor& f) const;
+    void visit(Scope const& I, Visitor& f) const;
+    void visitWithOverloads(Scope const& I, Visitor& f) const;
+    void visit(Info const& I, Visitor& f) const;
+    /** @} */
 
     //--------------------------------------------
     //

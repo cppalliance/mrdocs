@@ -9,12 +9,12 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_META_OVERLOADSET_HPP
-#define MRDOX_META_OVERLOADSET_HPP
+#ifndef MRDOX_META_FUNCTIONOVERLOADS_HPP
+#define MRDOX_META_FUNCTIONOVERLOADS_HPP
 
 #include <mrdox/meta/Function.hpp>
+#include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
-#include <functional>
 
 namespace clang {
 namespace mrdox {
@@ -22,17 +22,32 @@ namespace mrdox {
 class Corpus;
 struct Scope;
 
-struct OverloadSet
+/** A list of overloads for one function name.
+*/
+struct FunctionOverloads
 {
     llvm::StringRef name;
     std::vector<FunctionInfo const*> list;
 };
 
-std::vector<OverloadSet>
-makeOverloadSet(
+/** A set of unique function names in a scope
+*/
+struct FunctionOverloadsSet
+{
+    /** The access control of this scope.
+    */
+    AccessSpecifier access;
+
+    /** The list of function overloads in the scope.
+    */
+    std::vector<FunctionOverloads> list;
+};
+
+FunctionOverloadsSet
+makeFunctionOverloadsSet(
     Corpus const& corpus,
     Scope const& scope,
-    std::function<bool(FunctionInfo const&)> filter);
+    AccessSpecifier access);
 
 } // mrdox
 } // clang
