@@ -970,8 +970,6 @@ parseRecord(
         return decodeRecord(R, I->USR, Blob);
     case NAMESPACE_NAME:
         return decodeRecord(R, I->Name, Blob);
-    case NAMESPACE_PATH:
-        return decodeRecord(R, I->Path, Blob);
     default:
         return makeError("invalid field for NamespaceInfo");
     }
@@ -991,8 +989,6 @@ parseRecord(
         return decodeRecord(R, I->USR, Blob);
     case RECORD_NAME:
         return decodeRecord(R, I->Name, Blob);
-    case RECORD_PATH:
-        return decodeRecord(R, I->Path, Blob);
     case RECORD_DEFLOCATION:
         return decodeRecord(R, I->DefLoc, Blob);
     case RECORD_LOCATION:
@@ -1020,8 +1016,6 @@ parseRecord(
         return decodeRecord(R, I->USR, Blob);
     case BASE_RECORD_NAME:
         return decodeRecord(R, I->Name, Blob);
-    case BASE_RECORD_PATH:
-        return decodeRecord(R, I->Path, Blob);
     case BASE_RECORD_TAG_TYPE:
         return decodeRecord(R, I->TagType, Blob);
     case BASE_RECORD_IS_VIRTUAL:
@@ -1197,8 +1191,6 @@ parseRecord(
         return decodeRecord(R, I->Name, Blob);
     case REFERENCE_TYPE:
         return decodeRecord(R, I->RefType, Blob);
-    case REFERENCE_PATH:
-        return decodeRecord(R, I->Path, Blob);
     case REFERENCE_FIELD:
         return decodeRecord(R, F, Blob);
     default:

@@ -15,11 +15,11 @@
 // All headers related to
 // metadata extracted from AST
 
+#include <mrdox/meta/BaseRecord.hpp>
 #include <mrdox/meta/Enum.hpp>
 #include <mrdox/meta/FieldType.hpp>
 #include <mrdox/meta/Function.hpp>
 #include <mrdox/meta/Overloads.hpp>
-#include <mrdox/meta/Index.hpp>
 #include <mrdox/meta/Info.hpp>
 #include <mrdox/meta/Javadoc.hpp>
 #include <mrdox/meta/Location.hpp>

@@ -23,7 +23,6 @@ NamespaceInfo()
     : Info(
         InfoType::IT_namespace,
         EmptySID,
-        "",
         "")
     , Children(true)
 {
@@ -32,9 +31,8 @@ NamespaceInfo()
 NamespaceInfo::
 NamespaceInfo(
     SymbolID USR,
-    StringRef Name,
-    StringRef Path)
-    : Info(InfoType::IT_namespace, USR, Name, Path)
+    StringRef Name)
+    : Info(InfoType::IT_namespace, USR, Name)
     , Children(true)
 {
 }

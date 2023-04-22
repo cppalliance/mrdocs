@@ -31,8 +31,7 @@ struct NamespaceInfo
 
     NamespaceInfo(
         SymbolID USR,
-        llvm::StringRef Name = llvm::StringRef(),
-        llvm::StringRef Path = llvm::StringRef());
+        llvm::StringRef Name = llvm::StringRef());
 
     void merge(NamespaceInfo&& I);
 };

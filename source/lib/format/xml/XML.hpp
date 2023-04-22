@@ -13,6 +13,7 @@
 #define MRDOX_SOURCE_FORMAT_XML_HPP
 
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/meta/Javadoc.hpp>
 #include <mrdox/format/Generator.hpp>
 #include <mrdox/format/RecursiveWriter.hpp>
 

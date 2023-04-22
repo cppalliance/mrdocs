@@ -22,21 +22,20 @@ struct TypeInfo
 {
     TypeInfo() = default;
 
-    TypeInfo(Reference const& R)
+    explicit
+    TypeInfo(
+        Reference const& R) noexcept
         : Type(R)
     {
     }
 
     // Convenience constructor for when there is no symbol ID or info type
     // (normally used for built-in types in tests).
+    explicit
     TypeInfo(
-        llvm::StringRef Name,
-        llvm::StringRef Path = llvm::StringRef())
+        llvm::StringRef Name)
         : Type(
-            EmptySID,
-            Name,
-            InfoType::IT_default,
-            Path)
+            EmptySID, Name, InfoType::IT_default)
     {
     }
 

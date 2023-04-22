@@ -43,101 +43,20 @@ find(
 
 void
 CorpusImpl::
-insert(std::unique_ptr<Info> Ip)
+insert(std::unique_ptr<Info> I)
 {
-    assert(! isCanonical_);
-
-    auto& I = *Ip;
-
-    // VFALCO Better to do this in canonicalize
-    // Clean up the javadoc
-    /*
-    I.javadoc.calculateBrief();
-    if(I.IT == InfoType::IT_record)
+    // add to allSymbols
     {
-        auto& J = static_cast<RecordInfo&>(I);
-        for(auto& K : J.Members)
-            K.javadoc.calculateBrief();
+        std::lock_guard<llvm::sys::Mutex> Guard(allSymbolsMutex);
+        assert(! isCanonical_);
+        allSymbols_.emplace_back(I->USR);
     }
-    */
 
-    // Add a reference to this Info in the Index
-    insertIntoIndex(I);
-
-    // This has to come last because we move Ip.
-    // Store the Info in the result map
+    // This has to come last because we move I.
     {
         std::lock_guard<llvm::sys::Mutex> Guard(infoMutex);
-        InfoMap[llvm::toStringRef(I.USR)] = std::move(Ip);
+        InfoMap[llvm::toStringRef(I->USR)] = std::move(I);
     }
-    // CANNOT touch I or Ip here!
-}
-
-// A function to add a reference to Info in Idx.
-// Given an Info X with the following namespaces: [B,A]; a reference to X will
-// be added in the children of a reference to B, which should be also a child of
-// a reference to A, where A is a child of Idx.
-//   Idx
-//    |-- A
-//        |--B
-//           |--X
-// If the references to the namespaces do not exist, they will be created. If
-// the references already exist, the same one will be used.
-void
-CorpusImpl::
-insertIntoIndex(
-    Info const& I)
-{
-    assert(! isCanonical_);
-
-    std::lock_guard<llvm::sys::Mutex> Guard(allSymbolsMutex);
-
-    // Index pointer that will be moving through Idx until the first parent
-    // namespace of Info (where the reference has to be inserted) is found.
-    Index* pi = &Idx;
-    // The Namespace vector includes the upper-most namespace at the end so the
-    // loop will start from the end to find each of the namespaces.
-    for (const auto& R : llvm::reverse(I.Namespace))
-    {
-        // Look for the current namespace in the children of the index pi is
-        // pointing.
-        auto It = llvm::find(pi->Children, R.USR);
-        if (It != pi->Children.end())
-        {
-            // If it is found, just change pi to point the namespace reference found.
-            pi = &*It;
-        }
-        else
-        {
-            // If it is not found a new reference is created
-            pi->Children.emplace_back(R.USR, R.Name, R.RefType, R.Path);
-            // pi is updated with the reference of the new namespace reference
-            pi = &pi->Children.back();
-        }
-    }
-    // Look for Info in the vector where it is supposed to be; it could already
-    // exist if it is a parent namespace of an Info already passed to this
-    // function.
-    auto It = llvm::find(pi->Children, I.USR);
-    if (It == pi->Children.end())
-    {
-        // If it is not in the vector it is inserted
-        pi->Children.emplace_back(I.USR, I.extractName(), I.IT,
-            I.Path);
-    }
-    else
-    {
-        // If it not in the vector we only check if Path and Name are not empty
-        // because if the Info was included by a namespace it may not have those
-        // values.
-        if (It->Path.empty())
-            It->Path = I.Path;
-        if (It->Name.empty())
-            It->Name = I.extractName();
-    }
-
-    // also insert into allSymbols
-    allSymbols_.emplace_back(I.USR);
 }
 
 //------------------------------------------------

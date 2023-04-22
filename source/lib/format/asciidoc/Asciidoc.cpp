@@ -786,11 +786,11 @@ writeTypeName(
         auto const& J = corpus_.get<RecordInfo>(t.I.Type.USR);
         // VFALCO add namespace qualifiers if I is in
         //        a different namesapce
-        os_ << J.Path << "::" << J.Name;
+        os_ << J.Name << "::" << J.Name;
         return;
     }
     auto const& T = t.I.Type;
-    os_ << T.Path << "::" << T.Name;
+    os_ << T.Name << "::" << T.Name;
 }
 
 auto

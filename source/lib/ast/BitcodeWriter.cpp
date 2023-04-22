@@ -193,7 +193,6 @@ RecordIdNameMap = []()
         {MEMBER_TYPE_ACCESS, {"Access", &IntAbbrev}},
         {NAMESPACE_USR, {"USR", &SymbolIDAbbrev}},
         {NAMESPACE_NAME, {"Name", &StringAbbrev}},
-        {NAMESPACE_PATH, {"Path", &StringAbbrev}},
         {ENUM_USR, {"USR", &SymbolIDAbbrev}},
         {ENUM_NAME, {"Name", &StringAbbrev}},
         {ENUM_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
@@ -204,14 +203,12 @@ RecordIdNameMap = []()
         {ENUM_VALUE_EXPR, {"Expr", &StringAbbrev}},
         {RECORD_USR, {"USR", &SymbolIDAbbrev}},
         {RECORD_NAME, {"Name", &StringAbbrev}},
-        {RECORD_PATH, {"Path", &StringAbbrev}},
         {RECORD_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
         {RECORD_LOCATION, {"Location", &LocationAbbrev}},
         {RECORD_TAG_TYPE, {"TagType", &IntAbbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {BASE_RECORD_USR, {"USR", &SymbolIDAbbrev}},
         {BASE_RECORD_NAME, {"Name", &StringAbbrev}},
-        {BASE_RECORD_PATH, {"Path", &StringAbbrev}},
         {BASE_RECORD_TAG_TYPE, {"TagType", &IntAbbrev}},
         {BASE_RECORD_IS_VIRTUAL, {"IsVirtual", &BoolAbbrev}},
         {BASE_RECORD_ACCESS, {"Access", &IntAbbrev}},
@@ -225,7 +222,6 @@ RecordIdNameMap = []()
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
         {REFERENCE_TYPE, {"RefType", &IntAbbrev}},
-        {REFERENCE_PATH, {"Path", &StringAbbrev}},
         {REFERENCE_FIELD, {"Field", &IntAbbrev}},
         {TEMPLATE_PARAM_CONTENTS, {"Contents", &StringAbbrev}},
         {TEMPLATE_SPECIALIZATION_OF, {"SpecializationOf", &SymbolIDAbbrev}},
@@ -277,24 +273,22 @@ RecordsByBlock{
         {TYPEDEF_USR, TYPEDEF_NAME, TYPEDEF_DEFLOCATION, TYPEDEF_IS_USING}},
     // Namespace Block
     {BI_NAMESPACE_BLOCK_ID,
-        {NAMESPACE_USR, NAMESPACE_NAME, NAMESPACE_PATH}},
+        {NAMESPACE_USR, NAMESPACE_NAME}},
     // Record Block
     {BI_RECORD_BLOCK_ID,
-        {RECORD_USR, RECORD_NAME, RECORD_PATH, RECORD_DEFLOCATION,
+        {RECORD_USR, RECORD_NAME, RECORD_DEFLOCATION,
         RECORD_LOCATION, RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF}},
     // BaseRecord Block
     {BI_BASE_RECORD_BLOCK_ID,
-        {BASE_RECORD_USR, BASE_RECORD_NAME, BASE_RECORD_PATH,
-        BASE_RECORD_TAG_TYPE, BASE_RECORD_IS_VIRTUAL, BASE_RECORD_ACCESS,
-        BASE_RECORD_IS_PARENT}},
+        {BASE_RECORD_USR, BASE_RECORD_NAME, BASE_RECORD_TAG_TYPE,
+        BASE_RECORD_IS_VIRTUAL, BASE_RECORD_ACCESS, BASE_RECORD_IS_PARENT}},
     // Function Block
     {BI_FUNCTION_BLOCK_ID,
         {FUNCTION_USR, FUNCTION_NAME, FUNCTION_DEFLOCATION, FUNCTION_LOCATION,
         FUNCTION_ACCESS, FUNCTION_IS_METHOD}},
     // Reference Block
     {BI_REFERENCE_BLOCK_ID,
-        {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE,
-        REFERENCE_PATH, REFERENCE_FIELD}},
+        {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
     // Template Blocks.
     {BI_TEMPLATE_BLOCK_ID, {}},
         {BI_TEMPLATE_PARAM_BLOCK_ID, {TEMPLATE_PARAM_CONTENTS}},
@@ -388,7 +382,6 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
     emitRecord(I.USR, NAMESPACE_USR);
     emitRecord(I.Name, NAMESPACE_NAME);
-    emitRecord(I.Path, NAMESPACE_PATH);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
     emitBlock(I.javadoc);
@@ -412,7 +405,6 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
     emitRecord(I.USR, RECORD_USR);
     emitRecord(I.Name, RECORD_NAME);
-    emitRecord(I.Path, RECORD_PATH);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
     emitBlock(I.javadoc);
@@ -450,7 +442,6 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_BASE_RECORD_BLOCK_ID);
     emitRecord(I.USR, BASE_RECORD_USR);
     emitRecord(I.Name, BASE_RECORD_NAME);
-    emitRecord(I.Path, BASE_RECORD_PATH);
     emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
     emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
     emitRecord(I.Access, BASE_RECORD_ACCESS);
@@ -884,7 +875,6 @@ emitBlock(
     emitRecord(R.USR, REFERENCE_USR);
     emitRecord(R.Name, REFERENCE_NAME);
     emitRecord((unsigned)R.RefType, REFERENCE_TYPE);
-    emitRecord(R.Path, REFERENCE_PATH);
     emitRecord((unsigned)Field, REFERENCE_FIELD);
 }
 

@@ -27,7 +27,6 @@ struct FieldTypeInfo;
 struct FunctionInfo;
 struct Overloads;
 struct OverloadsSet;
-struct Index;
 struct Info;
 struct Javadoc;
 struct Location;

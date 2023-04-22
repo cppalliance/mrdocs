@@ -40,8 +40,6 @@ mergeBase(
         USR = Other.USR;
     if (Name == "")
         Name = Other.Name;
-    if (Path == "")
-        Path = Other.Path;
     if (Namespace.empty())
         Namespace = std::move(Other.Namespace);
     javadoc.merge(std::move(Other.javadoc));
@@ -86,56 +84,8 @@ extractName() const
     return llvm::SmallString<16>("");
 }
 
-llvm::SmallString<64>
-Info::
-getRelativeFilePath(
-    llvm::StringRef const& CurrentPath) const
-{
-    return calculateRelativeFilePath(
-        IT, Path, extractName(), CurrentPath);
-}
-
-/*
-llvm::SmallString<16>
-Info::
-getFileBaseName() const
-{
-    if (IT == InfoType::IT_namespace)
-        return llvm::SmallString<16>("index");
-    return extractName();
-}
-*/
-
 //------------------------------------------------
 
-llvm::SmallString<64>
-calculateRelativeFilePath(
-    InfoType const& Type,
-    llvm::StringRef const& Path,
-    llvm::StringRef const& Name,
-    llvm::StringRef const& CurrentPath)
-{
-    namespace path = llvm::sys::path;
-
-    llvm::SmallString<64> FilePath;
-
-    if (CurrentPath != Path)
-    {
-        // iterate back to the top
-        for (path::const_iterator I =
-            path::begin(CurrentPath);
-            I != path::end(CurrentPath); ++I)
-            path::append(FilePath, "..");
-        path::append(FilePath, Path);
-    }
-
-    // Namespace references have a Path to the parent namespace, but
-    // the file is actually in the subdirectory for the namespace.
-    if (Type == mrdox::InfoType::IT_namespace)
-        path::append(FilePath, Name);
-
-    return path::relative_path(FilePath);
-}
 
 llvm::StringRef
 Info::

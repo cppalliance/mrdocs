@@ -10,6 +10,7 @@
 //
 
 #include "Reduce.hpp"
+#include <mrdox/meta/BaseRecord.hpp>
 #include <mrdox/meta/Record.hpp>
 #include <cassert>
 #include <utility>
@@ -20,9 +21,8 @@ namespace mrdox {
 RecordInfo::
 RecordInfo(
     SymbolID USR,
-    StringRef Name,
-    StringRef Path)
-    : SymbolInfo(InfoType::IT_record, USR, Name, Path)
+    StringRef Name)
+    : SymbolInfo(InfoType::IT_record, USR, Name)
     , Children(false)
 {
 }
@@ -51,27 +51,6 @@ merge(RecordInfo&& Other)
     SymbolInfo::merge(std::move(Other));
     if (!Template)
         Template = Other.Template;
-}
-
-BaseRecordInfo::
-BaseRecordInfo()
-    : RecordInfo()
-{
-}
-
-BaseRecordInfo::
-BaseRecordInfo(
-    SymbolID USR,
-    StringRef Name,
-    StringRef Path,
-    bool IsVirtual,
-    AccessSpecifier Access,
-    bool IsParent)
-    : RecordInfo(USR, Name, Path)
-    , IsVirtual(IsVirtual)
-    , Access(Access)
-    , IsParent(IsParent)
-{
 }
 
 } // mrdox

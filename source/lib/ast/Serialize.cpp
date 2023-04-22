@@ -17,7 +17,6 @@
 #include <clang/Lex/Lexer.h>
 #include <llvm/ADT/Hashing.h>
 #include <llvm/ADT/StringExtras.h>
-#include <llvm/Support/Path.h>
 #include <llvm/Support/SHA1.h>
 #include <cassert>
 
@@ -123,32 +122,28 @@ getParentNamespaces(
             Namespaces.emplace_back(
                 getUSRForDecl(N),
                 Namespace,
-                InfoType::IT_namespace,
-                N->getQualifiedNameAsString());
+                InfoType::IT_namespace);
         }
         else if(auto const* N = dyn_cast<RecordDecl>(DC))
         {
             Namespaces.emplace_back(
                 getUSRForDecl(N),
                 N->getNameAsString(),
-                InfoType::IT_record,
-                N->getQualifiedNameAsString());
+                InfoType::IT_record);
         }
         else if(auto const* N = dyn_cast<FunctionDecl>(DC))
         {
             Namespaces.emplace_back(
                 getUSRForDecl(N),
                 N->getNameAsString(),
-                InfoType::IT_function,
-                N->getQualifiedNameAsString());
+                InfoType::IT_function);
         }
         else if(auto const* N = dyn_cast<EnumDecl>(DC))
         {
             Namespaces.emplace_back(
                 getUSRForDecl(N),
                 N->getNameAsString(),
-                InfoType::IT_enum,
-                N->getQualifiedNameAsString());
+                InfoType::IT_enum);
         }
     }
     while((DC = DC->getParent()));
@@ -170,43 +165,6 @@ getParentNamespaces(
 }
 
 //------------------------------------------------
-
-// A function to extract the appropriate relative path for a given info's
-// documentation. The path returned is a composite of the parent namespaces.
-//
-// Example: Given the below, the directory path for class C info will be
-// <root>/A/B
-//
-// namespace A {
-// namespace B {
-//
-// class C {};
-//
-// }
-// }
-static
-llvm::SmallString<128>
-getInfoRelativePath(
-    llvm::SmallVectorImpl<mrdox::Reference> const& Namespaces)
-{
-    llvm::SmallString<128> Path;
-    for(auto R = Namespaces.rbegin(), E = Namespaces.rend(); R != E; ++R)
-        llvm::sys::path::append(Path, R->Name);
-    return Path;
-}
-
-static
-llvm::SmallString<128>
-getInfoRelativePath(const Decl* D)
-{
-    llvm::SmallVector<Reference, 4> Namespaces;
-    // The third arg in getParentNamespaces is a boolean passed by reference,
-    // its value is not relevant in here so it's not used anywhere besides the
-    // function call
-    bool B = true;
-    getParentNamespaces(Namespaces, D, B);
-    return getInfoRelativePath(Namespaces);
-}
 
 static
 std::string
@@ -258,10 +216,7 @@ getTypeInfoForType(
     else
         IT = InfoType::IT_default;
     return TypeInfo(Reference(
-        getUSRForDecl(TD),
-        TD->getNameAsString(),
-        IT,
-        getInfoRelativePath(TD)));
+        getUSRForDecl(TD), TD->getNameAsString(), IT));
 }
 
 static
@@ -451,8 +406,7 @@ InsertChild(
     scope.Namespaces.emplace_back(
         Info.USR,
         Info.Name,
-        InfoType::IT_namespace,
-        getInfoRelativePath(Info.Namespace));
+        InfoType::IT_namespace);
 }
 
 static
@@ -464,8 +418,7 @@ InsertChild(
     scope.Records.emplace_back(
         Info.USR,
         Info.Name,
-        InfoType::IT_record,
-        getInfoRelativePath(Info.Namespace));
+        InfoType::IT_record);
 }
 
 static
@@ -477,8 +430,7 @@ InsertChild(
     scope.Functions.emplace_back(
         Info.USR,
         Info.Name,
-        InfoType::IT_function,
-        getInfoRelativePath(Info.Namespace));
+        InfoType::IT_function);
 }
 
 static
@@ -643,16 +595,14 @@ parseBases(
             I.Parents.emplace_back(
                 getUSRForDecl(D),
                 B.getType().getAsString(),
-                InfoType::IT_record,
-                B.getType().getAsString());
+                InfoType::IT_record);
         }
         else if(RecordDecl const* P = getRecordDeclForType(B.getType()))
         {
             I.Parents.emplace_back(
                 getUSRForDecl(P),
                 P->getNameAsString(),
-                InfoType::IT_record,
-                getInfoRelativePath(P));
+                InfoType::IT_record);
         }
         else
         {
@@ -668,8 +618,7 @@ parseBases(
             I.VirtualParents.emplace_back(
                 getUSRForDecl(P),
                 P->getNameAsString(),
-                InfoType::IT_record,
-                getInfoRelativePath(P));
+                InfoType::IT_record);
         }
         else
         {
@@ -797,7 +746,7 @@ parseBases(
                 // Initialized without USR and name, this will be set in the following
                 // if-else stmt.
                 BaseRecordInfo BI(
-                    {}, "", getInfoRelativePath(Base), B.isVirtual(),
+                    {}, "", B.isVirtual(),
                     getFinalAccessSpecifier(ParentAccess, B.getAccessSpecifier()),
                     IsParent);
                 if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
@@ -834,8 +783,7 @@ parseBases(
                         BI.Children.Functions.emplace_back(
                             FI.USR,
                             FI.Name,
-                            InfoType::IT_function,
-                            FI.Path);
+                            InfoType::IT_function);
                     }
                 }
                 I.Bases.emplace_back(std::move(BI));
@@ -868,7 +816,6 @@ build(
 
     if(D->isAnonymousNamespace())
         I.Name = "@nonymous_namespace";
-    I.Path = getInfoRelativePath(I.Namespace);
 
     if(I.Namespace.empty() && I.USR == globalNamespaceID)
     {
@@ -905,7 +852,6 @@ build(
     if(! getSymbolInfo(*this, I, D))
         return {};
     I.TagType = D->getTagKind();
-    I.Path = getInfoRelativePath(I.Namespace);
     parseFields(I, D, PublicOnly, AccessSpecifier::AS_public, R_);
     if(auto const* C = dyn_cast<CXXRecordDecl>(D))
     {
@@ -1015,11 +961,10 @@ build(
     else
         PD = D->getParent();
     SymbolID ParentID = getUSRForDecl(PD);
-    I.Parent = Reference{
+    I.Parent = Reference(
         ParentID,
         PD->getNameAsString(),
-        InfoType::IT_record,
-        PD->getQualifiedNameAsString()};
+        InfoType::IT_record);
     I.Access = D->getAccess();
 
     // Functions are inserted into the parent by
@@ -1164,7 +1109,7 @@ build(
     if(D->isFixed())
     {
         auto Name = D->getIntegerType().getAsString();
-        I.BaseType = TypeInfo(Name, Name);
+        I.BaseType = TypeInfo(Name);
     }
     parseEnumerators(I, D);
 

@@ -35,10 +35,6 @@ struct Reference
     */
     InfoType RefType = InfoType::IT_default;
 
-    // Path of directory where the generated file
-    // will be saved (possibly unresolved)
-    llvm::SmallString<128> Path;
-
     //--------------------------------------------
 
     // This variant (that takes no qualified name parameter) uses the Name as the
@@ -56,18 +52,6 @@ struct Reference
     {
     }
 
-    Reference(
-        SymbolID USR,
-        llvm::StringRef Name,
-        InfoType IT,
-        llvm::StringRef Path)
-        : USR(USR)
-        , Name(Name)
-        , RefType(IT)
-        , Path(Path)
-    {
-    }
-
     bool
     operator==(
         Reference const& Other) const
@@ -81,12 +65,6 @@ struct Reference
 
     bool canMerge(Reference const& Other);
     void merge(Reference&& I);
-
-    /// Returns the path for this Reference relative to CurrentPath.
-    llvm::SmallString<64> getRelativeFilePath(llvm::StringRef const& CurrentPath) const;
-
-    /// Returns the basename that should be used for this Reference.
-    //llvm::SmallString<16> getFileBaseName() const;
 };
 
 } // mrdox

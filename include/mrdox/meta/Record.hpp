@@ -37,8 +37,7 @@ struct RecordInfo : SymbolInfo
 
     RecordInfo(
         SymbolID USR = SymbolID(),
-        llvm::StringRef Name = llvm::StringRef(),
-        llvm::StringRef Path = llvm::StringRef());
+        llvm::StringRef Name = llvm::StringRef());
 
     void merge(RecordInfo&& I);
 
@@ -66,30 +65,6 @@ struct RecordInfo : SymbolInfo
     std::vector<BaseRecordInfo> Bases;              // List of base/parent records; this includes inherited methods and attributes
 
     Scope Children;
-};
-
-//------------------------------------------------
-
-struct BaseRecordInfo : public RecordInfo
-{
-    BaseRecordInfo();
-
-    BaseRecordInfo(
-        SymbolID USR,
-        llvm::StringRef Name,
-        llvm::StringRef Path,
-        bool IsVirtual,
-        AccessSpecifier Access,
-        bool IsParent);
-
-    // Indicates if base corresponds to a virtual inheritance
-    bool IsVirtual = false;
-
-    // Access level associated with this inherited info (public, protected,
-    // private).
-    AccessSpecifier Access = AccessSpecifier::AS_public;
-
-    bool IsParent = false; // Indicates if this base is a direct parent
 };
 
 } // mrdox

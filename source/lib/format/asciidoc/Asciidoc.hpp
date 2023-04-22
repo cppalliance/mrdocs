@@ -17,6 +17,7 @@
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/format/FlatWriter.hpp>
 #include <mrdox/format/Generator.hpp>
+#include <mrdox/meta/Javadoc.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>

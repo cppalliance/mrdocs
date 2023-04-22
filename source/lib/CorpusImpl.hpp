@@ -70,13 +70,6 @@ private:
     */
     void insert(std::unique_ptr<Info> Ip);
 
-    /** Insert Info into the index
-
-        @param Thread Safety
-        May be called concurrently.
-    */
-    void insertIntoIndex(Info const& I);
-
 private:
     struct Temps;
     friend class Corpus;
@@ -102,9 +95,6 @@ private:
     bool canonicalize(llvm::SmallVectorImpl<MemberTypeInfo>& list, Temps& t, Reporter& R);
 
     std::shared_ptr<Config const> config_;
-
-    // Index of all emitted symbols.
-    Index Idx;
 
     // Table of Info keyed on Symbol ID.
     llvm::StringMap<std::unique_ptr<Info>> InfoMap;

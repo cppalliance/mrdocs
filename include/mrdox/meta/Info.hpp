@@ -49,12 +49,6 @@ struct Info
     */
     Javadoc javadoc;
 
-    // Path of directory where the clang-doc
-    // generated file will be saved
-    llvm::SmallString<128> Path;          
-
-    std::string mangledName;
-
     //--------------------------------------------
 
     virtual ~Info() = default;
@@ -65,25 +59,21 @@ struct Info
     Info(
         InfoType IT = InfoType::IT_default,
         SymbolID USR = SymbolID(),
-        llvm::StringRef Name = llvm::StringRef(),
-        llvm::StringRef Path = llvm::StringRef())
+        llvm::StringRef Name = llvm::StringRef())
         : USR(USR)
         , IT(IT)
         , Name(Name)
-        , Path(Path)
     {
     }
 
     bool canMerge(const Info& Other);
     void mergeBase(Info&& I);
 
+    //
+    // Observers
+    //
+
     llvm::SmallString<16> extractName() const;
-
-    /// Returns the file path for this Info relative to CurrentPath.
-    llvm::SmallString<64> getRelativeFilePath(llvm::StringRef const& CurrentPath) const;
-
-    /// Returns the basename that should be used for this Info.
-    //llvm::SmallString<16> getFileBaseName() const;
 
     /** Return the fully qualified name.
     */
@@ -93,29 +83,11 @@ struct Info
 
     /** Return a string representing the symbol type.
 
-        This will be one of:
-
-        @li default
-        @li namespace
-        @li class
-        @li struct
-        @li union
-        @li function
-        @li enum
-        @li typedef
+        For example, "namespace", "class", et. al.
     */
     llvm::StringRef
     symbolType() const noexcept;
 };
-
-//------------------------------------------------
-
-llvm::SmallString<64>
-calculateRelativeFilePath(
-    InfoType const& Type,
-    llvm::StringRef const& Path,
-    llvm::StringRef const& Name,
-    llvm::StringRef const& CurrentPath);
 
 } // mrdox
 } // clang

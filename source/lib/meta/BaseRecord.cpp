@@ -9,30 +9,29 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/meta/Info.hpp>
-#include <mrdox/meta/Reference.hpp>
+#include <mrdox/meta/BaseRecord.hpp>
 
 namespace clang {
 namespace mrdox {
 
-bool
-Reference::
-canMerge(
-    Reference const& Other)
+BaseRecordInfo::
+BaseRecordInfo()
+    : RecordInfo()
 {
-    return
-        RefType == Other.RefType &&
-        USR == Other.USR;
 }
 
-void
-Reference::
-merge(
-    Reference&& Other)
+BaseRecordInfo::
+BaseRecordInfo(
+    SymbolID USR,
+    StringRef Name,
+    bool IsVirtual,
+    AccessSpecifier Access,
+    bool IsParent)
+    : RecordInfo(USR, Name)
+    , IsVirtual(IsVirtual)
+    , Access(Access)
+    , IsParent(IsParent)
 {
-    assert(canMerge(Other));
-    if (Name.empty())
-        Name = Other.Name;
 }
 
 } // mrdox
