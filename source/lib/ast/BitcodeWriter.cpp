@@ -41,6 +41,12 @@ struct RecordIdToIndexFunctor
     }
 };
 
+//------------------------------------------------
+//
+// Abbrev
+//
+//------------------------------------------------
+
 using AbbrevDsc = void (*)(std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev);
 
 static void AbbrevGen(
@@ -51,6 +57,24 @@ static void AbbrevGen(
         Abbrev->Add(Op);
 }
 
+static void Integer32Abbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. 32-bit signed or unsigned integer
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 32) });
+}
+
+static void Integer16Abbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. 16-bit signed or unsigned integer
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 16) });
+}
+
 static void BoolAbbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
 {
@@ -59,16 +83,6 @@ static void BoolAbbrev(
         llvm::BitCodeAbbrevOp(
             llvm::BitCodeAbbrevOp::Fixed,
             BitCodeConstants::BoolSize) });
-}
-
-static void IntAbbrev(
-    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
-{
-    AbbrevGen(Abbrev, {
-        // 0. Fixed-size integer
-        llvm::BitCodeAbbrevOp(
-            llvm::BitCodeAbbrevOp::Fixed,
-            BitCodeConstants::IntSize) });
 }
 
 static void SymbolIDAbbrev(
@@ -182,16 +196,16 @@ RecordIdNameMap = []()
     // There is no init-list constructor for the IndexedMap, so have to
     // improvise
     static const std::vector<std::pair<RecordId, RecordIdDsc>> Inits = {
-        {VERSION, {"Version", &IntAbbrev}},
-        {JAVADOC_LIST_KIND, {"JavadocListKind", &IntAbbrev}},
-        {JAVADOC_NODE_KIND, {"JavadocNodeKind", &IntAbbrev}},
+        {VERSION, {"Version", &Integer32Abbrev}},
+        {JAVADOC_LIST_KIND, {"JavadocListKind", &Integer32Abbrev}},
+        {JAVADOC_NODE_KIND, {"JavadocNodeKind", &Integer32Abbrev}},
         {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
-        {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &IntAbbrev}},
-        {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &IntAbbrev}},
+        {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &Integer32Abbrev}},
+        {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
         {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
         {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
-        {MEMBER_TYPE_ACCESS, {"Access", &IntAbbrev}},
+        {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
         {NAMESPACE_USR, {"USR", &SymbolIDAbbrev}},
         {NAMESPACE_NAME, {"Name", &StringAbbrev}},
         {ENUM_USR, {"USR", &SymbolIDAbbrev}},
@@ -206,25 +220,25 @@ RecordIdNameMap = []()
         {RECORD_NAME, {"Name", &StringAbbrev}},
         {RECORD_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
         {RECORD_LOCATION, {"Location", &LocationAbbrev}},
-        {RECORD_TAG_TYPE, {"TagType", &IntAbbrev}},
+        {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {BASE_RECORD_USR, {"USR", &SymbolIDAbbrev}},
         {BASE_RECORD_NAME, {"Name", &StringAbbrev}},
-        {BASE_RECORD_TAG_TYPE, {"TagType", &IntAbbrev}},
+        {BASE_RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {BASE_RECORD_IS_VIRTUAL, {"IsVirtual", &BoolAbbrev}},
-        {BASE_RECORD_ACCESS, {"Access", &IntAbbrev}},
+        {BASE_RECORD_ACCESS, {"Access", &Integer32Abbrev}},
         {BASE_RECORD_IS_PARENT, {"IsParent", &BoolAbbrev}},
         {FUNCTION_USR, {"USR", &SymbolIDAbbrev}},
         {FUNCTION_NAME, {"Name", &StringAbbrev}},
         {FUNCTION_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
         {FUNCTION_LOCATION, {"Location", &LocationAbbrev}},
-        {FUNCTION_ACCESS, {"Access", &IntAbbrev}},
+        {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
-        {FUNCTION_BITS, {"Specs", &IntAbbrev}},
+        {FUNCTION_BITS, {"Specs", &Integer16Abbrev}},
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
-        {REFERENCE_TYPE, {"RefType", &IntAbbrev}},
-        {REFERENCE_FIELD, {"Field", &IntAbbrev}},
+        {REFERENCE_TYPE, {"RefType", &Integer32Abbrev}},
+        {REFERENCE_FIELD, {"Field", &Integer32Abbrev}},
         {TEMPLATE_PARAM_CONTENTS, {"Contents", &StringAbbrev}},
         {TEMPLATE_SPECIALIZATION_OF, {"SpecializationOf", &SymbolIDAbbrev}},
         {TYPEDEF_USR, {"USR", &SymbolIDAbbrev}},
@@ -726,17 +740,46 @@ emitAbbrev(
 
 //------------------------------------------------
 //
-// emitRecord
+// Records
 //
 //------------------------------------------------
 
-template<class Enum, class>
+// 16 and 32 bit integers
+template<class Integer>
+requires std::is_integral_v<Integer>
 void
 BitcodeWriter::
 emitRecord(
-    Enum value, RecordId ID)
+    Integer Value, RecordId ID)
 {
-    emitRecord(static_cast<std::underlying_type_t<Enum>>(value), ID);
+    Assert(RecordIdNameMap[ID]);
+    if constexpr(sizeof(Integer) == 4)
+    {
+        Assert(RecordIdNameMap[ID].Abbrev == &Integer32Abbrev); 
+    }
+    else if constexpr(sizeof(Integer) == 2)
+    {
+        Assert(RecordIdNameMap[ID].Abbrev == &Integer16Abbrev);
+    }
+    else
+    {
+        static_assert("can't use Integer type");
+    }
+    if (!prepRecordData(ID, Value))
+        return;
+    Record.push_back(static_cast<RecordValue>(Value));
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
+}
+
+// enumerations
+template<class Enum>
+requires std::is_enum_v<Enum>
+void
+BitcodeWriter::
+emitRecord(
+    Enum Value, RecordId ID)
+{
+    emitRecord(static_cast<std::underlying_type_t<Enum>>(Value), ID);
 }
 
 void
@@ -799,34 +842,6 @@ emitRecord(
     Assert(RecordIdNameMap[ID].Abbrev == &BoolAbbrev && "Abbrev type mismatch.");
     if (!prepRecordData(ID, Val))
         return;
-    Record.push_back(Val);
-    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    int Val, RecordId ID)
-{
-    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    Assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
-    if (!prepRecordData(ID, Val))
-        return;
-    // FIXME: Assert that the integer is of the appropriate size.
-    Record.push_back(Val);
-    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
-}
-
-void
-BitcodeWriter::
-emitRecord(
-    unsigned Val, RecordId ID)
-{
-    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    Assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
-    if (!prepRecordData(ID, Val))
-        return;
-    Assert(Val < (1U << BitCodeConstants::IntSize));
     Record.push_back(Val);
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }

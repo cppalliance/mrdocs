@@ -70,15 +70,27 @@ public:
     void emitBlockID(BlockId ID);
     void emitBlockInfo(BlockId BID, const std::vector<RecordId> &RIDs);
 
-    // Emission of individual record types.
+    //--------------------------------------------
+    //
+    // Records
+    //
+    //--------------------------------------------
 
-    template<class Enum, class =
-        std::enable_if_t<std::is_enum_v<Enum>>>
-    void emitRecord(Enum value, RecordId ID);
+    template<class Integer>
+    requires
+        std::is_integral_v<Integer> &&
+        (sizeof(Integer) > 4)
+    void emitRecord(Integer Value, RecordId ID) = delete;
+
+    template<class Integer>
+    requires std::is_integral_v<Integer>
+    void emitRecord(Integer Value, RecordId ID);
+
+    template<class Enum>
+    requires std::is_enum_v<Enum>
+    void emitRecord(Enum Value, RecordId ID);
 
     void emitRecord(bool Value, RecordId ID);
-    void emitRecord(int Value, RecordId ID);
-    void emitRecord(unsigned Value, RecordId ID);
     void emitRecord(StringRef Str, RecordId ID);
     void emitRecord(SymbolID const& Str, RecordId ID);
     void emitRecord(Location const& Loc, RecordId ID);
@@ -86,6 +98,8 @@ public:
     void emitRecord(TemplateInfo const& Templ);
 
     bool prepRecordData(RecordId ID, bool ShouldEmit = true);
+
+    //--------------------------------------------
 
     // Emission of appropriate abbreviation type.
     void emitAbbrev(RecordId ID, BlockId Block);
@@ -135,8 +149,9 @@ private:
     // to this + 1. Longest is currently
     // `MemberTypeBlock` at 15 chars.
     //
+    using RecordValue = std::uint32_t;
     SmallVector<
-        uint32_t,
+        RecordValue,
         BitCodeConstants::RecordSize> Record;
     llvm::BitstreamWriter& Stream;
     AbbreviationMap Abbrevs;
