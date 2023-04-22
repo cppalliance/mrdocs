@@ -33,17 +33,6 @@ using UnqualifiedName = llvm::SmallString<16>;
 // Info for functions.
 struct FunctionInfo : SymbolInfo
 {
-    static constexpr InfoType type_id = InfoType::IT_function;
-
-    explicit
-    FunctionInfo(
-        SymbolID id_ = SymbolID())
-        : SymbolInfo(InfoType::IT_function, id_)
-    {
-    }
-
-    void merge(FunctionInfo&& I);
-
     bool IsMethod = false; // Indicates whether this function is a class method.
     Reference Parent;      // Reference to the parent class decl for this method.
     TypeInfo ReturnType;   // Info about the return type of this function.
@@ -60,6 +49,33 @@ struct FunctionInfo : SymbolInfo
 
     // When present, this function is a template or specialization.
     llvm::Optional<TemplateInfo> Template;
+
+    StorageClass storageClass = SC_None;
+    RefQualifierKind refQualifier = RQ_None;
+
+    bool isConst : 1 = false;
+    bool isConsteval : 1 = false;
+    bool isConstexpr : 1 = false;
+    bool isInline : 1 = false;
+    bool isNoExcept : 1 = false;
+    bool isSpecialMember : 1 = false; // dtor, move/copy construct or assign
+    bool isTrailingReturn : 1 = false;
+    bool isVariadic : 1 = false; // has a C-style "..." variadic
+    bool isVirtual : 1 = false;
+    bool isVolatile : 1 = false;
+
+    //--------------------------------------------
+
+    static constexpr InfoType type_id = InfoType::IT_function;
+
+    explicit
+    FunctionInfo(
+        SymbolID id_ = SymbolID())
+        : SymbolInfo(InfoType::IT_function, id_)
+    {
+    }
+
+    void merge(FunctionInfo&& I);
 };
 
 //------------------------------------------------

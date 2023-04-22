@@ -967,6 +967,23 @@ build(
         InfoType::IT_record);
     I.Access = D->getAccess();
 
+    I.refQualifier = D->getRefQualifier();
+
+    I.isConst = D->isConst();
+    I.isConsteval = D->isConsteval();
+    I.isConstexpr = D->isConstexprSpecified() && ! D->isExplicitlyDefaulted();
+    I.isInline = D->isInlineSpecified();
+    I.isNoExcept = isNoexceptExceptionSpec(D->getExceptionSpecType());
+    //I.isSpecialMember =
+    I.isVariadic = D->isVariadic();
+    I.isVirtual = D->isVirtualAsWritten();
+    I.isVolatile = D->isVolatile();
+
+    if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
+    {
+        I.isTrailingReturn = FP->hasTrailingReturn();
+    }
+
     // Functions are inserted into the parent by
     // reference, so we need to return both the
     // parent and the record itself.
