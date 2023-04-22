@@ -234,7 +234,7 @@ RecordIdNameMap = []()
         {FUNCTION_LOCATION, {"Location", &LocationAbbrev}},
         {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
-        {FUNCTION_BITS, {"Specs", &Integer16Abbrev}},
+        {FUNCTION_BITS, {"Specs", &Integer32Abbrev}},
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
         {REFERENCE_TYPE, {"RefType", &Integer32Abbrev}},

@@ -32,7 +32,7 @@ struct FunctionInfo : SymbolInfo
 {
     /** Bit constants used with function specifiers.
     */
-    enum : std::uint16_t
+    enum : std::uint32_t
     {
         // 11 bits
         constBit       = 0x0001,
@@ -60,7 +60,7 @@ struct FunctionInfo : SymbolInfo
     class Specs
     {
     public:
-        using value_type = std::uint16_t;
+        using value_type = std::uint32_t;
 
         Specs() = default;
 
