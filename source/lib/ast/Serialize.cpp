@@ -975,12 +975,19 @@ build(
     I.specs.set(FunctionInfo::noexceptBit, isNoexceptExceptionSpec(D->getExceptionSpecType()));
     I.specs.set(FunctionInfo::pureBit, D->isPure());
     //I.specs.set(FunctionInfo::specialBit);
+    //isOverrideSpecified();
+    //D->isCopyAssignmentOperator()
+    //D->isMoveAssignmentOperator()
+    //D->isOverloadedOperator();
+    //D->isStaticOverloadedOperator();
     I.specs.set(FunctionInfo::variadicBit, D->isVariadic());
     I.specs.set(FunctionInfo::virtualBit, D->isVirtualAsWritten());
     I.specs.set(FunctionInfo::volatileBit, D->isVolatile());
     if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
     {
         I.specs.set(FunctionInfo::trailReturnBit, FP->hasTrailingReturn());
+        //FP->getNoReturnAttr();
+        FP->isConst();
     }
     I.specs.setRefQualifier(D->getRefQualifier());
     I.specs.setStorageClass(D->getStorageClass());

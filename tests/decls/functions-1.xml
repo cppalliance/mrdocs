@@ -33,6 +33,8 @@
   <symbol name="T15::f" tag="function" id="wSFf8IAx5Twq6aD5T8XdnXGuhw8="/>
   <symbol name="T16" tag="struct" id="75395VGvKeZbe1EhfJwktZuWLs0="/>
   <symbol name="T16::f" tag="function" id="OEX+TUed8FjXJPiI4c3+9WHzJl4="/>
+  <symbol name="T17" tag="struct" id="HL3/1NhKSels2G5ay7F0IYzlSLs="/>
+  <symbol name="T17::f" tag="function" id="5+yfyWtDpz80IwKT3xugro18Ev0="/>
   <symbol name="U" tag="struct" id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
   <symbol name="U::f1" tag="function" id="DBXd564vaQo7GHkh6XCC6HV78/I="/>
   <symbol name="U::f2" tag="function" id="II436kVwM/ZBYOf9q474VxRXK6c="/>
@@ -144,19 +146,26 @@
       <static/>
     </function>
   </struct>
-  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+  <struct name="T17" id="HL3/1NhKSels2G5ay7F0IYzlSLs=">
     <file path="functions-1.cpp" line="20" class="def"/>
+    <base name="T14" access="public" id="SLJhBKx+2u4KxSJ78Fg6wqlObPc="/>
+    <function name="f" access="public" id="5+yfyWtDpz80IwKT3xugro18Ev0=">
+      <file path="functions-1.cpp" line="20"/>
+    </function>
+  </struct>
+  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+    <file path="functions-1.cpp" line="22" class="def"/>
     <function name="f1" access="public" id="DBXd564vaQo7GHkh6XCC6HV78/I=">
-      <file path="functions-1.cpp" line="22" class="def"/>
+      <file path="functions-1.cpp" line="24" class="def"/>
       <const/><constexpr/><inline/><noexcept/><trailing/><variadic/><volatile/>
     </function>
     <function name="f2" access="public" id="II436kVwM/ZBYOf9q474VxRXK6c=">
-      <file path="functions-1.cpp" line="23" class="def"/>
+      <file path="functions-1.cpp" line="25" class="def"/>
       <static/><constexpr/><inline/><noexcept/><trailing/>
       <return name="char"/>
     </function>
     <function name="f3" access="public" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
-      <file path="functions-1.cpp" line="24"/>
+      <file path="functions-1.cpp" line="26"/>
       <const/><noexcept/><pure/><virtual/><volatile/>
       <return name="int"/>
     </function>

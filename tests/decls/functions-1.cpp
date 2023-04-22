@@ -17,6 +17,8 @@ struct T14 { virtual void f() = 0; };
 struct T15 { void f() volatile; };
 struct T16 { static void f(); };
 
+struct T17 : T14 { void f() override; };
+
 struct U
 {
     inline constexpr auto f1(...) volatile const noexcept -> void {}
