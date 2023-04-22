@@ -109,7 +109,7 @@ bool
 XMLGenerator::
 buildOne(
     llvm::StringRef fileName,
-    Corpus& corpus,
+    Corpus const& corpus,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;
@@ -133,7 +133,7 @@ bool
 XMLGenerator::
 buildString(
     std::string& dest,
-    Corpus& corpus,
+    Corpus const& corpus,
     Reporter& R) const
 {
     dest.clear();

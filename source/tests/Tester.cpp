@@ -86,7 +86,7 @@ checkDirRecursively(
 void
 Tester::
 checkOneFile(
-    Corpus& corpus,
+    Corpus const& corpus,
     llvm::StringRef inputPath,
     llvm::SmallVectorImpl<char>& outputPathStr)
 {

@@ -45,7 +45,7 @@ public:
 
     void
     checkOneFile(
-        Corpus& corpus,
+        Corpus const& corpus,
         llvm::StringRef inputPath,
         llvm::SmallVectorImpl<char>& outputPathStr);
 };

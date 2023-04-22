@@ -82,7 +82,7 @@ struct Generator
     bool
     build(
         llvm::StringRef outputPath,
-        Corpus& corpus,
+        Corpus const& corpus,
         Reporter& R) const;
 
     /** Build single-file documentation from the corpus and configuration.
@@ -110,7 +110,7 @@ struct Generator
     bool
     buildOne(
         llvm::StringRef fileName,
-        Corpus& corpus,
+        Corpus const& corpus,
         Reporter& R) const = 0;
 
     /** Build a string containing the single-file documentation.
@@ -138,7 +138,7 @@ struct Generator
     bool
     buildString(
         std::string& dest,
-        Corpus& corpus,
+        Corpus const& corpus,
         Reporter& R) const = 0;
 };
 

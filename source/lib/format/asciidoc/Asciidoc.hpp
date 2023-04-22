@@ -50,19 +50,19 @@ public:
     bool
     build(
         llvm::StringRef rootPath,
-        Corpus& corpus,
+        Corpus const& corpus,
         Reporter& R) const override;
 
     bool
     buildOne(
         llvm::StringRef fileName,
-        Corpus& corpus,
+        Corpus const& corpus,
         Reporter& R) const override;
 
     bool
     buildString(
         std::string& dest,
-        Corpus& corpus,
+        Corpus const& corpus,
         Reporter& R) const override;
 };
 

@@ -21,7 +21,7 @@ bool
 Generator::
 build(
     StringRef outputPath,
-    Corpus& corpus,
+    Corpus const& corpus,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;

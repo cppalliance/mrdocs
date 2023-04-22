@@ -28,7 +28,7 @@ bool
 AsciidocGenerator::
 build(
     llvm::StringRef rootPath,
-    Corpus& corpus,
+    Corpus const& corpus,
     Reporter& R) const
 {
     namespace path = llvm::sys::path;
@@ -89,7 +89,7 @@ bool
 AsciidocGenerator::
 buildOne(
     llvm::StringRef fileName,
-    Corpus& corpus,
+    Corpus const& corpus,
     Reporter& R) const
 {
     namespace fs = llvm::sys::fs;
@@ -115,7 +115,7 @@ bool
 AsciidocGenerator::
 buildString(
     std::string& dest,
-    Corpus& corpus,
+    Corpus const& corpus,
     Reporter& R) const
 {
     dest.clear();
