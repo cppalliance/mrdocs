@@ -776,14 +776,14 @@ writeTypeName(
     TypeName const& t,
     llvm::raw_ostream& os)
 {
-    if(t.I.Type.USR == globalNamespaceID)
+    if(t.I.Type.id == globalNamespaceID)
     {
         os_ << t.I.Type.Name;
         return;
     }
-    if(corpus_.exists(t.I.Type.USR))
+    if(corpus_.exists(t.I.Type.id))
     {
-        auto const& J = corpus_.get<RecordInfo>(t.I.Type.USR);
+        auto const& J = corpus_.get<RecordInfo>(t.I.Type.id);
         // VFALCO add namespace qualifiers if I is in
         //        a different namesapce
         os_ << J.Name << "::" << J.Name;

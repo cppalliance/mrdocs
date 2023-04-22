@@ -24,7 +24,7 @@ struct Reference
 {
     /** Unique identifier of the referenced symbol.
     */
-    SymbolID USR = SymbolID();
+    SymbolID id = SymbolID();
 
     // Name of type (possibly unresolved). Not including namespaces or template
     // parameters (so for a std::vector<int> this would be "vector"). See also
@@ -43,10 +43,10 @@ struct Reference
     // string as a valid input for the global namespace (it will have
     // "GlobalNamespace" as the name, but an empty QualName).
     Reference(
-        SymbolID USR = EmptySID,
+        SymbolID id_ = EmptySID,
         llvm::StringRef Name = llvm::StringRef(),
         InfoType IT = InfoType::IT_default)
-        : USR(USR)
+        : id(id_)
         , Name(Name)
         , RefType(IT)
     {
@@ -59,8 +59,8 @@ struct Reference
         // VFALCO Is this function only needed
         //        for the old unit tests?
         return
-            std::tie(USR, Name, RefType) ==
-            std::tie(Other.USR, Other.Name, Other.RefType);
+            std::tie(id, Name, RefType) ==
+            std::tie(Other.id, Other.Name, Other.RefType);
     }
 
     bool canMerge(Reference const& Other);

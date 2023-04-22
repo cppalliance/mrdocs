@@ -49,13 +49,13 @@ insert(std::unique_ptr<Info> I)
     {
         std::lock_guard<llvm::sys::Mutex> Guard(allSymbolsMutex);
         assert(! isCanonical_);
-        allSymbols_.emplace_back(I->USR);
+        allSymbols_.emplace_back(I->id);
     }
 
     // This has to come last because we move I.
     {
         std::lock_guard<llvm::sys::Mutex> Guard(infoMutex);
-        InfoMap[llvm::toStringRef(I->USR)] = std::move(I);
+        InfoMap[llvm::toStringRef(I->id)] = std::move(I);
     }
 }
 
@@ -182,8 +182,8 @@ canonicalize(
         [this, &t](Reference& ref0, Reference& ref1)
         {
             return compareSymbolNames(
-                get<Info>(ref0.USR).getFullyQualifiedName(t.s0),
-                get<Info>(ref1.USR).getFullyQualifiedName(t.s1));
+                get<Info>(ref0.id).getFullyQualifiedName(t.s0),
+                get<Info>(ref1.id).getFullyQualifiedName(t.s1));
         });
     std::sort(
         I.Records.begin(),
@@ -191,8 +191,8 @@ canonicalize(
         [this, &t](Reference& ref0, Reference& ref1)
         {
             return compareSymbolNames(
-                get<Info>(ref0.USR).getFullyQualifiedName(t.s0),
-                get<Info>(ref1.USR).getFullyQualifiedName(t.s1));
+                get<Info>(ref0.id).getFullyQualifiedName(t.s0),
+                get<Info>(ref1.id).getFullyQualifiedName(t.s1));
         });
     std::sort(
         I.Functions.begin(),
@@ -200,8 +200,8 @@ canonicalize(
         [this, &t](Reference& ref0, Reference& ref1)
         {
             return compareSymbolNames(
-                get<Info>(ref0.USR).getFullyQualifiedName(t.s0),
-                get<Info>(ref1.USR).getFullyQualifiedName(t.s1));
+                get<Info>(ref0.id).getFullyQualifiedName(t.s0),
+                get<Info>(ref1.id).getFullyQualifiedName(t.s1));
         });
     // These seem to be non-copyable
 #if 0
@@ -225,13 +225,13 @@ canonicalize(
         });
 #endif
     for(auto& ref : I.Namespaces)
-        if(! canonicalize(get<NamespaceInfo>(ref.USR), t, R))
+        if(! canonicalize(get<NamespaceInfo>(ref.id), t, R))
             return false;
     for(auto& ref : I.Records)
-        if(! canonicalize(get<RecordInfo>(ref.USR), t, R))
+        if(! canonicalize(get<RecordInfo>(ref.id), t, R))
             return false;
     for(auto& ref : I.Functions)
-        if(! canonicalize(get<FunctionInfo>(ref.USR), t, R))
+        if(! canonicalize(get<FunctionInfo>(ref.id), t, R))
             return false;
     for(auto& J: I.Enums)
         if(! canonicalize(J, t, R))
@@ -255,8 +255,8 @@ canonicalize(
         [this, &t](Reference& ref0, Reference& ref1)
         {
             return compareSymbolNames(
-                get<Info>(ref0.USR).getFullyQualifiedName(t.s0),
-                get<Info>(ref1.USR).getFullyQualifiedName(t.s1));
+                get<Info>(ref0.id).getFullyQualifiedName(t.s0),
+                get<Info>(ref1.id).getFullyQualifiedName(t.s1));
         });
     return true;
 }

@@ -32,9 +32,9 @@ struct SymbolInfo : Info
     explicit
     SymbolInfo(
         InfoType IT,
-        SymbolID USR = SymbolID(),
+        SymbolID id_ = SymbolID(),
         llvm::StringRef Name = llvm::StringRef())
-        : Info(IT, USR, Name)
+        : Info(IT, id_, Name)
     {
     }
 

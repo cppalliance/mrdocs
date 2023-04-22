@@ -22,7 +22,7 @@ struct BaseRecordInfo : public RecordInfo
     BaseRecordInfo();
 
     BaseRecordInfo(
-        SymbolID USR,
+        SymbolID id_,
         llvm::StringRef Name,
         bool IsVirtual,
         AccessSpecifier Access,

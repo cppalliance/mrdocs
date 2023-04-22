@@ -380,7 +380,7 @@ emitBlock(
     NamespaceInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
-    emitRecord(I.USR, NAMESPACE_USR);
+    emitRecord(I.id, NAMESPACE_USR);
     emitRecord(I.Name, NAMESPACE_NAME);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
@@ -403,7 +403,7 @@ emitBlock(
     RecordInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
-    emitRecord(I.USR, RECORD_USR);
+    emitRecord(I.id, RECORD_USR);
     emitRecord(I.Name, RECORD_NAME);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
@@ -440,7 +440,7 @@ emitBlock(
     BaseRecordInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_BASE_RECORD_BLOCK_ID);
-    emitRecord(I.USR, BASE_RECORD_USR);
+    emitRecord(I.id, BASE_RECORD_USR);
     emitRecord(I.Name, BASE_RECORD_NAME);
     emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
     emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
@@ -456,7 +456,7 @@ emitBlock(
     FunctionInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
-    emitRecord(I.USR, FUNCTION_USR);
+    emitRecord(I.id, FUNCTION_USR);
     emitRecord(I.Name, FUNCTION_NAME);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
@@ -481,7 +481,7 @@ emitBlock(
     EnumInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
-    emitRecord(I.USR, ENUM_USR);
+    emitRecord(I.id, ENUM_USR);
     emitRecord(I.Name, ENUM_NAME);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
@@ -523,7 +523,7 @@ emitBlock(
     TypedefInfo const& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
-    emitRecord(T.USR, TYPEDEF_USR);
+    emitRecord(T.id, TYPEDEF_USR);
     emitRecord(T.Name, TYPEDEF_NAME);
     for (const auto& N : T.Namespace)
         emitBlock(N, FieldId::F_namespace);
@@ -869,10 +869,10 @@ BitcodeWriter::
 emitBlock(
     Reference const& R, FieldId Field)
 {
-    if (R.USR == globalNamespaceID && R.Name.empty())
+    if (R.id == globalNamespaceID && R.Name.empty())
         return;
     StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
-    emitRecord(R.USR, REFERENCE_USR);
+    emitRecord(R.id, REFERENCE_USR);
     emitRecord(R.Name, REFERENCE_NAME);
     emitRecord((unsigned)R.RefType, REFERENCE_TYPE);
     emitRecord((unsigned)Field, REFERENCE_FIELD);

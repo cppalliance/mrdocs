@@ -80,11 +80,11 @@ Corpus::
 visit(Scope const& I, Visitor& f) const
 {
     for(auto const& ref : I.Namespaces)
-        visit(get<NamespaceInfo>(ref.USR), f);
+        visit(get<NamespaceInfo>(ref.id), f);
     for(auto const& ref : I.Records)
-        visit(get<RecordInfo>(ref.USR), f);
+        visit(get<RecordInfo>(ref.id), f);
     for(auto const& ref : I.Functions)
-        visit(get<FunctionInfo>(ref.USR), f);
+        visit(get<FunctionInfo>(ref.id), f);
     for(auto const& J : I.Typedefs)
         visit(J, f);
     for(auto const& J : I.Enums)
@@ -97,9 +97,9 @@ visitWithOverloads(
     Scope const& I, Visitor& f) const
 {
     for(auto const& ref : I.Namespaces)
-        visit(get<NamespaceInfo>(ref.USR), f);
+        visit(get<NamespaceInfo>(ref.id), f);
     for(auto const& ref : I.Records)
-        visit(get<RecordInfo>(ref.USR), f);
+        visit(get<RecordInfo>(ref.id), f);
     if(I.isNamespaceScope)
     {
         // VFALCO Should this be AS_public
@@ -228,7 +228,7 @@ build(
             }
 
             std::unique_ptr<Info> I(merged.get().release());
-            assert(Group.getKey() == llvm::toStringRef(I->USR));
+            assert(Group.getKey() == llvm::toStringRef(I->id));
             corpus->insert(std::move(I));
         });
 

@@ -71,7 +71,7 @@ visit(
 
     auto filePath = filePrefix_;
     llvm::SmallString<0> temp;
-    path::append(filePath, toBaseFN(temp, I.USR));
+    path::append(filePath, toBaseFN(temp, I.id));
     path::replace_extension(filePath, "adoc");
     pages.emplace_back(std::move(filePath));
 
@@ -111,7 +111,7 @@ visit(
 
     auto filePath = filePrefix_;
     llvm::SmallString<0> temp;
-    path::append(filePath, toBaseFN(temp, I.USR));
+    path::append(filePath, toBaseFN(temp, I.id));
     path::replace_extension(filePath, "adoc");
     pages.emplace_back(std::move(filePath));
 }
@@ -125,7 +125,7 @@ visit(
 
     auto filePath = filePrefix_;
     llvm::SmallString<0> temp;
-    path::append(filePath, toBaseFN(temp, I.USR));
+    path::append(filePath, toBaseFN(temp, I.id));
     path::replace_extension(filePath, "adoc");
     pages.emplace_back(std::move(filePath));
 }

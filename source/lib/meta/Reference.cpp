@@ -22,7 +22,7 @@ canMerge(
 {
     return
         RefType == Other.RefType &&
-        USR == Other.USR;
+        id == Other.id;
 }
 
 void

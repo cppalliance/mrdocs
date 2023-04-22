@@ -37,8 +37,8 @@ struct FunctionInfo : SymbolInfo
 
     explicit
     FunctionInfo(
-        SymbolID USR = SymbolID())
-        : SymbolInfo(InfoType::IT_function, USR)
+        SymbolID id_ = SymbolID())
+        : SymbolInfo(InfoType::IT_function, id_)
     {
     }
 

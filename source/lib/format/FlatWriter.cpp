@@ -148,11 +148,11 @@ visit(
     Scope const& scope)
 {
     for(auto const& ref : scope.Namespaces)
-        visit(ref.USR);
+        visit(ref.id);
     for(auto const& ref : scope.Records)
-        visit(ref.USR);
+        visit(ref.id);
     for(auto const& ref : scope.Functions)
-        visit(ref.USR);
+        visit(ref.id);
     for(auto const& I : scope.Enums)
         writeEnum(I);
     for(auto const& I : scope.Typedefs)

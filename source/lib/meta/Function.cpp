@@ -25,9 +25,9 @@ merge(
         IsMethod = Other.IsMethod;
     if (!Access)
         Access = Other.Access;
-    if (ReturnType.Type.USR == EmptySID && ReturnType.Type.Name == "")
+    if (ReturnType.Type.id == EmptySID && ReturnType.Type.Name == "")
         ReturnType = std::move(Other.ReturnType);
-    if (Parent.USR == EmptySID && Parent.Name == "")
+    if (Parent.id == EmptySID && Parent.Name == "")
         Parent = std::move(Other.Parent);
     if (Params.empty())
         Params = std::move(Other.Params);

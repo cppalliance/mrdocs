@@ -27,7 +27,7 @@ canMerge(
 {
     return
         IT == Other.IT &&
-        USR == Other.USR;
+        id == Other.id;
 }
 
 void
@@ -36,8 +36,8 @@ mergeBase(
     Info&& Other)
 {
     assert(canMerge(Other));
-    if (USR == EmptySID)
-        USR = Other.USR;
+    if (id == EmptySID)
+        id = Other.id;
     if (Name == "")
         Name = Other.Name;
     if (Namespace.empty())
@@ -65,20 +65,25 @@ extractName() const
         // so here we can safely assume an unnamed namespace is the global
         // one.
         return {}; //return llvm::SmallString<16>("GlobalNamespace");
+
+    // VFALCO This API makes assumptions about what is
+    //        valid in the output format. We could for
+    //        example use base64 or base41...
     case InfoType::IT_record:
         return llvm::SmallString<16>("@nonymous_record_" +
-            toHex(llvm::toStringRef(USR)));
+            toHex(llvm::toStringRef(id)));
     case InfoType::IT_enum:
         return llvm::SmallString<16>("@nonymous_enum_" +
-            toHex(llvm::toStringRef(USR)));
+            toHex(llvm::toStringRef(id)));
     case InfoType::IT_typedef:
         return llvm::SmallString<16>("@nonymous_typedef_" +
-            toHex(llvm::toStringRef(USR)));
+            toHex(llvm::toStringRef(id)));
     case InfoType::IT_function:
         return llvm::SmallString<16>("@nonymous_function_" +
-            toHex(llvm::toStringRef(USR)));
+            toHex(llvm::toStringRef(id)));
     case InfoType::IT_default:
-        return llvm::SmallString<16>("@nonymous_" + toHex(llvm::toStringRef(USR)));
+        return llvm::SmallString<16>("@nonymous_" +
+            toHex(llvm::toStringRef(id)));
     }
     llvm_unreachable("Invalid InfoType.");
     return llvm::SmallString<16>("");

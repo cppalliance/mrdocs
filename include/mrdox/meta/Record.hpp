@@ -36,7 +36,7 @@ struct RecordInfo : SymbolInfo
     static constexpr InfoType type_id = InfoType::IT_record;
 
     RecordInfo(
-        SymbolID USR = SymbolID(),
+        SymbolID id = SymbolID(),
         llvm::StringRef Name = llvm::StringRef());
 
     void merge(RecordInfo&& I);

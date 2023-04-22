@@ -74,8 +74,8 @@ struct EnumInfo : SymbolInfo
 
     explicit
     EnumInfo(
-        SymbolID USR)
-        : SymbolInfo(InfoType::IT_enum, USR)
+        SymbolID id_)
+        : SymbolInfo(InfoType::IT_enum, id_)
     {
     }
 

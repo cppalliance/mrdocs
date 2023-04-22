@@ -27,7 +27,7 @@ AllSymbol(
 {
     I.getFullyQualifiedName(fqName);
     symbolType = I.symbolType();
-    id = I.USR;
+    id = I.id;
 }
 
 //------------------------------------------------
@@ -51,11 +51,11 @@ visitScope(
     Scope const& I)
 {
     for(auto const& ref : I.Namespaces)
-        visitNamespace(corpus_.get<NamespaceInfo>(ref.USR));
+        visitNamespace(corpus_.get<NamespaceInfo>(ref.id));
     for(auto const& ref : I.Records)
-        visitRecord(corpus_.get<RecordInfo>(ref.USR));
+        visitRecord(corpus_.get<RecordInfo>(ref.id));
     for(auto const& ref : I.Functions)
-        visitFunction(corpus_.get<FunctionInfo>(ref.USR));
+        visitFunction(corpus_.get<FunctionInfo>(ref.id));
     for(auto const& J : I.Typedefs)
         visitTypedef(J);
     for(auto const& J : I.Enums)

@@ -48,7 +48,7 @@ decodeRecord(
     llvm::StringRef Blob)
 {
     if (R[0] != BitCodeConstants::USRHashSize)
-        return makeError("incorrect USR size");
+        return makeError("incorrect USR digest size");
 
     // First position in the record is the length of the following array, so we
     // copy the following elements to the field.
@@ -967,7 +967,7 @@ parseRecord(
     switch (ID)
     {
     case NAMESPACE_USR:
-        return decodeRecord(R, I->USR, Blob);
+        return decodeRecord(R, I->id, Blob);
     case NAMESPACE_NAME:
         return decodeRecord(R, I->Name, Blob);
     default:
@@ -986,7 +986,7 @@ parseRecord(
     switch (ID)
     {
     case RECORD_USR:
-        return decodeRecord(R, I->USR, Blob);
+        return decodeRecord(R, I->id, Blob);
     case RECORD_NAME:
         return decodeRecord(R, I->Name, Blob);
     case RECORD_DEFLOCATION:
@@ -1013,7 +1013,7 @@ parseRecord(
     switch (ID)
     {
     case BASE_RECORD_USR:
-        return decodeRecord(R, I->USR, Blob);
+        return decodeRecord(R, I->id, Blob);
     case BASE_RECORD_NAME:
         return decodeRecord(R, I->Name, Blob);
     case BASE_RECORD_TAG_TYPE:
@@ -1040,7 +1040,7 @@ parseRecord(
     switch (ID)
     {
     case FUNCTION_USR:
-        return decodeRecord(R, I->USR, Blob);
+        return decodeRecord(R, I->id, Blob);
     case FUNCTION_NAME:
         return decodeRecord(R, I->Name, Blob);
     case FUNCTION_DEFLOCATION:
@@ -1067,7 +1067,7 @@ parseRecord(
     switch (ID)
     {
     case ENUM_USR:
-        return decodeRecord(R, I->USR, Blob);
+        return decodeRecord(R, I->id, Blob);
     case ENUM_NAME:
         return decodeRecord(R, I->Name, Blob);
     case ENUM_DEFLOCATION:
@@ -1113,7 +1113,7 @@ parseRecord(
     switch (ID)
     {
     case TYPEDEF_USR:
-        return decodeRecord(R, I->USR, Blob);
+        return decodeRecord(R, I->id, Blob);
     case TYPEDEF_NAME:
         return decodeRecord(R, I->Name, Blob);
     case TYPEDEF_DEFLOCATION:
@@ -1186,7 +1186,7 @@ parseRecord(
     switch (ID)
     {
     case REFERENCE_USR:
-        return decodeRecord(R, I->USR, Blob);
+        return decodeRecord(R, I->id, Blob);
     case REFERENCE_NAME:
         return decodeRecord(R, I->Name, Blob);
     case REFERENCE_TYPE:

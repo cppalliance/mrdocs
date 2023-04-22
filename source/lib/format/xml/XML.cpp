@@ -174,10 +174,10 @@ struct XMLGenerator::Writer::
     {
     }
 
-    Attr(SymbolID USR)
+    Attr(SymbolID id)
         : name("id")
-        , value(toString(USR))
-        , pred(USR != EmptySID)
+        , value(toString(id))
+        , pred(id != EmptySID)
     {
     }
 };
@@ -264,7 +264,7 @@ visitNamespace(
 {
     openTag("namespace", {
         { "name", I.Name },
-        { I.USR }
+        { I.id }
         });
 
     writeInfo(I);
@@ -287,7 +287,7 @@ visitRecord(
         clang::TypeWithKeyword::getTagTypeKindName(I.TagType);
     openTag(tag, {
         { "name", I.Name },
-        { I.USR }
+        { I.id }
         });
 
     writeInfo(I);
@@ -315,7 +315,7 @@ visitFunction(
     openTag("function", {
         { "name", I.Name },
         { I.Access },
-        { I.USR }
+        { I.id }
         });
 
     writeInfo(I);
@@ -341,13 +341,13 @@ visitTypedef(
 {
     openTag("typedef", {
         { "name", I.Name },
-        { I.USR }
+        { I.id }
         });
 
     writeInfo(I);
     writeSymbol(I);
-    if(I.Underlying.Type.USR != EmptySID)
-        writeTag("qualusr", toBase64(I.Underlying.Type.USR));
+    if(I.Underlying.Type.id != EmptySID)
+        writeTag("qualusr", toBase64(I.Underlying.Type.id));
     writeJavadoc(I.javadoc);
 
     closeTag("typedef");
@@ -361,7 +361,7 @@ visitEnum(
 {
     openTag("enum", {
         { "name", I.Name },
-        { I.USR }
+        { I.id }
         });
 
     writeInfo(I);
@@ -426,8 +426,8 @@ writeBaseRecord(
         { "name", I.Name },
         { I.Access },
         { "modifier", "virtual", I.IsVirtual },
-        { I.USR } });
-    if(! corpus_.exists(I.USR))
+        { I.id } });
+    if(! corpus_.exists(I.id))
     {
         // e,g. for std::true_type
         return;
@@ -444,7 +444,7 @@ writeParam(
         { "name", I.Name, ! I.Name.empty() },
         { "default", I.DefaultValue, ! I.DefaultValue.empty() },
         { "type", I.Type.Name },
-        { I.Type.USR } });
+        { I.Type.id } });
 }
 
 void
@@ -469,7 +469,7 @@ writeMemberType(
         { "type", I.Type.Name },
         { "value", I.DefaultValue, ! I.DefaultValue.empty() },
         { I.Access },
-        { I.Type.USR } });
+        { I.Type.id } });
 }
 
 void
@@ -482,7 +482,7 @@ writeReturnType(
         return;
     writeTag("return", {}, {
         { "name", I.Type.Name },
-        { I.Type.USR }
+        { I.Type.id }
         });
 }
 

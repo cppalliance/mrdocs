@@ -30,7 +30,7 @@ makeOverloadsSet(
     temp.reserve(scope.Functions.size());
     for(auto const& ref : scope.Functions)
     {
-        auto const& I = corpus.get<FunctionInfo>(ref.USR);
+        auto const& I = corpus.get<FunctionInfo>(ref.id);
         if(I.Access == access)
             temp.push_back(&I);
     }

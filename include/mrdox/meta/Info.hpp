@@ -29,15 +29,15 @@ namespace mrdox {
 */
 struct Info
 {
-    /** Unique identifier for the declaration.
+    /** The unique identifier for this symbol.
     */
-    SymbolID USR = SymbolID();
+    SymbolID id = SymbolID();
 
     /** Kind of declaration.
     */
     InfoType const IT = InfoType::IT_default;
 
-    /** Unqualified name.
+    /** The unqualified name.
     */
     llvm::SmallString<16> Name;
 
@@ -58,9 +58,9 @@ struct Info
     explicit
     Info(
         InfoType IT = InfoType::IT_default,
-        SymbolID USR = SymbolID(),
+        SymbolID id_ = SymbolID(),
         llvm::StringRef Name = llvm::StringRef())
-        : USR(USR)
+        : id(id_)
         , IT(IT)
         , Name(Name)
     {

@@ -273,7 +273,7 @@ getInfo(
     if(! shouldSerializeInfo(
         sr.PublicOnly, IsInAnonymousNamespace, D))
         return false;
-    I.USR = getUSRForDecl(D);
+    I.id = getUSRForDecl(D);
     I.Name = D->getNameAsString();
     // VFALCO investigate whether we can use
     // ASTContext::getCommentForDecl instead
@@ -388,7 +388,7 @@ static
 Bitcode
 serialize(T& I)
 {
-    return { I.USR, writeBitcode(I).str().str() };
+    return { I.id, writeBitcode(I).str().str() };
 }
 
 // The InsertChild functions insert the given info into the given scope using
@@ -404,7 +404,7 @@ InsertChild(
     NamespaceInfo const& Info)
 {
     scope.Namespaces.emplace_back(
-        Info.USR,
+        Info.id,
         Info.Name,
         InfoType::IT_namespace);
 }
@@ -416,7 +416,7 @@ InsertChild(
     RecordInfo const& Info)
 {
     scope.Records.emplace_back(
-        Info.USR,
+        Info.id,
         Info.Name,
         InfoType::IT_record);
 }
@@ -428,7 +428,7 @@ InsertChild(
     FunctionInfo const& Info)
 {
     scope.Functions.emplace_back(
-        Info.USR,
+        Info.id,
         Info.Name,
         InfoType::IT_function);
 }
@@ -482,13 +482,13 @@ MakeAndInsertIntoParent(
     {
     case InfoType::IT_namespace: {
         auto ParentNS = std::make_unique<NamespaceInfo>();
-        ParentNS->USR = Child.Namespace[0].USR;
+        ParentNS->id = Child.Namespace[0].id;
         InsertChild(ParentNS->Children, std::forward<ChildType>(Child));
         return ParentNS;
     }
     case InfoType::IT_record: {
         auto ParentRec = std::make_unique<RecordInfo>();
-        ParentRec->USR = Child.Namespace[0].USR;
+        ParentRec->id = Child.Namespace[0].id;
         InsertChild(ParentRec->Children, std::forward<ChildType>(Child));
         return ParentRec;
     }
@@ -641,7 +641,7 @@ getInfo(
     bool& IsInAnonymousNamespace,
     Reporter& R)
 {
-    I.USR = getUSRForDecl(D);
+    I.id = getUSRForDecl(D);
     I.Name = D->getNameAsString();
     getParentNamespaces(
         I.Namespace,
@@ -752,12 +752,12 @@ parseBases(
                 if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
                 {
                     const TemplateDecl* D = Ty->getTemplateName().getAsTemplateDecl();
-                    BI.USR = getUSRForDecl(D);
+                    BI.id = getUSRForDecl(D);
                     BI.Name = B.getType().getAsString();
                 }
                 else
                 {
-                    BI.USR = getUSRForDecl(Base);
+                    BI.id = getUSRForDecl(Base);
                     BI.Name = Base->getNameAsString();
                 }
                 parseFields(BI, Base, PublicOnly, BI.Access, R);
@@ -781,7 +781,7 @@ parseBases(
                         FI.Access =
                             getFinalAccessSpecifier(BI.Access, MD->getAccessUnsafe());
                         BI.Children.Functions.emplace_back(
-                            FI.USR,
+                            FI.id,
                             FI.Name,
                             InfoType::IT_function);
                     }
@@ -817,7 +817,7 @@ build(
     if(D->isAnonymousNamespace())
         I.Name = "@nonymous_namespace";
 
-    if(I.Namespace.empty() && I.USR == globalNamespaceID)
+    if(I.Namespace.empty() && I.id == globalNamespaceID)
     {
         // Global namespace has no parent.
         return { serialize(I), {} };
@@ -830,14 +830,14 @@ build(
     if(I.Namespace.empty())
     {
         // In global namespace
-        assert(P.USR == globalNamespaceID);
+        assert(P.id == globalNamespaceID);
         InsertChild(P.Children, I);
     }
     else
     {
         // namespace can only have a namespace as parent
         assert(I.Namespace[0].RefType == InfoType::IT_namespace);
-        P.USR = I.Namespace[0].USR;
+        P.id = I.Namespace[0].id;
         InsertChild(P.Children, I);
     }
     return { serialize(I), serialize(P) };
@@ -932,16 +932,16 @@ build(
     {
         NamespaceInfo P;
         if(! I.Namespace.empty())
-            P.USR = I.Namespace[0].USR;
+            P.id = I.Namespace[0].id;
         else
-            assert(P.USR == globalNamespaceID);
+            assert(P.id == globalNamespaceID);
         InsertChild(P.Children, I);
         return { serialize(I), serialize(P) };
     }
     assert(I.Namespace[0].RefType == InfoType::IT_record);
 
     RecordInfo P;
-    P.USR = I.Namespace[0].USR;
+    P.id = I.Namespace[0].id;
     InsertChild(P.Children, I);
     return { serialize(I), serialize(P) };
 }
@@ -972,7 +972,7 @@ build(
     // parent and the record itself.
     assert(I.Namespace[0].RefType == InfoType::IT_record);
     RecordInfo P;
-    P.USR = I.Namespace[0].USR;
+    P.id = I.Namespace[0].id;
     InsertChild(P.Children, I);
     return { serialize(I), serialize(P) };
 }
@@ -994,14 +994,14 @@ build(
     if(I.Namespace.empty())
     {
         // In global namespace
-        assert(P.USR == globalNamespaceID);
+        assert(P.id == globalNamespaceID);
         InsertChild(P.Children, I);
     }
     else
     {
         // free function can only have a namespace as parent
         assert(I.Namespace[0].RefType == InfoType::IT_namespace);
-        P.USR = I.Namespace[0].USR;
+        P.id = I.Namespace[0].id;
         InsertChild(P.Children, I);
     }
     return { serialize(I), serialize(P) };
@@ -1036,16 +1036,16 @@ build(
     {
         NamespaceInfo P;
         if(! I.Namespace.empty())
-            P.USR = I.Namespace[0].USR;
+            P.id = I.Namespace[0].id;
         else
-            assert(P.USR == globalNamespaceID);
+            assert(P.id == globalNamespaceID);
         P.Children.Typedefs.emplace_back(std::move(I));
         return { {}, serialize(P) };
     }
     assert(I.Namespace[0].RefType == InfoType::IT_record);
 
     RecordInfo P;
-    P.USR = I.Namespace[0].USR;
+    P.id = I.Namespace[0].id;
     P.Children.Typedefs.emplace_back(std::move(I));
     return { {}, serialize(P) };
 }
@@ -1083,16 +1083,16 @@ build(
     {
         NamespaceInfo P;
         if(! I.Namespace.empty())
-            P.USR = I.Namespace[0].USR;
+            P.id = I.Namespace[0].id;
         else
-            assert(P.USR == globalNamespaceID);
+            assert(P.id == globalNamespaceID);
         P.Children.Typedefs.emplace_back(std::move(I));
         return { {}, serialize(P) };
     }
     assert(I.Namespace[0].RefType == InfoType::IT_record);
 
     RecordInfo P;
-    P.USR = I.Namespace[0].USR;
+    P.id = I.Namespace[0].id;
     P.Children.Typedefs.emplace_back(std::move(I));
     return { {}, serialize(P) };
 }
@@ -1121,16 +1121,16 @@ build(
     {
         NamespaceInfo P;
         if(! I.Namespace.empty())
-            P.USR = I.Namespace[0].USR;
+            P.id = I.Namespace[0].id;
         else
-            assert(P.USR == globalNamespaceID);
+            assert(P.id == globalNamespaceID);
         P.Children.Enums.emplace_back(std::move(I));
         return { {}, serialize(P) };
     }
     assert(I.Namespace[0].RefType == InfoType::IT_record);
 
     RecordInfo P;
-    P.USR = I.Namespace[0].USR;
+    P.id = I.Namespace[0].id;
     P.Children.Enums.emplace_back(std::move(I));
     return { {}, serialize(P) };
 }

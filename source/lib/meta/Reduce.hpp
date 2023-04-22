@@ -42,7 +42,7 @@ reduce(
     if (Values.empty() || !Values[0])
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "no value to reduce");
-    std::unique_ptr<Info> Merged = std::make_unique<T>(Values[0]->USR);
+    std::unique_ptr<Info> Merged = std::make_unique<T>(Values[0]->id);
     T* Tmp = static_cast<T*>(Merged.get());
     for (auto& I : Values)
         Tmp->merge(std::move(*static_cast<T*>(I.get())));
@@ -59,7 +59,7 @@ getChildIndexIfExists(
 {
     for (unsigned long I = 0; I < Children.size(); I++)
     {
-        if (ChildToMerge.USR == Children[I].USR)
+        if (ChildToMerge.id == Children[I].id)
             return I;
     }
     return -1;

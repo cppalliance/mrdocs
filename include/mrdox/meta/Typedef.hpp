@@ -24,8 +24,8 @@ struct TypedefInfo : SymbolInfo
     static constexpr InfoType type_id = InfoType::IT_typedef;
 
     TypedefInfo(
-        SymbolID USR = SymbolID())
-        : SymbolInfo(InfoType::IT_typedef, USR)
+        SymbolID id_ = SymbolID())
+        : SymbolInfo(InfoType::IT_typedef, id_)
     {
     }
 
