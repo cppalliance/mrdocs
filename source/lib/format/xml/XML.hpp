@@ -15,7 +15,6 @@
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/meta/Javadoc.hpp>
 #include <mrdox/format/Generator.hpp>
-#include <mrdox/format/RecursiveWriter.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -56,9 +55,35 @@ struct XMLGenerator : Generator
 /** A writer which outputs XML.
 */
 class XMLGenerator::Writer
-    : public RecursiveWriter
+    : public Corpus::Visitor
 {
+    std::string indentString_;
+    llvm::raw_ostream& os_;
+    Corpus const& corpus_;
+    Reporter& R_;
+
 public:
+    /** Describes an item in the list of all symbols.
+    */
+    struct AllSymbol
+    {
+        /** The fully qualified name of this symbol.
+        */
+        std::string fqName;
+
+        /** A string representing the symbol type.
+        */
+        llvm::StringRef symbolType;
+
+        /** The ID of this symbol.
+        */
+        SymbolID id;
+
+        /** Constructor.
+        */
+        AllSymbol(Info const& I);
+    };
+
     struct Attr;
 
     struct Attrs
@@ -80,11 +105,11 @@ public:
 private:
     void writeAllSymbols();
 
-    void visitNamespace(NamespaceInfo const&) override;
-    void visitRecord(RecordInfo const&) override;
-    void visitFunction(FunctionInfo const&) override;
-    void visitTypedef(TypedefInfo const& I) override;
-    void visitEnum(EnumInfo const& I) override;
+    void visit(NamespaceInfo const&) override;
+    void visit(RecordInfo const&) override;
+    void visit(FunctionInfo const&) override;
+    void visit(EnumInfo const&) override;
+    void visit(TypedefInfo const&) override;
 
     void writeInfo(Info const& I);
     void writeSymbol(SymbolInfo const& I);
@@ -113,6 +138,9 @@ private:
     void closeTag(llvm::StringRef);
     void writeTag(llvm::StringRef tag,
         llvm::StringRef value = {}, Attrs = {});
+
+    llvm::raw_ostream& indent();
+    void adjustNesting(int levels);
 
     static std::string toString(SymbolID const& id);
     static llvm::StringRef toString(InfoType) noexcept;

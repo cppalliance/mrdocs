@@ -146,6 +146,23 @@ buildString(
 
 //------------------------------------------------
 //
+// AllSymbol
+//
+//------------------------------------------------
+
+XMLGenerator::
+Writer::
+AllSymbol::
+AllSymbol(
+    Info const& I)
+{
+    I.getFullyQualifiedName(fqName);
+    symbolType = I.symbolType();
+    id = I.id;
+}
+
+//------------------------------------------------
+//
 // Attrs
 //
 //------------------------------------------------
@@ -216,7 +233,9 @@ Writer(
     llvm::raw_ostream& os,
     Corpus const& corpus,
     Reporter& R) noexcept
-    : RecursiveWriter(os, corpus, R)
+    : os_(os)
+    , corpus_(corpus)
+    , R_(R)
 {
 }
 
@@ -230,7 +249,7 @@ write()
         "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
         "<mrdox>\n";
     writeAllSymbols();
-    visitNamespace(corpus_.globalNamespace());
+    corpus_.visit(globalNamespaceID, *this);
     os_ <<
         "</mrdox>\n";
 }
@@ -242,7 +261,11 @@ XMLGenerator::
 Writer::
 writeAllSymbols()
 {
-    auto list = makeAllSymbols();
+    std::vector<AllSymbol> list;
+    list.reserve(corpus_.allSymbols().size());
+    for(auto const& id : corpus_.allSymbols())
+        list.emplace_back(corpus_.get<Info>(id));
+
     openTag("symbols");
     for(auto const& I : list)
     {
@@ -259,7 +282,7 @@ writeAllSymbols()
 void
 XMLGenerator::
 Writer::
-visitNamespace(
+visit(
     NamespaceInfo const& I)
 {
     openTag("namespace", {
@@ -270,7 +293,7 @@ visitNamespace(
     writeInfo(I);
     writeJavadoc(I.javadoc);
 
-    visitScope(I.Children);
+    corpus_.visit(I.Children, *this);
 
     closeTag("namespace");
 }
@@ -280,7 +303,7 @@ visitNamespace(
 void
 XMLGenerator::
 Writer::
-visitRecord(
+visit(
     RecordInfo const& I)
 {
     llvm::StringRef tag =
@@ -299,7 +322,7 @@ visitRecord(
         writeMemberType(J);
     writeJavadoc(I.javadoc);
 
-    visitScope(I.Children);
+    corpus_.visit(I.Children, *this);
 
     closeTag(tag);
 }
@@ -309,7 +332,7 @@ visitRecord(
 void
 XMLGenerator::
 Writer::
-visitFunction(
+visit(
     FunctionInfo const& I)
 {
     openTag("function", {
@@ -320,6 +343,8 @@ visitFunction(
 
     writeInfo(I);
     writeSymbol(I);
+    //FunctionInfo
+    //FunctionInfo
     writeReturnType(I.ReturnType);
     for(auto const& J : I.Params)
         writeParam(J);
@@ -336,7 +361,7 @@ visitFunction(
 void
 XMLGenerator::
 Writer::
-visitTypedef(
+visit(
     TypedefInfo const& I)
 {
     openTag("typedef", {
@@ -356,7 +381,7 @@ visitTypedef(
 void
 XMLGenerator::
 Writer::
-visitEnum(
+visit(
     EnumInfo const& I)
 {
     openTag("enum", {
@@ -725,6 +750,33 @@ writeTag(
         "<" << tag << attrs << ">" <<
         escape(value) <<
         "</" << tag << ">\n";
+}
+
+//------------------------------------------------
+
+llvm::raw_ostream&
+XMLGenerator::
+Writer::
+indent()
+{
+    return os_ << indentString_;
+}
+
+void
+XMLGenerator::
+Writer::
+adjustNesting(int levels)
+{
+    if(levels > 0)
+    {
+        indentString_.append(levels * 2, ' ');
+    }
+    else
+    {
+        auto const n = levels * -2;
+        assert(n <= indentString_.size());
+        indentString_.resize(indentString_.size() - n);
+    }
 }
 
 //------------------------------------------------
