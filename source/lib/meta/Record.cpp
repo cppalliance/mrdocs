@@ -11,6 +11,7 @@
 
 #include "Reduce.hpp"
 #include <mrdox/meta/BaseRecord.hpp>
+#include <mrdox/Debug.hpp>
 #include <mrdox/meta/Record.hpp>
 #include <cassert>
 #include <utility>
@@ -31,7 +32,7 @@ void
 RecordInfo::
 merge(RecordInfo&& Other)
 {
-    assert(canMerge(Other));
+    Assert(canMerge(Other));
     if (!TagType)
         TagType = Other.TagType;
     IsTypeDef = IsTypeDef || Other.IsTypeDef;

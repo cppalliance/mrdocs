@@ -10,6 +10,7 @@
 //
 
 #include "BitcodeReader.hpp"
+#include <mrdox/Debug.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -20,27 +21,74 @@ namespace mrdox {
 //
 //------------------------------------------------
 
-// This implements decode for SmallString.
-llvm::Error
-decodeRecord(
-    const Record& R,
-    llvm::SmallVectorImpl<char>& Field,
-    llvm::StringRef Blob)
-{
-    Field.assign(Blob.begin(), Blob.end());
-    return llvm::Error::success();
-}
-
+// bool
+static
 llvm::Error
 decodeRecord(
     Record const& R,
-    std::string& Field,
+    bool& Field,
     llvm::StringRef Blob)
 {
-    Field.assign(Blob.begin(), Blob.end());
+    Field = R[0] != 0;
     return llvm::Error::success();
 }
 
+// integral types
+template<class IntTy>
+requires std::is_integral_v<IntTy>
+static
+llvm::Error
+decodeRecord(
+    Record const& R,
+    IntTy& v,
+    llvm::StringRef Blob)
+{
+    v = 0;
+    if (R[0] > (std::numeric_limits<IntTy>::max)())
+        return makeError("integer overflow");
+    v = static_cast<IntTy>(R[0]);
+    return llvm::Error::success();
+}
+
+// enumerations
+template<class Enum>
+requires std::is_enum_v<Enum>
+static
+llvm::Error
+decodeRecord(
+    Record const& R,
+    Enum& value,
+    llvm::StringRef blob)
+{
+    std::underlying_type_t<Enum> temp;
+    if(auto err = decodeRecord(R, temp, blob))
+        return err;
+    value = static_cast<Enum>(temp);
+    return llvm::Error::success();
+}
+
+// container of char
+template<class Field>
+requires std::is_same_v<
+    typename Field::value_type, char>
+static
+llvm::Error
+decodeRecord(
+    const Record& R,
+    Field& f,
+    llvm::StringRef blob)
+        requires requires
+        {
+            f.assign(blob.begin(), blob.end());
+        }
+{
+    f.assign(blob.begin(), blob.end());
+    return llvm::Error::success();
+}
+
+//------------------------------------------------
+
+static
 llvm::Error
 decodeRecord(
     const Record& R,
@@ -57,29 +105,7 @@ decodeRecord(
     return llvm::Error::success();
 }
 
-llvm::Error
-decodeRecord(
-    const Record& R,
-    bool& Field,
-    llvm::StringRef Blob)
-{
-    Field = R[0] != 0;
-    return llvm::Error::success();
-}
-
-llvm::Error
-decodeRecord(
-    const Record& R,
-    int& Field,
-    llvm::StringRef Blob)
-{
-    Field = 0;
-    if (R[0] > INT_MAX)
-        return makeError("integer too large to parse");
-    Field = (int)R[0];
-    return llvm::Error::success();
-}
-
+static
 llvm::Error
 decodeRecord(
     Record const& R,
@@ -100,6 +126,7 @@ decodeRecord(
     }
 }
 
+static
 llvm::Error
 decodeRecord(
     Record const& R,
@@ -121,6 +148,7 @@ decodeRecord(
     }
 }
 
+static
 llvm::Error
 decodeRecord(
     Record const& R,
@@ -133,6 +161,7 @@ decodeRecord(
     return llvm::Error::success();
 }
 
+static
 llvm::Error
 decodeRecord(
     Record const& R,
@@ -154,6 +183,7 @@ decodeRecord(
     return makeError("invalid value for InfoType");
 }
 
+static
 llvm::Error
 decodeRecord(
     Record const& R,
@@ -177,18 +207,7 @@ decodeRecord(
     return makeError("invalid value for FieldId");
 }
 
-#if 0
-llvm::Error
-decodeRecord(
-    Record const& R,
-    llvm::SmallVectorImpl<llvm::SmallString<16>>& Field,
-    llvm::StringRef Blob)
-{
-    Field.push_back(Blob);
-    return llvm::Error::success();
-}
-#endif
-
+static
 llvm::Error
 decodeRecord(
     const Record& R,
@@ -198,21 +217,6 @@ decodeRecord(
     if (R[0] > INT_MAX)
         return makeError("integer too large to parse");
     Field.emplace_back((int)R[0], Blob, (bool)R[1]);
-    return llvm::Error::success();
-}
-
-template<class Enum, class =
-    std::enable_if_t<std::is_enum_v<Enum>>>
-llvm::Error
-decodeRecord(
-    Record const& R,
-    Enum& value,
-    llvm::StringRef blob)
-{
-    std::underlying_type_t<Enum> temp;
-    if(auto err = decodeRecord(R, temp, blob))
-        return err;
-    value = static_cast<Enum>(temp);
     return llvm::Error::success();
 }
 
@@ -780,7 +784,7 @@ readSubBlock(
     {
     case BI_JAVADOC_BLOCK_ID:
     {
-        assert(javadoc_ == nullptr);
+        Assert(javadoc_ == nullptr);
         if(nodes_)
             return makeError("unexpected sub-block");
         auto rv = getJavadoc(I);
@@ -1051,6 +1055,14 @@ parseRecord(
         return decodeRecord(R, I->Access, Blob);
     case FUNCTION_IS_METHOD:
         return decodeRecord(R, I->IsMethod, Blob);
+    case FUNCTION_BITS:
+    {
+        FunctionInfo::Specs::value_type bits;
+        if(auto err = decodeRecord(R, bits, Blob))
+            return err;
+        I->specs = FunctionInfo::Specs(bits);
+        return llvm::Error::success();
+    }
     default:
         return makeError("invalid field for FunctionInfo");
     }
@@ -1248,7 +1260,7 @@ parseRecord(
     {
     case JAVADOC_LIST_KIND:
     {
-        assert(I != nullptr);
+        Assert(I != nullptr);
         Javadoc::Kind kind;
         if(auto err = decodeRecord(R, kind, blob))
             return err;

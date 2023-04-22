@@ -52,9 +52,9 @@ public:
     MangleContext& mc;
     Config const& config_;
     Reporter& R_;
-    bool PublicOnly;
-    int LineNumber;
     StringRef File;
+    int LineNumber;
+    bool PublicOnly;
     bool IsFileInRootDir;
 
     Serializer(
@@ -65,12 +65,12 @@ public:
         Config const& config,
         Reporter& R)
         : mc(mc_)
-        , LineNumber(LineNumber_)
-        , File(File_)
-        , IsFileInRootDir(IsFileInRootDir_)
         , config_(config)
         , R_(R)
+        , File(File_)
+        , LineNumber(LineNumber_)
         , PublicOnly(! config_.includePrivate())
+        , IsFileInRootDir(IsFileInRootDir_)
     {
     }
 

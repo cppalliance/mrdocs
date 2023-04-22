@@ -48,7 +48,7 @@ insert(std::unique_ptr<Info> I)
     // add to allSymbols
     {
         std::lock_guard<llvm::sys::Mutex> Guard(allSymbolsMutex);
-        assert(! isCanonical_);
+        Assert(! isCanonical_);
         allSymbols_.emplace_back(I->id);
     }
 
@@ -73,7 +73,7 @@ canonicalize(Reporter& R)
 {
     if(isCanonical_)
         return true;
-    assert(exists(globalNamespaceID));
+    Assert(exists(globalNamespaceID));
     auto& I = get<NamespaceInfo>(globalNamespaceID);
 
     if(config_->verbose())

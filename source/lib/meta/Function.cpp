@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include <mrdox/Debug.hpp>
 #include <mrdox/meta/Function.hpp>
 #include <utility>
 
@@ -17,10 +18,20 @@ namespace mrdox {
 
 void
 FunctionInfo::
+Specs::
+merge(Specs&& other) noexcept
+{
+    Assert(bits_ == 0 || bits_ == other.bits_);
+    if(other.bits_)
+        bits_ = other.bits_;
+}
+
+void
+FunctionInfo::
 merge(
     FunctionInfo&& Other)
 {
-    assert(canMerge(Other));
+    Assert(canMerge(Other));
     if (!IsMethod)
         IsMethod = Other.IsMethod;
     if (!Access)
@@ -34,6 +45,7 @@ merge(
     SymbolInfo::merge(std::move(Other));
     if (!Template)
         Template = Other.Template;
+    specs.merge(std::move(Other).specs);
 }
 
 } // mrdox

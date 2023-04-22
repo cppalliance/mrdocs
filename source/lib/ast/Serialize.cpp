@@ -12,6 +12,7 @@
 #include "Serialize.hpp"
 #include "Bitcode.hpp"
 #include "ParseJavadoc.hpp"
+#include <mrdox/Debug.hpp>
 #include <mrdox/Metadata.hpp>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
@@ -368,7 +369,7 @@ getMemberTypeInfo(
     FieldDecl const* D,
     Reporter& R)
 {
-    assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
+    Assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
 
     ASTContext& Context = D->getASTContext();
     // VFALCO investigate whether we can use
@@ -830,13 +831,13 @@ build(
     if(I.Namespace.empty())
     {
         // In global namespace
-        assert(P.id == globalNamespaceID);
+        Assert(P.id == globalNamespaceID);
         InsertChild(P.Children, I);
     }
     else
     {
         // namespace can only have a namespace as parent
-        assert(I.Namespace[0].RefType == InfoType::IT_namespace);
+        Assert(I.Namespace[0].RefType == InfoType::IT_namespace);
         P.id = I.Namespace[0].id;
         InsertChild(P.Children, I);
     }
@@ -934,11 +935,11 @@ build(
         if(! I.Namespace.empty())
             P.id = I.Namespace[0].id;
         else
-            assert(P.id == globalNamespaceID);
+            Assert(P.id == globalNamespaceID);
         InsertChild(P.Children, I);
         return { serialize(I), serialize(P) };
     }
-    assert(I.Namespace[0].RefType == InfoType::IT_record);
+    Assert(I.Namespace[0].RefType == InfoType::IT_record);
 
     RecordInfo P;
     P.id = I.Namespace[0].id;
@@ -967,27 +968,27 @@ build(
         InfoType::IT_record);
     I.Access = D->getAccess();
 
-    I.refQualifier = D->getRefQualifier();
-
-    I.isConst = D->isConst();
-    I.isConsteval = D->isConsteval();
-    I.isConstexpr = D->isConstexprSpecified() && ! D->isExplicitlyDefaulted();
-    I.isInline = D->isInlineSpecified();
-    I.isNoExcept = isNoexceptExceptionSpec(D->getExceptionSpecType());
-    //I.isSpecialMember =
-    I.isVariadic = D->isVariadic();
-    I.isVirtual = D->isVirtualAsWritten();
-    I.isVolatile = D->isVolatile();
-
+    I.specs.set(FunctionInfo::constBit, D->isConst());
+    I.specs.set(FunctionInfo::constevalBit, D->isConsteval());
+    I.specs.set(FunctionInfo::constexprBit, D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
+    I.specs.set(FunctionInfo::inlineBit, D->isInlineSpecified());
+    I.specs.set(FunctionInfo::noexceptBit, isNoexceptExceptionSpec(D->getExceptionSpecType()));
+    I.specs.set(FunctionInfo::pureBit, D->isPure());
+    //I.specs.set(FunctionInfo::specialBit);
+    I.specs.set(FunctionInfo::variadicBit, D->isVariadic());
+    I.specs.set(FunctionInfo::virtualBit, D->isVirtualAsWritten());
+    I.specs.set(FunctionInfo::volatileBit, D->isVolatile());
     if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
     {
-        I.isTrailingReturn = FP->hasTrailingReturn();
+        I.specs.set(FunctionInfo::trailReturnBit, FP->hasTrailingReturn());
     }
+    I.specs.setRefQualifier(D->getRefQualifier());
+    I.specs.setStorageClass(D->getStorageClass());
 
     // Functions are inserted into the parent by
     // reference, so we need to return both the
     // parent and the record itself.
-    assert(I.Namespace[0].RefType == InfoType::IT_record);
+    Assert(I.Namespace[0].RefType == InfoType::IT_record);
     RecordInfo P;
     P.id = I.Namespace[0].id;
     InsertChild(P.Children, I);
@@ -1011,13 +1012,13 @@ build(
     if(I.Namespace.empty())
     {
         // In global namespace
-        assert(P.id == globalNamespaceID);
+        Assert(P.id == globalNamespaceID);
         InsertChild(P.Children, I);
     }
     else
     {
         // free function can only have a namespace as parent
-        assert(I.Namespace[0].RefType == InfoType::IT_namespace);
+        Assert(I.Namespace[0].RefType == InfoType::IT_namespace);
         P.id = I.Namespace[0].id;
         InsertChild(P.Children, I);
     }
@@ -1055,11 +1056,11 @@ build(
         if(! I.Namespace.empty())
             P.id = I.Namespace[0].id;
         else
-            assert(P.id == globalNamespaceID);
+            Assert(P.id == globalNamespaceID);
         P.Children.Typedefs.emplace_back(std::move(I));
         return { {}, serialize(P) };
     }
-    assert(I.Namespace[0].RefType == InfoType::IT_record);
+    Assert(I.Namespace[0].RefType == InfoType::IT_record);
 
     RecordInfo P;
     P.id = I.Namespace[0].id;
@@ -1102,11 +1103,11 @@ build(
         if(! I.Namespace.empty())
             P.id = I.Namespace[0].id;
         else
-            assert(P.id == globalNamespaceID);
+            Assert(P.id == globalNamespaceID);
         P.Children.Typedefs.emplace_back(std::move(I));
         return { {}, serialize(P) };
     }
-    assert(I.Namespace[0].RefType == InfoType::IT_record);
+    Assert(I.Namespace[0].RefType == InfoType::IT_record);
 
     RecordInfo P;
     P.id = I.Namespace[0].id;
@@ -1140,11 +1141,11 @@ build(
         if(! I.Namespace.empty())
             P.id = I.Namespace[0].id;
         else
-            assert(P.id == globalNamespaceID);
+            Assert(P.id == globalNamespaceID);
         P.Children.Enums.emplace_back(std::move(I));
         return { {}, serialize(P) };
     }
-    assert(I.Namespace[0].RefType == InfoType::IT_record);
+    Assert(I.Namespace[0].RefType == InfoType::IT_record);
 
     RecordInfo P;
     P.id = I.Namespace[0].id;

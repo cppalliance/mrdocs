@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include <mrdox/Debug.hpp>
 #include <mrdox/meta/Symbol.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <cassert>
@@ -21,7 +22,7 @@ SymbolInfo::
 merge(
     SymbolInfo&& Other)
 {
-    assert(canMerge(Other));
+    Assert(canMerge(Other));
     if (!DefLoc)
         DefLoc = std::move(Other.DefLoc);
     // Unconditionally extend the list of locations, since we want all of them.

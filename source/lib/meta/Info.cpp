@@ -10,6 +10,7 @@
 //
 
 #include <mrdox/meta/Info.hpp>
+#include <mrdox/Debug.hpp>
 #include <mrdox/meta/Record.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/STLExtras.h>
@@ -35,7 +36,7 @@ Info::
 mergeBase(
     Info&& Other)
 {
-    assert(canMerge(Other));
+    Assert(canMerge(Other));
     if (id == EmptySID)
         id = Other.id;
     if (Name == "")

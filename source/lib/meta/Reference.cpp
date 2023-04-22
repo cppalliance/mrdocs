@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include <mrdox/Debug.hpp>
 #include <mrdox/meta/Info.hpp>
 #include <mrdox/meta/Reference.hpp>
 
@@ -30,7 +31,7 @@ Reference::
 merge(
     Reference&& Other)
 {
-    assert(canMerge(Other));
+    Assert(canMerge(Other));
     if (Name.empty())
         Name = Other.Name;
 }

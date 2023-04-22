@@ -199,6 +199,58 @@ struct XMLGenerator::Writer::
     }
 };
 
+//------------------------------------------------
+//
+// maybe_indent
+//
+//------------------------------------------------
+
+struct XMLGenerator::Writer::
+    maybe_indent_type
+{
+    llvm::raw_ostream& os_;
+    std::string const& indent_;
+    bool indented_ = false;
+
+    maybe_indent_type(
+        llvm::raw_ostream& os,
+        std::string const& indent) noexcept
+        : os_(os)
+        , indent_(indent)
+    {
+    }
+
+    template<class T>
+    llvm::raw_ostream&
+    operator<<(T const& t)
+    {
+        if(! indented_)
+        {
+            os_ << indent_;
+            indented_ = true;
+        }
+        return os_ << t;
+    }
+
+    void
+    finish()
+    {
+        if(indented_)
+            os_ << '\n';
+    }
+};
+
+auto
+XMLGenerator::
+Writer::
+maybe_indent() noexcept ->
+    maybe_indent_type
+{
+    return maybe_indent_type(os_, indentString_);
+}
+
+//------------------------------------------------
+
 XMLGenerator::
 Writer::
 Attrs::
@@ -343,8 +395,63 @@ visit(
 
     writeInfo(I);
     writeSymbol(I);
-    //FunctionInfo
-    //FunctionInfo
+    {
+        // FunctionInfo::Specs
+        auto os = maybe_indent();
+
+        switch(I.specs.storageClass())
+        {
+        case SC_None:
+            break;
+        case SC_Extern:
+            os << "<extern/>";
+            break;
+        case SC_Static:
+            os << "<static/>";
+            break;
+        case SC_PrivateExtern:
+            // VFALCO What is this for?
+            os << "<pextern/>";
+            break;
+        default:
+            Assert(isLegalForFunction(I.specs.storageClass()));
+            break;
+        }
+        switch(I.specs.refQualifier())
+        {
+        case RQ_None:
+            break;
+        case RQ_LValue:
+            os << "<lvref/>";
+            break;
+        case RQ_RValue:
+            os << "<rvref/>";
+            break;
+        }
+        if(I.specs.isSet(FunctionInfo::constBit))
+            os << "<const/>";
+        if(I.specs.isSet(FunctionInfo::constevalBit))
+            os << "<consteval/>";
+        if(I.specs.isSet(FunctionInfo::constexprBit))
+            os << "<constexpr/>";
+        if(I.specs.isSet(FunctionInfo::inlineBit))
+            os << "<inline/>";
+        if(I.specs.isSet(FunctionInfo::noexceptBit))
+            os << "<noexcept/>";
+        if(I.specs.isSet(FunctionInfo::pureBit))
+            os << "<pure/>";
+        if(I.specs.isSet(FunctionInfo::specialBit))
+            os << "<special/>";
+        if(I.specs.isSet(FunctionInfo::trailReturnBit))
+            os << "<trailing/>";
+        if(I.specs.isSet(FunctionInfo::variadicBit))
+            os << "<variadic/>";
+        if(I.specs.isSet(FunctionInfo::virtualBit))
+            os << "<virtual/>";
+        if(I.specs.isSet(FunctionInfo::volatileBit))
+            os << "<volatile/>";
+        os.finish();
+    }
     writeReturnType(I.ReturnType);
     for(auto const& J : I.Params)
         writeParam(J);
@@ -774,7 +881,7 @@ adjustNesting(int levels)
     else
     {
         auto const n = levels * -2;
-        assert(n <= indentString_.size());
+        Assert(n <= indentString_.size());
         indentString_.resize(indentString_.size() - n);
     }
 }

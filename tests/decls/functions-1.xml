@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<symbols>
+  <symbol name="" tag="namespace"/>
+  <symbol name="T01" tag="struct" id="O2UBDeG42PMrk1up8f8PGVFhIGk="/>
+  <symbol name="T01::f" tag="function" id="dmtEtFE6EVKE6hWuugP9vFuib6Y="/>
+  <symbol name="T02" tag="struct" id="H+pnPDuG6B+W6+srjVP2qhqXCrQ="/>
+  <symbol name="T02::f" tag="function" id="QPLurkQ2BXODb4xY6bw1mlNtQ28="/>
+  <symbol name="T03" tag="struct" id="rM+ml6ikwiS9Twa1IwpCHbSHTbg="/>
+  <symbol name="T03::f" tag="function" id="p6A5dCCvCkASDE6pH4cJA/27/o8="/>
+  <symbol name="T04" tag="struct" id="MBpLzhyCDdQBHul4AN2i2fR8fw0="/>
+  <symbol name="T04::f" tag="function" id="G71rDzcAZPSKGoGGoDswQjD1JuA="/>
+  <symbol name="T05" tag="struct" id="5s81XyCIgauM5viJN9KAwx2A6DU="/>
+  <symbol name="T05::f" tag="function" id="rWLMsKBEv1FtDyk7Y7XNzcgmt68="/>
+  <symbol name="T06" tag="struct" id="SzwXGFnhX4HlHjHolU7XF/KEqDs="/>
+  <symbol name="T06::f" tag="function" id="A3MUO5+pwkURxw+SBeh1y0BKv7c="/>
+  <symbol name="T08" tag="struct" id="WU9ZeQm0IOT8cYJkWXom3NXeWsM="/>
+  <symbol name="T08::f" tag="function" id="jlrEtbnYd1B6OAjYlF0gQ/oYu5w="/>
+  <symbol name="T09" tag="struct" id="SX7tpa77UInh7a4AsMFjfiCtoLY="/>
+  <symbol name="T09::f" tag="function" id="u+MePKsNF/sYSk6UpgNS65+USGU="/>
+  <symbol name="T10" tag="struct" id="TJnjDRnoO8E/5XEw8BaODsKxlwQ="/>
+  <symbol name="T10::f" tag="function" id="0hjrVGeDlQhdYkOu4shvWWPqNKU="/>
+  <symbol name="T11" tag="struct" id="MXMa4TZZfdRkREzWSLpIF6ruUyw="/>
+  <symbol name="T11::f" tag="function" id="+NevzZlqigIe1KSKS7eqq7pCd40="/>
+  <symbol name="T12" tag="struct" id="7rg34TfmIwu+7zOd7DN+Dq8mLCc="/>
+  <symbol name="T12::f" tag="function" id="I0S8eMgTnTkagm+IrM34MBiU4XI="/>
+  <symbol name="T13" tag="struct" id="NyLraUP0R3lYeyTpHQYZpyZMstc="/>
+  <symbol name="T13::f" tag="function" id="5d5eSOvkYwBOnpbLcrkRuFvJGP4="/>
+  <symbol name="T14" tag="struct" id="SLJhBKx+2u4KxSJ78Fg6wqlObPc="/>
+  <symbol name="T14::f" tag="function" id="1Lz3aFupR+OsCqiPOaIFWqGuyCc="/>
+  <symbol name="T15" tag="struct" id="Bu7lz+fvOPzOR6oSlAo9R8R0alg="/>
+  <symbol name="T15::f" tag="function" id="wSFf8IAx5Twq6aD5T8XdnXGuhw8="/>
+  <symbol name="T16" tag="struct" id="75395VGvKeZbe1EhfJwktZuWLs0="/>
+  <symbol name="T16::f" tag="function" id="OEX+TUed8FjXJPiI4c3+9WHzJl4="/>
+  <symbol name="U" tag="struct" id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
+  <symbol name="U::f1" tag="function" id="DBXd564vaQo7GHkh6XCC6HV78/I="/>
+  <symbol name="U::f2" tag="function" id="II436kVwM/ZBYOf9q474VxRXK6c="/>
+  <symbol name="U::f3" tag="function" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw="/>
+</symbols>
+<namespace name="">
+  <struct name="T01" id="O2UBDeG42PMrk1up8f8PGVFhIGk=">
+    <file path="functions-1.cpp" line="3" class="def"/>
+    <function name="f" access="public" id="dmtEtFE6EVKE6hWuugP9vFuib6Y=">
+      <file path="functions-1.cpp" line="3"/>
+    </function>
+  </struct>
+  <struct name="T02" id="H+pnPDuG6B+W6+srjVP2qhqXCrQ=">
+    <file path="functions-1.cpp" line="4" class="def"/>
+    <function name="f" access="public" id="QPLurkQ2BXODb4xY6bw1mlNtQ28=">
+      <file path="functions-1.cpp" line="4"/>
+      <static/>
+    </function>
+  </struct>
+  <struct name="T03" id="rM+ml6ikwiS9Twa1IwpCHbSHTbg=">
+    <file path="functions-1.cpp" line="5" class="def"/>
+    <function name="f" access="public" id="p6A5dCCvCkASDE6pH4cJA/27/o8=">
+      <file path="functions-1.cpp" line="5"/>
+      <lvref/>
+    </function>
+  </struct>
+  <struct name="T04" id="MBpLzhyCDdQBHul4AN2i2fR8fw0=">
+    <file path="functions-1.cpp" line="6" class="def"/>
+    <function name="f" access="public" id="G71rDzcAZPSKGoGGoDswQjD1JuA=">
+      <file path="functions-1.cpp" line="6"/>
+      <rvref/>
+    </function>
+  </struct>
+  <struct name="T05" id="5s81XyCIgauM5viJN9KAwx2A6DU=">
+    <file path="functions-1.cpp" line="7" class="def"/>
+    <function name="f" access="public" id="rWLMsKBEv1FtDyk7Y7XNzcgmt68=">
+      <file path="functions-1.cpp" line="7"/>
+      <const/>
+    </function>
+  </struct>
+  <struct name="T06" id="SzwXGFnhX4HlHjHolU7XF/KEqDs=">
+    <file path="functions-1.cpp" line="8" class="def"/>
+    <function name="f" access="public" id="A3MUO5+pwkURxw+SBeh1y0BKv7c=">
+      <file path="functions-1.cpp" line="8" class="def"/>
+      <constexpr/>
+    </function>
+  </struct>
+  <struct name="T08" id="WU9ZeQm0IOT8cYJkWXom3NXeWsM=">
+    <file path="functions-1.cpp" line="10" class="def"/>
+    <function name="f" access="public" id="jlrEtbnYd1B6OAjYlF0gQ/oYu5w=">
+      <file path="functions-1.cpp" line="10"/>
+      <inline/>
+    </function>
+  </struct>
+  <struct name="T09" id="SX7tpa77UInh7a4AsMFjfiCtoLY=">
+    <file path="functions-1.cpp" line="11" class="def"/>
+    <function name="f" access="public" id="u+MePKsNF/sYSk6UpgNS65+USGU=">
+      <file path="functions-1.cpp" line="11"/>
+      <noexcept/>
+    </function>
+  </struct>
+  <struct name="T10" id="TJnjDRnoO8E/5XEw8BaODsKxlwQ=">
+    <file path="functions-1.cpp" line="12" class="def"/>
+    <function name="f" access="public" id="0hjrVGeDlQhdYkOu4shvWWPqNKU=">
+      <file path="functions-1.cpp" line="12"/>
+      <trailing/>
+    </function>
+  </struct>
+  <struct name="T11" id="MXMa4TZZfdRkREzWSLpIF6ruUyw=">
+    <file path="functions-1.cpp" line="13" class="def"/>
+    <function name="f" access="public" id="+NevzZlqigIe1KSKS7eqq7pCd40=">
+      <file path="functions-1.cpp" line="13"/>
+      <trailing/>
+      <return name="int"/>
+    </function>
+  </struct>
+  <struct name="T12" id="7rg34TfmIwu+7zOd7DN+Dq8mLCc=">
+    <file path="functions-1.cpp" line="14" class="def"/>
+    <function name="f" access="public" id="I0S8eMgTnTkagm+IrM34MBiU4XI=">
+      <file path="functions-1.cpp" line="14"/>
+      <variadic/>
+    </function>
+  </struct>
+  <struct name="T13" id="NyLraUP0R3lYeyTpHQYZpyZMstc=">
+    <file path="functions-1.cpp" line="15" class="def"/>
+    <function name="f" access="public" id="5d5eSOvkYwBOnpbLcrkRuFvJGP4=">
+      <file path="functions-1.cpp" line="15"/>
+      <virtual/>
+    </function>
+  </struct>
+  <struct name="T14" id="SLJhBKx+2u4KxSJ78Fg6wqlObPc=">
+    <file path="functions-1.cpp" line="16" class="def"/>
+    <function name="f" access="public" id="1Lz3aFupR+OsCqiPOaIFWqGuyCc=">
+      <file path="functions-1.cpp" line="16"/>
+      <pure/><virtual/>
+    </function>
+  </struct>
+  <struct name="T15" id="Bu7lz+fvOPzOR6oSlAo9R8R0alg=">
+    <file path="functions-1.cpp" line="17" class="def"/>
+    <function name="f" access="public" id="wSFf8IAx5Twq6aD5T8XdnXGuhw8=">
+      <file path="functions-1.cpp" line="17"/>
+      <volatile/>
+    </function>
+  </struct>
+  <struct name="T16" id="75395VGvKeZbe1EhfJwktZuWLs0=">
+    <file path="functions-1.cpp" line="18" class="def"/>
+    <function name="f" access="public" id="OEX+TUed8FjXJPiI4c3+9WHzJl4=">
+      <file path="functions-1.cpp" line="18"/>
+      <static/>
+    </function>
+  </struct>
+  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+    <file path="functions-1.cpp" line="20" class="def"/>
+    <function name="f1" access="public" id="DBXd564vaQo7GHkh6XCC6HV78/I=">
+      <file path="functions-1.cpp" line="22" class="def"/>
+      <const/><constexpr/><inline/><noexcept/><trailing/><variadic/><volatile/>
+    </function>
+    <function name="f2" access="public" id="II436kVwM/ZBYOf9q474VxRXK6c=">
+      <file path="functions-1.cpp" line="23" class="def"/>
+      <static/><constexpr/><inline/><noexcept/><trailing/>
+      <return name="char"/>
+    </function>
+    <function name="f3" access="public" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
+      <file path="functions-1.cpp" line="24"/>
+      <const/><noexcept/><pure/><virtual/><volatile/>
+      <return name="int"/>
+    </function>
+  </struct>
+</namespace>
+</mrdox>

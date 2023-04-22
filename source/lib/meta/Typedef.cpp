@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include <mrdox/Debug.hpp>
 #include <mrdox/meta/Typedef.hpp>
 #include <cassert>
 
@@ -20,7 +21,7 @@ TypedefInfo::
 merge(
     TypedefInfo&& Other)
 {
-    assert(canMerge(Other));
+    Assert(canMerge(Other));
     if (!IsUsing)
         IsUsing = Other.IsUsing;
     if (Underlying.Type.Name == "")

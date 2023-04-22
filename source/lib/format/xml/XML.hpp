@@ -95,6 +95,10 @@ public:
             llvm::raw_ostream& os, Attrs const& attrs);
     };
 
+    struct maybe_indent_type;
+    maybe_indent_type
+    maybe_indent() noexcept;
+
     Writer(
         llvm::raw_ostream& os,
         Corpus const& corpus,

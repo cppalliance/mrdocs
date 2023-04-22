@@ -10,6 +10,7 @@
 //
 
 #include "Reduce.hpp"
+#include <mrdox/Debug.hpp>
 #include <mrdox/meta/Namespace.hpp>
 #include <mrdox/Config.hpp>
 #include <llvm/Support/Error.h>
@@ -41,7 +42,7 @@ void
 NamespaceInfo::
 merge(NamespaceInfo&& Other)
 {
-    assert(canMerge(Other));
+    Assert(canMerge(Other));
     // Reduce children if necessary.
     reduceChildren(Children.Namespaces, std::move(Other.Children.Namespaces));
     reduceChildren(Children.Records, std::move(Other.Children.Records));

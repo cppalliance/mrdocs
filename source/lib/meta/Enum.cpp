@@ -23,6 +23,7 @@
 // on members on the forward declaration, but would have the class name).
 //
 
+#include <mrdox/Debug.hpp>
 #include <mrdox/meta/Enum.hpp>
 
 namespace clang {
@@ -33,7 +34,7 @@ EnumInfo::
 merge(
     EnumInfo&& Other)
 {
-    assert(canMerge(Other));
+    Assert(canMerge(Other));
     if (!Scoped)
         Scoped = Other.Scoped;
     if (Members.empty())

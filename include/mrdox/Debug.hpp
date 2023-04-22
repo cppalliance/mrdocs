@@ -11,6 +11,10 @@
 #ifndef MRDOX_DEBUG_HPP
 #define MRDOX_DEBUG_HPP
 
+#if ! defined(NDEBUG)
+#include <llvm/Support/ErrorHandling.h>
+#endif
+
 // Some nice odds and ends such as leak checking
 // and redirection to the Visual Studio output window.
 
@@ -29,6 +33,12 @@ debugEnableRedirecton();
 */
 void
 debugEnableHeapChecking();
+
+#if defined(NDEBUG)
+#define Assert(expr) ((void)0)
+#else
+#define Assert(expr) ((!!(expr))? ((void)0): llvm_unreachable(#expr))
+#endif
 
 } // mrdox
 } // clang

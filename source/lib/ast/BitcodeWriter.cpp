@@ -11,6 +11,7 @@
 
 #include "BitcodeWriter.hpp"
 #include "ast/ParseJavadoc.hpp"
+#include <mrdox/Debug.hpp>
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/IndexedMap.h>
 #include <initializer_list>
@@ -164,10 +165,10 @@ BlockIdNameMap = []()
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
         {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, "TemplateSpecializationBlock"},
         {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"} };
-    assert(Inits.size() == BlockIdCount);
+    Assert(Inits.size() == BlockIdCount);
     for (const auto& Init : Inits)
         BlockIdNameMap[Init.first] = Init.second;
-    assert(BlockIdNameMap.size() == BlockIdCount);
+    Assert(BlockIdNameMap.size() == BlockIdCount);
     return BlockIdNameMap;
 }();
 
@@ -219,6 +220,7 @@ RecordIdNameMap = []()
         {FUNCTION_LOCATION, {"Location", &LocationAbbrev}},
         {FUNCTION_ACCESS, {"Access", &IntAbbrev}},
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
+        {FUNCTION_BITS, {"Specs", &IntAbbrev}},
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
         {REFERENCE_TYPE, {"RefType", &IntAbbrev}},
@@ -229,13 +231,13 @@ RecordIdNameMap = []()
         {TYPEDEF_NAME, {"Name", &StringAbbrev}},
         {TYPEDEF_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}} };
-    assert(Inits.size() == RecordIdCount);
+    Assert(Inits.size() == RecordIdCount);
     for (const auto& Init : Inits)
     {
         RecordIdNameMap[Init.first] = Init.second;
-        assert((Init.second.Name.size() + 1) <= BitCodeConstants::RecordSize);
+        Assert((Init.second.Name.size() + 1) <= BitCodeConstants::RecordSize);
     }
-    assert(RecordIdNameMap.size() == RecordIdCount);
+    Assert(RecordIdNameMap.size() == RecordIdCount);
     return RecordIdNameMap;
 }();
 
@@ -285,7 +287,7 @@ RecordsByBlock{
     // Function Block
     {BI_FUNCTION_BLOCK_ID,
         {FUNCTION_USR, FUNCTION_NAME, FUNCTION_DEFLOCATION, FUNCTION_LOCATION,
-        FUNCTION_ACCESS, FUNCTION_IS_METHOD}},
+        FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_BITS}},
     // Reference Block
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
@@ -356,7 +358,7 @@ emitBlockInfoBlock()
     Stream.EnterBlockInfoBlock();
     for (const auto& Block : RecordsByBlock)
     {
-        assert(Block.second.size() < (1U << BitCodeConstants::SubblockIDSize));
+        Assert(Block.second.size() < (1U << BitCodeConstants::SubblockIDSize));
         emitBlockInfo(Block.first, Block.second);
     }
     Stream.ExitBlock();
@@ -463,6 +465,7 @@ emitBlock(
     emitBlock(I.javadoc);
     emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
+    emitRecord(I.specs.bits(), FUNCTION_BITS);
     if (I.DefLoc)
         emitRecord(*I.DefLoc, FUNCTION_DEFLOCATION);
     for (const auto& L : I.Loc)
@@ -664,8 +667,8 @@ AbbreviationMap::
 add(RecordId RID,
     unsigned AbbrevID)
 {
-    assert(RecordIdNameMap[RID] && "Unknown RecordId.");
-    assert((Abbrevs.find(RID) == Abbrevs.end()) && "Abbreviation already added.");
+    Assert(RecordIdNameMap[RID] && "Unknown RecordId.");
+    Assert((Abbrevs.find(RID) == Abbrevs.end()) && "Abbreviation already added.");
     Abbrevs[RID] = AbbrevID;
 }
 
@@ -674,8 +677,8 @@ BitcodeWriter::
 AbbreviationMap::
 get(RecordId RID) const
 {
-    assert(RecordIdNameMap[RID] && "Unknown RecordId.");
-    assert((Abbrevs.find(RID) != Abbrevs.end()) && "Unknown abbreviation.");
+    Assert(RecordIdNameMap[RID] && "Unknown RecordId.");
+    Assert((Abbrevs.find(RID) != Abbrevs.end()) && "Unknown abbreviation.");
     return Abbrevs.lookup(RID);
 }
 
@@ -685,7 +688,7 @@ BitcodeWriter::
 emitBlockID(BlockId BID)
 {
     const auto& BlockIdName = BlockIdNameMap[BID];
-    assert(BlockIdName.data() && BlockIdName.size() && "Unknown BlockId.");
+    Assert(BlockIdName.data() && BlockIdName.size() && "Unknown BlockId.");
 
     Record.clear();
     Record.push_back(BID);
@@ -700,7 +703,7 @@ void
 BitcodeWriter::
 emitRecordID(RecordId ID)
 {
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     prepRecordData(ID);
     Record.append(RecordIdNameMap[ID].Name.begin(),
         RecordIdNameMap[ID].Name.end());
@@ -714,7 +717,7 @@ BitcodeWriter::
 emitAbbrev(
     RecordId ID, BlockId Block)
 {
-    assert(RecordIdNameMap[ID] && "Unknown abbreviation.");
+    Assert(RecordIdNameMap[ID] && "Unknown abbreviation.");
     auto Abbrev = std::make_shared<llvm::BitCodeAbbrev>();
     Abbrev->Add(llvm::BitCodeAbbrevOp(ID));
     RecordIdNameMap[ID].Abbrev(Abbrev);
@@ -742,12 +745,12 @@ emitRecord(
     SymbolID const& Sym,
     RecordId ID)
 {
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &SymbolIDAbbrev &&
+    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIdNameMap[ID].Abbrev == &SymbolIDAbbrev &&
         "Abbrev type mismatch.");
     if (!prepRecordData(ID, Sym != EmptySID))
         return;
-    assert(Sym.size() == 20);
+    Assert(Sym.size() == 20);
     Record.push_back(Sym.size());
     Record.append(Sym.begin(), Sym.end());
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
@@ -758,12 +761,12 @@ BitcodeWriter::
 emitRecord(
     llvm::StringRef Str, RecordId ID)
 {
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &StringAbbrev &&
+    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIdNameMap[ID].Abbrev == &StringAbbrev &&
         "Abbrev type mismatch.");
     if (!prepRecordData(ID, !Str.empty()))
         return;
-    assert(Str.size() < (1U << BitCodeConstants::StringLengthSize));
+    Assert(Str.size() < (1U << BitCodeConstants::StringLengthSize));
     Record.push_back(Str.size());
     Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, Str);
 }
@@ -773,15 +776,15 @@ BitcodeWriter::
 emitRecord(
     Location const& Loc, RecordId ID)
 {
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &LocationAbbrev &&
+    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIdNameMap[ID].Abbrev == &LocationAbbrev &&
         "Abbrev type mismatch.");
     if (!prepRecordData(ID, true))
         return;
     // FIXME: Assert that the line number
     // is of the appropriate size.
     Record.push_back(Loc.LineNumber);
-    assert(Loc.Filename.size() < (1U << BitCodeConstants::StringLengthSize));
+    Assert(Loc.Filename.size() < (1U << BitCodeConstants::StringLengthSize));
     Record.push_back(Loc.IsFileInRootDir);
     Record.push_back(Loc.Filename.size());
     Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, Loc.Filename);
@@ -792,8 +795,8 @@ BitcodeWriter::
 emitRecord(
     bool Val, RecordId ID)
 {
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &BoolAbbrev && "Abbrev type mismatch.");
+    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIdNameMap[ID].Abbrev == &BoolAbbrev && "Abbrev type mismatch.");
     if (!prepRecordData(ID, Val))
         return;
     Record.push_back(Val);
@@ -805,8 +808,8 @@ BitcodeWriter::
 emitRecord(
     int Val, RecordId ID)
 {
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
+    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
     if (!prepRecordData(ID, Val))
         return;
     // FIXME: Assert that the integer is of the appropriate size.
@@ -819,11 +822,11 @@ BitcodeWriter::
 emitRecord(
     unsigned Val, RecordId ID)
 {
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
+    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIdNameMap[ID].Abbrev == &IntAbbrev && "Abbrev type mismatch.");
     if (!prepRecordData(ID, Val))
         return;
-    assert(Val < (1U << BitCodeConstants::IntSize));
+    Assert(Val < (1U << BitCodeConstants::IntSize));
     Record.push_back(Val);
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
@@ -841,7 +844,7 @@ BitcodeWriter::
 prepRecordData(
     RecordId ID, bool ShouldEmit)
 {
-    assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
     if (!ShouldEmit)
         return false;
     Record.clear();
@@ -855,7 +858,7 @@ emitBlockInfo(
     BlockId BID,
     std::vector<RecordId> const& RIDs)
 {
-    assert(RIDs.size() < (1U << BitCodeConstants::SubblockIDSize));
+    Assert(RIDs.size() < (1U << BitCodeConstants::SubblockIDSize));
     emitBlockID(BID);
     for (RecordId RID : RIDs)
     {

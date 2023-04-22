@@ -811,7 +811,7 @@ Writer::
 openTitle(
     llvm::StringRef name)
 {
-    assert(sect_.level == 0);
+    Assert(sect_.level == 0);
     sect_.level++;
     if(sect_.level <= 6)
         sect_.markup.push_back('=');
@@ -838,7 +838,7 @@ AsciidocGenerator::
 Writer::
 closeSection()
 {
-    assert(sect_.level > 0);
+    Assert(sect_.level > 0);
     if(sect_.level <= 6)
         sect_.markup.pop_back();
     sect_.level--;

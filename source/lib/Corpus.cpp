@@ -228,7 +228,7 @@ build(
             }
 
             std::unique_ptr<Info> I(merged.get().release());
-            assert(Group.getKey() == llvm::toStringRef(I->id));
+            Assert(Group.getKey() == llvm::toStringRef(I->id));
             corpus->insert(std::move(I));
         });
 

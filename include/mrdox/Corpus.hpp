@@ -13,6 +13,7 @@
 #define MRDOX_CORPUS_HPP
 
 #include <mrdox/Config.hpp>
+#include <mrdox/Debug.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <mrdox/meta/Symbols.hpp>
@@ -129,18 +130,18 @@ get(
     SymbolID const& id) const noexcept
 {
     auto I = find(id);
-    assert(I != nullptr);
+    Assert(I != nullptr);
     auto const t = static_cast<T const*>(I);
     if constexpr(std::is_same_v<T, NamespaceInfo>)
-        assert(t->IT == InfoType::IT_namespace);
+        Assert(t->IT == InfoType::IT_namespace);
     else if constexpr(std::is_same_v<T, RecordInfo>)
-        assert(t->IT == InfoType::IT_record);
+        Assert(t->IT == InfoType::IT_record);
     else if constexpr(std::is_same_v<T, FunctionInfo>)
-        assert(t->IT == InfoType::IT_function);
+        Assert(t->IT == InfoType::IT_function);
     else if constexpr(std::is_same_v<T, EnumInfo>)
-        assert(t->IT == InfoType::IT_enum);
+        Assert(t->IT == InfoType::IT_enum);
     else if constexpr(std::is_same_v<T, TypedefInfo>)
-        assert(t->IT == InfoType::IT_typedef);
+        Assert(t->IT == InfoType::IT_typedef);
     return *t;
 }
 
