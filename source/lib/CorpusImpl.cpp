@@ -138,6 +138,7 @@ public:
         postProcess(I);
         canonicalize(I.Children);
         canonicalize(I.Members);
+        canonicalize(I.Friends);
         corpus_.visit(I.Children, *this);
     }
 
@@ -188,6 +189,20 @@ public:
                     ref0.id.data(),
                     ref1.id.data(),
                     ref0.id.size()) < 0;
+            });
+    }
+
+    void canonicalize(llvm::SmallVectorImpl<SymbolID>& list) noexcept
+    {
+        // Sort by symbol ID
+        llvm::sort(list,
+            [&](SymbolID const& id0,
+                SymbolID const& id1) noexcept
+            {
+                return std::memcmp(
+                    id0.data(),
+                    id1.data(),
+                    id0.size()) < 0;
             });
     }
 

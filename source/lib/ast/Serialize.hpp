@@ -18,6 +18,7 @@
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/AST/AST.h>
+#include <clang/AST/DeclFriend.h>
 #include <clang/AST/Mangle.h>
 #include <string>
 #include <utility>
@@ -40,9 +41,17 @@ namespace mrdox {
     for the parent which is referenced by the
     decl.
 */
-using SerializeResult = std::pair<Bitcode, Bitcode>;
+struct SerializeResult
+{
+    llvm::SmallVector<Bitcode, 3> bitcodes;
 
-namespace detail {
+    template<std::same_as<Bitcode>... Args>
+    SerializeResult(
+        Args&&... args)
+    {
+        (bitcodes.emplace_back(std::forward<Args>(args)), ...);
+    }
+};
 
 /** State information used during serialization to bitcode.
 */
@@ -77,35 +86,12 @@ public:
     SerializeResult build(NamespaceDecl const* D);
     SerializeResult build(CXXRecordDecl const* D);
     SerializeResult build(CXXMethodDecl const* D);
+    SerializeResult build(FriendDecl    const* D);
     SerializeResult build(FunctionDecl  const* D);
     SerializeResult build(TypedefDecl   const* D);
     SerializeResult build(TypeAliasDecl const* D);
     SerializeResult build(EnumDecl      const* D);
 };
-
-} // detail
-
-/** Return a serialized result for an AST Node.
-*/
-template<class Decl>
-SerializeResult
-serialize(
-    Decl const* D,
-    MangleContext& mc,
-    int LineNumber,
-    StringRef File,
-    bool IsFileInRootDir,
-    Config const& config,
-    Reporter& R)
-{
-    return detail::Serializer(
-        mc,
-        LineNumber,
-        File,
-        IsFileInRootDir,
-        config,
-        R).build(D);
-}
 
 } // mrdox
 } // clang

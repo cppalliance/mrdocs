@@ -13,6 +13,7 @@
 #include "Commands.hpp"
 #include "utility.hpp"
 #include "Serialize.hpp"
+#include <mrdox/Debug.hpp>
 #include <clang/Index/USRGeneration.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <llvm/ADT/StringExtras.h>
@@ -50,6 +51,7 @@ HandleTranslationUnit(
     TraverseDecl(Context.getTranslationUnitDecl());
 }
 
+// Returns `true` if something got mapped
 template<typename T>
 bool
 ASTVisitor::
@@ -63,13 +65,13 @@ mapDecl(T const* D)
     if(sm.isInSystemHeader(D->getLocation()))
     {
         // skip system header
-        return true;
+        return false;
     }
 
     if(D->getParentFunctionOrMethod())
     {
         // skip function-local declarations
-        return true;
+        return false;
     }
 
     llvm::SmallString<512> filePath;
@@ -83,7 +85,7 @@ mapDecl(T const* D)
         // cached filter entry already exists
         FileFilter const& ff = result.first->second;
         if(! ff.include)
-            return true;
+            return false;
         filePath = loc.getFilename(); // native
         convert_to_slash(filePath);
         // VFALCO we could assert that the prefix
@@ -99,7 +101,7 @@ mapDecl(T const* D)
         FileFilter& ff = result.first->second;
         ff.include = config_.shouldVisitFile(filePath, ff.prefix);
         if(! ff.include)
-            return true;
+            return false;
         // VFALCO we could assert that the prefix
         //        matches and just lop off the
         //        first ff.prefix.size() characters.
@@ -112,128 +114,137 @@ mapDecl(T const* D)
         if (index::generateUSRForDecl(D, USR))
         {
             // VFALCO report this, it seems to never happen
-            return true;
+            return false;
         }
     }
 
     // VFALCO is this right?
     bool const IsFileInRootDir = true;
 
-    auto res = serialize(
-        D,
-        *mc_,
-        getLine(D, D->getASTContext()),
-        filePath,
-        IsFileInRootDir,
-        config_,
-        R_);
+    SerializeResult res;
+    if constexpr(std::is_same_v<FriendDecl, T>)
+    {
+        res = Serializer(
+            *mc_,
+            0,//getLine(D, D->getASTContext()),
+            filePath,
+            IsFileInRootDir,
+            config_,
+            R_).build(D);
+    }
+    else
+    {
+        res = Serializer(
+            *mc_,
+            getLine(D, D->getASTContext()),
+            filePath,
+            IsFileInRootDir,
+            config_,
+            R_).build(D);
+    }
 
-    // An empty serialized declaration means that
-    // the serializer is skipping this declaration
-    // for some reason. For example it is private,
-    // or the declaration is enclosed in the parent.
-    if(! res.first.empty())
-        insertBitcode(ex_, std::move(res.first));
-    if(! res.second.empty())
-        insertBitcode(ex_, std::move(res.second));
+    if(res.bitcodes.empty())
+        return false;
+
+    for(auto&& bitcode : res.bitcodes)
+        insertBitcode(ex_, std::move(bitcode));
+    return true;
+}
+
+//------------------------------------------------
+
+// Returning false from any of these
+// functions will abort the _entire_ traversal
+
+bool
+ASTVisitor::
+WalkUpFromNamespaceDecl(
+    NamespaceDecl* D)
+{
+    mapDecl(D);
     return true;
 }
 
 bool
 ASTVisitor::
-VisitNamespaceDecl(
-    NamespaceDecl const* D)
+WalkUpFromCXXRecordDecl(
+    CXXRecordDecl* D)
 {
-    return mapDecl(D);
-}
-
-bool
-ASTVisitor::
-VisitCXXRecordDecl(
-    CXXRecordDecl const* D)
-{
-    return mapDecl(D);
-}
-
-bool
-ASTVisitor::
-VisitRecordDecl(
-    RecordDecl const* D)
-{
-    // Don't visit CXXRecordDecl twice
-    if (isa<CXXRecordDecl>(D))
-        return true;
-    //return mapDecl(D);
-    llvm_unreachable("C record in C++?");
-}
-
-bool
-ASTVisitor::
-VisitEnumDecl(
-    EnumDecl const* D)
-{
-    return mapDecl(D);
-}
-
-bool
-ASTVisitor::
-VisitCXXDestructorDecl(
-    CXXDestructorDecl const* D)
-{
-    return mapDecl(D);
-}
-
-bool
-ASTVisitor::
-VisitCXXConstructorDecl(
-    CXXConstructorDecl const* D)
-{
-    return mapDecl(D);
-}
-
-bool
-ASTVisitor::
-VisitCXXMethodDecl(
-    CXXMethodDecl const* D)
-{
-    // Don't visit twice
-    if( isa<CXXDestructorDecl>(D) ||
-        isa<CXXConstructorDecl>(D))
-        return true;
-    return mapDecl(D);
-}
-
-bool
-ASTVisitor::
-VisitFriendDecl(
-    FriendDecl const* D)
-{
+    mapDecl(D);
     return true;
 }
 
 bool
 ASTVisitor::
-VisitFunctionDecl(
-    FunctionDecl const* D)
+WalkUpFromCXXDestructorDecl(
+    CXXDestructorDecl* D)
 {
-    // Don't visit CXXMethodDecls twice
-    if (isa<CXXMethodDecl>(D))
-        return true;
-    return mapDecl(D);
+    mapDecl(D);
+    return true;
 }
 
 bool
 ASTVisitor::
-VisitTypedefDecl(TypedefDecl const* D)
+WalkUpFromCXXConstructorDecl(
+    CXXConstructorDecl* D)
 {
-    return mapDecl(D);
+    mapDecl(D);
+    return true;
 }
 
 bool
 ASTVisitor::
-VisitTypeAliasDecl(TypeAliasDecl const* D)
+WalkUpFromCXXMethodDecl(
+    CXXMethodDecl* D)
 {
-    return mapDecl(D);
+    mapDecl(D);
+    return true;
+}
+
+bool
+ASTVisitor::
+WalkUpFromFriendDecl(
+    FriendDecl* D)
+{
+    mapDecl(D);
+    return true;
+}
+
+bool
+ASTVisitor::
+WalkUpFromFunctionDecl(
+    FunctionDecl* D)
+{
+    Assert(! dyn_cast<CXXMethodDecl>(D));
+    mapDecl(D);
+    return true;
+}
+
+bool
+ASTVisitor::
+WalkUpFromTypeAliasDecl(
+    TypeAliasDecl* D)
+{
+    mapDecl(D);
+    return true;
+}
+
+bool
+ASTVisitor::
+WalkUpFromTypedefDecl(
+    TypedefDecl* D)
+{
+    mapDecl(D);
+    return true;
+}
+
+bool
+ASTVisitor::
+WalkUpFromEnumDecl(
+    EnumDecl* D)
+{
+    mapDecl(D);
+    return true;
 }
 
 int

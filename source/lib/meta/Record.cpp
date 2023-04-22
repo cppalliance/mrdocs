@@ -13,6 +13,7 @@
 #include <mrdox/meta/BaseRecord.hpp>
 #include <mrdox/Debug.hpp>
 #include <mrdox/meta/Record.hpp>
+#include <llvm/ADT/STLExtras.h>
 #include <cassert>
 #include <utility>
 
@@ -52,6 +53,10 @@ merge(RecordInfo&& Other)
     SymbolInfo::merge(std::move(Other));
     if (!Template)
         Template = Other.Template;
+    if(! Other.Friends.empty())
+    {
+        llvm::append_range(Friends, std::move(Other.Friends));
+    }
 }
 
 } // mrdox

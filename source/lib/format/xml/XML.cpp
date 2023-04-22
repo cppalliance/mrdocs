@@ -372,6 +372,11 @@ visit(
     // VFALCO data members?
     for(auto const& J : I.Members)
         writeMemberType(J);
+
+    // Friends
+    for(auto const& id : I.Friends)
+        writeTag("friend", "", { { id } });
+
     writeJavadoc(I.javadoc);
 
     corpus_.visit(I.Children, *this);

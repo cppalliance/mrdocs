@@ -100,6 +100,19 @@ static void SymbolIDAbbrev(
             BitCodeConstants::USRBitLengthSize) });
 }
 
+static void SymbolIDsAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. VBR integer (number of IDs)
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::VBR, 32),
+        // 1. Fixed-size array of 20-byte IDs
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 8) });
+}
+
 static void StringAbbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
 {
@@ -222,6 +235,7 @@ RecordIdNameMap = []()
         {RECORD_LOCATION, {"Location", &LocationAbbrev}},
         {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
+        {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
         {BASE_RECORD_USR, {"USR", &SymbolIDAbbrev}},
         {BASE_RECORD_NAME, {"Name", &StringAbbrev}},
         {BASE_RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
@@ -262,53 +276,54 @@ std::vector<std::pair<BlockId, std::vector<RecordId>>> const
 RecordsByBlock{
     // Version Block
     {BI_VERSION_BLOCK_ID, {VERSION}},
-    // Javadoc Block
-    {BI_JAVADOC_BLOCK_ID,
-        {}},
-    // List<Javadoc::Node> Block
-    {BI_JAVADOC_LIST_BLOCK_ID,
-        {JAVADOC_LIST_KIND}},
-    // Javadoc::Node Block
-    {BI_JAVADOC_NODE_BLOCK_ID,
-        {JAVADOC_NODE_KIND, JAVADOC_NODE_STRING, JAVADOC_NODE_STYLE,
-         JAVADOC_NODE_ADMONISH}},
-    // Type Block
-    {BI_TYPE_BLOCK_ID, {}},
-    // <mrdox/FieldType.hpp> Block
-    {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE}},
-    // MemberType Block
-    {BI_MEMBER_TYPE_BLOCK_ID, {MEMBER_TYPE_NAME, MEMBER_TYPE_ACCESS}},
-    // Enum Block
-    {BI_ENUM_BLOCK_ID,
-        {ENUM_USR, ENUM_NAME, ENUM_DEFLOCATION, ENUM_LOCATION, ENUM_SCOPED}},
-    // Enum Value Block
-    {BI_ENUM_VALUE_BLOCK_ID,
-        {ENUM_VALUE_NAME, ENUM_VALUE_VALUE, ENUM_VALUE_EXPR}},
-    // Typedef Block
-    {BI_TYPEDEF_BLOCK_ID,
-        {TYPEDEF_USR, TYPEDEF_NAME, TYPEDEF_DEFLOCATION, TYPEDEF_IS_USING}},
-    // Namespace Block
-    {BI_NAMESPACE_BLOCK_ID,
-        {NAMESPACE_USR, NAMESPACE_NAME}},
-    // Record Block
-    {BI_RECORD_BLOCK_ID,
-        {RECORD_USR, RECORD_NAME, RECORD_DEFLOCATION,
-        RECORD_LOCATION, RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF}},
-    // BaseRecord Block
+    // BaseRecordInfo
     {BI_BASE_RECORD_BLOCK_ID,
         {BASE_RECORD_USR, BASE_RECORD_NAME, BASE_RECORD_TAG_TYPE,
         BASE_RECORD_IS_VIRTUAL, BASE_RECORD_ACCESS, BASE_RECORD_IS_PARENT}},
-    // Function Block
+    // EnumInfo
+    {BI_ENUM_BLOCK_ID,
+        {ENUM_USR, ENUM_NAME, ENUM_DEFLOCATION, ENUM_LOCATION, ENUM_SCOPED}},
+    // EnumValue
+    {BI_ENUM_VALUE_BLOCK_ID,
+        {ENUM_VALUE_NAME, ENUM_VALUE_VALUE, ENUM_VALUE_EXPR}},
+    // FieldTypeInfo
+    {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE}},
+    // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
         {FUNCTION_USR, FUNCTION_NAME, FUNCTION_DEFLOCATION, FUNCTION_LOCATION,
         FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_BITS}},
-    // Reference Block
+    // Javadoc
+    {BI_JAVADOC_BLOCK_ID,
+        {}},
+    // List<Javadoc::Node>
+    {BI_JAVADOC_LIST_BLOCK_ID,
+        {JAVADOC_LIST_KIND}},
+    // Javadoc::Node
+    {BI_JAVADOC_NODE_BLOCK_ID,
+        {JAVADOC_NODE_KIND, JAVADOC_NODE_STRING, JAVADOC_NODE_STYLE,
+         JAVADOC_NODE_ADMONISH}},
+    // MemberTypeInfo
+    {BI_MEMBER_TYPE_BLOCK_ID, {MEMBER_TYPE_NAME, MEMBER_TYPE_ACCESS}},
+    // NamespaceInfo
+    {BI_NAMESPACE_BLOCK_ID,
+        {NAMESPACE_USR, NAMESPACE_NAME}},
+    // RecordInfo
+    {BI_RECORD_BLOCK_ID,
+        {RECORD_USR, RECORD_NAME, RECORD_DEFLOCATION,
+        RECORD_LOCATION, RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF,
+        RECORD_FRIENDS}},
+    // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
-    // Template Blocks.
+    // TemplateInfo.
     {BI_TEMPLATE_BLOCK_ID, {}},
-        {BI_TEMPLATE_PARAM_BLOCK_ID, {TEMPLATE_PARAM_CONTENTS}},
-        {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, {TEMPLATE_SPECIALIZATION_OF}}
+    {BI_TEMPLATE_PARAM_BLOCK_ID, {TEMPLATE_PARAM_CONTENTS}},
+    {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, {TEMPLATE_SPECIALIZATION_OF}},
+    // TypeInfo
+    {BI_TYPE_BLOCK_ID, {}},
+    // TypedefInfo
+    {BI_TYPEDEF_BLOCK_ID,
+        {TYPEDEF_USR, TYPEDEF_NAME, TYPEDEF_DEFLOCATION, TYPEDEF_IS_USING}}
 };
 
 //------------------------------------------------
@@ -448,6 +463,7 @@ emitBlock(
         emitBlock(C);
     if (I.Template)
         emitBlock(*I.Template);
+    emitRecord(I.Friends, RECORD_FRIENDS);
 }
 
 void
@@ -744,7 +760,7 @@ emitAbbrev(
 //
 //------------------------------------------------
 
-// 16 and 32 bit integers
+// Integer
 template<class Integer>
 requires std::is_integral_v<Integer>
 void
@@ -771,7 +787,7 @@ emitRecord(
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
-// enumerations
+// enum
 template<class Enum>
 requires std::is_enum_v<Enum>
 void
@@ -782,6 +798,23 @@ emitRecord(
     emitRecord(static_cast<std::underlying_type_t<Enum>>(Value), ID);
 }
 
+// SymbolIDs
+void
+BitcodeWriter::
+emitRecord(
+    llvm::SmallVectorImpl<SymbolID> const& Values, RecordId ID)
+{
+    Assert(RecordIdNameMap[ID]);
+    Assert(RecordIdNameMap[ID].Abbrev == &SymbolIDsAbbrev);
+    if (!prepRecordData(ID, Values.begin() != Values.end()))
+        return;
+    Record.push_back(Values.size());
+    for(auto const& Sym : Values)
+        Record.append(Sym.begin(), Sym.end());
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
+}
+
+// SymbolID
 void
 BitcodeWriter::
 emitRecord(
@@ -867,6 +900,8 @@ prepRecordData(
     return true;
 }
 
+//------------------------------------------------
+
 void
 BitcodeWriter::
 emitBlockInfo(
@@ -927,6 +962,8 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_PARAM_BLOCK_ID);
     emitRecord(T.Contents, TEMPLATE_PARAM_CONTENTS);
 }
+
+//------------------------------------------------
 
 /** Write an Info variant to the buffer as bitcode.
 */

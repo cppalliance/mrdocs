@@ -65,17 +65,17 @@ public:
 
 //private:
     void HandleTranslationUnit(ASTContext& Context) override;
-    bool VisitNamespaceDecl(NamespaceDecl const* D);
-    bool VisitCXXRecordDecl(CXXRecordDecl const* D);
-    bool VisitRecordDecl(RecordDecl const* D);
-    bool VisitEnumDecl(EnumDecl const* D);
-    bool VisitCXXDestructorDecl(CXXDestructorDecl const* D);
-    bool VisitCXXConstructorDecl(CXXConstructorDecl const* D);
-    bool VisitCXXMethodDecl(CXXMethodDecl const* D);
-    bool VisitFriendDecl(FriendDecl const* D);
-    bool VisitFunctionDecl(FunctionDecl const* D);
-    bool VisitTypedefDecl(TypedefDecl const* D);
-    bool VisitTypeAliasDecl(TypeAliasDecl const* D);
+
+    bool WalkUpFromNamespaceDecl(NamespaceDecl* D);
+    bool WalkUpFromCXXRecordDecl(CXXRecordDecl* D);
+    bool WalkUpFromCXXDestructorDecl(CXXDestructorDecl* D);
+    bool WalkUpFromCXXConstructorDecl(CXXConstructorDecl* D);
+    bool WalkUpFromCXXMethodDecl(CXXMethodDecl* D);
+    bool WalkUpFromFriendDecl(FriendDecl* D);
+    bool WalkUpFromFunctionDecl(FunctionDecl* D);
+    bool WalkUpFromTypeAliasDecl(TypeAliasDecl* D);
+    bool WalkUpFromTypedefDecl(TypedefDecl* D);
+    bool WalkUpFromEnumDecl(EnumDecl* D);
 
 private:
     template <typename T>

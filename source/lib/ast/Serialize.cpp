@@ -25,8 +25,6 @@
 namespace clang {
 namespace mrdox {
 
-namespace detail {
-
 //------------------------------------------------
 
 // Function to hash a given USR value for storage.
@@ -97,6 +95,41 @@ shouldSerializeInfo(
 }
 
 //------------------------------------------------
+
+static
+void
+getParent(
+    SymbolID& parent,
+    Decl const* D)
+{
+    bool isParentAnonymous = false;
+    DeclContext const* DC = D->getDeclContext();
+    Assert(DC != nullptr);
+    if(auto const* N = dyn_cast<NamespaceDecl>(DC))
+    {
+        if(N->isAnonymousNamespace())
+        {
+            isParentAnonymous = true;
+        }
+        parent = getUSRForDecl(N);
+    }
+    else if(auto const* N = dyn_cast<RecordDecl>(DC))
+    {
+        parent = getUSRForDecl(N);
+    }
+    else if(auto const* N = dyn_cast<FunctionDecl>(DC))
+    {
+        parent = getUSRForDecl(N);
+    }
+    else if(auto const* N = dyn_cast<EnumDecl>(DC))
+    {
+        parent = getUSRForDecl(N);
+    }
+    else
+    {
+        Assert(false);
+    }
+}
 
 static
 void
@@ -256,6 +289,23 @@ getTemplateParams(
     }
 }
 
+static
+void
+parseJavadoc(
+    Javadoc& javadoc,
+    Decl const* D)
+{
+    // VFALCO investigate whether we can use
+    // ASTContext::getCommentForDecl instead
+    RawComment* RC =
+        D->getASTContext().getRawCommentForDeclNoCache(D);
+    if(RC)
+    {
+        RC->setAttached();
+        javadoc = parseJavadoc(RC, D->getASTContext(), D);
+    }
+}
+
 //------------------------------------------------
 //
 // Info
@@ -277,15 +327,7 @@ getInfo(
         return false;
     I.id = getUSRForDecl(D);
     I.Name = D->getNameAsString();
-    // VFALCO investigate whether we can use
-    // ASTContext::getCommentForDecl instead
-    RawComment* RC =
-        D->getASTContext().getRawCommentForDeclNoCache(D);
-    if(RC)
-    {
-        RC->setAttached();
-        I.javadoc = parseJavadoc(RC, D->getASTContext(), D);
-    }
+    parseJavadoc(I.javadoc, D);
     return true;
 }
 
@@ -371,16 +413,7 @@ getMemberTypeInfo(
     Reporter& R)
 {
     Assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
-
-    ASTContext& Context = D->getASTContext();
-    // VFALCO investigate whether we can use
-    // ASTContext::getCommentForDecl instead of this logic. 
-    RawComment* RC = Context.getRawCommentForDeclNoCache(D);
-    if(RC)
-    {
-        RC->setAttached();
-        I.javadoc = parseJavadoc(RC, D->getASTContext(), D);
-    }
+    parseJavadoc(I.javadoc, D);
 }
 
 //------------------------------------------------
@@ -775,6 +808,19 @@ parseBases(
 
 //------------------------------------------------
 
+static
+int
+getLineNumber(
+    NamedDecl const* D)
+{
+    return D->getASTContext()
+        .getSourceManager()
+        .getPresumedLoc(
+            D->getBeginLoc()).getLine();
+}
+
+//------------------------------------------------
+
 SerializeResult
 Serializer::
 build(
@@ -787,7 +833,9 @@ build(
     if(D->isAnonymousNamespace())
         I.Name = "@nonymous_namespace";
 
-    return { serialize(I), serializeParent(std::move(I)) };
+    return {
+        serialize(I),
+        serializeParent(std::move(I)) };
 }
 
 SerializeResult
@@ -874,6 +922,67 @@ build(
     return { serialize(I), serializeParent(std::move(I)) };
 }
 
+//------------------------------------------------
+//
+// Functions, Member Functions
+//
+//------------------------------------------------
+
+// VFALCO could this be done in getFunctionInfo?
+//        but getFunctionInfo is called parseBases()
+static
+void
+getFunctionSpecs(
+    FunctionInfo& I,
+    FunctionDecl const* D)
+{
+    I.specs.set(FunctionInfo::constevalBit, D->isConsteval());
+    I.specs.set(FunctionInfo::constexprBit, D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
+    I.specs.set(FunctionInfo::inlineBit, D->isInlineSpecified());
+    I.specs.set(FunctionInfo::noexceptBit, isNoexceptExceptionSpec(D->getExceptionSpecType()));
+    I.specs.set(FunctionInfo::overrideBit, D->hasAttr<OverrideAttr>());
+    I.specs.set(FunctionInfo::pureBit, D->isPure());
+    I.specs.set(FunctionInfo::variadicBit, D->isVariadic());
+    I.specs.set(FunctionInfo::virtualBit, D->isVirtualAsWritten());
+    if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
+    {
+        I.specs.set(FunctionInfo::trailReturnBit, FP->hasTrailingReturn());
+        //FP->getNoReturnAttr();
+    }
+    I.specs.setStorageClass(D->getStorageClass());
+}
+
+static
+void
+getCXXMethodSpecs(
+    FunctionInfo& I,
+    CXXMethodDecl const* D)
+{
+    I.specs.set(FunctionInfo::constBit, D->isConst());
+    I.specs.set(FunctionInfo::volatileBit, D->isVolatile());
+    I.specs.setRefQualifier(D->getRefQualifier());
+
+    //I.specs.set(FunctionInfo::specialBit);
+    //D->isCopyAssignmentOperator()
+    //D->isMoveAssignmentOperator()
+    //D->isOverloadedOperator();
+    //D->isStaticOverloadedOperator();
+}
+
+static
+bool
+buildFunctionInfo(
+    Serializer& sr,
+    FunctionInfo& I,
+    FunctionDecl const* D)
+{
+    if(! getFunctionInfo(sr, I, D))
+        return false;
+    I.Access = AccessSpecifier::AS_none;
+    getFunctionSpecs(I, D);
+    return true;
+}
+
 SerializeResult
 Serializer::
 build(
@@ -882,6 +991,8 @@ build(
     FunctionInfo I;
     if(! getFunctionInfo(*this, I, D))
         return {};
+    getCXXMethodSpecs(I, D);
+
     I.IsMethod = true;
     NamedDecl const* PD = nullptr;
     if(auto const* SD = dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
@@ -895,31 +1006,63 @@ build(
         InfoType::IT_record);
     I.Access = D->getAccess();
 
-    I.specs.set(FunctionInfo::constBit, D->isConst());
-    I.specs.set(FunctionInfo::constevalBit, D->isConsteval());
-    I.specs.set(FunctionInfo::constexprBit, D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
-    I.specs.set(FunctionInfo::inlineBit, D->isInlineSpecified());
-    I.specs.set(FunctionInfo::noexceptBit, isNoexceptExceptionSpec(D->getExceptionSpecType()));
-    I.specs.set(FunctionInfo::overrideBit, D->hasAttr<OverrideAttr>());
-    I.specs.set(FunctionInfo::pureBit, D->isPure());
-    //I.specs.set(FunctionInfo::specialBit);
-    //D->isCopyAssignmentOperator()
-    //D->isMoveAssignmentOperator()
-    //D->isOverloadedOperator();
-    //D->isStaticOverloadedOperator();
-    I.specs.set(FunctionInfo::variadicBit, D->isVariadic());
-    I.specs.set(FunctionInfo::virtualBit, D->isVirtualAsWritten());
-    I.specs.set(FunctionInfo::volatileBit, D->isVolatile());
-    if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
-    {
-        I.specs.set(FunctionInfo::trailReturnBit, FP->hasTrailingReturn());
-        //FP->getNoReturnAttr();
-        FP->isConst();
-    }
-    I.specs.setRefQualifier(D->getRefQualifier());
-    I.specs.setStorageClass(D->getStorageClass());
+    getFunctionSpecs(I, D);
 
     return { serialize(I), serializeParent(std::move(I)) };
+}
+
+SerializeResult
+Serializer::
+build(
+    FriendDecl const* D)
+{
+    if(NamedDecl const* ND = D->getFriendDecl())
+    {
+        // D does not name a type
+        if(FunctionDecl const* FD = dyn_cast<FunctionDecl>(ND))
+        {
+            // VFALCO HACK, slam LineNumber before it is
+            //        inserted into Loc or DefLoc
+            LineNumber = getLineNumber(ND);
+
+            FunctionInfo I;
+            if(! buildFunctionInfo(*this, I, FD))
+                return {};
+            // VFALCO This is unfortunate, but the
+            // default of 0 would be AS_public. see #84
+            I.Access = AccessSpecifier::AS_none;
+            SymbolID id;
+            getParent(id, D);
+            RecordInfo P(id);
+            P.Friends.emplace_back(I.id);
+            return {
+                serialize(I),
+                serializeParent(std::move(I)),
+                serialize(P),
+                serializeParent(std::move(P)) };
+        }
+        if(FunctionTemplateDecl const* FT = dyn_cast<FunctionTemplateDecl>(ND))
+        {
+            // VFALCO TODO
+            return {};
+        }
+        if(ClassTemplateDecl const* CT = dyn_cast<ClassTemplateDecl>(ND))
+        {
+            // VFALCO TODO
+            return {};
+        }
+
+        Assert(false);
+        return {};
+    }
+    else if(TypeSourceInfo const* TS = D->getFriendType())
+    {
+        return {};
+    }
+    else
+    {
+        Assert(false);
+    }
 }
 
 SerializeResult
@@ -928,31 +1071,8 @@ build(
     FunctionDecl const* D)
 {
     FunctionInfo I;
-    if(! getFunctionInfo(*this, I, D))
+    if(! buildFunctionInfo(*this, I, D))
         return {};
-    I.Access = AccessSpecifier::AS_none;
-
-    I.specs.set(FunctionInfo::constevalBit, D->isConsteval());
-    I.specs.set(FunctionInfo::constexprBit, D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
-    I.specs.set(FunctionInfo::inlineBit, D->isInlineSpecified());
-    I.specs.set(FunctionInfo::noexceptBit, isNoexceptExceptionSpec(D->getExceptionSpecType()));
-    I.specs.set(FunctionInfo::overrideBit, D->hasAttr<OverrideAttr>());
-    I.specs.set(FunctionInfo::pureBit, D->isPure());
-    //I.specs.set(FunctionInfo::specialBit);
-    //D->isCopyAssignmentOperator()
-    //D->isMoveAssignmentOperator()
-    //D->isOverloadedOperator();
-    //D->isStaticOverloadedOperator();
-    I.specs.set(FunctionInfo::variadicBit, D->isVariadic());
-    I.specs.set(FunctionInfo::virtualBit, D->isVirtualAsWritten());
-    if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
-    {
-        I.specs.set(FunctionInfo::trailReturnBit, FP->hasTrailingReturn());
-        //FP->getNoReturnAttr();
-        FP->isConst();
-    }
-    I.specs.setStorageClass(D->getStorageClass());
-
     return { serialize(I), serializeParent(std::move(I)) };
 }
 
@@ -1024,10 +1144,8 @@ build(
     }
     parseEnumerators(I, D);
 
-    return { {}, serializeParent(std::move(I)) };
+    return { serializeParent(std::move(I)) };
 }
-
-} // detail
 
 } // mrdox
 } // clang

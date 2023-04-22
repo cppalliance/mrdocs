@@ -86,6 +86,33 @@ decodeRecord(
     return llvm::Error::success();
 }
 
+// range<SymbolID>
+
+llvm::Error
+decodeRecord(
+    Record const& R,
+    llvm::SmallVectorImpl<SymbolID>& f,
+    llvm::StringRef blob)
+{
+    auto src = R.begin();
+    auto n = *src++;
+    f.resize(n);
+    auto* dest = &f[0];
+    while(n--)
+    {
+        for(std::size_t i = 0;
+            i < BitCodeConstants::USRHashSize; ++i)
+        {
+            if(src[i] > std::uint8_t(-1))
+                return makeError("invalid byte");
+            (*dest)[i] = static_cast<std::uint8_t>(src[i]);
+        }
+        src += 20;
+        ++dest;
+    }
+    return llvm::Error::success();
+}
+
 //------------------------------------------------
 
 static
@@ -915,6 +942,8 @@ readSubBlock(
     }
 }
 
+//------------------------------------------------
+
 // Read records from bitcode into a given info.
 template <typename T>
 llvm::Error
@@ -925,7 +954,8 @@ readRecord(
 {
     Record R;
     llvm::StringRef Blob;
-    llvm::Expected<unsigned> MaybeRecID = Stream.readRecord(ID, R, &Blob);
+    llvm::Expected<unsigned> MaybeRecID =
+        Stream.readRecord(ID, R, &Blob);
     if (!MaybeRecID)
         return MaybeRecID.takeError();
     return parseRecord(R, MaybeRecID.get(), Blob, I);
@@ -940,12 +970,18 @@ readRecord(
 {
     Record R;
     llvm::StringRef Blob;
-    llvm::Expected<unsigned> MaybeRecID = Stream.readRecord(ID, R, &Blob);
+    llvm::Expected<unsigned> MaybeRecID =
+        Stream.readRecord(ID, R, &Blob);
     if (!MaybeRecID)
         return MaybeRecID.takeError();
-    return parseRecord(R, MaybeRecID.get(), Blob, I, CurrentReferenceField);
+    return parseRecord(R, MaybeRecID.get(), Blob,
+        I, CurrentReferenceField);
 }
 
+//------------------------------------------------
+//
+// parseRecord
+//
 //------------------------------------------------
 
 llvm::Error
@@ -1002,6 +1038,8 @@ parseRecord(
         return decodeRecord(R, I->TagType, Blob);
     case RECORD_IS_TYPE_DEF:
         return decodeRecord(R, I->IsTypeDef, Blob);
+    case RECORD_FRIENDS:
+        return decodeRecord(R, I->Friends, Blob);
     default:
         return makeError("invalid field for RecordInfo");
     }

@@ -64,6 +64,10 @@ struct RecordInfo : SymbolInfo
 
     std::vector<BaseRecordInfo> Bases;              // List of base/parent records; this includes inherited methods and attributes
 
+    /** List of friend functions.
+    */
+    llvm::SmallVector<SymbolID, 4> Friends;
+
     Scope Children;
 };
 

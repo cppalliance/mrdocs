@@ -90,12 +90,14 @@ public:
     requires std::is_enum_v<Enum>
     void emitRecord(Enum Value, RecordId ID);
 
-    void emitRecord(bool Value, RecordId ID);
-    void emitRecord(StringRef Str, RecordId ID);
+    void emitRecord(llvm::SmallVectorImpl<SymbolID> const& Values, RecordId ID);
+
     void emitRecord(SymbolID const& Str, RecordId ID);
+    void emitRecord(StringRef Str, RecordId ID);
     void emitRecord(Location const& Loc, RecordId ID);
-    void emitRecord(Reference const& Ref, RecordId ID);
+    void emitRecord(bool Value, RecordId ID);
     void emitRecord(TemplateInfo const& Templ);
+    //void emitRecord(Reference const& Ref, RecordId ID);
 
     bool prepRecordData(RecordId ID, bool ShouldEmit = true);
 
