@@ -385,118 +385,86 @@ getMemberTypeInfo(
 
 //------------------------------------------------
 
-template<typename T>
+template<class Parent, class Child>
+requires
+    std::derived_from<Child, Info> &&
+    std::is_same_v<decltype(Parent::Children), Scope>
+static
+void
+insertChild(Parent& parent, Child&& I)
+{
+    if constexpr(std::is_same_v<Child, NamespaceInfo>)
+    {
+        // namespace requires parent namespace
+        Assert(Parent::type_id == InfoType::IT_namespace);
+        parent.Children.Namespaces.emplace_back(I.id, I.Name, Child::type_id);
+    }
+    else if constexpr(std::is_same_v<Child, RecordInfo>)
+    {
+        parent.Children.Records.emplace_back(I.id, I.Name, Child::type_id);
+    }
+    else if constexpr(std::is_same_v<Child, FunctionInfo>)
+    {
+        parent.Children.Functions.emplace_back(I.id, I.Name, Child::type_id);
+    }
+    else if constexpr(std::is_same_v<Child, TypedefInfo>)
+    {
+        parent.Children.Typedefs.emplace_back(std::move(I));
+    }
+    else if constexpr(std::is_same_v<Child, EnumInfo>)
+    {
+        parent.Children.Enums.emplace_back(std::move(I));
+    }
+    else
+    {
+        static_error("unknown Info type", I);
+    }
+}
+
+// Return the serialized bitcode for a metadata node
 static
 Bitcode
-serialize(T& I)
+serialize(
+    Info const& I)
 {
     return { I.id, writeBitcode(I).str().str() };
 }
 
-// The InsertChild functions insert the given info into the given scope using
-// the method appropriate for that type. Some types are moved into the
-// appropriate vector, while other types have Reference objects generated to
-// refer to them.
-//
-// See MakeAndInsertIntoParent().
+// Create an empty parent for the child with the
+// child inserted either as a reference or by moving
+// the entire record. Then return the parent as a
+// serialized bitcode.
+template<class Child>
+requires std::derived_from<Child, Info>
 static
-void
-InsertChild(
-    Scope& scope,
-    NamespaceInfo const& Info)
+Bitcode
+serializeParent(Child&& I)
 {
-    scope.Namespaces.emplace_back(
-        Info.id,
-        Info.Name,
-        InfoType::IT_namespace);
-}
-
-static
-void
-InsertChild(
-    Scope& scope,
-    RecordInfo const& Info)
-{
-    scope.Records.emplace_back(
-        Info.id,
-        Info.Name,
-        InfoType::IT_record);
-}
-
-static
-void
-InsertChild(
-    Scope& scope,
-    FunctionInfo const& Info)
-{
-    scope.Functions.emplace_back(
-        Info.id,
-        Info.Name,
-        InfoType::IT_function);
-}
-
-static
-void
-InsertChild(
-    Scope& scope,
-    EnumInfo Info)
-{
-    scope.Enums.push_back(std::move(Info));
-}
-
-static
-void
-InsertChild(
-    Scope& scope,
-    TypedefInfo Info)
-{
-    scope.Typedefs.push_back(std::move(Info));
-}
-
-// Creates a parent of the correct type for the given child and inserts it into
-// that parent.
-//
-// This is complicated by the fact that namespaces and records are inserted by
-// reference (constructing a "Reference" object with that namespace/record's
-// info), while everything else is inserted by moving it directly into the child
-// vectors.
-//
-// For namespaces and records, explicitly specify a const& template parameter
-// when invoking this function:
-//   MakeAndInsertIntoParent<const Record&>(...);
-// Otherwise, specify an rvalue reference <EnumInfo&&> and move into the
-// parameter. Since each variant is used once, it's not worth having a more
-// elaborate system to automatically deduce this information.
-template<class ChildType>
-std::unique_ptr<Info>
-MakeAndInsertIntoParent(
-    ChildType Child)
-{
-    if(Child.Namespace.empty())
+    if(I.Namespace.empty())
     {
-        // Insert into global namespace.
-        auto ParentNS = std::make_unique<NamespaceInfo>();
-        InsertChild(ParentNS->Children, std::forward<ChildType>(Child));
-        return ParentNS;
-    }
+        if(I.id == globalNamespaceID)
+        {
+            // Global namespace has no parent.
+            return {};
+        }
 
-    switch (Child.Namespace[0].RefType)
+        // In global namespace
+        NamespaceInfo P;
+        Assert(P.id == globalNamespaceID);
+        insertChild(P, std::move(I));
+        return serialize(P);
+    }
+    if(I.Namespace[0].RefType == InfoType::IT_namespace)
     {
-    case InfoType::IT_namespace: {
-        auto ParentNS = std::make_unique<NamespaceInfo>();
-        ParentNS->id = Child.Namespace[0].id;
-        InsertChild(ParentNS->Children, std::forward<ChildType>(Child));
-        return ParentNS;
+        NamespaceInfo P(I.Namespace[0].id);
+        insertChild(P, std::move(I));
+        return serialize(P);
     }
-    case InfoType::IT_record: {
-        auto ParentRec = std::make_unique<RecordInfo>();
-        ParentRec->id = Child.Namespace[0].id;
-        InsertChild(ParentRec->Children, std::forward<ChildType>(Child));
-        return ParentRec;
-    }
-    default:
-        llvm_unreachable("Invalid reference type for parent namespace");
-    }
+    Assert(I.Namespace[0].RefType == InfoType::IT_record);
+    Assert(Child::type_id != InfoType::IT_namespace);
+    RecordInfo P(I.Namespace[0].id);
+    insertChild(P, std::move(I));
+    return serialize(P);
 }
 
 // There are two uses for this function.
@@ -819,30 +787,7 @@ build(
     if(D->isAnonymousNamespace())
         I.Name = "@nonymous_namespace";
 
-    if(I.Namespace.empty() && I.id == globalNamespaceID)
-    {
-        // Global namespace has no parent.
-        return { serialize(I), {} };
-    }
-
-    // Namespaces are inserted into the parent by
-    // reference, so we need to return both the
-    // parent and the record itself.
-    NamespaceInfo P;
-    if(I.Namespace.empty())
-    {
-        // In global namespace
-        Assert(P.id == globalNamespaceID);
-        InsertChild(P.Children, I);
-    }
-    else
-    {
-        // namespace can only have a namespace as parent
-        Assert(I.Namespace[0].RefType == InfoType::IT_namespace);
-        P.id = I.Namespace[0].id;
-        InsertChild(P.Children, I);
-    }
-    return { serialize(I), serialize(P) };
+    return { serialize(I), serializeParent(std::move(I)) };
 }
 
 SerializeResult
@@ -926,26 +871,7 @@ build(
         }
     }
 
-    // Functions are inserted into the parent by
-    // reference, so we need to return both the
-    // parent and the record itself.
-    if( I.Namespace.empty() ||
-        I.Namespace[0].RefType == InfoType::IT_namespace)
-    {
-        NamespaceInfo P;
-        if(! I.Namespace.empty())
-            P.id = I.Namespace[0].id;
-        else
-            Assert(P.id == globalNamespaceID);
-        InsertChild(P.Children, I);
-        return { serialize(I), serialize(P) };
-    }
-    Assert(I.Namespace[0].RefType == InfoType::IT_record);
-
-    RecordInfo P;
-    P.id = I.Namespace[0].id;
-    InsertChild(P.Children, I);
-    return { serialize(I), serialize(P) };
+    return { serialize(I), serializeParent(std::move(I)) };
 }
 
 SerializeResult
@@ -993,44 +919,41 @@ build(
     I.specs.setRefQualifier(D->getRefQualifier());
     I.specs.setStorageClass(D->getStorageClass());
 
-    // Functions are inserted into the parent by
-    // reference, so we need to return both the
-    // parent and the record itself.
-    Assert(I.Namespace[0].RefType == InfoType::IT_record);
-    RecordInfo P;
-    P.id = I.Namespace[0].id;
-    InsertChild(P.Children, I);
-    return { serialize(I), serialize(P) };
+    return { serialize(I), serializeParent(std::move(I)) };
 }
 
 SerializeResult
 Serializer::
 build(
-    FunctionDecl  const* D)
+    FunctionDecl const* D)
 {
     FunctionInfo I;
     if(! getFunctionInfo(*this, I, D))
         return {};
     I.Access = AccessSpecifier::AS_none;
 
-    // Functions are inserted into the parent by
-    // reference, so we need to return both the
-    // parent and the record itself.
-    NamespaceInfo P;
-    if(I.Namespace.empty())
+    I.specs.set(FunctionInfo::constevalBit, D->isConsteval());
+    I.specs.set(FunctionInfo::constexprBit, D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
+    I.specs.set(FunctionInfo::inlineBit, D->isInlineSpecified());
+    I.specs.set(FunctionInfo::noexceptBit, isNoexceptExceptionSpec(D->getExceptionSpecType()));
+    I.specs.set(FunctionInfo::overrideBit, D->hasAttr<OverrideAttr>());
+    I.specs.set(FunctionInfo::pureBit, D->isPure());
+    //I.specs.set(FunctionInfo::specialBit);
+    //D->isCopyAssignmentOperator()
+    //D->isMoveAssignmentOperator()
+    //D->isOverloadedOperator();
+    //D->isStaticOverloadedOperator();
+    I.specs.set(FunctionInfo::variadicBit, D->isVariadic());
+    I.specs.set(FunctionInfo::virtualBit, D->isVirtualAsWritten());
+    if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
     {
-        // In global namespace
-        Assert(P.id == globalNamespaceID);
-        InsertChild(P.Children, I);
+        I.specs.set(FunctionInfo::trailReturnBit, FP->hasTrailingReturn());
+        //FP->getNoReturnAttr();
+        FP->isConst();
     }
-    else
-    {
-        // free function can only have a namespace as parent
-        Assert(I.Namespace[0].RefType == InfoType::IT_namespace);
-        P.id = I.Namespace[0].id;
-        InsertChild(P.Children, I);
-    }
-    return { serialize(I), serialize(P) };
+    I.specs.setStorageClass(D->getStorageClass());
+
+    return { serialize(I), serializeParent(std::move(I)) };
 }
 
 SerializeResult
@@ -1054,26 +977,7 @@ build(
     I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
     I.IsUsing = false;
 
-    // Info is wrapped in its parent scope
-    // so is returned in the second position.
-    // VFALCO The position doesn't matter...
-    if( I.Namespace.empty() ||
-        I.Namespace[0].RefType == InfoType::IT_namespace)
-    {
-        NamespaceInfo P;
-        if(! I.Namespace.empty())
-            P.id = I.Namespace[0].id;
-        else
-            Assert(P.id == globalNamespaceID);
-        P.Children.Typedefs.emplace_back(std::move(I));
-        return { {}, serialize(P) };
-    }
-    Assert(I.Namespace[0].RefType == InfoType::IT_record);
-
-    RecordInfo P;
-    P.id = I.Namespace[0].id;
-    P.Children.Typedefs.emplace_back(std::move(I));
-    return { {}, serialize(P) };
+    return { serialize(I), serializeParent(std::move(I)) };
 }
 
 // VFALCO This is basically a copy of the typedef
@@ -1101,26 +1005,7 @@ build(
     I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
     I.IsUsing = true;
 
-    // Info is wrapped in its parent scope
-    // so is returned in the second position.
-    // VFALCO The position doesn't matter...
-    if( I.Namespace.empty() ||
-        I.Namespace[0].RefType == InfoType::IT_namespace)
-    {
-        NamespaceInfo P;
-        if(! I.Namespace.empty())
-            P.id = I.Namespace[0].id;
-        else
-            Assert(P.id == globalNamespaceID);
-        P.Children.Typedefs.emplace_back(std::move(I));
-        return { {}, serialize(P) };
-    }
-    Assert(I.Namespace[0].RefType == InfoType::IT_record);
-
-    RecordInfo P;
-    P.id = I.Namespace[0].id;
-    P.Children.Typedefs.emplace_back(std::move(I));
-    return { {}, serialize(P) };
+    return { serialize(I), serializeParent(std::move(I)) };
 }
 
 SerializeResult
@@ -1139,26 +1024,7 @@ build(
     }
     parseEnumerators(I, D);
 
-    // Info is wrapped in its parent scope
-    // so is returned in the second position.
-    // VFALCO The position doesn't matter...
-    if( I.Namespace.empty() ||
-        I.Namespace[0].RefType == InfoType::IT_namespace)
-    {
-        NamespaceInfo P;
-        if(! I.Namespace.empty())
-            P.id = I.Namespace[0].id;
-        else
-            Assert(P.id == globalNamespaceID);
-        P.Children.Enums.emplace_back(std::move(I));
-        return { {}, serialize(P) };
-    }
-    Assert(I.Namespace[0].RefType == InfoType::IT_record);
-
-    RecordInfo P;
-    P.id = I.Namespace[0].id;
-    P.Children.Enums.emplace_back(std::move(I));
-    return { {}, serialize(P) };
+    return { {}, serializeParent(std::move(I)) };
 }
 
 } // detail

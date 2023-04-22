@@ -10,6 +10,8 @@
   <symbol name="T::g1" tag="function" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA="/>
   <symbol name="T::g2" tag="function" id="flHl59B/bdRwuiNeh3sHqCycic0="/>
   <symbol name="T::g3" tag="function" id="DKxv4h+rP37b0u6O1qbB+u416ZY="/>
+  <symbol name="T::U1" tag="typedef" id="6UtddyCJy89K/bZpTmDb5jVXwAY="/>
+  <symbol name="T::U2" tag="typedef" id="wwp4SQjMPktMmsnvq1thxjxFHFs="/>
 </symbols>
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">

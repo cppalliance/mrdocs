@@ -59,10 +59,10 @@ visit(
     case InfoType::IT_function:
         visit(*static_cast<FunctionInfo const*>(&I));
         break;
-
-    default:
     case InfoType::IT_enum:
     case InfoType::IT_typedef:
+        break;
+    default:
     case InfoType::IT_default:
         llvm_unreachable("unsupported InfoType");
     }

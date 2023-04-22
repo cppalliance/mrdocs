@@ -31,8 +31,6 @@ namespace mrdox {
 // Information for a single possible value of an enumeration.
 struct EnumValueInfo
 {
-    static constexpr InfoType type_id = InfoType::IT_enum;
-
     explicit
     EnumValueInfo(
         llvm::StringRef Name = llvm::StringRef(),
@@ -67,6 +65,8 @@ struct EnumValueInfo
 // Info for types.
 struct EnumInfo : SymbolInfo
 {
+    static constexpr InfoType type_id = InfoType::IT_enum;
+
     EnumInfo()
         : SymbolInfo(InfoType::IT_enum)
     {
