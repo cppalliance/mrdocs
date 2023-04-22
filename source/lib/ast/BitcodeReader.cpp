@@ -791,6 +791,7 @@ readSubBlock(
         if(! rv)
             return rv.takeError();
         javadoc_ = rv.get();
+        javadoc_->emplace();
         if(auto err = readBlock(ID, javadoc_))
             return err;
         javadoc_ = nullptr;

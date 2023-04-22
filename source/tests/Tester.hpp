@@ -47,7 +47,7 @@ public:
     checkOneFile(
         Corpus const& corpus,
         llvm::StringRef inputPath,
-        llvm::SmallVectorImpl<char>& outputPathStr);
+        llvm::SmallString<340>& outputPathStr);
 };
 
 } // mrdox

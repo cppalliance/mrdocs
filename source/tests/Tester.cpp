@@ -57,7 +57,7 @@ checkDirRecursively(
             path::extension(iter->path()).equals_insensitive(".cpp"))
         {
             outputPath = iter->path();
-            path::replace_extension(outputPath, "xml");
+            path::replace_extension(outputPath, "");
             workGroup.post(
                 [
                 this,
@@ -88,23 +88,26 @@ Tester::
 checkOneFile(
     Corpus const& corpus,
     llvm::StringRef inputPath,
-    llvm::SmallVectorImpl<char>& outputPathStr)
+    llvm::SmallString<340>& outputPath)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    llvm::StringRef outputPath;
-    outputPath = { outputPathStr.data(), outputPathStr.size() };
-
+    // build XML
     std::string xmlString;
     if(! xmlGen->buildString(xmlString, corpus, R_))
         return;
+
+    // check that the XML file exists and is valid
     std::error_code ec;
     fs::file_status stat;
-    ec = fs::status(outputPathStr, stat, false);
+    path::replace_extension(outputPath, "xml");
+    ec = fs::status(outputPath, stat, false);
     if(ec == std::errc::no_such_file_or_directory)
     {
-        // create the xml file and write to it
+        // If the file doesn't already exist, then
+        // create it and write the produced XML.
+        // This counts as a test failure.
         R_.reportTestFailure();
         llvm::raw_fd_ostream os(outputPath, ec, llvm::sys::fs::OF_None);
         if(R_.error(ec, "open the file '", outputPath, "' for writing"))
@@ -113,38 +116,41 @@ checkOneFile(
         if(R_.error(os.error(), "write the file '", outputPath, "'"))
             return;
         R_.reportError();
-        // keep going, to write the other files
+        R_.print("Wrote: file '", outputPath, "'");
+        return;
     }
-    else if(R_.error(ec, "call fs::status on '", outputPathStr, "'"))
+    if(R_.error(ec, "call fs::status on '", outputPath, "'"))
     {
         return;
     }
-    else if(stat.type() != fs::file_type::regular_file)
+    if(stat.type() != fs::file_type::regular_file)
     {
         R_.failed("Couldn't open '", outputPath, "' because it is not a regular file");
         return;
     }
-    else
     {
-        // perform test
-        auto bufferResult = llvm::MemoryBuffer::getFile(outputPath, false);
-        if(R_.error(bufferResult, "read the file '", outputPath, "'"))
+        // read the XML file to get the expected output
+        auto expectedXml = llvm::MemoryBuffer::getFile(outputPath, false);
+        if(R_.error(expectedXml, "read the file '", outputPath, "'"))
             return;
-        std::string_view good(bufferResult->get()->getBuffer());
-        if(xmlString != good)
+        if(xmlString != expectedXml->get()->getBuffer())
         {
-            R_.print(
-                "File: \"", inputPath, "\" failed.\n",
-                "Expected:\n",
-                good, "\n",
-                "Got:\n", xmlString, "\n");
+            // The output did not match, write the
+            // mismatched XML to a .bad.xml file
+            llvm::SmallString<340> badPath = outputPath;
+            path::replace_extension(badPath, ".bad.xml");
+            std::error_code ec;
+            llvm::raw_fd_ostream os(badPath, ec, llvm::sys::fs::OF_None);
+            if(! R_.error(ec, "open '", badPath, "' for writing"))
+                os << xmlString;
+            R_.print("Failed: \"", inputPath, "\"\n");
             R_.reportTestFailure();
         }
     }
+
     if(adocGen)
     {
-        path::replace_extension(outputPathStr, adocGen->extension());
-        outputPath = { outputPathStr.data(), outputPathStr.size() };
+        path::replace_extension(outputPath, adocGen->extension());
         adocGen->buildOne(outputPath, corpus, R_);
     }
 }

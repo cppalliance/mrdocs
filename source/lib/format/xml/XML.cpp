@@ -625,7 +625,7 @@ XMLGenerator::
 Writer::
 writeJavadoc(Javadoc const& jd)
 {
-    if(jd.empty())
+    if(! jd.has_value())
         return;
     openTag("doc");
     if(auto brief = jd.getBrief())

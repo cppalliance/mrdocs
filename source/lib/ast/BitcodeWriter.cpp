@@ -565,7 +565,7 @@ BitcodeWriter::
 emitBlock(
     Javadoc const& jd)
 {
-    if(! jd.empty())
+    if(jd.has_value())
     {
         StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
         emitBlock(jd.getBlocks());

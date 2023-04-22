@@ -152,6 +152,7 @@ public:
     {
         visit(FC_);
 
+        // This must cause has_value() to return true
         return Javadoc(std::move(blocks_));
     }
 

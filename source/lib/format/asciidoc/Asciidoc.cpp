@@ -240,7 +240,8 @@ writeRecord(
     openSection(I.Name);
 
     // Brief
-    writeBrief(I.javadoc.getBrief());
+    if(I.javadoc.has_value())
+        writeBrief(I.javadoc.getBrief());
 
     // Synopsis
     openSection("Synopsis");
@@ -270,7 +271,8 @@ writeRecord(
     closeSection();
 
     // Description
-    writeDescription(I.javadoc.getBlocks());
+    if(I.javadoc.has_value())
+        writeDescription(I.javadoc.getBlocks());
 
     // Nested Types
     writeNestedTypes(
@@ -612,8 +614,6 @@ Writer::
 writeDescription(
     List<Javadoc::Block> const& list)
 {
-    if(list.empty())
-        return;
     //os_ << '\n';
     openSection("Description");
     os_ << '\n';
