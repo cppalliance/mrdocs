@@ -35,20 +35,21 @@ struct FunctionInfo : SymbolInfo
     enum : std::uint32_t
     {
         // 11 bits
-        constBit       = 0x0001,
-        constevalBit   = 0x0002,
-        constexprBit   = 0x0004,
-        inlineBit      = 0x0008,
-        noexceptBit    = 0x0010,
-        pureBit        = 0x0020,
-        specialBit     = 0x0040, // dtor, move/copy construct or assign
-        trailReturnBit = 0x0080,
-        variadicBit    = 0x0100, // has a C-style "..." variadic 
-        virtualBit     = 0x0200,
-        volatileBit    = 0x0400,
+        constBit         = 0x00000001,
+        constevalBit     = 0x00000002,
+        constexprBit     = 0x00000004,
+        inlineBit        = 0x00000008,
+        noexceptBit      = 0x00000010,
+        overrideBit      = 0x00000020,
+        pureBit          = 0x00000040,
+        specialBit       = 0x00000080, // dtor, move/copy construct or assign
+        trailReturnBit   = 0x00000100,
+        variadicBit      = 0x00000200, // has a C-style "..." variadic 
+        virtualBit       = 0x00000400,
+        volatileBit      = 0x00000800,
 
-        refQualifierMask = 0x1800, // 2 bits
-        storageClassMask = 0xE000  // top 3 bits
+        refQualifierMask = 0x18000000, // 2 bits
+        storageClassMask = 0xE0000000  // top 3 bits
     };
 
     /** Specifiers for the function.

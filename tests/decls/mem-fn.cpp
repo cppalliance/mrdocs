@@ -25,3 +25,8 @@ struct U
     static inline constexpr auto f2() noexcept -> char { return ' '; }
     virtual int f3() const volatile noexcept = 0;
 };
+
+struct V : U
+{
+    int f3() const volatile noexcept override;
+};

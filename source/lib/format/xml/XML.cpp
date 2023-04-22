@@ -438,6 +438,8 @@ visit(
             os << "<inline/>";
         if(I.specs.isSet(FunctionInfo::noexceptBit))
             os << "<noexcept/>";
+        if(I.specs.isSet(FunctionInfo::overrideBit))
+            os << "<override/>";
         if(I.specs.isSet(FunctionInfo::pureBit))
             os << "<pure/>";
         if(I.specs.isSet(FunctionInfo::specialBit))

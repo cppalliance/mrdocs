@@ -973,9 +973,9 @@ build(
     I.specs.set(FunctionInfo::constexprBit, D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
     I.specs.set(FunctionInfo::inlineBit, D->isInlineSpecified());
     I.specs.set(FunctionInfo::noexceptBit, isNoexceptExceptionSpec(D->getExceptionSpecType()));
+    I.specs.set(FunctionInfo::overrideBit, D->hasAttr<OverrideAttr>());
     I.specs.set(FunctionInfo::pureBit, D->isPure());
     //I.specs.set(FunctionInfo::specialBit);
-    //isOverrideSpecified();
     //D->isCopyAssignmentOperator()
     //D->isMoveAssignmentOperator()
     //D->isOverloadedOperator();
