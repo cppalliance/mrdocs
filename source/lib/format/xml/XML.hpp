@@ -128,7 +128,7 @@ private:
     template<class T>
     void writeNodes(List<T> const& list);
     void writeNode(Javadoc::Node const& node);
-    void writeBrief(Javadoc::Paragraph const* node);
+    void writeBrief(Javadoc::Paragraph const& node);
     void writeText(Javadoc::Text const& node);
     void writeStyledText(Javadoc::StyledText const& node);
     void writeParagraph(Javadoc::Paragraph const& node, llvm::StringRef tag = "");

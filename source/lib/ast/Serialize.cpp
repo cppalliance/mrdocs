@@ -14,6 +14,7 @@
 #include "ParseJavadoc.hpp"
 #include <mrdox/Debug.hpp>
 #include <mrdox/Metadata.hpp>
+#include <clang/AST/DeclFriend.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
 #include <llvm/ADT/Hashing.h>

@@ -72,6 +72,7 @@ public:
     bool VisitCXXDestructorDecl(CXXDestructorDecl const* D);
     bool VisitCXXConstructorDecl(CXXConstructorDecl const* D);
     bool VisitCXXMethodDecl(CXXMethodDecl const* D);
+    bool VisitFriendDecl(FriendDecl const* D);
     bool VisitFunctionDecl(FunctionDecl const* D);
     bool VisitTypedefDecl(TypedefDecl const* D);
     bool VisitTypeAliasDecl(TypeAliasDecl const* D);

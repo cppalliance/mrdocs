@@ -631,7 +631,7 @@ writeJavadoc(Javadoc const& jd)
         return;
     openTag("doc");
     if(auto brief = jd.getBrief())
-        writeBrief(brief);
+        writeBrief(*brief);
     writeNodes(jd.getBlocks());
     closeTag("doc");
 }
@@ -666,6 +666,9 @@ writeNode(
     case Javadoc::Kind::paragraph:
         writeParagraph(static_cast<Javadoc::Paragraph const&>(node));
         break;
+    case Javadoc::Kind::brief:
+        writeBrief(static_cast<Javadoc::Brief const&>(node));
+        break;
     case Javadoc::Kind::admonition:
         writeAdmonition(static_cast<Javadoc::Admonition const&>(node));
         break;
@@ -690,14 +693,10 @@ void
 XMLGenerator::
 Writer::
 writeBrief(
-    Javadoc::Paragraph const* node)
+    Javadoc::Paragraph const& node)
 {
-    if(! node)
-        return;
-    if(node->empty())
-        return;
     openTag("brief");
-    writeNodes(node->children);
+    writeNodes(node.children);
     closeTag("brief");
 }
 

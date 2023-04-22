@@ -205,6 +205,14 @@ VisitCXXMethodDecl(
 
 bool
 ASTVisitor::
+VisitFriendDecl(
+    FriendDecl const* D)
+{
+    return true;
+}
+
+bool
+ASTVisitor::
 VisitFunctionDecl(
     FunctionDecl const* D)
 {

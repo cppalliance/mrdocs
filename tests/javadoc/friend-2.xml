@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<symbols>
+  <symbol name="" tag="namespace"/>
+  <symbol name="f" tag="function" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+  <symbol name="T" tag="struct" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+</symbols>
+<namespace name="">
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="friend-2.cpp" line="1" class="def"/>
+  </struct>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file path="friend-2.cpp" line="4"/>
+    <file path="friend-2.cpp" line="7"/>
+    <doc>
+      <para>
+        <text> f</text>
+      </para>
+    </doc>
+  </function>
+</namespace>
+</mrdox>
