@@ -70,40 +70,48 @@ private:
     */
     void insert(std::unique_ptr<Info> Ip);
 
+    //--------------------------------------------
+
+    /** Base class used to visit elements of the corpus.
+    */
+    struct MutableVisitor
+    {
+        virtual ~MutableVisitor() = default;
+        virtual void visit(NamespaceInfo&) {}
+        virtual void visit(RecordInfo&) {}
+        virtual void visit(Overloads&) {}
+        virtual void visit(FunctionInfo&) {}
+        virtual void visit(EnumInfo&) {}
+        virtual void visit(TypedefInfo&) {}
+    };
+
+    /** Visit the specified symbol ID or node.
+    */
+    /** @{ */
+    void visit(SymbolID id, MutableVisitor& f);
+    void visit(Scope& I, MutableVisitor& f);
+    void visit(Info& I, MutableVisitor& f);
+    /** @} */
+
 private:
     struct Temps;
+    class Canonicalizer;
     friend class Corpus;
 
     /** Canonicalize the contents of the object.
 
-        @return true upon success.
-
         @param R The diagnostic reporting object to
         use for delivering errors and information.
     */
-    [[nodiscard]]
-    bool canonicalize(Reporter& R);
-
-    bool canonicalize(std::vector<SymbolID>& list, Temps& t, Reporter& R);
-    bool canonicalize(NamespaceInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(RecordInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(FunctionInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(EnumInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(TypedefInfo& I, Temps& t, Reporter& R);
-    bool canonicalize(Scope& I, Temps& t, Reporter& R);
-    bool canonicalize(std::vector<Reference>& list, Temps& t, Reporter& R);
-    bool canonicalize(llvm::SmallVectorImpl<MemberTypeInfo>& list, Temps& t, Reporter& R);
+    void canonicalize(Reporter& R);
 
     std::shared_ptr<Config const> config_;
 
     // Table of Info keyed on Symbol ID.
     llvm::StringMap<std::unique_ptr<Info>> InfoMap;
-
-    // list of all symbols
     std::vector<SymbolID> allSymbols_;
 
-    llvm::sys::Mutex infoMutex;
-    llvm::sys::Mutex allSymbolsMutex;
+    llvm::sys::Mutex mutex_;
     bool isCanonical_ = false;
 };
 

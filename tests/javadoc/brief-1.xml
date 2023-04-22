@@ -7,17 +7,6 @@
   <symbol name="f6" tag="function" id="NEkWCLiknLGzCD6JnXuBTSAAne8="/>
 </symbols>
 <namespace name="">
-  <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
-    <file path="brief-1.cpp" line="30"/>
-    <doc>
-      <para>
-        <text> brief </text>
-        <bold>bold</bold>
-        <text> it</text>
-        <text>continues to the line.</text>
-      </para>
-    </doc>
-  </function>
   <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
     <file path="brief-1.cpp" line="39"/>
     <doc>
@@ -30,6 +19,17 @@
         <bold>bold</bold>
         <text>    what will</text>
         <text>    happen?</text>
+      </para>
+    </doc>
+  </function>
+  <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
+    <file path="brief-1.cpp" line="30"/>
+    <doc>
+      <para>
+        <text> brief </text>
+        <bold>bold</bold>
+        <text> it</text>
+        <text>continues to the line.</text>
       </para>
     </doc>
   </function>

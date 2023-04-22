@@ -29,7 +29,7 @@ tolower(char c) noexcept
     return uc;
 }
 
-bool
+std::strong_ordering
 compareSymbolNames(
     llvm::StringRef s0,
     llvm::StringRef s1) noexcept
@@ -43,8 +43,10 @@ compareSymbolNames(
         char c1 = *i1;
         auto lc0 = tolower(c0);
         auto lc1 = tolower(c1);
-        if (lc0 != lc1)
-            return lc0 < lc1;
+        if(lc0 < lc1)
+            return std::strong_ordering::less;
+        else if(lc0 > lc1)
+            return std::strong_ordering::greater;
         if(c0 != c1)
         {
             s_cmp = c0 > c1 ? -1 : 1;
@@ -52,9 +54,11 @@ compareSymbolNames(
         }
         i0++, i1++;
     }
-    if (s0.size() != s1.size())
-        return s0.size() < s1.size();
-    return false;
+    if(s0.size() < s1.size())
+        return std::strong_ordering::less;
+    if(s0.size() > s1.size())
+        return std::strong_ordering::greater;
+    return std::strong_ordering::equivalent;
     //---
     while (i0 != s0.end() && i1 != s1.end())
     {
@@ -63,18 +67,24 @@ compareSymbolNames(
             char c1 = *i1;
             auto lc0 = tolower(c0);
             auto lc1 = tolower(c1);
-            if (lc0 != lc1)
-                return lc0 < lc1;
+            if(lc0 < lc1)
+                return std::strong_ordering::less;
+            else if(lc0 > lc1)
+                return std::strong_ordering::greater;
         }
 do_tiebreak:
         i0++, i1++;
     }
-    if (s0.size() != s1.size())
-        return s0.size() < s1.size();
-    return s_cmp < 0;
+    if(s0.size() < s1.size())
+        return std::strong_ordering::less;
+    if(s0.size() > s1.size())
+        return std::strong_ordering::greater;
+    if(s_cmp < 0)
+        return std::strong_ordering::less;
+    if(s_cmp > 0)
+        return std::strong_ordering::greater;
+    return std::strong_ordering::equivalent;
 }
-
-
 
 } // mrdox
 } // clang

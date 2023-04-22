@@ -11,6 +11,7 @@
 
 #include "CorpusImpl.hpp"
 #include <mrdox/Metadata.hpp>
+#include <llvm/ADT/STLExtras.h>
 
 namespace clang {
 namespace mrdox {
@@ -45,232 +46,178 @@ void
 CorpusImpl::
 insert(std::unique_ptr<Info> I)
 {
-    // add to allSymbols
-    {
-        std::lock_guard<llvm::sys::Mutex> Guard(allSymbolsMutex);
-        Assert(! isCanonical_);
-        allSymbols_.emplace_back(I->id);
-    }
+    std::lock_guard<llvm::sys::Mutex> Guard(mutex_);
+
+    Assert(! isCanonical_);
+    allSymbols_.emplace_back(I->id);
 
     // This has to come last because we move I.
+    InfoMap[llvm::toStringRef(I->id)] = std::move(I);
+}
+
+//------------------------------------------------
+//
+// MutableVisitor
+//
+//------------------------------------------------
+
+void
+CorpusImpl::
+visit(SymbolID id, MutableVisitor& f)
+{
+    visit(get<Info>(id), f);
+}
+
+void
+CorpusImpl::
+visit(Scope& I, MutableVisitor& f)
+{
+    for(auto& ref : I.Namespaces)
+        visit(get<NamespaceInfo>(ref.id), f);
+    for(auto& ref : I.Records)
+        visit(get<RecordInfo>(ref.id), f);
+    for(auto& ref : I.Functions)
+        visit(get<FunctionInfo>(ref.id), f);
+    for(auto& J : I.Typedefs)
+        visit(J, f);
+    for(auto& J : I.Enums)
+        visit(J, f);
+}
+
+void
+CorpusImpl::
+visit(Info& I, MutableVisitor& f)
+{
+    switch(I.IT)
     {
-        std::lock_guard<llvm::sys::Mutex> Guard(infoMutex);
-        InfoMap[llvm::toStringRef(I->id)] = std::move(I);
+    case InfoType::IT_namespace:
+        return f.visit(static_cast<NamespaceInfo&>(I));
+    case InfoType::IT_record:
+        return f.visit(static_cast<RecordInfo&>(I));
+    case InfoType::IT_function:
+        return f.visit(static_cast<FunctionInfo&>(I));
+    case InfoType::IT_typedef:
+        return f.visit(static_cast<TypedefInfo&>(I));
+    case InfoType::IT_enum:
+        return f.visit(static_cast<EnumInfo&>(I));
+    default:
+        llvm_unreachable("wrong InfoType for viist");
     }
 }
 
 //------------------------------------------------
+//
+// Canonicalizer
+//
+//------------------------------------------------
 
-struct CorpusImpl::Temps
+class CorpusImpl::
+    Canonicalizer : public MutableVisitor
 {
-    std::string s0;
-    std::string s1;
+    CorpusImpl& corpus_;
+    Reporter& R_;
+
+public:
+    Canonicalizer(
+        CorpusImpl& corpus,
+        Reporter& R) noexcept
+        : corpus_(corpus)
+        , R_(R)
+    {
+    }
+
+    void visit(NamespaceInfo& I)
+    {
+        postProcess(I);
+        canonicalize(I.Children);
+        corpus_.visit(I.Children, *this);
+    }
+
+    void visit(RecordInfo& I)
+    {
+        postProcess(I);
+        canonicalize(I.Children);
+        canonicalize(I.Members);
+        corpus_.visit(I.Children, *this);
+    }
+
+    void visit(FunctionInfo& I)
+    {
+        postProcess(I);
+    }
+
+    void visit(EnumInfo& I)
+    {
+        postProcess(I);
+    }
+
+    void visit(TypedefInfo& I)
+    {
+        postProcess(I);
+    }
+
+    //--------------------------------------------
+
+    void postProcess(Info& I)
+    {
+        //I.javadoc.calculateBrief();
+    }
+
+    //--------------------------------------------
+
+    void canonicalize(Scope& scope) noexcept
+    {
+        canonicalize(scope.Namespaces);
+        canonicalize(scope.Records);
+        canonicalize(scope.Functions);
+        // VFALCO These are non-copyable and thus cannot be sorted yet
+    #if 0
+        canonicalize(scope.Typedefs);
+        canonicalize(scope.Enums);
+    #endif
+    }
+
+    void canonicalize(std::vector<Reference>& list) noexcept
+    {
+        // Sort by symbol ID
+        llvm::sort(list,
+            [&](Reference const& ref0,
+                Reference const& ref1) noexcept
+            {
+                return std::memcmp(
+                    ref0.id.data(),
+                    ref1.id.data(),
+                    ref0.id.size()) < 0;
+            });
+    }
+
+    void canonicalize(llvm::SmallVectorImpl<MemberTypeInfo>& list)
+    {
+    }
 };
 
-bool
-CorpusImpl::
-canonicalize(Reporter& R)
-{
-    if(isCanonical_)
-        return true;
-    Assert(exists(globalNamespaceID));
-    auto& I = get<NamespaceInfo>(globalNamespaceID);
-
-    if(config_->verbose())
-        R.print("Canonicalizing...");
-
-    Temps t;
-
-    if(! canonicalize(I, t, R))
-        return false;
-
-    if(! canonicalize(allSymbols_, t, R))
-        return false;
-
-    isCanonical_ = true;
-    return true;
-}
-
-bool
+void
 CorpusImpl::
 canonicalize(
-    std::vector<SymbolID>& list, Temps& t, Reporter& R)
+    Reporter& R)
 {
-    // Sort by fully qualified name
-    llvm::sort(
-        list,
+    if(isCanonical_)
+        return;
+    if(config_->verbose())
+        R.print("Canonicalizing...");
+    Canonicalizer cn(*this, R);
+    visit(globalNamespaceID, cn);
+    std::string temp0;
+    std::string temp1;
+    llvm::sort(allSymbols_,
         [&](SymbolID const& id0,
             SymbolID const& id1) noexcept
         {
-            auto s0 = get<Info>(id0).getFullyQualifiedName(t.s0);
-            auto s1 = get<Info>(id1).getFullyQualifiedName(t.s1);
-            return compareSymbolNames(s0, s1);
-        });
-    return true;
-}
-
-
-bool
-CorpusImpl::
-canonicalize(
-    NamespaceInfo& I,
-    Temps& t,
-    Reporter& R)
-{
-    I.javadoc.calculateBrief();
-    if(! canonicalize(I.Children, t, R))
-        return false;
-    return true;
-}
-
-bool
-CorpusImpl::
-canonicalize(
-    RecordInfo& I,
-    Temps& t,
-    Reporter& R)
-{
-    I.javadoc.calculateBrief();
-    canonicalize(I.Children, t, R);
-    canonicalize(I.Members, t, R);
-    return true;
-}
-
-bool
-CorpusImpl::
-canonicalize(
-    FunctionInfo& I,
-    Temps& t,
-    Reporter& R)
-{
-    I.javadoc.calculateBrief();
-    return true;
-}
-
-bool
-CorpusImpl::
-canonicalize(
-    EnumInfo& I,
-    Temps& t,
-    Reporter& R)
-{
-    I.javadoc.calculateBrief();
-    return true;
-}
-
-bool
-CorpusImpl::
-canonicalize(
-    TypedefInfo& I,
-    Temps& t,
-    Reporter& R)
-{
-    I.javadoc.calculateBrief();
-    return true;
-}
-
-bool
-CorpusImpl::
-canonicalize(
-    Scope& I,
-    Temps& t,
-    Reporter& R)
-{
-    std::sort(
-        I.Namespaces.begin(),
-        I.Namespaces.end(),
-        [this, &t](Reference& ref0, Reference& ref1)
-        {
             return compareSymbolNames(
-                get<Info>(ref0.id).getFullyQualifiedName(t.s0),
-                get<Info>(ref1.id).getFullyQualifiedName(t.s1));
+                get<Info>(id0).getFullyQualifiedName(temp0),
+                get<Info>(id1).getFullyQualifiedName(temp1)) < 0;
         });
-    std::sort(
-        I.Records.begin(),
-        I.Records.end(),
-        [this, &t](Reference& ref0, Reference& ref1)
-        {
-            return compareSymbolNames(
-                get<Info>(ref0.id).getFullyQualifiedName(t.s0),
-                get<Info>(ref1.id).getFullyQualifiedName(t.s1));
-        });
-    std::sort(
-        I.Functions.begin(),
-        I.Functions.end(),
-        [this, &t](Reference& ref0, Reference& ref1)
-        {
-            return compareSymbolNames(
-                get<Info>(ref0.id).getFullyQualifiedName(t.s0),
-                get<Info>(ref1.id).getFullyQualifiedName(t.s1));
-        });
-    // These seem to be non-copyable
-#if 0
-    std::sort(
-        I.Enums.begin(),
-        I.Enums.end(),
-        [this, &t](EnumInfo& I0, EnumInfo& I1)
-        {
-            return compareSymbolNames(
-                I0.getFullyQualifiedName(t.s0),
-                I1.getFullyQualifiedName(t.s1));
-        });
-    std::sort(
-        I.Typedefs.begin(),
-        I.Typedefs.end(),
-        [this, &t](TypedefInfo& I0, TypedefInfo& I1)
-        {
-            return compareSymbolNames(
-                I0.getFullyQualifiedName(t.s0),
-                I1.getFullyQualifiedName(t.s1));
-        });
-#endif
-    for(auto& ref : I.Namespaces)
-        if(! canonicalize(get<NamespaceInfo>(ref.id), t, R))
-            return false;
-    for(auto& ref : I.Records)
-        if(! canonicalize(get<RecordInfo>(ref.id), t, R))
-            return false;
-    for(auto& ref : I.Functions)
-        if(! canonicalize(get<FunctionInfo>(ref.id), t, R))
-            return false;
-    for(auto& J: I.Enums)
-        if(! canonicalize(J, t, R))
-            return false;
-    for(auto& J: I.Typedefs)
-        if(! canonicalize(J, t, R))
-            return false;
-    return true;
-}
-
-bool
-CorpusImpl::
-canonicalize(
-    std::vector<Reference>& list,
-    Temps& t,
-    Reporter& R)
-{
-    std::sort(
-        list.begin(),
-        list.end(),
-        [this, &t](Reference& ref0, Reference& ref1)
-        {
-            return compareSymbolNames(
-                get<Info>(ref0.id).getFullyQualifiedName(t.s0),
-                get<Info>(ref1.id).getFullyQualifiedName(t.s1));
-        });
-    return true;
-}
-
-bool
-CorpusImpl::
-canonicalize(
-    llvm::SmallVectorImpl<MemberTypeInfo>& list,
-    Temps& t,
-    Reporter& R)
-{
-    for(auto J : list)
-        J.javadoc.calculateBrief();
-    return true;
+    isCanonical_ = true;
 }
 
 } // mrdox

@@ -11,6 +11,7 @@
 #include "PagesBuilder.hpp"
 #include "format/radix.hpp"
 #include <mrdox/Metadata.hpp>
+#include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
@@ -42,11 +43,11 @@ scan()
     // visit the children not the namespace
     corpus_.visitWithOverloads(corpus_.globalNamespace().Children, *this);
 
-    std::sort(pages.begin(), pages.end(),
+    llvm::sort(pages,
         [](Page& p0, Page& p1)
         {
             return compareSymbolNames(
-                p0.fileName, p1.fileName);
+                p0.fileName, p1.fileName) < 0;
         });
 }
 

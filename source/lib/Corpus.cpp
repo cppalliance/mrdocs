@@ -238,12 +238,7 @@ build(
     if(GotFailure)
         return makeErrorString("one or more errors occurred");
 
-    //
-    // Finish up
-    //
-
-    if(! corpus->canonicalize(R))
-        return makeError("canonicalization failed");
+    corpus->canonicalize(R);
 
     return corpus;
 }

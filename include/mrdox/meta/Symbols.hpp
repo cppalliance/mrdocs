@@ -49,7 +49,7 @@ enum class InfoType
     IT_typedef
 };
 
-/** Return true if s0 is less than s1.
+/** Return the result of comparing s0 to s1.
 
     This function returns true if the string
     s0 is less than the string s1. The comparison
@@ -58,7 +58,7 @@ enum class InfoType
     are compared with lowercase letters coming
     before uppercase letters.
 */
-bool
+std::strong_ordering
 compareSymbolNames(
     llvm::StringRef symbolName0,
     llvm::StringRef symbolName1) noexcept;
