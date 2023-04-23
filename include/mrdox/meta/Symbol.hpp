@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_SYMBOL_HPP
 #define MRDOX_META_SYMBOL_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Info.hpp>
 #include <mrdox/meta/Location.hpp>
 #include <llvm/ADT/Optional.h>

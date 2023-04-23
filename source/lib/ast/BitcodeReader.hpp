@@ -9,15 +9,17 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-//
-// This file implements a reader for parsing the clang-doc internal
-// representation from LLVM bitcode. The reader takes in a stream of bits and
-// generates the set of infos that it represents.
-//
-
 #ifndef MRDOX_SOURCE_AST_BITCODEREADER_HPP
 #define MRDOX_SOURCE_AST_BITCODEREADER_HPP
 
+//
+// This file implements a reader for parsing the
+// mrdox internal representation from LLVM bitcode.
+// The reader takes in a stream of bits and generates
+// the set of infos that it represents.
+//
+
+#include <mrdox/Platform.hpp>
 #include "AnyNodeList.hpp"
 #include "BitcodeIDs.hpp"
 #include "ParseJavadoc.hpp"

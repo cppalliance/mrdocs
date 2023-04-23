@@ -1,5 +1,4 @@
 //
-// This is a derivative work. originally part of the LLVM Project.
 // Licensed under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
@@ -9,25 +8,25 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_PARSEJAVADOC_HPP
-#define MRDOX_SOURCE_PARSEJAVADOC_HPP
+#ifndef MRDOX_GENERATORS_HPP
+#define MRDOX_GENERATORS_HPP
 
 #include <mrdox/Platform.hpp>
-#include <clang/AST/Decl.h>
-#include "clangASTComment.hpp"
-#include <clang/AST/ASTContext.h>
-#include <mrdox/meta/Javadoc.hpp>
 
 namespace clang {
 namespace mrdox {
 
-/** Return a complete javadoc object for a raw comment.
+/** A dynamic list of Generator
 */
-Javadoc
-parseJavadoc(
-    RawComment const* RC,
-    ASTContext const& Ctx,
-    Decl const* D);
+class Generators
+{
+    Generators() noexcept;
+
+public:
+    /** Destructor.
+    */
+    virtual ~Generators() = default;
+};
 
 } // mrdox
 } // clang

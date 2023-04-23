@@ -11,6 +11,7 @@
 #ifndef MRDOX_DEBUG_HPP
 #define MRDOX_DEBUG_HPP
 
+#include <mrdox/Platform.hpp>
 #if ! defined(NDEBUG)
 #include <llvm/Support/ErrorHandling.h>
 #endif

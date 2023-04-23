@@ -12,6 +12,7 @@
 #ifndef MRDOX_INFO_HPP
 #define MRDOX_INFO_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Javadoc.hpp>
 #include <mrdox/meta/Reference.hpp>
 #include <mrdox/meta/Symbols.hpp>

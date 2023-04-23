@@ -12,6 +12,7 @@
 #ifndef MRDOX_FUNCTION_HPP
 #define MRDOX_FUNCTION_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/FieldType.hpp>
 #include <mrdox/meta/Function.hpp>
 #include <mrdox/meta/Symbol.hpp>

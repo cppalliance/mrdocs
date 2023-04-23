@@ -12,6 +12,7 @@
 #ifndef MRDOX_REPORTER_HPP
 #define MRDOX_REPORTER_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/Error.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Mutex.h>

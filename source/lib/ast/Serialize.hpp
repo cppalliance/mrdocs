@@ -12,6 +12,7 @@
 #ifndef MRDOX_SOURCE_AST_SERIALIZE_HPP
 #define MRDOX_SOURCE_AST_SERIALIZE_HPP
 
+#include <mrdox/Platform.hpp>
 #include "clangASTComment.hpp"
 #include "Bitcode.hpp"
 #include <mrdox/Config.hpp>

@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_BASERECORD_HPP
 #define MRDOX_META_BASERECORD_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Record.hpp>
 
 namespace clang {

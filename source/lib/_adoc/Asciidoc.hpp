@@ -12,6 +12,7 @@
 #ifndef MRDOX_SOURCE_ADOC_ASCIIDOC_HPP
 #define MRDOX_SOURCE_ADOC_ASCIIDOC_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>

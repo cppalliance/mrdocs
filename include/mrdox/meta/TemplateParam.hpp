@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_TEMPLATEPARAM_HPP
 #define MRDOX_META_TEMPLATEPARAM_HPP
 
+#include <mrdox/Platform.hpp>
 #include <clang/AST/Decl.h>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/SmallString.h>

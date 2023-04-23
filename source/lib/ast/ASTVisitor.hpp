@@ -12,6 +12,7 @@
 #ifndef MRDOX_SOURCE_AST_ASTVISITOR_HPP
 #define MRDOX_SOURCE_AST_ASTVISITOR_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/AST/Mangle.h>

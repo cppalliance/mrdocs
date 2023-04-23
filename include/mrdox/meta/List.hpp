@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_LIST_HPP
 #define MRDOX_META_LIST_HPP
 
+#include <mrdox/Platform.hpp>
 #include <algorithm>
 #include <compare>
 #include <cstdint>

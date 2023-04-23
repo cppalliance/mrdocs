@@ -92,6 +92,11 @@ target_include_directories(mrdox-api
     PRIVATE
     "${PROJECT_SOURCE_DIR}/source/lib/"
 )
+target_compile_definitions(
+    mrdox-api
+    PRIVATE
+    -DMRDOX_LIB
+)
 
 # LLVM
 target_link_libraries(mrdox-api PUBLIC ${llvm_libs})
@@ -112,6 +117,7 @@ else()
         clangToolingInclusions)
 endif()
 target_include_directories(mrdox-api SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
+
 
 # Windows, Win64
 if (WIN32)

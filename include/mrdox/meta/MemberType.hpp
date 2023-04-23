@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_MEMBERTYPE_HPP
 #define MRDOX_META_MEMBERTYPE_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Javadoc.hpp>
 #include <mrdox/meta/FieldType.hpp>
 #include <mrdox/meta/Function.hpp>

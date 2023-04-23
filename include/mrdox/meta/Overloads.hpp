@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_OVERLOADS_HPP
 #define MRDOX_META_OVERLOADS_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Function.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>

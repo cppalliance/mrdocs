@@ -12,6 +12,7 @@
 #ifndef MRDOX_CONFIG_HPP
 #define MRDOX_CONFIG_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/ArgumentsAdjusters.h>
 #include <llvm/ADT/Optional.h>

@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_SYMBOLS_HPP
 #define MRDOX_META_SYMBOLS_HPP
 
+#include <mrdox/Platform.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <array>
 

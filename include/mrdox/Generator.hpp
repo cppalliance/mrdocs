@@ -15,6 +15,7 @@
 #ifndef MRDOX_GENERATOR_HPP
 #define MRDOX_GENERATOR_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Reporter.hpp>

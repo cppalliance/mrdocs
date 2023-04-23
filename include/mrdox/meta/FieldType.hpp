@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_FIELDTYPE_HPP
 #define MRDOX_META_FIELDTYPE_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Type.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <utility>

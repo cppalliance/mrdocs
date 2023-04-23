@@ -9,15 +9,17 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-//
-// This file implements a writer for serializing the clang-doc internal
-// representation to LLVM bitcode. The writer takes in a stream and emits the
-// generated bitcode to that stream.
-//
-
 #ifndef MRDOX_SOURCE_AST_BITCODEWRITER_HPP
 #define MRDOX_SOURCE_AST_BITCODEWRITER_HPP
 
+//
+// This file implements a writer for serializing the
+// mrdox internal representation to LLVM bitcode. The
+// writer takes in a stream and emits the generated
+// bitcode to that stream.
+//
+
+#include <mrdox/Platform.hpp>
 #include "BitcodeIDs.hpp"
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/meta/Javadoc.hpp>

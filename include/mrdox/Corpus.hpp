@@ -12,6 +12,7 @@
 #ifndef MRDOX_CORPUS_HPP
 #define MRDOX_CORPUS_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Debug.hpp>
 #include <mrdox/MetadataFwd.hpp>

@@ -12,6 +12,7 @@
 #ifndef MRDOX_SOURCE_BITCODE_HPP
 #define MRDOX_SOURCE_BITCODE_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>

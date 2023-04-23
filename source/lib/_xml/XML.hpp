@@ -12,6 +12,7 @@
 #ifndef MRDOX_SOURCE_XML_XML_HPP
 #define MRDOX_SOURCE_XML_XML_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/Generator.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/meta/Javadoc.hpp>

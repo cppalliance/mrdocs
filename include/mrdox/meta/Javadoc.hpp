@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_JAVADOC_HPP
 #define MRDOX_META_JAVADOC_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/List.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <memory>

@@ -12,6 +12,7 @@
 #ifndef MRDOX_ERROR_HPP
 #define MRDOX_ERROR_HPP
 
+#include <mrdox/Platform.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/raw_ostream.h>
 #include <source_location>

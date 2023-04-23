@@ -9,14 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-//
-// This file defines the internal representations of different declaration
-// types for the clang-doc tool.
-//
-
 #ifndef MRDOX_META_ENUM_HPP
 #define MRDOX_META_ENUM_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Symbol.hpp>
 #include <mrdox/meta/Type.hpp>
 #include <llvm/ADT/Optional.h>

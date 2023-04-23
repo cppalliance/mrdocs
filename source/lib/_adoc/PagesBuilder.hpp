@@ -11,6 +11,7 @@
 #ifndef MRDOX_SOURCE_ADOC_PAGESBUILDER_HPP
 #define MRDOX_SOURCE_ADOC_PAGESBUILDER_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <llvm/ADT/SmallString.h>

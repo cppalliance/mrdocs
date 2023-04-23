@@ -11,6 +11,8 @@
 #ifndef MRDOX_SOURCE_COMMANDS_HPP
 #define MRDOX_SOURCE_COMMANDS_HPP
 
+#include <mrdox/Platform.hpp>
+
 namespace clang {
 
 class ASTContext;

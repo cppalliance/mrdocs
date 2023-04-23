@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_TYPE_HPP
 #define MRDOX_META_TYPE_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Reference.hpp>
 
 namespace clang {

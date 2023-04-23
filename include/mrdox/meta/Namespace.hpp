@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_NAMESPACE_HPP
 #define MRDOX_META_NAMESPACE_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Info.hpp>
 #include <mrdox/meta/Scope.hpp>
 

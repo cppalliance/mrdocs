@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_TEMPLATE_HPP
 #define MRDOX_META_TEMPLATE_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/TemplateParam.hpp>
 #include <llvm/ADT/Optional.h>
 

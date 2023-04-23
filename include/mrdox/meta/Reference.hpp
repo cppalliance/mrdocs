@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_REFERENCE_HPP
 #define MRDOX_META_REFERENCE_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Symbols.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>

@@ -9,11 +9,13 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-// This is a workaround for the annoying
-// warning in the current trunk of llvm
-
 #ifndef MRDOX_SOURCE_AST_CLANGASTCOMMENT_HPP
 #define MRDOX_SOURCE_AST_CLANGASTCOMMENT_HPP
+
+#include <mrdox/Platform.hpp>
+
+// This is a workaround for the annoying
+// warning in the current trunk of llvm
 
 #ifdef _MSC_VER
 #pragma warning(push)

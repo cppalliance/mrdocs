@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_SCOPE_HPP
 #define MRDOX_META_SCOPE_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/Reference.hpp>
 #include <mrdox/meta/Typedef.hpp>
 #include <mrdox/meta/Enum.hpp>

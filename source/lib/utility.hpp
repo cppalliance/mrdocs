@@ -12,6 +12,7 @@
 #ifndef MRDOX_SOURCE_UTILITY_HPP
 #define MRDOX_SOURCE_UTILITY_HPP
 
+#include <mrdox/Platform.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Path.h>
 

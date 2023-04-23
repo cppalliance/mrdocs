@@ -12,6 +12,7 @@
 #ifndef MRDOX_META_RECORD_HPP
 #define MRDOX_META_RECORD_HPP
 
+#include <mrdox/Platform.hpp>
 #include <mrdox/meta/MemberType.hpp>
 #include <mrdox/meta/Reference.hpp>
 #include <mrdox/meta/Scope.hpp>

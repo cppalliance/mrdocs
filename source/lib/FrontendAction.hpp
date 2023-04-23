@@ -12,6 +12,7 @@
 #ifndef MRDOX_SOURCE_FRONTENDACTION_HPP
 #define MRDOX_SOURCE_FRONTENDACTION_HPP
 
+#include <mrdox/Platform.hpp>
 #include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
 #include <memory>

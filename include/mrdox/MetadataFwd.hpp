@@ -12,10 +12,11 @@
 #ifndef MRDOX_METADATA_FWD_HPP
 #define MRDOX_METADATA_FWD_HPP
 
+#include <mrdox/Platform.hpp>
+#include <mrdox/meta/Symbols.hpp>
+
 // Forward declarations for all types
 // related to metadata extracted from AST
-
-#include <mrdox/meta/Symbols.hpp>
 
 namespace clang {
 namespace mrdox {

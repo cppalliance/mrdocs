@@ -12,6 +12,8 @@
 #ifndef MRDOX_METADATA_HPP
 #define MRDOX_METADATA_HPP
 
+#include <mrdox/Platform.hpp>
+
 // All headers related to
 // metadata extracted from AST
 

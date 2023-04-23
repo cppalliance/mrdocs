@@ -12,6 +12,7 @@
 #ifndef MRDOX_LOCATION_HPP
 #define MRDOX_LOCATION_HPP
 
+#include <mrdox/Platform.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 
