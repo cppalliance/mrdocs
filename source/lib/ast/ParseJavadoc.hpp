@@ -9,14 +9,14 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_PARSEJAVADOC_HPP
-#define MRDOX_SOURCE_PARSEJAVADOC_HPP
+#ifndef MRDOX_LIB_AST_PARSEJAVADOC_HPP
+#define MRDOX_LIB_AST_PARSEJAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/meta/Javadoc.hpp>
 #include <clang/AST/Decl.h>
 #include "clangASTComment.hpp"
 #include <clang/AST/ASTContext.h>
-#include <mrdox/meta/Javadoc.hpp>
 
 namespace clang {
 namespace mrdox {

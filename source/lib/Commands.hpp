@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_COMMANDS_HPP
-#define MRDOX_SOURCE_COMMANDS_HPP
+#ifndef MRDOX_LIB_COMMANDS_HPP
+#define MRDOX_LIB_COMMANDS_HPP
 
 #include <mrdox/Platform.hpp>
 

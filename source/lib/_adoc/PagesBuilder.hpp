@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_ADOC_PAGESBUILDER_HPP
-#define MRDOX_SOURCE_ADOC_PAGESBUILDER_HPP
+#ifndef MRDOX_LIB_ADOC_PAGESBUILDER_HPP
+#define MRDOX_LIB_ADOC_PAGESBUILDER_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>

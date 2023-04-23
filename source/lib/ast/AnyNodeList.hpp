@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_AST_ANYNODELIST_HPP
-#define MRDOX_SOURCE_AST_ANYNODELIST_HPP
+#ifndef MRDOX_LIB_AST_ANYNODELIST_HPP
+#define MRDOX_LIB_AST_ANYNODELIST_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Error.hpp>

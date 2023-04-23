@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_AST_CLANGASTCOMMENT_HPP
-#define MRDOX_SOURCE_AST_CLANGASTCOMMENT_HPP
+#ifndef MRDOX_LIB_AST_CLANGASTCOMMENT_HPP
+#define MRDOX_LIB_AST_CLANGASTCOMMENT_HPP
 
 #include <mrdox/Platform.hpp>
 

@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_BITCODE_HPP
-#define MRDOX_SOURCE_BITCODE_HPP
+#ifndef MRDOX_LIB_BITCODE_HPP
+#define MRDOX_LIB_BITCODE_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
