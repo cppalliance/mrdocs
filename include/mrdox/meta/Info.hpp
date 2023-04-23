@@ -15,6 +15,7 @@
 #include <mrdox/meta/Javadoc.hpp>
 #include <mrdox/meta/Reference.hpp>
 #include <mrdox/meta/Symbols.hpp>
+#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>
@@ -47,7 +48,7 @@ struct Info
 
     /** The extracted javadoc for this declaration.
     */
-    Javadoc javadoc;
+    llvm::Optional<Javadoc> javadoc;
 
     //--------------------------------------------
 

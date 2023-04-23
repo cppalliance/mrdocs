@@ -24,6 +24,17 @@ struct MemberTypeInfo
     : FieldTypeInfo
     //, SymbolInfo
 {
+    // VFALCO This is public because 0 values in bitcode are not emitted...
+    // Access level associated with this info (public, protected, private, none).
+    // AS_public is set as default because the bitcode writer requires the enum
+    // with value 0 to be used as the default.
+    // (AS_public = 0, AS_protected = 1, AS_private = 2, AS_none = 3)
+    AccessSpecifier Access = AccessSpecifier::AS_public;
+
+    llvm::Optional<Javadoc> javadoc;
+
+    //--------------------------------------------
+
     MemberTypeInfo() = default;
     
     MemberTypeInfo(
@@ -43,15 +54,6 @@ struct MemberTypeInfo
             std::tie(Type, Name, Access, javadoc) ==
             std::tie(Other.Type, Other.Name, Other.Access, Other.javadoc);
     }
-
-    // VFALCO Why public?
-    // Access level associated with this info (public, protected, private, none).
-    // AS_public is set as default because the bitcode writer requires the enum
-    // with value 0 to be used as the default.
-    // (AS_public = 0, AS_protected = 1, AS_private = 2, AS_none = 3)
-    AccessSpecifier Access = AccessSpecifier::AS_public;
-
-    Javadoc javadoc;
 };
 
 } // mrdox

@@ -70,6 +70,13 @@ struct EnumInfo : SymbolInfo
     // Indicates whether this enum is scoped (e.g. enum class).
     bool Scoped = false;
 
+    // Set to nonempty to the type when this is an explicitly typed enum. For
+    //   enum Foo : short { ... };
+    // this will be "short".
+    llvm::Optional<TypeInfo> BaseType;
+
+    llvm::SmallVector<EnumValueInfo, 4> Members; // List of enum members.
+
     //--------------------------------------------
 
     static constexpr InfoType type_id = InfoType::IT_enum;
@@ -87,13 +94,6 @@ struct EnumInfo : SymbolInfo
     }
 
     void merge(EnumInfo&& I);
-
-    // Set to nonempty to the type when this is an explicitly typed enum. For
-    //   enum Foo : short { ... };
-    // this will be "short".
-    llvm::Optional<TypeInfo> BaseType;
-
-    llvm::SmallVector<EnumValueInfo, 4> Members; // List of enum members.
 };
 
 } // mrdox

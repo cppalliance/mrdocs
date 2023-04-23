@@ -297,20 +297,6 @@ struct Javadoc
     Javadoc(
         List<Block> blocks);
 
-    /** Return true if this has a value.
-
-        A value will exist if a FullComment node
-        was encountered while visiting the AST.
-        After post-processing, it is possible for
-        this function to return `true` even if
-        there are no top-level blocks remaining.
-    */
-    bool
-    has_value() const noexcept
-    {
-        return has_value_;
-    }
-
     /** Return true if this is empty
     */
     bool
@@ -325,14 +311,6 @@ struct Javadoc
     getBrief() const noexcept
     {
         return brief_.get();
-    }
-
-    /** Set the object as having a value.
-    */
-    void
-    emplace() noexcept
-    {
-        has_value_ = true;
     }
 
     /** Return the list of top level blocks.
@@ -446,7 +424,6 @@ struct Javadoc
 private:
     std::shared_ptr<Paragraph const> brief_;
     List<Block> blocks_;
-    bool has_value_ = false;
 };
 
 } // mrdox

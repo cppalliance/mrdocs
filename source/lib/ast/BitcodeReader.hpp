@@ -131,7 +131,7 @@ private:
     llvm::Error parseRecord(Record const& R, unsigned ID,
         llvm::StringRef Blob, TemplateParamInfo* I);
     llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, Javadoc* I);
+        llvm::StringRef Blob, llvm::Optional<Javadoc>* I);
     llvm::Error parseRecord(Record const& R, unsigned ID,
         llvm::StringRef Blob, AnyNodeList* I);
     llvm::Error parseRecord(Record const& R, unsigned ID,
@@ -146,7 +146,7 @@ private:
     llvm::BitstreamCursor& Stream;
     llvm::Optional<llvm::BitstreamBlockInfo> BlockInfo;
     FieldId CurrentReferenceField;
-    Javadoc* javadoc_ = nullptr;
+    llvm::Optional<Javadoc>* javadoc_ = nullptr;
     AnyNodeList* nodes_ = nullptr;
 };
 

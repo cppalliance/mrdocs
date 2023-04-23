@@ -249,22 +249,19 @@ decodeRecord(
 
 //------------------------------------------------
 
-llvm::Expected<Javadoc*>
-getJavadoc(...)
+template<class T>
+llvm::Expected<llvm::Optional<Javadoc>*>
+getJavadoc(T I)
 {
-    return makeError("invalid type cannot contain Javadoc");
-}
-
-llvm::Expected<Javadoc*>
-getJavadoc(Info* I)
-{
-    return &I->javadoc;
-}
-
-llvm::Expected<Javadoc*>
-getJavadoc(MemberTypeInfo* I)
-{
-    return &I->javadoc;
+    if constexpr(std::is_pointer_v<T>)
+    {
+        using U = std::remove_pointer_t<T>;
+        if constexpr(std::derived_from<U, Info>)
+            return &I->javadoc;
+        else if constexpr(std::derived_from<U, MemberTypeInfo>)
+            return &I->javadoc;
+    }
+    return makeError("wrong type");
 }
 
 //------------------------------------------------
@@ -819,7 +816,7 @@ readSubBlock(
             return rv.takeError();
         javadoc_ = rv.get();
         javadoc_->emplace();
-        if(auto err = readBlock(ID, javadoc_))
+        if(auto err = readBlock(ID, &*javadoc_))
             return err;
         javadoc_ = nullptr;
         return llvm::Error::success();
@@ -832,7 +829,7 @@ readSubBlock(
             return err;
         if(! J.isTopLevel())
             return J.spliceIntoParent();
-        return J.spliceInto(javadoc_->getBlocks());
+        return J.spliceInto((*javadoc_)->getBlocks());
     }
 
     case BI_JAVADOC_NODE_BLOCK_ID:
@@ -1316,7 +1313,7 @@ parseRecord(
     Record const& R,
     unsigned ID,
     llvm::StringRef blob,
-    Javadoc* I)
+    llvm::Optional<Javadoc>* I)
 {
     // VFALCO Should never get here because this
     // only contains sub-blocks and no records (yet).

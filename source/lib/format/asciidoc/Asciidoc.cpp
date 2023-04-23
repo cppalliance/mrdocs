@@ -205,8 +205,7 @@ writeRecord(
     openSection(I.Name);
 
     // Brief
-    if(I.javadoc.has_value())
-        writeBrief(I.javadoc.getBrief());
+    writeBrief(I.javadoc);
 
     // Synopsis
     openSection("Synopsis");
@@ -236,8 +235,7 @@ writeRecord(
     closeSection();
 
     // Description
-    if(I.javadoc.has_value())
-        writeDescription(I.javadoc.getBlocks());
+    writeDescription(I.javadoc);
 
     // Nested Types
     writeNestedTypes(
@@ -293,7 +291,7 @@ writeFunction(
     openSection(I.Name);
 
     // Brief
-    writeBrief(I.javadoc.getBrief());
+    writeBrief(I.javadoc);
 
     // Synopsis
     openSection("Synopsis");
@@ -328,26 +326,7 @@ writeFunction(
     closeSection();
 
     // Description
-    writeDescription(I.javadoc.getBlocks());
-
-    closeSection();
-}
-
-void
-AsciidocGenerator::
-Writer::
-writeEnum(
-    EnumInfo const& I)
-{
-    openSection(I.Name);
-
-    // Brief
-    writeBrief(I.javadoc.getBrief());
-
-    writeLocation(I);
-
-    // Description
-    writeDescription(I.javadoc.getBlocks());
+    writeDescription(I.javadoc);
 
     closeSection();
 }
@@ -361,12 +340,31 @@ writeTypedef(
     openSection(I.Name);
 
     // Brief
-    writeBrief(I.javadoc.getBrief());
+    writeBrief(I.javadoc);
 
     writeLocation(I);
 
     // Description
-    writeDescription(I.javadoc.getBlocks());
+    writeDescription(I.javadoc);
+
+    closeSection();
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeEnum(
+    EnumInfo const& I)
+{
+    openSection(I.Name);
+
+    // Brief
+    writeBrief(I.javadoc);
+
+    writeLocation(I);
+
+    // Description
+    writeDescription(I.javadoc);
 
     closeSection();
 }
@@ -407,7 +405,7 @@ writeFunctionOverloads(
         {
             for(auto const& K : J.list)
             {
-                writeBrief(K->javadoc.getBrief(), false);
+                writeBrief(K->javadoc, false);
                 os_ << '\n';
             }
         }
@@ -459,7 +457,7 @@ writeNestedTypes(
         os_ <<
             "|`" << it->Name << "`\n" <<
             "|";
-        writeBrief(it->javadoc.getBrief(), false);
+        writeBrief(it->javadoc, false);
         os_ << '\n';
     }   
     os_ <<
@@ -502,7 +500,7 @@ writeDataMembers(
         os_ <<
             "|`" << it->Name << "`\n" <<
             "|";
-        writeBrief(it->javadoc.getBrief(), false);
+        writeBrief(it->javadoc, false);
         os_ << '\n';
     }   
     os_ <<
@@ -517,16 +515,33 @@ void
 AsciidocGenerator::
 Writer::
 writeBrief(
-    Javadoc::Paragraph const* node,
+    llvm::Optional<Javadoc> const& javadoc,
     bool withNewline)
 {
-    if(! node)
+    if(! javadoc.has_value())
         return;
+    auto const node = javadoc->getBrief();
     if(node->empty())
         return;
     if(withNewline)
         os_ << '\n';
     writeNode(*node);
+}
+
+void
+AsciidocGenerator::
+Writer::
+writeDescription(
+    llvm::Optional<Javadoc> const& javadoc)
+{
+    if(! javadoc.has_value())
+        return;
+
+    //os_ << '\n';
+    openSection("Description");
+    os_ << '\n';
+    writeNodes(javadoc->getBlocks());
+    closeSection();
 }
 
 void
@@ -571,19 +586,6 @@ writeLocation(
             ">`\n";
         break;
     }
-}
-
-void
-AsciidocGenerator::
-Writer::
-writeDescription(
-    List<Javadoc::Block> const& list)
-{
-    //os_ << '\n';
-    openSection("Description");
-    os_ << '\n';
-    writeNodes(list);
-    closeSection();
 }
 
 //------------------------------------------------

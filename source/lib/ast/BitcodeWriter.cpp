@@ -417,7 +417,8 @@ emitBlock(
     emitRecord(I.Name, NAMESPACE_NAME);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
-    emitBlock(I.javadoc);
+    if(I.javadoc)
+        emitBlock(*I.javadoc);
     for (const auto& C : I.Children.Namespaces)
         emitBlock(C, FieldId::F_child_namespace);
     for (const auto& C : I.Children.Records)
@@ -440,7 +441,8 @@ emitBlock(
     emitRecord(I.Name, RECORD_NAME);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
-    emitBlock(I.javadoc);
+    if(I.javadoc)
+        emitBlock(*I.javadoc);
     if (I.DefLoc)
         emitRecord(*I.DefLoc, RECORD_DEFLOCATION);
     for (const auto& L : I.Loc)
@@ -494,7 +496,8 @@ emitBlock(
     emitRecord(I.Name, FUNCTION_NAME);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
-    emitBlock(I.javadoc);
+    if(I.javadoc)
+        emitBlock(*I.javadoc);
     emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
     emitRecord(I.specs.bits(), FUNCTION_BITS);
@@ -520,7 +523,8 @@ emitBlock(
     emitRecord(I.Name, ENUM_NAME);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
-    emitBlock(I.javadoc);
+    if(I.javadoc)
+        emitBlock(*I.javadoc);
     if (I.DefLoc)
         emitRecord(*I.DefLoc, ENUM_DEFLOCATION);
     for (const auto& L : I.Loc)
@@ -562,7 +566,8 @@ emitBlock(
     emitRecord(T.Name, TYPEDEF_NAME);
     for (const auto& N : T.Namespace)
         emitBlock(N, FieldId::F_namespace);
-    emitBlock(T.javadoc);
+    if(T.javadoc)
+        emitBlock(*T.javadoc);
     if (T.DefLoc)
         emitRecord(*T.DefLoc, TYPEDEF_DEFLOCATION);
     emitRecord(T.IsUsing, TYPEDEF_IS_USING);
@@ -589,7 +594,8 @@ emitBlock(
     emitBlock(T.Type, FieldId::F_type);
     emitRecord(T.Name, MEMBER_TYPE_NAME);
     emitRecord(T.Access, MEMBER_TYPE_ACCESS);
-    emitBlock(T.javadoc);
+    if(T.javadoc)
+        emitBlock(*T.javadoc);
 }
 
 void
@@ -597,11 +603,10 @@ BitcodeWriter::
 emitBlock(
     Javadoc const& jd)
 {
-    if(jd.has_value())
-    {
-        StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
-        emitBlock(jd.getBlocks());
-    }
+    // If the optional<Javadoc> has a value then we
+    // always want to emit it, even if it is empty.
+    StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
+    emitBlock(jd.getBlocks());
 }
 
 template<class T>

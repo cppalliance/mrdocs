@@ -87,8 +87,8 @@ public:
 protected:
     void writeRecord(RecordInfo const& I) override;
     void writeFunction(FunctionInfo const& I) override;
-    void writeEnum(EnumInfo const& I) override;
     void writeTypedef(TypedefInfo const& I) override;
+    void writeEnum(EnumInfo const& I) override;
 
     void writeBase(BaseRecordInfo const& I);
     void writeFunctionOverloads(
@@ -103,9 +103,12 @@ protected:
         llvm::SmallVectorImpl<MemberTypeInfo> const& list,
         AccessSpecifier access);
 
-    void writeBrief(Javadoc::Paragraph const* node, bool withNewline = true);
+    void writeBrief(
+        llvm::Optional<Javadoc> const& javadoc,
+        bool withNewline = true);
+    void writeDescription(
+        llvm::Optional<Javadoc> const& javadoc);
     void writeLocation(SymbolInfo const& I);
-    void writeDescription(List<Javadoc::Block> const& list);
 
     template<class T>
     void writeNodes(List<T> const& list);

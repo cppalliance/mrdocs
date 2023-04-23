@@ -120,7 +120,7 @@ private:
     void writeTemplateParam(TemplateParamInfo const& I);
     void writeMemberType(MemberTypeInfo const& I);
     void writeReturnType(TypeInfo const& I);
-    void writeJavadoc(Javadoc const& jd);
+    void writeJavadoc(llvm::Optional<Javadoc> const& javadoc);
 
     template<class T>
     void writeNodes(List<T> const& list);

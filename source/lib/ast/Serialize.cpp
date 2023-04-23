@@ -293,7 +293,7 @@ getTemplateParams(
 static
 void
 parseJavadoc(
-    Javadoc& javadoc,
+    llvm::Optional<Javadoc>& javadoc,
     Decl const* D)
 {
     // VFALCO investigate whether we can use
@@ -303,7 +303,11 @@ parseJavadoc(
     if(RC)
     {
         RC->setAttached();
-        javadoc = parseJavadoc(RC, D->getASTContext(), D);
+        javadoc.emplace(parseJavadoc(RC, D->getASTContext(), D));
+    }
+    else
+    {
+        javadoc.reset();
     }
 }
 

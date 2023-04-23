@@ -655,14 +655,15 @@ writeReturnType(
 void
 XMLGenerator::
 Writer::
-writeJavadoc(Javadoc const& jd)
+writeJavadoc(
+    llvm::Optional<Javadoc> const& javadoc)
 {
-    if(! jd.has_value())
+    if(! javadoc.has_value())
         return;
     openTag("doc");
-    if(auto brief = jd.getBrief())
+    if(auto brief = javadoc->getBrief())
         writeBrief(*brief);
-    writeNodes(jd.getBlocks());
+    writeNodes(javadoc->getBlocks());
     closeTag("doc");
 }
 

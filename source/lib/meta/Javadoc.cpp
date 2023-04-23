@@ -37,7 +37,6 @@ Javadoc::
 Javadoc(
     List<Block> blocks)
     : blocks_(std::move(blocks))
-    , has_value_(true)
 {
 }
 
@@ -58,8 +57,6 @@ Javadoc::
 operator==(
     Javadoc const& other) const noexcept
 {
-    if(has_value_ != other.has_value_)
-        return false;
     return blocks_ == other.blocks_;
 }
 
@@ -75,18 +72,11 @@ void
 Javadoc::
 merge(Javadoc&& other)
 {
-    if(! other.has_value())
-        return;
     // Unconditionally extend the blocks
     // since each decl may have a comment.
     if(other != *this)
     {
-        has_value_ = true;
         append(blocks_, std::move(other.blocks_));
-    }
-    else
-    {
-        Assert(has_value_);
     }
 }
 
