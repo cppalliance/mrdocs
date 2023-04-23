@@ -12,7 +12,7 @@
 #define MRDOX_LIB_CORPUSIMPL_HPP
 
 #include <mrdox/Platform.hpp>
-#include "_AST/Bitcode.hpp"
+#include "AST/Bitcode.hpp"
 #include <mrdox/Corpus.hpp>
 #include <string>
 

@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "_AST/Bitcode.hpp"
-#include "_AST/FrontendAction.hpp"
+#include "AST/Bitcode.hpp"
+#include "AST/FrontendAction.hpp"
 #include "Metadata/CorpusImpl.hpp"
 #include "Metadata/Reduce.hpp"
 #include <mrdox/Error.hpp>
