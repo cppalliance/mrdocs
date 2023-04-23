@@ -40,13 +40,14 @@ struct FunctionInfo : SymbolInfo
         constexprBit     = 0x00000004,
         inlineBit        = 0x00000008,
         noexceptBit      = 0x00000010,
-        overrideBit      = 0x00000020,
-        pureBit          = 0x00000040,
-        specialBit       = 0x00000080, // dtor, move/copy construct or assign
-        trailReturnBit   = 0x00000100,
-        variadicBit      = 0x00000200, // has a C-style "..." variadic 
-        virtualBit       = 0x00000400,
-        volatileBit      = 0x00000800,
+        noreturnBit      = 0x00000020,
+        overrideBit      = 0x00000040,
+        pureBit          = 0x00000080,
+        specialBit       = 0x00000100, // dtor, move/copy construct or assign
+        trailReturnBit   = 0x00000200,
+        variadicBit      = 0x00000400, // has a C-style "..." variadic 
+        virtualBit       = 0x00000800,
+        volatileBit      = 0x00001000,
 
         refQualifierMask = 0x18000000, // 2 bits
         storageClassMask = 0xE0000000  // top 3 bits

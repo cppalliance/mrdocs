@@ -1,2 +1,2 @@
-tests/decls/**/*.xml    binary
-tests/javadoc/**/*.xml  binary
+tests/n4944/**/*.xml      binary
+tests/old-tests/**/*.xml  binary

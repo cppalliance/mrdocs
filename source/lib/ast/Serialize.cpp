@@ -960,6 +960,7 @@ getFunctionSpecs(
     I.specs.set(FunctionInfo::constexprBit, D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
     I.specs.set(FunctionInfo::inlineBit, D->isInlineSpecified());
     I.specs.set(FunctionInfo::noexceptBit, isNoexceptExceptionSpec(D->getExceptionSpecType()));
+    I.specs.set(FunctionInfo::noreturnBit, D->hasAttr<CXX11NoReturnAttr>());
     I.specs.set(FunctionInfo::overrideBit, D->hasAttr<OverrideAttr>());
     I.specs.set(FunctionInfo::pureBit, D->isPure());
     I.specs.set(FunctionInfo::variadicBit, D->isVariadic());
@@ -967,7 +968,6 @@ getFunctionSpecs(
     if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
     {
         I.specs.set(FunctionInfo::trailReturnBit, FP->hasTrailingReturn());
-        //FP->getNoReturnAttr();
     }
     I.specs.setStorageClass(D->getStorageClass());
 }

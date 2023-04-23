@@ -232,7 +232,8 @@ handleFile(
         }
 
         // Compare the generated output with the expected output
-        if(generatedXml != expectedXml->getBuffer())
+        if( expectedXml &&
+            generatedXml != expectedXml->getBuffer())
         {
             // The output did not match
             results_.numberOfFailures++;

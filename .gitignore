@@ -6,7 +6,5 @@ bin64/
 build/
 temp/
 test/
-tests/decls/*.adoc
-tests/decls/*.bad.xml
-tests/javadoc/*.adoc
-tests/javadoc/*.bad.xml
+tests/**/*.adoc
+tests/**/*.bad.xml

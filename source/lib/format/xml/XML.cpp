@@ -277,7 +277,10 @@ build()
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
         "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
         "<mrdox>\n";
-    writeAllSymbols();
+
+    // VFALCO Do we even need this?
+    //writeAllSymbols();
+
     if(! corpus_.visit(globalNamespaceID, *this))
     {
         if(fd_os_ && fd_os_->error())
@@ -441,6 +444,8 @@ visit(
             os << "<inline/>";
         if(I.specs.isSet(FunctionInfo::noexceptBit))
             os << "<noexcept/>";
+        if(I.specs.isSet(FunctionInfo::noreturnBit))
+            os << "<noreturn/>";
         if(I.specs.isSet(FunctionInfo::overrideBit))
             os << "<override/>";
         if(I.specs.isSet(FunctionInfo::pureBit))

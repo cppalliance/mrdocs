@@ -181,8 +181,8 @@ if (MRDOX_BUILD_TESTS)
     target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
     target_include_directories(mrdox-test PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
     add_test(NAME mrdox-test COMMAND mrdox-test
-        "${PROJECT_SOURCE_DIR}/tests/decls"
-        "${PROJECT_SOURCE_DIR}/tests/javadoc"
+        "${PROJECT_SOURCE_DIR}/tests/n4944"
+        "${PROJECT_SOURCE_DIR}/tests/old-tests"
     )
     source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
     source_group(TREE ${PROJECT_SOURCE_DIR}/source/tests PREFIX "source" FILES ${TEST_SOURCES})

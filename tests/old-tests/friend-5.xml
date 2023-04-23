@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<namespace name="">
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="friend-5.cpp" line="1" class="def"/>
+    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+  </struct>
+  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+    <file path="friend-5.cpp" line="6" class="def"/>
+    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+  </struct>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file path="friend-5.cpp" line="3"/>
+    <file path="friend-5.cpp" line="8"/>
+    <file path="friend-5.cpp" line="12"/>
+    <doc>
+      <para>
+        <text> f</text>
+      </para>
+    </doc>
+  </function>
+</namespace>
+</mrdox>

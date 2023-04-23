@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<namespace name="">
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file path="para-2.cpp" line="10"/>
+    <doc>
+      <para>
+        <text> brief</text>
+      </para>
+      <para>
+        <text>a</text>
+        <text> b</text>
+        <text>  c</text>
+        <text>   d</text>
+      </para>
+    </doc>
+  </function>
+</namespace>
+</mrdox>

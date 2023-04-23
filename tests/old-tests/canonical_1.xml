@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
+<mrdox>
+<namespace name="">
+  <struct name="ba" id="DnCAWz4yn8cUKkg886MMQcSEBhg=">
+    <file path="canonical_1.cpp" line="9" class="def"/>
+  </struct>
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file path="canonical_1.cpp" line="4" class="def"/>
+  </struct>
+  <struct name="a" id="bJjlANSkHT9fMIOJb+7rnfl9B2Q=">
+    <file path="canonical_1.cpp" line="5" class="def"/>
+  </struct>
+  <struct name="bA" id="o++ChozQVnJgKoS41uCm96LOP14=">
+    <file path="canonical_1.cpp" line="7" class="def"/>
+  </struct>
+  <struct name="Ba" id="r32UJws/5rQHSwieW9XcY/Lu30k=">
+    <file path="canonical_1.cpp" line="6" class="def"/>
+  </struct>
+  <struct name="b" id="x22+jYd1xB7rz7rTGsgmwOre390=">
+    <file path="canonical_1.cpp" line="3" class="def"/>
+  </struct>
+  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
+    <file path="canonical_1.cpp" line="2" class="def"/>
+  </struct>
+  <struct name="Bx" id="64sjs/NcKpvextfuwbtyP/VMOJk=">
+    <file path="canonical_1.cpp" line="8" class="def"/>
+  </struct>
+</namespace>
+</mrdox>
