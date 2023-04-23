@@ -109,8 +109,8 @@ private:
     bool visit(NamespaceInfo const&) override;
     bool visit(RecordInfo const&) override;
     bool visit(FunctionInfo const&) override;
-    bool visit(EnumInfo const&) override;
     bool visit(TypedefInfo const&) override;
+    bool visit(EnumInfo const&) override;
 
     void writeInfo(Info const& I);
     void writeSymbol(SymbolInfo const& I);

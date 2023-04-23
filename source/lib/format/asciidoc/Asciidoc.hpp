@@ -16,7 +16,6 @@
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Generator.hpp>
-#include <mrdox/format/FlatWriter.hpp>
 #include <mrdox/meta/Javadoc.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
@@ -58,15 +57,19 @@ public:
 //------------------------------------------------
 
 class AsciidocGenerator::Writer
-    : public FlatWriter
+    : public Corpus::Visitor
 {
+protected:
     struct Section
     {
         int level = 0;
         std::string markup;
     };
 
+    llvm::raw_ostream& os_;
     llvm::raw_fd_ostream* fd_os_;
+    Corpus const& corpus_;
+    Reporter& R_;
     Section sect_;
 
 public:
@@ -85,10 +88,17 @@ public:
     void writeTypeName(TypeName const& tn, llvm::raw_ostream& os);
 
 protected:
-    void writeRecord(RecordInfo const& I) override;
-    void writeFunction(FunctionInfo const& I) override;
-    void writeTypedef(TypedefInfo const& I) override;
-    void writeEnum(EnumInfo const& I) override;
+    bool visit(NamespaceInfo const&) override;
+    bool visit(RecordInfo const&) override;
+    bool visit(FunctionInfo const&) override;
+    bool visit(TypedefInfo const&) override;
+    bool visit(EnumInfo const&) override;
+
+protected:
+    void writeRecord(RecordInfo const& I);
+    void writeFunction(FunctionInfo const& I);
+    void writeTypedef(TypedefInfo const& I);
+    void writeEnum(EnumInfo const& I);
 
     void writeBase(BaseRecordInfo const& I);
     void writeFunctionOverloads(

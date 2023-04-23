@@ -137,6 +137,10 @@ struct AsciidocGenerator::Writer::
 };
 
 //------------------------------------------------
+//
+// Writer
+//
+//------------------------------------------------
 
 AsciidocGenerator::
 Writer::
@@ -145,8 +149,10 @@ Writer(
     llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
     Reporter& R) noexcept
-    : FlatWriter(os, "", corpus, R)
+    : os_(os)
     , fd_os_(fd_os)
+    , corpus_(corpus)
+    , R_(R)
 {
 }
 
@@ -166,9 +172,58 @@ build()
     os_ <<
         "= Reference\n"
         ":role: mrdox\n";
-    visitAllSymbols();
+    (void)corpus_.visit(globalNamespaceID, *this);
     closeSection();
     return llvm::Error::success();
+}
+
+bool
+AsciidocGenerator::
+Writer::
+visit(
+    NamespaceInfo const& I)
+{
+    return corpus_.visit(I.Children, *this);
+}
+
+bool
+AsciidocGenerator::
+Writer::
+visit(
+    RecordInfo const& I)
+{
+    writeRecord(I);
+    return corpus_.visit(I.Children, *this);
+}
+
+bool
+AsciidocGenerator::
+Writer::
+visit(
+    FunctionInfo const& I)
+{
+    writeFunction(I);
+    return true;
+}
+
+bool
+AsciidocGenerator::
+Writer::
+visit(
+    TypedefInfo const& I)
+{
+    writeTypedef(I);
+    return true;
+}
+
+bool
+AsciidocGenerator::
+Writer::
+visit(
+    EnumInfo const& I)
+{
+    writeEnum(I);
+    return true;
 }
 
 //------------------------------------------------
@@ -521,6 +576,8 @@ writeBrief(
     if(! javadoc.has_value())
         return;
     auto const node = javadoc->getBrief();
+    if(! node)
+        return;
     if(node->empty())
         return;
     if(withNewline)

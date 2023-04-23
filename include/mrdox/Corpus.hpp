@@ -90,8 +90,8 @@ public:
         virtual bool visit(RecordInfo const&);
         virtual bool visit(Overloads const&);
         virtual bool visit(FunctionInfo const&);
-        virtual bool visit(EnumInfo const&);
         virtual bool visit(TypedefInfo const&);
+        virtual bool visit(EnumInfo const&);
     };
 
     /** Visit the specified symbol ID or node.
