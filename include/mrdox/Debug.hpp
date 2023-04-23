@@ -14,6 +14,7 @@
 #if ! defined(NDEBUG)
 #include <llvm/Support/ErrorHandling.h>
 #endif
+#include <llvm/Support/raw_ostream.h>
 
 // Some nice odds and ends such as leak checking
 // and redirection to the Visual Studio output window.
@@ -21,13 +22,12 @@
 namespace clang {
 namespace mrdox {
 
-/** Enable output window redirection for standard streams.
-
-    This will only take effect if a debugger
-    is attached at the time of the call.
+/** Return a stream which writes output to the debugger.
 */
-void
-debugEnableRedirecton();
+/** @{ */
+llvm::raw_ostream& debug_outs();
+llvm::raw_ostream& debug_errs();
+/** @} */
 
 /** Enable debug heap checking.
 */

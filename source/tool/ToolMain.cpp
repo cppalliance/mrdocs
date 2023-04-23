@@ -160,12 +160,12 @@ toolMain(
 
 int main(int argc, char const** argv)
 {
-    clang::mrdox::debugEnableRedirecton();
-    clang::mrdox::debugEnableHeapChecking();
+    using namespace clang::mrdox;
+
+    debugEnableHeapChecking();
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
    
-    clang::mrdox::Reporter R;
-    clang::mrdox::toolMain(argc, argv, R);
-
+    Reporter R;
+    toolMain(argc, argv, R);
     return R.getExitCode();
 }

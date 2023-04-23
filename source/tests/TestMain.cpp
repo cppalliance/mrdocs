@@ -398,9 +398,10 @@ main(int argc, const char** argv)
 {
     using namespace clang::mrdox;
 
-    debugEnableRedirecton();
+    // VFALCO This is crashing now on exit...
+    //llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
+
     debugEnableHeapChecking();
-    llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
 
     Reporter R;
 
@@ -424,7 +425,7 @@ main(int argc, const char** argv)
                 break;
     }
 
-    auto& os = std::cerr;
+    auto& os = debug_outs();
     if(results.numberofFilesWritten > 0)
         os <<
             results.numberofFilesWritten << " files written\n";
@@ -454,13 +455,15 @@ main(int argc, const char** argv)
         }
     }
     auto milli = results.elapsedMilliseconds();
-    if(milli < 1000)
+    if(milli < 10000)
         os <<
             " in " << milli << " milliseconds\n";
+#if 0
     else if(milli < 10000)
         os <<
             " in " << std::setprecision(1) <<
             double(milli) / 1000 << " seconds\n";
+#endif
     else
         os <<
             " in " << ((milli + 500) / 1000) <<

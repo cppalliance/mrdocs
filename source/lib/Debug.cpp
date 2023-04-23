@@ -9,11 +9,10 @@
 //
 
 #include <mrdox/Debug.hpp>
+#include <atomic>
+#include <memory>
 
 #if defined(_MSC_VER) && ! defined(NDEBUG)
-
-#include <iostream>
-#include <sstream>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -23,51 +22,67 @@ namespace mrdox {
 
 namespace {
 
-class debug_streambuf
-    : public std::stringbuf
-{
-    bool dbg_;
-    std::ostream& os_;
-    std::streambuf* sb_;
+static bool const isDebuggerPresent = ::IsDebuggerPresent();
 
-    void
-    write(char const* s)
+class debug_ostream
+    : public llvm::raw_ostream
+{
+    static constexpr std::size_t BufferSize = 4096;
+
+    llvm::raw_ostream& os_;
+    std::string buf_;
+
+    void write_impl(const char * Ptr, size_t Size) override
     {
-        if(dbg_)
-            ::OutputDebugStringA(s);
-        sb_->sputn(s, std::strlen(s));
+        os_.write(Ptr, Size);
+
+        if(isDebuggerPresent)
+        {
+            // Windows expects a null terminated string
+            buf_[Size] = '\0';
+            ::OutputDebugStringA(buf_.data());
+        }
     }
 
 public:
-    explicit
-    debug_streambuf(
-        std::ostream& os)
-        : dbg_(::IsDebuggerPresent() != 0)
-        , os_(os)
-        , sb_(dbg_ ? os.rdbuf(this) : os.rdbuf())
+    debug_ostream(
+        llvm::raw_ostream& os)
+        : os_(os)
     {
+        buf_.resize(BufferSize + 1);
+        SetBuffer(buf_.data(), BufferSize);
+        os_.tie(this);
     }
 
-    ~debug_streambuf()
+    ~debug_ostream()
     {
-        sync();
+        os_.tie(nullptr);
+        flush();
     }
 
-    int sync() override
+    std::size_t preferred_buffer_size() const override
     {
-        write(this->str().c_str());
-        this->str("");
+        return BufferSize;
+    }
+
+    std::uint64_t current_pos() const override
+    {
         return 0;
     }
 };
 
 } // (anon)
 
-void
-debugEnableRedirecton()
+llvm::raw_ostream& debug_outs()
 {
-    static debug_streambuf out(std::cout);
-    static debug_streambuf err(std::cerr);
+    static debug_ostream stream(llvm::outs());
+    return stream;
+}
+
+llvm::raw_ostream& debug_errs()
+{
+    static debug_ostream stream(llvm::errs());
+    return stream;
 }
 
 void
@@ -91,8 +106,14 @@ debugEnableHeapChecking()
 namespace clang {
 namespace mrdox {
 
-void debugEnableRedirecton()
+llvm::raw_ostream& debug_outs()
 {
+    return llvm::outs();
+}
+
+llvm::raw_ostream& debug_errs()
+{
+    return llvm::errs();
 }
 
 void debugEnableHeapChecking()
