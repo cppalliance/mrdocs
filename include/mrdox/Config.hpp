@@ -42,7 +42,9 @@ namespace mrdox {
     particular directory from which absolute paths
     are calculated from relative paths.
 */
-class Config : public std::enable_shared_from_this<Config>
+class MRDOX_VISIBLE
+    Config
+        : public std::enable_shared_from_this<Config>
 {
     template<class T>
     friend struct llvm::yaml::MappingTraits;
@@ -63,7 +65,7 @@ protected:
     explicit Config(llvm::StringRef configDir);
 
 public:
-    virtual ~Config() = default;
+    MRDOX_DECL virtual ~Config() = default;
 
     /** Return a defaulted Config using an existing directory.
 
@@ -71,6 +73,7 @@ public:
         If this is relative, an absolute path will
         be calculated from the current directory.
     */
+    MRDOX_DECL
     static
     llvm::Expected<std::shared_ptr<Config>>
     createAtDirectory(
@@ -78,6 +81,7 @@ public:
 
     /** Return a Config loaded from the specified YAML file.
     */
+    MRDOX_DECL
     static
     llvm::Expected<std::shared_ptr<Config>>
     loadFromFile(
@@ -230,12 +234,14 @@ public:
 
         @param dirPath The directory.
     */
+    MRDOX_DECL
     void
     setSourceRoot(
         llvm::StringRef dirPath);
 
     /** Set the filter for including translation units.
     */
+    MRDOX_DECL
     void
     setInputFileIncludes(
         std::vector<std::string> const& list);
@@ -258,7 +264,7 @@ public:
         concurrency level. Calls to post and wait
         are blocking.
     */
-    WorkGroup() noexcept = default;
+    MRDOX_DECL WorkGroup() noexcept;
 
     /** Constructor.
     */
@@ -268,27 +274,35 @@ public:
 
     /** Constructor.
     */
-    WorkGroup(WorkGroup const& other);
+    MRDOX_DECL
+    WorkGroup(
+        WorkGroup const& other);
 
     /** Assignment.
     */
+    MRDOX_DECL
     WorkGroup&
-    operator=(WorkGroup const& other);
+    operator=(
+        WorkGroup const& other);
 
     /** Post work to the work group.
     */
-    void post(std::function<void(void)>);
+    MRDOX_DECL
+    void
+    post(std::function<void(void)>);
 
     /** Wait for all posted work in the work group to complete.
     */
-    void wait();
+    MRDOX_DECL
+    void
+    wait();
 
 private:
     friend class Config::Impl;
 
     struct Base
     {
-        virtual ~Base() = default;
+        MRDOX_DECL virtual ~Base() noexcept;
     };
 
     class Impl;

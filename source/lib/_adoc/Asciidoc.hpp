@@ -37,6 +37,12 @@ public:
     llvm::StringRef
     name() const noexcept override
     {
+        return "adoc";
+    }
+
+    llvm::StringRef
+    displayName() const noexcept override
+    {
         return "Asciidoc";
     }
 

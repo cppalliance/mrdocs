@@ -58,7 +58,9 @@ auto nice(llvm::ErrorOr<T>&& e)
     return nice(e.getError());
 }
 
-llvm::StringRef nice(std::source_location loc);
+MRDOX_DECL
+llvm::StringRef
+nice(std::source_location loc);
 
 //------------------------------------------------
 
@@ -68,6 +70,7 @@ llvm::StringRef nice(std::source_location loc);
 
     @param loc The source location where the failure occurred.
 */
+MRDOX_DECL
 [[nodiscard]]
 llvm::Error
 makeErrorString(

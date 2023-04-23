@@ -94,6 +94,8 @@ target_include_directories(mrdox-api
 )
 target_compile_definitions(
     mrdox-api
+    PUBLIC
+    -DMRDOX_STATIC_LINK
     PRIVATE
     -DMRDOX_LIB
 )

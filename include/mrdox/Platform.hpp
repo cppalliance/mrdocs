@@ -19,24 +19,33 @@
 namespace clang {
 namespace mrdox {
 
+//------------------------------------------------
+//
+// static/dynamic linking
+//------------------------------------------------
+
+// static linking
+#if defined(MRDOX_STATIC_LINK)
+# define MRDOX_DECL
+# define MRDOX_VISIBLE
+
 // MSVC
-#if defined(_MSC_VER)
+#elif defined(_MSC_VER)
 # define MRDOX_SYMBOL_EXPORT __declspec(dllexport)
 # define MRDOX_SYMBOL_IMPORT __declspec(dllimport)
-# define MRDOX_SYMBOL_VISIBLE
 # if defined(MRDOX_LIB) // building library
 #  define MRDOX_DECL MRDOX_SYMBOL_EXPORT
 # else
 #  define MRDOX_DECL MRDOX_SYMBOL_IMPORT
 # endif
+# define MRDOX_VISIBLE
 
-// (others)
+// (unknown)
 #else
-# define MRDOX_SYMBOL_EXPORT
-# define MRDOX_SYMBOL_IMPORT
-# define MRDOX_SYMBOL_VISIBLE
-# define MRDOX_DECL
+# error unknown platform for dynamic linking
 #endif
+
+//------------------------------------------------
 
 } // mrdox
 } // clang

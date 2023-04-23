@@ -52,6 +52,10 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
 }
 
 //------------------------------------------------
+
+Corpus::~Corpus() noexcept = default;
+
+//------------------------------------------------
 //
 // Observers
 //
@@ -67,6 +71,8 @@ globalNamespace() const noexcept
 }
 
 //------------------------------------------------
+
+Corpus::Visitor::~Visitor() noexcept = default;
 
 bool
 Corpus::

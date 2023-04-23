@@ -13,7 +13,7 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Debug.hpp>
 #include <mrdox/Error.hpp>
-#include <mrdox/Generator.hpp>
+#include <mrdox/Generators.hpp>
 #include <clang/Tooling/StandaloneExecution.h>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
@@ -63,9 +63,6 @@ struct Results
 
 //------------------------------------------------
 
-static std::unique_ptr<Generator> xmlGen = makeXMLGenerator();
-static std::unique_ptr<Generator> adocGen = makeAsciidocGenerator();
-
 // We need a different config for each directory
 // or file passed on the command line, and thus
 // each input path must have a separate Instance.
@@ -77,6 +74,8 @@ class Instance
     std::shared_ptr<Config const> config_;
     Config::WorkGroup wg_;
     Reporter& R_;
+    Generator const* xmlGen_;
+    Generator const* adocGen_;
 
     void
     setConfig(
@@ -122,7 +121,11 @@ Instance(
     , options_(options)
     , wg_(config_)
     , R_(R)
+    , xmlGen_(getGenerators().find("xml"))
+    , adocGen_(getGenerators().find("adoc"))
 {
+    Assert(xmlGen_ != nullptr);
+    Assert(adocGen_ != nullptr);
 }
 
 void
@@ -177,7 +180,7 @@ handleFile(
     path::remove_filename(dirPath);
 
     SmallString outputPath = filePath;
-    path::replace_extension(outputPath, xmlGen->extension());
+    path::replace_extension(outputPath, xmlGen_->extension());
 
     // Build Corpus
     std::unique_ptr<Corpus> corpus;
@@ -196,7 +199,7 @@ handleFile(
     // Generate XML
     std::string generatedXml;
     if(R_.error(
-        xmlGen->buildSinglePageString(generatedXml, *corpus, R_),
+        xmlGen_->buildSinglePageString(generatedXml, *corpus, R_),
         "build XML string for '", filePath, "'"))
     {
         results_.numberOfErrors++;
@@ -275,9 +278,9 @@ handleFile(
     // Write Asciidoc if requested
     if(options_.adocOption.getValue())
     {
-        path::replace_extension(outputPath, adocGen->extension());
+        path::replace_extension(outputPath, adocGen_->extension());
         if(R_.error(
-            adocGen->buildSinglePageFile(outputPath, *corpus, R_),
+            adocGen_->buildSinglePageFile(outputPath, *corpus, R_),
             "write '", outputPath, "'"))
             return llvm::Error::success(); // keep going
     }

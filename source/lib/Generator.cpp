@@ -19,6 +19,8 @@
 namespace clang {
 namespace mrdox {
 
+Generator::~Generator() noexcept = default;
+
 llvm::Error
 Generator::
 buildPages(

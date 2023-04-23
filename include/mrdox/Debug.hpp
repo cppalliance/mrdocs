@@ -26,14 +26,13 @@ namespace mrdox {
 /** Return a stream which writes output to the debugger.
 */
 /** @{ */
-llvm::raw_ostream& debug_outs();
-llvm::raw_ostream& debug_errs();
+MRDOX_DECL llvm::raw_ostream& debug_outs();
+MRDOX_DECL llvm::raw_ostream& debug_errs();
 /** @} */
 
 /** Enable debug heap checking.
 */
-void
-debugEnableHeapChecking();
+MRDOX_DECL void debugEnableHeapChecking();
 
 #if defined(NDEBUG)
 #define Assert(expr) ((void)0)

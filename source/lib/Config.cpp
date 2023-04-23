@@ -86,7 +86,7 @@ class Config::WorkGroup::
 public:
     explicit
     Impl(
-        llvm::ThreadPool& threadPool)
+        llvm::ThreadPool& threadPool) noexcept
         : group_(threadPool)
     {
     }
@@ -120,6 +120,10 @@ public:
 };
 
 //------------------------------------------------
+
+Config::
+WorkGroup::
+Base::~Base() noexcept = default;
 
 Config::
 WorkGroup::

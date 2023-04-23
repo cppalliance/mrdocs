@@ -31,10 +31,13 @@ namespace mrdox {
 
 /** The collection of declarations in extracted form.
 */
-class Corpus
+class MRDOX_VISIBLE
+    Corpus
 {
 public:
-    virtual ~Corpus() = default;
+    MRDOX_DECL
+    virtual
+    ~Corpus() noexcept;
 
     //--------------------------------------------
 
@@ -46,20 +49,22 @@ public:
 
     /** Return the list of all uniquely identified symbols.
     */
+    MRDOX_DECL
     virtual
     std::vector<SymbolID> const&
     allSymbols() const noexcept = 0;
 
     /** Return the metadata for the global namespace.
     */
+    MRDOX_DECL
     NamespaceInfo const&
     globalNamespace() const noexcept;
 
     /** Return the Info with the matching ID, or nullptr.
     */
     /** @{ */
-    virtual Info* find(SymbolID const& id) noexcept = 0;
-    virtual Info const* find(SymbolID const& id) const noexcept = 0;
+    MRDOX_DECL virtual Info* find(SymbolID const& id) noexcept = 0;
+    MRDOX_DECL virtual Info const* find(SymbolID const& id) const noexcept = 0;
     /** @} */
 
     /** Return true if an Info with the specified symbol ID exists.
@@ -86,22 +91,26 @@ public:
     */
     struct Visitor
     {
-        virtual ~Visitor() = default;
-        virtual bool visit(NamespaceInfo const&);
-        virtual bool visit(RecordInfo const&);
-        virtual bool visit(Overloads const&);
-        virtual bool visit(FunctionInfo const&);
-        virtual bool visit(TypedefInfo const&);
-        virtual bool visit(EnumInfo const&);
+        MRDOX_DECL virtual ~Visitor() noexcept;
+        MRDOX_DECL virtual bool visit(NamespaceInfo const&);
+        MRDOX_DECL virtual bool visit(RecordInfo const&);
+        MRDOX_DECL virtual bool visit(Overloads const&);
+        MRDOX_DECL virtual bool visit(FunctionInfo const&);
+        MRDOX_DECL virtual bool visit(TypedefInfo const&);
+        MRDOX_DECL virtual bool visit(EnumInfo const&);
     };
 
     /** Visit the specified symbol ID or node.
     */
     /** @{ */
-    [[nodiscard]] bool visit(SymbolID id, Visitor& f) const;
-    [[nodiscard]] bool visit(Scope const& I, Visitor& f) const;
-    [[nodiscard]] bool visitWithOverloads(Scope const& I, Visitor& f) const;
-    [[nodiscard]] bool visit(Info const& I, Visitor& f) const;
+    MRDOX_DECL [[nodiscard]] bool visit(
+        SymbolID id, Visitor& f) const;
+    MRDOX_DECL [[nodiscard]] bool visit(
+        Scope const& I, Visitor& f) const;
+    MRDOX_DECL [[nodiscard]] bool visitWithOverloads(
+        Scope const& I, Visitor& f) const;
+    MRDOX_DECL [[nodiscard]] bool visit(
+        Info const& I, Visitor& f) const;
     /** @} */
 
     //--------------------------------------------
@@ -113,6 +122,7 @@ public:
         @param R The diagnostic reporting object to
         use for delivering errors and information.
     */
+    MRDOX_DECL
     [[nodiscard]]
     static
     llvm::Expected<std::unique_ptr<Corpus>>

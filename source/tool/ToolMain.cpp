@@ -22,7 +22,7 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Debug.hpp>
-#include <mrdox/Generator.hpp>
+#include <mrdox/Generators.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
@@ -103,9 +103,7 @@ toolMain(
     int argc, const char** argv,
     Reporter& R)
 {
-    std::vector<std::unique_ptr<Generator>> formats;
-    formats.emplace_back(makeXMLGenerator());
-    formats.emplace_back(makeAsciidocGenerator());
+    auto& generators = getGenerators();
 
     // parse command line options
     auto optionsResult = tooling::CommonOptionsParser::create(
@@ -125,20 +123,11 @@ toolMain(
         optionsResult->getCompilations(), 0);
 
     // create the generator
-    Generator const* gen;
+    auto generator = generators.find(FormatType.getValue());
+    if(! generator)
     {
-        auto it = std::find_if(
-            formats.begin(), formats.end(),
-            [](std::unique_ptr<Generator> const& up)
-            {
-                return up->extension().equals_insensitive(FormatType.getValue());
-            });
-        if(it == formats.end())
-        {
-            R.print("find the generator for '", FormatType.getValue(), "'");
-            return;
-        }
-        gen = it->get();
+        R.print("Generator '", FormatType.getValue(), "' not found.");
+        return;
     }
 
     // Run the tool, this can take a while
@@ -149,7 +138,7 @@ toolMain(
     // Run the generator.
     if((*config)->verbose())
         llvm::outs() << "Generating docs...\n";
-    if(! gen->buildPages((*config)->OutDirectory, **corpus, R))
+    if(! generator->buildPages((*config)->OutDirectory, **corpus, R))
         return;
 }
 

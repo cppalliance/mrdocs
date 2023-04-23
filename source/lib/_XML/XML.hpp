@@ -30,7 +30,13 @@ struct XMLGenerator : Generator
     llvm::StringRef
     name() const noexcept override
     {
-        return "XML";
+        return "xml";
+    }
+
+    llvm::StringRef
+    displayName() const noexcept override
+    {
+        return "Extensible Markup Language (XML)";
     }
 
     llvm::StringRef

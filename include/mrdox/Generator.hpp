@@ -26,17 +26,28 @@ namespace mrdox {
 
 /** Base class for documentation generators.
 */
-struct Generator
+struct MRDOX_VISIBLE
+    Generator
 {
     /** Destructor.
     */
-    virtual ~Generator() = default;
+    MRDOX_DECL
+    virtual
+    ~Generator() noexcept;
 
-    /** Return the full name of the generator.
+    /** Return the symbolic name of the generator.
     */
+    MRDOX_DECL
     virtual
     llvm::StringRef
     name() const noexcept = 0;
+
+    /** Return the display name of the generator.
+    */
+    MRDOX_DECL
+    virtual
+    llvm::StringRef
+    displayName() const noexcept = 0;
 
     /** Return the extension or tag of the generator.
 
@@ -49,6 +60,7 @@ struct Generator
         The returned string should not include
         a leading period.
     */
+    MRDOX_DECL
     virtual
     llvm::StringRef
     extension() const noexcept = 0;
@@ -73,6 +85,7 @@ struct Generator
         @param R The diagnostic reporting object to
         use for delivering errors and information.
     */
+    MRDOX_DECL
     virtual
     llvm::Error
     buildPages(
@@ -99,6 +112,7 @@ struct Generator
             fd_os->error() will be called periodically and
             the result returend if an error is indicated.
     */
+    MRDOX_DECL
     virtual
     llvm::Error
     buildSinglePage(
@@ -122,6 +136,7 @@ struct Generator
 
         @param R The diagnostic reporting object to use.
     */
+    MRDOX_DECL
     llvm::Error
     buildSinglePageFile(
         llvm::StringRef filePath,
@@ -144,15 +159,13 @@ struct Generator
 
         @param R The diagnostic reporting object to use.
     */
+    MRDOX_DECL
     llvm::Error
     buildSinglePageString(
         std::string& dest,
         Corpus const& corpus,
         Reporter& R) const;
 };
-
-extern std::unique_ptr<Generator> makeXMLGenerator();
-extern std::unique_ptr<Generator> makeAsciidocGenerator();
 
 } // mrdox
 } // clang
