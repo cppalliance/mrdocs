@@ -11,10 +11,53 @@
 
 #include <mrdox/Error.hpp>
 #include <mrdox/Reporter.hpp>
+#include <llvm/Support/Path.h>
 #include <utility>
 
 namespace clang {
 namespace mrdox {
+
+llvm::StringRef
+nice(
+    std::source_location loc)
+{
+    namespace path = llvm::sys::path;
+
+    static thread_local llvm::SmallString<0> temp;
+
+    llvm::StringRef fileName(loc.file_name());
+    auto it = path::rbegin(fileName);
+    auto const end = path::rend(fileName);
+    if(it == end)
+    {
+        temp.clear();
+        return {};
+    }
+    for(;;)
+    {
+        // VFALCO This assumes the directory
+        //        layout of the source files.
+        if( *it == "source" ||
+            *it == "include")
+        {
+            temp.assign(
+                it->data(),
+                fileName.end());
+            break;
+        }
+        ++it;
+        if(it == end)
+        {
+            temp = fileName;
+            break;
+        }
+    }
+    path::remove_dots(temp, true);
+    temp.push_back('(');
+    temp.append(std::to_string(loc.line()));
+    temp.push_back(')');
+    return temp;
+}
 
 namespace {
 
@@ -39,7 +82,7 @@ public:
     log(
         llvm::raw_ostream &os) const override
     {
-        os << action_ << " at " << detail::nice(loc_);
+        os << action_ << " at " << nice(loc_);
     }
 
     std::error_code

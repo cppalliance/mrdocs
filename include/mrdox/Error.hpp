@@ -12,7 +12,6 @@
 #ifndef MRDOX_ERROR_HPP
 #define MRDOX_ERROR_HPP
 
-#include <mrdox/detail/nice.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/raw_ostream.h>
 #include <source_location>
@@ -20,6 +19,47 @@
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
+/*
+    nice output for variadic error functions
+
+    These are used to convert arguments to
+    strings in makeError and Reporter members.
+*/
+
+template<class T>
+T& nice(T& t)
+{
+    return t;
+}
+
+template<class T>
+T&& nice(T&& t)
+{
+    return std::forward<T>(t);
+}
+
+template<class T>
+auto nice(llvm::Expected<T>&& e)
+{
+    return nice(e.takeError());
+}
+
+inline auto nice(std::error_code ec)
+{
+    return ec.message();
+}
+
+template<class T>
+auto nice(llvm::ErrorOr<T>&& e)
+{
+    return nice(e.getError());
+}
+
+llvm::StringRef nice(std::source_location loc);
+
+//------------------------------------------------
 
 /** Return an Error with descriptive information.
 
@@ -45,7 +85,6 @@ struct makeError : llvm::Error
         : llvm::Error(
             [&]
             {
-                using detail::nice;
                 std::string temp;
                 llvm::raw_string_ostream os(temp);
                 os << nice(std::forward<Arg0>(arg0));

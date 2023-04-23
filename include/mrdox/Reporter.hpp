@@ -12,7 +12,7 @@
 #ifndef MRDOX_REPORTER_HPP
 #define MRDOX_REPORTER_HPP
 
-#include <mrdox/detail/nice.hpp>
+#include <mrdox/Error.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/raw_ostream.h>
@@ -164,7 +164,6 @@ print(
     Arg0&& arg,
     Args&&... args)
 {
-    using detail::nice;
     auto& temp = temp_string();
     temp.clear();
     {
@@ -184,7 +183,6 @@ failed(
     Arg0&& arg,
     Args&&... args)
 {
-    using detail::nice;
     auto& temp = temp_string();
     temp.clear();
     {
@@ -208,7 +206,6 @@ error(
     Arg0&& arg0,
     Args&&... args)
 {
-    using detail::nice;
     if(! isFailure(std::forward<E>(e)))
         return false;
     auto& temp = temp_string();

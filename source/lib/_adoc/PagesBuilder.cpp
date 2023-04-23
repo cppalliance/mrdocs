@@ -9,7 +9,7 @@
 //
 
 #include "PagesBuilder.hpp"
-#include "format/radix.hpp"
+#include "radix.hpp"
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>
