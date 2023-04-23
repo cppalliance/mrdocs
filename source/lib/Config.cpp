@@ -19,6 +19,7 @@
 #include <llvm/Support/ThreadPool.h>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
+#include <atomic>
 
 //------------------------------------------------
 
@@ -111,7 +112,6 @@ public:
     Impl(
         llvm::StringRef configDir)
         : Config(configDir)
-        // VFALCO Should this concurrency be a command line option?
         , threadPool_(
             llvm::hardware_concurrency(
                 tooling::ExecutorConcurrency))
@@ -123,12 +123,60 @@ public:
 
 Config::
 WorkGroup::
-WorkGroup(
-    Config const& config)
-    : config_(static_cast<Config::Impl const&>(config))
-    , impl_(std::make_unique<Impl>(const_cast<
-        llvm::ThreadPool&>(config_.threadPool_)))
+~WorkGroup()
 {
+    impl_ = nullptr;
+    config_ = nullptr;
+}
+
+Config::
+WorkGroup::
+WorkGroup(
+    std::shared_ptr<Config const> config)
+    : config_(std::dynamic_pointer_cast<
+        Config::Impl const>(std::move(config)))
+    , impl_(config_
+        ? std::make_unique<Impl>(const_cast<
+            llvm::ThreadPool&>(config_->threadPool_))
+        : nullptr)
+{
+}
+
+Config::
+WorkGroup::
+WorkGroup(
+    WorkGroup const& other)
+    : config_(other.config_)
+    , impl_(other.config_
+        ? std::make_unique<Impl>(const_cast<
+            llvm::ThreadPool&>(config_->threadPool_))
+        : nullptr)
+{
+}
+
+auto
+Config::
+WorkGroup::
+operator=(
+    WorkGroup const& other) ->
+        WorkGroup&
+{
+    if(this == &other)
+        return *this;
+
+    if(! other.config_)
+    {
+        config_ = nullptr;
+        impl_ = nullptr;
+        return *this;
+    }
+
+    auto impl = std::make_unique<Impl>(
+        const_cast<llvm::ThreadPool&>(
+            other.config_->threadPool_));
+    impl_ = std::move(impl);
+    config_ = other.config_;
+    return *this;
 }
 
 void
@@ -137,11 +185,15 @@ WorkGroup::
 post(
     std::function<void(void)> f)
 {
-    auto& impl = static_cast<Impl&>(*impl_);
-    if(config_.doAsync_)
+    if(config_ && config_->doAsync_)
+    {
+        auto& impl = static_cast<Impl&>(*impl_);
         impl.group_.async(std::move(f));
+    }
     else
+    {
         f();
+    }
 }
 
 void
@@ -149,9 +201,11 @@ Config::
 WorkGroup::
 wait()
 {
-    auto& impl = static_cast<Impl&>(*impl_);
-    if(config_.doAsync_)
+    if(config_ && config_->doAsync_)
+    {
+        auto& impl = static_cast<Impl&>(*impl_);
         impl.group_.wait();
+    }
 }
 
 //------------------------------------------------

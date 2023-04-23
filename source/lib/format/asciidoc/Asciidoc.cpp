@@ -24,16 +24,16 @@ namespace mrdox {
 //
 //------------------------------------------------
 
-bool
+#if 0
+llvm::Error
 AsciidocGenerator::
-build(
-    llvm::StringRef rootPath,
+buildPages(
+    llvm::StringRef outputPath,
     Corpus const& corpus,
     Reporter& R) const
 {
     namespace path = llvm::sys::path;
 
-#if 0
     // Track which directories we already tried to create.
     llvm::StringSet<> CreatedDirs;
 
@@ -75,57 +75,25 @@ build(
         }
     }
     return true;
-#else
     PagesBuilder builder(corpus);
     builder.scan();
 
     llvm::SmallString<0> fileName(rootPath);
     path::append(fileName, "reference.adoc");
     return buildOne(fileName, corpus, R);
+}
 #endif
-}
 
-bool
+llvm::Error
 AsciidocGenerator::
-buildOne(
-    llvm::StringRef fileName,
+buildSinglePage(
+    llvm::raw_ostream& os,
     Corpus const& corpus,
-    Reporter& R) const
+    Reporter& R,
+    llvm::raw_fd_ostream* fd_os) const
 {
-    namespace fs = llvm::sys::fs;
-
-    std::error_code ec;
-    llvm::raw_fd_ostream os(
-        fileName,
-        ec,
-        fs::CD_CreateAlways,
-        fs::FA_Write,
-        fs::OF_None);
-    if(R.error(ec, "open the stream for '", fileName, "'"))
-        return false;
-
-    Writer w(os, fileName, corpus, R);
-    w.beginFile();
-    w.visitAllSymbols();
-    w.endFile();
-    return ! os.has_error();
-}
-
-bool
-AsciidocGenerator::
-buildString(
-    std::string& dest,
-    Corpus const& corpus,
-    Reporter& R) const
-{
-    dest.clear();
-    llvm::raw_string_ostream os(dest);
-
-    Writer w(os, "", corpus, R);
-    w.beginFile();
-    w.visitAllSymbols();
-    w.endFile();
-    return true;
+    Writer w(os, fd_os, corpus, R);
+    return w.build();
 }
 
 //------------------------------------------------
@@ -174,36 +142,33 @@ AsciidocGenerator::
 Writer::
 Writer(
     llvm::raw_ostream& os,
-    llvm::StringRef filePath,
+    llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
     Reporter& R) noexcept
-    : FlatWriter(os, filePath, corpus, R)
+    : FlatWriter(os, "", corpus, R)
+    , fd_os_(fd_os)
 {
 }
 
-void
+llvm::Error
 AsciidocGenerator::
 Writer::
-write()
+build()
 {
-}
+#if 0
+    PagesBuilder builder(corpus_);
+    builder.scan();
+#endif
 
-void
-AsciidocGenerator::
-Writer::
-beginFile()
-{
-    openTitle("Reference");
+    Assert(sect_.level == 0);
+    sect_.level = 1;
+    sect_.markup = "=";
     os_ <<
+        "= Reference\n"
         ":role: mrdox\n";
-}
-
-void
-AsciidocGenerator::
-Writer::
-endFile()
-{
+    visitAllSymbols();
     closeSection();
+    return llvm::Error::success();
 }
 
 //------------------------------------------------
@@ -804,20 +769,6 @@ typeName(
 }
 
 //------------------------------------------------
-
-void
-AsciidocGenerator::
-Writer::
-openTitle(
-    llvm::StringRef name)
-{
-    Assert(sect_.level == 0);
-    sect_.level++;
-    if(sect_.level <= 6)
-        sect_.markup.push_back('=');
-    os_ <<
-        sect_.markup << ' ' << name << "\n";
-}
 
 void
 AsciidocGenerator::

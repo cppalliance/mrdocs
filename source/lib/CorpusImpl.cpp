@@ -126,14 +126,14 @@ public:
     {
     }
 
-    void visit(NamespaceInfo& I)
+    void visit(NamespaceInfo& I) override
     {
         postProcess(I);
         canonicalize(I.Children);
         corpus_.visit(I.Children, *this);
     }
 
-    void visit(RecordInfo& I)
+    void visit(RecordInfo& I) override
     {
         postProcess(I);
         canonicalize(I.Children);
@@ -142,17 +142,17 @@ public:
         corpus_.visit(I.Children, *this);
     }
 
-    void visit(FunctionInfo& I)
+    void visit(FunctionInfo& I) override
     {
         postProcess(I);
     }
 
-    void visit(EnumInfo& I)
+    void visit(TypedefInfo& I) override
     {
         postProcess(I);
     }
 
-    void visit(TypedefInfo& I)
+    void visit(EnumInfo& I) override
     {
         postProcess(I);
     }

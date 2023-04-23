@@ -116,14 +116,6 @@ public:
     void
     reportError();
 
-    /** Report a unit test failure.
-
-        @par Thread Safety
-        May be called concurrently.
-    */
-    void
-    reportTestFailure();
-
 private:
     //--------------------------------------------
 
@@ -160,7 +152,6 @@ private:
 private:
     llvm::sys::Mutex mutable m_;
     std::size_t errorCount_ = 0;
-    std::size_t testFailureCount_ = 0;
 };
 
 //------------------------------------------------

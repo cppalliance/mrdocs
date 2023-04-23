@@ -15,8 +15,8 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Generator.hpp>
 #include <mrdox/format/FlatWriter.hpp>
-#include <mrdox/format/Generator.hpp>
 #include <mrdox/meta/Javadoc.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
@@ -47,23 +47,12 @@ public:
         return "adoc";
     }
 
-    bool
-    build(
-        llvm::StringRef rootPath,
+    llvm::Error
+    buildSinglePage(
+        llvm::raw_ostream& os,
         Corpus const& corpus,
-        Reporter& R) const override;
-
-    bool
-    buildOne(
-        llvm::StringRef fileName,
-        Corpus const& corpus,
-        Reporter& R) const override;
-
-    bool
-    buildString(
-        std::string& dest,
-        Corpus const& corpus,
-        Reporter& R) const override;
+        Reporter& R,
+        llvm::raw_fd_ostream* fd_os) const override;
 };
 
 //------------------------------------------------
@@ -77,18 +66,17 @@ class AsciidocGenerator::Writer
         std::string markup;
     };
 
+    llvm::raw_fd_ostream* fd_os_;
     Section sect_;
 
 public:
     Writer(
         llvm::raw_ostream& os,
-        llvm::StringRef filePath,
+        llvm::raw_fd_ostream* fd_os,
         Corpus const& corpus,
         Reporter& R) noexcept;
 
-    void write();
-    void beginFile() override;
-    void endFile() override;
+    llvm::Error build();
 
     struct FormalParam;
     struct TypeName;
@@ -134,7 +122,6 @@ protected:
     FormalParam formalParam(FieldTypeInfo const& ft);
     TypeName typeName(TypeInfo const& ti);
 
-    void openTitle(llvm::StringRef name);
     void openSection(llvm::StringRef name);
     void closeSection();
 

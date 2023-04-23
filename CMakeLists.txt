@@ -84,9 +84,9 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     source/lib/*.cpp
     source/lib/*.natvis)
 
-add_library(mrdox_lib ${LIB_INCLUDES} ${LIB_SOURCES})
-target_compile_features(mrdox_lib PUBLIC cxx_std_20)
-target_include_directories(mrdox_lib
+add_library(mrdox-api ${LIB_INCLUDES} ${LIB_SOURCES})
+target_compile_features(mrdox-api PUBLIC cxx_std_20)
+target_include_directories(mrdox-api
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     PRIVATE
@@ -94,14 +94,14 @@ target_include_directories(mrdox_lib
 )
 
 # LLVM
-target_link_libraries(mrdox_lib PUBLIC ${llvm_libs})
-target_include_directories(mrdox_lib SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
+target_link_libraries(mrdox-api PUBLIC ${llvm_libs})
+target_include_directories(mrdox-api SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
 
 # Clang
 if (CLANG_SIMPLE_LIBS)
-    target_link_libraries(mrdox_lib PUBLIC LLVM clang clang-cpp)
+    target_link_libraries(mrdox-api PUBLIC LLVM clang clang-cpp)
 else()
-    target_link_libraries(mrdox_lib
+    target_link_libraries(mrdox-api
         PUBLIC
         clangAST
         clangBasic
@@ -111,12 +111,12 @@ else()
         clangToolingCore
         clangToolingInclusions)
 endif()
-target_include_directories(mrdox_lib SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
+target_include_directories(mrdox-api SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
 
 # Windows, Win64
 if (WIN32)
     target_compile_definitions(
-        mrdox_lib
+        mrdox-api
         PUBLIC
         -D_WIN32_WINNT=0x0601
         -D_CRT_SECURE_NO_WARNINGS
@@ -124,12 +124,12 @@ if (WIN32)
     )
     get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
     if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
-        target_compile_definitions(mrdox_lib PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
-        target_compile_options(mrdox_lib PUBLIC /MD)
+        target_compile_definitions(mrdox-api PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
+        target_compile_options(mrdox-api PUBLIC /MD)
     endif()
     if(MSVC)
         target_compile_options(
-            mrdox_lib
+            mrdox-api
             PUBLIC
             /permissive-    # strict C++
             /W4             # enable all warnings
@@ -141,7 +141,7 @@ endif ()
 
 if (MRDOX_CLANG)
     target_compile_options(
-        mrdox_lib
+        mrdox-api
         PUBLIC
         -Wno-unused-private-field
         -Wno-unused-value
@@ -162,7 +162,7 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source/lib PREFIX "source" FILES ${LIB_S
 
 file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS source/tool/*.cpp source/tool/*.hpp)
 add_executable(mrdox ${TOOL_SOURCES})
-target_link_libraries(mrdox PRIVATE mrdox_lib)
+target_link_libraries(mrdox PRIVATE mrdox-api)
 target_include_directories(mrdox PRIVATE source/tool)
 
 source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
@@ -177,10 +177,10 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL
 if (MRDOX_BUILD_TESTS)
     file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/tests/*.cpp source/tests/*.hpp)
     enable_testing()
-    add_executable(mrdox_tests ${TEST_SOURCES})
-    target_link_libraries(mrdox_tests PRIVATE mrdox_lib ${llvm_libs})
-    target_include_directories(mrdox_tests PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
-    add_test(NAME mrdox_tests COMMAND mrdox_tests
+    add_executable(mrdox-test ${TEST_SOURCES})
+    target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
+    target_include_directories(mrdox-test PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
+    add_test(NAME mrdox-test COMMAND mrdox-test
         "${PROJECT_SOURCE_DIR}/tests/decls"
         "${PROJECT_SOURCE_DIR}/tests/javadoc"
     )

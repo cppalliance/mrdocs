@@ -12,9 +12,9 @@
 #ifndef MRDOX_SOURCE_FORMAT_XML_HPP
 #define MRDOX_SOURCE_FORMAT_XML_HPP
 
+#include <mrdox/Generator.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/meta/Javadoc.hpp>
-#include <mrdox/format/Generator.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -37,17 +37,12 @@ struct XMLGenerator : Generator
         return "xml";
     }
 
-    bool
-    buildOne(
-        llvm::StringRef fileName,
+    llvm::Error
+    buildSinglePage(
+        llvm::raw_ostream& os,
         Corpus const& corpus,
-        Reporter& R) const override;
-
-    bool
-    buildString(
-        std::string& dest,
-        Corpus const& corpus,
-        Reporter& R) const override;
+        Reporter& R,
+        llvm::raw_fd_ostream* fd_os) const override;
 };
 
 //------------------------------------------------
@@ -59,6 +54,7 @@ class XMLGenerator::Writer
 {
     std::string indentString_;
     llvm::raw_ostream& os_;
+    llvm::raw_fd_ostream* fd_os_;
     Corpus const& corpus_;
     Reporter& R_;
 
@@ -101,10 +97,11 @@ public:
 
     Writer(
         llvm::raw_ostream& os,
+        llvm::raw_fd_ostream* fd_os,
         Corpus const& corpus,
         Reporter& R) noexcept;
 
-    void write();
+    llvm::Error build();
 
 private:
     void writeAllSymbols();

@@ -105,43 +105,17 @@ write(
 //
 //------------------------------------------------
 
-bool
+llvm::Error
 XMLGenerator::
-buildOne(
-    llvm::StringRef fileName,
+buildSinglePage(
+    llvm::raw_ostream& os,
     Corpus const& corpus,
-    Reporter& R) const
+    Reporter& R,
+    llvm::raw_fd_ostream* fd_os) const
 {
     namespace fs = llvm::sys::fs;
-
-    std::error_code ec;
-    llvm::raw_fd_ostream os(
-        fileName,
-        ec,
-        fs::CD_CreateAlways,
-        fs::FA_Write,
-        fs::OF_None);
-    if(R.error(ec, "open a stream for '", fileName, "'"))
-        return false;
-
-    Writer w(os, corpus, R);
-    w.write();
-    return true;
-}
-
-bool
-XMLGenerator::
-buildString(
-    std::string& dest,
-    Corpus const& corpus,
-    Reporter& R) const
-{
-    dest.clear();
-    llvm::raw_string_ostream os(dest);
-
-    Writer w(os, corpus, R);
-    w.write();
-    return true;
+    Writer w(os, fd_os, corpus, R);
+    return w.build();
 }
 
 //------------------------------------------------
@@ -283,18 +257,20 @@ XMLGenerator::
 Writer::
 Writer(
     llvm::raw_ostream& os,
+    llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
     Reporter& R) noexcept
     : os_(os)
+    , fd_os_(fd_os)
     , corpus_(corpus)
     , R_(R)
 {
 }
 
-void
+llvm::Error
 XMLGenerator::
 Writer::
-write()
+build()
 {
     os_ <<
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
@@ -304,6 +280,7 @@ write()
     corpus_.visit(globalNamespaceID, *this);
     os_ <<
         "</mrdox>\n";
+    return llvm::Error::success();
 }
 
 //------------------------------------------------

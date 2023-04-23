@@ -129,6 +129,7 @@ getParent(
     {
         Assert(false);
     }
+    (void)isParentAnonymous;
 }
 
 static
@@ -318,6 +319,25 @@ getInfo(
     Serializer& sr,
     Info& I,
     NamedDecl const* D)
+{
+    bool IsInAnonymousNamespace;
+    getParentNamespaces(
+        I.Namespace, D, IsInAnonymousNamespace);
+    if(! shouldSerializeInfo(
+        sr.PublicOnly, IsInAnonymousNamespace, D))
+        return false;
+    I.id = getUSRForDecl(D);
+    I.Name = D->getNameAsString();
+    parseJavadoc(I.javadoc, D);
+    return true;
+}
+
+static
+bool
+getInfo(
+    Serializer& sr,
+    Info& I,
+    TypedefNameDecl const* D)
 {
     bool IsInAnonymousNamespace;
     getParentNamespaces(
@@ -1063,6 +1083,7 @@ build(
     {
         Assert(false);
     }
+    return {};
 }
 
 SerializeResult

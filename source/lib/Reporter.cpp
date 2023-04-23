@@ -31,8 +31,6 @@ getExitCode() const noexcept
 {
     if(errorCount_ > 0)
         return EXIT_FAILURE;
-    if(testFailureCount_ > 0)
-        return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
 
@@ -68,14 +66,6 @@ reportError()
 {
     std::lock_guard<llvm::sys::Mutex> lock(m_);
     ++errorCount_;
-}
-
-void
-Reporter::
-reportTestFailure()
-{
-    std::lock_guard<llvm::sys::Mutex> lock(m_);
-    ++testFailureCount_;
 }
 
 } // mrdox

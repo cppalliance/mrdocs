@@ -66,6 +66,7 @@ static void Integer32Abbrev(
             llvm::BitCodeAbbrevOp::Fixed, 32) });
 }
 
+#if 0
 static void Integer16Abbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
 {
@@ -74,6 +75,7 @@ static void Integer16Abbrev(
         llvm::BitCodeAbbrevOp(
             llvm::BitCodeAbbrevOp::Fixed, 16) });
 }
+#endif
 
 static void BoolAbbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
@@ -773,13 +775,15 @@ emitRecord(
     {
         Assert(RecordIdNameMap[ID].Abbrev == &Integer32Abbrev); 
     }
+#if 0
     else if constexpr(sizeof(Integer) == 2)
     {
         Assert(RecordIdNameMap[ID].Abbrev == &Integer16Abbrev);
     }
+#endif
     else
     {
-        static_assert("can't use Integer type");
+        static_error("can't use Integer type", Value);
     }
     if (!prepRecordData(ID, Value))
         return;

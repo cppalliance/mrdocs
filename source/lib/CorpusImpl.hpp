@@ -81,8 +81,8 @@ private:
         virtual void visit(RecordInfo&) {}
         virtual void visit(Overloads&) {}
         virtual void visit(FunctionInfo&) {}
-        virtual void visit(EnumInfo&) {}
         virtual void visit(TypedefInfo&) {}
+        virtual void visit(EnumInfo&) {}
     };
 
     /** Visit the specified symbol ID or node.

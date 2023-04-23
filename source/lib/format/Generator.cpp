@@ -10,53 +10,68 @@
 //
 
 #include "Commands.hpp"
-#include <mrdox/format/Generator.hpp>
+#include <mrdox/Error.hpp>
+#include <mrdox/Generator.hpp>
+#include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
 namespace clang {
 namespace mrdox {
 
-bool
+llvm::Error
 Generator::
-build(
-    StringRef outputPath,
+buildPages(
+    llvm::StringRef outputPath,
     Corpus const& corpus,
     Reporter& R) const
 {
-    namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    // If we are given a filename with the correct
-    // extension then just build the docs as one file.
-    if(path::extension(outputPath).compare_insensitive(path::extension(outputPath)))
-        return buildOne(outputPath, corpus, R);
+    using SmallString = llvm::SmallString<0>;
 
-    // Create the directory if needed
-    fs::file_status status;
-    std::error_code ec = fs::status(outputPath, status);
-    if(ec == std::errc::no_such_file_or_directory)
-    {
-        ec = fs::create_directories(outputPath, false);
-        if(R.error(ec, "create directories in '", outputPath, "'"))
-            return false;
-    }
-    if(R.error(ec, "call fs::status on '", outputPath, "'"))
-        return false;
+    SmallString ext(".");
+    ext += extension();
 
-    // If we are given an existing directory,
-    // then build a single-page file there with
-    // a default filename (e.g. "reference.adoc").
-    if(fs::is_directory(outputPath))
+    SmallString fileName = outputPath;
+    if(path::extension(outputPath).compare_insensitive(ext) != 0)
     {
-        llvm::SmallString<512> fileName(outputPath);
+        // directory specified
         path::append(fileName, "reference");
-        path::replace_extension(fileName, extension());
-        return buildOne(fileName, corpus, R);
+        path::replace_extension(fileName, ext);
     }
 
-    // Build as one file
-    return buildOne(outputPath, corpus, R);
+    std::error_code ec;
+    llvm::raw_fd_ostream os(fileName, ec);
+    if(ec)
+        return makeError("raw_fd_ostream returned ", ec);
+    return buildSinglePage(os, corpus, R, &os);
+}
+
+llvm::Error
+Generator::
+buildSinglePageFile(
+    llvm::StringRef filePath,
+    Corpus const& corpus,
+    Reporter& R) const
+{
+    std::error_code ec;
+    llvm::raw_fd_ostream os(filePath, ec);
+    if(ec)
+        return makeError("raw_fd_ostream returned ", ec);
+    return buildSinglePage(os, corpus, R, &os);
+}
+
+llvm::Error
+Generator::
+buildSinglePageString(
+    std::string& dest,
+    Corpus const& corpus,
+    Reporter& R) const
+{
+    dest.clear();
+    llvm::raw_string_ostream os(dest);
+    return buildSinglePage(os, corpus, R);
 }
 
 } // mrdox

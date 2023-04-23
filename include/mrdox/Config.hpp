@@ -41,7 +41,7 @@ namespace mrdox {
     particular directory from which absolute paths
     are calculated from relative paths.
 */
-class Config
+class Config : public std::enable_shared_from_this<Config>
 {
     template<class T>
     friend struct llvm::yaml::MappingTraits;
@@ -242,11 +242,37 @@ public:
 
 //------------------------------------------------
 
+/** A group representing possibly concurrent related tasks.
+*/
 class Config::WorkGroup
 {
 public:
+    /** Destructor.
+    */
+    ~WorkGroup();
+
+    /** Constructor.
+
+        Default constructed workgroups have no
+        concurrency level. Calls to post and wait
+        are blocking.
+    */
+    WorkGroup() noexcept = default;
+
+    /** Constructor.
+    */
     explicit
-    WorkGroup(Config const& config);
+    WorkGroup(
+        std::shared_ptr<Config const> config);
+
+    /** Constructor.
+    */
+    WorkGroup(WorkGroup const& other);
+
+    /** Assignment.
+    */
+    WorkGroup&
+    operator=(WorkGroup const& other);
 
     /** Post work to the work group.
     */
@@ -266,7 +292,7 @@ private:
 
     class Impl;
 
-    Config::Impl const& config_;
+    std::shared_ptr<Config::Impl const> config_;
     std::unique_ptr<Base> impl_;
 };
 
@@ -279,7 +305,7 @@ parallelForEach(
     Range&& range,
     UnaryFunction const& f) const
 {
-    WorkGroup wg(*this);
+    WorkGroup wg(shared_from_this());
     for(auto&& element : range)
         wg.post([&f, &element]
             {

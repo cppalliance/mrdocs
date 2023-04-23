@@ -29,8 +29,7 @@ class SingleFile
 public:
     SingleFile(
         llvm::StringRef dir,
-        llvm::StringRef file,
-        llvm::StringRef output)
+        llvm::StringRef file)
     {
         std::vector<std::string> cmds;
         cmds.emplace_back("clang");
@@ -39,7 +38,7 @@ public:
             dir,
             file,
             std::move(cmds),
-            output);
+            dir);
         cc_.back().Heuristic = "unit test";
     }
 

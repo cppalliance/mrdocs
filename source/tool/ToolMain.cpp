@@ -22,8 +22,8 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Debug.hpp>
+#include <mrdox/Generator.hpp>
 #include <mrdox/Reporter.hpp>
-#include <mrdox/format/Generator.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/CommandLine.h>
@@ -64,7 +64,7 @@ ToolCategory("mrdox options");
 
 static
 llvm::cl::opt<std::string>
-    ConfigPath(
+ConfigPath(
     "config",
     llvm::cl::desc(R"(The config filename relative to the repository root)"),
     llvm::cl::init("mrdox.yaml"),
@@ -80,11 +80,11 @@ FormatType(
 
 static
 llvm::cl::opt<bool>
-    IgnoreMappingFailures(
-        "ignore-map-errors",
-        llvm::cl::desc("Continue if files are not mapped correctly."),
-        llvm::cl::init(true),
-        llvm::cl::cat(ToolCategory));
+IgnoreMappingFailures(
+    "ignore-map-errors",
+    llvm::cl::desc("Continue if files are not mapped correctly."),
+    llvm::cl::init(true),
+    llvm::cl::cat(ToolCategory));
 
 static
 llvm::cl::opt<std::string>
@@ -147,8 +147,9 @@ toolMain(
         return;
 
     // Run the generator.
-    llvm::outs() << "Generating docs...\n";
-    if(! gen->build((*config)->OutDirectory, **corpus, R))
+    if((*config)->verbose())
+        llvm::outs() << "Generating docs...\n";
+    if(! gen->buildPages((*config)->OutDirectory, **corpus, R))
         return;
 }
 

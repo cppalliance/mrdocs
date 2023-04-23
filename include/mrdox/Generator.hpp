@@ -52,94 +52,102 @@ struct Generator
     llvm::StringRef
     extension() const noexcept = 0;
 
-    /** Build documentation from the corpus and configuration.
-
-        The default implementation calls @ref buildOneFile
-        with a suitable filename calculated from the
-        root directory and the generator's extension.
+    /** Build multi-page documentation from the corpus and configuration.
 
         @par Thread Safety
         @li Different `corpus` object: may be called concurrently.
         @li Same `corpus` object: may not be called concurrently.
 
-        @return `true` upon success.
+        @return The error, if any occurred.
 
-        @par outputPath The path to a directory for
-        emitting multi-file output, or the path of
-        a filename with the generator's extension
-        to emit output as a single file.
+        @param outputPath An existing directory or
+        a filename.
 
-        @par corpus The symbols to emit. The
+        @param corpus The symbols to emit. The
         generator may modify the contents of
         the object before returning.
 
-        @par config The configuration to use.
+        @param config The configuration to use.
 
-        @par R The diagnostic reporting object to
+        @param R The diagnostic reporting object to
         use for delivering errors and information.
     */
     virtual
-    bool
-    build(
+    llvm::Error
+    buildPages(
         llvm::StringRef outputPath,
         Corpus const& corpus,
         Reporter& R) const;
 
-    /** Build single-file documentation from the corpus and configuration.
+    /** Build the reference as a single page to an output stream.
 
         @par Thread Safety
         @li Different `corpus` object: may be called concurrently.
         @li Same `corpus` object: may not be called concurrently.
 
-        @return `true` upon success.
+        @return The error, if any occurred.
 
-        @par fileName The path to the file
-        which will be created or reset to hold
-        the generated results.
+        @param os The stream to write to.
 
-        @par corpus The symbols to emit. The
-        generator may modify the contents of
-        the object before returning.
+        @param corpus The metadata to emit.
 
-        @par config The configuration to use.
+        @param R The diagnostic reporting object to use.
 
-        @par R The diagnostic reporting object to
-        use for delivering errors and information.
+        @param fd_os A pointer to an optional, file-based
+            output stream. If this is not null, the function
+            fd_os->error() will be called periodically and
+            the result returend if an error is indicated.
     */
     virtual
-    bool
-    buildOne(
-        llvm::StringRef fileName,
+    llvm::Error
+    buildSinglePage(
+        llvm::raw_ostream& os,
         Corpus const& corpus,
-        Reporter& R) const = 0;
+        Reporter& R,
+        llvm::raw_fd_ostream* fd_os = nullptr) const = 0;
 
-    /** Build a string containing the single-file documentation.
+    /** Build the reference as a single page to a file.
 
         @par Thread Safety
         @li Different `corpus` object: may be called concurrently.
         @li Same `corpus` object: may not be called concurrently.
 
-        @return `true` upon success.
+        @return The error, if any occurred.
 
-        @par dest The string to hold the result.
+        @param filePath The file to write. If the
+        file already exists, it will be overwritten.
+
+        @param corpus The metadata to emit.
+
+        @param R The diagnostic reporting object to use.
+    */
+    llvm::Error
+    buildSinglePageFile(
+        llvm::StringRef filePath,
+        Corpus const& corpus,
+        Reporter& R) const;
+
+    /** Build the reference as a single page to a string.
+
+        @par Thread Safety
+        @li Different `corpus` object: may be called concurrently.
+        @li Same `corpus` object: may not be called concurrently.
+
+        @return The error, if any occurred.
+
+        @param dest The string to hold the result.
         For the duration of the call, this must
         not be accessed by any other threads.
 
-        @par corpus The symbols to emit. The
-        generator may modify the contents of
-        the object before returning.
+        @param corpus The metadata to emit.
 
-        @par config The configuration to use.
-
-        @par R The diagnostic reporting object to
-        use for delivering errors and information.
+        @param R The diagnostic reporting object to use.
     */
-    virtual
-    bool
-    buildString(
+    llvm::Error
+    buildSinglePageString(
         std::string& dest,
         Corpus const& corpus,
-        Reporter& R) const = 0;
+        Reporter& R) const;
 };
 
 extern std::unique_ptr<Generator> makeXMLGenerator();
