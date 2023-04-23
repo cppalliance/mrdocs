@@ -68,45 +68,110 @@ globalNamespace() const noexcept
 
 //------------------------------------------------
 
-void
+bool
+Corpus::
+Visitor::
+visit(
+    NamespaceInfo const&)
+{
+    return true;
+}
+
+bool
+Corpus::
+Visitor::
+visit(
+    RecordInfo const&)
+{
+    return true;
+}
+
+bool
+Corpus::
+Visitor::
+visit(
+    Overloads const&)
+{
+    return true;
+}
+
+bool
+Corpus::
+Visitor::
+visit(
+    FunctionInfo const&)
+{
+    return true;
+}
+
+bool
+Corpus::
+Visitor::
+visit(
+    EnumInfo const&)
+{
+    return true;
+}
+
+bool
+Corpus::
+Visitor::
+visit(
+    TypedefInfo const&)
+{
+    return true;
+}
+
+//------------------------------------------------
+
+bool
 Corpus::
 visit(SymbolID id, Visitor& f) const
 {
-    visit(get<Info>(id), f);
+    return visit(get<Info>(id), f);
 }
 
-void
+bool
 Corpus::
 visit(Scope const& I, Visitor& f) const
 {
     for(auto const& ref : I.Namespaces)
-        visit(get<NamespaceInfo>(ref.id), f);
+        if(! visit(get<NamespaceInfo>(ref.id), f))
+            return false;
     for(auto const& ref : I.Records)
-        visit(get<RecordInfo>(ref.id), f);
+        if(! visit(get<RecordInfo>(ref.id), f))
+            return false;
     for(auto const& ref : I.Functions)
-        visit(get<FunctionInfo>(ref.id), f);
+        if(! visit(get<FunctionInfo>(ref.id), f))
+            return false;
     for(auto const& J : I.Typedefs)
-        visit(J, f);
+        if(! visit(J, f))
+            return false;
     for(auto const& J : I.Enums)
-        visit(J, f);
+        if(! visit(J, f))
+            return false;
+    return true;
 }
 
-void
+bool
 Corpus::
 visitWithOverloads(
     Scope const& I, Visitor& f) const
 {
     for(auto const& ref : I.Namespaces)
-        visit(get<NamespaceInfo>(ref.id), f);
+        if(! visit(get<NamespaceInfo>(ref.id), f))
+            return false;
     for(auto const& ref : I.Records)
-        visit(get<RecordInfo>(ref.id), f);
+        if(! visit(get<RecordInfo>(ref.id), f))
+            return false;
     if(I.isNamespaceScope)
     {
         // VFALCO Should this be AS_public
         auto const set = makeOverloadsSet(
             *this, I, AccessSpecifier::AS_none);
         for(auto const& functionOverloads : set.list)
-            f.visit(functionOverloads);
+            if(! f.visit(functionOverloads))
+                return false;
     }
     else
     {
@@ -114,28 +179,34 @@ visitWithOverloads(
             auto const& set = makeOverloadsSet(
                 *this, I, AccessSpecifier::AS_public);
             for(auto const& functionOverloads : set.list)
-                f.visit(functionOverloads);
+                if(! f.visit(functionOverloads))
+                    return false;
         }
         {
             auto const& set = makeOverloadsSet(
                 *this, I, AccessSpecifier::AS_protected);
             for(auto const& functionOverloads : set.list)
-                f.visit(functionOverloads);
+                if(! f.visit(functionOverloads))
+                    return false;
         }
         {
             auto const& set = makeOverloadsSet(
                 *this, I, AccessSpecifier::AS_private);
             for(auto const& functionOverloads : set.list)
-                f.visit(functionOverloads);
+                if(! f.visit(functionOverloads))
+                    return false;
         }
     }
     for(auto const& J : I.Typedefs)
-        visit(J, f);
+        if(! visit(J, f))
+            return false;
     for(auto const& J : I.Enums)
-        visit(J, f);
+        if(! visit(J, f))
+            return false;
+    return true;
 }
 
-void
+bool
 Corpus::
 visit(Info const& I, Visitor& f) const
 {

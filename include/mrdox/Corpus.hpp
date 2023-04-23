@@ -86,21 +86,21 @@ public:
     struct Visitor
     {
         virtual ~Visitor() = default;
-        virtual void visit(NamespaceInfo const&) {}
-        virtual void visit(RecordInfo const&) {}
-        virtual void visit(Overloads const&) {}
-        virtual void visit(FunctionInfo const&) {}
-        virtual void visit(EnumInfo const&) {}
-        virtual void visit(TypedefInfo const&) {}
+        virtual bool visit(NamespaceInfo const&);
+        virtual bool visit(RecordInfo const&);
+        virtual bool visit(Overloads const&);
+        virtual bool visit(FunctionInfo const&);
+        virtual bool visit(EnumInfo const&);
+        virtual bool visit(TypedefInfo const&);
     };
 
     /** Visit the specified symbol ID or node.
     */
     /** @{ */
-    void visit(SymbolID id, Visitor& f) const;
-    void visit(Scope const& I, Visitor& f) const;
-    void visitWithOverloads(Scope const& I, Visitor& f) const;
-    void visit(Info const& I, Visitor& f) const;
+    [[nodiscard]] bool visit(SymbolID id, Visitor& f) const;
+    [[nodiscard]] bool visit(Scope const& I, Visitor& f) const;
+    [[nodiscard]] bool visitWithOverloads(Scope const& I, Visitor& f) const;
+    [[nodiscard]] bool visit(Info const& I, Visitor& f) const;
     /** @} */
 
     //--------------------------------------------

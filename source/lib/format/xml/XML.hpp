@@ -106,11 +106,11 @@ public:
 private:
     void writeAllSymbols();
 
-    void visit(NamespaceInfo const&) override;
-    void visit(RecordInfo const&) override;
-    void visit(FunctionInfo const&) override;
-    void visit(EnumInfo const&) override;
-    void visit(TypedefInfo const&) override;
+    bool visit(NamespaceInfo const&) override;
+    bool visit(RecordInfo const&) override;
+    bool visit(FunctionInfo const&) override;
+    bool visit(EnumInfo const&) override;
+    bool visit(TypedefInfo const&) override;
 
     void writeInfo(Info const& I);
     void writeSymbol(SymbolInfo const& I);

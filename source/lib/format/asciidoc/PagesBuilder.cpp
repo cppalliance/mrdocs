@@ -41,7 +41,9 @@ PagesBuilder::
 scan()
 {
     // visit the children not the namespace
-    corpus_.visitWithOverloads(corpus_.globalNamespace().Children, *this);
+    if(! corpus_.visitWithOverloads(
+            corpus_.globalNamespace().Children, *this))
+        return;
 
     llvm::sort(pages,
         [](Page& p0, Page& p1)
@@ -51,7 +53,7 @@ scan()
         });
 }
 
-void
+bool
 PagesBuilder::
 visit(
     NamespaceInfo const& I)
@@ -59,11 +61,13 @@ visit(
     namespace path = llvm::sys::path;
 
     auto saved = filePrefix_;
-    corpus_.visit(I.Children, *this);
+    if(! corpus_.visit(I.Children, *this))
+        return false;
     filePrefix_ = saved;
+    return true;
 }
 
-void
+bool
 PagesBuilder::
 visit(
     RecordInfo const& I)
@@ -78,12 +82,13 @@ visit(
 
     auto saved = filePrefix_;
     path::append(filePrefix_, I.Name);
-    corpus_.visitWithOverloads(I.Children, *this);
+    if(! corpus_.visitWithOverloads(I.Children, *this))
+        return false;
     filePrefix_ = saved;
-
+    return true;
 }
 
-void
+bool
 PagesBuilder::
 visit(
     Overloads const& I)
@@ -94,16 +99,19 @@ visit(
     path::append(filePath, I.name);
     path::replace_extension(filePath, "adoc");
     pages.emplace_back(Page(filePath));
+
+    return true;
 }
 
-void
+bool
 PagesBuilder::
 visit(
     FunctionInfo const& I)
 {
+    return true;
 }
 
-void
+bool
 PagesBuilder::
 visit(
     TypedefInfo const& I)
@@ -115,9 +123,11 @@ visit(
     path::append(filePath, toBaseFN(temp, I.id));
     path::replace_extension(filePath, "adoc");
     pages.emplace_back(std::move(filePath));
+
+    return true;
 }
 
-void
+bool
 PagesBuilder::
 visit(
     EnumInfo const& I)
@@ -129,6 +139,8 @@ visit(
     path::append(filePath, toBaseFN(temp, I.id));
     path::replace_extension(filePath, "adoc");
     pages.emplace_back(std::move(filePath));
+
+    return true;
 }
 
 } // mrdox

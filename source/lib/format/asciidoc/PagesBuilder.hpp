@@ -45,12 +45,12 @@ public:
 
     void scan();
 
-    void visit(NamespaceInfo const&) override;
-    void visit(RecordInfo const&) override;
-    void visit(Overloads const&) override;
-    void visit(FunctionInfo const&) override;
-    void visit(TypedefInfo const&) override;
-    void visit(EnumInfo const&) override;
+    bool visit(NamespaceInfo const&) override;
+    bool visit(RecordInfo const&) override;
+    bool visit(Overloads const&) override;
+    bool visit(FunctionInfo const&) override;
+    bool visit(TypedefInfo const&) override;
+    bool visit(EnumInfo const&) override;
 
 private:
     llvm::SmallString<0> filePrefix_;

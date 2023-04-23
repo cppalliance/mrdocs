@@ -11,6 +11,7 @@
 
 #include "XML.hpp"
 #include "format/radix.hpp"
+#include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
 
 namespace clang {
@@ -277,7 +278,12 @@ build()
         "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
         "<mrdox>\n";
     writeAllSymbols();
-    corpus_.visit(globalNamespaceID, *this);
+    if(! corpus_.visit(globalNamespaceID, *this))
+    {
+        if(fd_os_ && fd_os_->error())
+            return makeError("raw_fd_ostream returned ", fd_os_->error());
+        return makeError("visit failed");
+    }
     os_ <<
         "</mrdox>\n";
     return llvm::Error::success();
@@ -308,12 +314,15 @@ writeAllSymbols()
 
 //------------------------------------------------
 
-void
+bool
 XMLGenerator::
 Writer::
 visit(
     NamespaceInfo const& I)
 {
+    if(fd_os_ && fd_os_->error())
+        return false;
+
     openTag("namespace", {
         { "name", I.Name },
         { I.id }
@@ -322,19 +331,25 @@ visit(
     writeInfo(I);
     writeJavadoc(I.javadoc);
 
-    corpus_.visit(I.Children, *this);
+    if(! corpus_.visit(I.Children, *this))
+        return false;
 
     closeTag("namespace");
+
+    return true;
 }
 
 //------------------------------------------------
 
-void
+bool
 XMLGenerator::
 Writer::
 visit(
     RecordInfo const& I)
 {
+    if(fd_os_ && fd_os_->error())
+        return false;
+
     llvm::StringRef tag =
         clang::TypeWithKeyword::getTagTypeKindName(I.TagType);
     openTag(tag, {
@@ -356,19 +371,25 @@ visit(
 
     writeJavadoc(I.javadoc);
 
-    corpus_.visit(I.Children, *this);
+    if(! corpus_.visit(I.Children, *this))
+        return false;
 
     closeTag(tag);
+
+    return true;
 }
 
 //------------------------------------------------
 
-void
+bool
 XMLGenerator::
 Writer::
 visit(
     FunctionInfo const& I)
 {
+    if(fd_os_ && fd_os_->error())
+        return false;
+
     openTag("function", {
         { "name", I.Name },
         { I.Access },
@@ -445,16 +466,21 @@ visit(
     writeJavadoc(I.javadoc);
 
     closeTag("function");
+
+    return true;
 }
 
 //------------------------------------------------
 
-void
+bool
 XMLGenerator::
 Writer::
 visit(
     TypedefInfo const& I)
 {
+    if(fd_os_ && fd_os_->error())
+        return false;
+
     openTag("typedef", {
         { "name", I.Name },
         { I.id }
@@ -467,14 +493,19 @@ visit(
     writeJavadoc(I.javadoc);
 
     closeTag("typedef");
+
+    return true;
 }
 
-void
+bool
 XMLGenerator::
 Writer::
 visit(
     EnumInfo const& I)
 {
+    if(fd_os_ && fd_os_->error())
+        return false;
+
     openTag("enum", {
         { "name", I.Name },
         { I.id }
@@ -489,6 +520,8 @@ visit(
     writeJavadoc(I.javadoc);
 
     closeTag("enum");
+
+    return true;
 }
 
 //------------------------------------------------
