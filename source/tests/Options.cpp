@@ -30,6 +30,18 @@ Examples
 , Overview(
 R"(Test the output of MrDox against a set of input vectors.)")
 
+, badOption(
+    "bad",
+    llvm::cl::desc("Write a .bad.xml file for each test failure"),
+    llvm::cl::init(true),
+    llvm::cl::cat(TestCategory))
+
+, adocOption(
+    "adoc",
+    llvm::cl::desc("Write the corresponding Asciidoc (adoc) file for each input test file"),
+    llvm::cl::init(false),
+    llvm::cl::cat(TestCategory))
+
 , TestAction(
     "action",
     llvm::cl::desc(R"(Which action should be performed)"),
@@ -37,12 +49,6 @@ R"(Test the output of MrDox against a set of input vectors.)")
     llvm::cl::values(
         clEnumVal(test, "Compare output against expected"),
         clEnumVal(refresh, "Update all expected xml files")),
-    llvm::cl::cat(TestCategory))
-
-, BadOption(
-    "bad",
-    llvm::cl::desc("Write a .bad.xml file for each input file test failure"),
-    llvm::cl::init(true),
     llvm::cl::cat(TestCategory))
 
 , InputPaths(

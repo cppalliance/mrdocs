@@ -1,2 +1,3 @@
-enum E : char;
+enum struct X;
+enum struct X {};
 

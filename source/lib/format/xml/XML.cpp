@@ -172,6 +172,13 @@ struct XMLGenerator::Writer::
         , pred(id != EmptySID)
     {
     }
+
+    Attr(llvm::Optional<TypeInfo> const& opt)
+        : name("type")
+        , value(opt ? opt->Type.Name.str() : std::string())
+        , pred(opt)
+    {
+    }
 };
 
 //------------------------------------------------
@@ -513,10 +520,13 @@ visit(
 
     openTag("enum", {
         { "name", I.Name },
+        { "class", "scoped", I.Scoped },
+        { I.BaseType },
         { I.id }
         });
 
     writeInfo(I);
+    writeSymbol(I);
     for(auto const& v : I.Members)
         writeTag("element", {}, {
             { "name", v.Name },

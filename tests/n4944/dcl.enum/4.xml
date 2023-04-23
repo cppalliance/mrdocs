@@ -2,8 +2,8 @@
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
 <namespace name="">
-  <enum name="X" class="scoped" type="int" id="ST00Km++J5YixGbh0q74JrYHXAc=">
-    <file path="dcl.enum/2.cpp" line="1"/>
+  <enum name="E" type="char" id="xf6YhxRw8JpsHMwP6Tgyroti2gw=">
+    <file path="dcl.enum/4.cpp" line="1"/>
   </enum>
 </namespace>
 </mrdox>

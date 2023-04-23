@@ -239,10 +239,10 @@ handleFile(
             results_.numberOfFailures++;
             R_.print("Failed: '", filePath, "'\n");
 
-            if(options_.BadOption.getValue())
+            if(options_.badOption.getValue())
             {
-                // Write the a .bad.xml file
-                path::replace_extension(outputPath, ".bad.xml");
+                // Write the .bad.xml file
+                path::replace_extension(outputPath, "bad.xml");
                 std::error_code ec;
                 llvm::raw_fd_ostream os(outputPath, ec, llvm::sys::fs::OF_None);
                 if(ec)
@@ -251,6 +251,10 @@ handleFile(
                     return makeError("raw_fd_ostream returned ", ec);
                 }
                 os << generatedXml;
+
+                // Fix the path for the code that follows
+                outputPath.pop_back_n(8);
+                path::replace_extension(outputPath, "xml");
             }
         }
         else
@@ -268,7 +272,8 @@ handleFile(
         }
     }
 
-    if(adocGen)
+    // Write Asciidoc if requested
+    if(options_.adocOption.getValue())
     {
         path::replace_extension(outputPath, adocGen->extension());
         if(R_.error(

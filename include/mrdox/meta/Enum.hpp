@@ -61,10 +61,17 @@ struct EnumValueInfo
     llvm::SmallString<16> ValueExpr;
 };
 
+//------------------------------------------------
+
 // TODO: Expand to allow for documenting templating.
 // Info for types.
 struct EnumInfo : SymbolInfo
 {
+    // Indicates whether this enum is scoped (e.g. enum class).
+    bool Scoped = false;
+
+    //--------------------------------------------
+
     static constexpr InfoType type_id = InfoType::IT_enum;
 
     EnumInfo()
@@ -80,9 +87,6 @@ struct EnumInfo : SymbolInfo
     }
 
     void merge(EnumInfo&& I);
-
-    // Indicates whether this enum is scoped (e.g. enum class).
-    bool Scoped = false;
 
     // Set to nonempty to the type when this is an explicitly typed enum. For
     //   enum Foo : short { ... };

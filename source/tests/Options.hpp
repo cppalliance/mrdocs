@@ -29,8 +29,9 @@ class Options
 
 public:
     char const* Overview;
+    llvm::cl::opt<bool> badOption;
+    llvm::cl::opt<bool> adocOption;
     llvm::cl::opt<Action> TestAction;
-    llvm::cl::opt<bool> BadOption;
     llvm::cl::list<std::string> InputPaths;
 
     Options();
