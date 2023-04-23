@@ -10,14 +10,13 @@
 //
 
 #include "XML.hpp"
-#include "format/radix.hpp"
+#include "radix.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
 
 namespace clang {
 namespace mrdox {
-
-namespace {
+namespace xml {
 
 //------------------------------------------------
 //
@@ -97,8 +96,6 @@ write(
         }
     }
 }
-
-} // (anon)
 
 //------------------------------------------------
 //
@@ -968,12 +965,14 @@ toString(
     }
 }
 
+} // xml
+
 //------------------------------------------------
 
 std::unique_ptr<Generator>
 makeXMLGenerator()
 {
-    return std::make_unique<XMLGenerator>();
+    return std::make_unique<xml::XMLGenerator>();
 }
 
 } // mrdox

@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_FORMAT_ASCIIDOC_PAGESBUILDER_HPP
-#define MRDOX_SOURCE_FORMAT_ASCIIDOC_PAGESBUILDER_HPP
+#ifndef MRDOX_SOURCE_ADOC_PAGESBUILDER_HPP
+#define MRDOX_SOURCE_ADOC_PAGESBUILDER_HPP
 
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>
@@ -17,6 +17,7 @@
 
 namespace clang {
 namespace mrdox {
+namespace adoc {
 
 class PagesBuilder : Corpus::Visitor
 {
@@ -56,6 +57,7 @@ private:
     llvm::SmallString<0> filePrefix_;
 };
 
+} // adoc
 } // mrdox
 } // clang
 

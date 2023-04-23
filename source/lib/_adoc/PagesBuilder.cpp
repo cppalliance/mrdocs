@@ -17,6 +17,7 @@
 
 namespace clang {
 namespace mrdox {
+namespace adoc {
 
 /*
     Pages are as follows:
@@ -143,5 +144,6 @@ visit(
     return true;
 }
 
+} // adoc
 } // mrdox
 } // clang

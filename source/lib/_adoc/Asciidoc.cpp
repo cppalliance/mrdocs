@@ -17,6 +17,7 @@
 
 namespace clang {
 namespace mrdox {
+namespace adoc {
 
 //------------------------------------------------
 //
@@ -873,12 +874,15 @@ toString(TagTypeKind k) noexcept
     }
 }
 
+} // adoc
+
+
 //------------------------------------------------
 
 std::unique_ptr<Generator>
 makeAsciidocGenerator()
 {
-    return std::make_unique<AsciidocGenerator>();
+    return std::make_unique<adoc::AsciidocGenerator>();
 }
 
 } // mrdox

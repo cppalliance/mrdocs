@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_FORMAT_ASCIIDOC_HPP
-#define MRDOX_SOURCE_FORMAT_ASCIIDOC_HPP
+#ifndef MRDOX_SOURCE_ADOC_ASCIIDOC_HPP
+#define MRDOX_SOURCE_ADOC_ASCIIDOC_HPP
 
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
@@ -25,8 +25,7 @@
 
 namespace clang {
 namespace mrdox {
-
-struct OverloadSet;
+namespace adoc {
 
 class AsciidocGenerator
     : public Generator
@@ -141,6 +140,7 @@ protected:
     static llvm::StringRef toString(TagTypeKind k) noexcept;
 };
 
+} // adoc
 } // mrdox
 } // clang
 

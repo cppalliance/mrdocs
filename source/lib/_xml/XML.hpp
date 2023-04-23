@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SOURCE_FORMAT_XML_HPP
-#define MRDOX_SOURCE_FORMAT_XML_HPP
+#ifndef MRDOX_SOURCE_XML_XML_HPP
+#define MRDOX_SOURCE_XML_XML_HPP
 
 #include <mrdox/Generator.hpp>
 #include <mrdox/MetadataFwd.hpp>
@@ -18,6 +18,7 @@
 
 namespace clang {
 namespace mrdox {
+namespace xml {
 
 //------------------------------------------------
 
@@ -150,6 +151,7 @@ private:
 
 //------------------------------------------------
 
+} // xml
 } // mrdox
 } // clang
 
