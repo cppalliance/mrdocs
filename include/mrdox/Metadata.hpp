@@ -17,24 +17,24 @@
 // All headers related to
 // metadata extracted from AST
 
-#include <mrdox/meta/BaseRecord.hpp>
-#include <mrdox/meta/Enum.hpp>
-#include <mrdox/meta/FieldType.hpp>
-#include <mrdox/meta/Function.hpp>
-#include <mrdox/meta/Overloads.hpp>
-#include <mrdox/meta/Info.hpp>
-#include <mrdox/meta/Javadoc.hpp>
-#include <mrdox/meta/Location.hpp>
-#include <mrdox/meta/MemberType.hpp>
-#include <mrdox/meta/Namespace.hpp>
-#include <mrdox/meta/Record.hpp>
-#include <mrdox/meta/Reference.hpp>
-#include <mrdox/meta/Scope.hpp>
-#include <mrdox/meta/Symbol.hpp>
-#include <mrdox/meta/Symbols.hpp>
-#include <mrdox/meta/Template.hpp>
-#include <mrdox/meta/TemplateParam.hpp>
-#include <mrdox/meta/Type.hpp>
-#include <mrdox/meta/Typedef.hpp>
+#include <mrdox/Metadata/BaseRecord.hpp>
+#include <mrdox/Metadata/Enum.hpp>
+#include <mrdox/Metadata/FieldType.hpp>
+#include <mrdox/Metadata/Function.hpp>
+#include <mrdox/Metadata/Overloads.hpp>
+#include <mrdox/Metadata/Info.hpp>
+#include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdox/Metadata/Location.hpp>
+#include <mrdox/Metadata/MemberType.hpp>
+#include <mrdox/Metadata/Namespace.hpp>
+#include <mrdox/Metadata/Record.hpp>
+#include <mrdox/Metadata/Reference.hpp>
+#include <mrdox/Metadata/Scope.hpp>
+#include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Symbols.hpp>
+#include <mrdox/Metadata/Template.hpp>
+#include <mrdox/Metadata/TemplateParam.hpp>
+#include <mrdox/Metadata/Type.hpp>
+#include <mrdox/Metadata/Typedef.hpp>
 
 #endif

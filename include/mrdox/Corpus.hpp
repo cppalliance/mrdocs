@@ -17,7 +17,7 @@
 #include <mrdox/Debug.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
-#include <mrdox/meta/Symbols.hpp>
+#include <mrdox/Metadata/Symbols.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
 #include <cassert>

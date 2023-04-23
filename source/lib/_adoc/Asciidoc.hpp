@@ -17,7 +17,7 @@
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Generator.hpp>
-#include <mrdox/meta/Javadoc.hpp>
+#include <mrdox/Metadata/Javadoc.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>

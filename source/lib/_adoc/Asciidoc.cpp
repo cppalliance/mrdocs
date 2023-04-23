@@ -12,7 +12,7 @@
 #include "Asciidoc.hpp"
 #include "PagesBuilder.hpp"
 #include <mrdox/Metadata.hpp>
-#include <mrdox/meta/Overloads.hpp>
+#include <mrdox/Metadata/Overloads.hpp>
 #include <clang/Basic/Specifiers.h>
 
 namespace clang {

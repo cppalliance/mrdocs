@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "utility.hpp"
+#include "Support/Path.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Error.hpp>
 #include <clang/Tooling/AllTUsExecution.h>

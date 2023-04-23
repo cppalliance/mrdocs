@@ -13,7 +13,7 @@
 #define MRDOX_METADATA_FWD_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/meta/Symbols.hpp>
+#include <mrdox/Metadata/Symbols.hpp>
 
 // Forward declarations for all types
 // related to metadata extracted from AST

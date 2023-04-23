@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Commands.hpp"
+#include "_AST/Commands.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Generator.hpp>
 #include <llvm/ADT/SmallString.h>
