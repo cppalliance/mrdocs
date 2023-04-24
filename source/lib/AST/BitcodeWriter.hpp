@@ -92,6 +92,8 @@ public:
     requires std::is_enum_v<Enum>
     void emitRecord(Enum Value, RecordId ID);
 
+    void emitRecord(std::uint32_t const* p, std::size_t n, RecordId ID);
+
     void emitRecord(llvm::SmallVectorImpl<SymbolID> const& Values, RecordId ID);
 
     void emitRecord(SymbolID const& Str, RecordId ID);

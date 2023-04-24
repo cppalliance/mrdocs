@@ -184,7 +184,9 @@ visit(
         // FunctionInfo::Specs
         auto os = tags_.jit_indent();
 
-        switch(I.specs.storageClass())
+        auto SC = I.specs.get<
+            FnFlags0::storageClassMask, StorageClass>();
+        switch(SC)
         {
         case SC_None:
             break;
@@ -199,10 +201,12 @@ visit(
             os << "<pextern/>";
             break;
         default:
-            Assert(isLegalForFunction(I.specs.storageClass()));
+            Assert(isLegalForFunction(SC));
             break;
         }
-        switch(I.specs.refQualifier())
+
+        auto RQ = I.specs.get<FnFlags0::refQualifierMask>();
+        switch(RQ)
         {
         case RQ_None:
             break;
@@ -213,31 +217,31 @@ visit(
             os << "<rvref/>";
             break;
         }
-        if(I.specs.isSet(FunctionInfo::constBit))
+        if(I.specs.get<FnFlags0::constBit>())
             os << "<const/>";
-        if(I.specs.isSet(FunctionInfo::constevalBit))
+        if(I.specs.get<FnFlags0::constevalBit>())
             os << "<consteval/>";
-        if(I.specs.isSet(FunctionInfo::constexprBit))
+        if(I.specs.get<FnFlags0::constexprBit>())
             os << "<constexpr/>";
-        if(I.specs.isSet(FunctionInfo::inlineBit))
+        if(I.specs.get<FnFlags0::inlineBit>())
             os << "<inline/>";
-        if(I.specs.isSet(FunctionInfo::noexceptBit))
+        if(I.specs.get<FnFlags0::noexceptBit>())
             os << "<noexcept/>";
-        if(I.specs.isSet(FunctionInfo::noreturnBit))
+        if(I.specs.get<FnFlags0::noreturnBit>())
             os << "<noreturn/>";
-        if(I.specs.isSet(FunctionInfo::overrideBit))
+        if(I.specs.get<FnFlags0::overrideBit>())
             os << "<override/>";
-        if(I.specs.isSet(FunctionInfo::pureBit))
+        if(I.specs.get<FnFlags0::pureBit>())
             os << "<pure/>";
-        if(I.specs.isSet(FunctionInfo::specialBit))
+        if(I.specs.get<FnFlags0::specialBit>())
             os << "<special/>";
-        if(I.specs.isSet(FunctionInfo::trailReturnBit))
+        if(I.specs.get<FnFlags0::trailReturnBit>())
             os << "<trailing/>";
-        if(I.specs.isSet(FunctionInfo::variadicBit))
+        if(I.specs.get<FnFlags0::variadicBit>())
             os << "<variadic/>";
-        if(I.specs.isSet(FunctionInfo::virtualBit))
+        if(I.specs.get<FnFlags0::virtualBit>())
             os << "<virtual/>";
-        if(I.specs.isSet(FunctionInfo::volatileBit))
+        if(I.specs.get<FnFlags0::volatileBit>())
             os << "<volatile/>";
         os.finish();
     }

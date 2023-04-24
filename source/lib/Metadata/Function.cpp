@@ -18,16 +18,6 @@ namespace mrdox {
 
 void
 FunctionInfo::
-Specs::
-merge(Specs&& other) noexcept
-{
-    //Assert(bits_ == 0 || bits_ == other.bits_);
-    if(other.bits_)
-        bits_ |= other.bits_;
-}
-
-void
-FunctionInfo::
 merge(
     FunctionInfo&& Other)
 {

@@ -960,20 +960,20 @@ getFunctionSpecs(
     FunctionInfo& I,
     FunctionDecl const* D)
 {
-    I.specs.set(FunctionInfo::constevalBit, D->isConsteval());
-    I.specs.set(FunctionInfo::constexprBit, D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
-    I.specs.set(FunctionInfo::inlineBit, D->isInlineSpecified());
-    I.specs.set(FunctionInfo::noexceptBit, isNoexceptExceptionSpec(D->getExceptionSpecType()));
-    I.specs.set(FunctionInfo::noreturnBit, D->hasAttr<CXX11NoReturnAttr>());
-    I.specs.set(FunctionInfo::overrideBit, D->hasAttr<OverrideAttr>());
-    I.specs.set(FunctionInfo::pureBit, D->isPure());
-    I.specs.set(FunctionInfo::variadicBit, D->isVariadic());
-    I.specs.set(FunctionInfo::virtualBit, D->isVirtualAsWritten());
+    I.specs.set<FnFlags0::constevalBit>(D->isConsteval());
+    I.specs.set<FnFlags0::constexprBit>(D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
+    I.specs.set<FnFlags0::inlineBit>(D->isInlineSpecified());
+    I.specs.set<FnFlags0::noexceptBit>(isNoexceptExceptionSpec(D->getExceptionSpecType()));
+    I.specs.set<FnFlags0::noreturnBit>(D->hasAttr<CXX11NoReturnAttr>());
+    I.specs.set<FnFlags0::overrideBit>(D->hasAttr<OverrideAttr>());
+    I.specs.set<FnFlags0::pureBit>(D->isPure());
+    I.specs.set<FnFlags0::variadicBit>(D->isVariadic());
+    I.specs.set<FnFlags0::virtualBit>(D->isVirtualAsWritten());
     if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
     {
-        I.specs.set(FunctionInfo::trailReturnBit, FP->hasTrailingReturn());
+        I.specs.set<FnFlags0::trailReturnBit>(FP->hasTrailingReturn());
     }
-    I.specs.setStorageClass(D->getStorageClass());
+    I.specs.set<FnFlags0::storageClassMask>(D->getStorageClass());
 }
 
 static
@@ -982,11 +982,11 @@ getCXXMethodSpecs(
     FunctionInfo& I,
     CXXMethodDecl const* D)
 {
-    I.specs.set(FunctionInfo::constBit, D->isConst());
-    I.specs.set(FunctionInfo::volatileBit, D->isVolatile());
-    I.specs.setRefQualifier(D->getRefQualifier());
+    I.specs.set<FnFlags0::constBit>(D->isConst());
+    I.specs.set<FnFlags0::volatileBit>(D->isVolatile());
+    I.specs.set<FnFlags0::refQualifierMask>(D->getRefQualifier());
 
-    //I.specs.set(FunctionInfo::specialBit);
+    //I.specs.set<FnFlags0::specialBit>();
     //D->isCopyAssignmentOperator()
     //D->isMoveAssignmentOperator()
     //D->isOverloadedOperator();

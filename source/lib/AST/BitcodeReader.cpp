@@ -67,6 +67,24 @@ decodeRecord(
     return llvm::Error::success();
 }
 
+// bits
+template<class... Enum>
+static
+llvm::Error
+decodeRecord(
+    Record const& R,
+    std::uint32_t* data,
+    std::size_t n,
+    llvm::StringRef blob)
+{
+    auto n1 = *R.begin();
+    if(n1 != n)
+        return makeError("wrong size(", n1, ") for Bits(", n, ")");
+    for(std::size_t i = 0; i < n1; ++i)
+        data[i] = static_cast<std::uint32_t>(R.begin()[i + 1]);
+    return llvm::Error::success();
+}
+
 // container of char
 template<class Field>
 requires std::is_same_v<
@@ -87,7 +105,6 @@ decodeRecord(
 }
 
 // range<SymbolID>
-
 llvm::Error
 decodeRecord(
     Record const& R,
@@ -1093,10 +1110,10 @@ parseRecord(
         return decodeRecord(R, I->IsMethod, Blob);
     case FUNCTION_BITS:
     {
-        FunctionInfo::Specs::value_type bits;
-        if(auto err = decodeRecord(R, bits, Blob))
+        std::uint32_t v;
+        if(auto err = decodeRecord(R, &v, 1, Blob))
             return err;
-        I->specs = FunctionInfo::Specs(bits);
+        I->specs.load(v);
         return llvm::Error::success();
     }
     default:

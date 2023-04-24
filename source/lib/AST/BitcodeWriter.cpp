@@ -66,6 +66,19 @@ static void Integer32Abbrev(
             llvm::BitCodeAbbrevOp::Fixed, 32) });
 }
 
+static void Integer32ArrayAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. VBR integer (number of 32-bit integers)
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 2),
+        // 1. Fixed-size array of 32-bit integers
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 32) });
+}
+
 #if 0
 static void Integer16Abbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
@@ -250,7 +263,7 @@ RecordIdNameMap = []()
         {FUNCTION_LOCATION, {"Location", &LocationAbbrev}},
         {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
-        {FUNCTION_BITS, {"Specs", &Integer32Abbrev}},
+        {FUNCTION_BITS, {"Specs", &Integer32ArrayAbbrev}},
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
         {REFERENCE_TYPE, {"RefType", &Integer32Abbrev}},
@@ -500,7 +513,11 @@ emitBlock(
         emitBlock(*I.javadoc);
     emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
-    emitRecord(I.specs.bits(), FUNCTION_BITS);
+    {
+        std::uint32_t v[1] = {
+            I.specs.value() };
+        emitRecord(v, 1, FUNCTION_BITS);
+    }
     if (I.DefLoc)
         emitRecord(*I.DefLoc, FUNCTION_DEFLOCATION);
     for (const auto& L : I.Loc)
@@ -805,6 +822,34 @@ emitRecord(
     Enum Value, RecordId ID)
 {
     emitRecord(static_cast<std::underlying_type_t<Enum>>(Value), ID);
+}
+
+// Bits
+void
+BitcodeWriter::
+emitRecord(
+    std::uint32_t const* p,
+    std::size_t n,
+    RecordId ID)
+{
+    Assert(RecordIdNameMap[ID]);
+    Assert(RecordIdNameMap[ID].Abbrev ==
+        &Integer32ArrayAbbrev);
+    bool empty = true;
+    for(int i = 0; i < n; ++i)
+    {
+        if(p[i] == 0)
+        {
+            empty = false;
+            break;
+        }
+    }
+    if (!prepRecordData(ID, ! empty))
+        return;
+    Record.push_back(n);
+    for(int i = 0; i < n; ++i)
+        Record.push_back(static_cast<RecordValue>(p[i]));
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
 // SymbolIDs

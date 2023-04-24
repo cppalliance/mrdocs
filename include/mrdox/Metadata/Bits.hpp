@@ -23,34 +23,18 @@ namespace mrdox {
 
 /** A container of packed bits to describe metadata.
 
-    The container may be templated on the enumeration,
-    this ensures type safety.
+    The container may be templated on the
+    enumeration, to ensure type safety.
 */
-template<class... Enums>
+template<class Enum>
 class Bits
 {
-#if 0
     static_assert(std::is_enum_v<Enum>);
     static_assert(std::is_same_v<
         std::underlying_type_t<Enum>, std::uint32_t>);
 #ifdef __cpp_lib_is_scoped_enum
     static_assert(std::is_scoped_enum<Enum>);
 #endif
-#endif
-    template<class T>
-    static constexpr void count()
-    {
-        //static_assert(false, "enum not found");
-    }
-
-    template<class T, class E0, class... En>
-    static constexpr int count()
-    {
-        if constexpr(std::is_same_v<T, E0>)
-            return 0;
-        else
-            return 1 + count<T, En...>();
-    }
 
 public:
     using value_type = std::uint32_t;
@@ -59,87 +43,79 @@ public:
     */
     constexpr Bits() noexcept = default;
 
-    /** Return the size of the integer array representing the bits.
+    /** Return the integer value of the bit set.
     */
-    static constexpr std::size_t
-    size()
-    {
-        return sizeof...(Enums);
-    }
-
-    /** Return the index of the specified enum E in the pack.
-    */
-    template<class E>
-    static constexpr int
-    indexof()
-    {
-        return count<E, Enums...>();
-    }
-
-    /** Return a pointer to the beginning of the array of values.
-    */
-    constexpr value_type const* data() const
+    constexpr value_type
+    value() const noexcept
     {
         return bits_;
     }
 
-    /** Set a flag to true (or false).
-    */
-    template<class Enum>
-    constexpr void
-    set(Enum id, bool value = true) noexcept
-    {
-        Assert(std::has_single_bit(value_type(id)));
-        constexpr auto I = indexof<Enum>();
-        if(value)
-            bits_[I] |= value_type(id);
-        else
-            bits_[I] &= ~value_type(id);
-    }
-
-    /** Set an integer value for the id.
-    */
-    template<class Enum, class Integer>
-    constexpr void
-    set(Enum id, Integer value) noexcept
-    {
-        Assert(std::popcount(value_type(id)) > 1);
-        Assert(value > 0);
-        Assert(value_type(value) < (
-            value_type(id) >>
-                std::countr_zero(value_type(id))));
-        constexpr auto I = indexof<Enum>();
-        bits_[I] = (bits_[I] & ~value_type(id)) | (
-            value_type(value) << std::countr_zero(value_type(id)));
-    }
-
     /** Return true or false for a flag.
     */
-    template<class Enum>
+    template<Enum ID>
+    requires (std::has_single_bit(value_type(ID)))
     constexpr bool
-    get(Enum id) const noexcept
+    get() const noexcept
     {
-        Assert(std::has_single_bit(value_type(id)));
-        constexpr auto I = indexof<Enum>();
-        return bits_[I] & value_type(id);
+        return bits_ & value_type(ID);
     }
 
     /** Return the value for an id.
     */
-    template<class Enum>
-    constexpr value_type
-    get(Enum id) const noexcept
+    template<Enum ID, class T = value_type>
+    requires (std::popcount(value_type(ID)) > 1)
+    constexpr T
+    get() const noexcept
     {
-        Assert(std::popcount(value_type(id)) > 1);
-        constexpr auto I = indexof<Enum>();
-        return (bits_[I] & value_type(id)) >>
-            std::countr_zero(value_type(id));
+        return static_cast<T>((bits_ & value_type(ID)) >>
+            std::countr_zero(value_type(ID)));
     }
 
-    void merge(Bits&& other) noexcept;
+    /** Set a flag to true (or false).
+    */
+    template<Enum ID>
+    requires (std::has_single_bit(value_type(ID)))
+    constexpr void
+    set(bool value = true) noexcept
+    {
+        if(value)
+            bits_ |= value_type(ID);
+        else
+            bits_ &= ~value_type(ID);
+    }
+
+    /** Set an integer value for the id.
+    */
+    template<Enum ID, class Integer>
+    requires (std::popcount(value_type(ID)) > 1)
+    constexpr void
+    set(Integer value) noexcept
+    {
+        Assert(ID > 0);
+        Assert(value_type(value) < (value_type(ID) >>
+                std::countr_zero(value_type(ID))));
+        bits_ = (bits_ & ~value_type(ID)) | (
+            value_type(value) << std::countr_zero(
+                value_type(ID)));
+    }
+
+    /** Load all the bits at once.
+    */
+    constexpr void
+    load(value_type value)
+    {
+        bits_ = value;
+    }
+
+    constexpr void
+    merge(Bits&& other) noexcept
+    {
+        bits_ |= other.bits_;
+    }
 
 private:
-    value_type bits_[size()]{};
+    value_type bits_ = 0;
 };
 
 } // mrdox
