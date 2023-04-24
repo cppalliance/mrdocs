@@ -35,7 +35,7 @@ build()
     os_ <<
         "= Reference\n"
         ":role: mrdox\n";
-    (void)corpus_.visit(globalNamespaceID, *this);
+    corpus_.visit(globalNamespaceID, *this);
     closeSection();
     return llvm::Error::success();
 }

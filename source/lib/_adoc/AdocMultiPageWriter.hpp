@@ -12,6 +12,7 @@
 #define MRDOX_LIB_ADOC_ADOCMULTIPAGEWRITER_HPP
 
 #include "AdocWriter.hpp"
+#include "SafeNames.hpp"
 #include <mrdox/Corpus.hpp>
 
 namespace clang {
@@ -20,23 +21,24 @@ namespace adoc {
 
 class AdocMultiPageWriter
     : public AdocWriter
-    , public Corpus::Visitor
 {
+    SafeNames const& names_;
+
 public:
     AdocMultiPageWriter(
         llvm::raw_ostream& os,
         llvm::raw_fd_ostream* fd_os,
         Corpus const& corpus,
+        SafeNames const& names,
         Reporter& R) noexcept;
 
-    llvm::Error build();
+    void build(RecordInfo const&);
+    void build(FunctionInfo const&);
+    void build(TypedefInfo const&);
+    void build(EnumInfo const&);
 
 private:
-    bool visit(NamespaceInfo const&) override;
-    bool visit(RecordInfo const&) override;
-    bool visit(FunctionInfo const&) override;
-    bool visit(TypedefInfo const&) override;
-    bool visit(EnumInfo const&) override;
+    void writeTitle(Info const& I);
 };
 
 } // adoc

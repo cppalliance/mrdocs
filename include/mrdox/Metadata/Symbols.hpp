@@ -59,6 +59,7 @@ enum class InfoType
     are compared with lowercase letters coming
     before uppercase letters.
 */
+MRDOX_DECL
 std::strong_ordering
 compareSymbolNames(
     llvm::StringRef symbolName0,

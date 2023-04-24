@@ -49,8 +49,9 @@ class MRDOX_VISIBLE
     Config& operator=(Config const&) = delete;
 
 protected:
-    std::string sourceRoot_;
     llvm::SmallString<0> configDir_;
+    llvm::SmallString<0> outputPath_;
+    std::string sourceRoot_;
     bool includePrivate_ = false;
     bool verbose_ = true;
 
@@ -74,7 +75,6 @@ public:
     // VFALCO these naked data members are temporary...
     //
     tooling::ArgumentsAdjuster ArgAdjuster;
-    std::string OutDirectory;
     bool IgnoreMappingFailures = false;
 
     //--------------------------------------------
@@ -111,6 +111,14 @@ public:
     sourceRoot() const noexcept
     {
         return sourceRoot_;
+    }
+
+    /** Return the output directory or filename.
+    */
+    llvm::StringRef
+    outputPath() const noexcept
+    {
+        return outputPath_;
     }
 
     /** Return true if private members are documented.
@@ -159,6 +167,14 @@ public:
     {
         includePrivate_ = includePrivate;
     }
+
+    /** Set the output directory or file path.
+    */
+    MRDOX_DECL
+    virtual
+    void
+    setOutputPath(
+        llvm::StringRef outputPath) = 0;
 
     /** Set the directory where the input files are stored.
 

@@ -17,21 +17,21 @@
 namespace clang {
 namespace mrdox {
 
+template<class Pred>
+static
 OverloadsSet
-makeOverloadsSet(
+makeOverloadsSetImpl(
     Corpus const& corpus,
     Scope const& scope,
-    AccessSpecifier access)
+    Pred&& pred)
 {
     OverloadsSet result;
-    result.access = access;
-
     std::vector<FunctionInfo const*> temp;
     temp.reserve(scope.Functions.size());
     for(auto const& ref : scope.Functions)
     {
         auto const& I = corpus.get<FunctionInfo>(ref.id);
-        if(I.Access == access)
+        if(pred(I))
             temp.push_back(&I);
     }
     if(temp.empty())
@@ -60,6 +60,31 @@ makeOverloadsSet(
     }
     while(it != temp.end());
     return result;
+}
+
+OverloadsSet
+makeOverloadsSet(
+    Corpus const& corpus,
+    Scope const& scope)
+{
+    return makeOverloadsSetImpl(corpus, scope,
+        [](FunctionInfo const& I)
+        {
+            return true;
+        });
+}
+
+OverloadsSet
+makeOverloadsSet(
+    Corpus const& corpus,
+    Scope const& scope,
+    AccessSpecifier access)
+{
+    return makeOverloadsSetImpl(corpus, scope,
+        [access](FunctionInfo const& I)
+        {
+            return I.Access == access;
+        });
 }
 
 } // mrdox

@@ -45,6 +45,10 @@ public:
         llvm::StringRef configDir);
 
     void
+    setOutputPath(
+        llvm::StringRef outputPath) override;
+
+    void
     setSourceRoot(
         llvm::StringRef dirPath) override;
 

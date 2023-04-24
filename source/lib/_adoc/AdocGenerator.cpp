@@ -13,6 +13,7 @@
 #include "AdocMultiPageWriter.hpp"
 #include "AdocPagesBuilder.hpp"
 #include "AdocSinglePageWriter.hpp"
+#include "SafeNames.hpp"
 
 namespace clang {
 namespace mrdox {
@@ -31,56 +32,7 @@ buildPages(
     Corpus const& corpus,
     Reporter& R) const
 {
-    namespace fs = llvm::sys::fs;
-    namespace path = llvm::sys::path;
-
-#if 0
-    // Track which directories we already tried to create.
-    llvm::StringSet<> CreatedDirs;
-
-    // Collect all output by file name and create the necessary directories.
-    llvm::StringMap<std::vector<mrdox::Info*>> FileToInfos;
-    for (const auto& Group : corpus.InfoMap)
-    {
-        mrdox::Info* Info = Group.getValue().get();
-
-        llvm::SmallString<128> Path;
-        llvm::sys::path::native(RootDir, Path);
-        llvm::sys::path::append(Path, Info->getRelativeFilePath(""));
-        if (!CreatedDirs.contains(Path)) {
-            if (std::error_code Err = llvm::sys::fs::create_directories(Path);
-                Err != std::error_code()) {
-                return llvm::createStringError(Err, "Failed to create directory '%s'.",
-                    Path.c_str());
-            }
-            CreatedDirs.insert(Path);
-        }
-
-        llvm::sys::path::append(Path, Info->getFileBaseName() + ".adoc");
-        FileToInfos[Path].push_back(Info);
-    }
-
-    for (const auto& Group : FileToInfos) {
-        std::error_code FileErr;
-        llvm::raw_fd_ostream InfoOS(Group.getKey(), FileErr,
-            llvm::sys::fs::OF_None);
-        if (FileErr) {
-            return llvm::createStringError(FileErr, "Error opening file '%s'",
-                Group.getKey().str().c_str());
-        }
-
-        for (const auto& Info : Group.getValue()) {
-            if (llvm::Error Err = generateDocForInfo(Info, InfoOS, config)) {
-                return Err;
-            }
-        }
-    }
-    return true;
-#endif
-    AdocPagesBuilder builder(corpus);
-    builder.scan();
-
-    return llvm::Error::success();
+    return AdocPagesBuilder(outputPath, corpus, R).build();
 }
 
 llvm::Error

@@ -11,6 +11,7 @@
 #ifndef MRDOX_LIB_ADOC_ADOCPAGESBUILDER_HPP
 #define MRDOX_LIB_ADOC_ADOCPAGESBUILDER_HPP
 
+#include "SafeNames.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>
@@ -20,9 +21,14 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
-class AdocPagesBuilder : Corpus::Visitor
+class AdocPagesBuilder
+    : public Corpus::Visitor
 {
     Corpus const& corpus_;
+    Reporter& R_;
+    SafeNames names_;
+    llvm::StringRef outputPath_;
+    Config::WorkGroup wg_;
 
 public:
     struct Page
@@ -40,12 +46,21 @@ public:
     std::vector<Page> pages;
 
     AdocPagesBuilder(
-        Corpus const& corpus) noexcept
+        llvm::StringRef outputPath,
+        Corpus const& corpus,
+        Reporter& R)
         : corpus_(corpus)
+        , R_(R)
+        , names_(corpus_)
+        , outputPath_(outputPath)
+        , wg_(corpus.config().get())
     {
     }
 
-    void scan();
+    llvm::Error build();
+
+    template<class T>
+    void build(T const& I);
 
     bool visit(NamespaceInfo const&) override;
     bool visit(RecordInfo const&) override;
@@ -53,9 +68,6 @@ public:
     bool visit(FunctionInfo const&) override;
     bool visit(TypedefInfo const&) override;
     bool visit(EnumInfo const&) override;
-
-private:
-    llvm::SmallString<0> filePrefix_;
 };
 
 } // adoc

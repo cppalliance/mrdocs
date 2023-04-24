@@ -6,5 +6,6 @@ bin64/
 build/
 temp/
 test/
+tests/py
 tests/**/*.adoc
 tests/**/*.bad.xml

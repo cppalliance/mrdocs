@@ -88,9 +88,9 @@ IgnoreMappingFailures(
 
 static
 llvm::cl::opt<std::string>
-OutDirectory(
+OutputPath(
     "output",
-    llvm::cl::desc("Directory for outputting generated files."),
+    llvm::cl::desc("Directory or file for generating output."),
     llvm::cl::init("."),
     llvm::cl::cat(ToolCategory));
 
@@ -115,7 +115,7 @@ toolMain(
     if(! config)
         return (void)R.error(config, "load config file '", ConfigPath, "'");
 
-    (*config)->OutDirectory = OutDirectory;
+    (*config)->setOutputPath(OutputPath);
     (*config)->IgnoreMappingFailures = IgnoreMappingFailures;
 
     // create the executor
@@ -138,7 +138,7 @@ toolMain(
     // Run the generator.
     if((*config)->verbose())
         llvm::outs() << "Generating docs...\n";
-    if(! generator->buildPages((*config)->OutDirectory, **corpus, R))
+    if(! generator->buildPages((*config)->outputPath(), **corpus, R))
         return;
 }
 

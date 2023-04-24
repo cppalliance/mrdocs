@@ -57,6 +57,17 @@ ConfigImpl(
 
 void
 ConfigImpl::
+setOutputPath(
+    llvm::StringRef outputPath)
+{
+    namespace path = llvm::sys::path;
+    outputPath_ = outputPath;
+    path::remove_dots(outputPath_, true);
+    path::make_preferred(outputPath_);
+}
+
+void
+ConfigImpl::
 setSourceRoot(
     llvm::StringRef dirPath)
 {

@@ -21,6 +21,8 @@
 namespace clang {
 namespace mrdox {
 
+class Corpus;
+
 struct BaseRecordInfo;
 struct EnumValueInfo;
 struct EnumInfo;

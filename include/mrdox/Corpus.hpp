@@ -103,14 +103,10 @@ public:
     /** Visit the specified symbol ID or node.
     */
     /** @{ */
-    MRDOX_DECL [[nodiscard]] bool visit(
-        SymbolID id, Visitor& f) const;
-    MRDOX_DECL [[nodiscard]] bool visit(
-        Scope const& I, Visitor& f) const;
-    MRDOX_DECL [[nodiscard]] bool visitWithOverloads(
-        Scope const& I, Visitor& f) const;
-    MRDOX_DECL [[nodiscard]] bool visit(
-        Info const& I, Visitor& f) const;
+    MRDOX_DECL bool visit(SymbolID id, Visitor& f) const;
+    MRDOX_DECL bool visit(Scope const& I, Visitor& f) const;
+    MRDOX_DECL bool visitWithOverloads(Scope const& I, Visitor& f) const;
+    MRDOX_DECL bool visit(Info const& I, Visitor& f) const;
     /** @} */
 
     //--------------------------------------------

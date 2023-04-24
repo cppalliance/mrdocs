@@ -46,6 +46,15 @@ struct OverloadsSet
 
 /** Create an overload set for all functions in a scope.
 */
+MRDOX_DECL
+OverloadsSet
+makeOverloadsSet(
+    Corpus const& corpus,
+    Scope const& scope);
+
+/** Create an overload set for all functions in a scope.
+*/
+MRDOX_DECL
 OverloadsSet
 makeOverloadsSet(
     Corpus const& corpus,

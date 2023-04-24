@@ -9,6 +9,7 @@
 //
 
 #include "AdocPagesBuilder.hpp"
+#include "AdocMultiPageWriter.hpp"
 #include "Support/Radix.hpp"
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/STLExtras.h>
@@ -19,21 +20,43 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
+llvm::Error
+AdocPagesBuilder::
+build()
+{
+    corpus_.visit(globalNamespaceID, *this);
+    wg_.wait();
+    return llvm::Error::success();
+}
+
+template<class T>
 void
 AdocPagesBuilder::
-scan()
+build(
+    T const& I)
 {
-    // visit the children not the namespace
-    if(! corpus_.visitWithOverloads(
-            corpus_.globalNamespace().Children, *this))
-        return;
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
 
-    llvm::sort(pages,
-        [](Page& p0, Page& p1)
+    wg_.post(
+        [&]
         {
-            return compareSymbolNames(
-                p0.fileName, p1.fileName) < 0;
+            llvm::SmallString<512> filePath = corpus_.config()->outputPath();
+            llvm::StringRef name = names_.get(I.id);
+            path::append(filePath, name);
+            filePath.append(".adoc");
+            std::error_code ec;
+            llvm::raw_fd_ostream os(filePath, ec, fs::CD_CreateAlways);
+            if(! R_.error(ec, "open '", filePath, "'"))
+            {
+                AdocMultiPageWriter writer(os, &os, corpus_, names_, R_);
+                writer.build(I);
+                if(auto ec = os.error())
+                    if(R_.error(ec, "write '", filePath, "'"))
+                        return;
+            }
         });
+
 }
 
 bool
@@ -41,12 +64,7 @@ AdocPagesBuilder::
 visit(
     NamespaceInfo const& I)
 {
-    namespace path = llvm::sys::path;
-
-    auto saved = filePrefix_;
-    if(! corpus_.visit(I.Children, *this))
-        return false;
-    filePrefix_ = saved;
+    corpus_.visit(I.Children, *this);
     return true;
 }
 
@@ -55,19 +73,8 @@ AdocPagesBuilder::
 visit(
     RecordInfo const& I)
 {
-    namespace path = llvm::sys::path;
-
-    auto filePath = filePrefix_;
-    llvm::SmallString<0> temp;
-    path::append(filePath, toBaseFN(temp, I.id));
-    path::replace_extension(filePath, "adoc");
-    pages.emplace_back(std::move(filePath));
-
-    auto saved = filePrefix_;
-    path::append(filePrefix_, I.Name);
-    if(! corpus_.visitWithOverloads(I.Children, *this))
-        return false;
-    filePrefix_ = saved;
+    build(I);
+    corpus_.visit(I.Children, *this);
     return true;
 }
 
@@ -76,13 +83,6 @@ AdocPagesBuilder::
 visit(
     Overloads const& I)
 {
-    namespace path = llvm::sys::path;
-
-    auto filePath = filePrefix_;
-    path::append(filePath, I.name);
-    path::replace_extension(filePath, "adoc");
-    pages.emplace_back(Page(filePath));
-
     return true;
 }
 
@@ -91,6 +91,7 @@ AdocPagesBuilder::
 visit(
     FunctionInfo const& I)
 {
+    build(I);
     return true;
 }
 
@@ -99,14 +100,7 @@ AdocPagesBuilder::
 visit(
     TypedefInfo const& I)
 {
-    namespace path = llvm::sys::path;
-
-    auto filePath = filePrefix_;
-    llvm::SmallString<0> temp;
-    path::append(filePath, toBaseFN(temp, I.id));
-    path::replace_extension(filePath, "adoc");
-    pages.emplace_back(std::move(filePath));
-
+    build(I);
     return true;
 }
 
@@ -115,14 +109,7 @@ AdocPagesBuilder::
 visit(
     EnumInfo const& I)
 {
-    namespace path = llvm::sys::path;
-
-    auto filePath = filePrefix_;
-    llvm::SmallString<0> temp;
-    path::append(filePath, toBaseFN(temp, I.id));
-    path::replace_extension(filePath, "adoc");
-    pages.emplace_back(std::move(filePath));
-
+    build(I);
     return true;
 }
 
