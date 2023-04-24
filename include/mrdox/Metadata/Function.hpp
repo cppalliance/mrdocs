@@ -35,7 +35,7 @@ struct FunctionInfo : SymbolInfo
     */
     enum : std::uint32_t
     {
-        // 11 bits
+        // 13 bits
         constBit         = 0x00000001,
         constevalBit     = 0x00000002,
         constexprBit     = 0x00000004,
