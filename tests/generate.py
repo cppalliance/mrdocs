@@ -17,10 +17,16 @@ def GenerateEnumDeclarations():
     enumerators = " (|(A" + enumerator_initializer + "|A" + enumerator_initializer + ", B " + enumerator_initializer + "),?) "
     regex = "enum (|EnumName|class EnumName|struct EnumName) " + enum_base + " (\{" + enumerators + "\})? ;"
     generator = exrex.generate(regex)
-    first = next(generator) #The first entry is "enum    ;", which is not valid. Therefore, we skip it.
-    if first != "enum    ;":
-        raise Exception("We are expecting that the first value is 'enum    ;', which should be skipped. But our expectation is not met. The first value is '" + first + "'.")
-    return generator
+    declarations = list(generator)
+    # Unfortunately, the regex produces some invalid declarations. We remove them by hand as of now.
+    for invalidDeclaration in ["enum    ;", "enum  : short  ;", "enum  : unsigned int  ;",
+                               "enum  : const long  ;", "enum  : const volatile long long  ;",
+                               "enum  : decltype(0)  ;", "enum EnumName   ;"]:
+        try:
+            declarations.remove(invalidDeclaration)
+        except ValueError:
+            print("The invalid declaration \"" + invalidDeclaration + "\" gets no longer generated, so it can be removed from the list of invalid declarations.")
+    return declarations
 
 
 def GenerateIndexedCppFiles(parentDirectory, fileContents):
