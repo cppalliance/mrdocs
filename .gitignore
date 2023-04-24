@@ -8,3 +8,4 @@ temp/
 test/
 tests/**/*.adoc
 tests/**/*.bad.xml
+tests/py/
