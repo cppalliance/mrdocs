@@ -13,7 +13,7 @@ def EnumDeclarationsFolder():
 def GenerateEnumDeclarations():
     #https://eel.is/c++draft/enum
     enum_base = "(|: short|: unsigned int|: const long|: const volatile long long|: decltype\(0\))"
-    enumerator_initializer = "(| = 0| = true \? 1,2 : 3| = \!\+\[\]\(\)\{\})"
+    enumerator_initializer = "(| = 0| = true \? 1,2 : 3)"
     enumerators = " (|(A" + enumerator_initializer + "|A" + enumerator_initializer + ", B " + enumerator_initializer + "),?) "
     regex = "enum (|EnumName|class EnumName|struct EnumName) " + enum_base + " (\{" + enumerators + "\})? ;"
     generator = exrex.generate(regex)
