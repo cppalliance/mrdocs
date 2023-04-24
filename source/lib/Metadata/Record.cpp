@@ -56,6 +56,13 @@ merge(RecordInfo&& Other)
     if(! Other.Friends.empty())
     {
         llvm::append_range(Friends, std::move(Other.Friends));
+        llvm::sort(Friends,
+            [](SymbolID const& id0, SymbolID const& id1)
+            {
+                return id0 < id1;
+            });
+        auto last = std::unique(Friends.begin(), Friends.end());
+        Friends.erase(last, Friends.end());
     }
 }
 

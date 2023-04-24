@@ -1059,6 +1059,8 @@ build(
             getParent(id, D);
             RecordInfo P(id);
             P.Friends.emplace_back(I.id);
+            bool isInAnonymous;
+            getParentNamespaces(P.Namespace, ND, isInAnonymous);
             return {
                 serialize(I),
                 serializeParent(std::move(I)),
