@@ -15,11 +15,9 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/ArgumentsAdjusters.h>
-#include <llvm/ADT/Optional.h>
-#include <llvm/ADT/SmallVector.h>
+#include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
-#include <llvm/Support/YAMLTraits.h>
 #include <functional>
 #include <memory>
 #include <string>
@@ -34,6 +32,8 @@ struct MappingTraits;
 namespace clang {
 namespace mrdox {
 
+class ConfigImpl;
+
 /** Configuration used to generate the Corpus and Docs
 
     This contains all the settings applied from
@@ -44,74 +44,38 @@ namespace mrdox {
 */
 class MRDOX_VISIBLE
     Config
-        : public std::enable_shared_from_this<Config>
 {
-    template<class T>
-    friend struct llvm::yaml::MappingTraits;
-
-    class Impl;
-    struct Options;
-
-    llvm::SmallString<0> configDir_;
-    std::string sourceRoot_;
-    std::vector<llvm::SmallString<0>> inputFileIncludes_;
-    bool verbose_ = true;
-    bool includePrivate_ = false;
-
-    llvm::SmallString<0>
-    normalizePath(llvm::StringRef pathName);
+    Config(Config const&) = delete;
+    Config& operator=(Config const&) = delete;
 
 protected:
-    explicit Config(llvm::StringRef configDir);
+    std::string sourceRoot_;
+    llvm::SmallString<0> configDir_;
+    bool includePrivate_ = false;
+    bool verbose_ = true;
+
+    explicit
+    Config(llvm::StringRef configDir);
 
 public:
-    MRDOX_DECL virtual ~Config() = default;
+    class Options; // private, but for clang-15 bug
 
-    /** Return a defaulted Config using an existing directory.
+    /** A resource for running submitted work, possibly concurrent.
+    */
+    class WorkGroup;
 
-        @param dirPath The path to the directory.
-        If this is relative, an absolute path will
-        be calculated from the current directory.
+    /** Destructor.
     */
     MRDOX_DECL
-    static
-    llvm::Expected<std::shared_ptr<Config>>
-    createAtDirectory(
-        llvm::StringRef dirPath);
-
-    /** Return a Config loaded from the specified YAML file.
-    */
-    MRDOX_DECL
-    static
-    llvm::Expected<std::shared_ptr<Config>>
-    loadFromFile(
-        llvm::StringRef filePath);
+    virtual
+    ~Config() noexcept;
 
     //
     // VFALCO these naked data members are temporary...
     //
-
-    /** Adjustments to tool command line, applied during execute.
-    */
     tooling::ArgumentsAdjuster ArgAdjuster;
-
-    /** Name of project being documented.
-    */
-    std::string ProjectName;
-
-    // Directory for outputting generated files.
     std::string OutDirectory;
-                                                     
-    // URL of repository that hosts code used
-    // for links to definition locations.
-    llvm::Optional<std::string> RepositoryUrl;
-
     bool IgnoreMappingFailures = false;
-
-public:
-    /** A resource for running submitted work, possibly concurrent.
-    */
-    class WorkGroup;
 
     //--------------------------------------------
     //
@@ -156,32 +120,6 @@ public:
     {
         return includePrivate_;
     }
-
-    /** Returns true if the translation unit should be visited.
-
-        @param filePath The posix-style full path
-        to the file being processed.
-    */
-    bool
-    shouldVisitTU(
-        llvm::StringRef filePath) const noexcept;
-
-    /** Returns true if the file should be visited.
-
-        If the file is visited, then prefix is
-        set to the portion of the file path which
-        should be be removed for matching files.
-
-        @param filePath The posix-style full path
-        to the file being processed.
-
-        @param prefix The prefix which should be
-        removed from subsequent matches.
-    */
-    bool
-    shouldVisitFile(
-        llvm::StringRef filePath,
-        llvm::SmallVectorImpl<char>& prefix) const noexcept;
 
     /** Call a function for each element of a range.
 
@@ -235,28 +173,58 @@ public:
         @param dirPath The directory.
     */
     MRDOX_DECL
+    virtual
     void
     setSourceRoot(
-        llvm::StringRef dirPath);
+        llvm::StringRef dirPath) = 0;
 
     /** Set the filter for including translation units.
     */
     MRDOX_DECL
+    virtual
     void
     setInputFileIncludes(
-        std::vector<std::string> const& list);
+        std::vector<std::string> const& list) = 0;
+
+    //--------------------------------------------
+    //
+    // Creation
+    //
+    //--------------------------------------------
+
+    /** Return a defaulted Config using an existing directory.
+
+        @param dirPath The path to the directory.
+        If this is relative, an absolute path will
+        be calculated from the current directory.
+    */
+    MRDOX_DECL
+    static
+    llvm::Expected<std::shared_ptr<Config>>
+    createAtDirectory(
+        llvm::StringRef dirPath);
+
+    /** Return a Config loaded from the specified YAML file.
+    */
+    MRDOX_DECL
+    static
+    llvm::Expected<std::shared_ptr<Config>>
+    loadFromFile(
+        llvm::StringRef filePath);
 };
 
 //------------------------------------------------
 
 /** A group representing possibly concurrent related tasks.
 */
-class Config::WorkGroup
+class MRDOX_VISIBLE
+    Config::WorkGroup
 {
 public:
     /** Destructor.
     */
-    ~WorkGroup();
+    MRDOX_DECL
+    ~WorkGroup() noexcept;
 
     /** Constructor.
 
@@ -264,13 +232,15 @@ public:
         concurrency level. Calls to post and wait
         are blocking.
     */
-    MRDOX_DECL WorkGroup() noexcept;
+    MRDOX_DECL
+    WorkGroup() noexcept;
 
     /** Constructor.
     */
+    MRDOX_DECL
     explicit
     WorkGroup(
-        std::shared_ptr<Config const> config);
+        Config const* config);
 
     /** Constructor.
     */
@@ -298,7 +268,7 @@ public:
     wait();
 
 private:
-    friend class Config::Impl;
+    friend class ConfigImpl;
 
     struct Base
     {
@@ -307,7 +277,7 @@ private:
 
     class Impl;
 
-    std::shared_ptr<Config::Impl const> config_;
+    std::shared_ptr<ConfigImpl const> config_;
     std::unique_ptr<Base> impl_;
 };
 
@@ -320,7 +290,7 @@ parallelForEach(
     Range&& range,
     UnaryFunction const& f) const
 {
-    WorkGroup wg(shared_from_this());
+    WorkGroup wg(this);
     for(auto&& element : range)
         wg.post([&f, &element]
             {

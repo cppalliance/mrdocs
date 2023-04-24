@@ -13,7 +13,7 @@
 #define MRDOX_LIB_AST_ASTVISITOR_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Config.hpp>
+#include "ConfigImpl.hpp"
 #include <mrdox/Reporter.hpp>
 #include <clang/AST/Mangle.h>
 #include <clang/AST/RecursiveASTVisitor.h>
@@ -46,7 +46,7 @@ class ASTVisitor
     };
 
     tooling::ExecutionContext& ex_;
-    Config const& config_;
+    ConfigImpl const& config_;
     Reporter& R_;
     std::unordered_map<
         clang::SourceLocation::UIntTy,
@@ -59,7 +59,7 @@ public:
         Config const& config,
         Reporter& R) noexcept
         : ex_(ex)
-        , config_(config)
+        , config_(dynamic_cast<ConfigImpl const&>(config))
         , R_(R)
     {
     }

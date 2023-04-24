@@ -9,27 +9,26 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "ConfigImpl.hpp"
 #include "Support/Path.hpp"
-#include <mrdox/Config.hpp>
 #include <mrdox/Error.hpp>
-#include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
-#include <llvm/Support/MemoryBuffer.h>
 #include <llvm/Support/Path.h>
-#include <llvm/Support/ThreadPool.h>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
-#include <atomic>
 
 //------------------------------------------------
-
-// Options from YAML
+//
+// Options (YAML)
+//
+//------------------------------------------------
 
 namespace clang {
 namespace mrdox {
 
-struct Config::Options
+class Config::Options
 {
+public:
     struct FileFilter
     {
         std::vector<std::string> include;
@@ -69,8 +68,6 @@ struct llvm::yaml::MappingTraits<
     }
 };
 
-//------------------------------------------------
-
 namespace clang {
 namespace mrdox {
 
@@ -94,33 +91,6 @@ public:
     llvm::ThreadPoolTaskGroup group_;
 };
 
-//------------------------------------------------
-//
-// Config::Impl
-//
-//------------------------------------------------
-
-class Config::Impl : public Config
-{
-    llvm::ThreadPool mutable threadPool_;
-    bool doAsync_ = true;
-
-    friend class WorkGroup;
-
-public:
-    explicit
-    Impl(
-        llvm::StringRef configDir)
-        : Config(configDir)
-        , threadPool_(
-            llvm::hardware_concurrency(
-                tooling::ExecutorConcurrency))
-    {
-    }
-};
-
-//------------------------------------------------
-
 Config::
 WorkGroup::
 Base::~Base() noexcept = default;
@@ -136,9 +106,11 @@ WorkGroup::
 Config::
 WorkGroup::
 WorkGroup(
-    std::shared_ptr<Config const> config)
-    : config_(std::dynamic_pointer_cast<
-        Config::Impl const>(std::move(config)))
+    Config const* config)
+    : config_(config
+        ? dynamic_cast<ConfigImpl const*>(
+            config)->shared_from_this()
+        : nullptr)
     , impl_(config_
         ? std::make_unique<Impl>(const_cast<
             llvm::ThreadPool&>(config_->threadPool_))
@@ -213,29 +185,10 @@ wait()
 }
 
 //------------------------------------------------
-
-llvm::SmallString<0>
-Config::
-normalizePath(
-    llvm::StringRef pathName)
-{
-    namespace path = llvm::sys::path;
-
-    llvm::SmallString<0> result;
-    if(! path::is_absolute(pathName))
-    {
-        result = configDir();
-        path::append(result, path::Style::posix, pathName);
-        path::remove_dots(result, true, path::Style::posix);
-    }
-    else
-    {
-        result = pathName;
-        path::remove_dots(result, true);
-        convert_to_slash(result);
-    }
-    return result;
-}
+//
+// Config
+//
+//------------------------------------------------
 
 Config::
 Config(
@@ -243,6 +196,11 @@ Config(
     : configDir_(configDir)
 {
 }
+
+Config::
+~Config() noexcept = default;
+
+//------------------------------------------------
 
 llvm::Expected<std::shared_ptr<Config>>
 Config::
@@ -258,7 +216,7 @@ createAtDirectory(
     path::remove_dots(s, true);
     makeDirsy(s);
     convert_to_slash(s);
-    return std::make_shared<Config::Impl>(s);
+    return std::make_shared<ConfigImpl>(s);
 }
 
 llvm::Expected<std::shared_ptr<Config>>
@@ -284,7 +242,7 @@ loadFromFile(
         return config.takeError();
 
     // Read the YAML file into Options
-    Options opt;
+    Config::Options opt;
     auto fileText = llvm::MemoryBuffer::getFile(filePath);
     if(! fileText)
         return makeError(fileText.getError().message(), " when loading file '", filePath, "' ");
@@ -302,71 +260,6 @@ loadFromFile(
     (*config)->setInputFileIncludes(opt.input.include);
 
     return config;
-}
-
-//------------------------------------------------
-//
-// Observers
-//
-//------------------------------------------------
-
-bool
-Config::
-shouldVisitTU(
-    llvm::StringRef filePath) const noexcept
-{
-    if(inputFileIncludes_.empty())
-        return true;
-    for(auto const& s : inputFileIncludes_)
-        if(filePath == s)
-            return true;
-    return false;
-}
-
-bool
-Config::
-shouldVisitFile(
-    llvm::StringRef filePath,
-    llvm::SmallVectorImpl<char>& prefixPath) const noexcept
-{
-    namespace path = llvm::sys::path;
-
-    llvm::SmallString<32> temp;
-    temp = filePath;
-    if(! path::replace_path_prefix(temp, sourceRoot_, "", path::Style::posix))
-        return false;
-    prefixPath.assign(sourceRoot_.begin(), sourceRoot_.end());
-    makeDirsy(prefixPath);
-    return true;
-}
-
-//------------------------------------------------
-//
-// Modifiers
-//
-//------------------------------------------------
-
-void
-Config::
-setSourceRoot(
-    llvm::StringRef dirPath)
-{
-    namespace path = llvm::sys::path;
-
-    auto temp = normalizePath(dirPath);
-    makeDirsy(temp, path::Style::posix);
-    sourceRoot_ = temp.str();
-}
-
-void
-Config::
-setInputFileIncludes(
-    std::vector<std::string> const& list)
-{
-    namespace path = llvm::sys::path;
-
-    for(auto const& s0 : list)
-        inputFileIncludes_.push_back(normalizePath(s0));
 }
 
 } // mrdox

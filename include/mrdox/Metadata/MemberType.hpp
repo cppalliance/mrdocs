@@ -16,6 +16,7 @@
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Function.hpp>
+#include <llvm/ADT/Optional.h>
 
 namespace clang {
 namespace mrdox {

@@ -16,6 +16,7 @@
 #include <mrdox/Debug.hpp>
 #include <clang/Index/USRGeneration.h>
 #include <clang/AST/RecursiveASTVisitor.h>
+#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>

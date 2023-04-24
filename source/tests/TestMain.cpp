@@ -119,7 +119,7 @@ Instance(
     Reporter &R)
     : results_(results)
     , options_(options)
-    , wg_(config_)
+    , wg_(config_.get())
     , R_(R)
     , xmlGen_(getGenerators().find("xml"))
     , adocGen_(getGenerators().find("adoc"))

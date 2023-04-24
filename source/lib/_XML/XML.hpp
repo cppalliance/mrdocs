@@ -16,6 +16,7 @@
 #include <mrdox/Generator.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
+#include <llvm/ADT/Optional.h>
 
 namespace clang {
 namespace mrdox {
