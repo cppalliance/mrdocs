@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
-<mrdox>
-<namespace name="">
-  <enum name="E" type="char" id="xf6YhxRw8JpsHMwP6Tgyroti2gw=">
-    <file path="dcl.enum/4.cpp" line="1"/>
-  </enum>
-</namespace>
-</mrdox>
