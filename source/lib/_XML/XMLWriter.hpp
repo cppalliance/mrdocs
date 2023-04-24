@@ -9,58 +9,24 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_XML_XML_HPP
-#define MRDOX_LIB_XML_XML_HPP
+#ifndef MRDOX_LIB_XML_XMLWRITER_HPP
+#define MRDOX_LIB_XML_XMLWRITER_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Generator.hpp>
-#include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Metadata/Javadoc.hpp>
-#include <llvm/ADT/Optional.h>
+#include <mrdox/Corpus.hpp>
+#include <mrdox/Metadata.hpp>
+#include <string>
 
 namespace clang {
 namespace mrdox {
 namespace xml {
 
-//------------------------------------------------
-
-struct XMLGenerator : Generator
-{
-    class Writer;
-
-    llvm::StringRef
-    name() const noexcept override
-    {
-        return "xml";
-    }
-
-    llvm::StringRef
-    displayName() const noexcept override
-    {
-        return "Extensible Markup Language (XML)";
-    }
-
-    llvm::StringRef
-    extension() const noexcept override
-    {
-        return "xml";
-    }
-
-    llvm::Error
-    buildSinglePage(
-        llvm::raw_ostream& os,
-        Corpus const& corpus,
-        Reporter& R,
-        llvm::raw_fd_ostream* fd_os) const override;
-};
-
-//------------------------------------------------
-
 /** A writer which outputs XML.
 */
-class XMLGenerator::Writer
+class XMLWriter
     : public Corpus::Visitor
 {
+protected:
     std::string indentString_;
     llvm::raw_ostream& os_;
     llvm::raw_fd_ostream* fd_os_;
@@ -104,7 +70,7 @@ public:
     maybe_indent_type
     maybe_indent() noexcept;
 
-    Writer(
+    XMLWriter(
         llvm::raw_ostream& os,
         llvm::raw_fd_ostream* fd_os,
         Corpus const& corpus,
@@ -156,8 +122,6 @@ private:
     static llvm::StringRef toString(InfoType) noexcept;
     static llvm::StringRef toString(Javadoc::Style style) noexcept;
 };
-
-//------------------------------------------------
 
 } // xml
 } // mrdox

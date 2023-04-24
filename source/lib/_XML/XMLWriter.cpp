@@ -9,10 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "XML.hpp"
+#include "XMLWriter.hpp"
 #include "Support/Radix.hpp"
-#include <mrdox/Error.hpp>
-#include <mrdox/Metadata.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -99,31 +97,11 @@ write(
 
 //------------------------------------------------
 //
-// XMLGenerator
-//
-//------------------------------------------------
-
-llvm::Error
-XMLGenerator::
-buildSinglePage(
-    llvm::raw_ostream& os,
-    Corpus const& corpus,
-    Reporter& R,
-    llvm::raw_fd_ostream* fd_os) const
-{
-    namespace fs = llvm::sys::fs;
-    Writer w(os, fd_os, corpus, R);
-    return w.build();
-}
-
-//------------------------------------------------
-//
 // AllSymbol
 //
 //------------------------------------------------
 
-XMLGenerator::
-Writer::
+XMLWriter::
 AllSymbol::
 AllSymbol(
     Info const& I)
@@ -139,8 +117,7 @@ AllSymbol(
 //
 //------------------------------------------------
 
-struct XMLGenerator::Writer::
-    Attr
+struct XMLWriter::Attr
 {
     llvm::StringRef name;
     std::string value;
@@ -184,7 +161,7 @@ struct XMLGenerator::Writer::
 //
 //------------------------------------------------
 
-struct XMLGenerator::Writer::
+struct XMLWriter::
     maybe_indent_type
 {
     llvm::raw_ostream& os_;
@@ -220,8 +197,7 @@ struct XMLGenerator::Writer::
 };
 
 auto
-XMLGenerator::
-Writer::
+XMLWriter::
 maybe_indent() noexcept ->
     maybe_indent_type
 {
@@ -230,8 +206,7 @@ maybe_indent() noexcept ->
 
 //------------------------------------------------
 
-XMLGenerator::
-Writer::
+XMLWriter::
 Attrs::
 Attrs(
     std::initializer_list<Attr> init)
@@ -242,7 +217,7 @@ Attrs(
 llvm::raw_ostream&
 operator<<(
     llvm::raw_ostream& os,
-    XMLGenerator::Writer::Attrs const& attrs)
+    XMLWriter::Attrs const& attrs)
 {
     for(auto const& attr : attrs.init_)
         if(attr.pred)
@@ -254,13 +229,12 @@ operator<<(
 
 //------------------------------------------------
 //
-// Writer
+// XMLWriter
 //
 //------------------------------------------------
 
-XMLGenerator::
-Writer::
-Writer(
+XMLWriter::
+XMLWriter(
     llvm::raw_ostream& os,
     llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
@@ -273,8 +247,7 @@ Writer(
 }
 
 llvm::Error
-XMLGenerator::
-Writer::
+XMLWriter::
 build()
 {
     os_ <<
@@ -299,8 +272,7 @@ build()
 //------------------------------------------------
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeAllSymbols()
 {
     std::vector<AllSymbol> list;
@@ -322,8 +294,7 @@ writeAllSymbols()
 //------------------------------------------------
 
 bool
-XMLGenerator::
-Writer::
+XMLWriter::
 visit(
     NamespaceInfo const& I)
 {
@@ -349,8 +320,7 @@ visit(
 //------------------------------------------------
 
 bool
-XMLGenerator::
-Writer::
+XMLWriter::
 visit(
     RecordInfo const& I)
 {
@@ -389,8 +359,7 @@ visit(
 //------------------------------------------------
 
 bool
-XMLGenerator::
-Writer::
+XMLWriter::
 visit(
     FunctionInfo const& I)
 {
@@ -482,8 +451,7 @@ visit(
 //------------------------------------------------
 
 bool
-XMLGenerator::
-Writer::
+XMLWriter::
 visit(
     TypedefInfo const& I)
 {
@@ -507,8 +475,7 @@ visit(
 }
 
 bool
-XMLGenerator::
-Writer::
+XMLWriter::
 visit(
     EnumInfo const& I)
 {
@@ -539,8 +506,7 @@ visit(
 //------------------------------------------------
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeInfo(
     Info const& I)
 {
@@ -553,8 +519,7 @@ writeInfo(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeSymbol(
     SymbolInfo const& I)
 {
@@ -565,8 +530,7 @@ writeSymbol(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeLocation(
     Location const& loc,
     bool def)
@@ -578,8 +542,7 @@ writeLocation(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeBaseRecord(
     BaseRecordInfo const& I)
 {
@@ -596,8 +559,7 @@ writeBaseRecord(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeParam(
     FieldTypeInfo const& I)
 {
@@ -609,8 +571,7 @@ writeParam(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeTemplateParam(
     TemplateParamInfo const& I)
 {
@@ -620,8 +581,7 @@ writeTemplateParam(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeMemberType(
     MemberTypeInfo const& I)
 {
@@ -634,8 +594,7 @@ writeMemberType(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeReturnType(
     TypeInfo const& I)
 {
@@ -650,8 +609,7 @@ writeReturnType(
 //------------------------------------------------
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeJavadoc(
     llvm::Optional<Javadoc> const& javadoc)
 {
@@ -666,8 +624,7 @@ writeJavadoc(
 
 template<class T>
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeNodes(
     List<T> const& list)
 {
@@ -678,8 +635,7 @@ writeNodes(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeNode(
     Javadoc::Node const& node)
 {
@@ -718,8 +674,7 @@ writeNode(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeBrief(
     Javadoc::Paragraph const& node)
 {
@@ -729,8 +684,7 @@ writeBrief(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeText(
     Javadoc::Text const& node)
 {
@@ -741,8 +695,7 @@ writeText(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeStyledText(
     Javadoc::StyledText const& node)
 {
@@ -750,8 +703,7 @@ writeStyledText(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeParagraph(
     Javadoc::Paragraph const& para,
     llvm::StringRef tag)
@@ -763,8 +715,7 @@ writeParagraph(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeAdmonition(
     Javadoc::Admonition const& admonition)
 {
@@ -793,8 +744,7 @@ writeAdmonition(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeCode(Javadoc::Code const& code)
 {
     if(code.children.empty())
@@ -809,8 +759,7 @@ writeCode(Javadoc::Code const& code)
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeReturns(
     Javadoc::Returns const& returns)
 {
@@ -822,8 +771,7 @@ writeReturns(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeParam(
     Javadoc::Param const& param)
 {
@@ -834,8 +782,7 @@ writeParam(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeTParam(
     Javadoc::TParam const& tparam)
 {
@@ -848,8 +795,7 @@ writeTParam(
 //------------------------------------------------
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 openTag(
     llvm::StringRef tag,
     Attrs attrs)
@@ -859,8 +805,7 @@ openTag(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 closeTag(
     llvm::StringRef tag)
 {
@@ -869,8 +814,7 @@ closeTag(
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 writeTag(
     llvm::StringRef tag,
     llvm::StringRef value,
@@ -891,16 +835,14 @@ writeTag(
 //------------------------------------------------
 
 llvm::raw_ostream&
-XMLGenerator::
-Writer::
+XMLWriter::
 indent()
 {
     return os_ << indentString_;
 }
 
 void
-XMLGenerator::
-Writer::
+XMLWriter::
 adjustNesting(int levels)
 {
     if(levels > 0)
@@ -918,8 +860,7 @@ adjustNesting(int levels)
 //------------------------------------------------
 
 std::string
-XMLGenerator::
-Writer::
+XMLWriter::
 toString(
     SymbolID const& id)
 {
@@ -927,8 +868,7 @@ toString(
 }
 
 llvm::StringRef
-XMLGenerator::
-Writer::
+XMLWriter::
 toString(
     InfoType it) noexcept
 {
@@ -946,8 +886,7 @@ toString(
 }
 
 llvm::StringRef
-XMLGenerator::
-Writer::
+XMLWriter::
 toString(
     Javadoc::Style style) noexcept
 {
@@ -966,14 +905,5 @@ toString(
 }
 
 } // xml
-
-//------------------------------------------------
-
-std::unique_ptr<Generator>
-makeXMLGenerator()
-{
-    return std::make_unique<xml::XMLGenerator>();
-}
-
 } // mrdox
 } // clang
