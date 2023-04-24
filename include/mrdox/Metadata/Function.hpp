@@ -9,10 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_FUNCTION_HPP
-#define MRDOX_FUNCTION_HPP
+#ifndef MRDOX_METADATA_FUNCTION_HPP
+#define MRDOX_METADATA_FUNCTION_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Bits.hpp>
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
@@ -33,7 +34,7 @@ struct FunctionInfo : SymbolInfo
 {
     /** Bit constants used with function specifiers.
     */
-    enum : std::uint32_t
+    enum Flags : std::uint32_t
     {
         // 13 bits
         constBit         = 0x00000001,

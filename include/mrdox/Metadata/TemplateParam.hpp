@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_META_TEMPLATEPARAM_HPP
-#define MRDOX_META_TEMPLATEPARAM_HPP
+#ifndef MRDOX_METADATA_TEMPLATEPARAM_HPP
+#define MRDOX_METADATA_TEMPLATEPARAM_HPP
 
 #include <mrdox/Platform.hpp>
 #include <clang/AST/Decl.h>

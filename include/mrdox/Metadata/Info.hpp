@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_INFO_HPP
-#define MRDOX_INFO_HPP
+#ifndef MRDOX_METADATA_INFO_HPP
+#define MRDOX_METADATA_INFO_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>

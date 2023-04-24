@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_META_REFERENCE_HPP
-#define MRDOX_META_REFERENCE_HPP
+#ifndef MRDOX_METADATA_REFERENCE_HPP
+#define MRDOX_METADATA_REFERENCE_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Symbols.hpp>

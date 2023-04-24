@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_META_LIST_HPP
-#define MRDOX_META_LIST_HPP
+#ifndef MRDOX_METADATA_LIST_HPP
+#define MRDOX_METADATA_LIST_HPP
 
 #include <mrdox/Platform.hpp>
 #include <algorithm>
