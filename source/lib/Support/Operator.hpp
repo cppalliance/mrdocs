@@ -9,28 +9,19 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_SUPPORT_RADIX_HPP
-#define MRDOX_LIB_SUPPORT_RADIX_HPP
+#ifndef MRDOX_LIB_SUPPORT_OPERATOR_HPP
+#define MRDOX_LIB_SUPPORT_OPERATOR_HPP
 
 #include <mrdox/Platform.hpp>
-#include <llvm/ADT/ArrayRef.h>
-#include <llvm/ADT/SmallString.h>
+#include <clang/Basic/OperatorKinds.h>
 #include <llvm/ADT/StringRef.h>
-#include <array>
-#include <cstdint>
-#include <string>
 
 namespace clang {
 namespace mrdox {
 
-std::string
-toBase64(
-    std::array<uint8_t, 20> const& v);
-
 llvm::StringRef
-toBaseFN(
-    llvm::SmallVectorImpl<char>& dest,
-    llvm::ArrayRef<uint8_t> src);
+getSafeOperatorName(
+    OverloadedOperatorKind OOK) noexcept;
 
 } // mrdox
 } // clang
