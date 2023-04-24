@@ -20,7 +20,7 @@ makeXMLGenerator();
 
 extern
 std::unique_ptr<Generator>
-makeAsciidocGenerator();
+makeAdocGenerator();
 
 void
 GeneratorsImpl::
@@ -35,7 +35,7 @@ refresh_plist()
 GeneratorsImpl::
 GeneratorsImpl()
 {
-    llvm::handleAllErrors(insert(makeAsciidocGenerator()));
+    llvm::handleAllErrors(insert(makeAdocGenerator()));
     llvm::handleAllErrors(insert(makeXMLGenerator()));
 }
 

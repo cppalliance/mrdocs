@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_ADOC_ASCIIDOC_HPP
-#define MRDOX_LIB_ADOC_ASCIIDOC_HPP
+#ifndef MRDOX_LIB_ADOC_ADOCGENERATOR_HPP
+#define MRDOX_LIB_ADOC_ADOCGENERATOR_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
@@ -29,7 +29,7 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
-class AsciidocGenerator
+class AdocGenerator
     : public Generator
 {
 public:
@@ -63,7 +63,7 @@ public:
 
 //------------------------------------------------
 
-class AsciidocGenerator::Writer
+class AdocGenerator::Writer
     : public Corpus::Visitor
 {
 protected:

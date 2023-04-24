@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Asciidoc.hpp"
+#include "AdocWriter.hpp"
 #include "PagesBuilder.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
@@ -21,93 +21,14 @@ namespace adoc {
 
 //------------------------------------------------
 //
-// AsciidocGenerator
+// AdocWriter
 //
 //------------------------------------------------
 
-#if 0
-llvm::Error
-AsciidocGenerator::
-buildPages(
-    llvm::StringRef outputPath,
-    Corpus const& corpus,
-    Reporter& R) const
-{
-    namespace path = llvm::sys::path;
-
-    // Track which directories we already tried to create.
-    llvm::StringSet<> CreatedDirs;
-
-    // Collect all output by file name and create the necessary directories.
-    llvm::StringMap<std::vector<mrdox::Info*>> FileToInfos;
-    for (const auto& Group : corpus.InfoMap)
-    {
-        mrdox::Info* Info = Group.getValue().get();
-
-        llvm::SmallString<128> Path;
-        llvm::sys::path::native(RootDir, Path);
-        llvm::sys::path::append(Path, Info->getRelativeFilePath(""));
-        if (!CreatedDirs.contains(Path)) {
-            if (std::error_code Err = llvm::sys::fs::create_directories(Path);
-                Err != std::error_code()) {
-                return llvm::createStringError(Err, "Failed to create directory '%s'.",
-                    Path.c_str());
-            }
-            CreatedDirs.insert(Path);
-        }
-
-        llvm::sys::path::append(Path, Info->getFileBaseName() + ".adoc");
-        FileToInfos[Path].push_back(Info);
-    }
-
-    for (const auto& Group : FileToInfos) {
-        std::error_code FileErr;
-        llvm::raw_fd_ostream InfoOS(Group.getKey(), FileErr,
-            llvm::sys::fs::OF_None);
-        if (FileErr) {
-            return llvm::createStringError(FileErr, "Error opening file '%s'",
-                Group.getKey().str().c_str());
-        }
-
-        for (const auto& Info : Group.getValue()) {
-            if (llvm::Error Err = generateDocForInfo(Info, InfoOS, config)) {
-                return Err;
-            }
-        }
-    }
-    return true;
-    PagesBuilder builder(corpus);
-    builder.scan();
-
-    llvm::SmallString<0> fileName(rootPath);
-    path::append(fileName, "reference.adoc");
-    return buildOne(fileName, corpus, R);
-}
-#endif
-
-llvm::Error
-AsciidocGenerator::
-buildSinglePage(
-    llvm::raw_ostream& os,
-    Corpus const& corpus,
-    Reporter& R,
-    llvm::raw_fd_ostream* fd_os) const
-{
-    Writer w(os, fd_os, corpus, R);
-    return w.build();
-}
-
-//------------------------------------------------
-//
-// Writer
-//
-//------------------------------------------------
-
-struct AsciidocGenerator::Writer::
-    FormalParam
+struct AdocWriter::FormalParam
 {
     FieldTypeInfo const& I;
-    Writer& w;
+    AdocWriter& w;
 
     friend
     llvm::raw_ostream&
@@ -120,11 +41,10 @@ struct AsciidocGenerator::Writer::
     }
 };
 
-struct AsciidocGenerator::Writer::
-    TypeName
+struct AdocWriter::TypeName
 {
     TypeInfo const& I;
-    Writer& w;
+    AdocWriter& w;
 
     friend
     llvm::raw_ostream&
@@ -139,13 +59,12 @@ struct AsciidocGenerator::Writer::
 
 //------------------------------------------------
 //
-// Writer
+// AdocWriter
 //
 //------------------------------------------------
 
-AsciidocGenerator::
-Writer::
-Writer(
+AdocWriter::
+AdocWriter(
     llvm::raw_ostream& os,
     llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
@@ -158,8 +77,7 @@ Writer(
 }
 
 llvm::Error
-AsciidocGenerator::
-Writer::
+AdocWriter::
 build()
 {
 #if 0
@@ -179,8 +97,7 @@ build()
 }
 
 bool
-AsciidocGenerator::
-Writer::
+AdocWriter::
 visit(
     NamespaceInfo const& I)
 {
@@ -188,8 +105,7 @@ visit(
 }
 
 bool
-AsciidocGenerator::
-Writer::
+AdocWriter::
 visit(
     RecordInfo const& I)
 {
@@ -198,8 +114,7 @@ visit(
 }
 
 bool
-AsciidocGenerator::
-Writer::
+AdocWriter::
 visit(
     FunctionInfo const& I)
 {
@@ -208,8 +123,7 @@ visit(
 }
 
 bool
-AsciidocGenerator::
-Writer::
+AdocWriter::
 visit(
     TypedefInfo const& I)
 {
@@ -218,8 +132,7 @@ visit(
 }
 
 bool
-AsciidocGenerator::
-Writer::
+AdocWriter::
 visit(
     EnumInfo const& I)
 {
@@ -230,8 +143,7 @@ visit(
 //------------------------------------------------
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeFormalParam(
     FormalParam const& t,
     llvm::raw_ostream& os)
@@ -241,8 +153,7 @@ writeFormalParam(
 }
 
 auto
-AsciidocGenerator::
-Writer::
+AdocWriter::
 formalParam(
     FieldTypeInfo const& t) ->
         FormalParam
@@ -253,8 +164,7 @@ formalParam(
 //------------------------------------------------
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeRecord(
     RecordInfo const& I)
 {
@@ -339,8 +249,7 @@ writeRecord(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeFunction(
     FunctionInfo const& I)
 {
@@ -388,8 +297,7 @@ writeFunction(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeTypedef(
     TypedefInfo const& I)
 {
@@ -407,8 +315,7 @@ writeTypedef(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeEnum(
     EnumInfo const& I)
 {
@@ -428,8 +335,7 @@ writeEnum(
 //------------------------------------------------
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeBase(
     BaseRecordInfo const& I)
 {
@@ -437,8 +343,7 @@ writeBase(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeFunctionOverloads(
     llvm::StringRef sectionName,
     OverloadsSet const& set)
@@ -477,8 +382,7 @@ writeFunctionOverloads(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNestedTypes(
     llvm::StringRef sectionName,
     std::vector<TypedefInfo> const& list,
@@ -523,8 +427,7 @@ writeNestedTypes(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeDataMembers(
     llvm::StringRef sectionName,
     llvm::SmallVectorImpl<MemberTypeInfo> const& list,
@@ -568,8 +471,7 @@ writeDataMembers(
 //------------------------------------------------
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeBrief(
     llvm::Optional<Javadoc> const& javadoc,
     bool withNewline)
@@ -587,8 +489,7 @@ writeBrief(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeDescription(
     llvm::Optional<Javadoc> const& javadoc)
 {
@@ -603,8 +504,7 @@ writeDescription(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeLocation(
     SymbolInfo const& I)
 {
@@ -650,8 +550,7 @@ writeLocation(
 
 template<class T>
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNodes(
     List<T> const& list)
 {
@@ -662,8 +561,7 @@ writeNodes(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNode(
     Javadoc::Node const& node)
 {
@@ -705,8 +603,7 @@ writeNode(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNode(
     Javadoc::Text const& node)
 {
@@ -714,8 +611,7 @@ writeNode(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNode(
     Javadoc::StyledText const& node)
 {
@@ -737,8 +633,7 @@ writeNode(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNode(
     Javadoc::Paragraph const& node)
 {
@@ -746,8 +641,7 @@ writeNode(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNode(
     Javadoc::Admonition const& node)
 {
@@ -755,8 +649,7 @@ writeNode(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNode(
     Javadoc::Code const& node)
 {
@@ -769,24 +662,21 @@ writeNode(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNode(
     Javadoc::Param const& node)
 {
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNode(
     Javadoc::TParam const& node)
 {
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeNode(
     Javadoc::Returns const& node)
 {
@@ -795,8 +685,7 @@ writeNode(
 //------------------------------------------------
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 writeTypeName(
     TypeName const& t,
     llvm::raw_ostream& os)
@@ -819,8 +708,7 @@ writeTypeName(
 }
 
 auto
-AsciidocGenerator::
-Writer::
+AdocWriter::
 typeName(
     TypeInfo const& t) ->
         TypeName
@@ -831,8 +719,7 @@ typeName(
 //------------------------------------------------
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 openSection(
     llvm::StringRef name)
 {
@@ -845,8 +732,7 @@ openSection(
 }
 
 void
-AsciidocGenerator::
-Writer::
+AdocWriter::
 closeSection()
 {
     Assert(sect_.level > 0);
@@ -858,8 +744,7 @@ closeSection()
 //------------------------------------------------
 
 llvm::StringRef
-AsciidocGenerator::
-Writer::
+AdocWriter::
 toString(TagTypeKind k) noexcept
 {
     switch(k)
@@ -875,15 +760,5 @@ toString(TagTypeKind k) noexcept
 }
 
 } // adoc
-
-
-//------------------------------------------------
-
-std::unique_ptr<Generator>
-makeAsciidocGenerator()
-{
-    return std::make_unique<adoc::AsciidocGenerator>();
-}
-
 } // mrdox
 } // clang
