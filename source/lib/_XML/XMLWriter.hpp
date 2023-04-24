@@ -12,6 +12,7 @@
 #ifndef MRDOX_LIB_XML_XMLWRITER_HPP
 #define MRDOX_LIB_XML_XMLWRITER_HPP
 
+#include "XMLTags.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
@@ -27,7 +28,7 @@ class XMLWriter
     : public Corpus::Visitor
 {
 protected:
-    std::string indentString_;
+    XMLTags tags_;
     llvm::raw_ostream& os_;
     llvm::raw_fd_ostream* fd_os_;
     Corpus const& corpus_;
@@ -54,21 +55,6 @@ public:
         */
         AllSymbol(Info const& I);
     };
-
-    struct Attr;
-
-    struct Attrs
-    {
-        std::initializer_list<Attr> init_;
-        Attrs() = default;
-        Attrs(std::initializer_list<Attr> init);
-        friend llvm::raw_ostream& operator<<(
-            llvm::raw_ostream& os, Attrs const& attrs);
-    };
-
-    struct maybe_indent_type;
-    maybe_indent_type
-    maybe_indent() noexcept;
 
     XMLWriter(
         llvm::raw_ostream& os,
@@ -109,18 +95,6 @@ private:
     void writeReturns(Javadoc::Returns const& node);
     void writeParam(Javadoc::Param const& node);
     void writeTParam(Javadoc::TParam const& node);
-
-    void openTag(llvm::StringRef, Attrs = {});
-    void closeTag(llvm::StringRef);
-    void writeTag(llvm::StringRef tag,
-        llvm::StringRef value = {}, Attrs = {});
-
-    llvm::raw_ostream& indent();
-    void adjustNesting(int levels);
-
-    static std::string toString(SymbolID const& id);
-    static llvm::StringRef toString(InfoType) noexcept;
-    static llvm::StringRef toString(Javadoc::Style style) noexcept;
 };
 
 } // xml

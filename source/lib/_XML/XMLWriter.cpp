@@ -18,85 +18,6 @@ namespace xml {
 
 //------------------------------------------------
 //
-// escape
-//
-//------------------------------------------------
-
-/** Manipulator to apply XML escaping to output.
-*/
-struct escape
-{
-    explicit
-    escape(
-        llvm::StringRef const& s) noexcept
-        : s_(s)
-    {
-    }
-
-    friend
-    llvm::raw_ostream&
-    operator<<(
-        llvm::raw_ostream& os,
-        escape const& t)
-    {
-        t.write(os);
-        return os;
-    }
-
-private:
-    void write(llvm::raw_ostream& os) const;
-
-    llvm::StringRef s_;
-};
-
-void
-escape::
-write(
-    llvm::raw_ostream& os) const
-{
-    std::size_t pos = 0;
-    auto const size = s_.size();
-    while(pos < size)
-    {
-    unescaped:
-        auto const found = s_.find_first_of("<>&'\"", pos);
-        if(found == llvm::StringRef::npos)
-        {
-            os.write(s_.data() + pos, s_.size() - pos);
-            break;
-        }
-        os.write(s_.data() + pos, found - pos);
-        pos = found;
-        while(pos < size)
-        {
-            auto const c = s_[pos];
-            switch(c)
-            {
-            case '<':
-                os.write("&lt;", 4);
-                break;
-            case '>':
-                os.write("&gt;", 4);
-                break;
-            case '&':
-                os.write("&amp;", 5);
-                break;
-            case '\'':
-                os.write("&apos;", 6);
-                break;
-            case '\"':
-                os.write("&quot;", 6);
-                break;
-            default:
-                goto unescaped;
-            }
-            ++pos;
-        }
-    }
-}
-
-//------------------------------------------------
-//
 // AllSymbol
 //
 //------------------------------------------------
@@ -113,122 +34,6 @@ AllSymbol(
 
 //------------------------------------------------
 //
-// Attrs
-//
-//------------------------------------------------
-
-struct XMLWriter::Attr
-{
-    llvm::StringRef name;
-    std::string value;
-    bool pred;
-
-    Attr(
-        llvm::StringRef name_,
-        llvm::StringRef value_,
-        bool pred_ = true) noexcept
-        : name(name_)
-        , value(value_)
-        , pred(pred_)
-    {
-    }
-
-    Attr(AccessSpecifier access) noexcept
-        : name("access")
-        , value(clang::getAccessSpelling(access))
-        , pred(access != AccessSpecifier::AS_none)
-    {
-    }
-
-    Attr(SymbolID id)
-        : name("id")
-        , value(toString(id))
-        , pred(id != EmptySID)
-    {
-    }
-
-    Attr(llvm::Optional<TypeInfo> const& opt)
-        : name("type")
-        , value(opt ? opt->Type.Name.str() : std::string())
-        , pred(opt)
-    {
-    }
-};
-
-//------------------------------------------------
-//
-// maybe_indent
-//
-//------------------------------------------------
-
-struct XMLWriter::
-    maybe_indent_type
-{
-    llvm::raw_ostream& os_;
-    std::string const& indent_;
-    bool indented_ = false;
-
-    maybe_indent_type(
-        llvm::raw_ostream& os,
-        std::string const& indent) noexcept
-        : os_(os)
-        , indent_(indent)
-    {
-    }
-
-    template<class T>
-    llvm::raw_ostream&
-    operator<<(T const& t)
-    {
-        if(! indented_)
-        {
-            os_ << indent_;
-            indented_ = true;
-        }
-        return os_ << t;
-    }
-
-    void
-    finish()
-    {
-        if(indented_)
-            os_ << '\n';
-    }
-};
-
-auto
-XMLWriter::
-maybe_indent() noexcept ->
-    maybe_indent_type
-{
-    return maybe_indent_type(os_, indentString_);
-}
-
-//------------------------------------------------
-
-XMLWriter::
-Attrs::
-Attrs(
-    std::initializer_list<Attr> init)
-    : init_(init)
-{
-}
-
-llvm::raw_ostream&
-operator<<(
-    llvm::raw_ostream& os,
-    XMLWriter::Attrs const& attrs)
-{
-    for(auto const& attr : attrs.init_)
-        if(attr.pred)
-            os <<
-                ' ' << attr.name << '=' <<
-                "\"" << escape(attr.value) << "\"";
-    return os;
-}
-
-//------------------------------------------------
-//
 // XMLWriter
 //
 //------------------------------------------------
@@ -239,7 +44,8 @@ XMLWriter(
     llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
     Reporter& R) noexcept
-    : os_(os)
+    : tags_(os)
+    , os_(os)
     , fd_os_(fd_os)
     , corpus_(corpus)
     , R_(R)
@@ -280,15 +86,15 @@ writeAllSymbols()
     for(auto const& id : corpus_.allSymbols())
         list.emplace_back(corpus_.get<Info>(id));
 
-    openTag("symbols");
+    tags_.open("symbols");
     for(auto const& I : list)
     {
-        writeTag("symbol", {}, {
+        tags_.write("symbol", {}, {
             { "name", I.fqName },
             { "tag", I.symbolType },
             { I.id } });
     }
-    closeTag("symbols");
+    tags_.close("symbols");
 }
 
 //------------------------------------------------
@@ -301,7 +107,7 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
-    openTag("namespace", {
+    tags_.open("namespace", {
         { "name", I.Name },
         { I.id }
         });
@@ -312,7 +118,7 @@ visit(
     if(! corpus_.visit(I.Children, *this))
         return false;
 
-    closeTag("namespace");
+    tags_.close("namespace");
 
     return true;
 }
@@ -329,7 +135,7 @@ visit(
 
     llvm::StringRef tag =
         clang::TypeWithKeyword::getTagTypeKindName(I.TagType);
-    openTag(tag, {
+    tags_.open(tag, {
         { "name", I.Name },
         { I.id }
         });
@@ -344,14 +150,14 @@ visit(
 
     // Friends
     for(auto const& id : I.Friends)
-        writeTag("friend", "", { { id } });
+        tags_.write("friend", "", { { id } });
 
     writeJavadoc(I.javadoc);
 
     if(! corpus_.visit(I.Children, *this))
         return false;
 
-    closeTag(tag);
+    tags_.close(tag);
 
     return true;
 }
@@ -366,7 +172,7 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
-    openTag("function", {
+    tags_.open("function", {
         { "name", I.Name },
         { I.Access },
         { I.id }
@@ -376,7 +182,7 @@ visit(
     writeSymbol(I);
     {
         // FunctionInfo::Specs
-        auto os = maybe_indent();
+        auto os = tags_.jit_indent();
 
         switch(I.specs.storageClass())
         {
@@ -443,7 +249,7 @@ visit(
             writeTemplateParam(J);
     writeJavadoc(I.javadoc);
 
-    closeTag("function");
+    tags_.close("function");
 
     return true;
 }
@@ -458,7 +264,7 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
-    openTag("typedef", {
+    tags_.open("typedef", {
         { "name", I.Name },
         { I.id }
         });
@@ -466,10 +272,10 @@ visit(
     writeInfo(I);
     writeSymbol(I);
     if(I.Underlying.Type.id != EmptySID)
-        writeTag("qualusr", toBase64(I.Underlying.Type.id));
+        tags_.write("qualusr", toBase64(I.Underlying.Type.id));
     writeJavadoc(I.javadoc);
 
-    closeTag("typedef");
+    tags_.close("typedef");
 
     return true;
 }
@@ -482,7 +288,7 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
-    openTag("enum", {
+    tags_.open("enum", {
         { "name", I.Name },
         { "class", "scoped", I.Scoped },
         { I.BaseType },
@@ -492,13 +298,13 @@ visit(
     writeInfo(I);
     writeSymbol(I);
     for(auto const& v : I.Members)
-        writeTag("element", {}, {
+        tags_.write("element", {}, {
             { "name", v.Name },
             { "value", v.Value },
             });
     writeJavadoc(I.javadoc);
 
-    closeTag("enum");
+    tags_.close("enum");
 
     return true;
 }
@@ -512,9 +318,9 @@ writeInfo(
 {
 #if 0
     std::string temp;
-    indent() << "<path>" << I.Path << "</path>\n";
-    indent() << "<ename>" << I.extractName() << "</ename>\n";
-    indent() << "<fqn>" << I.getFullyQualifiedName(temp) << "</fqn>\n";
+    tags_.indent() << "<path>" << I.Path << "</path>\n";
+    tags_.indent() << "<ename>" << I.extractName() << "</ename>\n";
+    tags_.indent() << "<fqn>" << I.getFullyQualifiedName(temp) << "</fqn>\n";
 #endif
 }
 
@@ -535,7 +341,7 @@ writeLocation(
     Location const& loc,
     bool def)
 {
-    writeTag("file", {}, {
+    tags_.write("file", {}, {
         { "path", loc.Filename },
         { "line", std::to_string(loc.LineNumber) },
         { "class", "def", def } });
@@ -546,7 +352,7 @@ XMLWriter::
 writeBaseRecord(
     BaseRecordInfo const& I)
 {
-    writeTag("base", {}, {
+    tags_.write("base", {}, {
         { "name", I.Name },
         { I.Access },
         { "modifier", "virtual", I.IsVirtual },
@@ -563,7 +369,7 @@ XMLWriter::
 writeParam(
     FieldTypeInfo const& I)
 {
-    writeTag("param", {}, {
+    tags_.write("param", {}, {
         { "name", I.Name, ! I.Name.empty() },
         { "default", I.DefaultValue, ! I.DefaultValue.empty() },
         { "type", I.Type.Name },
@@ -575,7 +381,7 @@ XMLWriter::
 writeTemplateParam(
     TemplateParamInfo const& I)
 {
-    writeTag("tparam", {}, {
+    tags_.write("tparam", {}, {
         { "decl", I.Contents }
         });
 }
@@ -585,7 +391,7 @@ XMLWriter::
 writeMemberType(
     MemberTypeInfo const& I)
 {
-    writeTag("data", {}, {
+    tags_.write("data", {}, {
         { "name", I.Name },
         { "type", I.Type.Name },
         { "value", I.DefaultValue, ! I.DefaultValue.empty() },
@@ -600,7 +406,7 @@ writeReturnType(
 {
     if(I.Type.Name == "void")
         return;
-    writeTag("return", {}, {
+    tags_.write("return", {}, {
         { "name", I.Type.Name },
         { I.Type.id }
         });
@@ -615,11 +421,11 @@ writeJavadoc(
 {
     if(! javadoc.has_value())
         return;
-    openTag("doc");
+    tags_.open("doc");
     if(auto brief = javadoc->getBrief())
         writeBrief(*brief);
     writeNodes(javadoc->getBlocks());
-    closeTag("doc");
+    tags_.close("doc");
 }
 
 template<class T>
@@ -678,9 +484,9 @@ XMLWriter::
 writeBrief(
     Javadoc::Paragraph const& node)
 {
-    openTag("brief");
+    tags_.open("brief");
     writeNodes(node.children);
-    closeTag("brief");
+    tags_.close("brief");
 }
 
 void
@@ -688,9 +494,9 @@ XMLWriter::
 writeText(
     Javadoc::Text const& node)
 {
-    indent() <<
+    tags_.indent() <<
         "<text>" <<
-        escape(node.string) <<
+        xmlEscape(node.string) <<
         "</text>\n";
 }
 
@@ -699,7 +505,7 @@ XMLWriter::
 writeStyledText(
     Javadoc::StyledText const& node)
 {
-    writeTag(toString(node.style), node.string);
+    tags_.write(toString(node.style), node.string);
 }
 
 void
@@ -708,10 +514,10 @@ writeParagraph(
     Javadoc::Paragraph const& para,
     llvm::StringRef tag)
 {
-    openTag("para", {
+    tags_.open("para", {
         { "class", tag, ! tag.empty() }});
     writeNodes(para.children);
-    closeTag("para");
+    tags_.close("para");
 }
 
 void
@@ -749,13 +555,13 @@ writeCode(Javadoc::Code const& code)
 {
     if(code.children.empty())
     {
-        indent() << "<code/>\n";
+        tags_.indent() << "<code/>\n";
         return;
     }
 
-    openTag("code");
+    tags_.open("code");
     writeNodes(code.children);
-    closeTag("code");
+    tags_.close("code");
 }
 
 void
@@ -765,9 +571,9 @@ writeReturns(
 {
     if(returns.empty())
         return;
-    openTag("returns");
+    tags_.open("returns");
     writeNodes(returns.children);
-    closeTag("returns");
+    tags_.close("returns");
 }
 
 void
@@ -775,10 +581,10 @@ XMLWriter::
 writeParam(
     Javadoc::Param const& param)
 {
-    openTag("param", {
+    tags_.open("param", {
         { "name", param.name, ! param.name.empty() }});
     writeNodes(param.children);
-    closeTag("param");
+    tags_.close("param");
 }
 
 void
@@ -786,122 +592,10 @@ XMLWriter::
 writeTParam(
     Javadoc::TParam const& tparam)
 {
-    openTag("tparam", {
+    tags_.open("tparam", {
         { "name", tparam.name, ! tparam.name.empty() }});
     writeNodes(tparam.children);
-    closeTag("tparam");
-}
-
-//------------------------------------------------
-
-void
-XMLWriter::
-openTag(
-    llvm::StringRef tag,
-    Attrs attrs)
-{
-    indent() << '<' << tag << attrs << ">\n";
-    adjustNesting(1);
-}
-
-void
-XMLWriter::
-closeTag(
-    llvm::StringRef tag)
-{
-    adjustNesting(-1);
-    indent() << "</" << tag << ">\n";
-}
-
-void
-XMLWriter::
-writeTag(
-    llvm::StringRef tag,
-    llvm::StringRef value,
-    Attrs attrs)
-{
-    if(value.empty())
-    {
-        indent() << "<" << tag << attrs << "/>\n";
-        return;
-    }
-
-    indent() <<
-        "<" << tag << attrs << ">" <<
-        escape(value) <<
-        "</" << tag << ">\n";
-}
-
-//------------------------------------------------
-
-llvm::raw_ostream&
-XMLWriter::
-indent()
-{
-    return os_ << indentString_;
-}
-
-void
-XMLWriter::
-adjustNesting(int levels)
-{
-    if(levels > 0)
-    {
-        indentString_.append(levels * 2, ' ');
-    }
-    else
-    {
-        auto const n = levels * -2;
-        Assert(n <= indentString_.size());
-        indentString_.resize(indentString_.size() - n);
-    }
-}
-
-//------------------------------------------------
-
-std::string
-XMLWriter::
-toString(
-    SymbolID const& id)
-{
-    return toBase64(id);
-}
-
-llvm::StringRef
-XMLWriter::
-toString(
-    InfoType it) noexcept
-{
-    switch(it)
-    {
-    case InfoType::IT_default:    return "default";
-    case InfoType::IT_namespace:  return "namespace";
-    case InfoType::IT_record:     return "record";
-    case InfoType::IT_function:   return "function";
-    case InfoType::IT_enum:       return "enum";
-    case InfoType::IT_typedef:    return "typedef";
-    default:
-        llvm_unreachable("unknown InfoType");
-    }
-}
-
-llvm::StringRef
-XMLWriter::
-toString(
-    Javadoc::Style style) noexcept
-{
-    switch(style)
-    {
-    case Javadoc::Style::bold: return "bold";
-    case Javadoc::Style::mono: return "mono";
-    case Javadoc::Style::italic: return "italic";
-
-    // should never get here
-    case Javadoc::Style::none: return "";
-
-    default:
-        llvm_unreachable("unknown style");
-    }
+    tags_.close("tparam");
 }
 
 } // xml
