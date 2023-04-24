@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_ADOC_PAGESBUILDER_HPP
-#define MRDOX_LIB_ADOC_PAGESBUILDER_HPP
+#ifndef MRDOX_LIB_ADOC_ADOCPAGESBUILDER_HPP
+#define MRDOX_LIB_ADOC_ADOCPAGESBUILDER_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
@@ -20,7 +20,7 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
-class PagesBuilder : Corpus::Visitor
+class AdocPagesBuilder : Corpus::Visitor
 {
     Corpus const& corpus_;
 
@@ -39,7 +39,7 @@ public:
 
     std::vector<Page> pages;
 
-    PagesBuilder(
+    AdocPagesBuilder(
         Corpus const& corpus) noexcept
         : corpus_(corpus)
     {

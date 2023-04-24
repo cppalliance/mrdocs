@@ -22,7 +22,6 @@ namespace mrdox {
 namespace adoc {
 
 class AdocWriter
-    : public Corpus::Visitor
 {
 protected:
     struct Section
@@ -44,8 +43,6 @@ public:
         Corpus const& corpus,
         Reporter& R) noexcept;
 
-    llvm::Error build();
-
     struct FormalParam;
     struct TypeName;
 
@@ -53,19 +50,13 @@ public:
     void writeTypeName(TypeName const& tn, llvm::raw_ostream& os);
 
 protected:
-    bool visit(NamespaceInfo const&) override;
-    bool visit(RecordInfo const&) override;
-    bool visit(FunctionInfo const&) override;
-    bool visit(TypedefInfo const&) override;
-    bool visit(EnumInfo const&) override;
+    void write(RecordInfo const& I);
+    void write(FunctionInfo const& I);
+    void write(TypedefInfo const& I);
+    void write(EnumInfo const& I);
 
-protected:
-    void writeRecord(RecordInfo const& I);
-    void writeFunction(FunctionInfo const& I);
-    void writeTypedef(TypedefInfo const& I);
-    void writeEnum(EnumInfo const& I);
-
-    void writeBase(BaseRecordInfo const& I);
+    void writeBase(
+        BaseRecordInfo const& I);
     void writeFunctionOverloads(
         llvm::StringRef sectionName,
         OverloadsSet const& set);

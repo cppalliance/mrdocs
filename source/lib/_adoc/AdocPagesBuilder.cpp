@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "PagesBuilder.hpp"
+#include "AdocPagesBuilder.hpp"
 #include "Support/Radix.hpp"
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/STLExtras.h>
@@ -19,26 +19,8 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
-/*
-    Pages are as follows:
-
-    Class
-    Class Template
-    Class Template Specialization 
-    OverloadSet
-    Nested Class
-    Free Function
-    Variable/Constant
-    Typedef
-    Enum
-
-    Page name:
-
-    /{namespace}/{symbol}.html
-*/
-
 void
-PagesBuilder::
+AdocPagesBuilder::
 scan()
 {
     // visit the children not the namespace
@@ -55,7 +37,7 @@ scan()
 }
 
 bool
-PagesBuilder::
+AdocPagesBuilder::
 visit(
     NamespaceInfo const& I)
 {
@@ -69,7 +51,7 @@ visit(
 }
 
 bool
-PagesBuilder::
+AdocPagesBuilder::
 visit(
     RecordInfo const& I)
 {
@@ -90,7 +72,7 @@ visit(
 }
 
 bool
-PagesBuilder::
+AdocPagesBuilder::
 visit(
     Overloads const& I)
 {
@@ -105,7 +87,7 @@ visit(
 }
 
 bool
-PagesBuilder::
+AdocPagesBuilder::
 visit(
     FunctionInfo const& I)
 {
@@ -113,7 +95,7 @@ visit(
 }
 
 bool
-PagesBuilder::
+AdocPagesBuilder::
 visit(
     TypedefInfo const& I)
 {
@@ -129,7 +111,7 @@ visit(
 }
 
 bool
-PagesBuilder::
+AdocPagesBuilder::
 visit(
     EnumInfo const& I)
 {

@@ -10,7 +10,6 @@
 //
 
 #include "AdocWriter.hpp"
-#include "PagesBuilder.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <clang/Basic/Specifiers.h>
@@ -76,70 +75,6 @@ AdocWriter(
 {
 }
 
-llvm::Error
-AdocWriter::
-build()
-{
-#if 0
-    PagesBuilder builder(corpus_);
-    builder.scan();
-#endif
-
-    Assert(sect_.level == 0);
-    sect_.level = 1;
-    sect_.markup = "=";
-    os_ <<
-        "= Reference\n"
-        ":role: mrdox\n";
-    (void)corpus_.visit(globalNamespaceID, *this);
-    closeSection();
-    return llvm::Error::success();
-}
-
-bool
-AdocWriter::
-visit(
-    NamespaceInfo const& I)
-{
-    return corpus_.visit(I.Children, *this);
-}
-
-bool
-AdocWriter::
-visit(
-    RecordInfo const& I)
-{
-    writeRecord(I);
-    return corpus_.visit(I.Children, *this);
-}
-
-bool
-AdocWriter::
-visit(
-    FunctionInfo const& I)
-{
-    writeFunction(I);
-    return true;
-}
-
-bool
-AdocWriter::
-visit(
-    TypedefInfo const& I)
-{
-    writeTypedef(I);
-    return true;
-}
-
-bool
-AdocWriter::
-visit(
-    EnumInfo const& I)
-{
-    writeEnum(I);
-    return true;
-}
-
 //------------------------------------------------
 
 void
@@ -165,7 +100,7 @@ formalParam(
 
 void
 AdocWriter::
-writeRecord(
+write(
     RecordInfo const& I)
 {
     openSection(I.Name);
@@ -250,7 +185,7 @@ writeRecord(
 
 void
 AdocWriter::
-writeFunction(
+write(
     FunctionInfo const& I)
 {
     openSection(I.Name);
@@ -298,7 +233,7 @@ writeFunction(
 
 void
 AdocWriter::
-writeTypedef(
+write(
     TypedefInfo const& I)
 {
     openSection(I.Name);
@@ -316,7 +251,7 @@ writeTypedef(
 
 void
 AdocWriter::
-writeEnum(
+write(
     EnumInfo const& I)
 {
     openSection(I.Name);
