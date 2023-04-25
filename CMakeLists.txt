@@ -34,6 +34,16 @@ project(
 #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO ON CACHE STRING "")
 
 option(MRDOX_BUILD_TESTS "Build tests" ON)
+option(MRDOX_BUILD_SHARED "Link shared" OFF)
+
+if (MRDOX_BUILD_SHARED)
+    set(MRDOX_LINK_MODE SHARED)
+    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_SHARED_LINK)
+else()
+    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_STATIC_LINK)
+endif()
+
+
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(MRDOX_GCC ON)
@@ -84,7 +94,7 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     source/lib/*.cpp
     source/lib/*.natvis)
 
-add_library(mrdox-api ${LIB_INCLUDES} ${LIB_SOURCES})
+add_library(mrdox-api ${MRDOX_LINK_MODE} ${LIB_INCLUDES} ${LIB_SOURCES})
 target_compile_features(mrdox-api PUBLIC cxx_std_20)
 target_include_directories(mrdox-api
     PUBLIC
@@ -95,7 +105,7 @@ target_include_directories(mrdox-api
 target_compile_definitions(
     mrdox-api
     PUBLIC
-    -DMRDOX_STATIC_LINK
+    ${MRDOX_LINK_MODE_DEFINITION}
     PRIVATE
     -DMRDOX_LIB
 )

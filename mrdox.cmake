@@ -3,7 +3,7 @@
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
-# Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+# Copyright (c) 2023 Klemens Morgenstern (klemens.morgenstern@gmx.net)
 #
 # Official repository: https://github.com/cppalliance/mrdox
 #
