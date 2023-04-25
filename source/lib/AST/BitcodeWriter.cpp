@@ -838,7 +838,7 @@ emitRecord(
     bool empty = true;
     for(int i = 0; i < n; ++i)
     {
-        if(p[i] == 0)
+        if(p[i] != 0)
         {
             empty = false;
             break;

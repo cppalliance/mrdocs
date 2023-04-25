@@ -22,6 +22,9 @@
 #include <llvm/Support/SHA1.h>
 #include <cassert>
 
+#include <clang/AST/Decl.h>
+#include <clang/AST/DeclCXX.h>
+
 namespace clang {
 namespace mrdox {
 
@@ -960,37 +963,40 @@ getFunctionSpecs(
     FunctionInfo& I,
     FunctionDecl const* D)
 {
-    I.specs.set<FnFlags0::constevalBit>(D->isConsteval());
-    I.specs.set<FnFlags0::constexprBit>(D->isConstexprSpecified() && ! D->isExplicitlyDefaulted());
-    I.specs.set<FnFlags0::inlineBit>(D->isInlineSpecified());
-    I.specs.set<FnFlags0::noexceptBit>(isNoexceptExceptionSpec(D->getExceptionSpecType()));
-    I.specs.set<FnFlags0::noreturnBit>(D->hasAttr<CXX11NoReturnAttr>());
-    I.specs.set<FnFlags0::overrideBit>(D->hasAttr<OverrideAttr>());
-    I.specs.set<FnFlags0::pureBit>(D->isPure());
-    I.specs.set<FnFlags0::variadicBit>(D->isVariadic());
-    I.specs.set<FnFlags0::virtualBit>(D->isVirtualAsWritten());
+    I.specs.set<FnFlags0::isVariadic>(D->isVariadic());
+    I.specs.set<FnFlags0::isVirtualAsWritten>(D->isVirtualAsWritten());
+    I.specs.set<FnFlags0::isPure>(D->isPure());
+    I.specs.set<FnFlags0::isDefaulted>(D->isDefaulted());
+    I.specs.set<FnFlags0::isExplicitlyDefaulted>(D->isExplicitlyDefaulted());
+    I.specs.set<FnFlags0::isDeleted>(D->isDeleted());
+    I.specs.set<FnFlags0::isDeletedAsWritten>(D->isDeletedAsWritten());
+    I.specs.set<FnFlags0::isNoReturn>(D->isNoReturn());
+
+    I.specs.set<FnFlags0::hasCXX11NoReturnAttr>(D->hasAttr<CXX11NoReturnAttr>());
+    I.specs.set<FnFlags0::hasOverrideAttr>(D->hasAttr<OverrideAttr>());
     if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
+        I.specs.set<FnFlags0::hasTrailingReturn>(FP->hasTrailingReturn());
+
+    I.specs.set<FnFlags0::constexprKind>(D->getConstexprKind());
+    //D->isConstexpr(); // subsumed by getConstexprKind
+    //D->isConstexprSpecified(); // subsumed by getConstexprKind
+    //D->isConsteval(); // subsumed by getConstexprKind
+
+    // isNoexceptExceptionSpec(D->getExceptionSpecType())
+    I.specs.set<FnFlags0::exceptionSpecType>(D->getExceptionSpecType());
+    I.specs.set<FnFlags0::overloadedOperator>(D->getOverloadedOperator());
+    I.specs.set<FnFlags0::storageClass>(D->getStorageClass());
+
+    if(auto const MF = dyn_cast<CXXMethodDecl>(D))
     {
-        I.specs.set<FnFlags0::trailReturnBit>(FP->hasTrailingReturn());
+        I.specs.set<FnFlags0::isConst>(MF->isConst());
+        I.specs.set<FnFlags0::isVolatile>(MF->isVolatile());
+        I.specs.set<FnFlags0::refQualifier>(MF->getRefQualifier());
+        //MF->isCopyAssignmentOperator()
+        //MF->isMoveAssignmentOperator()
+        //MF->isOverloadedOperator();
+        //MF->isStaticOverloadedOperator();
     }
-    I.specs.set<FnFlags0::storageClassMask>(D->getStorageClass());
-}
-
-static
-void
-getCXXMethodSpecs(
-    FunctionInfo& I,
-    CXXMethodDecl const* D)
-{
-    I.specs.set<FnFlags0::constBit>(D->isConst());
-    I.specs.set<FnFlags0::volatileBit>(D->isVolatile());
-    I.specs.set<FnFlags0::refQualifierMask>(D->getRefQualifier());
-
-    //I.specs.set<FnFlags0::specialBit>();
-    //D->isCopyAssignmentOperator()
-    //D->isMoveAssignmentOperator()
-    //D->isOverloadedOperator();
-    //D->isStaticOverloadedOperator();
 }
 
 static
@@ -1015,7 +1021,7 @@ build(
     FunctionInfo I;
     if(! getFunctionInfo(*this, I, D))
         return {};
-    getCXXMethodSpecs(I, D);
+    getFunctionSpecs(I, D);
 
     I.IsMethod = true;
     NamedDecl const* PD = nullptr;

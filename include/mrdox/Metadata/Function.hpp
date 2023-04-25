@@ -32,23 +32,45 @@ namespace mrdox {
 */
 enum FnFlags0 : std::uint32_t
 {
-    // 13 bits
-    constBit         = 0x00000001,
-    constevalBit     = 0x00000002,
-    constexprBit     = 0x00000004,
-    inlineBit        = 0x00000008,
-    noexceptBit      = 0x00000010,
-    noreturnBit      = 0x00000020,
-    overrideBit      = 0x00000040,
-    pureBit          = 0x00000080,
-    specialBit       = 0x00000100, // dtor, move/copy construct or assign
-    trailReturnBit   = 0x00000200,
-    variadicBit      = 0x00000400, // has a C-style "..." variadic 
-    virtualBit       = 0x00000800,
-    volatileBit      = 0x00001000,
+    // Function Decl
 
-    refQualifierMask = 0x18000000, // 2 bits
-    storageClassMask = 0xE0000000  // top 3 bits
+    isVariadic              = 0x00000001, // has a C-style "..." variadic 
+    isVirtualAsWritten      = 0x00000002,
+    isPure                  = 0x00000004,
+    isDefaulted             = 0x00000008,
+    isExplicitlyDefaulted   = 0x00000010,
+    isDeleted               = 0x00000020,
+    isDeletedAsWritten      = 0x00000040,
+    isNoReturn              = 0x00000080,
+
+    hasCXX11NoReturnAttr    = 0x00000100,
+    hasOverrideAttr         = 0x00000200,
+    hasTrailingReturn       = 0x00000400,
+
+    constexprKind           = 0x00000800 +
+                              0x00001000,
+    exceptionSpecType       = 0x00002000 +
+                              0x00004000 +
+                              0x00008000 +
+                              0x00010000,
+    overloadedOperator      = 0x00020000 +
+                              0x00040000 +
+                              0x00080000 +
+                              0x00100000 +
+                              0x00200000 +
+                              0x00400000,
+
+    storageClass            = 0x00800000 +
+                              0x01000000 +
+                              0x02000000,
+
+    // CXXMethodDecl
+
+    isConst                 = 0x04000000,
+    isVolatile              = 0x08000000,
+
+    refQualifier            = 0x10000000 +
+                              0x20000000
 };
 
 // TODO: Expand to allow for documenting templating and default args.

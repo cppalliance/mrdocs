@@ -35,6 +35,7 @@ protected:
     Corpus const& corpus_;
     Reporter& R_;
     Section sect_;
+    std::string temp_;
 
 public:
     AdocWriter(
@@ -54,6 +55,8 @@ protected:
     void write(FunctionInfo const& I);
     void write(TypedefInfo const& I);
     void write(EnumInfo const& I);
+
+    virtual llvm::StringRef linkFor(Info const&);
 
     void writeBase(
         BaseRecordInfo const& I);

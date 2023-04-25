@@ -79,6 +79,20 @@ writeTitle(Info const& I)
         ":role: mrdox\n";
 }
 
+llvm::StringRef
+AdocMultiPageWriter::
+linkFor(
+    Info const& I)
+{
+    static thread_local std::string temp;
+    temp.clear();
+    llvm::raw_string_ostream os(temp);
+    os << "link:" <<
+        names_.get(I.id) << ".adoc[" <<
+        I.Name << "]";
+    return temp;
+}
+
 } // adoc
 } // mrdox
 } // clang

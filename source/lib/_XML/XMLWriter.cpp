@@ -11,6 +11,7 @@
 
 #include "XMLWriter.hpp"
 #include "Support/Radix.hpp"
+#include "Support/Operator.hpp"
 
 namespace clang {
 namespace mrdox {
@@ -172,8 +173,15 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
+    // OverloadedOperatorKind
+    auto const OOK = I.specs.get<
+        FnFlags0::overloadedOperator,
+        OverloadedOperatorKind>();
+
     tags_.open("function", {
         { "name", I.Name },
+        { "op", getSafeOperatorName(OOK),
+            OOK != OverloadedOperatorKind::OO_None },
         { I.Access },
         { I.id }
         });
@@ -181,31 +189,110 @@ visit(
     writeInfo(I);
     writeSymbol(I);
     {
-        // FunctionInfo::Specs
         auto os = tags_.jit_indent();
 
-        auto SC = I.specs.get<
-            FnFlags0::storageClassMask, StorageClass>();
-        switch(SC)
+        if(I.specs.get<FnFlags0::isVariadic>())
+            os << "<variadic/>";
+        if(I.specs.get<FnFlags0::isVirtualAsWritten>())
+            os << "<virtual/>";
+        if(I.specs.get<FnFlags0::isPure>())
+            os << "<pure/>";
+        if(I.specs.get<FnFlags0::isDefaulted>())
+            os << "<defaulted/>";
+        if(I.specs.get<FnFlags0::isDeleted>())
+            os << "<deleted/>";
+        if(I.specs.get<FnFlags0::isDeletedAsWritten>())
+            os << "<equals-delete/>";
+        if(I.specs.get<FnFlags0::isNoReturn>())
+            os << "<gcc-noreturn/>";
+        if(I.specs.get<FnFlags0::isNoReturn>())
+            os << "<gcc-noreturn/>";
+
+        if(I.specs.get<FnFlags0::hasCXX11NoReturnAttr>())
+            os << "<noreturn/>";
+        if(I.specs.get<FnFlags0::hasOverrideAttr>())
+            os << "<override/>";
+        if(I.specs.get<FnFlags0::hasTrailingReturn>())
+            os << "<trailing/>";
+
+        // ConstexprSpecKind
+        auto CSK = I.specs.get<
+            FnFlags0::constexprKind,
+            ConstexprSpecKind>();
+        switch(CSK)
         {
-        case SC_None:
+        case ConstexprSpecKind::Unspecified:
             break;
-        case SC_Extern:
-            os << "<extern/>";
+        case ConstexprSpecKind::Constexpr:
+            os << "<constexpr/>";
             break;
-        case SC_Static:
-            os << "<static/>";
+        case ConstexprSpecKind::Consteval:
+            os << "<consteval/>";
             break;
-        case SC_PrivateExtern:
-            // VFALCO What is this for?
-            os << "<pextern/>";
-            break;
-        default:
-            Assert(isLegalForFunction(SC));
+        case ConstexprSpecKind::Constinit:
+            Assert(false); // on function?
             break;
         }
 
-        auto RQ = I.specs.get<FnFlags0::refQualifierMask>();
+        // ExceptionSpecificationType
+        auto EST = I.specs.get<
+            FnFlags0::exceptionSpecType,
+            ExceptionSpecificationType>();
+        if(isNoexceptExceptionSpec(EST))
+            os << "<noexcept/>";
+        /*
+        switch(EST)
+        {
+        case EST_None:
+        case EST_DynamicNone:
+        case EST_Dynamic:
+        case EST_MSAny:
+        case EST_NoThrow:
+        case EST_BasicNoexcept:
+        case EST_DependentNoexcept:
+        case EST_NoexceptFalse:
+        case EST_NoexceptTrue:
+        case EST_Unevaluated:
+        case EST_Uninstantiated:
+        case EST_Unparsed:
+        default:
+            break;
+        }
+        */
+
+        // StorageClass
+        auto SC = I.specs.get<
+            FnFlags0::constexprKind,
+            StorageClass>();
+        Assert(isLegalForFunction(SC));
+        switch(SC)
+        {
+        case StorageClass::SC_None:
+            break;
+        case StorageClass::SC_Extern:
+            os << "<extern/>";
+            break;
+        case StorageClass::SC_Static:
+            os << "<static/>";
+            break;
+        case StorageClass::SC_PrivateExtern:
+            os << "<private-extern/>";
+            break;
+        case StorageClass::SC_Auto:
+            os << "<sc-auto/>";
+            break;
+        case StorageClass::SC_Register:
+            os << "<sc-register/>";
+            break;
+        default:
+            llvm_unreachable("unknown StorageClass");
+            break;
+        }
+
+        // RefQualifierKind
+        auto RQ = I.specs.get<
+            FnFlags0::refQualifier,
+            RefQualifierKind>();
         switch(RQ)
         {
         case RQ_None:
@@ -217,32 +304,12 @@ visit(
             os << "<rvref/>";
             break;
         }
-        if(I.specs.get<FnFlags0::constBit>())
+
+        if(I.specs.get<FnFlags0::isConst>())
             os << "<const/>";
-        if(I.specs.get<FnFlags0::constevalBit>())
-            os << "<consteval/>";
-        if(I.specs.get<FnFlags0::constexprBit>())
-            os << "<constexpr/>";
-        if(I.specs.get<FnFlags0::inlineBit>())
-            os << "<inline/>";
-        if(I.specs.get<FnFlags0::noexceptBit>())
-            os << "<noexcept/>";
-        if(I.specs.get<FnFlags0::noreturnBit>())
-            os << "<noreturn/>";
-        if(I.specs.get<FnFlags0::overrideBit>())
-            os << "<override/>";
-        if(I.specs.get<FnFlags0::pureBit>())
-            os << "<pure/>";
-        if(I.specs.get<FnFlags0::specialBit>())
-            os << "<special/>";
-        if(I.specs.get<FnFlags0::trailReturnBit>())
-            os << "<trailing/>";
-        if(I.specs.get<FnFlags0::variadicBit>())
-            os << "<variadic/>";
-        if(I.specs.get<FnFlags0::virtualBit>())
-            os << "<virtual/>";
-        if(I.specs.get<FnFlags0::volatileBit>())
+        if(I.specs.get<FnFlags0::isVolatile>())
             os << "<volatile/>";
+
         os.finish();
     }
     writeReturnType(I.ReturnType);

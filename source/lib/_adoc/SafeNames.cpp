@@ -9,7 +9,7 @@
 //
 
 #include "SafeNames.hpp"
-
+#include "Support/Operator.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/StringMap.h>
@@ -23,6 +23,7 @@ class SafeNames::
     Builder : public Corpus::Visitor
 {
     std::string prefix_;
+    std::string temp_;
 
 public:
     Builder(
@@ -38,30 +39,16 @@ public:
 private:
     using ScopeInfos = std::vector<Info const*>;
 
-    std::vector<std::string>
-    getNames()
-    {
-        std::vector<std::string> names;
-        for(auto const& ref : map)
-            names.push_back(ref.getValue());
-        llvm::sort(names,
-            [](llvm::StringRef const& n0, llvm::StringRef const& n1)
-            {
-                return compareSymbolNames(n0, n1) < 0;
-            });
-        return names;
-    }
-
     ScopeInfos
     buildScope(
         Scope const& scope)
     {
         ScopeInfos infos;
-        auto overloads = makeOverloadsSet(corpus_, scope);
+        //auto overloads = makeOverloadsSet(corpus_, scope);
         infos.reserve(
             scope.Namespaces.size() +
             scope.Records.size() +
-            overloads.list.size() +
+            scope.Functions.size() +
             scope.Typedefs.size() +
             scope.Enums.size());
         for(auto const& ref : scope.Namespaces)
@@ -85,6 +72,21 @@ private:
         return infos;
     }
 
+    llvm::StringRef
+    getSafe(Info const& I)
+    {
+        if(I.IT != InfoType::IT_function)
+            return I.Name;
+        auto const& FI = static_cast<
+            FunctionInfo const&>(I);
+        auto OOK = FI.specs.get<
+            FnFlags0::overloadedOperator,
+            OverloadedOperatorKind>();
+        if(OOK == OverloadedOperatorKind::OO_None)
+            return I.Name;
+        return getSafeOperatorName(OOK);
+    }
+
     void insertScope(ScopeInfos const& infos)
     {
         auto it0 = infos.begin();
@@ -102,7 +104,7 @@ private:
                 // unique
                 std::string s;
                 s.assign(prefix_);
-                s.append((*it0)->Name.data(), (*it0)->Name.size());
+                s.append(getSafe(**it0));
                 map.try_emplace(
                     llvm::toStringRef((*it0)->id),
                     std::move(s));
@@ -114,7 +116,7 @@ private:
             {
                 std::string s;
                 s.assign(prefix_);
-                s.append((*it0)->Name.data(), (*it0)->Name.size());
+                s.append(getSafe(**it0));
                 s.push_back('@');
                 s.append(std::to_string(i));
                 map.try_emplace(
@@ -131,8 +133,7 @@ private:
         for(auto const& ref : scope.Namespaces)
         {
             Info const& J(corpus_.get<Info>(ref.id));
-            llvm::StringRef name = J.Name;
-            prefix_.append(name.data(), name.size());
+            prefix_.append(getSafe(J));
             prefix_.push_back('.');
             corpus_.visit(J, *this);
             prefix_.resize(n0);
@@ -144,8 +145,7 @@ private:
         auto const n0 = prefix_.size();
         for(auto const I : infos)
         {
-            llvm::StringRef name = I->Name;
-            prefix_.append(name.data(), name.size());
+            prefix_.append(getSafe(*I));
             prefix_.push_back('.');
             corpus_.visit(*I, *this);
             prefix_.resize(n0);
@@ -167,21 +167,6 @@ private:
         auto infos = buildScope(I.Children);
         insertScope(infos);
         visitInfos(infos);
-        return true;
-    }
-
-    bool visit(Overloads const& I) override
-    {
-        return true;
-    }
-
-    bool visit(TypedefInfo const& I) override
-    {
-        return true;
-    }
-
-    bool visit(EnumInfo const& I) override
-    {
         return true;
     }
 

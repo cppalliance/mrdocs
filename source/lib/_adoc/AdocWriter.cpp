@@ -269,6 +269,14 @@ write(
 
 //------------------------------------------------
 
+llvm::StringRef
+AdocWriter::
+linkFor(
+    Info const& I)
+{
+    return I.Name;
+}
+
 void
 AdocWriter::
 writeBase(
@@ -295,7 +303,7 @@ writeFunctionOverloads(
     for(auto const& J : set.list)
     {
         os_ <<
-            "|`" << J.name << "`\n" <<
+            "|`" << linkFor(*J.list.front()) << "`\n" <<
             "|";
         if(! J.list.empty())
         {

@@ -39,6 +39,8 @@ public:
 
 private:
     void writeTitle(Info const& I);
+
+    llvm::StringRef linkFor(Info const& I) override;
 };
 
 } // adoc
