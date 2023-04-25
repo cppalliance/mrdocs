@@ -104,8 +104,6 @@ protected:
     void openSection(llvm::StringRef name);
     void closeSection();
 
-    static bool validSectionID(llvm::StringRef) noexcept;
-
     static llvm::StringRef toString(TagTypeKind k) noexcept;
 };
 

@@ -10,6 +10,7 @@
 //
 
 #include "AdocWriter.hpp"
+#include "Support/Validate.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <clang/Basic/Specifiers.h>
@@ -739,7 +740,7 @@ AdocWriter::
 openSection(
     Info const& I)
 {
-    Assert(validSectionID(names_.get(I.id)));
+    Assert(validAdocSectionID(names_.get(I.id)));
 
     sect_.level++;
     if(sect_.level <= 6)
@@ -771,21 +772,6 @@ closeSection()
     if(sect_.level <= 6)
         sect_.markup.pop_back();
     sect_.level--;
-}
-
-//------------------------------------------------
-
-bool
-AdocWriter::
-validSectionID(
-    llvm::StringRef s) noexcept
-{
-    if(s.empty())
-        return false;
-    return
-        s[0] == '_' ||
-        s[0] == ':' ||
-        isalpha(s[0]);
 }
 
 //------------------------------------------------
