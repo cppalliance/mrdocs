@@ -37,33 +37,131 @@ build()
         "= Reference\n"
         ":role: mrdox\n";
     corpus_.visit(globalNamespaceID, *this);
-    closeSection();
+    endSection();
     return llvm::Error::success();
 }
 
+//------------------------------------------------
+
+template<class Type>
+std::vector<Type const*>
+AdocSinglePageWriter::
+buildSortedList(
+    std::vector<Reference> const& from) const
+{
+    std::vector<Type const*> result;
+    result.reserve(from.size());
+    for(auto const& ref : from)
+        result.push_back(&corpus_.get<Type>(ref.id));
+    llvm::sort(result,
+        [&](Info const* I0, Info const* I1)
+        {
+            return compareSymbolNames(
+                I0->Name, I1->Name) < 0;
+        });
+    return result;
+}
+
+/*  Write a namespace.
+
+    This will index all individual
+    symbols except child namespaces,
+    sorted by group.
+*/
 bool
 AdocSinglePageWriter::
 visit(
     NamespaceInfo const& I)
 {
-    write(I);
-    if(! corpus_.visit(I.Children.Namespaces, *this))
-        return false;
+    //if(! corpus_.visit(I.Children.Namespaces, *this))
+        //return false;
+/*
+    if( I.Children.Records.empty() &&
+        I.Children.Functions.empty() &&
+        I.Children.Typedefs.empty() &&
+        I.Children.Enums.empty())
+        return;
+*/
+    // build sorted list of namespaces,
+    // this is for visitation not display.
+    auto namespaceList = buildSortedList<NamespaceInfo>(I.Children.Namespaces);
 
-    // Visit records in alphabetical display order
-    std::vector<RecordInfo const*> list;
-    list.reserve(I.Children.Records.size());
-    for(auto const& ref : I.Children.Records)
-        list.push_back(&corpus_.get<RecordInfo>(ref.id));
-    std::string s0, s1;
-    llvm::sort(list,
-        [&s0, &s1](Info const* I0, Info const* I1)
+    // don't emit empty namespaces,
+    // but still visit child namespaces.
+    if( ! I.Children.Records.empty() ||
+        ! I.Children.Functions.empty() ||
+        ! I.Children.Typedefs.empty() ||
+        ! I.Children.Enums.empty())
+    {
+        std::string s;
+        I.getFullyQualifiedName(s);
+        s = "namespace " + s;
+
+        beginSection(s);
+
+        auto recordList = buildSortedList<RecordInfo>(I.Children.Records);
+        auto functionList = buildSortedList<FunctionInfo>(I.Children.Functions);
+        //auto typeList = ?
+        //auto enumList = ?
+
+        if(! recordList.empty())
         {
-            return compareSymbolNames(
-                I0->getFullyQualifiedName(s0),
-                I1->getFullyQualifiedName(s1)) < 0;
-        });
-    for(auto const I : list)
+            beginSection("Classes");
+            os_ << "\n"
+                "[cols=1]\n"
+                "|===\n";
+            for(auto const I : recordList)
+            {
+                os_ << "\n|" << linkFor(*I) << '\n';
+            };
+            os_ << "|===\n";
+            endSection();
+        }
+
+        if(! functionList.empty())
+        {
+            beginSection("Functions");
+            os_ << "\n"
+                "[cols=1]\n"
+                "|===\n";
+            for(auto const I : functionList)
+            {
+                os_ << "\n|" << linkFor(*I) << '\n';
+            };
+            os_ << "|===\n";
+            endSection();
+        }
+
+        //if(! typeList.empty())
+
+        //if(! enumList.empty())
+
+        // now visit each indexed item
+        for(auto const& I : recordList)
+            visit(*I);
+        recordList.clear();
+
+        for(auto const& I : functionList)
+            visit(*I);
+        functionList.clear();
+
+        /*
+        for(auto const& I : typeList)
+            visit(*I);
+        typeList.clear();
+        */
+
+        /*
+        for(auto const& I : enumList)
+            visit(*I);
+        typeList.clear();
+        */
+
+        endSection();
+    }
+
+    // visit child namespaces
+    for(auto const& I : namespaceList)
         if(! visit(*I))
             return false;
 

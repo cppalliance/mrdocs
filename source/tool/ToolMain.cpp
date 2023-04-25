@@ -29,14 +29,6 @@
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/Signals.h>
 
-#if 0
-#if defined(_MSC_VER) && ! defined(NDEBUG)
-#define WIN32_LEAN_AND_MEAN
-#include <debugapi.h>
-#include <crtdbg.h>
-#endif
-#endif
-
 namespace clang {
 namespace mrdox {
 
@@ -138,8 +130,18 @@ toolMain(
     // Run the generator.
     if((*config)->verbose())
         llvm::outs() << "Generating docs...\n";
-    if(! generator->buildPages((*config)->outputPath(), **corpus, R))
-        return;
+    if((*corpus)->config()->singlePage())
+    {
+        if(! generator->buildSinglePageFile(
+            (*config)->outputPath(), **corpus, R))
+            return;
+    }
+    else
+    {
+        if(! generator->buildPages(
+            (*config)->outputPath(), **corpus, R))
+            return;
+    }
 }
 
 } // mrdox

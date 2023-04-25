@@ -37,6 +37,7 @@ public:
     bool verbose = true;
     bool include_private = false;
     std::string source_root;
+    bool single_page = false;
     FileFilter input;
 };
 
@@ -64,6 +65,7 @@ struct llvm::yaml::MappingTraits<
         io.mapOptional("verbose",      opt.verbose);
         io.mapOptional("private",      opt.include_private);
         io.mapOptional("source-root",  opt.source_root);
+        io.mapOptional("single-page",  opt.single_page);
         io.mapOptional("input",        opt.input);
     }
 };
@@ -258,6 +260,7 @@ loadFromFile(
     (*config)->setIncludePrivate(opt.include_private);
     (*config)->setSourceRoot(opt.source_root);
     (*config)->setInputFileIncludes(opt.input.include);
+    (*config)->setSinglePage(opt.single_page);
 
     return config;
 }

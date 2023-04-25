@@ -22,13 +22,6 @@
 #include <memory>
 #include <string>
 
-namespace llvm {
-namespace yaml {
-template<class T>
-struct MappingTraits;
-} // yaml
-} // llvm
-
 namespace clang {
 namespace mrdox {
 
@@ -53,6 +46,7 @@ protected:
     llvm::SmallString<0> outputPath_;
     std::string sourceRoot_;
     bool includePrivate_ = false;
+    bool singlePage_ = false;
     bool verbose_ = true;
 
     explicit
@@ -129,6 +123,14 @@ public:
         return includePrivate_;
     }
 
+    /** Return true if the output is single-page output.
+    */
+    bool
+    singlePage() const noexcept
+    {
+        return singlePage_;
+    }
+
     /** Call a function for each element of a range.
 
         The function is invoked with a reference
@@ -157,6 +159,13 @@ public:
         bool verbose) noexcept
     {
         verbose_ = verbose;
+    }
+
+    void
+    setSinglePage(
+        bool singlePage) noexcept
+    {
+        singlePage_ = singlePage;
     }
 
     /** Set whether or not to include private members.

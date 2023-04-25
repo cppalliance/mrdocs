@@ -130,7 +130,6 @@ else()
 endif()
 target_include_directories(mrdox-api SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
 
-
 # Windows, Win64
 if (WIN32)
     target_compile_definitions(

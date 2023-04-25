@@ -17,6 +17,13 @@
 #include <llvm/Support/ThreadPool.h>
 #include <memory>
 
+namespace llvm {
+namespace yaml {
+template<class T>
+struct MappingTraits;
+} // yaml
+} // llvm
+
 namespace clang {
 namespace mrdox {
 

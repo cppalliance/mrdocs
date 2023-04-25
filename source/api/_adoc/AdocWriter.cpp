@@ -115,71 +115,6 @@ AdocWriter::
 write(
     NamespaceInfo const& I)
 {
-    if( I.Children.Records.empty() &&
-        I.Children.Functions.empty() &&
-        I.Children.Typedefs.empty() &&
-        I.Children.Enums.empty())
-        return;
-
-    std::string s;
-    I.getFullyQualifiedName(s);
-    s = "namespace " + s;
-
-    openSection(s);
-
-    if(! I.Children.Records.empty())
-    {
-        openSection("Classes");
-        os_ << "\n"
-            "[cols=1]\n"
-            "|===\n";
-        for(auto const& ref : I.Children.Records)
-        {
-            auto const& I = corpus_.get<RecordInfo>(ref.id);
-            os_ << "\n|" << linkFor(I) << '\n';
-        };
-        os_ <<
-            "|===\n";
-        closeSection();
-    }
-
-    if(! I.Children.Functions.empty())
-    {
-        openSection("Functions");
-        os_ << '\n';
-        for(auto const& ref : I.Children.Functions)
-        {
-            auto const& I = corpus_.get<FunctionInfo>(ref.id);
-            os_ << linkFor(I) << '\n';
-        };
-        closeSection();
-    }
-
-    if(! I.Children.Typedefs.empty())
-    {
-        openSection("Types");
-        os_ << '\n';
-        for(auto const& ref : I.Children.Typedefs)
-        {
-            auto const& I = corpus_.get<TypedefInfo>(ref.id);
-            os_ << linkFor(I) << '\n';
-        };
-        closeSection();
-    }
-
-    if(! I.Children.Enums.empty())
-    {
-        openSection("Constants");
-        os_ << '\n';
-        for(auto const& ref : I.Children.Enums)
-        {
-            auto const& I = corpus_.get<EnumInfo>(ref.id);
-            os_ << linkFor(I) << '\n';
-        };
-        closeSection();
-    }
-
-    closeSection();
 }
 
 //------------------------------------------------
@@ -194,13 +129,13 @@ AdocWriter::
 write(
     RecordInfo const& I)
 {
-    openSection(I);
+    beginSection(I);
 
     // Brief
     writeBrief(I.javadoc);
 
     // Synopsis
-    openSection("Synopsis");
+    beginSection("Synopsis");
 
     // Location
     writeLocation(I);
@@ -224,7 +159,7 @@ write(
     os_ <<
         ";\n"
         "----\n";
-    closeSection();
+    endSection();
 
     // Description
     writeDescription(I.javadoc);
@@ -271,7 +206,7 @@ write(
         makeOverloadsSet(corpus_, I.Children,
             AccessSpecifier::AS_private));
 
-    closeSection();
+    endSection();
 }
 
 void
@@ -279,13 +214,13 @@ AdocWriter::
 write(
     FunctionInfo const& I)
 {
-    openSection(I.Name);
+    beginSection(I.Name);
 
     // Brief
     writeBrief(I.javadoc);
 
     // Synopsis
-    openSection("Synopsis");
+    beginSection("Synopsis");
 
     writeLocation(I);
 
@@ -314,12 +249,12 @@ write(
     }
     os_ <<
         "----\n";
-    closeSection();
+    endSection();
 
     // Description
     writeDescription(I.javadoc);
 
-    closeSection();
+    endSection();
 }
 
 void
@@ -327,7 +262,7 @@ AdocWriter::
 write(
     TypedefInfo const& I)
 {
-    openSection(I.Name);
+    beginSection(I.Name);
 
     // Brief
     writeBrief(I.javadoc);
@@ -337,7 +272,7 @@ write(
     // Description
     writeDescription(I.javadoc);
 
-    closeSection();
+    endSection();
 }
 
 void
@@ -345,7 +280,7 @@ AdocWriter::
 write(
     EnumInfo const& I)
 {
-    openSection(I.Name);
+    beginSection(I.Name);
 
     // Brief
     writeBrief(I.javadoc);
@@ -355,7 +290,7 @@ write(
     // Description
     writeDescription(I.javadoc);
 
-    closeSection();
+    endSection();
 }
 
 //------------------------------------------------
@@ -390,7 +325,7 @@ writeFunctionOverloads(
 {
     if(set.list.empty())
         return;
-    openSection(sectionName);
+    beginSection(sectionName);
     os_ <<
         "\n"
         "[,cols=2]\n" <<
@@ -418,7 +353,7 @@ writeFunctionOverloads(
     os_ <<
         "|===\n" <<
         "\n";
-    closeSection();
+    endSection();
 }
 
 void
@@ -441,7 +376,7 @@ writeNestedTypes(
         ++it;
     }
 #endif
-    openSection(sectionName);
+    beginSection(sectionName);
     os_ <<
         "\n"
         "[,cols=2]\n" <<
@@ -463,7 +398,7 @@ writeNestedTypes(
     os_ <<
         "|===\n" <<
         "\n";
-    closeSection();
+    endSection();
 }
 
 void
@@ -485,7 +420,7 @@ writeDataMembers(
             break;
         ++it;
     }
-    openSection(sectionName);
+    beginSection(sectionName);
     os_ <<
         "\n"
         "[,cols=2]\n" <<
@@ -505,7 +440,7 @@ writeDataMembers(
     os_ <<
         "|===\n" <<
         "\n";
-    closeSection();
+    endSection();
 }
 
 //------------------------------------------------
@@ -537,10 +472,10 @@ writeDescription(
         return;
 
     //os_ << '\n';
-    openSection("Description");
+    beginSection("Description");
     os_ << '\n';
     writeNodes(javadoc->getBlocks());
-    closeSection();
+    endSection();
 }
 
 void
@@ -737,7 +672,7 @@ typeName(
 
 void
 AdocWriter::
-openSection(
+beginSection(
     Info const& I)
 {
     Assert(validAdocSectionID(names_.get(I.id)));
@@ -753,7 +688,7 @@ openSection(
 
 void
 AdocWriter::
-openSection(
+beginSection(
     llvm::StringRef name)
 {
     sect_.level++;
@@ -766,7 +701,7 @@ openSection(
 
 void
 AdocWriter::
-closeSection()
+endSection()
 {
     Assert(sect_.level > 0);
     if(sect_.level <= 6)

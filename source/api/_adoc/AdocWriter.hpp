@@ -100,9 +100,9 @@ protected:
     FormalParam formalParam(FieldTypeInfo const& ft);
     TypeName typeName(TypeInfo const& ti);
 
-    void openSection(Info const& I);
-    void openSection(llvm::StringRef name);
-    void closeSection();
+    void beginSection(Info const& I);
+    void beginSection(llvm::StringRef name);
+    void endSection();
 
     static llvm::StringRef toString(TagTypeKind k) noexcept;
 };

@@ -35,6 +35,13 @@ public:
     llvm::Error build();
 
 private:
+    /** Return an array of info pointers display-sorted by symbol.
+    */
+    template<class Type>
+    std::vector<Type const*>
+    buildSortedList(
+        std::vector<Reference> const& from) const;
+
     bool visit(NamespaceInfo const&) override;
     bool visit(RecordInfo const&) override;
     bool visit(FunctionInfo const&) override;
