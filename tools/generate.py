@@ -17,6 +17,9 @@ def EmptyDeclarationFolder():
 def NamespaceDefinitionsFolder():
     return os.path.join(ToplevelFolder(), "namespace.def")
 
+def ClassSpecifiersFolder():
+    return os.path.join(ToplevelFolder(), "class.pre")
+
 
 def GenerateEnumDeclarations():
     #https://eel.is/c++draft/enum
@@ -48,6 +51,24 @@ def GenerateNamespaceDefinitions():
     return generator
 
 
+def GenerateClassSpecifiers():
+    #https://eel.is/c++draft/class.pre
+    base_classes = "struct base_1\{\};\nclass base_2\{\};\n"
+    class_key = "(class|struct)"
+    class_name = "(C|C final)"
+    access_specifier = "(|public|private|protected)"
+    class_or_decltype_1 = f"(base_1|decltype\(base_1\{{\}}\))"
+    class_or_decltype_2 = f"(base_2|decltype\(base_2\{{\}}\))"
+    base_specifier_1 = f"({access_specifier} {class_or_decltype_1}|virtual {access_specifier} {class_or_decltype_1}|{access_specifier} virtual {class_or_decltype_1})"
+    base_specifier_2 = f"({access_specifier} {class_or_decltype_2}|virtual {access_specifier} {class_or_decltype_2}|{access_specifier} virtual {class_or_decltype_2})"
+    base_clause = f"(|: {base_specifier_1}|: {base_specifier_1}, {base_specifier_2})"
+    class_or_struct = f"{class_key} ({class_name} {base_clause} \{{\}};| {base_clause} \{{\}} obj;)"
+    union = "(union U \{\};)|(union \{\} obj;)"
+    regex = f"({base_classes}{class_or_struct})|({union})"
+    generator = exrex.generate(regex)
+    return generator
+
+
 def GenerateIndexedCppFiles(parentDirectory, fileContents):
     os.makedirs(parentDirectory, exist_ok=True)
     for index, aDeclaration in enumerate(fileContents):
@@ -57,7 +78,9 @@ def GenerateIndexedCppFiles(parentDirectory, fileContents):
             f.write(aDeclaration)
 
 
+
 GenerateIndexedCppFiles(EnumDeclarationsFolder(), GenerateEnumDeclarations())
 #https://eel.is/c++draft/dcl.dcl#nt:empty-declaration
 GenerateIndexedCppFiles(EmptyDeclarationFolder(), [";"])
 GenerateIndexedCppFiles(NamespaceDefinitionsFolder(), GenerateNamespaceDefinitions())
+GenerateIndexedCppFiles(ClassSpecifiersFolder(), GenerateClassSpecifiers())
