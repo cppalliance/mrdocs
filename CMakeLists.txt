@@ -89,10 +89,10 @@ unset(CMAKE_FOLDER)
 
 file(GLOB_RECURSE LIB_INCLUDES CONFIGURE_DEPENDS include/*.hpp)
 file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
-    source/lib/*.h
-    source/lib/*.hpp
-    source/lib/*.cpp
-    source/lib/*.natvis)
+    source/api/*.h
+    source/api/*.hpp
+    source/api/*.cpp
+    source/api/*.natvis)
 
 add_library(mrdox-api ${MRDOX_LINK_MODE} ${LIB_INCLUDES} ${LIB_SOURCES})
 target_compile_features(mrdox-api PUBLIC cxx_std_20)
@@ -100,7 +100,7 @@ target_include_directories(mrdox-api
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     PRIVATE
-    "${PROJECT_SOURCE_DIR}/source/lib/"
+    "${PROJECT_SOURCE_DIR}/source/api/"
 )
 target_compile_definitions(
     mrdox-api
@@ -170,7 +170,7 @@ endif ()
 
 source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${LIB_INCLUDES})
-source_group(TREE ${PROJECT_SOURCE_DIR}/source/lib PREFIX "source" FILES ${LIB_SOURCES})
+source_group(TREE ${PROJECT_SOURCE_DIR}/source/api PREFIX "source" FILES ${LIB_SOURCES})
 
 #-------------------------------------------------
 #
@@ -193,16 +193,16 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL
 #-------------------------------------------------
 
 if (MRDOX_BUILD_TESTS)
-    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/tests/*.cpp source/tests/*.hpp)
+    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/test/*.cpp source/test/*.hpp)
     enable_testing()
     add_executable(mrdox-test ${TEST_SOURCES})
     target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
-    target_include_directories(mrdox-test PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
+    target_include_directories(mrdox-test PRIVATE ${PROJECT_SOURCE_DIR}/source/test)
     add_test(NAME mrdox-test COMMAND mrdox-test
             "${PROJECT_SOURCE_DIR}/tests/old-tests"
             )
     source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-    source_group(TREE ${PROJECT_SOURCE_DIR}/source/tests PREFIX "source" FILES ${TEST_SOURCES})
+    source_group(TREE ${PROJECT_SOURCE_DIR}/source/test PREFIX "source" FILES ${TEST_SOURCES})
 
     if (CMAKE_EXPORT_COMPILE_COMMANDS)
         # test run
