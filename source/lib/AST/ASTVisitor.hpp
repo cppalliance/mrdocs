@@ -73,6 +73,8 @@ public:
     bool WalkUpFromCXXConstructorDecl(CXXConstructorDecl* D);
     bool WalkUpFromCXXMethodDecl(CXXMethodDecl* D);
     bool WalkUpFromFriendDecl(FriendDecl* D);
+    //bool WalkUpFromUsingDecl(UsingDecl* D);
+    bool WalkUpFromUsingShadowDecl(UsingShadowDecl* D);
     bool WalkUpFromFunctionDecl(FunctionDecl* D);
     bool WalkUpFromTypeAliasDecl(TypeAliasDecl* D);
     bool WalkUpFromTypedefDecl(TypedefDecl* D);

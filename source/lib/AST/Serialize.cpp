@@ -1101,6 +1101,29 @@ build(
 SerializeResult
 Serializer::
 build(
+    UsingDecl const* D)
+{
+    DeclarationNameInfo DNI = D->getNameInfo();
+    NestedNameSpecifier const* NNS = D->getQualifier();
+    //auto const& specs = NNS->getSpecifiers();
+    bool hasTypename = D->hasTypename();
+    bool isAccess = D->isAccessDeclaration();
+    auto DN = DNI.getName();
+    auto s = DNI.getAsString();
+    return {};
+}
+
+SerializeResult
+Serializer::
+build(
+    UsingShadowDecl const* D)
+{
+    return {};
+}
+
+SerializeResult
+Serializer::
+build(
     FunctionDecl const* D)
 {
     FunctionInfo I;

@@ -211,6 +211,26 @@ WalkUpFromFriendDecl(
     return true;
 }
 
+#if 0
+bool
+ASTVisitor::
+WalkUpFromUsingDecl(
+    UsingDecl* D)
+{
+    mapDecl(D);
+    return true;
+}
+#endif
+
+bool
+ASTVisitor::
+WalkUpFromUsingShadowDecl(
+    UsingShadowDecl* D)
+{
+    mapDecl(D);
+    return true;
+}
+
 bool
 ASTVisitor::
 WalkUpFromFunctionDecl(

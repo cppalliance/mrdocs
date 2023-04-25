@@ -84,14 +84,16 @@ public:
     {
     }
 
-    SerializeResult build(NamespaceDecl const* D);
-    SerializeResult build(CXXRecordDecl const* D);
-    SerializeResult build(CXXMethodDecl const* D);
-    SerializeResult build(FriendDecl    const* D);
-    SerializeResult build(FunctionDecl  const* D);
-    SerializeResult build(TypedefDecl   const* D);
-    SerializeResult build(TypeAliasDecl const* D);
-    SerializeResult build(EnumDecl      const* D);
+    SerializeResult build(NamespaceDecl   const* D);
+    SerializeResult build(CXXRecordDecl   const* D);
+    SerializeResult build(CXXMethodDecl   const* D);
+    SerializeResult build(FriendDecl      const* D);
+    SerializeResult build(UsingDecl       const* D);
+    SerializeResult build(UsingShadowDecl const* D);
+    SerializeResult build(FunctionDecl    const* D);
+    SerializeResult build(TypedefDecl     const* D);
+    SerializeResult build(TypeAliasDecl   const* D);
+    SerializeResult build(EnumDecl        const* D);
 };
 
 } // mrdox
