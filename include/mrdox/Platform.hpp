@@ -41,6 +41,13 @@ namespace mrdox {
 # define MRDOX_VISIBLE
 
 // (unknown)
+#elif defined(__GNUC__)
+# if defined(MRDOX_LIB) // building library
+#   define MRDOX_DECL
+# else
+#   define MRDOX_DECL __attribute__((visibility("default")))
+#endif
+# define MRDOX_VISIBLE __attribute__((visibility("default")))
 #else
 # error unknown platform for dynamic linking
 #endif
