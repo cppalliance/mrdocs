@@ -11,6 +11,9 @@ def ToplevelFolder():
 def EnumDeclarationsFolder():
     return os.path.join(ToplevelFolder(), "dcl.enum")
 
+def EmptyDeclarationFolder():
+    return os.path.join(ToplevelFolder(), "dcl.dcl", "empty_declaration")
+
 
 def GenerateEnumDeclarations():
     #https://eel.is/c++draft/enum
@@ -41,3 +44,5 @@ def GenerateIndexedCppFiles(parentDirectory, fileContents):
 
 
 GenerateIndexedCppFiles(EnumDeclarationsFolder(), GenerateEnumDeclarations())
+#https://eel.is/c++draft/dcl.dcl#nt:empty-declaration
+GenerateIndexedCppFiles(EmptyDeclarationFolder(), [";"])
