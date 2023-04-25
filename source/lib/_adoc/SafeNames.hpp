@@ -34,6 +34,10 @@ public:
 
     llvm::StringRef
     get(SymbolID const& id) const noexcept;
+
+    llvm::StringRef
+    getOverload(
+        SymbolID const& id);
 };
 
 } // adoc

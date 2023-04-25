@@ -84,7 +84,7 @@ private:
             OverloadedOperatorKind>();
         if(OOK == OverloadedOperatorKind::OO_None)
             return I.Name;
-        temp_ = '@';
+        temp_ = '0';
         temp_.append(getSafeOperatorName(OOK));
         return temp_;
     }
@@ -118,9 +118,9 @@ private:
             {
                 std::string s;
                 s.assign(prefix_);
+                s.append(std::to_string(i + 1));
+                //s.push_back('@');
                 s.append(getSafe(**it0));
-                s.push_back('@');
-                s.append(std::to_string(i));
                 map.try_emplace(
                     llvm::toStringRef(it0[i]->id),
                     std::move(s));
