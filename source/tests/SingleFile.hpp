@@ -11,10 +11,13 @@
 #ifndef MRDOX_TESTS_SINGLE_FILE_HPP
 #define MRDOX_TESTS_SINGLE_FILE_HPP
 
+#include "Config.hpp"
+
 #include <clang/Tooling/CompilationDatabase.h>
 #include <string>
 #include <utility>
 #include <vector>
+
 
 namespace clang {
 namespace mrdox {
@@ -33,7 +36,7 @@ public:
     {
         std::vector<std::string> cmds;
         cmds.emplace_back("clang");
-        cmds.emplace_back("-std=c++20");
+        cmds.emplace_back(MRDOX_STANDARD_OPTION_STRING);
         cmds.emplace_back(file);
         cc_.emplace_back(
             dir,

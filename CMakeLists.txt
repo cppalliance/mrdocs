@@ -183,11 +183,12 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL
 #-------------------------------------------------
 
 if (MRDOX_BUILD_TESTS)
+    configure_file(source/tests/Config.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/Config.hpp)
     file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/tests/*.cpp source/tests/*.hpp)
     enable_testing()
     add_executable(mrdox-test ${TEST_SOURCES})
     target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
-    target_include_directories(mrdox-test PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
+    target_include_directories(mrdox-test PRIVATE ${PROJECT_SOURCE_DIR}/source/tests ${CMAKE_CURRENT_BINARY_DIR})
     add_test(NAME mrdox-test COMMAND mrdox-test
         "${PROJECT_SOURCE_DIR}/tests/n4944"
         "${PROJECT_SOURCE_DIR}/tests/old-tests"

@@ -1,0 +1,18 @@
+// Copyright (c) 2023 Klemens D. Morgenstern
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+#ifndef MRDOX_CONFIG_HPP_HPP
+#define MRDOX_CONFIG_HPP_HPP
+
+#cmakedefine CMAKE_CXX_STANDARD @CMAKE_CXX_STANDARD@
+
+#if !defined(CMAKE_CXX_STANDARD)
+    #define CMAKE_CXX_STANDARD 20
+    #define MRDOX_STANDARD_OPTION_STRING "-std=c++20"
+#else
+    #define MRDOX_STANDARD_OPTION_STRING "-std=c++@CMAKE_CXX_STANDARD@"
+#endif
+
+
+#endif //MRDOX_CONFIG_HPP_HPP
