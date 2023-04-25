@@ -34,6 +34,16 @@ project(
 #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO ON CACHE STRING "")
 
 option(MRDOX_BUILD_TESTS "Build tests" ON)
+option(MRDOX_BUILD_SHARED "Link shared" OFF)
+
+if (MRDOX_BUILD_SHARED)
+    set(MRDOX_LINK_MODE SHARED)
+    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_SHARED_LINK)
+else()
+    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_STATIC_LINK)
+endif()
+
+
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(MRDOX_GCC ON)
@@ -84,7 +94,7 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     source/lib/*.cpp
     source/lib/*.natvis)
 
-add_library(mrdox-api ${LIB_INCLUDES} ${LIB_SOURCES})
+add_library(mrdox-api ${MRDOX_LINK_MODE} ${LIB_INCLUDES} ${LIB_SOURCES})
 target_compile_features(mrdox-api PUBLIC cxx_std_20)
 target_include_directories(mrdox-api
     PUBLIC
@@ -95,7 +105,7 @@ target_include_directories(mrdox-api
 target_compile_definitions(
     mrdox-api
     PUBLIC
-    -DMRDOX_STATIC_LINK
+    ${MRDOX_LINK_MODE_DEFINITION}
     PRIVATE
     -DMRDOX_LIB
 )
@@ -189,8 +199,8 @@ if (MRDOX_BUILD_TESTS)
     target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
     target_include_directories(mrdox-test PRIVATE ${PROJECT_SOURCE_DIR}/source/tests)
     add_test(NAME mrdox-test COMMAND mrdox-test
-        "${PROJECT_SOURCE_DIR}/tests/old-tests"
-    )
+            "${PROJECT_SOURCE_DIR}/tests/old-tests"
+            )
     source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
     source_group(TREE ${PROJECT_SOURCE_DIR}/source/tests PREFIX "source" FILES ${TEST_SOURCES})
 
@@ -199,6 +209,22 @@ if (MRDOX_BUILD_TESTS)
 
     add_fail_test(NAME self-test COMMAND does-not-exist 1 2 3)
     add_fail_test(self-test-simple does-not-exist 1 2 3)
+
+    if (CMAKE_EXPORT_COMPILE_COMMANDS)
+        # test run
+        include(mrdox.cmake)
+        set(TESTFILES
+                testfiles/decl-only/attributes_1.cpp
+                testfiles/decl-only/canonical_1.cpp
+                testfiles/decl-only/record_1.cpp
+                testfiles/decl-only/record_2.cpp)
+
+        mrdox(FORMAT adoc CONFIG mrdox.yml SOURCES ${TESTFILES})
+        mrdox(FORMAT xml  CONFIG mrdox.yml SOURCES ${TESTFILES})
+
+        add_custom_target(reference_adoc DEPENDS reference.adoc)
+        add_custom_target(reference_xml  DEPENDS reference.xml)
+    endif()
 endif()
 
 #-------------------------------------------------
