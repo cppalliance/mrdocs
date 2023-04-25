@@ -20,6 +20,9 @@ def NamespaceDefinitionsFolder():
 def ClassSpecifiersFolder():
     return os.path.join(ToplevelFolder(), "class.pre")
 
+def NonMemberFunctionDeclarationsFolder():
+    return os.path.join(ToplevelFolder(), "functions", "non-member")
+
 
 def GenerateEnumDeclarations():
     #https://eel.is/c++draft/enum
@@ -69,6 +72,41 @@ def GenerateClassSpecifiers():
     return generator
 
 
+def GenerateNonMemberFunctions():
+    special_cases = """
+int const f\(\);|
+int volatile f\(\);|
+int const volatile f\(\);|
+int\* f\(\);|
+int& f\(\);|
+int&& f\(\);|
+void f\(bool const b\);|
+void f\(bool volatile b\);|
+void f\(bool const volatile b\);|
+void f\(bool& b\);|
+void f\(bool&& b\);|
+int f\(bool b\.\.\.\);|
+void f\(\) noexcept;|
+void f\(\) noexcept\(false\);|
+extern "C" int f\(bool b\);|
+namespace CppScope \{ extern "C" int f\(bool b\); \}|
+extern "C" \{ extern "C\+\+" int f\(bool b\); \}|
+int f\(bool b\) = delete;|
+int f\(bool b\) try \{ return b \? 1 : 2; \} catch\(\.\.\.\) \{ throw; \}|
+int f\(bool b\) noexcept\(false\) try \{ return b \? 1 : 2; \} catch\(\.\.\.\) \{ throw; \}|
+auto f\(bool b\) -> int;|
+auto f\(bool b\) -> auto \{ return b; \}|
+class C;\nint C::\* f\(int C::\* p\);|
+class C;\nusing MemFnPtr = char\(C::\*\)\(int\) const&;\nconst MemFnPtr& f\(MemFnPtr a, MemFnPtr& b, MemFnPtr&& c, const MemFnPtr& d\);
+"""
+    all_fundamental_types_except_void = "decltype\(nullptr\)|bool|char|signed char|unsigned char|char8_t|char16_t|char32_t|wchar_t|short|int|long|long long|unsigned short|unsigned int|unsigned long|unsigned long long|float|double|long double"
+    all_fundamental_types = f"{all_fundamental_types_except_void}|void"
+    function_returning_fundamental_types = f"({all_fundamental_types}) f\(\);"
+    function_taking_one_fundamental_type = f"void f\(({all_fundamental_types_except_void}) arg\);"
+    regex = f"({function_returning_fundamental_types}|{function_taking_one_fundamental_type}|{special_cases})"
+    generator = exrex.generate(regex)
+    return generator
+
 def GenerateIndexedCppFiles(parentDirectory, fileContents):
     os.makedirs(parentDirectory, exist_ok=True)
     for index, aDeclaration in enumerate(fileContents):
@@ -84,3 +122,4 @@ GenerateIndexedCppFiles(EnumDeclarationsFolder(), GenerateEnumDeclarations())
 GenerateIndexedCppFiles(EmptyDeclarationFolder(), [";"])
 GenerateIndexedCppFiles(NamespaceDefinitionsFolder(), GenerateNamespaceDefinitions())
 GenerateIndexedCppFiles(ClassSpecifiersFolder(), GenerateClassSpecifiers())
+GenerateIndexedCppFiles(NonMemberFunctionDeclarationsFolder(), GenerateNonMemberFunctions())
