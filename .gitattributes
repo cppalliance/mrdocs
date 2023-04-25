@@ -1,2 +1,1 @@
-tests/n4944/**/*.xml      binary
-tests/old-tests/**/*.xml  binary
+test-files/**/*.xml binary
