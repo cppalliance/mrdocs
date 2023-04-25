@@ -84,7 +84,9 @@ private:
             OverloadedOperatorKind>();
         if(OOK == OverloadedOperatorKind::OO_None)
             return I.Name;
-        return getSafeOperatorName(OOK);
+        temp_ = '@';
+        temp_.append(getSafeOperatorName(OOK));
+        return temp_;
     }
 
     void insertScope(ScopeInfos const& infos)

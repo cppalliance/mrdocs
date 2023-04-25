@@ -836,7 +836,7 @@ emitRecord(
     Assert(RecordIdNameMap[ID].Abbrev ==
         &Integer32ArrayAbbrev);
     bool empty = true;
-    for(int i = 0; i < n; ++i)
+    for(std::size_t i = 0; i < n; ++i)
     {
         if(p[i] != 0)
         {
@@ -847,7 +847,7 @@ emitRecord(
     if (!prepRecordData(ID, ! empty))
         return;
     Record.push_back(n);
-    for(int i = 0; i < n; ++i)
+    for(std::size_t i = 0; i < n; ++i)
         Record.push_back(static_cast<RecordValue>(p[i]));
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }

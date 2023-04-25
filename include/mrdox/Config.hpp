@@ -240,7 +240,7 @@ public:
     /** Destructor.
     */
     MRDOX_DECL
-    ~WorkGroup() noexcept;
+    ~WorkGroup();
 
     /** Constructor.
 

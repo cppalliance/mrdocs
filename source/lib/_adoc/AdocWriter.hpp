@@ -38,6 +38,8 @@ protected:
     std::string temp_;
 
 public:
+    virtual ~AdocWriter() = default;
+
     AdocWriter(
         llvm::raw_ostream& os,
         llvm::raw_fd_ostream* fd_os,

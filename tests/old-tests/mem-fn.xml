@@ -6,19 +6,23 @@
     <file path="mem-fn.cpp" line="17" class="def"/>
     <function name="f" access="public" id="wSFf8IAx5Twq6aD5T8XdnXGuhw8=">
       <file path="mem-fn.cpp" line="17"/>
+      <volatile/>
     </function>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
     <file path="mem-fn.cpp" line="22" class="def"/>
     <function name="f1" access="public" id="DBXd564vaQo7GHkh6XCC6HV78/I=">
       <file path="mem-fn.cpp" line="24" class="def"/>
+      <variadic/><trailing/><constexpr/><noexcept/><extern/><const/><volatile/>
     </function>
     <function name="f2" access="public" id="II436kVwM/ZBYOf9q474VxRXK6c=">
       <file path="mem-fn.cpp" line="25" class="def"/>
+      <trailing/><constexpr/><noexcept/><extern/>
       <return name="char"/>
     </function>
     <function name="f3" access="public" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
       <file path="mem-fn.cpp" line="26"/>
+      <virtual/><pure/><noexcept/><const/><volatile/>
       <return name="int"/>
     </function>
   </struct>
@@ -27,6 +31,7 @@
     <base name="T14" access="public" id="SLJhBKx+2u4KxSJ78Fg6wqlObPc="/>
     <function name="f" access="public" id="5+yfyWtDpz80IwKT3xugro18Ev0=">
       <file path="mem-fn.cpp" line="20"/>
+      <override/>
     </function>
   </struct>
   <struct name="T02" id="H+pnPDuG6B+W6+srjVP2qhqXCrQ=">
@@ -39,12 +44,14 @@
     <file path="mem-fn.cpp" line="6" class="def"/>
     <function name="f" access="public" id="G71rDzcAZPSKGoGGoDswQjD1JuA=">
       <file path="mem-fn.cpp" line="6"/>
+      <rvref/>
     </function>
   </struct>
   <struct name="T11" id="MXMa4TZZfdRkREzWSLpIF6ruUyw=">
     <file path="mem-fn.cpp" line="13" class="def"/>
     <function name="f" access="public" id="+NevzZlqigIe1KSKS7eqq7pCd40=">
       <file path="mem-fn.cpp" line="13"/>
+      <trailing/>
       <return name="int"/>
     </function>
   </struct>
@@ -52,6 +59,7 @@
     <file path="mem-fn.cpp" line="15" class="def"/>
     <function name="f" access="public" id="5d5eSOvkYwBOnpbLcrkRuFvJGP4=">
       <file path="mem-fn.cpp" line="15"/>
+      <virtual/>
     </function>
   </struct>
   <struct name="T01" id="O2UBDeG42PMrk1up8f8PGVFhIGk=">
@@ -64,24 +72,28 @@
     <file path="mem-fn.cpp" line="16" class="def"/>
     <function name="f" access="public" id="1Lz3aFupR+OsCqiPOaIFWqGuyCc=">
       <file path="mem-fn.cpp" line="16"/>
+      <virtual/><pure/>
     </function>
   </struct>
   <struct name="T09" id="SX7tpa77UInh7a4AsMFjfiCtoLY=">
     <file path="mem-fn.cpp" line="11" class="def"/>
     <function name="f" access="public" id="u+MePKsNF/sYSk6UpgNS65+USGU=">
       <file path="mem-fn.cpp" line="11"/>
+      <noexcept/>
     </function>
   </struct>
   <struct name="T06" id="SzwXGFnhX4HlHjHolU7XF/KEqDs=">
     <file path="mem-fn.cpp" line="8" class="def"/>
     <function name="f" access="public" id="A3MUO5+pwkURxw+SBeh1y0BKv7c=">
       <file path="mem-fn.cpp" line="8" class="def"/>
+      <constexpr/><extern/>
     </function>
   </struct>
   <struct name="T10" id="TJnjDRnoO8E/5XEw8BaODsKxlwQ=">
     <file path="mem-fn.cpp" line="12" class="def"/>
     <function name="f" access="public" id="0hjrVGeDlQhdYkOu4shvWWPqNKU=">
       <file path="mem-fn.cpp" line="12"/>
+      <trailing/>
     </function>
   </struct>
   <struct name="T08" id="WU9ZeQm0IOT8cYJkWXom3NXeWsM=">
@@ -94,18 +106,21 @@
     <file path="mem-fn.cpp" line="5" class="def"/>
     <function name="f" access="public" id="p6A5dCCvCkASDE6pH4cJA/27/o8=">
       <file path="mem-fn.cpp" line="5"/>
+      <lvref/>
     </function>
   </struct>
   <struct name="T05" id="5s81XyCIgauM5viJN9KAwx2A6DU=">
     <file path="mem-fn.cpp" line="7" class="def"/>
     <function name="f" access="public" id="rWLMsKBEv1FtDyk7Y7XNzcgmt68=">
       <file path="mem-fn.cpp" line="7"/>
+      <const/>
     </function>
   </struct>
   <struct name="T12" id="7rg34TfmIwu+7zOd7DN+Dq8mLCc=">
     <file path="mem-fn.cpp" line="14" class="def"/>
     <function name="f" access="public" id="I0S8eMgTnTkagm+IrM34MBiU4XI=">
       <file path="mem-fn.cpp" line="14"/>
+      <variadic/>
     </function>
   </struct>
   <struct name="T16" id="75395VGvKeZbe1EhfJwktZuWLs0=">
@@ -119,6 +134,7 @@
     <base name="U" access="public" id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
     <function name="f3" access="public" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
       <file path="mem-fn.cpp" line="31"/>
+      <override/><noexcept/><const/><volatile/>
       <return name="int"/>
     </function>
   </struct>
