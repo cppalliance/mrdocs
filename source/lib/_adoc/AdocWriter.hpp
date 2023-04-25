@@ -12,6 +12,7 @@
 #ifndef MRDOX_LIB_ADOC_ADOCWRITER_HPP
 #define MRDOX_LIB_ADOC_ADOCWRITER_HPP
 
+#include "SafeNames.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
@@ -23,6 +24,8 @@ namespace adoc {
 
 class AdocWriter
 {
+    SafeNames const& names_;
+
 protected:
     struct Section
     {
@@ -37,22 +40,23 @@ protected:
     Section sect_;
     std::string temp_;
 
+    friend class TypeName;
+
 public:
     virtual ~AdocWriter() = default;
 
     AdocWriter(
         llvm::raw_ostream& os,
         llvm::raw_fd_ostream* fd_os,
+        SafeNames const& names,
         Corpus const& corpus,
         Reporter& R) noexcept;
 
     struct FormalParam;
     struct TypeName;
 
-    void writeFormalParam(FormalParam const& p, llvm::raw_ostream& os);
-    void writeTypeName(TypeName const& tn, llvm::raw_ostream& os);
-
 protected:
+    void write(NamespaceInfo const& I);
     void write(RecordInfo const& I);
     void write(FunctionInfo const& I);
     void write(TypedefInfo const& I);
@@ -96,8 +100,11 @@ protected:
     FormalParam formalParam(FieldTypeInfo const& ft);
     TypeName typeName(TypeInfo const& ti);
 
+    void openSection(Info const& I);
     void openSection(llvm::StringRef name);
     void closeSection();
+
+    static bool validSectionID(llvm::StringRef) noexcept;
 
     static llvm::StringRef toString(TagTypeKind k) noexcept;
 };

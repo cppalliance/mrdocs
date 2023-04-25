@@ -36,6 +36,12 @@ public:
     get(SymbolID const& id) const noexcept;
 
     llvm::StringRef
+    get(
+        std::string& dest,
+        SymbolID const& id,
+        char sep) const noexcept;
+
+    llvm::StringRef
     getOverload(
         SymbolID const& id);
 };

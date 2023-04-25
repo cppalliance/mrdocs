@@ -43,8 +43,7 @@ buildSinglePage(
     Reporter& R,
     llvm::raw_fd_ostream* fd_os) const
 {
-    AdocSinglePageWriter w(os, fd_os, corpus, R);
-    return w.build();
+    return AdocSinglePageWriter(os, fd_os, corpus, R).build();
 }
 
 } // adoc

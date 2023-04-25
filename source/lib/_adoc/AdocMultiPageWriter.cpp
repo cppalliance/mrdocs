@@ -22,7 +22,7 @@ AdocMultiPageWriter(
     Corpus const& corpus,
     SafeNames const& names,
     Reporter& R) noexcept
-    : AdocWriter(os, fd_os, corpus, R)
+    : AdocWriter(os, fd_os, names, corpus, R)
     , names_(names)
 {
 }

@@ -21,7 +21,8 @@ AdocSinglePageWriter(
     llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
     Reporter& R) noexcept
-    : AdocWriter(os, fd_os, corpus, R)
+    : AdocWriter(os, fd_os, names_, corpus, R)
+    , names_(corpus)
 {
 }
 
@@ -45,7 +46,28 @@ AdocSinglePageWriter::
 visit(
     NamespaceInfo const& I)
 {
-    return corpus_.visit(I.Children, *this);
+    write(I);
+    if(! corpus_.visit(I.Children.Namespaces, *this))
+        return false;
+
+    // Visit records in alphabetical display order
+    std::vector<RecordInfo const*> list;
+    list.reserve(I.Children.Records.size());
+    for(auto const& ref : I.Children.Records)
+        list.push_back(&corpus_.get<RecordInfo>(ref.id));
+    std::string s0, s1;
+    llvm::sort(list,
+        [&s0, &s1](Info const* I0, Info const* I1)
+        {
+            return compareSymbolNames(
+                I0->getFullyQualifiedName(s0),
+                I1->getFullyQualifiedName(s1)) < 0;
+        });
+    for(auto const I : list)
+        if(! visit(*I))
+            return false;
+
+    return true;
 }
 
 bool
@@ -54,7 +76,7 @@ visit(
     RecordInfo const& I)
 {
     write(I);
-    return corpus_.visit(I.Children, *this);
+    return true;
 }
 
 bool

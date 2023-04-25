@@ -12,6 +12,7 @@
 #define MRDOX_LIB_ADOC_ADOCSINGLEPAGEWRITER_HPP
 
 #include "AdocWriter.hpp"
+#include "SafeNames.hpp"
 #include <mrdox/Corpus.hpp>
 
 namespace clang {
@@ -22,6 +23,8 @@ class AdocSinglePageWriter
     : public AdocWriter
     , public Corpus::Visitor
 {
+    SafeNames names_;
+
 public:
     AdocSinglePageWriter(
         llvm::raw_ostream& os,

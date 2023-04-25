@@ -12,6 +12,7 @@
 #include "Support/Operator.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
+#include <llvm/ADT/STLExtras.h>
 #include <llvm/ADT/StringMap.h>
 #include <algorithm>
 
@@ -136,7 +137,7 @@ private:
         {
             Info const& J(corpus_.get<Info>(ref.id));
             prefix_.append(getSafe(J));
-            prefix_.push_back('.');
+            prefix_.push_back('-');
             corpus_.visit(J, *this);
             prefix_.resize(n0);
         }
@@ -148,7 +149,7 @@ private:
         for(auto const I : infos)
         {
             prefix_.append(getSafe(*I));
-            prefix_.push_back('.');
+            prefix_.push_back('-');
             corpus_.visit(*I, *this);
             prefix_.resize(n0);
         }
@@ -184,6 +185,22 @@ SafeNames(
 {
     Builder b(corpus);
     map_ = std::move(b.map);
+}
+
+llvm::StringRef
+SafeNames::
+get(
+    std::string& dest,
+    SymbolID const& id,
+    char sep) const noexcept
+{
+    auto it = map_.find(llvm::toStringRef(id));
+    Assert(it != map_.end());
+    if(sep == '.')
+        return it->getValue();
+    dest = it->getValue();
+    std::replace(dest.begin(), dest.end(), '.', sep);
+    return dest;
 }
 
 llvm::StringRef

@@ -139,6 +139,28 @@ visit(SymbolID id, Visitor& f) const
 
 bool
 Corpus::
+visit(
+    std::vector<Reference> const& R, Visitor& f) const
+{
+    for(auto const& ref : R)
+        if(! visit(get<Info>(ref.id), f))
+            return false;
+    return true;
+}
+
+bool
+Corpus::
+visit(
+    std::vector<SymbolID> const& R, Visitor& f) const
+{
+    for(auto const& id : R)
+        if(! visit(get<Info>(id), f))
+            return false;
+    return true;
+}
+
+bool
+Corpus::
 visit(Scope const& I, Visitor& f) const
 {
     for(auto const& ref : I.Namespaces)

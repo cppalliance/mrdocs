@@ -104,6 +104,8 @@ public:
     */
     /** @{ */
     MRDOX_DECL bool visit(SymbolID id, Visitor& f) const;
+    MRDOX_DECL bool visit(std::vector<Reference> const& R, Visitor& f) const;
+    MRDOX_DECL bool visit(std::vector<SymbolID> const& R, Visitor& f) const;
     MRDOX_DECL bool visit(Scope const& I, Visitor& f) const;
     MRDOX_DECL bool visitWithOverloads(Scope const& I, Visitor& f) const;
     MRDOX_DECL bool visit(Info const& I, Visitor& f) const;

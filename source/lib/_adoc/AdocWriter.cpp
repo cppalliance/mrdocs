@@ -35,7 +35,7 @@ struct AdocWriter::FormalParam
         llvm::raw_ostream& os,
         FormalParam const& t)
     {
-        t.w.writeFormalParam(t, os);
+        os << t.I.Type.Name << ' ' << t.I.Name;
         return os;
     }
 };
@@ -43,6 +43,7 @@ struct AdocWriter::FormalParam
 struct AdocWriter::TypeName
 {
     TypeInfo const& I;
+    Corpus const& corpus;
     AdocWriter& w;
 
     friend
@@ -51,7 +52,21 @@ struct AdocWriter::TypeName
         llvm::raw_ostream& os,
         TypeName const& t)
     {
-        t.w.writeTypeName(t, os);
+        if(t.I.Type.id == globalNamespaceID)
+        {
+            os << t.I.Type.Name;
+            return os;
+        }
+        if(t.corpus.exists(t.I.Type.id))
+        {
+            auto const& J = t.corpus.get<RecordInfo>(t.I.Type.id);
+            // VFALCO add namespace qualifiers if I is in
+            //        a different namesapce
+            os << J.Name << "::" << J.Name;
+            return os;
+        }
+        auto const& T = t.I.Type;
+        os << T.Name << "::" << T.Name;
         return os;
     }
 };
@@ -66,26 +81,18 @@ AdocWriter::
 AdocWriter(
     llvm::raw_ostream& os,
     llvm::raw_fd_ostream* fd_os,
+    SafeNames const& names,
     Corpus const& corpus,
     Reporter& R) noexcept
     : os_(os)
     , fd_os_(fd_os)
+    , names_(names)
     , corpus_(corpus)
     , R_(R)
 {
 }
 
 //------------------------------------------------
-
-void
-AdocWriter::
-writeFormalParam(
-    FormalParam const& t,
-    llvm::raw_ostream& os)
-{
-    auto const& I = t.I;
-    os << I.Type.Name << ' ' << I.Name;
-}
 
 auto
 AdocWriter::
@@ -98,12 +105,95 @@ formalParam(
 
 //------------------------------------------------
 
+/*  Write a namespace.
+
+    This will list individual symbols by group.
+*/
+void
+AdocWriter::
+write(
+    NamespaceInfo const& I)
+{
+    if( I.Children.Records.empty() &&
+        I.Children.Functions.empty() &&
+        I.Children.Typedefs.empty() &&
+        I.Children.Enums.empty())
+        return;
+
+    std::string s;
+    I.getFullyQualifiedName(s);
+    s = "namespace " + s;
+
+    openSection(s);
+
+    if(! I.Children.Records.empty())
+    {
+        openSection("Classes");
+        os_ << "\n"
+            "[cols=1]\n"
+            "|===\n";
+        for(auto const& ref : I.Children.Records)
+        {
+            auto const& I = corpus_.get<RecordInfo>(ref.id);
+            os_ << "\n|" << linkFor(I) << '\n';
+        };
+        os_ <<
+            "|===\n";
+        closeSection();
+    }
+
+    if(! I.Children.Functions.empty())
+    {
+        openSection("Functions");
+        os_ << '\n';
+        for(auto const& ref : I.Children.Functions)
+        {
+            auto const& I = corpus_.get<FunctionInfo>(ref.id);
+            os_ << linkFor(I) << '\n';
+        };
+        closeSection();
+    }
+
+    if(! I.Children.Typedefs.empty())
+    {
+        openSection("Types");
+        os_ << '\n';
+        for(auto const& ref : I.Children.Typedefs)
+        {
+            auto const& I = corpus_.get<TypedefInfo>(ref.id);
+            os_ << linkFor(I) << '\n';
+        };
+        closeSection();
+    }
+
+    if(! I.Children.Enums.empty())
+    {
+        openSection("Constants");
+        os_ << '\n';
+        for(auto const& ref : I.Children.Enums)
+        {
+            auto const& I = corpus_.get<EnumInfo>(ref.id);
+            os_ << linkFor(I) << '\n';
+        };
+        closeSection();
+    }
+
+    closeSection();
+}
+
+//------------------------------------------------
+
+/*  Write a class/union/struct.
+
+    This will show the synopsis, description, and
+    tables for members which link to individual sections.
+*/
 void
 AdocWriter::
 write(
     RecordInfo const& I)
 {
-    openSection(I.Name);
+    openSection(I);
 
     // Brief
     writeBrief(I.javadoc);
@@ -274,7 +364,13 @@ AdocWriter::
 linkFor(
     Info const& I)
 {
-    return I.Name;
+    static thread_local std::string temp;
+    temp.clear();
+    llvm::raw_string_ostream os(temp);
+    os << "xref:#" <<
+        names_.get(I.id) << "[" <<
+        I.Name << "]";
+    return temp;
 }
 
 void
@@ -627,39 +723,32 @@ writeNode(
 
 //------------------------------------------------
 
-void
-AdocWriter::
-writeTypeName(
-    TypeName const& t,
-    llvm::raw_ostream& os)
-{
-    if(t.I.Type.id == globalNamespaceID)
-    {
-        os_ << t.I.Type.Name;
-        return;
-    }
-    if(corpus_.exists(t.I.Type.id))
-    {
-        auto const& J = corpus_.get<RecordInfo>(t.I.Type.id);
-        // VFALCO add namespace qualifiers if I is in
-        //        a different namesapce
-        os_ << J.Name << "::" << J.Name;
-        return;
-    }
-    auto const& T = t.I.Type;
-    os_ << T.Name << "::" << T.Name;
-}
-
 auto
 AdocWriter::
 typeName(
     TypeInfo const& t) ->
         TypeName
 {
-    return TypeName{ t, *this };
+    return TypeName{ t, corpus_, *this };
 }
 
 //------------------------------------------------
+
+void
+AdocWriter::
+openSection(
+    Info const& I)
+{
+    Assert(validSectionID(names_.get(I.id)));
+
+    sect_.level++;
+    if(sect_.level <= 6)
+        sect_.markup.push_back('=');
+    os_ <<
+        "\n" <<
+        "[\"#" << names_.get(I.id) << "\"]\n" <<
+        sect_.markup << ' ' << I.Name << "\n";
+}
 
 void
 AdocWriter::
@@ -682,6 +771,21 @@ closeSection()
     if(sect_.level <= 6)
         sect_.markup.pop_back();
     sect_.level--;
+}
+
+//------------------------------------------------
+
+bool
+AdocWriter::
+validSectionID(
+    llvm::StringRef s) noexcept
+{
+    if(s.empty())
+        return false;
+    return
+        s[0] == '_' ||
+        s[0] == ':' ||
+        isalpha(s[0]);
 }
 
 //------------------------------------------------
