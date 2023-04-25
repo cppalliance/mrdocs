@@ -193,6 +193,12 @@ if (MRDOX_BUILD_TESTS)
     )
     source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
     source_group(TREE ${PROJECT_SOURCE_DIR}/source/tests PREFIX "source" FILES ${TEST_SOURCES})
+
+    # fail test self-test
+    include(tests/FailTest.cmake)
+
+    add_fail_test(NAME self-test COMMAND does-not-exist 1 2 3)
+    add_fail_test(self-test-simple does-not-exist 1 2 3)
 endif()
 
 #-------------------------------------------------
