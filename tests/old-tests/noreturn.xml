@@ -7,17 +7,17 @@
     <friend id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
     <function name="f2" access="public" id="QjsWLydQujVa097RP8f2Lq3nLQ4=">
       <file path="noreturn.cpp" line="5"/>
-      <gcc-noreturn/><gcc-noreturn/><noreturn/>
+      <noreturn/>
     </function>
     <function name="f3" access="public" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
       <file path="noreturn.cpp" line="7"/>
-      <gcc-noreturn/><gcc-noreturn/><noreturn/>
+      <noreturn/>
     </function>
   </struct>
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file path="noreturn.cpp" line="1"/>
     <file path="noreturn.cpp" line="9"/>
-    <gcc-noreturn/><gcc-noreturn/><noreturn/>
+    <noreturn/>
   </function>
 </namespace>
 </mrdox>

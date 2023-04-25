@@ -204,11 +204,6 @@ visit(
         if(I.specs.get<FnFlags0::isDeletedAsWritten>())
             os << "<equals-delete/>";
         if(I.specs.get<FnFlags0::isNoReturn>())
-            os << "<gcc-noreturn/>";
-        if(I.specs.get<FnFlags0::isNoReturn>())
-            os << "<gcc-noreturn/>";
-
-        if(I.specs.get<FnFlags0::hasCXX11NoReturnAttr>())
             os << "<noreturn/>";
         if(I.specs.get<FnFlags0::hasOverrideAttr>())
             os << "<override/>";

@@ -971,18 +971,18 @@ getFunctionSpecs(
     I.specs.set<FnFlags0::isDeleted>(D->isDeleted());
     I.specs.set<FnFlags0::isDeletedAsWritten>(D->isDeletedAsWritten());
     I.specs.set<FnFlags0::isNoReturn>(D->isNoReturn());
-
-    I.specs.set<FnFlags0::hasCXX11NoReturnAttr>(D->hasAttr<CXX11NoReturnAttr>());
+        // subsumes D->hasAttr<NoReturnAttr>()
+        // subsumes D->hasAttr<CXX11NoReturnAttr>()
+        // subsumes D->hasAttr<C11NoReturnAttr>()
+        // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
     I.specs.set<FnFlags0::hasOverrideAttr>(D->hasAttr<OverrideAttr>());
     if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
         I.specs.set<FnFlags0::hasTrailingReturn>(FP->hasTrailingReturn());
 
     I.specs.set<FnFlags0::constexprKind>(D->getConstexprKind());
-    //D->isConstexpr(); // subsumed by getConstexprKind
-    //D->isConstexprSpecified(); // subsumed by getConstexprKind
-    //D->isConsteval(); // subsumed by getConstexprKind
-
-    // isNoexceptExceptionSpec(D->getExceptionSpecType())
+        // subsumes D->isConstexpr();
+        // subsumes D->isConstexprSpecified();
+        // subsumes D->isConsteval();
     I.specs.set<FnFlags0::exceptionSpecType>(D->getExceptionSpecType());
     I.specs.set<FnFlags0::overloadedOperator>(D->getOverloadedOperator());
     I.specs.set<FnFlags0::storageClass>(D->getStorageClass());
