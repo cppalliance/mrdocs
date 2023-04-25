@@ -14,6 +14,9 @@ def EnumDeclarationsFolder():
 def EmptyDeclarationFolder():
     return os.path.join(ToplevelFolder(), "dcl.dcl", "empty_declaration")
 
+def NamespaceDefinitionsFolder():
+    return os.path.join(ToplevelFolder(), "namespace.def")
+
 
 def GenerateEnumDeclarations():
     #https://eel.is/c++draft/enum
@@ -34,6 +37,17 @@ def GenerateEnumDeclarations():
     return declarations
 
 
+def GenerateNamespaceDefinitions():
+    #https://eel.is/c++draft/namespace.def
+    optional_content = "(class SampleClass \{\}; int SampleObject = 0; template<class T, auto V, template<class> class Templ> class SampleClassTemplate \{\};)?"
+    named_namespace_definition = f"(inline )?namespace ParseMeIfYouCan \{{ {optional_content} \}}"
+    unnamed_namespace_definition = f"(inline )?namespace \{{ {optional_content} \}}"
+    nested_namespace_definition = f"namespace Level_2::( inline )?Level_1::( inline )?Level_0 \{{ {optional_content} \}}"
+    regex = f"({named_namespace_definition}|{unnamed_namespace_definition}|{nested_namespace_definition})"
+    generator = exrex.generate(regex)
+    return generator
+
+
 def GenerateIndexedCppFiles(parentDirectory, fileContents):
     os.makedirs(parentDirectory, exist_ok=True)
     for index, aDeclaration in enumerate(fileContents):
@@ -46,3 +60,4 @@ def GenerateIndexedCppFiles(parentDirectory, fileContents):
 GenerateIndexedCppFiles(EnumDeclarationsFolder(), GenerateEnumDeclarations())
 #https://eel.is/c++draft/dcl.dcl#nt:empty-declaration
 GenerateIndexedCppFiles(EmptyDeclarationFolder(), [";"])
+GenerateIndexedCppFiles(NamespaceDefinitionsFolder(), GenerateNamespaceDefinitions())
