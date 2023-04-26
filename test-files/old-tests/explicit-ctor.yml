@@ -1,0 +1,2 @@
+cxxstd: c++20
+# no C++17 here.

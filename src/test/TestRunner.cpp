@@ -9,6 +9,7 @@
 //
 
 #include "TestRunner.hpp"
+#include "TestConfig.hpp"
 #include "TestArgs.hpp"
 #include "lib/Support/Error.hpp"
 #include "lib/Support/Path.hpp"
@@ -112,16 +113,25 @@ handleFile(
     // Build Corpus
     std::unique_ptr<Corpus> corpus;
     {
-        SingleFileDB db1(filePath);
-        auto workingDir = files::getParentDir(filePath);
-        // Convert relative paths to absolute
-        AbsoluteCompilationDatabase db(
-            llvm::StringRef(workingDir), db1, config);
-        ToolExecutor ex(report::Level::debug, *config, db);
-        auto result = CorpusImpl::build(ex, config);
-        if(! result)
-            report::error("{}: \"{}\"", result.error(), filePath);
-        corpus = result.release();
+
+        auto tcs = TestConfig::loadForTest(dirPath.c_str(), filePath);
+        if (!tcs)
+            return report::error("{}: \"{}\"", tcs.error(), dirPath);
+
+        for (const auto & tc : *tcs)
+        {
+            SingleFileDB db1(filePath, tc.cxxstd, tc.compile_flags, tc.heuristics);
+            auto workingDir = files::getParentDir(filePath);
+            // Convert relative paths to absolute
+            AbsoluteCompilationDatabase db(
+                llvm::StringRef(workingDir), db1, config);
+            ToolExecutor ex(report::Level::debug, *config, db);
+            auto result = CorpusImpl::build(ex, config);
+            if(! result)
+                report::error("{}: \"{}\"", result.error(), filePath);
+            if (!corpus)
+                corpus = result.release();
+        }
     }
 
     // Generate XML
