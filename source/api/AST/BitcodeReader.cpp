@@ -67,24 +67,6 @@ decodeRecord(
     return llvm::Error::success();
 }
 
-// bits
-template<class... Enum>
-static
-llvm::Error
-decodeRecord(
-    Record const& R,
-    std::uint32_t* data,
-    std::size_t n,
-    llvm::StringRef blob)
-{
-    auto n1 = *R.begin();
-    if(n1 != n)
-        return makeError("wrong size(", n1, ") for Bits(", n, ")");
-    for(std::size_t i = 0; i < n1; ++i)
-        data[i] = static_cast<std::uint32_t>(R.begin()[i + 1]);
-    return llvm::Error::success();
-}
-
 // container of char
 template<class Field>
 requires std::is_same_v<
@@ -261,6 +243,26 @@ decodeRecord(
     if (R[0] > INT_MAX)
         return makeError("integer too large to parse");
     Field.emplace_back((int)R[0], Blob, (bool)R[1]);
+    return llvm::Error::success();
+}
+
+
+template<class Enum>
+requires std::is_enum_v<Enum>
+static
+llvm::Error
+decodeRecord(
+    Record const& R,
+    Bits<Enum>& bits,
+    llvm::StringRef Blob)
+{
+    auto n = *R.begin();
+    if(n != 1)
+        return makeError("wrong size(", n, ") for Bits[1]");
+    auto const v = R.begin()[1];
+    if(v > (std::numeric_limits<std::uint32_t>::max)())
+        return makeError(v, " is out of range for Bits");
+    bits.load(static_cast<std::uint32_t>(v));
     return llvm::Error::success();
 }
 
@@ -1054,6 +1056,8 @@ parseRecord(
         return decodeRecord(R, I->IsTypeDef, Blob);
     case RECORD_FRIENDS:
         return decodeRecord(R, I->Friends, Blob);
+    case INFO_BITS:
+        return decodeRecord(R, I->specs, Blob);
     default:
         return makeError("invalid field for RecordInfo");
     }
@@ -1109,13 +1113,7 @@ parseRecord(
     case FUNCTION_IS_METHOD:
         return decodeRecord(R, I->IsMethod, Blob);
     case FUNCTION_BITS:
-    {
-        std::uint32_t v = 0;
-        if(auto err = decodeRecord(R, &v, 1, Blob))
-            return err;
-        I->specs.load(v);
-        return llvm::Error::success();
-    }
+        return decodeRecord(R, I->specs, Blob);
     default:
         return makeError("invalid field for FunctionInfo");
     }

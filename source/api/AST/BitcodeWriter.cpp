@@ -233,6 +233,7 @@ RecordIdNameMap = []()
         {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
         {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
         {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
+        {INFO_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
         {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
         {NAMESPACE_USR, {"USR", &SymbolIDAbbrev}},
@@ -327,7 +328,7 @@ RecordsByBlock{
     {BI_RECORD_BLOCK_ID,
         {RECORD_USR, RECORD_NAME, RECORD_DEFLOCATION,
         RECORD_LOCATION, RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF,
-        RECORD_FRIENDS}},
+        INFO_BITS, RECORD_FRIENDS}},
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
@@ -463,6 +464,7 @@ emitBlock(
         emitRecord(L, RECORD_LOCATION);
     emitRecord(I.TagType, RECORD_TAG_TYPE);
     emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
+    emitRecord(I.specs, INFO_BITS);
     for (const auto& N : I.Members)
         emitBlock(N);
     for (const auto& P : I.Parents)
@@ -514,11 +516,7 @@ emitBlock(
         emitBlock(*I.javadoc);
     emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
-    {
-        std::uint32_t v[1] = {
-            I.specs.value() };
-        emitRecord(v, 1, FUNCTION_BITS);
-    }
+    emitRecord(I.specs, FUNCTION_BITS);
     if (I.DefLoc)
         emitRecord(*I.DefLoc, FUNCTION_DEFLOCATION);
     for (const auto& L : I.Loc)
@@ -826,30 +824,21 @@ emitRecord(
 }
 
 // Bits
+template<class Enum>
+requires std::is_enum_v<Enum>
 void
 BitcodeWriter::
 emitRecord(
-    std::uint32_t const* p,
-    std::size_t n,
+    Bits<Enum> const& bits,
     RecordId ID)
 {
     Assert(RecordIdNameMap[ID]);
     Assert(RecordIdNameMap[ID].Abbrev ==
         &Integer32ArrayAbbrev);
-    bool empty = true;
-    for(std::size_t i = 0; i < n; ++i)
-    {
-        if(p[i] != 0)
-        {
-            empty = false;
-            break;
-        }
-    }
-    if (!prepRecordData(ID, ! empty))
+    if (!prepRecordData(ID, bits.value() != 0))
         return;
-    Record.push_back(n);
-    for(std::size_t i = 0; i < n; ++i)
-        Record.push_back(static_cast<RecordValue>(p[i]));
+    Record.push_back(1);
+    Record.push_back(static_cast<RecordValue>(bits.value()));
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 

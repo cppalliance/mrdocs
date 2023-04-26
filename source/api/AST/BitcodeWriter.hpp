@@ -22,6 +22,7 @@
 #include <mrdox/Platform.hpp>
 #include "BitcodeIDs.hpp"
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Metadata/Bits.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <clang/AST/AST.h>
 #include <llvm/ADT/DenseMap.h>
@@ -92,7 +93,9 @@ public:
     requires std::is_enum_v<Enum>
     void emitRecord(Enum Value, RecordId ID);
 
-    void emitRecord(std::uint32_t const* p, std::size_t n, RecordId ID);
+    template<class Enum>
+    requires std::is_enum_v<Enum>
+    void emitRecord(Bits<Enum> const&, RecordId ID);
 
     void emitRecord(llvm::SmallVectorImpl<SymbolID> const& Values, RecordId ID);
 

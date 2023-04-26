@@ -37,6 +37,7 @@ merge(RecordInfo&& Other)
     if (!TagType)
         TagType = Other.TagType;
     IsTypeDef = IsTypeDef || Other.IsTypeDef;
+    specs.merge(std::move(Other).specs);
     if (Members.empty())
         Members = std::move(Other.Members);
     if (Bases.empty())

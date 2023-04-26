@@ -143,6 +143,14 @@ visit(
 
     writeInfo(I);
     writeSymbol(I);
+    {
+        auto os = tags_.jit_indent();
+        if(I.specs.get<RecFlags0::isFinal>())
+            os << "<final/>";
+        if(I.specs.get<RecFlags0::isFinalDestructor>())
+            os << "<final-dtor/>";
+        os.finish();
+    }
     for(auto const& J : I.Bases)
         writeBaseRecord(J);
     // VFALCO data members?

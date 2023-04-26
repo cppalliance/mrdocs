@@ -13,6 +13,7 @@
 #define MRDOX_METADATA_RECORD_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Bits.hpp>
 #include <mrdox/Metadata/MemberType.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Scope.hpp>
@@ -29,19 +30,16 @@ namespace mrdox {
 
 struct BaseRecordInfo;
 
-// TODO: Expand to allow for documenting templating, inheritance access,
-// friend classes
-// Info for types.
+/** Bit constants used with function specifiers.
+*/
+enum RecFlags0 : std::uint32_t
+{
+    isFinal             = 0x00000001,
+    isFinalDestructor   = 0x00000002
+};
+
 struct RecordInfo : SymbolInfo
 {
-    static constexpr InfoType type_id = InfoType::IT_record;
-
-    RecordInfo(
-        SymbolID id = SymbolID(),
-        llvm::StringRef Name = llvm::StringRef());
-
-    void merge(RecordInfo&& I);
-
     // Type of this record (struct, class, union, interface).
     TagTypeKind TagType = TagTypeKind::TTK_Struct;
 
@@ -58,6 +56,8 @@ struct RecordInfo : SymbolInfo
     // are converted into records with the typedef as the Name + this flag set.
     bool IsTypeDef = false;
 
+    Bits<RecFlags0> specs;
+
     llvm::SmallVector<MemberTypeInfo, 4> Members;   // List of info about record members.
     llvm::SmallVector<Reference, 4> Parents;        // List of base/parent records
                                                     // (does not include virtual parents).
@@ -70,6 +70,16 @@ struct RecordInfo : SymbolInfo
     llvm::SmallVector<SymbolID, 4> Friends;
 
     Scope Children;
+
+    //--------------------------------------------
+
+    static constexpr InfoType type_id = InfoType::IT_record;
+
+    RecordInfo(
+        SymbolID id = SymbolID(),
+        llvm::StringRef Name = llvm::StringRef());
+
+    void merge(RecordInfo&& I);
 };
 
 } // mrdox

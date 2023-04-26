@@ -102,42 +102,24 @@ private:
     llvm::Error
     readRecord(unsigned ID, T I);
 
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, const unsigned VersionNo);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, NamespaceInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, RecordInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, BaseRecordInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, FunctionInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, EnumInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, EnumValueInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TypedefInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TypeInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, FieldTypeInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, MemberTypeInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, Reference* I, FieldId& F);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TemplateInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TemplateSpecializationInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, TemplateParamInfo* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, llvm::Optional<Javadoc>* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, AnyNodeList* I);
-    llvm::Error parseRecord(Record const& R, unsigned ID,
-        llvm::StringRef Blob, AnyNodeList::Nodes* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, const unsigned VersionNo);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, NamespaceInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, RecordInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, BaseRecordInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, FunctionInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, EnumInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, EnumValueInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, TypedefInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, TypeInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, FieldTypeInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, MemberTypeInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, Reference* I, FieldId& F);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, TemplateInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, TemplateSpecializationInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, TemplateParamInfo* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, llvm::Optional<Javadoc>* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, AnyNodeList* I);
+    llvm::Error parseRecord(Record const& R, unsigned ID, llvm::StringRef Blob, AnyNodeList::Nodes* I);
 
     // Helper function to step through blocks to find and dispatch the next record
     // or block to be read.

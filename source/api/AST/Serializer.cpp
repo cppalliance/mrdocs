@@ -856,6 +856,20 @@ build(
         writeParent(std::move(I)) };
 }
 
+static
+void
+getCXXRecordSpecs(
+    RecordInfo& I,
+    CXXRecordDecl const* D)
+{
+    // These are from CXXRecordDecl::isEffectivelyFinal()
+    I.specs.set<RecFlags0::isFinal>(D->hasAttr<FinalAttr>());
+    if(auto const DT = D->getDestructor())
+    {
+        I.specs.set<RecFlags0::isFinalDestructor>(DT->hasAttr<FinalAttr>());
+    }
+}
+
 SerializeResult
 Serializer::
 build(
@@ -865,6 +879,7 @@ build(
     if(! getSymbolInfo(*this, I, D))
         return {};
     I.TagType = D->getTagKind();
+    getCXXRecordSpecs(I, D);
     parseFields(I, D, PublicOnly, AccessSpecifier::AS_public, R_);
     if(auto const* C = dyn_cast<CXXRecordDecl>(D))
     {
