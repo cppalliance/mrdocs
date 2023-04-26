@@ -213,8 +213,8 @@ if (MRDOX_BUILD_TESTS)
                 testfiles/decl-only/record_1.cpp
                 testfiles/decl-only/record_2.cpp)
 
-        mrdox(FORMAT adoc CONFIG mrdox.yml SOURCES ${TESTFILES})
-        mrdox(FORMAT xml  CONFIG mrdox.yml SOURCES ${TESTFILES})
+        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${TESTFILES})
+        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${TESTFILES})
 
         add_custom_target(reference_adoc DEPENDS reference.adoc)
         add_custom_target(reference_xml  DEPENDS reference.xml)
