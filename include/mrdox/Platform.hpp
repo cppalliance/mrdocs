@@ -21,7 +21,8 @@ namespace mrdox {
 
 //------------------------------------------------
 //
-// static/dynamic linking
+// Shared Libraries
+//
 //------------------------------------------------
 
 // static linking
@@ -53,6 +54,12 @@ namespace mrdox {
 #endif
 
 //------------------------------------------------
+
+template<class T>
+T&& _access(T&& t) noexcept
+{
+    return static_cast<T&&>(t);
+}
 
 } // mrdox
 } // clang

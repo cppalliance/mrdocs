@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_AST_SERIALIZE_HPP
-#define MRDOX_API_AST_SERIALIZE_HPP
+#ifndef MRDOX_API_AST_SERIALIZER_HPP
+#define MRDOX_API_AST_SERIALIZER_HPP
 
 #include <mrdox/Platform.hpp>
 #include "clangASTComment.hpp"

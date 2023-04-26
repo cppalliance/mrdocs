@@ -63,6 +63,7 @@ protected:
     void write(EnumInfo const& I);
 
     virtual llvm::StringRef linkFor(Info const&);
+    virtual llvm::StringRef linkFor(Info const&, Overloads_ const&);
 
     void writeBase(
         BaseRecordInfo const& I);
@@ -78,6 +79,9 @@ protected:
         llvm::SmallVectorImpl<MemberTypeInfo> const& list,
         AccessSpecifier access);
 
+    void writeFunctionDeclaration(
+        FunctionInfo const& I);
+
     void writeBrief(
         llvm::Optional<Javadoc> const& javadoc,
         bool withNewline = true);
@@ -86,8 +90,16 @@ protected:
     void writeLocation(SymbolInfo const& I);
 
     template<class T>
-    void writeNodes(List<T> const& list);
+    void writeNodes(List<T> const& list)
+    {
+        if(list.empty())
+            return;
+        for(Javadoc::Node const& node : list)
+            writeNode(node);
+    }
+
     void writeNode(Javadoc::Node const& node);
+    void writeNode(Javadoc::Block const& node);
     void writeNode(Javadoc::Text const& node);
     void writeNode(Javadoc::StyledText const& node);
     void writeNode(Javadoc::Paragraph const& node);
@@ -101,6 +113,7 @@ protected:
     TypeName typeName(TypeInfo const& ti);
 
     void beginSection(Info const& I);
+    void beginSection(Info const& P, Overloads_ const& F);
     void beginSection(llvm::StringRef name);
     void endSection();
 

@@ -36,7 +36,9 @@ struct AdocWriter::FormalParam
         llvm::raw_ostream& os,
         FormalParam const& t)
     {
-        os << t.I.Type.Name << ' ' << t.I.Name;
+        os << t.I.Type.Name;
+        if(! t.I.Name.empty())
+            os << ' ' << t.I.Name;
         return os;
     }
 };
@@ -85,9 +87,9 @@ AdocWriter(
     SafeNames const& names,
     Corpus const& corpus,
     Reporter& R) noexcept
-    : os_(os)
+    : names_(names)
+    , os_(os)
     , fd_os_(fd_os)
-    , names_(names)
     , corpus_(corpus)
     , R_(R)
 {
@@ -309,6 +311,22 @@ linkFor(
     return temp;
 }
 
+llvm::StringRef
+AdocWriter::
+linkFor(
+    Info const& P,
+    Overloads_ const& t)
+{
+    static thread_local std::string temp;
+    temp.clear();
+    llvm::raw_string_ostream os(temp);
+    std::string s;
+    os << "xref:#" <<
+        names_.getOverload(P, t.name, '-', s) <<
+        "[" << t.name << "]";
+    return temp;
+}
+
 void
 AdocWriter::
 writeBase(
@@ -521,19 +539,24 @@ writeLocation(
     }
 }
 
-//------------------------------------------------
-
-template<class T>
 void
 AdocWriter::
-writeNodes(
-    List<T> const& list)
+writeFunctionDeclaration(
+    FunctionInfo const& I)
 {
-    if(list.empty())
+    os_ << typeName(I.ReturnType) << ' ' << I.Name;
+    if(I.Params.empty())
+    {
+        os_ << "()";
         return;
-    for(Javadoc::Node const& node : list)
-        writeNode(node);
+    }
+    os_ << "( " << formalParam(I.Params[0]);
+    for(std::size_t i = 1; i < I.Params.size(); ++i)
+        os_ << ", " << formalParam(I.Params[i]);
+    os_ << " )";
 }
+
+//------------------------------------------------
 
 void
 AdocWriter::
@@ -575,6 +598,15 @@ writeNode(
     default:
         llvm_unreachable("unknown kind");
     }
+}
+
+void
+AdocWriter::
+writeNode(
+    Javadoc::Block const&)
+{
+    // shouldn't get here
+    Assert(false);
 }
 
 void
@@ -686,6 +718,21 @@ beginSection(
         sect_.markup << ' ' << I.Name << "\n";
 }
 
+void
+AdocWriter::
+beginSection(
+    Info const& P,
+    Overloads_ const& F)
+{
+    sect_.level++;
+    if(sect_.level <= 6)
+        sect_.markup.push_back('=');
+    std::string temp;
+    os_ <<
+        "\n" <<
+        "[\"#" << names_.getOverload(P, F.name, '-', temp) << "\"]\n" <<
+        sect_.markup << ' ' << F.name << "\n";
+}
 void
 AdocWriter::
 beginSection(

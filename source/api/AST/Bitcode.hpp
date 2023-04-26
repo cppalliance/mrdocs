@@ -16,7 +16,7 @@
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/Execution.h>
-#include <llvm/ADT/SmallString.h>
+#include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringMap.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
@@ -40,8 +40,26 @@ namespace mrdox {
 */
 struct Bitcode
 {
+    /** The symbol ID for this bitcode.
+    */
     SymbolID id;
-    std::string data;
+
+    /** The serialized bitcode.
+
+        We use small string here to avoid
+        making needless copies.
+    */
+    llvm::SmallString<0> data;
+
+    Bitcode() noexcept = default;
+
+    Bitcode(
+        SymbolID const& id_,
+        llvm::SmallString<0>&& data_) noexcept
+        : id(id_)
+        , data(std::move(data_))
+    {
+    }
 
     bool empty() const noexcept
     {
@@ -55,7 +73,7 @@ using Bitcodes = llvm::StringMap<std::vector<StringRef>>;
 
 /** Return the serialized bitcode for a metadata node.
 */
-llvm::SmallString<2048>
+Bitcode
 writeBitcode(
     Info const& I);
 

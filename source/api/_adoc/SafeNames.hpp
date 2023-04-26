@@ -33,17 +33,20 @@ public:
         Corpus const&);
 
     llvm::StringRef
-    get(SymbolID const& id) const noexcept;
+    get(SymbolID const& id) const;
 
     llvm::StringRef
     get(
-        std::string& dest,
         SymbolID const& id,
-        char sep) const noexcept;
+        char sep,
+        std::string& dest) const;
 
     llvm::StringRef
     getOverload(
-        SymbolID const& id);
+        Info const &P,
+        llvm::StringRef name,
+        char sep,
+        std::string& dest) const;
 };
 
 } // adoc

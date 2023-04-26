@@ -1110,7 +1110,7 @@ parseRecord(
         return decodeRecord(R, I->IsMethod, Blob);
     case FUNCTION_BITS:
     {
-        std::uint32_t v;
+        std::uint32_t v = 0;
         if(auto err = decodeRecord(R, &v, 1, Blob))
             return err;
         I->specs.load(v);

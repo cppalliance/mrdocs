@@ -16,6 +16,8 @@
 #include <mrdox/Metadata/Function.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
+#include <span>
+#include <string_view>
 
 namespace clang {
 namespace mrdox {
@@ -60,6 +62,56 @@ makeOverloadsSet(
     Corpus const& corpus,
     Scope const& scope,
     AccessSpecifier access);
+
+//------------------------------------------------
+
+struct Overloads_
+{
+    /** The name for this set of functions.
+    */
+    std::string_view name;
+
+    /** The list of overloads.
+    */
+    std::span<FunctionInfo const*> list;
+};
+
+class MRDOX_VISIBLE
+    NamespaceOverloads
+{
+public:
+    std::vector<Overloads_> list;
+
+    /** Constructor.
+
+        @par Complexity
+        `O(N * log(N))` in `data.size()`.
+    */
+    MRDOX_DECL
+    explicit
+    NamespaceOverloads(
+        std::vector<FunctionInfo const*> data);
+
+private:
+    std::vector<FunctionInfo const*> data_;
+};
+
+/** Create an overload set for all functions in a namespace.
+
+    This function organizes all functions in the
+    specified list into an overload set. The top
+    level set is sorted alphabetically using a
+    display sort.
+
+    @return The overload set.
+
+    @param list The list of function references to use.
+*/
+MRDOX_DECL
+NamespaceOverloads
+makeNamespaceOverloads(
+    std::vector<Reference> const& list,
+    Corpus const& corpus);
 
 } // mrdox
 } // clang

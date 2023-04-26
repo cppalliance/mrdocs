@@ -55,7 +55,7 @@ GeneratorsImpl::
 insert(
     std::unique_ptr<Generator> G)
 {
-    if(auto g = find(G->name()))
+    if(find(G->name()) != nullptr)
         return makeError("generator '", G->name(), "' already exists");
     list_.emplace_back(std::move(G));
     refresh_plist();

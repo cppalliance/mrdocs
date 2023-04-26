@@ -10,6 +10,7 @@
 //
 
 #include "BitcodeWriter.hpp"
+#include "Bitcode.hpp"
 #include "ParseJavadoc.hpp"
 #include <mrdox/Debug.hpp>
 #include <mrdox/Metadata.hpp>
@@ -1021,15 +1022,15 @@ emitBlock(
 
 /** Write an Info variant to the buffer as bitcode.
 */
-llvm::SmallString<2048>
+Bitcode
 writeBitcode(
     Info const& I)
 {
-    SmallString<2048> Buffer;
+    SmallString<0> Buffer;
     llvm::BitstreamWriter Stream(Buffer);
     BitcodeWriter writer(Stream);
     writer.dispatchInfoForWrite(&I);
-    return Buffer;
+    return Bitcode{ I.id, std::move(Buffer) };
 }
 
 } // mrdox

@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Serialize.hpp"
+#include "Serializer.hpp"
 #include "Bitcode.hpp"
 #include "ParseJavadoc.hpp"
 #include <mrdox/Debug.hpp>
@@ -481,15 +481,6 @@ insertChild(Parent& parent, Child&& I)
     }
 }
 
-// Return the serialized bitcode for a metadata node
-static
-Bitcode
-serialize(
-    Info const& I)
-{
-    return { I.id, writeBitcode(I).str().str() };
-}
-
 // Create an empty parent for the child with the
 // child inserted either as a reference or by moving
 // the entire record. Then return the parent as a
@@ -498,7 +489,7 @@ template<class Child>
 requires std::derived_from<Child, Info>
 static
 Bitcode
-serializeParent(Child&& I)
+writeParent(Child&& I)
 {
     if(I.Namespace.empty())
     {
@@ -512,19 +503,19 @@ serializeParent(Child&& I)
         NamespaceInfo P;
         Assert(P.id == globalNamespaceID);
         insertChild(P, std::move(I));
-        return serialize(P);
+        return writeBitcode(P);
     }
     if(I.Namespace[0].RefType == InfoType::IT_namespace)
     {
         NamespaceInfo P(I.Namespace[0].id);
         insertChild(P, std::move(I));
-        return serialize(P);
+        return writeBitcode(P);
     }
     Assert(I.Namespace[0].RefType == InfoType::IT_record);
     Assert(Child::type_id != InfoType::IT_namespace);
     RecordInfo P(I.Namespace[0].id);
     insertChild(P, std::move(I));
-    return serialize(P);
+    return writeBitcode(P);
 }
 
 // There are two uses for this function.
@@ -861,8 +852,8 @@ build(
         I.Name = "@nonymous_namespace";
 
     return {
-        serialize(I),
-        serializeParent(std::move(I)) };
+        writeBitcode(I),
+        writeParent(std::move(I)) };
 }
 
 SerializeResult
@@ -946,7 +937,7 @@ build(
         }
     }
 
-    return { serialize(I), serializeParent(std::move(I)) };
+    return { writeBitcode(I), writeParent(std::move(I)) };
 }
 
 //------------------------------------------------
@@ -1038,7 +1029,7 @@ build(
 
     getFunctionSpecs(I, D);
 
-    return { serialize(I), serializeParent(std::move(I)) };
+    return { writeBitcode(I), writeParent(std::move(I)) };
 }
 
 SerializeResult
@@ -1068,19 +1059,21 @@ build(
             bool isInAnonymous;
             getParentNamespaces(P.Namespace, ND, isInAnonymous);
             return {
-                serialize(I),
-                serializeParent(std::move(I)),
-                serialize(P),
-                serializeParent(std::move(P)) };
+                writeBitcode(I),
+                writeParent(std::move(I)),
+                writeBitcode(P),
+                writeParent(std::move(P)) };
         }
         if(FunctionTemplateDecl const* FT = dyn_cast<FunctionTemplateDecl>(ND))
         {
             // VFALCO TODO
+            (void)FT;
             return {};
         }
         if(ClassTemplateDecl const* CT = dyn_cast<ClassTemplateDecl>(ND))
         {
             // VFALCO TODO
+            (void)CT;
             return {};
         }
 
@@ -1089,6 +1082,7 @@ build(
     }
     else if(TypeSourceInfo const* TS = D->getFriendType())
     {
+        (void)TS;
         return {};
     }
     else
@@ -1131,7 +1125,7 @@ build(
     FunctionInfo I;
     if(! buildFunctionInfo(*this, I, D))
         return {};
-    return { serialize(I), serializeParent(std::move(I)) };
+    return { writeBitcode(I), writeParent(std::move(I)) };
 }
 
 SerializeResult
@@ -1155,7 +1149,7 @@ build(
     I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
     I.IsUsing = false;
 
-    return { serialize(I), serializeParent(std::move(I)) };
+    return { writeBitcode(I), writeParent(std::move(I)) };
 }
 
 // VFALCO This is basically a copy of the typedef
@@ -1183,7 +1177,7 @@ build(
     I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
     I.IsUsing = true;
 
-    return { serialize(I), serializeParent(std::move(I)) };
+    return { writeBitcode(I), writeParent(std::move(I)) };
 }
 
 SerializeResult
@@ -1202,7 +1196,7 @@ build(
     }
     parseEnumerators(I, D);
 
-    return { serializeParent(std::move(I)) };
+    return { writeParent(std::move(I)) };
 }
 
 } // mrdox

@@ -11,7 +11,7 @@
 
 #include "ASTVisitor.hpp"
 #include "Commands.hpp"
-#include "Serialize.hpp"
+#include "Serializer.hpp"
 #include "Support/Path.hpp"
 #include <mrdox/Debug.hpp>
 #include <clang/Index/USRGeneration.h>

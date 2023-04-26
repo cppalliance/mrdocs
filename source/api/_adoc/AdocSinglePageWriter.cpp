@@ -73,15 +73,6 @@ AdocSinglePageWriter::
 visit(
     NamespaceInfo const& I)
 {
-    //if(! corpus_.visit(I.Children.Namespaces, *this))
-        //return false;
-/*
-    if( I.Children.Records.empty() &&
-        I.Children.Functions.empty() &&
-        I.Children.Typedefs.empty() &&
-        I.Children.Enums.empty())
-        return;
-*/
     // build sorted list of namespaces,
     // this is for visitation not display.
     auto namespaceList = buildSortedList<NamespaceInfo>(I.Children.Namespaces);
@@ -100,7 +91,7 @@ visit(
         beginSection(s);
 
         auto recordList = buildSortedList<RecordInfo>(I.Children.Records);
-        auto functionList = buildSortedList<FunctionInfo>(I.Children.Functions);
+        auto functionOverloads = makeNamespaceOverloads(I.Children.Functions, corpus_);
         //auto typeList = ?
         //auto enumList = ?
 
@@ -118,15 +109,15 @@ visit(
             endSection();
         }
 
-        if(! functionList.empty())
+        if(! functionOverloads.list.empty())
         {
             beginSection("Functions");
             os_ << "\n"
                 "[cols=1]\n"
                 "|===\n";
-            for(auto const I : functionList)
+            for(auto const t : functionOverloads.list)
             {
-                os_ << "\n|" << linkFor(*I) << '\n';
+                os_ << "\n|" << linkFor(I, t) << '\n';
             };
             os_ << "|===\n";
             endSection();
@@ -138,12 +129,14 @@ visit(
 
         // now visit each indexed item
         for(auto const& I : recordList)
-            visit(*I);
+            if(! visit(*I))
+                return false;
         recordList.clear();
 
-        for(auto const& I : functionList)
-            visit(*I);
-        functionList.clear();
+        for(auto const& t : functionOverloads.list)
+            if(! visitOverloads(I, t))
+                return false;
+        functionOverloads.list = {};
 
         /*
         for(auto const& I : typeList)
@@ -201,6 +194,47 @@ visit(
     EnumInfo const& I)
 {
     write(I);
+    return true;
+}
+
+bool
+AdocSinglePageWriter::
+visitOverloads(
+    Info const& P,
+    Overloads_ const& t)
+{
+    Assert(! t.list.empty());
+
+    beginSection(P, t);
+
+    // Location
+    writeLocation(*t.list.front());
+
+    // List of overloads
+    os_ << '\n';
+    for(auto const I : t.list)
+    {
+        os_ << ". `";
+        writeFunctionDeclaration(*I);
+        os_ << "`\n";
+    };
+
+    // Brief
+    os_ << "\n//-\n";
+    writeBrief(t.list.front()->javadoc, true);
+
+    // List of descriptions
+    for(auto const I : t.list)
+    {
+        os_ << ". ";
+        if(I->javadoc)
+            writeNodes(I->javadoc->getBlocks());
+        else
+            os_ << '\n';
+    }
+
+    endSection();
+
     return true;
 }
 

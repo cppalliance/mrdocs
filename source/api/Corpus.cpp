@@ -285,6 +285,15 @@ build(
         R.print("warning: mapping failed because ", toString(std::move(err)));
     }
 
+    // Inject the global namespace
+    {
+        NamespaceInfo I;
+        insertBitcode(
+            *ex.getExecutionContext(),
+            writeBitcode(I));
+
+    }
+
     // Collect the symbols. Each symbol will have
     // a vector of one or more bitcodes. These will
     // be merged later.

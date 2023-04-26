@@ -190,9 +190,17 @@ SafeNames(
 llvm::StringRef
 SafeNames::
 get(
-    std::string& dest,
+    SymbolID const &id) const
+{
+    return map_.find(llvm::toStringRef(id))->getValue();
+}
+
+llvm::StringRef
+SafeNames::
+get(
     SymbolID const& id,
-    char sep) const noexcept
+    char sep,
+    std::string& dest) const
 {
     auto it = map_.find(llvm::toStringRef(id));
     Assert(it != map_.end());
@@ -205,9 +213,17 @@ get(
 
 llvm::StringRef
 SafeNames::
-get(SymbolID const &id) const noexcept
+getOverload(
+    Info const& P,
+    llvm::StringRef name,
+    char sep,
+    std::string& dest) const
 {
-    return map_.find(llvm::toStringRef(id))->getValue();
+    dest = get(P.id);
+    dest.push_back(sep);
+    dest.push_back('0');
+    dest.append(name);
+    return dest;
 }
 
 } // adoc
