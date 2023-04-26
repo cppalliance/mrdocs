@@ -2,26 +2,33 @@
 
 import exrex
 import os
+import sys
 
-def ToplevelFolder():
-    scriptPath = os.path.realpath(__file__)
-    parentDirectory = os.path.dirname(scriptPath)
-    return os.path.join(parentDirectory, "py")
+# You can call this script with a target directory as command line argument.
+# If not, we fallback to the diretory of this script.
+# Within this target diretory, we always add a subdiretory 'py'.
+def ParseTargetDirectory():
+    if len(sys.argv) > 1:
+        return sys.argv[1]
+    else:
+        return os.path.join(os.path.dirname(os.path.realpath(__file__)), "py")
+
+providedTargetDirectory = ParseTargetDirectory()
 
 def EnumDeclarationsFolder():
-    return os.path.join(ToplevelFolder(), "dcl.enum")
+    return os.path.join(providedTargetDirectory, "dcl.enum")
 
 def EmptyDeclarationFolder():
-    return os.path.join(ToplevelFolder(), "dcl.dcl", "empty_declaration")
+    return os.path.join(providedTargetDirectory, "dcl.dcl", "empty_declaration")
 
 def NamespaceDefinitionsFolder():
-    return os.path.join(ToplevelFolder(), "namespace.def")
+    return os.path.join(providedTargetDirectory, "namespace.def")
 
 def ClassSpecifiersFolder():
-    return os.path.join(ToplevelFolder(), "class.pre")
+    return os.path.join(providedTargetDirectory, "class.pre")
 
 def NonMemberFunctionDeclarationsFolder():
-    return os.path.join(ToplevelFolder(), "functions", "non-member")
+    return os.path.join(providedTargetDirectory, "functions", "non-member")
 
 
 def GenerateEnumDeclarations():
