@@ -39,10 +39,10 @@ cmake --install .
 
 === MrDox:
 
-* narrow and deep focus on C++ only
+* narrow and deep focus on {cpp} only
 * uses clang's unstable libtooling API:
 ** Understands ALL C++: if clang can compile it, MrDox knows about it
-** This includes up to C++20 and even experimental things in C++23
+** This includes up to {cpp}20 and even experimental things in {cpp}23
 * brand-new program with no technical debt
 * written by me
 
