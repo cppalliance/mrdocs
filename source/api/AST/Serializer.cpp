@@ -1002,6 +1002,19 @@ getFunctionSpecs(
         //MF->isMoveAssignmentOperator()
         //MF->isOverloadedOperator();
         //MF->isStaticOverloadedOperator();
+
+        if(auto const Ctor = dyn_cast<CXXConstructorDecl>(MF))
+        {
+            I.specs1.set<FnFlags1::isExplicit>(Ctor->getExplicitSpecifier().isSpecified());
+        }
+        else if(auto const Conv = dyn_cast<CXXConversionDecl>(MF))
+        {
+            I.specs1.set<FnFlags1::isExplicit>(Conv->getExplicitSpecifier().isSpecified());
+        }
+    }
+    else if(auto const DG = dyn_cast<CXXDeductionGuideDecl>(D))
+    {
+        I.specs1.set<FnFlags1::isExplicit>(DG->getExplicitSpecifier().isSpecified());
     }
 
     if(auto attr = D->getAttr<WarnUnusedResultAttr>())

@@ -220,6 +220,8 @@ visit(
 
         if(I.specs1.get<FnFlags1::isNodiscard>())
             os << "<nodiscard/>";
+        if(I.specs1.get<FnFlags1::isExplicit>())
+            os << "<explicit/>";
 
         // ConstexprSpecKind
         auto CSK = I.specs0.get<
