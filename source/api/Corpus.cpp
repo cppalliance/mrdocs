@@ -72,7 +72,9 @@ globalNamespace() const noexcept
 
 //------------------------------------------------
 
-Corpus::Visitor::~Visitor() noexcept = default;
+Corpus::
+Visitor::
+~Visitor() noexcept = default;
 
 bool
 Corpus::
@@ -287,11 +289,12 @@ build(
 
     // Inject the global namespace
     {
+#if 0
         NamespaceInfo I;
         insertBitcode(
             *ex.getExecutionContext(),
             writeBitcode(I));
-
+#endif
     }
 
     // Collect the symbols. Each symbol will have

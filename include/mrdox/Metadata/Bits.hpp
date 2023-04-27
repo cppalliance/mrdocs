@@ -14,12 +14,15 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Debug.hpp>
+#include <array>
 #include <bit> // for constexpr popcount
 #include <cstdint>
 #include <type_traits>
 
 namespace clang {
 namespace mrdox {
+
+using BitsValueType = std::uint32_t;
 
 /** A container of packed bits to describe metadata.
 
@@ -37,13 +40,21 @@ class Bits
 #endif
 
 public:
-    using value_type = std::uint32_t;
+    using value_type = BitsValueType;
 
     /** Constructor.
     */
     constexpr Bits() noexcept = default;
 
-    /** Return the integer value of the bit set.
+    /** Return true if all bits are clear.
+    */
+    constexpr bool
+    empty() const noexcept
+    {
+        return bits_ == 0;
+    }
+
+    /** Return a pointer to the array of values.
     */
     constexpr value_type
     value() const noexcept
@@ -92,7 +103,7 @@ public:
     constexpr void
     set(Integer value) noexcept
     {
-        Assert(ID > 0);
+        Assert(static_cast<std::underlying_type_t<Enum>>(ID) > 0);
         Assert(value_type(value) < (value_type(ID) >>
                 std::countr_zero(value_type(ID))));
         bits_ = (bits_ & ~value_type(ID)) | (
@@ -100,14 +111,16 @@ public:
                 value_type(ID)));
     }
 
-    /** Load all the bits at once.
+    /** Set all of the bits at once.
     */
-    constexpr void
-    load(value_type value)
+    void
+    load(value_type bits) noexcept
     {
-        bits_ = value;
+        bits_ = bits;
     }
 
+    /** Merge other into this.
+    */
     constexpr void
     merge(Bits&& other) noexcept
     {
@@ -117,6 +130,67 @@ public:
 private:
     value_type bits_ = 0;
 };
+
+//------------------------------------------------
+
+/** Metafunction returns true_type if T is a Bits
+*/
+/** @{ */
+template<class...>
+inline constexpr bool is_Bits_v = false;
+
+template<>
+inline constexpr bool is_Bits_v<> = true;
+
+template<class Enum0, class... BitsN>
+inline constexpr bool is_Bits_v<
+    Bits<Enum0>, BitsN...> = is_Bits_v<BitsN...>;
+/** @} */
+
+//------------------------------------------------
+
+/** Convert one or more Bits to an array of values.
+*/
+template<class... BitsN>
+requires (is_Bits_v<BitsN...>)
+constexpr
+std::array<BitsValueType, sizeof...(BitsN)>
+getBits(
+    BitsN const&... bits) noexcept
+{
+    return { bits.value()... };
+}
+
+template<class... BitsN, size_t... Is>
+constexpr void BitsHelper(
+    std::index_sequence<Is...>,
+    std::array<BitsValueType, sizeof...(BitsN)> const& values,
+    BitsN&... bits)
+{
+    (bits.load(values[Is]), ...);
+}
+
+/** Load one or more Bits from an array of values.
+*/
+template<class... BitsN>
+requires (is_Bits_v<BitsN...>)
+constexpr void
+setBits(
+    std::array<BitsValueType,
+        sizeof...(BitsN)> const& values,
+    BitsN&... bits) noexcept
+{
+    BitsHelper(std::make_index_sequence<
+        sizeof...(BitsN)>(), values, bits...);
+}
+
+template<class... BitsN>
+requires (is_Bits_v<BitsN...>)
+constexpr bool
+bitsEmpty(BitsN const&... bits) noexcept
+{
+    return (bits.empty() && ...);
+}
 
 } // mrdox
 } // clang

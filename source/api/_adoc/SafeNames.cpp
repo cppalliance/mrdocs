@@ -33,6 +33,7 @@ public:
     {
         prefix_.reserve(512);
         corpus_.visit(globalNamespaceID, *this);
+        map.try_emplace(llvm::toStringRef(EmptySID), std::string());
     }
 
     llvm::StringMap<std::string> map;
@@ -80,7 +81,7 @@ private:
             return I.Name;
         auto const& FI = static_cast<
             FunctionInfo const&>(I);
-        auto OOK = FI.specs.get<
+        auto OOK = FI.specs0.get<
             FnFlags0::overloadedOperator,
             OverloadedOperatorKind>();
         if(OOK == OverloadedOperatorKind::OO_None)
@@ -192,7 +193,9 @@ SafeNames::
 get(
     SymbolID const &id) const
 {
-    return map_.find(llvm::toStringRef(id))->getValue();
+    auto const it = map_.find(llvm::toStringRef(id));
+    Assert(it != map_.end());
+    return it->getValue();
 }
 
 llvm::StringRef

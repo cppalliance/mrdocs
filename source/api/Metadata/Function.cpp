@@ -35,7 +35,8 @@ merge(
     SymbolInfo::merge(std::move(Other));
     if (!Template)
         Template = Other.Template;
-    specs.merge(std::move(Other).specs);
+    specs0.merge(std::move(Other).specs0);
+    specs1.merge(std::move(Other).specs1);
 }
 
 } // mrdox

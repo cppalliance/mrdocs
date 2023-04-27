@@ -246,23 +246,28 @@ decodeRecord(
     return llvm::Error::success();
 }
 
-
-template<class Enum>
-requires std::is_enum_v<Enum>
+template<class... BitsN>
+requires (is_Bits_v<BitsN...>)
 static
 llvm::Error
 decodeRecord(
     Record const& R,
-    Bits<Enum>& bits,
-    llvm::StringRef Blob)
+    llvm::StringRef Blob,
+    BitsN&... bits)
 {
-    auto n = *R.begin();
-    if(n != 1)
-        return makeError("wrong size(", n, ") for Bits[1]");
-    auto const v = R.begin()[1];
-    if(v > (std::numeric_limits<std::uint32_t>::max)())
-        return makeError(v, " is out of range for Bits");
-    bits.load(static_cast<std::uint32_t>(v));
+    auto const N = sizeof...(BitsN);
+    auto n = R[0];
+    if(n != N)
+        return makeError("wrong size(", n, ") for Bits[", N, "]");
+    std::array<BitsValueType, N> values;
+    for(std::size_t i = 0; i < N; ++i)
+    {
+        auto const v = R[i + 1];
+        if(v > (std::numeric_limits<std::uint32_t>::max)())
+            return makeError(v, " is out of range for Bits");
+        values[i] = v;
+    }
+    setBits(values, bits...);
     return llvm::Error::success();
 }
 
@@ -1035,7 +1040,7 @@ parseRecord(
 llvm::Error
 BitcodeReader::
 parseRecord(
-    const Record& R,
+    Record const& R,
     unsigned ID,
     llvm::StringRef Blob,
     RecordInfo* I)
@@ -1056,8 +1061,8 @@ parseRecord(
         return decodeRecord(R, I->IsTypeDef, Blob);
     case RECORD_FRIENDS:
         return decodeRecord(R, I->Friends, Blob);
-    case INFO_BITS:
-        return decodeRecord(R, I->specs, Blob);
+    case RECORD_SPECS:
+        return decodeRecord(R, Blob, I->specs);
     default:
         return makeError("invalid field for RecordInfo");
     }
@@ -1112,8 +1117,8 @@ parseRecord(
         return decodeRecord(R, I->Access, Blob);
     case FUNCTION_IS_METHOD:
         return decodeRecord(R, I->IsMethod, Blob);
-    case FUNCTION_BITS:
-        return decodeRecord(R, I->specs, Blob);
+    case FUNCTION_SPECS:
+        return decodeRecord(R, Blob, I->specs0, I->specs1);
     default:
         return makeError("invalid field for FunctionInfo");
     }

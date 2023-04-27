@@ -32,7 +32,7 @@ struct BaseRecordInfo;
 
 /** Bit constants used with function specifiers.
 */
-enum RecFlags0 : std::uint32_t
+enum class RecFlags0 : std::uint32_t
 {
     isFinal             = 0x00000001,
     isFinalDestructor   = 0x00000002

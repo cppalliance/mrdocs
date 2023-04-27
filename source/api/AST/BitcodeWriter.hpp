@@ -93,9 +93,9 @@ public:
     requires std::is_enum_v<Enum>
     void emitRecord(Enum Value, RecordId ID);
 
-    template<class Enum>
-    requires std::is_enum_v<Enum>
-    void emitRecord(Bits<Enum> const&, RecordId ID);
+    template<class... BitsN>
+    requires (is_Bits_v<BitsN...>)
+    void emitRecord(RecordId ID, BitsN const&...);
 
     void emitRecord(llvm::SmallVectorImpl<SymbolID> const& Values, RecordId ID);
 

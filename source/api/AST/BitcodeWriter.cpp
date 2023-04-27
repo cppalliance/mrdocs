@@ -233,7 +233,6 @@ RecordIdNameMap = []()
         {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
         {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
         {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
-        {INFO_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
         {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
         {NAMESPACE_USR, {"USR", &SymbolIDAbbrev}},
@@ -252,6 +251,7 @@ RecordIdNameMap = []()
         {RECORD_LOCATION, {"Location", &LocationAbbrev}},
         {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
+        {RECORD_SPECS, {"Specs", &Integer32ArrayAbbrev}},
         {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
         {BASE_RECORD_USR, {"USR", &SymbolIDAbbrev}},
         {BASE_RECORD_NAME, {"Name", &StringAbbrev}},
@@ -265,7 +265,7 @@ RecordIdNameMap = []()
         {FUNCTION_LOCATION, {"Location", &LocationAbbrev}},
         {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
-        {FUNCTION_BITS, {"Specs", &Integer32ArrayAbbrev}},
+        {FUNCTION_SPECS, {"Specs", &Integer32ArrayAbbrev}},
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
         {REFERENCE_TYPE, {"RefType", &Integer32Abbrev}},
@@ -308,7 +308,7 @@ RecordsByBlock{
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
         {FUNCTION_USR, FUNCTION_NAME, FUNCTION_DEFLOCATION, FUNCTION_LOCATION,
-        FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_BITS}},
+        FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_SPECS}},
     // Javadoc
     {BI_JAVADOC_BLOCK_ID,
         {}},
@@ -328,7 +328,7 @@ RecordsByBlock{
     {BI_RECORD_BLOCK_ID,
         {RECORD_USR, RECORD_NAME, RECORD_DEFLOCATION,
         RECORD_LOCATION, RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF,
-        INFO_BITS, RECORD_FRIENDS}},
+        RECORD_SPECS, RECORD_FRIENDS}},
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
@@ -464,7 +464,7 @@ emitBlock(
         emitRecord(L, RECORD_LOCATION);
     emitRecord(I.TagType, RECORD_TAG_TYPE);
     emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
-    emitRecord(I.specs, INFO_BITS);
+    emitRecord(RECORD_SPECS, I.specs);
     for (const auto& N : I.Members)
         emitBlock(N);
     for (const auto& P : I.Parents)
@@ -516,7 +516,7 @@ emitBlock(
         emitBlock(*I.javadoc);
     emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
-    emitRecord(I.specs, FUNCTION_BITS);
+    emitRecord(FUNCTION_SPECS, I.specs0, I.specs1);
     if (I.DefLoc)
         emitRecord(*I.DefLoc, FUNCTION_DEFLOCATION);
     for (const auto& L : I.Loc)
@@ -721,7 +721,7 @@ add(RecordId RID,
     unsigned AbbrevID)
 {
     Assert(RecordIdNameMap[RID] && "Unknown RecordId.");
-    Assert((Abbrevs.find(RID) == Abbrevs.end()) && "Abbreviation already added.");
+    //Assert((Abbrevs.find(RID) == Abbrevs.end()) && "Abbreviation already added.");
     Abbrevs[RID] = AbbrevID;
 }
 
@@ -824,21 +824,23 @@ emitRecord(
 }
 
 // Bits
-template<class Enum>
-requires std::is_enum_v<Enum>
+template<class... BitsN>
+requires (is_Bits_v<BitsN...>)
 void
 BitcodeWriter::
 emitRecord(
-    Bits<Enum> const& bits,
-    RecordId ID)
+    RecordId ID,
+    BitsN const&... bits)
 {
     Assert(RecordIdNameMap[ID]);
     Assert(RecordIdNameMap[ID].Abbrev ==
         &Integer32ArrayAbbrev);
-    if (!prepRecordData(ID, bits.value() != 0))
+    if (!prepRecordData(ID, ! bitsEmpty(bits...)))
         return;
-    Record.push_back(1);
-    Record.push_back(static_cast<RecordValue>(bits.value()));
+    auto const values = getBits(bits...);
+    Record.push_back(values.size());
+    for(std::size_t i = 0; i < values.size(); ++i)
+        Record.push_back(static_cast<RecordValue>(values.data()[i]));
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 

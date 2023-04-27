@@ -182,7 +182,7 @@ visit(
         return false;
 
     // OverloadedOperatorKind
-    auto const OOK = I.specs.get<
+    auto const OOK = I.specs0.get<
         FnFlags0::overloadedOperator,
         OverloadedOperatorKind>();
 
@@ -199,27 +199,30 @@ visit(
     {
         auto os = tags_.jit_indent();
 
-        if(I.specs.get<FnFlags0::isVariadic>())
+        if(I.specs0.get<FnFlags0::isVariadic>())
             os << "<variadic/>";
-        if(I.specs.get<FnFlags0::isVirtualAsWritten>())
+        if(I.specs0.get<FnFlags0::isVirtualAsWritten>())
             os << "<virtual/>";
-        if(I.specs.get<FnFlags0::isPure>())
+        if(I.specs0.get<FnFlags0::isPure>())
             os << "<pure/>";
-        if(I.specs.get<FnFlags0::isDefaulted>())
+        if(I.specs0.get<FnFlags0::isDefaulted>())
             os << "<defaulted/>";
-        if(I.specs.get<FnFlags0::isDeleted>())
+        if(I.specs0.get<FnFlags0::isDeleted>())
             os << "<deleted/>";
-        if(I.specs.get<FnFlags0::isDeletedAsWritten>())
+        if(I.specs0.get<FnFlags0::isDeletedAsWritten>())
             os << "<equals-delete/>";
-        if(I.specs.get<FnFlags0::isNoReturn>())
+        if(I.specs0.get<FnFlags0::isNoReturn>())
             os << "<noreturn/>";
-        if(I.specs.get<FnFlags0::hasOverrideAttr>())
+        if(I.specs0.get<FnFlags0::hasOverrideAttr>())
             os << "<override/>";
-        if(I.specs.get<FnFlags0::hasTrailingReturn>())
+        if(I.specs0.get<FnFlags0::hasTrailingReturn>())
             os << "<trailing/>";
 
+        if(I.specs1.get<FnFlags1::isNodiscard>())
+            os << "<nodiscard/>";
+
         // ConstexprSpecKind
-        auto CSK = I.specs.get<
+        auto CSK = I.specs0.get<
             FnFlags0::constexprKind,
             ConstexprSpecKind>();
         switch(CSK)
@@ -234,11 +237,12 @@ visit(
             break;
         case ConstexprSpecKind::Constinit:
             Assert(false); // on function?
+            //os << "<constinit/>";
             break;
         }
 
         // ExceptionSpecificationType
-        auto EST = I.specs.get<
+        auto EST = I.specs0.get<
             FnFlags0::exceptionSpecType,
             ExceptionSpecificationType>();
         if(isNoexceptExceptionSpec(EST))
@@ -264,7 +268,7 @@ visit(
         */
 
         // StorageClass
-        auto SC = I.specs.get<
+        auto SC = I.specs0.get<
             FnFlags0::constexprKind,
             StorageClass>();
         Assert(isLegalForFunction(SC));
@@ -293,7 +297,7 @@ visit(
         }
 
         // RefQualifierKind
-        auto RQ = I.specs.get<
+        auto RQ = I.specs0.get<
             FnFlags0::refQualifier,
             RefQualifierKind>();
         switch(RQ)
@@ -308,9 +312,9 @@ visit(
             break;
         }
 
-        if(I.specs.get<FnFlags0::isConst>())
+        if(I.specs0.get<FnFlags0::isConst>())
             os << "<const/>";
-        if(I.specs.get<FnFlags0::isVolatile>())
+        if(I.specs0.get<FnFlags0::isVolatile>())
             os << "<volatile/>";
 
         os.finish();

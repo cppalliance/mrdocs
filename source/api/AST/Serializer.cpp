@@ -969,39 +969,45 @@ getFunctionSpecs(
     FunctionInfo& I,
     FunctionDecl const* D)
 {
-    I.specs.set<FnFlags0::isVariadic>(D->isVariadic());
-    I.specs.set<FnFlags0::isVirtualAsWritten>(D->isVirtualAsWritten());
-    I.specs.set<FnFlags0::isPure>(D->isPure());
-    I.specs.set<FnFlags0::isDefaulted>(D->isDefaulted());
-    I.specs.set<FnFlags0::isExplicitlyDefaulted>(D->isExplicitlyDefaulted());
-    I.specs.set<FnFlags0::isDeleted>(D->isDeleted());
-    I.specs.set<FnFlags0::isDeletedAsWritten>(D->isDeletedAsWritten());
-    I.specs.set<FnFlags0::isNoReturn>(D->isNoReturn());
+    I.specs0.set<FnFlags0::isVariadic>(D->isVariadic());
+    I.specs0.set<FnFlags0::isVirtualAsWritten>(D->isVirtualAsWritten());
+    I.specs0.set<FnFlags0::isPure>(D->isPure());
+    I.specs0.set<FnFlags0::isDefaulted>(D->isDefaulted());
+    I.specs0.set<FnFlags0::isExplicitlyDefaulted>(D->isExplicitlyDefaulted());
+    I.specs0.set<FnFlags0::isDeleted>(D->isDeleted());
+    I.specs0.set<FnFlags0::isDeletedAsWritten>(D->isDeletedAsWritten());
+    I.specs0.set<FnFlags0::isNoReturn>(D->isNoReturn());
         // subsumes D->hasAttr<NoReturnAttr>()
         // subsumes D->hasAttr<CXX11NoReturnAttr>()
         // subsumes D->hasAttr<C11NoReturnAttr>()
         // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
-    I.specs.set<FnFlags0::hasOverrideAttr>(D->hasAttr<OverrideAttr>());
+    I.specs0.set<FnFlags0::hasOverrideAttr>(D->hasAttr<OverrideAttr>());
     if(auto const* FP = D->getType()->getAs<FunctionProtoType>())
-        I.specs.set<FnFlags0::hasTrailingReturn>(FP->hasTrailingReturn());
+        I.specs0.set<FnFlags0::hasTrailingReturn>(FP->hasTrailingReturn());
 
-    I.specs.set<FnFlags0::constexprKind>(D->getConstexprKind());
+    I.specs0.set<FnFlags0::constexprKind>(D->getConstexprKind());
         // subsumes D->isConstexpr();
         // subsumes D->isConstexprSpecified();
         // subsumes D->isConsteval();
-    I.specs.set<FnFlags0::exceptionSpecType>(D->getExceptionSpecType());
-    I.specs.set<FnFlags0::overloadedOperator>(D->getOverloadedOperator());
-    I.specs.set<FnFlags0::storageClass>(D->getStorageClass());
+    I.specs0.set<FnFlags0::exceptionSpecType>(D->getExceptionSpecType());
+    I.specs0.set<FnFlags0::overloadedOperator>(D->getOverloadedOperator());
+    I.specs0.set<FnFlags0::storageClass>(D->getStorageClass());
 
     if(auto const MF = dyn_cast<CXXMethodDecl>(D))
     {
-        I.specs.set<FnFlags0::isConst>(MF->isConst());
-        I.specs.set<FnFlags0::isVolatile>(MF->isVolatile());
-        I.specs.set<FnFlags0::refQualifier>(MF->getRefQualifier());
+        I.specs0.set<FnFlags0::isConst>(MF->isConst());
+        I.specs0.set<FnFlags0::isVolatile>(MF->isVolatile());
+        I.specs0.set<FnFlags0::refQualifier>(MF->getRefQualifier());
         //MF->isCopyAssignmentOperator()
         //MF->isMoveAssignmentOperator()
         //MF->isOverloadedOperator();
         //MF->isStaticOverloadedOperator();
+    }
+
+    if(auto attr = D->getAttr<WarnUnusedResultAttr>())
+    {
+        I.specs1.set<FnFlags1::isNodiscard>(true);
+        I.specs1.set<FnFlags1::nodiscardSpelling>(attr->getSemanticSpelling());
     }
 }
 

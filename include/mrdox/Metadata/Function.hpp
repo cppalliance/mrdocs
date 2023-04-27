@@ -30,7 +30,7 @@ namespace mrdox {
 
 /** Bit constants used with function specifiers.
 */
-enum FnFlags0 : std::uint32_t
+enum class FnFlags0 : std::uint32_t
 {
     // Function Decl
 
@@ -72,6 +72,18 @@ enum FnFlags0 : std::uint32_t
                               0x10000000
 };
 
+/** Bit constants used with function specifiers.
+*/
+enum class FnFlags1 : std::uint32_t
+{
+    isNodiscard             = 0x00000001,
+
+    nodiscardSpelling       = 0x00000002 +
+                              0x00000004 +
+                              0x00000008 +
+                              0x00000010
+};
+
 // TODO: Expand to allow for documenting templating and default args.
 // Info for functions.
 struct FunctionInfo : SymbolInfo
@@ -94,7 +106,8 @@ struct FunctionInfo : SymbolInfo
     // When present, this function is a template or specialization.
     llvm::Optional<TemplateInfo> Template;
 
-    Bits<FnFlags0> specs;
+    Bits<FnFlags0> specs0;
+    Bits<FnFlags1> specs1;
 
     //--------------------------------------------
 
