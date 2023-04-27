@@ -2,85 +2,96 @@
 <!DOCTYPE mrdox SYSTEM "mrdox.dtd">
 <mrdox>
 <namespace name="">
-  <struct name="ExplFalse" id="HgTptXdtBz1kXtdw8hy0HEpqWm4=">
-    <file path="explicit-ctor.cpp" line="18" class="def"/>
-    <function name="ExplFalse" access="public" id="B1pPQYLa0V0HcSU7YaiAwg7Kmw4=">
-      <file path="explicit-ctor.cpp" line="22"/>
+  <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
+    <file path="explicit-ctor.cpp" line="17" class="def"/>
+    <function name="ExplicitFalse" access="public" id="GVN7KvqFotNClBLUnxR3nnPlH7Y=">
+      <file path="explicit-ctor.cpp" line="18"/>
+      <explicit/>
+    </function>
+    <function name="ExplicitFalse" access="public" id="T0aRgSzz7xtFbPWKv3q57ueIYlI=">
+      <file path="explicit-ctor.cpp" line="21"/>
       <explicit/>
       <param type="int"/>
       <param type="int"/>
     </function>
-    <function name="ExplFalse" access="public" id="2VXMpLH6oHAGQRbo2Opm8XyfpSo=">
+    <function name="ExplicitFalse" access="public" id="gsl+2i8v8v4Lifq3SZ5sFhSfseQ=">
       <file path="explicit-ctor.cpp" line="19"/>
       <explicit/>
+      <param type="const ExplicitFalse &amp;"/>
     </function>
-    <function name="ExplFalse" access="public" id="3mZDVfGXWS6nJDf3gdaHHSqnv3k=">
-      <file path="explicit-ctor.cpp" line="21"/>
-      <explicit/><noexcept/>
-      <param type="ExplFalse &amp;&amp;"/>
-    </function>
-    <function name="ExplFalse" access="public" id="4r43v4bPb6rG6JnImJaFWp+RPCo=">
+    <function name="ExplicitFalse" access="public" id="qXjKOO0FQ3p2vTehkEQl2kIKpFs=">
       <file path="explicit-ctor.cpp" line="20"/>
-      <explicit/>
-      <param type="const ExplFalse &amp;"/>
+      <explicit/><noexcept/>
+      <param type="ExplicitFalse &amp;&amp;"/>
     </function>
   </struct>
-  <struct name="Expl" id="MlugggomKTnBPMKkcBG132APE00=">
+  <struct name="Explicit" id="bonobNKGOblPVcRjxpiPan4nYnc=">
     <file path="explicit-ctor.cpp" line="3" class="def"/>
-    <function name="Expl" access="public" id="LuL7sjn4zJ/FoPPZjNO7rl4brKA=">
-      <file path="explicit-ctor.cpp" line="6"/>
-      <explicit/><noexcept/>
-      <param type="Expl &amp;&amp;"/>
+    <function name="Explicit" access="public" id="CuzDbFSxtCdVcGerq2UySnHF7po=">
+      <file path="explicit-ctor.cpp" line="5"/>
+      <explicit/>
+      <param type="const Explicit &amp;"/>
     </function>
-    <function name="Expl" access="public" id="NmrSUe2oF1grL4YRMYCq3B5Shlg=">
+    <function name="Explicit" access="public" id="JPrjQsrkg+QoApI2wln2eGwCGP4=">
       <file path="explicit-ctor.cpp" line="4"/>
       <explicit/>
     </function>
-    <function name="Expl" access="public" id="WEjatmMEK7KyV9FkK0yzpGP0/Gc=">
-      <file path="explicit-ctor.cpp" line="5"/>
-      <explicit/>
-      <param type="const Expl &amp;"/>
-    </function>
-    <function name="Expl" access="public" id="ug+5jKgsbnRehxpOw693oClmf70=">
+    <function name="Explicit" access="public" id="Oj6cGCOaarVfZXkgsr/pOPOOiFY=">
       <file path="explicit-ctor.cpp" line="7"/>
       <explicit/>
       <param type="int"/>
       <param type="int"/>
     </function>
-  </struct>
-  <struct name="F" id="QXKJEfUwuRJdhdTj5QWZ1AEVUUY=">
-    <file path="explicit-ctor.cpp" line="27" class="def"/>
-    <function name="operator bool" access="public" id="H4xlO5ZFzbW1jvLM/nGJgMCulQk=">
-      <file path="explicit-ctor.cpp" line="30"/>
-      <explicit/>
-      <return name="_Bool"/>
-    </function>
-    <function name="F&lt;N&gt;" access="public" id="QV18E4YBXuJ0o6RepkdSJagth/Q=">
-      <file path="explicit-ctor.cpp" line="28"/>
-      <param type="int"/>
+    <function name="Explicit" access="public" id="saOH3agrCzNHcRhbXHOM0FYFxGc=">
+      <file path="explicit-ctor.cpp" line="6"/>
+      <explicit/><noexcept/>
+      <param type="Explicit &amp;&amp;"/>
     </function>
   </struct>
-  <struct name="ExplTrue" id="6Pyvs2VtiZ/83Djx/NWLOH8P/x8=">
-    <file path="explicit-ctor.cpp" line="11" class="def"/>
-    <function name="ExplTrue&lt;T&gt;" access="public" id="KwaDQkRHYmxUDE1eQCZf/YFiAWQ=">
+  <struct name="ExplicitTrue" id="htdCGapMsdazR1XkXoanrOCkvDE=">
+    <file path="explicit-ctor.cpp" line="10" class="def"/>
+    <function name="ExplicitTrue" access="public" id="Tj9uY+jY7QBYQC8IsjplHuoDgQo=">
       <file path="explicit-ctor.cpp" line="12"/>
       <explicit/>
+      <param type="const ExplicitTrue &amp;"/>
     </function>
-    <function name="ExplTrue&lt;T&gt;" access="public" id="n4aktsCbsMaf2NE3R7SKndOL/rA=">
+    <function name="ExplicitTrue" access="public" id="XCoHYDLlYJYpV6Ut7Ms0GjcQKjM=">
       <file path="explicit-ctor.cpp" line="14"/>
-      <explicit/><noexcept/>
-      <param type="ExplTrue&lt;T&gt; &amp;&amp;"/>
-    </function>
-    <function name="ExplTrue&lt;T&gt;" access="public" id="z5D93vebKh6mOA+2hAV6RhYDy/c=">
-      <file path="explicit-ctor.cpp" line="13"/>
-      <explicit/><noexcept/>
-      <param type="const ExplTrue&lt;T&gt; &amp;"/>
-    </function>
-    <function name="ExplTrue&lt;T&gt;" access="public" id="2c50pLZfEpo1bZjXJGbE0G0ZZew=">
-      <file path="explicit-ctor.cpp" line="15"/>
       <explicit/>
       <param type="int"/>
       <param type="int"/>
+    </function>
+    <function name="ExplicitTrue" access="public" id="iQOO8pEh0iNSnpupVwR9tCVIf8U=">
+      <file path="explicit-ctor.cpp" line="13"/>
+      <explicit/><noexcept/>
+      <param type="ExplicitTrue &amp;&amp;"/>
+    </function>
+    <function name="ExplicitTrue" access="public" id="3sd37ryB4gMx1BgYdDdQzVJFniU=">
+      <file path="explicit-ctor.cpp" line="11"/>
+      <explicit/>
+    </function>
+  </struct>
+  <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
+    <file path="explicit-ctor.cpp" line="25" class="def"/>
+    <function name="ExplicitExpression&lt;B&gt;" access="public" id="J31K1hQq31LWiQhVy5ro0V+1pD0=">
+      <file path="explicit-ctor.cpp" line="29"/>
+      <explicit/>
+      <param type="int"/>
+      <param type="int"/>
+    </function>
+    <function name="ExplicitExpression&lt;B&gt;" access="public" id="Ty1Sv+L6at7TykYdCITSQKmXwVs=">
+      <file path="explicit-ctor.cpp" line="27"/>
+      <explicit/>
+      <param type="const ExplicitExpression&lt;B&gt; &amp;"/>
+    </function>
+    <function name="ExplicitExpression&lt;B&gt;" access="public" id="gDoLCstIvgYYJng1jhLOLe/yz+Q=">
+      <file path="explicit-ctor.cpp" line="28"/>
+      <explicit/><noexcept/>
+      <param type="ExplicitExpression&lt;B&gt; &amp;&amp;"/>
+    </function>
+    <function name="ExplicitExpression&lt;B&gt;" access="public" id="s6L5UKI8FLTRiyny1rXgYxG/f/0=">
+      <file path="explicit-ctor.cpp" line="26"/>
+      <explicit/>
     </function>
   </struct>
 </namespace>
