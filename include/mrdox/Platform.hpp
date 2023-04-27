@@ -21,6 +21,10 @@
 namespace clang {
 namespace mrdox {
 
+/** The minimum version of LLVM required
+*/
+#define MRDOX_MINIMUM_LLVM_VERSION 15
+
 //------------------------------------------------
 //
 // Shared Libraries
