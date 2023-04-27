@@ -47,7 +47,8 @@ enum class InfoType
     IT_record,
     IT_function,
     IT_enum,
-    IT_typedef
+    IT_typedef,
+    IT_variable
 };
 
 /** Return the result of comparing s0 to s1.

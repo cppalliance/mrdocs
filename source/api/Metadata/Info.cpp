@@ -88,9 +88,10 @@ extractName() const
     case InfoType::IT_default:
         return llvm::SmallString<16>("@nonymous_" +
             toHex(llvm::toStringRef(id)));
+    default:
+        llvm_unreachable("Invalid InfoType.");
+        return llvm::SmallString<16>("");
     }
-    llvm_unreachable("Invalid InfoType.");
-    return llvm::SmallString<16>("");
 }
 
 //------------------------------------------------

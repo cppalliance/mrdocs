@@ -48,25 +48,6 @@ public:
     void emitBlockInfoBlock();
     void emitVersionBlock();
 
-    // Block emission of different info types.
-    void emitBlock(NamespaceInfo const& I);
-    void emitBlock(RecordInfo const& I);
-    void emitBlock(BaseRecordInfo const& I);
-    void emitBlock(FunctionInfo const& I);
-    void emitBlock(EnumInfo const& I);
-    void emitBlock(EnumValueInfo const& I);
-    void emitBlock(TypeInfo const& B);
-    void emitBlock(TypedefInfo const& B);
-    void emitBlock(FieldTypeInfo const& B);
-    void emitBlock(MemberTypeInfo const& T);
-    void emitBlock(Javadoc const& jd);
-    template<class T>
-    void emitBlock(List<T> const& list);
-    void emitBlock(Javadoc::Node const& I);
-    void emitBlock(TemplateInfo const& T);
-    void emitBlock(TemplateSpecializationInfo const& T);
-    void emitBlock(TemplateParamInfo const& T);
-    void emitBlock(Reference const& B, FieldId F);
 
     // Emission of validation and overview blocks.
     void emitRecordID(RecordId ID);
@@ -112,6 +93,35 @@ public:
 
     // Emission of appropriate abbreviation type.
     void emitAbbrev(RecordId ID, BlockId Block);
+
+    //--------------------------------------------
+    //
+    // emitBlock
+    //
+    //--------------------------------------------
+
+    template<class T>
+    void emitBlock(List<T> const& list);
+
+    void emitBlock(BaseRecordInfo const& I);
+    void emitBlock(EnumInfo const& I);
+    void emitBlock(EnumValueInfo const& I);
+    void emitBlock(FieldTypeInfo const& I);
+    void emitBlock(FunctionInfo const& I);
+    void emitBlock(Javadoc const& jd);
+    void emitBlock(Javadoc::Node const& I);
+    void emitBlock(MemberTypeInfo const& I);
+    void emitBlock(NamespaceInfo const& I);
+    void emitBlock(RecordInfo const& I);
+    void emitBlock(Reference const& B, FieldId F);
+    void emitBlock(TemplateInfo const& T);
+    void emitBlock(TemplateParamInfo const& T);
+    void emitBlock(TemplateSpecializationInfo const& T);
+    void emitBlock(TypedefInfo const& I);
+    void emitBlock(TypeInfo const& I);
+    void emitBlock(VariableInfo const& I);
+
+    //--------------------------------------------
 
 private:
     class AbbreviationMap

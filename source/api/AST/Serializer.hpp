@@ -94,6 +94,7 @@ public:
     SerializeResult build(TypedefDecl     const* D);
     SerializeResult build(TypeAliasDecl   const* D);
     SerializeResult build(EnumDecl        const* D);
+    SerializeResult build(VarDecl         const* D);
 };
 
 } // mrdox

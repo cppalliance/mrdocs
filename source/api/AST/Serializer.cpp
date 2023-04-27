@@ -1220,5 +1220,24 @@ build(
     return { writeParent(std::move(I)) };
 }
 
+SerializeResult
+Serializer::
+build(
+    VarDecl const* D)
+{
+    VariableInfo I;
+    if(! getSymbolInfo(*this, I, D))
+        return {};
+    I.Type = getTypeInfoForType(D->getTypeSourceInfo()->getType());
+#if 0
+        MemberTypeInfo& NewMember = I.Members.emplace_back(
+            getTypeInfoForType(F->getTypeSourceInfo()->getType()),
+            F->getNameAsString(),
+            getFinalAccessSpecifier(Access, F->getAccessUnsafe()));
+        getMemberTypeInfo(NewMember, F, R);
+#endif
+    return {};
+}
+
 } // mrdox
 } // clang

@@ -268,6 +268,15 @@ WalkUpFromEnumDecl(
     return true;
 }
 
+bool
+ASTVisitor::
+WalkUpFromVarDecl(
+    VarDecl* D)
+{
+    mapDecl(D);
+    return true;
+}
+
 int
 ASTVisitor::
 getLine(

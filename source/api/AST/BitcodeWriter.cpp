@@ -207,7 +207,9 @@ BlockIdNameMap = []()
         {BI_REFERENCE_BLOCK_ID, "ReferenceBlock"},
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
         {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, "TemplateSpecializationBlock"},
-        {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"} };
+        {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"},
+        {BI_VARIABLE_BLOCK_ID, "VariableBlock"}
+    };
     Assert(Inits.size() == BlockIdCount);
     for (const auto& Init : Inits)
         BlockIdNameMap[Init.first] = Init.second;
@@ -275,7 +277,12 @@ RecordIdNameMap = []()
         {TYPEDEF_USR, {"USR", &SymbolIDAbbrev}},
         {TYPEDEF_NAME, {"Name", &StringAbbrev}},
         {TYPEDEF_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
-        {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}} };
+        {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
+        {VARIABLE_USR, {"USR", &SymbolIDAbbrev}},
+        {VARIABLE_NAME, {"Name", &StringAbbrev}},
+        {VARIABLE_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
+        {VARIABLE_LOCATION, {"Location", &LocationAbbrev}}
+    };
     Assert(Inits.size() == RecordIdCount);
     for (const auto& Init : Inits)
     {
@@ -340,7 +347,9 @@ RecordsByBlock{
     {BI_TYPE_BLOCK_ID, {}},
     // TypedefInfo
     {BI_TYPEDEF_BLOCK_ID,
-        {TYPEDEF_USR, TYPEDEF_NAME, TYPEDEF_DEFLOCATION, TYPEDEF_IS_USING}}
+        {TYPEDEF_USR, TYPEDEF_NAME, TYPEDEF_DEFLOCATION, TYPEDEF_IS_USING}},
+    // VariableInfo
+    {BI_VARIABLE_BLOCK_ID, {}}
 };
 
 //------------------------------------------------
@@ -375,6 +384,9 @@ dispatchInfoForWrite(Info const* I)
         break;
     case InfoType::IT_typedef:
         emitBlock(*static_cast<TypedefInfo const*>(I));
+        break;
+    case InfoType::IT_variable:
+        emitBlock(*static_cast<VariableInfo const*>(I));
         break;
     default:
         llvm::errs() << "Unexpected info, unable to write.\n";
@@ -416,298 +428,6 @@ emitVersionBlock()
 {
     StreamSubBlockGuard Block(Stream, BI_VERSION_BLOCK_ID);
     emitRecord(VersionNumber, VERSION);
-}
-
-//------------------------------------------------
-
-// Block emission
-
-void
-BitcodeWriter::
-emitBlock(
-    NamespaceInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
-    emitRecord(I.id, NAMESPACE_USR);
-    emitRecord(I.Name, NAMESPACE_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(I.javadoc)
-        emitBlock(*I.javadoc);
-    for (const auto& C : I.Children.Namespaces)
-        emitBlock(C, FieldId::F_child_namespace);
-    for (const auto& C : I.Children.Records)
-        emitBlock(C, FieldId::F_child_record);
-    for (auto const& C : I.Children.Functions)
-        emitBlock(C, FieldId::F_child_function);
-    for (const auto& C : I.Children.Enums)
-        emitBlock(C);
-    for (const auto& C : I.Children.Typedefs)
-        emitBlock(C);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    RecordInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
-    emitRecord(I.id, RECORD_USR);
-    emitRecord(I.Name, RECORD_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(I.javadoc)
-        emitBlock(*I.javadoc);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, RECORD_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, RECORD_LOCATION);
-    emitRecord(I.TagType, RECORD_TAG_TYPE);
-    emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
-    emitRecord(RECORD_SPECS, I.specs);
-    for (const auto& N : I.Members)
-        emitBlock(N);
-    for (const auto& P : I.Parents)
-        emitBlock(P, FieldId::F_parent);
-    for (const auto& P : I.VirtualParents)
-        emitBlock(P, FieldId::F_vparent);
-    for (const auto& PB : I.Bases)
-        emitBlock(PB);
-    for (const auto& C : I.Children.Records)
-        emitBlock(C, FieldId::F_child_record);
-    for (auto const& C : I.Children.Functions)
-        emitBlock(C, FieldId::F_child_function);
-    for (const auto& C : I.Children.Enums)
-        emitBlock(C);
-    for (const auto& C : I.Children.Typedefs)
-        emitBlock(C);
-    if (I.Template)
-        emitBlock(*I.Template);
-    emitRecord(I.Friends, RECORD_FRIENDS);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    BaseRecordInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_BASE_RECORD_BLOCK_ID);
-    emitRecord(I.id, BASE_RECORD_USR);
-    emitRecord(I.Name, BASE_RECORD_NAME);
-    emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
-    emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
-    emitRecord(I.Access, BASE_RECORD_ACCESS);
-    emitRecord(I.IsParent, BASE_RECORD_IS_PARENT);
-    for (const auto& M : I.Members)
-        emitBlock(M);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    FunctionInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
-    emitRecord(I.id, FUNCTION_USR);
-    emitRecord(I.Name, FUNCTION_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(I.javadoc)
-        emitBlock(*I.javadoc);
-    emitRecord(I.Access, FUNCTION_ACCESS);
-    emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
-    emitRecord(FUNCTION_SPECS, I.specs0, I.specs1);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, FUNCTION_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, FUNCTION_LOCATION);
-    emitBlock(I.Parent, FieldId::F_parent);
-    emitBlock(I.ReturnType);
-    for (const auto& N : I.Params)
-        emitBlock(N);
-    if (I.Template)
-        emitBlock(*I.Template);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    EnumInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
-    emitRecord(I.id, ENUM_USR);
-    emitRecord(I.Name, ENUM_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(I.javadoc)
-        emitBlock(*I.javadoc);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, ENUM_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, ENUM_LOCATION);
-    emitRecord(I.Scoped, ENUM_SCOPED);
-    if (I.BaseType)
-        emitBlock(*I.BaseType);
-    for (const auto& N : I.Members)
-        emitBlock(N);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    EnumValueInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_ENUM_VALUE_BLOCK_ID);
-    emitRecord(I.Name, ENUM_VALUE_NAME);
-    emitRecord(I.Value, ENUM_VALUE_VALUE);
-    emitRecord(I.ValueExpr, ENUM_VALUE_EXPR);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    TypeInfo const& T)
-{
-    StreamSubBlockGuard Block(Stream, BI_TYPE_BLOCK_ID);
-    emitBlock(T.Type, FieldId::F_type);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    TypedefInfo const& T)
-{
-    StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
-    emitRecord(T.id, TYPEDEF_USR);
-    emitRecord(T.Name, TYPEDEF_NAME);
-    for (const auto& N : T.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(T.javadoc)
-        emitBlock(*T.javadoc);
-    if (T.DefLoc)
-        emitRecord(*T.DefLoc, TYPEDEF_DEFLOCATION);
-    emitRecord(T.IsUsing, TYPEDEF_IS_USING);
-    emitBlock(T.Underlying);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    FieldTypeInfo const& T)
-{
-    StreamSubBlockGuard Block(Stream, BI_FIELD_TYPE_BLOCK_ID);
-    emitBlock(T.Type, FieldId::F_type);
-    emitRecord(T.Name, FIELD_TYPE_NAME);
-    emitRecord(T.DefaultValue, FIELD_DEFAULT_VALUE);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    MemberTypeInfo const& T)
-{
-    StreamSubBlockGuard Block(Stream, BI_MEMBER_TYPE_BLOCK_ID);
-    emitBlock(T.Type, FieldId::F_type);
-    emitRecord(T.Name, MEMBER_TYPE_NAME);
-    emitRecord(T.Access, MEMBER_TYPE_ACCESS);
-    if(T.javadoc)
-        emitBlock(*T.javadoc);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    Javadoc const& jd)
-{
-    // If the optional<Javadoc> has a value then we
-    // always want to emit it, even if it is empty.
-    StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
-    emitBlock(jd.getBlocks());
-}
-
-template<class T>
-void
-BitcodeWriter::
-emitBlock(
-    List<T> const& list)
-{
-    StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_BLOCK_ID);
-    emitRecord(T::static_kind, JAVADOC_LIST_KIND);
-    for(Javadoc::Node const& node : list)
-        emitBlock(node);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    Javadoc::Node const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_JAVADOC_NODE_BLOCK_ID);
-    emitRecord(I.kind, JAVADOC_NODE_KIND);
-    switch(I.kind)
-    {
-    case Javadoc::Kind::text:
-    {
-        auto const& J = static_cast<Javadoc::Text const&>(I);
-        emitRecord(J.string, JAVADOC_NODE_STRING);
-        break;
-    }
-    case Javadoc::Kind::styled:
-    {
-        auto const& J = static_cast<Javadoc::StyledText const&>(I);
-        emitRecord(J.style, JAVADOC_NODE_STYLE);
-        emitRecord(J.string, JAVADOC_NODE_STRING);
-        break;
-    }
-    case Javadoc::Kind::paragraph:
-    {
-        auto const& J = static_cast<Javadoc::Paragraph const&>(I);
-        emitBlock(J.children);
-        break;
-    }
-    case Javadoc::Kind::brief:
-    {
-        auto const& J = static_cast<Javadoc::Brief const&>(I);
-        emitBlock(J.children);
-        break;
-    }
-    case Javadoc::Kind::admonition:
-    {
-        auto const& J = static_cast<Javadoc::Admonition const&>(I);
-        emitRecord(J.style, JAVADOC_NODE_ADMONISH);
-        emitBlock(J.children);
-        break;
-    }
-    case Javadoc::Kind::code:
-    {
-        auto const& J = static_cast<Javadoc::Code const&>(I);
-        emitBlock(J.children);
-        break;
-    }
-    case Javadoc::Kind::returns:
-    {
-        auto const& J = static_cast<Javadoc::Returns const&>(I);
-        emitBlock(J.children);
-        break;
-    }
-    case Javadoc::Kind::param:
-    {
-        auto const& J = static_cast<Javadoc::Param const&>(I);
-        emitRecord(J.name, JAVADOC_NODE_STRING);
-        emitBlock(J.children);
-        break;
-    }
-    case Javadoc::Kind::tparam:
-    {
-        auto const& J = static_cast<Javadoc::TParam const&>(I);
-        emitRecord(J.name, JAVADOC_NODE_STRING);
-        emitBlock(J.children);
-        break;
-    }
-    default:
-        llvm_unreachable("unknown kind");
-        break;
-    }
 }
 
 // AbbreviationMap
@@ -963,6 +683,273 @@ emitBlockInfo(
     }
 }
 
+//------------------------------------------------
+//
+// emitBlock
+//
+//------------------------------------------------
+
+template<class T>
+void
+BitcodeWriter::
+emitBlock(
+    List<T> const& list)
+{
+    StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_BLOCK_ID);
+    emitRecord(T::static_kind, JAVADOC_LIST_KIND);
+    for(Javadoc::Node const& node : list)
+        emitBlock(node);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    BaseRecordInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_BASE_RECORD_BLOCK_ID);
+    emitRecord(I.id, BASE_RECORD_USR);
+    emitRecord(I.Name, BASE_RECORD_NAME);
+    emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
+    emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
+    emitRecord(I.Access, BASE_RECORD_ACCESS);
+    emitRecord(I.IsParent, BASE_RECORD_IS_PARENT);
+    for (const auto& M : I.Members)
+        emitBlock(M);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    EnumInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
+    emitRecord(I.id, ENUM_USR);
+    emitRecord(I.Name, ENUM_NAME);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    if(I.javadoc)
+        emitBlock(*I.javadoc);
+    if (I.DefLoc)
+        emitRecord(*I.DefLoc, ENUM_DEFLOCATION);
+    for (const auto& L : I.Loc)
+        emitRecord(L, ENUM_LOCATION);
+    emitRecord(I.Scoped, ENUM_SCOPED);
+    if (I.BaseType)
+        emitBlock(*I.BaseType);
+    for (const auto& N : I.Members)
+        emitBlock(N);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    EnumValueInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_ENUM_VALUE_BLOCK_ID);
+    emitRecord(I.Name, ENUM_VALUE_NAME);
+    emitRecord(I.Value, ENUM_VALUE_VALUE);
+    emitRecord(I.ValueExpr, ENUM_VALUE_EXPR);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    FieldTypeInfo const& T)
+{
+    StreamSubBlockGuard Block(Stream, BI_FIELD_TYPE_BLOCK_ID);
+    emitBlock(T.Type, FieldId::F_type);
+    emitRecord(T.Name, FIELD_TYPE_NAME);
+    emitRecord(T.DefaultValue, FIELD_DEFAULT_VALUE);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    FunctionInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
+    emitRecord(I.id, FUNCTION_USR);
+    emitRecord(I.Name, FUNCTION_NAME);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    if(I.javadoc)
+        emitBlock(*I.javadoc);
+    emitRecord(I.Access, FUNCTION_ACCESS);
+    emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
+    emitRecord(FUNCTION_SPECS, I.specs0, I.specs1);
+    if (I.DefLoc)
+        emitRecord(*I.DefLoc, FUNCTION_DEFLOCATION);
+    for (const auto& L : I.Loc)
+        emitRecord(L, FUNCTION_LOCATION);
+    emitBlock(I.Parent, FieldId::F_parent);
+    emitBlock(I.ReturnType);
+    for (const auto& N : I.Params)
+        emitBlock(N);
+    if (I.Template)
+        emitBlock(*I.Template);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    Javadoc const& jd)
+{
+    // If the optional<Javadoc> has a value then we
+    // always want to emit it, even if it is empty.
+    StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
+    emitBlock(jd.getBlocks());
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    Javadoc::Node const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_JAVADOC_NODE_BLOCK_ID);
+    emitRecord(I.kind, JAVADOC_NODE_KIND);
+    switch(I.kind)
+    {
+    case Javadoc::Kind::text:
+    {
+        auto const& J = static_cast<Javadoc::Text const&>(I);
+        emitRecord(J.string, JAVADOC_NODE_STRING);
+        break;
+    }
+    case Javadoc::Kind::styled:
+    {
+        auto const& J = static_cast<Javadoc::StyledText const&>(I);
+        emitRecord(J.style, JAVADOC_NODE_STYLE);
+        emitRecord(J.string, JAVADOC_NODE_STRING);
+        break;
+    }
+    case Javadoc::Kind::paragraph:
+    {
+        auto const& J = static_cast<Javadoc::Paragraph const&>(I);
+        emitBlock(J.children);
+        break;
+    }
+    case Javadoc::Kind::brief:
+    {
+        auto const& J = static_cast<Javadoc::Brief const&>(I);
+        emitBlock(J.children);
+        break;
+    }
+    case Javadoc::Kind::admonition:
+    {
+        auto const& J = static_cast<Javadoc::Admonition const&>(I);
+        emitRecord(J.style, JAVADOC_NODE_ADMONISH);
+        emitBlock(J.children);
+        break;
+    }
+    case Javadoc::Kind::code:
+    {
+        auto const& J = static_cast<Javadoc::Code const&>(I);
+        emitBlock(J.children);
+        break;
+    }
+    case Javadoc::Kind::returns:
+    {
+        auto const& J = static_cast<Javadoc::Returns const&>(I);
+        emitBlock(J.children);
+        break;
+    }
+    case Javadoc::Kind::param:
+    {
+        auto const& J = static_cast<Javadoc::Param const&>(I);
+        emitRecord(J.name, JAVADOC_NODE_STRING);
+        emitBlock(J.children);
+        break;
+    }
+    case Javadoc::Kind::tparam:
+    {
+        auto const& J = static_cast<Javadoc::TParam const&>(I);
+        emitRecord(J.name, JAVADOC_NODE_STRING);
+        emitBlock(J.children);
+        break;
+    }
+    default:
+        llvm_unreachable("unknown kind");
+        break;
+    }
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    MemberTypeInfo const& T)
+{
+    StreamSubBlockGuard Block(Stream, BI_MEMBER_TYPE_BLOCK_ID);
+    emitBlock(T.Type, FieldId::F_type);
+    emitRecord(T.Name, MEMBER_TYPE_NAME);
+    emitRecord(T.Access, MEMBER_TYPE_ACCESS);
+    if(T.javadoc)
+        emitBlock(*T.javadoc);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    NamespaceInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
+    emitRecord(I.id, NAMESPACE_USR);
+    emitRecord(I.Name, NAMESPACE_NAME);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    if(I.javadoc)
+        emitBlock(*I.javadoc);
+    for (const auto& C : I.Children.Namespaces)
+        emitBlock(C, FieldId::F_child_namespace);
+    for (const auto& C : I.Children.Records)
+        emitBlock(C, FieldId::F_child_record);
+    for (auto const& C : I.Children.Functions)
+        emitBlock(C, FieldId::F_child_function);
+    for (const auto& C : I.Children.Enums)
+        emitBlock(C);
+    for (const auto& C : I.Children.Typedefs)
+        emitBlock(C);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    RecordInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
+    emitRecord(I.id, RECORD_USR);
+    emitRecord(I.Name, RECORD_NAME);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    if(I.javadoc)
+        emitBlock(*I.javadoc);
+    if (I.DefLoc)
+        emitRecord(*I.DefLoc, RECORD_DEFLOCATION);
+    for (const auto& L : I.Loc)
+        emitRecord(L, RECORD_LOCATION);
+    emitRecord(I.TagType, RECORD_TAG_TYPE);
+    emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
+    emitRecord(RECORD_SPECS, I.specs);
+    for (const auto& N : I.Members)
+        emitBlock(N);
+    for (const auto& P : I.Parents)
+        emitBlock(P, FieldId::F_parent);
+    for (const auto& P : I.VirtualParents)
+        emitBlock(P, FieldId::F_vparent);
+    for (const auto& PB : I.Bases)
+        emitBlock(PB);
+    for (const auto& C : I.Children.Records)
+        emitBlock(C, FieldId::F_child_record);
+    for (auto const& C : I.Children.Functions)
+        emitBlock(C, FieldId::F_child_function);
+    for (const auto& C : I.Children.Enums)
+        emitBlock(C);
+    for (const auto& C : I.Children.Typedefs)
+        emitBlock(C);
+    if (I.Template)
+        emitBlock(*I.Template);
+    emitRecord(I.Friends, RECORD_FRIENDS);
+}
+
 void
 BitcodeWriter::
 emitBlock(
@@ -992,6 +979,15 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
+    TemplateParamInfo const& T)
+{
+    StreamSubBlockGuard Block(Stream, BI_TEMPLATE_PARAM_BLOCK_ID);
+    emitRecord(T.Contents, TEMPLATE_PARAM_CONTENTS);
+}
+
+void
+BitcodeWriter::
+emitBlock(
     TemplateSpecializationInfo const& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_SPECIALIZATION_BLOCK_ID);
@@ -1003,10 +999,46 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    TemplateParamInfo const& T)
+    TypedefInfo const& T)
 {
-    StreamSubBlockGuard Block(Stream, BI_TEMPLATE_PARAM_BLOCK_ID);
-    emitRecord(T.Contents, TEMPLATE_PARAM_CONTENTS);
+    StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
+    emitRecord(T.id, TYPEDEF_USR);
+    emitRecord(T.Name, TYPEDEF_NAME);
+    for (const auto& N : T.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+    if(T.javadoc)
+        emitBlock(*T.javadoc);
+    if (T.DefLoc)
+        emitRecord(*T.DefLoc, TYPEDEF_DEFLOCATION);
+    emitRecord(T.IsUsing, TYPEDEF_IS_USING);
+    emitBlock(T.Underlying);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    TypeInfo const& T)
+{
+    StreamSubBlockGuard Block(Stream, BI_TYPE_BLOCK_ID);
+    emitBlock(T.Type, FieldId::F_type);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    VariableInfo const& I)
+{
+#if 0
+    StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
+    emitRecord(I.id, VARIABLE_USR);
+    emitRecord(I.Name, VARIABLE_NAME);
+    emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
+    emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
+    emitRecord(I.Access, BASE_RECORD_ACCESS);
+    emitRecord(I.IsParent, BASE_RECORD_IS_PARENT);
+    for (const auto& M : I.Members)
+        emitBlock(M);
+#endif
 }
 
 //------------------------------------------------

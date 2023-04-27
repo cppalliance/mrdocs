@@ -201,12 +201,13 @@ decodeRecord(
     case InfoType::IT_function:
     case InfoType::IT_enum:
     case InfoType::IT_typedef:
-    case InfoType::IT_default:
+    case InfoType::IT_variable:
         Field = IT;
         return llvm::Error::success();
+    default:
+        Field = InfoType::IT_default;
+        return makeError("invalid value for InfoType");
     }
-    Field = InfoType::IT_default;
-    return makeError("invalid value for InfoType");
 }
 
 static

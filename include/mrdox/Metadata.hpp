@@ -36,5 +36,6 @@
 #include <mrdox/Metadata/TemplateParam.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
+#include <mrdox/Metadata/Variable.hpp>
 
 #endif

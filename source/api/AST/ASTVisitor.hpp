@@ -79,6 +79,7 @@ public:
     bool WalkUpFromTypeAliasDecl(TypeAliasDecl* D);
     bool WalkUpFromTypedefDecl(TypedefDecl* D);
     bool WalkUpFromEnumDecl(EnumDecl* D);
+    bool WalkUpFromVarDecl(VarDecl* D);
 
 private:
     template <typename T>

@@ -44,6 +44,7 @@ struct TemplateParamInfo;
 struct TemplateSpecializationInfo;
 struct TypeInfo;
 struct TypedefInfo;
+struct VariableInfo;
 struct VerbatimBlock;
 
 } // mrdox
