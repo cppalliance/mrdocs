@@ -91,7 +91,7 @@ visit(
         beginSection(s);
 
         auto recordList = buildSortedList<RecordInfo>(I.Children.Records);
-        auto functionOverloads = makeNamespaceOverloads(I.Children.Functions, corpus_);
+        auto functionOverloads = makeNamespaceOverloads(I, corpus_);
         //auto typeList = ?
         //auto enumList = ?
 
@@ -201,18 +201,18 @@ bool
 AdocSinglePageWriter::
 visitOverloads(
     Info const& P,
-    Overloads_ const& t)
+    OverloadInfo const& I)
 {
-    Assert(! t.list.empty());
+    Assert(! I.Functions.empty());
 
-    beginSection(P, t);
+    beginSection(P, I);
 
     // Location
-    writeLocation(*t.list.front());
+    writeLocation(*I.Functions.front());
 
     // List of overloads
     os_ << '\n';
-    for(auto const I : t.list)
+    for(auto const I : I.Functions)
     {
         os_ << ". `";
         writeFunctionDeclaration(*I);
@@ -221,10 +221,10 @@ visitOverloads(
 
     // Brief
     os_ << "\n//-\n";
-    writeBrief(t.list.front()->javadoc, true);
+    writeBrief(I.Functions.front()->javadoc, true);
 
     // List of descriptions
-    for(auto const I : t.list)
+    for(auto const I : I.Functions)
     {
         os_ << ". ";
         if(I->javadoc)

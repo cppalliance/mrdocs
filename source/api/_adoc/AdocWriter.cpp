@@ -315,15 +315,15 @@ llvm::StringRef
 AdocWriter::
 linkFor(
     Info const& P,
-    Overloads_ const& t)
+    OverloadInfo const& I)
 {
     static thread_local std::string temp;
     temp.clear();
     llvm::raw_string_ostream os(temp);
     std::string s;
     os << "xref:#" <<
-        names_.getOverload(P, t.name, '-', s) <<
-        "[" << t.name << "]";
+        names_.getOverload(P, I.Name, '-', s) <<
+        "[" << I.Name << "]";
     return temp;
 }
 
@@ -722,7 +722,7 @@ void
 AdocWriter::
 beginSection(
     Info const& P,
-    Overloads_ const& F)
+    OverloadInfo const& I)
 {
     sect_.level++;
     if(sect_.level <= 6)
@@ -730,8 +730,8 @@ beginSection(
     std::string temp;
     os_ <<
         "\n" <<
-        "[\"#" << names_.getOverload(P, F.name, '-', temp) << "\"]\n" <<
-        sect_.markup << ' ' << F.name << "\n";
+        "[\"#" << names_.getOverload(P, I.Name, '-', temp) << "\"]\n" <<
+        sect_.markup << ' ' << I.Name << "\n";
 }
 void
 AdocWriter::

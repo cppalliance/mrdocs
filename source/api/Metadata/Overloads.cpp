@@ -10,6 +10,7 @@
 
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata/Function.hpp>
+#include <mrdox/Metadata/Namespace.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <mrdox/Metadata/Scope.hpp>
 #include <llvm/ADT/STLExtras.h>
@@ -91,6 +92,7 @@ makeOverloadsSet(
 
 NamespaceOverloads::
 NamespaceOverloads(
+    NamespaceInfo const& I,
     std::vector<FunctionInfo const*> data)
     : data_(std::move(data))
 {
@@ -112,7 +114,8 @@ NamespaceOverloads(
             {
                 return (*it0)->Name.compare_insensitive(I->Name) == 0;
             });
-        list.push_back({
+        list.emplace_back(OverloadInfo{
+            &I,
             { (*it0)->Name.data(), (*it0)->Name.size() },
             { it0, it } });
         it0 = it;
@@ -121,18 +124,18 @@ NamespaceOverloads(
 
 NamespaceOverloads
 makeNamespaceOverloads(
-    std::vector<Reference> const& list,
+    NamespaceInfo const& I,
     Corpus const& corpus)
 {
     std::vector<FunctionInfo const*> data;
-    data.reserve(list.size());
-    for(auto const& ref : list)
+    data.reserve(I.Children.Functions.size());
+    for(auto const& ref : I.Children.Functions)
     {
         auto const& I = corpus.get<FunctionInfo>(ref.id);
         data.push_back(&I);
     }
 
-    return NamespaceOverloads(std::move(data));
+    return NamespaceOverloads(I, std::move(data));
 }
 
 } // mrdox

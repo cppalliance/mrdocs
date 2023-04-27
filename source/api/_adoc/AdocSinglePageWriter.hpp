@@ -48,7 +48,7 @@ private:
     bool visit(TypedefInfo const&) override;
     bool visit(EnumInfo const&) override;
 
-    bool visitOverloads(Info const& P, Overloads_ const&);
+    bool visitOverloads(Info const& P, OverloadInfo const&);
 };
 
 } // adoc

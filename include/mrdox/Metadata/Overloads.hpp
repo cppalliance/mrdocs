@@ -14,6 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Function.hpp>
+#include <mrdox/MetadataFwd.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
 #include <span>
@@ -65,22 +66,26 @@ makeOverloadsSet(
 
 //------------------------------------------------
 
-struct Overloads_
+struct OverloadInfo
 {
+    /** The parent namespace or record.
+    */
+    Info const* Parent;
+
     /** The name for this set of functions.
     */
-    std::string_view name;
+    std::string_view Name;
 
     /** The list of overloads.
     */
-    std::span<FunctionInfo const*> list;
+    std::span<FunctionInfo const*> Functions;
 };
 
 class MRDOX_VISIBLE
     NamespaceOverloads
 {
 public:
-    std::vector<Overloads_> list;
+    std::vector<OverloadInfo> list;
 
     /** Constructor.
 
@@ -88,8 +93,8 @@ public:
         `O(N * log(N))` in `data.size()`.
     */
     MRDOX_DECL
-    explicit
     NamespaceOverloads(
+        NamespaceInfo const& I,
         std::vector<FunctionInfo const*> data);
 
 private:
@@ -110,7 +115,7 @@ private:
 MRDOX_DECL
 NamespaceOverloads
 makeNamespaceOverloads(
-    std::vector<Reference> const& list,
+    NamespaceInfo const& I,
     Corpus const& corpus);
 
 } // mrdox

@@ -289,12 +289,12 @@ build(
 
     // Inject the global namespace
     {
-#if 0
+        // default-constructed NamespaceInfo
+        // describes the global namespace
         NamespaceInfo I;
         insertBitcode(
             *ex.getExecutionContext(),
             writeBitcode(I));
-#endif
     }
 
     // Collect the symbols. Each symbol will have

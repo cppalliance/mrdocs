@@ -32,10 +32,13 @@ public:
         SafeNames const& names,
         Reporter& R) noexcept;
 
+    void build(NamespaceInfo const&);
     void build(RecordInfo const&);
     void build(FunctionInfo const&);
     void build(TypedefInfo const&);
     void build(EnumInfo const&);
+
+    void build(OverloadInfo const&);
 
 private:
     void writeTitle(Info const& I);

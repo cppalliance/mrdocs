@@ -132,15 +132,21 @@ toolMain(
         llvm::outs() << "Generating docs...\n";
     if((*corpus)->config()->singlePage())
     {
-        if(! generator->buildSinglePageFile(
-            (*config)->outputPath(), **corpus, R))
-            return;
+        auto err = generator->buildSinglePageFile(
+            (*config)->outputPath(), **corpus, R);
+        if(R.error(err,
+            "generate '", (*config)->outputPath(), "'"))
+        {
+        }
     }
     else
     {
-        if(! generator->buildPages(
-            (*config)->outputPath(), **corpus, R))
-            return;
+        auto err = generator->buildPages(
+            (*config)->outputPath(), **corpus, R);
+        if(R.error(err,
+            "generate pages in '", (*config)->outputPath(), "'"))
+        {
+        }
     }
 }
 
@@ -155,7 +161,7 @@ int main(int argc, char const** argv)
 
     debugEnableHeapChecking();
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-   
+
     Reporter R;
     toolMain(argc, argv, R);
     return R.getExitCode();

@@ -63,7 +63,7 @@ protected:
     void write(EnumInfo const& I);
 
     virtual llvm::StringRef linkFor(Info const&);
-    virtual llvm::StringRef linkFor(Info const&, Overloads_ const&);
+    virtual llvm::StringRef linkFor(Info const&, OverloadInfo const&);
 
     void writeBase(
         BaseRecordInfo const& I);
@@ -112,8 +112,11 @@ protected:
     FormalParam formalParam(FieldTypeInfo const& ft);
     TypeName typeName(TypeInfo const& ti);
 
+    void beginPage();
+    void endPage();
+
     void beginSection(Info const& I);
-    void beginSection(Info const& P, Overloads_ const& F);
+    void beginSection(Info const& P, OverloadInfo const& F);
     void beginSection(llvm::StringRef name);
     void endSection();
 

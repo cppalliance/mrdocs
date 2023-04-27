@@ -23,6 +23,9 @@ namespace adoc {
 class AdocGenerator
     : public Generator
 {
+    struct MultiPageBuilder;
+    struct SinglePageBuilder;
+
 public:
     llvm::StringRef
     name() const noexcept override
