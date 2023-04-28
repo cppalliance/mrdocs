@@ -310,7 +310,7 @@ struct MRDOX_VISIBLE
     /** Return the brief, or nullptr if there is none.
 
         This function should only be called
-        after calculateBrief() has been invoked.
+        after postProcess() has been invoked.
     */
     Paragraph const*
     getBrief() const noexcept
@@ -324,6 +324,22 @@ struct MRDOX_VISIBLE
     getBlocks() const noexcept
     {
         return blocks_;
+    }
+
+    /** Return the list of top level blocks.
+    */
+    AnyList<Param> const&
+    getParams() const noexcept
+    {
+        return params_;
+    }
+
+    /** Return the list of top level blocks.
+    */
+    AnyList<TParam> const&
+    getTParams() const noexcept
+    {
+        return tparams_;
     }
 
     // VFALCO This is unfortunately necessary for
@@ -346,12 +362,8 @@ struct MRDOX_VISIBLE
     MRDOX_DECL bool operator==(Javadoc const&) const noexcept;
     MRDOX_DECL bool operator!=(Javadoc const&) const noexcept;
     /* @} */
-
-    MRDOX_DECL
-    AnyList<Block>::const_iterator
-    findBrief() const noexcept;
-
-    /** Calculate the brief.
+   
+    /** Apply post-processing to the final object.
 
         The implementation calls this function once,
         after all doc comments have been merged
@@ -366,10 +378,14 @@ struct MRDOX_VISIBLE
 
         @li Otherwise, the brief is set to a
             null pointer to indicate absence.
+
+        Furthermore, the Params and TParams are
+        spliced out of the top level list of
+        blocks into their own lists.
     */
     MRDOX_DECL 
     void
-    calculateBrief();
+    postProcess();
 
     //--------------------------------------------
 
@@ -424,6 +440,8 @@ struct MRDOX_VISIBLE
 private:
     std::shared_ptr<Paragraph const> brief_;
     AnyList<Block> blocks_;
+    AnyList<Param> params_;
+    AnyList<TParam> tparams_;
 };
 
 } // mrdox

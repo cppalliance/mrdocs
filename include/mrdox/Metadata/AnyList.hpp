@@ -143,6 +143,9 @@ public:
     AnyListNodes extractNodes() noexcept;
     void spliceBack(AnyListNodes&& nodes) noexcept;
 
+    template<class U>
+    iterator move_to(iterator it, AnyList<U>& other) noexcept;
+
     compare_result compare(AnyList const& other) const noexcept
         requires std::three_way_comparable<T>;
     compare_result operator<=>(AnyList const& other) const noexcept
@@ -242,9 +245,13 @@ class AnyList<T>::iterator_impl
     using node_type  = std::conditional_t<isConst, Node const, Node>;
 
     node_type* it_;
+    node_type* prev_ = nullptr;
 
-    iterator_impl(node_type* it) noexcept
+    iterator_impl(
+        node_type* it,
+        node_type* prev) noexcept
         : it_(it)
+        , prev_(prev)
     {
     }
 
@@ -257,6 +264,7 @@ public:
 
     iterator_impl& operator++() noexcept
     {
+        prev_ = it_;
         it_ = it_->next;
         return *this;
     }
@@ -313,7 +321,8 @@ AnyList() noexcept
 
 template<class T>
 AnyList<T>::
-AnyList(AnyListNodes&& nodes) noexcept
+AnyList(
+    AnyListNodes&& nodes) noexcept
     : size_(nodes.size)
 {
     if(! nodes.head)
@@ -331,7 +340,8 @@ AnyList(AnyListNodes&& nodes) noexcept
 template<class T>
 template<class U>
 AnyList<T>::
-AnyList(AnyList<U>&& other) noexcept
+AnyList(
+    AnyList<U>&& other) noexcept
     : size_(other.size_)
 {
     if(size_ == 0)
@@ -351,7 +361,8 @@ AnyList(AnyList<U>&& other) noexcept
 
 template<class T>
 AnyList<T>::
-AnyList(AnyList&& other) noexcept
+AnyList(
+    AnyList&& other) noexcept
     : size_(other.size_)
 {
     if(size_ == 0)
@@ -429,7 +440,7 @@ AnyList<T>::
 begin() noexcept ->
     iterator
 {
-    return head_;
+    return { head_, nullptr };
 }
 
 template<class T>
@@ -438,7 +449,9 @@ AnyList<T>::
 end() noexcept ->
     iterator
 {
-    return &end_;
+    if(tail_ != &end_)
+        return { &end_, tail_ };
+    return { &end_, nullptr };
 }
 
 template<class T>
@@ -447,7 +460,7 @@ AnyList<T>::
 begin() const noexcept ->
     const_iterator
 {
-    return head_;
+    return { head_, nullptr };
 }
 
 template<class T>
@@ -456,7 +469,9 @@ AnyList<T>::
 end() const noexcept ->
     const_iterator
 {
-    return &end_;
+    if(tail_ != &end_)
+        return { &end_, tail_ };
+    return { &end_, nullptr };
 }
 
 template<class T>
@@ -465,7 +480,9 @@ AnyList<T>::
 cbegin() const noexcept ->
     const_iterator
 {
-    return head_;
+    if(tail_ != &end_)
+        return { &end_, tail_ };
+    return { &end_, nullptr };
 }
 
 template<class T>
@@ -474,7 +491,9 @@ AnyList<T>::
 cend() const noexcept ->
     const_iterator
 {
-    return &end_;
+    if(tail_ != &end_)
+        return { &end_, tail_ };
+    return { &end_, nullptr };
 }
 
 template<class T>
@@ -543,6 +562,53 @@ AnyList<T>::
 spliceBack(AnyListNodes&& nodes) noexcept
 {
     splice_back(AnyList<T>(std::move(nodes)));
+}
+
+template<class T>
+template<class U>
+auto
+AnyList<T>::
+move_to(
+    iterator it,
+    AnyList<U>& other) noexcept ->
+        iterator
+{
+    iterator result;
+    if(it.it_ == head_)
+    {
+        head_ = head_->next;
+        if( head_ == &end_)
+        {
+            tail_ = &end_;
+            result = { &end_, nullptr };
+        }
+        else
+        {
+            result = { head_, nullptr };
+        }
+    }
+    else
+    {
+        result = { it.it_->next, it.prev_ };
+        it.prev_->next = it.it_->next;
+        if( it.it_->next == &end_)
+            tail_ = it.prev_;
+    }
+    --size_;
+    if(other.empty())
+    {
+        other.head_ = it.it_;
+        other.tail_ = it.it_;
+        other.head_->next = &other.end_;
+        other.tail_->next = &other.end_;
+    }
+    else
+    {
+        other.tail_->next = it.it_;
+        it.it_->next = &other.end_;
+    }
+    ++other.size_;
+    return result;
 }
 
 template<class T>

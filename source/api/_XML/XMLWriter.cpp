@@ -419,6 +419,8 @@ writeJavadoc(
     if(auto brief = javadoc->getBrief())
         writeBrief(*brief);
     writeNodes(javadoc->getBlocks());
+    writeNodes(javadoc->getParams());
+    writeNodes(javadoc->getTParams());
     tags_.close("doc");
 }
 

@@ -73,51 +73,59 @@ operator!=(
     return !(*this == other);
 }
 
-auto
+void
 Javadoc::
-findBrief() const noexcept ->
-    AnyList<Block>::const_iterator
+postProcess()
 {
+    Paragraph* brief = nullptr;
     auto it = blocks_.begin();
-    auto first = blocks_.end();
-    for(;it != blocks_.end(); ++it)
-    {
-        if(it->kind == Kind::brief)
-            return it;
-        if( it->kind == Kind::paragraph &&
-            first == blocks_.end())
-        {
-            first = it;
-            ++it;
-            goto got_first;
-        }
-    }
-    return blocks_.end();
-got_first:
     while(it != blocks_.end())
     {
         if(it->kind == Kind::brief)
-            return it;
+        {
+            brief = static_cast<Paragraph*>(&*it);
+            goto done;
+        }
+        else if(it->kind == Kind::param)
+        {
+            it = blocks_.move_to(it, params_);
+            continue;
+        }
+        else if(it->kind == Kind::tparam)
+        {
+            it = blocks_.move_to(it, tparams_);
+            continue;
+        }
+        if(it->kind == Kind::paragraph && ! brief)
+        {
+            brief = static_cast<Paragraph*>(&*it);
+            ++it;
+            goto find_brief;
+        }
         ++it;
     }
-    return first;
-}
-
-void
-Javadoc::
-calculateBrief()
-{
-    Paragraph* brief = nullptr;
-    for(auto& block : blocks_)
+    goto done;
+find_brief:
+    while(it != blocks_.end())
     {
-        if(block.kind == Kind::brief)
+        if(it->kind == Kind::brief)
         {
-            brief = static_cast<Paragraph*>(&block);
+            brief = static_cast<Paragraph*>(&*it);
             break;
         }
-        if(block.kind == Kind::paragraph && ! brief)
-            brief = static_cast<Paragraph*>(&block);
+        else if(it->kind == Kind::param)
+        {
+            it = blocks_.move_to(it, params_);
+            continue;
+        }
+        else if(it->kind == Kind::tparam)
+        {
+            it = blocks_.move_to(it, tparams_);
+            continue;
+        }
+        ++it;
     }
+done:
     if(brief != nullptr)
     {
         brief_ = blocks_.extract_first_of<Paragraph>(
