@@ -26,7 +26,7 @@
       <attr id="constexpr-kind" name="constexpr" value="1"/>
       <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="storage-class" name="static" value="2"/>
-      <return name="char"/>
+      <return type="char"/>
     </function>
     <function name="f3" access="public" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
       <file path="mem-fn.cpp" line="26"/>
@@ -35,7 +35,7 @@
       <attr id="is-const"/>
       <attr id="is-volatile"/>
       <attr id="exception-spec" name="noexcept" value="5"/>
-      <return name="int"/>
+      <return type="int"/>
     </function>
   </struct>
   <struct name="T17" id="HL3/1NhKSels2G5ay7F0IYzlSLs=">
@@ -65,7 +65,7 @@
     <function name="f" access="public" id="+NevzZlqigIe1KSKS7eqq7pCd40=">
       <file path="mem-fn.cpp" line="13"/>
       <attr id="has-trailing-return"/>
-      <return name="int"/>
+      <return type="int"/>
     </function>
   </struct>
   <struct name="T13" id="NyLraUP0R3lYeyTpHQYZpyZMstc=">
@@ -153,7 +153,7 @@
       <attr id="is-const"/>
       <attr id="is-volatile"/>
       <attr id="exception-spec" name="noexcept" value="5"/>
-      <return name="int"/>
+      <return type="int"/>
     </function>
   </struct>
 </namespace>

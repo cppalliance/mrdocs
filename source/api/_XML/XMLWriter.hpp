@@ -80,10 +80,8 @@ private:
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
     void writeBaseRecord(BaseRecordInfo const& I);
-    void writeParam(FieldTypeInfo const& I);
     void writeTemplateParam(TemplateParamInfo const& I);
     void writeMemberType(MemberTypeInfo const& I);
-    void writeReturnType(TypeInfo const& I);
     void writeStorageClass(jit_indenter&, StorageClass SC);
     void writeJavadoc(llvm::Optional<Javadoc> const& javadoc);
 
@@ -97,7 +95,7 @@ private:
     void writeAdmonition(Javadoc::Admonition const& node);
     void writeCode(Javadoc::Code const& node);
     void writeReturns(Javadoc::Returns const& node);
-    void writeParam(Javadoc::Param const& node);
+    void writeJParam(Javadoc::Param const& node);
     void writeTParam(Javadoc::TParam const& node);
 };
 

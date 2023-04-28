@@ -18,10 +18,26 @@
 namespace clang {
 namespace mrdox {
 
-// A base struct for TypeInfos
+/** Metadata for naming a type.
+
+    A TypeInfo object names a type.
+
+    Builtin types:
+
+    @li void
+    @li std::nullptr_t
+    @li bool
+    @li char, unsigned char
+    @li float, double
+    @li short, int, long, long long
+    @li unsigned short, unsignd int
+    @li unsigned long, unsigned long long
+*/
 struct TypeInfo
 {
     /** The type being referenced.
+
+        If this names a built-in type
     */
     Reference Type;
 

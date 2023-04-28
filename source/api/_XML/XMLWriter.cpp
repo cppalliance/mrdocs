@@ -194,9 +194,11 @@ visit(
 
     write(I.specs0, tags_);
 
-    writeReturnType(I.ReturnType);
+    writeReturnType(I.ReturnType, tags_);
+
     for(auto const& J : I.Params)
-        writeParam(J);
+        writeParam(J, tags_);
+
     if(I.Template)
         for(TemplateParamInfo const& J : I.Template->Params)
             writeTemplateParam(J);
@@ -352,18 +354,6 @@ writeBaseRecord(
 
 void
 XMLWriter::
-writeParam(
-    FieldTypeInfo const& I)
-{
-    tags_.write("param", {}, {
-        { "name", I.Name, ! I.Name.empty() },
-        { "default", I.DefaultValue, ! I.DefaultValue.empty() },
-        { "type", I.Type.Name },
-        { I.Type.id } });
-}
-
-void
-XMLWriter::
 writeTemplateParam(
     TemplateParamInfo const& I)
 {
@@ -383,19 +373,6 @@ writeMemberType(
         { "value", I.DefaultValue, ! I.DefaultValue.empty() },
         { I.Access },
         { I.Type.id } });
-}
-
-void
-XMLWriter::
-writeReturnType(
-    TypeInfo const& I)
-{
-    if(I.Type.Name == "void")
-        return;
-    tags_.write("return", {}, {
-        { "name", I.Type.Name },
-        { I.Type.id }
-        });
 }
 
 void
@@ -482,7 +459,7 @@ writeNode(
         writeCode(static_cast<Javadoc::Code const&>(node));
         break;
     case Javadoc::Kind::param:
-        writeParam(static_cast<Javadoc::Param const&>(node));
+        writeJParam(static_cast<Javadoc::Param const&>(node));
         break;
     case Javadoc::Kind::tparam:
         writeTParam(static_cast<Javadoc::TParam const&>(node));
@@ -594,7 +571,7 @@ writeReturns(
 
 void
 XMLWriter::
-writeParam(
+writeJParam(
     Javadoc::Param const& param)
 {
     tags_.open("param", {

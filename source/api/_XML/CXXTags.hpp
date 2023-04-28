@@ -16,6 +16,7 @@
 #include "Support/Operator.hpp"
 #include <clang/AST/Attr.h>
 #include <mrdox/Metadata/Function.hpp>
+#include <mrdox/Metadata/Type.hpp>
 
 /*
     This file holds the business logic for transforming
@@ -37,6 +38,8 @@ constexpr llvm::StringRef usingTagName      = "using";
 constexpr llvm::StringRef enumTagName       = "enum";
 constexpr llvm::StringRef variableTagName   = "variable";
 constexpr llvm::StringRef attributeTagName  = "attr";
+constexpr llvm::StringRef returnTagName     = "return";
+constexpr llvm::StringRef paramTagName      = "param";
 
 constexpr llvm::StringRef getBitsIDName(RecFlags0 ID)
 {
@@ -262,6 +265,25 @@ inline void write(Bits<FnFlags1> const& bits, XMLTags& tags)
 inline void write(Bits<VarFlags0> const& bits, XMLTags& tags)
 {
     WriteBits(bits).write<VarFlags0::storageClass>(tags);
+}
+
+inline void writeReturnType(TypeInfo const& I, XMLTags& tags)
+{
+    if(I.Type.Name == "void")
+        return;
+    tags.write(returnTagName, {}, {
+        { "type", I.Type.Name },
+        { I.Type.id }
+        });
+}
+
+inline void writeParam(FieldTypeInfo const& I, XMLTags& tags)
+{
+    tags.write(paramTagName, {}, {
+        { "name", I.Name, ! I.Name.empty() },
+        { "type", I.Type.Name },
+        { "default", I.DefaultValue, ! I.DefaultValue.empty() },
+        { I.Type.id } });
 }
 
 } // xml

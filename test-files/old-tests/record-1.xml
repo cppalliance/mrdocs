@@ -6,7 +6,7 @@
     <file path="record-1.cpp" line="1" class="def"/>
     <function name="g3" access="protected" id="DKxv4h+rP37b0u6O1qbB+u416ZY=">
       <file path="record-1.cpp" line="28"/>
-      <return name="char"/>
+      <return type="char"/>
       <param name="x" type="int"/>
       <doc>
         <brief>
@@ -22,11 +22,11 @@
     </function>
     <function name="f3" access="public" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
       <file path="record-1.cpp" line="8"/>
-      <return name="char"/>
+      <return type="char"/>
     </function>
     <function name="g2" access="protected" id="flHl59B/bdRwuiNeh3sHqCycic0=">
       <file path="record-1.cpp" line="21"/>
-      <return name="int"/>
+      <return type="int"/>
       <doc>
         <brief>
           <text>brief-g2</text>
@@ -38,7 +38,7 @@
     </function>
     <function name="f2" access="public" id="w0ONazxXaWlB0RQLjfDqDWICUwo=">
       <file path="record-1.cpp" line="7"/>
-      <return name="int"/>
+      <return type="int"/>
     </function>
     <function name="f1" access="public" id="9sznTZ3/SXQNZpCsoMG8KWGLuEc=">
       <file path="record-1.cpp" line="6"/>

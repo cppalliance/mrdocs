@@ -6,28 +6,28 @@
     <file path="explicit-conv-operator.cpp" line="7" class="def"/>
     <function name="operator bool" access="public" id="hJXOxv26Y9uxUYMMVZRsp3Wps4A=">
       <file path="explicit-conv-operator.cpp" line="8"/>
-      <return name="_Bool"/>
+      <return type="_Bool"/>
     </function>
   </struct>
   <struct name="Explicit" id="bonobNKGOblPVcRjxpiPan4nYnc=">
     <file path="explicit-conv-operator.cpp" line="3" class="def"/>
     <function name="operator bool" access="public" id="64zY8rVu+TzEUayzMrnV65i9nFc=">
       <file path="explicit-conv-operator.cpp" line="4"/>
-      <return name="_Bool"/>
+      <return type="_Bool"/>
     </function>
   </struct>
   <struct name="ExplicitTrue" id="htdCGapMsdazR1XkXoanrOCkvDE=">
     <file path="explicit-conv-operator.cpp" line="11" class="def"/>
     <function name="operator bool" access="public" id="9tpZWv9eJGfWj37jmTdNTg+gp14=">
       <file path="explicit-conv-operator.cpp" line="12"/>
-      <return name="_Bool"/>
+      <return type="_Bool"/>
     </function>
   </struct>
   <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
     <file path="explicit-conv-operator.cpp" line="16" class="def"/>
     <function name="operator bool" access="public" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
       <file path="explicit-conv-operator.cpp" line="17"/>
-      <return name="_Bool"/>
+      <return type="_Bool"/>
     </function>
   </struct>
 </namespace>
