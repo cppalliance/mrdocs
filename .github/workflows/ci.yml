@@ -79,6 +79,6 @@ jobs:
           cxxstd: ${{ matrix.cxxstd }}
           cxx: ${{ matrix.cxx }}
           cc: ${{ matrix.cc }}
-          extra-args: ${{ format('-D LLVM_ROOT={0} -D Clang_ROOT={0}', '/usr/local') }}
+          extra-args: ${{ format('-D LLVM_ROOT={0} -D Clang_ROOT={0} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '/usr/local') }}
           # toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain }}
 
