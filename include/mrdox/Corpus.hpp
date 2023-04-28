@@ -148,10 +148,12 @@ get(
         Assert(t->IT == InfoType::IT_record);
     else if constexpr(std::is_same_v<T, FunctionInfo>)
         Assert(t->IT == InfoType::IT_function);
-    else if constexpr(std::is_same_v<T, EnumInfo>)
-        Assert(t->IT == InfoType::IT_enum);
     else if constexpr(std::is_same_v<T, TypedefInfo>)
         Assert(t->IT == InfoType::IT_typedef);
+    else if constexpr(std::is_same_v<T, EnumInfo>)
+        Assert(t->IT == InfoType::IT_enum);
+    else if constexpr(std::is_same_v<T, VariableInfo>)
+        Assert(t->IT == InfoType::IT_variable);
     return *t;
 }
 

@@ -15,9 +15,9 @@
     <file path="friend-4.cpp" line="9"/>
     <file path="friend-4.cpp" line="12"/>
     <doc>
-      <para>
-        <text> U::f</text>
-      </para>
+      <brief>
+        <text>U::f</text>
+      </brief>
     </doc>
   </function>
 </namespace>

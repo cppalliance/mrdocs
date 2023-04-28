@@ -5,9 +5,9 @@
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file path="para-2.cpp" line="10"/>
     <doc>
-      <para>
-        <text> brief</text>
-      </para>
+      <brief>
+        <text>brief</text>
+      </brief>
       <para>
         <text>a</text>
         <text> b</text>

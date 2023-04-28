@@ -138,6 +138,28 @@ class JavadocVisitor
             visit(*it);
     }
 
+#if 0
+    static void
+    makeLeftAligned(
+        List<Javadoc::Text>& list)
+    {
+        if(list.empty())
+            return;
+        // measure the left margin
+        std::size_t n = std::size_t(-1);
+        for(auto& text : list)
+        {
+            auto const space = text.string.size() -
+                llvm::StringRef(text.string).ltrim().size();
+            if( n > space)
+                n = space;
+        }
+        // now left-justify
+        for(auto& text : list)
+            text.string.erase(0, n);
+    }
+#endif
+
 public:
     JavadocVisitor(
         RawComment const* RC,
@@ -170,16 +192,13 @@ public:
         // paragraph has no doxygen command,
         // so we will trim the leading space.
         // Otherwise just trim trailing space
-#if 0
         if(para_->children.empty())
             s = s.ltrim().rtrim();
         else
-            s = s.rtrim();
-            //s = s.ltrim().rtrim();
-#endif
+            s = s.rtrim(); //.ltrim()
 
         // VFALCO Figure out why we get empty TextComment
-        //if(! s.empty())
+        if(! s.empty())
             Javadoc::append(*para_,
                 Javadoc::Text(ensureUTF8(s.str())));
     }

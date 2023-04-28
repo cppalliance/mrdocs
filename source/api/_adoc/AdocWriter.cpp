@@ -60,14 +60,16 @@ struct AdocWriter::TypeName
             os << t.I.Type.Name;
             return os;
         }
-        if(t.corpus.exists(t.I.Type.id))
+        // VFALCO This is broken
+#if 0
+        if(auto J = t.corpus.find(t.I.Type.id))
         {
-            auto const& J = t.corpus.get<RecordInfo>(t.I.Type.id);
             // VFALCO add namespace qualifiers if I is in
             //        a different namesapce
-            os << J.Name << "::" << J.Name;
+            os << J->Name << "::" << T.Name;
             return os;
         }
+#endif
         auto const& T = t.I.Type;
         os << T.Name << "::" << T.Name;
         return os;
@@ -604,7 +606,9 @@ AdocWriter::
 writeNode(
     Javadoc::Text const& node)
 {
-    os_ << node.string << '\n';
+    // Text nodes must be left aligned or
+    // else they can be rendered up as code.
+    os_ << llvm::StringRef(node.string).ltrim() << '\n';
 }
 
 void
@@ -653,7 +657,26 @@ writeNode(
     os_ <<
         "[,cpp]\n"
         "----\n";
-    writeNodes(node.children);
+    List<Javadoc::Text> const& list(node.children);
+    if(! list.empty())
+    {
+        // measure the left margin
+        std::size_t n = std::size_t(-1);
+        for(auto& text : list)
+        {
+            auto const space = text.string.size() -
+                llvm::StringRef(text.string).ltrim().size();
+            if( n > space)
+                n = space;
+        }
+        // now write left-aligned
+        for(auto& text : list)
+        {
+            llvm::StringRef string(text.string);
+            string = string.ltrim(n);
+            os_ << string << "\n";
+        }
+    }
     os_ <<
         "----\n";
 }

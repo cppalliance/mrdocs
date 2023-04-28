@@ -60,7 +60,9 @@ Javadoc::
 operator==(
     Javadoc const& other) const noexcept
 {
-    return blocks_ == other.blocks_;
+    return
+        std::tie(brief_, blocks_) ==
+        std::tie(other.brief_, other.blocks_);
 }
 
 bool
@@ -105,7 +107,6 @@ void
 Javadoc::
 calculateBrief()
 {
-return;
     Paragraph* brief = nullptr;
     for(auto& block : blocks_)
     {
@@ -124,6 +125,12 @@ return;
             {
                 return brief == &block;
             });
+    }
+    else
+    {
+        static std::shared_ptr<Paragraph const> empty_para =
+            std::make_shared<Paragraph>();
+        brief_ = empty_para;
     }
 }
 

@@ -5,12 +5,11 @@
   <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
     <file path="brief-1.cpp" line="39"/>
     <doc>
+      <brief>
+        <text>brief</text>
+      </brief>
       <para>
-        <text> brief</text>
-      </para>
-      <para>
-        <text>    many lined</text>
-        <text>    </text>
+        <text>many lined</text>
         <bold>bold</bold>
         <text>    what will</text>
         <text>    happen?</text>
@@ -20,12 +19,12 @@
   <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
     <file path="brief-1.cpp" line="30"/>
     <doc>
-      <para>
-        <text> brief </text>
+      <brief>
+        <text>brief</text>
         <bold>bold</bold>
         <text> it</text>
         <text>continues to the line.</text>
-      </para>
+      </brief>
     </doc>
   </function>
 </namespace>

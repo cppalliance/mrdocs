@@ -9,18 +9,14 @@
       <return name="char"/>
       <param name="x" type="int"/>
       <doc>
-        <para>
-          <text> brief-g3</text>
-        </para>
-        <para>
-          <text>        </text>
-        </para>
+        <brief>
+          <text>brief-g3</text>
+        </brief>
         <returns>
-          <text> the separator</text>
-          <text>        </text>
+          <text>the separator</text>
         </returns>
         <param name="x">
-          <text> any old number</text>
+          <text>any old number</text>
         </param>
       </doc>
     </function>
@@ -32,14 +28,11 @@
       <file path="record-1.cpp" line="21"/>
       <return name="int"/>
       <doc>
-        <para>
-          <text> brief-g2</text>
-        </para>
-        <para>
-          <text>        </text>
-        </para>
+        <brief>
+          <text>brief-g2</text>
+        </brief>
         <returns>
-          <text> the number 2</text>
+          <text>the number 2</text>
         </returns>
       </doc>
     </function>
@@ -53,11 +46,11 @@
     <function name="g1" access="protected" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA=">
       <file path="record-1.cpp" line="15"/>
       <doc>
+        <brief>
+          <text>brief-g1</text>
+        </brief>
         <para>
-          <text> brief-g1</text>
-        </para>
-        <para>
-          <text>        desc</text>
+          <text>desc</text>
         </para>
       </doc>
     </function>

@@ -170,7 +170,8 @@ public:
 
     void postProcess(Info& I)
     {
-        //I.javadoc.calculateBrief();
+        if(I.javadoc)
+            I.javadoc->calculateBrief();
     }
 
     //--------------------------------------------
