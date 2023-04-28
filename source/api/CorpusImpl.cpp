@@ -49,7 +49,7 @@ insert(std::unique_ptr<Info> I)
     std::lock_guard<llvm::sys::Mutex> Guard(mutex_);
 
     Assert(! isCanonical_);
-    allSymbols_.emplace_back(I->id);
+    allSymbols_.emplace_back(I.get());
 
     // This has to come last because we move I.
     InfoMap[llvm::toStringRef(I->id)] = std::move(I);
@@ -233,12 +233,12 @@ canonicalize(
     std::string temp0;
     std::string temp1;
     llvm::sort(allSymbols_,
-        [&](SymbolID const& id0,
-            SymbolID const& id1) noexcept
+        [&](Info const* I0,
+            Info const* I1)
         {
             return compareSymbolNames(
-                get<Info>(id0).getFullyQualifiedName(temp0),
-                get<Info>(id1).getFullyQualifiedName(temp1)) < 0;
+                I0->getFullyQualifiedName(temp0),
+                I1->getFullyQualifiedName(temp1)) < 0;
         });
     isCanonical_ = true;
 }

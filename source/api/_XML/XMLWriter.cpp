@@ -63,6 +63,8 @@ build()
         "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
         "<mrdox>\n";
 
+    //writeAllSymbols();
+
     if(! corpus_.visit(globalNamespaceID, *this))
     {
         if(fd_os_ && fd_os_->error())
@@ -80,18 +82,15 @@ void
 XMLWriter::
 writeAllSymbols()
 {
-    std::vector<AllSymbol> list;
-    list.reserve(corpus_.allSymbols().size());
-    for(auto const& id : corpus_.allSymbols())
-        list.emplace_back(corpus_.get<Info>(id));
-
+    std::string temp;
+    temp.reserve(256);
     tags_.open("symbols");
-    for(auto const& I : list)
+    for(auto I : corpus_.allSymbols())
     {
         tags_.write("symbol", {}, {
-            { "name", I.fqName },
-            { "tag", I.symbolType },
-            { I.id } });
+            { "name", I->getFullyQualifiedName(temp) },
+            { "tag", toString(I->IT)},
+            { I->id } });
     }
     tags_.close("symbols");
 }

@@ -35,6 +35,8 @@ class MRDOX_VISIBLE
     Corpus
 {
 public:
+    /** Destructor.
+    */
     MRDOX_DECL
     virtual
     ~Corpus() noexcept;
@@ -51,7 +53,7 @@ public:
     */
     MRDOX_DECL
     virtual
-    std::vector<SymbolID> const&
+    std::vector<Info const*> const&
     allSymbols() const noexcept = 0;
 
     /** Return the metadata for the global namespace.

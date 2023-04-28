@@ -84,12 +84,12 @@ toString(
 {
     switch(it)
     {
-    case InfoType::IT_default:    return "default";
     case InfoType::IT_namespace:  return "namespace";
     case InfoType::IT_record:     return "record";
     case InfoType::IT_function:   return "function";
-    case InfoType::IT_enum:       return "enum";
     case InfoType::IT_typedef:    return "typedef";
+    case InfoType::IT_enum:       return "enum";
+    case InfoType::IT_variable:   return "variable";
     default:
         llvm_unreachable("unknown InfoType");
     }
