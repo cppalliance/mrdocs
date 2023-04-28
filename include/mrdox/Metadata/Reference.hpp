@@ -53,6 +53,8 @@ struct Reference
     {
     }
 
+#if 0
+    // VFALCO What was this for?
     bool
     operator==(
         Reference const& Other) const
@@ -63,6 +65,7 @@ struct Reference
             std::tie(id, Name, RefType) ==
             std::tie(Other.id, Other.Name, Other.RefType);
     }
+#endif
 };
 
 } // mrdox

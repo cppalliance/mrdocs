@@ -46,10 +46,13 @@ struct TypeInfo
     {
     }
 
+#if 0
+    // VFALCO What was this for?
     bool operator==(TypeInfo const& Other) const
     {
         return Type == Other.Type;
     }
+#endif
 };
 
 } // mrdox
