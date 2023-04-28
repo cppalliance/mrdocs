@@ -400,25 +400,16 @@ class TypeBlock
 {
 protected:
     BitcodeReader& br_;
-    TypeInfo* p_;
+    TypeInfo& I_;
 
 public:
     FieldId F;
-    TypeInfo I;
 
     TypeBlock(
-        TypeInfo& I_,
+        TypeInfo& I,
         BitcodeReader& br) noexcept
         : br_(br)
-        , p_(&I_)
-    {
-    }
-
-    explicit
-    TypeBlock(
-        BitcodeReader& br) noexcept
-        : br_(br)
-        , p_(&I)
+        , I_(I)
     {
     }
 
@@ -434,7 +425,7 @@ public:
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             F = B.F;
-            p_->Type = std::move(B.I);
+            I_.Type = std::move(B.I);
             return llvm::Error::success();
         }
         default:
@@ -450,15 +441,16 @@ class FieldTypeBlock
 {
 protected:
     BitcodeReader& br_;
+    FieldTypeInfo& I_;
 
 public:
     FieldId F;
-    FieldTypeInfo I;
 
-    explicit
     FieldTypeBlock(
+        FieldTypeInfo& I,
         BitcodeReader& br) noexcept
         : br_(br)
+        , I_(I)
     {
     }
 
@@ -471,9 +463,9 @@ public:
         switch(ID)
         {
         case FIELD_TYPE_NAME:
-            return decodeRecord(R, I.Name, Blob);
+            return decodeRecord(R, I_.Name, Blob);
         case FIELD_DEFAULT_VALUE:
-            return decodeRecord(R, I.DefaultValue, Blob);
+            return decodeRecord(R, I_.DefaultValue, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -491,7 +483,7 @@ public:
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             F = B.F;
-            I.Type = std::move(B.I);
+            I_.Type = std::move(B.I);
             return llvm::Error::success();
         }
         default:
@@ -505,16 +497,15 @@ public:
 class MemberTypeBlock
     : public BitcodeReader::AnyBlock
 {
-protected:
     BitcodeReader& br_;
+    MemberTypeInfo& I_;
 
 public:
-    MemberTypeInfo I;
-
-    explicit
     MemberTypeBlock(
+        MemberTypeInfo& I,
         BitcodeReader& br) noexcept
         : br_(br)
+        , I_(I)
     {
     }
 
@@ -527,9 +518,9 @@ public:
         switch(ID)
         {
         case MEMBER_TYPE_NAME:
-            return decodeRecord(R, I.Name, Blob);
+            return decodeRecord(R, I_.Name, Blob);
         case MEMBER_TYPE_ACCESS:
-            return decodeRecord(R, I.Access, Blob);
+            return decodeRecord(R, I_.Access, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -546,13 +537,13 @@ public:
             ReferenceBlock B(br_);
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
-            I.Type = std::move(B.I);
+            I_.Type = std::move(B.I);
             return llvm::Error::success();
         }
         case BI_JAVADOC_BLOCK_ID:
         {
-            I.javadoc.emplace();
-            JavadocBlock B(*I.javadoc, br_);
+            I_.javadoc.emplace();
+            JavadocBlock B(*I_.javadoc, br_);
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             return llvm::Error::success();
@@ -569,14 +560,15 @@ class BaseRecordBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
+    BaseRecordInfo& I_;
 
 public:
-    BaseRecordInfo I;
-
     explicit
     BaseRecordBlock(
+        BaseRecordInfo& I,
         BitcodeReader& br) noexcept
         : br_(br)
+        , I_(I)
     {
     }
 
@@ -589,13 +581,13 @@ public:
         switch(ID)
         {
         case BASE_RECORD_TAG_TYPE:
-            return decodeRecord(R, I.TagType, Blob);
+            return decodeRecord(R, I_.TagType, Blob);
         case BASE_RECORD_IS_VIRTUAL:
-            return decodeRecord(R, I.IsVirtual, Blob);
+            return decodeRecord(R, I_.IsVirtual, Blob);
         case BASE_RECORD_ACCESS:
-            return decodeRecord(R, I.Access, Blob);
+            return decodeRecord(R, I_.Access, Blob);
         case BASE_RECORD_IS_PARENT:
-            return decodeRecord(R, I.IsParent, Blob);
+            return decodeRecord(R, I_.IsParent, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -609,18 +601,15 @@ public:
         {
         case BI_INFO_PART_ID:
         {
-            InfoPartBlock B(I, br_);
+            InfoPartBlock B(I_, br_);
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             return llvm::Error::success();
         }
         case BI_MEMBER_TYPE_BLOCK_ID:
         {
-            MemberTypeBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            I.Members.emplace_back(std::move(B.I));
-            return llvm::Error::success();
+            MemberTypeBlock B(I_.Members.emplace_back(), br_);
+            return br_.readBlock(B, ID);
         }
         default:
             return AnyBlock::readSubBlock(ID);
@@ -634,15 +623,16 @@ class TemplateSpecializationBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
+    llvm::Optional<TemplateSpecializationInfo>& I_;
 
 public:
-    TemplateSpecializationInfo I;
-
-    explicit
     TemplateSpecializationBlock(
-        BitcodeReader& br) noexcept
+        llvm::Optional<TemplateSpecializationInfo>& I,
+        BitcodeReader& br)
         : br_(br)
+        , I_(I)
     {
+        I_.emplace();
     }
 
     llvm::Error
@@ -652,9 +642,9 @@ public:
         switch(ID)
         {
         case TEMPLATE_SPECIALIZATION_OF:
-            return decodeRecord(R, I.SpecializationOf, Blob);
+            return decodeRecord(R, I_->SpecializationOf, Blob);
         case TEMPLATE_PARAM_CONTENTS:
-            return decodeRecord(R, I.Params.back().Contents, Blob);
+            return decodeRecord(R, I_->Params.back().Contents, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -668,7 +658,7 @@ public:
         {
         case BI_TEMPLATE_PARAM_BLOCK_ID:
         {
-            I.Params.emplace_back();
+            I_->Params.emplace_back();
             if(auto Err = br_.readBlock(*this, ID))
                 return Err;
             return llvm::Error::success();
@@ -685,15 +675,17 @@ class TemplateBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
+    llvm::Optional<TemplateInfo> I_;
 
 public:
-    TemplateInfo I;
-
     explicit
     TemplateBlock(
+        llvm::Optional<TemplateInfo>& I,
         BitcodeReader& br) noexcept
         : br_(br)
+        , I_(I)
     {
+        I_.emplace();
     }
 
     llvm::Error
@@ -703,7 +695,7 @@ public:
         switch(ID)
         {
         case TEMPLATE_PARAM_CONTENTS:
-            return decodeRecord(R, I.Params.back().Contents, Blob);
+            return decodeRecord(R, I_->Params.back().Contents, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -717,18 +709,15 @@ public:
         {
         case BI_TEMPLATE_PARAM_BLOCK_ID:
         {
-            I.Params.emplace_back();
+            I_->Params.emplace_back();
             if(auto Err = br_.readBlock(*this, ID))
                 return Err;
             return llvm::Error::success();
         }
         case BI_TEMPLATE_SPECIALIZATION_BLOCK_ID:
         {
-            TemplateSpecializationBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            I.Specialization.emplace(std::move(B.I));
-            return llvm::Error::success();
+            TemplateSpecializationBlock B(I_->Specialization, br_);
+            return br_.readBlock(B, ID);
         }
         default:
             return AnyBlock::readSubBlock(ID);
@@ -748,6 +737,7 @@ protected:
 public:
     std::unique_ptr<T> I;
 
+    explicit
     TopLevelBlock(
         BitcodeReader& br)
         : br_(br)
@@ -881,11 +871,8 @@ public:
         {
         case BI_MEMBER_TYPE_BLOCK_ID:
         {
-            MemberTypeBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            I->Members.emplace_back(std::move(B.I));
-            return llvm::Error::success();
+            MemberTypeBlock B(I->Members.emplace_back(), br_);
+            return br_.readBlock(B, ID);
         }
         case BI_REFERENCE_BLOCK_ID:
         {
@@ -907,19 +894,13 @@ public:
         }
         case BI_BASE_RECORD_BLOCK_ID:
         {
-            BaseRecordBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            I->Bases.emplace_back(std::move(B.I));
-            return llvm::Error::success();
+            BaseRecordBlock B(I->Bases.emplace_back(), br_);
+            return br_.readBlock(B, ID);
         }
         case BI_TEMPLATE_BLOCK_ID:
         {
-            TemplateBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            I->Template.emplace(std::move(B.I));
-            return llvm::Error::success();
+            TemplateBlock B(I->Template, br_);
+            return br_.readBlock(B, ID);
         }
         default:
             break;
@@ -981,13 +962,12 @@ public:
         }
         case BI_TYPE_BLOCK_ID:
         {
-            TypeBlock B(br_);
+            TypeBlock B(I->ReturnType, br_);
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             switch(B.F)
             {
             case FieldId::F_type:
-                I->ReturnType = std::move(B.I);
                 break;
             default:
                 return makeWrongFieldError(B.F);
@@ -996,13 +976,12 @@ public:
         }
         case BI_FIELD_TYPE_BLOCK_ID:
         {
-            FieldTypeBlock B(br_);
+            FieldTypeBlock B(I->Params.emplace_back(), br_);
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             switch(B.F)
             {
             case FieldId::F_type:
-                I->Params.emplace_back(std::move(B.I));
                 break;
             default:
                 return makeWrongFieldError(B.F);
@@ -1011,11 +990,8 @@ public:
         }
         case BI_TEMPLATE_BLOCK_ID:
         {
-            TemplateBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            I->Template.emplace(std::move(B.I));
-            return llvm::Error::success();
+            TemplateBlock B(I->Template, br_);
+            return br_.readBlock(B, ID);
         }
         default:
             break;
@@ -1060,13 +1036,12 @@ public:
         {
         case BI_TYPE_BLOCK_ID:
         {
-            TypeBlock B(br_);
+            TypeBlock B(I->Underlying, br_);
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             switch(B.F)
             {
             case FieldId::F_type:
-                I->Underlying = std::move(B.I);
                 break;
             default:
                 return makeWrongFieldError(B.F);
