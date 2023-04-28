@@ -154,6 +154,10 @@ visit(
 
     write(I.specs, tags_);
 
+    if(I.Template)
+        for(TemplateParamInfo const& J : I.Template->Params)
+            writeTemplateParam(J);
+
     for(auto const& J : I.Bases)
         writeBaseRecord(J);
     // VFALCO data members?

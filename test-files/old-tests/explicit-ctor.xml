@@ -64,6 +64,7 @@
   </struct>
   <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
     <file path="explicit-ctor.cpp" line="25" class="def"/>
+    <tparam decl="bool B"/>
     <function name="ExplicitExpression&lt;B&gt;" access="public" id="J31K1hQq31LWiQhVy5ro0V+1pD0=">
       <file path="explicit-ctor.cpp" line="29"/>
       <param type="int"/>

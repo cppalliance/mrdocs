@@ -670,7 +670,7 @@ class TemplateBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
-    llvm::Optional<TemplateInfo> I_;
+    llvm::Optional<TemplateInfo>& I_;
 
 public:
     explicit

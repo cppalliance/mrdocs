@@ -4,6 +4,7 @@
 <namespace name="">
   <struct name="X" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=">
     <file path="explicit-deduct-guide.cpp" line="4" class="def"/>
+    <tparam decl="int"/>
   </struct>
   <function name="&lt;deduction guide for X&gt;" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
     <file path="explicit-deduct-guide.cpp" line="8"/>
@@ -16,6 +17,7 @@
     <attr id="has-trailing-return"/>
     <return type="X&lt;0&gt;"/>
     <param type="long"/>
+    <tparam decl="bool B = true"/>
   </function>
   <function name="&lt;deduction guide for X&gt;" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
     <file path="explicit-deduct-guide.cpp" line="10"/>

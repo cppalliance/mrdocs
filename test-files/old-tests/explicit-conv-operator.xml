@@ -25,6 +25,7 @@
   </struct>
   <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
     <file path="explicit-conv-operator.cpp" line="16" class="def"/>
+    <tparam decl="bool B"/>
     <function name="operator bool" access="public" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
       <file path="explicit-conv-operator.cpp" line="17"/>
       <return type="_Bool"/>
