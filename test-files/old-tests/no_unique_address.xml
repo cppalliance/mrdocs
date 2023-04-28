@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="no_unique_address.cpp" line="5" class="def"/>
+    <data name="i" type="int" access="public">
+    </data>
+    <data name="e" type="Empty" access="public" id="iczIHP1J59EwYw3xxL3w2C3Q43Q=">
+      <attr id="nodiscard"/>
+      <attr id="deprecated"/>
+    </data>
+  </struct>
+  <struct name="Empty" id="iczIHP1J59EwYw3xxL3w2C3Q43Q=">
+    <file path="no_unique_address.cpp" line="3" class="def"/>
+  </struct>
+</namespace>
+</mrdox>

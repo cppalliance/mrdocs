@@ -464,6 +464,8 @@ public:
             return decodeRecord(R, I_.Name, Blob);
         case FIELD_DEFAULT_VALUE:
             return decodeRecord(R, I_.DefaultValue, Blob);
+        case FIELD_ATTRIBUTES:
+            return decodeRecord(R, {&I_.Flags.raw}, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -537,6 +539,11 @@ public:
                 return Err;
             I_.Type = std::move(B.I);
             return llvm::Error::success();
+        }
+        case BI_FIELD_TYPE_BLOCK_ID:
+        {
+            FieldTypeBlock B(I_, br_);
+            return br_.readBlock(B, ID);
         }
         case BI_JAVADOC_BLOCK_ID:
         {

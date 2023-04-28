@@ -14,11 +14,21 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Type.hpp>
+#include <mrdox/Metadata/BitField.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <utility>
 
 namespace clang {
 namespace mrdox {
+
+union FieldFlags
+{
+    BitFieldFullValue raw{.value=0u};
+
+    BitFlag<0> isNodiscard;
+    BitFlag<1> isDeprecated;
+    BitFlag<2> hasNoUniqueAddress;
+};
 
 // Info for field types.
 struct FieldTypeInfo
@@ -31,31 +41,23 @@ struct FieldTypeInfo
     // or the variable initializer if any.
     llvm::SmallString<16> DefaultValue;
 
+    // attributes (nodiscard, no_unique_address, deprecated)
+    FieldFlags Flags;
     //--------------------------------------------
 
     FieldTypeInfo() = default;
 
     FieldTypeInfo(
-        TypeInfo const& TI,
-        llvm::StringRef Name = llvm::StringRef(),
-        llvm::StringRef DefaultValue = llvm::StringRef())
+            TypeInfo const& TI,
+            llvm::StringRef Name = llvm::StringRef(),
+            llvm::StringRef DefaultValue = llvm::StringRef(),
+            FieldFlags Flags = {})
         : TypeInfo(TI)
         , Name(Name)
         , DefaultValue(DefaultValue)
+        , Flags(Flags)
     {
     }
-
-#if 0
-    // VFALCO What was this for?
-    bool
-    operator==(
-        FieldTypeInfo const& Other) const
-    {
-        return
-            std::tie(Type, Name, DefaultValue) ==
-            std::tie(Other.Type, Other.Name, Other.DefaultValue);
-    }
-#endif
 };
 
 } // mrdox

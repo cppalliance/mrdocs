@@ -334,7 +334,26 @@ getMemberTypeInfo(
 {
     Assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
     parseJavadoc(I.javadoc, D);
+
+    for (auto attr : D->attrs())
+    {
+        switch (attr->getKind())
+        {
+            case clang::attr::Kind::NoUniqueAddress:
+                I.Flags.hasNoUniqueAddress = true;
+                break;
+            case clang::attr::Kind::Deprecated:
+                I.Flags.isDeprecated = true;
+                break;
+            case clang::attr::Kind::Unused:
+                I.Flags.isNodiscard = true;
+                break;
+            default:
+                break;
+        }
+    }
 }
+
 
 //------------------------------------------------
 

@@ -73,7 +73,8 @@ grammar
             attribute type { text },
             attribute value { text } ?,
             Access,
-            ID ?
+            ID ?,
+            Attr *
         }
 
     #---------------------------------------------
