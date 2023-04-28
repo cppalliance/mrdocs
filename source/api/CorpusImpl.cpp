@@ -80,8 +80,8 @@ visit(Scope& I, MutableVisitor& f)
         visit(get<FunctionInfo>(ref.id), f);
     for(auto& ref : I.Typedefs)
         visit(get<TypedefInfo>(ref.id), f);
-    for(auto& J : I.Enums)
-        visit(J, f);
+    for(auto& ref : I.Enums)
+        visit(get<EnumInfo>(ref.id), f);
 }
 
 void
@@ -171,11 +171,8 @@ public:
         canonicalize(scope.Namespaces);
         canonicalize(scope.Records);
         canonicalize(scope.Functions);
-        // VFALCO These are non-copyable and thus cannot be sorted yet
-    #if 0
         canonicalize(scope.Typedefs);
         canonicalize(scope.Enums);
-    #endif
     }
 
     void canonicalize(std::vector<Reference>& list) noexcept

@@ -900,8 +900,8 @@ emitBlock(
         emitBlock(ref, FieldId::F_child_function);
     for (const auto& ref : I.Children.Typedefs)
         emitBlock(ref, FieldId::F_child_typedef);
-    for (const auto& C : I.Children.Enums)
-        emitBlock(C);
+    for (const auto& ref : I.Children.Enums)
+        emitBlock(ref, FieldId::F_child_enum);
 }
 
 void
@@ -929,8 +929,8 @@ emitBlock(
         emitBlock(C, FieldId::F_child_function);
     for (const auto& ref : I.Children.Typedefs)
         emitBlock(ref, FieldId::F_child_typedef);
-    for (const auto& C : I.Children.Enums)
-        emitBlock(C);
+    for (const auto& ref : I.Children.Enums)
+        emitBlock(ref, FieldId::F_child_enum);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord(I.Friends, RECORD_FRIENDS);

@@ -473,7 +473,7 @@ insertChild(Parent& parent, Child&& I)
     }
     else if constexpr(std::is_same_v<Child, EnumInfo>)
     {
-        parent.Children.Enums.emplace_back(std::move(I));
+        parent.Children.Enums.emplace_back(I.id, I.Name, Child::type_id);
     }
     else
     {

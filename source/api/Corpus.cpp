@@ -177,8 +177,8 @@ visit(Scope const& I, Visitor& f) const
     for(auto const& ref : I.Typedefs)
         if(! visit(get<TypedefInfo>(ref.id), f))
             return false;
-    for(auto const& J : I.Enums)
-        if(! visit(J, f))
+    for(auto const& ref : I.Enums)
+        if(! visit(get<EnumInfo>(ref.id), f))
             return false;
     return true;
 }
@@ -230,8 +230,8 @@ visitWithOverloads(
     for(auto const& ref : I.Typedefs)
         if(! visit(get<TypedefInfo>(ref.id), f))
             return false;
-    for(auto const& J : I.Enums)
-        if(! visit(J, f))
+    for(auto const& ref : I.Enums)
+        if(! visit(get<EnumInfo>(ref.id), f))
             return false;
     return true;
 }

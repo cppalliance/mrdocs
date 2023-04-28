@@ -1213,20 +1213,6 @@ readSubBlock(
         }
         break;
     }
-    case BI_ENUM_BLOCK_ID:
-    {
-        if constexpr(
-            std::derived_from<T, NamespaceInfo> ||
-            std::derived_from<T, RecordInfo>)
-        {
-            EnumBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            I->Children.Enums.emplace_back(std::move(*B.I));
-            return llvm::Error::success();
-        }
-        break;
-    }
     default:
         break;
     }

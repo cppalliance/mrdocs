@@ -61,8 +61,8 @@ private:
             infos.emplace_back(corpus_.find(ref.id));
         for(auto const& ref : scope.Typedefs)
             infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& I : scope.Enums)
-            infos.emplace_back(&I);
+        for(auto const& ref : scope.Enums)
+            infos.emplace_back(corpus_.find(ref.id));
         if(infos.size() < 2)
             return infos;
         std::string s0, s1;

@@ -49,8 +49,8 @@ merge(RecordInfo&& Other)
     // Reduce children if necessary.
     reduceChildren(Children.Records, std::move(Other.Children.Records));
     reduceChildren(Children.Functions, std::move(Other.Children.Functions));
-    reduceChildren(Children.Enums, std::move(Other.Children.Enums));
     reduceChildren(Children.Typedefs, std::move(Other.Children.Typedefs));
+    reduceChildren(Children.Enums, std::move(Other.Children.Enums));
     SymbolInfo::merge(std::move(Other));
     if (!Template)
         Template = Other.Template;

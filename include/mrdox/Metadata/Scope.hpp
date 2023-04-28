@@ -38,7 +38,7 @@ struct Scope
     std::vector<Reference> Records;
     std::vector<Reference> Functions;
     std::vector<Reference> Typedefs;
-    std::vector<EnumInfo> Enums;
+    std::vector<Reference> Enums;
     std::vector<Reference> Variables;
 
     explicit

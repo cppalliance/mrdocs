@@ -47,8 +47,8 @@ merge(NamespaceInfo&& Other)
     reduceChildren(Children.Namespaces, std::move(Other.Children.Namespaces));
     reduceChildren(Children.Records, std::move(Other.Children.Records));
     reduceChildren(Children.Functions, std::move(Other.Children.Functions));
-    reduceChildren(Children.Enums, std::move(Other.Children.Enums));
     reduceChildren(Children.Typedefs, std::move(Other.Children.Typedefs));
+    reduceChildren(Children.Enums, std::move(Other.Children.Enums));
     mergeBase(std::move(Other));
 }
 
