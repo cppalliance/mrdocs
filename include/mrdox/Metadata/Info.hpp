@@ -43,7 +43,7 @@ struct Info
     */
     llvm::SmallString<16> Name;
 
-    /** In-order List of parent namespaces.
+    /** In-order AnyList of parent namespaces.
     */
     llvm::SmallVector<Reference, 4> Namespace;
 

@@ -94,7 +94,7 @@ protected:
     void writeLocation(SymbolInfo const& I);
 
     template<class T>
-    void writeNodes(List<T> const& list)
+    void writeNodes(AnyList<T> const& list)
     {
         if(list.empty())
             return;

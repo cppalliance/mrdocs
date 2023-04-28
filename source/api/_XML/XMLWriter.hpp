@@ -86,7 +86,7 @@ private:
     void writeJavadoc(llvm::Optional<Javadoc> const& javadoc);
 
     template<class T>
-    void writeNodes(List<T> const& list);
+    void writeNodes(AnyList<T> const& list);
     void writeNode(Javadoc::Node const& node);
     void writeBrief(Javadoc::Paragraph const& node);
     void writeText(Javadoc::Text const& node);

@@ -279,7 +279,7 @@ visitOverloads(
     // Location
     writeLocation(*I.Functions.front());
 
-    // List of overloads
+    // AnyList of overloads
     os_ << '\n';
     for(auto const I : I.Functions)
     {
@@ -292,7 +292,7 @@ visitOverloads(
     os_ << "\n//-\n";
     writeBrief(I.Functions.front()->javadoc, true);
 
-    // List of descriptions
+    // AnyList of descriptions
     for(auto const I : I.Functions)
     {
         os_ << ". ";

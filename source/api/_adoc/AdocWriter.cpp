@@ -686,7 +686,7 @@ writeNode(
     os_ <<
         "[,cpp]\n"
         "----\n";
-    List<Javadoc::Text> const& list(node.children);
+    AnyList<Javadoc::Text> const& list(node.children);
     if(! list.empty())
     {
         // measure the left margin

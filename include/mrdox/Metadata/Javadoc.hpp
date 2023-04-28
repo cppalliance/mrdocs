@@ -13,7 +13,7 @@
 #define MRDOX_METADATA_JAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/List.hpp>
+#include <mrdox/Metadata/AnyList.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <memory>
 #include <string>
@@ -139,7 +139,7 @@ struct MRDOX_VISIBLE
     {
         static constexpr Kind static_kind = Kind::block;
 
-        List<Text> children;
+        AnyList<Text> children;
 
         bool empty() const noexcept
         {
@@ -153,7 +153,7 @@ struct MRDOX_VISIBLE
         explicit
         Block(
             Kind kind_,
-            List<Text> children_ = {}) noexcept
+            AnyList<Text> children_ = {}) noexcept
             : Node(kind_)
             , children(std::move(children_))
         {
@@ -178,7 +178,7 @@ struct MRDOX_VISIBLE
         explicit
         Paragraph(
             Kind kind,
-            List<Text> children_ = {})
+            AnyList<Text> children_ = {})
             : Block(kind, std::move(children_))
         {
         }
@@ -299,7 +299,7 @@ struct MRDOX_VISIBLE
     MRDOX_DECL
     explicit
     Javadoc(
-        List<Block> blocks);
+        AnyList<Block> blocks);
 
     /** Return true if this is empty
     */
@@ -320,7 +320,7 @@ struct MRDOX_VISIBLE
 
     /** Return the list of top level blocks.
     */
-    List<Block> const&
+    AnyList<Block> const&
     getBlocks() const noexcept
     {
         return blocks_;
@@ -328,7 +328,7 @@ struct MRDOX_VISIBLE
 
     // VFALCO This is unfortunately necessary for
     //        the deserialization from bitcode...
-    List<Block>&
+    AnyList<Block>&
     getBlocks() noexcept
     {
         return blocks_;
@@ -348,7 +348,7 @@ struct MRDOX_VISIBLE
     /* @} */
 
     MRDOX_DECL
-    List<Block>::const_iterator
+    AnyList<Block>::const_iterator
     findBrief() const noexcept;
 
     /** Calculate the brief.
@@ -379,7 +379,7 @@ struct MRDOX_VISIBLE
     template<class T, class U>
     static
     void
-    append(List<T>& list, List<U>&& other) noexcept
+    append(AnyList<T>& list, AnyList<U>&& other) noexcept
     {
         list.splice_back(std::move(other));
     }
@@ -387,7 +387,7 @@ struct MRDOX_VISIBLE
     template<class T, class Child>
     static
     void
-    append(List<T>& list, Child&& child)
+    append(AnyList<T>& list, Child&& child)
     {
         list.emplace_back(
             std::forward<Child>(child));
@@ -423,7 +423,7 @@ struct MRDOX_VISIBLE
 
 private:
     std::shared_ptr<Paragraph const> brief_;
-    List<Block> blocks_;
+    AnyList<Block> blocks_;
 };
 
 } // mrdox

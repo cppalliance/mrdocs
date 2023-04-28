@@ -310,7 +310,7 @@ RecordsByBlock{
     // Javadoc
     {BI_JAVADOC_BLOCK_ID,
         {}},
-    // List<Javadoc::Node>
+    // AnyList<Javadoc::Node>
     {BI_JAVADOC_LIST_BLOCK_ID,
         {JAVADOC_LIST_KIND}},
     // Javadoc::Node
@@ -682,7 +682,7 @@ template<class T>
 void
 BitcodeWriter::
 emitBlock(
-    List<T> const& list)
+    AnyList<T> const& list)
 {
     StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_BLOCK_ID);
     emitRecord(T::static_kind, JAVADOC_LIST_KIND);

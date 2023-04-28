@@ -71,8 +71,9 @@ build()
             return makeError("raw_fd_ostream returned ", fd_os_->error());
         return makeError("visit failed");
     }
-    os_ <<
-        "</mrdox>\n";
+
+    os_ << "</mrdox>\n";
+
     return llvm::Error::success();
 }
 
@@ -425,7 +426,7 @@ template<class T>
 void
 XMLWriter::
 writeNodes(
-    List<T> const& list)
+    AnyList<T> const& list)
 {
     if(list.empty())
         return;

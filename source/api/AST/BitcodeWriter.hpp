@@ -116,7 +116,7 @@ public:
     //--------------------------------------------
 
     template<class T>
-    void emitBlock(List<T> const& list);
+    void emitBlock(AnyList<T> const& list);
 
     void emitInfoPart(Info const& I);
     void emitSymbolPart(SymbolInfo const& I);

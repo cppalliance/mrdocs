@@ -38,7 +38,7 @@ Javadoc() noexcept = default;
 
 Javadoc::
 Javadoc(
-    List<Block> blocks)
+    AnyList<Block> blocks)
     : blocks_(std::move(blocks))
 {
 }
@@ -76,7 +76,7 @@ operator!=(
 auto
 Javadoc::
 findBrief() const noexcept ->
-    List<Block>::const_iterator
+    AnyList<Block>::const_iterator
 {
     auto it = blocks_.begin();
     auto first = blocks_.end();

@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_METADATA_LIST_HPP
-#define MRDOX_METADATA_LIST_HPP
+#ifndef MRDOX_METADATA_ANYLIST_HPP
+#define MRDOX_METADATA_ANYLIST_HPP
 
 #include <mrdox/Platform.hpp>
 #include <algorithm>
@@ -34,7 +34,7 @@ using compare_result_t =
 
 //------------------------------------------------
 
-struct ListNodes
+struct AnyListNodes
 {
     std::size_t size = 0;
     void* head = nullptr;
@@ -42,7 +42,7 @@ struct ListNodes
 };
 
 template<class Order>
-class ListBase
+class AnyListBase
 {
 protected:
     struct Node;
@@ -54,7 +54,7 @@ protected:
 //------------------------------------------------
 
 template<class Order>
-struct ListBase<Order>::Node
+struct AnyListBase<Order>::Node
 {
     Node* next;
 
@@ -81,14 +81,14 @@ struct ListBase<Order>::Node
 /** An append-only list of variants
 */
 template<class T>
-class List : public ListBase<compare_result_t<T>>
+class AnyList : public AnyListBase<compare_result_t<T>>
 {
     template<class U>
-    friend class List;
+    friend class AnyList;
 
     template<class U>
-    using Item = typename ListBase<compare_result_t<T>>::template Item<U>;
-    using Node = typename ListBase<compare_result_t<T>>::Node;
+    using Item = typename AnyListBase<compare_result_t<T>>::template Item<U>;
+    using Node = typename AnyListBase<compare_result_t<T>>::Node;
 
 public:
     using value_type = T;
@@ -110,22 +110,22 @@ public:
 
     //--------------------------------------------
 
-    ~List();
-    List() noexcept;
-    explicit List(ListNodes&&) noexcept;
+    ~AnyList();
+    AnyList() noexcept;
+    explicit AnyList(AnyListNodes&&) noexcept;
 
     template<class U>
-    List(List<U>&& other) noexcept;
-    List(List&& other) noexcept;
-    List& operator=(List&& other) noexcept;
+    AnyList(AnyList<U>&& other) noexcept;
+    AnyList(AnyList&& other) noexcept;
+    AnyList& operator=(AnyList&& other) noexcept;
 
     // VFALCO unfortunately due to TypedefInfo and
     // EnumInfo, a copy constructor is required.
     // This needs to be fixed.
     template<class U>
-    List(List<U> const& other) requires std::copyable<T>;
-    List(List const& other) requires std::copyable<T>;
-    List& operator=(List const& other) requires std::copyable<T>;
+    AnyList(AnyList<U> const& other) requires std::copyable<T>;
+    AnyList(AnyList const& other) requires std::copyable<T>;
+    AnyList& operator=(AnyList const& other) requires std::copyable<T>;
 
     iterator begin() noexcept;
     iterator end() noexcept;
@@ -140,14 +140,14 @@ public:
     T& back() noexcept;
 
     void clear() noexcept;
-    ListNodes extractNodes() noexcept;
-    void spliceBack(ListNodes&& nodes) noexcept;
+    AnyListNodes extractNodes() noexcept;
+    void spliceBack(AnyListNodes&& nodes) noexcept;
 
-    compare_result compare(List const& other) const noexcept
+    compare_result compare(AnyList const& other) const noexcept
         requires std::three_way_comparable<T>;
-    compare_result operator<=>(List const& other) const noexcept
+    compare_result operator<=>(AnyList const& other) const noexcept
         requires std::three_way_comparable<T>;
-    bool operator==(List const& other) const noexcept
+    bool operator==(AnyList const& other) const noexcept
         requires std::equality_comparable<T>;
 
     template<class U = T, class Pred>
@@ -158,9 +158,9 @@ public:
     U& emplace_back(U&& u);
 
     template<class U>
-    void splice_back(List<U>&& other) noexcept;
+    void splice_back(AnyList<U>&& other) noexcept;
 
-    void swap(List& other);
+    void swap(AnyList& other);
 
 private:
     void append(Node* node);
@@ -175,7 +175,7 @@ private:
 
 template<class Order>
 template<class U>
-struct ListBase<Order>::Item : Node
+struct AnyListBase<Order>::Item : Node
 {
     static constexpr std::type_info const* id_ = &typeid(U);
 
@@ -232,9 +232,9 @@ struct ListBase<Order>::Item : Node
 
 template<class T>
 template<bool isConst>
-class List<T>::iterator_impl
+class AnyList<T>::iterator_impl
 {
-    friend class List;
+    friend class AnyList;
 
     using value_type = std::conditional_t<isConst, T const, T>;
     using pointer    = std::conditional_t<isConst, T const*, T*>;
@@ -296,15 +296,15 @@ public:
 //--------------------------------------------
 
 template<class T>
-List<T>::
-~List()
+AnyList<T>::
+~AnyList()
 {
     clear();
 }
 
 template<class T>
-List<T>::
-List() noexcept
+AnyList<T>::
+AnyList() noexcept
     : size_(0)
     , head_(&end_)
     , tail_(&end_)
@@ -312,8 +312,8 @@ List() noexcept
 }
 
 template<class T>
-List<T>::
-List(ListNodes&& nodes) noexcept
+AnyList<T>::
+AnyList(AnyListNodes&& nodes) noexcept
     : size_(nodes.size)
 {
     if(! nodes.head)
@@ -330,8 +330,8 @@ List(ListNodes&& nodes) noexcept
 
 template<class T>
 template<class U>
-List<T>::
-List(List<U>&& other) noexcept
+AnyList<T>::
+AnyList(AnyList<U>&& other) noexcept
     : size_(other.size_)
 {
     if(size_ == 0)
@@ -350,8 +350,8 @@ List(List<U>&& other) noexcept
 }
 
 template<class T>
-List<T>::
-List(List&& other) noexcept
+AnyList<T>::
+AnyList(AnyList&& other) noexcept
     : size_(other.size_)
 {
     if(size_ == 0)
@@ -371,11 +371,11 @@ List(List&& other) noexcept
 
 template<class T>
 auto
-List<T>::
-operator=(List&& other) noexcept ->
-    List&
+AnyList<T>::
+operator=(AnyList&& other) noexcept ->
+    AnyList&
 {
-    List temp(std::move(other));
+    AnyList temp(std::move(other));
     temp.swap(*this);
     return *this;
 }
@@ -384,8 +384,8 @@ operator=(List&& other) noexcept ->
 
 template<class T>
 template<class U>
-List<T>::
-List(List<U> const& other)
+AnyList<T>::
+AnyList(AnyList<U> const& other)
     requires std::copyable<T>
     : size_(0)
     , head_(&end_)
@@ -397,8 +397,8 @@ List(List<U> const& other)
 }
 
 template<class T>
-List<T>::
-List(List const& other)
+AnyList<T>::
+AnyList(AnyList const& other)
     requires std::copyable<T>
     : size_(0)
     , head_(&end_)
@@ -411,12 +411,12 @@ List(List const& other)
 
 template<class T>
 auto
-List<T>::
-operator=(List const& other) ->
-    List &
+AnyList<T>::
+operator=(AnyList const& other) ->
+    AnyList &
     requires std::copyable<T>
 {
-    List temp(other);
+    AnyList temp(other);
     this->swap(temp);
     return *this;
 }
@@ -425,7 +425,7 @@ operator=(List const& other) ->
 
 template<class T>
 auto
-List<T>::
+AnyList<T>::
 begin() noexcept ->
     iterator
 {
@@ -434,7 +434,7 @@ begin() noexcept ->
 
 template<class T>
 auto
-List<T>::
+AnyList<T>::
 end() noexcept ->
     iterator
 {
@@ -443,7 +443,7 @@ end() noexcept ->
 
 template<class T>
 auto
-List<T>::
+AnyList<T>::
 begin() const noexcept ->
     const_iterator
 {
@@ -452,7 +452,7 @@ begin() const noexcept ->
 
 template<class T>
 auto
-List<T>::
+AnyList<T>::
 end() const noexcept ->
     const_iterator
 {
@@ -461,7 +461,7 @@ end() const noexcept ->
 
 template<class T>
 auto
-List<T>::
+AnyList<T>::
 cbegin() const noexcept ->
     const_iterator
 {
@@ -470,7 +470,7 @@ cbegin() const noexcept ->
 
 template<class T>
 auto
-List<T>::
+AnyList<T>::
 cend() const noexcept ->
     const_iterator
 {
@@ -479,7 +479,7 @@ cend() const noexcept ->
 
 template<class T>
 bool
-List<T>::
+AnyList<T>::
 empty() const noexcept
 {
     return head_ == &end_;
@@ -487,7 +487,7 @@ empty() const noexcept
 
 template<class T>
 std::size_t
-List<T>::
+AnyList<T>::
 size() const noexcept
 {
     return size_;
@@ -495,7 +495,7 @@ size() const noexcept
 
 template<class T>
 T const&
-List<T>::
+AnyList<T>::
 back() const noexcept
 {
     return *reinterpret_cast<T const*>(tail_->get());
@@ -503,7 +503,7 @@ back() const noexcept
 
 template<class T>
 T&
-List<T>::
+AnyList<T>::
 back() noexcept
 {
     return *reinterpret_cast<T*>(tail_->get());
@@ -511,7 +511,7 @@ back() noexcept
 
 template<class T>
 void
-List<T>::
+AnyList<T>::
 clear() noexcept
 {
     for(auto it = head_; it != &end_;)
@@ -524,13 +524,13 @@ clear() noexcept
 }
 
 template<class T>
-ListNodes
-List<T>::
+AnyListNodes
+AnyList<T>::
 extractNodes() noexcept
 {
     if(empty())
         return {};
-    ListNodes result{ size_, head_, tail_ };
+    AnyListNodes result{ size_, head_, tail_ };
     size_ = 0;
     head_ = &end_;
     tail_ = &end_;
@@ -539,17 +539,17 @@ extractNodes() noexcept
 
 template<class T>
 void
-List<T>::
-spliceBack(ListNodes&& nodes) noexcept
+AnyList<T>::
+spliceBack(AnyListNodes&& nodes) noexcept
 {
-    splice_back(List<T>(std::move(nodes)));
+    splice_back(AnyList<T>(std::move(nodes)));
 }
 
 template<class T>
 auto
-List<T>::
+AnyList<T>::
 compare(
-    List const& other) const noexcept ->
+    AnyList const& other) const noexcept ->
         compare_result
     requires std::three_way_comparable<T>
 {
@@ -569,9 +569,9 @@ compare(
 
 template<class T>
 auto
-List<T>::
+AnyList<T>::
 operator<=>(
-    List const& other) const noexcept ->
+    AnyList const& other) const noexcept ->
         compare_result
     requires std::three_way_comparable<T>
 {
@@ -580,9 +580,9 @@ operator<=>(
 
 template<class T>
 bool
-List<T>::
+AnyList<T>::
 operator==(
-    List const& other) const noexcept
+    AnyList const& other) const noexcept
     requires std::equality_comparable<T>
 {
     return compare(other) == compare_result::equal;
@@ -591,7 +591,7 @@ operator==(
 template<class T>
 template<class U, class Pred>
 std::shared_ptr<U const>
-List<T>::
+AnyList<T>::
 extract_first_of(
     Pred&& pred) noexcept
 {
@@ -634,7 +634,7 @@ extract_first_of(
 template<class T>
 template<class U>
 auto
-List<T>::
+AnyList<T>::
 emplace_back(U&& u) ->
     U&
 {
@@ -646,9 +646,9 @@ emplace_back(U&& u) ->
 template<class T>
 template<class U>
 void
-List<T>::
+AnyList<T>::
 splice_back(
-    List<U>&& other) noexcept
+    AnyList<U>&& other) noexcept
 {
     if(other.empty())
         return;
@@ -668,8 +668,8 @@ splice_back(
 
 template<class T>
 void
-List<T>::
-swap(List& other)
+AnyList<T>::
+swap(AnyList& other)
 {
     if(other.empty())
     {
@@ -704,7 +704,7 @@ swap(List& other)
 
 template<class T>
 void
-List<T>::
+AnyList<T>::
 append(Node* node)
 {
     if(head_ == &end_)

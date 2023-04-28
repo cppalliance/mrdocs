@@ -76,7 +76,7 @@ struct EnumInfo : SymbolInfo
     // this will be "short".
     llvm::Optional<TypeInfo> BaseType;
 
-    llvm::SmallVector<EnumValueInfo, 4> Members; // List of enum members.
+    llvm::SmallVector<EnumValueInfo, 4> Members; // AnyList of enum members.
 
     //--------------------------------------------
 

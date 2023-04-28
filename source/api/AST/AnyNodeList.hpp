@@ -14,7 +14,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
-#include <mrdox/Metadata/List.hpp>
+#include <mrdox/Metadata/AnyList.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -31,8 +31,8 @@ public:
         virtual llvm::Error setStyle(Javadoc::Style style) = 0;
         virtual llvm::Error setString(llvm::StringRef string) = 0;
         virtual llvm::Error setAdmonish(Javadoc::Admonish admonish) = 0;
-        virtual ListNodes extractNodes() = 0;
-        virtual void spliceBack(ListNodes&& nodes) noexcept = 0;
+        virtual AnyListNodes extractNodes() = 0;
+        virtual void spliceBack(AnyListNodes&& nodes) noexcept = 0;
     };
 
     ~AnyNodeList();
@@ -51,21 +51,21 @@ public:
     llvm::Error setKind(Javadoc::Kind kind);
 
     template<class T>
-    llvm::Error spliceInto(List<T>& nodes);
+    llvm::Error spliceInto(AnyList<T>& nodes);
     llvm::Error spliceIntoParent();
 
 private:
     template<class T>
     struct NodesImpl : Nodes
     {
-        List<T> list;
+        AnyList<T> list;
 
         llvm::Error appendChild(Javadoc::Kind kind) override;
         llvm::Error setStyle(Javadoc::Style style) override;
         llvm::Error setString(llvm::StringRef string) override;
         llvm::Error setAdmonish(Javadoc::Admonish admonish) override;
-        ListNodes extractNodes() override;
-        void spliceBack(ListNodes&& nodes) noexcept override;
+        AnyListNodes extractNodes() override;
+        void spliceBack(AnyListNodes&& nodes) noexcept override;
     };
 
     AnyNodeList* prev_;
@@ -125,12 +125,12 @@ getNodes() ->
             return makeError("missing kind");
         }
 
-        ListNodes extractNodes() override
+        AnyListNodes extractNodes() override
         {
             return {};
         }
 
-        void spliceBack(ListNodes&&) noexcept override
+        void spliceBack(AnyListNodes&&) noexcept override
         {
         }
     };
@@ -172,7 +172,7 @@ template<class T>
 llvm::Error
 AnyNodeList::
 spliceInto(
-    List<T>& nodes)
+    AnyList<T>& nodes)
 {
     if(nodes_ == nullptr)
         return makeError("splice without nodes");
@@ -335,7 +335,7 @@ setAdmonish(
 }
 
 template<class T>
-ListNodes
+AnyListNodes
 AnyNodeList::
 NodesImpl<T>::
 extractNodes()
@@ -348,7 +348,7 @@ void
 AnyNodeList::
 NodesImpl<T>::
 spliceBack(
-    ListNodes&& nodes) noexcept
+    AnyListNodes&& nodes) noexcept
 {
     if constexpr(std::derived_from<T, Javadoc::Block>)
     {

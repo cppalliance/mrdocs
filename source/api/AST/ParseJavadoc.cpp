@@ -141,7 +141,7 @@ class JavadocVisitor
 #if 0
     static void
     makeLeftAligned(
-        List<Javadoc::Text>& list)
+        AnyList<Javadoc::Text>& list)
     {
         if(list.empty())
             return;
@@ -381,8 +381,8 @@ public:
 private:
     FullComment const* FC_;
     ASTContext const& ctx_;
-    List<Javadoc::Block> blocks_;
-    List<Javadoc::Param> params_;
+    AnyList<Javadoc::Block> blocks_;
+    AnyList<Javadoc::Param> params_;
     Javadoc::Paragraph* para_ = nullptr;
     llvm::raw_string_ostream* os_ = nullptr;
 };
