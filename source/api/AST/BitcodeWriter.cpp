@@ -892,15 +892,15 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
     emitInfoPart(I);
-    for (const auto& C : I.Children.Namespaces)
-        emitBlock(C, FieldId::F_child_namespace);
-    for (const auto& C : I.Children.Records)
-        emitBlock(C, FieldId::F_child_record);
-    for (auto const& C : I.Children.Functions)
-        emitBlock(C, FieldId::F_child_function);
+    for (const auto& ref : I.Children.Namespaces)
+        emitBlock(ref, FieldId::F_child_namespace);
+    for (const auto& ref : I.Children.Records)
+        emitBlock(ref, FieldId::F_child_record);
+    for (auto const& ref : I.Children.Functions)
+        emitBlock(ref, FieldId::F_child_function);
+    for (const auto& ref : I.Children.Typedefs)
+        emitBlock(ref, FieldId::F_child_typedef);
     for (const auto& C : I.Children.Enums)
-        emitBlock(C);
-    for (const auto& C : I.Children.Typedefs)
         emitBlock(C);
 }
 
@@ -927,9 +927,9 @@ emitBlock(
         emitBlock(C, FieldId::F_child_record);
     for (auto const& C : I.Children.Functions)
         emitBlock(C, FieldId::F_child_function);
+    for (const auto& ref : I.Children.Typedefs)
+        emitBlock(ref, FieldId::F_child_typedef);
     for (const auto& C : I.Children.Enums)
-        emitBlock(C);
-    for (const auto& C : I.Children.Typedefs)
         emitBlock(C);
     if (I.Template)
         emitBlock(*I.Template);

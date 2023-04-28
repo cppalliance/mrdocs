@@ -78,8 +78,8 @@ visit(Scope& I, MutableVisitor& f)
         visit(get<RecordInfo>(ref.id), f);
     for(auto& ref : I.Functions)
         visit(get<FunctionInfo>(ref.id), f);
-    for(auto& J : I.Typedefs)
-        visit(J, f);
+    for(auto& ref : I.Typedefs)
+        visit(get<TypedefInfo>(ref.id), f);
     for(auto& J : I.Enums)
         visit(J, f);
 }

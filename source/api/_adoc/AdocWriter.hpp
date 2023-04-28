@@ -72,7 +72,7 @@ protected:
         OverloadsSet const& set);
     void writeNestedTypes(
         llvm::StringRef sectionName,
-        std::vector<TypedefInfo> const& list,
+        std::vector<Reference> const& list,
         AccessSpecifier access);
     void writeDataMembers(
         llvm::StringRef sectionName,

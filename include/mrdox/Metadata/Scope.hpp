@@ -37,7 +37,7 @@ struct Scope
     std::vector<Reference> Namespaces;
     std::vector<Reference> Records;
     std::vector<Reference> Functions;
-    std::vector<TypedefInfo> Typedefs;
+    std::vector<Reference> Typedefs;
     std::vector<EnumInfo> Enums;
     std::vector<Reference> Variables;
 

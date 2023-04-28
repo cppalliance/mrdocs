@@ -59,8 +59,8 @@ private:
             infos.emplace_back(corpus_.find(ref.id));
         for(auto const& ref : scope.Functions)
             infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& I : scope.Typedefs)
-            infos.emplace_back(&I);
+        for(auto const& ref : scope.Typedefs)
+            infos.emplace_back(corpus_.find(ref.id));
         for(auto const& I : scope.Enums)
             infos.emplace_back(&I);
         if(infos.size() < 2)

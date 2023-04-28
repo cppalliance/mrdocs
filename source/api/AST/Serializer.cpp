@@ -469,7 +469,7 @@ insertChild(Parent& parent, Child&& I)
     }
     else if constexpr(std::is_same_v<Child, TypedefInfo>)
     {
-        parent.Children.Typedefs.emplace_back(std::move(I));
+        parent.Children.Typedefs.emplace_back(I.id, I.Name, Child::type_id);
     }
     else if constexpr(std::is_same_v<Child, EnumInfo>)
     {

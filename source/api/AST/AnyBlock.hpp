@@ -784,6 +784,17 @@ public:
             }
             break;
         }
+        case FieldId::F_child_typedef:
+        {
+            if constexpr(
+                std::derived_from<T, NamespaceInfo> ||
+                std::derived_from<T, RecordInfo>)
+            {
+                I->Children.Typedefs.emplace_back(std::move(R));
+                return llvm::Error::success();
+            }
+            break;
+        }
         default:
             return makeWrongFieldError(Id);
         }
@@ -1199,20 +1210,6 @@ readSubBlock(
             std::derived_from<T, RecordInfo>)
         {
             return readChild(I->Children, ID);
-        }
-        break;
-    }
-    case BI_TYPEDEF_BLOCK_ID:
-    {
-        if constexpr(
-            std::derived_from<T, NamespaceInfo> ||
-            std::derived_from<T, RecordInfo>)
-        {
-            TypedefBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            I->Children.Typedefs.emplace_back(std::move(*B.I));
-            return llvm::Error::success();
         }
         break;
     }

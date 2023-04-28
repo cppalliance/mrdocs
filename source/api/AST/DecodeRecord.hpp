@@ -218,6 +218,7 @@ decodeRecord(
     case FieldId::F_child_namespace:
     case FieldId::F_child_record:
     case FieldId::F_child_function:
+    case FieldId::F_child_typedef:
     case FieldId::F_default:
         Field = F;
         return llvm::Error::success();

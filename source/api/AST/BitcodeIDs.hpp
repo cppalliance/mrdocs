@@ -133,7 +133,8 @@ enum class FieldId
     F_type,
     F_child_namespace,
     F_child_record,
-    F_child_function
+    F_child_function,
+    F_child_typedef
 };
 
 } // mrdox

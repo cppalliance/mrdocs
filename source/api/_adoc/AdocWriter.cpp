@@ -378,22 +378,11 @@ void
 AdocWriter::
 writeNestedTypes(
     llvm::StringRef sectionName,
-    std::vector<TypedefInfo> const& list,
+    std::vector<Reference> const& list,
     AccessSpecifier access)
 {
     if(list.empty())
         return;
-    auto it = list.begin();
-#if 0
-    for(;;)
-    {
-        if(it == list.end())
-            return;
-        if(it->Access == access)
-            break;
-        ++it;
-    }
-#endif
     beginSection(sectionName);
     os_ <<
         "\n"
@@ -401,16 +390,17 @@ writeNestedTypes(
         "|===\n" <<
         "|Name |Description\n" <<
         "\n";
-    for(;it != list.end(); ++it)
+    for(auto const& ref : list)
     {
+        auto& I = corpus_.get<TypedefInfo>(ref.id);
 #if 0
         if(it->Access != access)
             continue;
 #endif
         os_ <<
-            "|`" << it->Name << "`\n" <<
+            "|`" << I.Name << "`\n" <<
             "|";
-        writeBrief(it->javadoc, false);
+        writeBrief(I.javadoc, false);
         os_ << '\n';
     }   
     os_ <<
