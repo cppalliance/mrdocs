@@ -19,7 +19,7 @@ namespace clang {
 namespace mrdox {
 namespace bitcode {
 
-class Builder : public Corpus::Visitor
+class MultiFileBuilder : public Corpus::Visitor
 {
     Corpus const& corpus_;
     Reporter& R_;
@@ -28,7 +28,7 @@ class Builder : public Corpus::Visitor
     Config::WorkGroup wg_;
 
 public:
-    Builder(
+    MultiFileBuilder(
         llvm::StringRef outputPath,
         Corpus const& corpus,
         Reporter& R)
@@ -108,6 +108,74 @@ public:
 
 //------------------------------------------------
 
+class SingleFileBuilder : public Corpus::Visitor
+{
+    Corpus const& corpus_;
+    Reporter& R_;
+    llvm::raw_ostream& os_;
+    llvm::raw_fd_ostream* fd_os_;
+
+public:
+    SingleFileBuilder(
+        llvm::raw_ostream& os,
+        llvm::raw_fd_ostream* fd_os,
+        Corpus const& corpus,
+        Reporter& R)
+        : corpus_(corpus)
+        , R_(R)
+        , os_(os)
+        , fd_os_(fd_os)
+    {
+    }
+
+    llvm::Error
+    build()
+    {
+        corpus_.visit(globalNamespaceID, *this);
+        return llvm::Error::success();
+    }
+
+    template<class T>
+    void build(T const& I)
+    {
+        auto bc = writeBitcode(I);
+        os_.write(bc.data.data(), bc.data.size());
+    }
+
+    bool visit(NamespaceInfo const& I) override
+    {
+        corpus_.visit(I.Children, *this);
+        return true;
+    }
+
+    bool visit(RecordInfo const& I) override
+    {
+        build(I);
+        corpus_.visit(I.Children, *this);
+        return true;
+    }
+
+    bool visit(FunctionInfo const& I) override
+    {
+        build(I);
+        return true;
+    }
+
+    bool visit(TypedefInfo const& I) override
+    {
+        build(I);
+        return true;
+    }
+
+    bool visit(EnumInfo const& I) override
+    {
+        build(I);
+        return true;
+    }
+};
+
+//------------------------------------------------
+
 llvm::Error
 BitcodeGenerator::
 buildPages(
@@ -115,7 +183,7 @@ buildPages(
     Corpus const& corpus,
     Reporter& R) const
 {
-    return Builder(outputPath, corpus, R).build();
+    return MultiFileBuilder(outputPath, corpus, R).build();
 }
 
 llvm::Error
@@ -126,7 +194,7 @@ buildSinglePage(
     Reporter& R,
     llvm::raw_fd_ostream* fd_os) const
 {
-    return makeError("single-page bitcode not supported");
+    return SingleFileBuilder(os, fd_os, corpus, R).build();
 }
 
 } // xml
