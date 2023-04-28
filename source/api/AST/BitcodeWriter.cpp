@@ -247,6 +247,7 @@ RecordIdNameMap = []()
         {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
         {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
         {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
+        {FIELD_ATTRIBUTES, {"FieldAttributes", &Integer32ArrayAbbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
         {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
         {ENUM_SCOPED, {"Scoped", &BoolAbbrev}},
@@ -302,7 +303,7 @@ RecordsByBlock{
     {BI_ENUM_VALUE_BLOCK_ID,
         {ENUM_VALUE_NAME, ENUM_VALUE_VALUE, ENUM_VALUE_EXPR}},
     // FieldTypeInfo
-    {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE}},
+    {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE, FIELD_ATTRIBUTES}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
         {FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_BITS}},
@@ -760,6 +761,7 @@ emitBlock(
     emitBlock(T.Type, FieldId::F_type);
     emitRecord(T.Name, FIELD_TYPE_NAME);
     emitRecord(T.DefaultValue, FIELD_DEFAULT_VALUE);
+    emitRecord({T.Flags.raw}, FIELD_ATTRIBUTES);
 }
 
 void
@@ -871,7 +873,8 @@ emitBlock(
     MemberTypeInfo const& T)
 {
     StreamSubBlockGuard Block(Stream, BI_MEMBER_TYPE_BLOCK_ID);
-    emitBlock(T.Type, FieldId::F_type);
+//    emitBlock(T.Type, FieldId::F_type);
+    emitBlock(static_cast<const FieldTypeInfo &>(T));
     emitRecord(T.Name, MEMBER_TYPE_NAME);
     emitRecord(T.Access, MEMBER_TYPE_ACCESS);
     if(T.javadoc)

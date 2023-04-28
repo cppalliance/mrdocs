@@ -434,12 +434,15 @@ XMLWriter::
 writeMemberType(
     MemberTypeInfo const& I)
 {
-    tags_.write(dataMemberTagName, {}, {
+    tags_.open(dataMemberTagName, {
         { "name", I.Name },
         { "type", I.Type.Name },
         { "value", I.DefaultValue, ! I.DefaultValue.empty() },
         { I.Access },
         { I.Type.id } });
+
+    write(I.Flags, tags_);
+    tags_.close("data");
 }
 
 //------------------------------------------------

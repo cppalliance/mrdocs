@@ -96,6 +96,9 @@
       <optional>
         <ref name="ID"/>
       </optional>
+      <zeroOrMore>
+        <ref name="Attr"/>
+      </zeroOrMore>
     </element>
   </define>
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->

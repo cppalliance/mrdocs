@@ -214,6 +214,17 @@ inline void write(FnFlags1 const& bits, XMLTags& tags)
     fw.write(&FnFlags1::isExplicit,        "is-explicit");
 }
 
+
+inline void write(FieldFlags const& bits, XMLTags& tags)
+{
+    BitFieldWriter<FieldFlags> fw(bits, tags);
+
+    fw.write(&FieldFlags::isNodiscard, "nodiscard");
+    fw.write(&FieldFlags::isDeprecated, "deprecated");
+    fw.write(&FieldFlags::hasNoUniqueAddress, "no-unique-address");
+}
+
+
 inline void write(VarFlags0 const& bits, XMLTags& tags)
 {
     BitFieldWriter<VarFlags0> fw(bits, tags);
