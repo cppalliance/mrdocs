@@ -10,6 +10,7 @@
 
 #include "Support/Operator.hpp"
 #include "Support/SafeNames.hpp"
+#include "Support/Validate.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/STLExtras.h>
@@ -19,9 +20,18 @@
 namespace clang {
 namespace mrdox {
 
+/*
+    Unsafe names:
+
+    destructors
+    overloaded operators
+    function templates
+    class templates
+*/
 class SafeNames::
     Builder : public Corpus::Visitor
 {
+    llvm::raw_ostream* os_ = nullptr;
     std::string prefix_;
     std::string temp_;
 
@@ -33,8 +43,27 @@ public:
         prefix_.reserve(512);
         corpus_.visit(globalNamespaceID, *this);
         map.try_emplace(llvm::toStringRef(EmptySID), std::string());
+
+    #ifndef NDEBUG
+        //for(auto const& N : map)
+            //Assert(validAdocSectionID(N.second));
+    #endif
     }
 
+    Builder(
+        llvm::raw_ostream& os,
+        Corpus const& corpus)
+        :
+        //os_(&os),
+        corpus_(corpus)
+    {
+        prefix_.reserve(512);
+        corpus_.visit(globalNamespaceID, *this);
+        map.try_emplace(llvm::toStringRef(EmptySID), std::string());
+        if(os_)
+            *os_ << "\n\n";
+    }
+ 
     llvm::StringMap<std::string> map;
 
 private:
@@ -51,7 +80,8 @@ private:
             scope.Records.size() +
             scope.Functions.size() +
             scope.Typedefs.size() +
-            scope.Enums.size());
+            scope.Enums.size() +
+            scope.Variables.size());
         for(auto const& ref : scope.Namespaces)
             infos.emplace_back(corpus_.find(ref.id));
         for(auto const& ref : scope.Records)
@@ -61,6 +91,8 @@ private:
         for(auto const& ref : scope.Typedefs)
             infos.emplace_back(corpus_.find(ref.id));
         for(auto const& ref : scope.Enums)
+            infos.emplace_back(corpus_.find(ref.id));
+        for(auto const& ref : scope.Variables)
             infos.emplace_back(corpus_.find(ref.id));
         if(infos.size() < 2)
             return infos;
@@ -92,6 +124,25 @@ private:
 
     void insertScope(ScopeInfos const& infos)
     {
+        if(os_)
+        {
+            std::string temp;
+            if( infos.size() > 0 &&
+                infos.front()->Namespace.size() > 0)
+            {
+                auto const& P = corpus_.get<Info>(infos.front()->Namespace[0].id);
+                P.getFullyQualifiedName(temp);
+                temp.push_back(' ');
+            }
+            *os_ <<
+                "------------------------\n" <<
+                "Scope " << temp <<
+                "with " << infos.size() << " names:\n\n";
+            for(auto const& I : infos)
+                *os_ << I->Name << '\n';
+            *os_ << '\n';
+        }
+
         auto it0 = infos.begin();
         while(it0 != infos.end())
         {
@@ -108,7 +159,9 @@ private:
                 std::string s;
                 s.assign(prefix_);
                 s.append(getSafe(**it0));
-                map.try_emplace(
+                if(os_)
+                    *os_ << getSafe(**it0) << "\n";
+                auto result = map.try_emplace(
                     llvm::toStringRef((*it0)->id),
                     std::move(s));
                 it0 = it;
@@ -119,10 +172,14 @@ private:
             {
                 std::string s;
                 s.assign(prefix_);
-                s.append(std::to_string(i + 1));
+                std::string suffix;
+                suffix = std::to_string(i + 1);
                 //s.push_back('@');
-                s.append(getSafe(**it0));
-                map.try_emplace(
+                suffix.append(getSafe(**it0));
+                if(os_)
+                    *os_ << suffix << "\n";
+                s.append(suffix);
+                auto result = map.try_emplace(
                     llvm::toStringRef(it0[i]->id),
                     std::move(s));
             }
@@ -184,6 +241,15 @@ SafeNames(
     Corpus const& corpus)
 {
     Builder b(corpus);
+    map_ = std::move(b.map);
+}
+
+SafeNames::
+SafeNames(
+    llvm::raw_ostream& os,
+    Corpus const& corpus)
+{
+    Builder b(os, corpus);
     map_ = std::move(b.map);
 }
 

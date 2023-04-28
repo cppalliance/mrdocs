@@ -63,9 +63,6 @@ build()
         "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
         "<mrdox>\n";
 
-    // VFALCO Do we even need this?
-    //writeAllSymbols();
-
     if(! corpus_.visit(globalNamespaceID, *this))
     {
         if(fd_os_ && fd_os_->error())

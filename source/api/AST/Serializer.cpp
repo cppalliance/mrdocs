@@ -334,7 +334,11 @@ getInfo(
         sr.PublicOnly, IsInAnonymousNamespace, D))
         return false;
     I.id = getUSRForDecl(D);
-    I.Name = D->getNameAsString();
+    //I.Name = D->getName();
+    //if(I.Name.empty())
+        I.Name = D->getNameAsString();
+//if(D->getName() != I.Name)
+//debug_outs() << D->getName() << ", " << I.Name << "\n";
     parseJavadoc(I.javadoc, D);
     return true;
 }
@@ -964,7 +968,13 @@ build(
 // Functions, Member Functions
 //
 //------------------------------------------------
+/*
+    Types of member functions:
 
+    destructor
+    constructor
+    conversion operator
+*/
 // VFALCO could this be done in getFunctionInfo?
 //        but getFunctionInfo is called parseBases()
 static
@@ -1007,12 +1017,18 @@ getFunctionSpecs(
         //MF->isOverloadedOperator();
         //MF->isStaticOverloadedOperator();
 
-        if(auto const Ctor = dyn_cast<CXXConstructorDecl>(MF))
+        if(auto const Dtor = dyn_cast<CXXDestructorDecl>(MF))
         {
+//I.Name.append("-dtor");
+        }
+        else if(auto const Ctor = dyn_cast<CXXConstructorDecl>(MF))
+        {
+//I.Name.append("-ctor");
             I.specs1.set<FnFlags1::isExplicit>(Ctor->getExplicitSpecifier().isSpecified());
         }
         else if(auto const Conv = dyn_cast<CXXConversionDecl>(MF))
         {
+//I.Name.append("-conv");
             I.specs1.set<FnFlags1::isExplicit>(Conv->getExplicitSpecifier().isSpecified());
         }
     }
@@ -1064,8 +1080,6 @@ build(
         PD->getNameAsString(),
         InfoType::IT_record);
     I.Access = D->getAccess();
-
-    getFunctionSpecs(I, D);
 
     return { writeBitcode(I), writeParent(std::move(I)) };
 }

@@ -177,24 +177,6 @@ WalkUpFromCXXRecordDecl(
 
 bool
 ASTVisitor::
-WalkUpFromCXXDestructorDecl(
-    CXXDestructorDecl* D)
-{
-    mapDecl(D);
-    return true;
-}
-
-bool
-ASTVisitor::
-WalkUpFromCXXConstructorDecl(
-    CXXConstructorDecl* D)
-{
-    mapDecl(D);
-    return true;
-}
-
-bool
-ASTVisitor::
 WalkUpFromCXXMethodDecl(
     CXXMethodDecl* D)
 {

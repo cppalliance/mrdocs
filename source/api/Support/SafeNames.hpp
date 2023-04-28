@@ -15,6 +15,7 @@
 #include <mrdox/MetadataFwd.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringMap.h>
+#include <llvm/Support/raw_ostream.h>
 #include <string>
 
 namespace clang {
@@ -29,6 +30,10 @@ class SafeNames
 public:
     explicit
     SafeNames(
+        Corpus const&);
+
+    SafeNames(
+        llvm::raw_ostream& os,
         Corpus const&);
 
     llvm::StringRef

@@ -37,6 +37,7 @@ public:
     void build(FunctionInfo const&);
     void build(TypedefInfo const&);
     void build(EnumInfo const&);
+    void build(VariableInfo const&);
 
     void build(OverloadInfo const&);
 

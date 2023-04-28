@@ -69,8 +69,6 @@ public:
 
     bool WalkUpFromNamespaceDecl(NamespaceDecl* D);
     bool WalkUpFromCXXRecordDecl(CXXRecordDecl* D);
-    bool WalkUpFromCXXDestructorDecl(CXXDestructorDecl* D);
-    bool WalkUpFromCXXConstructorDecl(CXXConstructorDecl* D);
     bool WalkUpFromCXXMethodDecl(CXXMethodDecl* D);
     bool WalkUpFromFriendDecl(FriendDecl* D);
     //bool WalkUpFromUsingDecl(UsingDecl* D);

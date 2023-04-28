@@ -99,17 +99,6 @@ AdocWriter(
 
 //------------------------------------------------
 
-auto
-AdocWriter::
-formalParam(
-    FieldTypeInfo const& t) ->
-        FormalParam
-{
-    return FormalParam{ t, *this };
-}
-
-//------------------------------------------------
-
 /*  Write a namespace.
 
     This will list individual symbols by group.
@@ -119,6 +108,17 @@ AdocWriter::
 write(
     NamespaceInfo const& I)
 {
+}
+
+//------------------------------------------------
+
+auto
+AdocWriter::
+formalParam(
+    FieldTypeInfo const& t) ->
+        FormalParam
+{
+    return FormalParam{ t, *this };
 }
 
 //------------------------------------------------
@@ -297,6 +297,14 @@ write(
     endSection();
 }
 
+void
+AdocWriter::
+write(
+    VariableInfo const& I)
+{
+}
+
+
 //------------------------------------------------
 
 llvm::StringRef
@@ -327,6 +335,27 @@ linkFor(
         names_.getOverload(P, I.Name, '-', s) <<
         "[" << I.Name << "]";
     return temp;
+}
+
+void
+AdocWriter::
+writeLinkFor(OverloadInfo const& I)
+{
+    std::string s = names_.get(I.Parent->id).str();
+    
+    os_ << "xref:#" <<
+        names_.get(I.Parent->id) <<
+        '-' << I.Name << "[" <<
+        I.Name << "]";
+}
+
+void
+AdocWriter::
+writeLinkFor(Info const& I)
+{
+    os_ << "xref:#" <<
+        names_.get(I.id) << "[" <<
+        I.Name << "]";
 }
 
 void
@@ -720,7 +749,7 @@ AdocWriter::
 beginSection(
     Info const& I)
 {
-    Assert(validAdocSectionID(names_.get(I.id)));
+    //Assert(validAdocSectionID(names_.get(I.id)));
 
     sect_.level++;
     if(sect_.level <= 6)

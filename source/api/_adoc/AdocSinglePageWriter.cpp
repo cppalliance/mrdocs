@@ -22,7 +22,7 @@ AdocSinglePageWriter(
     Corpus const& corpus,
     Reporter& R) noexcept
     : AdocWriter(os, fd_os, names_, corpus, R)
-    , names_(corpus)
+    , names_(os, corpus)
 {
 }
 
@@ -75,25 +75,32 @@ visit(
 {
     // build sorted list of namespaces,
     // this is for visitation not display.
-    auto namespaceList = buildSortedList<NamespaceInfo>(I.Children.Namespaces);
+    auto namespaceList     = buildSortedList<NamespaceInfo>(I.Children.Namespaces);
+    auto recordList        = buildSortedList<RecordInfo>(I.Children.Records);
+    auto functionOverloads = makeNamespaceOverloads(I, corpus_);
+    auto typedefList       = buildSortedList<TypedefInfo>(I.Children.Typedefs);
+    auto enumList          = buildSortedList<EnumInfo>(I.Children.Enums);
+    auto variableList      = buildSortedList<VariableInfo>(I.Children.Variables);
 
     // don't emit empty namespaces,
     // but still visit child namespaces.
     if( ! I.Children.Records.empty() ||
-        ! I.Children.Functions.empty() ||
+        ! functionOverloads.list.empty() ||
         ! I.Children.Typedefs.empty() ||
-        ! I.Children.Enums.empty())
+        ! I.Children.Enums.empty() ||
+        ! I.Children.Variables.empty())
     {
         std::string s;
-        I.getFullyQualifiedName(s);
-        s = "namespace " + s;
-
+        if(I.id == EmptySID)
+        {
+            s = "global namespace";
+        }
+        else
+        {
+            I.getFullyQualifiedName(s);
+            s = "namespace " + s;
+        }
         beginSection(s);
-
-        auto recordList = buildSortedList<RecordInfo>(I.Children.Records);
-        auto functionOverloads = makeNamespaceOverloads(I, corpus_);
-        //auto typeList = ?
-        //auto enumList = ?
 
         if(! recordList.empty())
         {
@@ -101,9 +108,11 @@ visit(
             os_ << "\n"
                 "[cols=1]\n"
                 "|===\n";
-            for(auto const I : recordList)
+            for(auto const J : recordList)
             {
-                os_ << "\n|" << linkFor(*I) << '\n';
+                os_ << "\n|";
+                writeLinkFor(*J);
+                os_ << '\n';
             };
             os_ << "|===\n";
             endSection();
@@ -115,49 +124,86 @@ visit(
             os_ << "\n"
                 "[cols=1]\n"
                 "|===\n";
-            for(auto const t : functionOverloads.list)
+            for(auto const& J : functionOverloads.list)
             {
-                os_ << "\n|" << linkFor(I, t) << '\n';
+                os_ << "\n|";
+                writeLinkFor(J);
+                os_ << '\n';
             };
             os_ << "|===\n";
             endSection();
         }
 
-        //if(! typeList.empty())
+        if(! typedefList.empty())
+        {
+            beginSection("Types");
+            os_ << "\n"
+                "[cols=1]\n"
+                "|===\n";
+            for(auto const J : typedefList)
+            {
+                os_ << "\n|";
+                writeLinkFor(*J);
+                os_ << '\n';
+            };
+            os_ << "|===\n";
+            endSection();
+        }
 
-        //if(! enumList.empty())
+        if(! enumList.empty())
+        {
+            beginSection("Enums");
+            os_ << "\n"
+                "[cols=1]\n"
+                "|===\n";
+            for(auto const J : enumList)
+            {
+                os_ << "\n|";
+                writeLinkFor(*J);
+                os_ << '\n';
+            };
+            os_ << "|===\n";
+            endSection();
+        }
 
-        // now visit each indexed item
-        for(auto const& I : recordList)
-            if(! visit(*I))
-                return false;
-        recordList.clear();
-
-        for(auto const& t : functionOverloads.list)
-            if(! visitOverloads(I, t))
-                return false;
-        functionOverloads.list = {};
-
-        /*
-        for(auto const& I : typeList)
-            visit(*I);
-        typeList.clear();
-        */
-
-        /*
-        for(auto const& I : enumList)
-            visit(*I);
-        typeList.clear();
-        */
+        if(! variableList.empty())
+        {
+            beginSection("Variables");
+            os_ << "\n"
+                "[cols=1]\n"
+                "|===\n";
+            for(auto const J : variableList)
+            {
+                os_ << "\n|";
+                writeLinkFor(*J);
+                os_ << '\n';
+            };
+            os_ << "|===\n";
+            endSection();
+        }
 
         endSection();
     }
 
-    // visit child namespaces
+    // visit children
     for(auto const& I : namespaceList)
         if(! visit(*I))
             return false;
-
+    for(auto const& I : recordList)
+        if(! visit(*I))
+            return false;
+    for(auto const& I : functionOverloads.list)
+        if(! visit(I))
+            return false;
+    for(auto const& I : typedefList)
+        if(! visit(*I))
+            return false;
+    for(auto const& I : enumList)
+        if(! visit(*I))
+            return false;
+    for(auto const& I : variableList)
+        if(! visit(*I))
+            return false;
     return true;
 }
 
@@ -167,6 +213,21 @@ visit(
     RecordInfo const& I)
 {
     write(I);
+    return true;
+}
+
+bool
+AdocSinglePageWriter::
+visit(
+    OverloadInfo const& I)
+{
+    // this is the "overload resolution landing page"
+    // render the page
+
+    // visit the functions
+    for(auto const& J : I.Functions)
+        if(! visit(*J))
+            return false;
     return true;
 }
 
@@ -194,6 +255,14 @@ visit(
     EnumInfo const& I)
 {
     write(I);
+    return true;
+}
+
+bool
+AdocSinglePageWriter::
+visit(
+    VariableInfo const&)
+{
     return true;
 }
 

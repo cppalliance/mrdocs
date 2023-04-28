@@ -69,6 +69,13 @@ build(
 
 void
 AdocMultiPageWriter::
+build(
+    VariableInfo const& I)
+{
+}
+
+void
+AdocMultiPageWriter::
 writeTitle(Info const& I)
 {
     Assert(sect_.level == 0);
