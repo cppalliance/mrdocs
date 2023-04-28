@@ -38,8 +38,6 @@ struct SymbolInfo : Info
         : Info(IT, id_, Name)
     {
     }
-
-    void merge(SymbolInfo&& I);
 };
 
 } // mrdox

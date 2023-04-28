@@ -29,6 +29,16 @@ static bool canMerge(Reference const& I, Reference const& Other)
         I.id == Other.id;
 }
 
+static void merge(Javadoc& I, Javadoc&& other)
+{
+    // Unconditionally extend the blocks
+    // since each decl may have a comment.
+    if(other != I)
+    {
+        I.append(I.getBlocks(), std::move(other.getBlocks()));
+    }
+}
+
 void mergeInfo(Info& I, Info&& Other)
 {
     Assert(canMerge(I, Other));
@@ -43,7 +53,7 @@ void mergeInfo(Info& I, Info&& Other)
     if(! I.javadoc)
         I.javadoc = std::move(Other.javadoc);
     else if(Other.javadoc)
-        I.javadoc->merge(std::move(*Other.javadoc));
+        merge(*I.javadoc, std::move(*Other.javadoc));
 }
 
 static void mergeSymbolInfo(SymbolInfo& I, SymbolInfo&& Other)

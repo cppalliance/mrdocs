@@ -78,8 +78,6 @@ struct RecordInfo : SymbolInfo
     RecordInfo(
         SymbolID id = SymbolID(),
         llvm::StringRef Name = llvm::StringRef());
-
-    void merge(RecordInfo&& I);
 };
 
 } // mrdox

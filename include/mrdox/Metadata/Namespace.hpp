@@ -33,8 +33,6 @@ struct NamespaceInfo
     NamespaceInfo(
         SymbolID id,
         llvm::StringRef Name = llvm::StringRef());
-
-    void merge(NamespaceInfo&& I);
 };
 
 } // mrdox

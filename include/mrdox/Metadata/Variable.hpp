@@ -38,8 +38,6 @@ struct VariableInfo : SymbolInfo
         : SymbolInfo(InfoType::IT_variable, ID, Name)
     {
     }
-
-    void merge(TypedefInfo&& I);
 };
 
 } // mrdox

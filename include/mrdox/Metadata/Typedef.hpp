@@ -39,8 +39,6 @@ struct TypedefInfo : SymbolInfo
         : SymbolInfo(InfoType::IT_typedef, id_)
     {
     }
-
-    void merge(TypedefInfo&& I);
 };
 
 } // mrdox

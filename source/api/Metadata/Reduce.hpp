@@ -21,13 +21,13 @@
 namespace clang {
 namespace mrdox {
 
-void merge(Reference& I, Reference&& Other);
 void merge(NamespaceInfo& I, NamespaceInfo&& Other);
 void merge(RecordInfo& I, RecordInfo&& Other);
 void merge(FunctionInfo& I, FunctionInfo&& Other);
 void merge(TypedefInfo& I, TypedefInfo&& Other);
 void merge(EnumInfo& I, EnumInfo&& Other);
 void merge(VariableInfo& I, VariableInfo&& Other);
+void merge(Reference& I, Reference&& Other);
 
 //
 // This file defines the merging of different types of infos. The data in the

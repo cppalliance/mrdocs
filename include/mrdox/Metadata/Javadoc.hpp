@@ -343,14 +343,6 @@ struct Javadoc
     bool operator!=(Javadoc const&) const noexcept;
     /* @} */
 
-    /** Merge other into this.
-
-        This is used to combine separate doc
-        comments which are semantically attached
-        to the same symbol.
-    */
-    void merge(Javadoc&& other);
-
     List<Block>::const_iterator
     findBrief() const noexcept;
 

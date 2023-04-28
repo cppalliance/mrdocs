@@ -121,8 +121,6 @@ struct FunctionInfo : SymbolInfo
         : SymbolInfo(InfoType::IT_function, id_)
     {
     }
-
-    void merge(FunctionInfo&& I);
 };
 
 //------------------------------------------------

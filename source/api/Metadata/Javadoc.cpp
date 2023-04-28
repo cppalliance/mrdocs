@@ -68,18 +68,6 @@ operator!=(
     return !(*this == other);
 }
 
-void
-Javadoc::
-merge(Javadoc&& other)
-{
-    // Unconditionally extend the blocks
-    // since each decl may have a comment.
-    if(other != *this)
-    {
-        append(blocks_, std::move(other.blocks_));
-    }
-}
-
 auto
 Javadoc::
 findBrief() const noexcept ->
