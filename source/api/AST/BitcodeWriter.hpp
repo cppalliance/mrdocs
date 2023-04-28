@@ -38,6 +38,15 @@ namespace mrdox {
 class BitcodeWriter
 {
 public:
+    // Static size is the maximum length of
+    // the block/record names we're pushing
+    // to this + 1. Longest is currently
+    // `MemberTypeBlock` at 15 chars.
+    //
+    using RecordValue = std::uint32_t;
+    using RecordType = SmallVector<
+        RecordValue, BitCodeConstants::RecordSize>;
+
     explicit
     BitcodeWriter(llvm::BitstreamWriter &Stream);
 
@@ -96,12 +105,21 @@ public:
 
     //--------------------------------------------
     //
-    // emitBlock
+    // emitRecord
+    //
+    //--------------------------------------------
+
+    //--------------------------------------------
+    //
+    // Block emission
     //
     //--------------------------------------------
 
     template<class T>
     void emitBlock(List<T> const& list);
+
+    void emitInfoPart(Info const& I);
+    void emitSymbolPart(SymbolInfo const& I);
 
     void emitBlock(BaseRecordInfo const& I);
     void emitBlock(EnumInfo const& I);
@@ -163,15 +181,7 @@ private:
         StreamSubBlockGuard &operator=(StreamSubBlockGuard &) = delete;
     };
 
-    // Static size is the maximum length of
-    // the block/record names we're pushing
-    // to this + 1. Longest is currently
-    // `MemberTypeBlock` at 15 chars.
-    //
-    using RecordValue = std::uint32_t;
-    SmallVector<
-        RecordValue,
-        BitCodeConstants::RecordSize> Record;
+    RecordType Record;
     llvm::BitstreamWriter& Stream;
     AbbreviationMap Abbrevs;
 };

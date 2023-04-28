@@ -10,7 +10,7 @@
 //
 
 #include <mrdox/Debug.hpp>
-#include <mrdox/Metadata//Typedef.hpp>
+#include <mrdox/Metadata/Typedef.hpp>
 #include <cassert>
 
 namespace clang {

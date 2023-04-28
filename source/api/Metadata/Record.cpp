@@ -10,9 +10,9 @@
 //
 
 #include "Reduce.hpp"
-#include <mrdox/Metadata//BaseRecord.hpp>
+#include <mrdox/Metadata/BaseRecord.hpp>
 #include <mrdox/Debug.hpp>
-#include <mrdox/Metadata//Record.hpp>
+#include <mrdox/Metadata/Record.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <cassert>
 #include <utility>

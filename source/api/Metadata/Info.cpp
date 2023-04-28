@@ -9,9 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Metadata//Info.hpp>
+#include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Debug.hpp>
-#include <mrdox/Metadata//Record.hpp>
+#include <mrdox/Metadata/Record.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>

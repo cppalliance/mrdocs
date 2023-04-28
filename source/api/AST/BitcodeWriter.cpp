@@ -162,6 +162,8 @@ static void LocationAbbrev(
         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
 }
 
+//------------------------------------------------
+
 struct RecordIdDsc
 {
     llvm::StringRef Name;
@@ -191,6 +193,8 @@ BlockIdNameMap = []()
     // improvise
     static const std::vector<std::pair<BlockId, const char* const>> Inits = {
         {BI_VERSION_BLOCK_ID, "VersionBlock"},
+        {BI_INFO_PART_ID, "InfoPart"},
+        {BI_SYMBOL_PART_ID, "SymbolPart"},
         {BI_NAMESPACE_BLOCK_ID, "NamespaceBlock"},
         {BI_ENUM_BLOCK_ID, "EnumBlock"},
         {BI_ENUM_VALUE_BLOCK_ID, "EnumValueBlock"},
@@ -228,6 +232,10 @@ RecordIdNameMap = []()
     // improvise
     static const std::vector<std::pair<RecordId, RecordIdDsc>> Inits = {
         {VERSION, {"Version", &Integer32Abbrev}},
+        {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
+        {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
+        {SYMBOL_PART_LOCDEF, {"SymbolLocDef", &LocationAbbrev}},
+        {SYMBOL_PART_LOC, {"InfoName", &LocationAbbrev}},
         {JAVADOC_LIST_KIND, {"JavadocListKind", &Integer32Abbrev}},
         {JAVADOC_NODE_KIND, {"JavadocNodeKind", &Integer32Abbrev}},
         {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
@@ -237,34 +245,18 @@ RecordIdNameMap = []()
         {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
         {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
-        {NAMESPACE_USR, {"USR", &SymbolIDAbbrev}},
-        {NAMESPACE_NAME, {"Name", &StringAbbrev}},
-        {ENUM_USR, {"USR", &SymbolIDAbbrev}},
-        {ENUM_NAME, {"Name", &StringAbbrev}},
-        {ENUM_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
-        {ENUM_LOCATION, {"Location", &LocationAbbrev}},
         {ENUM_SCOPED, {"Scoped", &BoolAbbrev}},
         {ENUM_VALUE_NAME, {"Name", &StringAbbrev}},
         {ENUM_VALUE_VALUE, {"Value", &StringAbbrev}},
         {ENUM_VALUE_EXPR, {"Expr", &StringAbbrev}},
-        {RECORD_USR, {"USR", &SymbolIDAbbrev}},
-        {RECORD_NAME, {"Name", &StringAbbrev}},
-        {RECORD_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
-        {RECORD_LOCATION, {"Location", &LocationAbbrev}},
         {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_SPECS, {"Specs", &Integer32ArrayAbbrev}},
         {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
-        {BASE_RECORD_USR, {"USR", &SymbolIDAbbrev}},
-        {BASE_RECORD_NAME, {"Name", &StringAbbrev}},
         {BASE_RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {BASE_RECORD_IS_VIRTUAL, {"IsVirtual", &BoolAbbrev}},
         {BASE_RECORD_ACCESS, {"Access", &Integer32Abbrev}},
         {BASE_RECORD_IS_PARENT, {"IsParent", &BoolAbbrev}},
-        {FUNCTION_USR, {"USR", &SymbolIDAbbrev}},
-        {FUNCTION_NAME, {"Name", &StringAbbrev}},
-        {FUNCTION_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
-        {FUNCTION_LOCATION, {"Location", &LocationAbbrev}},
         {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
         {FUNCTION_SPECS, {"Specs", &Integer32ArrayAbbrev}},
@@ -274,14 +266,7 @@ RecordIdNameMap = []()
         {REFERENCE_FIELD, {"Field", &Integer32Abbrev}},
         {TEMPLATE_PARAM_CONTENTS, {"Contents", &StringAbbrev}},
         {TEMPLATE_SPECIALIZATION_OF, {"SpecializationOf", &SymbolIDAbbrev}},
-        {TYPEDEF_USR, {"USR", &SymbolIDAbbrev}},
-        {TYPEDEF_NAME, {"Name", &StringAbbrev}},
-        {TYPEDEF_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
-        {VARIABLE_USR, {"USR", &SymbolIDAbbrev}},
-        {VARIABLE_NAME, {"Name", &StringAbbrev}},
-        {VARIABLE_DEFLOCATION, {"DefLocation", &LocationAbbrev}},
-        {VARIABLE_LOCATION, {"Location", &LocationAbbrev}}
     };
     Assert(Inits.size() == RecordIdCount);
     for (const auto& Init : Inits)
@@ -300,13 +285,19 @@ std::vector<std::pair<BlockId, std::vector<RecordId>>> const
 RecordsByBlock{
     // Version Block
     {BI_VERSION_BLOCK_ID, {VERSION}},
+    // Info part
+    {BI_INFO_PART_ID,
+        {INFO_PART_ID, INFO_PART_NAME}},
+    // SymbolInfo part
+    {BI_SYMBOL_PART_ID,
+        {SYMBOL_PART_LOCDEF, SYMBOL_PART_LOC}},
     // BaseRecordInfo
     {BI_BASE_RECORD_BLOCK_ID,
-        {BASE_RECORD_USR, BASE_RECORD_NAME, BASE_RECORD_TAG_TYPE,
+        {BASE_RECORD_TAG_TYPE,
         BASE_RECORD_IS_VIRTUAL, BASE_RECORD_ACCESS, BASE_RECORD_IS_PARENT}},
     // EnumInfo
     {BI_ENUM_BLOCK_ID,
-        {ENUM_USR, ENUM_NAME, ENUM_DEFLOCATION, ENUM_LOCATION, ENUM_SCOPED}},
+        {ENUM_SCOPED}},
     // EnumValue
     {BI_ENUM_VALUE_BLOCK_ID,
         {ENUM_VALUE_NAME, ENUM_VALUE_VALUE, ENUM_VALUE_EXPR}},
@@ -314,8 +305,7 @@ RecordsByBlock{
     {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
-        {FUNCTION_USR, FUNCTION_NAME, FUNCTION_DEFLOCATION, FUNCTION_LOCATION,
-        FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_SPECS}},
+        {FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_SPECS}},
     // Javadoc
     {BI_JAVADOC_BLOCK_ID,
         {}},
@@ -330,12 +320,10 @@ RecordsByBlock{
     {BI_MEMBER_TYPE_BLOCK_ID, {MEMBER_TYPE_NAME, MEMBER_TYPE_ACCESS}},
     // NamespaceInfo
     {BI_NAMESPACE_BLOCK_ID,
-        {NAMESPACE_USR, NAMESPACE_NAME}},
+        {}},
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
-        {RECORD_USR, RECORD_NAME, RECORD_DEFLOCATION,
-        RECORD_LOCATION, RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF,
-        RECORD_SPECS, RECORD_FRIENDS}},
+        {RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF, RECORD_SPECS, RECORD_FRIENDS}},
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
@@ -347,7 +335,7 @@ RecordsByBlock{
     {BI_TYPE_BLOCK_ID, {}},
     // TypedefInfo
     {BI_TYPEDEF_BLOCK_ID,
-        {TYPEDEF_USR, TYPEDEF_NAME, TYPEDEF_DEFLOCATION, TYPEDEF_IS_USING}},
+        {TYPEDEF_IS_USING}},
     // VariableInfo
     {BI_VARIABLE_BLOCK_ID, {}}
 };
@@ -427,7 +415,7 @@ BitcodeWriter::
 emitVersionBlock()
 {
     StreamSubBlockGuard Block(Stream, BI_VERSION_BLOCK_ID);
-    emitRecord(VersionNumber, VERSION);
+    emitRecord(BitcodeVersion, VERSION);
 }
 
 // AbbreviationMap
@@ -703,12 +691,39 @@ emitBlock(
 
 void
 BitcodeWriter::
+emitInfoPart(
+    Info const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_INFO_PART_ID);
+    emitRecord(I.id, INFO_PART_ID);
+    emitRecord(I.Name, INFO_PART_NAME);
+    if(I.javadoc)
+        emitBlock(*I.javadoc);
+    for (const auto& N : I.Namespace)
+        emitBlock(N, FieldId::F_namespace);
+}
+
+void
+BitcodeWriter::
+emitSymbolPart(
+    SymbolInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_SYMBOL_PART_ID);
+    if (I.DefLoc)
+        emitRecord(*I.DefLoc, SYMBOL_PART_LOCDEF);
+    // VFALCO hack to squelch refs from typedefs
+    if(I.IT != InfoType::IT_typedef)
+        for (const auto& L : I.Loc)
+            emitRecord(L, SYMBOL_PART_LOC);
+}
+
+void
+BitcodeWriter::
 emitBlock(
     BaseRecordInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_BASE_RECORD_BLOCK_ID);
-    emitRecord(I.id, BASE_RECORD_USR);
-    emitRecord(I.Name, BASE_RECORD_NAME);
+    emitInfoPart(I);
     emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
     emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
     emitRecord(I.Access, BASE_RECORD_ACCESS);
@@ -723,16 +738,8 @@ emitBlock(
     EnumInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
-    emitRecord(I.id, ENUM_USR);
-    emitRecord(I.Name, ENUM_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(I.javadoc)
-        emitBlock(*I.javadoc);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, ENUM_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, ENUM_LOCATION);
+    emitInfoPart(I);
+    emitSymbolPart(I);
     emitRecord(I.Scoped, ENUM_SCOPED);
     if (I.BaseType)
         emitBlock(*I.BaseType);
@@ -768,19 +775,11 @@ emitBlock(
     FunctionInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
-    emitRecord(I.id, FUNCTION_USR);
-    emitRecord(I.Name, FUNCTION_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(I.javadoc)
-        emitBlock(*I.javadoc);
+    emitInfoPart(I);
+    emitSymbolPart(I);
     emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
     emitRecord(FUNCTION_SPECS, I.specs0, I.specs1);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, FUNCTION_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, FUNCTION_LOCATION);
     emitBlock(I.Parent, FieldId::F_parent);
     emitBlock(I.ReturnType);
     for (const auto& N : I.Params)
@@ -892,12 +891,7 @@ emitBlock(
     NamespaceInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
-    emitRecord(I.id, NAMESPACE_USR);
-    emitRecord(I.Name, NAMESPACE_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(I.javadoc)
-        emitBlock(*I.javadoc);
+    emitInfoPart(I);
     for (const auto& C : I.Children.Namespaces)
         emitBlock(C, FieldId::F_child_namespace);
     for (const auto& C : I.Children.Records)
@@ -916,16 +910,8 @@ emitBlock(
     RecordInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
-    emitRecord(I.id, RECORD_USR);
-    emitRecord(I.Name, RECORD_NAME);
-    for (const auto& N : I.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(I.javadoc)
-        emitBlock(*I.javadoc);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, RECORD_DEFLOCATION);
-    for (const auto& L : I.Loc)
-        emitRecord(L, RECORD_LOCATION);
+    emitInfoPart(I);
+    emitSymbolPart(I);
     emitRecord(I.TagType, RECORD_TAG_TYPE);
     emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
     emitRecord(RECORD_SPECS, I.specs);
@@ -999,19 +985,13 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    TypedefInfo const& T)
+    TypedefInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
-    emitRecord(T.id, TYPEDEF_USR);
-    emitRecord(T.Name, TYPEDEF_NAME);
-    for (const auto& N : T.Namespace)
-        emitBlock(N, FieldId::F_namespace);
-    if(T.javadoc)
-        emitBlock(*T.javadoc);
-    if (T.DefLoc)
-        emitRecord(*T.DefLoc, TYPEDEF_DEFLOCATION);
-    emitRecord(T.IsUsing, TYPEDEF_IS_USING);
-    emitBlock(T.Underlying);
+    emitInfoPart(I);
+    emitSymbolPart(I);
+    emitRecord(I.IsUsing, TYPEDEF_IS_USING);
+    emitBlock(I.Underlying);
 }
 
 void
@@ -1030,8 +1010,8 @@ emitBlock(
 {
 #if 0
     StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
-    emitRecord(I.id, VARIABLE_USR);
-    emitRecord(I.Name, VARIABLE_NAME);
+    emitInfoPart(I);
+    emitSymbolPart(I);
     emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
     emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
     emitRecord(I.Access, BASE_RECORD_ACCESS);

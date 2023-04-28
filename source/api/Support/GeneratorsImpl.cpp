@@ -16,11 +16,15 @@ namespace mrdox {
 
 extern
 std::unique_ptr<Generator>
-makeXMLGenerator();
+makeAdocGenerator();
 
 extern
 std::unique_ptr<Generator>
-makeAdocGenerator();
+makeBitcodeGenerator();
+
+extern
+std::unique_ptr<Generator>
+makeXMLGenerator();
 
 void
 GeneratorsImpl::
@@ -36,6 +40,7 @@ GeneratorsImpl::
 GeneratorsImpl()
 {
     llvm::handleAllErrors(insert(makeAdocGenerator()));
+    llvm::handleAllErrors(insert(makeBitcodeGenerator()));
     llvm::handleAllErrors(insert(makeXMLGenerator()));
 }
 

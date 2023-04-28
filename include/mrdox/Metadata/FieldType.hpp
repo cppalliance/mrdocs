@@ -24,6 +24,14 @@ namespace mrdox {
 struct FieldTypeInfo
     : public TypeInfo
 {
+    llvm::SmallString<16> Name; // Name associated with this info.
+
+    // When used for function parameters, contains the string representing the
+    // expression of the default value, if any.
+    llvm::SmallString<16> DefaultValue;
+
+    //--------------------------------------------
+
     FieldTypeInfo() = default;
 
     FieldTypeInfo(
@@ -44,12 +52,6 @@ struct FieldTypeInfo
             std::tie(Type, Name, DefaultValue) ==
             std::tie(Other.Type, Other.Name, Other.DefaultValue);
     }
-
-    llvm::SmallString<16> Name; // Name associated with this info.
-
-    // When used for function parameters, contains the string representing the
-    // expression of the default value, if any.
-    llvm::SmallString<16> DefaultValue;
 };
 
 } // mrdox

@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Metadata//TemplateParam.hpp>
+#include <mrdox/Metadata/TemplateParam.hpp>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/TemplateBase.h>
 #include <clang/Lex/Lexer.h>

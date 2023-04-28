@@ -20,15 +20,6 @@ namespace mrdox {
 
 struct BaseRecordInfo : public RecordInfo
 {
-    BaseRecordInfo();
-
-    BaseRecordInfo(
-        SymbolID id_,
-        llvm::StringRef Name,
-        bool IsVirtual,
-        AccessSpecifier Access,
-        bool IsParent);
-
     // Indicates if base corresponds to a virtual inheritance
     bool IsVirtual = false;
 
@@ -37,6 +28,17 @@ struct BaseRecordInfo : public RecordInfo
     AccessSpecifier Access = AccessSpecifier::AS_public;
 
     bool IsParent = false; // Indicates if this base is a direct parent
+
+    //--------------------------------------------
+
+    BaseRecordInfo();
+
+    BaseRecordInfo(
+        SymbolID id_,
+        llvm::StringRef Name,
+        bool IsVirtual,
+        AccessSpecifier Access,
+        bool IsParent);
 };
 
 } // mrdox

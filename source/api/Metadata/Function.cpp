@@ -10,7 +10,7 @@
 //
 
 #include <mrdox/Debug.hpp>
-#include <mrdox/Metadata//Function.hpp>
+#include <mrdox/Metadata/Function.hpp>
 #include <utility>
 
 namespace clang {

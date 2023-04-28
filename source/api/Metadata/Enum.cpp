@@ -24,7 +24,7 @@
 //
 
 #include <mrdox/Debug.hpp>
-#include <mrdox/Metadata//Enum.hpp>
+#include <mrdox/Metadata/Enum.hpp>
 
 namespace clang {
 namespace mrdox {

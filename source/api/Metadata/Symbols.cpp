@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Metadata//Symbols.hpp>
+#include <mrdox/Metadata/Symbols.hpp>
 #include <climits>
 
 namespace clang {

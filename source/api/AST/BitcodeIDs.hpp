@@ -21,7 +21,7 @@ namespace mrdox {
 // Current version number of clang-doc bitcode.
 // Should be bumped when removing or changing BlockIds, RecordIds, or
 // BitCodeConstants, though they can be added without breaking it.
-static const unsigned VersionNumber = 3;
+static const unsigned BitcodeVersion = 3;
 
 struct BitCodeConstants
 {
@@ -30,7 +30,7 @@ struct BitCodeConstants
     static constexpr unsigned SubblockIDSize = 4U;
     static constexpr unsigned BoolSize = 1U;
     static constexpr unsigned IntSize = 16U;
-    static constexpr unsigned StringLengthSize = 16U;
+    static constexpr unsigned StringLengthSize = 16U;  // up to 32767 chars
     static constexpr unsigned FilenameLengthSize = 16U;
     static constexpr unsigned LineNumberSize = 32U;
     static constexpr unsigned ReferenceTypeSize = 8U;
@@ -49,6 +49,9 @@ struct BitCodeConstants
 enum BlockId
 {
     BI_VERSION_BLOCK_ID = llvm::bitc::FIRST_APPLICATION_BLOCKID,
+
+    BI_INFO_PART_ID,
+    BI_SYMBOL_PART_ID,
 
     BI_BASE_RECORD_BLOCK_ID,
     BI_ENUM_BLOCK_ID,
@@ -77,10 +80,11 @@ enum BlockId
 enum RecordId
 {
     VERSION = 1,
-    FUNCTION_USR,
-    FUNCTION_NAME,
-    FUNCTION_DEFLOCATION,
-    FUNCTION_LOCATION,
+
+    INFO_PART_ID,
+    INFO_PART_NAME,
+    SYMBOL_PART_LOCDEF,
+    SYMBOL_PART_LOC,
     FUNCTION_ACCESS,
     FUNCTION_IS_METHOD,
     FUNCTION_SPECS,
@@ -93,26 +97,14 @@ enum RecordId
     FIELD_DEFAULT_VALUE,
     MEMBER_TYPE_NAME,
     MEMBER_TYPE_ACCESS,
-    NAMESPACE_USR,
-    NAMESPACE_NAME,
-    ENUM_USR,
-    ENUM_NAME,
-    ENUM_DEFLOCATION,
-    ENUM_LOCATION,
     ENUM_SCOPED,
     ENUM_VALUE_NAME,
     ENUM_VALUE_VALUE,
     ENUM_VALUE_EXPR,
-    RECORD_USR,
-    RECORD_NAME,
-    RECORD_DEFLOCATION,
-    RECORD_LOCATION,
     RECORD_TAG_TYPE,
     RECORD_IS_TYPE_DEF,
     RECORD_SPECS,
     RECORD_FRIENDS,
-    BASE_RECORD_USR,
-    BASE_RECORD_NAME,
     BASE_RECORD_TAG_TYPE,
     BASE_RECORD_IS_VIRTUAL,
     BASE_RECORD_ACCESS,
@@ -123,14 +115,7 @@ enum RecordId
     REFERENCE_FIELD,
     TEMPLATE_PARAM_CONTENTS,
     TEMPLATE_SPECIALIZATION_OF,
-    TYPEDEF_USR,
-    TYPEDEF_NAME,
-    TYPEDEF_DEFLOCATION,
     TYPEDEF_IS_USING,
-    VARIABLE_USR,
-    VARIABLE_NAME,
-    VARIABLE_DEFLOCATION,
-    VARIABLE_LOCATION,
     RI_LAST,
     RI_FIRST = VERSION
 };

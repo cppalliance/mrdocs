@@ -41,6 +41,11 @@ public:
     AnyNodeList(
         AnyNodeList*& stack) noexcept;
 
+    AnyNodeList*& stack() const noexcept
+    {
+        return stack_;
+    }
+
     Nodes& getNodes();
     bool isTopLevel() const noexcept;
     llvm::Error setKind(Javadoc::Kind kind);

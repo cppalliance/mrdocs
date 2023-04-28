@@ -10,8 +10,8 @@
 //
 
 #include <mrdox/Debug.hpp>
-#include <mrdox/Metadata//Info.hpp>
-#include <mrdox/Metadata//Reference.hpp>
+#include <mrdox/Metadata/Info.hpp>
+#include <mrdox/Metadata/Reference.hpp>
 
 namespace clang {
 namespace mrdox {
