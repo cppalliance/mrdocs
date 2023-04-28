@@ -75,6 +75,8 @@ struct RecordInfo : SymbolInfo
 
     static constexpr InfoType type_id = InfoType::IT_record;
 
+    MRDOX_DECL
+    explicit
     RecordInfo(
         SymbolID id = SymbolID(),
         llvm::StringRef Name = llvm::StringRef());

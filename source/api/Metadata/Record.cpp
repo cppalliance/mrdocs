@@ -9,22 +9,18 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Reduce.hpp"
-#include <mrdox/Metadata/BaseRecord.hpp>
-#include <mrdox/Debug.hpp>
 #include <mrdox/Metadata/Record.hpp>
-#include <llvm/ADT/STLExtras.h>
-#include <cassert>
-#include <utility>
+#include <mrdox/Metadata/BaseRecord.hpp>
 
 namespace clang {
 namespace mrdox {
 
+// This is here base BaseRecordInfo inherits from RecordInfo
 RecordInfo::
 RecordInfo(
-    SymbolID USR,
-    StringRef Name)
-    : SymbolInfo(InfoType::IT_record, USR, Name)
+    SymbolID id,
+    llvm::StringRef Name)
+    : SymbolInfo(InfoType::IT_record, id, Name)
     , Children(false)
 {
 }

@@ -48,6 +48,8 @@ struct MemberTypeInfo
     {
     }
 
+#if 0
+    // VFALCO What was this for?
     bool
     operator==(
         MemberTypeInfo const& Other) const
@@ -56,6 +58,7 @@ struct MemberTypeInfo
             std::tie(Type, Name, Access, javadoc) ==
             std::tie(Other.Type, Other.Name, Other.Access, Other.javadoc);
     }
+#endif
 };
 
 } // mrdox
