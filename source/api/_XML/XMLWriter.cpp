@@ -342,18 +342,24 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
-    tags_.open("typedef", {
+    llvm::StringRef tag;
+    if(I.IsUsing)
+        tag = "using";
+    else
+        tag = "typedef";
+    tags_.open(tag, {
         { "name", I.Name },
         { I.id }
         });
 
     writeInfo(I);
     writeSymbol(I);
-    if(I.Underlying.Type.id != EmptySID)
-        tags_.write("qualusr", toBase64(I.Underlying.Type.id));
+    tags_.write("type", "", {
+        { "name", I.Underlying.Type.Name },
+        { I.Underlying.Type.id } });
     writeJavadoc(I.javadoc);
 
-    tags_.close("typedef");
+    tags_.close(tag);
 
     return true;
 }

@@ -61,11 +61,13 @@
         </para>
       </doc>
     </function>
-    <typedef name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
+    <using name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
       <file path="record-1.cpp" line="3" class="def"/>
-    </typedef>
+      <type name="int"/>
+    </using>
     <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
       <file path="record-1.cpp" line="4" class="def"/>
+      <type name="char"/>
     </typedef>
   </struct>
 </namespace>

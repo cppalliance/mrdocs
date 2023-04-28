@@ -22,6 +22,16 @@ namespace mrdox {
 // Info for typedef and using statements.
 struct TypedefInfo : SymbolInfo
 {
+    TypeInfo Underlying;
+
+    // Indicates if this is a new C++ "using"-style typedef:
+    //   using MyVector = std::vector<int>
+    // False means it's a C-style typedef:
+    //   typedef std::vector<int> MyVector;
+    bool IsUsing = false;
+
+    //--------------------------------------------
+
     static constexpr InfoType type_id = InfoType::IT_typedef;
 
     TypedefInfo(
@@ -31,14 +41,6 @@ struct TypedefInfo : SymbolInfo
     }
 
     void merge(TypedefInfo&& I);
-
-    TypeInfo Underlying;
-
-    // Inidicates if this is a new C++ "using"-style typedef:
-    //   using MyVector = std::vector<int>
-    // False means it's a C-style typedef:
-    //   typedef std::vector<int> MyVector;
-    bool IsUsing = false;
 };
 
 } // mrdox

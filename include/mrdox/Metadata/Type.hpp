@@ -21,6 +21,12 @@ namespace mrdox {
 // A base struct for TypeInfos
 struct TypeInfo
 {
+    /** The type being referenced.
+    */
+    Reference Type;
+
+    //--------------------------------------------
+
     TypeInfo() = default;
 
     explicit
@@ -44,8 +50,6 @@ struct TypeInfo
     {
         return Type == Other.Type;
     }
-
-    Reference Type; // Referenced type in this info.
 };
 
 } // mrdox
