@@ -9,25 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Debug.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
-#include <cassert>
 
 namespace clang {
 namespace mrdox {
-
-void
-TypedefInfo::
-merge(
-    TypedefInfo&& Other)
-{
-    Assert(canMerge(Other));
-    if (!IsUsing)
-        IsUsing = Other.IsUsing;
-    if (Underlying.Type.Name == "")
-        Underlying = Other.Underlying;
-    SymbolInfo::merge(std::move(Other));
-}
 
 } // mrdox
 } // clang

@@ -13,6 +13,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Type.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -26,6 +27,10 @@ struct VariableInfo : SymbolInfo
 {
     TypeInfo Type;
 
+    //--------------------------------------------
+
+    static constexpr InfoType type_id = InfoType::IT_variable;
+
     explicit
     VariableInfo(
         SymbolID ID = SymbolID(),
@@ -33,6 +38,8 @@ struct VariableInfo : SymbolInfo
         : SymbolInfo(InfoType::IT_variable, ID, Name)
     {
     }
+
+    void merge(TypedefInfo&& I);
 };
 
 } // mrdox

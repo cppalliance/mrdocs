@@ -400,15 +400,25 @@ class TypeBlock
 {
 protected:
     BitcodeReader& br_;
+    TypeInfo* p_;
 
 public:
     FieldId F;
     TypeInfo I;
 
+    TypeBlock(
+        TypeInfo& I_,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , p_(&I_)
+    {
+    }
+
     explicit
     TypeBlock(
         BitcodeReader& br) noexcept
         : br_(br)
+        , p_(&I)
     {
     }
 
@@ -424,7 +434,7 @@ public:
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             F = B.F;
-            I.Type = std::move(B.I);
+            p_->Type = std::move(B.I);
             return llvm::Error::success();
         }
         default:
@@ -795,6 +805,17 @@ public:
             }
             break;
         }
+        case FieldId::F_child_enum:
+        {
+            if constexpr(
+                std::derived_from<T, NamespaceInfo> ||
+                std::derived_from<T, RecordInfo>)
+            {
+                I->Children.Enums.emplace_back(std::move(R));
+                return llvm::Error::success();
+            }
+            break;
+        }
         default:
             return makeWrongFieldError(Id);
         }
@@ -1061,10 +1082,41 @@ public:
 
 //------------------------------------------------
 
+class EnumValueBlock : public BitcodeReader::AnyBlock
+{
+    BitcodeReader& br_;
+    EnumValueInfo& I_;
+
+public:
+    EnumValueBlock(
+        EnumValueInfo& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I_(I)
+    {
+    }
+
+    llvm::Error
+    parseRecord(Record const& R,
+        unsigned ID, llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case ENUM_VALUE_NAME:
+            return decodeRecord(R, I_.Name, Blob);
+        case ENUM_VALUE_VALUE:
+            return decodeRecord(R, I_.Value, Blob);
+        case ENUM_VALUE_EXPR:
+            return decodeRecord(R, I_.ValueExpr, Blob);
+        default:
+            return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+};
+
 class EnumBlock
     : public TopLevelBlock<EnumInfo>
 {
-
 public:
     explicit
     EnumBlock(
@@ -1077,13 +1129,13 @@ public:
     parseRecord(Record const& R,
         unsigned ID, llvm::StringRef Blob) override
     {
-    #if 0
         switch(ID)
         {
+        case ENUM_SCOPED:
+            return decodeRecord(R, I->Scoped, Blob);
         default:
             break;
         }
-    #endif
         return TopLevelBlock::parseRecord(R, ID, Blob);
     }
 
@@ -1091,13 +1143,25 @@ public:
     readSubBlock(
         unsigned ID) override
     {
-    #if 0
         switch(ID)
         {
+        case BI_TYPE_BLOCK_ID:
+        {
+            I->BaseType.emplace();
+            TypeBlock B(*I->BaseType, br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_ENUM_VALUE_BLOCK_ID:
+        {
+            I->Members.emplace_back();
+            EnumValueBlock B(I->Members.back(), br_);
+            if(auto Err = br_.readBlock(B, ID))
+                return Err;
+            return llvm::Error::success();
+        }
         default:
             break;
         }
-    #endif
         return TopLevelBlock::readSubBlock(ID);
     }
 };
@@ -1166,6 +1230,12 @@ readChild(
         break;
     case FieldId::F_child_function:
         I.Functions.emplace_back(B.I);
+        break;
+    case FieldId::F_child_typedef:
+        I.Typedefs.emplace_back(B.I);
+        break;
+    case FieldId::F_child_enum:
+        I.Enums.emplace_back(B.I);
         break;
     default:
         return makeWrongFieldError(B.F);

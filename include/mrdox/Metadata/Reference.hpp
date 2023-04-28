@@ -63,9 +63,6 @@ struct Reference
             std::tie(id, Name, RefType) ==
             std::tie(Other.id, Other.Name, Other.RefType);
     }
-
-    bool canMerge(Reference const& Other);
-    void merge(Reference&& I);
 };
 
 } // mrdox

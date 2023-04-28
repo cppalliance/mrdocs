@@ -13,12 +13,21 @@
 #define MRDOX_API_METADATA_REDUCE_HPP
 
 #include <mrdox/Metadata/Info.hpp>
+#include <mrdox/MetadataFwd.hpp>
 #include <llvm/Support/Error.h>
 #include <memory>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
+
+void merge(Reference& I, Reference&& Other);
+void merge(NamespaceInfo& I, NamespaceInfo&& Other);
+void merge(RecordInfo& I, RecordInfo&& Other);
+void merge(FunctionInfo& I, FunctionInfo&& Other);
+void merge(TypedefInfo& I, TypedefInfo&& Other);
+void merge(EnumInfo& I, EnumInfo&& Other);
+void merge(VariableInfo& I, VariableInfo&& Other);
 
 //
 // This file defines the merging of different types of infos. The data in the
@@ -45,7 +54,7 @@ reduce(
     std::unique_ptr<Info> Merged = std::make_unique<T>(Values[0]->id);
     T* Tmp = static_cast<T*>(Merged.get());
     for (auto& I : Values)
-        Tmp->merge(std::move(*static_cast<T*>(I.get())));
+        merge(*Tmp, std::move(*static_cast<T*>(I.get())));
     return std::move(Merged);
 }
 
@@ -78,7 +87,7 @@ reduceChildren(
             Children.push_back(std::move(ChildToMerge));
             continue;
         }
-        Children[MergeIdx].merge(std::move(ChildToMerge));
+        merge(Children[MergeIdx], std::move(ChildToMerge));
     }
 }
 

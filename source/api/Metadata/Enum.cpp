@@ -23,24 +23,10 @@
 // on members on the forward declaration, but would have the class name).
 //
 
-#include <mrdox/Debug.hpp>
 #include <mrdox/Metadata/Enum.hpp>
 
 namespace clang {
 namespace mrdox {
-
-void
-EnumInfo::
-merge(
-    EnumInfo&& Other)
-{
-    Assert(canMerge(Other));
-    if (!Scoped)
-        Scoped = Other.Scoped;
-    if (Members.empty())
-        Members = std::move(Other.Members);
-    SymbolInfo::merge(std::move(Other));
-}
 
 } // mrdox
 } // clang

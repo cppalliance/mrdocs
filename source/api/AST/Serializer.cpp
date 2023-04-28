@@ -1230,7 +1230,7 @@ build(
     }
     parseEnumerators(I, D);
 
-    return { writeParent(std::move(I)) };
+    return { writeBitcode(I), writeParent(std::move(I)) };
 }
 
 SerializeResult

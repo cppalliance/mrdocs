@@ -88,8 +88,6 @@ struct EnumInfo : SymbolInfo
         : SymbolInfo(InfoType::IT_enum, id_)
     {
     }
-
-    void merge(EnumInfo&& I);
 };
 
 } // mrdox

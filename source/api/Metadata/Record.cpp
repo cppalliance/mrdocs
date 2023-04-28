@@ -29,43 +29,5 @@ RecordInfo(
 {
 }
 
-void
-RecordInfo::
-merge(RecordInfo&& Other)
-{
-    Assert(canMerge(Other));
-    if (!TagType)
-        TagType = Other.TagType;
-    IsTypeDef = IsTypeDef || Other.IsTypeDef;
-    specs.merge(std::move(Other).specs);
-    if (Members.empty())
-        Members = std::move(Other.Members);
-    if (Bases.empty())
-        Bases = std::move(Other.Bases);
-    if (Parents.empty())
-        Parents = std::move(Other.Parents);
-    if (VirtualParents.empty())
-        VirtualParents = std::move(Other.VirtualParents);
-    // Reduce children if necessary.
-    reduceChildren(Children.Records, std::move(Other.Children.Records));
-    reduceChildren(Children.Functions, std::move(Other.Children.Functions));
-    reduceChildren(Children.Typedefs, std::move(Other.Children.Typedefs));
-    reduceChildren(Children.Enums, std::move(Other.Children.Enums));
-    SymbolInfo::merge(std::move(Other));
-    if (!Template)
-        Template = Other.Template;
-    if(! Other.Friends.empty())
-    {
-        llvm::append_range(Friends, std::move(Other.Friends));
-        llvm::sort(Friends,
-            [](SymbolID const& id0, SymbolID const& id1)
-            {
-                return id0 < id1;
-            });
-        auto last = std::unique(Friends.begin(), Friends.end());
-        Friends.erase(last, Friends.end());
-    }
-}
-
 } // mrdox
 } // clang

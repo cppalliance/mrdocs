@@ -9,32 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Debug.hpp>
-#include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 
 namespace clang {
 namespace mrdox {
-
-bool
-Reference::
-canMerge(
-    Reference const& Other)
-{
-    return
-        RefType == Other.RefType &&
-        id == Other.id;
-}
-
-void
-Reference::
-merge(
-    Reference&& Other)
-{
-    Assert(canMerge(Other));
-    if (Name.empty())
-        Name = Other.Name;
-}
 
 } // mrdox
 } // clang

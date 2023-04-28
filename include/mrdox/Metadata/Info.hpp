@@ -68,9 +68,6 @@ struct Info
     {
     }
 
-    bool canMerge(const Info& Other);
-    void mergeBase(Info&& I);
-
     //
     // Observers
     //

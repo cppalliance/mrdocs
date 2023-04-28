@@ -21,34 +21,6 @@
 namespace clang {
 namespace mrdox {
 
-bool
-Info::
-canMerge(
-    Info const& Other)
-{
-    return
-        IT == Other.IT &&
-        id == Other.id;
-}
-
-void
-Info::
-mergeBase(
-    Info&& Other)
-{
-    Assert(canMerge(Other));
-    if (id == EmptySID)
-        id = Other.id;
-    if (Name == "")
-        Name = Other.Name;
-    if (Namespace.empty())
-        Namespace = std::move(Other.Namespace);
-    if(! javadoc)
-        javadoc = std::move(Other.javadoc);
-    else if(Other.javadoc)
-        javadoc->merge(std::move(*Other.javadoc));
-}
-
 llvm::SmallString<16>
 Info::
 extractName() const

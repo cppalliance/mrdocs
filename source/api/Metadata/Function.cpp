@@ -9,35 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Debug.hpp>
 #include <mrdox/Metadata/Function.hpp>
-#include <utility>
 
 namespace clang {
 namespace mrdox {
-
-void
-FunctionInfo::
-merge(
-    FunctionInfo&& Other)
-{
-    Assert(canMerge(Other));
-    if (!IsMethod)
-        IsMethod = Other.IsMethod;
-    if (!Access)
-        Access = Other.Access;
-    if (ReturnType.Type.id == EmptySID && ReturnType.Type.Name == "")
-        ReturnType = std::move(Other.ReturnType);
-    if (Parent.id == EmptySID && Parent.Name == "")
-        Parent = std::move(Other.Parent);
-    if (Params.empty())
-        Params = std::move(Other.Params);
-    SymbolInfo::merge(std::move(Other));
-    if (!Template)
-        Template = Other.Template;
-    specs0.merge(std::move(Other).specs0);
-    specs1.merge(std::move(Other).specs1);
-}
 
 } // mrdox
 } // clang
