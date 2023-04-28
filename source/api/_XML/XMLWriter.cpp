@@ -10,6 +10,7 @@
 //
 
 #include "XMLWriter.hpp"
+#include "CXXTags.hpp"
 #include "Support/Radix.hpp"
 #include "Support/Operator.hpp"
 
@@ -108,18 +109,19 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
-    tags_.open("namespace", {
+    tags_.open(namespaceTagName, {
         { "name", I.Name },
         { I.id }
         });
 
     writeInfo(I);
+
     writeJavadoc(I.javadoc);
 
     if(! corpus_.visit(I.Children, *this))
         return false;
 
-    tags_.close("namespace");
+    tags_.close(namespaceTagName);
 
     return true;
 }
@@ -134,23 +136,24 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
-    llvm::StringRef tag =
-        clang::TypeWithKeyword::getTagTypeKindName(I.TagType);
-    tags_.open(tag, {
+    llvm::StringRef tagName;
+    switch(I.TagType)
+    {
+    case TagTypeKind::TTK_Class:  tagName = classTagName; break;
+    case TagTypeKind::TTK_Struct: tagName = structTagName; break;
+    case TagTypeKind::TTK_Union:  tagName = unionTagName; break;
+    default:
+        Assert(false);
+    }
+    tags_.open(tagName, {
         { "name", I.Name },
         { I.id }
         });
 
-    writeInfo(I);
     writeSymbol(I);
-    {
-        auto os = tags_.jit_indent();
-        if(I.specs.get<RecFlags0::isFinal>())
-            os << "<final/>";
-        if(I.specs.get<RecFlags0::isFinalDestructor>())
-            os << "<final-dtor/>";
-        os.finish();
-    }
+
+    write(I.specs, tags_);
+
     for(auto const& J : I.Bases)
         writeBaseRecord(J);
     // VFALCO data members?
@@ -166,7 +169,7 @@ visit(
     if(! corpus_.visit(I.Children, *this))
         return false;
 
-    tags_.close(tag);
+    tags_.close(tagName);
 
     return true;
 }
@@ -181,133 +184,26 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
-    // OverloadedOperatorKind
-    auto const OOK = I.specs0.get<
-        FnFlags0::overloadedOperator,
-        OverloadedOperatorKind>();
-
-    tags_.open("function", {
+    tags_.open(functionTagName, {
         { "name", I.Name },
-        { "op", getSafeOperatorName(OOK),
-            OOK != OverloadedOperatorKind::OO_None },
         { I.Access },
         { I.id }
         });
 
-    writeInfo(I);
     writeSymbol(I);
-    {
-        auto os = tags_.jit_indent();
 
-        if(I.specs0.get<FnFlags0::isVariadic>())
-            os << "<variadic/>";
-        if(I.specs0.get<FnFlags0::isVirtualAsWritten>())
-            os << "<virtual/>";
-        if(I.specs0.get<FnFlags0::isPure>())
-            os << "<pure/>";
-        if(I.specs0.get<FnFlags0::isDefaulted>())
-            os << "<defaulted/>";
-        if(I.specs0.get<FnFlags0::isDeleted>())
-            os << "<deleted/>";
-        if(I.specs0.get<FnFlags0::isDeletedAsWritten>())
-            os << "<equals-delete/>";
-        if(I.specs0.get<FnFlags0::isNoReturn>())
-            os << "<noreturn/>";
-        if(I.specs0.get<FnFlags0::hasOverrideAttr>())
-            os << "<override/>";
-        if(I.specs0.get<FnFlags0::hasTrailingReturn>())
-            os << "<trailing/>";
+    write(I.specs0, tags_);
 
-        if(I.specs1.get<FnFlags1::isNodiscard>())
-            os << "<nodiscard/>";
-        if(I.specs1.get<FnFlags1::isExplicit>())
-            os << "<explicit/>";
-
-        // ConstexprSpecKind
-        auto CSK = I.specs0.get<
-            FnFlags0::constexprKind,
-            ConstexprSpecKind>();
-        switch(CSK)
-        {
-        case ConstexprSpecKind::Unspecified:
-            break;
-        case ConstexprSpecKind::Constexpr:
-            os << "<constexpr/>";
-            break;
-        case ConstexprSpecKind::Consteval:
-            os << "<consteval/>";
-            break;
-        case ConstexprSpecKind::Constinit:
-            Assert(false); // on function?
-            //os << "<constinit/>";
-            break;
-        }
-
-        // ExceptionSpecificationType
-        auto EST = I.specs0.get<
-            FnFlags0::exceptionSpecType,
-            ExceptionSpecificationType>();
-        if(isNoexceptExceptionSpec(EST))
-            os << "<noexcept/>";
-        /*
-        switch(EST)
-        {
-        case EST_None:
-        case EST_DynamicNone:
-        case EST_Dynamic:
-        case EST_MSAny:
-        case EST_NoThrow:
-        case EST_BasicNoexcept:
-        case EST_DependentNoexcept:
-        case EST_NoexceptFalse:
-        case EST_NoexceptTrue:
-        case EST_Unevaluated:
-        case EST_Uninstantiated:
-        case EST_Unparsed:
-        default:
-            break;
-        }
-        */
-
-        // StorageClass
-        auto SC = I.specs0.get<
-            FnFlags0::constexprKind,
-            StorageClass>();
-        Assert(isLegalForFunction(SC));
-        writeStorageClass(os, SC);
-
-        // RefQualifierKind
-        auto RQ = I.specs0.get<
-            FnFlags0::refQualifier,
-            RefQualifierKind>();
-        switch(RQ)
-        {
-        case RQ_None:
-            break;
-        case RQ_LValue:
-            os << "<lvref/>";
-            break;
-        case RQ_RValue:
-            os << "<rvref/>";
-            break;
-        }
-
-        if(I.specs0.get<FnFlags0::isConst>())
-            os << "<const/>";
-        if(I.specs0.get<FnFlags0::isVolatile>())
-            os << "<volatile/>";
-
-        os.finish();
-    }
     writeReturnType(I.ReturnType);
     for(auto const& J : I.Params)
         writeParam(J);
     if(I.Template)
         for(TemplateParamInfo const& J : I.Template->Params)
             writeTemplateParam(J);
+
     writeJavadoc(I.javadoc);
 
-    tags_.close("function");
+    tags_.close(functionTagName);
 
     return true;
 }
@@ -332,11 +228,12 @@ visit(
         { I.id }
         });
 
-    writeInfo(I);
     writeSymbol(I);
+
     tags_.write("type", "", {
         { "name", I.Underlying.Type.Name },
         { I.Underlying.Type.id } });
+
     writeJavadoc(I.javadoc);
 
     tags_.close(tag);
@@ -359,13 +256,14 @@ visit(
         { I.id }
         });
 
-    writeInfo(I);
     writeSymbol(I);
+
     for(auto const& v : I.Members)
         tags_.write("element", {}, {
             { "name", v.Name },
             { "value", v.Value },
             });
+
     writeJavadoc(I.javadoc);
 
     tags_.close("enum");
@@ -381,26 +279,23 @@ visit(
     if(fd_os_ && fd_os_->error())
         return false;
 
-    tags_.open("var", {
+    tags_.open("variable", {
         { "name", I.Name },
         { I.id }
         });
 
-    writeInfo(I);
     writeSymbol(I);
+
+    write(I.specs, tags_);
+
     tags_.write("type", {}, {
         { "name", I.Type.Name },
         { I.Type.id }
         });
-    {
-        auto os = tags_.jit_indent();
-        writeStorageClass(os, I.specs.get<
-            VarFlags0::storageClass, StorageClass>());
-        os.finish();
-    }
+
     writeJavadoc(I.javadoc);
 
-    tags_.close("var");
+    tags_.close("variable");
 
     return true;
 }
@@ -412,12 +307,6 @@ XMLWriter::
 writeInfo(
     Info const& I)
 {
-#if 0
-    std::string temp;
-    tags_.indent() << "<path>" << I.Path << "</path>\n";
-    tags_.indent() << "<ename>" << I.extractName() << "</ename>\n";
-    tags_.indent() << "<fqn>" << I.getFullyQualifiedName(temp) << "</fqn>\n";
-#endif
 }
 
 void
@@ -425,6 +314,7 @@ XMLWriter::
 writeSymbol(
     SymbolInfo const& I)
 {
+    writeInfo(I);
     if(I.DefLoc)
         writeLocation(*I.DefLoc, true);
     for(auto const& loc : I.Loc)

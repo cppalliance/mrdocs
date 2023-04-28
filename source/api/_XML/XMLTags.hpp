@@ -30,6 +30,8 @@ namespace clang {
 namespace mrdox {
 namespace xml {
 
+class jit_indenter;
+
 /** Manipulator to apply XML escaping to output.
 */
 struct xmlEscape
@@ -105,6 +107,16 @@ struct Attribute
         : name("type")
         , value(opt ? opt->Type.Name.str() : std::string())
         , pred(opt)
+    {
+    }
+
+    template<class Enum>
+    requires std::is_enum_v<Enum>
+    Attribute(Enum v)
+        : name("value")
+        , value(std::to_string(static_cast<
+            std::underlying_type_t<Enum>>(v)))
+        , pred(true)
     {
     }
 };

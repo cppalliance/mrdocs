@@ -76,7 +76,7 @@ private:
     bool visit(EnumInfo const&) override;
     bool visit(VariableInfo const&) override;
 
-    void writeInfo(Info const& I);
+    void writeInfo(Info const&);
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
     void writeBaseRecord(BaseRecordInfo const& I);

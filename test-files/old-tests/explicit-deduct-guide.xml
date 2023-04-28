@@ -7,25 +7,25 @@
   </struct>
   <function name="&lt;deduction guide for X&gt;" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
     <file path="explicit-deduct-guide.cpp" line="8"/>
-    <trailing/><explicit/>
+    <attr id="has-trailing-return"/>
     <return name="X&lt;0&gt;"/>
     <param type="char"/>
   </function>
   <function name="&lt;deduction guide for X&gt;" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
     <file path="explicit-deduct-guide.cpp" line="13"/>
-    <trailing/><explicit/>
+    <attr id="has-trailing-return"/>
     <return name="X&lt;0&gt;"/>
     <param type="long"/>
   </function>
   <function name="&lt;deduction guide for X&gt;" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
     <file path="explicit-deduct-guide.cpp" line="10"/>
-    <trailing/><explicit/>
+    <attr id="has-trailing-return"/>
     <return name="X&lt;0&gt;"/>
     <param type="int"/>
   </function>
   <function name="&lt;deduction guide for X&gt;" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
     <file path="explicit-deduct-guide.cpp" line="6"/>
-    <trailing/><explicit/>
+    <attr id="has-trailing-return"/>
     <return name="X&lt;0&gt;"/>
     <param type="_Bool"/>
   </function>

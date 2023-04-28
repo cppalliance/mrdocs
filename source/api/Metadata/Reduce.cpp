@@ -48,6 +48,7 @@ struct LocationLess
 
 } // (anon)
 
+#ifndef NDEBUG
 static bool canMerge(Info const& I, Info const& Other)
 {
     return
@@ -61,6 +62,7 @@ static bool canMerge(Reference const& I, Reference const& Other)
         I.RefType == Other.RefType &&
         I.id == Other.id;
 }
+#endif
 
 static void merge(Javadoc& I, Javadoc&& other)
 {

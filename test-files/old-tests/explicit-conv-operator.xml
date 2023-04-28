@@ -6,7 +6,6 @@
     <file path="explicit-conv-operator.cpp" line="7" class="def"/>
     <function name="operator bool" access="public" id="hJXOxv26Y9uxUYMMVZRsp3Wps4A=">
       <file path="explicit-conv-operator.cpp" line="8"/>
-      <explicit/>
       <return name="_Bool"/>
     </function>
   </struct>
@@ -14,7 +13,6 @@
     <file path="explicit-conv-operator.cpp" line="3" class="def"/>
     <function name="operator bool" access="public" id="64zY8rVu+TzEUayzMrnV65i9nFc=">
       <file path="explicit-conv-operator.cpp" line="4"/>
-      <explicit/>
       <return name="_Bool"/>
     </function>
   </struct>
@@ -22,7 +20,6 @@
     <file path="explicit-conv-operator.cpp" line="11" class="def"/>
     <function name="operator bool" access="public" id="9tpZWv9eJGfWj37jmTdNTg+gp14=">
       <file path="explicit-conv-operator.cpp" line="12"/>
-      <explicit/>
       <return name="_Bool"/>
     </function>
   </struct>
@@ -30,7 +27,6 @@
     <file path="explicit-conv-operator.cpp" line="16" class="def"/>
     <function name="operator bool" access="public" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
       <file path="explicit-conv-operator.cpp" line="17"/>
-      <explicit/>
       <return name="_Bool"/>
     </function>
   </struct>
