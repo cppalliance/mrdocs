@@ -24,7 +24,8 @@ namespace mrdox {
 
 /** A processed Doxygen-style comment attached to a declaration.
 */
-struct Javadoc
+struct MRDOX_VISIBLE
+    Javadoc
 {
     using String = std::string;
 
@@ -290,16 +291,19 @@ struct Javadoc
 
     //--------------------------------------------
 
-    Javadoc() noexcept = default;
+    MRDOX_DECL
+    Javadoc() noexcept;
 
     /** Constructor
     */
+    MRDOX_DECL
     explicit
     Javadoc(
         List<Block> blocks);
 
     /** Return true if this is empty
     */
+    MRDOX_DECL
     bool
     empty() const noexcept;
 
@@ -339,10 +343,11 @@ struct Javadoc
         output format.
     */
     /** @{ */
-    bool operator==(Javadoc const&) const noexcept;
-    bool operator!=(Javadoc const&) const noexcept;
+    MRDOX_DECL bool operator==(Javadoc const&) const noexcept;
+    MRDOX_DECL bool operator!=(Javadoc const&) const noexcept;
     /* @} */
 
+    MRDOX_DECL
     List<Block>::const_iterator
     findBrief() const noexcept;
 
@@ -362,7 +367,9 @@ struct Javadoc
         @li Otherwise, the brief is set to a
             null pointer to indicate absence.
     */
-    void calculateBrief();
+    MRDOX_DECL 
+    void
+    calculateBrief();
 
     //--------------------------------------------
 

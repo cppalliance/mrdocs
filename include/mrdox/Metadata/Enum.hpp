@@ -27,6 +27,19 @@ namespace mrdox {
 // Information for a single possible value of an enumeration.
 struct EnumValueInfo
 {
+    llvm::SmallString<16> Name;
+
+    // The computed value of the enumeration constant. This could be the result of
+    // evaluating the ValueExpr, or it could be automatically generated according
+    // to C rules.
+    llvm::SmallString<16> Value;
+
+    // Stores the user-supplied initialization expression for this enumeration
+    // constant. This will be empty for implicit enumeration values.
+    llvm::SmallString<16> ValueExpr;
+
+    //--------------------------------------------
+
     explicit
     EnumValueInfo(
         llvm::StringRef Name = llvm::StringRef(),
@@ -38,23 +51,15 @@ struct EnumValueInfo
     {
     }
 
+#if 0
+    // VFALCO What was this for?
     bool operator==(EnumValueInfo const& Other) const
     {
         return
             std::tie(Name, Value, ValueExpr) ==
             std::tie(Other.Name, Other.Value, Other.ValueExpr);
     }
-
-    llvm::SmallString<16> Name;
-
-    // The computed value of the enumeration constant. This could be the result of
-    // evaluating the ValueExpr, or it could be automatically generated according
-    // to C rules.
-    llvm::SmallString<16> Value;
-
-    // Stores the user-supplied initialization expression for this enumeration
-    // constant. This will be empty for implicit enumeration values.
-    llvm::SmallString<16> ValueExpr;
+#endif
 };
 
 //------------------------------------------------

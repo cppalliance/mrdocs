@@ -44,6 +44,8 @@ struct FieldTypeInfo
     {
     }
 
+#if 0
+    // VFALCO What was this for?
     bool
     operator==(
         FieldTypeInfo const& Other) const
@@ -52,6 +54,7 @@ struct FieldTypeInfo
             std::tie(Type, Name, DefaultValue) ==
             std::tie(Other.Type, Other.Name, Other.DefaultValue);
     }
+#endif
 };
 
 } // mrdox

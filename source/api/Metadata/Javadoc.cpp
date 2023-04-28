@@ -34,6 +34,9 @@ static_assert(a_Node<Javadoc::Code>);
 //------------------------------------------------
 
 Javadoc::
+Javadoc() noexcept = default;
+
+Javadoc::
 Javadoc(
     List<Block> blocks)
     : blocks_(std::move(blocks))
