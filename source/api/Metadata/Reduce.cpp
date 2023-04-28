@@ -15,6 +15,39 @@
 namespace clang {
 namespace mrdox {
 
+namespace {
+
+struct LocationEqual
+{
+    bool
+    operator()(
+        Location const& L0,
+        Location const& L1) const noexcept
+    {
+        return
+            std::tie(L0.LineNumber, L0.Filename) ==
+            std::tie(L1.LineNumber, L1.Filename);
+    }
+};
+
+struct LocationLess
+{
+    // This operator is used to sort a vector of Locations.
+    // No specific order (attributes more important than others) is required. Any
+    // sort is enough, the order is only needed to call std::unique after sorting
+    // the vector.
+    bool operator()(
+        Location const& L0,
+        Location const& L1) const noexcept
+    {
+        return
+            std::tie(L0.LineNumber, L0.Filename) <
+            std::tie(L1.LineNumber, L1.Filename);
+    }
+};
+
+} // (anon)
+
 static bool canMerge(Info const& I, Info const& Other)
 {
     return
@@ -64,8 +97,8 @@ static void mergeSymbolInfo(SymbolInfo& I, SymbolInfo&& Other)
     // Unconditionally extend the list of locations, since we want all of them.
     std::move(Other.Loc.begin(), Other.Loc.end(), std::back_inserter(I.Loc));
     // VFALCO This has the fortuituous effect of also canonicalizing
-    llvm::sort(I.Loc);
-    auto Last = std::unique(I.Loc.begin(), I.Loc.end());
+    llvm::sort(I.Loc, LocationLess{});
+    auto Last = std::unique(I.Loc.begin(), I.Loc.end(), LocationEqual{});
     I.Loc.erase(Last, I.Loc.end());
     mergeInfo(I, std::move(Other));
 }
