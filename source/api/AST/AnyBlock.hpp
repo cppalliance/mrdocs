@@ -255,18 +255,19 @@ class JavadocBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
-    Javadoc& jd_;
+    llvm::Optional<Javadoc>& I_;
     AnyNodeList J_;
     AnyNodeList* stack_ = nullptr;
 
 public:
     JavadocBlock(
-        Javadoc& jd,
+        llvm::Optional<Javadoc>& I,
         BitcodeReader& br) noexcept
         : br_(br)
-        , jd_(jd)
+        , I_(I)
         , J_(stack_)
     {
+        I_.emplace();
     }
 
     llvm::Error
@@ -280,7 +281,7 @@ public:
             JavadocNodesBlock B(stack_, br_);
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
-            if(auto Err = B.J.spliceInto(jd_.getBlocks()))
+            if(auto Err = B.J.spliceInto(I_->getBlocks()))
                 return Err;
             return llvm::Error::success();
         }
@@ -346,11 +347,8 @@ public:
         }
         case BI_JAVADOC_BLOCK_ID:
         {
-            I.javadoc.emplace();
-            JavadocBlock B(*I.javadoc, br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            return llvm::Error::success();
+            JavadocBlock B(I.javadoc, br_);
+            return br_.readBlock(B, ID);
         }
         default:
             break;
@@ -542,11 +540,8 @@ public:
         }
         case BI_JAVADOC_BLOCK_ID:
         {
-            I_.javadoc.emplace();
-            JavadocBlock B(*I_.javadoc, br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            return llvm::Error::success();
+            JavadocBlock B(I_.javadoc, br_);
+            return br_.readBlock(B, ID);
         }
         default:
             return AnyBlock::readSubBlock(ID);
