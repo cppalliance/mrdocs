@@ -12,7 +12,7 @@
 #ifndef MRDOX_API_ADOC_ADOCWRITER_HPP
 #define MRDOX_API_ADOC_ADOCWRITER_HPP
 
-#include "SafeNames.hpp"
+#include "Support/SafeNames.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>

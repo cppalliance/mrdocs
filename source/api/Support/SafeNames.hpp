@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_ADOC_SAFENAMES_HPP
-#define MRDOX_API_ADOC_SAFENAMES_HPP
+#ifndef MRDOX_API_SUPPORT_SAFENAMES_HPP
+#define MRDOX_API_SUPPORT_SAFENAMES_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
@@ -19,7 +19,6 @@
 
 namespace clang {
 namespace mrdox {
-namespace adoc {
 
 class SafeNames
 {
@@ -49,7 +48,6 @@ public:
         std::string& dest) const;
 };
 
-} // adoc
 } // mrdox
 } // clang
 

@@ -13,7 +13,7 @@
 #include "AdocMultiPageWriter.hpp"
 #include "AdocPagesBuilder.hpp"
 #include "AdocSinglePageWriter.hpp"
-#include "SafeNames.hpp"
+#include "Support/SafeNames.hpp"
 
 namespace clang {
 namespace mrdox {

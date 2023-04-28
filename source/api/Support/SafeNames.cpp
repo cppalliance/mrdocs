@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "SafeNames.hpp"
 #include "Support/Operator.hpp"
+#include "Support/SafeNames.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/STLExtras.h>
@@ -18,7 +18,6 @@
 
 namespace clang {
 namespace mrdox {
-namespace adoc {
 
 class SafeNames::
     Builder : public Corpus::Visitor
@@ -229,6 +228,5 @@ getOverload(
     return dest;
 }
 
-} // adoc
 } // mrdox
 } // clang

@@ -10,7 +10,7 @@
 //
 
 #include "BitcodeGenerator.hpp"
-#include "../_adoc/SafeNames.hpp"
+#include "Support/SafeNames.hpp"
 #include "AST/Bitcode.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
@@ -24,7 +24,7 @@ class MultiFileBuilder : public Corpus::Visitor
     Corpus const& corpus_;
     Reporter& R_;
     llvm::StringRef outputPath_;
-    adoc::SafeNames names_;
+    SafeNames names_;
     Config::WorkGroup wg_;
 
 public:
