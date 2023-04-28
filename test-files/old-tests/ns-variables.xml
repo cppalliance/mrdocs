@@ -5,5 +5,18 @@
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="ns-variables.cpp" line="7" class="def"/>
   </struct>
+  <var name="pi" id="EgqLVTs3FIJjFIODa5OOP2hmEI0=">
+    <file path="ns-variables.cpp" line="5" class="def"/>
+    <type name="double"/>
+  </var>
+  <var name="i" id="X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=">
+    <file path="ns-variables.cpp" line="3" class="def"/>
+    <type name="const int"/>
+  </var>
+  <var name="t" id="eFAdMVIx9F2Zyx0LmK/nCDOhmhA=">
+    <file path="ns-variables.cpp" line="9"/>
+    <type name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+    <extern/>
+  </var>
 </namespace>
 </mrdox>

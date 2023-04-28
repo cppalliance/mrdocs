@@ -31,6 +31,13 @@ namespace mrdox {
 */
 struct TemplateParamInfo
 {
+    // The literal contents of the code for that specifies this template parameter
+    // for this declaration. Typical values will be "class T" and
+    // "typename T = int".
+    llvm::SmallString<16> Contents;
+
+    //--------------------------------------------
+
     TemplateParamInfo() = default;
 
     explicit
@@ -46,11 +53,6 @@ struct TemplateParamInfo
         : Contents(Contents)
     {
     }
-
-    // The literal contents of the code for that specifies this template parameter
-    // for this declaration. Typical values will be "class T" and
-    // "typename T = int".
-    llvm::SmallString<16> Contents;
 };
 
 } // mrdox

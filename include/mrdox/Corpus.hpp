@@ -98,6 +98,7 @@ public:
         MRDOX_DECL virtual bool visit(FunctionInfo const&);
         MRDOX_DECL virtual bool visit(TypedefInfo const&);
         MRDOX_DECL virtual bool visit(EnumInfo const&);
+        MRDOX_DECL virtual bool visit(VariableInfo const&);
     };
 
     /** Visit the specified symbol ID or node.

@@ -220,6 +220,7 @@ decodeRecord(
     case FieldId::F_child_function:
     case FieldId::F_child_typedef:
     case FieldId::F_child_enum:
+    case FieldId::F_child_variable:
     case FieldId::F_default:
         Field = F;
         return llvm::Error::success();

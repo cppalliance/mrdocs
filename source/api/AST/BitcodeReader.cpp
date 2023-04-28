@@ -52,16 +52,52 @@ getInfos()
 
         // Top level blocks
         case BI_NAMESPACE_BLOCK_ID:
-        case BI_RECORD_BLOCK_ID:
-        case BI_FUNCTION_BLOCK_ID:
-        case BI_ENUM_BLOCK_ID:
-        case BI_TYPEDEF_BLOCK_ID:
         {
-            auto I = readInfo(ID);
-            if (!I)
+            auto I = readInfo<NamespaceBlock>(ID);
+            if(! I)
                 return I.takeError();
             Infos.emplace_back(std::move(I.get()));
-            continue;
+                continue;
+        }
+        case BI_RECORD_BLOCK_ID:
+        {
+            auto I = readInfo<RecordBlock>(ID);
+            if(! I)
+                return I.takeError();
+            Infos.emplace_back(std::move(I.get()));
+                continue;
+        }
+        case BI_FUNCTION_BLOCK_ID:
+        {
+            auto I = readInfo<FunctionBlock>(ID);
+            if(! I)
+                return I.takeError();
+            Infos.emplace_back(std::move(I.get()));
+                continue;
+        }
+        case BI_TYPEDEF_BLOCK_ID:
+        {
+            auto I = readInfo<TypedefBlock>(ID);
+            if(! I)
+                return I.takeError();
+            Infos.emplace_back(std::move(I.get()));
+                continue;
+        }
+        case BI_ENUM_BLOCK_ID:
+        {
+            auto I = readInfo<EnumBlock>(ID);
+            if(! I)
+                return I.takeError();
+            Infos.emplace_back(std::move(I.get()));
+                continue;
+        }
+        case BI_VARIABLE_BLOCK_ID:
+        {
+            auto I = readInfo<VariableBlock>(ID);
+            if(! I)
+                return I.takeError();
+            Infos.emplace_back(std::move(I.get()));
+                continue;
         }
 
         // NamedType and Comment blocks should
@@ -125,67 +161,19 @@ readBlockInfoBlock()
     return llvm::Error::success();
 }
 
+//------------------------------------------------
+
+template<class T>
 llvm::Expected<std::unique_ptr<Info>>
 BitcodeReader::
 readInfo(
     unsigned ID)
 {
-    switch (ID)
-    {
-    case BI_NAMESPACE_BLOCK_ID:
-    {
-        NamespaceBlock B(*this);
-        if(auto Err = readBlock(B, ID))
-            return Err;
-        return std::move(B.I);
-    }
-    case BI_RECORD_BLOCK_ID:
-    {
-        RecordBlock B(*this);
-        if(auto Err = readBlock(B, ID))
-            return Err;
-        return std::move(B.I);
-    }
-    case BI_FUNCTION_BLOCK_ID:
-    {
-        FunctionBlock B(*this);
-        if(auto Err = readBlock(B, ID))
-            return Err;
-        return std::move(B.I);
-    }
-    case BI_TYPEDEF_BLOCK_ID:
-    {
-        TypedefBlock B(*this);
-        if(auto Err = readBlock(B, ID))
-            return Err;
-        return std::move(B.I);
-    }
-    case BI_ENUM_BLOCK_ID:
-    {
-        EnumBlock B(*this);
-        if(auto Err = readBlock(B, ID))
-            return Err;
-        return std::move(B.I);
-    }
-#if 0
-    case BI_VARIABLE_BLOCK_ID:
-    {
-        VariableBlock B(*this);
-        push(&B);
-        if(auto Err = readBlock(ID))
-            return std::move(Err);
-        pop();
-        if(auto Err = readBlock(ID, B.I_.get()))
-            return std::move(Err);
-        return std::move(B.I_);
-    }
-#endif
-    default:
-        return makeError("cannot create info");
-    }
+    T B(*this);
+    if(auto Err = readBlock(B, ID))
+        return Err;
+    return std::move(B.I);
 }
-
-//------------------------------------------------
 
 llvm::Error
 BitcodeReader::

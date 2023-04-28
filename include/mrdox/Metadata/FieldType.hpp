@@ -26,8 +26,9 @@ struct FieldTypeInfo
 {
     llvm::SmallString<16> Name; // Name associated with this info.
 
-    // When used for function parameters, contains the string representing the
-    // expression of the default value, if any.
+    // When used for function parameters or variables,
+    // contains the string representing the expression of the default value,
+    // or the variable initializer if any.
     llvm::SmallString<16> DefaultValue;
 
     //--------------------------------------------

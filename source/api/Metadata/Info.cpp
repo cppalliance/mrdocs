@@ -48,14 +48,17 @@ extractName() const
     case InfoType::IT_record:
         return llvm::SmallString<16>("@nonymous_record_" +
             toHex(llvm::toStringRef(id)));
+    case InfoType::IT_function:
+        return llvm::SmallString<16>("@nonymous_function_" +
+            toHex(llvm::toStringRef(id)));
     case InfoType::IT_enum:
         return llvm::SmallString<16>("@nonymous_enum_" +
             toHex(llvm::toStringRef(id)));
     case InfoType::IT_typedef:
         return llvm::SmallString<16>("@nonymous_typedef_" +
             toHex(llvm::toStringRef(id)));
-    case InfoType::IT_function:
-        return llvm::SmallString<16>("@nonymous_function_" +
+    case InfoType::IT_variable:
+        return llvm::SmallString<16>("@nonymous_var_" +
             toHex(llvm::toStringRef(id)));
     case InfoType::IT_default:
         return llvm::SmallString<16>("@nonymous_" +

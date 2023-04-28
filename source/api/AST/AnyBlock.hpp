@@ -801,6 +801,17 @@ public:
             }
             break;
         }
+        case FieldId::F_child_variable:
+        {
+            if constexpr(
+                std::derived_from<T, NamespaceInfo> ||
+                std::derived_from<T, RecordInfo>)
+            {
+                I->Children.Variables.emplace_back(std::move(R));
+                return llvm::Error::success();
+            }
+            break;
+        }
         default:
             return makeWrongFieldError(Id);
         }
@@ -849,7 +860,7 @@ public:
             return decodeRecord(R, I->TagType, Blob);
         case RECORD_IS_TYPE_DEF:
             return decodeRecord(R, I->IsTypeDef, Blob);
-        case RECORD_SPECS:
+        case RECORD_BITS:
             return decodeRecord(R, Blob, I->specs);
         case RECORD_FRIENDS:
             return decodeRecord(R, I->Friends, Blob);
@@ -927,7 +938,7 @@ public:
             return decodeRecord(R, I->Access, Blob);
         case FUNCTION_IS_METHOD:
             return decodeRecord(R, I->IsMethod, Blob);
-        case FUNCTION_SPECS:
+        case FUNCTION_BITS:
             return decodeRecord(R, Blob, I->specs0, I->specs1);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
@@ -1154,13 +1165,13 @@ public:
     parseRecord(Record const& R,
         unsigned ID, llvm::StringRef Blob) override
     {
-    #if 0
         switch(ID)
         {
+        case VARIABLE_BITS:
+            return decodeRecord(R, Blob, I->specs);
         default:
             break;
         }
-    #endif
         return TopLevelBlock::parseRecord(R, ID, Blob);
     }
 
@@ -1168,13 +1179,16 @@ public:
     readSubBlock(
         unsigned ID) override
     {
-    #if 0
         switch(ID)
         {
+        case BI_TYPE_BLOCK_ID:
+        {
+            TypeBlock B(*I, br_);
+            return br_.readBlock(B, ID);
+        }
         default:
             break;
         }
-    #endif
         return TopLevelBlock::readSubBlock(ID);
     }
 };
@@ -1206,6 +1220,9 @@ readChild(
         break;
     case FieldId::F_child_enum:
         I.Enums.emplace_back(B.I);
+        break;
+    case FieldId::F_child_variable:
+        I.Variables.emplace_back(B.I);
         break;
     default:
         return makeWrongFieldError(B.F);

@@ -22,6 +22,8 @@ namespace clang {
 namespace mrdox {
 namespace xml {
 
+class jit_indenter;
+
 /** A writer which outputs XML.
 */
 class XMLWriter
@@ -72,6 +74,7 @@ private:
     bool visit(FunctionInfo const&) override;
     bool visit(TypedefInfo const&) override;
     bool visit(EnumInfo const&) override;
+    bool visit(VariableInfo const&) override;
 
     void writeInfo(Info const& I);
     void writeSymbol(SymbolInfo const& I);
@@ -81,6 +84,7 @@ private:
     void writeTemplateParam(TemplateParamInfo const& I);
     void writeMemberType(MemberTypeInfo const& I);
     void writeReturnType(TypeInfo const& I);
+    void writeStorageClass(jit_indenter&, StorageClass SC);
     void writeJavadoc(llvm::Optional<Javadoc> const& javadoc);
 
     template<class T>

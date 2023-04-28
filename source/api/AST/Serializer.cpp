@@ -475,6 +475,10 @@ insertChild(Parent& parent, Child&& I)
     {
         parent.Children.Enums.emplace_back(I.id, I.Name, Child::type_id);
     }
+    else if constexpr(std::is_same_v<Child, VariableInfo>)
+    {
+        parent.Children.Variables.emplace_back(I.id, I.Name, Child::type_id);
+    }
     else
     {
         static_error("unknown Info type", I);
@@ -1241,15 +1245,10 @@ build(
     VariableInfo I;
     if(! getSymbolInfo(*this, I, D))
         return {};
-    I.Type = getTypeInfoForType(D->getTypeSourceInfo()->getType());
-#if 0
-        MemberTypeInfo& NewMember = I.Members.emplace_back(
-            getTypeInfoForType(F->getTypeSourceInfo()->getType()),
-            F->getNameAsString(),
-            getFinalAccessSpecifier(Access, F->getAccessUnsafe()));
-        getMemberTypeInfo(NewMember, F, R);
-#endif
-    return {};
+    static_cast<TypeInfo&>(I) =
+        getTypeInfoForType(D->getTypeSourceInfo()->getType());
+    I.specs.set<VarFlags0::storageClass>(D->getStorageClass());
+    return { writeBitcode(I), writeParent(std::move(I)) };
 }
 
 } // mrdox

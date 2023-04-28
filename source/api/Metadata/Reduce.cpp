@@ -103,13 +103,6 @@ static void mergeSymbolInfo(SymbolInfo& I, SymbolInfo&& Other)
     mergeInfo(I, std::move(Other));
 }
 
-void merge(Reference& I, Reference&& Other)
-{
-    Assert(canMerge(I, Other));
-    if (I.Name.empty())
-        I.Name = Other.Name;
-}
-
 void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 {
     Assert(canMerge(I, Other));
@@ -202,8 +195,19 @@ void merge(EnumInfo& I, EnumInfo&& Other)
 
 void merge(VariableInfo& I, VariableInfo&& Other)
 {
+    Assert(canMerge(I, Other));
+    if(I.Type.id == EmptySID && I.Type.Name.empty())
+        I.Type = std::move(Other.Type);
+    mergeSymbolInfo(I, std::move(Other));
+    I.specs.merge(std::move(Other.specs));
 }
 
+void merge(Reference& I, Reference&& Other)
+{
+    Assert(canMerge(I, Other));
+    if (I.Name.empty())
+        I.Name = Other.Name;
+}
 
 } // mrdox
 } // clang

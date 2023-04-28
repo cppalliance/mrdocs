@@ -251,7 +251,7 @@ RecordIdNameMap = []()
         {ENUM_VALUE_EXPR, {"Expr", &StringAbbrev}},
         {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
-        {RECORD_SPECS, {"Specs", &Integer32ArrayAbbrev}},
+        {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
         {BASE_RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {BASE_RECORD_IS_VIRTUAL, {"IsVirtual", &BoolAbbrev}},
@@ -259,7 +259,7 @@ RecordIdNameMap = []()
         {BASE_RECORD_IS_PARENT, {"IsParent", &BoolAbbrev}},
         {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
-        {FUNCTION_SPECS, {"Specs", &Integer32ArrayAbbrev}},
+        {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
         {REFERENCE_TYPE, {"RefType", &Integer32Abbrev}},
@@ -267,6 +267,7 @@ RecordIdNameMap = []()
         {TEMPLATE_PARAM_CONTENTS, {"Contents", &StringAbbrev}},
         {TEMPLATE_SPECIALIZATION_OF, {"SpecializationOf", &SymbolIDAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
+        {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}}
     };
     Assert(Inits.size() == RecordIdCount);
     for (const auto& Init : Inits)
@@ -305,7 +306,7 @@ RecordsByBlock{
     {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
-        {FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_SPECS}},
+        {FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_BITS}},
     // Javadoc
     {BI_JAVADOC_BLOCK_ID,
         {}},
@@ -323,7 +324,7 @@ RecordsByBlock{
         {}},
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
-        {RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF, RECORD_SPECS, RECORD_FRIENDS}},
+        {RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF, RECORD_BITS, RECORD_FRIENDS}},
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
@@ -337,7 +338,7 @@ RecordsByBlock{
     {BI_TYPEDEF_BLOCK_ID,
         {TYPEDEF_IS_USING}},
     // VariableInfo
-    {BI_VARIABLE_BLOCK_ID, {}}
+    {BI_VARIABLE_BLOCK_ID, {VARIABLE_BITS}}
 };
 
 //------------------------------------------------
@@ -779,7 +780,7 @@ emitBlock(
     emitSymbolPart(I);
     emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
-    emitRecord(FUNCTION_SPECS, I.specs0, I.specs1);
+    emitRecord(FUNCTION_BITS, I.specs0, I.specs1);
     emitBlock(I.Parent, FieldId::F_parent);
     emitBlock(I.ReturnType);
     for (const auto& N : I.Params)
@@ -902,6 +903,8 @@ emitBlock(
         emitBlock(ref, FieldId::F_child_typedef);
     for (const auto& ref : I.Children.Enums)
         emitBlock(ref, FieldId::F_child_enum);
+    for (const auto& ref : I.Children.Variables)
+        emitBlock(ref, FieldId::F_child_variable);
 }
 
 void
@@ -914,7 +917,7 @@ emitBlock(
     emitSymbolPart(I);
     emitRecord(I.TagType, RECORD_TAG_TYPE);
     emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
-    emitRecord(RECORD_SPECS, I.specs);
+    emitRecord(RECORD_BITS, I.specs);
     for (const auto& N : I.Members)
         emitBlock(N);
     for (const auto& P : I.Parents)
@@ -931,6 +934,8 @@ emitBlock(
         emitBlock(ref, FieldId::F_child_typedef);
     for (const auto& ref : I.Children.Enums)
         emitBlock(ref, FieldId::F_child_enum);
+    for (const auto& ref : I.Children.Variables)
+        emitBlock(ref, FieldId::F_child_variable);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord(I.Friends, RECORD_FRIENDS);
@@ -1008,17 +1013,11 @@ BitcodeWriter::
 emitBlock(
     VariableInfo const& I)
 {
-#if 0
     StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
     emitInfoPart(I);
     emitSymbolPart(I);
-    emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
-    emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
-    emitRecord(I.Access, BASE_RECORD_ACCESS);
-    emitRecord(I.IsParent, BASE_RECORD_IS_PARENT);
-    for (const auto& M : I.Members)
-        emitBlock(M);
-#endif
+    emitBlock(static_cast<TypeInfo const&>(I));
+    emitRecord(VARIABLE_BITS, I.specs);
 }
 
 //------------------------------------------------

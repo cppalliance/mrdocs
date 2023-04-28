@@ -12,20 +12,30 @@
 #define MRDOX_METADATA_VARIABLE_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Bits.hpp>
+#include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Type.hpp>
+#include <clang/Basic/Specifiers.h>
 
 namespace clang {
 namespace mrdox {
+
+enum class VarFlags0 : std::uint32_t
+{
+    storageClass        = 0b00000000'00000000'00000000'00000111
+};
 
 /** A variable.
 
     This includes variables at namespace
     scope, and static variables at class scope.
 */
-struct VariableInfo : SymbolInfo
+struct VariableInfo
+    : SymbolInfo
+    , TypeInfo // holds the type of this variable
 {
-    TypeInfo Type;
+    Bits<VarFlags0> specs;
 
     //--------------------------------------------
 

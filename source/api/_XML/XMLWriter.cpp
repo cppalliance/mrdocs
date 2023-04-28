@@ -274,29 +274,7 @@ visit(
             FnFlags0::constexprKind,
             StorageClass>();
         Assert(isLegalForFunction(SC));
-        switch(SC)
-        {
-        case StorageClass::SC_None:
-            break;
-        case StorageClass::SC_Extern:
-            os << "<extern/>";
-            break;
-        case StorageClass::SC_Static:
-            os << "<static/>";
-            break;
-        case StorageClass::SC_PrivateExtern:
-            os << "<private-extern/>";
-            break;
-        case StorageClass::SC_Auto:
-            os << "<sc-auto/>";
-            break;
-        case StorageClass::SC_Register:
-            os << "<sc-register/>";
-            break;
-        default:
-            llvm_unreachable("unknown StorageClass");
-            break;
-        }
+        writeStorageClass(os, SC);
 
         // RefQualifierKind
         auto RQ = I.specs0.get<
@@ -391,6 +369,38 @@ visit(
     writeJavadoc(I.javadoc);
 
     tags_.close("enum");
+
+    return true;
+}
+
+bool
+XMLWriter::
+visit(
+    VariableInfo const& I)
+{
+    if(fd_os_ && fd_os_->error())
+        return false;
+
+    tags_.open("var", {
+        { "name", I.Name },
+        { I.id }
+        });
+
+    writeInfo(I);
+    writeSymbol(I);
+    tags_.write("type", {}, {
+        { "name", I.Type.Name },
+        { I.Type.id }
+        });
+    {
+        auto os = tags_.jit_indent();
+        writeStorageClass(os, I.specs.get<
+            VarFlags0::storageClass, StorageClass>());
+        os.finish();
+    }
+    writeJavadoc(I.javadoc);
+
+    tags_.close("var");
 
     return true;
 }
@@ -496,6 +506,36 @@ writeReturnType(
         { "name", I.Type.Name },
         { I.Type.id }
         });
+}
+
+void
+XMLWriter::
+writeStorageClass(
+    jit_indenter& os, StorageClass SC)
+{
+    switch(SC)
+    {
+    case StorageClass::SC_None:
+        break;
+    case StorageClass::SC_Extern:
+        os << "<extern/>";
+        break;
+    case StorageClass::SC_Static:
+        os << "<static/>";
+        break;
+    case StorageClass::SC_PrivateExtern:
+        os << "<private-extern/>";
+        break;
+    case StorageClass::SC_Auto:
+        os << "<sc-auto/>";
+        break;
+    case StorageClass::SC_Register:
+        os << "<sc-register/>";
+        break;
+    default:
+        llvm_unreachable("unknown StorageClass");
+        break;
+    }
 }
 
 //------------------------------------------------

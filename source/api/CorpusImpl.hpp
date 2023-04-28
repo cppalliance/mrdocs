@@ -83,6 +83,7 @@ private:
         virtual void visit(FunctionInfo&) {}
         virtual void visit(TypedefInfo&) {}
         virtual void visit(EnumInfo&) {}
+        virtual void visit(VariableInfo&) {}
     };
 
     /** Visit the specified symbol ID or node.

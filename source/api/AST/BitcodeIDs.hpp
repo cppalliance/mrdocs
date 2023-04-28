@@ -87,7 +87,7 @@ enum RecordId
     SYMBOL_PART_LOC,
     FUNCTION_ACCESS,
     FUNCTION_IS_METHOD,
-    FUNCTION_SPECS,
+    FUNCTION_BITS,
     JAVADOC_LIST_KIND,
     JAVADOC_NODE_KIND,
     JAVADOC_NODE_STRING,
@@ -103,7 +103,7 @@ enum RecordId
     ENUM_VALUE_EXPR,
     RECORD_TAG_TYPE,
     RECORD_IS_TYPE_DEF,
-    RECORD_SPECS,
+    RECORD_BITS,
     RECORD_FRIENDS,
     BASE_RECORD_TAG_TYPE,
     BASE_RECORD_IS_VIRTUAL,
@@ -116,6 +116,7 @@ enum RecordId
     TEMPLATE_PARAM_CONTENTS,
     TEMPLATE_SPECIALIZATION_OF,
     TYPEDEF_IS_USING,
+    VARIABLE_BITS,
     RI_LAST,
     RI_FIRST = VERSION
 };
@@ -135,7 +136,8 @@ enum class FieldId
     F_child_record,
     F_child_function,
     F_child_typedef,
-    F_child_enum
+    F_child_enum,
+    F_child_variable
 };
 
 } // mrdox

@@ -16,7 +16,6 @@
     <trailing/><explicit/>
     <return name="X&lt;0&gt;"/>
     <param type="long"/>
-    <tparam decl="bool B = true"/>
   </function>
   <function name="&lt;deduction guide for X&gt;" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
     <file path="explicit-deduct-guide.cpp" line="10"/>

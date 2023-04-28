@@ -67,6 +67,7 @@ public:
 
     /** Return the next decoded Info from the stream.
     */
+    template<class T>
     llvm::Expected<std::unique_ptr<Info>>
     readInfo(unsigned ID);
 
