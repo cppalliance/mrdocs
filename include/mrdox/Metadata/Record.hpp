@@ -30,7 +30,7 @@ namespace mrdox {
 
 struct BaseRecordInfo;
 
-/** Bit constants used with function specifiers.
+/** Bit constants used with Record metadata
 */
 enum class RecFlags0 : std::uint32_t
 {
@@ -40,6 +40,7 @@ enum class RecFlags0 : std::uint32_t
 
 struct RecordInfo : SymbolInfo
 {
+    // VFALCO Use our own enumeration for this
     // Type of this record (struct, class, union, interface).
     TagTypeKind TagType = TagTypeKind::TTK_Struct;
 

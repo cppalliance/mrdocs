@@ -264,7 +264,7 @@ inline void write(Bits<FnFlags1> const& bits, XMLTags& tags)
 
 inline void write(Bits<VarFlags0> const& bits, XMLTags& tags)
 {
-    WriteBits(bits).write<VarFlags0::storageClass>(tags);
+    WriteBits(bits).write<VarFlags0::storageClass, StorageClass>(tags);
 }
 
 inline void writeReturnType(TypeInfo const& I, XMLTags& tags)

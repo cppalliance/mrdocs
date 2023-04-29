@@ -17,8 +17,8 @@
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
-#include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
+#include <mrdox/Metadata/Template.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>

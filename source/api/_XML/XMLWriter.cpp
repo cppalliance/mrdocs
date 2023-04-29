@@ -88,9 +88,43 @@ writeAllSymbols()
     tags_.open("symbols");
     for(auto I : corpus_.allSymbols())
     {
+        llvm::StringRef tag;
+        switch(I->IT)
+        {
+        case InfoType::IT_namespace:
+            tag = "namespace";
+            break;
+        case InfoType::IT_record:
+            switch(static_cast<RecordInfo const*>(I)->TagType)
+            {
+            case TagTypeKind::TTK_Class:  tag = "class"; break;
+            case TagTypeKind::TTK_Struct: tag = "struct"; break;
+            case TagTypeKind::TTK_Union:  tag = "struct"; break;
+            default:
+                Assert(false);
+            }
+            break;
+        case InfoType::IT_function:
+            tag = "function";
+            break;
+        case InfoType::IT_typedef:
+            if(static_cast<TypedefInfo const*>(I)->IsUsing)
+                tag = "using";
+            else
+                tag = "typedef";
+            break;
+        case InfoType::IT_enum:
+            tag = "enum";
+            break;
+        case InfoType::IT_variable: 
+            tag = "variable";
+            break;
+        default:
+            Assert(false);
+        }
         tags_.write("symbol", {}, {
             { "name", I->getFullyQualifiedName(temp) },
-            { "tag", toString(I->IT)},
+            { "tag", tag },
             { I->id } });
     }
     tags_.close("symbols");

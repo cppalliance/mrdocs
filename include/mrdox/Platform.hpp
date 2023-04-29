@@ -11,6 +11,8 @@
 #ifndef MRDOX_PLATFORM_HPP
 #define MRDOX_PLATFORM_HPP
 
+#include <type_traits>
+
 /*
     Platform-specific things, and stuff
     that is dependent on the toolchain.
@@ -52,14 +54,6 @@ namespace mrdox {
 #else
 # error unknown platform for dynamic linking
 #endif
-
-//------------------------------------------------
-
-template<class T>
-T&& _access(T&& t) noexcept
-{
-    return static_cast<T&&>(t);
-}
 
 } // mrdox
 } // clang
