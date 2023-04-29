@@ -45,16 +45,17 @@ public:
 
     /** Return the Config used to generate this corpus.
     */
+    MRDOX_DECL
     virtual
     std::shared_ptr<Config const> const&
     config() const noexcept = 0;
 
-    /** Return the list of all uniquely identified symbols.
+    /** Return a sorted index of all 
     */
     MRDOX_DECL
     virtual
     std::vector<Info const*> const&
-    allSymbols() const noexcept = 0;
+    index() const noexcept = 0;
 
     /** Return the metadata for the global namespace.
     */

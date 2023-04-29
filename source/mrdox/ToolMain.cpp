@@ -103,14 +103,21 @@ toolMain(
     if(R.error(optionsResult, "calculate command line options"))
         return;
 
-    auto config = Config::loadFromFile(ConfigPath);
-    if(! config)
-        return (void)R.error(config, "load config file '", ConfigPath, "'");
+    std::error_code ec;
+    auto config = loadConfigFile(ConfigPath,
+        "",
+        ec);
+    if(ec)
+        return (void)R.error(ec, "load config file '", ConfigPath, "'");
 
-    (*config)->setOutputPath(OutputPath);
-    (*config)->IgnoreMappingFailures = IgnoreMappingFailures;
+//    config->setOutputPath(OutputPath);
+//    config->IgnoreMappingFailures = IgnoreMappingFailures;
 
     // create the executor
+    // VFALCO the 2nd parameter is ThreadCount and we should
+    // get this from the configuration. Or better yet why
+    // do we require the Executor in the Corpus API in the
+    // first place?
     auto ex = std::make_unique<tooling::AllTUsToolExecutor>(
         optionsResult->getCompilations(), 0);
 
@@ -123,28 +130,28 @@ toolMain(
     }
 
     // Run the tool, this can take a while
-    auto corpus = Corpus::build(*ex, *config, R);
+    auto corpus = Corpus::build(*ex, config, R);
     if(R.error(corpus, "build the documentation corpus"))
         return;
 
     // Run the generator.
-    if((*config)->verbose())
+    if(config->verbose())
         llvm::outs() << "Generating docs...\n";
     if((*corpus)->config()->singlePage())
     {
         auto err = generator->buildSinglePageFile(
-            (*config)->outputPath(), **corpus, R);
+            OutputPath.getValue(), **corpus, R);
         if(R.error(err,
-            "generate '", (*config)->outputPath(), "'"))
+            "generate '", OutputPath, "'"))
         {
         }
     }
     else
     {
         auto err = generator->buildPages(
-            (*config)->outputPath(), **corpus, R);
+            config->outputPath(), **corpus, R);
         if(R.error(err,
-            "generate pages in '", (*config)->outputPath(), "'"))
+            "generate pages in '", OutputPath.getValue(), "'"))
         {
         }
     }

@@ -12,17 +12,10 @@
 #ifndef MRDOX_API_CONFIGIMPL_HPP
 #define MRDOX_API_CONFIGIMPL_HPP
 
-#include <mrdox/Platform.hpp>
+#include "Support/YamlFwd.hpp"
 #include <mrdox/Config.hpp>
 #include <llvm/Support/ThreadPool.h>
 #include <memory>
-
-namespace llvm {
-namespace yaml {
-template<class T>
-struct MappingTraits;
-} // yaml
-} // llvm
 
 namespace clang {
 namespace mrdox {
@@ -32,9 +25,29 @@ class ConfigImpl
     , public std::enable_shared_from_this<ConfigImpl>
 
 {
-    std::vector<llvm::SmallString<0>> inputFileIncludes_;
     llvm::ThreadPool mutable threadPool_;
-    bool doAsync_ = true;
+
+    std::string configYaml_;
+    std::string extraYaml_;
+
+    struct FileFilter
+    {
+        std::vector<std::string> include;
+    };
+
+    llvm::SmallString<0> workingDir_;
+    llvm::SmallString<0> outputPath_;
+    std::string sourceRoot_;
+    bool includePrivate_ = false;
+    bool singlePage_ = false;
+    bool verbose_ = true;
+
+    std::string fileText_;
+    std::vector<std::string> inputFileIncludes_;
+
+    int concurrency_ = 0;
+
+    FileFilter input_;
 
     friend class Config;
     friend class Options;
@@ -43,25 +56,85 @@ class ConfigImpl
     template<class T>
     friend struct llvm::yaml::MappingTraits;
 
+    llvm::Error construct(
+        llvm::StringRef workingDir,
+        llvm::StringRef configYaml,
+        llvm::StringRef extraYaml);
+
     llvm::SmallString<0>
-    normalizePath(llvm::StringRef pathName);
+    normalizedPath(
+        llvm::StringRef pathName);
 
 public:
-    explicit
-    ConfigImpl(
-        llvm::StringRef configDir);
+    ConfigImpl();
 
-    void
-    setOutputPath(
-        llvm::StringRef outputPath) override;
+    /** Return true if the thread pool should be used for work.
+    */
+    bool useThreadPool() const noexcept
+    {
+        return concurrency_ != 1;
+    }
 
-    void
-    setSourceRoot(
-        llvm::StringRef dirPath) override;
+    /** Return true if tools should show progress.
+    */
+    bool
+    verbose() const noexcept override
+    {
+        return verbose_;
+    }
 
-    void
-    setInputFileIncludes(
-        std::vector<std::string> const& list) override;
+    /** Return true if private members are documented.
+    */
+    bool includePrivate() const noexcept
+    {
+        return includePrivate_;
+    }
+
+    /** Return the full path to the working directory.
+
+        The returned path will always be POSIX
+        style and have a trailing separator.
+    */
+    llvm::StringRef
+    workingDir() const noexcept
+    {
+        return workingDir_;
+    }
+
+    /** Return the full path to the source root directory.
+
+        The returned path will always be POSIX
+        style and have a trailing separator.
+    */
+    std::string_view
+    sourceRoot() const noexcept override
+    {
+        return sourceRoot_;
+    }
+
+    /** Return the output directory or filename.
+    */
+    std::string_view
+    outputPath() const noexcept override
+    {
+        return outputPath_.str();
+    }
+
+    /** Return true if the output is single-page output.
+    */
+    bool
+    singlePage() const noexcept override
+    {
+        return singlePage_;
+    }
+
+    //--------------------------------------------
+
+    std::pair<std::string_view, std::string_view>
+    configYaml() const noexcept override
+    {
+        return { configYaml_, extraYaml_ };
+    }
 
     //--------------------------------------------
 
@@ -90,8 +163,78 @@ public:
     shouldVisitFile(
         llvm::StringRef filePath,
         llvm::SmallVectorImpl<char>& prefix) const noexcept;
+
+    /** A diagnostic handler for reading YAML files.
+    */
+    static void yamlDiagnostic(llvm::SMDiagnostic const&, void*);
+
+    /** Return a configuration created from YAML.
+
+        @param workingDir The directory which
+        should be considered the working directory
+        for calculating filenames from relative
+        paths.
+
+        @param configYaml A string containing valid
+        YAML which will be parsed and applied to create
+        the configuration.
+
+        @param extraYaml An optional string containing
+        additional valid YAML which will be parsed and
+        applied to the existing configuration.
+    */
+    friend auto
+    createConfigFromYAML(
+        llvm::StringRef workingDir,
+        llvm::StringRef configYaml,
+        llvm::StringRef extraYaml) ->
+            llvm::ErrorOr<std::shared_ptr<
+                Config const>>;
 };
 
+//------------------------------------------------
+
+/** Return a configuration by loading one or both YAML strings.
+
+    This function attempts to parse the given
+    YAML string and apply the results to create
+    a configuration. The working directory of
+    the config object will be set to the specified
+    full path. If the specified path is empty,
+    then the current working directory of the
+    process will be used instead.
+
+    If the `extraYaml` string is not empty, then
+    after the YAML file is applied the string
+    will be parsed as YAML and the results will
+    be applied to the configuration. And keys
+    and values in the extra YAML which are the
+    same as elements from the file will replace
+    existing settings.
+
+    @return The configuration upon success,
+        otherwise an error.
+
+    @param workingDir The directory which
+    should be considered the working directory
+    for calculating filenames from relative
+    paths.
+
+    @param configYaml A string containing valid
+    YAML which will be parsed and applied to create
+    the configuration.
+
+    @param extraYaml An optional string containing
+    additional valid YAML which will be parsed and
+    applied to the existing configuration.
+*/
+auto
+createConfigFromYAML(
+    llvm::StringRef workingDir,
+    llvm::StringRef configYaml,
+    llvm::StringRef extraYaml) ->
+        llvm::ErrorOr<std::shared_ptr<
+            Config const>>;
 } // mrdox
 } // clang
 

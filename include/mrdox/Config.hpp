@@ -20,7 +20,10 @@
 #include <llvm/Support/Error.h>
 #include <functional>
 #include <memory>
-#include <string>
+#include <string_view>
+#include <system_error>
+#include <utility>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
@@ -42,15 +45,7 @@ class MRDOX_VISIBLE
     Config& operator=(Config const&) = delete;
 
 protected:
-    llvm::SmallString<0> configDir_;
-    llvm::SmallString<0> outputPath_;
-    std::string sourceRoot_;
-    bool includePrivate_ = false;
-    bool singlePage_ = false;
-    bool verbose_ = true;
-
-    explicit
-    Config(llvm::StringRef configDir);
+    Config() noexcept;
 
 public:
     class Options; // private, but for clang-15 bug
@@ -63,73 +58,18 @@ public:
     */
     MRDOX_DECL
     virtual
-    ~Config() noexcept;
+    ~Config() noexcept = 0;
+
+    /** Return true if tool output should be verbose.
+    */
+    MRDOX_DECL virtual bool
+    verbose() const noexcept = 0;
 
     //
     // VFALCO these naked data members are temporary...
     //
     tooling::ArgumentsAdjuster ArgAdjuster;
     bool IgnoreMappingFailures = false;
-
-    //--------------------------------------------
-    //
-    // Observers
-    //
-    //--------------------------------------------
-
-    /** Return true if tools should show progress.
-    */
-    bool
-    verbose() const noexcept
-    {
-        return verbose_;
-    }
-
-    /** Return the full path to the configuration directory.
-
-        The returned path will always be POSIX
-        style and have a trailing separator.
-    */
-    llvm::StringRef
-    configDir() const noexcept
-    {
-        return configDir_;
-    }
-
-    /** Return the full path to the source root directory.
-
-        The returned path will always be POSIX
-        style and have a trailing separator.
-    */
-    llvm::StringRef
-    sourceRoot() const noexcept
-    {
-        return sourceRoot_;
-    }
-
-    /** Return the output directory or filename.
-    */
-    llvm::StringRef
-    outputPath() const noexcept
-    {
-        return outputPath_;
-    }
-
-    /** Return true if private members are documented.
-    */
-    bool
-    includePrivate() const noexcept
-    {
-        return includePrivate_;
-    }
-
-    /** Return true if the output is single-page output.
-    */
-    bool
-    singlePage() const noexcept
-    {
-        return singlePage_;
-    }
 
     /** Call a function for each element of a range.
 
@@ -148,94 +88,39 @@ public:
 
     //--------------------------------------------
     //
-    // Modifiers
+    // Observers
     //
     //--------------------------------------------
 
-    /** Set whether tools should show progress.
+    MRDOX_DECL virtual std::string_view outputPath() const noexcept = 0;
+    MRDOX_DECL virtual std::string_view sourceRoot() const noexcept = 0;
+    MRDOX_DECL virtual bool singlePage() const noexcept = 0;
+
+    /** Return the YAML strings which produced this config.
+
+        The first element of the pair is the entire
+        contents of the YAML file or string used to
+        apply the initial values to the configuration.
+
+        The second element of the pair is either empty,
+        or holds a complate additional YAML string which
+        was applied to the values of the configuration,
+        after the first string was applied.
+
+        Any keys in the second YAML which match keys
+        found in the first YAML will effectively replace
+        those entries in the configuration.
+
+        A @ref Generator that wishes to implement
+        format-specific options, should parse and
+        apply the first string, then parse and apply
+        the second string to the same object.
+
+        @return The pair of valid YAML strings.
     */
-    void
-    setVerbose(
-        bool verbose) noexcept
-    {
-        verbose_ = verbose;
-    }
-
-    void
-    setSinglePage(
-        bool singlePage) noexcept
-    {
-        singlePage_ = singlePage;
-    }
-
-    /** Set whether or not to include private members.
-    */
-    void
-    setIncludePrivate(
-        bool includePrivate) noexcept
-    {
-        includePrivate_ = includePrivate;
-    }
-
-    /** Set the output directory or file path.
-    */
-    MRDOX_DECL
-    virtual
-    void
-    setOutputPath(
-        llvm::StringRef outputPath) = 0;
-
-    /** Set the directory where the input files are stored.
-
-        Symbol documentation will not be emitted unless
-        the corresponding source file is a child of this
-        directory.
-
-        If the specified directory is relative, then
-        the full path will be computed relative to
-        @ref configDir().
-
-        @param dirPath The directory.
-    */
-    MRDOX_DECL
-    virtual
-    void
-    setSourceRoot(
-        llvm::StringRef dirPath) = 0;
-
-    /** Set the filter for including translation units.
-    */
-    MRDOX_DECL
-    virtual
-    void
-    setInputFileIncludes(
-        std::vector<std::string> const& list) = 0;
-
-    //--------------------------------------------
-    //
-    // Creation
-    //
-    //--------------------------------------------
-
-    /** Return a defaulted Config using an existing directory.
-
-        @param dirPath The path to the directory.
-        If this is relative, an absolute path will
-        be calculated from the current directory.
-    */
-    MRDOX_DECL
-    static
-    llvm::Expected<std::shared_ptr<Config>>
-    createAtDirectory(
-        llvm::StringRef dirPath);
-
-    /** Return a Config loaded from the specified YAML file.
-    */
-    MRDOX_DECL
-    static
-    llvm::Expected<std::shared_ptr<Config>>
-    loadFromFile(
-        llvm::StringRef filePath);
+    MRDOX_DECL virtual auto
+    configYaml() const noexcept ->
+        std::pair<std::string_view, std::string_view> = 0;
 };
 
 //------------------------------------------------
@@ -306,8 +191,6 @@ private:
     std::unique_ptr<Base> impl_;
 };
 
-//------------------------------------------------
-
 template<class Range, class UnaryFunction>
 void
 Config::
@@ -323,6 +206,100 @@ parallelForEach(
             });
     wg.wait();
 }
+
+//------------------------------------------------
+
+/** Create a configuration by loading a YAML file.
+
+    This function attemtps to load the given
+    YAML file and apply the results to create
+    a configuration. The working directory of
+    the config object will be set to the
+    directory containing the file.
+
+    If the `extraYaml` string is not empty, then
+    after the YAML file is applied the string
+    will be parsed as YAML and the results will
+    be applied to the configuration. And keys
+    and values in the extra YAML which are the
+    same as elements from the file will replace
+    existing settings.
+
+    @return A valid object upon success.
+
+    @param fileName A full or relative path to
+    the configuration file, which may have any
+    extension including no extension.
+
+    @param extraYaml An optional string containing
+    additional valid YAML which will be parsed and
+    applied to the existing configuration.
+
+    @param ec [out] Set to the error, if any occurred.
+*/
+MRDOX_DECL
+std::shared_ptr<Config const>
+loadConfigFile(
+    std::string_view fileName,
+    std::string_view extraYaml,
+    std::error_code& ec);
+
+/** Return a configuration by loading a YAML file.
+
+    This function attemtps to load the given
+    YAML file and apply the settings to create
+    a configuration. The working directory of
+    the config object will be set to the
+    directory containing the file.
+
+    @return A valid object upon success.
+
+    @param fileName A full or relative path to
+    the configuration file, which may have any
+    extension including no extension.
+
+    @param ec [out] Set to the error, if any occurred.
+*/
+inline
+std::shared_ptr<Config const>
+loadConfigFile(
+    std::string_view fileName,
+    std::error_code& ec)
+{
+    return loadConfigFile(fileName, "", ec);
+}
+
+/** Create a configuration by loading a YAML string.
+
+    This function attempts to parse the given
+    YAML string and apply the results to create
+    a configuration. The working directory of
+    the config object will be set to the specified
+    full path. If the specified path is empty,
+    then the current working directory of the
+    process will be used instead.
+
+    @return A valid object upon success.
+
+    @param workingDir The directory which
+    should be considered the working directory
+    for calculating filenames from relative
+    paths.
+
+    @param configYaml A string containing valid
+    YAML which will be parsed and applied to create
+    the configuration.
+
+    @param ec [out] Set to the error, if any occurred.
+    */
+MRDOX_DECL
+std::shared_ptr<Config const>
+loadConfigString(
+    std::string_view workingDir,
+    std::string_view configYaml,
+    std::error_code& ec);
+
+//------------------------------------------------
 
 } // mrdox
 } // clang

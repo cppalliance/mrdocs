@@ -41,7 +41,7 @@ build(
     wg_.post(
         [&]
         {
-            llvm::SmallString<512> filePath = corpus_.config()->outputPath();
+            llvm::SmallString<512> filePath = outputPath_;
             llvm::StringRef name = names_.get(I.id);
             path::append(filePath, name);
             filePath.append(".adoc");

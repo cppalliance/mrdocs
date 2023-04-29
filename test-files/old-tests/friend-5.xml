@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
-<mrdox>
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="friend-5.cpp" line="1" class="def"/>
@@ -21,4 +18,3 @@
     </doc>
   </function>
 </namespace>
-</mrdox>

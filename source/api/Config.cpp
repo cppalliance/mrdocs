@@ -17,59 +17,6 @@
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
-//------------------------------------------------
-//
-// Options (YAML)
-//
-//------------------------------------------------
-
-namespace clang {
-namespace mrdox {
-
-class Config::Options
-{
-public:
-    struct FileFilter
-    {
-        std::vector<std::string> include;
-    };
-
-    bool verbose = true;
-    bool include_private = false;
-    std::string source_root;
-    bool single_page = false;
-    FileFilter input;
-};
-
-} // mrdox
-} // clang
-
-template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdox::Config::Options::FileFilter>
-{
-    static void mapping(IO &io,
-        clang::mrdox::Config::Options::FileFilter& f)
-    {
-        io.mapOptional("include", f.include);
-    }
-};
-
-template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdox::Config::Options>
-{
-    static void mapping(
-        IO& io, clang::mrdox::Config::Options& opt)
-    {
-        io.mapOptional("verbose",      opt.verbose);
-        io.mapOptional("private",      opt.include_private);
-        io.mapOptional("source-root",  opt.source_root);
-        io.mapOptional("single-page",  opt.single_page);
-        io.mapOptional("input",        opt.input);
-    }
-};
-
 namespace clang {
 namespace mrdox {
 
@@ -163,7 +110,7 @@ WorkGroup::
 post(
     std::function<void(void)> f)
 {
-    if(config_ && config_->doAsync_)
+    if(config_ && config_->useThreadPool())
     {
         auto& impl = static_cast<Impl&>(*impl_);
         impl.group_.async(std::move(f));
@@ -179,7 +126,7 @@ Config::
 WorkGroup::
 wait()
 {
-    if(config_ && config_->doAsync_)
+    if(config_ && config_->useThreadPool())
     {
         auto& impl = static_cast<Impl&>(*impl_);
         impl.group_.wait();
@@ -193,9 +140,7 @@ wait()
 //------------------------------------------------
 
 Config::
-Config(
-    llvm::StringRef configDir)
-    : configDir_(configDir)
+Config() noexcept
 {
 }
 
@@ -204,65 +149,67 @@ Config::
 
 //------------------------------------------------
 
-llvm::Expected<std::shared_ptr<Config>>
-Config::
-createAtDirectory(
-    llvm::StringRef dirPath)
+std::shared_ptr<Config const>
+loadConfigFile(
+    std::string_view fileName,
+    std::string_view extraYaml,
+    std::error_code& ec)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    llvm::SmallString<0> s(dirPath);
-    if(auto ec = fs::make_absolute(s))
-        return makeError("fs::make_absolute('", s, "') returned ", ec.message());
-    path::remove_dots(s, true);
-    makeDirsy(s);
-    convert_to_slash(s);
-    return std::make_shared<ConfigImpl>(s);
-}
-
-llvm::Expected<std::shared_ptr<Config>>
-Config::
-loadFromFile(
-    llvm::StringRef filePath)
-{
-    namespace fs = llvm::sys::fs;
-    namespace path = llvm::sys::path;
-
-    // check filePath is a regular file
+    // ensure fileName is a regular file
     fs::file_status stat;
-    if(auto ec = fs::status(filePath, stat))
-        return makeError("fs::status('", filePath, "') returned ", ec.message());
+    if(ec = fs::status(fileName, stat))
+        return {};
     if(stat.type() != fs::file_type::regular_file)
-        return makeError("path '", filePath, "' is not a regular file");
-
-    // create initial config at config dir
-    llvm::SmallString<0> s(filePath);
-    path::remove_filename(s);
-    auto config = createAtDirectory(s);
-    if(! config)
-        return config.takeError();
-
-    // Read the YAML file into Options
-    Config::Options opt;
-    auto fileText = llvm::MemoryBuffer::getFile(filePath);
-    if(! fileText)
-        return makeError(fileText.getError().message(), " when loading file '", filePath, "' ");
     {
-        llvm::yaml::Input yin(**fileText);
-        yin >> opt;
-        if(auto ec = yin.error())
-            return makeError(ec.message(), " when parsing file '", filePath, "' ");
+        ec = std::make_error_code(
+            std::errc::invalid_argument);
+        return {};
     }
 
-    // apply opt to Config
-    (*config)->setVerbose(opt.verbose);
-    (*config)->setIncludePrivate(opt.include_private);
-    (*config)->setSourceRoot(opt.source_root);
-    (*config)->setInputFileIncludes(opt.input.include);
-    (*config)->setSinglePage(opt.single_page);
+    // load the file into a string
+    auto fileText = llvm::MemoryBuffer::getFile(fileName);
+    if(! fileText)
+    {
+        ec = fileText.getError();
+        return {};
+    }
 
-    return config;
+    // calculate the working directory
+    llvm::SmallString<64> workingDir(fileName);
+    path::remove_filename(workingDir);
+    if(ec = fs::make_absolute(workingDir))
+        return {};
+
+    // attempt to create the config
+    auto result = createConfigFromYAML(
+        workingDir, (*fileText)->getBuffer(), extraYaml);
+
+    if(! result)
+    {
+        ec = result.getError();
+        return {};
+    }
+    return result.get();
+}
+
+std::shared_ptr<Config const>
+loadConfigString(
+    std::string_view workingDir,
+    std::string_view configYaml,
+    std::error_code& ec)
+{
+    auto result = createConfigFromYAML(
+        workingDir, configYaml, "");
+    if(! result)
+    {
+        ec = result.getError();
+        return {};
+    }
+    ec = {};
+    return result.get();
 }
 
 } // mrdox

@@ -10,6 +10,7 @@
 //
 
 #include "CorpusImpl.hpp"
+#include "ConfigImpl.hpp"
 #include "AST/Bitcode.hpp"
 #include "AST/FrontendAction.hpp"
 #include "Metadata/Reduce.hpp"
@@ -298,7 +299,8 @@ build(
         R.print("Mapping declarations");
     if(auto err = ex.execute(
         makeFrontendActionFactory(
-            *ex.getExecutionContext(), *corpus->config(), R),
+            *ex.getExecutionContext(),
+            *dynamic_cast<ConfigImpl const*>(corpus->config().get()), R),
         corpus->config()->ArgAdjuster))
     {
         if(! corpus->config()->IgnoreMappingFailures)

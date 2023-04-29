@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
-<mrdox>
 <namespace name="">
   <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
     <file path="explicit-ctor.cpp" line="17" class="def"/>
@@ -84,4 +81,3 @@
     </function>
   </struct>
 </namespace>
-</mrdox>

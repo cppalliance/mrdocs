@@ -56,10 +56,10 @@ class ASTVisitor
 public:
     ASTVisitor(
         tooling::ExecutionContext& ex,
-        Config const& config,
+        ConfigImpl const& config,
         Reporter& R) noexcept
         : ex_(ex)
-        , config_(dynamic_cast<ConfigImpl const&>(config))
+        , config_(config)
         , R_(R)
     {
     }

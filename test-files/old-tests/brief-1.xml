@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
-<mrdox>
 <namespace name="">
   <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
     <file path="brief-1.cpp" line="39"/>
@@ -28,4 +25,3 @@
     </doc>
   </function>
 </namespace>
-</mrdox>

@@ -70,6 +70,7 @@ struct Results
 class Instance
 {
     Results& results_;
+    std::string extraYaml_;
     Options const& options_;
     std::shared_ptr<Config const> config_;
     Config::WorkGroup wg_;
@@ -77,9 +78,9 @@ class Instance
     Generator const* xmlGen_;
     Generator const* adocGen_;
 
-    void
-    setConfig(
-        std::shared_ptr<Config> config);
+    std::shared_ptr<Config const>
+    makeConfig(
+        llvm::StringRef workingDir);
 
     llvm::Error
     writeFile(
@@ -88,7 +89,8 @@ class Instance
 
     llvm::Error
     handleFile(
-        llvm::StringRef filePath);
+        llvm::StringRef filePath,
+        std::shared_ptr<Config const> const& config);
 
     llvm::Error
     handleDir(
@@ -97,6 +99,7 @@ class Instance
 public:
     Instance(
         Results& results,
+        llvm::StringRef extraYaml,
         Options const& options,
         Reporter& R);
 
@@ -115,10 +118,20 @@ public:
 Instance::
 Instance(
     Results& results,
+    llvm::StringRef extraYaml,
     Options const& options,
-    Reporter &R)
+    Reporter& R)
     : results_(results)
+    , extraYaml_(extraYaml)
     , options_(options)
+    , config_([&extraYaml]
+        {
+            std::error_code ec;
+            auto config = loadConfigString(
+                "", extraYaml.str(), ec);
+            Assert(! ec);
+            return config;
+        }())
     , wg_(config_.get())
     , R_(R)
     , xmlGen_(getGenerators().find("xml"))
@@ -128,16 +141,27 @@ Instance(
     Assert(adocGen_ != nullptr);
 }
 
-void
+std::shared_ptr<Config const>
 Instance::
-setConfig(
-    std::shared_ptr<Config> config)
+makeConfig(
+    llvm::StringRef workingDir)
 {
-    config->setSourceRoot(config->configDir());
-    config->setVerbose(false);
-    config->setIncludePrivate(true);
+    std::string configYaml;
+    llvm::raw_string_ostream(configYaml) <<
+        "verbose: false\n"
+        "source-root: " << workingDir << "\n"
+        "with-private: true\n"
+        "generator:\n"
+        "  xml:\n"
+        "    index: false\n"
+        "    prolog: true\n";
 
-    config_ = config;
+    std::error_code ec;
+    auto config = loadConfigString(
+        workingDir, configYaml, 
+        ec);
+    Assert(! ec);
+    return config;
 }
 
 llvm::Error
@@ -167,7 +191,8 @@ writeFile(
 llvm::Error
 Instance::
 handleFile(
-    llvm::StringRef filePath)
+    llvm::StringRef filePath,
+    std::shared_ptr<Config const> const& config)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -187,7 +212,7 @@ handleFile(
     {
         SingleFile db(dirPath, filePath);
         tooling::StandaloneToolExecutor ex(db, { std::string(filePath) });
-        auto result = Corpus::build(ex, config_, R_);
+        auto result = Corpus::build(ex, config, R_);
         if(R_.error(result, "build Corpus for '", filePath, "'"))
         {
             results_.numberOfErrors++;
@@ -305,6 +330,8 @@ handleDir(
         return makeError("directory_iterator returned ", ec);
     fs::directory_iterator const end{};
 
+    auto const config = makeConfig(dirPath);
+
     while(iter != end)
     {
         if(iter->type() == fs::file_type::directory_file)
@@ -317,9 +344,9 @@ handleDir(
             path::extension(iter->path()).equals_insensitive(".cpp"))
         {
             wg_.post(
-                [this, filePath = SmallString(iter->path())]
+                [this, config, filePath = SmallString(iter->path())]
                 {
-                    handleFile(filePath).operator bool();
+                    handleFile(filePath, config).operator bool();
                 });
         }
         else
@@ -355,32 +382,22 @@ checkPath(
         if(! ext.equals_insensitive(".cpp"))
             return makeError("expected a .cpp file");
 
-        SmallString dirPath(inputPath);
-        path::remove_filename(dirPath);
-        path::remove_dots(dirPath, true);
-        auto config = Config::createAtDirectory(dirPath);
-        if(! config)
-        {
-            results_.numberOfErrors++;
-            return config.takeError();
-        }
-        setConfig(config.get());
-        auto err = handleFile(inputPath);
+        // Calculate the workingDir
+        SmallString workingDir(inputPath);
+        path::remove_filename(workingDir);
+        path::remove_dots(workingDir, true);
+
+        auto config = makeConfig(workingDir);
+        auto err = handleFile(inputPath, config);
         wg_.wait();
         return err;
     }
 
     if(fileStatus.type() == fs::file_type::directory_file)
     {
+        // Iterate this directory and all its children
         SmallString dirPath(inputPath);
         path::remove_dots(dirPath, true);
-        auto config = Config::createAtDirectory(dirPath);
-        if(! config)
-        {
-            results_.numberOfErrors++;
-            return config.takeError();
-        }
-        setConfig(config.get());
         auto err = handleDir(dirPath);
         wg_.wait();
         return err;
@@ -419,10 +436,13 @@ main(int argc, const char** argv)
         }
     }
 
+    std::string extraYaml;
+    llvm::raw_string_ostream(extraYaml) <<
+        "concurrency: 1\n";
     Results results;
     for(auto const& inputPath : options.InputPaths)
     {
-        Instance instance(results, options, R);
+        Instance instance(results, extraYaml, options, R);
         if(auto err = instance.checkPath(inputPath))
             if(R.error(err, "check path '", inputPath, "'"))
                 break;

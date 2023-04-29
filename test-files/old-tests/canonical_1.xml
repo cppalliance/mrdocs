@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
-<mrdox>
 <namespace name="">
   <struct name="ba" id="DnCAWz4yn8cUKkg886MMQcSEBhg=">
     <file path="canonical_1.cpp" line="9" class="def"/>
@@ -27,4 +24,3 @@
     <file path="canonical_1.cpp" line="8" class="def"/>
   </struct>
 </namespace>
-</mrdox>

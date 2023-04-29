@@ -30,7 +30,9 @@ makeDirsy(
     llvm::sys::path::Style style)
 {
     namespace path = llvm::sys::path;
-    if(! path::is_separator(s.back(), style))
+
+    if( ! s.empty() &&
+        ! path::is_separator(s.back(), style))
     {
         auto const sep = path::get_separator(style);
         s.insert(s.end(), sep.begin(), sep.end());

@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
-<mrdox>
 <namespace name="">
   <struct name="X" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=">
     <file path="explicit-deduct-guide.cpp" line="4" class="def"/>
@@ -32,4 +29,3 @@
     <param type="_Bool"/>
   </function>
 </namespace>
-</mrdox>

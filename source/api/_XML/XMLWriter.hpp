@@ -13,6 +13,7 @@
 #define MRDOX_API_XML_XMLWRITER_HPP
 
 #include "XMLTags.hpp"
+#include "Support/YamlFwd.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
@@ -29,6 +30,9 @@ class jit_indenter;
 class XMLWriter
     : public Corpus::Visitor
 {
+    template<class T>
+    friend struct llvm::yaml::MappingTraits;
+
 protected:
     XMLTags tags_;
     llvm::raw_ostream& os_;
@@ -36,28 +40,16 @@ protected:
     Corpus const& corpus_;
     Reporter& R_;
 
-public:
-    /** Describes an item in the list of all symbols.
-    */
-    struct AllSymbol
+    struct GenKey;
+    struct XmlKey;
+    struct Options
     {
-        /** The fully qualified name of this symbol.
-        */
-        std::string fqName;
-
-        /** A string representing the symbol type.
-        */
-        llvm::StringRef symbolType;
-
-        /** The ID of this symbol.
-        */
-        SymbolID id;
-
-        /** Constructor.
-        */
-        AllSymbol(Info const& I);
+        bool index = false;
+        bool prolog = true;
     };
+    Options options_;
 
+public:
     XMLWriter(
         llvm::raw_ostream& os,
         llvm::raw_fd_ostream* fd_os,
@@ -67,7 +59,7 @@ public:
     llvm::Error build();
 
 private:
-    void writeAllSymbols();
+    void writeIndex();
 
     bool visit(NamespaceInfo const&) override;
     bool visit(RecordInfo const&) override;

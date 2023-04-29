@@ -41,9 +41,9 @@ private:
     }
 
     std::vector<Info const*> const&
-    allSymbols() const noexcept override
+    index() const noexcept override
     {
-        return allSymbols_;
+        return index_;
     }
 
     Info*
@@ -110,7 +110,7 @@ private:
 
     // Table of Info keyed on Symbol ID.
     llvm::StringMap<std::unique_ptr<Info>> InfoMap;
-    std::vector<Info const*> allSymbols_;
+    std::vector<Info const*> index_;
 
     llvm::sys::Mutex mutex_;
     bool isCanonical_ = false;

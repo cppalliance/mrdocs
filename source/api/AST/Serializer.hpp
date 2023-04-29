@@ -15,7 +15,7 @@
 #include <mrdox/Platform.hpp>
 #include "clangASTComment.hpp"
 #include "Bitcode.hpp"
-#include <mrdox/Config.hpp>
+#include "ConfigImpl.hpp"
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/AST/AST.h>
@@ -60,7 +60,7 @@ class Serializer
 {
 public:
     MangleContext& mc;
-    Config const& config_;
+    ConfigImpl const& config_;
     Reporter& R_;
     StringRef File;
     int LineNumber;
@@ -72,7 +72,7 @@ public:
         int LineNumber_,
         StringRef File_,
         bool IsFileInRootDir_,
-        Config const& config,
+        ConfigImpl const& config,
         Reporter& R)
         : mc(mc_)
         , config_(config)

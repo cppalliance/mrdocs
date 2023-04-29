@@ -11,6 +11,7 @@
 
 #include "ASTVisitor.hpp"
 #include "Commands.hpp"
+#include "ConfigImpl.hpp"
 #include "Serializer.hpp"
 #include "Support/Path.hpp"
 #include <mrdox/Debug.hpp>
@@ -278,7 +279,7 @@ struct Action
 {
     Action(
         tooling::ExecutionContext& exc,
-        Config const& config,
+        ConfigImpl const& config,
         Reporter& R) noexcept
         : ex_(exc)
         , config_(config)
@@ -296,7 +297,7 @@ struct Action
 
 private:
     tooling::ExecutionContext& ex_;
-    Config const& config_;
+    ConfigImpl const& config_;
     Reporter& R_;
 };
 
@@ -304,7 +305,7 @@ struct Factory : tooling::FrontendActionFactory
 {
     Factory(
         tooling::ExecutionContext& exc,
-        Config const& config,
+        ConfigImpl const& config,
         Reporter& R) noexcept
         : ex_(exc)
         , config_(config)
@@ -320,7 +321,7 @@ struct Factory : tooling::FrontendActionFactory
 
 private:
     tooling::ExecutionContext& ex_;
-    Config const& config_;
+    ConfigImpl const& config_;
     Reporter& R_;
 };
 
@@ -329,7 +330,7 @@ private:
 std::unique_ptr<tooling::FrontendActionFactory>
 makeFrontendActionFactory(
     tooling::ExecutionContext& exc,
-    Config const& config,
+    ConfigImpl const& config,
     Reporter& R)
 {
     return std::make_unique<Factory>(exc, config, R);

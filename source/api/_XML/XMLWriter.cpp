@@ -10,29 +10,92 @@
 //
 
 #include "XMLWriter.hpp"
+#include "ConfigImpl.hpp"
 #include "CXXTags.hpp"
 #include "Support/Radix.hpp"
 #include "Support/Operator.hpp"
+#include <llvm/Support/YAMLParser.h>
+#include <llvm/Support/YAMLTraits.h>
+
+//------------------------------------------------
+//
+// YAML
+//
+//------------------------------------------------
 
 namespace clang {
 namespace mrdox {
 namespace xml {
 
-//------------------------------------------------
-//
-// AllSymbol
-//
-//------------------------------------------------
-
-XMLWriter::
-AllSymbol::
-AllSymbol(
-    Info const& I)
+struct XMLWriter::XmlKey
 {
-    I.getFullyQualifiedName(fqName);
-    symbolType = I.symbolType();
-    id = I.id;
-}
+    Options& opt;
+
+    explicit
+    XmlKey(
+        Options& opt_) noexcept
+        : opt(opt_)
+    {
+    }
+};
+
+struct XMLWriter::GenKey
+{
+    Options& opt;
+
+    explicit
+    GenKey(
+        Options& opt_)
+        : opt(opt_)
+    {
+    }
+};
+
+} // xml
+} // mrdox
+} // clang
+
+template<>
+struct llvm::yaml::MappingTraits<
+    clang::mrdox::xml::XMLWriter::XmlKey>
+{
+    static void mapping(
+        IO& io, clang::mrdox::xml::XMLWriter::XmlKey& opt_)
+    {
+        auto& opt= opt_.opt;
+        io.mapOptional("index",  opt.index);
+        io.mapOptional("prolog", opt.prolog);
+    }
+};
+
+template<>
+struct llvm::yaml::MappingTraits<
+    clang::mrdox::xml::XMLWriter::GenKey>
+{
+    static void mapping(
+        IO& io, clang::mrdox::xml::XMLWriter::GenKey& opt)
+    {
+        clang::mrdox::xml::XMLWriter::XmlKey k(opt.opt);
+
+        io.mapOptional("xml",  k);
+    }
+};
+
+template<>
+struct llvm::yaml::MappingTraits<
+    clang::mrdox::xml::XMLWriter::Options>
+{
+    static void mapping(IO& io,
+        clang::mrdox::xml::XMLWriter::Options& opt)
+    {
+        clang::mrdox::xml::XMLWriter::GenKey k(opt);
+        io.mapOptional("generator",  k);
+    }
+};
+
+namespace clang {
+namespace mrdox {
+namespace xml {
 
 //------------------------------------------------
 //
@@ -58,12 +121,33 @@ llvm::Error
 XMLWriter::
 build()
 {
-    os_ <<
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
-        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
-        "<mrdox>\n";
+    {
+        llvm::yaml::Input yin(
+            corpus_.config()->configYaml().first,
+                this, ConfigImpl::yamlDiagnostic);
+        yin.setAllowUnknownKeys(true);
+        yin >> options_;
+        if(auto ec = yin.error())
+            return makeError(ec);
+    }
+    {
+        llvm::yaml::Input yin(
+            corpus_.config()->configYaml().second,
+                this, ConfigImpl::yamlDiagnostic);
+        yin.setAllowUnknownKeys(true);
+        yin >> options_;
+        if(auto ec = yin.error())
+            return makeError(ec);
+    }
 
-    //writeAllSymbols();
+    if(options_.prolog)
+        os_ <<
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
+            "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
+            "<mrdox>\n";
+
+    if(options_.index)
+        writeIndex();
 
     if(! corpus_.visit(globalNamespaceID, *this))
     {
@@ -72,7 +156,8 @@ build()
         return makeError("visit failed");
     }
 
-    os_ << "</mrdox>\n";
+    if(options_.prolog)
+        os_ << "</mrdox>\n";
 
     return llvm::Error::success();
 }
@@ -81,12 +166,12 @@ build()
 
 void
 XMLWriter::
-writeAllSymbols()
+writeIndex()
 {
     std::string temp;
     temp.reserve(256);
     tags_.open("symbols");
-    for(auto I : corpus_.allSymbols())
+    for(auto I : corpus_.index())
     {
         llvm::StringRef tag;
         switch(I->IT)

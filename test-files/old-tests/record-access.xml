@@ -1,6 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mrdox SYSTEM "mrdox.dtd">
-<mrdox>
 <namespace name="">
   <union name="U0" id="SHIJWZPzfYtLVfe/rzFAmeVpANk=">
     <file path="record-access.cpp" line="21" class="def"/>
@@ -39,4 +36,3 @@
     </function>
   </struct>
 </namespace>
-</mrdox>

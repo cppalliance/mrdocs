@@ -19,7 +19,7 @@
 namespace clang {
 namespace mrdox {
 
-class Config;
+class ConfigImpl;
 class Reporter;
 
 /** Return a factory used to create our visitor.
@@ -27,7 +27,7 @@ class Reporter;
 std::unique_ptr<tooling::FrontendActionFactory>
 makeFrontendActionFactory(
     tooling::ExecutionContext& exc,
-    Config const& config,
+    ConfigImpl const& config,
     Reporter& R);
 
 } // mrdox
