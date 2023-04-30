@@ -41,15 +41,10 @@ class ConfigImpl;
 class MRDOX_VISIBLE
     Config
 {
-    Config(Config const&) = delete;
-    Config& operator=(Config const&) = delete;
-
 protected:
     Config() noexcept;
 
 public:
-    class Options; // private, but for clang-15 bug
-
     /** A resource for running submitted work, possibly concurrent.
     */
     class WorkGroup;

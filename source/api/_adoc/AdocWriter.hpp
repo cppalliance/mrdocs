@@ -13,6 +13,7 @@
 #define MRDOX_API_ADOC_ADOCWRITER_HPP
 
 #include "Support/SafeNames.hpp"
+#include "Support/YamlFwd.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
@@ -24,9 +25,20 @@ namespace adoc {
 
 class AdocWriter
 {
-    SafeNames const& names_;
+    template<class T>
+    friend struct llvm::yaml::MappingTraits;
 
 protected:
+    struct Options
+    {
+        bool safe_names = false;
+    };
+
+    struct Key;
+    struct GenKey;
+    Options options_;
+    SafeNames const& names_;
+
     struct Section
     {
         int level = 0;
@@ -51,6 +63,8 @@ public:
         SafeNames const& names,
         Corpus const& corpus,
         Reporter& R) noexcept;
+
+    llvm::Error init();
 
     struct FormalParam;
     struct TypeName;

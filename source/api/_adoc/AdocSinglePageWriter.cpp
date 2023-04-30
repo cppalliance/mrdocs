@@ -30,6 +30,8 @@ llvm::Error
 AdocSinglePageWriter::
 build()
 {
+    if(auto Err = AdocWriter::init())
+        return Err;
     Assert(sect_.level == 0);
     sect_.level = 1;
     sect_.markup = "=";

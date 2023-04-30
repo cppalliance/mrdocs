@@ -10,10 +10,88 @@
 //
 
 #include "AdocWriter.hpp"
+#include "ConfigImpl.hpp"
 #include "Support/Validate.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <clang/Basic/Specifiers.h>
+#include <llvm/Support/YAMLParser.h>
+#include <llvm/Support/YAMLTraits.h>
+
+//------------------------------------------------
+//
+// YAML
+//
+//------------------------------------------------
+
+namespace clang {
+namespace mrdox {
+namespace adoc {
+
+struct AdocWriter::Key
+{
+    Options& opt;
+
+    explicit
+    Key(
+        Options& opt_) noexcept
+        : opt(opt_)
+    {
+    }
+};
+
+struct AdocWriter::GenKey
+{
+    Options& opt;
+
+    explicit
+    GenKey(
+        Options& opt_)
+        : opt(opt_)
+    {
+    }
+};
+
+} // adoc
+} // mrdox
+} // clang
+
+template<>
+struct llvm::yaml::MappingTraits<
+    clang::mrdox::adoc::AdocWriter::Key>
+{
+    static void mapping(IO& io,
+        clang::mrdox::adoc::AdocWriter::Key& opt_)
+    {
+        auto& opt= opt_.opt;
+        io.mapOptional("safe-names",  opt.safe_names);
+    }
+};
+
+template<>
+struct llvm::yaml::MappingTraits<
+    clang::mrdox::adoc::AdocWriter::GenKey>
+{
+    static void mapping(IO& io,
+        clang::mrdox::adoc::AdocWriter::GenKey& opt)
+    {
+        clang::mrdox::adoc::AdocWriter::Key k(opt.opt);
+
+        io.mapOptional("adoc",  k);
+    }
+};
+
+template<>
+struct llvm::yaml::MappingTraits<
+    clang::mrdox::adoc::AdocWriter::Options>
+{
+    static void mapping(IO& io,
+        clang::mrdox::adoc::AdocWriter::Options& opt)
+    {
+        clang::mrdox::adoc::AdocWriter::GenKey k(opt);
+        io.mapOptional("generator",  k);
+    }
+};
 
 namespace clang {
 namespace mrdox {
@@ -95,6 +173,32 @@ AdocWriter(
     , corpus_(corpus)
     , R_(R)
 {
+}
+
+llvm::Error
+AdocWriter::
+init()
+{
+    {
+        llvm::yaml::Input yin(
+            corpus_.config()->configYaml().first,
+                this, ConfigImpl::yamlDiagnostic);
+        yin.setAllowUnknownKeys(true);
+        yin >> options_;
+        if(auto ec = yin.error())
+            return makeError(ec);
+    }
+    {
+        llvm::yaml::Input yin(
+            corpus_.config()->configYaml().second,
+                this, ConfigImpl::yamlDiagnostic);
+        yin.setAllowUnknownKeys(true);
+        yin >> options_;
+        if(auto ec = yin.error())
+            return makeError(ec);
+    }
+
+    return llvm::Error::success();
 }
 
 //------------------------------------------------

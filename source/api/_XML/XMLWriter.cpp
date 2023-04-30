@@ -59,8 +59,8 @@ template<>
 struct llvm::yaml::MappingTraits<
     clang::mrdox::xml::XMLWriter::XmlKey>
 {
-    static void mapping(
-        IO& io, clang::mrdox::xml::XMLWriter::XmlKey& opt_)
+    static void mapping(IO& io,
+        clang::mrdox::xml::XMLWriter::XmlKey& opt_)
     {
         auto& opt= opt_.opt;
         io.mapOptional("index",  opt.index);
@@ -72,8 +72,8 @@ template<>
 struct llvm::yaml::MappingTraits<
     clang::mrdox::xml::XMLWriter::GenKey>
 {
-    static void mapping(
-        IO& io, clang::mrdox::xml::XMLWriter::GenKey& opt)
+    static void mapping(IO& io,
+        clang::mrdox::xml::XMLWriter::GenKey& opt)
     {
         clang::mrdox::xml::XMLWriter::XmlKey k(opt.opt);
 
