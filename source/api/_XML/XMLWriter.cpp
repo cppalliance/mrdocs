@@ -60,8 +60,8 @@ build()
 {
     os_ <<
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
-        "<!DOCTYPE mrdox SYSTEM \"mrdox.dtd\">\n" <<
-        "<mrdox>\n";
+        "<mrdox xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+        "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc\">\n";
 
     // VFALCO Do we even need this?
     //writeAllSymbols();

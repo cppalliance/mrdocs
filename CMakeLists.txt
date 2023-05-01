@@ -219,6 +219,16 @@ if (MRDOX_BUILD_TESTS)
         add_custom_target(reference_adoc DEPENDS reference.adoc)
         add_custom_target(reference_xml  DEPENDS reference.xml)
     endif()
+
+    find_package(LibXml2)
+    if (LibXml2_FOUND)
+        file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)
+
+        add_test(NAME xml-lint
+                COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd
+                    --relaxng ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rng ${XML_SOURCES}
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+    endif()
 endif()
 
 #-------------------------------------------------

@@ -5,7 +5,7 @@ import os
 import sys
 
 # You can call this script with a target directory as command line argument.
-# If not, we fallback to the diretory of this script.
+# If not, we fallback to the directory of this script.
 # Within this target diretory, we always add a subdiretory 'py'.
 def ParseTargetDirectory():
     if len(sys.argv) > 1:
