@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
   <struct name="S5" id="HQ5z8M+Q3IIXdW9oiD6jtd0TL94=">
     <file path="record-inheritance.cpp" line="21" class="def"/>
@@ -60,3 +63,4 @@
     <base name="C0" access="private" modifier="virtual" id="sTaqkoFcVbtntbfpe777v5/pWL0="/>
   </class>
 </namespace>
+</mrdox>

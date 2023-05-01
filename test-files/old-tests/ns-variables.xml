@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="ns-variables.cpp" line="7" class="def"/>
@@ -16,3 +19,4 @@
     <type name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
   </variable>
 </namespace>
+</mrdox>

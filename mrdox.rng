@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  convert to mrdox.rng with trang.jar (https://relaxng.org/jclark/trang.html)
+  when commiting beacuse xmllint doesn't understand the compact format
+-->
+<grammar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://relaxng.org/ns/structure/1.0">
+  <start>
+    <element name="mrdox">
+      <optional>
+        <attribute name="xsi:noNamespaceSchemaLocation"/>
+      </optional>
+      <ref name="NamespaceInfo"/>
+    </element>
+  </start>
+  <define name="Id">
+    <attribute name="id"/>
+  </define>
+  <define name="Name">
+    <attribute name="name"/>
+  </define>
+  <define name="Attr">
+    <element name="attr">
+      <ref name="Id"/>
+      <optional>
+        <ref name="Name"/>
+      </optional>
+      <optional>
+        <attribute name="value"/>
+      </optional>
+    </element>
+  </define>
+  <define name="NamespaceInfo">
+    <element name="namespace">
+      <ref name="Name"/>
+      <optional>
+        <ref name="Id"/>
+      </optional>
+      <ref name="Info"/>
+      <optional>
+        <ref name="Javadoc"/>
+      </optional>
+      <ref name="Scope"/>
+    </element>
+  </define>
+  <define name="Symbol">
+    <attribute name="Tag"/>
+    <attribute name="Name"/>
+    <ref name="Id"/>
+  </define>
+  <define name="Symbols">
+    <zeroOrMore>
+      <element name="symbols">
+        <element name="symbol">
+          <ref name="Symbol"/>
+        </element>
+      </element>
+    </zeroOrMore>
+  </define>
+  <define name="SymbolInfo">
+    <ref name="Info"/>
+    <zeroOrMore>
+      <ref name="Location"/>
+    </zeroOrMore>
+  </define>
+  <define name="TemplateParamInfo">
+    <element name="tparam">
+      <attribute name="decl"/>
+    </element>
+  </define>
+  <define name="BaseRecordinfo">
+    <element name="base">
+      <ref name="Name"/>
+      <ref name="Access"/>
+      <optional>
+        <attribute name="modifier">
+          <value>virtual</value>
+        </attribute>
+      </optional>
+      <ref name="Id"/>
+    </element>
+  </define>
+  <define name="RecordInfoContent">
+    <ref name="Name"/>
+    <ref name="Id"/>
+    <zeroOrMore>
+      <choice>
+        <ref name="SymbolInfo"/>
+        <ref name="Attr"/>
+        <ref name="TemplateParamInfo"/>
+        <ref name="BaseRecordinfo"/>
+        <ref name="MemberTypeInfo"/>
+        <element name="friend">
+          <ref name="Id"/>
+        </element>
+        <optional>
+          <ref name="Javadoc"/>
+        </optional>
+        <ref name="Scope"/>
+      </choice>
+    </zeroOrMore>
+  </define>
+  <define name="RecordInfo">
+    <choice>
+      <element name="class">
+        <ref name="RecordInfoContent"/>
+      </element>
+      <element name="struct">
+        <ref name="RecordInfoContent"/>
+      </element>
+      <element name="union">
+        <ref name="RecordInfoContent"/>
+      </element>
+    </choice>
+  </define>
+  <define name="FunctionInfo">
+    <element name="function">
+      <ref name="Name"/>
+      <optional>
+        <ref name="Access"/>
+      </optional>
+      <ref name="Id"/>
+      <zeroOrMore>
+        <choice>
+          <ref name="SymbolInfo"/>
+          <zeroOrMore>
+            <ref name="Attr"/>
+          </zeroOrMore>
+          <element name="return">
+            <attribute name="type"/>
+            <optional>
+              <ref name="Id"/>
+            </optional>
+          </element>
+          <zeroOrMore>
+            <element name="param">
+              <optional>
+                <ref name="Name"/>
+              </optional>
+              <attribute name="type"/>
+              <optional>
+                <attribute name="default"/>
+              </optional>
+              <optional>
+                <ref name="Id"/>
+              </optional>
+            </element>
+          </zeroOrMore>
+          <zeroOrMore>
+            <ref name="TemplateParamInfo"/>
+          </zeroOrMore>
+          <optional>
+            <ref name="Javadoc"/>
+          </optional>
+        </choice>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="TypedefInfo">
+    <choice>
+      <element name="using">
+        <ref name="Name"/>
+        <ref name="Id"/>
+        <ref name="SymbolInfo"/>
+        <element name="type">
+          <ref name="Name"/>
+          <optional>
+            <ref name="Id"/>
+          </optional>
+        </element>
+      </element>
+      <element name="typedef">
+        <ref name="Name"/>
+        <ref name="Id"/>
+        <ref name="SymbolInfo"/>
+        <element name="type">
+          <ref name="Name"/>
+          <optional>
+            <ref name="Id"/>
+          </optional>
+        </element>
+      </element>
+    </choice>
+  </define>
+  <define name="EnumInfo">
+    <element name="enum">
+      <ref name="Name"/>
+      <optional>
+        <attribute name="class">
+          <value>scoped</value>
+        </attribute>
+      </optional>
+      <optional>
+        <attribute name="type"/>
+      </optional>
+      <ref name="Id"/>
+      <ref name="SymbolInfo"/>
+      <zeroOrMore>
+        <element name="element">
+          <ref name="Name"/>
+          <attribute name="Value"/>
+        </element>
+      </zeroOrMore>
+      <optional>
+        <ref name="Javadoc"/>
+      </optional>
+    </element>
+  </define>
+  <define name="VariableInfo">
+    <element name="variable">
+      <ref name="Name"/>
+      <ref name="Id"/>
+      <interleave>
+        <ref name="Location"/>
+        <zeroOrMore>
+          <ref name="Attr"/>
+        </zeroOrMore>
+        <element name="type">
+          <ref name="Name"/>
+          <optional>
+            <ref name="Id"/>
+          </optional>
+        </element>
+        <optional>
+          <ref name="Javadoc"/>
+        </optional>
+      </interleave>
+    </element>
+  </define>
+  <define name="Info">
+    <empty/>
+  </define>
+  <define name="Location">
+    <element name="file">
+      <attribute name="path"/>
+      <attribute name="line"/>
+      <optional>
+        <attribute name="class">
+          <value>def</value>
+        </attribute>
+      </optional>
+      <empty/>
+    </element>
+  </define>
+  <define name="BaseRecordInfo">
+    <element name="base">
+      <ref name="Name"/>
+      <ref name="Access"/>
+      <optional>
+        <attribute name="modifier">
+          <value>virtual</value>
+        </attribute>
+      </optional>
+      <ref name="Id"/>
+    </element>
+  </define>
+  <define name="Access">
+    <attribute name="access">
+      <choice>
+        <value>public</value>
+        <value>private</value>
+        <value>protected</value>
+      </choice>
+    </attribute>
+  </define>
+  <define name="MemberTypeInfo">
+    <element name="data">
+      <ref name="Name"/>
+      <attribute name="type"/>
+      <optional>
+        <attribute name="value"/>
+      </optional>
+      <ref name="Access"/>
+      <optional>
+        <ref name="Id"/>
+      </optional>
+    </element>
+  </define>
+  <define name="StorageClass">
+    <choice>
+      <element name="extern">
+        <empty/>
+      </element>
+      <element name="static">
+        <empty/>
+      </element>
+      <element name="private-extern">
+        <empty/>
+      </element>
+      <element name="sc-auto">
+        <empty/>
+      </element>
+      <element name="sc-register">
+        <empty/>
+      </element>
+    </choice>
+  </define>
+  <define name="Scope">
+    <zeroOrMore>
+      <choice>
+        <ref name="NamespaceInfo"/>
+        <ref name="RecordInfo"/>
+        <ref name="FunctionInfo"/>
+        <ref name="TypedefInfo"/>
+        <ref name="EnumInfo"/>
+        <ref name="VariableInfo"/>
+      </choice>
+    </zeroOrMore>
+  </define>
+  <!-- JavaDoc not in a nested grammar , so we can convert it to a XSD -->
+  <define name="Javadoc">
+    <element name="doc">
+      <optional>
+        <ref name="Brief"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="Node"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="Text">
+    <element name="text">
+      <text/>
+    </element>
+  </define>
+  <define name="Brief">
+    <element name="brief">
+      <zeroOrMore>
+        <ref name="Node"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="Node">
+    <choice>
+      <ref name="Text"/>
+      <ref name="Styled"/>
+      <ref name="Paragraph"/>
+      <ref name="Brief"/>
+      <ref name="Admonition"/>
+      <ref name="Code"/>
+      <ref name="Param"/>
+      <ref name="TParam"/>
+      <ref name="Returns"/>
+    </choice>
+  </define>
+  <define name="Styled">
+    <choice>
+      <element name="none">
+        <text/>
+      </element>
+      <element name="mono">
+        <text/>
+      </element>
+      <element name="bold">
+        <text/>
+      </element>
+      <element name="italic">
+        <text/>
+      </element>
+    </choice>
+  </define>
+  <define name="Paragraph">
+    <element name="para">
+      <optional>
+        <attribute name="class"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="Node"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="Admonition">
+    <ref name="Paragraph"/>
+  </define>
+  <define name="Code">
+    <element name="code">
+      <zeroOrMore>
+        <ref name="Node"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="Param">
+    <element name="param">
+      <optional>
+        <attribute name="name"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="Node"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="TParam">
+    <element name="tparam">
+      <optional>
+        <attribute name="name"/>
+      </optional>
+      <zeroOrMore>
+        <ref name="Node"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="Returns">
+    <element name="returns">
+      <zeroOrMore>
+        <ref name="Node"/>
+      </zeroOrMore>
+    </element>
+  </define>
+</grammar>

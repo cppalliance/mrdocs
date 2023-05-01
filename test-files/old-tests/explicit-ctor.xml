@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
   <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
     <file path="explicit-ctor.cpp" line="17" class="def"/>
@@ -81,3 +84,4 @@
     </function>
   </struct>
 </namespace>
+</mrdox>
