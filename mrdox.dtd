@@ -1,5 +1,0 @@
-<!ELEMENT mrdox (all, namespace)>
-<!ELEMENT all (symbol)>
-<!ATTLIST symbol name usr #REQUIRED>
-<!ELEMENT namespace>
-<!ATTLIST namespace name #REQUIRED>

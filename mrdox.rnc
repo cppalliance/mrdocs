@@ -1,0 +1,182 @@
+# convert to mrdox.rng with trang.jar (https://relaxng.org/jclark/trang.html)
+# when commiting beacuse xmllint doesn't understand the compact format
+
+namespace xsi= "http://www.w3.org/2001/XMLSchema-instance"
+
+grammar {
+    start = element mrdox {
+        attribute xsi:noNamespaceSchemaLocation {text}?,
+        NamespaceInfo
+    }
+    Id   = attribute id { text }
+    Name = attribute name { text }
+    Attr = element attr { Id, Name ?, attribute value { text } ?}
+
+    NamespaceInfo = element namespace {
+            Name,
+            Id?,
+            Info,
+            Javadoc?,
+            Scope
+    }
+
+    Symbol = (
+            attribute Tag { text },
+            attribute Name { text },
+            Id
+       )
+
+    Symbols = element symbols {
+            element symbol { Symbol }
+    }*
+
+    SymbolInfo = (
+        Info,
+        Location *
+    )
+
+    TemplateParamInfo = element tparam { attribute decl { text } }
+
+    BaseRecordinfo = element base {
+        Name, Access, attribute modifier { "virtual" } ?, Id
+    }
+
+    RecordInfoContent = (Name,
+            Id,
+            (SymbolInfo |
+             Attr |
+             TemplateParamInfo |
+             BaseRecordinfo |
+             MemberTypeInfo |
+             element friend { Id } |
+             Javadoc? |
+             Scope)*)
+
+    RecordInfo =
+        element class  { RecordInfoContent } |
+        element struct { RecordInfoContent } |
+        element union  { RecordInfoContent }
+
+    FunctionInfo = element function {
+            Name,
+            Access?,
+            Id,
+            (SymbolInfo |
+             Attr* |
+             element return { attribute type { text }, Id? } |
+             element param {
+                Name?,
+                attribute type { text },
+                attribute default { text } ?,
+                Id?
+             }* |
+             TemplateParamInfo* |
+             Javadoc?)*
+        }
+
+    TypedefInfo = element using
+        {
+            Name, Id,
+            SymbolInfo,
+            element type { Name, Id? }
+        } | element typedef
+        {
+            Name, Id,
+            SymbolInfo,
+            element type { Name, Id? }
+        }
+
+
+    EnumInfo = element enum {
+        Name,
+        attribute class {"scoped"} ?,
+        attribute type { text } ?,
+        Id,
+        SymbolInfo,
+        element \element {
+            Name,
+            attribute Value { text }
+        }*,
+        Javadoc?
+    }
+
+    VariableInfo = element variable {
+            Name,
+            Id,
+            (Location &
+             Attr* &
+             element type { Name, Id? } &
+             Javadoc?)
+        }
+
+    Info  = empty
+
+    Location = element file {
+            attribute path {text},
+            attribute line {text},
+            attribute class {"def"}?,
+            empty}
+
+    BaseRecordInfo = element base {
+        Name,
+        Access,
+        attribute modifier {"virtual"} ?,
+        Id
+    }
+
+    Access = attribute access { "public"|"private"|"protected" }
+
+    MemberTypeInfo = element data {
+        Name,
+        attribute type { text },
+        attribute value { text } ?,
+        Access,
+        Id?
+    }
+
+    StorageClass = (
+        element extern          {empty} |
+        element static          {empty} |
+        element private-extern  {empty} |
+        element sc-auto         {empty} |
+        element sc-register     {empty}
+    )
+
+    Scope = (
+            NamespaceInfo |
+            RecordInfo    |
+            FunctionInfo  |
+            TypedefInfo   |
+            EnumInfo      |
+            VariableInfo)*
+
+    # JavaDoc not in a nested grammar , so we can convert it to a XSD
+
+    Javadoc = element doc {Brief ?, Node* }
+    Text = element text { text }
+    Brief = element brief { Node * }
+    Node = (Text | Styled | Paragraph | Brief | Admonition | Code | Param | TParam | Returns)
+    Styled = (
+        element none { text } |
+        element mono { text } |
+        element bold { text } |
+        element italic { text })
+    Paragraph = element para {
+        attribute class { text } ?,
+        Node*
+    }
+
+    Admonition = Paragraph
+    Code = element code { Node * }
+    Param = element param {
+        attribute name { text } ?,
+        Node*
+    }
+
+    TParam = element tparam {
+        attribute name { text } ?,
+        Node*
+    }
+    Returns = element returns { Node * }
+
+}
