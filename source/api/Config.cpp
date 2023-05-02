@@ -160,7 +160,7 @@ loadConfigFile(
 
     // ensure fileName is a regular file
     fs::file_status stat;
-    if(ec = fs::status(fileName, stat))
+    if((ec = fs::status(fileName, stat)))
         return {};
     if(stat.type() != fs::file_type::regular_file)
     {
@@ -180,7 +180,7 @@ loadConfigFile(
     // calculate the working directory
     llvm::SmallString<64> workingDir(fileName);
     path::remove_filename(workingDir);
-    if(ec = fs::make_absolute(workingDir))
+    if((ec = fs::make_absolute(workingDir)))
         return {};
 
     // attempt to create the config

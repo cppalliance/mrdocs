@@ -195,7 +195,7 @@ visit(
         if(! visit(*I))
             return false;
     for(auto const& I : functionOverloads.list)
-        if(! visit(I))
+        if(! visitOverloads(I))
             return false;
     for(auto const& I : typedefList)
         if(! visit(*I))
@@ -220,7 +220,7 @@ visit(
 
 bool
 AdocSinglePageWriter::
-visit(
+visitOverloads(
     OverloadInfo const& I)
 {
     // this is the "overload resolution landing page"
@@ -268,6 +268,7 @@ visit(
     return true;
 }
 
+#if 0
 bool
 AdocSinglePageWriter::
 visitOverloads(
@@ -281,7 +282,7 @@ visitOverloads(
     // Location
     writeLocation(*I.Functions.front());
 
-    // AnyList of overloads
+    // List of overloads
     os_ << '\n';
     for(auto const I : I.Functions)
     {
@@ -294,7 +295,7 @@ visitOverloads(
     os_ << "\n//-\n";
     writeBrief(I.Functions.front()->javadoc, true);
 
-    // AnyList of descriptions
+    // List of descriptions
     for(auto const I : I.Functions)
     {
         os_ << ". ";
@@ -308,6 +309,7 @@ visitOverloads(
 
     return true;
 }
+#endif
 
 } // adoc
 } // mrdox

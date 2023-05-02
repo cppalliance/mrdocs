@@ -65,10 +65,10 @@ public:
 
     /** Return the Info with the matching ID, or nullptr.
     */
-    /** @{ */
-    MRDOX_DECL virtual Info* find(SymbolID const& id) noexcept = 0;
-    MRDOX_DECL virtual Info const* find(SymbolID const& id) const noexcept = 0;
-    /** @} */
+    MRDOX_DECL
+    virtual
+    Info const*
+    find(SymbolID const& id) const noexcept = 0;
 
     /** Return true if an Info with the specified symbol ID exists.
     */

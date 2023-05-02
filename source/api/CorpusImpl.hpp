@@ -33,6 +33,10 @@ public:
     {
     }
 
+    Info*
+    find(
+        SymbolID const& id) noexcept;
+
 private:
     std::shared_ptr<Config const> const&
     config() const noexcept override
@@ -45,10 +49,6 @@ private:
     {
         return index_;
     }
-
-    Info*
-    find(
-        SymbolID const& id) noexcept override;
 
     Info const*
     find(

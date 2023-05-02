@@ -44,13 +44,13 @@ private:
 
     bool visit(NamespaceInfo const&) override;
     bool visit(RecordInfo const&) override;
-    bool visit(OverloadInfo const&);
+    bool visitOverloads(OverloadInfo const&);
     bool visit(FunctionInfo const&) override;
     bool visit(TypedefInfo const&) override;
     bool visit(EnumInfo const&) override;
     bool visit(VariableInfo const&) override;
 
-    bool visitOverloads(Info const& P, OverloadInfo const&);
+    //bool visitOverloads(Info const& P, OverloadInfo const&);
 };
 
 } // adoc
