@@ -24,6 +24,8 @@ project(
     HOMEPAGE_URL "https://github.com/cppalliance/mrdox"
     LANGUAGES CXX C
 )
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
 
 #set(BUILD_SHARED_LIBS OFF CACHE STRING "")
 #set(CMAKE_CXX_EXTENSIONS OFF CACHE STRING "")
@@ -35,6 +37,8 @@ project(
 
 option(MRDOX_BUILD_TESTS "Build tests" ON)
 option(MRDOX_BUILD_SHARED "Link shared" OFF)
+option(MRDOX_INSTALL "Configure install target" ON)
+option(MRDOX_PACKAGE "Build install package" ON)
 
 if (MRDOX_BUILD_SHARED)
     set(MRDOX_LINK_MODE SHARED)
@@ -100,6 +104,7 @@ target_compile_features(mrdox-api PUBLIC cxx_std_20)
 target_include_directories(mrdox-api
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
     "${PROJECT_SOURCE_DIR}/source/api/"
 )
@@ -185,6 +190,90 @@ target_include_directories(mrdox PRIVATE source/tool)
 
 source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${PROJECT_SOURCE_DIR}/source/mrdox PREFIX "source" FILES ${TOOL_SOURCES})
+
+#-------------------------------------------------
+#
+# Install
+#
+#-------------------------------------------------
+if (MRDOX_INSTALL)
+    # Create and install mrdox-targets.cmake
+    install(TARGETS mrdox-api mrdox
+            EXPORT mrdox-targets
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            )
+
+    install(EXPORT mrdox-targets
+            FILE mrdox-targets.cmake
+            NAMESPACE mrdox::
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
+
+    # Headers
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdox
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+            FILES_MATCHING PATTERN "*.[hic]pp")
+
+    # Set variable where the cmake config is
+    # https://cliutils.gitlab.io/modern-cmake/chapters/install/installing.html
+    set(CONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
+
+    # Create and install mrdox-config-version.cmake
+    if (CMAKE_PROJECT_VERSION VERSION_LESS 1.0.0)
+        set(compatibility_mode SameMajorVersion)
+    else ()
+        set(compatibility_mode SameMinorVersion)
+    endif ()
+    write_basic_package_version_file(
+            mrdox-config-version.cmake
+            VERSION ${PACKAGE_VERSION}
+            COMPATIBILITY ${compatibility_mode})
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mrdox-config-version.cmake
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
+
+    # Create and install mrdox-config.cmake
+    set(INCLUDE_INSTALL_DIR include/)
+    set(LIB_INSTALL_DIR lib/)
+    configure_package_config_file(
+            ${CMAKE_CURRENT_SOURCE_DIR}/mrdox-config.cmake.in # input file
+            ${CMAKE_CURRENT_BINARY_DIR}/mrdox-config.cmake    # output file
+            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox
+            PATH_VARS CMAKE_INSTALL_LIBDIR INCLUDE_INSTALL_DIR LIB_INSTALL_DIR)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mrdox-config.cmake
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
+
+endif ()
+
+
+#-------------------------------------------------
+#
+# Packages
+#
+#-------------------------------------------------
+if (MRDOX_INSTALL AND MRDOX_PACKAGE)
+    # Set the cpack variables
+    # https://cliutils.gitlab.io/modern-cmake/chapters/install/packaging.html
+
+    # The most common cpack variables
+    set(CPACK_PACKAGE_VENDOR "mrdox")
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION})
+    set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+    set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+    set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+    set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
+    set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.adoc")
+
+    # Set CPACK_SOURCE_IGNORE_FILES with files source packages shouldn't install
+    # We get these from .gitignore to avoid redundancy
+    FILE(READ .gitignore GITIGNORE_CONTENTS)
+    STRING(REGEX REPLACE ";" "\\\\;" GITIGNORE_CONTENTS "${GITIGNORE_CONTENTS}")
+    STRING(REGEX REPLACE "\n" ";" GITIGNORE_CONTENTS "${GITIGNORE_CONTENTS}")
+    set(CPACK_SOURCE_IGNORE_FILES ${GITIGNORE_CONTENTS})
+
+    # Always include CPack at last
+    include(CPack)
+endif ()
 
 #-------------------------------------------------
 #
