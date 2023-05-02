@@ -43,7 +43,7 @@ public:
     {
     }
 
-    llvm::Error build();
+    Err build();
 
     template<class T>
     void build(T const& I);

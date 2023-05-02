@@ -20,13 +20,13 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
-llvm::Error
+Err
 AdocPagesBuilder::
 build()
 {
     corpus_.visit(globalNamespaceID, *this);
     wg_.wait();
-    return llvm::Error::success();
+    return {};
 }
 
 template<class T>
@@ -49,7 +49,7 @@ build(
             llvm::raw_fd_ostream os(filePath, ec, fs::CD_CreateAlways);
             if(! R_.error(ec, "open '", filePath, "'"))
             {
-                AdocMultiPageWriter writer(os, &os, corpus_, names_, R_);
+                AdocMultiPageWriter writer(os, corpus_, names_, R_);
                 writer.build(I);
                 if(auto ec = os.error())
                     if(R_.error(ec, "write '", filePath, "'"))

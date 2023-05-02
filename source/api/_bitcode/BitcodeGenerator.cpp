@@ -23,13 +23,13 @@ class MultiFileBuilder : public Corpus::Visitor
 {
     Corpus const& corpus_;
     Reporter& R_;
-    llvm::StringRef outputPath_;
+    std::string_view outputPath_;
     SafeNames names_;
     Config::WorkGroup wg_;
 
 public:
     MultiFileBuilder(
-        llvm::StringRef outputPath,
+        std::string_view outputPath,
         Corpus const& corpus,
         Reporter& R)
         : corpus_(corpus)
@@ -40,12 +40,12 @@ public:
     {
     }
 
-    llvm::Error
+    Err
     build()
     {
         corpus_.visit(globalNamespaceID, *this);
         wg_.wait();
-        return llvm::Error::success();
+        return Err();
     }
 
     template<class T>
@@ -57,7 +57,7 @@ public:
         wg_.post(
             [&]
             {
-                llvm::SmallString<512> filePath = outputPath_;
+                llvm::SmallString<512> filePath(outputPath_);
                 llvm::StringRef name = names_.get(I.id);
                 path::append(filePath, name);
                 filePath.append(".bc");
@@ -112,27 +112,24 @@ class SingleFileBuilder : public Corpus::Visitor
 {
     Corpus const& corpus_;
     Reporter& R_;
-    llvm::raw_ostream& os_;
-    llvm::raw_fd_ostream* fd_os_;
+    std::ostream& os_;
 
 public:
     SingleFileBuilder(
-        llvm::raw_ostream& os,
-        llvm::raw_fd_ostream* fd_os,
+        std::ostream& os,
         Corpus const& corpus,
         Reporter& R)
         : corpus_(corpus)
         , R_(R)
         , os_(os)
-        , fd_os_(fd_os)
     {
     }
 
-    llvm::Error
+    Err
     build()
     {
         corpus_.visit(globalNamespaceID, *this);
-        return llvm::Error::success();
+        return Err();
     }
 
     template<class T>
@@ -176,25 +173,24 @@ public:
 
 //------------------------------------------------
 
-llvm::Error
+Err
 BitcodeGenerator::
-buildPages(
-    llvm::StringRef outputPath,
+build(
+    std::string_view outputPath,
     Corpus const& corpus,
     Reporter& R) const
 {
     return MultiFileBuilder(outputPath, corpus, R).build();
 }
 
-llvm::Error
+Err
 BitcodeGenerator::
-buildSinglePage(
-    llvm::raw_ostream& os,
+buildOne(
+    std::ostream& os,
     Corpus const& corpus,
-    Reporter& R,
-    llvm::raw_fd_ostream* fd_os) const
+    Reporter& R) const
 {
-    return SingleFileBuilder(os, fd_os, corpus, R).build();
+    return SingleFileBuilder(os, corpus, R).build();
 }
 
 } // xml

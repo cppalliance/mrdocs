@@ -46,7 +46,6 @@ protected:
     };
 
     llvm::raw_ostream& os_;
-    llvm::raw_fd_ostream* fd_os_;
     Corpus const& corpus_;
     Reporter& R_;
     Section sect_;
@@ -59,7 +58,6 @@ public:
 
     AdocWriter(
         llvm::raw_ostream& os,
-        llvm::raw_fd_ostream* fd_os,
         SafeNames const& names,
         Corpus const& corpus,
         Reporter& R) noexcept;

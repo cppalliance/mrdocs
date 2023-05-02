@@ -25,29 +25,34 @@ class ConfigImpl
     , public std::enable_shared_from_this<ConfigImpl>
 
 {
-    llvm::ThreadPool mutable threadPool_;
-
-    std::string configYaml_;
-    std::string extraYaml_;
+    //--------------------------------------------
+    //
+    // yaml settings
+    //
 
     struct FileFilter
     {
         std::vector<std::string> include;
     };
 
-    llvm::SmallString<0> workingDir_;
-    llvm::SmallString<0> outputPath_;
-    std::string sourceRoot_;
-    bool includePrivate_ = false;
-    bool singlePage_ = false;
-    bool verbose_ = true;
-
-    std::string fileText_;
-    std::vector<std::string> inputFileIncludes_;
-
     int concurrency_ = 0;
+    std::vector<std::string> additionalDefines_;
+    bool singlePage_ = false;
+    std::string sourceRoot_;
+    bool verbose_ = true;
+    bool includePrivate_ = false;
 
     FileFilter input_;
+
+    //--------------------------------------------
+
+    llvm::ThreadPool mutable threadPool_;
+    std::string configYaml_;
+    std::string extraYaml_;
+    llvm::SmallString<0> workingDir_;
+    llvm::SmallString<0> outputPath_;
+    std::string fileText_;
+    std::vector<std::string> inputFileIncludes_;
 
     friend class Config;
     friend class Options;

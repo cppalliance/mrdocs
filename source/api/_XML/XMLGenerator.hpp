@@ -26,30 +26,29 @@ namespace xml {
 
 struct XMLGenerator : Generator
 {
-    llvm::StringRef
-    name() const noexcept override
+    std::string_view
+    id() const noexcept override
     {
         return "xml";
     }
 
-    llvm::StringRef
+    std::string_view
     displayName() const noexcept override
     {
         return "Extensible Markup Language (XML)";
     }
 
-    llvm::StringRef
-    extension() const noexcept override
+    std::string_view
+    fileExtension() const noexcept override
     {
         return "xml";
     }
 
-    llvm::Error
-    buildSinglePage(
-        llvm::raw_ostream& os,
+    Err
+    buildOne(
+        std::ostream& os,
         Corpus const& corpus,
-        Reporter& R,
-        llvm::raw_fd_ostream* fd_os) const override;
+        Reporter& R) const override;
 };
 
 } // xml

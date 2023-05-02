@@ -139,21 +139,18 @@ toolMain(
         llvm::outs() << "Generating docs...\n";
     if((*corpus)->config()->singlePage())
     {
-        auto err = generator->buildSinglePageFile(
+        auto err = generator->buildOne(
             OutputPath.getValue(), **corpus, R);
-        if(R.error(err,
-            "generate '", OutputPath, "'"))
-        {
-        }
+        if(err)
+            R.print(err.message(), "generate '", OutputPath, "'");
     }
     else
     {
-        auto err = generator->buildPages(
+        auto err = generator->build(
             config->outputPath(), **corpus, R);
-        if(R.error(err,
-            "generate pages in '", OutputPath.getValue(), "'"))
-        {
-        }
+        if(err)
+            R.print(err.message(),
+                "generate pages in '", OutputPath.getValue(), "'");
     }
 }
 

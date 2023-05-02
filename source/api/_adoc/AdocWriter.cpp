@@ -163,13 +163,11 @@ struct AdocWriter::TypeName
 AdocWriter::
 AdocWriter(
     llvm::raw_ostream& os,
-    llvm::raw_fd_ostream* fd_os,
     SafeNames const& names,
     Corpus const& corpus,
     Reporter& R) noexcept
     : names_(names)
     , os_(os)
-    , fd_os_(fd_os)
     , corpus_(corpus)
     , R_(R)
 {

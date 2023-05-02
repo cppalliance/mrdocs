@@ -14,7 +14,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Reporter.hpp>
-#include <clang/Tooling/ArgumentsAdjusters.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
@@ -61,9 +60,8 @@ public:
     verbose() const noexcept = 0;
 
     //
-    // VFALCO these naked data members are temporary...
+    // VFALCO this naked data member are temporary...
     //
-    tooling::ArgumentsAdjuster ArgAdjuster;
     bool IgnoreMappingFailures = false;
 
     /** Call a function for each element of a range.

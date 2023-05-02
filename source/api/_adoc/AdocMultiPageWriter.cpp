@@ -18,11 +18,10 @@ namespace adoc {
 AdocMultiPageWriter::
 AdocMultiPageWriter(
     llvm::raw_ostream& os,
-    llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
     SafeNames const& names,
     Reporter& R) noexcept
-    : AdocWriter(os, fd_os, names, corpus, R)
+    : AdocWriter(os, names, corpus, R)
     , names_(names)
 {
 }

@@ -15,16 +15,24 @@
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
+#include <fstream>
+#include <sstream>
 
 namespace clang {
 namespace mrdox {
 
-Generator::~Generator() noexcept = default;
-
-llvm::Error
 Generator::
-buildPages(
-    llvm::StringRef outputPath,
+~Generator() noexcept = default;
+
+/*  default implementation of this function
+    assumes the output is single page, and emits
+    the file reference.ext using the extension
+    of the generator.
+*/
+Err
+Generator::
+build(
+    std::string_view outputPath,
     Corpus const& corpus,
     Reporter& R) const
 {
@@ -33,9 +41,9 @@ buildPages(
     using SmallString = llvm::SmallString<0>;
 
     SmallString ext(".");
-    ext += extension();
+    ext += fileExtension();
 
-    SmallString fileName = outputPath;
+    SmallString fileName(outputPath);
     if(path::extension(outputPath).compare_insensitive(ext) != 0)
     {
         // directory specified
@@ -43,37 +51,62 @@ buildPages(
         path::replace_extension(fileName, ext);
     }
 
-    std::error_code ec;
-    llvm::raw_fd_ostream os(fileName, ec);
-    if(ec)
-        return makeError("raw_fd_ostream returned ", ec);
-    return buildSinglePage(os, corpus, R, &os);
+    return buildOne(fileName.str(), corpus, R);
 }
 
-llvm::Error
+Err
 Generator::
-buildSinglePageFile(
-    llvm::StringRef filePath,
+buildOne(
+    std::string_view fileName,
     Corpus const& corpus,
     Reporter& R) const
 {
-    std::error_code ec;
-    llvm::raw_fd_ostream os(filePath, ec);
-    if(ec)
-        return makeError("raw_fd_ostream returned ", ec);
-    return buildSinglePage(os, corpus, R, &os);
+    std::ofstream os;
+
+    try
+    {
+        os.open(std::string(fileName),
+            std::ios_base::binary |
+                std::ios_base::out |
+                std::ios_base::trunc // | std::ios_base::noreplace
+            );
+    }
+    catch(std::exception const& ex)
+    {
+        return makeErr("std::ofstream threw ", ex.what());
+    }
+
+    try
+    {
+        return buildOne(os, corpus, R);
+    }
+    catch(std::exception const& ex)
+    {
+        return makeErr("buildOne threw ", ex.what() );
+    }
 }
 
-llvm::Error
+Err
 Generator::
-buildSinglePageString(
+buildOneString(
     std::string& dest,
     Corpus const& corpus,
     Reporter& R) const
 {
     dest.clear();
-    llvm::raw_string_ostream os(dest);
-    return buildSinglePage(os, corpus, R);
+    std::stringstream ss;
+    try
+    {
+        auto err = buildOne(ss, corpus, R);
+        if(err)
+            return err;
+        dest = std::move(ss.str());
+        return {};
+    }
+    catch(std::exception const& ex)
+    {
+        return makeErr("buildOne threw ", ex.what() );
+    }
 }
 
 } // mrdox

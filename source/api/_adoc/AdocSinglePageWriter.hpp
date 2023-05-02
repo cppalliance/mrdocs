@@ -28,11 +28,10 @@ class AdocSinglePageWriter
 public:
     AdocSinglePageWriter(
         llvm::raw_ostream& os,
-        llvm::raw_fd_ostream* fd_os,
         Corpus const& corpus,
         Reporter& R) noexcept;
 
-    llvm::Error build();
+    Err build();
 
 private:
     /** Return an array of info pointers display-sorted by symbol.

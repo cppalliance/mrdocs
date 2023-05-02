@@ -205,7 +205,7 @@ handleFile(
     path::remove_filename(dirPath);
 
     SmallString outputPath = filePath;
-    path::replace_extension(outputPath, xmlGen_->extension());
+    path::replace_extension(outputPath, xmlGen_->fileExtension());
 
     // Build Corpus
     std::unique_ptr<Corpus> corpus;
@@ -224,7 +224,7 @@ handleFile(
     // Generate XML
     std::string generatedXml;
     if(R_.error(
-        xmlGen_->buildSinglePageString(generatedXml, *corpus, R_),
+        xmlGen_->buildOneString(generatedXml, *corpus, R_),
         "build XML string for '", filePath, "'"))
     {
         results_.numberOfErrors++;
@@ -303,9 +303,9 @@ handleFile(
     // Write Asciidoc if requested
     if(options_.adocOption.getValue())
     {
-        path::replace_extension(outputPath, adocGen_->extension());
+        path::replace_extension(outputPath, adocGen_->fileExtension());
         if(R_.error(
-            adocGen_->buildSinglePageFile(outputPath, *corpus, R_),
+            adocGen_->buildOne(outputPath.str(), *corpus, R_),
             "write '", outputPath, "'"))
             return llvm::Error::success(); // keep going
     }

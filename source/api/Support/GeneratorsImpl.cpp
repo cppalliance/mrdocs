@@ -26,6 +26,9 @@ extern
 std::unique_ptr<Generator>
 makeXMLGenerator();
 
+Generators::
+~Generators() noexcept = default;
+
 void
 GeneratorsImpl::
 refresh_plist()
@@ -47,10 +50,10 @@ GeneratorsImpl()
 Generator const*
 GeneratorsImpl::
 find(
-    llvm::StringRef name) const noexcept
+    std::string_view id) const noexcept
 {
     for(std::size_t i = 0; i < list_.size(); ++i)
-        if(list_[i]->name() == name)
+        if(list_[i]->id() == id)
             return list_[i].get();
     return nullptr;
 }
@@ -60,8 +63,8 @@ GeneratorsImpl::
 insert(
     std::unique_ptr<Generator> G)
 {
-    if(find(G->name()) != nullptr)
-        return makeError("generator '", G->name(), "' already exists");
+    if(find(G->id()) != nullptr)
+        return makeError("generator id = '", G->id(), "' already exists");
     list_.emplace_back(std::move(G));
     refresh_plist();
     return llvm::Error::success();

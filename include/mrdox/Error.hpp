@@ -17,9 +17,39 @@
 #include <llvm/Support/raw_ostream.h>
 #include <source_location>
 #include <string>
+#include <string_view>
+#include <utility>
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
+
+class Err
+{
+    std::string text_;
+
+public:
+    Err() = default;
+
+    explicit
+    Err(std::string text)
+        : text_(std::move(text))
+    {
+    }
+
+    explicit
+    operator bool() const noexcept
+    {
+        return ! text_.empty();
+    }
+
+    std::string_view
+    message() const noexcept
+    {
+        return text_;
+    }
+};
 
 //------------------------------------------------
 /*
@@ -50,6 +80,11 @@ auto nice(llvm::Expected<T>&& e)
 inline auto nice(std::error_code ec)
 {
     return ec.message();
+}
+
+inline auto nice(Err e)
+{
+    return e.message();
 }
 
 template<class T>
@@ -103,6 +138,19 @@ struct makeError : llvm::Error
 
 template<class Arg0, class... Args>
 makeError(Arg0&&, Args&&...) -> makeError<Arg0, Args...>;
+
+template<class... Args>
+Err makeErr(Args&&... args)
+{
+    auto err = makeError(std::forward<Args>(args)...);
+    if(! err)
+        return Err();
+    std::string s;
+    llvm::raw_string_ostream os(s);
+    os << err;
+    return Err(s.c_str());
+}
+
 
 } // mrdox
 } // clang

@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_GENERATORSIMPL_HPP
-#define MRDOX_API_GENERATORSIMPL_HPP
+#ifndef MRDOX_API_SUPPORT_GENERATORSIMPL_HPP
+#define MRDOX_API_SUPPORT_GENERATORSIMPL_HPP
 
 #include <mrdox/Error.hpp>
 #include <mrdox/Platform.hpp>
@@ -49,7 +49,7 @@ public:
 
     Generator const*
     find(
-        llvm::StringRef name) const noexcept override;
+        std::string_view name) const noexcept override;
 
     /** Insert a generator
     */

@@ -16,6 +16,7 @@
 #include "Metadata/Reduce.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
+#include <clang/Tooling/ArgumentsAdjusters.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Bitstream/BitstreamReader.h>
 #include <llvm/Support/Mutex.h>
@@ -292,6 +293,9 @@ build(
 {
     auto corpus = std::make_unique<CorpusImpl>(std::move(config));
 
+    // VFALCO TODO Fill this out
+    tooling::ArgumentsAdjuster ArgAdjuster;
+
     // Traverse the AST for all translation units
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
@@ -301,7 +305,7 @@ build(
         makeFrontendActionFactory(
             *ex.getExecutionContext(),
             *dynamic_cast<ConfigImpl const*>(corpus->config().get()), R),
-        corpus->config()->ArgAdjuster))
+        ArgAdjuster))
     {
         if(! corpus->config()->IgnoreMappingFailures)
             return err;

@@ -27,36 +27,35 @@ class AdocGenerator
     struct SinglePageBuilder;
 
 public:
-    llvm::StringRef
-    name() const noexcept override
+    std::string_view
+    id() const noexcept override
     {
         return "adoc";
     }
 
-    llvm::StringRef
+    std::string_view
     displayName() const noexcept override
     {
         return "Asciidoc";
     }
 
-    llvm::StringRef
-    extension() const noexcept override
+    std::string_view
+    fileExtension() const noexcept override
     {
         return "adoc";
     }
 
-    llvm::Error
-    buildPages(
-        llvm::StringRef outputPath,
+    Err
+    build(
+        std::string_view outputPath,
         Corpus const& corpus,
         Reporter& R) const override;
 
-    llvm::Error
-    buildSinglePage(
-        llvm::raw_ostream& os,
+    Err
+    buildOne(
+        std::ostream& os,
         Corpus const& corpus,
-        Reporter& R,
-        llvm::raw_fd_ostream* fd_os) const override;
+        Reporter& R) const override;
 };
 
 } // adoc

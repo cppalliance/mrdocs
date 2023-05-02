@@ -15,6 +15,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Scope.hpp>
+#include <llvm/ADT/StringRef.h>
 
 namespace clang {
 namespace mrdox {

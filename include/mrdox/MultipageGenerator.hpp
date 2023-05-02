@@ -12,74 +12,29 @@
 // Generator classes for converting declaration
 // information into documentation in a specified format.
 
-#ifndef MRDOX_GENERATOR_HPP
-#define MRDOX_GENERATOR_HPP
+#ifndef MRDOX_MULTIPAGE_GENERATOR_HPP
+#define MRDOX_MULTIPAGE_GENERATOR_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Config.hpp>
-#include <mrdox/Corpus.hpp>
-#include <mrdox/Reporter.hpp>
-#include <ostream>
-#include <string>
-#include <string_view>
+#include <mrdox/Generator.hpp>
 
 namespace clang {
 namespace mrdox {
 
-/** Base class for documentation generators.
+/** Base class for generators that emit multi-page output.
+
+    Subclasses are capable of both single-page and
+    multi-page output.
 */
 class MRDOX_VISIBLE
-    Generator
+    MultipageGenerator : public Generator
 {
 public:
-    /** Destructor.
-    */
-    MRDOX_DECL
-    virtual
-    ~Generator() noexcept;
+    /** Build multi-page documentation from the corpus and configuration.
 
-    /** Return the symbolic name of the generator.
-
-        This is a short, unique string which identifies
-        the generator in command line options and in
-        configuration files.
-    */
-    MRDOX_DECL
-    virtual
-    std::string_view
-    id() const noexcept = 0;
-
-    /** Return the display name of the generator.
-    */
-    MRDOX_DECL
-    virtual
-    std::string_view
-    displayName() const noexcept = 0;
-
-    /** Return the extension or tag of the generator.
-
-        This should be in all lower case. Examples
-        of tags are:
-
-        @li "adoc" Asciidoctor
-        @li "xml" XML
-
-        The returned string should not include
-        a leading period.
-    */
-    MRDOX_DECL
-    virtual
-    std::string_view
-    fileExtension() const noexcept = 0;
-
-    /** Build reference documentation for the corpus.
-
-        This function invokes the generator to emit
-        the documentation using @ref outputPath as
-        a parameter indicating where the output should
-        go. This can be a directory or a filename
-        depending on the generator and how it is
-        configured.
+        @par Thread Safety
+        @li Different `corpus` object: may be called concurrently.
+        @li Same `corpus` object: may not be called concurrently.
 
         @return The error, if any occurred.
 
@@ -97,17 +52,13 @@ public:
     */
     MRDOX_DECL
     virtual
-    Err
-    build(
-        std::string_view outputPath,
+    llvm::Error
+    buildPages(
+        llvm::StringRef outputPath,
         Corpus const& corpus,
         Reporter& R) const;
 
-    /** Build reference documentation for the corpus.
-
-        This function invokes the generator to emit
-        the full documentation to an output stream,
-        as a single entity.
+    /** Build the reference as a single page to an output stream.
 
         @par Thread Safety
         @li Different `corpus` object: may be called concurrently.
@@ -120,14 +71,20 @@ public:
         @param corpus The metadata to emit.
 
         @param R The diagnostic reporting object to use.
+
+        @param fd_os A pointer to an optional, file-based
+            output stream. If this is not null, the function
+            fd_os->error() will be called periodically and
+            the result returend if an error is indicated.
     */
     MRDOX_DECL
     virtual
-    Err
-    buildOne(
-        std::ostream& os,
+    llvm::Error
+    buildSinglePage(
+        llvm::raw_ostream& os,
         Corpus const& corpus,
-        Reporter& R) const = 0;
+        Reporter& R,
+        llvm::raw_fd_ostream* fd_os = nullptr) const = 0;
 
     /** Build the reference as a single page to a file.
 
@@ -137,7 +94,7 @@ public:
 
         @return The error, if any occurred.
 
-        @param fileName The file to write. If the
+        @param filePath The file to write. If the
         file already exists, it will be overwritten.
 
         @param corpus The metadata to emit.
@@ -145,13 +102,17 @@ public:
         @param R The diagnostic reporting object to use.
     */
     MRDOX_DECL
-    Err
-    buildOne(
-        std::string_view fileName,
+    llvm::Error
+    buildSinglePageFile(
+        llvm::StringRef filePath,
         Corpus const& corpus,
         Reporter& R) const;
 
     /** Build the reference as a single page to a string.
+
+        @par Thread Safety
+        @li Different `corpus` object: may be called concurrently.
+        @li Same `corpus` object: may not be called concurrently.
 
         @return The error, if any occurred.
 
@@ -164,8 +125,8 @@ public:
         @param R The diagnostic reporting object to use.
     */
     MRDOX_DECL
-    Err
-    buildOneString(
+    llvm::Error
+    buildSinglePageString(
         std::string& dest,
         Corpus const& corpus,
         Reporter& R) const;

@@ -106,18 +106,16 @@ namespace xml {
 XMLWriter::
 XMLWriter(
     llvm::raw_ostream& os,
-    llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
     Reporter& R) noexcept
     : tags_(os)
     , os_(os)
-    , fd_os_(fd_os)
     , corpus_(corpus)
     , R_(R)
 {
 }
 
-llvm::Error
+Err
 XMLWriter::
 build()
 {
@@ -128,7 +126,7 @@ build()
         yin.setAllowUnknownKeys(true);
         yin >> options_;
         if(auto ec = yin.error())
-            return makeError(ec);
+            return makeErr(ec);
     }
     {
         llvm::yaml::Input yin(
@@ -137,7 +135,7 @@ build()
         yin.setAllowUnknownKeys(true);
         yin >> options_;
         if(auto ec = yin.error())
-            return makeError(ec);
+            return makeErr(ec);
     }
 
     if(options_.prolog)
@@ -150,16 +148,12 @@ build()
         writeIndex();
 
     if(! corpus_.visit(globalNamespaceID, *this))
-    {
-        if(fd_os_ && fd_os_->error())
-            return makeError("raw_fd_ostream returned ", fd_os_->error());
-        return makeError("visit failed");
-    }
+        return makeErr("visit failed");
 
     if(options_.prolog)
         os_ << "</mrdox>\n";
 
-    return llvm::Error::success();
+    return {};
 }
 
 //------------------------------------------------
@@ -222,9 +216,6 @@ XMLWriter::
 visit(
     NamespaceInfo const& I)
 {
-    if(fd_os_ && fd_os_->error())
-        return false;
-
     tags_.open(namespaceTagName, {
         { "name", I.Name },
         { I.id }
@@ -249,9 +240,6 @@ XMLWriter::
 visit(
     RecordInfo const& I)
 {
-    if(fd_os_ && fd_os_->error())
-        return false;
-
     llvm::StringRef tagName;
     switch(I.TagType)
     {
@@ -301,9 +289,6 @@ XMLWriter::
 visit(
     FunctionInfo const& I)
 {
-    if(fd_os_ && fd_os_->error())
-        return false;
-
     tags_.open(functionTagName, {
         { "name", I.Name },
         { I.Access },
@@ -337,9 +322,6 @@ XMLWriter::
 visit(
     TypedefInfo const& I)
 {
-    if(fd_os_ && fd_os_->error())
-        return false;
-
     llvm::StringRef tag;
     if(I.IsUsing)
         tag = "using";
@@ -368,9 +350,6 @@ XMLWriter::
 visit(
     EnumInfo const& I)
 {
-    if(fd_os_ && fd_os_->error())
-        return false;
-
     tags_.open("enum", {
         { "name", I.Name },
         { "class", "scoped", I.Scoped },
@@ -398,9 +377,6 @@ XMLWriter::
 visit(
     VariableInfo const& I)
 {
-    if(fd_os_ && fd_os_->error())
-        return false;
-
     tags_.open("variable", {
         { "name", I.Name },
         { I.id }

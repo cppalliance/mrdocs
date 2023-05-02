@@ -18,20 +18,19 @@ namespace adoc {
 AdocSinglePageWriter::
 AdocSinglePageWriter(
     llvm::raw_ostream& os,
-    llvm::raw_fd_ostream* fd_os,
     Corpus const& corpus,
     Reporter& R) noexcept
-    : AdocWriter(os, fd_os, names_, corpus, R)
+    : AdocWriter(os, names_, corpus, R)
     , names_(os, corpus)
 {
 }
 
-llvm::Error
+Err
 AdocSinglePageWriter::
 build()
 {
-    if(auto Err = AdocWriter::init())
-        return Err;
+    if(auto E = AdocWriter::init())
+        return makeErr("init failed");
     Assert(sect_.level == 0);
     sect_.level = 1;
     sect_.markup = "=";
@@ -40,7 +39,7 @@ build()
         ":role: mrdox\n";
     corpus_.visit(globalNamespaceID, *this);
     endSection();
-    return llvm::Error::success();
+    return {};
 }
 
 //------------------------------------------------

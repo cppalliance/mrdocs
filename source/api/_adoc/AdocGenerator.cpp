@@ -13,6 +13,7 @@
 #include "AdocMultiPageWriter.hpp"
 #include "AdocPagesBuilder.hpp"
 #include "AdocSinglePageWriter.hpp"
+#include "Support/RawOstream.hpp"
 #include "Support/SafeNames.hpp"
 
 namespace clang {
@@ -25,25 +26,25 @@ namespace adoc {
 //
 //------------------------------------------------
 
-llvm::Error
+Err
 AdocGenerator::
-buildPages(
-    llvm::StringRef outputPath,
+build(
+    std::string_view outputPath,
     Corpus const& corpus,
     Reporter& R) const
 {
-    return AdocPagesBuilder(outputPath, corpus, R).build();
+    return AdocPagesBuilder(llvm::StringRef(outputPath), corpus, R).build();
 }
 
-llvm::Error
+Err
 AdocGenerator::
-buildSinglePage(
-    llvm::raw_ostream& os,
+buildOne(
+    std::ostream& os,
     Corpus const& corpus,
-    Reporter& R,
-    llvm::raw_fd_ostream* fd_os) const
+    Reporter& R) const
 {
-    return AdocSinglePageWriter(os, fd_os, corpus, R).build();
+    RawOstream raw_os(os);
+    return AdocSinglePageWriter(raw_os, corpus, R).build();
 }
 
 } // adoc

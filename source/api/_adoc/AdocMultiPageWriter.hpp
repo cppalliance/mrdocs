@@ -27,7 +27,6 @@ class AdocMultiPageWriter
 public:
     AdocMultiPageWriter(
         llvm::raw_ostream& os,
-        llvm::raw_fd_ostream* fd_os,
         Corpus const& corpus,
         SafeNames const& names,
         Reporter& R) noexcept;

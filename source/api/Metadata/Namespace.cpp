@@ -32,7 +32,7 @@ NamespaceInfo()
 NamespaceInfo::
 NamespaceInfo(
     SymbolID USR,
-    StringRef Name)
+    llvm::StringRef Name)
     : Info(InfoType::IT_namespace, USR, Name)
     , Children(true)
 {

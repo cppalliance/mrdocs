@@ -132,6 +132,11 @@ private:
         return ! e.operator bool();
     }
 
+    static bool isFailure(Err const& e) noexcept
+    {
+        return e.operator bool();
+    }
+
     static bool isFailure(llvm::Error&& e) noexcept
     {
         return e.operator bool();

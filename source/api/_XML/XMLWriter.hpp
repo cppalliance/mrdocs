@@ -36,7 +36,6 @@ class XMLWriter
 protected:
     XMLTags tags_;
     llvm::raw_ostream& os_;
-    llvm::raw_fd_ostream* fd_os_;
     Corpus const& corpus_;
     Reporter& R_;
 
@@ -52,11 +51,10 @@ protected:
 public:
     XMLWriter(
         llvm::raw_ostream& os,
-        llvm::raw_fd_ostream* fd_os,
         Corpus const& corpus,
         Reporter& R) noexcept;
 
-    llvm::Error build();
+    Err build();
 
 private:
     void writeIndex();

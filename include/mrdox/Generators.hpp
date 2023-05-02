@@ -13,8 +13,8 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Generator.hpp>
-#include <llvm/ADT/StringRef.h>
 #include <cstdint>
+#include <string_view>
 
 namespace clang {
 namespace mrdox {
@@ -24,9 +24,6 @@ namespace mrdox {
 class MRDOX_VISIBLE
     Generators
 {
-    Generators(Generators const&) = delete;
-    Generators& operator=(Generators const&) = delete;
-
 protected:
     Generators() noexcept = default;
 
@@ -43,7 +40,7 @@ public:
     */
     MRDOX_DECL
     virtual
-    ~Generators() = default;
+    ~Generators() noexcept;
 
     /** Return an iterator to the beginning.
     */
@@ -70,7 +67,7 @@ public:
     virtual
     Generator const*
     find(
-        llvm::StringRef name) const noexcept = 0;
+        std::string_view name) const noexcept = 0;
 };
 
 /** Return a reference to the global Generators instance.
