@@ -3,6 +3,7 @@
 import exrex
 import os
 import sys
+import math
 
 # You can call this script with a target directory as command line argument.
 # If not, we fallback to the directory of this script.
@@ -116,8 +117,12 @@ class C;\nusing MemFnPtr = char\(C::\*\)\(int\) const&;\nconst MemFnPtr& f\(MemF
 
 def GenerateIndexedCppFiles(parentDirectory, fileContents):
     os.makedirs(parentDirectory, exist_ok=True)
-    for index, aDeclaration in enumerate(fileContents):
-        fileName = str(index) + ".cpp"
+    contents = list(fileContents)
+    max_len = int(math.log10(len(contents))) + 1
+    name_fmt = f"{{:->{max_len}}}.cpp"
+
+    for index, aDeclaration in enumerate(contents):
+        fileName = name_fmt.format(index)
         filePath = os.path.join(parentDirectory, fileName)
         with open(filePath, "w") as f:
             f.write(aDeclaration)
