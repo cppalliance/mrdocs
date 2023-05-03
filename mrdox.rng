@@ -157,7 +157,7 @@
   </define>
   <define name="TypedefInfo">
     <choice>
-      <element name="using">
+      <element name="alias">
         <ref name="Name"/>
         <ref name="Id"/>
         <ref name="SymbolInfo"/>

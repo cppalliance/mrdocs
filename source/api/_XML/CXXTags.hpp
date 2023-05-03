@@ -16,7 +16,9 @@
 #include "Support/Operator.hpp"
 #include <clang/AST/Attr.h>
 #include <mrdox/Metadata/Function.hpp>
+#include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Type.hpp>
+#include <mrdox/Metadata/Variable.hpp>
 
 /*
     This file holds the business logic for transforming
@@ -34,12 +36,16 @@ constexpr llvm::StringRef structTagName     = "struct";
 constexpr llvm::StringRef unionTagName      = "union";
 constexpr llvm::StringRef functionTagName   = "function";
 constexpr llvm::StringRef typedefTagName    = "typedef";
-constexpr llvm::StringRef usingTagName      = "using";
+constexpr llvm::StringRef aliasTagName      = "alias";
 constexpr llvm::StringRef enumTagName       = "enum";
 constexpr llvm::StringRef variableTagName   = "variable";
 constexpr llvm::StringRef attributeTagName  = "attr";
 constexpr llvm::StringRef returnTagName     = "return";
 constexpr llvm::StringRef paramTagName      = "param";
+constexpr llvm::StringRef friendTagName     = "friend";
+constexpr llvm::StringRef tparamTagName     = "tparam";
+constexpr llvm::StringRef dataMemberTagName = "data";
+constexpr llvm::StringRef javadocTagName    = "doc";
 
 constexpr llvm::StringRef getBitsIDName(RecFlags0 ID)
 {
@@ -294,6 +300,11 @@ inline void writeParam(FieldTypeInfo const& I, XMLTags& tags)
         { "default", I.DefaultValue, ! I.DefaultValue.empty() },
         { I.Type.id } });
 }
+
+/** Return the xml tag name for the Info.
+*/
+llvm::StringRef
+getTagName(Info const& I) noexcept;
 
 } // xml
 } // mrdox

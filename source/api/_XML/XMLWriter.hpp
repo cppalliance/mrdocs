@@ -72,7 +72,6 @@ private:
     void writeBaseRecord(BaseRecordInfo const& I);
     void writeTemplateParam(TemplateParamInfo const& I);
     void writeMemberType(MemberTypeInfo const& I);
-    void writeStorageClass(jit_indenter&, StorageClass SC);
     void writeJavadoc(llvm::Optional<Javadoc> const& javadoc);
 
     template<class T>
