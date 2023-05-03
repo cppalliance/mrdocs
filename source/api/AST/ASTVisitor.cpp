@@ -60,6 +60,25 @@ struct SerializeResult
 };
 
 //------------------------------------------------
+//
+// ASTVisitor
+//
+//------------------------------------------------
+
+ASTVisitor::
+ASTVisitor(
+    tooling::ExecutionContext& ex,
+    ConfigImpl const& config,
+    Reporter& R) noexcept
+    : ex_(ex)
+    , config_(config)
+    , R_(R)
+    , PublicOnly(! config_.includePrivate_)
+    , IsFileInRootDir(true)
+{
+}
+
+//------------------------------------------------
 
 // Function to hash a given USR value for storage.
 // As USRs (Unified Symbol Resolution) could be

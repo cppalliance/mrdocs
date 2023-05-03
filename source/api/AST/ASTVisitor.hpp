@@ -50,13 +50,14 @@ public:
     tooling::ExecutionContext& ex_;
     ConfigImpl const& config_;
     Reporter& R_;
-    ASTContext* astContext_;
-    clang::SourceManager const* sourceManager_;
 
     StringRef File;
     int LineNumber;
     bool PublicOnly;
     bool IsFileInRootDir;
+
+    ASTContext* astContext_;
+    clang::SourceManager const* sourceManager_;
     std::unordered_map<
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
@@ -65,12 +66,7 @@ public:
     ASTVisitor(
         tooling::ExecutionContext& ex,
         ConfigImpl const& config,
-        Reporter& R) noexcept
-        : ex_(ex)
-        , config_(config)
-        , R_(R)
-    {
-    }
+        Reporter& R) noexcept;
 
 private:
     SerializeResult build(NamespaceDecl*   D);
