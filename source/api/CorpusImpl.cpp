@@ -226,7 +226,7 @@ canonicalize(
 {
     if(isCanonical_)
         return;
-    if(config_->verbose())
+    if(config_->verboseOutput)
         R.print("Canonicalizing...");
     Canonicalizer cn(*this, R);
     visit(globalNamespaceID, cn);

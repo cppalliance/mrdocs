@@ -44,11 +44,13 @@ struct llvm::yaml::MappingTraits<
     static void mapping(
         IO& io, clang::mrdox::ConfigImpl& cfg)
     {
+        io.mapOptional("ignore-failures", cfg.ignoreFailures);
+        io.mapOptional("verbose",         cfg.verboseOutput);
+
         io.mapOptional("concurrency",  cfg.concurrency_);
         io.mapOptional("defines",      cfg.additionalDefines_);
         io.mapOptional("single-page",  cfg.singlePage_);
         io.mapOptional("source-root",  cfg.sourceRoot_);
-        io.mapOptional("verbose",      cfg.verbose_);
         io.mapOptional("with-private", cfg.includePrivate_);
 
         io.mapOptional("input",        cfg.input_);
@@ -64,8 +66,8 @@ llvm::Error
 ConfigImpl::
 construct(
     llvm::StringRef workingDir,
-    llvm::StringRef configYaml,
-    llvm::StringRef extraYaml)
+    llvm::StringRef configYamlStr,
+    llvm::StringRef extraYamlStr)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -86,10 +88,13 @@ construct(
     convert_to_slash(s);
     workingDir_ = s;
 
-    configYaml_ = configYaml;
-    extraYaml_ = extraYaml;
+    configYamlStr_ = configYamlStr;
+    extraYamlStr_ = extraYamlStr;
 
-    // Read the YAML strings
+    configYaml = configYamlStr_;
+    extraYaml = extraYamlStr_;
+
+    // Parse the YAML strings
     {
         llvm::yaml::Input yin(configYaml, this, yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
@@ -203,7 +208,7 @@ createConfigFromYAML(
     llvm::StringRef configYaml,
     llvm::StringRef extraYaml) ->
         llvm::ErrorOr<std::shared_ptr<
-            Config const>>
+            ConfigImpl const>>
 {
     namespace path = llvm::sys::path;
 
@@ -215,6 +220,69 @@ createConfigFromYAML(
             std::errc::invalid_argument);
 
     return config;
+}
+
+std::shared_ptr<ConfigImpl const>
+loadConfigFile(
+    std::string_view fileName,
+    std::string_view extraYaml,
+    std::error_code& ec)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    // ensure fileName is a regular file
+    fs::file_status stat;
+    if((ec = fs::status(fileName, stat)))
+        return {};
+    if(stat.type() != fs::file_type::regular_file)
+    {
+        ec = std::make_error_code(
+            std::errc::invalid_argument);
+        return {};
+    }
+
+    // load the file into a string
+    auto fileText = llvm::MemoryBuffer::getFile(fileName);
+    if(! fileText)
+    {
+        ec = fileText.getError();
+        return {};
+    }
+
+    // calculate the working directory
+    llvm::SmallString<64> workingDir(fileName);
+    path::remove_filename(workingDir);
+    if((ec = fs::make_absolute(workingDir)))
+        return {};
+
+    // attempt to create the config
+    auto result = createConfigFromYAML(
+        workingDir, (*fileText)->getBuffer(), extraYaml);
+
+    if(! result)
+    {
+        ec = result.getError();
+        return {};
+    }
+    return result.get();
+}
+
+std::shared_ptr<ConfigImpl const>
+loadConfigString(
+    std::string_view workingDir,
+    std::string_view configYaml,
+    std::error_code& ec)
+{
+    auto result = createConfigFromYAML(
+        workingDir, configYaml, "");
+    if(! result)
+    {
+        ec = result.getError();
+        return {};
+    }
+    ec = {};
+    return result.get();
 }
 
 } // mrdox

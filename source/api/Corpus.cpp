@@ -312,14 +312,14 @@ build(
     // Traverse the AST for all translation units
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
-    if(corpus->config().verbose())
+    if(corpus->config.verboseOutput)
         R.print("Mapping declarations");
     if(auto err = ex.execute(
         makeFrontendActionFactory(
             *ex.getExecutionContext(), *config, R),
         ArgAdjuster))
     {
-        if(! corpus->config().IgnoreMappingFailures)
+        if(! corpus->config.ignoreFailures)
             return err;
         R.print("warning: mapping failed because ", toString(std::move(err)));
     }
@@ -337,16 +337,16 @@ build(
     // Collect the symbols. Each symbol will have
     // a vector of one or more bitcodes. These will
     // be merged later.
-    if(corpus->config().verbose())
+    if(corpus->config.verboseOutput)
         R.print("Collecting symbols");
     auto bitcodes = collectBitcodes(ex);
 
     // First reducing phase (reduce all decls into one info per decl).
-    if(corpus->config().verbose())
+    if(corpus->config.verboseOutput)
         R.print("Reducing ", bitcodes.size(), " declarations");
     std::atomic<bool> GotFailure;
     GotFailure = false;
-    corpus->config().parallelForEach(
+    corpus->config.parallelForEach(
         bitcodes,
         [&](auto& Group)
         {
@@ -380,7 +380,7 @@ build(
             corpus->insert(std::move(I));
         });
 
-    if(corpus->config().verbose())
+    if(corpus->config.verboseOutput)
         R.print("Collected ", corpus->InfoMap.size(), " symbols.\n");
 
     if(GotFailure)

@@ -13,6 +13,7 @@
 
 #include "ConfigImpl.hpp"
 #include <mrdox/Corpus.hpp>
+#include <llvm/ADT/StringMap.h>
 #include <string>
 
 namespace clang {
@@ -28,7 +29,8 @@ public:
     explicit
     CorpusImpl(
         std::shared_ptr<ConfigImpl const> config) noexcept
-        : config_(std::move(config))
+        : Corpus(*config)
+        , config_(std::move(config))
     {
     }
 
@@ -37,12 +39,6 @@ public:
         SymbolID const& id) noexcept;
 
 private:
-    Config const&
-    config() const noexcept override
-    {
-        return *config_;
-    }
-
     std::vector<Info const*> const&
     index() const noexcept override
     {

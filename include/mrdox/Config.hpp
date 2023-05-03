@@ -14,9 +14,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Reporter.hpp>
-#include <llvm/ADT/SmallString.h>
-#include <llvm/ADT/StringRef.h>
-#include <llvm/Support/Error.h>
 #include <functional>
 #include <memory>
 #include <string_view>
@@ -54,16 +51,6 @@ public:
     virtual
     ~Config() noexcept = 0;
 
-    /** Return true if tool output should be verbose.
-    */
-    MRDOX_DECL virtual bool
-    verbose() const noexcept = 0;
-
-    //
-    // VFALCO this naked data member are temporary...
-    //
-    bool IgnoreMappingFailures = false;
-
     /** Call a function for each element of a range.
 
         The function is invoked with a reference
@@ -81,39 +68,42 @@ public:
 
     //--------------------------------------------
     //
-    // Observers
+    // YAML
     //
     //--------------------------------------------
 
-    MRDOX_DECL virtual std::string_view outputPath() const noexcept = 0;
-    MRDOX_DECL virtual std::string_view sourceRoot() const noexcept = 0;
-    MRDOX_DECL virtual bool singlePage() const noexcept = 0;
+    /** `true` if AST visitation failures should not stop the program.
 
-    /** Return the YAML strings which produced this config.
+        @code
+        ignore-failures: true
+        @endcode
+    */
+    bool ignoreFailures = false;
 
-        The first element of the pair is the entire
-        contents of the YAML file or string used to
-        apply the initial values to the configuration.
+    /** `true` if tool output should be verbose.
 
-        The second element of the pair is either empty,
-        or holds a complate additional YAML string which
-        was applied to the values of the configuration,
-        after the first string was applied.
+        @code
+        verbose: true
+        @endcode
+    */
+    bool verboseOutput = false;
 
-        Any keys in the second YAML which match keys
-        found in the first YAML will effectively replace
+    /** A string holding the complete configuration YAML.
+    */
+    std::string_view configYaml;
+
+    /** A string holding extra configuration YAML.
+
+        Any keys in this string which match keys used
+        in @ref configYaml will effectively replace
         those entries in the configuration.
 
         A @ref Generator that wishes to implement
         format-specific options, should parse and
-        apply the first string, then parse and apply
-        the second string to the same object.
-
-        @return The pair of valid YAML strings.
+        apply `configYaml`, then parse and apply
+        this string to the same settings.
     */
-    MRDOX_DECL virtual auto
-    configYaml() const noexcept ->
-        std::pair<std::string_view, std::string_view> = 0;
+    std::string_view extraYaml;
 };
 
 //------------------------------------------------
@@ -199,100 +189,6 @@ parallelForEach(
             });
     wg.wait();
 }
-
-//------------------------------------------------
-
-/** Create a configuration by loading a YAML file.
-
-    This function attemtps to load the given
-    YAML file and apply the results to create
-    a configuration. The working directory of
-    the config object will be set to the
-    directory containing the file.
-
-    If the `extraYaml` string is not empty, then
-    after the YAML file is applied the string
-    will be parsed as YAML and the results will
-    be applied to the configuration. And keys
-    and values in the extra YAML which are the
-    same as elements from the file will replace
-    existing settings.
-
-    @return A valid object upon success.
-
-    @param fileName A full or relative path to
-    the configuration file, which may have any
-    extension including no extension.
-
-    @param extraYaml An optional string containing
-    additional valid YAML which will be parsed and
-    applied to the existing configuration.
-
-    @param ec [out] Set to the error, if any occurred.
-*/
-MRDOX_DECL
-std::shared_ptr<Config const>
-loadConfigFile(
-    std::string_view fileName,
-    std::string_view extraYaml,
-    std::error_code& ec);
-
-/** Return a configuration by loading a YAML file.
-
-    This function attemtps to load the given
-    YAML file and apply the settings to create
-    a configuration. The working directory of
-    the config object will be set to the
-    directory containing the file.
-
-    @return A valid object upon success.
-
-    @param fileName A full or relative path to
-    the configuration file, which may have any
-    extension including no extension.
-
-    @param ec [out] Set to the error, if any occurred.
-*/
-inline
-std::shared_ptr<Config const>
-loadConfigFile(
-    std::string_view fileName,
-    std::error_code& ec)
-{
-    return loadConfigFile(fileName, "", ec);
-}
-
-/** Create a configuration by loading a YAML string.
-
-    This function attempts to parse the given
-    YAML string and apply the results to create
-    a configuration. The working directory of
-    the config object will be set to the specified
-    full path. If the specified path is empty,
-    then the current working directory of the
-    process will be used instead.
-
-    @return A valid object upon success.
-
-    @param workingDir The directory which
-    should be considered the working directory
-    for calculating filenames from relative
-    paths.
-
-    @param configYaml A string containing valid
-    YAML which will be parsed and applied to create
-    the configuration.
-
-    @param ec [out] Set to the error, if any occurred.
-    */
-MRDOX_DECL
-std::shared_ptr<Config const>
-loadConfigString(
-    std::string_view workingDir,
-    std::string_view configYaml,
-    std::error_code& ec);
-
-//------------------------------------------------
 
 } // mrdox
 } // clang

@@ -34,6 +34,14 @@ namespace mrdox {
 class MRDOX_VISIBLE
     Corpus
 {
+protected:
+    explicit
+    Corpus(
+        Config const& config_) noexcept
+        : config(config_)
+    {
+    }
+
 public:
     /** Destructor.
     */
@@ -43,14 +51,11 @@ public:
 
     //--------------------------------------------
 
-    /** Return the Config used to generate this corpus.
+    /** The configuration used to generate this corpus.
     */
-    MRDOX_DECL
-    virtual
-    Config const&
-    config() const noexcept = 0;
+    Config const& config;
 
-    /** Return a sorted index of all 
+    /** Return a sorted index of all symbols.
     */
     MRDOX_DECL
     virtual

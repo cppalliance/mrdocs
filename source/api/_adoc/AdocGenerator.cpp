@@ -33,6 +33,7 @@ build(
     Corpus const& corpus,
     Reporter& R) const
 {
+    //if(corpus.config().
     return AdocPagesBuilder(llvm::StringRef(outputPath), corpus, R).build();
 }
 

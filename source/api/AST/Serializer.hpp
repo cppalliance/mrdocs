@@ -79,7 +79,7 @@ public:
         , R_(R)
         , File(File_)
         , LineNumber(LineNumber_)
-        , PublicOnly(! config_.includePrivate())
+        , PublicOnly(! config_.includePrivate_)
         , IsFileInRootDir(IsFileInRootDir_)
     {
     }

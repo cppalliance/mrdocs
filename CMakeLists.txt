@@ -183,13 +183,15 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source/api PREFIX "source" FILES ${LIB_S
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS source/mrdox/*.cpp source/mrdox/*.hpp)
+file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS source/tool/*.cpp source/tool/*.hpp)
 add_executable(mrdox ${TOOL_SOURCES})
 target_link_libraries(mrdox PRIVATE mrdox-api)
-target_include_directories(mrdox PRIVATE source/tool)
+target_include_directories(mrdox
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/source/)
 
 source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${PROJECT_SOURCE_DIR}/source/mrdox PREFIX "source" FILES ${TOOL_SOURCES})
+source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL_SOURCES})
 
 #-------------------------------------------------
 #
@@ -286,7 +288,9 @@ if (MRDOX_BUILD_TESTS)
     enable_testing()
     add_executable(mrdox-test ${TEST_SOURCES})
     target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
-    target_include_directories(mrdox-test PRIVATE ${PROJECT_SOURCE_DIR}/source/test)
+    target_include_directories(mrdox-test
+        PRIVATE
+        ${PROJECT_SOURCE_DIR}/source)
     add_test(NAME mrdox-test COMMAND mrdox-test
             "${PROJECT_SOURCE_DIR}/test-files/old-tests"
             )

@@ -19,7 +19,7 @@
 // representation to the desired output format.
 //
 
-#include <mrdox/Config.hpp>
+#include "api/ConfigImpl.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Debug.hpp>
 #include <mrdox/Generators.hpp>
@@ -103,6 +103,13 @@ toolMain(
     if(R.error(optionsResult, "calculate command line options"))
         return;
 
+    // Convert command line args to YAML
+    std::string extraYaml;
+    {
+        llvm::raw_string_ostream os(extraYaml);
+        if(IgnoreMappingFailures.getValue())
+            os << "ignore-failures: true\n";
+    }
     std::error_code ec;
     auto config = loadConfigFile(ConfigPath,
         "",
@@ -110,7 +117,6 @@ toolMain(
     if(ec)
         return (void)R.error(ec, "load config file '", ConfigPath, "'");
 
-//    config->setOutputPath(OutputPath);
 //    config->IgnoreMappingFailures = IgnoreMappingFailures;
 
     // create the executor
@@ -135,7 +141,7 @@ toolMain(
         return;
 
     // Run the generator.
-    if(config->verbose())
+    if(config->verboseOutput)
         llvm::outs() << "Generating docs...\n";
     auto err = generator->build(
         OutputPath.getValue(), **corpus, R);
