@@ -1310,10 +1310,7 @@ extract(InfoTy& I, DeclTy* D)
 
     namespace path = llvm::sys::path;
 
-    clang::SourceManager const& sm =
-        D->getASTContext().getSourceManager();
-
-    if(sm.isInSystemHeader(D->getLocation()))
+    if(sourceManager_->isInSystemHeader(D->getLocation()))
     {
         // skip system header
         return;
@@ -1327,7 +1324,7 @@ extract(InfoTy& I, DeclTy* D)
 
     llvm::SmallString<512> filePath;
     clang::PresumedLoc const loc =
-        sm.getPresumedLoc(D->getBeginLoc());
+        sourceManager_->getPresumedLoc(D->getBeginLoc());
     auto result = fileFilter_.emplace(
         loc.getIncludeLoc().getRawEncoding(),
         FileFilter());
@@ -1376,12 +1373,12 @@ extract(InfoTy& I, DeclTy* D)
     File = filePath;
     if constexpr(std::is_same_v<FriendDecl, DeclTy>)
     {
-        LineNumber = 0; // getLine(D, D->getASTContext())
+        LineNumber = 0; // getLine(D, *asContext_)
         res = build(D);
     }
     else
     {
-        LineNumber = getLine(D, D->getASTContext());
+        LineNumber = getLine(D, *astContext_);
         res = build(D);
     }
 
@@ -1400,8 +1397,9 @@ ASTVisitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
-    // cache the context
+    // cache contextual variables
     astContext_ = &Context;
+    sourceManager_ = &astContext_->getSourceManager();
 
     // Install handlers for our custom commands
     initCustomCommentCommands(Context);

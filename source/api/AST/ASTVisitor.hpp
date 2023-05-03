@@ -28,10 +28,10 @@ struct SerializeResult;
 
     An instance of this object visits the AST
     for exactly one translation unit. The AST is
-    converted into our metadata, and this metadata
-    is then serialized into bitcode. The resulting
-    bitcode is inserted into the tool results,
-    keyed by ID. Each ID can have multiple
+    extracted and converted into our metadata, and
+    this metadata is then serialized into bitcode.
+    The resulting bitcode is inserted into the tool
+    results, keyed by ID. Each ID can have multiple
     serialized bitcodes, as the same declaration
     in a particular include file can be seen by
     more than one translation unit.
@@ -51,6 +51,8 @@ public:
     ConfigImpl const& config_;
     Reporter& R_;
     ASTContext* astContext_;
+    clang::SourceManager const* sourceManager_;
+
     StringRef File;
     int LineNumber;
     bool PublicOnly;
