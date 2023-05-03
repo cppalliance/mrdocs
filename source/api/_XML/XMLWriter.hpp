@@ -45,6 +45,7 @@ protected:
     {
         bool index = false;
         bool prolog = true;
+        bool safe_names = false;
     };
     Options options_;
 
@@ -64,7 +65,7 @@ private:
     bool visit(FunctionInfo const&) override;
     bool visit(TypedefInfo const&) override;
     bool visit(EnumInfo const&) override;
-    bool visit(VariableInfo const&) override;
+    bool visit(VarInfo const&) override;
 
     void writeInfo(Info const&);
     void writeSymbol(SymbolInfo const& I);

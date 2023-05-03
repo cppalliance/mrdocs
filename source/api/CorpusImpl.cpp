@@ -82,8 +82,8 @@ visit(Scope& I, MutableVisitor& f)
         visit(get<TypedefInfo>(ref.id), f);
     for(auto& ref : I.Enums)
         visit(get<EnumInfo>(ref.id), f);
-    for(auto& ref : I.Variables)
-        visit(get<VariableInfo>(ref.id), f);
+    for(auto& ref : I.Vars)
+        visit(get<VarInfo>(ref.id), f);
 }
 
 void
@@ -103,7 +103,7 @@ visit(Info& I, MutableVisitor& f)
     case InfoType::IT_enum:
         return f.visit(static_cast<EnumInfo&>(I));
     case InfoType::IT_variable:
-        return f.visit(static_cast<VariableInfo&>(I));
+        return f.visit(static_cast<VarInfo&>(I));
     default:
         llvm_unreachable("wrong InfoType for viist");
     }
@@ -161,7 +161,7 @@ public:
         postProcess(I);
     }
 
-    void visit(VariableInfo& I) override
+    void visit(VarInfo& I) override
     {
         postProcess(I);
     }
@@ -183,7 +183,7 @@ public:
         canonicalize(scope.Functions);
         canonicalize(scope.Typedefs);
         canonicalize(scope.Enums);
-        canonicalize(scope.Variables);
+        canonicalize(scope.Vars);
     }
 
     void canonicalize(std::vector<Reference>& list) noexcept

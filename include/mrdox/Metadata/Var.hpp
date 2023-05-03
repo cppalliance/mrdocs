@@ -31,7 +31,7 @@ enum class VarFlags0 : std::uint32_t
     This includes variables at namespace
     scope, and static variables at class scope.
 */
-struct VariableInfo
+struct VarInfo
     : SymbolInfo
     , TypeInfo // holds the type of this variable
 {
@@ -42,7 +42,7 @@ struct VariableInfo
     static constexpr InfoType type_id = InfoType::IT_variable;
 
     explicit
-    VariableInfo(
+    VarInfo(
         SymbolID ID = SymbolID(),
         llvm::StringRef Name = llvm::StringRef())
         : SymbolInfo(InfoType::IT_variable, ID, Name)

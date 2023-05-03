@@ -39,7 +39,7 @@ struct Scope
     std::vector<Reference> Functions;
     std::vector<Reference> Typedefs;
     std::vector<Reference> Enums;
-    std::vector<Reference> Variables;
+    std::vector<Reference> Vars;
 
     explicit
     Scope(

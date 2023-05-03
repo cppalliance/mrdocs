@@ -44,7 +44,7 @@ getTagName(Info const& I) noexcept
     case InfoType::IT_enum:
         return enumTagName;
     case InfoType::IT_variable: 
-        return variableTagName;
+        return varTagName;
     default:
         break;
     }

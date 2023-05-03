@@ -48,7 +48,7 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
     case InfoType::IT_typedef:
         return reduce<TypedefInfo>(Values);
     case InfoType::IT_variable:
-        return reduce<VariableInfo>(Values);
+        return reduce<VarInfo>(Values);
     default:
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "unexpected info type");
@@ -138,7 +138,7 @@ bool
 Corpus::
 Visitor::
 visit(
-    VariableInfo const&)
+    VarInfo const&)
 {
     return true;
 }
@@ -193,8 +193,8 @@ visit(Scope const& I, Visitor& f) const
     for(auto const& ref : I.Enums)
         if(! visit(get<EnumInfo>(ref.id), f))
             return false;
-    for(auto const& ref : I.Variables)
-        if(! visit(get<VariableInfo>(ref.id), f))
+    for(auto const& ref : I.Vars)
+        if(! visit(get<VarInfo>(ref.id), f))
             return false;
     return true;
 }
@@ -249,8 +249,8 @@ visitWithOverloads(
     for(auto const& ref : I.Enums)
         if(! visit(get<EnumInfo>(ref.id), f))
             return false;
-    for(auto const& ref : I.Variables)
-        if(! visit(get<VariableInfo>(ref.id), f))
+    for(auto const& ref : I.Vars)
+        if(! visit(get<VarInfo>(ref.id), f))
             return false;
     return true;
 }
@@ -272,7 +272,7 @@ visit(Info const& I, Visitor& f) const
     case InfoType::IT_enum:
         return f.visit(static_cast<EnumInfo const&>(I));
     case InfoType::IT_variable:
-        return f.visit(static_cast<VariableInfo const&>(I));
+        return f.visit(static_cast<VarInfo const&>(I));
     default:
         llvm_unreachable("wrong InfoType for viist");
     }

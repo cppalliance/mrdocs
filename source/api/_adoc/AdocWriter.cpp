@@ -402,7 +402,7 @@ write(
 void
 AdocWriter::
 write(
-    VariableInfo const& I)
+    VarInfo const& I)
 {
 }
 

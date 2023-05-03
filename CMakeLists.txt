@@ -93,7 +93,7 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     source/api/*.h
     source/api/*.hpp
     source/api/*.cpp
-    #source/api/*.natvis
+    source/api/*.natvis
 )
 
 add_library(mrdox-api ${MRDOX_LINK_MODE} ${LIB_INCLUDES} ${LIB_SOURCES})

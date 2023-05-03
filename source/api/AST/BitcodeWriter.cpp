@@ -212,7 +212,7 @@ BlockIdNameMap = []()
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
         {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, "TemplateSpecializationBlock"},
         {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"},
-        {BI_VARIABLE_BLOCK_ID, "VariableBlock"}
+        {BI_VARIABLE_BLOCK_ID, "VarBlock"}
     };
     Assert(Inits.size() == BlockIdCount);
     for (const auto& Init : Inits)
@@ -337,7 +337,7 @@ RecordsByBlock{
     // TypedefInfo
     {BI_TYPEDEF_BLOCK_ID,
         {TYPEDEF_IS_USING}},
-    // VariableInfo
+    // VarInfo
     {BI_VARIABLE_BLOCK_ID, {VARIABLE_BITS}}
 };
 
@@ -375,7 +375,7 @@ dispatchInfoForWrite(Info const* I)
         emitBlock(*static_cast<TypedefInfo const*>(I));
         break;
     case InfoType::IT_variable:
-        emitBlock(*static_cast<VariableInfo const*>(I));
+        emitBlock(*static_cast<VarInfo const*>(I));
         break;
     default:
         llvm::errs() << "Unexpected info, unable to write.\n";
@@ -903,7 +903,7 @@ emitBlock(
         emitBlock(ref, FieldId::F_child_typedef);
     for (const auto& ref : I.Children.Enums)
         emitBlock(ref, FieldId::F_child_enum);
-    for (const auto& ref : I.Children.Variables)
+    for (const auto& ref : I.Children.Vars)
         emitBlock(ref, FieldId::F_child_variable);
 }
 
@@ -934,7 +934,7 @@ emitBlock(
         emitBlock(ref, FieldId::F_child_typedef);
     for (const auto& ref : I.Children.Enums)
         emitBlock(ref, FieldId::F_child_enum);
-    for (const auto& ref : I.Children.Variables)
+    for (const auto& ref : I.Children.Vars)
         emitBlock(ref, FieldId::F_child_variable);
     if (I.Template)
         emitBlock(*I.Template);
@@ -1011,7 +1011,7 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    VariableInfo const& I)
+    VarInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
     emitInfoPart(I);

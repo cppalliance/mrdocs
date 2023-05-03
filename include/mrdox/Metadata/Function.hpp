@@ -83,7 +83,9 @@ enum class FnFlags1 : std::uint32_t
                               0x00000008 +
                               0x00000010,
 
-    isExplicit              = 0x00000020
+    isExplicit              = 0x00000020,
+
+    functionKind            = 0b00000000'00000000'00011111'11000000
 };
 
 // TODO: Expand to allow for documenting templating and default args.

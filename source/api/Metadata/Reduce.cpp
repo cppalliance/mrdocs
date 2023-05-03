@@ -113,7 +113,7 @@ void merge(NamespaceInfo& I, NamespaceInfo&& Other)
     reduceChildren(I.Children.Functions, std::move(Other.Children.Functions));
     reduceChildren(I.Children.Typedefs, std::move(Other.Children.Typedefs));
     reduceChildren(I.Children.Enums, std::move(Other.Children.Enums));
-    reduceChildren(I.Children.Variables, std::move(Other.Children.Variables));
+    reduceChildren(I.Children.Vars, std::move(Other.Children.Vars));
     mergeInfo(I, std::move(Other));
 }
 
@@ -137,7 +137,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     reduceChildren(I.Children.Functions, std::move(Other.Children.Functions));
     reduceChildren(I.Children.Typedefs, std::move(Other.Children.Typedefs));
     reduceChildren(I.Children.Enums, std::move(Other.Children.Enums));
-    reduceChildren(I.Children.Variables, std::move(Other.Children.Variables));
+    reduceChildren(I.Children.Vars, std::move(Other.Children.Vars));
     mergeSymbolInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = Other.Template;
@@ -195,7 +195,7 @@ void merge(EnumInfo& I, EnumInfo&& Other)
     mergeSymbolInfo(I, std::move(Other));
 }
 
-void merge(VariableInfo& I, VariableInfo&& Other)
+void merge(VarInfo& I, VarInfo&& Other)
 {
     Assert(canMerge(I, Other));
     if(I.Type.id == EmptySID && I.Type.Name.empty())

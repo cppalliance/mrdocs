@@ -81,7 +81,7 @@ private:
             scope.Functions.size() +
             scope.Typedefs.size() +
             scope.Enums.size() +
-            scope.Variables.size());
+            scope.Vars.size());
         for(auto const& ref : scope.Namespaces)
             infos.emplace_back(corpus_.find(ref.id));
         for(auto const& ref : scope.Records)
@@ -92,7 +92,7 @@ private:
             infos.emplace_back(corpus_.find(ref.id));
         for(auto const& ref : scope.Enums)
             infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : scope.Variables)
+        for(auto const& ref : scope.Vars)
             infos.emplace_back(corpus_.find(ref.id));
         if(infos.size() < 2)
             return infos;

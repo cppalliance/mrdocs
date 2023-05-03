@@ -205,8 +205,8 @@
       </optional>
     </element>
   </define>
-  <define name="VariableInfo">
-    <element name="variable">
+  <define name="VarInfo">
+    <element name="var">
       <ref name="Name"/>
       <ref name="Id"/>
       <interleave>
@@ -302,7 +302,7 @@
         <ref name="FunctionInfo"/>
         <ref name="TypedefInfo"/>
         <ref name="EnumInfo"/>
-        <ref name="VariableInfo"/>
+        <ref name="VarInfo"/>
       </choice>
     </zeroOrMore>
   </define>

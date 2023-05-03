@@ -807,7 +807,7 @@ public:
                 std::derived_from<T, NamespaceInfo> ||
                 std::derived_from<T, RecordInfo>)
             {
-                I->Children.Variables.emplace_back(std::move(R));
+                I->Children.Vars.emplace_back(std::move(R));
                 return llvm::Error::success();
             }
             break;
@@ -1149,13 +1149,13 @@ public:
 
 //------------------------------------------------
 
-class VariableBlock
-    : public TopLevelBlock<VariableInfo>
+class VarBlock
+    : public TopLevelBlock<VarInfo>
 {
 
 public:
     explicit
-    VariableBlock(
+    VarBlock(
         BitcodeReader& br)
         : TopLevelBlock(br)
     {
@@ -1222,7 +1222,7 @@ readChild(
         I.Enums.emplace_back(B.I);
         break;
     case FieldId::F_child_variable:
-        I.Variables.emplace_back(B.I);
+        I.Vars.emplace_back(B.I);
         break;
     default:
         return makeWrongFieldError(B.F);

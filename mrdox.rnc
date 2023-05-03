@@ -100,7 +100,7 @@ grammar {
         Javadoc?
     }
 
-    VariableInfo = element variable {
+    VarInfo = element var {
             Name,
             Id,
             (Location &

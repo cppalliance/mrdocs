@@ -81,7 +81,7 @@ visit(
     auto functionOverloads = makeNamespaceOverloads(I, corpus_);
     auto typedefList       = buildSortedList<TypedefInfo>(I.Children.Typedefs);
     auto enumList          = buildSortedList<EnumInfo>(I.Children.Enums);
-    auto variableList      = buildSortedList<VariableInfo>(I.Children.Variables);
+    auto variableList      = buildSortedList<VarInfo>(I.Children.Vars);
 
     // don't emit empty namespaces,
     // but still visit child namespaces.
@@ -89,7 +89,7 @@ visit(
         ! functionOverloads.list.empty() ||
         ! I.Children.Typedefs.empty() ||
         ! I.Children.Enums.empty() ||
-        ! I.Children.Variables.empty())
+        ! I.Children.Vars.empty())
     {
         std::string s;
         if(I.id == EmptySID)
@@ -169,7 +169,7 @@ visit(
 
         if(! variableList.empty())
         {
-            beginSection("Variables");
+            beginSection("Vars");
             os_ << "\n"
                 "[cols=1]\n"
                 "|===\n";
@@ -262,7 +262,7 @@ visit(
 bool
 AdocSinglePageWriter::
 visit(
-    VariableInfo const&)
+    VarInfo const&)
 {
     return true;
 }

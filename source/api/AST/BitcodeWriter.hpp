@@ -137,7 +137,7 @@ public:
     void emitBlock(TemplateSpecializationInfo const& T);
     void emitBlock(TypedefInfo const& I);
     void emitBlock(TypeInfo const& I);
-    void emitBlock(VariableInfo const& I);
+    void emitBlock(VarInfo const& I);
 
     //--------------------------------------------
 

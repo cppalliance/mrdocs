@@ -18,7 +18,7 @@
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Type.hpp>
-#include <mrdox/Metadata/Variable.hpp>
+#include <mrdox/Metadata/Var.hpp>
 
 /*
     This file holds the business logic for transforming
@@ -38,7 +38,7 @@ constexpr llvm::StringRef functionTagName   = "function";
 constexpr llvm::StringRef typedefTagName    = "typedef";
 constexpr llvm::StringRef aliasTagName      = "alias";
 constexpr llvm::StringRef enumTagName       = "enum";
-constexpr llvm::StringRef variableTagName   = "variable";
+constexpr llvm::StringRef varTagName        = "var";
 constexpr llvm::StringRef attributeTagName  = "attr";
 constexpr llvm::StringRef returnTagName     = "return";
 constexpr llvm::StringRef paramTagName      = "param";

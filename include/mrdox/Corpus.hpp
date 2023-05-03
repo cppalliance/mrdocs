@@ -106,7 +106,7 @@ public:
         MRDOX_DECL virtual bool visit(FunctionInfo const&);
         MRDOX_DECL virtual bool visit(TypedefInfo const&);
         MRDOX_DECL virtual bool visit(EnumInfo const&);
-        MRDOX_DECL virtual bool visit(VariableInfo const&);
+        MRDOX_DECL virtual bool visit(VarInfo const&);
     };
 
     /** Visit the specified symbol ID or node.
@@ -160,7 +160,7 @@ get(
         Assert(t->IT == InfoType::IT_typedef);
     else if constexpr(std::is_same_v<T, EnumInfo>)
         Assert(t->IT == InfoType::IT_enum);
-    else if constexpr(std::is_same_v<T, VariableInfo>)
+    else if constexpr(std::is_same_v<T, VarInfo>)
         Assert(t->IT == InfoType::IT_variable);
     return *t;
 }

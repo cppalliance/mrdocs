@@ -93,7 +93,7 @@ getInfos()
         }
         case BI_VARIABLE_BLOCK_ID:
         {
-            auto I = readInfo<VariableBlock>(ID);
+            auto I = readInfo<VarBlock>(ID);
             if(! I)
                 return I.takeError();
             Infos.emplace_back(std::move(I.get()));
