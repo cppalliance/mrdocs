@@ -35,7 +35,6 @@ include(GNUInstallDirs)
 #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL ON CACHE STRING "")
 #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO ON CACHE STRING "")
 
-option(MRDOX_BUILD_TESTS "Build tests" ON)
 option(MRDOX_BUILD_SHARED "Link shared" OFF)
 option(MRDOX_INSTALL "Configure install target" ON)
 option(MRDOX_PACKAGE "Build install package" ON)
@@ -46,8 +45,6 @@ if (MRDOX_BUILD_SHARED)
 else()
     set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_STATIC_LINK)
 endif()
-
-
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(MRDOX_GCC ON)
@@ -283,7 +280,7 @@ endif ()
 #
 #-------------------------------------------------
 
-if (MRDOX_BUILD_TESTS)
+if (BUILD_TESTING)
     file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/test/*.cpp source/test/*.hpp)
     enable_testing()
     add_executable(mrdox-test ${TEST_SOURCES})
