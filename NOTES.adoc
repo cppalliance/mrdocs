@@ -2,7 +2,8 @@
 
 This worked for me:
 
-```
+[source]
+----
 # From Administrator CMD.EXE,
 # after running vcvars64.bat
 
@@ -14,7 +15,16 @@ cmake --install . --prefix "C:\Users\vinnie\src\llvm-install\Debug" --config Deb
 
 # MrDox
 cmake -G "Visual Studio 17 2022" -A x64 -B bin64 -DCMAKE_PREFIX_PATH="C:\Users\vinnie\src\llvm-install\RelWithDebInfo" -DCMAKE_TOOLCHAIN_FILE="C:\Users\vinnie\src\mrdox\toolchain.cmake"
-```
+----
+
+The LLVM version used in CI uses the following configuration command:
+
+[source]
+----
+cmake -S ../llvm/llvm -B . -G "Visual Studio 17 2022" -A x64 -DCMAKE_CONFIGURATION_TYPES="RelWithDebInfo" -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -DLLVM_ENABLE_IDE=OFF -DLLVM_ENABLE_DIA_SDK=OFF
+----
+
+This should generate an LLVM installation without reference to `diaguids.lib`, which is unavailable in CI.
 
 == Implementation notes
 
