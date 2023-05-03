@@ -15,13 +15,14 @@
 #include <mrdox/Platform.hpp>
 #include "ConfigImpl.hpp"
 #include <mrdox/Reporter.hpp>
-#include <clang/AST/Mangle.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Tooling/Execution.h>
 #include <unordered_map>
 
 namespace clang {
 namespace mrdox {
+
+struct SerializeResult;
 
 /** Convert AST to our metadata and serialize to bitcode.
 
@@ -39,6 +40,7 @@ class ASTVisitor
     : public RecursiveASTVisitor<ASTVisitor>
     , public ASTConsumer
 {
+public:
     struct FileFilter
     {
         llvm::SmallString<0> prefix;
@@ -48,10 +50,13 @@ class ASTVisitor
     tooling::ExecutionContext& ex_;
     ConfigImpl const& config_;
     Reporter& R_;
+    StringRef File;
+    int LineNumber;
+    bool PublicOnly;
+    bool IsFileInRootDir;
     std::unordered_map<
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
-    std::unique_ptr<MangleContext> mc_;
 
 public:
     ASTVisitor(
@@ -64,7 +69,20 @@ public:
     {
     }
 
-//private:
+private:
+    SerializeResult build(NamespaceDecl*   D);
+    SerializeResult build(CXXRecordDecl*   D);
+    SerializeResult build(CXXMethodDecl*   D);
+    SerializeResult build(FriendDecl*      D);
+    SerializeResult build(UsingDecl*       D);
+    SerializeResult build(UsingShadowDecl* D);
+    SerializeResult build(FunctionDecl*    D);
+    SerializeResult build(TypedefDecl*     D);
+    SerializeResult build(TypeAliasDecl*   D);
+    SerializeResult build(EnumDecl*        D);
+    SerializeResult build(VarDecl*         D);
+
+public:
     void HandleTranslationUnit(ASTContext& Context) override;
 
     bool WalkUpFromNamespaceDecl(NamespaceDecl* D);
