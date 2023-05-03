@@ -326,6 +326,14 @@ struct MRDOX_VISIBLE
         return blocks_;
     }
 
+    /** Return the element describing the return type.
+    */
+    Returns const*
+    getReturns() const noexcept
+    {
+        return returns_.get();
+    }
+
     /** Return the list of top level blocks.
     */
     AnyList<Param> const&
@@ -439,6 +447,7 @@ struct MRDOX_VISIBLE
 
 private:
     std::shared_ptr<Paragraph const> brief_;
+    std::shared_ptr<Returns const> returns_;
     AnyList<Block> blocks_;
     AnyList<Param> params_;
     AnyList<TParam> tparams_;

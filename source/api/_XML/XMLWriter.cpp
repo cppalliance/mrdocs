@@ -448,6 +448,8 @@ writeJavadoc(
     if(auto brief = javadoc->getBrief())
         writeBrief(*brief);
     writeNodes(javadoc->getBlocks());
+    if(auto returns = javadoc->getReturns())
+        writeNode(*returns);
     writeNodes(javadoc->getParams());
     writeNodes(javadoc->getTParams());
     tags_.close(javadocTagName);

@@ -86,6 +86,15 @@ postProcess()
             brief = static_cast<Paragraph*>(&*it);
             goto done;
         }
+        else if(it->kind == Kind::returns)
+        {
+            if(! returns_)
+            {
+                returns_ = std::make_shared<Returns>(
+                    std::move(static_cast<Returns &>(*it)));
+                it = blocks_.erase(it);
+            }
+        }
         else if(it->kind == Kind::param)
         {
             it = blocks_.move_to(it, params_);
