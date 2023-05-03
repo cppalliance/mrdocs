@@ -23,79 +23,114 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - { name: "MSVC 14.3 - C++20", os: windows-2022, cxxstd: '20', cmake_args: -G "Visual Studio 17 2022" -A x64, github_release: true }
           - { name: "GCC 12 - C++20",    os: ubuntu-22.04, cc: gcc-12, cxx: g++-12, cxxstd: '20', install: g++-12, github_release: true }
           - { name: "GCC 11 - C++20",    os: ubuntu-22.04, cc: gcc-11, cxx: g++-11, cxxstd: 20, install: g++-11 }
+          - { name: "Clang 15 - C++20",  os: ubuntu-22.04, cc: clang-15, cxx: clang++-15, cxxstd: 20, install: "clang-15 libxml2-utils" }
 
           # no <source_location>
           # - { name: "GCC 10 - C++20",    os: ubuntu-22.04, cc: gcc-10, cxx: g++-10, cxxstd: 20, install: g++-10 }
           # - { name: "GCC 9  - C++20",    os: ubuntu-22.04, cc: gcc-9,  cxx: g++-9,  cxxstd: 20, install: g++-9 }
-
-          - { name: "Clang 15 - C++20",  os: ubuntu-22.04, cc: clang-15, cxx: clang++-15, cxxstd: 20, install: "clang-15 libxml2-utils" }
 
           # no <source_location>
           # - { name: "Clang 14 - C++20",  os: ubuntu-22.04, cc: clang-14, cxx: clang++-14, cxxstd: 20, install: clang-14 }
           # - { name: "Clang 13 - C++20",  os: ubuntu-22.04, cc: clang-13, cxx: clang++-13, cxxstd: 20, install: clang-13 }
           # - { name: "Clang 12 - C++20",  os: ubuntu-22.04, cc: clang-12, cxx: clang++-12, cxxstd: 20, install: clang-12 }
 
-          # There's no LLVM container for MSVC yet
-          # - { name: "MSVC 14.3 - C++20", os: windows-2022, cxxstd: '17,20', cmake_args: -G "Visual Studio 17 2022" -A x64, }
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
-    container:
-      image: cppalliance/droneubuntu2204:llvm-731264b
+    container: ${{ !startsWith( matrix.os , 'windows' ) && 'cppalliance/droneubuntu2204:llvm-731264b' || null }}
     permissions:
       contents: write
 
     steps:
       - uses: actions/checkout@v3
 
-      #      - name: Environment
-      #        run: |
-      #          for dir in /usr/include/llvm /usr/local/include/llvm /usr/local/clang+llvm/include/llvm /usr/include/clang /usr/local/include/clang /usr/local/clang+llvm/include/clang
-      #          do
-      #          if [ -d "$dir" ]; then
-      #            find "$dir" -type f -name "*.h" -print
-      #          else
-      #            echo "$dir directory does not exist."
-      #          fi
-      #          done
+      - name: Install LLVM
+        id: llvm-install
+        if: ${{ startsWith( matrix.os , 'windows' ) }}
+        shell: bash
+        run: |
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          export AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }}
+          aws s3 cp s3://${{ secrets.AWS_BUCKET_NAME }}/llvm-install/RelWithDebInfo-731264b0.7z RelWithDebInfo-731264b0.7z
+          7z x RelWithDebInfo-731264b0.7z -ollvm-install
+          llvm_dir="./llvm-install/RelWithDebInfo"
+          llvm_dir="$(readlink -f "$llvm_dir" 2>/dev/null || realpath -e "$llvm_dir" 2>/dev/null || echo "$(pwd)/$llvm_dir")"
+          echo "llvm-dir=$llvm_dir" >> $GITHUB_OUTPUT
+          substring="C:/Program Files/Microsoft Visual Studio/2022/Community/DIA SDK/lib/amd64/diaguids.lib;"
+          sed -i "s|$substring||g" "./llvm-install/RelWithDebInfo/lib/cmake/llvm/LLVMExports.cmake"
 
       - name: Install packages
         if: ${{ matrix.install }}
         uses: ./.github/actions/package_install
         id: package-install
         with:
-          # vcpkg: fmt,openssl,zlib
           apt-get: ${{ matrix.install }}
 
-      # - name: Boost Clone
-      #   uses: ./.github/actions/boost_clone
-      #   with:
-      #     boost_dir: boost
-      #     branch: ${{ (startsWith(github.ref, 'refs/heads/master') && 'master') || 'develop' }}
-      #     patches: https://github.com/CppAlliance/buffers.git,https://github.com/CppAlliance/http_proto.git,https://github.com/CppAlliance/http_io.git
-      #     modules: url,../../../BoostServerTech
-
       - name: CMake Workflow (C++${{ matrix.cxxstd }})
-        uses: alandefreitas/cpp-actions/cmake_workflow@master
+        uses: alandefreitas/cpp-actions/cmake-workflow@master
         with:
           cxxstd: ${{ matrix.cxxstd }}
           cxx: ${{ matrix.cxx }}
           cc: ${{ matrix.cc }}
           install-prefix: .local
-          extra-args: ${{ format('-D LLVM_ROOT={0} -D Clang_ROOT={0} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON', '/usr/local') }}
-          # toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain }}
+          extra-args: ${{ format('-D LLVM_ROOT={0} -D Clang_ROOT={0} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON', (startsWith( matrix.os , 'windows') && steps.llvm-install.outputs.llvm-dir) || '/usr/local') }}
 
       - name: Create packages
         working-directory: ./build
         run: cpack
 
-      - name: Create GitHub Package Release
+      - name: Upload GitHub Release Artifacts
         if: ${{ matrix.github_release && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-packages-${{ runner.os }}
+          path: build/MrDox-?.?.?-*.*
+          retention-days: 1
+
+  docs:
+    needs: build
+    if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+    defaults:
+      run:
+        shell: bash
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: 'Create Release Packages', os: ubuntu-22.04 }
+
+    name: ${{ matrix.name }}
+    timeout-minutes: 120
+    runs-on: ${{matrix.os}}
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: release-packages-Linux
+          path: build
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: release-packages-Windows
+          path: build
+
+      - name: List artifacts
+        run: ls -R
+        working-directory: build
+
+      - name: Create GitHub Package Release
+        if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
         uses: softprops/action-gh-release@v1
         with:
           files: build/MrDox-?.?.?-*.*
-          tag_name: ${{ github.ref_name || github.ref }}
+          name: ${{ github.ref_name || github.ref }}
+          tag_name: ${{ github.ref_name || github.ref }}${{ (!startsWith(github.ref, 'refs/tags/')) && '-release' }}
           token: ${{ github.token }}
 
