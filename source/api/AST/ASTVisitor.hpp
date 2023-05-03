@@ -50,6 +50,7 @@ public:
     tooling::ExecutionContext& ex_;
     ConfigImpl const& config_;
     Reporter& R_;
+    ASTContext* astContext_;
     StringRef File;
     int LineNumber;
     bool PublicOnly;
@@ -82,6 +83,9 @@ private:
     SerializeResult build(EnumDecl*        D);
     SerializeResult build(VarDecl*         D);
 
+    template<class InfoTy, typename DeclTy>
+    void extract(InfoTy& I, DeclTy* D);
+
 public:
     void HandleTranslationUnit(ASTContext& Context) override;
 
@@ -90,7 +94,7 @@ public:
     bool WalkUpFromCXXMethodDecl(CXXMethodDecl* D);
     bool WalkUpFromFriendDecl(FriendDecl* D);
     //bool WalkUpFromUsingDecl(UsingDecl* D);
-    bool WalkUpFromUsingShadowDecl(UsingShadowDecl* D);
+    //bool WalkUpFromUsingShadowDecl(UsingShadowDecl* D);
     bool WalkUpFromFunctionDecl(FunctionDecl* D);
     bool WalkUpFromTypeAliasDecl(TypeAliasDecl* D);
     bool WalkUpFromTypedefDecl(TypedefDecl* D);
@@ -98,9 +102,6 @@ public:
     bool WalkUpFromVarDecl(VarDecl* D);
 
 private:
-    template <typename T>
-    bool mapDecl(T* D);
-
     int
     getLine(
         NamedDecl const* D,
