@@ -256,8 +256,8 @@ class JavadocBlock
 {
     BitcodeReader& br_;
     llvm::Optional<Javadoc>& I_;
-    AnyNodeList J_;
     AnyNodeList* stack_ = nullptr;
+    AnyNodeList J_;
 
 public:
     JavadocBlock(

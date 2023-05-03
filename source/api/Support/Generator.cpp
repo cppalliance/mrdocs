@@ -100,7 +100,7 @@ buildOneString(
         auto err = buildOne(ss, corpus, R);
         if(err)
             return err;
-        dest = std::move(ss.str());
+        dest = ss.str();
         return {};
     }
     catch(std::exception const& ex)

@@ -50,6 +50,7 @@ constexpr llvm::StringRef getBitsIDName(RecFlags0 ID)
     default:
         Assert(false);
     }
+    return "";
 }
 
 constexpr llvm::StringRef getBitsIDName(FnFlags0 ID)
@@ -76,6 +77,7 @@ constexpr llvm::StringRef getBitsIDName(FnFlags0 ID)
     default:
         Assert(false);
     }
+    return "";
 }
 
 constexpr llvm::StringRef getBitsIDName(FnFlags1 ID)
@@ -88,6 +90,7 @@ constexpr llvm::StringRef getBitsIDName(FnFlags1 ID)
     default:
         Assert(false);
     }
+    return "";
 }
 
 constexpr llvm::StringRef getBitsIDName(VarFlags0 ID)
@@ -98,6 +101,7 @@ constexpr llvm::StringRef getBitsIDName(VarFlags0 ID)
     default:
         Assert(false);
     }
+    return "";
 }
 
 constexpr llvm::StringRef getNameForValue(...)
@@ -115,6 +119,7 @@ constexpr llvm::StringRef getNameForValue(ConstexprSpecKind CSK)
     default:
         Assert(false);
     }
+    return "";
 }
 
 constexpr llvm::StringRef getNameForValue(ExceptionSpecificationType EST)
@@ -132,6 +137,7 @@ constexpr llvm::StringRef getNameForValue(ExceptionSpecificationType EST)
     default:
         Assert(false);
     }
+    return "";
 }
 
 inline llvm::StringRef getNameForValue(OverloadedOperatorKind OOK)
@@ -151,6 +157,7 @@ constexpr llvm::StringRef getNameForValue(StorageClass SC)
     default:
         Assert(false);
     }
+    return "";
 }
 
 constexpr llvm::StringRef getNameForValue(WarnUnusedResultAttr::Spelling WUS)
@@ -165,6 +172,7 @@ constexpr llvm::StringRef getNameForValue(WarnUnusedResultAttr::Spelling WUS)
     default:
         Assert(false);
     }
+    return "";
 }
 
 constexpr llvm::StringRef getNameForValue(RefQualifierKind RK)
@@ -176,6 +184,7 @@ constexpr llvm::StringRef getNameForValue(RefQualifierKind RK)
     default:
         Assert(false);
     }
+    return "";
 }
 
 //------------------------------------------------
