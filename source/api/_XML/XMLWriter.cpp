@@ -166,46 +166,10 @@ writeIndex()
     temp.reserve(256);
     tags_.open("symbols");
     for(auto I : corpus_.index())
-    {
-        llvm::StringRef tag;
-        switch(I->IT)
-        {
-        case InfoType::IT_namespace:
-            tag = "namespace";
-            break;
-        case InfoType::IT_record:
-            switch(static_cast<RecordInfo const*>(I)->TagType)
-            {
-            case TagTypeKind::TTK_Class:  tag = "class"; break;
-            case TagTypeKind::TTK_Struct: tag = "struct"; break;
-            case TagTypeKind::TTK_Union:  tag = "struct"; break;
-            default:
-                Assert(false);
-            }
-            break;
-        case InfoType::IT_function:
-            tag = "function";
-            break;
-        case InfoType::IT_typedef:
-            if(static_cast<TypedefInfo const*>(I)->IsUsing)
-                tag = "using";
-            else
-                tag = "typedef";
-            break;
-        case InfoType::IT_enum:
-            tag = "enum";
-            break;
-        case InfoType::IT_variable: 
-            tag = "variable";
-            break;
-        default:
-            Assert(false);
-        }
         tags_.write("symbol", {}, {
             { "name", I->getFullyQualifiedName(temp) },
-            { "tag", tag },
+            { "tag", getTagName(*I) },
             { I->id } });
-    }
     tags_.close("symbols");
 }
 
@@ -270,7 +234,7 @@ visit(
 
     // Friends
     for(auto const& id : I.Friends)
-        tags_.write("friend", "", { { id } });
+        tags_.write(friendTagName, "", { { id } });
 
     writeJavadoc(I.javadoc);
 
@@ -324,9 +288,9 @@ visit(
 {
     llvm::StringRef tag;
     if(I.IsUsing)
-        tag = "using";
+        tag = aliasTagName;
     else
-        tag = "typedef";
+        tag = typedefTagName;
     tags_.open(tag, {
         { "name", I.Name },
         { I.id }
@@ -350,7 +314,7 @@ XMLWriter::
 visit(
     EnumInfo const& I)
 {
-    tags_.open("enum", {
+    tags_.open(enumTagName, {
         { "name", I.Name },
         { "class", "scoped", I.Scoped },
         { I.BaseType },
@@ -367,7 +331,7 @@ visit(
 
     writeJavadoc(I.javadoc);
 
-    tags_.close("enum");
+    tags_.close(enumTagName);
 
     return true;
 }
@@ -377,7 +341,7 @@ XMLWriter::
 visit(
     VariableInfo const& I)
 {
-    tags_.open("variable", {
+    tags_.open(variableTagName, {
         { "name", I.Name },
         { I.id }
         });
@@ -393,7 +357,7 @@ visit(
 
     writeJavadoc(I.javadoc);
 
-    tags_.close("variable");
+    tags_.close(variableTagName);
 
     return true;
 }
@@ -453,7 +417,7 @@ XMLWriter::
 writeTemplateParam(
     TemplateParamInfo const& I)
 {
-    tags_.write("tparam", {}, {
+    tags_.write(tparamTagName, {}, {
         { "decl", I.Contents }
         });
 }
@@ -463,42 +427,12 @@ XMLWriter::
 writeMemberType(
     MemberTypeInfo const& I)
 {
-    tags_.write("data", {}, {
+    tags_.write(dataMemberTagName, {}, {
         { "name", I.Name },
         { "type", I.Type.Name },
         { "value", I.DefaultValue, ! I.DefaultValue.empty() },
         { I.Access },
         { I.Type.id } });
-}
-
-void
-XMLWriter::
-writeStorageClass(
-    jit_indenter& os, StorageClass SC)
-{
-    switch(SC)
-    {
-    case StorageClass::SC_None:
-        break;
-    case StorageClass::SC_Extern:
-        os << "<extern/>";
-        break;
-    case StorageClass::SC_Static:
-        os << "<static/>";
-        break;
-    case StorageClass::SC_PrivateExtern:
-        os << "<private-extern/>";
-        break;
-    case StorageClass::SC_Auto:
-        os << "<sc-auto/>";
-        break;
-    case StorageClass::SC_Register:
-        os << "<sc-register/>";
-        break;
-    default:
-        llvm_unreachable("unknown StorageClass");
-        break;
-    }
 }
 
 //------------------------------------------------
@@ -510,13 +444,13 @@ writeJavadoc(
 {
     if(! javadoc.has_value())
         return;
-    tags_.open("doc");
+    tags_.open(javadocTagName);
     if(auto brief = javadoc->getBrief())
         writeBrief(*brief);
     writeNodes(javadoc->getBlocks());
     writeNodes(javadoc->getParams());
     writeNodes(javadoc->getTParams());
-    tags_.close("doc");
+    tags_.close(javadocTagName);
 }
 
 template<class T>
