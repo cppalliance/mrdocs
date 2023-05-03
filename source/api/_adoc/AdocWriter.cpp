@@ -179,7 +179,7 @@ init()
 {
     {
         llvm::yaml::Input yin(
-            corpus_.config()->configYaml().first,
+            corpus_.config().configYaml().first,
                 this, ConfigImpl::yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
         yin >> options_;
@@ -188,7 +188,7 @@ init()
     }
     {
         llvm::yaml::Input yin(
-            corpus_.config()->configYaml().second,
+            corpus_.config().configYaml().second,
                 this, ConfigImpl::yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
         yin >> options_;

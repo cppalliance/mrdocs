@@ -137,21 +137,10 @@ toolMain(
     // Run the generator.
     if(config->verbose())
         llvm::outs() << "Generating docs...\n";
-    if((*corpus)->config()->singlePage())
-    {
-        auto err = generator->buildOne(
-            OutputPath.getValue(), **corpus, R);
-        if(err)
-            R.print(err.message(), "generate '", OutputPath, "'");
-    }
-    else
-    {
-        auto err = generator->build(
-            config->outputPath(), **corpus, R);
-        if(err)
-            R.print(err.message(),
-                "generate pages in '", OutputPath.getValue(), "'");
-    }
+    auto err = generator->build(
+        OutputPath.getValue(), **corpus, R);
+    if(err)
+        R.print(err.message(), "generate '", OutputPath, "'");
 }
 
 } // mrdox

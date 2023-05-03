@@ -25,6 +25,7 @@ class ConfigImpl
     , public std::enable_shared_from_this<ConfigImpl>
 
 {
+public:
     //--------------------------------------------
     //
     // yaml settings
@@ -46,6 +47,7 @@ class ConfigImpl
 
     //--------------------------------------------
 
+private:
     llvm::ThreadPool mutable threadPool_;
     std::string configYaml_;
     std::string extraYaml_;

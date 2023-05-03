@@ -288,26 +288,38 @@ llvm::Expected<std::unique_ptr<Corpus>>
 Corpus::
 build(
     tooling::ToolExecutor& ex,
-    std::shared_ptr<Config const> config,
+    std::shared_ptr<Config const> config_,
     Reporter& R)
 {
-    auto corpus = std::make_unique<CorpusImpl>(std::move(config));
+    auto config = std::dynamic_pointer_cast<ConfigImpl const>(config_);
+    auto corpus = std::make_unique<CorpusImpl>(config);
 
-    // VFALCO TODO Fill this out
+    // Build arguments adjuster
     tooling::ArgumentsAdjuster ArgAdjuster;
+    {
+        for(auto const& define : config->additionalDefines_)
+        {
+            std::string s;
+            llvm::raw_string_ostream os(s);
+            os << "-D" << define;
+            ArgAdjuster = tooling::combineAdjusters(
+                tooling::getInsertArgumentAdjuster(
+                    s.c_str(), tooling::ArgumentInsertPosition::END),
+                ArgAdjuster);
+        }
+    }
 
     // Traverse the AST for all translation units
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
-    if(corpus->config()->verbose())
+    if(corpus->config().verbose())
         R.print("Mapping declarations");
     if(auto err = ex.execute(
         makeFrontendActionFactory(
-            *ex.getExecutionContext(),
-            *dynamic_cast<ConfigImpl const*>(corpus->config().get()), R),
+            *ex.getExecutionContext(), *config, R),
         ArgAdjuster))
     {
-        if(! corpus->config()->IgnoreMappingFailures)
+        if(! corpus->config().IgnoreMappingFailures)
             return err;
         R.print("warning: mapping failed because ", toString(std::move(err)));
     }
@@ -325,16 +337,16 @@ build(
     // Collect the symbols. Each symbol will have
     // a vector of one or more bitcodes. These will
     // be merged later.
-    if(corpus->config()->verbose())
+    if(corpus->config().verbose())
         R.print("Collecting symbols");
     auto bitcodes = collectBitcodes(ex);
 
     // First reducing phase (reduce all decls into one info per decl).
-    if(corpus->config()->verbose())
+    if(corpus->config().verbose())
         R.print("Reducing ", bitcodes.size(), " declarations");
     std::atomic<bool> GotFailure;
     GotFailure = false;
-    corpus->config()->parallelForEach(
+    corpus->config().parallelForEach(
         bitcodes,
         [&](auto& Group)
         {
@@ -368,7 +380,7 @@ build(
             corpus->insert(std::move(I));
         });
 
-    if(corpus->config()->verbose())
+    if(corpus->config().verbose())
         R.print("Collected ", corpus->InfoMap.size(), " symbols.\n");
 
     if(GotFailure)

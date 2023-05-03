@@ -11,8 +11,7 @@
 #ifndef MRDOX_API_CORPUSIMPL_HPP
 #define MRDOX_API_CORPUSIMPL_HPP
 
-#include <mrdox/Platform.hpp>
-#include "AST/Bitcode.hpp"
+#include "ConfigImpl.hpp"
 #include <mrdox/Corpus.hpp>
 #include <string>
 
@@ -28,7 +27,7 @@ public:
     */
     explicit
     CorpusImpl(
-        std::shared_ptr<Config const> config) noexcept
+        std::shared_ptr<ConfigImpl const> config) noexcept
         : config_(std::move(config))
     {
     }
@@ -38,10 +37,10 @@ public:
         SymbolID const& id) noexcept;
 
 private:
-    std::shared_ptr<Config const> const&
+    Config const&
     config() const noexcept override
     {
-        return config_;
+        return *config_;
     }
 
     std::vector<Info const*> const&
@@ -106,7 +105,7 @@ private:
     */
     void canonicalize(Reporter& R);
 
-    std::shared_ptr<Config const> config_;
+    std::shared_ptr<ConfigImpl const> config_;
 
     // Table of Info keyed on Symbol ID.
     llvm::StringMap<std::unique_ptr<Info>> InfoMap;

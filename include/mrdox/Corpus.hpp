@@ -47,7 +47,7 @@ public:
     */
     MRDOX_DECL
     virtual
-    std::shared_ptr<Config const> const&
+    Config const&
     config() const noexcept = 0;
 
     /** Return a sorted index of all 

@@ -39,7 +39,7 @@ public:
         , R_(R)
         , names_(corpus_)
         , outputPath_(outputPath)
-        , wg_(corpus.config().get())
+        , wg_(&corpus.config())
     {
     }
 
