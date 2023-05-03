@@ -51,7 +51,7 @@ public:
     ConfigImpl const& config_;
     Reporter& R_;
 
-    StringRef File;
+    llvm::SmallString<512> File;
     int LineNumber;
     bool PublicOnly;
     bool IsFileInRootDir;
@@ -81,16 +81,35 @@ private:
     SerializeResult build(EnumDecl*        D);
     SerializeResult build(VarDecl*         D);
 
+    template<class DeclTy>
+    SerializeResult buildNamespace(DeclTy* D);
+
+    template<class DeclTy>
+    SerializeResult buildRecord(DeclTy* D);
+
+    template<class DeclTy>
+    SerializeResult buildFunction(DeclTy* D);
+
+    template<class DeclTy>
+    SerializeResult buildTypedef(DeclTy* D);
+
+    template<class DeclTy>
+    SerializeResult buildEnum(DeclTy* D);
+
+    template<class DeclTy>
+    SerializeResult buildVar(DeclTy* D);
+
     int
     getLine(
         NamedDecl const* D) const;
 
-    template<class InfoTy, typename DeclTy>
-    void extract(InfoTy& I, DeclTy* D);
+    template<typename DeclTy>
+    void extract(DeclTy* D);
 
 public:
     void HandleTranslationUnit(ASTContext& Context) override;
 
+    bool shouldExtract(Decl const* D);
     bool WalkUpFromNamespaceDecl(NamespaceDecl* D);
     bool WalkUpFromCXXRecordDecl(CXXRecordDecl* D);
     bool WalkUpFromCXXMethodDecl(CXXMethodDecl* D);

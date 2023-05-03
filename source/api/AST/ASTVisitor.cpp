@@ -1317,6 +1317,48 @@ build(
     return { writeBitcode(I), writeParent(std::move(I)) };
 }
 
+template<class DeclTy>
+SerializeResult
+ASTVisitor::
+buildNamespace(DeclTy* D)
+{
+}
+
+template<class DeclTy>
+SerializeResult
+ASTVisitor::
+buildRecord(DeclTy* D)
+{
+}
+
+template<class DeclTy>
+SerializeResult
+ASTVisitor::
+buildFunction(DeclTy* D)
+{
+}
+
+template<class DeclTy>
+SerializeResult
+ASTVisitor::
+buildTypedef(DeclTy* D)
+{
+}
+
+template<class DeclTy>
+SerializeResult
+ASTVisitor::
+buildEnum(DeclTy* D)
+{
+}
+
+template<class DeclTy>
+SerializeResult
+ASTVisitor::
+buildVar(DeclTy* D)
+{
+}
+
 //------------------------------------------------
 
 int
@@ -1328,28 +1370,19 @@ getLine(
         D->getBeginLoc()).getLine();
 }
 
-template<class InfoTy, class DeclTy>
-void
+bool
 ASTVisitor::
-extract(InfoTy& I, DeclTy* D)
+shouldExtract(
+    Decl const* D)
 {
-    Assert(&D->getASTContext() == astContext_);
-
     namespace path = llvm::sys::path;
 
     if(sourceManager_->isInSystemHeader(D->getLocation()))
-    {
-        // skip system header
-        return;
-    }
+        return false; // skip system header
 
     if(D->getParentFunctionOrMethod())
-    {
-        // skip function-local declarations
-        return;
-    }
+        return true; // skip function-local declaration
 
-    llvm::SmallString<512> filePath;
     clang::PresumedLoc const loc =
         sourceManager_->getPresumedLoc(D->getBeginLoc());
     auto result = fileFilter_.emplace(
@@ -1360,28 +1393,38 @@ extract(InfoTy& I, DeclTy* D)
         // cached filter entry already exists
         FileFilter const& ff = result.first->second;
         if(! ff.include)
-            return;
-        filePath = loc.getFilename(); // native
-        convert_to_slash(filePath);
+            return false;
+        File = loc.getFilename(); // native
+        convert_to_slash(File);
         // VFALCO we could assert that the prefix
         //        matches and just lop off the
         //        first ff.prefix.size() characters.
-        path::replace_path_prefix(filePath, ff.prefix, "");
+        path::replace_path_prefix(File, ff.prefix, "");
     }
     else
     {
         // new element
-        filePath = loc.getFilename();
-        convert_to_slash(filePath);
+        File = loc.getFilename();
+        convert_to_slash(File);
         FileFilter& ff = result.first->second;
-        ff.include = config_.shouldVisitFile(filePath, ff.prefix);
+        ff.include = config_.shouldVisitFile(File, ff.prefix);
         if(! ff.include)
-            return;
+            return false;
         // VFALCO we could assert that the prefix
         //        matches and just lop off the
         //        first ff.prefix.size() characters.
-        path::replace_path_prefix(filePath, ff.prefix, "");
+        path::replace_path_prefix(File, ff.prefix, "");
     }
+    return true;
+}
+
+template<class DeclTy>
+void
+ASTVisitor::
+extract(DeclTy* D)
+{
+    if(! shouldExtract(D))
+        return;
 
     // If there is an error generating a USR for the decl, skip this decl.
     {
@@ -1397,7 +1440,6 @@ extract(InfoTy& I, DeclTy* D)
     IsFileInRootDir = true;
 
     SerializeResult res;
-    File = filePath;
     if constexpr(std::is_same_v<FriendDecl, DeclTy>)
     {
         LineNumber = 0; // getLine(D)
@@ -1454,8 +1496,7 @@ ASTVisitor::
 WalkUpFromNamespaceDecl(
     NamespaceDecl* D)
 {
-    NamespaceInfo I;
-    extract(I, D);
+    extract(D);
     return true;
 }
 
@@ -1464,8 +1505,7 @@ ASTVisitor::
 WalkUpFromCXXRecordDecl(
     CXXRecordDecl* D)
 {
-    FunctionInfo I;
-    extract(I, D);
+    extract(D);
     return true;
 }
 
@@ -1474,8 +1514,7 @@ ASTVisitor::
 WalkUpFromCXXMethodDecl(
     CXXMethodDecl* D)
 {
-    FunctionInfo I;
-    extract(I, D);
+    extract(D);
     return true;
 }
 
@@ -1484,9 +1523,7 @@ ASTVisitor::
 WalkUpFromFriendDecl(
     FriendDecl* D)
 {
-    // This will be the parent record
-    RecordInfo P;
-    extract(P, D);
+    extract(D);
     return true;
 }
 
@@ -1496,7 +1533,7 @@ ASTVisitor::
 WalkUpFromUsingDecl(
     UsingDecl* D)
 {
-    extract(I, D);
+    extract(D);
     return true;
 }
 
@@ -1506,7 +1543,7 @@ WalkUpFromUsingShadowDecl(
     UsingShadowDecl* D)
 {
     // ?
-    extract(I, D);
+    extract(D);
     return true;
 }
 #endif
@@ -1516,8 +1553,7 @@ ASTVisitor::
 WalkUpFromFunctionDecl(
     FunctionDecl* D)
 {
-    FunctionInfo I;
-    extract(I, D);
+    extract(D);
     return true;
 }
 
@@ -1526,8 +1562,7 @@ ASTVisitor::
 WalkUpFromTypeAliasDecl(
     TypeAliasDecl* D)
 {
-    TypedefInfo I;
-    extract(I, D);
+    extract(D);
     return true;
 }
 
@@ -1536,8 +1571,7 @@ ASTVisitor::
 WalkUpFromTypedefDecl(
     TypedefDecl* D)
 {
-    TypedefInfo I;
-    extract(I, D);
+    extract(D);
     return true;
 }
 
@@ -1546,8 +1580,7 @@ ASTVisitor::
 WalkUpFromEnumDecl(
     EnumDecl* D)
 {
-    EnumInfo I;
-    extract(I, D);
+    extract(D);
     return true;
 }
 
@@ -1556,8 +1589,7 @@ ASTVisitor::
 WalkUpFromVarDecl(
     VarDecl* D)
 {
-    VariableInfo I;
-    extract(I, D);
+    extract(D);
     return true;
 }
 
