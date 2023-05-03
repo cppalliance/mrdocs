@@ -140,6 +140,8 @@ public:
     T& back() noexcept;
 
     void clear() noexcept;
+    iterator erase(iterator it) noexcept;
+
     AnyListNodes extractNodes() noexcept;
     void spliceBack(AnyListNodes&& nodes) noexcept;
 
@@ -239,9 +241,6 @@ class AnyList<T>::iterator_impl
 {
     friend class AnyList;
 
-    using value_type = std::conditional_t<isConst, T const, T>;
-    using pointer    = std::conditional_t<isConst, T const*, T*>;
-    using reference  = std::conditional_t<isConst, T const&, T&>;
     using node_type  = std::conditional_t<isConst, Node const, Node>;
 
     node_type* it_;
@@ -256,11 +255,22 @@ class AnyList<T>::iterator_impl
     }
 
 public:
-    using size_type = std::size_t;
-    using iterator_category =
-        std::forward_iterator_tag;
+    using value_type = std::conditional_t<isConst, T const, T>;
+    using pointer    = std::conditional_t<isConst, T const*, T*>;
+    using reference  = std::conditional_t<isConst, T const&, T&>;
+    using size_type  = std::size_t;
+    using iterator_category = std::forward_iterator_tag;
 
     iterator_impl() = default;
+
+    template<bool IsConst_, class =
+        std::enable_if_t<! IsConst_>>
+    iterator_impl(
+        iterator_impl<IsConst_> other) noexcept
+        : it_(other.it_)
+        , prev_(other.prev_)
+    {       
+    }
 
     iterator_impl& operator++() noexcept
     {
@@ -540,6 +550,39 @@ clear() noexcept
         it = next;
     }
     size_ = 0;
+}
+
+template<class T>
+auto
+AnyList<T>::
+erase(
+    iterator it) noexcept ->
+    iterator
+{
+    iterator result;
+    if(it.it_ == head_)
+    {
+        head_ = head_->next;
+        if( head_ == &end_)
+        {
+            tail_ = &end_;
+            result = iterator( &end_, nullptr );
+        }
+        else
+        {
+            result = iterator( head_, nullptr );
+        }
+    }
+    else
+    {
+        result = iterator( it.it_->next, it.prev_ );
+        it.prev_->next = it.it_->next;
+        if( it.it_->next == &end_)
+            tail_ = it.prev_;
+    }
+    delete it.it_;
+    --size_;
+    return result;
 }
 
 template<class T>
