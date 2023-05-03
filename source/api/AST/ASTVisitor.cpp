@@ -1300,7 +1300,15 @@ build(
 
 //------------------------------------------------
 
-// Returns `true` if something got mapped
+int
+ASTVisitor::
+getLine(
+    NamedDecl const* D) const
+{
+    return sourceManager_->getPresumedLoc(
+        D->getBeginLoc()).getLine();
+}
+
 template<class InfoTy, class DeclTy>
 void
 ASTVisitor::
@@ -1373,12 +1381,12 @@ extract(InfoTy& I, DeclTy* D)
     File = filePath;
     if constexpr(std::is_same_v<FriendDecl, DeclTy>)
     {
-        LineNumber = 0; // getLine(D, *asContext_)
+        LineNumber = 0; // getLine(D)
         res = build(D);
     }
     else
     {
-        LineNumber = getLine(D, *astContext_);
+        LineNumber = getLine(D);
         res = build(D);
     }
 
@@ -1535,86 +1543,6 @@ WalkUpFromVarDecl(
 }
 
 //------------------------------------------------
-
-int
-ASTVisitor::
-getLine(
-    NamedDecl const* D,
-    ASTContext const& Context) const
-{
-    return Context.getSourceManager().getPresumedLoc(
-        D->getBeginLoc()).getLine();
-}
-
-//------------------------------------------------
-
-namespace {
-
-struct Action
-    : public clang::ASTFrontendAction
-{
-    Action(
-        tooling::ExecutionContext& exc,
-        ConfigImpl const& config,
-        Reporter& R) noexcept
-        : ex_(exc)
-        , config_(config)
-        , R_(R)
-    {
-    }
-
-    std::unique_ptr<clang::ASTConsumer>
-    CreateASTConsumer(
-        clang::CompilerInstance& Compiler,
-        llvm::StringRef InFile) override
-    {
-        return std::make_unique<ASTVisitor>(ex_, config_, R_);
-    }
-
-private:
-    tooling::ExecutionContext& ex_;
-    ConfigImpl const& config_;
-    Reporter& R_;
-};
-
-//------------------------------------------------
-
-struct Factory : tooling::FrontendActionFactory
-{
-    Factory(
-        tooling::ExecutionContext& exc,
-        ConfigImpl const& config,
-        Reporter& R) noexcept
-        : ex_(exc)
-        , config_(config)
-        , R_(R)
-    {
-    }
-
-    std::unique_ptr<FrontendAction>
-    create() override
-    {
-        return std::make_unique<Action>(ex_, config_, R_);
-    }
-
-private:
-    tooling::ExecutionContext& ex_;
-    ConfigImpl const& config_;
-    Reporter& R_;
-};
-
-} // (anon)
-
-//------------------------------------------------
-
-std::unique_ptr<tooling::FrontendActionFactory>
-makeFrontendActionFactory(
-    tooling::ExecutionContext& exc,
-    ConfigImpl const& config,
-    Reporter& R)
-{
-    return std::make_unique<Factory>(exc, config, R);
-}
 
 } // mrdox
 } // clang

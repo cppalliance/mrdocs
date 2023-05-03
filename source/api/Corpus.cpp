@@ -12,6 +12,7 @@
 #include "CorpusImpl.hpp"
 #include "ConfigImpl.hpp"
 #include "AST/Bitcode.hpp"
+#include "AST/FrontendAction.hpp"
 #include "Metadata/Reduce.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
@@ -23,15 +24,6 @@
 
 namespace clang {
 namespace mrdox {
-
-/** Return a factory used to create our visitor.
-*/
-extern
-std::unique_ptr<tooling::FrontendActionFactory>
-makeFrontendActionFactory(
-    tooling::ExecutionContext& exc,
-    ConfigImpl const& config,
-    Reporter& R);
 
 // A standalone function to call to merge a vector of infos into one.
 // This assumes that all infos in the vector are of the same type, and will fail

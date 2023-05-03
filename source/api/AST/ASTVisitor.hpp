@@ -85,6 +85,10 @@ private:
     SerializeResult build(EnumDecl*        D);
     SerializeResult build(VarDecl*         D);
 
+    int
+    getLine(
+        NamedDecl const* D) const;
+
     template<class InfoTy, typename DeclTy>
     void extract(InfoTy& I, DeclTy* D);
 
@@ -102,19 +106,6 @@ public:
     bool WalkUpFromTypedefDecl(TypedefDecl* D);
     bool WalkUpFromEnumDecl(EnumDecl* D);
     bool WalkUpFromVarDecl(VarDecl* D);
-
-private:
-    int
-    getLine(
-        NamedDecl const* D,
-        ASTContext const& Context) const;
-
-    llvm::SmallString<128>
-    getFile(
-        NamedDecl const* D, 
-        ASTContext const& Context,
-        StringRef RootDir,
-        bool& IsFileInRootDir) const;
 };
 
 } // mrdox
