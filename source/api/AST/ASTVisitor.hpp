@@ -81,7 +81,7 @@ public:
 
 private:
     template <typename T>
-    bool mapDecl(T const* D);
+    bool mapDecl(T* D);
 
     int
     getLine(

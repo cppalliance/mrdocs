@@ -850,7 +850,7 @@ getLineNumber(
 SerializeResult
 Serializer::
 build(
-    NamespaceDecl const* D)
+    NamespaceDecl* D)
 {
     NamespaceInfo I;
     if(! getInfo(*this, I, D))
@@ -881,7 +881,7 @@ getCXXRecordSpecs(
 SerializeResult
 Serializer::
 build(
-    CXXRecordDecl const* D)
+    CXXRecordDecl* D)
 {
     RecordInfo I;
     if(! getSymbolInfo(*this, I, D))
@@ -1049,7 +1049,7 @@ bool
 buildFunctionInfo(
     Serializer& sr,
     FunctionInfo& I,
-    FunctionDecl const* D)
+    FunctionDecl* D)
 {
     if(! getFunctionInfo(sr, I, D))
         return false;
@@ -1061,7 +1061,7 @@ buildFunctionInfo(
 SerializeResult
 Serializer::
 build(
-    CXXMethodDecl const* D)
+    CXXMethodDecl* D)
 {
     FunctionInfo I;
     if(! getFunctionInfo(*this, I, D))
@@ -1087,12 +1087,12 @@ build(
 SerializeResult
 Serializer::
 build(
-    FriendDecl const* D)
+    FriendDecl* D)
 {
-    if(NamedDecl const* ND = D->getFriendDecl())
+    if(NamedDecl* ND = D->getFriendDecl())
     {
         // D does not name a type
-        if(FunctionDecl const* FD = dyn_cast<FunctionDecl>(ND))
+        if(FunctionDecl* FD = dyn_cast<FunctionDecl>(ND))
         {
             // VFALCO HACK, slam LineNumber before it is
             //        inserted into Loc or DefLoc
@@ -1116,13 +1116,13 @@ build(
                 writeBitcode(P),
                 writeParent(std::move(P)) };
         }
-        if(FunctionTemplateDecl const* FT = dyn_cast<FunctionTemplateDecl>(ND))
+        if(FunctionTemplateDecl* FT = dyn_cast<FunctionTemplateDecl>(ND))
         {
             // VFALCO TODO
             (void)FT;
             return {};
         }
-        if(ClassTemplateDecl const* CT = dyn_cast<ClassTemplateDecl>(ND))
+        if(ClassTemplateDecl* CT = dyn_cast<ClassTemplateDecl>(ND))
         {
             // VFALCO TODO
             (void)CT;
@@ -1132,7 +1132,7 @@ build(
         Assert(false);
         return {};
     }
-    else if(TypeSourceInfo const* TS = D->getFriendType())
+    else if(TypeSourceInfo* TS = D->getFriendType())
     {
         (void)TS;
         return {};
@@ -1147,7 +1147,7 @@ build(
 SerializeResult
 Serializer::
 build(
-    UsingDecl const* D)
+    UsingDecl* D)
 {
 #if 0
     DeclarationNameInfo DNI = D->getNameInfo();
@@ -1164,7 +1164,7 @@ build(
 SerializeResult
 Serializer::
 build(
-    UsingShadowDecl const* D)
+    UsingShadowDecl* D)
 {
     return {};
 }
@@ -1172,7 +1172,7 @@ build(
 SerializeResult
 Serializer::
 build(
-    FunctionDecl const* D)
+    FunctionDecl* D)
 {
     FunctionInfo I;
     if(! buildFunctionInfo(*this, I, D))
@@ -1183,7 +1183,7 @@ build(
 SerializeResult
 Serializer::
 build(
-    TypedefDecl const* D)
+    TypedefDecl* D)
 {
     TypedefInfo I;
     if(! getInfo(*this, I, D))
@@ -1211,7 +1211,7 @@ build(
 SerializeResult
 Serializer::
 build(
-    TypeAliasDecl const* D)
+    TypeAliasDecl* D)
 {
     TypedefInfo I;
     if(! getInfo(*this, I, D))
@@ -1235,7 +1235,7 @@ build(
 SerializeResult
 Serializer::
 build(
-    EnumDecl const* D)
+    EnumDecl* D)
 {
     EnumInfo I;
     if(! getSymbolInfo(*this, I, D))
@@ -1254,7 +1254,7 @@ build(
 SerializeResult
 Serializer::
 build(
-    VarDecl const* D)
+    VarDecl* D)
 {
     VariableInfo I;
     if(! getSymbolInfo(*this, I, D))

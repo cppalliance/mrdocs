@@ -45,6 +45,7 @@ protected:
     {
         bool index = false;
         bool prolog = true;
+        bool safe_names = false;
     };
     Options options_;
 

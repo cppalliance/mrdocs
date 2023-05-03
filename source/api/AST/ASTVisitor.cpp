@@ -57,7 +57,7 @@ HandleTranslationUnit(
 template<typename T>
 bool
 ASTVisitor::
-mapDecl(T const* D)
+mapDecl(T* D)
 {
     namespace path = llvm::sys::path;
 

@@ -13,6 +13,7 @@
 #include "ConfigImpl.hpp"
 #include "CXXTags.hpp"
 #include "Support/Radix.hpp"
+#include "Support/SafeNames.hpp"
 #include "Support/Operator.hpp"
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
@@ -65,6 +66,7 @@ struct llvm::yaml::MappingTraits<
         auto& opt= opt_.opt;
         io.mapOptional("index",  opt.index);
         io.mapOptional("prolog", opt.prolog);
+        io.mapOptional("safe-names", opt.safe_names);
     }
 };
 
@@ -144,7 +146,7 @@ build()
             "<mrdox xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
             "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc\">\n";
 
-    if(options_.index)
+    if(options_.index || options_.safe_names)
         writeIndex();
 
     if(! corpus_.visit(globalNamespaceID, *this))
@@ -165,11 +167,27 @@ writeIndex()
     std::string temp;
     temp.reserve(256);
     tags_.open("symbols");
-    for(auto I : corpus_.index())
-        tags_.write("symbol", {}, {
-            { "name", I->getFullyQualifiedName(temp) },
-            { "tag", getTagName(*I) },
-            { I->id } });
+    if(options_.safe_names)
+    {
+        SafeNames names(corpus_);
+        for(auto I : corpus_.index())
+        {
+            auto safe_name = names.get(I->id);
+            tags_.write("symbol", {}, {
+                { "safe", safe_name },
+                { "name", I->getFullyQualifiedName(temp) },
+                { "tag", getTagName(*I) },
+                { I->id } });
+        }
+    }
+    else
+    {
+        for(auto I : corpus_.index())
+            tags_.write("symbol", {}, {
+                { "name", I->getFullyQualifiedName(temp) },
+                { "tag", getTagName(*I) },
+                { I->id } });
+    }
     tags_.close("symbols");
 }
 
