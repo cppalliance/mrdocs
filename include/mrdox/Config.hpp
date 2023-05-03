@@ -80,6 +80,10 @@ public:
     */
     bool ignoreFailures = false;
 
+    /** `true` if everything should be output to a single page.
+    */
+    bool singlePage = false;
+
     /** `true` if tool output should be verbose.
 
         @code
@@ -87,6 +91,8 @@ public:
         @endcode
     */
     bool verboseOutput = false;
+
+    //--------------------------------------------
 
     /** A string holding the complete configuration YAML.
     */

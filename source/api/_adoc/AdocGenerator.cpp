@@ -33,8 +33,10 @@ build(
     Corpus const& corpus,
     Reporter& R) const
 {
-    //if(corpus.config().
-    return AdocPagesBuilder(llvm::StringRef(outputPath), corpus, R).build();
+    if(corpus.config.singlePage)
+        return Generator::build(outputPath, corpus, R);
+    return AdocPagesBuilder(
+        llvm::StringRef(outputPath), corpus, R).build();
 }
 
 Err

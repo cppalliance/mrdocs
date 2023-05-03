@@ -39,7 +39,6 @@ public:
 
     int concurrency_ = 0;
     std::vector<std::string> additionalDefines_;
-    bool singlePage_ = false;
     std::string sourceRoot_;
     bool includePrivate_ = false;
 

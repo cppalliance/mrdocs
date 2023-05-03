@@ -143,8 +143,7 @@ toolMain(
     // Run the generator.
     if(config->verboseOutput)
         llvm::outs() << "Generating docs...\n";
-    auto err = generator->build(
-        OutputPath.getValue(), **corpus, R);
+    auto err = generator->build(OutputPath.getValue(), **corpus, R);
     if(err)
         R.print(err.message(), "generate '", OutputPath, "'");
 }

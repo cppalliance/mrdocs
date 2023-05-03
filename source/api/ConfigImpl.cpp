@@ -45,11 +45,11 @@ struct llvm::yaml::MappingTraits<
         IO& io, clang::mrdox::ConfigImpl& cfg)
     {
         io.mapOptional("ignore-failures", cfg.ignoreFailures);
+        io.mapOptional("single-page",     cfg.singlePage);
         io.mapOptional("verbose",         cfg.verboseOutput);
 
         io.mapOptional("concurrency",  cfg.concurrency_);
         io.mapOptional("defines",      cfg.additionalDefines_);
-        io.mapOptional("single-page",  cfg.singlePage_);
         io.mapOptional("source-root",  cfg.sourceRoot_);
         io.mapOptional("with-private", cfg.includePrivate_);
 
