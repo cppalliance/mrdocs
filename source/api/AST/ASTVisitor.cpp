@@ -272,8 +272,10 @@ parseParameters(
 {
     for(ParmVarDecl const* P : D->parameters())
     {
+        // KRYSTIAN NOTE: call getOriginalType if we want to preserve
+        // top-level cv-qualfiers/array types/function types
         FieldTypeInfo& FieldInfo = I.Params.emplace_back(
-            getTypeInfoForType(P->getOriginalType()),
+            getTypeInfoForType(P->getType()),
             P->getNameAsString());
         FieldInfo.DefaultValue = getSourceCode(
             D, P->getDefaultArgRange());
