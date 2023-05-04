@@ -1378,10 +1378,17 @@ shouldExtract(
     namespace path = llvm::sys::path;
 
     if(sourceManager_->isInSystemHeader(D->getLocation()))
-        return false; // skip system header
+    {
+        // skip system header
+        return false;
+    }
 
     if(D->getParentFunctionOrMethod())
-        return true; // skip function-local declaration
+    {
+        // skip function-local declaration,
+        // and skip function ParmVarDecls.
+        return false;
+    }
 
     clang::PresumedLoc const loc =
         sourceManager_->getPresumedLoc(D->getBeginLoc());
@@ -1590,6 +1597,19 @@ WalkUpFromVarDecl(
     VarDecl* D)
 {
     extract(D);
+    return true;
+}
+
+bool
+ASTVisitor::
+WalkUpFromParmVarDecl(
+    ParmVarDecl* D)
+{
+    // We do nothing here, to prevent ParmVarDecl
+    // from appearing as VarDecl. We pick up the
+    // function parameters as a group from the
+    // FunctionDecl instead of visiting ParmVarDecl.
+
     return true;
 }
 

@@ -121,6 +121,8 @@ public:
     bool WalkUpFromTypedefDecl(TypedefDecl* D);
     bool WalkUpFromEnumDecl(EnumDecl* D);
     bool WalkUpFromVarDecl(VarDecl* D);
+
+    bool WalkUpFromParmVarDecl(ParmVarDecl* D);
 };
 
 } // mrdox
