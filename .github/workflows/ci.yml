@@ -9,7 +9,7 @@ on:
     tags:
       - "v*.*.*"
 
-  pull_request:
+  pull_request_target:
     branches:
       - develop
 
@@ -98,15 +98,9 @@ jobs:
       run:
         shell: bash
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - { name: 'Create Release Packages', os: ubuntu-22.04 }
-
-    name: ${{ matrix.name }}
+    name: Create Release Packages
     timeout-minutes: 120
-    runs-on: ${{matrix.os}}
+    runs-on: ubuntu-22.04
     permissions:
       contents: write
 
