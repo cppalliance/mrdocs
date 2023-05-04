@@ -40,7 +40,7 @@ struct BitCodeConstants
     static constexpr unsigned char Signature[4] = {'M', 'R', 'D', 'X'};
 };
 
-/** AnyList of block identifiers.
+/** List of block identifiers.
 
     New IDs need to be added to both the enum
     here and the relevant IdNameMap in the

@@ -59,14 +59,14 @@ struct RecordInfo : SymbolInfo
 
     Bits<RecFlags0> specs;
 
-    llvm::SmallVector<MemberTypeInfo, 4> Members;   // AnyList of info about record members.
-    llvm::SmallVector<Reference, 4> Parents;        // AnyList of base/parent records
+    llvm::SmallVector<MemberTypeInfo, 4> Members;   // List of info about record members.
+    llvm::SmallVector<Reference, 4> Parents;        // List of base/parent records
                                                     // (does not include virtual parents).
-    llvm::SmallVector<Reference, 4> VirtualParents; // AnyList of virtual base/parent records.
+    llvm::SmallVector<Reference, 4> VirtualParents; // List of virtual base/parent records.
 
-    std::vector<BaseRecordInfo> Bases;              // AnyList of base/parent records; this includes inherited methods and attributes
+    std::vector<BaseRecordInfo> Bases;              // List of base/parent records; this includes inherited methods and attributes
 
-    /** AnyList of friend functions.
+    /** List of friend functions.
     */
     llvm::SmallVector<SymbolID, 4> Friends;
 

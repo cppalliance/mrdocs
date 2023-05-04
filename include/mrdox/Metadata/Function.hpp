@@ -95,7 +95,7 @@ struct FunctionInfo : SymbolInfo
     bool IsMethod = false; // Indicates whether this function is a class method.
     Reference Parent;      // Reference to the parent class decl for this method.
     TypeInfo ReturnType;   // Info about the return type of this function.
-    llvm::SmallVector<FieldTypeInfo, 4> Params; // AnyList of parameters.
+    llvm::SmallVector<FieldTypeInfo, 4> Params; // List of parameters.
 
     // Access level for this method (public, private, protected, none).
     // AS_public is set as default because the bitcode writer requires the enum
