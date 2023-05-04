@@ -100,6 +100,7 @@ private:
     void buildVar(VarDecl* D);
 
 public:
+    bool shouldTraversePostOrder() const noexcept { return true; }
     void HandleTranslationUnit(ASTContext& Context) override;
     bool WalkUpFromNamespaceDecl(NamespaceDecl* D);
     bool WalkUpFromCXXRecordDecl(CXXRecordDecl* D);

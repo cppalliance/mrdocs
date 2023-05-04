@@ -272,8 +272,11 @@ parseParameters(
 {
     for(ParmVarDecl const* P : D->parameters())
     {
+        // KRYSTIAN NOTE: call getOriginalType instead
+        // of getType if we want to preserve top-level
+        // cv-qualfiers/array types/function types
         FieldTypeInfo& FieldInfo = I.Params.emplace_back(
-            getTypeInfoForType(P->getOriginalType()),
+            getTypeInfoForType(P->getType()),
             P->getNameAsString());
         FieldInfo.DefaultValue = getSourceCode(
             D, P->getDefaultArgRange());
@@ -1062,6 +1065,9 @@ ASTVisitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
+    // This visitor is written expecting post-order
+    Assert(shouldTraversePostOrder());
+
     // cache contextual variables
     astContext_ = &Context;
     sourceManager_ = &astContext_->getSourceManager();
@@ -1200,10 +1206,16 @@ ASTVisitor::
 WalkUpFromParmVarDecl(
     ParmVarDecl* D)
 {
-    // We do nothing here, to prevent ParmVarDecl
-    // from appearing as VarDecl. We pick up the
-    // function parameters as a group from the
-    // FunctionDecl instead of visiting ParmVarDecl.
+    // apply the type adjustments specified in [dcl.fct] p5
+    // to ensure that the USR of the corresponding function matches
+    // other declarations of the function that have parameters declared
+    // with different top-level cv-qualifiers
+    // since we parse function parameters when we visit
+    // the actual function declarations, do nothing else
+
+    D->setType(astContext_->getSignatureParameterType(D->getType()));
+
+    // Skip the VarDecl by not walking up from here
     return true;
 }
 
