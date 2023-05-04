@@ -1292,10 +1292,17 @@ ASTVisitor::
 WalkUpFromParmVarDecl(
     ParmVarDecl* D)
 {
-    // We do nothing here, to prevent ParmVarDecl
-    // from appearing as VarDecl. We pick up the
-    // function parameters as a group from the
-    // FunctionDecl instead of visiting ParmVarDecl.
+    Assert(shouldTraversePostOrder() &&
+        "expected post-order traversal");
+
+    // apply the type adjustments specified in [dcl.fct] p5
+    // to ensure that the USR of the corresponding function matches
+    // other declarations of the function that have parameters declared
+    // with different top-level cv-qualifiers
+    D->setType(astContext_->
+        getSignatureParameterType(D->getType()));
+    // since we parse function parameters when we visit
+    // the actual function declarations, do nothing else
     return true;
 }
 
