@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - { name: "MSVC 14.3 - C++20", os: windows-2022, cxxstd: '20', cmake_args: -G "Visual Studio 17 2022" -A x64, github_release: true }
+          - { name: "MSVC 14.3 - C++20", os: windows-2022, cxxstd: '20', cmake_args: -G "Visual Studio 17 2022" -A x64, github_release: true }
           - { name: "GCC 12 - C++20",    os: ubuntu-22.04, cc: gcc-12, cxx: g++-12, cxxstd: '20', install: g++-12, github_release: true }
           - { name: "GCC 11 - C++20",    os: ubuntu-22.04, cc: gcc-11, cxx: g++-11, cxxstd: 20, install: g++-11 }
           - { name: "Clang 15 - C++20",  os: ubuntu-22.04, cc: clang-15, cxx: clang++-15, cxxstd: 20, install: "clang-15 libxml2-utils" }
@@ -52,10 +52,7 @@ jobs:
         if: ${{ startsWith( matrix.os , 'windows' ) }}
         shell: bash
         run: |
-          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          export AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }}
-          aws s3 cp s3://${{ secrets.AWS_BUCKET_NAME }}/llvm-install/RelWithDebInfo-731264b0.7z RelWithDebInfo-731264b0.7z
+          curl -L -o "RelWithDebInfo-731264b0.7z" "https://github.com/cppalliance/mrdox/releases/download/llvm-package-release/RelWithDebInfo-731264b0.7z"
           7z x RelWithDebInfo-731264b0.7z -ollvm-install
           llvm_dir="./llvm-install/RelWithDebInfo"
           llvm_dir="$(readlink -f "$llvm_dir" 2>/dev/null || realpath -e "$llvm_dir" 2>/dev/null || echo "$(pwd)/$llvm_dir")"
@@ -110,10 +107,10 @@ jobs:
           name: release-packages-Linux
           path: build
 
-      # - uses: actions/download-artifact@v3
-      #   with:
-      #     name: release-packages-Windows
-      #     path: build
+      - uses: actions/download-artifact@v3
+        with:
+          name: release-packages-Windows
+          path: build
 
       - name: List artifacts
         run: ls -R
