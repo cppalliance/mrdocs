@@ -9,7 +9,7 @@
   </struct>
   <class name="C6" id="KS3H76wGd00jB2pnPVvaBxXfMk8=">
     <file path="record-inheritance.cpp" line="18" class="def"/>
-    <base name="C1" access="private" modifier="virtual" id="tm2khHa6qZM0lj1f7IwBdxVxDgE="/>
+    <base name="C1" access="private" class="virtual" id="tm2khHa6qZM0lj1f7IwBdxVxDgE="/>
   </class>
   <struct name="S4" id="OkKbIK8En3Y5FbOBQVeHnAsZ0aY=">
     <file path="record-inheritance.cpp" line="10" class="def"/>
@@ -60,7 +60,7 @@
   </class>
   <class name="C5" id="+FCicEQuRpyoPB1uYTGhWVcrlcE=">
     <file path="record-inheritance.cpp" line="17" class="def"/>
-    <base name="C0" access="private" modifier="virtual" id="sTaqkoFcVbtntbfpe777v5/pWL0="/>
+    <base name="C0" access="private" class="virtual" id="sTaqkoFcVbtntbfpe777v5/pWL0="/>
   </class>
 </namespace>
 </mrdox>

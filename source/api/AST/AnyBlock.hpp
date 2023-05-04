@@ -551,20 +551,21 @@ public:
 
 //------------------------------------------------
 
-class BaseRecordBlock
+class BaseBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
-    BaseRecordInfo& I_;
+    std::vector<BaseInfo>& v_;
 
 public:
     explicit
-    BaseRecordBlock(
-        BaseRecordInfo& I,
+    BaseBlock(
+        std::vector<BaseInfo>& v,
         BitcodeReader& br) noexcept
         : br_(br)
-        , I_(I)
+        , v_(v)
     {
+        v_.emplace_back();
     }
 
     llvm::Error
@@ -575,39 +576,16 @@ public:
     {
         switch(ID)
         {
-        case BASE_RECORD_TAG_TYPE:
-            return decodeRecord(R, I_.TagType, Blob);
-        case BASE_RECORD_IS_VIRTUAL:
-            return decodeRecord(R, I_.IsVirtual, Blob);
-        case BASE_RECORD_ACCESS:
-            return decodeRecord(R, I_.Access, Blob);
-        case BASE_RECORD_IS_PARENT:
-            return decodeRecord(R, I_.IsParent, Blob);
+        case BASE_ID:
+            return decodeRecord(R, v_.back().id, Blob);
+        case BASE_NAME:
+            return decodeRecord(R, v_.back().Name, Blob);
+        case BASE_ACCESS:
+            return decodeRecord(R, v_.back().Access, Blob);
+        case BASE_IS_VIRTUAL:
+            return decodeRecord(R, v_.back().IsVirtual, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
-        }
-    }
-
-    llvm::Error
-    readSubBlock(
-        unsigned ID) override
-    {
-        switch(ID)
-        {
-        case BI_INFO_PART_ID:
-        {
-            InfoPartBlock B(I_, br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            return llvm::Error::success();
-        }
-        case BI_MEMBER_TYPE_BLOCK_ID:
-        {
-            MemberTypeBlock B(I_.Members.emplace_back(), br_);
-            return br_.readBlock(B, ID);
-        }
-        default:
-            return AnyBlock::readSubBlock(ID);
         }
     }
 };
@@ -880,27 +858,9 @@ public:
             MemberTypeBlock B(I->Members.emplace_back(), br_);
             return br_.readBlock(B, ID);
         }
-        case BI_REFERENCE_BLOCK_ID:
+        case BI_BASE_BLOCK_ID:
         {
-            ReferenceBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            switch(B.F)
-            {
-            case FieldId::F_parent:
-                I->Parents.emplace_back(std::move(B.I));
-                break;
-            case FieldId::F_vparent:
-                I->VirtualParents.emplace_back(std::move(B.I));
-                break;
-            default:
-                return TopLevelBlock::insertChild(std::move(B.I), B.F);
-            }
-            return llvm::Error::success();
-        }
-        case BI_BASE_RECORD_BLOCK_ID:
-        {
-            BaseRecordBlock B(I->Bases.emplace_back(), br_);
+            BaseBlock B(I->Bases, br_);
             return br_.readBlock(B, ID);
         }
         case BI_TEMPLATE_BLOCK_ID:

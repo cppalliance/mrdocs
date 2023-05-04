@@ -244,8 +244,13 @@ visit(
         for(TemplateParamInfo const& J : I.Template->Params)
             writeTemplateParam(J);
 
-    for(auto const& J : I.Bases)
-        writeBaseRecord(J);
+    for(auto const& B : I.Bases)
+        tags_.write(baseTagName, "", {
+            { "name", B.Name },
+            { B.Access },
+            { "class", "virtual", B.IsVirtual },
+            { B.id }
+            });
     // VFALCO data members?
     for(auto const& J : I.Members)
         writeMemberType(J);
@@ -280,7 +285,7 @@ visit(
     writeSymbol(I);
 
     write(I.specs0, tags_);
-    //write(I.specs1, tags_);
+    write(I.specs1, tags_);
 
     writeReturnType(I.ReturnType, tags_);
 
@@ -343,7 +348,7 @@ visit(
     writeSymbol(I);
 
     for(auto const& v : I.Members)
-        tags_.write("element", {}, {
+        tags_.write("value", {}, {
             { "name", v.Name },
             { "value", v.Value },
             });
@@ -412,23 +417,6 @@ writeLocation(
         { "path", loc.Filename },
         { "line", std::to_string(loc.LineNumber) },
         { "class", "def", def } });
-}
-
-void
-XMLWriter::
-writeBaseRecord(
-    BaseRecordInfo const& I)
-{
-    tags_.write("base", {}, {
-        { "name", I.Name },
-        { I.Access },
-        { "modifier", "virtual", I.IsVirtual },
-        { I.id } });
-    if(! corpus_.exists(I.id))
-    {
-        // e,g. for std::true_type
-        return;
-    }
 }
 
 void

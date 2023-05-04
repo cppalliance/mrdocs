@@ -76,6 +76,7 @@ public://private:
     bool extractInfo(Info& I, NamedDecl const* D);
     Reference getFunctionReference(FunctionDecl const* D);
     int getLine(NamedDecl const* D) const;
+    void extractBases(RecordInfo& I, CXXRecordDecl* D);
 
 private:
     void buildNamespace(NamespaceDecl* D);

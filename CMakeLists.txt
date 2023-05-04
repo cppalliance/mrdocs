@@ -195,6 +195,7 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL
 # Install
 #
 #-------------------------------------------------
+
 if (MRDOX_INSTALL)
     # Create and install mrdox-targets.cmake
     install(TARGETS mrdox-api mrdox
@@ -241,7 +242,6 @@ if (MRDOX_INSTALL)
             PATH_VARS CMAKE_INSTALL_LIBDIR INCLUDE_INSTALL_DIR LIB_INSTALL_DIR)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mrdox-config.cmake
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
-
 endif ()
 
 
@@ -315,7 +315,7 @@ if (BUILD_TESTING)
         file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)
 
         add_test(NAME xml-lint
-                COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd
+                COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
                     --relaxng ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rng ${XML_SOURCES}
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()

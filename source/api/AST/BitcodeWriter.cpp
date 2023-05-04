@@ -193,6 +193,7 @@ BlockIdNameMap = []()
     // improvise
     static const std::vector<std::pair<BlockId, const char* const>> Inits = {
         {BI_VERSION_BLOCK_ID, "VersionBlock"},
+        {BI_BASE_BLOCK_ID, "BaseBlock"},
         {BI_INFO_PART_ID, "InfoPart"},
         {BI_SYMBOL_PART_ID, "SymbolPart"},
         {BI_NAMESPACE_BLOCK_ID, "NamespaceBlock"},
@@ -203,7 +204,6 @@ BlockIdNameMap = []()
         {BI_FIELD_TYPE_BLOCK_ID, "FieldTypeBlock"},
         {BI_MEMBER_TYPE_BLOCK_ID, "MemberTypeBlock"},
         {BI_RECORD_BLOCK_ID, "RecordBlock"},
-        {BI_BASE_RECORD_BLOCK_ID, "BaseRecordBlock"},
         {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
         {BI_JAVADOC_BLOCK_ID, "JavadocBlock"},
         {BI_JAVADOC_LIST_BLOCK_ID, "JavadocListBlock"},
@@ -232,6 +232,10 @@ RecordIdNameMap = []()
     // improvise
     static const std::vector<std::pair<RecordId, RecordIdDsc>> Inits = {
         {VERSION, {"Version", &Integer32Abbrev}},
+        {BASE_ID, {"BaseID", &SymbolIDAbbrev}},
+        {BASE_NAME, {"BaseName", &StringAbbrev}},
+        {BASE_ACCESS, {"BaseAccess", &Integer32Abbrev}},
+        {BASE_IS_VIRTUAL, {"BaseIsVirtual", &BoolAbbrev}},
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
         {SYMBOL_PART_LOCDEF, {"SymbolLocDef", &LocationAbbrev}},
@@ -253,10 +257,6 @@ RecordIdNameMap = []()
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
-        {BASE_RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
-        {BASE_RECORD_IS_VIRTUAL, {"IsVirtual", &BoolAbbrev}},
-        {BASE_RECORD_ACCESS, {"Access", &Integer32Abbrev}},
-        {BASE_RECORD_IS_PARENT, {"IsParent", &BoolAbbrev}},
         {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
@@ -292,10 +292,9 @@ RecordsByBlock{
     // SymbolInfo part
     {BI_SYMBOL_PART_ID,
         {SYMBOL_PART_LOCDEF, SYMBOL_PART_LOC}},
-    // BaseRecordInfo
-    {BI_BASE_RECORD_BLOCK_ID,
-        {BASE_RECORD_TAG_TYPE,
-        BASE_RECORD_IS_VIRTUAL, BASE_RECORD_ACCESS, BASE_RECORD_IS_PARENT}},
+    // BaseInfo
+    {BI_BASE_BLOCK_ID,
+        {BASE_ID, BASE_NAME, BASE_ACCESS, BASE_IS_VIRTUAL}},
     // EnumInfo
     {BI_ENUM_BLOCK_ID,
         {ENUM_SCOPED}},
@@ -721,16 +720,13 @@ emitSymbolPart(
 void
 BitcodeWriter::
 emitBlock(
-    BaseRecordInfo const& I)
+    BaseInfo const& I)
 {
-    StreamSubBlockGuard Block(Stream, BI_BASE_RECORD_BLOCK_ID);
-    emitInfoPart(I);
-    emitRecord(I.TagType, BASE_RECORD_TAG_TYPE);
-    emitRecord(I.IsVirtual, BASE_RECORD_IS_VIRTUAL);
-    emitRecord(I.Access, BASE_RECORD_ACCESS);
-    emitRecord(I.IsParent, BASE_RECORD_IS_PARENT);
-    for (const auto& M : I.Members)
-        emitBlock(M);
+    StreamSubBlockGuard Block(Stream, BI_BASE_BLOCK_ID);
+    emitRecord(I.id, BASE_ID);
+    emitRecord(I.Name, BASE_NAME);
+    emitRecord(I.Access, BASE_ACCESS);
+    emitRecord(I.IsVirtual, BASE_IS_VIRTUAL);
 }
 
 void
@@ -920,12 +916,8 @@ emitBlock(
     emitRecord(RECORD_BITS, I.specs);
     for (const auto& N : I.Members)
         emitBlock(N);
-    for (const auto& P : I.Parents)
-        emitBlock(P, FieldId::F_parent);
-    for (const auto& P : I.VirtualParents)
-        emitBlock(P, FieldId::F_vparent);
-    for (const auto& PB : I.Bases)
-        emitBlock(PB);
+    for (const auto& B : I.Bases)
+        emitBlock(B);
     for (const auto& C : I.Children.Records)
         emitBlock(C, FieldId::F_child_record);
     for (auto const& C : I.Children.Functions)

@@ -23,12 +23,12 @@
 #include <clang/AST/Type.h>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
+#include <string>
+#include <string_view>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
-
-struct BaseRecordInfo;
 
 /** Bit constants used with Record metadata
 */
@@ -38,6 +38,30 @@ enum class RecFlags0 : std::uint32_t
     isFinalDestructor   = 0x00000002
 };
 
+/** Metadata for a direct base.
+*/
+struct BaseInfo
+{
+    SymbolID id;
+    std::string Name;
+    AccessSpecifier Access;
+    bool IsVirtual;
+
+    BaseInfo(
+        SymbolID const& id_ = EmptySID,
+        std::string_view Name_ = "",
+        AccessSpecifier Access_ = AS_public,
+        bool IsVirtual_ = false)
+        : id(id_)
+        , Name(Name_)
+        , Access(Access_)
+        , IsVirtual(IsVirtual_)
+    {
+    }
+};
+
+/** Metadata for struct, class, or union.
+*/
 struct RecordInfo : SymbolInfo
 {
     // VFALCO Use our own enumeration for this
@@ -60,11 +84,10 @@ struct RecordInfo : SymbolInfo
     Bits<RecFlags0> specs;
 
     llvm::SmallVector<MemberTypeInfo, 4> Members;   // List of info about record members.
-    llvm::SmallVector<Reference, 4> Parents;        // List of base/parent records
-                                                    // (does not include virtual parents).
-    llvm::SmallVector<Reference, 4> VirtualParents; // List of virtual base/parent records.
 
-    std::vector<BaseRecordInfo> Bases;              // List of base/parent records; this includes inherited methods and attributes
+    /** List of immediate bases.
+    */
+    std::vector<BaseInfo> Bases;
 
     /** List of friend functions.
     */
@@ -76,11 +99,14 @@ struct RecordInfo : SymbolInfo
 
     static constexpr InfoType type_id = InfoType::IT_record;
 
-    MRDOX_DECL
     explicit
     RecordInfo(
         SymbolID id = SymbolID(),
-        llvm::StringRef Name = llvm::StringRef());
+        llvm::StringRef Name = llvm::StringRef())
+        : SymbolInfo(InfoType::IT_record, id, Name)
+        , Children(false)
+    {
+    }
 };
 
 } // mrdox

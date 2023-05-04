@@ -70,7 +70,6 @@ private:
     void writeInfo(Info const&);
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
-    void writeBaseRecord(BaseRecordInfo const& I);
     void writeTemplateParam(TemplateParamInfo const& I);
     void writeMemberType(MemberTypeInfo const& I);
     void writeJavadoc(llvm::Optional<Javadoc> const& javadoc);

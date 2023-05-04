@@ -38,7 +38,7 @@ constexpr llvm::StringRef functionTagName   = "function";
 constexpr llvm::StringRef typedefTagName    = "typedef";
 constexpr llvm::StringRef aliasTagName      = "alias";
 constexpr llvm::StringRef enumTagName       = "enum";
-constexpr llvm::StringRef varTagName        = "var";
+constexpr llvm::StringRef varTagName        = "variable";
 constexpr llvm::StringRef attributeTagName  = "attr";
 constexpr llvm::StringRef returnTagName     = "return";
 constexpr llvm::StringRef paramTagName      = "param";
@@ -46,6 +46,7 @@ constexpr llvm::StringRef friendTagName     = "friend";
 constexpr llvm::StringRef tparamTagName     = "tparam";
 constexpr llvm::StringRef dataMemberTagName = "data";
 constexpr llvm::StringRef javadocTagName    = "doc";
+constexpr llvm::StringRef baseTagName       = "base";
 
 constexpr llvm::StringRef getBitsIDName(RecFlags0 ID)
 {

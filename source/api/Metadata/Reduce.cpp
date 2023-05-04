@@ -128,10 +128,8 @@ void merge(RecordInfo& I, RecordInfo&& Other)
         I.Members = std::move(Other.Members);
     if (I.Bases.empty())
         I.Bases = std::move(Other.Bases);
-    if (I.Parents.empty())
-        I.Parents = std::move(Other.Parents);
-    if (I.VirtualParents.empty())
-        I.VirtualParents = std::move(Other.VirtualParents);
+    if( I.Bases.empty())
+        I.Bases = std::move(Other.Bases);
     // Reduce children if necessary.
     reduceChildren(I.Children.Records, std::move(Other.Children.Records));
     reduceChildren(I.Children.Functions, std::move(Other.Children.Functions));

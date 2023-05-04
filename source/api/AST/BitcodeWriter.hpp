@@ -121,7 +121,7 @@ public:
     void emitInfoPart(Info const& I);
     void emitSymbolPart(SymbolInfo const& I);
 
-    void emitBlock(BaseRecordInfo const& I);
+    void emitBlock(BaseInfo const& I);
     void emitBlock(EnumInfo const& I);
     void emitBlock(EnumValueInfo const& I);
     void emitBlock(FieldTypeInfo const& I);

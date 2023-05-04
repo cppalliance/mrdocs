@@ -489,132 +489,6 @@ parseEnumerators(
     }
 }
 
-// TODO: Remove the serialization of Parents and VirtualParents, this
-// information is also extracted in the other definition of parseBases.
-static
-void
-parseBases(
-    ASTVisitor& sr,
-    RecordInfo& I,
-    CXXRecordDecl const* D)
-{
-    // Don't parse bases if this isn't a definition.
-    if(!D->isThisDeclarationADefinition())
-        return;
-    for(const CXXBaseSpecifier& B : D->bases())
-    {
-        if(B.isVirtual())
-            continue;
-        if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
-        {
-            TemplateDecl const* D = Ty->getTemplateName().getAsTemplateDecl();
-            I.Parents.emplace_back(
-                getUSRForDecl(D),
-                B.getType().getAsString(),
-                InfoType::IT_record);
-        }
-        else if(RecordDecl const* P = getRecordDeclForType(B.getType()))
-        {
-            I.Parents.emplace_back(
-                getUSRForDecl(P),
-                P->getNameAsString(),
-                InfoType::IT_record);
-        }
-        else
-        {
-            I.Parents.emplace_back(
-                globalNamespaceID,
-                B.getType().getAsString());
-        }
-    }
-    for(CXXBaseSpecifier const& B : D->vbases())
-    {
-        if(RecordDecl const* P = getRecordDeclForType(B.getType()))
-        {
-            I.VirtualParents.emplace_back(
-                getUSRForDecl(P),
-                P->getNameAsString(),
-                InfoType::IT_record);
-        }
-        else
-        {
-            I.VirtualParents.emplace_back(
-                globalNamespaceID,
-                B.getType().getAsString());
-        }
-    }
-}
-
-//------------------------------------------------
-
-static
-void
-parseBases(
-    ASTVisitor& sr,
-    RecordInfo& I,
-    CXXRecordDecl const* D,
-    bool IsFileInRootDir,
-    bool PublicOnly,
-    bool IsParent,
-    AccessSpecifier ParentAccess,
-    Reporter& R)
-{
-    // Don't parse bases if this isn't a definition.
-    if(!D->isThisDeclarationADefinition())
-        return;
-    for(const CXXBaseSpecifier& B : D->bases())
-    {
-        if(const RecordType* Ty = B.getType()->getAs<RecordType>())
-        {
-            if(const CXXRecordDecl* Base =
-                cast_or_null<CXXRecordDecl>(Ty->getDecl()->getDefinition()))
-            {
-                // Initialized without USR and name, this will be set in the following
-                // if-else stmt.
-                BaseRecordInfo BI(
-                    {}, "", B.isVirtual(),
-                    getFinalAccessSpecifier(ParentAccess, B.getAccessSpecifier()),
-                    IsParent);
-                if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
-                {
-                    const TemplateDecl* D = Ty->getTemplateName().getAsTemplateDecl();
-                    BI.id = getUSRForDecl(D);
-                    BI.Name = B.getType().getAsString();
-                }
-                else
-                {
-                    BI.id = getUSRForDecl(Base);
-                    BI.Name = Base->getNameAsString();
-                }
-                parseFields(BI, Base, PublicOnly, BI.Access, R);
-                for(auto const& Decl : Base->decls())
-                {
-                    if(auto const* MD = dyn_cast<CXXMethodDecl>(Decl))
-                    {
-                        // Don't serialize private methods
-                        if(MD->getAccessUnsafe() == AccessSpecifier::AS_private ||
-                            !MD->isUserProvided())
-                            continue;
-                        BI.Children.Functions.emplace_back(sr.getFunctionReference(MD));
-                    }
-                }
-                I.Bases.emplace_back(std::move(BI));
-                // Call this function recursively to get the inherited classes of
-                // this base; these new bases will also get stored in the original
-                // RecordInfo: I.
-                //
-                // VFALCO Commented this out because we only want to show immediate
-                //        bases. Alternatively, the generator could check IsParent
-                //
-            #if 0
-                parseBases(sr, I, Base, IsFileInRootDir, PublicOnly, false,
-                    I.Bases.back().Access, R);
-            #endif
-            }
-        }
-    }
-}
-
 //------------------------------------------------
 
 // This also sets IsFileInRootDir
@@ -729,6 +603,42 @@ getLine(
         D->getBeginLoc()).getLine();
 }
 
+void
+ASTVisitor::
+extractBases(
+    RecordInfo& I, CXXRecordDecl* D)
+{
+    // Only direct bases
+    for(CXXBaseSpecifier const& B : D->bases())
+    {
+        if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
+        {
+            TemplateDecl const* D = Ty->getTemplateName().getAsTemplateDecl();
+            I.Bases.emplace_back(
+                getUSRForDecl(D),
+                B.getType().getAsString(),
+                B.getAccessSpecifier(),
+                B.isVirtual());
+        }
+        else if(RecordDecl const* P = getRecordDeclForType(B.getType()))
+        {
+            I.Bases.emplace_back(
+                getUSRForDecl(P),
+                P->getNameAsString(),
+                B.getAccessSpecifier(),
+                B.isVirtual());
+        }
+        else
+        {
+            I.Bases.emplace_back(
+                EmptySID,
+                B.getType().getAsString(),
+                B.getAccessSpecifier(),
+                B.isVirtual());
+        }
+    }
+}
+
 //------------------------------------------------
 
 // Decl types which have isThisDeclarationADefinition:
@@ -784,18 +694,8 @@ buildRecord(
         I.Name = TD->getNameAsString();
         I.IsTypeDef = true;
     }
-    // VFALCO: remove first call to parseBases,
-    // that function should be deleted
-    parseBases(*this, I, D); // VFALCO WHY?
 
-    parseBases(*this,
-        I,
-        D,
-        IsFileInRootDir,
-        PublicOnly,
-        true,
-        AccessSpecifier::AS_public,
-        R_);
+    extractBases(I, D);
 
     getTemplateParams(I.Template, D);
 

@@ -463,9 +463,12 @@ writeLinkFor(Info const& I)
 void
 AdocWriter::
 writeBase(
-    BaseRecordInfo const& I)
+    BaseInfo const& I)
 {
-    os_ << clang::getAccessSpelling(I.Access) << " " << I.Name;
+    if(I.IsVirtual)
+        os_ << "virtual ";
+    os_ << clang::getAccessSpelling(I.Access) << " ";
+    os_ << I.Name;
 }
 
 void

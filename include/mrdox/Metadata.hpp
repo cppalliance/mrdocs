@@ -17,7 +17,6 @@
 // All headers related to
 // metadata extracted from AST
 
-#include <mrdox/Metadata/BaseRecord.hpp>
 #include <mrdox/Metadata/Enum.hpp>
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Function.hpp>

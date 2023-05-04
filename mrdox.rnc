@@ -1,138 +1,183 @@
-# convert to mrdox.rng with trang.jar (https://relaxng.org/jclark/trang.html)
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2023 Klemens Morgenstern (klemens.morgenstern@gmx.net)
+#
+# Official repository: https://github.com/cppalliance/mrdox
+#
+# https://relaxng.org/compact-tutorial-20030326.html
+#
+# convert to mrdox.rng with tools/trang.jar (https://relaxng.org/jclark/trang.html)
 # when commiting beacuse xmllint doesn't understand the compact format
+#
 
 namespace xsi= "http://www.w3.org/2001/XMLSchema-instance"
 
-grammar {
-    start = element mrdox {
+grammar
+{
+    start = element mrdox
+    {
         attribute xsi:noNamespaceSchemaLocation {text}?,
-        NamespaceInfo
+        Namespace
     }
-    Id   = attribute id { text }
-    Name = attribute name { text }
-    Attr = element attr { Id, Name ?, attribute value { text } ?}
 
-    NamespaceInfo = element namespace {
+    #---------------------------------------------
+
+    Namespace =
+        element namespace
+        {
             Name,
-            Id?,
-            Info,
+            ID?,
             Javadoc?,
             Scope
-    }
+        }
 
-    Symbol = (
-            attribute Tag { text },
-            attribute Name { text },
-            Id
-       )
+    #---------------------------------------------
 
-    Symbols = element symbols {
-            element symbol { Symbol }
-    }*
+    Record =
+        element class  { RecordContent } |
+        element struct { RecordContent } |
+        element union  { RecordContent }
 
-    SymbolInfo = (
-        Info,
-        Location *
+    RecordContent =
+    (
+        Name,
+        ID,
+        Location *,
+        (
+            BaseInfo |
+            Attr |
+            TemplateParamInfo |
+            MemberTypeInfo |
+            element friend { ID } |
+            Javadoc? |
+            Scope
+        ) *
     )
+
+    BaseInfo =
+        element base
+        {
+            Name,
+            Access,
+            attribute class { "virtual" } ?,
+            ID
+        }
+
+    MemberTypeInfo =
+        element data
+        {
+            Name,
+            attribute type { text },
+            attribute value { text } ?,
+            Access,
+            ID ?
+        }
+
+    #---------------------------------------------
+
+    Function =
+        element function
+        {
+            Name,
+            Access?,
+            ID,
+            (
+                Location * |
+                Attr * |
+                element return { attribute type { text }, ID ? } |
+                element param
+                {
+                    Name?,
+                    attribute type { text },
+                    attribute default { text } ?,
+                    ID ?
+                } * |
+                TemplateParamInfo * |
+                Javadoc ?
+            ) *
+        }
+
+    #---------------------------------------------
+
+    Enum =
+        element enum
+        {
+            Name,
+            attribute class {"scoped"} ?,
+            attribute type { text } ?,
+            ID,
+            Location *,
+            element value
+            {
+                Name,
+                attribute value { text }
+            } *,
+            Javadoc ?
+        }
+
+    #---------------------------------------------
+
+    Typedef =
+        element alias
+        {
+            Name,
+            ID,
+            Location *,
+            element type { Name, ID ? }
+        } |
+        element typedef
+        {
+            Name,
+            ID,
+            Location *,
+            element type { Name, ID ? }
+        }
+
+    #---------------------------------------------
+
+    Var =
+        element variable
+        {
+            Name,
+            ID,
+            (
+                Location &
+                Attr * &
+                element type { Name, ID ? } &
+                Javadoc ?
+            )
+        }
+
+    #---------------------------------------------
+
+    Symbol =
+    (
+        attribute Tag { text },
+        attribute Name { text },
+        ID
+    )
+
+    Symbols =
+        element symbols
+        {
+            element symbol { Symbol }
+        } *
 
     TemplateParamInfo = element tparam { attribute decl { text } }
 
-    BaseRecordinfo = element base {
-        Name, Access, attribute modifier { "virtual" } ?, Id
-    }
-
-    RecordInfoContent = (Name,
-            Id,
-            (SymbolInfo |
-             Attr |
-             TemplateParamInfo |
-             BaseRecordinfo |
-             MemberTypeInfo |
-             element friend { Id } |
-             Javadoc? |
-             Scope)*)
-
-    RecordInfo =
-        element class  { RecordInfoContent } |
-        element struct { RecordInfoContent } |
-        element union  { RecordInfoContent }
-
-    FunctionInfo = element function {
-            Name,
-            Access?,
-            Id,
-            (SymbolInfo |
-             Attr* |
-             element return { attribute type { text }, Id? } |
-             element param {
-                Name?,
-                attribute type { text },
-                attribute default { text } ?,
-                Id?
-             }* |
-             TemplateParamInfo* |
-             Javadoc?)*
-        }
-
-    TypedefInfo = element using
+    Location =
+        element file
         {
-            Name, Id,
-            SymbolInfo,
-            element type { Name, Id? }
-        } | element typedef
-        {
-            Name, Id,
-            SymbolInfo,
-            element type { Name, Id? }
-        }
-
-
-    EnumInfo = element enum {
-        Name,
-        attribute class {"scoped"} ?,
-        attribute type { text } ?,
-        Id,
-        SymbolInfo,
-        element \element {
-            Name,
-            attribute Value { text }
-        }*,
-        Javadoc?
-    }
-
-    VarInfo = element var {
-            Name,
-            Id,
-            (Location &
-             Attr* &
-             element type { Name, Id? } &
-             Javadoc?)
-        }
-
-    Info  = empty
-
-    Location = element file {
             attribute path {text},
             attribute line {text},
-            attribute class {"def"}?,
-            empty}
-
-    BaseRecordInfo = element base {
-        Name,
-        Access,
-        attribute modifier {"virtual"} ?,
-        Id
-    }
+            attribute class {"def"} ?,
+            empty
+        }
 
     Access = attribute access { "public"|"private"|"protected" }
-
-    MemberTypeInfo = element data {
-        Name,
-        attribute type { text },
-        attribute value { text } ?,
-        Access,
-        Id?
-    }
 
     StorageClass = (
         element extern          {empty} |
@@ -143,12 +188,12 @@ grammar {
     )
 
     Scope = (
-            NamespaceInfo |
-            RecordInfo    |
-            FunctionInfo  |
-            TypedefInfo   |
-            EnumInfo      |
-            VariableInfo)*
+            Namespace |
+            Record    |
+            Function  |
+            Typedef   |
+            Enum      |
+            Var)*
 
     # JavaDoc not in a nested grammar , so we can convert it to a XSD
 
@@ -177,6 +222,12 @@ grammar {
         attribute name { text } ?,
         Node*
     }
+
     Returns = element returns { Node * }
 
+    ID   = attribute id { text }
+
+    Name = attribute name { text }
+
+    Attr = element attr { ID, Name ?, attribute value { text } ? }
 }

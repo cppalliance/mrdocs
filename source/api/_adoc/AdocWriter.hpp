@@ -81,8 +81,7 @@ protected:
     void writeLinkFor(Info const&);
     void writeLinkFor(OverloadInfo const&);
 
-    void writeBase(
-        BaseRecordInfo const& I);
+    void writeBase(BaseInfo const& I);
     void writeFunctionOverloads(
         llvm::StringRef sectionName,
         OverloadsSet const& set);
