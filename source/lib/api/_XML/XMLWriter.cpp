@@ -149,7 +149,7 @@ build()
     if(options_.index || options_.safe_names)
         writeIndex();
 
-    if(! corpus_.visit(globalNamespaceID, *this))
+    if(! corpus_.visit(*this, globalNamespaceID))
         return makeErr("visit failed");
 
     if(options_.prolog)
@@ -207,7 +207,7 @@ visit(
 
     writeJavadoc(I.javadoc);
 
-    if(! corpus_.visit(I.Children, *this))
+    if(! corpus_.visit(*this, I.Children))
         return false;
 
     tags_.close(namespaceTagName);
@@ -261,7 +261,7 @@ visit(
 
     writeJavadoc(I.javadoc);
 
-    if(! corpus_.visit(I.Children, *this))
+    if(! corpus_.visit(*this, I.Children))
         return false;
 
     tags_.close(tagName);

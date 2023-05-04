@@ -271,7 +271,7 @@ write(
     // Description
     writeDescription(I.javadoc);
 
-#if 1
+#if 0
     // Nested Types
     writeNestedTypes(
         "Types",
@@ -296,7 +296,7 @@ write(
         I.Members,
         AccessSpecifier::AS_protected);
 
-    // Member Functiosn (protected)
+    // Member Functions (protected)
     writeFunctionOverloads(
         "Protected Member Functions",
         makeOverloadsSet(corpus_, I.Children,
@@ -313,10 +313,62 @@ write(
         "Private Member Functions",
         makeOverloadsSet(corpus_, I.Children,
             AccessSpecifier::AS_private));
-#else
-
 #endif
     auto J = makeInterface(I, corpus_);
+
+    writeTrancheList("Classes",                 J.Public.Records);
+    writeTrancheList("Functions",               J.Public.Functions);
+    writeTrancheList("Constants",               J.Public.Enums);
+    writeTrancheList("Types",                   J.Public.Types);
+    writeTrancheList("Data Members",            J.Public.Data);
+    writeTrancheList("Static Data",             J.Public.Vars);
+
+    writeTrancheList("Classes (protected)",     J.Protected.Records);
+    writeTrancheList("Functions (protected)",   J.Protected.Functions);
+    writeTrancheList("Constants (protected)",   J.Protected.Enums);
+    writeTrancheList("Types (protected)",       J.Protected.Types);
+    writeTrancheList("Data Members (protected)",J.Protected.Data);
+    writeTrancheList("Static Data (protected)", J.Protected.Vars);
+
+    writeTrancheList("Classes (private)",       J.Private.Records);
+    writeTrancheList("Functions (private)",     J.Private.Functions);
+    writeTrancheList("Constants (private)",     J.Private.Enums);
+    writeTrancheList("Types (private)",         J.Private.Types);
+    writeTrancheList("Data Members (private)",  J.Private.Data);
+    writeTrancheList("Static Data (private)",   J.Private.Vars);
+
+    endSection();
+}
+
+template<class T>
+void
+AdocWriter::
+writeTrancheList(
+    llvm::StringRef sectionName,
+    std::span<T const> list)
+{
+    if(list.empty())
+        return;
+
+    beginSection(sectionName);
+
+    os_ <<
+        "\n"
+        "[,cols=2]\n" <<
+        "|===\n" <<
+        "|Name |Description\n" <<
+        "\n";
+    for(auto const& V : list)
+    {
+        os_ <<
+            "|`" << V.I->Name << "`\n" <<
+            "|";
+        writeBrief(V.I->javadoc, false);
+        os_ << '\n';
+    }   
+    os_ <<
+        "|===\n" <<
+        "\n";
 
     endSection();
 }

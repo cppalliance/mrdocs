@@ -13,6 +13,8 @@
 #define MRDOX_METADATA_RECORD_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Access.hpp>
+#include <mrdox/Metadata/BitField.hpp>
 #include <mrdox/Metadata/MemberType.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Scope.hpp>
@@ -94,7 +96,18 @@ struct RecordInfo : SymbolInfo
     */
     llvm::SmallVector<SymbolID, 4> Friends;
 
-    Scope Children;
+    mrdox::Scope Children;
+
+    struct Scope
+    {
+        std::vector<RefWithAccess> Records;
+        std::vector<RefWithAccess> Functions;
+        std::vector<RefWithAccess> Enums;
+        std::vector<RefWithAccess> Types;
+        std::vector<RefWithAccess> Vars;
+    };
+
+    Scope Children_;
 
     //--------------------------------------------
 

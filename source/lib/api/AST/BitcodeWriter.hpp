@@ -22,6 +22,8 @@
 #include <mrdox/Platform.hpp>
 #include "BitcodeIDs.hpp"
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Metadata/Access.hpp>
+#include <mrdox/Metadata/BitField.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <clang/AST/AST.h>
 #include <llvm/ADT/DenseMap.h>
@@ -59,9 +61,9 @@ public:
 
 
     // Emission of validation and overview blocks.
-    void emitRecordID(RecordId ID);
-    void emitBlockID(BlockId ID);
-    void emitBlockInfo(BlockId BID, const std::vector<RecordId> &RIDs);
+    void emitRecordID(RecordID ID);
+    void emitBlockID(BlockID ID);
+    void emitBlockInfo(BlockID BID, const std::vector<RecordID> &RIDs);
 
     //--------------------------------------------
     //
@@ -73,32 +75,32 @@ public:
     requires
         std::is_integral_v<Integer> &&
         (sizeof(Integer) > 4)
-    void emitRecord(Integer Value, RecordId ID) = delete;
+    void emitRecord(Integer Value, RecordID ID) = delete;
 
     template<class Integer>
     requires std::is_integral_v<Integer>
-    void emitRecord(Integer Value, RecordId ID);
+    void emitRecord(Integer Value, RecordID ID);
 
     template<class Enum>
     requires std::is_enum_v<Enum>
-    void emitRecord(Enum Value, RecordId ID);
+    void emitRecord(Enum Value, RecordID ID);
 
-    void emitRecord(llvm::SmallVectorImpl<SymbolID> const& Values, RecordId ID);
+    void emitRecord(llvm::SmallVectorImpl<SymbolID> const& Values, RecordID ID);
+    void emitRecord(std::vector<RefWithAccess> const& list, RecordID ID);
 
-    void emitRecord(SymbolID const& Str, RecordId ID);
-    void emitRecord(StringRef Str, RecordId ID);
-    void emitRecord(Location const& Loc, RecordId ID);
-    void emitRecord(bool Value, RecordId ID);
+    void emitRecord(SymbolID const& Str, RecordID ID);
+    void emitRecord(StringRef Str, RecordID ID);
+    void emitRecord(Location const& Loc, RecordID ID);
+    void emitRecord(bool Value, RecordID ID);
     void emitRecord(TemplateInfo const& Templ);
-    void emitRecord(std::initializer_list<BitFieldFullValue> values, RecordId ID);
-    //void emitRecord(Reference const& Ref, RecordId ID);
+    void emitRecord(std::initializer_list<BitFieldFullValue> values, RecordID ID);
 
-    bool prepRecordData(RecordId ID, bool ShouldEmit = true);
+    bool prepRecordData(RecordID ID, bool ShouldEmit = true);
 
     //--------------------------------------------
 
     // Emission of appropriate abbreviation type.
-    void emitAbbrev(RecordId ID, BlockId Block);
+    void emitAbbrev(RecordID ID, BlockID Block);
 
     //--------------------------------------------
     //
@@ -145,12 +147,12 @@ private:
 
     public:
         AbbreviationMap()
-            : Abbrevs(RecordIdCount)
+            : Abbrevs(RecordIDCount)
         {
         }
 
-        void add(RecordId RID, unsigned AbbrevID);
-        unsigned get(RecordId RID) const;
+        void add(RecordID RID, unsigned AbbrevID);
+        unsigned get(RecordID RID) const;
     };
 
     class StreamSubBlockGuard
@@ -165,7 +167,7 @@ private:
 
         StreamSubBlockGuard(
             llvm::BitstreamWriter &Stream_,
-            BlockId ID)
+            BlockID ID)
             : Stream(Stream_)
         {
             // NOTE: SubBlockIDSize could theoretically

@@ -89,14 +89,14 @@ unset(CMAKE_FOLDER)
 #
 #-------------------------------------------------
 
-configure_file(source/api/Version.hpp.in ${PROJECT_BINARY_DIR}/include/mrdox/Version.hpp)
+configure_file(source/lib/api/Version.hpp.in ${PROJECT_BINARY_DIR}/include/mrdox/Version.hpp)
 
 file(GLOB_RECURSE LIB_INCLUDES CONFIGURE_DEPENDS include/*.hpp)
 file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
-    source/api/*.h
-    source/api/*.hpp
-    source/api/*.cpp
-    source/api/*.natvis
+    source/lib/*.h
+    source/lib/*.hpp
+    source/lib/*.cpp
+    source/lib/*.natvis
 )
 
 add_library(mrdox-api ${MRDOX_LINK_MODE} ${LIB_INCLUDES} ${LIB_SOURCES})
@@ -106,7 +106,7 @@ target_include_directories(mrdox-api
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
-    "${PROJECT_SOURCE_DIR}/source/"
+    "${PROJECT_SOURCE_DIR}/source/lib"
     ${PROJECT_BINARY_DIR}/include
 )
 target_compile_definitions(
@@ -175,8 +175,8 @@ if (MRDOX_CLANG)
 endif ()
 
 source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${LIB_INCLUDES})
-source_group(TREE ${PROJECT_SOURCE_DIR}/source/api PREFIX "source" FILES ${LIB_SOURCES})
+source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX " include" FILES ${LIB_INCLUDES})
+source_group(TREE ${PROJECT_SOURCE_DIR}/source/lib/api PREFIX "api" FILES ${LIB_SOURCES})
 
 #-------------------------------------------------
 #
@@ -189,12 +189,65 @@ add_executable(mrdox ${TOOL_SOURCES})
 target_link_libraries(mrdox PRIVATE mrdox-api)
 target_include_directories(mrdox
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/source/
+    ${PROJECT_SOURCE_DIR}/source/lib
     ${PROJECT_BINARY_DIR}/include/
         )
 
 source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL_SOURCES})
+
+#-------------------------------------------------
+#
+# Tests
+#
+#-------------------------------------------------
+
+if (BUILD_TESTING)
+    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/test/*.cpp source/test/*.hpp)
+    enable_testing()
+    add_executable(mrdox-test ${TEST_SOURCES})
+    target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
+    target_include_directories(mrdox-test
+        PRIVATE
+        ${PROJECT_SOURCE_DIR}/source/lib)
+    add_test(NAME mrdox-test COMMAND mrdox-test
+            "${PROJECT_SOURCE_DIR}/test-files/old-tests"
+            )
+    source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
+    source_group(TREE ${PROJECT_SOURCE_DIR}/source/test PREFIX "source" FILES ${TEST_SOURCES})
+
+    if (CMAKE_EXPORT_COMPILE_COMMANDS)
+        # test run
+        set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+        include(mrdox.cmake)
+
+        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
+        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
+
+        add_custom_target(reference_adoc ALL DEPENDS reference.adoc)
+        add_custom_target(reference_xml  ALL DEPENDS reference.xml)
+    endif()
+
+    find_package(LibXml2)
+    if (LibXml2_FOUND)
+        find_package(Java REQUIRED Runtime)
+        # FindJava
+        if (NOT Java_FOUND)
+            message(FATAL_ERROR "Java is needed to run xml-lint")
+        endif()
+
+        add_custom_target(mrdox.rng ALL DEPENDS mrdox.rnc
+                         COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/tools/trang.jar
+                ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng)
+
+
+        file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)
+        add_test(NAME xml-lint
+                 COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
+                     --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng ${XML_SOURCES}
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+    endif()
+endif()
 
 #-------------------------------------------------
 #
@@ -250,7 +303,6 @@ if (MRDOX_INSTALL)
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
 endif ()
 
-
 #-------------------------------------------------
 #
 # Packages
@@ -279,58 +331,3 @@ if (MRDOX_INSTALL AND MRDOX_PACKAGE)
     # Always include CPack at last
     include(CPack)
 endif ()
-
-#-------------------------------------------------
-#
-# Tests
-#
-#-------------------------------------------------
-
-if (BUILD_TESTING)
-    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/test/*.cpp source/test/*.hpp)
-    enable_testing()
-    add_executable(mrdox-test ${TEST_SOURCES})
-    target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
-    target_include_directories(mrdox-test
-        PRIVATE
-        ${PROJECT_SOURCE_DIR}/source)
-    add_test(NAME mrdox-test COMMAND mrdox-test
-            "${PROJECT_SOURCE_DIR}/test-files/old-tests"
-            )
-    source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-    source_group(TREE ${PROJECT_SOURCE_DIR}/source/test PREFIX "source" FILES ${TEST_SOURCES})
-
-    if (CMAKE_EXPORT_COMPILE_COMMANDS)
-        # test run
-        set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-        include(mrdox.cmake)
-
-        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
-        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
-
-        add_custom_target(reference_adoc ALL DEPENDS reference.adoc)
-        add_custom_target(reference_xml  ALL DEPENDS reference.xml)
-    endif()
-
-    find_package(LibXml2)
-    if (LibXml2_FOUND)
-        find_package(Java REQUIRED Runtime)
-        # FindJava
-        if (NOT Java_FOUND)
-            message(FATAL_ERROR "Java is needed to run xml-lint")
-        endif()
-
-        add_custom_target(mrdox.rng ALL DEPENDS mrdox.rnc
-                         COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/tools/trang.jar
-                ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng)
-
-
-        file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)
-        add_test(NAME xml-lint
-                 COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
-                     --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng ${XML_SOURCES}
-                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    endif()
-endif()
-
-#-------------------------------------------------

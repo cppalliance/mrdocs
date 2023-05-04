@@ -19,7 +19,7 @@ namespace clang {
 namespace mrdox {
 
 // Current version number of clang-doc bitcode.
-// Should be bumped when removing or changing BlockIds, RecordIds, or
+// Should be bumped when removing or changing BlockIds, RecordIDs, or
 // BitCodeConstants, though they can be added without breaking it.
 static const unsigned BitcodeVersion = 3;
 
@@ -46,7 +46,7 @@ struct BitCodeConstants
     here and the relevant IdNameMap in the
     implementation file.
 */
-enum BlockId
+enum BlockID
 {
     BI_VERSION_BLOCK_ID = llvm::bitc::FIRST_APPLICATION_BLOCKID,
 
@@ -75,9 +75,9 @@ enum BlockId
     BI_FIRST = BI_VERSION_BLOCK_ID
 };
 
-// New Ids need to be added to the enum here, and to the relevant IdNameMap and
+// New IDs need to be added to the enum here, and to the relevant IdNameMap and
 // initialization list in the implementation file.
-enum RecordId
+enum RecordID
 {
     VERSION = 1,
 
@@ -114,6 +114,11 @@ enum RecordId
     REFERENCE_NAME,
     REFERENCE_TYPE,
     REFERENCE_FIELD,
+    RECORD_ENUMS,
+    RECORD_FUNCTIONS,
+    RECORD_RECORDS,
+    RECORD_TYPES,
+    RECORD_VARS,
     TEMPLATE_PARAM_CONTENTS,
     TEMPLATE_SPECIALIZATION_OF,
     TYPEDEF_IS_USING,
@@ -123,7 +128,7 @@ enum RecordId
 };
 
 static constexpr unsigned BlockIdCount = BI_LAST - BI_FIRST;
-static constexpr unsigned RecordIdCount = RI_LAST - RI_FIRST;
+static constexpr unsigned RecordIDCount = RI_LAST - RI_FIRST;
 
 // Identifiers for differentiating between subblocks
 enum class FieldId

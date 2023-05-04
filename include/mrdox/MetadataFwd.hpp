@@ -38,6 +38,7 @@ struct Location;
 struct MemberTypeInfo;
 struct NamespaceInfo;
 struct RecordInfo;
+struct RefWithAccess;
 struct Reference;
 struct Scope;
 struct SymbolInfo;

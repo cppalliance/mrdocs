@@ -63,32 +63,36 @@ insert(std::unique_ptr<Info> I)
 
 void
 CorpusImpl::
-visit(SymbolID id, MutableVisitor& f)
+visit(MutableVisitor& f, SymbolID id)
 {
-    visit(get<Info>(id), f);
+    visit(f, get<Info>(id));
 }
 
 void
 CorpusImpl::
-visit(Scope& I, MutableVisitor& f)
+visit(
+    MutableVisitor& f,
+    Scope& I)
 {
     for(auto& ref : I.Namespaces)
-        visit(get<NamespaceInfo>(ref.id), f);
+        visit(f, get<NamespaceInfo>(ref.id));
     for(auto& ref : I.Records)
-        visit(get<RecordInfo>(ref.id), f);
+        visit(f, get<RecordInfo>(ref.id));
     for(auto& ref : I.Functions)
-        visit(get<FunctionInfo>(ref.id), f);
+        visit(f, get<FunctionInfo>(ref.id));
     for(auto& ref : I.Typedefs)
-        visit(get<TypedefInfo>(ref.id), f);
+        visit(f, get<TypedefInfo>(ref.id));
     for(auto& ref : I.Enums)
-        visit(get<EnumInfo>(ref.id), f);
+        visit(f, get<EnumInfo>(ref.id));
     for(auto& ref : I.Vars)
-        visit(get<VarInfo>(ref.id), f);
+        visit(f, get<VarInfo>(ref.id));
 }
 
 void
 CorpusImpl::
-visit(Info& I, MutableVisitor& f)
+visit(
+    MutableVisitor& f,
+    Info& I)
 {
     switch(I.IT)
     {
@@ -134,7 +138,7 @@ public:
     {
         postProcess(I);
         canonicalize(I.Children);
-        corpus_.visit(I.Children, *this);
+        corpus_.visit(*this, I.Children);
     }
 
     void visit(RecordInfo& I) override
@@ -143,7 +147,7 @@ public:
         canonicalize(I.Children);
         canonicalize(I.Members);
         canonicalize(I.Friends);
-        corpus_.visit(I.Children, *this);
+        corpus_.visit(*this, I.Children);
     }
 
     void visit(FunctionInfo& I) override
@@ -229,7 +233,7 @@ canonicalize(
     if(config_->verboseOutput)
         R.print("Canonicalizing...");
     Canonicalizer cn(*this, R);
-    visit(globalNamespaceID, cn);
+    visit(cn, globalNamespaceID);
     std::string temp0;
     std::string temp1;
     llvm::sort(index_,

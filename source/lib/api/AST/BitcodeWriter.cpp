@@ -33,7 +33,7 @@ struct BlockIdToIndexFunctor
     }
 };
 
-struct RecordIdToIndexFunctor
+struct RecordIDToIndexFunctor
 {
     using argument_type = unsigned;
     unsigned operator()(unsigned ID) const 
@@ -129,6 +129,16 @@ static void SymbolIDsAbbrev(
             llvm::BitCodeAbbrevOp::Fixed, 8) });
 }
 
+static void RefsWithAccessAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. Fixed-size array of 21-byte SymbolID + Access
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 8) });
+}
+
 static void StringAbbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
 {
@@ -164,13 +174,13 @@ static void LocationAbbrev(
 
 //------------------------------------------------
 
-struct RecordIdDsc
+struct RecordIDDsc
 {
     llvm::StringRef Name;
     AbbrevDsc Abbrev = nullptr;
 
-    RecordIdDsc() = default;
-    RecordIdDsc(llvm::StringRef Name, AbbrevDsc Abbrev)
+    RecordIDDsc() = default;
+    RecordIDDsc(llvm::StringRef Name, AbbrevDsc Abbrev)
         : Name(Name), Abbrev(Abbrev)
     {
     }
@@ -191,7 +201,7 @@ BlockIdNameMap = []()
 
     // There is no init-list constructor for the IndexedMap, so have to
     // improvise
-    static const std::vector<std::pair<BlockId, const char* const>> Inits = {
+    static const std::vector<std::pair<BlockID, const char* const>> Inits = {
         {BI_VERSION_BLOCK_ID, "VersionBlock"},
         {BI_BASE_BLOCK_ID, "BaseBlock"},
         {BI_INFO_PART_ID, "InfoPart"},
@@ -222,68 +232,73 @@ BlockIdNameMap = []()
 }();
 
 static
-llvm::IndexedMap<RecordIdDsc, RecordIdToIndexFunctor> const
-RecordIdNameMap = []()
+llvm::IndexedMap<RecordIDDsc, RecordIDToIndexFunctor> const
+RecordIDNameMap = []()
 {
-    llvm::IndexedMap<RecordIdDsc, RecordIdToIndexFunctor> RecordIdNameMap;
-    RecordIdNameMap.resize(RecordIdCount);
+    llvm::IndexedMap<RecordIDDsc, RecordIDToIndexFunctor> RecordIDNameMap;
+    RecordIDNameMap.resize(RecordIDCount);
 
     // There is no init-list constructor for the IndexedMap, so have to
     // improvise
-    static const std::vector<std::pair<RecordId, RecordIdDsc>> Inits = {
+    static const std::vector<std::pair<RecordID, RecordIDDsc>> Inits = {
         {VERSION, {"Version", &Integer32Abbrev}},
         {BASE_ID, {"BaseID", &SymbolIDAbbrev}},
         {BASE_NAME, {"BaseName", &StringAbbrev}},
         {BASE_ACCESS, {"BaseAccess", &Integer32Abbrev}},
         {BASE_IS_VIRTUAL, {"BaseIsVirtual", &BoolAbbrev}},
+        {ENUM_SCOPED, {"Scoped", &BoolAbbrev}},
+        {ENUM_VALUE_NAME, {"Name", &StringAbbrev}},
+        {ENUM_VALUE_VALUE, {"Value", &StringAbbrev}},
+        {ENUM_VALUE_EXPR, {"Expr", &StringAbbrev}},
+        {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
+        {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
+        {FIELD_ATTRIBUTES, {"FieldAttributes", &Integer32ArrayAbbrev}},
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
-        {SYMBOL_PART_LOCDEF, {"SymbolLocDef", &LocationAbbrev}},
-        {SYMBOL_PART_LOC, {"InfoName", &LocationAbbrev}},
         {JAVADOC_LIST_KIND, {"JavadocListKind", &Integer32Abbrev}},
         {JAVADOC_NODE_KIND, {"JavadocNodeKind", &Integer32Abbrev}},
         {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
         {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &Integer32Abbrev}},
         {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
-        {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
-        {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
-        {FIELD_ATTRIBUTES, {"FieldAttributes", &Integer32ArrayAbbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
         {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
-        {ENUM_SCOPED, {"Scoped", &BoolAbbrev}},
-        {ENUM_VALUE_NAME, {"Name", &StringAbbrev}},
-        {ENUM_VALUE_VALUE, {"Value", &StringAbbrev}},
-        {ENUM_VALUE_EXPR, {"Expr", &StringAbbrev}},
+        {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
+        {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
+        {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
-        {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
-        {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
-        {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
         {REFERENCE_TYPE, {"RefType", &Integer32Abbrev}},
         {REFERENCE_FIELD, {"Field", &Integer32Abbrev}},
+        {RECORD_ENUMS,      {"RecordEnums", &RefsWithAccessAbbrev}},
+        {RECORD_FUNCTIONS,  {"RecordFunctions", &RefsWithAccessAbbrev}},
+        {RECORD_RECORDS,    {"RecordRecords", &RefsWithAccessAbbrev}},
+        {RECORD_TYPES,      {"RecordTypes", &RefsWithAccessAbbrev}},
+        {RECORD_VARS,       {"RecordVars", &RefsWithAccessAbbrev}},
+        {SYMBOL_PART_LOCDEF, {"SymbolLocDef", &LocationAbbrev}},
+        {SYMBOL_PART_LOC, {"InfoName", &LocationAbbrev}},
         {TEMPLATE_PARAM_CONTENTS, {"Contents", &StringAbbrev}},
         {TEMPLATE_SPECIALIZATION_OF, {"SpecializationOf", &SymbolIDAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}}
     };
-    Assert(Inits.size() == RecordIdCount);
+    Assert(Inits.size() == RecordIDCount);
     for (const auto& Init : Inits)
     {
-        RecordIdNameMap[Init.first] = Init.second;
+        RecordIDNameMap[Init.first] = Init.second;
         Assert((Init.second.Name.size() + 1) <= BitCodeConstants::RecordSize);
     }
-    Assert(RecordIdNameMap.size() == RecordIdCount);
-    return RecordIdNameMap;
+    Assert(RecordIDNameMap.size() == RecordIDCount);
+    return RecordIDNameMap;
 }();
 
 //------------------------------------------------
 
 static
-std::vector<std::pair<BlockId, std::vector<RecordId>>> const
+std::vector<std::pair<BlockID, std::vector<RecordID>>> const
 RecordsByBlock{
     // Version Block
     {BI_VERSION_BLOCK_ID, {VERSION}},
@@ -324,7 +339,8 @@ RecordsByBlock{
         {}},
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
-        {RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF, RECORD_BITS, RECORD_FRIENDS}},
+        {RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF, RECORD_BITS, RECORD_FRIENDS,
+        RECORD_ENUMS, RECORD_FUNCTIONS, RECORD_RECORDS, RECORD_TYPES, RECORD_VARS}},
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
@@ -426,10 +442,10 @@ constexpr unsigned char BitCodeConstants::Signature[];
 void
 BitcodeWriter::
 AbbreviationMap::
-add(RecordId RID,
+add(RecordID RID,
     unsigned AbbrevID)
 {
-    Assert(RecordIdNameMap[RID] && "Unknown RecordId.");
+    Assert(RecordIDNameMap[RID] && "Unknown RecordID.");
     //Assert((Abbrevs.find(RID) == Abbrevs.end()) && "Abbreviation already added.");
     Abbrevs[RID] = AbbrevID;
 }
@@ -437,9 +453,9 @@ add(RecordId RID,
 unsigned
 BitcodeWriter::
 AbbreviationMap::
-get(RecordId RID) const
+get(RecordID RID) const
 {
-    Assert(RecordIdNameMap[RID] && "Unknown RecordId.");
+    Assert(RecordIDNameMap[RID] && "Unknown RecordID.");
     Assert((Abbrevs.find(RID) != Abbrevs.end()) && "Unknown abbreviation.");
     return Abbrevs.lookup(RID);
 }
@@ -447,10 +463,10 @@ get(RecordId RID) const
 /// Emits a block ID and the block name to the BLOCKINFO block.
 void
 BitcodeWriter::
-emitBlockID(BlockId BID)
+emitBlockID(BlockID BID)
 {
     const auto& BlockIdName = BlockIdNameMap[BID];
-    Assert(BlockIdName.data() && BlockIdName.size() && "Unknown BlockId.");
+    Assert(BlockIdName.data() && BlockIdName.size() && "Unknown BlockID.");
 
     Record.clear();
     Record.push_back(BID);
@@ -463,12 +479,12 @@ emitBlockID(BlockId BID)
 /// Emits a record name to the BLOCKINFO block.
 void
 BitcodeWriter::
-emitRecordID(RecordId ID)
+emitRecordID(RecordID ID)
 {
-    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIDNameMap[ID] && "Unknown RecordID.");
     prepRecordData(ID);
-    Record.append(RecordIdNameMap[ID].Name.begin(),
-        RecordIdNameMap[ID].Name.end());
+    Record.append(RecordIDNameMap[ID].Name.begin(),
+        RecordIDNameMap[ID].Name.end());
     Stream.EmitRecord(llvm::bitc::BLOCKINFO_CODE_SETRECORDNAME, Record);
 }
 
@@ -477,12 +493,12 @@ emitRecordID(RecordId ID)
 void
 BitcodeWriter::
 emitAbbrev(
-    RecordId ID, BlockId Block)
+    RecordID ID, BlockID Block)
 {
-    Assert(RecordIdNameMap[ID] && "Unknown abbreviation.");
+    Assert(RecordIDNameMap[ID] && "Unknown abbreviation.");
     auto Abbrev = std::make_shared<llvm::BitCodeAbbrev>();
     Abbrev->Add(llvm::BitCodeAbbrevOp(ID));
-    RecordIdNameMap[ID].Abbrev(Abbrev);
+    RecordIDNameMap[ID].Abbrev(Abbrev);
     Abbrevs.add(ID, Stream.EmitBlockInfoAbbrev(Block, std::move(Abbrev)));
 }
 
@@ -498,17 +514,17 @@ requires std::is_integral_v<Integer>
 void
 BitcodeWriter::
 emitRecord(
-    Integer Value, RecordId ID)
+    Integer Value, RecordID ID)
 {
-    Assert(RecordIdNameMap[ID]);
+    Assert(RecordIDNameMap[ID]);
     if constexpr(sizeof(Integer) == 4)
     {
-        Assert(RecordIdNameMap[ID].Abbrev == &Integer32Abbrev); 
+        Assert(RecordIDNameMap[ID].Abbrev == &Integer32Abbrev); 
     }
 #if 0
     else if constexpr(sizeof(Integer) == 2)
     {
-        Assert(RecordIdNameMap[ID].Abbrev == &Integer16Abbrev);
+        Assert(RecordIDNameMap[ID].Abbrev == &Integer16Abbrev);
     }
 #endif
     else
@@ -527,7 +543,7 @@ requires std::is_enum_v<Enum>
 void
 BitcodeWriter::
 emitRecord(
-    Enum Value, RecordId ID)
+    Enum Value, RecordID ID)
 {
     emitRecord(static_cast<std::underlying_type_t<Enum>>(Value), ID);
 }
@@ -537,10 +553,10 @@ void
 BitcodeWriter::
 emitRecord(
     std::initializer_list<BitFieldFullValue> values,
-    RecordId ID)
+    RecordID ID)
 {
-    Assert(RecordIdNameMap[ID]);
-    Assert(RecordIdNameMap[ID].Abbrev == &Integer32ArrayAbbrev);
+    Assert(RecordIDNameMap[ID]);
+    Assert(RecordIDNameMap[ID].Abbrev == &Integer32ArrayAbbrev);
     if (!prepRecordData(ID, true))
         return;
     Record.push_back(values.size());
@@ -553,10 +569,10 @@ emitRecord(
 void
 BitcodeWriter::
 emitRecord(
-    llvm::SmallVectorImpl<SymbolID> const& Values, RecordId ID)
+    llvm::SmallVectorImpl<SymbolID> const& Values, RecordID ID)
 {
-    Assert(RecordIdNameMap[ID]);
-    Assert(RecordIdNameMap[ID].Abbrev == &SymbolIDsAbbrev);
+    Assert(RecordIDNameMap[ID]);
+    Assert(RecordIDNameMap[ID].Abbrev == &SymbolIDsAbbrev);
     if (!prepRecordData(ID, Values.begin() != Values.end()))
         return;
     Record.push_back(Values.size());
@@ -565,15 +581,35 @@ emitRecord(
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
+// vector<RefWithAccess>
+void
+BitcodeWriter::
+emitRecord(
+    std::vector<RefWithAccess> const& list,
+    RecordID ID)
+{
+    Assert(RecordIDNameMap[ID]);
+    Assert(RecordIDNameMap[ID].Abbrev == &RefsWithAccessAbbrev);
+    if (!prepRecordData(ID, ! list.empty()))
+        return;
+    for(auto const& ref : list)
+    {
+        Record.push_back(static_cast<
+            std::underlying_type_t<Access>>(ref.access));
+        Record.append(ref.id.begin(), ref.id.end());
+    }
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
+}
+
 // SymbolID
 void
 BitcodeWriter::
 emitRecord(
     SymbolID const& Sym,
-    RecordId ID)
+    RecordID ID)
 {
-    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    Assert(RecordIdNameMap[ID].Abbrev == &SymbolIDAbbrev &&
+    Assert(RecordIDNameMap[ID] && "Unknown RecordID.");
+    Assert(RecordIDNameMap[ID].Abbrev == &SymbolIDAbbrev &&
         "Abbrev type mismatch.");
     if (!prepRecordData(ID, Sym != EmptySID))
         return;
@@ -586,10 +622,10 @@ emitRecord(
 void
 BitcodeWriter::
 emitRecord(
-    llvm::StringRef Str, RecordId ID)
+    llvm::StringRef Str, RecordID ID)
 {
-    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    Assert(RecordIdNameMap[ID].Abbrev == &StringAbbrev &&
+    Assert(RecordIDNameMap[ID] && "Unknown RecordID.");
+    Assert(RecordIDNameMap[ID].Abbrev == &StringAbbrev &&
         "Abbrev type mismatch.");
     if (!prepRecordData(ID, !Str.empty()))
         return;
@@ -601,10 +637,10 @@ emitRecord(
 void
 BitcodeWriter::
 emitRecord(
-    Location const& Loc, RecordId ID)
+    Location const& Loc, RecordID ID)
 {
-    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    Assert(RecordIdNameMap[ID].Abbrev == &LocationAbbrev &&
+    Assert(RecordIDNameMap[ID] && "Unknown RecordID.");
+    Assert(RecordIDNameMap[ID].Abbrev == &LocationAbbrev &&
         "Abbrev type mismatch.");
     if (!prepRecordData(ID, true))
         return;
@@ -620,10 +656,10 @@ emitRecord(
 void
 BitcodeWriter::
 emitRecord(
-    bool Val, RecordId ID)
+    bool Val, RecordID ID)
 {
-    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
-    Assert(RecordIdNameMap[ID].Abbrev == &BoolAbbrev && "Abbrev type mismatch.");
+    Assert(RecordIDNameMap[ID] && "Unknown RecordID.");
+    Assert(RecordIDNameMap[ID].Abbrev == &BoolAbbrev && "Abbrev type mismatch.");
     if (!prepRecordData(ID, Val))
         return;
     Record.push_back(Val);
@@ -641,9 +677,9 @@ emitRecord(
 bool
 BitcodeWriter::
 prepRecordData(
-    RecordId ID, bool ShouldEmit)
+    RecordID ID, bool ShouldEmit)
 {
-    Assert(RecordIdNameMap[ID] && "Unknown RecordId.");
+    Assert(RecordIDNameMap[ID] && "Unknown RecordID.");
     if (!ShouldEmit)
         return false;
     Record.clear();
@@ -656,12 +692,12 @@ prepRecordData(
 void
 BitcodeWriter::
 emitBlockInfo(
-    BlockId BID,
-    std::vector<RecordId> const& RIDs)
+    BlockID BID,
+    std::vector<RecordID> const& RIDs)
 {
     Assert(RIDs.size() < (1U << BitCodeConstants::SubblockIDSize));
     emitBlockID(BID);
-    for (RecordId RID : RIDs)
+    for (RecordID RID : RIDs)
     {
         emitRecordID(RID);
         emitAbbrev(RID, BID);
@@ -917,6 +953,11 @@ emitBlock(
         emitBlock(N);
     for (const auto& B : I.Bases)
         emitBlock(B);
+    emitRecord(I.Children_.Records, RECORD_RECORDS);
+    emitRecord(I.Children_.Functions, RECORD_FUNCTIONS);
+    emitRecord(I.Children_.Enums, RECORD_ENUMS);
+    emitRecord(I.Children_.Types, RECORD_TYPES);
+    emitRecord(I.Children_.Vars, RECORD_VARS);
     for (const auto& C : I.Children.Records)
         emitBlock(C, FieldId::F_child_record);
     for (auto const& C : I.Children.Functions)

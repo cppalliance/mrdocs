@@ -118,6 +118,29 @@ void merge(NamespaceInfo& I, NamespaceInfo&& Other)
     mergeInfo(I, std::move(Other));
 }
 
+static
+void
+reduceRefsWithAccess(
+    std::vector<RefWithAccess>& list,
+    std::vector<RefWithAccess>&& otherList)
+{
+    for(auto const& ref : otherList)
+    {
+        auto it = llvm::find_if(
+            list,
+            [ref](RefWithAccess const& other) noexcept
+            {
+                return other.id == ref.id;
+            });
+        if(it != list.end())
+        {
+            Assert(it->access == ref.access);
+            continue;
+        }
+        list.push_back(ref);
+    }
+}
+
 void merge(RecordInfo& I, RecordInfo&& Other)
 {
     Assert(canMerge(I, Other));
@@ -137,6 +160,11 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     reduceChildren(I.Children.Typedefs, std::move(Other.Children.Typedefs));
     reduceChildren(I.Children.Enums, std::move(Other.Children.Enums));
     reduceChildren(I.Children.Vars, std::move(Other.Children.Vars));
+    reduceRefsWithAccess(I.Children_.Records, std::move(Other.Children_.Records));
+    reduceRefsWithAccess(I.Children_.Functions, std::move(Other.Children_.Functions));
+    reduceRefsWithAccess(I.Children_.Enums, std::move(Other.Children_.Enums));
+    reduceRefsWithAccess(I.Children_.Types, std::move(Other.Children_.Types));
+    reduceRefsWithAccess(I.Children_.Vars, std::move(Other.Children_.Vars));
     mergeSymbolInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = Other.Template;

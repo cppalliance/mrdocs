@@ -43,7 +43,7 @@ public:
     Err
     build()
     {
-        corpus_.visit(globalNamespaceID, *this);
+        corpus_.visit(*this, globalNamespaceID);
         wg_.wait();
         return Err();
     }
@@ -76,14 +76,14 @@ public:
 
     bool visit(NamespaceInfo const& I) override
     {
-        corpus_.visit(I.Children, *this);
+        corpus_.visit(*this, I.Children);
         return true;
     }
 
     bool visit(RecordInfo const& I) override
     {
         build(I);
-        corpus_.visit(I.Children, *this);
+        corpus_.visit(*this, I.Children);
         return true;
     }
 
@@ -128,7 +128,7 @@ public:
     Err
     build()
     {
-        corpus_.visit(globalNamespaceID, *this);
+        corpus_.visit(*this, globalNamespaceID);
         return Err();
     }
 
@@ -141,14 +141,14 @@ public:
 
     bool visit(NamespaceInfo const& I) override
     {
-        corpus_.visit(I.Children, *this);
+        corpus_.visit(*this, I.Children);
         return true;
     }
 
     bool visit(RecordInfo const& I) override
     {
         build(I);
-        corpus_.visit(I.Children, *this);
+        corpus_.visit(*this, I.Children);
         return true;
     }
 

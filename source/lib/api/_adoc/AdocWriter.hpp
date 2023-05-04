@@ -81,6 +81,11 @@ protected:
     void writeLinkFor(Info const&);
     void writeLinkFor(OverloadInfo const&);
 
+    template<class T>
+    void writeTrancheList(
+        llvm::StringRef sectionName,
+        std::span<T const> list);
+
     void writeBase(BaseInfo const& I);
     void writeFunctionOverloads(
         llvm::StringRef sectionName,

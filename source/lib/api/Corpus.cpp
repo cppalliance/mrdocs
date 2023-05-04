@@ -102,15 +102,6 @@ bool
 Corpus::
 Visitor::
 visit(
-    Overloads const&)
-{
-    return true;
-}
-
-bool
-Corpus::
-Visitor::
-visit(
     FunctionInfo const&)
 {
     return true;
@@ -147,18 +138,19 @@ visit(
 
 bool
 Corpus::
-visit(SymbolID id, Visitor& f) const
+visit(Visitor& f, SymbolID id) const
 {
-    return visit(get<Info>(id), f);
+    return visit(f, get<Info>(id));
 }
 
 bool
 Corpus::
 visit(
-    std::vector<Reference> const& R, Visitor& f) const
+    Visitor& f,
+    std::vector<Reference> const& R) const
 {
     for(auto const& ref : R)
-        if(! visit(get<Info>(ref.id), f))
+        if(! visit(f, get<Info>(ref.id)))
             return false;
     return true;
 }
@@ -166,98 +158,47 @@ visit(
 bool
 Corpus::
 visit(
-    std::vector<SymbolID> const& R, Visitor& f) const
+    Visitor& f,
+    std::vector<SymbolID> const& R) const
 {
     for(auto const& id : R)
-        if(! visit(get<Info>(id), f))
+        if(! visit(f, get<Info>(id)))
             return false;
     return true;
 }
 
 bool
 Corpus::
-visit(Scope const& I, Visitor& f) const
+visit(
+    Visitor& f,
+    Scope const& I) const
 {
     for(auto const& ref : I.Namespaces)
-        if(! visit(get<NamespaceInfo>(ref.id), f))
+        if(! visit(f, get<NamespaceInfo>(ref.id)))
             return false;
     for(auto const& ref : I.Records)
-        if(! visit(get<RecordInfo>(ref.id), f))
+        if(! visit(f, get<RecordInfo>(ref.id)))
             return false;
     for(auto const& ref : I.Functions)
-        if(! visit(get<FunctionInfo>(ref.id), f))
+        if(! visit(f, get<FunctionInfo>(ref.id)))
             return false;
     for(auto const& ref : I.Typedefs)
-        if(! visit(get<TypedefInfo>(ref.id), f))
+        if(! visit(f, get<TypedefInfo>(ref.id)))
             return false;
     for(auto const& ref : I.Enums)
-        if(! visit(get<EnumInfo>(ref.id), f))
+        if(! visit(f, get<EnumInfo>(ref.id)))
             return false;
     for(auto const& ref : I.Vars)
-        if(! visit(get<VarInfo>(ref.id), f))
+        if(! visit(f, get<VarInfo>(ref.id)))
             return false;
     return true;
 }
 
 bool
 Corpus::
-visitWithOverloads(
-    Scope const& I, Visitor& f) const
-{
-    for(auto const& ref : I.Namespaces)
-        if(! visit(get<NamespaceInfo>(ref.id), f))
-            return false;
-    for(auto const& ref : I.Records)
-        if(! visit(get<RecordInfo>(ref.id), f))
-            return false;
-    if(I.isNamespaceScope)
-    {
-        // VFALCO Should this be AS_public
-        auto const set = makeOverloadsSet(
-            *this, I, AccessSpecifier::AS_none);
-        for(auto const& functionOverloads : set.list)
-            if(! f.visit(functionOverloads))
-                return false;
-    }
-    else
-    {
-        {
-            auto const& set = makeOverloadsSet(
-                *this, I, AccessSpecifier::AS_public);
-            for(auto const& functionOverloads : set.list)
-                if(! f.visit(functionOverloads))
-                    return false;
-        }
-        {
-            auto const& set = makeOverloadsSet(
-                *this, I, AccessSpecifier::AS_protected);
-            for(auto const& functionOverloads : set.list)
-                if(! f.visit(functionOverloads))
-                    return false;
-        }
-        {
-            auto const& set = makeOverloadsSet(
-                *this, I, AccessSpecifier::AS_private);
-            for(auto const& functionOverloads : set.list)
-                if(! f.visit(functionOverloads))
-                    return false;
-        }
-    }
-    for(auto const& ref : I.Typedefs)
-        if(! visit(get<TypedefInfo>(ref.id), f))
-            return false;
-    for(auto const& ref : I.Enums)
-        if(! visit(get<EnumInfo>(ref.id), f))
-            return false;
-    for(auto const& ref : I.Vars)
-        if(! visit(get<VarInfo>(ref.id), f))
-            return false;
-    return true;
-}
-
-bool
-Corpus::
-visit(Info const& I, Visitor& f) const
+visit(
+    Visitor& f,
+    Info const& I) const
 {
     switch(I.IT)
     {

@@ -849,6 +849,17 @@ public:
             return decodeRecord(R, {&I->specs.raw}, Blob);
         case RECORD_FRIENDS:
             return decodeRecord(R, I->Friends, Blob);
+        case RECORD_ENUMS:
+            return decodeRecord(R, I->Children_.Enums, Blob);
+        case RECORD_FUNCTIONS:
+            return decodeRecord(R, I->Children_.Functions, Blob);
+        case RECORD_RECORDS:
+            return decodeRecord(R, I->Children_.Records, Blob);
+        case RECORD_TYPES:
+            return decodeRecord(R, I->Children_.Types, Blob);
+        case RECORD_VARS:
+            return decodeRecord(R, I->Children_.Vars, Blob);
+
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

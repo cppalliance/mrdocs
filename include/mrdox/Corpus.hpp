@@ -16,6 +16,7 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
+#include <mrdox/Metadata/Access.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
@@ -99,9 +100,9 @@ public:
     struct Visitor
     {
         MRDOX_DECL virtual ~Visitor() noexcept;
+
         MRDOX_DECL virtual bool visit(NamespaceInfo const&);
         MRDOX_DECL virtual bool visit(RecordInfo const&);
-        MRDOX_DECL virtual bool visit(Overloads const&);
         MRDOX_DECL virtual bool visit(FunctionInfo const&);
         MRDOX_DECL virtual bool visit(TypedefInfo const&);
         MRDOX_DECL virtual bool visit(EnumInfo const&);
@@ -111,12 +112,11 @@ public:
     /** Visit the specified symbol ID or node.
     */
     /** @{ */
-    MRDOX_DECL bool visit(SymbolID id, Visitor& f) const;
-    MRDOX_DECL bool visit(std::vector<Reference> const& R, Visitor& f) const;
-    MRDOX_DECL bool visit(std::vector<SymbolID> const& R, Visitor& f) const;
-    MRDOX_DECL bool visit(Scope const& I, Visitor& f) const;
-    MRDOX_DECL bool visitWithOverloads(Scope const& I, Visitor& f) const;
-    MRDOX_DECL bool visit(Info const& I, Visitor& f) const;
+    MRDOX_DECL bool visit(Visitor& f, SymbolID id) const;
+    MRDOX_DECL bool visit(Visitor& f, std::vector<Reference> const& R) const;
+    MRDOX_DECL bool visit(Visitor& f, std::vector<SymbolID> const& R) const;
+    MRDOX_DECL bool visit(Visitor& f, Scope const& I) const;
+    MRDOX_DECL bool visit(Visitor& f, Info const& I) const;
     /** @} */
 
     //--------------------------------------------

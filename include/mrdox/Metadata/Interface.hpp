@@ -14,6 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Metadata/Access.hpp>
 #include <span>
 #include <utility>
 #include <vector>
@@ -21,12 +22,46 @@
 namespace clang {
 namespace mrdox {
 
-enum class Access
+struct RecordWithAccess
 {
-    None = 0,          // bitstream elides zeroes
-    Public,
-    Protected,
-    Private
+    RecordInfo const* I;
+    RecordInfo const* From;
+    Access access;
+};
+
+struct FunctionWithAccess
+{
+    FunctionInfo const* I;
+    RecordInfo const* From;
+    Access access;
+};
+
+struct EnumWithAccess
+{
+    EnumInfo const* I;
+    RecordInfo const* From;
+    Access access;
+};
+
+struct TypeWithAccess
+{
+    TypedefInfo const* I;
+    RecordInfo const* From;
+    Access access;
+};
+
+struct VarWithAccess
+{
+    VarInfo const* I;
+    RecordInfo const* From;
+    Access access;
+};
+
+struct DataWithAccess
+{
+    MemberTypeInfo const* I;
+    RecordInfo const* From;
+    Access access;
 };
 
 /** The aggregated interface for a given struct, class, or union.
@@ -34,23 +69,16 @@ enum class Access
 class Interface
 {
 public:
-    template<class Ty>
-    struct Item
-    {
-        Ty const* I;
-        RecordInfo const* From;
-        Access access;
-    };
-
     /** A group of children that have the same access specifier.
     */
     struct Tranche
     {
-        std::span<Item<EnumInfo> const> Enums;
-        std::span<Item<TypedefInfo> const> Types;
-        std::span<Item<FunctionInfo> const> Functions;
-        std::span<Item<MemberTypeInfo> const> Members;
-        std::span<Item<VarInfo> const> Vars;
+        std::span<RecordWithAccess const> Records;
+        std::span<FunctionWithAccess const> Functions;
+        std::span<EnumWithAccess const> Enums;
+        std::span<TypeWithAccess const> Types;
+        std::span<DataWithAccess const> Data;
+        std::span<VarWithAccess const> Vars;
     };
 
     /** The aggregated public interfaces.
@@ -76,11 +104,12 @@ public:
 private:
     class Build;
 
-    std::vector<Item<EnumInfo>> enums_;
-    std::vector<Item<TypedefInfo>> types_;
-    std::vector<Item<FunctionInfo>> functions_;
-    std::vector<Item<MemberTypeInfo>> members_;
-    std::vector<Item<VarInfo>> vars_;
+    std::vector<RecordWithAccess> records_;
+    std::vector<FunctionWithAccess> functions_;
+    std::vector<EnumWithAccess> enums_;
+    std::vector<TypeWithAccess> types_;
+    std::vector<DataWithAccess> data_;
+    std::vector<VarWithAccess> vars_;
 };
 
 //------------------------------------------------

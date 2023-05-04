@@ -106,6 +106,42 @@ decodeRecord(
     return llvm::Error::success();
 }
 
+// vector<RefWithAccess>
+inline
+llvm::Error
+decodeRecord(
+    Record const& R,
+    std::vector<RefWithAccess>& f,
+    llvm::StringRef blob)
+{
+    constexpr auto RefWithAccessSize =
+        BitCodeConstants::USRHashSize + 1;
+    if(R.empty())
+        return makeError("empty");
+    auto n = R.size() / RefWithAccessSize;
+    if(R.size() != n * RefWithAccessSize)
+        return makeError("short Record");
+    auto src = R.begin();
+    f.resize(n);
+    auto* dest = &f[0];
+    while(n--)
+    {
+        if(*src > 2) // Access::Private
+            return makeError("invalid Access");
+        dest->access = static_cast<Access>(*src++);
+        for(std::size_t i = 0;
+            i < BitCodeConstants::USRHashSize; ++i)
+        {
+            if(src[i] > std::uint8_t(-1))
+                return makeError("invalid byte");
+            dest->id[i] = static_cast<std::uint8_t>(src[i]);
+        }
+        src += 20;
+        ++dest;
+    }
+    return llvm::Error::success();
+}
+
 inline
 llvm::Error
 decodeRecord(

@@ -42,7 +42,7 @@ public:
         : corpus_(corpus)
     {
         prefix_.reserve(512);
-        corpus_.visit(globalNamespaceID, *this);
+        corpus_.visit(*this, globalNamespaceID);
         /* auto result =*/ map.try_emplace(llvm::toStringRef(EmptySID), std::string());
 
     #ifndef NDEBUG
@@ -59,7 +59,7 @@ public:
         corpus_(corpus)
     {
         prefix_.reserve(512);
-        corpus_.visit(globalNamespaceID, *this);
+        corpus_.visit(*this, globalNamespaceID);
         /* auto result =*/ map.try_emplace(llvm::toStringRef(EmptySID), std::string());
         if(os_)
             *os_ << "\n\n";
@@ -194,7 +194,7 @@ private:
             Info const& J(corpus_.get<Info>(ref.id));
             prefix_.append(getSafe(J));
             prefix_.push_back('-');
-            corpus_.visit(J, *this);
+            corpus_.visit(*this, J);
             prefix_.resize(n0);
         }
     }
@@ -206,7 +206,7 @@ private:
         {
             prefix_.append(getSafe(*I));
             prefix_.push_back('-');
-            corpus_.visit(*I, *this);
+            corpus_.visit(*this, *I);
             prefix_.resize(n0);
         }
     }

@@ -8,11 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "test/Options.hpp"
-#include "test/SingleFile.hpp"
+#include "Options.hpp"
+#include "SingleFile.hpp"
 #include "api/ConfigImpl.hpp"
-#include <mrdox/Config.hpp>
 #include "api/Support/Debug.hpp"
+#include <mrdox/Config.hpp>
 #include <mrdox/Error.hpp>
 #include <mrdox/Generators.hpp>
 #include <clang/Tooling/StandaloneExecution.h>

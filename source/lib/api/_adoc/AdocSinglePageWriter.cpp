@@ -38,7 +38,7 @@ build()
     os_ <<
         "= Reference\n"
         ":role: mrdox\n";
-    corpus_.visit(globalNamespaceID, *this);
+    corpus_.visit(*this, globalNamespaceID);
     endSection();
     return {};
 }

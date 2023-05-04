@@ -50,7 +50,6 @@ public:
 
     bool visit(NamespaceInfo const&) override;
     bool visit(RecordInfo const&) override;
-    bool visit(Overloads const&) override;
     bool visit(FunctionInfo const&) override;
     bool visit(TypedefInfo const&) override;
     bool visit(EnumInfo const&) override;

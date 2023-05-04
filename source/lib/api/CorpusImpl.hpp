@@ -75,7 +75,6 @@ private:
         virtual ~MutableVisitor() = default;
         virtual void visit(NamespaceInfo&) {}
         virtual void visit(RecordInfo&) {}
-        virtual void visit(Overloads&) {}
         virtual void visit(FunctionInfo&) {}
         virtual void visit(TypedefInfo&) {}
         virtual void visit(EnumInfo&) {}
@@ -85,9 +84,9 @@ private:
     /** Visit the specified symbol ID or node.
     */
     /** @{ */
-    void visit(SymbolID id, MutableVisitor& f);
-    void visit(Scope& I, MutableVisitor& f);
-    void visit(Info& I, MutableVisitor& f);
+    void visit(MutableVisitor& f, SymbolID id);
+    void visit(MutableVisitor& f, Scope& I);
+    void visit(MutableVisitor& f, Info& I);
     /** @} */
 
 private:

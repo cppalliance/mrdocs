@@ -75,6 +75,25 @@ getUSRForDecl(
     return llvm::SHA1::hash(arrayRefFromStringRef(USR));
 }
 
+// Convert clang::AccessSpecifier to mrdox::Access
+static
+Access
+toAccess(
+    AccessSpecifier AS)
+{
+    switch(AS)
+    {
+    case AccessSpecifier::AS_public:
+        return Access::Public;
+    case AccessSpecifier::AS_protected:
+        return Access::Protected;
+    case AccessSpecifier::AS_private:
+        return Access::Private;
+    default:
+        llvm_unreachable("invald AccessSpecifier");
+    }
+}
+
 //------------------------------------------------
 
 static
@@ -362,6 +381,38 @@ getMemberTypeInfo(
 
 //------------------------------------------------
 
+template<class Child>
+static
+void
+insertChildWithAccess(
+    RecordInfo& P, Access access, Child const& I)
+{
+    if constexpr(std::is_same_v<Child, RecordInfo>)
+    {
+        P.Children_.Records.push_back({ I.id, access });
+    }
+    else if constexpr(std::is_same_v<Child, FunctionInfo>)
+    {
+        P.Children_.Functions.push_back({ I.id, access });
+    }
+    else if constexpr(std::is_same_v<Child, TypedefInfo>)
+    {
+        P.Children_.Types.push_back({ I.id, access });
+    }
+    else if constexpr(std::is_same_v<Child, EnumInfo>)
+    {
+        P.Children_.Enums.push_back({ I.id, access });
+    }
+    else if constexpr(std::is_same_v<Child, VarInfo>)
+    {
+        P.Children_.Vars.push_back({ I.id, access });
+    }
+    else
+    {
+        static_error("unknown Info type", I);
+    }
+}
+
 template<class Parent, class Child>
 requires
     std::derived_from<Child, Info> &&
@@ -436,6 +487,25 @@ writeParent(Child&& I)
     Assert(Child::type_id != InfoType::IT_namespace);
     RecordInfo P(I.Namespace[0].id);
     insertChild(P, std::move(I));
+    return writeBitcode(P);
+}
+
+// Create an empty parent for the child,
+// and insert the child as a RefWithAccess.
+// Then return the parent as a serialized bitcode.
+template<class Child>
+static
+Bitcode
+writeParentWithAccess(
+    Access access,
+    Child const& I)
+{
+    static_assert(std::derived_from<Child, Info>);
+    Assert(! I.Namespace.empty());
+    Assert(I.Namespace[0].RefType == InfoType::IT_record);
+    Assert(Child::type_id != InfoType::IT_namespace);
+    RecordInfo P(I.Namespace[0].id);
+    insertChildWithAccess(P, access, I);
     return writeBitcode(P);
 }
 
@@ -782,6 +852,9 @@ buildRecord(
     }
 
     insertBitcode(ex_, writeBitcode(I));
+    auto Access = D->getAccess();
+    if(Access != AccessSpecifier::AS_none)
+        insertBitcode(ex_, writeParentWithAccess(toAccess(Access), I));
     insertBitcode(ex_, writeParent(std::move(I)));
 }
 
@@ -941,6 +1014,8 @@ buildFunction(
     if(! buildFunction(I, D))
         return;
     insertBitcode(ex_, writeBitcode(I));
+    if(I.Access != AccessSpecifier::AS_none)
+        insertBitcode(ex_, writeParentWithAccess(toAccess(I.Access), I));
     insertBitcode(ex_, writeParent(std::move(I)));
 }
 

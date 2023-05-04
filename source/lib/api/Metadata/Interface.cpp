@@ -38,12 +38,12 @@ public:
         , corpus_(corpus)
         , includePrivate_(corpus_.config.includePrivate)
     {
+        I_.records_.clear();
+        I_.functions_.clear();
         I_.enums_.clear();
         I_.types_.clear();
-        I_.functions_.clear();
-        I_.members_.clear();
+        I_.data_.clear();
         I_.vars_.clear();
-
         append(Access::Public, Derived);
         finish();
     }
@@ -55,15 +55,31 @@ private:
         Access t0,
         AccessSpecifier t1) noexcept
     {
-        if( t0 ==  Access::None ||
-            t1 ==  AccessSpecifier::AS_none)
-            return Access::None;
+        if( t1 ==  AccessSpecifier::AS_none)
+            return t0;
         if( t0 ==  Access::Private ||
             t1 ==  AccessSpecifier::AS_private)
             return Access::Private;
         if( t0 ==  Access::Protected ||
             t1 ==  AccessSpecifier::AS_protected)
             return Access::Protected;
+        return Access::Public;
+    }
+
+    static
+    Access
+    effectiveAccess(
+        Access t0,
+        Access t1) noexcept
+    {
+        if( t0 ==  Access::Private ||
+            t1 ==  Access::Private)
+            return Access::Private;
+
+        if( t0 ==  Access::Protected ||
+            t1 ==  Access::Protected)
+            return Access::Protected;
+
         return Access::Public;
     }
 
@@ -78,34 +94,22 @@ private:
             append(actualAccess, corpus_.get<RecordInfo>(B.id));
         }
 
-        // Enums
+        // Records
         if( includePrivate_ ||
             access != Access::Private)
         {
-            for(auto const& ref : From.Children.Enums)
+            for(auto const& ref : From.Children_.Records)
             {
-                auto const& J = corpus_.get<EnumInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, AccessSpecifier::AS_public);
-                I_.enums_.push_back({ &J, &From, actualAccess });
-            }
-        }
-
-        // Typedefs
-        if( includePrivate_ ||
-            access != Access::Private)
-        {
-            for(auto const& ref : From.Children.Typedefs)
-            {
-                auto const& J = corpus_.get<TypedefInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, AccessSpecifier::AS_public);
-                I_.types_.push_back({ &J, &From, actualAccess });
+                auto const& J = corpus_.get<RecordInfo>(ref.id);
+                auto actualAccess = effectiveAccess(access, ref.access);
+                I_.records_.push_back({ &J, &From, actualAccess });
             }
         }
 
         // Functions
         {
             auto const isFinal = From.specs.isFinal.get();
-            for(auto const& ref : From.Children.Functions)
+            for(auto const& ref : From.Children_.Functions)
             {
                 auto const& J = corpus_.get<FunctionInfo>(ref.id);
                 auto actualAccess = effectiveAccess(access, J.Access);
@@ -121,6 +125,30 @@ private:
             }
         }
 
+        // Enums
+        if( includePrivate_ ||
+            access != Access::Private)
+        {
+            for(auto const& ref : From.Children_.Enums)
+            {
+                auto const& J = corpus_.get<EnumInfo>(ref.id);
+                auto actualAccess = effectiveAccess(access, ref.access);
+                I_.enums_.push_back({ &J, &From, actualAccess });
+            }
+        }
+
+        // Typedefs
+        if( includePrivate_ ||
+            access != Access::Private)
+        {
+            for(auto const& ref : From.Children_.Types)
+            {
+                auto const& J = corpus_.get<TypedefInfo>(ref.id);
+                auto actualAccess = effectiveAccess(access, ref.access);
+                I_.types_.push_back({ &J, &From, actualAccess });
+            }
+        }
+
         // Data Members
         if( includePrivate_ ||
             access != Access::Private)
@@ -128,7 +156,7 @@ private:
             for(auto const& J : From.Members)
             {
                 auto actualAccess = effectiveAccess(access, J.Access);
-                I_.members_.push_back({ &J, &From, actualAccess });
+                I_.data_.push_back({ &J, &From, actualAccess });
             }
         }
 
@@ -136,10 +164,10 @@ private:
         if( includePrivate_ ||
             access != Access::Private)
         {
-            for(auto const& ref : From.Children.Vars)
+            for(auto const& ref : From.Children_.Vars)
             {
                 auto const& J = corpus_.get<VarInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, AccessSpecifier::AS_public);
+                auto actualAccess = effectiveAccess(access, ref.access);
                 I_.vars_.push_back({ &J, &From, actualAccess });
             }
         }
@@ -148,16 +176,14 @@ private:
     template<class T>
     void
     sort(
-        std::span<Item<T> const> Interface::Tranche::*member,
-        std::vector<Item<T>>& list)
+        std::span<T const> Interface::Tranche::*member,
+        std::vector<T>& list)
     {
         llvm::stable_sort(
             list,
             []( auto const& I0,
                 auto const& I1) noexcept
             {
-                Assert(I0.access != Access::None);
-                Assert(I1.access != Access::None);
                 return
                     to_underlying(I0.access) <
                     to_underlying(I1.access);
@@ -167,15 +193,15 @@ private:
             it0, list.end(),
             [](auto const& I) noexcept
             {
-                return I.access != Access::Public;
+                return I.access == Access::Public;
             });
         I_.Public.*member = { it0, it };
         it0 = it;
-        it = std::find_if_not(
+        it = std::find_if(
             it0, list.end(),
             [](auto const& I) noexcept
             {
-                return I.access != Access::Protected;
+                return I.access == Access::Protected;
             });
         I_.Protected.*member = { it0, it };
         I_.Private.*member = { it, list.end() };
@@ -184,11 +210,12 @@ private:
     void
     finish()
     {
-        sort(&Interface::Tranche::Enums, I_.enums_);
-        sort(&Interface::Tranche::Types, I_.types_);
+        sort(&Interface::Tranche::Records,   I_.records_);
         sort(&Interface::Tranche::Functions, I_.functions_);
-        sort(&Interface::Tranche::Members, I_.members_);
-        sort(&Interface::Tranche::Vars, I_.vars_);
+        sort(&Interface::Tranche::Enums,     I_.enums_);
+        sort(&Interface::Tranche::Types,     I_.types_);
+        sort(&Interface::Tranche::Data,      I_.data_);
+        sort(&Interface::Tranche::Vars,      I_.vars_);
     }
 };
 
