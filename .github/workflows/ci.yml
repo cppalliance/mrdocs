@@ -110,10 +110,10 @@ jobs:
           name: release-packages-Linux
           path: build
 
-      - uses: actions/download-artifact@v3
-        with:
-          name: release-packages-Windows
-          path: build
+      # - uses: actions/download-artifact@v3
+      #   with:
+      #     name: release-packages-Windows
+      #     path: build
 
       - name: List artifacts
         run: ls -R
