@@ -21,7 +21,7 @@
 
 #include "api/ConfigImpl.hpp"
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Debug.hpp>
+#include "api/Support/Debug.hpp"
 #include <mrdox/Generators.hpp>
 #include <mrdox/Reporter.hpp>
 #include <clang/Tooling/AllTUsExecution.h>

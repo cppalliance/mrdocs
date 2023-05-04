@@ -10,7 +10,7 @@
 
 #include "AdocPagesBuilder.hpp"
 #include "AdocMultiPageWriter.hpp"
-#include "Support/Radix.hpp"
+#include "api/Support/Radix.hpp"
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>

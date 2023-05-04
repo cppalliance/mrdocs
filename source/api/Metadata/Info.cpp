@@ -10,7 +10,7 @@
 //
 
 #include <mrdox/Metadata/Info.hpp>
-#include <mrdox/Debug.hpp>
+#include "api/Support/Debug.hpp"
 #include <mrdox/Metadata/Record.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/STLExtras.h>

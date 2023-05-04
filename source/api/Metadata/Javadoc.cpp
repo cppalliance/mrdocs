@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Debug.hpp>
+#include "api/Support/Debug.hpp"
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>

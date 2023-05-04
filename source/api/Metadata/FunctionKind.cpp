@@ -9,8 +9,8 @@
 //
 
 #include "FunctionKind.hpp"
-#include "Support/TypeTraits.hpp"
-#include <mrdox/Debug.hpp>
+#include "api/Support/TypeTraits.hpp"
+#include "api/Support/Debug.hpp"
 #include <clang/Basic/OperatorKinds.h>
 #include <utility>
 

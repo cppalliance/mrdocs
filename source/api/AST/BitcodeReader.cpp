@@ -12,7 +12,7 @@
 #include "BitcodeReader.hpp"
 #include "AnyBlock.hpp"
 #include "DecodeRecord.hpp"
-#include <mrdox/Debug.hpp>
+#include "api/Support/Debug.hpp"
 
 namespace clang {
 namespace mrdox {

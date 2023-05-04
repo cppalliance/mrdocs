@@ -11,8 +11,8 @@
 
 #include "XMLGenerator.hpp"
 #include "XMLWriter.hpp"
-#include "Support/Radix.hpp"
-#include "Support/RawOstream.hpp"
+#include "api/Support/Radix.hpp"
+#include "api/Support/RawOstream.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
 

@@ -12,7 +12,7 @@
 #include "test/SingleFile.hpp"
 #include "api/ConfigImpl.hpp"
 #include <mrdox/Config.hpp>
-#include <mrdox/Debug.hpp>
+#include "api/Support/Debug.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Generators.hpp>
 #include <clang/Tooling/StandaloneExecution.h>

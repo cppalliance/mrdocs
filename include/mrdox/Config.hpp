@@ -92,6 +92,15 @@ public:
     */
     bool verboseOutput = false;
 
+    /** `true` if private members should be extracted and displayed.
+
+        In some cases private members will be listed
+        even if this configuration value is set to
+        `false`. For example, when extracting private
+        virtual functions in a base class.
+    */
+    bool includePrivate = false;
+
     //--------------------------------------------
 
     /** A string holding the complete configuration YAML.

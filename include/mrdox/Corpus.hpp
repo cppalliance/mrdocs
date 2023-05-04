@@ -14,7 +14,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
-#include <mrdox/Debug.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
@@ -148,20 +147,20 @@ get(
     SymbolID const& id) const noexcept
 {
     auto I = find(id);
-    Assert(I != nullptr);
+    assert(I != nullptr);
     auto const t = static_cast<T const*>(I);
     if constexpr(std::is_same_v<T, NamespaceInfo>)
-        Assert(t->IT == InfoType::IT_namespace);
+        assert(t->IT == InfoType::IT_namespace);
     else if constexpr(std::is_same_v<T, RecordInfo>)
-        Assert(t->IT == InfoType::IT_record);
+        assert(t->IT == InfoType::IT_record);
     else if constexpr(std::is_same_v<T, FunctionInfo>)
-        Assert(t->IT == InfoType::IT_function);
+        assert(t->IT == InfoType::IT_function);
     else if constexpr(std::is_same_v<T, TypedefInfo>)
-        Assert(t->IT == InfoType::IT_typedef);
+        assert(t->IT == InfoType::IT_typedef);
     else if constexpr(std::is_same_v<T, EnumInfo>)
-        Assert(t->IT == InfoType::IT_enum);
+        assert(t->IT == InfoType::IT_enum);
     else if constexpr(std::is_same_v<T, VarInfo>)
-        Assert(t->IT == InfoType::IT_variable);
+        assert(t->IT == InfoType::IT_variable);
     return *t;
 }
 

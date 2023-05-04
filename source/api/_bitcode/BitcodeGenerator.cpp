@@ -10,8 +10,8 @@
 //
 
 #include "BitcodeGenerator.hpp"
-#include "Support/SafeNames.hpp"
-#include "AST/Bitcode.hpp"
+#include "api/Support/SafeNames.hpp"
+#include "api/AST/Bitcode.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>
 

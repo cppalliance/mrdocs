@@ -12,10 +12,10 @@
 #include "ASTVisitor.hpp"
 #include "Bitcode.hpp"
 #include "Commands.hpp"
-#include "ConfigImpl.hpp"
+#include "api/ConfigImpl.hpp"
 #include "ParseJavadoc.hpp"
-#include "Support/Path.hpp"
-#include <mrdox/Debug.hpp>
+#include "api/Support/Path.hpp"
+#include "api/Support/Debug.hpp"
 #include <mrdox/Metadata.hpp>
 #include <clang/AST/Attr.h>
 #include <clang/AST/Decl.h>
@@ -49,7 +49,7 @@ ASTVisitor(
     : ex_(ex)
     , config_(config)
     , R_(R)
-    , PublicOnly(! config_.includePrivate_)
+    , PublicOnly(! config_.includePrivate)
     , IsFileInRootDir(true)
 {
 }
@@ -608,9 +608,16 @@ ASTVisitor::
 extractBases(
     RecordInfo& I, CXXRecordDecl* D)
 {
+    // Base metadata is only available for definitions.
+    if(! D->isThisDeclarationADefinition())
+        return;
+
     // Only direct bases
     for(CXXBaseSpecifier const& B : D->bases())
     {
+        auto const isVirtual = B.isVirtual();
+        if(isVirtual && ! config_.includePrivate)
+            continue;
         if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
         {
             TemplateDecl const* D = Ty->getTemplateName().getAsTemplateDecl();
@@ -618,7 +625,7 @@ extractBases(
                 getUSRForDecl(D),
                 B.getType().getAsString(),
                 B.getAccessSpecifier(),
-                B.isVirtual());
+                isVirtual);
         }
         else if(RecordDecl const* P = getRecordDeclForType(B.getType()))
         {
@@ -626,7 +633,7 @@ extractBases(
                 getUSRForDecl(P),
                 P->getNameAsString(),
                 B.getAccessSpecifier(),
-                B.isVirtual());
+                isVirtual);
         }
         else
         {
@@ -634,7 +641,7 @@ extractBases(
                 EmptySID,
                 B.getType().getAsString(),
                 B.getAccessSpecifier(),
-                B.isVirtual());
+                isVirtual);
         }
     }
 }
@@ -797,8 +804,6 @@ buildFunction(
     // FunctionDecl
     //
     I.specs0.set<FnFlags0::isVariadic>(D->isVariadic());
-    I.specs0.set<FnFlags0::isVirtualAsWritten>(D->isVirtualAsWritten());
-    I.specs0.set<FnFlags0::isPure>(D->isPure());
     I.specs0.set<FnFlags0::isDefaulted>(D->isDefaulted());
     I.specs0.set<FnFlags0::isExplicitlyDefaulted>(D->isExplicitlyDefaulted());
     I.specs0.set<FnFlags0::isDeleted>(D->isDeleted());
@@ -848,6 +853,9 @@ buildFunction(
             InfoType::IT_record);
         I.Access = D->getAccess();
 
+        I.specs0.set<FnFlags0::isVirtual>(D->isVirtual());
+        I.specs0.set<FnFlags0::isVirtualAsWritten>(D->isVirtualAsWritten());
+        I.specs0.set<FnFlags0::isPure>(D->isPure());
         I.specs0.set<FnFlags0::isConst>(D->isConst());
         I.specs0.set<FnFlags0::isVolatile>(D->isVolatile());
         I.specs0.set<FnFlags0::refQualifier>(D->getRefQualifier());

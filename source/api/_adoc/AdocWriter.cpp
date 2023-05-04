@@ -10,8 +10,9 @@
 //
 
 #include "AdocWriter.hpp"
-#include "ConfigImpl.hpp"
-#include "Support/Validate.hpp"
+#include "api/ConfigImpl.hpp"
+#include "api/Support/Debug.hpp"
+#include "api/Support/Validate.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <clang/Basic/Specifiers.h>
@@ -270,6 +271,7 @@ write(
     // Description
     writeDescription(I.javadoc);
 
+#if 1
     // Nested Types
     writeNestedTypes(
         "Types",
@@ -311,6 +313,10 @@ write(
         "Private Member Functions",
         makeOverloadsSet(corpus_, I.Children,
             AccessSpecifier::AS_private));
+#else
+
+#endif
+    auto J = makeInterface(I, corpus_);
 
     endSection();
 }

@@ -12,7 +12,7 @@
 #ifndef MRDOX_API_AST_ASTVISITOR_HPP
 #define MRDOX_API_AST_ASTVISITOR_HPP
 
-#include "ConfigImpl.hpp"
+#include "api/ConfigImpl.hpp"
 #include <mrdox/Reporter.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <clang/AST/RecursiveASTVisitor.h>

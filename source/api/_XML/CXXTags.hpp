@@ -13,7 +13,8 @@
 #define MRDOX_API_XML_CXXTAGS_HPP
 
 #include "XMLTags.hpp"
-#include "Support/Operator.hpp"
+#include "api/Support/Debug.hpp"
+#include "api/Support/Operator.hpp"
 #include <clang/AST/Attr.h>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Record.hpp>

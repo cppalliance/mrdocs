@@ -10,11 +10,11 @@
 //
 
 #include "XMLWriter.hpp"
-#include "ConfigImpl.hpp"
+#include "api/ConfigImpl.hpp"
 #include "CXXTags.hpp"
-#include "Support/Radix.hpp"
-#include "Support/SafeNames.hpp"
-#include "Support/Operator.hpp"
+#include "api/Support/Radix.hpp"
+#include "api/Support/SafeNames.hpp"
+#include "api/Support/Operator.hpp"
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 

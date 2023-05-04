@@ -10,7 +10,7 @@
 //
 
 #include "Reduce.hpp"
-#include <mrdox/Debug.hpp>
+#include "api/Support/Debug.hpp"
 #include <mrdox/Metadata/Namespace.hpp>
 #include <mrdox/Config.hpp>
 #include <llvm/Support/Error.h>

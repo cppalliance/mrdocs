@@ -9,10 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "ConfigImpl.hpp"
-#include "Support/Path.hpp"
-#include "Support/YamlFwd.hpp"
-#include <mrdox/Debug.hpp>
+#include "api/ConfigImpl.hpp"
+#include "api/Support/Path.hpp"
+#include "api/Support/YamlFwd.hpp"
+#include "api/Support/Debug.hpp"
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -44,16 +44,16 @@ struct llvm::yaml::MappingTraits<
     static void mapping(
         IO& io, clang::mrdox::ConfigImpl& cfg)
     {
-        io.mapOptional("ignore-failures", cfg.ignoreFailures);
-        io.mapOptional("single-page",     cfg.singlePage);
-        io.mapOptional("verbose",         cfg.verboseOutput);
+        io.mapOptional("ignore-failures",   cfg.ignoreFailures);
+        io.mapOptional("single-page",       cfg.singlePage);
+        io.mapOptional("verbose",           cfg.verboseOutput);
+        io.mapOptional("with-private",      cfg.includePrivate);
 
-        io.mapOptional("concurrency",  cfg.concurrency_);
-        io.mapOptional("defines",      cfg.additionalDefines_);
-        io.mapOptional("source-root",  cfg.sourceRoot_);
-        io.mapOptional("with-private", cfg.includePrivate_);
+        io.mapOptional("concurrency",       cfg.concurrency_);
+        io.mapOptional("defines",           cfg.additionalDefines_);
+        io.mapOptional("source-root",       cfg.sourceRoot_);
 
-        io.mapOptional("input",        cfg.input_);
+        io.mapOptional("input",             cfg.input_);
     }
 };
 

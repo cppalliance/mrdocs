@@ -12,7 +12,7 @@
 #ifndef MRDOX_API_CONFIGIMPL_HPP
 #define MRDOX_API_CONFIGIMPL_HPP
 
-#include "Support/YamlFwd.hpp"
+#include "api/Support/YamlFwd.hpp"
 #include <mrdox/Config.hpp>
 #include <llvm/Support/ThreadPool.h>
 #include <memory>
@@ -40,7 +40,6 @@ public:
     int concurrency_ = 0;
     std::vector<std::string> additionalDefines_;
     std::string sourceRoot_;
-    bool includePrivate_ = false;
 
     FileFilter input_;
 

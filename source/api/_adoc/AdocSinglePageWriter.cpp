@@ -10,6 +10,7 @@
 //
 
 #include "AdocSinglePageWriter.hpp"
+#include "api/Support/Debug.hpp"
 
 namespace clang {
 namespace mrdox {

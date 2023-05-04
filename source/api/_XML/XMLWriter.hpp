@@ -13,7 +13,7 @@
 #define MRDOX_API_XML_XMLWRITER_HPP
 
 #include "XMLTags.hpp"
-#include "Support/YamlFwd.hpp"
+#include "api/Support/YamlFwd.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>

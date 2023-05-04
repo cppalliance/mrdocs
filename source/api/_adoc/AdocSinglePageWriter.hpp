@@ -12,7 +12,7 @@
 #define MRDOX_API_ADOC_ADOCSINGLEPAGEWRITER_HPP
 
 #include "AdocWriter.hpp"
-#include "Support/SafeNames.hpp"
+#include "api/Support/SafeNames.hpp"
 #include <mrdox/Corpus.hpp>
 
 namespace clang {

@@ -10,9 +10,9 @@
 //
 
 #include "CorpusImpl.hpp"
-#include "ConfigImpl.hpp"
-#include "AST/Bitcode.hpp"
-#include "AST/FrontendAction.hpp"
+#include "api/ConfigImpl.hpp"
+#include "api/AST/Bitcode.hpp"
+#include "api/AST/FrontendAction.hpp"
 #include "Metadata/Reduce.hpp"
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata.hpp>

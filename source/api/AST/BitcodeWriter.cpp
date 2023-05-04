@@ -12,7 +12,7 @@
 #include "BitcodeWriter.hpp"
 #include "Bitcode.hpp"
 #include "ParseJavadoc.hpp"
-#include <mrdox/Debug.hpp>
+#include "api/Support/Debug.hpp"
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/IndexedMap.h>
 #include <initializer_list>

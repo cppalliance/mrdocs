@@ -38,7 +38,8 @@ makeOverloadsSetImpl(
     if(temp.empty())
         return result;
 
-    std::sort(temp.begin(), temp.end(),
+    llvm::stable_sort(
+        temp,
         []( FunctionInfo const* f0,
             FunctionInfo const* f1)
         {

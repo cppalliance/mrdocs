@@ -103,7 +103,7 @@ target_include_directories(mrdox-api
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
-    "${PROJECT_SOURCE_DIR}/source/api/"
+    "${PROJECT_SOURCE_DIR}/source/"
 )
 target_compile_definitions(
     mrdox-api

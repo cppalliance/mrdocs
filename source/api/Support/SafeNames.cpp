@@ -8,9 +8,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Support/Operator.hpp"
-#include "Support/SafeNames.hpp"
-#include "Support/Validate.hpp"
+#include "api/Support/Debug.hpp"
+#include "api/Support/Operator.hpp"
+#include "api/Support/SafeNames.hpp"
+#include "api/Support/Validate.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/STLExtras.h>

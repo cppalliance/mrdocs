@@ -10,8 +10,8 @@
 //
 
 #include "XMLTags.hpp"
-#include "Support/Radix.hpp"
-#include <mrdox/Debug.hpp>
+#include "api/Support/Radix.hpp"
+#include "api/Support/Debug.hpp"
 
 namespace clang {
 namespace mrdox {

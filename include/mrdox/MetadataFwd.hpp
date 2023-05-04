@@ -23,6 +23,8 @@ namespace mrdox {
 
 class Corpus;
 
+class Interface;
+
 struct BaseInfo;
 struct EnumValueInfo;
 struct EnumInfo;

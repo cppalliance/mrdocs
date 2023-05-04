@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Debug.hpp>
+#include "api/Support/Debug.hpp"
 #include <atomic>
 #include <memory>
 

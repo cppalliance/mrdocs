@@ -11,7 +11,7 @@
 #ifndef MRDOX_API_ADOC_ADOCPAGESBUILDER_HPP
 #define MRDOX_API_ADOC_ADOCPAGESBUILDER_HPP
 
-#include "Support/SafeNames.hpp"
+#include "api/Support/SafeNames.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>

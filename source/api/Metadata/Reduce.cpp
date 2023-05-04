@@ -9,6 +9,7 @@
 //
 
 #include "Reduce.hpp"
+#include "api/Support/Debug.hpp"
 #include <mrdox/Metadata.hpp>
 #include <llvm/ADT/STLExtras.h>
 

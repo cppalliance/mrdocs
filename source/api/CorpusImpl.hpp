@@ -11,7 +11,8 @@
 #ifndef MRDOX_API_CORPUSIMPL_HPP
 #define MRDOX_API_CORPUSIMPL_HPP
 
-#include "ConfigImpl.hpp"
+#include "api/ConfigImpl.hpp"
+#include "api/Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
 #include <llvm/ADT/StringMap.h>
 #include <string>

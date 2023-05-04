@@ -13,9 +13,9 @@
 #define MRDOX_METADATA_BITS_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Debug.hpp>
 #include <array>
 #include <bit> // for constexpr popcount
+#include <cassert>
 #include <cstdint>
 #include <type_traits>
 
@@ -103,8 +103,8 @@ public:
     constexpr void
     set(Integer value) noexcept
     {
-        Assert(static_cast<std::underlying_type_t<Enum>>(ID) > 0);
-        Assert(value_type(value) < (value_type(ID) >>
+        assert(static_cast<std::underlying_type_t<Enum>>(ID) > 0);
+        assert(value_type(value) < (value_type(ID) >>
                 std::countr_zero(value_type(ID))));
         bits_ = (bits_ & ~value_type(ID)) | (
             value_type(value) << std::countr_zero(
@@ -161,7 +161,7 @@ getBits(
     return { bits.value()... };
 }
 
-template<class... BitsN, size_t... Is>
+template<class... BitsN, std::size_t... Is>
 constexpr void BitsHelper(
     std::index_sequence<Is...>,
     std::array<BitsValueType, sizeof...(BitsN)> const& values,

@@ -35,41 +35,42 @@ enum class FnFlags0 : std::uint32_t
     // Function Decl
 
     isVariadic              = 0x00000001, // has a C-style "..." variadic 
-    isVirtualAsWritten      = 0x00000002,
-    isPure                  = 0x00000004,
-    isDefaulted             = 0x00000008,
-    isExplicitlyDefaulted   = 0x00000010,
-    isDeleted               = 0x00000020,
-    isDeletedAsWritten      = 0x00000040,
-    isNoReturn              = 0x00000080,
+    isVirtual               = 0x00000002,
+    isVirtualAsWritten      = 0x00000004,
+    isPure                  = 0x00000008,
+    isDefaulted             = 0x00000010,
+    isExplicitlyDefaulted   = 0x00000020,
+    isDeleted               = 0x00000040,
+    isDeletedAsWritten      = 0x00000080,
+    isNoReturn              = 0x00000100,
 
-    hasOverrideAttr         = 0x00000100,
-    hasTrailingReturn       = 0x00000200,
+    hasOverrideAttr         = 0x00000200,
+    hasTrailingReturn       = 0x00000400,
 
-    constexprKind           = 0x00000400 +
-                              0x00000800,
-    exceptionSpecType       = 0x00001000 +
-                              0x00002000 +
+    constexprKind           = 0x00000800 +
+                              0x00001000,
+    exceptionSpecType       = 0x00002000 +
                               0x00004000 +
-                              0x00008000,
-    overloadedOperator      = 0x00010000 +
-                              0x00020000 +
+                              0x00008000 +
+                              0x00010000,
+    overloadedOperator      = 0x00020000 +
                               0x00040000 +
                               0x00080000 +
                               0x00100000 +
-                              0x00200000,
+                              0x00200000 +
+                              0x00400000,
 
-    storageClass            = 0x00400000 +
-                              0x00800000 +
-                              0x01000000,
+    storageClass            = 0x00800000 +
+                              0x01000000 +
+                              0x02000000,
 
     // CXXMethodDecl
 
-    isConst                 = 0x02000000,
-    isVolatile              = 0x04000000,
+    isConst                 = 0x04000000,
+    isVolatile              = 0x08000000,
 
-    refQualifier            = 0x08000000 +
-                              0x10000000
+    refQualifier            = 0x10000000 +
+                              0x20000000
 };
 
 /** Bit constants used with function specifiers.

@@ -12,8 +12,8 @@
 #ifndef MRDOX_API_ADOC_ADOCWRITER_HPP
 #define MRDOX_API_ADOC_ADOCWRITER_HPP
 
-#include "Support/SafeNames.hpp"
-#include "Support/YamlFwd.hpp"
+#include "api/Support/SafeNames.hpp"
+#include "api/Support/YamlFwd.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
