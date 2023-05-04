@@ -1,0 +1,6 @@
+name: mrdox
+title: Sir Dox
+version: ~
+nav:
+  - modules/ROOT/nav.adoc
+  -

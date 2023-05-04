@@ -1,0 +1,34 @@
+= Invocation
+
+`mrdox` is a single executable, that can be invoked as follows:
+
+[source,bash]
+----
+mrdox --config config.yml my_source.cpp
+----
+
+Where config.yml is the mrdox specific configuration.
+
+Note that `mrdox` will look for a `compile_commands.json` file in the current directory,
+known as the compile databasefootnote:[The easiest way to obtain the compile database is with cmake's
+    https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html::[CMAKE_EXPORT_COMPILE_COMMANDS]].
+
+The compile database file can be changed by using `-p`, i.e.:
+
+
+[source,bash]
+----
+mrdox -p my_comile_commands.json --config config.yml my_source.cpp
+----
+
+=== Cmake script
+
+The mrdox.cmake script provides a `mrdox` command,
+that assumes `CMAKE_EXPORT_COMPILE_COMMANDS` is set for the whole project.
+
+[source,cmake]
+----
+        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES my_source.cpp)
+----
+
+which will generate a `reference.adoc` file.

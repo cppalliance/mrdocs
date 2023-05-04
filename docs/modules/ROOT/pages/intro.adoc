@@ -1,0 +1,59 @@
+= Mr.Dox
+
+Mr. dox is a documentation extractor and a spiritual successor to doxygen.
+
+It extracts javadoc comments from a project using clang and generates
+an intermediate format (such as xml or asciidoc).
+
+This means that mrdox is ideal for integration into a multi-step documentation
+toolset, e.g. antora.
+
+.Example workflow for mrdox
+[ditaa]
+....
++----------------+   exports   +-----------------------+
+| CMakeLists.txt |------------>| compile_commands.json |
++----------------+             +-----------------------+
+                                           |
+                        /------------------/
+                        |
+                        v
++-------------+    +---------+
+| C++ sources |--->| *mrdox* |
++-------------+    +---------+
+                        |
+                        v
++------------+    +-------------+
+| adoc files |--->| asciidoctor |--->  html
++------------+    +-------------+
+....
+
+Features include
+
+- full C++ AST based on clang
+- javadoc extraction (wiht llvm)
+- understands everything clang understands
+- (_planned_) plugin system
+
+
+== What's the difference to doxygen?
+
+Doxygen is great and has done a lot for C++.
+It is a single-step documentation generator,
+i.e. it uses the javadoc with additional markdown files
+to generate the complete documentation in the final format (e.g. html or pdf).
+
+This is a great fit for may projects,
+but for those needing more custom documentation this can be cumbersome.
+Doxygen does allow xml output, this format is still optimized for the common
+doxygen use case.
+
+Doxygen also works with multiple languages, whereas mrdox focusss on only C++.
+Since mrdox is based on the libtooling api, not the libclang one, it'll undestand all
+bleeding edge features of C++.
+
+== What's wrong with doxygen alternative X?
+
+There are many attempts to replace doxygen,
+but they mostly end up replicating the doxygen behaviour, of generating a full documentation.
+Most of them also use
