@@ -52,13 +52,16 @@ jobs:
         if: ${{ startsWith( matrix.os , 'windows' ) }}
         shell: bash
         run: |
+          set -xe
           curl -L -o "RelWithDebInfo-731264b0.7z" "https://github.com/cppalliance/mrdox/releases/download/llvm-package-release/RelWithDebInfo-731264b0.7z"
-          7z x RelWithDebInfo-731264b0.7z -ollvm-install
-          llvm_dir="./llvm-install/RelWithDebInfo"
-          llvm_dir="$(readlink -f "$llvm_dir" 2>/dev/null || realpath -e "$llvm_dir" 2>/dev/null || echo "$(pwd)/$llvm_dir")"
-          echo "llvm-dir=$llvm_dir" >> $GITHUB_OUTPUT
+          llvm_dir="${{runner.tool_cache}}/llvm-install"
+          llvm_dir=$(echo "$llvm_dir" | sed 's/\\/\//g')
+          7z x RelWithDebInfo-731264b0.7z -o"${llvm_dir}"
+          echo "llvm-dir=$llvm_dir/RelWithDebInfo" >> $GITHUB_OUTPUT
           substring="C:/Program Files/Microsoft Visual Studio/2022/Community/DIA SDK/lib/amd64/diaguids.lib;"
-          sed -i "s|$substring||g" "./llvm-install/RelWithDebInfo/lib/cmake/llvm/LLVMExports.cmake"
+          sed -i "s|$substring||g" "$llvm_dir/RelWithDebInfo/lib/cmake/llvm/LLVMExports.cmake"
+          echo "llvm_dir=$llvm_dir"
+          find "$llvm_dir" -type f
 
       - name: Install packages
         if: ${{ matrix.install }}
@@ -68,8 +71,9 @@ jobs:
           apt-get: ${{ matrix.install }}
 
       - name: CMake Workflow (C++${{ matrix.cxxstd }})
-        uses: alandefreitas/cpp-actions/cmake-workflow@master
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.0.0
         with:
+          cmake-min-version: 3.13
           cxxstd: ${{ matrix.cxxstd }}
           cxx: ${{ matrix.cxx }}
           cc: ${{ matrix.cc }}
@@ -102,6 +106,10 @@ jobs:
       contents: write
 
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 100
+
       - uses: actions/download-artifact@v3
         with:
           name: release-packages-Linux
@@ -116,12 +124,37 @@ jobs:
         run: ls -R
         working-directory: build
 
+      - name: Create release notes
+        uses: alandefreitas/cpp-actions/create-changelog@v1.0.0
+        with:
+          output-path: CHANGELOG.md
+          limit: 50
+
+      - name: Remove branch release
+        if: ${{ github.event_name == 'push' && contains(fromJSON('["master", "develop"]'), github.ref_name) }}
+        uses: dev-drprasad/delete-tag-and-release@v1.0
+        with:
+          tag_name: ${{ github.ref_name }}-release
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_release: true
+
       - name: Create GitHub Package Release
         if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
         uses: softprops/action-gh-release@v1
         with:
           files: build/MrDox-?.?.?-*.*
           name: ${{ github.ref_name || github.ref }}
-          tag_name: ${{ github.ref_name || github.ref }}${{ (!startsWith(github.ref, 'refs/tags/')) && '-release' }}
+          tag_name: ${{ github.ref_name || github.ref }}${{ ((!startsWith(github.ref, 'refs/tags/')) && '-release') || '' }}
+          body_path: CHANGELOG.md
+          prerelease: false
+          draft: false
           token: ${{ github.token }}
+
+      - uses: dev-drprasad/delete-older-releases@v0.2.1
+        if: ${{ github.event_name == 'push' && contains(fromJSON('["master", "develop"]'), github.ref_name) }}
+        with:
+          keep_latest: 1
+          delete_tag_pattern: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
