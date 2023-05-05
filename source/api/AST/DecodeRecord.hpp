@@ -266,6 +266,27 @@ decodeRecord(
     return llvm::Error::success();
 }
 
+template<std::size_t N>
+inline
+llvm::Error
+decodeRecord(
+    Record const& R,
+    std::array<BitFieldFullValue*, N> values,
+    llvm::StringRef Blob)
+{
+    auto n = R[0];
+    if(n != N)
+        return makeError("wrong size(", n, ") for Bitfields[", N, "]");
+    for(std::size_t i = 0; i < N; ++i)
+    {
+        auto const v = R[i + 1];
+        if(v > (std::numeric_limits<std::uint32_t>::max)())
+            return makeError(v, " is out of range for Bits");
+        *values[i] = v;
+    }
+    return llvm::Error::success();
+}
+
 } // mrdox
 } // clang
 

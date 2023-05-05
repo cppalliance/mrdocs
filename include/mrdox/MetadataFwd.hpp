@@ -49,6 +49,13 @@ struct TypedefInfo;
 struct VarInfo;
 struct VerbatimBlock;
 
+
+template<unsigned char Offset,
+         unsigned char Size,
+         typename T>
+struct BitField;
+using BitFieldFullValue = BitField<0, 32, std::uint32_t>;
+
 } // mrdox
 } // clang
 

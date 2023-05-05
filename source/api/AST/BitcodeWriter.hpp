@@ -35,6 +35,7 @@
 namespace clang {
 namespace mrdox {
 
+
 class BitcodeWriter
 {
 public:
@@ -94,6 +95,7 @@ public:
     void emitRecord(Location const& Loc, RecordId ID);
     void emitRecord(bool Value, RecordId ID);
     void emitRecord(TemplateInfo const& Templ);
+    void emitRecord(std::initializer_list<BitFieldFullValue> values, RecordId ID);
     //void emitRecord(Reference const& Ref, RecordId ID);
 
     bool prepRecordData(RecordId ID, bool ShouldEmit = true);
