@@ -552,6 +552,24 @@ emitRecord(
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
+
+// Bits
+void
+BitcodeWriter::
+emitRecord(
+    std::initializer_list<BitFieldFullValue> values,
+    RecordId ID)
+{
+    Assert(RecordIdNameMap[ID]);
+    Assert(RecordIdNameMap[ID].Abbrev == &Integer32ArrayAbbrev);
+    if (!prepRecordData(ID, true))
+        return;
+    Record.push_back(values.size());
+    for(std::uint32_t value : values)
+        Record.push_back(value);
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
+}
+
 // SymbolIDs
 void
 BitcodeWriter::
@@ -776,7 +794,7 @@ emitBlock(
     emitSymbolPart(I);
     emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
-    emitRecord(FUNCTION_BITS, I.specs0, I.specs1);
+    emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
     emitBlock(I.Parent, FieldId::F_parent);
     emitBlock(I.ReturnType);
     for (const auto& N : I.Params)
