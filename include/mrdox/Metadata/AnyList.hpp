@@ -648,6 +648,7 @@ move_to(
     else
     {
         other.tail_->next = it.it_;
+        other.tail_ = it.it_;
         it.it_->next = &other.end_;
     }
     ++other.size_;
