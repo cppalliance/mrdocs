@@ -61,16 +61,7 @@ constexpr llvm::StringRef getBitsIDName(RecFlags0 ID)
     return "";
 }
 
-constexpr llvm::StringRef getBitsIDName(VarFlags0 ID)
-{
-    switch(ID)
-    {
-    case VarFlags0::storageClass:     return "storage-class";
-    default:
-        Assert(false);
-    }
-    return "";
-}
+
 
 constexpr llvm::StringRef getNameForValue(...)
 {
@@ -282,9 +273,10 @@ inline void write(FnFlags1 const& bits, XMLTags& tags)
     fw.write(&FnFlags1::isExplicit,        "is-explicit");
 }
 
-inline void write(Bits<VarFlags0> const& bits, XMLTags& tags)
+inline void write(VarFlags0 const& bits, XMLTags& tags)
 {
-    WriteBits(bits).write<VarFlags0::storageClass, StorageClass>(tags);
+    BitFieldWriter<VarFlags0> fw(bits, tags);
+    fw.write(&VarFlags0::storageClass, "storage-class");
 }
 
 inline void writeReturnType(TypeInfo const& I, XMLTags& tags)

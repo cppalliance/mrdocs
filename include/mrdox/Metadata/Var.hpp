@@ -21,9 +21,11 @@
 namespace clang {
 namespace mrdox {
 
-enum class VarFlags0 : std::uint32_t
+union VarFlags0
 {
-    storageClass        = 0b00000000'00000000'00000000'00000111
+    BitFieldFullValue raw;
+
+    BitField<0, 3, StorageClass> storageClass;
 };
 
 /** A variable.
@@ -35,7 +37,7 @@ struct VarInfo
     : SymbolInfo
     , TypeInfo // holds the type of this variable
 {
-    Bits<VarFlags0> specs;
+    VarFlags0 specs{.raw={0}};
 
     //--------------------------------------------
 

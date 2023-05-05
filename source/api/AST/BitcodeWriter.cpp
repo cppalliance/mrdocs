@@ -1027,7 +1027,7 @@ emitBlock(
     emitInfoPart(I);
     emitSymbolPart(I);
     emitBlock(static_cast<TypeInfo const&>(I));
-    emitRecord(VARIABLE_BITS, I.specs);
+    emitRecord({I.specs.raw}, VARIABLE_BITS);
 }
 
 //------------------------------------------------

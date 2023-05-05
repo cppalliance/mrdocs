@@ -200,7 +200,7 @@ void merge(VarInfo& I, VarInfo&& Other)
     if(I.Type.id == EmptySID && I.Type.Name.empty())
         I.Type = std::move(Other.Type);
     mergeSymbolInfo(I, std::move(Other));
-    I.specs.merge(std::move(Other.specs));
+    I.specs.raw.value |= Other.specs.raw.value;
 }
 
 void merge(Reference& I, Reference&& Other)
