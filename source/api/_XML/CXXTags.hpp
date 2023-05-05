@@ -49,19 +49,6 @@ constexpr llvm::StringRef dataMemberTagName = "data";
 constexpr llvm::StringRef javadocTagName    = "doc";
 constexpr llvm::StringRef baseTagName       = "base";
 
-constexpr llvm::StringRef getBitsIDName(RecFlags0 ID)
-{
-    switch(ID)
-    {
-    case RecFlags0::isFinal:           return "is-final";
-    case RecFlags0::isFinalDestructor: return "is-final-dtor";
-    default:
-        Assert(false);
-    }
-    return "";
-}
-
-
 
 constexpr llvm::StringRef getNameForValue(...)
 {
@@ -236,10 +223,11 @@ struct BitFieldWriter
 template<class Enum>
 WriteBits(Bits<Enum> const&) -> WriteBits<Enum>;
 
-inline void write(Bits<RecFlags0> const& bits, XMLTags& tags)
+inline void write(RecFlags0 const& bits, XMLTags& tags)
 {
-    WriteBits(bits).write<RecFlags0::isFinal>(tags);
-    WriteBits(bits).write<RecFlags0::isFinalDestructor>(tags);
+    BitFieldWriter<RecFlags0> fw(bits, tags);
+    fw.write(&RecFlags0::isFinal, "is-final");
+    fw.write(&RecFlags0::isFinalDestructor, "is-final-dtor");
 }
 
 inline void write(FnFlags0 const& bits, XMLTags& tags)

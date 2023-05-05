@@ -32,10 +32,12 @@ namespace mrdox {
 
 /** Bit constants used with Record metadata
 */
-enum class RecFlags0 : std::uint32_t
+union RecFlags0
 {
-    isFinal             = 0x00000001,
-    isFinalDestructor   = 0x00000002
+    BitFieldFullValue raw{.value=0u};
+
+    BitFlag<0> isFinal;
+    BitFlag<1> isFinalDestructor;
 };
 
 /** Metadata for a direct base.
@@ -81,7 +83,7 @@ struct RecordInfo : SymbolInfo
     // are converted into records with the typedef as the Name + this flag set.
     bool IsTypeDef = false;
 
-    Bits<RecFlags0> specs;
+    RecFlags0 specs;
 
     llvm::SmallVector<MemberTypeInfo, 4> Members;   // List of info about record members.
 

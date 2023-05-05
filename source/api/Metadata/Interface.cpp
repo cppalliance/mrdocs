@@ -104,7 +104,7 @@ private:
 
         // Functions
         {
-            auto const isFinal = From.specs.get<RecFlags0::isFinal>();
+            auto const isFinal = From.specs.isFinal.get();
             for(auto const& ref : From.Children.Functions)
             {
                 auto const& J = corpus_.get<FunctionInfo>(ref.id);

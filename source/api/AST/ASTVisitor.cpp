@@ -695,9 +695,9 @@ buildRecord(
     parseFields(I, D, PublicOnly, AccessSpecifier::AS_public, R_);
 
     // These are from CXXRecordDecl::isEffectivelyFinal()
-    I.specs.set<RecFlags0::isFinal>(D->template hasAttr<FinalAttr>());
+    I.specs.isFinal = D->template hasAttr<FinalAttr>();
     if(auto const DT = D->getDestructor())
-        I.specs.set<RecFlags0::isFinalDestructor>(DT->template hasAttr<FinalAttr>());
+        I.specs.isFinalDestructor = DT->template hasAttr<FinalAttr>();
 
     if(TypedefNameDecl const* TD = D->getTypedefNameForAnonDecl())
     {

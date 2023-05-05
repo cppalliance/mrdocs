@@ -931,7 +931,7 @@ emitBlock(
     emitSymbolPart(I);
     emitRecord(I.TagType, RECORD_TAG_TYPE);
     emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
-    emitRecord(RECORD_BITS, I.specs);
+    emitRecord({I.specs.raw}, RECORD_BITS);
     for (const auto& N : I.Members)
         emitBlock(N);
     for (const auto& B : I.Bases)
