@@ -124,7 +124,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     if (!I.TagType)
         I.TagType = Other.TagType;
     I.IsTypeDef = I.IsTypeDef || Other.IsTypeDef;
-    I.specs.merge(std::move(Other).specs);
+    I.specs.raw.value |= Other.specs.raw.value;
     if (I.Members.empty())
         I.Members = std::move(Other.Members);
     if (I.Bases.empty())

@@ -839,7 +839,7 @@ public:
         case RECORD_IS_TYPE_DEF:
             return decodeRecord(R, I->IsTypeDef, Blob);
         case RECORD_BITS:
-            return decodeRecord(R, Blob, I->specs);
+            return decodeRecord<1u>(R, {&I->specs.raw}, Blob);
         case RECORD_FRIENDS:
             return decodeRecord(R, I->Friends, Blob);
         default:
