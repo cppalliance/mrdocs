@@ -532,28 +532,6 @@ emitRecord(
 }
 
 // Bits
-template<class... BitsN>
-requires (is_Bits_v<BitsN...>)
-void
-BitcodeWriter::
-emitRecord(
-    RecordId ID,
-    BitsN const&... bits)
-{
-    Assert(RecordIdNameMap[ID]);
-    Assert(RecordIdNameMap[ID].Abbrev ==
-        &Integer32ArrayAbbrev);
-    if (!prepRecordData(ID, ! bitsEmpty(bits...)))
-        return;
-    auto const values = getBits(bits...);
-    Record.push_back(values.size());
-    for(std::size_t i = 0; i < values.size(); ++i)
-        Record.push_back(static_cast<RecordValue>(values.data()[i]));
-    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
-}
-
-
-// Bits
 void
 BitcodeWriter::
 emitRecord(

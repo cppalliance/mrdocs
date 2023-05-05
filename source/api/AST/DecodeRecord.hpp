@@ -242,30 +242,6 @@ decodeRecord(
     return llvm::Error::success();
 }
 
-template<class... BitsN>
-requires (is_Bits_v<BitsN...>)
-llvm::Error
-decodeRecord(
-    Record const& R,
-    llvm::StringRef Blob,
-    BitsN&... bits)
-{
-    auto const N = sizeof...(BitsN);
-    auto n = R[0];
-    if(n != N)
-        return makeError("wrong size(", n, ") for Bits[", N, "]");
-    std::array<BitsValueType, N> values;
-    for(std::size_t i = 0; i < N; ++i)
-    {
-        auto const v = R[i + 1];
-        if(v > (std::numeric_limits<std::uint32_t>::max)())
-            return makeError(v, " is out of range for Bits");
-        values[i] = v;
-    }
-    setBits(values, bits...);
-    return llvm::Error::success();
-}
-
 template<std::size_t N>
 inline
 llvm::Error

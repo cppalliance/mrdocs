@@ -22,7 +22,6 @@
 #include <mrdox/Platform.hpp>
 #include "BitcodeIDs.hpp"
 #include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Metadata/Bits.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <clang/AST/AST.h>
 #include <llvm/ADT/DenseMap.h>
@@ -83,10 +82,6 @@ public:
     template<class Enum>
     requires std::is_enum_v<Enum>
     void emitRecord(Enum Value, RecordId ID);
-
-    template<class... BitsN>
-    requires (is_Bits_v<BitsN...>)
-    void emitRecord(RecordId ID, BitsN const&...);
 
     void emitRecord(llvm::SmallVectorImpl<SymbolID> const& Values, RecordId ID);
 

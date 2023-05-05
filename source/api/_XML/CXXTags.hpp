@@ -135,50 +135,6 @@ constexpr llvm::StringRef getNameForValue(RefQualifierKind RK)
 
 //------------------------------------------------
 
-template<class Enum>
-struct WriteBits
-{
-    Bits<Enum> bits;
-
-    WriteBits(Bits<Enum> const& bits_)
-        : bits(bits_)
-    {
-    }
-
-    template<Enum ID>
-    void write(XMLTags& tags)
-    {
-        auto const v = bits.template get<ID>();
-        if(v == 0)
-            return;
-        if constexpr(std::has_single_bit(BitsValueType(ID)))
-        {
-            tags.write(attributeTagName, {}, { { "id", getBitsIDName(ID) } });
-        }
-        else
-        {
-            tags.write(attributeTagName, {}, {
-                { "id", getBitsIDName(ID) },
-                { "value", std::to_string(v) } });
-        }
-    }
-
-    template<Enum ID, class ValueType>
-    requires std::is_enum_v<ValueType>
-    void write(XMLTags& tags)
-    {
-        static_assert(! std::has_single_bit(BitsValueType(ID)));
-        auto const v = static_cast<ValueType>(bits.template get<ID>());
-        if(static_cast<BitsValueType>(v) == 0)
-            return;
-        tags.write(attributeTagName, {}, {
-            { "id", getBitsIDName(ID) },
-            { "name", getNameForValue(v) },
-            { "value", std::to_string(static_cast<
-                std::underlying_type_t<ValueType>>(v)) } });
-    }
-};
-
 template<class BitFieldUnion>
 struct BitFieldWriter
 {
@@ -200,7 +156,7 @@ struct BitFieldWriter
 
         if constexpr (std::is_enum_v<T>)
         {
-            if(static_cast<BitsValueType>(v) == 0)
+            if(static_cast<std::uint32_t>(v) == 0)
                 return;
             tags.write(attributeTagName, {}, {
                     { "id", idName },
@@ -219,9 +175,6 @@ struct BitFieldWriter
                     { "value", std::to_string(v) } });
     }
 };
-
-template<class Enum>
-WriteBits(Bits<Enum> const&) -> WriteBits<Enum>;
 
 inline void write(RecFlags0 const& bits, XMLTags& tags)
 {
