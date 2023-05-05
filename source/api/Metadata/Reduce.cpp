@@ -170,8 +170,8 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
     mergeSymbolInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = Other.Template;
-    I.specs0.merge(std::move(Other).specs0);
-    I.specs1.merge(std::move(Other).specs1);
+    I.specs0.raw.value |= Other.specs0.raw.value;
+    I.specs1.raw.value |= Other.specs1.raw.value;
 }
 
 void merge(TypedefInfo& I, TypedefInfo&& Other)

@@ -806,30 +806,30 @@ buildFunction(
     //
     // FunctionDecl
     //
-    I.specs0.set<FnFlags0::isVariadic>(D->isVariadic());
-    I.specs0.set<FnFlags0::isDefaulted>(D->isDefaulted());
-    I.specs0.set<FnFlags0::isExplicitlyDefaulted>(D->isExplicitlyDefaulted());
-    I.specs0.set<FnFlags0::isDeleted>(D->isDeleted());
-    I.specs0.set<FnFlags0::isDeletedAsWritten>(D->isDeletedAsWritten());
-    I.specs0.set<FnFlags0::isNoReturn>(D->isNoReturn());
+    I.specs0.isVariadic = D->isVariadic();
+    I.specs0.isDefaulted = D->isDefaulted();
+    I.specs0.isExplicitlyDefaulted = D->isExplicitlyDefaulted();
+    I.specs0.isDeleted = D->isDeleted();
+    I.specs0.isDeletedAsWritten = D->isDeletedAsWritten();
+    I.specs0.isNoReturn = D->isNoReturn();
         // subsumes D->hasAttr<NoReturnAttr>()
         // subsumes D->hasAttr<CXX11NoReturnAttr>()
         // subsumes D->hasAttr<C11NoReturnAttr>()
         // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
-    I.specs0.set<FnFlags0::hasOverrideAttr>(D->template hasAttr<OverrideAttr>());
+    I.specs0.hasOverrideAttr = D->template hasAttr<OverrideAttr>();
     if(auto const* FP = D->getType()->template getAs<FunctionProtoType>())
-        I.specs0.set<FnFlags0::hasTrailingReturn>(FP->hasTrailingReturn());
-    I.specs0.set<FnFlags0::constexprKind>(D->getConstexprKind());
+        I.specs0.hasTrailingReturn= FP->hasTrailingReturn();
+    I.specs0.constexprKind = D->getConstexprKind();
         // subsumes D->isConstexpr();
         // subsumes D->isConstexprSpecified();
         // subsumes D->isConsteval();
-    I.specs0.set<FnFlags0::exceptionSpecType>(D->getExceptionSpecType());
-    I.specs0.set<FnFlags0::overloadedOperator>(D->getOverloadedOperator());
-    I.specs0.set<FnFlags0::storageClass>(D->getStorageClass());
+    I.specs0.exceptionSpecType = D->getExceptionSpecType();
+    I.specs0.overloadedOperator = D->getOverloadedOperator();
+    I.specs0.storageClass = D->getStorageClass();
     if(auto attr = D->template getAttr<WarnUnusedResultAttr>())
     {
-        I.specs1.set<FnFlags1::isNodiscard>(true);
-        I.specs1.set<FnFlags1::nodiscardSpelling>(attr->getSemanticSpelling());
+        I.specs1.isNodiscard = true;
+        I.specs1.nodiscardSpelling = attr->getSemanticSpelling();
     }
 
     if constexpr(! std::derived_from<DeclTy, CXXMethodDecl>)
@@ -856,12 +856,12 @@ buildFunction(
             InfoType::IT_record);
         I.Access = D->getAccess();
 
-        I.specs0.set<FnFlags0::isVirtual>(D->isVirtual());
-        I.specs0.set<FnFlags0::isVirtualAsWritten>(D->isVirtualAsWritten());
-        I.specs0.set<FnFlags0::isPure>(D->isPure());
-        I.specs0.set<FnFlags0::isConst>(D->isConst());
-        I.specs0.set<FnFlags0::isVolatile>(D->isVolatile());
-        I.specs0.set<FnFlags0::refQualifier>(D->getRefQualifier());
+        I.specs0.isVirtual = D->isVirtual();
+        I.specs0.isVirtualAsWritten = D->isVirtualAsWritten();
+        I.specs0.isPure = D->isPure();
+        I.specs0.isConst = D->isConst();
+        I.specs0.isVolatile = D->isVolatile();
+        I.specs0.refQualifier = D->getRefQualifier();
         //D->isCopyAssignmentOperator()
         //D->isMoveAssignmentOperator()
         //D->isOverloadedOperator();
@@ -882,7 +882,7 @@ buildFunction(
     if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
     {
         //I.Name.append("-ctor");
-        I.specs1.set<FnFlags1::isExplicit>(D->getExplicitSpecifier().isSpecified());
+        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
     }
 
     //
@@ -891,7 +891,7 @@ buildFunction(
     if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
     {
         //I.Name.append("-conv");
-        I.specs1.set<FnFlags1::isExplicit>(D->getExplicitSpecifier().isSpecified());
+        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
     }
 
     //
@@ -899,7 +899,7 @@ buildFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXDeductionGuideDecl>)
     {
-        I.specs1.set<FnFlags1::isExplicit>(D->getExplicitSpecifier().isSpecified());
+        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
     }
 
     return true;

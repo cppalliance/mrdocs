@@ -15,10 +15,10 @@
       <file path="mem-fn.cpp" line="24" class="def"/>
       <attr id="is-variadic"/>
       <attr id="has-trailing-return"/>
-      <attr id="is-const"/>
-      <attr id="is-volatile"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
       <attr id="exception-spec" name="noexcept" value="5"/>
+      <attr id="is-const"/>
+      <attr id="is-volatile"/>
     </function>
     <function name="f2" access="public" id="II436kVwM/ZBYOf9q474VxRXK6c=">
       <file path="mem-fn.cpp" line="25" class="def"/>
@@ -32,9 +32,9 @@
       <file path="mem-fn.cpp" line="26"/>
       <attr id="is-virtual-as-written"/>
       <attr id="is-pure"/>
+      <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="is-const"/>
       <attr id="is-volatile"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
       <return type="int"/>
     </function>
   </struct>
@@ -150,9 +150,9 @@
     <function name="f3" access="public" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
       <file path="mem-fn.cpp" line="31"/>
       <attr id="has-override"/>
+      <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="is-const"/>
       <attr id="is-volatile"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
       <return type="int"/>
     </function>
   </struct>

@@ -13,7 +13,7 @@
 #define MRDOX_METADATA_FUNCTION_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Bits.hpp>
+#include <mrdox/Metadata/BitField.hpp>
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
@@ -23,6 +23,7 @@
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>
+#include <clang/AST/Attr.h>
 #include <vector>
 
 namespace clang {
@@ -30,63 +31,43 @@ namespace mrdox {
 
 /** Bit constants used with function specifiers.
 */
-enum class FnFlags0 : std::uint32_t
+union FnFlags0
 {
-    // Function Decl
+    BitFieldFullValue raw;
 
-    isVariadic              = 0x00000001, // has a C-style "..." variadic 
-    isVirtual               = 0x00000002,
-    isVirtualAsWritten      = 0x00000004,
-    isPure                  = 0x00000008,
-    isDefaulted             = 0x00000010,
-    isExplicitlyDefaulted   = 0x00000020,
-    isDeleted               = 0x00000040,
-    isDeletedAsWritten      = 0x00000080,
-    isNoReturn              = 0x00000100,
+    BitFlag<0> isVariadic;
+    BitFlag<1> isVirtual;
+    BitFlag<2> isVirtualAsWritten;
+    BitFlag<3> isPure;
+    BitFlag<4> isDefaulted;
+    BitFlag<5> isExplicitlyDefaulted;
+    BitFlag<6> isDeleted;
+    BitFlag<7> isDeletedAsWritten;
+    BitFlag<8> isNoReturn;
 
-    hasOverrideAttr         = 0x00000200,
-    hasTrailingReturn       = 0x00000400,
-
-    constexprKind           = 0x00000800 +
-                              0x00001000,
-    exceptionSpecType       = 0x00002000 +
-                              0x00004000 +
-                              0x00008000 +
-                              0x00010000,
-    overloadedOperator      = 0x00020000 +
-                              0x00040000 +
-                              0x00080000 +
-                              0x00100000 +
-                              0x00200000 +
-                              0x00400000,
-
-    storageClass            = 0x00800000 +
-                              0x01000000 +
-                              0x02000000,
-
-    // CXXMethodDecl
-
-    isConst                 = 0x04000000,
-    isVolatile              = 0x08000000,
-
-    refQualifier            = 0x10000000 +
-                              0x20000000
+    BitFlag<9> hasOverrideAttr;
+    BitFlag<10> hasTrailingReturn;
+    BitField<11, 2, ConstexprSpecKind> constexprKind;
+    BitField<13, 4, ExceptionSpecificationType> exceptionSpecType;
+    BitField<17, 6, OverloadedOperatorKind> overloadedOperator;
+    BitField<23, 3, StorageClass> storageClass;
+    BitFlag<26> isConst;
+    BitFlag<27> isVolatile;
+    BitField<28, 2, RefQualifierKind> refQualifier;
 };
 
-/** Bit constants used with function specifiers.
+
+
+/** Bit field used with function specifiers.
 */
-enum class FnFlags1 : std::uint32_t
+union FnFlags1
 {
-    isNodiscard             = 0x00000001,
+    BitFieldFullValue raw;
 
-    nodiscardSpelling       = 0x00000002 +
-                              0x00000004 +
-                              0x00000008 +
-                              0x00000010,
-
-    isExplicit              = 0x00000020,
-
-    functionKind            = 0b00000000'00000000'00011111'11000000
+    BitFlag<0> isNodiscard;
+    BitField<1, 4, WarnUnusedResultAttr::Spelling> nodiscardSpelling;
+    BitFlag<5> isExplicit;
+    BitField<6, 7> functionKind;
 };
 
 // TODO: Expand to allow for documenting templating and default args.
@@ -111,8 +92,8 @@ struct FunctionInfo : SymbolInfo
     // When present, this function is a template or specialization.
     llvm::Optional<TemplateInfo> Template;
 
-    Bits<FnFlags0> specs0;
-    Bits<FnFlags1> specs1;
+    FnFlags0 specs0{.raw{0}};
+    FnFlags1 specs1{.raw{0}};
 
     //--------------------------------------------
 
