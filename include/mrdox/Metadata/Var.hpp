@@ -12,7 +12,6 @@
 #define MRDOX_METADATA_VARIABLE_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Bits.hpp>
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Type.hpp>

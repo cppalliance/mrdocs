@@ -13,7 +13,6 @@
 #define MRDOX_METADATA_RECORD_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Bits.hpp>
 #include <mrdox/Metadata/MemberType.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Scope.hpp>
