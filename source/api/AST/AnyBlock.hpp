@@ -1128,7 +1128,7 @@ public:
         switch(ID)
         {
         case VARIABLE_BITS:
-            return decodeRecord(R, Blob, I->specs);
+            return decodeRecord<1u>(R, {&I->specs.raw}, Blob);
         default:
             break;
         }

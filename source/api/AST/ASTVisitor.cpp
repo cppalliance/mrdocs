@@ -1052,7 +1052,7 @@ buildVar(
         I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
     static_cast<TypeInfo&>(I) =
         getTypeInfoForType(D->getTypeSourceInfo()->getType());
-    I.specs.set<VarFlags0::storageClass>(D->getStorageClass());
+    I.specs.storageClass = D->getStorageClass();
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(std::move(I)));
 }
