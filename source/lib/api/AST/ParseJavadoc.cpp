@@ -334,6 +334,21 @@ public:
             param.name = ensureUTF8(C->getParamNameAsWritten().str());
         else
             param.name = "@anon";
+        if(C->isDirectionExplicit())
+        {
+            switch(C->getDirection())
+            {
+            case ParamCommandComment::PassDirection::In:
+                param.direction = Javadoc::ParamDirection::in;
+                break;
+            case ParamCommandComment::PassDirection::Out:
+                param.direction = Javadoc::ParamDirection::out;
+                break;
+            case ParamCommandComment::PassDirection::InOut:
+                param.direction = Javadoc::ParamDirection::inout;
+                break;
+            }
+        }
         Scope scope(param, para_);
         //if(C->hasNonWhitespaceParagraph())
         visitChildren(C->getParagraph());

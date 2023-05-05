@@ -618,8 +618,25 @@ XMLWriter::
 writeJParam(
     Javadoc::Param const& param)
 {
+    const char* direction = nullptr;
+    switch(param.direction)
+    {
+    case Javadoc::ParamDirection::in:
+        direction = "in";
+        break;
+    case Javadoc::ParamDirection::out:
+        direction = "out";
+        break;
+    case Javadoc::ParamDirection::inout:
+        direction = "inout";
+        break;
+    default:
+        break;
+    }
     tags_.open("param", {
-        { "name", param.name, ! param.name.empty() }});
+        { "name", param.name, ! param.name.empty() },
+        { "class", direction, !! direction }
+    });
     writeNodes(param.children);
     tags_.close("param");
 }

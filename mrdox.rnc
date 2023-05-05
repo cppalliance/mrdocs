@@ -216,6 +216,7 @@ grammar
     Code = element code { Node * }
     Param = element param {
         attribute name { text } ?,
+        attribute class { text } ?,
         Node*
     }
 

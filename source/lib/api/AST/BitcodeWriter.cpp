@@ -260,6 +260,7 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
         {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &Integer32Abbrev}},
         {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
+        {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
         {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
         {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
@@ -331,7 +332,7 @@ RecordsByBlock{
     // Javadoc::Node
     {BI_JAVADOC_NODE_BLOCK_ID,
         {JAVADOC_NODE_KIND, JAVADOC_NODE_STRING, JAVADOC_NODE_STYLE,
-         JAVADOC_NODE_ADMONISH}},
+         JAVADOC_NODE_ADMONISH, JAVADOC_PARAM_DIRECTION}},
     // MemberTypeInfo
     {BI_MEMBER_TYPE_BLOCK_ID, {MEMBER_TYPE_NAME, MEMBER_TYPE_ACCESS}},
     // NamespaceInfo
@@ -886,6 +887,7 @@ emitBlock(
     case Javadoc::Kind::param:
     {
         auto const& J = static_cast<Javadoc::Param const&>(I);
+        emitRecord(J.direction, JAVADOC_PARAM_DIRECTION);
         emitRecord(J.name, JAVADOC_NODE_STRING);
         emitBlock(J.children);
         break;

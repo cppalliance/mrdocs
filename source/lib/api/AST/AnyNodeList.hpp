@@ -31,6 +31,7 @@ public:
         virtual llvm::Error setStyle(Javadoc::Style style) = 0;
         virtual llvm::Error setString(llvm::StringRef string) = 0;
         virtual llvm::Error setAdmonish(Javadoc::Admonish admonish) = 0;
+        virtual llvm::Error setDirection(Javadoc::ParamDirection direction) = 0;
         virtual AnyListNodes extractNodes() = 0;
         virtual void spliceBack(AnyListNodes&& nodes) noexcept = 0;
     };
@@ -64,6 +65,7 @@ private:
         llvm::Error setStyle(Javadoc::Style style) override;
         llvm::Error setString(llvm::StringRef string) override;
         llvm::Error setAdmonish(Javadoc::Admonish admonish) override;
+        llvm::Error setDirection(Javadoc::ParamDirection direction) override;
         AnyListNodes extractNodes() override;
         void spliceBack(AnyListNodes&& nodes) noexcept override;
     };
@@ -121,6 +123,11 @@ getNodes() ->
         }
 
         llvm::Error setAdmonish(Javadoc::Admonish) override
+        {
+            return makeError("missing kind");
+        }
+
+        llvm::Error setDirection(Javadoc::ParamDirection) override
         {
             return makeError("missing kind");
         }
@@ -331,6 +338,27 @@ setAdmonish(
     else
     {
         return makeError("admonish on wrong kind");
+    }
+}
+
+template<class T>
+llvm::Error
+AnyNodeList::
+NodesImpl<T>::
+setDirection(
+    Javadoc::ParamDirection direction)
+{
+    if constexpr(std::derived_from<T, Javadoc::Block>)
+    {
+        if(list.back().kind != Javadoc::Kind::param)
+            return makeError("direction on wrong kind");
+        auto& node = static_cast<Javadoc::Param&>(list.back());
+        node.direction = direction;
+        return llvm::Error::success();
+    }
+    else
+    {
+        return makeError("direction on wrong kind");
     }
 }
 

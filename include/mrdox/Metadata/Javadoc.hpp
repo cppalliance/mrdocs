@@ -65,6 +65,16 @@ struct MRDOX_VISIBLE
         warning
     };
 
+    /** Parameter pass direction.
+    */
+    enum class ParamDirection : int
+    {
+        none,
+        in,
+        out,
+        inout
+    };
+
     //--------------------------------------------
 
     /** This is a variant-like list element.
@@ -240,6 +250,7 @@ struct MRDOX_VISIBLE
     struct Param : Paragraph
     {
         String name;
+        ParamDirection direction;
 
         static constexpr Kind static_kind = Kind::param;
 
@@ -248,11 +259,13 @@ struct MRDOX_VISIBLE
 
         Param(
             String name_ = String(),
-            Paragraph details_ = Paragraph())
+            Paragraph details_ = Paragraph(),
+            ParamDirection direction_ = ParamDirection::none)
             : Paragraph(
                 Kind::param,
                 std::move(details_.children))
             , name(std::move(name_))
+            , direction(direction_)
         {
         }
     };

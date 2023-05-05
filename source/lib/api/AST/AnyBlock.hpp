@@ -201,6 +201,13 @@ public:
                 return Err;
             return J.getNodes().appendChild(kind);
         }
+        case JAVADOC_PARAM_DIRECTION:
+        {
+            Javadoc::ParamDirection direction;
+            if(auto Err = decodeRecord(R, direction, Blob))
+                return Err;
+            return J.getNodes().setDirection(direction);
+        }
         case JAVADOC_NODE_STRING:
         {
             return J.getNodes().setString(Blob);

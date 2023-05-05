@@ -67,10 +67,13 @@ static bool canMerge(Reference const& I, Reference const& Other)
 
 static void merge(Javadoc& I, Javadoc&& other)
 {
-    // Unconditionally extend the blocks
-    // since each decl may have a comment.
+    // FIXME: this doesn't merge parameter information;
+    // parameters with the same name but different direction
+    // or descriptions end up being duplicated
     if(other != I)
     {
+        // Unconditionally extend the blocks
+        // since each decl may have a comment.
         I.append(I.getBlocks(), std::move(other.getBlocks()));
     }
 }

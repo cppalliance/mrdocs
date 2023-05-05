@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <function name="o" id="AnuHurRy/SuMp7tO9bRT33UqDko=">
+    <file path="param-direction.cpp" line="67"/>
+    <file path="param-direction.cpp" line="72"/>
+    <param name="x9" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x9" class="in">
+      </param>
+      <param name="x9" class="out">
+      </param>
+    </doc>
+  </function>
+  <function name="m" id="F8cRGf9/eHn/XbtREVgRcfoLdZQ=">
+    <file path="param-direction.cpp" line="47"/>
+    <file path="param-direction.cpp" line="52"/>
+    <param name="x7" type="int"/>
+    <param name="y7" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x7" class="in">
+      </param>
+      <param name="y7" class="out">
+      </param>
+    </doc>
+  </function>
+  <function name="l" id="IcsfRcafZ9MAxyscbeqD6JBWohA=">
+    <file path="param-direction.cpp" line="42" class="def"/>
+    <param name="x6" type="int"/>
+    <param name="y6" type="int"/>
+    <param type="int"/>
+    <param name="z6" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x6" class="out">
+      </param>
+      <param name="y6">
+      </param>
+      <param name="z6" class="in">
+      </param>
+    </doc>
+  </function>
+  <function name="h" id="SUTpP/LXJ8XB7ZE93wUMkKJEFzE=">
+    <file path="param-direction.cpp" line="16" class="def"/>
+    <param name="x2" type="int"/>
+    <param name="y2" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x2">
+      </param>
+      <param name="y2" class="out">
+      </param>
+    </doc>
+  </function>
+  <function name="n" id="VQbsVNVJyIh3DE7+az/K+7nc2nA=">
+    <file path="param-direction.cpp" line="57"/>
+    <file path="param-direction.cpp" line="62"/>
+    <param name="x8" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x8" class="in">
+      </param>
+    </doc>
+  </function>
+  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
+    <file path="param-direction.cpp" line="4" class="def"/>
+    <param name="x0" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x0">
+      </param>
+    </doc>
+  </function>
+  <function name="j" id="r31pQ1z3fOa9WmZAd065l+zwBuo=">
+    <file path="param-direction.cpp" line="28" class="def"/>
+    <param name="x4" type="int"/>
+    <param name="y4" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x4">
+      </param>
+      <param name="y4" class="inout">
+      </param>
+    </doc>
+  </function>
+  <function name="i" id="r7dQzLcKLYSiiLyeiW1mNXI0/dk=">
+    <file path="param-direction.cpp" line="22" class="def"/>
+    <param name="x3" type="int"/>
+    <param name="y3" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x3" class="in">
+      </param>
+      <param name="y3" class="out">
+      </param>
+    </doc>
+  </function>
+  <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
+    <file path="param-direction.cpp" line="10" class="def"/>
+    <param name="x1" type="int"/>
+    <param name="y1" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x1">
+      </param>
+      <param name="y1" class="in">
+      </param>
+    </doc>
+  </function>
+  <function name="k" id="/AoXdw7cVEwQaKQbx9cHio6Nmg4=">
+    <file path="param-direction.cpp" line="35" class="def"/>
+    <param name="x5" type="int"/>
+    <param name="y5" type="int"/>
+    <param name="z5" type="int"/>
+    <doc>
+      <brief>
+      </brief>
+      <param name="x5" class="out">
+      </param>
+      <param name="y5" class="in">
+      </param>
+      <param name="z5">
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdox>
