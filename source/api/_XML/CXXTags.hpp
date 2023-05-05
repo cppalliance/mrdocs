@@ -61,46 +61,6 @@ constexpr llvm::StringRef getBitsIDName(RecFlags0 ID)
     return "";
 }
 
-constexpr llvm::StringRef getBitsIDName(FnFlags0 ID)
-{
-    switch(ID)
-    {
-    case FnFlags0::isVariadic:            return "is-variadic";
-    case FnFlags0::isVirtualAsWritten:    return "is-virtual-as-written";
-    case FnFlags0::isPure:                return "is-pure";
-    case FnFlags0::isDefaulted:           return "is-defaulted";
-    case FnFlags0::isExplicitlyDefaulted: return "is-explicitly-defaulted";
-    case FnFlags0::isDeleted:             return "is-deleted";
-    case FnFlags0::isDeletedAsWritten:    return "is-deleted-as-written";
-    case FnFlags0::isNoReturn:            return "is-no-return";
-    case FnFlags0::hasOverrideAttr:       return "has-override";
-    case FnFlags0::hasTrailingReturn:     return "has-trailing-return";
-    case FnFlags0::constexprKind:         return "constexpr-kind";
-    case FnFlags0::exceptionSpecType:     return "exception-spec";
-    case FnFlags0::overloadedOperator:    return "operator";
-    case FnFlags0::storageClass:          return "storage-class";
-    case FnFlags0::isConst:               return "is-const";
-    case FnFlags0::isVolatile:            return "is-volatile";
-    case FnFlags0::refQualifier:          return "ref-qualifier";
-    default:
-        Assert(false);
-    }
-    return "";
-}
-
-constexpr llvm::StringRef getBitsIDName(FnFlags1 ID)
-{
-    switch(ID)
-    {
-    case FnFlags1::isNodiscard:       return "nodiscard";
-    case FnFlags1::nodiscardSpelling: return "nodiscard-spelling";
-    case FnFlags1::isExplicit:        return "is-explicit";
-    default:
-        Assert(false);
-    }
-    return "";
-}
-
 constexpr llvm::StringRef getBitsIDName(VarFlags0 ID)
 {
     switch(ID)
@@ -125,7 +85,7 @@ constexpr llvm::StringRef getNameForValue(ConstexprSpecKind CSK)
     case ConstexprSpecKind::Consteval: return "consteval";
     case ConstexprSpecKind::Constinit: return "constinit";
     default:
-        Assert(false);
+        Assert(!"Invalid ConstexprSpecKind");
     }
     return "";
 }
@@ -241,6 +201,47 @@ struct WriteBits
     }
 };
 
+template<class BitFieldUnion>
+struct BitFieldWriter
+{
+    BitFieldUnion field;
+    XMLTags& tags;
+
+    BitFieldWriter(BitFieldUnion field, XMLTags& tags)
+        : field(field), tags(tags)
+    {
+    }
+
+    template<unsigned char Offset,
+             unsigned char Size,
+             typename T>
+    void write(BitField<Offset, Size, T> BitFieldUnion :: * member,
+                          const char * idName)
+    {
+        const auto v = (field.*member).get();
+
+        if constexpr (std::is_enum_v<T>)
+        {
+            if(static_cast<BitsValueType>(v) == 0)
+                return;
+            tags.write(attributeTagName, {}, {
+                    { "id", idName },
+                    { "name", getNameForValue(v) },
+                    { "value", std::to_string(static_cast<
+                                      std::underlying_type_t<T>>(v)) } });
+        }
+        else if constexpr (BitField<Offset, Size, T>::size == 1u)
+        {
+            if (v)
+                tags.write(attributeTagName, {}, { { "id", idName } });
+        }
+        else
+            tags.write(attributeTagName, {}, {
+                    { "id", idName },
+                    { "value", std::to_string(v) } });
+    }
+};
+
 template<class Enum>
 WriteBits(Bits<Enum> const&) -> WriteBits<Enum>;
 
@@ -250,33 +251,35 @@ inline void write(Bits<RecFlags0> const& bits, XMLTags& tags)
     WriteBits(bits).write<RecFlags0::isFinalDestructor>(tags);
 }
 
-inline void write(Bits<FnFlags0> const& bits, XMLTags& tags)
+inline void write(FnFlags0 const& bits, XMLTags& tags)
 {
-    WriteBits(bits).write<FnFlags0::isVariadic>(tags);
-    WriteBits(bits).write<FnFlags0::isVirtualAsWritten>(tags);
-    WriteBits(bits).write<FnFlags0::isPure>(tags);
-    WriteBits(bits).write<FnFlags0::isDefaulted>(tags);
-    WriteBits(bits).write<FnFlags0::isExplicitlyDefaulted>(tags);
-    WriteBits(bits).write<FnFlags0::isDeleted>(tags);
-    WriteBits(bits).write<FnFlags0::isDeletedAsWritten>(tags);
-    WriteBits(bits).write<FnFlags0::isNoReturn>(tags);
-    WriteBits(bits).write<FnFlags0::hasOverrideAttr>(tags);
-    WriteBits(bits).write<FnFlags0::hasTrailingReturn>(tags);
-    WriteBits(bits).write<FnFlags0::isConst>(tags);
-    WriteBits(bits).write<FnFlags0::isVolatile>(tags);
-
-    WriteBits(bits).write<FnFlags0::constexprKind, ConstexprSpecKind>(tags);
-    WriteBits(bits).write<FnFlags0::exceptionSpecType, ExceptionSpecificationType>(tags);
-    WriteBits(bits).write<FnFlags0::overloadedOperator, OverloadedOperatorKind>(tags);
-    WriteBits(bits).write<FnFlags0::storageClass, StorageClass>(tags);
-    WriteBits(bits).write<FnFlags0::refQualifier, RefQualifierKind>(tags);
+    BitFieldWriter<FnFlags0> fw(bits, tags);
+    fw.write(&FnFlags0::isVariadic,            "is-variadic");
+    fw.write(&FnFlags0::isVirtualAsWritten,    "is-virtual-as-written");
+    fw.write(&FnFlags0::isPure,                "is-pure");
+    fw.write(&FnFlags0::isDefaulted,           "is-defaulted");
+    fw.write(&FnFlags0::isExplicitlyDefaulted, "is-explicitly-defaulted");
+    fw.write(&FnFlags0::isDeleted,             "is-deleted");
+    fw.write(&FnFlags0::isDeletedAsWritten,    "is-deleted-as-written");
+    fw.write(&FnFlags0::isNoReturn,            "is-no-return");
+    fw.write(&FnFlags0::hasOverrideAttr,       "has-override");
+    fw.write(&FnFlags0::hasTrailingReturn,     "has-trailing-return");
+    fw.write(&FnFlags0::constexprKind,         "constexpr-kind");
+    fw.write(&FnFlags0::exceptionSpecType,     "exception-spec");
+    fw.write(&FnFlags0::overloadedOperator,    "operator");
+    fw.write(&FnFlags0::storageClass,          "storage-class");
+    fw.write(&FnFlags0::isConst,               "is-const");
+    fw.write(&FnFlags0::isVolatile,            "is-volatile");
+    fw.write(&FnFlags0::refQualifier,          "ref-qualifier");
 }
 
-inline void write(Bits<FnFlags1> const& bits, XMLTags& tags)
+inline void write(FnFlags1 const& bits, XMLTags& tags)
 {
-    WriteBits(bits).write<FnFlags1::isNodiscard>(tags);
-    WriteBits(bits).write<FnFlags1::nodiscardSpelling, WarnUnusedResultAttr::Spelling>(tags);
-    WriteBits(bits).write<FnFlags1::isExplicit>(tags);
+    BitFieldWriter<FnFlags1> fw(bits, tags);
+
+    fw.write(&FnFlags1::isNodiscard,       "nodiscard");
+    fw.write(&FnFlags1::nodiscardSpelling, "nodiscard-spelling");
+    fw.write(&FnFlags1::isExplicit,        "is-explicit");
 }
 
 inline void write(Bits<VarFlags0> const& bits, XMLTags& tags)

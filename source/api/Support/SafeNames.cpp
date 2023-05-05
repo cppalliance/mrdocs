@@ -113,9 +113,7 @@ private:
             return I.Name;
         auto const& FI = static_cast<
             FunctionInfo const&>(I);
-        auto OOK = FI.specs0.get<
-            FnFlags0::overloadedOperator,
-            OverloadedOperatorKind>();
+        auto OOK = FI.specs0.overloadedOperator.get();
         if(OOK == OverloadedOperatorKind::OO_None)
             return I.Name;
         temp_ = '0';

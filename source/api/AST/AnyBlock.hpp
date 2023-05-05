@@ -899,7 +899,7 @@ public:
         case FUNCTION_IS_METHOD:
             return decodeRecord(R, I->IsMethod, Blob);
         case FUNCTION_BITS:
-            return decodeRecord(R, Blob, I->specs0, I->specs1);
+            return decodeRecord<2u>(R, {&I->specs0.raw, &I->specs1.raw}, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

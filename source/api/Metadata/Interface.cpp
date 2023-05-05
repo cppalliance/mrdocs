@@ -114,7 +114,7 @@ private:
                 // unless this class is marked `final`.
                 if( includePrivate_ ||
                     actualAccess != Access::Private ||
-                    ( ! isFinal && J.specs0.get<FnFlags0::isVirtual>()))
+                    ( ! isFinal && J.specs0.isVirtual ))
                 {
                     I_.functions_.push_back({ &J, &From, actualAccess });
                 }
