@@ -839,7 +839,7 @@ public:
         case RECORD_IS_TYPE_DEF:
             return decodeRecord(R, I->IsTypeDef, Blob);
         case RECORD_BITS:
-            return decodeRecord<1u>(R, {&I->specs.raw}, Blob);
+            return decodeRecord(R, {&I->specs.raw}, Blob);
         case RECORD_FRIENDS:
             return decodeRecord(R, I->Friends, Blob);
         default:
@@ -899,7 +899,7 @@ public:
         case FUNCTION_IS_METHOD:
             return decodeRecord(R, I->IsMethod, Blob);
         case FUNCTION_BITS:
-            return decodeRecord<2u>(R, {&I->specs0.raw, &I->specs1.raw}, Blob);
+            return decodeRecord(R, {&I->specs0.raw, &I->specs1.raw}, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }
@@ -1128,7 +1128,7 @@ public:
         switch(ID)
         {
         case VARIABLE_BITS:
-            return decodeRecord<1u>(R, {&I->specs.raw}, Blob);
+            return decodeRecord(R, {&I->specs.raw}, Blob);
         default:
             break;
         }
