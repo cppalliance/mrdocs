@@ -19,6 +19,7 @@
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
+#include <llvm/Support/Program.h>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/ThreadPool.h>
 #include <atomic>
@@ -271,15 +272,27 @@ handleFile(
             if(options_.badOption.getValue())
             {
                 // Write the .bad.xml file
-                path::replace_extension(outputPath, "bad.xml");
-                std::error_code ec;
-                llvm::raw_fd_ostream os(outputPath, ec, llvm::sys::fs::OF_None);
-                if(ec)
+                auto bad = outputPath;
+                path::replace_extension(bad, "bad.xml");
                 {
-                    results_.numberOfErrors++;
-                    return makeError("raw_fd_ostream returned ", ec);
+                    std::error_code ec;
+                    llvm::raw_fd_ostream os(bad, ec, llvm::sys::fs::OF_None);
+                    if (ec) {
+                        results_.numberOfErrors++;
+                        return makeError("raw_fd_ostream returned ", ec);
+                    }
+                    os << generatedXml;
                 }
-                os << generatedXml;
+
+                auto diff = llvm::sys::findProgramByName("diff");
+
+                if (!diff.getError())
+                {
+                    path::replace_extension(bad, "xml");
+                    std::array<llvm::StringRef, 5u> args {
+                        diff.get(), "-u", "--color", bad, outputPath };
+                    llvm::sys::ExecuteAndWait(diff.get(), args);
+                }
 
                 // Fix the path for the code that follows
                 outputPath.pop_back_n(8);
