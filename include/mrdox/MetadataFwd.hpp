@@ -41,13 +41,17 @@ struct RefWithAccess;
 struct Reference;
 struct Scope;
 struct SymbolInfo;
-struct TemplateInfo;
-struct TemplateParamInfo;
-struct TemplateSpecializationInfo;
 struct TypeInfo;
 struct TypedefInfo;
 struct VarInfo;
 struct VerbatimBlock;
+
+struct TemplateInfo;
+struct TArg;
+struct TParam;
+struct TypeTParam;
+struct NonTypeTParam;
+struct TemplateTParam;
 
 struct DataMember;
 struct MemberEnum;

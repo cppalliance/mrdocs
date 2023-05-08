@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -594,32 +595,103 @@ public:
 
 //------------------------------------------------
 
-class TemplateSpecializationBlock
+class TemplateArgBlock
     : public BitcodeReader::AnyBlock
 {
-    BitcodeReader& br_;
-    llvm::Optional<TemplateSpecializationInfo>& I_;
+    TArg& I_;
 
 public:
-    TemplateSpecializationBlock(
-        llvm::Optional<TemplateSpecializationInfo>& I,
-        BitcodeReader& br)
-        : br_(br)
-        , I_(I)
+    TemplateArgBlock(
+        TArg& I) noexcept
+        : I_(I)
     {
-        I_.emplace();
     }
 
     llvm::Error
-    parseRecord(Record const& R,
-        unsigned ID, llvm::StringRef Blob) override
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
     {
         switch(ID)
         {
-        case TEMPLATE_SPECIALIZATION_OF:
-            return decodeRecord(R, I_->SpecializationOf, Blob);
-        case TEMPLATE_PARAM_CONTENTS:
-            return decodeRecord(R, I_->Params.back().Contents, Blob);
+        case TEMPLATE_ARG_VALUE:
+            return decodeRecord(R, I_.Value, Blob);
+        default:
+            return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+};
+
+//------------------------------------------------
+
+class TemplateParamBlock
+    : public BitcodeReader::AnyBlock
+{
+    BitcodeReader& br_;
+    TParam& I_;
+
+public:
+    TemplateParamBlock(
+        TParam& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I_(I)
+    {
+    }
+
+    llvm::Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case TEMPLATE_PARAM_NAME:
+        {
+            return decodeRecord(R, I_.Name, Blob);
+        }
+        case TEMPLATE_PARAM_IS_PACK:
+        {
+            return decodeRecord(R, I_.IsParameterPack, Blob);
+        }
+        case TEMPLATE_PARAM_KIND:
+        {
+            TemplateParamKind kind = TemplateParamKind::None;
+            if(auto Err = decodeRecord(R, kind, Blob))
+                return Err;
+            switch(kind)
+            {
+            case TemplateParamKind::Type:
+                I_.emplace<TypeTParam>();
+                break;
+            case TemplateParamKind::NonType:
+                I_.emplace<NonTypeTParam>();
+                break;
+            case TemplateParamKind::Template:
+                I_.emplace<TemplateTParam>();
+                break;
+            default:
+                return makeError("invalid template parameter kind");
+            }
+            return llvm::Error::success();
+        }
+        case TEMPLATE_PARAM_DEFAULT:
+        {
+            switch(I_.Kind)
+            {
+            case TemplateParamKind::NonType:
+                return decodeRecord(R,
+                    I_.get<NonTypeTParam>().Default.emplace(), Blob);
+            case TemplateParamKind::Template:
+                return decodeRecord(R,
+                    I_.get<TemplateTParam>().Default.emplace(), Blob);
+            default:
+                return makeError("invalid template parameter kind");
+            }
+        }
+            
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -633,14 +705,45 @@ public:
         {
         case BI_TEMPLATE_PARAM_BLOCK_ID:
         {
-            I_->Params.emplace_back();
-            if(auto Err = br_.readBlock(*this, ID))
+            if(I_.Kind != TemplateParamKind::Template)
+                return makeError("only TemplateTParam may have template parameters");
+            TemplateParamBlock P(I_.get<TemplateTParam>().Params.emplace_back(), br_);
+            if(auto Err = br_.readBlock(P, ID))
                 return Err;
             return llvm::Error::success();
         }
-        default:
-            return AnyBlock::readSubBlock(ID);
+        case BI_TYPE_BLOCK_ID:
+        {
+            TypeInfo* t = nullptr;
+            switch(I_.Kind)
+            {
+            case TemplateParamKind::Type:
+                t = &I_.get<TypeTParam>().Default.emplace();
+                break;
+            case TemplateParamKind::NonType:
+                t = &I_.get<NonTypeTParam>().Type;
+                break;
+            default:
+                return makeError("invalid TypeInfo block in TParam");
+            }
+            TypeBlock B(*t, br_);
+            if(auto Err = br_.readBlock(B, ID))
+                return Err;
+            // KRYSTIAN NOTE: is this check correct? 
+            // copied from a function with TypeInfo sub-block
+            switch(B.F)
+            {
+            case FieldId::F_type:
+                break;
+            default:
+                return makeWrongFieldError(B.F);
+            }
+            return llvm::Error::success();
         }
+        default:
+            break;
+        }
+        return AnyBlock::readSubBlock(ID);
     }
 };
 
@@ -669,8 +772,8 @@ public:
     {
         switch(ID)
         {
-        case TEMPLATE_PARAM_CONTENTS:
-            return decodeRecord(R, I_->Params.back().Contents, Blob);
+        case TEMPLATE_PRIMARY_USR:
+            return decodeRecord(R, I_->Primary.emplace(), Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -682,17 +785,21 @@ public:
     {
         switch(ID)
         {
-        case BI_TEMPLATE_PARAM_BLOCK_ID:
+        case BI_TEMPLATE_ARG_BLOCK_ID:
         {
-            I_->Params.emplace_back();
-            if(auto Err = br_.readBlock(*this, ID))
+            TemplateArgBlock A(
+                I_->Args.emplace_back());
+            if(auto Err = br_.readBlock(A, ID))
                 return Err;
             return llvm::Error::success();
         }
-        case BI_TEMPLATE_SPECIALIZATION_BLOCK_ID:
+        case BI_TEMPLATE_PARAM_BLOCK_ID:
         {
-            TemplateSpecializationBlock B(I_->Specialization, br_);
-            return br_.readBlock(B, ID);
+            TemplateParamBlock P(
+                I_->Params.emplace_back(), br_);
+            if(auto Err = br_.readBlock(P, ID))
+                return Err;
+            return llvm::Error::success();
         }
         default:
             return AnyBlock::readSubBlock(ID);

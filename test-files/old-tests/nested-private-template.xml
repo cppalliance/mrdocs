@@ -4,15 +4,23 @@
 <namespace name="">
   <class name="range" id="sjnSu9g/42wrfWC6AbtyVuLVV6Y=">
     <file path="nested-private-template.cpp" line="2" class="def"/>
-    <tparam decl="class T"/>
+    <template>
+      <tparam name="T" class="type"/>
+    </template>
     <struct name="impl" access="private" id="7XlFKPcXRfyYPWc4WPN3PAH+m58=">
       <file path="nested-private-template.cpp" line="5"/>
-      <tparam decl="class R"/>
-      <tparam decl="bool"/>
+      <template>
+        <tparam name="R" class="type"/>
+        <tparam class="non-type" type="bool"/>
+      </template>
     </struct>
     <struct name="impl" access="private" id="BCRU3eMBRSysyvFsjJj+0yg+Vfc=">
       <file path="nested-private-template.cpp" line="8" class="def"/>
-      <tparam decl="class R"/>
+      <template class="partial" id="7XlFKPcXRfyYPWc4WPN3PAH+m58=">
+        <tparam name="R" class="type"/>
+        <targ value="R"/>
+        <targ value="false"/>
+      </template>
     </struct>
   </class>
 </namespace>

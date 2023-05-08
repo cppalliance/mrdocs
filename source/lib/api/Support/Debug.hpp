@@ -17,6 +17,18 @@
 #endif
 #include <llvm/Support/raw_ostream.h>
 
+#if __has_include(<format>)
+    #include <format>
+
+    #define PRINT_FMT(fmt, ...) (debug_outs() << std::format(fmt \
+        __VA_OPT__(,) __VA_ARGS__))
+    #define PRINT_FUNC_AND_NAME(name) PRINT_FMT("{:<48} {}\n", \
+        (std::string(std::source_location::current().function_name()) + ":"), name)
+#else
+    #define PRINT_FMT(fmt, ...)
+    #define PRINT_FUNC_AND_NAME(name)
+#endif
+
 // Some nice odds and ends such as leak checking
 // and redirection to the Visual Studio output window.
 

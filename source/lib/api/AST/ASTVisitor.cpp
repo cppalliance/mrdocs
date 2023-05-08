@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -169,6 +170,20 @@ getParentNamespaces(
                 Namespace,
                 InfoType::IT_namespace);
         }
+        // for an explicit specialization of member of an implicit specialization,
+        // treat it as-if it was declared in the primary class template
+        else if(auto const* N = dyn_cast<ClassTemplateSpecializationDecl>(DC); N && 
+            N->getSpecializationKind() == TemplateSpecializationKind::TSK_ImplicitInstantiation)
+        {
+            ClassTemplateDecl* P = N->getSpecializedTemplate();
+            if(P->isMemberSpecialization())
+                P = P->getInstantiatedFromMemberTemplate();
+
+            Namespaces.emplace_back(
+                getSymbolID(P),
+                P->getNameAsString(),
+                InfoType::IT_record);
+        }
         else if(auto const* N = dyn_cast<RecordDecl>(DC))
         {
             Namespaces.emplace_back(
@@ -297,7 +312,7 @@ parseParameters(
     FunctionInfo& I,
     FunctionDecl const* D)
 {
-    for(ParmVarDecl const* P : D->parameters())
+    for(const ParmVarDecl* P : D->parameters())
     {
         // KRYSTIAN NOTE: call getOriginalType instead
         // of getType if we want to preserve top-level
@@ -310,24 +325,206 @@ parseParameters(
     }
 }
 
+TParam
+ASTVisitor::
+buildTemplateParam(
+    const NamedDecl* ND)
+{
+    // KRYSTIAN NOTE: Decl::isParameterPack  
+    // returns true for function parameter packs
+    TParam info(
+        ND->getNameAsString(),
+        ND->isTemplateParameterPack());
+
+    if(const auto* TP = dyn_cast<
+        TemplateTypeParmDecl>(ND))
+    {
+        auto& extinfo = info.emplace<
+            TypeTParam>();
+        if(TP->hasDefaultArgument())
+        {
+            extinfo.Default.emplace(getTypeInfoForType(
+                TP->getDefaultArgument()));
+        }
+    }
+    else if(const auto* TP = dyn_cast<
+        NonTypeTemplateParmDecl>(ND))
+    {
+        auto& extinfo = info.emplace<
+            NonTypeTParam>();
+        extinfo.Type = getTypeInfoForType(
+            TP->getType());
+        if(TP->hasDefaultArgument())
+        {
+            extinfo.Default.emplace(getSourceCode(
+                ND, TP->getDefaultArgumentLoc()));
+        }
+    }
+    else if(const auto* TP = dyn_cast<
+        TemplateTemplateParmDecl>(ND))
+    {
+        auto& extinfo = info.emplace<
+            TemplateTParam>();
+        const auto* NestedParamList = TP->getTemplateParameters();
+        for(const NamedDecl* NND : *NestedParamList)
+        {
+            extinfo.Params.emplace_back(
+                buildTemplateParam(NND));
+        }
+        if(TP->hasDefaultArgument())
+        {
+            extinfo.Default.emplace(getSourceCode(
+                ND, TP->getDefaultArgumentLoc()));
+        }
+    }
+    return info;
+}
+
 void
 ASTVisitor::
-getTemplateParams(
+buildTemplateArgs(
+    TemplateInfo& I,
+    ArrayRef<TemplateArgument> args)
+{
+    // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
+    // for template type parameters used as arguments. it also cannonicalizes
+    // types, which we do not want (although, PrintingPolicy has an option to change this).
+    // thus, we use the template arguments as written.
+
+    // KRYSTIAN NOTE: this can probably be changed to select
+    // the argument as written when it is not dependent and is a type.
+    // FIXME: constant folding behavior should be consistent with that of other
+    // constructs, e.g. noexcept specifiers & explicit specifiers
+    const auto& policy = astContext_->getPrintingPolicy();
+    for(const TemplateArgument& arg : args)
+    {
+        std::string arg_str;
+        llvm::raw_string_ostream stream(arg_str);
+        arg.print(policy, stream, false);
+        I.Args.emplace_back(std::move(arg_str));
+    }
+}
+
+void
+ASTVisitor::
+buildTemplateArgs(
+    TemplateInfo& I,
+    ArrayRef<TemplateArgumentLoc> args)
+{
+    // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
+    // for template type parameters used as arguments. it also cannonicalizes
+    // types, which we do not want (although, PrintingPolicy has an option to change this).
+    // thus, we use the template arguments as written.
+
+    // KRYSTIAN NOTE: this can probably be changed to select
+    // the argument as written when it is not dependent and is a type.
+    // FIXME: constant folding behavior should be consistent with that of other
+    // constructs, e.g. noexcept specifiers & explicit specifiers
+    const auto& policy = astContext_->getPrintingPolicy();
+    for(const TemplateArgumentLoc& arg : args)
+    {
+        std::string arg_str;
+        llvm::raw_string_ostream stream(arg_str);
+        arg.getArgument().print(policy, stream, false);
+        I.Args.emplace_back(std::move(arg_str));
+    }
+}
+
+void
+ASTVisitor::
+parseTemplateArgs(
+    llvm::Optional<TemplateInfo>& I,
+    const ClassTemplateSpecializationDecl* spec)
+{
+    if(! I)
+        I.emplace();
+
+    // ID of the primary template
+    if(ClassTemplateDecl* primary = spec->getSpecializedTemplate())
+    {
+        if(primary->isMemberSpecialization())
+            primary = primary->getInstantiatedFromMemberTemplate();
+        I->Primary.emplace(getSymbolID(primary));
+    }
+
+    const TypeSourceInfo* tsi = spec->getTypeAsWritten();
+    // type source information *should* be non-null
+    Assert(tsi);
+    auto args = tsi->getType()->getAs<
+        TemplateSpecializationType>()->template_arguments();
+    buildTemplateArgs(*I, args);
+}
+
+void
+ASTVisitor::
+parseTemplateArgs(
+    llvm::Optional<TemplateInfo>& I,
+    const FunctionTemplateSpecializationInfo* spec)
+{
+    if(! I)
+        I.emplace();
+
+    // ID of the primary template
+    // KRYSTIAN NOTE: do we need to check I->Primary.has_value()?
+    if(FunctionTemplateDecl* primary = spec->getTemplate())
+    {
+        if(primary->isMemberSpecialization())
+            primary = primary->getInstantiatedFromMemberTemplate();
+        I->Primary.emplace(getSymbolID(primary));
+    }
+
+    auto args = spec->TemplateArguments->asArray();
+    buildTemplateArgs(*I, args);
+}
+
+void
+ASTVisitor::
+parseTemplateArgs(
+    llvm::Optional<TemplateInfo>& I,
+    const ClassScopeFunctionSpecializationDecl* spec)
+{
+    if(! I)
+        I.emplace();
+    // KRYSTIAN NOTE: we have no way to get the ID of the primary template.
+    // in the future, we could use name lookup to find matching declarations
+    auto args = spec->getTemplateArgsAsWritten()->arguments();
+    buildTemplateArgs(*I, args);
+}
+
+void
+ASTVisitor::
+parseTemplateParams(
     llvm::Optional<TemplateInfo>& TemplateInfo,
     const Decl* D)
 {
     if(TemplateParameterList const* ParamList =
         D->getDescribedTemplateParams())
     {
-        if(!TemplateInfo)
+        if(! TemplateInfo)
         {
             TemplateInfo.emplace();
         }
         for(const NamedDecl* ND : *ParamList)
         {
-            TemplateInfo->Params.emplace_back(*ND);
+            TemplateInfo->Params.emplace_back(
+                buildTemplateParam(ND));
         }
     }
+}
+
+void
+ASTVisitor::
+applyDecayToParameters(
+    ASTContext* context,
+    FunctionDecl* D)
+{
+    // apply the type adjustments specified in [dcl.fct] p5
+    // to ensure that the USR of the corresponding function matches
+    // other declarations of the function that have parameters declared
+    // with different top-level cv-qualifiers.
+    // this needs to be done prior to USR generation for the function
+    for(ParmVarDecl* P : D->parameters())
+        P->setType(context->getSignatureParameterType(P->getType()));
 }
 
 void
@@ -683,12 +880,15 @@ extractBases(
     for(CXXBaseSpecifier const& B : D->bases())
     {
         auto const isVirtual = B.isVirtual();
+        // KRYSTIAN NOTE: is this right? a class with a single
+        // virtual base would be ignored here with ! config_.includePrivate
         if(isVirtual && ! config_.includePrivate)
             continue;
         if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
         {
+            TemplateDecl const* TD = Ty->getTemplateName().getAsTemplateDecl();
             I.Bases.emplace_back(
-                getSymbolID(D),
+                getSymbolID(TD),
                 getTypeAsString(B.getType()),
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
@@ -720,6 +920,8 @@ ASTVisitor::
 constructFunction(
     FunctionInfo& I, DeclTy* D, char const* name)
 {
+    // adjust parameter types
+    applyDecayToParameters(astContext_, D);
     if(! extractInfo(I, D))
         return false;
     if(name)
@@ -734,29 +936,8 @@ constructFunction(
     I.ReturnType = getTypeInfoForType(qt);
     parseParameters(I, D);
 
-    getTemplateParams(I.Template, D);
-
-    // Handle function template specializations.
-    if(FunctionTemplateSpecializationInfo const* FTSI =
-        D->getTemplateSpecializationInfo())
-    {
-        if(!I.Template)
-            I.Template.emplace();
-        I.Template->Specialization.emplace();
-        auto& Specialization = *I.Template->Specialization;
-
-        Specialization.SpecializationOf = getSymbolID(FTSI->getTemplate());
-
-        // Template parameters to the specialization.
-        if(FTSI->TemplateArguments)
-        {
-            for(TemplateArgument const& Arg :
-                    FTSI->TemplateArguments->asArray())
-            {
-                Specialization.Params.emplace_back(*D, Arg);
-            }
-        }
-    }
+    if(const auto* ftsi = D->getTemplateSpecializationInfo())
+        parseTemplateArgs(I.Template, ftsi);
 
     //
     // FunctionDecl
@@ -876,12 +1057,10 @@ buildNamespace(
 
 void
 ASTVisitor::
-buildRecord(
+constructRecord(
+    RecordInfo& I,
     CXXRecordDecl* D)
 {
-    if(! shouldExtract(D))
-        return;
-    RecordInfo I;
     if(! extractInfo(I, D))
         return;
     LineNumber = getLine(D);
@@ -904,56 +1083,6 @@ buildRecord(
     }
 
     extractBases(I, D);
-
-    getTemplateParams(I.Template, D);
-
-    // Full and partial specializations.
-    if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
-    {
-        if(!I.Template)
-            I.Template.emplace();
-        I.Template->Specialization.emplace();
-        auto& Specialization = *I.Template->Specialization;
-
-        // What this is a specialization of.
-        auto SpecOf = CTSD->getSpecializedTemplateOrPartial();
-        if(SpecOf.is<ClassTemplateDecl*>())
-        {
-            Specialization.SpecializationOf =
-                getSymbolID(SpecOf.get<ClassTemplateDecl*>());
-        }
-        else if(SpecOf.is<ClassTemplatePartialSpecializationDecl*>())
-        {
-            Specialization.SpecializationOf =
-                getSymbolID(SpecOf.get<ClassTemplatePartialSpecializationDecl*>());
-        }
-
-        // Parameters to the specilization. For partial specializations, get the
-        // parameters "as written" from the ClassTemplatePartialSpecializationDecl
-        // because the non-explicit template parameters will have generated internal
-        // placeholder names rather than the names the user typed that match the
-        // template parameters.
-        if(ClassTemplatePartialSpecializationDecl const* CTPSD =
-            dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
-        {
-            if(ASTTemplateArgumentListInfo const* AsWritten =
-                CTPSD->getTemplateArgsAsWritten())
-            {
-                for(unsigned i = 0; i < AsWritten->getNumTemplateArgs(); i++)
-                {
-                    Specialization.Params.emplace_back(
-                        getSourceCode(D, (*AsWritten)[i].getSourceRange()));
-                }
-            }
-        }
-        else
-        {
-            for(TemplateArgument const& Arg : CTSD->getTemplateArgs().asArray())
-            {
-                Specialization.Params.emplace_back(*D, Arg);
-            }
-        }
-    }
 
     AccessSpecifier access;
     if(auto CT = D->getDescribedClassTemplate())
@@ -1080,7 +1209,23 @@ buildVar(
 }
 
 template<class DeclTy>
-requires std::derived_from<DeclTy, CXXMethodDecl>
+void
+ASTVisitor::
+buildFunction(
+    FunctionInfo& I,
+    DeclTy* D,
+    char const* name)
+{
+    if(! constructFunction(I, D, name))
+        return;
+
+    insertBitcode(ex_, writeBitcode(I));
+    insertBitcode(ex_, writeParent(I, 
+        std::derived_from<DeclTy, CXXMethodDecl> ? 
+            D->getAccess() : AccessSpecifier::AS_none));
+}
+
+template<class DeclTy>
 void
 ASTVisitor::
 buildFunction(
@@ -1090,26 +1235,7 @@ buildFunction(
     if(! shouldExtract(D))
         return;
     FunctionInfo I;
-    if(! constructFunction(I, D, name))
-        return;
-    insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, D->getAccess()));
-}
-
-template<class DeclTy>
-requires (! std::derived_from<DeclTy, CXXMethodDecl>)
-void
-ASTVisitor::
-buildFunction(
-    DeclTy* D)
-{
-    if(! shouldExtract(D))
-        return;
-    FunctionInfo I;
-    if(! constructFunction(I, D))
-        return;
-    insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I));
+    buildFunction(I, D, name);
 }
 
 template<class DeclTy>
@@ -1151,9 +1277,6 @@ ASTVisitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
-    // This visitor is written expecting post-order
-    Assert(shouldTraversePostOrder());
-
     // cache contextual variables
     astContext_ = &Context;
     sourceManager_ = &astContext_->getSourceManager();
@@ -1178,28 +1301,38 @@ HandleTranslationUnit(
 
 // Returning false from any of these
 // functions will abort the _entire_ traversal
-
 bool
 ASTVisitor::
-WalkUpFromNamespaceDecl(
+TraverseNamespaceDecl(
     NamespaceDecl* D)
 {
     buildNamespace(D);
+
+    for(auto* child : D->decls())
+        TraverseDecl(child);
     return true;
 }
 
 bool
 ASTVisitor::
-WalkUpFromCXXRecordDecl(
+TraverseCXXRecordDecl(
     CXXRecordDecl* D)
 {
-    buildRecord(D);
+    if(! shouldExtract(D))
+        return true;
+    
+    RecordInfo I;
+    constructRecord(I, D);
+    
+    for(auto* child : D->decls())
+        if(! TraverseDecl(child))
+            return false;
     return true;
 }
 
 bool
 ASTVisitor::
-WalkUpFromCXXMethodDecl(
+TraverseCXXMethodDecl(
     CXXMethodDecl* D)
 {
     buildFunction(D);
@@ -1208,7 +1341,7 @@ WalkUpFromCXXMethodDecl(
 
 bool
 ASTVisitor::
-WalkUpFromCXXDestructorDecl(
+TraverseCXXDestructorDecl(
     CXXDestructorDecl* D)
 {
     buildFunction(D);
@@ -1233,7 +1366,7 @@ TraverseCXXConstructorDecl(
 
 bool
 ASTVisitor::
-WalkUpFromCXXConversionDecl(
+TraverseCXXConversionDecl(
     CXXConversionDecl* D)
 {
     buildFunction(D);
@@ -1242,7 +1375,16 @@ WalkUpFromCXXConversionDecl(
 
 bool
 ASTVisitor::
-WalkUpFromFunctionDecl(
+TraverseCXXDeductionGuideDecl(
+    CXXDeductionGuideDecl* D)
+{
+    buildFunction(D);
+    return true;
+}
+
+bool
+ASTVisitor::
+TraverseFunctionDecl(
     FunctionDecl* D)
 {
     buildFunction(D);
@@ -1251,7 +1393,7 @@ WalkUpFromFunctionDecl(
 
 bool
 ASTVisitor::
-WalkUpFromFriendDecl(
+TraverseFriendDecl(
     FriendDecl* D)
 {
     buildFriend(D);
@@ -1260,7 +1402,7 @@ WalkUpFromFriendDecl(
 
 bool
 ASTVisitor::
-WalkUpFromTypeAliasDecl(
+TraverseTypeAliasDecl(
     TypeAliasDecl* D)
 {
     buildTypedef(D);
@@ -1269,7 +1411,7 @@ WalkUpFromTypeAliasDecl(
 
 bool
 ASTVisitor::
-WalkUpFromTypedefDecl(
+TraverseTypedefDecl(
     TypedefDecl* D)
 {
     buildTypedef(D);
@@ -1278,7 +1420,7 @@ WalkUpFromTypedefDecl(
 
 bool
 ASTVisitor::
-WalkUpFromEnumDecl(
+TraverseEnumDecl(
     EnumDecl* D)
 {
     buildEnum(D);
@@ -1287,7 +1429,7 @@ WalkUpFromEnumDecl(
 
 bool
 ASTVisitor::
-WalkUpFromVarDecl(
+TraverseVarDecl(
     VarDecl* D)
 {
     buildVar(D);
@@ -1296,19 +1438,111 @@ WalkUpFromVarDecl(
 
 bool
 ASTVisitor::
-WalkUpFromParmVarDecl(
-    ParmVarDecl* D)
+TraverseClassTemplateDecl(
+    ClassTemplateDecl* D)
 {
-    // apply the type adjustments specified in [dcl.fct] p5
-    // to ensure that the USR of the corresponding function matches
-    // other declarations of the function that have parameters declared
-    // with different top-level cv-qualifiers
-    // since we parse function parameters when we visit
-    // the actual function declarations, do nothing else
+    CXXRecordDecl* RD = D->getTemplatedDecl();
+    if(! shouldExtract(RD))
+        return true;
+    RecordInfo I;
 
-    D->setType(astContext_->getSignatureParameterType(D->getType()));
+    parseTemplateParams(I.Template, RD);
+    constructRecord(I, RD);
 
-    // Skip the VarDecl by not walking up from here
+    for(auto* child : RD->decls())
+        if(! TraverseDecl(child))
+            return false;
+    return true;
+}
+
+bool
+ASTVisitor::
+TraverseClassTemplateSpecializationDecl(
+    ClassTemplateSpecializationDecl* D)
+{
+    CXXRecordDecl* RD = cast<CXXRecordDecl>(D); 
+    if(! shouldExtract(RD))
+        return true;
+    RecordInfo I;
+
+    parseTemplateParams(I.Template, RD);
+    parseTemplateArgs(I.Template, D);
+    constructRecord(I, RD);
+    
+    for(auto* child : RD->decls())
+        if(! TraverseDecl(child))
+            return false;
+    return true;
+}
+
+bool
+ASTVisitor::
+TraverseClassTemplatePartialSpecializationDecl(
+    ClassTemplatePartialSpecializationDecl* D)
+{
+    // without this function, we would only traverse 
+    // explicit specialization declarations
+    return TraverseClassTemplateSpecializationDecl(D);
+}
+
+bool
+ASTVisitor::
+TraverseFunctionTemplateDecl(
+    FunctionTemplateDecl* D)
+{
+    FunctionDecl* FD = D->getTemplatedDecl();
+    // check whether to extract using the templated declaration.
+    // this is done because the template-head may be implicit 
+    // (e.g. for an abbreviated function template with no template-head)
+    if(! shouldExtract(FD))
+        return true;
+    FunctionInfo I;
+
+    parseTemplateParams(I.Template, FD);
+
+    switch(FD->getKind())
+    {
+    case Decl::Kind::Function:
+        buildFunction(I, FD);
+        break;
+    case Decl::Kind::CXXMethod:
+        buildFunction(I, cast<CXXMethodDecl>(FD));
+        break;
+    case Decl::Kind::CXXConstructor:
+        buildFunction(I, cast<CXXConstructorDecl>(FD));
+        break;
+    case Decl::Kind::CXXConversion:
+        buildFunction(I, cast<CXXConversionDecl>(FD));
+        break;
+    case Decl::Kind::CXXDeductionGuide:
+        buildFunction(I, cast<CXXDeductionGuideDecl>(FD));
+        break;
+    case Decl::Kind::CXXDestructor:
+        Assert(! "a destructor cannot be a template");
+        break;
+    default:
+        Assert(! "unhandled kind for FunctionDecl");
+        break;
+    }
+    // we don't care about any block scope declarations, 
+    // nor do we need to traverse the FunctionDecl, so just return
+    return true;
+}
+
+bool
+ASTVisitor::
+TraverseClassScopeFunctionSpecializationDecl(
+    ClassScopeFunctionSpecializationDecl* D)
+{
+    if(! shouldExtract(D))
+        return true;
+    FunctionInfo I;
+
+    parseTemplateArgs(I.Template, D);
+
+    CXXMethodDecl* MD = D->getSpecialization();
+    buildFunction(I, MD);
+    
     return true;
 }
 

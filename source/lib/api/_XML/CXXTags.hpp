@@ -45,6 +45,8 @@ constexpr llvm::StringRef namespaceTagName  = "namespace";
 constexpr llvm::StringRef paramTagName      = "param";
 constexpr llvm::StringRef returnTagName     = "return";
 constexpr llvm::StringRef structTagName     = "struct";
+constexpr llvm::StringRef targTagName       = "targ";
+constexpr llvm::StringRef templateTagName   = "template";
 constexpr llvm::StringRef tparamTagName     = "tparam";
 constexpr llvm::StringRef typedefTagName    = "typedef";
 constexpr llvm::StringRef unionTagName      = "union";
@@ -248,6 +250,72 @@ inline void writeParam(FieldTypeInfo const& I, XMLTags& tags)
         { "type", I.Type.Name },
         { "default", I.DefaultValue, ! I.DefaultValue.empty() },
         { I.Type.id } });
+}
+
+inline void writeTemplateParam(const TParam& I, XMLTags& tags)
+{
+    switch(I.Kind)
+    {
+    case TemplateParamKind::Type:
+    {
+        const auto& t = I.get<TypeTParam>();
+        std::string_view default_val;
+        if(t.Default)
+            default_val = t.Default->Type.Name.str();
+
+        tags.write(tparamTagName, {}, {
+            { "name", I.Name, ! I.Name.empty() },
+            { "class", "type" },
+            { "default", default_val, ! default_val.empty() }
+        });
+        break;
+    }
+    case TemplateParamKind::NonType:
+    {
+        const auto& t = I.get<NonTypeTParam>();
+        std::string_view default_val;
+        if(t.Default)
+            default_val = t.Default.value();
+
+        tags.write(tparamTagName, {}, {
+            { "name", I.Name, ! I.Name.empty() },
+            { "class", "non-type" },
+            { "type", t.Type.Type.Name },
+            { "default", default_val, ! default_val.empty() }
+        });
+        break;
+    }
+    case TemplateParamKind::Template:
+    {
+        const auto& t = I.get<TemplateTParam>();
+        std::string_view default_val;
+        if(t.Default)
+            default_val = t.Default.value();
+        tags.open(tparamTagName, {
+            { "name", I.Name, ! I.Name.empty() },
+            { "class", "template" },
+            { "default", default_val, ! default_val.empty() }
+        });
+        for(const auto& P : t.Params)
+            writeTemplateParam(P, tags);
+        tags.close(tparamTagName);
+        break;
+    }
+    default:
+    {
+        tags.write(tparamTagName, {}, {
+            { "name", I.Name, ! I.Name.empty() }
+        });
+        break;
+    }
+    }
+}
+
+inline void writeTemplateArg(const TArg& I, XMLTags& tags)
+{
+    tags.write(targTagName, {}, {
+        { "value", I.Value }
+    });
 }
 
 /** Return the xml tag name for the Info.

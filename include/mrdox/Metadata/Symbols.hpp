@@ -80,6 +80,13 @@ public:
     {
         return ID_ != EmptySID;
     }
+
+    template<typename... Args>
+    constexpr value_type& emplace(Args&&... args)
+    {
+        return *::new (&ID_) SymbolID(
+            std::forward<Args>(args)...);
+    }
 };
 
 /** The ID of the global namespace.

@@ -132,8 +132,8 @@ public:
     void emitBlock(RecordInfo const& I);
     void emitBlock(Reference const& B, FieldId F);
     void emitBlock(TemplateInfo const& T);
-    void emitBlock(TemplateParamInfo const& T);
-    void emitBlock(TemplateSpecializationInfo const& T);
+    void emitBlock(TParam const& T);
+    void emitBlock(TArg const& T);
     void emitBlock(TypedefInfo const& I);
     void emitBlock(TypeInfo const& I);
     void emitBlock(VarInfo const& I);

@@ -76,7 +76,9 @@
   </struct>
   <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
     <file path="explicit-ctor.cpp" line="25" class="def"/>
-    <tparam decl="bool B"/>
+    <template>
+      <tparam name="B" class="non-type" type="bool"/>
+    </template>
     <function name="ExplicitExpression&lt;B&gt;" id="s6L5UKI8FLTRiyny1rXgYxG/f/0=">
       <file path="explicit-ctor.cpp" line="26"/>
       <attr id="is-explicit"/>

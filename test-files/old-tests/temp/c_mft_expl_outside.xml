@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
+    <file path="c_mft_expl_outside.cpp" line="1" class="def"/>
+    <function name="f" id="6UIt6/hx1mqXnkk0IbjFZNnVJ2Y=">
+      <file path="c_mft_expl_outside.cpp" line="4" class="def"/>
+      <template>
+        <tparam name="T" class="type"/>
+      </template>
+    </function>
+    <function name="f" id="veV2posfyuimiNezTTVnomiz6tY=">
+      <file path="c_mft_expl_outside.cpp" line="7" class="def"/>
+      <template class="explicit" id="6UIt6/hx1mqXnkk0IbjFZNnVJ2Y=">
+        <targ value="int"/>
+      </template>
+    </function>
+  </struct>
+</namespace>
+</mrdox>

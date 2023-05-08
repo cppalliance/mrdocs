@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -121,9 +122,44 @@ public:
         FunctionDecl const* D);
 
     void
-    getTemplateParams(
+    applyDecayToParameters(
+        ASTContext* context,
+        FunctionDecl* D);
+
+    void
+    parseTemplateParams(
         llvm::Optional<TemplateInfo>& TemplateInfo,
         const Decl* D);
+    
+    TParam
+    buildTemplateParam(
+        const NamedDecl* ND);
+
+    void 
+    buildTemplateArgs(
+        TemplateInfo& I,
+        ArrayRef<TemplateArgument> args);
+
+    void
+    buildTemplateArgs(
+        TemplateInfo& I,
+        ArrayRef<TemplateArgumentLoc> args);
+
+    void
+    parseTemplateArgs(
+        llvm::Optional<TemplateInfo>& I,
+        const ClassTemplateSpecializationDecl* spec);
+
+    void
+    parseTemplateArgs(
+        llvm::Optional<TemplateInfo>& I,
+        const FunctionTemplateSpecializationInfo* spec);
+
+    void
+    parseTemplateArgs(
+        llvm::Optional<TemplateInfo>& I,
+        const ClassScopeFunctionSpecializationDecl* spec);
+
     void
     parseRawComment(
         llvm::Optional<Javadoc>& javadoc,
@@ -160,10 +196,15 @@ public://private:
 private:
     template<class DeclTy>
     bool constructFunction(
-        FunctionInfo& I, DeclTy* D, char const* name = nullptr);
+        FunctionInfo& I, 
+        DeclTy* D, 
+        char const* name = nullptr);
+
+    void constructRecord(
+        RecordInfo& I, 
+        CXXRecordDecl* D);
 
     void buildNamespace (NamespaceDecl* D);
-    void buildRecord    (CXXRecordDecl* D);
     void buildFriend    (FriendDecl* D);
     void buildEnum      (EnumDecl* D);
     void buildVar       (VarDecl* D);
@@ -171,29 +212,36 @@ private:
     template<class DeclTy> void buildTypedef    (DeclTy* D);
 
     template<class DeclTy>
-    requires std::derived_from<DeclTy, CXXMethodDecl>
-    void buildFunction(DeclTy* D, char const* name = nullptr);
+    void buildFunction(
+        FunctionInfo& I, 
+        DeclTy* D, 
+        const char* name = nullptr);
 
     template<class DeclTy>
-    requires (! std::derived_from<DeclTy, CXXMethodDecl>)
-    void buildFunction(DeclTy* D);
+    void buildFunction(
+        DeclTy* D,
+        const char* name = nullptr);
 
 public:
-    bool shouldTraversePostOrder() const noexcept { return true; }
     void HandleTranslationUnit(ASTContext& Context) override;
-    bool WalkUpFromNamespaceDecl(NamespaceDecl* D);
-    bool WalkUpFromCXXRecordDecl(CXXRecordDecl* D);
-    bool WalkUpFromCXXMethodDecl(CXXMethodDecl* D);
-    bool WalkUpFromCXXDestructorDecl(CXXDestructorDecl* D);
+    bool TraverseNamespaceDecl(NamespaceDecl* D);
+    bool TraverseCXXRecordDecl(CXXRecordDecl* D);
+    bool TraverseCXXMethodDecl(CXXMethodDecl* D);
+    bool TraverseCXXDestructorDecl(CXXDestructorDecl* D);
     bool TraverseCXXConstructorDecl(CXXConstructorDecl* D);
-    bool WalkUpFromCXXConversionDecl(CXXConversionDecl* D);
-    bool WalkUpFromFunctionDecl(FunctionDecl* D);
-    bool WalkUpFromFriendDecl(FriendDecl* D);
-    bool WalkUpFromTypeAliasDecl(TypeAliasDecl* D);
-    bool WalkUpFromTypedefDecl(TypedefDecl* D);
-    bool WalkUpFromEnumDecl(EnumDecl* D);
-    bool WalkUpFromVarDecl(VarDecl* D);
-    bool WalkUpFromParmVarDecl(ParmVarDecl* D);
+    bool TraverseCXXConversionDecl(CXXConversionDecl* D);
+    bool TraverseCXXDeductionGuideDecl(CXXDeductionGuideDecl* D);
+    bool TraverseFunctionDecl(FunctionDecl* D);
+    bool TraverseFriendDecl(FriendDecl* D);
+    bool TraverseTypeAliasDecl(TypeAliasDecl* D);
+    bool TraverseTypedefDecl(TypedefDecl* D);
+    bool TraverseEnumDecl(EnumDecl* D);
+    bool TraverseVarDecl(VarDecl* D);
+    bool TraverseClassTemplateDecl(ClassTemplateDecl* D);
+    bool TraverseClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl* D);
+    bool TraverseClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl* D);
+    bool TraverseFunctionTemplateDecl(FunctionTemplateDecl* D);
+    bool TraverseClassScopeFunctionSpecializationDecl(ClassScopeFunctionSpecializationDecl* D);
 };
 
 } // mrdox

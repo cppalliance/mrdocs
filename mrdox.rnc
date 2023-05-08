@@ -47,10 +47,10 @@ grammar
         Access ?,
         ID,
         Location *,
+        Template ?,
         (
             BaseInfo |
             Attr |
-            TemplateParamInfo |
             MemberTypeInfo |
             element friend { ID } |
             Javadoc? |
@@ -88,6 +88,7 @@ grammar
             ID,
             (
                 Location * |
+                Template ? |
                 Attr * |
                 element return { attribute type { text }, ID ? } |
                 element param
@@ -97,7 +98,6 @@ grammar
                     attribute default { text } ?,
                     ID ?
                 } * |
-                TemplateParamInfo * |
                 Javadoc ?
             ) *
         }
@@ -168,10 +168,29 @@ grammar
             element symbol { Symbol }
         } *
 
+    Template =
+        element template
+        {
+            attribute class { "explicit"|"partial" } ?,
+            ID ?,
+            TemplateParamInfo *,
+            TemplateArgInfo *
+        }
+
+    TemplateArgInfo =
+        element targ
+        {
+            attribute value { text }
+        }
+
     TemplateParamInfo =
         element tparam
         {
-            attribute decl { text }
+            attribute name { text } ?,
+            attribute class { "type"|"non-type"|"template" },
+            attribute type { text } ?,
+            attribute default { text } ?,
+            TemplateParamInfo *
         }
 
     Location =

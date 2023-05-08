@@ -5,49 +5,94 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
 #include <mrdox/Metadata/TemplateParam.hpp>
-#include <clang/AST/ASTContext.h>
-#include <clang/AST/TemplateBase.h>
-#include <clang/Lex/Lexer.h>
+#include <mrdox/Metadata/TemplateArg.hpp>
 
 namespace clang {
 namespace mrdox {
 
-namespace {
-
-std::string
-getSourceCode(
-    Decl const& D,
-    SourceRange const& R)
+void
+TParam::
+destroy() const noexcept
 {
-    return Lexer::getSourceText(
-        CharSourceRange::getTokenRange(R),
-        D.getASTContext().getSourceManager(),
-        D.getASTContext().getLangOpts()).str();
+    switch(Kind)
+    {
+    case TemplateParamKind::Type:
+        return Variant_.Type.~TypeTParam();
+    case TemplateParamKind::NonType:
+        return Variant_.NonType.~NonTypeTParam();
+    case TemplateParamKind::Template:
+        return Variant_.Template.~TemplateTParam();
+    default:
+        return;
+    }
 }
 
-} // (anon)
+TParam::
+TParam(
+    const TParam& other)
+    : Name(other.Name)
+    , IsParameterPack(other.IsParameterPack)
+{
+    construct(other);
+}
 
-TemplateParamInfo::
-TemplateParamInfo(
-    NamedDecl const& ND)
-    : Contents(getSourceCode(ND, ND.getSourceRange()))
+TParam::
+TParam(
+    TParam&& other) noexcept
+    : Name(std::move(other.Name))
+    , IsParameterPack(other.IsParameterPack) 
+{
+    construct(std::move(other));
+}
+
+TParam::
+TParam(
+    std::string&& name,
+    bool is_pack)
+    : Name(std::move(name))
+    , IsParameterPack(is_pack)
 {
 }
 
-TemplateParamInfo::
-TemplateParamInfo(
-    clang::Decl const& D,
-    TemplateArgument const& Arg)
+TParam::
+~TParam()
 {
-    std::string Str;
-    llvm::raw_string_ostream Stream(Str);
-    Arg.print(PrintingPolicy(D.getLangOpts()), Stream, false);
-    Contents = Str;
+    destroy();
+}
+
+TParam&
+TParam::
+operator=(const TParam& other)
+{
+    destroy();
+    construct(other);
+    Name = other.Name;
+    IsParameterPack = other.IsParameterPack;
+    return *this;
+}
+
+TParam&
+TParam::
+operator=(TParam&& other) noexcept
+{
+    destroy();
+    construct(std::move(other));
+    Name = std::move(other.Name);
+    IsParameterPack = other.IsParameterPack;
+    return *this;
+}
+
+TArg::
+TArg(
+    std::string&& value)
+    : Value(std::move(value))
+{
 }
 
 } // mrdox

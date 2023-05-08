@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <file path="ct_mct_expl_inline.cpp" line="2" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+    </template>
+    <struct name="B" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
+      <file path="ct_mct_expl_inline.cpp" line="5" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+      </template>
+      <function name="f" id="E/7hys/9wYX9YmsaiN5VHroNb8A=">
+        <file path="ct_mct_expl_inline.cpp" line="5" class="def"/>
+      </function>
+    </struct>
+    <struct name="B" id="bHsbts/3qH4qdnqFkFXkR6e8OCw=">
+      <file path="ct_mct_expl_inline.cpp" line="7" class="def"/>
+      <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
+        <targ value="int"/>
+      </template>
+      <function name="g" id="ymRqXpmLCXBjCy4HMrul4HOObrs=">
+        <file path="ct_mct_expl_inline.cpp" line="8" class="def"/>
+      </function>
+    </struct>
+  </struct>
+</namespace>
+</mrdox>

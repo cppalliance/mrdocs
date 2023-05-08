@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <function name="f2" id="BVn9mZBUjrupKT/hcmB2opaRXII=">
+    <file path="function-template.cpp" line="8" class="def"/>
+    <template>
+      <tparam name="T" class="type" default="int"/>
+    </template>
+  </function>
+  <function name="g2" id="CR+oGVkvlYeRXx423BdbUdiyfGI=">
+    <file path="function-template.cpp" line="20" class="def"/>
+    <template>
+      <tparam name="J" class="non-type" type="int"/>
+      <tparam name="I" class="non-type" type="int" default="1"/>
+    </template>
+  </function>
+  <function name="h1" id="CSSRf8UFPpR/4f+ymxsrA3bG2gs=">
+    <file path="function-template.cpp" line="24" class="def"/>
+    <template>
+      <tparam name="x:auto" class="type"/>
+      <tparam name="auto:2" class="type"/>
+    </template>
+    <param name="x" type="auto"/>
+    <param type="auto"/>
+  </function>
+  <function name="f3" id="FpwDEuWCkwtZg2rG40r+1NAgPvg=">
+    <file path="function-template.cpp" line="11" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+      <tparam name="U" class="type" default="int"/>
+    </template>
+  </function>
+  <function name="f0" id="G5Gycl5fXkd7l6yntSV6MMQr5ec=">
+    <file path="function-template.cpp" line="2" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+    </template>
+    <param name="x" type="int"/>
+  </function>
+  <function name="i" id="OAMHb1yDlqAsy2FOrHhyB2Rftts=">
+    <file path="function-template.cpp" line="27" class="def"/>
+    <template>
+      <tparam name="T" class="type" default="int"/>
+      <tparam name="I" class="non-type" type="int" default="1"/>
+    </template>
+  </function>
+  <function name="f1" id="fpfzj7NvP0RymD19kc9AegA13cE=">
+    <file path="function-template.cpp" line="5" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+    </template>
+    <param name="t" type="T"/>
+  </function>
+  <function name="j0" id="nJNSlvqUH/l21TGT25LRQ+zBEuw=">
+    <file path="function-template.cpp" line="30" class="def"/>
+    <template>
+      <tparam name="T" class="template">
+        <tparam name="U" class="type"/>
+      </tparam>
+    </template>
+  </function>
+  <function name="g1" id="n4j0p3bBh0UwMIpqw35BJHCUmkA=">
+    <file path="function-template.cpp" line="17" class="def"/>
+    <template>
+      <tparam name="I" class="non-type" type="int" default="1"/>
+    </template>
+  </function>
+  <function name="g0" id="10VGELAizJ5U/4YaDXaQcV9P5IU=">
+    <file path="function-template.cpp" line="14" class="def"/>
+    <template>
+      <tparam name="I" class="non-type" type="int"/>
+    </template>
+    <param name="x" type="int"/>
+  </function>
+  <function name="j1" id="7D+MVsQ8UiCF/fMdh4TYzVzv/R0=">
+    <file path="function-template.cpp" line="35" class="def"/>
+    <template>
+      <tparam name="X" class="template">
+        <tparam name="W" class="type"/>
+      </tparam>
+      <tparam name="Z" class="template">
+        <tparam name="Y" class="type"/>
+      </tparam>
+    </template>
+  </function>
+  <function name="h0" id="7dJfgpH2aNKlsNFBU9eGpEy7mW8=">
+    <file path="function-template.cpp" line="22" class="def"/>
+    <template>
+      <tparam name="x:auto" class="type"/>
+    </template>
+    <param name="x" type="auto"/>
+  </function>
+</namespace>
+</mrdox>

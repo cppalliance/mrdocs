@@ -331,7 +331,6 @@ writeEnum(
     writeJavadoc(I.javadoc);
 
     tags_.close(enumTagName);
-
     return true;
 }
 
@@ -348,6 +347,8 @@ writeFunction(
 
     writeSymbol(I);
 
+    writeTemplate(I.Template);
+
     write(I.specs0, tags_);
     write(I.specs1, tags_);
 
@@ -355,10 +356,6 @@ writeFunction(
 
     for(auto const& J : I.Params)
         writeParam(J, tags_);
-
-    if(I.Template)
-        for(TemplateParamInfo const& J : I.Template->Params)
-            writeTemplateParam(J);
 
     writeJavadoc(I.javadoc);
 
@@ -389,11 +386,9 @@ writeRecord(
 
     writeSymbol(I);
 
-    write(I.specs, tags_);
+    writeTemplate(I.Template);
 
-    if(I.Template)
-        for(TemplateParamInfo const& J : I.Template->Params)
-            writeTemplateParam(J);
+    write(I.specs, tags_);
 
     for(auto const& B : I.Bases)
         tags_.write(baseTagName, "", {
@@ -512,16 +507,6 @@ writeLocation(
 
 void
 XMLWriter::
-writeTemplateParam(
-    TemplateParamInfo const& I)
-{
-    tags_.write(tparamTagName, {}, {
-        { "decl", I.Contents }
-        });
-}
-
-void
-XMLWriter::
 writeMemberType(
     MemberTypeInfo const& I)
 {
@@ -545,6 +530,44 @@ writeMemberType(
         write(I.Flags, tags_);
         tags_.close(dataMemberTagName);
     }
+}
+
+//------------------------------------------------
+
+void 
+XMLWriter::
+writeTemplate(
+    const std::optional<TemplateInfo>& I)
+{
+    if(! I)
+        return;
+
+    const char* spec = nullptr;
+    switch(I->specializationKind())
+    {
+    case TemplateSpecKind::Explicit:
+        spec = "explicit";
+        break;
+    case TemplateSpecKind::Partial:
+        spec = "partial";
+        break;
+    default:
+        break;
+    }
+    const SymbolID& id = I->Primary ?
+        *I->Primary : EmptySID;
+
+    tags_.open(templateTagName, {
+        {"class", spec, !! spec},
+        {id}
+    });   
+
+    for(const TParam& tparam : I->Params)
+        writeTemplateParam(tparam, tags_);
+    for(const TArg& targ : I->Args)
+        writeTemplateArg(targ, tags_);
+
+    tags_.close(templateTagName);
 }
 
 //------------------------------------------------

@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -219,8 +220,8 @@ BlockIdNameMap = []()
         {BI_JAVADOC_LIST_BLOCK_ID, "JavadocListBlock"},
         {BI_JAVADOC_NODE_BLOCK_ID, "JavadocNodeBlock"},
         {BI_REFERENCE_BLOCK_ID, "ReferenceBlock"},
+        {BI_TEMPLATE_ARG_BLOCK_ID, "TemplateArgBlock"},
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
-        {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, "TemplateSpecializationBlock"},
         {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"},
         {BI_VARIABLE_BLOCK_ID, "VarBlock"}
     };
@@ -279,8 +280,12 @@ RecordIDNameMap = []()
         {RECORD_VARS,       {"RecordVars", &RefsWithAccessAbbrev}},
         {SYMBOL_PART_LOCDEF, {"SymbolLocDef", &LocationAbbrev}},
         {SYMBOL_PART_LOC, {"InfoName", &LocationAbbrev}},
-        {TEMPLATE_PARAM_CONTENTS, {"Contents", &StringAbbrev}},
-        {TEMPLATE_SPECIALIZATION_OF, {"SpecializationOf", &SymbolIDAbbrev}},
+        {TEMPLATE_PRIMARY_USR, {"Primary", &SymbolIDAbbrev}},
+        {TEMPLATE_ARG_VALUE, {"Value", &StringAbbrev}},
+        {TEMPLATE_PARAM_KIND, {"Kind", &Integer32Abbrev}},
+        {TEMPLATE_PARAM_NAME, {"Name", &StringAbbrev}},
+        {TEMPLATE_PARAM_IS_PACK, {"Name", &BoolAbbrev}},
+        {TEMPLATE_PARAM_DEFAULT, {"Default", &StringAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}}
     };
@@ -343,10 +348,16 @@ RecordsByBlock{
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
+    // TArg.
+    {BI_TEMPLATE_ARG_BLOCK_ID, 
+        {TEMPLATE_ARG_VALUE}},
     // TemplateInfo.
-    {BI_TEMPLATE_BLOCK_ID, {}},
-    {BI_TEMPLATE_PARAM_BLOCK_ID, {TEMPLATE_PARAM_CONTENTS}},
-    {BI_TEMPLATE_SPECIALIZATION_BLOCK_ID, {TEMPLATE_SPECIALIZATION_OF}},
+    {BI_TEMPLATE_BLOCK_ID, 
+        {TEMPLATE_PRIMARY_USR}},
+    // TParam.
+    {BI_TEMPLATE_PARAM_BLOCK_ID, 
+        {TEMPLATE_PARAM_KIND, TEMPLATE_PARAM_NAME, 
+        TEMPLATE_PARAM_IS_PACK, TEMPLATE_PARAM_DEFAULT}},
     // TypeInfo
     {BI_TYPE_BLOCK_ID, {}},
     // TypedefInfo
@@ -977,33 +988,64 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    TemplateInfo const& T)
+    const TemplateInfo& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_BLOCK_ID);
-    for (const auto& P : T.Params)
-        emitBlock(P);
-    if (T.Specialization)
-        emitBlock(*T.Specialization);
+    if(T.Primary)
+        emitRecord(*T.Primary, TEMPLATE_PRIMARY_USR);
+    for(const auto& targ : T.Args)
+        emitBlock(targ);
+    for(const auto& tparam : T.Params)
+        emitBlock(tparam);
 }
 
 void
 BitcodeWriter::
 emitBlock(
-    TemplateParamInfo const& T)
+    const TParam& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_PARAM_BLOCK_ID);
-    emitRecord(T.Contents, TEMPLATE_PARAM_CONTENTS);
+    emitRecord(T.Kind, TEMPLATE_PARAM_KIND);
+    emitRecord(T.Name, TEMPLATE_PARAM_NAME);
+    emitRecord(T.IsParameterPack, TEMPLATE_PARAM_IS_PACK);
+    switch(T.Kind)
+    {
+    case TemplateParamKind::Type:
+    {
+        const auto& info = T.get<TypeTParam>();
+        if(info.Default)
+            emitBlock(*info.Default);
+        break;
+    }
+    case TemplateParamKind::NonType:
+    {
+        const auto& info = T.get<NonTypeTParam>();
+        emitBlock(info.Type);
+        if(info.Default)
+            emitRecord(*info.Default, TEMPLATE_PARAM_DEFAULT);
+        break;
+    }
+    case TemplateParamKind::Template:
+    {
+        const auto& info = T.get<TemplateTParam>();
+        for(const auto& P : info.Params)
+            emitBlock(P);
+        if(info.Default)
+            emitRecord(*info.Default, TEMPLATE_PARAM_DEFAULT);
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 void
 BitcodeWriter::
 emitBlock(
-    TemplateSpecializationInfo const& T)
+    const TArg& T)
 {
-    StreamSubBlockGuard Block(Stream, BI_TEMPLATE_SPECIALIZATION_BLOCK_ID);
-    emitRecord(T.SpecializationOf, TEMPLATE_SPECIALIZATION_OF);
-    for (const auto& P : T.Params)
-        emitBlock(P);
+    StreamSubBlockGuard Block(Stream, BI_TEMPLATE_ARG_BLOCK_ID);
+    emitRecord(T.Value, TEMPLATE_ARG_VALUE);
 }
 
 void

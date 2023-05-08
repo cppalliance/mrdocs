@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -13,30 +14,49 @@
 #define MRDOX_METADATA_TEMPLATE_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/TemplateArg.hpp>
 #include <mrdox/Metadata/TemplateParam.hpp>
-#include <llvm/ADT/Optional.h>
 
 namespace clang {
 namespace mrdox {
 
-struct TemplateSpecializationInfo
+enum class TemplateSpecKind
 {
-    // Indicates the declaration that this specializes.
-    SymbolID SpecializationOf;
-
-    // Template parameters applying to the specialized record/function.
-    std::vector<TemplateParamInfo> Params;
+    Primary = 0, // for bitstream
+    Explicit,
+    Partial
 };
 
-// Records the template information for a struct or function that is a template
-// or an explicit template specialization.
+// stores information pertaining to primary template and
+// partial/explicit specialization declarations
 struct TemplateInfo
 {
-    // May be empty for non-partial specializations.
-    std::vector<TemplateParamInfo> Params;
+    // for primary templates:
+    //     - Params will be non-empty
+    //     - Args will be empty
+    // for explicit specializations:
+    //     - Params will be empty
+    // for partial specializations:
+    //     - Params will be non-empty
+    //     - each template parameter will appear at least
+    //       once in Args outside of a non-deduced context 
+    std::vector<TParam> Params;
+    std::vector<TArg> Args;
 
-    // Set when this is a specialization of another record/function.
-    llvm::Optional<TemplateSpecializationInfo> Specialization;
+    // stores the ID of the corresponding primary template
+    // for partial and explicit specializations
+    OptionalSymbolID Primary;
+
+    // KRYSTIAN NOTE: using the presence of args/params
+    // to determine the specialization kind *should* work.
+    // emphasis on should.
+    TemplateSpecKind specializationKind() const noexcept
+    {
+        if(Params.empty())
+            return TemplateSpecKind::Explicit;
+        return Args.empty() ? TemplateSpecKind::Primary :
+            TemplateSpecKind::Partial;
+    }
 };
 
 } // mrdox
