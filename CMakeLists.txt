@@ -35,6 +35,7 @@ include(GNUInstallDirs)
 #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL ON CACHE STRING "")
 #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO ON CACHE STRING "")
 
+option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 option(MRDOX_BUILD_SHARED "Link shared" OFF)
 option(MRDOX_INSTALL "Configure install target" ON)
 option(MRDOX_PACKAGE "Build install package" ON)
@@ -296,18 +297,14 @@ if (BUILD_TESTING)
 
     if (CMAKE_EXPORT_COMPILE_COMMANDS)
         # test run
+        set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
         include(mrdox.cmake)
-        set(TESTFILES
-                testfiles/decl-only/attributes_1.cpp
-                testfiles/decl-only/canonical_1.cpp
-                testfiles/decl-only/record_1.cpp
-                testfiles/decl-only/record_2.cpp)
 
-        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${TESTFILES})
-        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${TESTFILES})
+        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
+        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
 
-        add_custom_target(reference_adoc DEPENDS reference.adoc)
-        add_custom_target(reference_xml  DEPENDS reference.xml)
+        add_custom_target(reference_adoc ALL DEPENDS reference.adoc)
+        add_custom_target(reference_xml  ALL DEPENDS reference.xml)
     endif()
 
     find_package(LibXml2)
