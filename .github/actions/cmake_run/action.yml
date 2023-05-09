@@ -108,6 +108,8 @@ runs:
         build_target=${{ inputs.build-target }}
         if [ "$build_target" != "" ]; then
           target_args="--target $build_target"
+        else; then
+          target_args="--target all"
         fi
         
         # iterate stds
@@ -121,7 +123,7 @@ runs:
                 cmake_cxxstd_arg="-D CMAKE_CXX_STANDARD=$cxxstd"
                 build_dir="build-$cxxstd"
             fi
-            cmake -S . -B $build_dir -D CMAKE_BUILD_TYPE=${{ inputs.build-type }} $cmake_toolchain_arg $cmake_cxxstd_arg ${{ inputs.extra-args }} -D CMAKE_INSTALL_PREFIX=${{ inputs.install-prefix }} $cmake_cc_path_args $cmake_cxx_path_args $cmake_enable_test_args
+            cmake -S . -B $build_dir -D CMAKE_BUILD_TYPE=${{ inputs.build-type }} $cmake_toolchain_arg $cmake_cxxstd_arg ${{ inputs.extra-args }} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_INSTALL_PREFIX=${{ inputs.install-prefix }} $cmake_cc_path_args $cmake_cxx_path_args $cmake_enable_test_args
             cmake --build $build_dir --config ${{ inputs.build-type }} -j ${{ steps.cpu-cores.outputs.count }} $target_args 
             cmake --install $build_dir --config ${{ inputs.build-type }} --prefix prefix
             if [ "$run_tests" == "true" ]; then
