@@ -5,7 +5,7 @@
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file path="attributes_1.cpp" line="2"/>
     <attr id="nodiscard"/>
-    <return type="_Bool"/>
+    <return type="bool"/>
   </function>
 </namespace>
 </mrdox>

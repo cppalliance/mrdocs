@@ -29,7 +29,7 @@
     <file path="explicit-deduct-guide.cpp" line="6"/>
     <attr id="has-trailing-return"/>
     <return type="X&lt;0&gt;"/>
-    <param type="_Bool"/>
+    <param type="bool"/>
   </function>
 </namespace>
 </mrdox>
