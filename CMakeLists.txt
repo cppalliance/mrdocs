@@ -309,12 +309,22 @@ if (BUILD_TESTING)
 
     find_package(LibXml2)
     if (LibXml2_FOUND)
-        file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)
+        find_package(Java REQUIRED Runtime)
+        # FindJava
+        if (NOT Java_FOUND)
+            message(FATAL_ERROR "Java is needed to run xml-lint")
+        endif()
 
+        add_custom_target(mrdox.rng ALL DEPENDS mrdox.rnc
+                         COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/tools/trang.jar
+                ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng)
+
+
+        file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)
         add_test(NAME xml-lint
-                COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
-                    --relaxng ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rng ${XML_SOURCES}
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+                 COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
+                     --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng ${XML_SOURCES}
+                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
 endif()
 
