@@ -89,6 +89,8 @@ unset(CMAKE_FOLDER)
 #
 #-------------------------------------------------
 
+configure_file(source/api/Version.hpp.in ${PROJECT_BINARY_DIR}/include/mrdox/Version.hpp)
+
 file(GLOB_RECURSE LIB_INCLUDES CONFIGURE_DEPENDS include/*.hpp)
 file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     source/api/*.h
@@ -105,6 +107,7 @@ target_include_directories(mrdox-api
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
     "${PROJECT_SOURCE_DIR}/source/"
+    ${PROJECT_BINARY_DIR}/include
 )
 target_compile_definitions(
     mrdox-api
@@ -186,7 +189,9 @@ add_executable(mrdox ${TOOL_SOURCES})
 target_link_libraries(mrdox PRIVATE mrdox-api)
 target_include_directories(mrdox
     PRIVATE
-    ${PROJECT_SOURCE_DIR}/source/)
+    ${PROJECT_SOURCE_DIR}/source/
+    ${PROJECT_BINARY_DIR}/include/
+        )
 
 source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL_SOURCES})

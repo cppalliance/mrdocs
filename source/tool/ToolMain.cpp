@@ -20,10 +20,11 @@
 //
 
 #include "api/ConfigImpl.hpp"
-#include <mrdox/Corpus.hpp>
 #include "api/Support/Debug.hpp"
+#include <mrdox/Corpus.hpp>
 #include <mrdox/Generators.hpp>
 #include <mrdox/Reporter.hpp>
+#include <mrdox/Version.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/CommonOptionsParser.h>
 #include <llvm/Support/CommandLine.h>
@@ -96,6 +97,9 @@ toolMain(
     Reporter& R)
 {
     auto& generators = getGenerators();
+
+    llvm::cl::SetVersionPrinter(
+            &clang::mrdox::print_version);
 
     // parse command line options
     auto optionsResult = tooling::CommonOptionsParser::create(
