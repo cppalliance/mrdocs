@@ -251,6 +251,9 @@ getTypeInfoForType(
     QualType const& T)
 {
     TagDecl const* TD = getTagDeclForType(T);
+    if (T->isBuiltinType()
+    && (T->getAs<clang::BuiltinType>()->getKind() == BuiltinType::Bool))
+        return TypeInfo(Reference(EmptySID, "bool"));
     if(!TD)
         return TypeInfo(Reference(EmptySID, T.getAsString()));
     InfoType IT;
@@ -275,6 +278,8 @@ parseParameters(
         // KRYSTIAN NOTE: call getOriginalType instead
         // of getType if we want to preserve top-level
         // cv-qualfiers/array types/function types
+        auto ti = getTypeInfoForType(P->getType());
+
         FieldTypeInfo& FieldInfo = I.Params.emplace_back(
             getTypeInfoForType(P->getType()),
             P->getNameAsString());
