@@ -183,8 +183,6 @@ void merge(RecordInfo& I, RecordInfo&& Other)
 void merge(FunctionInfo& I, FunctionInfo&& Other)
 {
     Assert(canMerge(I, Other));
-    if(! I.IsMethod)
-        I.IsMethod = Other.IsMethod;
     if (I.ReturnType.Type.id == EmptySID && I.ReturnType.Type.Name == "")
         I.ReturnType = std::move(Other.ReturnType);
     if (I.Parent.id == EmptySID && I.Parent.Name == "")

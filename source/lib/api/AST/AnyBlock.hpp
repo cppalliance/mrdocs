@@ -919,8 +919,6 @@ public:
     {
         switch(ID)
         {
-        case FUNCTION_IS_METHOD:
-            return decodeRecord(R, I->IsMethod, Blob);
         case FUNCTION_BITS:
             return decodeRecord(R, {&I->specs0.raw, &I->specs1.raw}, Blob);
         default:

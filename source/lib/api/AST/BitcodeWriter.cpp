@@ -263,7 +263,6 @@ RecordIDNameMap = []()
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
         {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
-        {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
@@ -321,7 +320,7 @@ RecordsByBlock{
     {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE, FIELD_ATTRIBUTES}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
-        {FUNCTION_IS_METHOD, FUNCTION_BITS}},
+        {FUNCTION_BITS}},
     // Javadoc
     {BI_JAVADOC_BLOCK_ID,
         {}},
@@ -808,7 +807,6 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
     emitInfoPart(I);
     emitSymbolPart(I);
-    emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
     emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
     emitBlock(I.Parent, FieldId::F_parent);
     emitBlock(I.ReturnType);

@@ -797,17 +797,11 @@ constructFunction(
         I.specs1.nodiscardSpelling = attr->getSemanticSpelling();
     }
 
-    if constexpr(! std::derived_from<DeclTy, CXXMethodDecl>)
-    {
-        I.IsMethod = false;
-    }
-
     //
     // CXXMethodDecl
     //
     if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
     {
-        I.IsMethod = true;
         NamedDecl const* PD = nullptr;
         if(auto const* SD = dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
             PD = SD->getSpecializedTemplate();
