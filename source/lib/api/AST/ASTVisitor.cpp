@@ -796,6 +796,7 @@ constructFunction(
         I.specs0.isConst = D->isConst();
         I.specs0.isVolatile = D->isVolatile();
         I.specs0.refQualifier = D->getRefQualifier();
+        I.specs0.isFinal = D->template hasAttr<FinalAttr>();
         //D->isCopyAssignmentOperator()
         //D->isMoveAssignmentOperator()
         //D->isOverloadedOperator();
@@ -947,8 +948,25 @@ buildRecord(
         }
     }
 
+    AccessSpecifier access;
+    if(auto CT = D->getDescribedClassTemplate())
+    {
+        access = CT->getAccess();
+    }
+    else if(auto MSI = D->getMemberSpecializationInfo())
+    {
+        access = MSI->getInstantiatedFrom()->getAccess();
+    }
+    else if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
+    {
+        access = CTSD->getSpecializedTemplate()->getAccess();
+    }
+    else
+    {
+        access = D->getAccess();
+    }
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(std::move(I), D->getAccess()));
+    insertBitcode(ex_, writeParent(std::move(I), access));
 }
 
 void

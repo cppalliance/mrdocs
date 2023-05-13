@@ -19,15 +19,25 @@
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
 #include <mrdox/Metadata/Var.hpp>
+#include <algorithm>
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
 
 class Interface::Build
 {
     Interface& I_;
     Corpus const& corpus_;
     bool includePrivate_;
+
+    std::vector<std::pair<Access, DataMember>> data_;
+    std::vector<std::pair<Access, MemberEnum>> enums_;
+    std::vector<std::pair<Access, MemberFunction>> functions_;
+    std::vector<std::pair<Access, MemberRecord>> records_;
+    std::vector<std::pair<Access, MemberType>> types_;
+    std::vector<std::pair<Access, StaticDataMember>> vars_;
 
 public:
     Build(
@@ -38,13 +48,8 @@ public:
         , corpus_(corpus)
         , includePrivate_(corpus_.config.includePrivate)
     {
-        I_.data_.clear();
-        I_.enums_.clear();
-        I_.functions_.clear();
-        I_.records_.clear();
-        I_.types_.clear();
-        I_.vars_.clear();
         append(Access::Public, Derived);
+
         finish();
     }
 
@@ -77,61 +82,6 @@ private:
             append(actualAccess, corpus_.get<RecordInfo>(B.id));
         }
 
-        // Records
-        if( includePrivate_ ||
-            access != Access::Private)
-        {
-            for(auto const& ref : From.Children_.Records)
-            {
-                auto const& J = corpus_.get<RecordInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                I_.records_.push_back({ &J, &From, actualAccess });
-            }
-        }
-
-        // Functions
-        {
-            auto const isFinal = From.specs.isFinal.get();
-            for(auto const& ref : From.Children_.Functions)
-            {
-                auto const& J = corpus_.get<FunctionInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                // private virtual functions are emitted anyway since
-                // they are always accessible from derived classes
-                // unless this class is marked `final`.
-                if( includePrivate_ ||
-                    actualAccess != Access::Private ||
-                    ( ! isFinal && J.specs0.isVirtual ))
-                {
-                    I_.functions_.push_back({ &J, &From, actualAccess });
-                }
-            }
-        }
-
-        // Enums
-        if( includePrivate_ ||
-            access != Access::Private)
-        {
-            for(auto const& ref : From.Children_.Enums)
-            {
-                auto const& J = corpus_.get<EnumInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                I_.enums_.push_back({ &J, &From, actualAccess });
-            }
-        }
-
-        // Typedefs
-        if( includePrivate_ ||
-            access != Access::Private)
-        {
-            for(auto const& ref : From.Children_.Types)
-            {
-                auto const& J = corpus_.get<TypedefInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                I_.types_.push_back({ &J, &From, actualAccess });
-            }
-        }
-
         // Data Members
         if( includePrivate_ ||
             access != Access::Private)
@@ -139,7 +89,62 @@ private:
             for(auto const& J : From.Members)
             {
                 auto actualAccess = effectiveAccess(access, J.access);
-                I_.data_.push_back({ &J, &From, actualAccess });
+                data_.push_back({ actualAccess, { &J, &From } });
+            }
+        }
+
+        // Member Enums
+        if( includePrivate_ ||
+            access != Access::Private)
+        {
+            for(auto const& ref : From.Children_.Enums)
+            {
+                auto const& J = corpus_.get<EnumInfo>(ref.id);
+                auto actualAccess = effectiveAccess(access, ref.access);
+                enums_.push_back({ actualAccess, { &J, &From } });
+            }
+        }
+
+        // Member Functions
+        {
+            auto const isRecFinal = From.specs.isFinal.get();
+            for(auto const& ref : From.Children_.Functions)
+            {
+                auto const& J = corpus_.get<FunctionInfo>(ref.id);
+                auto actualAccess = effectiveAccess(access, ref.access);
+                //bool isFinal = J.specs0.isFinal;
+                // private virtual functions are effectively public
+                // and should be emitted unless the record is final
+                if( includePrivate_ ||
+                    actualAccess != Access::Private ||
+                    ( ! isRecFinal && J.specs0.isVirtual ))
+                {
+                    functions_.push_back({ actualAccess, { &J, &From }});
+                }
+            }
+        }
+
+        // Member Records
+        if( includePrivate_ ||
+            access != Access::Private)
+        {
+            for(auto const& ref : From.Children_.Records)
+            {
+                auto const& J = corpus_.get<RecordInfo>(ref.id);
+                auto actualAccess = effectiveAccess(access, ref.access);
+                records_.push_back({ actualAccess, { &J, &From }});
+            }
+        }
+
+        // Member Types
+        if( includePrivate_ ||
+            access != Access::Private)
+        {
+            for(auto const& ref : From.Children_.Types)
+            {
+                auto const& J = corpus_.get<TypedefInfo>(ref.id);
+                auto actualAccess = effectiveAccess(access, ref.access);
+                types_.push_back({ actualAccess, { &J, &From }});
             }
         }
 
@@ -151,54 +156,63 @@ private:
             {
                 auto const& J = corpus_.get<VarInfo>(ref.id);
                 auto actualAccess = effectiveAccess(access, ref.access);
-                I_.vars_.push_back({ &J, &From, actualAccess });
+                vars_.push_back({ actualAccess, { &J, &From }});
             }
         }
     }
 
-    template<class T>
+    template<class T, class U>
     void
     sort(
         std::span<T const> Interface::Tranche::*member,
-        std::vector<T>& list)
+        std::vector<T>& dest,
+        std::vector<U>& src)
     {
         llvm::stable_sort(
-            list,
-            []( auto const& I0,
-                auto const& I1) noexcept
+            src,
+            []( auto const& p0,
+                auto const& p1) noexcept
             {
                 return
-                    to_underlying(I0.access) <
-                    to_underlying(I1.access);
+                    to_underlying(p0.first) <
+                    to_underlying(p1.first);
             });
-        auto it0 = list.begin();
+        dest.resize(0);
+        dest.reserve(src.size());
+        for(auto const& v : src)
+            dest.push_back(v.second);
+
+        auto it0 = src.begin();
         auto it = std::find_if_not(
-            it0, list.end(),
-            [](auto const& I) noexcept
+            it0, src.end(),
+            [](auto const& p) noexcept
             {
-                return I.access == Access::Public;
+                return p.first == Access::Public;
             });
-        I_.Public.*member = { it0, it };
+        std::size_t const nPublic = it - it0;
         it0 = it;
-        it = std::find_if(
-            it0, list.end(),
-            [](auto const& I) noexcept
+        it = std::find_if_not(
+            it0, src.end(),
+            [](auto const& p) noexcept
             {
-                return I.access == Access::Protected;
+                return p.first == Access::Protected;
             });
-        I_.Protected.*member = { it0, it };
-        I_.Private.*member = { it, list.end() };
+        std::size_t const nPrivate = src.end() - it;
+
+        I_.Public.*member    = { dest.begin(), dest.begin() + nPublic };
+        I_.Protected.*member = { dest.begin() + nPublic, dest.end() - nPrivate };
+        I_.Private.*member   = { dest.end() - nPrivate, dest.end() };
     }
 
     void
     finish()
     {
-        sort(&Interface::Tranche::Records,   I_.records_);
-        sort(&Interface::Tranche::Functions, I_.functions_);
-        sort(&Interface::Tranche::Enums,     I_.enums_);
-        sort(&Interface::Tranche::Types,     I_.types_);
-        sort(&Interface::Tranche::Data,      I_.data_);
-        sort(&Interface::Tranche::Vars,      I_.vars_);
+        sort(&Interface::Tranche::Records,   I_.records_,   records_);
+        sort(&Interface::Tranche::Functions, I_.functions_, functions_);
+        sort(&Interface::Tranche::Enums,     I_.enums_,     enums_);
+        sort(&Interface::Tranche::Types,     I_.types_,     types_);
+        sort(&Interface::Tranche::Data,      I_.data_,      data_);
+        sort(&Interface::Tranche::Vars,      I_.vars_,      vars_);
     }
 };
 

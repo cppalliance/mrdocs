@@ -35,28 +35,27 @@ union FnFlags0
 {
     BitFieldFullValue raw;
 
-    BitFlag<0> isVariadic;
-    BitFlag<1> isVirtual;
-    BitFlag<2> isVirtualAsWritten;
-    BitFlag<3> isPure;
-    BitFlag<4> isDefaulted;
-    BitFlag<5> isExplicitlyDefaulted;
-    BitFlag<6> isDeleted;
-    BitFlag<7> isDeletedAsWritten;
-    BitFlag<8> isNoReturn;
+    BitFlag < 0> isVariadic;
+    BitFlag < 1> isVirtual;
+    BitFlag < 2> isVirtualAsWritten;
+    BitFlag < 3> isPure;
+    BitFlag < 4> isDefaulted;
+    BitFlag < 5> isExplicitlyDefaulted;
+    BitFlag < 6> isDeleted;
+    BitFlag < 7> isDeletedAsWritten;
+    BitFlag < 8> isNoReturn;
+    BitFlag < 9> hasOverrideAttr;
+    BitFlag <10> hasTrailingReturn;
+    BitFlag <11> isConst;
+    BitFlag <12> isVolatile;
+    BitField<13> isFinal;
 
-    BitFlag<9> hasOverrideAttr;
-    BitFlag<10> hasTrailingReturn;
-    BitField<11, 2, ConstexprSpecKind> constexprKind;
-    BitField<13, 4, ExceptionSpecificationType> exceptionSpecType;
-    BitField<17, 6, OverloadedOperatorKind> overloadedOperator;
-    BitField<23, 3, StorageClass> storageClass;
-    BitFlag<26> isConst;
-    BitFlag<27> isVolatile;
-    BitField<28, 2, RefQualifierKind> refQualifier;
+    BitField<14, 2, ConstexprSpecKind> constexprKind;
+    BitField<16, 4, ExceptionSpecificationType> exceptionSpecType;
+    BitField<20, 6, OverloadedOperatorKind> overloadedOperator;
+    BitField<26, 3, StorageClass> storageClass;
+    BitField<29, 2, RefQualifierKind> refQualifier;
 };
-
-
 
 /** Bit field used with function specifiers.
 */

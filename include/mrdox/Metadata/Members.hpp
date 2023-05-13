@@ -28,42 +28,36 @@ struct DataMember
 {
     MemberTypeInfo const* I;
     RecordInfo const* From;
-    Access access;
 };
 
 struct MemberEnum
 {
     EnumInfo const* I;
     RecordInfo const* From;
-    Access access;
 };
 
 struct MemberFunction
 {
     FunctionInfo const* I;
     RecordInfo const* From;
-    Access access;
 };
 
 struct MemberRecord
 {
     RecordInfo const* I;
     RecordInfo const* From;
-    Access access;
 };
 
 struct MemberType
 {
     TypedefInfo const* I;
     RecordInfo const* From;
-    Access access;
 };
 
 struct StaticDataMember
 {
     VarInfo const* I;
     RecordInfo const* From;
-    Access access;
 };
 
 } // mrdox

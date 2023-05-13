@@ -108,12 +108,12 @@ public:
         MRDOX_DECL virtual bool visit(EnumInfo const&);
         MRDOX_DECL virtual bool visit(VarInfo const&);
 
-        MRDOX_DECL virtual bool visit(DataMember const&);
-        MRDOX_DECL virtual bool visit(MemberEnum const&);
-        MRDOX_DECL virtual bool visit(MemberFunction const&);
-        MRDOX_DECL virtual bool visit(MemberRecord const&);
-        MRDOX_DECL virtual bool visit(MemberType const&);
-        MRDOX_DECL virtual bool visit(StaticDataMember const&);
+        MRDOX_DECL virtual bool visit(DataMember const&, Access);
+        MRDOX_DECL virtual bool visit(MemberEnum const&, Access);
+        MRDOX_DECL virtual bool visit(MemberFunction const&, Access);
+        MRDOX_DECL virtual bool visit(MemberRecord const&, Access);
+        MRDOX_DECL virtual bool visit(MemberType const&, Access);
+        MRDOX_DECL virtual bool visit(StaticDataMember const&, Access);
     };
 
     /** Traverse the symbol, list, or its children.

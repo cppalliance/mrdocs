@@ -260,7 +260,7 @@ visit(
 bool
 XMLWriter::
 visit(
-    DataMember const& I)
+    DataMember const& I, Access access)
 {
     return true;
 }
@@ -268,41 +268,41 @@ visit(
 bool
 XMLWriter::
 visit(
-    MemberEnum const& I)
+    MemberEnum const& I, Access access)
 {
-    return writeEnum(*I.I, &I.access);
+    return writeEnum(*I.I, &access);
 }
 
 bool
 XMLWriter::
 visit(
-    MemberFunction const& I)
+    MemberFunction const& I, Access access)
 {
-    return writeFunction(*I.I, &I.access);
+    return writeFunction(*I.I, &access);
 }
 
 bool
 XMLWriter::
 visit(
-    MemberRecord const& I)
+    MemberRecord const& I, Access access)
 {
-    return writeRecord(*I.I, &I.access);
+    return writeRecord(*I.I, &access);
 }
 
 bool
 XMLWriter::
 visit(
-    MemberType const& I)
+    MemberType const& I, Access access)
 {
-    return writeTypedef(*I.I, &I.access);
+    return writeTypedef(*I.I, &access);
 }
 
 bool
 XMLWriter::
 visit(
-    StaticDataMember const& I)
+    StaticDataMember const& I, Access access)
 {
-    return writeVar(*I.I, &I.access);
+    return writeVar(*I.I, &access);
 }
 
 //------------------------------------------------

@@ -112,39 +112,34 @@ bool Corpus::Visitor::visit(VarInfo const&)
 
 //---
 
-bool Corpus::Visitor::visit(DataMember const&)
+bool Corpus::Visitor::visit(DataMember const&, Access)
 {
     return true;
 }
 
-bool Corpus::Visitor::visit(MemberEnum const& I)
+bool Corpus::Visitor::visit(MemberEnum const& I, Access)
 {
-    return visit(*I.I);
-//    return true;
+    return true;
 }
 
-bool Corpus::Visitor::visit(MemberFunction const& I)
+bool Corpus::Visitor::visit(MemberFunction const& I, Access)
 {
-    return visit(*I.I);
-//    return true;
+    return true;
 }
 
-bool Corpus::Visitor::visit(MemberRecord const& I)
+bool Corpus::Visitor::visit(MemberRecord const& I, Access)
 {
-    return visit(*I.I);
-//    return true;
+    return true;
 }
 
-bool Corpus::Visitor::visit(MemberType const& I)
+bool Corpus::Visitor::visit(MemberType const& I, Access)
 {
-    return visit(*I.I);
-//    return true;
+    return true;
 }
 
-bool Corpus::Visitor::visit(StaticDataMember const& I)
+bool Corpus::Visitor::visit(StaticDataMember const& I, Access)
 {
-    return visit(*I.I);
-//    return true;
+    return true;
 }
 
 
@@ -211,30 +206,30 @@ traverse(
     for(auto const& t : I.Children_.Records)
         if(! f.visit(MemberRecord{
             &get<RecordInfo>(t.id),
-                &I, t.access}))
+                &I}, t.access))
             return false;
     for(auto const& t : I.Children_.Functions)
         if(! f.visit(MemberFunction{
             &get<FunctionInfo>(t.id),
-                &I, t.access}))
+                &I}, t.access))
             return false;
     for(auto const& t : I.Children_.Types)
         if(! f.visit(MemberType{
             &get<TypedefInfo>(t.id),
-                &I, t.access}))
+                &I}, t.access))
             return false;
     for(auto const& t : I.Children_.Enums)
         if(! f.visit(MemberEnum{
             &get<EnumInfo>(t.id),
-                &I, t.access}))
+                &I}, t.access))
             return false;
     for(auto const& t : I.Children_.Vars)
         if(! f.visit(StaticDataMember{
             &get<VarInfo>(t.id),
-                &I, t.access}))
+                &I}, t.access))
             return false;
     for(auto const& t : I.Members)
-        if(! f.visit(DataMember{&t, &I, t.access}))
+        if(! f.visit(DataMember{&t, &I}, t.access))
             return false;
     return true;
 }
