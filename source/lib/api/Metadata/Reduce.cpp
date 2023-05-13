@@ -185,8 +185,6 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
     Assert(canMerge(I, Other));
     if (I.ReturnType.Type.id == EmptySID && I.ReturnType.Type.Name == "")
         I.ReturnType = std::move(Other.ReturnType);
-    if (I.Parent.id == EmptySID && I.Parent.Name == "")
-        I.Parent = std::move(Other.Parent);
     if (I.Params.empty())
         I.Params = std::move(Other.Params);
     mergeSymbolInfo(I, std::move(Other));

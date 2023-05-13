@@ -248,7 +248,6 @@ decodeRecord(
     switch (auto F = static_cast<FieldId>(R[0]))
     {
     case FieldId::F_namespace:
-    case FieldId::F_parent:
     case FieldId::F_vparent:
     case FieldId::F_type:
     case FieldId::F_child_namespace:

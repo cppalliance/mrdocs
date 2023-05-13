@@ -74,7 +74,6 @@ union FnFlags1
 // Info for functions.
 struct FunctionInfo : SymbolInfo
 {
-    Reference Parent;      // Reference to the parent class decl for this method.
     TypeInfo ReturnType;   // Info about the return type of this function.
     llvm::SmallVector<FieldTypeInfo, 4> Params; // List of parameters.
 

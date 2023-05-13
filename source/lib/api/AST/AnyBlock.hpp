@@ -932,21 +932,6 @@ public:
     {
         switch(ID)
         {
-        case BI_REFERENCE_BLOCK_ID:
-        {
-            ReferenceBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            switch(B.F)
-            {
-            case FieldId::F_parent:
-                I->Parent = std::move(B.I);
-                break;
-            default:
-                return makeWrongFieldError(B.F);
-            }
-            return llvm::Error::success();
-        }
         case BI_TYPE_BLOCK_ID:
         {
             TypeBlock B(I->ReturnType, br_);

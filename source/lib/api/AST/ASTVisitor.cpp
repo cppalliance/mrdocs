@@ -807,12 +807,6 @@ constructFunction(
             PD = SD->getSpecializedTemplate();
         else
             PD = D->getParent();
-        SymbolID ParentID = getUSRForDecl(PD);
-        I.Parent = Reference(
-            ParentID,
-            PD->getNameAsString(),
-            InfoType::IT_record);
-
         I.specs0.isVirtual = D->isVirtual();
         I.specs0.isVirtualAsWritten = D->isVirtualAsWritten();
         I.specs0.isPure = D->isPure();

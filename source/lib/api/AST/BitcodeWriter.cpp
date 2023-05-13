@@ -253,6 +253,7 @@ RecordIDNameMap = []()
         {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
         {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
         {FIELD_ATTRIBUTES, {"FieldAttributes", &Integer32ArrayAbbrev}},
+        {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
         {JAVADOC_LIST_KIND, {"JavadocListKind", &Integer32Abbrev}},
@@ -263,7 +264,6 @@ RecordIDNameMap = []()
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
         {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
-        {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
@@ -808,7 +808,6 @@ emitBlock(
     emitInfoPart(I);
     emitSymbolPart(I);
     emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
-    emitBlock(I.Parent, FieldId::F_parent);
     emitBlock(I.ReturnType);
     for (const auto& N : I.Params)
         emitBlock(N);
