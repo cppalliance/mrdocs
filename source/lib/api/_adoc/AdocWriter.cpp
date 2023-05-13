@@ -252,7 +252,7 @@ write(
         "\n" <<
         "[,cpp]\n"
         "----\n" <<
-        toString(I.TagType) << " " << I.Name;
+        tagToString(I.TagType) << " " << I.Name;
     if(! I.Bases.empty())
     {
         os_ << "\n    : ";
@@ -482,7 +482,7 @@ writeBase(
 {
     if(I.IsVirtual)
         os_ << "virtual ";
-    os_ << clang::getAccessSpelling(I.Access) << " ";
+    os_ << toString(I.access) << " ";
     os_ << I.Name;
 }
 
@@ -513,48 +513,6 @@ writeNestedTypes(
             "|`" << I.Name << "`\n" <<
             "|";
         writeBrief(I.javadoc, false);
-        os_ << '\n';
-    }   
-    os_ <<
-        "|===\n" <<
-        "\n";
-    endSection();
-}
-
-void
-AdocWriter::
-writeDataMembers(
-    llvm::StringRef sectionName,
-    llvm::SmallVectorImpl<MemberTypeInfo> const& list,
-    AccessSpecifier access)
-{
-    if(list.empty())
-        return;
-
-    auto it = list.begin();
-    for(;;)
-    {
-        if(it == list.end())
-            return;
-        if(it->Access == access)
-            break;
-        ++it;
-    }
-    beginSection(sectionName);
-    os_ <<
-        "\n"
-        "[,cols=2]\n" <<
-        "|===\n" <<
-        "|Name |Description\n" <<
-        "\n";
-    for(;it != list.end(); ++it)
-    {
-        if(it->Access != access)
-            continue;
-        os_ <<
-            "|`" << it->Name << "`\n" <<
-            "|";
-        writeBrief(it->javadoc, false);
         os_ << '\n';
     }   
     os_ <<
@@ -883,7 +841,7 @@ endSection()
 
 llvm::StringRef
 AdocWriter::
-toString(TagTypeKind k) noexcept
+tagToString(TagTypeKind k) noexcept
 {
     switch(k)
     {

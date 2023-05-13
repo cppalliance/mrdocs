@@ -47,17 +47,17 @@ struct BaseInfo
 {
     SymbolID id;
     std::string Name;
-    AccessSpecifier Access;
+    Access access;
     bool IsVirtual;
 
     BaseInfo(
         SymbolID const& id_ = EmptySID,
         std::string_view Name_ = "",
-        AccessSpecifier Access_ = AS_public,
+        Access access_ = Access::Public,
         bool IsVirtual_ = false)
         : id(id_)
         , Name(Name_)
-        , Access(Access_)
+        , access(access_)
         , IsVirtual(IsVirtual_)
     {
     }

@@ -4,19 +4,19 @@
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="record-data.cpp" line="3" class="def"/>
-    <data name="i" type="int" access="public">
+    <data name="i" type="int">
     </data>
-    <data name="j" type="double" access="public">
+    <data name="j" type="double">
     </data>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
     <file path="record-data.cpp" line="9" class="def"/>
-    <data name="t" type="T" access="public" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <data name="t" type="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     </data>
   </struct>
   <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
     <file path="record-data.cpp" line="23" class="def"/>
-    <data name="buf" type="char[64]" access="public">
+    <data name="buf" type="char[64]">
     </data>
   </struct>
   <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">

@@ -62,11 +62,11 @@ public:
 private:
     class Build;
 
-    std::vector<MemberRecord> records_;
-    std::vector<MemberFunction> functions_;
-    std::vector<MemberEnum> enums_;
-    std::vector<MemberType> types_;
     std::vector<DataMember> data_;
+    std::vector<MemberEnum> enums_;
+    std::vector<MemberFunction> functions_;
+    std::vector<MemberRecord> records_;
+    std::vector<MemberType> types_;
     std::vector<StaticDataMember> vars_;
 };
 

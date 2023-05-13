@@ -226,6 +226,24 @@ getSourceCode(
 //------------------------------------------------
 
 static
+Access
+getAccessFromSpecifier(
+    AccessSpecifier as) noexcept
+{
+    switch(as)
+    {
+    case AccessSpecifier::AS_public:
+        return Access::Public;
+    case AccessSpecifier::AS_protected:
+        return Access::Protected;
+    case AccessSpecifier::AS_private:
+        return Access::Private;
+    default:
+        llvm_unreachable("unknown AccessSpecifier");
+    }
+}
+
+static
 TagDecl*
 getTagDeclForType(
     QualType const& T)
@@ -490,41 +508,6 @@ writeParent(
     return writeBitcode(P);
 }
 
-// There are two uses for this function.
-// 1) Getting the resulting mode of inheritance of a record.
-//    Example: class A {}; class B : private A {}; class C : public B {};
-//    It's explicit that C is publicly inherited from C and B is privately
-//    inherited from A. It's not explicit but C is also privately inherited from
-//    A. This is the AS that this function calculates. FirstAS is the
-//    inheritance mode of `class C : B` and SecondAS is the inheritance mode of
-//    `class B : A`.
-// 2) Getting the inheritance mode of an inherited attribute / method.
-//    Example : class A { public: int M; }; class B : private A {};
-//    Class B is inherited from class A, which has a public attribute. This
-//    attribute is now part of the derived class B but it's not public. This
-//    will be private because the inheritance is private. This is the AS that
-//    this function calculates. FirstAS is the inheritance mode and SecondAS is
-//    the AS of the attribute / method.
-static
-AccessSpecifier
-getFinalAccessSpecifier(
-    AccessSpecifier FirstAS,
-    AccessSpecifier SecondAS)
-{
-    if(FirstAS == AccessSpecifier::AS_none ||
-        SecondAS == AccessSpecifier::AS_none)
-        return AccessSpecifier::AS_none;
-    if(FirstAS == AccessSpecifier::AS_private ||
-        SecondAS == AccessSpecifier::AS_private)
-        return AccessSpecifier::AS_private;
-    if(FirstAS == AccessSpecifier::AS_protected ||
-        SecondAS == AccessSpecifier::AS_protected)
-        return AccessSpecifier::AS_protected;
-    return AccessSpecifier::AS_public;
-}
-
-// The Access parameter is only provided when parsing the field of an inherited
-// record, the access specification of the field depends on the inheritance mode
 static
 void
 parseFields(
@@ -544,7 +527,7 @@ parseFields(
         MemberTypeInfo& NewMember = I.Members.emplace_back(
             getTypeInfoForType(F->getTypeSourceInfo()->getType()),
             F->getNameAsString(),
-            getFinalAccessSpecifier(Access, F->getAccessUnsafe()));
+            getAccessFromSpecifier(F->getAccessUnsafe()));
         getMemberTypeInfo(NewMember, F, R);
     }
 }
@@ -702,7 +685,7 @@ extractBases(
             I.Bases.emplace_back(
                 getUSRForDecl(D),
                 B.getType().getAsString(),
-                B.getAccessSpecifier(),
+                getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
         }
         else if(RecordDecl const* P = getRecordDeclForType(B.getType()))
@@ -710,7 +693,7 @@ extractBases(
             I.Bases.emplace_back(
                 getUSRForDecl(P),
                 P->getNameAsString(),
-                B.getAccessSpecifier(),
+                getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
         }
         else
@@ -718,7 +701,7 @@ extractBases(
             I.Bases.emplace_back(
                 EmptySID,
                 B.getType().getAsString(),
-                B.getAccessSpecifier(),
+                getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
         }
     }

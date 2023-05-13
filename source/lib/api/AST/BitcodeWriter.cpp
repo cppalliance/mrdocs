@@ -757,7 +757,7 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_BASE_BLOCK_ID);
     emitRecord(I.id, BASE_ID);
     emitRecord(I.Name, BASE_NAME);
-    emitRecord(I.Access, BASE_ACCESS);
+    emitRecord(I.access, BASE_ACCESS);
     emitRecord(I.IsVirtual, BASE_IS_VIRTUAL);
 }
 
@@ -909,7 +909,7 @@ emitBlock(
 //    emitBlock(T.Type, FieldId::F_type);
     emitBlock(static_cast<const FieldTypeInfo &>(T));
     emitRecord(T.Name, MEMBER_TYPE_NAME);
-    emitRecord(T.Access, MEMBER_TYPE_ACCESS);
+    emitRecord(T.access, MEMBER_TYPE_ACCESS);
     if(T.javadoc)
         emitBlock(*T.javadoc);
 }

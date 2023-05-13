@@ -38,34 +38,17 @@ public:
         , corpus_(corpus)
         , includePrivate_(corpus_.config.includePrivate)
     {
-        I_.records_.clear();
-        I_.functions_.clear();
-        I_.enums_.clear();
-        I_.types_.clear();
         I_.data_.clear();
+        I_.enums_.clear();
+        I_.functions_.clear();
+        I_.records_.clear();
+        I_.types_.clear();
         I_.vars_.clear();
         append(Access::Public, Derived);
         finish();
     }
 
 private:
-    static
-    Access
-    effectiveAccess(
-        Access t0,
-        AccessSpecifier t1) noexcept
-    {
-        if( t1 ==  AccessSpecifier::AS_none)
-            return t0;
-        if( t0 ==  Access::Private ||
-            t1 ==  AccessSpecifier::AS_private)
-            return Access::Private;
-        if( t0 ==  Access::Protected ||
-            t1 ==  AccessSpecifier::AS_protected)
-            return Access::Protected;
-        return Access::Public;
-    }
-
     static
     Access
     effectiveAccess(
@@ -90,7 +73,7 @@ private:
     {
         for(auto const& B : From.Bases)
         {
-            auto actualAccess = effectiveAccess(access, B.Access);
+            auto actualAccess = effectiveAccess(access, B.access);
             append(actualAccess, corpus_.get<RecordInfo>(B.id));
         }
 
@@ -155,7 +138,7 @@ private:
         {
             for(auto const& J : From.Members)
             {
-                auto actualAccess = effectiveAccess(access, J.Access);
+                auto actualAccess = effectiveAccess(access, J.access);
                 I_.data_.push_back({ &J, &From, actualAccess });
             }
         }

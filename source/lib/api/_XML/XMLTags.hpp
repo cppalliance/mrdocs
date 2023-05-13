@@ -87,6 +87,7 @@ struct Attribute
     {
     }
 
+#if 0
     Attribute(
         AccessSpecifier access) noexcept
         : name("access")
@@ -94,12 +95,32 @@ struct Attribute
         , pred(access != AccessSpecifier::AS_none)
     {
     }
+#endif
 
     Attribute(
         SymbolID id)
         : name("id")
         , value(toString(id))
         , pred(id != EmptySID)
+    {
+    }
+
+    Attribute(
+        Access access)
+        : name("access")
+        , value(
+            [access]
+            {
+                switch(access)
+                {
+                case Access::Public: return std::string("public");
+                case Access::Protected: return std::string("protected");
+                case Access::Private: return std::string("private");
+                default:
+                    llvm_unreachable("unknown Access");
+                }
+            }())
+        , pred(true)
     {
     }
 

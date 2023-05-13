@@ -13,6 +13,7 @@
 #define MRDOX_METADATA_MEMBERTYPE_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Access.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Function.hpp>
@@ -21,17 +22,13 @@
 namespace clang {
 namespace mrdox {
 
-// Info for member types.
+/** A data member for a class.
+*/
 struct MemberTypeInfo
     : FieldTypeInfo
     //, SymbolInfo
 {
-    // VFALCO This is public because 0 values in bitcode are not emitted...
-    // Access level associated with this info (public, protected, private, none).
-    // AS_public is set as default because the bitcode writer requires the enum
-    // with value 0 to be used as the default.
-    // (AS_public = 0, AS_protected = 1, AS_private = 2, AS_none = 3)
-    AccessSpecifier Access = AccessSpecifier::AS_public;
+    Access access = Access::Public;
 
     llvm::Optional<Javadoc> javadoc;
 
@@ -42,9 +39,9 @@ struct MemberTypeInfo
     MemberTypeInfo(
         TypeInfo const& TI,
         llvm::StringRef Name,
-        AccessSpecifier Access)
+        Access access_)
         : FieldTypeInfo(TI, Name)
-        , Access(Access)
+        , access(access_)
     {
     }
 

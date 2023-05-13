@@ -398,10 +398,11 @@ writeRecord(
     for(auto const& B : I.Bases)
         tags_.write(baseTagName, "", {
             { "name", B.Name },
-            { B.Access },
+            { B.access },
             { "class", "virtual", B.IsVirtual },
             { B.id }
             });
+
     // VFALCO data members?
     for(auto const& J : I.Members)
         writeMemberType(J);
@@ -528,7 +529,7 @@ writeMemberType(
         { "name", I.Name },
         { "type", I.Type.Name },
         { "value", I.DefaultValue, ! I.DefaultValue.empty() },
-        { I.Access },
+        { &I.access },
         { I.Type.id } });
 
     write(I.Flags, tags_);

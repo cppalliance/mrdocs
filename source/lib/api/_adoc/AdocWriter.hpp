@@ -23,6 +23,20 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
+inline
+llvm::StringRef
+toString(Access access) noexcept
+{
+    switch(access)
+    {
+    case Access::Public: return "public";
+    case Access::Protected: return "protected";
+    case Access::Private: return "private";
+    default:
+        llvm_unreachable("unknown access");
+    }
+}
+
 class AdocWriter
 {
     template<class T>
@@ -91,10 +105,6 @@ protected:
         llvm::StringRef sectionName,
         std::vector<Reference> const& list,
         AccessSpecifier access);
-    void writeDataMembers(
-        llvm::StringRef sectionName,
-        llvm::SmallVectorImpl<MemberTypeInfo> const& list,
-        AccessSpecifier access);
 
     void writeFunctionDeclaration(
         FunctionInfo const& I);
@@ -134,7 +144,7 @@ protected:
     void beginSection(llvm::StringRef name);
     void endSection();
 
-    static llvm::StringRef toString(TagTypeKind k) noexcept;
+    static llvm::StringRef tagToString(TagTypeKind k) noexcept;
 };
 
 } // adoc

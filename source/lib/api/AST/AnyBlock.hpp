@@ -527,7 +527,7 @@ public:
         case MEMBER_TYPE_NAME:
             return decodeRecord(R, I_.Name, Blob);
         case MEMBER_TYPE_ACCESS:
-            return decodeRecord(R, I_.Access, Blob);
+            return decodeRecord(R, I_.access, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -595,7 +595,7 @@ public:
         case BASE_NAME:
             return decodeRecord(R, v_.back().Name, Blob);
         case BASE_ACCESS:
-            return decodeRecord(R, v_.back().Access, Blob);
+            return decodeRecord(R, v_.back().access, Blob);
         case BASE_IS_VIRTUAL:
             return decodeRecord(R, v_.back().IsVirtual, Blob);
         default:

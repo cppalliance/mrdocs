@@ -234,26 +234,8 @@ traverse(
                 &I, t.access}))
             return false;
     for(auto const& t : I.Members)
-    {
-        Access access;
-        switch(t.Access)
-        {
-        case AccessSpecifier::AS_public:
-            access = Access::Public;
-            break;
-        case AccessSpecifier::AS_protected:
-            access = Access::Protected;
-            break;
-        case AccessSpecifier::AS_private:
-            access = Access::Private;
-            break;
-        case AccessSpecifier::AS_none:
-        default:
-            llvm_unreachable("invalid AccessSpecifier");
-        };
-        if(! f.visit(DataMember{&t, &I, access}))
+        if(! f.visit(DataMember{&t, &I, t.access}))
             return false;
-    }
     return true;
 }
 
