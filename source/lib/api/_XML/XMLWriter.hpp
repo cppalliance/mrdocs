@@ -67,6 +67,19 @@ private:
     bool visit(EnumInfo const&) override;
     bool visit(VarInfo const&) override;
 
+    bool visit(DataMember const&) override;
+    bool visit(MemberEnum const&) override;
+    bool visit(MemberFunction const&) override;
+    bool visit(MemberRecord const&) override;
+    bool visit(MemberType const&) override;
+    bool visit(StaticDataMember const&) override;
+
+    bool writeEnum(EnumInfo const&, Access const* access = nullptr);
+    bool writeFunction(FunctionInfo const&, Access const* access = nullptr);
+    bool writeRecord(RecordInfo const&, Access const* access = nullptr);
+    bool writeTypedef(TypedefInfo const&, Access const* access = nullptr);
+    bool writeVar(VarInfo const&, Access const* access = nullptr);
+
     void writeInfo(Info const&);
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);

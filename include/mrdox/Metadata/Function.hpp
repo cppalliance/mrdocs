@@ -79,12 +79,6 @@ struct FunctionInfo : SymbolInfo
     TypeInfo ReturnType;   // Info about the return type of this function.
     llvm::SmallVector<FieldTypeInfo, 4> Params; // List of parameters.
 
-    // Access level for this method (public, private, protected, none).
-    // AS_public is set as default because the bitcode writer requires the enum
-    // with value 0 to be used as the default.
-    // (AS_public = 0, AS_protected = 1, AS_private = 2, AS_none = 3)
-    AccessSpecifier Access = AccessSpecifier::AS_public;
-
     // Full qualified name of this function, including namespaces and template
     // specializations.
     SmallString<16> FullName;

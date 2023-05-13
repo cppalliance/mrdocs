@@ -63,6 +63,17 @@ struct BaseInfo
     }
 };
 
+/** Children of a class, struct, or union.
+*/
+struct RecordScope
+{
+    std::vector<RefWithAccess> Records;
+    std::vector<RefWithAccess> Functions;
+    std::vector<RefWithAccess> Enums;
+    std::vector<RefWithAccess> Types;
+    std::vector<RefWithAccess> Vars;
+};
+
 /** Metadata for struct, class, or union.
 */
 struct RecordInfo : SymbolInfo
@@ -96,18 +107,7 @@ struct RecordInfo : SymbolInfo
     */
     llvm::SmallVector<SymbolID, 4> Friends;
 
-    mrdox::Scope Children;
-
-    struct Scope
-    {
-        std::vector<RefWithAccess> Records;
-        std::vector<RefWithAccess> Functions;
-        std::vector<RefWithAccess> Enums;
-        std::vector<RefWithAccess> Types;
-        std::vector<RefWithAccess> Vars;
-    };
-
-    Scope Children_;
+    RecordScope Children_;
 
     //--------------------------------------------
 
@@ -118,7 +118,6 @@ struct RecordInfo : SymbolInfo
         SymbolID id = SymbolID(),
         llvm::StringRef Name = llvm::StringRef())
         : SymbolInfo(InfoType::IT_record, id, Name)
-        , Children(false)
     {
     }
 };

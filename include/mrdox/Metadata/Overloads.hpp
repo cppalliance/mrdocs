@@ -24,47 +24,6 @@ namespace clang {
 namespace mrdox {
 
 class Corpus;
-struct Scope;
-
-/** A list of overloads for one function name.
-*/
-struct Overloads
-{
-    llvm::StringRef name;
-    std::vector<FunctionInfo const*> list;
-};
-
-/** A set of unique function names in a scope
-*/
-struct OverloadsSet
-{
-    /** The access control of this scope.
-    */
-    AccessSpecifier access;
-
-    /** The list of function overloads in the scope.
-    */
-    std::vector<Overloads> list;
-};
-
-/** Create an overload set for all functions in a scope.
-*/
-MRDOX_DECL
-OverloadsSet
-makeOverloadsSet(
-    Corpus const& corpus,
-    Scope const& scope);
-
-/** Create an overload set for all functions in a scope.
-*/
-MRDOX_DECL
-OverloadsSet
-makeOverloadsSet(
-    Corpus const& corpus,
-    Scope const& scope,
-    AccessSpecifier access);
-
-//------------------------------------------------
 
 struct OverloadInfo
 {

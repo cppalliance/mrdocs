@@ -107,16 +107,24 @@ public:
         MRDOX_DECL virtual bool visit(TypedefInfo const&);
         MRDOX_DECL virtual bool visit(EnumInfo const&);
         MRDOX_DECL virtual bool visit(VarInfo const&);
+
+        MRDOX_DECL virtual bool visit(DataMember const&);
+        MRDOX_DECL virtual bool visit(MemberEnum const&);
+        MRDOX_DECL virtual bool visit(MemberFunction const&);
+        MRDOX_DECL virtual bool visit(MemberRecord const&);
+        MRDOX_DECL virtual bool visit(MemberType const&);
+        MRDOX_DECL virtual bool visit(StaticDataMember const&);
     };
 
-    /** Visit the specified symbol ID or node.
+    /** Traverse the symbol, list, or its children.
     */
     /** @{ */
-    MRDOX_DECL bool visit(Visitor& f, SymbolID id) const;
-    MRDOX_DECL bool visit(Visitor& f, std::vector<Reference> const& R) const;
-    MRDOX_DECL bool visit(Visitor& f, std::vector<SymbolID> const& R) const;
-    MRDOX_DECL bool visit(Visitor& f, Scope const& I) const;
-    MRDOX_DECL bool visit(Visitor& f, Info const& I) const;
+    MRDOX_DECL bool traverse(Visitor&, Info const& I) const;
+    MRDOX_DECL bool traverse(Visitor&, NamespaceInfo const& I) const;
+    MRDOX_DECL bool traverse(Visitor&, RecordInfo const& I) const;
+    MRDOX_DECL bool traverse(Visitor&, SymbolID id) const;
+    MRDOX_DECL bool traverse(Visitor&, std::vector<Reference> const& R) const;
+    MRDOX_DECL bool traverse(Visitor&, std::vector<SymbolID> const& R) const;
     /** @} */
 
     //--------------------------------------------

@@ -149,7 +149,7 @@ build()
     if(options_.index || options_.safe_names)
         writeIndex();
 
-    if(! corpus_.visit(*this, globalNamespaceID))
+    if(! corpus_.traverse(*this, globalNamespaceID))
         return makeErr("visit failed");
 
     if(options_.prolog)
@@ -207,7 +207,7 @@ visit(
 
     writeJavadoc(I.javadoc);
 
-    if(! corpus_.visit(*this, I.Children))
+    if(! corpus_.traverse(*this, I))
         return false;
 
     tags_.close(namespaceTagName);
@@ -215,12 +215,162 @@ visit(
     return true;
 }
 
+bool
+XMLWriter::
+visit(
+    RecordInfo const& I)
+{
+    return writeRecord(I);
+}
+
+bool
+XMLWriter::
+visit(
+    FunctionInfo const& I)
+{
+    return writeFunction(I);
+}
+
+bool
+XMLWriter::
+visit(
+    TypedefInfo const& I)
+{
+    return writeTypedef(I);
+}
+
+bool
+XMLWriter::
+visit(
+    EnumInfo const& I)
+{
+    return writeEnum(I);
+}
+
+bool
+XMLWriter::
+visit(
+    VarInfo const& I)
+{
+    return writeVar(I);
+}
+
 //------------------------------------------------
 
 bool
 XMLWriter::
 visit(
-    RecordInfo const& I)
+    DataMember const& I)
+{
+    return true;
+}
+
+bool
+XMLWriter::
+visit(
+    MemberEnum const& I)
+{
+    return writeEnum(*I.I, &I.access);
+}
+
+bool
+XMLWriter::
+visit(
+    MemberFunction const& I)
+{
+    return writeFunction(*I.I, &I.access);
+}
+
+bool
+XMLWriter::
+visit(
+    MemberRecord const& I)
+{
+    return writeRecord(*I.I, &I.access);
+}
+
+bool
+XMLWriter::
+visit(
+    MemberType const& I)
+{
+    return writeTypedef(*I.I, &I.access);
+}
+
+bool
+XMLWriter::
+visit(
+    StaticDataMember const& I)
+{
+    return writeVar(*I.I, &I.access);
+}
+
+//------------------------------------------------
+
+bool
+XMLWriter::
+writeEnum(
+    EnumInfo const& I, Access const* access)
+{
+    tags_.open(enumTagName, {
+        { "name", I.Name },
+        { "class", "scoped", I.Scoped },
+        { I.BaseType },
+        { access },
+        { I.id }
+        });
+
+    writeSymbol(I);
+
+    for(auto const& v : I.Members)
+        tags_.write("value", {}, {
+            { "name", v.Name },
+            { "value", v.Value },
+            });
+
+    writeJavadoc(I.javadoc);
+
+    tags_.close(enumTagName);
+
+    return true;
+}
+
+bool
+XMLWriter::
+writeFunction(
+    FunctionInfo const& I, Access const* access)
+{
+    tags_.open(functionTagName, {
+        { "name", I.Name },
+        { access },
+        { I.id }
+        });
+
+    writeSymbol(I);
+
+    write(I.specs0, tags_);
+    write(I.specs1, tags_);
+
+    writeReturnType(I.ReturnType, tags_);
+
+    for(auto const& J : I.Params)
+        writeParam(J, tags_);
+
+    if(I.Template)
+        for(TemplateParamInfo const& J : I.Template->Params)
+            writeTemplateParam(J);
+
+    writeJavadoc(I.javadoc);
+
+    tags_.close(functionTagName);
+
+    return true;
+}
+
+bool
+XMLWriter::
+writeRecord(
+    RecordInfo const& I, Access const* access)
 {
     llvm::StringRef tagName;
     switch(I.TagType)
@@ -233,6 +383,7 @@ visit(
     }
     tags_.open(tagName, {
         { "name", I.Name },
+        { access },
         { I.id }
         });
 
@@ -261,7 +412,7 @@ visit(
 
     writeJavadoc(I.javadoc);
 
-    if(! corpus_.visit(*this, I.Children))
+    if(! corpus_.traverse(*this, I))
         return false;
 
     tags_.close(tagName);
@@ -269,46 +420,10 @@ visit(
     return true;
 }
 
-//------------------------------------------------
-
 bool
 XMLWriter::
-visit(
-    FunctionInfo const& I)
-{
-    tags_.open(functionTagName, {
-        { "name", I.Name },
-        { I.Access },
-        { I.id }
-        });
-
-    writeSymbol(I);
-
-    write(I.specs0, tags_);
-    write(I.specs1, tags_);
-
-    writeReturnType(I.ReturnType, tags_);
-
-    for(auto const& J : I.Params)
-        writeParam(J, tags_);
-
-    if(I.Template)
-        for(TemplateParamInfo const& J : I.Template->Params)
-            writeTemplateParam(J);
-
-    writeJavadoc(I.javadoc);
-
-    tags_.close(functionTagName);
-
-    return true;
-}
-
-//------------------------------------------------
-
-bool
-XMLWriter::
-visit(
-    TypedefInfo const& I)
+writeTypedef(
+    TypedefInfo const& I, Access const* access)
 {
     llvm::StringRef tag;
     if(I.IsUsing)
@@ -317,6 +432,7 @@ visit(
         tag = typedefTagName;
     tags_.open(tag, {
         { "name", I.Name },
+        { access },
         { I.id }
         });
 
@@ -335,38 +451,12 @@ visit(
 
 bool
 XMLWriter::
-visit(
-    EnumInfo const& I)
-{
-    tags_.open(enumTagName, {
-        { "name", I.Name },
-        { "class", "scoped", I.Scoped },
-        { I.BaseType },
-        { I.id }
-        });
-
-    writeSymbol(I);
-
-    for(auto const& v : I.Members)
-        tags_.write("value", {}, {
-            { "name", v.Name },
-            { "value", v.Value },
-            });
-
-    writeJavadoc(I.javadoc);
-
-    tags_.close(enumTagName);
-
-    return true;
-}
-
-bool
-XMLWriter::
-visit(
-    VarInfo const& I)
+writeVar(
+    VarInfo const& I, Access const* access)
 {
     tags_.open(varTagName, {
         { "name", I.Name },
+        { access },
         { I.id }
         });
 

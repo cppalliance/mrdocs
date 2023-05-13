@@ -31,24 +31,24 @@ namespace clang {
 namespace mrdox {
 namespace xml {
 
-constexpr llvm::StringRef namespaceTagName  = "namespace";
-constexpr llvm::StringRef classTagName      = "class";
-constexpr llvm::StringRef structTagName     = "struct";
-constexpr llvm::StringRef unionTagName      = "union";
-constexpr llvm::StringRef functionTagName   = "function";
-constexpr llvm::StringRef typedefTagName    = "typedef";
+constexpr llvm::StringRef accessTagName     = "access";
 constexpr llvm::StringRef aliasTagName      = "alias";
-constexpr llvm::StringRef enumTagName       = "enum";
-constexpr llvm::StringRef varTagName        = "variable";
 constexpr llvm::StringRef attributeTagName  = "attr";
-constexpr llvm::StringRef returnTagName     = "return";
-constexpr llvm::StringRef paramTagName      = "param";
-constexpr llvm::StringRef friendTagName     = "friend";
-constexpr llvm::StringRef tparamTagName     = "tparam";
+constexpr llvm::StringRef baseTagName       = "base";
+constexpr llvm::StringRef classTagName      = "class";
 constexpr llvm::StringRef dataMemberTagName = "data";
 constexpr llvm::StringRef javadocTagName    = "doc";
-constexpr llvm::StringRef baseTagName       = "base";
-
+constexpr llvm::StringRef enumTagName       = "enum";
+constexpr llvm::StringRef friendTagName     = "friend";
+constexpr llvm::StringRef functionTagName   = "function";
+constexpr llvm::StringRef namespaceTagName  = "namespace";
+constexpr llvm::StringRef paramTagName      = "param";
+constexpr llvm::StringRef returnTagName     = "return";
+constexpr llvm::StringRef structTagName     = "struct";
+constexpr llvm::StringRef tparamTagName     = "tparam";
+constexpr llvm::StringRef typedefTagName    = "typedef";
+constexpr llvm::StringRef unionTagName      = "union";
+constexpr llvm::StringRef varTagName        = "variable";
 
 constexpr llvm::StringRef getNameForValue(...)
 {

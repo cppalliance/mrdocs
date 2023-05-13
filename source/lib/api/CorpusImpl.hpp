@@ -73,6 +73,7 @@ private:
     struct MutableVisitor
     {
         virtual ~MutableVisitor() = default;
+
         virtual void visit(NamespaceInfo&) {}
         virtual void visit(RecordInfo&) {}
         virtual void visit(FunctionInfo&) {}
@@ -84,9 +85,10 @@ private:
     /** Visit the specified symbol ID or node.
     */
     /** @{ */
-    void visit(MutableVisitor& f, SymbolID id);
-    void visit(MutableVisitor& f, Scope& I);
-    void visit(MutableVisitor& f, Info& I);
+    void traverse(MutableVisitor& f, Info& I);
+    void traverse(MutableVisitor& f, NamespaceInfo& I);
+    void traverse(MutableVisitor& f, RecordInfo& I);
+    void traverse(MutableVisitor& f, SymbolID id);
     /** @} */
 
 private:

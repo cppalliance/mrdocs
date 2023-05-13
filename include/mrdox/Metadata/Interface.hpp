@@ -14,55 +14,13 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Metadata/Access.hpp>
+#include <mrdox/Metadata/Members.hpp>
 #include <span>
 #include <utility>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
-
-struct RecordWithAccess
-{
-    RecordInfo const* I;
-    RecordInfo const* From;
-    Access access;
-};
-
-struct FunctionWithAccess
-{
-    FunctionInfo const* I;
-    RecordInfo const* From;
-    Access access;
-};
-
-struct EnumWithAccess
-{
-    EnumInfo const* I;
-    RecordInfo const* From;
-    Access access;
-};
-
-struct TypeWithAccess
-{
-    TypedefInfo const* I;
-    RecordInfo const* From;
-    Access access;
-};
-
-struct VarWithAccess
-{
-    VarInfo const* I;
-    RecordInfo const* From;
-    Access access;
-};
-
-struct DataWithAccess
-{
-    MemberTypeInfo const* I;
-    RecordInfo const* From;
-    Access access;
-};
 
 /** The aggregated interface for a given struct, class, or union.
 */
@@ -73,12 +31,12 @@ public:
     */
     struct Tranche
     {
-        std::span<RecordWithAccess const> Records;
-        std::span<FunctionWithAccess const> Functions;
-        std::span<EnumWithAccess const> Enums;
-        std::span<TypeWithAccess const> Types;
-        std::span<DataWithAccess const> Data;
-        std::span<VarWithAccess const> Vars;
+        std::span<MemberRecord const> Records;
+        std::span<MemberFunction const> Functions;
+        std::span<MemberEnum const> Enums;
+        std::span<MemberType const> Types;
+        std::span<DataMember const> Data;
+        std::span<StaticDataMember const> Vars;
     };
 
     /** The aggregated public interfaces.
@@ -104,12 +62,12 @@ public:
 private:
     class Build;
 
-    std::vector<RecordWithAccess> records_;
-    std::vector<FunctionWithAccess> functions_;
-    std::vector<EnumWithAccess> enums_;
-    std::vector<TypeWithAccess> types_;
-    std::vector<DataWithAccess> data_;
-    std::vector<VarWithAccess> vars_;
+    std::vector<MemberRecord> records_;
+    std::vector<MemberFunction> functions_;
+    std::vector<MemberEnum> enums_;
+    std::vector<MemberType> types_;
+    std::vector<DataMember> data_;
+    std::vector<StaticDataMember> vars_;
 };
 
 //------------------------------------------------

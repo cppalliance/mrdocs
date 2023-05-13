@@ -79,25 +79,23 @@ public://private:
     void extractBases(RecordInfo& I, CXXRecordDecl* D);
 
 private:
-    void buildNamespace(NamespaceDecl* D);
+    template<class DeclTy> bool constructFunction(FunctionInfo& I, DeclTy* D);
 
-    void buildRecord(CXXRecordDecl* D);
+    void buildNamespace (NamespaceDecl* D);
+    void buildRecord    (CXXRecordDecl* D);
+    void buildFriend    (FriendDecl* D);
+    void buildEnum      (EnumDecl* D);
+    void buildVar       (VarDecl* D);
+
+    template<class DeclTy> void buildTypedef    (DeclTy* D);
 
     template<class DeclTy>
-    bool buildFunction(FunctionInfo& I, DeclTy* D);
-
-    template<class DeclTy>
+    requires std::derived_from<DeclTy, CXXMethodDecl>
     void buildFunction(DeclTy* D);
 
     template<class DeclTy>
-    void buildFriend(DeclTy* D);
-
-    template<class DeclTy>
-    void buildTypedef(DeclTy* D);
-
-    void buildEnum(EnumDecl* D);
-
-    void buildVar(VarDecl* D);
+    requires (! std::derived_from<DeclTy, CXXMethodDecl>)
+    void buildFunction(DeclTy* D);
 
 public:
     bool shouldTraversePostOrder() const noexcept { return true; }

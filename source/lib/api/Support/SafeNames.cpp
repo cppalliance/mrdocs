@@ -42,7 +42,7 @@ public:
         : corpus_(corpus)
     {
         prefix_.reserve(512);
-        corpus_.visit(*this, globalNamespaceID);
+        corpus_.traverse(*this, globalNamespaceID);
         /* auto result =*/ map.try_emplace(llvm::toStringRef(EmptySID), std::string());
 
     #ifndef NDEBUG
@@ -59,7 +59,7 @@ public:
         corpus_(corpus)
     {
         prefix_.reserve(512);
-        corpus_.visit(*this, globalNamespaceID);
+        corpus_.traverse(*this, globalNamespaceID);
         /* auto result =*/ map.try_emplace(llvm::toStringRef(EmptySID), std::string());
         if(os_)
             *os_ << "\n\n";
@@ -75,7 +75,6 @@ private:
         Scope const& scope)
     {
         ScopeInfos infos;
-        //auto overloads = makeOverloadsSet(corpus_, scope);
         infos.reserve(
             scope.Namespaces.size() +
             scope.Records.size() +
@@ -94,6 +93,38 @@ private:
         for(auto const& ref : scope.Enums)
             infos.emplace_back(corpus_.find(ref.id));
         for(auto const& ref : scope.Vars)
+            infos.emplace_back(corpus_.find(ref.id));
+        if(infos.size() < 2)
+            return infos;
+        std::string s0, s1;
+        llvm::sort(infos,
+            [&](Info const* I0, Info const* I1)
+            {
+                return compareSymbolNames(I0->Name, I1->Name) < 0;
+            });
+        return infos;
+    }
+
+    ScopeInfos
+    buildScope(
+        RecordScope const& I)
+    {
+        ScopeInfos infos;
+        infos.reserve(
+            I.Records.size() +
+            I.Functions.size() +
+            I.Enums.size() +
+            I.Types.size() +
+            I.Vars.size());
+        for(auto const& ref : I.Records)
+            infos.emplace_back(corpus_.find(ref.id));
+        for(auto const& ref : I.Functions)
+            infos.emplace_back(corpus_.find(ref.id));
+        for(auto const& ref : I.Enums)
+            infos.emplace_back(corpus_.find(ref.id));
+        for(auto const& ref : I.Types)
+            infos.emplace_back(corpus_.find(ref.id));
+        for(auto const& ref : I.Vars)
             infos.emplace_back(corpus_.find(ref.id));
         if(infos.size() < 2)
             return infos;
@@ -194,7 +225,7 @@ private:
             Info const& J(corpus_.get<Info>(ref.id));
             prefix_.append(getSafe(J));
             prefix_.push_back('-');
-            corpus_.visit(*this, J);
+            corpus_.traverse(*this, J);
             prefix_.resize(n0);
         }
     }
@@ -206,7 +237,7 @@ private:
         {
             prefix_.append(getSafe(*I));
             prefix_.push_back('-');
-            corpus_.visit(*this, *I);
+            corpus_.traverse(*this, *I);
             prefix_.resize(n0);
         }
     }
@@ -223,7 +254,7 @@ private:
 
     bool visit(RecordInfo const& I) override
     {
-        auto infos = buildScope(I.Children);
+        auto infos = buildScope(I.Children_);
         insertScope(infos);
         visitInfos(infos);
         return true;

@@ -63,34 +63,7 @@ insert(std::unique_ptr<Info> I)
 
 void
 CorpusImpl::
-visit(MutableVisitor& f, SymbolID id)
-{
-    visit(f, get<Info>(id));
-}
-
-void
-CorpusImpl::
-visit(
-    MutableVisitor& f,
-    Scope& I)
-{
-    for(auto& ref : I.Namespaces)
-        visit(f, get<NamespaceInfo>(ref.id));
-    for(auto& ref : I.Records)
-        visit(f, get<RecordInfo>(ref.id));
-    for(auto& ref : I.Functions)
-        visit(f, get<FunctionInfo>(ref.id));
-    for(auto& ref : I.Typedefs)
-        visit(f, get<TypedefInfo>(ref.id));
-    for(auto& ref : I.Enums)
-        visit(f, get<EnumInfo>(ref.id));
-    for(auto& ref : I.Vars)
-        visit(f, get<VarInfo>(ref.id));
-}
-
-void
-CorpusImpl::
-visit(
+traverse(
     MutableVisitor& f,
     Info& I)
 {
@@ -111,6 +84,55 @@ visit(
     default:
         llvm_unreachable("wrong InfoType for viist");
     }
+}
+
+void
+CorpusImpl::
+traverse(
+    MutableVisitor& f,
+    NamespaceInfo& I)
+{
+    for(auto const& ref : I.Children.Namespaces)
+        f.visit(get<NamespaceInfo>(ref.id));
+    for(auto const& ref : I.Children.Records)
+        f.visit(get<RecordInfo>(ref.id));
+    for(auto const& ref : I.Children.Functions)
+        f.visit(get<FunctionInfo>(ref.id));
+    for(auto const& ref : I.Children.Typedefs)
+        f.visit(get<TypedefInfo>(ref.id));
+    for(auto const& ref : I.Children.Enums)
+        f.visit(get<EnumInfo>(ref.id));
+    for(auto const& ref : I.Children.Vars)
+        f.visit(get<VarInfo>(ref.id));
+}
+
+void
+CorpusImpl::
+traverse(
+    MutableVisitor& f,
+    RecordInfo& I)
+{
+    for(auto const& t : I.Children_.Records)
+        f.visit(get<RecordInfo>(t.id));
+    for(auto const& t : I.Children_.Functions)
+        f.visit(get<FunctionInfo>(t.id));
+    for(auto const& t : I.Children_.Types)
+        f.visit(get<TypedefInfo>(t.id));
+    for(auto const& t : I.Children_.Enums)
+        f.visit(get<EnumInfo>(t.id));
+    for(auto const& t : I.Children_.Vars)
+        f.visit(get<VarInfo>(t.id));
+    /*
+    for(auto const& t : I.Members)
+        f.visit(t);
+    */
+}
+
+void
+CorpusImpl::
+traverse(MutableVisitor& f, SymbolID id)
+{
+    traverse(f, get<Info>(id));
 }
 
 //------------------------------------------------
@@ -137,17 +159,23 @@ public:
     void visit(NamespaceInfo& I) override
     {
         postProcess(I);
-        canonicalize(I.Children);
-        corpus_.visit(*this, I.Children);
+        canonicalize(I.Children.Namespaces);
+        canonicalize(I.Children.Records);
+        canonicalize(I.Children.Functions);
+        canonicalize(I.Children.Typedefs);
+        canonicalize(I.Children.Enums);
+        canonicalize(I.Children.Vars);
+        corpus_.traverse(*this, I);
     }
 
     void visit(RecordInfo& I) override
     {
         postProcess(I);
-        canonicalize(I.Children);
+        // VFALCO Is this needed?
         canonicalize(I.Members);
+        // VFALCO Is this needed?
         canonicalize(I.Friends);
-        corpus_.visit(*this, I.Children);
+        corpus_.traverse(*this, I);
     }
 
     void visit(FunctionInfo& I) override
@@ -179,16 +207,6 @@ public:
     }
 
     //--------------------------------------------
-
-    void canonicalize(Scope& scope) noexcept
-    {
-        canonicalize(scope.Namespaces);
-        canonicalize(scope.Records);
-        canonicalize(scope.Functions);
-        canonicalize(scope.Typedefs);
-        canonicalize(scope.Enums);
-        canonicalize(scope.Vars);
-    }
 
     void canonicalize(std::vector<Reference>& list) noexcept
     {
@@ -233,7 +251,7 @@ canonicalize(
     if(config_->verboseOutput)
         R.print("Canonicalizing...");
     Canonicalizer cn(*this, R);
-    visit(cn, globalNamespaceID);
+    traverse(cn, globalNamespaceID);
     std::string temp0;
     std::string temp1;
     llvm::sort(index_,

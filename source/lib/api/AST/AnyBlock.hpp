@@ -919,8 +919,6 @@ public:
     {
         switch(ID)
         {
-        case FUNCTION_ACCESS:
-            return decodeRecord(R, I->Access, Blob);
         case FUNCTION_IS_METHOD:
             return decodeRecord(R, I->IsMethod, Blob);
         case FUNCTION_BITS:
@@ -1247,9 +1245,7 @@ readSubBlock(
     }
     case BI_REFERENCE_BLOCK_ID:
     {
-        if constexpr(
-            std::derived_from<T, NamespaceInfo> ||
-            std::derived_from<T, RecordInfo>)
+        if constexpr(std::derived_from<T, NamespaceInfo>)
         {
             return readChild(I->Children, ID);
         }

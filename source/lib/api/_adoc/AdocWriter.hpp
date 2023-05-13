@@ -87,9 +87,6 @@ protected:
         std::span<T const> list);
 
     void writeBase(BaseInfo const& I);
-    void writeFunctionOverloads(
-        llvm::StringRef sectionName,
-        OverloadsSet const& set);
     void writeNestedTypes(
         llvm::StringRef sectionName,
         std::vector<Reference> const& list,

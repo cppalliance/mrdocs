@@ -80,123 +80,79 @@ Corpus::
 Visitor::
 ~Visitor() noexcept = default;
 
-bool
-Corpus::
-Visitor::
-visit(
-    NamespaceInfo const&)
+bool Corpus::Visitor::visit(NamespaceInfo const&)
 {
     return true;
 }
 
-bool
-Corpus::
-Visitor::
-visit(
-    RecordInfo const&)
+bool Corpus::Visitor::visit(RecordInfo const&)
 {
     return true;
 }
 
-bool
-Corpus::
-Visitor::
-visit(
-    FunctionInfo const&)
+bool Corpus::Visitor::visit(FunctionInfo const&)
 {
     return true;
 }
 
-bool
-Corpus::
-Visitor::
-visit(
-    TypedefInfo const&)
+bool Corpus::Visitor::visit(TypedefInfo const&)
 {
     return true;
 }
 
-bool
-Corpus::
-Visitor::
-visit(
-    EnumInfo const&)
+bool Corpus::Visitor::visit(EnumInfo const&)
 {
     return true;
 }
 
-bool
-Corpus::
-Visitor::
-visit(
-    VarInfo const&)
+bool Corpus::Visitor::visit(VarInfo const&)
 {
     return true;
 }
+
+//---
+
+bool Corpus::Visitor::visit(DataMember const&)
+{
+    return true;
+}
+
+bool Corpus::Visitor::visit(MemberEnum const& I)
+{
+    return visit(*I.I);
+//    return true;
+}
+
+bool Corpus::Visitor::visit(MemberFunction const& I)
+{
+    return visit(*I.I);
+//    return true;
+}
+
+bool Corpus::Visitor::visit(MemberRecord const& I)
+{
+    return visit(*I.I);
+//    return true;
+}
+
+bool Corpus::Visitor::visit(MemberType const& I)
+{
+    return visit(*I.I);
+//    return true;
+}
+
+bool Corpus::Visitor::visit(StaticDataMember const& I)
+{
+    return visit(*I.I);
+//    return true;
+}
+
 
 //------------------------------------------------
 
 bool
 Corpus::
-visit(Visitor& f, SymbolID id) const
-{
-    return visit(f, get<Info>(id));
-}
-
-bool
-Corpus::
-visit(
-    Visitor& f,
-    std::vector<Reference> const& R) const
-{
-    for(auto const& ref : R)
-        if(! visit(f, get<Info>(ref.id)))
-            return false;
-    return true;
-}
-
-bool
-Corpus::
-visit(
-    Visitor& f,
-    std::vector<SymbolID> const& R) const
-{
-    for(auto const& id : R)
-        if(! visit(f, get<Info>(id)))
-            return false;
-    return true;
-}
-
-bool
-Corpus::
-visit(
-    Visitor& f,
-    Scope const& I) const
-{
-    for(auto const& ref : I.Namespaces)
-        if(! visit(f, get<NamespaceInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Records)
-        if(! visit(f, get<RecordInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Functions)
-        if(! visit(f, get<FunctionInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Typedefs)
-        if(! visit(f, get<TypedefInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Enums)
-        if(! visit(f, get<EnumInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Vars)
-        if(! visit(f, get<VarInfo>(ref.id)))
-            return false;
-    return true;
-}
-
-bool
-Corpus::
-visit(
+traverse(
     Visitor& f,
     Info const& I) const
 {
@@ -217,6 +173,119 @@ visit(
     default:
         llvm_unreachable("wrong InfoType for viist");
     }
+}
+
+bool
+Corpus::
+traverse(
+    Visitor& f,
+    NamespaceInfo const& I) const
+{
+    for(auto const& ref : I.Children.Namespaces)
+        if(! f.visit(get<NamespaceInfo>(ref.id)))
+            return false;
+    for(auto const& ref : I.Children.Records)
+        if(! f.visit(get<RecordInfo>(ref.id)))
+            return false;
+    for(auto const& ref : I.Children.Functions)
+        if(! f.visit(get<FunctionInfo>(ref.id)))
+            return false;
+    for(auto const& ref : I.Children.Typedefs)
+        if(! f.visit(get<TypedefInfo>(ref.id)))
+            return false;
+    for(auto const& ref : I.Children.Enums)
+        if(! f.visit(get<EnumInfo>(ref.id)))
+            return false;
+    for(auto const& ref : I.Children.Vars)
+        if(! f.visit(get<VarInfo>(ref.id)))
+            return false;
+    return true;
+}
+
+bool
+Corpus::
+traverse(
+    Visitor& f,
+    RecordInfo const& I) const
+{
+    for(auto const& t : I.Children_.Records)
+        if(! f.visit(MemberRecord{
+            &get<RecordInfo>(t.id),
+                &I, t.access}))
+            return false;
+    for(auto const& t : I.Children_.Functions)
+        if(! f.visit(MemberFunction{
+            &get<FunctionInfo>(t.id),
+                &I, t.access}))
+            return false;
+    for(auto const& t : I.Children_.Types)
+        if(! f.visit(MemberType{
+            &get<TypedefInfo>(t.id),
+                &I, t.access}))
+            return false;
+    for(auto const& t : I.Children_.Enums)
+        if(! f.visit(MemberEnum{
+            &get<EnumInfo>(t.id),
+                &I, t.access}))
+            return false;
+    for(auto const& t : I.Children_.Vars)
+        if(! f.visit(StaticDataMember{
+            &get<VarInfo>(t.id),
+                &I, t.access}))
+            return false;
+    for(auto const& t : I.Members)
+    {
+        Access access;
+        switch(t.Access)
+        {
+        case AccessSpecifier::AS_public:
+            access = Access::Public;
+            break;
+        case AccessSpecifier::AS_protected:
+            access = Access::Protected;
+            break;
+        case AccessSpecifier::AS_private:
+            access = Access::Private;
+            break;
+        case AccessSpecifier::AS_none:
+        default:
+            llvm_unreachable("invalid AccessSpecifier");
+        };
+        if(! f.visit(DataMember{&t, &I, access}))
+            return false;
+    }
+    return true;
+}
+
+bool
+Corpus::
+traverse(Visitor& f, SymbolID id) const
+{
+    return traverse(f, get<Info>(id));
+}
+
+bool
+Corpus::
+traverse(
+    Visitor& f,
+    std::vector<Reference> const& R) const
+{
+    for(auto const& ref : R)
+        if(! traverse(f, get<Info>(ref.id)))
+            return false;
+    return true;
+}
+
+bool
+Corpus::
+traverse(
+    Visitor& f,
+    std::vector<SymbolID> const& R) const
+{
+    for(auto const& id : R)
+        if(! traverse(f, get<Info>(id)))
+            return false;
+    return true;
 }
 
 //------------------------------------------------

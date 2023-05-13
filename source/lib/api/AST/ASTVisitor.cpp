@@ -75,25 +75,6 @@ getUSRForDecl(
     return llvm::SHA1::hash(arrayRefFromStringRef(USR));
 }
 
-// Convert clang::AccessSpecifier to mrdox::Access
-static
-Access
-toAccess(
-    AccessSpecifier AS)
-{
-    switch(AS)
-    {
-    case AccessSpecifier::AS_public:
-        return Access::Public;
-    case AccessSpecifier::AS_protected:
-        return Access::Protected;
-    case AccessSpecifier::AS_private:
-        return Access::Private;
-    default:
-        llvm_unreachable("invald AccessSpecifier");
-    }
-}
-
 //------------------------------------------------
 
 static
@@ -384,7 +365,7 @@ getMemberTypeInfo(
 template<class Child>
 static
 void
-insertChildWithAccess(
+insertChild(
     RecordInfo& P, Access access, Child const& I)
 {
     if constexpr(std::is_same_v<Child, RecordInfo>)
@@ -409,22 +390,18 @@ insertChildWithAccess(
     }
     else
     {
-        static_error("unknown Info type", I);
+        Assert(false);
     }
 }
 
-template<class Parent, class Child>
-requires
-    std::derived_from<Child, Info> &&
-    std::is_same_v<decltype(Parent::Children), Scope>
+template<class Child>
+requires std::derived_from<Child, Info>
 static
 void
-insertChild(Parent& parent, Child&& I)
+insertChild(NamespaceInfo& parent, Child const& I)
 {
     if constexpr(std::is_same_v<Child, NamespaceInfo>)
     {
-        // namespace requires parent namespace
-        Assert(Parent::type_id == InfoType::IT_namespace);
         parent.Children.Namespaces.emplace_back(I.id, I.Name, Child::type_id);
     }
     else if constexpr(std::is_same_v<Child, RecordInfo>)
@@ -449,63 +426,67 @@ insertChild(Parent& parent, Child&& I)
     }
     else
     {
-        static_error("unknown Info type", I);
+        Assert(false);
     }
 }
 
-// Create an empty parent for the child with the
-// child inserted either as a reference or by moving
-// the entire record. Then return the parent as a
-// serialized bitcode.
 template<class Child>
 requires std::derived_from<Child, Info>
 static
 Bitcode
-writeParent(Child&& I)
+writeParent(
+    Child const& I,
+    AccessSpecifier access = AccessSpecifier::AS_none)
 {
-    if(I.Namespace.empty())
+    Access access_;
+    switch(access)
     {
-        if(I.id == globalNamespaceID)
+    case AccessSpecifier::AS_none:
+    {
+        // Create an empty parent for the child with the
+        // child inserted either as a reference or by moving
+        // the entire record. Then return the parent as a
+        // serialized bitcode.
+        if(I.Namespace.empty())
         {
-            // Global namespace has no parent.
-            return {};
-        }
+            if(I.id == globalNamespaceID)
+            {
+                // Global namespace has no parent.
+                return {};
+            }
 
-        // In global namespace
-        NamespaceInfo P;
-        Assert(P.id == globalNamespaceID);
-        insertChild(P, std::move(I));
-        return writeBitcode(P);
-    }
-    if(I.Namespace[0].RefType == InfoType::IT_namespace)
-    {
+            // In global namespace
+            NamespaceInfo P;
+            Assert(P.id == globalNamespaceID);
+            insertChild(P, std::move(I));
+            return writeBitcode(P);
+        }
+        Assert(I.Namespace[0].RefType == InfoType::IT_namespace);
         NamespaceInfo P(I.Namespace[0].id);
         insertChild(P, std::move(I));
         return writeBitcode(P);
     }
-    Assert(I.Namespace[0].RefType == InfoType::IT_record);
-    Assert(Child::type_id != InfoType::IT_namespace);
-    RecordInfo P(I.Namespace[0].id);
-    insertChild(P, std::move(I));
-    return writeBitcode(P);
-}
+    case AccessSpecifier::AS_public:
+        access_ = Access::Public;
+        break;
+    case AccessSpecifier::AS_protected:
+        access_ = Access::Protected;
+        break;
+    case AccessSpecifier::AS_private:
+        access_ = Access::Private;
+        break;
+    default:
+        llvm_unreachable("unknown access");
+    }
 
-// Create an empty parent for the child,
-// and insert the child as a RefWithAccess.
-// Then return the parent as a serialized bitcode.
-template<class Child>
-static
-Bitcode
-writeParentWithAccess(
-    Access access,
-    Child const& I)
-{
-    static_assert(std::derived_from<Child, Info>);
+    // Create an empty Record for the child,
+    // and insert the child as a RefWithAccess.
+    // Then return the parent as a serialized bitcode.
     Assert(! I.Namespace.empty());
     Assert(I.Namespace[0].RefType == InfoType::IT_record);
     Assert(Child::type_id != InfoType::IT_namespace);
     RecordInfo P(I.Namespace[0].id);
-    insertChildWithAccess(P, access, I);
+    insertChild(P, access_, I);
     return writeBitcode(P);
 }
 
@@ -745,6 +726,150 @@ extractBases(
 
 //------------------------------------------------
 
+template<class DeclTy>
+bool
+ASTVisitor::
+constructFunction(
+    FunctionInfo& I, DeclTy* D)
+{
+    if(! extractInfo(I, D))
+        return false;
+    LineNumber = getLine(D);
+    if(D->isThisDeclarationADefinition())
+        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+    else
+        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
+    QualType const qt = D->getReturnType();
+    std::string s = qt.getAsString();
+    I.ReturnType = getTypeInfoForType(qt);
+    parseParameters(I, D);
+
+    getTemplateParams(I.Template, D);
+
+    // Handle function template specializations.
+    if(FunctionTemplateSpecializationInfo const* FTSI =
+        D->getTemplateSpecializationInfo())
+    {
+        if(!I.Template)
+            I.Template.emplace();
+        I.Template->Specialization.emplace();
+        auto& Specialization = *I.Template->Specialization;
+
+        Specialization.SpecializationOf = getUSRForDecl(FTSI->getTemplate());
+
+        // Template parameters to the specialization.
+        if(FTSI->TemplateArguments)
+        {
+            for(TemplateArgument const& Arg :
+                    FTSI->TemplateArguments->asArray())
+            {
+                Specialization.Params.emplace_back(*D, Arg);
+            }
+        }
+    }
+
+    //
+    // FunctionDecl
+    //
+    I.specs0.isVariadic = D->isVariadic();
+    I.specs0.isDefaulted = D->isDefaulted();
+    I.specs0.isExplicitlyDefaulted = D->isExplicitlyDefaulted();
+    I.specs0.isDeleted = D->isDeleted();
+    I.specs0.isDeletedAsWritten = D->isDeletedAsWritten();
+    I.specs0.isNoReturn = D->isNoReturn();
+        // subsumes D->hasAttr<NoReturnAttr>()
+        // subsumes D->hasAttr<CXX11NoReturnAttr>()
+        // subsumes D->hasAttr<C11NoReturnAttr>()
+        // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
+    I.specs0.hasOverrideAttr = D->template hasAttr<OverrideAttr>();
+    if(auto const* FP = D->getType()->template getAs<FunctionProtoType>())
+        I.specs0.hasTrailingReturn= FP->hasTrailingReturn();
+    I.specs0.constexprKind = D->getConstexprKind();
+        // subsumes D->isConstexpr();
+        // subsumes D->isConstexprSpecified();
+        // subsumes D->isConsteval();
+    I.specs0.exceptionSpecType = D->getExceptionSpecType();
+    I.specs0.overloadedOperator = D->getOverloadedOperator();
+    I.specs0.storageClass = D->getStorageClass();
+    if(auto attr = D->template getAttr<WarnUnusedResultAttr>())
+    {
+        I.specs1.isNodiscard = true;
+        I.specs1.nodiscardSpelling = attr->getSemanticSpelling();
+    }
+
+    if constexpr(! std::derived_from<DeclTy, CXXMethodDecl>)
+    {
+        I.IsMethod = false;
+    }
+
+    //
+    // CXXMethodDecl
+    //
+    if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
+    {
+        I.IsMethod = true;
+        NamedDecl const* PD = nullptr;
+        if(auto const* SD = dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
+            PD = SD->getSpecializedTemplate();
+        else
+            PD = D->getParent();
+        SymbolID ParentID = getUSRForDecl(PD);
+        I.Parent = Reference(
+            ParentID,
+            PD->getNameAsString(),
+            InfoType::IT_record);
+
+        I.specs0.isVirtual = D->isVirtual();
+        I.specs0.isVirtualAsWritten = D->isVirtualAsWritten();
+        I.specs0.isPure = D->isPure();
+        I.specs0.isConst = D->isConst();
+        I.specs0.isVolatile = D->isVolatile();
+        I.specs0.refQualifier = D->getRefQualifier();
+        //D->isCopyAssignmentOperator()
+        //D->isMoveAssignmentOperator()
+        //D->isOverloadedOperator();
+        //D->isStaticOverloadedOperator();
+    }
+
+    //
+    // CXXDestructorDecl
+    //
+    if constexpr(std::derived_from<DeclTy, CXXDestructorDecl>)
+    {
+        //I.Name.append("-dtor");
+    }
+
+    //
+    // CXXConstructorDecl
+    //
+    if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
+    {
+        //I.Name.append("-ctor");
+        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
+    }
+
+    //
+    // CXXConversionDecl
+    //
+    if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
+    {
+        //I.Name.append("-conv");
+        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
+    }
+
+    //
+    // CXXDeductionGuideDecl
+    //
+    if constexpr(std::derived_from<DeclTy, CXXDeductionGuideDecl>)
+    {
+        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
+    }
+
+    return true;
+}
+
+//------------------------------------------------
+
 // Decl types which have isThisDeclarationADefinition:
 //
 // VarTemplateDecl
@@ -757,7 +882,7 @@ extractBases(
 void
 ASTVisitor::
 buildNamespace(
-    NamespaceDecl * D)
+    NamespaceDecl* D)
 {
     if(! shouldExtract(D))
         return;
@@ -852,178 +977,13 @@ buildRecord(
     }
 
     insertBitcode(ex_, writeBitcode(I));
-    auto Access = D->getAccess();
-    if(Access != AccessSpecifier::AS_none)
-        insertBitcode(ex_, writeParentWithAccess(toAccess(Access), I));
-    insertBitcode(ex_, writeParent(std::move(I)));
+    insertBitcode(ex_, writeParent(std::move(I), D->getAccess()));
 }
 
-template<class DeclTy>
-bool
-ASTVisitor::
-buildFunction(
-    FunctionInfo& I, DeclTy* D)
-{
-    if(! extractInfo(I, D))
-        return false;
-    LineNumber = getLine(D);
-    if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
-    else
-        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
-    QualType const qt = D->getReturnType();
-    std::string s = qt.getAsString();
-    I.ReturnType = getTypeInfoForType(qt);
-    parseParameters(I, D);
-
-    getTemplateParams(I.Template, D);
-
-    // Handle function template specializations.
-    if(FunctionTemplateSpecializationInfo const* FTSI =
-        D->getTemplateSpecializationInfo())
-    {
-        if(!I.Template)
-            I.Template.emplace();
-        I.Template->Specialization.emplace();
-        auto& Specialization = *I.Template->Specialization;
-
-        Specialization.SpecializationOf = getUSRForDecl(FTSI->getTemplate());
-
-        // Template parameters to the specialization.
-        if(FTSI->TemplateArguments)
-        {
-            for(TemplateArgument const& Arg :
-                    FTSI->TemplateArguments->asArray())
-            {
-                Specialization.Params.emplace_back(*D, Arg);
-            }
-        }
-    }
-
-    //
-    // FunctionDecl
-    //
-    I.specs0.isVariadic = D->isVariadic();
-    I.specs0.isDefaulted = D->isDefaulted();
-    I.specs0.isExplicitlyDefaulted = D->isExplicitlyDefaulted();
-    I.specs0.isDeleted = D->isDeleted();
-    I.specs0.isDeletedAsWritten = D->isDeletedAsWritten();
-    I.specs0.isNoReturn = D->isNoReturn();
-        // subsumes D->hasAttr<NoReturnAttr>()
-        // subsumes D->hasAttr<CXX11NoReturnAttr>()
-        // subsumes D->hasAttr<C11NoReturnAttr>()
-        // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
-    I.specs0.hasOverrideAttr = D->template hasAttr<OverrideAttr>();
-    if(auto const* FP = D->getType()->template getAs<FunctionProtoType>())
-        I.specs0.hasTrailingReturn= FP->hasTrailingReturn();
-    I.specs0.constexprKind = D->getConstexprKind();
-        // subsumes D->isConstexpr();
-        // subsumes D->isConstexprSpecified();
-        // subsumes D->isConsteval();
-    I.specs0.exceptionSpecType = D->getExceptionSpecType();
-    I.specs0.overloadedOperator = D->getOverloadedOperator();
-    I.specs0.storageClass = D->getStorageClass();
-    if(auto attr = D->template getAttr<WarnUnusedResultAttr>())
-    {
-        I.specs1.isNodiscard = true;
-        I.specs1.nodiscardSpelling = attr->getSemanticSpelling();
-    }
-
-    if constexpr(! std::derived_from<DeclTy, CXXMethodDecl>)
-    {
-        I.IsMethod = false;
-        I.Access = AccessSpecifier::AS_none;
-    }
-
-    //
-    // CXXMethodDecl
-    //
-    if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
-    {
-        I.IsMethod = true;
-        NamedDecl const* PD = nullptr;
-        if(auto const* SD = dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
-            PD = SD->getSpecializedTemplate();
-        else
-            PD = D->getParent();
-        SymbolID ParentID = getUSRForDecl(PD);
-        I.Parent = Reference(
-            ParentID,
-            PD->getNameAsString(),
-            InfoType::IT_record);
-        I.Access = D->getAccess();
-
-        I.specs0.isVirtual = D->isVirtual();
-        I.specs0.isVirtualAsWritten = D->isVirtualAsWritten();
-        I.specs0.isPure = D->isPure();
-        I.specs0.isConst = D->isConst();
-        I.specs0.isVolatile = D->isVolatile();
-        I.specs0.refQualifier = D->getRefQualifier();
-        //D->isCopyAssignmentOperator()
-        //D->isMoveAssignmentOperator()
-        //D->isOverloadedOperator();
-        //D->isStaticOverloadedOperator();
-    }
-
-    //
-    // CXXDestructorDecl
-    //
-    if constexpr(std::derived_from<DeclTy, CXXDestructorDecl>)
-    {
-        //I.Name.append("-dtor");
-    }
-
-    //
-    // CXXConstructorDecl
-    //
-    if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
-    {
-        //I.Name.append("-ctor");
-        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
-    }
-
-    //
-    // CXXConversionDecl
-    //
-    if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
-    {
-        //I.Name.append("-conv");
-        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
-    }
-
-    //
-    // CXXDeductionGuideDecl
-    //
-    if constexpr(std::derived_from<DeclTy, CXXDeductionGuideDecl>)
-    {
-        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
-    }
-
-    return true;
-}
-
-template<class DeclTy>
-void
-ASTVisitor::
-buildFunction(
-    DeclTy* D)
-{
-    if(! shouldExtract(D))
-        return;
-    FunctionInfo I;
-    if(! buildFunction(I, D))
-        return;
-    insertBitcode(ex_, writeBitcode(I));
-    if(I.Access != AccessSpecifier::AS_none)
-        insertBitcode(ex_, writeParentWithAccess(toAccess(I.Access), I));
-    insertBitcode(ex_, writeParent(std::move(I)));
-}
-
-template<class DeclTy>
 void
 ASTVisitor::
 buildFriend(
-    DeclTy* D)
+    FriendDecl* D)
 {
     if(NamedDecl* ND = D->getFriendDecl())
     {
@@ -1033,11 +993,8 @@ buildFriend(
             if(! shouldExtract(FD))
                 return;
             FunctionInfo I;
-            if(! buildFunction(I, FD))
+            if(! constructFunction(I, FD))
                 return;
-            // VFALCO This is unfortunate, but the
-            // default of 0 would be AS_public. see #84
-            I.Access = AccessSpecifier::AS_none;
             SymbolID id;
             getParent(id, D);
             RecordInfo P(id);
@@ -1078,6 +1035,86 @@ buildFriend(
     return;
 }
 
+void
+ASTVisitor::
+buildEnum(
+    EnumDecl* D)
+{
+    if(! shouldExtract(D))
+        return;
+    EnumInfo I;
+    if(! extractInfo(I, D))
+        return;
+    LineNumber = getLine(D);
+    if(D->isThisDeclarationADefinition())
+        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+    else
+        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
+    I.Scoped = D->isScoped();
+    if(D->isFixed())
+    {
+        auto Name = D->getIntegerType().getAsString();
+        I.BaseType = TypeInfo(Name);
+    }
+    parseEnumerators(I, D);
+    insertBitcode(ex_, writeBitcode(I));
+    insertBitcode(ex_, writeParent(std::move(I), D->getAccess()));
+}
+
+void
+ASTVisitor::
+buildVar(
+    VarDecl* D)
+{
+    if(! shouldExtract(D))
+        return;
+    VarInfo I;
+    if(! extractInfo(I, D))
+        return;
+    LineNumber = getLine(D);
+    if(D->isThisDeclarationADefinition())
+        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+    else
+        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
+    static_cast<TypeInfo&>(I) =
+        getTypeInfoForType(D->getTypeSourceInfo()->getType());
+    I.specs.storageClass = D->getStorageClass();
+    insertBitcode(ex_, writeBitcode(I));
+    insertBitcode(ex_, writeParent(std::move(I), D->getAccess()));
+}
+
+template<class DeclTy>
+requires std::derived_from<DeclTy, CXXMethodDecl>
+void
+ASTVisitor::
+buildFunction(
+    DeclTy* D)
+{
+    if(! shouldExtract(D))
+        return;
+    FunctionInfo I;
+    if(! constructFunction(I, D))
+        return;
+    insertBitcode(ex_, writeBitcode(I));
+    insertBitcode(ex_, writeParent(I, D->getAccess()));
+}
+
+template<class DeclTy>
+requires (! std::derived_from<DeclTy, CXXMethodDecl>)
+void
+ASTVisitor::
+buildFunction(
+    DeclTy* D)
+{
+    if(! shouldExtract(D))
+        return;
+    FunctionInfo I;
+    if(! constructFunction(I, D))
+        return;
+    insertBitcode(ex_, writeBitcode(I));
+    insertBitcode(ex_, writeParent(I));
+}
+
 template<class DeclTy>
 void
 ASTVisitor::
@@ -1105,55 +1142,7 @@ buildTypedef(
     I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
     I.IsUsing = std::is_same_v<DeclTy, TypeAliasDecl>;
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(std::move(I)));
-}
-
-void
-ASTVisitor::
-buildEnum(
-    EnumDecl* D)
-{
-    if(! shouldExtract(D))
-        return;
-    EnumInfo I;
-    if(! extractInfo(I, D))
-        return;
-    LineNumber = getLine(D);
-    if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
-    else
-        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
-    I.Scoped = D->isScoped();
-    if(D->isFixed())
-    {
-        auto Name = D->getIntegerType().getAsString();
-        I.BaseType = TypeInfo(Name);
-    }
-    parseEnumerators(I, D);
-    insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(std::move(I)));
-}
-
-void
-ASTVisitor::
-buildVar(
-    VarDecl* D)
-{
-    if(! shouldExtract(D))
-        return;
-    VarInfo I;
-    if(! extractInfo(I, D))
-        return;
-    LineNumber = getLine(D);
-    if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
-    else
-        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
-    static_cast<TypeInfo&>(I) =
-        getTypeInfoForType(D->getTypeSourceInfo()->getType());
-    I.specs.storageClass = D->getStorageClass();
-    insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(std::move(I)));
+    insertBitcode(ex_, writeParent(I, D->getAccess()));
 }
 
 //------------------------------------------------

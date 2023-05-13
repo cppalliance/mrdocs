@@ -158,11 +158,6 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     if( I.Bases.empty())
         I.Bases = std::move(Other.Bases);
     // Reduce children if necessary.
-    reduceChildren(I.Children.Records, std::move(Other.Children.Records));
-    reduceChildren(I.Children.Functions, std::move(Other.Children.Functions));
-    reduceChildren(I.Children.Typedefs, std::move(Other.Children.Typedefs));
-    reduceChildren(I.Children.Enums, std::move(Other.Children.Enums));
-    reduceChildren(I.Children.Vars, std::move(Other.Children.Vars));
     reduceRefsWithAccess(I.Children_.Records, std::move(Other.Children_.Records));
     reduceRefsWithAccess(I.Children_.Functions, std::move(Other.Children_.Functions));
     reduceRefsWithAccess(I.Children_.Enums, std::move(Other.Children_.Enums));
@@ -190,8 +185,6 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
     Assert(canMerge(I, Other));
     if(! I.IsMethod)
         I.IsMethod = Other.IsMethod;
-    if (!I.Access)
-        I.Access = Other.Access;
     if (I.ReturnType.Type.id == EmptySID && I.ReturnType.Type.Name == "")
         I.ReturnType = std::move(Other.ReturnType);
     if (I.Parent.id == EmptySID && I.Parent.Name == "")

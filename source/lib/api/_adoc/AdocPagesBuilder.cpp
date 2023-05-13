@@ -24,7 +24,7 @@ Err
 AdocPagesBuilder::
 build()
 {
-    corpus_.visit(*this, globalNamespaceID);
+    corpus_.traverse(*this, globalNamespaceID);
     wg_.wait();
     return {};
 }
@@ -63,7 +63,7 @@ AdocPagesBuilder::
 visit(
     NamespaceInfo const& I)
 {
-    corpus_.visit(*this, I.Children);
+    corpus_.traverse(*this, I);
     return true;
 }
 
@@ -73,7 +73,7 @@ visit(
     RecordInfo const& I)
 {
     build(I);
-    corpus_.visit(*this, I.Children);
+    corpus_.traverse(*this, I);
     return true;
 }
 

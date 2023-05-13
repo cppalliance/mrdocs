@@ -263,7 +263,6 @@ RecordIDNameMap = []()
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
         {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
-        {FUNCTION_ACCESS, {"Access", &Integer32Abbrev}},
         {FUNCTION_IS_METHOD, {"IsMethod", &BoolAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
@@ -322,7 +321,7 @@ RecordsByBlock{
     {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE, FIELD_ATTRIBUTES}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
-        {FUNCTION_ACCESS, FUNCTION_IS_METHOD, FUNCTION_BITS}},
+        {FUNCTION_IS_METHOD, FUNCTION_BITS}},
     // Javadoc
     {BI_JAVADOC_BLOCK_ID,
         {}},
@@ -809,7 +808,6 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
     emitInfoPart(I);
     emitSymbolPart(I);
-    emitRecord(I.Access, FUNCTION_ACCESS);
     emitRecord(I.IsMethod, FUNCTION_IS_METHOD);
     emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
     emitBlock(I.Parent, FieldId::F_parent);
@@ -960,16 +958,6 @@ emitBlock(
     emitRecord(I.Children_.Enums, RECORD_ENUMS);
     emitRecord(I.Children_.Types, RECORD_TYPES);
     emitRecord(I.Children_.Vars, RECORD_VARS);
-    for (const auto& C : I.Children.Records)
-        emitBlock(C, FieldId::F_child_record);
-    for (auto const& C : I.Children.Functions)
-        emitBlock(C, FieldId::F_child_function);
-    for (const auto& ref : I.Children.Typedefs)
-        emitBlock(ref, FieldId::F_child_typedef);
-    for (const auto& ref : I.Children.Enums)
-        emitBlock(ref, FieldId::F_child_enum);
-    for (const auto& ref : I.Children.Vars)
-        emitBlock(ref, FieldId::F_child_variable);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord(I.Friends, RECORD_FRIENDS);

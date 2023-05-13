@@ -271,49 +271,6 @@ write(
     // Description
     writeDescription(I.javadoc);
 
-#if 0
-    // Nested Types
-    writeNestedTypes(
-        "Types",
-        I.Children.Typedefs,
-        AccessSpecifier::AS_public);
-
-    // Data Members
-    writeDataMembers(
-        "Data Members",
-        I.Members,
-        AccessSpecifier::AS_public);
-
-    // Member Functions
-    writeFunctionOverloads(
-        "Member Functions",
-        makeOverloadsSet(corpus_, I.Children,
-            AccessSpecifier::AS_public));
-
-    // Data Members (protected)
-    writeDataMembers(
-        "Protected Data Members",
-        I.Members,
-        AccessSpecifier::AS_protected);
-
-    // Member Functions (protected)
-    writeFunctionOverloads(
-        "Protected Member Functions",
-        makeOverloadsSet(corpus_, I.Children,
-                AccessSpecifier::AS_protected));
-
-    // Data Members (private)
-    writeDataMembers(
-        "Private Data Members",
-        I.Members,
-        AccessSpecifier::AS_private);
-
-    // Member Functions (private)
-    writeFunctionOverloads(
-        "Private Member Functions",
-        makeOverloadsSet(corpus_, I.Children,
-            AccessSpecifier::AS_private));
-#endif
     auto J = makeInterface(I, corpus_);
 
     writeTrancheList("Classes",                 J.Public.Records);
@@ -527,45 +484,6 @@ writeBase(
         os_ << "virtual ";
     os_ << clang::getAccessSpelling(I.Access) << " ";
     os_ << I.Name;
-}
-
-void
-AdocWriter::
-writeFunctionOverloads(
-    llvm::StringRef sectionName,
-    OverloadsSet const& set)
-{
-    if(set.list.empty())
-        return;
-    beginSection(sectionName);
-    os_ <<
-        "\n"
-        "[,cols=2]\n" <<
-        "|===\n" <<
-        "|Name |Description\n" <<
-        "\n";
-    for(auto const& J : set.list)
-    {
-        os_ <<
-            "|`" << linkFor(*J.list.front()) << "`\n" <<
-            "|";
-        if(! J.list.empty())
-        {
-            for(auto const& K : J.list)
-            {
-                writeBrief(K->javadoc, false);
-                os_ << '\n';
-            }
-        }
-        else
-        {
-            os_ << '\n';
-        }
-    }   
-    os_ <<
-        "|===\n" <<
-        "\n";
-    endSection();
 }
 
 void

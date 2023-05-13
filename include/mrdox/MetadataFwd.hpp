@@ -30,14 +30,13 @@ struct EnumValueInfo;
 struct EnumInfo;
 struct FieldTypeInfo;
 struct FunctionInfo;
-struct Overloads;
-struct OverloadsSet;
 struct Info;
 struct Javadoc;
 struct Location;
 struct MemberTypeInfo;
 struct NamespaceInfo;
 struct RecordInfo;
+struct RecordScope;
 struct RefWithAccess;
 struct Reference;
 struct Scope;
@@ -50,6 +49,12 @@ struct TypedefInfo;
 struct VarInfo;
 struct VerbatimBlock;
 
+struct DataMember;
+struct MemberEnum;
+struct MemberFunction;
+struct MemberRecord;
+struct MemberType;
+struct StaticDataMember;
 
 template<unsigned char Offset,
          unsigned char Size,

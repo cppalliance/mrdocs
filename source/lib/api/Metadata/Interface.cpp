@@ -112,7 +112,7 @@ private:
             for(auto const& ref : From.Children_.Functions)
             {
                 auto const& J = corpus_.get<FunctionInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, J.Access);
+                auto actualAccess = effectiveAccess(access, ref.access);
                 // private virtual functions are emitted anyway since
                 // they are always accessible from derived classes
                 // unless this class is marked `final`.

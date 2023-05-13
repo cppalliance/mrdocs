@@ -4,6 +4,40 @@
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="record-1.cpp" line="1" class="def"/>
+    <function name="f1" id="9sznTZ3/SXQNZpCsoMG8KWGLuEc=">
+      <file path="record-1.cpp" line="6"/>
+    </function>
+    <function name="f2" id="w0ONazxXaWlB0RQLjfDqDWICUwo=">
+      <file path="record-1.cpp" line="7"/>
+      <return type="int"/>
+    </function>
+    <function name="f3" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
+      <file path="record-1.cpp" line="8"/>
+      <return type="char"/>
+    </function>
+    <function name="g1" access="protected" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA=">
+      <file path="record-1.cpp" line="15"/>
+      <doc>
+        <brief>
+          <text>brief-g1</text>
+        </brief>
+        <para>
+          <text>desc</text>
+        </para>
+      </doc>
+    </function>
+    <function name="g2" access="protected" id="flHl59B/bdRwuiNeh3sHqCycic0=">
+      <file path="record-1.cpp" line="21"/>
+      <return type="int"/>
+      <doc>
+        <brief>
+          <text>brief-g2</text>
+        </brief>
+        <returns>
+          <text>the number 2</text>
+        </returns>
+      </doc>
+    </function>
     <function name="g3" access="protected" id="DKxv4h+rP37b0u6O1qbB+u416ZY=">
       <file path="record-1.cpp" line="28"/>
       <return type="char"/>
@@ -20,48 +54,14 @@
         </param>
       </doc>
     </function>
-    <function name="f3" access="public" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
-      <file path="record-1.cpp" line="8"/>
-      <return type="char"/>
-    </function>
-    <function name="g2" access="protected" id="flHl59B/bdRwuiNeh3sHqCycic0=">
-      <file path="record-1.cpp" line="21"/>
-      <return type="int"/>
-      <doc>
-        <brief>
-          <text>brief-g2</text>
-        </brief>
-        <returns>
-          <text>the number 2</text>
-        </returns>
-      </doc>
-    </function>
-    <function name="f2" access="public" id="w0ONazxXaWlB0RQLjfDqDWICUwo=">
-      <file path="record-1.cpp" line="7"/>
-      <return type="int"/>
-    </function>
-    <function name="f1" access="public" id="9sznTZ3/SXQNZpCsoMG8KWGLuEc=">
-      <file path="record-1.cpp" line="6"/>
-    </function>
-    <function name="g1" access="protected" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA=">
-      <file path="record-1.cpp" line="15"/>
-      <doc>
-        <brief>
-          <text>brief-g1</text>
-        </brief>
-        <para>
-          <text>desc</text>
-        </para>
-      </doc>
-    </function>
-    <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
-      <file path="record-1.cpp" line="4" class="def"/>
-      <type name="char"/>
-    </typedef>
     <alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
       <file path="record-1.cpp" line="3" class="def"/>
       <type name="int"/>
     </alias>
+    <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
+      <file path="record-1.cpp" line="4" class="def"/>
+      <type name="char"/>
+    </typedef>
   </struct>
 </namespace>
 </mrdox>

@@ -13,6 +13,7 @@
 #define MRDOX_API_XML_XMLTAGS_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Access.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Type.hpp>
@@ -99,6 +100,27 @@ struct Attribute
         : name("id")
         , value(toString(id))
         , pred(id != EmptySID)
+    {
+    }
+
+    Attribute(
+        Access const* access)
+        : name("access")
+        , value(
+            [access]
+            {
+                if(! access)
+                    return std::string();
+                switch(*access)
+                {
+                case Access::Public: return std::string("public");
+                case Access::Protected: return std::string("protected");
+                case Access::Private: return std::string("private");
+                default:
+                    llvm_unreachable("unknown Access");
+                }
+            }())
+        , pred(access != nullptr && *access != Access::Public)
     {
     }
 
