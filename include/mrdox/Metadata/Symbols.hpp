@@ -34,6 +34,54 @@ using SymbolID = std::array<unsigned char, 20>;
 */
 constexpr SymbolID const EmptySID = SymbolID();
 
+/** Like optional<SymbolID>
+*/
+class OptionalSymbolID
+{
+    SymbolID ID_{};
+
+public:
+    using value_type = SymbolID;
+
+    constexpr OptionalSymbolID() = default;
+
+    constexpr OptionalSymbolID(std::nullopt_t) noexcept
+        : OptionalSymbolID()
+    {
+    }
+
+    constexpr OptionalSymbolID(
+        OptionalSymbolID const& other) = default;
+
+    constexpr OptionalSymbolID& operator=(
+        OptionalSymbolID const& other) = default;
+
+    constexpr OptionalSymbolID(value_type const& v) noexcept
+        : ID_(v)
+    {
+    }
+
+    constexpr value_type& operator*() noexcept
+    {
+        return ID_;
+    }
+
+    constexpr value_type const& operator*() const noexcept
+    {
+        return ID_;
+    }
+
+    constexpr explicit operator bool() const noexcept
+    {
+        return has_value();
+    }
+
+    constexpr bool has_value() const noexcept
+    {
+        return ID_ != EmptySID;
+    }
+};
+
 /** The ID of the global namespace.
 */
 constexpr SymbolID const globalNamespaceID = EmptySID;
