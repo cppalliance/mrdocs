@@ -56,17 +56,8 @@ struct BitcodeReader::AnyBlock
 class VersionBlock
     : public BitcodeReader::AnyBlock
 {
-    BitcodeReader& br_;
-
 public:
     unsigned V;
-
-    explicit
-    VersionBlock(
-        BitcodeReader& br) noexcept
-        : br_(br)
-    {
-    }
 
     llvm::Error
     parseRecord(Record const& R,
@@ -568,16 +559,13 @@ public:
 class BaseBlock
     : public BitcodeReader::AnyBlock
 {
-    BitcodeReader& br_;
     std::vector<BaseInfo>& v_;
 
 public:
     explicit
     BaseBlock(
-        std::vector<BaseInfo>& v,
-        BitcodeReader& br) noexcept
-        : br_(br)
-        , v_(v)
+        std::vector<BaseInfo>& v) noexcept
+        : v_(v)
     {
         v_.emplace_back();
     }
@@ -885,7 +873,7 @@ public:
         }
         case BI_BASE_BLOCK_ID:
         {
-            BaseBlock B(I->Bases, br_);
+            BaseBlock B(I->Bases);
             return br_.readBlock(B, ID);
         }
         case BI_TEMPLATE_BLOCK_ID:
@@ -1031,15 +1019,12 @@ public:
 
 class EnumValueBlock : public BitcodeReader::AnyBlock
 {
-    BitcodeReader& br_;
     EnumValueInfo& I_;
 
 public:
     EnumValueBlock(
-        EnumValueInfo& I,
-        BitcodeReader& br) noexcept
-        : br_(br)
-        , I_(I)
+        EnumValueInfo& I) noexcept
+        : I_(I)
     {
     }
 
@@ -1101,7 +1086,7 @@ public:
         case BI_ENUM_VALUE_BLOCK_ID:
         {
             I->Members.emplace_back();
-            EnumValueBlock B(I->Members.back(), br_);
+            EnumValueBlock B(I->Members.back());
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             return llvm::Error::success();

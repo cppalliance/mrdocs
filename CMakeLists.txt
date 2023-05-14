@@ -236,9 +236,12 @@ if (BUILD_TESTING)
             message(FATAL_ERROR "Java is needed to run xml-lint")
         endif()
 
-        add_custom_target(mrdox.rng ALL DEPENDS mrdox.rnc
-                         COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/tools/trang.jar
-                ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng)
+        add_custom_target(
+            mrdox.rng ALL
+            DEPENDS mrdox.rnc
+            COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/tools/trang.jar
+                ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng
+            SOURCES mrdox.rnc)
 
 
         file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)

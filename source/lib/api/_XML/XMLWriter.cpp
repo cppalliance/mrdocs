@@ -525,15 +525,26 @@ XMLWriter::
 writeMemberType(
     MemberTypeInfo const& I)
 {
-    tags_.open(dataMemberTagName, {
-        { "name", I.Name },
-        { "type", I.Type.Name },
-        { "value", I.DefaultValue, ! I.DefaultValue.empty() },
-        { &I.access },
-        { I.Type.id } });
-
-    write(I.Flags, tags_);
-    tags_.close("data");
+    if(I.Flags.raw == 0)
+    {
+        tags_.write(dataMemberTagName, "", {
+            { "name", I.Name },
+            { "type", I.Type.Name },
+            { "value", I.DefaultValue, ! I.DefaultValue.empty() },
+            { &I.access },
+            { I.Type.id } });
+    }
+    else
+    {
+        tags_.open(dataMemberTagName, {
+            { "name", I.Name },
+            { "type", I.Type.Name },
+            { "value", I.DefaultValue, ! I.DefaultValue.empty() },
+            { &I.access },
+            { I.Type.id } });
+        write(I.Flags, tags_);
+        tags_.close(dataMemberTagName);
+    }
 }
 
 //------------------------------------------------

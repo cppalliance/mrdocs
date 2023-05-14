@@ -4,29 +4,22 @@
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="record-data.cpp" line="3" class="def"/>
-    <data name="i" type="int">
-    </data>
-    <data name="j" type="double">
-    </data>
+    <data name="i" type="int"/>
+    <data name="j" type="double"/>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
     <file path="record-data.cpp" line="9" class="def"/>
-    <data name="t" type="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    </data>
+    <data name="t" type="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
   </struct>
   <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
     <file path="record-data.cpp" line="23" class="def"/>
-    <data name="buf" type="char[64]">
-    </data>
+    <data name="buf" type="char[64]"/>
   </struct>
   <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
     <file path="record-data.cpp" line="14" class="def"/>
-    <data name="i" type="int" access="private">
-    </data>
-    <data name="j" type="unsigned long" access="protected">
-    </data>
-    <data name="k" type="double" access="private">
-    </data>
+    <data name="i" type="int" access="private"/>
+    <data name="j" type="unsigned long" access="protected"/>
+    <data name="k" type="double" access="private"/>
   </class>
 </namespace>
 </mrdox>

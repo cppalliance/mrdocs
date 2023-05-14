@@ -786,11 +786,6 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
     {
-        NamedDecl const* PD = nullptr;
-        if(auto const* SD = dyn_cast<ClassTemplateSpecializationDecl>(D->getParent()))
-            PD = SD->getSpecializedTemplate();
-        else
-            PD = D->getParent();
         I.specs0.isVirtual = D->isVirtual();
         I.specs0.isVirtualAsWritten = D->isVirtualAsWritten();
         I.specs0.isPure = D->isPure();
