@@ -169,12 +169,12 @@ writeIndex()
     tags_.open("symbols");
     if(options_.safe_names)
     {
-        SafeNames names(corpus_);
+        SafeNames names(os_, corpus_);
         for(auto I : corpus_.index())
         {
             auto safe_name = names.get(I->id);
             tags_.write("symbol", {}, {
-                //{ "mangled", I->MangledName, ! I->MangledName.empty() },
+                { "mangled", I->MangledName, /*! I->MangledName.empty()*/ },
                 { "safe", safe_name },
                 { "name", I->getFullyQualifiedName(temp) },
                 { "tag", getTagName(*I) },

@@ -55,7 +55,7 @@ public:
         llvm::raw_ostream& os,
         Corpus const& corpus)
         :
-        //os_(&os),
+        os_(&os),
         corpus_(corpus)
     {
         prefix_.reserve(512);
@@ -140,13 +140,14 @@ private:
     llvm::StringRef
     getSafe(Info const& I)
     {
+        //return I.MangledName;
         if(I.IT != InfoType::IT_function)
-            return I.Name;
+            return I.MangledName;
         auto const& FI = static_cast<
             FunctionInfo const&>(I);
         auto OOK = FI.specs0.overloadedOperator.get();
         if(OOK == OverloadedOperatorKind::OO_None)
-            return I.Name;
+            return I.MangledName;
         temp_ = '0';
         temp_.append(getSafeOperatorName(OOK));
         return temp_;

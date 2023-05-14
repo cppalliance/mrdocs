@@ -755,6 +755,23 @@ constructFunction(
 {
     if(! extractInfo(I, D))
         return false;
+
+    if constexpr(std::is_same_v<CXXConstructorDecl, DeclTy>)
+    {
+        I.MangledName = D->getName();
+    }
+    else if constexpr(std::is_same_v<CXXDestructorDecl, DeclTy>)
+    {
+        I.MangledName = D->getName();
+    }
+    else
+    {
+        if(auto* DI = D->getIdentifier())
+            I.MangledName = DI->getName();
+        else
+            I.MangledName = "?";
+    }
+
     LineNumber = getLine(D);
     if(D->isThisDeclarationADefinition())
         I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
@@ -764,27 +781,6 @@ constructFunction(
     std::string s = qt.getAsString();
     I.ReturnType = getTypeInfoForType(qt);
     parseParameters(I, D);
-
-    std::string MangledName;
-    if(mc_->shouldMangleDeclName(D))
-    {
-        llvm::raw_string_ostream os(MangledName);
-        auto temp = D->getDeclContext();
-        D->setDeclContext(D->getTranslationUnitDecl());
-        if(auto* CD = llvm::dyn_cast<CXXConstructorDecl>(D))
-            mc_->mangleName({CD, CXXCtorType::Ctor_Complete}, os);
-        else if(auto* CD = llvm::dyn_cast<CXXDestructorDecl>(D))
-            mc_->mangleName({CD, CXXDtorType::Dtor_Complete}, os);
-        else
-            mc_->mangleName(D, os);
-        D->setDeclContext(temp);
-        os.flush();
-    }
-    else
-    {
-        MangledName = D->getIdentifier()->getName();
-    }
-    caseEncodeMangledName(I.MangledName, MangledName, I.Name);
 
     getTemplateParams(I.Template, D);
 
@@ -931,6 +927,9 @@ buildRecord(
     RecordInfo I;
     if(! extractInfo(I, D))
         return;
+
+    I.MangledName = D->getName();
+
     LineNumber = getLine(D);
     if(D->isThisDeclarationADefinition())
         I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
@@ -1182,11 +1181,13 @@ buildTypedef(
         return;
     }
 
+#if 0
     {
         llvm::raw_string_ostream os(I.MangledName);
         mc_->mangleTypeName(QT, os);
         os.flush();
     }
+#endif
 
     LineNumber = getLine(D);
     // D->isThisDeclarationADefinition(); // not available
@@ -1275,6 +1276,7 @@ ASTVisitor::
 WalkUpFromCXXConstructorDecl(
     CXXConstructorDecl* D)
 {
+    auto s = D->getNameAsString();
     buildFunction(D);
     return true;
 }
