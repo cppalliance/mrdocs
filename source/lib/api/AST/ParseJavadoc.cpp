@@ -163,10 +163,11 @@ class JavadocVisitor
 public:
     JavadocVisitor(
         RawComment const* RC,
-        ASTContext const& ctx,
-        Decl const* D)
-        : FC_(RC->parse(ctx, nullptr, D))
-        , ctx_(ctx)
+        Decl const* D,
+        Reporter& R)
+        : FC_(RC->parse(D->getASTContext(), nullptr, D))
+        , ctx_(D->getASTContext())
+        , R_(R)
     {
     }
 
@@ -396,6 +397,7 @@ public:
 private:
     FullComment const* FC_;
     ASTContext const& ctx_;
+    Reporter& R_;
     AnyList<Javadoc::Block> blocks_;
     AnyList<Javadoc::Param> params_;
     Javadoc::Paragraph* para_ = nullptr;
@@ -544,10 +546,10 @@ dumpCommentCommands()
 Javadoc
 parseJavadoc(
     RawComment const* RC,
-    ASTContext const& Ctx,
-    Decl const* D)
+    Decl const* D,
+    Reporter& R)
 {
-    return JavadocVisitor(RC, Ctx, D).build();
+    return JavadocVisitor(RC, D, R).build();
 }
 
 } // mrdox

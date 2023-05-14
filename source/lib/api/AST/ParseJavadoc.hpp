@@ -13,6 +13,7 @@
 #define MRDOX_API_AST_PARSEJAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Reporter.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <clang/AST/Decl.h>
 #include "clangASTComment.hpp"
@@ -26,8 +27,8 @@ namespace mrdox {
 Javadoc
 parseJavadoc(
     RawComment const* RC,
-    ASTContext const& Ctx,
-    Decl const* D);
+    Decl const* D,
+    Reporter& R);
 
 } // mrdox
 } // clang

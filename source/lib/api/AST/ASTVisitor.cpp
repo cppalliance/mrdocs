@@ -329,7 +329,8 @@ static
 void
 parseJavadoc(
     llvm::Optional<Javadoc>& javadoc,
-    Decl const* D)
+    Decl const* D,
+    Reporter& R)
 {
     // VFALCO investigate whether we can use
     // ASTContext::getCommentForDecl instead
@@ -338,7 +339,7 @@ parseJavadoc(
     if(RC)
     {
         RC->setAttached();
-        javadoc.emplace(parseJavadoc(RC, D->getASTContext(), D));
+        javadoc.emplace(parseJavadoc(RC, D, R));
     }
     else
     {
@@ -356,7 +357,7 @@ getMemberTypeInfo(
     Reporter& R)
 {
     Assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
-    parseJavadoc(I.javadoc, D);
+    parseJavadoc(I.javadoc, D, R);
 
     for (auto attr : D->attrs())
     {
@@ -638,7 +639,7 @@ extractInfo(
     if(! extractSymbolID(I.id, D))
         return false;
     I.Name = D->getNameAsString();
-    parseJavadoc(I.javadoc, D);
+    parseJavadoc(I.javadoc, D, R_);
     return true;
 }
 
