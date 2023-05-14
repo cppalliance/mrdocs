@@ -40,7 +40,8 @@ NamespaceOverloads(
             it0 + 1, data_.end(),
             [it0](auto I)
             {
-                return (*it0)->Name.compare_insensitive(I->Name) == 0;
+                return llvm::StringRef((*it0)->Name).compare_insensitive(
+                    llvm::StringRef(I->Name)) == 0;
             });
         list.emplace_back(OverloadInfo{
             &I,

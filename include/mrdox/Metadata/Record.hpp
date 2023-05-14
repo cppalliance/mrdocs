@@ -82,10 +82,6 @@ struct RecordInfo : SymbolInfo
     // Type of this record (struct, class, union, interface).
     TagTypeKind TagType = TagTypeKind::TTK_Struct;
 
-    // Full qualified name of this record, including namespaces and template
-    // specializations.
-    llvm::SmallString<16> FullName;
-
     // When present, this record is a template or specialization.
     llvm::Optional<TemplateInfo> Template;
 
