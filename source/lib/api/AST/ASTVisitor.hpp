@@ -15,8 +15,10 @@
 #include "api/ConfigImpl.hpp"
 #include <mrdox/Reporter.hpp>
 #include <mrdox/MetadataFwd.hpp>
+#include <clang/AST/Mangle.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Tooling/Execution.h>
+#
 #include <unordered_map>
 
 namespace clang {
@@ -48,6 +50,7 @@ public:
     };
 
     tooling::ExecutionContext& ex_;
+    std::unique_ptr<MangleContext> mc_;
     ConfigImpl const& config_;
     Reporter& R_;
 

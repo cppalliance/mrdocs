@@ -84,7 +84,9 @@ void mergeInfo(Info& I, Info&& Other)
     if (I.id == EmptySID)
         I.id = Other.id;
     if (I.Name == "")
-        I.Name = Other.Name;
+        I.Name = std::move(Other.Name);
+    if (I.MangledName.empty())
+        I.MangledName = std::move(Other.MangledName);
     if (I.Namespace.empty())
         I.Namespace = std::move(Other.Namespace);
 

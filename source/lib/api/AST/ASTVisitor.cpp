@@ -12,10 +12,11 @@
 #include "ASTVisitor.hpp"
 #include "Bitcode.hpp"
 #include "Commands.hpp"
-#include "api/ConfigImpl.hpp"
 #include "ParseJavadoc.hpp"
-#include "api/Support/Path.hpp"
+#include "api/ConfigImpl.hpp"
 #include "api/Support/Debug.hpp"
+#include "api/Support/Path.hpp"
+#include "api/Support/Radix.hpp"
 #include <mrdox/Metadata.hpp>
 #include <clang/AST/Attr.h>
 #include <clang/AST/Decl.h>
@@ -553,6 +554,42 @@ parseEnumerators(
 
 //------------------------------------------------
 
+static
+std::string
+caseEncoding(
+    llvm::StringRef s)
+{
+    std::string binaryString;
+    binaryString.reserve(s.size());
+    for(char c : s)
+        if(c >= 'A' && c <= 'Z')
+            binaryString += '1';
+        else
+            binaryString += '0';
+    std::string result;
+    binaryStringToBase32(result, binaryString);
+    return result;
+}
+
+static
+void
+caseEncodeMangledName(
+    std::string& dest,
+    llvm::StringRef mangledName,
+    llvm::StringRef symbolName)
+{
+    Assert(mangledName.size() >= 2);
+    Assert(mangledName.substr(0, 2) == "_Z");
+    mangledName = mangledName.substr(2);
+    auto suffix = caseEncoding(symbolName);
+    dest.clear();
+    dest.reserve(mangledName.size() + suffix.size());
+    dest.append(mangledName);
+    dest.append(suffix);
+}
+
+//------------------------------------------------
+
 // This also sets IsFileInRootDir
 bool
 ASTVisitor::
@@ -727,6 +764,27 @@ constructFunction(
     std::string s = qt.getAsString();
     I.ReturnType = getTypeInfoForType(qt);
     parseParameters(I, D);
+
+    std::string MangledName;
+    if(mc_->shouldMangleDeclName(D))
+    {
+        llvm::raw_string_ostream os(MangledName);
+        auto temp = D->getDeclContext();
+        D->setDeclContext(D->getTranslationUnitDecl());
+        if(auto* CD = llvm::dyn_cast<CXXConstructorDecl>(D))
+            mc_->mangleName({CD, CXXCtorType::Ctor_Complete}, os);
+        else if(auto* CD = llvm::dyn_cast<CXXDestructorDecl>(D))
+            mc_->mangleName({CD, CXXDtorType::Dtor_Complete}, os);
+        else
+            mc_->mangleName(D, os);
+        D->setDeclContext(temp);
+        os.flush();
+    }
+    else
+    {
+        MangledName = D->getIdentifier()->getName();
+    }
+    caseEncodeMangledName(I.MangledName, MangledName, I.Name);
 
     getTemplateParams(I.Template, D);
 
@@ -1111,7 +1169,9 @@ buildTypedef(
     TypedefInfo I;
     if(! extractInfo(I, D))
         return;
-    I.Underlying = getTypeInfoForType(D->getUnderlyingType());
+
+    auto const QT = D->getUnderlyingType();
+    I.Underlying = getTypeInfoForType(QT);
     if(I.Underlying.Type.Name.empty())
     {
         // Typedef for an unnamed type. This is like
@@ -1120,6 +1180,12 @@ buildTypedef(
         // a record with that name, so we don't want to emit
         // a duplicate here.
         return;
+    }
+
+    {
+        llvm::raw_string_ostream os(I.MangledName);
+        mc_->mangleTypeName(QT, os);
+        os.flush();
     }
 
     LineNumber = getLine(D);
@@ -1140,6 +1206,8 @@ HandleTranslationUnit(
 {
     // This visitor is written expecting post-order
     Assert(shouldTraversePostOrder());
+
+    mc_.reset(ItaniumMangleContext::create(Context, Context.getDiagnostics()));
 
     // cache contextual variables
     astContext_ = &Context;

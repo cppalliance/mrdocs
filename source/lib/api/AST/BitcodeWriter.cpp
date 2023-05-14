@@ -256,6 +256,7 @@ RecordIDNameMap = []()
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
+        {INFO_PART_MANGLED_NAME, {"MangledName", &StringAbbrev}},
         {JAVADOC_LIST_KIND, {"JavadocListKind", &Integer32Abbrev}},
         {JAVADOC_NODE_KIND, {"JavadocNodeKind", &Integer32Abbrev}},
         {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
@@ -303,7 +304,7 @@ RecordsByBlock{
     {BI_VERSION_BLOCK_ID, {VERSION}},
     // Info part
     {BI_INFO_PART_ID,
-        {INFO_PART_ID, INFO_PART_NAME}},
+        {INFO_PART_ID, INFO_PART_NAME, INFO_PART_MANGLED_NAME}},
     // SymbolInfo part
     {BI_SYMBOL_PART_ID,
         {SYMBOL_PART_LOCDEF, SYMBOL_PART_LOC}},
@@ -729,6 +730,7 @@ emitInfoPart(
     StreamSubBlockGuard Block(Stream, BI_INFO_PART_ID);
     emitRecord(I.id, INFO_PART_ID);
     emitRecord(I.Name, INFO_PART_NAME);
+    emitRecord(I.MangledName, INFO_PART_MANGLED_NAME);
     if(I.javadoc)
         emitBlock(*I.javadoc);
     for (const auto& N : I.Namespace)

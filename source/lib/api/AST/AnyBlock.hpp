@@ -317,6 +317,8 @@ public:
             return decodeRecord(R, I.id, Blob);
         case INFO_PART_NAME:
             return decodeRecord(R, I.Name, Blob);
+        case INFO_PART_MANGLED_NAME:
+            return decodeRecord(R, I.MangledName, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }

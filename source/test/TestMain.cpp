@@ -155,8 +155,9 @@ makeConfig(
         "with-private: true\n"
         "generator:\n"
         "  xml:\n"
-        "    index: false\n"
-        "    prolog: true\n";
+        "    index: true\n"
+        "    prolog: true\n"
+        "    safe-names: true\n";
 
     std::error_code ec;
     auto config = loadConfigString(

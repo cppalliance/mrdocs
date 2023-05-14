@@ -174,6 +174,7 @@ writeIndex()
         {
             auto safe_name = names.get(I->id);
             tags_.write("symbol", {}, {
+                //{ "mangled", I->MangledName, ! I->MangledName.empty() },
                 { "safe", safe_name },
                 { "name", I->getFullyQualifiedName(temp) },
                 { "tag", getTagName(*I) },

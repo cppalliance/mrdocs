@@ -41,6 +41,7 @@ struct Info
     /** The unqualified name.
     */
     std::string Name;
+    std::string MangledName;
 
     /** In-order List of parent namespaces.
     */
