@@ -145,14 +145,11 @@ class CorpusImpl::
     Canonicalizer : public MutableVisitor
 {
     CorpusImpl& corpus_;
-    Reporter& R_;
 
 public:
     Canonicalizer(
-        CorpusImpl& corpus,
-        Reporter& R) noexcept
+        CorpusImpl& corpus) noexcept
         : corpus_(corpus)
-        , R_(R)
     {
     }
 
@@ -250,7 +247,7 @@ canonicalize(
         return;
     if(config_->verboseOutput)
         R.print("Canonicalizing...");
-    Canonicalizer cn(*this, R);
+    Canonicalizer cn(*this);
     traverse(cn, globalNamespaceID);
     std::string temp0;
     std::string temp1;

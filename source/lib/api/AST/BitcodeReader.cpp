@@ -44,7 +44,7 @@ getInfos()
         // Top level Version is first
         case BI_VERSION_BLOCK_ID:
         {
-            VersionBlock B(*this);
+            VersionBlock B;
             if (auto Err = readBlock(B, ID))
                 return std::move(Err);
             continue;

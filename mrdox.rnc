@@ -44,6 +44,7 @@ grammar
     RecordContent =
     (
         Name,
+        Access ?,
         ID,
         Location *,
         (
@@ -61,7 +62,7 @@ grammar
         element base
         {
             Name,
-            Access,
+            Access ?,
             attribute class { "virtual" } ?,
             ID
         }
@@ -72,7 +73,7 @@ grammar
             Name,
             attribute type { text },
             attribute value { text } ?,
-            Access,
+            Access ?,
             ID ?,
             Attr *
         }
@@ -167,7 +168,11 @@ grammar
             element symbol { Symbol }
         } *
 
-    TemplateParamInfo = element tparam { attribute decl { text } }
+    TemplateParamInfo =
+        element tparam
+        {
+            attribute decl { text }
+        }
 
     Location =
         element file

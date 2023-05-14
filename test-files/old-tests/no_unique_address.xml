@@ -4,8 +4,7 @@
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="no_unique_address.cpp" line="5" class="def"/>
-    <data name="i" type="int">
-    </data>
+    <data name="i" type="int"/>
     <data name="e" type="Empty" id="iczIHP1J59EwYw3xxL3w2C3Q43Q=">
       <attr id="nodiscard"/>
       <attr id="deprecated"/>

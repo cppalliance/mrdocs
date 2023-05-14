@@ -401,7 +401,6 @@ private:
     AnyList<Javadoc::Block> blocks_;
     AnyList<Javadoc::Param> params_;
     Javadoc::Paragraph* para_ = nullptr;
-    llvm::raw_string_ostream* os_ = nullptr;
 };
 
 //------------------------------------------------
