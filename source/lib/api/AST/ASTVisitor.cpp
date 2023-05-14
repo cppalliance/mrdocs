@@ -384,7 +384,7 @@ template<class Child>
 static
 void
 insertChild(
-    RecordInfo& P, Access access, Child const& I)
+    RecordInfo& P, Child const& I, Access access)
 {
     if constexpr(std::is_same_v<Child, RecordInfo>)
     {
@@ -476,12 +476,12 @@ writeParent(
             // In global namespace
             NamespaceInfo P;
             Assert(P.id == globalNamespaceID);
-            insertChild(P, std::move(I));
+            insertChild(P, I);
             return writeBitcode(P);
         }
         Assert(I.Namespace[0].RefType == InfoType::IT_namespace);
         NamespaceInfo P(I.Namespace[0].id);
-        insertChild(P, std::move(I));
+        insertChild(P, I);
         return writeBitcode(P);
     }
     case AccessSpecifier::AS_public:
@@ -504,7 +504,7 @@ writeParent(
     Assert(I.Namespace[0].RefType == InfoType::IT_record);
     Assert(Child::type_id != InfoType::IT_namespace);
     RecordInfo P(I.Namespace[0].id);
-    insertChild(P, access_, I);
+    insertChild(P, I, access_);
     return writeBitcode(P);
 }
 
@@ -864,7 +864,7 @@ buildNamespace(
     if(D->isAnonymousNamespace())
         I.Name = "@nonymous_namespace"; // VFALCO BAD!
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(std::move(I)));
+    insertBitcode(ex_, writeParent(I));
 }
 
 void
@@ -966,7 +966,7 @@ buildRecord(
         access = D->getAccess();
     }
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(std::move(I), access));
+    insertBitcode(ex_, writeParent(I, access));
 }
 
 void
@@ -991,9 +991,9 @@ buildFriend(
             bool isInAnonymous;
             getParentNamespaces(P.Namespace, ND, isInAnonymous);
             insertBitcode(ex_, writeBitcode(I));
-            insertBitcode(ex_, writeParent(std::move(I)));
+            insertBitcode(ex_, writeParent(I));
             insertBitcode(ex_, writeBitcode(P));
-            insertBitcode(ex_, writeParent(std::move(P)));
+            insertBitcode(ex_, writeParent(P));
             return;
         }
         if(FunctionTemplateDecl* FT = dyn_cast<FunctionTemplateDecl>(ND))
@@ -1047,7 +1047,7 @@ buildEnum(
     }
     parseEnumerators(I, D);
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(std::move(I), D->getAccess()));
+    insertBitcode(ex_, writeParent(I, D->getAccess()));
 }
 
 void
@@ -1069,7 +1069,7 @@ buildVar(
         getTypeInfoForType(D->getTypeSourceInfo()->getType());
     I.specs.storageClass = D->getStorageClass();
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(std::move(I), D->getAccess()));
+    insertBitcode(ex_, writeParent(I, D->getAccess()));
 }
 
 template<class DeclTy>
