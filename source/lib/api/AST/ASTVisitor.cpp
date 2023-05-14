@@ -12,8 +12,9 @@
 #include "ASTVisitor.hpp"
 #include "Bitcode.hpp"
 #include "Commands.hpp"
-#include "api/ConfigImpl.hpp"
 #include "ParseJavadoc.hpp"
+#include "api/ConfigImpl.hpp"
+#include "api/Metadata/FunctionKind.hpp"
 #include "api/Support/Path.hpp"
 #include "api/Support/Debug.hpp"
 #include <mrdox/Metadata.hpp>
@@ -781,6 +782,14 @@ constructFunction(
         I.specs1.nodiscardSpelling = attr->getSemanticSpelling();
     }
 
+    {
+        auto OOK = D->getOverloadedOperator();
+        if(OOK != OverloadedOperatorKind::OO_None)
+        {
+            I.specs1.functionKind = getFunctionKind(OOK);
+        }
+
+    }
     //
     // CXXMethodDecl
     //

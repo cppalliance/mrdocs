@@ -16,6 +16,7 @@
 #include <mrdox/Metadata/BitField.hpp>
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Function.hpp>
+#include <mrdox/Metadata/FunctionKind.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
@@ -64,9 +65,10 @@ union FnFlags1
     BitFieldFullValue raw;
 
     BitFlag<0> isNodiscard;
-    BitField<1, 4, WarnUnusedResultAttr::Spelling> nodiscardSpelling;
-    BitFlag<5> isExplicit;
-    BitField<6, 7> functionKind;
+    BitFlag<1> isExplicit;
+
+    BitField<2, 4, WarnUnusedResultAttr::Spelling> nodiscardSpelling;
+    BitField<6, 7, FunctionKind> functionKind;
 };
 
 // TODO: Expand to allow for documenting templating and default args.

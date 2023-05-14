@@ -14,15 +14,22 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/FunctionKind.hpp>
 #include <llvm/ADT/StringRef.h>
+#include <clang/Basic/OperatorKinds.h>
 
 namespace clang {
 namespace mrdox {
+
+/** Return the function kind corresponding to clang's enum
+*/
+FunctionKind
+getFunctionKind(
+    OverloadedOperatorKind OOK) noexcept;
 
 /** Return a unique string constant for the kind.
 */
 llvm::StringRef
 getFunctionKindString(
-    FunctionKind kind);
+    FunctionKind kind) noexcept;
 
 } // mrdox
 } // clang
