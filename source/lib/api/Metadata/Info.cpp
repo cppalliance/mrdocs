@@ -21,7 +21,7 @@
 namespace clang {
 namespace mrdox {
 
-llvm::SmallString<16>
+std::string
 Info::
 extractName() const
 {
@@ -36,43 +36,42 @@ extractName() const
         // namespace, which would conflict with the hard-coded global namespace name
         // below.)
         if (Name == "GlobalNamespace" && Namespace.empty())
-            return llvm::SmallString<16>("@GlobalNamespace");
+            return "@GlobalNamespace";
         // The case of anonymous namespaces is taken care of in serialization,
         // so here we can safely assume an unnamed namespace is the global
         // one.
-        return {}; //return llvm::SmallString<16>("GlobalNamespace");
+        return {}; //return std::string("GlobalNamespace");
 
     // VFALCO This API makes assumptions about what is
     //        valid in the output format. We could for
     //        example use base64 or base41...
     case InfoType::IT_record:
-        return llvm::SmallString<16>("@nonymous_record_" +
-            toHex(llvm::toStringRef(id)));
+        return std::string("@nonymous_record_") +
+            toHex(llvm::toStringRef(id));
     case InfoType::IT_function:
-        return llvm::SmallString<16>("@nonymous_function_" +
-            toHex(llvm::toStringRef(id)));
+        return std::string("@nonymous_function_") +
+            toHex(llvm::toStringRef(id));
     case InfoType::IT_enum:
-        return llvm::SmallString<16>("@nonymous_enum_" +
-            toHex(llvm::toStringRef(id)));
+        return std::string("@nonymous_enum_") +
+            toHex(llvm::toStringRef(id));
     case InfoType::IT_typedef:
-        return llvm::SmallString<16>("@nonymous_typedef_" +
-            toHex(llvm::toStringRef(id)));
+        return std::string("@nonymous_typedef_") +
+            toHex(llvm::toStringRef(id));
     case InfoType::IT_variable:
-        return llvm::SmallString<16>("@nonymous_var_" +
-            toHex(llvm::toStringRef(id)));
+        return std::string("@nonymous_var_") +
+            toHex(llvm::toStringRef(id));
     case InfoType::IT_default:
-        return llvm::SmallString<16>("@nonymous_" +
-            toHex(llvm::toStringRef(id)));
+        return std::string("@nonymous_") +
+            toHex(llvm::toStringRef(id));
     default:
         llvm_unreachable("Invalid InfoType.");
-        return llvm::SmallString<16>("");
+        return std::string("");
     }
 }
 
 //------------------------------------------------
 
-
-llvm::StringRef
+std::string&
 Info::
 getFullyQualifiedName(
     std::string& temp) const

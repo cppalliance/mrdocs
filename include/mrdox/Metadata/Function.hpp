@@ -76,10 +76,6 @@ struct FunctionInfo : SymbolInfo
     TypeInfo ReturnType;   // Info about the return type of this function.
     llvm::SmallVector<FieldTypeInfo, 4> Params; // List of parameters.
 
-    // Full qualified name of this function, including namespaces and template
-    // specializations.
-    SmallString<16> FullName;
-
     // When present, this function is a template or specialization.
     llvm::Optional<TemplateInfo> Template;
 

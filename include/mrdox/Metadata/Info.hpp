@@ -18,7 +18,6 @@
 #include <mrdox/Metadata/Symbols.hpp>
 #include <llvm/ADT/Optional.h>
 #include <llvm/ADT/StringRef.h>
-#include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>
 #include <array>
 #include <vector>
@@ -41,7 +40,7 @@ struct Info
 
     /** The unqualified name.
     */
-    llvm::SmallString<16> Name;
+    std::string Name;
 
     /** In-order List of parent namespaces.
     */
@@ -72,11 +71,14 @@ struct Info
     // Observers
     //
 
-    llvm::SmallString<16> extractName() const;
+    MRDOX_DECL
+    std::string
+    extractName() const;
 
     /** Return the fully qualified name.
     */
-    llvm::StringRef
+    MRDOX_DECL
+    std::string&
     getFullyQualifiedName(
         std::string& temp) const;
 

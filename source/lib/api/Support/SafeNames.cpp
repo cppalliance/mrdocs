@@ -180,7 +180,9 @@ private:
                 it0 + 1, infos.end(),
                 [it0](auto I)
                 {
-                    return (*it0)->Name.compare_insensitive(I->Name) != 0;
+                    return
+                        llvm::StringRef((*it0)->Name).compare_insensitive(
+                        llvm::StringRef(I->Name)) != 0;
                 });
             std::size_t n = std::distance(it0, it);
             if(n < 2)
