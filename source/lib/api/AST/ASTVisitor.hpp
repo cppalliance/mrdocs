@@ -79,7 +79,9 @@ public://private:
     void extractBases(RecordInfo& I, CXXRecordDecl* D);
 
 private:
-    template<class DeclTy> bool constructFunction(FunctionInfo& I, DeclTy* D);
+    template<class DeclTy>
+    bool constructFunction(
+        FunctionInfo& I, DeclTy* D, char const* name = nullptr);
 
     void buildNamespace (NamespaceDecl* D);
     void buildRecord    (CXXRecordDecl* D);
@@ -91,7 +93,7 @@ private:
 
     template<class DeclTy>
     requires std::derived_from<DeclTy, CXXMethodDecl>
-    void buildFunction(DeclTy* D);
+    void buildFunction(DeclTy* D, char const* name = nullptr);
 
     template<class DeclTy>
     requires (! std::derived_from<DeclTy, CXXMethodDecl>)
@@ -104,7 +106,7 @@ public:
     bool WalkUpFromCXXRecordDecl(CXXRecordDecl* D);
     bool WalkUpFromCXXMethodDecl(CXXMethodDecl* D);
     bool WalkUpFromCXXDestructorDecl(CXXDestructorDecl* D);
-    bool WalkUpFromCXXConstructorDecl(CXXConstructorDecl* D);
+    bool TraverseCXXConstructorDecl(CXXConstructorDecl* D);
     bool WalkUpFromCXXConversionDecl(CXXConversionDecl* D);
     bool WalkUpFromFunctionDecl(FunctionDecl* D);
     bool WalkUpFromFriendDecl(FriendDecl* D);

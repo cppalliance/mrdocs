@@ -715,10 +715,12 @@ template<class DeclTy>
 bool
 ASTVisitor::
 constructFunction(
-    FunctionInfo& I, DeclTy* D)
+    FunctionInfo& I, DeclTy* D, char const* name)
 {
     if(! extractInfo(I, D))
         return false;
+    if(name)
+        I.Name = name;
     LineNumber = getLine(D);
     if(D->isThisDeclarationADefinition())
         I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
@@ -813,7 +815,6 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXDestructorDecl>)
     {
-        //I.Name.append("-dtor");
     }
 
     //
@@ -821,7 +822,6 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
     {
-        //I.Name.append("-ctor");
         I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
     }
 
@@ -830,7 +830,6 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
     {
-        //I.Name.append("-conv");
         I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
     }
 
@@ -1082,12 +1081,13 @@ requires std::derived_from<DeclTy, CXXMethodDecl>
 void
 ASTVisitor::
 buildFunction(
-    DeclTy* D)
+    DeclTy* D,
+    char const* name)
 {
     if(! shouldExtract(D))
         return;
     FunctionInfo I;
-    if(! constructFunction(I, D))
+    if(! constructFunction(I, D, name))
         return;
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, D->getAccess()));
@@ -1213,9 +1213,16 @@ WalkUpFromCXXDestructorDecl(
 
 bool
 ASTVisitor::
-WalkUpFromCXXConstructorDecl(
+TraverseCXXConstructorDecl(
     CXXConstructorDecl* D)
 {
+    /*
+    auto s = D->getParent()->getName();
+    std::string s;
+    DeclarationName DN = D->getDeclName();
+    if(DN)
+        s = DN.getAsString();
+    */
     buildFunction(D);
     return true;
 }
