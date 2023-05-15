@@ -22,7 +22,7 @@ AdocSinglePageWriter(
     Corpus const& corpus,
     Reporter& R) noexcept
     : AdocWriter(os, names_, corpus, R)
-    , names_(os, corpus)
+    , names_(corpus)
 {
 }
 

@@ -10,6 +10,7 @@
 //
 
 #include "api/Support/Radix.hpp"
+#include "api/Support/Debug.hpp"
 #include <algorithm>
 #include <vector>
 
@@ -240,6 +241,85 @@ toBaseFN(
     dest.resize(baseFNEncodedSize(src.size()));
     auto n = baseFNEncode(&dest[0], src.data(), src.size());
     return llvm::StringRef(dest.data(), n);
+}
+
+llvm::StringRef
+toBase32(
+    std::string& dest,
+    llvm::StringRef src)
+{
+#if 0
+    std::vector<std::uint8_t> v;
+    v.reserve(2 * ((binaryString.size() + 14) / 15));
+    while(binaryString.size() >= 15)
+    {
+        std::uint16_t u =
+            (binaryString[ 0]-'0') * 0x0001 +
+            (binaryString[ 1]-'0') * 0x0002 +
+            (binaryString[ 2]-'0') * 0x0004 +
+            (binaryString[ 3]-'0') * 0x0008 +
+            (binaryString[ 4]-'0') * 0x0010 +
+            (binaryString[ 5]-'0') * 0x0020 +
+            (binaryString[ 6]-'0') * 0x0040 +
+            (binaryString[ 7]-'0') * 0x0080 +
+            (binaryString[ 8]-'0') * 0x0100 +
+            (binaryString[ 9]-'0') * 0x0200 +
+            (binaryString[10]-'0') * 0x0400 +
+            (binaryString[11]-'0') * 0x0800 +
+            (binaryString[12]-'0') * 0x1000 +
+            (binaryString[13]-'0') * 0x2000 +
+            (binaryString[14]-'0') * 0x4000;
+        v.push_back( u & 0x00ff);
+        v.push_back((u & 0xff00) >> 8);
+        binaryString = binaryString.substr(15);
+    }
+    if(! binaryString.empty())
+    {
+        char temp[15] = {
+            '0', '0', '0', '0', '0', '0', '0',
+            '0', '0', '0', '0', '0', '0', '0', '0' };
+        std::memcpy(temp, binaryString.data(), binaryString.size());
+        std::uint16_t u =
+            (temp[ 0]-'0') * 0x0001 +
+            (temp[ 1]-'0') * 0x0002 +
+            (temp[ 2]-'0') * 0x0004 +
+            (temp[ 3]-'0') * 0x0008 +
+            (temp[ 4]-'0') * 0x0010 +
+            (temp[ 5]-'0') * 0x0020 +
+            (temp[ 6]-'0') * 0x0040 +
+            (temp[ 7]-'0') * 0x0080 +
+            (temp[ 8]-'0') * 0x0100 +
+            (temp[ 9]-'0') * 0x0200 +
+            (temp[10]-'0') * 0x0400 +
+            (temp[11]-'0') * 0x0800 +
+            (temp[12]-'0') * 0x1000 +
+            (temp[13]-'0') * 0x2000 +
+            (temp[14]-'0') * 0x4000;
+        v.push_back( u & 0x00ff);
+        v.push_back((u & 0xff00) >> 8);
+    }
+    dest.clear();
+    Assert((v.size() & 1) == 0);
+    dest.reserve(3 * (v.size() / 2));
+    auto it = v.data();
+    auto const end = it + v.size();
+    while(it != end)
+    {
+        static constexpr char alphabet[33] =
+            "012345abcdefghijklmnopqrstuvwxyz";
+        std::uint16_t t = 256 * it[1] + it[0];
+        dest.push_back(alphabet[(t & 0x001f)]);
+        dest.push_back(alphabet[(t & 0x03e0) >> 5]);
+        dest.push_back(alphabet[(t & 0x7c00) >> 10]);
+        it += 2;
+    }
+    while(! dest.empty())
+        if(dest.back() == '0')
+            dest.pop_back();
+        else
+            break;
+#endif
+    return dest;
 }
 
 } // mrdox

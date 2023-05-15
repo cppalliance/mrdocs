@@ -10,6 +10,7 @@
 
 #include "api/Support/Debug.hpp"
 #include "api/Support/Operator.hpp"
+#include "api/Support/Radix.hpp"
 #include "api/Support/SafeNames.hpp"
 #include "api/Support/Validate.hpp"
 #include <mrdox/Corpus.hpp>
@@ -21,6 +22,8 @@
 namespace clang {
 namespace mrdox {
 
+namespace {
+
 /*
     Unsafe names:
 
@@ -29,15 +32,15 @@ namespace mrdox {
     function templates
     class templates
 */
-class SafeNames::
-    Builder : public Corpus::Visitor
+class PrettyBuilder : public Corpus::Visitor
 {
     llvm::raw_ostream* os_ = nullptr;
     std::string prefix_;
     std::string temp_;
 
 public:
-    Builder(
+    explicit
+    PrettyBuilder(
         Corpus const& corpus)
         : corpus_(corpus)
     {
@@ -51,7 +54,7 @@ public:
     #endif
     }
 
-    Builder(
+    PrettyBuilder(
         llvm::raw_ostream& os,
         Corpus const& corpus)
         :
@@ -268,61 +271,72 @@ private:
 
 //------------------------------------------------
 
-SafeNames::
-SafeNames(
-    Corpus const& corpus)
+// Always works but isn't the prettiest...
+class UglyBuilder : public Corpus::Visitor
 {
-    Builder b(corpus);
-    map_ = std::move(b.map);
-}
+    Corpus const& corpus_;
+
+public:
+    llvm::StringMap<std::string> map;
+
+    explicit
+    UglyBuilder(
+        Corpus const& corpus)
+        : corpus_(corpus)
+    {
+        llvm::SmallString<64> temp;
+        for(Info const* I : corpus_.index())
+            map.try_emplace(
+                llvm::toStringRef(I->id),
+                llvm::toHex(llvm::toStringRef(I->id), true));
+    }
+};
+
+} // (anon)
+
+//------------------------------------------------
 
 SafeNames::
 SafeNames(
     llvm::raw_ostream& os,
     Corpus const& corpus)
+    : corpus_(corpus)
+    //, map_(PrettyBuilder(corpus).map)
+    , map_(UglyBuilder(corpus).map)
 {
-    Builder b(os, corpus);
-    map_ = std::move(b.map);
+}
+
+SafeNames::
+SafeNames(
+    Corpus const& corpus)
+    : corpus_(corpus)
+    //, map_(PrettyBuilder(corpus).map)
+    , map_(UglyBuilder(corpus).map)
+{   
 }
 
 llvm::StringRef
 SafeNames::
 get(
-    SymbolID const &id) const
+    SymbolID const &id) const noexcept
 {
     auto const it = map_.find(llvm::toStringRef(id));
     Assert(it != map_.end());
     return it->getValue();
 }
 
-llvm::StringRef
+std::vector<llvm::StringRef>&
 SafeNames::
-get(
-    SymbolID const& id,
-    char sep,
-    std::string& dest) const
+getPath(
+    std::vector<llvm::StringRef>& dest,
+    SymbolID id) const
 {
-    auto it = map_.find(llvm::toStringRef(id));
-    Assert(it != map_.end());
-    if(sep == '.')
-        return it->getValue();
-    dest = it->getValue();
-    std::replace(dest.begin(), dest.end(), '.', sep);
-    return dest;
-}
-
-llvm::StringRef
-SafeNames::
-getOverload(
-    Info const& P,
-    llvm::StringRef name,
-    char sep,
-    std::string& dest) const
-{
-    dest = get(P.id);
-    dest.push_back(sep);
-    dest.push_back('0');
-    dest.append(name);
+    auto const& Parents = corpus_.get<Info>(id).Namespace;
+    dest.clear();
+    dest.reserve(1 + Parents.size());
+    dest.push_back(get(id));
+    for(auto const& ref : llvm::reverse(Parents))
+        dest.push_back(get(ref.id));
     return dest;
 }
 

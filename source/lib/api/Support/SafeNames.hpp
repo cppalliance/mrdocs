@@ -21,36 +21,49 @@
 namespace clang {
 namespace mrdox {
 
+/** A table mapping symbolIDs to safe names.
+
+    A safe name for a symbol is case-insensitive
+    unique and only contains characters which are
+    valid for both filenames and URL paths. For
+    filenames this includes only the subset of
+    characters valid for Windows, OSX, and Linux
+    type filesystems.
+*/
 class SafeNames
 {
+    Corpus const& corpus_;
     llvm::StringMap<std::string> map_;
-
-    class Builder;
-
-public:
-    explicit
-    SafeNames(
-        Corpus const&);
 
     SafeNames(
         llvm::raw_ostream& os,
         Corpus const&);
 
-    llvm::StringRef
-    get(SymbolID const& id) const;
+public:
+    /** Constructor.
+
+        Upon construction, the entire table of
+        safe names is built from the corpus.
+    */
+    explicit
+    SafeNames(
+        Corpus const& corpus);
 
     llvm::StringRef
-    get(
-        SymbolID const& id,
-        char sep,
-        std::string& dest) const;
+    get(SymbolID const& id) const noexcept;
 
-    llvm::StringRef
-    getOverload(
-        Info const &P,
-        llvm::StringRef name,
-        char sep,
-        std::string& dest) const;
+    std::vector<llvm::StringRef>&
+    getPath(
+        std::vector<llvm::StringRef>& dest,
+        SymbolID id) const;
+
+    std::vector<llvm::StringRef>
+    getPath(SymbolID const& id) const
+    {
+        std::vector<llvm::StringRef> v;
+        getPath(v, id);
+        return v;
+    }
 };
 
 } // mrdox

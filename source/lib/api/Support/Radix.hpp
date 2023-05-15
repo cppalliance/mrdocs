@@ -32,6 +32,11 @@ toBaseFN(
     llvm::SmallVectorImpl<char>& dest,
     llvm::ArrayRef<uint8_t> src);
 
+llvm::StringRef
+toBase32(
+    std::string& dest,
+    llvm::StringRef src);
+
 } // mrdox
 } // clang
 

@@ -449,7 +449,9 @@ linkFor(
     llvm::raw_string_ostream os(temp);
     std::string s;
     os << "xref:#" <<
+    #if 0
         names_.getOverload(P, I.Name, '-', s) <<
+    #endif
         "[" << I.Name << "]";
     return temp;
 }
@@ -811,7 +813,11 @@ beginSection(
     std::string temp;
     os_ <<
         "\n" <<
-        "[\"#" << names_.getOverload(P, I.Name, '-', temp) << "\"]\n" <<
+        "[\"#" <<
+    #if 0
+        names_.getOverload(P, I.Name, '-', temp) <<
+    #endif
+        "\"]\n" <<
         sect_.markup << ' ' << I.Name << "\n";
 }
 void
