@@ -25,6 +25,8 @@ class Corpus;
 
 class Interface;
 
+enum class Access;
+
 struct BaseInfo;
 struct EnumValueInfo;
 struct EnumInfo;

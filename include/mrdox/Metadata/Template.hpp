@@ -14,6 +14,7 @@
 #define MRDOX_METADATA_TEMPLATE_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Access.hpp>
 #include <mrdox/Metadata/TemplateArg.hpp>
 #include <mrdox/Metadata/TemplateParam.hpp>
 
@@ -27,7 +28,24 @@ enum class TemplateSpecKind
     Partial
 };
 
-// stores information pertaining to primary template and
+// stores members which have been explicitly specialized for an
+// implicit specialization of a primary template/partial specialization
+struct SpecializationInfo
+{
+    // the template arguments of the parent specialization.
+    // these never pertain to the explicitly specialized member;
+    // if the member is itself a template, it will use TemplateInfo
+    // to store any template parameters/arguments
+    std::vector<TArg> Args;
+    // ID of the explicitly specialized member in the primary template
+    RefWithAccess Specialized;
+    // the (explicitly) specialized member for this
+    // particular (implicit) specialization of the parent template.
+    // no Access is stored; it will be the same as the specialized member
+    SymbolID Specialization;
+};
+
+// stores information pertaining to primary templates and
 // partial/explicit specialization declarations
 struct TemplateInfo
 {
@@ -42,10 +60,16 @@ struct TemplateInfo
     //       once in Args outside of a non-deduced context 
     std::vector<TParam> Params;
     std::vector<TArg> Args;
+    // the templated entity
+    SymbolID Entity;
 
     // stores the ID of the corresponding primary template
     // for partial and explicit specializations
     OptionalSymbolID Primary;
+
+    // stores each member which is explicitly specialized for
+    // an implicit specializations of this template
+    std::vector<SpecializationInfo> Specializations;
 
     // KRYSTIAN NOTE: using the presence of args/params
     // to determine the specialization kind *should* work.

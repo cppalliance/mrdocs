@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -18,15 +19,11 @@
 #include <llvm/Support/raw_ostream.h>
 
 #if __has_include(<format>)
-    #include <format>
+    #define MRDOX_HAS_CXX20_FORMAT
 
-    #define PRINT_FMT(fmt, ...) (debug_outs() << std::format(fmt \
-        __VA_OPT__(,) __VA_ARGS__))
-    #define PRINT_FUNC_AND_NAME(name) PRINT_FMT("{:<48} {}\n", \
-        (std::string(std::source_location::current().function_name()) + ":"), name)
-#else
-    #define PRINT_FMT(fmt, ...)
-    #define PRINT_FUNC_AND_NAME(name)
+    #include <format>
+    #include <string>
+    #include <mrdox/MetadataFwd.hpp>
 #endif
 
 // Some nice odds and ends such as leak checking
@@ -57,5 +54,78 @@ MRDOX_DECL void debugEnableHeapChecking();
 
 } // mrdox
 } // clang
+
+#ifdef MRDOX_HAS_CXX20_FORMAT
+    template<>
+    struct std::formatter<clang::mrdox::SymbolID>
+        : std::formatter<std::string>
+    {
+        std::format_context::iterator format(
+            const clang::mrdox::SymbolID& s, 
+            std::format_context& ctx) const;
+    };
+
+    template<>
+    struct std::formatter<clang::mrdox::OptionalSymbolID>
+        : std::formatter<clang::mrdox::SymbolID>
+    {
+        std::format_context::iterator format(
+            const clang::mrdox::OptionalSymbolID& s, 
+            std::format_context& ctx) const;
+    };
+
+    template<>
+    struct std::formatter<clang::mrdox::InfoType>
+        : std::formatter<std::string>
+    {
+        std::format_context::iterator format(
+            clang::mrdox::InfoType t, 
+            std::format_context& ctx) const;
+    };
+
+    template<>
+    struct std::formatter<clang::mrdox::Access> 
+        : std::formatter<std::string>
+    {
+        std::format_context::iterator format(
+            clang::mrdox::Access a, 
+            std::format_context& ctx) const;
+    };
+
+    template<>
+    struct std::formatter<clang::mrdox::Reference> 
+        : std::formatter<std::string>
+    {
+        std::format_context::iterator format(
+            const clang::mrdox::Reference& r, 
+            std::format_context& ctx) const;
+    };
+
+    template<>
+    struct std::formatter<clang::mrdox::RefWithAccess> 
+        : std::formatter<std::string>
+    {
+        std::format_context::iterator format(
+            const clang::mrdox::RefWithAccess& r, 
+            std::format_context& ctx) const;
+    };
+
+    template<>
+    struct std::formatter<clang::mrdox::Info> 
+        : std::formatter<std::string>
+    {
+        std::format_context::iterator format(
+            const clang::mrdox::Info& i, 
+            std::format_context& ctx) const;
+    };
+
+    #define PRINT_FMT(fmt, ...) (debug_outs() << std::format(fmt \
+        __VA_OPT__(,) __VA_ARGS__))
+    #define PRINT_FUNC_AND_NAME(name) PRINT_FMT("{:<48} {}\n", \
+        (std::string(std::source_location::current().function_name()) + ":"), name)
+#else
+    #define PRINT_FMT(fmt, ...)
+    #define PRINT_FUNC_AND_NAME(name)
+#endif
 
 #endif
