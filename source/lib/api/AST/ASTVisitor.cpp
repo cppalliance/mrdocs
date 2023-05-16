@@ -26,7 +26,6 @@
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
 #include <llvm/ADT/Hashing.h>
-#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
@@ -65,9 +64,9 @@ ASTVisitor(
 // a relatively small amount of memory (vs storing
 // USRs directly).
 //
-static
 SymbolID
-getUSRForDecl(
+ASTVisitor::
+getSymbolID(
     Decl const* D)
 {
     llvm::SmallString<128> USR;
@@ -78,8 +77,8 @@ getUSRForDecl(
 
 //------------------------------------------------
 
-static
 bool
+ASTVisitor::
 shouldSerializeInfo(
     bool PublicOnly,
     bool IsInAnonymousNamespace,
@@ -106,8 +105,8 @@ shouldSerializeInfo(
 
 //------------------------------------------------
 
-static
 void
+ASTVisitor::
 getParent(
     SymbolID& parent,
     Decl const* D)
@@ -121,19 +120,19 @@ getParent(
         {
             isParentAnonymous = true;
         }
-        parent = getUSRForDecl(N);
+        parent = getSymbolID(N);
     }
     else if(auto const* N = dyn_cast<RecordDecl>(DC))
     {
-        parent = getUSRForDecl(N);
+        parent = getSymbolID(N);
     }
     else if(auto const* N = dyn_cast<FunctionDecl>(DC))
     {
-        parent = getUSRForDecl(N);
+        parent = getSymbolID(N);
     }
     else if(auto const* N = dyn_cast<EnumDecl>(DC))
     {
-        parent = getUSRForDecl(N);
+        parent = getSymbolID(N);
     }
     else
     {
@@ -142,8 +141,8 @@ getParent(
     (void)isParentAnonymous;
 }
 
-static
 void
+ASTVisitor::
 getParentNamespaces(
     llvm::SmallVector<Reference, 4>& Namespaces,
     Decl const* D,
@@ -166,28 +165,28 @@ getParentNamespaces(
                 Namespace = N->getNameAsString();
             }
             Namespaces.emplace_back(
-                getUSRForDecl(N),
+                getSymbolID(N),
                 Namespace,
                 InfoType::IT_namespace);
         }
         else if(auto const* N = dyn_cast<RecordDecl>(DC))
         {
             Namespaces.emplace_back(
-                getUSRForDecl(N),
+                getSymbolID(N),
                 N->getNameAsString(),
                 InfoType::IT_record);
         }
         else if(auto const* N = dyn_cast<FunctionDecl>(DC))
         {
             Namespaces.emplace_back(
-                getUSRForDecl(N),
+                getSymbolID(N),
                 N->getNameAsString(),
                 InfoType::IT_function);
         }
         else if(auto const* N = dyn_cast<EnumDecl>(DC))
         {
             Namespaces.emplace_back(
-                getUSRForDecl(N),
+                getSymbolID(N),
                 N->getNameAsString(),
                 InfoType::IT_enum);
         }
@@ -212,8 +211,8 @@ getParentNamespaces(
 
 //------------------------------------------------
 
-static
 std::string
+ASTVisitor::
 getSourceCode(
     Decl const* D,
     SourceRange const& R)
@@ -226,8 +225,8 @@ getSourceCode(
 
 //------------------------------------------------
 
-static
 Access
+ASTVisitor::
 getAccessFromSpecifier(
     AccessSpecifier as) noexcept
 {
@@ -244,8 +243,8 @@ getAccessFromSpecifier(
     }
 }
 
-static
 TagDecl*
+ASTVisitor::
 getTagDeclForType(
     QualType const& T)
 {
@@ -254,8 +253,8 @@ getTagDeclForType(
     return nullptr;
 }
 
-static
 RecordDecl*
+ASTVisitor::
 getRecordDeclForType(
     QualType const& T)
 {
@@ -264,8 +263,8 @@ getRecordDeclForType(
     return nullptr;
 }
 
-static
 TypeInfo
+ASTVisitor::
 getTypeInfoForType(
     QualType const& T)
 {
@@ -283,11 +282,11 @@ getTypeInfoForType(
     else
         IT = InfoType::IT_default;
     return TypeInfo(Reference(
-        getUSRForDecl(TD), TD->getNameAsString(), IT));
+        getSymbolID(TD), TD->getNameAsString(), IT));
 }
 
-static
 void
+ASTVisitor::
 parseParameters(
     FunctionInfo& I,
     FunctionDecl const* D)
@@ -308,6 +307,7 @@ parseParameters(
 }
 
 void
+ASTVisitor::
 getTemplateParams(
     llvm::Optional<TemplateInfo>& TemplateInfo,
     const Decl* D)
@@ -326,9 +326,9 @@ getTemplateParams(
     }
 }
 
-static
 void
-parseJavadoc(
+ASTVisitor::
+parseRawComment(
     llvm::Optional<Javadoc>& javadoc,
     Decl const* D,
     Reporter& R)
@@ -350,15 +350,15 @@ parseJavadoc(
 
 //------------------------------------------------
 
-static
 void
+ASTVisitor::
 getMemberTypeInfo(
     MemberTypeInfo& I,
     FieldDecl const* D,
     Reporter& R)
 {
     Assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
-    parseJavadoc(I.javadoc, D, R);
+    parseRawComment(I.javadoc, D, R);
 
     for (auto attr : D->attrs())
     {
@@ -510,8 +510,8 @@ writeParent(
     return writeBitcode(P);
 }
 
-static
 void
+ASTVisitor::
 parseFields(
     RecordInfo& I,
     const RecordDecl* D,
@@ -534,8 +534,8 @@ parseFields(
     }
 }
 
-static
 void
+ASTVisitor::
 parseEnumerators(
     EnumInfo& I,
     const EnumDecl* D)
@@ -640,7 +640,7 @@ extractInfo(
     if(! extractSymbolID(I.id, D))
         return false;
     I.Name = D->getNameAsString();
-    parseJavadoc(I.javadoc, D, R_);
+    parseRawComment(I.javadoc, D, R_);
     return true;
 }
 
@@ -685,7 +685,7 @@ extractBases(
         {
             TemplateDecl const* D = Ty->getTemplateName().getAsTemplateDecl();
             I.Bases.emplace_back(
-                getUSRForDecl(D),
+                getSymbolID(D),
                 B.getType().getAsString(),
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
@@ -693,7 +693,7 @@ extractBases(
         else if(RecordDecl const* P = getRecordDeclForType(B.getType()))
         {
             I.Bases.emplace_back(
-                getUSRForDecl(P),
+                getSymbolID(P),
                 P->getNameAsString(),
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
@@ -742,7 +742,7 @@ constructFunction(
         I.Template->Specialization.emplace();
         auto& Specialization = *I.Template->Specialization;
 
-        Specialization.SpecializationOf = getUSRForDecl(FTSI->getTemplate());
+        Specialization.SpecializationOf = getSymbolID(FTSI->getTemplate());
 
         // Template parameters to the specialization.
         if(FTSI->TemplateArguments)
@@ -917,12 +917,12 @@ buildRecord(
         if(SpecOf.is<ClassTemplateDecl*>())
         {
             Specialization.SpecializationOf =
-                getUSRForDecl(SpecOf.get<ClassTemplateDecl*>());
+                getSymbolID(SpecOf.get<ClassTemplateDecl*>());
         }
         else if(SpecOf.is<ClassTemplatePartialSpecializationDecl*>())
         {
             Specialization.SpecializationOf =
-                getUSRForDecl(SpecOf.get<ClassTemplatePartialSpecializationDecl*>());
+                getSymbolID(SpecOf.get<ClassTemplatePartialSpecializationDecl*>());
         }
 
         // Parameters to the specilization. For partial specializations, get the

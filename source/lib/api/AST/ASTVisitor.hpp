@@ -15,8 +15,10 @@
 #include "api/ConfigImpl.hpp"
 #include <mrdox/Reporter.hpp>
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Metadata/Access.hpp>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Tooling/Execution.h>
+#include <llvm/ADT/Optional.h>
 #include <unordered_map>
 
 namespace clang {
@@ -69,6 +71,79 @@ public:
         tooling::ExecutionContext& ex,
         ConfigImpl const& config,
         Reporter& R) noexcept;
+
+    SymbolID getSymbolID(Decl const* D);
+
+    bool shouldSerializeInfo(
+        bool PublicOnly,
+        bool IsInAnonymousNamespace,
+        NamedDecl const* D) noexcept;
+
+    void
+    getParent(
+        SymbolID& parent,
+        Decl const* D);
+
+    void
+    getParentNamespaces(
+        llvm::SmallVector<Reference, 4>& Namespaces,
+        Decl const* D,
+        bool& IsInAnonymousNamespace);
+
+    std::string
+    getSourceCode(
+        Decl const* D,
+        SourceRange const& R);
+
+    Access
+    getAccessFromSpecifier(
+        AccessSpecifier as) noexcept;
+
+    TagDecl*
+    getTagDeclForType(
+        QualType const& T);
+
+    RecordDecl*
+    getRecordDeclForType(
+        QualType const& T);
+
+    TypeInfo
+    getTypeInfoForType(
+        QualType const& T);
+
+    void
+    parseParameters(
+        FunctionInfo& I,
+        FunctionDecl const* D);
+
+    void
+    getTemplateParams(
+        llvm::Optional<TemplateInfo>& TemplateInfo,
+        const Decl* D);
+    void
+    parseRawComment(
+        llvm::Optional<Javadoc>& javadoc,
+        Decl const* D,
+        Reporter& R);
+
+    void
+    getMemberTypeInfo(
+        MemberTypeInfo& I,
+        FieldDecl const* D,
+        Reporter& R);
+
+    void
+    parseFields(
+        RecordInfo& I,
+        const RecordDecl* D,
+        bool PublicOnly,
+        AccessSpecifier Access,
+        Reporter& R);
+
+    void
+    parseEnumerators(
+        EnumInfo& I,
+        const EnumDecl* D);
 
 public://private:
     bool shouldExtract(Decl const* D);
