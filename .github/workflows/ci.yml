@@ -23,20 +23,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { name: "MSVC 14.3 - C++20", os: windows-2022, cxxstd: '20', cmake_args: -G "Visual Studio 17 2022" -A x64, github_release: true }
-          - { name: "GCC 12 - C++20",    os: ubuntu-22.04, cc: gcc-12, cxx: g++-12, cxxstd: '20', install: g++-12, github_release: true }
-          - { name: "GCC 11 - C++20",    os: ubuntu-22.04, cc: gcc-11, cxx: g++-11, cxxstd: 20, install: g++-11 }
-          - { name: "Clang 15 - C++20",  os: ubuntu-22.04, cc: clang-15, cxx: clang++-15, cxxstd: 20, install: "clang-15 libxml2-utils default-jre" }
-
-          # no <source_location>
-          # - { name: "GCC 10 - C++20",    os: ubuntu-22.04, cc: gcc-10, cxx: g++-10, cxxstd: 20, install: g++-10 }
-          # - { name: "GCC 9  - C++20",    os: ubuntu-22.04, cc: gcc-9,  cxx: g++-9,  cxxstd: 20, install: g++-9 }
-
-          # no <source_location>
-          # - { name: "Clang 14 - C++20",  os: ubuntu-22.04, cc: clang-14, cxx: clang++-14, cxxstd: 20, install: clang-14 }
-          # - { name: "Clang 13 - C++20",  os: ubuntu-22.04, cc: clang-13, cxx: clang++-13, cxxstd: 20, install: clang-13 }
-          # - { name: "Clang 12 - C++20",  os: ubuntu-22.04, cc: clang-12, cxx: clang++-12, cxxstd: 20, install: clang-12 }
-
+          - { name: "MSVC 14.3 - C++20", os: windows-2022, std: '20', cmake_args: -G "Visual Studio 17 2022" -A x64, github_release: true }
+          - { name: "GCC 13 - C++20",    os: ubuntu-22.04, compiler: gcc, version: 13.1, std: '20', github_release: true }
+          - { name: "Clang 16 - C++20",  os: ubuntu-22.04, compiler: clang, version: 16, std: 20, install: "libxml2-utils" }
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
@@ -63,20 +52,27 @@ jobs:
           echo "llvm_dir=$llvm_dir"
           find "$llvm_dir" -type f
 
+      - name: Setup C++
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.1.0
+        id: setup-cpp
+        with:
+          compiler: ${{ matrix.compiler }}
+          version: ${{ matrix.version }}
+
       - name: Install packages
         if: ${{ matrix.install }}
-        uses: ./.github/actions/package_install
+        uses: alandefreitas/cpp-actions/package-install@v1.0.0
         id: package-install
         with:
           apt-get: ${{ matrix.install }}
 
-      - name: CMake Workflow (C++${{ matrix.cxxstd }})
+      - name: CMake Workflow (C++${{ matrix.std }})
         uses: alandefreitas/cpp-actions/cmake-workflow@v1.0.0
         with:
           cmake-min-version: 3.13
-          cxxstd: ${{ matrix.cxxstd }}
-          cxx: ${{ matrix.cxx }}
-          cc: ${{ matrix.cc }}
+          cxxstd: ${{ matrix.std }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          cc: ${{ steps.setup-cpp.outputs.cc }}
           install-prefix: .local
           extra-args: ${{ format('-D LLVM_ROOT={0} -D Clang_ROOT={0} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON', (startsWith( matrix.os , 'windows') && steps.llvm-install.outputs.llvm-dir) || '/usr/local') }}
 
