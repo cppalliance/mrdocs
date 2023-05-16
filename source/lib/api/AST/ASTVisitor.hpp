@@ -95,21 +95,25 @@ public:
         Decl const* D,
         SourceRange const& R);
 
+    std::string
+    getTypeAsString(
+        QualType T);
+
     Access
     getAccessFromSpecifier(
         AccessSpecifier as) noexcept;
 
     TagDecl*
     getTagDeclForType(
-        QualType const& T);
+        QualType T);
 
     RecordDecl*
     getRecordDeclForType(
-        QualType const& T);
+        QualType T);
 
     TypeInfo
     getTypeInfoForType(
-        QualType const& T);
+        QualType T);
 
     void
     parseParameters(

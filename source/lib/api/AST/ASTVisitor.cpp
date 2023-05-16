@@ -225,6 +225,14 @@ getSourceCode(
 
 //------------------------------------------------
 
+std::string
+ASTVisitor::
+getTypeAsString(
+    QualType T)
+{
+    return T.getAsString(astContext_->getPrintingPolicy());
+}
+
 Access
 ASTVisitor::
 getAccessFromSpecifier(
@@ -246,7 +254,7 @@ getAccessFromSpecifier(
 TagDecl*
 ASTVisitor::
 getTagDeclForType(
-    QualType const& T)
+    QualType T)
 {
     if(TagDecl const* D = T->getAsTagDecl())
         return D->getDefinition();
@@ -256,7 +264,7 @@ getTagDeclForType(
 RecordDecl*
 ASTVisitor::
 getRecordDeclForType(
-    QualType const& T)
+    QualType T)
 {
     if(RecordDecl const* D = T->getAsRecordDecl())
         return D->getDefinition();
@@ -266,14 +274,12 @@ getRecordDeclForType(
 TypeInfo
 ASTVisitor::
 getTypeInfoForType(
-    QualType const& T)
+    QualType T)
 {
     TagDecl const* TD = getTagDeclForType(T);
-    if (T->isBuiltinType()
-    && (T->getAs<clang::BuiltinType>()->getKind() == BuiltinType::Bool))
-        return TypeInfo(Reference(EmptySID, "bool"));
     if(!TD)
-        return TypeInfo(Reference(EmptySID, T.getAsString()));
+        return TypeInfo(Reference(EmptySID,
+            getTypeAsString(T)));
     InfoType IT;
     if(dyn_cast<EnumDecl>(TD))
         IT = InfoType::IT_enum;
@@ -296,8 +302,6 @@ parseParameters(
         // KRYSTIAN NOTE: call getOriginalType instead
         // of getType if we want to preserve top-level
         // cv-qualfiers/array types/function types
-        auto ti = getTypeInfoForType(P->getType());
-
         FieldTypeInfo& FieldInfo = I.Params.emplace_back(
             getTypeInfoForType(P->getType()),
             P->getNameAsString());
@@ -683,10 +687,9 @@ extractBases(
             continue;
         if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
         {
-            TemplateDecl const* D = Ty->getTemplateName().getAsTemplateDecl();
             I.Bases.emplace_back(
                 getSymbolID(D),
-                B.getType().getAsString(),
+                getTypeAsString(B.getType()),
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
         }
@@ -702,7 +705,7 @@ extractBases(
         {
             I.Bases.emplace_back(
                 EmptySID,
-                B.getType().getAsString(),
+                getTypeAsString(B.getType()),
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
         }
@@ -727,7 +730,7 @@ constructFunction(
     else
         I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
     QualType const qt = D->getReturnType();
-    std::string s = qt.getAsString();
+    std::string s = getTypeAsString(qt);
     I.ReturnType = getTypeInfoForType(qt);
     parseParameters(I, D);
 
@@ -1046,7 +1049,7 @@ buildEnum(
     I.Scoped = D->isScoped();
     if(D->isFixed())
     {
-        auto Name = D->getIntegerType().getAsString();
+        auto Name = getTypeAsString(D->getIntegerType());
         I.BaseType = TypeInfo(Name);
     }
     parseEnumerators(I, D);
@@ -1069,8 +1072,8 @@ buildVar(
         I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
     else
         I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
-    static_cast<TypeInfo&>(I) =
-        getTypeInfoForType(D->getTypeSourceInfo()->getType());
+    static_cast<TypeInfo&>(I) = getTypeInfoForType(
+        D->getTypeSourceInfo()->getType());
     I.specs.storageClass = D->getStorageClass();
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, D->getAccess()));
@@ -1120,7 +1123,8 @@ buildTypedef(
     TypedefInfo I;
     if(! extractInfo(I, D))
         return;
-    I.Underlying = getTypeInfoForType(D->getUnderlyingType());
+    I.Underlying = getTypeInfoForType(
+        D->getUnderlyingType());
     if(I.Underlying.Type.Name.empty())
     {
         // Typedef for an unnamed type. This is like
