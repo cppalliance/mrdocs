@@ -14,7 +14,7 @@
     <file path="function-parm-decay.cpp" line="14"/>
     <file path="function-parm-decay.cpp" line="15"/>
     <file path="function-parm-decay.cpp" line="16"/>
-    <param name="x" type="int (*)(_Bool)"/>
+    <param name="x" type="int (*)(bool)"/>
   </function>
   <function name="i" id="UTOfie03KjmJww3mduHOqLZB5aI=">
     <file path="function-parm-decay.cpp" line="21"/>

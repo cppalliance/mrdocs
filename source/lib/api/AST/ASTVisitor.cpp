@@ -227,6 +227,15 @@ getSourceCode(
 //------------------------------------------------
 
 static
+std::string
+getTypeAsString(
+    QualType T,
+    const ASTContext& context)
+{
+    return T.getAsString(context.getPrintingPolicy());
+}
+
+static
 Access
 getAccessFromSpecifier(
     AccessSpecifier as) noexcept
@@ -247,7 +256,7 @@ getAccessFromSpecifier(
 static
 TagDecl*
 getTagDeclForType(
-    QualType const& T)
+    QualType T)
 {
     if(TagDecl const* D = T->getAsTagDecl())
         return D->getDefinition();
@@ -257,7 +266,7 @@ getTagDeclForType(
 static
 RecordDecl*
 getRecordDeclForType(
-    QualType const& T)
+    QualType T)
 {
     if(RecordDecl const* D = T->getAsRecordDecl())
         return D->getDefinition();
@@ -267,14 +276,13 @@ getRecordDeclForType(
 static
 TypeInfo
 getTypeInfoForType(
-    QualType const& T)
+    QualType T,
+    const ASTContext& context)
 {
     TagDecl const* TD = getTagDeclForType(T);
-    if (T->isBuiltinType()
-    && (T->getAs<clang::BuiltinType>()->getKind() == BuiltinType::Bool))
-        return TypeInfo(Reference(EmptySID, "bool"));
     if(!TD)
-        return TypeInfo(Reference(EmptySID, T.getAsString()));
+        return TypeInfo(Reference(EmptySID,
+            getTypeAsString(T, context)));
     InfoType IT;
     if(dyn_cast<EnumDecl>(TD))
         IT = InfoType::IT_enum;
@@ -297,10 +305,8 @@ parseParameters(
         // KRYSTIAN NOTE: call getOriginalType instead
         // of getType if we want to preserve top-level
         // cv-qualfiers/array types/function types
-        auto ti = getTypeInfoForType(P->getType());
-
         FieldTypeInfo& FieldInfo = I.Params.emplace_back(
-            getTypeInfoForType(P->getType()),
+            getTypeInfoForType(P->getType(), P->getASTContext()),
             P->getNameAsString());
         FieldInfo.DefaultValue = getSourceCode(
             D, P->getDefaultArgRange());
@@ -527,7 +533,7 @@ parseFields(
         // Use getAccessUnsafe so that we just get the default AS_none if it's not
         // valid, as opposed to an assert.
         MemberTypeInfo& NewMember = I.Members.emplace_back(
-            getTypeInfoForType(F->getTypeSourceInfo()->getType()),
+            getTypeInfoForType(F->getTypeSourceInfo()->getType(), F->getASTContext()),
             F->getNameAsString(),
             getAccessFromSpecifier(F->getAccessUnsafe()));
         getMemberTypeInfo(NewMember, F, R);
@@ -683,10 +689,10 @@ extractBases(
             continue;
         if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
         {
-            TemplateDecl const* D = Ty->getTemplateName().getAsTemplateDecl();
+            TemplateDecl const* TD = Ty->getTemplateName().getAsTemplateDecl();
             I.Bases.emplace_back(
-                getUSRForDecl(D),
-                B.getType().getAsString(),
+                getUSRForDecl(TD),
+                getTypeAsString(B.getType(), *astContext_),
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
         }
@@ -702,7 +708,7 @@ extractBases(
         {
             I.Bases.emplace_back(
                 EmptySID,
-                B.getType().getAsString(),
+                getTypeAsString(B.getType(), *astContext_),
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
         }
@@ -725,8 +731,8 @@ constructFunction(
     else
         I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
     QualType const qt = D->getReturnType();
-    std::string s = qt.getAsString();
-    I.ReturnType = getTypeInfoForType(qt);
+    std::string s = getTypeAsString(qt, *astContext_);
+    I.ReturnType = getTypeInfoForType(qt, *astContext_);
     parseParameters(I, D);
 
     getTemplateParams(I.Template, D);
@@ -1047,7 +1053,7 @@ buildEnum(
     I.Scoped = D->isScoped();
     if(D->isFixed())
     {
-        auto Name = D->getIntegerType().getAsString();
+        auto Name = getTypeAsString(D->getIntegerType(), *astContext_);
         I.BaseType = TypeInfo(Name);
     }
     parseEnumerators(I, D);
@@ -1070,8 +1076,8 @@ buildVar(
         I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
     else
         I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
-    static_cast<TypeInfo&>(I) =
-        getTypeInfoForType(D->getTypeSourceInfo()->getType());
+    static_cast<TypeInfo&>(I) = getTypeInfoForType(
+        D->getTypeSourceInfo()->getType(), *astContext_);
     I.specs.storageClass = D->getStorageClass();
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, D->getAccess()));
@@ -1120,7 +1126,8 @@ buildTypedef(
     TypedefInfo I;
     if(! extractInfo(I, D))
         return;
-    I.Underlying = getTypeInfoForType(D->getUnderlyingType());
+    I.Underlying = getTypeInfoForType(
+        D->getUnderlyingType(), *astContext_);
     if(I.Underlying.Type.Name.empty())
     {
         // Typedef for an unnamed type. This is like
