@@ -23,7 +23,6 @@
 #include <clang/AST/Decl.h>
 #include <clang/AST/DeclCXX.h>
 #include <clang/AST/DeclFriend.h>
-#include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
 #include <llvm/ADT/Hashing.h>
@@ -32,6 +31,7 @@
 #include <llvm/Support/Path.h>
 #include <llvm/Support/SHA1.h>
 #include <cassert>
+#include <ranges>
 
 namespace clang {
 namespace mrdox {
@@ -175,13 +175,32 @@ getParentNamespaces(
         else if(auto const* N = dyn_cast<ClassTemplateSpecializationDecl>(DC); N && 
             N->getSpecializationKind() == TemplateSpecializationKind::TSK_ImplicitInstantiation)
         {
-            ClassTemplateDecl* P = N->getSpecializedTemplate();
-            if(P->isMemberSpecialization())
-                P = P->getInstantiatedFromMemberTemplate();
+            // ClassTemplateDecl* P = N->getSpecializedTemplate();
+            Decl* TD = nullptr;
+            auto parent = N->getSpecializedTemplateOrPartial();
+            // an explicitly specialized member of a partial specialization 
+            // is not a member of the primary template; treat it as such.
+            if(auto* partial = parent.dyn_cast<ClassTemplatePartialSpecializationDecl*>())
+            {
+                if(auto* MT = partial->getInstantiatedFromMember())
+                    TD = MT;
+                else
+                    TD = partial;
+            }
+            else if(ClassTemplateDecl* PT = N->getSpecializedTemplate())
+            {
+                // for implicit specializations of a primary member template, 
+                // consider the parent context to be the primary template
+                if(auto* MT = PT->getInstantiatedFromMemberTemplate())
+                    TD = MT;
+                else
+                    TD = PT;
+            }
+            Assert(TD);
 
             Namespaces.emplace_back(
-                getSymbolID(P),
-                P->getNameAsString(),
+                getSymbolID(TD),
+                N->getNameAsString(),
                 InfoType::IT_record);
         }
         else if(auto const* N = dyn_cast<RecordDecl>(DC))
@@ -276,12 +295,12 @@ getTagDeclForType(
     return nullptr;
 }
 
-RecordDecl*
+CXXRecordDecl*
 ASTVisitor::
-getRecordDeclForType(
+getCXXRecordDeclForType(
     QualType T)
 {
-    if(RecordDecl const* D = T->getAsRecordDecl())
+    if(CXXRecordDecl const* D = T->getAsCXXRecordDecl())
         return D->getDefinition();
     return nullptr;
 }
@@ -380,11 +399,12 @@ buildTemplateParam(
     return info;
 }
 
+template<typename R>
 void
 ASTVisitor::
 buildTemplateArgs(
     TemplateInfo& I,
-    ArrayRef<TemplateArgument> args)
+    R&& args)
 {
     // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
     // for template type parameters used as arguments. it also cannonicalizes
@@ -407,31 +427,6 @@ buildTemplateArgs(
 
 void
 ASTVisitor::
-buildTemplateArgs(
-    TemplateInfo& I,
-    ArrayRef<TemplateArgumentLoc> args)
-{
-    // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
-    // for template type parameters used as arguments. it also cannonicalizes
-    // types, which we do not want (although, PrintingPolicy has an option to change this).
-    // thus, we use the template arguments as written.
-
-    // KRYSTIAN NOTE: this can probably be changed to select
-    // the argument as written when it is not dependent and is a type.
-    // FIXME: constant folding behavior should be consistent with that of other
-    // constructs, e.g. noexcept specifiers & explicit specifiers
-    const auto& policy = astContext_->getPrintingPolicy();
-    for(const TemplateArgumentLoc& arg : args)
-    {
-        std::string arg_str;
-        llvm::raw_string_ostream stream(arg_str);
-        arg.getArgument().print(policy, stream, false);
-        I.Args.emplace_back(std::move(arg_str));
-    }
-}
-
-void
-ASTVisitor::
 parseTemplateArgs(
     llvm::Optional<TemplateInfo>& I,
     const ClassTemplateSpecializationDecl* spec)
@@ -442,8 +437,8 @@ parseTemplateArgs(
     // ID of the primary template
     if(ClassTemplateDecl* primary = spec->getSpecializedTemplate())
     {
-        if(primary->isMemberSpecialization())
-            primary = primary->getInstantiatedFromMemberTemplate();
+        if(auto* MT = primary->getInstantiatedFromMemberTemplate())
+            primary = MT;
         I->Primary.emplace(getSymbolID(primary));
     }
 
@@ -468,8 +463,8 @@ parseTemplateArgs(
     // KRYSTIAN NOTE: do we need to check I->Primary.has_value()?
     if(FunctionTemplateDecl* primary = spec->getTemplate())
     {
-        if(primary->isMemberSpecialization())
-            primary = primary->getInstantiatedFromMemberTemplate();
+        if(auto* MT = primary->getInstantiatedFromMemberTemplate())
+            primary = MT;
         I->Primary.emplace(getSymbolID(primary));
     }
 
@@ -488,7 +483,8 @@ parseTemplateArgs(
     // KRYSTIAN NOTE: we have no way to get the ID of the primary template.
     // in the future, we could use name lookup to find matching declarations
     auto args = spec->getTemplateArgsAsWritten()->arguments();
-    buildTemplateArgs(*I, args);
+    buildTemplateArgs(*I, std::views::transform(
+        args, [](auto& x) -> auto& { return x.getArgument(); }));
 }
 
 void
@@ -515,7 +511,6 @@ parseTemplateParams(
 void
 ASTVisitor::
 applyDecayToParameters(
-    ASTContext* context,
     FunctionDecl* D)
 {
     // apply the type adjustments specified in [dcl.fct] p5
@@ -524,7 +519,7 @@ applyDecayToParameters(
     // with different top-level cv-qualifiers.
     // this needs to be done prior to USR generation for the function
     for(ParmVarDecl* P : D->parameters())
-        P->setType(context->getSignatureParameterType(P->getType()));
+        P->setType(astContext_->getSignatureParameterType(P->getType()));
 }
 
 void
@@ -565,17 +560,17 @@ getMemberTypeInfo(
     {
         switch (attr->getKind())
         {
-            case clang::attr::Kind::NoUniqueAddress:
-                I.Flags.hasNoUniqueAddress = true;
-                break;
-            case clang::attr::Kind::Deprecated:
-                I.Flags.isDeprecated = true;
-                break;
-            case clang::attr::Kind::Unused:
-                I.Flags.isNodiscard = true;
-                break;
-            default:
-                break;
+        case clang::attr::Kind::NoUniqueAddress:
+            I.Flags.hasNoUniqueAddress = true;
+            break;
+        case clang::attr::Kind::Deprecated:
+            I.Flags.isDeprecated = true;
+            break;
+        case clang::attr::Kind::Unused:
+            I.Flags.isNodiscard = true;
+            break;
+        default:
+            break;
         }
     }
 }
@@ -769,12 +764,8 @@ shouldExtract(
         return false;
     }
 
-    if(D->getParentFunctionOrMethod())
-    {
-        // skip function-local declaration,
-        // and skip function ParmVarDecls.
-        return false;
-    }
+    // we should never visit block scope declarations
+    Assert(! D->getParentFunctionOrMethod());
 
     clang::PresumedLoc const loc =
         sourceManager_->getPresumedLoc(D->getBeginLoc());
@@ -845,19 +836,6 @@ extractInfo(
     return true;
 }
 
-// Return a Reference for the function.
-Reference
-ASTVisitor::
-getFunctionReference(
-    FunctionDecl const* D)
-{
-    Reference ref;
-    /*shouldExtract=*/ extractSymbolID(ref.id, D);
-    ref.Name = D->getNameAsString();
-    ref.RefType = InfoType::IT_function;
-    return ref;
-}
-
 int
 ASTVisitor::
 getLine(
@@ -893,7 +871,7 @@ extractBases(
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
         }
-        else if(RecordDecl const* P = getRecordDeclForType(B.getType()))
+        else if(RecordDecl const* P = getCXXRecordDeclForType(B.getType()))
         {
             I.Bases.emplace_back(
                 getSymbolID(P),
@@ -918,10 +896,12 @@ template<class DeclTy>
 bool
 ASTVisitor::
 constructFunction(
-    FunctionInfo& I, DeclTy* D, char const* name)
+    FunctionInfo& I, 
+    DeclTy* D, 
+    char const* name)
 {
     // adjust parameter types
-    applyDecayToParameters(astContext_, D);
+    applyDecayToParameters(D);
     if(! extractInfo(I, D))
         return false;
     if(name)
@@ -1042,11 +1022,9 @@ constructFunction(
 void
 ASTVisitor::
 buildNamespace(
+    NamespaceInfo& I,
     NamespaceDecl* D)
 {
-    if(! shouldExtract(D))
-        return;
-    NamespaceInfo I;
     if(! extractInfo(I, D))
         return;
     if(D->isAnonymousNamespace())
@@ -1057,7 +1035,7 @@ buildNamespace(
 
 void
 ASTVisitor::
-constructRecord(
+buildRecord(
     RecordInfo& I,
     CXXRecordDecl* D)
 {
@@ -1163,11 +1141,9 @@ buildFriend(
 void
 ASTVisitor::
 buildEnum(
+    EnumInfo& I,
     EnumDecl* D)
 {
-    if(! shouldExtract(D))
-        return;
-    EnumInfo I;
     if(! extractInfo(I, D))
         return;
     LineNumber = getLine(D);
@@ -1189,11 +1165,9 @@ buildEnum(
 void
 ASTVisitor::
 buildVar(
+    VarInfo& I,
     VarDecl* D)
 {
-    if(! shouldExtract(D))
-        return;
-    VarInfo I;
     if(! extractInfo(I, D))
         return;
     LineNumber = getLine(D);
@@ -1222,7 +1196,7 @@ buildFunction(
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, 
         std::derived_from<DeclTy, CXXMethodDecl> ? 
-            D->getAccess() : AccessSpecifier::AS_none));
+        D->getAccess() : AccessSpecifier::AS_none));
 }
 
 template<class DeclTy>
@@ -1242,11 +1216,9 @@ template<class DeclTy>
 void
 ASTVisitor::
 buildTypedef(
+    TypedefInfo& I,
     DeclTy* D)
 {
-    if(! shouldExtract(D))
-        return;
-    TypedefInfo I;
     if(! extractInfo(I, D))
         return;
     I.Underlying = getTypeInfoForType(
@@ -1303,14 +1275,136 @@ HandleTranslationUnit(
 // functions will abort the _entire_ traversal
 bool
 ASTVisitor::
+TraverseDecl(
+    Decl* D)
+{
+    Assert(D);
+    if(D->isImplicit())
+        return true;
+
+    switch(D->getKind())
+    {
+    case Decl::TranslationUnit:
+        TraverseTranslationUnitDecl(
+            static_cast<TranslationUnitDecl*>(D));
+        break;
+    case Decl::Namespace:
+        TraverseNamespaceDecl(
+            static_cast<NamespaceDecl*>(D));
+        break;
+    case Decl::CXXRecord:
+        TraverseCXXRecordDecl(
+            static_cast<CXXRecordDecl*>(D));
+        break;
+    case Decl::CXXMethod:
+        TraverseCXXMethodDecl(
+            static_cast<CXXMethodDecl*>(D));
+        break;
+    case Decl::CXXDestructor:
+        TraverseCXXDestructorDecl(
+            static_cast<CXXDestructorDecl*>(D));
+        break;
+    case Decl::CXXConstructor:
+        TraverseCXXConstructorDecl(
+            static_cast<CXXConstructorDecl*>(D));
+        break;
+    case Decl::CXXConversion:
+        TraverseCXXConversionDecl(
+            static_cast<CXXConversionDecl*>(D));
+        break;
+    case Decl::CXXDeductionGuide:
+        TraverseCXXDeductionGuideDecl(
+            static_cast<CXXDeductionGuideDecl*>(D));
+        break;
+    case Decl::Function:
+        TraverseFunctionDecl(
+            static_cast<FunctionDecl*>(D));
+        break;
+    case Decl::Friend:
+        TraverseFriendDecl(
+            static_cast<FriendDecl*>(D));
+        break;
+    case Decl::TypeAlias:
+        TraverseTypeAliasDecl(
+            static_cast<TypeAliasDecl*>(D));
+        break;
+    case Decl::Typedef:
+        TraverseTypedefDecl(
+            static_cast<TypedefDecl*>(D));
+        break;
+    case Decl::Enum:
+        TraverseEnumDecl(
+            static_cast<EnumDecl*>(D));
+        break;
+    case Decl::Var:
+        TraverseVarDecl(
+            static_cast<VarDecl*>(D));
+        break;
+    case Decl::ClassTemplate:
+        TraverseClassTemplateDecl(
+            static_cast<ClassTemplateDecl*>(D));
+        break;
+    case Decl::ClassTemplateSpecialization:
+        TraverseClassTemplateSpecializationDecl(
+            static_cast<ClassTemplateSpecializationDecl*>(D));
+        break;
+    case Decl::ClassTemplatePartialSpecialization:
+        TraverseClassTemplatePartialSpecializationDecl(
+            static_cast<ClassTemplatePartialSpecializationDecl*>(D));
+        break;
+    case Decl::FunctionTemplate:
+        TraverseFunctionTemplateDecl(
+            static_cast<FunctionTemplateDecl*>(D));
+        break;
+    case Decl::ClassScopeFunctionSpecialization:
+        TraverseClassScopeFunctionSpecializationDecl(
+            static_cast<ClassScopeFunctionSpecializationDecl*>(D));
+        break;
+    default:
+        // for declarations we don't explicitly handle, traverse the children
+        // if it has any (e.g. LinkageSpecDecl, ExportDecl, ExternCContextDecl).
+        if(auto* DC = dyn_cast<DeclContext>(D))
+            TraverseDeclContext(DC);
+        break;
+    }
+    return true;
+}
+
+bool
+ASTVisitor::
+TraverseDeclContext(
+    DeclContext* D)
+{
+    Assert(D);
+    for(auto* C : D->decls())
+        TraverseDecl(C);
+    return true;
+}
+
+bool
+ASTVisitor::
+TraverseTranslationUnitDecl(
+    TranslationUnitDecl* D)
+{
+    auto Scope = astContext_->getTraversalScope();
+    Assert(Scope.size() == 1 &&
+        isa<TranslationUnitDecl>(Scope.front()));
+
+    return TraverseDeclContext(D);
+}
+
+bool
+ASTVisitor::
 TraverseNamespaceDecl(
     NamespaceDecl* D)
 {
-    buildNamespace(D);
+    if(! shouldExtract(D))
+        return true;
 
-    for(auto* child : D->decls())
-        TraverseDecl(child);
-    return true;
+    NamespaceInfo I;
+    buildNamespace(I, D);
+
+    return TraverseDeclContext(D);
 }
 
 bool
@@ -1320,14 +1414,11 @@ TraverseCXXRecordDecl(
 {
     if(! shouldExtract(D))
         return true;
-    
+
     RecordInfo I;
-    constructRecord(I, D);
-    
-    for(auto* child : D->decls())
-        if(! TraverseDecl(child))
-            return false;
-    return true;
+    buildRecord(I, D);
+
+    return TraverseDeclContext(D);
 }
 
 bool
@@ -1405,7 +1496,11 @@ ASTVisitor::
 TraverseTypeAliasDecl(
     TypeAliasDecl* D)
 {
-    buildTypedef(D);
+    if(! shouldExtract(D))
+        return true;
+
+    TypedefInfo I;
+    buildTypedef(I, D);
     return true;
 }
 
@@ -1414,7 +1509,11 @@ ASTVisitor::
 TraverseTypedefDecl(
     TypedefDecl* D)
 {
-    buildTypedef(D);
+    if(! shouldExtract(D))
+        return true;
+
+    TypedefInfo I;
+    buildTypedef(I, D);
     return true;
 }
 
@@ -1423,7 +1522,11 @@ ASTVisitor::
 TraverseEnumDecl(
     EnumDecl* D)
 {
-    buildEnum(D);
+    if(! shouldExtract(D))
+        return true;
+
+    EnumInfo I;
+    buildEnum(I, D);
     return true;
 }
 
@@ -1432,7 +1535,11 @@ ASTVisitor::
 TraverseVarDecl(
     VarDecl* D)
 {
-    buildVar(D);
+    if(! shouldExtract(D))
+        return true;
+
+    VarInfo I;
+    buildVar(I, D);
     return true;
 }
 
@@ -1444,15 +1551,12 @@ TraverseClassTemplateDecl(
     CXXRecordDecl* RD = D->getTemplatedDecl();
     if(! shouldExtract(RD))
         return true;
+
     RecordInfo I;
-
     parseTemplateParams(I.Template, RD);
-    constructRecord(I, RD);
+    buildRecord(I, RD);
 
-    for(auto* child : RD->decls())
-        if(! TraverseDecl(child))
-            return false;
-    return true;
+    return TraverseDeclContext(RD);
 }
 
 bool
@@ -1460,19 +1564,16 @@ ASTVisitor::
 TraverseClassTemplateSpecializationDecl(
     ClassTemplateSpecializationDecl* D)
 {
-    CXXRecordDecl* RD = cast<CXXRecordDecl>(D); 
+    CXXRecordDecl* RD = cast<CXXRecordDecl>(D);
     if(! shouldExtract(RD))
         return true;
-    RecordInfo I;
 
+    RecordInfo I;
     parseTemplateParams(I.Template, RD);
     parseTemplateArgs(I.Template, D);
-    constructRecord(I, RD);
-    
-    for(auto* child : RD->decls())
-        if(! TraverseDecl(child))
-            return false;
-    return true;
+    buildRecord(I, RD);
+
+    return TraverseDeclContext(RD);
 }
 
 bool
@@ -1496,28 +1597,32 @@ TraverseFunctionTemplateDecl(
     // (e.g. for an abbreviated function template with no template-head)
     if(! shouldExtract(FD))
         return true;
-    FunctionInfo I;
 
+    FunctionInfo I;
     parseTemplateParams(I.Template, FD);
 
     switch(FD->getKind())
     {
-    case Decl::Kind::Function:
+    case Decl::Function:
         buildFunction(I, FD);
         break;
-    case Decl::Kind::CXXMethod:
-        buildFunction(I, cast<CXXMethodDecl>(FD));
+    case Decl::CXXMethod:
+        buildFunction(I, static_cast<
+            CXXMethodDecl*>(FD));
         break;
-    case Decl::Kind::CXXConstructor:
-        buildFunction(I, cast<CXXConstructorDecl>(FD));
+    case Decl::CXXConstructor:
+        buildFunction(I, static_cast<
+            CXXConstructorDecl*>(FD));
         break;
-    case Decl::Kind::CXXConversion:
-        buildFunction(I, cast<CXXConversionDecl>(FD));
+    case Decl::CXXConversion:
+        buildFunction(I, static_cast<
+            CXXConversionDecl*>(FD));
         break;
-    case Decl::Kind::CXXDeductionGuide:
-        buildFunction(I, cast<CXXDeductionGuideDecl>(FD));
+    case Decl::CXXDeductionGuide:
+        buildFunction(I, static_cast<
+            CXXDeductionGuideDecl*>(FD));
         break;
-    case Decl::Kind::CXXDestructor:
+    case Decl::CXXDestructor:
         Assert(! "a destructor cannot be a template");
         break;
     default:
@@ -1536,13 +1641,13 @@ TraverseClassScopeFunctionSpecializationDecl(
 {
     if(! shouldExtract(D))
         return true;
-    FunctionInfo I;
 
+    FunctionInfo I;
     parseTemplateArgs(I.Template, D);
 
     CXXMethodDecl* MD = D->getSpecialization();
     buildFunction(I, MD);
-    
+
     return true;
 }
 

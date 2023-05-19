@@ -17,15 +17,12 @@
 #include <mrdox/Reporter.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Metadata/Access.hpp>
-#include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Tooling/Execution.h>
 #include <llvm/ADT/Optional.h>
 #include <unordered_map>
 
 namespace clang {
 namespace mrdox {
-
-struct SerializeResult;
 
 /** Convert AST to our metadata and serialize to bitcode.
 
@@ -39,9 +36,8 @@ struct SerializeResult;
     in a particular include file can be seen by
     more than one translation unit.
 */
-class ASTVisitor
-    : public RecursiveASTVisitor<ASTVisitor>
-    , public ASTConsumer
+class ASTVisitor 
+    : public ASTConsumer
 {
 public:
     struct FileFilter
@@ -108,8 +104,8 @@ public:
     getTagDeclForType(
         QualType T);
 
-    RecordDecl*
-    getRecordDeclForType(
+    CXXRecordDecl*
+    getCXXRecordDeclForType(
         QualType T);
 
     TypeInfo
@@ -123,27 +119,22 @@ public:
 
     void
     applyDecayToParameters(
-        ASTContext* context,
         FunctionDecl* D);
 
     void
     parseTemplateParams(
         llvm::Optional<TemplateInfo>& TemplateInfo,
         const Decl* D);
-    
+
     TParam
     buildTemplateParam(
         const NamedDecl* ND);
 
-    void 
-    buildTemplateArgs(
-        TemplateInfo& I,
-        ArrayRef<TemplateArgument> args);
-
+    template<typename R>
     void
     buildTemplateArgs(
         TemplateInfo& I,
-        ArrayRef<TemplateArgumentLoc> args);
+        R&& args);
 
     void
     parseTemplateArgs(
@@ -189,7 +180,6 @@ public://private:
     bool shouldExtract(Decl const* D);
     bool extractSymbolID(SymbolID& id, NamedDecl const* D);
     bool extractInfo(Info& I, NamedDecl const* D);
-    Reference getFunctionReference(FunctionDecl const* D);
     int getLine(NamedDecl const* D) const;
     void extractBases(RecordInfo& I, CXXRecordDecl* D);
 
@@ -200,20 +190,9 @@ private:
         DeclTy* D, 
         char const* name = nullptr);
 
-    void constructRecord(
-        RecordInfo& I, 
-        CXXRecordDecl* D);
-
-    void buildNamespace (NamespaceDecl* D);
-    void buildFriend    (FriendDecl* D);
-    void buildEnum      (EnumDecl* D);
-    void buildVar       (VarDecl* D);
-
-    template<class DeclTy> void buildTypedef    (DeclTy* D);
-
     template<class DeclTy>
     void buildFunction(
-        FunctionInfo& I, 
+        FunctionInfo& I,
         DeclTy* D, 
         const char* name = nullptr);
 
@@ -222,8 +201,35 @@ private:
         DeclTy* D,
         const char* name = nullptr);
 
+    void buildRecord(
+        RecordInfo& I, 
+        CXXRecordDecl* D);
+
+    void buildNamespace(
+        NamespaceInfo& I,
+        NamespaceDecl* D);
+
+    void buildFriend(
+        FriendDecl* D);
+
+    void buildEnum(
+        EnumInfo& I,
+        EnumDecl* D);
+
+    void buildVar(
+        VarInfo& I,
+        VarDecl* D);
+
+    template<class DeclTy>
+    void buildTypedef(
+        TypedefInfo& I,
+        DeclTy* D);
+
 public:
     void HandleTranslationUnit(ASTContext& Context) override;
+    bool TraverseDecl(Decl* D);
+    bool TraverseDeclContext(DeclContext* D);
+    bool TraverseTranslationUnitDecl(TranslationUnitDecl* D);
     bool TraverseNamespaceDecl(NamespaceDecl* D);
     bool TraverseCXXRecordDecl(CXXRecordDecl* D);
     bool TraverseCXXMethodDecl(CXXMethodDecl* D);
@@ -242,6 +248,15 @@ public:
     bool TraverseClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl* D);
     bool TraverseFunctionTemplateDecl(FunctionTemplateDecl* D);
     bool TraverseClassScopeFunctionSpecializationDecl(ClassScopeFunctionSpecializationDecl* D);
+
+#if 0
+    // includes both linkage-specification forms in [dcl.link]:
+    //     extern string-literal { declaration-seq(opt) }
+    //     extern string-literal name-declaration
+    bool TraverseLinkageSpecDecl(LinkageSpecDecl* D);
+    bool TraverseExternCContextDecl(ExternCContextDecl* D);
+    bool TraverseExportDecl(ExportDecl* D);
+#endif
 };
 
 } // mrdox
