@@ -85,12 +85,12 @@ unset(CMAKE_FOLDER)
 
 #-------------------------------------------------
 #
-# Library
+# Tool
 #
 #-------------------------------------------------
 
 configure_file(source/lib/api/Version.hpp.in ${PROJECT_BINARY_DIR}/include/mrdox/Version.hpp)
-
+file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS source/tool/*.cpp source/tool/*.hpp)
 file(GLOB_RECURSE LIB_INCLUDES CONFIGURE_DEPENDS include/*.hpp)
 file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     source/lib/*.h
@@ -99,9 +99,11 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     source/lib/*.natvis
 )
 
-add_library(mrdox-api ${MRDOX_LINK_MODE} ${LIB_INCLUDES} ${LIB_SOURCES})
-target_compile_features(mrdox-api PUBLIC cxx_std_20)
-target_include_directories(mrdox-api
+add_executable(mrdox ${TOOL_SOURCES} ${LIB_INCLUDES} ${LIB_SOURCES})
+
+
+target_compile_features(mrdox PUBLIC cxx_std_20)
+target_include_directories(mrdox
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
@@ -110,7 +112,7 @@ target_include_directories(mrdox-api
     ${PROJECT_BINARY_DIR}/include
 )
 target_compile_definitions(
-    mrdox-api
+    mrdox
     PUBLIC
     ${MRDOX_LINK_MODE_DEFINITION}
     PRIVATE
@@ -118,14 +120,14 @@ target_compile_definitions(
 )
 
 # LLVM
-target_link_libraries(mrdox-api PUBLIC ${llvm_libs})
-target_include_directories(mrdox-api SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
+target_link_libraries(mrdox PUBLIC ${llvm_libs})
+target_include_directories(mrdox SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
 
 # Clang
 if (CLANG_SIMPLE_LIBS)
-    target_link_libraries(mrdox-api PUBLIC LLVM clang clang-cpp)
+    target_link_libraries(mrdox PUBLIC LLVM clang clang-cpp)
 else()
-    target_link_libraries(mrdox-api
+    target_link_libraries(mrdox
         PUBLIC
         clangAST
         clangBasic
@@ -135,12 +137,12 @@ else()
         clangToolingCore
         clangToolingInclusions)
 endif()
-target_include_directories(mrdox-api SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
+target_include_directories(mrdox SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
 
 # Windows, Win64
 if (WIN32)
     target_compile_definitions(
-        mrdox-api
+        mrdox
         PUBLIC
         -D_WIN32_WINNT=0x0601
         -D_CRT_SECURE_NO_WARNINGS
@@ -148,12 +150,12 @@ if (WIN32)
     )
     get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
     if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
-        target_compile_definitions(mrdox-api PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
-        target_compile_options(mrdox-api PUBLIC /MD)
+        target_compile_definitions(mrdox PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
+        target_compile_options(mrdox PUBLIC /MD)
     endif()
     if(MSVC)
         target_compile_options(
-            mrdox-api
+            mrdox
             PUBLIC
             /permissive-    # strict C++
             /W4             # enable all warnings
@@ -165,7 +167,7 @@ endif ()
 
 if (MRDOX_CLANG)
     target_compile_options(
-        mrdox-api
+        mrdox
         PUBLIC
         -Wno-unused-private-field
         -Wno-unused-value
@@ -178,15 +180,6 @@ source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX " include" FILES ${LIB_INCLUDES})
 source_group(TREE ${PROJECT_SOURCE_DIR}/source/lib/api PREFIX "api" FILES ${LIB_SOURCES})
 
-#-------------------------------------------------
-#
-# Tool
-#
-#-------------------------------------------------
-
-file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS source/tool/*.cpp source/tool/*.hpp)
-add_executable(mrdox ${TOOL_SOURCES})
-target_link_libraries(mrdox PRIVATE mrdox-api)
 target_include_directories(mrdox
     PRIVATE
     ${PROJECT_SOURCE_DIR}/source/lib
@@ -205,12 +198,7 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL
 if (BUILD_TESTING)
     file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/test/*.cpp source/test/*.hpp)
     enable_testing()
-    add_executable(mrdox-test ${TEST_SOURCES})
-    target_link_libraries(mrdox-test PRIVATE mrdox-api ${llvm_libs})
-    target_include_directories(mrdox-test
-        PRIVATE
-        ${PROJECT_SOURCE_DIR}/source/lib)
-    add_test(NAME mrdox-test COMMAND mrdox-test
+    add_test(NAME mrdox-test COMMAND mrdox --action test
             "${PROJECT_SOURCE_DIR}/test-files/old-tests"
             )
     source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
@@ -260,7 +248,7 @@ endif()
 
 if (MRDOX_INSTALL)
     # Create and install mrdox-targets.cmake
-    install(TARGETS mrdox-api mrdox
+    install(TARGETS mrdox
             EXPORT mrdox-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
