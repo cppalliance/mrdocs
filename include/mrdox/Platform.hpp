@@ -40,7 +40,7 @@ namespace mrdox {
 #elif defined(_MSC_VER)
 # define MRDOX_SYMBOL_EXPORT __declspec(dllexport)
 # define MRDOX_SYMBOL_IMPORT __declspec(dllimport)
-# if defined(MRDOX_LIB) // building library
+# if defined(MRDOX_TOOL) // building tool
 #  define MRDOX_DECL MRDOX_SYMBOL_EXPORT
 # else
 #  define MRDOX_DECL MRDOX_SYMBOL_IMPORT
@@ -49,7 +49,7 @@ namespace mrdox {
 
 // (unknown)
 #elif defined(__GNUC__)
-# if defined(MRDOX_LIB) // building library
+# if defined(MRDOX_TOOL) // building library
 #   define MRDOX_DECL
 # else
 #   define MRDOX_DECL __attribute__((visibility("default")))

@@ -16,7 +16,6 @@
 
 cmake_minimum_required(VERSION 3.13)
 cmake_policy(SET CMP0111 OLD)
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 project(
     MrDox
     VERSION 1.0.0
@@ -89,18 +88,11 @@ unset(CMAKE_FOLDER)
 #
 #-------------------------------------------------
 
-configure_file(source/lib/api/Version.hpp.in ${PROJECT_BINARY_DIR}/include/mrdox/Version.hpp)
-file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS source/tool/*.cpp source/tool/*.hpp)
-file(GLOB_RECURSE LIB_INCLUDES CONFIGURE_DEPENDS include/*.hpp)
-file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
-    source/lib/*.h
-    source/lib/*.hpp
-    source/lib/*.cpp
-    source/lib/*.natvis
-)
+configure_file(source/Version.hpp.in "${PROJECT_SOURCE_DIR}/include/mrdox/Version.hpp")
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp source/*.in source/*.natvis)
+file(GLOB_RECURSE INCLUDES CONFIGURE_DEPENDS include/*.hpp)
 
-add_executable(mrdox ${TOOL_SOURCES} ${LIB_INCLUDES} ${LIB_SOURCES})
-
+add_executable(mrdox ${SOURCES} ${INCLUDES})
 
 target_compile_features(mrdox PUBLIC cxx_std_20)
 target_include_directories(mrdox
@@ -108,15 +100,15 @@ target_include_directories(mrdox
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
-    "${PROJECT_SOURCE_DIR}/source/lib"
-    ${PROJECT_BINARY_DIR}/include
+    "${PROJECT_SOURCE_DIR}/source"
+    "${PROJECT_SOURCE_DIR}/include"
 )
 target_compile_definitions(
     mrdox
     PUBLIC
     ${MRDOX_LINK_MODE_DEFINITION}
     PRIVATE
-    -DMRDOX_LIB
+    -DMRDOX_TOOL
 )
 
 # LLVM
@@ -176,18 +168,12 @@ if (MRDOX_CLANG)
     )
 endif ()
 
-source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX " include" FILES ${LIB_INCLUDES})
-source_group(TREE ${PROJECT_SOURCE_DIR}/source/lib/api PREFIX "api" FILES ${LIB_SOURCES})
+#-------------------------------------------------------------------------------
 
-target_include_directories(mrdox
-    PRIVATE
-    ${PROJECT_SOURCE_DIR}/source/lib
-    ${PROJECT_BINARY_DIR}/include/
-        )
-
-source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL_SOURCES})
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+#source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
+source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${INCLUDES})
+source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 
 #-------------------------------------------------
 #
@@ -196,13 +182,11 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source/tool PREFIX "source" FILES ${TOOL
 #-------------------------------------------------
 
 if (BUILD_TESTING)
-    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/test/*.cpp source/test/*.hpp)
+    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
     enable_testing()
     add_test(NAME mrdox-test COMMAND mrdox --action test
             "${PROJECT_SOURCE_DIR}/test-files/old-tests"
             )
-    source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
-    source_group(TREE ${PROJECT_SOURCE_DIR}/source/test PREFIX "source" FILES ${TEST_SOURCES})
 
     if (CMAKE_EXPORT_COMPILE_COMMANDS)
         # test run
@@ -230,7 +214,6 @@ if (BUILD_TESTING)
             COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/tools/trang.jar
                 ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng
             SOURCES mrdox.rnc)
-
 
         file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)
         add_test(NAME xml-lint
