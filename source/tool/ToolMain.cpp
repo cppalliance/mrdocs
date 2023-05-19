@@ -9,162 +9,74 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-// This tool for generating C and C++ documentation from source code
-// and comments. Generally, it runs a LibTooling FrontendAction on source files,
-// mapping each declaration in those files to its USR and serializing relevant
-// information into LLVM bitcode. It then runs a pass over the collected
-// declaration information, reducing by USR. There is an option to dump this
-// intermediate result to bitcode. Finally, it hands the reduced information
-// off to a generator, which does the final parsing from the intermediate
-// representation to the desired output format.
-//
+//------------------------------------------------
 
-#include "api/ConfigImpl.hpp"
+// This is a tool for generating reference documentation from C++ source code.
+// It runs a LibTooling FrontendAction on source files, mapping each declaration
+// in those files to its USR and serializing relevant information into LLVM
+// bitcode. It then runs a pass over the collected declaration information,
+// reducing by USR. Finally, it hands the reduced information off to a generator,
+// which does the final parsing from the intermediate representation to the
+// desired output format.
+//
+// The tool comes with these builtin generators:
+//
+//  XML
+//  Asciidoc
+//  Bitstream
+//
+// Furthermore, additional generators can be implemented as dynamically
+// loaded library "plugins" discovered at runtime. These generators can
+// be implemented without including LLVM headers or linking to LLVM
+// libraries.
+
+//------------------------------------------------
+
+#include "Options.hpp"
 #include "api/Support/Debug.hpp"
-#include <mrdox/Corpus.hpp>
-#include <mrdox/Generators.hpp>
 #include <mrdox/Reporter.hpp>
 #include <mrdox/Version.hpp>
-#include <clang/Tooling/AllTUsExecution.h>
-#include <clang/Tooling/CommonOptionsParser.h>
-#include <llvm/Support/CommandLine.h>
 #include <llvm/Support/Signals.h>
+#include <llvm/Support/CommandLine.h>
+#include <llvm/Support/raw_ostream.h>
+#include <stdlib.h>
 
 namespace clang {
 namespace mrdox {
 
-//------------------------------------------------
-
-namespace {
-
-const char* Overview =
-R"(Generates documentation from source code and comments.
-
-Examples
-
-  $ mrdox mrdox.yml
-  $ mrdox --config=mrdox.yml --output ./docs
-)";
-
-static
-llvm::cl::extrahelp
-CommonHelp(
-    tooling::CommonOptionsParser::HelpMessage);
-
-static
-llvm::cl::OptionCategory
-ToolCategory("mrdox options");
-
-static
-llvm::cl::opt<std::string>
-ConfigPath(
-    "config",
-    llvm::cl::desc(R"(The config filename relative to the repository root)"),
-    llvm::cl::init("mrdox.yaml"),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<std::string>
-FormatType(
-    "format",
-    llvm::cl::desc("Format for outputted docs (\"adoc\" or \"xml\")."),
-    llvm::cl::init("adoc"),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<bool>
-IgnoreMappingFailures(
-    "ignore-map-errors",
-    llvm::cl::desc("Continue if files are not mapped correctly."),
-    llvm::cl::init(true),
-    llvm::cl::cat(ToolCategory));
-
-static
-llvm::cl::opt<std::string>
-OutputPath(
-    "output",
-    llvm::cl::desc("Directory or file for generating output."),
-    llvm::cl::init("."),
-    llvm::cl::cat(ToolCategory));
-
-} // (anon)
-
-//------------------------------------------------
-
-void
-toolMain(
-    int argc, const char** argv,
-    Reporter& R)
-{
-    auto& generators = getGenerators();
-
-    llvm::cl::SetVersionPrinter(
-            &clang::mrdox::print_version);
-
-    // parse command line options
-    auto optionsResult = tooling::CommonOptionsParser::create(
-        argc, argv, ToolCategory, llvm::cl::OneOrMore, Overview);
-    if(R.error(optionsResult, "calculate command line options"))
-        return;
-
-    // Convert command line args to YAML
-    std::string extraYaml;
-    {
-        llvm::raw_string_ostream os(extraYaml);
-        if(IgnoreMappingFailures.getValue())
-            os << "ignore-failures: true\n";
-    }
-    std::error_code ec;
-    auto config = loadConfigFile(ConfigPath,
-        "",
-        ec);
-    if(ec)
-        return (void)R.error(ec, "load config file '", ConfigPath, "'");
-
-//    config->IgnoreMappingFailures = IgnoreMappingFailures;
-
-    // create the executor
-    // VFALCO the 2nd parameter is ThreadCount and we should
-    // get this from the configuration. Or better yet why
-    // do we require the Executor in the Corpus API in the
-    // first place?
-    auto ex = std::make_unique<tooling::AllTUsToolExecutor>(
-        optionsResult->getCompilations(), 0);
-
-    // create the generator
-    auto generator = generators.find(FormatType.getValue());
-    if(! generator)
-    {
-        R.print("Generator '", FormatType.getValue(), "' not found.");
-        return;
-    }
-
-    // Run the tool, this can take a while
-    auto corpus = Corpus::build(*ex, config, R);
-    if(R.error(corpus, "build the documentation corpus"))
-        return;
-
-    // Run the generator.
-    if(config->verboseOutput)
-        llvm::outs() << "Generating docs...\n";
-    auto err = generator->build(OutputPath.getValue(), **corpus, R);
-    if(err)
-        R.print(err.message(), "generate '", OutputPath, "'");
-}
+extern int DoGenerateAction(Reporter&);
+extern int DoTestAction(Reporter&);
 
 } // mrdox
 } // clang
-
-//------------------------------------------------
 
 int main(int argc, char const** argv)
 {
     using namespace clang::mrdox;
 
-    debugEnableHeapChecking();
+    // VFALCO this heap checking is too strong for
+    // a clang tool's model of what is actually a leak.
+    // clang::mrdox::debugEnableHeapChecking();
+
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
+    llvm::cl::SetVersionPrinter(&print_version);
+
+    {
+        std::string errorString;
+        llvm::raw_string_ostream os(errorString);
+        if(! llvm::cl::ParseCommandLineOptions(
+            argc, argv, Overview, &os, nullptr))
+        {
+            llvm::errs() << errorString;
+            return EXIT_FAILURE;
+        }
+    }
 
     Reporter R;
-    toolMain(argc, argv, R);
-    return R.getExitCode();
+    int toolResult;
+    if(clang::mrdox::ToolAction == Action::generate)
+        toolResult = DoGenerateAction(R);
+    else
+        toolResult = DoTestAction(R);    
+    return toolResult;
 }
