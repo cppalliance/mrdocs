@@ -54,7 +54,7 @@ function(mrdox)
             OUTPUT ${MRDOX_OUTPUT_FILE}
             COMMAND
                 mrdox --config=${CMAKE_CURRENT_SOURCE_DIR}/${MRDOX_TARGET_CONFIG}
-                        -p ${MRDOX_COMPILE_COMMANDS} ${ARGN}
+                        ${MRDOX_COMPILE_COMMANDS}
                         --format=${MRDOX_TARGET_FORMAT}
                         --output=${MRDOX_TARGET_OUTPUT}
             MAIN_DEPENDENCY ${MRDOX_TARGET_CONFIG} # scanner!
