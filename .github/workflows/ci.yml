@@ -53,29 +53,30 @@ jobs:
           find "$llvm_dir" -type f
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.1.0
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.2.1
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
+          update-ld-library-path: true
 
       - name: Install packages
         if: ${{ matrix.install }}
-        uses: alandefreitas/cpp-actions/package-install@v1.0.0
+        uses: alandefreitas/cpp-actions/package-install@v1.2.1
         id: package-install
         with:
           apt-get: ${{ matrix.install }}
 
       - name: CMake Workflow (C++${{ matrix.std }})
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.0.0
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.2.1
         with:
-          cmake-min-version: 3.13
+          cmake-version: '>=3.20'
           cxxstd: ${{ matrix.std }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
           cc: ${{ steps.setup-cpp.outputs.cc }}
           generator: Ninja
           install-prefix: .local
-          extra-args: ${{ format('-D LLVM_ROOT={0} -D Clang_ROOT={0} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON', (startsWith( matrix.os , 'windows') && steps.llvm-install.outputs.llvm-dir) || '/usr/local') }}
+          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-dir || '/usr/local') }}
 
       - name: Create packages
         working-directory: ./build
