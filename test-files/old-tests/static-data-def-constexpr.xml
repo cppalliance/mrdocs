@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <struct name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">
+    <file path="static-data-def-constexpr.cpp" line="1" class="def"/>
+    <variable name="s" id="Sugb8cWjf0PRq2dN0pOEbkKY9C4=">
+      <file path="static-data-def-constexpr.cpp" line="5" class="def"/>
+      <file path="static-data-def-constexpr.cpp" line="3"/>
+      <attr id="storage-class" name="static" value="2"/>
+      <type name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to="/>
+    </variable>
+  </struct>
+</namespace>
+</mrdox>
