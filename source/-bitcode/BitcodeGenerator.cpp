@@ -43,7 +43,7 @@ public:
     Err
     build()
     {
-        corpus_.traverse(*this, globalNamespaceID);
+        corpus_.traverse(*this, SymbolID::zero);
         wg_.wait();
         return Err();
     }
@@ -128,7 +128,7 @@ public:
     Err
     build()
     {
-        corpus_.traverse(*this, globalNamespaceID);
+        corpus_.traverse(*this, SymbolID::zero);
         return Err();
     }
 

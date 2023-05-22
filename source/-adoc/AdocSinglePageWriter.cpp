@@ -38,7 +38,7 @@ build()
     os_ <<
         "= Reference\n"
         ":role: mrdox\n";
-    corpus_.traverse(*this, globalNamespaceID);
+    corpus_.traverse(*this, SymbolID::zero);
     endSection();
     return {};
 }
@@ -93,7 +93,7 @@ visit(
         ! I.Children.Vars.empty())
     {
         std::string s;
-        if(I.id == EmptySID)
+        if(I.id == SymbolID::zero)
         {
             s = "global namespace";
         }

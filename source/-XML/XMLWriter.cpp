@@ -149,7 +149,7 @@ build()
     if(options_.index || options_.safe_names)
         writeIndex();
 
-    if(! corpus_.traverse(*this, globalNamespaceID))
+    if(! corpus_.traverse(*this, SymbolID::zero))
         return makeErr("visit failed");
 
     if(options_.prolog)
@@ -555,7 +555,7 @@ writeTemplate(
         break;
     }
     const SymbolID& id = I->Primary ?
-        *I->Primary : EmptySID;
+        *I->Primary : SymbolID::zero;
 
     tags_.open(templateTagName, {
         {"class", spec, !! spec},

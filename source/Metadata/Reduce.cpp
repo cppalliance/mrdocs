@@ -81,7 +81,7 @@ static void merge(Javadoc& I, Javadoc&& other)
 void mergeInfo(Info& I, Info&& Other)
 {
     Assert(canMerge(I, Other));
-    if (I.id == EmptySID)
+    if (I.id == SymbolID::zero)
         I.id = Other.id;
     if (I.Name == "")
         I.Name = Other.Name;
@@ -183,7 +183,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
 void merge(FunctionInfo& I, FunctionInfo&& Other)
 {
     Assert(canMerge(I, Other));
-    if (I.ReturnType.Type.id == EmptySID && I.ReturnType.Type.Name == "")
+    if (I.ReturnType.Type.id == SymbolID::zero && I.ReturnType.Type.Name == "")
         I.ReturnType = std::move(Other.ReturnType);
     if (I.Params.empty())
         I.Params = std::move(Other.Params);
@@ -217,7 +217,7 @@ void merge(EnumInfo& I, EnumInfo&& Other)
 void merge(VarInfo& I, VarInfo&& Other)
 {
     Assert(canMerge(I, Other));
-    if(I.Type.id == EmptySID && I.Type.Name.empty())
+    if(I.Type.id == SymbolID::zero && I.Type.Name.empty())
         I.Type = std::move(Other.Type);
     mergeSymbolInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;

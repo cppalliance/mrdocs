@@ -58,7 +58,7 @@ struct TypeInfo
     TypeInfo(
         llvm::StringRef Name)
         : Type(
-            EmptySID, Name, InfoType::IT_default)
+            SymbolID::zero, Name, InfoType::IT_default)
     {
     }
 

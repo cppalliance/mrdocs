@@ -51,7 +51,7 @@ struct BaseInfo
     bool IsVirtual;
 
     BaseInfo(
-        SymbolID const& id_ = EmptySID,
+        SymbolID const& id_ = SymbolID::zero,
         std::string_view Name_ = "",
         Access access_ = Access::Public,
         bool IsVirtual_ = false)

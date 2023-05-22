@@ -45,8 +45,8 @@ public:
         : corpus_(corpus)
     {
         prefix_.reserve(512);
-        corpus_.traverse(*this, globalNamespaceID);
-        /* auto result =*/ map.try_emplace(llvm::toStringRef(EmptySID), std::string());
+        corpus_.traverse(*this, SymbolID::zero);
+        /* auto result =*/ map.try_emplace(SymbolID::zero, std::string());
 
     #ifndef NDEBUG
         //for(auto const& N : map)
@@ -62,12 +62,12 @@ public:
         corpus_(corpus)
     {
         prefix_.reserve(512);
-        corpus_.traverse(*this, globalNamespaceID);
-        /* auto result =*/ map.try_emplace(llvm::toStringRef(EmptySID), std::string());
+        corpus_.traverse(*this, SymbolID::zero);
+        /* auto result =*/ map.try_emplace(SymbolID::zero, std::string());
         if(os_)
             *os_ << "\n\n";
     }
- 
+
     llvm::StringMap<std::string> map;
 
 private:
@@ -197,7 +197,7 @@ private:
                 if(os_)
                     *os_ << getSafe(**it0) << "\n";
                 /*auto result =*/ map.try_emplace(
-                    llvm::toStringRef((*it0)->id),
+                    (*it0)->id,
                     std::move(s));
                 it0 = it;
                 continue;
@@ -215,7 +215,7 @@ private:
                     *os_ << suffix << "\n";
                 s.append(suffix);
                 /*auto result =*/ map.try_emplace(
-                    llvm::toStringRef(it0[i]->id),
+                    it0[i]->id,
                     std::move(s));
             }
             it0 = it;
@@ -287,8 +287,8 @@ public:
         llvm::SmallString<64> temp;
         for(Info const* I : corpus_.index())
             map.try_emplace(
-                llvm::toStringRef(I->id),
-                llvm::toHex(llvm::toStringRef(I->id), true));
+                I->id,
+                llvm::toHex(I->id, true));
     }
 };
 
@@ -312,7 +312,7 @@ SafeNames(
     : corpus_(corpus)
     //, map_(PrettyBuilder(corpus).map)
     , map_(UglyBuilder(corpus).map)
-{   
+{
 }
 
 llvm::StringRef
@@ -320,7 +320,7 @@ SafeNames::
 get(
     SymbolID const &id) const noexcept
 {
-    auto const it = map_.find(llvm::toStringRef(id));
+    auto const it = map_.find(id);
     Assert(it != map_.end());
     return it->getValue();
 }

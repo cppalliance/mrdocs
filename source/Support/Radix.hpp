@@ -16,7 +16,6 @@
 #include <llvm/ADT/ArrayRef.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
-#include <array>
 #include <cstdint>
 #include <string>
 
@@ -24,8 +23,7 @@ namespace clang {
 namespace mrdox {
 
 std::string
-toBase64(
-    std::array<uint8_t, 20> const& v);
+toBase64(llvm::StringRef str);
 
 llvm::StringRef
 toBaseFN(

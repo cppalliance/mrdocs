@@ -224,12 +224,11 @@ base64Encode(void* dest, void const* src, std::size_t len)
 //------------------------------------------------
 
 std::string
-toBase64(
-    std::array<uint8_t, 20> const& src)
+toBase64(llvm::StringRef str)
 {
     std::string dest;
-    dest.resize(base64EncodedSize(src.size()));
-    base64Encode(&dest[0], src.data(), src.size());
+    dest.resize(base64EncodedSize(str.size()));
+    base64Encode(&dest[0], str.data(), str.size());
     return dest;
 }
 

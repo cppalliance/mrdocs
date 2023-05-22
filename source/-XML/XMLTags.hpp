@@ -101,7 +101,7 @@ struct Attribute
         SymbolID id)
         : name("id")
         , value(toString(id))
-        , pred(id != EmptySID)
+        , pred(id != SymbolID::zero)
     {
     }
 

@@ -134,7 +134,7 @@ struct AdocWriter::TypeName
         llvm::raw_ostream& os,
         TypeName const& t)
     {
-        if(t.I.Type.id == globalNamespaceID)
+        if(t.I.Type.id == SymbolID::zero)
         {
             os << t.I.Type.Name;
             return os;

@@ -23,7 +23,7 @@ CorpusImpl::
 find(
     SymbolID const& id) noexcept
 {
-    auto it = InfoMap.find(llvm::toStringRef(id));
+    auto it = InfoMap.find(id);
     if(it != InfoMap.end())
         return it->second.get();
     return nullptr;
@@ -34,7 +34,7 @@ CorpusImpl::
 find(
     SymbolID const& id) const noexcept
 {
-    auto it = InfoMap.find(llvm::toStringRef(id));
+    auto it = InfoMap.find(id);
     if(it != InfoMap.end())
         return it->second.get();
     return nullptr;
@@ -52,7 +52,7 @@ insert(std::unique_ptr<Info> I)
     index_.emplace_back(I.get());
 
     // This has to come last because we move I.
-    InfoMap[llvm::toStringRef(I->id)] = std::move(I);
+    InfoMap[I->id] = std::move(I);
 }
 
 //------------------------------------------------
@@ -212,10 +212,7 @@ public:
             [&](Reference const& ref0,
                 Reference const& ref1) noexcept
             {
-                return std::memcmp(
-                    ref0.id.data(),
-                    ref1.id.data(),
-                    ref0.id.size()) < 0;
+                return ref0.id < ref1.id;
             });
     }
 
@@ -226,10 +223,7 @@ public:
             [&](SymbolID const& id0,
                 SymbolID const& id1) noexcept
             {
-                return std::memcmp(
-                    id0.data(),
-                    id1.data(),
-                    id0.size()) < 0;
+                return id0 < id1;
             });
     }
 
@@ -248,7 +242,7 @@ canonicalize(
     if(config_->verboseOutput)
         R.print("Canonicalizing...");
     Canonicalizer cn(*this);
-    traverse(cn, globalNamespaceID);
+    traverse(cn, SymbolID::zero);
     std::string temp0;
     std::string temp1;
     llvm::sort(index_,

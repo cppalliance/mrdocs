@@ -20,7 +20,7 @@ insertBitcode(
     Bitcode&& bitcode)
 {
     ex.reportResult(
-        llvm::toStringRef(bitcode.id),
+        bitcode.id,
         std::move(bitcode.data));
 }
 

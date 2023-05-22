@@ -141,7 +141,7 @@ void debugEnableHeapChecking()
         const clang::mrdox::SymbolID& s,
         std::format_context& ctx) const
     {
-        std::string str = s == clang::mrdox::EmptySID ?
+        std::string str = s == clang::mrdox::SymbolID::zero ?
             "<empty SymbolID>" : clang::mrdox::toBase64(s);
         return std::formatter<std::string>::format(std::move(str), ctx);
     }

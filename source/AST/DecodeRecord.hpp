@@ -93,15 +93,8 @@ decodeRecord(
     auto* dest = &f[0];
     while(n--)
     {
-        for(std::size_t i = 0;
-            i < BitCodeConstants::USRHashSize; ++i)
-        {
-            if(src[i] > std::uint8_t(-1))
-                return makeError("invalid byte");
-            (*dest)[i] = static_cast<std::uint8_t>(src[i]);
-        }
-        src += 20;
-        ++dest;
+        *dest++ = SymbolID(src);
+        src += BitCodeConstants::USRHashSize;
     }
     return llvm::Error::success();
 }
@@ -129,15 +122,9 @@ decodeRecord(
         if(*src > 2) // Access::Private
             return makeError("invalid Access");
         dest->access = static_cast<Access>(*src++);
-        for(std::size_t i = 0;
-            i < BitCodeConstants::USRHashSize; ++i)
-        {
-            if(src[i] > std::uint8_t(-1))
-                return makeError("invalid byte");
-            dest->id[i] = static_cast<std::uint8_t>(src[i]);
-        }
-        src += 20;
+        dest->id = SymbolID(src);
         ++dest;
+        src += BitCodeConstants::USRHashSize;
     }
     return llvm::Error::success();
 }
@@ -152,10 +139,7 @@ decodeRecord(
     if (R[0] != BitCodeConstants::USRHashSize)
         return makeError("incorrect USR digest size");
 
-    // First position in the record is the length of the following array, so we
-    // copy the following elements to the field.
-    for (int I = 0, E = R[0]; I < E; ++I)
-        Field[I] = R[I + 1];
+    Field = SymbolID(&R[1]);
     return llvm::Error::success();
 }
 

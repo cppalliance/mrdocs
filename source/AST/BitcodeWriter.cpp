@@ -37,7 +37,7 @@ struct BlockIdToIndexFunctor
 struct RecordIDToIndexFunctor
 {
     using argument_type = unsigned;
-    unsigned operator()(unsigned ID) const 
+    unsigned operator()(unsigned ID) const
     {
         return ID - RI_FIRST;
     }
@@ -349,14 +349,14 @@ RecordsByBlock{
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
     // TArg.
-    {BI_TEMPLATE_ARG_BLOCK_ID, 
+    {BI_TEMPLATE_ARG_BLOCK_ID,
         {TEMPLATE_ARG_VALUE}},
     // TemplateInfo.
-    {BI_TEMPLATE_BLOCK_ID, 
+    {BI_TEMPLATE_BLOCK_ID,
         {TEMPLATE_PRIMARY_USR}},
     // TParam.
-    {BI_TEMPLATE_PARAM_BLOCK_ID, 
-        {TEMPLATE_PARAM_KIND, TEMPLATE_PARAM_NAME, 
+    {BI_TEMPLATE_PARAM_BLOCK_ID,
+        {TEMPLATE_PARAM_KIND, TEMPLATE_PARAM_NAME,
         TEMPLATE_PARAM_IS_PACK, TEMPLATE_PARAM_DEFAULT}},
     // TypeInfo
     {BI_TYPE_BLOCK_ID, {}},
@@ -529,7 +529,7 @@ emitRecord(
     Assert(RecordIDNameMap[ID]);
     if constexpr(sizeof(Integer) == 4)
     {
-        Assert(RecordIDNameMap[ID].Abbrev == &Integer32Abbrev); 
+        Assert(RecordIDNameMap[ID].Abbrev == &Integer32Abbrev);
     }
 #if 0
     else if constexpr(sizeof(Integer) == 2)
@@ -621,7 +621,7 @@ emitRecord(
     Assert(RecordIDNameMap[ID] && "Unknown RecordID.");
     Assert(RecordIDNameMap[ID].Abbrev == &SymbolIDAbbrev &&
         "Abbrev type mismatch.");
-    if (!prepRecordData(ID, Sym != EmptySID))
+    if (!prepRecordData(ID, Sym != SymbolID::zero))
         return;
     Assert(Sym.size() == 20);
     Record.push_back(Sym.size());
@@ -976,7 +976,7 @@ BitcodeWriter::
 emitBlock(
     Reference const& R, FieldId Field)
 {
-    if (R.id == globalNamespaceID && R.Name.empty())
+    if (R.id == SymbolID::zero && R.Name.empty())
         return;
     StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
     emitRecord(R.id, REFERENCE_USR);

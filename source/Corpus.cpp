@@ -71,7 +71,7 @@ NamespaceInfo const&
 Corpus::
 globalNamespace() const noexcept
 {
-    return get<NamespaceInfo>(globalNamespaceID);
+    return get<NamespaceInfo>(SymbolID::zero);
 }
 
 //------------------------------------------------
@@ -363,7 +363,7 @@ build(
             }
 
             std::unique_ptr<Info> I(merged.get().release());
-            Assert(Group.getKey() == llvm::toStringRef(I->id));
+            Assert(Group.getKey() == I->id);
             corpus->insert(std::move(I));
         });
 

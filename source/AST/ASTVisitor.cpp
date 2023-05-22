@@ -73,7 +73,8 @@ getSymbolID(
     llvm::SmallString<128> USR;
     if(index::generateUSRForDecl(D, USR))
         return SymbolID();
-    return llvm::SHA1::hash(arrayRefFromStringRef(USR));
+    auto r = llvm::SHA1::hash(arrayRefFromStringRef(USR));
+    return SymbolID(r.data());
 }
 
 //------------------------------------------------
@@ -101,7 +102,7 @@ shouldSerializeInfo(
         linkage == Linkage::ExternalLinkage)
         return true;
     // some form of internal linkage
-    return false; 
+    return false;
 }
 
 //------------------------------------------------
@@ -172,13 +173,13 @@ getParentNamespaces(
         }
         // for an explicit specialization of member of an implicit specialization,
         // treat it as-if it was declared in the primary class template
-        else if(auto const* N = dyn_cast<ClassTemplateSpecializationDecl>(DC); N && 
+        else if(auto const* N = dyn_cast<ClassTemplateSpecializationDecl>(DC); N &&
             N->getSpecializationKind() == TemplateSpecializationKind::TSK_ImplicitInstantiation)
         {
             // ClassTemplateDecl* P = N->getSpecializedTemplate();
             Decl* TD = nullptr;
             auto parent = N->getSpecializedTemplateOrPartial();
-            // an explicitly specialized member of a partial specialization 
+            // an explicitly specialized member of a partial specialization
             // is not a member of the primary template; treat it as such.
             if(auto* partial = parent.dyn_cast<ClassTemplatePartialSpecializationDecl*>())
             {
@@ -189,7 +190,7 @@ getParentNamespaces(
             }
             else if(ClassTemplateDecl* PT = N->getSpecializedTemplate())
             {
-                // for implicit specializations of a primary member template, 
+                // for implicit specializations of a primary member template,
                 // consider the parent context to be the primary template
                 if(auto* MT = PT->getInstantiatedFromMemberTemplate())
                     TD = MT;
@@ -237,7 +238,7 @@ getParentNamespaces(
         (!Namespaces.empty() && Namespaces.back().RefType == InfoType::IT_record))
     {
         Namespaces.emplace_back(
-            globalNamespaceID,
+            SymbolID::zero,
             "", //"GlobalNamespace",
             InfoType::IT_namespace);
     }
@@ -312,7 +313,7 @@ getTypeInfoForType(
 {
     TagDecl const* TD = getTagDeclForType(T);
     if(!TD)
-        return TypeInfo(Reference(EmptySID,
+        return TypeInfo(Reference(SymbolID::zero,
             getTypeAsString(T)));
     InfoType IT;
     if(dyn_cast<EnumDecl>(TD))
@@ -349,7 +350,7 @@ ASTVisitor::
 buildTemplateParam(
     const NamedDecl* ND)
 {
-    // KRYSTIAN NOTE: Decl::isParameterPack  
+    // KRYSTIAN NOTE: Decl::isParameterPack
     // returns true for function parameter packs
     TParam info(
         ND->getNameAsString(),
@@ -665,7 +666,7 @@ writeParent(
         // serialized bitcode.
         if(I.Namespace.empty())
         {
-            if(I.id == globalNamespaceID)
+            if(I.id == SymbolID::zero)
             {
                 // Global namespace has no parent.
                 return {};
@@ -673,7 +674,7 @@ writeParent(
 
             // In global namespace
             NamespaceInfo P;
-            Assert(P.id == globalNamespaceID);
+            Assert(P.id == SymbolID::zero);
             insertChild(P, I);
             return writeBitcode(P);
         }
@@ -814,7 +815,8 @@ extractSymbolID(
     auto const shouldIgnore = index::generateUSRForDecl(D, usr_);
     if(shouldIgnore)
         return false;
-    id = llvm::SHA1::hash(arrayRefFromStringRef(usr_));
+    auto r = llvm::SHA1::hash(arrayRefFromStringRef(usr_));
+    id = SymbolID(r.data());
     return true;
 }
 
@@ -882,7 +884,7 @@ extractBases(
         else
         {
             I.Bases.emplace_back(
-                EmptySID,
+                SymbolID::zero,
                 getTypeAsString(B.getType()),
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
@@ -896,8 +898,8 @@ template<class DeclTy>
 bool
 ASTVisitor::
 constructFunction(
-    FunctionInfo& I, 
-    DeclTy* D, 
+    FunctionInfo& I,
+    DeclTy* D,
     char const* name)
 {
     // adjust parameter types
@@ -1194,8 +1196,8 @@ buildFunction(
         return;
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, 
-        std::derived_from<DeclTy, CXXMethodDecl> ? 
+    insertBitcode(ex_, writeParent(I,
+        std::derived_from<DeclTy, CXXMethodDecl> ?
         D->getAccess() : AccessSpecifier::AS_none));
 }
 
@@ -1256,7 +1258,7 @@ HandleTranslationUnit(
     // Install handlers for our custom commands
     initCustomCommentCommands(Context);
 
-    llvm::Optional<llvm::StringRef> filePath = 
+    llvm::Optional<llvm::StringRef> filePath =
         Context.getSourceManager().getNonBuiltinFilenameForID(
             Context.getSourceManager().getMainFileID());
     if(! filePath)
@@ -1581,7 +1583,7 @@ ASTVisitor::
 TraverseClassTemplatePartialSpecializationDecl(
     ClassTemplatePartialSpecializationDecl* D)
 {
-    // without this function, we would only traverse 
+    // without this function, we would only traverse
     // explicit specialization declarations
     return TraverseClassTemplateSpecializationDecl(D);
 }
@@ -1593,7 +1595,7 @@ TraverseFunctionTemplateDecl(
 {
     FunctionDecl* FD = D->getTemplatedDecl();
     // check whether to extract using the templated declaration.
-    // this is done because the template-head may be implicit 
+    // this is done because the template-head may be implicit
     // (e.g. for an abbreviated function template with no template-head)
     if(! shouldExtract(FD))
         return true;
@@ -1629,7 +1631,7 @@ TraverseFunctionTemplateDecl(
         Assert(! "unhandled kind for FunctionDecl");
         break;
     }
-    // we don't care about any block scope declarations, 
+    // we don't care about any block scope declarations,
     // nor do we need to traverse the FunctionDecl, so just return
     return true;
 }

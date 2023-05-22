@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -14,7 +15,9 @@
 
 #include <mrdox/Platform.hpp>
 #include <llvm/ADT/StringRef.h>
-#include <array>
+#include <cstdint>
+#include <cstring>
+#include <compare>
 
 namespace clang {
 namespace mrdox {
@@ -25,14 +28,62 @@ namespace mrdox {
     USR. A USRs is a string that provide an
     unambiguous reference to a symbol.
 */
-struct SymbolID :
-    std::array<std::uint8_t, 20>
+class SymbolID
 {
+public:
+    static const SymbolID zero;
+
+    using value_type = std::uint8_t;
+
     constexpr SymbolID() = default;
-    constexpr SymbolID(const std::array<std::uint8_t, 20>& arr)
-        : array(arr)
+
+    template<typename Elem>
+    SymbolID(const Elem* src)
     {
+        for(auto& c : data_)
+            c = *src++;
     }
+
+    constexpr auto data() const noexcept
+    {
+        return data_;
+    }
+
+    constexpr std::size_t size() const noexcept
+    {
+        return 20;
+    }
+
+    constexpr auto begin() const noexcept
+    {
+        return data_;
+    }
+
+    constexpr auto end() const noexcept
+    {
+        return data_ + size();
+    }
+
+    operator llvm::StringRef() const noexcept
+    {
+        return llvm::StringRef(reinterpret_cast<
+            const char*>(data()), size());
+    }
+
+    auto operator<=>(
+        const SymbolID& other) const noexcept
+    {
+        return std::memcmp(
+            data(),
+            other.data(),
+            size()) <=> 0;
+    }
+
+    bool operator==(
+        const SymbolID& other) const noexcept = default;
+
+private:
+    value_type data_[20];
 };
 
 /** The empty Symbol ID.
@@ -40,7 +91,9 @@ struct SymbolID :
     This is used to avoid unnecessary constructions,
     and to identify the global namespace.
 */
-constexpr SymbolID const EmptySID = SymbolID();
+// KRYSTIAN NOTE: msvc requires inline as it doesn't consider SymbolID::zero
+// to be an inline variable without it (it should; see [dcl.constexpr])
+constexpr inline SymbolID SymbolID::zero = SymbolID();
 
 /** Like optional<SymbolID>
 */
@@ -86,7 +139,7 @@ public:
 
     constexpr bool has_value() const noexcept
     {
-        return ID_ != EmptySID;
+        return ID_ != SymbolID::zero;
     }
 
     template<typename... Args>
@@ -96,10 +149,6 @@ public:
             std::forward<Args>(args)...);
     }
 };
-
-/** The ID of the global namespace.
-*/
-constexpr SymbolID const globalNamespaceID = EmptySID;
 
 /** Info variant discriminator
 */

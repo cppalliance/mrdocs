@@ -44,7 +44,7 @@ struct Reference
     // string as a valid input for the global namespace (it will have
     // "GlobalNamespace" as the name, but an empty QualName).
     Reference(
-        SymbolID id_ = EmptySID,
+        SymbolID id_ = SymbolID::zero,
         llvm::StringRef Name = llvm::StringRef(),
         InfoType IT = InfoType::IT_default)
         : id(id_)

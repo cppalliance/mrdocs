@@ -47,22 +47,22 @@ extractName() const
     //        example use base64 or base41...
     case InfoType::IT_record:
         return std::string("@nonymous_record_") +
-            toHex(llvm::toStringRef(id));
+            llvm::toHex(id);
     case InfoType::IT_function:
         return std::string("@nonymous_function_") +
-            toHex(llvm::toStringRef(id));
+            llvm::toHex(id);
     case InfoType::IT_enum:
         return std::string("@nonymous_enum_") +
-            toHex(llvm::toStringRef(id));
+            llvm::toHex(id);
     case InfoType::IT_typedef:
         return std::string("@nonymous_typedef_") +
-            toHex(llvm::toStringRef(id));
+            llvm::toHex(id);
     case InfoType::IT_variable:
         return std::string("@nonymous_var_") +
-            toHex(llvm::toStringRef(id));
+            llvm::toHex(id);
     case InfoType::IT_default:
         return std::string("@nonymous_") +
-            toHex(llvm::toStringRef(id));
+            llvm::toHex(id);
     default:
         llvm_unreachable("Invalid InfoType.");
         return std::string("");

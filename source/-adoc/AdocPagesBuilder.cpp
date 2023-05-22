@@ -24,7 +24,7 @@ Err
 AdocPagesBuilder::
 build()
 {
-    corpus_.traverse(*this, globalNamespaceID);
+    corpus_.traverse(*this, SymbolID::zero);
     wg_.wait();
     return {};
 }

@@ -23,7 +23,7 @@ NamespaceInfo::
 NamespaceInfo()
     : Info(
         InfoType::IT_namespace,
-        EmptySID,
+        SymbolID::zero,
         "")
     , Children(true)
 {
