@@ -397,7 +397,7 @@ public:
 private:
     FullComment const* FC_;
     ASTContext const& ctx_;
-    Reporter& R_;
+    [[maybe_unused]] Reporter& R_;
     AnyList<Javadoc::Block> blocks_;
     AnyList<Javadoc::Param> params_;
     Javadoc::Paragraph* para_ = nullptr;

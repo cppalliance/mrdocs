@@ -111,7 +111,7 @@ public:
 class SingleFileBuilder : public Corpus::Visitor
 {
     Corpus const& corpus_;
-    Reporter& R_;
+    [[maybe_unused]] Reporter& R_;
     std::ostream& os_;
 
 public:
