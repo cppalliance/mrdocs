@@ -50,6 +50,8 @@ public:
     ConfigImpl const& config_;
     Reporter& R_;
 
+    clang::CompilerInstance& compiler_;
+
     llvm::SmallString<512> File;
     int LineNumber;
     bool PublicOnly;
@@ -63,29 +65,34 @@ public:
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
 
+    std::size_t context_depth_ = 0;
+    Sema* sema_;
+
 public:
     ASTVisitor(
         tooling::ExecutionContext& ex,
         ConfigImpl const& config,
-        Reporter& R) noexcept;
+        Reporter& R,
+        clang::CompilerInstance& compiler) noexcept;
 
-    SymbolID getSymbolID(Decl const* D);
+    bool
+    extractSymbolID(
+        SymbolID& id,
+        const NamedDecl* D);
 
     bool shouldSerializeInfo(
         bool PublicOnly,
-        bool IsInAnonymousNamespace,
-        NamedDecl const* D) noexcept;
+        bool IsOrIsInAnonymousNamespace,
+        const NamedDecl* D) noexcept;
 
-    void
-    getParent(
-        SymbolID& parent,
-        Decl const* D);
-
-    void
+    bool
     getParentNamespaces(
         llvm::SmallVector<Reference, 4>& Namespaces,
-        Decl const* D,
-        bool& IsInAnonymousNamespace);
+        const Decl* D);
+
+    int
+    getLine(
+        const NamedDecl* D) const;
 
     std::string
     getSourceCode(
@@ -123,7 +130,7 @@ public:
 
     void
     parseTemplateParams(
-        std::optional<TemplateInfo>& TemplateInfo,
+        TemplateInfo& I,
         const Decl* D);
 
     TParam
@@ -138,17 +145,17 @@ public:
 
     void
     parseTemplateArgs(
-        std::optional<TemplateInfo>& I,
+        TemplateInfo& I,
         const ClassTemplateSpecializationDecl* spec);
 
     void
     parseTemplateArgs(
-        std::optional<TemplateInfo>& I,
+        TemplateInfo& I,
         const FunctionTemplateSpecializationInfo* spec);
 
     void
     parseTemplateArgs(
-        std::optional<TemplateInfo>& I,
+        TemplateInfo& I,
         const ClassScopeFunctionSpecializationDecl* spec);
 
     void
@@ -170,30 +177,19 @@ public:
         EnumInfo& I,
         const EnumDecl* D);
 
-public://private:
     bool shouldExtract(Decl const* D);
-    bool extractSymbolID(SymbolID& id, NamedDecl const* D);
     bool extractInfo(Info& I, NamedDecl const* D);
-    int getLine(NamedDecl const* D) const;
     void extractBases(RecordInfo& I, CXXRecordDecl* D);
 
-private:
     template<class DeclTy>
     bool constructFunction(
         FunctionInfo& I,
-        DeclTy* D,
-        char const* name = nullptr);
+        DeclTy* D);
 
     template<class DeclTy>
     void buildFunction(
         FunctionInfo& I,
-        DeclTy* D,
-        const char* name = nullptr);
-
-    template<class DeclTy>
-    void buildFunction(
-        DeclTy* D,
-        const char* name = nullptr);
+        DeclTy* D);
 
     void buildRecord(
         RecordInfo& I,
@@ -219,38 +215,52 @@ private:
         TypedefInfo& I,
         DeclTy* D);
 
-public:
-    void HandleTranslationUnit(ASTContext& Context) override;
-    bool TraverseDecl(Decl* D);
-    bool TraverseDeclContext(DeclContext* D);
-    bool TraverseTranslationUnitDecl(TranslationUnitDecl* D);
-    bool TraverseNamespaceDecl(NamespaceDecl* D);
-    bool TraverseCXXRecordDecl(CXXRecordDecl* D);
-    bool TraverseCXXMethodDecl(CXXMethodDecl* D);
-    bool TraverseCXXDestructorDecl(CXXDestructorDecl* D);
-    bool TraverseCXXConstructorDecl(CXXConstructorDecl* D);
-    bool TraverseCXXConversionDecl(CXXConversionDecl* D);
-    bool TraverseCXXDeductionGuideDecl(CXXDeductionGuideDecl* D);
-    bool TraverseFunctionDecl(FunctionDecl* D);
-    bool TraverseFriendDecl(FriendDecl* D);
-    bool TraverseTypeAliasDecl(TypeAliasDecl* D);
-    bool TraverseTypedefDecl(TypedefDecl* D);
-    bool TraverseEnumDecl(EnumDecl* D);
-    bool TraverseVarDecl(VarDecl* D);
-    bool TraverseClassTemplateDecl(ClassTemplateDecl* D);
-    bool TraverseClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl* D);
-    bool TraverseClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl* D);
-    bool TraverseFunctionTemplateDecl(FunctionTemplateDecl* D);
-    bool TraverseClassScopeFunctionSpecializationDecl(ClassScopeFunctionSpecializationDecl* D);
+    // --------------------------------------------------------
 
+    bool Traverse(NamespaceDecl* D);
+    bool Traverse(CXXRecordDecl* D,
+        std::unique_ptr<TemplateInfo>&& Template = nullptr);
+    bool Traverse(VarDecl* D);
+    bool Traverse(FunctionDecl* D,
+        std::unique_ptr<TemplateInfo>&& Template = nullptr);
+    bool Traverse(CXXMethodDecl* D,
+        std::unique_ptr<TemplateInfo>&& Template = nullptr);
+    bool Traverse(CXXConstructorDecl* D,
+        std::unique_ptr<TemplateInfo>&& Template = nullptr);
+    bool Traverse(CXXConversionDecl* D,
+        std::unique_ptr<TemplateInfo>&& Template = nullptr);
+    bool Traverse(CXXDeductionGuideDecl* D,
+        std::unique_ptr<TemplateInfo>&& Template = nullptr);
+    // destructors cannot be templates
+    bool Traverse(CXXDestructorDecl* D);
+    bool Traverse(FriendDecl* D);
+    bool Traverse(TypeAliasDecl* D);
+    bool Traverse(TypedefDecl* D);
+    bool Traverse(EnumDecl* D);
+    bool Traverse(ClassTemplateDecl* D);
+    bool Traverse(ClassTemplateSpecializationDecl* D);
+    bool Traverse(ClassTemplatePartialSpecializationDecl* D);
+    bool Traverse(FunctionTemplateDecl* D);
+    bool Traverse(ClassScopeFunctionSpecializationDecl* D);
 #if 0
     // includes both linkage-specification forms in [dcl.link]:
     //     extern string-literal { declaration-seq(opt) }
     //     extern string-literal name-declaration
-    bool TraverseLinkageSpecDecl(LinkageSpecDecl* D);
-    bool TraverseExternCContextDecl(ExternCContextDecl* D);
-    bool TraverseExportDecl(ExportDecl* D);
+    bool Traverse(LinkageSpecDecl* D);
+    bool Traverse(ExternCContextDecl* D);
+    bool Traverse(ExportDecl* D);
 #endif
+
+    // catch-all function so overload resolution does not
+    // cause a hard error in the Traverse function for Decl
+    template<typename... Args>
+    auto Traverse(Args&&...);
+
+    template<typename... Args>
+    bool TraverseDecl(Decl* D, Args&&... args);
+    bool TraverseContext(DeclContext* D);
+
+    void HandleTranslationUnit(ASTContext& Context) override;
 };
 
 } // mrdox

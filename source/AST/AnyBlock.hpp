@@ -630,17 +630,16 @@ class TemplateBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
-    std::optional<TemplateInfo>& I_;
+    TemplateInfo& I_;
 
 public:
     explicit
     TemplateBlock(
-        std::optional<TemplateInfo>& I,
+        TemplateInfo& I,
         BitcodeReader& br) noexcept
         : br_(br)
         , I_(I)
     {
-        I_.emplace();
     }
 
     llvm::Error
@@ -650,7 +649,7 @@ public:
         switch(ID)
         {
         case TEMPLATE_PRIMARY_USR:
-            return decodeRecord(R, I_->Primary.emplace(), Blob);
+            return decodeRecord(R, I_.Primary.emplace(), Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -665,7 +664,7 @@ public:
         case BI_TEMPLATE_ARG_BLOCK_ID:
         {
             TemplateArgBlock A(
-                I_->Args.emplace_back());
+                I_.Args.emplace_back());
             if(auto Err = br_.readBlock(A, ID))
                 return Err;
             return llvm::Error::success();
@@ -673,7 +672,7 @@ public:
         case BI_TEMPLATE_PARAM_BLOCK_ID:
         {
             TemplateParamBlock P(
-                I_->Params.emplace_back(), br_);
+                I_.Params.emplace_back(), br_);
             if(auto Err = br_.readBlock(P, ID))
                 return Err;
             return llvm::Error::success();
@@ -947,7 +946,8 @@ public:
         }
         case BI_TEMPLATE_BLOCK_ID:
         {
-            TemplateBlock B(I->Template, br_);
+            I->Template = std::make_unique<TemplateInfo>();
+            TemplateBlock B(*I->Template, br_);
             return br_.readBlock(B, ID);
         }
         default:
@@ -1010,7 +1010,8 @@ public:
         }
         case BI_TEMPLATE_BLOCK_ID:
         {
-            TemplateBlock B(I->Template, br_);
+            I->Template = std::make_unique<TemplateInfo>();
+            TemplateBlock B(*I->Template, br_);
             return br_.readBlock(B, ID);
         }
         default:

@@ -80,12 +80,14 @@ struct RecordScope
 struct RecordInfo
     : SymbolInfo
 {
+    friend class ASTVisitor;
+
     // VFALCO Use our own enumeration for this
     // Type of this record (struct, class, union, interface).
     TagTypeKind TagType = TagTypeKind::TTK_Struct;
 
     // When present, this record is a template or specialization.
-    std::optional<TemplateInfo> Template;
+    std::unique_ptr<TemplateInfo> Template;
 
     // Indicates if the record was declared using a typedef. Things like anonymous
     // structs in a typedef:
@@ -117,6 +119,15 @@ struct RecordInfo
         SymbolID id = SymbolID::zero,
         llvm::StringRef Name = llvm::StringRef())
         : SymbolInfo(InfoType::IT_record, id, Name)
+    {
+    }
+
+private:
+    explicit
+    RecordInfo(
+        std::unique_ptr<TemplateInfo>&& T)
+        : SymbolInfo(InfoType::IT_record)
+        , Template(std::move(T))
     {
     }
 };

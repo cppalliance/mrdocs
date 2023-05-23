@@ -167,8 +167,8 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     // at a glance, it is not obvious that we are binding to
     // the SymboInfo base class subobject
     mergeSymbolInfo(I, std::move(Other));
-    if (!I.Template)
-        I.Template = Other.Template;
+    if (! I.Template)
+        I.Template = std::move(Other.Template);
     // This has the side-effect of canonicalizing
     if(! Other.Friends.empty())
     {
@@ -192,7 +192,7 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
         I.Params = std::move(Other.Params);
     mergeSymbolInfo(I, std::move(Other));
     if (!I.Template)
-        I.Template = Other.Template;
+        I.Template = std::move(Other.Template);
     I.specs0.raw.value |= Other.specs0.raw.value;
     I.specs1.raw.value |= Other.specs1.raw.value;
 }

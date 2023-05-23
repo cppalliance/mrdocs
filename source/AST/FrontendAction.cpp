@@ -36,7 +36,8 @@ struct Action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<ASTVisitor>(ex_, config_, R_);
+        return std::make_unique<ASTVisitor>(
+            ex_, config_, R_, Compiler);
     }
 
 private:

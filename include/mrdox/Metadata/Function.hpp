@@ -107,11 +107,13 @@ struct Param
 struct FunctionInfo
     : SymbolInfo
 {
+    friend class ASTVisitor;
+
     TypeInfo ReturnType;   // Info about the return type of this function.
     std::vector<Param> Params; // List of parameters.
 
     // When present, this function is a template or specialization.
-    std::optional<TemplateInfo> Template;
+    std::unique_ptr<TemplateInfo> Template;
 
     FnFlags0 specs0{.raw{0}};
     FnFlags1 specs1{.raw{0}};
@@ -124,6 +126,15 @@ struct FunctionInfo
     FunctionInfo(
         SymbolID id_ = SymbolID::zero)
         : SymbolInfo(InfoType::IT_function, id_)
+    {
+    }
+
+private:
+    explicit
+    FunctionInfo(
+        std::unique_ptr<TemplateInfo>&& T)
+        : SymbolInfo(InfoType::IT_function)
+        , Template(std::move(T))
     {
     }
 };

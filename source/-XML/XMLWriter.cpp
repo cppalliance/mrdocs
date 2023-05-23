@@ -347,7 +347,8 @@ writeFunction(
 
     writeSymbol(I);
 
-    writeTemplate(I.Template);
+    if(I.Template)
+        writeTemplate(*I.Template);
 
     write(I.specs0, tags_);
     write(I.specs1, tags_);
@@ -386,7 +387,8 @@ writeRecord(
 
     writeSymbol(I);
 
-    writeTemplate(I.Template);
+    if(I.Template)
+        writeTemplate(*I.Template);
 
     write(I.specs, tags_);
 
@@ -535,13 +537,10 @@ writeLocation(
 void
 XMLWriter::
 writeTemplate(
-    const std::optional<TemplateInfo>& I)
+    const TemplateInfo& I)
 {
-    if(! I)
-        return;
-
     const char* spec = nullptr;
-    switch(I->specializationKind())
+    switch(I.specializationKind())
     {
     case TemplateSpecKind::Explicit:
         spec = "explicit";
@@ -552,17 +551,17 @@ writeTemplate(
     default:
         break;
     }
-    const SymbolID& id = I->Primary ?
-        *I->Primary : SymbolID::zero;
+    const SymbolID& id = I.Primary ?
+        *I.Primary : SymbolID::zero;
 
     tags_.open(templateTagName, {
         {"class", spec, !! spec},
         {id}
     });
 
-    for(const TParam& tparam : I->Params)
+    for(const TParam& tparam : I.Params)
         writeTemplateParam(tparam, tags_);
-    for(const TArg& targ : I->Args)
+    for(const TArg& targ : I.Args)
         writeTemplateArg(targ, tags_);
 
     tags_.close(templateTagName);
