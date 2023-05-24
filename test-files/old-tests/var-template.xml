@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
+    <file path="var-template.cpp" line="10" class="def"/>
+    <variable name="C" id="629jUQifhGrj15iClsD5BexWpWQ=">
+      <file path="var-template.cpp" line="13" class="def"/>
+      <template>
+        <tparam name="T" class="type"/>
+      </template>
+      <attr id="storage-class" name="static" value="2"/>
+      <type name="unsigned int"/>
+    </variable>
+    <variable name="C" id="Wtlw7VEK38lEEBeqNoDOjTkJE+U=">
+      <file path="var-template.cpp" line="15" class="def"/>
+      <template class="explicit" id="kMNXdSEDYBD+T4RYbkq3ekR+jUU=">
+        <targ value="int"/>
+      </template>
+      <attr id="storage-class" name="static" value="2"/>
+      <type name="unsigned int"/>
+    </variable>
+    <variable name="C" id="wvoZkG3eTMaiFAf971AFdvmHCDE=">
+      <file path="var-template.cpp" line="18" class="def"/>
+      <template class="partial" id="kMNXdSEDYBD+T4RYbkq3ekR+jUU=">
+        <tparam name="T" class="type"/>
+        <targ value="T *"/>
+      </template>
+      <attr id="storage-class" name="static" value="2"/>
+      <type name="unsigned int"/>
+    </variable>
+  </struct>
+  <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=">
+    <file path="var-template.cpp" line="7" class="def"/>
+    <template class="partial" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=">
+      <tparam name="T" class="type"/>
+      <targ value="T &amp;"/>
+    </template>
+    <type name="unsigned int"/>
+  </variable>
+  <variable name="A" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
+    <file path="var-template.cpp" line="2" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+    </template>
+    <type name="unsigned int"/>
+  </variable>
+  <variable name="A" id="jrW9aLj8cqTteNoZmH97vOW7csQ=">
+    <file path="var-template.cpp" line="4" class="def"/>
+    <template class="explicit" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=">
+      <targ value="void"/>
+    </template>
+    <type name="unsigned int"/>
+  </variable>
+</namespace>
+</mrdox>

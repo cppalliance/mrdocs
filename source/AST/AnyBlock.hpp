@@ -1069,6 +1069,12 @@ public:
             }
             return llvm::Error::success();
         }
+        case BI_TEMPLATE_BLOCK_ID:
+        {
+            I->Template = std::make_unique<TemplateInfo>();
+            TemplateBlock B(*I->Template, br_);
+            return br_.readBlock(B, ID);
+        }
         default:
             break;
         }
@@ -1196,6 +1202,12 @@ public:
         case BI_TYPE_BLOCK_ID:
         {
             TypeBlock B(I->Type, br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_TEMPLATE_BLOCK_ID:
+        {
+            I->Template = std::make_unique<TemplateInfo>();
+            TemplateBlock B(*I->Template, br_);
             return br_.readBlock(B, ID);
         }
         default:

@@ -1063,6 +1063,8 @@ emitBlock(
     emitSymbolPart(I);
     emitRecord(I.IsUsing, TYPEDEF_IS_USING);
     emitBlock(I.Underlying);
+    if(I.Template)
+        emitBlock(*I.Template);
 }
 
 void
@@ -1084,6 +1086,8 @@ emitBlock(
     emitSymbolPart(I);
     emitBlock(I.Type);
     emitRecord({I.specs.raw}, VARIABLE_BITS);
+    if(I.Template)
+        emitBlock(*I.Template);
 }
 
 //------------------------------------------------

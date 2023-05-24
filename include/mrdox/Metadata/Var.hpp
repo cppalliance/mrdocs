@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -14,6 +15,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Field.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <clang/Basic/Specifiers.h>
 
@@ -35,10 +37,14 @@ union VarFlags0
 struct VarInfo
     : SymbolInfo
 {
+    friend class ASTVisitor;
+
     /** The type of the variable */
     TypeInfo Type;
 
     VarFlags0 specs{.raw={0}};
+
+    std::unique_ptr<TemplateInfo> Template;
 
     //--------------------------------------------
 
@@ -50,6 +56,16 @@ struct VarInfo
         llvm::StringRef Name = llvm::StringRef())
         : SymbolInfo(InfoType::IT_variable, ID, Name)
     {
+    }
+
+private:
+    explicit
+    VarInfo(
+        std::unique_ptr<TemplateInfo>&& T)
+        : SymbolInfo(InfoType::IT_variable)
+        , Template(std::move(T))
+    {
+
     }
 };
 

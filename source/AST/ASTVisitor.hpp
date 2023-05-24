@@ -72,8 +72,8 @@ public:
     ASTVisitor(
         tooling::ExecutionContext& ex,
         ConfigImpl const& config,
-        Reporter& R,
-        clang::CompilerInstance& compiler) noexcept;
+        clang::CompilerInstance& compiler,
+        Reporter& R) noexcept;
 
     bool
     extractSymbolID(
@@ -151,6 +151,11 @@ public:
     void
     parseTemplateArgs(
         TemplateInfo& I,
+        const VarTemplateSpecializationDecl* spec);
+
+    void
+    parseTemplateArgs(
+        TemplateInfo& I,
         const FunctionTemplateSpecializationInfo* spec);
 
     void
@@ -220,7 +225,11 @@ public:
     bool Traverse(NamespaceDecl* D);
     bool Traverse(CXXRecordDecl* D,
         std::unique_ptr<TemplateInfo>&& Template = nullptr);
-    bool Traverse(VarDecl* D);
+    bool Traverse(TypedefDecl* D);
+    bool Traverse(TypeAliasDecl* D,
+        std::unique_ptr<TemplateInfo>&& Template = nullptr);
+    bool Traverse(VarDecl* D,
+        std::unique_ptr<TemplateInfo>&& Template = nullptr);
     bool Traverse(FunctionDecl* D,
         std::unique_ptr<TemplateInfo>&& Template = nullptr);
     bool Traverse(CXXMethodDecl* D,
@@ -234,14 +243,17 @@ public:
     // destructors cannot be templates
     bool Traverse(CXXDestructorDecl* D);
     bool Traverse(FriendDecl* D);
-    bool Traverse(TypeAliasDecl* D);
-    bool Traverse(TypedefDecl* D);
     bool Traverse(EnumDecl* D);
+
     bool Traverse(ClassTemplateDecl* D);
     bool Traverse(ClassTemplateSpecializationDecl* D);
     bool Traverse(ClassTemplatePartialSpecializationDecl* D);
+    bool Traverse(VarTemplateDecl* D);
+    bool Traverse(VarTemplateSpecializationDecl* D);
+    bool Traverse(VarTemplatePartialSpecializationDecl* D);
     bool Traverse(FunctionTemplateDecl* D);
     bool Traverse(ClassScopeFunctionSpecializationDecl* D);
+    bool Traverse(TypeAliasTemplateDecl* D);
 #if 0
     // includes both linkage-specification forms in [dcl.link]:
     //     extern string-literal { declaration-seq(opt) }

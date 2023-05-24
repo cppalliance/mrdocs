@@ -204,6 +204,8 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
         I.IsUsing = Other.IsUsing;
     if (I.Underlying.Name == "")
         I.Underlying = Other.Underlying;
+    if(! I.Template)
+        I.Template = std::move(Other.Template);
     mergeSymbolInfo(I, std::move(Other));
 }
 
@@ -233,6 +235,8 @@ void merge(VarInfo& I, VarInfo&& Other)
     Assert(canMerge(I, Other));
     if(I.Type.id == SymbolID::zero && I.Type.Name.empty())
         I.Type = std::move(Other.Type);
+    if(! I.Template)
+        I.Template = std::move(Other.Template);
     mergeSymbolInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;
 }

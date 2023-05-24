@@ -135,8 +135,8 @@ ASTVisitor::
 ASTVisitor(
     tooling::ExecutionContext& ex,
     ConfigImpl const& config,
-    Reporter& R,
-    clang::CompilerInstance& compiler) noexcept
+    clang::CompilerInstance& compiler,
+    Reporter& R) noexcept
     : ex_(ex)
     , config_(config)
     , R_(R)
@@ -230,7 +230,7 @@ getParentNamespaces(
                 Namespace,
                 InfoType::IT_namespace);
         }
-#if 1
+#if 0
         // for an explicit specialization of member of an implicit specialization,
         // treat it as-if it was declared in the primary class template
         else if(const auto* N = dyn_cast<ClassTemplateSpecializationDecl>(DC); N &&
@@ -276,6 +276,8 @@ getParentNamespaces(
 #else
         else if(const auto* N = dyn_cast<CXXRecordDecl>(DC))
         {
+            // if the containing context is an implicit specialization,
+            // get the template from which it was instantiated
             if(const auto* S = dyn_cast<ClassTemplateSpecializationDecl>(DC);
                 S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
             {
@@ -525,6 +527,7 @@ parseTemplateArgs(
     TemplateInfo& I,
     const ClassTemplateSpecializationDecl* spec)
 {
+    // KRYSTIAN FIXME: should this use getTemplateInstantiationPattern?
     // ID of the primary template
     if(ClassTemplateDecl* primary = spec->getSpecializedTemplate())
     {
@@ -532,7 +535,8 @@ parseTemplateArgs(
             primary = MT;
         extractSymbolID(I.Primary.emplace(), primary);
     }
-
+    // KRYSTIAN NOTE: when this is a partial specialization, we could use
+    // ClassTemplatePartialSpecializationDecl::getTemplateArgsAsWritten
     const TypeSourceInfo* tsi = spec->getTypeAsWritten();
     // type source information *should* be non-null
     Assert(tsi);
@@ -545,8 +549,39 @@ void
 ASTVisitor::
 parseTemplateArgs(
     TemplateInfo& I,
+    const VarTemplateSpecializationDecl* spec)
+{
+    // KRYSTIAN FIXME: should this use getTemplateInstantiationPattern?
+    // ID of the primary template
+    if(VarTemplateDecl* primary = spec->getSpecializedTemplate())
+    {
+        if(auto* MT = primary->getInstantiatedFromMemberTemplate())
+            primary = MT;
+        extractSymbolID(I.Primary.emplace(), primary);
+    }
+
+    // spec->getTemplateArgsInfo()
+    if(auto* partial = dyn_cast<VarTemplatePartialSpecializationDecl>(spec);
+        partial && partial->getTemplateArgsAsWritten())
+    {
+        auto args = partial->getTemplateArgsAsWritten()->arguments();
+        buildTemplateArgs(I, std::views::transform(
+            args, [](auto& x) -> auto& { return x.getArgument(); }));
+    }
+    else
+    {
+        buildTemplateArgs(I, spec->getTemplateArgs().asArray());
+    }
+    // buildTemplateArgs(I, spec->getTemplateInstantiationArgs().asArray());
+}
+
+void
+ASTVisitor::
+parseTemplateArgs(
+    TemplateInfo& I,
     const FunctionTemplateSpecializationInfo* spec)
 {
+    // KRYSTIAN FIXME: should this use getTemplateInstantiationPattern?
     // ID of the primary template
     // KRYSTIAN NOTE: do we need to check I->Primary.has_value()?
     if(FunctionTemplateDecl* primary = spec->getTemplate())
@@ -555,9 +590,11 @@ parseTemplateArgs(
             primary = MT;
         extractSymbolID(I.Primary.emplace(), primary);
     }
-
-    auto args = spec->TemplateArguments->asArray();
-    buildTemplateArgs(I, args);
+    if(auto* args = spec->TemplateArguments)
+    {
+        // spec->TemplateArgumentsAsWritten->arguments();
+        buildTemplateArgs(I, args->asArray());
+    }
 }
 
 void
@@ -566,11 +603,16 @@ parseTemplateArgs(
     TemplateInfo& I,
     const ClassScopeFunctionSpecializationDecl* spec)
 {
+    // if(! spec->hasExplicitTemplateArgs())
+    //     return;
     // KRYSTIAN NOTE: we have no way to get the ID of the primary template.
     // in the future, we could use name lookup to find matching declarations
-    auto args = spec->getTemplateArgsAsWritten()->arguments();
-    buildTemplateArgs(I, std::views::transform(
-        args, [](auto& x) -> auto& { return x.getArgument(); }));
+    if(auto* args_written = spec->getTemplateArgsAsWritten())
+    {
+        auto args = args_written->arguments();
+        buildTemplateArgs(I, std::views::transform(
+            args, [](auto& x) -> auto& { return x.getArgument(); }));
+    }
 }
 
 void
@@ -1288,7 +1330,8 @@ buildTypedef(
     LineNumber = getLine(D);
     // D->isThisDeclarationADefinition(); // not available
     I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
-    I.IsUsing = std::is_same_v<DeclTy, TypeAliasDecl>;
+    // KRYSTIAN NOTE: IsUsing is set by TraverseTypeAlias
+    // I.IsUsing = std::is_same_v<DeclTy, TypeAliasDecl>;
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, D->getAccess()));
 }
@@ -1327,12 +1370,42 @@ Traverse(
 bool
 ASTVisitor::
 Traverse(
-    VarDecl* D)
+    TypedefDecl* D)
 {
     if(! shouldExtract(D))
         return true;
 
-    VarInfo I;
+    TypedefInfo I;
+    buildTypedef(I, D);
+    return true;
+}
+
+bool
+ASTVisitor::
+Traverse(
+    TypeAliasDecl* D,
+    std::unique_ptr<TemplateInfo>&& Template)
+{
+    if(! shouldExtract(D))
+        return true;
+
+    TypedefInfo I(std::move(Template));
+    I.IsUsing = true;
+
+    buildTypedef(I, D);
+    return true;
+}
+
+bool
+ASTVisitor::
+Traverse(
+    VarDecl* D,
+    std::unique_ptr<TemplateInfo>&& Template)
+{
+    if(! shouldExtract(D))
+        return true;
+
+    VarInfo I(std::move(Template));
     buildVar(I, D);
     return true;
 }
@@ -1433,32 +1506,6 @@ Traverse(
 bool
 ASTVisitor::
 Traverse(
-    TypeAliasDecl* D)
-{
-    if(! shouldExtract(D))
-        return true;
-
-    TypedefInfo I;
-    buildTypedef(I, D);
-    return true;
-}
-
-bool
-ASTVisitor::
-Traverse(
-    TypedefDecl* D)
-{
-    if(! shouldExtract(D))
-        return true;
-
-    TypedefInfo I;
-    buildTypedef(I, D);
-    return true;
-}
-
-bool
-ASTVisitor::
-Traverse(
     EnumDecl* D)
 {
     if(! shouldExtract(D))
@@ -1514,6 +1561,46 @@ Traverse(
 bool
 ASTVisitor::
 Traverse(
+    VarTemplateDecl* D)
+{
+    VarDecl* VD = D->getTemplatedDecl();
+    if(! shouldExtract(VD))
+        return true;
+
+    auto Template = std::make_unique<TemplateInfo>();
+    parseTemplateParams(*Template, VD);
+
+    return Traverse(VD, std::move(Template));
+}
+
+bool
+ASTVisitor::
+Traverse(
+    VarTemplateSpecializationDecl* D)
+{
+    VarDecl* VD = D;
+    if(! shouldExtract(VD))
+        return true;
+
+    auto Template = std::make_unique<TemplateInfo>();
+    parseTemplateParams(*Template, VD);
+    parseTemplateArgs(*Template, D);
+
+    return Traverse(VD, std::move(Template));
+}
+
+bool
+ASTVisitor::
+Traverse(
+    VarTemplatePartialSpecializationDecl* D)
+{
+    return Traverse(static_cast<
+        VarTemplateSpecializationDecl*>(D));
+}
+
+bool
+ASTVisitor::
+Traverse(
     FunctionTemplateDecl* D)
 {
     FunctionDecl* FD = D->getTemplatedDecl();
@@ -1537,12 +1624,36 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
+    // for class scope explicit specializations of member function templates which
+    // are members of class templates, it is impossible to know what the
+    // primary template is until the enclosing class template is instantiated.
+    // while such declarations are valid C++ (see CWG 727 and [temp.expl.spec] p3),
+    // GCC does not consider them to be valid. consequently, we do not extract the SymbolID
+    // of the primary template. in the future, we could take a best-effort approach to find
+    // the primary template, but this is only possible when none of the candidates are dependent
+    // upon a template parameter of the enclosing class template.
     auto Template = std::make_unique<TemplateInfo>();
     parseTemplateArgs(*Template, D);
 
     CXXMethodDecl* MD = D->getSpecialization();
 
+    // KRYSTIAN FIXME: is the right? should this call TraverseDecl instead?
     return Traverse(MD, std::move(Template));
+}
+
+bool
+ASTVisitor::
+Traverse(
+    TypeAliasTemplateDecl* D)
+{
+    TypeAliasDecl* AD = D->getTemplatedDecl();
+    if(! shouldExtract(AD))
+        return true;
+
+    auto Template = std::make_unique<TemplateInfo>();
+    parseTemplateParams(*Template, AD);
+
+    return Traverse(AD, std::move(Template));
 }
 
 template<typename... Args>
@@ -1669,6 +1780,21 @@ TraverseDecl(
             ClassTemplatePartialSpecializationDecl*>(D),
             std::forward<Args>(args)...);
         break;
+    case Decl::VarTemplate:
+        this->Traverse(static_cast<
+            VarTemplateDecl*>(D),
+            std::forward<Args>(args)...);
+        break;
+    case Decl::VarTemplateSpecialization:
+        this->Traverse(static_cast<
+            VarTemplateSpecializationDecl*>(D),
+            std::forward<Args>(args)...);
+        break;
+    case Decl::VarTemplatePartialSpecialization:
+        this->Traverse(static_cast<
+            VarTemplatePartialSpecializationDecl*>(D),
+            std::forward<Args>(args)...);
+        break;
     case Decl::FunctionTemplate:
         this->Traverse(static_cast<
             FunctionTemplateDecl*>(D),
@@ -1677,6 +1803,11 @@ TraverseDecl(
     case Decl::ClassScopeFunctionSpecialization:
         this->Traverse(static_cast<
             ClassScopeFunctionSpecializationDecl*>(D),
+            std::forward<Args>(args)...);
+        break;
+    case Decl::TypeAliasTemplate:
+        this->Traverse(static_cast<
+            TypeAliasTemplateDecl*>(D),
             std::forward<Args>(args)...);
         break;
     default:

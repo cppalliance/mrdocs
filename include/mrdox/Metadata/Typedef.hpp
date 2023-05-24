@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -14,6 +15,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Type.hpp>
 
 namespace clang {
@@ -23,6 +25,8 @@ namespace mrdox {
 struct TypedefInfo
     : SymbolInfo
 {
+    friend class ASTVisitor;
+
     TypeInfo Underlying;
 
     // Indicates if this is a new C++ "using"-style typedef:
@@ -31,13 +35,27 @@ struct TypedefInfo
     //   typedef std::vector<int> MyVector;
     bool IsUsing = false;
 
+    std::unique_ptr<TemplateInfo> Template;
+
     //--------------------------------------------
 
     static constexpr InfoType type_id = InfoType::IT_typedef;
 
+    explicit
     TypedefInfo(
         SymbolID id_ = SymbolID::zero)
         : SymbolInfo(InfoType::IT_typedef, id_)
+    {
+    }
+
+private:
+    // KRYSTIAN NOTE: if Template is non-null,
+    // then IsUsing *must* be set; should we do it here?
+    explicit
+    TypedefInfo(
+        std::unique_ptr<TemplateInfo>&& T)
+        : SymbolInfo(InfoType::IT_typedef)
+        , Template(std::move(T))
     {
     }
 };

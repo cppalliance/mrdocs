@@ -432,6 +432,9 @@ writeTypedef(
 
     writeSymbol(I);
 
+    if(I.Template)
+        writeTemplate(*I.Template);
+
     tags_.write("type", "", {
         { "name", I.Underlying.Name },
         { I.Underlying.id } });
@@ -484,6 +487,9 @@ writeVar(
         });
 
     writeSymbol(I);
+
+    if(I.Template)
+        writeTemplate(*I.Template);
 
     write(I.specs, tags_);
 

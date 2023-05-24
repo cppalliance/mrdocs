@@ -37,7 +37,7 @@ struct Action
         llvm::StringRef InFile) override
     {
         return std::make_unique<ASTVisitor>(
-            ex_, config_, R_, Compiler);
+            ex_, config_, Compiler, R_);
     }
 
 private:
