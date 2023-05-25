@@ -535,18 +535,18 @@ public:
         }
         case TEMPLATE_PARAM_KIND:
         {
-            TemplateParamKind kind = TemplateParamKind::None;
+            TParamKind kind = TParamKind::None;
             if(auto Err = decodeRecord(R, kind, Blob))
                 return Err;
             switch(kind)
             {
-            case TemplateParamKind::Type:
+            case TParamKind::Type:
                 I_.emplace<TypeTParam>();
                 break;
-            case TemplateParamKind::NonType:
+            case TParamKind::NonType:
                 I_.emplace<NonTypeTParam>();
                 break;
-            case TemplateParamKind::Template:
+            case TParamKind::Template:
                 I_.emplace<TemplateTParam>();
                 break;
             default:
@@ -558,10 +558,10 @@ public:
         {
             switch(I_.Kind)
             {
-            case TemplateParamKind::NonType:
+            case TParamKind::NonType:
                 return decodeRecord(R,
                     I_.get<NonTypeTParam>().Default.emplace(), Blob);
-            case TemplateParamKind::Template:
+            case TParamKind::Template:
                 return decodeRecord(R,
                     I_.get<TemplateTParam>().Default.emplace(), Blob);
             default:
@@ -582,7 +582,7 @@ public:
         {
         case BI_TEMPLATE_PARAM_BLOCK_ID:
         {
-            if(I_.Kind != TemplateParamKind::Template)
+            if(I_.Kind != TParamKind::Template)
                 return makeError("only TemplateTParam may have template parameters");
             TemplateParamBlock P(I_.get<TemplateTParam>().Params.emplace_back(), br_);
             if(auto Err = br_.readBlock(P, ID))
@@ -594,10 +594,10 @@ public:
             TypeInfo* t = nullptr;
             switch(I_.Kind)
             {
-            case TemplateParamKind::Type:
+            case TParamKind::Type:
                 t = &I_.get<TypeTParam>().Default.emplace();
                 break;
-            case TemplateParamKind::NonType:
+            case TParamKind::NonType:
                 t = &I_.get<NonTypeTParam>().Type;
                 break;
             default:

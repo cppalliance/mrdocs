@@ -1015,14 +1015,14 @@ emitBlock(
     emitRecord(T.IsParameterPack, TEMPLATE_PARAM_IS_PACK);
     switch(T.Kind)
     {
-    case TemplateParamKind::Type:
+    case TParamKind::Type:
     {
         const auto& info = T.get<TypeTParam>();
         if(info.Default)
             emitBlock(*info.Default);
         break;
     }
-    case TemplateParamKind::NonType:
+    case TParamKind::NonType:
     {
         const auto& info = T.get<NonTypeTParam>();
         emitBlock(info.Type);
@@ -1030,7 +1030,7 @@ emitBlock(
             emitRecord(*info.Default, TEMPLATE_PARAM_DEFAULT);
         break;
     }
-    case TemplateParamKind::Template:
+    case TParamKind::Template:
     {
         const auto& info = T.get<TemplateTParam>();
         for(const auto& P : info.Params)

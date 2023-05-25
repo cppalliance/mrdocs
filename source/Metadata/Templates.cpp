@@ -10,8 +10,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Metadata/TemplateParam.hpp>
-#include <mrdox/Metadata/TemplateArg.hpp>
+#include <mrdox/Metadata/Template.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -22,11 +21,11 @@ destroy() const noexcept
 {
     switch(Kind)
     {
-    case TemplateParamKind::Type:
+    case TParamKind::Type:
         return Variant_.Type.~TypeTParam();
-    case TemplateParamKind::NonType:
+    case TParamKind::NonType:
         return Variant_.NonType.~NonTypeTParam();
-    case TemplateParamKind::Template:
+    case TParamKind::Template:
         return Variant_.Template.~TemplateTParam();
     default:
         return;
@@ -46,7 +45,7 @@ TParam::
 TParam(
     TParam&& other) noexcept
     : Name(std::move(other.Name))
-    , IsParameterPack(other.IsParameterPack) 
+    , IsParameterPack(other.IsParameterPack)
 {
     construct(std::move(other));
 }

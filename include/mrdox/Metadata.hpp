@@ -32,7 +32,6 @@
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
-#include <mrdox/Metadata/TemplateParam.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
 #include <mrdox/Metadata/Var.hpp>

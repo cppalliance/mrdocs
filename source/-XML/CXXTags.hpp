@@ -257,7 +257,7 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
 {
     switch(I.Kind)
     {
-    case TemplateParamKind::Type:
+    case TParamKind::Type:
     {
         const auto& t = I.get<TypeTParam>();
         std::string_view default_val;
@@ -271,7 +271,7 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
         });
         break;
     }
-    case TemplateParamKind::NonType:
+    case TParamKind::NonType:
     {
         const auto& t = I.get<NonTypeTParam>();
         std::string_view default_val;
@@ -286,7 +286,7 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
         });
         break;
     }
-    case TemplateParamKind::Template:
+    case TParamKind::Template:
     {
         const auto& t = I.get<TemplateTParam>();
         std::string_view default_val;
