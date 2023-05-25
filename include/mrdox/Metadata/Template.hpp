@@ -191,6 +191,36 @@ struct TArg
 
 // ----------------------------------------------------------------
 
+// stores information pertaining to an explicit specialization of a
+// member of an implicitly instantiated class template specialization.
+// this structure is stored in the TemplateInfo corresponding to the
+// outermost specialized template. if the explicitly specialized
+// member is itself a member of a nested template, the SpecializationInfo
+// which stores the arguments for the parent template will additionally
+// store a pointer to the SpecializationInfo for the nested template,
+// recursively. each SpecializationInfo node contains a vector of
+// SymbolIDs pairs `(specialized, primary)`, where `specialized` is the
+// replacement definition of `primary` for the given set of template
+// arguments of its parent template(s).
+struct SpecializationInfo
+{
+    // template arguments a parent template is specialized for
+    std::vector<TArg> Args;
+
+    // ID of the template to which the arguments pertain
+    SymbolID Template;
+
+    // SpecializationInfo for nested templates which are also specialized
+    std::vector<SpecializationInfo> Nested;
+
+    // SymbolID pairs of any specialized members.
+    // the first element is the ID of the original member (i.e. member that is replaced)
+    // the second element is the ID of the specialized member (i.e. replacement)
+    std::vector<std::pair<SymbolID, SymbolID>> Members;
+};
+
+// ----------------------------------------------------------------
+
 enum class TemplateSpecKind
 {
     Primary = 0, // for bitstream
@@ -217,6 +247,10 @@ struct TemplateInfo
     // stores the ID of the corresponding primary template
     // for partial and explicit specializations
     OptionalSymbolID Primary;
+
+    // stores information for explicit specializations of members
+    // of implicitly instantiated class template specializations
+    std::vector<SpecializationInfo> Specializations;
 
     // KRYSTIAN NOTE: using the presence of args/params
     // to determine the specialization kind *should* work.
