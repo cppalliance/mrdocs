@@ -71,12 +71,39 @@ union FnFlags1
     BitField<6, 7, FunctionKind> functionKind;
 };
 
+// KRYSTIAN TODO: attributes (nodiscard, deprecated, and carries_dependency)
+// KRYSTIAN TODO: flag to indicate whether this is a function parameter pack
+/** Represents a single function parameter */
+struct Param
+{
+    /** The type of this parameter */
+    TypeInfo Type;
+
+    /** The name of this parameter, if any */
+    std::string Name;
+
+    /** The default argument for this parameter, if any */
+    std::string Default;
+
+    Param() = default;
+
+    Param(
+        TypeInfo&& type,
+        std::string&& name,
+        std::string&& def_arg)
+        : Type(std::move(type))
+        , Name(std::move(name))
+        , Default(std::move(def_arg))
+    {
+    }
+};
+
 // TODO: Expand to allow for documenting templating and default args.
 // Info for functions.
 struct FunctionInfo : SymbolInfo
 {
     TypeInfo ReturnType;   // Info about the return type of this function.
-    llvm::SmallVector<FieldTypeInfo, 4> Params; // List of parameters.
+    std::vector<Param> Params; // List of parameters.
 
     // When present, this function is a template or specialization.
     llvm::Optional<TemplateInfo> Template;

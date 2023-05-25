@@ -25,7 +25,7 @@ namespace mrdox {
 /** A data member for a class.
 */
 struct MemberTypeInfo
-    : FieldTypeInfo
+    : FieldInfo
     //, SymbolInfo
 {
     Access access = Access::Public;
@@ -40,7 +40,7 @@ struct MemberTypeInfo
         TypeInfo const& TI,
         llvm::StringRef Name,
         Access access_)
-        : FieldTypeInfo(TI, Name)
+        : FieldInfo(TI, Name)
         , access(access_)
     {
     }

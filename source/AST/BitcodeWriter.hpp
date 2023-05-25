@@ -123,8 +123,9 @@ public:
     void emitBlock(BaseInfo const& I);
     void emitBlock(EnumInfo const& I);
     void emitBlock(EnumValueInfo const& I);
-    void emitBlock(FieldTypeInfo const& I);
+    void emitBlock(FieldInfo const& I);
     void emitBlock(FunctionInfo const& I);
+    void emitBlock(Param const& I);
     void emitBlock(Javadoc const& jd);
     void emitBlock(Javadoc::Node const& I);
     void emitBlock(MemberTypeInfo const& I);

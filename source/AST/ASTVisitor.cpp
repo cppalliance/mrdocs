@@ -337,11 +337,10 @@ parseParameters(
         // KRYSTIAN NOTE: call getOriginalType instead
         // of getType if we want to preserve top-level
         // cv-qualfiers/array types/function types
-        FieldTypeInfo& FieldInfo = I.Params.emplace_back(
+        I.Params.emplace_back(
             getTypeInfoForType(P->getType()),
-            P->getNameAsString());
-        FieldInfo.DefaultValue = getSourceCode(
-            D, P->getDefaultArgRange());
+            P->getNameAsString(),
+            getSourceCode(D, P->getDefaultArgRange()));
     }
 }
 

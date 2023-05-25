@@ -26,6 +26,7 @@ namespace mrdox {
 
 struct DataMember
 {
+    // FieldInfo const* I;
     MemberTypeInfo const* I;
     RecordInfo const* From;
 };

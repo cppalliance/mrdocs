@@ -31,7 +31,7 @@ union FieldFlags
 };
 
 // Info for field types.
-struct FieldTypeInfo
+struct FieldInfo
     : public TypeInfo
 {
     llvm::SmallString<16> Name; // Name associated with this info.
@@ -45,9 +45,9 @@ struct FieldTypeInfo
     FieldFlags Flags;
     //--------------------------------------------
 
-    FieldTypeInfo() = default;
+    FieldInfo() = default;
 
-    FieldTypeInfo(
+    FieldInfo(
             TypeInfo const& TI,
             llvm::StringRef Name = llvm::StringRef(),
             llvm::StringRef DefaultValue = llvm::StringRef(),

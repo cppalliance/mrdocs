@@ -123,7 +123,7 @@ void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 
 static
 void
-reduceRefsWithAccess(
+reduceMemberRefs(
     std::vector<MemberRef>& list,
     std::vector<MemberRef>&& otherList)
 {
@@ -158,11 +158,11 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     if( I.Bases.empty())
         I.Bases = std::move(Other.Bases);
     // Reduce children if necessary.
-    reduceRefsWithAccess(I.Children_.Records, std::move(Other.Children_.Records));
-    reduceRefsWithAccess(I.Children_.Functions, std::move(Other.Children_.Functions));
-    reduceRefsWithAccess(I.Children_.Enums, std::move(Other.Children_.Enums));
-    reduceRefsWithAccess(I.Children_.Types, std::move(Other.Children_.Types));
-    reduceRefsWithAccess(I.Children_.Vars, std::move(Other.Children_.Vars));
+    reduceMemberRefs(I.Children_.Records, std::move(Other.Children_.Records));
+    reduceMemberRefs(I.Children_.Functions, std::move(Other.Children_.Functions));
+    reduceMemberRefs(I.Children_.Enums, std::move(Other.Children_.Enums));
+    reduceMemberRefs(I.Children_.Types, std::move(Other.Children_.Types));
+    reduceMemberRefs(I.Children_.Vars, std::move(Other.Children_.Vars));
     mergeSymbolInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = Other.Template;

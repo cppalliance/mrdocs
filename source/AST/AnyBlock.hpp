@@ -438,13 +438,13 @@ class FieldTypeBlock
 {
 protected:
     BitcodeReader& br_;
-    FieldTypeInfo& I_;
+    FieldInfo& I_;
 
 public:
     FieldId F;
 
     FieldTypeBlock(
-        FieldTypeInfo& I,
+        FieldInfo& I,
         BitcodeReader& br) noexcept
         : br_(br)
         , I_(I)
@@ -809,6 +809,80 @@ public:
 
 //------------------------------------------------
 
+class FunctionParamBlock
+    : public BitcodeReader::AnyBlock
+{
+    BitcodeReader& br_;
+    Param& I_;
+
+public:
+    FunctionParamBlock(
+        Param& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I_(I)
+    {
+    }
+
+    llvm::Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case FUNCTION_PARAM_NAME:
+        {
+            return decodeRecord(R, I_.Name, Blob);
+        }
+        case FUNCTION_PARAM_DEFAULT:
+        {
+            return decodeRecord(R, I_.Default, Blob);
+        }
+        /*
+        case FUNCTION_PARAM_IS_PACK:
+        {
+            return decodeRecord(R, I_.IsParameterPack, Blob);
+        }
+        */
+        default:
+            return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    llvm::Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_TYPE_BLOCK_ID:
+        {
+            TypeBlock B(I_.Type, br_);
+            if(auto Err = br_.readBlock(B, ID))
+                return Err;
+            // KRYSTIAN NOTE: is this check correct?
+            // copied from a function with TypeInfo sub-block
+            switch(B.F)
+            {
+            case FieldId::F_type:
+                break;
+            default:
+                return makeWrongFieldError(B.F);
+            }
+            return llvm::Error::success();
+        }
+        default:
+            break;
+        }
+        return AnyBlock::readSubBlock(ID);
+    }
+};
+
+
+//------------------------------------------------
+
 template<class T>
 class TopLevelBlock
     : public BitcodeReader::AnyBlock
@@ -1041,6 +1115,8 @@ public:
             }
             return llvm::Error::success();
         }
+
+#if 0
         case BI_FIELD_TYPE_BLOCK_ID:
         {
             FieldTypeBlock B(I->Params.emplace_back(), br_);
@@ -1055,6 +1131,13 @@ public:
             }
             return llvm::Error::success();
         }
+#else
+        case BI_FUNCTION_PARAM_BLOCK_ID:
+        {
+            FunctionParamBlock B(I->Params.emplace_back(), br_);
+            return br_.readBlock(B, ID);
+        }
+#endif
         case BI_TEMPLATE_BLOCK_ID:
         {
             TemplateBlock B(I->Template, br_);

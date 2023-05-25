@@ -130,7 +130,7 @@ static void SymbolIDsAbbrev(
             llvm::BitCodeAbbrevOp::Fixed, 8) });
 }
 
-static void RefsWithAccessAbbrev(
+static void MemberRefsAbbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
 {
     AbbrevGen(Abbrev, {
@@ -216,6 +216,7 @@ BlockIdNameMap = []()
         {BI_MEMBER_TYPE_BLOCK_ID, "MemberTypeBlock"},
         {BI_RECORD_BLOCK_ID, "RecordBlock"},
         {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
+        {BI_FUNCTION_PARAM_BLOCK_ID, "FunctionParamBlock"},
         {BI_JAVADOC_BLOCK_ID, "JavadocBlock"},
         {BI_JAVADOC_LIST_BLOCK_ID, "JavadocListBlock"},
         {BI_JAVADOC_NODE_BLOCK_ID, "JavadocNodeBlock"},
@@ -255,6 +256,8 @@ RecordIDNameMap = []()
         {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
         {FIELD_ATTRIBUTES, {"FieldAttributes", &Integer32ArrayAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
+        {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
+        {FUNCTION_PARAM_DEFAULT, {"Default", &StringAbbrev}},
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
         {JAVADOC_LIST_KIND, {"JavadocListKind", &Integer32Abbrev}},
@@ -273,11 +276,11 @@ RecordIDNameMap = []()
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
         {REFERENCE_TYPE, {"RefType", &Integer32Abbrev}},
         {REFERENCE_FIELD, {"Field", &Integer32Abbrev}},
-        {RECORD_ENUMS,      {"RecordEnums", &RefsWithAccessAbbrev}},
-        {RECORD_FUNCTIONS,  {"RecordFunctions", &RefsWithAccessAbbrev}},
-        {RECORD_RECORDS,    {"RecordRecords", &RefsWithAccessAbbrev}},
-        {RECORD_TYPES,      {"RecordTypes", &RefsWithAccessAbbrev}},
-        {RECORD_VARS,       {"RecordVars", &RefsWithAccessAbbrev}},
+        {RECORD_ENUMS,      {"RecordEnums", &MemberRefsAbbrev}},
+        {RECORD_FUNCTIONS,  {"RecordFunctions", &MemberRefsAbbrev}},
+        {RECORD_RECORDS,    {"RecordRecords", &MemberRefsAbbrev}},
+        {RECORD_TYPES,      {"RecordTypes", &MemberRefsAbbrev}},
+        {RECORD_VARS,       {"RecordVars", &MemberRefsAbbrev}},
         {SYMBOL_PART_LOCDEF, {"SymbolLocDef", &LocationAbbrev}},
         {SYMBOL_PART_LOC, {"InfoName", &LocationAbbrev}},
         {TEMPLATE_PRIMARY_USR, {"Primary", &SymbolIDAbbrev}},
@@ -321,11 +324,14 @@ RecordsByBlock{
     // EnumValue
     {BI_ENUM_VALUE_BLOCK_ID,
         {ENUM_VALUE_NAME, ENUM_VALUE_VALUE, ENUM_VALUE_EXPR}},
-    // FieldTypeInfo
+    // FieldInfo
     {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE, FIELD_ATTRIBUTES}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
         {FUNCTION_BITS}},
+    // Param
+    {BI_FUNCTION_PARAM_BLOCK_ID,
+        {FUNCTION_PARAM_NAME, FUNCTION_PARAM_DEFAULT}},
     // Javadoc
     {BI_JAVADOC_BLOCK_ID,
         {}},
@@ -599,7 +605,7 @@ emitRecord(
     RecordID ID)
 {
     Assert(RecordIDNameMap[ID]);
-    Assert(RecordIDNameMap[ID].Abbrev == &RefsWithAccessAbbrev);
+    Assert(RecordIDNameMap[ID].Abbrev == &MemberRefsAbbrev);
     if (!prepRecordData(ID, ! list.empty()))
         return;
     for(auto const& ref : list)
@@ -801,13 +807,24 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    FieldTypeInfo const& T)
+    FieldInfo const& T)
 {
     StreamSubBlockGuard Block(Stream, BI_FIELD_TYPE_BLOCK_ID);
     emitBlock(T.Type, FieldId::F_type);
     emitRecord(T.Name, FIELD_TYPE_NAME);
     emitRecord(T.DefaultValue, FIELD_DEFAULT_VALUE);
     emitRecord({T.Flags.raw}, FIELD_ATTRIBUTES);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    const Param& P)
+{
+    StreamSubBlockGuard Block(Stream, BI_FUNCTION_PARAM_BLOCK_ID);
+    emitRecord(P.Name, FUNCTION_PARAM_NAME);
+    emitRecord(P.Default, FUNCTION_PARAM_DEFAULT);
+    emitBlock(P.Type);
 }
 
 void
@@ -918,7 +935,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_MEMBER_TYPE_BLOCK_ID);
 //    emitBlock(T.Type, FieldId::F_type);
-    emitBlock(static_cast<const FieldTypeInfo &>(T));
+    emitBlock(static_cast<const FieldInfo &>(T));
     emitRecord(T.Name, MEMBER_TYPE_NAME);
     emitRecord(T.access, MEMBER_TYPE_ACCESS);
     if(T.javadoc)

@@ -65,8 +65,7 @@ protected:
     Section sect_;
     std::string temp_;
 
-    friend class TypeName;
-
+    friend struct TypeName;
 public:
     virtual ~AdocWriter() = default;
 
@@ -136,7 +135,7 @@ protected:
     void writeNode(Javadoc::TParam const& node);
     void writeNode(Javadoc::Returns const& node);
 
-    FormalParam formalParam(FieldTypeInfo const& ft);
+    FormalParam formalParam(Param const& ft);
     TypeName typeName(TypeInfo const& ti);
 
     void beginSection(Info const& I);

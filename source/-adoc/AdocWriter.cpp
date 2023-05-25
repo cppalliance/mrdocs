@@ -106,7 +106,7 @@ namespace adoc {
 
 struct AdocWriter::FormalParam
 {
-    FieldTypeInfo const& I;
+    Param const& I;
     AdocWriter& w;
 
     friend
@@ -115,9 +115,11 @@ struct AdocWriter::FormalParam
         llvm::raw_ostream& os,
         FormalParam const& t)
     {
-        os << t.I.Type.Name;
+        // KRYSTIAN FIXME: use AdocWriter::typeName
+        os << t.I.Type.Type.Name;
         if(! t.I.Name.empty())
             os << ' ' << t.I.Name;
+        // KRYSTIAN TODO: emit default argument
         return os;
     }
 };
@@ -218,7 +220,7 @@ write(
 auto
 AdocWriter::
 formalParam(
-    FieldTypeInfo const& t) ->
+    Param const& t) ->
         FormalParam
 {
     return FormalParam{ t, *this };
@@ -322,7 +324,7 @@ writeTrancheList(
             "|";
         writeBrief(V.I->javadoc, false);
         os_ << '\n';
-    }   
+    }
     os_ <<
         "|===\n" <<
         "\n";
@@ -461,7 +463,7 @@ AdocWriter::
 writeLinkFor(OverloadInfo const& I)
 {
     std::string s = names_.get(I.Parent->id).str();
-    
+
     os_ << "xref:#" <<
         names_.get(I.Parent->id) <<
         '-' << I.Name << "[" <<
@@ -516,7 +518,7 @@ writeNestedTypes(
             "|";
         writeBrief(I.javadoc, false);
         os_ << '\n';
-    }   
+    }
     os_ <<
         "|===\n" <<
         "\n";

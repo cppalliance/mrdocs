@@ -243,13 +243,13 @@ inline void writeReturnType(TypeInfo const& I, XMLTags& tags)
         });
 }
 
-inline void writeParam(FieldTypeInfo const& I, XMLTags& tags)
+inline void writeParam(Param const& P, XMLTags& tags)
 {
     tags.write(paramTagName, {}, {
-        { "name", I.Name, ! I.Name.empty() },
-        { "type", I.Type.Name },
-        { "default", I.DefaultValue, ! I.DefaultValue.empty() },
-        { I.Type.id } });
+        { "name", P.Name, ! P.Name.empty() },
+        { "type", P.Type.Type.Name },
+        { "default", P.Default, ! P.Default.empty() },
+        { P.Type.Type.id } });
 }
 
 inline void writeTemplateParam(const TParam& I, XMLTags& tags)
