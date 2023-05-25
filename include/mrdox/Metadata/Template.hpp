@@ -35,23 +35,23 @@ struct TParam;
 
 struct TypeTParam
 {
-    // default type for the type template parameter
+    /** Default type for the type template parameter */
     std::optional<TypeInfo> Default;
 };
 
 struct NonTypeTParam
 {
-    // type of the non-type template parameter
+    /** Type of the non-type template parameter */
     TypeInfo Type;
-    // non-type template parameter default value (if any)
+    // Non-type template parameter default value (if any)
     std::optional<std::string> Default;
 };
 
 struct TemplateTParam
 {
-    // template parameters for the template template parameter
+    /** Template parameters for the template template parameter */
     std::vector<TParam> Params;
-    // non-type template parameter default value (if any)
+    /** Non-type template parameter default value (if any) */
     std::optional<std::string> Default;
 };
 
@@ -96,11 +96,11 @@ private:
     }
 
 public:
-    // The kind of template parameter this is.
+    /** The kind of template parameter this is. */
     TParamKind Kind = TParamKind::None;
-    // The template parameters name, if any
+    /** The template parameters name, if any */
     std::string Name;
-    // Whether this template parameter is a parameter pack.
+    /** Whether this template parameter is a parameter pack. */
     bool IsParameterPack = false;
 
 
@@ -191,31 +191,34 @@ struct TArg
 
 // ----------------------------------------------------------------
 
-// stores information pertaining to an explicit specialization of a
-// member of an implicitly instantiated class template specialization.
-// this structure is stored in the TemplateInfo corresponding to the
-// outermost specialized template. if the explicitly specialized
-// member is itself a member of a nested template, the SpecializationInfo
-// which stores the arguments for the parent template will additionally
-// store a pointer to the SpecializationInfo for the nested template,
-// recursively. each SpecializationInfo node contains a vector of
-// SymbolIDs pairs `(specialized, primary)`, where `specialized` is the
-// replacement definition of `primary` for the given set of template
-// arguments of its parent template(s).
+/** Stores information pertaining to an explicit specialization of a
+    member of an implicitly instantiated class template specialization.
+
+    This structure is stored in the `TemplateInfo` corresponding to the
+    outermost specialized template. If the explicitly specialized
+    member is itself a member of a nested template, the `SpecializationInfo`
+    which stores the arguments for the parent template will additionally
+    store a pointer to the SpecializationInfo for the nested template,
+    recursively. Each `SpecializationInfo` node contains a vector of
+    `SymbolID` pairs `(specialized, primary)`, where `specialized` is the
+    replacement definition of `primary` for the given set of template
+    arguments of its parent template(s).
+*/
 struct SpecializationInfo
 {
-    // template arguments a parent template is specialized for
+    /** The template arguments the parent template is specialized for */
     std::vector<TArg> Args;
 
-    // ID of the template to which the arguments pertain
+    /** ID of the template to which the arguments pertain */
     SymbolID Template;
 
-    // SpecializationInfo for nested templates which are also specialized
+    /** SpecializationInfo for nested templates which are also specialized */
     std::vector<SpecializationInfo> Nested;
 
-    // SymbolID pairs of any specialized members.
-    // the first element is the ID of the original member (i.e. member that is replaced)
-    // the second element is the ID of the specialized member (i.e. replacement)
+    /** SymbolID pairs of any specialized members.
+        the first element is the ID of the original member (i.e. member that is replaced)
+        the second element is the ID of the specialized member (i.e. the replacement)
+    */
     std::vector<std::pair<SymbolID, SymbolID>> Members;
 };
 
@@ -228,28 +231,32 @@ enum class TemplateSpecKind
     Partial
 };
 
-// stores information pertaining to primary template and
-// partial/explicit specialization declarations
+/** Stores information pertaining to primary template and
+    partial/explicit specialization declarations
+*/
 struct TemplateInfo
 {
-    // for primary templates:
-    //     - Params will be non-empty
-    //     - Args will be empty
-    // for explicit specializations:
-    //     - Params will be empty
-    // for partial specializations:
-    //     - Params will be non-empty
-    //     - each template parameter will appear at least
-    //       once in Args outside of a non-deduced context
+    /** For primary templates:
+           - Params will be non-empty
+           - Args will be empty
+       For explicit specializations:
+           - Params will be empty
+       For partial specializations:
+           - Params will be non-empty
+           - each template parameter will appear at least
+             once in Args outside of a non-deduced context
+    */
     std::vector<TParam> Params;
     std::vector<TArg> Args;
 
-    // stores the ID of the corresponding primary template
-    // for partial and explicit specializations
+    /** Stores the ID of the corresponding primary template
+        for partial and explicit specializations
+    */
     OptionalSymbolID Primary;
 
-    // stores information for explicit specializations of members
-    // of implicitly instantiated class template specializations
+    /** Stores information for explicit specializations of members
+        of implicitly instantiated class template specializations
+    */
     std::vector<SpecializationInfo> Specializations;
 
     // KRYSTIAN NOTE: using the presence of args/params
