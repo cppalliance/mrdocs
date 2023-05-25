@@ -155,8 +155,6 @@ void merge(RecordInfo& I, RecordInfo&& Other)
         I.Members = std::move(Other.Members);
     if (I.Bases.empty())
         I.Bases = std::move(Other.Bases);
-    if( I.Bases.empty())
-        I.Bases = std::move(Other.Bases);
     // Reduce children if necessary.
     reduceMemberRefs(I.Children_.Records, std::move(Other.Children_.Records));
     reduceMemberRefs(I.Children_.Functions, std::move(Other.Children_.Functions));
