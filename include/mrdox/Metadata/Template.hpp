@@ -39,7 +39,7 @@ struct TemplateInfo
     // for partial specializations:
     //     - Params will be non-empty
     //     - each template parameter will appear at least
-    //       once in Args outside of a non-deduced context 
+    //       once in Args outside of a non-deduced context
     std::vector<TParam> Params;
     std::vector<TArg> Args;
 

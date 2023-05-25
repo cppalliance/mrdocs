@@ -67,11 +67,11 @@ struct BaseInfo
 */
 struct RecordScope
 {
-    std::vector<RefWithAccess> Records;
-    std::vector<RefWithAccess> Functions;
-    std::vector<RefWithAccess> Enums;
-    std::vector<RefWithAccess> Types;
-    std::vector<RefWithAccess> Vars;
+    std::vector<MemberRef> Records;
+    std::vector<MemberRef> Functions;
+    std::vector<MemberRef> Enums;
+    std::vector<MemberRef> Types;
+    std::vector<MemberRef> Vars;
 };
 
 /** Metadata for struct, class, or union.

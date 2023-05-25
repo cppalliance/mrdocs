@@ -697,7 +697,7 @@ writeParent(
     }
 
     // Create an empty Record for the child,
-    // and insert the child as a RefWithAccess.
+    // and insert the child as a MemberRef.
     // Then return the parent as a serialized bitcode.
     Assert(! I.Namespace.empty());
     Assert(I.Namespace[0].RefType == InfoType::IT_record);

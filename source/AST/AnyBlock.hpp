@@ -691,7 +691,7 @@ public:
                 return makeError("invalid template parameter kind");
             }
         }
-            
+
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -729,7 +729,7 @@ public:
             TypeBlock B(*t, br_);
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
-            // KRYSTIAN NOTE: is this check correct? 
+            // KRYSTIAN NOTE: is this check correct?
             // copied from a function with TypeInfo sub-block
             switch(B.F)
             {

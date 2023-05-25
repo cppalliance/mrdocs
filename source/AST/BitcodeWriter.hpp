@@ -86,7 +86,7 @@ public:
     void emitRecord(Enum Value, RecordID ID);
 
     void emitRecord(llvm::SmallVectorImpl<SymbolID> const& Values, RecordID ID);
-    void emitRecord(std::vector<RefWithAccess> const& list, RecordID ID);
+    void emitRecord(std::vector<MemberRef> const& list, RecordID ID);
 
     void emitRecord(SymbolID const& Str, RecordID ID);
     void emitRecord(StringRef Str, RecordID ID);

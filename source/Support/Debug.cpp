@@ -229,12 +229,12 @@ void debugEnableHeapChecking()
     }
 
     std::format_context::iterator
-    std::formatter<clang::mrdox::RefWithAccess>::
+    std::formatter<clang::mrdox::MemberRef>::
     format(
-        const clang::mrdox::RefWithAccess& r,
+        const clang::mrdox::MemberRef& r,
         std::format_context& ctx) const
     {
-        std::string str = std::format("RefWithAccess: access = {}, ID = {}",
+        std::string str = std::format("MemberRef: access = {}, ID = {}",
             r.access, r.id);
         return std::formatter<std::string>::format(std::move(str), ctx);
     }

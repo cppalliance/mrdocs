@@ -39,7 +39,7 @@ struct MemberTypeInfo;
 struct NamespaceInfo;
 struct RecordInfo;
 struct RecordScope;
-struct RefWithAccess;
+struct MemberRef;
 struct Reference;
 struct Scope;
 struct SymbolInfo;

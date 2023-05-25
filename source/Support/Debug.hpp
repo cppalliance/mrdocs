@@ -73,11 +73,11 @@
     };
 
     template<>
-    struct std::formatter<clang::mrdox::RefWithAccess>
+    struct std::formatter<clang::mrdox::MemberRef>
         : std::formatter<std::string>
     {
         std::format_context::iterator format(
-            const clang::mrdox::RefWithAccess& r,
+            const clang::mrdox::MemberRef& r,
             std::format_context& ctx) const;
     };
 

@@ -40,7 +40,7 @@ enum class Access
     This is used in records to refer to nested
     elements with access control.
 */
-struct RefWithAccess
+struct MemberRef
 {
     SymbolID id;
     Access access;

@@ -99,20 +99,20 @@ decodeRecord(
     return llvm::Error::success();
 }
 
-// vector<RefWithAccess>
+// vector<MemberRef>
 inline
 llvm::Error
 decodeRecord(
     Record const& R,
-    std::vector<RefWithAccess>& f,
+    std::vector<MemberRef>& f,
     llvm::StringRef blob)
 {
-    constexpr auto RefWithAccessSize =
+    constexpr auto MemberRefSize =
         BitCodeConstants::USRHashSize + 1;
     if(R.empty())
         return makeError("empty");
-    auto n = R.size() / RefWithAccessSize;
-    if(R.size() != n * RefWithAccessSize)
+    auto n = R.size() / MemberRefSize;
+    if(R.size() != n * MemberRefSize)
         return makeError("short Record");
     auto src = R.begin();
     f.resize(n);

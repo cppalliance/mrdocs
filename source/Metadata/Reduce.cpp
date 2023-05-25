@@ -124,14 +124,14 @@ void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 static
 void
 reduceRefsWithAccess(
-    std::vector<RefWithAccess>& list,
-    std::vector<RefWithAccess>&& otherList)
+    std::vector<MemberRef>& list,
+    std::vector<MemberRef>&& otherList)
 {
     for(auto const& ref : otherList)
     {
         auto it = llvm::find_if(
             list,
-            [ref](RefWithAccess const& other) noexcept
+            [ref](MemberRef const& other) noexcept
             {
                 return other.id == ref.id;
             });

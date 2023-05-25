@@ -591,11 +591,11 @@ emitRecord(
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
-// vector<RefWithAccess>
+// vector<MemberRef>
 void
 BitcodeWriter::
 emitRecord(
-    std::vector<RefWithAccess> const& list,
+    std::vector<MemberRef> const& list,
     RecordID ID)
 {
     Assert(RecordIDNameMap[ID]);
