@@ -13,7 +13,7 @@
 #define MRDOX_METADATA_JAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/AnyList.hpp>
+#include <mrdox/ADT/AnyList.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <memory>
 #include <string>

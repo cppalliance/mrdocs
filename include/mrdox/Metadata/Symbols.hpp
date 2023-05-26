@@ -14,6 +14,7 @@
 #define MRDOX_METADATA_SYMBOLS_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/ADT/Optional.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <cstdint>
 #include <cstring>
@@ -42,6 +43,11 @@ public:
     {
         for(auto& c : data_)
             c = *src++;
+    }
+
+    constexpr bool empty() const noexcept
+    {
+        return *this == zero;
     }
 
     constexpr auto data() const noexcept
@@ -95,60 +101,9 @@ private:
 // to be an inline variable without it (it should; see [dcl.constexpr])
 constexpr inline SymbolID SymbolID::zero = SymbolID();
 
-/** Like optional<SymbolID>
+/** Like std::optional<SymbolID>
 */
-class OptionalSymbolID
-{
-    SymbolID ID_{};
-
-public:
-    using value_type = SymbolID;
-
-    constexpr OptionalSymbolID() = default;
-
-    constexpr OptionalSymbolID(std::nullopt_t) noexcept
-        : OptionalSymbolID()
-    {
-    }
-
-    constexpr OptionalSymbolID(
-        OptionalSymbolID const& other) = default;
-
-    constexpr OptionalSymbolID& operator=(
-        OptionalSymbolID const& other) = default;
-
-    constexpr OptionalSymbolID(value_type const& v) noexcept
-        : ID_(v)
-    {
-    }
-
-    constexpr value_type& operator*() noexcept
-    {
-        return ID_;
-    }
-
-    constexpr value_type const& operator*() const noexcept
-    {
-        return ID_;
-    }
-
-    constexpr explicit operator bool() const noexcept
-    {
-        return has_value();
-    }
-
-    constexpr bool has_value() const noexcept
-    {
-        return ID_ != SymbolID::zero;
-    }
-
-    template<typename... Args>
-    constexpr value_type& emplace(Args&&... args)
-    {
-        return *::new (&ID_) SymbolID(
-            std::forward<Args>(args)...);
-    }
-};
+using OptionalSymbolID = Optional<SymbolID>;
 
 /** Info variant discriminator
 */

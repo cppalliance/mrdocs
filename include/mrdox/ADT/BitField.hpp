@@ -6,7 +6,6 @@
 //
 // Copyright (c) 2023 Klemens D. Morgenstern
 //
-//
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
