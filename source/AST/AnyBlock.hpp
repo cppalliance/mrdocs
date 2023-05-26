@@ -380,7 +380,7 @@ public:
     {
         switch(ID)
         {
-        case SYMBOL_PART_LOCDEF:
+        case SYMBOL_PART_DEFLOC:
             return decodeRecord(R, I.DefLoc, Blob);
         case SYMBOL_PART_LOC:
             return decodeRecord(R, I.Loc, Blob);
@@ -424,130 +424,6 @@ public:
             F = B.F;
             I_.Type = std::move(B.I);
             return llvm::Error::success();
-        }
-        default:
-            return AnyBlock::readSubBlock(ID);
-        }
-    }
-};
-
-//------------------------------------------------
-
-class FieldTypeBlock
-    : public BitcodeReader::AnyBlock
-{
-protected:
-    BitcodeReader& br_;
-    FieldInfo& I_;
-
-public:
-    FieldId F;
-
-    FieldTypeBlock(
-        FieldInfo& I,
-        BitcodeReader& br) noexcept
-        : br_(br)
-        , I_(I)
-    {
-    }
-
-    llvm::Error
-    parseRecord(
-        Record const& R,
-        unsigned ID,
-        llvm::StringRef Blob) override
-    {
-        switch(ID)
-        {
-        case FIELD_TYPE_NAME:
-            return decodeRecord(R, I_.Name, Blob);
-        case FIELD_DEFAULT_VALUE:
-            return decodeRecord(R, I_.DefaultValue, Blob);
-        case FIELD_ATTRIBUTES:
-            return decodeRecord(R, {&I_.Flags.raw}, Blob);
-        default:
-            return AnyBlock::parseRecord(R, ID, Blob);
-        }
-    }
-
-    llvm::Error
-    readSubBlock(
-        unsigned ID) override
-    {
-        switch(ID)
-        {
-        case BI_REFERENCE_BLOCK_ID:
-        {
-            ReferenceBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            F = B.F;
-            I_.Type = std::move(B.I);
-            return llvm::Error::success();
-        }
-        default:
-            return AnyBlock::readSubBlock(ID);
-        }
-    }
-};
-
-//------------------------------------------------
-
-class MemberTypeBlock
-    : public BitcodeReader::AnyBlock
-{
-    BitcodeReader& br_;
-    MemberTypeInfo& I_;
-
-public:
-    MemberTypeBlock(
-        MemberTypeInfo& I,
-        BitcodeReader& br) noexcept
-        : br_(br)
-        , I_(I)
-    {
-    }
-
-    llvm::Error
-    parseRecord(
-        Record const& R,
-        unsigned ID,
-        llvm::StringRef Blob) override
-    {
-        switch(ID)
-        {
-        case MEMBER_TYPE_NAME:
-            return decodeRecord(R, I_.Name, Blob);
-        case MEMBER_TYPE_ACCESS:
-            return decodeRecord(R, I_.access, Blob);
-        default:
-            return AnyBlock::parseRecord(R, ID, Blob);
-        }
-    }
-
-    llvm::Error
-    readSubBlock(
-        unsigned ID) override
-    {
-        switch(ID)
-        {
-        case BI_REFERENCE_BLOCK_ID:
-        {
-            ReferenceBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            I_.Type = std::move(B.I);
-            return llvm::Error::success();
-        }
-        case BI_FIELD_TYPE_BLOCK_ID:
-        {
-            FieldTypeBlock B(I_, br_);
-            return br_.readBlock(B, ID);
-        }
-        case BI_JAVADOC_BLOCK_ID:
-        {
-            JavadocBlock B(I_.javadoc, br_);
-            return br_.readBlock(B, ID);
         }
         default:
             return AnyBlock::readSubBlock(ID);
@@ -901,6 +777,7 @@ public:
     {
     }
 
+    #if 0
     llvm::Error
     insertChild(
         Reference&& R, FieldId Id)
@@ -973,11 +850,25 @@ public:
             }
             break;
         }
+        // KRYSTIAN FIXME: i am 90% sure that this isn't needed.
+        // we don't use Scope for storing Record members
+        case FieldId::F_child_field:
+        {
+            // Namespace can't have fields
+            if constexpr(
+                std::derived_from<T, RecordInfo>)
+            {
+                Assert("RecordInfo doesn't use Scope");
+                return llvm::Error::success();
+            }
+            break;
+        }
         default:
             return makeWrongFieldError(Id);
         }
         return makeError("unknown type");
     }
+    #endif
 
     llvm::Error readChild(Scope& I, unsigned ID);
     llvm::Error readSubBlock(unsigned ID) override;
@@ -1026,16 +917,17 @@ public:
         case RECORD_FRIENDS:
             return decodeRecord(R, I->Friends, Blob);
         case RECORD_ENUMS:
-            return decodeRecord(R, I->Children_.Enums, Blob);
+            return decodeRecord(R, I->Members.Enums, Blob);
         case RECORD_FUNCTIONS:
-            return decodeRecord(R, I->Children_.Functions, Blob);
+            return decodeRecord(R, I->Members.Functions, Blob);
         case RECORD_RECORDS:
-            return decodeRecord(R, I->Children_.Records, Blob);
+            return decodeRecord(R, I->Members.Records, Blob);
         case RECORD_TYPES:
-            return decodeRecord(R, I->Children_.Types, Blob);
+            return decodeRecord(R, I->Members.Types, Blob);
+        case RECORD_FIELDS:
+            return decodeRecord(R, I->Members.Fields, Blob);
         case RECORD_VARS:
-            return decodeRecord(R, I->Children_.Vars, Blob);
-
+            return decodeRecord(R, I->Members.Vars, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }
@@ -1047,11 +939,6 @@ public:
     {
         switch(ID)
         {
-        case BI_MEMBER_TYPE_BLOCK_ID:
-        {
-            MemberTypeBlock B(I->Members.emplace_back(), br_);
-            return br_.readBlock(B, ID);
-        }
         case BI_BASE_BLOCK_ID:
         {
             BaseBlock B(I->Bases);
@@ -1115,29 +1002,11 @@ public:
             }
             return llvm::Error::success();
         }
-
-#if 0
-        case BI_FIELD_TYPE_BLOCK_ID:
-        {
-            FieldTypeBlock B(I->Params.emplace_back(), br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            switch(B.F)
-            {
-            case FieldId::F_type:
-                break;
-            default:
-                return makeWrongFieldError(B.F);
-            }
-            return llvm::Error::success();
-        }
-#else
         case BI_FUNCTION_PARAM_BLOCK_ID:
         {
             FunctionParamBlock B(I->Params.emplace_back(), br_);
             return br_.readBlock(B, ID);
         }
-#endif
         case BI_TEMPLATE_BLOCK_ID:
         {
             TemplateBlock B(I->Template, br_);
@@ -1331,6 +1200,55 @@ public:
             break;
         }
         return TopLevelBlock::readSubBlock(ID);
+    }
+};
+
+//------------------------------------------------
+
+class FieldBlock
+    : public TopLevelBlock<FieldInfo>
+{
+public:
+    explicit
+    FieldBlock(
+        BitcodeReader& br)
+        : TopLevelBlock(br)
+    {
+    }
+
+    llvm::Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case FIELD_NAME:
+            return decodeRecord(R, I->Name, Blob);
+        case FIELD_DEFAULT:
+            return decodeRecord(R, I->Default, Blob);
+        case FIELD_ATTRIBUTES:
+            return decodeRecord(R, {&I->specs.raw}, Blob);
+        default:
+            return TopLevelBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    llvm::Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_TYPE_BLOCK_ID:
+        {
+            TypeBlock B(I->Type, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
     }
 };
 

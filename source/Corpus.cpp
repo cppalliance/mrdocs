@@ -49,6 +49,8 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
         return reduce<TypedefInfo>(Values);
     case InfoType::IT_variable:
         return reduce<VarInfo>(Values);
+    case InfoType::IT_field:
+        return reduce<FieldInfo>(Values);
     default:
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "unexpected info type");
@@ -110,12 +112,12 @@ bool Corpus::Visitor::visit(VarInfo const&)
     return true;
 }
 
-//---
-
-bool Corpus::Visitor::visit(DataMember const&, Access)
+bool Corpus::Visitor::visit(FieldInfo const&)
 {
     return true;
 }
+
+//---
 
 bool Corpus::Visitor::visit(MemberEnum const& I, Access)
 {
@@ -133,6 +135,11 @@ bool Corpus::Visitor::visit(MemberRecord const& I, Access)
 }
 
 bool Corpus::Visitor::visit(MemberType const& I, Access)
+{
+    return true;
+}
+
+bool Corpus::Visitor::visit(DataMember const&, Access)
 {
     return true;
 }
@@ -165,8 +172,11 @@ traverse(
         return f.visit(static_cast<EnumInfo const&>(I));
     case InfoType::IT_variable:
         return f.visit(static_cast<VarInfo const&>(I));
+    // KRYSTIAN FIXME: is this correct?
+    case InfoType::IT_field:
+        return f.visit(static_cast<FieldInfo const&>(I));
     default:
-        llvm_unreachable("wrong InfoType for viist");
+        llvm_unreachable("wrong InfoType for visit");
     }
 }
 
@@ -203,34 +213,37 @@ traverse(
     Visitor& f,
     RecordInfo const& I) const
 {
-    for(auto const& t : I.Children_.Records)
+    for(auto const& t : I.Members.Records)
         if(! f.visit(MemberRecord{
             &get<RecordInfo>(t.id),
                 &I}, t.access))
             return false;
-    for(auto const& t : I.Children_.Functions)
+    for(auto const& t : I.Members.Functions)
         if(! f.visit(MemberFunction{
             &get<FunctionInfo>(t.id),
                 &I}, t.access))
             return false;
-    for(auto const& t : I.Children_.Types)
+    for(auto const& t : I.Members.Types)
         if(! f.visit(MemberType{
             &get<TypedefInfo>(t.id),
                 &I}, t.access))
             return false;
-    for(auto const& t : I.Children_.Enums)
+    for(auto const& t : I.Members.Enums)
         if(! f.visit(MemberEnum{
             &get<EnumInfo>(t.id),
                 &I}, t.access))
             return false;
-    for(auto const& t : I.Children_.Vars)
+    for(auto const& t : I.Members.Fields)
+        if(! f.visit(DataMember{
+            &get<FieldInfo>(t.id),
+                &I}, t.access))
+            return false;
+    for(auto const& t : I.Members.Vars)
         if(! f.visit(StaticDataMember{
             &get<VarInfo>(t.id),
                 &I}, t.access))
             return false;
-    for(auto const& t : I.Members)
-        if(! f.visit(DataMember{&t, &I}, t.access))
-            return false;
+
     return true;
 }
 

@@ -32,11 +32,11 @@ class Interface::Build
     Corpus const& corpus_;
     bool includePrivate_;
 
-    std::vector<std::pair<Access, DataMember>> data_;
     std::vector<std::pair<Access, MemberEnum>> enums_;
     std::vector<std::pair<Access, MemberFunction>> functions_;
     std::vector<std::pair<Access, MemberRecord>> records_;
     std::vector<std::pair<Access, MemberType>> types_;
+    std::vector<std::pair<Access, DataMember>> data_;
     std::vector<std::pair<Access, StaticDataMember>> vars_;
 
 public:
@@ -82,22 +82,11 @@ private:
             append(actualAccess, corpus_.get<RecordInfo>(B.id));
         }
 
-        // Data Members
-        if( includePrivate_ ||
-            access != Access::Private)
-        {
-            for(auto const& J : From.Members)
-            {
-                auto actualAccess = effectiveAccess(access, J.access);
-                data_.push_back({ actualAccess, { &J, &From } });
-            }
-        }
-
         // Member Enums
         if( includePrivate_ ||
             access != Access::Private)
         {
-            for(auto const& ref : From.Children_.Enums)
+            for(auto const& ref : From.Members.Enums)
             {
                 auto const& J = corpus_.get<EnumInfo>(ref.id);
                 auto actualAccess = effectiveAccess(access, ref.access);
@@ -108,7 +97,7 @@ private:
         // Member Functions
         {
             auto const isRecFinal = From.specs.isFinal.get();
-            for(auto const& ref : From.Children_.Functions)
+            for(auto const& ref : From.Members.Functions)
             {
                 auto const& J = corpus_.get<FunctionInfo>(ref.id);
                 auto actualAccess = effectiveAccess(access, ref.access);
@@ -128,7 +117,7 @@ private:
         if( includePrivate_ ||
             access != Access::Private)
         {
-            for(auto const& ref : From.Children_.Records)
+            for(auto const& ref : From.Members.Records)
             {
                 auto const& J = corpus_.get<RecordInfo>(ref.id);
                 auto actualAccess = effectiveAccess(access, ref.access);
@@ -140,7 +129,7 @@ private:
         if( includePrivate_ ||
             access != Access::Private)
         {
-            for(auto const& ref : From.Children_.Types)
+            for(auto const& ref : From.Members.Types)
             {
                 auto const& J = corpus_.get<TypedefInfo>(ref.id);
                 auto actualAccess = effectiveAccess(access, ref.access);
@@ -148,11 +137,23 @@ private:
             }
         }
 
+        // Non-static Data Members
+        if( includePrivate_ ||
+            access != Access::Private)
+        {
+            for(auto const& ref : From.Members.Fields)
+            {
+                auto const& J = corpus_.get<FieldInfo>(ref.id);
+                auto actualAccess = effectiveAccess(access, ref.access);
+                data_.push_back({ actualAccess, { &J, &From }});
+            }
+        }
+
         // Static Data Members
         if( includePrivate_ ||
             access != Access::Private)
         {
-            for(auto const& ref : From.Children_.Vars)
+            for(auto const& ref : From.Members.Vars)
             {
                 auto const& J = corpus_.get<VarInfo>(ref.id);
                 auto actualAccess = effectiveAccess(access, ref.access);

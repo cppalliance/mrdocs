@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -95,10 +96,12 @@ void mergeInfo(Info& I, Info&& Other)
         merge(*I.javadoc, std::move(*Other.javadoc));
 }
 
-static void mergeSymbolInfo(SymbolInfo& I, SymbolInfo&& Other)
+static void mergeSymbolInfo(
+    SymbolInfo& I,
+    SymbolInfo&& Other)
 {
     Assert(canMerge(I, Other));
-    if (!I.DefLoc)
+    if (! I.DefLoc)
         I.DefLoc = std::move(Other.DefLoc);
     // Unconditionally extend the list of locations, since we want all of them.
     std::move(Other.Loc.begin(), Other.Loc.end(), std::back_inserter(I.Loc));
@@ -151,16 +154,18 @@ void merge(RecordInfo& I, RecordInfo&& Other)
         I.TagType = Other.TagType;
     I.IsTypeDef = I.IsTypeDef || Other.IsTypeDef;
     I.specs.raw.value |= Other.specs.raw.value;
-    if (I.Members.empty())
-        I.Members = std::move(Other.Members);
     if (I.Bases.empty())
         I.Bases = std::move(Other.Bases);
     // Reduce children if necessary.
-    reduceMemberRefs(I.Children_.Records, std::move(Other.Children_.Records));
-    reduceMemberRefs(I.Children_.Functions, std::move(Other.Children_.Functions));
-    reduceMemberRefs(I.Children_.Enums, std::move(Other.Children_.Enums));
-    reduceMemberRefs(I.Children_.Types, std::move(Other.Children_.Types));
-    reduceMemberRefs(I.Children_.Vars, std::move(Other.Children_.Vars));
+    reduceMemberRefs(I.Members.Records, std::move(Other.Members.Records));
+    reduceMemberRefs(I.Members.Functions, std::move(Other.Members.Functions));
+    reduceMemberRefs(I.Members.Enums, std::move(Other.Members.Enums));
+    reduceMemberRefs(I.Members.Types, std::move(Other.Members.Types));
+    reduceMemberRefs(I.Members.Fields, std::move(Other.Members.Fields));
+    reduceMemberRefs(I.Members.Vars, std::move(Other.Members.Vars));
+    // KRYSTIAN FIXME: really should use explicit cases here.
+    // at a glance, it is not obvious that we are binding to
+    // the SymboInfo base class subobject
     mergeSymbolInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = Other.Template;
@@ -210,6 +215,17 @@ void merge(EnumInfo& I, EnumInfo&& Other)
     if (I.Members.empty())
         I.Members = std::move(Other.Members);
     mergeSymbolInfo(I, std::move(Other));
+}
+
+void merge(FieldInfo& I, FieldInfo&& Other)
+{
+    Assert(canMerge(I, Other));
+    if(I.Type.Type.id == SymbolID::zero && I.Type.Type.Name.empty())
+        I.Type = std::move(Other.Type);
+    mergeSymbolInfo(I, std::move(Other));
+    I.specs.raw.value |= Other.specs.raw.value;
+    if(I.Default.empty())
+        I.Default = std::move(Other.Default);
 }
 
 void merge(VarInfo& I, VarInfo&& Other)

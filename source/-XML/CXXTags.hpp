@@ -221,6 +221,7 @@ inline void write(FieldFlags const& bits, XMLTags& tags)
 {
     BitFieldWriter<FieldFlags> fw(bits, tags);
 
+    // KRYSTIAN FIXME: non-static data members cannot be nodiscard
     fw.write(&FieldFlags::isNodiscard, "nodiscard");
     fw.write(&FieldFlags::isDeprecated, "deprecated");
     fw.write(&FieldFlags::hasNoUniqueAddress, "no-unique-address");

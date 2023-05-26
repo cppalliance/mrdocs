@@ -106,19 +106,19 @@ namespace adoc {
 
 struct AdocWriter::FormalParam
 {
-    Param const& I;
+    Param const& P;
     AdocWriter& w;
 
     friend
     llvm::raw_ostream&
     operator<<(
         llvm::raw_ostream& os,
-        FormalParam const& t)
+        FormalParam const& f)
     {
         // KRYSTIAN FIXME: use AdocWriter::typeName
-        os << t.I.Type.Type.Name;
-        if(! t.I.Name.empty())
-            os << ' ' << t.I.Name;
+        os << f.P.Type.Type.Name;
+        if(! f.P.Name.empty())
+            os << ' ' << f.P.Name;
         // KRYSTIAN TODO: emit default argument
         return os;
     }

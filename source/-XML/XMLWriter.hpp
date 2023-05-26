@@ -67,23 +67,23 @@ private:
     bool visit(EnumInfo const&) override;
     bool visit(VarInfo const&) override;
 
-    bool visit(DataMember const&, Access) override;
     bool visit(MemberEnum const&, Access) override;
     bool visit(MemberFunction const&, Access) override;
     bool visit(MemberRecord const&, Access) override;
     bool visit(MemberType const&, Access) override;
+    bool visit(DataMember const&, Access) override;
     bool visit(StaticDataMember const&, Access) override;
 
     bool writeEnum(EnumInfo const&, Access const* access = nullptr);
     bool writeFunction(FunctionInfo const&, Access const* access = nullptr);
     bool writeRecord(RecordInfo const&, Access const* access = nullptr);
     bool writeTypedef(TypedefInfo const&, Access const* access = nullptr);
+    bool writeField(FieldInfo const&, Access const* access = nullptr);
     bool writeVar(VarInfo const&, Access const* access = nullptr);
 
     void writeInfo(Info const&);
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
-    void writeMemberType(MemberTypeInfo const& I);
     void writeJavadoc(std::optional<Javadoc> const& javadoc);
     void writeTemplate(const std::optional<TemplateInfo>& I);
 

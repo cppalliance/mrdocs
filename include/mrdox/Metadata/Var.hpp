@@ -12,7 +12,7 @@
 #define MRDOX_METADATA_VARIABLE_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/FieldType.hpp>
+#include <mrdox/Metadata/Field.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <clang/Basic/Specifiers.h>
@@ -44,7 +44,7 @@ struct VarInfo
 
     explicit
     VarInfo(
-        SymbolID ID = SymbolID(),
+        SymbolID ID = SymbolID::zero,
         llvm::StringRef Name = llvm::StringRef())
         : SymbolInfo(InfoType::IT_variable, ID, Name)
     {

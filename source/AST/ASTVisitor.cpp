@@ -72,7 +72,7 @@ getSymbolID(
 {
     llvm::SmallString<128> USR;
     if(index::generateUSRForDecl(D, USR))
-        return SymbolID();
+        return SymbolID::zero;
     auto r = llvm::SHA1::hash(arrayRefFromStringRef(USR));
     return SymbolID(r.data());
 }
@@ -546,63 +546,35 @@ parseRawComment(
 
 //------------------------------------------------
 
-void
-ASTVisitor::
-getMemberTypeInfo(
-    MemberTypeInfo& I,
-    FieldDecl const* D,
-    Reporter& R)
-{
-    Assert(D && "Expect non-null FieldDecl in getMemberTypeInfo");
-    parseRawComment(I.javadoc, D, R);
-
-    for (auto attr : D->attrs())
-    {
-        switch (attr->getKind())
-        {
-        case clang::attr::Kind::NoUniqueAddress:
-            I.Flags.hasNoUniqueAddress = true;
-            break;
-        case clang::attr::Kind::Deprecated:
-            I.Flags.isDeprecated = true;
-            break;
-        case clang::attr::Kind::Unused:
-            I.Flags.isNodiscard = true;
-            break;
-        default:
-            break;
-        }
-    }
-}
-
-
-//------------------------------------------------
-
-template<class Child>
+template<class Member>
 static
 void
 insertChild(
-    RecordInfo& P, Child const& I, Access access)
+    RecordInfo& P, Member const& I, Access access)
 {
-    if constexpr(std::is_same_v<Child, RecordInfo>)
+    if constexpr(std::is_same_v<Member, RecordInfo>)
     {
-        P.Children_.Records.push_back({ I.id, access });
+        P.Members.Records.push_back({ I.id, access });
     }
-    else if constexpr(std::is_same_v<Child, FunctionInfo>)
+    else if constexpr(std::is_same_v<Member, FunctionInfo>)
     {
-        P.Children_.Functions.push_back({ I.id, access });
+        P.Members.Functions.push_back({ I.id, access });
     }
-    else if constexpr(std::is_same_v<Child, TypedefInfo>)
+    else if constexpr(std::is_same_v<Member, TypedefInfo>)
     {
-        P.Children_.Types.push_back({ I.id, access });
+        P.Members.Types.push_back({ I.id, access });
     }
-    else if constexpr(std::is_same_v<Child, EnumInfo>)
+    else if constexpr(std::is_same_v<Member, EnumInfo>)
     {
-        P.Children_.Enums.push_back({ I.id, access });
+        P.Members.Enums.push_back({ I.id, access });
     }
-    else if constexpr(std::is_same_v<Child, VarInfo>)
+    else if constexpr(std::is_same_v<Member, FieldInfo>)
     {
-        P.Children_.Vars.push_back({ I.id, access });
+        P.Members.Fields.push_back({ I.id, access });
+    }
+    else if constexpr(std::is_same_v<Member, VarInfo>)
+    {
+        P.Members.Vars.push_back({ I.id, access });
     }
     else
     {
@@ -640,6 +612,7 @@ insertChild(NamespaceInfo& parent, Child const& I)
     {
         parent.Children.Vars.emplace_back(I.id, I.Name, Child::type_id);
     }
+    // KRYSTIAN NOTE: Child should *never* be FieldInfo
     else
     {
         Assert(false);
@@ -715,18 +688,29 @@ parseFields(
     AccessSpecifier Access,
     Reporter& R)
 {
+    static_cast<void>(I);
+    static_cast<void>(PublicOnly);
+    static_cast<void>(Access);
+    static_cast<void>(R);
     for(const FieldDecl* F : D->fields())
     {
-        if(!shouldSerializeInfo(PublicOnly, /*IsInAnonymousNamespace=*/false, F))
+        FieldInfo FI;
+        if(! extractInfo(FI, F))
             continue;
+        LineNumber = getLine(F);
+        FI.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
 
-        // Use getAccessUnsafe so that we just get the default AS_none if it's not
-        // valid, as opposed to an assert.
-        MemberTypeInfo& NewMember = I.Members.emplace_back(
-            getTypeInfoForType(F->getTypeSourceInfo()->getType()),
-            F->getNameAsString(),
-            getAccessFromSpecifier(F->getAccessUnsafe()));
-        getMemberTypeInfo(NewMember, F, R);
+        FI.Type = getTypeInfoForType(
+            F->getTypeSourceInfo()->getType());
+
+
+        FI.specs.hasNoUniqueAddress = F->hasAttr<NoUniqueAddressAttr>();
+        FI.specs.isDeprecated = F->hasAttr<DeprecatedAttr>();
+        // KRYSTIAN FIXME: isNodiscard should be isMaybeUnused
+        FI.specs.isNodiscard = F->hasAttr<UnusedAttr>();
+
+        insertBitcode(ex_, writeBitcode(FI));
+        insertBitcode(ex_, writeParent(FI, F->getAccess()));
     }
 }
 

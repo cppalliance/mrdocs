@@ -99,12 +99,20 @@ getInfos()
             Infos.emplace_back(std::move(I.get()));
                 continue;
         }
+        // although fields can only be members of records,
+        // they are emitted as top-level blocks anyway
+        case BI_FIELD_BLOCK_ID:
+        {
+            auto I = readInfo<FieldBlock>(ID);
+            if(! I)
+                return I.takeError();
+            Infos.emplace_back(std::move(I.get()));
+                continue;
+        }
 
         // NamedType and Comment blocks should
         // not appear at the top level
         case BI_TYPE_BLOCK_ID:
-        case BI_FIELD_TYPE_BLOCK_ID:
-        case BI_MEMBER_TYPE_BLOCK_ID:
         case BI_JAVADOC_BLOCK_ID:
         case BI_JAVADOC_LIST_BLOCK_ID:
         case BI_JAVADOC_NODE_BLOCK_ID:

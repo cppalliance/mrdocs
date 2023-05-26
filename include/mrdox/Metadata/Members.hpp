@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -15,8 +16,8 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Access.hpp>
 #include <mrdox/Metadata/Enum.hpp>
+#include <mrdox/Metadata/Field.hpp>
 #include <mrdox/Metadata/Function.hpp>
-#include <mrdox/Metadata/MemberType.hpp>
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
 #include <mrdox/Metadata/Var.hpp>
@@ -26,8 +27,7 @@ namespace mrdox {
 
 struct DataMember
 {
-    // FieldInfo const* I;
-    MemberTypeInfo const* I;
+    FieldInfo const* I;
     RecordInfo const* From;
 };
 

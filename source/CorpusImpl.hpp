@@ -80,6 +80,7 @@ private:
         virtual void visit(TypedefInfo&) {}
         virtual void visit(EnumInfo&) {}
         virtual void visit(VarInfo&) {}
+        virtual void visit(FieldInfo&) {}
     };
 
     /** Visit the specified symbol ID or node.
@@ -132,6 +133,10 @@ get(
         Assert(t->IT == InfoType::IT_typedef);
     else if constexpr(std::is_same_v<T, EnumInfo>)
         Assert(t->IT == InfoType::IT_enum);
+    else if constexpr(std::is_same_v<T, VarInfo>)
+        Assert(t->IT == InfoType::IT_variable);
+    else if constexpr(std::is_same_v<T, FieldInfo>)
+        Assert(t->IT == InfoType::IT_field);
     return *t;
 }
 

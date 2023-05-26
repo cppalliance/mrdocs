@@ -212,8 +212,7 @@ BlockIdNameMap = []()
         {BI_ENUM_VALUE_BLOCK_ID, "EnumValueBlock"},
         {BI_TYPEDEF_BLOCK_ID, "TypedefBlock"},
         {BI_TYPE_BLOCK_ID, "TypeBlock"},
-        {BI_FIELD_TYPE_BLOCK_ID, "FieldTypeBlock"},
-        {BI_MEMBER_TYPE_BLOCK_ID, "MemberTypeBlock"},
+        {BI_FIELD_BLOCK_ID, "FieldBlock"},
         {BI_RECORD_BLOCK_ID, "RecordBlock"},
         {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
         {BI_FUNCTION_PARAM_BLOCK_ID, "FunctionParamBlock"},
@@ -252,8 +251,8 @@ RecordIDNameMap = []()
         {ENUM_VALUE_NAME, {"Name", &StringAbbrev}},
         {ENUM_VALUE_VALUE, {"Value", &StringAbbrev}},
         {ENUM_VALUE_EXPR, {"Expr", &StringAbbrev}},
-        {FIELD_TYPE_NAME, {"Name", &StringAbbrev}},
-        {FIELD_DEFAULT_VALUE, {"DefaultValue", &StringAbbrev}},
+        {FIELD_NAME, {"Name", &StringAbbrev}},
+        {FIELD_DEFAULT, {"DefaultValue", &StringAbbrev}},
         {FIELD_ATTRIBUTES, {"FieldAttributes", &Integer32ArrayAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
@@ -266,8 +265,6 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &Integer32Abbrev}},
         {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
-        {MEMBER_TYPE_NAME, {"Name", &StringAbbrev}},
-        {MEMBER_TYPE_ACCESS, {"Access", &Integer32Abbrev}},
         {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
@@ -281,12 +278,13 @@ RecordIDNameMap = []()
         {RECORD_RECORDS,    {"RecordRecords", &MemberRefsAbbrev}},
         {RECORD_TYPES,      {"RecordTypes", &MemberRefsAbbrev}},
         {RECORD_VARS,       {"RecordVars", &MemberRefsAbbrev}},
-        {SYMBOL_PART_LOCDEF, {"SymbolLocDef", &LocationAbbrev}},
-        {SYMBOL_PART_LOC, {"InfoName", &LocationAbbrev}},
-        {TEMPLATE_PRIMARY_USR, {"Primary", &SymbolIDAbbrev}},
-        {TEMPLATE_ARG_VALUE, {"Value", &StringAbbrev}},
-        {TEMPLATE_PARAM_KIND, {"Kind", &Integer32Abbrev}},
-        {TEMPLATE_PARAM_NAME, {"Name", &StringAbbrev}},
+        {RECORD_FIELDS,     {"RecordFields", &MemberRefsAbbrev}},
+        {SYMBOL_PART_DEFLOC, {"SymbolDefLoc", &LocationAbbrev}},
+        {SYMBOL_PART_LOC,    {"SymbolLoc", &LocationAbbrev}},
+        {TEMPLATE_PRIMARY_USR,   {"Primary", &SymbolIDAbbrev}},
+        {TEMPLATE_ARG_VALUE,     {"Value", &StringAbbrev}},
+        {TEMPLATE_PARAM_KIND,    {"Kind", &Integer32Abbrev}},
+        {TEMPLATE_PARAM_NAME,    {"Name", &StringAbbrev}},
         {TEMPLATE_PARAM_IS_PACK, {"Name", &BoolAbbrev}},
         {TEMPLATE_PARAM_DEFAULT, {"Default", &StringAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
@@ -312,9 +310,9 @@ RecordsByBlock{
     // Info part
     {BI_INFO_PART_ID,
         {INFO_PART_ID, INFO_PART_NAME}},
-    // SymbolInfo part
+    // SymbolInfo
     {BI_SYMBOL_PART_ID,
-        {SYMBOL_PART_LOCDEF, SYMBOL_PART_LOC}},
+        {SYMBOL_PART_DEFLOC, SYMBOL_PART_LOC}},
     // BaseInfo
     {BI_BASE_BLOCK_ID,
         {BASE_ID, BASE_NAME, BASE_ACCESS, BASE_IS_VIRTUAL}},
@@ -325,7 +323,8 @@ RecordsByBlock{
     {BI_ENUM_VALUE_BLOCK_ID,
         {ENUM_VALUE_NAME, ENUM_VALUE_VALUE, ENUM_VALUE_EXPR}},
     // FieldInfo
-    {BI_FIELD_TYPE_BLOCK_ID, {FIELD_TYPE_NAME, FIELD_DEFAULT_VALUE, FIELD_ATTRIBUTES}},
+    {BI_FIELD_BLOCK_ID,
+        {FIELD_NAME, FIELD_DEFAULT, FIELD_ATTRIBUTES}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
         {FUNCTION_BITS}},
@@ -342,15 +341,14 @@ RecordsByBlock{
     {BI_JAVADOC_NODE_BLOCK_ID,
         {JAVADOC_NODE_KIND, JAVADOC_NODE_STRING, JAVADOC_NODE_STYLE,
          JAVADOC_NODE_ADMONISH, JAVADOC_PARAM_DIRECTION}},
-    // MemberTypeInfo
-    {BI_MEMBER_TYPE_BLOCK_ID, {MEMBER_TYPE_NAME, MEMBER_TYPE_ACCESS}},
     // NamespaceInfo
     {BI_NAMESPACE_BLOCK_ID,
         {}},
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
-        {RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF, RECORD_BITS, RECORD_FRIENDS,
-        RECORD_ENUMS, RECORD_FUNCTIONS, RECORD_RECORDS, RECORD_TYPES, RECORD_VARS}},
+        {RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF, RECORD_BITS,
+        RECORD_FRIENDS, RECORD_ENUMS, RECORD_FUNCTIONS,
+        RECORD_RECORDS, RECORD_TYPES, RECORD_VARS, RECORD_FIELDS}},
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
@@ -408,6 +406,9 @@ dispatchInfoForWrite(Info const* I)
         break;
     case InfoType::IT_variable:
         emitBlock(*static_cast<VarInfo const*>(I));
+        break;
+    case InfoType::IT_field:
+        emitBlock(*static_cast<FieldInfo const*>(I));
         break;
     default:
         llvm::errs() << "Unexpected info, unable to write.\n";
@@ -755,14 +756,14 @@ emitInfoPart(
 void
 BitcodeWriter::
 emitSymbolPart(
-    SymbolInfo const& I)
+    const SymbolInfo& I)
 {
     StreamSubBlockGuard Block(Stream, BI_SYMBOL_PART_ID);
-    if (I.DefLoc)
-        emitRecord(*I.DefLoc, SYMBOL_PART_LOCDEF);
+    if(I.DefLoc)
+        emitRecord(*I.DefLoc, SYMBOL_PART_DEFLOC);
     // VFALCO hack to squelch refs from typedefs
     if(I.IT != InfoType::IT_typedef)
-        for (const auto& L : I.Loc)
+        for(const auto& L : I.Loc)
             emitRecord(L, SYMBOL_PART_LOC);
 }
 
@@ -807,13 +808,15 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    FieldInfo const& T)
+    FieldInfo const& F)
 {
-    StreamSubBlockGuard Block(Stream, BI_FIELD_TYPE_BLOCK_ID);
-    emitBlock(T.Type, FieldId::F_type);
-    emitRecord(T.Name, FIELD_TYPE_NAME);
-    emitRecord(T.DefaultValue, FIELD_DEFAULT_VALUE);
-    emitRecord({T.Flags.raw}, FIELD_ATTRIBUTES);
+    StreamSubBlockGuard Block(Stream, BI_FIELD_BLOCK_ID);
+    emitInfoPart(F);
+    emitSymbolPart(F);
+    emitBlock(F.Type);
+    emitRecord(F.Name, FIELD_NAME);
+    emitRecord(F.Default, FIELD_DEFAULT);
+    emitRecord({F.specs.raw}, FIELD_ATTRIBUTES);
 }
 
 void
@@ -931,20 +934,6 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    MemberTypeInfo const& T)
-{
-    StreamSubBlockGuard Block(Stream, BI_MEMBER_TYPE_BLOCK_ID);
-//    emitBlock(T.Type, FieldId::F_type);
-    emitBlock(static_cast<const FieldInfo &>(T));
-    emitRecord(T.Name, MEMBER_TYPE_NAME);
-    emitRecord(T.access, MEMBER_TYPE_ACCESS);
-    if(T.javadoc)
-        emitBlock(*T.javadoc);
-}
-
-void
-BitcodeWriter::
-emitBlock(
     NamespaceInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
@@ -974,15 +963,14 @@ emitBlock(
     emitRecord(I.TagType, RECORD_TAG_TYPE);
     emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
     emitRecord({I.specs.raw}, RECORD_BITS);
-    for (const auto& N : I.Members)
-        emitBlock(N);
     for (const auto& B : I.Bases)
         emitBlock(B);
-    emitRecord(I.Children_.Records, RECORD_RECORDS);
-    emitRecord(I.Children_.Functions, RECORD_FUNCTIONS);
-    emitRecord(I.Children_.Enums, RECORD_ENUMS);
-    emitRecord(I.Children_.Types, RECORD_TYPES);
-    emitRecord(I.Children_.Vars, RECORD_VARS);
+    emitRecord(I.Members.Records, RECORD_RECORDS);
+    emitRecord(I.Members.Functions, RECORD_FUNCTIONS);
+    emitRecord(I.Members.Enums, RECORD_ENUMS);
+    emitRecord(I.Members.Types, RECORD_TYPES);
+    emitRecord(I.Members.Fields, RECORD_FIELDS);
+    emitRecord(I.Members.Vars, RECORD_VARS);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord(I.Friends, RECORD_FRIENDS);

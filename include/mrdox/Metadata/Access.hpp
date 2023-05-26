@@ -35,7 +35,7 @@ enum class Access
     Private
 };
 
-/** A reference to a symbol, and an access speciier.
+/** A reference to a symbol, and an access specifier.
 
     This is used in records to refer to nested
     elements with access control.

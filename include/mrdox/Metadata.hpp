@@ -18,13 +18,12 @@
 // metadata extracted from AST
 
 #include <mrdox/Metadata/Enum.hpp>
-#include <mrdox/Metadata/FieldType.hpp>
+#include <mrdox/Metadata/Field.hpp>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Interface.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/Location.hpp>
-#include <mrdox/Metadata/MemberType.hpp>
 #include <mrdox/Metadata/Namespace.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <mrdox/Metadata/Record.hpp>

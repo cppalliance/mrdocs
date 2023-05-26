@@ -158,12 +158,6 @@ public:
         Reporter& R);
 
     void
-    getMemberTypeInfo(
-        MemberTypeInfo& I,
-        FieldDecl const* D,
-        Reporter& R);
-
-    void
     parseFields(
         RecordInfo& I,
         const RecordDecl* D,

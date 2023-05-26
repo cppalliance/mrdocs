@@ -81,8 +81,10 @@ traverse(
         return f.visit(static_cast<EnumInfo&>(I));
     case InfoType::IT_variable:
         return f.visit(static_cast<VarInfo&>(I));
+    case InfoType::IT_field:
+        return f.visit(static_cast<FieldInfo&>(I));
     default:
-        llvm_unreachable("wrong InfoType for viist");
+        llvm_unreachable("wrong InfoType for visit");
     }
 }
 
@@ -112,20 +114,18 @@ traverse(
     MutableVisitor& f,
     RecordInfo& I)
 {
-    for(auto const& t : I.Children_.Records)
+    for(auto const& t : I.Members.Records)
         f.visit(get<RecordInfo>(t.id));
-    for(auto const& t : I.Children_.Functions)
+    for(auto const& t : I.Members.Functions)
         f.visit(get<FunctionInfo>(t.id));
-    for(auto const& t : I.Children_.Types)
+    for(auto const& t : I.Members.Types)
         f.visit(get<TypedefInfo>(t.id));
-    for(auto const& t : I.Children_.Enums)
+    for(auto const& t : I.Members.Enums)
         f.visit(get<EnumInfo>(t.id));
-    for(auto const& t : I.Children_.Vars)
+    for(auto const& t : I.Members.Fields)
+        f.visit(get<FieldInfo>(t.id));
+    for(auto const& t : I.Members.Vars)
         f.visit(get<VarInfo>(t.id));
-    /*
-    for(auto const& t : I.Members)
-        f.visit(t);
-    */
 }
 
 void
@@ -169,8 +169,6 @@ public:
     {
         postProcess(I);
         // VFALCO Is this needed?
-        canonicalize(I.Members);
-        // VFALCO Is this needed?
         canonicalize(I.Friends);
         corpus_.traverse(*this, I);
     }
@@ -191,6 +189,11 @@ public:
     }
 
     void visit(VarInfo& I) override
+    {
+        postProcess(I);
+    }
+
+    void visit(FieldInfo& I) override
     {
         postProcess(I);
     }
@@ -225,10 +228,6 @@ public:
             {
                 return id0 < id1;
             });
-    }
-
-    void canonicalize(llvm::SmallVectorImpl<MemberTypeInfo>& list)
-    {
     }
 };
 

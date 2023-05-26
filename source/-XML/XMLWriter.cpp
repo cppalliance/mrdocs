@@ -260,14 +260,6 @@ visit(
 bool
 XMLWriter::
 visit(
-    DataMember const& I, Access access)
-{
-    return true;
-}
-
-bool
-XMLWriter::
-visit(
     MemberEnum const& I, Access access)
 {
     return writeEnum(*I.I, &access);
@@ -295,6 +287,14 @@ visit(
     MemberType const& I, Access access)
 {
     return writeTypedef(*I.I, &access);
+}
+
+bool
+XMLWriter::
+visit(
+    DataMember const& I, Access access)
+{
+    return writeField(*I.I, &access);
 }
 
 bool
@@ -398,10 +398,6 @@ writeRecord(
             { B.id }
             });
 
-    // VFALCO data members?
-    for(auto const& J : I.Members)
-        writeMemberType(J);
-
     // Friends
     for(auto const& id : I.Friends)
         tags_.write(friendTagName, "", { { id } });
@@ -441,6 +437,35 @@ writeTypedef(
     writeJavadoc(I.javadoc);
 
     tags_.close(tag);
+
+    return true;
+}
+
+bool
+XMLWriter::
+writeField(
+    const FieldInfo& I,
+    const Access* access)
+{
+    tags_.open(dataMemberTagName, {
+        { "name", I.Name },
+        { "default", I.Default, ! I.Default.empty() },
+        { access },
+        { I.id }
+    });
+
+    writeSymbol(I);
+
+    write(I.specs, tags_);
+
+    tags_.write("type", {}, {
+        { "name", I.Type.Type.Name },
+        { I.Type.Type.id }
+        });
+
+    writeJavadoc(I.javadoc);
+
+    tags_.close(dataMemberTagName);
 
     return true;
 }
@@ -503,33 +528,6 @@ writeLocation(
         { "path", loc.Filename },
         { "line", std::to_string(loc.LineNumber) },
         { "class", "def", def } });
-}
-
-void
-XMLWriter::
-writeMemberType(
-    MemberTypeInfo const& I)
-{
-    if(I.Flags.raw == 0)
-    {
-        tags_.write(dataMemberTagName, "", {
-            { "name", I.Name },
-            { "type", I.Type.Name },
-            { "value", I.DefaultValue, ! I.DefaultValue.empty() },
-            { &I.access },
-            { I.Type.id } });
-    }
-    else
-    {
-        tags_.open(dataMemberTagName, {
-            { "name", I.Name },
-            { "type", I.Type.Name },
-            { "value", I.DefaultValue, ! I.DefaultValue.empty() },
-            { &I.access },
-            { I.Type.id } });
-        write(I.Flags, tags_);
-        tags_.close(dataMemberTagName);
-    }
 }
 
 //------------------------------------------------

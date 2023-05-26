@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -23,19 +24,32 @@ namespace mrdox {
 
 /** Base class for Info that have source locations.
 */
-struct SymbolInfo : Info
+struct SymbolInfo
+    : Info
 {
-    std::optional<Location> DefLoc;     // Location where this decl is defined.
-    llvm::SmallVector<Location, 2> Loc; // Locations where this decl is declared.
+    /** Location where the entity was defined
+
+        KRYSTIAN NOTE: this is used for entities which cannot be
+        redeclared -- regardless of whether such a declaration is
+        actually a definition (e.g. alias-declarations and
+        typedef declarations are never definition).
+    */
+    std::optional<Location> DefLoc;
+
+    /** Locations where the entity was declared,
+
+        This does not include the definition.
+    */
+    std::vector<Location> Loc;
 
     //--------------------------------------------
 
     explicit
     SymbolInfo(
         InfoType IT,
-        SymbolID id_ = SymbolID(),
+        SymbolID id = SymbolID::zero,
         llvm::StringRef Name = llvm::StringRef())
-        : Info(IT, id_, Name)
+        : Info(IT, id, Name)
     {
     }
 };

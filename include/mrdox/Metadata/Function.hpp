@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -14,7 +15,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/BitField.hpp>
-#include <mrdox/Metadata/FieldType.hpp>
+#include <mrdox/Metadata/Field.hpp>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/FunctionKind.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
@@ -79,7 +80,10 @@ struct Param
     /** The type of this parameter */
     TypeInfo Type;
 
-    /** The name of this parameter, if any */
+    /** The parameter name.
+
+        Unnamed parameters are represented by empty strings.
+    */
     std::string Name;
 
     /** The default argument for this parameter, if any */
@@ -100,7 +104,8 @@ struct Param
 
 // TODO: Expand to allow for documenting templating and default args.
 // Info for functions.
-struct FunctionInfo : SymbolInfo
+struct FunctionInfo
+    : SymbolInfo
 {
     TypeInfo ReturnType;   // Info about the return type of this function.
     std::vector<Param> Params; // List of parameters.
@@ -117,7 +122,7 @@ struct FunctionInfo : SymbolInfo
 
     explicit
     FunctionInfo(
-        SymbolID id_ = SymbolID())
+        SymbolID id_ = SymbolID::zero)
         : SymbolInfo(InfoType::IT_function, id_)
     {
     }

@@ -107,12 +107,15 @@ public:
         MRDOX_DECL virtual bool visit(TypedefInfo const&);
         MRDOX_DECL virtual bool visit(EnumInfo const&);
         MRDOX_DECL virtual bool visit(VarInfo const&);
+        // KRYSTIAN FIXME: is this correct? does it make sense to
+        // visit a field as a non-member (a field *must* be class member)?
+        MRDOX_DECL virtual bool visit(FieldInfo const&);
 
-        MRDOX_DECL virtual bool visit(DataMember const&, Access);
         MRDOX_DECL virtual bool visit(MemberEnum const&, Access);
         MRDOX_DECL virtual bool visit(MemberFunction const&, Access);
         MRDOX_DECL virtual bool visit(MemberRecord const&, Access);
         MRDOX_DECL virtual bool visit(MemberType const&, Access);
+        MRDOX_DECL virtual bool visit(DataMember const&, Access);
         MRDOX_DECL virtual bool visit(StaticDataMember const&, Access);
     };
 
@@ -169,6 +172,8 @@ get(
         assert(t->IT == InfoType::IT_enum);
     else if constexpr(std::is_same_v<T, VarInfo>)
         assert(t->IT == InfoType::IT_variable);
+    else if constexpr(std::is_same_v<T, FieldInfo>)
+        assert(t->IT == InfoType::IT_field);
     return *t;
 }
 

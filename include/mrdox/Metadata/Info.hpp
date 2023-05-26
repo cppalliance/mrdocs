@@ -32,7 +32,7 @@ struct Info
 {
     /** The unique identifier for this symbol.
     */
-    SymbolID id = SymbolID();
+    SymbolID id = SymbolID::zero;
 
     /** Kind of declaration.
     */
@@ -59,7 +59,7 @@ struct Info
     explicit
     Info(
         InfoType IT = InfoType::IT_default,
-        SymbolID id_ = SymbolID(),
+        SymbolID id_ = SymbolID::zero,
         llvm::StringRef Name = llvm::StringRef())
         : id(id_)
         , IT(IT)

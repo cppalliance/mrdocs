@@ -252,7 +252,7 @@ inline
 llvm::Error
 decodeRecord(
     const Record& R,
-    llvm::SmallVectorImpl<Location>& Field,
+    std::vector<Location>& Field,
     llvm::StringRef Blob)
 {
     if (R[0] > INT_MAX)

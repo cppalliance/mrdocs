@@ -4,22 +4,43 @@
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="record-data.cpp" line="3" class="def"/>
-    <data name="i" type="int"/>
-    <data name="j" type="double"/>
+    <data name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
+      <file path="record-data.cpp" line="5" class="def"/>
+      <type name="int"/>
+    </data>
+    <data name="j" id="g7xcHrg43mq7PlaOEmNvMHlU+Hk=">
+      <file path="record-data.cpp" line="6" class="def"/>
+      <type name="double"/>
+    </data>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
     <file path="record-data.cpp" line="9" class="def"/>
-    <data name="t" type="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+    <data name="t" id="LvEIBVXJYQQL4yraOaQv7ijMDng=">
+      <file path="record-data.cpp" line="11" class="def"/>
+      <type name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+    </data>
   </struct>
   <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
     <file path="record-data.cpp" line="23" class="def"/>
-    <data name="buf" type="char[64]"/>
+    <data name="buf" id="2akJUSKKPN7IylZjqGMRlhXupds=">
+      <file path="record-data.cpp" line="25" class="def"/>
+      <type name="char[64]"/>
+    </data>
   </struct>
   <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
     <file path="record-data.cpp" line="14" class="def"/>
-    <data name="i" type="int" access="private"/>
-    <data name="j" type="unsigned long" access="protected"/>
-    <data name="k" type="double" access="private"/>
+    <data name="i" access="private" id="EWXCzRl9erjnMQFZ8VmHC5cVkLM=">
+      <file path="record-data.cpp" line="16" class="def"/>
+      <type name="int"/>
+    </data>
+    <data name="j" access="protected" id="VKvx+Pci4bUmtjCsXJqKb7SNYqw=">
+      <file path="record-data.cpp" line="18" class="def"/>
+      <type name="unsigned long"/>
+    </data>
+    <data name="k" access="private" id="iKr1oLycejUWY6AnSgoQnbmaCEE=">
+      <file path="record-data.cpp" line="20" class="def"/>
+      <type name="double"/>
+    </data>
   </class>
 </namespace>
 </mrdox>

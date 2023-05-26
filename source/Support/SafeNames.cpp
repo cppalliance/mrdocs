@@ -127,6 +127,8 @@ private:
             infos.emplace_back(corpus_.find(ref.id));
         for(auto const& ref : I.Types)
             infos.emplace_back(corpus_.find(ref.id));
+        for(auto const& ref : I.Fields)
+            infos.emplace_back(corpus_.find(ref.id));
         for(auto const& ref : I.Vars)
             infos.emplace_back(corpus_.find(ref.id));
         if(infos.size() < 2)
@@ -259,7 +261,7 @@ private:
 
     bool visit(RecordInfo const& I) override
     {
-        auto infos = buildScope(I.Children_);
+        auto infos = buildScope(I.Members);
         insertScope(infos);
         visitInfos(infos);
         return true;

@@ -42,8 +42,7 @@ class BitcodeWriter
 public:
     // Static size is the maximum length of
     // the block/record names we're pushing
-    // to this + 1. Longest is currently
-    // `MemberTypeBlock` at 15 chars.
+    // to this + 1.
     //
     using RecordValue = std::uint32_t;
     using RecordType = SmallVector<
@@ -123,12 +122,10 @@ public:
     void emitBlock(BaseInfo const& I);
     void emitBlock(EnumInfo const& I);
     void emitBlock(EnumValueInfo const& I);
-    void emitBlock(FieldInfo const& I);
     void emitBlock(FunctionInfo const& I);
     void emitBlock(Param const& I);
     void emitBlock(Javadoc const& jd);
     void emitBlock(Javadoc::Node const& I);
-    void emitBlock(MemberTypeInfo const& I);
     void emitBlock(NamespaceInfo const& I);
     void emitBlock(RecordInfo const& I);
     void emitBlock(Reference const& B, FieldId F);
@@ -138,6 +135,7 @@ public:
     void emitBlock(TypedefInfo const& I);
     void emitBlock(TypeInfo const& I);
     void emitBlock(VarInfo const& I);
+    void emitBlock(FieldInfo const& I);
 
     //--------------------------------------------
 

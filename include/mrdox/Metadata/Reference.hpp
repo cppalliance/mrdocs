@@ -25,7 +25,7 @@ struct Reference
 {
     /** Unique identifier of the referenced symbol.
     */
-    SymbolID id = SymbolID();
+    SymbolID id = SymbolID::zero;
 
     // Name of type (possibly unresolved). Not including namespaces or template
     // parameters (so for a std::vector<int> this would be "vector"). See also

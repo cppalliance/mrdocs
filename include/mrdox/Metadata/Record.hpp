@@ -15,7 +15,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Access.hpp>
 #include <mrdox/ADT/BitField.hpp>
-#include <mrdox/Metadata/MemberType.hpp>
+#include <mrdox/Metadata/Field.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Scope.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
@@ -63,7 +63,7 @@ struct BaseInfo
     }
 };
 
-/** Children of a class, struct, or union.
+/** Members of a class, struct, or union.
 */
 struct RecordScope
 {
@@ -71,12 +71,14 @@ struct RecordScope
     std::vector<MemberRef> Functions;
     std::vector<MemberRef> Enums;
     std::vector<MemberRef> Types;
+    std::vector<MemberRef> Fields;
     std::vector<MemberRef> Vars;
 };
 
 /** Metadata for struct, class, or union.
 */
-struct RecordInfo : SymbolInfo
+struct RecordInfo
+    : SymbolInfo
 {
     // VFALCO Use our own enumeration for this
     // Type of this record (struct, class, union, interface).
@@ -89,11 +91,10 @@ struct RecordInfo : SymbolInfo
     // structs in a typedef:
     //   typedef struct { ... } foo_t;
     // are converted into records with the typedef as the Name + this flag set.
+    // KRYSTIAN FIXME: this does not account for alias-declarations
     bool IsTypeDef = false;
 
     RecFlags0 specs;
-
-    llvm::SmallVector<MemberTypeInfo, 4> Members;   // List of info about record members.
 
     /** List of immediate bases.
     */
@@ -103,7 +104,9 @@ struct RecordInfo : SymbolInfo
     */
     llvm::SmallVector<SymbolID, 4> Friends;
 
-    RecordScope Children_;
+    /** Record members
+    */
+    RecordScope Members;
 
     //--------------------------------------------
 
@@ -111,7 +114,7 @@ struct RecordInfo : SymbolInfo
 
     explicit
     RecordInfo(
-        SymbolID id = SymbolID(),
+        SymbolID id = SymbolID::zero,
         llvm::StringRef Name = llvm::StringRef())
         : SymbolInfo(InfoType::IT_record, id, Name)
     {

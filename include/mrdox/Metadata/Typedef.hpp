@@ -20,7 +20,8 @@ namespace clang {
 namespace mrdox {
 
 // Info for typedef and using statements.
-struct TypedefInfo : SymbolInfo
+struct TypedefInfo
+    : SymbolInfo
 {
     TypeInfo Underlying;
 
@@ -35,7 +36,7 @@ struct TypedefInfo : SymbolInfo
     static constexpr InfoType type_id = InfoType::IT_typedef;
 
     TypedefInfo(
-        SymbolID id_ = SymbolID())
+        SymbolID id_ = SymbolID::zero)
         : SymbolInfo(InfoType::IT_typedef, id_)
     {
     }

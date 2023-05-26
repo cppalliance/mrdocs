@@ -24,6 +24,7 @@
 namespace clang {
 namespace mrdox {
 
+// FIXME: this does not store javadocs...
 // Information for a single possible value of an enumeration.
 struct EnumValueInfo
 {
@@ -66,7 +67,8 @@ struct EnumValueInfo
 
 // TODO: Expand to allow for documenting templating.
 // Info for types.
-struct EnumInfo : SymbolInfo
+struct EnumInfo
+    : SymbolInfo
 {
     // Indicates whether this enum is scoped (e.g. enum class).
     bool Scoped = false;
@@ -82,15 +84,10 @@ struct EnumInfo : SymbolInfo
 
     static constexpr InfoType type_id = InfoType::IT_enum;
 
-    EnumInfo()
-        : SymbolInfo(InfoType::IT_enum)
-    {
-    }
-
     explicit
     EnumInfo(
-        SymbolID id_)
-        : SymbolInfo(InfoType::IT_enum, id_)
+        SymbolID id = SymbolID::zero)
+        : SymbolInfo(InfoType::IT_enum, id)
     {
     }
 };
