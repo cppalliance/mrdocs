@@ -14,7 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Type.hpp>
-#include <mrdox/Metadata/BitField.hpp>
+#include <mrdox/ADT/BitField.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <utility>
 

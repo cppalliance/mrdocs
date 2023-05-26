@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_METADATA_BITFIELD_HPP
-#define MRDOX_METADATA_BITFIELD_HPP
+#ifndef MRDOX_ADT_BITFIELD_HPP
+#define MRDOX_ADT_BITFIELD_HPP
 
 #include <cstdint>
 #include <limits>
@@ -20,16 +20,14 @@
 namespace clang {
 namespace mrdox {
 
-
-constexpr std::uint32_t makeMask(unsigned char Offset,
-                                 unsigned char Size)
+constexpr std::uint32_t makeMask(
+    unsigned char Offset, unsigned char Size)
 {
     auto init = std::numeric_limits<std::uint32_t>::max();
     auto offset = init << Offset;
     auto rest   = init >>= (sizeof(std::uint32_t) * 8) - (Offset + Size);
     return offset & rest;
 }
-
 
 template<unsigned char Offset,
          unsigned char Size = 1u,
@@ -77,7 +75,7 @@ using BitFlag = BitField<Offset, 1u, bool>;
 
 using BitFieldFullValue = BitField<0, 32>;
 
-}
-}
+} // mrdox
+} // clang
 
-#endif //MRDOX_METADATA_BITFIELD_HPP
+#endif

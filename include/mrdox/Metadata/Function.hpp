@@ -13,7 +13,7 @@
 #define MRDOX_METADATA_FUNCTION_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/BitField.hpp>
+#include <mrdox/ADT/BitField.hpp>
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/FunctionKind.hpp>

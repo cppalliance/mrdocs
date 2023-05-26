@@ -14,7 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Access.hpp>
-#include <mrdox/Metadata/BitField.hpp>
+#include <mrdox/ADT/BitField.hpp>
 #include <mrdox/Metadata/MemberType.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Scope.hpp>
