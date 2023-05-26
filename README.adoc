@@ -46,3 +46,4 @@ cmake --install .
 * brand-new program with no technical debt
 * written by me
 
+Lint me
