@@ -51,10 +51,9 @@ grammar
         (
             BaseInfo |
             Attr |
-            MemberTypeInfo |
             element friend { ID } |
             Javadoc? |
-            Scope
+            RecordScope
         ) *
     )
 
@@ -65,17 +64,6 @@ grammar
             Access ?,
             attribute class { "virtual" } ?,
             ID
-        }
-
-    MemberTypeInfo =
-        element data
-        {
-            Name,
-            attribute type { text },
-            attribute value { text } ?,
-            Access ?,
-            ID ?,
-            Attr *
         }
 
     #---------------------------------------------
@@ -136,6 +124,23 @@ grammar
             ID,
             Location *,
             element type { Name, ID ? }
+        }
+
+    #---------------------------------------------
+
+    Field =
+        element data
+        {
+            Name,
+            Access?,
+            ID,
+            attribute default { text } ?,
+            (
+                Location &
+                Attr * &
+                element type { Name, ID ? } &
+                Javadoc ?
+            )
         }
 
     #---------------------------------------------
@@ -218,6 +223,15 @@ grammar
             Function  |
             Typedef   |
             Enum      |
+            Var)*
+
+    RecordScope = (
+            Namespace |
+            Record    |
+            Function  |
+            Typedef   |
+            Enum      |
+            Field     |
             Var)*
 
     # JavaDoc not in a nested grammar , so we can convert it to a XSD

@@ -449,9 +449,9 @@ writeField(
 {
     tags_.open(dataMemberTagName, {
         { "name", I.Name },
-        { "default", I.Default, ! I.Default.empty() },
         { access },
-        { I.id }
+        { I.id },
+        { "default", I.Default, ! I.Default.empty() }
     });
 
     writeSymbol(I);
