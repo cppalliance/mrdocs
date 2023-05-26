@@ -16,12 +16,12 @@
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
-#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/ADT/SmallVector.h>
 #include <array>
-#include <vector>
+#include <optional>
 #include <string>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
@@ -48,7 +48,7 @@ struct Info
 
     /** The extracted javadoc for this declaration.
     */
-    llvm::Optional<Javadoc> javadoc;
+    std::optional<Javadoc> javadoc;
 
     //--------------------------------------------
 

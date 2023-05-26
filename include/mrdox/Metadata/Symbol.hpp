@@ -15,8 +15,8 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Location.hpp>
-#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
+#include <optional>
 
 namespace clang {
 namespace mrdox {
@@ -25,7 +25,7 @@ namespace mrdox {
 */
 struct SymbolInfo : Info
 {
-    llvm::Optional<Location> DefLoc;     // Location where this decl is defined.
+    std::optional<Location> DefLoc;     // Location where this decl is defined.
     llvm::SmallVector<Location, 2> Loc; // Locations where this decl is declared.
 
     //--------------------------------------------

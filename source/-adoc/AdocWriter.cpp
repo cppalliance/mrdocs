@@ -530,7 +530,7 @@ writeNestedTypes(
 void
 AdocWriter::
 writeBrief(
-    llvm::Optional<Javadoc> const& javadoc,
+    std::optional<Javadoc> const& javadoc,
     bool withNewline)
 {
     if(! javadoc.has_value())
@@ -548,7 +548,7 @@ writeBrief(
 void
 AdocWriter::
 writeDescription(
-    llvm::Optional<Javadoc> const& javadoc)
+    std::optional<Javadoc> const& javadoc)
 {
     if(! javadoc.has_value())
         return;

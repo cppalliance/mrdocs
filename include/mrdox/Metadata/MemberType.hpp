@@ -17,7 +17,7 @@
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/FieldType.hpp>
 #include <mrdox/Metadata/Function.hpp>
-#include <llvm/ADT/Optional.h>
+#include <optional>
 
 namespace clang {
 namespace mrdox {
@@ -30,12 +30,12 @@ struct MemberTypeInfo
 {
     Access access = Access::Public;
 
-    llvm::Optional<Javadoc> javadoc;
+    std::optional<Javadoc> javadoc;
 
     //--------------------------------------------
 
     MemberTypeInfo() = default;
-    
+
     MemberTypeInfo(
         TypeInfo const& TI,
         llvm::StringRef Name,

@@ -84,9 +84,9 @@ private:
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
     void writeMemberType(MemberTypeInfo const& I);
-    void writeJavadoc(llvm::Optional<Javadoc> const& javadoc);
+    void writeJavadoc(std::optional<Javadoc> const& javadoc);
     void writeTemplate(const std::optional<TemplateInfo>& I);
-    
+
     template<class T>
     void writeNodes(AnyList<T> const& list);
     void writeNode(Javadoc::Node const& node);

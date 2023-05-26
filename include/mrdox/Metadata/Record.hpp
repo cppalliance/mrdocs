@@ -22,8 +22,8 @@
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <clang/AST/Type.h>
-#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallVector.h>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -83,7 +83,7 @@ struct RecordInfo : SymbolInfo
     TagTypeKind TagType = TagTypeKind::TTK_Struct;
 
     // When present, this record is a template or specialization.
-    llvm::Optional<TemplateInfo> Template;
+    std::optional<TemplateInfo> Template;
 
     // Indicates if the record was declared using a typedef. Things like anonymous
     // structs in a typedef:

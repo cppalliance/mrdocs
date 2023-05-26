@@ -18,9 +18,9 @@
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <clang/Basic/Specifiers.h>
-#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
+#include <optional>
 
 /*
     Object for assisting with generating
@@ -146,7 +146,7 @@ struct Attribute
     }
 
     Attribute(
-        llvm::Optional<TypeInfo> const& opt)
+        std::optional<TypeInfo> const& opt)
         : name("type")
         , value(opt ? opt->Type.Name.str() : std::string())
         , pred(opt)

@@ -150,7 +150,7 @@ llvm::Error
 BitcodeReader::
 readBlockInfoBlock()
 {
-    Expected<llvm::Optional<llvm::BitstreamBlockInfo>> MaybeBlockInfo =
+    Expected<std::optional<llvm::BitstreamBlockInfo>> MaybeBlockInfo =
         Stream.ReadBlockInfoBlock();
     if (!MaybeBlockInfo)
         return MaybeBlockInfo.takeError();

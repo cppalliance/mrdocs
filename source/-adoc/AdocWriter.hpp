@@ -109,10 +109,10 @@ protected:
         FunctionInfo const& I);
 
     void writeBrief(
-        llvm::Optional<Javadoc> const& javadoc,
+        std::optional<Javadoc> const& javadoc,
         bool withNewline = true);
     void writeDescription(
-        llvm::Optional<Javadoc> const& javadoc);
+        std::optional<Javadoc> const& javadoc);
     void writeLocation(SymbolInfo const& I);
 
     template<class T>

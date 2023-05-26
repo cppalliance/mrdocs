@@ -21,10 +21,10 @@
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
 #include <clang/Basic/Specifiers.h>
-#include <llvm/ADT/Optional.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>
 #include <clang/AST/Attr.h>
+#include <optional>
 #include <vector>
 
 namespace clang {
@@ -106,7 +106,7 @@ struct FunctionInfo : SymbolInfo
     std::vector<Param> Params; // List of parameters.
 
     // When present, this function is a template or specialization.
-    llvm::Optional<TemplateInfo> Template;
+    std::optional<TemplateInfo> Template;
 
     FnFlags0 specs0{.raw{0}};
     FnFlags1 specs1{.raw{0}};

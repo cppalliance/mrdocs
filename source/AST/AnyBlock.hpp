@@ -254,13 +254,13 @@ class JavadocBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
-    llvm::Optional<Javadoc>& I_;
+    std::optional<Javadoc>& I_;
     AnyNodeList* stack_ = nullptr;
     AnyNodeList J_;
 
 public:
     JavadocBlock(
-        llvm::Optional<Javadoc>& I,
+        std::optional<Javadoc>& I,
         BitcodeReader& br) noexcept
         : br_(br)
         , I_(I)
@@ -753,12 +753,12 @@ class TemplateBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
-    llvm::Optional<TemplateInfo>& I_;
+    std::optional<TemplateInfo>& I_;
 
 public:
     explicit
     TemplateBlock(
-        llvm::Optional<TemplateInfo>& I,
+        std::optional<TemplateInfo>& I,
         BitcodeReader& br) noexcept
         : br_(br)
         , I_(I)

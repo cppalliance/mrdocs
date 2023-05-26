@@ -428,7 +428,7 @@ buildTemplateArgs(
 void
 ASTVisitor::
 parseTemplateArgs(
-    llvm::Optional<TemplateInfo>& I,
+    std::optional<TemplateInfo>& I,
     const ClassTemplateSpecializationDecl* spec)
 {
     if(! I)
@@ -453,7 +453,7 @@ parseTemplateArgs(
 void
 ASTVisitor::
 parseTemplateArgs(
-    llvm::Optional<TemplateInfo>& I,
+    std::optional<TemplateInfo>& I,
     const FunctionTemplateSpecializationInfo* spec)
 {
     if(! I)
@@ -475,7 +475,7 @@ parseTemplateArgs(
 void
 ASTVisitor::
 parseTemplateArgs(
-    llvm::Optional<TemplateInfo>& I,
+    std::optional<TemplateInfo>& I,
     const ClassScopeFunctionSpecializationDecl* spec)
 {
     if(! I)
@@ -490,7 +490,7 @@ parseTemplateArgs(
 void
 ASTVisitor::
 parseTemplateParams(
-    llvm::Optional<TemplateInfo>& TemplateInfo,
+    std::optional<TemplateInfo>& TemplateInfo,
     const Decl* D)
 {
     if(TemplateParameterList const* ParamList =
@@ -525,7 +525,7 @@ applyDecayToParameters(
 void
 ASTVisitor::
 parseRawComment(
-    llvm::Optional<Javadoc>& javadoc,
+    std::optional<Javadoc>& javadoc,
     Decl const* D,
     Reporter& R)
 {
@@ -1257,7 +1257,7 @@ HandleTranslationUnit(
     // Install handlers for our custom commands
     initCustomCommentCommands(Context);
 
-    llvm::Optional<llvm::StringRef> filePath =
+    std::optional<llvm::StringRef> filePath =
         Context.getSourceManager().getNonBuiltinFilenameForID(
             Context.getSourceManager().getMainFileID());
     if(! filePath)

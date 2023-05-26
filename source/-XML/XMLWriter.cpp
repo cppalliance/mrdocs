@@ -534,7 +534,7 @@ writeMemberType(
 
 //------------------------------------------------
 
-void 
+void
 XMLWriter::
 writeTemplate(
     const std::optional<TemplateInfo>& I)
@@ -560,7 +560,7 @@ writeTemplate(
     tags_.open(templateTagName, {
         {"class", spec, !! spec},
         {id}
-    });   
+    });
 
     for(const TParam& tparam : I->Params)
         writeTemplateParam(tparam, tags_);
@@ -575,7 +575,7 @@ writeTemplate(
 void
 XMLWriter::
 writeJavadoc(
-    llvm::Optional<Javadoc> const& javadoc)
+    std::optional<Javadoc> const& javadoc)
 {
     if(! javadoc.has_value())
         return;

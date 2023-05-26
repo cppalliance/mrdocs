@@ -18,7 +18,7 @@
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Metadata/Access.hpp>
 #include <clang/Tooling/Execution.h>
-#include <llvm/ADT/Optional.h>
+#include <optional>
 #include <unordered_map>
 
 namespace clang {
@@ -36,7 +36,7 @@ namespace mrdox {
     in a particular include file can be seen by
     more than one translation unit.
 */
-class ASTVisitor 
+class ASTVisitor
     : public ASTConsumer
 {
 public:
@@ -123,7 +123,7 @@ public:
 
     void
     parseTemplateParams(
-        llvm::Optional<TemplateInfo>& TemplateInfo,
+        std::optional<TemplateInfo>& TemplateInfo,
         const Decl* D);
 
     TParam
@@ -138,22 +138,22 @@ public:
 
     void
     parseTemplateArgs(
-        llvm::Optional<TemplateInfo>& I,
+        std::optional<TemplateInfo>& I,
         const ClassTemplateSpecializationDecl* spec);
 
     void
     parseTemplateArgs(
-        llvm::Optional<TemplateInfo>& I,
+        std::optional<TemplateInfo>& I,
         const FunctionTemplateSpecializationInfo* spec);
 
     void
     parseTemplateArgs(
-        llvm::Optional<TemplateInfo>& I,
+        std::optional<TemplateInfo>& I,
         const ClassScopeFunctionSpecializationDecl* spec);
 
     void
     parseRawComment(
-        llvm::Optional<Javadoc>& javadoc,
+        std::optional<Javadoc>& javadoc,
         Decl const* D,
         Reporter& R);
 
@@ -186,14 +186,14 @@ public://private:
 private:
     template<class DeclTy>
     bool constructFunction(
-        FunctionInfo& I, 
-        DeclTy* D, 
+        FunctionInfo& I,
+        DeclTy* D,
         char const* name = nullptr);
 
     template<class DeclTy>
     void buildFunction(
         FunctionInfo& I,
-        DeclTy* D, 
+        DeclTy* D,
         const char* name = nullptr);
 
     template<class DeclTy>
@@ -202,7 +202,7 @@ private:
         const char* name = nullptr);
 
     void buildRecord(
-        RecordInfo& I, 
+        RecordInfo& I,
         CXXRecordDecl* D);
 
     void buildNamespace(
