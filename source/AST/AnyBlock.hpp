@@ -422,7 +422,8 @@ public:
             if(auto Err = br_.readBlock(B, ID))
                 return Err;
             F = B.F;
-            I_.Type = std::move(B.I);
+            static_cast<Reference&>(I_) =
+                std::move(B.I);
             return llvm::Error::success();
         }
         default:
@@ -1193,7 +1194,7 @@ public:
         {
         case BI_TYPE_BLOCK_ID:
         {
-            TypeBlock B(*I, br_);
+            TypeBlock B(I->Type, br_);
             return br_.readBlock(B, ID);
         }
         default:
@@ -1247,8 +1248,9 @@ public:
             return br_.readBlock(B, ID);
         }
         default:
-            return TopLevelBlock::readSubBlock(ID);
+            break;
         }
+        return TopLevelBlock::readSubBlock(ID);
     }
 };
 

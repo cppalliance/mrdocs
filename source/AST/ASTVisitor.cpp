@@ -1160,7 +1160,7 @@ buildVar(
         I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
     else
         I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
-    static_cast<TypeInfo&>(I) = getTypeInfoForType(
+    I.Type = getTypeInfoForType(
         D->getTypeSourceInfo()->getType());
     I.specs.storageClass = D->getStorageClass();
     insertBitcode(ex_, writeBitcode(I));
@@ -1208,7 +1208,7 @@ buildTypedef(
         return;
     I.Underlying = getTypeInfoForType(
         D->getUnderlyingType());
-    if(I.Underlying.Type.Name.empty())
+    if(I.Underlying.Name.empty())
     {
         // Typedef for an unnamed type. This is like
         // "typedef struct { } Foo;". The record serializer

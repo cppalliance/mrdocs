@@ -186,7 +186,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
 void merge(FunctionInfo& I, FunctionInfo&& Other)
 {
     Assert(canMerge(I, Other));
-    if (I.ReturnType.Type.id == SymbolID::zero && I.ReturnType.Type.Name == "")
+    if (I.ReturnType.id == SymbolID::zero && I.ReturnType.Name == "")
         I.ReturnType = std::move(Other.ReturnType);
     if (I.Params.empty())
         I.Params = std::move(Other.Params);
@@ -202,7 +202,7 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     Assert(canMerge(I, Other));
     if (!I.IsUsing)
         I.IsUsing = Other.IsUsing;
-    if (I.Underlying.Type.Name == "")
+    if (I.Underlying.Name == "")
         I.Underlying = Other.Underlying;
     mergeSymbolInfo(I, std::move(Other));
 }
@@ -220,7 +220,7 @@ void merge(EnumInfo& I, EnumInfo&& Other)
 void merge(FieldInfo& I, FieldInfo&& Other)
 {
     Assert(canMerge(I, Other));
-    if(I.Type.Type.id == SymbolID::zero && I.Type.Type.Name.empty())
+    if(I.Type.id == SymbolID::zero && I.Type.Name.empty())
         I.Type = std::move(Other.Type);
     mergeSymbolInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;

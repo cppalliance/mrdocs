@@ -34,8 +34,10 @@ union VarFlags0
 */
 struct VarInfo
     : SymbolInfo
-    , TypeInfo // holds the type of this variable
 {
+    /** The type of the variable */
+    TypeInfo Type;
+
     VarFlags0 specs{.raw={0}};
 
     //--------------------------------------------

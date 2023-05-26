@@ -431,8 +431,8 @@ writeTypedef(
     writeSymbol(I);
 
     tags_.write("type", "", {
-        { "name", I.Underlying.Type.Name },
-        { I.Underlying.Type.id } });
+        { "name", I.Underlying.Name },
+        { I.Underlying.id } });
 
     writeJavadoc(I.javadoc);
 
@@ -459,8 +459,8 @@ writeField(
     write(I.specs, tags_);
 
     tags_.write("type", {}, {
-        { "name", I.Type.Type.Name },
-        { I.Type.Type.id }
+        { "name", I.Type.Name },
+        { I.Type.id }
         });
 
     writeJavadoc(I.javadoc);

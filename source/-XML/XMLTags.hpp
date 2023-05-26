@@ -148,7 +148,7 @@ struct Attribute
     Attribute(
         std::optional<TypeInfo> const& opt)
         : name("type")
-        , value(opt ? opt->Type.Name.str() : std::string())
+        , value(opt ? opt->Name.str() : std::string())
         , pred(opt)
     {
     }

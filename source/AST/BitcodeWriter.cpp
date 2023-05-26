@@ -1071,7 +1071,7 @@ emitBlock(
     TypeInfo const& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TYPE_BLOCK_ID);
-    emitBlock(T.Type, FieldId::F_type);
+    emitBlock(static_cast<const Reference&>(T), FieldId::F_type);
 }
 
 void
@@ -1082,7 +1082,7 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
     emitInfoPart(I);
     emitSymbolPart(I);
-    emitBlock(static_cast<TypeInfo const&>(I));
+    emitBlock(I.Type);
     emitRecord({I.specs.raw}, VARIABLE_BITS);
 }
 

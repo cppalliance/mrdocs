@@ -34,21 +34,14 @@ namespace mrdox {
     @li unsigned long, unsigned long long
 */
 struct TypeInfo
+    : Reference
 {
-    /** The type being referenced.
-
-        If this names a built-in type
-    */
-    Reference Type;
-
-    //--------------------------------------------
-
     TypeInfo() = default;
 
     explicit
     TypeInfo(
         Reference const& R) noexcept
-        : Type(R)
+        : Reference(R)
     {
     }
 
@@ -57,7 +50,7 @@ struct TypeInfo
     explicit
     TypeInfo(
         llvm::StringRef Name)
-        : Type(
+        : Reference(
             SymbolID::zero, Name, InfoType::IT_default)
     {
     }

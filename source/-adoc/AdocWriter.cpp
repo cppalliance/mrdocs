@@ -116,7 +116,7 @@ struct AdocWriter::FormalParam
         FormalParam const& f)
     {
         // KRYSTIAN FIXME: use AdocWriter::typeName
-        os << f.P.Type.Type.Name;
+        os << f.P.Type.Name;
         if(! f.P.Name.empty())
             os << ' ' << f.P.Name;
         // KRYSTIAN TODO: emit default argument
@@ -136,9 +136,9 @@ struct AdocWriter::TypeName
         llvm::raw_ostream& os,
         TypeName const& t)
     {
-        if(t.I.Type.id == SymbolID::zero)
+        if(t.I.id == SymbolID::zero)
         {
-            os << t.I.Type.Name;
+            os << t.I.Name;
             return os;
         }
         // VFALCO This is broken
@@ -151,8 +151,7 @@ struct AdocWriter::TypeName
             return os;
         }
 #endif
-        auto const& T = t.I.Type;
-        os << T.Name << "::" << T.Name;
+        os << t.I.Name << "::" << t.I.Name;
         return os;
     }
 };

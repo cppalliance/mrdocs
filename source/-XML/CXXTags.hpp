@@ -236,11 +236,11 @@ inline void write(VarFlags0 const& bits, XMLTags& tags)
 
 inline void writeReturnType(TypeInfo const& I, XMLTags& tags)
 {
-    if(I.Type.Name == "void")
+    if(I.Name == "void")
         return;
     tags.write(returnTagName, {}, {
-        { "type", I.Type.Name },
-        { I.Type.id }
+        { "type", I.Name },
+        { I.id }
         });
 }
 
@@ -248,9 +248,9 @@ inline void writeParam(Param const& P, XMLTags& tags)
 {
     tags.write(paramTagName, {}, {
         { "name", P.Name, ! P.Name.empty() },
-        { "type", P.Type.Type.Name },
+        { "type", P.Type.Name },
         { "default", P.Default, ! P.Default.empty() },
-        { P.Type.Type.id } });
+        { P.Type.id } });
 }
 
 inline void writeTemplateParam(const TParam& I, XMLTags& tags)
@@ -262,7 +262,7 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
         const auto& t = I.get<TypeTParam>();
         std::string_view default_val;
         if(t.Default)
-            default_val = t.Default->Type.Name.str();
+            default_val = t.Default->Name.str();
 
         tags.write(tparamTagName, {}, {
             { "name", I.Name, ! I.Name.empty() },
@@ -281,7 +281,7 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
         tags.write(tparamTagName, {}, {
             { "name", I.Name, ! I.Name.empty() },
             { "class", "non-type" },
-            { "type", t.Type.Type.Name },
+            { "type", t.Type.Name },
             { "default", default_val, ! default_val.empty() }
         });
         break;
