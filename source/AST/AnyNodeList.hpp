@@ -14,7 +14,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Error.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
-#include <mrdox/Metadata/AnyList.hpp>
+#include <mrdox/ADT/AnyList.hpp>
 
 namespace clang {
 namespace mrdox {
