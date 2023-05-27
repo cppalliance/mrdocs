@@ -9,16 +9,24 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "clangASTComment.hpp"
 #include "ParseJavadoc.hpp"
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <clang/AST/CommentCommandTraits.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/RawCommentList.h>
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
+#endif
+#include <clang/AST/Comment.h>
+#include <clang/AST/CommentVisitor.h>
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+
 #include <llvm/Support/JSON.h>
 #include <cassert>
-
-#include <llvm/Support/Mutex.h>
 
 /*
     Comment Types
@@ -541,6 +549,23 @@ dumpCommentCommands()
 }
 
 //------------------------------------------------
+
+void
+initCustomCommentCommands(ASTContext& context)
+{
+    auto& traits = context.getCommentCommandTraits();
+
+    {
+        //auto cmd = traits.registerBlockCommand("mrdox");
+        //auto cmd = traits.registerBlockCommand("par");
+
+        //CommentOptions opt;
+        //opt.BlockCommandNames.push_back("par");
+        //traits.registerCommentOptions(opt);
+    }
+
+    (void)traits;
+}
 
 Javadoc
 parseJavadoc(

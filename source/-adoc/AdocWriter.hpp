@@ -144,6 +144,11 @@ protected:
     void endSection();
 
     static llvm::StringRef tagToString(TagTypeKind k) noexcept;
+
+    //--------------------------------------------
+
+    void declareRecord(RecordInfo const& I);
+    void declareFunction(FunctionInfo const& I);
 };
 
 } // adoc

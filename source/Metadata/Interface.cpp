@@ -79,6 +79,10 @@ private:
         for(auto const& B : From.Bases)
         {
             auto actualAccess = effectiveAccess(access, B.access);
+            // VFALCO temporary hack to avoid looking up IDs
+            //        which for metadata that is not emitted.
+            if(! corpus_.find(B.id))
+                continue;
             append(actualAccess, corpus_.get<RecordInfo>(B.id));
         }
 

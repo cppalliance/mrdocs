@@ -862,6 +862,22 @@ tagToString(TagTypeKind k) noexcept
     }
 }
 
+//------------------------------------------------
+
+void
+AdocWriter::
+declareRecord(
+    RecordInfo const& I)
+{
+}
+
+void
+AdocWriter::
+declareFunction(
+    FunctionInfo const& I)
+{
+}
+
 } // adoc
 } // mrdox
 } // clang

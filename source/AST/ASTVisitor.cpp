@@ -12,7 +12,6 @@
 
 #include "ASTVisitor.hpp"
 #include "Bitcode.hpp"
-#include "Commands.hpp"
 #include "ParseJavadoc.hpp"
 #include "ConfigImpl.hpp"
 #include "Metadata/FunctionKind.hpp"
