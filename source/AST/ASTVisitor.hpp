@@ -176,7 +176,7 @@ public:
 
     void
     parseRawComment(
-        std::optional<Javadoc>& javadoc,
+        std::unique_ptr<Javadoc>& javadoc,
         Decl const* D,
         Reporter& R);
 

@@ -254,19 +254,19 @@ class JavadocBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
-    std::optional<Javadoc>& I_;
+    std::unique_ptr<Javadoc>& I_;
     AnyNodeList* stack_ = nullptr;
     AnyNodeList J_;
 
 public:
     JavadocBlock(
-        std::optional<Javadoc>& I,
+        std::unique_ptr<Javadoc>& I,
         BitcodeReader& br) noexcept
         : br_(br)
         , I_(I)
         , J_(stack_)
     {
-        I_.emplace();
+        I_ = std::make_unique<Javadoc>();
     }
 
     llvm::Error

@@ -747,8 +747,7 @@ emitInfoPart(
     StreamSubBlockGuard Block(Stream, BI_INFO_PART_ID);
     emitRecord(I.id, INFO_PART_ID);
     emitRecord(I.Name, INFO_PART_NAME);
-    if(I.javadoc)
-        emitBlock(*I.javadoc);
+    emitBlock(I.javadoc);
     for (const auto& N : I.Namespace)
         emitBlock(N, FieldId::F_namespace);
 }
@@ -849,12 +848,14 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    Javadoc const& jd)
+    std::unique_ptr<Javadoc> const& jd)
 {
-    // If the optional<Javadoc> has a value then we
+    if(! jd)
+        return;
+    // If the unique_ptr<Javadoc> has a value then we
     // always want to emit it, even if it is empty.
     StreamSubBlockGuard Block(Stream, BI_JAVADOC_BLOCK_ID);
-    emitBlock(jd.getBlocks());
+    emitBlock(jd->getBlocks());
 }
 
 void

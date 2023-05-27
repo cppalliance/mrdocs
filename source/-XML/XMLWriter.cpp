@@ -578,9 +578,9 @@ writeTemplate(
 void
 XMLWriter::
 writeJavadoc(
-    std::optional<Javadoc> const& javadoc)
+    std::unique_ptr<Javadoc> const& javadoc)
 {
-    if(! javadoc.has_value())
+    if(! javadoc)
         return;
     tags_.open(javadocTagName);
     if(auto brief = javadoc->getBrief())

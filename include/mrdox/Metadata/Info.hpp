@@ -19,7 +19,7 @@
 #include <llvm/ADT/StringRef.h>
 #include <llvm/ADT/SmallVector.h>
 #include <array>
-#include <optional>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -48,7 +48,7 @@ struct Info
 
     /** The extracted javadoc for this declaration.
     */
-    std::optional<Javadoc> javadoc;
+    std::unique_ptr<Javadoc> javadoc;
 
     //--------------------------------------------
 

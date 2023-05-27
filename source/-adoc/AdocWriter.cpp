@@ -529,10 +529,10 @@ writeNestedTypes(
 void
 AdocWriter::
 writeBrief(
-    std::optional<Javadoc> const& javadoc,
+    std::unique_ptr<Javadoc> const& javadoc,
     bool withNewline)
 {
-    if(! javadoc.has_value())
+    if(! javadoc)
         return;
     auto const node = javadoc->getBrief();
     if(! node)
@@ -547,9 +547,9 @@ writeBrief(
 void
 AdocWriter::
 writeDescription(
-    std::optional<Javadoc> const& javadoc)
+    std::unique_ptr<Javadoc> const& javadoc)
 {
-    if(! javadoc.has_value())
+    if(! javadoc)
         return;
 
     //os_ << '\n';

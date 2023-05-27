@@ -124,7 +124,7 @@ public:
     void emitBlock(EnumValueInfo const& I);
     void emitBlock(FunctionInfo const& I);
     void emitBlock(Param const& I);
-    void emitBlock(Javadoc const& jd);
+    void emitBlock(std::unique_ptr<Javadoc> const& jd);
     void emitBlock(Javadoc::Node const& I);
     void emitBlock(NamespaceInfo const& I);
     void emitBlock(RecordInfo const& I);

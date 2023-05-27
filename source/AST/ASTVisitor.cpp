@@ -517,7 +517,7 @@ applyDecayToParameters(
 void
 ASTVisitor::
 parseRawComment(
-    std::optional<Javadoc>& javadoc,
+    std::unique_ptr<Javadoc>& javadoc,
     Decl const* D,
     Reporter& R)
 {
@@ -528,7 +528,8 @@ parseRawComment(
     if(RC)
     {
         RC->setAttached();
-        javadoc.emplace(parseJavadoc(RC, D, R));
+        javadoc = std::make_unique<Javadoc>(
+            parseJavadoc(RC, D, R));
     }
     else
     {

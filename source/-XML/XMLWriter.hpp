@@ -84,7 +84,7 @@ private:
     void writeInfo(Info const&);
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
-    void writeJavadoc(std::optional<Javadoc> const& javadoc);
+    void writeJavadoc(std::unique_ptr<Javadoc> const& javadoc);
     void writeTemplate(const TemplateInfo& I);
 
     template<class T>
