@@ -12,6 +12,7 @@
 #ifndef MRDOX_API_ADOC_ADOCWRITER_HPP
 #define MRDOX_API_ADOC_ADOCWRITER_HPP
 
+#include "Support/Formatter.hpp"
 #include "Support/SafeNames.hpp"
 #include "Support/YamlFwd.hpp"
 #include <mrdox/Platform.hpp>
@@ -98,6 +99,9 @@ protected:
     void writeTrancheList(
         llvm::StringRef sectionName,
         std::span<T const> list);
+
+    template<class Stream, class T>
+    void declareSynopsis(Formatter<Stream>&, T const& I);
 
     void writeBase(BaseInfo const& I);
     void writeNestedTypes(

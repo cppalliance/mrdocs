@@ -12,6 +12,7 @@
 #include "AdocWriter.hpp"
 #include "ConfigImpl.hpp"
 #include "Support/Debug.hpp"
+#include "Support/Formatter.hpp"
 #include "Support/Validate.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
@@ -336,6 +337,12 @@ AdocWriter::
 write(
     FunctionInfo const& I)
 {
+#if 1
+    auto os = Formatter(os_);
+    os_ << "-----------------\n";
+    declareSynopsis(os, I);
+    os_ << "-----------------\n";
+#else
     beginSection(I.Name);
 
     // Brief
@@ -377,6 +384,7 @@ write(
     writeDescription(I.javadoc);
 
     endSection();
+#endif
 }
 
 void
@@ -476,6 +484,38 @@ writeLinkFor(Info const& I)
     os_ << "xref:#" <<
         names_.get(I.id) << "[" <<
         I.Name << "]";
+}
+
+
+template<class Stream, class T>
+void
+AdocWriter::
+declareSynopsis(
+    Formatter<Stream>& os,
+    T const& I)
+{
+    if constexpr(std::is_same_v<T, RecordInfo>)
+    {
+
+    }
+    if constexpr(std::is_same_v<T, FunctionInfo>)
+    {
+        if(! I.Params.empty())
+        {
+            os << I.ReturnType.Name << " " << I.Name << "(\n");
+            os(I.ReturnType.Name, " ", I.Name, "(\n");
+            os.indent(4);
+            os(formalParam(I.Params[0]));
+            for(std::size_t i = 1; i < I.Params.size(); ++i)
+                os(",\n", formalParam(I.Params[i]));
+            os(");\n");
+            os.indent(-4);
+        }
+        else
+        {
+            os(I.ReturnType.Name, " ", I.Name, "();\n");
+        }
+    }
 }
 
 void
