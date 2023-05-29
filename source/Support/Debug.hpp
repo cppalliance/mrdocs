@@ -18,78 +18,72 @@
 #endif
 #include <llvm/Support/raw_ostream.h>
 
-#if __has_include(<format>)
-    #define MRDOX_HAS_CXX20_FORMAT
-#endif
+#include <fmt/format.h>
+#include <string>
+#include <mrdox/MetadataFwd.hpp>
 
-#ifdef MRDOX_HAS_CXX20_FORMAT
-    #include <format>
-    #include <string>
-    #include <mrdox/MetadataFwd.hpp>
+template<>
+struct fmt::formatter<clang::mrdox::SymbolID>
+    : fmt::formatter<std::string>
+{
+    fmt::format_context::iterator format(
+        const clang::mrdox::SymbolID& s,
+        fmt::format_context& ctx) const;
+};
 
-    template<>
-    struct std::formatter<clang::mrdox::SymbolID>
-        : std::formatter<std::string>
-    {
-        std::format_context::iterator format(
-            const clang::mrdox::SymbolID& s,
-            std::format_context& ctx) const;
-    };
+template<>
+struct fmt::formatter<clang::mrdox::OptionalSymbolID>
+    : fmt::formatter<clang::mrdox::SymbolID>
+{
+    fmt::format_context::iterator format(
+        const clang::mrdox::OptionalSymbolID& s,
+        fmt::format_context& ctx) const;
+};
 
-    template<>
-    struct std::formatter<clang::mrdox::OptionalSymbolID>
-        : std::formatter<clang::mrdox::SymbolID>
-    {
-        std::format_context::iterator format(
-            const clang::mrdox::OptionalSymbolID& s,
-            std::format_context& ctx) const;
-    };
+template<>
+struct fmt::formatter<clang::mrdox::InfoType>
+    : fmt::formatter<std::string>
+{
+    fmt::format_context::iterator format(
+        clang::mrdox::InfoType t,
+        fmt::format_context& ctx) const;
+};
 
-    template<>
-    struct std::formatter<clang::mrdox::InfoType>
-        : std::formatter<std::string>
-    {
-        std::format_context::iterator format(
-            clang::mrdox::InfoType t,
-            std::format_context& ctx) const;
-    };
+template<>
+struct fmt::formatter<clang::mrdox::Access>
+    : fmt::formatter<std::string>
+{
+    fmt::format_context::iterator format(
+        clang::mrdox::Access a,
+        fmt::format_context& ctx) const;
+};
 
-    template<>
-    struct std::formatter<clang::mrdox::Access>
-        : std::formatter<std::string>
-    {
-        std::format_context::iterator format(
-            clang::mrdox::Access a,
-            std::format_context& ctx) const;
-    };
+template<>
+struct fmt::formatter<clang::mrdox::Reference>
+    : fmt::formatter<std::string>
+{
+    fmt::format_context::iterator format(
+        const clang::mrdox::Reference& r,
+        fmt::format_context& ctx) const;
+};
 
-    template<>
-    struct std::formatter<clang::mrdox::Reference>
-        : std::formatter<std::string>
-    {
-        std::format_context::iterator format(
-            const clang::mrdox::Reference& r,
-            std::format_context& ctx) const;
-    };
+template<>
+struct fmt::formatter<clang::mrdox::MemberRef>
+    : fmt::formatter<std::string>
+{
+    fmt::format_context::iterator format(
+        const clang::mrdox::MemberRef& r,
+        fmt::format_context& ctx) const;
+};
 
-    template<>
-    struct std::formatter<clang::mrdox::MemberRef>
-        : std::formatter<std::string>
-    {
-        std::format_context::iterator format(
-            const clang::mrdox::MemberRef& r,
-            std::format_context& ctx) const;
-    };
-
-    template<>
-    struct std::formatter<clang::mrdox::Info>
-        : std::formatter<std::string>
-    {
-        std::format_context::iterator format(
-            const clang::mrdox::Info& i,
-            std::format_context& ctx) const;
-    };
-#endif
+template<>
+struct fmt::formatter<clang::mrdox::Info>
+    : fmt::formatter<std::string>
+{
+    fmt::format_context::iterator format(
+        const clang::mrdox::Info& i,
+        fmt::format_context& ctx) const;
+};
 
 // Some nice odds and ends such as leak checking
 // and redirection to the Visual Studio output window.

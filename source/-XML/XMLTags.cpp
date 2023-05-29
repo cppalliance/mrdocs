@@ -189,7 +189,7 @@ nest(int levels)
     }
     else
     {
-        auto const n = levels * -2;
+        auto const n = static_cast<std::size_t>(levels * -2);
         Assert(n <= indent_.size());
         indent_.resize(indent_.size() - n);
     }

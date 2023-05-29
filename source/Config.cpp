@@ -19,12 +19,22 @@
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
+#include <version>
+
 // Check llvm version
 #define STRINGIFY(Value) #Value
 static_assert(
     LLVM_VERSION_MAJOR >= MRDOX_MINIMUM_LLVM_VERSION,
     "MrDox requires at least clang " STRINGIFY(MRDOX_MINIMUM_LLVM_VERSION)
     ", got " LLVM_VERSION_STRING " instead.");
+
+#if ! defined(__cpp_lib_ranges)
+#error "Ranges library unavailable"
+#endif
+
+#include <ranges>
+
+#include <fmt/format.h>
 
 namespace clang {
 namespace mrdox {

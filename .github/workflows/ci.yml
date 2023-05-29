@@ -58,19 +58,20 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
-          update-ld-library-path: true
+          update-ld-library-path: ${{ matrix.compiler == 'gcc' }}
+          check-latest: ${{ matrix.compiler == 'clang' }}
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.2.1
+        uses: alandefreitas/cpp-actions/package-install@v1.3.0
         id: package-install
         with:
           apt-get: ${{ matrix.install }}
-          vcpkg: libxml2[tools]
+          vcpkg: fmt libxml2[tools]
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
           cc: ${{ steps.setup-cpp.outputs.cc }}
 
       - name: CMake Workflow (C++${{ matrix.std }})
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.2.1
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.3.0
         with:
           cmake-version: '>=3.20'
           cxxstd: ${{ matrix.std }}
