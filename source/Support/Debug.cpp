@@ -141,9 +141,9 @@ void debugEnableHeapChecking()
         const clang::mrdox::SymbolID& s,
         std::format_context& ctx) const
     {
-        std::string str = s == clang::mrdox::SymbolID::zero ?
-            "<empty SymbolID>" : clang::mrdox::toBase64(s);
-        return std::formatter<std::string>::format(std::move(str), ctx);
+        return s == clang::mrdox::SymbolID::zero ?
+            std::format_to(ctx.out(), "<empty SymbolID>") :
+            std::format_to(ctx.out(), "{}", clang::mrdox::toBase64(s));;
     }
 
     std::format_context::iterator
@@ -152,6 +152,7 @@ void debugEnableHeapChecking()
         const clang::mrdox::OptionalSymbolID& s,
         std::format_context& ctx) const
     {
+        // what if it's null?
         return std::formatter<clang::mrdox::SymbolID>::format(*s, ctx);
     }
 
@@ -161,34 +162,25 @@ void debugEnableHeapChecking()
         clang::mrdox::InfoType t,
         std::format_context& ctx) const
     {
-        const char* str = "<unknown InfoType>";
         switch(t)
         {
         case clang::mrdox::InfoType::IT_default:
-            str = "default";
-            break;
+            return std::format_to(ctx.out(), "default");
         case clang::mrdox::InfoType::IT_namespace:
-            str = "namespace";
-            break;
+            return std::format_to(ctx.out(), "namespace");
         case clang::mrdox::InfoType::IT_record:
-            str = "record";
-            break;
+            return std::format_to(ctx.out(), "record");
         case clang::mrdox::InfoType::IT_function:
-            str = "function";
-            break;
+            return std::format_to(ctx.out(), "function");
         case clang::mrdox::InfoType::IT_enum:
-            str = "enum";
-            break;
+            return std::format_to(ctx.out(), "enum");
         case clang::mrdox::InfoType::IT_typedef:
-            str = "typedef";
-            break;
+            return std::format_to(ctx.out(), "typedef");
         case clang::mrdox::InfoType::IT_variable:
-            str = "variable";
-            break;
+            return std::format_to(ctx.out(), "variable");
         default:
-            break;
+            return std::format_to(ctx.out(), "<unknown InfoType>");
         }
-        return std::formatter<std::string>::format(str, ctx);
     }
 
     std::format_context::iterator
@@ -197,22 +189,17 @@ void debugEnableHeapChecking()
         clang::mrdox::Access a,
         std::format_context& ctx) const
     {
-        const char* str = "<unknown Access>";
         switch(a)
         {
         case clang::mrdox::Access::Public:
-            str = "public";
-            break;
+            return std::format_to(ctx.out(), "public");
         case clang::mrdox::Access::Protected:
-            str = "protected";
-            break;
+            return std::format_to(ctx.out(), "protected");
         case clang::mrdox::Access::Private:
-            str = "private";
-            break;
+            return std::format_to(ctx.out(), "private");
         default:
-            break;
+            return std::format_to(ctx.out(), "<unknown Access>");
         }
-        return std::formatter<std::string>::format(str, ctx);
     }
 
     std::format_context::iterator
@@ -221,11 +208,11 @@ void debugEnableHeapChecking()
         const clang::mrdox::Reference& r,
         std::format_context& ctx) const
     {
-        std::string str = std::format("Reference: type = {}", r.RefType);
+        auto itr = std::format_to(ctx.out(), "Reference: type = {}", r.RefType);
         if(! r.Name.empty())
-            str += std::format(", name = '{}'", std::string(r.Name));
-        str += std::format(", ID = {}", r.id);
-        return std::formatter<std::string>::format(std::move(str), ctx);
+            itr = std::format_to(itr, ", name = '{}'", std::string(r.Name));
+        itr = std::format_to(itr, ", ID = {}", r.id);
+        return itr;
     }
 
     std::format_context::iterator
@@ -234,9 +221,7 @@ void debugEnableHeapChecking()
         const clang::mrdox::MemberRef& r,
         std::format_context& ctx) const
     {
-        std::string str = std::format("MemberRef: access = {}, ID = {}",
-            r.access, r.id);
-        return std::formatter<std::string>::format(std::move(str), ctx);
+        return std::format_to(ctx.out(), "MemberRef: access = {}, ID = {}", r.access, r.id);
     }
 
     std::format_context::iterator
@@ -245,10 +230,10 @@ void debugEnableHeapChecking()
         const clang::mrdox::Info& i,
         std::format_context& ctx) const
     {
-        std::string str = std::format("Info: type = {}", i.IT);
+        auto itr = std::format_to(ctx.out(), "Info: type = {}", i.IT);
         if(! i.Name.empty())
-            str += std::format(", name = '{}'", i.Name);
-        str += std::format(", ID = {}", i.id);
+            itr = std::format_to(itr, ", name = '{}'", i.Name);
+        itr = std::format_to(itr, ", ID = {}", i.id);
         if(! i.Namespace.empty())
         {
             std::string namespaces;
@@ -258,8 +243,8 @@ void debugEnableHeapChecking()
                 namespaces += "::";
                 namespaces += i.Namespace[0].Name;
             }
-            str += std::format(", namespace = {}", namespaces);
+            itr = std::format_to(itr, ", namespace = {}", namespaces);
         }
-        return std::formatter<std::string>::format(std::move(str), ctx);
+        return itr;
     }
 #endif

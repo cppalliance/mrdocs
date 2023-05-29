@@ -29,8 +29,13 @@
 
     template<>
     struct std::formatter<clang::mrdox::SymbolID>
-        : std::formatter<std::string>
     {
+        constexpr std::format_parse_context::iterator
+        parse(std::format_parse_context & ctx)
+        {
+            return ctx.begin();
+        }
+
         std::format_context::iterator format(
             const clang::mrdox::SymbolID& s,
             std::format_context& ctx) const;
@@ -40,6 +45,12 @@
     struct std::formatter<clang::mrdox::OptionalSymbolID>
         : std::formatter<clang::mrdox::SymbolID>
     {
+        constexpr std::format_parse_context::iterator
+        parse(std::format_parse_context & ctx)
+        {
+            return ctx.begin();
+        }
+
         std::format_context::iterator format(
             const clang::mrdox::OptionalSymbolID& s,
             std::format_context& ctx) const;
@@ -47,8 +58,13 @@
 
     template<>
     struct std::formatter<clang::mrdox::InfoType>
-        : std::formatter<std::string>
     {
+        constexpr std::format_parse_context::iterator
+        parse(std::format_parse_context & ctx)
+        {
+            return ctx.begin();
+        }
+
         std::format_context::iterator format(
             clang::mrdox::InfoType t,
             std::format_context& ctx) const;
@@ -56,8 +72,13 @@
 
     template<>
     struct std::formatter<clang::mrdox::Access>
-        : std::formatter<std::string>
     {
+        constexpr std::format_parse_context::iterator
+        parse(std::format_parse_context & ctx)
+        {
+            return ctx.begin();
+        }
+
         std::format_context::iterator format(
             clang::mrdox::Access a,
             std::format_context& ctx) const;
@@ -65,8 +86,13 @@
 
     template<>
     struct std::formatter<clang::mrdox::Reference>
-        : std::formatter<std::string>
     {
+        constexpr std::format_parse_context::iterator
+        parse(std::format_parse_context & ctx)
+        {
+            return ctx.begin();
+        }
+
         std::format_context::iterator format(
             const clang::mrdox::Reference& r,
             std::format_context& ctx) const;
@@ -74,8 +100,13 @@
 
     template<>
     struct std::formatter<clang::mrdox::MemberRef>
-        : std::formatter<std::string>
     {
+        constexpr std::format_parse_context::iterator
+        parse(std::format_parse_context & ctx)
+        {
+            return ctx.begin();
+        }
+
         std::format_context::iterator format(
             const clang::mrdox::MemberRef& r,
             std::format_context& ctx) const;
@@ -83,8 +114,13 @@
 
     template<>
     struct std::formatter<clang::mrdox::Info>
-        : std::formatter<std::string>
     {
+        constexpr std::format_parse_context::iterator
+        parse(std::format_parse_context & ctx)
+        {
+            return ctx.begin();
+        }
+
         std::format_context::iterator format(
             const clang::mrdox::Info& i,
             std::format_context& ctx) const;
