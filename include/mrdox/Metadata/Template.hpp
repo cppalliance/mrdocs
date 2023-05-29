@@ -14,6 +14,7 @@
 #define MRDOX_METADATA_TEMPLATE_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/ADT/Optional.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <optional>
 #include <string>
@@ -46,7 +47,7 @@ struct NonTypeTParam
     /** Type of the non-type template parameter */
     TypeInfo Type;
     // Non-type template parameter default value (if any)
-    std::optional<std::string> Default;
+    Optional<std::string> Default;
 };
 
 struct TemplateTParam
@@ -54,7 +55,7 @@ struct TemplateTParam
     /** Template parameters for the template template parameter */
     std::vector<TParam> Params;
     /** Non-type template parameter default value (if any) */
-    std::optional<std::string> Default;
+    Optional<std::string> Default;
 };
 
 // ----------------------------------------------------------------
