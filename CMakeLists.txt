@@ -81,6 +81,7 @@ include(HandleLLVMOptions)
 add_definitions(${LLVM_DEFINITIONS})
 llvm_map_components_to_libnames(llvm_libs all)
 unset(CMAKE_FOLDER)
+find_package(fmt REQUIRED CONFIG)
 
 #-------------------------------------------------
 #
@@ -130,6 +131,9 @@ else()
         clangToolingInclusions)
 endif()
 target_include_directories(mrdox SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
+
+# fmt
+target_link_libraries(mrdox PUBLIC fmt::fmt)
 
 # Windows, Win64
 if (WIN32)
