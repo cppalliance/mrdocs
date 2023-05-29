@@ -13,6 +13,7 @@
 #define MRDOX_ADT_OPTIONAL_HPP
 
 #include <mrdox/Platform.hpp>
+#include <concepts>
 #include <type_traits>
 #include <utility>
 
@@ -27,9 +28,11 @@ namespace mrdox {
 struct DefaultEmptyPredicate
 {
     template<class T>
-    requires
-        requires(T t) { t.empty(); }
     constexpr bool operator()(T const& t) const noexcept
+        requires requires
+        {
+            { t.empty() } -> std::convertible_to<bool>;
+        }
     {
         return t.empty();
     }
@@ -73,6 +76,26 @@ public:
         return t_ = T(std::forward<Args>(args)...);
     }
 
+    constexpr value_type& value() & noexcept
+    {
+        return t_;
+    }
+
+    constexpr const value_type& value() const & noexcept
+    {
+        return t_;
+    }
+
+    constexpr value_type&& value() && noexcept
+    {
+        return std::move(t_);
+    }
+
+    constexpr const value_type&& value() const && noexcept
+    {
+        return std::move(t_);
+    }
+
     constexpr value_type& operator*() noexcept
     {
         return t_;
@@ -81,6 +104,16 @@ public:
     constexpr value_type const& operator*() const noexcept
     {
         return t_;
+    }
+
+    constexpr value_type* operator->() noexcept
+    {
+        return &t_;
+    }
+
+    constexpr value_type const* operator->() const noexcept
+    {
+        return &t_;
     }
 
     constexpr explicit operator bool() const noexcept
