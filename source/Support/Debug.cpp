@@ -192,9 +192,9 @@ void debugEnableHeapChecking()
     {
         auto itr = std::format_to(ctx.out(), "Reference: type = {}", to_string(r.RefType));
         if(! r.Name.empty())
-            itr = std::format_to(itr, ", name = '{}'", std::string(r.Name));
-        itr = std::format_to(itr, ", ID = {}", r.id);
-        return itr;
+            itr = std::format_to(itr, ", name = '{}'", std::string_view(r.Name.data(), r.Name.size()));
+        itr = std::format_to(itr, ", ID = ");
+        return std::formatter<clang::mrdox::SymbolID>().format(r.id, ctx);
     }
 
     std::format_context::iterator
@@ -203,7 +203,10 @@ void debugEnableHeapChecking()
         const clang::mrdox::MemberRef& r,
         std::format_context& ctx) const
     {
-        return std::format_to(ctx.out(), "MemberRef: access = {}, ID = {}", r.access, r.id);
+        auto itr = std::format_to(ctx.out(), "MemberRef: access = ");
+        itr = std::formatter<clang::mrdox::Access>().format(r.access, ctx);
+        std::format_to(itr, ", ID = ");
+        return std::formatter<clang::mrdox::SymbolID>().format(r.id, ctx);
     }
 
     std::format_context::iterator
@@ -212,20 +215,23 @@ void debugEnableHeapChecking()
         const clang::mrdox::Info& i,
         std::format_context& ctx) const
     {
-        auto itr = std::format_to(ctx.out(), "Info: type = {}", i.IT);
+        auto itr = std::format_to(ctx.out(), "Info: type = {}", to_string(i.IT));
         if(! i.Name.empty())
-            itr = std::format_to(itr, ", name = '{}'", i.Name);
-        itr = std::format_to(itr, ", ID = {}", i.id);
+            itr = std::format_to(itr, ", name = '{}'", std::string_view(i.Name.data(), i.Name.size()));
+        itr = std::format_to(itr, ", ID = ");
+        itr = std::formatter<clang::mrdox::SymbolID>().format(i.id, ctx);
         if(! i.Namespace.empty())
         {
-            std::string namespaces;
-            namespaces += i.Namespace[0].Name;
+            itr = std::format_to(itr, ", namespace = {}",
+                                 std::string_view(i.Namespace[0].Name.data(),
+                                                  i.Namespace[0].Name.size()));
+            std::format_to(itr, ", namespace = ");
+
+
             for(std::size_t idx = 1; idx < i.Namespace.size(); ++idx)
-            {
-                namespaces += "::";
-                namespaces += i.Namespace[0].Name;
-            }
-            itr = std::format_to(itr, ", namespace = {}", namespaces);
+                itr = std::format_to(itr, "::{}",
+                                     std::string_view(i.Namespace[idx].Name.data(),
+                                                      i.Namespace[idx].Name.size()));
         }
         return itr;
     }
