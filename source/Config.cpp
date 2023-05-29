@@ -26,6 +26,15 @@ static_assert(
     "MrDox requires at least clang " STRINGIFY(MRDOX_MINIMUM_LLVM_VERSION)
     ", got " LLVM_VERSION_STRING " instead.");
 
+#if ! defined(__cpp_lib_ranges)
+#error "Ranges library unavailable"
+#endif
+
+// the second part is clang's versioning
+#if ! defined(__cpp_lib_format) && (defined(_LIBCPP_FORMAT) && !defined(_LIBCPP_HAS_NO_INCOMPLETE_FORMAT))
+#error "format library unavailable"
+#endif
+
 namespace clang {
 namespace mrdox {
 
