@@ -162,25 +162,7 @@ void debugEnableHeapChecking()
         clang::mrdox::InfoType t,
         std::format_context& ctx) const
     {
-        switch(t)
-        {
-        case clang::mrdox::InfoType::IT_default:
-            return std::format_to(ctx.out(), "default");
-        case clang::mrdox::InfoType::IT_namespace:
-            return std::format_to(ctx.out(), "namespace");
-        case clang::mrdox::InfoType::IT_record:
-            return std::format_to(ctx.out(), "record");
-        case clang::mrdox::InfoType::IT_function:
-            return std::format_to(ctx.out(), "function");
-        case clang::mrdox::InfoType::IT_enum:
-            return std::format_to(ctx.out(), "enum");
-        case clang::mrdox::InfoType::IT_typedef:
-            return std::format_to(ctx.out(), "typedef");
-        case clang::mrdox::InfoType::IT_variable:
-            return std::format_to(ctx.out(), "variable");
-        default:
-            return std::format_to(ctx.out(), "<unknown InfoType>");
-        }
+        return std::format_to(ctx.out(), "{}", to_string(t));
     }
 
     std::format_context::iterator
@@ -208,7 +190,7 @@ void debugEnableHeapChecking()
         const clang::mrdox::Reference& r,
         std::format_context& ctx) const
     {
-        auto itr = std::format_to(ctx.out(), "Reference: type = {}", r.RefType);
+        auto itr = std::format_to(ctx.out(), "Reference: type = {}", to_string(r.RefType));
         if(! r.Name.empty())
             itr = std::format_to(itr, ", name = '{}'", std::string(r.Name));
         itr = std::format_to(itr, ", ID = {}", r.id);

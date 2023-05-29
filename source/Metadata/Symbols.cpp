@@ -29,6 +29,31 @@ tolower(char c) noexcept
     return uc;
 }
 
+std::string_view
+to_string(
+    InfoType it) noexcept
+{
+  switch (it) 
+  {
+  case clang::mrdox::InfoType::IT_default:
+      return "default";
+  case clang::mrdox::InfoType::IT_namespace:
+      return "namespace";
+  case clang::mrdox::InfoType::IT_record:
+      return "record";
+  case clang::mrdox::InfoType::IT_function:
+      return "function";
+  case clang::mrdox::InfoType::IT_enum:
+      return "enum";
+  case clang::mrdox::InfoType::IT_typedef:
+      return "typedef";
+  case clang::mrdox::InfoType::IT_variable:
+      return "variable";
+  default:
+      return "<unknown InfoType>";
+  }
+}
+
 std::strong_ordering
 compareSymbolNames(
     llvm::StringRef s0,

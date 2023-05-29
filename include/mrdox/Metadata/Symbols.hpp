@@ -119,6 +119,11 @@ enum class InfoType
     IT_field
 };
 
+MRDOX_DECL
+std::string_view
+to_string(
+    InfoType it) noexcept;
+
 /** Return the result of comparing s0 to s1.
 
     This function returns true if the string
