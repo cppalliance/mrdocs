@@ -159,7 +159,8 @@ ASTVisitor(
 bool
 ASTVisitor::
 extractSymbolID(
-    SymbolID& id, const NamedDecl* D)
+    const Decl* D,
+    SymbolID& id)
 {
     usr_.clear();
     if(index::generateUSRForDecl(D, usr_))
@@ -167,6 +168,16 @@ extractSymbolID(
     id = SymbolID(llvm::SHA1::hash(
         arrayRefFromStringRef(usr_)).data());
     return true;
+}
+
+SymbolID
+ASTVisitor::
+extractSymbolID(
+    const Decl* D)
+{
+    SymbolID id = SymbolID::zero;
+    extractSymbolID(D, id);
+    return id;
 }
 
 bool
@@ -224,7 +235,7 @@ getParentNamespaces(
             {
                 Namespace = N->getNameAsString();
             }
-            extractSymbolID(id, N);
+            extractSymbolID(N, id);
             Namespaces.emplace_back(
                 id,
                 Namespace,
@@ -259,7 +270,7 @@ getParentNamespaces(
             }
             Assert(TD);
 
-            extractSymbolID(id, TD);
+            extractSymbolID(TD, id);
             Namespaces.emplace_back(
                 id,
                 N->getNameAsString(),
@@ -267,7 +278,7 @@ getParentNamespaces(
         }
         else if(const auto* N = dyn_cast<RecordDecl>(DC))
         {
-            extractSymbolID(id, N);
+            extractSymbolID(N, id);
             Namespaces.emplace_back(
                 id,
                 N->getNameAsString(),
@@ -283,7 +294,7 @@ getParentNamespaces(
             {
                 N = S->getTemplateInstantiationPattern();
             }
-            extractSymbolID(id, N);
+            extractSymbolID(N, id);
             Namespaces.emplace_back(
                 id,
                 N->getNameAsString(),
@@ -292,7 +303,7 @@ getParentNamespaces(
 #endif
         else if(const auto* N = dyn_cast<FunctionDecl>(DC))
         {
-            extractSymbolID(id, N);
+            extractSymbolID(N, id);
             Namespaces.emplace_back(
                 id,
                 N->getNameAsString(),
@@ -300,7 +311,7 @@ getParentNamespaces(
         }
         else if(const auto* N = dyn_cast<EnumDecl>(DC))
         {
-            extractSymbolID(id, N);
+            extractSymbolID(N, id);
             Namespaces.emplace_back(
                 id,
                 N->getNameAsString(),
@@ -315,7 +326,7 @@ getParentNamespaces(
     // (because this means it's in the global namespace).
     // Also if its outermost namespace is a record because
     // that record matches the previous condition mentioned.
-    if((Namespaces.empty() && isa<RecordDecl>(D)) ||
+    if((Namespaces.empty() && isa<CXXRecordDecl>(D)) ||
         (!Namespaces.empty() && Namespaces.back().RefType == InfoType::IT_record))
     {
         Namespaces.emplace_back(
@@ -403,18 +414,17 @@ ASTVisitor::
 getTypeInfoForType(
     QualType T)
 {
-
     SymbolID id = SymbolID::zero;
     if(const TagDecl* TD = getTagDeclForType(T))
     {
         InfoType IT;
         if(isa<EnumDecl>(TD))
             IT = InfoType::IT_enum;
-        else if(isa<RecordDecl>(TD))
+        else if(isa<CXXRecordDecl>(TD))
             IT = InfoType::IT_record;
         else
             IT = InfoType::IT_default;
-        extractSymbolID(id, TD);
+        extractSymbolID(TD, id);
         return TypeInfo(Reference(
             id, TD->getNameAsString(), IT));
     }
@@ -533,7 +543,7 @@ parseTemplateArgs(
     {
         if(auto* MT = primary->getInstantiatedFromMemberTemplate())
             primary = MT;
-        extractSymbolID(I.Primary.emplace(), primary);
+        extractSymbolID(primary, I.Primary.emplace());
     }
     // KRYSTIAN NOTE: when this is a partial specialization, we could use
     // ClassTemplatePartialSpecializationDecl::getTemplateArgsAsWritten
@@ -557,7 +567,11 @@ parseTemplateArgs(
     {
         if(auto* MT = primary->getInstantiatedFromMemberTemplate())
             primary = MT;
-        extractSymbolID(I.Primary.emplace(), primary);
+        // unlike function and class templates, the USR generated
+        // for variable templates differs from that of the VarDecl
+        // returned by getTemplatedDecl. this might be a clang bug.
+        // the USR of the templated VarDecl seems to be the correct one.
+        extractSymbolID(primary->getTemplatedDecl(), I.Primary.emplace());
     }
 
     // spec->getTemplateArgsInfo()
@@ -588,7 +602,7 @@ parseTemplateArgs(
     {
         if(auto* MT = primary->getInstantiatedFromMemberTemplate())
             primary = MT;
-        extractSymbolID(I.Primary.emplace(), primary);
+        extractSymbolID(primary, I.Primary.emplace());
     }
     if(auto* args = spec->TemplateArguments)
     {
@@ -828,7 +842,7 @@ parseEnumerators(
 bool
 ASTVisitor::
 shouldExtract(
-    Decl const* D)
+    const Decl* D)
 {
     namespace path = llvm::sys::path;
 
@@ -881,12 +895,12 @@ bool
 ASTVisitor::
 extractInfo(
     Info& I,
-    NamedDecl const* D)
+    const NamedDecl* D)
 {
     bool anonymous = getParentNamespaces(I.Namespace, D);
     if(! shouldSerializeInfo(PublicOnly, anonymous, D))
         return false;
-    if(! extractSymbolID(I.id, D))
+    if(! extractSymbolID(D, I.id))
         return false;
     I.Name = D->getNameAsString();
     parseRawComment(I.javadoc, D, R_);
@@ -915,16 +929,16 @@ extractBases(
         if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
         {
             TemplateDecl const* TD = Ty->getTemplateName().getAsTemplateDecl();
-            extractSymbolID(id, TD);
+            extractSymbolID(TD, id);
             I.Bases.emplace_back(
                 id,
                 getTypeAsString(B.getType()),
                 getAccessFromSpecifier(B.getAccessSpecifier()),
                 isVirtual);
         }
-        else if(RecordDecl const* P = getCXXRecordDeclForType(B.getType()))
+        else if(CXXRecordDecl const* P = getCXXRecordDeclForType(B.getType()))
         {
-            extractSymbolID(id, P);
+            extractSymbolID(P, id);
             I.Bases.emplace_back(
                 id,
                 P->getNameAsString(),
@@ -1157,10 +1171,10 @@ buildFriend(
             getParent(id, D);
 #else
             const DeclContext* DC = D->getDeclContext();
-            const auto* RD = dyn_cast<RecordDecl>(DC);
+            const auto* RD = dyn_cast<CXXRecordDecl>(DC);
             Assert(RD && "the semantic DeclContext of a FriendDecl must be a class");
             RecordInfo P;
-            extractSymbolID(P.id, RD);
+            extractSymbolID(RD, P.id);
 
 #if 0
             SymbolID id_;
@@ -1677,7 +1691,26 @@ TraverseDecl(
 #if 1
     if(D->isImplicit())
         return true;
-#else
+#elif 1
+    {
+
+        if(D->isImplicit())
+        {
+            if(! encountered_explicit_)
+                return true;
+            print_debug("{:<64}{:<32} ID = {}\n", std::format(
+                "{}(implicit) {}", indent(context_depth_), D->getDeclKindName()),
+                getDeclName(D), extractSymbolID(D));
+            return true;
+        }
+        encountered_explicit_ = true;
+
+        print_debug("{:<64}{:<32} ID = {}\n", std::format(
+            "{}{}", indent(context_depth_), D->getDeclKindName()),
+            getDeclName(D), extractSymbolID(D));
+        print_debug("{}    {}\n", indent(context_depth_), usr_.c_str());
+    }
+#elif 1
     {
         auto specs = getNumSpecializations(D);
         std::string specs_str = specs.has_value() ?

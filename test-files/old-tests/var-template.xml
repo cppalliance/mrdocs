@@ -14,7 +14,7 @@
     </variable>
     <variable name="C" id="Wtlw7VEK38lEEBeqNoDOjTkJE+U=">
       <file path="var-template.cpp" line="15" class="def"/>
-      <template class="explicit" id="kMNXdSEDYBD+T4RYbkq3ekR+jUU=">
+      <template class="explicit" id="629jUQifhGrj15iClsD5BexWpWQ=">
         <targ value="int"/>
       </template>
       <attr id="storage-class" name="static" value="2"/>
@@ -22,7 +22,7 @@
     </variable>
     <variable name="C" id="wvoZkG3eTMaiFAf971AFdvmHCDE=">
       <file path="var-template.cpp" line="18" class="def"/>
-      <template class="partial" id="kMNXdSEDYBD+T4RYbkq3ekR+jUU=">
+      <template class="partial" id="629jUQifhGrj15iClsD5BexWpWQ=">
         <tparam name="T" class="type"/>
         <targ value="T *"/>
       </template>
@@ -32,7 +32,7 @@
   </struct>
   <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=">
     <file path="var-template.cpp" line="7" class="def"/>
-    <template class="partial" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=">
+    <template class="partial" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
       <tparam name="T" class="type"/>
       <targ value="T &amp;"/>
     </template>
@@ -47,7 +47,7 @@
   </variable>
   <variable name="A" id="jrW9aLj8cqTteNoZmH97vOW7csQ=">
     <file path="var-template.cpp" line="4" class="def"/>
-    <template class="explicit" id="z3eMoJQlHlg0acXVyn1pwg9Ktys=">
+    <template class="explicit" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
       <targ value="void"/>
     </template>
     <type name="unsigned int"/>

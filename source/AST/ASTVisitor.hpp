@@ -65,8 +65,10 @@ public:
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
 
-    std::size_t context_depth_ = 0;
     Sema* sema_;
+
+    std::size_t context_depth_ = 0;
+    bool encountered_explicit_ = false;
 
 public:
     ASTVisitor(
@@ -77,8 +79,12 @@ public:
 
     bool
     extractSymbolID(
-        SymbolID& id,
-        const NamedDecl* D);
+        const Decl* D,
+        SymbolID& id);
+
+    SymbolID
+    extractSymbolID(
+        const Decl* D);
 
     bool shouldSerializeInfo(
         bool PublicOnly,
@@ -89,6 +95,15 @@ public:
     getParentNamespaces(
         llvm::SmallVector<Reference, 4>& Namespaces,
         const Decl* D);
+
+    bool
+    shouldExtract(
+        const Decl* D);
+
+    bool
+    extractInfo(
+        Info& I,
+        const NamedDecl* D);
 
     int
     getLine(
@@ -174,8 +189,6 @@ public:
         EnumInfo& I,
         const EnumDecl* D);
 
-    bool shouldExtract(Decl const* D);
-    bool extractInfo(Info& I, NamedDecl const* D);
     void extractBases(RecordInfo& I, CXXRecordDecl* D);
 
     template<class DeclTy>
