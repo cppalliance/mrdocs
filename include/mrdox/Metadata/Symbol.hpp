@@ -16,7 +16,6 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Location.hpp>
-#include <llvm/ADT/SmallVector.h>
 #include <optional>
 
 namespace clang {

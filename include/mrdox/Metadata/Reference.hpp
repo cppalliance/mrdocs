@@ -53,7 +53,7 @@ struct Reference
     {
     }
 
-#if 1
+#if 0
     // VFALCO What was this for?
     bool
     operator==(

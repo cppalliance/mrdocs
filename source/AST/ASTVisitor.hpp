@@ -50,7 +50,6 @@ public:
     ConfigImpl const& config_;
     Reporter& R_;
 
-    clang::CompilerInstance& compiler_;
 
     llvm::SmallString<512> File;
     int LineNumber;
@@ -65,11 +64,8 @@ public:
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
 
+    clang::CompilerInstance& compiler_;
     Sema* sema_;
-
-    std::size_t context_depth_ = 0;
-    bool encountered_explicit_ = false;
-
 public:
     ASTVisitor(
         tooling::ExecutionContext& ex,
@@ -231,46 +227,39 @@ public:
 
     // --------------------------------------------------------
 
-    bool Traverse(NamespaceDecl* D);
-    bool Traverse(CXXRecordDecl* D,
-        std::unique_ptr<TemplateInfo>&& Template = nullptr);
-    bool Traverse(TypedefDecl* D);
-    bool Traverse(TypeAliasDecl* D,
-        std::unique_ptr<TemplateInfo>&& Template = nullptr);
-    bool Traverse(VarDecl* D,
-        std::unique_ptr<TemplateInfo>&& Template = nullptr);
-    bool Traverse(FunctionDecl* D,
-        std::unique_ptr<TemplateInfo>&& Template = nullptr);
-    bool Traverse(CXXMethodDecl* D,
-        std::unique_ptr<TemplateInfo>&& Template = nullptr);
-    bool Traverse(CXXConstructorDecl* D,
-        std::unique_ptr<TemplateInfo>&& Template = nullptr);
-    bool Traverse(CXXConversionDecl* D,
-        std::unique_ptr<TemplateInfo>&& Template = nullptr);
-    bool Traverse(CXXDeductionGuideDecl* D,
-        std::unique_ptr<TemplateInfo>&& Template = nullptr);
+    bool Traverse(NamespaceDecl*);
+    bool Traverse(CXXRecordDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
+    bool Traverse(TypedefDecl*);
+    bool Traverse(TypeAliasDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
+    bool Traverse(VarDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
+    bool Traverse(FunctionDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
+    bool Traverse(CXXMethodDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
+    bool Traverse(CXXConstructorDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
+    bool Traverse(CXXConversionDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
+    bool Traverse(CXXDeductionGuideDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
     // destructors cannot be templates
-    bool Traverse(CXXDestructorDecl* D);
-    bool Traverse(FriendDecl* D);
-    bool Traverse(EnumDecl* D);
-    bool Traverse(FieldDecl* D);
+    bool Traverse(CXXDestructorDecl*);
+    bool Traverse(FriendDecl*);
+    bool Traverse(EnumDecl*);
+    bool Traverse(FieldDecl*);
 
-    bool Traverse(ClassTemplateDecl* D);
-    bool Traverse(ClassTemplateSpecializationDecl* D);
-    bool Traverse(ClassTemplatePartialSpecializationDecl* D);
-    bool Traverse(VarTemplateDecl* D);
-    bool Traverse(VarTemplateSpecializationDecl* D);
-    bool Traverse(VarTemplatePartialSpecializationDecl* D);
-    bool Traverse(FunctionTemplateDecl* D);
-    bool Traverse(ClassScopeFunctionSpecializationDecl* D);
-    bool Traverse(TypeAliasTemplateDecl* D);
+    bool Traverse(ClassTemplateDecl*);
+    bool Traverse(ClassTemplateSpecializationDecl*);
+    bool Traverse(ClassTemplatePartialSpecializationDecl*);
+    bool Traverse(VarTemplateDecl*);
+    bool Traverse(VarTemplateSpecializationDecl*);
+    bool Traverse(VarTemplatePartialSpecializationDecl*);
+    bool Traverse(FunctionTemplateDecl*);
+    bool Traverse(ClassScopeFunctionSpecializationDecl*);
+    bool Traverse(TypeAliasTemplateDecl*);
+
 #if 0
     // includes both linkage-specification forms in [dcl.link]:
     //     extern string-literal { declaration-seq(opt) }
     //     extern string-literal name-declaration
-    bool Traverse(LinkageSpecDecl* D);
-    bool Traverse(ExternCContextDecl* D);
-    bool Traverse(ExportDecl* D);
+    bool Traverse(LinkageSpecDecl*);
+    bool Traverse(ExternCContextDecl*);
+    bool Traverse(ExportDecl*);
 #endif
 
     // catch-all function so overload resolution does not

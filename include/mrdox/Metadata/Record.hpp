@@ -24,7 +24,6 @@
 #include <clang/AST/Type.h>
 #include <llvm/ADT/SmallVector.h>
 #include <memory>
-#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -105,7 +104,7 @@ struct RecordInfo
 
     /** List of friend functions.
     */
-    llvm::SmallVector<SymbolID, 4> Friends;
+    std::vector<SymbolID> Friends;
 
     /** Record members
     */

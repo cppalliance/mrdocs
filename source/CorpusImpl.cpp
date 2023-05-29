@@ -219,7 +219,7 @@ public:
             });
     }
 
-    void canonicalize(llvm::SmallVectorImpl<SymbolID>& list) noexcept
+    void canonicalize(std::vector<SymbolID>& list) noexcept
     {
         // Sort by symbol ID
         llvm::sort(list,

@@ -25,13 +25,14 @@ namespace mrdox {
 
 enum class TParamKind : int
 {
-    None = 0, // for bitstream
+    // empty state, only used when constructing TParams
+    None,
     // template type parameter, e.g. "typename T" or "class T"
     Type,
     // template non-type parameter, e.g. "int N" or "auto N"
     NonType,
     // template template parameter, e.g. "template<typename> typename T"
-    Template,
+    Template
 };
 
 struct TParam;
@@ -194,8 +195,7 @@ struct TArg
 
 // ----------------------------------------------------------------
 
-/** Stores information pertaining to an explicit specialization of a
-    member of an implicitly instantiated class template specialization.
+/** Information pertaining to member specializations.
 
     This structure is stored in the `TemplateInfo` corresponding to the
     outermost specialized template. If the explicitly specialized
@@ -234,12 +234,11 @@ enum class TemplateSpecKind
     Partial
 };
 
-/** Stores information pertaining to primary template and
-    partial/explicit specialization declarations
+/** Information pertaining to templates and specializations thereof.
 */
 struct TemplateInfo
 {
-    /** For primary templates:
+    /* For primary templates:
            - Params will be non-empty
            - Args will be empty
        For explicit specializations:
@@ -252,15 +251,16 @@ struct TemplateInfo
     std::vector<TParam> Params;
     std::vector<TArg> Args;
 
-    /** Stores the ID of the corresponding primary template
-        for partial and explicit specializations
+    /** Primary template ID for partial and explicit specializations.
     */
     OptionalSymbolID Primary;
 
+#if 0
     /** Stores information for explicit specializations of members
         of implicitly instantiated class template specializations
     */
     std::vector<SpecializationInfo> Specializations;
+#endif
 
     // KRYSTIAN NOTE: using the presence of args/params
     // to determine the specialization kind *should* work.

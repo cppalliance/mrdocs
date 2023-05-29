@@ -586,7 +586,7 @@ emitRecord(
 void
 BitcodeWriter::
 emitRecord(
-    llvm::SmallVectorImpl<SymbolID> const& Values, RecordID ID)
+    std::vector<SymbolID> const& Values, RecordID ID)
 {
     Assert(RecordIDNameMap[ID]);
     Assert(RecordIDNameMap[ID].Abbrev == &SymbolIDsAbbrev);

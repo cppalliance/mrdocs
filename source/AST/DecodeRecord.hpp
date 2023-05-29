@@ -84,7 +84,7 @@ inline
 llvm::Error
 decodeRecord(
     Record const& R,
-    llvm::SmallVectorImpl<SymbolID>& f,
+    std::vector<SymbolID>& f,
     llvm::StringRef blob)
 {
     auto src = R.begin();

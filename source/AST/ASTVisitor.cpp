@@ -23,6 +23,7 @@
 #include <clang/AST/Decl.h>
 #include <clang/AST/DeclCXX.h>
 #include <clang/AST/DeclFriend.h>
+#include <clang/Frontend/CompilerInstance.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
 #include <llvm/ADT/Hashing.h>
@@ -33,97 +34,9 @@
 #include <cassert>
 #include <ranges>
 
-#include <clang/Frontend/CompilerInstance.h>
-// #include <clang/Sema/Sema.h>
-// #include <clang/Sema/Template.h>
 
 namespace clang {
 namespace mrdox {
-
-namespace {
-
-std::string getDeclName(const Decl* D)
-{
-    if(const auto* N = dyn_cast<NamedDecl>(D))
-        return N->getQualifiedNameAsString();
-    return "<unnamed>";
-}
-
-std::optional<std::size_t> getNumSpecializations(Decl* D)
-{
-    std::optional<std::size_t> r;
-    if(auto* T = dyn_cast<ClassTemplateDecl>(D))
-    {
-        r.emplace();
-        if(T->specializations().empty())
-            return r;
-        for([[maybe_unused]] auto&& S : T->specializations())
-        {
-#if 0
-            print_debug("                ");
-            DeclContext* DC = S->getDeclContext();
-            do
-            {
-                Decl* ID = dyn_cast<Decl>(DC);
-                print_debug("{} ({}) | ", getDeclName(ID), ID->getDeclKindName());
-            }
-            while(DC = DC->getParent());
-            print_debug("\n");
-#endif
-            ++r.value();
-        }
-    }
-    else if(auto* T = dyn_cast<FunctionTemplateDecl>(D))
-    {
-        r.emplace();
-        for([[maybe_unused]] auto&& S : T->specializations())
-            ++r.value();
-    }
-    else if(auto* T = dyn_cast<VarTemplateDecl>(D))
-    {
-        r.emplace();
-        for([[maybe_unused]] auto&& S : T->specializations())
-            ++r.value();
-    }
-    return r;
-}
-
-std::string indent(
-    std::size_t depth,
-    std::size_t indent_size = 4)
-{
-    return std::string(depth * indent_size, ' ');
-}
-
-const CXXRecordDecl*
-getInstantiatedFromRecord(
-    const ClassTemplatePartialSpecializationDecl* CTPSD)
-{
-    if(auto* MT = CTPSD->getInstantiatedFromMember())
-        return MT;
-    return CTPSD;
-}
-
-const CXXRecordDecl*
-getInstantiatedFromRecord(
-    const ClassTemplateSpecializationDecl* CTSD)
-{
-    auto parent = CTSD->getSpecializedTemplateOrPartial();
-    // an explicitly specialized member of a partial specialization
-    // is not a member of the primary template; treat it as such.
-    if(auto* CTPSD = parent.dyn_cast<ClassTemplatePartialSpecializationDecl*>())
-        return getInstantiatedFromRecord(CTPSD);
-
-    ClassTemplateDecl* CTD = CTSD->getSpecializedTemplate();
-    Assert(CTD);
-    // for implicit specializations of a primary member template,
-    // consider the parent context to be the primary template
-    if(ClassTemplateDecl* MT = CTD->getInstantiatedFromMemberTemplate())
-        return MT->getTemplatedDecl();
-    return CTD->getTemplatedDecl();
-}
-
-} // anon
 
 //------------------------------------------------
 //
@@ -267,7 +180,7 @@ getParentNamespaces(
                 N->getNameAsString(),
                 InfoType::IT_enum);
         }
-        else if(const auto* N = dyn_cast<TranslationUnitDecl>(DC))
+        else if(isa<TranslationUnitDecl>(DC))
         {
             Namespaces.emplace_back(
                 SymbolID::zero,
@@ -1098,7 +1011,8 @@ buildFriend(
 #else
             const DeclContext* DC = D->getDeclContext();
             const auto* RD = dyn_cast<CXXRecordDecl>(DC);
-            Assert(RD && "the semantic DeclContext of a FriendDecl must be a class");
+            // the semantic DeclContext of a FriendDecl must be a class
+            Assert(RD);
             RecordInfo P;
             extractSymbolID(RD, P.id);
 
@@ -1563,14 +1477,15 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    // for class scope explicit specializations of member function templates which
-    // are members of class templates, it is impossible to know what the
-    // primary template is until the enclosing class template is instantiated.
-    // while such declarations are valid C++ (see CWG 727 and [temp.expl.spec] p3),
-    // GCC does not consider them to be valid. consequently, we do not extract the SymbolID
-    // of the primary template. in the future, we could take a best-effort approach to find
-    // the primary template, but this is only possible when none of the candidates are dependent
-    // upon a template parameter of the enclosing class template.
+    /* For class scope explicit specializations of member function templates which
+       are members of class templates, it is impossible to know what the
+       primary template is until the enclosing class template is instantiated.
+       while such declarations are valid C++ (see CWG 727 and [temp.expl.spec] p3),
+       GCC does not consider them to be valid. Consequently, we do not extract the SymbolID
+       of the primary template. In the future, we could take a best-effort approach to find
+       the primary template, but this is only possible when none of the candidates are dependent
+       upon a template parameter of the enclosing class template.
+    */
     auto Template = std::make_unique<TemplateInfo>();
     parseTemplateArgs(*Template, D);
 
@@ -1613,48 +1528,8 @@ TraverseDecl(
     Args&&... args)
 {
     Assert(D);
-
-#if 1
     if(D->isImplicit())
         return true;
-#elif 1
-    {
-
-        if(D->isImplicit())
-        {
-            if(! encountered_explicit_)
-                return true;
-            print_debug("{:<64}{:<32} ID = {}\n", std::format(
-                "{}(implicit) {}", indent(context_depth_), D->getDeclKindName()),
-                getDeclName(D), extractSymbolID(D));
-            return true;
-        }
-        encountered_explicit_ = true;
-
-        print_debug("{:<64}{:<32} ID = {}\n", std::format(
-            "{}{}", indent(context_depth_), D->getDeclKindName()),
-            getDeclName(D), extractSymbolID(D));
-        print_debug("{}    {}\n", indent(context_depth_), usr_.c_str());
-    }
-#elif 1
-    {
-        auto specs = getNumSpecializations(D);
-        std::string specs_str = specs.has_value() ?
-            std::format("specializations = {}", *specs) : "";
-        if(D->isImplicit())
-        {
-            print_debug("{:<64}{:<32}{}\n", std::format(
-                "{}(implicit) {}", indent(context_depth_), D->getDeclKindName()),
-                getDeclName(D), specs_str);
-            if(auto* DC = dyn_cast<DeclContext>(D))
-                TraverseContext(DC);
-            return true;
-        }
-        print_debug("{:<64}{:<32}{}\n", std::format(
-            "{}{}", indent(context_depth_), D->getDeclKindName()),
-            getDeclName(D), specs_str);
-    }
-#endif
 
     switch(D->getKind())
     {
@@ -1790,10 +1665,8 @@ TraverseContext(
     DeclContext* D)
 {
     Assert(D);
-    ++context_depth_;
     for(auto* C : D->decls())
         TraverseDecl(C);
-    --context_depth_;
     return true;
 }
 
@@ -1822,7 +1695,6 @@ HandleTranslationUnit(
     if(! config_.shouldVisitTU(File))
         return;
 
-    context_depth_ = 0;
     sema_ = &compiler_.getSema();
 
     TranslationUnitDecl* TU =
