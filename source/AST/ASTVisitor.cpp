@@ -222,7 +222,6 @@ getParentNamespaces(
     const DeclContext* DC = D->getDeclContext();
     do
     {
-        SymbolID id = SymbolID::zero;
         if(const auto* N = dyn_cast<NamespaceDecl>(DC))
         {
             std::string Namespace;
@@ -235,56 +234,11 @@ getParentNamespaces(
             {
                 Namespace = N->getNameAsString();
             }
-            extractSymbolID(N, id);
             Namespaces.emplace_back(
-                id,
+                extractSymbolID(N),
                 Namespace,
                 InfoType::IT_namespace);
         }
-#if 0
-        // for an explicit specialization of member of an implicit specialization,
-        // treat it as-if it was declared in the primary class template
-        else if(const auto* N = dyn_cast<ClassTemplateSpecializationDecl>(DC); N &&
-            N->getSpecializationKind() == TemplateSpecializationKind::TSK_ImplicitInstantiation)
-        {
-            // ClassTemplateDecl* P = N->getSpecializedTemplate();
-            NamedDecl* TD = nullptr;
-            auto parent = N->getSpecializedTemplateOrPartial();
-            // an explicitly specialized member of a partial specialization
-            // is not a member of the primary template; treat it as such.
-            if(auto* partial = parent.dyn_cast<ClassTemplatePartialSpecializationDecl*>())
-            {
-                if(auto* MT = partial->getInstantiatedFromMember())
-                    TD = MT;
-                else
-                    TD = partial;
-            }
-            else if(ClassTemplateDecl* PT = N->getSpecializedTemplate())
-            {
-                // for implicit specializations of a primary member template,
-                // consider the parent context to be the primary template
-                if(auto* MT = PT->getInstantiatedFromMemberTemplate())
-                    TD = MT;
-                else
-                    TD = PT;
-            }
-            Assert(TD);
-
-            extractSymbolID(TD, id);
-            Namespaces.emplace_back(
-                id,
-                N->getNameAsString(),
-                InfoType::IT_record);
-        }
-        else if(const auto* N = dyn_cast<RecordDecl>(DC))
-        {
-            extractSymbolID(N, id);
-            Namespaces.emplace_back(
-                id,
-                N->getNameAsString(),
-                InfoType::IT_record);
-        }
-#else
         else if(const auto* N = dyn_cast<CXXRecordDecl>(DC))
         {
             // if the containing context is an implicit specialization,
@@ -294,46 +248,34 @@ getParentNamespaces(
             {
                 N = S->getTemplateInstantiationPattern();
             }
-            extractSymbolID(N, id);
             Namespaces.emplace_back(
-                id,
+                extractSymbolID(N),
                 N->getNameAsString(),
                 InfoType::IT_record);
         }
-#endif
         else if(const auto* N = dyn_cast<FunctionDecl>(DC))
         {
-            extractSymbolID(N, id);
             Namespaces.emplace_back(
-                id,
+                extractSymbolID(N),
                 N->getNameAsString(),
                 InfoType::IT_function);
         }
         else if(const auto* N = dyn_cast<EnumDecl>(DC))
         {
-            extractSymbolID(N, id);
             Namespaces.emplace_back(
-                id,
+                extractSymbolID(N),
                 N->getNameAsString(),
                 InfoType::IT_enum);
         }
+        else if(const auto* N = dyn_cast<TranslationUnitDecl>(DC))
+        {
+            Namespaces.emplace_back(
+                SymbolID::zero,
+                "", //"GlobalNamespace",
+                InfoType::IT_namespace);
+        }
     }
     while((DC = DC->getParent()));
-
-    // The global namespace should be added to the
-    // list of namespaces if the decl corresponds to
-    // a Record and if it doesn't have any namespace
-    // (because this means it's in the global namespace).
-    // Also if its outermost namespace is a record because
-    // that record matches the previous condition mentioned.
-    if((Namespaces.empty() && isa<CXXRecordDecl>(D)) ||
-        (!Namespaces.empty() && Namespaces.back().RefType == InfoType::IT_record))
-    {
-        Namespaces.emplace_back(
-            SymbolID::zero,
-            "", //"GlobalNamespace",
-            InfoType::IT_namespace);
-    }
 
     return anonymous;
 }
@@ -768,26 +710,10 @@ writeParent(
     Access access_;
     switch(access)
     {
+    // namespace scope declaration
     case AccessSpecifier::AS_none:
     {
-        // Create an empty parent for the child with the
-        // child inserted either as a reference or by moving
-        // the entire record. Then return the parent as a
-        // serialized bitcode.
-        if(I.Namespace.empty())
-        {
-            if(I.id == SymbolID::zero)
-            {
-                // Global namespace has no parent.
-                return {};
-            }
-
-            // In global namespace
-            NamespaceInfo P;
-            Assert(P.id == SymbolID::zero);
-            insertChild(P, I);
-            return writeBitcode(P);
-        }
+        Assert(! I.Namespace.empty());
         Assert(I.Namespace[0].RefType == InfoType::IT_namespace);
 
         NamespaceInfo P(I.Namespace[0].id);
