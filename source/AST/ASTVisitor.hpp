@@ -170,14 +170,6 @@ public:
         Reporter& R);
 
     void
-    parseFields(
-        RecordInfo& I,
-        const RecordDecl* D,
-        bool PublicOnly,
-        AccessSpecifier Access,
-        Reporter& R);
-
-    void
     parseEnumerators(
         EnumInfo& I,
         const EnumDecl* D);
@@ -210,6 +202,10 @@ public:
     void buildEnum(
         EnumInfo& I,
         EnumDecl* D);
+
+    void buildField(
+        FieldInfo& I,
+        FieldDecl* D);
 
     void buildVar(
         VarInfo& I,
@@ -244,6 +240,7 @@ public:
     bool Traverse(CXXDestructorDecl* D);
     bool Traverse(FriendDecl* D);
     bool Traverse(EnumDecl* D);
+    bool Traverse(FieldDecl* D);
 
     bool Traverse(ClassTemplateDecl* D);
     bool Traverse(ClassTemplateSpecializationDecl* D);

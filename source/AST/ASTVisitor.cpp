@@ -806,41 +806,6 @@ writeParent(
 
 void
 ASTVisitor::
-parseFields(
-    RecordInfo& I,
-    const RecordDecl* D,
-    bool PublicOnly,
-    AccessSpecifier Access,
-    Reporter& R)
-{
-    static_cast<void>(I);
-    static_cast<void>(PublicOnly);
-    static_cast<void>(Access);
-    static_cast<void>(R);
-    for(const FieldDecl* F : D->fields())
-    {
-        FieldInfo FI;
-        if(! extractInfo(FI, F))
-            continue;
-        LineNumber = getLine(F);
-        FI.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
-
-        FI.Type = getTypeInfoForType(
-            F->getTypeSourceInfo()->getType());
-
-
-        FI.specs.hasNoUniqueAddress = F->hasAttr<NoUniqueAddressAttr>();
-        FI.specs.isDeprecated = F->hasAttr<DeprecatedAttr>();
-        // KRYSTIAN FIXME: isNodiscard should be isMaybeUnused
-        FI.specs.isNodiscard = F->hasAttr<UnusedAttr>();
-
-        insertBitcode(ex_, writeBitcode(FI));
-        insertBitcode(ex_, writeParent(FI, F->getAccess()));
-    }
-}
-
-void
-ASTVisitor::
 parseEnumerators(
     EnumInfo& I,
     const EnumDecl* D)
@@ -1137,7 +1102,6 @@ buildRecord(
     else
         I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
     I.TagType = D->getTagKind();
-    parseFields(I, D, PublicOnly, AccessSpecifier::AS_public, R_);
 
     // These are from CXXRecordDecl::isEffectivelyFinal()
     I.specs.isFinal = D->template hasAttr<FinalAttr>();
@@ -1266,6 +1230,29 @@ buildEnum(
         I.BaseType = TypeInfo(Name);
     }
     parseEnumerators(I, D);
+    insertBitcode(ex_, writeBitcode(I));
+    insertBitcode(ex_, writeParent(I, D->getAccess()));
+}
+
+void
+ASTVisitor::
+buildField(
+    FieldInfo& I,
+    FieldDecl* D)
+{
+    if(! extractInfo(I, D))
+        return;
+    LineNumber = getLine(D);
+    I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+
+    I.Type = getTypeInfoForType(
+        D->getTypeSourceInfo()->getType());
+
+    I.specs.hasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
+    I.specs.isDeprecated = D->hasAttr<DeprecatedAttr>();
+    // KRYSTIAN FIXME: isNodiscard should be isMaybeUnused
+    I.specs.isNodiscard = D->hasAttr<UnusedAttr>();
+
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, D->getAccess()));
 }
@@ -1519,6 +1506,18 @@ Traverse(
 bool
 ASTVisitor::
 Traverse(
+    FieldDecl* D)
+{
+    if(! shouldExtract(D))
+        return true;
+    FieldInfo I;
+    buildField(I, D);
+    return true;
+}
+
+bool
+ASTVisitor::
+Traverse(
     ClassTemplateDecl* D)
 {
     CXXRecordDecl* RD = D->getTemplatedDecl();
@@ -1758,6 +1757,11 @@ TraverseDecl(
     case Decl::Enum:
         this->Traverse(static_cast<
             EnumDecl*>(D),
+            std::forward<Args>(args)...);
+        break;
+    case Decl::Field:
+        this->Traverse(static_cast<
+            FieldDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::Var:
