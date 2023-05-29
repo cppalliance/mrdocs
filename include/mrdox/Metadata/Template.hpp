@@ -15,7 +15,9 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Type.hpp>
+#include <optional>
 #include <string>
+#include <vector>
 
 namespace clang {
 namespace mrdox {

@@ -17,6 +17,7 @@
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Type.hpp>
+#include <memory>
 
 namespace clang {
 namespace mrdox {

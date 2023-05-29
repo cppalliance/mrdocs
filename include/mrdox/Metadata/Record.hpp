@@ -23,6 +23,7 @@
 #include <mrdox/Metadata/Template.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/SmallVector.h>
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>

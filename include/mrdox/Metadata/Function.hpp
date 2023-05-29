@@ -25,7 +25,9 @@
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/SmallVector.h>
 #include <clang/AST/Attr.h>
+#include <memory>
 #include <optional>
+#include <string>
 #include <vector>
 
 namespace clang {

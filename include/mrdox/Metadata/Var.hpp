@@ -18,6 +18,7 @@
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <clang/Basic/Specifiers.h>
+#include <memory>
 
 namespace clang {
 namespace mrdox {
