@@ -74,12 +74,39 @@ endif()
 #-------------------------------------------------
 
 set(CMAKE_FOLDER Dependencies)
+
+# LLVM
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(HandleLLVMOptions)
 add_definitions(${LLVM_DEFINITIONS})
 llvm_map_components_to_libnames(llvm_libs all)
+
+# Duktape
+if(NOT DEFINED DUKTAPE_SOURCE_ROOT)
+    set(DUKTAPE_SOURCE_ROOT $ENV{DUKTAPE_SOURCE_ROOT})
+endif()
+if (NOT DUKTAPE_SOURCE_ROOT)
+    include(FetchContent)
+    if (POLICY CMP0135)
+        cmake_policy(SET CMP0135 NEW)
+    endif()
+    FetchContent_Declare(
+            duktape
+            URL https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
+    )
+    FetchContent_GetProperties(duktape)
+    if(NOT duktape_POPULATED)
+        FetchContent_Populate(duktape)
+        set(DUKTAPE_SOURCE_ROOT ${duktape_SOURCE_DIR})
+    endif()
+endif()
+add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
+target_include_directories(duktape PUBLIC ${DUKTAPE_SOURCE_ROOT}/src)
+add_library(duktape::duktape ALIAS duktape)
+
+# fmt
 unset(CMAKE_FOLDER)
 find_package(fmt REQUIRED CONFIG)
 
@@ -133,7 +160,7 @@ endif()
 target_include_directories(mrdox SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
 
 # fmt
-target_link_libraries(mrdox PUBLIC fmt::fmt)
+target_link_libraries(mrdox PUBLIC fmt::fmt duktape::duktape)
 
 # Windows, Win64
 if (WIN32)
@@ -188,7 +215,7 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 if (BUILD_TESTING)
     file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
     enable_testing()
-    add_test(NAME mrdox-test COMMAND mrdox --action test
+    add_test(NAME mrdox-test COMMAND mrdox --action test --adoc
             "${PROJECT_SOURCE_DIR}/test-files/old-tests"
             )
 

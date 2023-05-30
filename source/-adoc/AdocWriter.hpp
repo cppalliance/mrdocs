@@ -46,6 +46,7 @@ protected:
     struct Options
     {
         bool safe_names = false;
+        std::string template_dir;
     };
 
     struct Key;
@@ -118,10 +119,16 @@ protected:
     template<class T>
     void writeNodes(AnyList<T> const& list)
     {
+        writeNodes(os_, list);
+    }
+
+    template<class T>
+    static void writeNodes(llvm::raw_ostream& os, AnyList<T> const& list)
+    {
         if(list.empty())
             return;
         for(Javadoc::Node const& node : list)
-            writeNode(node);
+            writeNode(os, node);
     }
 
     void writeNode(Javadoc::Node const& node);
@@ -134,6 +141,17 @@ protected:
     void writeNode(Javadoc::Param const& node);
     void writeNode(Javadoc::TParam const& node);
     void writeNode(Javadoc::Returns const& node);
+
+    static void writeNode(llvm::raw_ostream& os, Javadoc::Node const& node);
+    static void writeNode(llvm::raw_ostream& os, Javadoc::Block const& node);
+    static void writeNode(llvm::raw_ostream& os, Javadoc::Text const& node);
+    static void writeNode(llvm::raw_ostream& os, Javadoc::StyledText const& node);
+    static void writeNode(llvm::raw_ostream& os, Javadoc::Paragraph const& node);
+    static void writeNode(llvm::raw_ostream& os, Javadoc::Admonition const& node);
+    static void writeNode(llvm::raw_ostream& os, Javadoc::Code const& node);
+    static void writeNode(llvm::raw_ostream& os, Javadoc::Param const& node);
+    static void writeNode(llvm::raw_ostream& os, Javadoc::TParam const& node);
+    static void writeNode(llvm::raw_ostream& os, Javadoc::Returns const& node);
 
     FormalParam formalParam(Param const& ft);
     TypeName typeName(TypeInfo const& ti);

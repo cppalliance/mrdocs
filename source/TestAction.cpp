@@ -152,7 +152,9 @@ makeConfig(
         "generator:\n"
         "  xml:\n"
         "    index: false\n"
-        "    prolog: true\n";
+        "    prolog: true\n"
+        "  adoc:\n"
+        "    template-dir: my-templates\n";
 
     std::error_code ec;
     auto config = loadConfigString(

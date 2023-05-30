@@ -1,0 +1,154 @@
+= Reference
+:role: mrdox
+
+{{#if classes}}
+== Classes
+{{/if}}
+
+{{#each classes}}
+[#{{id}}]
+=== Class `{{name}}`
+
+{{#if brief}}
+[.lead]
+{{brief}}
+{{/if}}
+
+{{#if description}}
+{{description}}
+{{/if}}
+
+{{#if filename}}
+[source, cpp]
+----
+#include <{{filename}}>
+----
+
+{{/if}}
+
+{{#if bases}}
+==== Base Classes
+
+{{#each bases}}
+* {{this}}
+{{/each}}
+
+{{/if}}
+
+{{#if classes}}
+==== Nested Classes
+
+{{#each classes}}
+* {{name}}
+{{/each}}
+
+{{/if}}
+{{/each}}
+
+{{#if overloads}}
+== Overloads
+{{/if}}
+
+{{#each overloads}}
+[[{{this.[0].id}}]]
+=== {{this.[0].name}}
+
+{{#if this.[0].brief}}
+    [.lead]
+    {{this.[0].brief}}
+{{/if}}
+
+{{#if this.[0].description}}
+    {{this.[0].description}}
+{{/if}}
+
+{{#if this.[0].filename}}
+[source, cpp]
+----
+#include <{{ this.[0].filename }}>
+----
+
+{{/if}}
+
+Return Type:
+
+{{#each this}}
+* {{inc @index}}) `{{this.return}}`
+{{/each}}
+
+{{#if this.[0].params}}
+Parameters:
+
+{{#each this}}
+* {{inc @index}})
+{{#each this.params}}
+{{#if name}}
+** {{name}} (`{{type}}`)
+{{else}}
+** `{{type}}`
+{{/if}}
+{{/each}}
+{{/each}}
+
+{{/if}}
+{{/each}}
+
+{{#if typedefs}}
+== Typedefs
+{{/if}}
+
+{{#each typedefs}}
+[#{{id}}]
+=== Typedef `{{name}}`
+
+{{#if brief}}
+[.lead]
+{{brief}}
+{{/if}}
+
+{{#if description}}
+{{description}}
+{{/if}}
+
+{{#if filename}}
+[source, cpp]
+----
+#include <{{filename}}>
+----
+
+{{/if}}
+
+{{/each}}
+
+{{#each enums}}
+[#{{id}}]
+=== Enum `{{name}}`
+
+{{#if brief}}
+[.lead]
+{{brief}}
+{{/if}}
+
+{{#if description}}
+{{description}}
+{{/if}}
+
+{{#if filename}}
+[source, cpp]
+----
+#include <{{filename}}>
+----
+
+{{/if}}
+
+{{/each}}
+
+
+== Data
+
+[source,json]
+----
+{{{jsonPrettyPrint .}}}
+----
+
+

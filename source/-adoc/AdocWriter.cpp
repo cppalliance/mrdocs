@@ -66,6 +66,7 @@ struct llvm::yaml::MappingTraits<
     {
         auto& opt= opt_.opt;
         io.mapOptional("safe-names",  opt.safe_names);
+        io.mapOptional("template-dir",  opt.template_dir);
     }
 };
 
@@ -624,39 +625,39 @@ writeFunctionDeclaration(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Node const& node)
+    llvm::raw_ostream& os, Javadoc::Node const& node)
 {
     switch(node.kind)
     {
     case Javadoc::Kind::text:
-        writeNode(static_cast<Javadoc::Text const&>(node));
+        writeNode(os, static_cast<Javadoc::Text const&>(node));
         return;
     case Javadoc::Kind::styled:
-        writeNode(static_cast<Javadoc::StyledText const&>(node));
+        writeNode(os, static_cast<Javadoc::StyledText const&>(node));
         return;
 #if 0
     case Javadoc::Node::block:
-        writeNode(static_cast<Javadoc::Block const&>(node));
+        writeNode(os, static_cast<Javadoc::Block const&>(node));
         return;
 #endif
     case Javadoc::Kind::brief:
     case Javadoc::Kind::paragraph:
-        writeNode(static_cast<Javadoc::Paragraph const&>(node));
+        writeNode(os, static_cast<Javadoc::Paragraph const&>(node));
         return;
     case Javadoc::Kind::admonition:
-        writeNode(static_cast<Javadoc::Admonition const&>(node));
+        writeNode(os, static_cast<Javadoc::Admonition const&>(node));
         return;
     case Javadoc::Kind::code:
-        writeNode(static_cast<Javadoc::Code const&>(node));
+        writeNode(os, static_cast<Javadoc::Code const&>(node));
         return;
     case Javadoc::Kind::param:
-        writeNode(static_cast<Javadoc::Param const&>(node));
+        writeNode(os, static_cast<Javadoc::Param const&>(node));
         return;
     case Javadoc::Kind::tparam:
-        writeNode(static_cast<Javadoc::TParam const&>(node));
+        writeNode(os, static_cast<Javadoc::TParam const&>(node));
         return;
     case Javadoc::Kind::returns:
-        writeNode(static_cast<Javadoc::Returns const&>(node));
+        writeNode(os, static_cast<Javadoc::Returns const&>(node));
         return;
     default:
         llvm_unreachable("unknown kind");
@@ -666,7 +667,15 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Block const&)
+    Javadoc::Node const& node)
+{
+    writeNode(os_, node);
+}
+
+void
+AdocWriter::
+writeNode(
+    llvm::raw_ostream& os, Javadoc::Block const&)
 {
     // shouldn't get here
     Assert(false);
@@ -675,31 +684,47 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Text const& node)
+    Javadoc::Block const& node)
 {
-    // Text nodes must be left aligned or
-    // else they can be rendered up as code.
-    os_ << llvm::StringRef(node.string).ltrim() << '\n';
+    writeNode(os_, node);
 }
 
 void
 AdocWriter::
 writeNode(
-    Javadoc::StyledText const& node)
+    llvm::raw_ostream& os, Javadoc::Text const& node)
+{
+    // Text nodes must be left aligned or
+    // else they can be rendered up as code.
+    os << llvm::StringRef(node.string).ltrim() << '\n';
+}
+
+void
+AdocWriter::
+writeNode(
+    Javadoc::Text const& node)
+{
+    writeNode(os_, node);
+}
+
+void
+AdocWriter::
+writeNode(
+    llvm::raw_ostream& os, Javadoc::StyledText const& node)
 {
     switch(node.style)
     {
     case Javadoc::Style::bold:
-        os_ << '*' << node.string << "*\n";
+        os << '*' << node.string << "*\n";
         break;
     case Javadoc::Style::mono:
-        os_ << '`' << node.string << "`\n";
+        os << '`' << node.string << "`\n";
         break;
     case Javadoc::Style::italic:
-        os_ << '_' << node.string << "_\n";
+        os << '_' << node.string << "_\n";
         break;
     default:
-        os_ << node.string << '\n';
+        os << node.string << '\n';
         break;
     }
 }
@@ -707,9 +732,33 @@ writeNode(
 void
 AdocWriter::
 writeNode(
+    Javadoc::StyledText const& node)
+{
+    writeNode(os_, node);
+}
+
+void
+AdocWriter::
+writeNode(
+    llvm::raw_ostream& os, Javadoc::Paragraph const& node)
+{
+    writeNodes(os, node.children);
+}
+
+void
+AdocWriter::
+writeNode(
     Javadoc::Paragraph const& node)
 {
-    writeNodes(node.children);
+    writeNode(os_, node);
+}
+
+void
+AdocWriter::
+writeNode(
+    llvm::raw_ostream& os, Javadoc::Admonition const& node)
+{
+    writeNodes(os, node.children);
 }
 
 void
@@ -717,15 +766,15 @@ AdocWriter::
 writeNode(
     Javadoc::Admonition const& node)
 {
-    writeNodes(node.children);
+    writeNode(os_, node);
 }
 
 void
 AdocWriter::
 writeNode(
-    Javadoc::Code const& node)
+    llvm::raw_ostream& os, Javadoc::Code const& node)
 {
-    os_ <<
+    os <<
         "[,cpp]\n"
         "----\n";
     AnyList<Javadoc::Text> const& list(node.children);
@@ -745,17 +794,40 @@ writeNode(
         {
             llvm::StringRef string(text.string);
             string = string.ltrim(n);
-            os_ << string << "\n";
+            os << string << "\n";
         }
     }
-    os_ <<
+    os <<
         "----\n";
 }
 
 void
 AdocWriter::
 writeNode(
+    Javadoc::Code const& node)
+{
+    writeNode(os_, node);
+}
+
+void
+AdocWriter::
+writeNode(
+    llvm::raw_ostream& os, Javadoc::Param const& node)
+{
+}
+
+void
+AdocWriter::
+writeNode(
     Javadoc::Param const& node)
+{
+    writeNode(os_, node);
+}
+
+void
+AdocWriter::
+writeNode(
+    llvm::raw_ostream& os, Javadoc::TParam const& node)
 {
 }
 
@@ -764,6 +836,14 @@ AdocWriter::
 writeNode(
     Javadoc::TParam const& node)
 {
+    writeNode(os_, node);
+}
+
+void
+AdocWriter::
+writeNode(
+    llvm::raw_ostream& os, Javadoc::Returns const& node)
+{
 }
 
 void
@@ -771,6 +851,7 @@ AdocWriter::
 writeNode(
     Javadoc::Returns const& node)
 {
+    writeNode(os_, node);
 }
 
 //------------------------------------------------
