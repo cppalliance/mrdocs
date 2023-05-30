@@ -3,90 +3,90 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
   <struct name="A" id="AKwlChAOi+0ttIAPsD7uitS+gk0=">
-    <file path="template-spec.cpp" line="7" class="def"/>
+    <file path="class-template-spec.cpp" line="7" class="def"/>
     <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <targ value="int"/>
     </template>
     <function name="g" id="NCn1LYKSU8X/x/ejZTTGKsJQLug=">
-      <file path="template-spec.cpp" line="10"/>
+      <file path="class-template-spec.cpp" line="10"/>
     </function>
   </struct>
   <struct name="B" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
-    <file path="template-spec.cpp" line="20" class="def"/>
+    <file path="class-template-spec.cpp" line="20" class="def"/>
     <template>
       <tparam name="T" class="type"/>
     </template>
     <function name="f" id="toIq7IwIU6fbbbkqhsEmDYWVF00=">
-      <file path="template-spec.cpp" line="22"/>
+      <file path="class-template-spec.cpp" line="22"/>
     </function>
   </struct>
   <struct name="B" id="ZjUaxeOoGJ0Jol9Nmn7cGRE7RCo=">
-    <file path="template-spec.cpp" line="31" class="def"/>
+    <file path="class-template-spec.cpp" line="31" class="def"/>
     <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
       <tparam name="T" class="type"/>
       <targ value="T &amp;"/>
     </template>
     <function name="h" id="Y1o9DjZarkgpmS4JVrc/XkZMn3k=">
-      <file path="template-spec.cpp" line="34"/>
+      <file path="class-template-spec.cpp" line="34"/>
     </function>
   </struct>
   <struct name="B" id="dydGCFMdrM4nOwuv3RCXqg2KCUA=">
-    <file path="template-spec.cpp" line="25" class="def"/>
+    <file path="class-template-spec.cpp" line="25" class="def"/>
     <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
       <tparam name="T" class="type"/>
       <targ value="T *"/>
     </template>
     <function name="g" id="YqMF7qPhrCzrLLwscZ76goyLl0k=">
-      <file path="template-spec.cpp" line="28"/>
+      <file path="class-template-spec.cpp" line="28"/>
     </function>
   </struct>
   <struct name="C" id="qrcrkE8Br83XKNMh95Dvwpph/M8=">
-    <file path="template-spec.cpp" line="43" class="def"/>
+    <file path="class-template-spec.cpp" line="43" class="def"/>
     <template class="explicit" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
       <targ value="int"/>
       <targ value="int"/>
     </template>
     <function name="g" id="xGwiZK/5LGsqcQUgiFrCHkH3zFU=">
-      <file path="template-spec.cpp" line="46"/>
+      <file path="class-template-spec.cpp" line="46"/>
     </function>
   </struct>
   <struct name="A" id="y/8TvVlacBAIG2ds2aYgZE+zGUU=">
-    <file path="template-spec.cpp" line="13" class="def"/>
+    <file path="class-template-spec.cpp" line="13" class="def"/>
     <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <targ value="long"/>
     </template>
     <function name="h" id="t1Sc28cdaNrQCdMKo/gCBCog34Q=">
-      <file path="template-spec.cpp" line="16"/>
+      <file path="class-template-spec.cpp" line="16"/>
     </function>
   </struct>
   <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <file path="template-spec.cpp" line="2" class="def"/>
+    <file path="class-template-spec.cpp" line="2" class="def"/>
     <template>
       <tparam name="T" class="type"/>
     </template>
     <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
-      <file path="template-spec.cpp" line="4"/>
+      <file path="class-template-spec.cpp" line="4"/>
     </function>
   </struct>
   <struct name="C" id="6zS87fCNnLtFfHbRWEmcdeAT1Zg=">
-    <file path="template-spec.cpp" line="49" class="def"/>
+    <file path="class-template-spec.cpp" line="49" class="def"/>
     <template class="partial" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
       <tparam name="T" class="type"/>
       <targ value="T *"/>
       <targ value="int"/>
     </template>
     <function name="h" id="N2KH/LGAYrCEUFXj6hyS4bkzaIs=">
-      <file path="template-spec.cpp" line="52"/>
+      <file path="class-template-spec.cpp" line="52"/>
     </function>
   </struct>
   <struct name="C" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
-    <file path="template-spec.cpp" line="38" class="def"/>
+    <file path="class-template-spec.cpp" line="38" class="def"/>
     <template>
       <tparam name="T" class="type"/>
       <tparam name="U" class="type"/>
     </template>
     <function name="f" id="mhp5LhlIUPVO0i2zQmcJLvBQAlk=">
-      <file path="template-spec.cpp" line="40"/>
+      <file path="class-template-spec.cpp" line="40"/>
     </function>
   </struct>
 </namespace>

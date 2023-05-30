@@ -148,11 +148,11 @@ public:
     buildTemplateParam(
         const NamedDecl* ND);
 
-    template<typename R>
+    template<typename Range>
     void
     buildTemplateArgs(
-        TemplateInfo& I,
-        R&& args);
+        std::vector<TArg>& result,
+        Range&& range);
 
     void
     parseTemplateArgs(

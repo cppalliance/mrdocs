@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <file path="static-data-template.cpp" line="2" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+    </template>
+    <variable name="x" id="7L90lvoKPW80F2cnMs0e05abtuk=">
+      <file path="static-data-template.cpp" line="5" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <tparam name="V" class="type"/>
+      </template>
+      <attr id="storage-class" name="static" value="2"/>
+      <type name="const T"/>
+    </variable>
+    <variable name="x" id="odTOUblgmooUozrBqW3qKzPWSO4=">
+      <file path="static-data-template.cpp" line="7" class="def"/>
+      <template class="partial" id="7L90lvoKPW80F2cnMs0e05abtuk=">
+        <tparam name="U" class="type"/>
+        <targ value="U *"/>
+        <targ value="T"/>
+      </template>
+      <attr id="storage-class" name="static" value="2"/>
+      <type name="const T"/>
+    </variable>
+    <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=">
+      <file path="static-data-template.cpp" line="10" class="def"/>
+      <template class="explicit" id="7L90lvoKPW80F2cnMs0e05abtuk=">
+        <targ value="T"/>
+        <targ value="long"/>
+      </template>
+      <attr id="storage-class" name="static" value="2"/>
+      <type name="const bool"/>
+    </variable>
+  </struct>
+</namespace>
+</mrdox>

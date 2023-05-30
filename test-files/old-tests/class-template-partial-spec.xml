@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <file path="class-template-partial-spec.cpp" line="2" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+    </template>
+    <struct name="B" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
+      <file path="class-template-partial-spec.cpp" line="5" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <tparam name="V" class="type"/>
+      </template>
+    </struct>
+    <struct name="B" id="Y/lm1lkT88vf1Ml123mbuN6Fp2Y=">
+      <file path="class-template-partial-spec.cpp" line="7" class="def"/>
+      <template class="partial" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
+        <tparam name="U" class="type"/>
+        <targ value="U *"/>
+        <targ value="T"/>
+      </template>
+    </struct>
+    <struct name="B" id="RB9DBMAJDxjxuRQCinQOVPFSNek=">
+      <file path="class-template-partial-spec.cpp" line="10" class="def"/>
+      <template class="explicit" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
+        <targ value="T"/>
+        <targ value="long"/>
+      </template>
+    </struct>
+  </struct>
+</namespace>
+</mrdox>

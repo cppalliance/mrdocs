@@ -359,12 +359,12 @@ buildTemplateParam(
     return info;
 }
 
-template<typename R>
+template<typename Range>
 void
 ASTVisitor::
 buildTemplateArgs(
-    TemplateInfo& I,
-    R&& args)
+    std::vector<TArg>& result,
+    Range&& range)
 {
     // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
     // for template type parameters used as arguments. it also cannonicalizes
@@ -376,12 +376,12 @@ buildTemplateArgs(
     // FIXME: constant folding behavior should be consistent with that of other
     // constructs, e.g. noexcept specifiers & explicit specifiers
     const auto& policy = astContext_->getPrintingPolicy();
-    for(const TemplateArgument& arg : args)
+    for(const TemplateArgument& arg : range)
     {
         std::string arg_str;
         llvm::raw_string_ostream stream(arg_str);
         arg.print(policy, stream, false);
-        I.Args.emplace_back(std::move(arg_str));
+        result.emplace_back(std::move(arg_str));
     }
 }
 
@@ -401,12 +401,13 @@ parseTemplateArgs(
     }
     // KRYSTIAN NOTE: when this is a partial specialization, we could use
     // ClassTemplatePartialSpecializationDecl::getTemplateArgsAsWritten
-    const TypeSourceInfo* tsi = spec->getTypeAsWritten();
-    // type source information *should* be non-null
-    Assert(tsi);
-    auto args = tsi->getType()->getAs<
+    const TypeSourceInfo* type_written = spec->getTypeAsWritten();
+    // if the type as written is nullptr (it should never be), bail
+    if(! type_written)
+        return;
+    auto args = type_written->getType()->getAs<
         TemplateSpecializationType>()->template_arguments();
-    buildTemplateArgs(I, args);
+    buildTemplateArgs(I.Args, args);
 }
 
 void
@@ -427,20 +428,18 @@ parseTemplateArgs(
         // the USR of the templated VarDecl seems to be the correct one.
         extractSymbolID(primary->getTemplatedDecl(), I.Primary.emplace());
     }
-
-    // spec->getTemplateArgsInfo()
-    if(auto* partial = dyn_cast<VarTemplatePartialSpecializationDecl>(spec);
-        partial && partial->getTemplateArgsAsWritten())
-    {
-        auto args = partial->getTemplateArgsAsWritten()->arguments();
-        buildTemplateArgs(I, std::views::transform(
-            args, [](auto& x) -> auto& { return x.getArgument(); }));
-    }
+    const ASTTemplateArgumentListInfo* args_written = nullptr;
+    // getTemplateArgsInfo returns nullptr for partial specializations,
+    // so we use getTemplateArgsAsWritten if this is a partial specialization
+    if(auto* partial = dyn_cast<VarTemplatePartialSpecializationDecl>(spec))
+        args_written = partial->getTemplateArgsAsWritten();
     else
-    {
-        buildTemplateArgs(I, spec->getTemplateArgs().asArray());
-    }
-    // buildTemplateArgs(I, spec->getTemplateInstantiationArgs().asArray());
+        args_written = spec->getTemplateArgsInfo();
+    if(! args_written)
+        return;
+    auto args = args_written->arguments();
+    buildTemplateArgs(I.Args, std::views::transform(
+        args, [](auto& x) -> auto& { return x.getArgument(); }));
 }
 
 void
@@ -458,11 +457,11 @@ parseTemplateArgs(
             primary = MT;
         extractSymbolID(primary, I.Primary.emplace());
     }
+    // TemplateArguments is used instead of TemplateArgumentsAsWritten
+    // because explicit specializations of function templates may have
+    // template arguments deduced from their return type and parameters
     if(auto* args = spec->TemplateArguments)
-    {
-        // spec->TemplateArgumentsAsWritten->arguments();
-        buildTemplateArgs(I, args->asArray());
-    }
+        buildTemplateArgs(I.Args, args->asArray());
 }
 
 void
@@ -473,12 +472,15 @@ parseTemplateArgs(
 {
     // if(! spec->hasExplicitTemplateArgs())
     //     return;
-    // KRYSTIAN NOTE: we have no way to get the ID of the primary template.
+    // KRYSTIAN NOTE: we have no way to get the ID of the primary template;
+    // it is unknown what function template this will be an explicit
+    // specialization of until the enclosing class template is instantiated.
+    // this also means that we can only extract the explicit template arguments.
     // in the future, we could use name lookup to find matching declarations
     if(auto* args_written = spec->getTemplateArgsAsWritten())
     {
         auto args = args_written->arguments();
-        buildTemplateArgs(I, std::views::transform(
+        buildTemplateArgs(I.Args, std::views::transform(
             args, [](auto& x) -> auto& { return x.getArgument(); }));
     }
 }
