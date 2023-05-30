@@ -11,6 +11,7 @@
 
 #include "AdocWriter.hpp"
 #include "ConfigImpl.hpp"
+#include "ADT/RangeFor.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Formatter.hpp"
 #include "Support/Validate.hpp"
@@ -116,7 +117,7 @@ struct AdocWriter::FormalParam
         llvm::raw_ostream& os,
         FormalParam const& f)
     {
-        // KRYSTIAN FIXME: use AdocWriter::typeName
+        // KRYSTIAN FIXME: use AdocWriter::typeName_
         os << f.P.Type.Name;
         if(! f.P.Name.empty())
             os << ' ' << f.P.Name;
@@ -127,7 +128,7 @@ struct AdocWriter::FormalParam
     friend void tag_invoke(format_tag,
         Formatter& os, FormalParam const& FP)
     {
-        // KRYSTIAN FIXME: use AdocWriter::typeName
+        // KRYSTIAN FIXME: use AdocWriter::typeName_
         os(FP.P.Type.Name);
         if(! FP.P.Name.empty())
             os(" ", FP.P.Name);
@@ -380,7 +381,7 @@ write(
     if(! I.Params.empty())
     {
         os_ <<
-            typeName(I.ReturnType) << '\n' <<
+            typeName_(I.ReturnType) << '\n' <<
             I.Name << "(\n"
             "    " << formalParam(I.Params[0]);
         for(std::size_t i = 1; i < I.Params.size(); ++i)
@@ -393,7 +394,7 @@ write(
     else
     {
         os_ <<
-            typeName(I.ReturnType) << '\n' <<
+            typeName_(I.ReturnType) << '\n' <<
             I.Name << "();" << "\n";
     }
     os_ <<
@@ -510,33 +511,16 @@ writeLinkFor(Info const& I)
 
 auto
 AdocWriter::
-linkedSymbol(RecordInfo const& I)
+linkedSymbol(Info const& I)
 {
     struct xref
     {
-        RecordInfo const& I;
+        Info const& I;
         AdocWriter const& wr_;
 
         void operator()(Formatter& os) const
         {
-            os(tagToString(I.TagType), " ", I.Name, ";\n");
-#if 0
-            os_ <<
-                "\n" <<
-                "[,cpp]\n"
-                "----\n" <<
-                tagToString(I.TagType) << " " << I.Name;
-            if(! I.Bases.empty())
-            {
-                os_ << "\n    : ";
-                writeBase(I.Bases[0]);
-                for(std::size_t i = 1; i < I.Bases.size(); ++i)
-                {
-                    os_ << "\n    , ";
-                    writeBase(I.Bases[i]);
-                }
-            }
-#endif
+            os("xref:#", wr_.names_.get(I.id), "[", I.Name, "]");
         }
     };
     return xref{I, *this};
@@ -544,16 +528,16 @@ linkedSymbol(RecordInfo const& I)
 
 auto
 AdocWriter::
-linkedSymbol(FunctionInfo const& I)
+typeName(TypeInfo const& I)
 {
     struct xref
     {
-        FunctionInfo const& I;
+        TypeInfo const& I;
         AdocWriter const& wr_;
 
         void operator()(Formatter& os) const
         {
-            os("xref:#", wr_.names_.get(I.id), "[", I.Name, "]");
+            os(I.Name);
         }
     };
     return xref{I, *this};
@@ -566,6 +550,54 @@ forwardDeclareRecord(
     RecordInfo const& I)
 {
     os(tagToString(I.TagType), " ", I.Name, ";\n");
+}
+
+void
+AdocWriter::
+declareTypedef(
+    Formatter& os,
+    TypedefInfo const& I)
+{
+    if(I.IsUsing)
+    {
+        os("using ", I.Name, " = ", typeName(I.Underlying), ";\n");
+    }
+    else
+    {
+        os("typedef ", typeName(I.Underlying), " ", I.Name, ";\n");
+    }
+}
+
+void
+AdocWriter::
+declareEnum(
+    Formatter& os,
+    EnumInfo const& I)
+{
+    llvm::StringRef tag;
+    if(I.Scoped)
+        tag = "enum class";
+    else
+        tag = "enum";
+
+    os(tag, " ", linkedSymbol(I));
+    if(I.BaseType)
+        os(" : ", I.BaseType->Name);
+    os("\n{\n");
+    os.indent(4);
+    for(auto const& J : RangeFor(I.Members))
+    {
+        if(J.value.ValueExpr.empty())
+            os(J.value.Name);
+        else
+            os(J.value.Name, " = ", J.value.ValueExpr);
+        if(! J.last)
+            os(",\n");
+        else
+            os("\n");
+    }
+    os.indent(-4);
+    os("};\n");
 }
 
 void
@@ -588,34 +620,65 @@ declareRecord(
         llvm_unreachable("bad TagType");
     }
 
+    auto const updateAccess =
+        [&](Access access_)
+        {
+            if(access_ != access)
+            {
+                access = access_;
+                os.indent(-4);
+                switch(access)
+                {
+                case Access::Public:
+                    os("public:\n");
+                    break;
+                case Access::Protected:
+                    os("protected:\n");
+                    break;
+                case Access::Private:
+                    os("private:\n");
+                    break;
+                default:
+                    llvm_unreachable("bad Access");
+                }
+                os.indent(4);
+            }
+        };
+
     // TODO template-head
 
     os(tagToString(I.TagType), " ", I.Name);
     os("\n{\n");
     os.indent(4);
 
+    // Member Typedefs and Aliases
+    for(auto const& ref : I.Members.Types)
+    {
+        updateAccess(ref.access);
+        auto const& J = corpus_.get<TypedefInfo>(ref.id);
+        declareTypedef(os, J);
+    }
+
+    // Member Enums
+    for(auto const& ref : I.Members.Enums)
+    {
+        updateAccess(ref.access);
+        auto const& J = corpus_.get<EnumInfo>(ref.id);
+        declareEnum(os, J);
+    }
+
+    // Member Records
+    for(auto const& ref : I.Members.Records)
+    {
+        updateAccess(ref.access);
+        auto const& J = corpus_.get<RecordInfo>(ref.id);
+        declareRecord(os, J);
+    }
+
+    // Member Functions
     for(auto const& ref : I.Members.Functions)
     {
-        if(ref.access != access)
-        {
-            access = ref.access;
-            os.indent(-4);
-            switch(ref.access)
-            {
-            case Access::Public:
-                os("public:\n");
-                break;
-            case Access::Protected:
-                os("protected:\n");
-                break;
-            case Access::Private:
-                os("private:\n");
-                break;
-            default:
-                llvm_unreachable("bad Access");
-            }
-            os.indent(4);
-        }
+        updateAccess(ref.access);
         auto const& J = corpus_.get<FunctionInfo>(ref.id);
         declareFunction(os, J);
     }
@@ -777,7 +840,7 @@ AdocWriter::
 writeFunctionDeclaration(
     FunctionInfo const& I)
 {
-    os_ << typeName(I.ReturnType) << ' ' << I.Name;
+    os_ << typeName_(I.ReturnType) << ' ' << I.Name;
     if(I.Params.empty())
     {
         os_ << "()";
@@ -947,7 +1010,7 @@ writeNode(
 
 auto
 AdocWriter::
-typeName(
+typeName_(
     TypeInfo const& t) ->
         TypeName
 {

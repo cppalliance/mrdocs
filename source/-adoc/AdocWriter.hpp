@@ -102,10 +102,12 @@ protected:
 
     //--------------------------------------------
 
-    auto linkedSymbol(RecordInfo const& I);
-    auto linkedSymbol(FunctionInfo const& I);
+    auto linkedSymbol(Info const& I);
+    auto typeName(TypeInfo const& I);
 
     void forwardDeclareRecord(Formatter&, RecordInfo const& I);
+    void declareTypedef(Formatter&, TypedefInfo const& I);
+    void declareEnum(Formatter&, EnumInfo const& I);
     void declareRecord(Formatter&, RecordInfo const& I);
     void declareFunction(Formatter&, FunctionInfo const& I);
 
@@ -148,7 +150,7 @@ protected:
     void writeNode(Javadoc::Returns const& node);
 
     FormalParam formalParam(Param const& ft);
-    TypeName typeName(TypeInfo const& ti);
+    TypeName typeName_(TypeInfo const& ti);
 
     void beginSection(Info const& I);
     void beginSection(Info const& P, OverloadInfo const& F);
