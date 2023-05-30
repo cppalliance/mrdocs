@@ -123,6 +123,16 @@ struct AdocWriter::FormalParam
         // KRYSTIAN TODO: emit default argument
         return os;
     }
+
+    friend void tag_invoke(format_tag,
+        Formatter& os, FormalParam const& FP)
+    {
+        // KRYSTIAN FIXME: use AdocWriter::typeName
+        os(FP.P.Type.Name);
+        if(! FP.P.Name.empty())
+            os(" ", FP.P.Name);
+        // KRYSTIAN TODO: emit default argument
+    }
 };
 
 struct AdocWriter::TypeName
@@ -238,6 +248,16 @@ AdocWriter::
 write(
     RecordInfo const& I)
 {
+#if 1
+    auto os = Formatter(os_);
+    os( "[,cpp,subs=normal]\n", 
+        "----\n");
+    //forwardDeclareRecord(os, I);
+    declareRecord(os, I);
+    os( //";\n"
+        "----\n"
+        "\n");
+#else
     beginSection(I);
 
     // Brief
@@ -297,6 +317,7 @@ write(
     writeTrancheList("Static Data (private)",   J.Private.Vars);
 
     endSection();
+#endif
 }
 
 template<class T>
@@ -339,9 +360,8 @@ write(
 {
 #if 1
     auto os = Formatter(os_);
-    os_ << "-----------------\n";
-    declareSynopsis(os, I);
-    os_ << "-----------------\n";
+    declareFunction(os, I);
+    os_ << "\n";
 #else
     beginSection(I.Name);
 
@@ -486,35 +506,145 @@ writeLinkFor(Info const& I)
         I.Name << "]";
 }
 
+//------------------------------------------------
 
-template<class Stream, class T>
+auto
+AdocWriter::
+linkedSymbol(RecordInfo const& I)
+{
+    struct xref
+    {
+        RecordInfo const& I;
+        AdocWriter const& wr_;
+
+        void operator()(Formatter& os) const
+        {
+            os(tagToString(I.TagType), " ", I.Name, ";\n");
+#if 0
+            os_ <<
+                "\n" <<
+                "[,cpp]\n"
+                "----\n" <<
+                tagToString(I.TagType) << " " << I.Name;
+            if(! I.Bases.empty())
+            {
+                os_ << "\n    : ";
+                writeBase(I.Bases[0]);
+                for(std::size_t i = 1; i < I.Bases.size(); ++i)
+                {
+                    os_ << "\n    , ";
+                    writeBase(I.Bases[i]);
+                }
+            }
+#endif
+        }
+    };
+    return xref{I, *this};
+}
+
+auto
+AdocWriter::
+linkedSymbol(FunctionInfo const& I)
+{
+    struct xref
+    {
+        FunctionInfo const& I;
+        AdocWriter const& wr_;
+
+        void operator()(Formatter& os) const
+        {
+            os("xref:#", wr_.names_.get(I.id), "[", I.Name, "]");
+        }
+    };
+    return xref{I, *this};
+}
+
 void
 AdocWriter::
-declareSynopsis(
-    Formatter<Stream>& os,
-    T const& I)
+forwardDeclareRecord(
+    Formatter& os,
+    RecordInfo const& I)
 {
-    if constexpr(std::is_same_v<T, RecordInfo>)
-    {
+    os(tagToString(I.TagType), " ", I.Name, ";\n");
+}
 
-    }
-    if constexpr(std::is_same_v<T, FunctionInfo>)
+void
+AdocWriter::
+declareRecord(
+    Formatter& os,
+    RecordInfo const& I)
+{
+    Access access;
+    switch(I.TagType)
     {
-        if(! I.Params.empty())
+    case TagTypeKind::TTK_Class:
+        access = Access::Private;
+        break;
+    case TagTypeKind::TTK_Struct:
+    case TagTypeKind::TTK_Union:
+        access = Access::Public;
+        break;
+    default:
+        llvm_unreachable("bad TagType");
+    }
+
+    // TODO template-head
+
+    os(tagToString(I.TagType), " ", I.Name);
+    os("\n{\n");
+    os.indent(4);
+
+    for(auto const& ref : I.Members.Functions)
+    {
+        if(ref.access != access)
         {
-            os << I.ReturnType.Name << " " << I.Name << "(\n");
-            os(I.ReturnType.Name, " ", I.Name, "(\n");
-            os.indent(4);
-            os(formalParam(I.Params[0]));
-            for(std::size_t i = 1; i < I.Params.size(); ++i)
-                os(",\n", formalParam(I.Params[i]));
-            os(");\n");
+            access = ref.access;
             os.indent(-4);
+            switch(ref.access)
+            {
+            case Access::Public:
+                os("public:\n");
+                break;
+            case Access::Protected:
+                os("protected:\n");
+                break;
+            case Access::Private:
+                os("private:\n");
+                break;
+            default:
+                llvm_unreachable("bad Access");
+            }
+            os.indent(4);
         }
-        else
-        {
-            os(I.ReturnType.Name, " ", I.Name, "();\n");
-        }
+        auto const& J = corpus_.get<FunctionInfo>(ref.id);
+        declareFunction(os, J);
+    }
+    os.indent(-4);
+    os("};\n");
+}
+
+
+void
+AdocWriter::
+declareFunction(
+    Formatter& os,
+    FunctionInfo const& I)
+{
+    // TODO template-head
+
+    if(! I.Params.empty())
+    {
+        os(I.ReturnType.Name, " ", linkedSymbol(I), "(\n");
+        os.indent(4);
+        os(formalParam(I.Params[0]));
+        for(std::size_t i = 1; i < I.Params.size(); ++i)
+            os(",\n", formalParam(I.Params[i]));
+        os(");\n");
+        os.indent(-4);
+    }
+    else
+    {
+        os(I.ReturnType.Name, " ", linkedSymbol(I), "();\n");
     }
 }
 

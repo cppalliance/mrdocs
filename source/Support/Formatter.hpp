@@ -12,7 +12,7 @@
 #define MRDOX_API_SUPPORT_FORMATTER_HPP
 
 #include <mrdox/Platform.hpp>
-#include <llvm/ADT/SmallString.h>
+#include <llvm/ADT/SmallVector.h>
 #include <charconv>
 #include <concepts>
 #include <string_view>
@@ -25,22 +25,31 @@
 namespace clang {
 namespace mrdox {
 
+struct format_tag {};
+
 /** Produces formatted output to a stream.
 */
-template<class Output>
 class Formatter
 {
-    Output& os_;
+    void* stream_;
+    void (*stream_fn_)(
+        void*, char const*, std::size_t);
     std::string indent_;
     bool needIndent_ = true;
 
 public:
     /** Constructor.
     */
+    template<class Stream>
     explicit
     Formatter(
-        Output& os) noexcept
-        : os_(os)
+        Stream& os) noexcept
+        : stream_(&os)
+        , stream_fn_(
+            [](void* os, char const* p, std::size_t n)
+            {
+                reinterpret_cast<Stream*>(os)->write(p, n);
+            })
     {
     }
 
@@ -86,7 +95,7 @@ private:
     // emit a newline
     void write_newline()
     {
-        os_.write("\n", 1);
+        stream_fn_(stream_, "\n", 1);
     }
 
     // write the string to the stream
@@ -99,10 +108,10 @@ private:
             {
                 if(needIndent_)
                 {
-                    os_.write(indent_.data(), indent_.size());
+                    stream_fn_(stream_, indent_.data(), indent_.size());
                     needIndent_ = false;
                 }
-                os_.write(it0, it - it0);
+                stream_fn_(stream_, it0, it - it0);
             };
         for(;;)
         {
@@ -143,8 +152,8 @@ private:
         write_impl(std::string_view(sz));
     }
 
-    template<std::size_t N>
-    void write(llvm::SmallString<N> const& ss)
+    // small string
+    void write(llvm::SmallVectorImpl<char> const& ss)
     {
         write_impl(std::string_view(ss.data(), ss.size()));
     }
@@ -170,6 +179,26 @@ private:
     void write(N n)
     {
         write_impl(std::to_chars(n));
+    }
+
+    // call operator
+    template<class T>
+    void write(T const& t)
+        requires requires { t(*this); }
+    {
+        t(*this);
+    }
+
+        
+    // tag_invoke
+    template<class T>
+    void write(T const& t)
+        requires requires
+        {
+            tag_invoke(format_tag{}, *this, t);
+        }
+    {
+        tag_invoke(format_tag{}, *this, t);
     }
 };
 

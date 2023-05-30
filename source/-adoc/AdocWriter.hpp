@@ -100,8 +100,16 @@ protected:
         llvm::StringRef sectionName,
         std::span<T const> list);
 
-    template<class Stream, class T>
-    void declareSynopsis(Formatter<Stream>&, T const& I);
+    //--------------------------------------------
+
+    auto linkedSymbol(RecordInfo const& I);
+    auto linkedSymbol(FunctionInfo const& I);
+
+    void forwardDeclareRecord(Formatter&, RecordInfo const& I);
+    void declareRecord(Formatter&, RecordInfo const& I);
+    void declareFunction(Formatter&, FunctionInfo const& I);
+
+    //--------------------------------------------
 
     void writeBase(BaseInfo const& I);
     void writeNestedTypes(

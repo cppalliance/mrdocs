@@ -84,6 +84,7 @@ visit(
     auto enumList          = buildSortedList<EnumInfo>(I.Children.Enums);
     auto variableList      = buildSortedList<VarInfo>(I.Children.Vars);
 
+#if 0
     // don't emit empty namespaces,
     // but still visit child namespaces.
     if( ! I.Children.Records.empty() ||
@@ -186,6 +187,9 @@ visit(
 
         endSection();
     }
+#endif
+
+os_ << "\n";
 
     // visit children
     for(auto const& I : namespaceList)
