@@ -2,38 +2,38 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <struct name="D" id="i5oK/nki0o3BH2ZAgkGyaGib07g=">
-    <file path="alias-template.cpp" line="11" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-    </template>
-    <alias name="E" id="STM3CgeaOEakPrQJdlRWWM4MMFo=">
-      <file path="alias-template.cpp" line="14" class="def"/>
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="D" id="i5oK/nki0o3BH2ZAgkGyaGib07g=">
+      <file path="alias-template.cpp" line="11" class="def"/>
       <template>
         <tparam name="U" class="type"/>
+        <alias name="E" id="STM3CgeaOEakPrQJdlRWWM4MMFo=">
+          <file path="alias-template.cpp" line="14" class="def"/>
+          <type name="B&lt;T, U&gt;"/>
+        </alias>
       </template>
-      <type name="B&lt;T, U&gt;"/>
+    </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="U" class="type"/>
+    <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
+      <file path="alias-template.cpp" line="5" class="def"/>
+    </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+      <file path="alias-template.cpp" line="2" class="def"/>
+    </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
+      <file path="alias-template.cpp" line="8" class="def"/>
+      <type name="A&lt;T&gt;"/>
     </alias>
-  </struct>
-  <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
-    <file path="alias-template.cpp" line="5" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-      <tparam name="U" class="type"/>
-    </template>
-  </struct>
-  <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <file path="alias-template.cpp" line="2" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-    </template>
-  </struct>
-  <alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
-    <file path="alias-template.cpp" line="8" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-    </template>
-    <type name="A&lt;T&gt;"/>
-  </alias>
+  </template>
 </namespace>
 </mrdox>

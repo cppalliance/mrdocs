@@ -14,7 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Metadata/Members.hpp>
+#include <mrdox/Metadata/Record.hpp>
 #include <span>
 #include <utility>
 #include <vector>

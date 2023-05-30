@@ -2,42 +2,42 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <function name="h" id="TjNHTu8/auH8QPVcgjW7FUo2dFM=">
-    <file path="function-tparm-decay.cpp" line="22"/>
-    <file path="function-tparm-decay.cpp" line="24"/>
-    <file path="function-tparm-decay.cpp" line="26"/>
-    <file path="function-tparm-decay.cpp" line="28"/>
-    <template>
-      <tparam name="x" class="non-type" type="int (*)(bool)"/>
-    </template>
-  </function>
-  <function name="g" id="WsEgNgLbqe3a0eM5Bqsuf58XoH0=">
-    <file path="function-tparm-decay.cpp" line="13"/>
-    <file path="function-tparm-decay.cpp" line="15"/>
-    <file path="function-tparm-decay.cpp" line="17"/>
-    <file path="function-tparm-decay.cpp" line="19"/>
-    <template>
-      <tparam name="x" class="non-type" type="int *"/>
-    </template>
-  </function>
-  <function name="f" id="eqMdBnxdb22zO3kokXFKlz9ktqg=">
-    <file path="function-tparm-decay.cpp" line="4"/>
-    <file path="function-tparm-decay.cpp" line="6"/>
-    <file path="function-tparm-decay.cpp" line="8"/>
-    <file path="function-tparm-decay.cpp" line="10"/>
-    <template>
-      <tparam name="x" class="non-type" type="int"/>
-    </template>
-  </function>
-  <function name="i" id="2woLp3PdyOT/I0DFMkY8OAli5YM=">
-    <file path="function-tparm-decay.cpp" line="34"/>
-    <file path="function-tparm-decay.cpp" line="36"/>
-    <file path="function-tparm-decay.cpp" line="38"/>
-    <file path="function-tparm-decay.cpp" line="40"/>
-    <template>
-      <tparam class="non-type" type="T"/>
-    </template>
-  </function>
+  <template>
+    <tparam name="x" class="non-type" type="int (*)(bool)"/>
+    <function name="h" id="TjNHTu8/auH8QPVcgjW7FUo2dFM=">
+      <file path="function-tparm-decay.cpp" line="22"/>
+      <file path="function-tparm-decay.cpp" line="24"/>
+      <file path="function-tparm-decay.cpp" line="26"/>
+      <file path="function-tparm-decay.cpp" line="28"/>
+    </function>
+  </template>
+  <template>
+    <tparam name="x" class="non-type" type="int *"/>
+    <function name="g" id="WsEgNgLbqe3a0eM5Bqsuf58XoH0=">
+      <file path="function-tparm-decay.cpp" line="13"/>
+      <file path="function-tparm-decay.cpp" line="15"/>
+      <file path="function-tparm-decay.cpp" line="17"/>
+      <file path="function-tparm-decay.cpp" line="19"/>
+    </function>
+  </template>
+  <template>
+    <tparam name="x" class="non-type" type="int"/>
+    <function name="f" id="eqMdBnxdb22zO3kokXFKlz9ktqg=">
+      <file path="function-tparm-decay.cpp" line="4"/>
+      <file path="function-tparm-decay.cpp" line="6"/>
+      <file path="function-tparm-decay.cpp" line="8"/>
+      <file path="function-tparm-decay.cpp" line="10"/>
+    </function>
+  </template>
+  <template>
+    <tparam class="non-type" type="T"/>
+    <function name="i" id="2woLp3PdyOT/I0DFMkY8OAli5YM=">
+      <file path="function-tparm-decay.cpp" line="34"/>
+      <file path="function-tparm-decay.cpp" line="36"/>
+      <file path="function-tparm-decay.cpp" line="38"/>
+      <file path="function-tparm-decay.cpp" line="40"/>
+    </function>
+  </template>
   <alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
     <file path="function-tparm-decay.cpp" line="30" class="def"/>
     <type name="int"/>

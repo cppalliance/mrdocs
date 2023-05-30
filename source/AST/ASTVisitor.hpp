@@ -16,7 +16,6 @@
 #include "ConfigImpl.hpp"
 #include <mrdox/Reporter.hpp>
 #include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Metadata/Access.hpp>
 #include <clang/Tooling/Execution.h>
 #include <optional>
 #include <unordered_map>
@@ -51,10 +50,8 @@ public:
     Reporter& R_;
 
 
-    llvm::SmallString<512> File;
-    int LineNumber;
-    bool PublicOnly;
-    bool IsFileInRootDir;
+    llvm::SmallString<512> File_;
+    bool IsFileInRootDir_;
 
     llvm::SmallString<128> usr_;
 
@@ -66,6 +63,7 @@ public:
 
     clang::CompilerInstance& compiler_;
     Sema* sema_;
+
 public:
     ASTVisitor(
         tooling::ExecutionContext& ex,
@@ -83,14 +81,7 @@ public:
         const Decl* D);
 
     bool shouldSerializeInfo(
-        bool PublicOnly,
-        bool IsOrIsInAnonymousNamespace,
         const NamedDecl* D) noexcept;
-
-    bool
-    getParentNamespaces(
-        llvm::SmallVector<Reference, 4>& Namespaces,
-        const Decl* D);
 
     bool
     shouldExtract(
@@ -185,20 +176,30 @@ public:
         EnumInfo& I,
         const EnumDecl* D);
 
-    void extractBases(RecordInfo& I, CXXRecordDecl* D);
+    void
+    getParentNamespaces(
+        std::vector<SymbolID>& Namespaces,
+        const Decl* D);
+
+    void extractBases(
+        RecordInfo& I,
+        CXXRecordDecl* D);
 
     template<class DeclTy>
     bool constructFunction(
         FunctionInfo& I,
+        AccessSpecifier A,
         DeclTy* D);
 
     template<class DeclTy>
     void buildFunction(
         FunctionInfo& I,
+        AccessSpecifier A,
         DeclTy* D);
 
     void buildRecord(
         RecordInfo& I,
+        AccessSpecifier A,
         CXXRecordDecl* D);
 
     void buildNamespace(
@@ -210,48 +211,53 @@ public:
 
     void buildEnum(
         EnumInfo& I,
+        AccessSpecifier A,
         EnumDecl* D);
 
     void buildField(
         FieldInfo& I,
+        AccessSpecifier A,
         FieldDecl* D);
 
     void buildVar(
         VarInfo& I,
+        AccessSpecifier A,
         VarDecl* D);
 
     template<class DeclTy>
     void buildTypedef(
         TypedefInfo& I,
+        AccessSpecifier A,
         DeclTy* D);
 
     // --------------------------------------------------------
 
     bool Traverse(NamespaceDecl*);
-    bool Traverse(CXXRecordDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
-    bool Traverse(TypedefDecl*);
-    bool Traverse(TypeAliasDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
-    bool Traverse(VarDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
-    bool Traverse(FunctionDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
-    bool Traverse(CXXMethodDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
-    bool Traverse(CXXConstructorDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
-    bool Traverse(CXXConversionDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
-    bool Traverse(CXXDeductionGuideDecl*, std::unique_ptr<TemplateInfo>&& = nullptr);
+    bool Traverse(TypedefDecl*, AccessSpecifier);
+    bool Traverse(TypeAliasDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool Traverse(CXXRecordDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool Traverse(VarDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool Traverse(FunctionDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool Traverse(CXXMethodDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool Traverse(CXXConstructorDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool Traverse(CXXConversionDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool Traverse(CXXDeductionGuideDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
     // destructors cannot be templates
-    bool Traverse(CXXDestructorDecl*);
-    bool Traverse(FriendDecl*);
-    bool Traverse(EnumDecl*);
-    bool Traverse(FieldDecl*);
+    bool Traverse(CXXDestructorDecl*, AccessSpecifier);
+    bool Traverse(EnumDecl*, AccessSpecifier);
+    bool Traverse(FieldDecl*, AccessSpecifier);
 
-    bool Traverse(ClassTemplateDecl*);
+    // KRYSTIAN TODO: friends are a can of worms
+    // we do not wish to open just yet
+    bool Traverse(FriendDecl*);
+
+    bool Traverse(ClassTemplateDecl*, AccessSpecifier);
     bool Traverse(ClassTemplateSpecializationDecl*);
-    bool Traverse(ClassTemplatePartialSpecializationDecl*);
-    bool Traverse(VarTemplateDecl*);
+    bool Traverse(VarTemplateDecl*, AccessSpecifier);
     bool Traverse(VarTemplateSpecializationDecl*);
-    bool Traverse(VarTemplatePartialSpecializationDecl*);
-    bool Traverse(FunctionTemplateDecl*);
+    bool Traverse(FunctionTemplateDecl*, AccessSpecifier);
     bool Traverse(ClassScopeFunctionSpecializationDecl*);
-    bool Traverse(TypeAliasTemplateDecl*);
+    bool Traverse(TypeAliasTemplateDecl*, AccessSpecifier);
 
 #if 0
     // includes both linkage-specification forms in [dcl.link]:

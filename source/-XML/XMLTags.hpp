@@ -13,8 +13,8 @@
 #define MRDOX_API_XML_XMLTAGS_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Access.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <clang/Basic/Specifiers.h>

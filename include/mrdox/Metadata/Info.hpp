@@ -36,7 +36,7 @@ struct Info
 
     /** Kind of declaration.
     */
-    InfoType const IT = InfoType::IT_default;
+    InfoType IT = InfoType::IT_default;
 
     /** The unqualified name.
     */
@@ -44,7 +44,7 @@ struct Info
 
     /** In-order List of parent namespaces.
     */
-    llvm::SmallVector<Reference, 4> Namespace;
+    std::vector<SymbolID> Namespace;
 
     /** The extracted javadoc for this declaration.
     */
@@ -75,13 +75,14 @@ struct Info
     std::string
     extractName() const;
 
+#if 0
     /** Return the fully qualified name.
     */
     MRDOX_DECL
     std::string&
     getFullyQualifiedName(
         std::string& temp) const;
-
+#endif
     /** Return a string representing the symbol type.
 
         For example, "namespace", "class", et. al.

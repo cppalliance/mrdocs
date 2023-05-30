@@ -207,6 +207,7 @@ struct TArg
     replacement definition of `primary` for the given set of template
     arguments of its parent template(s).
 */
+#if 0
 struct SpecializationInfo
 {
     /** The template arguments the parent template is specialized for */
@@ -214,6 +215,24 @@ struct SpecializationInfo
 
     /** ID of the template to which the arguments pertain */
     SymbolID Template;
+
+    /** SpecializationInfo for nested templates which are also specialized */
+    std::vector<SpecializationInfo> Nested;
+
+    /** SymbolID pairs of any specialized members.
+        the first element is the ID of the original member (i.e. member that is replaced)
+        the second element is the ID of the specialized member (i.e. the replacement)
+    */
+    std::vector<std::pair<SymbolID, SymbolID>> Members;
+};
+#endif
+struct SpecializationInfo
+{
+    /** The template arguments the parent template is specialized for */
+    std::vector<TArg> Args;
+
+    /** ID of the template to which the arguments pertain */
+    SymbolID Primary;
 
     /** SpecializationInfo for nested templates which are also specialized */
     std::vector<SpecializationInfo> Nested;

@@ -318,6 +318,8 @@ public:
             return decodeRecord(R, I.id, Blob);
         case INFO_PART_NAME:
             return decodeRecord(R, I.Name, Blob);
+        case INFO_PART_PARENTS:
+            return decodeRecord(R, I.Namespace, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -329,21 +331,6 @@ public:
     {
         switch(ID)
         {
-        case BI_REFERENCE_BLOCK_ID:
-        {
-            ReferenceBlock B(br_);
-            if(auto Err = br_.readBlock(B, ID))
-                return Err;
-            switch(B.F)
-            {
-            case FieldId::F_namespace:
-                I.Namespace.emplace_back(std::move(B.I));
-                break;
-            default:
-                return AnyBlock::readSubBlock(ID);
-            }
-            return llvm::Error::success();
-        }
         case BI_JAVADOC_BLOCK_ID:
         {
             JavadocBlock B(I.javadoc, br_);

@@ -165,8 +165,8 @@ private:
             if( infos.size() > 0 &&
                 infos.front()->Namespace.size() > 0)
             {
-                auto const& P = corpus_.get<Info>(infos.front()->Namespace[0].id);
-                P.getFullyQualifiedName(temp);
+                auto const& P = corpus_.get<Info>(infos.front()->Namespace[0]);
+                corpus_.getFullyQualifiedName(P, temp);
                 temp.push_back(' ');
             }
             *os_ <<
@@ -337,8 +337,8 @@ getPath(
     dest.clear();
     dest.reserve(1 + Parents.size());
     dest.push_back(get(id));
-    for(auto const& ref : llvm::reverse(Parents))
-        dest.push_back(get(ref.id));
+    for(auto const& id : llvm::reverse(Parents))
+        dest.push_back(get(id));
     return dest;
 }
 

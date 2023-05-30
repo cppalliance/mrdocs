@@ -16,7 +16,6 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Reporter.hpp>
-#include <mrdox/Metadata/Access.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/Support/Mutex.h>
@@ -147,6 +146,13 @@ public:
         tooling::ToolExecutor& ex,
         std::shared_ptr<Config const> config,
         Reporter& R);
+
+    // KRYSTIAN NOTE: temporary
+    MRDOX_DECL
+    std::string&
+    getFullyQualifiedName(
+        const Info& I,
+        std::string& temp) const;
 };
 
 //------------------------------------------------

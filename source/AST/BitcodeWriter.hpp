@@ -22,7 +22,6 @@
 #include <mrdox/Platform.hpp>
 #include "BitcodeIDs.hpp"
 #include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Metadata/Access.hpp>
 #include <mrdox/ADT/BitField.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <clang/AST/AST.h>

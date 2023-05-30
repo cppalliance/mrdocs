@@ -116,7 +116,8 @@ enum class InfoType
     IT_enum,
     IT_typedef,
     IT_variable,
-    IT_field
+    IT_field,
+    IT_specialization
 };
 
 /** Return the result of comparing s0 to s1.

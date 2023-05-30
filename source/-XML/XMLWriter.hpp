@@ -85,7 +85,8 @@ private:
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
     void writeJavadoc(std::unique_ptr<Javadoc> const& javadoc);
-    void writeTemplate(const TemplateInfo& I);
+    void openTemplate(const std::unique_ptr<TemplateInfo>& I);
+    void closeTemplate(const std::unique_ptr<TemplateInfo>& I);
 
     template<class T>
     void writeNodes(AnyList<T> const& list);

@@ -11,8 +11,8 @@
 
 #include "Support/Debug.hpp"
 #include "Support/Radix.hpp"
-#include <mrdox/Metadata/Access.hpp>
 #include <mrdox/Metadata/Info.hpp>
+#include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <atomic>
@@ -251,11 +251,11 @@ format(
     if(! i.Namespace.empty())
     {
         std::string namespaces;
-        namespaces += i.Namespace[0].Name;
+        namespaces += fmt::format("{}", i.Namespace[0]);
         for(std::size_t idx = 1; idx < i.Namespace.size(); ++idx)
         {
             namespaces += "::";
-            namespaces += i.Namespace[idx].Name;
+            namespaces += fmt::format("{}", i.Namespace[idx]);
         }
         str += fmt::format(", namespace = {}", namespaces);
     }

@@ -99,7 +99,7 @@ visit(
         }
         else
         {
-            I.getFullyQualifiedName(s);
+            corpus_.getFullyQualifiedName(I, s);
             s = "namespace " + s;
         }
         beginSection(s);

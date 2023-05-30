@@ -175,7 +175,7 @@ writeIndex()
             auto safe_name = names.get(I->id);
             tags_.write("symbol", {}, {
                 { "safe", safe_name },
-                { "name", I->getFullyQualifiedName(temp) },
+                { "name", corpus_.getFullyQualifiedName(*I, temp) },
                 { "tag", getTagName(*I) },
                 { I->id } });
         }
@@ -184,7 +184,7 @@ writeIndex()
     {
         for(auto I : corpus_.index())
             tags_.write("symbol", {}, {
-                { "name", I->getFullyQualifiedName(temp) },
+                { "name", corpus_.getFullyQualifiedName(*I, temp) },
                 { "tag", getTagName(*I) },
                 { I->id } });
     }
@@ -339,6 +339,8 @@ XMLWriter::
 writeFunction(
     FunctionInfo const& I, Access const* access)
 {
+    openTemplate(I.Template);
+
     tags_.open(functionTagName, {
         { "name", I.Name },
         { access },
@@ -346,9 +348,6 @@ writeFunction(
         });
 
     writeSymbol(I);
-
-    if(I.Template)
-        writeTemplate(*I.Template);
 
     write(I.specs0, tags_);
     write(I.specs1, tags_);
@@ -362,6 +361,7 @@ writeFunction(
 
     tags_.close(functionTagName);
 
+    closeTemplate(I.Template);
     return true;
 }
 
@@ -370,6 +370,8 @@ XMLWriter::
 writeRecord(
     RecordInfo const& I, Access const* access)
 {
+    openTemplate(I.Template);
+
     llvm::StringRef tagName;
     switch(I.TagType)
     {
@@ -387,8 +389,6 @@ writeRecord(
 
     writeSymbol(I);
 
-    if(I.Template)
-        writeTemplate(*I.Template);
 
     write(I.specs, tags_);
 
@@ -411,6 +411,8 @@ writeRecord(
 
     tags_.close(tagName);
 
+    closeTemplate(I.Template);
+
     return true;
 }
 
@@ -419,6 +421,8 @@ XMLWriter::
 writeTypedef(
     TypedefInfo const& I, Access const* access)
 {
+    openTemplate(I.Template);
+
     llvm::StringRef tag;
     if(I.IsUsing)
         tag = aliasTagName;
@@ -432,9 +436,6 @@ writeTypedef(
 
     writeSymbol(I);
 
-    if(I.Template)
-        writeTemplate(*I.Template);
-
     tags_.write("type", "", {
         { "name", I.Underlying.Name },
         { I.Underlying.id } });
@@ -442,6 +443,8 @@ writeTypedef(
     writeJavadoc(I.javadoc);
 
     tags_.close(tag);
+
+    closeTemplate(I.Template);
 
     return true;
 }
@@ -480,6 +483,8 @@ XMLWriter::
 writeVar(
     VarInfo const& I, Access const* access)
 {
+    openTemplate(I.Template);
+
     tags_.open(varTagName, {
         { "name", I.Name },
         { access },
@@ -487,9 +492,6 @@ writeVar(
         });
 
     writeSymbol(I);
-
-    if(I.Template)
-        writeTemplate(*I.Template);
 
     write(I.specs, tags_);
 
@@ -501,6 +503,8 @@ writeVar(
     writeJavadoc(I.javadoc);
 
     tags_.close(varTagName);
+
+    closeTemplate(I.Template);
 
     return true;
 }
@@ -542,11 +546,13 @@ writeLocation(
 
 void
 XMLWriter::
-writeTemplate(
-    const TemplateInfo& I)
+openTemplate(
+    const std::unique_ptr<TemplateInfo>& I)
 {
+    if(! I)
+        return;
     const char* spec = nullptr;
-    switch(I.specializationKind())
+    switch(I->specializationKind())
     {
     case TemplateSpecKind::Explicit:
         spec = "explicit";
@@ -557,21 +563,30 @@ writeTemplate(
     default:
         break;
     }
-    const SymbolID& id = I.Primary ?
-        *I.Primary : SymbolID::zero;
+    const SymbolID& id = I->Primary ?
+        *I->Primary : SymbolID::zero;
 
     tags_.open(templateTagName, {
         {"class", spec, !! spec},
         {id}
     });
 
-    for(const TParam& tparam : I.Params)
+    for(const TParam& tparam : I->Params)
         writeTemplateParam(tparam, tags_);
-    for(const TArg& targ : I.Args)
+    for(const TArg& targ : I->Args)
         writeTemplateArg(targ, tags_);
+}
 
+void
+XMLWriter::
+closeTemplate(
+    const std::unique_ptr<TemplateInfo>& I)
+{
+    if(! I)
+        return;
     tags_.close(templateTagName);
 }
+
 
 //------------------------------------------------
 

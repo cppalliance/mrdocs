@@ -13,14 +13,15 @@
 #define MRDOX_METADATA_RECORD_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Access.hpp>
 #include <mrdox/ADT/BitField.hpp>
 #include <mrdox/Metadata/Field.hpp>
+#include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Scope.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
+#include <mrdox/Metadata/Var.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/SmallVector.h>
 #include <memory>
@@ -30,6 +31,35 @@
 
 namespace clang {
 namespace mrdox {
+
+/** Access specifier.
+
+    Public is set to zero since it is the most
+    frequently occurring access, and it is
+    elided by the bitstream encoder because it
+    has an all-zero bit pattern. This improves
+    compression in the bitstream.
+
+    @note It is by design that there is no
+    constant to represent "none."
+*/
+enum class Access
+{
+    Public = 0,
+    Protected,
+    Private
+};
+
+/** A reference to a symbol, and an access specifier.
+
+    This is used in records to refer to nested
+    elements with access control.
+*/
+struct MemberRef
+{
+    SymbolID id;
+    Access access;
+};
 
 /** Bit constants used with Record metadata
 */
@@ -130,6 +160,42 @@ private:
         , Template(std::move(T))
     {
     }
+};
+
+struct DataMember
+{
+    FieldInfo const* I;
+    RecordInfo const* From;
+};
+
+struct MemberEnum
+{
+    EnumInfo const* I;
+    RecordInfo const* From;
+};
+
+struct MemberFunction
+{
+    FunctionInfo const* I;
+    RecordInfo const* From;
+};
+
+struct MemberRecord
+{
+    RecordInfo const* I;
+    RecordInfo const* From;
+};
+
+struct MemberType
+{
+    TypedefInfo const* I;
+    RecordInfo const* From;
+};
+
+struct StaticDataMember
+{
+    VarInfo const* I;
+    RecordInfo const* From;
 };
 
 } // mrdox

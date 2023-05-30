@@ -391,5 +391,28 @@ build(
     return corpus;
 }
 
+// KRYSTIAN NOTE: temporary
+std::string&
+Corpus::
+getFullyQualifiedName(
+    const Info& I,
+    std::string& temp) const
+{
+    temp.clear();
+    for(auto const& ns_id : llvm::reverse(I.Namespace))
+    {
+        if(const Info* ns = find(ns_id))
+            temp.append(ns->Name.data(), ns->Name.size());
+        else
+            temp.append("<unnamed>");
+
+        temp.append("::");
+    }
+    auto s = I.extractName();
+    temp.append(s.data(), s.size());
+    return temp;
+}
+
+
 } // mrdox
 } // clang

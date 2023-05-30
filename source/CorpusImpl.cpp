@@ -249,8 +249,8 @@ canonicalize(
             Info const* I1)
         {
             return compareSymbolNames(
-                I0->getFullyQualifiedName(temp0),
-                I1->getFullyQualifiedName(temp1)) < 0;
+                getFullyQualifiedName(*I0, temp0),
+                getFullyQualifiedName(*I1, temp1)) < 0;
         });
     isCanonical_ = true;
 }

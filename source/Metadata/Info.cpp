@@ -70,7 +70,7 @@ extractName() const
 }
 
 //------------------------------------------------
-
+#if 0
 std::string&
 Info::
 getFullyQualifiedName(
@@ -86,6 +86,7 @@ getFullyQualifiedName(
     temp.append(s.data(), s.size());
     return temp;
 }
+#endif
 
 llvm::StringRef
 Info::

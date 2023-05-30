@@ -2,23 +2,23 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <file path="ct_mft_expl_inline.cpp" line="2" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-    </template>
-    <function name="f" id="fycIFVnUjGsczEihLemEC7pcV4w=">
-      <file path="ct_mft_expl_inline.cpp" line="5" class="def"/>
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+      <file path="ct_mft_expl_inline.cpp" line="2" class="def"/>
       <template>
         <tparam name="U" class="type"/>
+        <function name="f" id="fycIFVnUjGsczEihLemEC7pcV4w=">
+          <file path="ct_mft_expl_inline.cpp" line="5" class="def"/>
+        </function>
       </template>
-    </function>
-    <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
-      <file path="ct_mft_expl_inline.cpp" line="7" class="def"/>
       <template class="explicit">
         <targ value="int"/>
+        <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
+          <file path="ct_mft_expl_inline.cpp" line="7" class="def"/>
+        </function>
       </template>
-    </function>
-  </struct>
+    </struct>
+  </template>
 </namespace>
 </mrdox>

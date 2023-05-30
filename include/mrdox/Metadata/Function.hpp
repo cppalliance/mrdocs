@@ -16,8 +16,6 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/BitField.hpp>
 #include <mrdox/Metadata/Field.hpp>
-#include <mrdox/Metadata/Function.hpp>
-#include <mrdox/Metadata/FunctionKind.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
@@ -28,6 +26,80 @@
 
 namespace clang {
 namespace mrdox {
+
+/** An enumeration of the different kinds of functions.
+*/
+enum class FunctionKind
+{
+    // VFALCO The most frequent function kind should be
+    // here, since the bitstream writer does not emit zeroes.
+    Plain = 0,
+
+    // The operator kind values have to match the clang enumeration
+    OpNew /* = clang::OverloadedOperatorKind::OO_New */,
+    OpDelete,
+    OpArray_New,
+    OpArray_Delete,
+    OpPlus,
+    OpMinus,
+    OpStar,
+    OpSlash,
+    OpPercent,
+    OpCaret,
+    OpAmp,
+    OpPipe,
+    OpTilde,
+    OpExclaim,
+    OpEqual,
+    OpLess,
+    OpGreater,
+    OpPlusEqual,
+    OpMinusEqual,
+    OpStarEqual,
+    OpSlashEqual,
+    OpPercentEqual,
+    OpCaretEqual,
+    OpAmpEqual,
+    OpPipeEqual,
+    OpLessLess,
+    OpGreaterGreater,
+    OpLessLessEqual,
+    OpGreaterGreaterEqual,
+    OpEqualEqual,
+    OpExclaimEqual,
+    OpLessEqual,
+    OpGreaterEqual,
+    OpSpaceship,
+    OpAmpAmp,
+    OpPipePipe,
+    OpPlusPlus,
+    OpMinusMinus,
+    OpComma,
+    OpArrowStar,
+    OpArrow,
+    OpCall,
+    OpSubscript,
+    OpConditional,
+    OpCoawait,
+    NUM_OVERLOADED_OPERATORS /* = clang::OverloadedOperatorKind::NUM_OVERLOADED_OPERATORS */,
+
+    Destructor = NUM_OVERLOADED_OPERATORS,
+    Constructor,
+    Conversion
+};
+
+/** Return the function kind corresponding to clang's enum
+*/
+FunctionKind
+getFunctionKind(
+    OverloadedOperatorKind OOK) noexcept;
+
+/** Return a unique string constant for the kind.
+*/
+llvm::StringRef
+getFunctionKindString(
+    FunctionKind kind) noexcept;
+
 
 /** Bit constants used with function specifiers.
 */

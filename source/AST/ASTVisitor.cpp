@@ -11,10 +11,10 @@
 //
 
 #include "ASTVisitor.hpp"
+#include "ASTVisitorHelpers.hpp"
 #include "Bitcode.hpp"
 #include "ParseJavadoc.hpp"
 #include "ConfigImpl.hpp"
-#include "Metadata/FunctionKind.hpp"
 #include "Support/Path.hpp"
 #include "Support/Debug.hpp"
 #include <mrdox/Metadata.hpp>
@@ -32,7 +32,6 @@
 #include <llvm/Support/SHA1.h>
 #include <cassert>
 #include <ranges>
-
 
 namespace clang {
 namespace mrdox {
@@ -52,8 +51,7 @@ ASTVisitor(
     : ex_(ex)
     , config_(config)
     , R_(R)
-    , PublicOnly(! config_.includePrivate)
-    , IsFileInRootDir(true)
+    , IsFileInRootDir_(true)
     , compiler_(compiler)
 {
 }
@@ -95,16 +93,18 @@ extractSymbolID(
 bool
 ASTVisitor::
 shouldSerializeInfo(
-    bool PublicOnly,
-    bool IsOrIsInAnonymousNamespace,
     const NamedDecl* D) noexcept
 {
-    // FIXME: this isn't right
-    if(! PublicOnly)
+    // KRYSTIAN FIXME: getting the access of a members
+    // is not as simple as calling Decl::getAccessUnsafe.
+    // specifically, templates may not have
+    // their access set until they are actually instantiated.
+    return true;
+#if 0
+    if(config_.includePrivate)
         return true;
     if(IsOrIsInAnonymousNamespace)
         return false;
-
     // bool isPublic()
     AccessSpecifier access = D->getAccessUnsafe();
     if(access == AccessSpecifier::AS_private)
@@ -115,81 +115,7 @@ shouldSerializeInfo(
         return true;
     // some form of internal linkage
     return false;
-}
-
-//------------------------------------------------
-
-/** Returns true if D is or is in an anonymous namespace
-*/
-bool
-ASTVisitor::
-getParentNamespaces(
-    llvm::SmallVector<Reference, 4>& Namespaces,
-    const Decl* D)
-{
-    bool anonymous = false;
-    if(auto const* N = dyn_cast<NamespaceDecl>(D))
-        anonymous = N->isAnonymousNamespace();
-
-    const DeclContext* DC = D->getDeclContext();
-    do
-    {
-        if(const auto* N = dyn_cast<NamespaceDecl>(DC))
-        {
-            std::string Namespace;
-            if(N->isAnonymousNamespace())
-            {
-                Namespace = "@nonymous_namespace";
-                anonymous = true;
-            }
-            else
-            {
-                Namespace = N->getNameAsString();
-            }
-            Namespaces.emplace_back(
-                extractSymbolID(N),
-                Namespace,
-                InfoType::IT_namespace);
-        }
-        else if(const auto* N = dyn_cast<CXXRecordDecl>(DC))
-        {
-            // if the containing context is an implicit specialization,
-            // get the template from which it was instantiated
-            if(const auto* S = dyn_cast<ClassTemplateSpecializationDecl>(DC);
-                S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
-            {
-                N = S->getTemplateInstantiationPattern();
-            }
-            Namespaces.emplace_back(
-                extractSymbolID(N),
-                N->getNameAsString(),
-                InfoType::IT_record);
-        }
-        else if(const auto* N = dyn_cast<FunctionDecl>(DC))
-        {
-            Namespaces.emplace_back(
-                extractSymbolID(N),
-                N->getNameAsString(),
-                InfoType::IT_function);
-        }
-        else if(const auto* N = dyn_cast<EnumDecl>(DC))
-        {
-            Namespaces.emplace_back(
-                extractSymbolID(N),
-                N->getNameAsString(),
-                InfoType::IT_enum);
-        }
-        else if(isa<TranslationUnitDecl>(DC))
-        {
-            Namespaces.emplace_back(
-                SymbolID::zero,
-                "", //"GlobalNamespace",
-                InfoType::IT_namespace);
-        }
-    }
-    while((DC = DC->getParent()));
-
-    return anonymous;
+#endif
 }
 
 //------------------------------------------------
@@ -541,79 +467,6 @@ parseRawComment(
 
 //------------------------------------------------
 
-template<class Member>
-static
-void
-insertChild(
-    RecordInfo& P, Member const& I, Access access)
-{
-    if constexpr(std::is_same_v<Member, RecordInfo>)
-    {
-        P.Members.Records.push_back({ I.id, access });
-    }
-    else if constexpr(std::is_same_v<Member, FunctionInfo>)
-    {
-        P.Members.Functions.push_back({ I.id, access });
-    }
-    else if constexpr(std::is_same_v<Member, TypedefInfo>)
-    {
-        P.Members.Types.push_back({ I.id, access });
-    }
-    else if constexpr(std::is_same_v<Member, EnumInfo>)
-    {
-        P.Members.Enums.push_back({ I.id, access });
-    }
-    else if constexpr(std::is_same_v<Member, FieldInfo>)
-    {
-        P.Members.Fields.push_back({ I.id, access });
-    }
-    else if constexpr(std::is_same_v<Member, VarInfo>)
-    {
-        P.Members.Vars.push_back({ I.id, access });
-    }
-    else
-    {
-        Assert(false);
-    }
-}
-
-template<class Child>
-requires std::derived_from<Child, Info>
-static
-void
-insertChild(NamespaceInfo& parent, Child const& I)
-{
-    if constexpr(std::is_same_v<Child, NamespaceInfo>)
-    {
-        parent.Children.Namespaces.emplace_back(I.id, I.Name, Child::type_id);
-    }
-    else if constexpr(std::is_same_v<Child, RecordInfo>)
-    {
-        parent.Children.Records.emplace_back(I.id, I.Name, Child::type_id);
-    }
-    else if constexpr(std::is_same_v<Child, FunctionInfo>)
-    {
-        parent.Children.Functions.emplace_back(I.id, I.Name, Child::type_id);
-    }
-    else if constexpr(std::is_same_v<Child, TypedefInfo>)
-    {
-        parent.Children.Typedefs.emplace_back(I.id, I.Name, Child::type_id);
-    }
-    else if constexpr(std::is_same_v<Child, EnumInfo>)
-    {
-        parent.Children.Enums.emplace_back(I.id, I.Name, Child::type_id);
-    }
-    else if constexpr(std::is_same_v<Child, VarInfo>)
-    {
-        parent.Children.Vars.emplace_back(I.id, I.Name, Child::type_id);
-    }
-    // KRYSTIAN NOTE: Child should *never* be FieldInfo
-    else
-    {
-        Assert(false);
-    }
-}
-
 template<class Child>
 requires std::derived_from<Child, Info>
 static
@@ -622,17 +475,16 @@ writeParent(
     Child const& I,
     AccessSpecifier access = AccessSpecifier::AS_none)
 {
+    Assert(! I.Namespace.empty());
     Access access_;
     switch(access)
     {
     // namespace scope declaration
     case AccessSpecifier::AS_none:
     {
-        Assert(! I.Namespace.empty());
-        Assert(I.Namespace[0].RefType == InfoType::IT_namespace);
-
-        NamespaceInfo P(I.Namespace[0].id);
-        insertChild(P, I);
+        NamespaceInfo P(I.Namespace.front());
+        insertChild<Child>(P.Children,
+            I.id, I.Name, Child::type_id);
         return writeBitcode(P);
     }
     case AccessSpecifier::AS_public:
@@ -647,15 +499,12 @@ writeParent(
     default:
         llvm_unreachable("unknown access");
     }
-
     // Create an empty Record for the child,
     // and insert the child as a MemberRef.
     // Then return the parent as a serialized bitcode.
-    Assert(! I.Namespace.empty());
-    Assert(I.Namespace[0].RefType == InfoType::IT_record);
-    Assert(Child::type_id != InfoType::IT_namespace);
-    RecordInfo P(I.Namespace[0].id);
-    insertChild(P, I, access_);
+    RecordInfo P(I.Namespace.front());
+    insertChild<Child>(P.Members,
+        I.id, access_);
     return writeBitcode(P);
 }
 
@@ -694,43 +543,35 @@ shouldExtract(
     // we should never visit block scope declarations
     Assert(! D->getParentFunctionOrMethod());
 
-    clang::PresumedLoc const loc =
+    const PresumedLoc loc =
         sourceManager_->getPresumedLoc(D->getBeginLoc());
-    auto result = fileFilter_.emplace(
+
+    auto [it, inserted] = fileFilter_.emplace(
         loc.getIncludeLoc().getRawEncoding(),
         FileFilter());
-    if(! result.second)
-    {
-        // cached filter entry already exists
-        FileFilter const& ff = result.first->second;
-        if(! ff.include)
-            return false;
-        File = loc.getFilename(); // native
-        convert_to_slash(File);
-        // VFALCO we could assert that the prefix
-        //        matches and just lop off the
-        //        first ff.prefix.size() characters.
-        path::replace_path_prefix(File, ff.prefix, "");
-    }
-    else
-    {
-        // new element
-        File = loc.getFilename();
-        convert_to_slash(File);
-        FileFilter& ff = result.first->second;
-        ff.include = config_.shouldVisitFile(File, ff.prefix);
-        if(! ff.include)
-            return false;
-        // VFALCO we could assert that the prefix
-        //        matches and just lop off the
-        //        first ff.prefix.size() characters.
-        path::replace_path_prefix(File, ff.prefix, "");
-    }
 
-    IsFileInRootDir = true;
+    FileFilter& ff = it->second;
+    File_ = loc.getFilename();
+    convert_to_slash(File_);
+
+    // file has not been previously visited
+    if(inserted)
+        ff.include = config_.shouldVisitFile(File_, ff.prefix);
+
+    // don't extract if the declaration is in a file
+    // that should not be visited
+    if(! ff.include)
+        return false;
+    // VFALCO we could assert that the prefix
+    //        matches and just lop off the
+    //        first ff.prefix.size() characters.
+    path::replace_path_prefix(File_, ff.prefix, "");
+
+    IsFileInRootDir_ = true;
 
     return true;
 }
+
 
 bool
 ASTVisitor::
@@ -738,8 +579,8 @@ extractInfo(
     Info& I,
     const NamedDecl* D)
 {
-    bool anonymous = getParentNamespaces(I.Namespace, D);
-    if(! shouldSerializeInfo(PublicOnly, anonymous, D))
+    getParentNamespaces(I.Namespace, D);
+    if(! shouldSerializeInfo(D))
         return false;
     if(! extractSymbolID(D, I.id))
         return false;
@@ -748,10 +589,71 @@ extractInfo(
     return true;
 }
 
+//------------------------------------------------
+
+void
+ASTVisitor::
+getParentNamespaces(
+    std::vector<SymbolID>& Namespaces,
+    const Decl* D)
+{
+    const DeclContext* DC = D->getDeclContext();
+    do
+    {
+        // KRYSTIAN TODO: this can be a switch using DeclContext::getDeclKind
+        if(const auto* N = dyn_cast<NamespaceDecl>(DC))
+        {
+
+            Namespaces.emplace_back(
+                extractSymbolID(N));
+        }
+        else if(const auto* N = dyn_cast<ClassTemplateSpecializationDecl>(DC);
+            N && N->getSpecializationKind() == TSK_ImplicitInstantiation)
+        {
+            // if the containing context is an implicit specialization,
+            // get the template from which it was instantiated
+            const CXXRecordDecl* RD = N->getTemplateInstantiationPattern();
+#if 0
+            std::vector<TArg> args;
+            buildTemplateArgs(args, N->getTemplateArgs().asArray());
+            SymbolID primary = extractSymbolID(RD);
+#endif
+
+            Namespaces.emplace_back(
+                // extractSymbolID(N));
+                extractSymbolID(RD));
+        }
+        else if(const auto* N = dyn_cast<CXXRecordDecl>(DC))
+        {
+            Namespaces.emplace_back(
+                extractSymbolID(N));
+        }
+        else if(const auto* N = dyn_cast<FunctionDecl>(DC))
+        {
+            Namespaces.emplace_back(
+                extractSymbolID(N));
+        }
+        else if(const auto* N = dyn_cast<EnumDecl>(DC))
+        {
+            Namespaces.emplace_back(
+                extractSymbolID(N));
+        }
+        else if(isa<TranslationUnitDecl>(DC))
+        {
+            Namespaces.emplace_back(
+                SymbolID::zero);
+        }
+    }
+    while((DC = DC->getParent()));
+}
+
+//------------------------------------------------
+
 void
 ASTVisitor::
 extractBases(
-    RecordInfo& I, CXXRecordDecl* D)
+    RecordInfo& I,
+    CXXRecordDecl* D)
 {
     // Base metadata is only available for definitions.
     if(! D->isThisDeclarationADefinition())
@@ -799,11 +701,47 @@ extractBases(
 
 //------------------------------------------------
 
+void
+ASTVisitor::
+buildRecord(
+    RecordInfo& I,
+    AccessSpecifier A,
+    CXXRecordDecl* D)
+{
+    if(! extractInfo(I, D))
+        return;
+    int line = getLine(D);
+    if(D->isThisDeclarationADefinition())
+        I.DefLoc.emplace(line, File_, IsFileInRootDir_);
+    else
+        I.Loc.emplace_back(line, File_, IsFileInRootDir_);
+    I.TagType = D->getTagKind();
+
+    // These are from CXXRecordDecl::isEffectivelyFinal()
+    I.specs.isFinal = D->template hasAttr<FinalAttr>();
+    if(auto const DT = D->getDestructor())
+        I.specs.isFinalDestructor = DT->template hasAttr<FinalAttr>();
+
+    if(TypedefNameDecl const* TD = D->getTypedefNameForAnonDecl())
+    {
+        I.Name = TD->getNameAsString();
+        I.IsTypeDef = true;
+    }
+
+    extractBases(I, D);
+
+    insertBitcode(ex_, writeBitcode(I));
+    insertBitcode(ex_, writeParent(I, A));
+}
+
+//------------------------------------------------
+
 template<class DeclTy>
 bool
 ASTVisitor::
 constructFunction(
     FunctionInfo& I,
+    AccessSpecifier A,
     DeclTy* D)
 {
     // adjust parameter types
@@ -812,11 +750,11 @@ constructFunction(
         return false;
     // if(name)
     //     I.Name = name;
-    LineNumber = getLine(D);
+    int line = getLine(D);
     if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+        I.DefLoc.emplace(line, File_, IsFileInRootDir_);
     else
-        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
+        I.Loc.emplace_back(line, File_, IsFileInRootDir_);
     QualType qt = D->getReturnType();
     std::string s = getTypeAsString(qt);
     I.ReturnType = getTypeInfoForType(qt);
@@ -945,55 +883,6 @@ buildNamespace(
 
 void
 ASTVisitor::
-buildRecord(
-    RecordInfo& I,
-    CXXRecordDecl* D)
-{
-    if(! extractInfo(I, D))
-        return;
-    LineNumber = getLine(D);
-    if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
-    else
-        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
-    I.TagType = D->getTagKind();
-
-    // These are from CXXRecordDecl::isEffectivelyFinal()
-    I.specs.isFinal = D->template hasAttr<FinalAttr>();
-    if(auto const DT = D->getDestructor())
-        I.specs.isFinalDestructor = DT->template hasAttr<FinalAttr>();
-
-    if(TypedefNameDecl const* TD = D->getTypedefNameForAnonDecl())
-    {
-        I.Name = TD->getNameAsString();
-        I.IsTypeDef = true;
-    }
-
-    extractBases(I, D);
-
-    AccessSpecifier access;
-    if(auto CT = D->getDescribedClassTemplate())
-    {
-        access = CT->getAccess();
-    }
-    else if(auto MSI = D->getMemberSpecializationInfo())
-    {
-        access = MSI->getInstantiatedFrom()->getAccess();
-    }
-    else if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
-    {
-        access = CTSD->getSpecializedTemplate()->getAccess();
-    }
-    else
-    {
-        access = D->getAccess();
-    }
-    insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, access));
-}
-
-void
-ASTVisitor::
 buildFriend(
     FriendDecl* D)
 {
@@ -1005,7 +894,7 @@ buildFriend(
             if(! shouldExtract(FD))
                 return;
             FunctionInfo I;
-            if(! constructFunction(I, FD))
+            if(! constructFunction(I, FD->getAccessUnsafe(), FD))
                 return;
 #if 0
             SymbolID id;
@@ -1070,15 +959,16 @@ void
 ASTVisitor::
 buildEnum(
     EnumInfo& I,
+    AccessSpecifier A,
     EnumDecl* D)
 {
     if(! extractInfo(I, D))
         return;
-    LineNumber = getLine(D);
+    int line = getLine(D);
     if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+        I.DefLoc.emplace(line, File_, IsFileInRootDir_);
     else
-        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
+        I.Loc.emplace_back(line, File_, IsFileInRootDir_);
     I.Scoped = D->isScoped();
     if(D->isFixed())
     {
@@ -1087,19 +977,20 @@ buildEnum(
     }
     parseEnumerators(I, D);
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, D->getAccess()));
+    insertBitcode(ex_, writeParent(I, A));
 }
 
 void
 ASTVisitor::
 buildField(
     FieldInfo& I,
+    AccessSpecifier A,
     FieldDecl* D)
 {
     if(! extractInfo(I, D))
         return;
-    LineNumber = getLine(D);
-    I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+    int line = getLine(D);
+    I.DefLoc.emplace(line, File_, IsFileInRootDir_);
 
     I.Type = getTypeInfoForType(
         D->getTypeSourceInfo()->getType());
@@ -1110,27 +1001,28 @@ buildField(
     I.specs.isNodiscard = D->hasAttr<UnusedAttr>();
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, D->getAccess()));
+    insertBitcode(ex_, writeParent(I, A));
 }
 
 void
 ASTVisitor::
 buildVar(
     VarInfo& I,
+    AccessSpecifier A,
     VarDecl* D)
 {
     if(! extractInfo(I, D))
         return;
-    LineNumber = getLine(D);
+    int line = getLine(D);
     if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+        I.DefLoc.emplace(line, File_, IsFileInRootDir_);
     else
-        I.Loc.emplace_back(LineNumber, File, IsFileInRootDir);
+        I.Loc.emplace_back(line, File_, IsFileInRootDir_);
     I.Type = getTypeInfoForType(
         D->getTypeSourceInfo()->getType());
     I.specs.storageClass = D->getStorageClass();
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, D->getAccess()));
+    insertBitcode(ex_, writeParent(I, A));
 }
 
 template<class DeclTy>
@@ -1138,15 +1030,14 @@ void
 ASTVisitor::
 buildFunction(
     FunctionInfo& I,
+    AccessSpecifier A,
     DeclTy* D)
 {
-    if(! constructFunction(I, D))
+    if(! constructFunction(I, A, D))
         return;
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I,
-        std::derived_from<DeclTy, CXXMethodDecl> ?
-        D->getAccess() : AccessSpecifier::AS_none));
+    insertBitcode(ex_, writeParent(I, A));
 }
 
 template<class DeclTy>
@@ -1154,6 +1045,7 @@ void
 ASTVisitor::
 buildTypedef(
     TypedefInfo& I,
+    AccessSpecifier A,
     DeclTy* D)
 {
     if(! extractInfo(I, D))
@@ -1170,9 +1062,9 @@ buildTypedef(
         return;
     }
 
-    LineNumber = getLine(D);
+    int line = getLine(D);
     // D->isThisDeclarationADefinition(); // not available
-    I.DefLoc.emplace(LineNumber, File, IsFileInRootDir);
+    I.DefLoc.emplace(line, File_, IsFileInRootDir_);
     // KRYSTIAN NOTE: IsUsing is set by TraverseTypeAlias
     // I.IsUsing = std::is_same_v<DeclTy, TypeAliasDecl>;
     insertBitcode(ex_, writeBitcode(I));
@@ -1188,6 +1080,9 @@ Traverse(
 {
     if(! shouldExtract(D))
         return true;
+    if(! config_.includeAnonymous &&
+        D->isAnonymousNamespace())
+        return true;
 
     NamespaceInfo I;
     buildNamespace(I, D);
@@ -1199,13 +1094,17 @@ bool
 ASTVisitor::
 Traverse(
     CXXRecordDecl* D,
-    std::unique_ptr<TemplateInfo>&& Template)
+    AccessSpecifier A,
+    std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
     if(! shouldExtract(D))
         return true;
 
+    Assert(! D->getDeclContext()->isRecord() ||
+        A != AccessSpecifier::AS_none);
+
     RecordInfo I(std::move(Template));
-    buildRecord(I, D);
+    buildRecord(I, A, D);
 
     return TraverseContext(D);
 }
@@ -1213,13 +1112,17 @@ Traverse(
 bool
 ASTVisitor::
 Traverse(
-    TypedefDecl* D)
+    TypedefDecl* D,
+    AccessSpecifier A)
 {
     if(! shouldExtract(D))
         return true;
 
+    Assert(! D->getDeclContext()->isRecord() ||
+        A != AccessSpecifier::AS_none);
+
     TypedefInfo I;
-    buildTypedef(I, D);
+    buildTypedef(I, A, D);
     return true;
 }
 
@@ -1227,15 +1130,19 @@ bool
 ASTVisitor::
 Traverse(
     TypeAliasDecl* D,
-    std::unique_ptr<TemplateInfo>&& Template)
+    AccessSpecifier A,
+    std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
     if(! shouldExtract(D))
         return true;
 
+    Assert(! D->getDeclContext()->isRecord() ||
+        A != AccessSpecifier::AS_none);
+
     TypedefInfo I(std::move(Template));
     I.IsUsing = true;
 
-    buildTypedef(I, D);
+    buildTypedef(I, A, D);
     return true;
 }
 
@@ -1243,13 +1150,17 @@ bool
 ASTVisitor::
 Traverse(
     VarDecl* D,
-    std::unique_ptr<TemplateInfo>&& Template)
+    AccessSpecifier A,
+    std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
     if(! shouldExtract(D))
         return true;
 
+    Assert(! D->getDeclContext()->isRecord() ||
+        A != AccessSpecifier::AS_none);
+
     VarInfo I(std::move(Template));
-    buildVar(I, D);
+    buildVar(I, A, D);
     return true;
 }
 
@@ -1257,12 +1168,17 @@ bool
 ASTVisitor::
 Traverse(
     FunctionDecl* D,
-    std::unique_ptr<TemplateInfo>&& Template)
+    AccessSpecifier A,
+    std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
     if(! shouldExtract(D))
         return true;
+
+    Assert(! D->getDeclContext()->isRecord());
+    Assert(A == AccessSpecifier::AS_none);
+
     FunctionInfo I(std::move(Template));
-    buildFunction(I, D);
+    buildFunction(I, A, D);
     return true;
 }
 
@@ -1270,12 +1186,17 @@ bool
 ASTVisitor::
 Traverse(
     CXXMethodDecl* D,
-    std::unique_ptr<TemplateInfo>&& Template)
+    AccessSpecifier A,
+    std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
     if(! shouldExtract(D))
         return true;
+
+    Assert(D->getDeclContext()->isRecord());
+    Assert(A != AccessSpecifier::AS_none);
+
     FunctionInfo I(std::move(Template));
-    buildFunction(I, D);
+    buildFunction(I, A, D);
     return true;
 }
 
@@ -1283,7 +1204,8 @@ bool
 ASTVisitor::
 Traverse(
     CXXConstructorDecl* D,
-    std::unique_ptr<TemplateInfo>&& Template)
+    AccessSpecifier A,
+    std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
     /*
     auto s = D->getParent()->getName();
@@ -1294,8 +1216,12 @@ Traverse(
     */
     if(! shouldExtract(D))
         return true;
+
+    Assert(D->getDeclContext()->isRecord());
+    Assert(A != AccessSpecifier::AS_none);
+
     FunctionInfo I(std::move(Template));
-    buildFunction(I, D);
+    buildFunction(I, A, D);
     return true;
 }
 
@@ -1303,12 +1229,17 @@ bool
 ASTVisitor::
 Traverse(
     CXXConversionDecl* D,
-    std::unique_ptr<TemplateInfo>&& Template)
+    AccessSpecifier A,
+    std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
     if(! shouldExtract(D))
         return true;
+
+    Assert(D->getDeclContext()->isRecord());
+    Assert(A != AccessSpecifier::AS_none);
+
     FunctionInfo I(std::move(Template));
-    buildFunction(I, D);
+    buildFunction(I, A, D);
     return true;
 }
 
@@ -1316,24 +1247,31 @@ bool
 ASTVisitor::
 Traverse(
     CXXDeductionGuideDecl* D,
-    std::unique_ptr<TemplateInfo>&& Template)
+    AccessSpecifier A,
+    std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
     if(! shouldExtract(D))
         return true;
+
     FunctionInfo I(std::move(Template));
-    buildFunction(I, D);
+    buildFunction(I, A, D);
     return true;
 }
 
 bool
 ASTVisitor::
 Traverse(
-    CXXDestructorDecl* D)
+    CXXDestructorDecl* D,
+    AccessSpecifier A)
 {
     if(! shouldExtract(D))
         return true;
+
+    Assert(D->getDeclContext()->isRecord());
+    Assert(A != AccessSpecifier::AS_none);
+
     FunctionInfo I;
-    buildFunction(I, D);
+    buildFunction(I, A, D);
     return true;
 }
 
@@ -1349,32 +1287,42 @@ Traverse(
 bool
 ASTVisitor::
 Traverse(
-    EnumDecl* D)
+    EnumDecl* D,
+    AccessSpecifier A)
 {
     if(! shouldExtract(D))
         return true;
+
+    Assert(! D->getDeclContext()->isRecord() ||
+        A != AccessSpecifier::AS_none);
 
     EnumInfo I;
-    buildEnum(I, D);
+    buildEnum(I, A, D);
     return true;
 }
 
 bool
 ASTVisitor::
 Traverse(
-    FieldDecl* D)
+    FieldDecl* D,
+    AccessSpecifier A)
 {
     if(! shouldExtract(D))
         return true;
+
+    Assert(D->getDeclContext()->isRecord());
+    Assert(A != AccessSpecifier::AS_none);
+
     FieldInfo I;
-    buildField(I, D);
+    buildField(I, A, D);
     return true;
 }
 
 bool
 ASTVisitor::
 Traverse(
-    ClassTemplateDecl* D)
+    ClassTemplateDecl* D,
+    AccessSpecifier A)
 {
     CXXRecordDecl* RD = D->getTemplatedDecl();
     if(! shouldExtract(RD))
@@ -1383,7 +1331,7 @@ Traverse(
     auto Template = std::make_unique<TemplateInfo>();
     parseTemplateParams(*Template, RD);
 
-    return Traverse(RD, std::move(Template));
+    return Traverse(RD, A, std::move(Template));
 }
 
 bool
@@ -1399,24 +1347,17 @@ Traverse(
     parseTemplateParams(*Template, RD);
     parseTemplateArgs(*Template, D);
 
-    return Traverse(RD, std::move(Template));
+    // determine the access from the primary template
+    return Traverse(RD,
+        D->getSpecializedTemplate()->getAccessUnsafe(),
+        std::move(Template));
 }
 
 bool
 ASTVisitor::
 Traverse(
-    ClassTemplatePartialSpecializationDecl* D)
-{
-    // without this function, we would only traverse
-    // explicit specialization declarations
-    return Traverse(static_cast<
-        ClassTemplateSpecializationDecl*>(D));
-}
-
-bool
-ASTVisitor::
-Traverse(
-    VarTemplateDecl* D)
+    VarTemplateDecl* D,
+    AccessSpecifier A)
 {
     VarDecl* VD = D->getTemplatedDecl();
     if(! shouldExtract(VD))
@@ -1425,7 +1366,7 @@ Traverse(
     auto Template = std::make_unique<TemplateInfo>();
     parseTemplateParams(*Template, VD);
 
-    return Traverse(VD, std::move(Template));
+    return Traverse(VD, A, std::move(Template));
 }
 
 bool
@@ -1441,22 +1382,16 @@ Traverse(
     parseTemplateParams(*Template, VD);
     parseTemplateArgs(*Template, D);
 
-    return Traverse(VD, std::move(Template));
+    return Traverse(VD,
+        D->getSpecializedTemplate()->getAccessUnsafe(),
+        std::move(Template));
 }
 
 bool
 ASTVisitor::
 Traverse(
-    VarTemplatePartialSpecializationDecl* D)
-{
-    return Traverse(static_cast<
-        VarTemplateSpecializationDecl*>(D));
-}
-
-bool
-ASTVisitor::
-Traverse(
-    FunctionTemplateDecl* D)
+    FunctionTemplateDecl* D,
+    AccessSpecifier A)
 {
     FunctionDecl* FD = D->getTemplatedDecl();
     // check whether to extract using the templated declaration.
@@ -1493,14 +1428,17 @@ Traverse(
 
     CXXMethodDecl* MD = D->getSpecialization();
 
-    // KRYSTIAN FIXME: is the right? should this call TraverseDecl instead?
-    return Traverse(MD, std::move(Template));
+    // since the templated CXXMethodDecl may be a constructor
+    // or conversion function, call TraverseDecl to ensure that
+    // we call traverse for the dynamic type of the CXXMethodDecl
+    return TraverseDecl(MD, std::move(Template));
 }
 
 bool
 ASTVisitor::
 Traverse(
-    TypeAliasTemplateDecl* D)
+    TypeAliasTemplateDecl* D,
+    AccessSpecifier A)
 {
     TypeAliasDecl* AD = D->getTemplatedDecl();
     if(! shouldExtract(AD))
@@ -1509,7 +1447,7 @@ Traverse(
     auto Template = std::make_unique<TemplateInfo>();
     parseTemplateParams(*Template, AD);
 
-    return Traverse(AD, std::move(Template));
+    return Traverse(AD, A, std::move(Template));
 }
 
 template<typename... Args>
@@ -1533,6 +1471,9 @@ TraverseDecl(
     if(D->isImplicit())
         return true;
 
+    [[maybe_unused]] AccessSpecifier access =
+        D->getAccessUnsafe();
+
     switch(D->getKind())
     {
     case Decl::Namespace:
@@ -1543,36 +1484,43 @@ TraverseDecl(
     case Decl::CXXRecord:
         this->Traverse(static_cast<
             CXXRecordDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXMethod:
         this->Traverse(static_cast<
             CXXMethodDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXConstructor:
         this->Traverse(static_cast<
             CXXConstructorDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXConversion:
         this->Traverse(static_cast<
             CXXConversionDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXDestructor:
         this->Traverse(static_cast<
             CXXDestructorDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXDeductionGuide:
         this->Traverse(static_cast<
             CXXDeductionGuideDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::Function:
         this->Traverse(static_cast<
             FunctionDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::Friend:
@@ -1583,61 +1531,61 @@ TraverseDecl(
     case Decl::TypeAlias:
         this->Traverse(static_cast<
             TypeAliasDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::Typedef:
         this->Traverse(static_cast<
             TypedefDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::Enum:
         this->Traverse(static_cast<
             EnumDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::Field:
         this->Traverse(static_cast<
             FieldDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::Var:
         this->Traverse(static_cast<
             VarDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::ClassTemplate:
         this->Traverse(static_cast<
             ClassTemplateDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
+    case Decl::ClassTemplatePartialSpecialization:
     case Decl::ClassTemplateSpecialization:
         this->Traverse(static_cast<
             ClassTemplateSpecializationDecl*>(D),
             std::forward<Args>(args)...);
         break;
-    case Decl::ClassTemplatePartialSpecialization:
-        this->Traverse(static_cast<
-            ClassTemplatePartialSpecializationDecl*>(D),
-            std::forward<Args>(args)...);
-        break;
     case Decl::VarTemplate:
         this->Traverse(static_cast<
             VarTemplateDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
+    case Decl::VarTemplatePartialSpecialization:
     case Decl::VarTemplateSpecialization:
         this->Traverse(static_cast<
             VarTemplateSpecializationDecl*>(D),
             std::forward<Args>(args)...);
         break;
-    case Decl::VarTemplatePartialSpecialization:
-        this->Traverse(static_cast<
-            VarTemplatePartialSpecializationDecl*>(D),
-            std::forward<Args>(args)...);
-        break;
     case Decl::FunctionTemplate:
         this->Traverse(static_cast<
             FunctionTemplateDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     case Decl::ClassScopeFunctionSpecialization:
@@ -1648,6 +1596,7 @@ TraverseDecl(
     case Decl::TypeAliasTemplate:
         this->Traverse(static_cast<
             TypeAliasTemplateDecl*>(D),
+            access,
             std::forward<Args>(args)...);
         break;
     default:
@@ -1668,7 +1617,8 @@ TraverseContext(
 {
     Assert(D);
     for(auto* C : D->decls())
-        TraverseDecl(C);
+        if(! TraverseDecl(C))
+            return false;
     return true;
 }
 
@@ -1692,9 +1642,9 @@ HandleTranslationUnit(
         return;
 
     // Filter out TUs we don't care about
-    File = *filePath;
-    convert_to_slash(File);
-    if(! config_.shouldVisitTU(File))
+    File_ = *filePath;
+    convert_to_slash(File_);
+    if(! config_.shouldVisitTU(File_))
         return;
 
     sema_ = &compiler_.getSema();

@@ -4,24 +4,24 @@
 <namespace name="">
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
     <file path="c_mct_expl_outside.cpp" line="1" class="def"/>
-    <struct name="B" id="TqGFMDXDQ6ddt946aVDeyhY9Ij8=">
-      <file path="c_mct_expl_outside.cpp" line="4" class="def"/>
-      <template>
-        <tparam name="T" class="type"/>
-      </template>
-      <function name="f" id="GOVvMTuIkLp/PqUkD5z7Bvf4+FQ=">
+    <template>
+      <tparam name="T" class="type"/>
+      <struct name="B" id="TqGFMDXDQ6ddt946aVDeyhY9Ij8=">
         <file path="c_mct_expl_outside.cpp" line="4" class="def"/>
-      </function>
-    </struct>
-    <struct name="B" id="FxMFFVpoV2/LOOndnkQ2gu3w69U=">
-      <file path="c_mct_expl_outside.cpp" line="8" class="def"/>
-      <template class="explicit" id="TqGFMDXDQ6ddt946aVDeyhY9Ij8=">
-        <targ value="int"/>
-      </template>
-      <function name="g" id="nxkAf/oNulEWX8A/IPUHkew79Y4=">
-        <file path="c_mct_expl_outside.cpp" line="9" class="def"/>
-      </function>
-    </struct>
+        <function name="f" id="GOVvMTuIkLp/PqUkD5z7Bvf4+FQ=">
+          <file path="c_mct_expl_outside.cpp" line="4" class="def"/>
+        </function>
+      </struct>
+    </template>
+    <template class="explicit" id="TqGFMDXDQ6ddt946aVDeyhY9Ij8=">
+      <targ value="int"/>
+      <struct name="B" id="FxMFFVpoV2/LOOndnkQ2gu3w69U=">
+        <file path="c_mct_expl_outside.cpp" line="8" class="def"/>
+        <function name="g" id="nxkAf/oNulEWX8A/IPUHkew79Y4=">
+          <file path="c_mct_expl_outside.cpp" line="9" class="def"/>
+        </function>
+      </struct>
+    </template>
   </struct>
 </namespace>
 </mrdox>
