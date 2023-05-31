@@ -101,6 +101,15 @@ public:
     */
     bool includePrivate = false;
 
+    /** `true` if anonymous namespace members should be extracted and displayed.
+
+        In some cases anonymous namespace members will
+        be listed even if this configuration value is set to
+        `false`. For example, this may occur for a class derived
+        from one declared within an anonymous namespace.
+    */
+    bool includeAnonymous = true;
+
     //--------------------------------------------
 
     /** A string holding the complete configuration YAML.

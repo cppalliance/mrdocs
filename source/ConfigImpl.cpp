@@ -48,6 +48,7 @@ struct llvm::yaml::MappingTraits<
         io.mapOptional("single-page",       cfg.singlePage);
         io.mapOptional("verbose",           cfg.verboseOutput);
         io.mapOptional("with-private",      cfg.includePrivate);
+        io.mapOptional("with-anonymous",    cfg.includeAnonymous);
 
         io.mapOptional("concurrency",       cfg.concurrency_);
         io.mapOptional("defines",           cfg.additionalDefines_);
