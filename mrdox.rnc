@@ -74,9 +74,9 @@ grammar
             Name,
             Access?,
             ID,
+            Location *,
+            Template ?,
             (
-                Location * |
-                Template ? |
                 Attr * |
                 element return { attribute type { text }, ID ? } |
                 element param
@@ -116,6 +116,7 @@ grammar
             Name,
             ID,
             Location *,
+            Template ?,
             element type { Name, ID ? }
         } |
         element typedef
@@ -132,11 +133,11 @@ grammar
         element data
         {
             Name,
-            Access?,
+            Access ?,
             ID,
             attribute default { text } ?,
+            Location,
             (
-                Location &
                 Attr * &
                 element type { Name, ID ? } &
                 Javadoc ?
@@ -149,9 +150,11 @@ grammar
         element variable
         {
             Name,
+            Access ?,
             ID,
+            Location *,
+            Template ?,
             (
-                Location &
                 Attr * &
                 element type { Name, ID ? } &
                 Javadoc ?
