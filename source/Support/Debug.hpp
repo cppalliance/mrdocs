@@ -111,7 +111,7 @@ MRDOX_DECL void debugEnableHeapChecking();
 #define static_error(msg, value) \
     static_assert(!std::is_same_v<decltype(value),decltype(value)>,msg)
 
-#ifdef MRDOX_HAS_CXX20_FORMAT
+#ifndef NDEBUG
     // effectively the same as c++23 <print>,
     // except using debug_outs() as the output stream
     template<
@@ -121,8 +121,8 @@ MRDOX_DECL void debugEnableHeapChecking();
         Format fmt,
         Args&&... args)
     {
-        debug_outs() << std::vformat(fmt,
-            std::make_format_args(std::forward<Args>(args)...));
+        debug_outs() << fmt::vformat(fmt,
+            fmt::make_format_args(std::forward<Args>(args)...));
     }
 #else
     template<typename... Args>
