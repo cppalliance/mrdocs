@@ -106,10 +106,14 @@ protected:
     auto typeName(TypeInfo const& I);
 
     void forwardDeclareRecord(Formatter&, RecordInfo const& I);
+    void forwardDeclareEnum(Formatter&, EnumInfo const& I);
+
     void declareTypedef(Formatter&, TypedefInfo const& I);
     void declareEnum(Formatter&, EnumInfo const& I);
     void declareRecord(Formatter&, RecordInfo const& I);
     void declareFunction(Formatter&, FunctionInfo const& I);
+    void declareData(Formatter&, FieldInfo const& I);
+    void declareStaticData(Formatter&, VarInfo const& I);
 
     //--------------------------------------------
 

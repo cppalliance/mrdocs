@@ -554,6 +554,24 @@ forwardDeclareRecord(
 
 void
 AdocWriter::
+forwardDeclareEnum(
+    Formatter&os,
+    EnumInfo const& I)
+{
+    llvm::StringRef tag;
+    if(I.Scoped)
+        tag = "enum class";
+    else
+        tag = "enum";
+
+    os(tag, " ", linkedSymbol(I));
+    if(I.BaseType)
+        os(" : ", I.BaseType->Name);
+    os(";\n");
+}
+
+void
+AdocWriter::
 declareTypedef(
     Formatter& os,
     TypedefInfo const& I)
@@ -664,7 +682,7 @@ declareRecord(
     {
         updateAccess(ref.access);
         auto const& J = corpus_.get<EnumInfo>(ref.id);
-        declareEnum(os, J);
+        forwardDeclareEnum(os, J);
     }
 
     // Member Records
@@ -672,7 +690,7 @@ declareRecord(
     {
         updateAccess(ref.access);
         auto const& J = corpus_.get<RecordInfo>(ref.id);
-        declareRecord(os, J);
+        forwardDeclareRecord(os, J);
     }
 
     // Member Functions
@@ -682,10 +700,26 @@ declareRecord(
         auto const& J = corpus_.get<FunctionInfo>(ref.id);
         declareFunction(os, J);
     }
+
+    // Data Members
+    for(auto const& ref : I.Members.Fields)
+    {
+        updateAccess(ref.access);
+        auto const& J = corpus_.get<FieldInfo>(ref.id);
+        declareData(os, J);
+    }
+
+    // Static Data Members
+    for(auto const& ref : I.Members.Vars)
+    {
+        updateAccess(ref.access);
+        auto const& J = corpus_.get<VarInfo>(ref.id);
+        declareStaticData(os, J);
+    }
+
     os.indent(-4);
     os("};\n");
 }
-
 
 void
 AdocWriter::
@@ -710,6 +744,26 @@ declareFunction(
         os(I.ReturnType.Name, " ", linkedSymbol(I), "();\n");
     }
 }
+
+void
+AdocWriter::
+declareData(
+    Formatter& os,
+    FieldInfo const& I)
+{
+    os(I.Type.Name, " ", linkedSymbol(I), ";\n");
+}
+
+void
+AdocWriter::
+declareStaticData(
+    Formatter& os,
+    VarInfo const& I)
+{
+    os("static ", I.Type.Name, " ", linkedSymbol(I), ";\n");
+}
+
+//------------------------------------------------
 
 void
 AdocWriter::
