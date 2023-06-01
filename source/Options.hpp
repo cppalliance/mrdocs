@@ -31,7 +31,6 @@ extern llvm::cl::opt<Action>        ToolAction;
 
 // Test options
 extern llvm::cl::opt<bool> badOption;
-extern llvm::cl::opt<bool> adocOption;
 
 // Generate options
 extern llvm::cl::opt<std::string> FormatType;

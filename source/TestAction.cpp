@@ -310,16 +310,6 @@ handleFile(
         }
     }
 
-    // Write Asciidoc if requested
-    if(adocOption.getValue())
-    {
-        path::replace_extension(outputPath, adocGen_->fileExtension());
-        if(R_.error(
-            adocGen_->buildOne(outputPath.str(), *corpus, R_),
-            "write '", outputPath, "'"))
-            return llvm::Error::success(); // keep going
-    }
-
     return llvm::Error::success();
 }
 

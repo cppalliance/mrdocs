@@ -51,12 +51,6 @@ llvm::cl::opt<bool> badOption(
     llvm::cl::init(true),
     llvm::cl::cat(Category));
 
-llvm::cl::opt<bool> adocOption(
-    "adoc",
-    llvm::cl::desc("Write the corresponding Asciidoc (adoc) file for each input test file"),
-    llvm::cl::init(false),
-    llvm::cl::cat(Category));
-
 // Generate options
 
 llvm::cl::opt<std::string> FormatType(
