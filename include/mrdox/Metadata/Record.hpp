@@ -59,6 +59,16 @@ struct MemberRef
 {
     SymbolID id;
     Access access;
+
+    constexpr MemberRef() = default;
+
+    constexpr MemberRef(
+        const SymbolID& id_,
+        Access access_)
+    : id(id_)
+    , access(access_)
+    {
+    }
 };
 
 /** Bit constants used with Record metadata
