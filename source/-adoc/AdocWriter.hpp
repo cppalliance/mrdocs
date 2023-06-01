@@ -46,6 +46,7 @@ protected:
     struct Options
     {
         bool safe_names = false;
+        std::string template_dir;
     };
 
     struct Key;

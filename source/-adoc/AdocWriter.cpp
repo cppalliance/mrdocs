@@ -66,6 +66,7 @@ struct llvm::yaml::MappingTraits<
     {
         auto& opt= opt_.opt;
         io.mapOptional("safe-names",  opt.safe_names);
+        io.mapOptional("template-dir",  opt.template_dir);
     }
 };
 

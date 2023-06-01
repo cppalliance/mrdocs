@@ -96,7 +96,8 @@ makeInterface(
     Corpus const& corpus)
 {
     Interface I;
-    return makeInterface(I, Derived, corpus);
+    makeInterface(I, Derived, corpus);
+    return I;
 }
 
 } // mrdox
