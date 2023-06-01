@@ -45,6 +45,9 @@ public:
     iterator end() const noexcept;
 };
 
+template<class C>
+RangeFor(C const&) -> RangeFor<C>;
+
 //------------------------------------------------
 
 template<class Container>
