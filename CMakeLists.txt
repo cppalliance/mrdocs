@@ -194,14 +194,14 @@ if (BUILD_TESTING)
 
     if (CMAKE_EXPORT_COMPILE_COMMANDS)
         # test run
-        set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-        include(mrdox.cmake)
+        # set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+        # include(mrdox.cmake)
 
-        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
-        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
+        # mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
+        # mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
 
-        add_custom_target(reference_adoc ALL DEPENDS reference.adoc)
-        add_custom_target(reference_xml  ALL DEPENDS reference.xml)
+        # add_custom_target(reference_adoc ALL DEPENDS reference.adoc)
+        # add_custom_target(reference_xml  ALL DEPENDS reference.xml)
     endif()
 
     find_package(LibXml2)
