@@ -12,6 +12,7 @@
 #include "ASTVisitor.hpp"
 #include "FrontendAction.hpp"
 #include <clang/Tooling/Tooling.h>
+#include <clang/Frontend/CompilerInstance.h>
 
 namespace clang {
 namespace mrdox {
@@ -27,6 +28,16 @@ struct Action
         : ex_(exc)
         , config_(config)
     {
+    }
+
+    bool
+    PrepareToExecuteAction(
+        CompilerInstance& Compiler) override
+    {
+        FrontendOptions& fe_opts =
+            Compiler.getFrontendOpts();
+        fe_opts.SkipFunctionBodies = true;
+        return true;
     }
 
     std::unique_ptr<clang::ASTConsumer>

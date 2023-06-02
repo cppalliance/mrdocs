@@ -273,6 +273,19 @@ public:
     bool TraverseContext(DeclContext* D);
 
     void HandleTranslationUnit(ASTContext& Context) override;
+
+
+    /** Skip function bodies
+
+        This is called by Sema when parsing a function that has a body and:
+        - is constexpr, or
+        - uses a placeholder for a deduced return type
+
+        We always return `true` because whenever this function *is* called,
+        it will be for a function that cannot be used in a constant expression,
+        nor one that introduces a new type via returning a local class.
+    */
+    bool shouldSkipFunctionBody(Decl* D) override { return true; }
 };
 
 } // mrdox

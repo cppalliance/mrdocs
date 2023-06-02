@@ -1474,124 +1474,124 @@ TraverseDecl(
     switch(D->getKind())
     {
     case Decl::Namespace:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             NamespaceDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::CXXRecord:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             CXXRecordDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXMethod:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             CXXMethodDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXConstructor:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             CXXConstructorDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXConversion:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             CXXConversionDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXDestructor:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             CXXDestructorDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXDeductionGuide:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             CXXDeductionGuideDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Function:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             FunctionDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Friend:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             FriendDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::TypeAlias:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             TypeAliasDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Typedef:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             TypedefDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Enum:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             EnumDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Field:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             FieldDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Var:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             VarDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::ClassTemplate:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             ClassTemplateDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::ClassTemplatePartialSpecialization:
     case Decl::ClassTemplateSpecialization:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             ClassTemplateSpecializationDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::VarTemplate:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             VarTemplateDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::VarTemplatePartialSpecialization:
     case Decl::VarTemplateSpecialization:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             VarTemplateSpecializationDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::FunctionTemplate:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             FunctionTemplateDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::ClassScopeFunctionSpecialization:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             ClassScopeFunctionSpecializationDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::TypeAliasTemplate:
-        this->Traverse(static_cast<
+        Traverse(static_cast<
             TypeAliasTemplateDecl*>(D),
             access,
             std::forward<Args>(args)...);
