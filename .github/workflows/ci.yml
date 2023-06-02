@@ -95,6 +95,11 @@ jobs:
           path: build/MrDox-?.?.?-*.*
           retention-days: 1
 
+      - name: Log compile_commands.json
+        working-directory: ./build
+        run: |
+          cat compile_commands.json
+
   docs:
     needs: build
     if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
