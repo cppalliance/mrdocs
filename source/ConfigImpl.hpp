@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_CONFIGIMPL_HPP
-#define MRDOX_CONFIGIMPL_HPP
+#ifndef MRDOX_LIB_CONFIGIMPL_HPP
+#define MRDOX_LIB_CONFIGIMPL_HPP
 
 #include "Support/YamlFwd.hpp"
 #include <mrdox/Config.hpp>

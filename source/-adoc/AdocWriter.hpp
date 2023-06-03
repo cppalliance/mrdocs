@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_ADOC_ADOCWRITER_HPP
-#define MRDOX_ADOC_ADOCWRITER_HPP
+#ifndef MRDOX_LIB_ADOC_ADOCWRITER_HPP
+#define MRDOX_LIB_ADOC_ADOCWRITER_HPP
 
 #include "Support/SafeNames.hpp"
 #include "Support/YamlFwd.hpp"

@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SUPPORT_TYPE_TRAITS_HPP
-#define MRDOX_SUPPORT_TYPE_TRAITS_HPP
+#ifndef MRDOX_LIB_SUPPORT_TYPE_TRAITS_HPP
+#define MRDOX_LIB_SUPPORT_TYPE_TRAITS_HPP
 
 #include <type_traits>
 

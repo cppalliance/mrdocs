@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_ADOC_ADOCMULTIPAGEWRITER_HPP
-#define MRDOX_ADOC_ADOCMULTIPAGEWRITER_HPP
+#ifndef MRDOX_LIB_ADOC_ADOCMULTIPAGEWRITER_HPP
+#define MRDOX_LIB_ADOC_ADOCMULTIPAGEWRITER_HPP
 
 #include "AdocWriter.hpp"
 #include "Support/SafeNames.hpp"

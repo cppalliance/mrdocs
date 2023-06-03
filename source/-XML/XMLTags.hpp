@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_XML_XMLTAGS_HPP
-#define MRDOX_XML_XMLTAGS_HPP
+#ifndef MRDOX_LIB_XML_XMLTAGS_HPP
+#define MRDOX_LIB_XML_XMLTAGS_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>

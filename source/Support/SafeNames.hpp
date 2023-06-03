@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SUPPORT_SAFENAMES_HPP
-#define MRDOX_SUPPORT_SAFENAMES_HPP
+#ifndef MRDOX_LIB_SUPPORT_SAFENAMES_HPP
+#define MRDOX_LIB_SUPPORT_SAFENAMES_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>

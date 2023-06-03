@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_DEBUG_HPP
-#define MRDOX_DEBUG_HPP
+#ifndef MRDOX_LIB_SUPPORT_DEBUG_HPP
+#define MRDOX_LIB_SUPPORT_DEBUG_HPP
 
 #include <mrdox/Platform.hpp>
 #if ! defined(NDEBUG)

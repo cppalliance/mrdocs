@@ -9,8 +9,13 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+<<<<<<< HEAD
 #ifndef MRDOX_ADOC_ASCIIDOC_HPP
 #define MRDOX_ADOC_ASCIIDOC_HPP
+=======
+#ifndef MRDOX_LIB_ADOC_ASCIIDOC_HPP
+#define MRDOX_LIB_ADOC_ASCIIDOC_HPP
+>>>>>>> 203c58d (chore: tidy include guards)
 
 #include <mrdox/Platform.hpp>
 

@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TOOL_SINGLEFILEDB_HPP
-#define MRDOX_TOOL_SINGLEFILEDB_HPP
+#ifndef MRDOX_LIB_SINGLEFILEDB_HPP
+#define MRDOX_LIB_SINGLEFILEDB_HPP
 
 #include <clang/Tooling/CompilationDatabase.h>
 #include <string>

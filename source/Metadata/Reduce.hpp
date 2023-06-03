@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_METADATA_REDUCE_HPP
-#define MRDOX_METADATA_REDUCE_HPP
+#ifndef MRDOX_LIB_METADATA_REDUCE_HPP
+#define MRDOX_LIB_METADATA_REDUCE_HPP
 
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/MetadataFwd.hpp>
