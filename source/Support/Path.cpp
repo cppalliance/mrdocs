@@ -10,9 +10,39 @@
 //
 
 #include "Path.hpp"
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Path.h>
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
+
+std::string
+makeFullPath(
+    std::string_view pathName,
+    std::string_view workingDir)
+{
+    namespace path = llvm::sys::path;
+
+    llvm::SmallString<0> result;
+
+    if(! path::is_absolute(pathName))
+    {
+        result = workingDir;
+        path::append(result, path::Style::posix, pathName);
+        path::remove_dots(result, true, path::Style::posix);
+        return std::string(result);
+    }
+
+    result = pathName;
+    path::remove_dots(result, true);
+    convert_to_slash(result);
+    return std::string(result);
+}
+
+
+//------------------------------------------------
 
 llvm::StringRef
 convert_to_slash(

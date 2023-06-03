@@ -19,11 +19,13 @@
 namespace clang {
 namespace mrdox {
 
-/// Replaces backslashes with slashes if Windows in place.
-///
-/// @param path A path that is transformed to native format.
-/// On Unix, this function is a no-op because backslashes
-/// are valid path chracters.
+/** Replaces backslashes with slashes if Windows in place.
+
+    @param path A path that is transformed to native format.
+
+    On Unix, this function is a no-op because backslashes
+    are valid path chracters.
+*/
 llvm::StringRef
 convert_to_slash(
     llvm::SmallVectorImpl<char> &path,
