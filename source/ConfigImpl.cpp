@@ -69,31 +69,33 @@ namespace mrdox {
 Error
 ConfigImpl::
 construct(
-    llvm::StringRef workingDir,
-    llvm::StringRef configYamlStr,
-    llvm::StringRef extraYamlStr)
+    llvm::StringRef workingDirArg,
+    llvm::StringRef configYamlArg,
+    llvm::StringRef extraYamlArg)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
     // calculate working directory
     llvm::SmallString<64> s;
-    if(workingDir.empty())
+    if(workingDirArg.empty())
     {
         if(auto ec = fs::current_path(s))
             return Error(ec);
     }
     else
     {
-        s = workingDir;
+        s = workingDirArg;
     }
     path::remove_dots(s, true);
     makeDirsy(s);
     convert_to_slash(s);
     workingDir_ = s;
+    workingDir = std::string_view(
+        workingDir_.data(), workingDir_.size());
 
-    configYamlStr_ = configYamlStr;
-    extraYamlStr_ = extraYamlStr;
+    configYamlStr_ = configYamlArg;
+    extraYamlStr_ = extraYamlArg;
 
     configYaml = configYamlStr_;
     extraYaml = extraYamlStr_;
@@ -138,7 +140,7 @@ normalizedPath(
     llvm::SmallString<0> result;
     if(! path::is_absolute(pathName))
     {
-        result = workingDir();
+        result = workingDir;
         path::append(result, path::Style::posix, pathName);
         path::remove_dots(result, true, path::Style::posix);
     }

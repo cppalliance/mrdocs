@@ -111,6 +111,16 @@ public:
 
     //--------------------------------------------
 
+    /** Full path to the working directory
+
+        The working directory is used to calculate
+        full paths from relative paths.
+
+        This string will always be POSIX style
+        and have a trailing directory separator.
+    */
+    std::string_view workingDir;
+
     /** A string holding the complete configuration YAML.
     */
     std::string_view configYaml;

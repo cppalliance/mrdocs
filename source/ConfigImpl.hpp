@@ -81,17 +81,6 @@ public:
         return concurrency_ != 1;
     }
 
-    /** Return the full path to the working directory.
-
-        The returned path will always be POSIX
-        style and have a trailing separator.
-    */
-    llvm::StringRef
-    workingDir() const noexcept
-    {
-        return workingDir_;
-    }
-
     /** Return the full path to the source root directory.
 
         The returned path will always be POSIX
