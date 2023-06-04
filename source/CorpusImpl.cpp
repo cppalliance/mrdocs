@@ -11,6 +11,7 @@
 
 #include "CorpusImpl.hpp"
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Support/Report.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang {
@@ -233,13 +234,12 @@ public:
 
 void
 CorpusImpl::
-canonicalize(
-    Reporter& R)
+canonicalize()
 {
     if(isCanonical_)
         return;
     if(config_->verboseOutput)
-        R.print("Canonicalizing...");
+        reportInfo("Canonicalizing...");
     Canonicalizer cn(*this);
     traverse(cn, SymbolID::zero);
     std::string temp0;

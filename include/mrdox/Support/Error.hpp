@@ -13,146 +13,157 @@
 #define MRDOX_API_SUPPORT_ERROR_HPP
 
 #include <mrdox/Platform.hpp>
-#include <llvm/Support/Error.h>
-#include <llvm/Support/raw_ostream.h>
+#include <fmt/format.h>
+#include <cassert>
 #include <source_location>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 
 namespace clang {
 namespace mrdox {
 
-//------------------------------------------------
-
-class Err
+/** Holds the description of an error, or success.
+*/
+class [[nodiscard]] Error
 {
     std::string text_;
+    std::source_location loc_;
 
 public:
-    Err() = default;
+    /** Constructor.
 
+        A default constructed error is
+        equivalent to success.
+    */
+    Error() = default;
+
+    /** Constructor.
+    */
+    Error(Error&&) = default;
+
+    /** Constructor.
+    */
+    Error(Error const&) = default;
+
+    /** Constructor.
+    */
+    Error& operator=(Error&&) = default;
+
+    /** Assignment.
+    */
+    Error& operator=(Error const&) = default;
+
+    /** Constructor.
+
+        @param text A message describing the error.
+        An empty string indicates success.
+    */
     explicit
-    Err(std::string text)
-        : text_(std::move(text))
+    Error(
+        std::string_view text)
+        : text_(text)
     {
     }
 
+    /** Constructor.
+
+        @param fs The format string. An empty
+        string indicates success.
+
+        @param arg0,args The arguments to use
+        with the format string.
+    */
+    template<class Arg0, class... Args>
     explicit
-    operator bool() const noexcept
+    Error(
+        fmt::format_string<Arg0, Args...> fs,
+        Arg0&& arg0, Args&&... args)
+    {
+        text_ = fmt::format(fs,
+            std::forward<Arg0>(arg0),
+            std::forward<Args>(args)...);
+    }
+
+    /** Constructor.
+
+        @param ec The error code.
+    */
+    explicit
+    Error(
+        std::error_code const& ec)
+        : Error(ec
+            ? std::string_view(ec.message())
+            : std::string_view())
+    {
+    }
+
+    /** Return true if this holds an error.
+    */
+    bool failed() const noexcept
     {
         return ! text_.empty();
     }
 
+    /** Return true if this holds an error.
+    */
+    explicit
+    operator bool() const noexcept
+    {
+        return failed();
+    }
+
+    /** Return the error string.
+    */
     std::string_view
     message() const noexcept
     {
         return text_;
     }
+
+    /** Return a value indicating success.
+    */
+    static
+    Error
+    success() noexcept;
 };
 
-//------------------------------------------------
-/*
-    nice output for variadic error functions
-
-    These are used to convert arguments to
-    strings in makeError and Reporter members.
-*/
-
-template<class T>
-T& nice(T& t)
+inline
+Error
+Error::
+success() noexcept
 {
-    return t;
+    return Error();
 }
-
-template<class T>
-T&& nice(T&& t)
-{
-    return std::forward<T>(t);
-}
-
-template<class T>
-auto nice(llvm::Expected<T>&& e)
-{
-    return nice(e.takeError());
-}
-
-inline auto nice(std::error_code ec)
-{
-    return ec.message();
-}
-
-inline auto nice(Err e)
-{
-    return e.message();
-}
-
-template<class T>
-auto nice(llvm::ErrorOr<T>&& e)
-{
-    return nice(e.getError());
-}
-
-MRDOX_DECL
-llvm::StringRef
-nice(std::source_location loc);
-
-//------------------------------------------------
-
-/** Return an Error with descriptive information.
-
-    @param reason A phrase describing the cause of the failure.
-
-    @param loc The source location where the failure occurred.
-*/
-MRDOX_DECL
-[[nodiscard]]
-llvm::Error
-makeErrorString(
-    std::string reason,
-    std::source_location loc =
-        std::source_location::current());
-
-template<class Arg0, class... Args>
-struct makeError : llvm::Error
-{
-    makeError(
-        Arg0&& arg0,
-        Args&&... args,
-        std::source_location loc =
-            std::source_location::current())
-        : llvm::Error(
-            [&]
-            {
-                std::string temp;
-                llvm::raw_string_ostream os(temp);
-                os << nice(std::forward<Arg0>(arg0));
-                if constexpr(sizeof...(args) > 0)
-                    (os << ... << nice(std::forward<Args>(args)));
-                os << ' ' << nice(loc);
-                return makeErrorString(std::move(temp), loc);
-            }())
-    {
-    }
-};
-
-template<class Arg0, class... Args>
-makeError(Arg0&&, Args&&...) -> makeError<Arg0, Args...>;
-
-template<class... Args>
-Err makeErr(Args&&... args)
-{
-    auto err = makeError(std::forward<Args>(args)...);
-    if(! err)
-        return Err();
-    std::string s;
-    llvm::raw_string_ostream os(s);
-    os << err;
-    return Err(s.c_str());
-}
-
 
 } // mrdox
 } // clang
+
+//------------------------------------------------
+
+template<>
+struct fmt::formatter<clang::mrdox::Error>
+    : fmt::formatter<std::string_view>
+{
+    auto format(
+        clang::mrdox::Error const& err,
+        fmt::format_context& ctx) const
+    {
+        return fmt::formatter<std::string_view>::format(err.message(), ctx);
+    }
+};
+
+template<>
+struct fmt::formatter<std::error_code>
+    : fmt::formatter<std::string_view>
+{
+    auto format(
+        std::error_code const& ec,
+        fmt::format_context& ctx) const
+    {
+        return fmt::formatter<std::string_view>::format(ec.message(), ctx);
+    }
+};
 
 #endif

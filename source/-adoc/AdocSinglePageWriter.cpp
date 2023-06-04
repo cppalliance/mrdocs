@@ -19,19 +19,18 @@ namespace adoc {
 AdocSinglePageWriter::
 AdocSinglePageWriter(
     llvm::raw_ostream& os,
-    Corpus const& corpus,
-    Reporter& R) noexcept
-    : AdocWriter(os, names_, corpus, R)
+    Corpus const& corpus) noexcept
+    : AdocWriter(os, names_, corpus)
     , names_(corpus)
 {
 }
 
-Err
+Error
 AdocSinglePageWriter::
 build()
 {
-    if(auto E = AdocWriter::init())
-        return makeErr("init failed");
+    if(auto err = AdocWriter::init())
+        return err;
     Assert(sect_.level == 0);
     sect_.level = 1;
     sect_.markup = "=";

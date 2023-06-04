@@ -10,9 +10,10 @@
 //
 
 #include "BitcodeGenerator.hpp"
+#include "Support/Error.hpp"
 #include "Support/SafeNames.hpp"
 #include "AST/Bitcode.hpp"
-#include <mrdox/Error.hpp>
+#include <mrdox/Support/Report.hpp>
 #include <mrdox/Metadata.hpp>
 
 namespace clang {
@@ -22,7 +23,6 @@ namespace bitcode {
 class MultiFileBuilder : public Corpus::Visitor
 {
     Corpus const& corpus_;
-    Reporter& R_;
     std::string_view outputPath_;
     SafeNames names_;
     Config::WorkGroup wg_;
@@ -30,22 +30,20 @@ class MultiFileBuilder : public Corpus::Visitor
 public:
     MultiFileBuilder(
         std::string_view outputPath,
-        Corpus const& corpus,
-        Reporter& R)
+        Corpus const& corpus)
         : corpus_(corpus)
-        , R_(R)
         , outputPath_(outputPath)
         , names_(corpus_)
         , wg_(&corpus.config)
     {
     }
 
-    Err
+    Error
     build()
     {
         corpus_.traverse(*this, SymbolID::zero);
         wg_.wait();
-        return Err();
+        return Error();
     }
 
     template<class T>
@@ -63,14 +61,18 @@ public:
                 filePath.append(".bc");
                 std::error_code ec;
                 llvm::raw_fd_ostream os(filePath, ec, fs::CD_CreateAlways);
-                if(! R_.error(ec, "open '", filePath, "'"))
+                if(ec)
                 {
-                    auto bc = writeBitcode(I);
-                    if(auto ec = os.error())
-                        if(R_.error(ec, "write '", filePath, "'"))
-                            return;
-                    os.write(bc.data.data(), bc.data.size());
+                    reportError(Error(ec), "open \"{}\"", filePath);
+                    return;
                 }
+                auto bc = writeBitcode(I);
+                if(auto ec = os.error())
+                {
+                    reportError(Error(ec), "write \"{}\"", filePath);
+                    return;
+                }
+                os.write(bc.data.data(), bc.data.size());
             });
     }
 
@@ -111,25 +113,22 @@ public:
 class SingleFileBuilder : public Corpus::Visitor
 {
     Corpus const& corpus_;
-    [[maybe_unused]] Reporter& R_;
     std::ostream& os_;
 
 public:
     SingleFileBuilder(
         std::ostream& os,
-        Corpus const& corpus,
-        Reporter& R)
+        Corpus const& corpus)
         : corpus_(corpus)
-        , R_(R)
         , os_(os)
     {
     }
 
-    Err
+    Error
     build()
     {
         corpus_.traverse(*this, SymbolID::zero);
-        return Err();
+        return Error();
     }
 
     template<class T>
@@ -173,24 +172,22 @@ public:
 
 //------------------------------------------------
 
-Err
+Error
 BitcodeGenerator::
 build(
     std::string_view outputPath,
-    Corpus const& corpus,
-    Reporter& R) const
+    Corpus const& corpus) const
 {
-    return MultiFileBuilder(outputPath, corpus, R).build();
+    return MultiFileBuilder(outputPath, corpus).build();
 }
 
-Err
+Error
 BitcodeGenerator::
 buildOne(
     std::ostream& os,
-    Corpus const& corpus,
-    Reporter& R) const
+    Corpus const& corpus) const
 {
-    return SingleFileBuilder(os, corpus, R).build();
+    return SingleFileBuilder(os, corpus).build();
 }
 
 } // xml

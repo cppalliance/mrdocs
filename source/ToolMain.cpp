@@ -34,7 +34,7 @@
 
 #include "Options.hpp"
 #include "Support/Debug.hpp"
-#include <mrdox/Reporter.hpp>
+#include <mrdox/Support/Report.hpp>
 #include <mrdox/Version.hpp>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/CommandLine.h>
@@ -44,8 +44,8 @@
 namespace clang {
 namespace mrdox {
 
-extern int DoGenerateAction(Reporter&);
-extern int DoTestAction(Reporter&);
+extern Error DoGenerateAction();
+extern int DoTestAction();
 
 inline void print_version(llvm::raw_ostream& os)
 {
@@ -80,11 +80,17 @@ int main(int argc, char const** argv)
         }
     }
 
-    Reporter R;
-    int toolResult;
+    // Generate
     if(clang::mrdox::ToolAction == Action::generate)
-        toolResult = DoGenerateAction(R);
-    else
-        toolResult = DoTestAction(R);    
-    return toolResult;
+    {
+        auto err = DoGenerateAction();
+        if(! err)
+            return EXIT_SUCCESS;
+
+        reportError(err, "generate reference documentation");
+        return EXIT_FAILURE;
+    }
+
+    // Test
+    return DoTestAction();
 }

@@ -44,11 +44,10 @@ struct XMLGenerator : Generator
         return "xml";
     }
 
-    Err
+    Error
     buildOne(
         std::ostream& os,
-        Corpus const& corpus,
-        Reporter& R) const override;
+        Corpus const& corpus) const override;
 };
 
 } // xml

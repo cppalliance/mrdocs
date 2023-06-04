@@ -21,9 +21,8 @@
 
 #include <mrdox/Platform.hpp>
 #include "BitcodeIDs.hpp"
-#include <mrdox/Error.hpp>
+#include <mrdox/Support/Expected.hpp>
 #include <mrdox/Metadata.hpp>
-#include <mrdox/Reporter.hpp>
 #include <clang/AST/AST.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/Bitstream/BitstreamReader.h>
@@ -39,18 +38,15 @@ class BitcodeReader
 {
 public:
     BitcodeReader(
-        llvm::BitstreamCursor& Stream,
-        Reporter& R)
-        : R_(R)
-        , Stream(Stream)
+        llvm::BitstreamCursor& Stream)
+        : Stream(Stream)
     {
     }
 
     // Main entry point, calls readBlock to read each block in the given stream.
-    llvm::Expected<
-        std::vector<std::unique_ptr<Info>>>
-    getInfos();
-
+    auto
+    getInfos() ->
+        Expected<std::vector<std::unique_ptr<Info>>>;
 public:
     struct AnyBlock;
 
@@ -62,35 +58,32 @@ public:
         BlockBegin
     };
 
-    llvm::Error validateStream();
-    llvm::Error readBlockInfoBlock();
+    Error validateStream();
+    Error readBlockInfoBlock();
 
     /** Return the next decoded Info from the stream.
     */
     template<class T>
-    llvm::Expected<std::unique_ptr<Info>>
+    Expected<std::unique_ptr<Info>>
     readInfo(unsigned ID);
 
     /** Read a single block.
 
         Calls readRecord on each record found.
     */
-    llvm::Error
-    readBlock(AnyBlock& B, unsigned ID);
+    Error readBlock(AnyBlock& B, unsigned ID);
 
     /** Read a record into a data field.
 
         This calls parseRecord after casting.
     */
-    llvm::Error
-    readRecord(unsigned ID);
+    Error readRecord(unsigned ID);
 
     // Helper function to step through blocks to find and dispatch the next record
     // or block to be read.
     Cursor skipUntilRecordOrBlock(unsigned &BlockOrRecordID);
 
 public:
-    Reporter& R_;
     llvm::BitstreamCursor& Stream;
     std::optional<llvm::BitstreamBlockInfo> BlockInfo;
     std::vector<AnyBlock*> blockStack_;

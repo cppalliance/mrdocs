@@ -14,9 +14,9 @@
 
 #include "Support/SafeNames.hpp"
 #include "Support/YamlFwd.hpp"
-#include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <string>
 
 namespace clang {
@@ -61,7 +61,6 @@ protected:
 
     llvm::raw_ostream& os_;
     Corpus const& corpus_;
-    Reporter& R_;
     Section sect_;
     std::string temp_;
 
@@ -72,10 +71,9 @@ public:
     AdocWriter(
         llvm::raw_ostream& os,
         SafeNames const& names,
-        Corpus const& corpus,
-        Reporter& R) noexcept;
+        Corpus const& corpus) noexcept;
 
-    llvm::Error init();
+    Error init();
 
     struct FormalParam;
     struct TypeName;

@@ -42,17 +42,15 @@ struct BitcodeGenerator : Generator
         return "bc";
     }
 
-    Err
+    Error
     build(
         std::string_view outputPath,
-        Corpus const& corpus,
-        Reporter& R) const override;
+        Corpus const& corpus) const override;
 
-    Err
+    Error
     buildOne(
         std::ostream& os,
-        Corpus const& corpus,
-        Reporter& R) const override;
+        Corpus const& corpus) const override;
 };
 
 } // bitcode

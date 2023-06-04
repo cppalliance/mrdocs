@@ -166,16 +166,14 @@ AdocWriter::
 AdocWriter(
     llvm::raw_ostream& os,
     SafeNames const& names,
-    Corpus const& corpus,
-    Reporter& R) noexcept
+    Corpus const& corpus) noexcept
     : names_(names)
     , os_(os)
     , corpus_(corpus)
-    , R_(R)
 {
 }
 
-llvm::Error
+Error
 AdocWriter::
 init()
 {
@@ -186,7 +184,7 @@ init()
         yin.setAllowUnknownKeys(true);
         yin >> options_;
         if(auto ec = yin.error())
-            return makeError(ec);
+            return Error(ec);
     }
     {
         llvm::yaml::Input yin(
@@ -195,10 +193,10 @@ init()
         yin.setAllowUnknownKeys(true);
         yin >> options_;
         if(auto ec = yin.error())
-            return makeError(ec);
+            return Error(ec);
     }
 
-    return llvm::Error::success();
+    return Error::success();
 }
 
 //------------------------------------------------

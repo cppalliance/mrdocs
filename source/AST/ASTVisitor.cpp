@@ -46,11 +46,9 @@ ASTVisitor::
 ASTVisitor(
     tooling::ExecutionContext& ex,
     ConfigImpl const& config,
-    clang::CompilerInstance& compiler,
-    Reporter& R) noexcept
+    clang::CompilerInstance& compiler) noexcept
     : ex_(ex)
     , config_(config)
-    , R_(R)
     , IsFileInRootDir_(true)
     , compiler_(compiler)
 {
@@ -446,8 +444,7 @@ void
 ASTVisitor::
 parseRawComment(
     std::unique_ptr<Javadoc>& javadoc,
-    Decl const* D,
-    Reporter& R)
+    Decl const* D)
 {
     // VFALCO investigate whether we can use
     // ASTContext::getCommentForDecl instead
@@ -457,7 +454,7 @@ parseRawComment(
     {
         RC->setAttached();
         javadoc = std::make_unique<Javadoc>(
-            parseJavadoc(RC, D, R));
+            parseJavadoc(RC, D));
     }
     else
     {
@@ -585,7 +582,7 @@ extractInfo(
     if(! extractSymbolID(D, I.id))
         return false;
     I.Name = D->getNameAsString();
-    parseRawComment(I.javadoc, D, R_);
+    parseRawComment(I.javadoc, D);
     return true;
 }
 

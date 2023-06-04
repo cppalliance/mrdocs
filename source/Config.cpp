@@ -11,7 +11,7 @@
 
 #include "ConfigImpl.hpp"
 #include "Support/Path.hpp"
-#include <mrdox/Error.hpp>
+#include <mrdox/Support/Error.hpp>
 
 #include <llvm/Config/llvm-config.h>
 #include <llvm/Support/FileSystem.h>

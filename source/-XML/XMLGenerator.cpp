@@ -13,23 +13,22 @@
 #include "XMLWriter.hpp"
 #include "Support/Radix.hpp"
 #include "Support/RawOstream.hpp"
-#include <mrdox/Error.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Metadata.hpp>
 
 namespace clang {
 namespace mrdox {
 namespace xml {
 
-Err
+Error
 XMLGenerator::
 buildOne(
     std::ostream& os,
-    Corpus const& corpus,
-    Reporter& R) const
+    Corpus const& corpus) const
 {
     namespace fs = llvm::sys::fs;
     RawOstream raw_os(os);
-    return XMLWriter(raw_os, corpus, R).build();
+    return XMLWriter(raw_os, corpus).build();
 }
 
 } // xml

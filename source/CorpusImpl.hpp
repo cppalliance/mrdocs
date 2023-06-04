@@ -15,6 +15,7 @@
 #include "Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
 #include <llvm/ADT/StringMap.h>
+#include <llvm/Support/Mutex.h>
 #include <string>
 
 namespace clang {
@@ -102,7 +103,7 @@ private:
         @param R The diagnostic reporting object to
         use for delivering errors and information.
     */
-    void canonicalize(Reporter& R);
+    void canonicalize();
 
     std::shared_ptr<ConfigImpl const> config_;
 

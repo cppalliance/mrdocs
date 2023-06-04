@@ -28,8 +28,7 @@ public:
     AdocMultiPageWriter(
         llvm::raw_ostream& os,
         Corpus const& corpus,
-        SafeNames const& names,
-        Reporter& R) noexcept;
+        SafeNames const& names) noexcept;
 
     void build(NamespaceInfo const&);
     void build(RecordInfo const&);

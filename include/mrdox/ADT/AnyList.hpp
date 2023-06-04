@@ -18,6 +18,7 @@
 #include <cstdint>
 #include <iterator>
 #include <memory>
+#include <type_traits>
 #include <typeinfo>
 #include <utility>
 

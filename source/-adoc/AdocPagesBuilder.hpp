@@ -12,9 +12,9 @@
 #define MRDOX_ADOC_ADOCPAGESBUILDER_HPP
 
 #include "Support/SafeNames.hpp"
-#include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 
 namespace clang {
@@ -25,7 +25,6 @@ class AdocPagesBuilder
     : public Corpus::Visitor
 {
     Corpus const& corpus_;
-    Reporter& R_;
     SafeNames names_;
     llvm::StringRef outputPath_;
     Config::WorkGroup wg_;
@@ -33,17 +32,15 @@ class AdocPagesBuilder
 public:
     AdocPagesBuilder(
         llvm::StringRef outputPath,
-        Corpus const& corpus,
-        Reporter& R)
+        Corpus const& corpus)
         : corpus_(corpus)
-        , R_(R)
         , names_(corpus_)
         , outputPath_(outputPath)
         , wg_(&corpus.config)
     {
     }
 
-    Err build();
+    Error build();
 
     template<class T>
     void build(T const& I);

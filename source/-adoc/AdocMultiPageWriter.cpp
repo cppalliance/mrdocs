@@ -20,9 +20,8 @@ AdocMultiPageWriter::
 AdocMultiPageWriter(
     llvm::raw_ostream& os,
     Corpus const& corpus,
-    SafeNames const& names,
-    Reporter& R) noexcept
-    : AdocWriter(os, names, corpus, R)
+    SafeNames const& names) noexcept
+    : AdocWriter(os, names, corpus)
     , names_(names)
 {
 }

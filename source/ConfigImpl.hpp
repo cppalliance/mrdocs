@@ -14,6 +14,8 @@
 
 #include "Support/YamlFwd.hpp"
 #include <mrdox/Config.hpp>
+#include <mrdox/Support/Expected.hpp>
+#include <llvm/ADT/SmallString.h>
 #include <llvm/Support/ThreadPool.h>
 #include <memory>
 
@@ -60,7 +62,7 @@ private:
     template<class T>
     friend struct llvm::yaml::MappingTraits;
 
-    llvm::Error construct(
+    Error construct(
         llvm::StringRef workingDir,
         llvm::StringRef configYaml,
         llvm::StringRef extraYaml);
@@ -152,13 +154,12 @@ public:
         additional valid YAML which will be parsed and
         applied to the existing configuration.
     */
-    friend auto
+    friend
+    Expected<std::shared_ptr<ConfigImpl const>>
     createConfigFromYAML(
         llvm::StringRef workingDir,
         llvm::StringRef configYaml,
-        llvm::StringRef extraYaml) ->
-            llvm::ErrorOr<std::shared_ptr<
-                ConfigImpl const>>;
+        llvm::StringRef extraYaml);
 };
 
 //------------------------------------------------
@@ -197,14 +198,11 @@ public:
     additional valid YAML which will be parsed and
     applied to the existing configuration.
 */
-auto
+Expected<std::shared_ptr<ConfigImpl const>>
 createConfigFromYAML(
     llvm::StringRef workingDir,
     llvm::StringRef configYaml,
-    llvm::StringRef extraYaml) ->
-        llvm::ErrorOr<std::shared_ptr<
-            ConfigImpl const>>;
-
+    llvm::StringRef extraYaml);
 
 /** Create a configuration by loading a YAML file.
 
@@ -235,11 +233,10 @@ createConfigFromYAML(
     @param ec [out] Set to the error, if any occurred.
 */
 MRDOX_DECL
-std::shared_ptr<ConfigImpl const>
+Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
     std::string_view fileName,
-    std::string_view extraYaml,
-    std::error_code& ec);
+    std::string_view extraYaml);
 
 /** Return a configuration by loading a YAML file.
 
@@ -258,12 +255,11 @@ loadConfigFile(
     @param ec [out] Set to the error, if any occurred.
 */
 inline
-std::shared_ptr<ConfigImpl const>
+Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
-    std::string_view fileName,
-    std::error_code& ec)
+    std::string_view fileName)
 {
-    return loadConfigFile(fileName, "", ec);
+    return loadConfigFile(fileName, "");
 }
 
 /** Create a configuration by loading a YAML string.
@@ -289,12 +285,14 @@ loadConfigFile(
 
     @param ec [out] Set to the error, if any occurred.
 */
-MRDOX_DECL
-std::shared_ptr<ConfigImpl const>
+inline
+Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigString(
     std::string_view workingDir,
-    std::string_view configYaml,
-    std::error_code& ec);
+    std::string_view configYaml)
+{
+    return createConfigFromYAML(workingDir, configYaml, "");
+}
 
 } // mrdox
 } // clang

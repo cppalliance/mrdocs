@@ -20,15 +20,13 @@ namespace clang {
 namespace mrdox {
 
 class ConfigImpl;
-class Reporter;
 
 /** Return a factory used to create our visitor.
 */
 std::unique_ptr<tooling::FrontendActionFactory>
 makeFrontendActionFactory(
     tooling::ExecutionContext& exc,
-    ConfigImpl const& config,
-    Reporter& R);
+    ConfigImpl const& config);
 
 } // mrdox
 } // clang

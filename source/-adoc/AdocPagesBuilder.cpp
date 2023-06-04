@@ -10,8 +10,10 @@
 
 #include "AdocPagesBuilder.hpp"
 #include "AdocMultiPageWriter.hpp"
+#include "Support/Error.hpp"
 #include "Support/Radix.hpp"
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Support/Report.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -20,7 +22,7 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
-Err
+Error
 AdocPagesBuilder::
 build()
 {
@@ -47,13 +49,21 @@ build(
             filePath.append(".adoc");
             std::error_code ec;
             llvm::raw_fd_ostream os(filePath, ec, fs::CD_CreateAlways);
-            if(! R_.error(ec, "open '", filePath, "'"))
+            if(ec)
             {
-                AdocMultiPageWriter writer(os, corpus_, names_, R_);
-                writer.build(I);
-                if(auto ec = os.error())
-                    if(R_.error(ec, "write '", filePath, "'"))
-                        return;
+                reportError(
+                    Error("raw_fd_ostream(\"{}\") returned \"{}\"", filePath, ec.message()),
+                    "generate Asciidoc reference");
+                return;
+            }
+            AdocMultiPageWriter writer(os, corpus_, names_);
+            writer.build(I);
+            if(auto ec = os.error())
+            {
+                reportError(
+                    Error("AdocMultiPageWriter returned \"{}\"", ec.message()),
+                    "generate Asciidoc reference");
+                return;
             }
         });
 }

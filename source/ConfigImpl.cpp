@@ -10,15 +10,18 @@
 //
 
 #include "ConfigImpl.hpp"
+#include "Support/Debug.hpp"
+#include "Support/Error.hpp"
 #include "Support/Path.hpp"
 #include "Support/YamlFwd.hpp"
-#include "Support/Debug.hpp"
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
+
+#include <mrdox/Support/Report.hpp>
 
 //------------------------------------------------
 //
@@ -63,7 +66,7 @@ struct llvm::yaml::MappingTraits<
 namespace clang {
 namespace mrdox {
 
-llvm::Error
+Error
 ConfigImpl::
 construct(
     llvm::StringRef workingDir,
@@ -78,7 +81,7 @@ construct(
     if(workingDir.empty())
     {
         if(auto ec = fs::current_path(s))
-            return makeError(ec);
+            return Error(ec);
     }
     else
     {
@@ -101,14 +104,14 @@ construct(
         yin.setAllowUnknownKeys(true);
         yin >> *this;
         if(auto ec = yin.error())
-            return makeError(ec);
+            return Error(ec);
     }
     {
         llvm::yaml::Input yin(extraYaml, this, yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
         yin >> *this;
         if(auto ec = yin.error())
-            return makeError(ec);
+            return Error(ec);
     }
 
     // Post-process as needed
@@ -122,7 +125,7 @@ construct(
     for(auto& name : inputFileIncludes_)
         name = normalizedPath(name).str();
 
-    return llvm::Error::success();
+    return Error::success();
 }
 
 llvm::SmallString<0>
@@ -203,87 +206,53 @@ yamlDiagnostic(
 
 //------------------------------------------------
 
-auto
+Expected<std::shared_ptr<ConfigImpl const>>
 createConfigFromYAML(
     llvm::StringRef workingDir,
     llvm::StringRef configYaml,
-    llvm::StringRef extraYaml) ->
-        llvm::ErrorOr<std::shared_ptr<
-            ConfigImpl const>>
+    llvm::StringRef extraYaml)
 {
-    namespace path = llvm::sys::path;
-
     auto config = std::make_shared<ConfigImpl>();
-
-    if(auto Err = config->construct(
+    if(auto err = config->construct(
             workingDir, configYaml, extraYaml))
-        return std::make_error_code(
-            std::errc::invalid_argument);
-
+        return err;
     return config;
 }
 
-std::shared_ptr<ConfigImpl const>
+Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
-    std::string_view fileName,
-    std::string_view extraYaml,
-    std::error_code& ec)
+    std::string_view fileNameArg,
+    std::string_view extraYaml)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
+    std::error_code ec;
+
+    llvm::SmallString<512> fileName(fileNameArg);
+    path::remove_dots(fileName, true);
+
     // ensure fileName is a regular file
     fs::file_status stat;
     if((ec = fs::status(fileName, stat)))
-        return {};
+        return Error("fs::status(\"{}\") returned \"{}\"", fileName, ec);
     if(stat.type() != fs::file_type::regular_file)
-    {
-        ec = std::make_error_code(
-            std::errc::invalid_argument);
-        return {};
-    }
+        return Error("\"{}\" is not a regular file", fileName);
 
     // load the file into a string
     auto fileText = llvm::MemoryBuffer::getFile(fileName);
     if(! fileText)
-    {
-        ec = fileText.getError();
-        return {};
-    }
+        return Error("getFile(\"{}\") returned \"{}\"", fileName, fileText.getError());
 
     // calculate the working directory
     llvm::SmallString<64> workingDir(fileName);
     path::remove_filename(workingDir);
     if((ec = fs::make_absolute(workingDir)))
-        return {};
+        return Error("fs::make_absolute(\"{}\") returned \"{}\"", workingDir, ec);
 
     // attempt to create the config
-    auto result = createConfigFromYAML(
-        workingDir, (*fileText)->getBuffer(), extraYaml);
-
-    if(! result)
-    {
-        ec = result.getError();
-        return {};
-    }
-    return result.get();
-}
-
-std::shared_ptr<ConfigImpl const>
-loadConfigString(
-    std::string_view workingDir,
-    std::string_view configYaml,
-    std::error_code& ec)
-{
-    auto result = createConfigFromYAML(
-        workingDir, configYaml, "");
-    if(! result)
-    {
-        ec = result.getError();
-        return {};
-    }
-    ec = {};
-    return result.get();
+    return createConfigFromYAML(workingDir,
+        (*fileText)->getBuffer(), extraYaml);
 }
 
 } // mrdox

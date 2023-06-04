@@ -19,20 +19,20 @@ namespace mrdox {
 
 // bool
 inline
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     bool& Field,
     llvm::StringRef Blob)
 {
     Field = R[0] != 0;
-    return llvm::Error::success();
+    return Error::success();
 }
 
 // integral types
 template<class IntTy>
 requires std::is_integral_v<IntTy>
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     IntTy& v,
@@ -40,15 +40,15 @@ decodeRecord(
 {
     v = 0;
     if (R[0] > (std::numeric_limits<IntTy>::max)())
-        return makeError("integer overflow");
+        return Error("integer overflow");
     v = static_cast<IntTy>(R[0]);
-    return llvm::Error::success();
+    return Error::success();
 }
 
 // enumerations
 template<class Enum>
 requires std::is_enum_v<Enum>
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     Enum& value,
@@ -58,14 +58,14 @@ decodeRecord(
     if(auto err = decodeRecord(R, temp, blob))
         return err;
     value = static_cast<Enum>(temp);
-    return llvm::Error::success();
+    return Error::success();
 }
 
 // container of char
 template<class Field>
 requires std::is_same_v<
     typename Field::value_type, char>
-llvm::Error
+Error
 decodeRecord(
     const Record& R,
     Field& f,
@@ -76,12 +76,12 @@ decodeRecord(
         }
 {
     f.assign(blob.begin(), blob.end());
-    return llvm::Error::success();
+    return Error::success();
 }
 
 // range<SymbolID>
 inline
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     std::vector<SymbolID>& f,
@@ -96,12 +96,12 @@ decodeRecord(
         *dest++ = SymbolID(src);
         src += BitCodeConstants::USRHashSize;
     }
-    return llvm::Error::success();
+    return Error::success();
 }
 
 // vector<MemberRef>
 inline
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     std::vector<MemberRef>& f,
@@ -110,41 +110,41 @@ decodeRecord(
     constexpr auto MemberRefSize =
         BitCodeConstants::USRHashSize + 1;
     if(R.empty())
-        return makeError("empty");
+        return Error("record is empty");
     auto n = R.size() / MemberRefSize;
     if(R.size() != n * MemberRefSize)
-        return makeError("short Record");
+        return Error("record is short");
     auto src = R.begin();
     f.resize(n);
     auto* dest = &f[0];
     while(n--)
     {
         if(*src > 2) // Access::Private
-            return makeError("invalid Access");
+            return Error("invalid Access={}", *src);
         dest->access = static_cast<Access>(*src++);
         dest->id = SymbolID(src);
         ++dest;
         src += BitCodeConstants::USRHashSize;
     }
-    return llvm::Error::success();
+    return Error::success();
 }
 
 inline
-llvm::Error
+Error
 decodeRecord(
     const Record& R,
     SymbolID& Field,
     llvm::StringRef Blob)
 {
     if (R[0] != BitCodeConstants::USRHashSize)
-        return makeError("incorrect USR digest size");
+        return Error("USR digest size={}", R[0]);
 
     Field = SymbolID(&R[1]);
-    return llvm::Error::success();
+    return Error::success();
 }
 
 inline
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     AccessSpecifier& Field,
@@ -157,15 +157,15 @@ decodeRecord(
     case AS_protected:
     case AS_none:
         Field = (AccessSpecifier)R[0];
-        return llvm::Error::success();
+        return Error::success();
     default:
         Field = AS_none;
-        return makeError("invalid value for AccessSpecifier");
+        return Error("AccessSpecifier={} is invalid", R[0]);
     }
 }
 
 inline
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     TagTypeKind& Field,
@@ -179,28 +179,28 @@ decodeRecord(
     case TTK_Class:
     case TTK_Enum:
         Field = (TagTypeKind)R[0];
-        return llvm::Error::success();
+        return Error::success();
     default:
         Field = TTK_Struct;
-        return makeError("invalid value for TagTypeKind");
+        return Error("TagTypeKind={} is invalid", R[0]);
     }
 }
 
 inline
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     std::optional<Location>& Field,
     llvm::StringRef Blob)
 {
     if (R[0] > INT_MAX)
-        return makeError("integer too large to parse");
+        return Error("integer value {} too large", R[0]);
     Field.emplace((int)R[0], Blob, (bool)R[1]);
-    return llvm::Error::success();
+    return Error::success();
 }
 
 inline
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     InfoType& Field,
@@ -215,21 +215,22 @@ decodeRecord(
     case InfoType::IT_typedef:
     case InfoType::IT_variable:
         Field = IT;
-        return llvm::Error::success();
+        return Error::success();
     default:
         Field = InfoType::IT_default;
-        return makeError("invalid value for InfoType");
+        return Error("InfoType is invalid");
     }
 }
 
 inline
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     FieldId& Field,
     llvm::StringRef Blob)
 {
-    switch (auto F = static_cast<FieldId>(R[0]))
+    auto F = static_cast<FieldId>(R[0]);
+    switch(F)
     {
     case FieldId::F_namespace:
     case FieldId::F_vparent:
@@ -242,27 +243,27 @@ decodeRecord(
     case FieldId::F_child_variable:
     case FieldId::F_default:
         Field = F;
-        return llvm::Error::success();
+        return Error::success();
     }
     Field = FieldId::F_default;
-    return makeError("invalid value for FieldId");
+    return Error("FieldId is invalid");
 }
 
 inline
-llvm::Error
+Error
 decodeRecord(
     const Record& R,
     std::vector<Location>& Field,
     llvm::StringRef Blob)
 {
     if (R[0] > INT_MAX)
-        return makeError("integer too large to parse");
+        return Error("integer {} is too large", R[0]);
     Field.emplace_back((int)R[0], Blob, (bool)R[1]);
-    return llvm::Error::success();
+    return Error::success();
 }
 
 inline
-llvm::Error
+Error
 decodeRecord(
     Record const& R,
     std::initializer_list<BitFieldFullValue*> values,
@@ -270,7 +271,7 @@ decodeRecord(
 {
     auto n = R[0];
     if(n != values.size())
-        return makeError("wrong size(", n, ") for Bitfields[", values.size(), "]");
+        return Error("wrong size={} for Bitfields[{}]", n, values.size());
 
     auto itr = values.begin();
     for(std::size_t i = 0; i < values.size(); ++i)
@@ -278,10 +279,10 @@ decodeRecord(
 
         auto const v = R[i + 1];
         if(v > (std::numeric_limits<std::uint32_t>::max)())
-            return makeError(v, " is out of range for Bits");
+            return Error("{} is out of range for Bits", v);
         **itr++ = v;
     }
-    return llvm::Error::success();
+    return Error::success();
 }
 
 } // mrdox

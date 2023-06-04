@@ -11,7 +11,7 @@
 #ifndef MRDOX_SUPPORT_GENERATORSIMPL_HPP
 #define MRDOX_SUPPORT_GENERATORSIMPL_HPP
 
-#include <mrdox/Error.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Platform.hpp>
 #include <mrdox/Generators.hpp>
 #include <llvm/ADT/SmallVector.h>
@@ -53,7 +53,7 @@ public:
 
     /** Insert a generator
     */
-    llvm::Error
+    Error
     insert(std::unique_ptr<Generator> G);
 };
 

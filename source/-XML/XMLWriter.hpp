@@ -14,9 +14,9 @@
 
 #include "XMLTags.hpp"
 #include "Support/YamlFwd.hpp"
-#include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <string>
 
 namespace clang {
@@ -37,7 +37,6 @@ protected:
     XMLTags tags_;
     llvm::raw_ostream& os_;
     Corpus const& corpus_;
-    Reporter& R_;
 
     struct GenKey;
     struct XmlKey;
@@ -52,10 +51,9 @@ protected:
 public:
     XMLWriter(
         llvm::raw_ostream& os,
-        Corpus const& corpus,
-        Reporter& R) noexcept;
+        Corpus const& corpus) noexcept;
 
-    Err build();
+    Error build();
 
 private:
     void writeIndex();

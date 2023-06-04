@@ -13,7 +13,6 @@
 #define MRDOX_AST_PARSEJAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Reporter.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 
 namespace clang {
@@ -38,8 +37,7 @@ initCustomCommentCommands(
 Javadoc
 parseJavadoc(
     RawComment const* RC,
-    Decl const* D,
-    Reporter& R);
+    Decl const* D);
 
 } // mrdox
 

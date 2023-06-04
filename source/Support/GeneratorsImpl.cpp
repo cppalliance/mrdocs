@@ -42,9 +42,10 @@ refresh_plist()
 GeneratorsImpl::
 GeneratorsImpl()
 {
-    llvm::handleAllErrors(insert(makeAdocGenerator()));
-    llvm::handleAllErrors(insert(makeBitcodeGenerator()));
-    llvm::handleAllErrors(insert(makeXMLGenerator()));
+    Error err;
+    err = insert(makeAdocGenerator());
+    err = insert(makeBitcodeGenerator());
+    err = insert(makeXMLGenerator());
 }
 
 Generator const*
@@ -58,16 +59,16 @@ find(
     return nullptr;
 }
 
-llvm::Error
+Error
 GeneratorsImpl::
 insert(
     std::unique_ptr<Generator> G)
 {
     if(find(G->id()) != nullptr)
-        return makeError("generator id = '", G->id(), "' already exists");
+        return Error("generator id=\"{}\" already exists", G->id());
     list_.emplace_back(std::move(G));
     refresh_plist();
-    return llvm::Error::success();
+    return Error::success();
 }
 
 //------------------------------------------------

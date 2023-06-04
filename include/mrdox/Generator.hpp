@@ -18,7 +18,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Reporter.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <ostream>
 #include <string>
 #include <string_view>
@@ -91,17 +91,13 @@ public:
         the object before returning.
 
         @param config The configuration to use.
-
-        @param R The diagnostic reporting object to
-        use for delivering errors and information.
     */
     MRDOX_DECL
     virtual
-    Err
+    Error
     build(
         std::string_view outputPath,
-        Corpus const& corpus,
-        Reporter& R) const;
+        Corpus const& corpus) const;
 
     /** Build reference documentation for the corpus.
 
@@ -118,16 +114,13 @@ public:
         @param os The stream to write to.
 
         @param corpus The metadata to emit.
-
-        @param R The diagnostic reporting object to use.
     */
     MRDOX_DECL
     virtual
-    Err
+    Error
     buildOne(
         std::ostream& os,
-        Corpus const& corpus,
-        Reporter& R) const = 0;
+        Corpus const& corpus) const = 0;
 
     /** Build the reference as a single page to a file.
 
@@ -141,15 +134,12 @@ public:
         file already exists, it will be overwritten.
 
         @param corpus The metadata to emit.
-
-        @param R The diagnostic reporting object to use.
     */
     MRDOX_DECL
-    Err
+    Error
     buildOne(
         std::string_view fileName,
-        Corpus const& corpus,
-        Reporter& R) const;
+        Corpus const& corpus) const;
 
     /** Build the reference as a single page to a string.
 
@@ -160,15 +150,12 @@ public:
         not be accessed by any other threads.
 
         @param corpus The metadata to emit.
-
-        @param R The diagnostic reporting object to use.
     */
     MRDOX_DECL
-    Err
+    Error
     buildOneString(
         std::string& dest,
-        Corpus const& corpus,
-        Reporter& R) const;
+        Corpus const& corpus) const;
 };
 
 } // mrdox

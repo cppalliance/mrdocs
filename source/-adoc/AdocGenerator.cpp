@@ -26,28 +26,26 @@ namespace adoc {
 //
 //------------------------------------------------
 
-Err
+Error
 AdocGenerator::
 build(
     std::string_view outputPath,
-    Corpus const& corpus,
-    Reporter& R) const
+    Corpus const& corpus) const
 {
     if(corpus.config.singlePage)
-        return Generator::build(outputPath, corpus, R);
+        return Generator::build(outputPath, corpus);
     return AdocPagesBuilder(
-        llvm::StringRef(outputPath), corpus, R).build();
+        llvm::StringRef(outputPath), corpus).build();
 }
 
-Err
+Error
 AdocGenerator::
 buildOne(
     std::ostream& os,
-    Corpus const& corpus,
-    Reporter& R) const
+    Corpus const& corpus) const
 {
     RawOstream raw_os(os);
-    return AdocSinglePageWriter(raw_os, corpus, R).build();
+    return AdocSinglePageWriter(raw_os, corpus).build();
 }
 
 } // adoc

@@ -12,7 +12,6 @@
 #include "Options.hpp"
 #include "ConfigImpl.hpp"
 #include <mrdox/Generators.hpp>
-#include <mrdox/Reporter.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/JSONCompilationDatabase.h>
 #include <cstdlib>
@@ -20,8 +19,8 @@
 namespace clang {
 namespace mrdox {
 
-int
-DoGenerateAction(Reporter& R)
+Error
+DoGenerateAction()
 {
     auto& generators = getGenerators();
 
@@ -35,42 +34,21 @@ DoGenerateAction(Reporter& R)
 
     // Load configuration file
     if(! ConfigPath.hasArgStr())
-    {
-        llvm::errs() <<
-            "Missing configuration file path argument.\n";
-        return EXIT_FAILURE;
-    }
-    std::error_code ec;
-    auto config = loadConfigFile(ConfigPath, extraYaml, ec);
-    if(ec)
-    {
-        (void)R.error(ec, "load config file '", ConfigPath, "'");
-        return EXIT_FAILURE;
-    }
+        return Error("the config path argument is missing");
+    auto config = loadConfigFile(ConfigPath, extraYaml);
+    if(! config)
+        return config.getError();
 
     // Load the compilation database
     if(InputPaths.empty())
-    {
-        llvm::errs() <<
-            "Missing path to compilation database argument.\n";
-        return EXIT_FAILURE;
-    }
+        return Error("the compilation database path argument is missing");
     if(InputPaths.size() > 1)
-    {
-        llvm::errs() <<
-            "Expected one input path argument, got more than one.\n";
-        return EXIT_FAILURE;
-    }
+        return Error("got {} input paths where 1 was expected", InputPaths.size());
     std::string errorMessage;
-    auto compilations =
-        tooling::JSONCompilationDatabase::loadFromFile(
-            InputPaths.front(), errorMessage,
-                tooling::JSONCommandLineSyntax::AutoDetect);
+    auto compilations = tooling::JSONCompilationDatabase::loadFromFile(
+        InputPaths.front(), errorMessage, tooling::JSONCommandLineSyntax::AutoDetect);
     if(! compilations)
-    {
-        llvm::errs() << errorMessage << '\n';
-        return EXIT_FAILURE;
-    }
+        return Error(std::move(errorMessage));
 
     // Create the ToolExecutor from the compilation database
     int ThreadCount = 0;
@@ -80,26 +58,17 @@ DoGenerateAction(Reporter& R)
     // Create the generator
     auto generator = generators.find(FormatType.getValue());
     if(! generator)
-    {
-        R.print("Generator '", FormatType.getValue(), "' not found.");
-        return EXIT_FAILURE;
-    }
+        return Error("the Generator \"{}\" was not found", FormatType.getValue());
 
     // Run the tool, this can take a while
-    auto corpus = Corpus::build(*ex, config, R);
-    if(R.error(corpus, "build the documentation corpus"))
-        return EXIT_FAILURE;
+    auto corpus = Corpus::build(*ex, *config);
+    if(! corpus)
+        return Error("Corpus::build returned \"{}\"", corpus.getError());
 
     // Run the generator.
-    if(config->verboseOutput)
+    if(config.get()->verboseOutput)
         llvm::outs() << "Generating docs...\n";
-    auto err = generator->build(OutputPath.getValue(), **corpus, R);
-    if(err)
-    {
-        R.print(err.message(), "generate '", OutputPath, "'");
-        return EXIT_FAILURE;
-    }
-    return EXIT_SUCCESS;
+    return generator->build(OutputPath.getValue(), **corpus);
 }
 
 } // mrdox

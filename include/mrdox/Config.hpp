@@ -13,7 +13,6 @@
 #define MRDOX_API_CONFIG_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Reporter.hpp>
 #include <functional>
 #include <memory>
 #include <string_view>

@@ -108,16 +108,14 @@ namespace xml {
 XMLWriter::
 XMLWriter(
     llvm::raw_ostream& os,
-    Corpus const& corpus,
-    Reporter& R) noexcept
+    Corpus const& corpus) noexcept
     : tags_(os)
     , os_(os)
     , corpus_(corpus)
-    , R_(R)
 {
 }
 
-Err
+Error
 XMLWriter::
 build()
 {
@@ -128,7 +126,7 @@ build()
         yin.setAllowUnknownKeys(true);
         yin >> options_;
         if(auto ec = yin.error())
-            return makeErr(ec);
+            return Error(ec);
     }
     {
         llvm::yaml::Input yin(
@@ -137,7 +135,7 @@ build()
         yin.setAllowUnknownKeys(true);
         yin >> options_;
         if(auto ec = yin.error())
-            return makeErr(ec);
+            return Error(ec);
     }
 
     if(options_.prolog)
@@ -150,7 +148,7 @@ build()
         writeIndex();
 
     if(! corpus_.traverse(*this, SymbolID::zero))
-        return makeErr("visit failed");
+        return Error("visitation aborted");
 
     if(options_.prolog)
         os_ << "</mrdox>\n";

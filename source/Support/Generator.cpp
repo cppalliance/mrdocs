@@ -10,7 +10,7 @@
 //
 
 #include "AST/ParseJavadoc.hpp"
-#include <mrdox/Error.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Generator.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
@@ -29,12 +29,11 @@ Generator::
     the file reference.ext using the extension
     of the generator.
 */
-Err
+Error
 Generator::
 build(
     std::string_view outputPath,
-    Corpus const& corpus,
-    Reporter& R) const
+    Corpus const& corpus) const
 {
     namespace path = llvm::sys::path;
 
@@ -51,15 +50,14 @@ build(
         path::replace_extension(fileName, ext);
     }
 
-    return buildOne(fileName.str(), corpus, R);
+    return buildOne(fileName.str(), corpus);
 }
 
-Err
+Error
 Generator::
 buildOne(
     std::string_view fileName,
-    Corpus const& corpus,
-    Reporter& R) const
+    Corpus const& corpus) const
 {
     std::ofstream os;
 
@@ -73,31 +71,30 @@ buildOne(
     }
     catch(std::exception const& ex)
     {
-        return makeErr("std::ofstream threw ", ex.what());
+        return Error("std::ofstream threw \"{}\"", ex.what());
     }
 
     try
     {
-        return buildOne(os, corpus, R);
+        return buildOne(os, corpus);
     }
     catch(std::exception const& ex)
     {
-        return makeErr("buildOne threw ", ex.what() );
+        return Error("buildOne threw \"{}\"", ex.what());
     }
 }
 
-Err
+Error
 Generator::
 buildOneString(
     std::string& dest,
-    Corpus const& corpus,
-    Reporter& R) const
+    Corpus const& corpus) const
 {
     dest.clear();
     std::stringstream ss;
     try
     {
-        auto err = buildOne(ss, corpus, R);
+        auto err = buildOne(ss, corpus);
         if(err)
             return err;
         dest = ss.str();
@@ -105,7 +102,7 @@ buildOneString(
     }
     catch(std::exception const& ex)
     {
-        return makeErr("buildOne threw ", ex.what() );
+        return Error("buildOne threw \"{}\"", ex.what());
     }
 }
 

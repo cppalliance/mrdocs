@@ -14,7 +14,8 @@
 #include "AST/Bitcode.hpp"
 #include "AST/FrontendAction.hpp"
 #include "Metadata/Reduce.hpp"
-#include <mrdox/Error.hpp>
+#include "Support/Error.hpp"
+#include <mrdox/Support/Report.hpp>
 #include <mrdox/Metadata.hpp>
 #include <clang/Tooling/ArgumentsAdjusters.h>
 #include <clang/Tooling/CommonOptionsParser.h>
@@ -284,12 +285,11 @@ traverse(
 //
 //------------------------------------------------
 
-llvm::Expected<std::unique_ptr<Corpus>>
+Expected<std::unique_ptr<Corpus>>
 Corpus::
 build(
     tooling::ToolExecutor& ex,
-    std::shared_ptr<Config const> config_,
-    Reporter& R)
+    std::shared_ptr<Config const> config_)
 {
     auto config = std::dynamic_pointer_cast<ConfigImpl const>(config_);
     auto corpus = std::make_unique<CorpusImpl>(config);
@@ -313,15 +313,14 @@ build(
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
     if(corpus->config.verboseOutput)
-        R.print("Mapping declarations");
+        reportInfo("Mapping declarations");
     if(auto err = ex.execute(
         makeFrontendActionFactory(
-            *ex.getExecutionContext(), *config, R),
-        ArgAdjuster))
+            *ex.getExecutionContext(), *config), ArgAdjuster))
     {
         if(! corpus->config.ignoreFailures)
-            return err;
-        R.print("warning: mapping failed because ", toString(std::move(err)));
+            return toError(std::move(err));
+        reportWarning("warning: mapping failed because ", toString(std::move(err)));
     }
 
     // Inject the global namespace
@@ -338,12 +337,12 @@ build(
     // a vector of one or more bitcodes. These will
     // be merged later.
     if(corpus->config.verboseOutput)
-        R.print("Collecting symbols");
+        reportInfo("Collecting symbols");
     auto bitcodes = collectBitcodes(ex);
 
     // First reducing phase (reduce all decls into one info per decl).
     if(corpus->config.verboseOutput)
-        R.print("Reducing ", bitcodes.size(), " declarations");
+        reportInfo("Reducing {} declarations", bitcodes.size());
     std::atomic<bool> GotFailure;
     GotFailure = false;
     corpus->config.parallelForEach(
@@ -356,9 +355,10 @@ build(
             // Each Bitcode can have multiple Infos
             for (auto& bitcode : Group.getValue())
             {
-                auto infos = readBitcode(bitcode, R);
-                if(R.error(infos, "read bitcode"))
+                auto infos = readBitcode(bitcode);
+                if(! infos)
                 {
+                    reportError(infos.getError(), "read bitcode");
                     GotFailure = true;
                     return;
                 }
@@ -369,8 +369,9 @@ build(
             }
 
             auto merged = mergeInfos(Infos);
-            if(R.error(merged, "merge metadata"))
+            if(! merged)
             {
+                reportError(toError(merged.takeError()), "merge metadata");
                 GotFailure = true;
                 return;
             }
@@ -381,12 +382,12 @@ build(
         });
 
     if(corpus->config.verboseOutput)
-        R.print("Collected ", corpus->InfoMap.size(), " symbols.\n");
+        llvm::outs() << "Collected " << corpus->InfoMap.size() << " symbols.\n";
 
     if(GotFailure)
-        return makeErrorString("one or more errors occurred");
+        return Error("multiple errors occurred");
 
-    corpus->canonicalize(R);
+    corpus->canonicalize();
 
     return corpus;
 }

@@ -12,9 +12,10 @@
 #include "SingleFileDB.hpp"
 #include "ConfigImpl.hpp"
 #include "Support/Debug.hpp"
+#include "Support/Error.hpp"
 #include <mrdox/Config.hpp>
-#include <mrdox/Error.hpp>
 #include <mrdox/Generators.hpp>
+#include <mrdox/Support/Report.hpp>
 #include <clang/Tooling/StandaloneExecution.h>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
@@ -75,7 +76,7 @@ class TestRunner
     std::string extraYaml_;
     std::shared_ptr<Config const> config_;
     Config::WorkGroup wg_;
-    Reporter& R_;
+    llvm::ErrorOr<std::string> diff_;
     Generator const* xmlGen_;
     Generator const* adocGen_;
 
@@ -83,32 +84,31 @@ class TestRunner
     makeConfig(
         llvm::StringRef workingDir);
 
-    llvm::Error
+    Error
     writeFile(
         llvm::StringRef filePath,
         llvm::StringRef contents);
 
-    llvm::Error
+    Error
     handleFile(
         llvm::StringRef filePath,
         std::shared_ptr<Config const> const& config);
 
-    llvm::Error
+    Error
     handleDir(
         llvm::StringRef dirPath);
 
 public:
     TestRunner(
         Results& results,
-        llvm::StringRef extraYaml,
-        Reporter& R);
+        llvm::StringRef extraYaml);
 
     /** Check a single file, or a directory recursively.
 
         This function checks the specified path
         and blocks until completed.
     */
-    llvm::Error
+    Error
     checkPath(
         llvm::StringRef inputPath);
 };
@@ -118,20 +118,19 @@ public:
 TestRunner::
 TestRunner(
     Results& results,
-    llvm::StringRef extraYaml,
-    Reporter& R)
+    llvm::StringRef extraYaml)
     : results_(results)
     , extraYaml_(extraYaml)
     , config_([&extraYaml]
         {
             std::error_code ec;
             auto config = loadConfigString(
-                "", extraYaml.str(), ec);
-            Assert(! ec);
-            return config;
+                "", extraYaml.str());
+            Assert(config);
+            return *config;
         }())
     , wg_(config_.get())
-    , R_(R)
+    , diff_(llvm::sys::findProgramByName("diff"))
     , xmlGen_(getGenerators().find("xml"))
     , adocGen_(getGenerators().find("adoc"))
 {
@@ -156,13 +155,12 @@ makeConfig(
 
     std::error_code ec;
     auto config = loadConfigString(
-        workingDir, configYaml, 
-        ec);
-    Assert(! ec);
-    return config;
+        workingDir, configYaml);
+    Assert(config);
+    return *config;
 }
 
-llvm::Error
+Error
 TestRunner::
 writeFile(
     llvm::StringRef filePath,
@@ -173,20 +171,19 @@ writeFile(
     if(ec)
     {
         results_.numberOfErrors++;
-        return makeError("raw_fd_ostream returned ", ec);
+        return Error("raw_fd_ostream(\"{}\") returned \"{}\"", filePath, ec);
     }
     os << contents;
     if(os.error())
     {
         results_.numberOfErrors++;
-        return makeError("raw_fd_ostream::write returned ", os.error());
+        return Error("raw_fd_ostream::write returned \"{}\"", os.error());
     }
-    //R_.print("File '", outputPath, "' written.");
     results_.numberofFilesWritten++;
-    return llvm::Error::success();
+    return Error::success();
 }
 
-llvm::Error
+Error
 TestRunner::
 handleFile(
     llvm::StringRef filePath,
@@ -210,23 +207,22 @@ handleFile(
     {
         SingleFileDB db(dirPath, filePath);
         tooling::StandaloneToolExecutor ex(db, { std::string(filePath) });
-        auto result = Corpus::build(ex, config, R_);
-        if(R_.error(result, "build Corpus for '", filePath, "'"))
+        auto result = Corpus::build(ex, config);
+        if(! result)
         {
-            results_.numberOfErrors++;
-            return llvm::Error::success(); // keep going
+            reportError(result.getError(), "build Corpus for \"{}\"", filePath);
+            return Error::success(); // keep going
         }
         corpus = std::move(result.get());
     }
 
     // Generate XML
     std::string generatedXml;
-    if(R_.error(
-        xmlGen_->buildOneString(generatedXml, *corpus, R_),
-        "build XML string for '", filePath, "'"))
+    if(auto err = xmlGen_->buildOneString(generatedXml, *corpus))
     {
+        reportError(err, "build XML string for \"{}\"", filePath);
         results_.numberOfErrors++;
-        return llvm::Error::success(); // keep going
+        return Error::success(); // keep going
     }
 
     if(ToolAction == Action::test)
@@ -243,13 +239,15 @@ handleFile(
                 if( result.getError() != std::errc::no_such_file_or_directory)
                 {
                     // Some kind of system problem
-                    (void)R_.error(result.getError(), "load '", outputPath, "'");
-                    return llvm::Error::success(); // keep going
+                    reportError(
+                        Error("MemoryBuffer::getFile(\"{}\") returned \"{}\""),
+                        "load the reference XML");
+                    return Error::success(); // keep going
                 }
 
                 // File does not exist, so write it
                 if(auto err = writeFile(outputPath, generatedXml))
-                    return llvm::Error::success();
+                    return Error::success();
             }
             else
             {
@@ -263,7 +261,7 @@ handleFile(
         {
             // The output did not match
             results_.numberOfFailures++;
-            R_.print("Failed: '", filePath, "'\n");
+            reportError("Test for \"{}\" failed", filePath);
 
             if(badOption.getValue())
             {
@@ -273,21 +271,21 @@ handleFile(
                 {
                     std::error_code ec;
                     llvm::raw_fd_ostream os(bad, ec, llvm::sys::fs::OF_None);
-                    if (ec) {
+                    if (ec)
+                    {
                         results_.numberOfErrors++;
-                        return makeError("raw_fd_ostream returned ", ec);
+                        return Error("raw_fd_ostream(\"{}\") returned \"{}\"", bad, ec);
                     }
                     os << generatedXml;
                 }
 
-                auto diff = llvm::sys::findProgramByName("diff");
-
-                if (!diff.getError())
+                // VFALCO We are calling this over and over again instead of once?
+                if(! diff_.getError())
                 {
                     path::replace_extension(bad, "xml");
                     std::array<llvm::StringRef, 5u> args {
-                        diff.get(), "-u", "--color", bad, outputPath };
-                    llvm::sys::ExecuteAndWait(diff.get(), args);
+                        diff_.get(), "-u", "--color", bad, outputPath };
+                    llvm::sys::ExecuteAndWait(diff_.get(), args);
                 }
 
                 // Fix the path for the code that follows
@@ -306,14 +304,14 @@ handleFile(
         if(auto err = writeFile(outputPath, generatedXml))
         {
             results_.numberOfErrors++;
-            return llvm::Error::success();
+            return Error::success();
         }
     }
 
-    return llvm::Error::success();
+    return Error::success();
 }
 
-llvm::Error
+Error
 TestRunner::
 handleDir(
     llvm::StringRef dirPath)
@@ -327,7 +325,7 @@ handleDir(
     std::error_code ec;
     fs::directory_iterator iter(dirPath, ec, false);
     if(ec)
-        return makeError("directory_iterator returned ", ec);
+        return Error("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec);
     fs::directory_iterator const end{};
 
     auto const config = makeConfig(dirPath);
@@ -355,12 +353,12 @@ handleDir(
         }
         iter.increment(ec);
         if(ec)
-            return makeError("directory_iterator returned ", ec);
+            return Error("directory_iterator::increment returned \"{}\"", ec);
     }
-    return llvm::Error::success();
+    return Error::success();
 }
 
-llvm::Error
+Error
 TestRunner::
 checkPath(
     llvm::StringRef inputPath)
@@ -373,14 +371,14 @@ checkPath(
     if(auto ec = fs::status(inputPath, fileStatus))
     {
         results_.numberOfErrors++;
-        return makeError("fs::status returned '", ec, "'");
+        return Error("fs::status(\"{}\") returned \"{}\"", inputPath, ec);
     }
 
     if(fileStatus.type() == fs::file_type::regular_file)
     {
         auto const ext = path::extension(inputPath);
         if(! ext.equals_insensitive(".cpp"))
-            return makeError("expected a .cpp file");
+            return Error("\"{}\" is not a .cpp file");
 
         // Calculate the workingDir
         SmallString workingDir(inputPath);
@@ -403,11 +401,11 @@ checkPath(
         return err;
     }
 
-    return makeError("wrong fs::file_type=", static_cast<int>(fileStatus.type()));
+    return Error("fs::file_type was not directory_file");
 }
 
 int
-DoTestAction(Reporter& R)
+DoTestAction()
 {
     using namespace clang::mrdox;
 
@@ -417,10 +415,12 @@ DoTestAction(Reporter& R)
     Results results;
     for(auto const& inputPath : InputPaths)
     {
-        TestRunner instance(results, extraYaml, R);
+        TestRunner instance(results, extraYaml);
         if(auto err = instance.checkPath(inputPath))
-            if(R.error(err, "check path '", inputPath, "'"))
-                break;
+        {
+            reportError(err, "check path \"{}\"", inputPath);
+            break;
+        }
     }
 
     auto& os = debug_outs();

@@ -14,7 +14,6 @@
 #define MRDOX_AST_ASTVISITOR_HPP
 
 #include "ConfigImpl.hpp"
-#include <mrdox/Reporter.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <clang/Tooling/Execution.h>
 #include <optional>
@@ -47,8 +46,6 @@ public:
 
     tooling::ExecutionContext& ex_;
     ConfigImpl const& config_;
-    Reporter& R_;
-
 
     llvm::SmallString<512> File_;
     bool IsFileInRootDir_;
@@ -68,8 +65,7 @@ public:
     ASTVisitor(
         tooling::ExecutionContext& ex,
         ConfigImpl const& config,
-        clang::CompilerInstance& compiler,
-        Reporter& R) noexcept;
+        clang::CompilerInstance& compiler) noexcept;
 
     bool
     extractSymbolID(
@@ -168,8 +164,7 @@ public:
     void
     parseRawComment(
         std::unique_ptr<Javadoc>& javadoc,
-        Decl const* D,
-        Reporter& R);
+        Decl const* D);
 
     void
     parseEnumerators(

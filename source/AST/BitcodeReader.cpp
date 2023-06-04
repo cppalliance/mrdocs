@@ -13,31 +13,31 @@
 #include "AnyBlock.hpp"
 #include "DecodeRecord.hpp"
 #include "Support/Debug.hpp"
+#include "Support/Error.hpp"
 
 namespace clang {
 namespace mrdox {
 
 // Entry point
-llvm::Expected<
-    std::vector<std::unique_ptr<Info>>>
+Expected<std::vector<std::unique_ptr<Info>>>
 BitcodeReader::
 getInfos()
 {
     std::vector<std::unique_ptr<Info>> Infos;
-    if (auto Err = validateStream())
-        return std::move(Err);
+    if (auto err = validateStream())
+        return err;
 
     // Read the top level blocks.
     while (!Stream.AtEndOfStream())
     {
-        Expected<unsigned> MaybeCode = Stream.ReadCode();
+        llvm::Expected<unsigned> MaybeCode = Stream.ReadCode();
         if (!MaybeCode)
-            return MaybeCode.takeError();
+            return toError(MaybeCode.takeError());
         if (MaybeCode.get() != llvm::bitc::ENTER_SUBBLOCK)
-            return makeError("no blocks in input");
-        Expected<unsigned> MaybeID = Stream.ReadSubBlockID();
+            return Error("no blocks in input");
+        llvm::Expected<unsigned> MaybeID = Stream.ReadSubBlockID();
         if (!MaybeID)
-            return MaybeID.takeError();
+            return toError(MaybeID.takeError());
         unsigned ID = MaybeID.get();
         switch (ID)
         {
@@ -45,8 +45,8 @@ getInfos()
         case BI_VERSION_BLOCK_ID:
         {
             VersionBlock B;
-            if (auto Err = readBlock(B, ID))
-                return std::move(Err);
+            if (auto err = readBlock(B, ID))
+                return std::move(err);
             continue;
         }
 
@@ -55,7 +55,7 @@ getInfos()
         {
             auto I = readInfo<NamespaceBlock>(ID);
             if(! I)
-                return I.takeError();
+                return I.getError();
             Infos.emplace_back(std::move(I.get()));
                 continue;
         }
@@ -63,7 +63,7 @@ getInfos()
         {
             auto I = readInfo<RecordBlock>(ID);
             if(! I)
-                return I.takeError();
+                return I.getError();
             Infos.emplace_back(std::move(I.get()));
                 continue;
         }
@@ -71,7 +71,7 @@ getInfos()
         {
             auto I = readInfo<FunctionBlock>(ID);
             if(! I)
-                return I.takeError();
+                return I.getError();
             Infos.emplace_back(std::move(I.get()));
                 continue;
         }
@@ -79,7 +79,7 @@ getInfos()
         {
             auto I = readInfo<TypedefBlock>(ID);
             if(! I)
-                return I.takeError();
+                return I.getError();
             Infos.emplace_back(std::move(I.get()));
                 continue;
         }
@@ -87,7 +87,7 @@ getInfos()
         {
             auto I = readInfo<EnumBlock>(ID);
             if(! I)
-                return I.takeError();
+                return I.getError();
             Infos.emplace_back(std::move(I.get()));
                 continue;
         }
@@ -95,7 +95,7 @@ getInfos()
         {
             auto I = readInfo<VarBlock>(ID);
             if(! I)
-                return I.takeError();
+                return I.getError();
             Infos.emplace_back(std::move(I.get()));
                 continue;
         }
@@ -105,7 +105,7 @@ getInfos()
         {
             auto I = readInfo<FieldBlock>(ID);
             if(! I)
-                return I.takeError();
+                return I.getError();
             Infos.emplace_back(std::move(I.get()));
                 continue;
         }
@@ -117,15 +117,16 @@ getInfos()
         case BI_JAVADOC_LIST_BLOCK_ID:
         case BI_JAVADOC_NODE_BLOCK_ID:
         case BI_REFERENCE_BLOCK_ID:
-            return makeError("invalid top level block");
+            return Error("invalid top level block");
         case llvm::bitc::BLOCKINFO_BLOCK_ID:
-            if (auto Err = readBlockInfoBlock())
-                return std::move(Err);
+            if (auto err = readBlockInfoBlock())
+                return std::move(err);
             continue;
         default:
-            if (llvm::Error Err = Stream.SkipBlock()) {
+            if (llvm::Error err = Stream.SkipBlock())
+            {
                 // FIXME this drops the error on the floor.
-                consumeError(std::move(Err));
+                consumeError(std::move(err));
             }
             continue;
         }
@@ -135,62 +136,62 @@ getInfos()
 
 //------------------------------------------------
 
-llvm::Error
+Error
 BitcodeReader::
 validateStream()
 {
     if (Stream.AtEndOfStream())
-        return makeError("premature end of stream");
+        return Error("premature end of stream");
 
     // Sniff for the signature.
     for (int i = 0; i != 4; ++i)
     {
-        Expected<llvm::SimpleBitstreamCursor::word_t> MaybeRead = Stream.Read(8);
+        llvm::Expected<llvm::SimpleBitstreamCursor::word_t> MaybeRead = Stream.Read(8);
         if (!MaybeRead)
-            return MaybeRead.takeError();
+            return toError(MaybeRead.takeError());
         else if (MaybeRead.get() != BitCodeConstants::Signature[i])
-            return makeError("invalid bitcode signature");
+            return Error("invalid bitcode signature");
     }
-    return llvm::Error::success();
+    return Error::success();
 }
 
-llvm::Error
+Error
 BitcodeReader::
 readBlockInfoBlock()
 {
-    Expected<std::optional<llvm::BitstreamBlockInfo>> MaybeBlockInfo =
+    llvm::Expected<std::optional<llvm::BitstreamBlockInfo>> MaybeBlockInfo =
         Stream.ReadBlockInfoBlock();
     if (!MaybeBlockInfo)
-        return MaybeBlockInfo.takeError();
+        return toError(MaybeBlockInfo.takeError());
     BlockInfo = MaybeBlockInfo.get();
     if (!BlockInfo)
-        return makeError("unable to parse BlockInfoBlock");
+        return Error("unable to parse BlockInfoBlock");
     Stream.setBlockInfo(&*BlockInfo);
-    return llvm::Error::success();
+    return Error::success();
 }
 
 //------------------------------------------------
 
 template<class T>
-llvm::Expected<std::unique_ptr<Info>>
+Expected<std::unique_ptr<Info>>
 BitcodeReader::
 readInfo(
     unsigned ID)
 {
     T B(*this);
-    if(auto Err = readBlock(B, ID))
-        return Err;
+    if(auto err = readBlock(B, ID))
+        return err;
     return std::move(B.I);
 }
 
-llvm::Error
+Error
 BitcodeReader::
 readBlock(
     AnyBlock& B, unsigned ID)
 {
     blockStack_.push_back(&B);
     if (auto err = Stream.EnterSubBlock(ID))
-        return err;
+        return toError(std::move(err));
 
     for(;;)
     {
@@ -200,30 +201,32 @@ readBlock(
         switch (Res)
         {
         case Cursor::BadBlock:
-            return makeError("bad block found");
+            return Error("bad block found");
         case Cursor::BlockEnd:
             blockStack_.pop_back();
-            return llvm::Error::success();
+            return Error::success();
         case Cursor::BlockBegin:
-            if (auto Err = blockStack_.back()->readSubBlock(BlockOrCode))
+            if (auto err = blockStack_.back()->readSubBlock(BlockOrCode))
             {
                 if (llvm::Error Skipped = Stream.SkipBlock())
-                    return joinErrors(std::move(Err), std::move(Skipped));
-                return Err;
+                {
+                    return toError(std::move(Skipped));
+                }
+                return err;
             }
             continue;
         case Cursor::Record:
             break;
         }
-        if (auto Err = readRecord(BlockOrCode))
-            return Err;
+        if (auto err = readRecord(BlockOrCode))
+            return err;
     }
 }
 
 //------------------------------------------------
 
 // Read records from bitcode into AnyBlock
-llvm::Error
+Error
 BitcodeReader::
 readRecord(unsigned ID)
 {
@@ -232,7 +235,7 @@ readRecord(unsigned ID)
     llvm::Expected<unsigned> MaybeRecID =
         Stream.readRecord(ID, R, &Blob);
     if (!MaybeRecID)
-        return MaybeRecID.takeError();
+        return toError(MaybeRecID.takeError());
     return blockStack_.back()->parseRecord(R, MaybeRecID.get(), Blob);
 }
 
@@ -248,7 +251,7 @@ skipUntilRecordOrBlock(
 
     while (!Stream.AtEndOfStream())
     {
-        Expected<unsigned> MaybeCode = Stream.ReadCode();
+        llvm::Expected<unsigned> MaybeCode = Stream.ReadCode();
         if (!MaybeCode)
         {
             // FIXME this drops the error on the floor.
@@ -265,7 +268,7 @@ skipUntilRecordOrBlock(
         switch (static_cast<llvm::bitc::FixedAbbrevIDs>(Code))
         {
         case llvm::bitc::ENTER_SUBBLOCK:
-            if (Expected<unsigned> MaybeID = Stream.ReadSubBlockID())
+            if (llvm::Expected<unsigned> MaybeID = Stream.ReadSubBlockID())
                 BlockOrRecordID = MaybeID.get();
             else {
                 // FIXME this drops the error on the floor.
@@ -277,9 +280,10 @@ skipUntilRecordOrBlock(
                 return Cursor::BadBlock;
             return Cursor::BlockEnd;
         case llvm::bitc::DEFINE_ABBREV:
-            if (llvm::Error Err = Stream.ReadAbbrevRecord()) {
+            if (llvm::Error err = Stream.ReadAbbrevRecord())
+            {
                 // FIXME this drops the error on the floor.
-                consumeError(std::move(Err));
+                consumeError(std::move(err));
             }
             continue;
         case llvm::bitc::UNABBREV_RECORD:
@@ -294,14 +298,11 @@ skipUntilRecordOrBlock(
 //------------------------------------------------
 
 // Calls readBlock to read each block in the given bitcode.
-llvm::Expected<
-    std::vector<std::unique_ptr<Info>>>
-readBitcode(
-    llvm::StringRef bitcode,
-    Reporter& R)
+Expected<std::vector<std::unique_ptr<Info>>>
+readBitcode(llvm::StringRef bitcode)
 {
     llvm::BitstreamCursor Stream(bitcode);
-    BitcodeReader reader(Stream, R);
+    BitcodeReader reader(Stream);
     return reader.getInfos();
 }
 
