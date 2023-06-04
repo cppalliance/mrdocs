@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_AST_ANYBLOCK_HPP
-#define MRDOX_API_AST_ANYBLOCK_HPP
+#ifndef MRDOX_AST_ANYBLOCK_HPP
+#define MRDOX_AST_ANYBLOCK_HPP
 
 #include "BitcodeReader.hpp"
 #include "AnyNodeList.hpp"

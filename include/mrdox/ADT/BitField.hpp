@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_ADT_BITFIELD_HPP
-#define MRDOX_ADT_BITFIELD_HPP
+#ifndef MRDOX_API_ADT_BITFIELD_HPP
+#define MRDOX_API_ADT_BITFIELD_HPP
 
 #include <cstdint>
 #include <limits>

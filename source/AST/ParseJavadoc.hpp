@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_AST_PARSEJAVADOC_HPP
-#define MRDOX_API_AST_PARSEJAVADOC_HPP
+#ifndef MRDOX_AST_PARSEJAVADOC_HPP
+#define MRDOX_AST_PARSEJAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Reporter.hpp>

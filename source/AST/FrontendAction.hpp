@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_AST_FRONTENDACTION_HPP
-#define MRDOX_API_AST_FRONTENDACTION_HPP
+#ifndef MRDOX_AST_FRONTENDACTION_HPP
+#define MRDOX_AST_FRONTENDACTION_HPP
 
 #include <mrdox/Platform.hpp>
 #include <clang/Tooling/Execution.h>

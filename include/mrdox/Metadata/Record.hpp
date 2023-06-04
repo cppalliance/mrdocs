@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_METADATA_RECORD_HPP
-#define MRDOX_METADATA_RECORD_HPP
+#ifndef MRDOX_API_METADATA_RECORD_HPP
+#define MRDOX_API_METADATA_RECORD_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/BitField.hpp>

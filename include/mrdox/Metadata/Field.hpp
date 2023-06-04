@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_METADATA_FIELD_HPP
-#define MRDOX_METADATA_FIELD_HPP
+#ifndef MRDOX_API_METADATA_FIELD_HPP
+#define MRDOX_API_METADATA_FIELD_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Info.hpp>

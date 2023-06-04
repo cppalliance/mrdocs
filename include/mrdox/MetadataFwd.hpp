@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_METADATA_FWD_HPP
-#define MRDOX_METADATA_FWD_HPP
+#ifndef MRDOX_API_METADATAFWD_HPP
+#define MRDOX_API_METADATAFWD_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Symbols.hpp>

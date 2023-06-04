@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_AST_BITCODEREADER_HPP
-#define MRDOX_API_AST_BITCODEREADER_HPP
+#ifndef MRDOX_AST_BITCODEREADER_HPP
+#define MRDOX_AST_BITCODEREADER_HPP
 
 //
 // This file implements a reader for parsing the

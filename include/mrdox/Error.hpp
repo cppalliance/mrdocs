@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_ERROR_HPP
-#define MRDOX_ERROR_HPP
+#ifndef MRDOX_API_ERROR_HPP
+#define MRDOX_API_ERROR_HPP
 
 #include <mrdox/Platform.hpp>
 #include <llvm/Support/Error.h>

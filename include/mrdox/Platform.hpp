@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_PLATFORM_HPP
-#define MRDOX_PLATFORM_HPP
+#ifndef MRDOX_API_PLATFORM_HPP
+#define MRDOX_API_PLATFORM_HPP
 
 #include <type_traits>
 

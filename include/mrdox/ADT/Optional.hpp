@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_ADT_OPTIONAL_HPP
-#define MRDOX_ADT_OPTIONAL_HPP
+#ifndef MRDOX_API_ADT_OPTIONAL_HPP
+#define MRDOX_API_ADT_OPTIONAL_HPP
 
 #include <mrdox/Platform.hpp>
 #include <concepts>

@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_ADOC_ADOCPAGESBUILDER_HPP
-#define MRDOX_API_ADOC_ADOCPAGESBUILDER_HPP
+#ifndef MRDOX_ADOC_ADOCPAGESBUILDER_HPP
+#define MRDOX_ADOC_ADOCPAGESBUILDER_HPP
 
 #include "Support/SafeNames.hpp"
 #include <mrdox/Platform.hpp>

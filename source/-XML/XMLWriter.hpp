@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_XML_XMLWRITER_HPP
-#define MRDOX_API_XML_XMLWRITER_HPP
+#ifndef MRDOX_XML_XMLWRITER_HPP
+#define MRDOX_XML_XMLWRITER_HPP
 
 #include "XMLTags.hpp"
 #include "Support/YamlFwd.hpp"

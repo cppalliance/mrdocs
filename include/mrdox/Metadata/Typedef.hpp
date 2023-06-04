@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_METADATA_TYPEDEF_HPP
-#define MRDOX_METADATA_TYPEDEF_HPP
+#ifndef MRDOX_API_METADATA_TYPEDEF_HPP
+#define MRDOX_API_METADATA_TYPEDEF_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Symbol.hpp>

@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_SUPPORT_GENERATORSIMPL_HPP
-#define MRDOX_API_SUPPORT_GENERATORSIMPL_HPP
+#ifndef MRDOX_SUPPORT_GENERATORSIMPL_HPP
+#define MRDOX_SUPPORT_GENERATORSIMPL_HPP
 
 #include <mrdox/Error.hpp>
 #include <mrdox/Platform.hpp>

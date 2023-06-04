@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_SUPPORT_OPERATOR_HPP
-#define MRDOX_API_SUPPORT_OPERATOR_HPP
+#ifndef MRDOX_SUPPORT_OPERATOR_HPP
+#define MRDOX_SUPPORT_OPERATOR_HPP
 
 #include <mrdox/Platform.hpp>
 #include <clang/Basic/OperatorKinds.h>

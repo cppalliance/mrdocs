@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_AST_ASTVISITOR_HPP
-#define MRDOX_API_AST_ASTVISITOR_HPP
+#ifndef MRDOX_AST_ASTVISITOR_HPP
+#define MRDOX_AST_ASTVISITOR_HPP
 
 #include "ConfigImpl.hpp"
 #include <mrdox/Reporter.hpp>

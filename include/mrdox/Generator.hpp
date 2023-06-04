@@ -12,8 +12,8 @@
 // Generator classes for converting declaration
 // information into documentation in a specified format.
 
-#ifndef MRDOX_GENERATOR_HPP
-#define MRDOX_GENERATOR_HPP
+#ifndef MRDOX_API_GENERATOR_HPP
+#define MRDOX_API_GENERATOR_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>

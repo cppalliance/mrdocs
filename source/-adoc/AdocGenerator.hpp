@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_ADOC_ADOCGENERATOR_HPP
-#define MRDOX_API_ADOC_ADOCGENERATOR_HPP
+#ifndef MRDOX_ADOC_ADOCGENERATOR_HPP
+#define MRDOX_ADOC_ADOCGENERATOR_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>

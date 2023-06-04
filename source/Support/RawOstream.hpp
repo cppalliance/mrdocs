@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_SUPPORT_RAWOSTREAM_HPP
-#define MRDOX_API_SUPPORT_RAWOSTREAM_HPP
+#ifndef MRDOX_SUPPORT_RAWOSTREAM_HPP
+#define MRDOX_SUPPORT_RAWOSTREAM_HPP
 
 #include <llvm/Support/raw_ostream.h>
 #include <ostream>
