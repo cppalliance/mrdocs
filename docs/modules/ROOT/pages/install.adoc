@@ -1,0 +1,85 @@
+= Install
+
+== Binaries
+
+Binaries are available from our https://github.com/cppalliance/mrdox/releases[Release Page,window="_blank"]
+
+== Source
+
+=== Requirements
+
+MrDox depends on a recent version of LLVM.
+
+Here are the instructions to clone LLVM version required by this project.
+
+[source,bash]
+----
+git clone https://github.com/llvm/llvm-project.git
+cd llvm-project
+git checkout 731264b0c2af7aa46bd39625202a99e06cfccff9
+----
+
+Here are the instructions to build and install LLVM with the settings required by this project.
+
+Windows:
+
+[source,bash]
+----
+# From Administrator CMD.EXE, after running vcvars64.bat
+cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_CONFIGURATION_TYPES="Debug;RelWithDebInfo" -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=/path/to/llvm+clang -D LLVM_ENABLE_IDE=OFF -D LLVM_ENABLE_DIA_SDK=OFF
+cd build
+cmake --build . --config RelWithDebInfo -j <threads>
+cmake --build . --config Debug -j <threads>
+cmake --install . --prefix "/path/to/llvm+clang/Debug" --config Debug
+cmake --install . --prefix "/path/to/llvm+clang/RelWithDebInfo" --config RelWithDebInfo
+----
+
+Unix variants:
+
+[source,bash]
+----
+cmake -S llvm -B build -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_BUILD_TYPE=RelWithDebInfo -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=/path/to/llvm+clang/RelWithDebInfo
+cd build
+cmake --build . -j <threads>
+cmake --install .
+----
+
+=== MrDox
+
+Once the LLVM variants are available in `/path/to/llvm+clang`, you can download MrDox:
+
+[source,bash]
+----
+git clone https://github.com/cppalliance/mrdox
+cd mrdox
+----
+
+Configure it with:
+
+Windows:
+
+[source,bash]
+----
+git clone https://github.com/cppalliance/mrdox
+cd mrdox
+cmake -G "Visual Studio 17 2022" -A x64 -B bin64 -D CMAKE_PREFIX_PATH="/path/to/llvm+clang/RelWithDebInfo"
+----
+
+Unix variants:
+
+[source,bash]
+----
+git clone https://github.com/cppalliance/mrdox
+cd mrdox
+cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LLVM_ROOT=/path/to/llvm+clang/RelWithDebInfo -D Clang_ROOT=/path/to/llvm+clang/RelWithDebInfo
+----
+
+Then build and install it with:
+
+[source,bash]
+----
+cd build
+cmake --build . -j <threads>
+cmake --install .
+----
+

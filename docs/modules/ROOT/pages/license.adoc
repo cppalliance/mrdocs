@@ -1,0 +1,8 @@
+= License
+
+[source,txt]
+--------
+include::partial$LICENSE.txt[]
+--------
+
+
