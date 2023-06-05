@@ -150,8 +150,9 @@ reduceMemberRefs(
 void merge(RecordInfo& I, RecordInfo&& Other)
 {
     Assert(canMerge(I, Other));
-    if (!I.TagType)
-        I.TagType = Other.TagType;
+    if(Other.KeyKind != RecordKeyKind::Struct &&
+        I.KeyKind != Other.KeyKind)
+        I.KeyKind = Other.KeyKind;
     I.IsTypeDef = I.IsTypeDef || Other.IsTypeDef;
     I.specs.raw.value |= Other.specs.raw.value;
     if (I.Bases.empty())

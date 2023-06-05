@@ -712,7 +712,26 @@ buildRecord(
         I.DefLoc.emplace(line, File_, IsFileInRootDir_);
     else
         I.Loc.emplace_back(line, File_, IsFileInRootDir_);
-    I.TagType = D->getTagKind();
+
+    switch(D->getTagKind())
+    {
+    case TagTypeKind::TTK_Struct:
+        I.KeyKind = RecordKeyKind::Struct;
+        break;
+    case TagTypeKind::TTK_Class:
+        I.KeyKind = RecordKeyKind::Class;
+        break;
+    case TagTypeKind::TTK_Union:
+        I.KeyKind = RecordKeyKind::Union;
+        break;
+    // KRYSTIAN NOTE: do want to support __interface?
+    // it is a Microsoft extension.
+    case TagTypeKind::TTK_Interface:
+        I.KeyKind = RecordKeyKind::Interface;
+        break;
+    default:
+        llvm_unreachable("unsupported TagTypeKind");
+    }
 
     // These are from CXXRecordDecl::isEffectivelyFinal()
     I.specs.isFinal = D->template hasAttr<FinalAttr>();

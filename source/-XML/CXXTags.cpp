@@ -24,11 +24,12 @@ getTagName(Info const& I) noexcept
     case InfoType::IT_namespace:
         return namespaceTagName;
     case InfoType::IT_record:
-        switch(static_cast<RecordInfo const&>(I).TagType)
+        switch(static_cast<RecordInfo const&>(I).KeyKind)
         {
-        case TagTypeKind::TTK_Class:  return classTagName;
-        case TagTypeKind::TTK_Struct: return structTagName;
-        case TagTypeKind::TTK_Union:  return unionTagName;
+        case RecordKeyKind::Class:     return classTagName;
+        case RecordKeyKind::Struct:    return structTagName;
+        case RecordKeyKind::Union:     return unionTagName;
+        case RecordKeyKind::Interface: return interfaceTagName;
         default:
             break;
         }
@@ -43,7 +44,7 @@ getTagName(Info const& I) noexcept
         break;
     case InfoType::IT_enum:
         return enumTagName;
-    case InfoType::IT_variable: 
+    case InfoType::IT_variable:
         return varTagName;
     default:
         break;

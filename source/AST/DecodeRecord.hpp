@@ -147,49 +147,6 @@ inline
 Error
 decodeRecord(
     Record const& R,
-    AccessSpecifier& Field,
-    llvm::StringRef Blob)
-{
-    switch (R[0])
-    {
-    case AS_public:
-    case AS_private:
-    case AS_protected:
-    case AS_none:
-        Field = (AccessSpecifier)R[0];
-        return Error::success();
-    default:
-        Field = AS_none;
-        return Error("AccessSpecifier={} is invalid", R[0]);
-    }
-}
-
-inline
-Error
-decodeRecord(
-    Record const& R,
-    TagTypeKind& Field,
-    llvm::StringRef Blob)
-{
-    switch (R[0])
-    {
-    case TTK_Struct:
-    case TTK_Interface:
-    case TTK_Union:
-    case TTK_Class:
-    case TTK_Enum:
-        Field = (TagTypeKind)R[0];
-        return Error::success();
-    default:
-        Field = TTK_Struct;
-        return Error("TagTypeKind={} is invalid", R[0]);
-    }
-}
-
-inline
-Error
-decodeRecord(
-    Record const& R,
     std::optional<Location>& Field,
     llvm::StringRef Blob)
 {

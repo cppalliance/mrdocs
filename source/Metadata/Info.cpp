@@ -99,8 +99,19 @@ symbolType() const noexcept
     case InfoType::IT_namespace:
         return "namespace";
     case InfoType::IT_record:
-        return clang::TypeWithKeyword::getTagTypeKindName(
-            static_cast<RecordInfo const*>(this)->TagType);
+        switch(static_cast<RecordInfo const*>(this)->KeyKind)
+        {
+        case RecordKeyKind::Struct:
+            return "struct";
+        case RecordKeyKind::Class:
+            return "class";
+        case RecordKeyKind::Union:
+            return "union";
+        case RecordKeyKind::Interface:
+            return "interface";
+        default:
+            llvm_unreachable("unknown RecordKeyKind");
+        }
     case InfoType::IT_function:
         return "function";
     case InfoType::IT_enum:

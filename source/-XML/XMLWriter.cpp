@@ -371,11 +371,12 @@ writeRecord(
     openTemplate(I.Template);
 
     llvm::StringRef tagName;
-    switch(I.TagType)
+    switch(I.KeyKind)
     {
-    case TagTypeKind::TTK_Class:  tagName = classTagName; break;
-    case TagTypeKind::TTK_Struct: tagName = structTagName; break;
-    case TagTypeKind::TTK_Union:  tagName = unionTagName; break;
+    case RecordKeyKind::Class:     tagName = classTagName; break;
+    case RecordKeyKind::Struct:    tagName = structTagName; break;
+    case RecordKeyKind::Union:     tagName = unionTagName; break;
+    case RecordKeyKind::Interface: tagName = interfaceTagName; break;
     default:
         Assert(false);
     }

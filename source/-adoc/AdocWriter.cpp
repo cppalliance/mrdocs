@@ -251,7 +251,7 @@ write(
         "\n" <<
         "[,cpp]\n"
         "----\n" <<
-        tagToString(I.TagType) << " " << I.Name;
+        recordKeyToString(I.KeyKind) << " " << I.Name;
     if(! I.Bases.empty())
     {
         os_ << "\n    : ";
@@ -846,17 +846,16 @@ endSection()
 
 llvm::StringRef
 AdocWriter::
-tagToString(TagTypeKind k) noexcept
+recordKeyToString(RecordKeyKind k) noexcept
 {
     switch(k)
     {
-    case TagTypeKind::TTK_Struct: return "struct";
-    case TagTypeKind::TTK_Interface: return "__interface";
-    case TagTypeKind::TTK_Union: return "union";
-    case TagTypeKind::TTK_Class: return "class";
-    case TagTypeKind::TTK_Enum: return "enum";
+    case RecordKeyKind::Struct: return "struct";
+    case RecordKeyKind::Interface: return "__interface";
+    case RecordKeyKind::Union: return "union";
+    case RecordKeyKind::Class: return "class";
     default:
-        llvm_unreachable("unknown TagTypeKind");
+        llvm_unreachable("unknown RecordKeyKind");
     }
 }
 

@@ -266,7 +266,7 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &Integer32Abbrev}},
         {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
-        {RECORD_TAG_TYPE, {"TagType", &Integer32Abbrev}},
+        {RECORD_KEY_KIND, {"KeyKind", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
@@ -347,7 +347,7 @@ RecordsByBlock{
         {}},
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
-        {RECORD_TAG_TYPE, RECORD_IS_TYPE_DEF, RECORD_BITS,
+        {RECORD_KEY_KIND, RECORD_IS_TYPE_DEF, RECORD_BITS,
         RECORD_FRIENDS, RECORD_ENUMS, RECORD_FUNCTIONS,
         RECORD_RECORDS, RECORD_TYPES, RECORD_VARS, RECORD_FIELDS}},
     // std::vector<Reference>
@@ -961,7 +961,7 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
     emitInfoPart(I);
     emitSymbolPart(I);
-    emitRecord(I.TagType, RECORD_TAG_TYPE);
+    emitRecord(I.KeyKind, RECORD_KEY_KIND);
     emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
     emitRecord({I.specs.raw}, RECORD_BITS);
     for (const auto& B : I.Bases)

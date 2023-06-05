@@ -141,7 +141,7 @@ protected:
     void beginSection(llvm::StringRef name);
     void endSection();
 
-    static llvm::StringRef tagToString(TagTypeKind k) noexcept;
+    static llvm::StringRef recordKeyToString(RecordKeyKind k) noexcept;
 
     //--------------------------------------------
 

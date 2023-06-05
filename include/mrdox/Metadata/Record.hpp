@@ -115,6 +115,16 @@ struct RecordScope
     std::vector<MemberRef> Vars;
 };
 
+enum class RecordKeyKind
+{
+    Struct,
+    Class,
+    Union,
+    // KRYSTIAN NOTE: __interface is a Microsoft extension,
+    // do we want to support it?
+    Interface
+};
+
 /** Metadata for struct, class, or union.
 */
 struct RecordInfo
@@ -122,9 +132,9 @@ struct RecordInfo
 {
     friend class ASTVisitor;
 
-    // VFALCO Use our own enumeration for this
-    // Type of this record (struct, class, union, interface).
-    TagTypeKind TagType = TagTypeKind::TTK_Struct;
+    /** Kind of record this is (class, struct, or union).
+    */
+    RecordKeyKind KeyKind = RecordKeyKind::Struct;
 
     // When present, this record is a template or specialization.
     std::unique_ptr<TemplateInfo> Template;

@@ -899,8 +899,8 @@ public:
     {
         switch(ID)
         {
-        case RECORD_TAG_TYPE:
-            return decodeRecord(R, I->TagType, Blob);
+        case RECORD_KEY_KIND:
+            return decodeRecord(R, I->KeyKind, Blob);
         case RECORD_IS_TYPE_DEF:
             return decodeRecord(R, I->IsTypeDef, Blob);
         case RECORD_BITS:
