@@ -160,12 +160,12 @@ struct RecordInfo
 
     //--------------------------------------------
 
-    static constexpr InfoType type_id = InfoType::IT_record;
+    static constexpr InfoKind kind_id = InfoKind::Record;
 
     explicit
     RecordInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoType::IT_record, ID)
+        : SymbolInfo(InfoKind::Record, ID)
     {
     }
 
@@ -173,7 +173,7 @@ private:
     explicit
     RecordInfo(
         std::unique_ptr<TemplateInfo>&& T)
-        : SymbolInfo(InfoType::IT_record)
+        : SymbolInfo(InfoKind::Record)
         , Template(std::move(T))
     {
     }

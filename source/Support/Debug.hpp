@@ -41,11 +41,11 @@ struct fmt::formatter<clang::mrdox::OptionalSymbolID>
 };
 
 template<>
-struct fmt::formatter<clang::mrdox::InfoType>
+struct fmt::formatter<clang::mrdox::InfoKind>
     : fmt::formatter<std::string>
 {
     fmt::format_context::iterator format(
-        clang::mrdox::InfoType t,
+        clang::mrdox::InfoKind t,
         fmt::format_context& ctx) const;
 };
 

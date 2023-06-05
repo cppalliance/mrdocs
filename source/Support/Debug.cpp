@@ -152,36 +152,36 @@ format(
 }
 
 fmt::format_context::iterator
-fmt::formatter<clang::mrdox::InfoType>::
+fmt::formatter<clang::mrdox::InfoKind>::
 format(
-    clang::mrdox::InfoType t,
+    clang::mrdox::InfoKind t,
     fmt::format_context& ctx) const
 {
-    const char* str = "<unknown InfoType>";
+    const char* str = "<unknown InfoKind>";
     switch(t)
     {
-    case clang::mrdox::InfoType::IT_default:
+    case clang::mrdox::InfoKind::Default:
         str = "default";
         break;
-    case clang::mrdox::InfoType::IT_namespace:
+    case clang::mrdox::InfoKind::Namespace:
         str = "namespace";
         break;
-    case clang::mrdox::InfoType::IT_record:
+    case clang::mrdox::InfoKind::Record:
         str = "record";
         break;
-    case clang::mrdox::InfoType::IT_function:
+    case clang::mrdox::InfoKind::Function:
         str = "function";
         break;
-    case clang::mrdox::InfoType::IT_enum:
+    case clang::mrdox::InfoKind::Enum:
         str = "enum";
         break;
-    case clang::mrdox::InfoType::IT_typedef:
+    case clang::mrdox::InfoKind::Typedef:
         str = "typedef";
         break;
-    case clang::mrdox::InfoType::IT_variable:
+    case clang::mrdox::InfoKind::Variable:
         str = "variable";
         break;
-    case clang::mrdox::InfoType::IT_field:
+    case clang::mrdox::InfoKind::Field:
         str = "field";
         break;
     default:
@@ -220,7 +220,7 @@ format(
     const clang::mrdox::Reference& r,
     fmt::format_context& ctx) const
 {
-    std::string str = fmt::format("Reference: type = {}", r.RefType);
+    std::string str = fmt::format("Reference: kind = {}", r.RefKind);
     if(! r.Name.empty())
         str += fmt::format(", name = '{}'", std::string(r.Name));
     str += fmt::format(", ID = {}", r.id);
@@ -244,7 +244,7 @@ format(
     const clang::mrdox::Info& i,
     fmt::format_context& ctx) const
 {
-    std::string str = fmt::format("Info: type = {}", i.IT);
+    std::string str = fmt::format("Info: kind = {}", i.Kind);
     if(! i.Name.empty())
         str += fmt::format(", name = '{}'", i.Name);
     str += fmt::format(", ID = {}", i.id);

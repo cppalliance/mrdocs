@@ -37,20 +37,20 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "no info values to merge");
 
-    switch (Values[0]->IT) {
-    case InfoType::IT_namespace:
+    switch (Values[0]->Kind) {
+    case InfoKind::Namespace:
         return reduce<NamespaceInfo>(Values);
-    case InfoType::IT_record:
+    case InfoKind::Record:
         return reduce<RecordInfo>(Values);
-    case InfoType::IT_enum:
+    case InfoKind::Enum:
         return reduce<EnumInfo>(Values);
-    case InfoType::IT_function:
+    case InfoKind::Function:
         return reduce<FunctionInfo>(Values);
-    case InfoType::IT_typedef:
+    case InfoKind::Typedef:
         return reduce<TypedefInfo>(Values);
-    case InfoType::IT_variable:
+    case InfoKind::Variable:
         return reduce<VarInfo>(Values);
-    case InfoType::IT_field:
+    case InfoKind::Field:
         return reduce<FieldInfo>(Values);
     default:
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
@@ -159,25 +159,25 @@ traverse(
     Visitor& f,
     Info const& I) const
 {
-    switch(I.IT)
+    switch(I.Kind)
     {
-    case InfoType::IT_namespace:
+    case InfoKind::Namespace:
         return f.visit(static_cast<NamespaceInfo const&>(I));
-    case InfoType::IT_record:
+    case InfoKind::Record:
         return f.visit(static_cast<RecordInfo const&>(I));
-    case InfoType::IT_function:
+    case InfoKind::Function:
         return f.visit(static_cast<FunctionInfo const&>(I));
-    case InfoType::IT_typedef:
+    case InfoKind::Typedef:
         return f.visit(static_cast<TypedefInfo const&>(I));
-    case InfoType::IT_enum:
+    case InfoKind::Enum:
         return f.visit(static_cast<EnumInfo const&>(I));
-    case InfoType::IT_variable:
+    case InfoKind::Variable:
         return f.visit(static_cast<VarInfo const&>(I));
     // KRYSTIAN FIXME: is this correct?
-    case InfoType::IT_field:
+    case InfoKind::Field:
         return f.visit(static_cast<FieldInfo const&>(I));
     default:
-        llvm_unreachable("wrong InfoType for visit");
+        llvm_unreachable("wrong InfoKind for visit");
     }
 }
 

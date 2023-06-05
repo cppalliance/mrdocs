@@ -34,7 +34,7 @@ struct Info
 
     /** Kind of declaration.
     */
-    InfoType IT = InfoType::IT_default;
+    InfoKind Kind = InfoKind::Default;
 
     /** The unqualified name.
     */
@@ -56,10 +56,10 @@ struct Info
 
     explicit
     Info(
-        InfoType IT = InfoType::IT_default,
+        InfoKind kind = InfoKind::Default,
         SymbolID ID = SymbolID::zero)
         : id(ID)
-        , IT(IT)
+        , Kind(kind)
     {
     }
 

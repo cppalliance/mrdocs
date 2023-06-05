@@ -45,9 +45,9 @@ struct SymbolInfo
 
     explicit
     SymbolInfo(
-        InfoType IT,
+        InfoKind kind,
         SymbolID ID = SymbolID::zero)
-        : Info(IT, ID)
+        : Info(kind, ID)
     {
     }
 };

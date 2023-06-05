@@ -108,8 +108,8 @@ public:
             return decodeRecord(R, I.id, Blob);
         case REFERENCE_NAME:
             return decodeRecord(R, I.Name, Blob);
-        case REFERENCE_TYPE:
-            return decodeRecord(R, I.RefType, Blob);
+        case REFERENCE_KIND:
+            return decodeRecord(R, I.RefKind, Blob);
         case REFERENCE_FIELD:
             return decodeRecord(R, F, Blob);
         default:

@@ -49,12 +49,12 @@ struct VarInfo
 
     //--------------------------------------------
 
-    static constexpr InfoType type_id = InfoType::IT_variable;
+    static constexpr InfoKind kind_id = InfoKind::Variable;
 
     explicit
     VarInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoType::IT_variable, ID)
+        : SymbolInfo(InfoKind::Variable, ID)
     {
     }
 
@@ -62,7 +62,7 @@ private:
     explicit
     VarInfo(
         std::unique_ptr<TemplateInfo>&& T)
-        : SymbolInfo(InfoType::IT_variable)
+        : SymbolInfo(InfoKind::Variable)
         , Template(std::move(T))
     {
 

@@ -28,9 +28,9 @@ extractName() const
     if (!Name.empty())
         return Name;
 
-    switch (IT)
+    switch(Kind)
     {
-    case InfoType::IT_namespace:
+    case InfoKind::Namespace:
         // Cover the case where the project contains a base namespace called
         // 'GlobalNamespace' (i.e. a namespace at the same level as the global
         // namespace, which would conflict with the hard-coded global namespace name
@@ -45,26 +45,26 @@ extractName() const
     // VFALCO This API makes assumptions about what is
     //        valid in the output format. We could for
     //        example use base64 or base41...
-    case InfoType::IT_record:
+    case InfoKind::Record:
         return std::string("@nonymous_record_") +
             llvm::toHex(id);
-    case InfoType::IT_function:
+    case InfoKind::Function:
         return std::string("@nonymous_function_") +
             llvm::toHex(id);
-    case InfoType::IT_enum:
+    case InfoKind::Enum:
         return std::string("@nonymous_enum_") +
             llvm::toHex(id);
-    case InfoType::IT_typedef:
+    case InfoKind::Typedef:
         return std::string("@nonymous_typedef_") +
             llvm::toHex(id);
-    case InfoType::IT_variable:
+    case InfoKind::Variable:
         return std::string("@nonymous_var_") +
             llvm::toHex(id);
-    case InfoType::IT_default:
+    case InfoKind::Default:
         return std::string("@nonymous_") +
             llvm::toHex(id);
     default:
-        llvm_unreachable("Invalid InfoType.");
+        llvm_unreachable("Invalid InfoKind.");
         return std::string("");
     }
 }
@@ -92,13 +92,13 @@ llvm::StringRef
 Info::
 symbolType() const noexcept
 {
-    switch(this->IT)
+    switch(this->Kind)
     {
-    case InfoType::IT_default:
+    case InfoKind::Default:
         return "default";
-    case InfoType::IT_namespace:
+    case InfoKind::Namespace:
         return "namespace";
-    case InfoType::IT_record:
+    case InfoKind::Record:
         switch(static_cast<RecordInfo const*>(this)->KeyKind)
         {
         case RecordKeyKind::Struct:
@@ -112,14 +112,14 @@ symbolType() const noexcept
         default:
             llvm_unreachable("unknown RecordKeyKind");
         }
-    case InfoType::IT_function:
+    case InfoKind::Function:
         return "function";
-    case InfoType::IT_enum:
+    case InfoKind::Enum:
         return "enum";
-    case InfoType::IT_typedef:
+    case InfoKind::Typedef:
         return "typedef";
     default:
-        llvm_unreachable("unknown InfoType");
+        llvm_unreachable("unknown InfoKind");
     }
 }
 

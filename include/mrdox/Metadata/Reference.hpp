@@ -34,7 +34,7 @@ struct Reference
 
     /** The type of the referenced symbol.
     */
-    InfoType RefType = InfoType::IT_default;
+    InfoKind RefKind = InfoKind::Default;
 
     //--------------------------------------------
 
@@ -46,10 +46,10 @@ struct Reference
     Reference(
         SymbolID ID = SymbolID::zero,
         std::string_view Name = "",
-        InfoType IT = InfoType::IT_default)
+        InfoKind kind = InfoKind::Default)
         : id(ID)
         , Name(Name)
-        , RefType(IT)
+        , RefKind(kind)
     {
     }
 
@@ -62,8 +62,8 @@ struct Reference
         // VFALCO Is this function only needed
         //        for the old unit tests?
         return
-            std::tie(id, Name, RefType) ==
-            std::tie(Other.id, Other.Name, Other.RefType);
+            std::tie(id, Name, RefKind) ==
+            std::tie(Other.id, Other.Name, Other.RefKind);
     }
 #endif
 };

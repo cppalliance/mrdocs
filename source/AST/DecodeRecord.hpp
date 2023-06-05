@@ -160,22 +160,22 @@ inline
 Error
 decodeRecord(
     Record const& R,
-    InfoType& Field,
+    InfoKind& Field,
     llvm::StringRef Blob)
 {
-    switch (auto IT = static_cast<InfoType>(R[0]))
+    switch(auto kind = static_cast<InfoKind>(R[0]))
     {
-    case InfoType::IT_namespace:
-    case InfoType::IT_record:
-    case InfoType::IT_function:
-    case InfoType::IT_enum:
-    case InfoType::IT_typedef:
-    case InfoType::IT_variable:
-        Field = IT;
+    case InfoKind::Namespace:
+    case InfoKind::Record:
+    case InfoKind::Function:
+    case InfoKind::Enum:
+    case InfoKind::Typedef:
+    case InfoKind::Variable:
+        Field = kind;
         return Error::success();
     default:
-        Field = InfoType::IT_default;
-        return Error("InfoType is invalid");
+        Field = InfoKind::Default;
+        return Error("InfoKind is invalid");
     }
 }
 

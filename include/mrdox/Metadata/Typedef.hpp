@@ -40,12 +40,12 @@ struct TypedefInfo
 
     //--------------------------------------------
 
-    static constexpr InfoType type_id = InfoType::IT_typedef;
+    static constexpr InfoKind kind_id = InfoKind::Typedef;
 
     explicit
     TypedefInfo(
         SymbolID id_ = SymbolID::zero)
-        : SymbolInfo(InfoType::IT_typedef, id_)
+        : SymbolInfo(InfoKind::Typedef, id_)
     {
     }
 
@@ -55,7 +55,7 @@ private:
     explicit
     TypedefInfo(
         std::unique_ptr<TemplateInfo>&& T)
-        : SymbolInfo(InfoType::IT_typedef)
+        : SymbolInfo(InfoKind::Typedef)
         , Template(std::move(T))
     {
     }

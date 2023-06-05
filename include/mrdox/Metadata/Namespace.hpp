@@ -28,7 +28,7 @@ struct NamespaceInfo
 
     //--------------------------------------------
 
-    static constexpr InfoType type_id = InfoType::IT_namespace;
+    static constexpr InfoKind kind_id = InfoKind::Namespace;
 
     NamespaceInfo();
 

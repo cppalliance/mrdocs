@@ -22,7 +22,7 @@ namespace mrdox {
 NamespaceInfo::
 NamespaceInfo()
     : Info(
-        InfoType::IT_namespace,
+        InfoKind::Namespace,
         SymbolID::zero)
     , Children(true)
 {
@@ -31,7 +31,7 @@ NamespaceInfo()
 NamespaceInfo::
 NamespaceInfo(
     SymbolID USR)
-    : Info(InfoType::IT_namespace, USR)
+    : Info(InfoKind::Namespace, USR)
     , Children(true)
 {
 }

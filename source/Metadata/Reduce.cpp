@@ -54,14 +54,14 @@ struct LocationLess
 static bool canMerge(Info const& I, Info const& Other)
 {
     return
-        I.IT == Other.IT &&
+        I.Kind == Other.Kind &&
         I.id == Other.id;
 }
 
 static bool canMerge(Reference const& I, Reference const& Other)
 {
     return
-        I.RefType == Other.RefType &&
+        I.RefKind == Other.RefKind &&
         I.id == Other.id;
 }
 #endif

@@ -82,12 +82,12 @@ struct EnumInfo
 
     //--------------------------------------------
 
-    static constexpr InfoType type_id = InfoType::IT_enum;
+    static constexpr InfoKind kind_id = InfoKind::Enum;
 
     explicit
     EnumInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoType::IT_enum, ID)
+        : SymbolInfo(InfoKind::Enum, ID)
     {
     }
 };

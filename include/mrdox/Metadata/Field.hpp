@@ -56,11 +56,11 @@ struct FieldInfo
 
     //--------------------------------------------
 
-    static constexpr InfoType type_id = InfoType::IT_field;
+    static constexpr InfoKind kind_id = InfoKind::Field;
 
     FieldInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoType::IT_field, ID)
+        : SymbolInfo(InfoKind::Field, ID)
     {
     }
 };

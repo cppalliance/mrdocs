@@ -272,7 +272,7 @@ RecordIDNameMap = []()
         {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
         {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
         {REFERENCE_NAME, {"Name", &StringAbbrev}},
-        {REFERENCE_TYPE, {"RefType", &Integer32Abbrev}},
+        {REFERENCE_KIND, {"RefKind", &Integer32Abbrev}},
         {REFERENCE_FIELD, {"Field", &Integer32Abbrev}},
         {RECORD_ENUMS,      {"RecordEnums", &MemberRefsAbbrev}},
         {RECORD_FUNCTIONS,  {"RecordFunctions", &MemberRefsAbbrev}},
@@ -352,7 +352,7 @@ RecordsByBlock{
         RECORD_RECORDS, RECORD_TYPES, RECORD_VARS, RECORD_FIELDS}},
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
-        {REFERENCE_USR, REFERENCE_NAME, REFERENCE_TYPE, REFERENCE_FIELD}},
+        {REFERENCE_USR, REFERENCE_NAME, REFERENCE_KIND, REFERENCE_FIELD}},
     // TArg.
     {BI_TEMPLATE_ARG_BLOCK_ID,
         {TEMPLATE_ARG_VALUE}},
@@ -388,27 +388,27 @@ bool
 BitcodeWriter::
 dispatchInfoForWrite(Info const* I)
 {
-    switch (I->IT)
+    switch (I->Kind)
     {
-    case InfoType::IT_namespace:
+    case InfoKind::Namespace:
         emitBlock(*static_cast<NamespaceInfo const*>(I));
         break;
-    case InfoType::IT_record:
+    case InfoKind::Record:
         emitBlock(*static_cast<RecordInfo const*>(I));
         break;
-    case InfoType::IT_function:
+    case InfoKind::Function:
         emitBlock(*static_cast<FunctionInfo const*>(I));
         break;
-    case InfoType::IT_enum:
+    case InfoKind::Enum:
         emitBlock(*static_cast<EnumInfo const*>(I));
         break;
-    case InfoType::IT_typedef:
+    case InfoKind::Typedef:
         emitBlock(*static_cast<TypedefInfo const*>(I));
         break;
-    case InfoType::IT_variable:
+    case InfoKind::Variable:
         emitBlock(*static_cast<VarInfo const*>(I));
         break;
-    case InfoType::IT_field:
+    case InfoKind::Field:
         emitBlock(*static_cast<FieldInfo const*>(I));
         break;
     default:
@@ -761,7 +761,7 @@ emitSymbolPart(
     if(I.DefLoc)
         emitRecord(*I.DefLoc, SYMBOL_PART_DEFLOC);
     // VFALCO hack to squelch refs from typedefs
-    if(I.IT != InfoType::IT_typedef)
+    if(I.Kind != InfoKind::Typedef)
         for(const auto& L : I.Loc)
             emitRecord(L, SYMBOL_PART_LOC);
 }
@@ -987,7 +987,7 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
     emitRecord(R.id, REFERENCE_USR);
     emitRecord(R.Name, REFERENCE_NAME);
-    emitRecord((unsigned)R.RefType, REFERENCE_TYPE);
+    emitRecord((unsigned)R.RefKind, REFERENCE_KIND);
     emitRecord((unsigned)Field, REFERENCE_FIELD);
 }
 

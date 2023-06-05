@@ -107,17 +107,17 @@ using OptionalSymbolID = Optional<SymbolID>;
 
 /** Info variant discriminator
 */
-enum class InfoType
+enum class InfoKind
 {
-    IT_default,
-    IT_namespace,
-    IT_record,
-    IT_function,
-    IT_enum,
-    IT_typedef,
-    IT_variable,
-    IT_field,
-    IT_specialization
+    Default,
+    Namespace,
+    Record,
+    Function,
+    Enum,
+    Typedef,
+    Variable,
+    Field,
+    Specialization
 };
 
 /** Return the result of comparing s0 to s1.

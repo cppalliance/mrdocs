@@ -68,24 +68,24 @@ traverse(
     MutableVisitor& f,
     Info& I)
 {
-    switch(I.IT)
+    switch(I.Kind)
     {
-    case InfoType::IT_namespace:
+    case InfoKind::Namespace:
         return f.visit(static_cast<NamespaceInfo&>(I));
-    case InfoType::IT_record:
+    case InfoKind::Record:
         return f.visit(static_cast<RecordInfo&>(I));
-    case InfoType::IT_function:
+    case InfoKind::Function:
         return f.visit(static_cast<FunctionInfo&>(I));
-    case InfoType::IT_typedef:
+    case InfoKind::Typedef:
         return f.visit(static_cast<TypedefInfo&>(I));
-    case InfoType::IT_enum:
+    case InfoKind::Enum:
         return f.visit(static_cast<EnumInfo&>(I));
-    case InfoType::IT_variable:
+    case InfoKind::Variable:
         return f.visit(static_cast<VarInfo&>(I));
-    case InfoType::IT_field:
+    case InfoKind::Field:
         return f.visit(static_cast<FieldInfo&>(I));
     default:
-        llvm_unreachable("wrong InfoType for visit");
+        llvm_unreachable("wrong InfoKind for visit");
     }
 }
 

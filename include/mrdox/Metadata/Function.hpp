@@ -190,12 +190,12 @@ struct FunctionInfo
 
     //--------------------------------------------
 
-    static constexpr InfoType type_id = InfoType::IT_function;
+    static constexpr InfoKind kind_id = InfoKind::Function;
 
     explicit
     FunctionInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoType::IT_function, ID)
+        : SymbolInfo(InfoKind::Function, ID)
     {
     }
 
@@ -203,7 +203,7 @@ private:
     explicit
     FunctionInfo(
         std::unique_ptr<TemplateInfo>&& T)
-        : SymbolInfo(InfoType::IT_function)
+        : SymbolInfo(InfoKind::Function)
         , Template(std::move(T))
     {
     }

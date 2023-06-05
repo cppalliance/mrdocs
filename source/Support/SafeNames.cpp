@@ -145,7 +145,7 @@ private:
     llvm::StringRef
     getSafe(Info const& I)
     {
-        if(I.IT != InfoType::IT_function)
+        if(I.Kind != InfoKind::Function)
             return I.Name;
         auto const& FI = static_cast<
             FunctionInfo const&>(I);

@@ -19,11 +19,11 @@ namespace xml {
 llvm::StringRef
 getTagName(Info const& I) noexcept
 {
-    switch(I.IT)
+    switch(I.Kind)
     {
-    case InfoType::IT_namespace:
+    case InfoKind::Namespace:
         return namespaceTagName;
-    case InfoType::IT_record:
+    case InfoKind::Record:
         switch(static_cast<RecordInfo const&>(I).KeyKind)
         {
         case RecordKeyKind::Class:     return classTagName;
@@ -34,17 +34,17 @@ getTagName(Info const& I) noexcept
             break;
         }
         break;
-    case InfoType::IT_function:
+    case InfoKind::Function:
         return functionTagName;
-    case InfoType::IT_typedef:
+    case InfoKind::Typedef:
         if(static_cast<TypedefInfo const&>(I).IsUsing)
             return aliasTagName;
         else
             return typedefTagName;
         break;
-    case InfoType::IT_enum:
+    case InfoKind::Enum:
         return enumTagName;
-    case InfoType::IT_variable:
+    case InfoKind::Variable:
         return varTagName;
     default:
         break;

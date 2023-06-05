@@ -195,16 +195,16 @@ getTypeInfoForType(
     SymbolID id = SymbolID::zero;
     if(const TagDecl* TD = getTagDeclForType(T))
     {
-        InfoType IT;
+        InfoKind kind;
         if(isa<EnumDecl>(TD))
-            IT = InfoType::IT_enum;
+            kind = InfoKind::Enum;
         else if(isa<CXXRecordDecl>(TD))
-            IT = InfoType::IT_record;
+            kind = InfoKind::Record;
         else
-            IT = InfoType::IT_default;
+            kind = InfoKind::Default;
         extractSymbolID(TD, id);
         return TypeInfo(Reference(
-            id, TD->getNameAsString(), IT));
+            id, TD->getNameAsString(), kind));
     }
     return TypeInfo(Reference(id,
         getTypeAsString(T)));
@@ -481,7 +481,7 @@ writeParent(
     {
         NamespaceInfo P(I.Namespace.front());
         insertChild<Child>(P.Children,
-            I.id, I.Name, Child::type_id);
+            I.id, I.Name, Child::kind_id);
         return writeBitcode(P);
     }
     case AccessSpecifier::AS_public:

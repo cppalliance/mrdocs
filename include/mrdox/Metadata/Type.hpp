@@ -51,7 +51,7 @@ struct TypeInfo
     TypeInfo(
         std::string_view Name)
         : Reference(
-            SymbolID::zero, Name, InfoType::IT_default)
+            SymbolID::zero, Name, InfoKind::Default)
     {
     }
 

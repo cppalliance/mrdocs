@@ -161,19 +161,19 @@ get(
     assert(I != nullptr);
     auto const t = static_cast<T const*>(I);
     if constexpr(std::is_same_v<T, NamespaceInfo>)
-        assert(t->IT == InfoType::IT_namespace);
+        assert(t->Kind == InfoKind::Namespace);
     else if constexpr(std::is_same_v<T, RecordInfo>)
-        assert(t->IT == InfoType::IT_record);
+        assert(t->Kind == InfoKind::Record);
     else if constexpr(std::is_same_v<T, FunctionInfo>)
-        assert(t->IT == InfoType::IT_function);
+        assert(t->Kind == InfoKind::Function);
     else if constexpr(std::is_same_v<T, TypedefInfo>)
-        assert(t->IT == InfoType::IT_typedef);
+        assert(t->Kind == InfoKind::Typedef);
     else if constexpr(std::is_same_v<T, EnumInfo>)
-        assert(t->IT == InfoType::IT_enum);
+        assert(t->Kind == InfoKind::Enum);
     else if constexpr(std::is_same_v<T, VarInfo>)
-        assert(t->IT == InfoType::IT_variable);
+        assert(t->Kind == InfoKind::Variable);
     else if constexpr(std::is_same_v<T, FieldInfo>)
-        assert(t->IT == InfoType::IT_field);
+        assert(t->Kind == InfoKind::Field);
     return *t;
 }
 

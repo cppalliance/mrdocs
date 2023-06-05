@@ -580,17 +580,17 @@ writeLocation(
 #endif
     //--------------------------------------------
 
-    switch(I.IT)
+    switch(I.Kind)
     {
     default:
-    case InfoType::IT_function:
+    case InfoKind::Function:
         os_ <<
             "\n"
             "Declared in " << url <<
             "[" << loc->Filename << "]" <<
             "\n";
         break;
-    case InfoType::IT_record:
+    case InfoKind::Record:
         os_ <<
             "\n"
             "`#include <" << url <<
