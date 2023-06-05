@@ -16,7 +16,6 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
-#include <clang/Tooling/Execution.h>
 #include <cassert>
 #include <memory>
 #include <string>
@@ -128,18 +127,6 @@ public:
     /** @} */
 
     //--------------------------------------------
-
-    /** Build metadata for a set of translation units.
-
-        @param config A shared pointer to the configuration.
-    */
-    MRDOX_DECL
-    [[nodiscard]]
-    static
-    Expected<std::unique_ptr<Corpus>>
-    build(
-        tooling::ToolExecutor& ex,
-        std::shared_ptr<Config const> config);
 
     // KRYSTIAN NOTE: temporary
     MRDOX_DECL

@@ -11,6 +11,7 @@
 #include "Options.hpp"
 #include "SingleFileDB.hpp"
 #include "ConfigImpl.hpp"
+#include "CorpusImpl.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Error.hpp"
 #include <mrdox/Config.hpp>
@@ -207,7 +208,7 @@ handleFile(
     {
         SingleFileDB db(dirPath, filePath);
         tooling::StandaloneToolExecutor ex(db, { std::string(filePath) });
-        auto result = Corpus::build(ex, config);
+        auto result = CorpusImpl::build(ex, config);
         if(! result)
         {
             reportError(result.getError(), "build Corpus for \"{}\"", filePath);

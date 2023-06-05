@@ -11,6 +11,7 @@
 
 #include "Options.hpp"
 #include "ConfigImpl.hpp"
+#include "CorpusImpl.hpp"
 #include <mrdox/Generators.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/JSONCompilationDatabase.h>
@@ -61,9 +62,9 @@ DoGenerateAction()
         return Error("the Generator \"{}\" was not found", FormatType.getValue());
 
     // Run the tool, this can take a while
-    auto corpus = Corpus::build(*ex, *config);
+    auto corpus = CorpusImpl::build(*ex, *config);
     if(! corpus)
-        return Error("Corpus::build returned \"{}\"", corpus.getError());
+        return Error("CorpusImpl::build returned \"{}\"", corpus.getError());
 
     // Run the generator.
     if(config.get()->verboseOutput)

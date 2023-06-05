@@ -14,6 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Support/Expected.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/ADT/StringMap.h>
@@ -78,7 +79,7 @@ writeBitcode(
 
 /** Return an array of Info read from a bitstream.
 */
-Expected<std::vector<std::unique_ptr<Info>>>
+mrdox::Expected<std::vector<std::unique_ptr<Info>>>
 readBitcode(llvm::StringRef bitcode);
 
 /** Store a key/value pair in the tool results.

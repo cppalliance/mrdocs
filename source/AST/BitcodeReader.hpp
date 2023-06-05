@@ -46,7 +46,7 @@ public:
     // Main entry point, calls readBlock to read each block in the given stream.
     auto
     getInfos() ->
-        Expected<std::vector<std::unique_ptr<Info>>>;
+        mrdox::Expected<std::vector<std::unique_ptr<Info>>>;
 public:
     struct AnyBlock;
 
@@ -64,7 +64,7 @@ public:
     /** Return the next decoded Info from the stream.
     */
     template<class T>
-    Expected<std::unique_ptr<Info>>
+    mrdox::Expected<std::unique_ptr<Info>>
     readInfo(unsigned ID);
 
     /** Read a single block.

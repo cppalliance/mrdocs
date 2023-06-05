@@ -14,12 +14,13 @@
 #include "DecodeRecord.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Error.hpp"
+#include <mrdox/Support/Expected.hpp>
 
 namespace clang {
 namespace mrdox {
 
 // Entry point
-Expected<std::vector<std::unique_ptr<Info>>>
+mrdox::Expected<std::vector<std::unique_ptr<Info>>>
 BitcodeReader::
 getInfos()
 {
@@ -173,7 +174,7 @@ readBlockInfoBlock()
 //------------------------------------------------
 
 template<class T>
-Expected<std::unique_ptr<Info>>
+mrdox::Expected<std::unique_ptr<Info>>
 BitcodeReader::
 readInfo(
     unsigned ID)
@@ -298,7 +299,7 @@ skipUntilRecordOrBlock(
 //------------------------------------------------
 
 // Calls readBlock to read each block in the given bitcode.
-Expected<std::vector<std::unique_ptr<Info>>>
+mrdox::Expected<std::vector<std::unique_ptr<Info>>>
 readBitcode(llvm::StringRef bitcode)
 {
     llvm::BitstreamCursor Stream(bitcode);

@@ -14,6 +14,9 @@
 #include "ConfigImpl.hpp"
 #include "Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
+#include <mrdox/Metadata.hpp>
+#include <mrdox/Support/Expected.hpp>
+#include <clang/Tooling/Execution.h>
 #include <llvm/ADT/StringMap.h>
 #include <llvm/Support/Mutex.h>
 #include <string>
@@ -39,6 +42,19 @@ public:
     Info*
     find(
         SymbolID const& id) noexcept;
+
+
+    /** Build metadata for a set of translation units.
+
+        @param config A shared pointer to the configuration.
+    */
+    // MRDOX_DECL
+    [[nodiscard]]
+    static
+    mrdox::Expected<std::unique_ptr<Corpus>>
+    build(
+        tooling::ToolExecutor& ex,
+        std::shared_ptr<Config const> config);
 
 private:
     std::vector<Info const*> const&
