@@ -22,8 +22,6 @@
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Var.hpp>
-#include <clang/AST/Type.h>
-#include <llvm/ADT/SmallVector.h>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -166,9 +164,8 @@ struct RecordInfo
 
     explicit
     RecordInfo(
-        SymbolID id = SymbolID::zero,
-        llvm::StringRef Name = llvm::StringRef())
-        : SymbolInfo(InfoType::IT_record, id, Name)
+        SymbolID ID = SymbolID::zero)
+        : SymbolInfo(InfoType::IT_record, ID)
     {
     }
 

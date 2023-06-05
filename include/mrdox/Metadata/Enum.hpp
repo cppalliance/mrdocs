@@ -15,10 +15,9 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Type.hpp>
-#include <llvm/ADT/SmallString.h>
-#include <llvm/ADT/SmallVector.h>
-#include <llvm/ADT/StringRef.h>
 #include <optional>
+#include <string>
+#include <string_view>
 #include <utility>
 
 namespace clang {
@@ -28,24 +27,24 @@ namespace mrdox {
 // Information for a single possible value of an enumeration.
 struct EnumValueInfo
 {
-    llvm::SmallString<16> Name;
+    std::string Name;
 
     // The computed value of the enumeration constant. This could be the result of
     // evaluating the ValueExpr, or it could be automatically generated according
     // to C rules.
-    llvm::SmallString<16> Value;
+    std::string Value;
 
     // Stores the user-supplied initialization expression for this enumeration
     // constant. This will be empty for implicit enumeration values.
-    llvm::SmallString<16> ValueExpr;
+    std::string ValueExpr;
 
     //--------------------------------------------
 
     explicit
     EnumValueInfo(
-        llvm::StringRef Name = llvm::StringRef(),
-        llvm::StringRef Value = llvm::StringRef("0"),
-        llvm::StringRef ValueExpr = llvm::StringRef())
+        std::string_view Name = "",
+        std::string_view Value = "0",
+        std::string_view ValueExpr = "")
         : Name(Name)
         , Value(Value)
         , ValueExpr(ValueExpr)
@@ -78,7 +77,8 @@ struct EnumInfo
     // this will be "short".
     std::optional<TypeInfo> BaseType;
 
-    llvm::SmallVector<EnumValueInfo, 4> Members; // List of enum members.
+    // Enumeration members.
+    std::vector<EnumValueInfo> Members;
 
     //--------------------------------------------
 
@@ -86,8 +86,8 @@ struct EnumInfo
 
     explicit
     EnumInfo(
-        SymbolID id = SymbolID::zero)
-        : SymbolInfo(InfoType::IT_enum, id)
+        SymbolID ID = SymbolID::zero)
+        : SymbolInfo(InfoType::IT_enum, ID)
     {
     }
 };

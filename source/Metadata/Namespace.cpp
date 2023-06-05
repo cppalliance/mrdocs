@@ -23,17 +23,15 @@ NamespaceInfo::
 NamespaceInfo()
     : Info(
         InfoType::IT_namespace,
-        SymbolID::zero,
-        "")
+        SymbolID::zero)
     , Children(true)
 {
 }
 
 NamespaceInfo::
 NamespaceInfo(
-    SymbolID USR,
-    llvm::StringRef Name)
-    : Info(InfoType::IT_namespace, USR, Name)
+    SymbolID USR)
+    : Info(InfoType::IT_namespace, USR)
     , Children(true)
 {
 }

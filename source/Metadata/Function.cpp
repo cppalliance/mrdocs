@@ -105,7 +105,7 @@ getFunctionKind(
     return Table[to_underlying(OOK)].kind;
 }
 
-llvm::StringRef
+std::string_view
 getFunctionKindString(
     FunctionKind kind) noexcept
 {

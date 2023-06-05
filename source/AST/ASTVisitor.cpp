@@ -519,7 +519,7 @@ parseEnumerators(
 
         SmallString<16> ValueStr;
         E->getInitVal().toString(ValueStr);
-        I.Members.emplace_back(E->getNameAsString(), ValueStr, ValueExpr);
+        I.Members.emplace_back(E->getNameAsString(), ValueStr.str(), ValueExpr);
     }
 }
 
@@ -709,9 +709,9 @@ buildRecord(
         return;
     int line = getLine(D);
     if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(line, File_, IsFileInRootDir_);
+        I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
     else
-        I.Loc.emplace_back(line, File_, IsFileInRootDir_);
+        I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
 
     switch(D->getTagKind())
     {
@@ -768,9 +768,9 @@ constructFunction(
     //     I.Name = name;
     int line = getLine(D);
     if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(line, File_, IsFileInRootDir_);
+        I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
     else
-        I.Loc.emplace_back(line, File_, IsFileInRootDir_);
+        I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
     QualType qt = D->getReturnType();
     std::string s = getTypeAsString(qt);
     I.ReturnType = getTypeInfoForType(qt);
@@ -982,9 +982,9 @@ buildEnum(
         return;
     int line = getLine(D);
     if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(line, File_, IsFileInRootDir_);
+        I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
     else
-        I.Loc.emplace_back(line, File_, IsFileInRootDir_);
+        I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
     I.Scoped = D->isScoped();
     if(D->isFixed())
     {
@@ -1006,7 +1006,7 @@ buildField(
     if(! extractInfo(I, D))
         return;
     int line = getLine(D);
-    I.DefLoc.emplace(line, File_, IsFileInRootDir_);
+    I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
 
     I.Type = getTypeInfoForType(
         D->getTypeSourceInfo()->getType());
@@ -1031,9 +1031,9 @@ buildVar(
         return;
     int line = getLine(D);
     if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(line, File_, IsFileInRootDir_);
+        I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
     else
-        I.Loc.emplace_back(line, File_, IsFileInRootDir_);
+        I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
     I.Type = getTypeInfoForType(
         D->getTypeSourceInfo()->getType());
     I.specs.storageClass = D->getStorageClass();
@@ -1080,7 +1080,7 @@ buildTypedef(
 
     int line = getLine(D);
     // D->isThisDeclarationADefinition(); // not available
-    I.DefLoc.emplace(line, File_, IsFileInRootDir_);
+    I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
     // KRYSTIAN NOTE: IsUsing is set by TraverseTypeAlias
     // I.IsUsing = std::is_same_v<DeclTy, TypeAliasDecl>;
     insertBitcode(ex_, writeBitcode(I));

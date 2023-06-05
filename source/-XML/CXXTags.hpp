@@ -263,7 +263,7 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
         const auto& t = I.get<TypeTParam>();
         std::string_view default_val;
         if(t.Default)
-            default_val = t.Default->Name.str();
+            default_val = t.Default->Name;
 
         tags.write(tparamTagName, {}, {
             { "name", I.Name, ! I.Name.empty() },

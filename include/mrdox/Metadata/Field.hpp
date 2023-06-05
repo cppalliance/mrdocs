@@ -18,7 +18,6 @@
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <mrdox/ADT/BitField.hpp>
-#include <llvm/ADT/SmallString.h>
 #include <utility>
 
 namespace clang {
@@ -60,9 +59,8 @@ struct FieldInfo
     static constexpr InfoType type_id = InfoType::IT_field;
 
     FieldInfo(
-        SymbolID ID = SymbolID::zero,
-        llvm::StringRef Name = llvm::StringRef())
-        : SymbolInfo(InfoType::IT_field, ID, Name)
+        SymbolID ID = SymbolID::zero)
+        : SymbolInfo(InfoType::IT_field, ID)
     {
     }
 };

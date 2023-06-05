@@ -16,8 +16,6 @@
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
-#include <llvm/ADT/StringRef.h>
-#include <llvm/ADT/SmallVector.h>
 #include <array>
 #include <memory>
 #include <string>
@@ -59,11 +57,9 @@ struct Info
     explicit
     Info(
         InfoType IT = InfoType::IT_default,
-        SymbolID id_ = SymbolID::zero,
-        llvm::StringRef Name = llvm::StringRef())
-        : id(id_)
+        SymbolID ID = SymbolID::zero)
+        : id(ID)
         , IT(IT)
-        , Name(Name)
     {
     }
 

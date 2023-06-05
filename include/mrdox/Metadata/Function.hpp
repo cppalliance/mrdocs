@@ -96,7 +96,7 @@ getFunctionKind(
 
 /** Return a unique string constant for the kind.
 */
-llvm::StringRef
+std::string_view
 getFunctionKindString(
     FunctionKind kind) noexcept;
 
@@ -194,8 +194,8 @@ struct FunctionInfo
 
     explicit
     FunctionInfo(
-        SymbolID id_ = SymbolID::zero)
-        : SymbolInfo(InfoType::IT_function, id_)
+        SymbolID ID = SymbolID::zero)
+        : SymbolInfo(InfoType::IT_function, ID)
     {
     }
 

@@ -53,9 +53,8 @@ struct VarInfo
 
     explicit
     VarInfo(
-        SymbolID ID = SymbolID::zero,
-        llvm::StringRef Name = llvm::StringRef())
-        : SymbolInfo(InfoType::IT_variable, ID, Name)
+        SymbolID ID = SymbolID::zero)
+        : SymbolInfo(InfoType::IT_variable, ID)
     {
     }
 

@@ -49,7 +49,7 @@ struct TypeInfo
     // (normally used for built-in types in tests).
     explicit
     TypeInfo(
-        llvm::StringRef Name)
+        std::string_view Name)
         : Reference(
             SymbolID::zero, Name, InfoType::IT_default)
     {

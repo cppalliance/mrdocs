@@ -13,23 +13,23 @@
 #define MRDOX_API_METADATA_LOCATION_HPP
 
 #include <mrdox/Platform.hpp>
-#include <llvm/ADT/SmallString.h>
-#include <llvm/ADT/StringRef.h>
+#include <string>
+#include <string_view>
 
 namespace clang {
 namespace mrdox {
 
 struct Location
 {
-    int LineNumber = 0;             // Line number of this Location.
-    llvm::SmallString<32> Filename; // File for this Location.
-    bool IsFileInRootDir = false;   // Indicates if file is inside root directory
+    int LineNumber = 0;           // Line number of this Location.
+    std::string Filename;         // File for this Location.
+    bool IsFileInRootDir = false; // Indicates if file is inside root directory
 
     //--------------------------------------------
 
     Location(
         int LineNumber = 0,
-        llvm::StringRef Filename = llvm::StringRef(),
+        std::string_view Filename = "",
         bool IsFileInRootDir = false)
         : LineNumber(LineNumber)
         , Filename(Filename)
