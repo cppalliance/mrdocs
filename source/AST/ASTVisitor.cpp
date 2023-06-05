@@ -1625,9 +1625,10 @@ ASTVisitor::
 HandleTranslationUnit(
     ASTContext& Context)
 {
-    // cache contextual variables
-    astContext_ = &Context;
-    sourceManager_ = &astContext_->getSourceManager();
+    // the ASTContext and Sema better be the same
+    // as those set by Initialize and InitializeSema
+    Assert(astContext_ == &Context);
+    Assert(sema_);
 
     // Install handlers for our custom commands
     initCustomCommentCommands(Context);
@@ -1644,8 +1645,6 @@ HandleTranslationUnit(
     if(! config_.shouldVisitTU(File_))
         return;
 
-    sema_ = &compiler_.getSema();
-
     TranslationUnitDecl* TU =
         Context.getTranslationUnitDecl();
     // the traversal scope should *only* consist of the
@@ -1657,6 +1656,30 @@ HandleTranslationUnit(
 
     for(auto* C : TU->decls())
         TraverseDecl(C);
+}
+
+void
+ASTVisitor::
+Initialize(ASTContext& Context)
+{
+    astContext_ = &Context;
+    sourceManager_ = &Context.getSourceManager();
+}
+
+void
+ASTVisitor::
+InitializeSema(Sema& S)
+{
+    // Sema should not have been initialized yet
+    Assert(! sema_);
+    sema_ = &S;
+}
+
+void
+ASTVisitor::
+ForgetSema()
+{
+    sema_ = nullptr;
 }
 
 } // mrdox

@@ -15,6 +15,7 @@
 
 #include "ConfigImpl.hpp"
 #include <mrdox/MetadataFwd.hpp>
+#include <clang/Sema/SemaConsumer.h>
 #include <clang/Tooling/Execution.h>
 #include <optional>
 #include <unordered_map>
@@ -35,7 +36,7 @@ namespace mrdox {
     more than one translation unit.
 */
 class ASTVisitor
-    : public ASTConsumer
+    : public SemaConsumer
 {
 public:
     struct FileFilter
@@ -52,14 +53,15 @@ public:
 
     llvm::SmallString<128> usr_;
 
-    ASTContext* astContext_;
-    clang::SourceManager const* sourceManager_;
     std::unordered_map<
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
 
     clang::CompilerInstance& compiler_;
-    Sema* sema_;
+
+    ASTContext* astContext_ = nullptr;
+    SourceManager* sourceManager_ = nullptr;
+    Sema* sema_ = nullptr;
 
 public:
     ASTVisitor(
@@ -274,7 +276,6 @@ public:
 
     void HandleTranslationUnit(ASTContext& Context) override;
 
-
     /** Skip function bodies
 
         This is called by Sema when parsing a function that has a body and:
@@ -286,6 +287,11 @@ public:
         nor one that introduces a new type via returning a local class.
     */
     bool shouldSkipFunctionBody(Decl* D) override { return true; }
+
+    void Initialize(ASTContext& Context) override;
+    void InitializeSema(Sema& S) override;
+    void ForgetSema() override;
+
 };
 
 } // mrdox
