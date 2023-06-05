@@ -196,7 +196,8 @@ public:
         }
         case JAVADOC_PARAM_DIRECTION:
         {
-            Javadoc::ParamDirection direction;
+            Javadoc::ParamDirection direction =
+                Javadoc::ParamDirection::none;
             if(auto err = decodeRecord(R, direction, Blob))
                 return err;
             return J.getNodes().setDirection(direction);
@@ -207,14 +208,16 @@ public:
         }
         case JAVADOC_NODE_STYLE:
         {
-            Javadoc::Style style;
+            Javadoc::Style style =
+                Javadoc::Style::none;
             if(auto err = decodeRecord(R, style, Blob))
                 return err;
             return J.getNodes().setStyle(style);
         }
         case JAVADOC_NODE_ADMONISH:
         {
-            Javadoc::Admonish admonish;
+            Javadoc::Admonish admonish =
+                Javadoc::Admonish::none;
             if(auto err = decodeRecord(R, admonish, Blob))
                 return err;
             return J.getNodes().setAdmonish(admonish);
