@@ -36,6 +36,7 @@ include(GNUInstallDirs)
 
 option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 option(MRDOX_BUILD_SHARED "Link shared" OFF)
+option(MRDOX_BUILD_DOCS "Configure install target" OFF)
 option(MRDOX_INSTALL "Configure install target" ON)
 option(MRDOX_PACKAGE "Build install package" ON)
 
@@ -186,7 +187,7 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 #
 #-------------------------------------------------
 
-if (BUILD_TESTING)
+if (MRDOX_BUILD_TESTS)
     file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
     enable_testing()
     add_test(NAME mrdox-test COMMAND mrdox --action test
@@ -228,6 +229,37 @@ if (BUILD_TESTING)
     endif()
 endif()
 
+
+#-------------------------------------------------
+#
+# Docs
+#
+#-------------------------------------------------
+
+if (MRDOX_BUILD_DOCS)
+    find_program(NPM_EXECUTABLE npm)
+    find_program(NPX_EXECUTABLE npx)
+
+    if(NPM_EXECUTABLE AND NPX_EXECUTABLE)
+        message(STATUS "NPM found: ${NPM_EXECUTABLE}")
+        message(STATUS "NPX found: ${NPX_EXECUTABLE}")
+
+        set(DOCS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs)
+        set(DOCS_BUILD_DIR ${DOCS_SOURCE_DIR}/build/site)
+        set(DOCS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/doc/mrdox/html)
+
+        # Add custom target for generating documentation
+        add_custom_target(generate_docs
+                COMMAND ${NPM_EXECUTABLE} install
+                COMMAND ${NPX_EXECUTABLE} antora local-antora-playbook.yml
+                WORKING_DIRECTORY ${DOCS_SOURCE_DIR}
+                COMMENT "Generating MrDox documentation"
+                )
+    else()
+        message(WARNING "NPM or NPX not found. Unable to generate documentation.")
+    endif()
+endif ()
+
 #-------------------------------------------------
 #
 # Install
@@ -252,6 +284,14 @@ if (MRDOX_INSTALL)
     install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdox
             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             FILES_MATCHING PATTERN "*.[hic]pp")
+
+    # Set installation rules for generated documentation
+    if (MRDOX_BUILD_DOCS)
+        install(DIRECTORY ${DOCS_BUILD_DIR}
+                DESTINATION ${DOCS_INSTALL_DIR}
+                COMPONENT documentation
+                )
+    endif()
 
     # Set variable where the cmake config is
     # https://cliutils.gitlab.io/modern-cmake/chapters/install/installing.html

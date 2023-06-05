@@ -102,6 +102,53 @@ jobs:
       run:
         shell: bash
 
+    name: Publish docs
+    timeout-minutes: 30
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Antora
+        working-directory: docs
+        run: |
+          npm install
+
+      - name: Generate Site
+        working-directory: docs
+        run: |
+          master_antora_exists=$(curl --silent --fail --head https://github.com/cppalliance/mrdox/blob/master/docs/antora.yml >/dev/null && echo "true" || echo "false")
+          develop_antora_exists=$(curl --silent --fail --head https://github.com/cppalliance/mrdox/blob/develop/docs/antora.yml >/dev/null && echo "true" || echo "false")
+          if [ "$master_antora_exists" == "true" ] && [ "$develop_antora_exists" == "true" ]; then
+              # Antora is set up in both master and develop: render complete playbook
+              npx antora antora-playbook.yml
+          else
+              # Antora is not set up in master and develop yet: render local playbook while integration is not complete
+              # The local playbook is used for local development and for the documentation included in the release
+              npx antora local-antora-playbook.yml
+          fi
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/build/site
+          force_orphan: true
+
+  releases:
+    needs: build
+    if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+    defaults:
+      run:
+        shell: bash
+
     name: Create Release Packages
     timeout-minutes: 120
     runs-on: ubuntu-22.04

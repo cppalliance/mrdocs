@@ -1,0 +1,29 @@
+# npm install
+# npx antora --fetch antora-playbook.yml
+site:
+  title: MrDox
+  url: https://cppalliance.github.io/mrdox/
+  start_page: mrdox::index.adoc
+  robots: allow
+  keys:
+    repo_url: 'https://github.com/cppalliance/mrdox'
+
+content:
+  branches: [ master, develop ]
+  tags: [ v* ]
+  edit_url: 'https://github.com/cppalliance/mrdox/edit/{refname}/{path}'
+  sources:
+    - url: https://github.com/cppalliance/mrdox.git
+      start_path: docs
+      edit_url: 'https://github.com/cppalliance/mrdox/edit/{refname}/{path}'
+
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+
+antora:
+  extensions:
+    - require: '@antora/lunr-extension' # https://gitlab.com/antora/antora-lunr-extension
+      index_latest_only: true
+
