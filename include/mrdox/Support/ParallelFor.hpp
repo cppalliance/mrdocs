@@ -19,27 +19,39 @@
 #include <thread>
 #include <vector>
 
+#include <algorithm>
+
 namespace clang {
 namespace mrdox {
 
 /** Visit all elements of a range concurrently.
 */
 template<
-    class Range,
-    class Worker,
+    class Elements,
+    class Workers,
     class... Args>
 Error
 parallelFor(
-    Range&& range,
-    std::vector<Worker>& workers,
+    Elements& elements,
+    Workers& workers,
     Args&&... args)
 {
+    if(std::next(std::begin(workers)) == std::end(workers))
+    {
+        // Non-concurrent
+        auto&& worker(*std::begin(workers));
+        for(auto&& element : elements)
+            if(! worker(element, std::forward<Args>(args)...))
+                return Error("canceled");
+        return Error::success();
+    }
+
     std::mutex m;
     bool cancel = false;
-    auto it = std::begin(range);
-    auto const end = std::end(range);
+    auto it = std::begin(elements);
+    auto const end = std::end(elements);
     auto const do_work =
-        [&](Worker& worker)
+        [&](auto&& agent)
         {
             std::unique_lock<std::mutex> lock(m);
             if(it == end || cancel)
@@ -47,7 +59,7 @@ parallelFor(
             auto it0 = it;
             ++it;
             lock.unlock();
-            bool cancel_ = worker(*it0,
+            bool cancel_ = ! agent(*it0,
                 std::forward<Args>(args)...);
             if(! cancel_)
                 return true;
@@ -55,15 +67,14 @@ parallelFor(
             return false;
         };
     std::vector<std::thread> threads;
-    threads.reserve(workers.size());
-    for(std::size_t i = 0; i < workers.size(); ++i)
+    for(auto& worker : workers)
         threads.emplace_back(std::thread(
-            [&](std::size_t i_)
+            [&](auto&& agent)
             {
                 for(;;)
-                    if(! do_work(workers[i]))
+                    if(! do_work(agent))
                         break;
-            }, i));
+            }, worker));
     for(auto& t : threads)
         t.join();
     if(cancel)
