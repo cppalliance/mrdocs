@@ -40,6 +40,7 @@ struct Scope
     std::vector<Reference> Typedefs;
     std::vector<Reference> Enums;
     std::vector<Reference> Vars;
+    std::vector<Reference> Specializations;
 
     explicit
     Scope(

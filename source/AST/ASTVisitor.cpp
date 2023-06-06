@@ -587,17 +587,21 @@ extractInfo(
 
 //------------------------------------------------
 
-void
+bool
 ASTVisitor::
 getParentNamespaces(
     std::vector<SymbolID>& Namespaces,
     const Decl* D)
 {
-    const DeclContext* DC = D->getDeclContext();
+    bool member_specialization = false;
+    const Decl* child = D;
+    const DeclContext* parent_context = child->getDeclContext();
     do
     {
+        const Decl* parent = cast<Decl>(parent_context);
+
         SymbolID id = SymbolID::zero;
-        switch(DC->getDeclKind())
+        switch(parent_context->getDeclKind())
         {
         default:
             // we consider all other DeclContexts to be "transparent"
@@ -611,27 +615,22 @@ getParentNamespaces(
         // a member of an implicit instantiation.
         case Decl::ClassTemplateSpecialization:
         case Decl::ClassTemplatePartialSpecialization:
-        if(const auto* S = dyn_cast<ClassTemplateSpecializationDecl>(DC);
+        if(const auto* S = dyn_cast<ClassTemplateSpecializationDecl>(parent_context);
             S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
         {
+            member_specialization = true;
             // KRYSTIAN FIXME: i'm pretty sure DeclContext::getDeclKind()
             // will never be Decl::ClassTemplatePartialSpecialization for
             // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
             // is accessible through S->getSpecializedTemplateOrPartial
             // if the implicit instantiation used a partially specialized template,
-            Assert(DC->getDeclKind() != Decl::ClassTemplatePartialSpecialization);
-            // if the containing context is an implicit specialization,
-            // get the template from which it was instantiated
-            const CXXRecordDecl* RD = S->getTemplateInstantiationPattern();
-#if 0
-            std::vector<TArg> args;
-            buildTemplateArgs(args, S->getTemplateArgs().asArray());
-            SymbolID primary = extractSymbolID(RD);
-#endif
-            Assert(RD);
-            extractSymbolID(RD, id);
-            break;
+            Assert(parent_context->getDeclKind() !=
+                Decl::ClassTemplatePartialSpecialization);
+
+            SpecializationInfo I;
+            buildSpecialization(I, S, child);
         }
+        [[fallthrough]];
         // we should never encounter a Record
         // that is not a CXXRecord
         // case Decl::Record:
@@ -648,15 +647,47 @@ getParentNamespaces(
         case Decl::CXXMethod:
         case Decl::CXXConversion:
         {
-            Assert(isa<Decl>(DC));
-            extractSymbolID(cast<Decl>(DC), id);
+            extractSymbolID(parent, id);
             break;
         }
         }
         Namespaces.emplace_back(id);
+        child = parent;
     }
-    while((DC = DC->getParent()));
+    while((parent_context = parent_context->getParent()));
     // print_debug("\n");
+    return member_specialization;
+}
+
+//------------------------------------------------
+
+void
+ASTVisitor::
+buildSpecialization(
+    SpecializationInfo& I,
+    const ClassTemplateSpecializationDecl* P,
+    const Decl* C)
+{
+    const CXXRecordDecl* RD =
+        P->getTemplateInstantiationPattern();
+    Assert(RD);
+
+    extractSymbolID(P, I.id);
+    extractSymbolID(RD, I.Primary);
+    buildTemplateArgs(I.Args,
+        P->getTemplateArgs().asArray());
+    I.Name = RD->getNameAsString();
+
+    SymbolID child = extractSymbolID(C);
+    // KRYSTIAN TODO: properly extract the primary ID
+    // of the specialized member
+    I.Members.emplace_back(child, child);
+
+    bool member_spec = getParentNamespaces(I.Namespace, P);
+
+    insertBitcode(ex_, writeBitcode(I));
+    if(! member_spec)
+        insertBitcode(ex_, writeParent(I));
 }
 
 //------------------------------------------------
@@ -761,10 +792,11 @@ buildRecord(
 
     extractBases(I, D);
 
-    getParentNamespaces(I.Namespace, D);
+    bool member_spec = getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, A));
+    if(! member_spec)
+        insertBitcode(ex_, writeParent(I, A));
 }
 
 //------------------------------------------------
@@ -911,10 +943,11 @@ buildNamespace(
     if(D->isAnonymousNamespace())
         I.Name = "@nonymous_namespace"; // VFALCO BAD!
 
-    getParentNamespaces(I.Namespace, D);
+    bool member_spec = getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I));
+    if(! member_spec)
+        insertBitcode(ex_, writeParent(I));
 }
 
 void
@@ -1014,10 +1047,11 @@ buildEnum(
     }
     parseEnumerators(I, D);
 
-    getParentNamespaces(I.Namespace, D);
+    bool member_spec = getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, A));
+    if(! member_spec)
+        insertBitcode(ex_, writeParent(I, A));
 }
 
 void
@@ -1040,10 +1074,11 @@ buildField(
     // KRYSTIAN FIXME: isNodiscard should be isMaybeUnused
     I.specs.isNodiscard = D->hasAttr<UnusedAttr>();
 
-    getParentNamespaces(I.Namespace, D);
+    bool member_spec = getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, A));
+    if(! member_spec)
+        insertBitcode(ex_, writeParent(I, A));
 }
 
 void
@@ -1064,10 +1099,11 @@ buildVar(
         D->getTypeSourceInfo()->getType());
     I.specs.storageClass = D->getStorageClass();
 
-    getParentNamespaces(I.Namespace, D);
+    bool member_spec = getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, A));
+    if(! member_spec)
+        insertBitcode(ex_, writeParent(I, A));
 }
 
 template<class DeclTy>
@@ -1081,10 +1117,11 @@ buildFunction(
     if(! constructFunction(I, A, D))
         return;
 
-    getParentNamespaces(I.Namespace, D);
+    bool member_spec = getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, A));
+    if(! member_spec)
+        insertBitcode(ex_, writeParent(I, A));
 }
 
 template<class DeclTy>
@@ -1115,10 +1152,11 @@ buildTypedef(
     // KRYSTIAN NOTE: IsUsing is set by TraverseTypeAlias
     // I.IsUsing = std::is_same_v<DeclTy, TypeAliasDecl>;
 
-    getParentNamespaces(I.Namespace, D);
+    bool member_spec = getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
-    insertBitcode(ex_, writeParent(I, D->getAccess()));
+    if(! member_spec)
+        insertBitcode(ex_, writeParent(I, D->getAccess()));
 }
 
 //------------------------------------------------

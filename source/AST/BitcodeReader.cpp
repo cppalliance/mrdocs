@@ -111,6 +111,15 @@ getInfos()
                 continue;
         }
 
+        case BI_SPECIALIZATION_BLOCK_ID:
+        {
+            auto I = readInfo<SpecializationBlock>(ID);
+            if(! I)
+                return I.getError();
+            Infos.emplace_back(std::move(I.get()));
+                continue;
+        }
+
         // NamedType and Comment blocks should
         // not appear at the top level
         case BI_TYPE_BLOCK_ID:

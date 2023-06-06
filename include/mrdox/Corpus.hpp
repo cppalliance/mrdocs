@@ -106,6 +106,7 @@ public:
         // KRYSTIAN FIXME: is this correct? does it make sense to
         // visit a field as a non-member (a field *must* be class member)?
         MRDOX_DECL virtual bool visit(FieldInfo const&);
+        MRDOX_DECL virtual bool visit(SpecializationInfo const&);
 
         MRDOX_DECL virtual bool visit(MemberEnum const&, Access);
         MRDOX_DECL virtual bool visit(MemberFunction const&, Access);
@@ -121,6 +122,7 @@ public:
     MRDOX_DECL bool traverse(Visitor&, Info const& I) const;
     MRDOX_DECL bool traverse(Visitor&, NamespaceInfo const& I) const;
     MRDOX_DECL bool traverse(Visitor&, RecordInfo const& I) const;
+    MRDOX_DECL bool traverse(Visitor&, SpecializationInfo const& I) const;
     MRDOX_DECL bool traverse(Visitor&, SymbolID id) const;
     MRDOX_DECL bool traverse(Visitor&, std::vector<Reference> const& R) const;
     MRDOX_DECL bool traverse(Visitor&, std::vector<SymbolID> const& R) const;
@@ -161,6 +163,8 @@ get(
         assert(t->Kind == InfoKind::Variable);
     else if constexpr(std::is_same_v<T, FieldInfo>)
         assert(t->Kind == InfoKind::Field);
+    else if constexpr(std::is_same_v<T, SpecializationInfo>)
+        assert(t->Kind == InfoKind::Specialization);
     return *t;
 }
 

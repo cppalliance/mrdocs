@@ -64,6 +64,7 @@ private:
     bool visit(TypedefInfo const&) override;
     bool visit(EnumInfo const&) override;
     bool visit(VarInfo const&) override;
+    bool visit(SpecializationInfo const&) override;
 
     bool visit(MemberEnum const&, Access) override;
     bool visit(MemberFunction const&, Access) override;
@@ -78,6 +79,7 @@ private:
     bool writeTypedef(TypedefInfo const&, Access const* access = nullptr);
     bool writeField(FieldInfo const&, Access const* access = nullptr);
     bool writeVar(VarInfo const&, Access const* access = nullptr);
+    bool writeSpecialization(const SpecializationInfo& I);
 
     void writeInfo(Info const&);
     void writeSymbol(SymbolInfo const& I);

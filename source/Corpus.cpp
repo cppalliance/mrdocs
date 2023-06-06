@@ -78,6 +78,11 @@ bool Corpus::Visitor::visit(FieldInfo const&)
     return true;
 }
 
+bool Corpus::Visitor::visit(SpecializationInfo const&)
+{
+    return true;
+}
+
 //---
 
 bool Corpus::Visitor::visit(MemberEnum const& I, Access)
@@ -136,6 +141,8 @@ traverse(
     // KRYSTIAN FIXME: is this correct?
     case InfoKind::Field:
         return f.visit(static_cast<FieldInfo const&>(I));
+    case InfoKind::Specialization:
+        return f.visit(static_cast<SpecializationInfo const&>(I));
     default:
         llvm_unreachable("wrong InfoKind for visit");
     }
@@ -164,6 +171,9 @@ traverse(
             return false;
     for(auto const& ref : I.Children.Vars)
         if(! f.visit(get<VarInfo>(ref.id)))
+            return false;
+    for(auto const& ref : I.Children.Specializations)
+        if(! f.visit(get<SpecializationInfo>(ref.id)))
             return false;
     return true;
 }
@@ -205,6 +215,18 @@ traverse(
                 &I}, t.access))
             return false;
 
+    return true;
+}
+
+bool
+Corpus::
+traverse(
+    Visitor& f,
+    SpecializationInfo const& I) const
+{
+    for(auto const& m : I.Members)
+        if(! traverse(f, get<Info>(m.Specialized)))
+            return false;
     return true;
 }
 

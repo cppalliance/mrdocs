@@ -48,6 +48,8 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
         return reduce<VarInfo>(Values);
     case InfoKind::Field:
         return reduce<FieldInfo>(Values);
+    case InfoKind::Specialization:
+        return reduce<SpecializationInfo>(Values);
     default:
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "unexpected info type");

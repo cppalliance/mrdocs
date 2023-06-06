@@ -253,6 +253,14 @@ visit(
     return writeVar(I);
 }
 
+bool
+XMLWriter::
+visit(
+    SpecializationInfo const& I)
+{
+    return writeSpecialization(I);
+}
+
 //------------------------------------------------
 
 bool
@@ -586,6 +594,26 @@ closeTemplate(
     tags_.close(templateTagName);
 }
 
+bool
+XMLWriter::
+writeSpecialization(
+    const SpecializationInfo& I)
+{
+    tags_.open(specializationTagName, {
+        {I.id},
+        {"primary", toString(I.Primary) }
+    });
+
+    for(const TArg& targ : I.Args)
+        writeTemplateArg(targ, tags_);
+
+    if(! corpus_.traverse(*this, I))
+        return false;
+
+    tags_.close(specializationTagName);
+
+    return true;
+}
 
 //------------------------------------------------
 

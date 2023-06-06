@@ -140,6 +140,21 @@ static void MemberRefsAbbrev(
             llvm::BitCodeAbbrevOp::Fixed, 8) });
 }
 
+#if 0
+static void SpecializedMemAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. Fixed-size array of 21-byte SymbolID pairs
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 8),
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 8) });
+}
+#endif
+
 static void StringAbbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
 {
@@ -223,6 +238,7 @@ BlockIdNameMap = []()
         {BI_TEMPLATE_ARG_BLOCK_ID, "TemplateArgBlock"},
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
         {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"},
+        {BI_SPECIALIZATION_BLOCK_ID, "SpecializationBlock"},
         {BI_VARIABLE_BLOCK_ID, "VarBlock"}
     };
     Assert(Inits.size() == BlockIdCount);
@@ -286,8 +302,10 @@ RecordIDNameMap = []()
         {TEMPLATE_ARG_VALUE,     {"Value", &StringAbbrev}},
         {TEMPLATE_PARAM_KIND,    {"Kind", &Integer32Abbrev}},
         {TEMPLATE_PARAM_NAME,    {"Name", &StringAbbrev}},
-        {TEMPLATE_PARAM_IS_PACK, {"Name", &BoolAbbrev}},
+        {TEMPLATE_PARAM_IS_PACK, {"IsPack", &BoolAbbrev}},
         {TEMPLATE_PARAM_DEFAULT, {"Default", &StringAbbrev}},
+        {SPECIALIZATION_PRIMARY, {"SpecializationPrimary", &SymbolIDAbbrev}},
+        {SPECIALIZATION_MEMBERS, {"SpecializationMembers", &SymbolIDsAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}}
     };
@@ -353,16 +371,19 @@ RecordsByBlock{
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_KIND, REFERENCE_FIELD}},
-    // TArg.
+    // TArg
     {BI_TEMPLATE_ARG_BLOCK_ID,
         {TEMPLATE_ARG_VALUE}},
-    // TemplateInfo.
+    // TemplateInfo
     {BI_TEMPLATE_BLOCK_ID,
         {TEMPLATE_PRIMARY_USR}},
-    // TParam.
+    // TParam
     {BI_TEMPLATE_PARAM_BLOCK_ID,
         {TEMPLATE_PARAM_KIND, TEMPLATE_PARAM_NAME,
         TEMPLATE_PARAM_IS_PACK, TEMPLATE_PARAM_DEFAULT}},
+    // SpecializationInfo
+    {BI_SPECIALIZATION_BLOCK_ID,
+        {SPECIALIZATION_PRIMARY, SPECIALIZATION_MEMBERS}},
     // TypeInfo
     {BI_TYPE_BLOCK_ID, {}},
     // TypedefInfo
@@ -410,6 +431,9 @@ dispatchInfoForWrite(Info const* I)
         break;
     case InfoKind::Field:
         emitBlock(*static_cast<FieldInfo const*>(I));
+        break;
+    case InfoKind::Specialization:
+        emitBlock(*static_cast<SpecializationInfo const*>(I));
         break;
     default:
         llvm::errs() << "Unexpected info, unable to write.\n";
@@ -618,6 +642,29 @@ emitRecord(
     }
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
+
+#if 0
+// vector<SpecializedMember>
+void
+BitcodeWriter::
+emitRecord(
+    std::vector<SpecializedMember> const& list,
+    RecordID ID)
+{
+    Assert(RecordIDNameMap[ID]);
+    Assert(RecordIDNameMap[ID].Abbrev == &SpecializedMemAbbrev);
+    if (!prepRecordData(ID, ! list.empty()))
+        return;
+    for(auto const& mem : list)
+    {
+        Record.push_back(BitCodeConstants::USRHashSize);
+        Record.append(mem.Primary.begin(), mem.Primary.end());
+        Record.push_back(BitCodeConstants::USRHashSize);
+        Record.append(mem.Specialized.begin(), mem.Specialized.end());
+    }
+    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
+}
+#endif
 
 // SymbolID
 void
@@ -951,6 +998,8 @@ emitBlock(
         emitBlock(ref, FieldId::F_child_enum);
     for (const auto& ref : I.Children.Vars)
         emitBlock(ref, FieldId::F_child_variable);
+    for (const auto& ref : I.Children.Specializations)
+        emitBlock(ref, FieldId::F_child_specialization);
 }
 
 void
@@ -989,6 +1038,26 @@ emitBlock(
     emitRecord(R.Name, REFERENCE_NAME);
     emitRecord((unsigned)R.RefKind, REFERENCE_KIND);
     emitRecord((unsigned)Field, REFERENCE_FIELD);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    const SpecializationInfo& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_SPECIALIZATION_BLOCK_ID);
+    emitInfoPart(I);
+    emitRecord(I.Primary, SPECIALIZATION_PRIMARY);
+    for(const auto& targ : I.Args)
+        emitBlock(targ);
+    std::vector<SymbolID> members;
+    members.reserve(I.Members.size() * 2);
+    for(const auto& mem : I.Members)
+    {
+        members.emplace_back(mem.Primary);
+        members.emplace_back(mem.Specialized);
+    }
+    emitRecord(members, SPECIALIZATION_MEMBERS);
 }
 
 void

@@ -129,6 +129,37 @@ decodeRecord(
     return Error::success();
 }
 
+#if 0
+// vector<SpecializedMember>
+inline
+Error
+decodeRecord(
+    Record const& R,
+    std::vector<SpecializedMember>& f,
+    llvm::StringRef blob)
+{
+    constexpr auto SpecializedMemberSize =
+        BitCodeConstants::USRHashSize * 2;
+    if(R.empty())
+        return Error("record is empty");
+    auto n = R.size() / SpecializedMemberSize;
+    if(R.size() != n * SpecializedMemberSize)
+        return Error("record is short");
+    auto src = R.begin();
+    f.resize(n);
+    auto* dest = &f[0];
+    while(n--)
+    {
+        dest->Primary = SymbolID(src);
+        src += BitCodeConstants::USRHashSize;
+        dest->Specialized = SymbolID(src);
+        src += BitCodeConstants::USRHashSize;
+        ++dest;
+    }
+    return Error::success();
+}
+#endif
+
 inline
 Error
 decodeRecord(
@@ -171,6 +202,7 @@ decodeRecord(
     case InfoKind::Enum:
     case InfoKind::Typedef:
     case InfoKind::Variable:
+    case InfoKind::Specialization:
         Field = kind;
         return Error::success();
     default:
@@ -198,6 +230,7 @@ decodeRecord(
     case FieldId::F_child_typedef:
     case FieldId::F_child_enum:
     case FieldId::F_child_variable:
+    case FieldId::F_child_specialization:
     case FieldId::F_default:
         Field = F;
         return Error::success();

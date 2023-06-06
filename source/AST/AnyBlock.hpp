@@ -1260,6 +1260,63 @@ public:
 
 //------------------------------------------------
 
+class SpecializationBlock
+    : public TopLevelBlock<SpecializationInfo>
+{
+public:
+    explicit
+    SpecializationBlock(
+        BitcodeReader& br)
+        : TopLevelBlock(br)
+    {
+    }
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case SPECIALIZATION_PRIMARY:
+            return decodeRecord(R, I->Primary, Blob);
+        case SPECIALIZATION_MEMBERS:
+        {
+            std::vector<SymbolID> members;
+            if(auto err = decodeRecord(R, members, Blob))
+                return err;
+            for(std::size_t i = 0; i < members.size(); i += 2)
+                I->Members.emplace_back(members[i + 0], members[i + 1]);
+            return Error::success();
+
+        }
+        default:
+            break;
+        }
+        return TopLevelBlock::parseRecord(R, ID, Blob);
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_TEMPLATE_ARG_BLOCK_ID:
+        {
+            TemplateArgBlock B(I->Args.emplace_back());
+            return br_.readBlock(B, ID);
+        }
+        default:
+            break;
+        }
+        return TopLevelBlock::readSubBlock(ID);
+    }
+};
+
+//------------------------------------------------
+
 template<class T>
 Error
 TopLevelBlock<T>::
@@ -1288,6 +1345,9 @@ readChild(
         break;
     case FieldId::F_child_variable:
         I.Vars.emplace_back(B.I);
+        break;
+    case FieldId::F_child_specialization:
+        I.Specializations.emplace_back(B.I);
         break;
     default:
         return makeWrongFieldError(B.F);

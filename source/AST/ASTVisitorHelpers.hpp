@@ -39,6 +39,8 @@ void insertChild(Scope& P, Args&&... args)
             P.Enums.emplace_back(std::forward<Args>(args)...);
         else if constexpr(std::is_same_v<U, VarInfo>)
             P.Vars.emplace_back(std::forward<Args>(args)...);
+        else if constexpr(std::is_same_v<U, SpecializationInfo>)
+            P.Specializations.emplace_back(std::forward<Args>(args)...);
         else
             // KRYSTIAN NOTE: Child should *never* be FieldInfo
             llvm_unreachable("invalid Scope child");

@@ -29,6 +29,7 @@
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Scope.hpp>
+#include <mrdox/Metadata/Specialization.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>

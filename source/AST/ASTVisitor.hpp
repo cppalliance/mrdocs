@@ -173,10 +173,16 @@ public:
         EnumInfo& I,
         const EnumDecl* D);
 
-    void
+    bool
     getParentNamespaces(
         std::vector<SymbolID>& Namespaces,
         const Decl* D);
+
+    void
+    buildSpecialization(
+        SpecializationInfo& I,
+        const ClassTemplateSpecializationDecl* P,
+        const Decl* C);
 
     void extractBases(
         RecordInfo& I,

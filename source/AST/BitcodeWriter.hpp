@@ -85,6 +85,7 @@ public:
 
     void emitRecord(std::vector<SymbolID> const& Values, RecordID ID);
     void emitRecord(std::vector<MemberRef> const& list, RecordID ID);
+    // void emitRecord(std::vector<SpecializedMember> const& list, RecordID ID);
 
     void emitRecord(SymbolID const& Str, RecordID ID);
     void emitRecord(StringRef Str, RecordID ID);
@@ -128,6 +129,7 @@ public:
     void emitBlock(NamespaceInfo const& I);
     void emitBlock(RecordInfo const& I);
     void emitBlock(Reference const& B, FieldId F);
+    void emitBlock(SpecializationInfo const& T);
     void emitBlock(TemplateInfo const& T);
     void emitBlock(TParam const& T);
     void emitBlock(TArg const& T);

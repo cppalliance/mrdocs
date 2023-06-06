@@ -121,6 +121,7 @@ void merge(NamespaceInfo& I, NamespaceInfo&& Other)
     reduceChildren(I.Children.Typedefs, std::move(Other.Children.Typedefs));
     reduceChildren(I.Children.Enums, std::move(Other.Children.Enums));
     reduceChildren(I.Children.Vars, std::move(Other.Children.Vars));
+    reduceChildren(I.Children.Specializations, std::move(Other.Children.Specializations));
     mergeInfo(I, std::move(Other));
 }
 
@@ -143,6 +144,26 @@ reduceMemberRefs(
             Assert(it->access == ref.access);
             continue;
         }
+        list.push_back(ref);
+    }
+}
+
+static
+void
+reduceSpecializedMembers(
+    std::vector<SpecializedMember>& list,
+    std::vector<SpecializedMember>&& otherList)
+{
+    for(auto const& ref : otherList)
+    {
+        auto it = llvm::find_if(
+            list,
+            [ref](SpecializedMember const& other) noexcept
+            {
+                return other.Specialized == ref.Specialized;
+            });
+        if(it != list.end())
+            continue;
         list.push_back(ref);
     }
 }
@@ -248,6 +269,21 @@ void merge(Reference& I, Reference&& Other)
     if (I.Name.empty())
         I.Name = Other.Name;
 }
+
+void merge(SpecializationInfo& I, SpecializationInfo&& Other)
+{
+    Assert(canMerge(I, Other));
+    if(I.Primary == SymbolID::zero)
+        I.Primary = Other.Primary;
+    if(I.Args.empty())
+        I.Args = std::move(Other.Args);
+    reduceSpecializedMembers(I.Members,
+        std::move(Other.Members));
+
+    mergeInfo(I, std::move(Other));
+
+}
+
 
 } // mrdox
 } // clang

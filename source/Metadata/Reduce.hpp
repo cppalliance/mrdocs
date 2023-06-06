@@ -29,6 +29,7 @@ void merge(EnumInfo& I, EnumInfo&& Other);
 void merge(FieldInfo& I, FieldInfo&& Other);
 void merge(VarInfo& I, VarInfo&& Other);
 void merge(Reference& I, Reference&& Other);
+void merge(SpecializationInfo& I, SpecializationInfo&& Other);
 
 //
 // This file defines the merging of different types of infos. The data in the

@@ -69,6 +69,7 @@ enum BlockID
     BI_TEMPLATE_ARG_BLOCK_ID,
     BI_TEMPLATE_BLOCK_ID,
     BI_TEMPLATE_PARAM_BLOCK_ID,
+    BI_SPECIALIZATION_BLOCK_ID,
     BI_TYPE_BLOCK_ID,
     BI_TYPEDEF_BLOCK_ID,
     BI_VARIABLE_BLOCK_ID,
@@ -127,6 +128,8 @@ enum RecordID
     TEMPLATE_PARAM_KIND,
     TEMPLATE_PARAM_NAME,
     TEMPLATE_PRIMARY_USR,
+    SPECIALIZATION_PRIMARY,
+    SPECIALIZATION_MEMBERS,
     TYPEDEF_IS_USING,
     VARIABLE_BITS,
     RI_LAST,
@@ -148,7 +151,8 @@ enum class FieldId
     F_child_function,
     F_child_typedef,
     F_child_enum,
-    F_child_variable
+    F_child_variable,
+    F_child_specialization
 };
 
 } // mrdox
