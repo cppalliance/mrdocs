@@ -12,9 +12,12 @@
 #include "Options.hpp"
 #include "ConfigImpl.hpp"
 #include "CorpusImpl.hpp"
+#include "AST/AbsoluteCompilationDatabase.hpp"
 #include <mrdox/Generators.hpp>
+#include <mrdox/Support/Report.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/JSONCompilationDatabase.h>
+#include <llvm/Support/Path.h>
 #include <cstdlib>
 
 namespace clang {
@@ -23,6 +26,8 @@ namespace mrdox {
 Error
 DoGenerateAction()
 {
+    namespace path = llvm::sys::path;
+
     auto& generators = getGenerators();
 
     // Calculate additional YAML settings from command line options.
@@ -45,16 +50,23 @@ DoGenerateAction()
         return Error("the compilation database path argument is missing");
     if(InputPaths.size() > 1)
         return Error("got {} input paths where 1 was expected", InputPaths.size());
+    llvm::StringRef compilationsPath = InputPaths.front();
     std::string errorMessage;
-    auto compilations = tooling::JSONCompilationDatabase::loadFromFile(
-        InputPaths.front(), errorMessage, tooling::JSONCommandLineSyntax::AutoDetect);
-    if(! compilations)
+    auto jsonCompilations = tooling::JSONCompilationDatabase::loadFromFile(
+        compilationsPath, errorMessage, tooling::JSONCommandLineSyntax::AutoDetect);
+    if(! jsonCompilations)
         return Error(std::move(errorMessage));
 
+    // Calculate the working directory
+    llvm::SmallString<240> workingDir(compilationsPath);
+    path::remove_filename(workingDir);
+
+    // Convert relative paths to absolute
+    AbsoluteCompilationDatabase compilations(workingDir, *jsonCompilations);
+    
     // Create the ToolExecutor from the compilation database
     int ThreadCount = 0;
-    auto ex = std::make_unique<tooling::AllTUsToolExecutor>(
-        *compilations, ThreadCount);
+    auto ex = std::make_unique<tooling::AllTUsToolExecutor>(compilations, ThreadCount);
 
     // Create the generator
     auto generator = generators.find(FormatType.getValue());
@@ -68,7 +80,7 @@ DoGenerateAction()
 
     // Run the generator.
     if(config.get()->verboseOutput)
-        llvm::outs() << "Generating docs...\n";
+        reportInfo("Generating docs...\n");
     return generator->build(OutputPath.getValue(), **corpus);
 }
 

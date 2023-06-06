@@ -13,11 +13,19 @@
 #define MRDOX_LIB_SUPPORT_PATH_HPP
 
 #include <mrdox/Platform.hpp>
+#include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Path.h>
 
 namespace clang {
 namespace mrdox {
+
+/** A reasonably sized small string for paths.
+
+    This is for local variables not for use
+    as data members of long-lived types.
+*/
+using SmallPathString = llvm::SmallString<340>;
 
 /** Replaces backslashes with slashes if Windows in place.
 
