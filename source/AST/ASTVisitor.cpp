@@ -576,7 +576,6 @@ extractInfo(
     Info& I,
     const NamedDecl* D)
 {
-    getParentNamespaces(I.Namespace, D);
     if(! shouldSerializeInfo(D))
         return false;
     if(! extractSymbolID(D, I.id))
@@ -597,51 +596,67 @@ getParentNamespaces(
     const DeclContext* DC = D->getDeclContext();
     do
     {
-        // KRYSTIAN TODO: this can be a switch using DeclContext::getDeclKind
-        if(const auto* N = dyn_cast<NamespaceDecl>(DC))
+        SymbolID id = SymbolID::zero;
+        switch(DC->getDeclKind())
         {
-
-            Namespaces.emplace_back(
-                extractSymbolID(N));
-        }
-        else if(const auto* N = dyn_cast<ClassTemplateSpecializationDecl>(DC);
-            N && N->getSpecializationKind() == TSK_ImplicitInstantiation)
+        default:
+            // we consider all other DeclContexts to be "transparent"
+            // and do not include them in the list of parents.
+            continue;
+        // the TranslationUnit DeclContext
+        // is the global namespace; use SymbolID::zero
+        case Decl::TranslationUnit:
+            break;
+        // special case for an explicit specializations of
+        // a member of an implicit instantiation.
+        case Decl::ClassTemplateSpecialization:
+        case Decl::ClassTemplatePartialSpecialization:
+        if(const auto* S = dyn_cast<ClassTemplateSpecializationDecl>(DC);
+            S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
         {
+            // KRYSTIAN FIXME: i'm pretty sure DeclContext::getDeclKind()
+            // will never be Decl::ClassTemplatePartialSpecialization for
+            // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
+            // is accessible through S->getSpecializedTemplateOrPartial
+            // if the implicit instantiation used a partially specialized template,
+            Assert(DC->getDeclKind() != Decl::ClassTemplatePartialSpecialization);
             // if the containing context is an implicit specialization,
             // get the template from which it was instantiated
-            const CXXRecordDecl* RD = N->getTemplateInstantiationPattern();
+            const CXXRecordDecl* RD = S->getTemplateInstantiationPattern();
 #if 0
             std::vector<TArg> args;
-            buildTemplateArgs(args, N->getTemplateArgs().asArray());
+            buildTemplateArgs(args, S->getTemplateArgs().asArray());
             SymbolID primary = extractSymbolID(RD);
 #endif
-
-            Namespaces.emplace_back(
-                // extractSymbolID(N));
-                extractSymbolID(RD));
+            Assert(RD);
+            extractSymbolID(RD, id);
+            break;
         }
-        else if(const auto* N = dyn_cast<CXXRecordDecl>(DC))
+        // we should never encounter a Record
+        // that is not a CXXRecord
+        // case Decl::Record:
+        case Decl::Namespace:
+        case Decl::CXXRecord:
+        case Decl::Enum:
+        // we currently don't handle local classes,
+        // but will at some point. only functions that may
+        // be declared to return a placeholder for a deduced type
+        // can return local classes, so ignore other function DeclContexts.
+        // deduction guides, constructors, and destructors do not have
+        // declared return types, so we do not need to consider them.
+        case Decl::Function:
+        case Decl::CXXMethod:
+        case Decl::CXXConversion:
         {
-            Namespaces.emplace_back(
-                extractSymbolID(N));
+            Assert(isa<Decl>(DC));
+            extractSymbolID(cast<Decl>(DC), id);
+            break;
         }
-        else if(const auto* N = dyn_cast<FunctionDecl>(DC))
-        {
-            Namespaces.emplace_back(
-                extractSymbolID(N));
         }
-        else if(const auto* N = dyn_cast<EnumDecl>(DC))
-        {
-            Namespaces.emplace_back(
-                extractSymbolID(N));
-        }
-        else if(isa<TranslationUnitDecl>(DC))
-        {
-            Namespaces.emplace_back(
-                SymbolID::zero);
-        }
+        Namespaces.emplace_back(id);
     }
     while((DC = DC->getParent()));
+    // print_debug("\n");
 }
 
 //------------------------------------------------
@@ -745,6 +760,8 @@ buildRecord(
     }
 
     extractBases(I, D);
+
+    getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, A));
@@ -893,6 +910,9 @@ buildNamespace(
         return;
     if(D->isAnonymousNamespace())
         I.Name = "@nonymous_namespace"; // VFALCO BAD!
+
+    getParentNamespaces(I.Namespace, D);
+
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I));
 }
@@ -935,6 +955,7 @@ buildFriend(
             getParentNamespaces(P.Namespace, ND, isInAnonymous);
             Assert(isInAnonymous == ND->isInAnonymousNamespace());
 #else
+            getParentNamespaces(I.Namespace, FD);
             getParentNamespaces(P.Namespace, ND);
 #endif
             insertBitcode(ex_, writeBitcode(I));
@@ -992,6 +1013,9 @@ buildEnum(
         I.BaseType = TypeInfo(Name);
     }
     parseEnumerators(I, D);
+
+    getParentNamespaces(I.Namespace, D);
+
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, A));
 }
@@ -1016,6 +1040,8 @@ buildField(
     // KRYSTIAN FIXME: isNodiscard should be isMaybeUnused
     I.specs.isNodiscard = D->hasAttr<UnusedAttr>();
 
+    getParentNamespaces(I.Namespace, D);
+
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, A));
 }
@@ -1037,6 +1063,9 @@ buildVar(
     I.Type = getTypeInfoForType(
         D->getTypeSourceInfo()->getType());
     I.specs.storageClass = D->getStorageClass();
+
+    getParentNamespaces(I.Namespace, D);
+
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, A));
 }
@@ -1051,6 +1080,8 @@ buildFunction(
 {
     if(! constructFunction(I, A, D))
         return;
+
+    getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, A));
@@ -1083,6 +1114,9 @@ buildTypedef(
     I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
     // KRYSTIAN NOTE: IsUsing is set by TraverseTypeAlias
     // I.IsUsing = std::is_same_v<DeclTy, TypeAliasDecl>;
+
+    getParentNamespaces(I.Namespace, D);
+
     insertBitcode(ex_, writeBitcode(I));
     insertBitcode(ex_, writeParent(I, D->getAccess()));
 }
@@ -1195,6 +1229,7 @@ Traverse(
 
     FunctionInfo I(std::move(Template));
     buildFunction(I, A, D);
+
     return true;
 }
 
