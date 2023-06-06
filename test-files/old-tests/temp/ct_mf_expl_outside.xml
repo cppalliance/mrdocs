@@ -9,10 +9,13 @@
       <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
         <file path="ct_mf_expl_outside.cpp" line="4" class="def"/>
       </function>
-      <function name="f" id="5vQMmBbKdcjmr6fZ5KE/+hqkRD0=">
-        <file path="ct_mf_expl_outside.cpp" line="7" class="def"/>
-      </function>
     </struct>
   </template>
+  <specialization id="AKwlChAOi+0ttIAPsD7uitS+gk0=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <targ value="int"/>
+    <function name="f" id="5vQMmBbKdcjmr6fZ5KE/+hqkRD0=">
+      <file path="ct_mf_expl_outside.cpp" line="7" class="def"/>
+    </function>
+  </specialization>
 </namespace>
 </mrdox>

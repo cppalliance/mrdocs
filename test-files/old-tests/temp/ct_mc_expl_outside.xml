@@ -12,13 +12,13 @@
           <file path="ct_mc_expl_outside.cpp" line="4" class="def"/>
         </function>
       </struct>
-      <struct name="B" id="xks7eBJx25CIVelbqBa2LCCEll4=">
-        <file path="ct_mc_expl_outside.cpp" line="7" class="def"/>
-        <function name="g" id="692fgnQlzTAWgxI/0d6qH/zXq2w=">
-          <file path="ct_mc_expl_outside.cpp" line="8" class="def"/>
-        </function>
-      </struct>
     </struct>
   </template>
+  <specialization id="AKwlChAOi+0ttIAPsD7uitS+gk0=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <targ value="int"/>
+    <struct name="B" id="xks7eBJx25CIVelbqBa2LCCEll4=">
+      <file path="ct_mc_expl_outside.cpp" line="7" class="def"/>
+    </struct>
+  </specialization>
 </namespace>
 </mrdox>
