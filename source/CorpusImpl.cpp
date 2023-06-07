@@ -104,21 +104,6 @@ build(
     auto config = std::dynamic_pointer_cast<ConfigImpl const>(config_);
     auto corpus = std::make_unique<CorpusImpl>(config);
 
-    // Build arguments adjuster
-    tooling::ArgumentsAdjuster ArgAdjuster;
-    {
-        for(auto const& define : config->additionalDefines_)
-        {
-            std::string s;
-            llvm::raw_string_ostream os(s);
-            os << "-D" << define;
-            ArgAdjuster = tooling::combineAdjusters(
-                tooling::getInsertArgumentAdjuster(
-                    s.c_str(), tooling::ArgumentInsertPosition::END),
-                ArgAdjuster);
-        }
-    }
-
     // Traverse the AST for all translation units
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
@@ -126,7 +111,7 @@ build(
         reportInfo("Mapping declarations");
     if(auto err = ex.execute(
         makeFrontendActionFactory(
-            *ex.getExecutionContext(), *config), ArgAdjuster))
+            *ex.getExecutionContext(), *config)))
     {
         if(! corpus->config.ignoreFailures)
             return toError(std::move(err));

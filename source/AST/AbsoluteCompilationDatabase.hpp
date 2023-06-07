@@ -11,6 +11,7 @@
 #ifndef MRDOX_LIB_AST_ABSOLUTECOMPILATIONDATABASE_HPP
 #define MRDOX_LIB_AST_ABSOLUTECOMPILATIONDATABASE_HPP
 
+#include <mrdox/Config.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
 #include <llvm/ADT/StringMap.h>
 #include <vector>
@@ -41,7 +42,8 @@ public:
     */
     AbsoluteCompilationDatabase(
         llvm::StringRef workingDir,
-        CompilationDatabase const& inner);
+        CompilationDatabase const& inner,
+        std::shared_ptr<const Config> config);
 
     std::vector<tooling::CompileCommand>
     getCompileCommands(
