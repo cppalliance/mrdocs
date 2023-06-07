@@ -1484,10 +1484,10 @@ TraverseDecl(
     Args&&... args)
 {
     Assert(D);
-    if(D->isImplicit())
+    if(D->isInvalidDecl() || D->isImplicit())
         return true;
 
-    [[maybe_unused]] AccessSpecifier access =
+    AccessSpecifier access =
         D->getAccessUnsafe();
 
     switch(D->getKind())
