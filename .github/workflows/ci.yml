@@ -18,27 +18,54 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  cpp-matrix:
+    runs-on: ubuntu-latest
+    name: Generate Test Matrix
+    outputs:
+      matrix: ${{ steps.cpp-matrix.outputs.matrix }}
+    steps:
+      - name: Clone cpp-actions
+        uses: actions/checkout@v3
+
+      - name: Generate Test Matrix
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.4.0
+        id: cpp-matrix
+        with:
+          compilers: |
+            gcc 13
+            clang 16
+            msvc 14.34
+          standards: '>=20'
+          max-standards: 1
+          latest-factors: gcc Coverage TSan UBSan
+          factors: | # Don't include Asan because `clang/AST/Decl.h` fails
+            clang Time-Trace
+
   build:
+    needs: cpp-matrix
+
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - { name: "MSVC 14.3 - C++20", os: windows-2022, std: '20', cmake_args: -G "Visual Studio 17 2022" -A x64, github_release: true }
-          - { name: "GCC 13 - C++20",    os: ubuntu-22.04, compiler: gcc, version: 13.1, std: '20', github_release: true, install: "openjdk-11-jdk ninja-build" }
-          - { name: "Clang 16 - C++20",  os: ubuntu-22.04, compiler: clang, version: 16, std: 20, install: "openjdk-11-jdk ninja-build" }
+        include: ${{ fromJSON(needs.cpp-matrix.outputs.matrix) }}
+
+    defaults:
+      run:
+        shell: bash
 
     name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
-    container: ${{ !startsWith( matrix.os , 'windows' ) && 'cppalliance/droneubuntu2204:llvm-731264b' || null }}
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ ( !startsWith( matrix.runs-on , 'windows' ) && 'cppalliance/droneubuntu2204:llvm-731264b' ) || null }}
     permissions:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Clone mrdox
+        uses: actions/checkout@v3
 
       - name: Install LLVM
         id: llvm-install
-        if: ${{ startsWith( matrix.os , 'windows' ) }}
+        if: ${{ startsWith( matrix.runs-on , 'windows' ) }}
         shell: bash
         run: |
           set -xe
@@ -53,7 +80,7 @@ jobs:
           find "$llvm_dir" -type f
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.2.1
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.4.0
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -62,38 +89,74 @@ jobs:
           check-latest: ${{ matrix.compiler == 'clang' }}
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.3.0
+        uses: alandefreitas/cpp-actions/package-install@v1.4.0
         id: package-install
         with:
-          apt-get: ${{ matrix.install }}
+          apt-get: ${{ matrix.install }} openjdk-11-jdk ninja-build
           vcpkg: fmt libxml2[tools]
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
+          ccflags: ${{ matrix.ccflags }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
+          cxxflags: ${{ matrix.cxxflags }}
 
-      - name: CMake Workflow (C++${{ matrix.std }})
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.3.0
+      - name: CMake Workflow
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.4.0
         with:
           cmake-version: '>=3.20'
-          cxxstd: ${{ matrix.std }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxxflags: ${{ ( matrix.compiler == 'gcc' && '-static-libstdc++') || '' }}
-          toolchain: ${{ steps.package-install.outputs.vcpkg-toolchain }}
           generator: Ninja
+          toolchain: ${{ steps.package-install.outputs.vcpkg-toolchain }}
+          build-type: ${{ matrix.build-type }}
+          cxxstd: ${{ matrix.cxxstd }}
+          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
+          ccflags: ${{ matrix.ccflags }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
+          cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           install-prefix: .local
           extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-dir || '/usr/local') }}
-
-      - name: Create packages
-        working-directory: ./build
-        run: cpack
+          export-compile-commands: ${{ matrix.time-trace }}
+          package: ${{ matrix.is-main }}
+          package-dir: packages
 
       - name: Upload GitHub Release Artifacts
-        if: ${{ matrix.github_release && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+        if: ${{ matrix.is-main && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
         uses: actions/upload-artifact@v3
         with:
           name: release-packages-${{ runner.os }}
-          path: build/MrDox-?.?.?-*.*
+          path: build/packages
           retention-days: 1
+
+      - name: FlameGraph
+        uses: alandefreitas/cpp-actions/flamegraph@v1.4.0
+        if: matrix.time-trace
+        with:
+          build-dir: build
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          trace-commands: true
+
+      - name: Codecov
+        if: ${{ matrix.coverage }}
+        run: |
+          set -x
+          # Find gcov
+          gcov_tool="gcov"
+          if command -v "gcov-${{ steps.setup-cpp.outputs.version-major }}.${{ steps.setup-cpp.outputs.version-minor }}" &> /dev/null; then
+              gcov_tool="gcov"
+          elif command -v "gcov-${{ steps.setup-cpp.outputs.version-major }}" &> /dev/null; then
+              gcov_tool="gcov-${{ steps.setup-cpp.outputs.version-major }}"
+          fi
+          lcov -c -q -o "./build/coverage.info" -d "./build" --include "$(pwd)/*" --gcov-tool "$gcov_tool"
+          
+          # Upload to codecov
+          bash <(curl -s https://codecov.io/bash) -f "./build/coverage.info"
+          
+          # Update summary
+          echo "# Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[![codecov](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA/graphs/sunburst.svg)](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "$GITHUB_REF_NAME: [![codecov](https://codecov.io/github/$GITHUB_REPOSITORY/branch/$GITHUB_REF_NAME/graph/badge.svg)](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
 
   docs:
     needs: build
@@ -109,21 +172,18 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Clone mrdox
+        uses: actions/checkout@v3
 
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install Antora
-        working-directory: docs
-        run: |
-          npm install
-
       - name: Generate Site
         working-directory: docs
         run: |
+          npm install
           master_antora_exists=$(curl --silent --fail --head https://github.com/cppalliance/mrdox/blob/master/docs/antora.yml >/dev/null && echo "true" || echo "false")
           develop_antora_exists=$(curl --silent --fail --head https://github.com/cppalliance/mrdox/blob/develop/docs/antora.yml >/dev/null && echo "true" || echo "false")
           if [ "$master_antora_exists" == "true" ] && [ "$develop_antora_exists" == "true" ]; then
@@ -156,9 +216,8 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 100
+      - name: Clone mrdox
+        uses: actions/checkout@v3
 
       - uses: actions/download-artifact@v3
         with:
@@ -174,11 +233,13 @@ jobs:
         run: ls -R
         working-directory: build
 
-      - name: Create release notes
-        uses: alandefreitas/cpp-actions/create-changelog@v1.0.0
+      - name: Create changelog
+        uses: alandefreitas/cpp-actions/create-changelog@v1.4.0
         with:
           output-path: CHANGELOG.md
-          limit: 50
+          thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          limit: 150
 
       - name: Remove branch release
         if: ${{ github.event_name == 'push' && contains(fromJSON('["master", "develop"]'), github.ref_name) }}
