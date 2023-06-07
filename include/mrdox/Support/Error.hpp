@@ -15,7 +15,6 @@
 #include <mrdox/Platform.hpp>
 #include <fmt/format.h>
 #include <cassert>
-#include <source_location>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -29,7 +28,6 @@ namespace mrdox {
 class [[nodiscard]] Error
 {
     std::string text_;
-    std::source_location loc_;
 
 public:
     /** Constructor.
