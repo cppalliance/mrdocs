@@ -182,14 +182,14 @@ public:
         {
         case JAVADOC_LIST_KIND:
         {
-            Javadoc::Kind kind;
+            Javadoc::Kind kind{};
             if(auto err = decodeRecord(R, kind, Blob))
                 return err;
             return J.setKind(kind);
         }
         case JAVADOC_NODE_KIND:
         {
-            Javadoc::Kind kind;
+            Javadoc::Kind kind{};
             if(auto err = decodeRecord(R, kind, Blob))
                 return err;
             return J.getNodes().appendChild(kind);
