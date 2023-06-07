@@ -94,6 +94,8 @@ postProcess()
                     std::move(static_cast<Returns &>(*it)));
                 it = blocks_.erase(it);
             }
+            // KRYSTIAN TODO: emit a warning for duplicate @returns
+            continue;
         }
         else if(it->kind == Kind::param)
         {
