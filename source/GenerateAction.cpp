@@ -62,8 +62,11 @@ DoGenerateAction()
     path::remove_filename(workingDir);
 
     // Convert relative paths to absolute
-    AbsoluteCompilationDatabase compilations(workingDir, *jsonCompilations);
-    
+    AbsoluteCompilationDatabase compilations(
+        workingDir,
+        *jsonCompilations,
+        *config);
+
     // Create the ToolExecutor from the compilation database
     int ThreadCount = 0;
     auto ex = std::make_unique<tooling::AllTUsToolExecutor>(compilations, ThreadCount);
