@@ -77,11 +77,25 @@ endif()
 
 set(CMAKE_FOLDER Dependencies)
 
+macro(add_variable_override var_name var_val)
+    macro(handle_${var_name}_access var)
+        set(${var} ${var_val})
+    endmacro()
+    variable_watch(${var_name} handle_${var_name}_access)
+endmacro()
+
+macro(remove_variable_override var_name)
+    macro(handle_${var_name}_access)
+    endmacro()
+endmacro()
+
 # LLVM
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
+add_variable_override(msvc_warning_flags "")
 include(HandleLLVMOptions)
+remove_variable_override(msvc_warning_flags)
 add_definitions(${LLVM_DEFINITIONS})
 llvm_map_components_to_libnames(llvm_libs all)
 
@@ -181,16 +195,24 @@ if (WIN32)
     get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
     if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
         target_compile_definitions(mrdox PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
-        target_compile_options(mrdox PUBLIC /MD)
+        # target_compile_options(mrdox PUBLIC /MD)
     endif()
     if(MSVC)
         target_compile_options(
             mrdox
             PUBLIC
             /permissive-    # strict C++
-            /W4             # enable all warnings
             /MP             # multi-processor compilation
             /EHsc           # C++ Exception handling
+            /W4             # enable all warnings
+            /wd4100         # unreferenced formal parameter
+            /wd4702         # unreachable code
+            /wd4706         # assignment within conditional expression
+            /wd4244         # narrowing integral conversion
+            /wd4267         # narrowing std::size_t conversion
+            /wd4456         # declaration hides local declaration
+            /wd4457         # declaration hides function parameter declaration
+            /wd4459         # declaration hides global declaration
         )
     endif()
 endif ()
