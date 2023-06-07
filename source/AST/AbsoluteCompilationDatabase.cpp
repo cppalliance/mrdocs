@@ -27,6 +27,16 @@
 namespace clang {
 namespace mrdox {
 
+static
+bool
+isCXXSrcFile(
+    std::string_view filename)
+{
+    return driver::types::isCXX(
+        driver::types::lookupTypeForExtension(
+            llvm::sys::path::extension(filename).drop_front()));
+}
+
 template<typename... Opts>
 static
 bool
@@ -218,6 +228,10 @@ AbsoluteCompilationDatabase(
             path::remove_dots(temp, true);
             cmd.Filename = static_cast<std::string>(temp);
         }
+
+        // non-C++ input file; skip
+        if(! isCXXSrcFile(cmd.Filename))
+            continue;
 
         std::size_t i = AllCommands_.size();
         auto result = IndexByFile_.try_emplace(cmd.Filename, i);
