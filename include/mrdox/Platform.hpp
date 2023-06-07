@@ -13,6 +13,10 @@
 
 #include <type_traits>
 
+#if __cplusplus < 202002L
+    #error "mrdox requires at least C++20"
+#endif
+
 /*
     Platform-specific things, and stuff
     that is dependent on the toolchain.
