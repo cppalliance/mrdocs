@@ -89,11 +89,10 @@ postProcess()
         else if(it->kind == Kind::returns)
         {
             if(! returns_)
-            {
                 returns_ = std::make_shared<Returns>(
                     std::move(static_cast<Returns &>(*it)));
-                it = blocks_.erase(it);
-            }
+            // unconditionally consume the Returns element
+            it = blocks_.erase(it);
             // KRYSTIAN TODO: emit a warning for duplicate @returns
             continue;
         }
