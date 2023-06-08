@@ -70,7 +70,7 @@ llvm::cl::opt<bool> IgnoreMappingFailures(
 llvm::cl::opt<std::string> ConfigPath(
     "config",
     llvm::cl::desc(R"(The config filename relative to the repository root)"),
-    llvm::cl::init("mrdox.yaml"),
+    llvm::cl::init("mrdox.yml"),
     llvm::cl::cat(Category));
 
 llvm::cl::opt<std::string> OutputPath(

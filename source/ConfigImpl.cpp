@@ -52,8 +52,8 @@ struct llvm::yaml::MappingTraits<
         io.mapOptional("verbose",           cfg.verboseOutput);
         io.mapOptional("with-private",      cfg.includePrivate);
         io.mapOptional("with-anonymous",    cfg.includeAnonymous);
+        io.mapOptional("concurrency",       cfg.concurrency);
 
-        io.mapOptional("concurrency",       cfg.concurrency_);
         io.mapOptional("defines",           cfg.additionalDefines_);
         io.mapOptional("source-root",       cfg.sourceRoot_);
 
@@ -69,36 +69,16 @@ namespace mrdox {
 Error
 ConfigImpl::
 construct(
-    llvm::StringRef workingDirArg,
-    llvm::StringRef configYamlArg,
-    llvm::StringRef extraYamlArg)
+    llvm::StringRef workingDir_,
+    llvm::StringRef configYaml_,
+    llvm::StringRef extraYaml_)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    // calculate working directory
-    llvm::SmallString<64> s;
-    if(workingDirArg.empty())
-    {
-        if(auto ec = fs::current_path(s))
-            return Error(ec);
-    }
-    else
-    {
-        s = workingDirArg;
-    }
-    path::remove_dots(s, true);
-    makeDirsy(s);
-    convert_to_slash(s);
-    workingDir_ = s;
-    workingDir = std::string_view(
-        workingDir_.data(), workingDir_.size());
-
-    configYamlStr_ = configYamlArg;
-    extraYamlStr_ = extraYamlArg;
-
-    configYaml = configYamlStr_;
-    extraYaml = extraYamlStr_;
+    workingDir = workingDir_;
+    configYaml = configYaml_;
+    extraYaml = extraYaml_;
 
     // Parse the YAML strings
     {
@@ -117,6 +97,8 @@ construct(
     }
 
     // Post-process as needed
+    if( concurrency == 0)
+        concurrency = llvm::thread::hardware_concurrency();
 
     // fix source-root
     auto temp = normalizedPath(sourceRoot_);
@@ -214,47 +196,55 @@ createConfigFromYAML(
     llvm::StringRef configYaml,
     llvm::StringRef extraYaml)
 {
+#if 0
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    SmallPathString temp(workingDir);
+    path::remove_dots(temp, true, path::Style::native);
+#endif
+
     auto config = std::make_shared<ConfigImpl>();
-    if(auto err = config->construct(
-            workingDir, configYaml, extraYaml))
+    if(auto err = config->construct(workingDir, configYaml, extraYaml))
         return err;
     return config;
 }
 
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
-    std::string_view fileNameArg,
+    std::string_view configFilePath,
     std::string_view extraYaml)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    std::error_code ec;
+    SmallPathString temp(configFilePath);
+    path::remove_dots(temp, true, path::Style::native);
 
-    llvm::SmallString<512> fileName(fileNameArg);
-    path::remove_dots(fileName, true);
-
-    // ensure fileName is a regular file
+    // ensure configFilePath is a regular file
     fs::file_status stat;
-    if((ec = fs::status(fileName, stat)))
-        return Error("fs::status(\"{}\") returned \"{}\"", fileName, ec);
+    if(auto ec = fs::status(temp, stat))
+        return Error("fs::status(\"{}\") returned \"{}\"", temp, ec);
     if(stat.type() != fs::file_type::regular_file)
-        return Error("\"{}\" is not a regular file", fileName);
+        return Error("\"{}\" is not a regular file", temp);
 
     // load the file into a string
-    auto fileText = llvm::MemoryBuffer::getFile(fileName);
-    if(! fileText)
-        return Error("getFile(\"{}\") returned \"{}\"", fileName, fileText.getError());
+    auto text = llvm::MemoryBuffer::getFile(temp);
+    if(! text)
+        return Error("MemoryBuffer::getFile(\"{}\") returned \"{}\"", temp, text.getError());
 
     // calculate the working directory
-    llvm::SmallString<64> workingDir(fileName);
+    SmallPathString workingDir(temp);
     path::remove_filename(workingDir);
-    if((ec = fs::make_absolute(workingDir)))
+    if(auto ec = fs::make_absolute(workingDir))
         return Error("fs::make_absolute(\"{}\") returned \"{}\"", workingDir, ec);
+    makeDirsy(workingDir);
 
     // attempt to create the config
-    return createConfigFromYAML(workingDir,
-        (*fileText)->getBuffer(), extraYaml);
+    auto config = std::make_shared<ConfigImpl>();
+    if(auto err = config->construct(workingDir, (*text)->getBuffer(), extraYaml))
+        return err;
+    return config;
 }
 
 } // mrdox

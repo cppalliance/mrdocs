@@ -13,8 +13,10 @@
 #define MRDOX_API_CONFIG_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <functional>
 #include <memory>
+#include <string>
 #include <string_view>
 #include <system_error>
 #include <utility>
@@ -109,6 +111,12 @@ public:
     */
     bool includeAnonymous = true;
 
+    /** The level of concurrency desired.
+
+        This will always be greater than zero.
+    */
+    unsigned int concurrency = 0;
+
     //--------------------------------------------
 
     /** Full path to the working directory
@@ -116,14 +124,14 @@ public:
         The working directory is used to calculate
         full paths from relative paths.
 
-        This string will always be POSIX style
+        This string will always be native style
         and have a trailing directory separator.
     */
-    std::string_view workingDir;
+    std::string workingDir;
 
     /** A string holding the complete configuration YAML.
     */
-    std::string_view configYaml;
+    std::string configYaml;
 
     /** A string holding extra configuration YAML.
 
@@ -136,7 +144,7 @@ public:
         apply `configYaml`, then parse and apply
         this string to the same settings.
     */
-    std::string_view extraYaml;
+    std::string extraYaml;
 };
 
 //------------------------------------------------

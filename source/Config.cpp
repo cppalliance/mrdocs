@@ -12,7 +12,6 @@
 #include "ConfigImpl.hpp"
 #include "Support/Path.hpp"
 #include <mrdox/Support/Error.hpp>
-
 #include <llvm/Config/llvm-config.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -129,7 +128,7 @@ WorkGroup::
 post(
     std::function<void(void)> f)
 {
-    if(config_ && config_->useThreadPool())
+    if(config_ && config_->concurrency > 1)
     {
         auto& impl = static_cast<Impl&>(*impl_);
         impl.group_.async(std::move(f));
@@ -145,7 +144,7 @@ Config::
 WorkGroup::
 wait()
 {
-    if(config_ && config_->useThreadPool())
+    if(config_ && config_->concurrency > 1)
     {
         auto& impl = static_cast<Impl&>(*impl_);
         impl.group_.wait();

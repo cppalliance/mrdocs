@@ -39,7 +39,6 @@ public:
         std::vector<std::string> include;
     };
 
-    int concurrency_ = 0;
     std::vector<std::string> additionalDefines_;
     std::string sourceRoot_;
 
@@ -49,9 +48,6 @@ public:
 
 private:
     llvm::ThreadPool mutable threadPool_;
-    std::string configYamlStr_;
-    std::string extraYamlStr_;
-    llvm::SmallString<0> workingDir_;
     llvm::SmallString<0> outputPath_;
     std::vector<std::string> inputFileIncludes_;
 
@@ -73,13 +69,6 @@ private:
 
 public:
     ConfigImpl();
-
-    /** Return true if the thread pool should be used for work.
-    */
-    bool useThreadPool() const noexcept
-    {
-        return concurrency_ != 1;
-    }
 
     /** Return the full path to the source root directory.
 
@@ -128,27 +117,18 @@ public:
     */
     static void yamlDiagnostic(llvm::SMDiagnostic const&, void*);
 
-    /** Return a configuration created from YAML.
-
-        @param workingDir The directory which
-        should be considered the working directory
-        for calculating filenames from relative
-        paths.
-
-        @param configYaml A string containing valid
-        YAML which will be parsed and applied to create
-        the configuration.
-
-        @param extraYaml An optional string containing
-        additional valid YAML which will be parsed and
-        applied to the existing configuration.
-    */
     friend
     Expected<std::shared_ptr<ConfigImpl const>>
     createConfigFromYAML(
         llvm::StringRef workingDir,
         llvm::StringRef configYaml,
         llvm::StringRef extraYaml);
+
+    friend
+    Expected<std::shared_ptr<ConfigImpl const>>
+    loadConfigFile(
+        std::string_view configFilePath,
+        std::string_view extraYam);
 };
 
 //------------------------------------------------
@@ -191,7 +171,7 @@ Expected<std::shared_ptr<ConfigImpl const>>
 createConfigFromYAML(
     llvm::StringRef workingDir,
     llvm::StringRef configYaml,
-    llvm::StringRef extraYaml);
+    llvm::StringRef extraYaml = "");
 
 /** Create a configuration by loading a YAML file.
 
@@ -209,47 +189,24 @@ createConfigFromYAML(
     same as elements from the file will replace
     existing settings.
 
-    @return A valid object upon success.
+    @return A valid object upon success, otherwise
+    an error.
 
-    @param fileName A full or relative path to
-    the configuration file, which may have any
-    extension including no extension.
+    @param configFilePath A relative or absolute
+    path to the configuration file. Relative paths
+    will be resolved according to the current working
+    directory of the process. POSIX or Windows style
+    path separators are accepted.
 
     @param extraYaml An optional string containing
     additional valid YAML which will be parsed and
     applied to the existing configuration.
-
-    @param ec [out] Set to the error, if any occurred.
 */
 MRDOX_DECL
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
-    std::string_view fileName,
-    std::string_view extraYaml);
-
-/** Return a configuration by loading a YAML file.
-
-    This function attemtps to load the given
-    YAML file and apply the settings to create
-    a configuration. The working directory of
-    the config object will be set to the
-    directory containing the file.
-
-    @return A valid object upon success.
-
-    @param fileName A full or relative path to
-    the configuration file, which may have any
-    extension including no extension.
-
-    @param ec [out] Set to the error, if any occurred.
-*/
-inline
-Expected<std::shared_ptr<ConfigImpl const>>
-loadConfigFile(
-    std::string_view fileName)
-{
-    return loadConfigFile(fileName, "");
-}
+    std::string_view configFilePath,
+    std::string_view extraYam = "");
 
 /** Create a configuration by loading a YAML string.
 
@@ -263,10 +220,10 @@ loadConfigFile(
 
     @return A valid object upon success.
 
-    @param workingDir The directory which
-    should be considered the working directory
-    for calculating filenames from relative
-    paths.
+    @param workingDir The directory which should
+    be considered the working directory for
+    calculating filenames from relative paths.
+    This must be an absolute path, or empty.
 
     @param configYaml A string containing valid
     YAML which will be parsed and applied to create
