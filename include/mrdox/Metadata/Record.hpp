@@ -111,6 +111,7 @@ struct RecordScope
     std::vector<MemberRef> Types;
     std::vector<MemberRef> Fields;
     std::vector<MemberRef> Vars;
+    std::vector<SymbolID> Specializations;
 };
 
 enum class RecordKeyKind

@@ -919,6 +919,8 @@ public:
             return decodeRecord(R, I->Members.Fields, Blob);
         case RECORD_VARS:
             return decodeRecord(R, I->Members.Vars, Blob);
+        case RECORD_SPECIALIZATIONS:
+            return decodeRecord(R, I->Members.Specializations, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

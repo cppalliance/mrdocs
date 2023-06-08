@@ -150,6 +150,29 @@ reduceMemberRefs(
 
 static
 void
+reduceRefs(
+    std::vector<SymbolID>& list,
+    std::vector<SymbolID>&& otherList)
+{
+    for(auto const& id : otherList)
+    {
+        auto it = llvm::find(list, id);
+#if 0
+        auto it = llvm::find_if(
+            list,
+            [ref](SymbolID const& other) noexcept
+            {
+                return other.id == ref.id;
+            });
+#endif
+        if(it != list.end())
+            continue;
+        list.push_back(id);
+    }
+}
+
+static
+void
 reduceSpecializedMembers(
     std::vector<SpecializedMember>& list,
     std::vector<SpecializedMember>&& otherList)
@@ -185,12 +208,15 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     reduceMemberRefs(I.Members.Types, std::move(Other.Members.Types));
     reduceMemberRefs(I.Members.Fields, std::move(Other.Members.Fields));
     reduceMemberRefs(I.Members.Vars, std::move(Other.Members.Vars));
+
+    reduceRefs(I.Members.Specializations, std::move(Other.Members.Specializations));
     // KRYSTIAN FIXME: really should use explicit cases here.
     // at a glance, it is not obvious that we are binding to
     // the SymboInfo base class subobject
     mergeSymbolInfo(I, std::move(Other));
     if (! I.Template)
         I.Template = std::move(Other.Template);
+#if 0
     // This has the side-effect of canonicalizing
     if(! Other.Friends.empty())
     {
@@ -203,6 +229,9 @@ void merge(RecordInfo& I, RecordInfo&& Other)
         auto last = std::unique(I.Friends.begin(), I.Friends.end());
         I.Friends.erase(last, I.Friends.end());
     }
+#else
+    reduceRefs(I.Friends, std::move(Other.Friends));
+#endif
 }
 
 void merge(FunctionInfo& I, FunctionInfo&& Other)

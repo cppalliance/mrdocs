@@ -214,6 +214,9 @@ traverse(
             &get<VarInfo>(t.id),
                 &I}, t.access))
             return false;
+    for(auto const& t : I.Members.Specializations)
+        if(! f.visit(get<SpecializationInfo>(t)))
+            return false;
 
     return true;
 }

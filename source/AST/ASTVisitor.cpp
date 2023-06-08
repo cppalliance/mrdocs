@@ -500,8 +500,11 @@ writeParent(
     // and insert the child as a MemberRef.
     // Then return the parent as a serialized bitcode.
     RecordInfo P(I.Namespace.front());
-    insertChild<Child>(P.Members,
-        I.id, access_);
+    if constexpr(std::is_same_v<Child, SpecializationInfo>)
+        insertChild<Child>(P.Members, I.id);
+    else
+        insertChild<Child>(P.Members, I.id, access_);
+
     return writeBitcode(P);
 }
 
@@ -654,7 +657,6 @@ getParentNamespaces(
         child = parent;
     }
     while((parent_context = parent_context->getParent()));
-    // print_debug("\n");
     return member_specialization;
 }
 
@@ -686,7 +688,9 @@ buildSpecialization(
 
     insertBitcode(ex_, writeBitcode(I));
     if(! member_spec)
-        insertBitcode(ex_, writeParent(I));
+        insertBitcode(ex_, writeParent(I,
+            P->getDeclContext()->isFileContext() ?
+                AccessSpecifier::AS_none : AccessSpecifier::AS_public));
 }
 
 //------------------------------------------------

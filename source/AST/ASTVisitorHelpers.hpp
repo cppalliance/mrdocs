@@ -54,9 +54,9 @@ void insertChild(Scope& P, Args&&... args)
 template<typename T, typename... Args>
 void insertChild(RecordScope& P, Args&&... args)
 {
+    using U = std::remove_cvref_t<T>;
     if constexpr(std::is_constructible_v<MemberRef, Args...>)
     {
-        using U = std::remove_cvref_t<T>;
         if constexpr(std::is_same_v<U, RecordInfo>)
             P.Records.emplace_back(std::forward<Args>(args)...);
         else if constexpr(std::is_same_v<U, FunctionInfo>)
@@ -69,6 +69,13 @@ void insertChild(RecordScope& P, Args&&... args)
             P.Fields.emplace_back(std::forward<Args>(args)...);
         else if constexpr(std::is_same_v<U, VarInfo>)
             P.Vars.emplace_back(std::forward<Args>(args)...);
+        else
+            llvm_unreachable("invalid RecordScope member");
+    }
+    else if constexpr(std::is_constructible_v<SymbolID, Args...>)
+    {
+        if constexpr(std::is_same_v<U, SpecializationInfo>)
+            P.Specializations.emplace_back(std::forward<Args>(args)...);
         else
             llvm_unreachable("invalid RecordScope member");
     }

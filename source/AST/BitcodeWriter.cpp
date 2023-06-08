@@ -296,6 +296,7 @@ RecordIDNameMap = []()
         {RECORD_TYPES,      {"RecordTypes", &MemberRefsAbbrev}},
         {RECORD_VARS,       {"RecordVars", &MemberRefsAbbrev}},
         {RECORD_FIELDS,     {"RecordFields", &MemberRefsAbbrev}},
+        {RECORD_SPECIALIZATIONS,{"RecordSpecializations", &SymbolIDsAbbrev}},
         {SYMBOL_PART_DEFLOC, {"SymbolDefLoc", &LocationAbbrev}},
         {SYMBOL_PART_LOC,    {"SymbolLoc", &LocationAbbrev}},
         {TEMPLATE_PRIMARY_USR,   {"Primary", &SymbolIDAbbrev}},
@@ -367,7 +368,8 @@ RecordsByBlock{
     {BI_RECORD_BLOCK_ID,
         {RECORD_KEY_KIND, RECORD_IS_TYPE_DEF, RECORD_BITS,
         RECORD_FRIENDS, RECORD_ENUMS, RECORD_FUNCTIONS,
-        RECORD_RECORDS, RECORD_TYPES, RECORD_VARS, RECORD_FIELDS}},
+        RECORD_RECORDS, RECORD_TYPES, RECORD_VARS, RECORD_FIELDS,
+        RECORD_SPECIALIZATIONS}},
     // std::vector<Reference>
     {BI_REFERENCE_BLOCK_ID,
         {REFERENCE_USR, REFERENCE_NAME, REFERENCE_KIND, REFERENCE_FIELD}},
@@ -1021,6 +1023,7 @@ emitBlock(
     emitRecord(I.Members.Types, RECORD_TYPES);
     emitRecord(I.Members.Fields, RECORD_FIELDS);
     emitRecord(I.Members.Vars, RECORD_VARS);
+    emitRecord(I.Members.Specializations, RECORD_SPECIALIZATIONS);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord(I.Friends, RECORD_FRIENDS);

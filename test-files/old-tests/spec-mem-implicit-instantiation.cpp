@@ -41,3 +41,15 @@ struct A<bool>::C<U*>
 template<>
 template<>
 void A<bool>::C<double*>::j() { }
+
+struct D
+{
+    template<typename T>
+    struct E
+    {
+        void f() { }
+    };
+};
+
+template<>
+void D::E<int>::f() { }

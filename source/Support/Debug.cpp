@@ -81,6 +81,7 @@ public:
 
 llvm::raw_ostream& debug_outs()
 {
+    return llvm::outs();
     static debug_ostream stream(llvm::outs());
     return stream;
 }
@@ -183,6 +184,9 @@ format(
         break;
     case clang::mrdox::InfoKind::Field:
         str = "field";
+        break;
+    case clang::mrdox::InfoKind::Specialization:
+        str = "specialization";
         break;
     default:
         break;
