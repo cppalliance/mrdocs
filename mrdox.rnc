@@ -188,6 +188,16 @@ grammar
             )
         }
 
+    Specialization =
+        element specialization
+        {
+            ID,
+            attribute primary { text },
+            TemplateArg *,
+            RecordScope
+        }
+
+
     TemplateArg =
         element targ
         {
@@ -223,23 +233,29 @@ grammar
         element sc-register     {empty}
     )
 
-    Scope = (
-            Namespace |
-            Record    |
-            Function  |
-            Typedef   |
-            Enum      |
-            Var       |
-            Template)*
+    Scope =
+        (
+            Namespace      |
+            Record         |
+            Function       |
+            Typedef        |
+            Enum           |
+            Var            |
+            Template       |
+            Specialization
+        )*
 
-    RecordScope = (
-            Record    |
-            Function  |
-            Typedef   |
-            Enum      |
-            Field     |
-            Var       |
-            Template)*
+    RecordScope =
+        (
+            Record         |
+            Function       |
+            Typedef        |
+            Enum           |
+            Field          |
+            Var            |
+            Template       |
+            Specialization
+        )*
 
     # JavaDoc not in a nested grammar , so we can convert it to a XSD
 
