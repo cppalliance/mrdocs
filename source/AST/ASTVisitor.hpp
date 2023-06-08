@@ -85,6 +85,11 @@ public:
     shouldExtract(
         const Decl* D);
 
+    template<typename DeclTy>
+    bool
+    isImplicitInstantiation(
+        const DeclTy* D);
+
     bool
     extractInfo(
         Info& I,

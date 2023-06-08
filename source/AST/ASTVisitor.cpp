@@ -569,6 +569,19 @@ shouldExtract(
     return true;
 }
 
+template<typename DeclTy>
+bool
+ASTVisitor::
+isImplicitInstantiation(
+    const DeclTy* D)
+{
+    if constexpr(requires { { D->getTemplateSpecializationKind() } ->
+        std::same_as<TemplateSpecializationKind>; })
+        return D->getTemplateSpecializationKind() ==
+            TemplateSpecializationKind::TSK_ImplicitInstantiation;
+    else
+        return false;
+}
 
 bool
 ASTVisitor::
@@ -1185,6 +1198,10 @@ Traverse(
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
+    // implicit instantiations should *only* have their Info
+    // extracted via buildSpecialization calls from getParentNamespaces
+    if(isImplicitInstantiation(D))
+        return true;
     if(! shouldExtract(D))
         return true;
 
@@ -1241,6 +1258,13 @@ Traverse(
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
+    // implicitly instantiated definitions of non-inline
+    // static data members of class templates are added to
+    // the end of the TU DeclContext. Decl::isImplicit returns
+    // false for these VarDecls, so we must check whether this
+    // variable is an implicit instantiation & skip such Decls
+    if(isImplicitInstantiation(D))
+        return true;
     if(! shouldExtract(D))
         return true;
 
@@ -1259,6 +1283,8 @@ Traverse(
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
+    if(isImplicitInstantiation(D))
+        return true;
     if(! shouldExtract(D))
         return true;
 
@@ -1278,6 +1304,8 @@ Traverse(
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
+    if(isImplicitInstantiation(D))
+        return true;
     if(! shouldExtract(D))
         return true;
 
@@ -1303,6 +1331,8 @@ Traverse(
     if(DN)
         s = DN.getAsString();
     */
+    if(isImplicitInstantiation(D))
+        return true;
     if(! shouldExtract(D))
         return true;
 
@@ -1321,6 +1351,8 @@ Traverse(
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
+    if(isImplicitInstantiation(D))
+        return true;
     if(! shouldExtract(D))
         return true;
 
@@ -1339,6 +1371,8 @@ Traverse(
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
+    if(isImplicitInstantiation(D))
+        return true;
     if(! shouldExtract(D))
         return true;
 
@@ -1353,6 +1387,8 @@ Traverse(
     CXXDestructorDecl* D,
     AccessSpecifier A)
 {
+    if(isImplicitInstantiation(D))
+        return true;
     if(! shouldExtract(D))
         return true;
 
@@ -1379,6 +1415,8 @@ Traverse(
     EnumDecl* D,
     AccessSpecifier A)
 {
+    if(isImplicitInstantiation(D))
+        return true;
     if(! shouldExtract(D))
         return true;
 
