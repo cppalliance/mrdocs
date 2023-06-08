@@ -13,6 +13,7 @@
 #define MRDOX_LIB_SUPPORT_PATH_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/Path.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Path.h>
