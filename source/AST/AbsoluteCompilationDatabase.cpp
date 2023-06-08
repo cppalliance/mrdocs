@@ -234,10 +234,9 @@ AbsoluteCompilationDatabase(
             continue;
 
         std::size_t i = AllCommands_.size();
-        [[maybe_unused]] auto result =
-            IndexByFile_.try_emplace(cmd.Filename, i);
-        AllCommands_.emplace_back(std::move(cmd));
-        Assert(result.second);
+        auto result = IndexByFile_.try_emplace(cmd.Filename, i);
+        if(result.second)
+            AllCommands_.emplace_back(std::move(cmd));
     }
 }
 
