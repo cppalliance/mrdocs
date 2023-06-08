@@ -85,11 +85,6 @@ public:
     shouldExtract(
         const Decl* D);
 
-    template<typename DeclTy>
-    bool
-    isImplicitInstantiation(
-        const DeclTy* D);
-
     bool
     extractInfo(
         Info& I,
@@ -303,6 +298,8 @@ public:
     void InitializeSema(Sema& S) override;
     void ForgetSema() override;
 
+    void HandleCXXStaticMemberVarInstantiation(VarDecl* D) override;
+    void HandleCXXImplicitFunctionInstantiation(FunctionDecl* D) override;
 };
 
 } // mrdox
