@@ -8,6 +8,8 @@ Binaries are available from our https://github.com/cppalliance/mrdox/releases[Re
 
 === Requirements
 
+==== LLVM
+
 MrDox depends on a recent version of LLVM.
 
 Here are the instructions to clone LLVM version required by this project.
@@ -44,9 +46,49 @@ cmake --build . -j <threads>
 cmake --install .
 ----
 
+==== fmt
+
+MrDox uses the `fmt` library to format its messages. The library can be downloaded from https://vcpkg.io/en/getting-started.html[vcpkg] or installed from https://github.com/fmtlib/fmt[their official repository].
+
+When using vcpkg, its toolchain should be provided to the mrdox cmake configure command:
+
+[source,bash]
+----
+cmake -B [build directory] -S [path to mrdox] -D CMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake
+----
+
+When the `fmt` library has been installed from their official release, the library path should be provided to the mrdox cmake configure command:
+
+[source,bash]
+----
+cmake -B [build directory] -S [path to mrdox] -D FMT_ROOT=[path to installed fmt]
+----
+
+Alternatively, when neither option is available, the mrdox configure script will attempt to automatically download the `fmt` library during configuration.
+
+==== duktape
+
+The MrDox templating system uses the duktape JS interpreter for its handlebars templating system. The library can be downloaded from https://vcpkg.io/en/getting-started.html[vcpkg] or installed from https://duktape.org/[their official repository].
+
+When using vcpkg, its toolchain should be provided to the mrdox cmake configure command:
+
+[source,bash]
+----
+cmake -B [build directory] -S [path to mrdox] -D CMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake
+----
+
+When duktape has been installed from their https://github.com/svaarala/duktape/releases/tag/v2.7.0[official release], the duktape source path should be provided to the mrdox cmake configure command:
+
+[source,bash]
+----
+cmake -B [build directory] -S [path to mrdox] -D DUKTAPE_SOURCE_ROOT=[path to duktape source]
+----
+
+Alternatively, when neither option is available, the mrdox configure script will attempt to automatically download duktape during configuration.
+
 === MrDox
 
-Once the LLVM variants are available in `/path/to/llvm+clang`, you can download MrDox:
+Once the LLVM variants and dependencies are available in `/path/to/llvm+clang`, you can download MrDox:
 
 [source,bash]
 ----

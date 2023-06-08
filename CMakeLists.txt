@@ -85,36 +85,65 @@ add_definitions(${LLVM_DEFINITIONS})
 llvm_map_components_to_libnames(llvm_libs all)
 
 # Duktape
-if(NOT DEFINED DUKTAPE_SOURCE_ROOT)
-    set(DUKTAPE_SOURCE_ROOT $ENV{DUKTAPE_SOURCE_ROOT})
-endif()
-if (NOT DUKTAPE_SOURCE_ROOT)
-    include(FetchContent)
-    if (POLICY CMP0135)
-        cmake_policy(SET CMP0135 NEW)
+find_package(duktape CONFIG)
+if (duktape_FOUND)
+    if (NOT TARGET duktape::duktape)
+        add_library(duktape INTERFACE)
+        target_link_libraries(duktape main ${DUKTAPE_LIBRARY})
+        target_include_directories(duktape INTERFACE ${DUKTAPE_INCLUDE_DIRS})
+        target_include_directories(duktape PUBLIC ${DUKTAPE_SOURCE_ROOT}/src)
+        add_library(duktape::duktape ALIAS duktape)
     endif()
-    FetchContent_Declare(
-            duktape
-            URL https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
-    )
-    FetchContent_GetProperties(duktape)
-    if(NOT duktape_POPULATED)
-        FetchContent_Populate(duktape)
-        set(DUKTAPE_SOURCE_ROOT ${duktape_SOURCE_DIR})
-    endif()
-endif()
-add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
-target_include_directories(duktape PUBLIC ${DUKTAPE_SOURCE_ROOT}/src)
-add_library(duktape::duktape ALIAS duktape)
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-    target_compile_options(duktape PRIVATE -w)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(duktape PRIVATE /w)
-endif()
+else()
+    if (NOT DEFINED DUKTAPE_SOURCE_ROOT)
+        set(DUKTAPE_SOURCE_ROOT $ENV{DUKTAPE_SOURCE_ROOT})
+    endif ()
+    if (NOT DUKTAPE_SOURCE_ROOT)
+        include(FetchContent)
+        if (POLICY CMP0135)
+            cmake_policy(SET CMP0135 NEW)
+        endif ()
+        FetchContent_Declare(
+                duktape
+                URL https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
+        )
+        FetchContent_GetProperties(duktape)
+        if (NOT duktape_POPULATED)
+            FetchContent_Populate(duktape)
+            set(DUKTAPE_SOURCE_ROOT ${duktape_SOURCE_DIR})
+        endif ()
+    endif ()
+    add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
+    target_include_directories(duktape PUBLIC ${DUKTAPE_SOURCE_ROOT}/src)
+    add_library(duktape::duktape ALIAS duktape)
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+        target_compile_options(duktape PRIVATE -w)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_compile_options(duktape PRIVATE /w)
+    endif ()
+endif ()
 
 # fmt
-unset(CMAKE_FOLDER)
-find_package(fmt REQUIRED CONFIG)
+find_package(fmt CONFIG)
+if (NOT fmt_FOUND)
+    if (NOT DEFINED FMT_SOURCE_ROOT)
+        set(FMT_SOURCE_ROOT $ENV{FMT_SOURCE_ROOT})
+    endif ()
+    if (NOT FMT_SOURCE_ROOT)
+        include(FetchContent)
+        FetchContent_Declare(
+                fmt
+                URL https://github.com/fmtlib/fmt/releases/download/10.0.0/fmt-10.0.0.zip
+        )
+        FetchContent_GetProperties(fmt)
+        if (NOT fmt_POPULATED)
+            FetchContent_Populate(fmt)
+            set(FMT_SOURCE_ROOT ${fmt_SOURCE_DIR})
+        endif ()
+    endif ()
+endif ()
+
+unset(CMAKE_FOLDER) # Dependencies
 
 #-------------------------------------------------
 #
@@ -164,8 +193,16 @@ else()
 endif()
 target_include_directories(mrdox SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
 
+# duktape
+target_link_libraries(mrdox PRIVATE duktape::duktape)
+
 # fmt
-target_link_libraries(mrdox PUBLIC fmt::fmt duktape::duktape)
+if (fmt_FOUND)
+    target_link_libraries(mrdox PRIVATE fmt::fmt)
+else ()
+    target_include_directories(mrdox SYSTEM PRIVATE ${FMT_SOURCE_ROOT}/include)
+     target_compile_definitions(mrdox PRIVATE FMT_HEADER_ONLY)
+endif()
 
 # Windows, Win64
 if (WIN32)
