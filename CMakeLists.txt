@@ -210,6 +210,7 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 # Plugins
 #
 #-------------------------------------------------
+set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 
 file(GLOB plugins LIST_DIRECTORIES 1 CONFIGURE_DEPENDS plugins/*)
 
@@ -225,22 +226,25 @@ endforeach()
 #-------------------------------------------------
 
 if (MRDOX_BUILD_TESTS)
-    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
     enable_testing()
     add_test(NAME mrdox-test COMMAND mrdox --action test
             "${PROJECT_SOURCE_DIR}/test-files/old-tests"
             )
 
     if (CMAKE_EXPORT_COMPILE_COMMANDS)
+        file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/*.cpp)
+        list(GET TEST_SOURCES 0 TEST_SOURCE)
         # test run
-        set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
         include(mrdox.cmake)
 
-        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
-        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
+        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCE ${TEST_SOURCE} OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/test-docs)
+        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCE ${TEST_SOURCE} OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/test-docs)
+        mrdox(FORMAT test CONFIG docs/mrdox.yml SOURCE ${TEST_SOURCE} test_generator OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/test-docs
+              PLUGINS_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
-        add_custom_target(reference_adoc ALL DEPENDS reference.adoc)
-        add_custom_target(reference_xml  ALL DEPENDS reference.xml)
+        add_custom_target(reference_adoc ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/test-docs/reference.adoc)
+        add_custom_target(reference_xml  ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/test-docs/reference.xml)
+        add_custom_target(reference_test ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/test-docs/reference.test)
     endif()
 
     find_package(LibXml2)
