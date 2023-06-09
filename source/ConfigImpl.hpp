@@ -63,10 +63,6 @@ private:
         llvm::StringRef configYaml,
         llvm::StringRef extraYaml);
 
-    llvm::SmallString<0>
-    normalizedPath(
-        llvm::StringRef pathName);
-
 public:
     ConfigImpl();
 
@@ -111,7 +107,7 @@ public:
     bool
     shouldVisitFile(
         llvm::StringRef filePath,
-        llvm::SmallVectorImpl<char>& prefix) const noexcept;
+        std::string& prefix) const noexcept;
 
     /** A diagnostic handler for reading YAML files.
     */

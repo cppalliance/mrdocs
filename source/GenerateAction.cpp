@@ -15,9 +15,9 @@
 #include "AST/AbsoluteCompilationDatabase.hpp"
 #include <mrdox/Generators.hpp>
 #include <mrdox/Support/Report.hpp>
+#include <mrdox/Support/Path.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/JSONCompilationDatabase.h>
-#include <llvm/Support/Path.h>
 #include <cstdlib>
 
 namespace clang {
@@ -26,8 +26,6 @@ namespace mrdox {
 Error
 DoGenerateAction()
 {
-    namespace path = llvm::sys::path;
-
     auto& generators = getGenerators();
 
     // Calculate additional YAML settings from command line options.
@@ -50,7 +48,7 @@ DoGenerateAction()
         return Error("the compilation database path argument is missing");
     if(InputPaths.size() > 1)
         return Error("got {} input paths where 1 was expected", InputPaths.size());
-    llvm::StringRef compilationsPath = InputPaths.front();
+    auto compilationsPath = files::normalizePath(InputPaths.front());
     std::string errorMessage;
     auto jsonCompilations = tooling::JSONCompilationDatabase::loadFromFile(
         compilationsPath, errorMessage, tooling::JSONCommandLineSyntax::AutoDetect);
@@ -58,8 +56,10 @@ DoGenerateAction()
         return Error(std::move(errorMessage));
 
     // Calculate the working directory
-    llvm::SmallString<240> workingDir(compilationsPath);
-    path::remove_filename(workingDir);
+    auto absPath = files::makeAbsolute(compilationsPath);
+    if(! absPath)
+        return absPath.getError();
+    auto workingDir = files::getParentDir(*absPath);
 
     // Convert relative paths to absolute
     AbsoluteCompilationDatabase compilations(

@@ -20,40 +20,6 @@
 namespace clang {
 namespace mrdox {
 
-/** Append a trailing native separator if not already present.
-*/
-MRDOX_DECL
-std::string_view
-makeDirsy(
-    std::string& dirName);
-
-/** Return a native absolute path representing a path.
-
-    This function returns an absolute path using
-    native separators given a relative or absolute
-    path.
-
-    If the input path is relative, it is first made
-    absolute by resolving it against the configuration's
-    working directory.
-
-    The input path can use native, POSIX, or Windows
-    separators.
-
-    The returned path will have a trailing separator.
-*/
-MRDOX_DECL
-std::string
-makeAbsoluteDirectory(
-    std::string_view dirName,
-    std::string_view workingDir);
-
-MRDOX_DECL
-std::string
-makeFilePath(
-    std::string_view dirName,
-    std::string_view fileName);
-
 //------------------------------------------------
 
 struct AnyFileVisitor
@@ -105,6 +71,42 @@ forEachFile(
 
 namespace files {
 
+/** Return true if pathName ends in a separator.
+*/
+MRDOX_DECL
+bool
+isDirsy(
+    std::string_view pathName) noexcept;
+
+/** Return a normalized path.
+
+    This function returns a new path based on
+    applying the following changes to the passed
+    path:
+
+    @li "." and ".." are resolved
+
+    @li Separators made uniform
+
+    @return The normalized path.
+
+    @param pathName The relative or absolute path.
+*/
+MRDOX_DECL
+std::string
+normalizePath(
+    std::string_view pathName);
+
+/** Return the parent directory.
+
+    If the parent directory is defined, the returned
+    path will always have a trailing separator.
+*/
+MRDOX_DECL
+std::string
+getParentDir(
+    std::string_view pathName);
+
 /** Return the filename part of the path.
 */
 MRDOX_DECL
@@ -124,6 +126,34 @@ getFileText(
 MRDOX_DECL
 std::string
 makeDirsy(
+    std::string_view pathName);
+
+/** Return an absolute path from a possibly relative path.
+
+    Relative paths are resolved against the
+    current working directory of the process.
+
+    @return The absolute path, or an error if
+    any occurred.
+*/
+MRDOX_DECL
+Expected<std::string>
+makeAbsolute(
+    std::string_view pathName);
+
+/** Return an absolute path from a possibly relative path.
+*/
+MRDOX_DECL
+std::string
+makeAbsolute(
+    std::string_view pathName,
+    std::string_view workingDir);
+
+/** Convert all backward slashes to forward slashes.
+*/
+MRDOX_DECL
+std::string
+makePosixStyle(
     std::string_view pathName);
 
 MRDOX_DECL

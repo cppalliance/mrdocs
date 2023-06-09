@@ -14,81 +14,10 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/MemoryBuffer.h>
-
 #include <fstream>
 
 namespace clang {
 namespace mrdox {
-
-static
-bool
-isDirsy(
-    std::string_view nativeDirName)
-{
-    namespace path = llvm::sys::path;
-    if(nativeDirName.empty())
-        return false;
-    if(! path::is_separator(
-        nativeDirName.back(),
-        path::Style::windows_slash))
-        return false;
-    return true;
-}
-
-std::string_view
-makeDirsy(
-    std::string& dirName)
-{
-    namespace path = llvm::sys::path;
-
-    if( ! dirName.empty() &&
-        ! path::is_separator(
-            dirName.back(),
-            path::Style::windows_slash))
-    {
-        auto const sep = path::get_separator(path::Style::native);
-        dirName.push_back(sep.front());
-    }
-
-    return dirName;
-}
-
-std::string
-makeAbsoluteDirectory(
-    std::string_view dirName,
-    std::string_view workingDir)
-{
-    namespace path = llvm::sys::path;
-
-    Assert(isDirsy(workingDir));
-
-    if(! path::is_absolute(dirName, path::Style::windows_slash))
-    {
-        SmallPathString result(workingDir);
-        path::append(result, path::Style::native, dirName);
-        path::remove_dots(result, true, path::Style::native);
-        makeDirsy(result);
-        return std::string(result);
-    }
-
-    SmallPathString result(workingDir);
-    path::remove_dots(result, true, path::Style::native);
-    makeDirsy(result);
-    return std::string(result);
-}
-
-std::string
-makeFilePath(
-    std::string_view dirName,
-    std::string_view fileName)
-{
-    namespace path = llvm::sys::path;
-
-    SmallPathString result(dirName);
-    path::append(result, path::Style::native, fileName);
-    path::remove_dots(result, true, path::Style::native);
-    return std::string(result);
-}
 
 //------------------------------------------------
 
@@ -100,21 +29,6 @@ convert_to_slash(
     if (! llvm::sys::path::is_style_posix(style))
         std::replace(path.begin(), path.end(), '\\', '/');
     return llvm::StringRef(path.data(), path.size());
-}
-
-void
-makeDirsy(
-    llvm::SmallVectorImpl<char>& s,
-    llvm::sys::path::Style style)
-{
-    namespace path = llvm::sys::path;
-
-    if( ! s.empty() &&
-        ! path::is_separator(s.back(), style))
-    {
-        auto const sep = path::get_separator(style);
-        s.insert(s.end(), sep.begin(), sep.end());
-    }
 }
 
 //------------------------------------------------
@@ -136,8 +50,7 @@ forEachFile(
     {
         if(it->type() == fs::file_type::directory_file)
         {
-            std::string s = it->path();
-            makeDirsy(s);
+            auto s = files::makeDirsy(it->path());
             auto err = visitor.visitFile(s);
             if(err)
                 return err;
@@ -160,8 +73,47 @@ forEachFile(
 }
 
 //------------------------------------------------
+//
+// files
+//
+//------------------------------------------------
 
 namespace files {
+
+bool
+isDirsy(
+    std::string_view pathName) noexcept
+{
+    namespace path = llvm::sys::path;
+    if(pathName.empty())
+        return false;
+    if(! path::is_separator(
+        pathName.back(),
+            path::Style::native))
+        return false;
+    return true;
+}
+
+std::string
+normalizePath(
+    std::string_view pathName)
+{
+    namespace path = llvm::sys::path;
+
+    SmallPathString result(pathName);
+    path::remove_dots(result, true);
+    return static_cast<std::string>(result.str());
+}
+
+std::string
+getParentDir(
+    std::string_view pathName)
+{
+    namespace path = llvm::sys::path;
+
+    auto result = path::parent_path(pathName).str();
+    return makeDirsy(result);
+}
 
 std::string_view
 getFileName(
@@ -207,6 +159,52 @@ makeDirsy(
     return result;
 }
 
+Expected<std::string>
+makeAbsolute(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    SmallPathString result(pathName);
+    if(auto ec = fs::make_absolute(result))
+        return Error("fs::make_absolute(\"{}\") returned \"{}\"", pathName, ec);
+    return static_cast<std::string>(result);
+}
+
+std::string
+makeAbsolute(
+    std::string_view pathName,
+    std::string_view workingDir)
+{
+    namespace path = llvm::sys::path;
+
+    Assert(isDirsy(workingDir));
+
+    if(! path::is_absolute(pathName))
+    {
+        SmallPathString result(workingDir);
+        path::append(result, path::Style::native, pathName);
+        path::remove_dots(result, true);//, path::Style::native);
+        return std::string(result);
+    }
+
+    SmallPathString result(pathName);
+    path::remove_dots(result, true, path::Style::native);
+    return std::string(result);
+}
+
+std::string
+makePosixStyle(
+    std::string_view pathName)
+{
+    std::string result(pathName);
+    for(auto& c : result)
+        if(c == '\\')
+            c = '/';
+    return result;
+}
+
 std::string
 appendPath(
     std::string_view basePath,
@@ -216,6 +214,7 @@ appendPath(
 
     SmallPathString temp(makeDirsy(basePath));
     path::append(temp, pathName);
+    path::remove_dots(temp, true);
     return static_cast<std::string>(temp.str());
 }
 

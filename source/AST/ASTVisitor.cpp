@@ -551,8 +551,7 @@ shouldExtract(
         FileFilter());
 
     FileFilter& ff = it->second;
-    File_ = loc.getFilename();
-    convert_to_slash(File_);
+    File_ = files::makePosixStyle(loc.getFilename());
 
     // file has not been previously visited
     if(inserted)

@@ -41,7 +41,7 @@ class ASTVisitor
 public:
     struct FileFilter
     {
-        llvm::SmallString<0> prefix;
+        std::string prefix;
         bool include = true;
     };
 

@@ -14,6 +14,7 @@
 #include "Support/Error.hpp"
 #include "Support/Path.hpp"
 #include "Support/YamlFwd.hpp"
+#include <mrdox/Support/Path.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -100,39 +101,16 @@ construct(
     if( concurrency == 0)
         concurrency = llvm::thread::hardware_concurrency();
 
-    // fix source-root
-    auto temp = normalizedPath(sourceRoot_);
-    makeDirsy(temp, path::Style::posix);
-    sourceRoot_ = temp.str();
+    // This has to be forward slash style
+    sourceRoot_ = files::makePosixStyle(files::makeDirsy(
+        files::makeAbsolute(sourceRoot_, workingDir)));
 
-    // fix input files
+    // adjust input files
     for(auto& name : inputFileIncludes_)
-        name = normalizedPath(name).str();
+        name = files::makePosixStyle(
+            files::makeAbsolute(name, workingDir));
 
     return Error::success();
-}
-
-llvm::SmallString<0>
-ConfigImpl::
-normalizedPath(
-    llvm::StringRef pathName)
-{
-    namespace path = llvm::sys::path;
-
-    llvm::SmallString<0> result;
-    if(! path::is_absolute(pathName))
-    {
-        result = workingDir;
-        path::append(result, path::Style::posix, pathName);
-        path::remove_dots(result, true, path::Style::posix);
-    }
-    else
-    {
-        result = pathName;
-        path::remove_dots(result, true);
-        convert_to_slash(result);
-    }
-    return result;
 }
 
 ConfigImpl::
@@ -162,16 +140,16 @@ bool
 ConfigImpl::
 shouldVisitFile(
     llvm::StringRef filePath,
-    llvm::SmallVectorImpl<char>& prefixPath) const noexcept
+    std::string& prefixPath) const noexcept
 {
     namespace path = llvm::sys::path;
 
-    llvm::SmallString<32> temp;
+    SmallPathString temp;
     temp = filePath;
     if(! path::replace_path_prefix(temp, sourceRoot_, "", path::Style::posix))
         return false;
+    Assert(files::isDirsy(sourceRoot_));
     prefixPath.assign(sourceRoot_.begin(), sourceRoot_.end());
-    makeDirsy(prefixPath);
     return true;
 }
 
@@ -218,31 +196,22 @@ loadConfigFile(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    SmallPathString temp(configFilePath);
-    path::remove_dots(temp, true, path::Style::native);
+    auto temp = files::normalizePath(configFilePath);
 
-    // ensure configFilePath is a regular file
-    fs::file_status stat;
-    if(auto ec = fs::status(temp, stat))
-        return Error("fs::status(\"{}\") returned \"{}\"", temp, ec);
-    if(stat.type() != fs::file_type::regular_file)
-        return Error("\"{}\" is not a regular file", temp);
-
-    // load the file into a string
-    auto text = llvm::MemoryBuffer::getFile(temp);
+    // load the config file into a string
+    auto absPath = files::makeAbsolute(temp);
+    if(! absPath)
+        return absPath.getError();
+    auto text = files::getFileText(*absPath);
     if(! text)
-        return Error("MemoryBuffer::getFile(\"{}\") returned \"{}\"", temp, text.getError());
+        return text.getError();
 
     // calculate the working directory
-    SmallPathString workingDir(temp);
-    path::remove_filename(workingDir);
-    if(auto ec = fs::make_absolute(workingDir))
-        return Error("fs::make_absolute(\"{}\") returned \"{}\"", workingDir, ec);
-    makeDirsy(workingDir);
+    auto workingDir = files::getParentDir(*absPath);
 
     // attempt to create the config
     auto config = std::make_shared<ConfigImpl>();
-    if(auto err = config->construct(workingDir, (*text)->getBuffer(), extraYaml))
+    if(auto err = config->construct(workingDir, *text, extraYaml))
         return err;
     return config;
 }
