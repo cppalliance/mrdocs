@@ -30,7 +30,7 @@ function(mrdox)
     cmake_parse_arguments(
         MRDOX_TARGET
         "" # options
-        "OUTPUT;FORMAT;CONFIG" # one_value_keywords
+        "OUTPUT;FORMAT;CONFIG;PLUGINS" # one_value_keywords
         "SOURCES"
         ${ARGN}
     )
@@ -49,6 +49,10 @@ function(mrdox)
         set(MRDOX_TARGET_FORMAT xml)
     endif()
 
+    if (NOT MRDOX_TARGET_PLUGINS_PATH)
+        set(MRDOX_TARGET_PLUGINS_PATH ${CMAKE_CURRENT_BINARY_DIR})
+    endif()
+
     set(MRDOX_OUTPUT_FILE ${MRDOX_TARGET_OUTPUT}/reference.${MRDOX_TARGET_FORMAT})
     add_custom_command(
             OUTPUT ${MRDOX_OUTPUT_FILE}
@@ -57,6 +61,7 @@ function(mrdox)
                         ${MRDOX_COMPILE_COMMANDS}
                         --format=${MRDOX_TARGET_FORMAT}
                         --output=${MRDOX_TARGET_OUTPUT}
+                        --plugins-path=${MRDOX_TARGET_PLUGINS_PATH}
             MAIN_DEPENDENCY ${MRDOX_TARGET_CONFIG} # scanner!
             DEPENDS ${MRDOX_EXECUTABLE_DEPENDENCY} ${MRDOX_TARGET_SOURCES}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

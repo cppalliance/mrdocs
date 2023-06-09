@@ -85,5 +85,12 @@ llvm::cl::list<std::string> InputPaths(
     llvm::cl::desc("The path to the compilation database, or one or more .cpp files to test."),
     llvm::cl::cat(Category));
 
+llvm::cl::opt<std::string>   PluginsPath(
+    "plugins-path",
+    llvm::cl::desc("The plugins directory"),
+    llvm::cl::cat(Category)
+    );
+
+
 } // mrdox
 } // clang

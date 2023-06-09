@@ -35,17 +35,9 @@ include(GNUInstallDirs)
 #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO ON CACHE STRING "")
 
 option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
-option(MRDOX_BUILD_SHARED "Link shared" OFF)
 option(MRDOX_BUILD_DOCS "Configure install target" OFF)
 option(MRDOX_INSTALL "Configure install target" ON)
 option(MRDOX_PACKAGE "Build install package" ON)
-
-if (MRDOX_BUILD_SHARED)
-    set(MRDOX_LINK_MODE SHARED)
-    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_SHARED_LINK)
-else()
-    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_STATIC_LINK)
-endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(MRDOX_GCC ON)
@@ -105,6 +97,7 @@ if (NOT DUKTAPE_SOURCE_ROOT)
 endif()
 add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
 target_include_directories(duktape PUBLIC ${DUKTAPE_SOURCE_ROOT}/src)
+
 add_library(duktape::duktape ALIAS duktape)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(duktape PRIVATE -w)
@@ -137,13 +130,11 @@ target_include_directories(mrdox
     "${PROJECT_SOURCE_DIR}/source"
     "${PROJECT_SOURCE_DIR}/include"
 )
-target_compile_definitions(
-    mrdox
-    PUBLIC
-    ${MRDOX_LINK_MODE_DEFINITION}
-    PRIVATE
-    -DMRDOX_TOOL
-)
+
+set_target_properties(mrdox PROPERTIES
+        ENABLE_EXPORTS ON
+        POSITION_INDEPENDENT_CODE ON
+        )
 
 # LLVM
 target_link_libraries(mrdox PUBLIC ${llvm_libs})
@@ -166,7 +157,8 @@ endif()
 target_include_directories(mrdox SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
 
 # fmt
-target_link_libraries(mrdox PUBLIC fmt::fmt duktape::duktape)
+target_link_libraries(mrdox PUBLIC fmt::fmt)
+target_link_libraries(mrdox PRIVATE duktape::duktape)
 
 # Windows, Win64
 if (WIN32)
@@ -212,6 +204,19 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 #source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${INCLUDES})
 source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
+
+#-------------------------------------------------
+#
+# Plugins
+#
+#-------------------------------------------------
+
+file(GLOB plugins LIST_DIRECTORIES 1 CONFIGURE_DEPENDS plugins/*)
+
+foreach(plugin ${plugins})
+    add_subdirectory(${plugin})
+endforeach()
+
 
 #-------------------------------------------------
 #

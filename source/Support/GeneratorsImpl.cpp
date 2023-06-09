@@ -9,7 +9,13 @@
 //
 
 #include "GeneratorsImpl.hpp"
+#include "Path.hpp"
 #include <llvm/ADT/STLExtras.h>
+#include <llvm/Support/CommandLine.h>
+#include <llvm/Support/DynamicLibrary.h>
+#include <llvm/Support/FileSystem.h>
+
+
 
 namespace clang {
 namespace mrdox {
@@ -39,6 +45,8 @@ refresh_plist()
         plist_.push_back(g.get());
 }
 
+extern llvm::cl::opt<std::string>   PluginsPath;
+
 GeneratorsImpl::
 GeneratorsImpl()
 {
@@ -46,6 +54,33 @@ GeneratorsImpl()
     err = insert(makeAdocGenerator());
     err = insert(makeBitcodeGenerator());
     err = insert(makeXMLGenerator());
+
+    std::string err_;
+
+    SmallPathString plugin_path;
+    if (!PluginsPath.empty())
+      plugin_path = PluginsPath;
+    else
+      llvm::sys::fs::current_path(plugin_path);
+
+    std::error_code ec;
+    for (auto itr = llvm::sys::fs::directory_iterator(plugin_path, ec);
+         itr != llvm::sys::fs::directory_iterator() && !ec;
+         itr.increment(ec))
+    {
+      if (!itr->path().ends_with(".dll")
+       && !itr->path().ends_with(".so"))
+        continue;
+
+      auto lib = llvm::sys::DynamicLibrary::getPermanentLibrary(itr->path().c_str(), &err_);
+      auto mkgen = lib.getAddressOfSymbol("makeMrDoxGenerator");
+
+      if (mkgen)
+        err = insert(reinterpret_cast<decltype(&makeAdocGenerator)>(mkgen)());
+    }
+
+    if (ec)
+      throw std::system_error(ec);
 }
 
 Generator const*
@@ -70,6 +105,7 @@ insert(
     refresh_plist();
     return Error::success();
 }
+
 
 //------------------------------------------------
 

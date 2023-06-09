@@ -35,13 +35,8 @@ namespace mrdox {
 //
 //------------------------------------------------
 
-// static linking
-#if defined(MRDOX_STATIC_LINK)
-# define MRDOX_DECL
-# define MRDOX_VISIBLE
-
 // MSVC
-#elif defined(_MSC_VER)
+#if defined(_MSC_VER)
 # define MRDOX_SYMBOL_EXPORT __declspec(dllexport)
 # define MRDOX_SYMBOL_IMPORT __declspec(dllimport)
 # if defined(MRDOX_TOOL) // building tool
@@ -53,15 +48,13 @@ namespace mrdox {
 
 // (unknown)
 #elif defined(__GNUC__)
-# if defined(MRDOX_TOOL) // building library
-#   define MRDOX_DECL
-# else
-#   define MRDOX_DECL __attribute__((visibility("default")))
-#endif
-# define MRDOX_VISIBLE __attribute__((visibility("default")))
+#  define MRDOX_DECL __attribute__((visibility("default")))
+#  define MRDOX_VISIBLE __attribute__((visibility("default")))
 #else
 # error unknown platform for dynamic linking
 #endif
+
+
 
 } // mrdox
 } // clang
