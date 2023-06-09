@@ -25,8 +25,6 @@ namespace mrdox {
 */
 struct Scope
 {
-    bool isNamespaceScope = true;
-
     // Namespaces and Records are references because they will be properly
     // documented in their own info, while the entirety of Functions and Enums are
     // included here because they should not have separate documentation from
@@ -41,13 +39,6 @@ struct Scope
     std::vector<Reference> Enums;
     std::vector<Reference> Vars;
     std::vector<Reference> Specializations;
-
-    explicit
-    Scope(
-        bool isNamespaceScope_) noexcept
-        : isNamespaceScope(isNamespaceScope_)
-    {
-    }
 };
 
 } // mrdox

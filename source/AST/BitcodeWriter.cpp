@@ -789,14 +789,15 @@ emitInfoPart(
 void
 BitcodeWriter::
 emitSymbolPart(
-    const SymbolInfo& I)
+    const Info& I,
+    const SymbolInfo& S)
 {
     StreamSubBlockGuard Block(Stream, BI_SYMBOL_PART_ID);
-    if(I.DefLoc)
-        emitRecord(*I.DefLoc, SYMBOL_PART_DEFLOC);
+    if(S.DefLoc)
+        emitRecord(*S.DefLoc, SYMBOL_PART_DEFLOC);
     // VFALCO hack to squelch refs from typedefs
     if(I.Kind != InfoKind::Typedef)
-        for(const auto& L : I.Loc)
+        for(const auto& L : S.Loc)
             emitRecord(L, SYMBOL_PART_LOC);
 }
 
@@ -819,7 +820,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I);
+    emitSymbolPart(I, I);
     emitRecord(I.Scoped, ENUM_SCOPED);
     if (I.BaseType)
         emitBlock(*I.BaseType);
@@ -845,7 +846,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_FIELD_BLOCK_ID);
     emitInfoPart(F);
-    emitSymbolPart(F);
+    emitSymbolPart(F, F);
     emitBlock(F.Type);
     emitRecord(F.Name, FIELD_NAME);
     emitRecord(F.Default, FIELD_DEFAULT);
@@ -870,7 +871,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I);
+    emitSymbolPart(I, I);
     emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
     emitBlock(I.ReturnType);
     for (const auto& N : I.Params)
@@ -996,7 +997,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I);
+    emitSymbolPart(I, I);
     emitRecord(I.KeyKind, RECORD_KEY_KIND);
     emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
     emitRecord({I.specs.raw}, RECORD_BITS);
@@ -1118,7 +1119,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I);
+    emitSymbolPart(I, I);
     emitRecord(I.IsUsing, TYPEDEF_IS_USING);
     emitBlock(I.Underlying);
     if(I.Template)
@@ -1141,7 +1142,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I);
+    emitSymbolPart(I, I);
     emitBlock(I.Type);
     emitRecord({I.specs.raw}, VARIABLE_BITS);
     if(I.Template)

@@ -146,24 +146,16 @@ get(
 {
     auto I = find(id);
     assert(I != nullptr);
-    auto const t = static_cast<T const*>(I);
-    if constexpr(std::is_same_v<T, NamespaceInfo>)
-        assert(t->Kind == InfoKind::Namespace);
-    else if constexpr(std::is_same_v<T, RecordInfo>)
-        assert(t->Kind == InfoKind::Record);
-    else if constexpr(std::is_same_v<T, FunctionInfo>)
-        assert(t->Kind == InfoKind::Function);
-    else if constexpr(std::is_same_v<T, TypedefInfo>)
-        assert(t->Kind == InfoKind::Typedef);
-    else if constexpr(std::is_same_v<T, EnumInfo>)
-        assert(t->Kind == InfoKind::Enum);
-    else if constexpr(std::is_same_v<T, VarInfo>)
-        assert(t->Kind == InfoKind::Variable);
-    else if constexpr(std::is_same_v<T, FieldInfo>)
-        assert(t->Kind == InfoKind::Field);
-    else if constexpr(std::is_same_v<T, SpecializationInfo>)
-        assert(t->Kind == InfoKind::Specialization);
-    return *t;
+    if constexpr(std::is_same_v<T, Info>)
+    {
+        return *I;
+    }
+    else
+    {
+        auto const& J = *static_cast<T const*>(I);
+        assert(J.Kind == T::kind_id);
+        return J;
+    }
 }
 
 } // mrdox

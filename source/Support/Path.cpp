@@ -19,6 +19,9 @@
 namespace clang {
 namespace mrdox {
 
+AnyFileVisitor::
+~AnyFileVisitor() = default;
+
 //------------------------------------------------
 
 llvm::StringRef

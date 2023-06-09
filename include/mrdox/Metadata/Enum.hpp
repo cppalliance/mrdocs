@@ -13,6 +13,7 @@
 #define MRDOX_API_METADATA_ENUM_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <optional>
@@ -38,6 +39,10 @@ struct EnumValueInfo
     // constant. This will be empty for implicit enumeration values.
     std::string ValueExpr;
 
+    /** The documentation for the value, if any.
+    */
+    std::unique_ptr<Javadoc> javadoc;
+
     //--------------------------------------------
 
     explicit
@@ -50,16 +55,6 @@ struct EnumValueInfo
         , ValueExpr(ValueExpr)
     {
     }
-
-#if 0
-    // VFALCO What was this for?
-    bool operator==(EnumValueInfo const& Other) const
-    {
-        return
-            std::tie(Name, Value, ValueExpr) ==
-            std::tie(Other.Name, Other.Value, Other.ValueExpr);
-    }
-#endif
 };
 
 //------------------------------------------------
@@ -67,7 +62,8 @@ struct EnumValueInfo
 // TODO: Expand to allow for documenting templating.
 // Info for types.
 struct EnumInfo
-    : SymbolInfo
+    : IsInfo<InfoKind::Enum>
+    , SymbolInfo
 {
     // Indicates whether this enum is scoped (e.g. enum class).
     bool Scoped = false;
@@ -82,12 +78,10 @@ struct EnumInfo
 
     //--------------------------------------------
 
-    static constexpr InfoKind kind_id = InfoKind::Enum;
-
     explicit
     EnumInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoKind::Enum, ID)
+        : IsInfo(ID)
     {
     }
 };

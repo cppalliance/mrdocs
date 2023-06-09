@@ -88,7 +88,7 @@ getFullyQualifiedName(
 }
 #endif
 
-llvm::StringRef
+std::string_view
 Info::
 symbolType() const noexcept
 {

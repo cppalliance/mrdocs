@@ -19,6 +19,7 @@
 #include <array>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace clang {
@@ -26,7 +27,8 @@ namespace mrdox {
 
 /** Common properties of all symbols
 */
-struct Info
+struct MRDOX_VISIBLE
+    Info
 {
     /** The unique identifier for this symbol.
     */
@@ -71,20 +73,60 @@ struct Info
     std::string
     extractName() const;
 
-#if 0
-    /** Return the fully qualified name.
-    */
-    MRDOX_DECL
-    std::string&
-    getFullyQualifiedName(
-        std::string& temp) const;
-#endif
     /** Return a string representing the symbol type.
 
         For example, "namespace", "class", et. al.
     */
-    llvm::StringRef
+    MRDOX_DECL
+    std::string_view
     symbolType() const noexcept;
+
+    constexpr bool isDefault()        { return Kind == InfoKind::Default; }
+    constexpr bool isNamespace()      { return Kind == InfoKind::Namespace; }
+    constexpr bool isRecord()         { return Kind == InfoKind::Record; }
+    constexpr bool isFunction()       { return Kind == InfoKind::Function; }
+    constexpr bool isEnum()           { return Kind == InfoKind::Enum; }
+    constexpr bool isTypedef()        { return Kind == InfoKind::Typedef; }
+    constexpr bool isVariable()       { return Kind == InfoKind::Variable; }
+    constexpr bool isField()          { return Kind == InfoKind::Field; }
+    constexpr bool isSpecialization() { return Kind == InfoKind::Specialization; }
+};
+
+//------------------------------------------------
+
+/** Base class for providing variant discriminator functions.
+
+    This offers functions that return a boolean at
+    compile-time, indicating if the most-derived
+    class is a certain type.
+*/
+template<InfoKind K>
+struct IsInfo : Info
+{
+    /** The variant discriminator constant of the most-derived class.
+    */
+    static constexpr InfoKind kind_id = K;
+
+    static constexpr bool isDefault()        { return K== InfoKind::Default; }
+    static constexpr bool isNamespace()      { return K == InfoKind::Namespace; }
+    static constexpr bool isRecord()         { return K == InfoKind::Record; }
+    static constexpr bool isFunction()       { return K == InfoKind::Function; }
+    static constexpr bool isEnum()           { return K == InfoKind::Enum; }
+    static constexpr bool isTypedef()        { return K == InfoKind::Typedef; }
+    static constexpr bool isVariable()       { return K == InfoKind::Variable; }
+    static constexpr bool isField()          { return K == InfoKind::Field; }
+    static constexpr bool isSpecialization() { return K == InfoKind::Specialization; }
+
+protected:
+    constexpr IsInfo()
+        : Info(K)
+    {
+    }
+
+    constexpr explicit IsInfo(SymbolID ID)
+        : Info(K, ID)
+    {
+    }
 };
 
 } // mrdox

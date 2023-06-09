@@ -19,22 +19,5 @@
 namespace clang {
 namespace mrdox {
 
-NamespaceInfo::
-NamespaceInfo()
-    : Info(
-        InfoKind::Namespace,
-        SymbolID::zero)
-    , Children(true)
-{
-}
-
-NamespaceInfo::
-NamespaceInfo(
-    SymbolID USR)
-    : Info(InfoKind::Namespace, USR)
-    , Children(true)
-{
-}
-
 } // mrdox
 } // clang

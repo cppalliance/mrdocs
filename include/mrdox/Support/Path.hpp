@@ -22,8 +22,10 @@ namespace mrdox {
 
 //------------------------------------------------
 
-struct AnyFileVisitor
+struct MRDOX_VISIBLE
+    AnyFileVisitor
 {
+    virtual ~AnyFileVisitor() = 0;
     virtual Error visitFile(std::string_view fileName) = 0;
 };
 

@@ -39,7 +39,8 @@ union FieldFlags
     Non-static data members cannot be redeclared.
 */
 struct FieldInfo
-    : SymbolInfo
+    : IsInfo<InfoKind::Field>
+    , SymbolInfo
 {
     /** Type of the field */
     TypeInfo Type;
@@ -56,11 +57,9 @@ struct FieldInfo
 
     //--------------------------------------------
 
-    static constexpr InfoKind kind_id = InfoKind::Field;
-
     FieldInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoKind::Field, ID)
+        : IsInfo(ID)
     {
     }
 };

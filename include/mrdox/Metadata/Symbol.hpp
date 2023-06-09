@@ -24,7 +24,6 @@ namespace mrdox {
 /** Base class for Info that have source locations.
 */
 struct SymbolInfo
-    : Info
 {
     /** Location where the entity was defined
 
@@ -41,15 +40,8 @@ struct SymbolInfo
     */
     std::vector<Location> Loc;
 
-    //--------------------------------------------
-
-    explicit
-    SymbolInfo(
-        InfoKind kind,
-        SymbolID ID = SymbolID::zero)
-        : Info(kind, ID)
-    {
-    }
+protected:
+    SymbolInfo() = default;
 };
 
 } // mrdox
