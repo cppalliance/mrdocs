@@ -22,18 +22,18 @@ namespace mrdox {
 /** Describes a namespace.
 */
 struct NamespaceInfo
-    : public Info
+    : IsInfo<InfoKind::Namespace>
 {
     Scope Children;
 
     //--------------------------------------------
 
-    static constexpr InfoKind kind_id = InfoKind::Namespace;
-
-    NamespaceInfo();
-
-    explicit NamespaceInfo(
-        SymbolID id);
+    explicit
+    NamespaceInfo(
+        SymbolID ID = SymbolID::zero)
+        : IsInfo(ID)
+    {
+    }
 };
 
 } // mrdox

@@ -45,7 +45,7 @@ struct SpecializedMember
 /** Specialization info for members of implicit instantiations
 */
 struct SpecializationInfo
-    : Info
+    : IsInfo<InfoKind::Specialization>
 {
     /** The template arguments the parent template is specialized for */
     std::vector<TArg> Args;
@@ -61,11 +61,10 @@ struct SpecializationInfo
     */
     std::vector<SpecializedMember> Members;
 
-    static constexpr InfoKind kind_id = InfoKind::Specialization;
-
+    explicit
     SpecializationInfo(
         SymbolID ID = SymbolID::zero)
-        : Info(InfoKind::Specialization, ID)
+        : IsInfo(ID)
     {
     }
 };

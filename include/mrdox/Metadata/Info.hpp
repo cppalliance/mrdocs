@@ -85,6 +85,49 @@ struct Info
     */
     llvm::StringRef
     symbolType() const noexcept;
+
+    constexpr bool isDefault() { return Kind == InfoKind::Default; }
+    constexpr bool isNamespace() { return Kind == InfoKind::Namespace; }
+    constexpr bool isRecord() { return Kind == InfoKind::Record; }
+    constexpr bool isFunction() { return Kind == InfoKind::Function; }
+    constexpr bool isEnum() { return Kind == InfoKind::Enum; }
+    constexpr bool isTypedef() { return Kind == InfoKind::Typedef; }
+    constexpr bool isVariable() { return Kind == InfoKind::Variable; }
+    constexpr bool isField() { return Kind == InfoKind::Field; }
+    constexpr bool isSpecialization() { return Kind == InfoKind::Specialization; }
+};
+
+/** InfoKind checking functions for derived `Info` types
+
+    Used to optimize `InfoKind` checks through an `Info` derived class.
+*/
+template<InfoKind K>
+struct IsInfo : Info
+{
+    static constexpr InfoKind kind_id = K;
+
+    static constexpr bool isDefault() { return K== InfoKind::Default; }
+    static constexpr bool isNamespace() { return K == InfoKind::Namespace; }
+    static constexpr bool isRecord() { return K == InfoKind::Record; }
+    static constexpr bool isFunction() { return K == InfoKind::Function; }
+    static constexpr bool isEnum() { return K == InfoKind::Enum; }
+    static constexpr bool isTypedef() { return K == InfoKind::Typedef; }
+    static constexpr bool isVariable() { return K == InfoKind::Variable; }
+    static constexpr bool isField() { return K == InfoKind::Field; }
+    static constexpr bool isSpecialization() { return K == InfoKind::Specialization; }
+
+    constexpr
+    IsInfo()
+        : Info(K)
+    {
+    }
+
+    constexpr
+    explicit
+    IsInfo(SymbolID ID)
+        : Info(K, ID)
+    {
+    }
 };
 
 } // mrdox

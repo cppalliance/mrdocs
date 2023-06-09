@@ -201,8 +201,6 @@ visit(
         { I.id }
         });
 
-    writeInfo(I);
-
     writeJavadoc(I.javadoc);
 
     if(! corpus_.traverse(*this, I))
@@ -519,17 +517,9 @@ writeVar(
 
 void
 XMLWriter::
-writeInfo(
-    Info const& I)
-{
-}
-
-void
-XMLWriter::
 writeSymbol(
     SymbolInfo const& I)
 {
-    writeInfo(I);
     if(I.DefLoc)
         writeLocation(*I.DefLoc, true);
     for(auto const& loc : I.Loc)

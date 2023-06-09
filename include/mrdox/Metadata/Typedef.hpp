@@ -24,7 +24,8 @@ namespace mrdox {
 
 // Info for typedef and using statements.
 struct TypedefInfo
-    : SymbolInfo
+    : IsInfo<InfoKind::Typedef>
+    , SymbolInfo
 {
     friend class ASTVisitor;
 
@@ -40,12 +41,10 @@ struct TypedefInfo
 
     //--------------------------------------------
 
-    static constexpr InfoKind kind_id = InfoKind::Typedef;
-
     explicit
     TypedefInfo(
-        SymbolID id_ = SymbolID::zero)
-        : SymbolInfo(InfoKind::Typedef, id_)
+        SymbolID ID = SymbolID::zero)
+        : IsInfo(ID)
     {
     }
 
@@ -55,8 +54,7 @@ private:
     explicit
     TypedefInfo(
         std::unique_ptr<TemplateInfo>&& T)
-        : SymbolInfo(InfoKind::Typedef)
-        , Template(std::move(T))
+        : Template(std::move(T))
     {
     }
 };

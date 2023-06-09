@@ -500,7 +500,7 @@ writeParent(
     // and insert the child as a MemberRef.
     // Then return the parent as a serialized bitcode.
     RecordInfo P(I.Namespace.front());
-    if constexpr(std::is_same_v<Child, SpecializationInfo>)
+    if constexpr(Child::isSpecialization())
         insertChild<Child>(P.Members, I.id);
     else
         insertChild<Child>(P.Members, I.id, access_);

@@ -117,7 +117,7 @@ public:
     void emitBlock(AnyList<T> const& list);
 
     void emitInfoPart(Info const& I);
-    void emitSymbolPart(SymbolInfo const& I);
+    void emitSymbolPart(Info const& I, SymbolInfo const& S);
 
     void emitBlock(BaseInfo const& I);
     void emitBlock(EnumInfo const& I);

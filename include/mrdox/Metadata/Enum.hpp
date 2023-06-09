@@ -67,7 +67,8 @@ struct EnumValueInfo
 // TODO: Expand to allow for documenting templating.
 // Info for types.
 struct EnumInfo
-    : SymbolInfo
+    : IsInfo<InfoKind::Enum>
+    , SymbolInfo
 {
     // Indicates whether this enum is scoped (e.g. enum class).
     bool Scoped = false;
@@ -82,12 +83,10 @@ struct EnumInfo
 
     //--------------------------------------------
 
-    static constexpr InfoKind kind_id = InfoKind::Enum;
-
     explicit
     EnumInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoKind::Enum, ID)
+        : IsInfo(ID)
     {
     }
 };

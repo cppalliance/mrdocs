@@ -147,22 +147,25 @@ get(
     auto I = find(id);
     assert(I != nullptr);
     auto const t = static_cast<T const*>(I);
-    if constexpr(std::is_same_v<T, NamespaceInfo>)
-        assert(t->Kind == InfoKind::Namespace);
-    else if constexpr(std::is_same_v<T, RecordInfo>)
-        assert(t->Kind == InfoKind::Record);
-    else if constexpr(std::is_same_v<T, FunctionInfo>)
-        assert(t->Kind == InfoKind::Function);
-    else if constexpr(std::is_same_v<T, TypedefInfo>)
-        assert(t->Kind == InfoKind::Typedef);
-    else if constexpr(std::is_same_v<T, EnumInfo>)
-        assert(t->Kind == InfoKind::Enum);
-    else if constexpr(std::is_same_v<T, VarInfo>)
-        assert(t->Kind == InfoKind::Variable);
-    else if constexpr(std::is_same_v<T, FieldInfo>)
-        assert(t->Kind == InfoKind::Field);
-    else if constexpr(std::is_same_v<T, SpecializationInfo>)
-        assert(t->Kind == InfoKind::Specialization);
+    if constexpr(! std::is_same_v<T, Info>)
+    {
+        if constexpr(T::isNamespace())
+            assert(t->Kind == InfoKind::Namespace);
+        else if constexpr(T::isRecord())
+            assert(t->Kind == InfoKind::Record);
+        else if constexpr(T::isFunction())
+            assert(t->Kind == InfoKind::Function);
+        else if constexpr(T::isTypedef())
+            assert(t->Kind == InfoKind::Typedef);
+        else if constexpr(T::isEnum())
+            assert(t->Kind == InfoKind::Enum);
+        else if constexpr(T::isVariable())
+            assert(t->Kind == InfoKind::Variable);
+        else if constexpr(T::isField())
+            assert(t->Kind == InfoKind::Field);
+        else if constexpr(T::isSpecialization())
+            assert(t->Kind == InfoKind::Specialization);
+    }
     return *t;
 }
 

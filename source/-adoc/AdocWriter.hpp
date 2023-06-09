@@ -112,7 +112,9 @@ protected:
         bool withNewline = true);
     void writeDescription(
         std::unique_ptr<Javadoc> const& javadoc);
-    void writeLocation(SymbolInfo const& I);
+    void writeLocation(
+        Info const& I,
+        SymbolInfo const& S);
 
     template<class T>
     void writeNodes(AnyList<T> const& list)

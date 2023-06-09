@@ -100,7 +100,6 @@ static void mergeSymbolInfo(
     SymbolInfo& I,
     SymbolInfo&& Other)
 {
-    Assert(canMerge(I, Other));
     if (! I.DefLoc)
         I.DefLoc = std::move(Other.DefLoc);
     // Unconditionally extend the list of locations, since we want all of them.
@@ -109,7 +108,6 @@ static void mergeSymbolInfo(
     llvm::sort(I.Loc, LocationLess{});
     auto Last = std::unique(I.Loc.begin(), I.Loc.end(), LocationEqual{});
     I.Loc.erase(Last, I.Loc.end());
-    mergeInfo(I, std::move(Other));
 }
 
 void merge(NamespaceInfo& I, NamespaceInfo&& Other)
@@ -214,6 +212,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     // at a glance, it is not obvious that we are binding to
     // the SymboInfo base class subobject
     mergeSymbolInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
     if (! I.Template)
         I.Template = std::move(Other.Template);
 #if 0
@@ -242,6 +241,7 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
     if (I.Params.empty())
         I.Params = std::move(Other.Params);
     mergeSymbolInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = std::move(Other.Template);
     I.specs0.raw.value |= Other.specs0.raw.value;
@@ -258,6 +258,7 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     if(! I.Template)
         I.Template = std::move(Other.Template);
     mergeSymbolInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
 }
 
 void merge(EnumInfo& I, EnumInfo&& Other)
@@ -268,6 +269,7 @@ void merge(EnumInfo& I, EnumInfo&& Other)
     if (I.Members.empty())
         I.Members = std::move(Other.Members);
     mergeSymbolInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
 }
 
 void merge(FieldInfo& I, FieldInfo&& Other)
@@ -276,6 +278,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
     if(I.Type.id == SymbolID::zero && I.Type.Name.empty())
         I.Type = std::move(Other.Type);
     mergeSymbolInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;
     if(I.Default.empty())
         I.Default = std::move(Other.Default);
@@ -289,6 +292,7 @@ void merge(VarInfo& I, VarInfo&& Other)
     if(! I.Template)
         I.Template = std::move(Other.Template);
     mergeSymbolInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;
 }
 

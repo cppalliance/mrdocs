@@ -81,7 +81,6 @@ private:
     bool writeVar(VarInfo const&, Access const* access = nullptr);
     bool writeSpecialization(const SpecializationInfo& I);
 
-    void writeInfo(Info const&);
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
     void writeJavadoc(std::unique_ptr<Javadoc> const& javadoc);

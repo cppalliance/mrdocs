@@ -26,20 +26,19 @@ void insertChild(Scope& P, Args&&... args)
 {
     if constexpr(std::is_constructible_v<Reference, Args...>)
     {
-        using U = std::remove_cvref_t<T>;
-        if constexpr(std::is_same_v<U, NamespaceInfo>)
+        if constexpr(T::isNamespace())
             P.Namespaces.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, RecordInfo>)
+        else if constexpr(T::isRecord())
             P.Records.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, FunctionInfo>)
+        else if constexpr(T::isFunction())
             P.Functions.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, TypedefInfo>)
+        else if constexpr(T::isTypedef())
             P.Typedefs.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, EnumInfo>)
+        else if constexpr(T::isEnum())
             P.Enums.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, VarInfo>)
+        else if constexpr(T::isVariable())
             P.Vars.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, SpecializationInfo>)
+        else if constexpr(T::isSpecialization())
             P.Specializations.emplace_back(std::forward<Args>(args)...);
         else
             // KRYSTIAN NOTE: Child should *never* be FieldInfo
@@ -57,24 +56,24 @@ void insertChild(RecordScope& P, Args&&... args)
     using U = std::remove_cvref_t<T>;
     if constexpr(std::is_constructible_v<MemberRef, Args...>)
     {
-        if constexpr(std::is_same_v<U, RecordInfo>)
+        if constexpr(T::isRecord())
             P.Records.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, FunctionInfo>)
+        else if constexpr(T::isFunction())
             P.Functions.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, TypedefInfo>)
+        else if constexpr(T::isTypedef())
             P.Types.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, EnumInfo>)
+        else if constexpr(T::isEnum())
             P.Enums.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, FieldInfo>)
+        else if constexpr(T::isField())
             P.Fields.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(std::is_same_v<U, VarInfo>)
+        else if constexpr(T::isVariable())
             P.Vars.emplace_back(std::forward<Args>(args)...);
         else
             llvm_unreachable("invalid RecordScope member");
     }
     else if constexpr(std::is_constructible_v<SymbolID, Args...>)
     {
-        if constexpr(std::is_same_v<U, SpecializationInfo>)
+        if constexpr(T::isSpecialization())
             P.Specializations.emplace_back(std::forward<Args>(args)...);
         else
             llvm_unreachable("invalid RecordScope member");

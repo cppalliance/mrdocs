@@ -124,7 +124,8 @@ enum class RecordKeyKind
 /** Metadata for struct, class, or union.
 */
 struct RecordInfo
-    : SymbolInfo
+    : IsInfo<InfoKind::Record>
+    , SymbolInfo
 {
     friend class ASTVisitor;
 
@@ -158,12 +159,10 @@ struct RecordInfo
 
     //--------------------------------------------
 
-    static constexpr InfoKind kind_id = InfoKind::Record;
-
     explicit
     RecordInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoKind::Record, ID)
+        : IsInfo(ID)
     {
     }
 
@@ -171,8 +170,7 @@ private:
     explicit
     RecordInfo(
         std::unique_ptr<TemplateInfo>&& T)
-        : SymbolInfo(InfoKind::Record)
-        , Template(std::move(T))
+        : Template(std::move(T))
     {
     }
 };

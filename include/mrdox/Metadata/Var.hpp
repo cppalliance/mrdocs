@@ -36,7 +36,8 @@ union VarFlags0
     scope, and static variables at class scope.
 */
 struct VarInfo
-    : SymbolInfo
+    : IsInfo<InfoKind::Variable>
+    , SymbolInfo
 {
     friend class ASTVisitor;
 
@@ -49,12 +50,10 @@ struct VarInfo
 
     //--------------------------------------------
 
-    static constexpr InfoKind kind_id = InfoKind::Variable;
-
     explicit
     VarInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoKind::Variable, ID)
+        : IsInfo(ID)
     {
     }
 
@@ -62,8 +61,7 @@ private:
     explicit
     VarInfo(
         std::unique_ptr<TemplateInfo>&& T)
-        : SymbolInfo(InfoKind::Variable)
-        , Template(std::move(T))
+        : Template(std::move(T))
     {
 
     }

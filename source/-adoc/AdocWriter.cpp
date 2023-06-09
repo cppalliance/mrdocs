@@ -245,7 +245,7 @@ write(
     beginSection("Synopsis");
 
     // Location
-    writeLocation(I);
+    writeLocation(I, I);
 
     // Declaration
     os_ <<
@@ -343,7 +343,7 @@ write(
     // Synopsis
     beginSection("Synopsis");
 
-    writeLocation(I);
+    writeLocation(I, I);
 
     os_ <<
         "\n"
@@ -388,7 +388,7 @@ write(
     // Brief
     writeBrief(I.javadoc);
 
-    writeLocation(I);
+    writeLocation(I, I);
 
     // Description
     writeDescription(I.javadoc);
@@ -406,7 +406,7 @@ write(
     // Brief
     writeBrief(I.javadoc);
 
-    writeLocation(I);
+    writeLocation(I, I);
 
     // Description
     writeDescription(I.javadoc);
@@ -561,13 +561,14 @@ writeDescription(
 void
 AdocWriter::
 writeLocation(
-    SymbolInfo const& I)
+    Info const& I,
+    SymbolInfo const& S)
 {
     Location const* loc = nullptr;
-    if(I.DefLoc.has_value())
-        loc = &*I.DefLoc;
-    else if(! I.Loc.empty())
-        loc = &I.Loc[0];
+    if(S.DefLoc.has_value())
+        loc = &*S.DefLoc;
+    else if(! S.Loc.empty())
+        loc = &S.Loc[0];
 
     std::string url;
     //--------------------------------------------

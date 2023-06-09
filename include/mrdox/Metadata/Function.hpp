@@ -175,7 +175,8 @@ struct Param
 // TODO: Expand to allow for documenting templating and default args.
 // Info for functions.
 struct FunctionInfo
-    : SymbolInfo
+    : IsInfo<InfoKind::Function>
+    , SymbolInfo
 {
     friend class ASTVisitor;
 
@@ -190,12 +191,10 @@ struct FunctionInfo
 
     //--------------------------------------------
 
-    static constexpr InfoKind kind_id = InfoKind::Function;
-
     explicit
     FunctionInfo(
         SymbolID ID = SymbolID::zero)
-        : SymbolInfo(InfoKind::Function, ID)
+        : IsInfo(ID)
     {
     }
 
@@ -203,8 +202,7 @@ private:
     explicit
     FunctionInfo(
         std::unique_ptr<TemplateInfo>&& T)
-        : SymbolInfo(InfoKind::Function)
-        , Template(std::move(T))
+        : Template(std::move(T))
     {
     }
 };
