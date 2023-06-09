@@ -852,7 +852,6 @@ recordKeyToString(RecordKeyKind k) noexcept
     switch(k)
     {
     case RecordKeyKind::Struct: return "struct";
-    case RecordKeyKind::Interface: return "__interface";
     case RecordKeyKind::Union: return "union";
     case RecordKeyKind::Class: return "class";
     default:

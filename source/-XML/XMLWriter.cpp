@@ -384,7 +384,6 @@ writeRecord(
     case RecordKeyKind::Class:     tagName = classTagName; break;
     case RecordKeyKind::Struct:    tagName = structTagName; break;
     case RecordKeyKind::Union:     tagName = unionTagName; break;
-    case RecordKeyKind::Interface: tagName = interfaceTagName; break;
     default:
         Assert(false);
     }

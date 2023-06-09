@@ -118,10 +118,7 @@ enum class RecordKeyKind
 {
     Struct,
     Class,
-    Union,
-    // KRYSTIAN NOTE: __interface is a Microsoft extension,
-    // do we want to support it?
-    Interface
+    Union
 };
 
 /** Metadata for struct, class, or union.

@@ -773,11 +773,6 @@ buildRecord(
     case TagTypeKind::TTK_Union:
         I.KeyKind = RecordKeyKind::Union;
         break;
-    // KRYSTIAN NOTE: do want to support __interface?
-    // it is a Microsoft extension.
-    case TagTypeKind::TTK_Interface:
-        I.KeyKind = RecordKeyKind::Interface;
-        break;
     default:
         llvm_unreachable("unsupported TagTypeKind");
     }

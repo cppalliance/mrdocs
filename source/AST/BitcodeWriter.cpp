@@ -140,21 +140,6 @@ static void MemberRefsAbbrev(
             llvm::BitCodeAbbrevOp::Fixed, 8) });
 }
 
-#if 0
-static void SpecializedMemAbbrev(
-    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
-{
-    AbbrevGen(Abbrev, {
-        // 0. Fixed-size array of 21-byte SymbolID pairs
-        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
-        llvm::BitCodeAbbrevOp(
-            llvm::BitCodeAbbrevOp::Fixed, 8),
-        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
-        llvm::BitCodeAbbrevOp(
-            llvm::BitCodeAbbrevOp::Fixed, 8) });
-}
-#endif
-
 static void StringAbbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
 {

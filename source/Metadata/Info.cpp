@@ -107,8 +107,6 @@ symbolType() const noexcept
             return "class";
         case RecordKeyKind::Union:
             return "union";
-        case RecordKeyKind::Interface:
-            return "interface";
         default:
             llvm_unreachable("unknown RecordKeyKind");
         }

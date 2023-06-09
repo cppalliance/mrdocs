@@ -29,7 +29,6 @@ getTagName(Info const& I) noexcept
         case RecordKeyKind::Class:     return classTagName;
         case RecordKeyKind::Struct:    return structTagName;
         case RecordKeyKind::Union:     return unionTagName;
-        case RecordKeyKind::Interface: return interfaceTagName;
         default:
             break;
         }

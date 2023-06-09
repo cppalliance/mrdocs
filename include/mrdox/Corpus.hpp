@@ -103,8 +103,6 @@ public:
         MRDOX_DECL virtual bool visit(TypedefInfo const&);
         MRDOX_DECL virtual bool visit(EnumInfo const&);
         MRDOX_DECL virtual bool visit(VarInfo const&);
-        // KRYSTIAN FIXME: is this correct? does it make sense to
-        // visit a field as a non-member (a field *must* be class member)?
         MRDOX_DECL virtual bool visit(FieldInfo const&);
         MRDOX_DECL virtual bool visit(SpecializationInfo const&);
 

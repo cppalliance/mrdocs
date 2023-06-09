@@ -41,7 +41,6 @@ constexpr llvm::StringRef javadocTagName        = "doc";
 constexpr llvm::StringRef enumTagName           = "enum";
 constexpr llvm::StringRef friendTagName         = "friend";
 constexpr llvm::StringRef functionTagName       = "function";
-constexpr llvm::StringRef interfaceTagName      = "interface";
 constexpr llvm::StringRef namespaceTagName      = "namespace";
 constexpr llvm::StringRef paramTagName          = "param";
 constexpr llvm::StringRef returnTagName         = "return";
