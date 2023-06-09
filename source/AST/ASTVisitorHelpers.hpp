@@ -14,35 +14,23 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Metadata/Record.hpp>
-#include <mrdox/Metadata/Scope.hpp>
+#include <mrdox/Metadata/Namespace.hpp>
 #include <type_traits>
 
 namespace clang {
 namespace mrdox {
 
-
 template<typename T, typename... Args>
-void insertChild(Scope& P, Args&&... args)
+void insertChild(NamespaceInfo& I, Args&&... args)
 {
-    if constexpr(std::is_constructible_v<Reference, Args...>)
+    if constexpr(std::is_constructible_v<SymbolID, Args...>)
     {
-        if constexpr(T::isNamespace())
-            P.Namespaces.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isRecord())
-            P.Records.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isFunction())
-            P.Functions.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isTypedef())
-            P.Typedefs.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isEnum())
-            P.Enums.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isVariable())
-            P.Vars.emplace_back(std::forward<Args>(args)...);
+        if constexpr(T::isField())
+            llvm_unreachable("invalid namespace member");
         else if constexpr(T::isSpecialization())
-            P.Specializations.emplace_back(std::forward<Args>(args)...);
+            I.Specializations.emplace_back(std::forward<Args>(args)...);
         else
-            // KRYSTIAN NOTE: Child should *never* be FieldInfo
-            llvm_unreachable("invalid Scope child");
+            I.Members.emplace_back(std::forward<Args>(args)...);
     }
     else
     {

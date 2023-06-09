@@ -41,8 +41,6 @@ struct NamespaceInfo;
 struct RecordInfo;
 struct RecordScope;
 struct Param;
-struct Reference;
-struct Scope;
 struct SpecializationInfo;
 struct SpecializedMember;
 struct SymbolInfo;

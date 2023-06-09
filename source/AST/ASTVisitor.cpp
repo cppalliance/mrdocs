@@ -195,19 +195,10 @@ getTypeInfoForType(
     SymbolID id = SymbolID::zero;
     if(const TagDecl* TD = getTagDeclForType(T))
     {
-        InfoKind kind;
-        if(isa<EnumDecl>(TD))
-            kind = InfoKind::Enum;
-        else if(isa<CXXRecordDecl>(TD))
-            kind = InfoKind::Record;
-        else
-            kind = InfoKind::Default;
         extractSymbolID(TD, id);
-        return TypeInfo(Reference(
-            id, TD->getNameAsString(), kind));
+        return TypeInfo(id, TD->getNameAsString());
     }
-    return TypeInfo(Reference(id,
-        getTypeAsString(T)));
+    return TypeInfo(id, getTypeAsString(T));
 }
 
 void
@@ -480,8 +471,7 @@ writeParent(
     case AccessSpecifier::AS_none:
     {
         NamespaceInfo P(I.Namespace.front());
-        insertChild<Child>(P.Children,
-            I.id, I.Name, Child::kind_id);
+        insertChild<Child>(P, I.id);
         return writeBitcode(P);
     }
     case AccessSpecifier::AS_public:
@@ -1041,7 +1031,7 @@ buildEnum(
     if(D->isFixed())
     {
         auto Name = getTypeAsString(D->getIntegerType());
-        I.BaseType = TypeInfo(Name);
+        I.BaseType = TypeInfo(SymbolID::zero, Name);
     }
     parseEnumerators(I, D);
 

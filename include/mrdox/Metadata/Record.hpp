@@ -14,13 +14,13 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/BitField.hpp>
+#include <mrdox/Metadata/Enum.hpp>
 #include <mrdox/Metadata/Field.hpp>
 #include <mrdox/Metadata/Function.hpp>
-#include <mrdox/Metadata/Reference.hpp>
-#include <mrdox/Metadata/Scope.hpp>
 #include <mrdox/Metadata/Symbol.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
+#include <mrdox/Metadata/Typedef.hpp>
 #include <mrdox/Metadata/Var.hpp>
 #include <memory>
 #include <string>

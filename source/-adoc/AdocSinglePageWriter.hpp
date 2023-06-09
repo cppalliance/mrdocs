@@ -38,7 +38,7 @@ private:
     template<class Type>
     std::vector<Type const*>
     buildSortedList(
-        std::vector<Reference> const& from) const;
+        std::vector<SymbolID> const& from) const;
 
     bool visit(NamespaceInfo const&) override;
     bool visit(RecordInfo const&) override;

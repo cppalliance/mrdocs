@@ -76,28 +76,13 @@ private:
 
     ScopeInfos
     buildScope(
-        Scope const& scope)
+        NamespaceInfo const& I)
     {
         ScopeInfos infos;
-        infos.reserve(
-            scope.Namespaces.size() +
-            scope.Records.size() +
-            scope.Functions.size() +
-            scope.Typedefs.size() +
-            scope.Enums.size() +
-            scope.Vars.size());
-        for(auto const& ref : scope.Namespaces)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : scope.Records)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : scope.Functions)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : scope.Typedefs)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : scope.Enums)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : scope.Vars)
-            infos.emplace_back(corpus_.find(ref.id));
+        infos.reserve(I.Members.size());
+        for(auto const& id : I.Members)
+            infos.emplace_back(corpus_.find(id));
+        // KRYSTIAN FIXME: include specializations
         if(infos.size() < 2)
             return infos;
         std::string s0, s1;
@@ -225,19 +210,6 @@ private:
         }
     }
 
-    void visitScope(Scope const& scope)
-    {
-        auto const n0 = prefix_.size();
-        for(auto const& ref : scope.Namespaces)
-        {
-            Info const& J(corpus_.get<Info>(ref.id));
-            prefix_.append(getSafe(J));
-            prefix_.push_back('-');
-            corpus_.traverse(*this, J);
-            prefix_.resize(n0);
-        }
-    }
-
     void visitInfos(ScopeInfos const& infos)
     {
         auto const n0 = prefix_.size();
@@ -254,7 +226,7 @@ private:
 
     bool visit(NamespaceInfo const& I) override
     {
-        auto infos = buildScope(I.Children);
+        auto infos = buildScope(I);
         insertScope(infos);
         visitInfos(infos);
         return true;

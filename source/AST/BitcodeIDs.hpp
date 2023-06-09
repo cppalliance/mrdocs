@@ -34,7 +34,6 @@ struct BitCodeConstants
     static constexpr unsigned StringLengthSize = 16U;  // up to 32767 chars
     static constexpr unsigned FilenameLengthSize = 16U;
     static constexpr unsigned LineNumberSize = 32U;
-    static constexpr unsigned ReferenceTypeSize = 8U;
     static constexpr unsigned USRLengthSize = 6U;
     static constexpr unsigned USRBitLengthSize = 8U;
     static constexpr unsigned USRHashSize = 20;
@@ -65,7 +64,6 @@ enum BlockID
     BI_JAVADOC_NODE_BLOCK_ID,
     BI_NAMESPACE_BLOCK_ID,
     BI_RECORD_BLOCK_ID,
-    BI_REFERENCE_BLOCK_ID,
     BI_TEMPLATE_ARG_BLOCK_ID,
     BI_TEMPLATE_BLOCK_ID,
     BI_TEMPLATE_PARAM_BLOCK_ID,
@@ -88,6 +86,10 @@ enum RecordID
     INFO_PART_PARENTS,
     SYMBOL_PART_DEFLOC,
     SYMBOL_PART_LOC,
+    NAMESPACE_MEMBERS,
+    NAMESPACE_SPECIALIZATIONS,
+    TYPE_ID,
+    TYPE_NAME,
     BASE_ACCESS,
     BASE_ID,
     BASE_IS_VIRTUAL,
@@ -112,10 +114,6 @@ enum RecordID
     RECORD_FRIENDS,
     RECORD_IS_TYPE_DEF,
     RECORD_KEY_KIND,
-    REFERENCE_FIELD,
-    REFERENCE_NAME,
-    REFERENCE_KIND,
-    REFERENCE_USR,
     RECORD_ENUMS,
     RECORD_FUNCTIONS,
     RECORD_RECORDS,
@@ -139,22 +137,6 @@ enum RecordID
 
 static constexpr unsigned BlockIdCount = BI_LAST - BI_FIRST;
 static constexpr unsigned RecordIDCount = RI_LAST - RI_FIRST;
-
-// Identifiers for differentiating between subblocks
-enum class FieldId
-{
-    F_default,
-    F_namespace,
-    F_vparent,
-    F_type,
-    F_child_namespace,
-    F_child_record,
-    F_child_function,
-    F_child_typedef,
-    F_child_enum,
-    F_child_variable,
-    F_child_specialization
-};
 
 } // mrdox
 } // clang

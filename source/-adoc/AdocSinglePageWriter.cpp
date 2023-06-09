@@ -44,16 +44,24 @@ build()
 
 //------------------------------------------------
 
+// FIXME: we really should sort the members into
+// vectors of their respective types in one pass
 template<class Type>
 std::vector<Type const*>
 AdocSinglePageWriter::
 buildSortedList(
-    std::vector<Reference> const& from) const
+    std::vector<SymbolID> const& from) const
 {
     std::vector<Type const*> result;
     result.reserve(from.size());
-    for(auto const& ref : from)
-        result.push_back(&corpus_.get<Type>(ref.id));
+    for(auto const& id : from)
+    {
+        const Info* info = corpus_.find(id);
+        Assert(info);
+        if(Type::kind_id == info->Kind)
+            result.push_back(
+                static_cast<const Type*>(info));
+    }
     llvm::sort(result,
         [&](Info const* I0, Info const* I1)
         {
@@ -76,20 +84,22 @@ visit(
 {
     // build sorted list of namespaces,
     // this is for visitation not display.
-    auto namespaceList     = buildSortedList<NamespaceInfo>(I.Children.Namespaces);
-    auto recordList        = buildSortedList<RecordInfo>(I.Children.Records);
+
+    // FIXME: sort members in one pass
+    auto namespaceList     = buildSortedList<NamespaceInfo>(I.Members);
+    auto recordList        = buildSortedList<RecordInfo>(I.Members);
     auto functionOverloads = makeNamespaceOverloads(I, corpus_);
-    auto typedefList       = buildSortedList<TypedefInfo>(I.Children.Typedefs);
-    auto enumList          = buildSortedList<EnumInfo>(I.Children.Enums);
-    auto variableList      = buildSortedList<VarInfo>(I.Children.Vars);
+    auto typedefList       = buildSortedList<TypedefInfo>(I.Members);
+    auto enumList          = buildSortedList<EnumInfo>(I.Members);
+    auto variableList      = buildSortedList<VarInfo>(I.Members);
 
     // don't emit empty namespaces,
     // but still visit child namespaces.
-    if( ! I.Children.Records.empty() ||
+    if( ! namespaceList.empty() ||
         ! functionOverloads.list.empty() ||
-        ! I.Children.Typedefs.empty() ||
-        ! I.Children.Enums.empty() ||
-        ! I.Children.Vars.empty())
+        ! typedefList.empty() ||
+        ! enumList.empty() ||
+        ! variableList.empty())
     {
         std::string s;
         if(I.id == SymbolID::zero)

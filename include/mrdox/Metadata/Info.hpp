@@ -14,7 +14,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
-#include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <array>
 #include <memory>
@@ -86,14 +85,14 @@ struct Info
     llvm::StringRef
     symbolType() const noexcept;
 
-    constexpr bool isDefault() { return Kind == InfoKind::Default; }
-    constexpr bool isNamespace() { return Kind == InfoKind::Namespace; }
-    constexpr bool isRecord() { return Kind == InfoKind::Record; }
-    constexpr bool isFunction() { return Kind == InfoKind::Function; }
-    constexpr bool isEnum() { return Kind == InfoKind::Enum; }
-    constexpr bool isTypedef() { return Kind == InfoKind::Typedef; }
-    constexpr bool isVariable() { return Kind == InfoKind::Variable; }
-    constexpr bool isField() { return Kind == InfoKind::Field; }
+    constexpr bool isDefault() const noexcept { return Kind == InfoKind::Default; }
+    constexpr bool isNamespace() const noexcept { return Kind == InfoKind::Namespace; }
+    constexpr bool isRecord() const noexcept { return Kind == InfoKind::Record; }
+    constexpr bool isFunction() const noexcept { return Kind == InfoKind::Function; }
+    constexpr bool isEnum() const noexcept { return Kind == InfoKind::Enum; }
+    constexpr bool isTypedef() const noexcept { return Kind == InfoKind::Typedef; }
+    constexpr bool isVariable() const noexcept { return Kind == InfoKind::Variable; }
+    constexpr bool isField() const noexcept { return Kind == InfoKind::Field; }
     constexpr bool isSpecialization() { return Kind == InfoKind::Specialization; }
 };
 
@@ -106,15 +105,15 @@ struct IsInfo : Info
 {
     static constexpr InfoKind kind_id = K;
 
-    static constexpr bool isDefault() { return K== InfoKind::Default; }
-    static constexpr bool isNamespace() { return K == InfoKind::Namespace; }
-    static constexpr bool isRecord() { return K == InfoKind::Record; }
-    static constexpr bool isFunction() { return K == InfoKind::Function; }
-    static constexpr bool isEnum() { return K == InfoKind::Enum; }
-    static constexpr bool isTypedef() { return K == InfoKind::Typedef; }
-    static constexpr bool isVariable() { return K == InfoKind::Variable; }
-    static constexpr bool isField() { return K == InfoKind::Field; }
-    static constexpr bool isSpecialization() { return K == InfoKind::Specialization; }
+    static constexpr bool isDefault() noexcept { return K== InfoKind::Default; }
+    static constexpr bool isNamespace() noexcept { return K == InfoKind::Namespace; }
+    static constexpr bool isRecord() noexcept { return K == InfoKind::Record; }
+    static constexpr bool isFunction() noexcept { return K == InfoKind::Function; }
+    static constexpr bool isEnum() noexcept { return K == InfoKind::Enum; }
+    static constexpr bool isTypedef() noexcept { return K == InfoKind::Typedef; }
+    static constexpr bool isVariable() noexcept { return K == InfoKind::Variable; }
+    static constexpr bool isField() noexcept { return K == InfoKind::Field; }
+    static constexpr bool isSpecialization() noexcept { return K == InfoKind::Specialization; }
 
     constexpr
     IsInfo()

@@ -16,6 +16,10 @@
     <file path="function-parm-decay.cpp" line="16"/>
     <param name="x" type="int (*)(bool)"/>
   </function>
+  <alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
+    <file path="function-parm-decay.cpp" line="18" class="def"/>
+    <type name="int"/>
+  </alias>
   <function name="i" id="UTOfie03KjmJww3mduHOqLZB5aI=">
     <file path="function-parm-decay.cpp" line="21"/>
     <file path="function-parm-decay.cpp" line="22"/>
@@ -30,10 +34,6 @@
     <file path="function-parm-decay.cpp" line="6"/>
     <param name="x" type="int"/>
   </function>
-  <alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
-    <file path="function-parm-decay.cpp" line="18" class="def"/>
-    <type name="int"/>
-  </alias>
   <alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
     <file path="function-parm-decay.cpp" line="19" class="def"/>
     <type name="const int"/>

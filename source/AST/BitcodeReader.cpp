@@ -126,7 +126,6 @@ getInfos()
         case BI_JAVADOC_BLOCK_ID:
         case BI_JAVADOC_LIST_BLOCK_ID:
         case BI_JAVADOC_NODE_BLOCK_ID:
-        case BI_REFERENCE_BLOCK_ID:
             return Error("invalid top level block");
         case llvm::bitc::BLOCKINFO_BLOCK_ID:
             if (auto err = readBlockInfoBlock())

@@ -44,13 +44,6 @@ struct BitcodeReader::AnyBlock
     {
         return Error("unexpected sub-block with ID={}", ID);
     }
-
-    Error
-    makeWrongFieldError(FieldId F)
-    {
-        return Error("unexpected FieldId");
-            //static_cast<std::underlying_type_t<FieldId>>(F));
-    }
 };
 
 //------------------------------------------------
@@ -76,80 +69,6 @@ public:
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
-    }
-};
-
-//------------------------------------------------
-
-class ReferenceBlock
-    : public BitcodeReader::AnyBlock
-{
-protected:
-    BitcodeReader& br_;
-
-public:
-    Reference I;
-    FieldId F;
-
-    explicit
-    ReferenceBlock(
-        BitcodeReader& br) noexcept
-        : br_(br)
-    {
-    }
-
-    Error
-    parseRecord(Record const& R,
-        unsigned ID, llvm::StringRef Blob) override
-    {
-        switch(ID)
-        {
-        case REFERENCE_USR:
-            return decodeRecord(R, I.id, Blob);
-        case REFERENCE_NAME:
-            return decodeRecord(R, I.Name, Blob);
-        case REFERENCE_KIND:
-            return decodeRecord(R, I.RefKind, Blob);
-        case REFERENCE_FIELD:
-            return decodeRecord(R, F, Blob);
-        default:
-            return AnyBlock::parseRecord(R, ID, Blob);
-        }
-    }
-};
-
-//------------------------------------------------
-
-template<class Container>
-class ReferencesBlock
-    : public BitcodeReader::AnyBlock
-{
-protected:
-    BitcodeReader& br_;
-    Container& C_;
-    FieldId F_;
-    Reference I;
-
-public:
-    ReferencesBlock(
-        Container& C,
-        BitcodeReader& br) noexcept
-        : br_(br)
-        , C_(C)
-    {
-    }
-
-    Error
-    parseRecord(Record const& R,
-        unsigned ID, llvm::StringRef Blob) override
-    {
-        ReferenceBlock B(br_);
-        if(auto err = br_.readBlock(B, ID))
-            return err;
-        //if(B.F != F_)
-            //return makeWrongFieldError(B.F);
-        C_.emplace_back(B.I);
-        return Error::success();
     }
 };
 
@@ -341,9 +260,8 @@ public:
             return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return AnyBlock::readSubBlock(ID);
         }
-        return AnyBlock::readSubBlock(ID);
     }
 };
 
@@ -391,8 +309,6 @@ protected:
     TypeInfo& I_;
 
 public:
-    FieldId F;
-
     TypeBlock(
         TypeInfo& I,
         BitcodeReader& br) noexcept
@@ -402,23 +318,19 @@ public:
     }
 
     Error
-    readSubBlock(
-        unsigned ID) override
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
     {
         switch(ID)
         {
-        case BI_REFERENCE_BLOCK_ID:
-        {
-            ReferenceBlock B(br_);
-            if(auto err = br_.readBlock(B, ID))
-                return err;
-            F = B.F;
-            static_cast<Reference&>(I_) =
-                std::move(B.I);
-            return Error::success();
-        }
+        case TYPE_ID:
+            return decodeRecord(R, I_.id, Blob);
+        case TYPE_NAME:
+            return decodeRecord(R, I_.Name, Blob);
         default:
-            return AnyBlock::readSubBlock(ID);
+            return AnyBlock::parseRecord(R, ID, Blob);
         }
     }
 };
@@ -559,7 +471,6 @@ public:
                 return Error("invalid template parameter kind");
             }
         }
-
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -576,9 +487,7 @@ public:
             if(I_.Kind != TParamKind::Template)
                 return Error("only TemplateTParam may have template parameters");
             TemplateParamBlock P(I_.get<TemplateTParam>().Params.emplace_back(), br_);
-            if(auto err = br_.readBlock(P, ID))
-                return err;
-            return Error::success();
+            return br_.readBlock(P, ID);
         }
         case BI_TYPE_BLOCK_ID:
         {
@@ -595,23 +504,11 @@ public:
                 return Error("invalid TypeInfo block in TParam");
             }
             TypeBlock B(*t, br_);
-            if(auto err = br_.readBlock(B, ID))
-                return err;
-            // KRYSTIAN NOTE: is this check correct?
-            // copied from a function with TypeInfo sub-block
-            switch(B.F)
-            {
-            case FieldId::F_type:
-                break;
-            default:
-                return makeWrongFieldError(B.F);
-            }
-            return Error::success();
+            return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return AnyBlock::readSubBlock(ID);
         }
-        return AnyBlock::readSubBlock(ID);
     }
 };
 
@@ -656,17 +553,13 @@ public:
         {
             TemplateArgBlock A(
                 I_.Args.emplace_back());
-            if(auto err = br_.readBlock(A, ID))
-                return err;
-            return Error::success();
+            return br_.readBlock(A, ID);
         }
         case BI_TEMPLATE_PARAM_BLOCK_ID:
         {
             TemplateParamBlock P(
                 I_.Params.emplace_back(), br_);
-            if(auto err = br_.readBlock(P, ID))
-                return err;
-            return Error::success();
+            return br_.readBlock(P, ID);
         }
         default:
             return AnyBlock::readSubBlock(ID);
@@ -700,18 +593,12 @@ public:
         switch(ID)
         {
         case FUNCTION_PARAM_NAME:
-        {
             return decodeRecord(R, I_.Name, Blob);
-        }
         case FUNCTION_PARAM_DEFAULT:
-        {
             return decodeRecord(R, I_.Default, Blob);
-        }
         /*
         case FUNCTION_PARAM_IS_PACK:
-        {
             return decodeRecord(R, I_.IsParameterPack, Blob);
-        }
         */
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
@@ -727,18 +614,7 @@ public:
         case BI_TYPE_BLOCK_ID:
         {
             TypeBlock B(I_.Type, br_);
-            if(auto err = br_.readBlock(B, ID))
-                return err;
-            // KRYSTIAN NOTE: is this check correct?
-            // copied from a function with TypeInfo sub-block
-            switch(B.F)
-            {
-            case FieldId::F_type:
-                break;
-            default:
-                return makeWrongFieldError(B.F);
-            }
-            return Error::success();
+            return br_.readBlock(B, ID);
         }
         default:
             break;
@@ -768,100 +644,6 @@ public:
     {
     }
 
-    #if 0
-    Error
-    insertChild(
-        Reference&& R, FieldId Id)
-    {
-        switch(Id)
-        {
-        case FieldId::F_child_namespace:
-        {
-            // Record can't have namespace
-            if constexpr(
-                std::derived_from<T, NamespaceInfo>)
-            {
-                I->Children.Namespaces.emplace_back(std::move(R));
-                return Error::success();
-            }
-            break;
-        }
-        case FieldId::F_child_record:
-        {
-            if constexpr(
-                std::derived_from<T, NamespaceInfo> ||
-                std::derived_from<T, RecordInfo>)
-            {
-                I->Children.Records.emplace_back(std::move(R));
-                return Error::success();
-            }
-            break;
-        }
-        case FieldId::F_child_function:
-        {
-            if constexpr(
-                std::derived_from<T, NamespaceInfo> ||
-                std::derived_from<T, RecordInfo>)
-            {
-                I->Children.Functions.emplace_back(std::move(R));
-                return Error::success();
-            }
-            break;
-        }
-        case FieldId::F_child_typedef:
-        {
-            if constexpr(
-                std::derived_from<T, NamespaceInfo> ||
-                std::derived_from<T, RecordInfo>)
-            {
-                I->Children.Typedefs.emplace_back(std::move(R));
-                return Error::success();
-            }
-            break;
-        }
-        case FieldId::F_child_enum:
-        {
-            if constexpr(
-                std::derived_from<T, NamespaceInfo> ||
-                std::derived_from<T, RecordInfo>)
-            {
-                I->Children.Enums.emplace_back(std::move(R));
-                return Error::success();
-            }
-            break;
-        }
-        case FieldId::F_child_variable:
-        {
-            if constexpr(
-                std::derived_from<T, NamespaceInfo> ||
-                std::derived_from<T, RecordInfo>)
-            {
-                I->Children.Vars.emplace_back(std::move(R));
-                return Error::success();
-            }
-            break;
-        }
-        // KRYSTIAN FIXME: i am 90% sure that this isn't needed.
-        // we don't use Scope for storing Record members
-        case FieldId::F_child_field:
-        {
-            // Namespace can't have fields
-            if constexpr(
-                std::derived_from<T, RecordInfo>)
-            {
-                Assert("RecordInfo doesn't use Scope");
-                return Error::success();
-            }
-            break;
-        }
-        default:
-            return makeWrongFieldError(Id);
-        }
-        return Error("unknown type");
-    }
-    #endif
-
-    Error readChild(Scope& I, unsigned ID);
     Error readSubBlock(unsigned ID) override;
 };
 
@@ -877,6 +659,23 @@ public:
         BitcodeReader& br)
         : TopLevelBlock(br)
     {
+    }
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case NAMESPACE_MEMBERS:
+            return decodeRecord(R, I->Members, Blob);
+        case NAMESPACE_SPECIALIZATIONS:
+            return decodeRecord(R, I->Specializations, Blob);
+        default:
+            return TopLevelBlock::parseRecord(R, ID, Blob);
+        }
     }
 };
 
@@ -894,8 +693,10 @@ public:
     }
 
     Error
-    parseRecord(Record const& R,
-        unsigned ID, llvm::StringRef Blob) override
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
     {
         switch(ID)
         {
@@ -985,16 +786,7 @@ public:
         case BI_TYPE_BLOCK_ID:
         {
             TypeBlock B(I->ReturnType, br_);
-            if(auto err = br_.readBlock(B, ID))
-                return err;
-            switch(B.F)
-            {
-            case FieldId::F_type:
-                break;
-            default:
-                return makeWrongFieldError(B.F);
-            }
-            return Error::success();
+            return br_.readBlock(B, ID);
         }
         case BI_FUNCTION_PARAM_BLOCK_ID:
         {
@@ -1008,9 +800,8 @@ public:
             return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return TopLevelBlock::readSubBlock(ID);
         }
-        return TopLevelBlock::readSubBlock(ID);
     }
 };
 
@@ -1037,9 +828,8 @@ public:
         case TYPEDEF_IS_USING:
             return decodeRecord(R, I->IsUsing, Blob);
         default:
-            break;
+            return TopLevelBlock::parseRecord(R, ID, Blob);
         }
-        return TopLevelBlock::parseRecord(R, ID, Blob);
     }
 
     Error
@@ -1051,16 +841,7 @@ public:
         case BI_TYPE_BLOCK_ID:
         {
             TypeBlock B(I->Underlying, br_);
-            if(auto err = br_.readBlock(B, ID))
-                return err;
-            switch(B.F)
-            {
-            case FieldId::F_type:
-                break;
-            default:
-                return makeWrongFieldError(B.F);
-            }
-            return Error::success();
+            return br_.readBlock(B, ID);
         }
         case BI_TEMPLATE_BLOCK_ID:
         {
@@ -1069,9 +850,8 @@ public:
             return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return TopLevelBlock::readSubBlock(ID);
         }
-        return TopLevelBlock::readSubBlock(ID);
     }
 };
 
@@ -1126,9 +906,8 @@ public:
         case ENUM_SCOPED:
             return decodeRecord(R, I->Scoped, Blob);
         default:
-            break;
+            return TopLevelBlock::parseRecord(R, ID, Blob);
         }
-        return TopLevelBlock::parseRecord(R, ID, Blob);
     }
 
     Error
@@ -1147,14 +926,11 @@ public:
         {
             I->Members.emplace_back();
             EnumValueBlock B(I->Members.back());
-            if(auto err = br_.readBlock(B, ID))
-                return err;
-            return Error::success();
+            return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return TopLevelBlock::readSubBlock(ID);
         }
-        return TopLevelBlock::readSubBlock(ID);
     }
 };
 
@@ -1181,9 +957,8 @@ public:
         case VARIABLE_BITS:
             return decodeRecord(R, {&I->specs.raw}, Blob);
         default:
-            break;
+            return TopLevelBlock::parseRecord(R, ID, Blob);
         }
-        return TopLevelBlock::parseRecord(R, ID, Blob);
     }
 
     Error
@@ -1204,9 +979,8 @@ public:
             return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return TopLevelBlock::readSubBlock(ID);
         }
-        return TopLevelBlock::readSubBlock(ID);
     }
 };
 
@@ -1254,9 +1028,8 @@ public:
             return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return TopLevelBlock::readSubBlock(ID);
         }
-        return TopLevelBlock::readSubBlock(ID);
     }
 };
 
@@ -1291,12 +1064,10 @@ public:
             for(std::size_t i = 0; i < members.size(); i += 2)
                 I->Members.emplace_back(members[i + 0], members[i + 1]);
             return Error::success();
-
         }
         default:
-            break;
+            return TopLevelBlock::parseRecord(R, ID, Blob);
         }
-        return TopLevelBlock::parseRecord(R, ID, Blob);
     }
 
     Error
@@ -1311,51 +1082,12 @@ public:
             return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return TopLevelBlock::readSubBlock(ID);
         }
-        return TopLevelBlock::readSubBlock(ID);
     }
 };
 
 //------------------------------------------------
-
-template<class T>
-Error
-TopLevelBlock<T>::
-readChild(
-    Scope& I, unsigned ID)
-{
-    ReferenceBlock B(br_);
-    if(auto err = br_.readBlock(B, ID))
-        return err;
-    switch(B.F)
-    {
-    case FieldId::F_child_namespace:
-        I.Namespaces.emplace_back(B.I);
-        break;
-    case FieldId::F_child_record:
-        I.Records.emplace_back(B.I);
-        break;
-    case FieldId::F_child_function:
-        I.Functions.emplace_back(B.I);
-        break;
-    case FieldId::F_child_typedef:
-        I.Typedefs.emplace_back(B.I);
-        break;
-    case FieldId::F_child_enum:
-        I.Enums.emplace_back(B.I);
-        break;
-    case FieldId::F_child_variable:
-        I.Vars.emplace_back(B.I);
-        break;
-    case FieldId::F_child_specialization:
-        I.Specializations.emplace_back(B.I);
-        break;
-    default:
-        return makeWrongFieldError(B.F);
-    }
-    return Error::success();
-}
 
 template<class T>
 Error
@@ -1370,9 +1102,7 @@ readSubBlock(
         if constexpr(std::derived_from<T, Info>)
         {
             InfoPartBlock B(*I.get(), br_);
-            if(auto err = br_.readBlock(B, ID))
-                return err;
-            return Error::success();
+            return br_.readBlock(B, ID);
         }
         break;
     }
@@ -1381,17 +1111,7 @@ readSubBlock(
         if constexpr(std::derived_from<T, SymbolInfo>)
         {
             SymbolPartBlock B(*I.get(), br_);
-            if(auto err = br_.readBlock(B, ID))
-                return err;
-            return Error::success();
-        }
-        break;
-    }
-    case BI_REFERENCE_BLOCK_ID:
-    {
-        if constexpr(std::derived_from<T, NamespaceInfo>)
-        {
-            return readChild(I->Children, ID);
+            return br_.readBlock(B, ID);
         }
         break;
     }

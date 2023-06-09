@@ -14,7 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Info.hpp>
-#include <mrdox/Metadata/Scope.hpp>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
@@ -24,7 +24,8 @@ namespace mrdox {
 struct NamespaceInfo
     : IsInfo<InfoKind::Namespace>
 {
-    Scope Children;
+    std::vector<SymbolID> Members;
+    std::vector<SymbolID> Specializations;
 
     //--------------------------------------------
 

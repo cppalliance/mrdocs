@@ -12,7 +12,6 @@
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Namespace.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
-#include <mrdox/Metadata/Scope.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang {
@@ -57,11 +56,14 @@ makeNamespaceOverloads(
     Corpus const& corpus)
 {
     std::vector<FunctionInfo const*> data;
-    data.reserve(I.Children.Functions.size());
-    for(auto const& ref : I.Children.Functions)
+    for(auto const& id : I.Members)
     {
-        auto const& I = corpus.get<FunctionInfo>(ref.id);
-        data.push_back(&I);
+        if(const Info* info = corpus.find(id);
+            info && info->isFunction())
+        {
+            data.push_back(static_cast<
+                const FunctionInfo*>(info));
+        }
     }
 
     return NamespaceOverloads(I, std::move(data));

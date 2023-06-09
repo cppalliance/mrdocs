@@ -138,7 +138,6 @@ traverse(
         return f.visit(static_cast<EnumInfo const&>(I));
     case InfoKind::Variable:
         return f.visit(static_cast<VarInfo const&>(I));
-    // KRYSTIAN FIXME: is this correct?
     case InfoKind::Field:
         return f.visit(static_cast<FieldInfo const&>(I));
     case InfoKind::Specialization:
@@ -154,26 +153,11 @@ traverse(
     Visitor& f,
     NamespaceInfo const& I) const
 {
-    for(auto const& ref : I.Children.Namespaces)
-        if(! f.visit(get<NamespaceInfo>(ref.id)))
+    for(auto const& id : I.Members)
+        if(! this->traverse(f, id))
             return false;
-    for(auto const& ref : I.Children.Records)
-        if(! f.visit(get<RecordInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Children.Functions)
-        if(! f.visit(get<FunctionInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Children.Typedefs)
-        if(! f.visit(get<TypedefInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Children.Enums)
-        if(! f.visit(get<EnumInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Children.Vars)
-        if(! f.visit(get<VarInfo>(ref.id)))
-            return false;
-    for(auto const& ref : I.Children.Specializations)
-        if(! f.visit(get<SpecializationInfo>(ref.id)))
+    for(auto const& id : I.Specializations)
+        if(! f.visit(get<SpecializationInfo>(id)))
             return false;
     return true;
 }
@@ -238,18 +222,6 @@ Corpus::
 traverse(Visitor& f, SymbolID id) const
 {
     return traverse(f, get<Info>(id));
-}
-
-bool
-Corpus::
-traverse(
-    Visitor& f,
-    std::vector<Reference> const& R) const
-{
-    for(auto const& ref : R)
-        if(! traverse(f, get<Info>(ref.id)))
-            return false;
-    return true;
 }
 
 bool

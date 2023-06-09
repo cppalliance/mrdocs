@@ -2,6 +2,28 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
+  <template class="partial" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
+    <tparam name="T" class="type"/>
+    <targ value="T &amp;"/>
+    <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=">
+      <file path="var-template.cpp" line="7" class="def"/>
+      <type name="unsigned int"/>
+    </variable>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <variable name="A" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
+      <file path="var-template.cpp" line="2" class="def"/>
+      <type name="unsigned int"/>
+    </variable>
+  </template>
+  <template class="explicit" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
+    <targ value="void"/>
+    <variable name="A" id="jrW9aLj8cqTteNoZmH97vOW7csQ=">
+      <file path="var-template.cpp" line="4" class="def"/>
+      <type name="unsigned int"/>
+    </variable>
+  </template>
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
     <file path="var-template.cpp" line="10" class="def"/>
     <template>
@@ -30,27 +52,5 @@
       </variable>
     </template>
   </struct>
-  <template class="partial" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
-    <tparam name="T" class="type"/>
-    <targ value="T &amp;"/>
-    <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=">
-      <file path="var-template.cpp" line="7" class="def"/>
-      <type name="unsigned int"/>
-    </variable>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <variable name="A" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
-      <file path="var-template.cpp" line="2" class="def"/>
-      <type name="unsigned int"/>
-    </variable>
-  </template>
-  <template class="explicit" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
-    <targ value="void"/>
-    <variable name="A" id="jrW9aLj8cqTteNoZmH97vOW7csQ=">
-      <file path="var-template.cpp" line="4" class="def"/>
-      <type name="unsigned int"/>
-    </variable>
-  </template>
 </namespace>
 </mrdox>

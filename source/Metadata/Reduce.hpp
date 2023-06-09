@@ -28,7 +28,6 @@ void merge(TypedefInfo& I, TypedefInfo&& Other);
 void merge(EnumInfo& I, EnumInfo&& Other);
 void merge(FieldInfo& I, FieldInfo&& Other);
 void merge(VarInfo& I, VarInfo&& Other);
-void merge(Reference& I, Reference&& Other);
 void merge(SpecializationInfo& I, SpecializationInfo&& Other);
 
 //

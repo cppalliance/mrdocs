@@ -13,7 +13,6 @@
 #include "Support/Radix.hpp"
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Record.hpp>
-#include <mrdox/Metadata/Reference.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <atomic>
 #include <memory>
@@ -216,19 +215,6 @@ format(
         break;
     }
     return fmt::formatter<std::string>::format(str, ctx);
-}
-
-fmt::format_context::iterator
-fmt::formatter<clang::mrdox::Reference>::
-format(
-    const clang::mrdox::Reference& r,
-    fmt::format_context& ctx) const
-{
-    std::string str = fmt::format("Reference: kind = {}", r.RefKind);
-    if(! r.Name.empty())
-        str += fmt::format(", name = '{}'", std::string(r.Name));
-    str += fmt::format(", ID = {}", r.id);
-    return fmt::formatter<std::string>::format(std::move(str), ctx);
 }
 
 fmt::format_context::iterator

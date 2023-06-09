@@ -13,7 +13,9 @@
 #define MRDOX_API_METADATA_TYPE_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Reference.hpp>
+#include <mrdox/Metadata/Symbols.hpp>
+#include <string>
+#include <string_view>
 
 namespace clang {
 namespace mrdox {
@@ -34,24 +36,16 @@ namespace mrdox {
     @li unsigned long, unsigned long long
 */
 struct TypeInfo
-    : Reference
 {
-    TypeInfo() = default;
+    SymbolID id;
+    std::string Name;
 
     explicit
     TypeInfo(
-        Reference const& R) noexcept
-        : Reference(R)
-    {
-    }
-
-    // Convenience constructor for when there is no symbol ID or info type
-    // (normally used for built-in types in tests).
-    explicit
-    TypeInfo(
-        std::string_view Name)
-        : Reference(
-            SymbolID::zero, Name, InfoKind::Default)
+        SymbolID ID = SymbolID::zero,
+        std::string_view name = "") noexcept
+        : id(ID)
+        , Name(name)
     {
     }
 

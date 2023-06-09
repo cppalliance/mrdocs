@@ -57,13 +57,6 @@ static bool canMerge(Info const& I, Info const& Other)
         I.Kind == Other.Kind &&
         I.id == Other.id;
 }
-
-static bool canMerge(Reference const& I, Reference const& Other)
-{
-    return
-        I.RefKind == Other.RefKind &&
-        I.id == Other.id;
-}
 #endif
 
 static void merge(Javadoc& I, Javadoc&& other)
@@ -110,17 +103,20 @@ static void mergeSymbolInfo(
     I.Loc.erase(Last, I.Loc.end());
 }
 
-void merge(NamespaceInfo& I, NamespaceInfo&& Other)
+
+static
+void
+reduceRefs(
+    std::vector<SymbolID>& list,
+    std::vector<SymbolID>&& otherList)
 {
-    Assert(canMerge(I, Other));
-    reduceChildren(I.Children.Namespaces, std::move(Other.Children.Namespaces));
-    reduceChildren(I.Children.Records, std::move(Other.Children.Records));
-    reduceChildren(I.Children.Functions, std::move(Other.Children.Functions));
-    reduceChildren(I.Children.Typedefs, std::move(Other.Children.Typedefs));
-    reduceChildren(I.Children.Enums, std::move(Other.Children.Enums));
-    reduceChildren(I.Children.Vars, std::move(Other.Children.Vars));
-    reduceChildren(I.Children.Specializations, std::move(Other.Children.Specializations));
-    mergeInfo(I, std::move(Other));
+    for(auto const& id : otherList)
+    {
+        auto it = llvm::find(list, id);
+        if(it != list.end())
+            continue;
+        list.push_back(id);
+    }
 }
 
 static
@@ -148,29 +144,6 @@ reduceMemberRefs(
 
 static
 void
-reduceRefs(
-    std::vector<SymbolID>& list,
-    std::vector<SymbolID>&& otherList)
-{
-    for(auto const& id : otherList)
-    {
-        auto it = llvm::find(list, id);
-#if 0
-        auto it = llvm::find_if(
-            list,
-            [ref](SymbolID const& other) noexcept
-            {
-                return other.id == ref.id;
-            });
-#endif
-        if(it != list.end())
-            continue;
-        list.push_back(id);
-    }
-}
-
-static
-void
 reduceSpecializedMembers(
     std::vector<SpecializedMember>& list,
     std::vector<SpecializedMember>&& otherList)
@@ -187,6 +160,14 @@ reduceSpecializedMembers(
             continue;
         list.push_back(ref);
     }
+}
+
+void merge(NamespaceInfo& I, NamespaceInfo&& Other)
+{
+    Assert(canMerge(I, Other));
+    reduceRefs(I.Members, std::move(Other.Members));
+    reduceRefs(I.Specializations, std::move(Other.Specializations));
+    mergeInfo(I, std::move(Other));
 }
 
 void merge(RecordInfo& I, RecordInfo&& Other)
@@ -294,13 +275,6 @@ void merge(VarInfo& I, VarInfo&& Other)
     mergeSymbolInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;
-}
-
-void merge(Reference& I, Reference&& Other)
-{
-    Assert(canMerge(I, Other));
-    if (I.Name.empty())
-        I.Name = Other.Name;
 }
 
 void merge(SpecializationInfo& I, SpecializationInfo&& Other)

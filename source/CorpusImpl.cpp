@@ -229,18 +229,9 @@ traverse(
     MutableVisitor& f,
     NamespaceInfo& I)
 {
-    for(auto const& ref : I.Children.Namespaces)
-        f.visit(get<NamespaceInfo>(ref.id));
-    for(auto const& ref : I.Children.Records)
-        f.visit(get<RecordInfo>(ref.id));
-    for(auto const& ref : I.Children.Functions)
-        f.visit(get<FunctionInfo>(ref.id));
-    for(auto const& ref : I.Children.Typedefs)
-        f.visit(get<TypedefInfo>(ref.id));
-    for(auto const& ref : I.Children.Enums)
-        f.visit(get<EnumInfo>(ref.id));
-    for(auto const& ref : I.Children.Vars)
-        f.visit(get<VarInfo>(ref.id));
+    for(auto const& id : I.Members)
+        this->traverse(f, id);
+    // KRYSTIAN FIXME: should we traverse specializations?
 }
 
 void
@@ -261,6 +252,7 @@ traverse(
         f.visit(get<FieldInfo>(t.id));
     for(auto const& t : I.Members.Vars)
         f.visit(get<VarInfo>(t.id));
+    // KRYSTIAN FIXME: should we traverse specializations?
 }
 
 void
@@ -291,12 +283,11 @@ public:
     void visit(NamespaceInfo& I) override
     {
         postProcess(I);
-        canonicalize(I.Children.Namespaces);
-        canonicalize(I.Children.Records);
-        canonicalize(I.Children.Functions);
-        canonicalize(I.Children.Typedefs);
-        canonicalize(I.Children.Enums);
-        canonicalize(I.Children.Vars);
+        canonicalize(I.Members);
+        // KRYSTIAN FIXME: should we canonicalize specializations?
+        // we shouldn't canonicalize anything if we intend to
+        // preserve declaration order.
+
         corpus_.traverse(*this, I);
     }
 
@@ -342,17 +333,6 @@ public:
     }
 
     //--------------------------------------------
-
-    void canonicalize(std::vector<Reference>& list) noexcept
-    {
-        // Sort by symbol ID
-        llvm::sort(list,
-            [&](Reference const& ref0,
-                Reference const& ref1) noexcept
-            {
-                return ref0.id < ref1.id;
-            });
-    }
 
     void canonicalize(std::vector<SymbolID>& list) noexcept
     {
