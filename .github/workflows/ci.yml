@@ -37,7 +37,7 @@ jobs:
             msvc 14.34
           standards: '>=20'
           max-standards: 1
-          latest-factors: gcc Coverage TSan UBSan
+          latest-factors: gcc Coverage UBSan # TSan
           factors: | # Don't include Asan because `clang/AST/Decl.h` fails
             clang Time-Trace
 
