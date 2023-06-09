@@ -70,18 +70,18 @@ public:
         @param fs The format string. An empty
         string indicates success.
 
-        @param arg0,args The arguments to use
+        @param args The arguments to use
         with the format string.
     */
-    template<class Arg0, class... Args>
+    template<class... Args>
     explicit
     Error(
-        fmt::format_string<Arg0, Args...> fs,
-        Arg0&& arg0, Args&&... args)
+        std::string_view fs,
+        Args&&... args)
+        : text_(fmt::vformat(fs,
+            fmt::make_format_args(
+                std::forward<Args>(args)...)))
     {
-        text_ = fmt::format(fs,
-            std::forward<Arg0>(arg0),
-            std::forward<Args>(args)...);
     }
 
     /** Constructor.
