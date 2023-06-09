@@ -128,7 +128,6 @@ public:
     void emitBlock(Javadoc::Node const& I);
     void emitBlock(NamespaceInfo const& I);
     void emitBlock(RecordInfo const& I);
-    void emitBlock(Reference const& B, FieldId F);
     void emitBlock(SpecializationInfo const& T);
     void emitBlock(TemplateInfo const& T);
     void emitBlock(TParam const& T);

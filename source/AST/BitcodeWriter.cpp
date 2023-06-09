@@ -219,7 +219,6 @@ BlockIdNameMap = []()
         {BI_JAVADOC_BLOCK_ID, "JavadocBlock"},
         {BI_JAVADOC_LIST_BLOCK_ID, "JavadocListBlock"},
         {BI_JAVADOC_NODE_BLOCK_ID, "JavadocNodeBlock"},
-        {BI_REFERENCE_BLOCK_ID, "ReferenceBlock"},
         {BI_TEMPLATE_ARG_BLOCK_ID, "TemplateArgBlock"},
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
         {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"},
@@ -267,14 +266,12 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &Integer32Abbrev}},
         {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
+        {NAMESPACE_MEMBERS, {"NamespaceMembers", &SymbolIDsAbbrev}},
+        {NAMESPACE_SPECIALIZATIONS, {"NamespaceSpecializations", &SymbolIDsAbbrev}},
         {RECORD_KEY_KIND, {"KeyKind", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
-        {REFERENCE_USR, {"USR", &SymbolIDAbbrev}},
-        {REFERENCE_NAME, {"Name", &StringAbbrev}},
-        {REFERENCE_KIND, {"RefKind", &Integer32Abbrev}},
-        {REFERENCE_FIELD, {"Field", &Integer32Abbrev}},
         {RECORD_ENUMS,      {"RecordEnums", &MemberRefsAbbrev}},
         {RECORD_FUNCTIONS,  {"RecordFunctions", &MemberRefsAbbrev}},
         {RECORD_RECORDS,    {"RecordRecords", &MemberRefsAbbrev}},
@@ -282,6 +279,8 @@ RecordIDNameMap = []()
         {RECORD_VARS,       {"RecordVars", &MemberRefsAbbrev}},
         {RECORD_FIELDS,     {"RecordFields", &MemberRefsAbbrev}},
         {RECORD_SPECIALIZATIONS,{"RecordSpecializations", &SymbolIDsAbbrev}},
+        {SPECIALIZATION_PRIMARY, {"SpecializationPrimary", &SymbolIDAbbrev}},
+        {SPECIALIZATION_MEMBERS, {"SpecializationMembers", &SymbolIDsAbbrev}},
         {SYMBOL_PART_DEFLOC, {"SymbolDefLoc", &LocationAbbrev}},
         {SYMBOL_PART_LOC,    {"SymbolLoc", &LocationAbbrev}},
         {TEMPLATE_PRIMARY_USR,   {"Primary", &SymbolIDAbbrev}},
@@ -290,8 +289,8 @@ RecordIDNameMap = []()
         {TEMPLATE_PARAM_NAME,    {"Name", &StringAbbrev}},
         {TEMPLATE_PARAM_IS_PACK, {"IsPack", &BoolAbbrev}},
         {TEMPLATE_PARAM_DEFAULT, {"Default", &StringAbbrev}},
-        {SPECIALIZATION_PRIMARY, {"SpecializationPrimary", &SymbolIDAbbrev}},
-        {SPECIALIZATION_MEMBERS, {"SpecializationMembers", &SymbolIDsAbbrev}},
+        {TYPE_ID, {"TypeID", &SymbolIDAbbrev}},
+        {TYPE_NAME, {"TypeName", &StringAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}}
     };
@@ -348,16 +347,13 @@ RecordsByBlock{
          JAVADOC_NODE_ADMONISH, JAVADOC_PARAM_DIRECTION}},
     // NamespaceInfo
     {BI_NAMESPACE_BLOCK_ID,
-        {}},
+        {NAMESPACE_MEMBERS, NAMESPACE_SPECIALIZATIONS}},
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
         {RECORD_KEY_KIND, RECORD_IS_TYPE_DEF, RECORD_BITS,
         RECORD_FRIENDS, RECORD_ENUMS, RECORD_FUNCTIONS,
         RECORD_RECORDS, RECORD_TYPES, RECORD_VARS, RECORD_FIELDS,
         RECORD_SPECIALIZATIONS}},
-    // std::vector<Reference>
-    {BI_REFERENCE_BLOCK_ID,
-        {REFERENCE_USR, REFERENCE_NAME, REFERENCE_KIND, REFERENCE_FIELD}},
     // TArg
     {BI_TEMPLATE_ARG_BLOCK_ID,
         {TEMPLATE_ARG_VALUE}},
@@ -372,7 +368,8 @@ RecordsByBlock{
     {BI_SPECIALIZATION_BLOCK_ID,
         {SPECIALIZATION_PRIMARY, SPECIALIZATION_MEMBERS}},
     // TypeInfo
-    {BI_TYPE_BLOCK_ID, {}},
+    {BI_TYPE_BLOCK_ID,
+        {TYPE_ID, TYPE_NAME}},
     // TypedefInfo
     {BI_TYPEDEF_BLOCK_ID,
         {TYPEDEF_IS_USING}},
@@ -974,20 +971,8 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
     emitInfoPart(I);
-    for (const auto& ref : I.Children.Namespaces)
-        emitBlock(ref, FieldId::F_child_namespace);
-    for (const auto& ref : I.Children.Records)
-        emitBlock(ref, FieldId::F_child_record);
-    for (auto const& ref : I.Children.Functions)
-        emitBlock(ref, FieldId::F_child_function);
-    for (const auto& ref : I.Children.Typedefs)
-        emitBlock(ref, FieldId::F_child_typedef);
-    for (const auto& ref : I.Children.Enums)
-        emitBlock(ref, FieldId::F_child_enum);
-    for (const auto& ref : I.Children.Vars)
-        emitBlock(ref, FieldId::F_child_variable);
-    for (const auto& ref : I.Children.Specializations)
-        emitBlock(ref, FieldId::F_child_specialization);
+    emitRecord(I.Members, NAMESPACE_MEMBERS);
+    emitRecord(I.Specializations, NAMESPACE_SPECIALIZATIONS);
 }
 
 void
@@ -1013,20 +998,6 @@ emitBlock(
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord(I.Friends, RECORD_FRIENDS);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    Reference const& R, FieldId Field)
-{
-    if (R.id == SymbolID::zero && R.Name.empty())
-        return;
-    StreamSubBlockGuard Block(Stream, BI_REFERENCE_BLOCK_ID);
-    emitRecord(R.id, REFERENCE_USR);
-    emitRecord(R.Name, REFERENCE_NAME);
-    emitRecord((unsigned)R.RefKind, REFERENCE_KIND);
-    emitRecord((unsigned)Field, REFERENCE_FIELD);
 }
 
 void
@@ -1131,8 +1102,11 @@ BitcodeWriter::
 emitBlock(
     TypeInfo const& T)
 {
+    if (T.id == SymbolID::zero && T.Name.empty())
+        return;
     StreamSubBlockGuard Block(Stream, BI_TYPE_BLOCK_ID);
-    emitBlock(static_cast<const Reference&>(T), FieldId::F_type);
+    emitRecord(T.id, TYPE_ID);
+    emitRecord(T.Name, TYPE_NAME);
 }
 
 void

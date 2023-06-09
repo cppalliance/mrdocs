@@ -2,6 +2,10 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
+  <alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
+    <file path="function-tparm-decay.cpp" line="30" class="def"/>
+    <type name="int"/>
+  </alias>
   <template>
     <tparam name="x" class="non-type" type="int (*)(bool)"/>
     <function name="h" id="TjNHTu8/auH8QPVcgjW7FUo2dFM=">
@@ -29,6 +33,10 @@
       <file path="function-tparm-decay.cpp" line="10"/>
     </function>
   </template>
+  <alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
+    <file path="function-tparm-decay.cpp" line="31" class="def"/>
+    <type name="const int"/>
+  </alias>
   <template>
     <tparam class="non-type" type="T"/>
     <function name="i" id="2woLp3PdyOT/I0DFMkY8OAli5YM=">
@@ -38,13 +46,5 @@
       <file path="function-tparm-decay.cpp" line="40"/>
     </function>
   </template>
-  <alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
-    <file path="function-tparm-decay.cpp" line="30" class="def"/>
-    <type name="int"/>
-  </alias>
-  <alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
-    <file path="function-tparm-decay.cpp" line="31" class="def"/>
-    <type name="const int"/>
-  </alias>
 </namespace>
 </mrdox>

@@ -2,12 +2,6 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <template>
-    <tparam class="non-type" type="int"/>
-    <struct name="X" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=">
-      <file path="explicit-deduct-guide.cpp" line="4" class="def"/>
-    </struct>
-  </template>
   <function name="&lt;deduction guide for X&gt;" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
     <file path="explicit-deduct-guide.cpp" line="8"/>
     <attr id="has-trailing-return"/>
@@ -39,5 +33,11 @@
     <return type="X&lt;0&gt;"/>
     <param type="bool"/>
   </function>
+  <template>
+    <tparam class="non-type" type="int"/>
+    <struct name="X" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=">
+      <file path="explicit-deduct-guide.cpp" line="4" class="def"/>
+    </struct>
+  </template>
 </namespace>
 </mrdox>

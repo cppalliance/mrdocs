@@ -122,7 +122,6 @@ public:
     MRDOX_DECL bool traverse(Visitor&, RecordInfo const& I) const;
     MRDOX_DECL bool traverse(Visitor&, SpecializationInfo const& I) const;
     MRDOX_DECL bool traverse(Visitor&, SymbolID id) const;
-    MRDOX_DECL bool traverse(Visitor&, std::vector<Reference> const& R) const;
     MRDOX_DECL bool traverse(Visitor&, std::vector<SymbolID> const& R) const;
     /** @} */
 

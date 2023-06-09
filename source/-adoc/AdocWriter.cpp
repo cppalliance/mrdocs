@@ -492,7 +492,7 @@ void
 AdocWriter::
 writeNestedTypes(
     llvm::StringRef sectionName,
-    std::vector<Reference> const& list,
+    std::vector<SymbolID> const& list,
     AccessSpecifier access)
 {
     if(list.empty())
@@ -504,9 +504,9 @@ writeNestedTypes(
         "|===\n" <<
         "|Name |Description\n" <<
         "\n";
-    for(auto const& ref : list)
+    for(auto const& id : list)
     {
-        auto& I = corpus_.get<TypedefInfo>(ref.id);
+        auto& I = corpus_.get<TypedefInfo>(id);
 #if 0
         if(it->Access != access)
             continue;

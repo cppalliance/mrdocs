@@ -101,7 +101,7 @@ protected:
     void writeBase(BaseInfo const& I);
     void writeNestedTypes(
         llvm::StringRef sectionName,
-        std::vector<Reference> const& list,
+        std::vector<SymbolID> const& list,
         AccessSpecifier access);
 
     void writeFunctionDeclaration(

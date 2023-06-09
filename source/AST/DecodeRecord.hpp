@@ -160,7 +160,7 @@ inline
 Error
 decodeRecord(
     Record const& R,
-    InfoKind& Field,
+    InfoKind& Kind,
     llvm::StringRef Blob)
 {
     switch(auto kind = static_cast<InfoKind>(R[0]))
@@ -171,41 +171,14 @@ decodeRecord(
     case InfoKind::Enum:
     case InfoKind::Typedef:
     case InfoKind::Variable:
+    case InfoKind::Field:
     case InfoKind::Specialization:
-        Field = kind;
+        Kind = kind;
         return Error::success();
     default:
-        Field = InfoKind::Default;
+        Kind = InfoKind::Default;
         return Error("InfoKind is invalid");
     }
-}
-
-inline
-Error
-decodeRecord(
-    Record const& R,
-    FieldId& Field,
-    llvm::StringRef Blob)
-{
-    auto F = static_cast<FieldId>(R[0]);
-    switch(F)
-    {
-    case FieldId::F_namespace:
-    case FieldId::F_vparent:
-    case FieldId::F_type:
-    case FieldId::F_child_namespace:
-    case FieldId::F_child_record:
-    case FieldId::F_child_function:
-    case FieldId::F_child_typedef:
-    case FieldId::F_child_enum:
-    case FieldId::F_child_variable:
-    case FieldId::F_child_specialization:
-    case FieldId::F_default:
-        Field = F;
-        return Error::success();
-    }
-    Field = FieldId::F_default;
-    return Error("FieldId is invalid");
 }
 
 inline

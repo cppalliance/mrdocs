@@ -59,15 +59,6 @@ struct fmt::formatter<clang::mrdox::Access>
 };
 
 template<>
-struct fmt::formatter<clang::mrdox::Reference>
-    : fmt::formatter<std::string>
-{
-    fmt::format_context::iterator format(
-        const clang::mrdox::Reference& r,
-        fmt::format_context& ctx) const;
-};
-
-template<>
 struct fmt::formatter<clang::mrdox::MemberRef>
     : fmt::formatter<std::string>
 {
