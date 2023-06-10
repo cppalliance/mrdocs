@@ -14,14 +14,22 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
+#include <functional>
 #include <iterator>
 #include <mutex>
 #include <thread>
 #include <utility>
 #include <vector>
 
+namespace llvm {
+class ThreadPool;
+class ThreadPoolTaskGroup;
+} // llvm
+
 namespace clang {
 namespace mrdox {
+
+class TaskGroup;
 
 //------------------------------------------------
 
@@ -30,16 +38,9 @@ namespace mrdox {
 class MRDOX_VISIBLE
     ThreadPool
 {
-    class Impl;
+    std::unique_ptr<llvm::ThreadPool> impl_;
 
-    struct MRDOX_VISIBLE
-        Work
-    {
-        virtual ~Work() = 0;
-        virtual void operator()() = 0;
-    };
-
-    std::unique_ptr<Impl> impl_;
+    friend class TaskGroup;
 
 public:
     /** Destructor.
@@ -52,117 +53,80 @@ public:
     MRDOX_DECL
     explicit
     ThreadPool(
-        std::size_t concurrency);
+        unsigned concurrency);
 
     /** Submit work to be executed.
 
         The signature of the submitted function
         object should be `void(void)`.
     */
-    template<class F>
     void
-    post(F&& f);
+    async(std::function<void(void)> f);
+
+    /** Invoke a function object for each element of a range.
+    */
+    template<class Range, class F>
+    void forEach(Range&& range, F const& f);
 
     /** Block until all work has completed.
     */
     MRDOX_DECL
     void
     wait();
-
-private:
-    MRDOX_DECL void do_post(std::unique_ptr<Work>);
 };
-
-template<class F>
-void
-ThreadPool::
-post(F&& f)
-{
-    if(! impl_)
-    {
-        // no threads
-        f();
-        return;
-    }
-
-    struct WorkImpl : Work
-    {
-        F f;
-
-        ~WorkImpl() = default;
-
-        explicit WorkImpl(F&& f_)
-            : f(std::forward<F>(f_))
-        {
-        }
-
-        void operator()() override
-        {
-            f();
-        }
-    };
-
-    do_post(std::make_unique<WorkImpl>(std::forward<F>(f)));
-}
 
 //------------------------------------------------
 
-/** Visit all elements of a range concurrently.
+/** A subset of possible work in a thread pool.
 */
-template<
-    class Elements,
-    class Workers,
-    class... Args>
-Error
-forEach(
-    Elements& elements,
-    Workers& workers,
-    Args&&... args)
+class MRDOX_VISIBLE
+    TaskGroup
 {
-    if(std::next(std::begin(workers)) == std::end(workers))
-    {
-        // Non-concurrent
-        auto&& worker(*std::begin(workers));
-        for(auto&& element : elements)
-            if(! worker(element, std::forward<Args>(args)...))
-                return Error("canceled");
-        return Error::success();
-    }
+    std::unique_ptr<llvm::ThreadPoolTaskGroup> impl_;
 
-    std::mutex m;
-    bool cancel = false;
-    auto it = std::begin(elements);
-    auto const end = std::end(elements);
-    auto const do_work =
-        [&](auto&& agent)
-        {
-            std::unique_lock<std::mutex> lock(m);
-            if(it == end || cancel)
-                return false;
-            auto it0 = it;
-            ++it;
-            lock.unlock();
-            bool cancel_ = ! agent(*it0,
-                std::forward<Args>(args)...);
-            if(! cancel_)
-                return true;
-            cancel = true;
-            return false;
-        };
-    std::vector<std::thread> threads;
-    for(auto& worker : workers)
-        threads.emplace_back(std::thread(
-            [&](auto&& agent)
+public:
+    MRDOX_DECL
+    ~TaskGroup();
+
+    MRDOX_DECL
+    explicit
+    TaskGroup(
+        ThreadPool& threadPool);
+
+    /** Submit work to be executed.
+
+        The signature of the submitted function
+        object should be `void(void)`.
+    */
+    void
+    async(std::function<void(void)> f);
+
+    /** Block until all work has completed.
+    */
+    MRDOX_DECL
+    void
+    wait();
+};
+
+//------------------------------------------------
+
+/** Invoke a function object for each element of a range.
+*/
+template<class Range, class F>
+void
+ThreadPool::
+forEach(
+    Range&& range,
+    F const& f)
+{
+    TaskGroup tg(*this);
+    for(auto&& value : range)
+        tg.async(
+            [&f, &value]
             {
-                for(;;)
-                    if(! do_work(agent))
-                        break;
-            }, worker));
-    for(auto& t : threads)
-        t.join();
-    if(cancel)
-        return Error("canceled");
-    return Error::success();
+                f(value);
+            });
+    tg.wait();
 }
 
 } // mrdox

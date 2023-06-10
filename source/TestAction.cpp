@@ -24,7 +24,6 @@
 #include <llvm/Support/Path.h>
 #include <llvm/Support/Program.h>
 #include <llvm/Support/Signals.h>
-#include <llvm/Support/ThreadPool.h>
 #include <atomic>
 #include <iomanip>
 #include <iostream>
@@ -334,7 +333,7 @@ handleDir(
             iter->type() == fs::file_type::regular_file &&
             path::extension(iter->path()).equals_insensitive(".cpp"))
         {
-            threadPool_.post(
+            threadPool_.async(
                 [this, config, filePath = SmallString(iter->path())]
                 {
                     handleFile(filePath, config).operator bool();
