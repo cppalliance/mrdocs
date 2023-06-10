@@ -25,7 +25,7 @@ class MultiFileBuilder : public Corpus::Visitor
     Corpus const& corpus_;
     std::string_view outputPath_;
     SafeNames names_;
-    Config::WorkGroup wg_;
+    TaskGroup taskGroup_;
 
 public:
     MultiFileBuilder(
@@ -34,7 +34,7 @@ public:
         : corpus_(corpus)
         , outputPath_(outputPath)
         , names_(corpus_)
-        , wg_(&corpus.config)
+        , taskGroup_(corpus.config.threadPool())
     {
     }
 
@@ -42,7 +42,7 @@ public:
     build()
     {
         corpus_.traverse(*this, SymbolID::zero);
-        wg_.wait();
+        taskGroup_.wait();
         return Error();
     }
 
@@ -52,7 +52,7 @@ public:
         namespace fs = llvm::sys::fs;
         namespace path = llvm::sys::path;
 
-        wg_.post(
+        taskGroup_.async(
             [&]
             {
                 llvm::SmallString<512> filePath(outputPath_);

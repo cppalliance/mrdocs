@@ -14,6 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
+#include <mrdox/Support/Thread.hpp>
 #include <functional>
 #include <memory>
 #include <string>
@@ -42,30 +43,18 @@ protected:
     Config() noexcept;
 
 public:
-    /** A resource for running submitted work, possibly concurrent.
-    */
-    class WorkGroup;
-
     /** Destructor.
     */
     MRDOX_DECL
     virtual
     ~Config() noexcept = 0;
 
-    /** Call a function for each element of a range.
-
-        The function is invoked with a reference
-        to each element of the container using the
-        concurrency specified in the configuration.
-
-        This function must not be called concurrently,
-        despite being marked `const`.
+    /** Return a pool of threads for executing work.
     */
-    template<class Range, class UnaryFunction>
-    void
-    parallelForEach(
-        Range&& range,
-        UnaryFunction const& f) const;
+    MRDOX_DECL
+    virtual
+    ThreadPool&
+    threadPool() const noexcept = 0;
 
     //--------------------------------------------
     //
@@ -146,90 +135,6 @@ public:
     */
     std::string extraYaml;
 };
-
-//------------------------------------------------
-
-/** A group representing possibly concurrent related tasks.
-*/
-class MRDOX_VISIBLE
-    Config::WorkGroup
-{
-public:
-    /** Destructor.
-    */
-    MRDOX_DECL
-    ~WorkGroup();
-
-    /** Constructor.
-
-        Default constructed workgroups have no
-        concurrency level. Calls to post and wait
-        are blocking.
-    */
-    MRDOX_DECL
-    WorkGroup() noexcept;
-
-    /** Constructor.
-    */
-    MRDOX_DECL
-    explicit
-    WorkGroup(
-        Config const* config);
-
-    /** Constructor.
-    */
-    MRDOX_DECL
-    WorkGroup(
-        WorkGroup const& other);
-
-    /** Assignment.
-    */
-    MRDOX_DECL
-    WorkGroup&
-    operator=(
-        WorkGroup const& other);
-
-    /** Post work to the work group.
-    */
-    MRDOX_DECL
-    void
-    post(std::function<void(void)>);
-
-    /** Wait for all posted work in the work group to complete.
-    */
-    MRDOX_DECL
-    void
-    wait();
-
-private:
-    friend class ConfigImpl;
-
-    struct Base
-    {
-        MRDOX_DECL virtual ~Base() noexcept;
-    };
-
-    class Impl;
-
-    std::shared_ptr<ConfigImpl const> config_;
-    std::unique_ptr<Base> impl_;
-};
-
-template<class Range, class UnaryFunction>
-void
-Config::
-parallelForEach(
-    Range&& range,
-    UnaryFunction const& f) const
-{
-    WorkGroup wg(this);
-    for(auto&& element : range)
-        wg.post([&f, &element]
-            {
-                f(element);
-            });
-    wg.wait();
-}
 
 } // mrdox
 } // clang

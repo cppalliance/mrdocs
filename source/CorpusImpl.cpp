@@ -142,7 +142,7 @@ build(
         reportInfo("Reducing {} declarations", bitcodes.size());
     std::atomic<bool> GotFailure;
     GotFailure = false;
-    corpus->config.parallelForEach(
+    corpus->config.threadPool().forEach(
         bitcodes,
         [&](auto& Group)
         {

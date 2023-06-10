@@ -15,6 +15,7 @@
 #include "Support/YamlFwd.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Support/Expected.hpp>
+#include <mrdox/Support/Thread.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/ThreadPool.h>
 #include <memory>
@@ -25,7 +26,6 @@ namespace mrdox {
 class ConfigImpl
     : public Config
     , public std::enable_shared_from_this<ConfigImpl>
-
 {
 public:
     //--------------------------------------------
@@ -47,7 +47,7 @@ public:
     //--------------------------------------------
 
 private:
-    llvm::ThreadPool mutable threadPool_;
+    ThreadPool mutable threadPool_;
     llvm::SmallString<0> outputPath_;
     std::vector<std::string> inputFileIncludes_;
 
@@ -65,6 +65,12 @@ private:
 
 public:
     ConfigImpl();
+
+    ThreadPool&
+    threadPool() const noexcept override
+    {
+        return threadPool_;
+    }
 
     /** Return the full path to the source root directory.
 

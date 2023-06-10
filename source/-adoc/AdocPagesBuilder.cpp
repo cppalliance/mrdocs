@@ -27,7 +27,7 @@ AdocPagesBuilder::
 build()
 {
     corpus_.traverse(*this, SymbolID::zero);
-    wg_.wait();
+    taskGroup_.wait();
     return {};
 }
 
@@ -40,7 +40,7 @@ build(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    wg_.post(
+    taskGroup_.async(
         [&]
         {
             llvm::SmallString<512> filePath = outputPath_;

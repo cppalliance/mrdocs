@@ -78,7 +78,6 @@ class TestRunner
     std::string extraYaml_;
     llvm::ErrorOr<std::string> diff_;
     Generator const* xmlGen_;
-    Generator const* adocGen_;
 
     std::shared_ptr<Config const>
     makeConfig(
@@ -124,10 +123,8 @@ TestRunner(
     , extraYaml_(extraYaml)
     , diff_(llvm::sys::findProgramByName("diff"))
     , xmlGen_(getGenerators().find("xml"))
-    , adocGen_(getGenerators().find("adoc"))
 {
     Assert(xmlGen_ != nullptr);
-    Assert(adocGen_ != nullptr);
 }
 
 std::shared_ptr<Config const>

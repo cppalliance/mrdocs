@@ -37,6 +37,13 @@ ThreadPool(
     impl_ = std::make_unique<llvm::ThreadPool>(S);
 }
 
+unsigned
+ThreadPool::
+getThreadCount() const noexcept
+{
+    return impl_->getThreadCount();
+}
+
 void
 ThreadPool::
 async(

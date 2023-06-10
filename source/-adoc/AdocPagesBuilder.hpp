@@ -27,7 +27,7 @@ class AdocPagesBuilder
     Corpus const& corpus_;
     SafeNames names_;
     llvm::StringRef outputPath_;
-    Config::WorkGroup wg_;
+    TaskGroup taskGroup_;
 
 public:
     AdocPagesBuilder(
@@ -36,7 +36,7 @@ public:
         : corpus_(corpus)
         , names_(corpus_)
         , outputPath_(outputPath)
-        , wg_(&corpus.config)
+        , taskGroup_(corpus.config.threadPool())
     {
     }
 

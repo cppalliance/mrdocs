@@ -117,9 +117,7 @@ construct(
 
 ConfigImpl::
 ConfigImpl()
-    : threadPool_(
-        llvm::hardware_concurrency(
-            tooling::ExecutorConcurrency))
+    : threadPool_(0)
 {
 }
 

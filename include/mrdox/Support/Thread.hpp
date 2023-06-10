@@ -55,6 +55,12 @@ public:
     ThreadPool(
         unsigned concurrency);
 
+    /** Return the number of threads in the pool.
+    */
+    MRDOX_DECL
+    unsigned
+    getThreadCount() const noexcept;
+
     /** Submit work to be executed.
 
         The signature of the submitted function
@@ -119,15 +125,60 @@ forEach(
     Range&& range,
     F const& f)
 {
-    TaskGroup tg(*this);
+    TaskGroup taskGroup(*this);
     for(auto&& value : range)
-        tg.async(
+        taskGroup.async(
             [&f, &value]
             {
                 f(value);
             });
-    tg.wait();
+    taskGroup.wait();
 }
+
+//------------------------------------------------
+
+#if 0
+/** A set of execution agents for performing concurrent work.
+*/
+template<class... Args>
+class ExecutionGroup
+{
+    std::vector<Agent*> agents_;
+    std::vector<std::function<void(Agent&)>> work_;
+    ThreadPool threadPool_;
+    TaskGroup taskGroup_;
+
+public:
+    template<class Agents>
+    explicit
+    Executors(
+        Agents&& agents,
+        ThreadPool &threadPool)
+        : threadPool_(threadPool)
+    {
+        agents_.reserve(std::distance(
+            std::begin(agents), std::end(agents)));
+        for(auto& agent : agents)
+            agents_.push_back(&agent);
+    }
+
+    /** Submit work to be executed.
+
+        The signature of the submitted function
+        object should be `void(Agent&)`.
+    */
+    void
+    async(std::function<void(void)> f);
+
+    /** Block until all work has completed.
+    */
+    void
+    wait()
+    {
+        taskGroup_.wait();
+    }
+};
+#endif
 
 } // mrdox
 } // clang
