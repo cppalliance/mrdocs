@@ -15,6 +15,8 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Metadata/Namespace.hpp>
+#include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <cassert>
 #include <memory>
@@ -125,6 +127,69 @@ public:
     MRDOX_DECL bool traverse(Visitor&, std::vector<Reference> const& R) const;
     MRDOX_DECL bool traverse(Visitor&, std::vector<SymbolID> const& R) const;
     /** @} */
+
+    template<class F>
+    bool
+    traverse(NamespaceInfo const& I, F&& f)
+    {
+        for(auto const& ref : I.Children.Namespaces)
+            if(! visit(get<NamespaceInfo>(ref.id), f))
+                return false;
+        for(auto const& ref : I.Children.Records)
+            if(! visit(get<RecordInfo>(ref.id), f))
+                return false;
+        for(auto const& ref : I.Children.Functions)
+            if(! visit(get<FunctionInfo>(ref.id), f))
+                return false;
+        for(auto const& ref : I.Children.Typedefs)
+            if(! visit(get<TypedefInfo>(ref.id), f))
+                return false;
+        for(auto const& ref : I.Children.Enums)
+            if(! visit(get<EnumInfo>(ref.id), f))
+                return false;
+        for(auto const& ref : I.Children.Vars)
+            if(! visit(get<VarInfo>(ref.id), f))
+                return false;
+        for(auto const& ref : I.Children.Specializations)
+            if(! visit(*get<SpecializationInfo>(ref.id), f))
+                return false;
+        return true;
+    }
+
+    template<class F>
+    bool
+    traverse(RecordInfo const& I, F&& f)
+    {
+        if constexpr(std::is_invocable_v<F, RecordInfo const&>)
+            for(auto const& ref : I.Members.Records)
+                if(! f(get<RecordInfo>(ref.id)))
+                    return false;
+        if constexpr(std::is_invocable_v<F, FunctionInfo const&>)
+            for(auto const& ref : I.Members.Functions)
+                if(! f(get<FunctionInfo>(ref.id)))
+                    return false;
+        if constexpr(std::is_invocable_v<F, EnumInfo const&>)
+            for(auto const& ref : I.Members.Enums)
+                if(! f(get<EnumInfo>(ref.id)))
+                    return false;
+        if constexpr(std::is_invocable_v<F, TypedefInfo const&>)
+            for(auto const& ref : I.Members.Types)
+                if(! f(get<TypedefInfo>(ref.id)))
+                    return false;
+        if constexpr(std::is_invocable_v<F, FieldInfo const&>)
+            for(auto const& ref : I.Members.Fields)
+                if(! f(get<FieldInfo>(ref.id)))
+                    return false;
+        if constexpr(std::is_invocable_v<F, VarInfo const&>)
+            for(auto const& ref : I.Members.Vars)
+                if(! f(get<VarInfo>(ref.id)))
+                    return false;
+        if constexpr(std::is_invocable_v<F, SpecializationInfo const&>)
+            for(auto const& ref : I.Members.Specializations)
+                if(! f(get<SpecializationInfo>(ref.id)))
+                    return false;
+        return true;
+    }
 
     //--------------------------------------------
 
