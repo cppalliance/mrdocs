@@ -17,6 +17,7 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Generators.hpp>
 #include <mrdox/Support/Report.hpp>
+#include <mrdox/Support/Thread.hpp>
 #include <clang/Tooling/StandaloneExecution.h>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
@@ -73,10 +74,9 @@ struct Results
 
 class TestRunner
 {
+    ThreadPool threadPool_;
     Results& results_;
     std::string extraYaml_;
-    std::shared_ptr<Config const> config_;
-    Config::WorkGroup wg_;
     llvm::ErrorOr<std::string> diff_;
     Generator const* xmlGen_;
     Generator const* adocGen_;
@@ -120,17 +120,9 @@ TestRunner::
 TestRunner(
     Results& results,
     llvm::StringRef extraYaml)
-    : results_(results)
+    : threadPool_(1)
+    , results_(results)
     , extraYaml_(extraYaml)
-    , config_([&extraYaml]
-        {
-            std::error_code ec;
-            auto config = loadConfigString(
-                "", extraYaml.str());
-            Assert(config);
-            return *config;
-        }())
-    , wg_(config_.get())
     , diff_(llvm::sys::findProgramByName("diff"))
     , xmlGen_(getGenerators().find("xml"))
     , adocGen_(getGenerators().find("adoc"))
@@ -342,7 +334,7 @@ handleDir(
             iter->type() == fs::file_type::regular_file &&
             path::extension(iter->path()).equals_insensitive(".cpp"))
         {
-            wg_.post(
+            threadPool_.post(
                 [this, config, filePath = SmallString(iter->path())]
                 {
                     handleFile(filePath, config).operator bool();
@@ -388,7 +380,7 @@ checkPath(
 
         auto config = makeConfig(workingDir);
         auto err = handleFile(inputPath, config);
-        wg_.wait();
+        threadPool_.wait();
         return err;
     }
 
@@ -398,7 +390,7 @@ checkPath(
         SmallString dirPath(inputPath);
         path::remove_dots(dirPath, true);
         auto err = handleDir(dirPath);
-        wg_.wait();
+        threadPool_.wait();
         return err;
     }
 

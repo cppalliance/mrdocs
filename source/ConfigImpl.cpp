@@ -77,7 +77,9 @@ construct(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    workingDir = workingDir_;
+    if(! files::isAbsolute(workingDir_))
+        return Error("path \"{}\" is not absolute", workingDir_);
+    workingDir = files::makeDirsy(files::normalizePath(workingDir_));
     configYaml = configYaml_;
     extraYaml = extraYaml_;
 
@@ -174,14 +176,6 @@ createConfigFromYAML(
     llvm::StringRef configYaml,
     llvm::StringRef extraYaml)
 {
-#if 0
-    namespace fs = llvm::sys::fs;
-    namespace path = llvm::sys::path;
-
-    SmallPathString temp(workingDir);
-    path::remove_dots(temp, true, path::Style::native);
-#endif
-
     auto config = std::make_shared<ConfigImpl>();
     if(auto err = config->construct(workingDir, configYaml, extraYaml))
         return err;

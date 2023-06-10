@@ -9,20 +9,103 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SUPPORT_PARALLELFOR_HPP
-#define MRDOX_SUPPORT_PARALLELFOR_HPP
+#ifndef MRDOX_SUPPORT_THREAD_HPP
+#define MRDOX_SUPPORT_THREAD_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <iterator>
 #include <mutex>
 #include <thread>
+#include <utility>
 #include <vector>
-
-#include <algorithm>
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
+
+/** A pool of threads for executing work concurrently.
+*/
+class MRDOX_VISIBLE
+    ThreadPool
+{
+    class Impl;
+
+    struct MRDOX_VISIBLE
+        Work
+    {
+        virtual ~Work() = 0;
+        virtual void operator()() = 0;
+    };
+
+    std::unique_ptr<Impl> impl_;
+
+public:
+    /** Destructor.
+    */
+    MRDOX_DECL
+    ~ThreadPool();
+
+    /** Constructor.
+    */
+    MRDOX_DECL
+    explicit
+    ThreadPool(
+        std::size_t concurrency);
+
+    /** Submit work to be executed.
+
+        The signature of the submitted function
+        object should be `void(void)`.
+    */
+    template<class F>
+    void
+    post(F&& f);
+
+    /** Block until all work has completed.
+    */
+    MRDOX_DECL
+    void
+    wait();
+
+private:
+    MRDOX_DECL void do_post(std::unique_ptr<Work>);
+};
+
+template<class F>
+void
+ThreadPool::
+post(F&& f)
+{
+    if(! impl_)
+    {
+        // no threads
+        f();
+        return;
+    }
+
+    struct WorkImpl : Work
+    {
+        F f;
+
+        ~WorkImpl() = default;
+
+        explicit WorkImpl(F&& f_)
+            : f(std::forward<F>(f_))
+        {
+        }
+
+        void operator()() override
+        {
+            f();
+        }
+    };
+
+    do_post(std::make_unique<WorkImpl>(std::forward<F>(f)));
+}
+
+//------------------------------------------------
 
 /** Visit all elements of a range concurrently.
 */
@@ -31,7 +114,7 @@ template<
     class Workers,
     class... Args>
 Error
-parallelFor(
+forEach(
     Elements& elements,
     Workers& workers,
     Args&&... args)

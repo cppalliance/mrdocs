@@ -81,10 +81,20 @@ forEachFile(
 namespace files {
 
 bool
+isAbsolute(
+    std::string_view pathName) noexcept
+{
+    namespace path = llvm::sys::path;
+
+    return path::is_absolute(pathName);
+}
+
+bool
 isDirsy(
     std::string_view pathName) noexcept
 {
     namespace path = llvm::sys::path;
+
     if(pathName.empty())
         return false;
     if(! path::is_separator(

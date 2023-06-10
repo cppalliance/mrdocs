@@ -71,6 +71,13 @@ forEachFile(
 
 namespace files {
 
+/** Return true if pathName is absolute.
+*/
+MRDOX_DECL
+bool
+isAbsolute(
+    std::string_view pathName) noexcept;
+
 /** Return true if pathName ends in a separator.
 */
 MRDOX_DECL
