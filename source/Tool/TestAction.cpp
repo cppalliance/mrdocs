@@ -144,7 +144,7 @@ makeConfig(
 
     std::error_code ec;
     auto config = loadConfigString(
-        workingDir, configYaml);
+        workingDir, toolArgs.addonsDir, configYaml);
     Assert(config);
     return *config;
 }

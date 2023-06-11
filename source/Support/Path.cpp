@@ -92,6 +92,15 @@ isAbsolute(
     return path::is_absolute(pathName);
 }
 
+Error
+requireAbsolute(
+    std::string_view pathName)
+{
+    if(! isAbsolute(pathName))
+        return Error("\"{}\" is not an absolute path");
+    return Error::success();
+}
+
 bool
 isDirsy(
     std::string_view pathName) noexcept
@@ -229,6 +238,20 @@ appendPath(
     path::append(temp, pathName);
     path::remove_dots(temp, true);
     return static_cast<std::string>(temp.str());
+}
+
+Error
+requireDirectory(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+
+    fs::file_status fileStatus;
+    if(auto ec = fs::status(pathName, fileStatus))
+        return Error("fs::status(\"{}\") returned \"{}\"", pathName, ec);
+    if(fileStatus.type() != fs::file_type::directory_file)
+        return Error("\"{}\" is not a directory", pathName);
+    return Error::success();
 }
 
 } // files

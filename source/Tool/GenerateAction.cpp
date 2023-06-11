@@ -37,9 +37,10 @@ DoGenerateAction()
     }
 
     // Load configuration file
-    if(! toolArgs.configPath.hasArgStr())
+    if(toolArgs.configPath.empty())
         return Error("the config path argument is missing");
-    auto config = loadConfigFile(toolArgs.configPath, extraYaml);
+    auto config = loadConfigFile(
+        toolArgs.configPath, toolArgs.addonsDir, extraYaml);
     if(! config)
         return config.getError();
 

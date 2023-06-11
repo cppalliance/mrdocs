@@ -61,6 +61,7 @@ private:
 public:
     ConfigImpl(
         llvm::StringRef workingDir,
+        llvm::StringRef addonsDir,
         llvm::StringRef configYaml,
         llvm::StringRef extraYaml);
 
@@ -120,15 +121,17 @@ public:
     friend
     Expected<std::shared_ptr<ConfigImpl const>>
     createConfigFromYAML(
-        llvm::StringRef workingDir,
-        llvm::StringRef configYaml,
-        llvm::StringRef extraYaml);
+        std::string_view workingDir,
+        std::string_view addonsDir,
+        std::string_view configYaml,
+        std::string_view extraYaml);
 
     friend
     Expected<std::shared_ptr<ConfigImpl const>>
     loadConfigFile(
         std::string_view configFilePath,
-        std::string_view extraYam);
+        std::string_view addonsDir,
+        std::string_view extraYaml);
 };
 
 //------------------------------------------------
@@ -159,6 +162,10 @@ public:
     for calculating filenames from relative
     paths.
 
+    @param addonsDir A valid directory to determine
+    the location of the addons/ folder.
+    This must be an absolute path.
+
     @param configYaml A string containing valid
     YAML which will be parsed and applied to create
     the configuration.
@@ -169,9 +176,10 @@ public:
 */
 Expected<std::shared_ptr<ConfigImpl const>>
 createConfigFromYAML(
-    llvm::StringRef workingDir,
-    llvm::StringRef configYaml,
-    llvm::StringRef extraYaml = "");
+    std::string_view workingDir,
+    std::string_view addonsDir,
+    std::string_view configYaml,
+    std::string_view extraYaml = "");
 
 /** Create a configuration by loading a YAML file.
 
@@ -198,6 +206,10 @@ createConfigFromYAML(
     directory of the process. POSIX or Windows style
     path separators are accepted.
 
+    @param addonsDir A valid directory to determine
+    the location of the addons/ folder.
+    This must be an absolute path.
+
     @param extraYaml An optional string containing
     additional valid YAML which will be parsed and
     applied to the existing configuration.
@@ -206,7 +218,8 @@ MRDOX_DECL
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
     std::string_view configFilePath,
-    std::string_view extraYam = "");
+    std::string_view addonsDir,
+    std::string_view extraYaml = "");
 
 /** Create a configuration by loading a YAML string.
 
@@ -223,7 +236,11 @@ loadConfigFile(
     @param workingDir The directory which should
     be considered the working directory for
     calculating filenames from relative paths.
-    This must be an absolute path, or empty.
+    This must be an absolute path.
+
+    @param addonsDir A valid directory to determine
+    the location of the addons/ folder.
+    This must be an absolute path.
 
     @param configYaml A string containing valid
     YAML which will be parsed and applied to create
@@ -235,6 +252,7 @@ inline
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigString(
     std::string_view workingDir,
+    std::string_view addonsDir,
     std::string_view configYaml)
 {
     return createConfigFromYAML(workingDir, configYaml, "");

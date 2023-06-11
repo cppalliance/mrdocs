@@ -117,6 +117,13 @@ public:
     */
     std::string workingDir;
 
+    /** Full path to the Addons directory.
+
+        This string will always be native style
+        and have a trailing directory separator.
+    */
+    std::string addonsDir;
+
     /** A string holding the complete configuration YAML.
     */
     std::string configYaml;

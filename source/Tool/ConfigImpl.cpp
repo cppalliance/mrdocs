@@ -70,6 +70,7 @@ namespace mrdox {
 ConfigImpl::
 ConfigImpl(
     llvm::StringRef workingDir_,
+    llvm::StringRef addonsDir_,
     llvm::StringRef configYaml_,
     llvm::StringRef extraYaml_)
 {
@@ -79,6 +80,12 @@ ConfigImpl(
     if(! files::isAbsolute(workingDir_))
         throw Error("path \"{}\" is not absolute", workingDir_);
     workingDir = files::makeDirsy(files::normalizePath(workingDir_));
+
+    if(auto err = files::requireDirectory(addonsDir_))
+        throw Error("path \"{}\" is not absolute", addonsDir_);
+    Assert(files::isDirsy(addonsDir_));
+    addonsDir = addonsDir_;
+
     configYaml = configYaml_;
     extraYaml = extraYaml_;
 
@@ -163,14 +170,15 @@ yamlDiagnostic(
 
 Expected<std::shared_ptr<ConfigImpl const>>
 createConfigFromYAML(
-    llvm::StringRef workingDir,
-    llvm::StringRef configYaml,
-    llvm::StringRef extraYaml)
+    std::string_view workingDir,
+    std::string_view addonsDir,
+    std::string_view configYaml,
+    std::string_view extraYaml)
 {
     try
     {
         auto config = std::make_shared<ConfigImpl>(
-            workingDir, configYaml, extraYaml);
+            workingDir, addonsDir, configYaml, extraYaml);
         return config;
     }
     catch(Error err)
@@ -182,6 +190,7 @@ createConfigFromYAML(
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
     std::string_view configFilePath,
+    std::string_view addonsDir,
     std::string_view extraYaml)
 {
     namespace fs = llvm::sys::fs;
@@ -204,7 +213,7 @@ loadConfigFile(
     try
     {
         auto config = std::make_shared<ConfigImpl>(
-            workingDir, *text, extraYaml);
+            workingDir, addonsDir, *text, extraYaml);
         return config;
     }
     catch(Error err)

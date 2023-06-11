@@ -1,0 +1,4 @@
+= Addons/Generator/Asciidoc
+
+These files are used by the Asciidoc generator.
+
