@@ -8,10 +8,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_CORPUSIMPL_HPP
-#define MRDOX_LIB_CORPUSIMPL_HPP
+#ifndef MRDOX_TOOL_CORPUSIMPL_HPP
+#define MRDOX_TOOL_CORPUSIMPL_HPP
 
-#include "ConfigImpl.hpp"
+#include "Tool/ConfigImpl.hpp"
 #include "Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>

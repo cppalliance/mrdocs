@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_AST_BITCODEWRITER_HPP
-#define MRDOX_LIB_AST_BITCODEWRITER_HPP
+#ifndef MRDOX_TOOL_AST_BITCODEWRITER_HPP
+#define MRDOX_TOOL_AST_BITCODEWRITER_HPP
 
 //
 // This file implements a writer for serializing the

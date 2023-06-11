@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_SUPPORT_YAMLFWD_HPP
-#define MRDOX_LIB_SUPPORT_YAMLFWD_HPP
+#ifndef MRDOX_TOOL_SUPPORT_YAMLFWD_HPP
+#define MRDOX_TOOL_SUPPORT_YAMLFWD_HPP
 
 #include <mrdox/Platform.hpp>
 

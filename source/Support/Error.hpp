@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_SUPPORT_ERROR_HPP
-#define MRDOX_LIB_SUPPORT_ERROR_HPP
+#ifndef MRDOX_TOOL_SUPPORT_ERROR_HPP
+#define MRDOX_TOOL_SUPPORT_ERROR_HPP
 
 #include <mrdox/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>

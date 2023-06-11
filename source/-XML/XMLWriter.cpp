@@ -10,7 +10,7 @@
 //
 
 #include "XMLWriter.hpp"
-#include "ConfigImpl.hpp"
+#include "Tool/ConfigImpl.hpp"
 #include "CXXTags.hpp"
 #include "Support/Radix.hpp"
 #include "Support/SafeNames.hpp"

@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_OPTIONS_HPP
-#define MRDOX_LIB_OPTIONS_HPP
+#ifndef MRDOX_TOOL_OPTIONS_HPP
+#define MRDOX_TOOL_OPTIONS_HPP
 
 #include <llvm/Support/CommandLine.h>
 #include <string>

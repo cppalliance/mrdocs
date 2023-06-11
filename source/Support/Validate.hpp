@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_SUPPORT_VALIDATE_HPP
-#define MRDOX_LIB_SUPPORT_VALIDATE_HPP
+#ifndef MRDOX_TOOL_SUPPORT_VALIDATE_HPP
+#define MRDOX_TOOL_SUPPORT_VALIDATE_HPP
 
 #include <mrdox/Platform.hpp>
 #include <llvm/ADT/StringRef.h>

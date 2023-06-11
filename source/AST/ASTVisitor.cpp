@@ -14,7 +14,7 @@
 #include "ASTVisitorHelpers.hpp"
 #include "Bitcode.hpp"
 #include "ParseJavadoc.hpp"
-#include "ConfigImpl.hpp"
+#include "Tool/ConfigImpl.hpp"
 #include "Support/Path.hpp"
 #include "Support/Debug.hpp"
 #include <mrdox/Metadata.hpp>

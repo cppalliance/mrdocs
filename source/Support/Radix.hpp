@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_SUPPORT_RADIX_HPP
-#define MRDOX_LIB_SUPPORT_RADIX_HPP
+#ifndef MRDOX_TOOL_SUPPORT_RADIX_HPP
+#define MRDOX_TOOL_SUPPORT_RADIX_HPP
 
 #include <mrdox/Platform.hpp>
 #include <llvm/ADT/ArrayRef.h>

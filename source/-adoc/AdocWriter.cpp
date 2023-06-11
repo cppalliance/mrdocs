@@ -10,7 +10,7 @@
 //
 
 #include "AdocWriter.hpp"
-#include "ConfigImpl.hpp"
+#include "Tool/ConfigImpl.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Validate.hpp"
 #include <mrdox/Metadata.hpp>

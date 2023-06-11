@@ -22,8 +22,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-#ifndef MRDOX_LIB_AST_EXECUTION_HPP
-#define MRDOX_LIB_AST_EXECUTION_HPP
+#ifndef MRDOX_TOOL_AST_EXECUTION_HPP
+#define MRDOX_TOOL_AST_EXECUTION_HPP
 
 #include <clang/Tooling/ArgumentsAdjusters.h>
 #include <clang/Tooling/Execution.h>

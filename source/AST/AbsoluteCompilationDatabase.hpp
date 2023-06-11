@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_AST_ABSOLUTECOMPILATIONDATABASE_HPP
-#define MRDOX_LIB_AST_ABSOLUTECOMPILATIONDATABASE_HPP
+#ifndef MRDOX_TOOL_AST_ABSOLUTECOMPILATIONDATABASE_HPP
+#define MRDOX_TOOL_AST_ABSOLUTECOMPILATIONDATABASE_HPP
 
 #include <mrdox/Config.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
