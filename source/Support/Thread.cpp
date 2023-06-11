@@ -9,7 +9,7 @@
 //
 
 #include "Support/Debug.hpp"
-#include <mrdox/Support/Thread.hpp>
+#include <mrdox/Support/ThreadPool.hpp>
 #include <llvm/Support/ThreadPool.h>
 #include <utility>
 
