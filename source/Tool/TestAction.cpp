@@ -17,7 +17,7 @@
 #include <mrdox/Generators.hpp>
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Report.hpp>
-#include <mrdox/Support/Thread.hpp>
+#include <mrdox/Support/ThreadPool.hpp>
 #include <clang/Tooling/StandaloneExecution.h>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
