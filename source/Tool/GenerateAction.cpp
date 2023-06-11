@@ -10,7 +10,7 @@
 //
 
 #include "Options.hpp"
-#include "ConfigImpl.hpp"
+#include "Tool/ConfigImpl.hpp"
 #include "CorpusImpl.hpp"
 #include "AST/AbsoluteCompilationDatabase.hpp"
 #include <mrdox/Generators.hpp>

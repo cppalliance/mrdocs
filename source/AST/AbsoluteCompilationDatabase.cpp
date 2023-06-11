@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "ConfigImpl.hpp"
+#include "Tool/ConfigImpl.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Path.hpp"
 #include "AST/AbsoluteCompilationDatabase.hpp"

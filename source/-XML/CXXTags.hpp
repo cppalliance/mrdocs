@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_XML_CXXTAGS_HPP
-#define MRDOX_LIB_XML_CXXTAGS_HPP
+#ifndef MRDOX_TOOL_XML_CXXTAGS_HPP
+#define MRDOX_TOOL_XML_CXXTAGS_HPP
 
 #include "XMLTags.hpp"
 #include "Support/Operator.hpp"

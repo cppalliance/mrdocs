@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_AST_BITCODEIDS_HPP
-#define MRDOX_LIB_AST_BITCODEIDS_HPP
+#ifndef MRDOX_TOOL_AST_BITCODEIDS_HPP
+#define MRDOX_TOOL_AST_BITCODEIDS_HPP
 
 #include <mrdox/Platform.hpp>
 #include <llvm/Bitstream/BitCodeEnums.h>

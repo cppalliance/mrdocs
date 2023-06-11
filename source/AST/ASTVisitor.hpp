@@ -10,10 +10,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_AST_ASTVISITOR_HPP
-#define MRDOX_LIB_AST_ASTVISITOR_HPP
+#ifndef MRDOX_TOOL_AST_ASTVISITOR_HPP
+#define MRDOX_TOOL_AST_ASTVISITOR_HPP
 
-#include "ConfigImpl.hpp"
+#include "Tool/ConfigImpl.hpp"
 #include <mrdox/MetadataFwd.hpp>
 #include <clang/Sema/SemaConsumer.h>
 #include <clang/Tooling/Execution.h>

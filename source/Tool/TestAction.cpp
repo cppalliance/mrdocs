@@ -10,7 +10,7 @@
 
 #include "Options.hpp"
 #include "SingleFileDB.hpp"
-#include "ConfigImpl.hpp"
+#include "Tool/ConfigImpl.hpp"
 #include "CorpusImpl.hpp"
 #include "Support/Error.hpp"
 #include <mrdox/Config.hpp>

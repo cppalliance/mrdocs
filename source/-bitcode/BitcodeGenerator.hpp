@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_BITCODE_BITCODEGENERATOR_HPP
-#define MRDOX_LIB_BITCODE_BITCODEGENERATOR_HPP
+#ifndef MRDOX_TOOL_BITCODE_BITCODEGENERATOR_HPP
+#define MRDOX_TOOL_BITCODE_BITCODEGENERATOR_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Generator.hpp>

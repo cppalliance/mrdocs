@@ -7,8 +7,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_AST_ASTVISITORHELPERS_HPP
-#define MRDOX_LIB_AST_ASTVISITORHELPERS_HPP
+#ifndef MRDOX_TOOL_AST_ASTVISITORHELPERS_HPP
+#define MRDOX_TOOL_AST_ASTVISITORHELPERS_HPP
 
 #include "Support/Debug.hpp"
 #include <mrdox/Platform.hpp>

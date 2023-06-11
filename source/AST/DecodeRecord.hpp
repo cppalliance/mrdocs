@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_AST_DECODERECORD_HPP
-#define MRDOX_LIB_AST_DECODERECORD_HPP
+#ifndef MRDOX_TOOL_AST_DECODERECORD_HPP
+#define MRDOX_TOOL_AST_DECODERECORD_HPP
 
 #include "BitcodeReader.hpp"
 
