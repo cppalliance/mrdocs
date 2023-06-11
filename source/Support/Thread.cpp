@@ -28,7 +28,18 @@ ThreadPool::
 }
 
 ThreadPool::
+ThreadPool() = default;
+
+ThreadPool::
 ThreadPool(
+    unsigned concurrency)
+{
+    reset(concurrency);
+}
+
+void
+ThreadPool::
+reset(
     unsigned concurrency)
 {
     llvm::ThreadPoolStrategy S;

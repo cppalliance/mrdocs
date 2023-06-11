@@ -58,13 +58,11 @@ private:
     template<class T>
     friend struct llvm::yaml::MappingTraits;
 
-    Error construct(
+public:
+    ConfigImpl(
         llvm::StringRef workingDir,
         llvm::StringRef configYaml,
         llvm::StringRef extraYaml);
-
-public:
-    ConfigImpl();
 
     ThreadPool&
     threadPool() const noexcept override

@@ -15,6 +15,7 @@
 #include <mrdox/Corpus.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Support/Error.hpp>
+#include <mrdox/Support/Thread.hpp>
 #include <llvm/ADT/SmallString.h>
 
 namespace clang {

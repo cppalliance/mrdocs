@@ -14,7 +14,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Thread.hpp>
 #include <functional>
 #include <memory>
 #include <string>
@@ -26,7 +25,7 @@
 namespace clang {
 namespace mrdox {
 
-class ConfigImpl;
+class ThreadPool;
 
 /** Configuration used to generate the Corpus and Docs
 

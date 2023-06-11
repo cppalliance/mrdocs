@@ -67,9 +67,8 @@ struct llvm::yaml::MappingTraits<
 namespace clang {
 namespace mrdox {
 
-Error
 ConfigImpl::
-construct(
+ConfigImpl(
     llvm::StringRef workingDir_,
     llvm::StringRef configYaml_,
     llvm::StringRef extraYaml_)
@@ -78,7 +77,7 @@ construct(
     namespace path = llvm::sys::path;
 
     if(! files::isAbsolute(workingDir_))
-        return Error("path \"{}\" is not absolute", workingDir_);
+        throw Error("path \"{}\" is not absolute", workingDir_);
     workingDir = files::makeDirsy(files::normalizePath(workingDir_));
     configYaml = configYaml_;
     extraYaml = extraYaml_;
@@ -89,14 +88,14 @@ construct(
         yin.setAllowUnknownKeys(true);
         yin >> *this;
         if(auto ec = yin.error())
-            return Error(ec);
+            throw Error(ec);
     }
     {
         llvm::yaml::Input yin(extraYaml, this, yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
         yin >> *this;
         if(auto ec = yin.error())
-            return Error(ec);
+            throw Error(ec);
     }
 
     // Post-process as needed
@@ -112,13 +111,7 @@ construct(
         name = files::makePosixStyle(
             files::makeAbsolute(name, workingDir));
 
-    return Error::success();
-}
-
-ConfigImpl::
-ConfigImpl()
-    : threadPool_(0)
-{
+    threadPool_.reset(concurrency);
 }
 
 //------------------------------------------------
@@ -174,10 +167,16 @@ createConfigFromYAML(
     llvm::StringRef configYaml,
     llvm::StringRef extraYaml)
 {
-    auto config = std::make_shared<ConfigImpl>();
-    if(auto err = config->construct(workingDir, configYaml, extraYaml))
+    try
+    {
+        auto config = std::make_shared<ConfigImpl>(
+            workingDir, configYaml, extraYaml);
+        return config;
+    }
+    catch(Error err)
+    {
         return err;
-    return config;
+    }
 }
 
 Expected<std::shared_ptr<ConfigImpl const>>
@@ -202,10 +201,16 @@ loadConfigFile(
     auto workingDir = files::getParentDir(*absPath);
 
     // attempt to create the config
-    auto config = std::make_shared<ConfigImpl>();
-    if(auto err = config->construct(workingDir, *text, extraYaml))
+    try
+    {
+        auto config = std::make_shared<ConfigImpl>(
+            workingDir, *text, extraYaml);
+        return config;
+    }
+    catch(Error err)
+    {
         return err;
-    return config;
+    }
 }
 
 } // mrdox

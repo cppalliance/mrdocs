@@ -49,10 +49,26 @@ public:
     ~ThreadPool();
 
     /** Constructor.
+
+        Default constructed thread pools may only
+        be reset or destroyed.
+    */
+    MRDOX_DECL
+    explicit
+    ThreadPool();
+
+    /** Constructor.
     */
     MRDOX_DECL
     explicit
     ThreadPool(
+        unsigned concurrency);
+
+    /** Reset the pool to the specified concurrency.
+    */
+    MRDOX_DECL
+    void
+    reset(
         unsigned concurrency);
 
     /** Return the number of threads in the pool.
