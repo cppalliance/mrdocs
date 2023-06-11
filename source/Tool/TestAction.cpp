@@ -8,9 +8,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Options.hpp"
 #include "SingleFileDB.hpp"
-#include "Tool/ConfigImpl.hpp"
+#include "ToolArgs.hpp"
+#include "ConfigImpl.hpp"
 #include "CorpusImpl.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Error.hpp"
@@ -214,7 +214,7 @@ handleFile(
         return Error::success(); // keep going
     }
 
-    if(ToolAction == Action::test)
+    if(toolArgs.toolAction == Action::test)
     {
         // Open and load XML comparison file
         std::unique_ptr<llvm::MemoryBuffer> expectedXml;
@@ -252,7 +252,7 @@ handleFile(
             results_.numberOfFailures++;
             reportError("Test for \"{}\" failed", filePath);
 
-            if(badOption.getValue())
+            if(toolArgs.badOption.getValue())
             {
                 // Write the .bad.xml file
                 auto bad = outputPath;
@@ -287,7 +287,7 @@ handleFile(
             // success
         }
     }
-    else if(ToolAction == Action::update)
+    else if(toolArgs.toolAction == Action::update)
     {
         // Refresh the expected output file
         if(auto err = writeFile(outputPath, generatedXml))
@@ -402,7 +402,7 @@ DoTestAction()
     llvm::raw_string_ostream(extraYaml) <<
         "concurrency: 1\n";
     Results results;
-    for(auto const& inputPath : InputPaths)
+    for(auto const& inputPath : toolArgs.inputPaths)
     {
         TestRunner instance(results, extraYaml);
         if(auto err = instance.checkPath(inputPath))

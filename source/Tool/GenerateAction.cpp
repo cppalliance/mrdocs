@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Options.hpp"
-#include "Tool/ConfigImpl.hpp"
+#include "ToolArgs.hpp"
+#include "ConfigImpl.hpp"
 #include "CorpusImpl.hpp"
 #include "AST/AbsoluteCompilationDatabase.hpp"
 #include <mrdox/Generators.hpp>
@@ -32,23 +32,23 @@ DoGenerateAction()
     std::string extraYaml;
     {
         llvm::raw_string_ostream os(extraYaml);
-        if(IgnoreMappingFailures.getValue())
+        if(toolArgs.ignoreMappingFailures.getValue())
             os << "ignore-failures: true\n";
     }
 
     // Load configuration file
-    if(! ConfigPath.hasArgStr())
+    if(! toolArgs.configPath.hasArgStr())
         return Error("the config path argument is missing");
-    auto config = loadConfigFile(ConfigPath, extraYaml);
+    auto config = loadConfigFile(toolArgs.configPath, extraYaml);
     if(! config)
         return config.getError();
 
     // Load the compilation database
-    if(InputPaths.empty())
+    if(toolArgs.inputPaths.empty())
         return Error("the compilation database path argument is missing");
-    if(InputPaths.size() > 1)
-        return Error("got {} input paths where 1 was expected", InputPaths.size());
-    auto compilationsPath = files::normalizePath(InputPaths.front());
+    if(toolArgs.inputPaths.size() > 1)
+        return Error("got {} input paths where 1 was expected", toolArgs.inputPaths.size());
+    auto compilationsPath = files::normalizePath(toolArgs.inputPaths.front());
     std::string errorMessage;
     auto jsonCompilations = tooling::JSONCompilationDatabase::loadFromFile(
         compilationsPath, errorMessage, tooling::JSONCommandLineSyntax::AutoDetect);
@@ -70,9 +70,9 @@ DoGenerateAction()
     auto ex = std::make_unique<tooling::AllTUsToolExecutor>(compilations, ThreadCount);
 
     // Create the generator
-    auto generator = generators.find(FormatType.getValue());
+    auto generator = generators.find(toolArgs.formatType.getValue());
     if(! generator)
-        return Error("the Generator \"{}\" was not found", FormatType.getValue());
+        return Error("the Generator \"{}\" was not found", toolArgs.formatType.getValue());
 
     // Run the tool, this can take a while
     auto corpus = CorpusImpl::build(*ex, *config);
@@ -82,7 +82,7 @@ DoGenerateAction()
     // Run the generator.
     if(config.get()->verboseOutput)
         reportInfo("Generating docs...\n");
-    return generator->build(OutputPath.getValue(), **corpus);
+    return generator->build(toolArgs.outputPath.getValue(), **corpus);
 }
 
 } // mrdox
