@@ -57,17 +57,23 @@ getThreadCount() const noexcept
 
 void
 ThreadPool::
-async(
-    std::function<void(void)> f)
+wait()
 {
-    impl_->async(std::move(f));
+    impl_->wait();
 }
 
 void
 ThreadPool::
-wait()
+post(
+    any_callable<void(void)> f)
 {
-    impl_->wait();
+    auto sp = std::make_shared<
+        any_callable<void(void)>>(std::move(f));
+    impl_->async(
+        [sp]
+        {
+            (*sp)();
+        });
 }
 
 //------------------------------------------------
@@ -90,17 +96,23 @@ TaskGroup(
 
 void
 TaskGroup::
-async(
-    std::function<void(void)> f)
+wait()
 {
-    impl_->async(std::move(f));
+    impl_->wait();
 }
 
 void
 TaskGroup::
-wait()
+post(
+    any_callable<void(void)> f)
 {
-    impl_->wait();
+    auto sp = std::make_shared<
+        any_callable<void(void)>>(std::move(f));
+    impl_->async(
+        [sp]
+        {
+            (*sp)();
+        });
 }
 
 } // mrdox
