@@ -30,7 +30,8 @@ class ToolArgs
 {
     ToolArgs();
 
-    llvm::cl::OptionCategory    genCat;
+    llvm::cl::OptionCategory    commonCat;
+    llvm::cl::OptionCategory    generateCat;
     llvm::cl::OptionCategory    testCat;
 
 public:
@@ -41,6 +42,7 @@ public:
 
     // Common options
     llvm::cl::opt<Action>       toolAction;
+    llvm::cl::opt<std::string>  addonsDir;
     llvm::cl::opt<std::string>  configPath;
     llvm::cl::opt<std::string>  outputPath;
     llvm::cl::list<std::string> inputPaths;

@@ -80,6 +80,13 @@ bool
 isAbsolute(
     std::string_view pathName) noexcept;
 
+/** Return an error if pathName is not absolute.
+*/
+MRDOX_DECL
+Error
+requireAbsolute(
+    std::string_view pathName);
+
 /** Return true if pathName ends in a separator.
 */
 MRDOX_DECL
@@ -169,6 +176,13 @@ MRDOX_DECL
 std::string
 appendPath(
     std::string_view basePath,
+    std::string_view pathName);
+
+/** Return an error if the path is not a directory.
+*/
+MRDOX_DECL
+Error
+requireDirectory(
     std::string_view pathName);
 
 } // files
