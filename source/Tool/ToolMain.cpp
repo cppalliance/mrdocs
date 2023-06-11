@@ -32,7 +32,7 @@
 
 //------------------------------------------------
 
-#include "Options.hpp"
+#include "ToolArgs.hpp"
 #include "Support/Debug.hpp"
 #include <mrdox/Support/Report.hpp>
 #include <mrdox/Version.hpp>
@@ -69,19 +69,13 @@ int main(int argc, char const** argv)
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     llvm::cl::SetVersionPrinter(&print_version);
 
-    {
-        std::string errorString;
-        llvm::raw_string_ostream os(errorString);
-        if(! llvm::cl::ParseCommandLineOptions(
-            argc, argv, Overview, &os, nullptr))
-        {
-            llvm::errs() << errorString;
-            return EXIT_FAILURE;
-        }
-    }
+    toolArgs.hideForeignOptions();
+    if(! llvm::cl::ParseCommandLineOptions(
+            argc, argv, toolArgs.usageText))
+        return EXIT_FAILURE;
 
     // Generate
-    if(clang::mrdox::ToolAction == Action::generate)
+    if(clang::mrdox::toolArgs.toolAction == Action::generate)
     {
         auto err = DoGenerateAction();
         if(! err)
