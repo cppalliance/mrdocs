@@ -176,7 +176,22 @@ MRDOX_DECL
 std::string
 appendPath(
     std::string_view basePath,
-    std::string_view pathName);
+    std::string_view name);
+
+MRDOX_DECL
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name1,
+    std::string_view name2);
+
+MRDOX_DECL
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name1,
+    std::string_view name2,
+    std::string_view name3);
 
 /** Return an error if the path is not a directory.
 */

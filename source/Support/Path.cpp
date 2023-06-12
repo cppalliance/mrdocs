@@ -229,12 +229,41 @@ makePosixStyle(
 std::string
 appendPath(
     std::string_view basePath,
-    std::string_view pathName)
+    std::string_view name)
 {
     namespace path = llvm::sys::path;
 
     SmallPathString temp(makeDirsy(basePath));
-    path::append(temp, pathName);
+    path::append(temp, name);
+    path::remove_dots(temp, true);
+    return static_cast<std::string>(temp.str());
+}
+
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name1,
+    std::string_view name2)
+{
+    namespace path = llvm::sys::path;
+
+    SmallPathString temp(makeDirsy(basePath));
+    path::append(temp, name1, name2);
+    path::remove_dots(temp, true);
+    return static_cast<std::string>(temp.str());
+}
+
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name1,
+    std::string_view name2,
+    std::string_view name3)
+{
+    namespace path = llvm::sys::path;
+
+    SmallPathString temp(makeDirsy(basePath));
+    path::append(temp, name1, name2, name3);
     path::remove_dots(temp, true);
     return static_cast<std::string>(temp.str());
 }

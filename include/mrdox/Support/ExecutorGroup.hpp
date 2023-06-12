@@ -132,6 +132,11 @@ private:
             group_.agents_.emplace_back(std::move(agent_));
             group_.impl_->cv_.notify_all();
         }
+
+        Agent& operator*() const noexcept
+        {
+            return *agent_;
+        }
     };
 
     void
@@ -153,7 +158,7 @@ private:
                     any_callable<void(Agent&)> work(std::move(work_.front()));
                     work_.pop_front();
                     unlock_guard unlock(impl_->mutex_);
-                    work(*agent);
+                    work(*scope);
                 }
             });
     }
