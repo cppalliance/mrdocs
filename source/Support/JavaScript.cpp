@@ -51,9 +51,9 @@ struct Access
         return (*this)(scope.ctx_);
     }
 
-    duk_idx_t operator()(Object const& obj) const noexcept
+    duk_idx_t operator()(Value const& val) const noexcept
     {
-        return obj.idx_;
+        return val.idx_;
     }
 
     void addref(Scope& scope) const noexcept
@@ -150,10 +150,26 @@ Arg(Value const& value) noexcept
 
 void
 Arg::
-push_Value(
+push_bool(
     Arg const& arg, Scope& scope)
 {
-    duk_dup(A(scope), arg.index);
+    duk_push_boolean(A(scope), arg.number != 0);
+}
+
+void
+Arg::
+push_int(
+    Arg const& arg, Scope& scope)
+{
+    duk_push_int(A(scope), arg.number);
+}
+
+void
+Arg::
+push_uint(
+    Arg const& arg, Scope& scope)
+{
+    duk_push_uint(A(scope), arg.u_number);
 }
 
 void
@@ -162,6 +178,14 @@ push_lstring(
     Arg const& arg, Scope& scope)
 {
     duk_push_lstring(A(scope), arg.data, arg.size);
+}
+
+void
+Arg::
+push_Value(
+    Arg const& arg, Scope& scope)
+{
+    duk_dup(A(scope), arg.index);
 }
 
 //------------------------------------------------
@@ -327,6 +351,15 @@ type() const noexcept
     }
 }
 
+bool
+Value::
+isArray() const noexcept
+{
+    return
+        isObject() &&
+        duk_is_array(A(*scope_), idx_);
+}
+
 Expected<Value>
 Value::
 callImpl(
@@ -390,6 +423,66 @@ get() const noexcept
 
 //------------------------------------------------
 //
+// Array
+//
+//------------------------------------------------
+
+Array::
+Array(
+    int idx,
+    Scope& scope) noexcept
+    : Value(idx, scope)
+{
+}
+
+Array::
+Array(
+    Value value)
+{
+    if(! value.isArray())
+        throw Error("not an Array");
+    static_cast<Value&>(*this) = std::move(value);
+}
+
+Array&
+Array::
+operator=(
+    Value value)
+{
+    if(! value.isArray())
+        throw Error("not an Array");
+    static_cast<Value&>(*this) = std::move(value);
+    return *this;
+}
+
+Array::
+Array(Scope& scope)
+    : Value(duk_push_array(A(scope)), scope)
+{
+}
+
+std::size_t
+Array::
+size() const
+{
+    return duk_get_length(A(*scope_), idx_);
+}
+
+void
+Array::
+push_back(
+    Arg value) const
+{
+    auto len = duk_get_length(A(*scope_), idx_);
+    value.push(value, *scope_);
+    if(! duk_put_prop_index(A(*scope_), idx_, len))
+    {
+        // VFALCO What?
+    }
+}
+
+//------------------------------------------------
+//
 // Object
 //
 //------------------------------------------------
@@ -428,6 +521,19 @@ Object::
 Object(Scope& scope)
     : Value(duk_push_object(A(scope)), scope)
 {
+}
+
+void
+Object::
+insert(
+    std::string_view name, Arg value) const
+{
+    value.push(value, *scope_);
+    if(! duk_put_prop_lstring(A(*scope_),
+        idx_, name.data(), name.size()))
+    {
+        // VFALCO What?
+    }
 }
 
 //------------------------------------------------

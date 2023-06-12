@@ -93,11 +93,50 @@ struct Arg
     void (*push)(Arg const&, Scope&);
 
     int number = 0;
+    unsigned u_number = 0;
     char const* data = nullptr;
     std::size_t size = 0;
     unsigned int index = 0; // of object
 
     Arg() = default;
+
+    Arg(int i) noexcept
+        : push(&push_int)
+        , number(i)
+    {
+    }
+
+    Arg(bool b) noexcept
+        : push(&push_bool)
+        , number(b)
+    {
+    }
+
+    Arg(unsigned u) noexcept
+        : push(&push_uint)
+        , u_number(u)
+    {
+    }
+
+    Arg(std::size_t u) noexcept
+        : push(&push_uint)
+        , u_number(static_cast<std::size_t>(u))
+    {
+    }
+
+    Arg(char const* s) noexcept
+        : push(&push_lstring)
+        , data(s)
+        , size(std::string_view(s).size())
+    {
+    }
+
+    Arg(std::string const& s) noexcept
+        : push(&push_lstring)
+        , data(s.data())
+        , size(s.size())
+    {
+    }
 
     Arg(std::string_view s) noexcept
         : push(&push_lstring)
@@ -108,8 +147,11 @@ struct Arg
 
     MRDOX_DECL Arg(Value const& value) noexcept;
 
-    MRDOX_DECL static void push_Value(Arg const&, Scope&);
+    MRDOX_DECL static void push_bool(Arg const&, Scope&);
+    MRDOX_DECL static void push_int(Arg const&, Scope&);
+    MRDOX_DECL static void push_uint(Arg const&, Scope&);
     MRDOX_DECL static void push_lstring(Arg const&, Scope&);
+    MRDOX_DECL static void push_Value(Arg const&, Scope&);
 };
 
 //------------------------------------------------
@@ -211,6 +253,8 @@ public:
         return type() == Type::string;
     }
 
+    MRDOX_DECL bool isArray() const noexcept;
+
     bool isObject() const noexcept
     {
         return type() == Type::object;
@@ -296,6 +340,34 @@ public:
 
 //------------------------------------------------
 
+/** An ECMAScript Array.
+
+    An Array is an Object which has the internal
+    class Array prototype.
+*/
+class Array : public Value
+{
+    friend struct Access;
+
+    Array(int idx, Scope&) noexcept;
+
+public:
+    MRDOX_DECL Array(Value value);
+    MRDOX_DECL Array& operator=(Value value);
+    MRDOX_DECL explicit Array(Scope& scope);
+
+    MRDOX_DECL
+    std::size_t
+    size() const;
+
+    MRDOX_DECL
+    void
+    push_back(
+        Arg value) const;
+};
+
+//------------------------------------------------
+
 /** An ECMAScript Object.
 */
 class Object : public Value
@@ -313,6 +385,11 @@ public:
     MRDOX_DECL Object(Value value);
     MRDOX_DECL Object& operator=(Value value);
     MRDOX_DECL explicit Object(Scope& scope);
+
+    MRDOX_DECL
+    void
+    insert(
+        std::string_view name, Arg value) const;
 
     /** Call a member or function.
     */
