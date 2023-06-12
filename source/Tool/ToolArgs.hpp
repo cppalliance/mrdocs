@@ -63,7 +63,7 @@ public:
     This is a global variable because of how the
     LLVM command line interface is designed.
 */
-constexpr ToolArgs& toolArgs = ToolArgs::instance_;
+constexpr static ToolArgs& toolArgs = ToolArgs::instance_;
 
 } // mrdox
 } // clang
