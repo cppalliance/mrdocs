@@ -255,7 +255,7 @@ loadConfigString(
     std::string_view addonsDir,
     std::string_view configYaml)
 {
-    return createConfigFromYAML(workingDir, configYaml, "");
+    return createConfigFromYAML(workingDir, addonsDir, configYaml);
 }
 
 } // mrdox
