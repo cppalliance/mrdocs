@@ -37,7 +37,7 @@
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/Report.hpp>
 #include <mrdox/Version.hpp>
-#include <llvm/Support/Filesystem.h>
+#include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Process.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/Signals.h>
@@ -99,7 +99,7 @@ int main(int argc, char const** argv)
     else
     {
         // check process working directory
-        addonsDir = fs::getMainExecutable(argv[0], &main);
+        addonsDir = fs::getMainExecutable(argv[0], reinterpret_cast<void*>(&main));
         if(addonsDir.empty())
         {
             reportError(
