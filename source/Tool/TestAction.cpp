@@ -145,6 +145,8 @@ makeConfig(
     std::error_code ec;
     auto config = loadConfigString(
         workingDir, toolArgs.addonsDir, configYaml);
+    if (!config)
+      reportError(config.getError(), "load the configuration string");
     MRDOX_ASSERT(config);
     return *config;
 }
