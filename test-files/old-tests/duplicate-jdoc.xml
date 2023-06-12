@@ -6,9 +6,9 @@
     <file path="duplicate-jdoc.cpp" line="5" class="def"/>
     <return type="int"/>
     <doc>
-      <para>
+      <brief>
         <text>f0 brief</text>
-      </para>
+      </brief>
       <returns>
         <text>int</text>
       </returns>
@@ -21,9 +21,9 @@
     <file path="duplicate-jdoc.cpp" line="11" class="def"/>
     <return type="int"/>
     <doc>
-      <para>
+      <brief>
         <text>f1 brief</text>
-      </para>
+      </brief>
       <returns>
         <text>int</text>
       </returns>
@@ -36,9 +36,9 @@
     <file path="duplicate-jdoc.cpp" line="17" class="def"/>
     <param name="a" type="int"/>
     <doc>
-      <para>
+      <brief>
         <text>g0 brief</text>
-      </para>
+      </brief>
       <param name="a">
         <text>one</text>
       </param>
@@ -51,9 +51,9 @@
     <file path="duplicate-jdoc.cpp" line="23" class="def"/>
     <param name="a" type="int"/>
     <doc>
-      <para>
+      <brief>
         <text>g1 brief</text>
-      </para>
+      </brief>
       <param name="a">
         <text>one</text>
       </param>
@@ -67,9 +67,9 @@
     <function name="h0" id="GUlieEk6E+t8qLpALj3XrWv0CGw=">
       <file path="duplicate-jdoc.cpp" line="30" class="def"/>
       <doc>
-        <para>
+        <brief>
           <text>h0 brief</text>
-        </para>
+        </brief>
         <tparam name="T">
           <text>one</text>
         </tparam>
@@ -84,9 +84,9 @@
     <function name="h1" id="q8fclJU+n2M3XqifIjVL9vT9fKQ=">
       <file path="duplicate-jdoc.cpp" line="37" class="def"/>
       <doc>
-        <para>
+        <brief>
           <text>h1 brief</text>
-        </para>
+        </brief>
         <tparam name="T">
           <text>one</text>
         </tparam>

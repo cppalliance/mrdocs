@@ -6,6 +6,8 @@
     <file path="param.cpp" line="4" class="def"/>
     <param name="x" type="int"/>
     <doc>
+      <brief>
+      </brief>
       <param name="x">
       </param>
     </doc>
@@ -15,6 +17,8 @@
     <param name="x" type="int"/>
     <param name="y" type="int"/>
     <doc>
+      <brief>
+      </brief>
       <param name="x">
       </param>
       <param name="y">
@@ -27,6 +31,8 @@
     <param name="y" type="int"/>
     <param name="z" type="int"/>
     <doc>
+      <brief>
+      </brief>
       <param name="x">
       </param>
       <param name="y">
@@ -42,6 +48,8 @@
     <param name="y" type="int"/>
     <param name="z" type="int"/>
     <doc>
+      <brief>
+      </brief>
       <param name="w">
       </param>
       <param name="x">

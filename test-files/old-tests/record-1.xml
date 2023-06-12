@@ -26,9 +26,9 @@
     <function name="g1" access="protected" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA=">
       <file path="record-1.cpp" line="15"/>
       <doc>
-        <para>
+        <brief>
           <text>brief-g1</text>
-        </para>
+        </brief>
         <para>
           <text>desc</text>
         </para>
@@ -38,9 +38,9 @@
       <file path="record-1.cpp" line="21"/>
       <return type="int"/>
       <doc>
-        <para>
+        <brief>
           <text>brief-g2</text>
-        </para>
+        </brief>
         <returns>
           <text>the number 2</text>
         </returns>
@@ -51,9 +51,9 @@
       <return type="char"/>
       <param name="x" type="int"/>
       <doc>
-        <para>
+        <brief>
           <text>brief-g3</text>
-        </para>
+        </brief>
         <returns>
           <text>the separator</text>
         </returns>

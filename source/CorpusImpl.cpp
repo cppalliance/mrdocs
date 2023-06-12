@@ -86,6 +86,9 @@ void
 CorpusImpl::
 insert(std::unique_ptr<Info> I)
 {
+    if(I->javadoc)
+        I->javadoc->postProcess();
+
     std::lock_guard<llvm::sys::Mutex> Guard(mutex_);
 
     index_.emplace_back(I.get());

@@ -10,9 +10,9 @@
     <file path="friend-2.cpp" line="4"/>
     <file path="friend-2.cpp" line="7"/>
     <doc>
-      <para>
+      <brief>
         <text>f</text>
-      </para>
+      </brief>
     </doc>
   </function>
 </namespace>

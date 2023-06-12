@@ -11,9 +11,9 @@
     <file path="friend-3.cpp" line="9"/>
     <file path="friend-3.cpp" line="12"/>
     <doc>
-      <para>
+      <brief>
         <text>T::f</text>
-      </para>
+      </brief>
     </doc>
   </function>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
