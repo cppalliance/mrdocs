@@ -19,6 +19,7 @@
 #include <cstdint>
 #include <cstring>
 #include <compare>
+#include <string_view>
 
 namespace clang {
 namespace mrdox {
@@ -137,6 +138,10 @@ enum class AccessKind
     Private,
     None
 };
+
+MRDOX_DECL
+std::string_view
+toString(AccessKind access);
 
 /** Return the result of comparing s0 to s1.
 

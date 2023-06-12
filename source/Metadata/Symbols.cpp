@@ -15,6 +15,25 @@
 namespace clang {
 namespace mrdox {
 
+std::string_view
+toString(AccessKind access)
+{
+    switch(access)
+    {
+    case AccessKind::Public:
+        return "public";
+    case AccessKind::Private:
+        return "private";
+    case AccessKind::Protected:
+        return "protected";
+    case AccessKind::None:
+        return "none";
+    default:
+        // unknown AccessKind
+        MRDOX_UNREACHABLE();
+    }
+}
+
 // Better have 8 bits per byte, otherwise
 // we are going to be having some problems...
 static_assert(CHAR_BIT == 8);

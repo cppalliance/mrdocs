@@ -23,21 +23,6 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
-inline
-llvm::StringRef
-toString(AccessKind access) noexcept
-{
-    switch(access)
-    {
-    case AccessKind::Public: return "public";
-    case AccessKind::Protected: return "protected";
-    case AccessKind::Private: return "private";
-    default:
-        // unknown access
-        MRDOX_UNREACHABLE();
-    }
-}
-
 class AdocWriter
 {
     template<class T>

@@ -108,22 +108,9 @@ struct Attribute
     Attribute(
         AccessKind access)
         : name("access")
-        , value(
-            [access]
-            {
-                switch(access)
-                {
-                case AccessKind::None:
-                    return std::string();
-                case AccessKind::Public: return std::string("public");
-                case AccessKind::Protected: return std::string("protected");
-                case AccessKind::Private: return std::string("private");
-                default:
-                    // unknown Access
-                    MRDOX_UNREACHABLE();
-                }
-            }())
-        , pred(access == AccessKind::Private || access == AccessKind::Protected)
+        , value(toString(access))
+        , pred(access == AccessKind::Private ||
+            access == AccessKind::Protected)
     {
     }
 
