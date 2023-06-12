@@ -125,7 +125,6 @@ find_package(fmt REQUIRED CONFIG)
 configure_file(source/Version.hpp.in "${PROJECT_SOURCE_DIR}/include/mrdox/Version.hpp")
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp source/*.in source/*.natvis)
 file(GLOB_RECURSE INCLUDES CONFIGURE_DEPENDS include/*.hpp)
-
 add_executable(mrdox ${SOURCES} ${INCLUDES})
 
 target_compile_features(mrdox PUBLIC cxx_std_20)
@@ -220,6 +219,16 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 #-------------------------------------------------
 
 if (MRDOX_BUILD_TESTS)
+    # if we run tests, we need the addons in the right place.
+    add_custom_command(
+            TARGET mrdox
+            POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy
+                    ${CMAKE_SOURCE_DIR}/addons
+                    ${CMAKE_BINARY_DIR}/addons
+            BYPRODUCTS ${CMAKE_BINARY_DIR}/addons
+    )
+
     file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
     enable_testing()
     add_test(NAME mrdox-test COMMAND mrdox --action test
