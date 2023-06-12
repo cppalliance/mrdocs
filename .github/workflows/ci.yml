@@ -111,7 +111,7 @@ jobs:
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           install-prefix: .local
-          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-dir || '/usr/local') }}
+          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_BUILD_TYPE=Debug', steps.llvm-install.outputs.llvm-dir || '/usr/local') }}
           export-compile-commands: ${{ matrix.time-trace }}
           package: ${{ matrix.is-main }}
           package-dir: packages
