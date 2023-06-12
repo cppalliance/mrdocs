@@ -14,11 +14,11 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
-#include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Metadata/Symbols.hpp>
+#include <mrdox/Metadata.hpp>
 #include <memory>
 #include <string>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 namespace clang {
@@ -117,6 +117,16 @@ public:
     MRDOX_DECL bool traverse(Visitor&, std::vector<SymbolID> const& R) const;
     /** @} */
 
+    template<class F, class... Args>
+    void traverse(
+        NamespaceInfo const& I,
+        F&& f, Args&&... args) const;
+
+    template<class F, class... Args>
+    void traverse(
+        RecordInfo const& I,
+        F&& f, Args&&... args) const;
+
     //--------------------------------------------
 
     // KRYSTIAN NOTE: temporary
@@ -126,6 +136,64 @@ public:
         const Info& I,
         std::string& temp) const;
 };
+
+//------------------------------------------------
+
+/** Invoke a function object with an Info-derived type.
+*/
+template<class F, class... Args>
+void
+visit(
+    Info const& I, F&& f, Args&&... args)
+{
+    switch(I.Kind)
+    {
+    case InfoKind::Namespace:
+        if constexpr(std::is_invocable_v<F,
+                NamespaceInfo const&, Args&&...>)
+            f(static_cast<NamespaceInfo const&>(I),
+                std::forward<Args>(args)...);
+        return;
+    case InfoKind::Record:
+        if constexpr(std::is_invocable_v<F,
+                RecordInfo const&, Args&&...>)
+            f(static_cast<RecordInfo const&>(I),
+                std::forward<Args>(args)...);
+        return;
+    case InfoKind::Function:
+        if constexpr(std::is_invocable_v<F,
+                FunctionInfo const&, Args&&...>)
+            f(static_cast<FunctionInfo const&>(I),
+                std::forward<Args>(args)...);
+        return;
+    case InfoKind::Enum:
+        if constexpr(std::is_invocable_v<F,
+                EnumInfo const&, Args&&...>)
+            f(static_cast<EnumInfo const&>(I),
+                std::forward<Args>(args)...);
+        return;
+    case InfoKind::Typedef:
+        if constexpr(std::is_invocable_v<F,
+                TypedefInfo const&, Args&&...>)
+            f(static_cast<TypedefInfo const&>(I),
+                std::forward<Args>(args)...);
+        return;
+    case InfoKind::Variable:
+        if constexpr(std::is_invocable_v<F,
+                VarInfo const&, Args&&...>)
+            f(static_cast<VarInfo const&>(I),
+                std::forward<Args>(args)...);
+        return;
+    case InfoKind::Specialization:
+        if constexpr(std::is_invocable_v<F,
+                SpecializationInfo const&, Args&&...>)
+            f(static_cast<SpecializationInfo const&>(I),
+                std::forward<Args>(args)...);
+        return;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
 
 //------------------------------------------------
 
@@ -147,6 +215,43 @@ get(
         MRDOX_ASSERT(J.Kind == T::kind_id);
         return J;
     }
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverse(
+    NamespaceInfo const& I,
+    F&& f,
+    Args&&... args) const
+{
+    for(auto const& id : I.Members)
+        visit(get<Info>(id),
+            std::forward<F>(f),
+            std::forward<Args>(args)...);
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverse(
+    RecordInfo const& I,
+    F&& f, Args&&... args) const
+{
+    for(auto const& id : I.Members)
+        visit(get<Info>(id),
+            std::forward<F>(f),
+            std::forward<Args>(args)...);
+
+    for(auto const& id : I.Friends)
+        visit(get<Info>(id),
+            std::forward<F>(f),
+            std::forward<Args>(args)...);
+
+    for(auto const& id : I.Specializations)
+        visit(get<Info>(id),
+            std::forward<F>(f),
+            std::forward<Args>(args)...);
 }
 
 } // mrdox

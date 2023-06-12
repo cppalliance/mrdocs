@@ -24,6 +24,14 @@
 namespace clang {
 namespace mrdox {
 
+struct NamespaceInfo;
+struct RecordInfo;
+struct FunctionInfo;
+struct EnumInfo;
+struct TypedefInfo;
+struct VarInfo;
+struct SpecializationInfo;
+
 /** Common properties of all symbols
 */
 struct MRDOX_VISIBLE
