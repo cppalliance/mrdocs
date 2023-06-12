@@ -56,24 +56,24 @@ void insertChild(RecordScope& P, Args&&... args)
     using U = std::remove_cvref_t<T>;
     if constexpr(std::is_constructible_v<MemberRef, Args...>)
     {
-        if constexpr(T::isRecord())
+        if constexpr(U::isRecord())
             P.Records.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isFunction())
+        else if constexpr(U::isFunction())
             P.Functions.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isTypedef())
+        else if constexpr(U::isTypedef())
             P.Types.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isEnum())
+        else if constexpr(U::isEnum())
             P.Enums.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isField())
+        else if constexpr(U::isField())
             P.Fields.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isVariable())
+        else if constexpr(U::isVariable())
             P.Vars.emplace_back(std::forward<Args>(args)...);
         else
             llvm_unreachable("invalid RecordScope member");
     }
     else if constexpr(std::is_constructible_v<SymbolID, Args...>)
     {
-        if constexpr(T::isSpecialization())
+        if constexpr(U::isSpecialization())
             P.Specializations.emplace_back(std::forward<Args>(args)...);
         else
             llvm_unreachable("invalid RecordScope member");
