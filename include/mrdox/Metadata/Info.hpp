@@ -35,7 +35,7 @@ struct MRDOX_VISIBLE
 
     /** Kind of declaration.
     */
-    InfoKind Kind = InfoKind::Default;
+    InfoKind Kind;
 
     /** The unqualified name.
     */
@@ -57,7 +57,7 @@ struct MRDOX_VISIBLE
 
     explicit
     Info(
-        InfoKind kind = InfoKind::Default,
+        InfoKind kind,
         SymbolID ID = SymbolID::zero)
         : id(ID)
         , Kind(kind)
@@ -80,7 +80,6 @@ struct MRDOX_VISIBLE
     std::string_view
     symbolType() const noexcept;
 
-    constexpr bool isDefault()        const noexcept { return Kind == InfoKind::Default; }
     constexpr bool isNamespace()      const noexcept { return Kind == InfoKind::Namespace; }
     constexpr bool isRecord()         const noexcept { return Kind == InfoKind::Record; }
     constexpr bool isFunction()       const noexcept { return Kind == InfoKind::Function; }
@@ -106,7 +105,6 @@ struct IsInfo : Info
     */
     static constexpr InfoKind kind_id = K;
 
-    static constexpr bool isDefault()        noexcept { return K== InfoKind::Default; }
     static constexpr bool isNamespace()      noexcept { return K == InfoKind::Namespace; }
     static constexpr bool isRecord()         noexcept { return K == InfoKind::Record; }
     static constexpr bool isFunction()       noexcept { return K == InfoKind::Function; }

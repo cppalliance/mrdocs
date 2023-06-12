@@ -160,9 +160,6 @@ format(
     const char* str = "<unknown InfoKind>";
     switch(t)
     {
-    case clang::mrdox::InfoKind::Default:
-        str = "default";
-        break;
     case clang::mrdox::InfoKind::Namespace:
         str = "namespace";
         break;

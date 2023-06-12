@@ -60,9 +60,6 @@ extractName() const
     case InfoKind::Variable:
         return std::string("@nonymous_var_") +
             llvm::toHex(id);
-    case InfoKind::Default:
-        return std::string("@nonymous_") +
-            llvm::toHex(id);
     default:
         llvm_unreachable("Invalid InfoKind.");
         return std::string("");
@@ -94,8 +91,6 @@ symbolType() const noexcept
 {
     switch(this->Kind)
     {
-    case InfoKind::Default:
-        return "default";
     case InfoKind::Namespace:
         return "namespace";
     case InfoKind::Record:

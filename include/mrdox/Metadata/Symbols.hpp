@@ -109,7 +109,6 @@ using OptionalSymbolID = Optional<SymbolID>;
 */
 enum class InfoKind
 {
-    Default,
     Namespace,
     Record,
     Function,

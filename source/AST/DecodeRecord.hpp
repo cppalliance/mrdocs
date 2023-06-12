@@ -163,7 +163,8 @@ decodeRecord(
     InfoKind& Kind,
     llvm::StringRef Blob)
 {
-    switch(auto kind = static_cast<InfoKind>(R[0]))
+    Kind = static_cast<InfoKind>(R[0]);
+    switch(Kind)
     {
     case InfoKind::Namespace:
     case InfoKind::Record:
@@ -173,10 +174,8 @@ decodeRecord(
     case InfoKind::Variable:
     case InfoKind::Field:
     case InfoKind::Specialization:
-        Kind = kind;
         return Error::success();
     default:
-        Kind = InfoKind::Default;
         return Error("InfoKind is invalid");
     }
 }
