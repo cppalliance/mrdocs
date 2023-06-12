@@ -13,7 +13,7 @@
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Support/Report.hpp>
 #include <mrdox/Metadata.hpp>
-#include <cassert>
+#include <mrdox/Platform.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -110,7 +110,8 @@ traverse(
     case InfoKind::Specialization:
         return f.visit(static_cast<SpecializationInfo const&>(I));
     default:
-        llvm_unreachable("wrong InfoKind for visit");
+        // wrong InfoKind for visit
+        MRDOX_UNREACHABLE();
     }
 }
 

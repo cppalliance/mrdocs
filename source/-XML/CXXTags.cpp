@@ -48,7 +48,7 @@ getTagName(Info const& I) noexcept
     default:
         break;
     }
-    Assert(false);
+    MRDOX_ASSERT(false);
     return "(unknown)";
 }
 

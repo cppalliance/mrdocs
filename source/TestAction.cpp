@@ -12,10 +12,10 @@
 #include "SingleFileDB.hpp"
 #include "ConfigImpl.hpp"
 #include "CorpusImpl.hpp"
-#include "Support/Debug.hpp"
 #include "Support/Error.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Generators.hpp>
+#include <mrdox/Platform.hpp>
 #include <mrdox/Support/Report.hpp>
 #include <mrdox/Support/Thread.hpp>
 #include <clang/Tooling/StandaloneExecution.h>
@@ -124,7 +124,7 @@ TestRunner(
     , diff_(llvm::sys::findProgramByName("diff"))
     , xmlGen_(getGenerators().find("xml"))
 {
-    Assert(xmlGen_ != nullptr);
+    MRDOX_ASSERT(xmlGen_ != nullptr);
 }
 
 std::shared_ptr<Config const>
@@ -145,7 +145,7 @@ makeConfig(
     std::error_code ec;
     auto config = loadConfigString(
         workingDir, configYaml);
-    Assert(config);
+    MRDOX_ASSERT(config);
     return *config;
 }
 
@@ -181,7 +181,7 @@ handleFile(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    Assert(path::extension(filePath).compare_insensitive(".cpp") == 0);
+    MRDOX_ASSERT(path::extension(filePath).compare_insensitive(".cpp") == 0);
 
     results_.numberOfFiles++;
 

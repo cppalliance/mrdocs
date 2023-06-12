@@ -33,7 +33,8 @@ toString(AccessKind access) noexcept
     case AccessKind::Protected: return "protected";
     case AccessKind::Private: return "private";
     default:
-        llvm_unreachable("unknown access");
+        // unknown access
+        MRDOX_UNREACHABLE();
     }
 }
 

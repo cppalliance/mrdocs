@@ -73,7 +73,7 @@ reportError(
     fmt::format_string<Args...> fs,
     Args&&... args)
 {
-    assert(err.failed());
+    MRDOX_ASSERT(err.failed());
     reportError(fmt::format(
         "Could not {} because {}",
         fmt::format(fs, std::forward<Args>(args)...),

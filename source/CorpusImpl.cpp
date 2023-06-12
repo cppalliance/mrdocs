@@ -173,7 +173,7 @@ build(
             }
 
             std::unique_ptr<Info> I(merged.get().release());
-            Assert(Group.getKey() == I->id);
+            MRDOX_ASSERT(Group.getKey() == I->id);
             corpus->insert(std::move(I));
         });
 

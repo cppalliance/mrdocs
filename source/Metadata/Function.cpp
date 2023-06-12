@@ -9,7 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Support/Debug.hpp"
 #include "Support/TypeTraits.hpp"
 #include <mrdox/Metadata/Function.hpp>
 #include <clang/Basic/OperatorKinds.h>
@@ -100,8 +99,8 @@ FunctionKind
 getFunctionKind(
     OverloadedOperatorKind OOK) noexcept
 {
-    Assert(OOK < OverloadedOperatorKind::NUM_OVERLOADED_OPERATORS);
-    Assert(Table[to_underlying(OOK)].ook == OOK);
+    MRDOX_ASSERT(OOK < OverloadedOperatorKind::NUM_OVERLOADED_OPERATORS);
+    MRDOX_ASSERT(Table[to_underlying(OOK)].ook == OOK);
     return Table[to_underlying(OOK)].kind;
 }
 
@@ -109,7 +108,7 @@ std::string_view
 getFunctionKindString(
     FunctionKind kind) noexcept
 {
-    Assert(Table[to_underlying(kind)].kind == kind);
+    MRDOX_ASSERT(Table[to_underlying(kind)].kind == kind);
     return Table[to_underlying(kind)].name;
 }
 

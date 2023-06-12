@@ -8,13 +8,13 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Support/Debug.hpp"
 #include "Support/Operator.hpp"
 #include "Support/Radix.hpp"
 #include "Support/SafeNames.hpp"
 #include "Support/Validate.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Platform.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/ADT/StringMap.h>
@@ -51,7 +51,7 @@ public:
 
     #ifndef NDEBUG
         //for(auto const& N : map)
-            //Assert(validAdocSectionID(N.second));
+            //MRDOX_ASSERT(validAdocSectionID(N.second));
     #endif
     }
 
@@ -282,7 +282,7 @@ get(
     SymbolID const &id) const noexcept
 {
     auto const it = map_.find(id);
-    Assert(it != map_.end());
+    MRDOX_ASSERT(it != map_.end());
     return it->getValue();
 }
 

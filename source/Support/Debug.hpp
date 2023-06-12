@@ -84,12 +84,6 @@ MRDOX_DECL llvm::raw_ostream& debug_errs();
 */
 MRDOX_DECL void debugEnableHeapChecking();
 
-#if defined(NDEBUG)
-#define Assert(expr) ((void)0)
-#else
-#define Assert(expr) ((!!(expr))? ((void)0): llvm_unreachable(#expr))
-#endif
-
 #define static_error(msg, value) \
     static_assert(!std::is_same_v<decltype(value),decltype(value)>,msg)
 

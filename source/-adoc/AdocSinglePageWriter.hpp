@@ -14,6 +14,7 @@
 #include "AdocWriter.hpp"
 #include "Support/SafeNames.hpp"
 #include <mrdox/Corpus.hpp>
+#include <mrdox/Platform.hpp>
 
 namespace clang {
 namespace mrdox {

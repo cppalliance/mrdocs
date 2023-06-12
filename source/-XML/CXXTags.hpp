@@ -13,13 +13,13 @@
 #define MRDOX_LIB_XML_CXXTAGS_HPP
 
 #include "XMLTags.hpp"
-#include "Support/Debug.hpp"
 #include "Support/Operator.hpp"
 #include <clang/AST/Attr.h>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <mrdox/Metadata/Var.hpp>
+#include <mrdox/Platform.hpp>
 
 /*
     This file holds the business logic for transforming
@@ -66,7 +66,7 @@ constexpr llvm::StringRef getNameForValue(ConstexprSpecKind CSK)
     case ConstexprSpecKind::Consteval: return "consteval";
     case ConstexprSpecKind::Constinit: return "constinit";
     default:
-        Assert(!"Invalid ConstexprSpecKind");
+        MRDOX_ASSERT(!"Invalid ConstexprSpecKind");
     }
     return "";
 }
@@ -84,7 +84,7 @@ constexpr llvm::StringRef getNameForValue(ExceptionSpecificationType EST)
     case ExceptionSpecificationType::EST_NoexceptFalse:     return "noexcept-false";
     case ExceptionSpecificationType::EST_NoexceptTrue:      return "noexcept-true";
     default:
-        Assert(false);
+        MRDOX_ASSERT(false);
     }
     return "";
 }
@@ -104,7 +104,7 @@ constexpr llvm::StringRef getNameForValue(StorageClass SC)
     case StorageClass::SC_Auto:          return "auto";
     case StorageClass::SC_Register:      return "register";
     default:
-        Assert(false);
+        MRDOX_ASSERT(false);
     }
     return "";
 }
@@ -119,7 +119,7 @@ constexpr llvm::StringRef getNameForValue(WarnUnusedResultAttr::Spelling WUS)
     case WarnUnusedResultAttr::Spelling::CXX11_gnu_warn_unused_result: return "gnu-warn-unused-cxx11";
     case WarnUnusedResultAttr::Spelling::C2x_gnu_warn_unused_result:   return "gnu-warn-unused-C2x";
     default:
-        Assert(false);
+        MRDOX_ASSERT(false);
     }
     return "";
 }
@@ -131,7 +131,7 @@ constexpr llvm::StringRef getNameForValue(RefQualifierKind RK)
     case RefQualifierKind::RQ_LValue: return "lv";
     case RefQualifierKind::RQ_RValue: return "rv";
     default:
-        Assert(false);
+        MRDOX_ASSERT(false);
     }
     return "";
 }

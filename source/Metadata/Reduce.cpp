@@ -10,8 +10,8 @@
 //
 
 #include "Reduce.hpp"
-#include "Support/Debug.hpp"
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Platform.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang {
@@ -74,7 +74,7 @@ static void merge(Javadoc& I, Javadoc&& other)
 
 void mergeInfo(Info& I, Info&& Other)
 {
-    Assert(canMerge(I, Other));
+    MRDOX_ASSERT(canMerge(I, Other));
     if(I.id == SymbolID::zero)
         I.id = Other.id;
     if(I.Name == "")
@@ -142,7 +142,7 @@ reduceSpecializedMembers(
 
 void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 {
-    Assert(canMerge(I, Other));
+    MRDOX_ASSERT(canMerge(I, Other));
     reduceSymbolIDs(I.Members, std::move(Other.Members));
     reduceSymbolIDs(I.Specializations, std::move(Other.Specializations));
     mergeInfo(I, std::move(Other));
@@ -150,7 +150,7 @@ void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 
 void merge(RecordInfo& I, RecordInfo&& Other)
 {
-    Assert(canMerge(I, Other));
+    MRDOX_ASSERT(canMerge(I, Other));
     if(Other.KeyKind != RecordKeyKind::Struct &&
         I.KeyKind != Other.KeyKind)
         I.KeyKind = Other.KeyKind;
@@ -173,7 +173,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
 
 void merge(FunctionInfo& I, FunctionInfo&& Other)
 {
-    Assert(canMerge(I, Other));
+    MRDOX_ASSERT(canMerge(I, Other));
     if (I.ReturnType.id == SymbolID::zero && I.ReturnType.Name == "")
         I.ReturnType = std::move(Other.ReturnType);
     if (I.Params.empty())
@@ -188,7 +188,7 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
 
 void merge(TypedefInfo& I, TypedefInfo&& Other)
 {
-    Assert(canMerge(I, Other));
+    MRDOX_ASSERT(canMerge(I, Other));
     if (!I.IsUsing)
         I.IsUsing = Other.IsUsing;
     if (I.Underlying.Name == "")
@@ -201,7 +201,7 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
 
 void merge(EnumInfo& I, EnumInfo&& Other)
 {
-    Assert(canMerge(I, Other));
+    MRDOX_ASSERT(canMerge(I, Other));
     if(! I.Scoped)
         I.Scoped = Other.Scoped;
     if (I.Members.empty())
@@ -212,7 +212,7 @@ void merge(EnumInfo& I, EnumInfo&& Other)
 
 void merge(FieldInfo& I, FieldInfo&& Other)
 {
-    Assert(canMerge(I, Other));
+    MRDOX_ASSERT(canMerge(I, Other));
     if(I.Type.id == SymbolID::zero && I.Type.Name.empty())
         I.Type = std::move(Other.Type);
     mergeSymbolInfo(I, std::move(Other));
@@ -224,7 +224,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
 
 void merge(VarInfo& I, VarInfo&& Other)
 {
-    Assert(canMerge(I, Other));
+    MRDOX_ASSERT(canMerge(I, Other));
     if(I.Type.id == SymbolID::zero && I.Type.Name.empty())
         I.Type = std::move(Other.Type);
     if(! I.Template)
@@ -236,7 +236,7 @@ void merge(VarInfo& I, VarInfo&& Other)
 
 void merge(SpecializationInfo& I, SpecializationInfo&& Other)
 {
-    Assert(canMerge(I, Other));
+    MRDOX_ASSERT(canMerge(I, Other));
     if(I.Primary == SymbolID::zero)
         I.Primary = Other.Primary;
     if(I.Args.empty())

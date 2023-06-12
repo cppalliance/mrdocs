@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Support/Debug.hpp"
+#include <mrdox/Platform.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/JavaScript.hpp>
 #include <llvm/Support/MemoryBuffer.h>
@@ -92,7 +92,7 @@ constexpr Access A{};
 static std::string getStringProp(
     std::string_view name, Scope& scope)
 {
-    Assert(duk_get_type(A(scope), -1) == DUK_TYPE_OBJECT);
+    MRDOX_ASSERT(duk_get_type(A(scope), -1) == DUK_TYPE_OBJECT);
     if(! duk_get_prop_lstring(A(scope), -1, name.data(), name.size()))
         throw Error("missing property {}", name);
     char const* s;
@@ -100,7 +100,7 @@ static std::string getStringProp(
         duk_to_string(A(scope), -1);
     duk_size_t len;
     s = duk_get_lstring(A(scope), -1, &len);
-    Assert(s);
+    MRDOX_ASSERT(s);
     std::string result = std::string(s, len);
     duk_pop(A(scope));
     return result;
@@ -185,7 +185,7 @@ Scope(
 Scope::
 ~Scope()
 {
-    Assert(refs_ == 0);
+    MRDOX_ASSERT(refs_ == 0);
     reset();
 }
 
@@ -198,7 +198,7 @@ script(
         A(*this), jsCode.data(), jsCode.size());
     if(failed)
         return popError(*this);
-    Assert(duk_get_type(A(*this), -1) == DUK_TYPE_UNDEFINED);
+    MRDOX_ASSERT(duk_get_type(A(*this), -1) == DUK_TYPE_UNDEFINED);
     duk_pop(A(*this)); // result
     return Error::success();
 }
@@ -322,7 +322,8 @@ type() const noexcept
     case DUK_TYPE_OBJECT:    return Type::object;
     case DUK_TYPE_NONE:
     default:
-        llvm_unreachable("unknown type");
+        // unknown type
+        MRDOX_UNREACHABLE();
     }
 }
 

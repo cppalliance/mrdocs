@@ -10,7 +10,6 @@
 //
 
 #include "Path.hpp"
-#include "Support/Debug.hpp"
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/MemoryBuffer.h>
@@ -192,7 +191,7 @@ makeAbsolute(
 {
     namespace path = llvm::sys::path;
 
-    Assert(isDirsy(workingDir));
+    MRDOX_ASSERT(isDirsy(workingDir));
 
     if(! path::is_absolute(pathName))
     {

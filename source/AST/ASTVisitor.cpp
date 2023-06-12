@@ -30,7 +30,6 @@
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/SHA1.h>
-#include <cassert>
 #include <ranges>
 
 namespace clang {
@@ -165,7 +164,8 @@ getAccessFromSpecifier(
     case AccessSpecifier::AS_none:
         return AccessKind::None;
     default:
-        llvm_unreachable("unknown AccessSpecifier");
+        // unknown AccessSpecifier
+        MRDOX_UNREACHABLE();
     }
 }
 
@@ -465,12 +465,12 @@ writeParent(
     Child const& I,
     bool parent_is_record)
 {
-    Assert(! I.Namespace.empty());
+    MRDOX_ASSERT(! I.Namespace.empty());
     // Create an dummy parent and insert the child
     // Then return the parent as a serialized bitcode.
     if(parent_is_record)
     {
-        Assert(Child::isSpecialization() ||
+        MRDOX_ASSERT(Child::isSpecialization() ||
             I.Access != AccessKind::None);
         RecordInfo P(I.Namespace.front());
         insertChild<Child>(P, I.id);
@@ -478,7 +478,7 @@ writeParent(
     }
     else
     {
-        Assert(I.Access == AccessKind::None);
+        MRDOX_ASSERT(I.Access == AccessKind::None);
         NamespaceInfo P(I.Namespace.front());
         insertChild<Child>(P, I.id);
         return writeBitcode(P);
@@ -518,7 +518,7 @@ shouldExtract(
         return false;
 
     // we should never visit block scope declarations
-    Assert(! D->getParentFunctionOrMethod());
+    MRDOX_ASSERT(! D->getParentFunctionOrMethod());
 
     const PresumedLoc loc =
         sourceManager_->getPresumedLoc(D->getBeginLoc());
@@ -602,7 +602,7 @@ getParentNamespaces(
             // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
             // is accessible through S->getSpecializedTemplateOrPartial
             // if the implicit instantiation used a partially specialized template,
-            Assert(parent_context->getDeclKind() !=
+            MRDOX_ASSERT(parent_context->getDeclKind() !=
                 Decl::ClassTemplatePartialSpecialization);
 
             SpecializationInfo I;
@@ -647,7 +647,7 @@ buildSpecialization(
 {
     const CXXRecordDecl* RD =
         P->getTemplateInstantiationPattern();
-    Assert(RD);
+    MRDOX_ASSERT(RD);
 
     extractSymbolID(P, I.id);
     extractSymbolID(RD, I.Primary);
@@ -752,7 +752,8 @@ buildRecord(
         I.KeyKind = RecordKeyKind::Union;
         break;
     default:
-        llvm_unreachable("unsupported TagTypeKind");
+        // unsupported TagTypeKind
+        MRDOX_UNREACHABLE();
     }
 
     // These are from CXXRecordDecl::isEffectivelyFinal()
@@ -948,21 +949,21 @@ buildFriend(
             const DeclContext* DC = D->getDeclContext();
             const auto* RD = dyn_cast<CXXRecordDecl>(DC);
             // the semantic DeclContext of a FriendDecl must be a class
-            Assert(RD);
+            MRDOX_ASSERT(RD);
             RecordInfo P;
             extractSymbolID(RD, P.id);
 
 #if 0
             SymbolID id_;
             getParent(id_, D);
-            Assert(id_ == id);
+            MRDOX_ASSERT(id_ == id);
 #endif
 #endif
             P.Friends.emplace_back(I.id);
 #if 0
             bool isInAnonymous;
             getParentNamespaces(P.Namespace, ND, isInAnonymous);
-            Assert(isInAnonymous == ND->isInAnonymousNamespace());
+            MRDOX_ASSERT(isInAnonymous == ND->isInAnonymousNamespace());
 #else
             getParentNamespaces(I.Namespace, FD);
             getParentNamespaces(P.Namespace, ND);
@@ -986,8 +987,7 @@ buildFriend(
             return;
         }
 
-        Assert(false);
-        return;
+        MRDOX_UNREACHABLE();
     }
     else if(TypeSourceInfo* TS = D->getFriendType())
     {
@@ -996,7 +996,7 @@ buildFriend(
     }
     else
     {
-        Assert(false);
+        MRDOX_UNREACHABLE();
     }
     return;
 }
@@ -1164,7 +1164,7 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(! D->getDeclContext()->isRecord() ||
+    MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
     RecordInfo I(std::move(Template));
@@ -1184,7 +1184,7 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(! D->getDeclContext()->isRecord() ||
+    MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
     TypedefInfo I;
@@ -1204,7 +1204,7 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(! D->getDeclContext()->isRecord() ||
+    MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
     TypedefInfo I(std::move(Template));
@@ -1225,7 +1225,7 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(! D->getDeclContext()->isRecord() ||
+    MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
     VarInfo I(std::move(Template));
@@ -1245,8 +1245,8 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(! D->getDeclContext()->isRecord());
-    Assert(A == AccessSpecifier::AS_none);
+    MRDOX_ASSERT(! D->getDeclContext()->isRecord());
+    MRDOX_ASSERT(A == AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
     I.Access = getAccessFromSpecifier(A);
@@ -1266,8 +1266,8 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(D->getDeclContext()->isRecord());
-    Assert(A != AccessSpecifier::AS_none);
+    MRDOX_ASSERT(D->getDeclContext()->isRecord());
+    MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
     I.Access = getAccessFromSpecifier(A);
@@ -1293,8 +1293,8 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(D->getDeclContext()->isRecord());
-    Assert(A != AccessSpecifier::AS_none);
+    MRDOX_ASSERT(D->getDeclContext()->isRecord());
+    MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
     I.Access = getAccessFromSpecifier(A);
@@ -1313,8 +1313,8 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(D->getDeclContext()->isRecord());
-    Assert(A != AccessSpecifier::AS_none);
+    MRDOX_ASSERT(D->getDeclContext()->isRecord());
+    MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
     I.Access = getAccessFromSpecifier(A);
@@ -1349,8 +1349,8 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(D->getDeclContext()->isRecord());
-    Assert(A != AccessSpecifier::AS_none);
+    MRDOX_ASSERT(D->getDeclContext()->isRecord());
+    MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I;
     I.Access = getAccessFromSpecifier(A);
@@ -1377,7 +1377,7 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(! D->getDeclContext()->isRecord() ||
+    MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
     EnumInfo I;
@@ -1396,8 +1396,8 @@ Traverse(
     if(! shouldExtract(D))
         return true;
 
-    Assert(D->getDeclContext()->isRecord());
-    Assert(A != AccessSpecifier::AS_none);
+    MRDOX_ASSERT(D->getDeclContext()->isRecord());
+    MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FieldInfo I;
     I.Access = getAccessFromSpecifier(A);
@@ -1543,7 +1543,8 @@ auto
 ASTVisitor::
 Traverse(Args&&...)
 {
-    llvm_unreachable("no matching Traverse overload found");
+    // no matching Traverse overload found
+    MRDOX_UNREACHABLE();
 }
 
 //------------------------------------------------
@@ -1555,7 +1556,7 @@ TraverseDecl(
     Decl* D,
     Args&&... args)
 {
-    Assert(D);
+    MRDOX_ASSERT(D);
     if(D->isInvalidDecl() || D->isImplicit())
         return true;
 
@@ -1703,7 +1704,7 @@ ASTVisitor::
 TraverseContext(
     DeclContext* D)
 {
-    Assert(D);
+    MRDOX_ASSERT(D);
     for(auto* C : D->decls())
         if(! TraverseDecl(C))
             return false;
@@ -1718,8 +1719,8 @@ HandleTranslationUnit(
 {
     // the ASTContext and Sema better be the same
     // as those set by Initialize and InitializeSema
-    Assert(astContext_ == &Context);
-    Assert(sema_);
+    MRDOX_ASSERT(astContext_ == &Context);
+    MRDOX_ASSERT(sema_);
 
     // Install handlers for our custom commands
     initCustomCommentCommands(Context);
@@ -1742,7 +1743,7 @@ HandleTranslationUnit(
     // top-level TranslationUnitDecl. if this assert fires,
     // then it means ASTContext::setTraversalScope is being
     // (erroneously) used somewhere
-    Assert(Context.getTraversalScope() ==
+    MRDOX_ASSERT(Context.getTraversalScope() ==
         std::vector<Decl*>{TU});
 
     for(auto* C : TU->decls())
@@ -1762,7 +1763,7 @@ ASTVisitor::
 InitializeSema(Sema& S)
 {
     // Sema should not have been initialized yet
-    Assert(! sema_);
+    MRDOX_ASSERT(! sema_);
     sema_ = &S;
 }
 

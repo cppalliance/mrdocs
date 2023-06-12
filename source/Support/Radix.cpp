@@ -11,6 +11,7 @@
 
 #include "Support/Radix.hpp"
 #include "Support/Debug.hpp"
+#include <mrdox/Platform.hpp>
 #include <algorithm>
 #include <vector>
 
@@ -298,7 +299,7 @@ toBase32(
         v.push_back((u & 0xff00) >> 8);
     }
     dest.clear();
-    Assert((v.size() & 1) == 0);
+    MRDOX_ASSERT((v.size() & 1) == 0);
     dest.reserve(3 * (v.size() / 2));
     auto it = v.data();
     auto const end = it + v.size();

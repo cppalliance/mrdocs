@@ -11,9 +11,9 @@
 
 #include "AdocWriter.hpp"
 #include "ConfigImpl.hpp"
-#include "Support/Debug.hpp"
 #include "Support/Validate.hpp"
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/Support/YAMLParser.h>
@@ -659,7 +659,8 @@ writeNode(
         writeNode(static_cast<Javadoc::Returns const&>(node));
         return;
     default:
-        llvm_unreachable("unknown kind");
+        // unknown kind
+        MRDOX_UNREACHABLE();
     }
 }
 
@@ -669,7 +670,7 @@ writeNode(
     Javadoc::Block const&)
 {
     // shouldn't get here
-    Assert(false);
+    MRDOX_ASSERT(false);
 }
 
 void
@@ -791,7 +792,7 @@ AdocWriter::
 beginSection(
     Info const& I)
 {
-    //Assert(validAdocSectionID(names_.get(I.id)));
+    //MRDOX_ASSERT(validAdocSectionID(names_.get(I.id)));
 
     sect_.level++;
     if(sect_.level <= 6)
@@ -838,7 +839,7 @@ void
 AdocWriter::
 endSection()
 {
-    Assert(sect_.level > 0);
+    MRDOX_ASSERT(sect_.level > 0);
     if(sect_.level <= 6)
         sect_.markup.pop_back();
     sect_.level--;
@@ -856,7 +857,8 @@ recordKeyToString(RecordKeyKind k) noexcept
     case RecordKeyKind::Union: return "union";
     case RecordKeyKind::Class: return "class";
     default:
-        llvm_unreachable("unknown RecordKeyKind");
+        // unknown RecordKeyKind
+        MRDOX_UNREACHABLE();
     }
 }
 

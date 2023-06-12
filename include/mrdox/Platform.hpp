@@ -11,6 +11,7 @@
 #ifndef MRDOX_API_PLATFORM_HPP
 #define MRDOX_API_PLATFORM_HPP
 
+#include <cassert>
 #include <type_traits>
 
 #if __cplusplus < 202002L
@@ -61,6 +62,20 @@ namespace mrdox {
 # define MRDOX_VISIBLE __attribute__((visibility("default")))
 #else
 # error unknown platform for dynamic linking
+#endif
+
+//------------------------------------------------
+
+#ifndef MRDOX_ASSERT
+# define MRDOX_ASSERT(x) assert(x)
+#endif
+
+#ifndef MRDOX_UNREACHABLE
+# ifdef __GNUC__
+#  define MRDOX_UNREACHABLE() do { MRDOX_ASSERT(false); __builtin_unreachable(); } while(false)
+# elif defined(_MSC_VER)
+#  define MRDOX_UNREACHABLE() do { MRDOX_ASSERT(false); __assume(false); } while(false)
+# endif
 #endif
 
 } // mrdox

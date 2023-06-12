@@ -14,7 +14,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
-#include <cassert>
 #include <new>
 #include <type_traits>
 
@@ -63,7 +62,7 @@ public:
         Error err) noexcept
         : has_error_(true)
     {
-        assert(err.failed());
+        MRDOX_ASSERT(err.failed());
         new(&e_) Error(std::move(err));
     }
 
@@ -106,7 +105,7 @@ public:
     Error const&
     getError() const
     {
-        assert(has_error_);
+        MRDOX_ASSERT(has_error_);
         return e_;
     }
 
@@ -122,37 +121,37 @@ public:
 
     reference get() noexcept
     {
-        assert(! has_error_);
+        MRDOX_ASSERT(! has_error_);
         return t_;
     };
 
     const_reference get() const noexcept
     {
-        assert(! has_error_);
+        MRDOX_ASSERT(! has_error_);
         return t_;
     };
 
     pointer operator->() noexcept
     {
-        assert(! has_error_);
+        MRDOX_ASSERT(! has_error_);
         return &t_;
     }
 
     reference operator*() noexcept
     {
-        assert(! has_error_);
+        MRDOX_ASSERT(! has_error_);
         return t_;
     }
 
     const_pointer operator->() const noexcept
     {
-        assert(! has_error_);
+        MRDOX_ASSERT(! has_error_);
         return &t_;
     }
 
     const_reference operator*() const noexcept
     {
-        assert(! has_error_);
+        MRDOX_ASSERT(! has_error_);
         return t_;
     }
 };

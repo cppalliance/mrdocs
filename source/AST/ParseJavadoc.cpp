@@ -26,7 +26,6 @@
 #endif
 
 #include <llvm/Support/JSON.h>
-#include <cassert>
 
 /*
     Comment Types
@@ -246,7 +245,8 @@ public:
         case InlineCommandComment::RenderKind::RenderAnchor:
             break;
         default:
-            llvm_unreachable("unknown RenderKind");
+            // unknown RenderKind
+            MRDOX_UNREACHABLE();
         }
 
         // It looks like the clang parser does not

@@ -119,35 +119,13 @@ struct Attribute
                 case AccessKind::Protected: return std::string("protected");
                 case AccessKind::Private: return std::string("private");
                 default:
-                    llvm_unreachable("unknown Access");
+                    // unknown Access
+                    MRDOX_UNREACHABLE();
                 }
             }())
         , pred(access == AccessKind::Private || access == AccessKind::Protected)
     {
     }
-
-    #if 0
-    Attribute(
-        AccessKind const* access)
-        : name("access")
-        , value(
-            [access]
-            {
-                if(! access)
-                    return std::string();
-                switch(*access)
-                {
-                case AccessKind::Public: return std::string("public");
-                case AccessKind::Protected: return std::string("protected");
-                case AccessKind::Private: return std::string("private");
-                default:
-                    llvm_unreachable("unknown Access");
-                }
-            }())
-        , pred(access != nullptr && *access != AccessKind::Public)
-    {
-    }
-    #endif
 
     Attribute(
         std::optional<TypeInfo> const& opt)

@@ -141,7 +141,7 @@ shouldVisitFile(
     temp = filePath;
     if(! path::replace_path_prefix(temp, sourceRoot_, "", path::Style::posix))
         return false;
-    Assert(files::isDirsy(sourceRoot_));
+    MRDOX_ASSERT(files::isDirsy(sourceRoot_));
     prefixPath.assign(sourceRoot_.begin(), sourceRoot_.end());
     return true;
 }

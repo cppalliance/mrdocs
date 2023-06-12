@@ -32,7 +32,7 @@ getSafeOperatorName(
     case OO_Slash:               return "slash";    // /
     case OO_Percent:             return "mod";      // %
     case OO_Caret:               return "xor";      // ^
-    case OO_Amp:                 return "bitand";   // &      
+    case OO_Amp:                 return "bitand";   // &
     case OO_Pipe:                return "bitor";    // |
     case OO_Tilde:               return "bitnot";   // ~
     case OO_Exclaim:             return "not";      // !
@@ -68,7 +68,8 @@ getSafeOperatorName(
     case OO_Conditional:         return "ternary";  // ?
     case OO_Coawait:             return "coawait";  // co_await
     default:
-        llvm_unreachable("unknown op");
+        // unknown op
+        MRDOX_UNREACHABLE();
     };
 }
 

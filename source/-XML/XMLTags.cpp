@@ -11,7 +11,7 @@
 
 #include "XMLTags.hpp"
 #include "Support/Radix.hpp"
-#include "Support/Debug.hpp"
+#include <mrdox/Platform.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -92,7 +92,8 @@ toString(
     case Javadoc::Style::none: return "";
 
     default:
-        llvm_unreachable("unknown style");
+        // unknown style
+        MRDOX_UNREACHABLE();
     }
 }
 
@@ -190,7 +191,7 @@ nest(int levels)
     else
     {
         auto const n = static_cast<std::size_t>(levels * -2);
-        Assert(n <= indent_.size());
+        MRDOX_ASSERT(n <= indent_.size());
         indent_.resize(indent_.size() - n);
     }
 }

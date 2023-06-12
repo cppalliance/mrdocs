@@ -15,6 +15,7 @@
 #include "Support/Radix.hpp"
 #include "Support/SafeNames.hpp"
 #include "Support/Operator.hpp"
+#include <mrdox/Platform.hpp>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
@@ -341,7 +342,7 @@ writeRecord(
     case RecordKeyKind::Struct:    tagName = structTagName; break;
     case RecordKeyKind::Union:     tagName = unionTagName; break;
     default:
-        Assert(false);
+        MRDOX_ASSERT(false);
     }
     tags_.open(tagName, {
         { "name", I.Name },
@@ -628,7 +629,8 @@ writeNode(
         writeReturns(static_cast<Javadoc::Returns const&>(node));
         break;
     default:
-        llvm_unreachable("unknown kind");
+        // unknown kind
+        MRDOX_UNREACHABLE();
     }
 }
 
@@ -697,7 +699,8 @@ writeAdmonition(
         tag = "warning";
         break;
     default:
-        llvm_unreachable("unknown style");
+        // unknown style
+        MRDOX_UNREACHABLE();
     }
     writeParagraph(admonition, tag);
 }

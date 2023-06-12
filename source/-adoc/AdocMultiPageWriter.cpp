@@ -10,7 +10,7 @@
 //
 
 #include "AdocMultiPageWriter.hpp"
-#include "Support/Debug.hpp"
+#include <mrdox/Platform.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -77,7 +77,7 @@ void
 AdocMultiPageWriter::
 writeTitle(Info const& I)
 {
-    Assert(sect_.level == 0);
+    MRDOX_ASSERT(sect_.level == 0);
     sect_.level = 1;
     sect_.markup = "=";
     os_ <<

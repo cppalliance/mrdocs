@@ -10,13 +10,11 @@
 //
 
 #include <mrdox/Metadata/Info.hpp>
-#include "Support/Debug.hpp"
 #include <mrdox/Metadata/Record.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
-#include <cassert>
 
 namespace clang {
 namespace mrdox {
@@ -61,8 +59,8 @@ extractName() const
         return std::string("@nonymous_var_") +
             llvm::toHex(id);
     default:
-        llvm_unreachable("Invalid InfoKind.");
-        return std::string("");
+        // invalid InfoKind
+        MRDOX_UNREACHABLE();
     }
 }
 
@@ -103,7 +101,8 @@ symbolType() const noexcept
         case RecordKeyKind::Union:
             return "union";
         default:
-            llvm_unreachable("unknown RecordKeyKind");
+            // unknown RecordKeyKind
+            MRDOX_UNREACHABLE();
         }
     case InfoKind::Function:
         return "function";
@@ -112,7 +111,8 @@ symbolType() const noexcept
     case InfoKind::Typedef:
         return "typedef";
     default:
-        llvm_unreachable("unknown InfoKind");
+        // unknown InfoKind
+        MRDOX_UNREACHABLE();
     }
 }
 

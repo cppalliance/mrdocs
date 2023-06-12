@@ -15,6 +15,7 @@
 #include "Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Platform.hpp>
 #include <mrdox/Support/Expected.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/ADT/StringMap.h>
@@ -103,27 +104,10 @@ get(
     SymbolID const& id) noexcept
 {
     auto I = find(id);
-    Assert(I != nullptr);
+    MRDOX_ASSERT(I != nullptr);
     auto const t = static_cast<T*>(I);
     if constexpr(! std::is_same_v<T, Info>)
-    {
-        if constexpr(T::isNamespace())
-            Assert(t->Kind == InfoKind::Namespace);
-        else if constexpr(T::isRecord())
-            Assert(t->Kind == InfoKind::Record);
-        else if constexpr(T::isFunction())
-            Assert(t->Kind == InfoKind::Function);
-        else if constexpr(T::isTypedef())
-            Assert(t->Kind == InfoKind::Typedef);
-        else if constexpr(T::isEnum())
-            Assert(t->Kind == InfoKind::Enum);
-        else if constexpr(T::isVariable())
-            Assert(t->Kind == InfoKind::Variable);
-        else if constexpr(T::isField())
-            Assert(t->Kind == InfoKind::Field);
-        else if constexpr(T::isSpecialization())
-            Assert(t->Kind == InfoKind::Specialization);
-    }
+        MRDOX_ASSERT(t->Kind == T::kind_id);
     return *t;
 }
 

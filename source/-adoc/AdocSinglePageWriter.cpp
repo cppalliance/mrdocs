@@ -10,7 +10,7 @@
 //
 
 #include "AdocSinglePageWriter.hpp"
-#include "Support/Debug.hpp"
+#include <mrdox/Platform.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -31,7 +31,7 @@ build()
 {
     if(auto err = AdocWriter::init())
         return err;
-    Assert(sect_.level == 0);
+    MRDOX_ASSERT(sect_.level == 0);
     sect_.level = 1;
     sect_.markup = "=";
     os_ <<
@@ -57,7 +57,7 @@ buildSortedList(
     for(auto const& id : from)
     {
         const Info* info = corpus_.find(id);
-        Assert(info);
+        MRDOX_ASSERT(info);
         if(Type::kind_id == info->Kind)
             result.push_back(
                 static_cast<const Type*>(info));
@@ -284,7 +284,7 @@ visitOverloads(
     Info const& P,
     OverloadInfo const& I)
 {
-    Assert(! I.Functions.empty());
+    MRDOX_ASSERT(! I.Functions.empty());
 
     beginSection(P, I);
 

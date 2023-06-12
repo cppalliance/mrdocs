@@ -14,7 +14,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <fmt/format.h>
-#include <cassert>
 #include <string>
 #include <string_view>
 #include <type_traits>

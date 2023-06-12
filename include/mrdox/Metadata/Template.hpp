@@ -147,7 +147,7 @@ public:
         else if constexpr(std::is_same_v<U, TemplateTParam>)
             Kind = TParamKind::Template;
         else
-            assert(! "invalid template parameter kind");
+            MRDOX_ASSERT(! "invalid template parameter kind");
         return *::new (static_cast<void*>(&Variant_)) T(
             std::forward<Args>(args)...);
     }
@@ -163,7 +163,7 @@ public:
         else if constexpr(std::is_same_v<U, TemplateTParam>)
             return Variant_.Template;
         else
-            assert(! "invalid template parameter kind");
+            MRDOX_ASSERT(! "invalid template parameter kind");
     }
 
     template<typename T>
@@ -177,7 +177,7 @@ public:
         else if constexpr(std::is_same_v<U, TemplateTParam>)
             return Variant_.Template;
         else
-            assert(! "invalid template parameter kind");
+            MRDOX_ASSERT(! "invalid template parameter kind");
     }
 };
 

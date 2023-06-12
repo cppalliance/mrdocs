@@ -26,7 +26,8 @@ void insertChild(NamespaceInfo& I, Args&&... args)
     if constexpr(std::is_constructible_v<SymbolID, Args...>)
     {
         if constexpr(T::isField())
-            llvm_unreachable("invalid namespace member");
+            // invalid namespace member
+            MRDOX_UNREACHABLE();
         else if constexpr(T::isSpecialization())
             I.Specializations.emplace_back(std::forward<Args>(args)...);
         else
@@ -34,7 +35,8 @@ void insertChild(NamespaceInfo& I, Args&&... args)
     }
     else
     {
-        llvm_unreachable("invalid arguments");
+        // invalid arguments
+        MRDOX_UNREACHABLE();
     }
 }
 
@@ -50,7 +52,8 @@ void insertChild(RecordInfo& I, Args&&... args)
     }
     else
     {
-        llvm_unreachable("invalid arguments");
+        // invalid arguments
+        MRDOX_UNREACHABLE();
     }
 }
 

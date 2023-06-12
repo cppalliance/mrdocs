@@ -298,10 +298,12 @@ skipUntilRecordOrBlock(
         case llvm::bitc::UNABBREV_RECORD:
             return Cursor::BadBlock;
         case llvm::bitc::FIRST_APPLICATION_ABBREV:
-            llvm_unreachable("Unexpected abbrev id.");
+            // Unexpected abbrev id
+            MRDOX_UNREACHABLE();
         }
     }
-    llvm_unreachable("Premature stream end.");
+    // Premature stream end
+    MRDOX_UNREACHABLE();
 }
 
 //------------------------------------------------

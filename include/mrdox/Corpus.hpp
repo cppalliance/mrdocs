@@ -16,7 +16,6 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
-#include <cassert>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -137,7 +136,7 @@ get(
     SymbolID const& id) const noexcept
 {
     auto I = find(id);
-    assert(I != nullptr);
+    MRDOX_ASSERT(I != nullptr);
     if constexpr(std::is_same_v<T, Info>)
     {
         return *I;
@@ -145,7 +144,7 @@ get(
     else
     {
         auto const& J = *static_cast<T const*>(I);
-        assert(J.Kind == T::kind_id);
+        MRDOX_ASSERT(J.Kind == T::kind_id);
         return J;
     }
 }
