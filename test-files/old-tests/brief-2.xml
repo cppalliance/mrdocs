@@ -5,58 +5,58 @@
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file path="brief-2.cpp" line="5"/>
     <doc>
-      <brief>
-        <text>brief</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
-    <file path="brief-2.cpp" line="34"/>
-    <doc>
-      <brief>
-        <text>br</text>
-        <text>ief</text>
-      </brief>
       <para>
-        <text>desc</text>
-      </para>
-    </doc>
-  </function>
-  <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
-    <file path="brief-2.cpp" line="27"/>
-    <doc>
-      <brief>
-        <text>br</text>
-        <text>ief</text>
-      </brief>
-    </doc>
-  </function>
-  <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
-    <file path="brief-2.cpp" line="13"/>
-    <doc>
-      <brief>
         <text>brief</text>
-      </brief>
+      </para>
     </doc>
   </function>
   <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
     <file path="brief-2.cpp" line="9"/>
     <doc>
-      <brief>
+      <para>
         <text>brief</text>
-      </brief>
+      </para>
+    </doc>
+  </function>
+  <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
+    <file path="brief-2.cpp" line="13"/>
+    <doc>
+      <para>
+        <text>brief</text>
+      </para>
     </doc>
   </function>
   <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
     <file path="brief-2.cpp" line="17"/>
     <file path="brief-2.cpp" line="22"/>
     <doc>
-      <brief>
+      <para>
         <text>brief                    x</text>
-      </brief>
+      </para>
       <para>
         <text>br</text>
         <text>ief</text>
+      </para>
+    </doc>
+  </function>
+  <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
+    <file path="brief-2.cpp" line="27"/>
+    <doc>
+      <para>
+        <text>br</text>
+        <text>ief</text>
+      </para>
+    </doc>
+  </function>
+  <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
+    <file path="brief-2.cpp" line="34"/>
+    <doc>
+      <para>
+        <text>br</text>
+        <text>ief</text>
+      </para>
+      <para>
+        <text>desc</text>
       </para>
     </doc>
   </function>

@@ -25,13 +25,13 @@ namespace adoc {
 
 inline
 llvm::StringRef
-toString(Access access) noexcept
+toString(AccessKind access) noexcept
 {
     switch(access)
     {
-    case Access::Public: return "public";
-    case Access::Protected: return "protected";
-    case Access::Private: return "private";
+    case AccessKind::Public: return "public";
+    case AccessKind::Protected: return "protected";
+    case AccessKind::Private: return "private";
     default:
         llvm_unreachable("unknown access");
     }

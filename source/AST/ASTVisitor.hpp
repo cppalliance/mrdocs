@@ -103,7 +103,7 @@ public:
     getTypeAsString(
         QualType T);
 
-    Access
+    AccessKind
     getAccessFromSpecifier(
         AccessSpecifier as) noexcept;
 
@@ -191,18 +191,15 @@ public:
     template<class DeclTy>
     bool constructFunction(
         FunctionInfo& I,
-        AccessSpecifier A,
         DeclTy* D);
 
     template<class DeclTy>
     void buildFunction(
         FunctionInfo& I,
-        AccessSpecifier A,
         DeclTy* D);
 
     void buildRecord(
         RecordInfo& I,
-        AccessSpecifier A,
         CXXRecordDecl* D);
 
     void buildNamespace(
@@ -214,23 +211,19 @@ public:
 
     void buildEnum(
         EnumInfo& I,
-        AccessSpecifier A,
         EnumDecl* D);
 
     void buildField(
         FieldInfo& I,
-        AccessSpecifier A,
         FieldDecl* D);
 
     void buildVar(
         VarInfo& I,
-        AccessSpecifier A,
         VarDecl* D);
 
     template<class DeclTy>
     void buildTypedef(
         TypedefInfo& I,
-        AccessSpecifier A,
         DeclTy* D);
 
     // --------------------------------------------------------

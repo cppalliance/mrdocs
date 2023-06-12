@@ -6,9 +6,32 @@
     <file path="param.cpp" line="4" class="def"/>
     <param name="x" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x">
+      </param>
+    </doc>
+  </function>
+  <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
+    <file path="param.cpp" line="10" class="def"/>
+    <param name="x" type="int"/>
+    <param name="y" type="int"/>
+    <doc>
+      <param name="x">
+      </param>
+      <param name="y">
+      </param>
+    </doc>
+  </function>
+  <function name="h" id="rxzCccrw6I3QTAhGPnAfCKLwzTA=">
+    <file path="param.cpp" line="17" class="def"/>
+    <param name="x" type="int"/>
+    <param name="y" type="int"/>
+    <param name="z" type="int"/>
+    <doc>
+      <param name="x">
+      </param>
+      <param name="y">
+      </param>
+      <param name="z">
       </param>
     </doc>
   </function>
@@ -19,8 +42,6 @@
     <param name="y" type="int"/>
     <param name="z" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="w">
       </param>
       <param name="x">
@@ -28,35 +49,6 @@
       <param name="y">
       </param>
       <param name="z">
-      </param>
-    </doc>
-  </function>
-  <function name="h" id="rxzCccrw6I3QTAhGPnAfCKLwzTA=">
-    <file path="param.cpp" line="17" class="def"/>
-    <param name="x" type="int"/>
-    <param name="y" type="int"/>
-    <param name="z" type="int"/>
-    <doc>
-      <brief>
-      </brief>
-      <param name="x">
-      </param>
-      <param name="y">
-      </param>
-      <param name="z">
-      </param>
-    </doc>
-  </function>
-  <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
-    <file path="param.cpp" line="10" class="def"/>
-    <param name="x" type="int"/>
-    <param name="y" type="int"/>
-    <doc>
-      <brief>
-      </brief>
-      <param name="x">
-      </param>
-      <param name="y">
       </param>
     </doc>
   </function>

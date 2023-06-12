@@ -2,10 +2,67 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
+  <struct name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">
+    <file path="class-template.cpp" line="1" class="def"/>
+  </struct>
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="C0" id="sv7ww7qclY8KsvAbFHXaKZnSO80=">
+      <file path="class-template.cpp" line="4" class="def"/>
+      <data name="w" id="ySFHEWJe6/b1dbtjDC2IAvT2vmU=">
+        <file path="class-template.cpp" line="6" class="def"/>
+        <type name="int"/>
+      </data>
+      <data name="x" id="81imwKxfuTfd7lfVGnF+fKx46lY=">
+        <file path="class-template.cpp" line="7" class="def"/>
+        <type name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to="/>
+      </data>
+      <data name="y" id="UKBRhwzQ0PeL6ZwfxmreRBoDQSY=">
+        <file path="class-template.cpp" line="8" class="def"/>
+        <type name="T"/>
+      </data>
+      <struct name="N0" id="gx6LdMT9nBMQKB26lZXGWbB7N6c=">
+        <file path="class-template.cpp" line="10" class="def"/>
+        <data name="z" id="sdv932bFyf1dJzPblqxQGqsy8G4=">
+          <file path="class-template.cpp" line="12" class="def"/>
+          <type name="int"/>
+        </data>
+      </struct>
+    </struct>
+  </template>
+  <struct name="C1" id="tm2khHa6qZM0lj1f7IwBdxVxDgE=">
+    <file path="class-template.cpp" line="16" class="def"/>
+    <data name="w" id="Q0itZUB0O9hts+pFPk9DO415Lo8=">
+      <file path="class-template.cpp" line="18" class="def"/>
+      <type name="int"/>
+    </data>
+    <template>
+      <tparam name="T" class="type"/>
+      <struct name="N1" id="F1Cyqn/faLYbjTU4RfGsepUiiZw=">
+        <file path="class-template.cpp" line="21" class="def"/>
+        <data name="x" id="bQCgblScrSKOxQMVJxT7vFw9W4I=">
+          <file path="class-template.cpp" line="23" class="def"/>
+          <type name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to="/>
+        </data>
+        <data name="y" id="phg6+zMhjV0SJ7vav871OGqoPPQ=">
+          <file path="class-template.cpp" line="24" class="def"/>
+          <type name="T"/>
+        </data>
+        <data name="z" id="53ijFg2EUlLuOP8qvufgjwZDNoI=">
+          <file path="class-template.cpp" line="25" class="def"/>
+          <type name="int"/>
+        </data>
+      </struct>
+    </template>
+  </struct>
   <template>
     <tparam name="T" class="type"/>
     <struct name="C2" id="IIPz8Fm6nqKoYQpeJ/kvZaWvtI8=">
       <file path="class-template.cpp" line="30" class="def"/>
+      <data name="v" id="rvAO5HvzEvS8z9PgbRoqkyTi+1c=">
+        <file path="class-template.cpp" line="32" class="def"/>
+        <type name="int"/>
+      </data>
       <template>
         <tparam name="U" class="type"/>
         <struct name="N2" id="xljI5oOqNOhyyR4QzmKvFB3nEfw=">
@@ -28,65 +85,8 @@
           </data>
         </struct>
       </template>
-      <data name="v" id="rvAO5HvzEvS8z9PgbRoqkyTi+1c=">
-        <file path="class-template.cpp" line="32" class="def"/>
-        <type name="int"/>
-      </data>
     </struct>
   </template>
-  <struct name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">
-    <file path="class-template.cpp" line="1" class="def"/>
-  </struct>
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="C0" id="sv7ww7qclY8KsvAbFHXaKZnSO80=">
-      <file path="class-template.cpp" line="4" class="def"/>
-      <struct name="N0" id="gx6LdMT9nBMQKB26lZXGWbB7N6c=">
-        <file path="class-template.cpp" line="10" class="def"/>
-        <data name="z" id="sdv932bFyf1dJzPblqxQGqsy8G4=">
-          <file path="class-template.cpp" line="12" class="def"/>
-          <type name="int"/>
-        </data>
-      </struct>
-      <data name="w" id="ySFHEWJe6/b1dbtjDC2IAvT2vmU=">
-        <file path="class-template.cpp" line="6" class="def"/>
-        <type name="int"/>
-      </data>
-      <data name="x" id="81imwKxfuTfd7lfVGnF+fKx46lY=">
-        <file path="class-template.cpp" line="7" class="def"/>
-        <type name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to="/>
-      </data>
-      <data name="y" id="UKBRhwzQ0PeL6ZwfxmreRBoDQSY=">
-        <file path="class-template.cpp" line="8" class="def"/>
-        <type name="T"/>
-      </data>
-    </struct>
-  </template>
-  <struct name="C1" id="tm2khHa6qZM0lj1f7IwBdxVxDgE=">
-    <file path="class-template.cpp" line="16" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-      <struct name="N1" id="F1Cyqn/faLYbjTU4RfGsepUiiZw=">
-        <file path="class-template.cpp" line="21" class="def"/>
-        <data name="x" id="bQCgblScrSKOxQMVJxT7vFw9W4I=">
-          <file path="class-template.cpp" line="23" class="def"/>
-          <type name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to="/>
-        </data>
-        <data name="y" id="phg6+zMhjV0SJ7vav871OGqoPPQ=">
-          <file path="class-template.cpp" line="24" class="def"/>
-          <type name="T"/>
-        </data>
-        <data name="z" id="53ijFg2EUlLuOP8qvufgjwZDNoI=">
-          <file path="class-template.cpp" line="25" class="def"/>
-          <type name="int"/>
-        </data>
-      </struct>
-    </template>
-    <data name="w" id="Q0itZUB0O9hts+pFPk9DO415Lo8=">
-      <file path="class-template.cpp" line="18" class="def"/>
-      <type name="int"/>
-    </data>
-  </struct>
   <template>
     <tparam name="T" class="type"/>
     <struct name="C3" id="x60FzYL65XgZZRrxrZuC5jemrwQ=">

@@ -4,6 +4,19 @@
 <namespace name="">
   <template>
     <tparam name="T" class="type"/>
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+      <file path="alias-template.cpp" line="2" class="def"/>
+    </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="U" class="type"/>
+    <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
+      <file path="alias-template.cpp" line="5" class="def"/>
+    </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
     <alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
       <file path="alias-template.cpp" line="8" class="def"/>
       <type name="A&lt;T&gt;"/>
@@ -20,19 +33,6 @@
           <type name="B&lt;T, U&gt;"/>
         </alias>
       </template>
-    </struct>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <tparam name="U" class="type"/>
-    <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
-      <file path="alias-template.cpp" line="5" class="def"/>
-    </struct>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file path="alias-template.cpp" line="2" class="def"/>
     </struct>
   </template>
 </namespace>

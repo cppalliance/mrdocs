@@ -2,6 +2,11 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file path="noreturn.cpp" line="1"/>
+    <file path="noreturn.cpp" line="9"/>
+    <attr id="is-no-return"/>
+  </function>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="noreturn.cpp" line="3" class="def"/>
     <friend id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
@@ -15,10 +20,5 @@
       <attr id="is-no-return"/>
     </function>
   </struct>
-  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
-    <file path="noreturn.cpp" line="1"/>
-    <file path="noreturn.cpp" line="9"/>
-    <attr id="is-no-return"/>
-  </function>
 </namespace>
 </mrdox>

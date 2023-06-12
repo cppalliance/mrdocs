@@ -84,14 +84,12 @@ public:
     void emitRecord(Enum Value, RecordID ID);
 
     void emitRecord(std::vector<SymbolID> const& Values, RecordID ID);
-    void emitRecord(std::vector<MemberRef> const& list, RecordID ID);
     // void emitRecord(std::vector<SpecializedMember> const& list, RecordID ID);
 
     void emitRecord(SymbolID const& Str, RecordID ID);
     void emitRecord(StringRef Str, RecordID ID);
     void emitRecord(Location const& Loc, RecordID ID);
     void emitRecord(bool Value, RecordID ID);
-    void emitRecord(TemplateInfo const& Templ);
     void emitRecord(std::initializer_list<BitFieldFullValue> values, RecordID ID);
 
     bool prepRecordData(RecordID ID, bool ShouldEmit = true);

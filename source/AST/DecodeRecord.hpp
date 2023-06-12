@@ -99,36 +99,6 @@ decodeRecord(
     return Error::success();
 }
 
-// vector<MemberRef>
-inline
-Error
-decodeRecord(
-    Record const& R,
-    std::vector<MemberRef>& f,
-    llvm::StringRef blob)
-{
-    constexpr auto MemberRefSize =
-        BitCodeConstants::USRHashSize + 1;
-    if(R.empty())
-        return Error("record is empty");
-    auto n = R.size() / MemberRefSize;
-    if(R.size() != n * MemberRefSize)
-        return Error("record is short");
-    auto src = R.begin();
-    f.resize(n);
-    auto* dest = &f[0];
-    while(n--)
-    {
-        if(*src > 2) // Access::Private
-            return Error("invalid Access={}", *src);
-        dest->access = static_cast<Access>(*src++);
-        dest->id = SymbolID(src);
-        ++dest;
-        src += BitCodeConstants::USRHashSize;
-    }
-    return Error::success();
-}
-
 inline
 Error
 decodeRecord(

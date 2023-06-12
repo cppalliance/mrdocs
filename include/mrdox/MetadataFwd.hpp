@@ -25,7 +25,7 @@ class Corpus;
 
 class Interface;
 
-enum class Access;
+enum class AccessKind;
 enum class FunctionKind;
 
 struct BaseInfo;
@@ -36,10 +36,8 @@ struct FunctionInfo;
 struct Info;
 struct Javadoc;
 struct Location;
-struct MemberRef;
 struct NamespaceInfo;
 struct RecordInfo;
-struct RecordScope;
 struct Param;
 struct SpecializationInfo;
 struct SpecializedMember;

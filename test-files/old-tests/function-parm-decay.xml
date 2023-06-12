@@ -2,6 +2,13 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
+  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
+    <file path="function-parm-decay.cpp" line="3"/>
+    <file path="function-parm-decay.cpp" line="4"/>
+    <file path="function-parm-decay.cpp" line="5"/>
+    <file path="function-parm-decay.cpp" line="6"/>
+    <param name="x" type="int"/>
+  </function>
   <function name="g" id="CJhykN8TDmEo0Pl8UC2D9+rotIs=">
     <file path="function-parm-decay.cpp" line="8"/>
     <file path="function-parm-decay.cpp" line="9"/>
@@ -20,6 +27,10 @@
     <file path="function-parm-decay.cpp" line="18" class="def"/>
     <type name="int"/>
   </alias>
+  <alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
+    <file path="function-parm-decay.cpp" line="19" class="def"/>
+    <type name="const int"/>
+  </alias>
   <function name="i" id="UTOfie03KjmJww3mduHOqLZB5aI=">
     <file path="function-parm-decay.cpp" line="21"/>
     <file path="function-parm-decay.cpp" line="22"/>
@@ -27,16 +38,5 @@
     <file path="function-parm-decay.cpp" line="24"/>
     <param type="T"/>
   </function>
-  <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
-    <file path="function-parm-decay.cpp" line="3"/>
-    <file path="function-parm-decay.cpp" line="4"/>
-    <file path="function-parm-decay.cpp" line="5"/>
-    <file path="function-parm-decay.cpp" line="6"/>
-    <param name="x" type="int"/>
-  </function>
-  <alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
-    <file path="function-parm-decay.cpp" line="19" class="def"/>
-    <type name="const int"/>
-  </alias>
 </namespace>
 </mrdox>

@@ -106,26 +106,29 @@ struct Attribute
     }
 
     Attribute(
-        Access access)
+        AccessKind access)
         : name("access")
         , value(
             [access]
             {
                 switch(access)
                 {
-                case Access::Public: return std::string("public");
-                case Access::Protected: return std::string("protected");
-                case Access::Private: return std::string("private");
+                case AccessKind::None:
+                    return std::string();
+                case AccessKind::Public: return std::string("public");
+                case AccessKind::Protected: return std::string("protected");
+                case AccessKind::Private: return std::string("private");
                 default:
                     llvm_unreachable("unknown Access");
                 }
             }())
-        , pred(true)
+        , pred(access == AccessKind::Private || access == AccessKind::Protected)
     {
     }
 
+    #if 0
     Attribute(
-        Access const* access)
+        AccessKind const* access)
         : name("access")
         , value(
             [access]
@@ -134,16 +137,17 @@ struct Attribute
                     return std::string();
                 switch(*access)
                 {
-                case Access::Public: return std::string("public");
-                case Access::Protected: return std::string("protected");
-                case Access::Private: return std::string("private");
+                case AccessKind::Public: return std::string("public");
+                case AccessKind::Protected: return std::string("protected");
+                case AccessKind::Private: return std::string("private");
                 default:
                     llvm_unreachable("unknown Access");
                 }
             }())
-        , pred(access != nullptr && *access != Access::Public)
+        , pred(access != nullptr && *access != AccessKind::Public)
     {
     }
+    #endif
 
     Attribute(
         std::optional<TypeInfo> const& opt)

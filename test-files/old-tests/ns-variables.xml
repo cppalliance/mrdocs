@@ -2,17 +2,17 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file path="ns-variables.cpp" line="7" class="def"/>
-  </struct>
-  <variable name="pi" id="EgqLVTs3FIJjFIODa5OOP2hmEI0=">
-    <file path="ns-variables.cpp" line="5" class="def"/>
-    <type name="double"/>
-  </variable>
   <variable name="i" id="X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=">
     <file path="ns-variables.cpp" line="3" class="def"/>
     <type name="const int"/>
   </variable>
+  <variable name="pi" id="EgqLVTs3FIJjFIODa5OOP2hmEI0=">
+    <file path="ns-variables.cpp" line="5" class="def"/>
+    <type name="double"/>
+  </variable>
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="ns-variables.cpp" line="7" class="def"/>
+  </struct>
   <variable name="t" id="eFAdMVIx9F2Zyx0LmK/nCDOhmhA=">
     <file path="ns-variables.cpp" line="9"/>
     <attr id="storage-class" name="extern" value="1"/>

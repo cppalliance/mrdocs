@@ -39,32 +39,14 @@ void insertChild(NamespaceInfo& I, Args&&... args)
 }
 
 template<typename T, typename... Args>
-void insertChild(RecordScope& P, Args&&... args)
+void insertChild(RecordInfo& I, Args&&... args)
 {
-    using U = std::remove_cvref_t<T>;
-    if constexpr(std::is_constructible_v<MemberRef, Args...>)
-    {
-        if constexpr(T::isRecord())
-            P.Records.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isFunction())
-            P.Functions.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isTypedef())
-            P.Types.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isEnum())
-            P.Enums.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isField())
-            P.Fields.emplace_back(std::forward<Args>(args)...);
-        else if constexpr(T::isVariable())
-            P.Vars.emplace_back(std::forward<Args>(args)...);
-        else
-            llvm_unreachable("invalid RecordScope member");
-    }
-    else if constexpr(std::is_constructible_v<SymbolID, Args...>)
+    if constexpr(std::is_constructible_v<SymbolID, Args...>)
     {
         if constexpr(T::isSpecialization())
-            P.Specializations.emplace_back(std::forward<Args>(args)...);
+            I.Specializations.emplace_back(std::forward<Args>(args)...);
         else
-            llvm_unreachable("invalid RecordScope member");
+            I.Members.emplace_back(std::forward<Args>(args)...);
     }
     else
     {

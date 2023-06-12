@@ -32,12 +32,12 @@ class Interface::Build
     Corpus const& corpus_;
     bool includePrivate_;
 
-    std::vector<std::pair<Access, MemberEnum>> enums_;
-    std::vector<std::pair<Access, MemberFunction>> functions_;
-    std::vector<std::pair<Access, MemberRecord>> records_;
-    std::vector<std::pair<Access, MemberType>> types_;
-    std::vector<std::pair<Access, DataMember>> data_;
-    std::vector<std::pair<Access, StaticDataMember>> vars_;
+    std::vector<std::pair<AccessKind, MemberEnum>> enums_;
+    std::vector<std::pair<AccessKind, MemberFunction>> functions_;
+    std::vector<std::pair<AccessKind, MemberRecord>> records_;
+    std::vector<std::pair<AccessKind, MemberType>> types_;
+    std::vector<std::pair<AccessKind, DataMember>> data_;
+    std::vector<std::pair<AccessKind, StaticDataMember>> vars_;
 
 public:
     Build(
@@ -48,32 +48,32 @@ public:
         , corpus_(corpus)
         , includePrivate_(corpus_.config.includePrivate)
     {
-        append(Access::Public, Derived);
+        append(AccessKind::Public, Derived);
 
         finish();
     }
 
 private:
     static
-    Access
+    AccessKind
     effectiveAccess(
-        Access t0,
-        Access t1) noexcept
+        AccessKind t0,
+        AccessKind t1) noexcept
     {
-        if( t0 ==  Access::Private ||
-            t1 ==  Access::Private)
-            return Access::Private;
+        if( t0 ==  AccessKind::Private ||
+            t1 ==  AccessKind::Private)
+            return AccessKind::Private;
 
-        if( t0 ==  Access::Protected ||
-            t1 ==  Access::Protected)
-            return Access::Protected;
+        if( t0 ==  AccessKind::Protected ||
+            t1 ==  AccessKind::Protected)
+            return AccessKind::Protected;
 
-        return Access::Public;
+        return AccessKind::Public;
     }
 
     void
     append(
-        Access access,
+        AccessKind access,
         RecordInfo const& From)
     {
         for(auto const& B : From.Bases)
@@ -86,82 +86,51 @@ private:
             append(actualAccess, corpus_.get<RecordInfo>(B.id));
         }
 
-        // Member Enums
         if( includePrivate_ ||
-            access != Access::Private)
+            access != AccessKind::Private)
         {
-            for(auto const& ref : From.Members.Enums)
+            for(auto const& id : From.Members)
             {
-                auto const& J = corpus_.get<EnumInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                enums_.push_back({ actualAccess, { &J, &From } });
-            }
-        }
-
-        // Member Functions
-        {
-            auto const isRecFinal = From.specs.isFinal.get();
-            for(auto const& ref : From.Members.Functions)
-            {
-                auto const& J = corpus_.get<FunctionInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                //bool isFinal = J.specs0.isFinal;
-                // private virtual functions are effectively public
-                // and should be emitted unless the record is final
-                if( includePrivate_ ||
-                    actualAccess != Access::Private ||
-                    ( ! isRecFinal && J.specs0.isVirtual ))
+                const auto& I = corpus_.get<Info>(id);
+                auto actualAccess = effectiveAccess(access, I.Access);
+                switch(I.Kind)
                 {
-                    functions_.push_back({ actualAccess, { &J, &From }});
+                case InfoKind::Enum:
+                    enums_.push_back({ actualAccess,
+                        { static_cast<const EnumInfo*>(&I), &From } });
+                    break;
+                case InfoKind::Field:
+                    data_.push_back({ actualAccess,
+                        { static_cast<const FieldInfo*>(&I), &From } });
+                    break;
+                case InfoKind::Function:
+                {
+                    auto const isRecFinal = From.specs.isFinal.get();
+                    const auto& F = static_cast<const FunctionInfo&>(I);
+                    if( includePrivate_ ||
+                        actualAccess != AccessKind::Private ||
+                        ( ! isRecFinal && F.specs0.isVirtual ))
+                    {
+                        functions_.push_back({ actualAccess, { &F, &From } });
+                    }
+                    break;
                 }
-            }
-        }
+                case InfoKind::Record:
+                    records_.push_back({ actualAccess,
+                        { static_cast<const RecordInfo*>(&I), &From } });
+                    break;
+                case InfoKind::Typedef:
+                    types_.push_back({ actualAccess,
+                        { static_cast<const TypedefInfo*>(&I), &From } });
+                    break;
+                case InfoKind::Variable:
+                    vars_.push_back({ actualAccess,
+                        { static_cast<const VarInfo*>(&I), &From } });
+                    break;
 
-        // Member Records
-        if( includePrivate_ ||
-            access != Access::Private)
-        {
-            for(auto const& ref : From.Members.Records)
-            {
-                auto const& J = corpus_.get<RecordInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                records_.push_back({ actualAccess, { &J, &From }});
-            }
-        }
-
-        // Member Types
-        if( includePrivate_ ||
-            access != Access::Private)
-        {
-            for(auto const& ref : From.Members.Types)
-            {
-                auto const& J = corpus_.get<TypedefInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                types_.push_back({ actualAccess, { &J, &From }});
-            }
-        }
-
-        // Non-static Data Members
-        if( includePrivate_ ||
-            access != Access::Private)
-        {
-            for(auto const& ref : From.Members.Fields)
-            {
-                auto const& J = corpus_.get<FieldInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                data_.push_back({ actualAccess, { &J, &From }});
-            }
-        }
-
-        // Static Data Members
-        if( includePrivate_ ||
-            access != Access::Private)
-        {
-            for(auto const& ref : From.Members.Vars)
-            {
-                auto const& J = corpus_.get<VarInfo>(ref.id);
-                auto actualAccess = effectiveAccess(access, ref.access);
-                vars_.push_back({ actualAccess, { &J, &From }});
+                default:
+                    break;
+                }
             }
         }
     }
@@ -192,7 +161,7 @@ private:
             it0, src.end(),
             [](auto const& p) noexcept
             {
-                return p.first == Access::Public;
+                return p.first == AccessKind::Public;
             });
         std::size_t const nPublic = it - it0;
         it0 = it;
@@ -200,7 +169,7 @@ private:
             it0, src.end(),
             [](auto const& p) noexcept
             {
-                return p.first == Access::Protected;
+                return p.first == AccessKind::Protected;
             });
         std::size_t const nPrivate = src.end() - it;
 

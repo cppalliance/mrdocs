@@ -5,9 +5,9 @@
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file path="commands.cpp" line="8"/>
     <doc>
-      <brief>
+      <para>
         <text>brief</text>
-      </brief>
+      </para>
       <para>
         <text>mrdox hello</text>
       </para>

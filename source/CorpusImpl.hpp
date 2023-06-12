@@ -83,43 +83,9 @@ private:
     */
     void insert(std::unique_ptr<Info> Ip);
 
-    //--------------------------------------------
-
-    /** Base class used to visit elements of the corpus.
-    */
-    struct MutableVisitor
-    {
-        virtual ~MutableVisitor() = default;
-
-        virtual void visit(NamespaceInfo&) {}
-        virtual void visit(RecordInfo&) {}
-        virtual void visit(FunctionInfo&) {}
-        virtual void visit(TypedefInfo&) {}
-        virtual void visit(EnumInfo&) {}
-        virtual void visit(VarInfo&) {}
-        virtual void visit(FieldInfo&) {}
-    };
-
-    /** Visit the specified symbol ID or node.
-    */
-    /** @{ */
-    void traverse(MutableVisitor& f, Info& I);
-    void traverse(MutableVisitor& f, NamespaceInfo& I);
-    void traverse(MutableVisitor& f, RecordInfo& I);
-    void traverse(MutableVisitor& f, SymbolID id);
-    /** @} */
-
 private:
     struct Temps;
-    class Canonicalizer;
     friend class Corpus;
-
-    /** Canonicalize the contents of the object.
-
-        @param R The diagnostic reporting object to
-        use for delivering errors and information.
-    */
-    void canonicalize();
 
     std::shared_ptr<ConfigImpl const> config_;
 
@@ -128,7 +94,6 @@ private:
     std::vector<Info const*> index_;
 
     llvm::sys::Mutex mutex_;
-    bool isCanonical_ = false;
 };
 
 template<class T>

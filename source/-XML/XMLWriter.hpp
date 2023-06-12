@@ -65,21 +65,15 @@ private:
     bool visit(EnumInfo const&) override;
     bool visit(VarInfo const&) override;
     bool visit(SpecializationInfo const&) override;
+    bool visit(FieldInfo const&) override;
 
-    bool visit(MemberEnum const&, Access) override;
-    bool visit(MemberFunction const&, Access) override;
-    bool visit(MemberRecord const&, Access) override;
-    bool visit(MemberType const&, Access) override;
-    bool visit(DataMember const&, Access) override;
-    bool visit(StaticDataMember const&, Access) override;
-
-    bool writeEnum(EnumInfo const&, Access const* access = nullptr);
-    bool writeFunction(FunctionInfo const&, Access const* access = nullptr);
-    bool writeRecord(RecordInfo const&, Access const* access = nullptr);
-    bool writeTypedef(TypedefInfo const&, Access const* access = nullptr);
-    bool writeField(FieldInfo const&, Access const* access = nullptr);
-    bool writeVar(VarInfo const&, Access const* access = nullptr);
-    bool writeSpecialization(const SpecializationInfo& I);
+    bool writeEnum(EnumInfo const&);
+    bool writeFunction(FunctionInfo const&);
+    bool writeRecord(RecordInfo const&);
+    bool writeTypedef(TypedefInfo const&);
+    bool writeField(FieldInfo const&);
+    bool writeVar(VarInfo const&);
+    bool writeSpecialization(const SpecializationInfo&);
 
     void writeSymbol(SymbolInfo const& I);
     void writeLocation(Location const& loc, bool def = false);

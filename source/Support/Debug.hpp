@@ -50,20 +50,11 @@ struct fmt::formatter<clang::mrdox::InfoKind>
 };
 
 template<>
-struct fmt::formatter<clang::mrdox::Access>
+struct fmt::formatter<clang::mrdox::AccessKind>
     : fmt::formatter<std::string>
 {
     fmt::format_context::iterator format(
-        clang::mrdox::Access a,
-        fmt::format_context& ctx) const;
-};
-
-template<>
-struct fmt::formatter<clang::mrdox::MemberRef>
-    : fmt::formatter<std::string>
-{
-    fmt::format_context::iterator format(
-        const clang::mrdox::MemberRef& r,
+        clang::mrdox::AccessKind a,
         fmt::format_context& ctx) const;
 };
 

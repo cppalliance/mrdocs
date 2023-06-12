@@ -149,7 +149,7 @@ getTypeAsString(
     return T.getAsString(astContext_->getPrintingPolicy());
 }
 
-Access
+AccessKind
 ASTVisitor::
 getAccessFromSpecifier(
     AccessSpecifier as) noexcept
@@ -157,11 +157,13 @@ getAccessFromSpecifier(
     switch(as)
     {
     case AccessSpecifier::AS_public:
-        return Access::Public;
+        return AccessKind::Public;
     case AccessSpecifier::AS_protected:
-        return Access::Protected;
+        return AccessKind::Protected;
     case AccessSpecifier::AS_private:
-        return Access::Private;
+        return AccessKind::Private;
+    case AccessSpecifier::AS_none:
+        return AccessKind::None;
     default:
         llvm_unreachable("unknown AccessSpecifier");
     }
@@ -461,41 +463,26 @@ static
 Bitcode
 writeParent(
     Child const& I,
-    AccessSpecifier access = AccessSpecifier::AS_none)
+    bool parent_is_record)
 {
     Assert(! I.Namespace.empty());
-    Access access_;
-    switch(access)
+    // Create an dummy parent and insert the child
+    // Then return the parent as a serialized bitcode.
+    if(parent_is_record)
     {
-    // namespace scope declaration
-    case AccessSpecifier::AS_none:
+        Assert(Child::isSpecialization() ||
+            I.Access != AccessKind::None);
+        RecordInfo P(I.Namespace.front());
+        insertChild<Child>(P, I.id);
+        return writeBitcode(P);
+    }
+    else
     {
+        Assert(I.Access == AccessKind::None);
         NamespaceInfo P(I.Namespace.front());
         insertChild<Child>(P, I.id);
         return writeBitcode(P);
     }
-    case AccessSpecifier::AS_public:
-        access_ = Access::Public;
-        break;
-    case AccessSpecifier::AS_protected:
-        access_ = Access::Protected;
-        break;
-    case AccessSpecifier::AS_private:
-        access_ = Access::Private;
-        break;
-    default:
-        llvm_unreachable("unknown access");
-    }
-    // Create an empty Record for the child,
-    // and insert the child as a MemberRef.
-    // Then return the parent as a serialized bitcode.
-    RecordInfo P(I.Namespace.front());
-    if constexpr(Child::isSpecialization())
-        insertChild<Child>(P.Members, I.id);
-    else
-        insertChild<Child>(P.Members, I.id, access_);
-
-    return writeBitcode(P);
 }
 
 void
@@ -678,8 +665,9 @@ buildSpecialization(
     insertBitcode(ex_, writeBitcode(I));
     if(! member_spec)
         insertBitcode(ex_, writeParent(I,
-            P->getDeclContext()->isFileContext() ?
-                AccessSpecifier::AS_none : AccessSpecifier::AS_public));
+            P->getDeclContext()->isRecord()));
+            // ! P->getDeclContext()->isFileContext()));
+
 }
 
 //------------------------------------------------
@@ -704,6 +692,8 @@ extractBases(
             continue;
 
         SymbolID id = SymbolID::zero;
+        AccessKind access = getAccessFromSpecifier(
+            B.getAccessSpecifier());
         if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
         {
             TemplateDecl const* TD = Ty->getTemplateName().getAsTemplateDecl();
@@ -711,7 +701,7 @@ extractBases(
             I.Bases.emplace_back(
                 id,
                 getTypeAsString(B.getType()),
-                getAccessFromSpecifier(B.getAccessSpecifier()),
+                access,
                 isVirtual);
         }
         else if(CXXRecordDecl const* P = getCXXRecordDeclForType(B.getType()))
@@ -720,7 +710,7 @@ extractBases(
             I.Bases.emplace_back(
                 id,
                 P->getNameAsString(),
-                getAccessFromSpecifier(B.getAccessSpecifier()),
+                access,
                 isVirtual);
         }
         else
@@ -728,7 +718,7 @@ extractBases(
             I.Bases.emplace_back(
                 id,
                 getTypeAsString(B.getType()),
-                getAccessFromSpecifier(B.getAccessSpecifier()),
+                access,
                 isVirtual);
         }
     }
@@ -740,7 +730,6 @@ void
 ASTVisitor::
 buildRecord(
     RecordInfo& I,
-    AccessSpecifier A,
     CXXRecordDecl* D)
 {
     if(! extractInfo(I, D))
@@ -783,7 +772,8 @@ buildRecord(
 
     insertBitcode(ex_, writeBitcode(I));
     if(! member_spec)
-        insertBitcode(ex_, writeParent(I, A));
+        insertBitcode(ex_, writeParent(I,
+            D->getDeclContext()->isRecord()));
 }
 
 //------------------------------------------------
@@ -793,7 +783,6 @@ bool
 ASTVisitor::
 constructFunction(
     FunctionInfo& I,
-    AccessSpecifier A,
     DeclTy* D)
 {
     // adjust parameter types
@@ -934,7 +923,7 @@ buildNamespace(
 
     insertBitcode(ex_, writeBitcode(I));
     if(! member_spec)
-        insertBitcode(ex_, writeParent(I));
+        insertBitcode(ex_, writeParent(I, false));
 }
 
 void
@@ -950,7 +939,7 @@ buildFriend(
             if(! shouldExtract(FD))
                 return;
             FunctionInfo I;
-            if(! constructFunction(I, FD->getAccessUnsafe(), FD))
+            if(! constructFunction(I, FD))
                 return;
 #if 0
             SymbolID id;
@@ -979,9 +968,9 @@ buildFriend(
             getParentNamespaces(P.Namespace, ND);
 #endif
             insertBitcode(ex_, writeBitcode(I));
-            insertBitcode(ex_, writeParent(I));
+            insertBitcode(ex_, writeParent(I, false));
             insertBitcode(ex_, writeBitcode(P));
-            insertBitcode(ex_, writeParent(P));
+            insertBitcode(ex_, writeParent(P, false));
             return;
         }
         if(FunctionTemplateDecl* FT = dyn_cast<FunctionTemplateDecl>(ND))
@@ -1016,7 +1005,6 @@ void
 ASTVisitor::
 buildEnum(
     EnumInfo& I,
-    AccessSpecifier A,
     EnumDecl* D)
 {
     if(! extractInfo(I, D))
@@ -1038,14 +1026,14 @@ buildEnum(
 
     insertBitcode(ex_, writeBitcode(I));
     if(! member_spec)
-        insertBitcode(ex_, writeParent(I, A));
+        insertBitcode(ex_, writeParent(I,
+            D->getDeclContext()->isRecord()));
 }
 
 void
 ASTVisitor::
 buildField(
     FieldInfo& I,
-    AccessSpecifier A,
     FieldDecl* D)
 {
     if(! extractInfo(I, D))
@@ -1065,14 +1053,14 @@ buildField(
 
     insertBitcode(ex_, writeBitcode(I));
     if(! member_spec)
-        insertBitcode(ex_, writeParent(I, A));
+        insertBitcode(ex_, writeParent(I,
+            D->getDeclContext()->isRecord()));
 }
 
 void
 ASTVisitor::
 buildVar(
     VarInfo& I,
-    AccessSpecifier A,
     VarDecl* D)
 {
     if(! extractInfo(I, D))
@@ -1090,7 +1078,8 @@ buildVar(
 
     insertBitcode(ex_, writeBitcode(I));
     if(! member_spec)
-        insertBitcode(ex_, writeParent(I, A));
+        insertBitcode(ex_, writeParent(I,
+            D->getDeclContext()->isRecord()));
 }
 
 template<class DeclTy>
@@ -1098,17 +1087,17 @@ void
 ASTVisitor::
 buildFunction(
     FunctionInfo& I,
-    AccessSpecifier A,
     DeclTy* D)
 {
-    if(! constructFunction(I, A, D))
+    if(! constructFunction(I, D))
         return;
 
     bool member_spec = getParentNamespaces(I.Namespace, D);
 
     insertBitcode(ex_, writeBitcode(I));
     if(! member_spec)
-        insertBitcode(ex_, writeParent(I, A));
+        insertBitcode(ex_, writeParent(I,
+            D->getDeclContext()->isRecord()));
 }
 
 template<class DeclTy>
@@ -1116,7 +1105,6 @@ void
 ASTVisitor::
 buildTypedef(
     TypedefInfo& I,
-    AccessSpecifier A,
     DeclTy* D)
 {
     if(! extractInfo(I, D))
@@ -1143,7 +1131,8 @@ buildTypedef(
 
     insertBitcode(ex_, writeBitcode(I));
     if(! member_spec)
-        insertBitcode(ex_, writeParent(I, D->getAccess()));
+        insertBitcode(ex_, writeParent(I,
+            D->getDeclContext()->isRecord()));
 }
 
 //------------------------------------------------
@@ -1179,7 +1168,9 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     RecordInfo I(std::move(Template));
-    buildRecord(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildRecord(I, D);
 
     return TraverseContext(D);
 }
@@ -1197,7 +1188,9 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     TypedefInfo I;
-    buildTypedef(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildTypedef(I, D);
     return true;
 }
 
@@ -1215,9 +1208,10 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     TypedefInfo I(std::move(Template));
+    I.Access = getAccessFromSpecifier(A);
     I.IsUsing = true;
 
-    buildTypedef(I, A, D);
+    buildTypedef(I, D);
     return true;
 }
 
@@ -1235,7 +1229,9 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     VarInfo I(std::move(Template));
-    buildVar(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildVar(I, D);
     return true;
 }
 
@@ -1253,7 +1249,9 @@ Traverse(
     Assert(A == AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
-    buildFunction(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildFunction(I, D);
 
     return true;
 }
@@ -1272,7 +1270,9 @@ Traverse(
     Assert(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
-    buildFunction(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildFunction(I, D);
     return true;
 }
 
@@ -1297,7 +1297,9 @@ Traverse(
     Assert(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
-    buildFunction(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildFunction(I, D);
     return true;
 }
 
@@ -1315,7 +1317,9 @@ Traverse(
     Assert(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
-    buildFunction(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildFunction(I, D);
     return true;
 }
 
@@ -1330,7 +1334,9 @@ Traverse(
         return true;
 
     FunctionInfo I(std::move(Template));
-    buildFunction(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildFunction(I, D);
     return true;
 }
 
@@ -1347,7 +1353,9 @@ Traverse(
     Assert(A != AccessSpecifier::AS_none);
 
     FunctionInfo I;
-    buildFunction(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildFunction(I, D);
     return true;
 }
 
@@ -1373,7 +1381,9 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     EnumInfo I;
-    buildEnum(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildEnum(I, D);
     return true;
 }
 
@@ -1390,7 +1400,9 @@ Traverse(
     Assert(A != AccessSpecifier::AS_none);
 
     FieldInfo I;
-    buildField(I, A, D);
+    I.Access = getAccessFromSpecifier(A);
+
+    buildField(I, D);
     return true;
 }
 

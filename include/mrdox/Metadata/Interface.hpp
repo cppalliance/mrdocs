@@ -22,6 +22,42 @@
 namespace clang {
 namespace mrdox {
 
+struct DataMember
+{
+    FieldInfo const* I;
+    RecordInfo const* From;
+};
+
+struct MemberEnum
+{
+    EnumInfo const* I;
+    RecordInfo const* From;
+};
+
+struct MemberFunction
+{
+    FunctionInfo const* I;
+    RecordInfo const* From;
+};
+
+struct MemberRecord
+{
+    RecordInfo const* I;
+    RecordInfo const* From;
+};
+
+struct MemberType
+{
+    TypedefInfo const* I;
+    RecordInfo const* From;
+};
+
+struct StaticDataMember
+{
+    VarInfo const* I;
+    RecordInfo const* From;
+};
+
 /** The aggregated interface for a given struct, class, or union.
 */
 class Interface

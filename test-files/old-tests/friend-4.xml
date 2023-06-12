@@ -6,19 +6,19 @@
     <file path="friend-4.cpp" line="1" class="def"/>
     <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
   </struct>
-  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file path="friend-4.cpp" line="6" class="def"/>
-    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
-  </struct>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file path="friend-4.cpp" line="3"/>
     <file path="friend-4.cpp" line="9"/>
     <file path="friend-4.cpp" line="12"/>
     <doc>
-      <brief>
+      <para>
         <text>U::f</text>
-      </brief>
+      </para>
     </doc>
   </function>
+  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+    <file path="friend-4.cpp" line="6" class="def"/>
+    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+  </struct>
 </namespace>
 </mrdox>

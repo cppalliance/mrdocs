@@ -83,39 +83,6 @@ bool Corpus::Visitor::visit(SpecializationInfo const&)
     return true;
 }
 
-//---
-
-bool Corpus::Visitor::visit(MemberEnum const& I, Access)
-{
-    return true;
-}
-
-bool Corpus::Visitor::visit(MemberFunction const& I, Access)
-{
-    return true;
-}
-
-bool Corpus::Visitor::visit(MemberRecord const& I, Access)
-{
-    return true;
-}
-
-bool Corpus::Visitor::visit(MemberType const& I, Access)
-{
-    return true;
-}
-
-bool Corpus::Visitor::visit(DataMember const&, Access)
-{
-    return true;
-}
-
-bool Corpus::Visitor::visit(StaticDataMember const& I, Access)
-{
-    return true;
-}
-
-
 //------------------------------------------------
 
 bool
@@ -157,7 +124,7 @@ traverse(
         if(! this->traverse(f, id))
             return false;
     for(auto const& id : I.Specializations)
-        if(! f.visit(get<SpecializationInfo>(id)))
+        if(! this->traverse(f, id))
             return false;
     return true;
 }
@@ -168,40 +135,12 @@ traverse(
     Visitor& f,
     RecordInfo const& I) const
 {
-    for(auto const& t : I.Members.Records)
-        if(! f.visit(MemberRecord{
-            &get<RecordInfo>(t.id),
-                &I}, t.access))
+    for(auto const& id : I.Members)
+        if(! this->traverse(f, id))
             return false;
-    for(auto const& t : I.Members.Functions)
-        if(! f.visit(MemberFunction{
-            &get<FunctionInfo>(t.id),
-                &I}, t.access))
+    for(auto const& id : I.Specializations)
+        if(! this->traverse(f, id))
             return false;
-    for(auto const& t : I.Members.Types)
-        if(! f.visit(MemberType{
-            &get<TypedefInfo>(t.id),
-                &I}, t.access))
-            return false;
-    for(auto const& t : I.Members.Enums)
-        if(! f.visit(MemberEnum{
-            &get<EnumInfo>(t.id),
-                &I}, t.access))
-            return false;
-    for(auto const& t : I.Members.Fields)
-        if(! f.visit(DataMember{
-            &get<FieldInfo>(t.id),
-                &I}, t.access))
-            return false;
-    for(auto const& t : I.Members.Vars)
-        if(! f.visit(StaticDataMember{
-            &get<VarInfo>(t.id),
-                &I}, t.access))
-            return false;
-    for(auto const& t : I.Members.Specializations)
-        if(! f.visit(get<SpecializationInfo>(t)))
-            return false;
-
     return true;
 }
 
@@ -211,8 +150,8 @@ traverse(
     Visitor& f,
     SpecializationInfo const& I) const
 {
-    for(auto const& m : I.Members)
-        if(! traverse(f, get<Info>(m.Specialized)))
+    for(auto const& id : I.Members)
+        if(! traverse(f, get<Info>(id.Specialized)))
             return false;
     return true;
 }

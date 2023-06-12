@@ -20,13 +20,6 @@
       <type name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
     </data>
   </struct>
-  <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
-    <file path="record-data.cpp" line="23" class="def"/>
-    <data name="buf" id="2akJUSKKPN7IylZjqGMRlhXupds=">
-      <file path="record-data.cpp" line="25" class="def"/>
-      <type name="char[64]"/>
-    </data>
-  </struct>
   <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
     <file path="record-data.cpp" line="14" class="def"/>
     <data name="i" access="private" id="EWXCzRl9erjnMQFZ8VmHC5cVkLM=">
@@ -42,5 +35,12 @@
       <type name="double"/>
     </data>
   </class>
+  <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
+    <file path="record-data.cpp" line="23" class="def"/>
+    <data name="buf" id="2akJUSKKPN7IylZjqGMRlhXupds=">
+      <file path="record-data.cpp" line="25" class="def"/>
+      <type name="char[64]"/>
+    </data>
+  </struct>
 </namespace>
 </mrdox>

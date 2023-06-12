@@ -30,45 +30,6 @@
 namespace clang {
 namespace mrdox {
 
-/** Access specifier.
-
-    Public is set to zero since it is the most
-    frequently occurring access, and it is
-    elided by the bitstream encoder because it
-    has an all-zero bit pattern. This improves
-    compression in the bitstream.
-
-    @note It is by design that there is no
-    constant to represent "none."
-*/
-enum class Access
-{
-    Public = 0,
-    Protected,
-    Private
-};
-
-/** A reference to a symbol, and an access specifier.
-
-    This is used in records to refer to nested
-    elements with access control.
-*/
-struct MemberRef
-{
-    SymbolID id;
-    Access access;
-
-    constexpr MemberRef() = default;
-
-    constexpr MemberRef(
-        const SymbolID& id_,
-        Access access_)
-    : id(id_)
-    , access(access_)
-    {
-    }
-};
-
 /** Bit constants used with Record metadata
 */
 union RecFlags0
@@ -85,13 +46,13 @@ struct BaseInfo
 {
     SymbolID id;
     std::string Name;
-    Access access;
+    AccessKind access;
     bool IsVirtual;
 
     BaseInfo(
         SymbolID const& id_ = SymbolID::zero,
         std::string_view Name_ = "",
-        Access access_ = Access::Public,
+        AccessKind access_ = AccessKind::Public,
         bool IsVirtual_ = false)
         : id(id_)
         , Name(Name_)
@@ -99,19 +60,6 @@ struct BaseInfo
         , IsVirtual(IsVirtual_)
     {
     }
-};
-
-/** Members of a class, struct, or union.
-*/
-struct RecordScope
-{
-    std::vector<MemberRef> Records;
-    std::vector<MemberRef> Functions;
-    std::vector<MemberRef> Enums;
-    std::vector<MemberRef> Types;
-    std::vector<MemberRef> Fields;
-    std::vector<MemberRef> Vars;
-    std::vector<SymbolID> Specializations;
 };
 
 enum class RecordKeyKind
@@ -155,7 +103,11 @@ struct RecordInfo
 
     /** Record members
     */
-    RecordScope Members;
+    std::vector<SymbolID> Members;
+
+    /** Record member specializations
+    */
+    std::vector<SymbolID> Specializations;
 
     //--------------------------------------------
 
@@ -173,42 +125,6 @@ private:
         : Template(std::move(T))
     {
     }
-};
-
-struct DataMember
-{
-    FieldInfo const* I;
-    RecordInfo const* From;
-};
-
-struct MemberEnum
-{
-    EnumInfo const* I;
-    RecordInfo const* From;
-};
-
-struct MemberFunction
-{
-    FunctionInfo const* I;
-    RecordInfo const* From;
-};
-
-struct MemberRecord
-{
-    RecordInfo const* I;
-    RecordInfo const* From;
-};
-
-struct MemberType
-{
-    TypedefInfo const* I;
-    RecordInfo const* From;
-};
-
-struct StaticDataMember
-{
-    VarInfo const* I;
-    RecordInfo const* From;
 };
 
 } // mrdox

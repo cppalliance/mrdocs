@@ -246,6 +246,14 @@ visit(
 bool
 XMLWriter::
 visit(
+    FieldInfo const& I)
+{
+    return writeField(I);
+}
+
+bool
+XMLWriter::
+visit(
     VarInfo const& I)
 {
     return writeVar(I);
@@ -263,64 +271,14 @@ visit(
 
 bool
 XMLWriter::
-visit(
-    MemberEnum const& I, Access access)
-{
-    return writeEnum(*I.I, &access);
-}
-
-bool
-XMLWriter::
-visit(
-    MemberFunction const& I, Access access)
-{
-    return writeFunction(*I.I, &access);
-}
-
-bool
-XMLWriter::
-visit(
-    MemberRecord const& I, Access access)
-{
-    return writeRecord(*I.I, &access);
-}
-
-bool
-XMLWriter::
-visit(
-    MemberType const& I, Access access)
-{
-    return writeTypedef(*I.I, &access);
-}
-
-bool
-XMLWriter::
-visit(
-    DataMember const& I, Access access)
-{
-    return writeField(*I.I, &access);
-}
-
-bool
-XMLWriter::
-visit(
-    StaticDataMember const& I, Access access)
-{
-    return writeVar(*I.I, &access);
-}
-
-//------------------------------------------------
-
-bool
-XMLWriter::
 writeEnum(
-    EnumInfo const& I, Access const* access)
+    EnumInfo const& I)
 {
     tags_.open(enumTagName, {
         { "name", I.Name },
         { "class", "scoped", I.Scoped },
         { I.BaseType },
-        { access },
+        { I.Access },
         { I.id }
         });
 
@@ -341,13 +299,13 @@ writeEnum(
 bool
 XMLWriter::
 writeFunction(
-    FunctionInfo const& I, Access const* access)
+    FunctionInfo const& I)
 {
     openTemplate(I.Template);
 
     tags_.open(functionTagName, {
         { "name", I.Name },
-        { access },
+        { I.Access },
         { I.id }
         });
 
@@ -372,7 +330,7 @@ writeFunction(
 bool
 XMLWriter::
 writeRecord(
-    RecordInfo const& I, Access const* access)
+    RecordInfo const& I)
 {
     openTemplate(I.Template);
 
@@ -387,7 +345,7 @@ writeRecord(
     }
     tags_.open(tagName, {
         { "name", I.Name },
-        { access },
+        { I.Access },
         { I.id }
         });
 
@@ -423,7 +381,7 @@ writeRecord(
 bool
 XMLWriter::
 writeTypedef(
-    TypedefInfo const& I, Access const* access)
+    TypedefInfo const& I)
 {
     openTemplate(I.Template);
 
@@ -434,7 +392,7 @@ writeTypedef(
         tag = typedefTagName;
     tags_.open(tag, {
         { "name", I.Name },
-        { access },
+        { I.Access },
         { I.id }
         });
 
@@ -456,12 +414,11 @@ writeTypedef(
 bool
 XMLWriter::
 writeField(
-    const FieldInfo& I,
-    const Access* access)
+    const FieldInfo& I)
 {
     tags_.open(dataMemberTagName, {
         { "name", I.Name },
-        { access },
+        { I.Access },
         { I.id },
         { "default", I.Default, ! I.Default.empty() }
     });
@@ -485,13 +442,13 @@ writeField(
 bool
 XMLWriter::
 writeVar(
-    VarInfo const& I, Access const* access)
+    VarInfo const& I)
 {
     openTemplate(I.Template);
 
     tags_.open(varTagName, {
         { "name", I.Name },
-        { access },
+        { I.Access },
         { I.id }
         });
 

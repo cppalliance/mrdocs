@@ -80,9 +80,12 @@ public:
 
 llvm::raw_ostream& debug_outs()
 {
+#if 1
     return llvm::outs();
+#else
     static debug_ostream stream(llvm::outs());
     return stream;
+#endif
 }
 
 llvm::raw_ostream& debug_errs()
@@ -191,38 +194,30 @@ format(
 }
 
 fmt::format_context::iterator
-fmt::formatter<clang::mrdox::Access>::
+fmt::formatter<clang::mrdox::AccessKind>::
 format(
-    clang::mrdox::Access a,
+    clang::mrdox::AccessKind a,
     fmt::format_context& ctx) const
 {
     const char* str = "<unknown Access>";
     switch(a)
     {
-    case clang::mrdox::Access::Public:
+    case clang::mrdox::AccessKind::Public:
         str = "public";
         break;
-    case clang::mrdox::Access::Protected:
+    case clang::mrdox::AccessKind::Protected:
         str = "protected";
         break;
-    case clang::mrdox::Access::Private:
+    case clang::mrdox::AccessKind::Private:
         str = "private";
+        break;
+    case clang::mrdox::AccessKind::None:
+        str = "none";
         break;
     default:
         break;
     }
     return fmt::formatter<std::string>::format(str, ctx);
-}
-
-fmt::format_context::iterator
-fmt::formatter<clang::mrdox::MemberRef>::
-format(
-    const clang::mrdox::MemberRef& r,
-    fmt::format_context& ctx) const
-{
-    std::string str = fmt::format("MemberRef: access = {}, ID = {}",
-        r.access, r.id);
-    return fmt::formatter<std::string>::format(std::move(str), ctx);
 }
 
 fmt::format_context::iterator

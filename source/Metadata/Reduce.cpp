@@ -75,13 +75,14 @@ static void merge(Javadoc& I, Javadoc&& other)
 void mergeInfo(Info& I, Info&& Other)
 {
     Assert(canMerge(I, Other));
-    if (I.id == SymbolID::zero)
+    if(I.id == SymbolID::zero)
         I.id = Other.id;
-    if (I.Name == "")
+    if(I.Name == "")
         I.Name = Other.Name;
-    if (I.Namespace.empty())
+    if(I.Namespace.empty())
         I.Namespace = std::move(Other.Namespace);
-
+    if(I.Access == AccessKind::None)
+        I.Access = Other.Access;
     // append javadocs
     if(! I.javadoc)
         I.javadoc = std::move(Other.javadoc);
@@ -106,7 +107,7 @@ static void mergeSymbolInfo(
 
 static
 void
-reduceRefs(
+reduceSymbolIDs(
     std::vector<SymbolID>& list,
     std::vector<SymbolID>&& otherList)
 {
@@ -116,29 +117,6 @@ reduceRefs(
         if(it != list.end())
             continue;
         list.push_back(id);
-    }
-}
-
-static
-void
-reduceMemberRefs(
-    std::vector<MemberRef>& list,
-    std::vector<MemberRef>&& otherList)
-{
-    for(auto const& ref : otherList)
-    {
-        auto it = llvm::find_if(
-            list,
-            [ref](MemberRef const& other) noexcept
-            {
-                return other.id == ref.id;
-            });
-        if(it != list.end())
-        {
-            Assert(it->access == ref.access);
-            continue;
-        }
-        list.push_back(ref);
     }
 }
 
@@ -165,8 +143,8 @@ reduceSpecializedMembers(
 void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 {
     Assert(canMerge(I, Other));
-    reduceRefs(I.Members, std::move(Other.Members));
-    reduceRefs(I.Specializations, std::move(Other.Specializations));
+    reduceSymbolIDs(I.Members, std::move(Other.Members));
+    reduceSymbolIDs(I.Specializations, std::move(Other.Specializations));
     mergeInfo(I, std::move(Other));
 }
 
@@ -180,15 +158,10 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     I.specs.raw.value |= Other.specs.raw.value;
     if (I.Bases.empty())
         I.Bases = std::move(Other.Bases);
-    // Reduce children if necessary.
-    reduceMemberRefs(I.Members.Records, std::move(Other.Members.Records));
-    reduceMemberRefs(I.Members.Functions, std::move(Other.Members.Functions));
-    reduceMemberRefs(I.Members.Enums, std::move(Other.Members.Enums));
-    reduceMemberRefs(I.Members.Types, std::move(Other.Members.Types));
-    reduceMemberRefs(I.Members.Fields, std::move(Other.Members.Fields));
-    reduceMemberRefs(I.Members.Vars, std::move(Other.Members.Vars));
-
-    reduceRefs(I.Members.Specializations, std::move(Other.Members.Specializations));
+    // Reduce members if necessary.
+    reduceSymbolIDs(I.Friends, std::move(Other.Friends));
+    reduceSymbolIDs(I.Members, std::move(Other.Members));
+    reduceSymbolIDs(I.Specializations, std::move(Other.Specializations));
     // KRYSTIAN FIXME: really should use explicit cases here.
     // at a glance, it is not obvious that we are binding to
     // the SymboInfo base class subobject
@@ -196,22 +169,6 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     mergeInfo(I, std::move(Other));
     if (! I.Template)
         I.Template = std::move(Other.Template);
-#if 0
-    // This has the side-effect of canonicalizing
-    if(! Other.Friends.empty())
-    {
-        llvm::append_range(I.Friends, std::move(Other.Friends));
-        llvm::sort(I.Friends,
-            [](SymbolID const& id0, SymbolID const& id1)
-            {
-                return id0 < id1;
-            });
-        auto last = std::unique(I.Friends.begin(), I.Friends.end());
-        I.Friends.erase(last, I.Friends.end());
-    }
-#else
-    reduceRefs(I.Friends, std::move(Other.Friends));
-#endif
 }
 
 void merge(FunctionInfo& I, FunctionInfo&& Other)

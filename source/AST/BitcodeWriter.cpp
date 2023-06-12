@@ -130,16 +130,6 @@ static void SymbolIDsAbbrev(
             llvm::BitCodeAbbrevOp::Fixed, 8) });
 }
 
-static void MemberRefsAbbrev(
-    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
-{
-    AbbrevGen(Abbrev, {
-        // 0. Fixed-size array of 21-byte SymbolID + Access
-        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Array),
-        llvm::BitCodeAbbrevOp(
-            llvm::BitCodeAbbrevOp::Fixed, 8) });
-}
-
 static void StringAbbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
 {
@@ -257,6 +247,7 @@ RecordIDNameMap = []()
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
         {FUNCTION_PARAM_DEFAULT, {"Default", &StringAbbrev}},
+        {INFO_PART_ACCESS, {"InfoAccess", &Integer32Abbrev}},
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
         {INFO_PART_PARENTS, {"InfoParents", &SymbolIDsAbbrev}},
@@ -272,13 +263,8 @@ RecordIDNameMap = []()
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
-        {RECORD_ENUMS,      {"RecordEnums", &MemberRefsAbbrev}},
-        {RECORD_FUNCTIONS,  {"RecordFunctions", &MemberRefsAbbrev}},
-        {RECORD_RECORDS,    {"RecordRecords", &MemberRefsAbbrev}},
-        {RECORD_TYPES,      {"RecordTypes", &MemberRefsAbbrev}},
-        {RECORD_VARS,       {"RecordVars", &MemberRefsAbbrev}},
-        {RECORD_FIELDS,     {"RecordFields", &MemberRefsAbbrev}},
-        {RECORD_SPECIALIZATIONS,{"RecordSpecializations", &SymbolIDsAbbrev}},
+        {RECORD_MEMBERS, {"RecordMembers", &SymbolIDsAbbrev}},
+        {RECORD_SPECIALIZATIONS, {"RecordSpecializations", &SymbolIDsAbbrev}},
         {SPECIALIZATION_PRIMARY, {"SpecializationPrimary", &SymbolIDAbbrev}},
         {SPECIALIZATION_MEMBERS, {"SpecializationMembers", &SymbolIDsAbbrev}},
         {SYMBOL_PART_DEFLOC, {"SymbolDefLoc", &LocationAbbrev}},
@@ -313,7 +299,8 @@ RecordsByBlock{
     {BI_VERSION_BLOCK_ID, {VERSION}},
     // Info part
     {BI_INFO_PART_ID,
-        {INFO_PART_ID, INFO_PART_NAME, INFO_PART_PARENTS}},
+        {INFO_PART_ID, INFO_PART_ACCESS,
+         INFO_PART_NAME, INFO_PART_PARENTS}},
     // SymbolInfo
     {BI_SYMBOL_PART_ID,
         {SYMBOL_PART_DEFLOC, SYMBOL_PART_LOC}},
@@ -351,9 +338,7 @@ RecordsByBlock{
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
         {RECORD_KEY_KIND, RECORD_IS_TYPE_DEF, RECORD_BITS,
-        RECORD_FRIENDS, RECORD_ENUMS, RECORD_FUNCTIONS,
-        RECORD_RECORDS, RECORD_TYPES, RECORD_VARS, RECORD_FIELDS,
-        RECORD_SPECIALIZATIONS}},
+        RECORD_FRIENDS, RECORD_MEMBERS, RECORD_SPECIALIZATIONS}},
     // TArg
     {BI_TEMPLATE_ARG_BLOCK_ID,
         {TEMPLATE_ARG_VALUE}},
@@ -607,26 +592,6 @@ emitRecord(
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
-// vector<MemberRef>
-void
-BitcodeWriter::
-emitRecord(
-    std::vector<MemberRef> const& list,
-    RecordID ID)
-{
-    Assert(RecordIDNameMap[ID]);
-    Assert(RecordIDNameMap[ID].Abbrev == &MemberRefsAbbrev);
-    if (!prepRecordData(ID, ! list.empty()))
-        return;
-    for(auto const& ref : list)
-    {
-        Record.push_back(static_cast<
-            std::underlying_type_t<Access>>(ref.access));
-        Record.append(ref.id.begin(), ref.id.end());
-    }
-    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
-}
-
 #if 0
 // vector<SpecializedMember>
 void
@@ -715,14 +680,6 @@ emitRecord(
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
-void
-BitcodeWriter::
-emitRecord(
-    TemplateInfo const& Templ)
-{
-    // VFALCO What's going on here? Missing code?
-}
-
 bool
 BitcodeWriter::
 prepRecordData(
@@ -778,6 +735,7 @@ emitInfoPart(
 {
     StreamSubBlockGuard Block(Stream, BI_INFO_PART_ID);
     emitRecord(I.id, INFO_PART_ID);
+    emitRecord(I.Access, INFO_PART_ACCESS);
     emitRecord(I.Name, INFO_PART_NAME);
     emitRecord(I.Namespace, INFO_PART_PARENTS);
     emitBlock(I.javadoc);
@@ -869,12 +827,12 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
     emitInfoPart(I);
     emitSymbolPart(I, I);
+    if (I.Template)
+        emitBlock(*I.Template);
     emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
     emitBlock(I.ReturnType);
     for (const auto& N : I.Params)
         emitBlock(N);
-    if (I.Template)
-        emitBlock(*I.Template);
 }
 
 void
@@ -983,21 +941,16 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
     emitInfoPart(I);
     emitSymbolPart(I, I);
+    if (I.Template)
+        emitBlock(*I.Template);
     emitRecord(I.KeyKind, RECORD_KEY_KIND);
     emitRecord(I.IsTypeDef, RECORD_IS_TYPE_DEF);
     emitRecord({I.specs.raw}, RECORD_BITS);
     for (const auto& B : I.Bases)
         emitBlock(B);
-    emitRecord(I.Members.Records, RECORD_RECORDS);
-    emitRecord(I.Members.Functions, RECORD_FUNCTIONS);
-    emitRecord(I.Members.Enums, RECORD_ENUMS);
-    emitRecord(I.Members.Types, RECORD_TYPES);
-    emitRecord(I.Members.Fields, RECORD_FIELDS);
-    emitRecord(I.Members.Vars, RECORD_VARS);
-    emitRecord(I.Members.Specializations, RECORD_SPECIALIZATIONS);
-    if (I.Template)
-        emitBlock(*I.Template);
     emitRecord(I.Friends, RECORD_FRIENDS);
+    emitRecord(I.Members, RECORD_MEMBERS);
+    emitRecord(I.Specializations, RECORD_SPECIALIZATIONS);
 }
 
 void
@@ -1117,10 +1070,10 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
     emitInfoPart(I);
     emitSymbolPart(I, I);
-    emitBlock(I.Type);
-    emitRecord({I.specs.raw}, VARIABLE_BITS);
     if(I.Template)
         emitBlock(*I.Template);
+    emitBlock(I.Type);
+    emitRecord({I.specs.raw}, VARIABLE_BITS);
 }
 
 //------------------------------------------------

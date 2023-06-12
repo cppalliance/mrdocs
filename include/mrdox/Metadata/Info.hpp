@@ -37,6 +37,17 @@ struct MRDOX_VISIBLE
     */
     InfoKind Kind;
 
+    /** Declaration access.
+
+        Class members use:
+        @li `AccessKind::Public`,
+        @li `AccessKind::Protected`, and
+        @li `AccessKind::Private`.
+
+        Namespace members use `AccessKind::None`.
+    */
+    AccessKind Access = AccessKind::None;
+
     /** The unqualified name.
     */
     std::string Name;

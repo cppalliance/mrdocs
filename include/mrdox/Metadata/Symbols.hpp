@@ -109,7 +109,7 @@ using OptionalSymbolID = Optional<SymbolID>;
 */
 enum class InfoKind
 {
-    Namespace,
+    Namespace = 0,
     Record,
     Function,
     Enum,
@@ -117,6 +117,25 @@ enum class InfoKind
     Variable,
     Field,
     Specialization
+};
+
+/** Access specifier.
+
+    Public is set to zero since it is the most
+    frequently occurring access, and it is
+    elided by the bitstream encoder because it
+    has an all-zero bit pattern. This improves
+    compression in the bitstream.
+
+    None is used for namespace members and friend;
+    such declarations have no access.
+*/
+enum class AccessKind
+{
+    Public = 0,
+    Protected,
+    Private,
+    None
 };
 
 /** Return the result of comparing s0 to s1.

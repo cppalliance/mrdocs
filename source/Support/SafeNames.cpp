@@ -96,27 +96,13 @@ private:
 
     ScopeInfos
     buildScope(
-        RecordScope const& I)
+        RecordInfo const& I)
     {
         ScopeInfos infos;
-        infos.reserve(
-            I.Records.size() +
-            I.Functions.size() +
-            I.Enums.size() +
-            I.Types.size() +
-            I.Vars.size());
-        for(auto const& ref : I.Records)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : I.Functions)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : I.Enums)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : I.Types)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : I.Fields)
-            infos.emplace_back(corpus_.find(ref.id));
-        for(auto const& ref : I.Vars)
-            infos.emplace_back(corpus_.find(ref.id));
+        infos.reserve(I.Members.size());
+        for(auto const& id : I.Members)
+            infos.emplace_back(corpus_.find(id));
+        // KRYSTIAN FIXME: include specializations and friends
         if(infos.size() < 2)
             return infos;
         std::string s0, s1;
@@ -234,7 +220,7 @@ private:
 
     bool visit(RecordInfo const& I) override
     {
-        auto infos = buildScope(I.Members);
+        auto infos = buildScope(I);
         insertScope(infos);
         visitInfos(infos);
         return true;

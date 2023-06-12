@@ -2,28 +2,13 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <struct name="D" id="CSFzdUEgi4+pu0K2D3isHXeaoFQ=">
-    <file path="spec-mem-implicit-instantiation.cpp" line="45" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-      <struct name="E" id="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
-        <file path="spec-mem-implicit-instantiation.cpp" line="48" class="def"/>
-        <function name="f" id="nxF8MdADIr6UZe8NnMsl1r561d0=">
-          <file path="spec-mem-implicit-instantiation.cpp" line="50" class="def"/>
-        </function>
-      </struct>
-    </template>
-    <specialization id="27+9TQyh1Vcx+C3POBLdyXJP8bo=" primary="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
-      <targ value="int"/>
-      <function name="f" id="BL/+D2PyDBFwjwkcczCrXeCBouI=">
-        <file path="spec-mem-implicit-instantiation.cpp" line="54" class="def"/>
-      </function>
-    </specialization>
-  </struct>
   <template>
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <file path="spec-mem-implicit-instantiation.cpp" line="2" class="def"/>
+      <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
+        <file path="spec-mem-implicit-instantiation.cpp" line="4" class="def"/>
+      </function>
       <template>
         <tparam name="U" class="type"/>
         <struct name="B" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
@@ -42,11 +27,26 @@
           </function>
         </struct>
       </template>
-      <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
-        <file path="spec-mem-implicit-instantiation.cpp" line="4" class="def"/>
-      </function>
     </struct>
   </template>
+  <struct name="D" id="CSFzdUEgi4+pu0K2D3isHXeaoFQ=">
+    <file path="spec-mem-implicit-instantiation.cpp" line="45" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+      <struct name="E" id="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
+        <file path="spec-mem-implicit-instantiation.cpp" line="48" class="def"/>
+        <function name="f" id="nxF8MdADIr6UZe8NnMsl1r561d0=">
+          <file path="spec-mem-implicit-instantiation.cpp" line="50" class="def"/>
+        </function>
+      </struct>
+    </template>
+    <specialization id="27+9TQyh1Vcx+C3POBLdyXJP8bo=" primary="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
+      <targ value="int"/>
+      <function name="f" id="BL/+D2PyDBFwjwkcczCrXeCBouI=">
+        <file path="spec-mem-implicit-instantiation.cpp" line="54" class="def"/>
+      </function>
+    </specialization>
+  </struct>
   <specialization id="AKwlChAOi+0ttIAPsD7uitS+gk0=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ value="int"/>
     <function name="f" id="5vQMmBbKdcjmr6fZ5KE/+hqkRD0=">

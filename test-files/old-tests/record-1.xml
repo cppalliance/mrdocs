@@ -4,6 +4,14 @@
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="record-1.cpp" line="1" class="def"/>
+    <alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
+      <file path="record-1.cpp" line="3" class="def"/>
+      <type name="int"/>
+    </alias>
+    <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
+      <file path="record-1.cpp" line="4" class="def"/>
+      <type name="char"/>
+    </typedef>
     <function name="f1" id="9sznTZ3/SXQNZpCsoMG8KWGLuEc=">
       <file path="record-1.cpp" line="6"/>
     </function>
@@ -18,9 +26,9 @@
     <function name="g1" access="protected" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA=">
       <file path="record-1.cpp" line="15"/>
       <doc>
-        <brief>
+        <para>
           <text>brief-g1</text>
-        </brief>
+        </para>
         <para>
           <text>desc</text>
         </para>
@@ -30,9 +38,9 @@
       <file path="record-1.cpp" line="21"/>
       <return type="int"/>
       <doc>
-        <brief>
+        <para>
           <text>brief-g2</text>
-        </brief>
+        </para>
         <returns>
           <text>the number 2</text>
         </returns>
@@ -43,9 +51,9 @@
       <return type="char"/>
       <param name="x" type="int"/>
       <doc>
-        <brief>
+        <para>
           <text>brief-g3</text>
-        </brief>
+        </para>
         <returns>
           <text>the separator</text>
         </returns>
@@ -54,14 +62,6 @@
         </param>
       </doc>
     </function>
-    <alias name="U1" id="6UtddyCJy89K/bZpTmDb5jVXwAY=">
-      <file path="record-1.cpp" line="3" class="def"/>
-      <type name="int"/>
-    </alias>
-    <typedef name="U2" id="wwp4SQjMPktMmsnvq1thxjxFHFs=">
-      <file path="record-1.cpp" line="4" class="def"/>
-      <type name="char"/>
-    </typedef>
   </struct>
 </namespace>
 </mrdox>

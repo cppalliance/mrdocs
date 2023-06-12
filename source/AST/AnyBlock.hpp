@@ -239,6 +239,8 @@ public:
         {
         case INFO_PART_ID:
             return decodeRecord(R, I.id, Blob);
+        case INFO_PART_ACCESS:
+            return decodeRecord(R, I.Access, Blob);
         case INFO_PART_NAME:
             return decodeRecord(R, I.Name, Blob);
         case INFO_PART_PARENTS:
@@ -708,20 +710,10 @@ public:
             return decodeRecord(R, {&I->specs.raw}, Blob);
         case RECORD_FRIENDS:
             return decodeRecord(R, I->Friends, Blob);
-        case RECORD_ENUMS:
-            return decodeRecord(R, I->Members.Enums, Blob);
-        case RECORD_FUNCTIONS:
-            return decodeRecord(R, I->Members.Functions, Blob);
-        case RECORD_RECORDS:
-            return decodeRecord(R, I->Members.Records, Blob);
-        case RECORD_TYPES:
-            return decodeRecord(R, I->Members.Types, Blob);
-        case RECORD_FIELDS:
-            return decodeRecord(R, I->Members.Fields, Blob);
-        case RECORD_VARS:
-            return decodeRecord(R, I->Members.Vars, Blob);
+        case RECORD_MEMBERS:
+            return decodeRecord(R, I->Members, Blob);
         case RECORD_SPECIALIZATIONS:
-            return decodeRecord(R, I->Members.Specializations, Blob);
+            return decodeRecord(R, I->Specializations, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

@@ -2,51 +2,21 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+      <file path="class-template-spec.cpp" line="2" class="def"/>
+      <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
+        <file path="class-template-spec.cpp" line="4"/>
+      </function>
+    </struct>
+  </template>
   <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ value="int"/>
     <struct name="A" id="AKwlChAOi+0ttIAPsD7uitS+gk0=">
       <file path="class-template-spec.cpp" line="7" class="def"/>
       <function name="g" id="NCn1LYKSU8X/x/ejZTTGKsJQLug=">
         <file path="class-template-spec.cpp" line="10"/>
-      </function>
-    </struct>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <struct name="B" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
-      <file path="class-template-spec.cpp" line="20" class="def"/>
-      <function name="f" id="toIq7IwIU6fbbbkqhsEmDYWVF00=">
-        <file path="class-template-spec.cpp" line="22"/>
-      </function>
-    </struct>
-  </template>
-  <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
-    <tparam name="T" class="type"/>
-    <targ value="T &amp;"/>
-    <struct name="B" id="ZjUaxeOoGJ0Jol9Nmn7cGRE7RCo=">
-      <file path="class-template-spec.cpp" line="31" class="def"/>
-      <function name="h" id="Y1o9DjZarkgpmS4JVrc/XkZMn3k=">
-        <file path="class-template-spec.cpp" line="34"/>
-      </function>
-    </struct>
-  </template>
-  <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
-    <tparam name="T" class="type"/>
-    <targ value="T *"/>
-    <struct name="B" id="dydGCFMdrM4nOwuv3RCXqg2KCUA=">
-      <file path="class-template-spec.cpp" line="25" class="def"/>
-      <function name="g" id="YqMF7qPhrCzrLLwscZ76goyLl0k=">
-        <file path="class-template-spec.cpp" line="28"/>
-      </function>
-    </struct>
-  </template>
-  <template class="explicit" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
-    <targ value="int"/>
-    <targ value="int"/>
-    <struct name="C" id="qrcrkE8Br83XKNMh95Dvwpph/M8=">
-      <file path="class-template-spec.cpp" line="43" class="def"/>
-      <function name="g" id="xGwiZK/5LGsqcQUgiFrCHkH3zFU=">
-        <file path="class-template-spec.cpp" line="46"/>
       </function>
     </struct>
   </template>
@@ -61,10 +31,50 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file path="class-template-spec.cpp" line="2" class="def"/>
-      <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
-        <file path="class-template-spec.cpp" line="4"/>
+    <struct name="B" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
+      <file path="class-template-spec.cpp" line="20" class="def"/>
+      <function name="f" id="toIq7IwIU6fbbbkqhsEmDYWVF00=">
+        <file path="class-template-spec.cpp" line="22"/>
+      </function>
+    </struct>
+  </template>
+  <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
+    <tparam name="T" class="type"/>
+    <targ value="T *"/>
+    <struct name="B" id="dydGCFMdrM4nOwuv3RCXqg2KCUA=">
+      <file path="class-template-spec.cpp" line="25" class="def"/>
+      <function name="g" id="YqMF7qPhrCzrLLwscZ76goyLl0k=">
+        <file path="class-template-spec.cpp" line="28"/>
+      </function>
+    </struct>
+  </template>
+  <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
+    <tparam name="T" class="type"/>
+    <targ value="T &amp;"/>
+    <struct name="B" id="ZjUaxeOoGJ0Jol9Nmn7cGRE7RCo=">
+      <file path="class-template-spec.cpp" line="31" class="def"/>
+      <function name="h" id="Y1o9DjZarkgpmS4JVrc/XkZMn3k=">
+        <file path="class-template-spec.cpp" line="34"/>
+      </function>
+    </struct>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <tparam name="U" class="type"/>
+    <struct name="C" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
+      <file path="class-template-spec.cpp" line="38" class="def"/>
+      <function name="f" id="mhp5LhlIUPVO0i2zQmcJLvBQAlk=">
+        <file path="class-template-spec.cpp" line="40"/>
+      </function>
+    </struct>
+  </template>
+  <template class="explicit" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
+    <targ value="int"/>
+    <targ value="int"/>
+    <struct name="C" id="qrcrkE8Br83XKNMh95Dvwpph/M8=">
+      <file path="class-template-spec.cpp" line="43" class="def"/>
+      <function name="g" id="xGwiZK/5LGsqcQUgiFrCHkH3zFU=">
+        <file path="class-template-spec.cpp" line="46"/>
       </function>
     </struct>
   </template>
@@ -76,16 +86,6 @@
       <file path="class-template-spec.cpp" line="49" class="def"/>
       <function name="h" id="N2KH/LGAYrCEUFXj6hyS4bkzaIs=">
         <file path="class-template-spec.cpp" line="52"/>
-      </function>
-    </struct>
-  </template>
-  <template>
-    <tparam name="T" class="type"/>
-    <tparam name="U" class="type"/>
-    <struct name="C" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
-      <file path="class-template-spec.cpp" line="38" class="def"/>
-      <function name="f" id="mhp5LhlIUPVO0i2zQmcJLvBQAlk=">
-        <file path="class-template-spec.cpp" line="40"/>
       </function>
     </struct>
   </template>

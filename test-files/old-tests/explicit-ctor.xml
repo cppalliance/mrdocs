@@ -2,30 +2,6 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
-    <file path="explicit-ctor.cpp" line="17" class="def"/>
-    <function name="ExplicitFalse" id="GVN7KvqFotNClBLUnxR3nnPlH7Y=">
-      <file path="explicit-ctor.cpp" line="18"/>
-      <attr id="is-explicit"/>
-    </function>
-    <function name="ExplicitFalse" id="gsl+2i8v8v4Lifq3SZ5sFhSfseQ=">
-      <file path="explicit-ctor.cpp" line="19"/>
-      <attr id="is-explicit"/>
-      <param type="const ExplicitFalse &amp;"/>
-    </function>
-    <function name="ExplicitFalse" id="qXjKOO0FQ3p2vTehkEQl2kIKpFs=">
-      <file path="explicit-ctor.cpp" line="20"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
-      <attr id="is-explicit"/>
-      <param type="ExplicitFalse &amp;&amp;"/>
-    </function>
-    <function name="ExplicitFalse" id="T0aRgSzz7xtFbPWKv3q57ueIYlI=">
-      <file path="explicit-ctor.cpp" line="21"/>
-      <attr id="is-explicit"/>
-      <param type="int"/>
-      <param type="int"/>
-    </function>
-  </struct>
   <struct name="Explicit" id="bonobNKGOblPVcRjxpiPan4nYnc=">
     <file path="explicit-ctor.cpp" line="3" class="def"/>
     <function name="Explicit" id="JPrjQsrkg+QoApI2wln2eGwCGP4=">
@@ -69,6 +45,30 @@
     </function>
     <function name="ExplicitTrue" id="XCoHYDLlYJYpV6Ut7Ms0GjcQKjM=">
       <file path="explicit-ctor.cpp" line="14"/>
+      <attr id="is-explicit"/>
+      <param type="int"/>
+      <param type="int"/>
+    </function>
+  </struct>
+  <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
+    <file path="explicit-ctor.cpp" line="17" class="def"/>
+    <function name="ExplicitFalse" id="GVN7KvqFotNClBLUnxR3nnPlH7Y=">
+      <file path="explicit-ctor.cpp" line="18"/>
+      <attr id="is-explicit"/>
+    </function>
+    <function name="ExplicitFalse" id="gsl+2i8v8v4Lifq3SZ5sFhSfseQ=">
+      <file path="explicit-ctor.cpp" line="19"/>
+      <attr id="is-explicit"/>
+      <param type="const ExplicitFalse &amp;"/>
+    </function>
+    <function name="ExplicitFalse" id="qXjKOO0FQ3p2vTehkEQl2kIKpFs=">
+      <file path="explicit-ctor.cpp" line="20"/>
+      <attr id="exception-spec" name="noexcept" value="5"/>
+      <attr id="is-explicit"/>
+      <param type="ExplicitFalse &amp;&amp;"/>
+    </function>
+    <function name="ExplicitFalse" id="T0aRgSzz7xtFbPWKv3q57ueIYlI=">
+      <file path="explicit-ctor.cpp" line="21"/>
       <attr id="is-explicit"/>
       <param type="int"/>
       <param type="int"/>
