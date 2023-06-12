@@ -484,7 +484,7 @@ writeBase(
 {
     if(I.IsVirtual)
         os_ << "virtual ";
-    os_ << toString(I.access) << " ";
+    os_ << toString(I.Access) << " ";
     os_ << I.Name;
 }
 

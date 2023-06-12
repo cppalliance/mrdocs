@@ -764,7 +764,7 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_BASE_BLOCK_ID);
     emitRecord(I.id, BASE_ID);
     emitRecord(I.Name, BASE_NAME);
-    emitRecord(I.access, BASE_ACCESS);
+    emitRecord(I.Access, BASE_ACCESS);
     emitRecord(I.IsVirtual, BASE_IS_VIRTUAL);
 }
 

@@ -46,17 +46,17 @@ struct BaseInfo
 {
     SymbolID id;
     std::string Name;
-    AccessKind access;
+    AccessKind Access;
     bool IsVirtual;
 
     BaseInfo(
         SymbolID const& id_ = SymbolID::zero,
         std::string_view Name_ = "",
-        AccessKind access_ = AccessKind::Public,
+        AccessKind access = AccessKind::Public,
         bool IsVirtual_ = false)
         : id(id_)
         , Name(Name_)
-        , access(access_)
+        , Access(access)
         , IsVirtual(IsVirtual_)
     {
     }

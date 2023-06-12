@@ -358,7 +358,7 @@ writeRecord(
     for(auto const& B : I.Bases)
         tags_.write(baseTagName, "", {
             { "name", B.Name },
-            { B.access },
+            { B.Access },
             { "class", "virtual", B.IsVirtual },
             { B.id }
             });

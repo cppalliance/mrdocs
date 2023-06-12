@@ -366,7 +366,7 @@ public:
         case BASE_NAME:
             return decodeRecord(R, v_.back().Name, Blob);
         case BASE_ACCESS:
-            return decodeRecord(R, v_.back().access, Blob);
+            return decodeRecord(R, v_.back().Access, Blob);
         case BASE_IS_VIRTUAL:
             return decodeRecord(R, v_.back().IsVirtual, Blob);
         default:
