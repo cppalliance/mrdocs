@@ -83,16 +83,16 @@ private:
 
     template<class T>
     void writeNodes(AnyList<T> const& list);
-    void writeNode(Javadoc::Node const& node);
-    void writeBrief(Javadoc::Paragraph const& node);
-    void writeText(Javadoc::Text const& node);
-    void writeStyledText(Javadoc::StyledText const& node);
-    void writeParagraph(Javadoc::Paragraph const& node, llvm::StringRef tag = "");
-    void writeAdmonition(Javadoc::Admonition const& node);
-    void writeCode(Javadoc::Code const& node);
-    void writeReturns(Javadoc::Returns const& node);
-    void writeJParam(Javadoc::Param const& node);
-    void writeTParam(Javadoc::TParam const& node);
+    void writeNode(doc::Node const& node);
+    void writeBrief(doc::Paragraph const& node);
+    void writeText(doc::Text const& node);
+    void writeStyledText(doc::StyledText const& node);
+    void writeParagraph(doc::Paragraph const& node, llvm::StringRef tag = "");
+    void writeAdmonition(doc::Admonition const& node);
+    void writeCode(doc::Code const& node);
+    void writeReturns(doc::Returns const& node);
+    void writeJParam(doc::Param const& node);
+    void writeTParam(doc::TParam const& node);
 };
 
 } // xml

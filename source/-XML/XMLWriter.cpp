@@ -597,36 +597,36 @@ writeNodes(
 void
 XMLWriter::
 writeNode(
-    Javadoc::Node const& node)
+    doc::Node const& node)
 {
     switch(node.kind)
     {
-    case Javadoc::Kind::text:
-        writeText(static_cast<Javadoc::Text const&>(node));
+    case doc::Kind::text:
+        writeText(static_cast<doc::Text const&>(node));
         break;
-    case Javadoc::Kind::styled:
-        writeStyledText(static_cast<Javadoc::StyledText const&>(node));
+    case doc::Kind::styled:
+        writeStyledText(static_cast<doc::StyledText const&>(node));
         break;
-    case Javadoc::Kind::paragraph:
-        writeParagraph(static_cast<Javadoc::Paragraph const&>(node));
+    case doc::Kind::paragraph:
+        writeParagraph(static_cast<doc::Paragraph const&>(node));
         break;
-    case Javadoc::Kind::brief:
-        writeBrief(static_cast<Javadoc::Brief const&>(node));
+    case doc::Kind::brief:
+        writeBrief(static_cast<doc::Brief const&>(node));
         break;
-    case Javadoc::Kind::admonition:
-        writeAdmonition(static_cast<Javadoc::Admonition const&>(node));
+    case doc::Kind::admonition:
+        writeAdmonition(static_cast<doc::Admonition const&>(node));
         break;
-    case Javadoc::Kind::code:
-        writeCode(static_cast<Javadoc::Code const&>(node));
+    case doc::Kind::code:
+        writeCode(static_cast<doc::Code const&>(node));
         break;
-    case Javadoc::Kind::param:
-        writeJParam(static_cast<Javadoc::Param const&>(node));
+    case doc::Kind::param:
+        writeJParam(static_cast<doc::Param const&>(node));
         break;
-    case Javadoc::Kind::tparam:
-        writeTParam(static_cast<Javadoc::TParam const&>(node));
+    case doc::Kind::tparam:
+        writeTParam(static_cast<doc::TParam const&>(node));
         break;
-    case Javadoc::Kind::returns:
-        writeReturns(static_cast<Javadoc::Returns const&>(node));
+    case doc::Kind::returns:
+        writeReturns(static_cast<doc::Returns const&>(node));
         break;
     default:
         // unknown kind
@@ -637,7 +637,7 @@ writeNode(
 void
 XMLWriter::
 writeBrief(
-    Javadoc::Paragraph const& node)
+    doc::Paragraph const& node)
 {
     tags_.open("brief");
     writeNodes(node.children);
@@ -647,7 +647,7 @@ writeBrief(
 void
 XMLWriter::
 writeText(
-    Javadoc::Text const& node)
+    doc::Text const& node)
 {
     tags_.indent() <<
         "<text>" <<
@@ -658,7 +658,7 @@ writeText(
 void
 XMLWriter::
 writeStyledText(
-    Javadoc::StyledText const& node)
+    doc::StyledText const& node)
 {
     tags_.write(toString(node.style), node.string);
 }
@@ -666,7 +666,7 @@ writeStyledText(
 void
 XMLWriter::
 writeParagraph(
-    Javadoc::Paragraph const& para,
+    doc::Paragraph const& para,
     llvm::StringRef tag)
 {
     tags_.open("para", {
@@ -678,24 +678,24 @@ writeParagraph(
 void
 XMLWriter::
 writeAdmonition(
-    Javadoc::Admonition const& admonition)
+    doc::Admonition const& admonition)
 {
     llvm::StringRef tag;
     switch(admonition.style)
     {
-    case Javadoc::Admonish::note:
+    case doc::Admonish::note:
         tag = "note";
         break;
-    case Javadoc::Admonish::tip:
+    case doc::Admonish::tip:
         tag = "tip";
         break;
-    case Javadoc::Admonish::important:
+    case doc::Admonish::important:
         tag = "important";
         break;
-    case Javadoc::Admonish::caution:
+    case doc::Admonish::caution:
         tag = "caution";
         break;
-    case Javadoc::Admonish::warning:
+    case doc::Admonish::warning:
         tag = "warning";
         break;
     default:
@@ -707,7 +707,7 @@ writeAdmonition(
 
 void
 XMLWriter::
-writeCode(Javadoc::Code const& code)
+writeCode(doc::Code const& code)
 {
     if(code.children.empty())
     {
@@ -723,7 +723,7 @@ writeCode(Javadoc::Code const& code)
 void
 XMLWriter::
 writeReturns(
-    Javadoc::Returns const& returns)
+    doc::Returns const& returns)
 {
     if(returns.empty())
         return;
@@ -735,18 +735,18 @@ writeReturns(
 void
 XMLWriter::
 writeJParam(
-    Javadoc::Param const& param)
+    doc::Param const& param)
 {
     const char* direction = nullptr;
     switch(param.direction)
     {
-    case Javadoc::ParamDirection::in:
+    case doc::ParamDirection::in:
         direction = "in";
         break;
-    case Javadoc::ParamDirection::out:
+    case doc::ParamDirection::out:
         direction = "out";
         break;
-    case Javadoc::ParamDirection::inout:
+    case doc::ParamDirection::inout:
         direction = "inout";
         break;
     default:
@@ -763,7 +763,7 @@ writeJParam(
 void
 XMLWriter::
 writeTParam(
-    Javadoc::TParam const& tparam)
+    doc::TParam const& tparam)
 {
     tags_.open("tparam", {
         { "name", tparam.name, ! tparam.name.empty() }});

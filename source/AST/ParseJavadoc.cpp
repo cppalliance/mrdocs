@@ -148,7 +148,7 @@ class JavadocVisitor
 #if 0
     static void
     makeLeftAligned(
-        AnyList<Javadoc::Text>& list)
+        AnyList<doc::Text>& list)
     {
         if(list.empty())
             return;
@@ -206,7 +206,7 @@ public:
         // VFALCO Figure out why we get empty TextComment
         if(! s.empty())
             Javadoc::append(*para_,
-                Javadoc::Text(ensureUTF8(s.str())));
+                doc::Text(ensureUTF8(s.str())));
     }
 
     void visitHTMLTagComment(
@@ -229,17 +229,17 @@ public:
     void visitInlineCommandComment(
         InlineCommandComment const* C)
     {
-        Javadoc::Style style(Javadoc::Style::none);
+        doc::Style style(doc::Style::none);
         switch (C->getRenderKind())
         {
         case InlineCommandComment::RenderKind::RenderMonospaced:
-            style = Javadoc::Style::mono;
+            style = doc::Style::mono;
             break;
         case InlineCommandComment::RenderKind::RenderBold:
-            style = Javadoc::Style::bold;
+            style = doc::Style::bold;
             break;
         case InlineCommandComment::RenderKind::RenderEmphasized:
-            style = Javadoc::Style::italic;
+            style = doc::Style::italic;
             break;
         case InlineCommandComment::RenderKind::RenderNormal:
         case InlineCommandComment::RenderKind::RenderAnchor:
@@ -253,7 +253,7 @@ public:
         // emit nested styles, so only one inline
         // style command can be applied per args.
 
-        Javadoc::String s;
+        doc::String s;
         std::size_t n = 0;
         for(unsigned i = 0; i < C->getNumArgs(); ++i)
             n += C->getArgText(i).size();
@@ -261,12 +261,12 @@ public:
         for(unsigned i = 0; i < C->getNumArgs(); ++i)
             s.append(C->getArgText(i));
 
-        if(style != Javadoc::Style::none)
+        if(style != doc::Style::none)
             Javadoc::append(*para_,
-                Javadoc::StyledText(std::move(s), style));
+                doc::StyledText(std::move(s), style));
         else
             Javadoc::append(*para_,
-                Javadoc::Text(std::move(s)));
+                doc::Text(std::move(s)));
     }
 
     //
@@ -278,7 +278,7 @@ public:
     {
         if(para_)
             return visitChildren(C);
-        Javadoc::Paragraph para;
+        doc::Paragraph para;
         Scope scope(para, para_);
         visitChildren(C);
         // VFALCO Figure out why we get empty ParagraphComment
@@ -301,7 +301,7 @@ public:
         }
         if(cmd->IsBriefCommand)
         {
-            Javadoc::Brief brief;
+            doc::Brief brief;
             Scope scope(brief, para_);
             visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::move(brief));
@@ -309,7 +309,7 @@ public:
         }
         if(cmd->IsReturnsCommand)
         {
-            Javadoc::Returns returns;
+            doc::Returns returns;
             Scope scope(returns, para_);
             visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::move(returns));
@@ -317,7 +317,7 @@ public:
         }
         if(cmd->getID() == CommandTraits::KCI_note)
         {
-            Javadoc::Admonition para(Javadoc::Admonish::note);
+            doc::Admonition para(doc::Admonish::note);
             Scope scope(para, para_);
             visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::move(para));
@@ -325,7 +325,7 @@ public:
         }
         if(cmd->getID() == CommandTraits::KCI_warning)
         {
-            Javadoc::Admonition para(Javadoc::Admonish::warning);
+            doc::Admonition para(doc::Admonish::warning);
             Scope scope(para, para_);
             visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::move(para));
@@ -336,7 +336,7 @@ public:
     void visitParamCommandComment(
         ParamCommandComment const* C)
     {
-        Javadoc::Param param;
+        doc::Param param;
         if(C->hasParamName())
             param.name = ensureUTF8(C->getParamNameAsWritten().str());
         else
@@ -346,13 +346,13 @@ public:
             switch(C->getDirection())
             {
             case ParamCommandComment::PassDirection::In:
-                param.direction = Javadoc::ParamDirection::in;
+                param.direction = doc::ParamDirection::in;
                 break;
             case ParamCommandComment::PassDirection::Out:
-                param.direction = Javadoc::ParamDirection::out;
+                param.direction = doc::ParamDirection::out;
                 break;
             case ParamCommandComment::PassDirection::InOut:
-                param.direction = Javadoc::ParamDirection::inout;
+                param.direction = doc::ParamDirection::inout;
                 break;
             }
         }
@@ -365,7 +365,7 @@ public:
     void visitTParamCommandComment(
         TParamCommandComment const* C)
     {
-        Javadoc::TParam tparam;
+        doc::TParam tparam;
         if(C->hasParamName())
             tparam.name = ensureUTF8(C->getParamNameAsWritten().str());
         else
@@ -379,7 +379,7 @@ public:
     void visitVerbatimBlockComment(
         VerbatimBlockComment const* C)
     {
-        Javadoc::Code code;
+        doc::Code code;
         Scope scope(code, para_);
         //if(C->hasNonWhitespaceParagraph())
         visitChildren(C);
@@ -397,15 +397,15 @@ public:
         VerbatimBlockLineComment const* C)
     {
         Javadoc::append(*para_,
-            Javadoc::Text(C->getText().str()));
+            doc::Text(C->getText().str()));
     }
 
 private:
     FullComment const* FC_;
     ASTContext const& ctx_;
-    AnyList<Javadoc::Block> blocks_;
-    AnyList<Javadoc::Param> params_;
-    Javadoc::Paragraph* para_ = nullptr;
+    AnyList<doc::Block> blocks_;
+    AnyList<doc::Param> params_;
+    doc::Paragraph* para_ = nullptr;
 };
 
 //------------------------------------------------

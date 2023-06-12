@@ -27,11 +27,11 @@ public:
     struct Nodes
     {
         virtual ~Nodes() = default;
-        virtual Error appendChild(Javadoc::Kind kind) = 0;
-        virtual Error setStyle(Javadoc::Style style) = 0;
+        virtual Error appendChild(doc::Kind kind) = 0;
+        virtual Error setStyle(doc::Style style) = 0;
         virtual Error setString(llvm::StringRef string) = 0;
-        virtual Error setAdmonish(Javadoc::Admonish admonish) = 0;
-        virtual Error setDirection(Javadoc::ParamDirection direction) = 0;
+        virtual Error setAdmonish(doc::Admonish admonish) = 0;
+        virtual Error setDirection(doc::ParamDirection direction) = 0;
         virtual AnyListNodes extractNodes() = 0;
         virtual void spliceBack(AnyListNodes&& nodes) noexcept = 0;
     };
@@ -49,7 +49,7 @@ public:
 
     Nodes& getNodes();
     bool isTopLevel() const noexcept;
-    Error setKind(Javadoc::Kind kind);
+    Error setKind(doc::Kind kind);
 
     template<class T>
     Error spliceInto(AnyList<T>& nodes);
@@ -61,11 +61,11 @@ private:
     {
         AnyList<T> list;
 
-        Error appendChild(Javadoc::Kind kind) override;
-        Error setStyle(Javadoc::Style style) override;
+        Error appendChild(doc::Kind kind) override;
+        Error setStyle(doc::Style style) override;
         Error setString(llvm::StringRef string) override;
-        Error setAdmonish(Javadoc::Admonish admonish) override;
-        Error setDirection(Javadoc::ParamDirection direction) override;
+        Error setAdmonish(doc::Admonish admonish) override;
+        Error setDirection(doc::ParamDirection direction) override;
         AnyListNodes extractNodes() override;
         void spliceBack(AnyListNodes&& nodes) noexcept override;
     };
@@ -107,12 +107,12 @@ getNodes() ->
 
     struct ErrorNodes : Nodes
     {
-        Error appendChild(Javadoc::Kind) override
+        Error appendChild(doc::Kind) override
         {
             return Error("kind is missing");
         }
 
-        Error setStyle(Javadoc::Style) override
+        Error setStyle(doc::Style) override
         {
             return Error("kind is missing");
         }
@@ -122,12 +122,12 @@ getNodes() ->
             return Error("kind is missing");
         }
 
-        Error setAdmonish(Javadoc::Admonish) override
+        Error setAdmonish(doc::Admonish) override
         {
             return Error("kind is missing");
         }
 
-        Error setDirection(Javadoc::ParamDirection) override
+        Error setDirection(doc::ParamDirection) override
         {
             return Error("kind is missing");
         }
@@ -157,17 +157,17 @@ inline
 Error
 AnyNodeList::
 setKind(
-    Javadoc::Kind kind)
+    doc::Kind kind)
 {
     if(nodes_ != nullptr)
         return Error("kind already set");
     switch(kind)
     {
-    case Javadoc::Kind::block:
-        nodes_ = new NodesImpl<Javadoc::Block>();
+    case doc::Kind::block:
+        nodes_ = new NodesImpl<doc::Block>();
         break;
-    case Javadoc::Kind::text:
-        nodes_ = new NodesImpl<Javadoc::Text>();
+    case doc::Kind::text:
+        nodes_ = new NodesImpl<doc::Text>();
         break;
     default:
         return Error("wrong or unknown kind");
@@ -211,36 +211,36 @@ Error
 AnyNodeList::
 NodesImpl<T>::
 appendChild(
-    Javadoc::Kind kind)
+    doc::Kind kind)
 {
     switch(kind)
     {
-    case Javadoc::Kind::text:
-        Javadoc::append(list, Javadoc::Text());
+    case doc::Kind::text:
+        Javadoc::append(list, doc::Text());
         return Error::success();
-    case Javadoc::Kind::styled:
-        Javadoc::append(list, Javadoc::StyledText());
+    case doc::Kind::styled:
+        Javadoc::append(list, doc::StyledText());
         return Error::success();
-    case Javadoc::Kind::paragraph:
-        Javadoc::append(list, Javadoc::Paragraph());
+    case doc::Kind::paragraph:
+        Javadoc::append(list, doc::Paragraph());
         return Error::success();
-    case Javadoc::Kind::brief:
-        Javadoc::append(list, Javadoc::Brief());
+    case doc::Kind::brief:
+        Javadoc::append(list, doc::Brief());
         return Error::success();
-    case Javadoc::Kind::admonition:
-        Javadoc::append(list, Javadoc::Admonition());
+    case doc::Kind::admonition:
+        Javadoc::append(list, doc::Admonition());
         return Error::success();
-    case Javadoc::Kind::code:
-        Javadoc::append(list, Javadoc::Code());
+    case doc::Kind::code:
+        Javadoc::append(list, doc::Code());
         return Error::success();
-    case Javadoc::Kind::returns:
-        Javadoc::append(list, Javadoc::Returns());
+    case doc::Kind::returns:
+        Javadoc::append(list, doc::Returns());
         return Error::success();
-    case Javadoc::Kind::param:
-        Javadoc::append(list, Javadoc::Param());
+    case doc::Kind::param:
+        Javadoc::append(list, doc::Param());
         return Error::success();
-    case Javadoc::Kind::tparam:
-        Javadoc::append(list, Javadoc::TParam());
+    case doc::Kind::tparam:
+        Javadoc::append(list, doc::TParam());
         return Error::success();
     default:
         return Error("invalid kind");
@@ -252,13 +252,13 @@ Error
 AnyNodeList::
 NodesImpl<T>::
 setStyle(
-    Javadoc::Style style)
+    doc::Style style)
 {
-    if constexpr(std::derived_from<T, Javadoc::Text>)
+    if constexpr(std::derived_from<T, doc::Text>)
     {
-        if(list.back().kind != Javadoc::Kind::styled)
+        if(list.back().kind != doc::Kind::styled)
             return Error("style on wrong kind");
-        auto& node = static_cast<Javadoc::StyledText&>(list.back());
+        auto& node = static_cast<doc::StyledText&>(list.back());
         node.style = style;
         return Error::success();
     }
@@ -275,25 +275,25 @@ NodesImpl<T>::
 setString(
     llvm::StringRef string)
 {
-    if constexpr(std::derived_from<T, Javadoc::Text>)
+    if constexpr(std::derived_from<T, doc::Text>)
     {
-        auto& node = static_cast<Javadoc::Text&>(list.back());
+        auto& node = static_cast<doc::Text&>(list.back());
         node.string = string.str();
         return Error::success();
     }
-    else if constexpr(std::derived_from<T, Javadoc::Block>)
+    else if constexpr(std::derived_from<T, doc::Block>)
     {
         switch(list.back().kind)
         {
-        case Javadoc::Kind::param:
+        case doc::Kind::param:
         {
-            auto& node = static_cast<Javadoc::Param&>(list.back());
+            auto& node = static_cast<doc::Param&>(list.back());
             node.name = string.str();
             return Error::success();
         }
-        case Javadoc::Kind::tparam:
+        case doc::Kind::tparam:
         {
-            auto& node = static_cast<Javadoc::TParam&>(list.back());
+            auto& node = static_cast<doc::TParam&>(list.back());
             node.name = string.str();
             return Error::success();
         }
@@ -304,15 +304,15 @@ setString(
 #if 0
     // VFALCO This was for when the top level Javadoc
     // has separate lists for Param and TParam
-    else if constexpr(std::derived_from<T, Javadoc::Param>)
+    else if constexpr(std::derived_from<T, doc::Param>)
     {
-        auto& node = static_cast<Javadoc::Param&>(list.back());
+        auto& node = static_cast<doc::Param&>(list.back());
         node.name = string.str();
         return Error::success();
     }
-    else if constexpr(std::derived_from<T, Javadoc::TParam>)
+    else if constexpr(std::derived_from<T, doc::TParam>)
     {
-        auto& node = static_cast<Javadoc::TParam&>(list.back());
+        auto& node = static_cast<doc::TParam&>(list.back());
         node.name = string.str();
         return Error::success();
     }
@@ -325,13 +325,13 @@ Error
 AnyNodeList::
 NodesImpl<T>::
 setAdmonish(
-    Javadoc::Admonish admonish)
+    doc::Admonish admonish)
 {
-    if constexpr(std::derived_from<T, Javadoc::Block>)
+    if constexpr(std::derived_from<T, doc::Block>)
     {
-        if(list.back().kind != Javadoc::Kind::admonition)
+        if(list.back().kind != doc::Kind::admonition)
             return Error("admonish on wrong kind");
-        auto& node = static_cast<Javadoc::Admonition&>(list.back());
+        auto& node = static_cast<doc::Admonition&>(list.back());
         node.style = admonish;
         return Error::success();
     }
@@ -346,13 +346,13 @@ Error
 AnyNodeList::
 NodesImpl<T>::
 setDirection(
-    Javadoc::ParamDirection direction)
+    doc::ParamDirection direction)
 {
-    if constexpr(std::derived_from<T, Javadoc::Block>)
+    if constexpr(std::derived_from<T, doc::Block>)
     {
-        if(list.back().kind != Javadoc::Kind::param)
+        if(list.back().kind != doc::Kind::param)
             return Error("direction on wrong kind");
-        auto& node = static_cast<Javadoc::Param&>(list.back());
+        auto& node = static_cast<doc::Param&>(list.back());
         node.direction = direction;
         return Error::success();
     }
@@ -378,7 +378,7 @@ NodesImpl<T>::
 spliceBack(
     AnyListNodes&& nodes) noexcept
 {
-    if constexpr(std::derived_from<T, Javadoc::Block>)
+    if constexpr(std::derived_from<T, doc::Block>)
     {
         list.back().children.spliceBack(std::move(nodes));
     }

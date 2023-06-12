@@ -107,20 +107,20 @@ protected:
     {
         if(list.empty())
             return;
-        for(Javadoc::Node const& node : list)
+        for(doc::Node const& node : list)
             writeNode(node);
     }
 
-    void writeNode(Javadoc::Node const& node);
-    void writeNode(Javadoc::Block const& node);
-    void writeNode(Javadoc::Text const& node);
-    void writeNode(Javadoc::StyledText const& node);
-    void writeNode(Javadoc::Paragraph const& node);
-    void writeNode(Javadoc::Admonition const& node);
-    void writeNode(Javadoc::Code const& node);
-    void writeNode(Javadoc::Param const& node);
-    void writeNode(Javadoc::TParam const& node);
-    void writeNode(Javadoc::Returns const& node);
+    void writeNode(doc::Node const& node);
+    void writeNode(doc::Block const& node);
+    void writeNode(doc::Text const& node);
+    void writeNode(doc::StyledText const& node);
+    void writeNode(doc::Paragraph const& node);
+    void writeNode(doc::Admonition const& node);
+    void writeNode(doc::Code const& node);
+    void writeNode(doc::Param const& node);
+    void writeNode(doc::TParam const& node);
+    void writeNode(doc::Returns const& node);
 
     FormalParam formalParam(Param const& ft);
     TypeName typeName(TypeInfo const& ti);

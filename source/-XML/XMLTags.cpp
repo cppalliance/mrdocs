@@ -80,16 +80,16 @@ toString(
 
 llvm::StringRef
 toString(
-    Javadoc::Style style) noexcept
+    doc::Style style) noexcept
 {
     switch(style)
     {
-    case Javadoc::Style::bold: return "bold";
-    case Javadoc::Style::mono: return "mono";
-    case Javadoc::Style::italic: return "italic";
+    case doc::Style::bold: return "bold";
+    case doc::Style::mono: return "mono";
+    case doc::Style::italic: return "italic";
 
     // should never get here
-    case Javadoc::Style::none: return "";
+    case doc::Style::none: return "";
 
     default:
         // unknown style

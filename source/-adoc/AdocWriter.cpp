@@ -624,39 +624,39 @@ writeFunctionDeclaration(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Node const& node)
+    doc::Node const& node)
 {
     switch(node.kind)
     {
-    case Javadoc::Kind::text:
-        writeNode(static_cast<Javadoc::Text const&>(node));
+    case doc::Kind::text:
+        writeNode(static_cast<doc::Text const&>(node));
         return;
-    case Javadoc::Kind::styled:
-        writeNode(static_cast<Javadoc::StyledText const&>(node));
+    case doc::Kind::styled:
+        writeNode(static_cast<doc::StyledText const&>(node));
         return;
 #if 0
-    case Javadoc::Node::block:
-        writeNode(static_cast<Javadoc::Block const&>(node));
+    case doc::Node::block:
+        writeNode(static_cast<doc::Block const&>(node));
         return;
 #endif
-    case Javadoc::Kind::brief:
-    case Javadoc::Kind::paragraph:
-        writeNode(static_cast<Javadoc::Paragraph const&>(node));
+    case doc::Kind::brief:
+    case doc::Kind::paragraph:
+        writeNode(static_cast<doc::Paragraph const&>(node));
         return;
-    case Javadoc::Kind::admonition:
-        writeNode(static_cast<Javadoc::Admonition const&>(node));
+    case doc::Kind::admonition:
+        writeNode(static_cast<doc::Admonition const&>(node));
         return;
-    case Javadoc::Kind::code:
-        writeNode(static_cast<Javadoc::Code const&>(node));
+    case doc::Kind::code:
+        writeNode(static_cast<doc::Code const&>(node));
         return;
-    case Javadoc::Kind::param:
-        writeNode(static_cast<Javadoc::Param const&>(node));
+    case doc::Kind::param:
+        writeNode(static_cast<doc::Param const&>(node));
         return;
-    case Javadoc::Kind::tparam:
-        writeNode(static_cast<Javadoc::TParam const&>(node));
+    case doc::Kind::tparam:
+        writeNode(static_cast<doc::TParam const&>(node));
         return;
-    case Javadoc::Kind::returns:
-        writeNode(static_cast<Javadoc::Returns const&>(node));
+    case doc::Kind::returns:
+        writeNode(static_cast<doc::Returns const&>(node));
         return;
     default:
         // unknown kind
@@ -667,7 +667,7 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Block const&)
+    doc::Block const&)
 {
     // shouldn't get here
     MRDOX_ASSERT(false);
@@ -676,9 +676,9 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Text const& node)
+    doc::Text const& node)
 {
-    // Text nodes must be left aligned or
+    // doc::Text nodes must be left aligned or
     // else they can be rendered up as code.
     os_ << llvm::StringRef(node.string).ltrim() << '\n';
 }
@@ -686,17 +686,17 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    Javadoc::StyledText const& node)
+    doc::StyledText const& node)
 {
     switch(node.style)
     {
-    case Javadoc::Style::bold:
+    case doc::Style::bold:
         os_ << '*' << node.string << "*\n";
         break;
-    case Javadoc::Style::mono:
+    case doc::Style::mono:
         os_ << '`' << node.string << "`\n";
         break;
-    case Javadoc::Style::italic:
+    case doc::Style::italic:
         os_ << '_' << node.string << "_\n";
         break;
     default:
@@ -708,7 +708,7 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Paragraph const& node)
+    doc::Paragraph const& node)
 {
     writeNodes(node.children);
 }
@@ -716,7 +716,7 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Admonition const& node)
+    doc::Admonition const& node)
 {
     writeNodes(node.children);
 }
@@ -724,12 +724,12 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Code const& node)
+    doc::Code const& node)
 {
     os_ <<
         "[,cpp]\n"
         "----\n";
-    AnyList<Javadoc::Text> const& list(node.children);
+    AnyList<doc::Text> const& list(node.children);
     if(! list.empty())
     {
         // measure the left margin
@@ -756,21 +756,21 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    Javadoc::Param const& node)
+    doc::Param const& node)
 {
 }
 
 void
 AdocWriter::
 writeNode(
-    Javadoc::TParam const& node)
+    doc::TParam const& node)
 {
 }
 
 void
 AdocWriter::
 writeNode(
-    Javadoc::Returns const& node)
+    doc::Returns const& node)
 {
 }
 

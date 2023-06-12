@@ -22,14 +22,14 @@ concept a_Node =
     std::is_copy_constructible_v<T> &&
     std::three_way_comparable<T>;
 
-static_assert(a_Node<Javadoc::Node>);
-static_assert(a_Node<Javadoc::Text>);
-static_assert(a_Node<Javadoc::StyledText>);
-static_assert(a_Node<Javadoc::Block>);
-static_assert(a_Node<Javadoc::Paragraph>);
-static_assert(a_Node<Javadoc::Param>);
-static_assert(a_Node<Javadoc::TParam>);
-static_assert(a_Node<Javadoc::Code>);
+static_assert(a_Node<doc::Node>);
+static_assert(a_Node<doc::Text>);
+static_assert(a_Node<doc::StyledText>);
+static_assert(a_Node<doc::Block>);
+static_assert(a_Node<doc::Paragraph>);
+static_assert(a_Node<doc::Param>);
+static_assert(a_Node<doc::TParam>);
+static_assert(a_Node<doc::Code>);
 
 //------------------------------------------------
 
@@ -38,7 +38,7 @@ Javadoc() noexcept = default;
 
 Javadoc::
 Javadoc(
-    AnyList<Block> blocks)
+    AnyList<doc::Block> blocks)
     : blocks_(std::move(blocks))
 {
 }
@@ -77,38 +77,38 @@ void
 Javadoc::
 postProcess()
 {
-    Paragraph* brief = nullptr;
+    doc::Paragraph* brief = nullptr;
     auto it = blocks_.begin();
     while(it != blocks_.end())
     {
-        if(it->kind == Kind::brief)
+        if(it->kind == doc::Kind::brief)
         {
-            brief = static_cast<Paragraph*>(&*it);
+            brief = static_cast<doc::Paragraph*>(&*it);
             goto done;
         }
-        else if(it->kind == Kind::returns)
+        else if(it->kind == doc::Kind::returns)
         {
             if(! returns_)
-                returns_ = std::make_shared<Returns>(
-                    std::move(static_cast<Returns &>(*it)));
+                returns_ = std::make_shared<doc::Returns>(
+                    std::move(static_cast<doc::Returns &>(*it)));
             // unconditionally consume the Returns element
             it = blocks_.erase(it);
             // KRYSTIAN TODO: emit a warning for duplicate @returns
             continue;
         }
-        else if(it->kind == Kind::param)
+        else if(it->kind == doc::Kind::param)
         {
             it = blocks_.move_to(it, params_);
             continue;
         }
-        else if(it->kind == Kind::tparam)
+        else if(it->kind == doc::Kind::tparam)
         {
             it = blocks_.move_to(it, tparams_);
             continue;
         }
-        if(it->kind == Kind::paragraph && ! brief)
+        if(it->kind == doc::Kind::paragraph && ! brief)
         {
-            brief = static_cast<Paragraph*>(&*it);
+            brief = static_cast<doc::Paragraph*>(&*it);
             ++it;
             goto find_brief;
         }
@@ -118,17 +118,17 @@ postProcess()
 find_brief:
     while(it != blocks_.end())
     {
-        if(it->kind == Kind::brief)
+        if(it->kind == doc::Kind::brief)
         {
-            brief = static_cast<Paragraph*>(&*it);
+            brief = static_cast<doc::Paragraph*>(&*it);
             break;
         }
-        else if(it->kind == Kind::param)
+        else if(it->kind == doc::Kind::param)
         {
             it = blocks_.move_to(it, params_);
             continue;
         }
-        else if(it->kind == Kind::tparam)
+        else if(it->kind == doc::Kind::tparam)
         {
             it = blocks_.move_to(it, tparams_);
             continue;
@@ -138,16 +138,16 @@ find_brief:
 done:
     if(brief != nullptr)
     {
-        brief_ = blocks_.extract_first_of<Paragraph>(
-            [brief](Block& block)
+        brief_ = blocks_.extract_first_of<doc::Paragraph>(
+            [brief](doc::Block& block)
             {
                 return brief == &block;
             });
     }
     else
     {
-        static std::shared_ptr<Paragraph const> empty_para =
-            std::make_shared<Paragraph>();
+        static std::shared_ptr<doc::Paragraph const> empty_para =
+            std::make_shared<doc::Paragraph>();
         brief_ = empty_para;
     }
 }

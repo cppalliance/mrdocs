@@ -65,7 +65,7 @@ private:
 // Converters for attributes
 std::string toString(SymbolID const& id);
 llvm::StringRef toString(InfoKind) noexcept;
-llvm::StringRef toString(Javadoc::Style style) noexcept;
+llvm::StringRef toString(doc::Style style) noexcept;
 
 //------------------------------------------------
 
