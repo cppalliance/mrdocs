@@ -41,7 +41,6 @@ enum class Kind
 {
     text = 1, // needed by bitstream
     styled,
-    block, // used by bitcodes
     paragraph,
     brief,
     admonition,
@@ -176,8 +175,6 @@ struct StyledText : Text
 */
 struct Block : Node
 {
-    static constexpr Kind static_kind = Kind::block;
-
     List<Text> children;
 
     bool empty() const noexcept
