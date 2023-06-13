@@ -103,14 +103,16 @@ public:
         set to the portion of the file path which
         should be be removed for matching files.
 
-        @param filePath The posix-style full path
-        to the file being processed.
+        @param filePath A posix-style full or
+        relative path to the file being processed.
+        Relative paths are resolved against the
+        working directory.
 
         @param prefix The prefix which should be
         removed from subsequent matches.
     */
     bool
-    shouldVisitFile(
+    shouldExtractFromFile(
         llvm::StringRef filePath,
         std::string& prefix) const noexcept;
 
