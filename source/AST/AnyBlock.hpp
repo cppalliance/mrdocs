@@ -82,13 +82,11 @@ class JavadocNodesBlock
 
 public:
     doc::List<doc::Node> nodes;
-    doc::Kind list_kind;
 
     explicit
     JavadocNodesBlock(
         BitcodeReader& br) noexcept
         : br_(br)
-        , list_kind()
     {
     }
 
@@ -100,18 +98,6 @@ public:
     {
         switch (ID)
         {
-        // KRYSTIAN NOTE: this doesn't actually do anything
-        case JAVADOC_LIST_KIND:
-        {
-            doc::Kind kind{};
-            if(auto err = decodeRecord(R, kind, Blob))
-                return err;
-            if(kind != doc::Kind::block &&
-                kind != doc::Kind::text)
-                return Error("wrong or unknown kind");
-            list_kind = kind;
-            return Error::success();
-        }
         case JAVADOC_NODE_KIND:
         {
             doc::Kind kind{};

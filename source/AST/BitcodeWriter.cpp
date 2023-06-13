@@ -251,7 +251,6 @@ RecordIDNameMap = []()
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
         {INFO_PART_PARENTS, {"InfoParents", &SymbolIDsAbbrev}},
-        {JAVADOC_LIST_KIND, {"JavadocListKind", &Integer32Abbrev}},
         {JAVADOC_NODE_KIND, {"JavadocNodeKind", &Integer32Abbrev}},
         {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
         {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &Integer32Abbrev}},
@@ -327,7 +326,7 @@ RecordsByBlock{
         {}},
     // doc::List<doc::Node>
     {BI_JAVADOC_LIST_BLOCK_ID,
-        {JAVADOC_LIST_KIND}},
+        {}},
     // doc::Node
     {BI_JAVADOC_NODE_BLOCK_ID,
         {JAVADOC_NODE_KIND, JAVADOC_NODE_STRING, JAVADOC_NODE_STYLE,
@@ -723,7 +722,6 @@ emitBlock(
     const doc::List<T>& list)
 {
     StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_BLOCK_ID);
-    emitRecord(T::static_kind, JAVADOC_LIST_KIND);
     for(const auto& node : list)
         emitBlock(*node);
 }
