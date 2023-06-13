@@ -138,14 +138,22 @@ shouldVisitTU(
 
 bool
 ConfigImpl::
-shouldVisitFile(
+shouldExtractFromFile(
     llvm::StringRef filePath,
     std::string& prefixPath) const noexcept
 {
     namespace path = llvm::sys::path;
 
     SmallPathString temp;
-    temp = filePath;
+    if(! files::isAbsolute(filePath))
+    {
+        temp = files::makePosixStyle(
+            files::makeAbsolute(filePath, workingDir));
+    }
+    else
+    {
+        temp = filePath;
+    }
     if(! path::replace_path_prefix(temp, sourceRoot_, "", path::Style::posix))
         return false;
     MRDOX_ASSERT(files::isDirsy(sourceRoot_));

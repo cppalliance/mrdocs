@@ -532,7 +532,7 @@ shouldExtract(
 
     // file has not been previously visited
     if(inserted)
-        ff.include = config_.shouldVisitFile(File_, ff.prefix);
+        ff.include = config_.shouldExtractFromFile(File_, ff.prefix);
 
     // don't extract if the declaration is in a file
     // that should not be visited
