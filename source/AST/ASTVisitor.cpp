@@ -559,7 +559,9 @@ extractInfo(
     if(! extractSymbolID(D, I.id))
         return false;
     I.Name = D->getNameAsString();
-    parseRawComment(I.javadoc, D);
+    // do not extract javadocs for namespaces
+    if(! I.isNamespace())
+        parseRawComment(I.javadoc, D);
     return true;
 }
 
