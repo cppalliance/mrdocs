@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -13,11 +14,13 @@
 #define MRDOX_API_METADATA_JAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/ADT/AnyList.hpp>
+#include <Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <memory>
+#include <ranges>
 #include <string>
 #include <utility>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
@@ -26,7 +29,13 @@ namespace mrdox {
 // related types, constants, and functions.
 namespace doc {
 
+struct Node;
+
 using String = std::string;
+
+template<typename T>
+    requires std::derived_from<T, doc::Node>
+using List = std::vector<std::unique_ptr<T>>;
 
 enum class Kind
 {
@@ -82,12 +91,20 @@ struct Node
 {
     Kind kind;
 
-    auto operator<=>(
-        Node const&) const noexcept = default;
-
     explicit Node(Kind kind_) noexcept
         : kind(kind_)
     {
+    }
+
+    virtual ~Node() = default;
+
+    bool operator==(const Node&)
+        const noexcept = default;
+
+    virtual bool equals(
+        const Node& other) const noexcept
+    {
+        return kind == other.kind;
     }
 };
 
@@ -99,15 +116,21 @@ struct Text : Node
 
     static constexpr Kind static_kind = Kind::text;
 
-    auto operator<=>(Text const&
-        ) const noexcept = default;
-
     explicit
     Text(
         String string_ = String())
         : Node(Kind::text)
         , string(std::move(string_))
     {
+    }
+
+    bool operator==(const Text&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Text&>(other);
     }
 
 protected:
@@ -128,9 +151,6 @@ struct StyledText : Text
 
     static constexpr Kind static_kind = Kind::styled;
 
-    auto operator<=>(StyledText const&
-        ) const noexcept = default;
-
     StyledText(
         String string_ = String(),
         Style style_ = Style::none)
@@ -138,6 +158,16 @@ struct StyledText : Text
         , style(style_)
     {
     }
+
+    bool operator==(const StyledText&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const StyledText&>(other);
+    }
+
 };
 
 /** A piece of block content
@@ -148,21 +178,36 @@ struct Block : Node
 {
     static constexpr Kind static_kind = Kind::block;
 
-    AnyList<Text> children;
+    List<Text> children;
 
     bool empty() const noexcept
     {
         return children.empty();
     }
 
-    auto operator<=>(Block const&
-        ) const noexcept = default;
+    bool operator==(const Block& other) const noexcept
+    {
+        if(kind != other.kind)
+            return false;
+        return std::equal(children.begin(), children.end(),
+            other.children.begin(), other.children.end(),
+            [](const auto& a, const auto& b)
+            {
+                return a->equals(*b);
+            });
+    }
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Block&>(other);
+    }
 
 protected:
     explicit
     Block(
         Kind kind_,
-        AnyList<Text> children_ = {}) noexcept
+        List<Text> children_ = {}) noexcept
         : Node(kind_)
         , children(std::move(children_))
     {
@@ -175,19 +220,25 @@ struct Paragraph : Block
 {
     static constexpr Kind static_kind = Kind::paragraph;
 
-    auto operator<=>(Paragraph const&
-        ) const noexcept = default;
-
     Paragraph() noexcept
         : Block(Kind::paragraph)
     {
+    }
+
+    bool operator==(const Paragraph&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Paragraph&>(other);
     }
 
 protected:
     explicit
     Paragraph(
         Kind kind,
-        AnyList<Text> children_ = {})
+        List<Text> children_ = {})
         : Block(kind, std::move(children_))
     {
     }
@@ -199,12 +250,18 @@ struct Brief : Paragraph
 {
     static constexpr Kind static_kind = Kind::brief;
 
-    auto operator<=>(Brief const&
-        ) const noexcept = default;
-
     Brief() noexcept
         : Paragraph(Kind::brief)
     {
+    }
+
+    bool operator==(const Brief&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Brief&>(other);
     }
 };
 
@@ -214,15 +271,21 @@ struct Admonition : Paragraph
 {
     Admonish style;
 
-    auto operator<=>(Admonition const&
-        ) const noexcept = default;
-
     explicit
     Admonition(
         Admonish style_ = Admonish::none)
         : Paragraph(Kind::admonition)
         , style(style_)
     {
+    }
+
+    bool operator==(const Admonition&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Admonition&>(other);
     }
 };
 
@@ -235,12 +298,18 @@ struct Code : Paragraph
 
     static constexpr Kind static_kind = Kind::code;
 
-    auto operator<=>(Code const&
-        ) const noexcept = default;
-
     Code()
         : Paragraph(Kind::code)
     {
+    }
+
+    bool operator==(const Code&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Code&>(other);
     }
 };
 
@@ -253,9 +322,6 @@ struct Param : Paragraph
 
     static constexpr Kind static_kind = Kind::param;
 
-    auto operator<=>(Param const&
-        ) const noexcept = default;
-
     Param(
         String name_ = String(),
         Paragraph details_ = Paragraph(),
@@ -267,6 +333,15 @@ struct Param : Paragraph
         , direction(direction_)
     {
     }
+
+    bool operator==(const Param&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Param&>(other);
+    }
 };
 
 /** Documentation for a template parameter
@@ -277,12 +352,18 @@ struct TParam : Paragraph
 
     static constexpr Kind static_kind = Kind::tparam;
 
-    auto operator<=>(TParam const&
-        ) const noexcept = default;
-
     TParam()
         : Paragraph(Kind::tparam)
     {
+    }
+
+    bool operator==(const TParam&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const TParam&>(other);
     }
 };
 
@@ -292,12 +373,18 @@ struct Returns : Paragraph
 {
     static constexpr Kind static_kind = Kind::returns;
 
-    auto operator<=>(Returns const&
-        ) const noexcept = default;
-
     Returns()
         : Paragraph(Kind::returns)
     {
+    }
+
+    bool operator==(const Returns&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Returns&>(other);
     }
 };
 
@@ -319,7 +406,7 @@ struct MRDOX_VISIBLE
     MRDOX_DECL
     explicit
     Javadoc(
-        AnyList<doc::Block> blocks);
+        doc::List<doc::Block> blocks);
 
     /** Return true if this is empty
     */
@@ -340,7 +427,7 @@ struct MRDOX_VISIBLE
 
     /** Return the list of top level blocks.
     */
-    AnyList<doc::Block> const&
+    doc::List<doc::Block> const&
     getBlocks() const noexcept
     {
         return blocks_;
@@ -356,7 +443,7 @@ struct MRDOX_VISIBLE
 
     /** Return the list of top level blocks.
     */
-    AnyList<doc::Param> const&
+    doc::List<doc::Param> const&
     getParams() const noexcept
     {
         return params_;
@@ -364,7 +451,7 @@ struct MRDOX_VISIBLE
 
     /** Return the list of top level blocks.
     */
-    AnyList<doc::TParam> const&
+    doc::List<doc::TParam> const&
     getTParams() const noexcept
     {
         return tparams_;
@@ -372,7 +459,7 @@ struct MRDOX_VISIBLE
 
     // VFALCO This is unfortunately necessary for
     //        the deserialization from bitcode...
-    AnyList<doc::Block>&
+    doc::List<doc::Block>&
     getBlocks() noexcept
     {
         return blocks_;
@@ -390,7 +477,7 @@ struct MRDOX_VISIBLE
     MRDOX_DECL bool operator==(Javadoc const&) const noexcept;
     MRDOX_DECL bool operator!=(Javadoc const&) const noexcept;
     /* @} */
-   
+
     /** Apply post-processing to the final object.
 
         The implementation calls this function once,
@@ -411,7 +498,7 @@ struct MRDOX_VISIBLE
         spliced out of the top level list of
         blocks into their own lists.
     */
-    MRDOX_DECL 
+    MRDOX_DECL
     void
     postProcess();
 
@@ -423,54 +510,44 @@ struct MRDOX_VISIBLE
     template<class T, class U>
     static
     void
-    append(AnyList<T>& list, AnyList<U>&& other) noexcept
+    append(doc::List<T>& list, doc::List<U>&& other) noexcept
     {
-        list.splice_back(std::move(other));
+        list.reserve(list.size() + other.size());
+        for(auto& p : other)
+            list.emplace_back(static_cast<T*>(p.release()));
+        other.clear();
     }
 
     template<class T, class Child>
     static
     void
-    append(AnyList<T>& list, Child&& child)
+    append(
+        doc::List<T>& list,
+        std::unique_ptr<Child>&& child)
     {
         list.emplace_back(
-            std::forward<Child>(child));
+            std::move(child));
     }
 
     template<class Parent, class Child>
     static
     void
-    append(Parent& parent, Child&& child)
+    append(
+        Parent& parent,
+        std::unique_ptr<Child>&& child)
     {
         append(parent.children,
-            std::forward<Child>(child));
-    }
-
-    template<class Child>
-    static
-    void
-    append(doc::Paragraph& parent, Child&& child)
-    {
-        append(parent.children,
-            std::forward<Child>(child));
-    }
-    /** @} */
-
-    /** Add a top level element to the doc comment.
-    */
-    void append(doc::Block node)
-    {
-        append(blocks_, std::move(node));
+            std::move(child));
     }
 
     //--------------------------------------------
 
 private:
-    std::shared_ptr<doc::Paragraph const> brief_;
-    std::shared_ptr<doc::Returns const> returns_;
-    AnyList<doc::Block> blocks_;
-    AnyList<doc::Param> params_;
-    AnyList<doc::TParam> tparams_;
+    std::unique_ptr<doc::Paragraph> brief_;
+    std::unique_ptr<doc::Returns> returns_;
+    doc::List<doc::Block> blocks_;
+    doc::List<doc::Param> params_;
+    doc::List<doc::TParam> tparams_;
 };
 
 } // mrdox

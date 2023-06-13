@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -17,19 +18,22 @@
 namespace clang {
 namespace mrdox {
 
-template<class T>
-concept a_Node =
-    std::is_copy_constructible_v<T> &&
-    std::three_way_comparable<T>;
+//------------------------------------------------
 
-static_assert(a_Node<doc::Node>);
-static_assert(a_Node<doc::Text>);
-static_assert(a_Node<doc::StyledText>);
-static_assert(a_Node<doc::Block>);
-static_assert(a_Node<doc::Paragraph>);
-static_assert(a_Node<doc::Param>);
-static_assert(a_Node<doc::TParam>);
-static_assert(a_Node<doc::Code>);
+template<typename T, typename U>
+static
+auto
+move_to(
+    doc::List<T>& dst,
+    doc::List<U>& src,
+    typename doc::List<U>::iterator it)
+{
+    auto elem = std::move(*it);
+    it = src.erase(it);
+    dst.emplace(dst.end(),
+        static_cast<T*>(elem.release()));
+    return it;
+}
 
 //------------------------------------------------
 
@@ -38,7 +42,7 @@ Javadoc() noexcept = default;
 
 Javadoc::
 Javadoc(
-    AnyList<doc::Block> blocks)
+    doc::List<doc::Block> blocks)
     : blocks_(std::move(blocks))
 {
 }
@@ -60,9 +64,21 @@ Javadoc::
 operator==(
     Javadoc const& other) const noexcept
 {
-    return
-        std::tie(brief_, blocks_) ==
-        std::tie(other.brief_, other.blocks_);
+    if(! brief_ || ! other.brief_)
+    {
+        if(brief_ != other.brief_)
+            return false;
+    }
+    else if(! brief_->equals(*other.brief_))
+    {
+        return false;
+    }
+    return std::equal(blocks_.begin(), blocks_.end(),
+        other.blocks_.begin(), other.blocks_.end(),
+        [](const auto& a, const auto& b)
+        {
+            return a->equals(static_cast<const doc::Node&>(*b));
+        });
 }
 
 bool
@@ -81,34 +97,35 @@ postProcess()
     auto it = blocks_.begin();
     while(it != blocks_.end())
     {
-        if(it->kind == doc::Kind::brief)
+        auto& block_ptr = *it;
+        if(block_ptr->kind == doc::Kind::brief)
         {
-            brief = static_cast<doc::Paragraph*>(&*it);
+            brief = static_cast<doc::Paragraph*>(block_ptr.get());
             goto done;
         }
-        else if(it->kind == doc::Kind::returns)
+        else if(block_ptr->kind == doc::Kind::returns)
         {
             if(! returns_)
-                returns_ = std::make_shared<doc::Returns>(
-                    std::move(static_cast<doc::Returns &>(*it)));
+                returns_.reset(static_cast<
+                    doc::Returns*>(block_ptr.release()));
             // unconditionally consume the Returns element
             it = blocks_.erase(it);
             // KRYSTIAN TODO: emit a warning for duplicate @returns
             continue;
         }
-        else if(it->kind == doc::Kind::param)
+        else if(block_ptr->kind == doc::Kind::param)
         {
-            it = blocks_.move_to(it, params_);
+            it = move_to(params_, blocks_, it);
             continue;
         }
-        else if(it->kind == doc::Kind::tparam)
+        else if(block_ptr->kind == doc::Kind::tparam)
         {
-            it = blocks_.move_to(it, tparams_);
+            it = move_to(tparams_, blocks_, it);
             continue;
         }
-        if(it->kind == doc::Kind::paragraph && ! brief)
+        if(block_ptr->kind == doc::Kind::paragraph && ! brief)
         {
-            brief = static_cast<doc::Paragraph*>(&*it);
+            brief = static_cast<doc::Paragraph*>(block_ptr.get());
             ++it;
             goto find_brief;
         }
@@ -118,19 +135,20 @@ postProcess()
 find_brief:
     while(it != blocks_.end())
     {
-        if(it->kind == doc::Kind::brief)
+        auto& block_ptr = *it;
+        if(block_ptr->kind == doc::Kind::brief)
         {
-            brief = static_cast<doc::Paragraph*>(&*it);
+            brief = static_cast<doc::Paragraph*>(block_ptr.get());
             break;
         }
-        else if(it->kind == doc::Kind::param)
+        else if(block_ptr->kind == doc::Kind::param)
         {
-            it = blocks_.move_to(it, params_);
+            it = move_to(params_, blocks_, it);
             continue;
         }
-        else if(it->kind == doc::Kind::tparam)
+        else if(block_ptr->kind == doc::Kind::tparam)
         {
-            it = blocks_.move_to(it, tparams_);
+            it = move_to(tparams_, blocks_, it);
             continue;
         }
         ++it;
@@ -138,18 +156,18 @@ find_brief:
 done:
     if(brief != nullptr)
     {
-        brief_ = blocks_.extract_first_of<doc::Paragraph>(
-            [brief](doc::Block& block)
+        auto match = std::find_if(blocks_.begin(), blocks_.end(),
+            [brief](std::unique_ptr<doc::Block>& block)
             {
-                return brief == &block;
+                return brief == block.get();
             });
+        MRDOX_ASSERT(match != blocks_.end());
+        brief_.reset(static_cast<doc::Paragraph*>(
+            match->release()));
+        blocks_.erase(match);
     }
-    else
-    {
-        static std::shared_ptr<doc::Paragraph const> empty_para =
-            std::make_shared<doc::Paragraph>();
-        brief_ = empty_para;
-    }
+    // KRYSTIAN FIXME: should an empty paragraph be used
+    // as the brief when no written brief exists?
 }
 
 } // mrdox

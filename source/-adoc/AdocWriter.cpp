@@ -729,22 +729,22 @@ writeNode(
     os_ <<
         "[,cpp]\n"
         "----\n";
-    AnyList<doc::Text> const& list(node.children);
+    doc::List<doc::Text> const& list = node.children;
     if(! list.empty())
     {
         // measure the left margin
         std::size_t n = std::size_t(-1);
         for(auto& text : list)
         {
-            auto const space = text.string.size() -
-                llvm::StringRef(text.string).ltrim().size();
+            auto const space = text->string.size() -
+                llvm::StringRef(text->string).ltrim().size();
             if( n > space)
                 n = space;
         }
         // now write left-aligned
         for(auto& text : list)
         {
-            llvm::StringRef string(text.string);
+            llvm::StringRef string(text->string);
             string = string.ltrim(n);
             os_ << string << "\n";
         }

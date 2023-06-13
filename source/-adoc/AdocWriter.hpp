@@ -103,12 +103,12 @@ protected:
         SymbolInfo const& S);
 
     template<class T>
-    void writeNodes(AnyList<T> const& list)
+    void writeNodes(doc::List<T> const& list)
     {
         if(list.empty())
             return;
-        for(doc::Node const& node : list)
-            writeNode(node);
+        for(const auto& node : list)
+            writeNode(*node);
     }
 
     void writeNode(doc::Node const& node);

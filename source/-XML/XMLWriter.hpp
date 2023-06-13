@@ -82,7 +82,7 @@ private:
     void closeTemplate(const std::unique_ptr<TemplateInfo>& I);
 
     template<class T>
-    void writeNodes(AnyList<T> const& list);
+    void writeNodes(doc::List<T> const& list);
     void writeNode(doc::Node const& node);
     void writeBrief(doc::Paragraph const& node);
     void writeText(doc::Text const& node);

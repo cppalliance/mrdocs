@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -586,12 +587,12 @@ template<class T>
 void
 XMLWriter::
 writeNodes(
-    AnyList<T> const& list)
+    doc::List<T> const& list)
 {
     if(list.empty())
         return;
     for(auto const& node : list)
-        writeNode(node);
+        writeNode(*node);
 }
 
 void

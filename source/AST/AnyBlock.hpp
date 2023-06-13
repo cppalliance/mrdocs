@@ -14,7 +14,6 @@
 #define MRDOX_TOOL_AST_ANYBLOCK_HPP
 
 #include "BitcodeReader.hpp"
-#include "AnyNodeList.hpp"
 #include "DecodeRecord.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Error.hpp"
@@ -74,7 +73,7 @@ public:
 
 //------------------------------------------------
 
-/** An AnyNodeList
+/** A doc::List<doc::Node>
 */
 class JavadocNodesBlock
     : public BitcodeReader::AnyBlock
@@ -82,36 +81,74 @@ class JavadocNodesBlock
     BitcodeReader& br_;
 
 public:
-    AnyNodeList J;
+    doc::List<doc::Node> nodes;
+    doc::Kind list_kind;
 
     explicit
     JavadocNodesBlock(
-        AnyNodeList*& stack,
         BitcodeReader& br) noexcept
         : br_(br)
-        , J(stack)
+        , list_kind()
     {
     }
 
     Error
-    parseRecord(Record const& R,
-        unsigned ID, llvm::StringRef Blob) override
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
     {
         switch (ID)
         {
+        // KRYSTIAN NOTE: this doesn't actually do anything
         case JAVADOC_LIST_KIND:
         {
             doc::Kind kind{};
             if(auto err = decodeRecord(R, kind, Blob))
                 return err;
-            return J.setKind(kind);
+            if(kind != doc::Kind::block &&
+                kind != doc::Kind::text)
+                return Error("wrong or unknown kind");
+            list_kind = kind;
+            return Error::success();
         }
         case JAVADOC_NODE_KIND:
         {
             doc::Kind kind{};
             if(auto err = decodeRecord(R, kind, Blob))
                 return err;
-            return J.getNodes().appendChild(kind);
+            switch(kind)
+            {
+            case doc::Kind::text:
+                nodes.emplace_back(std::make_unique<doc::Text>());
+                return Error::success();
+            case doc::Kind::styled:
+                nodes.emplace_back(std::make_unique<doc::StyledText>());
+                return Error::success();
+            case doc::Kind::paragraph:
+                nodes.emplace_back(std::make_unique<doc::Paragraph>());
+                return Error::success();
+            case doc::Kind::brief:
+                nodes.emplace_back(std::make_unique<doc::Brief>());
+                return Error::success();
+            case doc::Kind::admonition:
+                nodes.emplace_back(std::make_unique<doc::Admonition>());
+                return Error::success();
+            case doc::Kind::code:
+                nodes.emplace_back(std::make_unique<doc::Code>());
+                return Error::success();
+            case doc::Kind::returns:
+                nodes.emplace_back(std::make_unique<doc::Returns>());
+                return Error::success();
+            case doc::Kind::param:
+                nodes.emplace_back(std::make_unique<doc::Param>());
+                return Error::success();
+            case doc::Kind::tparam:
+                nodes.emplace_back(std::make_unique<doc::TParam>());
+                return Error::success();
+            default:
+                return Error("invalid kind");
+            }
         }
         case JAVADOC_PARAM_DIRECTION:
         {
@@ -119,11 +156,34 @@ public:
                 doc::ParamDirection::none;
             if(auto err = decodeRecord(R, direction, Blob))
                 return err;
-            return J.getNodes().setDirection(direction);
+            auto node = nodes.back().get();
+            if(node->kind != doc::Kind::param)
+                return Error("direction on wrong kind");
+            auto param = static_cast<doc::Param*>(node);
+            param->direction = direction;
+            return Error::success();
         }
         case JAVADOC_NODE_STRING:
         {
-            return J.getNodes().setString(Blob);
+            switch(auto node = nodes.back().get();
+                node->kind)
+            {
+            case doc::Kind::text:
+            case doc::Kind::styled:
+                static_cast<doc::Text*>(
+                    node)->string = Blob.str();
+                return Error::success();
+            case doc::Kind::param:
+                static_cast<doc::Param*>(
+                    node)->name = Blob.str();
+                return Error::success();
+            case doc::Kind::tparam:
+                static_cast<doc::TParam*>(
+                    node)->name = Blob.str();
+                return Error::success();
+            default:
+                return Error("string on wrong kind");
+            }
         }
         case JAVADOC_NODE_STYLE:
         {
@@ -131,7 +191,13 @@ public:
                 doc::Style::none;
             if(auto err = decodeRecord(R, style, Blob))
                 return err;
-            return J.getNodes().setStyle(style);
+            auto node = nodes.back().get();
+            if(node->kind != doc::Kind::styled)
+                return Error("style on wrong kind");
+            static_cast<doc::StyledText*>(
+                node)->style = style;
+            return Error::success();
+
         }
         case JAVADOC_NODE_ADMONISH:
         {
@@ -139,7 +205,12 @@ public:
                 doc::Admonish::none;
             if(auto err = decodeRecord(R, admonish, Blob))
                 return err;
-            return J.getNodes().setAdmonish(admonish);
+            auto node = nodes.back().get();
+            if(node->kind != doc::Kind::admonition)
+                return Error("admonish on wrong kind");
+            static_cast<doc::Admonition*>(
+                node)->style = admonish;
+            return Error::success();
         }
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
@@ -158,11 +229,17 @@ public:
         }
         case BI_JAVADOC_LIST_BLOCK_ID:
         {
-            JavadocNodesBlock B(J.stack(), br_);
+            auto node = nodes.back().get();
+            if(node->kind == doc::Kind::text ||
+                node->kind == doc::Kind::styled)
+                return Error("text node cannot have list");
+
+            JavadocNodesBlock B(br_);
             if(auto err = br_.readBlock(B, ID))
                 return err;
-            if(auto err = B.J.spliceIntoParent())
-                return err;
+            Javadoc::append(static_cast<
+                doc::Block*>(node)->children,
+                std::move(B.nodes));
             return Error::success();
         }
         default:
@@ -178,8 +255,6 @@ class JavadocBlock
 {
     BitcodeReader& br_;
     std::unique_ptr<Javadoc>& I_;
-    AnyNodeList* stack_ = nullptr;
-    AnyNodeList J_;
 
 public:
     JavadocBlock(
@@ -187,7 +262,6 @@ public:
         BitcodeReader& br) noexcept
         : br_(br)
         , I_(I)
-        , J_(stack_)
     {
         I_ = std::make_unique<Javadoc>();
     }
@@ -200,11 +274,12 @@ public:
         {
         case BI_JAVADOC_LIST_BLOCK_ID:
         {
-            JavadocNodesBlock B(stack_, br_);
+            JavadocNodesBlock B(br_);
             if(auto err = br_.readBlock(B, ID))
                 return err;
-            if(auto err = B.J.spliceInto(I_->getBlocks()))
-                return err;
+            Javadoc::append(
+                I_->getBlocks(),
+                std::move(B.nodes));
             return Error::success();
         }
         default:

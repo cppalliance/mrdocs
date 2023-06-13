@@ -111,8 +111,8 @@ public:
     //
     //--------------------------------------------
 
-    template<class T>
-    void emitBlock(AnyList<T> const& list);
+    template<typename T>
+    void emitBlock(doc::List<T> const& list);
 
     void emitInfoPart(Info const& I);
     void emitSymbolPart(Info const& I, SymbolInfo const& S);

@@ -6,8 +6,6 @@
     <file path="param-direction.cpp" line="4" class="def"/>
     <param name="x0" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x0">
       </param>
     </doc>
@@ -17,8 +15,6 @@
     <param name="x1" type="int"/>
     <param name="y1" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x1">
       </param>
       <param name="y1" class="in">
@@ -30,8 +26,6 @@
     <param name="x2" type="int"/>
     <param name="y2" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x2">
       </param>
       <param name="y2" class="out">
@@ -43,8 +37,6 @@
     <param name="x3" type="int"/>
     <param name="y3" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x3" class="in">
       </param>
       <param name="y3" class="out">
@@ -56,8 +48,6 @@
     <param name="x4" type="int"/>
     <param name="y4" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x4">
       </param>
       <param name="y4" class="inout">
@@ -70,8 +60,6 @@
     <param name="y5" type="int"/>
     <param name="z5" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x5" class="out">
       </param>
       <param name="y5" class="in">
@@ -87,8 +75,6 @@
     <param type="int"/>
     <param name="z6" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x6" class="out">
       </param>
       <param name="y6">
@@ -103,8 +89,6 @@
     <param name="x7" type="int"/>
     <param name="y7" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x7" class="in">
       </param>
       <param name="y7" class="out">
@@ -116,8 +100,6 @@
     <file path="param-direction.cpp" line="62"/>
     <param name="x8" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x8" class="in">
       </param>
     </doc>
@@ -127,8 +109,6 @@
     <file path="param-direction.cpp" line="72"/>
     <param name="x9" type="int"/>
     <doc>
-      <brief>
-      </brief>
       <param name="x9" class="in">
       </param>
       <param name="x9" class="out">
