@@ -87,6 +87,7 @@ private:
     void writeBrief(doc::Paragraph const& node);
     void writeText(doc::Text const& node);
     void writeStyledText(doc::StyledText const& node);
+    void writeHeading(doc::Heading const& node);
     void writeParagraph(doc::Paragraph const& node, llvm::StringRef tag = "");
     void writeAdmonition(doc::Admonition const& node);
     void writeCode(doc::Code const& node);

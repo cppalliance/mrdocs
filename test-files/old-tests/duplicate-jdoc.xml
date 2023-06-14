@@ -7,13 +7,15 @@
     <return type="int"/>
     <doc>
       <brief>
-        <text>f0 brief</text>
+        <text> f0 brief</text>
+        <text></text>
       </brief>
       <returns>
-        <text>int</text>
+        <text> int</text>
+        <text></text>
       </returns>
       <returns>
-        <text>int</text>
+        <text> int</text>
       </returns>
     </doc>
   </function>
@@ -22,13 +24,15 @@
     <return type="int"/>
     <doc>
       <brief>
-        <text>f1 brief</text>
+        <text> f1 brief</text>
+        <text></text>
       </brief>
       <returns>
-        <text>int</text>
+        <text> int</text>
+        <text></text>
       </returns>
       <returns>
-        <text>bool</text>
+        <text> bool</text>
       </returns>
     </doc>
   </function>
@@ -37,13 +41,15 @@
     <param name="a" type="int"/>
     <doc>
       <brief>
-        <text>g0 brief</text>
+        <text> g0 brief</text>
+        <text></text>
       </brief>
       <param name="a">
-        <text>one</text>
+        <text> one</text>
+        <text></text>
       </param>
       <param name="a">
-        <text>one</text>
+        <text> one</text>
       </param>
     </doc>
   </function>
@@ -52,13 +58,15 @@
     <param name="a" type="int"/>
     <doc>
       <brief>
-        <text>g1 brief</text>
+        <text> g1 brief</text>
+        <text></text>
       </brief>
       <param name="a">
-        <text>one</text>
+        <text> one</text>
+        <text></text>
       </param>
       <param name="b">
-        <text>two</text>
+        <text> two</text>
       </param>
     </doc>
   </function>
@@ -68,13 +76,15 @@
       <file path="duplicate-jdoc.cpp" line="30" class="def"/>
       <doc>
         <brief>
-          <text>h0 brief</text>
+          <text> h0 brief</text>
+          <text></text>
         </brief>
         <tparam name="T">
-          <text>one</text>
+          <text> one</text>
+          <text></text>
         </tparam>
         <tparam name="T">
-          <text>one</text>
+          <text> one</text>
         </tparam>
       </doc>
     </function>
@@ -85,13 +95,15 @@
       <file path="duplicate-jdoc.cpp" line="37" class="def"/>
       <doc>
         <brief>
-          <text>h1 brief</text>
+          <text> h1 brief</text>
+          <text></text>
         </brief>
         <tparam name="T">
-          <text>one</text>
+          <text> one</text>
+          <text></text>
         </tparam>
         <tparam name="U">
-          <text>two</text>
+          <text> two</text>
         </tparam>
       </doc>
     </function>

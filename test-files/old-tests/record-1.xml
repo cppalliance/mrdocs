@@ -27,10 +27,10 @@
       <file path="record-1.cpp" line="15"/>
       <doc>
         <brief>
-          <text>brief-g1</text>
+          <text> brief-g1</text>
         </brief>
         <para>
-          <text>desc</text>
+          <text>        desc</text>
         </para>
       </doc>
     </function>
@@ -39,10 +39,13 @@
       <return type="int"/>
       <doc>
         <brief>
-          <text>brief-g2</text>
+          <text> brief-g2</text>
         </brief>
+        <para>
+          <text></text>
+        </para>
         <returns>
-          <text>the number 2</text>
+          <text> the number 2</text>
         </returns>
       </doc>
     </function>
@@ -52,13 +55,17 @@
       <param name="x" type="int"/>
       <doc>
         <brief>
-          <text>brief-g3</text>
+          <text> brief-g3</text>
         </brief>
+        <para>
+          <text></text>
+        </para>
         <returns>
-          <text>the separator</text>
+          <text> the separator</text>
+          <text></text>
         </returns>
         <param name="x">
-          <text>any old number</text>
+          <text> any old number</text>
         </param>
       </doc>
     </function>

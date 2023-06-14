@@ -19,16 +19,16 @@
     <file path="para-1.cpp" line="27"/>
     <doc>
       <brief>
-        <text>brief</text>
+        <text> brief</text>
       </brief>
       <para>
-        <text>a</text>
+        <text>    a</text>
       </para>
       <para>
-        <text>b</text>
+        <text>    b</text>
       </para>
       <para>
-        <text>c</text>
+        <text>    c</text>
       </para>
     </doc>
   </function>

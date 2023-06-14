@@ -6,7 +6,7 @@
     <file path="brief-2.cpp" line="5"/>
     <doc>
       <brief>
-        <text>brief</text>
+        <text> brief</text>
       </brief>
     </doc>
   </function>
@@ -14,7 +14,7 @@
     <file path="brief-2.cpp" line="9"/>
     <doc>
       <brief>
-        <text>brief</text>
+        <text>            brief</text>
       </brief>
     </doc>
   </function>
@@ -34,7 +34,7 @@
         <text>brief                    x</text>
       </brief>
       <para>
-        <text>br</text>
+        <text> br</text>
         <text>ief</text>
       </para>
     </doc>
@@ -43,7 +43,7 @@
     <file path="brief-2.cpp" line="27"/>
     <doc>
       <brief>
-        <text>br</text>
+        <text> br</text>
         <text>ief</text>
       </brief>
     </doc>
@@ -52,11 +52,11 @@
     <file path="brief-2.cpp" line="34"/>
     <doc>
       <brief>
-        <text>br</text>
+        <text> br</text>
         <text>ief</text>
       </brief>
       <para>
-        <text>desc</text>
+        <text>    desc</text>
       </para>
     </doc>
   </function>

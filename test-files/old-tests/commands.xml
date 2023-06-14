@@ -6,10 +6,10 @@
     <file path="commands.cpp" line="8"/>
     <doc>
       <brief>
-        <text>brief</text>
+        <text> brief</text>
       </brief>
       <para>
-        <text>mrdox hello</text>
+        <text>    mrdox hello</text>
       </para>
     </doc>
   </function>

@@ -607,6 +607,9 @@ writeNode(
     case doc::Kind::styled:
         writeStyledText(static_cast<doc::StyledText const&>(node));
         break;
+    case doc::Kind::heading:
+        writeHeading(static_cast<doc::Heading const&>(node));
+        break;
     case doc::Kind::paragraph:
         writeParagraph(static_cast<doc::Paragraph const&>(node));
         break;
@@ -661,6 +664,14 @@ writeStyledText(
     doc::StyledText const& node)
 {
     tags_.write(toString(node.style), node.string);
+}
+
+void
+XMLWriter::
+writeHeading(
+    doc::Heading const& heading)
+{
+    tags_.write("head", heading.string);
 }
 
 void
