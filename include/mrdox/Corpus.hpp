@@ -160,6 +160,9 @@ visit(
     case InfoKind::Enum:
         return f(static_cast<EnumInfo const&>(I),
             std::forward<Args>(args)...);
+    case InfoKind::Field:
+        return f(static_cast<FieldInfo const&>(I),
+            std::forward<Args>(args)...);
     case InfoKind::Typedef:
         return f(static_cast<TypedefInfo const&>(I),
             std::forward<Args>(args)...);
