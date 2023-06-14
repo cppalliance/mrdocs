@@ -14,84 +14,19 @@
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
-#include <atomic>
 #include <memory>
-
-#if defined(_MSC_VER) && ! defined(NDEBUG)
-
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
 
 namespace clang {
 namespace mrdox {
 
-namespace {
-
-static bool const isDebuggerPresent = ::IsDebuggerPresent();
-
-class debug_ostream
-    : public llvm::raw_ostream
-{
-    static constexpr std::size_t BufferSize = 4096;
-
-    llvm::raw_ostream& os_;
-    std::string buf_;
-
-    void write_impl(const char * Ptr, size_t Size) override
-    {
-        os_.write(Ptr, Size);
-
-        if(isDebuggerPresent)
-        {
-            // Windows expects a null terminated string
-            buf_[Size] = '\0';
-            ::OutputDebugStringA(buf_.data());
-        }
-    }
-
-public:
-    debug_ostream(
-        llvm::raw_ostream& os)
-        : os_(os)
-    {
-        buf_.resize(BufferSize + 1);
-        SetBuffer(buf_.data(), BufferSize);
-        os_.tie(this);
-    }
-
-    ~debug_ostream()
-    {
-        os_.tie(nullptr);
-        flush();
-    }
-
-    std::size_t preferred_buffer_size() const override
-    {
-        return BufferSize;
-    }
-
-    std::uint64_t current_pos() const override
-    {
-        return 0;
-    }
-};
-
-} // (anon)
-
 llvm::raw_ostream& debug_outs()
 {
-#if 1
     return llvm::outs();
-#else
-    static debug_ostream stream(llvm::outs());
-    return stream;
-#endif
 }
 
 llvm::raw_ostream& debug_errs()
 {
-    static debug_ostream stream(llvm::errs());
-    return stream;
+    return llvm::errs();
 }
 
 void
@@ -107,32 +42,6 @@ debugEnableHeapChecking()
 
 } // mrdox
 } // clang
-
-#else
-
-//------------------------------------------------
-
-namespace clang {
-namespace mrdox {
-
-llvm::raw_ostream& debug_outs()
-{
-    return llvm::outs();
-}
-
-llvm::raw_ostream& debug_errs()
-{
-    return llvm::errs();
-}
-
-void debugEnableHeapChecking()
-{
-}
-
-} // mrdox
-} // clang
-
-#endif
 
 fmt::format_context::iterator
 fmt::formatter<clang::mrdox::SymbolID>::
