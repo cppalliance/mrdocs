@@ -14,10 +14,8 @@
 #define MRDOX_API_METADATA_JAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
-#include <Support/Error.hpp>
-#include <llvm/ADT/SmallString.h>
+#include <mrdox/Support/Error.hpp>
 #include <memory>
-#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
