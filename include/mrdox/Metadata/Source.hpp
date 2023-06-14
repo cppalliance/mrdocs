@@ -10,20 +10,48 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_METADATA_SYMBOL_HPP
-#define MRDOX_API_METADATA_SYMBOL_HPP
+#ifndef MRDOX_API_METADATA_SOURCE_HPP
+#define MRDOX_API_METADATA_SOURCE_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Info.hpp>
-#include <mrdox/Metadata/Location.hpp>
 #include <optional>
+#include <string>
+#include <string_view>
 
 namespace clang {
 namespace mrdox {
 
-/** Base class for Info that have source locations.
+struct Location
+{
+    /** Name of the file
+    */
+    std::string Filename;
+
+    /** Line number within the file
+    */
+    int LineNumber;
+
+    /** Whether the file is inside the source root directory
+    */
+    bool IsFileInRootDir;
+
+    //--------------------------------------------
+
+    Location(
+        int line = 0,
+        std::string_view filename = "",
+        bool in_root_dir = false)
+        : Filename(filename)
+        , LineNumber(line)
+        , IsFileInRootDir(in_root_dir)
+    {
+    }
+};
+
+/** Stores source information for a declaration.
 */
-struct SymbolInfo
+struct SourceInfo
 {
     /** Location where the entity was defined
 
@@ -41,7 +69,7 @@ struct SymbolInfo
     std::vector<Location> Loc;
 
 protected:
-    SymbolInfo() = default;
+    SourceInfo() = default;
 };
 
 } // mrdox

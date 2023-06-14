@@ -75,7 +75,7 @@ private:
     bool writeVar(VariableInfo const&);
     bool writeSpecialization(const SpecializationInfo&);
 
-    void writeSymbol(SymbolInfo const& I);
+    void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
     void writeJavadoc(std::unique_ptr<Javadoc> const& javadoc);
     void openTemplate(const std::unique_ptr<TemplateInfo>& I);

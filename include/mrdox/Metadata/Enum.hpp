@@ -14,7 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
-#include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <optional>
 #include <string>
@@ -63,7 +63,7 @@ struct EnumValueInfo
 // Info for types.
 struct EnumInfo
     : IsInfo<InfoKind::Enum>
-    , SymbolInfo
+    , SourceInfo
 {
     // Indicates whether this enum is scoped (e.g. enum class).
     bool Scoped = false;

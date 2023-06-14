@@ -23,12 +23,11 @@
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Interface.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
-#include <mrdox/Metadata/Location.hpp>
 #include <mrdox/Metadata/Namespace.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Specialization.hpp>
-#include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Type.hpp>

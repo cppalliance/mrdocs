@@ -562,7 +562,7 @@ void
 AdocWriter::
 writeLocation(
     Info const& I,
-    SymbolInfo const& S)
+    SourceInfo const& S)
 {
     Location const* loc = nullptr;
     if(S.DefLoc.has_value())

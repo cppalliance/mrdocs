@@ -41,7 +41,7 @@ struct RecordInfo;
 struct Param;
 struct SpecializationInfo;
 struct SpecializedMember;
-struct SymbolInfo;
+struct SourceInfo;
 struct TypeInfo;
 struct TypedefInfo;
 struct VariableInfo;

@@ -16,7 +16,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/BitField.hpp>
 #include <mrdox/Metadata/Field.hpp>
-#include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
 #include <clang/AST/Attr.h>
@@ -176,7 +176,7 @@ struct Param
 // Info for functions.
 struct FunctionInfo
     : IsInfo<InfoKind::Function>
-    , SymbolInfo
+    , SourceInfo
 {
     friend class ASTVisitor;
 

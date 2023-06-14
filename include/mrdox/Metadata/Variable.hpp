@@ -14,7 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/BitField.hpp>
-#include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <clang/Basic/Specifiers.h>
@@ -37,7 +37,7 @@ union VariableFlags0
 */
 struct VariableInfo
     : IsInfo<InfoKind::Variable>
-    , SymbolInfo
+    , SourceInfo
 {
     friend class ASTVisitor;
 

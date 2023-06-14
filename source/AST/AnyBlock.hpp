@@ -330,16 +330,16 @@ public:
 
 //------------------------------------------------
 
-class SymbolPartBlock
+class SourceInfoBlock
     : public BitcodeReader::AnyBlock
 {
 protected:
     BitcodeReader& br_;
-    SymbolInfo& I;
+    SourceInfo& I;
 
 public:
-    SymbolPartBlock(
-        SymbolInfo& I,
+    SourceInfoBlock(
+        SourceInfo& I,
         BitcodeReader& br) noexcept
         : br_(br)
         , I(I)
@@ -347,14 +347,16 @@ public:
     }
 
     Error
-    parseRecord(Record const& R,
-        unsigned ID, llvm::StringRef Blob) override
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
     {
         switch(ID)
         {
-        case SYMBOL_PART_DEFLOC:
+        case SOURCE_INFO_DEFLOC:
             return decodeRecord(R, I.DefLoc, Blob);
-        case SYMBOL_PART_LOC:
+        case SOURCE_INFO_LOC:
             return decodeRecord(R, I.Loc, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
@@ -1159,11 +1161,11 @@ readSubBlock(
         }
         break;
     }
-    case BI_SYMBOL_PART_ID:
+    case BI_SOURCE_INFO_ID:
     {
-        if constexpr(std::derived_from<T, SymbolInfo>)
+        if constexpr(std::derived_from<T, SourceInfo>)
         {
-            SymbolPartBlock B(*I.get(), br_);
+            SourceInfoBlock B(*I.get(), br_);
             return br_.readBlock(B, ID);
         }
         break;

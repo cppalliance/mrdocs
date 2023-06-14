@@ -15,7 +15,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Info.hpp>
-#include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <mrdox/ADT/BitField.hpp>
 #include <utility>
@@ -40,7 +40,7 @@ union FieldFlags
 */
 struct FieldInfo
     : IsInfo<InfoKind::Field>
-    , SymbolInfo
+    , SourceInfo
 {
     /** Type of the field */
     TypeInfo Type;

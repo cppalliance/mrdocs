@@ -115,7 +115,7 @@ public:
     void emitBlock(doc::List<T> const& list);
 
     void emitInfoPart(Info const& I);
-    void emitSymbolPart(Info const& I, SymbolInfo const& S);
+    void emitSourceInfo(Info const& I, SourceInfo const& S);
 
     void emitBlock(BaseInfo const& I);
     void emitBlock(EnumInfo const& I);

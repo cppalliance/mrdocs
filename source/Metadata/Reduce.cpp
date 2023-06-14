@@ -90,9 +90,9 @@ void mergeInfo(Info& I, Info&& Other)
         merge(*I.javadoc, std::move(*Other.javadoc));
 }
 
-static void mergeSymbolInfo(
-    SymbolInfo& I,
-    SymbolInfo&& Other)
+static void mergeSourceInfo(
+    SourceInfo& I,
+    SourceInfo&& Other)
 {
     if (! I.DefLoc)
         I.DefLoc = std::move(Other.DefLoc);
@@ -165,7 +165,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     // KRYSTIAN FIXME: really should use explicit cases here.
     // at a glance, it is not obvious that we are binding to
     // the SymboInfo base class subobject
-    mergeSymbolInfo(I, std::move(Other));
+    mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
     if (! I.Template)
         I.Template = std::move(Other.Template);
@@ -178,7 +178,7 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
         I.ReturnType = std::move(Other.ReturnType);
     if (I.Params.empty())
         I.Params = std::move(Other.Params);
-    mergeSymbolInfo(I, std::move(Other));
+    mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = std::move(Other.Template);
@@ -195,7 +195,7 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
         I.Underlying = Other.Underlying;
     if(! I.Template)
         I.Template = std::move(Other.Template);
-    mergeSymbolInfo(I, std::move(Other));
+    mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
 }
 
@@ -206,7 +206,7 @@ void merge(EnumInfo& I, EnumInfo&& Other)
         I.Scoped = Other.Scoped;
     if (I.Members.empty())
         I.Members = std::move(Other.Members);
-    mergeSymbolInfo(I, std::move(Other));
+    mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
 }
 
@@ -215,7 +215,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
     MRDOX_ASSERT(canMerge(I, Other));
     if(I.Type.id == SymbolID::zero && I.Type.Name.empty())
         I.Type = std::move(Other.Type);
-    mergeSymbolInfo(I, std::move(Other));
+    mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;
     if(I.Default.empty())
@@ -229,7 +229,7 @@ void merge(VariableInfo& I, VariableInfo&& Other)
         I.Type = std::move(Other.Type);
     if(! I.Template)
         I.Template = std::move(Other.Template);
-    mergeSymbolInfo(I, std::move(Other));
+    mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;
 }

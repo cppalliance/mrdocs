@@ -100,7 +100,7 @@ protected:
         std::unique_ptr<Javadoc> const& javadoc);
     void writeLocation(
         Info const& I,
-        SymbolInfo const& S);
+        SourceInfo const& S);
 
     template<class T>
     void writeNodes(doc::List<T> const& list)

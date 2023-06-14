@@ -196,7 +196,7 @@ BlockIdNameMap = []()
         {BI_VERSION_BLOCK_ID, "VersionBlock"},
         {BI_BASE_BLOCK_ID, "BaseBlock"},
         {BI_INFO_PART_ID, "InfoPart"},
-        {BI_SYMBOL_PART_ID, "SymbolPart"},
+        {BI_SOURCE_INFO_ID, "SourceInfoBlock"},
         {BI_NAMESPACE_BLOCK_ID, "NamespaceBlock"},
         {BI_ENUM_BLOCK_ID, "EnumBlock"},
         {BI_ENUM_VALUE_BLOCK_ID, "EnumValueBlock"},
@@ -266,8 +266,8 @@ RecordIDNameMap = []()
         {RECORD_SPECIALIZATIONS, {"RecordSpecializations", &SymbolIDsAbbrev}},
         {SPECIALIZATION_PRIMARY, {"SpecializationPrimary", &SymbolIDAbbrev}},
         {SPECIALIZATION_MEMBERS, {"SpecializationMembers", &SymbolIDsAbbrev}},
-        {SYMBOL_PART_DEFLOC, {"SymbolDefLoc", &LocationAbbrev}},
-        {SYMBOL_PART_LOC,    {"SymbolLoc", &LocationAbbrev}},
+        {SOURCE_INFO_DEFLOC, {"SourceDefLoc", &LocationAbbrev}},
+        {SOURCE_INFO_LOC,    {"SourceLoc", &LocationAbbrev}},
         {TEMPLATE_PRIMARY_USR,   {"Primary", &SymbolIDAbbrev}},
         {TEMPLATE_ARG_VALUE,     {"Value", &StringAbbrev}},
         {TEMPLATE_PARAM_KIND,    {"Kind", &Integer32Abbrev}},
@@ -300,9 +300,9 @@ RecordsByBlock{
     {BI_INFO_PART_ID,
         {INFO_PART_ID, INFO_PART_ACCESS,
          INFO_PART_NAME, INFO_PART_PARENTS}},
-    // SymbolInfo
-    {BI_SYMBOL_PART_ID,
-        {SYMBOL_PART_DEFLOC, SYMBOL_PART_LOC}},
+    // SourceInfo
+    {BI_SOURCE_INFO_ID,
+        {SOURCE_INFO_DEFLOC, SOURCE_INFO_LOC}},
     // BaseInfo
     {BI_BASE_BLOCK_ID,
         {BASE_ID, BASE_NAME, BASE_ACCESS, BASE_IS_VIRTUAL}},
@@ -741,17 +741,17 @@ emitInfoPart(
 
 void
 BitcodeWriter::
-emitSymbolPart(
+emitSourceInfo(
     const Info& I,
-    const SymbolInfo& S)
+    const SourceInfo& S)
 {
-    StreamSubBlockGuard Block(Stream, BI_SYMBOL_PART_ID);
+    StreamSubBlockGuard Block(Stream, BI_SOURCE_INFO_ID);
     if(S.DefLoc)
-        emitRecord(*S.DefLoc, SYMBOL_PART_DEFLOC);
+        emitRecord(*S.DefLoc, SOURCE_INFO_DEFLOC);
     // VFALCO hack to squelch refs from typedefs
     if(I.Kind != InfoKind::Typedef)
         for(const auto& L : S.Loc)
-            emitRecord(L, SYMBOL_PART_LOC);
+            emitRecord(L, SOURCE_INFO_LOC);
 }
 
 void
@@ -773,7 +773,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I, I);
+    emitSourceInfo(I, I);
     emitRecord(I.Scoped, ENUM_SCOPED);
     if (I.BaseType)
         emitBlock(*I.BaseType);
@@ -799,7 +799,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_FIELD_BLOCK_ID);
     emitInfoPart(F);
-    emitSymbolPart(F, F);
+    emitSourceInfo(F, F);
     emitBlock(F.Type);
     emitRecord(F.Name, FIELD_NAME);
     emitRecord(F.Default, FIELD_DEFAULT);
@@ -824,7 +824,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I, I);
+    emitSourceInfo(I, I);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
@@ -939,7 +939,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I, I);
+    emitSourceInfo(I, I);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord(I.KeyKind, RECORD_KEY_KIND);
@@ -1042,7 +1042,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I, I);
+    emitSourceInfo(I, I);
     emitRecord(I.IsUsing, TYPEDEF_IS_USING);
     emitBlock(I.Underlying);
     if(I.Template)
@@ -1068,7 +1068,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
     emitInfoPart(I);
-    emitSymbolPart(I, I);
+    emitSourceInfo(I, I);
     if(I.Template)
         emitBlock(*I.Template);
     emitBlock(I.Type);

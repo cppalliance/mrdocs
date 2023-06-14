@@ -284,7 +284,7 @@ writeEnum(
         { I.id }
         });
 
-    writeSymbol(I);
+    writeSourceInfo(I);
 
     for(auto const& v : I.Members)
         tags_.write("value", {}, {
@@ -311,7 +311,7 @@ writeFunction(
         { I.id }
         });
 
-    writeSymbol(I);
+    writeSourceInfo(I);
 
     write(I.specs0, tags_);
     write(I.specs1, tags_);
@@ -351,7 +351,7 @@ writeRecord(
         { I.id }
         });
 
-    writeSymbol(I);
+    writeSourceInfo(I);
 
 
     write(I.specs, tags_);
@@ -398,7 +398,7 @@ writeTypedef(
         { I.id }
         });
 
-    writeSymbol(I);
+    writeSourceInfo(I);
 
     tags_.write("type", "", {
         { "name", I.Underlying.Name },
@@ -425,7 +425,7 @@ writeField(
         { "default", I.Default, ! I.Default.empty() }
     });
 
-    writeSymbol(I);
+    writeSourceInfo(I);
 
     write(I.specs, tags_);
 
@@ -454,7 +454,7 @@ writeVar(
         { I.id }
         });
 
-    writeSymbol(I);
+    writeSourceInfo(I);
 
     write(I.specs, tags_);
 
@@ -476,8 +476,8 @@ writeVar(
 
 void
 XMLWriter::
-writeSymbol(
-    SymbolInfo const& I)
+writeSourceInfo(
+    SourceInfo const& I)
 {
     if(I.DefLoc)
         writeLocation(*I.DefLoc, true);

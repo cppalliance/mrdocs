@@ -14,7 +14,7 @@
 #define MRDOX_API_METADATA_TYPEDEF_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <memory>
@@ -25,7 +25,7 @@ namespace mrdox {
 // Info for typedef and using statements.
 struct TypedefInfo
     : IsInfo<InfoKind::Typedef>
-    , SymbolInfo
+    , SourceInfo
 {
     friend class ASTVisitor;
 

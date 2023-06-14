@@ -17,7 +17,7 @@
 #include <mrdox/Metadata/Enum.hpp>
 #include <mrdox/Metadata/Field.hpp>
 #include <mrdox/Metadata/Function.hpp>
-#include <mrdox/Metadata/Symbol.hpp>
+#include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
@@ -73,7 +73,7 @@ enum class RecordKeyKind
 */
 struct RecordInfo
     : IsInfo<InfoKind::Record>
-    , SymbolInfo
+    , SourceInfo
 {
     friend class ASTVisitor;
 
