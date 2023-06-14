@@ -868,6 +868,12 @@ emitBlock(
         emitRecord(J.string, JAVADOC_NODE_STRING);
         break;
     }
+    case doc::Kind::heading:
+    {
+        auto const& J = static_cast<doc::Heading const&>(I);
+        emitRecord(J.string, JAVADOC_NODE_STRING);
+        break;
+    }
     case doc::Kind::paragraph:
     {
         auto const& J = static_cast<doc::Paragraph const&>(I);

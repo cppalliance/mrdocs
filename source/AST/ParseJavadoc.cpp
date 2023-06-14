@@ -11,6 +11,7 @@
 
 #include "ParseJavadoc.hpp"
 #include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdox/Support/String.hpp>
 #include <clang/AST/CommentCommandTraits.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/RawCommentList.h>
@@ -145,28 +146,6 @@ class JavadocVisitor
             visit(*it);
     }
 
-#if 0
-    static void
-    makeLeftAligned(
-        doc::List<doc::Text>& list)
-    {
-        if(list.empty())
-            return;
-        // measure the left margin
-        std::size_t n = std::size_t(-1);
-        for(auto& text : list)
-        {
-            auto const space = text->string.size() -
-                llvm::StringRef(text->string).ltrim().size();
-            if( n > space)
-                n = space;
-        }
-        // now left-justify
-        for(auto& text : list)
-            text->string.erase(0, n);
-    }
-#endif
-
 public:
     JavadocVisitor(
         RawComment const* RC,
@@ -198,14 +177,20 @@ public:
         // paragraph has no doxygen command,
         // so we will trim the leading space.
         // Otherwise just trim trailing space
-        if(para_->children.empty())
+#if 0
+        if(paragraph_->children.empty())
             s = s.ltrim().rtrim();
         else
             s = s.rtrim(); //.ltrim()
+#else
+        s = s.rtrim();
+#endif
 
         // VFALCO Figure out why we get empty TextComment
+#if 0
         if(! s.empty())
-            Javadoc::append(*para_, std::make_unique<
+#endif
+            Javadoc::append(*paragraph_, std::make_unique<
                 doc::Text>(ensureUTF8(s.str())));
     }
 
@@ -262,10 +247,10 @@ public:
             s.append(C->getArgText(i));
 
         if(style != doc::Style::none)
-            Javadoc::append(*para_, std::make_unique<
+            Javadoc::append(*paragraph_, std::make_unique<
                 doc::StyledText>(std::move(s), style));
         else
-            Javadoc::append(*para_, std::make_unique<
+            Javadoc::append(*paragraph_, std::make_unique<
                 doc::Text>(std::move(s)));
     }
 
@@ -276,15 +261,15 @@ public:
     void visitParagraphComment(
         ParagraphComment const* C)
     {
-        if(para_)
+        if(paragraph_)
             return visitChildren(C);
-        doc::Paragraph para;
-        Scope scope(para, para_);
+        doc::Paragraph paragraph;
+        Scope scope(paragraph, paragraph_);
         visitChildren(C);
         // VFALCO Figure out why we get empty ParagraphComment
-        if(! para.empty())
+        if(! paragraph.empty())
             Javadoc::append(blocks_, std::make_unique<
-                doc::Paragraph>(std::move(para)));
+                doc::Paragraph>(std::move(paragraph)));
     }
 
     void
@@ -303,7 +288,7 @@ public:
         if(cmd->IsBriefCommand)
         {
             doc::Brief brief;
-            Scope scope(brief, para_);
+            Scope scope(brief, paragraph_);
             visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::make_unique<
                 doc::Brief>(std::move(brief)));
@@ -312,7 +297,7 @@ public:
         if(cmd->IsReturnsCommand)
         {
             doc::Returns returns;
-            Scope scope(returns, para_);
+            Scope scope(returns, paragraph_);
             visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::make_unique<
                 doc::Returns>(std::move(returns)));
@@ -320,20 +305,53 @@ public:
         }
         if(cmd->getID() == CommandTraits::KCI_note)
         {
-            doc::Admonition para(doc::Admonish::note);
-            Scope scope(para, para_);
+            doc::Admonition paragraph(doc::Admonish::note);
+            Scope scope(paragraph, paragraph_);
             visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::make_unique<
-                doc::Admonition>(std::move(para)));
+                doc::Admonition>(std::move(paragraph)));
             return;
         }
         if(cmd->getID() == CommandTraits::KCI_warning)
         {
-            doc::Admonition para(doc::Admonish::warning);
-            Scope scope(para, para_);
+            doc::Admonition paragraph(doc::Admonish::warning);
+            Scope scope(paragraph, paragraph_);
             visitChildren(C->getParagraph());
             Javadoc::append(blocks_, std::make_unique<
-                doc::Admonition>(std::move(para)));
+                doc::Admonition>(std::move(paragraph)));
+            return;
+        }
+        if(cmd->getID() == CommandTraits::KCI_par)
+        {
+            // VFALCO This is legacy compatibility
+            // for Boost libraries using @par as a
+            // section heading.
+            doc::Paragraph paragraph;
+            Scope scope(paragraph, paragraph_);
+            visitChildren(C->getParagraph());
+            if(! paragraph.children.empty())
+            {
+                // first TextComment is the heading text
+                doc::String text(std::move(
+                    paragraph.children.front()->string));
+
+                // VFALCO Unfortunately clang puts at least
+                // one space in front of the text, which seems
+                // incorrect.
+                auto const s = trim(text);
+                if(s.size() != text.size())
+                    text = s;
+
+                doc::Heading heading(std::move(text));
+                Javadoc::append(blocks_, std::make_unique<
+                    doc::Heading>(std::move(heading)));
+
+                // remaining TextComment, if any
+                paragraph.children.erase(paragraph.children.begin());
+                if(! paragraph.children.empty())
+                Javadoc::append(blocks_, std::make_unique<
+                    doc::Paragraph>(std::move(paragraph)));
+            }
             return;
         }
     }
@@ -361,7 +379,7 @@ public:
                 break;
             }
         }
-        Scope scope(param, para_);
+        Scope scope(param, paragraph_);
         //if(C->hasNonWhitespaceParagraph())
         visitChildren(C->getParagraph());
         Javadoc::append(blocks_, std::make_unique<
@@ -376,7 +394,7 @@ public:
             tparam.name = ensureUTF8(C->getParamNameAsWritten().str());
         else
             tparam.name = "@anon";
-        Scope scope(tparam, para_);
+        Scope scope(tparam, paragraph_);
         //if(C->hasNonWhitespaceParagraph())
         visitChildren(C->getParagraph());
         Javadoc::append(blocks_, std::make_unique<
@@ -387,7 +405,7 @@ public:
         VerbatimBlockComment const* C)
     {
         doc::Code code;
-        Scope scope(code, para_);
+        Scope scope(code, paragraph_);
         //if(C->hasNonWhitespaceParagraph())
         visitChildren(C);
         Javadoc::append(blocks_, std::make_unique<
@@ -404,7 +422,7 @@ public:
     void visitVerbatimBlockLineComment(
         VerbatimBlockLineComment const* C)
     {
-        Javadoc::append(*para_, std::make_unique<
+        Javadoc::append(*paragraph_, std::make_unique<
             doc::Text>(C->getText().str()));
     }
 
@@ -413,7 +431,7 @@ private:
     ASTContext const& ctx_;
     doc::List<doc::Block> blocks_;
     doc::List<doc::Param> params_;
-    doc::Paragraph* para_ = nullptr;
+    doc::Paragraph* paragraph_ = nullptr;
 };
 
 //------------------------------------------------

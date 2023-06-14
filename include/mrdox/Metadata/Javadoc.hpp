@@ -19,6 +19,7 @@
 #include <memory>
 #include <ranges>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -40,14 +41,15 @@ using List = std::vector<std::unique_ptr<T>>;
 enum class Kind
 {
     text = 1, // needed by bitstream
-    styled,
-    paragraph,
-    brief,
     admonition,
+    brief,
     code,
+    heading,
+    paragraph,
     param,
+    returns,
+    styled,
     tparam,
-    returns
 };
 
 /** A text style.
@@ -208,6 +210,31 @@ protected:
         : Node(kind_)
         , children(std::move(children_))
     {
+    }
+};
+
+/** A manually specified section heading.
+*/
+struct Heading : Block
+{
+    static constexpr Kind static_kind = Kind::heading;
+
+    String string;
+
+    Heading(
+        String string_ = String())
+        : Block(Kind::heading)
+        , string(std::move(string_))
+    {
+    }
+
+    bool operator==(const Heading&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Heading&>(other);
     }
 };
 
@@ -385,7 +412,67 @@ struct Returns : Paragraph
     }
 };
 
+//------------------------------------------------
+
+template<class F, class... Args>
+constexpr
+auto
+visit(
+    Node const& node,
+    F&& f, Args&&... args)
+{
+    switch(node.kind)
+    {
+    case Kind::admonition:
+        return f(static_cast<Admonition const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::brief:
+        return f(static_cast<Brief const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::code:
+        return f(static_cast<Code const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::heading:
+        return f(static_cast<Heading const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::paragraph:
+        return f(static_cast<Paragraph const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::param:
+        return f(static_cast<Param const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::returns:
+        return f(static_cast<Returns const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::styled:
+        return f(static_cast<StyledText const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::text:
+        return f(static_cast<Text const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::tparam:
+        return f(static_cast<TParam const&>(node),
+            std::forward<Args>(args)...);
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+template<class F, class T, class... Args>
+requires std::derived_from<T, Node>
+void traverse(
+    std::vector<std::unique_ptr<T>> const& list,
+    F&& f, Args&&... args)
+{
+    for(auto const& node : list)
+        visit(*node,
+            std::forward<F>(f),
+            std::forward<Args>(args)...);
+}
+
 } // doc
+
+//------------------------------------------------
 
 /** A processed Doxygen-style comment attached to a declaration.
 */

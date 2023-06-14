@@ -111,6 +111,9 @@ public:
             case doc::Kind::styled:
                 nodes.emplace_back(std::make_unique<doc::StyledText>());
                 return Error::success();
+            case doc::Kind::heading:
+                nodes.emplace_back(std::make_unique<doc::Heading>());
+                return Error::success();
             case doc::Kind::paragraph:
                 nodes.emplace_back(std::make_unique<doc::Paragraph>());
                 return Error::success();
@@ -154,6 +157,9 @@ public:
             switch(auto node = nodes.back().get();
                 node->kind)
             {
+            case doc::Kind::heading:
+                static_cast<doc::Heading*>(node)->string = Blob.str();
+                return Error::success();
             case doc::Kind::text:
             case doc::Kind::styled:
                 static_cast<doc::Text*>(
