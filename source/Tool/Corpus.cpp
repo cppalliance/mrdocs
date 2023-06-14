@@ -68,7 +68,7 @@ bool Corpus::Visitor::visit(EnumInfo const&)
     return true;
 }
 
-bool Corpus::Visitor::visit(VarInfo const&)
+bool Corpus::Visitor::visit(VariableInfo const&)
 {
     return true;
 }
@@ -104,7 +104,7 @@ traverse(
     case InfoKind::Enum:
         return f.visit(static_cast<EnumInfo const&>(I));
     case InfoKind::Variable:
-        return f.visit(static_cast<VarInfo const&>(I));
+        return f.visit(static_cast<VariableInfo const&>(I));
     case InfoKind::Field:
         return f.visit(static_cast<FieldInfo const&>(I));
     case InfoKind::Specialization:

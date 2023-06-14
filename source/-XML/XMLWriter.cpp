@@ -256,7 +256,7 @@ visit(
 bool
 XMLWriter::
 visit(
-    VarInfo const& I)
+    VariableInfo const& I)
 {
     return writeVar(I);
 }
@@ -444,7 +444,7 @@ writeField(
 bool
 XMLWriter::
 writeVar(
-    VarInfo const& I)
+    VariableInfo const& I)
 {
     openTemplate(I.Template);
 

@@ -71,7 +71,7 @@ protected:
     void write(FunctionInfo const& I);
     void write(TypedefInfo const& I);
     void write(EnumInfo const& I);
-    void write(VarInfo const& I);
+    void write(VariableInfo const& I);
 
     virtual llvm::StringRef linkFor(Info const&);
     virtual llvm::StringRef linkFor(Info const&, OverloadInfo const&);

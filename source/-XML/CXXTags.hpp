@@ -18,7 +18,7 @@
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Type.hpp>
-#include <mrdox/Metadata/Var.hpp>
+#include <mrdox/Metadata/Variable.hpp>
 #include <mrdox/Platform.hpp>
 
 /*
@@ -229,10 +229,10 @@ inline void write(FieldFlags const& bits, XMLTags& tags)
 }
 
 
-inline void write(VarFlags0 const& bits, XMLTags& tags)
+inline void write(VariableFlags0 const& bits, XMLTags& tags)
 {
-    BitFieldWriter<VarFlags0> fw(bits, tags);
-    fw.write(&VarFlags0::storageClass, "storage-class");
+    BitFieldWriter<VariableFlags0> fw(bits, tags);
+    fw.write(&VariableFlags0::storageClass, "storage-class");
 }
 
 inline void writeReturnType(TypeInfo const& I, XMLTags& tags)

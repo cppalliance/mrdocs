@@ -29,7 +29,7 @@ struct RecordInfo;
 struct FunctionInfo;
 struct EnumInfo;
 struct TypedefInfo;
-struct VarInfo;
+struct VariableInfo;
 struct SpecializationInfo;
 
 /** Common properties of all symbols

@@ -218,7 +218,7 @@ public:
         FieldDecl* D);
 
     void buildVar(
-        VarInfo& I,
+        VariableInfo& I,
         VarDecl* D);
 
     template<class DeclTy>

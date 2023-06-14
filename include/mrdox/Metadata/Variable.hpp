@@ -23,7 +23,7 @@
 namespace clang {
 namespace mrdox {
 
-union VarFlags0
+union VariableFlags0
 {
     BitFieldFullValue raw;
 
@@ -35,7 +35,7 @@ union VarFlags0
     This includes variables at namespace
     scope, and static variables at class scope.
 */
-struct VarInfo
+struct VariableInfo
     : IsInfo<InfoKind::Variable>
     , SymbolInfo
 {
@@ -44,14 +44,14 @@ struct VarInfo
     /** The type of the variable */
     TypeInfo Type;
 
-    VarFlags0 specs{.raw={0}};
+    VariableFlags0 specs{.raw={0}};
 
     std::unique_ptr<TemplateInfo> Template;
 
     //--------------------------------------------
 
     explicit
-    VarInfo(
+    VariableInfo(
         SymbolID ID = SymbolID::zero)
         : IsInfo(ID)
     {
@@ -59,7 +59,7 @@ struct VarInfo
 
 private:
     explicit
-    VarInfo(
+    VariableInfo(
         std::unique_ptr<TemplateInfo>&& T)
         : Template(std::move(T))
     {

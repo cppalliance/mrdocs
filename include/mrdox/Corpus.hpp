@@ -101,7 +101,7 @@ public:
         MRDOX_DECL virtual bool visit(FunctionInfo const&);
         MRDOX_DECL virtual bool visit(TypedefInfo const&);
         MRDOX_DECL virtual bool visit(EnumInfo const&);
-        MRDOX_DECL virtual bool visit(VarInfo const&);
+        MRDOX_DECL virtual bool visit(VariableInfo const&);
         MRDOX_DECL virtual bool visit(FieldInfo const&);
         MRDOX_DECL virtual bool visit(SpecializationInfo const&);
     };
@@ -180,8 +180,8 @@ visit(
         return;
     case InfoKind::Variable:
         if constexpr(std::is_invocable_v<F,
-                VarInfo const&, Args&&...>)
-            f(static_cast<VarInfo const&>(I),
+                VariableInfo const&, Args&&...>)
+            f(static_cast<VariableInfo const&>(I),
                 std::forward<Args>(args)...);
         return;
     case InfoKind::Specialization:

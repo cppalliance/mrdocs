@@ -44,7 +44,7 @@ struct SpecializedMember;
 struct SymbolInfo;
 struct TypeInfo;
 struct TypedefInfo;
-struct VarInfo;
+struct VariableInfo;
 struct VerbatimBlock;
 
 struct TemplateInfo;

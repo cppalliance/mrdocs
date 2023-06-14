@@ -18,7 +18,7 @@
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
-#include <mrdox/Metadata/Var.hpp>
+#include <mrdox/Metadata/Variable.hpp>
 #include <algorithm>
 
 namespace clang {
@@ -125,7 +125,7 @@ private:
                     break;
                 case InfoKind::Variable:
                     vars_.push_back({ actualAccess,
-                        { static_cast<const VarInfo*>(&I), &From } });
+                        { static_cast<const VariableInfo*>(&I), &From } });
                     break;
 
                 default:

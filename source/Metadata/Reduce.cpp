@@ -222,7 +222,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
         I.Default = std::move(Other.Default);
 }
 
-void merge(VarInfo& I, VarInfo&& Other)
+void merge(VariableInfo& I, VariableInfo&& Other)
 {
     MRDOX_ASSERT(canMerge(I, Other));
     if(I.Type.id == SymbolID::zero && I.Type.Name.empty())

@@ -33,6 +33,6 @@
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Type.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
-#include <mrdox/Metadata/Var.hpp>
+#include <mrdox/Metadata/Variable.hpp>
 
 #endif

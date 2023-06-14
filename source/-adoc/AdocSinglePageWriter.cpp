@@ -91,7 +91,7 @@ visit(
     auto functionOverloads = makeNamespaceOverloads(I, corpus_);
     auto typedefList       = buildSortedList<TypedefInfo>(I.Members);
     auto enumList          = buildSortedList<EnumInfo>(I.Members);
-    auto variableList      = buildSortedList<VarInfo>(I.Members);
+    auto variableList      = buildSortedList<VariableInfo>(I.Members);
 
     // don't emit empty namespaces,
     // but still visit child namespaces.
@@ -272,7 +272,7 @@ visit(
 bool
 AdocSinglePageWriter::
 visit(
-    VarInfo const&)
+    VariableInfo const&)
 {
     return true;
 }

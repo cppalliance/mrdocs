@@ -47,7 +47,7 @@ private:
     bool visit(FunctionInfo const&) override;
     bool visit(TypedefInfo const&) override;
     bool visit(EnumInfo const&) override;
-    bool visit(VarInfo const&) override;
+    bool visit(VariableInfo const&) override;
 
     //bool visitOverloads(Info const& P, OverloadInfo const&);
 };

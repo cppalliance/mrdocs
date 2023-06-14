@@ -69,7 +69,7 @@ build(
 void
 AdocMultiPageWriter::
 build(
-    VarInfo const& I)
+    VariableInfo const& I)
 {
 }
 

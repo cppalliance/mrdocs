@@ -990,7 +990,7 @@ public:
 //------------------------------------------------
 
 class VarBlock
-    : public TopLevelBlock<VarInfo>
+    : public TopLevelBlock<VariableInfo>
 {
 
 public:

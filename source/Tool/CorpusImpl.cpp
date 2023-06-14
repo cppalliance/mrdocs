@@ -45,7 +45,7 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
     case InfoKind::Typedef:
         return reduce<TypedefInfo>(Values);
     case InfoKind::Variable:
-        return reduce<VarInfo>(Values);
+        return reduce<VariableInfo>(Values);
     case InfoKind::Field:
         return reduce<FieldInfo>(Values);
     case InfoKind::Specialization:

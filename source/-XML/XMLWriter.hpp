@@ -63,7 +63,7 @@ private:
     bool visit(FunctionInfo const&) override;
     bool visit(TypedefInfo const&) override;
     bool visit(EnumInfo const&) override;
-    bool visit(VarInfo const&) override;
+    bool visit(VariableInfo const&) override;
     bool visit(SpecializationInfo const&) override;
     bool visit(FieldInfo const&) override;
 
@@ -72,7 +72,7 @@ private:
     bool writeRecord(RecordInfo const&);
     bool writeTypedef(TypedefInfo const&);
     bool writeField(FieldInfo const&);
-    bool writeVar(VarInfo const&);
+    bool writeVar(VariableInfo const&);
     bool writeSpecialization(const SpecializationInfo&);
 
     void writeSymbol(SymbolInfo const& I);

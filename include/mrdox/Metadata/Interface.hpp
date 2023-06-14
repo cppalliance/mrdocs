@@ -54,7 +54,7 @@ struct MemberType
 
 struct StaticDataMember
 {
-    VarInfo const* I;
+    VariableInfo const* I;
     RecordInfo const* From;
 };
 

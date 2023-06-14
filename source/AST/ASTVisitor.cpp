@@ -1062,7 +1062,7 @@ buildField(
 void
 ASTVisitor::
 buildVar(
-    VarInfo& I,
+    VariableInfo& I,
     VarDecl* D)
 {
     if(! extractInfo(I, D))
@@ -1230,7 +1230,7 @@ Traverse(
     MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
-    VarInfo I(std::move(Template));
+    VariableInfo I(std::move(Template));
     I.Access = getAccessFromSpecifier(A);
 
     buildVar(I, D);

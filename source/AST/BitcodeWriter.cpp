@@ -357,7 +357,7 @@ RecordsByBlock{
     // TypedefInfo
     {BI_TYPEDEF_BLOCK_ID,
         {TYPEDEF_IS_USING}},
-    // VarInfo
+    // VariableInfo
     {BI_VARIABLE_BLOCK_ID, {VARIABLE_BITS}}
 };
 
@@ -395,7 +395,7 @@ dispatchInfoForWrite(Info const* I)
         emitBlock(*static_cast<TypedefInfo const*>(I));
         break;
     case InfoKind::Variable:
-        emitBlock(*static_cast<VarInfo const*>(I));
+        emitBlock(*static_cast<VariableInfo const*>(I));
         break;
     case InfoKind::Field:
         emitBlock(*static_cast<FieldInfo const*>(I));
@@ -1064,7 +1064,7 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    VarInfo const& I)
+    VariableInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
     emitInfoPart(I);
