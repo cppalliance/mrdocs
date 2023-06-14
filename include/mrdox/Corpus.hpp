@@ -83,7 +83,7 @@ public:
 
         If the id does not exist, the behavior is undefined.
     */
-    template<class T>
+    template<class T = Info>
     T const&
     get(
         SymbolID const& id) const noexcept;
@@ -142,54 +142,33 @@ public:
 /** Invoke a function object with an Info-derived type.
 */
 template<class F, class... Args>
-void
+auto
 visit(
     Info const& I, F&& f, Args&&... args)
 {
     switch(I.Kind)
     {
     case InfoKind::Namespace:
-        if constexpr(std::is_invocable_v<F,
-                NamespaceInfo const&, Args&&...>)
-            f(static_cast<NamespaceInfo const&>(I),
-                std::forward<Args>(args)...);
-        return;
+        return f(static_cast<NamespaceInfo const&>(I),
+            std::forward<Args>(args)...);
     case InfoKind::Record:
-        if constexpr(std::is_invocable_v<F,
-                RecordInfo const&, Args&&...>)
-            f(static_cast<RecordInfo const&>(I),
-                std::forward<Args>(args)...);
-        return;
+        return f(static_cast<RecordInfo const&>(I),
+            std::forward<Args>(args)...);
     case InfoKind::Function:
-        if constexpr(std::is_invocable_v<F,
-                FunctionInfo const&, Args&&...>)
-            f(static_cast<FunctionInfo const&>(I),
-                std::forward<Args>(args)...);
-        return;
+        return f(static_cast<FunctionInfo const&>(I),
+            std::forward<Args>(args)...);
     case InfoKind::Enum:
-        if constexpr(std::is_invocable_v<F,
-                EnumInfo const&, Args&&...>)
-            f(static_cast<EnumInfo const&>(I),
-                std::forward<Args>(args)...);
-        return;
+        return f(static_cast<EnumInfo const&>(I),
+            std::forward<Args>(args)...);
     case InfoKind::Typedef:
-        if constexpr(std::is_invocable_v<F,
-                TypedefInfo const&, Args&&...>)
-            f(static_cast<TypedefInfo const&>(I),
-                std::forward<Args>(args)...);
-        return;
+        return f(static_cast<TypedefInfo const&>(I),
+            std::forward<Args>(args)...);
     case InfoKind::Variable:
-        if constexpr(std::is_invocable_v<F,
-                VarInfo const&, Args&&...>)
-            f(static_cast<VarInfo const&>(I),
-                std::forward<Args>(args)...);
-        return;
+        return f(static_cast<VarInfo const&>(I),
+            std::forward<Args>(args)...);
     case InfoKind::Specialization:
-        if constexpr(std::is_invocable_v<F,
-                SpecializationInfo const&, Args&&...>)
-            f(static_cast<SpecializationInfo const&>(I),
-                std::forward<Args>(args)...);
-        return;
+        return f(static_cast<SpecializationInfo const&>(I),
+            std::forward<Args>(args)...);
     default:
         MRDOX_UNREACHABLE();
     }
@@ -222,12 +201,10 @@ void
 Corpus::
 traverse(
     NamespaceInfo const& I,
-    F&& f,
-    Args&&... args) const
+    F&& f, Args&&... args) const
 {
     for(auto const& id : I.Members)
-        visit(get<Info>(id),
-            std::forward<F>(f),
+        visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
 }
 
@@ -239,18 +216,13 @@ traverse(
     F&& f, Args&&... args) const
 {
     for(auto const& id : I.Members)
-        visit(get<Info>(id),
-            std::forward<F>(f),
+        visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
-
     for(auto const& id : I.Friends)
-        visit(get<Info>(id),
-            std::forward<F>(f),
+        visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
-
     for(auto const& id : I.Specializations)
-        visit(get<Info>(id),
-            std::forward<F>(f),
+        visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
 }
 
