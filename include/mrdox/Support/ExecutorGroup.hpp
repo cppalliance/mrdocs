@@ -124,6 +124,7 @@ private:
             : group_(group)
             , agent_(std::move(agent))
         {
+            MRDOX_ASSERT(agent_.get() != nullptr);
         }
 
         ~scoped_agent()
@@ -135,6 +136,7 @@ private:
 
         Agent& operator*() const noexcept
         {
+            MRDOX_ASSERT(agent_.get() != nullptr);
             return *agent_;
         }
     };
@@ -142,14 +144,18 @@ private:
     void
     run(std::unique_lock<std::mutex> lock)
     {
+        MRDOX_ASSERT(lock.owns_lock());
         std::unique_ptr<Agent> agent(std::move(agents_.back()));
+        MRDOX_ASSERT(agent.get() != nullptr);
         agents_.pop_back();
         ++busy_;
 
         threadPool_.async(
             [this, agent = std::move(agent)]() mutable
             {
+                MRDOX_ASSERT(agent.get() != nullptr);
                 scoped_agent scope(*this, std::move(agent));
+                MRDOX_ASSERT(agent.get() == nullptr);
                 std::unique_lock<std::mutex> lock(impl_->mutex_);
                 for(;;)
                 {
