@@ -105,12 +105,16 @@ symbolType() const noexcept
             // unknown RecordKeyKind
             MRDOX_UNREACHABLE();
         }
+    case InfoKind::Field:
+        return "data";
     case InfoKind::Function:
         return "function";
     case InfoKind::Enum:
         return "enum";
     case InfoKind::Typedef:
         return "typedef";
+    case InfoKind::Variable:
+        return "variable";
     default:
         // unknown InfoKind
         MRDOX_UNREACHABLE();
