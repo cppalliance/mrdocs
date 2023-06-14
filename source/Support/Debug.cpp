@@ -24,11 +24,6 @@ llvm::raw_ostream& debug_outs()
     return llvm::outs();
 }
 
-llvm::raw_ostream& debug_errs()
-{
-    return llvm::errs();
-}
-
 void
 debugEnableHeapChecking()
 {

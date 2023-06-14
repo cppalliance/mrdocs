@@ -77,7 +77,7 @@ namespace mrdox {
 */
 /** @{ */
 MRDOX_DECL llvm::raw_ostream& debug_outs();
-MRDOX_DECL llvm::raw_ostream& debug_errs();
+
 /** @} */
 
 /** Enable debug heap checking.
