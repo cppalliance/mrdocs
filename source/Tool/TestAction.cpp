@@ -275,7 +275,7 @@ handleFile(
                 {
                     path::replace_extension(bad, "xml");
                     std::array<llvm::StringRef, 5u> args {
-                        diff_.get(), "-u", "--color", bad, outputPath };
+                        diff_.get(), "-u", "--color", outputPath, bad };
                     llvm::sys::ExecuteAndWait(diff_.get(), args);
                 }
 
