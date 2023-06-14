@@ -79,16 +79,15 @@ jobs:
           find "$llvm_dir" -type f
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.4.0
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.5.0
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
           version: ${{ matrix.version }}
-          update-ld-library-path: ${{ matrix.compiler == 'gcc' }}
           check-latest: ${{ matrix.compiler == 'clang' }}
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.4.0
+        uses: alandefreitas/cpp-actions/package-install@v1.5.0
         id: package-install
         with:
           apt-get: ${{ matrix.install }} openjdk-11-jdk ninja-build
@@ -99,7 +98,7 @@ jobs:
           cxxflags: ${{ matrix.cxxflags }}
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.4.0
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.5.0
         with:
           cmake-version: '>=3.20'
           generator: Ninja
@@ -125,12 +124,11 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.4.0
+        uses: alandefreitas/cpp-actions/flamegraph@v1.5.0
         if: matrix.time-trace
         with:
           build-dir: build
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          trace-commands: true
 
       - name: Codecov
         if: ${{ matrix.coverage }}
@@ -233,7 +231,7 @@ jobs:
         working-directory: build
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.4.0
+        uses: alandefreitas/cpp-actions/create-changelog@v1.5.0
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
