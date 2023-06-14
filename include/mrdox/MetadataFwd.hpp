@@ -25,8 +25,15 @@ class Corpus;
 
 class Interface;
 
+enum class InfoKind;
+
 enum class AccessKind;
-enum class FunctionKind;
+enum class ConstexprKind;
+enum class ExplicitKind;
+enum class NoexceptKind;
+enum class OperatorKind;
+enum class ReferenceKind;
+enum class StorageClassKind;
 
 struct BaseInfo;
 struct EnumValueInfo;

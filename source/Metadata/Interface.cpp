@@ -142,7 +142,7 @@ private:
         std::vector<T>& dest,
         std::vector<U>& src)
     {
-        llvm::stable_sort(
+        std::ranges::stable_sort(
             src,
             []( auto const& p0,
                 auto const& p1) noexcept

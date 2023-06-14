@@ -11,6 +11,7 @@
 
 #include "AdocSinglePageWriter.hpp"
 #include <mrdox/Platform.hpp>
+#include <llvm/ADT/STLExtras.h>
 
 namespace clang {
 namespace mrdox {

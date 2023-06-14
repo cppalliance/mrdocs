@@ -6,22 +6,22 @@
     <file path="explicit-ctor.cpp" line="3" class="def"/>
     <function name="Explicit" id="JPrjQsrkg+QoApI2wln2eGwCGP4=">
       <file path="explicit-ctor.cpp" line="4"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit" value="1"/>
     </function>
     <function name="Explicit" id="CuzDbFSxtCdVcGerq2UySnHF7po=">
       <file path="explicit-ctor.cpp" line="5"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit" value="1"/>
       <param type="const Explicit &amp;"/>
     </function>
     <function name="Explicit" id="saOH3agrCzNHcRhbXHOM0FYFxGc=">
       <file path="explicit-ctor.cpp" line="6"/>
       <attr id="exception-spec" name="noexcept" value="5"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit" value="1"/>
       <param type="Explicit &amp;&amp;"/>
     </function>
     <function name="Explicit" id="Oj6cGCOaarVfZXkgsr/pOPOOiFY=">
       <file path="explicit-ctor.cpp" line="7"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit" value="1"/>
       <param type="int"/>
       <param type="int"/>
     </function>
@@ -30,22 +30,22 @@
     <file path="explicit-ctor.cpp" line="10" class="def"/>
     <function name="ExplicitTrue" id="3sd37ryB4gMx1BgYdDdQzVJFniU=">
       <file path="explicit-ctor.cpp" line="11"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(true)" value="3"/>
     </function>
     <function name="ExplicitTrue" id="Tj9uY+jY7QBYQC8IsjplHuoDgQo=">
       <file path="explicit-ctor.cpp" line="12"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(true)" value="3"/>
       <param type="const ExplicitTrue &amp;"/>
     </function>
     <function name="ExplicitTrue" id="iQOO8pEh0iNSnpupVwR9tCVIf8U=">
       <file path="explicit-ctor.cpp" line="13"/>
       <attr id="exception-spec" name="noexcept" value="5"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(true)" value="3"/>
       <param type="ExplicitTrue &amp;&amp;"/>
     </function>
     <function name="ExplicitTrue" id="XCoHYDLlYJYpV6Ut7Ms0GjcQKjM=">
       <file path="explicit-ctor.cpp" line="14"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(true)" value="3"/>
       <param type="int"/>
       <param type="int"/>
     </function>
@@ -54,22 +54,22 @@
     <file path="explicit-ctor.cpp" line="17" class="def"/>
     <function name="ExplicitFalse" id="GVN7KvqFotNClBLUnxR3nnPlH7Y=">
       <file path="explicit-ctor.cpp" line="18"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(false)" value="2"/>
     </function>
     <function name="ExplicitFalse" id="gsl+2i8v8v4Lifq3SZ5sFhSfseQ=">
       <file path="explicit-ctor.cpp" line="19"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(false)" value="2"/>
       <param type="const ExplicitFalse &amp;"/>
     </function>
     <function name="ExplicitFalse" id="qXjKOO0FQ3p2vTehkEQl2kIKpFs=">
       <file path="explicit-ctor.cpp" line="20"/>
       <attr id="exception-spec" name="noexcept" value="5"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(false)" value="2"/>
       <param type="ExplicitFalse &amp;&amp;"/>
     </function>
     <function name="ExplicitFalse" id="T0aRgSzz7xtFbPWKv3q57ueIYlI=">
       <file path="explicit-ctor.cpp" line="21"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(false)" value="2"/>
       <param type="int"/>
       <param type="int"/>
     </function>
@@ -80,22 +80,22 @@
       <file path="explicit-ctor.cpp" line="25" class="def"/>
       <function name="ExplicitExpression&lt;B&gt;" id="s6L5UKI8FLTRiyny1rXgYxG/f/0=">
         <file path="explicit-ctor.cpp" line="26"/>
-        <attr id="is-explicit"/>
+        <attr id="explicit-spec" name="explicit(expr)" value="4"/>
       </function>
       <function name="ExplicitExpression&lt;B&gt;" id="Ty1Sv+L6at7TykYdCITSQKmXwVs=">
         <file path="explicit-ctor.cpp" line="27"/>
-        <attr id="is-explicit"/>
+        <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <param type="const ExplicitExpression&lt;B&gt; &amp;"/>
       </function>
       <function name="ExplicitExpression&lt;B&gt;" id="gDoLCstIvgYYJng1jhLOLe/yz+Q=">
         <file path="explicit-ctor.cpp" line="28"/>
         <attr id="exception-spec" name="noexcept" value="5"/>
-        <attr id="is-explicit"/>
+        <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <param type="ExplicitExpression&lt;B&gt; &amp;&amp;"/>
       </function>
       <function name="ExplicitExpression&lt;B&gt;" id="J31K1hQq31LWiQhVy5ro0V+1pD0=">
         <file path="explicit-ctor.cpp" line="29"/>
-        <attr id="is-explicit"/>
+        <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <param type="int"/>
         <param type="int"/>
       </function>

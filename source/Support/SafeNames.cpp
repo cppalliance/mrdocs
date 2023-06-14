@@ -8,7 +8,6 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Support/Operator.hpp"
 #include "Support/Radix.hpp"
 #include "Support/SafeNames.hpp"
 #include "Support/Validate.hpp"
@@ -47,7 +46,8 @@ public:
     {
         prefix_.reserve(512);
         corpus_.traverse(*this, SymbolID::zero);
-        /* auto result =*/ map.try_emplace(SymbolID::zero, std::string());
+        /* auto result =*/ map.try_emplace(
+            llvm::StringRef(SymbolID::zero), std::string());
 
     #ifndef NDEBUG
         //for(auto const& N : map)
@@ -64,7 +64,8 @@ public:
     {
         prefix_.reserve(512);
         corpus_.traverse(*this, SymbolID::zero);
-        /* auto result =*/ map.try_emplace(SymbolID::zero, std::string());
+        /* auto result =*/ map.try_emplace(
+            llvm::StringRef(SymbolID::zero), std::string());
         if(os_)
             *os_ << "\n\n";
     }
@@ -122,7 +123,7 @@ private:
         auto const& FI = static_cast<
             FunctionInfo const&>(I);
         auto OOK = FI.specs0.overloadedOperator.get();
-        if(OOK == OverloadedOperatorKind::OO_None)
+        if(OOK == OperatorKind::None)
             return I.Name;
         temp_ = '0';
         temp_.append(getSafeOperatorName(OOK));
@@ -171,7 +172,7 @@ private:
                 if(os_)
                     *os_ << getSafe(**it0) << "\n";
                 /*auto result =*/ map.try_emplace(
-                    (*it0)->id,
+                    llvm::StringRef((*it0)->id),
                     std::move(s));
                 it0 = it;
                 continue;
@@ -189,7 +190,7 @@ private:
                     *os_ << suffix << "\n";
                 s.append(suffix);
                 /*auto result =*/ map.try_emplace(
-                    it0[i]->id,
+                    llvm::StringRef(it0[i]->id),
                     std::move(s));
             }
             it0 = it;
@@ -248,8 +249,8 @@ public:
         llvm::SmallString<64> temp;
         for(Info const* I : corpus_.index())
             map.try_emplace(
-                I->id,
-                llvm::toHex(I->id, true));
+                llvm::StringRef(I->id),
+                toBase16(I->id, true));
     }
 };
 
@@ -281,7 +282,7 @@ SafeNames::
 get(
     SymbolID const &id) const noexcept
 {
-    auto const it = map_.find(id);
+    auto const it = map_.find(llvm::StringRef(id));
     MRDOX_ASSERT(it != map_.end());
     return it->getValue();
 }

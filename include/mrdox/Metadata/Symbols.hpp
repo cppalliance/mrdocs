@@ -15,7 +15,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/Optional.hpp>
-#include <llvm/ADT/StringRef.h>
 #include <cstdint>
 #include <cstring>
 #include <compare>
@@ -71,9 +70,9 @@ public:
         return data_ + size();
     }
 
-    operator llvm::StringRef() const noexcept
+    operator std::string_view() const noexcept
     {
-        return llvm::StringRef(reinterpret_cast<
+        return std::string_view(reinterpret_cast<
             const char*>(data()), size());
     }
 
@@ -106,43 +105,6 @@ constexpr inline SymbolID SymbolID::zero = SymbolID();
 */
 using OptionalSymbolID = Optional<SymbolID>;
 
-/** Info variant discriminator
-*/
-enum class InfoKind
-{
-    Namespace = 0,
-    Record,
-    Function,
-    Enum,
-    Typedef,
-    Variable,
-    Field,
-    Specialization
-};
-
-/** Access specifier.
-
-    Public is set to zero since it is the most
-    frequently occurring access, and it is
-    elided by the bitstream encoder because it
-    has an all-zero bit pattern. This improves
-    compression in the bitstream.
-
-    None is used for namespace members and friend;
-    such declarations have no access.
-*/
-enum class AccessKind
-{
-    Public = 0,
-    Protected,
-    Private,
-    None
-};
-
-MRDOX_DECL
-std::string_view
-toString(AccessKind access);
-
 /** Return the result of comparing s0 to s1.
 
     This function returns true if the string
@@ -155,8 +117,8 @@ toString(AccessKind access);
 MRDOX_DECL
 std::strong_ordering
 compareSymbolNames(
-    llvm::StringRef symbolName0,
-    llvm::StringRef symbolName1) noexcept;
+    std::string_view symbolName0,
+    std::string_view symbolName1) noexcept;
 
 } // mrdox
 } // clang

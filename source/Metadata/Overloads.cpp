@@ -13,6 +13,7 @@
 #include <mrdox/Metadata/Namespace.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <llvm/ADT/STLExtras.h>
+#include <llvm/ADT/StringRef.h>
 
 namespace clang {
 namespace mrdox {

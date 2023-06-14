@@ -11,21 +11,21 @@
   <function name="&lt;deduction guide for X&gt;" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
     <file path="explicit-deduct-guide.cpp" line="6"/>
     <attr id="has-trailing-return"/>
-    <attr id="is-explicit"/>
+    <attr id="explicit-spec" name="explicit" value="1"/>
     <return type="X&lt;0&gt;"/>
     <param type="bool"/>
   </function>
   <function name="&lt;deduction guide for X&gt;" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
     <file path="explicit-deduct-guide.cpp" line="8"/>
     <attr id="has-trailing-return"/>
-    <attr id="is-explicit"/>
+    <attr id="explicit-spec" name="explicit(true)" value="3"/>
     <return type="X&lt;0&gt;"/>
     <param type="char"/>
   </function>
   <function name="&lt;deduction guide for X&gt;" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
     <file path="explicit-deduct-guide.cpp" line="10"/>
     <attr id="has-trailing-return"/>
-    <attr id="is-explicit"/>
+    <attr id="explicit-spec" name="explicit(false)" value="2"/>
     <return type="X&lt;0&gt;"/>
     <param type="int"/>
   </function>
@@ -34,7 +34,7 @@
     <function name="&lt;deduction guide for X&gt;" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
       <file path="explicit-deduct-guide.cpp" line="13"/>
       <attr id="has-trailing-return"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(expr)" value="4"/>
       <return type="X&lt;0&gt;"/>
       <param type="long"/>
     </function>

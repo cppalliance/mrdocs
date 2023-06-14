@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -13,8 +14,6 @@
 #define MRDOX_TOOL_XML_CXXTAGS_HPP
 
 #include "XMLTags.hpp"
-#include "Support/Operator.hpp"
-#include <clang/AST/Attr.h>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Type.hpp>
@@ -58,82 +57,34 @@ constexpr llvm::StringRef getNameForValue(...)
     return "";
 }
 
-constexpr llvm::StringRef getNameForValue(ConstexprSpecKind CSK)
+inline llvm::StringRef getNameForValue(ConstexprKind kind)
 {
-    switch(CSK)
-    {
-    case ConstexprSpecKind::Constexpr: return "constexpr";
-    case ConstexprSpecKind::Consteval: return "consteval";
-    case ConstexprSpecKind::Constinit: return "constinit";
-    default:
-        MRDOX_ASSERT(!"Invalid ConstexprSpecKind");
-    }
-    return "";
+    return toString(kind);
 }
 
-constexpr llvm::StringRef getNameForValue(ExceptionSpecificationType EST)
+inline llvm::StringRef getNameForValue(NoexceptKind kind)
 {
-    switch(EST)
-    {
-    case ExceptionSpecificationType::EST_DynamicNone:       return "throw";
-    case ExceptionSpecificationType::EST_Dynamic:           return "throw-expr";
-    case ExceptionSpecificationType::EST_MSAny:             return "ms-throw";
-    case ExceptionSpecificationType::EST_NoThrow:           return "ms-nothrow";
-    case ExceptionSpecificationType::EST_BasicNoexcept:     return "noexcept";
-    case ExceptionSpecificationType::EST_DependentNoexcept: return "noexcept-expr";
-    case ExceptionSpecificationType::EST_NoexceptFalse:     return "noexcept-false";
-    case ExceptionSpecificationType::EST_NoexceptTrue:      return "noexcept-true";
-    default:
-        MRDOX_ASSERT(false);
-    }
-    return "";
+    return toString(kind);
 }
 
-inline llvm::StringRef getNameForValue(OverloadedOperatorKind OOK)
+inline llvm::StringRef getNameForValue(StorageClassKind kind)
 {
-    return getSafeOperatorName(OOK);
+    return toString(kind);
 }
 
-constexpr llvm::StringRef getNameForValue(StorageClass SC)
+inline llvm::StringRef getNameForValue(ReferenceKind kind)
 {
-    switch(SC)
-    {
-    case StorageClass::SC_Extern:        return "extern";
-    case StorageClass::SC_Static:        return "static";
-    case StorageClass::SC_PrivateExtern: return "extern-private";
-    case StorageClass::SC_Auto:          return "auto";
-    case StorageClass::SC_Register:      return "register";
-    default:
-        MRDOX_ASSERT(false);
-    }
-    return "";
+    return toString(kind);
 }
 
-constexpr llvm::StringRef getNameForValue(WarnUnusedResultAttr::Spelling WUS)
+inline llvm::StringRef getNameForValue(ExplicitKind kind)
 {
-    switch(WUS)
-    {
-    case WarnUnusedResultAttr::Spelling::CXX11_nodiscard:              return "nodiscard";
-    case WarnUnusedResultAttr::Spelling::C2x_nodiscard:                return "nodiscard-C2x";
-    case WarnUnusedResultAttr::Spelling::GNU_warn_unused_result:       return "gnu-warn-unused";
-    case WarnUnusedResultAttr::Spelling::CXX11_gnu_warn_unused_result: return "gnu-warn-unused-cxx11";
-    case WarnUnusedResultAttr::Spelling::C2x_gnu_warn_unused_result:   return "gnu-warn-unused-C2x";
-    default:
-        MRDOX_ASSERT(false);
-    }
-    return "";
+    return toString(kind);
 }
 
-constexpr llvm::StringRef getNameForValue(RefQualifierKind RK)
+inline llvm::StringRef getNameForValue(OperatorKind kind)
 {
-    switch(RK)
-    {
-    case RefQualifierKind::RQ_LValue: return "lv";
-    case RefQualifierKind::RQ_RValue: return "rv";
-    default:
-        MRDOX_ASSERT(false);
-    }
-    return "";
+    return getSafeOperatorName(kind);
 }
 
 //------------------------------------------------
@@ -200,7 +151,7 @@ inline void write(FnFlags0 const& bits, XMLTags& tags)
     fw.write(&FnFlags0::hasOverrideAttr,       "has-override");
     fw.write(&FnFlags0::hasTrailingReturn,     "has-trailing-return");
     fw.write(&FnFlags0::constexprKind,         "constexpr-kind");
-    fw.write(&FnFlags0::exceptionSpecType,     "exception-spec");
+    fw.write(&FnFlags0::exceptionSpec    ,     "exception-spec");
     fw.write(&FnFlags0::overloadedOperator,    "operator");
     fw.write(&FnFlags0::storageClass,          "storage-class");
     fw.write(&FnFlags0::isConst,               "is-const");
@@ -212,9 +163,8 @@ inline void write(FnFlags1 const& bits, XMLTags& tags)
 {
     BitFieldWriter<FnFlags1> fw(bits, tags);
 
+    fw.write(&FnFlags1::explicitSpec,      "explicit-spec");
     fw.write(&FnFlags1::isNodiscard,       "nodiscard");
-    fw.write(&FnFlags1::nodiscardSpelling, "nodiscard-spelling");
-    fw.write(&FnFlags1::isExplicit,        "is-explicit");
 }
 
 

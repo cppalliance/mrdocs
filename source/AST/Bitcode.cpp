@@ -20,7 +20,7 @@ insertBitcode(
     Bitcode&& bitcode)
 {
     ex.reportResult(
-        bitcode.id,
+        StringRef(bitcode.id),
         std::move(bitcode.data));
 }
 

@@ -19,7 +19,6 @@
 #include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
-#include <clang/AST/Attr.h>
 #include <memory>
 #include <string>
 #include <vector>
@@ -27,78 +26,26 @@
 namespace clang {
 namespace mrdox {
 
-/** An enumeration of the different kinds of functions.
+/** Return the name of an operator as a string.
 */
-enum class FunctionKind
-{
-    // VFALCO The most frequent function kind should be
-    // here, since the bitstream writer does not emit zeroes.
-    Plain = 0,
-
-    // The operator kind values have to match the clang enumeration
-    OpNew /* = clang::OverloadedOperatorKind::OO_New */,
-    OpDelete,
-    OpArray_New,
-    OpArray_Delete,
-    OpPlus,
-    OpMinus,
-    OpStar,
-    OpSlash,
-    OpPercent,
-    OpCaret,
-    OpAmp,
-    OpPipe,
-    OpTilde,
-    OpExclaim,
-    OpEqual,
-    OpLess,
-    OpGreater,
-    OpPlusEqual,
-    OpMinusEqual,
-    OpStarEqual,
-    OpSlashEqual,
-    OpPercentEqual,
-    OpCaretEqual,
-    OpAmpEqual,
-    OpPipeEqual,
-    OpLessLess,
-    OpGreaterGreater,
-    OpLessLessEqual,
-    OpGreaterGreaterEqual,
-    OpEqualEqual,
-    OpExclaimEqual,
-    OpLessEqual,
-    OpGreaterEqual,
-    OpSpaceship,
-    OpAmpAmp,
-    OpPipePipe,
-    OpPlusPlus,
-    OpMinusMinus,
-    OpComma,
-    OpArrowStar,
-    OpArrow,
-    OpCall,
-    OpSubscript,
-    OpConditional,
-    OpCoawait,
-    NUM_OVERLOADED_OPERATORS /* = clang::OverloadedOperatorKind::NUM_OVERLOADED_OPERATORS */,
-
-    Destructor = NUM_OVERLOADED_OPERATORS,
-    Constructor,
-    Conversion
-};
-
-/** Return the function kind corresponding to clang's enum
-*/
-FunctionKind
-getFunctionKind(
-    OverloadedOperatorKind OOK) noexcept;
-
-/** Return a unique string constant for the kind.
-*/
+MRDOX_DECL
 std::string_view
-getFunctionKindString(
-    FunctionKind kind) noexcept;
+getOperatorName(
+    OperatorKind kind) noexcept;
+
+/** Return the short name of an operator as a string.
+*/
+MRDOX_DECL
+std::string_view
+getShortOperatorName(
+    OperatorKind kind) noexcept;
+
+/** Return the safe name of an operator as a string.
+*/
+MRDOX_DECL
+std::string_view
+getSafeOperatorName(
+    OperatorKind kind) noexcept;
 
 
 /** Bit constants used with function specifiers.
@@ -122,11 +69,11 @@ union FnFlags0
     BitFlag <12> isVolatile;
     BitField<13> isFinal;
 
-    BitField<14, 2, ConstexprSpecKind> constexprKind;
-    BitField<16, 4, ExceptionSpecificationType> exceptionSpecType;
-    BitField<20, 6, OverloadedOperatorKind> overloadedOperator;
-    BitField<26, 3, StorageClass> storageClass;
-    BitField<29, 2, RefQualifierKind> refQualifier;
+    BitField<14, 2, ConstexprKind> constexprKind;
+    BitField<16, 4, NoexceptKind> exceptionSpec;
+    BitField<20, 6, OperatorKind> overloadedOperator;
+    BitField<26, 3, StorageClassKind> storageClass;
+    BitField<29, 2, ReferenceKind> refQualifier;
 };
 
 /** Bit field used with function specifiers.
@@ -136,10 +83,8 @@ union FnFlags1
     BitFieldFullValue raw;
 
     BitFlag<0> isNodiscard;
-    BitFlag<1> isExplicit;
 
-    BitField<2, 4, WarnUnusedResultAttr::Spelling> nodiscardSpelling;
-    BitField<6, 7, FunctionKind> functionKind;
+    BitField<1, 3, ExplicitKind> explicitSpec;
 };
 
 // KRYSTIAN TODO: attributes (nodiscard, deprecated, and carries_dependency)

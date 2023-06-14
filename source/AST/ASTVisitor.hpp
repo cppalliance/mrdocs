@@ -103,10 +103,6 @@ public:
     getTypeAsString(
         QualType T);
 
-    AccessKind
-    getAccessFromSpecifier(
-        AccessSpecifier as) noexcept;
-
     TagDecl*
     getTagDeclForType(
         QualType T);

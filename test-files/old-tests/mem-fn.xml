@@ -19,14 +19,14 @@
     <file path="mem-fn.cpp" line="5" class="def"/>
     <function name="f" id="p6A5dCCvCkASDE6pH4cJA/27/o8=">
       <file path="mem-fn.cpp" line="5"/>
-      <attr id="ref-qualifier" name="lv" value="1"/>
+      <attr id="ref-qualifier" name="lvalue" value="1"/>
     </function>
   </struct>
   <struct name="T04" id="MBpLzhyCDdQBHul4AN2i2fR8fw0=">
     <file path="mem-fn.cpp" line="6" class="def"/>
     <function name="f" id="G71rDzcAZPSKGoGGoDswQjD1JuA=">
       <file path="mem-fn.cpp" line="6"/>
-      <attr id="ref-qualifier" name="rv" value="2"/>
+      <attr id="ref-qualifier" name="rvalue" value="2"/>
     </function>
   </struct>
   <struct name="T05" id="5s81XyCIgauM5viJN9KAwx2A6DU=">

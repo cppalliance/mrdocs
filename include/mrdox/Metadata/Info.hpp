@@ -14,6 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdox/Metadata/Specifiers.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <array>
 #include <memory>
@@ -31,6 +32,20 @@ struct EnumInfo;
 struct TypedefInfo;
 struct VariableInfo;
 struct SpecializationInfo;
+
+/** Info variant discriminator
+*/
+enum class InfoKind
+{
+    Namespace = 0,
+    Record,
+    Function,
+    Enum,
+    Typedef,
+    Variable,
+    Field,
+    Specialization
+};
 
 /** Common properties of all symbols
 */

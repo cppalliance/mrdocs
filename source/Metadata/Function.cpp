@@ -5,13 +5,13 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
 #include "Support/TypeTraits.hpp"
 #include <mrdox/Metadata/Function.hpp>
-#include <clang/Basic/OperatorKinds.h>
 #include <utility>
 
 namespace clang {
@@ -19,22 +19,16 @@ namespace mrdox {
 
 namespace {
 
-static_assert(
-    to_underlying(FunctionKind::NUM_OVERLOADED_OPERATORS) ==
-    to_underlying(OverloadedOperatorKind::NUM_OVERLOADED_OPERATORS));
-
 struct Item
 {
-    char const* token;
     char const* name;
-    FunctionKind kind;
-    OverloadedOperatorKind ook;
+    char const* safe_name;
+    char const* short_name;
+    OperatorKind kind;
 };
 
 // short operator names from:
 // http://www.int0x80.gr/papers/name_mangling.pdf
-using FK = FunctionKind;
-using OOK = OverloadedOperatorKind;
 static constinit Item const Table[] = {
     /*
         ::= ps # + (unary)
@@ -42,74 +36,82 @@ static constinit Item const Table[] = {
         ::= ad # & (unary)
         ::= de # * (unary)
     */
-    { "",          "",    FK::Plain,                 OOK::OO_None },
-    { "new",       "nw",  FK::OpNew,                 OOK::OO_New },
-    { "delete",    "dl",  FK::OpDelete,              OOK::OO_Delete },
-    { "new[]",     "na",  FK::OpArray_New,           OOK::OO_Array_New },
-    { "delete[]",  "da",  FK::OpArray_Delete,        OOK::OO_Array_Delete },
-    { "+",         "pl",  FK::OpPlus,                OOK::OO_Plus },
-    { "-",         "mi",  FK::OpMinus,               OOK::OO_Minus },
-    { "*",         "ml",  FK::OpStar,                OOK::OO_Star },
-    { "/",         "dv",  FK::OpSlash,               OOK::OO_Slash },
-    { "%",         "rm",  FK::OpPercent,             OOK::OO_Percent },
-    { "^",         "eo",  FK::OpCaret,               OOK::OO_Caret },
-    { "&",         "an",  FK::OpAmp,                 OOK::OO_Amp },
-    { "|",         "or",  FK::OpPipe,                OOK::OO_Pipe },
-    { "~",         "co",  FK::OpTilde,               OOK::OO_Tilde },
-    { "!",         "nt",  FK::OpExclaim,             OOK::OO_Exclaim },
-    { "=",         "as",  FK::OpEqual,               OOK::OO_Equal },
-    { "<",         "lt",  FK::OpLess,                OOK::OO_Less },
-    { ">",         "gt",  FK::OpGreater,             OOK::OO_Greater },
-    { "+=",        "ple", FK::OpPlusEqual,           OOK::OO_PlusEqual },
-    { "-=",        "mie", FK::OpMinusEqual,          OOK::OO_MinusEqual },
-    { "*=",        "mle", FK::OpStarEqual,           OOK::OO_StarEqual },
-    { "/=",        "dve", FK::OpSlashEqual,          OOK::OO_SlashEqual },
-    { "%=",        "rme", FK::OpPercentEqual,        OOK::OO_PercentEqual },
-    { "^=",        "eoe", FK::OpCaretEqual,          OOK::OO_CaretEqual },
-    { "&=",        "ane", FK::OpAmpEqual,            OOK::OO_AmpEqual },
-    { "|=",        "ore", FK::OpPipeEqual,           OOK::OO_PipeEqual },
-    { "<<",        "ls",  FK::OpLessLess,            OOK::OO_LessLess },
-    { ">>",        "rs",  FK::OpGreaterGreater,      OOK::OO_GreaterGreater },
-    { "<<=",       "lse", FK::OpLessLessEqual,       OOK::OO_LessLessEqual },
-    { ">>=",       "rse", FK::OpGreaterGreaterEqual, OOK::OO_GreaterGreaterEqual },
-    { "==",        "eq",  FK::OpEqualEqual,          OOK::OO_EqualEqual },
-    { "!=",        "ne",  FK::OpExclaimEqual,        OOK::OO_ExclaimEqual },
-    { "<=",        "le",  FK::OpLessEqual,           OOK::OO_LessEqual },
-    { ">=",        "ge",  FK::OpGreaterEqual,        OOK::OO_GreaterEqual },
-    { "<=>",       "ss",  FK::OpSpaceship,           OOK::OO_Spaceship },
-    { "&&",        "aa",  FK::OpAmpAmp,              OOK::OO_AmpAmp },
-    { "||",        "oo",  FK::OpPipePipe,            OOK::OO_PipePipe },
-    { "++",        "pp",  FK::OpPlusPlus,            OOK::OO_PlusPlus },
-    { "--",        "mm",  FK::OpMinusMinus,          OOK::OO_MinusMinus },
-    { ",",         "cm",  FK::OpComma,               OOK::OO_Comma },
-    { "->*",       "pm",  FK::OpArrowStar,           OOK::OO_ArrowStar },
-    { "->",        "pt",  FK::OpArrow,               OOK::OO_Arrow },
-    { "()",        "cl",  FK::OpCall,                OOK::OO_Call },
-    { "[]",        "ix",  FK::OpSubscript,           OOK::OO_Subscript },
-    { "?",         "qu",  FK::OpConditional,         OOK::OO_Conditional },
-    { "co_await",  "ca",  FK::OpCoawait,             OOK::OO_Coawait },
-    { "~",         "dt",  FK::Destructor,            OOK::OO_None },
-    { "",          "ct",  FK::Constructor,           OOK::OO_None },
-    { "",          "cv",  FK::Conversion,            OOK::OO_None }
+    { "",         "",          "",    OperatorKind::None                },
+    { "new",      "new",       "nw",  OperatorKind::New                 },
+    { "delete",   "del",       "dl",  OperatorKind::Delete              },
+    { "new[]",    "arr_new",   "na",  OperatorKind::ArrayNew            },
+    { "delete[]", "arr_del",   "da",  OperatorKind::ArrayDelete         },
+    { "+",        "plus",      "pl",  OperatorKind::Plus                },
+    { "-",        "minus",     "mi",  OperatorKind::Minus               },
+    { "*",        "star",      "ml",  OperatorKind::Star                },
+    { "/",        "slash",     "dv",  OperatorKind::Slash               },
+    { "%",        "mod",       "rm",  OperatorKind::Percent             },
+    { "^",        "xor",       "eo",  OperatorKind::Caret               },
+    { "&",        "bitand",    "an",  OperatorKind::Amp                 },
+    { "|",        "bitor",     "or",  OperatorKind::Pipe                },
+    { "~",        "bitnot",    "co",  OperatorKind::Tilde               },
+    { "!",        "not",       "nt",  OperatorKind::Exclaim             },
+    { "=",        "assign",    "as",  OperatorKind::Equal               },
+    { "<",        "lt",        "lt",  OperatorKind::Less                },
+    { ">",        "gt",        "gt",  OperatorKind::Greater             },
+    { "+=",       "plus_eq",   "ple", OperatorKind::PlusEqual           },
+    { "-=",       "minus_eq",  "mie", OperatorKind::MinusEqual          },
+    { "*=",       "star_eq",   "mle", OperatorKind::StarEqual           },
+    { "/=",       "slash_eq",  "dve", OperatorKind::SlashEqual          },
+    { "%=",       "mod_eq",    "rme", OperatorKind::PercentEqual        },
+    { "^=",       "xor_eq",    "eoe", OperatorKind::CaretEqual          },
+    { "&=",       "and_eq",    "ane", OperatorKind::AmpEqual            },
+    { "|=",       "or_eq",     "ore", OperatorKind::PipeEqual           },
+    { "<<",       "lshift",    "ls",  OperatorKind::LessLess            },
+    { ">>",       "rshift",    "rs",  OperatorKind::GreaterGreater      },
+    { "<<=",      "lshift_eq", "lse", OperatorKind::LessLessEqual       },
+    { ">>=",      "rshift_eq", "rse", OperatorKind::GreaterGreaterEqual },
+    { "==",       "eq",        "eq",  OperatorKind::EqualEqual          },
+    { "!=",       "not_eq",    "ne",  OperatorKind::ExclaimEqual        },
+    { "<=",       "le",        "le",  OperatorKind::LessEqual           },
+    { ">=",       "ge",        "ge",  OperatorKind::GreaterEqual        },
+    { "<=>",      "3way",      "ss",  OperatorKind::Spaceship           },
+    { "&&",       "and",       "aa",  OperatorKind::AmpAmp              },
+    { "||",       "or",        "oo",  OperatorKind::PipePipe            },
+    { "++",       "inc",       "pp",  OperatorKind::PlusPlus            },
+    { "--",       "dec",       "mm",  OperatorKind::MinusMinus          },
+    { ",",        "comma",     "cm",  OperatorKind::Comma               },
+    { "->*",      "ptrmem",    "pm",  OperatorKind::ArrowStar           },
+    { "->",       "ptr",       "pt",  OperatorKind::Arrow               },
+    { "()",       "call",      "cl",  OperatorKind::Call                },
+    { "[]",       "subs",      "ix",  OperatorKind::Subscript           },
+    { "?",        "ternary",   "qu",  OperatorKind::Conditional         },
+    { "co_await", "coawait",   "ca",  OperatorKind::Coawait             },
+    // { "~",         "dt",  FunctionKind::Destructor },
+    // { "",          "ct",  FunctionKind::Constructor },
+    // { "",          "cv",  FunctionKind::Conversion }
 };
 
 } // (anon)
 
-FunctionKind
-getFunctionKind(
-    OverloadedOperatorKind OOK) noexcept
-{
-    MRDOX_ASSERT(OOK < OverloadedOperatorKind::NUM_OVERLOADED_OPERATORS);
-    MRDOX_ASSERT(Table[to_underlying(OOK)].ook == OOK);
-    return Table[to_underlying(OOK)].kind;
-}
 
 std::string_view
-getFunctionKindString(
-    FunctionKind kind) noexcept
+getOperatorName(
+    OperatorKind kind) noexcept
 {
     MRDOX_ASSERT(Table[to_underlying(kind)].kind == kind);
     return Table[to_underlying(kind)].name;
+}
+
+std::string_view
+getShortOperatorName(
+    OperatorKind kind) noexcept
+{
+    MRDOX_ASSERT(Table[to_underlying(kind)].kind == kind);
+    return Table[to_underlying(kind)].short_name;
+}
+
+std::string_view
+getSafeOperatorName(
+    OperatorKind kind) noexcept
+{
+    MRDOX_ASSERT(Table[to_underlying(kind)].kind == kind);
+    return Table[to_underlying(kind)].safe_name;
 }
 
 } // mrdox

@@ -15,7 +15,6 @@
 #include "CXXTags.hpp"
 #include "Support/Radix.hpp"
 #include "Support/SafeNames.hpp"
-#include "Support/Operator.hpp"
 #include <mrdox/Platform.hpp>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>

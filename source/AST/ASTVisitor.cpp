@@ -148,27 +148,6 @@ getTypeAsString(
     return T.getAsString(astContext_->getPrintingPolicy());
 }
 
-AccessKind
-ASTVisitor::
-getAccessFromSpecifier(
-    AccessSpecifier as) noexcept
-{
-    switch(as)
-    {
-    case AccessSpecifier::AS_public:
-        return AccessKind::Public;
-    case AccessSpecifier::AS_protected:
-        return AccessKind::Protected;
-    case AccessSpecifier::AS_private:
-        return AccessKind::Private;
-    case AccessSpecifier::AS_none:
-        return AccessKind::None;
-    default:
-        // unknown AccessSpecifier
-        MRDOX_UNREACHABLE();
-    }
-}
-
 TagDecl*
 ASTVisitor::
 getTagDeclForType(
@@ -694,7 +673,7 @@ extractBases(
             continue;
 
         SymbolID id = SymbolID::zero;
-        AccessKind access = getAccessFromSpecifier(
+        AccessKind access = convertToAccessKind(
             B.getAccessSpecifier());
         if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
         {
@@ -827,27 +806,21 @@ constructFunction(
     I.specs0.hasOverrideAttr = D->template hasAttr<OverrideAttr>();
     if(auto const* FP = D->getType()->template getAs<FunctionProtoType>())
         I.specs0.hasTrailingReturn= FP->hasTrailingReturn();
-    I.specs0.constexprKind = D->getConstexprKind();
-        // subsumes D->isConstexpr();
-        // subsumes D->isConstexprSpecified();
-        // subsumes D->isConsteval();
-    I.specs0.exceptionSpecType = D->getExceptionSpecType();
-    I.specs0.overloadedOperator = D->getOverloadedOperator();
-    I.specs0.storageClass = D->getStorageClass();
-    if(auto attr = D->template getAttr<WarnUnusedResultAttr>())
-    {
-        I.specs1.isNodiscard = true;
-        I.specs1.nodiscardSpelling = attr->getSemanticSpelling();
-    }
+    I.specs0.constexprKind =
+        convertToConstexprKind(
+            D->getConstexprKind());
+    I.specs0.exceptionSpec =
+        convertToNoexceptKind(
+            D->getExceptionSpecType());
+    I.specs0.overloadedOperator =
+        convertToOperatorKind(
+            D->getOverloadedOperator());
+    I.specs0.storageClass =
+        convertToStorageClassKind(
+            D->getStorageClass());
 
-    {
-        auto OOK = D->getOverloadedOperator();
-        if(OOK != OverloadedOperatorKind::OO_None)
-        {
-            I.specs1.functionKind = getFunctionKind(OOK);
-        }
+    I.specs1.isNodiscard = D->template hasAttr<WarnUnusedResultAttr>();
 
-    }
     //
     // CXXMethodDecl
     //
@@ -858,7 +831,9 @@ constructFunction(
         I.specs0.isPure = D->isPure();
         I.specs0.isConst = D->isConst();
         I.specs0.isVolatile = D->isVolatile();
-        I.specs0.refQualifier = D->getRefQualifier();
+        I.specs0.refQualifier =
+            convertToReferenceKind(
+                D->getRefQualifier());
         I.specs0.isFinal = D->template hasAttr<FinalAttr>();
         //D->isCopyAssignmentOperator()
         //D->isMoveAssignmentOperator()
@@ -878,7 +853,9 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
     {
-        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
+        I.specs1.explicitSpec =
+            convertToExplicitKind(
+                D->getExplicitSpecifier());
     }
 
     //
@@ -886,7 +863,9 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
     {
-        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
+        I.specs1.explicitSpec =
+            convertToExplicitKind(
+                D->getExplicitSpecifier());
     }
 
     //
@@ -894,7 +873,9 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXDeductionGuideDecl>)
     {
-        I.specs1.isExplicit = D->getExplicitSpecifier().isSpecified();
+        I.specs1.explicitSpec =
+            convertToExplicitKind(
+                D->getExplicitSpecifier());
     }
 
     return true;
@@ -1074,7 +1055,9 @@ buildVar(
         I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
     I.Type = getTypeInfoForType(
         D->getTypeSourceInfo()->getType());
-    I.specs.storageClass = D->getStorageClass();
+    I.specs.storageClass =
+        convertToStorageClassKind(
+            D->getStorageClass());
 
     bool member_spec = getParentNamespaces(I.Namespace, D);
 
@@ -1170,7 +1153,7 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     RecordInfo I(std::move(Template));
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildRecord(I, D);
 
@@ -1190,7 +1173,7 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     TypedefInfo I;
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildTypedef(I, D);
     return true;
@@ -1210,7 +1193,7 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     TypedefInfo I(std::move(Template));
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
     I.IsUsing = true;
 
     buildTypedef(I, D);
@@ -1231,7 +1214,7 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     VariableInfo I(std::move(Template));
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildVar(I, D);
     return true;
@@ -1251,7 +1234,7 @@ Traverse(
     MRDOX_ASSERT(A == AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);
 
@@ -1272,7 +1255,7 @@ Traverse(
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);
     return true;
@@ -1299,7 +1282,7 @@ Traverse(
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);
     return true;
@@ -1319,7 +1302,7 @@ Traverse(
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);
     return true;
@@ -1336,7 +1319,7 @@ Traverse(
         return true;
 
     FunctionInfo I(std::move(Template));
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);
     return true;
@@ -1355,7 +1338,7 @@ Traverse(
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I;
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);
     return true;
@@ -1383,7 +1366,7 @@ Traverse(
         A != AccessSpecifier::AS_none);
 
     EnumInfo I;
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildEnum(I, D);
     return true;
@@ -1402,7 +1385,7 @@ Traverse(
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FieldInfo I;
-    I.Access = getAccessFromSpecifier(A);
+    I.Access = convertToAccessKind(A);
 
     buildField(I, D);
     return true;

@@ -17,7 +17,6 @@
 #include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Type.hpp>
-#include <clang/Basic/Specifiers.h>
 #include <memory>
 
 namespace clang {
@@ -27,7 +26,7 @@ union VariableFlags0
 {
     BitFieldFullValue raw;
 
-    BitField<0, 3, StorageClass> storageClass;
+    BitField<0, 3, StorageClassKind> storageClass;
 };
 
 /** A variable.

@@ -18,22 +18,28 @@
 #include <llvm/ADT/StringRef.h>
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 namespace clang {
 namespace mrdox {
 
 std::string
-toBase64(llvm::StringRef str);
+toBase64(std::string_view str);
 
 llvm::StringRef
 toBaseFN(
     llvm::SmallVectorImpl<char>& dest,
     llvm::ArrayRef<uint8_t> src);
 
-llvm::StringRef
+std::string_view
 toBase32(
     std::string& dest,
-    llvm::StringRef src);
+    std::string_view src);
+
+std::string
+toBase16(
+    std::string_view str,
+    bool lowercase = false);
 
 } // mrdox
 } // clang

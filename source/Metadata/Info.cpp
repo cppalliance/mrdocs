@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "Support/Radix.hpp"
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Record.hpp>
 #include <clang/AST/Type.h>
@@ -45,19 +46,19 @@ extractName() const
     //        example use base64 or base41...
     case InfoKind::Record:
         return std::string("@nonymous_record_") +
-            llvm::toHex(id);
+            toBase16(id);
     case InfoKind::Function:
         return std::string("@nonymous_function_") +
-            llvm::toHex(id);
+            toBase16(id);
     case InfoKind::Enum:
         return std::string("@nonymous_enum_") +
-            llvm::toHex(id);
+            toBase16(id);
     case InfoKind::Typedef:
         return std::string("@nonymous_typedef_") +
-            llvm::toHex(id);
+            toBase16(id);
     case InfoKind::Variable:
         return std::string("@nonymous_var_") +
-            llvm::toHex(id);
+            toBase16(id);
     default:
         // invalid InfoKind
         MRDOX_UNREACHABLE();

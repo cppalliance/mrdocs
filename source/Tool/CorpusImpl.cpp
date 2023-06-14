@@ -63,7 +63,7 @@ CorpusImpl::
 find(
     SymbolID const& id) noexcept
 {
-    auto it = InfoMap.find(id);
+    auto it = InfoMap.find(StringRef(id));
     if(it != InfoMap.end())
         return it->second.get();
     return nullptr;
@@ -74,7 +74,7 @@ CorpusImpl::
 find(
     SymbolID const& id) const noexcept
 {
-    auto it = InfoMap.find(id);
+    auto it = InfoMap.find(StringRef(id));
     if(it != InfoMap.end())
         return it->second.get();
     return nullptr;
@@ -94,7 +94,7 @@ insert(std::unique_ptr<Info> I)
     index_.emplace_back(I.get());
 
     // This has to come last because we move I.
-    InfoMap[I->id] = std::move(I);
+    InfoMap[StringRef(I->id)] = std::move(I);
 }
 
 //------------------------------------------------
@@ -176,7 +176,7 @@ build(
             }
 
             std::unique_ptr<Info> I(merged.get().release());
-            MRDOX_ASSERT(Group.getKey() == I->id);
+            MRDOX_ASSERT(Group.getKey() == StringRef(I->id));
             corpus->insert(std::move(I));
         });
 

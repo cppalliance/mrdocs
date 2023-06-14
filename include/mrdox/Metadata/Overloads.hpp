@@ -15,8 +15,6 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/MetadataFwd.hpp>
-#include <clang/Basic/Specifiers.h>
-#include <llvm/ADT/StringRef.h>
 #include <span>
 #include <string_view>
 

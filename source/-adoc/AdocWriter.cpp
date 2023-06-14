@@ -16,6 +16,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Overloads.hpp>
 #include <clang/Basic/Specifiers.h>
+#include <llvm/ADT/StringRef.h>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
@@ -493,7 +494,7 @@ AdocWriter::
 writeNestedTypes(
     llvm::StringRef sectionName,
     std::vector<SymbolID> const& list,
-    AccessSpecifier access)
+    AccessKind access)
 {
     if(list.empty())
         return;

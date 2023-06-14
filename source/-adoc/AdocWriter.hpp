@@ -88,7 +88,7 @@ protected:
     void writeNestedTypes(
         llvm::StringRef sectionName,
         std::vector<SymbolID> const& list,
-        AccessSpecifier access);
+        AccessKind access);
 
     void writeFunctionDeclaration(
         FunctionInfo const& I);

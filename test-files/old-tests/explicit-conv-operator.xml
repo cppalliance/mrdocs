@@ -6,7 +6,7 @@
     <file path="explicit-conv-operator.cpp" line="3" class="def"/>
     <function name="operator bool" id="64zY8rVu+TzEUayzMrnV65i9nFc=">
       <file path="explicit-conv-operator.cpp" line="4"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit" value="1"/>
       <return type="bool"/>
     </function>
   </struct>
@@ -14,7 +14,7 @@
     <file path="explicit-conv-operator.cpp" line="7" class="def"/>
     <function name="operator bool" id="hJXOxv26Y9uxUYMMVZRsp3Wps4A=">
       <file path="explicit-conv-operator.cpp" line="8"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(false)" value="2"/>
       <return type="bool"/>
     </function>
   </struct>
@@ -22,7 +22,7 @@
     <file path="explicit-conv-operator.cpp" line="11" class="def"/>
     <function name="operator bool" id="9tpZWv9eJGfWj37jmTdNTg+gp14=">
       <file path="explicit-conv-operator.cpp" line="12"/>
-      <attr id="is-explicit"/>
+      <attr id="explicit-spec" name="explicit(true)" value="3"/>
       <return type="bool"/>
     </function>
   </struct>
@@ -32,7 +32,7 @@
       <file path="explicit-conv-operator.cpp" line="16" class="def"/>
       <function name="operator bool" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
         <file path="explicit-conv-operator.cpp" line="17"/>
-        <attr id="is-explicit"/>
+        <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <return type="bool"/>
       </function>
     </struct>

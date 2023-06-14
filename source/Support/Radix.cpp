@@ -12,6 +12,7 @@
 #include "Support/Radix.hpp"
 #include "Support/Debug.hpp"
 #include <mrdox/Platform.hpp>
+#include <llvm/ADT/StringExtras.h>
 #include <algorithm>
 #include <vector>
 
@@ -225,7 +226,7 @@ base64Encode(void* dest, void const* src, std::size_t len)
 //------------------------------------------------
 
 std::string
-toBase64(llvm::StringRef str)
+toBase64(std::string_view str)
 {
     std::string dest;
     dest.resize(base64EncodedSize(str.size()));
@@ -243,10 +244,10 @@ toBaseFN(
     return llvm::StringRef(dest.data(), n);
 }
 
-llvm::StringRef
+std::string_view
 toBase32(
     std::string& dest,
-    llvm::StringRef src)
+    std::string_view src)
 {
 #if 0
     std::vector<std::uint8_t> v;
@@ -320,6 +321,16 @@ toBase32(
             break;
 #endif
     return dest;
+}
+
+std::string
+toBase16(
+    std::string_view str,
+    bool lowercase)
+{
+    return llvm::toHex(
+        llvm::StringRef(str.data(), str.size()),
+        lowercase);
 }
 
 } // mrdox
