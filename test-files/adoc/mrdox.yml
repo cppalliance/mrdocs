@@ -1,0 +1,13 @@
+#ignore-failures: true
+#verbose: false
+#with-private: false
+concurrency: 1
+source-root: .
+single-page: true
+input:
+  include:
+    #- test.cpp
+defines:
+  #- BOOST_URL_DOCS
+generator:
+  adoc:

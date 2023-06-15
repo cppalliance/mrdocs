@@ -13,7 +13,6 @@
 #define MRDOX_TOOL_ADOC_ADOCGENERATOR_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Generator.hpp>
 
 namespace clang {
@@ -23,9 +22,6 @@ namespace adoc {
 class AdocGenerator
     : public Generator
 {
-    struct MultiPageBuilder;
-    struct SinglePageBuilder;
-
 public:
     std::string_view
     id() const noexcept override

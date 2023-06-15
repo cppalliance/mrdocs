@@ -55,8 +55,9 @@ function(mrdox)
             COMMAND
                 mrdox --config=${CMAKE_CURRENT_SOURCE_DIR}/${MRDOX_TARGET_CONFIG}
                         ${MRDOX_COMPILE_COMMANDS}
+                        --addons=../addons
                         --format=${MRDOX_TARGET_FORMAT}
-                        --output=${MRDOX_TARGET_OUTPUT}
+                        "--output=${MRDOX_TARGET_OUTPUT}"
             MAIN_DEPENDENCY ${MRDOX_TARGET_CONFIG} # scanner!
             DEPENDS ${MRDOX_EXECUTABLE_DEPENDENCY} ${MRDOX_TARGET_SOURCES}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

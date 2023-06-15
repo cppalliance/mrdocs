@@ -1,0 +1,7 @@
+﻿[
+  {
+    "directory": ".",
+    "command": "clang test.cpp",
+    "file": "test.cpp"
+  }
+]

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace name="">
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file path="test.cpp" line="9"/>
+    <doc>
+      <brief>
+        <text> brief</text>
+      </brief>
+      <para>
+        <text></text>
+        <text>Boost</text>
+      </para>
+      <para>
+        <text></text>
+        <text></text>
+        <text> heading1</text>
+        <text></text>
+      </para>
+    </doc>
+  </function>
+</namespace>
+</mrdox>

@@ -10,15 +10,42 @@
 //
 
 #include "AdocGenerator.hpp"
-#include "AdocMultiPageWriter.hpp"
-#include "AdocPagesBuilder.hpp"
-#include "AdocSinglePageWriter.hpp"
-#include "Support/RawOstream.hpp"
+#include "Builder.hpp"
+#include "SinglePageVisitor.hpp"
 #include "Support/SafeNames.hpp"
+#include <mrdox/Support/Thread.hpp>
+#include <mrdox/Support/Path.hpp>
+#include <optional>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
 namespace adoc {
+
+Expected<ExecutorGroup<Builder>>
+createExecutors(
+    Corpus const& corpus)
+{
+    auto options = loadOptions(corpus);
+    if(! options)
+        return options.getError();
+
+    auto const& config = corpus.config;
+    auto& threadPool = config.threadPool();
+    ExecutorGroup<Builder> group(threadPool);
+    for(auto i = threadPool.getThreadCount(); i--;)
+    {
+        try
+        {
+           group.emplace(corpus, *options);
+        }
+        catch(Error const& e)
+        {
+            return e;
+        }
+    }
+    return group;
+}
 
 //------------------------------------------------
 //
@@ -34,8 +61,12 @@ build(
 {
     if(corpus.config.singlePage)
         return Generator::build(outputPath, corpus);
-    return AdocPagesBuilder(
-        llvm::StringRef(outputPath), corpus).build();
+
+    auto ex = createExecutors(corpus);
+    if(! ex)
+        return ex.getError();
+
+    return Error::success();
 }
 
 Error
@@ -44,8 +75,14 @@ buildOne(
     std::ostream& os,
     Corpus const& corpus) const
 {
-    RawOstream raw_os(os);
-    return AdocSinglePageWriter(raw_os, corpus).build();
+    auto ex = createExecutors(corpus);
+    if(! ex)
+        return ex.getError();
+
+    SinglePageVisitor visitor(*ex, corpus, os);
+    visitor(corpus.globalNamespace());
+    ex->wait();
+    return Error::success();
 }
 
 } // adoc

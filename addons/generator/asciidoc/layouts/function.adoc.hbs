@@ -1,0 +1,27 @@
+== {{page.name}}
+
+{{#if page.doc}}
+{{page.doc.brief}}
+{{/if}}
+
+=== Synopsis
+
+{{#if page.decl}}
+[,cpp]
+----
+{{page.decl}}
+----
+{{/if}}
+
+{{#if page.loc}}
+Declared in file <{{page.loc}}>
+{{/if}}
+
+{{page.synopsis}}
+
+{{#if page.doc.description}}
+=== Description
+
+{{page.doc.description}}
+
+{{/if}}

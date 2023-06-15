@@ -201,6 +201,12 @@ visitComment(
     visitChildren(C);
 }
 
+//------------------------------------------------
+//
+// inline content
+//
+//------------------------------------------------
+
 void
 JavadocVisitor::
 visitTextComment(
@@ -301,9 +307,11 @@ visitInlineCommandComment(
             doc::Text>(std::move(s)));
 }
 
+//------------------------------------------------
 //
-// Block Content
+// block Content
 //
+//------------------------------------------------
 
 void
 JavadocVisitor::
