@@ -853,78 +853,44 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_JAVADOC_NODE_BLOCK_ID);
     emitRecord(I.kind, JAVADOC_NODE_KIND);
-    switch(I.kind)
-    {
-    case doc::Kind::text:
-    {
-        auto const& J = static_cast<doc::Text const&>(I);
-        emitRecord(J.string, JAVADOC_NODE_STRING);
-        break;
-    }
-    case doc::Kind::styled:
-    {
-        auto const& J = static_cast<doc::StyledText const&>(I);
-        emitRecord(J.style, JAVADOC_NODE_STYLE);
-        emitRecord(J.string, JAVADOC_NODE_STRING);
-        break;
-    }
-    case doc::Kind::heading:
-    {
-        auto const& J = static_cast<doc::Heading const&>(I);
-        emitRecord(J.string, JAVADOC_NODE_STRING);
-        break;
-    }
-    case doc::Kind::paragraph:
-    {
-        auto const& J = static_cast<doc::Paragraph const&>(I);
-        emitBlock(J.children);
-        break;
-    }
-    case doc::Kind::brief:
-    {
-        auto const& J = static_cast<doc::Brief const&>(I);
-        emitBlock(J.children);
-        break;
-    }
-    case doc::Kind::admonition:
-    {
-        auto const& J = static_cast<doc::Admonition const&>(I);
-        emitRecord(J.style, JAVADOC_NODE_ADMONISH);
-        emitBlock(J.children);
-        break;
-    }
-    case doc::Kind::code:
-    {
-        auto const& J = static_cast<doc::Code const&>(I);
-        emitBlock(J.children);
-        break;
-    }
-    case doc::Kind::returns:
-    {
-        auto const& J = static_cast<doc::Returns const&>(I);
-        emitBlock(J.children);
-        break;
-    }
-    case doc::Kind::param:
-    {
-        auto const& J = static_cast<doc::Param const&>(I);
-        emitRecord(J.direction, JAVADOC_PARAM_DIRECTION);
-        emitRecord(J.name, JAVADOC_NODE_STRING);
-        emitBlock(J.children);
-        break;
-    }
-    case doc::Kind::tparam:
-    {
-        auto const& J = static_cast<doc::TParam const&>(I);
-        emitRecord(J.name, JAVADOC_NODE_STRING);
-        emitBlock(J.children);
-        break;
-    }
-    default:
-        // unknown kind
-        MRDOX_UNREACHABLE();
-        break;
-    }
+    doc::visit(I.kind,
+        [&]<class T>()
+        {
+            if constexpr(! std::is_void_v<T>)
+            {
+                auto const& J = static_cast<T const&>(I);
+
+                if constexpr(
+                        std::derived_from<T, doc::Heading> ||
+                        std::derived_from<T, doc::Text>)
+                    emitRecord(J.string, JAVADOC_NODE_STRING);
+
+                if constexpr(std::derived_from<T, doc::Admonition>)
+                    emitRecord(J.style, JAVADOC_NODE_ADMONISH);
+
+                if constexpr(std::derived_from<T, doc::Styled>)
+                    emitRecord(J.style, JAVADOC_NODE_STYLE);
+
+                if constexpr(
+                        std::derived_from<T, doc::Param>)
+                {
+                    emitRecord(J.name, JAVADOC_NODE_STRING);
+                    emitRecord(J.direction, JAVADOC_PARAM_DIRECTION);
+                }
+
+                if constexpr(std::derived_from<T, doc::TParam>)
+                {
+                    emitRecord(J.name, JAVADOC_NODE_STRING);
+                }
+
+                if constexpr(std::derived_from<T, doc::Block>)
+                    emitBlock(J.children);
+            }
+            else
+            {
+                MRDOX_UNREACHABLE();
+            }
+        });
 }
 
 void

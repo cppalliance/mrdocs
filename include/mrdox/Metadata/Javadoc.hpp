@@ -97,17 +97,24 @@ struct Node
 
     virtual ~Node() = default;
 
-    bool operator==(const Node&)
-        const noexcept = default;
-
-    virtual bool equals(
-        const Node& other) const noexcept
+    bool operator==(const Node&)const noexcept = default;
+    virtual bool equals(const Node& other) const noexcept
     {
         return kind == other.kind;
     }
 };
 
-/** A string of plain text.
+//------------------------------------------------
+//
+// Text nodes
+//
+//------------------------------------------------
+
+/** A Node containing a string of text.
+
+    There will be no newlines in the text. Otherwise,
+    this would be represented as multiple text nodes
+    within a Paragraph node.
 */
 struct Text : Node
 {
@@ -117,15 +124,13 @@ struct Text : Node
 
     explicit
     Text(
-        String string_ = String())
+        String string_ = String()) noexcept
         : Node(Kind::text)
         , string(std::move(string_))
     {
     }
 
-    bool operator==(const Text&)
-        const noexcept = default;
-
+    bool operator==(const Text&) const noexcept = default;
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
@@ -144,30 +149,34 @@ protected:
 
 /** A piece of style text.
 */
-struct StyledText : Text
+struct Styled : Text
 {
     Style style;
 
     static constexpr Kind static_kind = Kind::styled;
 
-    StyledText(
+    Styled(
         String string_ = String(),
-        Style style_ = Style::none)
+        Style style_ = Style::none) noexcept
         : Text(std::move(string_), Kind::styled)
         , style(style_)
     {
     }
 
-    bool operator==(const StyledText&)
-        const noexcept = default;
-
-    bool equals(const Node& other) const noexcept override
+    bool operator==(Styled const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
-            *this == static_cast<const StyledText&>(other);
+            *this == static_cast<const Styled&>(other);
     }
 
 };
+
+//------------------------------------------------
+//
+// Block nodes
+//
+//------------------------------------------------
 
 /** A piece of block content
 
@@ -220,15 +229,13 @@ struct Heading : Block
     String string;
 
     Heading(
-        String string_ = String())
+        String string_ = String()) noexcept
         : Block(Kind::heading)
         , string(std::move(string_))
     {
     }
 
-    bool operator==(const Heading&)
-        const noexcept = default;
-
+    bool operator==(Heading const&) const noexcept = default;
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
@@ -247,9 +254,7 @@ struct Paragraph : Block
     {
     }
 
-    bool operator==(const Paragraph&)
-        const noexcept = default;
-
+    bool operator==(const Paragraph&) const noexcept = default;
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
@@ -260,7 +265,7 @@ protected:
     explicit
     Paragraph(
         Kind kind,
-        List<Text> children_ = {})
+        List<Text> children_ = {}) noexcept
         : Block(kind, std::move(children_))
     {
     }
@@ -277,9 +282,7 @@ struct Brief : Paragraph
     {
     }
 
-    bool operator==(const Brief&)
-        const noexcept = default;
-
+    bool operator==(const Brief&) const noexcept = default;
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
@@ -287,7 +290,7 @@ struct Brief : Paragraph
     }
 };
 
-/** Documentation for an admonition
+/** An admonition.
 */
 struct Admonition : Paragraph
 {
@@ -295,15 +298,13 @@ struct Admonition : Paragraph
 
     explicit
     Admonition(
-        Admonish style_ = Admonish::none)
+        Admonish style_ = Admonish::none) noexcept
         : Paragraph(Kind::admonition)
         , style(style_)
     {
     }
 
-    bool operator==(const Admonition&)
-        const noexcept = default;
-
+    bool operator==(const Admonition&) const noexcept = default;
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
@@ -320,14 +321,12 @@ struct Code : Paragraph
 
     static constexpr Kind static_kind = Kind::code;
 
-    Code()
+    Code() noexcept
         : Paragraph(Kind::code)
     {
     }
 
-    bool operator==(const Code&)
-        const noexcept = default;
-
+    bool operator==(const Code&) const noexcept = default;
     bool equals(const Node& other) const noexcept override
     {
         return kind == other.kind &&
@@ -366,28 +365,6 @@ struct Param : Paragraph
     }
 };
 
-/** Documentation for a template parameter
-*/
-struct TParam : Paragraph
-{
-    String name;
-
-    static constexpr Kind static_kind = Kind::tparam;
-
-    TParam()
-        : Paragraph(Kind::tparam)
-    {
-    }
-
-    bool operator==(const TParam&)
-        const noexcept = default;
-
-    bool equals(const Node& other) const noexcept override
-    {
-        return kind == other.kind &&
-            *this == static_cast<const TParam&>(other);
-    }
-};
 
 /** Documentation for a function return type
 */
@@ -409,8 +386,62 @@ struct Returns : Paragraph
             *this == static_cast<const Returns&>(other);
     }
 };
+/** Documentation for a template parameter
+*/
+struct TParam : Paragraph
+{
+    String name;
+
+    static constexpr Kind static_kind = Kind::tparam;
+
+    TParam()
+        : Paragraph(Kind::tparam)
+    {
+    }
+
+    bool operator==(const TParam&) const noexcept = default;
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const TParam&>(other);
+    }
+};
 
 //------------------------------------------------
+
+template<class F, class... Args>
+constexpr
+auto
+visit(
+    Kind kind,
+    F&& f, Args&&... args)
+{
+    switch(kind)
+    {
+    case Kind::admonition:
+        return f.template operator()<Admonition>(std::forward<Args>(args)...);
+    case Kind::brief:
+        return f.template operator()<Brief>(std::forward<Args>(args)...);
+    case Kind::code:
+        return f.template operator()<Code>(std::forward<Args>(args)...);
+    case Kind::heading:
+        return f.template operator()<Heading>(std::forward<Args>(args)...);
+    case Kind::paragraph:
+        return f.template operator()<Paragraph>(std::forward<Args>(args)...);
+    case Kind::param:
+        return f.template operator()<Param>(std::forward<Args>(args)...);
+    case Kind::returns:
+        return f.template operator()<Returns>(std::forward<Args>(args)...);
+    case Kind::styled:
+        return f.template operator()<Styled>(std::forward<Args>(args)...);
+    case Kind::text:
+        return f.template operator()<Text>(std::forward<Args>(args)...);
+    case Kind::tparam:
+        return f.template operator()<TParam>(std::forward<Args>(args)...);
+    default:
+        return f.template operator()<void>(std::forward<Args>(args)...);
+    }
+}
 
 template<class F, class... Args>
 constexpr
@@ -443,7 +474,7 @@ visit(
         return f(static_cast<Returns const&>(node),
             std::forward<Args>(args)...);
     case Kind::styled:
-        return f(static_cast<StyledText const&>(node),
+        return f(static_cast<Styled const&>(node),
             std::forward<Args>(args)...);
     case Kind::text:
         return f(static_cast<Text const&>(node),

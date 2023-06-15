@@ -114,7 +114,7 @@ protected:
     void writeNode(doc::Node const& node);
     void writeNode(doc::Block const& node);
     void writeNode(doc::Text const& node);
-    void writeNode(doc::StyledText const& node);
+    void writeNode(doc::Styled const& node);
     void writeNode(doc::Paragraph const& node);
     void writeNode(doc::Admonition const& node);
     void writeNode(doc::Code const& node);

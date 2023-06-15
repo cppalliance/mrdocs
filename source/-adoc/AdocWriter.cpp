@@ -633,7 +633,7 @@ writeNode(
         writeNode(static_cast<doc::Text const&>(node));
         return;
     case doc::Kind::styled:
-        writeNode(static_cast<doc::StyledText const&>(node));
+        writeNode(static_cast<doc::Styled const&>(node));
         return;
 #if 0
     case doc::Node::block:
@@ -687,7 +687,7 @@ writeNode(
 void
 AdocWriter::
 writeNode(
-    doc::StyledText const& node)
+    doc::Styled const& node)
 {
     switch(node.style)
     {

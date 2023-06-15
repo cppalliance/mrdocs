@@ -248,7 +248,7 @@ public:
 
         if(style != doc::Style::none)
             Javadoc::append(*paragraph_, std::make_unique<
-                doc::StyledText>(std::move(s), style));
+                doc::Styled>(std::move(s), style));
         else
             Javadoc::append(*paragraph_, std::make_unique<
                 doc::Text>(std::move(s)));

@@ -103,41 +103,19 @@ public:
             doc::Kind kind{};
             if(auto err = decodeRecord(R, kind, Blob))
                 return err;
-            switch(kind)
-            {
-            case doc::Kind::text:
-                nodes.emplace_back(std::make_unique<doc::Text>());
-                return Error::success();
-            case doc::Kind::styled:
-                nodes.emplace_back(std::make_unique<doc::StyledText>());
-                return Error::success();
-            case doc::Kind::heading:
-                nodes.emplace_back(std::make_unique<doc::Heading>());
-                return Error::success();
-            case doc::Kind::paragraph:
-                nodes.emplace_back(std::make_unique<doc::Paragraph>());
-                return Error::success();
-            case doc::Kind::brief:
-                nodes.emplace_back(std::make_unique<doc::Brief>());
-                return Error::success();
-            case doc::Kind::admonition:
-                nodes.emplace_back(std::make_unique<doc::Admonition>());
-                return Error::success();
-            case doc::Kind::code:
-                nodes.emplace_back(std::make_unique<doc::Code>());
-                return Error::success();
-            case doc::Kind::returns:
-                nodes.emplace_back(std::make_unique<doc::Returns>());
-                return Error::success();
-            case doc::Kind::param:
-                nodes.emplace_back(std::make_unique<doc::Param>());
-                return Error::success();
-            case doc::Kind::tparam:
-                nodes.emplace_back(std::make_unique<doc::TParam>());
-                return Error::success();
-            default:
-                return Error("invalid kind");
-            }
+            return visit(kind,
+                [&]<class T>()
+                {
+                    if constexpr(! std::is_same_v<T, void>)
+                    {
+                        nodes.emplace_back(std::make_unique<T>());
+                        return Error::success();
+                    }
+                    else
+                    {
+                        return Error("unknown doc::Kind");
+                    }
+                });
         }
         case JAVADOC_PARAM_DIRECTION:
         {
@@ -186,7 +164,7 @@ public:
             auto node = nodes.back().get();
             if(node->kind != doc::Kind::styled)
                 return Error("style on wrong kind");
-            static_cast<doc::StyledText*>(
+            static_cast<doc::Styled*>(
                 node)->style = style;
             return Error::success();
 
