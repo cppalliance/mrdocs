@@ -22,10 +22,24 @@
 namespace clang {
 namespace mrdox {
 
+class MRDOX_DECL
+    ExecutorGroupBase
+{
+protected:
+    struct MRDOX_DECL
+        AnyAgent
+    {
+        virtual ~AnyAgent() = 0;
+        virtual void* get() noexcept = 0;
+    };
+
+public:
+};
+
 /** A set of execution agents for performing concurrent work.
 */
 template<class Agent>
-class ExecutorGroup
+class ExecutorGroup : public ExecutorGroupBase
 {
     struct Impl
     {
@@ -124,7 +138,6 @@ private:
             : group_(group)
             , agent_(std::move(agent))
         {
-            MRDOX_ASSERT(agent_.get() != nullptr);
         }
 
         ~scoped_agent()
@@ -136,7 +149,6 @@ private:
 
         Agent& operator*() const noexcept
         {
-            MRDOX_ASSERT(agent_.get() != nullptr);
             return *agent_;
         }
     };
@@ -144,24 +156,21 @@ private:
     void
     run(std::unique_lock<std::mutex> lock)
     {
-        MRDOX_ASSERT(lock.owns_lock());
         std::unique_ptr<Agent> agent(std::move(agents_.back()));
-        MRDOX_ASSERT(agent.get() != nullptr);
         agents_.pop_back();
         ++busy_;
 
         threadPool_.async(
             [this, agent = std::move(agent)]() mutable
             {
-                MRDOX_ASSERT(agent.get() != nullptr);
-                scoped_agent scope(*this, std::move(agent));
-                MRDOX_ASSERT(agent.get() == nullptr);
                 std::unique_lock<std::mutex> lock(impl_->mutex_);
+                scoped_agent scope(*this, std::move(agent));
                 for(;;)
                 {
                     if(work_.empty())
                         break;
-                    any_callable<void(Agent&)> work(std::move(work_.front()));
+                    any_callable<void(Agent&)> work(
+                        std::move(work_.front()));
                     work_.pop_front();
                     unlock_guard unlock(impl_->mutex_);
                     work(*scope);
