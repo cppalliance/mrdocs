@@ -14,6 +14,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <fmt/format.h>
+#include <exception>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -24,7 +25,8 @@ namespace mrdox {
 
 /** Holds the description of an error, or success.
 */
-class [[nodiscard]] Error
+class [[nodiscard]] MRDOX_DECL
+    Error : public std::exception
 {
     std::string text_;
 
@@ -117,6 +119,14 @@ public:
     message() const noexcept
     {
         return text_;
+    }
+
+    /** Return a null-terminated error string.
+    */
+    char const*
+    what() const noexcept override
+    {
+        return text_.c_str();
     }
 
     /** Return a value indicating success.
