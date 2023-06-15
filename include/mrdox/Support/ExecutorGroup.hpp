@@ -12,10 +12,10 @@
 #define MRDOX_SUPPORT_EXECUTORGROUP_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/any_callable.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
-#include <mrdox/Support/unlock_guard.hpp>
-#include <condition_variable>
 #include <deque>
+#include <memory>
 #include <mutex>
 #include <vector>
 
@@ -25,7 +25,11 @@ namespace mrdox {
 class MRDOX_DECL
     ExecutorGroupBase
 {
+    class scoped_agent;
+
 protected:
+    struct Impl;
+
     struct MRDOX_DECL
         AnyAgent
     {
@@ -33,7 +37,25 @@ protected:
         virtual void* get() noexcept = 0;
     };
 
+    std::unique_ptr<Impl> impl_;
+    std::vector<std::unique_ptr<AnyAgent>> agents_;
+    std::deque<any_callable<void(void*)>> work_;
+
+    explicit ExecutorGroupBase(ThreadPool&);
+    void post(any_callable<void(void*)>);
+    void run(std::unique_lock<std::mutex>);
+
 public:
+    template<class T>
+    using arg_t = ThreadPool::arg_t<T>;
+
+    ~ExecutorGroupBase();
+    ExecutorGroupBase(ExecutorGroupBase&&) noexcept;
+
+    /** Block until all work has completed.
+    */
+    void
+    wait() noexcept;
 };
 
 /** A set of execution agents for performing concurrent work.
@@ -41,32 +63,27 @@ public:
 template<class Agent>
 class ExecutorGroup : public ExecutorGroupBase
 {
-    struct Impl
+    struct AgentImpl : AnyAgent
     {
-        std::mutex mutex_;
-        std::condition_variable cv_;
+        Agent agent_;
+
+        template<class... Args>
+        AgentImpl(Args&&... args)
+            : agent_(std::forward<Args>(args)...)
+        {
+        }
+
+        void* get() noexcept override
+        {
+            return &agent_;
+        }
     };
 
-    ThreadPool& threadPool_;
-    std::unique_ptr<Impl> impl_;
-    std::vector<std::unique_ptr<Agent>> agents_;
-    std::deque<any_callable<void(Agent&)>> work_;
-    std::size_t busy_ = 0;
-
 public:
-    template<class T>
-    using arg_t = ThreadPool::arg_t<T>;
-
-    ExecutorGroup(ExecutorGroup const&) = delete;
-    ExecutorGroup& operator=(ExecutorGroup&&) = delete;
-    ExecutorGroup& operator=(ExecutorGroup const&) = delete;
-    ExecutorGroup(ExecutorGroup&&) = default;
-
     explicit
     ExecutorGroup(
-        ThreadPool& threadPool) noexcept
-        : threadPool_(threadPool)
-        , impl_(std::make_unique<Impl>())
+        ThreadPool& threadPool)
+        : ExecutorGroupBase(threadPool)
     {
     }
 
@@ -79,8 +96,9 @@ public:
     void
     emplace(Args&&... args)
     {
-        agents_.emplace_back(std::make_unique<Agent>(
-            std::forward<Args>(args)...));
+        agents_.emplace_back(
+            std::make_unique<AgentImpl>(
+                std::forward<Args>(args)...));
     }
 
     /** Submit work to be executed.
@@ -96,85 +114,16 @@ public:
     async(F&& f, Args&&... args)
     {
         static_assert(std::is_invocable_v<F, Agent&, arg_t<Args>...>);
-        std::unique_lock<std::mutex> lock(impl_->mutex_);
-        work_.emplace_back(
+        post(
             [
                 f = std::forward<F>(f),
                 args = std::tuple<arg_t<Args>...>(args...)
-            ](Agent& agent)
+            ](void* agent)
             {
-                std::apply(f, std::tuple_cat(
-                    std::tuple<Agent&>(agent),
+                std::apply(f,
+                    std::tuple_cat(std::tuple<Agent&>(
+                        *reinterpret_cast<Agent*>(agent)),
                     std::move(args)));
-            });
-        if(agents_.empty())
-            return;
-        run(std::move(lock));
-    }
-
-    /** Block until all work has completed.
-    */
-    void
-    wait()
-    {
-        std::unique_lock<std::mutex> lock(impl_->mutex_);
-        impl_->cv_.wait(lock,
-            [&]
-            {
-                return work_.empty() && busy_ == 0;
-            });
-    }
-
-private:
-    class scoped_agent
-    {
-        ExecutorGroup& group_;
-        std::unique_ptr<Agent> agent_;
-
-    public:
-        scoped_agent(
-            ExecutorGroup& group,
-            std::unique_ptr<Agent> agent) noexcept
-            : group_(group)
-            , agent_(std::move(agent))
-        {
-        }
-
-        ~scoped_agent()
-        {
-            --group_.busy_;
-            group_.agents_.emplace_back(std::move(agent_));
-            group_.impl_->cv_.notify_all();
-        }
-
-        Agent& operator*() const noexcept
-        {
-            return *agent_;
-        }
-    };
-
-    void
-    run(std::unique_lock<std::mutex> lock)
-    {
-        std::unique_ptr<Agent> agent(std::move(agents_.back()));
-        agents_.pop_back();
-        ++busy_;
-
-        threadPool_.async(
-            [this, agent = std::move(agent)]() mutable
-            {
-                std::unique_lock<std::mutex> lock(impl_->mutex_);
-                scoped_agent scope(*this, std::move(agent));
-                for(;;)
-                {
-                    if(work_.empty())
-                        break;
-                    any_callable<void(Agent&)> work(
-                        std::move(work_.front()));
-                    work_.pop_front();
-                    unlock_guard unlock(impl_->mutex_);
-                    work(*scope);
-                }
             });
     }
 };

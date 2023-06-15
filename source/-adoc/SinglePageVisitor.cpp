@@ -9,6 +9,7 @@
 //
 
 #include "SinglePageVisitor.hpp"
+#include <mrdox/Support/unlock_guard.hpp>
 
 namespace clang {
 namespace mrdox {
