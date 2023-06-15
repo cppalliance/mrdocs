@@ -98,6 +98,47 @@ public:
     {
         switch (ID)
         {
+        case JAVADOC_NODE_ADMONISH:
+        {
+            doc::Admonish admonish =
+                doc::Admonish::none;
+            if(auto err = decodeRecord(R, admonish, Blob))
+                return err;
+            auto node = nodes.back().get();
+            if(node->kind != doc::Kind::admonition)
+                return Error("admonish on wrong kind");
+            static_cast<doc::Admonition*>(
+                node)->style = admonish;
+            return Error::success();
+        }
+
+        case JAVADOC_PARAM_DIRECTION:
+        {
+            doc::ParamDirection direction =
+                doc::ParamDirection::none;
+            if(auto err = decodeRecord(R, direction, Blob))
+                return err;
+            auto node = nodes.back().get();
+            if(node->kind != doc::Kind::param)
+                return Error("direction on wrong kind");
+            auto param = static_cast<doc::Param*>(node);
+            param->direction = direction;
+            return Error::success();
+        }
+
+        case JAVADOC_NODE_HREF:
+        {
+            switch(auto node = nodes.back().get();
+                node->kind)
+            {
+            case doc::Kind::link:
+                static_cast<doc::Link*>(node)->href = Blob.str();
+                return Error::success();
+            default:
+                return Error("href on wrong kind");
+            }
+        }
+
         case JAVADOC_NODE_KIND:
         {
             doc::Kind kind{};
@@ -117,19 +158,7 @@ public:
                     }
                 });
         }
-        case JAVADOC_PARAM_DIRECTION:
-        {
-            doc::ParamDirection direction =
-                doc::ParamDirection::none;
-            if(auto err = decodeRecord(R, direction, Blob))
-                return err;
-            auto node = nodes.back().get();
-            if(node->kind != doc::Kind::param)
-                return Error("direction on wrong kind");
-            auto param = static_cast<doc::Param*>(node);
-            param->direction = direction;
-            return Error::success();
-        }
+
         case JAVADOC_NODE_STRING:
         {
             switch(auto node = nodes.back().get();
@@ -155,6 +184,7 @@ public:
                 return Error("string on wrong kind");
             }
         }
+
         case JAVADOC_NODE_STYLE:
         {
             doc::Style style =
@@ -169,19 +199,7 @@ public:
             return Error::success();
 
         }
-        case JAVADOC_NODE_ADMONISH:
-        {
-            doc::Admonish admonish =
-                doc::Admonish::none;
-            if(auto err = decodeRecord(R, admonish, Blob))
-                return err;
-            auto node = nodes.back().get();
-            if(node->kind != doc::Kind::admonition)
-                return Error("admonish on wrong kind");
-            static_cast<doc::Admonition*>(
-                node)->style = admonish;
-            return Error::success();
-        }
+
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -193,10 +211,6 @@ public:
     {
         switch(ID)
         {
-        case BI_JAVADOC_NODE_BLOCK_ID:
-        {
-            return br_.readBlock(*this, ID);
-        }
         case BI_JAVADOC_LIST_BLOCK_ID:
         {
             auto node = nodes.back().get();
@@ -212,6 +226,12 @@ public:
                 std::move(B.nodes));
             return Error::success();
         }
+
+        case BI_JAVADOC_NODE_BLOCK_ID:
+        {
+            return br_.readBlock(*this, ID);
+        }
+
         default:
             return AnyBlock::readSubBlock(ID);
         }

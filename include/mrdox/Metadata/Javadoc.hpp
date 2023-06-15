@@ -43,6 +43,8 @@ enum class Kind
     brief,
     code,
     heading,
+    link,
+    list_item,
     paragraph,
     param,
     returns,
@@ -147,7 +149,7 @@ protected:
     }
 };
 
-/** A piece of style text.
+/** A piece of styled text.
 */
 struct Styled : Text
 {
@@ -170,6 +172,42 @@ struct Styled : Text
             *this == static_cast<const Styled&>(other);
     }
 
+};
+
+/** A hyperlink.
+
+    Note that the text of the hyperlink can be
+    block content.
+*/
+struct Link : Node
+{
+    String href;
+
+    static constexpr Kind static_kind = Kind::link;
+
+    explicit
+    Link(
+        String href_ = String()) noexcept
+        : Node(Kind::link)
+        , href(std::move(href_))
+    {
+    }
+
+    bool operator==(const Link&) const noexcept = default;
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Link&>(other);
+    }
+
+protected:
+    Link(
+        String href_,
+        Kind kind_)
+        : Node(kind_)
+        , href(std::move(href_))
+    {
+    }
 };
 
 //------------------------------------------------
@@ -334,6 +372,27 @@ struct Code : Paragraph
     }
 };
 
+/** An item in a list
+*/
+struct ListItem : Paragraph
+{
+    static constexpr Kind static_kind = Kind::list_item;
+
+    ListItem()
+        : Paragraph(Kind::list_item)
+    {
+    }
+
+    bool operator==(const ListItem&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const ListItem&>(other);
+    }
+};
+
 /** Documentation for a function parameter
 */
 struct Param : Paragraph
@@ -426,6 +485,8 @@ visit(
         return f.template operator()<Code>(std::forward<Args>(args)...);
     case Kind::heading:
         return f.template operator()<Heading>(std::forward<Args>(args)...);
+    case Kind::list_item:
+        return f.template operator()<ListItem>(std::forward<Args>(args)...);
     case Kind::paragraph:
         return f.template operator()<Paragraph>(std::forward<Args>(args)...);
     case Kind::param:
@@ -466,6 +527,12 @@ visit(
             std::forward<Args>(args)...);
     case Kind::paragraph:
         return f(static_cast<Paragraph const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::link:
+        return f(static_cast<Link const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::list_item:
+        return f(static_cast<ListItem const&>(node),
             std::forward<Args>(args)...);
     case Kind::param:
         return f(static_cast<Param const&>(node),

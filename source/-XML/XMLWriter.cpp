@@ -613,6 +613,12 @@ writeNode(
     case doc::Kind::paragraph:
         writeParagraph(static_cast<doc::Paragraph const&>(node));
         break;
+    case doc::Kind::link:
+        writeLink(static_cast<doc::Link const&>(node));
+        break;
+    case doc::Kind::list_item:
+        writeListItem(static_cast<doc::ListItem const&>(node));
+        break;
     case doc::Kind::brief:
         writeBrief(static_cast<doc::Brief const&>(node));
         break;
@@ -635,6 +641,26 @@ writeNode(
         // unknown kind
         MRDOX_UNREACHABLE();
     }
+}
+
+void
+XMLWriter::
+writeLink(
+    doc::Link const& node)
+{
+    tags_.write("link", {}, {
+        { "href", node.href }
+        });
+}
+
+void
+XMLWriter::
+writeListItem(
+    doc::ListItem const& node)
+{
+    tags_.open("item");
+    writeNodes(node.children);
+    tags_.close("item");
 }
 
 void

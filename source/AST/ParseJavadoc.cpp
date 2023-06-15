@@ -127,6 +127,13 @@ Scope(U&, T*&) -> Scope<T, T>;
 class JavadocVisitor
     : public ConstCommentVisitor<JavadocVisitor>
 {
+    FullComment const* FC_;
+    ASTContext const& ctx_;
+    doc::List<doc::Block> blocks_;
+    doc::List<doc::Param> params_;
+    doc::Paragraph* paragraph_ = nullptr;
+    std::size_t htmlTagNesting_ = 0;
+
     static
     std::string&
     ensureUTF8(
@@ -137,8 +144,8 @@ class JavadocVisitor
         return s;
     }
 
-    template<class... Args>
-    void visitChildren(
+    void
+    visitChildren(
         Comment const* C)
     {
         for(auto const* it = C->child_begin();
@@ -155,284 +162,338 @@ public:
     {
     }
 
-    Javadoc build()
-    {
-        visit(FC_);
+    Javadoc build();
+    void visitComment(Comment const* C);
 
-        // This must cause has_value() to return true
-        return Javadoc(std::move(blocks_));
-    }
+    // inline content
+    void visitTextComment(TextComment const* C);
+    void visitHTMLStartTagComment(HTMLStartTagComment const* C);
+    void visitHTMLEndTagComment(HTMLEndTagComment const* C);
+    void visitInlineCommandComment(InlineCommandComment const* C);
 
-    void visitComment(
-        Comment const* C)
-    {
-        visitChildren(C);
-    }
+    // block content
+    void visitParagraphComment(ParagraphComment const* C);
+    void visitBlockCommandComment(BlockCommandComment const* C);
+    void visitParamCommandComment(ParamCommandComment const* C);
+    void visitTParamCommandComment(TParamCommandComment const* C);
+    void visitVerbatimBlockComment(VerbatimBlockComment const* C);
+    void visitVerbatimLineComment(VerbatimLineComment const* C);
+    void visitVerbatimBlockLineComment(VerbatimBlockLineComment const* C);
+};
 
-    void visitTextComment(
-        TextComment const* C)
-    {
-        llvm::StringRef s = C->getText();
-        // If this is the very first node, the
-        // paragraph has no doxygen command,
-        // so we will trim the leading space.
-        // Otherwise just trim trailing space
+//------------------------------------------------
+
+Javadoc
+JavadocVisitor::
+build()
+{
+    visit(FC_);
+
+    // This must cause has_value() to return true
+    return Javadoc(std::move(blocks_));
+}
+
+void
+JavadocVisitor::
+visitComment(
+    Comment const* C)
+{
+    visitChildren(C);
+}
+
+void
+JavadocVisitor::
+visitTextComment(
+    TextComment const* C)
+{
+    llvm::StringRef s = C->getText();
+    // If this is the very first node, the
+    // paragraph has no doxygen command,
+    // so we will trim the leading space.
+    // Otherwise just trim trailing space
 #if 0
-        if(paragraph_->children.empty())
-            s = s.ltrim().rtrim();
-        else
-            s = s.rtrim(); //.ltrim()
+    if(paragraph_->children.empty())
+        s = s.ltrim().rtrim();
+    else
+        s = s.rtrim(); //.ltrim()
 #else
-        s = s.rtrim();
+    s = s.rtrim();
 #endif
 
-        // VFALCO Figure out why we get empty TextComment
+    // VFALCO Figure out why we get empty TextComment
 #if 0
-        if(! s.empty())
+    if(! s.empty())
 #endif
-            Javadoc::append(*paragraph_, std::make_unique<
-                doc::Text>(ensureUTF8(s.str())));
-    }
+        Javadoc::append(*paragraph_, std::make_unique<
+            doc::Text>(ensureUTF8(s.str())));
+}
 
-    void visitHTMLTagComment(
-        HTMLTagComment const* C)
+void
+JavadocVisitor::
+visitHTMLStartTagComment(
+    HTMLStartTagComment const* C)
+{
+    ++htmlTagNesting_;
+    llvm::StringRef s = C->getTagName();
+    if(s == "a")
     {
-        visitChildren(C);
-    }
-
-    void visitHTMLStartTagComment(
-        HTMLStartTagComment const* C)
-    {
-        visitChildren(C);
-    }
-
-    void HTMLEndTagComment(
-        HTMLStartTagComment const* C)
-    {
-    }
-
-    void visitInlineCommandComment(
-        InlineCommandComment const* C)
-    {
-        doc::Style style(doc::Style::none);
-        switch (C->getRenderKind())
-        {
-        case InlineCommandComment::RenderKind::RenderMonospaced:
-            style = doc::Style::mono;
-            break;
-        case InlineCommandComment::RenderKind::RenderBold:
-            style = doc::Style::bold;
-            break;
-        case InlineCommandComment::RenderKind::RenderEmphasized:
-            style = doc::Style::italic;
-            break;
-        case InlineCommandComment::RenderKind::RenderNormal:
-        case InlineCommandComment::RenderKind::RenderAnchor:
-            break;
-        default:
-            // unknown RenderKind
-            MRDOX_UNREACHABLE();
-        }
-
-        // It looks like the clang parser does not
-        // emit nested styles, so only one inline
-        // style command can be applied per args.
-
-        doc::String s;
-        std::size_t n = 0;
-        for(unsigned i = 0; i < C->getNumArgs(); ++i)
-            n += C->getArgText(i).size();
-        s.reserve(n);
-        for(unsigned i = 0; i < C->getNumArgs(); ++i)
-            s.append(C->getArgText(i));
-
-        if(style != doc::Style::none)
-            Javadoc::append(*paragraph_, std::make_unique<
-                doc::Styled>(std::move(s), style));
-        else
-            Javadoc::append(*paragraph_, std::make_unique<
-                doc::Text>(std::move(s)));
-    }
-
-    //
-    // Block Content
-    //
-
-    void visitParagraphComment(
-        ParagraphComment const* C)
-    {
-        if(paragraph_)
-            return visitChildren(C);
         doc::Paragraph paragraph;
         Scope scope(paragraph, paragraph_);
-        visitChildren(C);
-        // VFALCO Figure out why we get empty ParagraphComment
-        if(! paragraph.empty())
+        auto const n = C->child_count();
+        if(n > 0)
+        {
+            visitChildren(C);
+        }
+    }
+}
+
+void
+JavadocVisitor::
+visitHTMLEndTagComment(
+    HTMLEndTagComment const* C)
+{
+    visitChildren(C);
+    --htmlTagNesting_;
+}
+
+void
+JavadocVisitor::
+visitInlineCommandComment(
+    InlineCommandComment const* C)
+{
+    doc::Style style(doc::Style::none);
+    switch (C->getRenderKind())
+    {
+    case InlineCommandComment::RenderKind::RenderMonospaced:
+        style = doc::Style::mono;
+        break;
+    case InlineCommandComment::RenderKind::RenderBold:
+        style = doc::Style::bold;
+        break;
+    case InlineCommandComment::RenderKind::RenderEmphasized:
+        style = doc::Style::italic;
+        break;
+    case InlineCommandComment::RenderKind::RenderNormal:
+    case InlineCommandComment::RenderKind::RenderAnchor:
+        break;
+    default:
+        // unknown RenderKind
+        MRDOX_UNREACHABLE();
+    }
+
+    // It looks like the clang parser does not
+    // emit nested styles, so only one inline
+    // style command can be applied per args.
+
+    doc::String s;
+    std::size_t n = 0;
+    for(unsigned i = 0; i < C->getNumArgs(); ++i)
+        n += C->getArgText(i).size();
+    s.reserve(n);
+    for(unsigned i = 0; i < C->getNumArgs(); ++i)
+        s.append(C->getArgText(i));
+
+    if(style != doc::Style::none)
+        Javadoc::append(*paragraph_, std::make_unique<
+            doc::Styled>(std::move(s), style));
+    else
+        Javadoc::append(*paragraph_, std::make_unique<
+            doc::Text>(std::move(s)));
+}
+
+//
+// Block Content
+//
+
+void
+JavadocVisitor::
+visitParagraphComment(
+    ParagraphComment const* C)
+{
+    if(paragraph_)
+        return visitChildren(C);
+    doc::Paragraph paragraph;
+    Scope scope(paragraph, paragraph_);
+    visitChildren(C);
+    // VFALCO Figure out why we get empty ParagraphComment
+    if(! paragraph.empty())
+        Javadoc::append(blocks_, std::make_unique<
+            doc::Paragraph>(std::move(paragraph)));
+}
+
+void
+JavadocVisitor::
+visitBlockCommandComment(
+    BlockCommandComment const* C)
+{
+    auto const* cmd = ctx_
+        .getCommentCommandTraits()
+        .getCommandInfo(C->getCommandID());
+    if(cmd == nullptr)
+    {
+        // ignore this command and the
+        // text that follows for now.
+        return;
+    }
+    if(cmd->IsBriefCommand)
+    {
+        doc::Brief brief;
+        Scope scope(brief, paragraph_);
+        visitChildren(C->getParagraph());
+        Javadoc::append(blocks_, std::make_unique<
+            doc::Brief>(std::move(brief)));
+        return;
+    }
+    if(cmd->IsReturnsCommand)
+    {
+        doc::Returns returns;
+        Scope scope(returns, paragraph_);
+        visitChildren(C->getParagraph());
+        Javadoc::append(blocks_, std::make_unique<
+            doc::Returns>(std::move(returns)));
+        return;
+    }
+    if(cmd->getID() == CommandTraits::KCI_note)
+    {
+        doc::Admonition paragraph(doc::Admonish::note);
+        Scope scope(paragraph, paragraph_);
+        visitChildren(C->getParagraph());
+        Javadoc::append(blocks_, std::make_unique<
+            doc::Admonition>(std::move(paragraph)));
+        return;
+    }
+    if(cmd->getID() == CommandTraits::KCI_warning)
+    {
+        doc::Admonition paragraph(doc::Admonish::warning);
+        Scope scope(paragraph, paragraph_);
+        visitChildren(C->getParagraph());
+        Javadoc::append(blocks_, std::make_unique<
+            doc::Admonition>(std::move(paragraph)));
+        return;
+    }
+    if(cmd->getID() == CommandTraits::KCI_par)
+    {
+        // VFALCO This is legacy compatibility
+        // for Boost libraries using @par as a
+        // section heading.
+        doc::Paragraph paragraph;
+        Scope scope(paragraph, paragraph_);
+        visitChildren(C->getParagraph());
+        if(! paragraph.children.empty())
+        {
+            // first TextComment is the heading text
+            doc::String text(std::move(
+                paragraph.children.front()->string));
+
+            // VFALCO Unfortunately clang puts at least
+            // one space in front of the text, which seems
+            // incorrect.
+            auto const s = trim(text);
+            if(s.size() != text.size())
+                text = s;
+
+            doc::Heading heading(std::move(text));
+            Javadoc::append(blocks_, std::make_unique<
+                doc::Heading>(std::move(heading)));
+
+            // remaining TextComment, if any
+            paragraph.children.erase(paragraph.children.begin());
+            if(! paragraph.children.empty())
             Javadoc::append(blocks_, std::make_unique<
                 doc::Paragraph>(std::move(paragraph)));
+        }
+        return;
     }
-
-    void
-    visitBlockCommandComment(
-        BlockCommandComment const* C)
+    if(cmd->getID() == CommandTraits::KCI_li)
     {
-        auto const* cmd = ctx_
-            .getCommentCommandTraits()
-            .getCommandInfo(C->getCommandID());
-        if(cmd == nullptr)
-        {
-            // ignore this command and the
-            // text that follows for now.
-            return;
-        }
-        if(cmd->IsBriefCommand)
-        {
-            doc::Brief brief;
-            Scope scope(brief, paragraph_);
-            visitChildren(C->getParagraph());
-            Javadoc::append(blocks_, std::make_unique<
-                doc::Brief>(std::move(brief)));
-            return;
-        }
-        if(cmd->IsReturnsCommand)
-        {
-            doc::Returns returns;
-            Scope scope(returns, paragraph_);
-            visitChildren(C->getParagraph());
-            Javadoc::append(blocks_, std::make_unique<
-                doc::Returns>(std::move(returns)));
-            return;
-        }
-        if(cmd->getID() == CommandTraits::KCI_note)
-        {
-            doc::Admonition paragraph(doc::Admonish::note);
-            Scope scope(paragraph, paragraph_);
-            visitChildren(C->getParagraph());
-            Javadoc::append(blocks_, std::make_unique<
-                doc::Admonition>(std::move(paragraph)));
-            return;
-        }
-        if(cmd->getID() == CommandTraits::KCI_warning)
-        {
-            doc::Admonition paragraph(doc::Admonish::warning);
-            Scope scope(paragraph, paragraph_);
-            visitChildren(C->getParagraph());
-            Javadoc::append(blocks_, std::make_unique<
-                doc::Admonition>(std::move(paragraph)));
-            return;
-        }
-        if(cmd->getID() == CommandTraits::KCI_par)
-        {
-            // VFALCO This is legacy compatibility
-            // for Boost libraries using @par as a
-            // section heading.
-            doc::Paragraph paragraph;
-            Scope scope(paragraph, paragraph_);
-            visitChildren(C->getParagraph());
-            if(! paragraph.children.empty())
-            {
-                // first TextComment is the heading text
-                doc::String text(std::move(
-                    paragraph.children.front()->string));
-
-                // VFALCO Unfortunately clang puts at least
-                // one space in front of the text, which seems
-                // incorrect.
-                auto const s = trim(text);
-                if(s.size() != text.size())
-                    text = s;
-
-                doc::Heading heading(std::move(text));
-                Javadoc::append(blocks_, std::make_unique<
-                    doc::Heading>(std::move(heading)));
-
-                // remaining TextComment, if any
-                paragraph.children.erase(paragraph.children.begin());
-                if(! paragraph.children.empty())
-                Javadoc::append(blocks_, std::make_unique<
-                    doc::Paragraph>(std::move(paragraph)));
-            }
-            return;
-        }
-    }
-
-    void visitParamCommandComment(
-        ParamCommandComment const* C)
-    {
-        doc::Param param;
-        if(C->hasParamName())
-            param.name = ensureUTF8(C->getParamNameAsWritten().str());
-        else
-            param.name = "@anon";
-        if(C->isDirectionExplicit())
-        {
-            switch(C->getDirection())
-            {
-            case ParamCommandComment::PassDirection::In:
-                param.direction = doc::ParamDirection::in;
-                break;
-            case ParamCommandComment::PassDirection::Out:
-                param.direction = doc::ParamDirection::out;
-                break;
-            case ParamCommandComment::PassDirection::InOut:
-                param.direction = doc::ParamDirection::inout;
-                break;
-            }
-        }
-        Scope scope(param, paragraph_);
-        //if(C->hasNonWhitespaceParagraph())
+        doc::ListItem paragraph;
+        Scope scope(paragraph, paragraph_);
         visitChildren(C->getParagraph());
         Javadoc::append(blocks_, std::make_unique<
-            doc::Param>(std::move(param)));
+            doc::ListItem>(std::move(paragraph)));
+        return;
     }
+}
 
-    void visitTParamCommandComment(
-        TParamCommandComment const* C)
+void
+JavadocVisitor::
+visitParamCommandComment(
+    ParamCommandComment const* C)
+{
+    doc::Param param;
+    if(C->hasParamName())
+        param.name = ensureUTF8(C->getParamNameAsWritten().str());
+    else
+        param.name = "@anon";
+    if(C->isDirectionExplicit())
     {
-        doc::TParam tparam;
-        if(C->hasParamName())
-            tparam.name = ensureUTF8(C->getParamNameAsWritten().str());
-        else
-            tparam.name = "@anon";
-        Scope scope(tparam, paragraph_);
-        //if(C->hasNonWhitespaceParagraph())
-        visitChildren(C->getParagraph());
-        Javadoc::append(blocks_, std::make_unique<
-            doc::TParam>(std::move(tparam)));
+        switch(C->getDirection())
+        {
+        case ParamCommandComment::PassDirection::In:
+            param.direction = doc::ParamDirection::in;
+            break;
+        case ParamCommandComment::PassDirection::Out:
+            param.direction = doc::ParamDirection::out;
+            break;
+        case ParamCommandComment::PassDirection::InOut:
+            param.direction = doc::ParamDirection::inout;
+            break;
+        }
     }
+    Scope scope(param, paragraph_);
+    //if(C->hasNonWhitespaceParagraph())
+    visitChildren(C->getParagraph());
+    Javadoc::append(blocks_, std::make_unique<
+        doc::Param>(std::move(param)));
+}
 
-    void visitVerbatimBlockComment(
-        VerbatimBlockComment const* C)
-    {
-        doc::Code code;
-        Scope scope(code, paragraph_);
-        //if(C->hasNonWhitespaceParagraph())
-        visitChildren(C);
-        Javadoc::append(blocks_, std::make_unique<
-            doc::Code>(std::move(code)));
-    }
+void
+JavadocVisitor::
+visitTParamCommandComment(
+    TParamCommandComment const* C)
+{
+    doc::TParam tparam;
+    if(C->hasParamName())
+        tparam.name = ensureUTF8(C->getParamNameAsWritten().str());
+    else
+        tparam.name = "@anon";
+    Scope scope(tparam, paragraph_);
+    //if(C->hasNonWhitespaceParagraph())
+    visitChildren(C->getParagraph());
+    Javadoc::append(blocks_, std::make_unique<
+        doc::TParam>(std::move(tparam)));
+}
 
-    void visitVerbatimLineComment(
-        VerbatimLineComment const* C)
-    {
-        // VFALCO This doesn't seem to be used
-        //        in any of my codebases, follow up
-    }
+void
+JavadocVisitor::
+visitVerbatimBlockComment(
+    VerbatimBlockComment const* C)
+{
+    doc::Code code;
+    Scope scope(code, paragraph_);
+    //if(C->hasNonWhitespaceParagraph())
+    visitChildren(C);
+    Javadoc::append(blocks_, std::make_unique<
+        doc::Code>(std::move(code)));
+}
 
-    void visitVerbatimBlockLineComment(
-        VerbatimBlockLineComment const* C)
-    {
-        Javadoc::append(*paragraph_, std::make_unique<
-            doc::Text>(C->getText().str()));
-    }
+void
+JavadocVisitor::
+visitVerbatimLineComment(
+    VerbatimLineComment const* C)
+{
+    // VFALCO This doesn't seem to be used
+    //        in any of my codebases, follow up
+}
 
-private:
-    FullComment const* FC_;
-    ASTContext const& ctx_;
-    doc::List<doc::Block> blocks_;
-    doc::List<doc::Param> params_;
-    doc::Paragraph* paragraph_ = nullptr;
-};
+void
+JavadocVisitor::
+visitVerbatimBlockLineComment(
+    VerbatimBlockLineComment const* C)
+{
+    Javadoc::append(*paragraph_, std::make_unique<
+        doc::Text>(C->getText().str()));
+}
 
 //------------------------------------------------
 

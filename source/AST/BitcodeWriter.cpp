@@ -251,10 +251,11 @@ RecordIDNameMap = []()
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
         {INFO_PART_PARENTS, {"InfoParents", &SymbolIDsAbbrev}},
+        {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
+        {JAVADOC_NODE_HREF, {"JavadocNodeHref", &StringAbbrev}},
         {JAVADOC_NODE_KIND, {"JavadocNodeKind", &Integer32Abbrev}},
         {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
         {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &Integer32Abbrev}},
-        {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {NAMESPACE_MEMBERS, {"NamespaceMembers", &SymbolIDsAbbrev}},
         {NAMESPACE_SPECIALIZATIONS, {"NamespaceSpecializations", &SymbolIDsAbbrev}},
@@ -329,7 +330,7 @@ RecordsByBlock{
         {}},
     // doc::Node
     {BI_JAVADOC_NODE_BLOCK_ID,
-        {JAVADOC_NODE_KIND, JAVADOC_NODE_STRING, JAVADOC_NODE_STYLE,
+        {JAVADOC_NODE_KIND, JAVADOC_NODE_HREF, JAVADOC_NODE_STRING, JAVADOC_NODE_STYLE,
          JAVADOC_NODE_ADMONISH, JAVADOC_PARAM_DIRECTION}},
     // NamespaceInfo
     {BI_NAMESPACE_BLOCK_ID,
@@ -859,6 +860,9 @@ emitBlock(
             if constexpr(! std::is_void_v<T>)
             {
                 auto const& J = static_cast<T const&>(I);
+
+                if constexpr(std::derived_from<T, doc::Link>)
+                    emitRecord(J.href, JAVADOC_NODE_HREF);
 
                 if constexpr(
                         std::derived_from<T, doc::Heading> ||

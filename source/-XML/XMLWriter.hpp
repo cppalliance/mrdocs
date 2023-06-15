@@ -84,15 +84,18 @@ private:
     template<class T>
     void writeNodes(doc::List<T> const& list);
     void writeNode(doc::Node const& node);
-    void writeBrief(doc::Paragraph const& node);
-    void writeText(doc::Text const& node);
-    void writeStyledText(doc::Styled const& node);
-    void writeHeading(doc::Heading const& node);
-    void writeParagraph(doc::Paragraph const& node, llvm::StringRef tag = "");
+
     void writeAdmonition(doc::Admonition const& node);
+    void writeBrief(doc::Paragraph const& node);
     void writeCode(doc::Code const& node);
-    void writeReturns(doc::Returns const& node);
+    void writeHeading(doc::Heading const& node);
+    void writeLink(doc::Link const& node);
+    void writeListItem(doc::ListItem const& node);
+    void writeParagraph(doc::Paragraph const& node, llvm::StringRef tag = "");
     void writeJParam(doc::Param const& node);
+    void writeReturns(doc::Returns const& node);
+    void writeStyledText(doc::Styled const& node);
+    void writeText(doc::Text const& node);
     void writeTParam(doc::TParam const& node);
 };
 
