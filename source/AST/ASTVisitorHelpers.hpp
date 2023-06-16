@@ -21,8 +21,6 @@
 namespace clang {
 namespace mrdox {
 
-namespace {
-
 AccessKind
 convertToAccessKind(
     AccessSpecifier spec)
@@ -240,8 +238,6 @@ void insertChild(RecordInfo& I, Args&&... args)
         MRDOX_UNREACHABLE();
     }
 }
-
-} // (anon)
 
 } // mrdox
 } // clang
