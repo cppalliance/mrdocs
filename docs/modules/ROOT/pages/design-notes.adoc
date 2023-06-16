@@ -39,3 +39,12 @@ We probably don't want to store any javadocs for namespaces either.
 The AST visitor and metadata all use forward slashes to represent file
 pathnames, even on Windows. This is so the generated reference documentation
 does not vary based on the platform.
+
+== Exceptions
+
+In functions which cannot return an error, such as work submitted to a thread
+pool or in a constructor, the implementation usually throws `Error`. These
+are caught and reported, and the process exits gracefully. If any exception
+is thrown which is not derived from `Error`, then it should not be caught.
+The uncaught exception handler should print a stack trace and exit the process
+immediately.

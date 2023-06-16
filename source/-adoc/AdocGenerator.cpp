@@ -13,8 +13,8 @@
 #include "Builder.hpp"
 #include "SinglePageVisitor.hpp"
 #include "Support/SafeNames.hpp"
-#include <mrdox/Support/Thread.hpp>
 #include <mrdox/Support/Path.hpp>
+#include <mrdox/Support/Report.hpp>
 #include <optional>
 #include <vector>
 
@@ -81,7 +81,12 @@ buildOne(
 
     SinglePageVisitor visitor(*ex, corpus, os);
     visitor(corpus.globalNamespace());
-    ex->wait();
+    auto errors = ex->wait();
+    if(! errors.empty())
+    {
+        reportErrors(errors);
+        return Error("one or more errors occurred");
+    }
     return Error::success();
 }
 

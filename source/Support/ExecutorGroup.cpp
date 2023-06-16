@@ -11,6 +11,7 @@
 #include <mrdox/Support/ExecutorGroup.hpp>
 #include <mrdox/Support/unlock_guard.hpp>
 #include <condition_variable>
+#include <unordered_set>
 
 namespace clang {
 namespace mrdox {
@@ -21,6 +22,7 @@ struct ExecutorGroupBase::
     ThreadPool& threadPool;
     std::mutex mutex;
     std::condition_variable cv;
+    std::unordered_set<Error> errors;
     std::size_t busy = 0;
 
     explicit
@@ -107,13 +109,28 @@ run(std::unique_lock<std::mutex> lock)
                 any_callable<void(void*)> work(
                     std::move(work_.front()));
                 work_.pop_front();
-                unlock_guard unlock(impl_->mutex);
-                work(scope.get());
+                {
+                    lock.unlock();
+                    try
+                    {
+                        work(scope.get());
+                        lock.lock();
+                    }
+                    catch(Error const& err)
+                    {
+                        lock.lock();
+                        impl_->errors.emplace(err);
+                    }
+                    // Any exception which is not
+                    // derived from Error should
+                    // be reported and terminate
+                    // the process immediately.
+                }
             }
         });
 }
 
-void
+std::vector<Error>
 ExecutorGroupBase::
 wait() noexcept
 {
@@ -123,6 +140,12 @@ wait() noexcept
         {
             return work_.empty() && impl_->busy == 0;
         });
+    std::vector<Error> errors;
+    errors.reserve(impl_->errors.size());
+    for(auto& err : impl_->errors)
+        errors.emplace_back(std::move(err));
+    impl_->errors.clear();
+    return errors;
 }
 
 } // mrdox

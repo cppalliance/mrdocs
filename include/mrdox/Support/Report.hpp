@@ -80,6 +80,14 @@ reportError(
         err.message()));
 }
 
+template<class Range>
+void
+reportErrors(Range const& errors)
+{
+    for(auto const& err : errors)
+        reportError(err.message());
+}
+
 /** Report a warning to the console.
 
     @param text The message contents. A newline

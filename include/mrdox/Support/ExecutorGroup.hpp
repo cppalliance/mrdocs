@@ -13,6 +13,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/any_callable.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
 #include <deque>
 #include <memory>
@@ -53,10 +54,16 @@ public:
     ExecutorGroupBase(ExecutorGroupBase&&) noexcept;
 
     /** Block until all work has completed.
+
+        @return Zero or more errors which were
+        thrown from submitted work.
     */
-    void
+    [[nodiscard]]
+    std::vector<Error>
     wait() noexcept;
 };
+
+//------------------------------------------------
 
 /** A set of execution agents for performing concurrent work.
 */

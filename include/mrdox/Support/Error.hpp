@@ -121,6 +121,14 @@ public:
         return text_;
     }
 
+    /** Return true if this equals other.
+    */
+    bool
+    operator==(Error const& other) const noexcept
+    {
+        return text_ == other.text_;
+    }
+
     /** Return a null-terminated error string.
     */
     char const*
@@ -146,6 +154,16 @@ success() noexcept
 
 } // mrdox
 } // clang
+
+template<>
+struct std::hash<::clang::mrdox::Error>
+{
+    std::size_t operator()(
+        ::clang::mrdox::Error const& err) const noexcept
+    {
+        return std::hash<std::string_view>()(err.message());
+    }
+};
 
 //------------------------------------------------
 
