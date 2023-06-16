@@ -139,6 +139,14 @@ reportInfo(
         std::forward<Args>(args)...));
 }
 
+/** Report an unhandled exception
+*/
+MRDOX_DECL
+[[noreturn]]
+void
+reportUnhandledException(
+    std::exception const& ex);
+
 } // mrdox
 } // clang
 

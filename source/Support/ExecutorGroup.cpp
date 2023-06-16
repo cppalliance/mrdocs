@@ -9,6 +9,7 @@
 //
 
 #include <mrdox/Support/ExecutorGroup.hpp>
+#include <mrdox/Support/Report.hpp>
 #include <mrdox/Support/unlock_guard.hpp>
 #include <condition_variable>
 #include <unordered_set>
@@ -121,10 +122,14 @@ run(std::unique_lock<std::mutex> lock)
                         lock.lock();
                         impl_->errors.emplace(err);
                     }
-                    // Any exception which is not
-                    // derived from Error should
-                    // be reported and terminate
-                    // the process immediately.
+                    catch(std::exception const& ex)
+                    {
+                        // Any exception which is not
+                        // derived from Error should
+                        // be reported and terminate
+                        // the process immediately.
+                        reportUnhandledException(ex);
+                    }
                 }
             }
         });

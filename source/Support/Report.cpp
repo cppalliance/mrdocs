@@ -11,6 +11,8 @@
 #include <mrdox/Support/Report.hpp>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/Signals.h>
+#include <cstdlib>
 #include <mutex>
 
 namespace clang {
@@ -40,6 +42,19 @@ reportInfo(
 {
     std::lock_guard<llvm::sys::Mutex> lock(report_mutex_);
     llvm::errs() << text << '\n';
+}
+
+void
+reportUnhandledException(
+    std::exception const& ex)
+{
+    namespace sys = llvm::sys;
+
+    std::lock_guard<llvm::sys::Mutex> lock(report_mutex_);
+    llvm::errs() <<
+        "Unhandled exception: " << ex.what() << '\n';
+    sys::PrintStackTrace(llvm::errs());
+    std::exit(EXIT_FAILURE);
 }
 
 } // mrdox

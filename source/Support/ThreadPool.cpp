@@ -9,7 +9,9 @@
 //
 
 #include "Support/Debug.hpp"
+#include <mrdox/Support/Report.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
+#include <llvm/Support/Signals.h>
 #include <llvm/Support/ThreadPool.h>
 #include <mutex>
 #include <unordered_set>
@@ -74,7 +76,18 @@ post(
     impl_->async(
         [sp]
         {
-            (*sp)();
+            try
+            {
+                (*sp)();
+            }
+            catch(std::exception const& ex)
+            {
+                // Any exception which is not
+                // derived from Error should
+                // be reported and terminate
+                // the process immediately.
+                reportUnhandledException(ex);
+            }
         });
 }
 
@@ -153,10 +166,14 @@ post(
                 std::lock_guard<std::mutex> lock(impl_->mutex);
                 impl_->errors.emplace(std::move(err));
             }
-            // Any exception which is not
-            // derived from Error should
-            // be reported and terminate
-            // the process immediately.
+            catch(std::exception const& ex)
+            {
+                // Any exception which is not
+                // derived from Error should
+                // be reported and terminate
+                // the process immediately.
+                reportUnhandledException(ex);
+            }
         });
 }
 

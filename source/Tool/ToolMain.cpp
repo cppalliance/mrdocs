@@ -40,14 +40,17 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Process.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/PrettyStackTrace.h>
 #include <llvm/Support/Signals.h>
 #include <stdlib.h>
+
+extern int main(int argc, char const** argv);
 
 namespace clang {
 namespace mrdox {
 
-extern Error DoGenerateAction();
 extern int DoTestAction();
+extern Error DoGenerateAction();
 
 void
 print_version(llvm::raw_ostream& os)
@@ -58,19 +61,16 @@ print_version(llvm::raw_ostream& os)
        << "\n    built with LLVM " << LLVM_VERSION_STRING;
 }
 
-} // mrdox
-} // clang
-
-int main(int argc, char const** argv)
+int mrdox_main(int argc, char const** argv)
 {
-    using namespace clang::mrdox;
-    using Process = llvm::sys::Process;
     namespace fs = llvm::sys::fs;
+    using Process = llvm::sys::Process;
 
     // VFALCO this heap checking is too strong for
     // a clang tool's model of what is actually a leak.
     // debugEnableHeapChecking();
 
+    llvm::EnablePrettyStackTrace();
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
     llvm::cl::SetVersionPrinter(&print_version);
 
@@ -154,4 +154,24 @@ int main(int argc, char const** argv)
 
     // Test
     return DoTestAction();
+}
+
+} // mrdox
+} // clang
+
+int main(int argc, char const** argv)
+{
+    try
+    {
+        return clang::mrdox::mrdox_main(argc, argv);
+    }
+    catch(std::exception const& ex)
+    {
+        // Any exception which is not
+        // derived from Error should
+        // be reported and terminate
+        // the process immediately.
+        clang::mrdox::reportUnhandledException(ex);
+        return EXIT_FAILURE;
+    }
 }
