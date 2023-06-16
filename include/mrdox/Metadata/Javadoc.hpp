@@ -175,11 +175,8 @@ struct Styled : Text
 };
 
 /** A hyperlink.
-
-    Note that the text of the hyperlink can be
-    block content.
 */
-struct Link : Node
+struct Link : Text
 {
     String href;
 
@@ -187,8 +184,9 @@ struct Link : Node
 
     explicit
     Link(
+        String string_ = String(),
         String href_ = String()) noexcept
-        : Node(Kind::link)
+        : Text(std::move(string_), Kind::link)
         , href(std::move(href_))
     {
     }
@@ -198,15 +196,6 @@ struct Link : Node
     {
         return kind == other.kind &&
             *this == static_cast<const Link&>(other);
-    }
-
-protected:
-    Link(
-        String href_,
-        Kind kind_)
-        : Node(kind_)
-        , href(std::move(href_))
-    {
     }
 };
 
@@ -485,6 +474,8 @@ visit(
         return f.template operator()<Code>(std::forward<Args>(args)...);
     case Kind::heading:
         return f.template operator()<Heading>(std::forward<Args>(args)...);
+    case Kind::link:
+        return f.template operator()<Link>(std::forward<Args>(args)...);
     case Kind::list_item:
         return f.template operator()<ListItem>(std::forward<Args>(args)...);
     case Kind::paragraph:

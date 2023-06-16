@@ -426,7 +426,7 @@ parseRawComment(
     {
         RC->setAttached();
         javadoc = std::make_unique<Javadoc>(
-            parseJavadoc(RC, D));
+            parseJavadoc(RC, D, config_));
     }
     else
     {

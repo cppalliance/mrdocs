@@ -866,7 +866,8 @@ emitBlock(
 
                 if constexpr(
                         std::derived_from<T, doc::Heading> ||
-                        std::derived_from<T, doc::Text>)
+                        std::derived_from<T, doc::Text> ||
+                        std::derived_from<T, doc::Link>)
                     emitRecord(J.string, JAVADOC_NODE_STRING);
 
                 if constexpr(std::derived_from<T, doc::Admonition>)

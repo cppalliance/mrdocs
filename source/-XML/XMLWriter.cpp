@@ -648,7 +648,7 @@ XMLWriter::
 writeLink(
     doc::Link const& node)
 {
-    tags_.write("link", {}, {
+    tags_.write("link", node.string, {
         { "href", node.href }
         });
 }

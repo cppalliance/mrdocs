@@ -11,11 +11,12 @@
 
 #include "ParseJavadoc.hpp"
 #include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdox/Support/Path.hpp>
+#include <mrdox/Support/Report.hpp>
 #include <mrdox/Support/String.hpp>
 #include <clang/AST/CommentCommandTraits.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/RawCommentList.h>
-
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable: 5054) // C5054: operator '+': deprecated between enumerations of different types
@@ -25,7 +26,7 @@
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
-
+#include <clang/Basic/SourceManager.h>
 #include <llvm/Support/JSON.h>
 
 /*
@@ -97,6 +98,48 @@ using namespace comments;
 
 //------------------------------------------------
 
+class JavadocVisitor
+    : public ConstCommentVisitor<JavadocVisitor>
+{
+    Config const& config_;
+    ASTContext const& ctx_;
+    SourceManager const& sm_;
+    FullComment const* FC_;
+    doc::List<doc::Block> blocks_;
+    doc::List<doc::Param> params_;
+    doc::Paragraph* paragraph_ = nullptr;
+    std::size_t htmlTagNesting_ = 0;
+    Comment::child_iterator it_;
+    Comment::child_iterator end_;
+
+    static std::string& ensureUTF8(std::string&&);
+    void visitChildren(Comment const* C);
+
+public:
+    JavadocVisitor(
+        RawComment const*, Decl const*, Config const&);
+    Javadoc build();
+
+    void visitComment(Comment const* C);
+
+    // inline content
+    void visitTextComment(TextComment const* C);
+    void visitHTMLStartTagComment(HTMLStartTagComment const* C);
+    void visitHTMLEndTagComment(HTMLEndTagComment const* C);
+    void visitInlineCommandComment(InlineCommandComment const* C);
+
+    // block content
+    void visitParagraphComment(ParagraphComment const* C);
+    void visitBlockCommandComment(BlockCommandComment const* C);
+    void visitParamCommandComment(ParamCommandComment const* C);
+    void visitTParamCommandComment(TParamCommandComment const* C);
+    void visitVerbatimBlockComment(VerbatimBlockComment const* C);
+    void visitVerbatimLineComment(VerbatimLineComment const* C);
+    void visitVerbatimBlockLineComment(VerbatimBlockLineComment const* C);
+};
+
+//------------------------------------------------
+
 template<class U, class T>
 struct Scope
 {
@@ -124,65 +167,47 @@ Scope(U&, T*&) -> Scope<T, T>;
 
 //------------------------------------------------
 
-class JavadocVisitor
-    : public ConstCommentVisitor<JavadocVisitor>
+std::string&
+JavadocVisitor::
+ensureUTF8(
+    std::string&& s)
 {
-    FullComment const* FC_;
-    ASTContext const& ctx_;
-    doc::List<doc::Block> blocks_;
-    doc::List<doc::Param> params_;
-    doc::Paragraph* paragraph_ = nullptr;
-    std::size_t htmlTagNesting_ = 0;
+    if (!llvm::json::isUTF8(s))
+        s = llvm::json::fixUTF8(s);
+    return s;
+}
 
-    static
-    std::string&
-    ensureUTF8(
-        std::string&& s)
+void
+JavadocVisitor::
+visitChildren(
+    Comment const* C)
+{
+    auto const it0 = it_;
+    auto const end0 = end_;
+    it_ = C->child_begin();
+    end_ = C->child_end();
+    while(it_ != end_)
     {
-        if (!llvm::json::isUTF8(s))
-            s = llvm::json::fixUTF8(s);
-        return s;
+        visit(*it_);
+        ++it_; // must happen after
     }
-
-    void
-    visitChildren(
-        Comment const* C)
-    {
-        for(auto const* it = C->child_begin();
-                it != C->child_end(); ++it)
-            visit(*it);
-    }
-
-public:
-    JavadocVisitor(
-        RawComment const* RC,
-        Decl const* D)
-        : FC_(RC->parse(D->getASTContext(), nullptr, D))
-        , ctx_(D->getASTContext())
-    {
-    }
-
-    Javadoc build();
-    void visitComment(Comment const* C);
-
-    // inline content
-    void visitTextComment(TextComment const* C);
-    void visitHTMLStartTagComment(HTMLStartTagComment const* C);
-    void visitHTMLEndTagComment(HTMLEndTagComment const* C);
-    void visitInlineCommandComment(InlineCommandComment const* C);
-
-    // block content
-    void visitParagraphComment(ParagraphComment const* C);
-    void visitBlockCommandComment(BlockCommandComment const* C);
-    void visitParamCommandComment(ParamCommandComment const* C);
-    void visitTParamCommandComment(TParamCommandComment const* C);
-    void visitVerbatimBlockComment(VerbatimBlockComment const* C);
-    void visitVerbatimLineComment(VerbatimLineComment const* C);
-    void visitVerbatimBlockLineComment(VerbatimBlockLineComment const* C);
-};
+    it_ = it0;
+    end_ = end0;
+}
 
 //------------------------------------------------
 
+JavadocVisitor::
+JavadocVisitor(
+    RawComment const* RC,
+    Decl const* D,
+    Config const& config)
+    : config_(config)
+    , ctx_(D->getASTContext())
+    , FC_(RC->parse(D->getASTContext(), nullptr, D))
+    , sm_(ctx_.getSourceManager())
+{
+}
 Javadoc
 JavadocVisitor::
 build()
@@ -239,18 +264,58 @@ JavadocVisitor::
 visitHTMLStartTagComment(
     HTMLStartTagComment const* C)
 {
-    ++htmlTagNesting_;
-    llvm::StringRef s = C->getTagName();
-    if(s == "a")
+    MRDOX_ASSERT(C->child_begin() == C->child_end());
+    auto const tag = C->getTagName();
+    if(tag == "a")
     {
-        doc::Paragraph paragraph;
-        Scope scope(paragraph, paragraph_);
-        auto const n = C->child_count();
-        if(n > 0)
+        PresumedLoc const loc = sm_.getPresumedLoc(C->getBeginLoc());
+
+        if(end_ - it_ < 3)
         {
-            visitChildren(C);
+            // error
+            reportError(
+                "warning: invalid HTML <a> tag at {}({})",
+                files::makePosixStyle(loc.getFilename()),
+                loc.getLine());
+            return;
         }
+        if(it_[1]->getCommentKind() != Comment::TextCommentKind)
+        {
+            // error
+            return;
+        }
+        if(it_[2]->getCommentKind() != Comment::HTMLEndTagCommentKind)
+        {
+            // error
+            return;
+        }
+        auto const& cText =
+            *static_cast<TextComment const*>(it_[1]);
+        auto const& cEndTag =
+            *static_cast<HTMLEndTagComment const*>(it_[2]);
+        if(cEndTag.getTagName() != "a")
+        {
+            // error
+            return;
+        }
+        std::string text;
+        std::string href;
+        text = cText.getText();
+        for(std::size_t i = 0; i < C->getNumAttrs(); ++i)
+        {
+            auto const& attr = C->getAttr(i);
+            if(attr.Name == "href")
+            {
+                href = attr.Value;
+                break;
+            }
+        }
+        Javadoc::append(*paragraph_, std::make_unique<doc::Link>(
+            ensureUTF8(std::move(text)), ensureUTF8(std::move(href))));
+
+        it_ += 2; // bit of a hack
     }
+    --htmlTagNesting_;
 }
 
 void
@@ -258,7 +323,7 @@ JavadocVisitor::
 visitHTMLEndTagComment(
     HTMLEndTagComment const* C)
 {
-    visitChildren(C);
+    MRDOX_ASSERT(C->child_begin() == C->child_end());
     --htmlTagNesting_;
 }
 
@@ -662,9 +727,10 @@ initCustomCommentCommands(ASTContext& context)
 Javadoc
 parseJavadoc(
     RawComment const* RC,
-    Decl const* D)
+    Decl const* D,
+    Config const& config)
 {
-    return JavadocVisitor(RC, D).build();
+    return JavadocVisitor(RC, D, config).build();
 }
 
 } // mrdox

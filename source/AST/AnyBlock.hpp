@@ -169,6 +169,7 @@ public:
                 return Error::success();
             case doc::Kind::text:
             case doc::Kind::styled:
+            case doc::Kind::link:
                 static_cast<doc::Text*>(
                     node)->string = Blob.str();
                 return Error::success();

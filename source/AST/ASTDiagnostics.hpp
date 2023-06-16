@@ -13,33 +13,16 @@
 #define MRDOX_TOOL_AST_PARSEJAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Config.hpp>
-#include <mrdox/Metadata/Javadoc.hpp>
 
 namespace clang {
-
-class Decl;
-class ASTContext;
-class RawComment;
-
 namespace mrdox {
 
-/** Initialize clang to recognize our custom comments.
-
-    Safe to be called more than once, but
-    not concurrently.
-*/
-void
-initCustomCommentCommands(
-    ASTContext& ctx);
-
-/** Return a complete javadoc object for a raw comment.
-*/
-Javadoc
-parseJavadoc(
-    RawComment const* RC,
-    Decl const* D,
-    Config const& config);
+class ASTDiagnostics
+{
+public:
+    void
+    warning();
+};
 
 } // mrdox
 } // clang

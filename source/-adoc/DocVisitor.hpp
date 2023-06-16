@@ -67,173 +67,226 @@ class DocVisitor
     std::back_insert_iterator<std::string> ins_;
 
 public:
-    explicit
-    DocVisitor(
-        std::string& dest) noexcept
-        : dest_(dest)
-        , ins_(std::back_inserter(dest_))
-    {
-    }
+    explicit DocVisitor(std::string& dest) noexcept;
 
-    void operator()(
-        doc::List<doc::Block> const& list)
-    {
-        for(auto const& block : list)
-            doc::visit(*block, *this);
-    }
+    void operator()(doc::List<doc::Block> const& list);
 
-    void operator()(doc::Admonition const& I)
-    {
-        //dest_ += I.string;
-    }
+    void operator()(doc::Admonition const& I);
+    void operator()(doc::Code const& I);
+    void operator()(doc::Heading const& I);
+    void operator()(doc::Paragraph const& I);
+    void operator()(doc::Link const& I);
+    void operator()(doc::ListItem const& I);
+    void operator()(doc::Param const& I);
+    void operator()(doc::Returns const& I);
+    void operator()(doc::Text const& I);
+    void operator()(doc::Styled const& I);
+    void operator()(doc::TParam const& I);
 
-    void operator()(doc::Code const& I)
-    {
-        auto const leftMargin = measureLeftMargin(I.children);
-        dest_ +=
-            "[,cpp]\n"
-            "----\n";
-        for(auto const& it : RangeFor(I.children))
-        {
-            doc::visit(*it.value,
-                [&]<class T>(T const& text)
-                {
-                    if constexpr(std::is_same_v<T, doc::Text>)
-                    {
-                        if(! text.string.empty())
-                        {
-                            std::string_view s = text.string;
-                            s.remove_prefix(leftMargin);
-                            dest_.append(s);
-                        }
-                        dest_.push_back('\n');
-                    }
-                    else
-                    {
-                        MRDOX_UNREACHABLE();
-                    }
-                });
-        }
-        dest_ += "----\n";
-    }
-
-    void operator()(doc::Heading const& I)
-    {
-        fmt::format_to(ins_, "=== {}\n", I.string);
-    }
-
-    //void operator()(doc::Brief const& I)
-    void operator()(doc::Paragraph const& I)
-    {
-        for(auto const& it : RangeFor(I.children))
-        {
-            auto const n = dest_.size();
-            doc::visit(*it.value, *this);
-            // detect empty text blocks
-            if(! it.last && dest_.size() > n)
-            {
-                // wrap past 80 cols
-                if(dest_.size() < 80)
-                    dest_.push_back(' ');
-                else
-                   dest_.append("\n");
-            }
-        }
-        dest_.push_back('\n');
-    }
-
-    void operator()(doc::Link const& I)
-    {
-        //dest_ += I.string;
-    }
-
-    void operator()(doc::ListItem const& I)
-    {
-        dest_.append("* ");
-        for(auto const& it : RangeFor(I.children))
-        {
-            auto const n = dest_.size();
-            doc::visit(*it.value, *this);
-            // detect empty text blocks
-            if(! it.last && dest_.size() > n)
-            {
-                // wrap past 80 cols
-                if(dest_.size() < 80)
-                    dest_.push_back(' ');
-                else
-                   dest_.append("\n");
-            }
-        }
-        dest_.push_back('\n');
-    }
-
-    void operator()(doc::Param const& I)
-    {
-        //dest_ += I.string;
-    }
-
-    void operator()(doc::Returns const& I)
-    {
-        //dest_ += I.string;
-    }
-
-    void operator()(doc::Text const& I)
-    {
-        // Asciidoc text must not have leading 
-        // else they can be rendered up as code.
-        std::string_view s = trim(I.string);
-        dest_.append(s);
-    }
-
-    void operator()(doc::Styled const& I)
-    {
-        // VFALCO We need to apply Asciidoc escaping
-        // depending on the contents of the string.
-        std::string_view s = trim(I.string);
-        switch(I.style)
-        {
-        case doc::Style::none:
-            dest_.append(s);
-            break;
-        case doc::Style::bold:
-            fmt::format_to(std::back_inserter(dest_), "*{}*", s);
-            break;
-        case doc::Style::mono:
-            fmt::format_to(std::back_inserter(dest_), "`{}`", s);
-            break;
-        case doc::Style::italic:
-            fmt::format_to(std::back_inserter(dest_), "_{}_", s);
-            break;
-        default:
-            MRDOX_UNREACHABLE();
-        }
-    }
-
-    void operator()(doc::TParam const& I)
-    {
-        //dest_ += I.string;
-    }
-
-    std::size_t
-    measureLeftMargin(
-        doc::List<doc::Text> const& list)
-    {
-        if(list.empty())
-            return 0;
-        std::size_t n = std::size_t(-1);
-        for(auto& text : list)
-        {
-            if(trim(text->string).empty())
-                continue;
-            auto const space =
-                text->string.size() - ltrim(text->string).size();
-            if( n > space)
-                n = space;
-        }
-        return n;
-    }
-
+    std::size_t measureLeftMargin(
+        doc::List<doc::Text> const& list);
 };
+
+DocVisitor::
+DocVisitor(
+    std::string& dest) noexcept
+    : dest_(dest)
+    , ins_(std::back_inserter(dest_))
+{
+}
+
+void
+DocVisitor::
+operator()(
+    doc::List<doc::Block> const& list)
+{
+    for(auto const& block : list)
+        doc::visit(*block, *this);
+}
+
+void
+DocVisitor::
+operator()(
+    doc::Admonition const& I)
+{
+    //dest_ += I.string;
+}
+
+void
+DocVisitor::
+operator()(
+    doc::Code const& I)
+{
+    auto const leftMargin = measureLeftMargin(I.children);
+    dest_ +=
+        "[,cpp]\n"
+        "----\n";
+    for(auto const& it : RangeFor(I.children))
+    {
+        doc::visit(*it.value,
+            [&]<class T>(T const& text)
+            {
+                if constexpr(std::is_same_v<T, doc::Text>)
+                {
+                    if(! text.string.empty())
+                    {
+                        std::string_view s = text.string;
+                        s.remove_prefix(leftMargin);
+                        dest_.append(s);
+                    }
+                    dest_.push_back('\n');
+                }
+                else
+                {
+                    MRDOX_UNREACHABLE();
+                }
+            });
+    }
+    dest_ += "----\n";
+}
+
+void
+DocVisitor::
+operator()(
+    doc::Heading const& I)
+{
+    fmt::format_to(ins_, "=== {}\n", I.string);
+}
+
+//void operator()(doc::Brief const& I)
+void
+DocVisitor::
+operator()(
+    doc::Paragraph const& I)
+{
+    for(auto const& it : RangeFor(I.children))
+    {
+        auto const n = dest_.size();
+        doc::visit(*it.value, *this);
+        // detect empty text blocks
+        if(! it.last && dest_.size() > n)
+        {
+            // wrap past 80 cols
+            if(dest_.size() < 80)
+                dest_.push_back(' ');
+            else
+                dest_.append("\n");
+        }
+    }
+    dest_.push_back('\n');
+}
+
+void
+DocVisitor::
+operator()(
+    doc::Link const& I)
+{
+    dest_.append("link:");
+    dest_.append(I.href);
+    dest_.push_back('[');
+    dest_.append(I.string);
+    dest_.push_back(']');
+}
+
+void
+DocVisitor::
+operator()(
+    doc::ListItem const& I)
+{
+    dest_.append("* ");
+    for(auto const& it : RangeFor(I.children))
+    {
+        auto const n = dest_.size();
+        doc::visit(*it.value, *this);
+        // detect empty text blocks
+        if(! it.last && dest_.size() > n)
+        {
+            // wrap past 80 cols
+            if(dest_.size() < 80)
+                dest_.push_back(' ');
+            else
+                dest_.append("\n");
+        }
+    }
+    dest_.push_back('\n');
+}
+
+void
+DocVisitor::
+operator()(doc::Param const& I)
+{
+    //dest_ += I.string;
+}
+
+void
+DocVisitor::
+operator()(doc::Returns const& I)
+{
+    //dest_ += I.string;
+}
+
+void
+DocVisitor::
+operator()(doc::Text const& I)
+{
+    // Asciidoc text must not have leading 
+    // else they can be rendered up as code.
+    std::string_view s = trim(I.string);
+    dest_.append(s);
+}
+
+void
+DocVisitor::
+operator()(doc::Styled const& I)
+{
+    // VFALCO We need to apply Asciidoc escaping
+    // depending on the contents of the string.
+    std::string_view s = trim(I.string);
+    switch(I.style)
+    {
+    case doc::Style::none:
+        dest_.append(s);
+        break;
+    case doc::Style::bold:
+        fmt::format_to(std::back_inserter(dest_), "*{}*", s);
+        break;
+    case doc::Style::mono:
+        fmt::format_to(std::back_inserter(dest_), "`{}`", s);
+        break;
+    case doc::Style::italic:
+        fmt::format_to(std::back_inserter(dest_), "_{}_", s);
+        break;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+void
+DocVisitor::
+operator()(doc::TParam const& I)
+{
+    //dest_ += I.string;
+}
+
+std::size_t
+DocVisitor::
+measureLeftMargin(
+    doc::List<doc::Text> const& list)
+{
+    if(list.empty())
+        return 0;
+    std::size_t n = std::size_t(-1);
+    for(auto& text : list)
+    {
+        if(trim(text->string).empty())
+            continue;
+        auto const space =
+            text->string.size() - ltrim(text->string).size();
+        if( n > space)
+            n = space;
+    }
+    return n;
+}
 
 } // adoc
 } // mrdox
