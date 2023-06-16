@@ -1,8 +1,10 @@
 /.idea
 /.vs
 /.vscode
+/CMakePresets.json
 /CMakeSettings.json
 /build
+/local
 /temp
 /test
 /test-files/py
