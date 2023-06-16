@@ -12,7 +12,7 @@ cd llvm-project
 git checkout 731264b0c2af7aa46bd39625202a99e06cfccff9
 cmake -S llvm -B build -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_BUILD_TYPE=Release -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=/path/to/llvm+clang
 cd build
-cmake --build . -j <threads>
+cmake --build . -j <threads> --config Release
 cmake --install .
 ----
 
