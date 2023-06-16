@@ -180,7 +180,7 @@ build(
             corpus->insert(std::move(I));
         });
     if(! errors.empty())
-        return reportErrors(errors);
+        return Error(errors);
 
     if(corpus->config.verboseOutput)
         llvm::outs() << "Collected " << corpus->InfoMap.size() << " symbols.\n";

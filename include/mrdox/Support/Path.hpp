@@ -200,6 +200,13 @@ Error
 requireDirectory(
     std::string_view pathName);
 
+/** Return the relevant suffix of a source file path.
+*/
+MRDOX_DECL
+std::string_view
+getSourceFilename(
+    std::string_view pathName);
+
 } // files
 
 } // mrdox

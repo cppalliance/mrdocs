@@ -282,6 +282,30 @@ requireDirectory(
     return Error::success();
 }
 
+std::string_view
+getSourceFilename(
+    std::string_view pathName)
+{
+    namespace path = llvm::sys::path;
+    auto const begin = path::rend(pathName);
+    auto it = path::rbegin(pathName);
+    auto prev = it;
+    while(it != begin)
+    {
+        if(*it == "source")
+        {
+            return pathName.substr(prev - begin);
+        }
+        if(*it == "include")
+        {
+            return pathName.substr(prev - begin);
+        }
+        prev = it;
+        ++it;
+    }
+    return pathName;
+}
+
 } // files
 
 } // mrdox

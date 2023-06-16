@@ -13,7 +13,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
-#include <fmt/format.h>
 #include <string_view>
 #include <utility>
 
@@ -78,22 +77,6 @@ reportError(
         "Could not {} because {}",
         fmt::format(fs, std::forward<Args>(args)...),
         err.message()));
-}
-
-template<class Range>
-Error
-reportErrors(Range const& errors)
-{
-    MRDOX_ASSERT(std::begin(errors) != std::end(errors));
-    std::size_t n = 0;
-    for(auto const& err : errors)
-    {
-        ++n;
-        reportError(err.message());
-    }
-    if(n > 1)
-        return Error("{} errors occurred", n);
-    return Error("an error occurred");
 }
 
 /** Report a warning to the console.

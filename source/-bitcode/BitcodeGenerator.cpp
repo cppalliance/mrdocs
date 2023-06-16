@@ -45,7 +45,7 @@ public:
         corpus_.traverse(*this, SymbolID::zero);
         auto errors = taskGroup_.wait();
         if(! errors.empty())
-            return reportErrors(errors);
+            return Error(errors);
         return Error::success();
     }
 

@@ -158,7 +158,6 @@ Expected<std::string>
 Builder::
 operator()(RecordInfo const& I)
 {
-return std::string();
     Config const& config = corpus_.config;
 
     js::Scope scope(ctx_);

@@ -13,12 +13,14 @@
 #define MRDOX_API_SUPPORT_ERROR_HPP
 
 #include <mrdox/Platform.hpp>
-#include <fmt/format.h>
+#include <mrdox/Support/Format.hpp>
 #include <exception>
+#include <iterator>
 #include <string>
 #include <string_view>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
@@ -29,6 +31,11 @@ class [[nodiscard]] MRDOX_DECL
     Error final : public std::exception
 {
     std::string text_;
+
+    static
+    std::string
+    appendSourceLocation(
+        std::string&&, std::source_location const&);
 
 public:
     /** Constructor.
@@ -56,33 +63,17 @@ public:
 
     /** Constructor.
 
-        @param text A message describing the error.
-        An empty string indicates success.
+        @param s The text of the error. This
+        must not be empty.
     */
     explicit
     Error(
-        std::string_view text)
-        : text_(text)
+        std::string s,
+        std::source_location loc =
+            std::source_location::current())
+        : text_(appendSourceLocation(std::move(s), loc))
     {
-    }
-
-    /** Constructor.
-
-        @param fs The format string. An empty
-        string indicates success.
-
-        @param args The arguments to use
-        with the format string.
-    */
-    template<class... Args>
-    explicit
-    Error(
-        std::string_view fs,
-        Args&&... args)
-        : text_(fmt::vformat(fs,
-            fmt::make_format_args(
-                std::forward<Args>(args)...)))
-    {
+        MRDOX_ASSERT(! text_.empty());
     }
 
     /** Constructor.
@@ -91,12 +82,43 @@ public:
     */
     explicit
     Error(
-        std::error_code const& ec)
-        : Error(ec
-            ? std::string_view(ec.message())
-            : std::string_view())
+        std::error_code const& ec,
+        std::source_location loc =
+            std::source_location::current())
+    {
+        if(! ec)
+            return;
+        text_ = appendSourceLocation(ec.message(), loc);
+    }
+
+    /** Constructor.
+
+        @param fs The format string. This
+        must not be empty.
+
+        @param args Zero or more values to
+        substitute into the format string.
+    */
+    template<class... Args>
+    explicit
+    Error(
+        FormatString<std::type_identity_t<Args>...> fs,
+        Args&&... args)
+        : Error(
+            [&]
+            {
+                std::string s;
+                fmt::vformat_to(
+                    std::back_inserter(s),
+                    fs.fs, fmt::make_format_args(
+                        std::forward<Args>(args)...));
+                return s;
+            }(), fs.loc)
     {
     }
+
+    explicit
+    Error(std::vector<Error> const& errors);
 
     /** Return true if this holds an error.
     */
