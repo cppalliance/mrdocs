@@ -26,7 +26,7 @@ namespace mrdox {
 /** Holds the description of an error, or success.
 */
 class [[nodiscard]] MRDOX_DECL
-    Error : public std::exception
+    Error final : public std::exception
 {
     std::string text_;
 

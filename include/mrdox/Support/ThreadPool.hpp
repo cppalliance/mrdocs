@@ -13,11 +13,12 @@
 #define MRDOX_SUPPORT_THREAD_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/any_callable.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <memory>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 namespace llvm {
 class ThreadPool;
@@ -41,10 +42,10 @@ class MRDOX_VISIBLE
     friend class TaskGroup;
 
 public:
-    template<class Agent> struct arg_ty { using type = Agent; };
-    template<class Agent> struct arg_ty<Agent&> { using type =
-        std::conditional_t< std::is_const_v<Agent>, Agent, Agent&>; };
-    template<class Agent> using arg_t = typename arg_ty<Agent>::type;
+    template<class T> struct arg_ty { using type = T; };
+    template<class T> struct arg_ty<T&> { using type =
+        std::conditional_t< std::is_const_v<T>, T, T&>; };
+    template<class T> using arg_t = typename arg_ty<T>::type;
 
     /** Destructor.
     */
@@ -93,9 +94,14 @@ public:
     }
 
     /** Invoke a function object for each element of a range.
+
+        @return Zero or more errors which were
+        thrown from submitted work.
     */
     template<class Range, class F>
-    void forEach(Range&& range, F const& f);
+    [[nodiscard]]
+    std::vector<Error>
+    forEach(Range&& range, F const& f);
 
     /** Block until all work has completed.
     */
@@ -114,7 +120,9 @@ private:
 class MRDOX_VISIBLE
     TaskGroup
 {
-    std::unique_ptr<llvm::ThreadPoolTaskGroup> impl_;
+    struct Impl;
+
+    std::unique_ptr<Impl> impl_;
 
 public:
     /** Destructor.
@@ -142,9 +150,13 @@ public:
     }
 
     /** Block until all work has completed.
+
+        @return Zero or more errors which were
+        thrown from submitted work.
     */
     MRDOX_DECL
-    void
+    [[nodiscard]]
+    std::vector<Error>
     wait();
 
 private:
@@ -154,7 +166,7 @@ private:
 //------------------------------------------------
 
 template<class Range, class F>
-void
+std::vector<Error>
 ThreadPool::
 forEach(
     Range&& range,
@@ -167,7 +179,7 @@ forEach(
             {
                 f(value);
             });
-    taskGroup.wait();
+    return taskGroup.wait();
 }
 
 } // mrdox

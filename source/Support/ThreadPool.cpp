@@ -11,6 +11,8 @@
 #include "Support/Debug.hpp"
 #include <mrdox/Support/ThreadPool.hpp>
 #include <llvm/Support/ThreadPool.h>
+#include <mutex>
+#include <unordered_set>
 #include <utility>
 
 namespace clang {
@@ -82,6 +84,22 @@ post(
 //
 //------------------------------------------------
 
+struct TaskGroup::
+    Impl
+{
+    std::mutex mutex;
+    std::unordered_set<Error> errors;
+    llvm::ThreadPoolTaskGroup taskGroup;
+
+    explicit
+    Impl(
+        llvm::ThreadPool& threadPool)
+        : taskGroup(threadPool)
+    {
+    }
+};
+
+
 TaskGroup::
 ~TaskGroup()
 {
@@ -90,15 +108,30 @@ TaskGroup::
 TaskGroup::
 TaskGroup(
     ThreadPool& threadPool)
-    : impl_(std::make_unique<llvm::ThreadPoolTaskGroup>(*threadPool.impl_))
+    : impl_(std::make_unique<Impl>(*threadPool.impl_))
 {
 }
 
-void
+std::vector<Error>
 TaskGroup::
 wait()
 {
-    impl_->wait();
+    impl_->taskGroup.wait();
+
+    // VFALCO We could have a small data race here
+    // where another thread posts work after the
+    // wait is satisfied, but that could be
+    // considered user error.
+    //
+    // In theory the lock should not be needed.
+    //
+    std::lock_guard<std::mutex> lock(impl_->mutex);
+    std::vector<Error> errors;
+    errors.reserve(impl_->errors.size());
+    for(auto& err : impl_->errors)
+        errors.emplace_back(std::move(err));
+    impl_->errors.clear();
+    return errors;
 }
 
 void
@@ -108,10 +141,22 @@ post(
 {
     auto sp = std::make_shared<
         any_callable<void(void)>>(std::move(f));
-    impl_->async(
-        [sp]
+    impl_->taskGroup.async(
+        [&, sp]
         {
-            (*sp)();
+            try
+            {
+                (*sp)();
+            }
+            catch(Error const& err)
+            {
+                std::lock_guard<std::mutex> lock(impl_->mutex);
+                impl_->errors.emplace(std::move(err));
+            }
+            // Any exception which is not
+            // derived from Error should
+            // be reported and terminate
+            // the process immediately.
         });
 }
 

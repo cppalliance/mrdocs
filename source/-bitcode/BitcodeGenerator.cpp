@@ -43,8 +43,10 @@ public:
     build()
     {
         corpus_.traverse(*this, SymbolID::zero);
-        taskGroup_.wait();
-        return Error();
+        auto errors = taskGroup_.wait();
+        if(! errors.empty())
+            return reportErrors(errors);
+        return Error::success();
     }
 
     template<class T>

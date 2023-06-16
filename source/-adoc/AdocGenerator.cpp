@@ -83,10 +83,7 @@ buildOne(
     visitor(corpus.globalNamespace());
     auto errors = ex->wait();
     if(! errors.empty())
-    {
-        reportErrors(errors);
-        return Error("one or more errors occurred");
-    }
+        return reportErrors(errors);
     return Error::success();
 }
 

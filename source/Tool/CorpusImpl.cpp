@@ -144,7 +144,7 @@ build(
         reportInfo("Reducing {} declarations", bitcodes.size());
     std::atomic<bool> GotFailure;
     GotFailure = false;
-    corpus->config.threadPool().forEach(
+    auto errors = corpus->config.threadPool().forEach(
         bitcodes,
         [&](auto& Group)
         {
@@ -179,6 +179,8 @@ build(
             MRDOX_ASSERT(Group.getKey() == StringRef(I->id));
             corpus->insert(std::move(I));
         });
+    if(! errors.empty())
+        return reportErrors(errors);
 
     if(corpus->config.verboseOutput)
         llvm::outs() << "Collected " << corpus->InfoMap.size() << " symbols.\n";
