@@ -39,6 +39,7 @@ option(MRDOX_BUILD_SHARED "Link shared" OFF)
 option(MRDOX_BUILD_DOCS "Configure install target" OFF)
 option(MRDOX_INSTALL "Configure install target" ON)
 option(MRDOX_PACKAGE "Build install package" ON)
+option(MRDOX_GENERATE_REFERENCE "Generate reference.xml/reference.adoc" ON)
 
 if (MRDOX_BUILD_SHARED)
     set(MRDOX_LINK_MODE SHARED)
@@ -235,7 +236,7 @@ if (MRDOX_BUILD_TESTS)
             "${PROJECT_SOURCE_DIR}/test-files/old-tests"
             )
 
-    if (CMAKE_EXPORT_COMPILE_COMMANDS)
+    if (MRDOX_GENERATE_REFERENCE)
         # test run
         set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
         include(mrdox.cmake)
