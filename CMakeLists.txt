@@ -269,6 +269,7 @@ if (MRDOX_BUILD_TESTS)
                     ${CMAKE_SOURCE_DIR}/addons
                     ${CMAKE_BINARY_DIR}/addons
             BYPRODUCTS ${CMAKE_BINARY_DIR}/addons
+            DEPENDS ${CMAKE_SOURCE_DIR}/addons
     )
 
     file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
