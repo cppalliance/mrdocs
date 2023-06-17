@@ -10,7 +10,7 @@
 
 #include "Builder.hpp"
 #include "DocVisitor.hpp"
-#include "Dom.hpp"
+// #include "Dom.hpp"
 #include "Support/Radix.hpp"
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/Path.hpp>
@@ -18,9 +18,240 @@
 #include <llvm/Support/Path.h>
 #include <fmt/format.h>
 
+#include <span>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
+
 namespace clang {
 namespace mrdox {
 namespace html {
+
+namespace {
+
+struct BasicHTMLTag
+{
+    std::string_view Name;
+    std::string Id;
+    std::vector<std::string_view> Class;
+    std::vector<std::pair<
+        std::string_view,
+        std::string>> Attrs;
+};
+
+struct HTMLTagWriter
+{
+    BasicHTMLTag Tag;
+    std::string Content;
+
+    HTMLTagWriter(
+        const BasicHTMLTag& tag,
+        std::string_view content = {})
+        : Tag(tag)
+        , Content(content)
+    {
+    }
+
+    // HTMLTagWriter writeChild(
+    void write(
+        const BasicHTMLTag& child_tag,
+        std::string_view child_content = {})
+    {
+        // HTMLTagWriter child(child_tag, child_content);
+        write(HTMLTagWriter(child_tag, child_content).get());
+    }
+
+    // HTMLTagWriter writeChild(
+    void write(
+        const BasicHTMLTag& child_tag,
+        const HTMLTagWriter& child_content)
+    {
+        write(HTMLTagWriter(child_tag, child_content.get()).get());
+        // return HTMLTagWriter(child_tag, child_content.get());
+    }
+
+    void write(std::string_view content)
+    {
+        Content += content;
+    }
+
+    operator std::string()
+    {
+        return get();
+    }
+
+    std::string get() const
+    {
+        std::string r;
+        r += fmt::format("<{}", Tag.Name);
+        if(! Tag.Id.empty())
+            r += fmt::format(" id = \"{}\"", Tag.Id);
+        if(! Tag.Class.empty())
+        {
+            r += fmt::format(" class = \"{}", Tag.Class.front());
+            for(auto c : std::span(Tag.Class.begin() + 1, Tag.Class.end()))
+                r += fmt::format(" {}", c);
+            r += '"';
+        }
+        for(auto&& [attr, val] : Tag.Attrs)
+            r += fmt::format(" {} = \"{}\"", attr, val);
+        if(Content.empty())
+            r += "/>";
+        else
+            r += fmt::format(">{}</{}>", Content, Tag.Name);
+        return r;
+    }
+};
+
+std::string
+buildIdHref(const SymbolID& id)
+{
+    return fmt::format("#{}", toBase16(id));
+}
+
+std::string
+buildTypeInfo(const TypeInfo& I)
+{
+    if(I.id == SymbolID::zero)
+        return HTMLTagWriter({
+            .Name = "span",
+            .Class = {"type-info"}
+        }, I.Name);
+    return HTMLTagWriter({
+        .Name = "a",
+        .Class = {"type-info"},
+        .Attrs = {
+            {"href", buildIdHref(I.id)}
+        }
+    }, I.Name);
+}
+
+std::string
+buildParam(const Param& P)
+{
+    std::string r = buildTypeInfo(P.Type);
+    if(! P.Name.empty())
+        r += fmt::format(" {}", P.Name);
+    if(! P.Default.empty())
+        r += fmt::format(" = {}", P.Default);
+    return r;
+}
+
+} // (anon)
+
+
+std::string
+Builder::
+buildInfo(const FunctionInfo& I)
+{
+    HTMLTagWriter div({
+        .Name = "div",
+        .Id = toBase16(I.id),
+        .Class = {"function-info"}
+    });
+    if(I.specs0.storageClass != StorageClassKind::None)
+    {
+        div.write({
+            .Name = "span",
+            .Class = {"kw-storage-class-kind"}
+        }, toString(I.specs0.storageClass));
+        div.write(" ");
+    }
+    if(I.specs0.constexprKind != ConstexprKind::None)
+    {
+        div.write({
+            .Name = "span",
+            .Class = {"kw-constexpr-kind"}
+        }, toString(I.specs0.constexprKind));
+        div.write(" ");
+    }
+    div.write(buildTypeInfo(I.ReturnType));
+    div.write(fmt::format(" {}(", I.Name));
+    if(! I.Params.empty())
+    {
+        auto first = I.Params.begin();
+        div.write(buildParam(*first++));
+        for(; first != I.Params.end(); ++first)
+            div.write(fmt::format(", {}", buildParam(*first)));
+    }
+    div.write(")");
+    return div;
+}
+
+std::string
+Builder::
+buildInfo(const FieldInfo& I)
+{
+    HTMLTagWriter div({
+        .Name = "div",
+        .Id = toBase16(I.id),
+        .Class = {"field-info"}
+    });
+    div.write(buildTypeInfo(I.Type));
+    div.write(fmt::format(" {}", I.Name));
+    return div;
+}
+
+std::string
+Builder::
+buildInfo(const VariableInfo& I)
+{
+    HTMLTagWriter div({
+        .Name = "div",
+        .Id = toBase16(I.id),
+        .Class = {"function-info"}
+    });
+    if(I.specs.storageClass != StorageClassKind::None)
+    {
+        div.write({
+            .Name = "span",
+            .Class = {"kw-storage-class"}
+        }, toString(I.specs.storageClass));
+        div.write(" ");
+    }
+    div.write(buildTypeInfo(I.Type));
+    div.write(fmt::format(" {}", I.Name));
+    return div;
+}
+
+std::string
+Builder::
+buildInfo(
+    const RecordInfo& I,
+    bool write_children)
+{
+    HTMLTagWriter div({
+        .Name = "div",
+        .Id = toBase16(I.id),
+        .Class = {"record-info"}
+    });
+    div.write({
+        .Name = write_children ? "h1" : "span",
+    }, fmt::format("class {}", I.Name));
+
+    if(write_children)
+    {
+        for(const SymbolID& id : I.Members)
+        {
+            visit(corpus_.get(id),
+                [&](const auto& C)
+                {
+                    div.write(buildInfo(C));
+                });
+        }
+    }
+    return div;
+}
+
+std::string
+Builder::
+buildInfo(const Info&)
+{
+    return "";
+}
+
+
 
 Builder::
 Builder(
@@ -29,6 +260,7 @@ Builder(
     : corpus_(corpus)
     , options_(options)
 {
+#if 0
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
@@ -46,6 +278,7 @@ Builder(
             throw err;
     }
     auto Handlebars = scope.getGlobal("Handlebars");
+#endif
 
     // load templates
 #if 0
@@ -58,6 +291,7 @@ Builder(
         });
 #endif
 
+#if 0
     Error err;
 
     // load partials
@@ -79,6 +313,7 @@ Builder(
         });
     if(err)
         throw err;
+#endif
 
     // load helpers
 #if 0
@@ -100,6 +335,7 @@ Builder(
         throw err;
 #endif
 
+#if 0
     err = scope.script(
         "Handlebars.registerHelper("
         "    'to_string', function(context)\n"
@@ -108,6 +344,7 @@ Builder(
         "});");
     if(err)
         throw err;
+#endif
 }
 
 Expected<std::string>
@@ -115,6 +352,7 @@ Builder::
 operator()(NamespaceInfo const& I)
 {
 return std::string();
+#if 0
     Config const& config = corpus_.config;
 
     js::Scope scope(ctx_);
@@ -153,14 +391,17 @@ return std::string();
         return result.getError();
     js::String htmlText(*result);
     return std::string(htmlText);
+#endif
 }
 
 Expected<std::string>
 Builder::
 operator()(RecordInfo const& I)
 {
+    // return std::string();
+    return buildInfo(I, true) + "<hr>";
+#if 0
     Config const& config = corpus_.config;
-
     js::Scope scope(ctx_);
     auto Handlebars = scope.getGlobal("Handlebars");
     auto layoutDir = files::appendPath(config.addonsDir,
@@ -196,6 +437,7 @@ operator()(RecordInfo const& I)
         return result.getError();
     js::String htmlText(*result);
     return std::string(htmlText);
+#endif
 }
 
 Expected<std::string>
@@ -204,6 +446,15 @@ operator()(FunctionInfo const& I)
 {
     Config const& config = corpus_.config;
 
+#if 0
+    return HTMLTagWriter({
+        .Name = "div",
+        .Id = toBase16(I.id)
+    }, buildInfo(I));
+#endif
+
+    return buildInfo(I) + "<hr>";
+#if 0
     js::Scope scope(ctx_);
     auto Handlebars = scope.getGlobal("Handlebars");
     auto layoutDir = files::appendPath(config.addonsDir,
@@ -234,10 +485,12 @@ operator()(FunctionInfo const& I)
         return result.getError();
     js::String htmlText(*result);
     return std::string(htmlText);
+#endif
 }
 
 //------------------------------------------------
 
+#if 0
 /*  Append the short-form descriptor of I to the list.
 */
 void
@@ -254,7 +507,9 @@ insertMember(
         makeJavadoc(obj, *I.javadoc);
     list.push_back(obj);
 }
+#endif
 
+#if 0
 void
 Builder::
 makeJavadoc(
@@ -286,7 +541,9 @@ makeJavadoc(
 
     item.insert("doc", obj);
 }
+#endif
 
+#if 0
 std::string
 Builder::
 renderTypeName(
@@ -342,9 +599,10 @@ renderFunctionDecl(
     }
     return dest;
 }
-
+#endif
 //------------------------------------------------
 
+#if 0
 dom::Object
 Builder::
 domGetSymbol(
@@ -357,6 +615,7 @@ domGetSymbol(
                 Symbol<T>>(I, corpus_);
         });
 }
+#endif
 
 //------------------------------------------------
 

@@ -18,7 +18,7 @@
 #include <mrdox/Support/JavaScript.hpp>
 #include <ostream>
 
-#include <mrdox/Support/Dom.hpp>
+// #include <mrdox/Support/Dom.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -33,7 +33,7 @@ class Builder
 {
     Corpus const& corpus_;
     Options options_;
-    js::Context ctx_;
+    // js::Context ctx_;
 
 public:
     Builder(
@@ -44,17 +44,24 @@ public:
     Expected<std::string> operator()(RecordInfo const&);
     Expected<std::string> operator()(FunctionInfo const&);
 
-    void insertMember(js::Array const&, auto const& I);
-    void makeJavadoc(js::Object const& item, Javadoc const& jd);
-    void renderDocNode(std::string& dest, doc::Node const& node);
+    std::string buildInfo(const Info&);
+    std::string buildInfo(
+        const RecordInfo&,
+        bool write_children = false);
+    std::string buildInfo(const FunctionInfo&);
+    std::string buildInfo(const VariableInfo&);
+    std::string buildInfo(const FieldInfo&);
+    // void insertMember(js::Array const&, auto const& I);
+    // void makeJavadoc(js::Object const& item, Javadoc const& jd);
+    // void renderDocNode(std::string& dest, doc::Node const& node);
 
-    std::string renderFormalParam(Param const& I);
-    std::string renderTypeName(TypeInfo const& I);
-    std::string renderFunctionDecl(FunctionInfo const&);
+    // std::string renderFormalParam(Param const& I);
+    // std::string renderTypeName(TypeInfo const& I);
+    // std::string renderFunctionDecl(FunctionInfo const&);
 
     //--------------------------------------------
 
-    dom::Object domGetSymbol(SymbolID const& id);
+    // dom::Object domGetSymbol(SymbolID const& id);
 };
 
 } // html
