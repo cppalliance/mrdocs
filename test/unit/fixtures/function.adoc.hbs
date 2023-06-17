@@ -1,0 +1,95 @@
+== {{page.name}}
+
+{{#if page.doc}}
+{{page.doc.brief}}
+{{/if}}
+
+=== Synopsis
+
+{{#if page.decl}}
+[,cpp]
+----
+{{page.decl}}
+----
+{{/if}}
+
+{{#if page.loc}}
+Declared in file <{{page.loc}}>
+{{/if}}
+
+{{page.synopsis}}
+
+{{#if page.doc.description}}
+=== Description
+
+{{page.doc.description}}
+
+{{/if}}
+
+{{! The following are temporary handlebars tests (we are already testing comments here) }}
+
+{{!-- This comment may contain mustaches like }} --}}
+
+// Record detail partial
+{{>record-detail}}
+
+// #with to change context
+{{#with page.person}}Person: {{firstname}} {{lastname}} in page about `{{../page.name}}`
+{{/with}}
+
+// #each to iterate, change context, and access parent context
+People:
+{{#each page.people}}* Person: {{firstname}} {{lastname}} in page about `{{../page.name}}`
+{{/each}}
+
+// Render complete context with "." as key
+{{.}}
+
+// Use to_string
+{{to_string .}}
+
+// Literals
+true = {{true}}
+false = {{false}}
+null = {{null}}
+undefined = {{undefined}}
+./[true] = {{./[true]}}
+./[false] = {{./[false]}}
+./[null] = {{./[null]}}
+./[undefined] = {{./[undefined]}}
+'See Website' = {{'See Website'}}
+"See Website" = {{"See Website"}}
+
+// Arrays
+Second person is {{page.people.[1].firstname}} {{page.people.[1].lastname}}
+Second person is {{page.people.[1].[firstname]}} {{page.people.[1].[lastname]}}
+
+// Dot segments
+Second person is {{./page.people.[.].[1].[firstname]}} {{./page.[.].people.[1].[lastname].[.]}}
+
+// Special characters (disabled for adoc)
+raw: {{{page.specialChars}}}
+html-escaped: {{page.specialChars}}
+
+// Helpers
+{{loud page.person.firstname}} {{loud page.person.lastname}}
+{{link "See Website" page.url}}
+
+// Helpers with literal values
+[source]
+----
+{{progress "Search" 10 false}}
+{{progress "Upload" 90 true}}
+{{progress "Finish" 100 false}}
+----
+
+// Undefined helper
+{{undefinedhelper page.person.lastname}}
+
+// Helpers with hashes
+{{link "*project chat*^" href="https://chat.asciidoc.org" role="green"}}
+
+// Subexpressions
+{{progress "Upload" 90 (and true true)}}
+{{progress "Upload" 90 (and true (and true 'truthy'))}}
+

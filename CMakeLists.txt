@@ -311,6 +311,25 @@ if (MRDOX_BUILD_TESTS)
                      --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng ${XML_SOURCES}
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
+
+    add_executable(handlebars-test
+            test/unit/handlebars.cpp
+            include/mrdox/Support/Handlebars.hpp
+            source/Support/Handlebars.cpp
+            include/mrdox/Support/Path.hpp
+            source/Support/Path.cpp
+            )
+    target_include_directories(handlebars-test PRIVATE include)
+    target_compile_features(handlebars-test PRIVATE cxx_std_20)
+    target_link_libraries(handlebars-test PRIVATE fmt::fmt)
+    target_link_libraries(handlebars-test PUBLIC clangToolingInclusions)
+    target_include_directories(handlebars-test SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
+    target_compile_definitions(handlebars-test PRIVATE MRDOX_UNIT_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test/unit")
+    target_compile_definitions(handlebars-test PRIVATE MRDOX_STATIC_LINK)
+    if(MSVC)
+        target_compile_options(handlebars-test PRIVATE /EHsc)
+    endif()
+    add_test(NAME handlebars-test COMMAND handlebars-test)
 endif()
 
 
