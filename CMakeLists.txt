@@ -318,6 +318,8 @@ if (MRDOX_BUILD_TESTS)
             source/Support/Handlebars.cpp
             include/mrdox/Support/Path.hpp
             source/Support/Path.cpp
+            include/mrdox/Support/Error.hpp
+            source/Support/Error.cpp
             )
     target_include_directories(handlebars-test PRIVATE include)
     target_compile_features(handlebars-test PRIVATE cxx_std_20)
