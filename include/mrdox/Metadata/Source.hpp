@@ -14,8 +14,8 @@
 #define MRDOX_API_METADATA_SOURCE_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/ADT/Optional.hpp>
 #include <mrdox/Metadata/Info.hpp>
-#include <optional>
 #include <string>
 #include <string_view>
 
@@ -49,6 +49,11 @@ struct Location
     }
 };
 
+/** Like std::optional<SymbolID>
+*/
+using OptionalLocation = Optional<Location,
+    decltype([](const Location& loc) { return loc.Filename.empty(); })>;
+
 /** Stores source information for a declaration.
 */
 struct SourceInfo
@@ -60,7 +65,7 @@ struct SourceInfo
         actually a definition (e.g. alias-declarations and
         typedef declarations are never definition).
     */
-    std::optional<Location> DefLoc;
+    OptionalLocation DefLoc;
 
     /** Locations where the entity was declared,
 

@@ -117,7 +117,7 @@ inline
 Error
 decodeRecord(
     Record const& R,
-    std::optional<Location>& Field,
+    OptionalLocation& Field,
     llvm::StringRef Blob)
 {
     if (R[0] > INT_MAX)
