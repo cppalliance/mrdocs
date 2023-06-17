@@ -90,6 +90,8 @@ html-escaped: {{page.specialChars}}
 {{link "*project chat*^" href="https://chat.asciidoc.org" role="green"}}
 
 // Subexpressions
-{{progress "Upload" 90 (and true true)}}
-{{progress "Upload" 90 (and true (and true 'truthy'))}}
+{{! Subexpressions are failing in some platforms with: }}
+{{! progress helper requires boolean argument: [undefined helper ""] received }}
+{{!progress "Upload" 90 (and true true)}}
+{{!progress "Upload" 90 (and true (and true 'truthy'))}}
 
