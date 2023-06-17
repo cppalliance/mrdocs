@@ -57,9 +57,9 @@ namespace mrdox {
 # if defined(MRDOX_TOOL) // building library
 #   define MRDOX_DECL
 # else
-#   define MRDOX_DECL __attribute__((visibility("default")))
+#   define MRDOX_DECL __attribute__((__visibility__("default")))
 #endif
-# define MRDOX_VISIBLE __attribute__((visibility("default")))
+# define MRDOX_VISIBLE __attribute__((__visibility__("default")))
 #else
 # error unknown platform for dynamic linking
 #endif
