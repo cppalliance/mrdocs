@@ -1,0 +1,843 @@
+== {{ page.name }}
+
+{{#if page.doc}}
+{{page.doc.brief}}
+{{/if}}
+
+=== Synopsis
+
+{{#if page.decl }}
+[,cpp]
+----
+{{page.decl}}
+----
+{{/if}}
+
+{{#if page.loc}}
+Declared in file <{{page.loc}}>
+{{/if}}
+
+{{page.synopsis}}
+
+{{#if page.doc.description}}
+=== Description
+
+{{page.doc.description}}
+
+== Basic
+
+{{/if}}
+
+{{! The following are temporary handlebars tests (we are already testing comments here) }}
+
+{{!-- This comment may contain mustaches like }} --}}
+
+// Record detail partial
+{{>record-detail}}
+
+// #with to change context
+{{#with page.person}}Person: {{firstname}} {{lastname}} in page about `{{../name}}`
+{{/with}}
+
+// #each to iterate, change context, and access parent context
+People:
+{{#each page.people}}* Person: {{firstname}} {{lastname}} in page about `{{../name}}`
+{{/each}}
+
+== Expressions
+
+// Render complete context with "." as key
+{{.}}
+
+// Use to_string
+{{to_string .}}
+
+// Literals
+true = {{true}}
+false = {{false}}
+null = {{null}}
+undefined = {{undefined}}
+./[true] = {{./[true]}}
+./[false] = {{./[false]}}
+./[null] = {{./[null]}}
+./[undefined] = {{./[undefined]}}
+'See Website' = {{'See Website'}}
+"See Website" = {{"See Website"}}
+
+// Arrays
+Second person is {{page.people.[1].firstname}} {{page.people.[1].lastname}}
+Second person is {{page.people.[1].[firstname]}} {{page.people.[1].[lastname]}}
+
+// Dot segments
+Second person is {{./page.people.[.].[1].[firstname]}} {{./page.[.].people.[1].[lastname].[.]}}
+
+// Special characters (disabled for adoc)
+raw: {{{page.specialChars}}}
+html-escaped: {{page.specialChars}}
+
+// Helpers
+{{loud page.person.firstname}} {{loud page.person.lastname}}
+{{link "See Website" page.url}}
+
+// Helpers with literal values
+[source]
+----
+{{progress "Search" 10 false}}
+{{progress "Upload" 90 true}}
+{{progress "Finish" 100 false}}
+----
+
+// Undefined helper
+{{undefinedhelper page.person.lastname}}
+
+// Helpers with hashes
+{{link "*project chat*^" href="https://chat.asciidoc.org" role="green"}}
+
+// Subexpressions
+{{progress "Upload" 90 (and true true)}}
+{{progress "Upload" 90 (and true (and true 'truthy'))}}
+
+// Whitespace control
+{{#each nav ~}}
+  <a href="{{url}}">
+    {{~#if test}}
+      {{~title}}
+    {{~^~}}
+      Empty
+    {{~/if~}}
+  </a>
+{{~/each}}
+
+{{>escaped}}
+
+== Partials
+
+// Basic partials
+{{>record-detail}}
+{{> record-detail}}
+
+// Dynamic partials
+{{> (whichPartial) }}
+{{> (lookup . 'myVariable') }}
+
+// Partial context switch
+{{> myPartialContext myOtherContext }}
+
+// Partial parameters
+{{> myPartialParam parameter=favoriteNumber }}
+
+{{#each page.people}}
+  {{> myPartialParam2 prefix=../prefix firstname=firstname lastname=lastname}}.
+{{/each}}
+
+// Partial blocks
+{{#> myMissingPartial }}
+  Failover content
+{{/myMissingPartial}}
+
+// Pass templates to partials
+{{#> layoutTemplate }}
+My Content
+{{/layoutTemplate}}
+
+// Inline partials
+{{#*inline "peoplePartial"}}
+  My Content
+{{/inline~}}
+{{#each page.people}}
+  {{> peoplePartial}}
+{{/each}}
+
+// Block inline partials
+{{#> pageLayout}}
+  {{#*inline "nav"}}
+    My Nav
+  {{/inline}}
+  {{#*inline "content"}}
+    My Content
+  {{/inline}}
+{{/pageLayout}}
+
+== Blocks
+
+// Block noop
+<div class="entry">
+  <h1>{{title}}</h1>
+  <div class="body">
+    {{#noop}}{{body}}{{/noop}}
+  </div>
+</div>
+
+// Block function
+<div class="entry">
+  <h1>{{title}}</h1>
+  <div class="body">
+    {{#bold}}{{body}}{{/bold}}
+  </div>
+</div>
+
+// Block helper parameter
+<div class="entry">
+    <h1>{{title}}</h1>
+    {{#with story}}
+        <div class="intro">{{{intro}}}</div>
+        <div class="body">{{{body}}}</div>
+    {{/with}}
+</div>
+
+// Simple iterators
+<div class="entry">
+  <h1>{{title}}</h1>
+  {{#with story}}
+    <div class="intro">{{{intro}}}</div>
+    <div class="body">{{{body}}}</div>
+  {{/with}}
+</div>
+<div class="comments">
+  {{#each comments}}
+    <div class="comment">
+      <h2>{{subject}}</h2>
+      {{{body}}}
+    </div>
+  {{/each}}
+</div>
+
+// Custom list helper
+{{#list nav}}
+    <a href="{{url}}">{{title}}</a>
+{{/list}}
+
+// Conditionals
+{{#if isActive}}
+    <img src="star.gif" alt="Active">
+{{/if}}
+
+{{#if isActive}}
+  <img src="star.gif" alt="Active">
+{{else}}
+  <img src="cry.gif" alt="Inactive">
+{{/if}}
+
+{{#if isStar}}
+  <img src="star.gif" alt="Active">
+{{else}}
+  <img src="cry.gif" alt="Inactive">
+{{/if}}
+
+// Chained blocks
+// 1
+{{#if isActive}}
+   HIT <img src="star.gif" alt="Active 1">
+{{else if isInactive}}
+  <img src="cry.gif" alt="Inactive 1">
+{{else}}
+  No User
+{{/if}}
+
+// 2
+{{#if isInactive}}
+  <img src="cry.gif" alt="Inactive 2">
+{{else if isActive}}
+   HIT <img src="star.gif" alt="Active 2">
+{{else}}
+  No User
+{{/if}}
+
+// 3
+{{#if isInactive}}
+    <img src="cry.gif" alt="Inactive 3">
+{{else if isInactive}}
+    <img src="star.gif" alt="Inactive 3">
+{{else}}
+    HIT No User
+{{/if}}
+
+// Block hash arguments
+{{#list nav id="nav-bar" class="top"}}
+    <a href="{{url}}">{{title}}</a>
+{{/list}}
+
+// Private variables
+{{#list nav}}
+  {{@index}}. {{url}}
+{{/list}}
+
+// Iterate objects
+{{#each peopleobj}}
+    Id: {{@index}}, Key: {{@key}}, Name: {{firstname}} {{lastname}}
+{{/each}}
+
+// Block parameters
+{{#each page.people as |user userId|}}
+    Id: {{userId}} Name: {{user.firstname}}
+{{/each}}
+
+// Recursive block parameters
+{{#each page.people as |user userId|}}
+    {{#each user.book as |book bookId|}}
+        User Id: {{userId}} Book Id: {{bookId}}
+    {{/each}}
+{{/each}}
+
+== Built-in Helpers
+
+// Author
+{{#if author}}
+<h1>{{firstname}} {{lastname}}</h1>
+{{/if}}
+
+// Unknown
+<div class="entry">
+{{#if author2}}
+<h1>{{firstname}} {{lastname}}</h1>
+{{else}}
+<h1>Unknown Author</h1>
+{{/if}}
+</div>
+
+// Include zero
+{{#if 0 includeZero=true}}
+<h1>Does render</h1>
+{{else}}
+<h1>Does not render</h1>
+{{/if}}
+
+{{#if 0 includeZero=false}}
+<h1>Does not render</h1>
+{{else}}
+<h1>Does render</h1>
+{{/if}}
+
+// Custom
+{{#if (isdefined author)}}author defined{{else}}author undefined{{/if}}
+{{#if (isdefined value2)}}value2 defined{{else}}value2 undefined{{/if}}
+
+// unless
+<div class="entry">
+{{#unless license}}
+<h3 class="warning">WARNING: This entry does not have a license!</h3>
+{{/unless}}
+</div>
+
+// each with non objects
+<ul class="people_list">
+    {{#each names}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+
+// No paragraphs
+{{#each paragraphs}}
+<p>{{this}}</p>
+{{else}}
+<p class="empty">No paragraphs</p>
+{{/each}}
+
+// indexes and keys
+{{#each names}} {{@index}}: {{this}} {{/each}}
+{{#each namesobj}} {{@key}}: {{this}} {{/each}}
+
+// with
+{{#with page.author}}
+{{firstname}} {{lastname}}
+{{/with}}
+
+// with block parameters
+{{#with city as | city |}}
+  {{#with city.location as | loc |}}
+    {{../city.name}}: {{loc.north}} {{loc.east}}
+  {{/with}}
+{{/with}}
+
+// with inverse
+{{#with undefinedcity}}
+{{name}} (not shown because there is no city)
+{{else}}
+No city found
+{{/with}}
+
+// lookup
+{{! this should be looking up ../cities once we have frames. ".." currently goes to the global context. }}
+{{#each lookup_test.people}}
+{{.}} lives in {{lookup ../lookup_test/cities @index}}
+{{/each}}
+
+// lookup2
+{{#each lookup_test2.persons as | person |}}
+    {{name}} lives in {{#with (lookup ../lookup_test2/cities [resident-in])~}}
+      {{name}} ({{country}})
+    {{/with}}
+{{/each}}
+
+// log (there should be no rendered output)
+{{log 'this is a simple log output'}}
+{{log 'firstname' firstname 'lastname' lastname}}
+{{log "debug logging" level="debug"}}
+{{log "info logging" level="info"}}
+{{log "info logging is the default"}}
+{{log "logging a warning" level="warn"}}
+{{log "logging an error" level="error"}}
+
+== Hooks
+
+// Helper missing
+{{foo}}
+{{foo true}}
+{{foo 2 true}}
+{{#foo true}}{{/foo}}
+{{#foo}}block content{{/foo}}
+
+// Block helper missing
+{{#person}}
+    {{firstname}} {{lastname}}
+{{/person}}
+
+== String helpers
+
+// capitalize
+{{ capitalize 'Hello world!' }}
+{{#capitalize }}Hello world!{{/capitalize}}
+{{ capitalize 'hello world!' }}
+{{#capitalize }}hello world!{{/capitalize}}
+// center
+{{ center 'Hello world!' 50 }}
+{{#center 50 }}Hello world!{{/center}}
+{{ center 'Hello world!' 50 '-' }}
+{{#center 50 '-' }}Hello world!{{/center}}
+// ljust
+{{ ljust 'Hello world!' 50 }}
+{{#ljust 50 }}Hello world!{{/ljust}}
+{{ ljust 'Hello world!' 50 '-' }}
+{{#ljust 50 '-' }}Hello world!{{/ljust}}
+// pad_end
+{{ pad_end 'Hello world!' 50 }}
+{{#pad_end 50 }}Hello world!{{/pad_end}}
+{{ pad_end 'Hello world!' 50 '-' }}
+{{#pad_end 50 '-' }}Hello world!{{/pad_end}}
+// rjust
+{{ rjust 'Hello world!' 50 }}
+{{#rjust 50 }}Hello world!{{/rjust}}
+{{ rjust 'Hello world!' 50 '-' }}
+{{#rjust 50 '-' }}Hello world!{{/rjust}}
+// pad_start
+{{ pad_start 'Hello world!' 50 }}
+{{#pad_start 50 }}Hello world!{{/pad_start}}
+{{ pad_start 'Hello world!' 50 '-' }}
+{{#pad_start 50 '-' }}Hello world!{{/pad_start}}
+// count
+{{ count 'Hello world!' 'o' }}
+{{#count 'o' }}Hello world!{{/count}}
+{{ count 'Hello world!' 'o' 5 }}
+{{#count 'o' 5 }}Hello world!{{/count}}
+{{ count 'Hello world!' 'o' 0 5 }}
+{{#count 'o' 0 5 }}Hello world!{{/count}}
+// ends_with
+{{ ends_with 'Hello world!' 'world!' }}
+{{#ends_with 'world!' }}Hello world!{{/ends_with}}
+{{ ends_with 'Hello world!' 'world!' 5 }}
+{{#ends_with 'world!' 5 }}Hello world!{{/ends_with}}
+{{ ends_with 'Hello world!' 'o' 0 5 }}
+{{#ends_with 'o' 0 5 }}Hello world!{{/ends_with}}
+{{ ends_with 'Hello world!' 'Japan' 0 5 }}
+{{#ends_with 'Japan' 0 5 }}Hello world!{{/ends_with}}
+// starts_with
+{{ starts_with 'Hello world!' 'Hello' }}
+{{#starts_with 'Hello' }}Hello world!{{/starts_with}}
+{{ starts_with 'Hello world!' 'world!' 6 }}
+{{#starts_with 'world!' 6 }}Hello world!{{/starts_with}}
+{{ starts_with 'Hello world!' 'Hello' 0 5 }}
+{{#starts_with 'Hello' 0 5 }}Hello world!{{/starts_with}}
+{{ starts_with 'Hello world!' 'Japan' 0 5 }}
+{{#starts_with 'Japan' 0 5 }}Hello world!{{/starts_with}}
+// expandtabs
+{{ expandtabs 'Hello	world!' }}
+{{#expandtabs }}Hello	world!{{/expandtabs}}
+{{ expandtabs 'Hello	world!' 1 }}
+{{#expandtabs 1 }}Hello	world!{{/expandtabs}}
+{{ expandtabs 'Hello	world!' 0 }}
+{{#expandtabs 0 }}Hello	world!{{/expandtabs}}
+// find
+{{ find 'Hello world!' 'world' }}
+{{#find 'world' }}Hello world!{{/find}}
+// index_of
+{{ index_of 'Hello world!' 'world' }}
+{{#index_of 'world' }}Hello world!{{/index_of}}
+// includes
+{{ includes 'Hello world!' 'Hello' }}
+{{#includes 'Hello' }}Hello world!{{/includes}}
+{{ includes 'Hello world!' 'Bye' }}
+{{#includes 'Bye' }}Hello world!{{/includes}}
+// rfind
+{{ rfind 'Hello world!' 'world' }}
+{{#rfind 'world' }}Hello world!{{/rfind}}
+{{ rfind 'Hello world!' 'o' }}
+{{#rfind 'o' }}Hello world!{{/rfind}}
+// rindex_of
+{{ rindex_of 'Hello world!' 'world' }}
+{{#rindex_of 'world' }}Hello world!{{/rindex_of}}
+{{ rindex_of 'Hello world!' 'o' }}
+{{#rindex_of 'o' }}Hello world!{{/rindex_of}}
+// last_index_of
+{{ last_index_of 'Hello world!' 'world' }}
+{{#last_index_of 'world' }}Hello world!{{/last_index_of}}
+{{ last_index_of 'Hello world!' 'o' }}
+{{#last_index_of 'o' }}Hello world!{{/last_index_of}}
+// at
+{{ at 'Hello world!' 1 }}
+{{#at 1 }}Hello world!{{/at}}
+// char_at
+{{ char_at 'Hello world!' 1 }}
+{{#char_at 1 }}Hello world!{{/char_at}}
+// isalnum
+{{ is_alnum 'h3llo1' }}
+{{#is_alnum }}h3llo1{{/is_alnum}}
+{{ is_alnum 'Hello world!' }}
+{{#is_alnum }}Hello world!{{/is_alnum}}
+// isalpha
+{{ is_alnum 'hello' }}
+{{#is_alnum }}hello{{/is_alnum}}
+{{ is_alnum 'h3llo' }}
+{{#is_alnum }}h3llo{{/is_alnum}}
+{{ is_alpha 'Hello world!' }}
+{{#is_alpha }}Hello world!{{/is_alpha}}
+// isascii
+{{ is_ascii 'Hello world!' }}
+{{#is_ascii }}Hello world!{{/is_ascii}}
+// isdecimal
+{{ is_decimal 'Hello world!' }}
+{{#is_decimal }}Hello world!{{/is_decimal}}
+{{ is_decimal '0123' }}
+{{#is_decimal }}0123{{/is_decimal}}
+// isdigit
+{{ is_digit 'Hello world!' }}
+{{#is_digit }}Hello world!{{/is_digit}}
+{{ is_digit '0123' }}
+{{#is_digit }}0123{{/is_digit}}
+// islower
+{{ is_lower 'Hello world!' }}
+{{#is_lower }}Hello world!{{/is_lower}}
+{{ is_lower 'hello world!' }}
+{{#is_lower }}hello world!{{/is_lower}}
+// isupper
+{{ is_upper 'Hello world!' }}
+{{#is_upper }}Hello world!{{/is_upper}}
+{{ is_upper 'HELLO WORLD!' }}
+{{#is_upper }}HELLO WORLD!{{/is_upper}}
+// isprintable
+{{ is_printable 'Hello world!' }}
+{{#is_printable }}Hello world!{{/is_printable}}
+{{ is_printable 'Hello	world!' }}
+{{#is_printable }}Hello	world!{{/is_printable}}
+// isspace
+{{ is_space 'Hello world!' }}
+{{#is_space }}Hello world!{{/is_space}}
+{{ is_space '    ' }}
+{{#is_space }}    {{/is_space}}
+{{ is_space '' }}
+{{#is_space }}{{/is_space}}
+// istitle
+{{ is_title 'Hello world!' }}
+{{#is_title }}Hello world!{{/is_title}}
+{{ is_title 'Hello World!' }}
+{{#is_title }}Hello World!{{/is_title}}
+// upper
+{{ upper 'Hello world!' }}
+{{#upper }}Hello world!{{/upper}}
+// to_upper
+{{ to_upper 'Hello world!' }}
+{{#to_upper }}Hello world!{{/to_upper}}
+// lower
+{{ lower 'Hello world!' }}
+{{#lower }}Hello world!{{/lower}}
+// to_lower
+{{ to_lower 'Hello world!' }}
+{{#to_lower }}Hello world!{{/to_lower}}
+// swapcase
+{{ swap_case 'Hello world!' }}
+{{#swap_case }}Hello world!{{/swap_case}}
+// join
+{{ join ',' (split 'Hello,world!' '/') }}
+{{#join (split 'Hello/world!' '/') }},{{/join}}
+// concat
+{{ concat 'Hello world!' ',' 'Bye!' }}
+{{#concat ',' 'Bye!' }}Hello world!{{/concat}}
+// strip
+{{ strip '      Hello world!        ' }}
+{{#strip }}      Hello world!        {{/strip}}
+{{ strip '--------Hello world!--------' '-' }}
+{{#strip '-' }}--------Hello world!--------{{/strip}}
+// trim
+{{ trim '       Hello world!        ' }}
+{{#trim }}       Hello world!        {{/trim}}
+{{ trim '--------Hello world!--------' '-' }}
+{{#trim '-' }}--------Hello world!--------'{{/trim}}
+// lstrip
+{{ lstrip '     Hello world!        ' }}
+{{#lstrip }}     Hello world!        {{/lstrip}}
+{{ lstrip '--------Hello world!--------' '-' }}
+{{#lstrip '-' }}--------Hello world!--------{{/lstrip}}
+// trim_start
+{{ trim_start '       Hello world!         ' }}
+{{#trim_start }}       Hello world!         {{/trim_start}}
+{{ trim_start '--------Hello world!--------' '-' }}
+{{#trim_start '-' }}--------Hello world!--------{{/trim_start}}
+// rstrip
+{{ rstrip '           Hello world!         ' }}
+{{#rstrip }}           Hello world!         {{/rstrip}}
+{{ rstrip '--------Hello world!--------' '-' }}
+{{#rstrip '-' }}--------Hello world!--------{{/rstrip}}
+// trim_end
+{{ trim_end '         Hello world!         ' }}
+{{#trim_end }}         Hello world!         {{/trim_end}}
+{{ trim_end '--------Hello world!--------' '-' }}
+{{#trim_end '-' }}--------Hello world!--------{{/trim_end}}
+// partition
+{{ partition 'Hello world!' ' ' }}
+{{#partition ' ' }}Hello world!{{/partition}}
+{{ partition 'Hello world!' '?' }}
+{{#partition '?' }}Hello world!{{/partition}}
+// rpartition
+{{ rpartition 'Hello world!' ' ' }}
+{{#rpartition ' ' }}Hello world!{{/rpartition}}
+{{ rpartition 'Hello world!' '?' }}
+{{#rpartition '?' }}Hello world!{{/rpartition}}
+// remove_prefix
+{{ remove_prefix 'Hello world!' 'Hello' }}
+{{#remove_prefix 'Hello' }}Hello world!{{/remove_prefix}}
+// remove_suffix
+{{ remove_suffix 'Hello world!' 'world!' }}
+{{#remove_suffix 'world!' }}Hello world!{{/remove_suffix}}
+{{ remove_suffix 'Hello world!' '!' }}
+{{#remove_suffix '!' }}Hello world!{{/remove_suffix}}
+// replace
+{{ replace 'Hello world!' ' world' '' }}
+{{#replace ' world' '' }}Hello world!{{/replace}}
+// split
+{{ split 'Hello world!' ' ' }}
+{{#split ' ' }}Hello world!{{/split}}
+{{ split 'Hello world!' 'l' 2 }}
+{{#split 'l' 2 }}Hello world!{{/split}}
+// rsplit
+{{ rsplit 'Hello world!' ' ' }}
+{{#rsplit ' ' }}Hello world!{{/rsplit}}
+{{ rsplit 'Hello world!' 'l' 2}}
+{{#rsplit 'l' 2 }}Hello world!{{/rsplit}}
+// splitlines
+{{ split_lines 'Hello world!\nBye!' }}
+{{#split_lines }}Hello world!\nBye!{{/split_lines}}
+// zfill
+{{ zfill 'Hello world!' 50 }}
+{{#zfill 50 }}Hello world!{{/zfill}}
+{{ zfill '30' 80 }}
+{{#zfill 80 }}30{{/zfill}}
+{{ zfill '-30' 80 }}
+{{#zfill 80 }}-30{{/zfill}}
+// repeat
+{{ repeat 'Hello world!' 3 }}
+{{#repeat 3 }}Hello world!{{/repeat}}
+// escape
+{{ escape 'Hello world!' }}
+{{#escape }}Hello world!{{/escape}}
+{{ escape '<Hello world!></Hello>' }}
+{{#escape }}<Hello world!></Hello>{{/escape}}
+// slice
+{{ slice 'Hello world!' 1 5 }}
+{{#slice 1 5 }}Hello world!{{/slice}}
+{{ slice 'Hello world!' 1 }}
+{{#slice 1 }}Hello world!{{/slice}}
+{{ slice 'Hello world!' 1 -1 }}
+{{#slice 1 -1 }}Hello world!{{/slice}}
+{{ slice 'Hello world!' 1 -44 }}
+{{#slice 1 -44 }}Hello world!{{/slice}}
+// substr
+{{ substr 'Hello world!' 1 5 }}
+{{#substr 1 5 }}Hello world!{{/substr}}
+{{ substr 'Hello world!' 1 }}
+{{#substr 1 }}Hello world!{{/substr}}
+{{ substr 'Hello world!' 1 -1 }}
+{{#substr 1 -1 }}Hello world!{{/substr}}
+{{ substr 'Hello world!' 1 -44 }}
+{{#substr 1 -44 }}Hello world!{{/substr}}
+// safe_anchor_id
+{{ safe_anchor_id 'Hello world!' }}
+{{#safe_anchor_id }}Hello world!{{/safe_anchor_id}}
+// strip_namespace
+{{ strip_namespace 'Hello world!' }}
+{{#strip_namespace }}Hello world!{{/strip_namespace}}
+{{ strip_namespace 'std::memory_order' }}
+{{#strip_namespace }}std::memory_order{{/strip_namespace}}
+{{ strip_namespace 'std::memory_order::memory_order_acquire' }}
+{{#strip_namespace }}std::memory_order::memory_order_acquire{{/strip_namespace}}
+{{ strip_namespace 'std::basic_string<char, typename B::value_type>' }}
+{{#strip_namespace }}std::basic_string<char, typename B::value_type>{{/strip_namespace}}
+
+== Containers
+
+// size
+{{ size containers.array }}
+{{ size containers.object }}
+{{ size containers.object_array }}
+// len
+{{ len containers.array }}
+{{ len containers.object }}
+{{ len containers.object_array }}
+// keys
+{{! keys containers.array }}
+{{ keys containers.object }}
+{{! keys containers.object_array }}
+// list
+{{! list containers.array }}
+{{ list containers.object }}
+{{! list containers.object_array }}
+// iter
+{{! iter containers.array }}
+{{ iter containers.object }}
+{{! iter containers.object_array }}
+// values
+{{ values containers.array }}
+{{ values containers.object }}
+{{ to_string (values containers.object_array) }}
+// del
+{{ del containers.array 'c' }}
+{{ to_string (del containers.object 'c') }}
+{{ to_string (del containers.object_array 'c') }}
+// delete
+{{ delete containers.array 'c' }}
+{{ to_string (delete containers.object 'c') }}
+{{ to_string (delete containers.object_array 'c') }}
+// has
+{{ has containers.array 'c' }}
+{{ has containers.object 'c' }}
+{{ has containers.object_array 'c' }}
+// exist
+{{ exist containers.array 'c' }}
+{{ exist containers.array 'z' }}
+{{ exist containers.object 'c' }}
+{{ exist containers.object 'z' }}
+{{ exist containers.object_array 'c' }}
+// contains
+{{ contains containers.array 'c' }}
+{{ contains containers.array 'z' }}
+{{ contains containers.object 'c' }}
+{{ contains containers.object 'z' }}
+{{ contains containers.object_array 'c' }}
+// has_any
+{{ has_any containers.array (split 'z,b,c' ',') }}
+{{ has_any containers.array (split '' ',') }}
+{{ has_any containers.array (split 'z' ',') }}
+{{ has_any containers.object (split 'z,b,c' ',') }}
+{{ has_any containers.object (split '' ',') }}
+{{ has_any containers.object (split 'z' ',') }}
+{{ has_any containers.object_array (split 'z,b,c' ',') }}
+// exist_any
+{{ exist_any containers.array (split 'a,b,c' ',') }}
+{{ exist_any containers.object (split 'a,b,c' ',') }}
+{{ exist_any containers.object_array (split 'a,b,c' ',') }}
+// contains_any
+{{ contains_any containers.array (split 'a,b,c' ',') }}
+{{ contains_any containers.object (split 'a,b,c' ',') }}
+{{ contains_any containers.object_array (split 'a,b,c' ',') }}
+// get
+{{ get containers.array 2 }}
+{{ get containers.object 'c' }}
+{{ to_string (get containers.object_array 2) }}
+// get_or
+{{ get_or containers.array 30 'y' }}
+{{ get_or containers.object 'z' 'y' }}
+{{ get_or containers.object_array 30 'y' }}
+// items
+{{ items containers.array }}
+{{ items containers.object }}
+{{ to_string (items containers.object_array) }}
+// entries
+{{ entries containers.array }}
+{{ entries containers.object }}
+{{ to_string (entries containers.object_array) }}
+// first
+{{ first containers.array }}
+{{ to_string (first containers.object) }}
+{{ to_string (first containers.object_array) }}
+// head
+{{ head containers.array }}
+{{ to_string (head containers.object) }}
+{{ to_string (head containers.object_array) }}
+// front
+{{ front containers.array }}
+{{ to_string (front containers.object) }}
+{{ to_string (front containers.object_array) }}
+// last
+{{ last containers.array }}
+{{ to_string (last containers.object) }}
+{{ to_string (last containers.object_array) }}
+// tail
+{{ tail containers.array }}
+{{ to_string (tail containers.object) }}
+{{ to_string (tail containers.object_array) }}
+// back
+{{ back containers.array }}
+{{ to_string (back containers.object) }}
+{{ to_string (back containers.object_array) }}
+// reverse
+{{ reverse containers.array }}
+{{ to_string (reverse containers.object) }}
+{{ to_string (reverse containers.object_array) }}
+// reversed
+{{ reversed containers.array }}
+{{ to_string (reversed containers.object) }}
+{{ to_string (reversed containers.object_array) }}
+// update
+{{ update containers.array containers.array2 }}
+{{ to_string (update containers.object containers.object2) }}
+{{ to_string (update containers.object_array containers.array2) }}
+// merge
+{{ merge containers.array containers.array2 }}
+{{ to_string (merge containers.object containers.object2) }}
+{{ to_string (merge containers.object_array containers.array2) }}
+// sort
+{{ sort containers.array }}
+{{ to_string (sort containers.object) }}
+{{ to_string (sort containers.object_array) }}
+// sort_by
+{{! sort_by containers.array 'account_id' }}
+{{! sort_by containers.object 'account_id' }}
+{{ to_string (sort_by containers.object_array 'account_id') }}
+// at
+{{ at containers.array 2 }}
+{{ at containers.object 'c' }}
+{{ to_string (at containers.object_array 2) }}
+// fill
+{{ fill containers.array '-' 2 5 }}
+{{ fill containers.array '-' 2 -1 }}
+{{! fill containers.object }}
+{{! fill containers.object_array }}
+// count
+{{ count containers.array 'c' }}
+{{ count containers.object 'c' }}
+{{ count containers.object_array 'c' }}
+// concat
+{{ concat containers.array containers.array2 }}
+{{ concat containers.object containers.object2 }}
+{{ concat containers.object_array containers.array2 }}
+// replace
+{{ replace containers.array 'c' 'd' }}
+{{ replace containers.array 'c' 'd' }}
+{{ to_string (replace containers.object 'c' 'd') }}
+{{ to_string (replace containers.object_array 'c' 'd') }}
+// chunk
+{{ chunk containers.array 3 }}
+{{ to_string (chunk containers.object 3) }}
+{{ to_string (chunk containers.object_array 2) }}
+// group_by
+{{! to_string (group_by containers.array 'account_id') }}
+{{! to_string (group_by containers.object 'account_id') }}
+{{ to_string (group_by containers.object_array 'account_id') }}
+{{ to_string (group_by containers.object_array 'product') }}
+// pluck
+{{! to_string (pluck containers.array 'account_id') }}
+{{! to_string (pluck containers.object 'account_id') }}
+{{ to_string (pluck containers.object_array 'account_id') }}
+{{ to_string (pluck containers.object_array 'product') }}
+// unique
+{{ to_string (unique (concat containers.array containers.array2)) }}
+{{! to_string (unique (concat containers.object containers.object2)) }}
+{{! to_string (unique containers.object_array) }}

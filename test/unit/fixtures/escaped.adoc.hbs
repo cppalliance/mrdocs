@@ -1,0 +1,19 @@
+{{! tests with raw blocks are separated in this partial because they usually break the syntax highlighting in the IDE }}
+// Inline escapes
+\{{escaped}}
+{{true}}
+
+// Raw blocks
+{{{{raw}}}}
+{{escaped}}
+{{{{/raw}}}}
+
+// Raw blocks
+{{{{noop}}}}
+{{bar}}
+{{{{/noop}}}}
+
+// Raw block helper
+{{{{loud}}}}
+{{bar}}
+{{{{/loud}}}}
