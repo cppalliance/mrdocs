@@ -12,10 +12,13 @@
 #define MRDOX_LIB_ADOC_BUILDER_HPP
 
 #include "Options.hpp"
+#include "Support/Radix.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/JavaScript.hpp>
 #include <ostream>
+
+#include <mrdox/Support/Dom.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -48,6 +51,10 @@ public:
     std::string renderFormalParam(Param const& I);
     std::string renderTypeName(TypeInfo const& I);
     std::string renderFunctionDecl(FunctionInfo const&);
+
+    //--------------------------------------------
+
+    dom::Object domGetSymbol(SymbolID const& id);
 };
 
 } // adoc

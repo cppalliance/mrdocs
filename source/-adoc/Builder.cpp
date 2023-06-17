@@ -10,6 +10,7 @@
 
 #include "Builder.hpp"
 #include "DocVisitor.hpp"
+#include "Dom.hpp"
 #include "Support/Radix.hpp"
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/Path.hpp>
@@ -341,6 +342,23 @@ renderFunctionDecl(
     }
     return dest;
 }
+
+//------------------------------------------------
+
+dom::Object
+Builder::
+domGetSymbol(
+    SymbolID const& id)
+{
+    return visit(corpus_.get(id),
+        [&]<class T>(T const& I)
+        {
+            return dom::makeObject<
+                Symbol<T>>(I, corpus_);
+        });
+}
+
+//------------------------------------------------
 
 } // adoc
 } // mrdox

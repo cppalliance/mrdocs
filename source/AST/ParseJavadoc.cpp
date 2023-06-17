@@ -204,8 +204,8 @@ JavadocVisitor(
     Config const& config)
     : config_(config)
     , ctx_(D->getASTContext())
-    , FC_(RC->parse(D->getASTContext(), nullptr, D))
     , sm_(ctx_.getSourceManager())
+    , FC_(RC->parse(D->getASTContext(), nullptr, D))
 {
 }
 Javadoc
