@@ -86,6 +86,62 @@ Value() noexcept
 }
 
 Value::
+Value(
+    Value&& other) noexcept
+    : kind_(other.kind_)
+{
+    switch(kind_)
+    {
+    case Kind::Array:
+        new(&array_) ArrayPtr(std::move(other.array_));
+        other.array_.~Pointer();
+        break;
+    case Kind::Object:
+        new(&object_) ObjectPtr(std::move(other.object_));
+        object_.~Pointer();
+        break;
+    case Kind::String:
+        new(&string_) std::string(std::move(other.string_));
+        string_.~basic_string();
+        break;
+    case Kind::Integer:
+    case Kind::Boolean:
+        number_ = other.number_;
+    case Kind::Null:
+        break;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+    other.kind_ = Kind::Null;
+}
+
+Value::
+Value(
+    Value const& other)
+    : kind_(other.kind_)
+{
+    switch(kind_)
+    {
+    case Kind::Array:
+        new(&array_) ArrayPtr(other.array_);
+        break;
+    case Kind::Object:
+        new(&object_) ObjectPtr(other.object_);
+        break;
+    case Kind::String:
+        new(&string_) std::string(other.string_);
+        break;
+    case Kind::Integer:
+    case Kind::Boolean:
+        number_ = other.number_;
+    case Kind::Null:
+        break;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+Value::
 Value(bool b) noexcept
     : kind_(Kind::Boolean)
     , number_(b)

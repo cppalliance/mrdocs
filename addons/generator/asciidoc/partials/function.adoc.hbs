@@ -1,0 +1,18 @@
+{{!-- function --}}
+[#{{symbol.id}}]
+== {{symbol.name}}
+
+{{symbol.doc.brief}}
+
+=== Synopsis
+
+{{>function-sig symbol}}
+
+{{>source symbol.loc}}
+
+{{#if symbol.doc.description}}
+=== Description
+
+{{symbol.doc.description}}
+
+{{/if}}

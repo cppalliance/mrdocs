@@ -1,0 +1,8 @@
+{{#if def}}
+Declared in file <{{def.file}}>
+{{else if decl}}
+{{#each decl}}
+Declared in file <{{file}}>
+{{/each}}
+{{else}}
+{{/if}}

@@ -9,10 +9,9 @@
 //
 
 #include "Builder.hpp"
-#include "DocVisitor.hpp"
-#include "Dom.hpp"
 #include "Support/Radix.hpp"
-#include <mrdox/Support/Path.hpp>
+#include <mrdox/Dom/DomContext.hpp>
+#include <mrdox/Dom/DomSymbol.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -100,20 +99,31 @@ Builder(
         throw err;
 #endif
 
-    err = scope.script(
-        "Handlebars.registerHelper("
-        "    'to_string', function(context, depth)\n"
-        "{\n"
-        "   return JSON.stringify(context, null, 2);\n"
-        "});");
+    err = scope.script(R"(
+        Handlebars.registerHelper(
+            'to_string', function(context, depth)
+        {
+           return JSON.stringify(context, null, 2);
+        });
+
+        Handlebars.registerHelper(
+            'eq', function(a, b)
+        {
+           return a === b;
+        });
+
+    )");
     if(err)
         throw err;
 }
 
+//------------------------------------------------
+
 Expected<std::string>
 Builder::
 callTemplate(
-    std::string_view name, dom::ObjectPtr const& context)
+    std::string_view name,
+    dom::ObjectPtr const& context)
 {
     Config const& config = corpus_.config;
 
@@ -131,10 +141,8 @@ callTemplate(
     options.insert("allowProtoMethodsByDefault", true);
     auto templateFn = Handlebars.call("compile", *fileText, options);
 
-    js::Object hbCtx(scope);
-    hbCtx.insert("page", js::Object(scope, context));
-
-    auto result = js::tryCall(templateFn, hbCtx);
+    auto result = js::tryCall(
+        templateFn, js::Object(scope, context));
     if(! result)
         return result.getError();
     js::String adocText(*result);
@@ -143,75 +151,76 @@ callTemplate(
 
 Expected<std::string>
 Builder::
+renderSinglePageHeader()
+{
+    auto obj = dom::makePointer<dom::Object>();
+    auto text = callTemplate("single-header.adoc.hbs", obj);
+    return text;
+}
+
+Expected<std::string>
+Builder::
+renderSinglePageFooter()
+{
+    auto obj = dom::makePointer<dom::Object>();
+    auto text = callTemplate("single-footer.adoc.hbs", obj);
+    return text;
+}
+
+//------------------------------------------------
+
+dom::ObjectPtr
+Builder::
+getSymbol(
+    SymbolID const& id)
+{
+    return visit(corpus_.get(id),
+        [&]<class T>(T const& I) ->
+            dom::ObjectPtr
+        {
+            return dom::makePointer<
+                DomSymbol<T>>(I, corpus_);
+        });
+}
+
+dom::ObjectPtr
+Builder::
+createContext(
+    SymbolID const& id)
+{
+    return dom::makePointer<DomContext>(
+        DomContext::Hash({
+            { "document", "test" },
+            { "symbol", getSymbol(id) }
+        }));
+}
+
+Expected<std::string>
+Builder::
 operator()(NamespaceInfo const& I)
 {
-    return callTemplate("namespace.adoc.hbs", domGetSymbol(I.id));
+    return callTemplate(
+        "single-symbol.adoc.hbs",
+        createContext(I.id));
 }
 
 Expected<std::string>
 Builder::
 operator()(RecordInfo const& I)
 {
-    return callTemplate("record.adoc.hbs", domGetSymbol(I.id));
+    return callTemplate(
+        "single-symbol.adoc.hbs",
+        createContext(I.id));
 }
 
 Expected<std::string>
 Builder::
 operator()(FunctionInfo const& I)
 {
-    return callTemplate("function.adoc.hbs", domGetSymbol(I.id));
+    return callTemplate(
+        "single-symbol.adoc.hbs",
+        createContext(I.id));
 }
-
-//------------------------------------------------
-
-void
-Builder::
-makeJavadoc(
-    js::Object const& item,
-    Javadoc const& jd)
-{
-    js::Scope scope(ctx_);
-    js::Object obj(scope);
-
-    std::string dest;
-
-    // brief
-    DocVisitor visitor(dest);
-    dest.clear();
-    if(auto brief = jd.getBrief())
-    {
-        visitor(*brief);
-    }
-    obj.insert("brief", dest);
-
-    // description
-    if(! jd.getBlocks().empty())
-    {
-        dest.clear();
-        visitor(jd.getBlocks());
-        if(! dest.empty())
-            obj.insert("description", dest);
-    }
-
-    item.insert("doc", obj);
-}
-
-//------------------------------------------------
-
-dom::Pointer<dom::Object>
-Builder::
-domGetSymbol(
-    SymbolID const& id)
-{
-    return visit(corpus_.get(id),
-        [&]<class T>(T const& I)
-        {
-            return dom::Pointer<dom::Object>(
-                dom::makePointer<Symbol<T>>(I, corpus_));
-        });
-}
-
-//------------------------------------------------
 
 } // adoc
 } // mrdox

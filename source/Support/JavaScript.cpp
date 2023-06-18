@@ -707,7 +707,7 @@ obj_get_prop(duk_context* ctx)
 Object::
 Object(
     Scope& scope,
-    dom::Pointer<dom::Object> const& obj)
+    dom::ObjectPtr const& obj)
     : Value(duk_push_object(A(scope)), scope)
 {
     obj_construct(A(*scope_), idx_, obj.get());

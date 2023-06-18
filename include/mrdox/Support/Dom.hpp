@@ -189,6 +189,8 @@ class MRDOX_DECL
 public:
     ~Value();
     Value() noexcept;
+    Value(Value const&);
+    Value(Value&&) noexcept;
     Value(bool b) noexcept;
     Value(ArrayPtr const& arr) noexcept;
     Value(ObjectPtr const& arr) noexcept;
@@ -220,6 +222,14 @@ public:
         else
             kind_ = Kind::Integer;
         number_ = static_cast<std::int64_t>(number);
+    }
+
+    template<class Enum>
+    requires std::is_enum_v<Enum>
+    Value(Enum v) noexcept
+        : Value(static_cast<
+            std::underlying_type_t<Enum>>(v))
+    {
     }
 
     Kind kind() const noexcept { return kind_; }

@@ -40,20 +40,19 @@ public:
         Corpus const& corpus,
         Options const& options);
 
+    Expected<std::string> callTemplate(
+        std::string_view name, dom::ObjectPtr const& context);
+
+    Expected<std::string> renderSinglePageHeader();
+    Expected<std::string> renderSinglePageFooter();
+
+    dom::ObjectPtr getSymbol(SymbolID const& id);
+    dom::ObjectPtr createContext(SymbolID const& id);
+
     Expected<std::string> operator()(NamespaceInfo const&);
     Expected<std::string> operator()(RecordInfo const&);
     Expected<std::string> operator()(FunctionInfo const&);
 
-    Expected<std::string> callTemplate(std::string_view name,
-        dom::Pointer<dom::Object> const& context);
-
-    void makeJavadoc(js::Object const& item, Javadoc const& jd);
-    void renderDocNode(std::string& dest, doc::Node const& node);
-
-    //--------------------------------------------
-
-    dom::Pointer<dom::Object>
-    domGetSymbol(SymbolID const& id);
 };
 
 } // adoc

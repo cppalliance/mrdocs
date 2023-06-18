@@ -1,0 +1,11 @@
+{{!-- namespace --}}
+[#{{symbol.id}}]
+== Namespace {{symbol.name}}
+
+[,cols=2]
+|===
+|Name |Description
+{{#each symbol.members}}
+|xref:{{id}}[`{{name}}`] |{{doc.brief}}
+{{/each}}
+|===

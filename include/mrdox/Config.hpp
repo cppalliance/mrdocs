@@ -69,9 +69,9 @@ public:
     */
     bool ignoreFailures = false;
 
-    /** `true` if everything should be output to a single page.
+    /** `true` if output should consist of multiple files.
     */
-    bool singlePage = false;
+    bool multiPage = false;
 
     /** `true` if tool output should be verbose.
 

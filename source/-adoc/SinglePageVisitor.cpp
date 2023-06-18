@@ -47,7 +47,7 @@ SinglePageVisitor::
 operator()(RecordInfo const& I)
 {
     renderPage(I, numPages_++);
-    corpus_.traverse(I, *this);
+    //corpus_.traverse(I, *this);
 }
 
 void

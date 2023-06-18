@@ -1,0 +1,12 @@
+{{#if (eq kind "function")}}
+{{#if (eq specs.storageClass "static")}}static {{/if~}}
+{{>type-name return}} {{name}}(
+{{~#each params}}
+{{>type-name type}}
+{{#if name}} {{name}}{{/if}}
+{{~#unless @last}}, {{/unless}}
+{{~/each}})
+{{~#if (eq specs.exceptionSpec "noexcept")}} noexcept{{/if~}}
+;
+{{~else~}}
+{{/if}}

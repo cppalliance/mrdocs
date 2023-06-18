@@ -1,6 +1,8 @@
-{{!-- Declare the signature of a function --}}
 [source,cpp,subs=+macros]
 ----
+{{#if (eq specs.storageClass "static")}}
+static
+{{/if}}
 {{>type-name return}}
 
 {{#if params}}
@@ -8,9 +10,12 @@
 {{#each params}}
     {{>type-name type~}}
     {{#if name}} {{name}}{{/if}}
-    {{~#if @last}});{{else}},{{/if}}
-{{/each}}
-{{else}}
-{{name}}();
-{{/if}}
+    {{~#if @last}}){{else}},
+    {{/if}}
+{{~/each}}
+{{~else~}}
+{{name}}()
+{{~/if~}}
+{{#if (eq specs.exceptionSpec "noexcept")}} noexcept{{/if~}}
+;
 ----

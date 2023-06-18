@@ -1,0 +1,27 @@
+{{!-- record --}}
+[#{{symbol.id}}]
+== {{symbol.name}}
+
+{{symbol.doc.brief}}
+
+=== Synopsis
+
+[source,cpp,subs=+macros]
+----
+{{symbol.tag}} {{symbol.name}}
+{
+{{#each symbol.members}}
+    {{>record-member}}
+
+{{/each}}
+};
+----
+
+{{>source symbol.loc}}
+
+{{#if symbol.doc.description}}
+=== Description
+
+{{symbol.doc.description}}
+
+{{/if}}

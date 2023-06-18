@@ -60,7 +60,7 @@ build(
     std::string_view outputPath,
     Corpus const& corpus) const
 {
-    if(corpus.config.singlePage)
+    if(! corpus.config.multiPage)
         return Generator::build(outputPath, corpus);
 
     auto ex = createExecutors(corpus);
@@ -85,11 +85,40 @@ buildOne(
     if(! ex)
         return ex.getError();
 
-    SinglePageVisitor visitor(*ex, corpus, os);
-    visitor(corpus.globalNamespace());
-    auto errors = ex->wait();
+    std::vector<Error> errors;
+
+    ex->async(
+        [this, &os](Builder& builder)
+        {
+            auto pageText =
+                builder.renderSinglePageHeader();
+            if(! pageText)
+                throw pageText.getError();
+            os.write(pageText->data(), pageText->size());
+        });
+    errors = ex->wait();
     if(! errors.empty())
         return Error(errors);
+
+    SinglePageVisitor visitor(*ex, corpus, os);
+    visitor(corpus.globalNamespace());
+    errors = ex->wait();
+    if(! errors.empty())
+        return Error(errors);
+
+    ex->async(
+        [this, &os](Builder& builder)
+        {
+            auto pageText =
+                builder.renderSinglePageFooter();
+            if(! pageText)
+                throw pageText.getError();
+            os.write(pageText->data(), pageText->size());
+        });
+    errors = ex->wait();
+    if(! errors.empty())
+        return Error(errors);
+
     return Error::success();
 }
 

@@ -2,23 +2,20 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file path="test.cpp" line="9"/>
-    <doc>
-      <brief>
-        <text> brief</text>
-      </brief>
-      <para>
-        <text></text>
-        <text>Boost</text>
-      </para>
-      <para>
-        <text></text>
-        <text></text>
-        <text> heading1</text>
-        <text></text>
-      </para>
-    </doc>
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="test.cpp" line="1" class="def"/>
+  </struct>
+  <function name="f0" id="eEUsaw5xOfm6oKU9915p0s/L7fk=">
+    <file path="test.cpp" line="3"/>
+    <attr id="storage-class" name="static" value="2"/>
+  </function>
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file path="test.cpp" line="5"/>
+    <attr id="exception-spec" name="noexcept" value="5"/>
+  </function>
+  <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
+    <file path="test.cpp" line="7"/>
+    <attr id="storage-class" name="extern" value="1"/>
   </function>
 </namespace>
 </mrdox>

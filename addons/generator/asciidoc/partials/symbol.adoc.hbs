@@ -1,0 +1,11 @@
+{{#if (eq symbol.kind "namespace")}}
+{{>namespace}}
+{{else if (eq symbol.kind "function")}}
+{{>function}}
+{{else if (eq symbol.kind "class")}}
+{{>record}}
+{{else if (eq symbol.kind "struct")}}
+{{>record}}
+{{else if (eq symbol.kind "union")}}
+{{>record}}
+{{/if}}
