@@ -15,6 +15,8 @@
 namespace clang {
 namespace mrdox {
 
+ToolArgs ToolArgs::instance_;
+
 //------------------------------------------------
 
 ToolArgs::
@@ -106,8 +108,6 @@ EXAMPLES:
     llvm::cl::cat(testCat))
 {
 }
-
-ToolArgs ToolArgs::instance_;
 
 void
 ToolArgs::

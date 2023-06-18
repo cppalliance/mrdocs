@@ -62,6 +62,13 @@ DoGenerateAction()
         return absPath.getError();
     auto workingDir = files::getParentDir(*absPath);
 
+    // normalize outputPath
+    if( toolArgs.outputPath.empty())
+        return Error("output path is empty");
+    toolArgs.outputPath = files::normalizePath(
+        files::makeAbsolute(toolArgs.outputPath,
+            (*config)->workingDir));
+
     // Convert relative paths to absolute
     AbsoluteCompilationDatabase compilations(
         workingDir, *jsonCompilations, *config);
