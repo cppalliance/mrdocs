@@ -22,7 +22,8 @@
 namespace clang {
 namespace mrdox {
 
-struct Location
+struct MRDOX_DECL
+    Location
 {
     /** Name of the file
     */
@@ -56,7 +57,8 @@ using OptionalLocation = Optional<Location,
 
 /** Stores source information for a declaration.
 */
-struct SourceInfo
+struct MRDOX_DECL
+    SourceInfo
 {
     /** Location where the entity was defined
 
