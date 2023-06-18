@@ -1,23 +1,13 @@
+[#{{page.id}}]
 == {{page.name}}
 
-{{#if page.doc}}
 {{page.doc.brief}}
-{{/if}}
 
 === Synopsis
 
-{{#if page.decl}}
-[,cpp]
-----
-{{page.decl}}
-----
-{{/if}}
+{{>function-sig page}}
 
-{{#if page.loc}}
-Declared in file <{{page.loc}}>
-{{/if}}
-
-{{page.synopsis}}
+Declared in file <{{page.loc.file}}>
 
 {{#if page.doc.description}}
 === Description

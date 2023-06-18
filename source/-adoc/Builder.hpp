@@ -44,17 +44,16 @@ public:
     Expected<std::string> operator()(RecordInfo const&);
     Expected<std::string> operator()(FunctionInfo const&);
 
-    void insertMember(js::Array const&, auto const& I);
+    Expected<std::string> callTemplate(std::string_view name,
+        dom::Pointer<dom::Object> const& context);
+
     void makeJavadoc(js::Object const& item, Javadoc const& jd);
     void renderDocNode(std::string& dest, doc::Node const& node);
 
-    std::string renderFormalParam(Param const& I);
-    std::string renderTypeName(TypeInfo const& I);
-    std::string renderFunctionDecl(FunctionInfo const&);
-
     //--------------------------------------------
 
-    dom::Object domGetSymbol(SymbolID const& id);
+    dom::Pointer<dom::Object>
+    domGetSymbol(SymbolID const& id);
 };
 
 } // adoc

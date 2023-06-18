@@ -11,6 +11,7 @@
 
 #include "AdocGenerator.hpp"
 #include "Builder.hpp"
+#include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
 #include "Support/SafeNames.hpp"
 #include <mrdox/Support/Path.hpp>
@@ -66,6 +67,11 @@ build(
     if(! ex)
         return ex.getError();
 
+    MultiPageVisitor visitor(*ex, outputPath, corpus);
+    visitor(corpus.globalNamespace());
+    auto errors = ex->wait();
+    if(! errors.empty())
+        return Error(errors);
     return Error::success();
 }
 

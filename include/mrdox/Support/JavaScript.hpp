@@ -12,6 +12,7 @@
 #define MRDOX_SUPPORT_JAVASCRIPT_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Expected.hpp>
 #include <cstdlib>
@@ -175,7 +176,13 @@ public:
 
     /** Run a script.
     */
-    MRDOX_DECL Error script(std::string_view jsCode);
+    MRDOX_DECL
+    Error
+    script(std::string_view jsCode);
+
+    /** Return the global object.
+    */
+    MRDOX_DECL Object getGlobalObject();
 
     /** Return a global object if it exists.
     */
@@ -382,6 +389,8 @@ class Object : public Value
         std::size_t size) const;
 
 public:
+    MRDOX_DECL Object(Scope&,
+        dom::Pointer<dom::Object> const& obj);
     MRDOX_DECL Object(Value value);
     MRDOX_DECL Object& operator=(Value value);
     MRDOX_DECL explicit Object(Scope& scope);

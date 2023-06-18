@@ -13,7 +13,6 @@
 #include <mrdox/Support/JavaScript.hpp>
 #include <llvm/Support/MemoryBuffer.h>
 #include <duktape.h>
-//#include <duk_module_duktape.h>
 #include <utility>
 
 namespace clang {
@@ -36,6 +35,17 @@ struct Context::Impl
         : refs(1)
         , ctx(duk_create_heap_default())
     {
+#if 0
+        // create prototype
+        auto idx = duk_push_object(ctx);
+        duk_push_string(ctx, "test");
+        duk_push_c_function(ctx, &my_getter, 0);
+        duk_def_prop(ctx, idx,
+            DUK_DEFPROP_HAVE_GETTER |
+            DUK_DEFPROP_SET_ENUMERABLE);
+        auto result = duk_put_global_string(ctx, "Proto");
+        MRDOX_ASSERT(result == 1);
+#endif
     }
 };
 
@@ -225,6 +235,14 @@ script(
     MRDOX_ASSERT(duk_get_type(A(*this), -1) == DUK_TYPE_UNDEFINED);
     duk_pop(A(*this)); // result
     return Error::success();
+}
+
+Object
+Scope::
+getGlobalObject()
+{
+    duk_push_global_object(A(*this));
+    return A.construct<Object>(-1, *this);
 }
 
 Expected<Object>
@@ -427,6 +445,105 @@ get() const noexcept
 //
 //------------------------------------------------
 
+static void obj_construct(
+    duk_context*, duk_idx_t, dom::Object*);
+
+static duk_ret_t arr_finalizer(duk_context*);
+static duk_ret_t arr_get_prop(duk_context*);
+
+static
+void
+arr_construct(
+    duk_context* ctx,
+    duk_idx_t idx,
+    dom::Array* arr)
+{
+    idx = duk_normalize_index(ctx, idx);
+    duk_push_pointer(ctx, arr->addref());
+    duk_put_prop_string(ctx, idx, "ptr");
+
+    duk_push_c_function(ctx, &arr_finalizer, 0);
+    duk_set_finalizer(ctx, idx);
+
+    for(std::size_t i = 0; i < arr->length(); ++i)
+    {
+        duk_push_int(ctx, i);
+        duk_push_c_function(ctx, &arr_get_prop, 1);
+        duk_def_prop(ctx, idx,
+            DUK_DEFPROP_HAVE_GETTER |
+            DUK_DEFPROP_SET_ENUMERABLE);
+    }
+}
+
+static
+dom::Array*
+arr_get_impl(
+    duk_context* ctx, duk_idx_t idx)
+{
+    duk_require_object(ctx, idx);
+    auto found = duk_get_prop_string(ctx, idx, "ptr");
+    MRDOX_ASSERT(found == 1);
+    auto impl = reinterpret_cast<dom::Array*>(
+        duk_get_pointer(ctx, -1));
+    duk_pop(ctx);
+    return impl;
+}
+
+static
+duk_ret_t
+arr_finalizer(duk_context* ctx)
+{
+    duk_push_this(ctx);
+    arr_get_impl(ctx, -1)->release();
+    return 0;
+}
+
+static
+duk_ret_t
+arr_get_prop(duk_context* ctx)
+{
+    auto index = duk_to_int(ctx, -1);
+
+    duk_push_this(ctx);
+    auto arr = arr_get_impl(ctx, -1);
+ 
+    auto value = arr->get(index);
+    switch(value.kind())
+    {
+    case dom::Kind::Object:
+    {
+        duk_push_object(ctx);
+        obj_construct(ctx, -1, value.getObject().get());
+        break;
+    }
+    case dom::Kind::Array:
+    {
+        duk_push_array(ctx);
+        arr_construct(ctx, -1, value.getArray().get());
+        break;
+    }
+    case dom::Kind::String:
+    {
+        auto const s = value.getString();
+        duk_push_lstring(ctx, s.data(), s.size());
+        break;
+    }
+    case dom::Kind::Integer:
+        duk_push_int(ctx, static_cast<
+            duk_int_t>(value.getInteger()));
+        break;
+    case dom::Kind::Boolean:
+        duk_push_boolean(ctx, value.getBool());
+        break;
+    case dom::Kind::Null:
+        duk_push_null(ctx);
+        break;
+    }
+    duk_swap_top(ctx, -3);
+    duk_pop_2(ctx);
+    return 1;
+}
+
 Array::
 Array(
     int idx,
@@ -487,14 +604,124 @@ push_back(
 //
 //------------------------------------------------
 
+static duk_ret_t obj_finalizer(duk_context*);
+static duk_ret_t obj_get_prop(duk_context*);
+
+static
+void
+obj_construct(
+    duk_context* ctx,
+    duk_idx_t idx,
+    dom::Object* obj)
+{
+    idx = duk_normalize_index(ctx, idx);
+
+    duk_push_pointer(ctx, obj->addref());
+    duk_put_prop_string(ctx, idx, "ptr");
+
+    duk_push_c_function(ctx, &obj_finalizer, 0);
+    duk_set_finalizer(ctx, idx);
+
+    for(auto const& prop : obj->props())
+    {
+        duk_push_lstring(ctx, prop.data(), prop.size());
+        duk_push_c_function(ctx, &obj_get_prop, 1);
+        duk_def_prop(ctx, idx,
+            DUK_DEFPROP_HAVE_GETTER |
+            DUK_DEFPROP_SET_ENUMERABLE);
+    }
+}
+
+static
+dom::Object*
+obj_get_impl(
+    duk_context* ctx, duk_idx_t idx)
+{
+    duk_require_object(ctx, idx);
+    auto found = duk_get_prop_string(ctx, idx, "ptr");
+    MRDOX_ASSERT(found == 1);
+    auto impl = reinterpret_cast<dom::Object*>(
+        duk_get_pointer(ctx, -1));
+    duk_pop(ctx);
+    return impl;
+}
+
+static
+duk_ret_t
+obj_finalizer(duk_context* ctx)
+{
+    duk_push_this(ctx);
+    obj_get_impl(ctx, -1)->release();
+    return 0;
+}
+
+static
+duk_ret_t
+obj_get_prop(duk_context* ctx)
+{
+    duk_size_t size;
+    auto const data =
+        duk_get_lstring(ctx, -1, &size);
+    std::string_view key(data, size);
+
+    duk_push_this(ctx);
+    auto obj = obj_get_impl(ctx, -1);
+ 
+    auto value = obj->get(key);
+    switch(value.kind())
+    {
+    case dom::Kind::Object:
+    {
+        duk_push_object(ctx);
+        obj_construct(ctx, -1, value.getObject().get());
+        break;
+    }
+    case dom::Kind::Array:
+    {
+        duk_push_array(ctx);
+        arr_construct(ctx, -1, value.getArray().get());
+        break;
+    }
+    case dom::Kind::String:
+    {
+        auto const s = value.getString();
+        duk_push_lstring(ctx, s.data(), s.size());
+        break;
+    }
+    case dom::Kind::Integer:
+        duk_push_int(ctx, static_cast<
+            duk_int_t>(value.getInteger()));
+        break;
+    case dom::Kind::Boolean:
+        duk_push_boolean(ctx, value.getBool());
+        break;
+    case dom::Kind::Null:
+        duk_push_null(ctx);
+        break;
+    }
+    duk_swap_top(ctx, -3);
+    duk_pop_2(ctx);
+    return 1;
+}
+
+Object::
+Object(
+    Scope& scope,
+    dom::Pointer<dom::Object> const& obj)
+    : Value(duk_push_object(A(scope)), scope)
+{
+    obj_construct(A(*scope_), idx_, obj.get());
+}
+
 Object::
 Object(
     int idx,
     Scope& scope) noexcept
     : Value(idx, scope)
 {
-    if(scope_)
-        duk_require_object(A(*scope_), idx_);
+    if(! scope_)
+        return;
+    duk_require_object(A(*scope_), idx_);
 }
 
 Object::

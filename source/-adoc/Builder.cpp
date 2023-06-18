@@ -102,7 +102,7 @@ Builder(
 
     err = scope.script(
         "Handlebars.registerHelper("
-        "    'to_string', function(context)\n"
+        "    'to_string', function(context, depth)\n"
         "{\n"
         "   return JSON.stringify(context, null, 2);\n"
         "});");
@@ -112,148 +112,57 @@ Builder(
 
 Expected<std::string>
 Builder::
-operator()(NamespaceInfo const& I)
+callTemplate(
+    std::string_view name, dom::ObjectPtr const& context)
 {
-return std::string();
     Config const& config = corpus_.config;
 
     js::Scope scope(ctx_);
     auto Handlebars = scope.getGlobal("Handlebars");
     auto layoutDir = files::appendPath(config.addonsDir,
             "generator", "asciidoc", "layouts");
-    auto pathName = files::appendPath(layoutDir, "namespace.adoc.hbs");
+    auto pathName = files::appendPath(layoutDir, name);
     auto fileText = files::getFileText(pathName);
     if(! fileText)
         return fileText.getError();
     js::Object options(scope);
     options.insert("noEscape", true);
+    options.insert("allowProtoPropertiesByDefault", true);
+    options.insert("allowProtoMethodsByDefault", true);
     auto templateFn = Handlebars.call("compile", *fileText, options);
 
-    js::Object context(scope);
-    {
-        // build page
-        js::Object page(scope);
-        page.insert("kind", "namespace");
-        page.insert("name", I.Name);
-        {
-            js::Array list(scope);
-            for(auto const& id : I.Members)
-                visit(corpus_.get<Info>(id),
-                    [&](auto const& I)
-                    {
-                        insertMember(list, I);
-                    });
-            page.insert("members", list);
-        }
-        context.insert("page", page);
-    }
+    js::Object hbCtx(scope);
+    hbCtx.insert("page", js::Object(scope, context));
 
-    auto result = js::tryCall(templateFn, context);
+    auto result = js::tryCall(templateFn, hbCtx);
     if(! result)
         return result.getError();
     js::String adocText(*result);
     return std::string(adocText);
+}
+
+Expected<std::string>
+Builder::
+operator()(NamespaceInfo const& I)
+{
+    return callTemplate("namespace.adoc.hbs", domGetSymbol(I.id));
 }
 
 Expected<std::string>
 Builder::
 operator()(RecordInfo const& I)
 {
-    Config const& config = corpus_.config;
-
-    js::Scope scope(ctx_);
-    auto Handlebars = scope.getGlobal("Handlebars");
-    auto layoutDir = files::appendPath(config.addonsDir,
-            "generator", "asciidoc", "layouts");
-    auto pathName = files::appendPath(layoutDir, "record.adoc.hbs");
-    auto fileText = files::getFileText(pathName);
-    if(! fileText)
-        return fileText.getError();
-    js::Object options(scope);
-    options.insert("noEscape", true);
-    auto templateFn = Handlebars.call("compile", *fileText, options);
-
-    js::Object context(scope);
-    {
-        js::Object page(scope);
-        page.insert("kind", "record");
-        page.insert("name", I.Name);
-        {
-            js::Array list(scope);
-            for(auto const& id : I.Members)
-                visit(corpus_.get<Info>(id),
-                    [&](auto const& I)
-                    {
-                        insertMember(list, I);
-                    });
-            page.insert("members", list);
-        }
-        context.insert("page", page);
-    }
-
-    auto result = js::tryCall(templateFn, context);
-    if(! result)
-        return result.getError();
-    js::String adocText(*result);
-    return std::string(adocText);
+    return callTemplate("record.adoc.hbs", domGetSymbol(I.id));
 }
 
 Expected<std::string>
 Builder::
 operator()(FunctionInfo const& I)
 {
-    Config const& config = corpus_.config;
-
-    js::Scope scope(ctx_);
-    auto Handlebars = scope.getGlobal("Handlebars");
-    auto layoutDir = files::appendPath(config.addonsDir,
-            "generator", "asciidoc", "layouts");
-    auto pathName = files::appendPath(layoutDir, "function.adoc.hbs");
-    auto fileText = files::getFileText(pathName);
-    if(! fileText)
-        return fileText.getError();
-    js::Object options(scope);
-    options.insert("noEscape", true);
-    auto templateFn = Handlebars.call("compile", *fileText, options);
-
-    js::Object context(scope);
-    {
-        js::Object page(scope);
-        page.insert("kind", "record");
-        page.insert("name", I.Name);
-        page.insert("decl", renderFunctionDecl(I));
-        if(I.DefLoc.has_value())
-            page.insert("loc", I.DefLoc->Filename);
-        if(I.javadoc)
-            makeJavadoc(page, *I.javadoc);
-        context.insert("page", page);
-    }
-
-    auto result = js::tryCall(templateFn, context);
-    if(! result)
-        return result.getError();
-    js::String adocText(*result);
-    return std::string(adocText);
+    return callTemplate("function.adoc.hbs", domGetSymbol(I.id));
 }
 
 //------------------------------------------------
-
-/*  Append the short-form descriptor of I to the list.
-*/
-void
-Builder::
-insertMember(
-    js::Array const& list, auto const& I)
-{
-    js::Scope scope(ctx_);
-    js::Object obj(scope);
-    obj.insert("name", I.Name);
-    obj.insert("tag", I.symbolType());
-    obj.insert("id", toBase16(I.id));
-    if(I.javadoc)
-        makeJavadoc(obj, *I.javadoc);
-    list.push_back(obj);
-}
 
 void
 Builder::
@@ -287,65 +196,9 @@ makeJavadoc(
     item.insert("doc", obj);
 }
 
-std::string
-Builder::
-renderTypeName(
-    TypeInfo const& I)
-{
-    if(I.id == SymbolID::zero)
-        return I.Name;
-    // VFALCO Work-around for having IDs that don't exist
-    auto J = corpus_.find(I.id);
-    if(J == nullptr)
-        return I.Name;
-    return J->Name;
-}
-
-std::string
-Builder::
-renderFormalParam(
-    Param const& I)
-{
-    std::string s;
-    s = renderTypeName(I.Type);
-    if(! I.Name.empty())
-    {
-        s.push_back(' ');
-        s.append(I.Name);
-    }
-    return s;
-}
-
-std::string
-Builder::
-renderFunctionDecl(
-    FunctionInfo const& I)
-{
-    std::string dest;
-    dest.append(renderTypeName(I.ReturnType));
-    dest.push_back('\n');
-    dest.append(I.Name);
-    if(! I.Params.empty())
-    {
-        dest.append("(\n    ");
-        dest.append(renderFormalParam(I.Params[0]));
-        for(std::size_t i = 1; i < I.Params.size(); ++i)
-        {
-            dest.append(",\n    ");
-            dest.append(renderFormalParam(I.Params[i]));
-        }
-        dest.append(");\n");
-    }
-    else
-    {
-        dest.append("();\n");
-    }
-    return dest;
-}
-
 //------------------------------------------------
 
-dom::Object
+dom::Pointer<dom::Object>
 Builder::
 domGetSymbol(
     SymbolID const& id)
@@ -353,8 +206,8 @@ domGetSymbol(
     return visit(corpus_.get(id),
         [&]<class T>(T const& I)
         {
-            return dom::makeObject<
-                Symbol<T>>(I, corpus_);
+            return dom::Pointer<dom::Object>(
+                dom::makePointer<Symbol<T>>(I, corpus_));
         });
 }
 

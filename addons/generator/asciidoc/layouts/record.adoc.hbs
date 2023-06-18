@@ -1,2 +1,25 @@
-{{>record-detail}}
+[#{{page.id}}]
+== {{page.name}}
 
+{{page.doc.brief}}
+
+=== Synopsis
+
+[,cpp]
+----
+{{page.tag}} {{page.name}}
+{
+{{#each members}}
+    {{name}}
+{{/each}}
+};
+----
+
+Declared in file <{{page.loc.file}}>
+
+{{#if page.doc.description}}
+=== Description
+
+{{page.doc.description}}
+
+{{/if}}

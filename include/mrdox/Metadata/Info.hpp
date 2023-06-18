@@ -56,6 +56,10 @@ struct MRDOX_VISIBLE
     */
     SymbolID id = SymbolID::zero;
 
+    /** The unqualified name.
+    */
+    std::string Name;
+
     /** Kind of declaration.
     */
     InfoKind Kind;
@@ -70,10 +74,6 @@ struct MRDOX_VISIBLE
         Namespace members use `AccessKind::None`.
     */
     AccessKind Access = AccessKind::None;
-
-    /** The unqualified name.
-    */
-    std::string Name;
 
     /** In-order List of parent namespaces.
     */
@@ -92,7 +92,7 @@ struct MRDOX_VISIBLE
     explicit
     Info(
         InfoKind kind,
-        SymbolID ID = SymbolID::zero)
+        SymbolID ID = SymbolID::zero) noexcept
         : id(ID)
         , Kind(kind)
     {

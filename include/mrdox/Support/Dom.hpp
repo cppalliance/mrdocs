@@ -12,11 +12,14 @@
 #define MRDOX_SUPPORT_DOM_HPP
 
 #include <mrdox/Platform.hpp>
+#include <atomic>
 #include <cstdint>
 #include <memory>
 #include <string_view>
 #include <type_traits>
 #include <utility>
+
+#include <vector>
 
 namespace clang {
 namespace mrdox {
@@ -40,64 +43,137 @@ enum class Kind
 
 //------------------------------------------------
 
+/** A type-erased object or array implementation.
+*/
 class MRDOX_DECL
-    Array
+    Any
 {
+    void* ptr_;
+    std::atomic<std::size_t> refs_ = 1;
+
+protected:
+    explicit Any(void* ptr) noexcept
+        : ptr_(ptr)
+    {
+    }
+
 public:
-    struct Impl
-    {
-        virtual ~Impl() = 0;
-        virtual std::size_t length() const noexcept = 0;
-        virtual Value get(std::size_t) const = 0;
-    };
+    virtual ~Any() = 0;
 
-    explicit
-    Array(std::shared_ptr<Impl> impl) noexcept
-        : impl_(std::move(impl))
+    void* get() const noexcept
     {
+        return ptr_;
     }
 
-    std::size_t length() const noexcept
+    Any* addref() noexcept
     {
-        return impl_->length();
+        ++refs_;
+        return this;
     }
 
-    Value get(std::size_t index) const;
-
-private:
-    std::shared_ptr<Impl> impl_;
+    void release() noexcept
+    {
+        if(--refs_ > 0)
+            return;
+        delete this;
+    }
 };
+
+/** A pointer container for object or array.
+*/
+template<class T>
+requires std::derived_from<T, Any>
+class Pointer
+{
+public: // VFALCO FIXME!
+    Any* any_;
+
+public: // VFALCO FIXME!
+    explicit
+    Pointer(Any* any) noexcept
+        : any_(any)
+    {
+    }
+
+public:
+    Pointer() = delete;
+    Pointer& operator=(
+        Pointer const&) = delete;
+
+    ~Pointer()
+    {
+        any_->release();
+    }
+
+    Pointer(Pointer const& other) noexcept
+        : any_(other.any_->addref())
+    {
+    }
+
+    template<class U>
+    requires std::derived_from<U, T>
+    Pointer(Pointer<U> const& other) noexcept
+        : any_(other.any_->addref())
+    {
+    }
+
+    T* get() const noexcept
+    {
+        return reinterpret_cast<T*>(any_->get());
+    }
+
+    T* operator->() const noexcept
+    {
+        return get();
+    }
+
+    T& operator*() const noexcept
+    {
+        return *get();
+    }
+
+    Any* any() const noexcept
+    {
+        return any_;
+    }
+};
+
+template<
+    class T, class... Args>
+requires std::derived_from<T, Any>
+Pointer<T>
+makePointer(Args&&... args)
+{
+    return Pointer<T>(new T(
+        std::forward<Args>(args)...));
+}
 
 //------------------------------------------------
 
 class MRDOX_DECL
-    Object
+    Array : public Any
 {
 public:
-    struct MRDOX_DECL
-        Impl
-    {
-        virtual ~Impl() = 0;
-        virtual bool empty() const noexcept;
-        virtual Value get(std::string_view) const = 0;
-    };
-
-    explicit
-    Object(std::shared_ptr<Impl> impl) noexcept
-        : impl_(std::move(impl))
-    {
-    }
-
-    bool empty() const noexcept
-    {
-        return impl_->empty();
-    }
-
-    Value get(std::string_view key) const;
-
-private:
-    std::shared_ptr<Impl> impl_;
+    Array();
+    virtual std::size_t length() const noexcept = 0;
+    virtual Value get(std::size_t) const = 0;
 };
+
+using ArrayPtr = Pointer<Array>;
+
+//------------------------------------------------
+
+class MRDOX_DECL
+    Object : public Any
+{
+public:
+    Object();
+    virtual bool empty() const noexcept;
+    virtual Value get(std::string_view) const = 0;
+    virtual std::vector<std::string_view> props() const = 0;
+};
+
+using ObjectPtr = Pointer<Object>;
 
 //------------------------------------------------
 
@@ -110,20 +186,34 @@ class MRDOX_DECL
     {
         std::int64_t number_;
         std::string string_;
-        Object object_;
-        Array array_;
+        ArrayPtr array_;
+        ObjectPtr object_;
     };
 
 public:
     ~Value();
     Value() noexcept;
     Value(bool b) noexcept;
-    Value(Array arr) noexcept;
-    Value(Object arr) noexcept;
+    Value(ArrayPtr const& arr) noexcept;
+    Value(ObjectPtr const& arr) noexcept;
     Value(std::nullptr_t) noexcept;
     Value(char const* string) noexcept;
     Value(std::string_view s) noexcept;
     Value(std::string string) noexcept;
+
+    template<class T>
+    requires std::derived_from<T, Array>
+    Value(Pointer<T> const& ptr) noexcept
+        : Value(ArrayPtr(ptr))
+    {
+    }
+
+    template<class T>
+    requires std::derived_from<T, Object>
+    Value(Pointer<T> const& ptr) noexcept
+        : Value(ObjectPtr(ptr))
+    {
+    }
 
     template<class T>
     requires std::is_integral_v<T>
@@ -136,6 +226,7 @@ public:
         number_ = static_cast<std::int64_t>(number);
     }
 
+    Kind kind() const noexcept { return kind_; }
     bool isBool() const noexcept { return kind_ == Kind::Boolean; }
     bool isArray() const noexcept { return kind_ == Kind::Array; }
     bool isObject() const noexcept { return kind_ == Kind::Object; }
@@ -151,18 +242,6 @@ public:
         return number_ == 0;
     }
 
-    Array const& getArray() const noexcept
-    {
-        MRDOX_ASSERT(kind_ == Kind::Array);
-        return array_;
-    }
-
-    Object const& getObject() const noexcept
-    {
-        MRDOX_ASSERT(kind_ == Kind::Object);
-        return object_;
-    }
-
     std::int64_t getInteger() const noexcept
     {
         MRDOX_ASSERT(kind_ == Kind::Integer);
@@ -174,46 +253,30 @@ public:
         MRDOX_ASSERT(kind_ == Kind::String);
         return string_;
     }
+
+    ArrayPtr const&
+    getArray() const noexcept
+    {
+        MRDOX_ASSERT(kind_ == Kind::Array);
+        return array_;
+    }
+
+    ObjectPtr const&
+    getObject() const noexcept
+    {
+        MRDOX_ASSERT(kind_ == Kind::Object);
+        return object_;
+    }
 };
 
-//------------------------------------------------
-
 inline
 Value
-Array::
-get(
-    std::size_t index) const
+nonEmptyString(
+    std::string_view s)
 {
-    return impl_->get(index);
-}
-
-inline
-Value
-Object::
-get(
-    std::string_view key) const
-{
-    return impl_->get(key);
-}
-
-//------------------------------------------------
-
-template<class T, class... Args>
-requires std::derived_from<T, Array::Impl>
-Array
-makeArray(Args&&... args)
-{
-    return Array(std::make_shared<T>(
-        std::forward<Args>(args)...));
-}
-
-template<class T, class... Args>
-requires std::derived_from<T, Object::Impl>
-Object
-makeObject(Args&&... args)
-{
-    return Object(std::make_shared<T>(
-        std::forward<Args>(args)...));
+    if(! s.empty())
+        return s;
+    return nullptr;
 }
 
 } // dom

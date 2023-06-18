@@ -14,20 +14,22 @@ namespace clang {
 namespace mrdox {
 namespace dom {
 
+Any::~Any() = default;
+
 Array::
-Impl::
-~Impl() = default;
-
-Object::
-Impl::
-~Impl() = default;
-
-bool
-Object::
-Impl::
-empty() const noexcept
+Array()
+    : Any(this)
 {
-    // default to false
+}
+
+Object::
+Object()
+    : Any(this)
+{
+}
+
+bool Object::empty() const noexcept
+{
     return false;
 }
 
@@ -36,16 +38,15 @@ Value::
 {
     switch(kind_)
     {
-    case Kind::Object:
-        object_.~Object();
-        break;
     case Kind::Array:
-        array_.~Array();
+        array_.~Pointer();
+        break;
+    case Kind::Object:
+        object_.~Pointer();
         break;
     case Kind::String:
         string_.~basic_string();
         break;
-
     case Kind::Integer:
     case Kind::Boolean:
     case Kind::Null:
@@ -70,7 +71,7 @@ Value(bool b) noexcept
 
 Value::
 Value(
-    Array arr) noexcept
+    ArrayPtr const& arr) noexcept
     : kind_(Kind::Array)
     , array_(std::move(arr))
 {
@@ -78,7 +79,7 @@ Value(
 
 Value::
 Value(
-    Object obj) noexcept
+    ObjectPtr const& obj) noexcept
     : kind_(Kind::Object)
     , object_(std::move(obj))
 {
@@ -119,8 +120,8 @@ isTruthy() const noexcept
 {
     switch(kind_)
     {
-    case Kind::Object: return object_.empty();
-    case Kind::Array: return array_.length() > 0;
+    case Kind::Array: return array_->length() > 0;
+    case Kind::Object: return object_->empty();
     case Kind::String: return string_.size() > 0;
     case Kind::Integer:
     case Kind::Boolean: return number_ != 0;

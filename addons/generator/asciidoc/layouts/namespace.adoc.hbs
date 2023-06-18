@@ -1,13 +1,10 @@
+[#{{page.id}}]
 == Namespace {{page.name}}
 
+[,cols=2]
+|===
+|Name |Description
 {{#each page.members}}
-
-=== {{name}}
-
-{{doc.brief}}
-
-==== Description
-
-{{doc.description }}
-
+|xref:{{id}}[`{{name}}`] |{{doc.brief}}
 {{/each}}
+|===
