@@ -16,10 +16,45 @@ namespace dom {
 
 Any::~Any() = default;
 
-bool Object::empty() const noexcept
+//------------------------------------------------
+
+std::size_t
+Array::
+length() const noexcept
 {
-    return false;
+    return 0;
 }
+
+Value
+Array::
+get(std::size_t) const
+{
+    return nullptr;
+}
+
+bool
+Object::
+empty() const noexcept
+{
+    return true;
+}
+
+Value
+Object::
+get(std::string_view) const
+{
+    return nullptr;
+}
+
+auto
+Object::
+props() const ->
+    std::vector<std::string_view>
+{
+    return {};
+}
+
+//------------------------------------------------
 
 Value::
 ~Value()

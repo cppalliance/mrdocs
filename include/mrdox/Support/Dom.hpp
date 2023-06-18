@@ -152,8 +152,8 @@ class MRDOX_DECL
     Array : public Any
 {
 public:
-    virtual std::size_t length() const noexcept = 0;
-    virtual Value get(std::size_t) const = 0;
+    virtual std::size_t length() const noexcept;
+    virtual Value get(std::size_t) const;
 };
 
 using ArrayPtr = Pointer<Array>;
@@ -165,8 +165,8 @@ class MRDOX_DECL
 {
 public:
     virtual bool empty() const noexcept;
-    virtual Value get(std::string_view) const = 0;
-    virtual std::vector<std::string_view> props() const = 0;
+    virtual Value get(std::string_view) const;
+    virtual std::vector<std::string_view> props() const;
 };
 
 using ObjectPtr = Pointer<Object>;
