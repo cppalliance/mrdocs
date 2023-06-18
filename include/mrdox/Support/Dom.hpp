@@ -48,22 +48,10 @@ enum class Kind
 class MRDOX_DECL
     Any
 {
-    void* ptr_;
-    std::atomic<std::size_t> refs_ = 1;
-
-protected:
-    explicit Any(void* ptr) noexcept
-        : ptr_(ptr)
-    {
-    }
+    std::atomic<std::size_t> mutable refs_ = 1;
 
 public:
     virtual ~Any() = 0;
-
-    void* get() const noexcept
-    {
-        return ptr_;
-    }
 
     Any* addref() noexcept
     {
@@ -71,7 +59,13 @@ public:
         return this;
     }
 
-    void release() noexcept
+    Any const* addref() const noexcept
+    {
+        ++refs_;
+        return this;
+    }
+
+    void release() const noexcept
     {
         if(--refs_ > 0)
             return;
@@ -79,16 +73,21 @@ public:
     }
 };
 
+template<class U, class... Args>
+auto makePointer(Args&&... args);
+
 /** A pointer container for object or array.
 */
 template<class T>
-requires std::derived_from<T, Any>
+requires std::convertible_to<T*, Any*>
 class Pointer
 {
-public: // VFALCO FIXME!
     Any* any_;
 
-public: // VFALCO FIXME!
+    template<class U>
+    requires std::convertible_to<U*, Any*>
+    friend class Pointer;
+
     explicit
     Pointer(Any* any) noexcept
         : any_(any)
@@ -97,8 +96,7 @@ public: // VFALCO FIXME!
 
 public:
     Pointer() = delete;
-    Pointer& operator=(
-        Pointer const&) = delete;
+    Pointer& operator=(Pointer const&) = delete;
 
     ~Pointer()
     {
@@ -111,7 +109,7 @@ public:
     }
 
     template<class U>
-    requires std::derived_from<U, T>
+    requires std::convertible_to<U*, T*>
     Pointer(Pointer<U> const& other) noexcept
         : any_(other.any_->addref())
     {
@@ -119,7 +117,7 @@ public:
 
     T* get() const noexcept
     {
-        return reinterpret_cast<T*>(any_->get());
+        return static_cast<T*>(any_);
     }
 
     T* operator->() const noexcept
@@ -136,15 +134,15 @@ public:
     {
         return any_;
     }
+
+    template<class U, class... Args>
+    friend auto makePointer(Args&&... args);
 };
 
-template<
-    class T, class... Args>
-requires std::derived_from<T, Any>
-Pointer<T>
-makePointer(Args&&... args)
+template<class U, class... Args>
+auto makePointer(Args&&... args)
 {
-    return Pointer<T>(new T(
+    return Pointer<U>(new U(
         std::forward<Args>(args)...));
 }
 
@@ -154,7 +152,6 @@ class MRDOX_DECL
     Array : public Any
 {
 public:
-    Array();
     virtual std::size_t length() const noexcept = 0;
     virtual Value get(std::size_t) const = 0;
 };
@@ -167,7 +164,6 @@ class MRDOX_DECL
     Object : public Any
 {
 public:
-    Object();
     virtual bool empty() const noexcept;
     virtual Value get(std::string_view) const = 0;
     virtual std::vector<std::string_view> props() const = 0;

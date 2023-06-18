@@ -16,18 +16,6 @@ namespace dom {
 
 Any::~Any() = default;
 
-Array::
-Array()
-    : Any(this)
-{
-}
-
-Object::
-Object()
-    : Any(this)
-{
-}
-
 bool Object::empty() const noexcept
 {
     return false;
