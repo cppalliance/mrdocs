@@ -9,23 +9,50 @@
 //
 
 #include "MultiPageVisitor.hpp"
+#include <mrdox/Support/Path.hpp>
+#include <fstream>
 
 namespace clang {
 namespace mrdox {
 namespace adoc {
 
-// Launch a task to render the page
+template<std::derived_from<Info> Ty>
 void
 MultiPageVisitor::
-renderPage(
-    auto const& I)
+render(
+    Ty const& I,
+    Builder& builder)
+{
+    auto pageText = builder(I);
+    if(! pageText)
+        throw pageText.getError();
+
+    std::string fileName = files::appendPath(
+        outputPath_, toBase16(I.id) + ".adoc");
+    std::ofstream os;
+    try
+    {
+        os.open(fileName,
+            std::ios_base::binary |
+                std::ios_base::out |
+                std::ios_base::trunc // | std::ios_base::noreplace
+            );
+        os.write(pageText->data(), pageText->size());
+    }
+    catch(std::exception const& ex)
+    {
+        throw Error("std::ofstream(\"{}\") threw \"{}\"", fileName, ex.what());
+    }
+}
+
+void
+MultiPageVisitor::
+renderAsync(auto const& I)
 {
     ex_.async(
         [this, &I](Builder& builder)
         {
-            auto pageText = builder(I);
-            if(! pageText)
-                throw pageText.getError();
+            render(I, builder);
         });
 }
 
@@ -33,7 +60,7 @@ void
 MultiPageVisitor::
 operator()(NamespaceInfo const& I)
 {
-    renderPage(I);
+    renderAsync(I);
     corpus_.traverse(I, *this);
 }
 
@@ -41,7 +68,7 @@ void
 MultiPageVisitor::
 operator()(RecordInfo const& I)
 {
-    renderPage(I);
+    renderAsync(I);
     corpus_.traverse(I, *this);
 }
 
@@ -49,7 +76,7 @@ void
 MultiPageVisitor::
 operator()(FunctionInfo const& I)
 {
-    renderPage(I);
+    renderAsync(I);
 }
 
 } // adoc
