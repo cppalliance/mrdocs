@@ -112,6 +112,17 @@ Builder(
            return a === b;
         });
 
+        Handlebars.registerHelper(
+            'neq', function(a, b)
+        {
+           return a !== b;
+        });
+
+        Handlebars.registerHelper(
+            'not', function(a)
+        {
+           return ! a;
+        });
     )");
     if(err)
         throw err;

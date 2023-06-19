@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -18,6 +19,7 @@
 #include <mrdox/Dom/DomSource.hpp>
 #include <mrdox/Dom/DomSymbol.hpp>
 #include <mrdox/Dom/DomSymbolArray.hpp>
+#include <mrdox/Dom/DomTemplate.hpp>
 #include <mrdox/Dom/DomType.hpp>
 
 namespace clang {
@@ -87,6 +89,12 @@ get(std::string_view key) const
         if(key == "specializations")
             return dom::makePointer<DomSymbolArray>(
                 I_->Specializations, corpus_);
+        if(key == "template")
+        {
+            if(! I_->Template)
+                return nullptr;
+            return dom::makePointer<DomTemplate>(*I_->Template, corpus_);
+        }
     }
     if constexpr(T::isFunction())
     {
@@ -99,15 +107,33 @@ get(std::string_view key) const
         if(key == "specs")
             return dom::makePointer<DomFnSpecs>(
                 *I_, corpus_);
+        if(key == "template")
+        {
+            if(! I_->Template)
+                return nullptr;
+            return dom::makePointer<DomTemplate>(*I_->Template, corpus_);
+        }
     }
     if constexpr(T::isEnum())
     {
     }
     if constexpr(T::isTypedef())
     {
+        if(key == "template")
+        {
+            if(! I_->Template)
+                return nullptr;
+            return dom::makePointer<DomTemplate>(*I_->Template, corpus_);
+        }
     }
     if constexpr(T::isVariable())
     {
+        if(key == "template")
+        {
+            if(! I_->Template)
+                return nullptr;
+            return dom::makePointer<DomTemplate>(*I_->Template, corpus_);
+        }
     }
     if constexpr(T::isField())
     {
@@ -149,13 +175,23 @@ props() const ->
             "bases",
             "friends",
             "members",
-            "specializations"
+            "specializations",
+            "template"
             });
     if constexpr(T::isFunction())
         v.insert(v.end(), {
             "return",
             "params",
-            "specs"
+            "specs",
+            "template"
+            });
+    if constexpr(T::isVariable())
+        v.insert(v.end(), {
+            "template"
+            });
+    if constexpr(T::isTypedef())
+        v.insert(v.end(), {
+            "template"
             });
     return v;
 }
