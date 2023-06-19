@@ -40,7 +40,7 @@
   </template>
   <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
     <tparam name="T" class="type"/>
-    <targ value="T *"/>
+    <targ value="T*"/>
     <struct name="B" id="dydGCFMdrM4nOwuv3RCXqg2KCUA=">
       <file path="class-template-spec.cpp" line="25" class="def"/>
       <function name="g" id="YqMF7qPhrCzrLLwscZ76goyLl0k=">
@@ -50,7 +50,7 @@
   </template>
   <template class="partial" id="Bu/3QcmNOdsc7RSM3OKHnuCxGPU=">
     <tparam name="T" class="type"/>
-    <targ value="T &amp;"/>
+    <targ value="T&amp;"/>
     <struct name="B" id="ZjUaxeOoGJ0Jol9Nmn7cGRE7RCo=">
       <file path="class-template-spec.cpp" line="31" class="def"/>
       <function name="h" id="Y1o9DjZarkgpmS4JVrc/XkZMn3k=">
@@ -80,7 +80,7 @@
   </template>
   <template class="partial" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
     <tparam name="T" class="type"/>
-    <targ value="T *"/>
+    <targ value="T*"/>
     <targ value="int"/>
     <struct name="C" id="6zS87fCNnLtFfHbRWEmcdeAT1Zg=">
       <file path="class-template-spec.cpp" line="49" class="def"/>

@@ -17,7 +17,7 @@
       </template>
       <template class="partial" id="7L90lvoKPW80F2cnMs0e05abtuk=">
         <tparam name="U" class="type"/>
-        <targ value="U *"/>
+        <targ value="U*"/>
         <targ value="T"/>
         <variable name="x" id="odTOUblgmooUozrBqW3qKzPWSO4=">
           <file path="static-data-template.cpp" line="7" class="def"/>

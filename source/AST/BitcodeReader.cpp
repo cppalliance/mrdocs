@@ -122,7 +122,7 @@ getInfos()
 
         // NamedType and Comment blocks should
         // not appear at the top level
-        case BI_TYPE_BLOCK_ID:
+        // case BI_TYPE_BLOCK_ID:
         case BI_JAVADOC_BLOCK_ID:
         case BI_JAVADOC_LIST_BLOCK_ID:
         case BI_JAVADOC_NODE_BLOCK_ID:

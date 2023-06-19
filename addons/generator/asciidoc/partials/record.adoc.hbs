@@ -11,7 +11,9 @@
 {{#if symbol.template}}
 {{>template-head symbol.template}}
 {{symbol.tag}} {{symbol.name~}}
-{{>template-args symbol.template}}
+{{#if (neq symbol.template.kind "primary")~}}
+{{>template-args args=symbol.template.args}}
+{{/if}}
 {{else}}
 {{symbol.tag}} {{symbol.name~}}
 {{/if}}
@@ -22,7 +24,7 @@
     {{#if @first}}:{{else}},{{/if}}
     {{~#unless (eq access ../symbol.defaultAccess)}} {{access}}{{/unless}}
     {{~#if isVirtual}} virtual{{/if}}
-    {{~null}} {{type.name}}
+    {{~null}} {{>declarator type decl-name=""}}
     {{~#if @last}};{{/if}}
 {{/each}}
 {{/unless}}

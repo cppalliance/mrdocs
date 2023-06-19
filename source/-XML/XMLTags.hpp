@@ -114,14 +114,6 @@ struct Attribute
     {
     }
 
-    Attribute(
-        std::optional<TypeInfo> const& opt)
-        : name("type")
-        , value(opt ? opt->Name : std::string())
-        , pred(opt)
-    {
-    }
-
     template<class Enum>
     requires std::is_enum_v<Enum>
     Attribute(Enum v)

@@ -15,7 +15,7 @@
       </field>
       <field name="x" id="81imwKxfuTfd7lfVGnF+fKx46lY=">
         <file path="class-template.cpp" line="7" class="def"/>
-        <type name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to="/>
+        <type name="S"/>
       </field>
       <field name="y" id="UKBRhwzQ0PeL6ZwfxmreRBoDQSY=">
         <file path="class-template.cpp" line="8" class="def"/>
@@ -42,7 +42,7 @@
         <file path="class-template.cpp" line="21" class="def"/>
         <field name="x" id="bQCgblScrSKOxQMVJxT7vFw9W4I=">
           <file path="class-template.cpp" line="23" class="def"/>
-          <type name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to="/>
+          <type name="S"/>
         </field>
         <field name="y" id="phg6+zMhjV0SJ7vav871OGqoPPQ=">
           <file path="class-template.cpp" line="24" class="def"/>
@@ -69,7 +69,7 @@
           <file path="class-template.cpp" line="35" class="def"/>
           <field name="w" id="bLX5mthqXMHAtLNEc87RKLQSUyU=">
             <file path="class-template.cpp" line="37" class="def"/>
-            <type name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to="/>
+            <type name="S"/>
           </field>
           <field name="x" id="qSNOAAxaet7aBxvD7WvFqJOpm3A=">
             <file path="class-template.cpp" line="38" class="def"/>

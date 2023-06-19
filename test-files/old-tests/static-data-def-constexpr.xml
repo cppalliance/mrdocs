@@ -8,7 +8,7 @@
       <file path="static-data-def-constexpr.cpp" line="5" class="def"/>
       <file path="static-data-def-constexpr.cpp" line="3"/>
       <attr id="storage-class" name="static" value="2"/>
-      <type name="const S" id="pOYGF6pLJlICuiGO0Xj0daDb/to="/>
+      <type name="const S"/>
     </variable>
   </struct>
 </namespace>

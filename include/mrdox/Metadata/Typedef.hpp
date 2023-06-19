@@ -29,7 +29,7 @@ struct TypedefInfo
 {
     friend class ASTVisitor;
 
-    TypeInfo Underlying;
+    std::unique_ptr<TypeInfo> Underlying;
 
     // Indicates if this is a new C++ "using"-style typedef:
     //   using MyVector = std::vector<int>

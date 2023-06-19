@@ -219,6 +219,15 @@ convertToRecordKeyKind(
     }
 }
 
+QualifierKind
+convertToQualifierKind(
+    Qualifiers kind)
+{
+    return static_cast<QualifierKind>(
+        (kind.hasConst() ? QualifierKind::Const : QualifierKind::None) |
+        (kind.hasVolatile() ? QualifierKind::Volatile : QualifierKind::None));
+}
+
 template<typename T, typename... Args>
 void insertChild(NamespaceInfo& I, Args&&... args)
 {

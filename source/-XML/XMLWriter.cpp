@@ -275,6 +275,7 @@ XMLWriter::
 writeEnum(
     EnumInfo const& I)
 {
+#if 0
     tags_.open(enumTagName, {
         { "name", I.Name },
         { "class", "scoped", I.Scoped },
@@ -282,6 +283,20 @@ writeEnum(
         { I.Access },
         { I.id }
         });
+#else
+    tags_.open(enumTagName, {
+        { "name", I.Name },
+        { "class", "scoped", I.Scoped },
+        { I.Access },
+        { I.id }
+    });
+    if(I.BaseType)
+    {
+        tags_.open(baseTagName);
+        writeType(I.BaseType);
+        tags_.close(baseTagName);
+    }
+#endif
 
     writeSourceInfo(I);
 
@@ -329,7 +344,7 @@ writeFunction(
     write(I.specs0, tags_);
     write(I.specs1, tags_);
 
-    writeReturnType(I.ReturnType, tags_);
+    writeReturnType(*I.ReturnType, tags_);
 
     for(auto const& J : I.Params)
         writeParam(J, tags_);
@@ -360,9 +375,9 @@ writeRecord(
 
     writeSourceInfo(I);
 
-
     write(I.specs, tags_);
 
+#if 0
     for(auto const& B : I.Bases)
         tags_.write(baseTagName, "", {
             { "name", B.Type.Name },
@@ -370,6 +385,18 @@ writeRecord(
             { "class", "virtual", B.IsVirtual },
             { B.Type.id }
             });
+#else
+    for(auto const& B : I.Bases)
+    {
+        tags_.open(baseTagName, {
+            { B.Access },
+            { "class", "virtual", B.IsVirtual },
+        });
+        writeType(B.Type);
+        tags_.close(baseTagName);
+    }
+#endif
+
 
     // Friends
     for(auto const& id : I.Friends)
@@ -407,9 +434,12 @@ writeTypedef(
 
     writeSourceInfo(I);
 
+    writeType(I.Underlying);
+#if 0
     tags_.write("type", "", {
         { "name", I.Underlying.Name },
         { I.Underlying.id } });
+#endif
 
     writeJavadoc(I.javadoc);
 
@@ -436,10 +466,13 @@ writeField(
 
     write(I.specs, tags_);
 
+    writeType(I.Type);
+#if 0
     tags_.write("type", {}, {
         { "name", I.Type.Name },
         { I.Type.id }
         });
+#endif
 
     writeJavadoc(I.javadoc);
 
@@ -465,10 +498,13 @@ writeVar(
 
     write(I.specs, tags_);
 
+    writeType(I.Type);
+#if 0
     tags_.write("type", {}, {
         { "name", I.Type.Name },
         { I.Type.id }
         });
+#endif
 
     writeJavadoc(I.javadoc);
 
@@ -568,6 +604,21 @@ writeSpecialization(
     tags_.close(specializationTagName);
 
     return true;
+}
+
+//------------------------------------------------
+
+void
+XMLWriter::
+writeType(
+    const std::unique_ptr<TypeInfo>& type)
+{
+    if(! type)
+        return;
+
+    tags_.write("type", {}, {
+        { "name", toString(*type) },
+    });
 }
 
 //------------------------------------------------

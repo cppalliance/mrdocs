@@ -16,7 +16,7 @@
   <variable name="t" id="eFAdMVIx9F2Zyx0LmK/nCDOhmhA=">
     <file path="ns-variables.cpp" line="9"/>
     <attr id="storage-class" name="extern" value="1"/>
-    <type name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+    <type name="T"/>
   </variable>
 </namespace>
 </mrdox>

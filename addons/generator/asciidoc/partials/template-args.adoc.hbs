@@ -1,6 +1,4 @@
-{{#if (neq kind "primary")~}}<
-{{~#each args~}}
+<{{~#each args~}}
     {{value}}
     {{~#if (not @last)}}, {{/if}}
-{{~/each~}}
->{{/if}}
+{{~/each~}}>

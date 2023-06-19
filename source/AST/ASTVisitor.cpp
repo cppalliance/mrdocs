@@ -129,13 +129,12 @@ getLine(
 std::string
 ASTVisitor::
 getSourceCode(
-    Decl const* D,
     SourceRange const& R)
 {
-    return Lexer::getSourceText(CharSourceRange::getTokenRange(R),
-        D->getASTContext().getSourceManager(),
-        D->getASTContext().getLangOpts())
-        .str();
+    return Lexer::getSourceText(
+        CharSourceRange::getTokenRange(R),
+        *sourceManager_,
+        astContext_->getLangOpts()).str();
 }
 
 //------------------------------------------------
@@ -148,138 +147,321 @@ getTypeAsString(
     return T.getAsString(astContext_->getPrintingPolicy());
 }
 
-SymbolID
+std::unique_ptr<TypeInfo>
 ASTVisitor::
-getSymbolIDForType(
-    QualType T)
+buildTypeInfoForType(
+    const NestedNameSpecifier* N)
 {
-    QualType inner = T;
-    while(true)
+    if(N)
     {
-        inner = inner.getLocalUnqualifiedType();
-        const Type* type = inner.getTypePtr();
-        switch(inner->getTypeClass())
+        if(const auto* T = N->getAsType())
+            return buildTypeInfoForType(QualType(T, 0));
+        if(const auto* I = N->getAsIdentifier())
         {
-        // parenthesized types
-        case Type::Paren:
-        {
-            auto* PT = cast<ParenType>(type);
-            inner = PT->getInnerType();
-            continue;
-        }
-        // pointers
-        case Type::Pointer:
-        {
-            auto* PT = cast<PointerType>(type);
-            inner = PT->getPointeeType();
-            continue;
-        }
-        // references
-        case Type::LValueReference:
-        case Type::RValueReference:
-        {
-            auto* RT = cast<ReferenceType>(type);
-            inner = RT->getPointeeType();
-            continue;
-        }
-        // pointer to members
-        case Type::MemberPointer:
-        {
-            auto* MPT = cast<MemberPointerType>(type);
-            inner = MPT->getPointeeType();
-            continue;
-        }
-        // arrays
-        case Type::ConstantArray:
-        case Type::IncompleteArray:
-        case Type::VariableArray:
-        case Type::DependentSizedArray:
-        {
-            auto* AT = cast<ArrayType>(type);
-            inner = AT->getElementType();
-            continue;
-        }
-        // elaborated type specifier
-        case Type::Elaborated:
-        {
-            auto* ET = cast<ElaboratedType>(type);
-            inner = ET->getNamedType();
-            continue;
-        }
-        // type with __atribute__
-        case Type::Attributed:
-        {
-            auto* AT = cast<AttributedType>(type);
-            inner = AT->getModifiedType();
-            continue;
-        }
-        // adjusted and decayed types
-        case Type::Decayed:
-        case Type::Adjusted:
-        {
-            auto* AT = cast<AdjustedType>(type);
-            inner = AT->getOriginalType();
-            continue;
-        }
-        // using declarations
-        case Type::Using:
-        {
-            auto* UT = cast<UsingType>(type);
-            // look through the using declaration and
-            // use the the type from the referenced declaration
-            inner = UT->getUnderlyingType();
-            continue;
-        }
-        // specialization of a class/alias template or
-        // template template parameter
-        case Type::TemplateSpecialization:
-        {
-            auto* TST = cast<TemplateSpecializationType>(type);
-            // use the SymbolID of the corresponding template if it is known
-            if(auto* TD = TST->getTemplateName().getAsTemplateDecl())
-                return extractSymbolID(TD);
-            return SymbolID::zero;
-        }
-        // pack expansion
-        case Type::PackExpansion:
-        {
-            auto* PET = cast<PackExpansionType>(type);
-            inner = PET->getPattern();
-            continue;
-        }
-        // record type
-        case Type::Record:
-        {
-            auto* RT = cast<RecordType>(type);
-            return extractSymbolID(RT->getDecl());
-        }
-        // enum type
-        case Type::Enum:
-        {
-            auto* ET = cast<EnumType>(type);
-            return extractSymbolID(ET->getDecl());
-        }
-        // typedef/alias type
-        case Type::Typedef:
-        {
-            auto* TT = cast<TypedefType>(type);
-            return extractSymbolID(TT->getDecl());
-        }
-        default:
-            return SymbolID::zero;
+            auto R = std::make_unique<TagTypeInfo>();
+            R->ParentType = buildTypeInfoForType(N->getPrefix());
+            R->Name = I->getName();
+            return R;
         }
     }
-
+    return nullptr;
 }
 
-TypeInfo
+std::unique_ptr<TypeInfo>
 ASTVisitor::
-getTypeInfoForType(
-    QualType T)
+buildTypeInfoForType(
+    QualType qt)
 {
-    return TypeInfo(
-        getSymbolIDForType(T),
-        getTypeAsString(T));
+    // should never be called for a QualType
+    // that has no Type pointer
+    MRDOX_ASSERT(! qt.isNull());
+    const Type* type = qt.getTypePtr();
+    switch(qt->getTypeClass())
+    {
+    // parenthesized types
+    case Type::Paren:
+    {
+        auto* T = cast<ParenType>(type);
+        return buildTypeInfoForType(
+            T->getInnerType().withFastQualifiers(
+                qt.getLocalFastQualifiers()));
+    }
+    // type with __atribute__
+    case Type::Attributed:
+    {
+        auto* T = cast<AttributedType>(type);
+        return buildTypeInfoForType(
+            T->getModifiedType().withFastQualifiers(
+                qt.getLocalFastQualifiers()));
+    }
+    // adjusted and decayed types
+    case Type::Decayed:
+    case Type::Adjusted:
+    {
+        auto* T = cast<AdjustedType>(type);
+        return buildTypeInfoForType(
+            T->getOriginalType().withFastQualifiers(
+                qt.getLocalFastQualifiers()));
+    }
+    // using declarations
+    case Type::Using:
+    {
+        auto* T = cast<UsingType>(type);
+        // look through the using declaration and
+        // use the the type from the referenced declaration
+        return buildTypeInfoForType(
+            T->getUnderlyingType().withFastQualifiers(
+                qt.getLocalFastQualifiers()));
+    }
+    // pointers
+    case Type::Pointer:
+    {
+        auto* T = cast<PointerType>(type);
+        auto I = std::make_unique<PointerTypeInfo>();
+        I->PointeeType = buildTypeInfoForType(
+            T->getPointeeType());
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    // references
+    case Type::LValueReference:
+    {
+        auto* T = cast<LValueReferenceType>(type);
+        auto I = std::make_unique<LValueReferenceTypeInfo>();
+        I->PointeeType = buildTypeInfoForType(
+            T->getPointeeType());
+        return I;
+    }
+    case Type::RValueReference:
+    {
+        auto* T = cast<RValueReferenceType>(type);
+        auto I = std::make_unique<RValueReferenceTypeInfo>();
+        I->PointeeType = buildTypeInfoForType(
+            T->getPointeeType());
+        return I;
+    }
+    // pointer to members
+    case Type::MemberPointer:
+    {
+        auto* T = cast<MemberPointerType>(type);
+        auto I = std::make_unique<MemberPointerTypeInfo>();
+        I->PointeeType = buildTypeInfoForType(
+            T->getPointeeType());
+        I->ParentType = buildTypeInfoForType(
+            QualType(T->getClass(), 0));
+        return I;
+    }
+    // pack expansion
+    case Type::PackExpansion:
+    {
+        auto* T = cast<PackExpansionType>(type);
+        auto I = std::make_unique<PackTypeInfo>();
+        I->PatternType = buildTypeInfoForType(T->getPattern());
+        return I;
+    }
+    // KRYSTIAN NOTE: we don't handle FunctionNoProto here,
+    // and it's unclear if we should. we should not encounter
+    // such types in c++ (but it might be possible?)
+    // functions
+    case Type::FunctionProto:
+    {
+        auto* T = cast<FunctionProtoType>(type);
+        auto I = std::make_unique<FunctionTypeInfo>();
+        I->ReturnType = buildTypeInfoForType(
+            T->getReturnType());
+        for(QualType PT : T->getParamTypes())
+            I->ParamTypes.emplace_back(
+                buildTypeInfoForType(PT));
+        I->RefQualifier = convertToReferenceKind(
+            T->getRefQualifier());
+        I->CVQualifiers = convertToQualifierKind(
+            T->getMethodQuals());
+        I->ExceptionSpec = convertToNoexceptKind(
+            T->getExceptionSpecType());
+        return I;
+    }
+    // KRYSTIAN FIXME: do we handle variables arrays?
+    // they can only be created within function scope
+    // arrays
+    case Type::IncompleteArray:
+    {
+        auto* T = cast<IncompleteArrayType>(type);
+        auto I = std::make_unique<ArrayTypeInfo>();
+        I->ElementType = buildTypeInfoForType(
+            T->getElementType());
+        return I;
+    }
+    case Type::ConstantArray:
+    {
+        auto* T = cast<ConstantArrayType>(type);
+        auto I = std::make_unique<ArrayTypeInfo>();
+        I->ElementType = buildTypeInfoForType(
+            T->getElementType());
+        if(auto* E = T->getSizeExpr())
+            I->BoundsExpr = getSourceCode(E->getSourceRange());
+        I->BoundsValue = toString(T->getSize(), 10, false);
+        return I;
+    }
+    case Type::DependentSizedArray:
+    {
+        auto* T = cast<DependentSizedArrayType>(type);
+        auto I = std::make_unique<ArrayTypeInfo>();
+        I->ElementType = buildTypeInfoForType(
+            T->getElementType());
+        if(auto* E = T->getSizeExpr())
+            I->BoundsExpr = getSourceCode(E->getSourceRange());
+        return I;
+    }
+    case Type::Auto:
+    {
+        auto* T = cast<AutoType>(type);
+        QualType deduced = T->getDeducedType();
+        // KRYSTIAN NOTE: we don't use isDeduced because it will
+        // return true if the type is dependent
+        // if the type has been deduced, use the deduced type
+        if(! deduced.isNull())
+            return buildTypeInfoForType(deduced);
+        auto I = std::make_unique<BuiltinTypeInfo>();
+        I->Name = getTypeAsString(
+            qt.withoutLocalFastQualifiers());
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    case Type::DeducedTemplateSpecialization:
+    {
+        auto* T = cast<DeducedTemplateSpecializationType>(type);
+        if(T->isDeduced())
+            return buildTypeInfoForType(T->getDeducedType());
+        auto I = std::make_unique<TagTypeInfo>();
+        if(auto* TD = T->getTemplateName().getAsTemplateDecl())
+        {
+            extractSymbolID(TD, I->id);
+            I->Name = TD->getNameAsString();
+        }
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    // elaborated type specifier or
+    // type with nested name specifier
+    case Type::Elaborated:
+    {
+        auto* T = cast<ElaboratedType>(type);
+        auto I = buildTypeInfoForType(
+            T->getNamedType().withFastQualifiers(
+                qt.getLocalFastQualifiers()));
+        // ignore elaborated-type-specifiers
+        if(auto kw = T->getKeyword();
+            kw != ElaboratedTypeKeyword::ETK_Typename &&
+            kw != ElaboratedTypeKeyword::ETK_None)
+            return I;
+        switch(I->Kind)
+        {
+        case TypeKind::Tag:
+            static_cast<TagTypeInfo&>(*I).ParentType =
+                buildTypeInfoForType(T->getQualifier());
+            break;
+        case TypeKind::Specialization:
+            static_cast<SpecializationTypeInfo&>(*I).ParentType =
+                buildTypeInfoForType(T->getQualifier());
+            break;
+        default:
+            MRDOX_UNREACHABLE();
+        };
+        return I;
+    }
+    // qualified dependent name with template keyword
+    case Type::DependentTemplateSpecialization:
+    {
+        auto* T = cast<DependentTemplateSpecializationType>(type);
+        auto I = std::make_unique<SpecializationTypeInfo>();
+        I->ParentType = buildTypeInfoForType(
+            T->getQualifier());
+        I->Name = T->getIdentifier()->getName();
+        buildTemplateArgs(I->TemplateArgs, T->template_arguments());
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    // specialization of a class/alias template or
+    // template template parameter
+    case Type::TemplateSpecialization:
+    {
+        auto* T = cast<TemplateSpecializationType>(type);
+        auto I = std::make_unique<SpecializationTypeInfo>();
+        // use the SymbolID of the corresponding template if it is known
+        if(auto* TD = T->getTemplateName().getAsTemplateDecl())
+        {
+            extractSymbolID(TD, I->id);
+            I->Name = TD->getNameAsString();
+        }
+        buildTemplateArgs(I->TemplateArgs, T->template_arguments());
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    // dependent typename-specifier
+    case Type::DependentName:
+    {
+        auto* T = cast<DependentNameType>(type);
+        auto I = std::make_unique<TagTypeInfo>();
+        I->ParentType = buildTypeInfoForType(
+            T->getQualifier());
+        I->Name = T->getIdentifier()->getName();
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    // injected class name within a class template
+    // or a specialization thereof
+    case Type::InjectedClassName:
+    {
+        // we treat the injected class name as a normal CXXRecord,
+        // and do not store the implicit template argument list
+        auto* T = cast<InjectedClassNameType>(type);
+        auto I = std::make_unique<TagTypeInfo>();
+        extractSymbolID(T->getDecl(), I->id);
+        I->Name = T->getDecl()->getNameAsString();
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    // record & enum types
+    case Type::Record:
+    case Type::Enum:
+    {
+        auto* T = cast<TagType>(type);
+        auto I = std::make_unique<TagTypeInfo>();
+        extractSymbolID(T->getDecl(), I->id);
+        I->Name = T->getDecl()->getNameAsString();
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    // typedef/alias type
+    case Type::Typedef:
+    {
+        auto* T = cast<TypedefType>(type);
+        auto I = std::make_unique<TagTypeInfo>();
+        extractSymbolID(T->getDecl(), I->id);
+        I->Name = T->getDecl()->getNameAsString();
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    // builtin/unhandled type
+    default:
+    {
+        auto I = std::make_unique<BuiltinTypeInfo>();
+        I->Name = getTypeAsString(
+            qt.withoutLocalFastQualifiers());
+        I->CVQualifiers = convertToQualifierKind(
+            qt.getLocalQualifiers());
+        return I;
+    }
+    }
 }
 
 void
@@ -291,9 +473,9 @@ parseParameters(
     for(const ParmVarDecl* P : D->parameters())
     {
         I.Params.emplace_back(
-            getTypeInfoForType(P->getOriginalType()),
+            buildTypeInfoForType(P->getOriginalType()),
             P->getNameAsString(),
-            getSourceCode(D, P->getDefaultArgRange()));
+            getSourceCode(P->getDefaultArgRange()));
     }
 }
 
@@ -315,8 +497,8 @@ buildTemplateParam(
             TypeTParam>();
         if(TP->hasDefaultArgument())
         {
-            extinfo.Default.emplace(getTypeInfoForType(
-                TP->getDefaultArgument()));
+            extinfo.Default = buildTypeInfoForType(
+                TP->getDefaultArgument());
         }
     }
     else if(const auto* TP = dyn_cast<
@@ -324,12 +506,12 @@ buildTemplateParam(
     {
         auto& extinfo = info.emplace<
             NonTypeTParam>();
-        extinfo.Type = getTypeInfoForType(
+        extinfo.Type = buildTypeInfoForType(
             TP->getType());
         if(TP->hasDefaultArgument())
         {
             extinfo.Default.emplace(getSourceCode(
-                ND, TP->getDefaultArgumentLoc()));
+                TP->getDefaultArgumentLoc()));
         }
     }
     else if(const auto* TP = dyn_cast<
@@ -346,7 +528,7 @@ buildTemplateParam(
         if(TP->hasDefaultArgument())
         {
             extinfo.Default.emplace(getSourceCode(
-                ND, TP->getDefaultArgumentLoc()));
+                TP->getDefaultArgumentLoc()));
         }
     }
     return info;
@@ -372,8 +554,16 @@ buildTemplateArgs(
     for(const TemplateArgument& arg : range)
     {
         std::string arg_str;
-        llvm::raw_string_ostream stream(arg_str);
-        arg.print(policy, stream, false);
+        if(arg.getKind() == TemplateArgument::Type)
+        {
+            QualType qt = arg.getAsType();
+            arg_str = toString(*buildTypeInfoForType(qt));
+        }
+        else
+        {
+            llvm::raw_string_ostream stream(arg_str);
+            arg.print(policy, stream, false);
+        }
         result.emplace_back(std::move(arg_str));
     }
 }
@@ -571,14 +761,11 @@ parseEnumerators(
     {
         std::string ValueExpr;
         if(const Expr* InitExpr = E->getInitExpr())
-            ValueExpr = getSourceCode(D, InitExpr->getSourceRange());
-
-        SmallString<16> ValueStr;
-        E->getInitVal().toString(ValueStr);
+            ValueExpr = getSourceCode(InitExpr->getSourceRange());
 
         I.Members.emplace_back(
             E->getNameAsString(),
-            ValueStr.str(),
+            toString(E->getInitVal(), 10),
             ValueExpr);
         parseRawComment(I.Members.back().javadoc, E);
     }
@@ -769,7 +956,7 @@ extractBases(
     for(CXXBaseSpecifier const& B : D->bases())
     {
         I.Bases.emplace_back(
-            getTypeInfoForType(B.getType()),
+            buildTypeInfoForType(B.getType()),
             convertToAccessKind(
                 B.getAccessSpecifier()),
             B.isVirtual());
@@ -835,10 +1022,9 @@ constructFunction(
         I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
     else
         I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
-    QualType qt = D->getReturnType();
-    std::string s = getTypeAsString(qt);
-    I.ReturnType = getTypeInfoForType(qt);
     parseParameters(I, D);
+    I.ReturnType = buildTypeInfoForType(
+        D->getReturnType());
 
     if(const auto* ftsi = D->getTemplateSpecializationInfo())
     {
@@ -1056,10 +1242,9 @@ buildEnum(
         I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
     I.Scoped = D->isScoped();
     if(D->isFixed())
-    {
-        auto Name = getTypeAsString(D->getIntegerType());
-        I.BaseType = TypeInfo(SymbolID::zero, Name);
-    }
+        I.BaseType = buildTypeInfoForType(
+            D->getIntegerType());
+
     parseEnumerators(I, D);
 
     bool member_spec = getParentNamespaces(I.Namespace, D);
@@ -1081,8 +1266,12 @@ buildField(
     int line = getLine(D);
     I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
 
-    I.Type = getTypeInfoForType(
+#if 0
+    I.Type = buildTypeInfoForType(
         D->getTypeSourceInfo()->getType());
+#else
+    I.Type = buildTypeInfoForType(D->getType());
+#endif
 
     I.specs.hasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
     I.specs.isDeprecated = D->hasAttr<DeprecatedAttr>();
@@ -1110,8 +1299,12 @@ buildVar(
         I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
     else
         I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
-    I.Type = getTypeInfoForType(
+#if 0
+    I.Type = buildTypeInfoForType(
         D->getTypeSourceInfo()->getType());
+#else
+    I.Type = buildTypeInfoForType(D->getType());
+#endif
     I.specs.storageClass =
         convertToStorageClassKind(
             D->getStorageClass());
@@ -1151,8 +1344,10 @@ buildTypedef(
 {
     if(! extractInfo(I, D))
         return;
-    I.Underlying = getTypeInfoForType(
+    I.Underlying = buildTypeInfoForType(
         D->getUnderlyingType());
+
+#if 0
     if(I.Underlying.Name.empty())
     {
         // Typedef for an unnamed type. This is like
@@ -1162,6 +1357,7 @@ buildTypedef(
         // a duplicate here.
         return;
     }
+#endif
 
     int line = getLine(D);
     // D->isThisDeclarationADefinition(); // not available

@@ -93,7 +93,7 @@ union FnFlags1
 struct Param
 {
     /** The type of this parameter */
-    TypeInfo Type;
+    std::unique_ptr<TypeInfo> Type;
 
     /** The parameter name.
 
@@ -107,7 +107,7 @@ struct Param
     Param() = default;
 
     Param(
-        TypeInfo&& type,
+        std::unique_ptr<TypeInfo>&& type,
         std::string&& name,
         std::string&& def_arg)
         : Type(std::move(type))
@@ -125,7 +125,7 @@ struct FunctionInfo
 {
     friend class ASTVisitor;
 
-    TypeInfo ReturnType;   // Info about the return type of this function.
+    std::unique_ptr<TypeInfo> ReturnType; // Info about the return type of this function.
     std::vector<Param> Params; // List of parameters.
 
     // When present, this function is a template or specialization.

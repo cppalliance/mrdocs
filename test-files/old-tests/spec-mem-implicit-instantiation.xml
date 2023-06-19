@@ -72,13 +72,13 @@
     <targ value="bool"/>
     <template class="partial" id="UYi0dO2mWSf0nD8WRfX9JD1eJyw=">
       <tparam name="U" class="type"/>
-      <targ value="U *"/>
+      <targ value="U*"/>
       <struct name="C" id="xYK8qpEgWzczUMGnNUx+ozeBle0=">
         <file path="spec-mem-implicit-instantiation.cpp" line="34" class="def"/>
       </struct>
     </template>
     <specialization id="EyperGIiZ7cSv/PB2BApKjPRQVA=" primary="xYK8qpEgWzczUMGnNUx+ozeBle0=">
-      <targ value="double *"/>
+      <targ value="double*"/>
       <function name="j" id="4hePn1dLCqLal3xld/sSlBvpu6U=">
         <file path="spec-mem-implicit-instantiation.cpp" line="41" class="def"/>
       </function>

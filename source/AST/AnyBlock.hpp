@@ -371,6 +371,7 @@ public:
 
 //------------------------------------------------
 
+#if 0
 class TypeBlock
     : public BitcodeReader::AnyBlock
 {
@@ -403,6 +404,127 @@ public:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
     }
+};
+#endif
+//------------------------------------------------
+
+class TypeInfoBlock
+    : public BitcodeReader::AnyBlock
+{
+protected:
+    BitcodeReader& br_;
+    std::unique_ptr<TypeInfo>& I_;
+
+public:
+    TypeInfoBlock(
+        std::unique_ptr<TypeInfo>& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I_(I)
+    {
+    }
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case TYPEINFO_KIND:
+        {
+            TypeKind k{};
+            if(auto err = decodeRecord(R, k, Blob))
+                return err;
+            switch(k)
+            {
+            case TypeKind::Builtin:
+                I_ = std::make_unique<BuiltinTypeInfo>();
+                break;
+            case TypeKind::Tag:
+                I_ = std::make_unique<TagTypeInfo>();
+                break;
+            case TypeKind::Specialization:
+                I_ = std::make_unique<SpecializationTypeInfo>();
+                break;
+            case TypeKind::LValueReference:
+                I_ = std::make_unique<LValueReferenceTypeInfo>();
+                break;
+            case TypeKind::RValueReference:
+                I_ = std::make_unique<RValueReferenceTypeInfo>();
+                break;
+            case TypeKind::Pointer:
+                I_ = std::make_unique<PointerTypeInfo>();
+                break;
+            case TypeKind::MemberPointer:
+                I_ = std::make_unique<MemberPointerTypeInfo>();
+                break;
+            case TypeKind::Array:
+                I_ = std::make_unique<ArrayTypeInfo>();
+                break;
+            case TypeKind::Function:
+                I_ = std::make_unique<FunctionTypeInfo>();
+                break;
+            case TypeKind::Pack:
+                I_ = std::make_unique<PackTypeInfo>();
+                break;
+            default:
+                return Error("invalid TypeInfo kind");
+            }
+            return Error::success();
+        }
+        case TYPEINFO_ID:
+            return visit(*I_, [&]<typename T>(T& t)
+                {
+                    if constexpr(requires { t.id; })
+                        return decodeRecord(R, t.id, Blob);
+                    else
+                        return Error("wrong TypeInfo kind");
+                });
+        case TYPEINFO_NAME:
+            return visit(*I_, [&]<typename T>(T& t)
+                {
+                    if constexpr(requires { t.Name; })
+                        return decodeRecord(R, t.Name, Blob);
+                    else
+                        return Error("wrong TypeInfo kind");
+                });
+        case TYPEINFO_CVQUAL:
+            return visit(*I_, [&]<typename T>(T& t)
+                {
+                    if constexpr(requires { t.CVQualifiers; })
+                        return decodeRecord(R, t.CVQualifiers, Blob);
+                    else
+                        return Error("wrong TypeInfo kind");
+                });
+        case TYPEINFO_REFQUAL:
+            if(I_->Kind != TypeKind::Function)
+                return Error("wrong TypeInfo kind");
+            return decodeRecord(R, static_cast<
+                FunctionTypeInfo&>(*I_).RefQualifier, Blob);
+        case TYPEINFO_EXCEPTION_SPEC:
+            if(I_->Kind != TypeKind::Function)
+                return Error("wrong TypeInfo kind");
+            return decodeRecord(R, static_cast<
+                FunctionTypeInfo&>(*I_).ExceptionSpec, Blob);
+        case TYPEINFO_BOUNDS_EXPR:
+            if(I_->Kind != TypeKind::Array)
+                return Error("wrong TypeInfo kind");
+            return decodeRecord(R, static_cast<
+                ArrayTypeInfo&>(*I_).BoundsExpr, Blob);
+        case TYPEINFO_BOUNDS_VALUE:
+            if(I_->Kind != TypeKind::Array)
+                return Error("wrong TypeInfo kind");
+            return decodeRecord(R, static_cast<
+                ArrayTypeInfo&>(*I_).BoundsValue, Blob);
+        default:
+            return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(unsigned ID) override;
 };
 
 //------------------------------------------------
@@ -446,9 +568,9 @@ public:
     {
         switch(ID)
         {
-        case BI_TYPE_BLOCK_ID:
+        case BI_TYPEINFO_BLOCK_ID:
         {
-            TypeBlock B(I_.Type, br_);
+            TypeInfoBlock B(I_.Type, br_);
             return br_.readBlock(B, ID);
         }
         default:
@@ -573,13 +695,13 @@ public:
             TemplateParamBlock P(I_.get<TemplateTParam>().Params.emplace_back(), br_);
             return br_.readBlock(P, ID);
         }
-        case BI_TYPE_BLOCK_ID:
+        case BI_TYPEINFO_BLOCK_ID:
         {
-            TypeInfo* t = nullptr;
+            std::unique_ptr<TypeInfo>* t = nullptr;
             switch(I_.Kind)
             {
             case TParamKind::Type:
-                t = &I_.get<TypeTParam>().Default.emplace();
+                t = &I_.get<TypeTParam>().Default;
                 break;
             case TParamKind::NonType:
                 t = &I_.get<NonTypeTParam>().Type;
@@ -587,7 +709,7 @@ public:
             default:
                 return formatError("invalid TypeInfo block in TParam");
             }
-            TypeBlock B(*t, br_);
+            TypeInfoBlock B(*t, br_);
             return br_.readBlock(B, ID);
         }
         default:
@@ -653,6 +775,73 @@ public:
 
 //------------------------------------------------
 
+Error
+TypeInfoBlock::
+readSubBlock(unsigned ID)
+{
+    switch(ID)
+    {
+    // if the subblock ID is BI_TYPEINFO_BLOCK_ID,
+    // it means that the block is a subblock of a
+    // BI_TYPEINFO_CHILD_BLOCK_ID, BI_TYPEINFO_PARENT_BLOCK_ID,
+    // or BI_TYPEINFO_PARAM_BLOCK_ID and should "forward"
+    // the result to the caller
+    case BI_TYPEINFO_BLOCK_ID:
+        return br_.readBlock(*this, ID);
+    case BI_TYPEINFO_CHILD_BLOCK_ID:
+        return visit(*I_, [&]<typename T>(T& t)
+            {
+                std::unique_ptr<TypeInfo>* child = nullptr;
+                if constexpr(requires { t.PointeeType; })
+                    child = &t.PointeeType;
+                else if constexpr(std::same_as<T, PackTypeInfo>)
+                    child = &t.PatternType;
+                else if constexpr(std::same_as<T, ArrayTypeInfo>)
+                    child = &t.ElementType;
+                else if constexpr(std::same_as<T, FunctionTypeInfo>)
+                    child = &t.ReturnType;
+
+                if(! child)
+                    return Error("wrong TypeInfo kind");
+                TypeInfoBlock B(*child, br_);
+                return br_.readBlock(B, ID);
+            });
+    case BI_TYPEINFO_PARENT_BLOCK_ID:
+        return visit(*I_, [&]<typename T>(T& t)
+            {
+                if constexpr(requires { t.ParentType; })
+                {
+                    TypeInfoBlock B(t.ParentType, br_);
+                    return br_.readBlock(B, ID);
+                }
+                return Error("wrong TypeInfo kind");
+            });
+
+    case BI_TYPEINFO_PARAM_BLOCK_ID:
+    {
+        if(I_->Kind != TypeKind::Function)
+            return Error("wrong TypeInfo kind");
+        auto& F = static_cast<FunctionTypeInfo&>(*I_);
+        TypeInfoBlock B(F.ParamTypes.emplace_back(), br_);
+        return br_.readBlock(B, ID);
+    }
+    case BI_TEMPLATE_ARG_BLOCK_ID:
+        return visit(*I_, [&]<typename T>(T& t)
+            {
+                if constexpr(requires { t.TemplateArgs; })
+                {
+                    TemplateArgBlock B(t.TemplateArgs.emplace_back());
+                    return br_.readBlock(B, ID);
+                }
+                return Error("wrong TypeInfo kind");
+            });
+    default:
+        return AnyBlock::readSubBlock(ID);
+    }
+}
+
+//------------------------------------------------
+
 class FunctionParamBlock
     : public BitcodeReader::AnyBlock
 {
@@ -695,9 +884,9 @@ public:
     {
         switch(ID)
         {
-        case BI_TYPE_BLOCK_ID:
+        case BI_TYPEINFO_BLOCK_ID:
         {
-            TypeBlock B(I_.Type, br_);
+            TypeInfoBlock B(I_.Type, br_);
             return br_.readBlock(B, ID);
         }
         default:
@@ -855,9 +1044,9 @@ public:
     {
         switch(ID)
         {
-        case BI_TYPE_BLOCK_ID:
+        case BI_TYPEINFO_BLOCK_ID:
         {
-            TypeBlock B(I->ReturnType, br_);
+            TypeInfoBlock B(I->ReturnType, br_);
             return br_.readBlock(B, ID);
         }
         case BI_FUNCTION_PARAM_BLOCK_ID:
@@ -910,9 +1099,9 @@ public:
     {
         switch(ID)
         {
-        case BI_TYPE_BLOCK_ID:
+        case BI_TYPEINFO_BLOCK_ID:
         {
-            TypeBlock B(I->Underlying, br_);
+            TypeInfoBlock B(I->Underlying, br_);
             return br_.readBlock(B, ID);
         }
         case BI_TEMPLATE_BLOCK_ID:
@@ -1007,10 +1196,9 @@ public:
     {
         switch(ID)
         {
-        case BI_TYPE_BLOCK_ID:
+        case BI_TYPEINFO_BLOCK_ID:
         {
-            I->BaseType.emplace();
-            TypeBlock B(*I->BaseType, br_);
+            TypeInfoBlock B(I->BaseType, br_);
             return br_.readBlock(B, ID);
         }
         case BI_ENUM_VALUE_BLOCK_ID:
@@ -1058,9 +1246,9 @@ public:
     {
         switch(ID)
         {
-        case BI_TYPE_BLOCK_ID:
+        case BI_TYPEINFO_BLOCK_ID:
         {
-            TypeBlock B(I->Type, br_);
+            TypeInfoBlock B(I->Type, br_);
             return br_.readBlock(B, ID);
         }
         case BI_TEMPLATE_BLOCK_ID:
@@ -1113,9 +1301,9 @@ public:
     {
         switch(ID)
         {
-        case BI_TYPE_BLOCK_ID:
+        case BI_TYPEINFO_BLOCK_ID:
         {
-            TypeBlock B(I->Type, br_);
+            TypeInfoBlock B(I->Type, br_);
             return br_.readBlock(B, ID);
         }
         default:

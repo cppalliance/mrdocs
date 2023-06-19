@@ -14,198 +14,198 @@
   </template>
   <alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
     <file path="type-resolution.cpp" line="6" class="def"/>
-    <type name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <type name="A"/>
   </alias>
   <alias name="D" id="LXTs1uTCF/vevZU29QYVICehLFQ=">
     <file path="type-resolution.cpp" line="8" class="def"/>
-    <type name="B&lt;short, long&gt;" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <type name="B&lt;short, long&gt;"/>
   </alias>
   <template>
     <tparam name="T" class="type"/>
     <alias name="E" id="ikh/cWe22atB10u7UsOKS5W39CA=">
       <file path="type-resolution.cpp" line="11" class="def"/>
-      <type name="B&lt;T, long&gt;" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+      <type name="B&lt;T, long&gt;"/>
     </alias>
   </template>
   <function name="f0" id="NmPMV0MWNFJUjfSOLHtzdbgpFoQ=">
     <file path="type-resolution.cpp" line="13"/>
-    <param type="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <param type="A"/>
   </function>
   <function name="f1" id="BaEDPGJuuB/LSgDi3IbZIcI8+hQ=">
     <file path="type-resolution.cpp" line="14"/>
-    <param type="const A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <param type="const A"/>
   </function>
   <function name="f2" id="7hoCtaKnV3q0+0LGpIwT05DsCzM=">
     <file path="type-resolution.cpp" line="15"/>
-    <param type="A &amp;" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <param type="A&amp;"/>
   </function>
   <function name="f3" id="+u77KXnhVCt71fF6pXSP0epFvnk=">
     <file path="type-resolution.cpp" line="16"/>
-    <param type="const A &amp;" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <param type="const A&amp;"/>
   </function>
   <function name="f4" id="9T7aRCZADylTGfrzXLBOVh0ozys=">
     <file path="type-resolution.cpp" line="17"/>
-    <param type="A *" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <param type="A*"/>
   </function>
   <function name="f5" id="kT0jo07C7QGLPer3WTjynau4uqw=">
     <file path="type-resolution.cpp" line="18"/>
-    <param type="const A *" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <param type="const A*"/>
   </function>
   <function name="f6" id="MdHfxQfzVjQ3CUyn9Mpn7fQk+/M=">
     <file path="type-resolution.cpp" line="19"/>
-    <param type="A **" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <param type="A**"/>
   </function>
   <function name="f7" id="w10F/8wyLcytn7L65/ILYU0EdXo=">
     <file path="type-resolution.cpp" line="20"/>
-    <param type="const A **" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <param type="const A**"/>
   </function>
   <function name="f8" id="CClm4VbfLVJuyMbCoDMeADEgyqc=">
     <file path="type-resolution.cpp" line="21"/>
-    <param type="const A *const *" id="YrPSaKAbmXgzCAX5WByx4eVoqBM="/>
+    <param type="const A* const*"/>
   </function>
   <function name="g0" id="yrx2OB9QNNSl9+wzVkVQ8SEabRs=">
     <file path="type-resolution.cpp" line="23"/>
-    <param type="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA="/>
+    <param type="C"/>
   </function>
   <function name="g1" id="Rj6P6+H/ZPGfGuoquGgLekbJPqg=">
     <file path="type-resolution.cpp" line="24"/>
-    <param type="const C" id="f75RIL8qKOwbyH6ffvrv59F0nCA="/>
+    <param type="const C"/>
   </function>
   <function name="g2" id="ZoIZSEi5P7rybxKK8Kjgxla7+4Y=">
     <file path="type-resolution.cpp" line="25"/>
-    <param type="C &amp;" id="f75RIL8qKOwbyH6ffvrv59F0nCA="/>
+    <param type="C&amp;"/>
   </function>
   <function name="g3" id="Q0DuYbFpCkEF2ouXRvQLKKq1zh8=">
     <file path="type-resolution.cpp" line="26"/>
-    <param type="const C &amp;" id="f75RIL8qKOwbyH6ffvrv59F0nCA="/>
+    <param type="const C&amp;"/>
   </function>
   <function name="g4" id="SayuQ3M/mTSdbTbGozDw6t08++w=">
     <file path="type-resolution.cpp" line="27"/>
-    <param type="C *" id="f75RIL8qKOwbyH6ffvrv59F0nCA="/>
+    <param type="C*"/>
   </function>
   <function name="g5" id="PaQ7BnZjNHfJZQsH/h+VxhlT36c=">
     <file path="type-resolution.cpp" line="28"/>
-    <param type="const C *" id="f75RIL8qKOwbyH6ffvrv59F0nCA="/>
+    <param type="const C*"/>
   </function>
   <function name="g6" id="Q3jmjtDscKaRlk9NmZeWQrE/qC0=">
     <file path="type-resolution.cpp" line="29"/>
-    <param type="C **" id="f75RIL8qKOwbyH6ffvrv59F0nCA="/>
+    <param type="C**"/>
   </function>
   <function name="g7" id="c258MEng+EH63J85RJQ0lCqTn9c=">
     <file path="type-resolution.cpp" line="30"/>
-    <param type="const C **" id="f75RIL8qKOwbyH6ffvrv59F0nCA="/>
+    <param type="const C**"/>
   </function>
   <function name="g8" id="ycKVTIHwB/Z8IbNKkEaJj75S3bA=">
     <file path="type-resolution.cpp" line="31"/>
-    <param type="const C *const *" id="f75RIL8qKOwbyH6ffvrv59F0nCA="/>
+    <param type="const C* const*"/>
   </function>
   <function name="h0" id="E5y/fD9iZ0MCXYoHtunBFFWTWhg=">
     <file path="type-resolution.cpp" line="33"/>
-    <param type="B&lt;short, long&gt;" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <param type="B&lt;short, long&gt;"/>
   </function>
   <function name="h1" id="BI0JWw00VfmJGJLhcVYpoks79MI=">
     <file path="type-resolution.cpp" line="34"/>
-    <param type="const B&lt;short, long&gt;" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <param type="const B&lt;short, long&gt;"/>
   </function>
   <function name="h2" id="ysfWNk4t2HuUA1jfw595fkiD1PA=">
     <file path="type-resolution.cpp" line="35"/>
-    <param type="B&lt;short, long&gt; &amp;" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <param type="B&lt;short, long&gt;&amp;"/>
   </function>
   <function name="h3" id="3YZIC0cuzzvjybwCWJjk6kMYkzk=">
     <file path="type-resolution.cpp" line="36"/>
-    <param type="const B&lt;short, long&gt; &amp;" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <param type="const B&lt;short, long&gt;&amp;"/>
   </function>
   <function name="h4" id="fIfvv5LTjuRTX2EoKkdnMHXq8E0=">
     <file path="type-resolution.cpp" line="37"/>
-    <param type="B&lt;short, long&gt; *" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <param type="B&lt;short, long&gt;*"/>
   </function>
   <function name="h5" id="oFewAAa3bKYS3Sk8SzrCV2pZjwY=">
     <file path="type-resolution.cpp" line="38"/>
-    <param type="const B&lt;short, long&gt; *" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <param type="const B&lt;short, long&gt;*"/>
   </function>
   <function name="h6" id="4+iF5tOtJgZ7ZcqfZljDl0zsJaY=">
     <file path="type-resolution.cpp" line="39"/>
-    <param type="B&lt;short, long&gt; **" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <param type="B&lt;short, long&gt;**"/>
   </function>
   <function name="h7" id="spvd/tFS+th4JW6fc601EqTD5hA=">
     <file path="type-resolution.cpp" line="40"/>
-    <param type="const B&lt;short, long&gt; **" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <param type="const B&lt;short, long&gt;**"/>
   </function>
   <function name="h8" id="AIIJjypsyznlYuu8zS5f9VVTsqM=">
     <file path="type-resolution.cpp" line="41"/>
-    <param type="const B&lt;short, long&gt; *const *" id="swBEqeWAJoaWVKty+1lCoYUK04A="/>
+    <param type="const B&lt;short, long&gt;* const*"/>
   </function>
   <function name="i0" id="UUnnujM/qHDrH/lhqape19i4ygc=">
     <file path="type-resolution.cpp" line="43"/>
-    <param type="D" id="LXTs1uTCF/vevZU29QYVICehLFQ="/>
+    <param type="D"/>
   </function>
   <function name="i1" id="oZaT3+tjcRZ1TqV3dDRcibfcIUA=">
     <file path="type-resolution.cpp" line="44"/>
-    <param type="const D" id="LXTs1uTCF/vevZU29QYVICehLFQ="/>
+    <param type="const D"/>
   </function>
   <function name="i2" id="9ssXVWUhTzxQgA12dFAzDjoQsSo=">
     <file path="type-resolution.cpp" line="45"/>
-    <param type="D &amp;" id="LXTs1uTCF/vevZU29QYVICehLFQ="/>
+    <param type="D&amp;"/>
   </function>
   <function name="i3" id="lt3C1MYHyvgc69kaQIicxt6GShw=">
     <file path="type-resolution.cpp" line="46"/>
-    <param type="const D &amp;" id="LXTs1uTCF/vevZU29QYVICehLFQ="/>
+    <param type="const D&amp;"/>
   </function>
   <function name="i4" id="T8COa5LWeytxzI9W9tsQ0yn3pMQ=">
     <file path="type-resolution.cpp" line="47"/>
-    <param type="D *" id="LXTs1uTCF/vevZU29QYVICehLFQ="/>
+    <param type="D*"/>
   </function>
   <function name="i5" id="yjcvYN+iBULxlO9Ye2mlCrItu0E=">
     <file path="type-resolution.cpp" line="48"/>
-    <param type="const D *" id="LXTs1uTCF/vevZU29QYVICehLFQ="/>
+    <param type="const D*"/>
   </function>
   <function name="i6" id="n5ijVugkR+RdqWc8HhULfhumEa8=">
     <file path="type-resolution.cpp" line="49"/>
-    <param type="D **" id="LXTs1uTCF/vevZU29QYVICehLFQ="/>
+    <param type="D**"/>
   </function>
   <function name="i7" id="ZjHOF6kLLIcBXeh5KZapmnzPEnI=">
     <file path="type-resolution.cpp" line="50"/>
-    <param type="const D **" id="LXTs1uTCF/vevZU29QYVICehLFQ="/>
+    <param type="const D**"/>
   </function>
   <function name="i8" id="D9mUtv975QoRibry0HtjynvRkzs=">
     <file path="type-resolution.cpp" line="51"/>
-    <param type="const D *const *" id="LXTs1uTCF/vevZU29QYVICehLFQ="/>
+    <param type="const D* const*"/>
   </function>
   <function name="j0" id="iegBG/1Lpr/GF9vznbapPd8d6Ws=">
     <file path="type-resolution.cpp" line="53"/>
-    <param type="E&lt;short&gt;" id="ikh/cWe22atB10u7UsOKS5W39CA="/>
+    <param type="E&lt;short&gt;"/>
   </function>
   <function name="j1" id="al+9zRjNTBZZcU69a8iMD6KngWA=">
     <file path="type-resolution.cpp" line="54"/>
-    <param type="const E&lt;short&gt;" id="ikh/cWe22atB10u7UsOKS5W39CA="/>
+    <param type="const E&lt;short&gt;"/>
   </function>
   <function name="j2" id="2cJI8v0G+GfLxlnF+d0p52Lt9zE=">
     <file path="type-resolution.cpp" line="55"/>
-    <param type="E&lt;short&gt; &amp;" id="ikh/cWe22atB10u7UsOKS5W39CA="/>
+    <param type="E&lt;short&gt;&amp;"/>
   </function>
   <function name="j3" id="gGkJqESKyHkjrDimz/Z1Uj2cK+0=">
     <file path="type-resolution.cpp" line="56"/>
-    <param type="const E&lt;short&gt; &amp;" id="ikh/cWe22atB10u7UsOKS5W39CA="/>
+    <param type="const E&lt;short&gt;&amp;"/>
   </function>
   <function name="j4" id="Mj/s1nUSVoc1ekzTBsQf9pPgkFw=">
     <file path="type-resolution.cpp" line="57"/>
-    <param type="E&lt;short&gt; *" id="ikh/cWe22atB10u7UsOKS5W39CA="/>
+    <param type="E&lt;short&gt;*"/>
   </function>
   <function name="j5" id="gVVoORJQLKCql9+xiRwm1JBfiBE=">
     <file path="type-resolution.cpp" line="58"/>
-    <param type="const E&lt;short&gt; *" id="ikh/cWe22atB10u7UsOKS5W39CA="/>
+    <param type="const E&lt;short&gt;*"/>
   </function>
   <function name="j6" id="sprKg2FCJZqWV8vVSeoW2hF5RL8=">
     <file path="type-resolution.cpp" line="59"/>
-    <param type="E&lt;short&gt; **" id="ikh/cWe22atB10u7UsOKS5W39CA="/>
+    <param type="E&lt;short&gt;**"/>
   </function>
   <function name="j7" id="VSCpXF9FwRBZvC4dq2fu0/+CXgY=">
     <file path="type-resolution.cpp" line="60"/>
-    <param type="const E&lt;short&gt; **" id="ikh/cWe22atB10u7UsOKS5W39CA="/>
+    <param type="const E&lt;short&gt;**"/>
   </function>
   <function name="j8" id="rjNquALg5slBV3zcGK7kbMiR/Oc=">
     <file path="type-resolution.cpp" line="61"/>
-    <param type="const E&lt;short&gt; *const *" id="ikh/cWe22atB10u7UsOKS5W39CA="/>
+    <param type="const E&lt;short&gt;* const*"/>
   </function>
 </namespace>
 </mrdox>

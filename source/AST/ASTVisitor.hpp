@@ -96,19 +96,18 @@ public:
 
     std::string
     getSourceCode(
-        Decl const* D,
         SourceRange const& R);
 
     std::string
     getTypeAsString(
         QualType T);
 
-    SymbolID
-    getSymbolIDForType(
-        QualType T);
+    std::unique_ptr<TypeInfo>
+    buildTypeInfoForType(
+        const NestedNameSpecifier* N);
 
-    TypeInfo
-    getTypeInfoForType(
+    std::unique_ptr<TypeInfo>
+    buildTypeInfoForType(
         QualType T);
 
     void

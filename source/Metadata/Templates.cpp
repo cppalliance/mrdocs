@@ -34,15 +34,6 @@ destroy() const noexcept
 
 TParam::
 TParam(
-    const TParam& other)
-    : Name(other.Name)
-    , IsParameterPack(other.IsParameterPack)
-{
-    construct(other);
-}
-
-TParam::
-TParam(
     TParam&& other) noexcept
     : Name(std::move(other.Name))
     , IsParameterPack(other.IsParameterPack)
@@ -63,17 +54,6 @@ TParam::
 ~TParam()
 {
     destroy();
-}
-
-TParam&
-TParam::
-operator=(const TParam& other)
-{
-    destroy();
-    construct(other);
-    Name = other.Name;
-    IsParameterPack = other.IsParameterPack;
-    return *this;
 }
 
 TParam&

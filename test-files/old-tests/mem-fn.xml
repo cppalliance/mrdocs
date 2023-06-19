@@ -109,7 +109,9 @@
   </struct>
   <struct name="T17" id="HL3/1NhKSels2G5ay7F0IYzlSLs=">
     <file path="mem-fn.cpp" line="20" class="def"/>
-    <base name="T14" id="SLJhBKx+2u4KxSJ78Fg6wqlObPc="/>
+    <base>
+      <type name="T14"/>
+    </base>
     <function name="f" id="5+yfyWtDpz80IwKT3xugro18Ev0=">
       <file path="mem-fn.cpp" line="20"/>
       <attr id="has-override"/>
@@ -146,7 +148,9 @@
   </struct>
   <struct name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
     <file path="mem-fn.cpp" line="29" class="def"/>
-    <base name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00="/>
+    <base>
+      <type name="U"/>
+    </base>
     <function name="f3" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
       <file path="mem-fn.cpp" line="31"/>
       <attr id="has-override"/>

@@ -1,8 +1,8 @@
 {{#if (eq kind "function")}}
 {{#if (eq storageClass "static")}}static {{/if~}}
-{{>type-name return}} {{name}}(
+{{>declarator return decl-name=""}} {{name}}(
 {{~#each params}}
-{{>type-name type}}
+{{>declarator type decl-name=""}}
 {{#if name}} {{name}}{{/if}}
 {{~#unless @last}}, {{/unless}}
 {{~/each}})

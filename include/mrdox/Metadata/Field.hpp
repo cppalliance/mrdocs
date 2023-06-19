@@ -43,7 +43,7 @@ struct FieldInfo
     , SourceInfo
 {
     /** Type of the field */
-    TypeInfo Type;
+    std::unique_ptr<TypeInfo> Type;
 
     /** The default member initializer, if any.
     */

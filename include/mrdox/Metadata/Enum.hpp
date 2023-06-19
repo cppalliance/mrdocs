@@ -70,7 +70,7 @@ struct EnumInfo
     // Set to nonempty to the type when this is an explicitly typed enum. For
     //   enum Foo : short { ... };
     // this will be "short".
-    std::optional<TypeInfo> BaseType;
+    std::unique_ptr<TypeInfo> BaseType;
 
     // Enumeration members.
     std::vector<EnumValueInfo> Members;

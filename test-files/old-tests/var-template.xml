@@ -18,7 +18,7 @@
   </template>
   <template class="partial" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
     <tparam name="T" class="type"/>
-    <targ value="T &amp;"/>
+    <targ value="T&amp;"/>
     <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=">
       <file path="var-template.cpp" line="7" class="def"/>
       <type name="unsigned int"/>
@@ -44,7 +44,7 @@
     </template>
     <template class="partial" id="629jUQifhGrj15iClsD5BexWpWQ=">
       <tparam name="T" class="type"/>
-      <targ value="T *"/>
+      <targ value="T*"/>
       <variable name="C" id="wvoZkG3eTMaiFAf971AFdvmHCDE=">
         <file path="var-template.cpp" line="18" class="def"/>
         <attr id="storage-class" name="static" value="2"/>

@@ -1,22 +1,27 @@
 [source,cpp,subs=+macros]
 ----
-{{#if (eq storageClass "static")}}
-static
-{{/if}}
-{{>type-name return}}
+{{#if template}}{{>template-head template}}{{/if~}}
+{{#if (eq storageClass "static")}}static
+{{/if~}}
+{{>declarator-before return}}
 
-{{#if params}}
-{{name}}(
+{{name~}}
+{{#if (eq template.kind "explicit")~}}
+    {{~>template-args args=template.args~}}
+{{~/if~}}
+
+{{~#if params}}
+(
 {{#each params}}
-    {{>type-name type~}}
-    {{#if name}} {{name}}{{/if}}
+    {{>declarator type decl-name=name~}}
     {{~#if @last}}){{else}},
     {{/if}}
 {{~/each}}
 {{~else~}}
-{{name}}()
+()
 {{~/if~}}
 {{#if (eq exceptionSpec "noexcept")}} noexcept{{/if~}}
+{{~>declarator-after return~}}
 {{#if isDeleted}} = delete{{/if~}}
 ;
 ----

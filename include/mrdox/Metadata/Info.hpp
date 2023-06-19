@@ -90,7 +90,7 @@ struct MRDOX_VISIBLE
     //--------------------------------------------
 
     virtual ~Info() = default;
-    Info(Info const &Other) = delete;
+    Info(Info const& Other) = delete;
     Info(Info&& Other) = default;
 
     explicit

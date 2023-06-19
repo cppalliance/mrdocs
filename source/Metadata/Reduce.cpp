@@ -174,7 +174,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
 void merge(FunctionInfo& I, FunctionInfo&& Other)
 {
     MRDOX_ASSERT(canMerge(I, Other));
-    if (I.ReturnType.id == SymbolID::zero && I.ReturnType.Name == "")
+    if (! I.ReturnType)
         I.ReturnType = std::move(Other.ReturnType);
     if (I.Params.empty())
         I.Params = std::move(Other.Params);
@@ -191,8 +191,8 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     MRDOX_ASSERT(canMerge(I, Other));
     if (!I.IsUsing)
         I.IsUsing = Other.IsUsing;
-    if (I.Underlying.Name == "")
-        I.Underlying = Other.Underlying;
+    if (! I.Underlying)
+        I.Underlying = std::move(Other.Underlying);
     if(! I.Template)
         I.Template = std::move(Other.Template);
     mergeSourceInfo(I, std::move(Other));
@@ -213,7 +213,7 @@ void merge(EnumInfo& I, EnumInfo&& Other)
 void merge(FieldInfo& I, FieldInfo&& Other)
 {
     MRDOX_ASSERT(canMerge(I, Other));
-    if(I.Type.id == SymbolID::zero && I.Type.Name.empty())
+    if(! I.Type)
         I.Type = std::move(Other.Type);
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
@@ -225,7 +225,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
 void merge(VariableInfo& I, VariableInfo&& Other)
 {
     MRDOX_ASSERT(canMerge(I, Other));
-    if(I.Type.id == SymbolID::zero && I.Type.Name.empty())
+    if(! I.Type)
         I.Type = std::move(Other.Type);
     if(! I.Template)
         I.Template = std::move(Other.Template);

@@ -14,14 +14,14 @@
     <file path="function-parm-decay.cpp" line="9"/>
     <file path="function-parm-decay.cpp" line="10"/>
     <file path="function-parm-decay.cpp" line="11"/>
-    <param name="x" type="int *"/>
+    <param name="x" type="int*"/>
   </function>
   <function name="h" id="O4TonOdK6PIf6z1nHqJsqg7QfBw=">
     <file path="function-parm-decay.cpp" line="13"/>
     <file path="function-parm-decay.cpp" line="14"/>
     <file path="function-parm-decay.cpp" line="15"/>
     <file path="function-parm-decay.cpp" line="16"/>
-    <param name="x" type="int (bool)"/>
+    <param name="x" type="int(bool)"/>
   </function>
   <alias name="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=">
     <file path="function-parm-decay.cpp" line="18" class="def"/>
@@ -36,7 +36,7 @@
     <file path="function-parm-decay.cpp" line="22"/>
     <file path="function-parm-decay.cpp" line="23"/>
     <file path="function-parm-decay.cpp" line="24"/>
-    <param type="T" id="PvNOREc+JWxdkVgvSz+jC45IbGQ="/>
+    <param type="T"/>
   </function>
 </namespace>
 </mrdox>

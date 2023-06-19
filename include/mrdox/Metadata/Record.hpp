@@ -44,14 +44,14 @@ union RecFlags0
 */
 struct BaseInfo
 {
-    TypeInfo Type;
+    std::unique_ptr<TypeInfo> Type;
     AccessKind Access = AccessKind::Public;
     bool IsVirtual = false;
 
     BaseInfo() = default;
 
     BaseInfo(
-        TypeInfo&& type,
+        std::unique_ptr<TypeInfo>&& type,
         AccessKind access,
         bool is_virtual)
         : Type(std::move(type))

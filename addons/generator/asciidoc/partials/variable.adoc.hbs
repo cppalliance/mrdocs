@@ -8,13 +8,12 @@
 
 [source,cpp,subs=+macros]
 ----
-{{#if symbol.template}}
-{{>template-head symbol.template}}
-{{symbol.type.name}} {{symbol.name~}}
-{{>template-args symbol.template}}
-{{else}}
-{{symbol.type.name}} {{symbol.name~}}
-{{/if}}
+{{#if symbol.template}}{{>template-head symbol.template}}{{/if~}}
+{{#if (or (eq symbol.template.kind "explicit") (eq symbol.template.kind "partial"))~}}
+    {{~>declarator symbol.type decl-name=symbol.name decl-name-targs=symbol.template.args~}}
+{{~else~}}
+    {{~>declarator symbol.type decl-name=symbol.name decl-name-targs=""~}}
+{{~/if}}
 ;
 ----
 

@@ -107,25 +107,46 @@ Builder(
         Handlebars.registerHelper(
             'to_string', function(context, depth)
         {
-           return JSON.stringify(context, null, 2);
+            return JSON.stringify(context, null, 2);
         });
 
         Handlebars.registerHelper(
             'eq', function(a, b)
         {
-           return a === b;
+            return a === b;
         });
 
         Handlebars.registerHelper(
             'neq', function(a, b)
         {
-           return a !== b;
+            return a !== b;
         });
 
         Handlebars.registerHelper(
             'not', function(a)
         {
-           return ! a;
+            return ! a;
+        });
+
+        Handlebars.registerHelper(
+            'or', function(a, b)
+        {
+            return a || b;
+        });
+
+        Handlebars.registerHelper(
+            'and', function(a, b)
+        {
+            return a && b;
+        });
+
+        Handlebars.registerHelper(
+            'concat', function()
+        {
+            var result = '';
+            for(var i = 0; i < arguments.length - 1; ++i)
+                result += arguments[i];
+            return result;
         });
     )");
     if(err)

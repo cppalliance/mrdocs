@@ -44,13 +44,13 @@ struct TParam;
 struct TypeTParam
 {
     /** Default type for the type template parameter */
-    std::optional<TypeInfo> Default;
+    std::unique_ptr<TypeInfo> Default;
 };
 
 struct NonTypeTParam
 {
     /** Type of the non-type template parameter */
-    TypeInfo Type;
+    std::unique_ptr<TypeInfo> Type;
     // Non-type template parameter default value (if any)
     Optional<std::string> Default;
 };
@@ -120,19 +120,10 @@ public:
 
     MRDOX_DECL
     TParam(
-        const TParam& other);
-
-    MRDOX_DECL
-    TParam(
         std::string&& name,
         bool is_pack);
 
     MRDOX_DECL ~TParam();
-
-    MRDOX_DECL
-    TParam&
-    operator=(
-        const TParam& other);
 
     MRDOX_DECL
     TParam&
@@ -233,13 +224,6 @@ struct TemplateInfo
     /** Primary template ID for partial and explicit specializations.
     */
     OptionalSymbolID Primary;
-
-#if 0
-    /** Stores information for explicit specializations of members
-        of implicitly instantiated class template specializations
-    */
-    std::vector<SpecializationInfo> Specializations;
-#endif
 
     // KRYSTIAN NOTE: using the presence of args/params
     // to determine the specialization kind *should* work.

@@ -41,7 +41,7 @@ struct VariableInfo
     friend class ASTVisitor;
 
     /** The type of the variable */
-    TypeInfo Type;
+    std::unique_ptr<TypeInfo> Type;
 
     std::unique_ptr<TemplateInfo> Template;
 

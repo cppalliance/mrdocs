@@ -15,7 +15,7 @@
       </template>
       <template class="partial" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
         <tparam name="U" class="type"/>
-        <targ value="U *"/>
+        <targ value="U*"/>
         <targ value="T"/>
         <struct name="B" id="Y/lm1lkT88vf1Ml123mbuN6Fp2Y=">
           <file path="class-template-partial-spec.cpp" line="7" class="def"/>

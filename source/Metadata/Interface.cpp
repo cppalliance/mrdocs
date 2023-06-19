@@ -89,12 +89,15 @@ private:
                 actualAccess == AccessKind::Private)
                 continue;
             // VFALCO temporary hack to avoid looking up IDs
-            //        which for metadata that is not emitted.
+            //        which for metadata that is not emitted
+            continue;
+#if 0
             if(B.Type.id == SymbolID::zero ||
                 ! corpus_.find(B.Type.id))
                 continue;
             append(actualAccess,
                 corpus_.get<RecordInfo>(B.Type.id));
+#endif
         }
 
         for(auto const& id : From.Members)

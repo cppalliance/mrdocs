@@ -7,7 +7,7 @@
     <function name="operator+" id="2JysU2zJdfiiAb7nyNnvkDzkKvU=">
       <file path="overloaded-op-1.cpp" line="3"/>
       <attr id="operator" name="plus" value="5"/>
-      <return type="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
+      <return type="T"/>
     </function>
   </struct>
 </namespace>

@@ -201,7 +201,13 @@ BlockIdNameMap = []()
         {BI_ENUM_BLOCK_ID, "EnumBlock"},
         {BI_ENUM_VALUE_BLOCK_ID, "EnumValueBlock"},
         {BI_TYPEDEF_BLOCK_ID, "TypedefBlock"},
-        {BI_TYPE_BLOCK_ID, "TypeBlock"},
+        // {BI_TYPE_BLOCK_ID, "TypeBlock"},
+
+        {BI_TYPEINFO_BLOCK_ID, "TypeInfoBlock"},
+        {BI_TYPEINFO_PARENT_BLOCK_ID, "TypeInfoParentBlock"},
+        {BI_TYPEINFO_CHILD_BLOCK_ID, "TypeInfoChildBlock"},
+        {BI_TYPEINFO_PARAM_BLOCK_ID, "TypeInfoParamBlock"},
+
         {BI_FIELD_BLOCK_ID, "FieldBlock"},
         {BI_RECORD_BLOCK_ID, "RecordBlock"},
         {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
@@ -275,6 +281,16 @@ RecordIDNameMap = []()
         {TEMPLATE_PARAM_DEFAULT, {"Default", &StringAbbrev}},
         {TYPE_ID, {"TypeID", &SymbolIDAbbrev}},
         {TYPE_NAME, {"TypeName", &StringAbbrev}},
+
+        {TYPEINFO_KIND, {"TypeinfoKind", &Integer32Abbrev}},
+        {TYPEINFO_ID, {"TypeinfoID", &SymbolIDAbbrev}},
+        {TYPEINFO_NAME, {"TypeinfoName", &StringAbbrev}},
+        {TYPEINFO_CVQUAL, {"TypeinfoCV", &Integer32Abbrev}},
+        {TYPEINFO_BOUNDS_VALUE, {"TypeinfoBoundsVal", &StringAbbrev}},
+        {TYPEINFO_BOUNDS_EXPR, {"TypeinfoBoundsExpr", &StringAbbrev}},
+        {TYPEINFO_EXCEPTION_SPEC, {"TypeinfoNoexcept", &Integer32Abbrev}},
+        {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
+
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}}
     };
@@ -351,8 +367,21 @@ RecordsByBlock{
     {BI_SPECIALIZATION_BLOCK_ID,
         {SPECIALIZATION_PRIMARY, SPECIALIZATION_MEMBERS}},
     // TypeInfo
-    {BI_TYPE_BLOCK_ID,
-        {TYPE_ID, TYPE_NAME}},
+    // {BI_TYPE_BLOCK_ID,
+    //     {TYPE_ID, TYPE_NAME}},
+
+
+    {BI_TYPEINFO_BLOCK_ID,
+        {TYPEINFO_KIND, TYPEINFO_ID, TYPEINFO_NAME,
+        TYPEINFO_CVQUAL, TYPEINFO_BOUNDS_VALUE, TYPEINFO_BOUNDS_EXPR,
+        TYPEINFO_EXCEPTION_SPEC, TYPEINFO_REFQUAL}},
+    {BI_TYPEINFO_PARENT_BLOCK_ID,
+        {}},
+    {BI_TYPEINFO_CHILD_BLOCK_ID,
+        {}},
+    {BI_TYPEINFO_PARAM_BLOCK_ID,
+        {}},
+
     // TypedefInfo
     {BI_TYPEDEF_BLOCK_ID,
         {TYPEDEF_IS_USING}},
@@ -773,8 +802,7 @@ emitBlock(
     emitInfoPart(I);
     emitSourceInfo(I, I);
     emitRecord(I.Scoped, ENUM_SCOPED);
-    if (I.BaseType)
-        emitBlock(*I.BaseType);
+    emitBlock(I.BaseType);
     for (const auto& N : I.Members)
         emitBlock(N);
 }
@@ -899,6 +927,72 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
+    std::unique_ptr<TypeInfo> const& TI,
+    BlockID ID)
+{
+    if(! TI)
+        return;
+    StreamSubBlockGuard Block(Stream, ID);
+    emitBlock(TI);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    std::unique_ptr<TypeInfo> const& TI)
+{
+    // return emitTypeInfo(t, BI_TypeInfoBLOCK_ID);
+    if(! TI)
+        return;
+    // If the unique_ptr<Javadoc> has a value then we
+    // always want to emit it, even if it is empty.
+    StreamSubBlockGuard Block(Stream, BI_TYPEINFO_BLOCK_ID);
+
+    emitRecord(TI->Kind, TYPEINFO_KIND);
+    visit(*TI, [&]<typename T>(const T& t)
+        {
+            if constexpr(requires { t.id; })
+                emitRecord(t.id, TYPEINFO_ID);
+            if constexpr(requires { t.Name; })
+                emitRecord(t.Name, TYPEINFO_NAME);
+            if constexpr(requires { t.CVQualifiers; })
+                emitRecord(t.CVQualifiers, TYPEINFO_CVQUAL);
+            if constexpr(requires { t.TemplateArgs; })
+            {
+                for(const auto& targ : t.TemplateArgs)
+                    emitBlock(targ);
+            }
+            if constexpr(requires { t.ParentType; })
+                emitBlock(t.ParentType, BI_TYPEINFO_PARENT_BLOCK_ID);
+
+            if constexpr(requires { t.PointeeType; })
+                emitBlock(t.PointeeType, BI_TYPEINFO_CHILD_BLOCK_ID);
+
+            if constexpr(std::same_as<T, PackTypeInfo>)
+                emitBlock(t.PatternType, BI_TYPEINFO_CHILD_BLOCK_ID);
+
+            if constexpr(std::same_as<T, ArrayTypeInfo>)
+            {
+                emitBlock(t.ElementType, BI_TYPEINFO_CHILD_BLOCK_ID);
+                emitRecord(t.BoundsValue, TYPEINFO_BOUNDS_VALUE);
+                emitRecord(t.BoundsExpr, TYPEINFO_BOUNDS_EXPR);
+            }
+
+            if constexpr(std::same_as<T, FunctionTypeInfo>)
+            {
+                emitBlock(t.ReturnType, BI_TYPEINFO_CHILD_BLOCK_ID);
+                for(const auto& P : t.ParamTypes)
+                    emitBlock(P, BI_TYPEINFO_PARAM_BLOCK_ID);
+
+                emitRecord(t.RefQualifier, TYPEINFO_REFQUAL);
+                emitRecord(t.ExceptionSpec, TYPEINFO_EXCEPTION_SPEC);
+            }
+        });
+}
+
+void
+BitcodeWriter::
+emitBlock(
     NamespaceInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
@@ -975,8 +1069,7 @@ emitBlock(
     case TParamKind::Type:
     {
         const auto& info = T.get<TypeTParam>();
-        if(info.Default)
-            emitBlock(*info.Default);
+        emitBlock(info.Default);
         break;
     }
     case TParamKind::NonType:
@@ -1024,6 +1117,7 @@ emitBlock(
         emitBlock(*I.Template);
 }
 
+#if 0
 void
 BitcodeWriter::
 emitBlock(
@@ -1035,6 +1129,7 @@ emitBlock(
     emitRecord(T.id, TYPE_ID);
     emitRecord(T.Name, TYPE_NAME);
 }
+#endif
 
 void
 BitcodeWriter::

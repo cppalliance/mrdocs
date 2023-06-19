@@ -81,6 +81,8 @@ private:
     void openTemplate(const std::unique_ptr<TemplateInfo>& I);
     void closeTemplate(const std::unique_ptr<TemplateInfo>& I);
 
+    void writeType(std::unique_ptr<TypeInfo> const& type);
+
     template<class T>
     void writeNodes(doc::List<T> const& list);
     void writeNode(doc::Node const& node);

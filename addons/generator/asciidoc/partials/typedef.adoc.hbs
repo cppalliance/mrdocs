@@ -1,1 +1,27 @@
 {{!-- typedef --}}
+[#{{symbol.id}}]
+== {{symbol.name}}
+
+{{symbol.doc.brief}}
+
+=== Synopsis
+
+[source,cpp,subs=+macros]
+----
+{{#if symbol.isUsing~}}
+    {{~#if symbol.template}}{{>template-head symbol.template}}{{/if~}}
+    using {{symbol.name}} = {{>declarator symbol.type}}
+{{~else~}}
+    typedef {{>declarator symbol.type decl-name=symbol.name}}
+{{~/if}}
+;
+----
+
+{{>source symbol.loc}}
+
+{{#if symbol.doc.description}}
+=== Description
+
+{{symbol.doc.description}}
+
+{{/if}}

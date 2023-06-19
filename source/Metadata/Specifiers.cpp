@@ -99,8 +99,8 @@ toString(ReferenceKind kind)
     switch(kind)
     {
     case ReferenceKind::None:   return "";
-    case ReferenceKind::LValue: return "lvalue";
-    case ReferenceKind::RValue: return "rvalue";
+    case ReferenceKind::LValue: return "&";
+    case ReferenceKind::RValue: return "&&";
     default:
         MRDOX_UNREACHABLE();
     }

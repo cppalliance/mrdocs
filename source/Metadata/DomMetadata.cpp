@@ -216,27 +216,46 @@ class DomTypeInfo : public dom::Object
 public:
     DomTypeInfo(
         TypeInfo const& I,
-        Corpus const& corpus)
-        : Object({
-            { "id", toBase16(I.id) },
-            { "name", I.Name },
-            { "symbol",
-                domCreateInfoOrNull(I.id, corpus) }
-            })
-    {
-    }
+        Corpus const& corpus);
 };
 
 static
 dom::Value
 domCreate(
-    std::optional<TypeInfo> const& I,
+    std::unique_ptr<TypeInfo> const& I,
     Corpus const& corpus)
 {
     if(I)
         return makeShared<DomTypeInfo>(*I, corpus);
     return nullptr;
 }
+
+class DomTypeInfoArray : public dom::Array
+{
+    std::vector<std::unique_ptr<TypeInfo>> const& list_;
+    Corpus const& corpus_;
+
+public:
+    DomTypeInfoArray(
+        std::vector<std::unique_ptr<TypeInfo>> const& list,
+        Corpus const& corpus) noexcept
+        : list_(list)
+        , corpus_(corpus)
+    {
+    }
+
+    std::size_t size() const noexcept override
+    {
+        return list_.size();
+    }
+
+    dom::Value get(std::size_t index) const override
+    {
+        if(index < list_.size())
+            return domCreate(list_[index], corpus_);
+        return nullptr;
+    }
+};
 
 //------------------------------------------------
 //
@@ -254,7 +273,7 @@ public:
         Corpus const& corpus) noexcept
         : Object({
             {"name", dom::stringOrNull(I.Name)},
-            {"type", makeShared<DomTypeInfo>(I.Type, corpus)},
+            {"type", domCreate(I.Type, corpus)},
             {"default", dom::stringOrNull(I.Default)}
         })
     {
@@ -410,8 +429,7 @@ getTParamDefault(
         const auto& P = I.get<TypeTParam>();
         if(! P.Default)
             return nullptr;
-        return makeShared<DomTypeInfo>(
-            *P.Default, corpus);
+        return domCreate(P.Default, corpus);
     }
     case TParamKind::NonType:
     {
@@ -442,8 +460,7 @@ DomTParam(
         {"name", dom::stringOrNull(I.Name)},
         {"is-pack", I.IsParameterPack},
         {"type", I.Kind == TParamKind::NonType ?
-            makeShared<DomTypeInfo>(
-                I.get<NonTypeTParam>().Type, corpus) :
+            domCreate(I.get<NonTypeTParam>().Type, corpus) :
             dom::Value()},
         {"params", I.Kind == TParamKind::Template ?
             makeShared<DomTParamArray>(
@@ -466,6 +483,81 @@ domCreate(
 }
 
 //------------------------------------------------
+
+static
+dom::Object::list_type
+makeTypeProps(
+    const TypeInfo& I,
+    const Corpus& corpus)
+{
+    dom::Object::list_type result = {{"kind", toString(I.Kind)}};
+    visit(I, [&]<typename T>(const T& t)
+    {
+        if constexpr(requires { t.Name; })
+            result.emplace_back("name",
+                t.Name);
+
+        if constexpr(requires { t.id; })
+        {
+            if(t.id != SymbolID::zero && corpus.find(t.id))
+                result.emplace_back("id",
+                    toBase16(t.id));
+        }
+
+        if constexpr(T::isSpecialization())
+            result.emplace_back("template-args",
+                makeShared<DomTArgArray>(t.TemplateArgs, corpus));
+
+        if constexpr(requires { t.CVQualifiers; })
+            result.emplace_back("cv-qualifiers",
+                toString(t.CVQualifiers));
+
+        if constexpr(requires { t.ParentType; })
+            result.emplace_back("parent-type",
+                domCreate(t.ParentType, corpus));
+
+        if constexpr(requires { t.PointeeType; })
+            result.emplace_back("pointee-type",
+                domCreate(t.PointeeType, corpus));
+
+        if constexpr(T::isPack())
+            result.emplace_back("pattern-type",
+                domCreate(t.PatternType, corpus));
+
+        if constexpr(T::isArray())
+        {
+            result.emplace_back("element-type",
+                domCreate(t.ElementType, corpus));
+            result.emplace_back("bounds-value",
+                t.BoundsValue);
+            result.emplace_back("bounds-expr",
+                t.BoundsExpr);
+        }
+
+        if constexpr(T::isFunction())
+        {
+            result.emplace_back("return-type",
+                domCreate(t.ReturnType, corpus));
+            result.emplace_back("param-types",
+                makeShared<DomTypeInfoArray>(t.ParamTypes, corpus));
+            result.emplace_back("exception-spec",
+                toString(t.ExceptionSpec));
+            result.emplace_back("ref-qualifier",
+                toString(t.RefQualifier));
+        }
+    });
+    return result;
+}
+
+DomTypeInfo::
+DomTypeInfo(
+    TypeInfo const& I,
+    Corpus const& corpus)
+    : Object(makeTypeProps(I, corpus))
+{
+}
+
+//------------------------------------------------
 //
 // BaseInfo
 //
@@ -484,7 +576,6 @@ public:
             })
     {
     }
-
 };
 
 class DomBaseArray : public dom::Array
@@ -769,7 +860,7 @@ construct() const
     {
         list.insert(list.end(), {
             { "params",     makeShared<DomParamArray>(I_.Params, corpus_) },
-            { "return",     makeShared<DomTypeInfo>(I_.ReturnType, corpus_) },
+            { "return",     domCreate(I_.ReturnType, corpus_) },
             { "template",   domCreate(I_.Template, corpus_) },
 
             { "isVariadic",         I_.specs0.isVariadic.get() },
@@ -807,13 +898,15 @@ construct() const
     if constexpr(T::isTypedef())
     {
         list.insert(list.end(), {
-            { "template", domCreate(I_.Template, corpus_) }
+            { "type", domCreate(I_.Underlying, corpus_) },
+            { "template", domCreate(I_.Template, corpus_) },
+            { "isUsing", I_.IsUsing }
             });
     }
     if constexpr(T::isVariable())
     {
         list.insert(list.end(), {
-            { "type", makeShared<DomTypeInfo>(I_.Type, corpus_) },
+            { "type", domCreate(I_.Type, corpus_) },
             { "template", domCreate(I_.Template, corpus_) },
             { "storageClass", toString(I_.specs.storageClass) }
             });
@@ -821,7 +914,7 @@ construct() const
     if constexpr(T::isField())
     {
         list.insert(list.end(), {
-            { "type", makeShared<DomTypeInfo>(I_.Type, corpus_) },
+            { "type", domCreate(I_.Type, corpus_) },
             { "default", dom::stringOrNull(I_.Default) },
             { "isNodiscard", I_.specs.isNodiscard.get() },
             { "isDeprecated", I_.specs.isDeprecated.get() },
