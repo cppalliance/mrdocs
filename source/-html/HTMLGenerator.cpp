@@ -59,7 +59,7 @@ build(
     std::string_view outputPath,
     Corpus const& corpus) const
 {
-    if(corpus.config.singlePage)
+    if(! corpus.config.multiPage)
         return Generator::build(outputPath, corpus);
 
     auto ex = createExecutors(corpus);
