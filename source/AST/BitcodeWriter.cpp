@@ -233,8 +233,6 @@ RecordIDNameMap = []()
     // improvise
     static const std::vector<std::pair<RecordID, RecordIDDsc>> Inits = {
         {VERSION, {"Version", &Integer32Abbrev}},
-        {BASE_ID, {"BaseID", &SymbolIDAbbrev}},
-        {BASE_NAME, {"BaseName", &StringAbbrev}},
         {BASE_ACCESS, {"BaseAccess", &Integer32Abbrev}},
         {BASE_IS_VIRTUAL, {"BaseIsVirtual", &BoolAbbrev}},
         {ENUM_SCOPED, {"Scoped", &BoolAbbrev}},
@@ -306,7 +304,7 @@ RecordsByBlock{
         {SOURCE_INFO_DEFLOC, SOURCE_INFO_LOC}},
     // BaseInfo
     {BI_BASE_BLOCK_ID,
-        {BASE_ID, BASE_NAME, BASE_ACCESS, BASE_IS_VIRTUAL}},
+        {BASE_ACCESS, BASE_IS_VIRTUAL}},
     // EnumInfo
     {BI_ENUM_BLOCK_ID,
         {ENUM_SCOPED}},
@@ -761,10 +759,9 @@ emitBlock(
     BaseInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_BASE_BLOCK_ID);
-    emitRecord(I.id, BASE_ID);
-    emitRecord(I.Name, BASE_NAME);
     emitRecord(I.Access, BASE_ACCESS);
     emitRecord(I.IsVirtual, BASE_IS_VIRTUAL);
+    emitBlock(I.Type);
 }
 
 void

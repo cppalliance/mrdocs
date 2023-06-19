@@ -81,9 +81,9 @@ private:
             auto actualAccess = effectiveAccess(access, B.Access);
             // VFALCO temporary hack to avoid looking up IDs
             //        which for metadata that is not emitted.
-            if(! corpus_.find(B.id))
+            if(! corpus_.find(B.Type.id))
                 continue;
-            append(actualAccess, corpus_.get<RecordInfo>(B.id));
+            append(actualAccess, corpus_.get<RecordInfo>(B.Type.id));
         }
 
         if( includePrivate_ ||

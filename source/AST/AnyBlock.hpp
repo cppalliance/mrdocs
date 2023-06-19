@@ -410,15 +410,17 @@ public:
 class BaseBlock
     : public BitcodeReader::AnyBlock
 {
-    std::vector<BaseInfo>& v_;
+    BitcodeReader& br_;
+    BaseInfo& I_;
 
 public:
     explicit
     BaseBlock(
-        std::vector<BaseInfo>& v) noexcept
-        : v_(v)
+        BaseInfo& I,
+        BitcodeReader& br) noexcept
+        : I_(I)
+        , br_(br)
     {
-        v_.emplace_back();
     }
 
     Error
@@ -429,16 +431,28 @@ public:
     {
         switch(ID)
         {
-        case BASE_ID:
-            return decodeRecord(R, v_.back().id, Blob);
-        case BASE_NAME:
-            return decodeRecord(R, v_.back().Name, Blob);
         case BASE_ACCESS:
-            return decodeRecord(R, v_.back().Access, Blob);
+            return decodeRecord(R, I_.Access, Blob);
         case BASE_IS_VIRTUAL:
-            return decodeRecord(R, v_.back().IsVirtual, Blob);
+            return decodeRecord(R, I_.IsVirtual, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_TYPE_BLOCK_ID:
+        {
+            TypeBlock B(I_.Type, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return AnyBlock::readSubBlock(ID);
         }
     }
 };
@@ -687,9 +701,8 @@ public:
             return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return AnyBlock::readSubBlock(ID);
         }
-        return AnyBlock::readSubBlock(ID);
     }
 };
 
@@ -795,7 +808,7 @@ public:
         {
         case BI_BASE_BLOCK_ID:
         {
-            BaseBlock B(I->Bases);
+            BaseBlock B(I->Bases.emplace_back(), br_);
             return br_.readBlock(B, ID);
         }
         case BI_TEMPLATE_BLOCK_ID:
@@ -805,9 +818,8 @@ public:
             return br_.readBlock(B, ID);
         }
         default:
-            break;
+            return TopLevelBlock::readSubBlock(ID);
         }
-        return TopLevelBlock::readSubBlock(ID);
     }
 };
 

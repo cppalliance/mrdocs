@@ -103,14 +103,6 @@ public:
     getTypeAsString(
         QualType T);
 
-    TagDecl*
-    getTagDeclForType(
-        QualType T);
-
-    CXXRecordDecl*
-    getCXXRecordDeclForType(
-        QualType T);
-
     SymbolID
     getSymbolIDForType(
         QualType T);

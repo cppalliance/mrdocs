@@ -44,20 +44,19 @@ union RecFlags0
 */
 struct BaseInfo
 {
-    SymbolID id;
-    std::string Name;
-    AccessKind Access;
-    bool IsVirtual;
+    TypeInfo Type;
+    AccessKind Access = AccessKind::Public;
+    bool IsVirtual = false;
+
+    BaseInfo() = default;
 
     BaseInfo(
-        SymbolID const& id_ = SymbolID::zero,
-        std::string_view Name_ = "",
-        AccessKind access = AccessKind::Public,
-        bool IsVirtual_ = false)
-        : id(id_)
-        , Name(Name_)
+        TypeInfo&& type,
+        AccessKind access,
+        bool is_virtual)
+        : Type(std::move(type))
         , Access(access)
-        , IsVirtual(IsVirtual_)
+        , IsVirtual(is_virtual)
     {
     }
 };

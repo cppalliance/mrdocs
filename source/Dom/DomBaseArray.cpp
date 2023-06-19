@@ -38,7 +38,7 @@ get(
     if(index < list_.size())
         return dom::makePointer<DomBase>(
             corpus_.get<RecordInfo>(
-                list_[index].id),
+                list_[index].Type.id),
             list_[index],
             corpus_);
     return nullptr;

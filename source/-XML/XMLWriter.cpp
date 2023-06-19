@@ -357,10 +357,10 @@ writeRecord(
 
     for(auto const& B : I.Bases)
         tags_.write(baseTagName, "", {
-            { "name", B.Name },
+            { "name", B.Type.Name },
             { B.Access },
             { "class", "virtual", B.IsVirtual },
-            { B.id }
+            { B.Type.id }
             });
 
     // Friends

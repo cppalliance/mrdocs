@@ -148,26 +148,6 @@ getTypeAsString(
     return T.getAsString(astContext_->getPrintingPolicy());
 }
 
-TagDecl*
-ASTVisitor::
-getTagDeclForType(
-    QualType T)
-{
-    if(TagDecl const* D = T->getAsTagDecl())
-        return D->getDefinition();
-    return nullptr;
-}
-
-CXXRecordDecl*
-ASTVisitor::
-getCXXRecordDeclForType(
-    QualType T)
-{
-    if(CXXRecordDecl const* D = T->getAsCXXRecordDecl())
-        return D->getDefinition();
-    return nullptr;
-}
-
 SymbolID
 ASTVisitor::
 getSymbolIDForType(
@@ -784,42 +764,11 @@ extractBases(
     // Only direct bases
     for(CXXBaseSpecifier const& B : D->bases())
     {
-        auto const isVirtual = B.isVirtual();
-        // KRYSTIAN NOTE: is this right? a class with a single
-        // virtual base would be ignored here with ! config_.includePrivate
-        if(isVirtual && ! config_.includePrivate)
-            continue;
-
-        SymbolID id = SymbolID::zero;
-        AccessKind access = convertToAccessKind(
-            B.getAccessSpecifier());
-        if(auto const* Ty = B.getType()->getAs<TemplateSpecializationType>())
-        {
-            TemplateDecl const* TD = Ty->getTemplateName().getAsTemplateDecl();
-            extractSymbolID(TD, id);
-            I.Bases.emplace_back(
-                id,
-                getTypeAsString(B.getType()),
-                access,
-                isVirtual);
-        }
-        else if(CXXRecordDecl const* P = getCXXRecordDeclForType(B.getType()))
-        {
-            extractSymbolID(P, id);
-            I.Bases.emplace_back(
-                id,
-                P->getNameAsString(),
-                access,
-                isVirtual);
-        }
-        else
-        {
-            I.Bases.emplace_back(
-                id,
-                getTypeAsString(B.getType()),
-                access,
-                isVirtual);
-        }
+        I.Bases.emplace_back(
+            getTypeInfoForType(B.getType()),
+            convertToAccessKind(
+                B.getAccessSpecifier()),
+            B.isVirtual());
     }
 }
 

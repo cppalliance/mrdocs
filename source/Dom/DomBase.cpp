@@ -10,6 +10,7 @@
 
 #include <mrdox/Dom/DomBase.hpp>
 #include <mrdox/Dom/DomSymbol.hpp>
+#include <mrdox/Dom/DomType.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -28,14 +29,8 @@ dom::Value
 DomBase::
 get(std::string_view key) const
 {
-    if(key == "name")
-    {
-        // this overrides the name in the Info,
-        // for the case where the symbolID is zero.
-        if(B_->id != SymbolID::zero)
-            return I_->Name;
-        return B_->Name;
-    }
+    if(key == "type")
+        return dom::makePointer<DomType>(B_->Type, corpus_);
     if(key == "base-access")
         return toString(B_->Access);
     if(key == "is-virtual")
@@ -52,7 +47,7 @@ props() const ->
     std::vector<std::string_view> v =
         DomSymbol<RecordInfo>::props();
     v.insert(v.end(), {
-        //"name", // already there from Symbol
+        "type",
         "base-access",
         "is-virtual"
         });
