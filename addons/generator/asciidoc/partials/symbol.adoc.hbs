@@ -2,10 +2,6 @@
 {{>namespace}}
 {{else if (eq symbol.kind "function")}}
 {{>function}}
-{{else if (eq symbol.kind "class")}}
-{{>record}}
-{{else if (eq symbol.kind "struct")}}
-{{>record}}
-{{else if (eq symbol.kind "union")}}
+{{else if (eq symbol.kind "record")}}
 {{>record}}
 {{/if}}

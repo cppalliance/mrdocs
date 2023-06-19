@@ -41,7 +41,7 @@ get(std::string_view key) const
     if(key == "id")
         return toBase16(I_->id);
     if(key == "kind")
-        return I_->symbolType();
+        return toString(I_->Kind);
     if(key == "access")
         return toString(I_->Access);
     if(key == "name")
@@ -72,16 +72,7 @@ get(std::string_view key) const
     if constexpr(T::isRecord())
     {
         if(key == "tag")
-        {
-            switch(I_->KeyKind)
-            {
-            case RecordKeyKind::Class:  return "class";
-            case RecordKeyKind::Struct: return "struct";
-            case RecordKeyKind::Union:  return "union";
-            default:
-                MRDOX_UNREACHABLE();
-            }
-        }
+            return toString(I_->KeyKind);
         if(key == "is-typedef")
             return I_->IsTypeDef;
         if(key == "bases")

@@ -47,6 +47,10 @@ enum class InfoKind
     Specialization
 };
 
+MRDOX_DECL
+std::string_view
+toString(InfoKind kind) noexcept;
+
 /** Common properties of all symbols
 */
 struct MRDOX_VISIBLE
@@ -105,14 +109,6 @@ struct MRDOX_VISIBLE
     MRDOX_DECL
     std::string
     extractName() const;
-
-    /** Return a string representing the symbol type.
-
-        For example, "namespace", "class", et. al.
-    */
-    MRDOX_DECL
-    std::string_view
-    symbolType() const noexcept;
 
     constexpr bool isNamespace()      const noexcept { return Kind == InfoKind::Namespace; }
     constexpr bool isRecord()         const noexcept { return Kind == InfoKind::Record; }

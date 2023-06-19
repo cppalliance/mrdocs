@@ -335,15 +335,9 @@ writeRecord(
 {
     openTemplate(I.Template);
 
-    llvm::StringRef tagName;
-    switch(I.KeyKind)
-    {
-    case RecordKeyKind::Class:     tagName = classTagName; break;
-    case RecordKeyKind::Struct:    tagName = structTagName; break;
-    case RecordKeyKind::Union:     tagName = unionTagName; break;
-    default:
-        MRDOX_ASSERT(false);
-    }
+    llvm::StringRef tagName =
+        toString(I.KeyKind);
+
     tags_.open(tagName, {
         { "name", I.Name },
         { I.Access },

@@ -85,26 +85,14 @@ getFullyQualifiedName(
 #endif
 
 std::string_view
-Info::
-symbolType() const noexcept
+toString(InfoKind kind) noexcept
 {
-    switch(this->Kind)
+    switch(kind)
     {
     case InfoKind::Namespace:
         return "namespace";
     case InfoKind::Record:
-        switch(static_cast<RecordInfo const*>(this)->KeyKind)
-        {
-        case RecordKeyKind::Struct:
-            return "struct";
-        case RecordKeyKind::Class:
-            return "class";
-        case RecordKeyKind::Union:
-            return "union";
-        default:
-            // unknown RecordKeyKind
-            MRDOX_UNREACHABLE();
-        }
+        return "record";
     case InfoKind::Field:
         return "data";
     case InfoKind::Function:

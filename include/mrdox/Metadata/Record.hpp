@@ -68,6 +68,10 @@ enum class RecordKeyKind
     Union
 };
 
+MRDOX_DECL
+std::string_view
+toString(RecordKeyKind kind) noexcept;
+
 /** Metadata for struct, class, or union.
 */
 struct RecordInfo
