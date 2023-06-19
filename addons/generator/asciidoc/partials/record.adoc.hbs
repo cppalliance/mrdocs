@@ -8,7 +8,12 @@
 
 [source,cpp,subs=+macros]
 ----
+{{#if symbol.template}}
+{{>template-head symbol.template}}
+{{symbol.tag}} {{symbol.name}}{{>template-args symbol.template}}
+{{else}}
 {{symbol.tag}} {{symbol.name}}
+{{/if}}
 {
 {{#each symbol.members}}
     {{>record-member}}
