@@ -50,10 +50,14 @@ struct MRDOX_DECL
     }
 };
 
+struct LocationHasFileNamePredicate
+{
+    bool operator()(const Location& loc) { return loc.Filename.empty(); }
+};
+
 /** Like std::optional<SymbolID>
 */
-using OptionalLocation = Optional<Location,
-    decltype([](const Location& loc) { return loc.Filename.empty(); })>;
+using OptionalLocation = Optional<Location, LocationHasFileNamePredicate>;
 
 /** Stores source information for a declaration.
 */
