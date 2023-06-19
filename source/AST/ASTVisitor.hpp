@@ -111,6 +111,10 @@ public:
     getCXXRecordDeclForType(
         QualType T);
 
+    SymbolID
+    getSymbolIDForType(
+        QualType T);
+
     TypeInfo
     getTypeInfoForType(
         QualType T);

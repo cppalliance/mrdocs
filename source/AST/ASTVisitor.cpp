@@ -168,18 +168,139 @@ getCXXRecordDeclForType(
     return nullptr;
 }
 
+SymbolID
+ASTVisitor::
+getSymbolIDForType(
+    QualType T)
+{
+    SymbolID id = SymbolID::zero;
+    QualType inner = T;
+    while(true)
+    {
+        inner = inner.getLocalUnqualifiedType();
+        const Type* type = inner.getTypePtr();
+        switch(inner->getTypeClass())
+        {
+        // parenthesized types
+        case Type::Paren:
+        {
+            auto* PT = cast<ParenType>(type);
+            inner = PT->getInnerType();
+            continue;
+        }
+        // pointers
+        case Type::Pointer:
+        {
+            auto* PT = cast<PointerType>(type);
+            inner = PT->getPointeeType();
+            continue;
+        }
+        // references
+        case Type::LValueReference:
+        case Type::RValueReference:
+        {
+            auto* RT = cast<ReferenceType>(type);
+            inner = RT->getPointeeType();
+            continue;
+        }
+        // pointer to members
+        case Type::MemberPointer:
+        {
+            auto* MPT = cast<MemberPointerType>(type);
+            inner = MPT->getPointeeType();
+            continue;
+        }
+        // arrays
+        case Type::ConstantArray:
+        case Type::IncompleteArray:
+        case Type::VariableArray:
+        case Type::DependentSizedArray:
+        {
+            auto* AT = cast<ArrayType>(type);
+            inner = AT->getElementType();
+            continue;
+        }
+        // elaborated type specifier
+        case Type::Elaborated:
+        {
+            auto* ET = cast<ElaboratedType>(type);
+            inner = ET->getNamedType();
+            continue;
+        }
+        // type with __atribute__
+        case Type::Attributed:
+        {
+            auto* AT = cast<AttributedType>(type);
+            inner = AT->getModifiedType();
+            continue;
+        }
+        // adjusted and decayed types
+        case Type::Decayed:
+        case Type::Adjusted:
+        {
+            auto* AT = cast<AdjustedType>(type);
+            inner = AT->getOriginalType();
+            continue;
+        }
+        // using declarations
+        case Type::Using:
+        {
+            auto* UT = cast<UsingType>(type);
+            // look through the using declaration and
+            // use the the type from the referenced declaration
+            inner = UT->getUnderlyingType();
+            continue;
+        }
+        // specialization of a class/alias template or
+        // template template parameter
+        case Type::TemplateSpecialization:
+        {
+            auto* TST = cast<TemplateSpecializationType>(type);
+            // use the SymbolID of the corresponding template if it is known
+            if(auto* TD = TST->getTemplateName().getAsTemplateDecl())
+                return extractSymbolID(TD);
+            return SymbolID::zero;
+        }
+        // pack expansion
+        case Type::PackExpansion:
+        {
+            auto* PET = cast<PackExpansionType>(type);
+            inner = PET->getPattern();
+            continue;
+        }
+        // record type
+        case Type::Record:
+        {
+            auto* RT = cast<RecordType>(type);
+            return extractSymbolID(RT->getDecl());
+        }
+        // enum type
+        case Type::Enum:
+        {
+            auto* ET = cast<EnumType>(type);
+            return extractSymbolID(ET->getDecl());
+        }
+        // typedef/alias type
+        case Type::Typedef:
+        {
+            auto* TT = cast<TypedefType>(type);
+            return extractSymbolID(TT->getDecl());
+        }
+        default:
+            return SymbolID::zero;
+        }
+    }
+
+}
+
 TypeInfo
 ASTVisitor::
 getTypeInfoForType(
     QualType T)
 {
-    SymbolID id = SymbolID::zero;
-    if(const TagDecl* TD = getTagDeclForType(T))
-    {
-        extractSymbolID(TD, id);
-        return TypeInfo(id, TD->getNameAsString());
-    }
-    return TypeInfo(id, getTypeAsString(T));
+    return TypeInfo(
+        getSymbolIDForType(T),
+        getTypeAsString(T));
 }
 
 void
@@ -190,11 +311,8 @@ parseParameters(
 {
     for(const ParmVarDecl* P : D->parameters())
     {
-        // KRYSTIAN NOTE: call getOriginalType instead
-        // of getType if we want to preserve top-level
-        // cv-qualfiers/array types/function types
         I.Params.emplace_back(
-            getTypeInfoForType(P->getType()),
+            getTypeInfoForType(P->getOriginalType()),
             P->getNameAsString(),
             getSourceCode(D, P->getDefaultArgRange()));
     }
