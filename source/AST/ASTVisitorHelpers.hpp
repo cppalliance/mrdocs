@@ -202,6 +202,23 @@ convertToReferenceKind(
     }
 }
 
+RecordKeyKind
+convertToRecordKeyKind(
+    TagTypeKind kind)
+{
+    using OldKind = TagTypeKind;
+    using NewKind = RecordKeyKind;
+    switch(kind)
+    {
+    case OldKind::TTK_Struct: return NewKind::Struct;
+    case OldKind::TTK_Class:  return NewKind::Class;
+    case OldKind::TTK_Union:  return NewKind::Union;
+    default:
+        // unsupported TagTypeKind
+        MRDOX_UNREACHABLE();
+    }
+}
+
 template<typename T, typename... Args>
 void insertChild(NamespaceInfo& I, Args&&... args)
 {

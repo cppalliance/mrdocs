@@ -788,21 +788,7 @@ buildRecord(
     else
         I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
 
-    switch(D->getTagKind())
-    {
-    case TagTypeKind::TTK_Struct:
-        I.KeyKind = RecordKeyKind::Struct;
-        break;
-    case TagTypeKind::TTK_Class:
-        I.KeyKind = RecordKeyKind::Class;
-        break;
-    case TagTypeKind::TTK_Union:
-        I.KeyKind = RecordKeyKind::Union;
-        break;
-    default:
-        // unsupported TagTypeKind
-        MRDOX_UNREACHABLE();
-    }
+    I.KeyKind = convertToRecordKeyKind(D->getTagKind());
 
     // These are from CXXRecordDecl::isEffectivelyFinal()
     I.specs.isFinal = D->template hasAttr<FinalAttr>();
