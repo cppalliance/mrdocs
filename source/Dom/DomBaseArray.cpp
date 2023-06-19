@@ -36,7 +36,7 @@ get(
     std::size_t index) const
 {
     if(index < list_.size())
-        return dom::makePointer<DomBase>(
+        return dom::create<DomBase>(
             corpus_.get<RecordInfo>(
                 list_[index].Type.id),
             list_[index],

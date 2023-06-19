@@ -36,7 +36,7 @@ get(std::size_t index) const
 {
     if(index >= list_.size())
         return nullptr;
-    return dom::makePointer<DomParam>(
+    return dom::create<DomParam>(
         list_[index], corpus_);
 }
 

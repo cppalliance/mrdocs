@@ -32,11 +32,11 @@ get(std::string_view key) const
     {
         if(! I_.DefLoc)
             return nullptr;
-        return dom::makePointer<DomLocation>(
+        return dom::create<DomLocation>(
             *I_.DefLoc, corpus_);
     }
     if(key == "decl")
-        return dom::makePointer<DomArray<
+        return dom::create<DomArray<
             Location, DomLocation>>(I_.Loc, corpus_);
     return nullptr;
 }

@@ -45,7 +45,7 @@ public:
     {
         if(index >= list_.size())
             return nullptr;
-        return dom::makePointer<U>(list_[index], corpus_);
+        return dom::create<U>(list_[index], corpus_);
     }
 };
 

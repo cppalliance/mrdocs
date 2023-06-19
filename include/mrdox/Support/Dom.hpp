@@ -74,7 +74,7 @@ public:
 };
 
 template<class U, class... Args>
-auto makePointer(Args&&... args);
+auto create(Args&&... args);
 
 /** A pointer container for object or array.
 */
@@ -136,11 +136,11 @@ public:
     }
 
     template<class U, class... Args>
-    friend auto makePointer(Args&&... args);
+    friend auto create(Args&&... args);
 };
 
 template<class U, class... Args>
-auto makePointer(Args&&... args)
+auto create(Args&&... args)
 {
     return Pointer<U>(new U(
         std::forward<Args>(args)...));

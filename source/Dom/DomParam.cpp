@@ -30,7 +30,7 @@ get(std::string_view key) const
     if(key == "name")
         return dom::nonEmptyString(I_->Name);
     if(key == "type")
-        return dom::makePointer<DomType>(I_->Type, corpus_);
+        return dom::create<DomType>(I_->Type, corpus_);
     if(key == "default")
         return dom::nonEmptyString(I_->Default);
     return nullptr;

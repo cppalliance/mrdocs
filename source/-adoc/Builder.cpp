@@ -164,7 +164,7 @@ Expected<std::string>
 Builder::
 renderSinglePageHeader()
 {
-    auto obj = dom::makePointer<dom::Object>();
+    auto obj = dom::create<dom::Object>();
     auto text = callTemplate("single-header.adoc.hbs", obj);
     return text;
 }
@@ -173,7 +173,7 @@ Expected<std::string>
 Builder::
 renderSinglePageFooter()
 {
-    auto obj = dom::makePointer<dom::Object>();
+    auto obj = dom::create<dom::Object>();
     auto text = callTemplate("single-footer.adoc.hbs", obj);
     return text;
 }
@@ -189,7 +189,7 @@ getSymbol(
         [&]<class T>(T const& I) ->
             dom::ObjectPtr
         {
-            return dom::makePointer<
+            return dom::create<
                 DomSymbol<T>>(I, corpus_);
         });
 }
@@ -199,7 +199,7 @@ Builder::
 createContext(
     SymbolID const& id)
 {
-    return dom::makePointer<DomContext>(
+    return dom::create<DomContext>(
         DomContext::Hash({
             { "document", "test" },
             { "symbol", getSymbol(id) }

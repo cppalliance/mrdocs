@@ -49,24 +49,24 @@ get(std::string_view key) const
     if(key == "name")
         return I_->Name;
     if(key == "namespace")
-        return dom::makePointer<DomSymbolArray>(
+        return dom::create<DomSymbolArray>(
             I_->Namespace, corpus_);
     if(key == "doc")
     {
         if(I_->javadoc)
-            return dom::makePointer<DomJavadoc>(
+            return dom::create<DomJavadoc>(
                 *I_->javadoc, corpus_);
         return nullptr;
     }
     if constexpr(std::derived_from<T, SourceInfo>)
     {
         if(key == "loc")
-            return dom::makePointer<DomSource>(*I_, corpus_);
+            return dom::create<DomSource>(*I_, corpus_);
     }
     if constexpr(T::isNamespace())
     {
         if(key == "members")
-            return dom::makePointer<DomSymbolArray>(
+            return dom::create<DomSymbolArray>(
                 I_->Members, corpus_);
         if(key == "specializations")
             return nullptr;
@@ -78,16 +78,16 @@ get(std::string_view key) const
         if(key == "is-typedef")
             return I_->IsTypeDef;
         if(key == "bases")
-            return dom::makePointer<DomBaseArray>(
+            return dom::create<DomBaseArray>(
                 I_->Bases, corpus_);
         if(key == "friends")
-            return dom::makePointer<DomSymbolArray>(
+            return dom::create<DomSymbolArray>(
                 I_->Friends, corpus_);
         if(key == "members")
-            return dom::makePointer<DomSymbolArray>(
+            return dom::create<DomSymbolArray>(
                 I_->Members, corpus_);
         if(key == "specializations")
-            return dom::makePointer<DomSymbolArray>(
+            return dom::create<DomSymbolArray>(
                 I_->Specializations, corpus_);
         if(key == "template")
         {
@@ -99,13 +99,13 @@ get(std::string_view key) const
     if constexpr(T::isFunction())
     {
         if(key == "params")
-            return dom::makePointer<DomParamArray>(
+            return dom::create<DomParamArray>(
                 I_->Params, corpus_);
         if(key == "return")
-            return dom::makePointer<DomType>(
+            return dom::create<DomType>(
                 I_->ReturnType, corpus_);
         if(key == "specs")
-            return dom::makePointer<DomFnSpecs>(
+            return dom::create<DomFnSpecs>(
                 *I_, corpus_);
         if(key == "template")
         {

@@ -49,7 +49,7 @@ get(std::string_view key) const
             [&]<class T>(T const& I) ->
                 dom::ObjectPtr
             {
-                return dom::makePointer<
+                return dom::create<
                     DomSymbol<T>>(I, corpus_);
             });
     }
