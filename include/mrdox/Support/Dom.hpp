@@ -245,7 +245,7 @@ public:
     bool getBool() const noexcept
     {
         MRDOX_ASSERT(kind_ == Kind::Boolean);
-        return number_ == 0;
+        return number_ != 0;
     }
 
     std::int64_t getInteger() const noexcept
