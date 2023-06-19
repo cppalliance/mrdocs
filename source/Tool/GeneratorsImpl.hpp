@@ -8,12 +8,12 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TOOL_SUPPORT_GENERATORSIMPL_HPP
-#define MRDOX_TOOL_SUPPORT_GENERATORSIMPL_HPP
+#ifndef MRDOX_TOOL_GENERATORSIMPL_HPP
+#define MRDOX_TOOL_GENERATORSIMPL_HPP
 
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Platform.hpp>
-#include <mrdox/Generators.hpp>
+#include "mrdox/Support/Error.hpp"
+#include "mrdox/Platform.hpp"
+#include "mrdox/Generators.hpp"
 #include <llvm/ADT/SmallVector.h>
 #include <memory>
 #include <vector>
@@ -65,4 +65,4 @@ getGeneratorsImpl() noexcept;
 } // mrdox
 } // clang
 
-#endif
+#endif // MRDOX_TOOL_GENERATORSIMPL_HPP

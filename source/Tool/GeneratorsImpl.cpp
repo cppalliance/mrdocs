@@ -9,6 +9,8 @@
 //
 
 #include "GeneratorsImpl.hpp"
+#include "Tool/ToolWorld.hpp"
+
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang {
@@ -73,17 +75,10 @@ insert(
 
 //------------------------------------------------
 
-GeneratorsImpl&
-getGeneratorsImpl() noexcept
-{
-    static GeneratorsImpl impl;
-    return impl;
-}
-
 Generators const&
 getGenerators() noexcept
 {
-    return getGeneratorsImpl();
+    return *toolWorld().generators;
 }
 
 } // mrdox
