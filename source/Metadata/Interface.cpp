@@ -32,12 +32,17 @@ class Interface::Build
     Corpus const& corpus_;
     bool includePrivate_;
 
-    std::vector<std::pair<AccessKind, MemberEnum>> enums_;
-    std::vector<std::pair<AccessKind, MemberFunction>> functions_;
-    std::vector<std::pair<AccessKind, MemberRecord>> records_;
-    std::vector<std::pair<AccessKind, MemberType>> types_;
-    std::vector<std::pair<AccessKind, DataMember>> data_;
-    std::vector<std::pair<AccessKind, StaticDataMember>> vars_;
+    template<class T>
+    using Table = std::vector<
+        std::pair<AccessKind, T const*>>;
+
+    Table<RecordInfo>       records_;
+    Table<FunctionInfo>     functions_;
+    Table<EnumInfo>         enums_;
+    Table<TypedefInfo>      types_;
+    Table<FieldInfo>        data_;
+    Table<FunctionInfo>     staticfuncs_;
+    Table<VariableInfo>     staticdata_;
 
 public:
     Build(
@@ -48,6 +53,7 @@ public:
         , corpus_(corpus)
         , includePrivate_(corpus_.config.includePrivate)
     {
+        // treat `Derived` as a public base,
         append(AccessKind::Public, Derived);
 
         finish();
@@ -83,54 +89,62 @@ private:
             //        which for metadata that is not emitted.
             if(! corpus_.find(B.Type.id))
                 continue;
-            append(actualAccess, corpus_.get<RecordInfo>(B.Type.id));
+            if( includePrivate_ ||
+                actualAccess != AccessKind::Private)
+            {
+                append(actualAccess,
+                    corpus_.get<RecordInfo>(B.Type.id));
+            }
         }
 
-        if( includePrivate_ ||
-            access != AccessKind::Private)
+        for(auto const& id : From.Members)
         {
-            for(auto const& id : From.Members)
+            const auto& I = corpus_.get<Info>(id);
+            auto actualAccess = effectiveAccess(access, I.Access);
+            if(I.Kind == InfoKind::Function)
             {
-                const auto& I = corpus_.get<Info>(id);
-                auto actualAccess = effectiveAccess(access, I.Access);
-                switch(I.Kind)
+                const auto& F = static_cast<FunctionInfo const&>(I);
+                auto const isRecFinal = From.specs.isFinal.get();
+                if( includePrivate_ ||
+                    actualAccess != AccessKind::Private || (
+                        ! isRecFinal && F.specs0.isVirtual))
                 {
-                case InfoKind::Enum:
-                    enums_.push_back({ actualAccess,
-                        { static_cast<const EnumInfo*>(&I), &From } });
-                    break;
-                case InfoKind::Field:
-                    data_.push_back({ actualAccess,
-                        { static_cast<const FieldInfo*>(&I), &From } });
-                    break;
-                case InfoKind::Function:
-                {
-                    auto const isRecFinal = From.specs.isFinal.get();
-                    const auto& F = static_cast<const FunctionInfo&>(I);
-                    if( includePrivate_ ||
-                        actualAccess != AccessKind::Private ||
-                        ( ! isRecFinal && F.specs0.isVirtual ))
-                    {
-                        functions_.push_back({ actualAccess, { &F, &From } });
-                    }
-                    break;
+                    if(F.specs0.storageClass == StorageClassKind::Static)
+                        staticfuncs_.push_back({ actualAccess, &F });
+                    else
+                        functions_.push_back({ actualAccess, &F });
                 }
-                case InfoKind::Record:
-                    records_.push_back({ actualAccess,
-                        { static_cast<const RecordInfo*>(&I), &From } });
-                    break;
-                case InfoKind::Typedef:
-                    types_.push_back({ actualAccess,
-                        { static_cast<const TypedefInfo*>(&I), &From } });
-                    break;
-                case InfoKind::Variable:
-                    vars_.push_back({ actualAccess,
-                        { static_cast<const VariableInfo*>(&I), &From } });
-                    break;
-
-                default:
-                    break;
-                }
+                continue;
+            }
+            else if(! includePrivate_ &&
+                actualAccess == AccessKind::Private)
+            {
+                continue;
+            }
+            switch(I.Kind)
+            {
+            case InfoKind::Enum:
+                enums_.push_back({ actualAccess,
+                    static_cast<const EnumInfo*>(&I) });
+                break;
+            case InfoKind::Field:
+                data_.push_back({ actualAccess,
+                    static_cast<const FieldInfo*>(&I) });
+                break;
+            case InfoKind::Record:
+                records_.push_back({ actualAccess,
+                    static_cast<const RecordInfo*>(&I) });
+                break;
+            case InfoKind::Typedef:
+                types_.push_back({ actualAccess,
+                    static_cast<const TypedefInfo*>(&I) });
+                break;
+            case InfoKind::Variable:
+                staticdata_.push_back({ actualAccess,
+                    static_cast<const VariableInfo*>(&I) });
+                break;
+            default:
+                MRDOX_UNREACHABLE();
             }
         }
     }
@@ -138,9 +152,9 @@ private:
     template<class T, class U>
     void
     sort(
-        std::span<T const> Interface::Tranche::*member,
-        std::vector<T>& dest,
-        std::vector<U>& src)
+        std::span<T const*> Interface::Tranche::*member,
+        std::vector<T const*>& dest,
+        Table<U>& src)
     {
         std::ranges::stable_sort(
             src,
@@ -172,7 +186,7 @@ private:
                 return p.first == AccessKind::Protected;
             });
         std::size_t const nPrivate = src.end() - it;
-
+//MRDOX_ASSERT(nPrivate == 0);
         I_.Public.*member    = { dest.begin(), dest.begin() + nPublic };
         I_.Protected.*member = { dest.begin() + nPublic, dest.end() - nPrivate };
         I_.Private.*member   = { dest.end() - nPrivate, dest.end() };
@@ -181,23 +195,33 @@ private:
     void
     finish()
     {
-        sort(&Interface::Tranche::Records,   I_.records_,   records_);
-        sort(&Interface::Tranche::Functions, I_.functions_, functions_);
-        sort(&Interface::Tranche::Enums,     I_.enums_,     enums_);
-        sort(&Interface::Tranche::Types,     I_.types_,     types_);
-        sort(&Interface::Tranche::Data,      I_.data_,      data_);
-        sort(&Interface::Tranche::Vars,      I_.vars_,      vars_);
+        sort(&Interface::Tranche::Records,          I_.records_,    records_);
+        sort(&Interface::Tranche::Functions,        I_.functions_,  functions_);
+        sort(&Interface::Tranche::Enums,            I_.enums_,      enums_);
+        sort(&Interface::Tranche::Types,            I_.types_,      types_);
+        sort(&Interface::Tranche::Data,             I_.data_,       data_);
+        sort(&Interface::Tranche::StaticFunctions,  I_.staticfuncs_,staticfuncs_);
+        sort(&Interface::Tranche::StaticData,       I_.staticdata_, staticdata_);
+#if 0
+MRDOX_ASSERT(I_.Private.Records.empty());
+MRDOX_ASSERT(I_.Private.Functions.empty());
+MRDOX_ASSERT(I_.Private.Enums.empty());
+MRDOX_ASSERT(I_.Private.Types.empty());
+MRDOX_ASSERT(I_.Private.Data.empty());
+MRDOX_ASSERT(I_.Private.StaticFunctions.empty());
+MRDOX_ASSERT(I_.Private.StaticData.empty());
+#endif
     }
 };
 
-Interface&
+std::shared_ptr<Interface>
 makeInterface(
-    Interface& I,
     RecordInfo const& Derived,
     Corpus const& corpus)
 {
+    Interface I;
     Interface::Build(I, Derived, corpus);
-    return I;
+    return std::make_shared<Interface>(std::move(I));
 }
 
 } // mrdox

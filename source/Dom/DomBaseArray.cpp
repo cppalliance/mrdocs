@@ -37,10 +37,7 @@ get(
 {
     if(index < list_.size())
         return dom::create<DomBase>(
-            corpus_.get<RecordInfo>(
-                list_[index].Type.id),
-            list_[index],
-            corpus_);
+            list_[index], corpus_);
     return nullptr;
 }
 

@@ -8,29 +8,30 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_DOM_DOMBASE_HPP
-#define MRDOX_API_DOM_DOMBASE_HPP
+#ifndef MRDOX_API_DOM_DOMINTERFACE_HPP
+#define MRDOX_API_DOM_DOMINTERFACE_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Dom/DomSymbol.hpp>
+#include <mrdox/Metadata/Interface.hpp>
+#include <mrdox/Support/Dom.hpp>
+#include <memory>
 
 namespace clang {
 namespace mrdox {
 
-/** A base class record
+/** The aggregate interface to a record.
 */
 class MRDOX_DECL
-    DomBase : public dom::Object
+    DomInterface : public dom::Object
 {
-    BaseInfo const& B_;
+    std::shared_ptr<Interface> I_;
     Corpus const& corpus_;
 
 public:
-    DomBase(
-        BaseInfo const& B,
+    DomInterface(
+        std::shared_ptr<Interface> I,
         Corpus const& corpus) noexcept;
-
     dom::Value get(std::string_view key) const override;
     std::vector<std::string_view> props() const override;
 };

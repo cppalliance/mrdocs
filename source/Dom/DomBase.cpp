@@ -17,11 +17,10 @@ namespace mrdox {
 
 DomBase::
 DomBase(
-    RecordInfo const& I,
     BaseInfo const& B,
     Corpus const& corpus) noexcept
-    : DomSymbol<RecordInfo>(I, corpus)
-    , B_(&B)
+    : B_(B)
+    , corpus_(corpus)
 {
 }
 
@@ -30,13 +29,12 @@ DomBase::
 get(std::string_view key) const
 {
     if(key == "type")
-        return dom::makePointer<DomType>(B_->Type, corpus_);
-    if(key == "base-access")
-        return toString(B_->Access);
-    if(key == "is-virtual")
-        return B_->IsVirtual;
-
-    return DomSymbol<RecordInfo>::get(key);
+        return dom::create<DomType>(B_.Type, corpus_);
+    if(key == "access")
+        return toString(B_.Access);
+    if(key == "isVirtual")
+        return B_.IsVirtual;
+    return nullptr;
 }
 
 auto
@@ -44,14 +42,11 @@ DomBase::
 props() const ->
     std::vector<std::string_view>
 {
-    std::vector<std::string_view> v =
-        DomSymbol<RecordInfo>::props();
-    v.insert(v.end(), {
+    return {
         "type",
-        "base-access",
-        "is-virtual"
-        });
-    return v;
+        "access",
+        "isVirtual"
+        };
 }
 
 } // mrdox

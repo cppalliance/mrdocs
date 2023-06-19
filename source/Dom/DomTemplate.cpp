@@ -43,14 +43,14 @@ get(std::string_view key) const
     {
         if(I_->Kind != TParamKind::NonType)
             return nullptr;
-        return dom::makePointer<DomType>(
+        return dom::create<DomType>(
             I_->get<NonTypeTParam>().Type, corpus_);
     }
     if(key == "params")
     {
         if(I_->Kind != TParamKind::Template)
             return nullptr;
-        return dom::makePointer<DomTParamArray>(
+        return dom::create<DomTParamArray>(
             I_->get<TemplateTParam>().Params, corpus_);
     }
     if(key == "default")
@@ -62,7 +62,7 @@ get(std::string_view key) const
             const auto& P = I_->get<TypeTParam>();
             if(! P.Default)
                 return nullptr;
-            return dom::makePointer<DomType>(
+            return dom::create<DomType>(
                 *P.Default, corpus_);
         }
         case TParamKind::NonType:
@@ -109,7 +109,7 @@ get(std::size_t index) const
 {
     if(index >= list_.size())
         return nullptr;
-    return dom::makePointer<DomTParam>(
+    return dom::create<DomTParam>(
         list_[index], corpus_);
 }
 
@@ -140,7 +140,7 @@ get(std::size_t index) const
 {
     if(index >= list_.size())
         return nullptr;
-    return dom::makePointer<DomTArg>(
+    return dom::create<DomTArg>(
         list_[index], corpus_);
 }
 
@@ -186,15 +186,15 @@ get(std::string_view key) const
             [&]<class T>(T const& I) ->
                 dom::ObjectPtr
             {
-                return dom::makePointer<
+                return dom::create<
                     DomSymbol<T>>(I, corpus_);
             });
     }
     if(key == "params")
-        return dom::makePointer<DomTParamArray>(
+        return dom::create<DomTParamArray>(
             I_->Params, corpus_);
     if(key == "args")
-        return dom::makePointer<DomTArgArray>(
+        return dom::create<DomTArgArray>(
             I_->Args, corpus_);
     return nullptr;
 }

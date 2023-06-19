@@ -17,5 +17,6 @@ static
 {{name}}()
 {{~/if~}}
 {{#if (eq specs.exceptionSpec "noexcept")}} noexcept{{/if~}}
+{{#if specs.isDeleted}} = delete{{/if~}}
 ;
 ----

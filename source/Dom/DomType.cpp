@@ -35,11 +35,7 @@ get(std::string_view key) const
     if(key == "id")
         return toBase16(I_->id);
     if(key == "name")
-    {
-        if(J_)
-            return dom::nonEmptyString(J_->Name);
         return dom::nonEmptyString(I_->Name);
-    }
     if(key == "symbol")
     {
         if(! J_)

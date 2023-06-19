@@ -1,0 +1,32 @@
+{{#if tranche.records}}
+==={{label}} Types
+{{>info-list tranche.records}}
+{{/if}}
+{{#if tranche.types}}
+{{#if label}}
+==={{label}} Types
+{{else}}
+=== Types
+{{/if}}
+{{>info-list tranche.types}}
+{{/if}}
+{{#if tranche.functions}}
+==={{label}} Functions
+{{>info-list tranche.functions}}
+{{/if}}
+{{#if tranche.enums}}
+==={{label}} Enums
+{{>info-list tranche.enums}}
+{{/if}}
+{{#if tranche.data}}
+==={{label}} Data
+{{>info-list tranche.data}}
+{{/if}}
+{{#if tranche.staticfunctions}}
+==={{label}} Static Functions
+{{>info-list tranche.staticfunctions}}
+{{/if}}
+{{#if tranche.staticdata}}
+==={{label}} Static Data
+{{>info-list tranche.staticdata}}
+{{/if}}

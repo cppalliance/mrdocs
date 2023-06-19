@@ -29,7 +29,7 @@ class MRDOX_DECL
     static_assert(std::derived_from<T, Info>);
 
 protected:
-    T const* I_;
+    T const& I_;
     Corpus const& corpus_;
 
 public:

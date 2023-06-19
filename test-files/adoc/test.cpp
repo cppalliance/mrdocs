@@ -1,15 +1,16 @@
-struct T
-{
-    T() = default;
-    T(T const& other) = delete;
+template<class X, class Y, typename Z>
+class V {};
 
-    int f();
-    void h(int i);
+struct A {};
+struct B {};
+struct C {};
 
-    struct U
-    {
-        void g();
-    };
+struct S0 : A, B {};
+struct S1 : S0, C {};
 
-    void j(int, char x, bool) noexcept;
-};
+template<class T>
+struct U {};
+
+struct Z : U<S0> {};
+
+struct Q : protected A, virtual B{};

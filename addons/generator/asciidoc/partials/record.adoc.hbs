@@ -10,19 +10,31 @@
 ----
 {{#if symbol.template}}
 {{>template-head symbol.template}}
-{{symbol.tag}} {{symbol.name}}{{>template-args symbol.template}}
+{{symbol.tag}} {{symbol.name~}}
+{{>template-args symbol.template}}
 {{else}}
-{{symbol.tag}} {{symbol.name}}
+{{symbol.tag}} {{symbol.name~}}
 {{/if}}
-{
-{{#each symbol.members}}
-    {{>record-member}}
-
+{{#unless symbol.bases}}
+;
+{{else}}{{"\n"}}
+{{#each symbol.bases}}
+    {{#if @first}}: {{else}}, {{/if}}
+    {{~access}}
+    {{~#if isVirtual}} virtual{{/if}}
+    {{~null}} {{type.name}}
+    {{~#if @last}};{{/if}}
 {{/each}}
-};
+{{/unless}}
 ----
 
 {{>source symbol.loc}}
+
+{{#with symbol.interface}}
+{{> tranche tranche=public label=""}}
+{{> tranche tranche=protected label=" Protected"}}
+{{> tranche tranche=private label=" Private"}}
+{{/with}}
 
 {{#if symbol.doc.description}}
 === Description

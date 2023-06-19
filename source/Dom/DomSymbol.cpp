@@ -13,6 +13,8 @@
 #include <mrdox/Dom/DomBase.hpp>
 #include <mrdox/Dom/DomBaseArray.hpp>
 #include <mrdox/Dom/DomFnSpecs.hpp>
+#include <mrdox/Dom/DomFnSpecs.hpp>
+#include <mrdox/Dom/DomInterface.hpp>
 #include <mrdox/Dom/DomJavadoc.hpp>
 #include <mrdox/Dom/DomLocation.hpp>
 #include <mrdox/Dom/DomParamArray.hpp>
@@ -21,6 +23,7 @@
 #include <mrdox/Dom/DomSymbolArray.hpp>
 #include <mrdox/Dom/DomTemplate.hpp>
 #include <mrdox/Dom/DomType.hpp>
+#include <mrdox/Metadata/Interface.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -30,7 +33,7 @@ DomSymbol<T>::
 DomSymbol(
     T const& I,
     Corpus const& corpus) noexcept
-    : I_(&I)
+    : I_(I)
     , corpus_(corpus)
 {
 }
@@ -41,77 +44,80 @@ DomSymbol<T>::
 get(std::string_view key) const
 {
     if(key == "id")
-        return toBase16(I_->id);
+        return toBase16(I_.id);
     if(key == "kind")
-        return toString(I_->Kind);
+        return toString(I_.Kind);
     if(key == "access")
-        return toString(I_->Access);
+        return toString(I_.Access);
     if(key == "name")
-        return I_->Name;
+        return I_.Name;
     if(key == "namespace")
         return dom::create<DomSymbolArray>(
-            I_->Namespace, corpus_);
+            I_.Namespace, corpus_);
     if(key == "doc")
     {
-        if(I_->javadoc)
+        if(I_.javadoc)
             return dom::create<DomJavadoc>(
-                *I_->javadoc, corpus_);
+                *I_.javadoc, corpus_);
         return nullptr;
     }
     if constexpr(std::derived_from<T, SourceInfo>)
     {
         if(key == "loc")
-            return dom::create<DomSource>(*I_, corpus_);
+            return dom::create<DomSource>(I_, corpus_);
     }
     if constexpr(T::isNamespace())
     {
         if(key == "members")
             return dom::create<DomSymbolArray>(
-                I_->Members, corpus_);
+                I_.Members, corpus_);
         if(key == "specializations")
             return nullptr;
     }
     if constexpr(T::isRecord())
     {
         if(key == "tag")
-            return toString(I_->KeyKind);
-        if(key == "is-typedef")
-            return I_->IsTypeDef;
+            return toString(I_.KeyKind);
+        if(key == "isTypedef")
+            return I_.IsTypeDef;
         if(key == "bases")
             return dom::create<DomBaseArray>(
-                I_->Bases, corpus_);
+                I_.Bases, corpus_);
         if(key == "friends")
             return dom::create<DomSymbolArray>(
-                I_->Friends, corpus_);
+                I_.Friends, corpus_);
         if(key == "members")
             return dom::create<DomSymbolArray>(
-                I_->Members, corpus_);
+                I_.Members, corpus_);
         if(key == "specializations")
             return dom::create<DomSymbolArray>(
-                I_->Specializations, corpus_);
+                I_.Specializations, corpus_);
         if(key == "template")
         {
-            if(! I_->Template)
+            if(! I_.Template)
                 return nullptr;
-            return dom::makePointer<DomTemplate>(*I_->Template, corpus_);
+            return dom::create<DomTemplate>(*I_.Template, corpus_);
         }
+        if(key == "interface")
+            return dom::create<DomInterface>(
+                makeInterface(I_, corpus_), corpus_);
     }
     if constexpr(T::isFunction())
     {
         if(key == "params")
             return dom::create<DomParamArray>(
-                I_->Params, corpus_);
+                I_.Params, corpus_);
         if(key == "return")
             return dom::create<DomType>(
-                I_->ReturnType, corpus_);
+                I_.ReturnType, corpus_);
         if(key == "specs")
-            return dom::create<DomFnSpecs>(
-                *I_, corpus_);
+            return dom::create<DomFnSpecs>(I_, corpus_);
         if(key == "template")
         {
-            if(! I_->Template)
+            if(! I_.Template)
                 return nullptr;
-            return dom::makePointer<DomTemplate>(*I_->Template, corpus_);
+            return dom::create<DomTemplate>(
+                *I_.Template, corpus_);
         }
     }
     if constexpr(T::isEnum())
@@ -121,18 +127,18 @@ get(std::string_view key) const
     {
         if(key == "template")
         {
-            if(! I_->Template)
+            if(! I_.Template)
                 return nullptr;
-            return dom::makePointer<DomTemplate>(*I_->Template, corpus_);
+            return dom::create<DomTemplate>(*I_.Template, corpus_);
         }
     }
     if constexpr(T::isVariable())
     {
         if(key == "template")
         {
-            if(! I_->Template)
+            if(! I_.Template)
                 return nullptr;
-            return dom::makePointer<DomTemplate>(*I_->Template, corpus_);
+            return dom::create<DomTemplate>(*I_.Template, corpus_);
         }
     }
     if constexpr(T::isField())
@@ -171,7 +177,8 @@ props() const ->
     if constexpr(T::isRecord())
         v.insert(v.end(), {
             "tag",
-            "is-typedef",
+            "interface",
+            "isTypedef",
             "bases",
             "friends",
             "members",

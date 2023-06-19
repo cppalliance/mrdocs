@@ -1,8 +1,8 @@
 {{#if def}}
-Declared in file <{{def.file}}>
+Declared in file <{{def.file}}> at line {{line}}
 {{else if decl}}
 {{#each decl}}
-Declared in file <{{file}}>
+Declared in file <{{file}}> at line {{line}}
 {{/each}}
 {{else}}
 {{/if}}

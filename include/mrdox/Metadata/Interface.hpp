@@ -15,48 +15,13 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Metadata/Record.hpp>
+#include <memory>
 #include <span>
 #include <utility>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
-
-struct DataMember
-{
-    FieldInfo const* I;
-    RecordInfo const* From;
-};
-
-struct MemberEnum
-{
-    EnumInfo const* I;
-    RecordInfo const* From;
-};
-
-struct MemberFunction
-{
-    FunctionInfo const* I;
-    RecordInfo const* From;
-};
-
-struct MemberRecord
-{
-    RecordInfo const* I;
-    RecordInfo const* From;
-};
-
-struct MemberType
-{
-    TypedefInfo const* I;
-    RecordInfo const* From;
-};
-
-struct StaticDataMember
-{
-    VariableInfo const* I;
-    RecordInfo const* From;
-};
 
 /** The aggregated interface for a given struct, class, or union.
 */
@@ -67,12 +32,13 @@ public:
     */
     struct Tranche
     {
-        std::span<MemberRecord const> Records;
-        std::span<MemberFunction const> Functions;
-        std::span<MemberEnum const> Enums;
-        std::span<MemberType const> Types;
-        std::span<DataMember const> Data;
-        std::span<StaticDataMember const> Vars;
+        std::span<RecordInfo const*>    Records;
+        std::span<FunctionInfo const*>  Functions;
+        std::span<EnumInfo const*>      Enums;
+        std::span<TypedefInfo const*>   Types;
+        std::span<FieldInfo const*>     Data;
+        std::span<FunctionInfo const*>  StaticFunctions;
+        std::span<VariableInfo const*>  StaticData;
     };
 
     /** The aggregated public interfaces.
@@ -89,21 +55,21 @@ public:
 
     MRDOX_DECL
     friend
-    Interface&
+    std::shared_ptr<Interface>
     makeInterface(
-        Interface& I,
         RecordInfo const& Derived,
         Corpus const& corpus);
 
 private:
     class Build;
 
-    std::vector<DataMember> data_;
-    std::vector<MemberEnum> enums_;
-    std::vector<MemberFunction> functions_;
-    std::vector<MemberRecord> records_;
-    std::vector<MemberType> types_;
-    std::vector<StaticDataMember> vars_;
+    std::vector<RecordInfo const*>    records_;
+    std::vector<FunctionInfo const*>  functions_;
+    std::vector<EnumInfo const*>      enums_;
+    std::vector<TypedefInfo const*>   types_;
+    std::vector<FieldInfo const*>     data_;
+    std::vector<FunctionInfo const*>  staticfuncs_;
+    std::vector<VariableInfo const*>  staticdata_;
 };
 
 //------------------------------------------------
@@ -119,22 +85,10 @@ private:
     @param corpus The complete metadata.
 */
 MRDOX_DECL
-Interface&
+std::shared_ptr<Interface>
 makeInterface(
-    Interface& I,
     RecordInfo const& Derived,
     Corpus const& corpus);
-
-inline
-Interface
-makeInterface(
-    RecordInfo const& Derived,
-    Corpus const& corpus)
-{
-    Interface I;
-    makeInterface(I, Derived, corpus);
-    return I;
-}
 
 } // mrdox
 } // clang
