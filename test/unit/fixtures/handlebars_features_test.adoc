@@ -44,20 +44,20 @@ People:
 
 
 // Render complete context with "." as key
-{"nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice} ,{"lastname": Doe , "firstname": Bob} ,{"lastname": Smith , "firstname": Carol}]}}
+{"myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice} ,{"lastname": Doe , "firstname": Bob} ,{"lastname": Smith , "firstname": Carol}]}}
 
 // Use to_string
-{"nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"firstname":"Alice","lastname":"Doe"},{"firstname":"Bob","lastname":"Doe"},{"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"}}
+{"myVariable":"lookupMyPartial","nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"firstname":"Alice","lastname":"Doe"},{"firstname":"Bob","lastname":"Doe"},{"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"}}
 
 // Literals
 true = true
 false = true
-null = 
-undefined = 
+null =
+undefined =
 ./[true] = true
 ./[false] = true
-./[null] = 
-./[undefined] = 
+./[null] =
+./[undefined] =
 'See Website' = See Website
 "See Website" = See Website
 
@@ -79,9 +79,9 @@ https://cppalliance.org/[See Website]
 // Helpers with literal values
 [source]
 ----
-** 10% Search 
+** 10% Search
 ****************** 90% Upload stalled
-******************** 100% Finish 
+******************** 100% Finish
 ----
 
 // Undefined helper
@@ -124,4 +124,4 @@ struct from_chars
 
 // Dynamic partials
 Dynamo!
-
+Found!

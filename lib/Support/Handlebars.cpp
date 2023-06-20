@@ -1031,6 +1031,7 @@ registerStandardHelpers(Handlebars& hbs)
     hbs.registerHelper("unless", unless_fn);
     hbs.registerHelper("with", with_fn);
     hbs.registerHelper("each", each_fn);
+    hbs.registerHelper("lookup", lookup_fn);
 }
 
 void
@@ -1290,6 +1291,30 @@ each_fn(
     }
     return cb.inverse(context);
 }
+
+llvm::json::Value
+lookup_fn(
+    llvm::json::Object const& context,
+    llvm::json::Array const& args,
+    HandlebarsCallback const& cb) {
+    if (args.size() != 2) {
+        return fmt::format(R"([lookup helper requires 2 arguments: {} provided])", args.size());
+    }
+    if (args[0].kind() != llvm::json::Value::Kind::Object) {
+        return R"([lookup helper requires first argument to be an object])";
+    }
+    if (args[1].kind() != llvm::json::Value::Kind::String) {
+        return R"([lookup helper requires second argument to be a string])";
+    }
+    llvm::json::Object const& obj = *args[0].getAsObject();
+    llvm::StringRef key = args[1].getAsString().value();
+    llvm::json::Value const* v = findNested(obj, key);
+    if (v != nullptr) {
+        return *v;
+    }
+    return nullptr;
+}
+
 
 }
 

@@ -432,6 +432,13 @@ each_fn(
     llvm::json::Array const& args,
     HandlebarsCallback const& cb);
 
+llvm::json::Value
+lookup_fn(
+    llvm::json::Object const& context,
+    llvm::json::Array const& conditional,
+    HandlebarsCallback const& cb);
+
+
 }
 
 } // mrdox
