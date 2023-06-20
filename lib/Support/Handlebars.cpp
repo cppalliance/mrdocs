@@ -924,6 +924,11 @@ renderTag(
                 auto [partialKey, contextKey] = findKeyValuePair(expr);
                 if (partialKey.empty())
                 {
+                    llvm::json::Value const* value = findNested(data, expr);
+                    if (value != nullptr && value->kind() == llvm::json::Value::Kind::Object)
+                    {
+                        partialCtx = *value->getAsObject();
+                    }
                     continue;
                 }
                 if (contextKey != ".") {

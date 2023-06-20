@@ -387,6 +387,8 @@ main() {
             llvm::json::Object{
                     {"url", "bar"}}};
     context["myVariable"] = "lookupMyPartial";
+    context["myOtherContext"] = llvm::json::Object{};
+    context["myOtherContext"].getAsObject()->operator[]("information") = "Interesting!";
 
     // Register some extra test helpers
     Handlebars hbs;
@@ -406,6 +408,7 @@ main() {
     });
     hbs.registerPartial("dynamicPartial", "Dynamo!");
     hbs.registerPartial("lookupMyPartial", "Found!");
+    hbs.registerPartial("myPartial", "{{information}}");
 
     // Render template with all handlebars features
     std::string rendered_text = hbs.render(template_str, context, options);
