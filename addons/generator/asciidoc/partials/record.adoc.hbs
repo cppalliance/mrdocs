@@ -19,8 +19,8 @@
 ;
 {{else}}{{"\n"}}
 {{#each symbol.bases}}
-    {{#if @first}}: {{else}}, {{/if}}
-    {{~access}}
+    {{#if @first}}:{{else}},{{/if}}
+    {{~#unless (eq access ../symbol.defaultAccess)}} {{access}}{{/unless}}
     {{~#if isVirtual}} virtual{{/if}}
     {{~null}} {{type.name}}
     {{~#if @last}};{{/if}}

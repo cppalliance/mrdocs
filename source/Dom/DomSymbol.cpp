@@ -78,6 +78,19 @@ get(std::string_view key) const
     {
         if(key == "tag")
             return toString(I_.KeyKind);
+        if(key == "defaultAccess")
+        {
+            switch(I_.KeyKind)
+            {
+            case RecordKeyKind::Class:
+                return "private";
+            case RecordKeyKind::Struct:
+            case RecordKeyKind::Union:
+                return "public";
+            default:
+                MRDOX_UNREACHABLE();
+            }
+        }
         if(key == "isTypedef")
             return I_.IsTypeDef;
         if(key == "bases")
@@ -96,7 +109,8 @@ get(std::string_view key) const
         {
             if(! I_.Template)
                 return nullptr;
-            return dom::create<DomTemplate>(*I_.Template, corpus_);
+            return dom::create<DomTemplate>(
+                *I_.Template, corpus_);
         }
         if(key == "interface")
             return dom::create<DomInterface>(
@@ -177,6 +191,7 @@ props() const ->
     if constexpr(T::isRecord())
         v.insert(v.end(), {
             "tag",
+            "defaultAccess",
             "interface",
             "isTypedef",
             "bases",
