@@ -333,9 +333,14 @@ void splitLines(std::string_view text, std::vector<std::string_view> &lines) {
 
 int
 main() {
-    auto template_text_r = files::getFileText(MRDOX_UNIT_TEST_DIR "/fixtures/function.adoc.hbs");
+    std::string_view template_path = MRDOX_UNIT_TEST_DIR "/fixtures/function.adoc.hbs";
+    std::string_view partial_path = MRDOX_UNIT_TEST_DIR "/fixtures/record-detail.adoc.hbs";
+    std::string_view output_path = MRDOX_UNIT_TEST_DIR "/fixtures/function.adoc";
+    auto template_text_r = files::getFileText(template_path);
     REQUIRE(template_text_r);
-    auto master_file_contents_r = files::getFileText(MRDOX_UNIT_TEST_DIR "/fixtures/function.adoc");
+    auto partial_text_r = files::getFileText(partial_path);
+    REQUIRE(partial_text_r);
+    auto master_file_contents_r = files::getFileText(output_path);
     auto template_str = *template_text_r;
     REQUIRE_FALSE(template_str.empty());
 
@@ -382,15 +387,16 @@ main() {
     hbs.registerHelper("link", link_fn);
     hbs.registerHelper("loud", loud_fn);
     hbs.registerHelper("to_string", to_string_fn);
+    hbs.registerPartial("record-detail", *partial_text_r);
 
     // Render template with all handlebars features
     std::string rendered_text = hbs.render(template_str, context, options);
     REQUIRE_FALSE(rendered_text.empty());
 
     // Compare template with reference
-    if (!master_file_contents_r) {
+    if (!master_file_contents_r || master_file_contents_r->empty()) {
         // Write rendered template to file with ofstream
-        std::ofstream out(MRDOX_UNIT_TEST_DIR "/fixtures/function.adoc");
+        std::ofstream out((std::string(output_path)));
         REQUIRE(out);
         fmt::println("Parsed template:\n{}", rendered_text);
         out << rendered_text;

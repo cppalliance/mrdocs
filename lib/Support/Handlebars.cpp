@@ -498,7 +498,7 @@ evalExpr(
         auto it = helpers_.find(helper);
         if (it == helpers_.end())
         {
-            return fmt::format("[undefined helper \"{}\"]", helper);
+            return fmt::format(R"([undefined helper "{}" from "{}"])", helper, all);
         }
         helper_type const& fn = it->second;
 
@@ -531,63 +531,145 @@ evalExpr(
     }
 }
 
+struct Tag {
+    std::string_view buffer;
 
+    char type;
+
+    // From after type until closing tag
+    std::string_view content;
+
+    // First expression in content if more than one expression
+    std::string_view helper;
+
+    // Other expressions in content
+    std::string_view expression;
+
+    // Whether to escape the result
+    bool forceNoEscape{false};
+};
+
+// Parse a tag into helper, expression and content
+Tag
+parseTag(std::string_view tag)
+{
+    MRDOX_ASSERT(tag.size() >= 4);
+    MRDOX_ASSERT(tag[0] == '{');
+    MRDOX_ASSERT(tag[1] == '{');
+    MRDOX_ASSERT(tag[tag.size() - 1] == '}');
+    MRDOX_ASSERT(tag[tag.size() - 2] == '}');
+    Tag t;
+    t.buffer = tag;
+    t.forceNoEscape = false;
+    tag = tag.substr(2, tag.size() - 4);
+    // Remove whitespaces once again to support tags with extra whitespaces.
+    // This makes invalid tags like "{{ #if condition }}" work instead of failing.
+    tag = trim_spaces(tag);
+    if (tag.empty())
+    {
+        t.type = ' ';
+        t.content = tag.substr(0);
+        t.helper = tag.substr(0);
+        t.content = tag.substr(0);
+        t.expression = tag.substr(0);
+        return t;
+    }
+    static constexpr std::array<char, 5> tag_types({'{', '#', '/', '>', '!'});
+    auto it = std::ranges::find_if(tag_types, [tag](char c) { return c == tag.front(); });
+    if (it != tag_types.end()) {
+        t.type = tag.front();
+        tag.remove_prefix(1);
+        if (t.type == '{') {
+            MRDOX_ASSERT(tag[tag.size() - 1] == '}');
+            tag.remove_suffix(1);
+            t.forceNoEscape = true;
+        }
+        tag = trim_spaces(tag);
+    } else {
+        t.type = ' ';
+    }
+    t.content = tag;
+
+    std::string_view expr;
+    std::string_view tagContent = t.content;
+    static constexpr std::array<char, 2> require_helpers({'#', '>'});
+    if (std::ranges::any_of(require_helpers, [f=t.type](char c) { return c == f; })) {
+        // First expression is a helper even if there's only one expression
+        if (findExpr(expr, tagContent)) {
+            t.helper = expr;
+            tagContent.remove_prefix(expr.data() + expr.size() - tagContent.data());
+            t.expression = trim_spaces(tagContent);
+        } else {
+            t.helper = tagContent;
+            t.expression = {};
+        }
+    } else {
+        if (findExpr(expr, tagContent)) {
+            t.expression = expr;
+            t.helper = {};
+        }
+        tagContent.remove_prefix(expr.data() + expr.size() - tagContent.data());
+        if (findExpr(expr, tagContent)) {
+            // Second expression exists, so first is a helper and the rest is the arguments
+            t.helper = t.expression;
+            t.expression = {expr.data(), static_cast<std::size_t>(tagContent.data() + tagContent.size() - expr.data())};
+        }
+    }
+    return t;
+}
 
 // Render a handlebars tag
 void
 Handlebars::
 renderTag(
-    std::string_view tag,
+    std::string_view tag0,
     llvm::raw_string_ostream& out,
     std::string_view& templateText,
     llvm::json::Object const &data,
     HandlebarsOptions opt) const {
-    MRDOX_ASSERT(tag.size() >= 4);
-    if (tag[2] == '#')
+    MRDOX_ASSERT(tag0.size() >= 4);
+    Tag tag = parseTag(tag0);
+    if (tag.type == '#')
     {
         // Opening a section tag
-        auto tagContent = tag.substr(3, tag.size() - 5);
-        auto pos = std::min(tagContent.find(' '), tagContent.size());
-        std::string_view helper = tagContent.substr(0, pos);
-        std::string_view expression =
-            pos != tagContent.size() ?
-                tagContent.substr(pos + 1) :
-                std::string_view();
-
         // Find closing tag
-        std::string_view closeTag;
+        Tag closeTag;
         int l = 1;
         std::string_view fnBlock = templateText;
         std::string_view inverseBlock;
         std::string_view* curBlock = &fnBlock;
         while (!templateText.empty())
         {
-            std::string_view t;
-            if (!findTag(t, templateText))
+            std::string_view tagStr;
+            if (!findTag(tagStr, templateText))
                 break;
 
+            Tag curTag = parseTag(tagStr);
+
             // move template after the tag
-            auto tag_pos = t.data() - templateText.data();
-            templateText.remove_prefix(tag_pos + t.size());
+            auto tag_pos = curTag.buffer.data() - templateText.data();
+            templateText.remove_prefix(tag_pos + curTag.buffer.size());
 
             // update section level
-            if (t[2] == '#')
+            if (curTag.type == '#')
             {
+                // Opening a child section tag
                 ++l;
             }
-            else if (t[2] == '/')
+            else if (curTag.type == '/')
             {
+                // Closing a section tag
                 --l;
                 if (l == 0)
                 {
-                    closeTag = t;
-                    auto closeTagContent = closeTag.substr(3, closeTag.size() - 5);
-                    if (closeTagContent != helper)
+                    // Closing the main section tag
+                    closeTag = curTag;
+                    if (closeTag.content != tag.helper)
                     {
-                        out << "[mismatched closing tag: " << closeTag << "]";
+                        out << "[mismatched closing tag: " << closeTag.buffer << "]";
                         return;
                     }
-                    *curBlock = {curBlock->data(), closeTag.data()};
+                    *curBlock = {curBlock->data(), closeTag.buffer.data()};
                     break;
                 }
             }
@@ -595,19 +677,18 @@ renderTag(
             // check inversion
             if (l == 1)
             {
-                if (t[2] == '^')
+                if (curTag.type == '^')
                 {
-                    std::string_view invertTag = t;
-                    std::string_view invertTagContent = tag.substr(3, tag.size() - 5);
-                    if (invertTagContent != helper)
+                    Tag invertTag = curTag;
+                    if (invertTag.content != tag.helper)
                     {
-                        out << "[mismatched invert tag: " << invertTag << "]";
+                        out << "[mismatched invert tag: " << invertTag.buffer << "]";
                         return;
                     }
                 }
-                if (t[2] == '^' || t == "{{else}}")
+                if (curTag.type == '^' || curTag.content == "else")
                 {
-                    *curBlock = {curBlock->data(), t.data()};
+                    *curBlock = {curBlock->data(), curTag.buffer.data()};
                     curBlock = &inverseBlock;
                     *curBlock = templateText;
                 }
@@ -624,19 +705,15 @@ renderTag(
         // When the args is a single value, we wrap it in a single element
         // array.
         llvm::json::Array args;
-        llvm::json::Value const* value = findNested(data, expression);
-        if (value == nullptr)
+        llvm::json::Value value = evalExpr(data, tag.expression);
+        if (!value.getAsArray())
         {
-            args.push_back(nullptr);
+            args.push_back(std::move(value));
         }
-        else if (!value->getAsArray())
+        else if (value.getAsArray())
         {
-            args.push_back(*value);
-        }
-        else if (value->getAsArray())
-        {
-            llvm::json::Array const* valueArray = value->getAsArray();
-            args = *valueArray;
+            llvm::json::Array* valueArray = value.getAsArray();
+            args = std::move(*valueArray);
         }
 
         // 3rd argument) callbacks
@@ -651,10 +728,10 @@ renderTag(
         };
 
         // Call helper
-        auto it = helpers_.find(helper);
+        auto it = helpers_.find(tag.helper);
         if (it == helpers_.end())
         {
-            out << "[undefined helper \"" << helper << "\"]";
+            out << "[undefined helper in \"" << tag.buffer << "\"]";
             return;
         }
         helper_type const& fn = it->second;
@@ -663,31 +740,24 @@ renderTag(
         opt2.noEscape = true;
         format_to(out, res, opt2);
     }
-    else if (tag[2] == '/' || tag[2] == '!')
+    else if (tag.type == '/' || tag.type == '!')
     {
         // Comment or orphan section closing tag
         // This will handle both {{!}} and {{!----}} comments
         // End a section here represents an error in the template, since we
         // should have already closed the section in the first condition
     }
-    else if (tag[2] == '>')
+    else if (tag.type == '>')
     {
         // Partial
-        auto tagContent = tag.substr(3, tag.size() - 5);
-        auto pos = std::min(tagContent.find(' '), tagContent.size());
-        std::string_view partial = tagContent.substr(0, pos);
-        std::string_view expression =
-            pos != tagContent.size() ?
-                tagContent.substr(pos + 1) :
-                std::string_view();
-        auto it = partials_.find(partial);
+        auto it = partials_.find(tag.helper);
         if (it == partials_.end())
         {
-            out << "[undefined partial \"" << tagContent << "\"]";
+            out << "[undefined partial in \"" << tag.buffer << "\"]";
             return;
         }
 
-        if (expression.empty())
+        if (tag.expression.empty())
         {
             // inherit context
             render_to(out, it->second, data, opt);
@@ -695,18 +765,26 @@ renderTag(
         else
         {
             // create context from specified keys
-            auto exprSplit = std::min(tagContent.find('='), tagContent.size());
-            std::string_view partial_key = tagContent.substr(0, exprSplit);
-            std::string_view context_key = tagContent.substr(exprSplit + 1);
+            auto tagContent = tag.expression;
             llvm::json::Object partialCtx;
-            if (context_key != ".") {
-                llvm::json::Value const* value = findNested(data, context_key);
-                if (value != nullptr)
+            std::string_view expr;
+            while (findExpr(expr, tagContent))
+            {
+                tagContent = tagContent.substr(expr.data() + expr.size() - tagContent.data());
+                auto [partialKey, contextKey] = findKeyValuePair(expr);
+                if (partialKey.empty())
                 {
-                    partialCtx.try_emplace({partial_key}, *value);
+                    continue;
                 }
-            } else {
-                partialCtx.try_emplace({partial_key}, llvm::json::Value(llvm::json::Object(data)));
+                if (contextKey != ".") {
+                    llvm::json::Value const* value = findNested(data, contextKey);
+                    if (value != nullptr)
+                    {
+                        partialCtx.try_emplace({partialKey}, *value);
+                    }
+                } else {
+                    partialCtx.try_emplace({partialKey}, llvm::json::Value(llvm::json::Object(data)));
+                }
             }
             render_to(out, it->second, partialCtx, opt);
         }
@@ -714,68 +792,53 @@ renderTag(
     else
     {
         // Expression
-        auto tagContent = tag.substr(2, tag.size() - 4);
         auto opt2 = opt;
-        if (tag[2] == '{')
+        if (tag.forceNoEscape)
         {
             // Unescaped tag content
-            tagContent = tag.substr(3, tag.size() - 6);
             opt2.noEscape = true;
         }
 
-        std::string_view expr0;
-        if (!findExpr(expr0, tagContent))
+        if (tag.content.empty())
         {
-            // No expression, nothing to render
+            // No helper, no expression: nothing to render
             return;
         }
-        tagContent.remove_prefix(expr0.size());
 
-        std::string_view expr1;
-        if (!findExpr(expr1, tagContent))
-        {
-            // Single expression, render variable directly
-            std::string_view path = expr0;
-            llvm::json::Value v = evalExpr(data, path);
+        if (tag.helper.empty() && !tag.expression.empty()) {
+            llvm::json::Value v = evalExpr(data, tag.expression);
             format_to(out, v, opt2);
             return;
         }
-        tagContent.remove_prefix(expr1.data() + expr1.size() - tagContent.data());
 
         // Multiple expressions, first string is a helper function
-        std::string_view helper = expr0;
-        auto it = helpers_.find(helper);
+        auto it = helpers_.find(tag.helper);
         if (it == helpers_.end())
         {
-            out << "[undefined helper \"" << helper << "\"]";
+            out << "[undefined helper in \"" << tag.buffer << "\"]";
             return;
         }
         helper_type const& fn = it->second;
 
         // Remaining expressions are a list of arguments to the helper function
+        // Each argument may be an argument to the function or a key-value pair
+        // for the callback hashes
         llvm::json::Array args;
         HandlebarsCallback cb;
-        auto [k, v] = findKeyValuePair(expr1);
-        if (k.empty())
+        std::string_view tagContent = tag.expression;
+        std::string_view expr;
+        while (findExpr(expr, tagContent))
         {
-            args.push_back(evalExpr(data, expr1));
-        }
-        else
-        {
-            cb.hashes.try_emplace(llvm::json::ObjectKey(k), evalExpr(data, v));
-        }
-        while (findExpr(expr1, tagContent))
-        {
-            std::tie(k, v) = findKeyValuePair(expr1);
+            tagContent = tagContent.substr(expr.data() + expr.size() - tagContent.data());
+            auto [k, v] = findKeyValuePair(expr);
             if (k.empty())
             {
-                args.push_back(evalExpr(data, expr1));
+                args.push_back(evalExpr(data, expr));
             }
             else
             {
                 cb.hashes.try_emplace(llvm::json::ObjectKey(k), evalExpr(data, v));
             }
-            tagContent.remove_prefix(expr1.data() + expr1.size() - tagContent.data());
         }
 
         llvm::json::Value res = fn(data, args, cb);
