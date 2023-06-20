@@ -582,7 +582,7 @@ findKeyValuePair(std::string_view expression)
 {
     if (expression.empty())
         return { {}, {} };
-    auto pos = expression.find_first_of("=");
+    auto pos = expression.find('=');
     if (pos == std::string_view::npos)
         return { {}, {} };
     std::string_view key = expression.substr(0, pos);
@@ -806,6 +806,32 @@ renderTag(
                     }
                     break;
                 }
+            }
+        }
+
+        // If the first line of fnBlock is only whitespaces, remove it
+        // This is a small undocumented detail of handlebars.js that makes
+        // the output match what's expected by the users.
+        auto posLB = fnBlock.find_first_of("\r\n");
+        if (posLB != std::string_view::npos)
+        {
+            std::string_view first_line = fnBlock.substr(0, posLB);
+            if (std::ranges::all_of(first_line, [](char c) { return c == ' '; })) {
+                fnBlock.remove_prefix(posLB);
+                posLB = fnBlock.find_first_not_of("\r\n");
+                if (posLB != std::string_view::npos)
+                {
+                    fnBlock.remove_prefix(posLB);
+                }
+            }
+        }
+        // Do the same for the last line
+        auto posRB = fnBlock.find_last_of("\r\n");
+        if (posRB != std::string_view::npos)
+        {
+            std::string_view last_line = fnBlock.substr(posRB + 1);
+            if (std::ranges::all_of(last_line, [](char c) { return c == ' '; })) {
+                fnBlock.remove_suffix(last_line.size());
             }
         }
 
