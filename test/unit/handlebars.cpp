@@ -376,6 +376,7 @@ main() {
         people.push_back(std::move(person));
     }
     page["people"] = std::move(people);
+    page["prefix"] = "Hello";
     page["specialChars"] = "& < > \" ' ` =";
     page["url"] = "https://cppalliance.org/";
     context["page"] = std::move(page);
@@ -389,6 +390,9 @@ main() {
     context["myVariable"] = "lookupMyPartial";
     context["myOtherContext"] = llvm::json::Object{};
     context["myOtherContext"].getAsObject()->operator[]("information") = "Interesting!";
+    context["favoriteNumber"] = 123;
+    context["prefix"] = "Hello";
+
 
     // Register some extra test helpers
     Handlebars hbs;
@@ -408,7 +412,9 @@ main() {
     });
     hbs.registerPartial("dynamicPartial", "Dynamo!");
     hbs.registerPartial("lookupMyPartial", "Found!");
-    hbs.registerPartial("myPartial", "{{information}}");
+    hbs.registerPartial("myPartialContext", "{{information}}");
+    hbs.registerPartial("myPartialParam", "The result is {{parameter}}");
+    hbs.registerPartial("myPartialParam2", "{{prefix}}, {{firstname}} {{lastname}}");
 
     // Render template with all handlebars features
     std::string rendered_text = hbs.render(template_str, context, options);

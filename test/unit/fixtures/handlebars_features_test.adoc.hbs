@@ -122,9 +122,14 @@ html-escaped: {{page.specialChars}}
 {{> (lookup . 'myVariable') }}
 
 // Partial context switch
-{{> myPartial myOtherContext }}
+{{> myPartialContext myOtherContext }}
 
+// Partial parameters
+{{> myPartialParam parameter=favoriteNumber }}
 
+{{#each page.people}}
+  {{> myPartialParam2 prefix=../prefix firstname=firstname lastname=lastname}}.
+{{/each}}
 
 
 
