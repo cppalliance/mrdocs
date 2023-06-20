@@ -1,0 +1,32 @@
+{{!-- enum --}}
+[#{{symbol.id}}]
+== {{symbol.name}}
+
+{{symbol.doc.brief}}
+
+=== Synopsis
+
+[source,cpp,subs=+macros]
+----
+enum {{name}};
+----
+
+{{>source symbol.loc}}
+
+{{#if symbol.members}}
+=== Members
+[,cols=2]
+|===
+|Name |Description
+{{#each symbol.members}}
+|{{name}} |{{doc.brief}}
+{{/each}}
+|===
+{{/if}}
+
+{{#if symbol.doc.description}}
+=== Description
+
+{{symbol.doc.description}}
+
+{{/if}}

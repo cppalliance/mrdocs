@@ -104,7 +104,6 @@ toString(InfoKind kind) noexcept
     case InfoKind::Variable:
         return "variable";
     default:
-        // unknown InfoKind
         MRDOX_UNREACHABLE();
     }
 }

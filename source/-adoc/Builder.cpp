@@ -233,6 +233,15 @@ operator()(FunctionInfo const& I)
         createContext(I.id));
 }
 
+Expected<std::string>
+Builder::
+operator()(EnumInfo const& I)
+{
+    return callTemplate(
+        "single-symbol.adoc.hbs",
+        createContext(I.id));
+}
+
 } // adoc
 } // mrdox
 } // clang

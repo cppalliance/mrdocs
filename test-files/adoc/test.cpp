@@ -1,16 +1,12 @@
-template<class X, class Y, typename Z>
-class V {};
+struct T {};
 
-struct A {};
-struct B {};
-struct C {};
+enum E
+{
+    /** hmm
+    */
+    a,
 
-struct S0 : A, B {};
-struct S1 : S0, C {};
-
-template<class T>
-struct U {};
-
-struct Z : U<S0> {};
-
-struct Q : protected A, virtual B{};
+    b=2,
+    c,
+    d
+};

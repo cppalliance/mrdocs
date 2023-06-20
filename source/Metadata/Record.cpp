@@ -25,7 +25,6 @@ toString(RecordKeyKind kind) noexcept
     case RecordKeyKind::Union:
         return "union";
     default:
-        // unknown RecordKeyKind
         MRDOX_UNREACHABLE();
     }
 }

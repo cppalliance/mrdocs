@@ -22,7 +22,7 @@ template<class T, class U>
 class MRDOX_DECL
     DomArray : public dom::Array
 {
-    std::vector<T> list_;
+    std::vector<T> const& list_;
     Corpus const& corpus_;
 
 public:

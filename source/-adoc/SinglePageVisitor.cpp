@@ -57,6 +57,13 @@ operator()(FunctionInfo const& I)
     renderPage(I, numPages_++);
 }
 
+void
+SinglePageVisitor::
+operator()(EnumInfo const& I)
+{
+    renderPage(I, numPages_++);
+}
+
 // pageNumber is zero-based
 void
 SinglePageVisitor::

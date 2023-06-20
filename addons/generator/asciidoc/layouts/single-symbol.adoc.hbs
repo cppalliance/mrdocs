@@ -1,1 +1,3 @@
-{{>symbol symbol=symbol}}
+{{#with symbol}}
+{{> (lookup . 'kind') symbol=.}}
+{{/with}}

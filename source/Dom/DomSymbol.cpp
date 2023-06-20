@@ -10,6 +10,7 @@
 //
 
 #include "Support/Radix.hpp"
+#include <mrdox/Dom/DomArray.hpp>
 #include <mrdox/Dom/DomBase.hpp>
 #include <mrdox/Dom/DomBaseArray.hpp>
 #include <mrdox/Dom/DomFnSpecs.hpp>
@@ -27,6 +28,56 @@
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
+
+class DomEnumValue : public dom::Object
+{
+    EnumValueInfo const& I_;
+    Corpus const& corpus_;
+
+public:
+    DomEnumValue(
+        EnumValueInfo const& I,
+        Corpus const& corpus) noexcept
+        : I_(I)
+        , corpus_(corpus)
+    {
+    }
+
+    dom::Value
+    get(std::string_view key) const override
+    {
+        if(key == "name")
+            return I_.Name;
+        if(key == "value")
+            return I_.Value;
+        if(key == "expr")
+            return I_.ValueExpr;
+        if(key == "doc")
+        {
+            if(I_.javadoc)
+                return dom::create<DomJavadoc>(
+                    *I_.javadoc, corpus_);
+            return nullptr;
+        }
+        return nullptr;
+    }
+
+    std::vector<std::string_view>
+    props() const override
+    {
+        return {
+            "name",
+            "value",
+            "expr",
+            "doc",
+        };
+    }
+};
+
+
+//------------------------------------------------
 
 template<class T>
 DomSymbol<T>::
@@ -136,6 +187,19 @@ get(std::string_view key) const
     }
     if constexpr(T::isEnum())
     {
+        if(key == "type")
+        {
+            if(I_.BaseType)
+                return dom::create<DomType>(
+                    *I_.BaseType, corpus_);
+            return nullptr;
+        }
+        if(key == "members")
+            return dom::create<DomArray<
+                EnumValueInfo, DomEnumValue>>(
+                    I_.Members, corpus_);
+        if(key == "isScoped")
+            return I_.Scoped;
     }
     if constexpr(T::isTypedef())
     {
@@ -206,6 +270,12 @@ props() const ->
             "params",
             "specs",
             "template"
+            });
+    if constexpr(T::isEnum())
+        v.insert(v.end(), {
+            "type",
+            "members",
+            "isScoped"
             });
     if constexpr(T::isVariable())
         v.insert(v.end(), {

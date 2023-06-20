@@ -52,7 +52,7 @@ public:
     Expected<std::string> operator()(NamespaceInfo const&);
     Expected<std::string> operator()(RecordInfo const&);
     Expected<std::string> operator()(FunctionInfo const&);
-
+    Expected<std::string> operator()(EnumInfo const&);
 };
 
 } // adoc
