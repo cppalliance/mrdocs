@@ -138,4 +138,5 @@ The result is 1.230000e+02
   Failover content
 
 
-
+// Pass templates to partials
+Site Content My Content

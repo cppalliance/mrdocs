@@ -978,8 +978,15 @@ renderTag(
 
         if (tag.expression.empty())
         {
-            // inherit context
-            render_to(out, partial_text, data, opt);
+            if (tag.type2 != '#') {
+                // Render partial with current context
+                render_to(out, partial_text, data, opt);
+            } else {
+                // inherit context but populate partials with "@partial-block"
+                Handlebars hbs2 = *this;
+                hbs2.partials_["@partial-block"] = std::string(fnBlock);
+                hbs2.render_to(out, partial_text, data, opt);
+            }
         }
         else
         {

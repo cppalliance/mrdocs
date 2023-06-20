@@ -415,6 +415,7 @@ main() {
     hbs.registerPartial("myPartialContext", "{{information}}");
     hbs.registerPartial("myPartialParam", "The result is {{parameter}}");
     hbs.registerPartial("myPartialParam2", "{{prefix}}, {{firstname}} {{lastname}}");
+    hbs.registerPartial("layout", "Site Content {{> @partial-block }}");
 
     // Render template with all handlebars features
     std::string rendered_text = hbs.render(template_str, context, options);

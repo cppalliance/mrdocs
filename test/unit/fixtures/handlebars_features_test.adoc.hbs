@@ -136,4 +136,7 @@ html-escaped: {{page.specialChars}}
   Failover content
 {{/myMissingPartial}}
 
-
+// Pass templates to partials
+{{#> layout }}
+My Content
+{{/layout}}
