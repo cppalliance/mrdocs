@@ -24,7 +24,13 @@ This is the from_chars function
 
 
 // Record detail partial
-[undefined partial "record-detail"]
+[,cpp]
+----
+struct from_chars
+{
+};
+----
+
 
 // #with to change context
 Person: John Doe in page about `from_chars`
@@ -79,14 +85,12 @@ https://cppalliance.org/[See Website]
 ----
 
 // Undefined helper
-[undefined helper "undefinedhelper"]
+[undefined helper in "{{undefinedhelper page.person.lastname}}"]
 
 // Helpers with hashes
 https://chat.asciidoc.org[*project chat*^,role=green]
 
 // Subexpressions
-
-
-
-
+****************** 90% Upload stalled
+****************** 90% Upload stalled
 
