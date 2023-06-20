@@ -333,10 +333,10 @@ void splitLines(std::string_view text, std::vector<std::string_view> &lines) {
 
 int
 main() {
-    std::string_view template_path = MRDOX_UNIT_TEST_DIR "/fixtures/function.adoc.hbs";
+    std::string_view template_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc.hbs";
     std::string_view partial_path = MRDOX_UNIT_TEST_DIR "/fixtures/record-detail.adoc.hbs";
-    std::string_view output_path = MRDOX_UNIT_TEST_DIR "/fixtures/function.adoc";
-    std::string_view error_output_path = MRDOX_UNIT_TEST_DIR "/fixtures/function-error.adoc";
+    std::string_view output_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc";
+    std::string_view error_output_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test_error.adoc";
     auto template_text_r = files::getFileText(template_path);
     REQUIRE(template_text_r);
     auto partial_text_r = files::getFileText(partial_path);
