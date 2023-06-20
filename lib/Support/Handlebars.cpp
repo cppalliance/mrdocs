@@ -94,7 +94,11 @@ findTag(std::string_view &tag, std::string_view templateText)
 struct Handlebars::Tag {
     std::string_view buffer;
 
+    // Tag type
     char type = '\0';
+
+    // Secondary tag type
+    char type2 = '\0';
 
     // From after type until closing tag
     std::string_view content;
@@ -279,6 +283,12 @@ parseTag(std::string_view tagStr)
     if (it != tag_types.end()) {
         t.type = tagStr.front();
         tagStr.remove_prefix(1);
+        if (t.type == '#' && tagStr.starts_with('>')) {
+            // Partial block. Secondary tag is # (or complete tag is >#)
+            t.type = '>';
+            t.type2 = '#';
+            tagStr.remove_prefix(1);
+        }
         tagStr = trim_spaces(tagStr);
     } else if (t.rawBlock) {
         t.type = '#';
@@ -714,6 +724,121 @@ evalExpr(
     }
 }
 
+// Parse a block starting at templateText
+bool
+parseBlock(
+    Handlebars::Tag const &tag,
+    std::string_view &templateText,
+    llvm::raw_string_ostream &out,
+    std::string_view &fnBlock,
+    std::string_view &inverseBlock) {
+    fnBlock=templateText;
+    inverseBlock = {};
+    Handlebars::Tag closeTag;
+    int l = 1;
+    std::string_view* curBlock = &fnBlock;
+    while (!templateText.empty())
+    {
+        std::string_view tagStr;
+        if (!findTag(tagStr, templateText))
+            break;
+
+        Handlebars::Tag curTag = parseTag(tagStr);
+
+        // move template after the tag
+        auto tag_pos = curTag.buffer.data() - templateText.data();
+        templateText.remove_prefix(tag_pos + curTag.buffer.size());
+
+        // update section level
+        if (!tag.rawBlock) {
+            if (curTag.type == '#') {
+                // Opening a child section tag
+                ++l;
+            } else if (curTag.type == '/') {
+                // Closing a section tag
+                --l;
+                if (l == 0) {
+                    // Closing the main section tag
+                    closeTag = curTag;
+                    if (closeTag.content != tag.helper) {
+                        out << "[mismatched closing tag: " << closeTag.buffer << "]";
+                        return false;
+                    }
+                    *curBlock = {curBlock->data(), closeTag.buffer.data()};
+                    if (closeTag.removeLWhitespace) {
+                        *curBlock = trim_rspaces(*curBlock);
+                    }
+                    if (closeTag.removeRWhitespace) {
+                        templateText = trim_lspaces(templateText);
+                    }
+                    break;
+                }
+            }
+
+            // check inversion
+            if (l == 1) {
+                if (curTag.content == "^" || curTag.content == "else") {
+                    *curBlock = {curBlock->data(), curTag.buffer.data()};
+                    if (curTag.removeLWhitespace) {
+                        *curBlock = trim_rspaces(*curBlock);
+                    }
+                    if (tag.removeRWhitespace) {
+                        *curBlock = trim_lspaces(*curBlock);
+                    }
+                    curBlock = &inverseBlock;
+                    *curBlock = templateText;
+                    if (curTag.removeRWhitespace) {
+                        *curBlock = trim_lspaces(*curBlock);
+                        templateText = trim_lspaces(templateText);
+                    }
+                }
+            }
+        } else {
+            // raw block
+            if (curTag.type == '/' && tag.rawBlock == curTag.rawBlock && tag.helper == curTag.content) {
+                // Closing the raw section
+                l = 0;
+                closeTag = curTag;
+                *curBlock = {curBlock->data(), closeTag.buffer.data()};
+                if (closeTag.removeLWhitespace) {
+                    *curBlock = trim_rspaces(*curBlock);
+                }
+                if (closeTag.removeRWhitespace) {
+                    templateText = trim_lspaces(templateText);
+                }
+                break;
+            }
+        }
+    }
+
+    // If the first line of fnBlock is only whitespaces, remove it
+    // This is a small undocumented detail of handlebars.js that makes
+    // the output match what's expected by the users.
+    auto posLB = fnBlock.find_first_of("\r\n");
+    if (posLB != std::string_view::npos)
+    {
+        std::string_view first_line = fnBlock.substr(0, posLB);
+        if (std::ranges::all_of(first_line, [](char c) { return c == ' '; })) {
+            fnBlock.remove_prefix(posLB);
+            posLB = fnBlock.find_first_not_of("\r\n");
+            if (posLB != std::string_view::npos)
+            {
+                fnBlock.remove_prefix(posLB);
+            }
+        }
+    }
+    // Do the same for the last line
+    auto posRB = fnBlock.find_last_of("\r\n");
+    if (posRB != std::string_view::npos)
+    {
+        std::string_view last_line = fnBlock.substr(posRB + 1);
+        if (std::ranges::all_of(last_line, [](char c) { return c == ' '; })) {
+            fnBlock.remove_suffix(last_line.size());
+        }
+    }
+    return true;
+}
+
 // Render a handlebars tag
 void
 Handlebars::
@@ -727,112 +852,14 @@ renderTag(
     {
         // Opening a section tag
         // Find closing tag
-        Tag closeTag;
-        int l = 1;
         if (tag.removeRWhitespace) {
             templateText = trim_lspaces(templateText);
         }
-        std::string_view fnBlock = templateText;
+
+        std::string_view fnBlock;
         std::string_view inverseBlock;
-        std::string_view* curBlock = &fnBlock;
-        while (!templateText.empty())
-        {
-            std::string_view tagStr;
-            if (!findTag(tagStr, templateText))
-                break;
-
-            Tag curTag = parseTag(tagStr);
-
-            // move template after the tag
-            auto tag_pos = curTag.buffer.data() - templateText.data();
-            templateText.remove_prefix(tag_pos + curTag.buffer.size());
-
-            // update section level
-            if (!tag.rawBlock) {
-                if (curTag.type == '#') {
-                    // Opening a child section tag
-                    ++l;
-                } else if (curTag.type == '/') {
-                    // Closing a section tag
-                    --l;
-                    if (l == 0) {
-                        // Closing the main section tag
-                        closeTag = curTag;
-                        if (closeTag.content != tag.helper) {
-                            out << "[mismatched closing tag: " << closeTag.buffer << "]";
-                            return;
-                        }
-                        *curBlock = {curBlock->data(), closeTag.buffer.data()};
-                        if (closeTag.removeLWhitespace) {
-                            *curBlock = trim_rspaces(*curBlock);
-                        }
-                        if (closeTag.removeRWhitespace) {
-                            templateText = trim_lspaces(templateText);
-                        }
-                        break;
-                    }
-                }
-
-                // check inversion
-                if (l == 1) {
-                    if (curTag.content == "^" || curTag.content == "else") {
-                        *curBlock = {curBlock->data(), curTag.buffer.data()};
-                        if (curTag.removeLWhitespace) {
-                            *curBlock = trim_rspaces(*curBlock);
-                        }
-                        if (tag.removeRWhitespace) {
-                            *curBlock = trim_lspaces(*curBlock);
-                        }
-                        curBlock = &inverseBlock;
-                        *curBlock = templateText;
-                        if (curTag.removeRWhitespace) {
-                            *curBlock = trim_lspaces(*curBlock);
-                            templateText = trim_lspaces(templateText);
-                        }
-                    }
-                }
-            } else {
-                // raw block
-                if (curTag.type == '/' && tag.rawBlock == curTag.rawBlock && tag.helper == curTag.content) {
-                    // Closing the raw section
-                    l = 0;
-                    closeTag = curTag;
-                    *curBlock = {curBlock->data(), closeTag.buffer.data()};
-                    if (closeTag.removeLWhitespace) {
-                        *curBlock = trim_rspaces(*curBlock);
-                    }
-                    if (closeTag.removeRWhitespace) {
-                        templateText = trim_lspaces(templateText);
-                    }
-                    break;
-                }
-            }
-        }
-
-        // If the first line of fnBlock is only whitespaces, remove it
-        // This is a small undocumented detail of handlebars.js that makes
-        // the output match what's expected by the users.
-        auto posLB = fnBlock.find_first_of("\r\n");
-        if (posLB != std::string_view::npos)
-        {
-            std::string_view first_line = fnBlock.substr(0, posLB);
-            if (std::ranges::all_of(first_line, [](char c) { return c == ' '; })) {
-                fnBlock.remove_prefix(posLB);
-                posLB = fnBlock.find_first_not_of("\r\n");
-                if (posLB != std::string_view::npos)
-                {
-                    fnBlock.remove_prefix(posLB);
-                }
-            }
-        }
-        // Do the same for the last line
-        auto posRB = fnBlock.find_last_of("\r\n");
-        if (posRB != std::string_view::npos)
-        {
-            std::string_view last_line = fnBlock.substr(posRB + 1);
-            if (std::ranges::all_of(last_line, [](char c) { return c == ' '; })) {
-                fnBlock.remove_suffix(last_line.size());
-            }
+        if (!parseBlock(tag, templateText, out, fnBlock, inverseBlock)) {
+            return;
         }
 
         // Setup helper arguments
@@ -925,18 +952,34 @@ renderTag(
             }
         }
 
+        // Parse block
+        std::string_view fnBlock;
+        std::string_view inverseBlock;
+        if (tag.type2 == '#') {
+            if (!parseBlock(tag, templateText, out, fnBlock, inverseBlock)) {
+                return;
+            }
+        }
+
         // Partial
         auto it = partials_.find(helper);
+        std::string_view partial_text;
         if (it == partials_.end())
         {
-            out << "[undefined partial in \"" << tag.buffer << "\"]";
-            return;
+            if (tag.type2 == '#') {
+                partial_text = fnBlock;
+            } else {
+                out << "[undefined partial in \"" << tag.buffer << "\"]";
+                return;
+            }
+        } else {
+            partial_text = it->second;
         }
 
         if (tag.expression.empty())
         {
             // inherit context
-            render_to(out, it->second, data, opt);
+            render_to(out, partial_text, data, opt);
         }
         else
         {
@@ -967,7 +1010,7 @@ renderTag(
                     partialCtx.try_emplace({partialKey}, llvm::json::Value(llvm::json::Object(data)));
                 }
             }
-            render_to(out, it->second, partialCtx, opt);
+            render_to(out, partial_text, partialCtx, opt);
         }
 
         if (tag.removeRWhitespace) {

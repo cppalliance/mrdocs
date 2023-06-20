@@ -134,5 +134,8 @@ The result is 1.230000e+02
   Hello, Carol Smith.
 
 
+// Partial blocks
+  Failover content
+
 
 
