@@ -397,6 +397,14 @@ main() {
     hbs.registerHelper("to_string", to_string_fn);
     hbs.registerPartial("record-detail", *partial_text_r);
 
+    hbs.registerHelper("whichPartial", [](
+            llvm::json::Object const& /* context */,
+            llvm::json::Array const& /* args */,
+            HandlebarsCallback const& /* callback params */) -> llvm::json::Value {
+        return "dynamicPartial";
+    });
+    hbs.registerPartial("dynamicPartial", "Dynamo!");
+
     // Render template with all handlebars features
     std::string rendered_text = hbs.render(template_str, context, options);
     REQUIRE_FALSE(rendered_text.empty());

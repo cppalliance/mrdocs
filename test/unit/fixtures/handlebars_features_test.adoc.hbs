@@ -112,3 +112,11 @@ html-escaped: {{page.specialChars}}
 {{{{raw}}}}
   {{escaped}}
 {{{{/raw}}}}
+
+// Basic partials
+{{>record-detail}}
+{{ > record-detail}}
+
+// Dynamic partials
+{{> (whichPartial) }}
+

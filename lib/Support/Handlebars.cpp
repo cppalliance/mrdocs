@@ -888,8 +888,19 @@ renderTag(
     }
     else if (tag.type == '>')
     {
+        // Evaluate dynamic partial
+        std::string_view helper = tag.helper;
+        if (helper.starts_with('(')) {
+            std::string_view expr;
+            findExpr(expr, helper);
+            llvm::json::Value value = evalExpr(data, expr);
+            if (value.getAsString()) {
+                helper = *value.getAsString();
+            }
+        }
+
         // Partial
-        auto it = partials_.find(tag.helper);
+        auto it = partials_.find(helper);
         if (it == partials_.end())
         {
             out << "[undefined partial in \"" << tag.buffer << "\"]";

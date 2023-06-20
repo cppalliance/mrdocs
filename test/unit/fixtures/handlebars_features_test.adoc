@@ -105,3 +105,23 @@ true
 
   {{escaped}}
 
+
+// Basic partials
+[,cpp]
+----
+struct from_chars
+{
+};
+----
+
+[,cpp]
+----
+struct from_chars
+{
+};
+----
+
+
+// Dynamic partials
+Dynamo!
+
