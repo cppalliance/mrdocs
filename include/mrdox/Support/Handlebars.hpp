@@ -70,8 +70,11 @@ class Handlebars {
         }
     };
 
-    std::unordered_map<std::string, std::string, string_hash, std::equal_to<>> partials_;
-    std::unordered_map<std::string, helper_type, string_hash, std::equal_to<>> helpers_;
+    using partials_map = std::unordered_map<std::string, std::string, string_hash, std::equal_to<>>;
+    using helpers_map = std::unordered_map<std::string, helper_type, string_hash, std::equal_to<>>;
+
+    partials_map partials_;
+    helpers_map helpers_;
 
 public:
     /// Render a handlebars template
@@ -335,13 +338,23 @@ public:
     struct Tag;
 
 private:
+    // render to ostream using extra partials from parent contexts
+    void
+    render_to(
+        llvm::raw_string_ostream& out,
+        std::string_view templateText,
+        llvm::json::Object const &data,
+        HandlebarsOptions opt,
+        partials_map& extra_partials) const;
+
     void
     renderTag(
         Tag const& tag,
         llvm::raw_string_ostream& out,
         std::string_view& templateText,
         llvm::json::Object const &data,
-        HandlebarsOptions opt) const;
+        HandlebarsOptions opt,
+        partials_map& extra_partials) const;
 
     llvm::json::Value
     evalExpr(

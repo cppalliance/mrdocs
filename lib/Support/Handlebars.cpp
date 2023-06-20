@@ -337,6 +337,24 @@ render_to(
     llvm::json::Object const &data,
     HandlebarsOptions opt) const
 {
+    partials_map extra_partials;
+    render_to(
+        out,
+        templateText,
+        data,
+        opt,
+        extra_partials);
+}
+
+void
+Handlebars::
+render_to(
+    llvm::raw_string_ostream& out,
+    std::string_view templateText,
+    llvm::json::Object const &data,
+    HandlebarsOptions opt,
+    partials_map& extra_partials) const
+{
     while (!templateText.empty()) {
         std::string_view tagStr;
         if (!findTag(tagStr, templateText))
@@ -358,7 +376,7 @@ render_to(
         out << templateText.substr(0, templateEndPos);
         templateText.remove_prefix(tagStartPos + tagStr.size());
         if (!tag.escaped) {
-            renderTag(tag, out, templateText, data, opt);
+            renderTag(tag, out, templateText, data, opt, extra_partials);
         } else {
             out << tag.content;
         }
@@ -847,7 +865,8 @@ renderTag(
     llvm::raw_string_ostream& out,
     std::string_view& templateText,
     llvm::json::Object const &data,
-    HandlebarsOptions opt) const {
+    HandlebarsOptions opt,
+    partials_map& extra_partials) const {
     if (tag.type == '#')
     {
         // Opening a section tag
@@ -886,13 +905,21 @@ renderTag(
         // 3rd argument) callbacks
         HandlebarsCallback cb;
         if (!tag.rawBlock) {
-            cb.fn = [this, fnBlock, opt](llvm::json::Object const &item) -> std::string {
+            cb.fn = [this, fnBlock, opt, &extra_partials](
+                llvm::json::Object const &item) -> std::string {
                 // Render one element in the list with the fnBlock template
-                return render(fnBlock, item, opt);
+                std::string res;
+                llvm::raw_string_ostream os{res};
+                render_to(os, fnBlock, item, opt, extra_partials);
+                return res;
             };
-            cb.inverse = [this, inverseBlock, opt](llvm::json::Object const &item) -> std::string {
+            cb.inverse = [this, inverseBlock, opt, &extra_partials](
+                llvm::json::Object const &item) -> std::string {
                 // Render one element in the list with the inverseBlock template
-                return render(inverseBlock, item, opt);
+                std::string res;
+                llvm::raw_string_ostream os{res};
+                render_to(os, inverseBlock, item, opt, extra_partials);
+                return res;
             };
         } else {
             cb.fn = [this, fnBlock, opt](llvm::json::Object const &item) -> std::string {
@@ -966,11 +993,16 @@ renderTag(
         std::string_view partial_text;
         if (it == partials_.end())
         {
-            if (tag.type2 == '#') {
-                partial_text = fnBlock;
+            it = extra_partials.find(helper);
+            if (it == extra_partials.end()) {
+                if (tag.type2 == '#') {
+                    partial_text = fnBlock;
+                } else {
+                    out << "[undefined partial in \"" << tag.buffer << "\"]";
+                    return;
+                }
             } else {
-                out << "[undefined partial in \"" << tag.buffer << "\"]";
-                return;
+                partial_text = it->second;
             }
         } else {
             partial_text = it->second;
@@ -978,14 +1010,13 @@ renderTag(
 
         if (tag.expression.empty())
         {
-            if (tag.type2 != '#') {
-                // Render partial with current context
-                render_to(out, partial_text, data, opt);
-            } else {
-                // inherit context but populate partials with "@partial-block"
-                Handlebars hbs2 = *this;
-                hbs2.partials_["@partial-block"] = std::string(fnBlock);
-                hbs2.render_to(out, partial_text, data, opt);
+            if (tag.type2 == '#') {
+                extra_partials["@partial-block"] = std::string(fnBlock);
+            }
+            // Render partial with current context
+            render_to(out, partial_text, data, opt, extra_partials);
+            if (tag.type2 == '#') {
+                extra_partials.erase("@partial-block");
             }
         }
         else
@@ -1017,7 +1048,7 @@ renderTag(
                     partialCtx.try_emplace({partialKey}, llvm::json::Value(llvm::json::Object(data)));
                 }
             }
-            render_to(out, partial_text, partialCtx, opt);
+            render_to(out, partial_text, partialCtx, opt, extra_partials);
         }
 
         if (tag.removeRWhitespace) {
