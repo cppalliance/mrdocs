@@ -346,7 +346,7 @@ main() {
     REQUIRE_FALSE(template_str.empty());
 
     HandlebarsOptions options;
-    options.noEscape = true;
+    options.noHTMLEscape = true;
 
     // Create context for tests
     llvm::json::Object context;

@@ -72,6 +72,8 @@ findTag(std::string_view &tag, std::string_view templateText)
     std::string_view closeTagToken = "}}";
     if (templateText.substr(pos).starts_with("{{!--")) {
         closeTagToken = "--}}";
+    } else if (templateText.substr(pos).starts_with("{{{{")) {
+        closeTagToken = "}}}}";
     } else if (templateText.substr(pos).starts_with("{{{")) {
         closeTagToken = "}}}";
     }
@@ -105,6 +107,9 @@ struct Handlebars::Tag {
 
     // Whether to escape the result
     bool forceNoHTMLEscape{false};
+
+    // Whether to escape the result
+    bool rawBlock{false};
 
     // Whether to remove leading whitespace
     bool removeLWhitespace{false};
@@ -227,6 +232,11 @@ parseTag(std::string_view tagStr)
     {
         t.forceNoHTMLEscape = true;
         tagStr = tagStr.substr(1, tagStr.size() - 2);
+        if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
+        {
+            t.rawBlock = true;
+            tagStr = tagStr.substr(1, tagStr.size() - 2);
+        }
     }
 
     // Just get the content of expression is escaped
@@ -270,6 +280,8 @@ parseTag(std::string_view tagStr)
         t.type = tagStr.front();
         tagStr.remove_prefix(1);
         tagStr = trim_spaces(tagStr);
+    } else if (t.rawBlock) {
+        t.type = '#';
     } else {
         t.type = ' ';
     }
@@ -349,7 +361,7 @@ escape_to(
     std::string_view str,
     HandlebarsOptions opt)
 {
-    if (opt.noEscape)
+    if (opt.noHTMLEscape)
     {
         out << str;
     }
@@ -736,24 +748,55 @@ renderTag(
             templateText.remove_prefix(tag_pos + curTag.buffer.size());
 
             // update section level
-            if (curTag.type == '#')
-            {
-                // Opening a child section tag
-                ++l;
-            }
-            else if (curTag.type == '/')
-            {
-                // Closing a section tag
-                --l;
-                if (l == 0)
-                {
-                    // Closing the main section tag
-                    closeTag = curTag;
-                    if (closeTag.content != tag.helper)
-                    {
-                        out << "[mismatched closing tag: " << closeTag.buffer << "]";
-                        return;
+            if (!tag.rawBlock) {
+                if (curTag.type == '#') {
+                    // Opening a child section tag
+                    ++l;
+                } else if (curTag.type == '/') {
+                    // Closing a section tag
+                    --l;
+                    if (l == 0) {
+                        // Closing the main section tag
+                        closeTag = curTag;
+                        if (closeTag.content != tag.helper) {
+                            out << "[mismatched closing tag: " << closeTag.buffer << "]";
+                            return;
+                        }
+                        *curBlock = {curBlock->data(), closeTag.buffer.data()};
+                        if (closeTag.removeLWhitespace) {
+                            *curBlock = trim_rspaces(*curBlock);
+                        }
+                        if (closeTag.removeRWhitespace) {
+                            templateText = trim_lspaces(templateText);
+                        }
+                        break;
                     }
+                }
+
+                // check inversion
+                if (l == 1) {
+                    if (curTag.content == "^" || curTag.content == "else") {
+                        *curBlock = {curBlock->data(), curTag.buffer.data()};
+                        if (curTag.removeLWhitespace) {
+                            *curBlock = trim_rspaces(*curBlock);
+                        }
+                        if (tag.removeRWhitespace) {
+                            *curBlock = trim_lspaces(*curBlock);
+                        }
+                        curBlock = &inverseBlock;
+                        *curBlock = templateText;
+                        if (curTag.removeRWhitespace) {
+                            *curBlock = trim_lspaces(*curBlock);
+                            templateText = trim_lspaces(templateText);
+                        }
+                    }
+                }
+            } else {
+                // raw block
+                if (curTag.type == '/' && tag.rawBlock == curTag.rawBlock && tag.helper == curTag.content) {
+                    // Closing the raw section
+                    l = 0;
+                    closeTag = curTag;
                     *curBlock = {curBlock->data(), closeTag.buffer.data()};
                     if (closeTag.removeLWhitespace) {
                         *curBlock = trim_rspaces(*curBlock);
@@ -762,27 +805,6 @@ renderTag(
                         templateText = trim_lspaces(templateText);
                     }
                     break;
-                }
-            }
-
-            // check inversion
-            if (l == 1)
-            {
-                if (curTag.content == "^" || curTag.content == "else")
-                {
-                    *curBlock = {curBlock->data(), curTag.buffer.data()};
-                    if (curTag.removeLWhitespace) {
-                        *curBlock = trim_rspaces(*curBlock);
-                    }
-                    if (tag.removeRWhitespace) {
-                        *curBlock = trim_lspaces(*curBlock);
-                    }
-                    curBlock = &inverseBlock;
-                    *curBlock = templateText;
-                    if (curTag.removeRWhitespace) {
-                        *curBlock = trim_lspaces(*curBlock);
-                        templateText = trim_lspaces(templateText);
-                    }
                 }
             }
         }
@@ -810,27 +832,52 @@ renderTag(
 
         // 3rd argument) callbacks
         HandlebarsCallback cb;
-        cb.fn = [this, fnBlock, opt](llvm::json::Object const& item) -> std::string {
-            // Render one element in the list with the fnBlock template
-            return render(fnBlock, item, opt);
-        };
-        cb.inverse = [this, inverseBlock, opt](llvm::json::Object const& item) -> std::string {
-            // Render one element in the list with the inverseBlock template
-            return render(inverseBlock, item, opt);
-        };
+        if (!tag.rawBlock) {
+            cb.fn = [this, fnBlock, opt](llvm::json::Object const &item) -> std::string {
+                // Render one element in the list with the fnBlock template
+                return render(fnBlock, item, opt);
+            };
+            cb.inverse = [this, inverseBlock, opt](llvm::json::Object const &item) -> std::string {
+                // Render one element in the list with the inverseBlock template
+                return render(inverseBlock, item, opt);
+            };
+        } else {
+            cb.fn = [this, fnBlock, opt](llvm::json::Object const &item) -> std::string {
+                // Render one element in the list with the fnBlock template
+                return std::string(fnBlock);
+            };
+            cb.inverse = [this, inverseBlock, opt](llvm::json::Object const &item) -> std::string {
+                // Render one element in the list with the inverseBlock template
+                return {};
+            };
+        }
 
         // Call helper
         auto it = helpers_.find(tag.helper);
-        if (it == helpers_.end())
-        {
-            out << "[undefined helper in \"" << tag.buffer << "\"]";
-            return;
+        if (!tag.rawBlock) {
+            if (it == helpers_.end())
+            {
+                out << "[undefined helper in \"" << tag.buffer << "\"]";
+                return;
+            }
+            helper_type const& fn = it->second;
+            llvm::json::Value res = fn(context, args, cb);
+            HandlebarsOptions opt2 = opt;
+            opt2.noHTMLEscape = true;
+            format_to(out, res, opt2);
+        } else {
+            llvm::json::Value res(nullptr);
+            if (it == helpers_.end())
+            {
+                res = {fnBlock};
+            } else {
+                helper_type const& fn = it->second;
+                res = fn(context, args, cb);
+            }
+            HandlebarsOptions opt2 = opt;
+            opt2.noHTMLEscape = true;
+            format_to(out, res, opt2);
         }
-        helper_type const& fn = it->second;
-        llvm::json::Value res = fn(context, args, cb);
-        HandlebarsOptions opt2 = opt;
-        opt2.noEscape = true;
-        format_to(out, res, opt2);
     }
     else if (tag.type == '/' || tag.type == '!')
     {
@@ -892,7 +939,7 @@ renderTag(
         if (tag.forceNoHTMLEscape)
         {
             // Unescaped tag content
-            opt2.noEscape = true;
+            opt2.noHTMLEscape = true;
         }
 
         if (tag.content.empty())

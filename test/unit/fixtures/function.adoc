@@ -100,3 +100,8 @@ https://chat.asciidoc.org[*project chat*^,role=green]
 // Inline escapes
 escaped
 true
+
+// Raw blocks
+
+  {{escaped}}
+

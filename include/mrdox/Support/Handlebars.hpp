@@ -23,7 +23,7 @@ namespace mrdox {
 
 struct HandlebarsOptions {
     /// Escape HTML entities
-    bool noEscape = false;
+    bool noHTMLEscape = false;
 };
 
 struct HandlebarsCallback {
