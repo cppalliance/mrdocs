@@ -62,28 +62,37 @@ findTag(std::string_view &tag, std::string_view templateText)
 {
     if (templateText.size() < 4)
         return false;
+
+    // Find opening tag
     auto pos = templateText.find("{{");
     if (pos == std::string_view::npos)
         return false;
 
+    // Find closing tag
     std::string_view closeTagToken = "}}";
     if (templateText.substr(pos).starts_with("{{!--")) {
         closeTagToken = "--}}";
     } else if (templateText.substr(pos).starts_with("{{{")) {
         closeTagToken = "}}}";
     }
-
     auto end = templateText.find(closeTagToken, pos);
     if (end == std::string_view::npos)
         return false;
+
+    // Found tag
     tag = templateText.substr(pos, end - pos + closeTagToken.size());
+
+    // Check if tag is escaped verbatim
+    if (pos != 0 && templateText[pos - 1] == '\\') {
+        tag = {tag.begin() - 1, tag.end()};
+    }
     return true;
 }
 
 struct Handlebars::Tag {
     std::string_view buffer;
 
-    char type;
+    char type = '\0';
 
     // From after type until closing tag
     std::string_view content;
@@ -95,13 +104,16 @@ struct Handlebars::Tag {
     std::string_view expression;
 
     // Whether to escape the result
-    bool forceNoEscape{false};
+    bool forceNoHTMLEscape{false};
 
     // Whether to remove leading whitespace
     bool removeLWhitespace{false};
 
     // Whether to remove trailing whitespace
     bool removeRWhitespace{false};
+
+    // Whether the whole tag content is escaped
+    bool escaped{false};
 };
 
 std::string_view
@@ -200,20 +212,28 @@ Handlebars::Tag
 parseTag(std::string_view tagStr)
 {
     MRDOX_ASSERT(tagStr.size() >= 4);
-    MRDOX_ASSERT(tagStr[0] == '{');
-    MRDOX_ASSERT(tagStr[1] == '{');
+    Handlebars::Tag t;
+    t.escaped = tagStr.front() == '\\';
+    MRDOX_ASSERT(tagStr[0 + t.escaped] == '{');
+    MRDOX_ASSERT(tagStr[1 + t.escaped] == '{');
     MRDOX_ASSERT(tagStr[tagStr.size() - 1] == '}');
     MRDOX_ASSERT(tagStr[tagStr.size() - 2] == '}');
-    Handlebars::Tag t;
     t.buffer = tagStr;
-    tagStr = tagStr.substr(2, tagStr.size() - 4);
+    tagStr = tagStr.substr(2 + t.escaped, tagStr.size() - 4 - t.escaped);
 
-    // Force no escape
-    t.forceNoEscape = false;
+    // Force no HTML escape
+    t.forceNoHTMLEscape = false;
     if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
     {
-        t.forceNoEscape = true;
+        t.forceNoHTMLEscape = true;
         tagStr = tagStr.substr(1, tagStr.size() - 2);
+    }
+
+    // Just get the content of expression is escaped
+    if (t.escaped) {
+        t.content = tagStr;
+        t.expression = tagStr;
+        return t;
     }
 
     // Remove whitespaces once again to support tags with extra whitespaces.
@@ -315,7 +335,11 @@ render_to(
         }
         out << templateText.substr(0, templateEndPos);
         templateText.remove_prefix(tagStartPos + tagStr.size());
-        renderTag(tag, out, templateText, data, opt);
+        if (!tag.escaped) {
+            renderTag(tag, out, templateText, data, opt);
+        } else {
+            out << tag.content;
+        }
     }
 }
 
@@ -865,7 +889,7 @@ renderTag(
     {
         // Expression
         auto opt2 = opt;
-        if (tag.forceNoEscape)
+        if (tag.forceNoHTMLEscape)
         {
             // Unescaped tag content
             opt2.noEscape = true;

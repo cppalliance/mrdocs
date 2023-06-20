@@ -97,3 +97,6 @@ https://chat.asciidoc.org[*project chat*^,role=green]
 // Whitespace control
 <a href="foo">bar</a><a href="bar">Empty</a>
 
+// Inline escapes
+escaped
+true
