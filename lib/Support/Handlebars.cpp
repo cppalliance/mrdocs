@@ -494,7 +494,7 @@ evalExpr(
     {
         std::string_view all = expression.substr(1, expression.size() - 2);
         std::string_view helper;
-        MRDOX_ASSERT(findExpr(helper, all));
+        findExpr(helper, all);
         auto it = helpers_.find(helper);
         if (it == helpers_.end())
         {
