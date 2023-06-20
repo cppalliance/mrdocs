@@ -285,11 +285,25 @@ writeEnum(
 
     writeSourceInfo(I);
 
-    for(auto const& v : I.Members)
-        tags_.write("value", {}, {
-            { "name", v.Name },
-            { "value", v.Value },
+    for(auto const& V : I.Members)
+    {
+        if(! V.javadoc)
+        {
+            tags_.write("value", {}, {
+                { "name", V.Name },
+                { "value", V.Value },
+                });
+        }
+        else
+        {
+            tags_.open("value", {
+                { "name", V.Name },
+                { "value", V.Value }
             });
+            writeJavadoc(V.javadoc);
+            tags_.close("value");
+        }
+    }
 
     writeJavadoc(I.javadoc);
 

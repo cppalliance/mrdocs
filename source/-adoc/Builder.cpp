@@ -206,41 +206,26 @@ createContext(
         }));
 }
 
+template<class T>
 Expected<std::string>
 Builder::
-operator()(NamespaceInfo const& I)
+operator()(T const& I)
 {
     return callTemplate(
         "single-symbol.adoc.hbs",
         createContext(I.id));
 }
 
-Expected<std::string>
-Builder::
-operator()(RecordInfo const& I)
-{
-    return callTemplate(
-        "single-symbol.adoc.hbs",
-        createContext(I.id));
-}
+#define DEFINE(T) template Expected<std::string> \
+    Builder::operator()<T>(T const&)
 
-Expected<std::string>
-Builder::
-operator()(FunctionInfo const& I)
-{
-    return callTemplate(
-        "single-symbol.adoc.hbs",
-        createContext(I.id));
-}
-
-Expected<std::string>
-Builder::
-operator()(EnumInfo const& I)
-{
-    return callTemplate(
-        "single-symbol.adoc.hbs",
-        createContext(I.id));
-}
+DEFINE(NamespaceInfo);
+DEFINE(RecordInfo);
+DEFINE(FunctionInfo);
+DEFINE(EnumInfo);
+DEFINE(TypedefInfo);
+DEFINE(VariableInfo);
+DEFINE(FieldInfo);
 
 } // adoc
 } // mrdox

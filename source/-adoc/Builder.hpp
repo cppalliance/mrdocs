@@ -49,10 +49,8 @@ public:
     dom::ObjectPtr getSymbol(SymbolID const& id);
     dom::ObjectPtr createContext(SymbolID const& id);
 
-    Expected<std::string> operator()(NamespaceInfo const&);
-    Expected<std::string> operator()(RecordInfo const&);
-    Expected<std::string> operator()(FunctionInfo const&);
-    Expected<std::string> operator()(EnumInfo const&);
+    template<class T>
+    Expected<std::string> operator()(T const&);
 };
 
 } // adoc

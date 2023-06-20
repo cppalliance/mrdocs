@@ -576,7 +576,12 @@ parseEnumerators(
 
         SmallString<16> ValueStr;
         E->getInitVal().toString(ValueStr);
-        I.Members.emplace_back(E->getNameAsString(), ValueStr.str(), ValueExpr);
+
+        I.Members.emplace_back(
+            E->getNameAsString(),
+            ValueStr.str(),
+            ValueExpr);
+        parseRawComment(I.Members.back().javadoc, E);
     }
 }
 

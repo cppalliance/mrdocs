@@ -932,11 +932,14 @@ public:
 class EnumValueBlock : public BitcodeReader::AnyBlock
 {
     EnumValueInfo& I_;
+    BitcodeReader& br_;
 
 public:
     EnumValueBlock(
-        EnumValueInfo& I) noexcept
+        EnumValueInfo& I,
+        BitcodeReader& br) noexcept
         : I_(I)
+        , br_(br)
     {
     }
 
@@ -954,6 +957,22 @@ public:
             return decodeRecord(R, I_.ValueExpr, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_JAVADOC_BLOCK_ID:
+        {
+            JavadocBlock B(I_.javadoc, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return AnyBlock::readSubBlock(ID);
         }
     }
 };
@@ -997,7 +1016,7 @@ public:
         case BI_ENUM_VALUE_BLOCK_ID:
         {
             I->Members.emplace_back();
-            EnumValueBlock B(I->Members.back());
+            EnumValueBlock B(I->Members.back(), br_);
             return br_.readBlock(B, ID);
         }
         default:

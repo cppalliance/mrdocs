@@ -788,6 +788,7 @@ emitBlock(
     emitRecord(I.Name, ENUM_VALUE_NAME);
     emitRecord(I.Value, ENUM_VALUE_VALUE);
     emitRecord(I.ValueExpr, ENUM_VALUE_EXPR);
+    emitBlock(I.javadoc);
 }
 
 void

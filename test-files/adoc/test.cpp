@@ -1,5 +1,9 @@
 struct T {};
 
+/** This is an enum
+
+    Good enum.
+*/
 enum E
 {
     /** hmm

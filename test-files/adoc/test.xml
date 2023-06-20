@@ -5,9 +5,44 @@
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="test.cpp" line="1" class="def"/>
   </struct>
-  <function name="f" id="sgP6K1YoLuQEErJPRWdhzK0NBdQ=">
-    <file path="test.cpp" line="2"/>
-    <param name="t" type="const T &amp;" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
-  </function>
+  <enum name="E" id="xf6YhxRw8JpsHMwP6Tgyroti2gw=">
+    <file path="test.cpp" line="7" class="def"/>
+    <value name="a" value="0">
+      <doc>
+        <para>
+          <text> hmm</text>
+        </para>
+      </doc>
+    </value>
+    <value name="b" value="2">
+      <doc>
+        <para>
+          <text> hmm</text>
+        </para>
+      </doc>
+    </value>
+    <value name="c" value="3">
+      <doc>
+        <para>
+          <text> hmm</text>
+        </para>
+      </doc>
+    </value>
+    <value name="d" value="4">
+      <doc>
+        <para>
+          <text> hmm</text>
+        </para>
+      </doc>
+    </value>
+    <doc>
+      <brief>
+        <text> This is an enum</text>
+      </brief>
+      <para>
+        <text>    Good enum.</text>
+      </para>
+    </doc>
+  </enum>
 </namespace>
 </mrdox>

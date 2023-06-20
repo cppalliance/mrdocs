@@ -24,7 +24,6 @@
 namespace clang {
 namespace mrdox {
 
-// FIXME: this does not store javadocs...
 // Information for a single possible value of an enumeration.
 struct EnumValueInfo
 {

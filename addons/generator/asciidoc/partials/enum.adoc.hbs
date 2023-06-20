@@ -28,5 +28,14 @@ enum {{name}};
 === Description
 
 {{symbol.doc.description}}
+{{/if}}
 
+{{#if symbol.members}}
+{{#each symbol.members}}
+{{#if doc.description}}
+==== {{name}}
+
+{{doc.description}}
+{{/if}}
+{{/each}}
 {{/if}}
