@@ -93,3 +93,14 @@ html-escaped: {{page.specialChars}}
 {{progress "Upload" 90 (and true true)}}
 {{progress "Upload" 90 (and true (and true 'truthy'))}}
 
+// Whitespace control
+{{#each nav ~}}
+  <a href="{{url}}">
+    {{~#if test}}
+      {{~title}}
+    {{~^~}}
+      Empty
+    {{~/if~}}
+  </a>
+{{~/each}}
+

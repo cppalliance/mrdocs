@@ -80,6 +80,213 @@ findTag(std::string_view &tag, std::string_view templateText)
     return true;
 }
 
+struct Handlebars::Tag {
+    std::string_view buffer;
+
+    char type;
+
+    // From after type until closing tag
+    std::string_view content;
+
+    // First expression in content if more than one expression
+    std::string_view helper;
+
+    // Other expressions in content
+    std::string_view expression;
+
+    // Whether to escape the result
+    bool forceNoEscape{false};
+
+    // Whether to remove leading whitespace
+    bool removeLWhitespace{false};
+
+    // Whether to remove trailing whitespace
+    bool removeRWhitespace{false};
+};
+
+std::string_view
+trim_spaces(std::string_view expression)
+{
+    auto pos = expression.find_first_not_of(" \t\r\n");
+    if (pos == std::string_view::npos)
+        return "";
+    expression.remove_prefix(pos);
+    pos = expression.find_last_not_of(" \t\r\n");
+    if (pos == std::string_view::npos)
+        return "";
+    expression.remove_suffix(expression.size() - pos - 1);
+    return expression;
+}
+
+std::string_view
+trim_lspaces(std::string_view expression)
+{
+    auto pos = expression.find_first_not_of(" \t\r\n");
+    if (pos == std::string_view::npos)
+        return "";
+    expression.remove_prefix(pos);
+    return expression;
+}
+
+std::string_view
+trim_rspaces(std::string_view expression)
+{
+    auto pos = expression.find_last_not_of(" \t\r\n");
+    if (pos == std::string_view::npos)
+        return "";
+    expression.remove_suffix(expression.size() - pos - 1);
+    return expression;
+}
+
+// Find next expression in tag content
+bool
+findExpr(std::string_view & expr, std::string_view tagContent)
+{
+    tagContent = trim_spaces(tagContent);
+    if (tagContent.empty())
+        return false;
+
+    // Look for quoted expression
+    for (auto quote: {'\"', '\''})
+    {
+        if (tagContent.front() == quote)
+        {
+            auto close_pos = tagContent.find(quote, 1);
+            while (
+                close_pos != std::string_view::npos &&
+                tagContent[close_pos - 1] == '\\')
+            {
+                // Skip escaped quote
+                close_pos = tagContent.find(quote, close_pos + 1);
+            }
+            if (close_pos == std::string_view::npos)
+            {
+                // No closing quote found, invalid expression
+                return false;
+            }
+            expr = tagContent.substr(0, close_pos + 1);
+            return true;
+        }
+    }
+
+    // Look for subexpressions
+    if (tagContent.front() == '(')
+    {
+        std::string_view all = tagContent.substr(1);
+        std::string_view sub;
+        while (findExpr(sub, all)) {
+            all.remove_prefix(sub.data() + sub.size() - all.data());
+        }
+        if (!all.starts_with(')'))
+            return false;
+        expr = tagContent.substr(0, sub.data() + sub.size() - tagContent.data() + 1);
+        return true;
+    }
+
+    // No quoted expression found, look for whitespace
+    auto pos = tagContent.find_first_of(" \t\r\n)");
+    if (pos == std::string_view::npos)
+    {
+        expr = tagContent;
+        return true;
+    }
+    expr = tagContent.substr(0, pos);
+    return pos != 0;
+}
+
+
+// Parse a tag into helper, expression and content
+Handlebars::Tag
+parseTag(std::string_view tagStr)
+{
+    MRDOX_ASSERT(tagStr.size() >= 4);
+    MRDOX_ASSERT(tagStr[0] == '{');
+    MRDOX_ASSERT(tagStr[1] == '{');
+    MRDOX_ASSERT(tagStr[tagStr.size() - 1] == '}');
+    MRDOX_ASSERT(tagStr[tagStr.size() - 2] == '}');
+    Handlebars::Tag t;
+    t.buffer = tagStr;
+    tagStr = tagStr.substr(2, tagStr.size() - 4);
+
+    // Force no escape
+    t.forceNoEscape = false;
+    if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
+    {
+        t.forceNoEscape = true;
+        tagStr = tagStr.substr(1, tagStr.size() - 2);
+    }
+
+    // Remove whitespaces once again to support tags with extra whitespaces.
+    // This makes invalid tags like "{{ #if condition }}" work instead of failing.
+    tagStr = trim_spaces(tagStr);
+
+    // Identify whitespace removal
+    if (tagStr.starts_with('~')) {
+        t.removeLWhitespace = true;
+        tagStr.remove_prefix(1);
+        tagStr = trim_spaces(tagStr);
+    }
+    if (tagStr.ends_with('~')) {
+        t.removeRWhitespace = true;
+        tagStr.remove_suffix(1);
+        tagStr = trim_spaces(tagStr);
+    }
+
+    // Empty tag
+    if (tagStr.empty())
+    {
+        t.type = ' ';
+        t.content = tagStr.substr(0);
+        t.helper = tagStr.substr(0);
+        t.content = tagStr.substr(0);
+        t.expression = tagStr.substr(0);
+        return t;
+    }
+
+    // Find tag type
+    static constexpr std::array<char, 5> tag_types({'#', '/', '>', '!'});
+    auto it = std::ranges::find_if(tag_types, [tagStr](char c) { return c == tagStr.front(); });
+    if (it != tag_types.end()) {
+        t.type = tagStr.front();
+        tagStr.remove_prefix(1);
+        tagStr = trim_spaces(tagStr);
+    } else {
+        t.type = ' ';
+    }
+    t.content = tagStr;
+
+    // Find helper and expression
+    std::string_view expr;
+    std::string_view tagContent = t.content;
+    if (t.type == '#' || t.type == '>') {
+        // Tag type requires a helper
+        // First expression is always a helper even if there's only one expression
+        if (findExpr(expr, tagContent)) {
+            t.helper = expr;
+            tagContent.remove_prefix(expr.data() + expr.size() - tagContent.data());
+            t.expression = trim_spaces(tagContent);
+        } else {
+            t.helper = tagContent;
+            t.expression = {};
+        }
+    } else {
+        // Tag type doesn't require a helper
+        // First expression is always an expression even if there's only one expression
+        // If there's a second expression, the first is a helper
+        if (findExpr(expr, tagContent)) {
+            t.expression = expr;
+            t.helper = {};
+        }
+        tagContent.remove_prefix(expr.data() + expr.size() - tagContent.data());
+        if (findExpr(expr, tagContent)) {
+            // Second expression exists, so first is a helper and the rest is the arguments
+            t.helper = t.expression;
+            t.expression = {expr.data(), static_cast<std::size_t>(tagContent.data() + tagContent.size() - expr.data())};
+        }
+    }
+    return t;
+}
+
 void
 Handlebars::
 render_to(
@@ -89,15 +296,25 @@ render_to(
     HandlebarsOptions opt) const
 {
     while (!templateText.empty()) {
-        std::string_view tag;
-        if (!findTag(tag, templateText))
+        std::string_view tagStr;
+        if (!findTag(tagStr, templateText))
         {
             out << templateText;
             break;
         }
-        auto tag_pos = tag.data() - templateText.data();
-        out << templateText.substr(0, tag_pos);
-        templateText.remove_prefix(tag_pos + tag.size());
+        std::size_t tagStartPos = tagStr.data() - templateText.data();
+        Tag tag = parseTag(tagStr);
+        std::size_t templateEndPos = tagStartPos;
+        if (tag.removeLWhitespace) {
+            auto pos = templateText.substr(0, tagStartPos).find_last_not_of(" \t\r\n");
+            if (pos != std::string_view::npos) {
+                templateEndPos = pos + 1;
+            } else {
+                templateEndPos = 0;
+            }
+        }
+        out << templateText.substr(0, templateEndPos);
+        templateText.remove_prefix(tagStartPos + tagStr.size());
         renderTag(tag, out, templateText, data, opt);
     }
 }
@@ -283,20 +500,6 @@ findNested(
     return cur;
 }
 
-std::string_view
-trim_spaces(std::string_view expression)
-{
-    auto pos = expression.find_first_not_of(" \t\r\n");
-    if (pos == std::string_view::npos)
-        return "";
-    expression.remove_prefix(pos);
-    pos = expression.find_last_not_of(" \t\r\n");
-    if (pos == std::string_view::npos)
-        return "";
-    expression.remove_suffix(expression.size() - pos - 1);
-    return expression;
-}
-
 constexpr
 bool
 is_literal_value(
@@ -396,62 +599,6 @@ std::string unescapeString(std::string_view str) {
     return unescapedString;
 }
 
-// Find next expression in tag content
-bool
-findExpr(std::string_view & expr, std::string_view tagContent)
-{
-    tagContent = trim_spaces(tagContent);
-    if (tagContent.empty())
-        return false;
-
-    // Look for quoted expression
-    for (auto quote: {'\"', '\''})
-    {
-        if (tagContent.front() == quote)
-        {
-            auto close_pos = tagContent.find(quote, 1);
-            while (
-                close_pos != std::string_view::npos &&
-                tagContent[close_pos - 1] == '\\')
-            {
-                // Skip escaped quote
-                close_pos = tagContent.find(quote, close_pos + 1);
-            }
-            if (close_pos == std::string_view::npos)
-            {
-                // No closing quote found, invalid expression
-                return false;
-            }
-            expr = tagContent.substr(0, close_pos + 1);
-            return true;
-        }
-    }
-
-    // Look for subexpressions
-    if (tagContent.front() == '(')
-    {
-        std::string_view all = tagContent.substr(1);
-        std::string_view sub;
-        while (findExpr(sub, all)) {
-            all.remove_prefix(sub.data() + sub.size() - all.data());
-        }
-        if (!all.starts_with(')'))
-            return false;
-        expr = tagContent.substr(0, sub.data() + sub.size() - tagContent.data() + 1);
-        return true;
-    }
-
-    // No quoted expression found, look for whitespace
-    auto pos = tagContent.find_first_of(" \t\r\n)");
-    if (pos == std::string_view::npos)
-    {
-        expr = tagContent;
-        return true;
-    }
-    expr = tagContent.substr(0, pos);
-    return pos != 0;
-}
-
 llvm::json::Value
 Handlebars::
 evalExpr(
@@ -531,110 +678,24 @@ evalExpr(
     }
 }
 
-struct Tag {
-    std::string_view buffer;
-
-    char type;
-
-    // From after type until closing tag
-    std::string_view content;
-
-    // First expression in content if more than one expression
-    std::string_view helper;
-
-    // Other expressions in content
-    std::string_view expression;
-
-    // Whether to escape the result
-    bool forceNoEscape{false};
-};
-
-// Parse a tag into helper, expression and content
-Tag
-parseTag(std::string_view tag)
-{
-    MRDOX_ASSERT(tag.size() >= 4);
-    MRDOX_ASSERT(tag[0] == '{');
-    MRDOX_ASSERT(tag[1] == '{');
-    MRDOX_ASSERT(tag[tag.size() - 1] == '}');
-    MRDOX_ASSERT(tag[tag.size() - 2] == '}');
-    Tag t;
-    t.buffer = tag;
-    t.forceNoEscape = false;
-    tag = tag.substr(2, tag.size() - 4);
-    // Remove whitespaces once again to support tags with extra whitespaces.
-    // This makes invalid tags like "{{ #if condition }}" work instead of failing.
-    tag = trim_spaces(tag);
-    if (tag.empty())
-    {
-        t.type = ' ';
-        t.content = tag.substr(0);
-        t.helper = tag.substr(0);
-        t.content = tag.substr(0);
-        t.expression = tag.substr(0);
-        return t;
-    }
-    static constexpr std::array<char, 5> tag_types({'{', '#', '/', '>', '!'});
-    auto it = std::ranges::find_if(tag_types, [tag](char c) { return c == tag.front(); });
-    if (it != tag_types.end()) {
-        t.type = tag.front();
-        tag.remove_prefix(1);
-        if (t.type == '{') {
-            MRDOX_ASSERT(tag[tag.size() - 1] == '}');
-            tag.remove_suffix(1);
-            t.forceNoEscape = true;
-        }
-        tag = trim_spaces(tag);
-    } else {
-        t.type = ' ';
-    }
-    t.content = tag;
-
-    std::string_view expr;
-    std::string_view tagContent = t.content;
-    static constexpr std::array<char, 2> require_helpers({'#', '>'});
-    if (std::ranges::any_of(require_helpers, [f=t.type](char c) { return c == f; })) {
-        // First expression is a helper even if there's only one expression
-        if (findExpr(expr, tagContent)) {
-            t.helper = expr;
-            tagContent.remove_prefix(expr.data() + expr.size() - tagContent.data());
-            t.expression = trim_spaces(tagContent);
-        } else {
-            t.helper = tagContent;
-            t.expression = {};
-        }
-    } else {
-        if (findExpr(expr, tagContent)) {
-            t.expression = expr;
-            t.helper = {};
-        }
-        tagContent.remove_prefix(expr.data() + expr.size() - tagContent.data());
-        if (findExpr(expr, tagContent)) {
-            // Second expression exists, so first is a helper and the rest is the arguments
-            t.helper = t.expression;
-            t.expression = {expr.data(), static_cast<std::size_t>(tagContent.data() + tagContent.size() - expr.data())};
-        }
-    }
-    return t;
-}
-
 // Render a handlebars tag
 void
 Handlebars::
 renderTag(
-    std::string_view tag0,
+    Tag const& tag,
     llvm::raw_string_ostream& out,
     std::string_view& templateText,
     llvm::json::Object const &data,
     HandlebarsOptions opt) const {
-    MRDOX_ASSERT(tag0.size() >= 4);
-    Tag tag = parseTag(tag0);
     if (tag.type == '#')
     {
         // Opening a section tag
         // Find closing tag
         Tag closeTag;
         int l = 1;
+        if (tag.removeRWhitespace) {
+            templateText = trim_lspaces(templateText);
+        }
         std::string_view fnBlock = templateText;
         std::string_view inverseBlock;
         std::string_view* curBlock = &fnBlock;
@@ -670,6 +731,12 @@ renderTag(
                         return;
                     }
                     *curBlock = {curBlock->data(), closeTag.buffer.data()};
+                    if (closeTag.removeLWhitespace) {
+                        *curBlock = trim_rspaces(*curBlock);
+                    }
+                    if (closeTag.removeRWhitespace) {
+                        templateText = trim_lspaces(templateText);
+                    }
                     break;
                 }
             }
@@ -677,20 +744,21 @@ renderTag(
             // check inversion
             if (l == 1)
             {
-                if (curTag.type == '^')
-                {
-                    Tag invertTag = curTag;
-                    if (invertTag.content != tag.helper)
-                    {
-                        out << "[mismatched invert tag: " << invertTag.buffer << "]";
-                        return;
-                    }
-                }
-                if (curTag.type == '^' || curTag.content == "else")
+                if (curTag.content == "^" || curTag.content == "else")
                 {
                     *curBlock = {curBlock->data(), curTag.buffer.data()};
+                    if (curTag.removeLWhitespace) {
+                        *curBlock = trim_rspaces(*curBlock);
+                    }
+                    if (tag.removeRWhitespace) {
+                        *curBlock = trim_lspaces(*curBlock);
+                    }
                     curBlock = &inverseBlock;
                     *curBlock = templateText;
+                    if (curTag.removeRWhitespace) {
+                        *curBlock = trim_lspaces(*curBlock);
+                        templateText = trim_lspaces(templateText);
+                    }
                 }
             }
         }
@@ -788,6 +856,10 @@ renderTag(
             }
             render_to(out, it->second, partialCtx, opt);
         }
+
+        if (tag.removeRWhitespace) {
+            templateText = trim_lspaces(templateText);
+        }
     }
     else
     {
@@ -843,6 +915,10 @@ renderTag(
 
         llvm::json::Value res = fn(data, args, cb);
         format_to(out, res, opt2);
+
+        if (tag.removeRWhitespace) {
+            templateText = trim_lspaces(templateText);
+        }
     }
 }
 

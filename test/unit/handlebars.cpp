@@ -336,6 +336,7 @@ main() {
     std::string_view template_path = MRDOX_UNIT_TEST_DIR "/fixtures/function.adoc.hbs";
     std::string_view partial_path = MRDOX_UNIT_TEST_DIR "/fixtures/record-detail.adoc.hbs";
     std::string_view output_path = MRDOX_UNIT_TEST_DIR "/fixtures/function.adoc";
+    std::string_view error_output_path = MRDOX_UNIT_TEST_DIR "/fixtures/function-error.adoc";
     auto template_text_r = files::getFileText(template_path);
     REQUIRE(template_text_r);
     auto partial_text_r = files::getFileText(partial_path);
@@ -378,6 +379,13 @@ main() {
     page["specialChars"] = "& < > \" ' ` =";
     page["url"] = "https://cppalliance.org/";
     context["page"] = std::move(page);
+    context["nav"] = llvm::json::Array{
+            llvm::json::Object{
+                    {"url", "foo"},
+                    {"test", true},
+                    {"title", "bar"}},
+            llvm::json::Object{
+                    {"url", "bar"}}};
 
     // Register some extra test helpers
     Handlebars hbs;
@@ -405,6 +413,10 @@ main() {
         auto master_file_contents = *master_file_contents_r;
         DiffStringsResult diff = diffStrings(master_file_contents, rendered_text);
         if (diff.added > 0 || diff.removed > 0) {
+            std::ofstream out((std::string(error_output_path)));
+            REQUIRE(out);
+            out << rendered_text;
+
             fmt::println("DIFF:\n=====================\n{}\n=====================", diff.diff);
             REQUIRE(diff.added == 0);
             REQUIRE(diff.removed == 0);

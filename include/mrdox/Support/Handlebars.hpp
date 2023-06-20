@@ -332,10 +332,12 @@ public:
         }));
     }
 
+    struct Tag;
+
 private:
     void
     renderTag(
-        std::string_view tag,
+        Tag const& tag,
         llvm::raw_string_ostream& out,
         std::string_view& templateText,
         llvm::json::Object const &data,
