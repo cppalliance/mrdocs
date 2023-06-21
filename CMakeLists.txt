@@ -275,6 +275,7 @@ if (MRDOX_BUILD_TESTS)
     enable_testing()
     add_test(NAME mrdox-test COMMAND mrdox-test --action test
             "${PROJECT_SOURCE_DIR}/test-files/old-tests"
+            "${PROJECT_SOURCE_DIR}/test-files/filter"
             )
 
     if (MRDOX_GENERATE_REFERENCE)

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace>
+  <struct name="thingy" id="hslhTrj7BewN+FG+oZYDIJaF5PI=">
+    <file path="root_namespaces.cpp" line="1" class="def"/>
+  </struct>
+  <namespace name="other" id="wgK0gLwIPdedcgwxdvD0ZUXLYuQ=">
+    <struct name="thingy" id="1M5k2gvr3puyQe6ScyR3+uho3uw=">
+      <file path="root_namespaces.cpp" line="12" class="def"/>
+    </struct>
+    <namespace name="root_detail" id="0CWNH9cIY7isZeXhDRNyNKaKcf0=">
+      <struct name="thingy_impl" id="404juIn7/zl6pyjp9FN9aanZkB4=">
+        <file path="root_namespaces.cpp" line="17" class="def"/>
+      </struct>
+    </namespace>
+  </namespace>
+</namespace>
+</mrdox>

@@ -1,0 +1,10 @@
+verbose: false
+with-private: true
+exclude-namespaces:
+  - detail
+  - ::root_detail
+  - ::other::nested_detail
+generator:
+  xml:
+    index: false
+    prolog: true

@@ -140,6 +140,9 @@ public:
         this string to the same settings.
     */
     std::string extraYaml;
+
+    /** Regular expression to exclude namespaces */
+    std::vector<std::string> excludeNamespaces;
 };
 
 } // mrdox

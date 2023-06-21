@@ -17,6 +17,7 @@
 #include <mrdox/Config.hpp>
 #include <mrdox/Generators.hpp>
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
 #include <llvm/Support/CommandLine.h>
@@ -129,21 +130,27 @@ TestRunner::
 makeConfig(
     llvm::StringRef workingDir)
 {
-    std::string configYaml;
-    llvm::raw_string_ostream(configYaml) <<
-        "verbose: false\n"
-        "source-root: " << workingDir << "\n"
-        "with-private: true\n"
-        "generator:\n"
-        "  xml:\n"
-        "    index: false\n"
-        "    prolog: true\n";
+    Expected<std::shared_ptr<ConfigImpl const>> config = nullptr;
+    auto configFilePath = files::appendPath(workingDir, "mrdox.yml");
+    if (llvm::sys::fs::exists(configFilePath))
+        config = loadConfigFile(configFilePath, testArgs.addonsDir);
+    else
+    {
+        std::string configYaml;
+        llvm::raw_string_ostream(configYaml) <<
+            "verbose: false\n"
+            "source-root: " << workingDir << "\n"
+            "with-private: true\n"
+            "generator:\n"
+            "  xml:\n"
+            "    index: false\n"
+            "    prolog: true\n";
 
-    std::error_code ec;
-    auto config = loadConfigString(
-        workingDir, testArgs.addonsDir, configYaml);
+        config = loadConfigString(
+            workingDir, testArgs.addonsDir, configYaml);
+    }
     if (!config)
-      reportError(config.error(), "load the configuration string");
+        reportError(config.error(), "load the configuration string");
     MRDOX_ASSERT(config);
     return *config;
 }

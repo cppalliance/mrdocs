@@ -65,6 +65,10 @@ public:
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
 
+    std::unordered_map<
+        const Decl*,
+        bool> namespaceFilter_;
+
 public:
     ASTVisitor(
         tooling::ExecutionContext& ex,
@@ -257,6 +261,9 @@ public:
     void buildTypedef(
         TypedefInfo& I,
         DeclTy* D);
+
+    bool
+    shouldExtractNamespace(const Decl * D);
 
     // --------------------------------------------------------
 

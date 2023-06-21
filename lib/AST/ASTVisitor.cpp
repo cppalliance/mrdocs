@@ -869,7 +869,89 @@ shouldExtract(
 
     IsFileInRootDir_ = true;
 
-    return true;
+    if (config_.excludeNamespaces.empty())
+        return true;
+
+    const Decl * scope = nullptr;
+
+    const auto isScope (D->getKind() == Decl::Namespace ||  D->getKind() == Decl::CXXRecord);
+    if (isScope)
+        scope = D;
+    else
+        scope = dyn_cast<Decl>(D->getDeclContext());
+
+    return !shouldExtractNamespace(scope);
+}
+
+bool
+ASTVisitor::
+shouldExtractNamespace(const Decl * D)
+{
+    // Step 1: Check if we're talking about a namespace
+    if ((D == nullptr) || (
+            D->getKind() != Decl::Namespace))
+        return false;
+
+    auto itr = namespaceFilter_.find(D);
+    if (itr != namespaceFilter_.end())
+        return itr->second;
+
+    // check if any parent is skipped already
+    auto nmd = dyn_cast<NamedDecl>(D);
+    bool filtered = false;
+
+    if (nmd != nullptr)
+    {
+        for (const auto & ft : config_.excludeNamespaces)
+        {
+            std::string_view ff{ft};
+            if (!ff.ends_with(nmd->getName()))
+                continue;
+
+            ff.remove_suffix(nmd->getName().size());
+            if (!ff.ends_with("::") && !ff.empty())
+                continue;
+            auto ctx = nmd->getDeclContext();
+            while(!ff.empty())
+            {
+                if (ff == "::") // absolute
+                {
+                    filtered = ctx->isTranslationUnit();
+                    break;
+                }
+
+                if (!ctx->isNamespace())
+                    break;
+
+                auto ns = cast<NamespaceDecl>(ctx);
+                ff.remove_suffix(2u); // remove trailing "::"
+                if (!ff.ends_with(ns->getName()))
+                    break;
+
+                ff.remove_suffix(ns->getName().size());
+                if (!ff.ends_with("::") && !ff.empty())
+                    break;
+
+                ctx = ctx->getParent();
+            }
+
+            filtered |= ff.empty();
+            if (filtered)
+                break;
+        }
+    }
+
+    if (!filtered)
+    {
+        auto ctx = D->getDeclContext();
+        if (ctx == nullptr)
+            return true;
+        auto outer = dyn_cast<Decl>(ctx);
+        filtered = shouldExtractNamespace(outer);
+    }
+
+    namespaceFilter_.emplace(D, filtered);
+    return filtered;
 }
 
 bool
