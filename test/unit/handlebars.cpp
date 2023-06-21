@@ -80,6 +80,14 @@ namespace {
     }
 
     llvm::json::Value
+    bold_fn(
+        llvm::json::Object const& ctx,
+        llvm::json::Array const& /* args */,
+        HandlebarsCallback const& cb) {
+        return fmt::format(R"(<div class="mybold">{}</div>)", cb.fn(ctx));
+    }
+
+    llvm::json::Value
     link_fn(
             llvm::json::Array const& args,
             HandlebarsCallback const& cb) {
@@ -147,6 +155,27 @@ namespace {
         stream << arg;
         return out;
     }
+
+    llvm::json::Value
+    list_fn(
+    llvm::json::Object const& context,
+    llvm::json::Array const& args,
+    HandlebarsCallback const& cb) {
+        // Built-in helper to change the context for each object in args
+        if (!args.empty()) {
+            std::string out = "<ul>";
+            for (auto const& arg : args) {
+                if (arg.kind() == llvm::json::Value::Kind::Object) {
+                    llvm::json::Object frame = *arg.getAsObject();
+                    frame.try_emplace("..", llvm::json::Object(context));
+                    out += "<li>" + cb.fn(frame) + "</li>";
+                }
+            }
+            return out + "</ul>";
+        }
+        return cb.inverse(context);
+    }
+
 }
 
 struct DiffStringsResult {
@@ -394,6 +423,19 @@ main() {
     context["prefix"] = "Hello";
     context["title"] = "My Title";
     context["body"] = "My Body";
+    llvm::json::Object story;
+    story["intro"] = "Before the jump";
+    story["body"] = "After the jump";
+    context["story"] = std::move(story);
+    llvm::json::Array comments;
+    comments.push_back(llvm::json::Object{
+            {"subject", "subject 1"},
+            {"body", "body 1"}});
+    comments.push_back(llvm::json::Object{
+            {"subject", "subject 2"},
+            {"body", "body 2"}});
+    context["comments"] = std::move(comments);
+    context["isActive"] = true;
 
 
     // Register some extra test helpers
@@ -404,7 +446,8 @@ main() {
     hbs.registerHelper("link", link_fn);
     hbs.registerHelper("loud", loud_fn);
     hbs.registerHelper("to_string", to_string_fn);
-    // hbs.registerHelper("noop", noop_fn);
+    hbs.registerHelper("bold", bold_fn);
+    hbs.registerHelper("list", list_fn);
 
     for (auto partial_path: partial_paths) {
         auto partial_text_r = files::getFileText(partial_path);

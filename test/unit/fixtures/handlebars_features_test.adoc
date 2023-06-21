@@ -41,11 +41,13 @@ People:
 * Person: Carol Smith in page about `from_chars`
 
 
+== Expressions
+
 // Render complete context with "." as key
-{"myOtherContext": {"information": Interesting!} , "body": My Body , "favoriteNumber": 1.230000e+02 , "prefix": Hello , "myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "title": My Title , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "prefix": Hello , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice} ,{"lastname": Doe , "firstname": Bob} ,{"lastname": Smith , "firstname": Carol}]}}
+{"myOtherContext": {"information": Interesting!} , "body": My Body , "favoriteNumber": 1.230000e+02 , "prefix": Hello , "comments": [{"body": body 1 , "subject": subject 1} ,{"body": body 2 , "subject": subject 2}] , "myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "isActive": true , "title": My Title , "story": {"body": After the jump , "intro": Before the jump} , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "prefix": Hello , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice} ,{"lastname": Doe , "firstname": Bob} ,{"lastname": Smith , "firstname": Carol}]}}
 
 // Use to_string
-{"body":"My Body","favoriteNumber":123,"myOtherContext":{"information":"Interesting!"},"myVariable":"lookupMyPartial","nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"firstname":"Alice","lastname":"Doe"},{"firstname":"Bob","lastname":"Doe"},{"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"prefix":"Hello","specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"},"prefix":"Hello","title":"My Title"}
+{"body":"My Body","comments":[{"body":"body 1","subject":"subject 1"},{"body":"body 2","subject":"subject 2"}],"favoriteNumber":123,"isActive":true,"myOtherContext":{"information":"Interesting!"},"myVariable":"lookupMyPartial","nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"firstname":"Alice","lastname":"Doe"},{"firstname":"Bob","lastname":"Doe"},{"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"prefix":"Hello","specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"},"prefix":"Hello","story":{"body":"After the jump","intro":"Before the jump"},"title":"My Title"}
 
 // Literals
 true = true
@@ -104,6 +106,8 @@ true
 
 
 
+== Partials
+
 // Basic partials
 [,cpp]
 ----
@@ -157,6 +161,8 @@ Site Content My Content
       My Content
 </div>
 
+== Blocks
+
 // Block noop
 <div class="entry">
   <h1>My Title</h1>
@@ -164,3 +170,54 @@ Site Content My Content
     My Body
   </div>
 </div>
+
+// Block function
+<div class="entry">
+  <h1>My Title</h1>
+  <div class="body">
+    <div class="mybold">My Body</div>
+  </div>
+</div>
+
+// Block helper parameter
+<div class="entry">
+    <h1>My Title</h1>
+            <div class="intro">Before the jump</div>
+        <div class="body">After the jump</div>
+
+</div>
+
+// Simple iterators
+<div class="entry">
+  <h1>My Title</h1>
+      <div class="intro">Before the jump</div>
+    <div class="body">After the jump</div>
+
+</div>
+<div class="comments">
+      <div class="comment">
+      <h2>subject 1</h2>
+      body 1
+    </div>
+    <div class="comment">
+      <h2>subject 2</h2>
+      body 2
+    </div>
+
+</div>
+
+// Custom list helper
+<ul><li>    <a href="foo">bar</a>
+</li><li>    <a href="bar"></a>
+</li></ul>
+
+// Conditionals
+    <img src="star.gif" alt="Active">
+
+
+  <img src="star.gif" alt="Active">
+
+
+
+  <img src="cry.gif" alt="Inactive">
+

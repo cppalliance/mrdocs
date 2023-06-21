@@ -24,6 +24,8 @@ Declared in file <{{page.loc}}>
 
 {{page.doc.description}}
 
+== Basic
+
 {{/if}}
 
 {{! The following are temporary handlebars tests (we are already testing comments here) }}
@@ -41,6 +43,8 @@ Declared in file <{{page.loc}}>
 People:
 {{#each page.people}}* Person: {{firstname}} {{lastname}} in page about `{{../page.name}}`
 {{/each}}
+
+== Expressions
 
 // Render complete context with "." as key
 {{.}}
@@ -106,6 +110,8 @@ html-escaped: {{page.specialChars}}
 
 {{>escaped}}
 
+== Partials
+
 // Basic partials
 {{>record-detail}}
 {{ > record-detail}}
@@ -152,6 +158,8 @@ My Content
   {{/inline}}
 {{/pageLayout}}
 
+== Blocks
+
 // Block noop
 <div class="entry">
   <h1>{{title}}</h1>
@@ -159,3 +167,59 @@ My Content
     {{#noop}}{{body}}{{/noop}}
   </div>
 </div>
+
+// Block function
+<div class="entry">
+  <h1>{{title}}</h1>
+  <div class="body">
+    {{#bold}}{{body}}{{/bold}}
+  </div>
+</div>
+
+// Block helper parameter
+<div class="entry">
+    <h1>{{title}}</h1>
+    {{#with story}}
+        <div class="intro">{{{intro}}}</div>
+        <div class="body">{{{body}}}</div>
+    {{/with}}
+</div>
+
+// Simple iterators
+<div class="entry">
+  <h1>{{title}}</h1>
+  {{#with story}}
+    <div class="intro">{{{intro}}}</div>
+    <div class="body">{{{body}}}</div>
+  {{/with}}
+</div>
+<div class="comments">
+  {{#each comments}}
+    <div class="comment">
+      <h2>{{subject}}</h2>
+      {{{body}}}
+    </div>
+  {{/each}}
+</div>
+
+// Custom list helper
+{{#list nav}}
+    <a href="{{url}}">{{title}}</a>
+{{/list}}
+
+// Conditionals
+{{#if isActive}}
+    <img src="star.gif" alt="Active">
+{{/if}}
+
+{{#if isActive}}
+  <img src="star.gif" alt="Active">
+{{else}}
+  <img src="cry.gif" alt="Inactive">
+{{/if}}
+
+{{#if isStar}}
+  <img src="star.gif" alt="Active">
+{{else}}
+  <img src="cry.gif" alt="Inactive">
+{{/if}}
