@@ -15,6 +15,17 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
+void
+SinglePageVisitor::
+operator()(auto const& I)
+{
+    renderPage(I, numPages_++);
+    if constexpr(
+            I.isNamespace() ||
+            I.isRecord())
+        corpus_.traverse(I, *this);
+}
+
 // Launch a task to render the page
 // pageNumber is zero-based
 //
@@ -32,36 +43,6 @@ renderPage(
                 throw pageText.getError();
             endPage(std::move(*pageText), pageNumber);
         });
-}
-
-void
-SinglePageVisitor::
-operator()(NamespaceInfo const& I)
-{
-    renderPage(I, numPages_++);
-    corpus_.traverse(I, *this);
-}
-
-void
-SinglePageVisitor::
-operator()(RecordInfo const& I)
-{
-    renderPage(I, numPages_++);
-    corpus_.traverse(I, *this);
-}
-
-void
-SinglePageVisitor::
-operator()(FunctionInfo const& I)
-{
-    renderPage(I, numPages_++);
-}
-
-void
-SinglePageVisitor::
-operator()(EnumInfo const& I)
-{
-    renderPage(I, numPages_++);
 }
 
 // pageNumber is zero-based
@@ -102,6 +83,18 @@ endPage(
         pages_[pageNumber].reset();
     }
 }
+
+#define DEFINE(T) template void \
+    SinglePageVisitor::operator()<T>(T const&)
+
+DEFINE(NamespaceInfo);
+DEFINE(RecordInfo);
+DEFINE(FunctionInfo);
+DEFINE(EnumInfo);
+DEFINE(TypedefInfo);
+DEFINE(VariableInfo);
+DEFINE(FieldInfo);
+DEFINE(SpecializationInfo);
 
 } // adoc
 } // mrdox

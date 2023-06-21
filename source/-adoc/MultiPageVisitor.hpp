@@ -41,15 +41,8 @@ public:
     {
     }
 
-    template<std::derived_from<Info> Ty>
-    void render(Ty const& I, Builder&);
-
-    void renderAsync(auto const& I);
-
-    void operator()(NamespaceInfo const& I);
-    void operator()(RecordInfo const& I);
-    void operator()(FunctionInfo const& I);
-    void operator()(Info const&) {}
+    void operator()(auto const& I);
+    void renderPage(auto const& I);
 };
 
 } // adoc

@@ -211,12 +211,17 @@ get(std::string_view key) const
     }
     if constexpr(T::isVariable())
     {
+        if(key == "type")
+            return dom::create<DomType>(
+                I_.Type, corpus_);
         if(key == "template")
         {
             if(! I_.Template)
                 return nullptr;
             return dom::create<DomTemplate>(*I_.Template, corpus_);
         }
+        if(key == "storageClass")
+            return toString(I_.specs.storageClass);
     }
     if constexpr(T::isField())
     {
@@ -299,6 +304,9 @@ props() const ->
             });
     if constexpr(T::isVariable())
         v.insert(v.end(), {
+            "type",
+            "template",
+            "storageClass"
             });
     if constexpr(T::isField())
         v.insert(v.end(), {

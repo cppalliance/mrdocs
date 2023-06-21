@@ -2,47 +2,26 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+  <variable name="i" id="C9UHMk+lrMjCQ//ZLEsEfWY2fvY=">
     <file path="test.cpp" line="1" class="def"/>
-  </struct>
-  <enum name="E" id="xf6YhxRw8JpsHMwP6Tgyroti2gw=">
-    <file path="test.cpp" line="7" class="def"/>
-    <value name="a" value="0">
-      <doc>
-        <para>
-          <text> hmm</text>
-        </para>
-      </doc>
-    </value>
-    <value name="b" value="2">
-      <doc>
-        <para>
-          <text> hmm</text>
-        </para>
-      </doc>
-    </value>
-    <value name="c" value="3">
-      <doc>
-        <para>
-          <text> hmm</text>
-        </para>
-      </doc>
-    </value>
-    <value name="d" value="4">
-      <doc>
-        <para>
-          <text> hmm</text>
-        </para>
-      </doc>
-    </value>
+    <type name="int"/>
+  </variable>
+  <variable name="j" id="pKvK/kHXdM/1/pu86JcSrLqVypE=">
+    <file path="test.cpp" line="2" class="def"/>
+    <type name="void *"/>
+  </variable>
+  <variable name="c" id="iioAt3yDydhhvIYN2uDSaCApJ00=">
+    <file path="test.cpp" line="8" class="def"/>
+    <attr id="storage-class" name="static" value="2"/>
+    <type name="char"/>
     <doc>
       <brief>
-        <text> This is an enum</text>
+        <text> brief</text>
       </brief>
       <para>
-        <text>    Good enum.</text>
+        <text>    desc</text>
       </para>
     </doc>
-  </enum>
+  </variable>
 </namespace>
 </mrdox>

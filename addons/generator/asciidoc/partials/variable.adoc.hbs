@@ -1,1 +1,28 @@
 {{!-- variable --}}
+[#{{symbol.id}}]
+== {{symbol.name}}
+
+{{symbol.doc.brief}}
+
+=== Synopsis
+
+[source,cpp,subs=+macros]
+----
+{{#if symbol.template}}
+{{>template-head symbol.template}}
+{{symbol.type.name}} {{symbol.name~}}
+{{>template-args symbol.template}}
+{{else}}
+{{symbol.type.name}} {{symbol.name~}}
+{{/if}}
+;
+----
+
+{{>source symbol.loc}}
+
+{{#if symbol.doc.description}}
+=== Description
+
+{{symbol.doc.description}}
+
+{{/if}}

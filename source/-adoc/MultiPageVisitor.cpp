@@ -16,68 +16,59 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
-template<std::derived_from<Info> Ty>
 void
 MultiPageVisitor::
-render(
-    Ty const& I,
-    Builder& builder)
+operator()(auto const& I)
 {
-    auto pageText = builder(I);
-    if(! pageText)
-        throw pageText.getError();
-
-    std::string fileName = files::appendPath(
-        outputPath_, toBase16(I.id) + ".adoc");
-    std::ofstream os;
-    try
-    {
-        os.open(fileName,
-            std::ios_base::binary |
-                std::ios_base::out |
-                std::ios_base::trunc // | std::ios_base::noreplace
-            );
-        os.write(pageText->data(), pageText->size());
-    }
-    catch(std::exception const& ex)
-    {
-        throw Error("std::ofstream(\"{}\") threw \"{}\"", fileName, ex.what());
-    }
+    renderPage(I);
+    if constexpr(
+            I.isNamespace() ||
+            I.isRecord())
+        corpus_.traverse(I, *this);
 }
 
 void
 MultiPageVisitor::
-renderAsync(auto const& I)
+renderPage(
+    auto const& I)
 {
     ex_.async(
         [this, &I](Builder& builder)
         {
-            render(I, builder);
+            auto pageText = builder(I);
+            if(! pageText)
+                throw pageText.getError();
+
+            std::string fileName = files::appendPath(
+                outputPath_, toBase16(I.id) + ".adoc");
+            std::ofstream os;
+            try
+            {
+                os.open(fileName,
+                    std::ios_base::binary |
+                        std::ios_base::out |
+                        std::ios_base::trunc // | std::ios_base::noreplace
+                    );
+                os.write(pageText->data(), pageText->size());
+            }
+            catch(std::exception const& ex)
+            {
+                throw Error("std::ofstream(\"{}\") threw \"{}\"", fileName, ex.what());
+            }
         });
 }
 
-void
-MultiPageVisitor::
-operator()(NamespaceInfo const& I)
-{
-    renderAsync(I);
-    corpus_.traverse(I, *this);
-}
+#define DEFINE(T) template void \
+    MultiPageVisitor::operator()<T>(T const&)
 
-void
-MultiPageVisitor::
-operator()(RecordInfo const& I)
-{
-    renderAsync(I);
-    corpus_.traverse(I, *this);
-}
-
-void
-MultiPageVisitor::
-operator()(FunctionInfo const& I)
-{
-    renderAsync(I);
-}
+DEFINE(NamespaceInfo);
+DEFINE(RecordInfo);
+DEFINE(FunctionInfo);
+DEFINE(EnumInfo);
+DEFINE(TypedefInfo);
+DEFINE(VariableInfo);
+DEFINE(FieldInfo);
+DEFINE(SpecializationInfo);
 
 } // adoc
 } // mrdox

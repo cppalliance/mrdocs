@@ -226,6 +226,7 @@ DEFINE(EnumInfo);
 DEFINE(TypedefInfo);
 DEFINE(VariableInfo);
 DEFINE(FieldInfo);
+DEFINE(SpecializationInfo);
 
 } // adoc
 } // mrdox

@@ -46,14 +46,7 @@ public:
     {
     }
 
-    /** Visit a given symbol.
-    */
-    void operator()(NamespaceInfo const& I);
-    void operator()(RecordInfo const& I);
-    void operator()(FunctionInfo const& I);
-    void operator()(EnumInfo const& I);
-    void operator()(Info const&) {}
-
+    void operator()(auto const& I);
     void renderPage(auto const& I, std::size_t pageNumber);
     void endPage(std::string pageText, std::size_t pageNumber);
 };

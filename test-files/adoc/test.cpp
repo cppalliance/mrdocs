@@ -1,16 +1,8 @@
-struct T
-{
-};
+int i;
+void* j = nullptr;
 
-struct U
-{
-    int i;
+/** brief
 
-    /** brief
-
-        desc
-    */
-    T t;
-
-    void* p = nullptr;
-};
+    desc
+*/
+static char c = 0;

@@ -43,15 +43,15 @@ struct VariableInfo
     /** The type of the variable */
     TypeInfo Type;
 
-    VariableFlags0 specs{.raw={0}};
-
     std::unique_ptr<TemplateInfo> Template;
+
+    VariableFlags0 specs{.raw={0}};
 
     //--------------------------------------------
 
     explicit
     VariableInfo(
-        SymbolID ID = SymbolID::zero)
+        SymbolID ID = SymbolID::zero) noexcept
         : IsInfo(ID)
     {
     }
@@ -59,7 +59,7 @@ struct VariableInfo
 private:
     explicit
     VariableInfo(
-        std::unique_ptr<TemplateInfo>&& T)
+        std::unique_ptr<TemplateInfo>&& T) noexcept
         : Template(std::move(T))
     {
 

@@ -167,10 +167,8 @@ int main(int argc, char const** argv)
     }
     catch(std::exception const& ex)
     {
-        // Any exception which is not
-        // derived from Error should
-        // be reported and terminate
-        // the process immediately.
+        // Any exception not derived from Error should be
+        // reported and terminate the process immediately.
         clang::mrdox::reportUnhandledException(ex);
         return EXIT_FAILURE;
     }
