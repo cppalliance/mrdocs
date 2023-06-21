@@ -7,16 +7,16 @@
   </struct>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="no_unique_address.cpp" line="5" class="def"/>
-    <data name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
+    <field name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
       <file path="no_unique_address.cpp" line="7" class="def"/>
       <type name="int"/>
-    </data>
-    <data name="e" id="h2j8f921HD+Fyaokcs4ndGM/yNk=">
+    </field>
+    <field name="e" id="h2j8f921HD+Fyaokcs4ndGM/yNk=">
       <file path="no_unique_address.cpp" line="8" class="def"/>
       <attr id="nodiscard"/>
       <attr id="deprecated"/>
       <type name="Empty" id="iczIHP1J59EwYw3xxL3w2C3Q43Q="/>
-    </data>
+    </field>
   </struct>
 </namespace>
 </mrdox>

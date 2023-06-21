@@ -94,7 +94,7 @@ toString(InfoKind kind) noexcept
     case InfoKind::Record:
         return "record";
     case InfoKind::Field:
-        return "data";
+        return "field";
     case InfoKind::Function:
         return "function";
     case InfoKind::Enum:

@@ -94,7 +94,7 @@ public:
                 DomTrancheList<TypedefInfo,
                     DomSymbol<TypedefInfo>>>(
                         I_, tranche_.Types, corpus_);
-        if(key == "data")
+        if(key == "field")
             return dom::create<
                 DomTrancheList<FieldInfo,
                     DomSymbol<FieldInfo>>>(
@@ -120,7 +120,7 @@ public:
             "functions",
             "enums",
             "types",
-            "data",
+            "fields",
             "staticfuncs",
             "staticdata"
         };

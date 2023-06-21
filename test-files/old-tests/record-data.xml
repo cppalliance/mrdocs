@@ -4,43 +4,43 @@
 <namespace name="">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="record-data.cpp" line="3" class="def"/>
-    <data name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
+    <field name="i" id="91xV6rCFObgi6i1/U2uZ/GnD3WM=">
       <file path="record-data.cpp" line="5" class="def"/>
       <type name="int"/>
-    </data>
-    <data name="j" id="g7xcHrg43mq7PlaOEmNvMHlU+Hk=">
+    </field>
+    <field name="j" id="g7xcHrg43mq7PlaOEmNvMHlU+Hk=">
       <file path="record-data.cpp" line="6" class="def"/>
       <type name="double"/>
-    </data>
+    </field>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
     <file path="record-data.cpp" line="9" class="def"/>
-    <data name="t" id="LvEIBVXJYQQL4yraOaQv7ijMDng=">
+    <field name="t" id="LvEIBVXJYQQL4yraOaQv7ijMDng=">
       <file path="record-data.cpp" line="11" class="def"/>
       <type name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ="/>
-    </data>
+    </field>
   </struct>
   <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
     <file path="record-data.cpp" line="14" class="def"/>
-    <data name="i" access="private" id="EWXCzRl9erjnMQFZ8VmHC5cVkLM=">
+    <field name="i" access="private" id="EWXCzRl9erjnMQFZ8VmHC5cVkLM=">
       <file path="record-data.cpp" line="16" class="def"/>
       <type name="int"/>
-    </data>
-    <data name="j" access="protected" id="VKvx+Pci4bUmtjCsXJqKb7SNYqw=">
+    </field>
+    <field name="j" access="protected" id="VKvx+Pci4bUmtjCsXJqKb7SNYqw=">
       <file path="record-data.cpp" line="18" class="def"/>
       <type name="unsigned long"/>
-    </data>
-    <data name="k" access="private" id="iKr1oLycejUWY6AnSgoQnbmaCEE=">
+    </field>
+    <field name="k" access="private" id="iKr1oLycejUWY6AnSgoQnbmaCEE=">
       <file path="record-data.cpp" line="20" class="def"/>
       <type name="double"/>
-    </data>
+    </field>
   </class>
   <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
     <file path="record-data.cpp" line="23" class="def"/>
-    <data name="buf" id="2akJUSKKPN7IylZjqGMRlhXupds=">
+    <field name="buf" id="2akJUSKKPN7IylZjqGMRlhXupds=">
       <file path="record-data.cpp" line="25" class="def"/>
       <type name="char[64]"/>
-    </data>
+    </field>
   </struct>
 </namespace>
 </mrdox>
