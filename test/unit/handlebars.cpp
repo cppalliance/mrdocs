@@ -149,7 +149,7 @@ namespace {
 
     llvm::json::Value
     to_string_fn(
-            llvm::json::Value const& arg) {
+        llvm::json::Value const& arg) {
         std::string out;
         llvm::raw_string_ostream stream(out);
         stream << arg;
@@ -158,18 +158,20 @@ namespace {
 
     llvm::json::Value
     list_fn(
-    llvm::json::Object const& context,
-    llvm::json::Array const& args,
-    HandlebarsCallback const& cb) {
+        llvm::json::Object const& context,
+        llvm::json::Array const& args,
+        HandlebarsCallback const& cb) {
         // Built-in helper to change the context for each object in args
-        if (!args.empty()) {
+        MRDOX_ASSERT(args.size() == 1);
+        MRDOX_ASSERT(args[0].kind() == llvm::json::Value::Kind::Array);
+        MRDOX_ASSERT(args[0].getAsArray()->front().kind() == llvm::json::Value::Kind::Object);
+        llvm::json::Array const& items = *args[0].getAsArray();
+        if (!items.empty()) {
             std::string out = "<ul>";
-            for (auto const& arg : args) {
-                if (arg.kind() == llvm::json::Value::Kind::Object) {
-                    llvm::json::Object frame = *arg.getAsObject();
-                    frame.try_emplace("..", llvm::json::Object(context));
-                    out += "<li>" + cb.fn(frame) + "</li>";
-                }
+            for (auto const& item : items) {
+                llvm::json::Object frame = *item.getAsObject();
+                frame.try_emplace("..", llvm::json::Object(context));
+                out += "<li>" + cb.fn(frame) + "</li>";
             }
             return out + "</ul>";
         }

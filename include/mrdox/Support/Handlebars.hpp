@@ -391,6 +391,13 @@ private:
         llvm::json::Object const& data,
         HandlebarsOptions const& opt) const;
 
+    void
+    setupArgs(
+        std::string_view expression,
+        llvm::json::Object const& data,
+        llvm::json::Array &args,
+        HandlebarsCallback &cb) const;
+
     llvm::json::Value
     evalExpr(
         llvm::json::Object const &data,

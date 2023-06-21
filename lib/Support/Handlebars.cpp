@@ -724,18 +724,7 @@ evalExpr(
         std::string_view sub;
         llvm::json::Array args;
         HandlebarsCallback cb;
-        while (findExpr(sub, all)) {
-            all.remove_prefix(sub.end() - all.begin());
-            auto [k, v] = findKeyValuePair(sub);
-            if (k.empty())
-            {
-                args.push_back(evalExpr(data, sub));
-            }
-            else
-            {
-                cb.hashes.try_emplace(llvm::json::ObjectKey(k), evalExpr(data, v));
-            }
-        }
+        setupArgs(all, data, args, cb);
         return fn(data, args, cb);
     }
     else
@@ -870,7 +859,7 @@ parseBlock(
 llvm::json::Value
 noop_fn(
 llvm::json::Object const& context,
-llvm::json::Array const& args,
+llvm::json::Array const& /* args */,
 HandlebarsCallback const& cb) {
     return cb.fn(context);
 }
@@ -953,11 +942,27 @@ renderExpression(
     // for the callback hashes
     llvm::json::Array args;
     HandlebarsCallback cb;
-    std::string_view tagContent = tag.expression;
+    setupArgs(tag.expression, data, args, cb);
+
+    llvm::json::Value res = fn(data, args, cb);
+    format_to(out, res, opt2);
+
+    if (tag.removeRWhitespace) {
+        templateText = trim_lspaces(templateText);
+    }
+}
+
+void
+Handlebars::
+setupArgs(
+    std::string_view expression,
+    llvm::json::Object const& data,
+    llvm::json::Array &args,
+    HandlebarsCallback &cb) const {
     std::string_view expr;
-    while (findExpr(expr, tagContent))
+    while (findExpr(expr, expression))
     {
-        tagContent = tagContent.substr(expr.data() + expr.size() - tagContent.data());
+        expression = expression.substr(expr.data() + expr.size() - expression.data());
         auto [k, v] = findKeyValuePair(expr);
         if (k.empty())
         {
@@ -967,13 +972,6 @@ renderExpression(
         {
             cb.hashes.try_emplace(llvm::json::ObjectKey(k), this->evalExpr(data, v));
         }
-    }
-
-    llvm::json::Value res = fn(data, args, cb);
-    format_to(out, res, opt2);
-
-    if (tag.removeRWhitespace) {
-        templateText = trim_lspaces(templateText);
     }
 }
 
@@ -1153,19 +1151,10 @@ renderBlock(
     // When the args is a single value, we wrap it in a single element
     // array.
     llvm::json::Array args;
-    llvm::json::Value value = this->evalExpr(data, tag.expression);
-    if (!value.getAsArray())
-    {
-        args.push_back(std::move(value));
-    }
-    else if (value.getAsArray())
-    {
-        llvm::json::Array* valueArray = value.getAsArray();
-        args = std::move(*valueArray);
-    }
-
-    // 3rd argument) callbacks
     HandlebarsCallback cb;
+    setupArgs(tag.expression, data, args, cb);
+
+    // 3rd argument) setup callbacks
     if (!tag.rawBlock) {
         cb.fn = [this, fnBlock, opt, &extra_partials](
             llvm::json::Object const &item) -> std::string {
@@ -1219,7 +1208,7 @@ renderBlock(
     format_to(out, res, opt2);
 }
 
-    void
+void
 Handlebars::
 registerPartial(
     std::string_view name,
@@ -1487,20 +1476,66 @@ with_fn(
     return cb.inverse(context);
 }
 
+std::string_view
+kindToString(llvm::json::Value::Kind kind) {
+    switch (kind) {
+        case llvm::json::Value::Kind::Null:
+            return "null";
+        case llvm::json::Value::Kind::Object:
+            return "object";
+        case llvm::json::Value::Kind::Array:
+            return "array";
+        case llvm::json::Value::Kind::String:
+            return "string";
+        case llvm::json::Value::Kind::Number:
+            return "number";
+        case llvm::json::Value::Kind::Boolean:
+            return "boolean";
+        default:
+            return "unknown";
+    }
+}
+
+std::string
+validateArgs(
+    std::string_view helper,
+    std::initializer_list<llvm::json::Value::Kind> il,
+    llvm::json::Array const& args) {
+    if (args.size() != il.size()) {
+        return fmt::format(R"(["{}" helper requires {} arguments: {} arguments provided])", helper, il.size(), args.size());
+    }
+    for (size_t i = 0; i < args.size(); ++i) {
+        if (args[i].kind() != il.begin()[i]) {
+            return fmt::format(R"(["{}" helper requires argument {} to be of type {}: {} provided])", helper, i, kindToString(il.begin()[i]), kindToString(args[i].kind()));
+        }
+    }
+    return {};
+}
+
 llvm::json::Value
 each_fn(
     llvm::json::Object const& context,
     llvm::json::Array const& args,
     HandlebarsCallback const& cb) {
     // Built-in helper to change the context for each object in args
-    if (!args.empty()) {
+    std::string err = validateArgs("each", {llvm::json::Value::Kind::Array}, args);
+    if (!err.empty()) {
+        return err;
+    }
+    llvm::json::Value const& itemsV = args[0];
+    if (itemsV.kind() != llvm::json::Value::Kind::Array) {
+        return fmt::format(R"(["each" helper requires argument 0 to be of type array])", kindToString(itemsV.kind()));
+    }
+    llvm::json::Array const& items = *args[0].getAsArray();
+    if (!stdr::all_of(stdv::transform(items, &llvm::json::Value::kind), [](llvm::json::Value::Kind k) { return k == llvm::json::Value::Kind::Object; })) {
+        return fmt::format(R"(["each" helper requires all items to be objects])");
+    }
+    if (!items.empty()) {
         std::string out;
-        for (auto const& arg : args) {
-            if (arg.kind() == llvm::json::Value::Kind::Object) {
-                llvm::json::Object frame = *arg.getAsObject();
-                frame.try_emplace("..", llvm::json::Object(context));
-                out += cb.fn(frame);
-            }
+        for (auto const& item : items) {
+            llvm::json::Object frame = *item.getAsObject();
+            frame.try_emplace("..", llvm::json::Object(context));
+            out += cb.fn(frame);
         }
         return out;
     }
