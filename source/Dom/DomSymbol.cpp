@@ -76,7 +76,6 @@ public:
     }
 };
 
-
 //------------------------------------------------
 
 template<class T>
@@ -221,6 +220,18 @@ get(std::string_view key) const
     }
     if constexpr(T::isField())
     {
+        if(key == "type")
+            return dom::create<DomType>(
+                I_.Type, corpus_);
+        if(key == "default")
+            return dom::create<DomType>(
+                I_.Type, corpus_);
+        if(key == "isNodiscard")
+            return I_.specs.isNodiscard.get();
+        if(key == "isDeprecated")
+            return I_.specs.isDeprecated.get();
+        if(key == "hasNoUniqueAddress")
+            return I_.specs.hasNoUniqueAddress.get();
     }
     if constexpr(T::isSpecialization())
     {
@@ -234,6 +245,7 @@ DomSymbol<T>::
 props() const ->
     std::vector<std::string_view>
 {
+    // VFALCO Duplicates are OK
     std::vector<std::string_view> v;
     v.insert(v.end(), {
         "id",
@@ -285,6 +297,24 @@ props() const ->
         v.insert(v.end(), {
             "template"
             });
+    if constexpr(T::isVariable())
+        v.insert(v.end(), {
+            });
+    if constexpr(T::isField())
+        v.insert(v.end(), {
+            "type",
+            "default",
+            "isNodiscard",
+            "isDeprecated",
+            "hasNoUniqueAddress"
+            });
+    if constexpr(T::isSpecialization())
+        v.insert(v.end(), {
+            "type"
+            });
+    std::sort(v.begin(), v.end());
+    auto it = std::unique(v.begin(), v.end());
+    v.erase(it, v.end());
     return v;
 }
 

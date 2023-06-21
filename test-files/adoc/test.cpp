@@ -1,16 +1,16 @@
-struct T {};
-
-/** This is an enum
-
-    Good enum.
-*/
-enum E
+struct T
 {
-    /** hmm
-    */
-    a,
+};
 
-    b=2,
-    c,
-    d
+struct U
+{
+    int i;
+
+    /** brief
+
+        desc
+    */
+    T t;
+
+    void* p = nullptr;
 };

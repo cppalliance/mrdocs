@@ -45,11 +45,8 @@ struct FieldInfo
     /** Type of the field */
     TypeInfo Type;
 
-    // std::string Name; // Name associated with this info.
-
-    // When used for function parameters or variables,
-    // contains the string representing the expression of the default value,
-    // or the variable initializer if any.
+    /** The default member initializer, if any.
+    */
     std::string Default;
 
     // attributes (nodiscard, no_unique_address, deprecated)
@@ -57,8 +54,9 @@ struct FieldInfo
 
     //--------------------------------------------
 
+    explicit
     FieldInfo(
-        SymbolID ID = SymbolID::zero)
+        SymbolID ID = SymbolID::zero) noexcept
         : IsInfo(ID)
     {
     }
