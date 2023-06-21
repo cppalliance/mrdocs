@@ -334,13 +334,13 @@ void splitLines(std::string_view text, std::vector<std::string_view> &lines) {
 int
 main() {
     std::string_view template_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc.hbs";
-    std::string_view partial_path = MRDOX_UNIT_TEST_DIR "/fixtures/record-detail.adoc.hbs";
+    std::string_view partial_paths[] = {
+        MRDOX_UNIT_TEST_DIR "/fixtures/record-detail.adoc.hbs",
+        MRDOX_UNIT_TEST_DIR "/fixtures/escaped.adoc.hbs"};
     std::string_view output_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc";
     std::string_view error_output_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test_error.adoc";
     auto template_text_r = files::getFileText(template_path);
     REQUIRE(template_text_r);
-    auto partial_text_r = files::getFileText(partial_path);
-    REQUIRE(partial_text_r);
     auto master_file_contents_r = files::getFileText(output_path);
     auto template_str = *template_text_r;
     REQUIRE_FALSE(template_str.empty());
@@ -402,7 +402,17 @@ main() {
     hbs.registerHelper("link", link_fn);
     hbs.registerHelper("loud", loud_fn);
     hbs.registerHelper("to_string", to_string_fn);
-    hbs.registerPartial("record-detail", *partial_text_r);
+
+    for (auto partial_path: partial_paths) {
+        auto partial_text_r = files::getFileText(partial_path);
+        REQUIRE(partial_text_r);
+        std::string_view filename = files::getFileName(partial_path);
+        auto pos = filename.find('.');
+        if (pos != std::string_view::npos) {
+            filename = filename.substr(0, pos);
+        }
+        hbs.registerPartial(filename, *partial_text_r);
+    }
 
     hbs.registerHelper("whichPartial", [](
             llvm::json::Object const& /* context */,
@@ -415,7 +425,8 @@ main() {
     hbs.registerPartial("myPartialContext", "{{information}}");
     hbs.registerPartial("myPartialParam", "The result is {{parameter}}");
     hbs.registerPartial("myPartialParam2", "{{prefix}}, {{firstname}} {{lastname}}");
-    hbs.registerPartial("layout", "Site Content {{> @partial-block }}");
+    hbs.registerPartial("layoutTemplate", "Site Content {{> @partial-block }}");
+    hbs.registerPartial("pageLayout", "<div class=\"nav\">\n  {{> nav}}\n</div>\n<div class=\"content\">\n  {{> content}}\n</div>");
 
     // Render template with all handlebars features
     std::string rendered_text = hbs.render(template_str, context, options);

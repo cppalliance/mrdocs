@@ -100,7 +100,8 @@ escaped
 true
 
 // Raw blocks
-  {{escaped}}
+{{escaped}}
+
 
 
 // Basic partials
@@ -140,3 +141,18 @@ The result is 1.230000e+02
 
 // Pass templates to partials
 Site Content My Content
+
+
+// Inline partials
+    My Content
+    My Content
+    My Content
+
+
+// Block inline partials
+<div class="nav">
+      My Nav
+</div>
+<div class="content">
+      My Content
+</div>

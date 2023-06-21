@@ -283,11 +283,18 @@ parseTag(std::string_view tagStr)
     if (it != tag_types.end()) {
         t.type = tagStr.front();
         tagStr.remove_prefix(1);
-        if (t.type == '#' && tagStr.starts_with('>')) {
-            // Partial block. Secondary tag is # (or complete tag is >#)
-            t.type = '>';
-            t.type2 = '#';
-            tagStr.remove_prefix(1);
+        if (t.type == '#') {
+            if (tagStr.starts_with('>')) {
+                // Partial block. # is a secondary tag
+                t.type = '>';
+                t.type2 = '#';
+                tagStr.remove_prefix(1);
+            } else if (tagStr.starts_with('*')) {
+                // Partial block. # is a secondary tag
+                t.type = '*';
+                t.type2 = '#';
+                tagStr.remove_prefix(1);
+            }
         }
         tagStr = trim_spaces(tagStr);
     } else if (t.rawBlock) {
@@ -769,7 +776,7 @@ parseBlock(
 
         // update section level
         if (!tag.rawBlock) {
-            if (curTag.type == '#') {
+            if (curTag.type == '#' || curTag.type2 == '#') {
                 // Opening a child section tag
                 ++l;
             } else if (curTag.type == '/') {
@@ -990,31 +997,36 @@ renderTag(
 
         // Partial
         auto it = partials_.find(helper);
-        std::string_view partial_text;
+        std::string_view partial_content;
         if (it == partials_.end())
         {
             it = extra_partials.find(helper);
             if (it == extra_partials.end()) {
                 if (tag.type2 == '#') {
-                    partial_text = fnBlock;
+                    partial_content = fnBlock;
                 } else {
                     out << "[undefined partial in \"" << tag.buffer << "\"]";
                     return;
                 }
             } else {
-                partial_text = it->second;
+                partial_content = it->second;
             }
         } else {
-            partial_text = it->second;
+            partial_content = it->second;
         }
 
         if (tag.expression.empty())
         {
             if (tag.type2 == '#') {
+                // evaluate fnBlock to populate extra partials
+                std::string ignore;
+                llvm::raw_string_ostream os{ignore};
+                render_to(os, fnBlock, data, opt, extra_partials);
+                // also add @partial-block to extra partials
                 extra_partials["@partial-block"] = std::string(fnBlock);
             }
             // Render partial with current context
-            render_to(out, partial_text, data, opt, extra_partials);
+            render_to(out, partial_content, data, opt, extra_partials);
             if (tag.type2 == '#') {
                 extra_partials.erase("@partial-block");
             }
@@ -1048,12 +1060,44 @@ renderTag(
                     partialCtx.try_emplace({partialKey}, llvm::json::Value(llvm::json::Object(data)));
                 }
             }
-            render_to(out, partial_text, partialCtx, opt, extra_partials);
+            render_to(out, partial_content, partialCtx, opt, extra_partials);
         }
 
         if (tag.removeRWhitespace) {
             templateText = trim_lspaces(templateText);
         }
+    }
+    else if (tag.type == '*')
+    {
+        // Validate decorator
+        if (tag.helper != "inline")
+        {
+            out << fmt::format(R"([undefined decorator "{}" in "{}"])", tag.helper, tag.buffer);
+            return;
+        }
+
+        // Evaluate expression
+        std::string_view expr;
+        findExpr(expr, tag.expression);
+        llvm::json::Value value = evalExpr(data, expr);
+        if (value.kind() != llvm::json::Value::Kind::String)
+        {
+            out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.expression, tag.buffer);
+            return;
+        }
+        std::string_view partial_name = *value.getAsString();
+
+        // Parse block
+        std::string_view fnBlock;
+        std::string_view inverseBlock;
+        if (tag.type2 == '#') {
+            if (!parseBlock(tag, templateText, out, fnBlock, inverseBlock)) {
+                return;
+            }
+        }
+        fnBlock = trim_rspaces(fnBlock);
+        extra_partials[std::string(partial_name)] = std::string(fnBlock);
+        // continue as usual with new extra partials
     }
     else
     {

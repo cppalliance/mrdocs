@@ -104,14 +104,7 @@ html-escaped: {{page.specialChars}}
   </a>
 {{~/each}}
 
-// Inline escapes
-\{{escaped}}
-{{true}}
-
-// Raw blocks
-{{{{raw}}}}
-  {{escaped}}
-{{{{/raw}}}}
+{{>escaped}}
 
 // Basic partials
 {{>record-detail}}
@@ -137,6 +130,24 @@ html-escaped: {{page.specialChars}}
 {{/myMissingPartial}}
 
 // Pass templates to partials
-{{#> layout }}
+{{#> layoutTemplate }}
 My Content
-{{/layout}}
+{{/layoutTemplate}}
+
+// Inline partials
+{{#*inline "peoplePartial"}}
+  My Content
+{{/inline~}}
+{{#each page.people}}
+  {{> peoplePartial}}
+{{/each}}
+
+// Block inline partials
+{{#> pageLayout}}
+  {{#*inline "nav"}}
+    My Nav
+  {{/inline}}
+  {{#*inline "content"}}
+    My Content
+  {{/inline}}
+{{/pageLayout}}
