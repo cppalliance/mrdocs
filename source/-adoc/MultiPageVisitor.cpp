@@ -16,14 +16,15 @@ namespace clang {
 namespace mrdox {
 namespace adoc {
 
+template<class T>
 void
 MultiPageVisitor::
-operator()(auto const& I)
+operator()(T const& I)
 {
     renderPage(I);
     if constexpr(
-            I.isNamespace() ||
-            I.isRecord())
+            T::isNamespace() ||
+            T::isRecord())
         corpus_.traverse(I, *this);
 }
 

@@ -88,7 +88,7 @@ buildOne(
     std::vector<Error> errors;
 
     ex->async(
-        [this, &os](Builder& builder)
+        [&os](Builder& builder)
         {
             auto pageText =
                 builder.renderSinglePageHeader();
@@ -107,7 +107,7 @@ buildOne(
         return Error(errors);
 
     ex->async(
-        [this, &os](Builder& builder)
+        [ &os](Builder& builder)
         {
             auto pageText =
                 builder.renderSinglePageFooter();

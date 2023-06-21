@@ -46,7 +46,8 @@ public:
     {
     }
 
-    void operator()(auto const& I);
+    template<class T>
+    void operator()(T const& I);
     void renderPage(auto const& I, std::size_t pageNumber);
     void endPage(std::string pageText, std::size_t pageNumber);
 };

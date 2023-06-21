@@ -41,7 +41,8 @@ public:
     {
     }
 
-    void operator()(auto const& I);
+    template<class T>
+    void operator()(T const& I);
     void renderPage(auto const& I);
 };
 
