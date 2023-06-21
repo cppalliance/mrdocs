@@ -345,7 +345,7 @@ private:
         std::string_view templateText,
         llvm::json::Object const &data,
         HandlebarsOptions opt,
-        partials_map& extra_partials) const;
+        partials_map& inlinePartials) const;
 
     void
     renderTag(
@@ -354,7 +354,42 @@ private:
         std::string_view& templateText,
         llvm::json::Object const &data,
         HandlebarsOptions opt,
-        partials_map& extra_partials) const;
+        partials_map& inlinePartials) const;
+
+    void
+    renderBlock(
+        std::string_view blockName,
+        Handlebars::Tag const& tag,
+        llvm::raw_string_ostream &out,
+        std::string_view &templateText,
+        llvm::json::Object const& data,
+        HandlebarsOptions const& opt,
+        Handlebars::partials_map &inlinePartials) const;
+
+    void
+    renderPartial(
+        Handlebars::Tag const& tag,
+        llvm::raw_string_ostream &out,
+        std::string_view &templateText,
+        llvm::json::Object const& data,
+        HandlebarsOptions &opt,
+        Handlebars::partials_map &inlinePartials) const;
+
+    void
+    renderDecorator(
+        Handlebars::Tag const& tag,
+        llvm::raw_string_ostream &out,
+        std::string_view &templateText,
+        llvm::json::Object const& data,
+        Handlebars::partials_map &inlinePartials) const;
+
+    void
+    renderExpression(
+        Handlebars::Tag const& tag,
+        llvm::raw_string_ostream &out,
+        std::string_view &templateText,
+        llvm::json::Object const& data,
+        HandlebarsOptions const& opt) const;
 
     llvm::json::Value
     evalExpr(

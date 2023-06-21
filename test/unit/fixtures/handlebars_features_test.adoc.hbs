@@ -223,3 +223,32 @@ My Content
 {{else}}
   <img src="cry.gif" alt="Inactive">
 {{/if}}
+
+// Chained blocks
+// 1
+{{#if isActive}}
+   HIT <img src="star.gif" alt="Active 1">
+{{else if isInactive}}
+  <img src="cry.gif" alt="Inactive 1">
+{{else}}
+  No User
+{{/if}}
+
+// 2
+{{#if isInactive}}
+  <img src="cry.gif" alt="Inactive 2">
+{{else if isActive}}
+   HIT <img src="star.gif" alt="Active 2">
+{{else}}
+  No User
+{{/if}}
+
+// 3
+{{#if isInactive}}
+    <img src="cry.gif" alt="Inactive 3">
+{{else if isInactive}}
+    <img src="star.gif" alt="Inactive 3">
+{{else}}
+    HIT No User
+{{/if}}
+

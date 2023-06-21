@@ -436,6 +436,7 @@ main() {
             {"body", "body 2"}});
     context["comments"] = std::move(comments);
     context["isActive"] = true;
+    context["isInactive"] = false;
 
 
     // Register some extra test helpers

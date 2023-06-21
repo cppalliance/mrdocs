@@ -752,11 +752,13 @@ evalExpr(
 // Parse a block starting at templateText
 bool
 parseBlock(
+    std::string_view blockName,
     Handlebars::Tag const &tag,
     std::string_view &templateText,
     llvm::raw_string_ostream &out,
     std::string_view &fnBlock,
-    std::string_view &inverseBlock) {
+    std::string_view &inverseBlock,
+    Handlebars::Tag &inverseTag) {
     fnBlock=templateText;
     inverseBlock = {};
     Handlebars::Tag closeTag;
@@ -785,8 +787,8 @@ parseBlock(
                 if (l == 0) {
                     // Closing the main section tag
                     closeTag = curTag;
-                    if (closeTag.content != tag.helper) {
-                        out << "[mismatched closing tag: " << closeTag.buffer << "]";
+                    if (closeTag.content != blockName) {
+                        out << fmt::format(R"([mismatched closing tag: "{}" for block name "{}")", closeTag.buffer, blockName);
                         return false;
                     }
                     *curBlock = {curBlock->data(), closeTag.buffer.data()};
@@ -801,8 +803,9 @@ parseBlock(
             }
 
             // check inversion
-            if (l == 1) {
-                if (curTag.content == "^" || curTag.content == "else") {
+            if (l == 1 && curBlock != &inverseBlock) {
+                if (curTag.content == "^" || curTag.helper == "else" || curTag.expression == "else") {
+                    inverseTag = curTag;
                     *curBlock = {curBlock->data(), curTag.buffer.data()};
                     if (curTag.removeLWhitespace) {
                         *curBlock = trim_rspaces(*curBlock);
@@ -820,7 +823,7 @@ parseBlock(
             }
         } else {
             // raw block
-            if (curTag.type == '/' && tag.rawBlock == curTag.rawBlock && tag.helper == curTag.content) {
+            if (curTag.type == '/' && tag.rawBlock == curTag.rawBlock && blockName == curTag.content) {
                 // Closing the raw section
                 l = 0;
                 closeTag = curTag;
@@ -884,293 +887,339 @@ renderTag(
     partials_map& extra_partials) const {
     if (tag.type == '#')
     {
-        // Opening a section tag
-        // Find closing tag
-        if (tag.removeRWhitespace) {
-            templateText = trim_lspaces(templateText);
-        }
-
-        std::string_view fnBlock;
-        std::string_view inverseBlock;
-        if (!parseBlock(tag, templateText, out, fnBlock, inverseBlock)) {
-            return;
-        }
-
-        // Setup helper arguments
-        // 1st argument) context
-        llvm::json::Object const& context = data;
-
-        // 2nd argument) array of block items as the args
-        // In general, the args should be an array (eg. {{#each items}}), but
-        // some special helpers may use a single value (eg. {{#if item}}).
-        // When the args is a single value, we wrap it in a single element
-        // array.
-        llvm::json::Array args;
-        llvm::json::Value value = evalExpr(data, tag.expression);
-        if (!value.getAsArray())
-        {
-            args.push_back(std::move(value));
-        }
-        else if (value.getAsArray())
-        {
-            llvm::json::Array* valueArray = value.getAsArray();
-            args = std::move(*valueArray);
-        }
-
-        // 3rd argument) callbacks
-        HandlebarsCallback cb;
-        if (!tag.rawBlock) {
-            cb.fn = [this, fnBlock, opt, &extra_partials](
-                llvm::json::Object const &item) -> std::string {
-                // Render one element in the list with the fnBlock template
-                std::string res;
-                llvm::raw_string_ostream os{res};
-                render_to(os, fnBlock, item, opt, extra_partials);
-                return res;
-            };
-            cb.inverse = [this, inverseBlock, opt, &extra_partials](
-                llvm::json::Object const &item) -> std::string {
-                // Render one element in the list with the inverseBlock template
-                std::string res;
-                llvm::raw_string_ostream os{res};
-                render_to(os, inverseBlock, item, opt, extra_partials);
-                return res;
-            };
-        } else {
-            cb.fn = [this, fnBlock, opt](llvm::json::Object const &item) -> std::string {
-                // Render one element in the list with the fnBlock template
-                return std::string(fnBlock);
-            };
-            cb.inverse = [this, inverseBlock, opt](llvm::json::Object const &item) -> std::string {
-                // Render one element in the list with the inverseBlock template
-                return {};
-            };
-        }
-
-        // Call helper
-        auto it = helpers_.find(tag.helper);
-        if (!tag.rawBlock) {
-            llvm::json::Value res(nullptr);
-            if (it != helpers_.end())
-            {
-                helper_type const& fn = it->second;
-                res = fn(context, args, cb);
-            } else {
-                helper_type const& fn = noop_fn;
-                res = fn(context, args, cb);
-            }
-            HandlebarsOptions opt2 = opt;
-            opt2.noHTMLEscape = true;
-            format_to(out, res, opt2);
-        } else {
-            llvm::json::Value res(nullptr);
-            if (it == helpers_.end())
-            {
-                res = {fnBlock};
-            } else {
-                helper_type const& fn = it->second;
-                res = fn(context, args, cb);
-            }
-            HandlebarsOptions opt2 = opt;
-            opt2.noHTMLEscape = true;
-            format_to(out, res, opt2);
-        }
+        renderBlock(tag.helper, tag, out, templateText, data, opt, extra_partials);
     }
     else if (tag.type == '/' || tag.type == '!')
     {
         // Comment or orphan section closing tag
         // This will handle both {{!}} and {{!----}} comments
-        // End a section here represents an error in the template, since we
-        // should have already closed the section in the first condition
+        // End a section here is a noop since it represents an error in the
+        // template. We should have already closed the section in the first
+        // condition of renderBlock.
     }
     else if (tag.type == '>')
     {
-        // Evaluate dynamic partial
-        std::string_view helper = tag.helper;
-        if (helper.starts_with('(')) {
-            std::string_view expr;
-            findExpr(expr, helper);
-            llvm::json::Value value = evalExpr(data, expr);
-            if (value.getAsString()) {
-                helper = *value.getAsString();
-            }
-        }
-
-        // Parse block
-        std::string_view fnBlock;
-        std::string_view inverseBlock;
-        if (tag.type2 == '#') {
-            if (!parseBlock(tag, templateText, out, fnBlock, inverseBlock)) {
-                return;
-            }
-        }
-
-        // Partial
-        auto it = partials_.find(helper);
-        std::string_view partial_content;
-        if (it == partials_.end())
-        {
-            it = extra_partials.find(helper);
-            if (it == extra_partials.end()) {
-                if (tag.type2 == '#') {
-                    partial_content = fnBlock;
-                } else {
-                    out << "[undefined partial in \"" << tag.buffer << "\"]";
-                    return;
-                }
-            } else {
-                partial_content = it->second;
-            }
-        } else {
-            partial_content = it->second;
-        }
-
-        if (tag.expression.empty())
-        {
-            if (tag.type2 == '#') {
-                // evaluate fnBlock to populate extra partials
-                std::string ignore;
-                llvm::raw_string_ostream os{ignore};
-                render_to(os, fnBlock, data, opt, extra_partials);
-                // also add @partial-block to extra partials
-                extra_partials["@partial-block"] = std::string(fnBlock);
-            }
-            // Render partial with current context
-            render_to(out, partial_content, data, opt, extra_partials);
-            if (tag.type2 == '#') {
-                extra_partials.erase("@partial-block");
-            }
-        }
-        else
-        {
-            // create context from specified keys
-            auto tagContent = tag.expression;
-            llvm::json::Object partialCtx;
-            std::string_view expr;
-            while (findExpr(expr, tagContent))
-            {
-                tagContent = tagContent.substr(expr.data() + expr.size() - tagContent.data());
-                auto [partialKey, contextKey] = findKeyValuePair(expr);
-                if (partialKey.empty())
-                {
-                    llvm::json::Value const* value = findNested(data, expr);
-                    if (value != nullptr && value->kind() == llvm::json::Value::Kind::Object)
-                    {
-                        partialCtx = *value->getAsObject();
-                    }
-                    continue;
-                }
-                if (contextKey != ".") {
-                    llvm::json::Value const* value = findNested(data, contextKey);
-                    if (value != nullptr)
-                    {
-                        partialCtx.try_emplace({partialKey}, *value);
-                    }
-                } else {
-                    partialCtx.try_emplace({partialKey}, llvm::json::Value(llvm::json::Object(data)));
-                }
-            }
-            render_to(out, partial_content, partialCtx, opt, extra_partials);
-        }
-
-        if (tag.removeRWhitespace) {
-            templateText = trim_lspaces(templateText);
-        }
+        renderPartial(tag, out, templateText, data, opt, extra_partials);
     }
     else if (tag.type == '*')
     {
-        // Validate decorator
-        if (tag.helper != "inline")
-        {
-            out << fmt::format(R"([undefined decorator "{}" in "{}"])", tag.helper, tag.buffer);
-            return;
-        }
-
-        // Evaluate expression
-        std::string_view expr;
-        findExpr(expr, tag.expression);
-        llvm::json::Value value = evalExpr(data, expr);
-        if (value.kind() != llvm::json::Value::Kind::String)
-        {
-            out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.expression, tag.buffer);
-            return;
-        }
-        std::string_view partial_name = *value.getAsString();
-
-        // Parse block
-        std::string_view fnBlock;
-        std::string_view inverseBlock;
-        if (tag.type2 == '#') {
-            if (!parseBlock(tag, templateText, out, fnBlock, inverseBlock)) {
-                return;
-            }
-        }
-        fnBlock = trim_rspaces(fnBlock);
-        extra_partials[std::string(partial_name)] = std::string(fnBlock);
-        // continue as usual with new extra partials
+        renderDecorator(tag, out, templateText, data, extra_partials);
     }
     else
     {
-        // Expression
-        auto opt2 = opt;
-        if (tag.forceNoHTMLEscape)
-        {
-            // Unescaped tag content
-            opt2.noHTMLEscape = true;
-        }
-
-        if (tag.content.empty())
-        {
-            // No helper, no expression: nothing to render
-            return;
-        }
-
-        if (tag.helper.empty() && !tag.expression.empty()) {
-            llvm::json::Value v = evalExpr(data, tag.expression);
-            format_to(out, v, opt2);
-            return;
-        }
-
-        // Multiple expressions, first string is a helper function
-        auto it = helpers_.find(tag.helper);
-        if (it == helpers_.end())
-        {
-            out << "[undefined helper in \"" << tag.buffer << "\"]";
-            return;
-        }
-        helper_type const& fn = it->second;
-
-        // Remaining expressions are a list of arguments to the helper function
-        // Each argument may be an argument to the function or a key-value pair
-        // for the callback hashes
-        llvm::json::Array args;
-        HandlebarsCallback cb;
-        std::string_view tagContent = tag.expression;
-        std::string_view expr;
-        while (findExpr(expr, tagContent))
-        {
-            tagContent = tagContent.substr(expr.data() + expr.size() - tagContent.data());
-            auto [k, v] = findKeyValuePair(expr);
-            if (k.empty())
-            {
-                args.push_back(evalExpr(data, expr));
-            }
-            else
-            {
-                cb.hashes.try_emplace(llvm::json::ObjectKey(k), evalExpr(data, v));
-            }
-        }
-
-        llvm::json::Value res = fn(data, args, cb);
-        format_to(out, res, opt2);
-
-        if (tag.removeRWhitespace) {
-            templateText = trim_lspaces(templateText);
-        }
+        renderExpression(tag, out, templateText, data, opt);
     }
 }
 
 void
+Handlebars::
+renderExpression(
+    Handlebars::Tag const &tag,
+    llvm::raw_string_ostream &out,
+    std::string_view &templateText,
+    llvm::json::Object const &data,
+    HandlebarsOptions const &opt) const {
+    // Expression
+    auto opt2 = opt;
+    if (tag.forceNoHTMLEscape)
+    {
+        // Unescaped tag content
+        opt2.noHTMLEscape = true;
+    }
+
+    if (tag.content.empty())
+    {
+        // No helper, no expression: nothing to render
+        return;
+    }
+
+    if (tag.helper.empty() && !tag.expression.empty()) {
+        llvm::json::Value v = this->evalExpr(data, tag.expression);
+        format_to(out, v, opt2);
+        return;
+    }
+
+    // Multiple expressions, first string is a helper function
+    auto it = this->helpers_.find(tag.helper);
+    if (it == this->helpers_.end())
+    {
+        out << "[undefined helper in \"" << tag.buffer << "\"]";
+        return;
+    }
+    helper_type const& fn = it->second;
+
+    // Remaining expressions are a list of arguments to the helper function
+    // Each argument may be an argument to the function or a key-value pair
+    // for the callback hashes
+    llvm::json::Array args;
+    HandlebarsCallback cb;
+    std::string_view tagContent = tag.expression;
+    std::string_view expr;
+    while (findExpr(expr, tagContent))
+    {
+        tagContent = tagContent.substr(expr.data() + expr.size() - tagContent.data());
+        auto [k, v] = findKeyValuePair(expr);
+        if (k.empty())
+        {
+            args.push_back(this->evalExpr(data, expr));
+        }
+        else
+        {
+            cb.hashes.try_emplace(llvm::json::ObjectKey(k), this->evalExpr(data, v));
+        }
+    }
+
+    llvm::json::Value res = fn(data, args, cb);
+    format_to(out, res, opt2);
+
+    if (tag.removeRWhitespace) {
+        templateText = trim_lspaces(templateText);
+    }
+}
+
+void
+Handlebars::
+renderDecorator(
+    Handlebars::Tag const& tag,
+    llvm::raw_string_ostream &out,
+    std::string_view &templateText,
+    llvm::json::Object const& data,
+    Handlebars::partials_map &extra_partials) const {
+    // Validate decorator
+    if (tag.helper != "inline")
+    {
+        out << fmt::format(R"([undefined decorator "{}" in "{}"])", tag.helper, tag.buffer);
+        return;
+    }
+
+    // Evaluate expression
+    std::string_view expr;
+    findExpr(expr, tag.expression);
+    llvm::json::Value value = this->evalExpr(data, expr);
+    if (value.kind() != llvm::json::Value::String)
+    {
+        out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.expression, tag.buffer);
+        return;
+    }
+    std::string_view partial_name = *value.getAsString();
+
+    // Parse block
+    std::string_view fnBlock;
+    std::string_view inverseBlock;
+    Tag inverseTag;
+    if (tag.type2 == '#') {
+        if (!parseBlock(tag.helper, tag, templateText, out, fnBlock, inverseBlock, inverseTag)) {
+            return;
+        }
+    }
+    fnBlock = trim_rspaces(fnBlock);
+    extra_partials[std::string(partial_name)] = std::string(fnBlock);
+    // continue as usual with new extra partials
+}
+
+void
+Handlebars::
+renderPartial(
+    Handlebars::Tag const &tag,
+    llvm::raw_string_ostream &out,
+    std::string_view &templateText,
+    llvm::json::Object const &data,
+    HandlebarsOptions &opt,
+    Handlebars::partials_map &extra_partials) const {
+    // Evaluate dynamic partial
+    std::string_view helper = tag.helper;
+    if (helper.starts_with('(')) {
+        std::string_view expr;
+        findExpr(expr, helper);
+        llvm::json::Value value = this->evalExpr(data, expr);
+        if (value.getAsString()) {
+            helper = *value.getAsString();
+        }
+    }
+
+    // Parse block
+    std::string_view fnBlock;
+    std::string_view inverseBlock;
+    Tag inverseTag;
+    if (tag.type2 == '#') {
+        if (!parseBlock(tag.helper, tag, templateText, out, fnBlock, inverseBlock, inverseTag)) {
+            return;
+        }
+    }
+
+    // Partial
+    auto it = this->partials_.find(helper);
+    std::string_view partial_content;
+    if (it == this->partials_.end())
+    {
+        it = extra_partials.find(helper);
+        if (it == extra_partials.end()) {
+            if (tag.type2 == '#') {
+                partial_content = fnBlock;
+            } else {
+                out << "[undefined partial in \"" << tag.buffer << "\"]";
+                return;
+            }
+        } else {
+            partial_content = it->second;
+        }
+    } else {
+        partial_content = it->second;
+    }
+
+    if (tag.expression.empty())
+    {
+        if (tag.type2 == '#') {
+            // evaluate fnBlock to populate extra partials
+            std::string ignore;
+            llvm::raw_string_ostream os{ignore};
+            this->render_to(os, fnBlock, data, opt, extra_partials);
+            // also add @partial-block to extra partials
+            extra_partials["@partial-block"] = std::string(fnBlock);
+        }
+        // Render partial with current context
+        this->render_to(out, partial_content, data, opt, extra_partials);
+        if (tag.type2 == '#') {
+            extra_partials.erase("@partial-block");
+        }
+    }
+    else
+    {
+        // create context from specified keys
+        auto tagContent = tag.expression;
+        llvm::json::Object partialCtx;
+        std::string_view expr;
+        while (findExpr(expr, tagContent))
+        {
+            tagContent = tagContent.substr(expr.data() + expr.size() - tagContent.data());
+            auto [partialKey, contextKey] = findKeyValuePair(expr);
+            if (partialKey.empty())
+            {
+                llvm::json::Value const* value = findNested(data, expr);
+                if (value != nullptr && value->kind() == llvm::json::Value::Object)
+                {
+                    partialCtx = *value->getAsObject();
+                }
+                continue;
+            }
+            if (contextKey != ".") {
+                llvm::json::Value const* value = findNested(data, contextKey);
+                if (value != nullptr)
+                {
+                    partialCtx.try_emplace({partialKey}, *value);
+                }
+            } else {
+                partialCtx.try_emplace({partialKey}, llvm::json::Value(llvm::json::Object(data)));
+            }
+        }
+        this->render_to(out, partial_content, partialCtx, opt, extra_partials);
+    }
+
+    if (tag.removeRWhitespace) {
+        templateText = trim_lspaces(templateText);
+    }
+}
+
+void
+Handlebars::
+renderBlock(
+    std::string_view blockName,
+    Handlebars::Tag const &tag,
+    llvm::raw_string_ostream &out,
+    std::string_view &templateText,
+    llvm::json::Object const& data,
+    HandlebarsOptions const& opt,
+    Handlebars::partials_map &extra_partials) const {
+    // Opening a section tag
+    // Find closing tag
+    if (tag.removeRWhitespace) {
+        templateText = trim_lspaces(templateText);
+    }
+
+    std::string_view fnBlock;
+    std::string_view inverseBlock;
+    Tag inverseTag;
+    if (!parseBlock(blockName, tag, templateText, out, fnBlock, inverseBlock, inverseTag)) {
+        return;
+    }
+
+    // Setup helper arguments
+    // 1st argument) context
+    llvm::json::Object const& context = data;
+
+    // 2nd argument) array of block items as the args
+    // In general, the args should be an array (eg. {{#each items}}), but
+    // some special helpers may use a single value (eg. {{#if item}}).
+    // When the args is a single value, we wrap it in a single element
+    // array.
+    llvm::json::Array args;
+    llvm::json::Value value = this->evalExpr(data, tag.expression);
+    if (!value.getAsArray())
+    {
+        args.push_back(std::move(value));
+    }
+    else if (value.getAsArray())
+    {
+        llvm::json::Array* valueArray = value.getAsArray();
+        args = std::move(*valueArray);
+    }
+
+    // 3rd argument) callbacks
+    HandlebarsCallback cb;
+    if (!tag.rawBlock) {
+        cb.fn = [this, fnBlock, opt, &extra_partials](
+            llvm::json::Object const &item) -> std::string {
+            // Render one element in the list with the fnBlock template
+            std::string res;
+            llvm::raw_string_ostream os{res};
+            this->render_to(os, fnBlock, item, opt, extra_partials);
+            return res;
+        };
+        cb.inverse = [this, inverseTag, inverseBlock, opt, &extra_partials, blockName](
+                llvm::json::Object const &item) -> std::string {
+            // Render one element in the list with the inverseBlock template
+            // This recursively calls renderBlock with the inverted Tag to support
+            // chained blocks
+            std::string res;
+            llvm::raw_string_ostream os{res};
+            std::string_view inverseText = inverseBlock;
+            // Create a temp inverse tag where the expression contains helper and next expression
+            Tag tempInverseTag = inverseTag;
+            std::string_view expr;
+            std::string_view expressionContent = tempInverseTag.expression;
+            if (findExpr(expr, expressionContent))
+            {
+                tempInverseTag.helper = expr;
+                expressionContent = expressionContent.substr(expr.data() + expr.size() - expressionContent.data());
+                tempInverseTag.expression = expressionContent;
+            } else {
+                tempInverseTag.helper = {};
+                tempInverseTag.expression = {};
+            }
+            this->renderBlock(blockName, tempInverseTag, os, inverseText, item, opt, extra_partials);
+            return res;
+        };
+    } else {
+        cb.fn = [this, fnBlock, opt](llvm::json::Object const &item) -> std::string {
+            // Render one element in the list with the fnBlock template
+            return std::string(fnBlock);
+        };
+        cb.inverse = [this, inverseBlock, opt](llvm::json::Object const &item) -> std::string {
+            // Render one element in the list with the inverseBlock template
+            return {};
+        };
+    }
+
+    // Call helper
+    auto helperIt = this->helpers_.find(tag.helper);
+    helper_type const& fn = helperIt != this->helpers_.end() ? helperIt->second : noop_fn;
+    llvm::json::Value res = fn(context, args, cb);
+    HandlebarsOptions opt2 = opt;
+    opt2.noHTMLEscape = true;
+    format_to(out, res, opt2);
+}
+
+    void
 Handlebars::
 registerPartial(
     std::string_view name,
