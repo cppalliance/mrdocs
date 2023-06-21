@@ -864,6 +864,14 @@ parseBlock(
     return true;
 }
 
+llvm::json::Value
+noop_fn(
+llvm::json::Object const& context,
+llvm::json::Array const& args,
+HandlebarsCallback const& cb) {
+    return cb.fn(context);
+}
+
 // Render a handlebars tag
 void
 Handlebars::
@@ -942,13 +950,15 @@ renderTag(
         // Call helper
         auto it = helpers_.find(tag.helper);
         if (!tag.rawBlock) {
-            if (it == helpers_.end())
+            llvm::json::Value res(nullptr);
+            if (it != helpers_.end())
             {
-                out << "[undefined helper in \"" << tag.buffer << "\"]";
-                return;
+                helper_type const& fn = it->second;
+                res = fn(context, args, cb);
+            } else {
+                helper_type const& fn = noop_fn;
+                res = fn(context, args, cb);
             }
-            helper_type const& fn = it->second;
-            llvm::json::Value res = fn(context, args, cb);
             HandlebarsOptions opt2 = opt;
             opt2.noHTMLEscape = true;
             format_to(out, res, opt2);

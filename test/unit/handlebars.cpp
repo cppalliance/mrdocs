@@ -392,6 +392,8 @@ main() {
     context["myOtherContext"].getAsObject()->operator[]("information") = "Interesting!";
     context["favoriteNumber"] = 123;
     context["prefix"] = "Hello";
+    context["title"] = "My Title";
+    context["body"] = "My Body";
 
 
     // Register some extra test helpers
@@ -402,6 +404,7 @@ main() {
     hbs.registerHelper("link", link_fn);
     hbs.registerHelper("loud", loud_fn);
     hbs.registerHelper("to_string", to_string_fn);
+    // hbs.registerHelper("noop", noop_fn);
 
     for (auto partial_path: partial_paths) {
         auto partial_text_r = files::getFileText(partial_path);

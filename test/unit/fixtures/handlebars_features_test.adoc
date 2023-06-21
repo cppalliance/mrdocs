@@ -42,10 +42,10 @@ People:
 
 
 // Render complete context with "." as key
-{"myOtherContext": {"information": Interesting!} , "favoriteNumber": 1.230000e+02 , "prefix": Hello , "myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "prefix": Hello , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice} ,{"lastname": Doe , "firstname": Bob} ,{"lastname": Smith , "firstname": Carol}]}}
+{"myOtherContext": {"information": Interesting!} , "body": My Body , "favoriteNumber": 1.230000e+02 , "prefix": Hello , "myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "title": My Title , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "prefix": Hello , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice} ,{"lastname": Doe , "firstname": Bob} ,{"lastname": Smith , "firstname": Carol}]}}
 
 // Use to_string
-{"favoriteNumber":123,"myOtherContext":{"information":"Interesting!"},"myVariable":"lookupMyPartial","nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"firstname":"Alice","lastname":"Doe"},{"firstname":"Bob","lastname":"Doe"},{"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"prefix":"Hello","specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"},"prefix":"Hello"}
+{"body":"My Body","favoriteNumber":123,"myOtherContext":{"information":"Interesting!"},"myVariable":"lookupMyPartial","nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"firstname":"Alice","lastname":"Doe"},{"firstname":"Bob","lastname":"Doe"},{"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"prefix":"Hello","specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"},"prefix":"Hello","title":"My Title"}
 
 // Literals
 true = true
@@ -155,4 +155,12 @@ Site Content My Content
 </div>
 <div class="content">
       My Content
+</div>
+
+// Block noop
+<div class="entry">
+  <h1>My Title</h1>
+  <div class="body">
+    My Body
+  </div>
 </div>

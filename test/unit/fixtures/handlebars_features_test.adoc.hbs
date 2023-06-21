@@ -151,3 +151,11 @@ My Content
     My Content
   {{/inline}}
 {{/pageLayout}}
+
+// Block noop
+<div class="entry">
+  <h1>{{title}}</h1>
+  <div class="body">
+    {{#noop}}{{body}}{{/noop}}
+  </div>
+</div>
