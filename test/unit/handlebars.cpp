@@ -195,16 +195,17 @@ namespace {
         llvm::json::Object const& ctx,
         llvm::json::Array const& args,
         HandlebarsCallback const& cb) {
-        // If used as a block helper
-        if (args.empty()) {
+        if (cb.isBlock()) {
+            // "loud" is used as a block helper
             std::string res = cb.fn(ctx);
             res = llvm::StringRef(res).upper();
             return res;
+        } else {
+            // "loud" is used as an expression helper
+            llvm::StringRef str = args[0].getAsString().value();
+            std::string res = str.upper();
+            return res;
         }
-        // If used as an expression helper
-        llvm::StringRef str = args[0].getAsString().value();
-        std::string res = str.upper();
-        return res;
     }
 }
 
@@ -443,6 +444,10 @@ main() {
     page["prefix"] = "Hello";
     page["specialChars"] = "& < > \" ' ` =";
     page["url"] = "https://cppalliance.org/";
+    llvm::json::Object page_author;
+    page_author["firstname"] = "Yehuda";
+    page_author["lastname"] = "Katz";
+    page["author"] = std::move(page_author);
     context["page"] = std::move(page);
     context["nav"] = llvm::json::Array{
             llvm::json::Object{
@@ -480,11 +485,57 @@ main() {
         peopleObj[firstname] = std::move(person);
     }
     context["peopleobj"] = std::move(peopleObj);
+    context["author"] = true;
+    context["firstname"] = "Yehuda";
+    context["author"] = "Katz";
+    llvm::json::Array names;
+    names.push_back("Yehuda Katz");
+    names.push_back("Alan Johnson");
+    names.push_back("Charles Jolley");
+    context["names"] = std::move(names);
+    llvm::json::Object namesobj;
+    namesobj["Yehuda"] = "Yehuda Katz";
+    namesobj["Alan"] = "Alan Johnson";
+    namesobj["Charles"] = "Charles Jolley";
+    context["namesobj"] = std::move(namesobj);
+    llvm::json::Object city;
+    city["name"] = "San Francisco";
+    city["summary"] = "San Francisco is the <b>cultural center</b> of <b>Northern California</b>";
+    llvm::json::Object location;
+    location["north"] = "37.73,";
+    location["east"] = -122.44;
+    city["location"] = std::move(location);
+    city["population"] = 883305;
+    context["city"] = std::move(city);
+
+    llvm::json::Object lookup_test;
+    lookup_test["people"] = llvm::json::Array{"Nils", "Yehuda"};
+    lookup_test["cities"] = llvm::json::Array{"Darmstadt", "San Francisco"};
+    context["lookup_test"] = std::move(lookup_test);
+
+    llvm::json::Object lookup_test2;
+    llvm::json::Array persons;
+    persons.push_back(llvm::json::Object{
+            {"name", "Nils"},
+            {"resident-in", "darmstadt"}});
+    persons.push_back(llvm::json::Object{
+            {"name", "Yehuda"},
+            {"resident-in", "san-francisco"}});
+    lookup_test2["persons"] = std::move(persons);
+    llvm::json::Object cities;
+    cities["darmstadt"] = llvm::json::Object{
+            {"name", "Darmstadt"},
+            {"country", "Germany"}};
+    cities["san-francisco"] = llvm::json::Object{
+            {"name", "San Francisco"},
+            {"country", "USA"}};
+    lookup_test2["cities"] = std::move(cities);
+    context["lookup_test2"] = std::move(lookup_test2);
 
 
     // Register some extra test helpers
     Handlebars hbs;
-    helpers::registerStandardHelpers(hbs);
+    helpers::registerBuiltinHelpers(hbs);
     helpers::registerAntoraHelpers(hbs);
     hbs.registerHelper("progress", progress_fn);
     hbs.registerHelper("link", link_fn);
@@ -492,6 +543,10 @@ main() {
     hbs.registerHelper("to_string", to_string_fn);
     hbs.registerHelper("bold", bold_fn);
     hbs.registerHelper("list", list_fn);
+    hbs.registerHelper("isdefined", [](llvm::json::Array const& args) -> llvm::json::Value {
+        return args[0].kind() != llvm::json::Value::Kind::Null;
+    });
+
 
     for (auto partial_path: partial_paths) {
         auto partial_text_r = files::getFileText(partial_path);

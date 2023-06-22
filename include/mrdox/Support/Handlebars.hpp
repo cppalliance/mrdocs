@@ -26,25 +26,116 @@ struct HandlebarsOptions {
     bool noHTMLEscape = false;
 };
 
-class HandlebarsCallback {
+class MRDOX_DECL HandlebarsCallback {
 private:
     std::function<std::string(llvm::json::Object const&)> fn_;
     std::function<std::string(llvm::json::Object const&)> inverse_;
     friend class Handlebars;
 public:
-    /// The callback function type to render a list item in a block section
+    /// Render the block content with the specified context
+    /**
+     * This function renders the block content with the specified context.
+     *
+     * For example, the following template calls the helper "list" with a block section:
+     *
+     *   {{#list people}}{{name}}{{/list}}
+     *
+     * In this context, this function would render the {{name}} block content with
+     * any specified context.
+     *
+     * To list all people, a helper such as "list" would usually call this function once for each
+     * person, passing the person's object as the context argument.
+     *
+     * If this is not a block helper, this function returns an empty string.
+     *
+     * @param context The context to render the block content with
+     * @return The rendered block content
+     */
     [[nodiscard]]
     std::string
-    fn(llvm::json::Object const& item) const {
-        return fn_(item);
+    fn(llvm::json::Object const& context) const {
+        if (isBlock()) {
+            return fn_(context);
+        } else {
+            return {};
+        }
     }
 
-    /// The callback function type to render a list item in the else section
+    /// Create frame around value so that { "this": context } and call fn
     [[nodiscard]]
     std::string
-    inverse(llvm::json::Object const& item) const{
-        return inverse_(item);
+    fn(llvm::json::Value const& context) const;
+
+    /// Render the inverse block content with the specified context
+    /**
+     * This function renders the inverse block content with the specified context.
+     *
+     * For example, the following template calls the helper "list" with a block section:
+     *
+     *  {{#list people}}{{name}}{{else}}No people{{/list}}
+     *
+     * In this context, this function would render the {{else}}...{{/list}} block content with
+     * any specified context.
+     *
+     * When there are no people, a helper such as "list" would usually call this function once, passing
+     * the original context argument instead of a person on the list.
+     *
+     * @param context The context to render the block content with
+     * @return The rendered block content
+     */
+    [[nodiscard]]
+    std::string
+    inverse(llvm::json::Object const& context) const{
+        return inverse_(context);
     };
+
+    /// Create frame around value so that { "this": context } and call inverse
+    [[nodiscard]]
+    std::string
+    inverse(llvm::json::Value const& context) const;
+
+    /// Determine if helper is being called from a block section
+    /**
+     * This function returns true if the helper is being called from a block section.
+     *
+     * For example, the following template calls the helper "list" with a block section:
+     *
+     *    {{#list people}}{{name}}{{/list}}
+     *
+     * The helper "list" is called with a block section because it is called with a block of text.
+     * On the other hand, the following template calls the helper "year" without a block section:
+     *
+     *   {{year}}
+     *
+     * Helpers can be called with or without a block section. For example, the following template
+     * calls the helper "loud" with a block section, and the same helper "loud" without a block
+     * section:
+     *
+     *  {{#loud}}HELLO{{/loud}} {{loud "Hello"}}
+     *
+     * This function can be used from within the helper to determine which behavior is expected
+     * from the template.
+     *
+     * @return true if the helper is being called from a block section
+     */
+    [[nodiscard]]
+    bool isBlock() const {
+        return static_cast<bool>(fn_);
+    }
+
+    /// Log a message
+    /**
+     * Helpers can use this callback function to log messages.
+     *
+     * The behavior of this function can be overriden with the handlebars hooks.
+     */
+    void log(
+        llvm::json::Value const& level,
+        llvm::json::Array const& args) const;
+
+    // Return context from callback to simplify helper implementation
+    // llvm::json::Object const&
+    // context() const;
 
     // AFREITAS: we need extra overloads of fn and inverse for blockParams
     // (as |userId user|) and private data (@index, @key, ...) as frames.
@@ -58,12 +149,11 @@ public:
 
 /// A handlebars template engine
 /**
-    This class implements a handlebars template engine.
-    The template text is rendered using the data provided
-    as a JSON array. The result is returned as a string.
-
-    @see https://handlebarsjs.com/
-
+ *    This class implements a handlebars template engine.
+ *    The template text is rendered using the data provided
+ *    as a JSON array. The result is returned as a string.
+ *
+ *    @see https://handlebarsjs.com/
  */
 class Handlebars {
     using helper_type = std::function<
@@ -419,14 +509,31 @@ private:
         std::string_view expression) const;
 };
 
-// Helper functions shared by Handlebars.cpp and Builder.cpp
+/// Determine if a JSON value is truthy
+/**
+ * A JSON value is truthy if it is a boolean and is true, a number and not
+ * zero, or an non-empty string, array or object.
+ *
+ * @param arg The JSON value to test
+ *
+ * @return True if the value is truthy, false otherwise
+ */
+MRDOX_DECL
 bool
 isTruthy(llvm::json::Value const& arg);
 
+/// Lookup a property in a JSON object
+/**
+   @param data The JSON object to look up the property in
+   @param path The path to the property to look up
+
+   @return The value of the property, or nullptr if the property does not exist
+ */
+MRDOX_DECL
 llvm::json::Value const*
-findNested(
-    llvm::json::Object const &data,
-    std::string_view name);
+lookupProperty(
+    llvm::json::Value const &data,
+    std::string_view path);
 
 namespace helpers {
 
@@ -436,8 +543,9 @@ namespace helpers {
 
    @param hbs The Handlebars instance to register the helpers into
  */
+MRDOX_DECL
 void
-registerStandardHelpers(Handlebars& hbs);
+registerBuiltinHelpers(Handlebars& hbs);
 
 /// Register all the Antora helpers into a Handlebars instance
 /**
@@ -445,71 +553,123 @@ registerStandardHelpers(Handlebars& hbs);
 
    @param hbs The Handlebars instance to register the helpers into
  */
+MRDOX_DECL
 void
 registerAntoraHelpers(Handlebars& hbs);
 
+MRDOX_DECL
 llvm::json::Value
 and_fn(llvm::json::Array const& args);
 
+MRDOX_DECL
 llvm::json::Value
 or_fn(llvm::json::Array const& args);
 
+MRDOX_DECL
 llvm::json::Value
 eq_fn(llvm::json::Array const& args);
 
+MRDOX_DECL
 llvm::json::Value
 ne_fn(llvm::json::Array const& args);
 
+MRDOX_DECL
 llvm::json::Value
 not_fn(llvm::json::Value const& arg);
 
+MRDOX_DECL
 llvm::json::Value
 increment_fn(llvm::json::Value const &arg);
 
+MRDOX_DECL
 llvm::json::Value
 detag_fn(std::string_view html);
 
+MRDOX_DECL
 llvm::json::Value
 relativize_fn(
     llvm::json::Object const& ctx0,
     llvm::json::Array const& args);
 
+MRDOX_DECL
 llvm::json::Value
 year_fn();
 
 // https://github.com/handlebars-lang/handlebars.js/tree/master/lib/handlebars/helpers
+
+
+/// "if" helper function
+/**
+ * You can use the if helper to conditionally render a block. If its argument returns false, undefined, null,
+ * "", 0, or [], Handlebars will not render the block.
+ */
+MRDOX_DECL
 llvm::json::Value
 if_fn(
     llvm::json::Object const& context,
-    llvm::json::Array const& conditional,
+    llvm::json::Array const& args,
     HandlebarsCallback const& cb);
 
+/// "unless" helper function
+/**
+ * You can use the unless helper as the inverse of the if helper. Its block will be rendered if the expression
+ * returns a falsy value.
+ */
+MRDOX_DECL
 llvm::json::Value
 unless_fn(
     llvm::json::Object const& context,
-    llvm::json::Array const& conditional,
+    llvm::json::Array const& args,
     HandlebarsCallback const& cb);
 
+
+/// "unless" helper function
+/**
+ * The with-helper allows you to change the evaluation context of template-part.
+ */
+MRDOX_DECL
 llvm::json::Value
 with_fn(
     llvm::json::Object const& context,
     llvm::json::Array const& args,
     HandlebarsCallback const& cb);
 
+/// "each" helper function
+/**
+ * You can iterate over a list or object using the built-in each helper.
+ *
+ * Inside the block, you can use {{this}} to reference the element being iterated over.
+ */
+MRDOX_DECL
 llvm::json::Value
 each_fn(
     llvm::json::Object const& context,
     llvm::json::Array const& args,
     HandlebarsCallback const& cb);
 
+/// "log" helper function
+/**
+ * The lookup helper allows for dynamic parameter resolution using Handlebars variables.
+ */
+MRDOX_DECL
 llvm::json::Value
 lookup_fn(
+    llvm::json::Object const& context,
+    llvm::json::Array const& args,
+    HandlebarsCallback const& cb);
+
+/// "log" helper function
+/**
+ * The log helper allows for logging of context state while executing a template.
+ */
+MRDOX_DECL
+llvm::json::Value
+log_fn(
     llvm::json::Object const& context,
     llvm::json::Array const& conditional,
     HandlebarsCallback const& cb);
 
-}
-
+} // helpers
 } // mrdox
 } // clang
 

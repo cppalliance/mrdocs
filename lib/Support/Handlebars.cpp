@@ -35,7 +35,7 @@ isTruthy(llvm::json::Value const& arg)
         return !arg.getAsObject()->empty();
     else
         return false;
-};
+}
 
 std::string
 Handlebars::
@@ -499,8 +499,58 @@ format_to(
     }
 }
 
+void
+HandlebarsCallback::
+log(llvm::json::Value const& level0,
+    llvm::json::Array const& args) const {
+    llvm::json::Value level = level0;
+    if (level.kind() == llvm::json::Value::Kind::String) {
+        std::string_view levelStr = level.getAsString().value();
+        if (levelStr == "debug") {
+            level = 0;
+        } else if (levelStr == "info") {
+            level = 1;
+        } else if (levelStr == "warn") {
+            level = 2;
+        } else if (levelStr == "error") {
+            level = 3;
+        } else {
+            int levelInt = 0;
+            auto res = std::from_chars(
+                levelStr.data(),
+                levelStr.data() + levelStr.size(),
+                levelInt);
+            if (res.ec == std::errc()) {
+                level = levelInt;
+            } else {
+                level = 0;
+            }
+        }
+    }
+
+    if (!level.getAsInteger()) {
+        return;
+    }
+
+    // AFREITAS: handlebars should propagate its log level to the callback
+    static constexpr int hbs_log_level = 4;
+
+    if (level.getAsInteger().value() < hbs_log_level) {
+        std::string out;
+        llvm::raw_string_ostream os(out);
+        for (llvm::json::Value const& arg : args) {
+            HandlebarsOptions opt;
+            opt.noHTMLEscape = true;
+            format_to(os, arg, opt);
+            os << ' ';
+        }
+        fmt::println("{}", out);
+    }
+}
+
+
 llvm::json::Value const*
-findNested(
+lookupProperty(
     llvm::json::Object const &data,
     std::string_view path)
 {
@@ -594,6 +644,18 @@ findNested(
         std::tie(segment, path) = nextSegment(path);
     }
     return cur;
+}
+
+llvm::json::Value const*
+lookupProperty(
+    llvm::json::Value const &data,
+    std::string_view path) {
+    if (data.kind() != llvm::json::Value::Kind::Object) {
+        if (path == "." || path == "this" || path == "[.]" || path == "[this]" || path.empty())
+            return &data;
+        return nullptr;
+    }
+    return lookupProperty(*data.getAsObject(), path);
 }
 
 constexpr
@@ -716,7 +778,13 @@ evalExpr(
     }
     else if (expression == ".")
     {
-        return llvm::json::Object(data);
+        // AFREITAS: replace with frames
+        // non-objects are wrapped into the "this" key so that the context is always an object
+        // this should be replaced with frames
+        auto it = data.find("this");
+        if (it == data.end())
+            return llvm::json::Object(data);
+        return it->second;
     }
     else if (is_literal_string(expression))
     {
@@ -754,7 +822,7 @@ evalExpr(
     }
     else
     {
-        llvm::json::Value const* value = findNested(data, expression);
+        llvm::json::Value const* value = lookupProperty(data, expression);
         if (value != nullptr)
         {
             return *value;
@@ -903,14 +971,6 @@ renderTag(
     {
         renderBlock(tag.helper, tag, out, templateText, data, opt, extra_partials);
     }
-    else if (tag.type == '/' || tag.type == '!')
-    {
-        // Comment or orphan section closing tag
-        // This will handle both {{!}} and {{!----}} comments
-        // End a section here is a noop since it represents an error in the
-        // template. We should have already closed the section in the first
-        // condition of renderBlock.
-    }
     else if (tag.type == '>')
     {
         renderPartial(tag, out, templateText, data, opt, extra_partials);
@@ -919,7 +979,7 @@ renderTag(
     {
         renderDecorator(tag, out, templateText, data, extra_partials);
     }
-    else
+    else if (tag.type != '/' && tag.type != '!')
     {
         renderExpression(tag, out, templateText, data, opt);
     }
@@ -948,6 +1008,7 @@ renderExpression(
     }
 
     if (tag.helper.empty() && !tag.expression.empty()) {
+        // expression with no helper
         llvm::json::Value v = this->evalExpr(data, tag.expression);
         format_to(out, v, opt2);
         return;
@@ -1118,7 +1179,7 @@ renderPartial(
             auto [partialKey, contextKey] = findKeyValuePair(expr);
             if (partialKey.empty())
             {
-                llvm::json::Value const* value = findNested(data, expr);
+                llvm::json::Value const* value = lookupProperty(data, expr);
                 if (value != nullptr && value->kind() == llvm::json::Value::Object)
                 {
                     partialCtx = *value->getAsObject();
@@ -1126,7 +1187,7 @@ renderPartial(
                 continue;
             }
             if (contextKey != ".") {
-                llvm::json::Value const* value = findNested(data, contextKey);
+                llvm::json::Value const* value = lookupProperty(data, contextKey);
                 if (value != nullptr)
                 {
                     partialCtx.try_emplace({partialKey}, *value);
@@ -1263,13 +1324,14 @@ registerHelper(
 namespace helpers {
 
 void
-registerStandardHelpers(Handlebars& hbs)
+registerBuiltinHelpers(Handlebars& hbs)
 {
     hbs.registerHelper("if", if_fn);
     hbs.registerHelper("unless", unless_fn);
     hbs.registerHelper("with", with_fn);
     hbs.registerHelper("each", each_fn);
     hbs.registerHelper("lookup", lookup_fn);
+    hbs.registerHelper("log", log_fn);
 }
 
 void
@@ -1469,12 +1531,32 @@ year_fn() {
 llvm::json::Value
 if_fn(
     llvm::json::Object const& context,
-    llvm::json::Array const& conditional,
+    llvm::json::Array const& args,
     HandlebarsCallback const& cb) {
     // The if block helper has a special logic where is uses the first
     // argument as a conditional but uses the content itself as the
     // item to render the callback
-    if (!conditional.empty() && isTruthy(conditional[0])) {
+    if (args.size() != 1) {
+        return "#if requires exactly one argument";
+    }
+    llvm::json::Value const& conditional = args[0];
+    if (conditional.kind() == llvm::json::Value::Kind::Number) {
+        // Treat the zero path separately
+        auto v = conditional.getAsUINT64();
+        if (v && *v == 0) {
+            bool includeZero = false;
+            auto it = cb.hashes.find("includeZero");
+            if (it != cb.hashes.end() && it->second.kind() == llvm::json::Value::Kind::Boolean) {
+                includeZero = *it->getSecond().getAsBoolean();
+            }
+            if (includeZero) {
+                return cb.fn(context);
+            } else {
+                return cb.inverse(context);
+            }
+        }
+    }
+    if (isTruthy(conditional)) {
         return cb.fn(context);
     } else {
         return cb.inverse(context);
@@ -1484,12 +1566,30 @@ if_fn(
 llvm::json::Value
 unless_fn(
     llvm::json::Object const& context,
-    llvm::json::Array const& conditional,
+    llvm::json::Array const& args,
     HandlebarsCallback const& cb) {
-    // The unless block helper has a special logic where is uses the first
-    // argument as a conditional but uses the content itself as the
-    // item to render the callback
-    if (!conditional.empty() && isTruthy(conditional[0])) {
+    // Same as "if". Swap inverse and fn.
+    if (args.size() != 1) {
+        return "#if requires exactly one argument";
+    }
+    llvm::json::Value const& conditional = args[0];
+    if (conditional.kind() == llvm::json::Value::Kind::Number) {
+        // Treat the zero path separately
+        auto v = conditional.getAsUINT64();
+        if (v && *v == 0) {
+            bool includeZero = false;
+            auto it = cb.hashes.find("includeZero");
+            if (it != cb.hashes.end() && it->second.kind() == llvm::json::Value::Kind::Boolean) {
+                includeZero = *it->getSecond().getAsBoolean();
+            }
+            if (includeZero) {
+                return cb.inverse(context);
+            } else {
+                return cb.fn(context);
+            }
+        }
+    }
+    if (isTruthy(conditional)) {
         return cb.inverse(context);
     } else {
         return cb.fn(context);
@@ -1502,8 +1602,20 @@ with_fn(
     llvm::json::Array const& args,
     HandlebarsCallback const& cb) {
     // Built-in helper to change the context
-    if (!args.empty() && args[0].kind() == llvm::json::Value::Kind::Object) {
-        llvm::json::Object frame = *args[0].getAsObject();
+    if (args.size() != 1) {
+        return "#with requires exactly one argument";
+    }
+    llvm::json::Value const& value = args[0];
+    if (isTruthy(value)) {
+        llvm::json::Object frame;
+        if (value.kind() == llvm::json::Value::Kind::Object) {
+            frame = *value.getAsObject();
+        } else {
+            frame.try_emplace("this", value);
+        }
+        if (!cb.blockParams.empty()) {
+            frame.try_emplace(cb.blockParams[0].getAsString().value(), value);
+        }
         frame.try_emplace("..", llvm::json::Object(context));
         return cb.fn(frame);
     }
@@ -1576,18 +1688,22 @@ each_fn(
     llvm::json::Object const& context,
     llvm::json::Array const& args,
     HandlebarsCallback const& cb) {
-    // Built-in helper to change the context for each object in args
-    std::string err = validateArgs("each", {{llvm::json::Value::Kind::Array, llvm::json::Value::Kind::Object}}, args);
-    if (!err.empty()) {
-        return err;
+    if (args.size() != 1) {
+        return "#each requires exactly one argument";
     }
+
     std::size_t index = 0;
     std::string out;
     llvm::json::Value const& itemsV = args[0];
     if (itemsV.kind() == llvm::json::Value::Kind::Array) {
         llvm::json::Array const& items = *args[0].getAsArray();
         for (auto const& item : items) {
-            llvm::json::Object frame = *item.getAsObject();
+            llvm::json::Object frame;
+            if (item.getAsObject()) {
+                frame = *item.getAsObject();
+            } else {
+                frame["this"] = item;
+            }
             // Pass as frame
             frame.try_emplace("..", llvm::json::Object(context));
             // Pass as private data object
@@ -1608,7 +1724,12 @@ each_fn(
     } else if (itemsV.kind() == llvm::json::Value::Kind::Object) {
         llvm::json::Object const& items = *args[0].getAsObject();
         for (auto const& item : items) {
-            llvm::json::Object frame = *item.getSecond().getAsObject();
+            llvm::json::Object frame;
+            if (item.getSecond().getAsObject()) {
+                frame = *item.getSecond().getAsObject();
+            } else {
+                frame["this"] = item.getSecond();
+            }
             frame.try_emplace("..", llvm::json::Object(context));
             frame.try_emplace("@key", item.getFirst());
             frame.try_emplace("@first", index == 0);
@@ -1638,22 +1759,46 @@ lookup_fn(
     if (args.size() != 2) {
         return fmt::format(R"([lookup helper requires 2 arguments: {} provided])", args.size());
     }
-    if (args[0].kind() != llvm::json::Value::Kind::Object) {
-        return R"([lookup helper requires first argument to be an object])";
-    }
-    if (args[1].kind() != llvm::json::Value::Kind::String) {
-        return R"([lookup helper requires second argument to be a string])";
-    }
-    llvm::json::Object const& obj = *args[0].getAsObject();
-    llvm::StringRef key = args[1].getAsString().value();
-    llvm::json::Value const* v = findNested(obj, key);
-    if (v != nullptr) {
-        return *v;
+    if (args[1].kind() == llvm::json::Value::Kind::String) {
+        // Second argument is a string, so we're looking up a property
+        llvm::StringRef key = args[1].getAsString().value();
+        llvm::json::Value const* v = lookupProperty(args[0], key);
+        if (v != nullptr) {
+            return *v;
+        }
+    } else if (args[1].kind() == llvm::json::Value::Kind::Number) {
+        // Second argument is a number, so we're looking up an array index
+        llvm::json::Array const* a = args[0].getAsArray();
+        if (a != nullptr) {
+            auto indexR = args[1].getAsUINT64();
+            if (indexR) {
+                std::size_t index = *indexR;
+                if (index >= 0 && index < a->size()) {
+                    return (*a)[index];
+                }
+            }
+        }
     }
     return nullptr;
 }
 
+llvm::json::Value
+log_fn(
+    llvm::json::Object const& context,
+    llvm::json::Array const& args,
+    HandlebarsCallback const& cb) {
+    llvm::json::Value level = 1;
+    auto it = cb.hashes.find("level");
+    if (it != cb.hashes.end() && it->second.kind() != llvm::json::Value::Kind::Null) {
+        level = it->second;
+    }
+    cb.log(level, args);
+    llvm::json::Value res(nullptr);
+    return res;
 }
+
+} // helpers
 
 } // mrdox
 } // clang
+

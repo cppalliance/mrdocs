@@ -44,10 +44,10 @@ People:
 == Expressions
 
 // Render complete context with "." as key
-{"myOtherContext": {"information": Interesting!} , "body": My Body , "favoriteNumber": 123 , "prefix": Hello , "comments": [{"body": body 1 , "subject": subject 1} ,{"body": body 2 , "subject": subject 2}] , "myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "isActive": true , "isInactive": true , "title": My Title , "story": {"body": After the jump , "intro": Before the jump} , "peopleobj": {"Carol": {"lastname": Smith , "firstname": Carol} , "Alice": {"lastname": Doe , "firstname": Alice} , "Bob": {"lastname": Doe , "firstname": Bob}} , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "prefix": Hello , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Doe , "firstname": Bob , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Smith , "firstname": Carol , "book": [{} ,{} ,{} ,{}]}]}}
+{"names": [Yehuda Katz ,Alan Johnson ,Charles Jolley] , "firstname": Yehuda , "myOtherContext": {"information": Interesting!} , "body": My Body , "favoriteNumber": 123 , "prefix": Hello , "comments": [{"body": body 1 , "subject": subject 1} ,{"body": body 2 , "subject": subject 2}] , "city": {"name": San Francisco , "population": 883305 , "summary": San Francisco is the <b>cultural center</b> of <b>Northern California</b> , "location": {"east": -1.224400e+02 , "north": 37.73,}} , "namesobj": {"Charles": Charles Jolley , "Yehuda": Yehuda Katz , "Alan": Alan Johnson} , "myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "isActive": true , "isInactive": true , "lookup_test": {"cities": [Darmstadt ,San Francisco] , "people": [Nils ,Yehuda]} , "lookup_test2": {"persons": [{"name": Nils , "resident-in": darmstadt} ,{"name": Yehuda , "resident-in": san-francisco}] , "cities": {"darmstadt": {"country": Germany , "name": Darmstadt} , "san-francisco": {"country": USA , "name": San Francisco}}} , "title": My Title , "story": {"body": After the jump , "intro": Before the jump} , "peopleobj": {"Carol": {"lastname": Smith , "firstname": Carol} , "Alice": {"lastname": Doe , "firstname": Alice} , "Bob": {"lastname": Doe , "firstname": Bob}} , "author": Katz , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "prefix": Hello , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Doe , "firstname": Bob , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Smith , "firstname": Carol , "book": [{} ,{} ,{} ,{}]}] , "author": {"lastname": Katz , "firstname": Yehuda}}}
 
 // Use to_string
-{"body":"My Body","comments":[{"body":"body 1","subject":"subject 1"},{"body":"body 2","subject":"subject 2"}],"favoriteNumber":123,"isActive":true,"isInactive":false,"myOtherContext":{"information":"Interesting!"},"myVariable":"lookupMyPartial","nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"book":[{},{},{},{}],"firstname":"Alice","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Bob","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"prefix":"Hello","specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"},"peopleobj":{"Alice":{"firstname":"Alice","lastname":"Doe"},"Bob":{"firstname":"Bob","lastname":"Doe"},"Carol":{"firstname":"Carol","lastname":"Smith"}},"prefix":"Hello","story":{"body":"After the jump","intro":"Before the jump"},"title":"My Title"}
+{"author":"Katz","body":"My Body","city":{"location":{"east":-122.44,"north":"37.73,"},"name":"San Francisco","population":883305,"summary":"San Francisco is the <b>cultural center</b> of <b>Northern California</b>"},"comments":[{"body":"body 1","subject":"subject 1"},{"body":"body 2","subject":"subject 2"}],"favoriteNumber":123,"firstname":"Yehuda","isActive":true,"isInactive":false,"lookup_test":{"cities":["Darmstadt","San Francisco"],"people":["Nils","Yehuda"]},"lookup_test2":{"cities":{"darmstadt":{"country":"Germany","name":"Darmstadt"},"san-francisco":{"country":"USA","name":"San Francisco"}},"persons":[{"name":"Nils","resident-in":"darmstadt"},{"name":"Yehuda","resident-in":"san-francisco"}]},"myOtherContext":{"information":"Interesting!"},"myVariable":"lookupMyPartial","names":["Yehuda Katz","Alan Johnson","Charles Jolley"],"namesobj":{"Alan":"Alan Johnson","Charles":"Charles Jolley","Yehuda":"Yehuda Katz"},"nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"author":{"firstname":"Yehuda","lastname":"Katz"},"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"book":[{},{},{},{}],"firstname":"Alice","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Bob","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"prefix":"Hello","specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"},"peopleobj":{"Alice":{"firstname":"Alice","lastname":"Doe"},"Bob":{"firstname":"Bob","lastname":"Doe"},"Carol":{"firstname":"Carol","lastname":"Smith"}},"prefix":"Hello","story":{"body":"After the jump","intro":"Before the jump"},"title":"My Title"}
 
 // Literals
 true = true
@@ -97,12 +97,21 @@ https://chat.asciidoc.org[*project chat*^,role=green]
 // Whitespace control
 <a href="foo">bar</a><a href="bar">Empty</a>
 
+
 // Inline escapes
 escaped
 true
 
 // Raw blocks
 {{escaped}}
+
+
+// Raw blocks
+{{bar}}
+
+
+// Raw block helper
+{{BAR}}
 
 
 
@@ -276,10 +285,82 @@ Site Content My Content
 
 
 
-// Raw blocks
-  {{bar}}
+== Built-in Helpers
+
+// Author
+<h1>Yehuda </h1>
 
 
-// Raw block helper
-  {{BAR}}
+// Unknown
+<div class="entry">
+<h1>Unknown Author</h1>
+
+</div>
+
+// Include zero
+<h1>Does render</h1>
+
+
+<h1>Does render</h1>
+
+
+// Custom
+author defined
+value2 undefined
+
+// unless
+<div class="entry">
+<h3 class="warning">WARNING: This entry does not have a license!</h3>
+
+</div>
+
+// each with non objects
+<ul class="people_list">
+        <li>Yehuda Katz</li>
+    <li>Alan Johnson</li>
+    <li>Charles Jolley</li>
+
+</ul>
+
+// No paragraphs
+<p class="empty">No paragraphs</p>
+
+
+// indexes and keys
+ 0: Yehuda Katz  1: Alan Johnson  2: Charles Jolley 
+ Charles: Charles Jolley  Yehuda: Yehuda Katz  Alan: Alan Johnson 
+
+// with
+Yehuda Katz
+
+
+// with block parameters
+      San Francisco: 37.73, -1.224400e+02
+
+
+
+// with inverse
+No city found
+
+
+// lookup
+
+Nils lives in Darmstadt
+Yehuda lives in San Francisco
+
+
+// lookup2
+    Nils lives in Darmstadt (Germany)
+
+    Yehuda lives in San Francisco (USA)
+
+
+
+// log (there should be no rendered output)
+
+
+
+
+
+
 

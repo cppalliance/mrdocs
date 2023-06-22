@@ -281,12 +281,101 @@ My Content
     {{/each}}
 {{/each}}
 
-// Raw blocks
-{{{{noop}}}}
-  {{bar}}
-{{{{/noop}}}}
+== Built-in Helpers
 
-// Raw block helper
-{{{{loud}}}}
-  {{bar}}
-{{{{/loud}}}}
+// Author
+{{#if author}}
+<h1>{{firstname}} {{lastname}}</h1>
+{{/if}}
+
+// Unknown
+<div class="entry">
+{{#if author2}}
+<h1>{{firstname}} {{lastname}}</h1>
+{{else}}
+<h1>Unknown Author</h1>
+{{/if}}
+</div>
+
+// Include zero
+{{#if 0 includeZero=true}}
+<h1>Does render</h1>
+{{else}}
+<h1>Does not render</h1>
+{{/if}}
+
+{{#if 0 includeZero=false}}
+<h1>Does not render</h1>
+{{else}}
+<h1>Does render</h1>
+{{/if}}
+
+// Custom
+{{#if (isdefined author)}}author defined{{else}}author undefined{{/if}}
+{{#if (isdefined value2)}}value2 defined{{else}}value2 undefined{{/if}}
+
+// unless
+<div class="entry">
+{{#unless license}}
+<h3 class="warning">WARNING: This entry does not have a license!</h3>
+{{/unless}}
+</div>
+
+// each with non objects
+<ul class="people_list">
+    {{#each names}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+
+// No paragraphs
+{{#each paragraphs}}
+<p>{{this}}</p>
+{{else}}
+<p class="empty">No paragraphs</p>
+{{/each}}
+
+// indexes and keys
+{{#each names}} {{@index}}: {{this}} {{/each}}
+{{#each namesobj}} {{@key}}: {{this}} {{/each}}
+
+// with
+{{#with page.author}}
+{{firstname}} {{lastname}}
+{{/with}}
+
+// with block parameters
+{{#with city as | city |}}
+  {{#with city.location as | loc |}}
+    {{../city.name}}: {{loc.north}} {{loc.east}}
+  {{/with}}
+{{/with}}
+
+// with inverse
+{{#with undefinedcity}}
+{{name}} (not shown because there is no city)
+{{else}}
+No city found
+{{/with}}
+
+// lookup
+{{! this should be looking up ../cities once we have frames. ".." currently goes to the global context. }}
+{{#each lookup_test.people}}
+{{.}} lives in {{lookup ../lookup_test/cities @index}}
+{{/each}}
+
+// lookup2
+{{#each lookup_test2.persons as | person |}}
+    {{name}} lives in {{#with (lookup ../lookup_test2/cities [resident-in])~}}
+      {{name}} ({{country}})
+    {{/with}}
+{{/each}}
+
+// log (there should be no rendered output)
+{{log 'this is a simple log output'}}
+{{log 'firstname' firstname 'lastname' lastname}}
+{{log "debug logging" level="debug"}}
+{{log "info logging" level="info"}}
+{{log "info logging is the default"}}
+{{log "logging a warning" level="warn"}}
+{{log "logging an error" level="error"}}
