@@ -46,8 +46,14 @@ public:
         return inverse_(item);
     };
 
+    // AFREITAS: we need extra overloads of fn and inverse for blockParams
+    // (as |userId user|) and private data (@index, @key, ...) as frames.
+
     /// Extra key value pairs passed to the callback
     llvm::json::Object hashes;
+
+    /// Block parameters passed to the callback
+    llvm::json::Array blockParams;
 };
 
 /// A handlebars template engine

@@ -420,6 +420,11 @@ main() {
         person = {};
         person["firstname"] = firstname;
         person["lastname"] = lastname;
+        person["book"] = llvm::json::Array{
+            llvm::json::Object{},
+            llvm::json::Object{},
+            llvm::json::Object{},
+            llvm::json::Object{}};
         people.push_back(std::move(person));
     }
     page["people"] = std::move(people);
@@ -455,6 +460,14 @@ main() {
     context["comments"] = std::move(comments);
     context["isActive"] = true;
     context["isInactive"] = false;
+    llvm::json::Object peopleObj;
+    for (auto [firstname, lastname]: first_and_last_names) {
+        person = {};
+        person["firstname"] = firstname;
+        person["lastname"] = lastname;
+        peopleObj[firstname] = std::move(person);
+    }
+    context["peopleobj"] = std::move(peopleObj);
 
 
     // Register some extra test helpers

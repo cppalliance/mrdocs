@@ -258,7 +258,25 @@ My Content
 {{/list}}
 
 // Private variables
-{{! Private variables should be implemented as frames }}
+{{! Private variables should still be implemented as frames }}
 {{#list nav}}
   {{@index}}. {{url}}
 {{/list}}
+
+// Iterate objects
+{{#each peopleobj}}
+    Id: {{@index}}, Key: {{@key}}, Name: {{firstname}} {{lastname}}
+{{/each}}
+
+// Block parameters
+{{#each page.people as |user userId|}}
+    Id: {{userId}} Name: {{user.firstname}}
+{{/each}}
+
+// Recursive block parameters
+{{!-- The correct syntax should be {{userId}} once we have object frames --}}
+{{#each page.people as |user userId|}}
+    {{#each user.book as |book bookId|}}
+        User Id: {{../userId}} Book Id: {{bookId}}
+    {{/each}}
+{{/each}}

@@ -109,6 +109,9 @@ struct Handlebars::Tag {
     // Other expressions in content
     std::string_view expression;
 
+    // Block parameters
+    std::string_view blockParams;
+
     // Whether to escape the result
     bool forceNoHTMLEscape{false};
 
@@ -304,9 +307,25 @@ parseTag(std::string_view tagStr)
     }
     t.content = tagStr;
 
+    // Get block parameters
+    if (tagStr.ends_with('|')) {
+        auto blockStart = tagStr.find_last_of('|', tagStr.size() - 2);
+        if (blockStart != std::string_view::npos) {
+            std::string_view tagStr1 = tagStr;
+            tagStr1.remove_suffix(tagStr.size() - blockStart);
+            tagStr1 = trim_rspaces(tagStr1);
+            if (tagStr1.ends_with(" as")) {
+                t.blockParams = trim_spaces(tagStr.substr(blockStart));
+                t.blockParams.remove_prefix(1);
+                t.blockParams.remove_suffix(1);
+                tagStr = tagStr1.substr(0, tagStr1.size() - 3);
+            }
+        }
+    }
+
     // Find helper and expression
     std::string_view expr;
-    std::string_view tagContent = t.content;
+    std::string_view tagContent = tagStr;
     if (t.type == '#' || t.type == '>') {
         // Tag type requires a helper
         // First expression is always a helper even if there's only one expression
@@ -1160,6 +1179,15 @@ renderBlock(
     HandlebarsCallback cb;
     setupArgs(tag.expression, data, args, cb);
 
+    // Setup block params
+    std::string_view expr;
+    std::string_view bps = tag.blockParams;
+    while (findExpr(expr, bps))
+    {
+        bps = bps.substr(expr.data() + expr.size() - bps.data());
+        cb.blockParams.push_back(llvm::json::Value(expr));
+    }
+
     // 3rd argument) setup callbacks
     if (!tag.rawBlock) {
         cb.fn_ = [this, fnBlock, opt, &extra_partials](
@@ -1518,40 +1546,88 @@ validateArgs(
     return {};
 }
 
+std::string
+validateArgs(
+    std::string_view helper,
+    std::initializer_list<std::initializer_list<llvm::json::Value::Kind>> il,
+    llvm::json::Array const& args) {
+    if (args.size() != il.size()) {
+        return fmt::format(R"(["{}" helper requires {} arguments: {} arguments provided])", helper, il.size(), args.size());
+    }
+    for (size_t i = 0; i < args.size(); ++i) {
+        auto allowed = il.begin()[i];
+        bool const any_valid = stdr::any_of(allowed, [&](llvm::json::Value::Kind a) {
+            return args[i].kind() == a;
+        });
+        if (!any_valid) {
+            std::string allowed_str(kindToString(allowed.begin()[0]));
+            for (auto a : stdv::drop(allowed, 1)) {
+                allowed_str += ", or ";
+                allowed_str += kindToString(a);
+            }
+            return fmt::format(R"(["{}" helper requires argument {} to be of type {}: {} provided])", helper, i, allowed_str, kindToString(args[i].kind()));
+        }
+    }
+    return {};
+}
+
 llvm::json::Value
 each_fn(
     llvm::json::Object const& context,
     llvm::json::Array const& args,
     HandlebarsCallback const& cb) {
     // Built-in helper to change the context for each object in args
-    std::string err = validateArgs("each", {llvm::json::Value::Kind::Array}, args);
+    std::string err = validateArgs("each", {{llvm::json::Value::Kind::Array, llvm::json::Value::Kind::Object}}, args);
     if (!err.empty()) {
         return err;
     }
+    std::size_t index = 0;
+    std::string out;
     llvm::json::Value const& itemsV = args[0];
-    if (itemsV.kind() != llvm::json::Value::Kind::Array) {
-        return fmt::format(R"(["each" helper requires argument 0 to be of type array])", kindToString(itemsV.kind()));
-    }
-    llvm::json::Array const& items = *args[0].getAsArray();
-    if (!stdr::all_of(stdv::transform(items, &llvm::json::Value::kind), [](llvm::json::Value::Kind k) { return k == llvm::json::Value::Kind::Object; })) {
-        return fmt::format(R"(["each" helper requires all items to be objects])");
-    }
-    if (!items.empty()) {
-        std::string out;
-        std::size_t i = 0;
+    if (itemsV.kind() == llvm::json::Value::Kind::Array) {
+        llvm::json::Array const& items = *args[0].getAsArray();
         for (auto const& item : items) {
             llvm::json::Object frame = *item.getAsObject();
+            // Pass as frame
             frame.try_emplace("..", llvm::json::Object(context));
-            frame.try_emplace("@key", i);
-            frame.try_emplace("@first", i == 0);
-            frame.try_emplace("@last", i == items.size() - 1);
-            frame.try_emplace("@index", i);
-            ++i;
+            // Pass as private data object
+            frame.try_emplace("@key", index);
+            frame.try_emplace("@first", index == 0);
+            frame.try_emplace("@last", index == items.size() - 1);
+            frame.try_emplace("@index", index);
+            // Pass a blockParams array
+            if (cb.blockParams.size() > 0) {
+                frame.try_emplace(cb.blockParams[0].getAsString().value(), item);
+                if (cb.blockParams.size() > 1) {
+                    frame.try_emplace(cb.blockParams[1].getAsString().value(), index);
+                }
+            }
+            ++index;
             out += cb.fn(frame);
         }
-        return out;
+    } else if (itemsV.kind() == llvm::json::Value::Kind::Object) {
+        llvm::json::Object const& items = *args[0].getAsObject();
+        for (auto const& item : items) {
+            llvm::json::Object frame = *item.getSecond().getAsObject();
+            frame.try_emplace("..", llvm::json::Object(context));
+            frame.try_emplace("@key", item.getFirst());
+            frame.try_emplace("@first", index == 0);
+            frame.try_emplace("@last", index == items.size() - 1);
+            frame.try_emplace("@index", index);
+            if (cb.blockParams.size() > 0) {
+                frame.try_emplace(cb.blockParams[0].getAsString().value(), item.getSecond());
+                if (cb.blockParams.size() > 1) {
+                    frame.try_emplace(cb.blockParams[1].getAsString().value(), index);
+                }
+            }
+            ++index;
+            out += cb.fn(frame);
+        }
     }
-    return cb.inverse(context);
+    if (index == 0) {
+        out += cb.inverse(context);
+    }
+    return out;
 }
 
 llvm::json::Value
