@@ -369,7 +369,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
         }
     }
     if (unchanged <= context_size) {
-        for (i = diffLines.size() - context_size; i < diffLines.size(); ++i) {
+        for (i = std::max(diffLines.size() - context_size, i); i < diffLines.size(); ++i) {
             result.diff += fmt::format("{}\n", diffLines[i].line);
         }
     } else {
@@ -487,7 +487,7 @@ main() {
     context["peopleobj"] = std::move(peopleObj);
     context["author"] = true;
     context["firstname"] = "Yehuda";
-    context["author"] = "Katz";
+    context["lastname"] = "Katz";
     llvm::json::Array names;
     names.push_back("Yehuda Katz");
     names.push_back("Alan Johnson");
@@ -538,6 +538,8 @@ main() {
     helpers::registerBuiltinHelpers(hbs);
     helpers::registerAntoraHelpers(hbs);
     hbs.registerHelper("progress", progress_fn);
+    hbs.registerHelper("noop", helpers::noop_fn);
+    hbs.registerHelper("raw", helpers::noop_fn);
     hbs.registerHelper("link", link_fn);
     hbs.registerHelper("loud", loud_fn);
     hbs.registerHelper("to_string", to_string_fn);
@@ -545,6 +547,37 @@ main() {
     hbs.registerHelper("list", list_fn);
     hbs.registerHelper("isdefined", [](llvm::json::Array const& args) -> llvm::json::Value {
         return args[0].kind() != llvm::json::Value::Kind::Null;
+    });
+    hbs.registerHelper("helperMissing", [](
+        llvm::json::Array const& args,
+        HandlebarsCallback const& cb) -> llvm::json::Value {
+        std::string out;
+        llvm::raw_string_ostream os(out);
+        os << "Missing: ";
+        os << cb.name;
+        os << "(";
+        bool first = true;
+        for (auto const& arg: args) {
+            if (!first) {
+                os << ", ";
+            }
+            first = false;
+            os << arg;
+        }
+        os << ")";
+        return out;
+    });
+    hbs.registerHelper("blockHelperMissing", [](
+        llvm::json::Object const& context,
+        llvm::json::Array const& args,
+        HandlebarsCallback const& cb) -> llvm::json::Value {
+        std::string out;
+        llvm::raw_string_ostream os(out);
+        os << "Helper '";
+        os << cb.name;
+        os << "' not found. Printing block: ";
+        os << cb.fn(context);
+        return out;
     });
 
 

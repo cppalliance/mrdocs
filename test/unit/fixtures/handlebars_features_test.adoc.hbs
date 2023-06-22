@@ -379,3 +379,17 @@ No city found
 {{log "info logging is the default"}}
 {{log "logging a warning" level="warn"}}
 {{log "logging an error" level="error"}}
+
+== Hooks
+
+// Helper missing
+{{foo}}
+{{foo true}}
+{{foo 2 true}}
+{{#foo true}}{{/foo}}
+{{#foo}}block content{{/foo}}
+
+// Block helper missing
+{{#person}}
+    {{firstname}} {{lastname}}
+{{/person}}

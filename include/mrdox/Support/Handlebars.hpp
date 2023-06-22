@@ -145,6 +145,9 @@ public:
 
     /// Block parameters passed to the callback
     llvm::json::Array blockParams;
+
+    /// Name of the helper being called
+    std::string_view name;
 };
 
 /// A handlebars template engine
@@ -507,6 +510,9 @@ private:
     evalExpr(
         llvm::json::Object const &data,
         std::string_view expression) const;
+
+    helper_type const&
+    getHelper(std::string_view name, bool isBlock) const;
 };
 
 /// Determine if a JSON value is truthy
@@ -667,6 +673,13 @@ llvm::json::Value
 log_fn(
     llvm::json::Object const& context,
     llvm::json::Array const& conditional,
+    HandlebarsCallback const& cb);
+
+/// No operation helper
+llvm::json::Value
+noop_fn(
+    llvm::json::Object const& context,
+    llvm::json::Array const& /* args */,
     HandlebarsCallback const& cb);
 
 } // helpers

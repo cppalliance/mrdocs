@@ -44,20 +44,20 @@ People:
 == Expressions
 
 // Render complete context with "." as key
-{"names": [Yehuda Katz ,Alan Johnson ,Charles Jolley] , "firstname": Yehuda , "myOtherContext": {"information": Interesting!} , "body": My Body , "favoriteNumber": 123 , "prefix": Hello , "comments": [{"body": body 1 , "subject": subject 1} ,{"body": body 2 , "subject": subject 2}] , "city": {"name": San Francisco , "population": 883305 , "summary": San Francisco is the <b>cultural center</b> of <b>Northern California</b> , "location": {"east": -1.224400e+02 , "north": 37.73,}} , "namesobj": {"Charles": Charles Jolley , "Yehuda": Yehuda Katz , "Alan": Alan Johnson} , "myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "isActive": true , "isInactive": true , "lookup_test": {"cities": [Darmstadt ,San Francisco] , "people": [Nils ,Yehuda]} , "lookup_test2": {"persons": [{"name": Nils , "resident-in": darmstadt} ,{"name": Yehuda , "resident-in": san-francisco}] , "cities": {"darmstadt": {"country": Germany , "name": Darmstadt} , "san-francisco": {"country": USA , "name": San Francisco}}} , "title": My Title , "story": {"body": After the jump , "intro": Before the jump} , "peopleobj": {"Carol": {"lastname": Smith , "firstname": Carol} , "Alice": {"lastname": Doe , "firstname": Alice} , "Bob": {"lastname": Doe , "firstname": Bob}} , "author": Katz , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "prefix": Hello , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Doe , "firstname": Bob , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Smith , "firstname": Carol , "book": [{} ,{} ,{} ,{}]}] , "author": {"lastname": Katz , "firstname": Yehuda}}}
+{"lastname": Katz , "names": [Yehuda Katz ,Alan Johnson ,Charles Jolley] , "firstname": Yehuda , "myOtherContext": {"information": Interesting!} , "body": My Body , "favoriteNumber": 123 , "prefix": Hello , "comments": [{"body": body 1 , "subject": subject 1} ,{"body": body 2 , "subject": subject 2}] , "city": {"name": San Francisco , "population": 883305 , "summary": San Francisco is the <b>cultural center</b> of <b>Northern California</b> , "location": {"east": -1.224400e+02 , "north": 37.73,}} , "namesobj": {"Charles": Charles Jolley , "Yehuda": Yehuda Katz , "Alan": Alan Johnson} , "myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "isActive": true , "isInactive": true , "lookup_test": {"cities": [Darmstadt ,San Francisco] , "people": [Nils ,Yehuda]} , "lookup_test2": {"persons": [{"name": Nils , "resident-in": darmstadt} ,{"name": Yehuda , "resident-in": san-francisco}] , "cities": {"darmstadt": {"country": Germany , "name": Darmstadt} , "san-francisco": {"country": USA , "name": San Francisco}}} , "title": My Title , "story": {"body": After the jump , "intro": Before the jump} , "peopleobj": {"Carol": {"lastname": Smith , "firstname": Carol} , "Alice": {"lastname": Doe , "firstname": Alice} , "Bob": {"lastname": Doe , "firstname": Bob}} , "author": true , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "prefix": Hello , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Doe , "firstname": Bob , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Smith , "firstname": Carol , "book": [{} ,{} ,{} ,{}]}] , "author": {"lastname": Katz , "firstname": Yehuda}}}
 
 // Use to_string
-{"author":"Katz","body":"My Body","city":{"location":{"east":-122.44,"north":"37.73,"},"name":"San Francisco","population":883305,"summary":"San Francisco is the <b>cultural center</b> of <b>Northern California</b>"},"comments":[{"body":"body 1","subject":"subject 1"},{"body":"body 2","subject":"subject 2"}],"favoriteNumber":123,"firstname":"Yehuda","isActive":true,"isInactive":false,"lookup_test":{"cities":["Darmstadt","San Francisco"],"people":["Nils","Yehuda"]},"lookup_test2":{"cities":{"darmstadt":{"country":"Germany","name":"Darmstadt"},"san-francisco":{"country":"USA","name":"San Francisco"}},"persons":[{"name":"Nils","resident-in":"darmstadt"},{"name":"Yehuda","resident-in":"san-francisco"}]},"myOtherContext":{"information":"Interesting!"},"myVariable":"lookupMyPartial","names":["Yehuda Katz","Alan Johnson","Charles Jolley"],"namesobj":{"Alan":"Alan Johnson","Charles":"Charles Jolley","Yehuda":"Yehuda Katz"},"nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"author":{"firstname":"Yehuda","lastname":"Katz"},"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"book":[{},{},{},{}],"firstname":"Alice","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Bob","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"prefix":"Hello","specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"},"peopleobj":{"Alice":{"firstname":"Alice","lastname":"Doe"},"Bob":{"firstname":"Bob","lastname":"Doe"},"Carol":{"firstname":"Carol","lastname":"Smith"}},"prefix":"Hello","story":{"body":"After the jump","intro":"Before the jump"},"title":"My Title"}
+{"author":true,"body":"My Body","city":{"location":{"east":-122.44,"north":"37.73,"},"name":"San Francisco","population":883305,"summary":"San Francisco is the <b>cultural center</b> of <b>Northern California</b>"},"comments":[{"body":"body 1","subject":"subject 1"},{"body":"body 2","subject":"subject 2"}],"favoriteNumber":123,"firstname":"Yehuda","isActive":true,"isInactive":false,"lastname":"Katz","lookup_test":{"cities":["Darmstadt","San Francisco"],"people":["Nils","Yehuda"]},"lookup_test2":{"cities":{"darmstadt":{"country":"Germany","name":"Darmstadt"},"san-francisco":{"country":"USA","name":"San Francisco"}},"persons":[{"name":"Nils","resident-in":"darmstadt"},{"name":"Yehuda","resident-in":"san-francisco"}]},"myOtherContext":{"information":"Interesting!"},"myVariable":"lookupMyPartial","names":["Yehuda Katz","Alan Johnson","Charles Jolley"],"namesobj":{"Alan":"Alan Johnson","Charles":"Charles Jolley","Yehuda":"Yehuda Katz"},"nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"author":{"firstname":"Yehuda","lastname":"Katz"},"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"book":[{},{},{},{}],"firstname":"Alice","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Bob","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"prefix":"Hello","specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"},"peopleobj":{"Alice":{"firstname":"Alice","lastname":"Doe"},"Bob":{"firstname":"Bob","lastname":"Doe"},"Carol":{"firstname":"Carol","lastname":"Smith"}},"prefix":"Hello","story":{"body":"After the jump","intro":"Before the jump"},"title":"My Title"}
 
 // Literals
 true = true
 false = true
-null = 
-undefined = 
+null = Missing: null()
+undefined = Missing: undefined()
 ./[true] = true
 ./[false] = true
-./[null] = 
-./[undefined] = 
+./[null] = Missing: ./[null]()
+./[undefined] = Missing: ./[undefined]()
 'See Website' = See Website
 "See Website" = See Website
 
@@ -85,7 +85,7 @@ https://cppalliance.org/[See Website]
 ----
 
 // Undefined helper
-[undefined helper in "{{undefinedhelper page.person.lastname}}"]
+Missing: undefinedhelper("Doe")
 
 // Helpers with hashes
 https://chat.asciidoc.org[*project chat*^,role=green]
@@ -217,7 +217,7 @@ Site Content My Content
 
 // Custom list helper
 <ul><li>    <a href="foo">bar</a>
-</li><li>    <a href="bar"></a>
+</li><li>    <a href="bar">Missing: title()</a>
 </li></ul>
 
 // Conditionals
@@ -225,6 +225,7 @@ Site Content My Content
 
 
   <img src="star.gif" alt="Active">
+
 
 
   <img src="cry.gif" alt="Inactive">
@@ -240,12 +241,13 @@ Site Content My Content
 
 
 // 3
+
     HIT No User
 
 
 // Block hash arguments
 <ul class="top" id="nav-bar"><li>    <a href="foo">bar</a>
-</li><li>    <a href="bar"></a>
+</li><li>    <a href="bar">Missing: title()</a>
 </li></ul>
 
 // Private variables
@@ -288,17 +290,19 @@ Site Content My Content
 == Built-in Helpers
 
 // Author
-<h1>Yehuda </h1>
+<h1>Yehuda Katz</h1>
 
 
 // Unknown
 <div class="entry">
+
 <h1>Unknown Author</h1>
 
 </div>
 
 // Include zero
 <h1>Does render</h1>
+
 
 
 <h1>Does render</h1>
@@ -323,6 +327,7 @@ value2 undefined
 </ul>
 
 // No paragraphs
+
 <p class="empty">No paragraphs</p>
 
 
@@ -340,6 +345,7 @@ Yehuda Katz
 
 
 // with inverse
+
 No city found
 
 
@@ -364,3 +370,15 @@ Yehuda lives in San Francisco
 
 
 
+
+== Hooks
+
+// Helper missing
+Missing: foo()
+Missing: foo(true)
+Missing: foo(2, true)
+Missing: foo(true)
+Helper 'foo' not found. Printing block: block content
+
+// Block helper missing
+Helper 'person' not found. Printing block:     Yehuda Katz

@@ -107,7 +107,7 @@ struct Handlebars::Tag {
     std::string_view helper;
 
     // Other expressions in content
-    std::string_view expression;
+    std::string_view arguments;
 
     // Block parameters
     std::string_view blockParams;
@@ -167,8 +167,10 @@ bool
 findExpr(std::string_view & expr, std::string_view tagContent)
 {
     tagContent = trim_spaces(tagContent);
-    if (tagContent.empty())
+    if (tagContent.empty()) {
+        expr = tagContent;
         return false;
+    }
 
     // Look for quoted expression
     for (auto quote: {'\"', '\''})
@@ -249,7 +251,7 @@ parseTag(std::string_view tagStr)
     // Just get the content of expression is escaped
     if (t.escaped) {
         t.content = tagStr;
-        t.expression = tagStr;
+        t.arguments = tagStr;
         return t;
     }
 
@@ -276,36 +278,48 @@ parseTag(std::string_view tagStr)
         t.content = tagStr.substr(0);
         t.helper = tagStr.substr(0);
         t.content = tagStr.substr(0);
-        t.expression = tagStr.substr(0);
+        t.arguments = tagStr.substr(0);
         return t;
     }
 
     // Find tag type
-    static constexpr std::array<char, 5> tag_types({'#', '/', '>', '!'});
-    auto it = std::ranges::find_if(tag_types, [tagStr](char c) { return c == tagStr.front(); });
-    if (it != tag_types.end()) {
-        t.type = tagStr.front();
+    if (tagStr.starts_with('^')) {
+        t.type = '^';
         tagStr.remove_prefix(1);
-        if (t.type == '#') {
-            if (tagStr.starts_with('>')) {
-                // Partial block. # is a secondary tag
-                t.type = '>';
-                t.type2 = '#';
-                tagStr.remove_prefix(1);
-            } else if (tagStr.starts_with('*')) {
-                // Partial block. # is a secondary tag
-                t.type = '*';
-                t.type2 = '#';
-                tagStr.remove_prefix(1);
-            }
-        }
         tagStr = trim_spaces(tagStr);
-    } else if (t.rawBlock) {
-        t.type = '#';
+        t.content = tagStr;
+    } else if (tagStr.starts_with("else")) {
+        t.type = '^';
+        tagStr.remove_prefix(4);
+        tagStr = trim_spaces(tagStr);
+        t.content = tagStr;
     } else {
-        t.type = ' ';
+        static constexpr std::array<char, 5> tag_types({'#', '/', '>', '!'});
+        auto it = std::ranges::find_if(tag_types, [tagStr](char c) { return c == tagStr.front(); });
+        if (it != tag_types.end()) {
+            t.type = tagStr.front();
+            tagStr.remove_prefix(1);
+            if (t.type == '#') {
+                if (tagStr.starts_with('>')) {
+                    // Partial block. # is a secondary tag
+                    t.type = '>';
+                    t.type2 = '#';
+                    tagStr.remove_prefix(1);
+                } else if (tagStr.starts_with('*')) {
+                    // Partial block. # is a secondary tag
+                    t.type = '*';
+                    t.type2 = '#';
+                    tagStr.remove_prefix(1);
+                }
+            }
+            tagStr = trim_spaces(tagStr);
+        } else if (t.rawBlock) {
+            t.type = '#';
+        } else {
+            t.type = ' ';
+        }
+        t.content = tagStr;
     }
-    t.content = tagStr;
 
     // Get block parameters
     if (tagStr.ends_with('|')) {
@@ -325,32 +339,13 @@ parseTag(std::string_view tagStr)
 
     // Find helper and expression
     std::string_view expr;
-    std::string_view tagContent = tagStr;
-    if (t.type == '#' || t.type == '>') {
-        // Tag type requires a helper
-        // First expression is always a helper even if there's only one expression
-        if (findExpr(expr, tagContent)) {
-            t.helper = expr;
-            tagContent.remove_prefix(expr.data() + expr.size() - tagContent.data());
-            t.expression = trim_spaces(tagContent);
-        } else {
-            t.helper = tagContent;
-            t.expression = {};
-        }
+    if (findExpr(expr, tagStr)) {
+        t.helper = expr;
+        tagStr.remove_prefix(expr.data() + expr.size() - tagStr.data());
+        t.arguments = trim_spaces(tagStr);
     } else {
-        // Tag type doesn't require a helper
-        // First expression is always an expression even if there's only one expression
-        // If there's a second expression, the first is a helper
-        if (findExpr(expr, tagContent)) {
-            t.expression = expr;
-            t.helper = {};
-        }
-        tagContent.remove_prefix(expr.data() + expr.size() - tagContent.data());
-        if (findExpr(expr, tagContent)) {
-            // Second expression exists, so first is a helper and the rest is the arguments
-            t.helper = t.expression;
-            t.expression = {expr.data(), static_cast<std::size_t>(tagContent.data() + tagContent.size() - expr.data())};
-        }
+        t.helper = tagStr;
+        t.arguments = {};
     }
     return t;
 }
@@ -806,17 +801,13 @@ evalExpr(
         std::string_view all = expression.substr(1, expression.size() - 2);
         std::string_view helper;
         findExpr(helper, all);
-        auto it = helpers_.find(helper);
-        if (it == helpers_.end())
-        {
-            return fmt::format(R"([undefined helper "{}" from "{}"])", helper, all);
-        }
-        helper_type const& fn = it->second;
+        helper_type const& fn = getHelper(helper, false);
 
         all.remove_prefix(helper.data() + helper.size() - all.data());
         std::string_view sub;
         llvm::json::Array args;
         HandlebarsCallback cb;
+        cb.name = helper;
         setupArgs(all, data, args, cb);
         return fn(data, args, cb);
     }
@@ -829,6 +820,39 @@ evalExpr(
         }
         return nullptr;
     }
+}
+
+auto
+Handlebars::
+getHelper(std::string_view helper, bool isNoArgBlock) const -> helper_type const& {
+    auto it = helpers_.find(helper);
+    if (it != helpers_.end()) {
+        return it->second;
+    }
+    // This hook is called when a mustache or a block-statement
+    // - a simple mustache-expression is not a registered helper AND
+    // - is not a property of the current evaluation context.
+    // you can add custom handling for those situations by registering the helper helperMissing
+    // The helper receives the same arguments and options (hash, name etc) as any custom helper
+    // or block-helper. The options.name is the name of the helper being called.
+    // If no parameters are passed to the mustache, the default behavior is to do nothing
+    // and ignore the whole mustache expression or the whole block (noop_fn)
+    it = helpers_.find(!isNoArgBlock ? "helperMissing" : "blockHelperMissing");
+    if (it != helpers_.end()) {
+        return it->second;
+    }
+    if (it == helpers_.end())
+    {
+        thread_local static helper_type h = [](
+                llvm::json::Object const &context,
+                llvm::json::Array const &args,
+                HandlebarsCallback const &cb) -> llvm::json::Value {
+            return fmt::format(R"([undefined helper "{}"])", cb.name);
+        };
+        return h;
+    }
+    thread_local static helper_type noop_v = helpers::noop_fn;
+    return noop_v;
 }
 
 // Parse a block starting at templateText
@@ -886,7 +910,7 @@ parseBlock(
 
             // check inversion
             if (l == 1 && curBlock != &inverseBlock) {
-                if (curTag.content == "^" || curTag.helper == "else" || curTag.expression == "else") {
+                if (curTag.type == '^') {
                     inverseTag = curTag;
                     *curBlock = {curBlock->data(), curTag.buffer.data()};
                     if (curTag.removeLWhitespace) {
@@ -949,13 +973,6 @@ parseBlock(
     return true;
 }
 
-llvm::json::Value
-noop_fn(
-llvm::json::Object const& context,
-llvm::json::Array const& /* args */,
-HandlebarsCallback const& cb) {
-    return cb.fn(context);
-}
 
 // Render a handlebars tag
 void
@@ -993,46 +1010,42 @@ renderExpression(
     std::string_view &templateText,
     llvm::json::Object const &data,
     HandlebarsOptions const &opt) const {
-    // Expression
-    auto opt2 = opt;
-    if (tag.forceNoHTMLEscape)
-    {
-        // Unescaped tag content
-        opt2.noHTMLEscape = true;
-    }
+    if (tag.helper.empty())
+        return;
 
-    if (tag.content.empty())
-    {
-        // No helper, no expression: nothing to render
+    auto opt2 = opt;
+    opt2.noHTMLEscape = tag.forceNoHTMLEscape || opt.noHTMLEscape;
+
+    auto it = helpers_.find(tag.helper);
+    if (it != helpers_.end()) {
+        helper_type const& fn = getHelper(tag.helper, false);
+        llvm::json::Array args;
+        HandlebarsCallback cb;
+        cb.name = tag.helper;
+        setupArgs(tag.arguments, data, args, cb);
+        llvm::json::Value res = fn(data, args, cb);
+        format_to(out, res, opt2);
+        if (tag.removeRWhitespace) {
+            templateText = trim_lspaces(templateText);
+        }
         return;
     }
 
-    if (tag.helper.empty() && !tag.expression.empty()) {
-        // expression with no helper
-        llvm::json::Value v = this->evalExpr(data, tag.expression);
+    llvm::json::Value v = this->evalExpr(data, tag.helper);
+    if (v.kind() != llvm::json::Value::Kind::Null)
+    {
         format_to(out, v, opt2);
         return;
     }
 
-    // Multiple expressions, first string is a helper function
-    auto it = this->helpers_.find(tag.helper);
-    if (it == this->helpers_.end())
-    {
-        out << "[undefined helper in \"" << tag.buffer << "\"]";
-        return;
-    }
-    helper_type const& fn = it->second;
-
-    // Remaining expressions are a list of arguments to the helper function
-    // Each argument may be an argument to the function or a key-value pair
-    // for the callback hashes
+    // Let it decay to helperMissing hook
+    helper_type const& fn = getHelper(tag.helper, false);
     llvm::json::Array args;
     HandlebarsCallback cb;
-    setupArgs(tag.expression, data, args, cb);
-
+    cb.name = tag.helper;
+    setupArgs(tag.arguments, data, args, cb);
     llvm::json::Value res = fn(data, args, cb);
     format_to(out, res, opt2);
-
     if (tag.removeRWhitespace) {
         templateText = trim_lspaces(templateText);
     }
@@ -1078,11 +1091,11 @@ renderDecorator(
 
     // Evaluate expression
     std::string_view expr;
-    findExpr(expr, tag.expression);
+    findExpr(expr, tag.arguments);
     llvm::json::Value value = this->evalExpr(data, expr);
     if (value.kind() != llvm::json::Value::String)
     {
-        out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.expression, tag.buffer);
+        out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.arguments, tag.buffer);
         return;
     }
     std::string_view partial_name = *value.getAsString();
@@ -1151,7 +1164,7 @@ renderPartial(
         partial_content = it->second;
     }
 
-    if (tag.expression.empty())
+    if (tag.arguments.empty())
     {
         if (tag.type2 == '#') {
             // evaluate fnBlock to populate extra partials
@@ -1170,7 +1183,7 @@ renderPartial(
     else
     {
         // create context from specified keys
-        auto tagContent = tag.expression;
+        auto tagContent = tag.arguments;
         llvm::json::Object partialCtx;
         std::string_view expr;
         while (findExpr(expr, tagContent))
@@ -1238,7 +1251,8 @@ renderBlock(
     // array.
     llvm::json::Array args;
     HandlebarsCallback cb;
-    setupArgs(tag.expression, data, args, cb);
+    cb.name = tag.helper;
+    setupArgs(tag.arguments, data, args, cb);
 
     // Setup block params
     std::string_view expr;
@@ -1261,26 +1275,14 @@ renderBlock(
         };
         cb.inverse_ = [this, inverseTag, inverseBlock, opt, &extra_partials, blockName](
                 llvm::json::Object const &item) -> std::string {
-            // Render one element in the list with the inverseBlock template
-            // This recursively calls renderBlock with the inverted Tag to support
-            // chained blocks
+            // inverseTag.expression carries helpers and expression in else or ^ tag
+            if (inverseTag.helper.empty()) {
+                return std::string(inverseBlock);
+            }
             std::string res;
             llvm::raw_string_ostream os{res};
             std::string_view inverseText = inverseBlock;
-            // Create a temp inverse tag where the expression contains helper and next expression
-            Tag tempInverseTag = inverseTag;
-            std::string_view expr;
-            std::string_view expressionContent = tempInverseTag.expression;
-            if (findExpr(expr, expressionContent))
-            {
-                tempInverseTag.helper = expr;
-                expressionContent = expressionContent.substr(expr.data() + expr.size() - expressionContent.data());
-                tempInverseTag.expression = expressionContent;
-            } else {
-                tempInverseTag.helper = {};
-                tempInverseTag.expression = {};
-            }
-            this->renderBlock(blockName, tempInverseTag, os, inverseText, item, opt, extra_partials);
+            renderBlock(blockName, inverseTag, os, inverseText, item, opt, extra_partials);
             return res;
         };
     } else {
@@ -1295,8 +1297,7 @@ renderBlock(
     }
 
     // Call helper
-    auto helperIt = this->helpers_.find(tag.helper);
-    helper_type const& fn = helperIt != this->helpers_.end() ? helperIt->second : noop_fn;
+    helper_type const& fn = getHelper(tag.helper, args.empty());
     llvm::json::Value res = fn(context, args, cb);
     HandlebarsOptions opt2 = opt;
     opt2.noHTMLEscape = true;
@@ -1773,7 +1774,7 @@ lookup_fn(
             auto indexR = args[1].getAsUINT64();
             if (indexR) {
                 std::size_t index = *indexR;
-                if (index >= 0 && index < a->size()) {
+                if (index < a->size()) {
                     return (*a)[index];
                 }
             }
@@ -1795,6 +1796,22 @@ log_fn(
     cb.log(level, args);
     llvm::json::Value res(nullptr);
     return res;
+}
+
+llvm::json::Value
+noop_fn(
+    llvm::json::Object const& context,
+    llvm::json::Array const& args,
+    HandlebarsCallback const& cb) {
+    if (cb.isBlock()) {
+        // If the hook is not overridden, then the default implementation will
+        // mimic the behavior of Mustache and just call the block.
+        return cb.fn(context);
+    }
+    if (args.empty()) {
+        return nullptr;
+    }
+    return fmt::format(R"(Missing helper: "{}")", cb.name);
 }
 
 } // helpers
