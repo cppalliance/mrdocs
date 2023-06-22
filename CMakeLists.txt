@@ -222,6 +222,13 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 #-------------------------------------------------
 
 if (MRDOX_BUILD_TESTS)
+    # Enable warnings as errors on mrdox target for all compilers
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+        target_compile_options(mrdox PRIVATE -Werror)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_compile_options(mrdox PRIVATE /WX)
+    endif()
+
     # if we run tests, we need the addons in the right place.
     add_custom_command(
             TARGET mrdox
