@@ -275,3 +275,11 @@ Site Content My Content
         User Id: 2 Book Id: 3
 
 
+
+// Raw blocks
+  {{bar}}
+
+
+// Raw block helper
+  {{BAR}}
+

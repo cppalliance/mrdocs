@@ -508,7 +508,6 @@ lookup_fn(
     llvm::json::Array const& conditional,
     HandlebarsCallback const& cb);
 
-
 }
 
 } // mrdox

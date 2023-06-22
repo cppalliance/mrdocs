@@ -75,11 +75,6 @@ public:
 namespace {
     // Helpers from the handlebars documentation
     llvm::json::Value
-    loud_fn(std::string_view arg) {
-        return llvm::StringRef(arg).upper();
-    }
-
-    llvm::json::Value
     bold_fn(
         llvm::json::Object const& ctx,
         llvm::json::Array const& /* args */,
@@ -193,6 +188,23 @@ namespace {
             return out + "</ul>";
         }
         return cb.inverse(context);
+    }
+
+    llvm::json::Value
+    loud_fn(
+        llvm::json::Object const& ctx,
+        llvm::json::Array const& args,
+        HandlebarsCallback const& cb) {
+        // If used as a block helper
+        if (args.empty()) {
+            std::string res = cb.fn(ctx);
+            res = llvm::StringRef(res).upper();
+            return res;
+        }
+        // If used as an expression helper
+        llvm::StringRef str = args[0].getAsString().value();
+        std::string res = str.upper();
+        return res;
     }
 }
 
