@@ -443,7 +443,13 @@ format_to(
     if (value.kind() == llvm::json::Value::Kind::String) {
         escape_to(out, *value.getAsString(), opt);
     } else if (value.kind() == llvm::json::Value::Kind::Number) {
-        out << *value.getAsNumber();
+        if (value.getAsInteger()) {
+            out << *value.getAsInteger();
+        } else if (value.getAsUINT64()) {
+            out << *value.getAsUINT64();
+        } else {
+            out << *value.getAsNumber();
+        }
     } else if (value.kind() == llvm::json::Value::Kind::Boolean) {
         out << (value.getAsBoolean() ? "true" : "false");
     } else if (value.kind() == llvm::json::Value::Kind::Array) {
@@ -1156,7 +1162,7 @@ renderBlock(
 
     // 3rd argument) setup callbacks
     if (!tag.rawBlock) {
-        cb.fn = [this, fnBlock, opt, &extra_partials](
+        cb.fn_ = [this, fnBlock, opt, &extra_partials](
             llvm::json::Object const &item) -> std::string {
             // Render one element in the list with the fnBlock template
             std::string res;
@@ -1164,7 +1170,7 @@ renderBlock(
             this->render_to(os, fnBlock, item, opt, extra_partials);
             return res;
         };
-        cb.inverse = [this, inverseTag, inverseBlock, opt, &extra_partials, blockName](
+        cb.inverse_ = [this, inverseTag, inverseBlock, opt, &extra_partials, blockName](
                 llvm::json::Object const &item) -> std::string {
             // Render one element in the list with the inverseBlock template
             // This recursively calls renderBlock with the inverted Tag to support
@@ -1189,11 +1195,11 @@ renderBlock(
             return res;
         };
     } else {
-        cb.fn = [this, fnBlock, opt](llvm::json::Object const &item) -> std::string {
+        cb.fn_ = [this, fnBlock, opt](llvm::json::Object const &item) -> std::string {
             // Render one element in the list with the fnBlock template
             return std::string(fnBlock);
         };
-        cb.inverse = [this, inverseBlock, opt](llvm::json::Object const &item) -> std::string {
+        cb.inverse_ = [this, inverseBlock, opt](llvm::json::Object const &item) -> std::string {
             // Render one element in the list with the inverseBlock template
             return {};
         };
@@ -1532,9 +1538,15 @@ each_fn(
     }
     if (!items.empty()) {
         std::string out;
+        std::size_t i = 0;
         for (auto const& item : items) {
             llvm::json::Object frame = *item.getAsObject();
             frame.try_emplace("..", llvm::json::Object(context));
+            frame.try_emplace("@key", i);
+            frame.try_emplace("@first", i == 0);
+            frame.try_emplace("@last", i == items.size() - 1);
+            frame.try_emplace("@index", i);
+            ++i;
             out += cb.fn(frame);
         }
         return out;

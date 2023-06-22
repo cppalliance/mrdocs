@@ -252,3 +252,13 @@ My Content
     HIT No User
 {{/if}}
 
+// Block hash arguments
+{{#list nav id="nav-bar" class="top"}}
+    <a href="{{url}}">{{title}}</a>
+{{/list}}
+
+// Private variables
+{{! Private variables should be implemented as frames }}
+{{#list nav}}
+  {{@index}}. {{url}}
+{{/list}}

@@ -26,16 +26,25 @@ struct HandlebarsOptions {
     bool noHTMLEscape = false;
 };
 
-struct HandlebarsCallback {
+class HandlebarsCallback {
+private:
+    std::function<std::string(llvm::json::Object const&)> fn_;
+    std::function<std::string(llvm::json::Object const&)> inverse_;
+    friend class Handlebars;
+public:
     /// The callback function type to render a list item in a block section
-    std::function<
-        std::string(
-            llvm::json::Object const& /* subcontext / item */)> fn;
+    [[nodiscard]]
+    std::string
+    fn(llvm::json::Object const& item) const {
+        return fn_(item);
+    }
 
     /// The callback function type to render a list item in the else section
-    std::function<
-        std::string(
-            llvm::json::Object const& /* subcontext / item */)> inverse;
+    [[nodiscard]]
+    std::string
+    inverse(llvm::json::Object const& item) const{
+        return inverse_(item);
+    };
 
     /// Extra key value pairs passed to the callback
     llvm::json::Object hashes;

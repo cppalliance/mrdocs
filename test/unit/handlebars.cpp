@@ -167,17 +167,33 @@ namespace {
         MRDOX_ASSERT(args[0].getAsArray()->front().kind() == llvm::json::Value::Kind::Object);
         llvm::json::Array const& items = *args[0].getAsArray();
         if (!items.empty()) {
-            std::string out = "<ul>";
+            std::string out = "<ul";
+            for (auto const& [key, value] : cb.hashes) {
+                out += " ";
+                out += llvm::StringRef(key);
+                out += "=\"";
+                out += value.getAsString().value();
+                out += "\"";
+            }
+            out += ">";
+            std::size_t i = 0;
             for (auto const& item : items) {
                 llvm::json::Object frame = *item.getAsObject();
                 frame.try_emplace("..", llvm::json::Object(context));
+                frame.try_emplace("@key", i);
+                frame.try_emplace("@first", i == 0);
+                frame.try_emplace("@last", i == items.size() - 1);
+                frame.try_emplace("@index", i);
+                MRDOX_ASSERT(frame.find("@index") != frame.end());
+                MRDOX_ASSERT(frame["@index"].kind() == llvm::json::Value::Kind::Number);
+                MRDOX_ASSERT(frame["@index"].getAsUINT64().value() == i);
                 out += "<li>" + cb.fn(frame) + "</li>";
+                ++i;
             }
             return out + "</ul>";
         }
         return cb.inverse(context);
     }
-
 }
 
 struct DiffStringsResult {
