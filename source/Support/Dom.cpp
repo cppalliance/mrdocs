@@ -107,6 +107,7 @@ Value(
     case Kind::Integer:
     case Kind::Boolean:
         number_ = other.number_;
+        break;
     case Kind::Null:
         break;
     default:
@@ -134,6 +135,7 @@ Value(
     case Kind::Integer:
     case Kind::Boolean:
         number_ = other.number_;
+        break;
     case Kind::Null:
         break;
     default:

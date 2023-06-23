@@ -50,10 +50,18 @@ struct MRDOX_DECL
     }
 };
 
-/** Like std::optional<SymbolID>
+struct LocationEmptyPredicate
+{
+    constexpr bool operator()(
+        Location const& loc) const noexcept
+    {
+        return loc.Filename.empty();
+    }
+};
+
+/** Like std::optional<Location>
 */
-using OptionalLocation = Optional<Location,
-    decltype([](const Location& loc) { return loc.Filename.empty(); })>;
+using OptionalLocation = Optional<Location, LocationEmptyPredicate>;
 
 /** Stores source information for a declaration.
 */

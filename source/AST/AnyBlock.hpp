@@ -418,8 +418,8 @@ public:
     BaseBlock(
         BaseInfo& I,
         BitcodeReader& br) noexcept
-        : I_(I)
-        , br_(br)
+        : br_(br)
+        , I_(I)
     {
     }
 

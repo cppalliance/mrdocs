@@ -481,7 +481,8 @@ arr_get_impl(
     duk_context* ctx, duk_idx_t idx)
 {
     duk_require_object(ctx, idx);
-    auto found = duk_get_prop_string(ctx, idx, "ptr");
+    [[maybe_unused]] auto found =
+        duk_get_prop_string(ctx, idx, "ptr");
     MRDOX_ASSERT(found == 1);
     auto impl = reinterpret_cast<dom::Array*>(
         duk_get_pointer(ctx, -1));
@@ -506,7 +507,7 @@ arr_get_prop(duk_context* ctx)
 
     duk_push_this(ctx);
     auto arr = arr_get_impl(ctx, -1);
- 
+
     auto value = arr->get(index);
     switch(value.kind())
     {
@@ -638,7 +639,8 @@ obj_get_impl(
     duk_context* ctx, duk_idx_t idx)
 {
     duk_require_object(ctx, idx);
-    auto found = duk_get_prop_string(ctx, idx, "ptr");
+    [[maybe_unused]] auto found =
+        duk_get_prop_string(ctx, idx, "ptr");
     MRDOX_ASSERT(found == 1);
     auto impl = reinterpret_cast<dom::Object*>(
         duk_get_pointer(ctx, -1));
@@ -666,7 +668,7 @@ obj_get_prop(duk_context* ctx)
 
     duk_push_this(ctx);
     auto obj = obj_get_impl(ctx, -1);
- 
+
     auto value = obj->get(key);
     switch(value.kind())
     {

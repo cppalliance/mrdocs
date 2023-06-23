@@ -153,7 +153,6 @@ ASTVisitor::
 getSymbolIDForType(
     QualType T)
 {
-    SymbolID id = SymbolID::zero;
     QualType inner = T;
     while(true)
     {
