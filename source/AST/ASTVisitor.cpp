@@ -1181,8 +1181,7 @@ buildTypedef(
 
 bool
 ASTVisitor::
-Traverse(
-    NamespaceDecl* D)
+traverse(NamespaceDecl* D)
 {
     if(! shouldExtract(D))
         return true;
@@ -1193,13 +1192,12 @@ Traverse(
     NamespaceInfo I;
     buildNamespace(I, D);
 
-    return TraverseContext(D);
+    return traverseContext(D);
 }
 
 bool
 ASTVisitor::
-Traverse(
-    CXXRecordDecl* D,
+traverse(CXXRecordDecl* D,
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
@@ -1214,13 +1212,12 @@ Traverse(
 
     buildRecord(I, D);
 
-    return TraverseContext(D);
+    return traverseContext(D);
 }
 
 bool
 ASTVisitor::
-Traverse(
-    TypedefDecl* D,
+traverse(TypedefDecl* D,
     AccessSpecifier A)
 {
     if(! shouldExtract(D))
@@ -1238,8 +1235,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    TypeAliasDecl* D,
+traverse(TypeAliasDecl* D,
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
@@ -1259,8 +1255,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    VarDecl* D,
+traverse(VarDecl* D,
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
@@ -1279,8 +1274,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    FunctionDecl* D,
+traverse(FunctionDecl* D,
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
@@ -1300,8 +1294,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    CXXMethodDecl* D,
+traverse(CXXMethodDecl* D,
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
@@ -1320,8 +1313,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    CXXConstructorDecl* D,
+traverse(CXXConstructorDecl* D,
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
@@ -1347,8 +1339,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    CXXConversionDecl* D,
+traverse(CXXConversionDecl* D,
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
@@ -1367,8 +1358,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    CXXDeductionGuideDecl* D,
+traverse(CXXDeductionGuideDecl* D,
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
@@ -1384,8 +1374,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    CXXDestructorDecl* D,
+traverse(CXXDestructorDecl* D,
     AccessSpecifier A)
 {
     if(! shouldExtract(D))
@@ -1403,8 +1392,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    FriendDecl* D)
+traverse(FriendDecl* D)
 {
     buildFriend(D);
     return true;
@@ -1412,8 +1400,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    EnumDecl* D,
+traverse(EnumDecl* D,
     AccessSpecifier A)
 {
     if(! shouldExtract(D))
@@ -1431,8 +1418,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    FieldDecl* D,
+traverse(FieldDecl* D,
     AccessSpecifier A)
 {
     if(! shouldExtract(D))
@@ -1450,8 +1436,7 @@ Traverse(
 
 bool
 ASTVisitor::
-Traverse(
-    ClassTemplateDecl* D,
+traverse(ClassTemplateDecl* D,
     AccessSpecifier A)
 {
     CXXRecordDecl* RD = D->getTemplatedDecl();
@@ -1461,13 +1446,12 @@ Traverse(
     auto Template = std::make_unique<TemplateInfo>();
     parseTemplateParams(*Template, RD);
 
-    return Traverse(RD, A, std::move(Template));
+    return traverse(RD, A, std::move(Template));
 }
 
 bool
 ASTVisitor::
-Traverse(
-    ClassTemplateSpecializationDecl* D)
+traverse(ClassTemplateSpecializationDecl* D)
 {
     CXXRecordDecl* RD = D;
     if(! shouldExtract(RD))
@@ -1478,15 +1462,14 @@ Traverse(
     parseTemplateArgs(*Template, D);
 
     // determine the access from the primary template
-    return Traverse(RD,
+    return traverse(RD,
         D->getSpecializedTemplate()->getAccessUnsafe(),
         std::move(Template));
 }
 
 bool
 ASTVisitor::
-Traverse(
-    VarTemplateDecl* D,
+traverse(VarTemplateDecl* D,
     AccessSpecifier A)
 {
     VarDecl* VD = D->getTemplatedDecl();
@@ -1496,13 +1479,12 @@ Traverse(
     auto Template = std::make_unique<TemplateInfo>();
     parseTemplateParams(*Template, VD);
 
-    return Traverse(VD, A, std::move(Template));
+    return traverse(VD, A, std::move(Template));
 }
 
 bool
 ASTVisitor::
-Traverse(
-    VarTemplateSpecializationDecl* D)
+traverse(VarTemplateSpecializationDecl* D)
 {
     VarDecl* VD = D;
     if(! shouldExtract(VD))
@@ -1512,15 +1494,14 @@ Traverse(
     parseTemplateParams(*Template, VD);
     parseTemplateArgs(*Template, D);
 
-    return Traverse(VD,
+    return traverse(VD,
         D->getSpecializedTemplate()->getAccessUnsafe(),
         std::move(Template));
 }
 
 bool
 ASTVisitor::
-Traverse(
-    FunctionTemplateDecl* D,
+traverse(FunctionTemplateDecl* D,
     AccessSpecifier A)
 {
     FunctionDecl* FD = D->getTemplatedDecl();
@@ -1533,13 +1514,12 @@ Traverse(
     parseTemplateParams(*Template, FD);
 
     // traverse the templated declaration according to its kind
-    return TraverseDecl(FD, std::move(Template));
+    return traverseDecl(FD, std::move(Template));
 }
 
 bool
 ASTVisitor::
-Traverse(
-    ClassScopeFunctionSpecializationDecl* D)
+traverse(ClassScopeFunctionSpecializationDecl* D)
 {
     if(! shouldExtract(D))
         return true;
@@ -1561,13 +1541,12 @@ Traverse(
     // since the templated CXXMethodDecl may be a constructor
     // or conversion function, call TraverseDecl to ensure that
     // we call traverse for the dynamic type of the CXXMethodDecl
-    return TraverseDecl(MD, std::move(Template));
+    return traverseDecl(MD, std::move(Template));
 }
 
 bool
 ASTVisitor::
-Traverse(
-    TypeAliasTemplateDecl* D,
+traverse(TypeAliasTemplateDecl* D,
     AccessSpecifier A)
 {
     TypeAliasDecl* AD = D->getTemplatedDecl();
@@ -1577,13 +1556,13 @@ Traverse(
     auto Template = std::make_unique<TemplateInfo>();
     parseTemplateParams(*Template, AD);
 
-    return Traverse(AD, A, std::move(Template));
+    return traverse(AD, A, std::move(Template));
 }
 
 template<typename... Args>
 auto
 ASTVisitor::
-Traverse(Args&&...)
+traverse(Args&&...)
 {
     // no matching Traverse overload found
     MRDOX_UNREACHABLE();
@@ -1594,7 +1573,7 @@ Traverse(Args&&...)
 template<typename... Args>
 bool
 ASTVisitor::
-TraverseDecl(
+traverseDecl(
     Decl* D,
     Args&&... args)
 {
@@ -1608,124 +1587,124 @@ TraverseDecl(
     switch(D->getKind())
     {
     case Decl::Namespace:
-        Traverse(static_cast<
+        traverse(static_cast<
             NamespaceDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::CXXRecord:
-        Traverse(static_cast<
+        traverse(static_cast<
             CXXRecordDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXMethod:
-        Traverse(static_cast<
+        traverse(static_cast<
             CXXMethodDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXConstructor:
-        Traverse(static_cast<
+        traverse(static_cast<
             CXXConstructorDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXConversion:
-        Traverse(static_cast<
+        traverse(static_cast<
             CXXConversionDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXDestructor:
-        Traverse(static_cast<
+        traverse(static_cast<
             CXXDestructorDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::CXXDeductionGuide:
-        Traverse(static_cast<
+        traverse(static_cast<
             CXXDeductionGuideDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Function:
-        Traverse(static_cast<
+        traverse(static_cast<
             FunctionDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Friend:
-        Traverse(static_cast<
+        traverse(static_cast<
             FriendDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::TypeAlias:
-        Traverse(static_cast<
+        traverse(static_cast<
             TypeAliasDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Typedef:
-        Traverse(static_cast<
+        traverse(static_cast<
             TypedefDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Enum:
-        Traverse(static_cast<
+        traverse(static_cast<
             EnumDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Field:
-        Traverse(static_cast<
+        traverse(static_cast<
             FieldDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::Var:
-        Traverse(static_cast<
+        traverse(static_cast<
             VarDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::ClassTemplate:
-        Traverse(static_cast<
+        traverse(static_cast<
             ClassTemplateDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::ClassTemplatePartialSpecialization:
     case Decl::ClassTemplateSpecialization:
-        Traverse(static_cast<
+        traverse(static_cast<
             ClassTemplateSpecializationDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::VarTemplate:
-        Traverse(static_cast<
+        traverse(static_cast<
             VarTemplateDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::VarTemplatePartialSpecialization:
     case Decl::VarTemplateSpecialization:
-        Traverse(static_cast<
+        traverse(static_cast<
             VarTemplateSpecializationDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::FunctionTemplate:
-        Traverse(static_cast<
+        traverse(static_cast<
             FunctionTemplateDecl*>(D),
             access,
             std::forward<Args>(args)...);
         break;
     case Decl::ClassScopeFunctionSpecialization:
-        Traverse(static_cast<
+        traverse(static_cast<
             ClassScopeFunctionSpecializationDecl*>(D),
             std::forward<Args>(args)...);
         break;
     case Decl::TypeAliasTemplate:
-        Traverse(static_cast<
+        traverse(static_cast<
             TypeAliasTemplateDecl*>(D),
             access,
             std::forward<Args>(args)...);
@@ -1734,7 +1713,7 @@ TraverseDecl(
         // for declarations we don't explicitly handle, traverse the children
         // if it has any (e.g. LinkageSpecDecl, ExportDecl, ExternCContextDecl).
         if(auto* DC = dyn_cast<DeclContext>(D))
-            TraverseContext(DC);
+            traverseContext(DC);
         break;
     }
 
@@ -1743,12 +1722,12 @@ TraverseDecl(
 
 bool
 ASTVisitor::
-TraverseContext(
+traverseContext(
     DeclContext* D)
 {
     MRDOX_ASSERT(D);
     for(auto* C : D->decls())
-        if(! TraverseDecl(C))
+        if(! traverseDecl(C))
             return false;
     return true;
 }
@@ -1789,7 +1768,7 @@ HandleTranslationUnit(
         std::vector<Decl*>{TU});
 
     for(auto* C : TU->decls())
-        TraverseDecl(C);
+        traverseDecl(C);
 }
 
 void

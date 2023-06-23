@@ -220,50 +220,50 @@ public:
 
     // --------------------------------------------------------
 
-    bool Traverse(NamespaceDecl*);
-    bool Traverse(TypedefDecl*, AccessSpecifier);
-    bool Traverse(TypeAliasDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
-    bool Traverse(CXXRecordDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
-    bool Traverse(VarDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
-    bool Traverse(FunctionDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
-    bool Traverse(CXXMethodDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
-    bool Traverse(CXXConstructorDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
-    bool Traverse(CXXConversionDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
-    bool Traverse(CXXDeductionGuideDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(NamespaceDecl*);
+    bool traverse(TypedefDecl*, AccessSpecifier);
+    bool traverse(TypeAliasDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(CXXRecordDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(VarDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(FunctionDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(CXXMethodDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(CXXConstructorDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(CXXConversionDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(CXXDeductionGuideDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
     // destructors cannot be templates
-    bool Traverse(CXXDestructorDecl*, AccessSpecifier);
-    bool Traverse(EnumDecl*, AccessSpecifier);
-    bool Traverse(FieldDecl*, AccessSpecifier);
+    bool traverse(CXXDestructorDecl*, AccessSpecifier);
+    bool traverse(EnumDecl*, AccessSpecifier);
+    bool traverse(FieldDecl*, AccessSpecifier);
 
     // KRYSTIAN TODO: friends are a can of worms
     // we do not wish to open just yet
-    bool Traverse(FriendDecl*);
+    bool traverse(FriendDecl*);
 
-    bool Traverse(ClassTemplateDecl*, AccessSpecifier);
-    bool Traverse(ClassTemplateSpecializationDecl*);
-    bool Traverse(VarTemplateDecl*, AccessSpecifier);
-    bool Traverse(VarTemplateSpecializationDecl*);
-    bool Traverse(FunctionTemplateDecl*, AccessSpecifier);
-    bool Traverse(ClassScopeFunctionSpecializationDecl*);
-    bool Traverse(TypeAliasTemplateDecl*, AccessSpecifier);
+    bool traverse(ClassTemplateDecl*, AccessSpecifier);
+    bool traverse(ClassTemplateSpecializationDecl*);
+    bool traverse(VarTemplateDecl*, AccessSpecifier);
+    bool traverse(VarTemplateSpecializationDecl*);
+    bool traverse(FunctionTemplateDecl*, AccessSpecifier);
+    bool traverse(ClassScopeFunctionSpecializationDecl*);
+    bool traverse(TypeAliasTemplateDecl*, AccessSpecifier);
 
 #if 0
     // includes both linkage-specification forms in [dcl.link]:
     //     extern string-literal { declaration-seq(opt) }
     //     extern string-literal name-declaration
-    bool Traverse(LinkageSpecDecl*);
-    bool Traverse(ExternCContextDecl*);
-    bool Traverse(ExportDecl*);
+    bool traverse(LinkageSpecDecl*);
+    bool traverse(ExternCContextDecl*);
+    bool traverse(ExportDecl*);
 #endif
 
     // catch-all function so overload resolution does not
     // cause a hard error in the Traverse function for Decl
     template<typename... Args>
-    auto Traverse(Args&&...);
+    auto traverse(Args&&...);
 
     template<typename... Args>
-    bool TraverseDecl(Decl* D, Args&&... args);
-    bool TraverseContext(DeclContext* D);
+    bool traverseDecl(Decl* D, Args&&... args);
+    bool traverseContext(DeclContext* D);
 
     void HandleTranslationUnit(ASTContext& Context) override;
 
