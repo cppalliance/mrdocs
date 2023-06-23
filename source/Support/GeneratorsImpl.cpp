@@ -65,7 +65,7 @@ insert(
     std::unique_ptr<Generator> G)
 {
     if(find(G->id()) != nullptr)
-        return Error("generator id=\"{}\" already exists", G->id());
+        return formatError("generator id=\"{}\" already exists", G->id());
     list_.emplace_back(std::move(G));
     refresh_plist();
     return Error::success();

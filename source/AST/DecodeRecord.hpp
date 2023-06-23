@@ -40,7 +40,7 @@ decodeRecord(
 {
     v = 0;
     if (R[0] > (std::numeric_limits<IntTy>::max)())
-        return Error("integer overflow");
+        return formatError("integer overflow");
     v = static_cast<IntTy>(R[0]);
     return Error::success();
 }
@@ -107,7 +107,7 @@ decodeRecord(
     llvm::StringRef Blob)
 {
     if (R[0] != BitCodeConstants::USRHashSize)
-        return Error("USR digest size={}", R[0]);
+        return formatError("USR digest size={}", R[0]);
 
     Field = SymbolID(&R[1]);
     return Error::success();
@@ -121,7 +121,7 @@ decodeRecord(
     llvm::StringRef Blob)
 {
     if (R[0] > INT_MAX)
-        return Error("integer value {} too large", R[0]);
+        return formatError("integer value {} too large", R[0]);
     Field.emplace((int)R[0], Blob, (bool)R[1]);
     return Error::success();
 }
@@ -146,7 +146,7 @@ decodeRecord(
     case InfoKind::Specialization:
         return Error::success();
     default:
-        return Error("InfoKind is invalid");
+        return formatError("InfoKind is invalid");
     }
 }
 
@@ -158,7 +158,7 @@ decodeRecord(
     llvm::StringRef Blob)
 {
     if (R[0] > INT_MAX)
-        return Error("integer {} is too large", R[0]);
+        return formatError("integer {} is too large", R[0]);
     Field.emplace_back((int)R[0], Blob, (bool)R[1]);
     return Error::success();
 }
@@ -172,7 +172,7 @@ decodeRecord(
 {
     auto n = R[0];
     if(n != values.size())
-        return Error("wrong size={} for Bitfields[{}]", n, values.size());
+        return formatError("wrong size={} for Bitfields[{}]", n, values.size());
 
     auto itr = values.begin();
     for(std::size_t i = 0; i < values.size(); ++i)
@@ -180,7 +180,7 @@ decodeRecord(
 
         auto const v = R[i + 1];
         if(v > (std::numeric_limits<std::uint32_t>::max)())
-            return Error("{} is out of range for Bits", v);
+            return formatError("{} is out of range for Bits", v);
         **itr++ = v;
     }
     return Error::success();

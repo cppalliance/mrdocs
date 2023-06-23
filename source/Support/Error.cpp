@@ -45,17 +45,27 @@ Error(
     MRDOX_ASSERT(errors.size() > 0);
     if(errors.size() == 1)
     {
-        text_ = errors.front().message();
+        message_ = errors.front().message();
         return;
     }
 
-    text_ = fmt::format("{} errors occurred:\n", errors.size());
+    message_ = fmt::format("{} errors occurred:\n", errors.size());
     for(auto const& err : errors)
     {
-        text_.append("    ");
-        text_.append(err.message());
-        text_.push_back('\n');
+        message_.append("    ");
+        message_.append(err.message());
+        message_.push_back('\n');
     }
+}
+
+SourceLocation::
+SourceLocation(
+    std::source_location const& loc) noexcept
+    : file_(files::getSourceFilename(loc.file_name()))
+    , line_(loc.line())
+    , col_(loc.column())
+    , func_(loc.function_name())
+{
 }
 
 } // mrdox

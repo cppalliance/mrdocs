@@ -71,7 +71,7 @@ buildOne(
     }
     catch(std::exception const& ex)
     {
-        return Error("std::ofstream threw \"{}\"", ex.what());
+        return formatError("std::ofstream threw \"{}\"", ex.what());
     }
 
     try
@@ -80,7 +80,7 @@ buildOne(
     }
     catch(std::exception const& ex)
     {
-        return Error("buildOne threw \"{}\"", ex.what());
+        return formatError("buildOne threw \"{}\"", ex.what());
     }
 }
 
@@ -102,7 +102,7 @@ buildOneString(
     }
     catch(std::exception const& ex)
     {
-        return Error("buildOne threw \"{}\"", ex.what());
+        return formatError("buildOne threw \"{}\"", ex.what());
     }
 }
 

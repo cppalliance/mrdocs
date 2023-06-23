@@ -186,7 +186,7 @@ build(
         llvm::outs() << "Collected " << corpus->InfoMap.size() << " symbols.\n";
 
     if(GotFailure)
-        return Error("multiple errors occurred");
+        return formatError("multiple errors occurred");
 
     return corpus;
 }

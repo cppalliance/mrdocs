@@ -78,11 +78,11 @@ ConfigImpl(
     namespace path = llvm::sys::path;
 
     if(! files::isAbsolute(workingDir_))
-        throw Error("working path \"{}\" is not absolute", workingDir_);
+        throw formatError("working path \"{}\" is not absolute", workingDir_);
     workingDir = files::makeDirsy(files::normalizePath(workingDir_));
 
     if(auto err = files::requireDirectory(addonsDir_))
-        throw Error("addons path \"{}\" is not absolute", addonsDir_);
+        throw formatError("addons path \"{}\" is not absolute", addonsDir_);
     MRDOX_ASSERT(files::isDirsy(addonsDir_));
     addonsDir = addonsDir_;
 

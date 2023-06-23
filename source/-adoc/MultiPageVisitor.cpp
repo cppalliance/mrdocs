@@ -54,7 +54,7 @@ renderPage(
             }
             catch(std::exception const& ex)
             {
-                throw Error("std::ofstream(\"{}\") threw \"{}\"", fileName, ex.what());
+                throw formatError("std::ofstream(\"{}\") threw \"{}\"", fileName, ex.what());
             }
         });
 }

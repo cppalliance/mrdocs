@@ -38,7 +38,7 @@ DoGenerateAction()
 
     // Load configuration file
     if(toolArgs.configPath.empty())
-        return Error("the config path argument is missing");
+        return formatError("the config path argument is missing");
     auto config = loadConfigFile(
         toolArgs.configPath, toolArgs.addonsDir, extraYaml);
     if(! config)
@@ -46,9 +46,9 @@ DoGenerateAction()
 
     // Load the compilation database
     if(toolArgs.inputPaths.empty())
-        return Error("the compilation database path argument is missing");
+        return formatError("the compilation database path argument is missing");
     if(toolArgs.inputPaths.size() > 1)
-        return Error("got {} input paths where 1 was expected", toolArgs.inputPaths.size());
+        return formatError("got {} input paths where 1 was expected", toolArgs.inputPaths.size());
     auto compilationsPath = files::normalizePath(toolArgs.inputPaths.front());
     std::string errorMessage;
     auto jsonCompilations = tooling::JSONCompilationDatabase::loadFromFile(
@@ -64,7 +64,7 @@ DoGenerateAction()
 
     // normalize outputPath
     if( toolArgs.outputPath.empty())
-        return Error("output path is empty");
+        return formatError("output path is empty");
     toolArgs.outputPath = files::normalizePath(
         files::makeAbsolute(toolArgs.outputPath,
             (*config)->workingDir));
@@ -80,12 +80,12 @@ DoGenerateAction()
     // Create the generator
     auto generator = generators.find(toolArgs.formatType.getValue());
     if(! generator)
-        return Error("the Generator \"{}\" was not found", toolArgs.formatType.getValue());
+        return formatError("the Generator \"{}\" was not found", toolArgs.formatType.getValue());
 
     // Run the tool, this can take a while
     auto corpus = CorpusImpl::build(*ex, *config);
     if(! corpus)
-        return Error("CorpusImpl::build returned \"{}\"", corpus.getError());
+        return formatError("CorpusImpl::build returned \"{}\"", corpus.getError());
 
     // Run the generator.
     if(config.get()->verboseOutput)
