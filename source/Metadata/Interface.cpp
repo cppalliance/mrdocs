@@ -85,16 +85,16 @@ private:
         for(auto const& B : From.Bases)
         {
             auto actualAccess = effectiveAccess(access, B.Access);
+            if( ! includePrivate_ &&
+                actualAccess == AccessKind::Private)
+                continue;
             // VFALCO temporary hack to avoid looking up IDs
             //        which for metadata that is not emitted.
-            if(! corpus_.find(B.Type.id))
+            if(B.Type.id == SymbolID::zero ||
+                ! corpus_.find(B.Type.id))
                 continue;
-            if( includePrivate_ ||
-                actualAccess != AccessKind::Private)
-            {
-                append(actualAccess,
-                    corpus_.get<RecordInfo>(B.Type.id));
-            }
+            append(actualAccess,
+                corpus_.get<RecordInfo>(B.Type.id));
         }
 
         for(auto const& id : From.Members)
