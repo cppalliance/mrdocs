@@ -47,7 +47,7 @@ forEachFile(
     fs::directory_iterator const end{};
     fs::directory_iterator it(dirPath, ec, false);
     if(ec)
-        return Error("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec);
+        return formatError("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec);
     while(it != end)
     {
         if(it->type() == fs::file_type::directory_file)
@@ -69,7 +69,7 @@ forEachFile(
         }
         it.increment(ec);
         if(ec)
-            return Error("directory_iterator::increment returned \"{}\"", ec);
+            return formatError("directory_iterator::increment returned \"{}\"", ec);
     }
     return Error::success();
 }
@@ -96,7 +96,7 @@ requireAbsolute(
     std::string_view pathName)
 {
     if(! isAbsolute(pathName))
-        return Error("\"{}\" is not an absolute path");
+        return formatError("\"{}\" is not an absolute path");
     return Error::success();
 }
 
@@ -151,13 +151,13 @@ getFileText(
 {
     std::ifstream file((std::string(pathName)));
     if(! file.good())
-        return Error("std::ifstream(\"{}\" returned \"{}\"",
+        return formatError("std::ifstream(\"{}\" returned \"{}\"",
             pathName, std::error_code(errno, std::generic_category()));
     std::istreambuf_iterator<char> it(file);
     std::istreambuf_iterator<char> const end;
     std::string text(it, end);
     if(! file.good())
-        return Error("getFileText(\"{}\") returned \"{}\"",
+        return formatError("getFileText(\"{}\") returned \"{}\"",
             pathName, std::error_code(errno, std::generic_category()));
     return text;
 }
@@ -189,7 +189,7 @@ makeAbsolute(
 
     SmallPathString result(pathName);
     if(auto ec = fs::make_absolute(result))
-        return Error("fs::make_absolute(\"{}\") returned \"{}\"", pathName, ec);
+        return formatError("fs::make_absolute(\"{}\") returned \"{}\"", pathName, ec);
     return static_cast<std::string>(result);
 }
 
@@ -276,9 +276,9 @@ requireDirectory(
 
     fs::file_status fileStatus;
     if(auto ec = fs::status(pathName, fileStatus))
-        return Error("fs::status(\"{}\") returned \"{}\"", pathName, ec);
+        return formatError("fs::status(\"{}\") returned \"{}\"", pathName, ec);
     if(fileStatus.type() != fs::file_type::directory_file)
-        return Error("\"{}\" is not a directory", pathName);
+        return formatError("\"{}\" is not a directory", pathName);
     return Error::success();
 }
 

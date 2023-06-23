@@ -35,7 +35,7 @@ getInfos()
         if (!MaybeCode)
             return toError(MaybeCode.takeError());
         if (MaybeCode.get() != llvm::bitc::ENTER_SUBBLOCK)
-            return Error("no blocks in input");
+            return formatError("no blocks in input");
         llvm::Expected<unsigned> MaybeID = Stream.ReadSubBlockID();
         if (!MaybeID)
             return toError(MaybeID.takeError());
@@ -126,7 +126,7 @@ getInfos()
         case BI_JAVADOC_BLOCK_ID:
         case BI_JAVADOC_LIST_BLOCK_ID:
         case BI_JAVADOC_NODE_BLOCK_ID:
-            return Error("invalid top level block");
+            return formatError("invalid top level block");
         case llvm::bitc::BLOCKINFO_BLOCK_ID:
             if (auto err = readBlockInfoBlock())
                 return std::move(err);
@@ -150,7 +150,7 @@ BitcodeReader::
 validateStream()
 {
     if (Stream.AtEndOfStream())
-        return Error("premature end of stream");
+        return formatError("premature end of stream");
 
     // Sniff for the signature.
     for (int i = 0; i != 4; ++i)
@@ -159,7 +159,7 @@ validateStream()
         if (!MaybeRead)
             return toError(MaybeRead.takeError());
         else if (MaybeRead.get() != BitCodeConstants::Signature[i])
-            return Error("invalid bitcode signature");
+            return formatError("invalid bitcode signature");
     }
     return Error::success();
 }
@@ -174,7 +174,7 @@ readBlockInfoBlock()
         return toError(MaybeBlockInfo.takeError());
     BlockInfo = MaybeBlockInfo.get();
     if (!BlockInfo)
-        return Error("unable to parse BlockInfoBlock");
+        return formatError("unable to parse BlockInfoBlock");
     Stream.setBlockInfo(&*BlockInfo);
     return Error::success();
 }
@@ -210,7 +210,7 @@ readBlock(
         switch (Res)
         {
         case Cursor::BadBlock:
-            return Error("bad block found");
+            return formatError("bad block found");
         case Cursor::BlockEnd:
             blockStack_.pop_back();
             return Error::success();

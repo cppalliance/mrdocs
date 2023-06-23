@@ -162,13 +162,13 @@ writeFile(
     if(ec)
     {
         results_.numberOfErrors++;
-        return Error("raw_fd_ostream(\"{}\") returned \"{}\"", filePath, ec);
+        return formatError("raw_fd_ostream(\"{}\") returned \"{}\"", filePath, ec);
     }
     os << contents;
     if(os.error())
     {
         results_.numberOfErrors++;
-        return Error("raw_fd_ostream::write returned \"{}\"", os.error());
+        return formatError("raw_fd_ostream::write returned \"{}\"", os.error());
     }
     results_.numberofFilesWritten++;
     return Error::success();
@@ -265,7 +265,7 @@ handleFile(
                     if (ec)
                     {
                         results_.numberOfErrors++;
-                        return Error("raw_fd_ostream(\"{}\") returned \"{}\"", bad, ec);
+                        return formatError("raw_fd_ostream(\"{}\") returned \"{}\"", bad, ec);
                     }
                     os << generatedXml;
                 }
@@ -316,7 +316,7 @@ handleDir(
     std::error_code ec;
     fs::directory_iterator iter(dirPath, ec, false);
     if(ec)
-        return Error("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec);
+        return formatError("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec);
     fs::directory_iterator const end{};
 
     auto const config = makeConfig(dirPath);
@@ -344,7 +344,7 @@ handleDir(
         }
         iter.increment(ec);
         if(ec)
-            return Error("directory_iterator::increment returned \"{}\"", ec);
+            return formatError("directory_iterator::increment returned \"{}\"", ec);
     }
     return Error::success();
 }
@@ -362,14 +362,14 @@ checkPath(
     if(auto ec = fs::status(inputPath, fileStatus))
     {
         results_.numberOfErrors++;
-        return Error("fs::status(\"{}\") returned \"{}\"", inputPath, ec);
+        return formatError("fs::status(\"{}\") returned \"{}\"", inputPath, ec);
     }
 
     if(fileStatus.type() == fs::file_type::regular_file)
     {
         auto const ext = path::extension(inputPath);
         if(! ext.equals_insensitive(".cpp"))
-            return Error("\"{}\" is not a .cpp file");
+            return formatError("\"{}\" is not a .cpp file");
 
         // Calculate the workingDir
         SmallString workingDir(inputPath);
@@ -392,7 +392,7 @@ checkPath(
         return err;
     }
 
-    return Error("fs::file_type was not directory_file");
+    return formatError("fs::file_type was not directory_file");
 }
 
 int

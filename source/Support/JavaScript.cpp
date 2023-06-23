@@ -118,7 +118,7 @@ static std::string getStringProp(
     Access A(scope);
     MRDOX_ASSERT(duk_get_type(A, -1) == DUK_TYPE_OBJECT);
     if(! duk_get_prop_lstring(A, -1, name.data(), name.size()))
-        throw Error("missing property {}", name);
+        throw formatError("missing property {}", name);
     char const* s;
     if(duk_get_type(A, -1) != DUK_TYPE_STRING)
         duk_to_string(A, -1);
@@ -133,10 +133,11 @@ static std::string getStringProp(
 static Error popError(Scope& scope)
 {
     Access A(scope);
-    Error err("{} (\"{}\" line {})",
-        getStringProp("message", scope),
-        getStringProp("fileName", scope),
-        getStringProp("lineNumber", scope));
+    auto err = formatError(
+        "{} (\"{}\" line {})",
+            getStringProp("message", scope),
+            getStringProp("fileName", scope),
+            getStringProp("lineNumber", scope));
     duk_pop(A);
     return err;
 }
@@ -426,7 +427,7 @@ tryGetGlobal(
         A, name.data(), name.size()))
     {
         duk_pop(A); // undefined
-        return Error("global property {} not found", name);
+        return formatError("global property {} not found", name);
     }
     return A.construct<Object>(duk_get_top_index(A), *this);
 }
@@ -590,7 +591,7 @@ String(
     Value value)
 {
     if(! value.isString())
-        throw Error("not a string");
+        throw formatError("not a string");
     static_cast<Value&>(*this) = std::move(value);
 }
 
@@ -600,7 +601,7 @@ operator=(
     Value value)
 {
     if(! value.isString())
-        throw Error("not a string");
+        throw formatError("not a string");
     static_cast<Value&>(*this) = std::move(value);
     return *this;
 }
@@ -734,7 +735,7 @@ Array(
     Value value)
 {
     if(! value.isArray())
-        throw Error("not an Array");
+        throw formatError("not an Array");
     static_cast<Value&>(*this) = std::move(value);
 }
 
@@ -744,7 +745,7 @@ operator=(
     Value value)
 {
     if(! value.isArray())
-        throw Error("not an Array");
+        throw formatError("not an Array");
     static_cast<Value&>(*this) = std::move(value);
     return *this;
 }
@@ -911,7 +912,7 @@ Object(
     Value value)
 {
     if(! value.isObject())
-        throw Error("not an Object");
+        throw formatError("not an Object");
     static_cast<Value&>(*this) = std::move(value);
 }
 
@@ -921,7 +922,7 @@ operator=(
     Value value)
 {
     if(! value.isObject())
-        throw Error("not an Object");
+        throw formatError("not an Object");
     static_cast<Value&>(*this) = std::move(value);
     return *this;
 }
@@ -958,7 +959,7 @@ callImpl(
     Access A(*scope_);
     if(! duk_get_prop_lstring(A,
             idx_, name.data(), name.size()))
-        return Error("method {} not found", name);
+        return formatError("method {} not found", name);
     duk_dup(A, idx_);
     for(std::size_t i = 0; i < size; ++i)
         A.push(data[i]);

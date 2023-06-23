@@ -149,7 +149,7 @@ build()
         writeIndex();
 
     if(! corpus_.traverse(*this, SymbolID::zero))
-        return Error("visitation aborted");
+        return formatError("visitation aborted");
 
     if(options_.prolog)
         os_ << "</mrdox>\n";

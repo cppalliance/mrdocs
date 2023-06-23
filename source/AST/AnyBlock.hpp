@@ -34,14 +34,14 @@ struct BitcodeReader::AnyBlock
         unsigned ID,
         llvm::StringRef Blob)
     {
-        return Error("unexpected record with ID={}", ID);
+        return formatError("unexpected record with ID={}", ID);
     }
 
     virtual
     Error
     readSubBlock(unsigned ID)
     {
-        return Error("unexpected sub-block with ID={}", ID);
+        return formatError("unexpected sub-block with ID={}", ID);
     }
 };
 
@@ -63,7 +63,7 @@ public:
             if(auto err = decodeRecord(R, V, Blob))
                 return err;
             if(V != BitcodeVersion)
-                return Error("wrong ID for Version");
+                return formatError("wrong ID for Version");
             return Error::success();
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
@@ -106,7 +106,7 @@ public:
                 return err;
             auto node = nodes.back().get();
             if(node->kind != doc::Kind::admonition)
-                return Error("admonish on wrong kind");
+                return formatError("admonish on wrong kind");
             static_cast<doc::Admonition*>(
                 node)->style = admonish;
             return Error::success();
@@ -120,7 +120,7 @@ public:
                 return err;
             auto node = nodes.back().get();
             if(node->kind != doc::Kind::param)
-                return Error("direction on wrong kind");
+                return formatError("direction on wrong kind");
             auto param = static_cast<doc::Param*>(node);
             param->direction = direction;
             return Error::success();
@@ -135,7 +135,7 @@ public:
                 static_cast<doc::Link*>(node)->href = Blob.str();
                 return Error::success();
             default:
-                return Error("href on wrong kind");
+                return formatError("href on wrong kind");
             }
         }
 
@@ -154,7 +154,7 @@ public:
                     }
                     else
                     {
-                        return Error("unknown doc::Kind");
+                        return formatError("unknown doc::Kind");
                     }
                 });
         }
@@ -182,7 +182,7 @@ public:
                     node)->name = Blob.str();
                 return Error::success();
             default:
-                return Error("string on wrong kind");
+                return formatError("string on wrong kind");
             }
         }
 
@@ -194,7 +194,7 @@ public:
                 return err;
             auto node = nodes.back().get();
             if(node->kind != doc::Kind::styled)
-                return Error("style on wrong kind");
+                return formatError("style on wrong kind");
             static_cast<doc::Styled*>(
                 node)->style = style;
             return Error::success();
@@ -217,7 +217,7 @@ public:
             auto node = nodes.back().get();
             if(node->kind == doc::Kind::text ||
                 node->kind == doc::Kind::styled)
-                return Error("text node cannot have list");
+                return formatError("text node cannot have list");
 
             JavadocNodesBlock B(br_);
             if(auto err = br_.readBlock(B, ID))
@@ -537,7 +537,7 @@ public:
                 I_.emplace<TemplateTParam>();
                 break;
             default:
-                return Error("invalid template parameter kind");
+                return formatError("invalid template parameter kind");
             }
             return Error::success();
         }
@@ -552,7 +552,7 @@ public:
                 return decodeRecord(R,
                     I_.get<TemplateTParam>().Default.emplace(), Blob);
             default:
-                return Error("invalid template parameter kind");
+                return formatError("invalid template parameter kind");
             }
         }
         default:
@@ -569,7 +569,7 @@ public:
         case BI_TEMPLATE_PARAM_BLOCK_ID:
         {
             if(I_.Kind != TParamKind::Template)
-                return Error("only TemplateTParam may have template parameters");
+                return formatError("only TemplateTParam may have template parameters");
             TemplateParamBlock P(I_.get<TemplateTParam>().Params.emplace_back(), br_);
             return br_.readBlock(P, ID);
         }
@@ -585,7 +585,7 @@ public:
                 t = &I_.get<NonTypeTParam>().Type;
                 break;
             default:
-                return Error("invalid TypeInfo block in TParam");
+                return formatError("invalid TypeInfo block in TParam");
             }
             TypeBlock B(*t, br_);
             return br_.readBlock(B, ID);
