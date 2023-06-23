@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SUPPORT_EXECUTORGROUP_HPP
-#define MRDOX_SUPPORT_EXECUTORGROUP_HPP
+#ifndef MRDOX_API_SUPPORT_EXECUTORGROUP_HPP
+#define MRDOX_API_SUPPORT_EXECUTORGROUP_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/any_callable.hpp>

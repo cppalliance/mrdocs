@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SUPPORT_JAVASCRIPT_HPP
-#define MRDOX_SUPPORT_JAVASCRIPT_HPP
+#ifndef MRDOX_API_SUPPORT_JAVASCRIPT_HPP
+#define MRDOX_API_SUPPORT_JAVASCRIPT_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Dom.hpp>
