@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SUPPORT_ANY_CALLABLE_HPP
-#define MRDOX_SUPPORT_ANY_CALLABLE_HPP
+#ifndef MRDOX_API_SUPPORT_ANY_CALLABLE_HPP
+#define MRDOX_API_SUPPORT_ANY_CALLABLE_HPP
 
 #include <mrdox/Platform.hpp>
 #include <memory>

@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SUPPORT_THREAD_HPP
-#define MRDOX_SUPPORT_THREAD_HPP
+#ifndef MRDOX_API_SUPPORT_THREAD_HPP
+#define MRDOX_API_SUPPORT_THREAD_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/any_callable.hpp>

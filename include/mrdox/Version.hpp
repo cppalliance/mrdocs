@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_VERSION_HPP
-#define MRDOX_VERSION_HPP
+#ifndef MRDOX_API_VERSION_HPP
+#define MRDOX_API_VERSION_HPP
 
 #include <string_view>
 

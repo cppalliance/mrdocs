@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_SUPPORT_UNLOCK_GUARD_HPP
-#define MRDOX_SUPPORT_UNLOCK_GUARD_HPP
+#ifndef MRDOX_API_SUPPORT_UNLOCK_GUARD_HPP
+#define MRDOX_API_SUPPORT_UNLOCK_GUARD_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mutex>
