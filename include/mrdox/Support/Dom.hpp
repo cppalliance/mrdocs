@@ -12,6 +12,7 @@
 #define MRDOX_API_SUPPORT_DOM_HPP
 
 #include <mrdox/Platform.hpp>
+#include <fmt/format.h>
 #include <atomic>
 #include <cstdint>
 #include <initializer_list>
@@ -101,7 +102,6 @@ public:
 };
 
 template<class U, class... Args>
-requires std::derived_from<U, Any>
 auto create(Args&&... args);
 
 //------------------------------------------------
@@ -123,7 +123,8 @@ class Pointer
     friend class Pointer;
 
     explicit
-    Pointer(Any* any) noexcept
+    Pointer(
+        Any* any) noexcept
         : any_(any)
     {
     }
@@ -143,22 +144,31 @@ public:
     }
 
     template<class U>
-    requires std::convertible_to<U*, T*>
-    Pointer(U* u) noexcept
+    requires(
+        std::convertible_to<U*, T*> &&
+        std::derived_from<U, Any>)
+    Pointer(
+        U* u) noexcept
         : any_(u->addref())
     {
     }
 
     template<class U>
-    requires std::convertible_to<U*, T*>
-    Pointer(Pointer<U> const& other) noexcept
+    requires(
+        std::convertible_to<U*, T*> &&
+        std::derived_from<U, Any>)
+    Pointer(
+        Pointer<U> const& other) noexcept
         : any_(other.any_->addref())
     {
     }
 
     template<class U>
-    requires std::convertible_to<U*, T*>
-    Pointer& operator=(
+    requires(
+        std::convertible_to<U*, T*> &&
+        std::derived_from<U, Any>)
+    Pointer&
+    operator=(
         Pointer<U> const& other) noexcept
     {
         Pointer temp(other);
@@ -196,12 +206,10 @@ public:
     }
 
     template<class U, class... Args>
-    requires std::derived_from<U, Any>
     friend auto create(Args&&... args);
 };
 
 template<class U, class... Args>
-requires std::derived_from<U, Any>
 auto create(Args&&... args)
 {
     return Pointer<U>(new U(
@@ -220,6 +228,11 @@ class MRDOX_DECL
 public:
     virtual std::size_t length() const noexcept;
     virtual Value get(std::size_t) const;
+
+    /** Return a diagnostic string.
+    */
+    std::string
+    displayString() const;
 };
 
 using ArrayPtr = Pointer<Array>;
@@ -235,13 +248,8 @@ using ArrayPtr = Pointer<Array>;
 class MRDOX_DECL
     Object : public Any
 {
-protected:
-    /** Constructor.
-
-        The newly constructed object will retain
-        a copy of the list of values in `other`.
-    */
-    Object(Object const& other);
+    template<class U, class... Args>
+    friend auto create(Args&&... args);
 
 public:
     /** The type of an element in this container.
@@ -252,11 +260,19 @@ public:
     */
     using list_type = std::vector<value_type>;
 
+protected:
     /** Constructor.
 
         Default-constructed objects are empty.
     */
     Object() noexcept;
+
+    /** Constructor.
+
+        The newly constructed object will retain
+        a copy of the list of values in `other`.
+    */
+    Object(Object const& other);
 
     /** Constructor.
 
@@ -269,6 +285,7 @@ public:
     */
     explicit Object(list_type list);
 
+public:
     /** Return an iterable range with the contents.
     */
     list_type const& list() const noexcept;
@@ -321,6 +338,11 @@ public:
         @param value The value to set.
     */
     virtual void set(std::string_view key, Value value);
+
+    /** Return a diagnostic string.
+    */
+    std::string
+    displayString() const;
 
     // VFALCO DEPRECATED (for duktape)
     virtual std::vector<std::string_view> props() const;
@@ -404,6 +426,9 @@ class MRDOX_DECL
         ObjectPtr     obj_;
         LazyObjectPtr lazy_obj_;
     };
+
+    friend class Array;
+    friend class Object;
 
 public:
     ~Value();
@@ -553,6 +578,19 @@ public:
     {
         v0.swap(v1);
     }
+
+    /** Return a diagnostic string.
+    */
+    std::string
+    displayString() const;
+
+private:
+    /** Return a diagnostic string.
+
+        This function will not traverse children.
+    */
+    std::string
+    displayString1() const;
 };
 
 /** Return a non-empty string, or a null.
@@ -570,5 +608,33 @@ stringOrNull(
 } // dom
 } // mrdox
 } // clang
+
+//------------------------------------------------
+
+template<>
+struct fmt::formatter<clang::mrdox::dom::Object>
+    : fmt::formatter<std::string>
+{
+    auto format(
+        clang::mrdox::dom::Object const& value,
+        fmt::format_context& ctx) const
+    {
+        return fmt::formatter<std::string>::format(
+            value.displayString(), ctx);
+    }
+};
+
+template<>
+struct fmt::formatter<clang::mrdox::dom::Value>
+    : fmt::formatter<std::string>
+{
+    auto format(
+        clang::mrdox::dom::Value const& value,
+        fmt::format_context& ctx) const
+    {
+        return fmt::formatter<std::string>::format(
+            value.displayString(), ctx);
+    }
+};
 
 #endif

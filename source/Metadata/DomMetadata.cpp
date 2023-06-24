@@ -71,7 +71,7 @@ public:
     {
     }
 
-    std::size_t length() const noexcept
+    std::size_t length() const noexcept override
     {
         return list_.size();
     }
@@ -205,14 +205,6 @@ public:
     }
 };
 
-static
-dom::Value
-domCreate(
-    SourceInfo const& I)
-{
-    return dom::create<DomSourceInfo>(I);
-}
-
 //------------------------------------------------
 //
 // TypeInfo
@@ -249,7 +241,6 @@ domCreate(
 //------------------------------------------------
 //
 // Param
-//
 //
 //------------------------------------------------
 
@@ -558,7 +549,7 @@ public:
     {
     }
 
-    std::size_t length() const noexcept
+    std::size_t length() const noexcept override
     {
         return list_.size();
     }
@@ -592,8 +583,7 @@ public:
     {
     }
 
-    std::size_t
-    length() const noexcept override
+    std::size_t length() const noexcept override
     {
         return list_.size();
     }

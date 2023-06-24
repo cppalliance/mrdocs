@@ -10,6 +10,8 @@
 
 #include <mrdox/Support/Dom.hpp>
 #include <mrdox/Support/Error.hpp>
+#include <mrdox/Support/RangeFor.hpp>
+#include <algorithm>
 
 namespace clang {
 namespace mrdox {
@@ -28,6 +30,10 @@ Any::
 ~Any() = default;
 
 //------------------------------------------------
+//
+// Array
+//
+//------------------------------------------------
 
 std::size_t
 Array::
@@ -43,11 +49,44 @@ get(std::size_t) const
     return nullptr;
 }
 
+std::string
+Array::
+displayString() const
+{
+    if(length() == 0)
+        return "[]";
+    std::string s = "[";
+    {
+        auto insert = std::back_inserter(s);
+        for(std::size_t i = 0; i < length(); ++i)
+        {
+            if(i != 0)
+                fmt::format_to(insert,
+                    ", {}",
+                    get(i).displayString1());
+            else
+                fmt::format_to(insert,
+                    " {}",
+                    get(i).displayString1());
+        }
+    }
+    s += " ]";
+    return s;
+}
+
 //------------------------------------------------
+//
+// Object
+//
+//------------------------------------------------
+
+Object::
+Object() noexcept = default;
 
 Object::
 Object(
     Object const& other)
+    : Any()
 {
     // deep-copy the list
     list_.reserve(other.list_.size());
@@ -55,9 +94,6 @@ Object(
         list_.emplace_back(
             kv.first, kv.second.copy());
 }
-
-Object::
-Object() noexcept = default;
 
 Object::
 Object(
@@ -141,6 +177,33 @@ set(std::string_view key,
         key, std::move(value));
 }
 
+std::string
+Object::
+displayString() const
+{
+    if(empty())
+        return "{}";
+    std::string s = "{";
+    {
+        auto insert = std::back_inserter(s);
+        for(auto const& kv : RangeFor(list_))
+        {
+            if(! kv.first)
+                fmt::format_to(insert,
+                    ", {} : {}",
+                    kv.value.first,
+                    kv.value.second.displayString1());
+            else
+                fmt::format_to(insert,
+                    " {} : {}",
+                    kv.value.first,
+                    kv.value.second.displayString1());
+        }
+    }
+    s += " }";
+    return s;
+}
+
 auto
 Object::
 props() const ->
@@ -203,16 +266,16 @@ Value::
     case Kind::Integer:
         break;
     case Kind::String:
-        str_.~basic_string();
+        std::destroy_at(&str_);
         break;
     case Kind::Array:
-        arr_.~Pointer();
+        std::destroy_at(&arr_);
         break;
     case Kind::Object:
-        obj_.~Pointer();
+        std::destroy_at(&obj_);
         break;
     case Kind::LazyObject:
-        lazy_obj_.~Pointer();
+        std::destroy_at(&lazy_obj_);
         break;
     default:
         MRDOX_UNREACHABLE();
@@ -235,22 +298,22 @@ Value(
     case Kind::Null:
         break;
     case Kind::Boolean:
-        b_ = other.b_;
+        std::construct_at(&b_, other.b_);
         break;
     case Kind::Integer:
-        i_ = other.i_;
+        std::construct_at(&i_, other.i_);
         break;
     case Kind::String:
-        new(&str_) std::string(other.str_);
+        std::construct_at(&str_, other.str_);
         break;
     case Kind::Array:
-        new(&arr_) ArrayPtr(other.arr_);
+        std::construct_at(&arr_, other.arr_);
         break;
     case Kind::Object:
-        new(&obj_) ObjectPtr(other.obj_);
+        std::construct_at(&obj_, other.obj_);
         break;
     case Kind::LazyObject:
-        new(&lazy_obj_) LazyObjectPtr(other.lazy_obj_);
+        std::construct_at(&lazy_obj_, other.lazy_obj_);
         break;
     default:
         MRDOX_UNREACHABLE();
@@ -267,26 +330,26 @@ Value(
     case Kind::Null:
         break;
     case Kind::Boolean:
-        b_ = other.b_;
+        std::construct_at(&b_, other.b_);
         break;
     case Kind::Integer:
-        i_ = other.i_;
+        std::construct_at(&i_, other.i_);
         break;
     case Kind::String:
-        new(&str_) std::string(std::move(other.str_));
-        other.str_.~basic_string();
+        std::construct_at(&str_, std::move(other.str_));
+        std::destroy_at(&other.str_);
         break;
     case Kind::Array:
-        new(&arr_) ArrayPtr(std::move(other.arr_));
-        other.arr_.~Pointer();
+        std::construct_at(&arr_, std::move(other.arr_));
+        std::destroy_at(&other.arr_);
         break;
     case Kind::Object:
-        new(&obj_) ObjectPtr(std::move(other.obj_));
-        other.obj_.~Pointer();
+        std::construct_at(&obj_, std::move(other.obj_));
+        std::destroy_at(&other.obj_);
         break;
     case Kind::LazyObject:
-        new(&lazy_obj_) LazyObjectPtr(std::move(other.lazy_obj_));
-        other.lazy_obj_.~Pointer();
+        std::construct_at(&lazy_obj_, std::move(other.lazy_obj_));
+        std::destroy_at(&lazy_obj_);
         break;
     default:
         MRDOX_UNREACHABLE();
@@ -416,7 +479,8 @@ isTruthy() const noexcept
     case Kind::Array: return arr_->length() > 0;
     case Kind::Object: return ! obj_->empty();
     case Kind::LazyObject: return ! lazy_obj_->get()->empty();
-    default: MRDOX_UNREACHABLE();
+    default:
+        MRDOX_UNREACHABLE();
     }
 }
 
@@ -441,6 +505,60 @@ swap(
     std::construct_at(this, std::move(other));
     std::destroy_at(&other);
     std::construct_at(&other, std::move(temp));
+}
+
+std::string
+Value::
+displayString() const
+{
+    switch(kind_)
+    {
+    case Kind::Array:
+        return arr_->displayString();
+    case Kind::Object:
+        return obj_->displayString();
+    case Kind::LazyObject:
+        return lazy_obj_->get()->displayString();
+    default:
+        return displayString1();
+    }
+}
+
+std::string
+Value::
+displayString1() const
+{
+    switch(kind_)
+    {
+    case Kind::Null:
+        return "null";
+    case Kind::Boolean:
+        return b_ ? "true" : "false";
+    case Kind::Integer:
+        return std::to_string(i_);
+    case Kind::String:
+        return fmt::format("\"{}\"", str_);
+    case Kind::Array:
+    {
+        if(arr_->length() > 0)
+            return "[...]";
+        return "[]";
+    }
+    case Kind::Object:
+    {
+        if(! obj_->list().empty())
+            return "{...}";
+        return "{}";
+    }
+    case Kind::LazyObject:
+    {
+        if(! lazy_obj_->get()->list().empty())
+            return "{...}";
+        return "{}";
+    }
+    default:
+        MRDOX_UNREACHABLE();
+    }
 }
 
 //------------------------------------------------

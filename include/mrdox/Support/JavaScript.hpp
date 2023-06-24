@@ -214,8 +214,6 @@ public:
     MRDOX_DECL
     Object
     getGlobal(std::string_view name);
-
-    Expected<Value> call();
 };
 
 //------------------------------------------------
