@@ -55,6 +55,10 @@ class MRDOX_DECL
 {
     std::atomic<std::size_t> mutable refs_ = 1;
 
+protected:
+    Any() noexcept;
+    Any(Any const&) noexcept;
+
 public:
     virtual ~Any() = 0;
 
@@ -213,6 +217,8 @@ using ArrayPtr = Pointer<Array>;
 class MRDOX_DECL
     Object : public Any
 {
+    Object(Object const&);
+
 public:
     using value_type = std::pair<std::string, Value>;
     using list_type = std::vector<value_type>;
@@ -222,6 +228,7 @@ public:
     list_type const& list() const noexcept;
     void append(std::string_view key, Value value);
     void append(std::initializer_list<value_type>);
+    virtual Value copy() const;
     virtual bool empty() const noexcept;
     virtual Value get(std::string_view key) const;
     virtual void set(std::string_view key, Value value);
@@ -356,6 +363,10 @@ public:
             std::underlying_type_t<Enum>>(v))
     {
     }
+
+    /** Return a copy.
+    */
+    Value copy() const;
 
     dom::Kind kind() const noexcept;
     bool isNull() const noexcept { return kind_ == Kind::Null; }

@@ -15,6 +15,15 @@ namespace mrdox {
 namespace dom {
 
 Any::
+Any() noexcept = default;
+
+Any::
+Any(Any const&) noexcept
+{
+    MRDOX_ASSERT(refs_ == 1);
+}
+
+Any::
 ~Any() = default;
 
 //------------------------------------------------
@@ -34,6 +43,10 @@ get(std::size_t) const
 }
 
 //------------------------------------------------
+
+Object::
+Object(
+    Object const&) = default;
 
 Object::
 Object() noexcept = default;
@@ -68,6 +81,13 @@ append(
     std::initializer_list<value_type> init)
 {
     list_.insert(list_.end(), init);
+}
+
+Value
+Object::
+copy() const
+{
+    return create<Object>(list_);
 }
 
 bool
@@ -331,6 +351,29 @@ operator=(
     Value temp(other);
     swap(temp);
     return *this;
+}
+
+Value
+Value::
+copy() const
+{
+    switch(kind_)
+    {
+    case Kind::Null:
+    case Kind::Boolean:
+    case Kind::Integer:
+    case Kind::String:
+        return *this;
+    case Kind::Array:
+        // VFALCO currently, arrays are immutable so
+        // we can just give the caller shared ownership.
+        return *this;
+    case Kind::Object:
+    case Kind::LazyObject:
+        return obj_->copy();
+    default:
+        MRDOX_UNREACHABLE();
+    }
 }
 
 dom::Kind
