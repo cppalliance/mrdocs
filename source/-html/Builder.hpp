@@ -3,13 +3,13 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
-// Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_HTML_BUILDER_HPP
-#define MRDOX_LIB_HTML_BUILDER_HPP
+#ifndef MRDOX_TOOL_HTML_BUILDER_HPP
+#define MRDOX_TOOL_HTML_BUILDER_HPP
 
 #include "HTMLTag.hpp"
 #include "Options.hpp"
@@ -57,7 +57,7 @@ public:
     void writeChildren(
         HTMLTagWriter&,
         const std::vector<SymbolID>&);
-    
+
     std::string
     buildIdHref(const SymbolID& id);
 

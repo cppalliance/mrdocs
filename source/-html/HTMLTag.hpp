@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_HTMLTAG_HPP
-#define MRDOX_LIB_HTMLTAG_HPP
+#ifndef MRDOX_TOOL_HTMLTAG_HPP
+#define MRDOX_TOOL_HTMLTAG_HPP
 
 #include <mrdox/Support/String.hpp>
 #include <fmt/format.h>

@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_LIB_HTML_SINGLEPAGEVISITOR_HPP
-#define MRDOX_LIB_HTML_SINGLEPAGEVISITOR_HPP
+#ifndef MRDOX_TOOL_HTML_SINGLEPAGEVISITOR_HPP
+#define MRDOX_TOOL_HTML_SINGLEPAGEVISITOR_HPP
 
 #include "Builder.hpp"
 #include <mrdox/Support/ExecutorGroup.hpp>
@@ -29,7 +29,7 @@ class SinglePageVisitor
     ExecutorGroup<Builder>& ex_;
     Corpus const& corpus_;
     std::ostream& os_;
-    std::size_t numPages_ = 0; 
+    std::size_t numPages_ = 0;
     std::mutex mutex_;
     std::size_t topPage_ = 0;
     std::vector<std::optional<
