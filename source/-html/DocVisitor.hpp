@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -11,9 +12,9 @@
 #ifndef MRDOX_TOOL_HTML_DOCVISITOR_HPP
 #define MRDOX_TOOL_HTML_DOCVISITOR_HPP
 
+#include "HTMLTag.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
-#include <mrdox/Support/RangeFor.hpp>
 #include <mrdox/Support/String.hpp>
 #include <fmt/format.h>
 
@@ -21,69 +22,59 @@ namespace clang {
 namespace mrdox {
 namespace html {
 
-class DocVisitor
+struct DocVisitor
 {
-    std::string& dest_;
-    std::back_insert_iterator<std::string> ins_;
+    void operator()(doc::List<doc::Block> const& list, HTMLTagWriter& tag);
 
-public:
-    explicit DocVisitor(std::string& dest) noexcept;
-
-    void operator()(doc::List<doc::Block> const& list);
-
-    void operator()(doc::Admonition const& I);
-    void operator()(doc::Code const& I);
-    void operator()(doc::Heading const& I);
-    void operator()(doc::Paragraph const& I);
-    void operator()(doc::Link const& I);
-    void operator()(doc::ListItem const& I);
-    void operator()(doc::Param const& I);
-    void operator()(doc::Returns const& I);
-    void operator()(doc::Text const& I);
-    void operator()(doc::Styled const& I);
-    void operator()(doc::TParam const& I);
+    void operator()(doc::Admonition const& I, HTMLTagWriter& tag);
+    void operator()(doc::Code const& I, HTMLTagWriter& tag);
+    void operator()(doc::Heading const& I, HTMLTagWriter& tag);
+    void operator()(doc::Paragraph const& I, HTMLTagWriter& tag);
+    void operator()(doc::Link const& I, HTMLTagWriter& tag);
+    void operator()(doc::ListItem const& I, HTMLTagWriter& tag);
+    void operator()(doc::Param const& I, HTMLTagWriter& tag);
+    void operator()(doc::Returns const& I, HTMLTagWriter& tag);
+    void operator()(doc::Text const& I, HTMLTagWriter& tag);
+    void operator()(doc::Styled const& I, HTMLTagWriter& tag);
+    void operator()(doc::TParam const& I, HTMLTagWriter& tag);
 
     std::size_t measureLeftMargin(
         doc::List<doc::Text> const& list);
 };
 
-DocVisitor::
-DocVisitor(
-    std::string& dest) noexcept
-    : dest_(dest)
-    , ins_(std::back_inserter(dest_))
-{
-}
-
 void
 DocVisitor::
 operator()(
-    doc::List<doc::Block> const& list)
+    doc::List<doc::Block> const& list,
+    HTMLTagWriter& tag)
 {
     for(auto const& block : list)
-        doc::visit(*block, *this);
+        doc::visit(*block, *this, tag);
 }
 
 void
 DocVisitor::
 operator()(
-    doc::Admonition const& I)
+    doc::Admonition const& I,
+    HTMLTagWriter& tag)
 {
-    //dest_ += I.string;
+
 }
 
 void
 DocVisitor::
 operator()(
-    doc::Code const& I)
+    doc::Code const& I,
+    HTMLTagWriter& tag)
 {
     auto const leftMargin = measureLeftMargin(I.children);
-    dest_ +=
-        "[,cpp]\n"
-        "----\n";
-    for(auto const& it : RangeFor(I.children))
+    HTMLTagWriter code({
+        .Name = "div",
+        .Class = "jd-code"
+    });
+    for(const auto& c : I.children)
     {
-        doc::visit(*it.value,
+        doc::visit(*c,
             [&]<class T>(T const& text)
             {
                 if constexpr(std::is_same_v<T, doc::Text>)
@@ -92,9 +83,9 @@ operator()(
                     {
                         std::string_view s = text.string;
                         s.remove_prefix(leftMargin);
-                        dest_.append(s);
+                        code.write(s);
                     }
-                    dest_.push_back('\n');
+                    code.write("\n");
                 }
                 else
                 {
@@ -102,130 +93,144 @@ operator()(
                 }
             });
     }
-    dest_ += "----\n";
+    tag.write(code);
 }
 
 void
 DocVisitor::
 operator()(
-    doc::Heading const& I)
+    doc::Heading const& I,
+    HTMLTagWriter& tag)
 {
-    fmt::format_to(ins_, "=== {}\n", I.string);
+    tag.write({
+        .Name = "span",
+        .Class = "jd-heading",
+        .Content = trim(I.string)
+    });
 }
 
-//void operator()(doc::Brief const& I)
 void
 DocVisitor::
 operator()(
-    doc::Paragraph const& I)
+    doc::Paragraph const& I,
+    HTMLTagWriter& tag)
 {
-    for(auto const& it : RangeFor(I.children))
+    HTMLTagWriter para({
+        .Name = "p",
+        .Class = "jd-paragraph",
+    });
+    if(! I.children.empty())
     {
-        auto const n = dest_.size();
-        doc::visit(*it.value, *this);
-        // detect empty text blocks
-        if(! it.last && dest_.size() > n)
+        auto first = I.children.begin();
+        doc::visit(**first++, *this, para);
+        for(const auto last = I.children.end(); first != last;)
         {
-            // wrap past 80 cols
-            if(dest_.size() < 80)
-                dest_.push_back(' ');
-            else
-                dest_.append("\n");
+            para.write(" ");
+            doc::visit(**first++, *this, para);
         }
     }
-    dest_.push_back('\n');
+    tag.write(para);
 }
 
 void
 DocVisitor::
 operator()(
-    doc::Link const& I)
+    doc::Link const& I,
+    HTMLTagWriter& tag)
 {
-    dest_.append("link:");
-    dest_.append(I.href);
-    dest_.push_back('[');
-    dest_.append(I.string);
-    dest_.push_back(']');
+    tag.write({
+        .Name = "a",
+        .Class = "jd-link",
+        .Attrs = {{"href", I.href}},
+        .Content = I.string
+    });
 }
 
 void
 DocVisitor::
 operator()(
-    doc::ListItem const& I)
+    doc::ListItem const& I,
+    HTMLTagWriter& tag)
 {
-    dest_.append("* ");
-    for(auto const& it : RangeFor(I.children))
+    HTMLTagWriter list({
+        .Name = "ul",
+        .Class = "jd-list"
+    });
+    for(const auto& c : I.children)
     {
-        auto const n = dest_.size();
-        doc::visit(*it.value, *this);
-        // detect empty text blocks
-        if(! it.last && dest_.size() > n)
-        {
-            // wrap past 80 cols
-            if(dest_.size() < 80)
-                dest_.push_back(' ');
-            else
-                dest_.append("\n");
-        }
+        HTMLTagWriter item({
+            .Name = "li",
+            .Class = "jd-list-item"
+        });
+        doc::visit(*c, *this, item);
+        if(item.has_content())
+            list.write(item);
     }
-    dest_.push_back('\n');
+    tag.write(list);
 }
 
 void
 DocVisitor::
-operator()(doc::Param const& I)
+operator()(
+    doc::Param const& I,
+    HTMLTagWriter& tag)
 {
-    //dest_ += I.string;
 }
 
 void
 DocVisitor::
-operator()(doc::Returns const& I)
+operator()(
+    doc::Returns const& I,
+    HTMLTagWriter& tag)
 {
-    //dest_ += I.string;
 }
 
 void
 DocVisitor::
-operator()(doc::Text const& I)
+operator()(
+    doc::Text const& I,
+    HTMLTagWriter& tag)
 {
-    // Asciidoc text must not have leading
-    // else they can be rendered up as code.
-    std::string_view s = trim(I.string);
-    dest_.append(s);
+    tag.write(trim(I.string));
 }
 
 void
 DocVisitor::
-operator()(doc::Styled const& I)
+operator()(
+    doc::Styled const& I,
+    HTMLTagWriter& tag)
 {
-    // VFALCO We need to apply Asciidoc escaping
-    // depending on the contents of the string.
-    std::string_view s = trim(I.string);
+    std::string_view style_class;
     switch(I.style)
     {
     case doc::Style::none:
-        dest_.append(s);
+        style_class = "jd-style-none";
         break;
     case doc::Style::bold:
-        fmt::format_to(std::back_inserter(dest_), "*{}*", s);
+        style_class = "jd-style-bold";
         break;
     case doc::Style::mono:
-        fmt::format_to(std::back_inserter(dest_), "`{}`", s);
+        style_class = "jd-style-mono";
         break;
     case doc::Style::italic:
-        fmt::format_to(std::back_inserter(dest_), "_{}_", s);
+        style_class = "jd-style-italic";
         break;
     default:
         MRDOX_UNREACHABLE();
     }
+    tag.write({
+        .Name = "span",
+        .Class = style_class,
+        .Content = trim(I.string)
+    });
 }
 
 void
 DocVisitor::
-operator()(doc::TParam const& I)
+operator()(
+    doc::TParam const& I,
+    HTMLTagWriter& tag)
 {
-    //dest_ += I.string;
 }
 
 std::size_t

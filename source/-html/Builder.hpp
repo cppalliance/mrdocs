@@ -11,6 +11,7 @@
 #ifndef MRDOX_LIB_HTML_BUILDER_HPP
 #define MRDOX_LIB_HTML_BUILDER_HPP
 
+#include "HTMLTag.hpp"
 #include "Options.hpp"
 #include "Support/Radix.hpp"
 #include <mrdox/Corpus.hpp>
@@ -22,9 +23,6 @@
 namespace clang {
 namespace mrdox {
 namespace html {
-
-struct HTMLTag;
-struct HTMLTagWriter;
 
 /** Builds reference output.
 
@@ -45,6 +43,8 @@ public:
     Expected<std::string> operator()(NamespaceInfo const&);
     Expected<std::string> operator()(RecordInfo const&);
     Expected<std::string> operator()(FunctionInfo const&);
+    Expected<std::string> operator()(VariableInfo const&);
+    Expected<std::string> operator()(TypedefInfo const&);
 
     HTMLTagWriter buildInfo(const Info&);
     HTMLTagWriter buildInfo(const NamespaceInfo&);
