@@ -241,36 +241,16 @@ domCreate(
 */
 class DomParam : public dom::Object
 {
-    Param const* I_;
-    Corpus const& corpus_;
-
 public:
     DomParam(
         Param const& I,
         Corpus const& corpus) noexcept
-        : I_(&I)
-        , corpus_(corpus)
+        : Object({
+            {"name", dom::nonEmptyString(I.Name)},
+            {"type", dom::create<DomTypeInfo>(I.Type, corpus)},
+            {"default", dom::nonEmptyString(I.Default)}
+        })
     {
-    }
-
-    dom::Value get(std::string_view key) const override
-    {
-        if(key == "name")
-            return dom::nonEmptyString(I_->Name);
-        if(key == "type")
-            return dom::create<DomTypeInfo>(I_->Type, corpus_);
-        if(key == "default")
-            return dom::nonEmptyString(I_->Default);
-        return nullptr;
-    }
-
-    std::vector<std::string_view> props() const override
-    {
-        return {
-            "name",
-            "type",
-            "default"
-        };
     }
 };
 
@@ -312,61 +292,22 @@ public:
 
 class DomTParam : public dom::Object
 {
-    TParam const* I_;
-    Corpus const& corpus_;
-
 public:
-    DomTParam(
+     DomTParam(
         TParam const& I,
-        Corpus const& corpus) noexcept
-        : I_(&I)
-        , corpus_(corpus)
-    {
-    }
-
-    dom::Value get(std::string_view key) const override;
-
-    std::vector<std::string_view> props() const override
-    {
-        return {
-            "kind",
-            "name",
-            "is-pack",
-            "default",
-            // only for NonTypeTParam
-            "type",
-            // only for TemplateTParam
-            "params"
-        };
-    }
+        Corpus const& corpus) noexcept;
 };
 
 class DomTArg : public dom::Object
 {
-    TArg const* I_;
-    Corpus const& corpus_;
-
 public:
     DomTArg(
         TArg const& I,
         Corpus const& corpus) noexcept
-        : I_(&I)
-        , corpus_(corpus)
+        : Object({
+            {"value", dom::nonEmptyString(I.Value)}
+        })
     {
-    }
-
-    dom::Value get(std::string_view key) const override
-    {
-        if(key == "value")
-            return dom::nonEmptyString(I_->Value);
-        return nullptr;
-    }
-
-    std::vector<std::string_view> props() const override
-    {
-        return {
-            "value"
-        };
     }
 };
 
@@ -430,137 +371,81 @@ public:
     }
 };
 
-class MRDOX_DECL
-    DomTemplate : public dom::Object
+class DomTemplate : public dom::Object
 {
-    TemplateInfo const* I_;
-    Info const* Primary_;
-    Corpus const& corpus_;
-
 public:
     DomTemplate(
         TemplateInfo const& I,
         Corpus const& corpus) noexcept
-        : I_(&I)
-        , corpus_(corpus)
+        : Object({
+            {"kind", toString(I.specializationKind())},
+            {"primary", I.Primary ?
+                domCreateInfo(*I.Primary, corpus) :
+                nullptr},
+            {"params", dom::create<DomTParamArray>(
+                I.Params, corpus)},
+            {"args", dom::create<DomTArgArray>(
+                I.Args, corpus)}
+        })
     {
-        if(I_->Primary)
-            Primary_ = corpus_.find(*I_->Primary);
-        else
-            Primary_ = nullptr;
-    }
-
-    dom::Value get(std::string_view key) const override
-    {
-        if(key == "kind")
-        {
-            switch(I_->specializationKind())
-            {
-            case TemplateSpecKind::Primary:
-                return "primary";
-            case TemplateSpecKind::Explicit:
-                return "explicit";
-            case TemplateSpecKind::Partial:
-                return "partial";
-            default:
-                MRDOX_UNREACHABLE();
-            }
-        }
-        if(key == "primary")
-        {
-            if(Primary_)
-                return domCreateInfo(*Primary_, corpus_);
-            return nullptr;
-        }
-        if(key == "params")
-            return dom::create<DomTParamArray>(
-                I_->Params, corpus_);
-        if(key == "args")
-            return dom::create<DomTArgArray>(
-                I_->Args, corpus_);
-        return nullptr;
-    }
-
-    std::vector<std::string_view> props() const override
-    {
-        return {
-            "params",
-            "args",
-            "kind",
-            "primary"
-        };
     }
 };
 
-// These are here for circular references
-
+static
 dom::Value
-DomTParam::
-get(std::string_view key) const
+getTParamDefault(
+    TParam const& I,
+    Corpus const& corpus)
 {
-    if(key == "kind")
+    switch(I.Kind)
     {
-        switch(I_->Kind)
-        {
-        case TParamKind::Type:
-            return "type";
-        case TParamKind::NonType:
-            return "non-type";
-        case TParamKind::Template:
-            return "template";
-        default:
-            MRDOX_UNREACHABLE();
-        }
-    }
-    if(key == "name")
-        return dom::nonEmptyString(I_->Name);
-    if(key == "is-pack")
-        return I_->IsParameterPack;
-    if(key == "type")
+    case TParamKind::Type:
     {
-        if(I_->Kind != TParamKind::NonType)
+        const auto& P = I.get<TypeTParam>();
+        if(! P.Default)
             return nullptr;
         return dom::create<DomTypeInfo>(
-            I_->get<NonTypeTParam>().Type, corpus_);
+            *P.Default, corpus);
     }
-    if(key == "params")
+    case TParamKind::NonType:
     {
-        if(I_->Kind != TParamKind::Template)
+        const auto& P = I.get<NonTypeTParam>();
+        if(! P.Default)
             return nullptr;
-        return dom::create<DomTParamArray>(
-            I_->get<TemplateTParam>().Params, corpus_);
+        return *P.Default;
     }
-    if(key == "default")
+    case TParamKind::Template:
     {
-        switch(I_->Kind)
-        {
-        case TParamKind::Type:
-        {
-            const auto& P = I_->get<TypeTParam>();
-            if(! P.Default)
-                return nullptr;
-            return dom::create<DomTypeInfo>(
-                *P.Default, corpus_);
-        }
-        case TParamKind::NonType:
-        {
-            const auto& P = I_->get<NonTypeTParam>();
-            if(! P.Default)
-                return nullptr;
-            return *P.Default;
-        }
-        case TParamKind::Template:
-        {
-            const auto& P = I_->get<TemplateTParam>();
-            if(! P.Default)
-                return nullptr;
-            return *P.Default;
-        }
-        default:
-            MRDOX_UNREACHABLE();
-        }
+        const auto& P = I.get<TemplateTParam>();
+        if(! P.Default)
+            return nullptr;
+        return *P.Default;
     }
-    return nullptr;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+// this is here for circular references
+DomTParam::
+DomTParam(
+    TParam const& I,
+    Corpus const& corpus) noexcept
+    : Object({
+        {"kind", toString(I.Kind)},
+        {"name", dom::nonEmptyString(I.Name)},
+        {"is-pack", I.IsParameterPack},
+        {"type", I.Kind == TParamKind::NonType ?
+            dom::create<DomTypeInfo>(
+                I.get<NonTypeTParam>().Type, corpus) :
+            dom::Value()},
+        {"params", I.Kind == TParamKind::Template ?
+            dom::create<DomTParamArray>(
+                I.get<TemplateTParam>().Params, corpus) :
+            dom::Value()},
+        {"default", getTParamDefault(I, corpus)}
+    })
+{
 }
 
 static

@@ -35,6 +35,10 @@ enum class TParamKind : int
     Template
 };
 
+MRDOX_DECL
+std::string_view
+toString(TParamKind kind);
+
 struct TParam;
 
 struct TypeTParam
@@ -204,6 +208,10 @@ enum class TemplateSpecKind
     Explicit,
     Partial
 };
+
+MRDOX_DECL
+std::string_view
+toString(TemplateSpecKind kind);
 
 /** Information pertaining to templates and specializations thereof.
 */

@@ -94,5 +94,38 @@ TArg(
 {
 }
 
+std::string_view
+toString(TParamKind kind)
+{
+    switch(kind)
+    {
+    case TParamKind::Type:
+        return "type";
+    case TParamKind::NonType:
+        return "non-type";
+    case TParamKind::Template:
+        return "template";
+    default:
+        // kind should never be None
+        MRDOX_UNREACHABLE();
+    }
+}
+
+std::string_view
+toString(TemplateSpecKind kind)
+{
+    switch(kind)
+    {
+    case TemplateSpecKind::Primary:
+        return "primary";
+    case TemplateSpecKind::Explicit:
+        return "explicit";
+    case TemplateSpecKind::Partial:
+        return "partial";
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
 } // mrdox
 } // clang
