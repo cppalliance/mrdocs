@@ -46,17 +46,65 @@ public:
     Expected<std::string> operator()(VariableInfo const&);
     Expected<std::string> operator()(TypedefInfo const&);
 
-    HTMLTagWriter buildInfo(const Info&);
-    HTMLTagWriter buildInfo(const NamespaceInfo&);
-    HTMLTagWriter buildInfo(const RecordInfo&);
-    HTMLTagWriter buildInfo(const FunctionInfo&);
-    HTMLTagWriter buildInfo(const VariableInfo&);
-    HTMLTagWriter buildInfo(const FieldInfo&);
-    HTMLTagWriter buildInfo(const TypedefInfo&);
+    HTMLTagWriter buildInfo(const Info&, bool primary = false);
+    HTMLTagWriter buildInfo(const NamespaceInfo&, bool primary = false);
+    HTMLTagWriter buildInfo(const RecordInfo&, bool primary = false);
+    HTMLTagWriter buildInfo(const FunctionInfo&, bool primary = false);
+    HTMLTagWriter buildInfo(const VariableInfo&, bool primary = false);
+    HTMLTagWriter buildInfo(const FieldInfo&, bool primary = false);
+    HTMLTagWriter buildInfo(const TypedefInfo&, bool primary = false);
 
     void writeChildren(
         HTMLTagWriter&,
         const std::vector<SymbolID>&);
+
+    std::string
+    buildTypeInfo(const TypeInfo& I);
+
+    std::string
+    buildParam(const Param& P);
+
+    std::string
+    buildTParam(const TParam& P);
+
+    std::string
+    buildTParams(
+        const std::vector<TParam>& params);
+
+    void
+    writeTemplateHead(
+        HTMLTagWriter& tag,
+        const std::unique_ptr<TemplateInfo>& I);
+
+    std::string
+    buildTemplateArg(
+        const TArg& arg);
+
+    std::string
+    buildTemplateArgs(
+        const std::unique_ptr<TemplateInfo>& I);
+
+    void
+    writeName(
+        HTMLTagWriter& tag,
+        const Info& I);
+
+    template<typename InfoTy>
+    void
+    writeTemplateName(
+        HTMLTagWriter& tag,
+        const InfoTy& I)
+            requires requires { I.Template; };
+
+    void
+    writeBrief(
+        HTMLTagWriter& tag,
+        const Info& I);
+
+    void
+    writeDescription(
+        HTMLTagWriter& tag,
+        const Info& I);
 
     // void insertMember(js::Array const&, auto const& I);
     // void makeJavadoc(js::Object const& item, Javadoc const& jd);

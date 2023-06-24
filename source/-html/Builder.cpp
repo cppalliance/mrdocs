@@ -30,40 +30,6 @@ namespace html {
 
 namespace {
 
-std::string
-buildIdHref(const SymbolID& id)
-{
-    return fmt::format("#{}", toBase16(id));
-}
-
-std::string
-buildTypeInfo(const TypeInfo& I)
-{
-    if(I.id == SymbolID::zero)
-        return HTMLTagWriter({
-            .Name = "span",
-            .Class = "type-info",
-            .Content = I.Name
-        });
-    return HTMLTagWriter({
-        .Name = "a",
-        .Class = "type-info",
-        .Attrs = {{"href", buildIdHref(I.id)}},
-        .Content = I.Name
-    });
-}
-
-std::string
-buildParam(const Param& P)
-{
-    HTMLTagWriter param(buildTypeInfo(P.Type));
-    if(! P.Name.empty())
-        param.write(" ", P.Name);
-    if(! P.Default.empty())
-        param.write(" = ", P.Default);
-    return param;
-}
-
 void
 writeSpec(
     HTMLTagWriter& tag,
@@ -138,13 +104,23 @@ writeSpec(
     });
 }
 
-std::string buildTParam(
-    const TParam& P);
+} // anon
 
-// void writeTParams(
-//     HTMLTagWriter& tag,
-//     const std::vector<TParam>& params)
-std::string buildTParams(
+std::string
+Builder::
+buildParam(const Param& P)
+{
+    HTMLTagWriter param(buildTypeInfo(P.Type));
+    if(! P.Name.empty())
+        param.write(" ", P.Name);
+    if(! P.Default.empty())
+        param.write(" = ", P.Default);
+    return param;
+}
+
+std::string
+Builder::
+buildTParams(
     const std::vector<TParam>& params)
 {
     HTMLTagWriter tag;
@@ -155,12 +131,15 @@ std::string buildTParams(
     });
     tag.write(
         "<",
-        join(std::views::transform(params, buildTParam), ", "),
+        join(std::views::transform(params,
+            [this](const TParam& P) { return buildTParam(P); }), ", "),
         ">");
     return tag;
 }
 
-std::string buildTParam(
+std::string
+Builder::
+buildTParam(
     const TParam& P)
 {
     HTMLTagWriter param;
@@ -211,10 +190,10 @@ std::string buildTParam(
     if(! default_val.empty())
         param.write(" = ", default_val);
     return param;
-
 }
 
 void
+Builder::
 writeTemplateHead(
     HTMLTagWriter& tag,
     const std::unique_ptr<TemplateInfo>& I)
@@ -229,6 +208,7 @@ writeTemplateHead(
 }
 
 std::string
+Builder::
 buildTemplateArg(
     const TArg& arg)
 {
@@ -236,6 +216,7 @@ buildTemplateArg(
 }
 
 std::string
+Builder::
 buildTemplateArgs(
     const std::unique_ptr<TemplateInfo>& I)
 {
@@ -245,43 +226,43 @@ buildTemplateArgs(
     {
         tag.write(
             "<",
-            join(std::views::transform(I->Args, buildTemplateArg), ", "),
+            join(std::views::transform(I->Args,
+                [this](const TArg& A) { return buildTemplateArg(A); }), ", "),
             ">");
     }
     return tag;
 }
 
-template<typename T>
 void
+Builder::
 writeName(
     HTMLTagWriter& tag,
-    const T& t)
-    requires (std::derived_from<T, Info> &&
-        ! requires { t.Template; })
+    const Info& I)
 {
     tag.write({
         .Name = "span",
         .Class = "info-name",
-        .Content = t.Name
+        .Content = I.Name
     });
 }
 
-template<typename T>
+template<typename InfoTy>
 void
-writeName(
+Builder::
+writeTemplateName(
     HTMLTagWriter& tag,
-    const T& t)
-    requires std::derived_from<T, Info> &&
-        requires { t.Template; }
+    const InfoTy& I)
+        requires requires { I.Template; }
 {
     tag.write({
         .Name = "span",
         .Class = "info-name",
-        .Content = t.Name + buildTemplateArgs(t.Template)
+        .Content = I.Name + buildTemplateArgs(I.Template)
     });
 }
 
 void
+Builder::
 writeBrief(
     HTMLTagWriter& tag,
     const Info& I)
@@ -300,6 +281,7 @@ writeBrief(
 }
 
 void
+Builder::
 writeDescription(
     HTMLTagWriter& tag,
     const Info& I)
@@ -318,22 +300,45 @@ writeDescription(
     }
 }
 
-} // (anon)
+std::string
+Builder::
+buildTypeInfo(const TypeInfo& I)
+{
+    if(I.id == SymbolID::zero ||
+        ! corpus_.find(I.id))
+        return HTMLTagWriter({
+            .Name = "span",
+            .Class = "type-info",
+            .Content = I.Name
+        });
+    std::string id_href =
+        fmt::format("#{}", toBase16(I.id));
+    return HTMLTagWriter({
+        .Name = "a",
+        .Class = "type-info",
+        .Attrs = {{"href", id_href}},
+        .Content = I.Name
+    });
+}
 
 HTMLTagWriter
 Builder::
-buildInfo(const Info&)
+buildInfo(
+    const Info&,
+    bool primary)
 {
     return HTMLTagWriter();
 }
 
 HTMLTagWriter
 Builder::
-buildInfo(const FunctionInfo& I)
+buildInfo(
+    const FunctionInfo& I,
+    bool primary)
 {
     HTMLTagWriter div({
         .Name = "div",
-        .Id = toBase16(I.id),
+        .Id = primary ? toBase16(I.id) : "",
         .Class = "function-info"
     });
     writeBrief(div, I);
@@ -344,11 +349,12 @@ buildInfo(const FunctionInfo& I)
 
     div.write(buildTypeInfo(I.ReturnType), " ");
 
-    writeName(div, I);
+    writeTemplateName(div, I);
 
     div.write(
         "(",
-        join(std::views::transform(I.Params, buildParam), ", "),
+        join(std::views::transform(I.Params,
+            [this](const Param& P) { return buildParam(P); }), ", "),
         ")");
 
     if(I.specs0.isConst)
@@ -371,11 +377,13 @@ buildInfo(const FunctionInfo& I)
 
 HTMLTagWriter
 Builder::
-buildInfo(const VariableInfo& I)
+buildInfo(
+    const VariableInfo& I,
+    bool primary)
 {
     HTMLTagWriter div({
         .Name = "div",
-        .Id = toBase16(I.id),
+        .Id = primary ? toBase16(I.id) : "",
         .Class = "variable-info"
     });
     writeBrief(div, I);
@@ -383,17 +391,19 @@ buildInfo(const VariableInfo& I)
     writeSpec(div, I.specs.storageClass);
 
     div.write(buildTypeInfo(I.Type), " ");
-    writeName(div, I);
+    writeTemplateName(div, I);
     return div;
 }
 
 HTMLTagWriter
 Builder::
-buildInfo(const FieldInfo& I)
+buildInfo(
+    const FieldInfo& I,
+    bool primary)
 {
     HTMLTagWriter div({
         .Name = "div",
-        .Id = toBase16(I.id),
+        .Id = primary ? toBase16(I.id) : "",
         .Class = "field-info"
     });
     writeBrief(div, I);
@@ -404,11 +414,13 @@ buildInfo(const FieldInfo& I)
 
 HTMLTagWriter
 Builder::
-buildInfo(const TypedefInfo& I)
+buildInfo(
+    const TypedefInfo& I,
+    bool primary)
 {
     HTMLTagWriter div({
         .Name = "div",
-        .Id = toBase16(I.id),
+        .Id = primary ? toBase16(I.id) : "",
         .Class = "typedef-info"
     });
     writeBrief(div, I);
@@ -420,7 +432,7 @@ buildInfo(const TypedefInfo& I)
             .Class = "kw-using",
             .Content = "using"
         }).write(" ");
-        writeName(div, I);
+        writeTemplateName(div, I);
         div.write(" = ", buildTypeInfo(I.Underlying));
     }
     else
@@ -440,11 +452,12 @@ buildInfo(const TypedefInfo& I)
 HTMLTagWriter
 Builder::
 buildInfo(
-    const RecordInfo& I)
+    const RecordInfo& I,
+    bool primary)
 {
     HTMLTagWriter div({
         .Name = "div",
-        .Id = toBase16(I.id),
+        .Id = primary ? toBase16(I.id) : "",
         .Class = {"record-info"}
     });
     writeBrief(div, I);
@@ -455,7 +468,7 @@ buildInfo(
         .Content = toString(I.KeyKind)
     }).write(" ");;
 
-    writeName(div, I);
+    writeTemplateName(div, I);
 
     return div;
 }
@@ -463,11 +476,12 @@ buildInfo(
 HTMLTagWriter
 Builder::
 buildInfo(
-    const NamespaceInfo& I)
+    const NamespaceInfo& I,
+    bool primary)
 {
     HTMLTagWriter div({
         .Name = "div",
-        .Id = toBase16(I.id),
+        .Id = primary ? toBase16(I.id) : "",
         .Class = {"namespace-info"}
     });
 
@@ -516,7 +530,7 @@ Expected<std::string>
 Builder::
 operator()(NamespaceInfo const& I)
 {
-    HTMLTagWriter tag = buildInfo(I);
+    HTMLTagWriter tag = buildInfo(I, true);
     writeChildren(tag, I.Members);
     return std::string(tag) + "<hr>";
 }
@@ -525,7 +539,7 @@ Expected<std::string>
 Builder::
 operator()(RecordInfo const& I)
 {
-    HTMLTagWriter tag = buildInfo(I);
+    HTMLTagWriter tag = buildInfo(I, true);
     writeDescription(tag, I);
     writeChildren(tag, I.Members);
     return std::string(tag) + "<hr>";
@@ -535,11 +549,12 @@ Expected<std::string>
 Builder::
 operator()(FunctionInfo const& I)
 {
+#if 0
     if(auto* parent = corpus_.find(I.Namespace.front());
         parent && parent->isRecord())
         return "";
-
-    HTMLTagWriter tag = buildInfo(I);
+#endif
+    HTMLTagWriter tag = buildInfo(I, true);
     writeDescription(tag, I);
     return std::string(tag) + "<hr>";
 }
@@ -548,11 +563,12 @@ Expected<std::string>
 Builder::
 operator()(VariableInfo const& I)
 {
+#if 0
     if(auto* parent = corpus_.find(I.Namespace.front());
         parent && parent->isRecord())
         return "";
-
-    HTMLTagWriter tag = buildInfo(I);
+#endif
+    HTMLTagWriter tag = buildInfo(I, true);
     writeDescription(tag, I);
     return std::string(tag) + "<hr>";
 }
@@ -561,9 +577,11 @@ Expected<std::string>
 Builder::
 operator()(TypedefInfo const& I)
 {
+#if 0
     if(auto* parent = corpus_.find(I.Namespace.front());
         parent && parent->isRecord())
         return "";
+#endif
 
     HTMLTagWriter tag = buildInfo(I);
     writeDescription(tag, I);
