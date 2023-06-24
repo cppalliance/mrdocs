@@ -23,6 +23,9 @@ namespace clang {
 namespace mrdox {
 namespace html {
 
+struct HTMLTag;
+struct HTMLTagWriter;
+
 /** Builds reference output.
 
     This contains all the state information
@@ -43,13 +46,18 @@ public:
     Expected<std::string> operator()(RecordInfo const&);
     Expected<std::string> operator()(FunctionInfo const&);
 
-    std::string buildInfo(const Info&);
-    std::string buildInfo(
-        const RecordInfo&,
-        bool write_children = false);
-    std::string buildInfo(const FunctionInfo&);
-    std::string buildInfo(const VariableInfo&);
-    std::string buildInfo(const FieldInfo&);
+    HTMLTagWriter buildInfo(const Info&);
+    HTMLTagWriter buildInfo(const NamespaceInfo&);
+    HTMLTagWriter buildInfo(const RecordInfo&);
+    HTMLTagWriter buildInfo(const FunctionInfo&);
+    HTMLTagWriter buildInfo(const VariableInfo&);
+    HTMLTagWriter buildInfo(const FieldInfo&);
+    HTMLTagWriter buildInfo(const TypedefInfo&);
+
+    void writeChildren(
+        HTMLTagWriter&,
+        const std::vector<SymbolID>&);
+
     // void insertMember(js::Array const&, auto const& I);
     // void makeJavadoc(js::Object const& item, Javadoc const& jd);
     // void renderDocNode(std::string& dest, doc::Node const& node);

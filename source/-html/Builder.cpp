@@ -13,8 +13,6 @@
 #include "Support/Radix.hpp"
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/String.hpp>
-// #include <llvm/Support/FileSystem.h>
-// #include <llvm/Support/Path.h>
 #include <fmt/format.h>
 
 #include <concepts>
@@ -30,22 +28,20 @@ namespace clang {
 namespace mrdox {
 namespace html {
 
-namespace {
-
 struct stringish
 {
     stringish() = default;
 
     template<typename T>
-        requires std::constructible_from<std::string_view, std::decay_t<T>>
+        requires std::constructible_from<std::string_view, T>
     stringish(T&& t)
         : Underlying(std::string_view(std::forward<T>(t)))
     {
     }
 
     template<typename T>
-        requires (! std::constructible_from<std::string_view, std::decay_t<T>> &&
-            std::constructible_from<std::string, std::decay_t<T>>)
+        requires (! std::constructible_from<std::string_view, T> &&
+            std::constructible_from<std::string, T>)
     stringish(T&& t)
         : Underlying(std::forward<T>(t))
     {
@@ -54,12 +50,32 @@ struct stringish
     std::string Underlying;
 };
 
+template<typename T>
+struct vectorish
+{
+    vectorish() = default;
+
+    template<typename U>
+        requires std::convertible_to<U, T>
+    vectorish(U&& elem)
+        : Underlying({elem})
+    {
+    }
+
+    vectorish(const std::initializer_list<T>& init)
+        : Underlying(init)
+    {
+    }
+
+    std::vector<T> Underlying;
+};
+
 struct HTMLTag
 {
     std::string_view Name;
     std::string Id;
-    std::vector<std::string_view> Class;
-    std::vector<std::pair<
+    vectorish<std::string_view> Class;
+    vectorish<std::pair<
         std::string_view,
         std::string>> Attrs;
     stringish Content;
@@ -68,6 +84,8 @@ struct HTMLTag
 struct HTMLTagWriter
 {
     HTMLTag Tag;
+
+    HTMLTagWriter() = default;
 
     HTMLTagWriter(
         const HTMLTag& tag)
@@ -175,14 +193,15 @@ private:
         r += fmt::format("<{}", Tag.Name);
         if(! Tag.Id.empty())
             r += fmt::format(" id = \"{}\"", Tag.Id);
-        if(! Tag.Class.empty())
+        const auto& Class = Tag.Class.Underlying;
+        if(! Class.empty())
         {
-            r += fmt::format(" class = \"{}", Tag.Class.front());
-            for(auto c : std::span(Tag.Class.begin() + 1, Tag.Class.end()))
+            r += fmt::format(" class = \"{}", Class.front());
+            for(auto c : std::span(Class.begin() + 1, Class.end()))
                 r += fmt::format(" {}", c);
             r += '"';
         }
-        for(auto&& [attr, val] : Tag.Attrs)
+        for(auto&& [attr, val] : Tag.Attrs.Underlying)
             r += fmt::format(" {} = \"{}\"", attr, val);
         if(Tag.Content.Underlying.empty())
             r += "/>";
@@ -196,6 +215,8 @@ private:
     bool stale_ = true;
 };
 
+namespace {
+
 std::string
 buildIdHref(const SymbolID& id)
 {
@@ -208,15 +229,13 @@ buildTypeInfo(const TypeInfo& I)
     if(I.id == SymbolID::zero)
         return HTMLTagWriter({
             .Name = "span",
-            .Class = {"type-info"},
+            .Class = "type-info",
             .Content = I.Name
         });
     return HTMLTagWriter({
         .Name = "a",
-        .Class = {"type-info"},
-        .Attrs = {
-            {"href", buildIdHref(I.id)}
-        },
+        .Class = "type-info",
+        .Attrs = {{"href", buildIdHref(I.id)}},
         .Content = I.Name
     });
 }
@@ -230,15 +249,6 @@ buildParam(const Param& P)
     if(! P.Default.empty())
         param.write(" = ", P.Default);
     return param;
-#if 0
-
-    std::string r = buildTypeInfo(P.Type);
-    if(! P.Name.empty())
-        r += fmt::format(" {}", P.Name);
-    if(! P.Default.empty())
-        r += fmt::format(" = {}", P.Default);
-    return r;
-#endif
 }
 
 void
@@ -250,7 +260,7 @@ writeSpec(
         return;
     tag.write({
         .Name = "span",
-        .Class = {"kw-storage-class-kind"},
+        .Class = "kw-storage-class-kind",
         .Content = toString(kind)
     }).write(" ");
 }
@@ -264,7 +274,7 @@ writeSpec(
         return;
     tag.write({
         .Name = "span",
-        .Class = {"kw-constexpr-kind"},
+        .Class = "kw-constexpr-kind",
         .Content = toString(kind)
     }).write(" ");
 }
@@ -279,7 +289,7 @@ writeSpec(
         return;
     tag.write({
         .Name = "span",
-        .Class = {"kw-explicit-kind"},
+        .Class = "kw-explicit-kind",
         .Content = toString(kind)
     }).write(" ");
 }
@@ -296,7 +306,7 @@ writeSpec(
         "&" : "&&";
     tag.write(" ").write({
         .Name = "span",
-        .Class = {"tk-refqual-kind"},
+        .Class = "tk-refqual-kind",
         .Content = refqual
     });
 }
@@ -310,31 +320,191 @@ writeSpec(
         return;
     tag.write(" ").write({
         .Name = "span",
-        .Class = {"kw-noexcept-kind"},
+        .Class = "kw-noexcept-kind",
         .Content = toString(kind)
+    });
+}
+
+std::string buildTParam(
+    const TParam& P);
+
+// void writeTParams(
+//     HTMLTagWriter& tag,
+//     const std::vector<TParam>& params)
+std::string buildTParams(
+    const std::vector<TParam>& params)
+{
+    HTMLTagWriter tag;
+    tag.write({
+        .Name = "span",
+        .Class = "kw-template",
+        .Content = "template"
+    });
+    tag.write(
+        "<",
+        join(std::views::transform(params, buildTParam), ", "),
+        ">");
+    return tag;
+}
+
+std::string buildTParam(
+    const TParam& P)
+{
+    HTMLTagWriter param;
+    std::string default_val;
+    switch(P.Kind)
+    {
+    case TParamKind::Type:
+    {
+        const auto& TP = P.get<TypeTParam>();
+        param.write({
+            .Name = "span",
+            .Class = "kw-typename",
+            .Content = "typename"
+        });
+        if(TP.Default)
+            default_val = buildTypeInfo(*TP.Default);
+        break;
+
+    }
+    case TParamKind::NonType:
+    {
+        const auto& NTTP = P.get<NonTypeTParam>();
+        param.write(buildTypeInfo(NTTP.Type));
+        if(NTTP.Default)
+            default_val = *NTTP.Default;
+        break;
+    }
+    case TParamKind::Template:
+    {
+        const auto& TTP = P.get<TemplateTParam>();
+        param.write(buildTParams(TTP.Params), " ");
+        param.write({
+            .Name = "span",
+            .Class = "kw-typename",
+            .Content = "typename"
+        });
+        if(TTP.Default)
+            default_val = *TTP.Default;
+        break;
+    }
+    default:
+        MRDOX_UNREACHABLE();
+    }
+    if(P.IsParameterPack)
+        param.write("...");
+    if(! P.Name.empty())
+        param.write(" ", P.Name);
+    if(! default_val.empty())
+        param.write(" = ", default_val);
+    return param;
+
+}
+
+void
+writeTemplateHead(
+    HTMLTagWriter& tag,
+    const std::unique_ptr<TemplateInfo>& I)
+{
+    if(! I)
+        return;
+    tag.write({
+        .Name = "div",
+        .Class = "template-head",
+        .Content = buildTParams(I->Params)
+    });
+}
+
+std::string
+buildTemplateArg(
+    const TArg& arg)
+{
+    return arg.Value;
+}
+
+std::string
+buildTemplateArgs(
+    const std::unique_ptr<TemplateInfo>& I)
+{
+    HTMLTagWriter tag;
+    if(I && I->specializationKind() !=
+        TemplateSpecKind::Primary)
+    {
+        tag.write(
+            "<",
+            join(std::views::transform(I->Args, buildTemplateArg), ", "),
+            ">");
+    }
+    return tag;
+}
+
+template<typename T>
+void
+writeName(
+    HTMLTagWriter& tag,
+    const T& t)
+    requires (std::derived_from<T, Info> &&
+        ! requires { t.Template; })
+{
+    tag.write({
+        .Name = "span",
+        .Class = "info-name",
+        .Content = t.Name
+    });
+}
+
+template<typename T>
+void
+writeName(
+    HTMLTagWriter& tag,
+    const T& t)
+    requires std::derived_from<T, Info> &&
+        requires { t.Template; }
+{
+    tag.write({
+        .Name = "span",
+        .Class = "info-name",
+        .Content = t.Name + buildTemplateArgs(t.Template)
     });
 }
 
 } // (anon)
 
-std::string
+void
+Builder::
+writeChildren(
+    HTMLTagWriter& tag,
+    const std::vector<SymbolID>& children)
+{
+    for(const SymbolID& id : children)
+    {
+        visit(corpus_.get(id),
+            [&](const auto& C)
+            {
+                tag.write(buildInfo(C));
+            });
+    }
+}
+
+HTMLTagWriter
 Builder::
 buildInfo(const FunctionInfo& I)
 {
     HTMLTagWriter div({
         .Name = "div",
         .Id = toBase16(I.id),
-        .Class = {"function-info"}
+        .Class = "function-info"
     });
+    writeTemplateHead(div, I.Template);
     writeSpec(div, I.specs1.explicitSpec);
     writeSpec(div, I.specs0.storageClass);
     writeSpec(div, I.specs0.constexprKind);
 
-    div.write(buildTypeInfo(I.ReturnType));
+    div.write(buildTypeInfo(I.ReturnType), " ");
+
+    writeName(div, I);
 
     div.write(
-        " ",
-        I.Name,
         "(",
         join(std::views::transform(I.Params, buildParam), ", "),
         ")");
@@ -342,96 +512,136 @@ buildInfo(const FunctionInfo& I)
     if(I.specs0.isConst)
         div.write(" ").write({
             .Name = "span",
-            .Class = {"kw-const"},
+            .Class = "kw-const",
             .Content = "const"});
 
     if(I.specs0.isVolatile)
         div.write(" ").write({
             .Name = "span",
-            .Class = {"kw-volatile"},
+            .Class = "kw-volatile",
             .Content = "volatile"});
 
     writeSpec(div, I.specs0.refQualifier);
     writeSpec(div, I.specs0.exceptionSpec);
 
-    // div.write(")");
     return div;
 }
 
-std::string
-Builder::
-buildInfo(const FieldInfo& I)
-{
-    HTMLTagWriter div({
-        .Name = "div",
-        .Id = toBase16(I.id),
-        .Class = {"field-info"}
-    });
-    div.write(buildTypeInfo(I.Type));
-    div.write(" ", I.Name);
-    return div;
-}
-
-std::string
+HTMLTagWriter
 Builder::
 buildInfo(const VariableInfo& I)
 {
     HTMLTagWriter div({
         .Name = "div",
         .Id = toBase16(I.id),
-        .Class = {"function-info"}
+        .Class = "variable-info"
     });
+    writeTemplateHead(div, I.Template);
     writeSpec(div, I.specs.storageClass);
-#if 0
-    if(I.specs.storageClass != StorageClassKind::None)
-    {
-        div.write({
-            .Name = "span",
-            .Class = {"kw-storage-class"}
-        }, toString(I.specs.storageClass));
-        div.write(" ");
-    }
-#endif
-    div.write(buildTypeInfo(I.Type));
-    div.write(fmt::format(" {}", I.Name));
+
+    div.write(buildTypeInfo(I.Type), " ");
+    writeName(div, I);
     return div;
 }
 
-std::string
+HTMLTagWriter
+Builder::
+buildInfo(const FieldInfo& I)
+{
+    HTMLTagWriter div({
+        .Name = "div",
+        .Id = toBase16(I.id),
+        .Class = "field-info"
+    });
+    div.write(buildTypeInfo(I.Type), " ");
+    writeName(div, I);
+    return div;
+}
+
+HTMLTagWriter
+Builder::
+buildInfo(const TypedefInfo& I)
+{
+    HTMLTagWriter div({
+        .Name = "div",
+        .Id = toBase16(I.id),
+        .Class = "typedef-info"
+    });
+    if(I.IsUsing)
+    {
+        writeTemplateHead(div, I.Template);
+        div.write({
+            .Name = "span",
+            .Class = "kw-using",
+            .Content = "using"
+        }).write(" ");
+        writeName(div, I);
+        div.write(" = ", buildTypeInfo(I.Underlying));
+    }
+    else
+    {
+        div.write({
+            .Name = "span",
+            .Class = "kw-typedef",
+            .Content = "typedef"
+        }).write(" ");
+        div.write(buildTypeInfo(I.Underlying), " ");
+        writeName(div, I);
+    }
+    // writeName(div, I);
+    return div;
+}
+
+HTMLTagWriter
 Builder::
 buildInfo(
-    const RecordInfo& I,
-    bool write_children)
+    const RecordInfo& I)
 {
     HTMLTagWriter div({
         .Name = "div",
         .Id = toBase16(I.id),
         .Class = {"record-info"}
     });
-    div.write({
-        .Name = write_children ? "h1" : "span",
-        .Content = fmt::format("class {}", I.Name)
-    });
+    writeTemplateHead(div, I.Template);
 
-    if(write_children)
-    {
-        for(const SymbolID& id : I.Members)
-        {
-            visit(corpus_.get(id),
-                [&](const auto& C)
-                {
-                    div.write(buildInfo(C));
-                });
-        }
-    }
+    div.write({
+        .Name = "span",
+        .Class = "kw-class-key",
+        .Content = toString(I.KeyKind)
+    }).write(" ");;
+
+    writeName(div, I);
+
     return div;
 }
 
-std::string
+HTMLTagWriter
+Builder::
+buildInfo(
+    const NamespaceInfo& I)
+{
+    HTMLTagWriter div({
+        .Name = "div",
+        .Id = toBase16(I.id),
+        .Class = {"namespace-info"}
+    });
+
+    div.write({
+        .Name = "span",
+        .Class = "kw-namespace",
+        .Content = "namespace"
+    }).write(" ");;
+
+    writeName(div, I);
+
+    return div;
+}
+
+HTMLTagWriter
 Builder::
 buildInfo(const Info&)
 {
-    return "";
+    return HTMLTagWriter();
 }
 
 
@@ -443,232 +653,35 @@ Builder(
     : corpus_(corpus)
     , options_(options)
 {
-#if 0
-    namespace fs = llvm::sys::fs;
-    namespace path = llvm::sys::path;
 
-    Config const& config = corpus.config;
-
-    js::Scope scope(ctx_);
-
-    {
-        auto handlebarsPath = files::appendPath(
-            config.addonsDir, "js", "handlebars.js");
-        auto fileText = files::getFileText(handlebarsPath);
-        if(! fileText)
-            throw fileText.getError();
-        if(auto err = scope.script(*fileText))
-            throw err;
-    }
-    auto Handlebars = scope.getGlobal("Handlebars");
-#endif
-
-    // load templates
-#if 0
-    err = forEachFile(options_.template_dir,
-        [&](std::string_view fileName)
-        {
-            if(! fileName.ends_with(".html.hbs"))
-                return Error::success();
-            return Error::success();
-        });
-#endif
-
-#if 0
-    Error err;
-
-    // load partials
-    err = forEachFile(
-        files::appendPath(config.addonsDir,
-            "generator", "asciidoc", "partials"),
-        [&](std::string_view pathName)
-        {
-            constexpr std::string_view ext = ".html.hbs";
-            if(! pathName.ends_with(ext))
-                return Error::success();
-            auto name = files::getFileName(pathName);
-            name.remove_suffix(ext.size());
-            auto text = files::getFileText(pathName);
-            if(! text)
-                return text.getError();
-            Handlebars.call("registerPartial", name, *text);
-            return Error::success();
-        });
-    if(err)
-        throw err;
-#endif
-
-    // load helpers
-#if 0
-    err = forEachFile(
-        files::appendPath(config.addonsDir,
-            "generator", "js", "helpers"),
-        [&](std::string_view pathName)
-        {
-            constexpr std::string_view ext = ".js";
-            if(! pathName.ends_with(ext))
-                return Error::success();
-            auto name = files::getFileName(pathName);
-            name.remove_suffix(ext.size());
-            //Handlebars.call("registerHelper", name, *text);
-            auto err = ctx_.scriptFromFile(pathName);
-            return Error::success();
-        });
-    if(err)
-        throw err;
-#endif
-
-#if 0
-    err = scope.script(
-        "Handlebars.registerHelper("
-        "    'to_string', function(context)\n"
-        "{\n"
-        "   return JSON.stringify(context, null, 2);\n"
-        "});");
-    if(err)
-        throw err;
-#endif
 }
 
 Expected<std::string>
 Builder::
 operator()(NamespaceInfo const& I)
 {
-return std::string();
-#if 0
-    Config const& config = corpus_.config;
-
-    js::Scope scope(ctx_);
-    auto Handlebars = scope.getGlobal("Handlebars");
-    auto layoutDir = files::appendPath(config.addonsDir,
-            "generator", "asciidoc", "layouts");
-    auto pathName = files::appendPath(layoutDir, "namespace.html.hbs");
-    auto fileText = files::getFileText(pathName);
-    if(! fileText)
-        return fileText.getError();
-    js::Object options(scope);
-    options.insert("noEscape", true);
-    auto templateFn = Handlebars.call("compile", *fileText, options);
-
-    js::Object context(scope);
-    {
-        // build page
-        js::Object page(scope);
-        page.insert("kind", "namespace");
-        page.insert("name", I.Name);
-        {
-            js::Array list(scope);
-            for(auto const& id : I.Members)
-                visit(corpus_.get<Info>(id),
-                    [&](auto const& I)
-                    {
-                        insertMember(list, I);
-                    });
-            page.insert("members", list);
-        }
-        context.insert("page", page);
-    }
-
-    auto result = js::tryCall(templateFn, context);
-    if(! result)
-        return result.getError();
-    js::String htmlText(*result);
-    return std::string(htmlText);
-#endif
+    return std::string();
 }
 
 Expected<std::string>
 Builder::
 operator()(RecordInfo const& I)
 {
-    // return std::string();
-    return buildInfo(I, true) + "<hr>";
-#if 0
-    Config const& config = corpus_.config;
-    js::Scope scope(ctx_);
-    auto Handlebars = scope.getGlobal("Handlebars");
-    auto layoutDir = files::appendPath(config.addonsDir,
-            "generator", "asciidoc", "layouts");
-    auto pathName = files::appendPath(layoutDir, "record.html.hbs");
-    auto fileText = files::getFileText(pathName);
-    if(! fileText)
-        return fileText.getError();
-    js::Object options(scope);
-    options.insert("noEscape", true);
-    auto templateFn = Handlebars.call("compile", *fileText, options);
-
-    js::Object context(scope);
-    {
-        js::Object page(scope);
-        page.insert("kind", "record");
-        page.insert("name", I.Name);
-        {
-            js::Array list(scope);
-            for(auto const& id : I.Members)
-                visit(corpus_.get<Info>(id),
-                    [&](auto const& I)
-                    {
-                        insertMember(list, I);
-                    });
-            page.insert("members", list);
-        }
-        context.insert("page", page);
-    }
-
-    auto result = js::tryCall(templateFn, context);
-    if(! result)
-        return result.getError();
-    js::String htmlText(*result);
-    return std::string(htmlText);
-#endif
+    HTMLTagWriter tag = buildInfo(I);
+    writeChildren(tag, I.Members);
+    return std::string(tag) + "<hr>";
 }
 
 Expected<std::string>
 Builder::
 operator()(FunctionInfo const& I)
 {
-    Config const& config = corpus_.config;
+    if(auto* parent = corpus_.find(I.Namespace.front());
+        parent && parent->isRecord())
+        return "";
 
-#if 0
-    return HTMLTagWriter({
-        .Name = "div",
-        .Id = toBase16(I.id)
-    }, buildInfo(I));
-#endif
-
-    return buildInfo(I) + "<hr>";
-#if 0
-    js::Scope scope(ctx_);
-    auto Handlebars = scope.getGlobal("Handlebars");
-    auto layoutDir = files::appendPath(config.addonsDir,
-            "generator", "asciidoc", "layouts");
-    auto pathName = files::appendPath(layoutDir, "function.html.hbs");
-    auto fileText = files::getFileText(pathName);
-    if(! fileText)
-        return fileText.getError();
-    js::Object options(scope);
-    options.insert("noEscape", true);
-    auto templateFn = Handlebars.call("compile", *fileText, options);
-
-    js::Object context(scope);
-    {
-        js::Object page(scope);
-        page.insert("kind", "record");
-        page.insert("name", I.Name);
-        page.insert("decl", renderFunctionDecl(I));
-        if(I.DefLoc.has_value())
-            page.insert("loc", I.DefLoc->Filename);
-        if(I.javadoc)
-            makeJavadoc(page, *I.javadoc);
-        context.insert("page", page);
-    }
-
-    auto result = js::tryCall(templateFn, context);
-    if(! result)
-        return result.getError();
-    js::String htmlText(*result);
-    return std::string(htmlText);
-#endif
+    HTMLTagWriter tag = buildInfo(I);
+    return std::string(tag) + "<hr>";
 }
 
 //------------------------------------------------
