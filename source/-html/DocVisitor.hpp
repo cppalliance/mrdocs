@@ -14,52 +14,12 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Support/RangeFor.hpp>
+#include <mrdox/Support/String.hpp>
 #include <fmt/format.h>
 
 namespace clang {
 namespace mrdox {
 namespace html {
-
-inline
-std::string_view
-ltrim(std::string_view s)
-{
-    auto it = s.begin();
-    for (;; ++it)
-    {
-        if (it == s.end())
-            return {};
-        if (!isspace(*it))
-            break;
-    }
-    return s.substr(it - s.begin());
-}
-
-inline
-std::string_view
-rtrim(std::string_view s)
-{
-    auto it = s.end() - 1;
-    for (; it > s.begin() && isspace(*it); --it);
-    return s.substr(0, it - s.begin());
-}
-
-inline
-std::string_view
-trim(std::string_view s)
-{
-    auto left = s.begin();
-    for (;; ++left)
-    {
-        if (left == s.end())
-            return {};
-        if (!isspace(*left))
-            break;
-    }
-    auto right = s.end() - 1;
-    for (; right > left && isspace(*right); --right);
-    return std::string_view(&*left, right - left + 1);
-}
 
 class DocVisitor
 {
@@ -229,7 +189,7 @@ void
 DocVisitor::
 operator()(doc::Text const& I)
 {
-    // Asciidoc text must not have leading 
+    // Asciidoc text must not have leading
     // else they can be rendered up as code.
     std::string_view s = trim(I.string);
     dest_.append(s);

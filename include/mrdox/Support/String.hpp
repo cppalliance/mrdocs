@@ -12,7 +12,10 @@
 #define MRDOX_API_SUPPORT_STRING_HPP
 
 #include <mrdox/Platform.hpp>
+#include <string>
 #include <string_view>
+#include <cctype>
+
 
 namespace clang {
 namespace mrdox {
@@ -26,7 +29,7 @@ ltrim(std::string_view s)
     {
         if (it == s.end())
             return {};
-        if (!isspace(*it))
+        if (! std::isspace(*it))
             break;
     }
     return s.substr(it - s.begin());
@@ -37,7 +40,7 @@ std::string_view
 rtrim(std::string_view s)
 {
     auto it = s.end() - 1;
-    for (; it > s.begin() && isspace(*it); --it);
+    for (; it > s.begin() && std::isspace(*it); --it);
     return s.substr(0, it - s.begin());
 }
 
@@ -50,12 +53,32 @@ trim(std::string_view s)
     {
         if (left == s.end())
             return {};
-        if (!isspace(*left))
+        if (! std::isspace(*left))
             break;
     }
     auto right = s.end() - 1;
-    for (; right > left && isspace(*right); --right);
+    for (; right > left && std::isspace(*right); --right);
     return std::string_view(&*left, right - left + 1);
+}
+
+template<typename Range>
+std::string
+join(
+    Range&& range,
+    std::string_view delim)
+{
+    std::string result;
+    if(std::empty(range))
+        return result;
+    auto first = std::begin(range);
+    auto last = std::end(range);
+    result.append(*first++);
+    while(first != last)
+    {
+        result.append(delim);
+        result.append(*first++);
+    }
+    return result;
 }
 
 } // mrdox
