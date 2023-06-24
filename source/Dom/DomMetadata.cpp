@@ -10,7 +10,6 @@
 
 #include "Support/Radix.hpp"
 #include <mrdox/Metadata.hpp>
-#include <mrdox/Dom/DomFnSpecs.hpp>
 #include <mrdox/Dom/DomMetadata.hpp>
 
 #include "-adoc/DocVisitor.hpp" // VFALCO NO!
@@ -784,10 +783,32 @@ construct() const
     if constexpr(T::isFunction())
     {
         list.insert(list.end(), {
-            { "params", dom::create<DomParamArray>(I_.Params, corpus_) },
-            { "return", dom::create<DomTypeInfo>(I_.ReturnType, corpus_) },
-            { "specs", dom::create<DomFnSpecs>(I_, corpus_) },
-            { "template", domCreate(I_.Template, corpus_) }
+            { "params",     dom::create<DomParamArray>(I_.Params, corpus_) },
+            { "return",     dom::create<DomTypeInfo>(I_.ReturnType, corpus_) },
+            { "template",   domCreate(I_.Template, corpus_) },
+
+            { "isVariadic",         I_.specs0.isVariadic.get() },
+            { "isVirtual",          I_.specs0.isVirtual.get() },
+            { "isVirtualAsWritten", I_.specs0.isVirtualAsWritten.get() },
+            { "isPure",             I_.specs0.isPure.get() },
+            { "isDefaulted",        I_.specs0.isDefaulted.get() },
+          { "isExplicitlyDefaulted",I_.specs0.isExplicitlyDefaulted.get() },
+            { "isDeleted",          I_.specs0.isDeleted.get() },
+            { "isDeletedAsWritten", I_.specs0.isDeletedAsWritten.get() },
+            { "isNoReturn",         I_.specs0.isNoReturn.get() },
+            { "hasOverrideAttr",    I_.specs0.hasOverrideAttr.get() },
+            { "hasTrailingReturn",  I_.specs0.hasTrailingReturn.get() },
+            { "isConst",            I_.specs0.isConst.get() },
+            { "isVolatile",         I_.specs0.isVolatile.get() },
+            { "isFinal",            I_.specs0.isFinal.get() },
+            { "isNodiscard",        I_.specs1.isNodiscard.get() },
+
+            { "constexprKind",      toString(I_.specs0.constexprKind.get()) },
+            { "exceptionSpec",      toString(I_.specs0.exceptionSpec.get()) },
+            { "overloadedOperator", I_.specs0.overloadedOperator.get() },
+            { "storageClass",       toString(I_.specs0.storageClass.get()) },
+            { "refQualifier",       toString(I_.specs0.refQualifier.get()) },
+            { "explicitSpec",       toString(I_.specs1.explicitSpec.get()) }
             });
     }
     if constexpr(T::isEnum())

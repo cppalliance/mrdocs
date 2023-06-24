@@ -1,6 +1,6 @@
 [source,cpp,subs=+macros]
 ----
-{{#if (eq specs.storageClass "static")}}
+{{#if (eq storageClass "static")}}
 static
 {{/if}}
 {{>type-name return}}
@@ -16,7 +16,7 @@ static
 {{~else~}}
 {{name}}()
 {{~/if~}}
-{{#if (eq specs.exceptionSpec "noexcept")}} noexcept{{/if~}}
-{{#if specs.isDeleted}} = delete{{/if~}}
+{{#if (eq exceptionSpec "noexcept")}} noexcept{{/if~}}
+{{#if isDeleted}} = delete{{/if~}}
 ;
 ----
