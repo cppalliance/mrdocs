@@ -10,7 +10,7 @@
 
 #include "Support/Radix.hpp"
 #include <mrdox/Metadata.hpp>
-#include <mrdox/Dom/DomMetadata.hpp>
+#include <mrdox/Metadata/DomMetadata.hpp>
 
 #include "-adoc/DocVisitor.hpp" // VFALCO NO!
 

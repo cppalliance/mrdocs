@@ -8,7 +8,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Dom/DomContext.hpp>
+#include <mrdox/Metadata/DomContext.hpp>
 #include <utility>
 
 namespace clang {

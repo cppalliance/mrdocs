@@ -10,8 +10,8 @@
 
 #include "Builder.hpp"
 #include "Support/Radix.hpp"
-#include <mrdox/Dom/DomContext.hpp>
-#include <mrdox/Dom/DomMetadata.hpp>
+#include <mrdox/Metadata/DomContext.hpp>
+#include <mrdox/Metadata/DomMetadata.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
