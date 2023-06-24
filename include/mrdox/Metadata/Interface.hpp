@@ -41,6 +41,8 @@ public:
         std::span<VariableInfo const*>  StaticData;
     };
 
+    Corpus const& corpus;
+
     /** The aggregated public interfaces.
     */
     Tranche Public;
@@ -62,6 +64,8 @@ public:
 
 private:
     class Build;
+
+    explicit Interface(Corpus const&) noexcept;
 
     std::vector<RecordInfo const*>    records_;
     std::vector<FunctionInfo const*>  functions_;

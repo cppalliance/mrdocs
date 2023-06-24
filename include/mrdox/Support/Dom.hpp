@@ -14,6 +14,7 @@
 #include <mrdox/Platform.hpp>
 #include <atomic>
 #include <cstdint>
+#include <initializer_list>
 #include <memory>
 #include <string_view>
 #include <type_traits>
@@ -33,14 +34,18 @@ class Value;
 */
 enum class Kind
 {
-    Object,
-    Array,
-    String,
-    Integer,
+    Null,
     Boolean,
-    Null
+    Integer,
+    String,
+    Array,
+    Object
 };
 
+//------------------------------------------------
+//
+// Any
+//
 //------------------------------------------------
 
 /** A type-erased object or array implementation.
@@ -76,9 +81,15 @@ public:
 template<class U, class... Args>
 auto create(Args&&... args);
 
+//------------------------------------------------
+//
+// Pointer
+//
+//------------------------------------------------
+
 /** A pointer container for object or array.
 */
-template<class T>
+template<class T = Any>
 requires std::convertible_to<T*, Any*>
 class Pointer
 {
@@ -96,15 +107,22 @@ class Pointer
 
 public:
     Pointer() = delete;
-    Pointer& operator=(Pointer const&) = delete;
 
     ~Pointer()
     {
         any_->release();
     }
 
-    Pointer(Pointer const& other) noexcept
+    Pointer(
+        Pointer const& other) noexcept
         : any_(other.any_->addref())
+    {
+    }
+
+    template<class U>
+    requires std::convertible_to<U*, T*>
+    Pointer(U* u) noexcept
+        : any_(u->addref())
     {
     }
 
@@ -113,6 +131,16 @@ public:
     Pointer(Pointer<U> const& other) noexcept
         : any_(other.any_->addref())
     {
+    }
+
+    template<class U>
+    requires std::convertible_to<U*, T*>
+    Pointer& operator=(
+        Pointer<U> const& other) noexcept
+    {
+        Pointer temp(other);
+        temp.swap(*this);
+        return *this;
     }
 
     T* get() const noexcept
@@ -130,9 +158,18 @@ public:
         return *get();
     }
 
-    Any* any() const noexcept
+    void swap(Pointer& other) noexcept
     {
-        return any_;
+        auto temp = any_;
+        any_ = other.any_;
+        other.any_ = temp;
+    }
+
+    friend
+    void
+    swap(Pointer& p0, Pointer& p1) noexcept
+    {
+        p0.swap(p1);
     }
 
     template<class U, class... Args>
@@ -147,6 +184,10 @@ auto create(Args&&... args)
 }
 
 //------------------------------------------------
+//
+// Array
+//
+//------------------------------------------------
 
 class MRDOX_DECL
     Array : public Any
@@ -159,31 +200,94 @@ public:
 using ArrayPtr = Pointer<Array>;
 
 //------------------------------------------------
+//
+// Object
+//
+//------------------------------------------------
 
+/** A container of key and value pairs.
+*/
 class MRDOX_DECL
     Object : public Any
 {
 public:
+    using value_type = std::pair<std::string, Value>;
+    using list_type = std::vector<value_type>;
+
+    Object() noexcept;
+    explicit Object(list_type list);
+    list_type const& list() const noexcept;
+    void append(std::string_view key, Value value);
+    void append(std::initializer_list<value_type>);
     virtual bool empty() const noexcept;
-    virtual Value get(std::string_view) const;
+    virtual Value get(std::string_view key) const;
+    virtual void set(std::string_view key, Value value);
     virtual std::vector<std::string_view> props() const;
+
+private:
+    list_type list_;
 };
 
 using ObjectPtr = Pointer<Object>;
 
+/** Return a new object with a given list of properties.
+*/
+MRDOX_DECL
+ObjectPtr
+createObject(
+    Object::list_type list);
+
+//------------------------------------------------
+//
+// LazyObject
+//
 //------------------------------------------------
 
+/** An Object whose construction is deferred.
+*/
+class MRDOX_DECL
+    LazyObject : public Any
+{
+    std::atomic<Object*> mutable p_ = nullptr;
+
+    virtual ObjectPtr construct() const = 0;
+
+public:
+    LazyObject() noexcept;
+    ~LazyObject() noexcept;
+    ObjectPtr get() const;
+};
+
+using LazyObjectPtr = Pointer<LazyObject>;
+
+//------------------------------------------------
+
+/** A variant container for any kind of Dom value.
+*/
 class MRDOX_DECL
     Value
 {
+    enum class Kind
+    {
+        Null,
+        Boolean,
+        Integer,
+        String,
+        Array,
+        Object,
+        LazyObject
+    };
+
     Kind kind_;
 
     union
     {
-        std::int64_t number_;
-        std::string string_;
-        ArrayPtr array_;
-        ObjectPtr object_;
+        bool          b_;
+        std::int64_t  i_;
+        std::string   str_;
+        ArrayPtr      arr_;
+        ObjectPtr     obj_;
+        LazyObjectPtr lazy_obj_;
     };
 
 public:
@@ -191,13 +295,35 @@ public:
     Value() noexcept;
     Value(Value const&);
     Value(Value&&) noexcept;
-    Value(bool b) noexcept;
-    Value(ArrayPtr const& arr) noexcept;
-    Value(ObjectPtr const& arr) noexcept;
     Value(std::nullptr_t) noexcept;
-    Value(char const* string) noexcept;
-    Value(std::string_view s) noexcept;
-    Value(std::string string) noexcept;
+    Value(std::int64_t) noexcept;
+    Value(std::string s) noexcept;
+    Value(ArrayPtr arr) noexcept;
+    Value(ObjectPtr obj) noexcept;
+    Value(LazyObjectPtr lazy_obj) noexcept;
+    Value& operator=(Value&&) noexcept;
+    Value& operator=(Value const&);
+
+    template<class Boolean>
+    requires std::is_same_v<Boolean, bool>
+    Value(Boolean const& b) noexcept
+        : kind_(Kind::Boolean)
+        , b_(b)
+    {
+    }
+
+    Value(char const* s)
+        : Value(std::string(s))
+    {
+    }
+
+    template<class String>
+    requires std::is_convertible_v<
+        String, std::string_view>
+    Value(String const& s)
+        : Value(std::string(s))
+    {
+    }
 
     template<class T>
     requires std::derived_from<T, Array>
@@ -214,14 +340,10 @@ public:
     }
 
     template<class T>
-    requires std::is_integral_v<T>
-    Value(T number) noexcept
+    requires std::derived_from<T, LazyObject>
+    Value(Pointer<T> const& ptr) noexcept
+        : Value(LazyObjectPtr(ptr))
     {
-        if constexpr(std::is_same_v<T, bool>)
-            kind_ = Kind::Boolean;
-        else
-            kind_ = Kind::Integer;
-        number_ = static_cast<std::int64_t>(number);
     }
 
     template<class Enum>
@@ -232,46 +354,53 @@ public:
     {
     }
 
-    Kind kind() const noexcept { return kind_; }
-    bool isBool() const noexcept { return kind_ == Kind::Boolean; }
-    bool isArray() const noexcept { return kind_ == Kind::Array; }
-    bool isObject() const noexcept { return kind_ == Kind::Object; }
+    dom::Kind kind() const noexcept;
     bool isNull() const noexcept { return kind_ == Kind::Null; }
+    bool isBool() const noexcept { return kind_ == Kind::Boolean; }
     bool isInteger() const noexcept { return kind_ == Kind::Integer; }
     bool isString() const noexcept { return kind_ == Kind::String; }
+    bool isArray() const noexcept { return kind_ == Kind::Array; }
+    bool isObject() const noexcept
+    {
+        return
+            kind_ == Kind::Object ||
+            kind_ == Kind::LazyObject;
+    }
 
     bool isTruthy() const noexcept;
 
     bool getBool() const noexcept
     {
         MRDOX_ASSERT(kind_ == Kind::Boolean);
-        return number_ != 0;
+        return b_ != 0;
     }
 
     std::int64_t getInteger() const noexcept
     {
         MRDOX_ASSERT(kind_ == Kind::Integer);
-        return number_;
+        return i_;
     }
 
     std::string_view getString() const noexcept
     {
         MRDOX_ASSERT(kind_ == Kind::String);
-        return string_;
+        return str_;
     }
 
     ArrayPtr const&
     getArray() const noexcept
     {
         MRDOX_ASSERT(kind_ == Kind::Array);
-        return array_;
+        return arr_;
     }
 
-    ObjectPtr const&
-    getObject() const noexcept
+    ObjectPtr getObject() const noexcept;
+
+    void swap(Value& other) noexcept;
+
+    friend void swap(Value& v0, Value& v1) noexcept
     {
-        MRDOX_ASSERT(kind_ == Kind::Object);
-        return object_;
+        v0.swap(v1);
     }
 };
 

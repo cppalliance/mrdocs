@@ -8,33 +8,22 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_API_DOM_DOMBASEARRAY_HPP
-#define MRDOX_API_DOM_DOMBASEARRAY_HPP
+#ifndef MRDOX_API_DOM_DOMMETADATA_HPP
+#define MRDOX_API_DOM_DOMMETADATA_HPP
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Support/Dom.hpp>
-#include <vector>
+#include <mrdox/Metadata.hpp>
+#include <type_traits>
 
 namespace clang {
 namespace mrdox {
 
-/** A vector of BaseInfo.
+/** Return a Dom node for the given metadata.
 */
-class MRDOX_DECL
-    DomBaseArray : public dom::Array
-{
-    std::vector<BaseInfo> const& list_;
-    Corpus const& corpus_;
-
-public:
-    DomBaseArray(
-        std::vector<BaseInfo> const& list,
-        Corpus const& corpus) noexcept;
-
-    std::size_t length() const noexcept override;
-    dom::Value get(std::size_t index) const override;
-};
+MRDOX_DECL dom::Value domCreateInfo(Info const& I, Corpus const& corpus);
+MRDOX_DECL dom::Value domCreateInfo(SymbolID const& id, Corpus const& corpus);
 
 } // mrdox
 } // clang

@@ -87,6 +87,7 @@ public:
         doc::List<doc::Text> const& list);
 };
 
+inline
 DocVisitor::
 DocVisitor(
     std::string& dest) noexcept
@@ -95,6 +96,7 @@ DocVisitor(
 {
 }
 
+inline
 void
 DocVisitor::
 operator()(
@@ -104,6 +106,7 @@ operator()(
         doc::visit(*block, *this);
 }
 
+inline
 void
 DocVisitor::
 operator()(
@@ -112,6 +115,7 @@ operator()(
     //dest_ += I.string;
 }
 
+inline
 void
 DocVisitor::
 operator()(
@@ -145,6 +149,7 @@ operator()(
     dest_ += "----\n";
 }
 
+inline
 void
 DocVisitor::
 operator()(
@@ -154,6 +159,7 @@ operator()(
 }
 
 //void operator()(doc::Brief const& I)
+inline
 void
 DocVisitor::
 operator()(
@@ -176,6 +182,7 @@ operator()(
     dest_.push_back('\n');
 }
 
+inline
 void
 DocVisitor::
 operator()(
@@ -188,6 +195,7 @@ operator()(
     dest_.push_back(']');
 }
 
+inline
 void
 DocVisitor::
 operator()(
@@ -211,6 +219,7 @@ operator()(
     dest_.push_back('\n');
 }
 
+inline
 void
 DocVisitor::
 operator()(doc::Param const& I)
@@ -218,6 +227,7 @@ operator()(doc::Param const& I)
     //dest_ += I.string;
 }
 
+inline
 void
 DocVisitor::
 operator()(doc::Returns const& I)
@@ -225,6 +235,7 @@ operator()(doc::Returns const& I)
     //dest_ += I.string;
 }
 
+inline
 void
 DocVisitor::
 operator()(doc::Text const& I)
@@ -235,6 +246,7 @@ operator()(doc::Text const& I)
     dest_.append(s);
 }
 
+inline
 void
 DocVisitor::
 operator()(doc::Styled const& I)
@@ -261,6 +273,7 @@ operator()(doc::Styled const& I)
     }
 }
 
+inline
 void
 DocVisitor::
 operator()(doc::TParam const& I)
@@ -268,6 +281,7 @@ operator()(doc::TParam const& I)
     //dest_ += I.string;
 }
 
+inline
 std::size_t
 DocVisitor::
 measureLeftMargin(

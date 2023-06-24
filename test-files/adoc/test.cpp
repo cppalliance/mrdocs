@@ -1,5 +1,10 @@
+#include <string>
+
+struct T {};
+
 /** brief
 
 */
-void f();
+T f();
 
+std::string g();

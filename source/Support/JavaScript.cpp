@@ -51,47 +51,60 @@ struct Context::Impl
 
 struct Access
 {
-    duk_context* operator()(Context const& ctx) const noexcept
+    explicit Access(
+        Context const& ctx) noexcept
+        : impl_(ctx.impl_)
     {
-        return ctx.impl_->ctx;
     }
 
-    duk_context* operator()(Scope const& scope) const noexcept
+    explicit Access(
+        Scope const& scope) noexcept
+        : Access(scope.ctx_)
     {
-        return (*this)(scope.ctx_);
     }
 
-    duk_idx_t operator()(Value const& val) const noexcept
+    operator duk_context*() const noexcept
     {
-        return val.idx_;
+        return impl_->ctx;
     }
 
-    void addref(Scope& scope) const noexcept
+    void push(Param const& param) const
+    {
+        param.push(impl_->ctx);
+    }
+
+    static duk_idx_t idx(Value const& value) noexcept
+    {
+        return value.idx_;
+    }
+
+    static void addref(Scope& scope) noexcept
     {
         ++scope.refs_;
     }
 
-    void release(Scope& scope) const noexcept
+    static void release(Scope& scope) noexcept
     {
         if(--scope.refs_ != 0)
             return;
         scope.reset();
     }
 
-    void swap(Value& v0, Value& v1) const noexcept
+    static void swap(Value& v0, Value& v1) noexcept
     {
         std::swap(v0.scope_, v1.scope_);
         std::swap(v0.idx_, v1.idx_);
     }
 
     template<class T, class... Args>
-    T construct(Args&&... args) const
+    static T construct(Args&&... args)
     {
         return T(std::forward<Args>(args)...);
     }
-};
 
-constexpr Access A{};
+private:
+    Context::Impl* impl_;
+};
 
 //------------------------------------------------
 //
@@ -102,27 +115,29 @@ constexpr Access A{};
 static std::string getStringProp(
     std::string_view name, Scope& scope)
 {
-    MRDOX_ASSERT(duk_get_type(A(scope), -1) == DUK_TYPE_OBJECT);
-    if(! duk_get_prop_lstring(A(scope), -1, name.data(), name.size()))
+    Access A(scope);
+    MRDOX_ASSERT(duk_get_type(A, -1) == DUK_TYPE_OBJECT);
+    if(! duk_get_prop_lstring(A, -1, name.data(), name.size()))
         throw Error("missing property {}", name);
     char const* s;
-    if(duk_get_type(A(scope), -1) != DUK_TYPE_STRING)
-        duk_to_string(A(scope), -1);
+    if(duk_get_type(A, -1) != DUK_TYPE_STRING)
+        duk_to_string(A, -1);
     duk_size_t len;
-    s = duk_get_lstring(A(scope), -1, &len);
+    s = duk_get_lstring(A, -1, &len);
     MRDOX_ASSERT(s);
     std::string result = std::string(s, len);
-    duk_pop(A(scope));
+    duk_pop(A);
     return result;
 }
 
 static Error popError(Scope& scope)
 {
+    Access A(scope);
     Error err("{} (\"{}\" line {})",
         getStringProp("message", scope),
         getStringProp("fileName", scope),
         getStringProp("lineNumber", scope));
-    duk_pop(A(scope));
+    duk_pop(A);
     return err;
 }
 
@@ -151,51 +166,204 @@ Context(
 
 //------------------------------------------------
 
-Arg::
-Arg(Value const& value) noexcept
-    : push(&push_Value)
-    , index(A(value))
+static void obj_construct(
+    duk_context*, duk_idx_t, dom::Object*);
+
+//------------------------------------------------
+
+void
+Param::
+push(void* ctx_) const
+{
+    auto ctx = static_cast<duk_context*>(ctx_);
+    switch(kind_)
+    {
+    case Kind::Undefined:
+        duk_push_undefined(ctx);
+        break;
+    case Kind::Null:
+        duk_push_null(ctx);
+        break;
+    case Kind::Boolean:
+        duk_push_boolean(ctx, b_);
+        break;
+    case Kind::Integer:
+        duk_push_int(ctx, i_);
+        break;
+    case Kind::Unsigned:
+        duk_push_uint(ctx, u_);
+        break;
+    case Kind::Double:
+        duk_push_number(ctx, d_);
+        break;
+    case Kind::String:
+        duk_push_lstring(
+            ctx, s_.data(), s_.size());
+        break;
+    case Kind::Value:
+        duk_dup(ctx, idx_);
+        break;
+    case Kind::DomObject:
+        duk_push_object(ctx);
+        obj_construct(ctx, -1, obj_.get());
+        break;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+Param::
+Param(
+    Param&& other) noexcept
+{
+    kind_ = other.kind_;
+    switch(other.kind_)
+    {
+    case Kind::Undefined:
+    case Kind::Null:
+        break;
+    case Kind::Boolean:
+        b_ = other.b_;
+        break;
+    case Kind::Integer:
+        i_ = other.i_;
+        break;
+    case Kind::Unsigned:
+        u_ = other.u_;
+        break;
+    case Kind::Double:
+        d_ = other.d_;
+        break;
+    case Kind::String:
+        s_ = other.s_;
+        break;
+    case Kind::Value:
+        idx_ = other.idx_;
+        break;
+    case Kind::DomObject:
+        obj_ = other.obj_;
+        break;
+    }
+}
+
+Param::
+Param(
+    dom::ObjectPtr const& obj) noexcept
+    : kind_(Kind::DomObject)
+    , obj_(obj)
 {
 }
 
-void
-Arg::
-push_bool(
-    Arg const& arg, Scope& scope)
+Param::
+~Param()
 {
-    duk_push_boolean(A(scope), arg.number != 0);
+    switch(kind_)
+    {
+    case Kind::Undefined:
+    case Kind::Null:
+    case Kind::Boolean:
+    case Kind::Integer:
+    case Kind::Unsigned:
+    case Kind::Double:
+        break;
+    case Kind::String:
+        s_.~basic_string_view();
+        break;
+    case Kind::Value:
+        break;
+    case Kind::DomObject:
+        obj_.~Pointer();
+        break;
+    default:
+        MRDOX_UNREACHABLE();
+    }
 }
 
-void
-Arg::
-push_int(
-    Arg const& arg, Scope& scope)
+Param::
+Param() noexcept = default;
+
+Param::
+Param(
+    std::nullptr_t) noexcept
+    : kind_(Kind::Null)
 {
-    duk_push_int(A(scope), arg.number);
 }
 
-void
-Arg::
-push_uint(
-    Arg const& arg, Scope& scope)
+Param::
+Param(
+    bool b) noexcept
+    : kind_(Kind::Boolean)
+    , b_(b)
 {
-    duk_push_uint(A(scope), arg.u_number);
 }
 
-void
-Arg::
-push_lstring(
-    Arg const& arg, Scope& scope)
+Param::
+Param(
+    int i) noexcept
+    : kind_(Kind::Integer)
+    , i_(i)
 {
-    duk_push_lstring(A(scope), arg.data, arg.size);
 }
 
-void
-Arg::
-push_Value(
-    Arg const& arg, Scope& scope)
+Param::
+Param(
+    unsigned int u) noexcept
+    : kind_(Kind::Unsigned)
+    , u_(u)
 {
-    duk_dup(A(scope), arg.index);
+}
+
+Param::
+Param(
+    double d) noexcept
+    : kind_(Kind::Double)
+    , d_(d)
+{
+}
+
+Param::
+Param(
+    std::string_view s) noexcept
+    : kind_(Kind::String)
+    , s_(s)
+{
+}
+
+Param::
+Param(
+    Value const& value) noexcept
+    : kind_(Kind::Value)
+    , idx_(Access::idx(value))
+{
+}
+
+Param::
+Param(
+    dom::Value const& value) noexcept
+    : Param(
+        [&value]() -> Param
+        {
+            switch(value.kind())
+            {
+            case dom::Kind::Null:
+                return nullptr;
+            case dom::Kind::Boolean:
+                return value.getBool();
+            case dom::Kind::Integer:
+                return static_cast<int>(
+                    value.getInteger());
+            case dom::Kind::String:
+                return value.getString();
+            case dom::Kind::Array:
+                return nullptr;
+            case dom::Kind::Object:
+                return value.getObject();
+            default:
+                MRDOX_UNREACHABLE();
+            }
+        }())
+       
+{
 }
 
 //------------------------------------------------
@@ -204,7 +372,8 @@ void
 Scope::
 reset()
 {
-    duk_pop_n(A(ctx_), duk_get_top(A(ctx_)) - top_);
+    Access A(ctx_);
+    duk_pop_n(A, duk_get_top(A) - top_);
 }
 
 Scope::
@@ -212,7 +381,7 @@ Scope(
     Context const& ctx) noexcept
     : ctx_(ctx)
     , refs_(0)
-    , top_(duk_get_top(A(ctx)))
+    , top_(duk_get_top(Access(ctx)))
 {
 }
 
@@ -228,12 +397,13 @@ Scope::
 script(
     std::string_view jsCode)
 {
+    Access A(*this);
     auto failed = duk_peval_lstring(
-        A(*this), jsCode.data(), jsCode.size());
+        A, jsCode.data(), jsCode.size());
     if(failed)
         return popError(*this);
-    MRDOX_ASSERT(duk_get_type(A(*this), -1) == DUK_TYPE_UNDEFINED);
-    duk_pop(A(*this)); // result
+    MRDOX_ASSERT(duk_get_type(A, -1) == DUK_TYPE_UNDEFINED);
+    duk_pop(A); // result
     return Error::success();
 }
 
@@ -241,7 +411,8 @@ Object
 Scope::
 getGlobalObject()
 {
-    duk_push_global_object(A(*this));
+    Access A(*this);
+    duk_push_global_object(A);
     return A.construct<Object>(-1, *this);
 }
 
@@ -250,13 +421,14 @@ Scope::
 tryGetGlobal(
     std::string_view name)
 {
+    Access A(*this);
     if(! duk_get_global_lstring(
-        A(*this), name.data(), name.size()))
+        A, name.data(), name.size()))
     {
-        duk_pop(A(*this)); // undefined
+        duk_pop(A); // undefined
         return Error("global property {} not found", name);
     }
-    return A.construct<Object>(duk_get_top_index(A(*this)), *this);
+    return A.construct<Object>(duk_get_top_index(A), *this);
 }
 
 Object
@@ -281,8 +453,9 @@ Value(
     int idx,
     Scope& scope) noexcept
     : scope_(&scope)
-    , idx_(duk_require_normalize_index(A(scope), idx))
 {
+    Access A(*scope_);
+    idx_ = duk_require_normalize_index(A, idx);
     A.addref(*scope_);
 }
 
@@ -291,8 +464,9 @@ Value::
 {
     if( ! scope_)
         return;
-    if(idx_ == duk_get_top(A(*scope_)) - 1)
-        duk_pop(A(*scope_));
+    Access A(*scope_);
+    if(idx_ == duk_get_top(A) - 1)
+        duk_pop(A);
     A.release(*scope_);
 }
 
@@ -315,8 +489,9 @@ Value(
         return;
     }
 
-    duk_dup(A(*scope_), other.idx_);
-    idx_ = duk_normalize_index(A(*scope_), -1);
+    Access A(*scope_);
+    duk_dup(A, other.idx_);
+    idx_ = duk_normalize_index(A, -1);
     A.addref(*scope_);
 }
 
@@ -335,7 +510,7 @@ Value::
 operator=(Value const& other)
 {
     Value temp(other);
-    A.swap(*this, temp);
+    Access::swap(*this, temp);
     return *this;
 }
 
@@ -344,7 +519,7 @@ Value::
 operator=(Value&& other) noexcept
 {
     Value temp(std::move(other));
-    A.swap(*this, temp);
+    Access::swap(*this, temp);
     return *this;
 }
 
@@ -354,7 +529,8 @@ type() const noexcept
 {
     if(! scope_)
         return Type::undefined;
-    switch(duk_get_type(A(*scope_), idx_))
+    Access A(*scope_);
+    switch(duk_get_type(A, idx_))
     {
     case DUK_TYPE_UNDEFINED: return Type::undefined;
     case DUK_TYPE_NULL:      return Type::null;
@@ -373,21 +549,23 @@ bool
 Value::
 isArray() const noexcept
 {
+    Access A(*scope_);
     return
         isObject() &&
-        duk_is_array(A(*scope_), idx_);
+        duk_is_array(A, idx_);
 }
 
 Expected<Value>
 Value::
 callImpl(
-    Arg const* data,
+    Param const* data,
     std::size_t size) const
 {
-    duk_dup(A(*scope_), idx_);
+    Access A(*scope_);
+    duk_dup(A, idx_);
     for(std::size_t i = 0; i < size; ++i)
-        data[i].push(data[i], *scope_);
-    auto result = duk_pcall(A(*scope_), size);
+        A.push(data[i]);
+    auto result = duk_pcall(A, size);
     if(result == DUK_EXEC_ERROR)
         return popError(*scope_);
     return A.construct<Value>(-1, *scope_);
@@ -433,9 +611,10 @@ get() const noexcept
 {
     if(! scope_)
         return {};
+    Access A(*scope_);
     duk_size_t size;
     auto data = duk_get_lstring(
-        A(*scope_), idx_, &size);
+        A, idx_, &size);
     return { data, size };
 }
 
@@ -444,9 +623,6 @@ get() const noexcept
 // Array
 //
 //------------------------------------------------
-
-static void obj_construct(
-    duk_context*, duk_idx_t, dom::Object*);
 
 static duk_ret_t arr_finalizer(duk_context*);
 static duk_ret_t arr_get_prop(duk_context*);
@@ -575,7 +751,7 @@ operator=(
 
 Array::
 Array(Scope& scope)
-    : Value(duk_push_array(A(scope)), scope)
+    : Value(duk_push_array(Access(scope)), scope)
 {
 }
 
@@ -583,17 +759,19 @@ std::size_t
 Array::
 size() const
 {
-    return duk_get_length(A(*scope_), idx_);
+    Access A(*scope_);
+    return duk_get_length(A, idx_);
 }
 
 void
 Array::
 push_back(
-    Arg value) const
+    Param value) const
 {
-    auto len = duk_get_length(A(*scope_), idx_);
-    value.push(value, *scope_);
-    if(! duk_put_prop_index(A(*scope_), idx_, len))
+    Access A(*scope_);
+    auto len = duk_get_length(A, idx_);
+    A.push(value);
+    if(! duk_put_prop_index(A, idx_, len))
     {
         // VFALCO What?
     }
@@ -710,9 +888,10 @@ Object::
 Object(
     Scope& scope,
     dom::ObjectPtr const& obj)
-    : Value(duk_push_object(A(scope)), scope)
+    : Value(duk_push_object(Access(scope)), scope)
 {
-    obj_construct(A(*scope_), idx_, obj.get());
+    Access A(*scope_);
+    obj_construct(A, idx_, obj.get());
 }
 
 Object::
@@ -723,7 +902,8 @@ Object(
 {
     if(! scope_)
         return;
-    duk_require_object(A(*scope_), idx_);
+    Access A(*scope_);
+    duk_require_object(A, idx_);
 }
 
 Object::
@@ -748,17 +928,18 @@ operator=(
 
 Object::
 Object(Scope& scope)
-    : Value(duk_push_object(A(scope)), scope)
+    : Value(duk_push_object(Access(scope)), scope)
 {
 }
 
 void
 Object::
 insert(
-    std::string_view name, Arg value) const
+    std::string_view name, Param value) const
 {
-    value.push(value, *scope_);
-    if(! duk_put_prop_lstring(A(*scope_),
+    Access A(*scope_);
+    A.push(value);
+    if(! duk_put_prop_lstring(A,
         idx_, name.data(), name.size()))
     {
         // VFALCO What?
@@ -771,20 +952,21 @@ Expected<Value>
 Object::
 callImpl(
     std::string_view name,
-    Arg const* data,
+    Param const* data,
     std::size_t size) const
 {
-    if(! duk_get_prop_lstring(A(*scope_),
+    Access A(*scope_);
+    if(! duk_get_prop_lstring(A,
             idx_, name.data(), name.size()))
         return Error("method {} not found", name);
-    duk_dup(A(*scope_), idx_);
+    duk_dup(A, idx_);
     for(std::size_t i = 0; i < size; ++i)
-        data[i].push(data[i], *scope_);
-    auto rc = duk_pcall_method(A(*scope_), size);
+        A.push(data[i]);
+    auto rc = duk_pcall_method(A, size);
     if(rc == DUK_EXEC_ERROR)
     {
         Error err = popError(*scope_);
-        duk_pop(A(*scope_)); // method
+        duk_pop(A); // method
         return err;
     }
     return A.construct<Value>(-1, *scope_);

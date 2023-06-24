@@ -40,17 +40,19 @@ public:
         Corpus const& corpus,
         Options const& options);
 
-    Expected<std::string> callTemplate(
-        std::string_view name, dom::ObjectPtr const& context);
+    dom::Value createContext(SymbolID const& id);
+
+    Expected<std::string>
+    callTemplate(
+        std::string_view name,
+        dom::Value const& context);
 
     Expected<std::string> renderSinglePageHeader();
     Expected<std::string> renderSinglePageFooter();
 
-    dom::ObjectPtr getSymbol(SymbolID const& id);
-    dom::ObjectPtr createContext(SymbolID const& id);
-
     template<class T>
-    Expected<std::string> operator()(T const&);
+    Expected<std::string>
+    operator()(T const&);
 };
 
 } // adoc

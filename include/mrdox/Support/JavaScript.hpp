@@ -34,6 +34,20 @@ class Value;
 
 //------------------------------------------------
 
+/** Types of values.
+*/
+enum class Type
+{
+    undefined = 1,
+    null,
+    boolean,
+    number,
+    string,
+    object
+};
+
+//------------------------------------------------
+
 class Prop
 {
     unsigned int index_;
@@ -89,70 +103,75 @@ public:
 
 //------------------------------------------------
 
-struct Arg
+/** A bound value which can be passed to JavaScript.
+
+    Objects of this type are used as parameter
+    types in signatures of C++ functions. They
+    should not be used anywhere else, otherwise
+    the behavior is undefined.
+*/
+class MRDOX_DECL
+    Param
 {
-    void (*push)(Arg const&, Scope&);
+    enum class Kind
+    {
+        Undefined,
+        Null,
+        Boolean,
+        Integer,
+        Unsigned,
+        Double,
+        String,
+        Value,
+        DomObject
+    };
 
-    int number = 0;
-    unsigned u_number = 0;
-    char const* data = nullptr;
-    std::size_t size = 0;
-    unsigned int index = 0; // of object
+    Kind kind_ = Kind::Undefined;
 
-    Arg() = default;
+    union
+    {
+        bool b_;
+        int i_;
+        unsigned int u_;
+        double d_;
+        std::string_view s_;
+        int idx_;
+        dom::ObjectPtr obj_;
+    };
 
-    Arg(int i) noexcept
-        : push(&push_int)
-        , number(i)
+    friend struct Access;
+    void push(void*) const;
+    Param(Param&&) noexcept;
+    Param(dom::ObjectPtr const&) noexcept;
+
+public:
+    /** Destructor.
+    */
+    ~Param();
+
+    /** Constructor.
+
+        Default constructed params have type undefined.
+    */
+    Param() noexcept;
+
+    Param(std::nullptr_t) noexcept;
+    Param(bool) noexcept;
+    Param(int) noexcept;
+    Param(unsigned int) noexcept;
+    Param(double) noexcept;
+    Param(std::string_view) noexcept;
+    Param(Value const&) noexcept;
+    Param(dom::Value const&) noexcept;
+
+    template<class String>
+    requires std::is_convertible_v<
+        String, std::string_view>
+    Param(
+        String const& string)
+        : Param(std::string_view(string))
     {
     }
-
-    Arg(bool b) noexcept
-        : push(&push_bool)
-        , number(b)
-    {
-    }
-
-    Arg(unsigned u) noexcept
-        : push(&push_uint)
-        , u_number(u)
-    {
-    }
-
-    Arg(std::size_t u) noexcept
-        : push(&push_uint)
-        , u_number(static_cast<std::size_t>(u))
-    {
-    }
-
-    Arg(char const* s) noexcept
-        : push(&push_lstring)
-        , data(s)
-        , size(std::string_view(s).size())
-    {
-    }
-
-    Arg(std::string const& s) noexcept
-        : push(&push_lstring)
-        , data(s.data())
-        , size(s.size())
-    {
-    }
-
-    Arg(std::string_view s) noexcept
-        : push(&push_lstring)
-        , data(s.data())
-        , size(s.size())
-    {
-    }
-
-    MRDOX_DECL Arg(Value const& value) noexcept;
-
-    MRDOX_DECL static void push_bool(Arg const&, Scope&);
-    MRDOX_DECL static void push_int(Arg const&, Scope&);
-    MRDOX_DECL static void push_uint(Arg const&, Scope&);
-    MRDOX_DECL static void push_lstring(Arg const&, Scope&);
-    MRDOX_DECL static void push_Value(Arg const&, Scope&);
 };
 
 //------------------------------------------------
@@ -200,18 +219,6 @@ public:
 };
 
 //------------------------------------------------
-
-/** Types of values.
-*/
-enum class Type
-{
-    undefined = 1,
-    null,
-    boolean,
-    number,
-    string,
-    object
-};
 
 /** An ECMAScript value.
 */
@@ -289,7 +296,7 @@ private:
     MRDOX_DECL
     Expected<Value>
     callImpl(
-        Arg const* data,
+        Param const* data,
         std::size_t size) const;
 };
 
@@ -299,7 +306,7 @@ tryCall(
     Value const& fn,
     Args&&... args)
 {
-    std::array<Arg, sizeof...(args)> va{ Arg(args)... };
+    std::array<Param, sizeof...(args)> va{ Param(args)... };
     return fn.callImpl(va.data(), va.size());
 }
 
@@ -370,7 +377,7 @@ public:
     MRDOX_DECL
     void
     push_back(
-        Arg value) const;
+        Param value) const;
 };
 
 //------------------------------------------------
@@ -385,7 +392,7 @@ class Object : public Value
 
     Expected<Value> callImpl(
         std::string_view name,
-        Arg const* data,
+        Param const* data,
         std::size_t size) const;
 
 public:
@@ -398,7 +405,7 @@ public:
     MRDOX_DECL
     void
     insert(
-        std::string_view name, Arg value) const;
+        std::string_view name, Param value) const;
 
     /** Call a member or function.
     */
@@ -408,7 +415,7 @@ public:
         std::string_view name,
         Args&&... args) const
     {
-        std::array<Arg, sizeof...(args)> va{ Arg(args)... };
+        std::array<Param, sizeof...(args)> va{ Param(args)... };
         return callImpl(name, va.data(), va.size());
     }
 

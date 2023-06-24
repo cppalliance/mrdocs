@@ -11,7 +11,7 @@
 #include "Builder.hpp"
 #include "Support/Radix.hpp"
 #include <mrdox/Dom/DomContext.hpp>
-#include <mrdox/Dom/DomSymbol.hpp>
+#include <mrdox/Dom/DomMetadata.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -134,7 +134,7 @@ Expected<std::string>
 Builder::
 callTemplate(
     std::string_view name,
-    dom::ObjectPtr const& context)
+    dom::Value const& context)
 {
     Config const& config = corpus_.config;
 
@@ -152,8 +152,7 @@ callTemplate(
     options.insert("allowProtoMethodsByDefault", true);
     auto templateFn = Handlebars.call("compile", *fileText, options);
 
-    auto result = js::tryCall(
-        templateFn, js::Object(scope, context));
+    auto result = js::tryCall(templateFn, context);
     if(! result)
         return result.getError();
     js::String adocText(*result);
@@ -180,21 +179,7 @@ renderSinglePageFooter()
 
 //------------------------------------------------
 
-dom::ObjectPtr
-Builder::
-getSymbol(
-    SymbolID const& id)
-{
-    return visit(corpus_.get(id),
-        [&]<class T>(T const& I) ->
-            dom::ObjectPtr
-        {
-            return dom::create<
-                DomSymbol<T>>(I, corpus_);
-        });
-}
-
-dom::ObjectPtr
+dom::Value
 Builder::
 createContext(
     SymbolID const& id)
@@ -202,7 +187,7 @@ createContext(
     return dom::create<DomContext>(
         DomContext::Hash({
             { "document", "test" },
-            { "symbol", getSymbol(id) }
+            { "symbol", domCreateInfo(id, corpus_) }
         }));
 }
 
