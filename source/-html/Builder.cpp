@@ -130,10 +130,10 @@ buildTParams(
         .Content = "template"
     });
     tag.write(
-        "<",
+        "&lt;",
         join(std::views::transform(params,
             [this](const TParam& P) { return buildTParam(P); }), ", "),
-        ">");
+        "&gt;");
     return tag;
 }
 
@@ -225,10 +225,10 @@ buildTemplateArgs(
         TemplateSpecKind::Primary)
     {
         tag.write(
-            "<",
+            "&lt;",
             join(std::views::transform(I->Args,
                 [this](const TArg& A) { return buildTemplateArg(A); }), ", "),
-            ">");
+            "&gt;");
     }
     return tag;
 }
@@ -240,8 +240,9 @@ writeName(
     const Info& I)
 {
     tag.write({
-        .Name = "span",
+        .Name = "a",
         .Class = "info-name",
+        .Attrs = {{"href", buildIdHref(I.id)}},
         .Content = I.Name
     });
 }
@@ -255,10 +256,11 @@ writeTemplateName(
         requires requires { I.Template; }
 {
     tag.write({
-        .Name = "span",
+        .Name = "a",
         .Class = "info-name",
-        .Content = I.Name + buildTemplateArgs(I.Template)
-    });
+        .Attrs = {{"href", buildIdHref(I.id)}},
+        .Content = I.Name
+    }).write(buildTemplateArgs(I.Template));
 }
 
 void
@@ -302,6 +304,13 @@ writeDescription(
 
 std::string
 Builder::
+buildIdHref(const SymbolID& id)
+{
+    return fmt::format("#{}", toBase16(id));
+}
+
+std::string
+Builder::
 buildTypeInfo(const TypeInfo& I)
 {
     if(I.id == SymbolID::zero ||
@@ -311,12 +320,10 @@ buildTypeInfo(const TypeInfo& I)
             .Class = "type-info",
             .Content = I.Name
         });
-    std::string id_href =
-        fmt::format("#{}", toBase16(I.id));
     return HTMLTagWriter({
         .Name = "a",
         .Class = "type-info",
-        .Attrs = {{"href", id_href}},
+        .Attrs = {{"href", buildIdHref(I.id)}},
         .Content = I.Name
     });
 }

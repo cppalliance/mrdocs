@@ -57,6 +57,9 @@ public:
     void writeChildren(
         HTMLTagWriter&,
         const std::vector<SymbolID>&);
+    
+    std::string
+    buildIdHref(const SymbolID& id);
 
     std::string
     buildTypeInfo(const TypeInfo& I);
