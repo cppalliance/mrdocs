@@ -9,6 +9,7 @@
 //
 
 #include <mrdox/Support/Dom.hpp>
+#include <mrdox/Support/Error.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -46,7 +47,14 @@ get(std::size_t) const
 
 Object::
 Object(
-    Object const&) = default;
+    Object const& other)
+{
+    // deep-copy the list
+    list_.reserve(other.list_.size());
+    for(auto const& kv : other.list_)
+        list_.emplace_back(
+            kv.first, kv.second.copy());
+}
 
 Object::
 Object() noexcept = default;
@@ -369,8 +377,9 @@ copy() const
         // we can just give the caller shared ownership.
         return *this;
     case Kind::Object:
-    case Kind::LazyObject:
         return obj_->copy();
+    case Kind::LazyObject:
+        return lazy_obj_->get()->copy();
     default:
         MRDOX_UNREACHABLE();
     }
@@ -413,14 +422,13 @@ isTruthy() const noexcept
 
 ObjectPtr
 Value::
-getObject() const noexcept
+getObject() const
 {
     if(kind_ == Kind::Object)
         return obj_;
     if(kind_ == Kind::LazyObject)
         return lazy_obj_->get();
-    MRDOX_ASSERT(kind_ == Kind::Object);
-    return obj_;
+    throw Error("not an Object");
 }
 
 void

@@ -19,7 +19,6 @@
 #include <string_view>
 #include <type_traits>
 #include <utility>
-
 #include <vector>
 
 namespace clang {
@@ -48,7 +47,7 @@ enum class Kind
 //
 //------------------------------------------------
 
-/** A type-erased object or array implementation.
+/** Reference-counting base class for dynamic types.
 */
 class MRDOX_DECL
     Any
@@ -56,24 +55,43 @@ class MRDOX_DECL
     std::atomic<std::size_t> mutable refs_ = 1;
 
 protected:
+    /** Destructor.
+    */
+    virtual ~Any() = 0;
+
+    /** Constructor.
+    */
     Any() noexcept;
+
+    /** Constructor.
+
+        The caller will have exclusive ownership
+        immediately after construction is complete.
+    */
     Any(Any const&) noexcept;
 
 public:
-    virtual ~Any() = 0;
-
+    /** Return a pointer with shared ownership.
+    */
     Any* addref() noexcept
     {
         ++refs_;
         return this;
     }
 
+    /** Return a pointer with shared ownership.
+    */
     Any const* addref() const noexcept
     {
         ++refs_;
         return this;
     }
 
+    /** Release shared ownership.
+
+        If this is the last remaining owner,
+        then this will be deleted.
+    */
     void release() const noexcept
     {
         if(--refs_ > 0)
@@ -92,16 +110,16 @@ auto create(Args&&... args);
 //
 //------------------------------------------------
 
-/** A pointer container for object or array.
+/** A pointer container for dynamic objects.
 */
-template<class T = Any>
-requires std::convertible_to<T*, Any*>
+template<class T>
 class Pointer
 {
     Any* any_;
 
+    static_assert(std::derived_from<T, Any>);
+
     template<class U>
-    requires std::convertible_to<U*, Any*>
     friend class Pointer;
 
     explicit
@@ -217,27 +235,102 @@ using ArrayPtr = Pointer<Array>;
 class MRDOX_DECL
     Object : public Any
 {
-    Object(Object const&);
+protected:
+    /** Constructor.
+
+        The newly constructed object will retain
+        a copy of the list of values in `other`.
+    */
+    Object(Object const& other);
 
 public:
+    /** The type of an element in this container.
+    */
     using value_type = std::pair<std::string, Value>;
+
+    /** The underlying, iterable range used by this container.
+    */
     using list_type = std::vector<value_type>;
 
+    /** Constructor.
+
+        Default-constructed objects are empty.
+    */
     Object() noexcept;
+
+    /** Constructor.
+
+        Upon construction, the object will retain
+        ownership of a shallow copy of the specified
+        list. In particular, dynamic objects will
+        be acquired with shared ownership.
+
+        @param list The initial list of values.
+    */
     explicit Object(list_type list);
+
+    /** Return an iterable range with the contents.
+    */
     list_type const& list() const noexcept;
+
+    /** Add elements to the container.
+
+        No checking is performed to prevent
+        the insertion of duplicate keys.
+    */
     void append(std::string_view key, Value value);
+
+    /** Add elements to the container.
+
+        No checking is performed to prevent
+        the insertion of duplicate keys.
+    */
     void append(std::initializer_list<value_type>);
+
+    /** Return a deep copy of the container.
+
+        In particular, dynamic objects will be
+        deeply copied; changes to the copy are
+        not reflected in the original.
+    */
     virtual Value copy() const;
+
+    /** Return true if the container is empty.
+    */
     virtual bool empty() const noexcept;
+
+    /** Return the value for a given key.
+
+        If the key does not exist, a null value
+        is returned.
+
+        @return The value, or null.
+
+        @param key The key.
+    */
     virtual Value get(std::string_view key) const;
+
+    /** Set or replace the value for a given key.
+
+        This function inserts a new key or changes
+        the value for the existing key if it is
+        already present.
+
+        @param key The key.
+
+        @param value The value to set.
+    */
     virtual void set(std::string_view key, Value value);
+
+    // VFALCO DEPRECATED (for duktape)
     virtual std::vector<std::string_view> props() const;
 
 private:
     list_type list_;
 };
 
+/** Alias for a pointer to an Object.
+*/
 using ObjectPtr = Pointer<Object>;
 
 /** Return a new object with a given list of properties.
@@ -260,14 +353,26 @@ class MRDOX_DECL
 {
     std::atomic<Object*> mutable p_ = nullptr;
 
+    /** Return the object.
+    */
     virtual ObjectPtr construct() const = 0;
 
 public:
-    LazyObject() noexcept;
+    /** Destructor.
+    */
     ~LazyObject() noexcept;
+
+    /** Constructor.
+    */
+    LazyObject() noexcept;
+
+    /** Return the object.
+    */
     ObjectPtr get() const;
 };
 
+/** Alias for a pointer to a LazyObject.
+*/
 using LazyObjectPtr = Pointer<LazyObject>;
 
 //------------------------------------------------
@@ -368,12 +473,32 @@ public:
     */
     Value copy() const;
 
+    /** Return the type of value contained.|
+    */
     dom::Kind kind() const noexcept;
+
+    /** Return true if this is null.
+    */
     bool isNull() const noexcept { return kind_ == Kind::Null; }
+
+    /** Return true if this is a boolean.
+    */
     bool isBool() const noexcept { return kind_ == Kind::Boolean; }
+
+    /** Return true if this is an integer.
+    */
     bool isInteger() const noexcept { return kind_ == Kind::Integer; }
+
+    /** Return true if this is a string.
+    */
     bool isString() const noexcept { return kind_ == Kind::String; }
+
+    /** Return true if this is an array.
+    */
     bool isArray() const noexcept { return kind_ == Kind::Array; }
+
+    /** Return true if this is an object.
+    */
     bool isObject() const noexcept
     {
         return
@@ -408,19 +533,33 @@ public:
         return arr_;
     }
 
-    ObjectPtr getObject() const noexcept;
+    /** Return the object if this is an object.
 
-    void swap(Value& other) noexcept;
+        @throw Error `! isObject()`
+    */
+    ObjectPtr
+    getObject() const;
 
-    friend void swap(Value& v0, Value& v1) noexcept
+    /** Swap two values.
+    */
+    void
+    swap(Value& other) noexcept;
+
+    /** Swap two values.
+    */
+    friend
+    void
+    swap(Value& v0, Value& v1) noexcept
     {
         v0.swap(v1);
     }
 };
 
+/** Return a non-empty string, or a null.
+*/
 inline
 Value
-nonEmptyString(
+stringOrNull(
     std::string_view s)
 {
     if(! s.empty())

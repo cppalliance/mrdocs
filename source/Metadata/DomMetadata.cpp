@@ -262,9 +262,9 @@ public:
         Param const& I,
         Corpus const& corpus) noexcept
         : Object({
-            {"name", dom::nonEmptyString(I.Name)},
+            {"name", dom::stringOrNull(I.Name)},
             {"type", dom::create<DomTypeInfo>(I.Type, corpus)},
-            {"default", dom::nonEmptyString(I.Default)}
+            {"default", dom::stringOrNull(I.Default)}
         })
     {
     }
@@ -321,7 +321,7 @@ public:
         TArg const& I,
         Corpus const& corpus)
         : Object({
-            {"value", dom::nonEmptyString(I.Value)}
+            {"value", dom::stringOrNull(I.Value)}
         })
     {
     }
@@ -448,7 +448,7 @@ DomTParam(
     Corpus const& corpus)
     : Object({
         {"kind", toString(I.Kind)},
-        {"name", dom::nonEmptyString(I.Name)},
+        {"name", dom::stringOrNull(I.Name)},
         {"is-pack", I.IsParameterPack},
         {"type", I.Kind == TParamKind::NonType ?
             dom::create<DomTypeInfo>(
@@ -837,7 +837,7 @@ construct() const
     {
         list.insert(list.end(), {
             { "type", dom::create<DomTypeInfo>(I_.Type, corpus_) },
-            { "default", dom::nonEmptyString(I_.Default) },
+            { "default", dom::stringOrNull(I_.Default) },
             { "isNodiscard", I_.specs.isNodiscard.get() },
             { "isDeprecated", I_.specs.isDeprecated.get() },
             { "hasNoUniqueAddress", I_.specs.hasNoUniqueAddress.get() }
