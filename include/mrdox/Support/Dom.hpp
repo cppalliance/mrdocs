@@ -79,6 +79,7 @@ public:
 };
 
 template<class U, class... Args>
+requires std::derived_from<U, Any>
 auto create(Args&&... args);
 
 //------------------------------------------------
@@ -173,10 +174,12 @@ public:
     }
 
     template<class U, class... Args>
+    requires std::derived_from<U, Any>
     friend auto create(Args&&... args);
 };
 
 template<class U, class... Args>
+requires std::derived_from<U, Any>
 auto create(Args&&... args)
 {
     return Pointer<U>(new U(

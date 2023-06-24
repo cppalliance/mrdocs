@@ -27,6 +27,24 @@ public:
 
 namespace {
 
+//------------------------------------------------
+
+/** Return a Dom node for the given metadata.
+
+    If `id` is equal to @ref SymbolID::zero, a
+    null value is returned.
+*/
+inline
+dom::Value
+domCreateInfoOrNull(
+    SymbolID const& id,
+    Corpus const& corpus)
+{
+    if(id != SymbolID::zero)
+        return domCreateInfo(id, corpus);
+    return nullptr;
+}
+
 template<class T>
 dom::Value
 domEagerCreateInfo(
@@ -211,9 +229,8 @@ public:
         : Object({
             { "id", toBase16(I.id) },
             { "name", I.Name },
-            { "symbol", I.id != SymbolID::zero
-                ? domCreateInfo(I.id, corpus)
-                : nullptr }
+            { "symbol",
+                domCreateInfoOrNull(I.id, corpus) }
             })
     {
     }
@@ -277,10 +294,10 @@ public:
 
     dom::Value get(std::size_t index) const override
     {
-        if(index >= list_.size())
-            return nullptr;
-        return dom::create<DomParam>(
-            list_[index], corpus_);
+        if(index < list_.size())
+            return dom::create<DomParam>(
+                list_[index], corpus_);
+        return nullptr;
     }
 };
 
@@ -295,7 +312,7 @@ class DomTParam : public dom::Object
 public:
      DomTParam(
         TParam const& I,
-        Corpus const& corpus) noexcept;
+        Corpus const& corpus);
 };
 
 class DomTArg : public dom::Object
@@ -303,7 +320,7 @@ class DomTArg : public dom::Object
 public:
     DomTArg(
         TArg const& I,
-        Corpus const& corpus) noexcept
+        Corpus const& corpus)
         : Object({
             {"value", dom::nonEmptyString(I.Value)}
         })
@@ -376,12 +393,11 @@ class DomTemplate : public dom::Object
 public:
     DomTemplate(
         TemplateInfo const& I,
-        Corpus const& corpus) noexcept
+        Corpus const& corpus)
         : Object({
             {"kind", toString(I.specializationKind())},
-            {"primary", I.Primary ?
-                domCreateInfo(*I.Primary, corpus) :
-                nullptr},
+            {"primary", domCreateInfoOrNull(
+                *I.Primary, corpus) },
             {"params", dom::create<DomTParamArray>(
                 I.Params, corpus)},
             {"args", dom::create<DomTArgArray>(
@@ -430,7 +446,7 @@ getTParamDefault(
 DomTParam::
 DomTParam(
     TParam const& I,
-    Corpus const& corpus) noexcept
+    Corpus const& corpus)
     : Object({
         {"kind", toString(I.Kind)},
         {"name", dom::nonEmptyString(I.Name)},
@@ -816,8 +832,29 @@ construct() const
 
 } // (anon)
 
-/** Return a lazy Info node.
+#if 0
+/** Return a Dom node for the given metadata.
 */
+MRDOX_DECL
+dom::Value
+domCreateInfo(
+    Info const& I,
+    Corpus const& corpus);
+
+// Return an Info node, or null if the id is empty
+inline
+dom::Value
+domCreateInfoOrNull(
+    OptionalSymbolID const& id,
+    Corpus const& corpus)
+{
+    if(id)
+        return domCreateInfo(*id, corpus);
+    return nullptr;
+}
+#endif
+
+// Return a possibly-lazy Info node
 dom::Value
 domCreateInfo(
     Info const& I,
@@ -831,8 +868,20 @@ domCreateInfo(
         });
 }
 
-/** Return a lazy Info node, or null.
-*/
+// Return a never-lazy Info node
+template<class T>
+static
+dom::Value
+domEagerCreateInfo(
+    T const& I,
+    Corpus const& corpus)
+{
+    return DomInfo<T>(I, corpus).construct();
+}
+
+//------------------------------------------------
+
+// The returned value can sometimes be lazy
 dom::Value
 domCreateInfo(
     SymbolID const& id,
@@ -844,20 +893,6 @@ domCreateInfo(
     if(I)
         return domCreateInfo(*I, corpus);
     return nullptr;
-}
-
-/** Create an Info node immediately.
-
-    This invokes the factory directly, without
-    going through the lazy wrapper.
-*/
-template<class T>
-dom::Value
-domEagerCreateInfo(
-    T const& I,
-    Corpus const& corpus)
-{
-    return DomInfo<T>(I, corpus).construct();
 }
 
 } // mrdox

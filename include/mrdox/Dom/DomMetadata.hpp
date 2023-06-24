@@ -22,8 +22,11 @@ namespace mrdox {
 
 /** Return a Dom node for the given metadata.
 */
-MRDOX_DECL dom::Value domCreateInfo(Info const& I, Corpus const& corpus);
-MRDOX_DECL dom::Value domCreateInfo(SymbolID const& id, Corpus const& corpus);
+MRDOX_DECL
+dom::Value
+domCreateInfo(
+    SymbolID const& id,
+    Corpus const& corpus);
 
 } // mrdox
 } // clang
