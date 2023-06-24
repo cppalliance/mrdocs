@@ -15,7 +15,6 @@
 #include "Support/Radix.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/JavaScript.hpp>
 #include <ostream>
 
 // #include <mrdox/Support/Dom.hpp>

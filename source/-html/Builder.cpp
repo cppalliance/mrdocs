@@ -13,8 +13,8 @@
 #include "Support/Radix.hpp"
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/String.hpp>
-#include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
+// #include <llvm/Support/FileSystem.h>
+// #include <llvm/Support/Path.h>
 #include <fmt/format.h>
 
 #include <concepts>
@@ -22,6 +22,7 @@
 #include <span>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -53,7 +54,7 @@ struct stringish
     std::string Underlying;
 };
 
-struct BasicHTMLTag
+struct HTMLTag
 {
     std::string_view Name;
     std::string Id;
@@ -66,36 +67,28 @@ struct BasicHTMLTag
 
 struct HTMLTagWriter
 {
-    BasicHTMLTag Tag;
-    // std::string Content;
+    HTMLTag Tag;
 
     HTMLTagWriter(
-        const BasicHTMLTag& tag,
-        std::string_view content = {})
+        const HTMLTag& tag)
         : Tag(tag)
-        // , Content(content)
     {
     }
 
     HTMLTagWriter(
-        BasicHTMLTag&& tag,
-        std::string_view content = {})
+        HTMLTag&& tag)
         : Tag(std::move(tag))
-        // , Content(content)
     {
     }
 
-#if 0
-    void write(
+    HTMLTagWriter(
         std::string_view content)
+        : HTMLTagWriter({.Content = content})
     {
-        Tag.Content.Underlying += content;
-        stale_ = true;
     }
-#endif
 
     template<typename... Args>
-    void write(
+    HTMLTagWriter& write(
         std::string_view content,
         Args&&... args)
     {
@@ -104,75 +97,46 @@ struct HTMLTagWriter
         stale_ = true;
         if constexpr(sizeof...(Args))
             write(std::forward<Args>(args)...);
+        return *this;
     }
 
+#if 0
     template<typename... Args>
-    void write(
+    HTMLTagWriter& write(
         const HTMLTagWriter& child_tag,
         Args&&... args)
     {
         write(std::string(child_tag));
         if constexpr(sizeof...(Args))
             write(std::forward<Args>(args)...);
+        return *this;
     }
 
     template<typename... Args>
-    void write(
-        const BasicHTMLTag& child_tag,
+    HTMLTagWriter& write(
+        const HTMLTag& child_tag,
         Args&&... args)
     {
         write(HTMLTagWriter(child_tag));
         if constexpr(sizeof...(Args))
             write(std::forward<Args>(args)...);
+        return *this;
+    }
+#else
+    HTMLTagWriter& write(
+        const HTMLTagWriter& child_tag)
+    {
+        write(std::string(child_tag));
+        return *this;
     }
 
-
-#if 0
-    template<
-        typename First,
-        typename... Args>
-        requires (! std::same_as<std::remove_cvref_t<First>, BasicHTMLTag> &&
-            ! std::convertible_to<std::remove_cvref_t<First>, std::string_view> &&
-            std::constructible_from<BasicHTMLTag, First>)
-
-
-    void write(
-        First&& content,
-        Args&&... args)
+    HTMLTagWriter& write(
+        const HTMLTag& child_tag)
     {
-        write(std::string_view(
-            HTMLTagWriter(
-                BasicHTMLTag(
-                    std::forward<First>(content)))));
-        write(std::forward<Args>(args)...);
+        write(HTMLTagWriter(child_tag));
+        return *this;
     }
 #endif
-
-
-
-    #if 0
-    // HTMLTagWriter writeChild(
-    void write(
-        const BasicHTMLTag& child_tag,
-        std::string_view child_content = {})
-    {
-        // HTMLTagWriter child(child_tag, child_content);
-        write(std::string_view(HTMLTagWriter(child_tag, child_content)));
-    }
-    #endif
-
-    // HTMLTagWriter writeChild(
-    #if 0
-    void write(
-        const BasicHTMLTag& child_tag,
-        const HTMLTagWriter& child_content)
-    {
-        write(std::string_view(
-            HTMLTagWriter(child_tag,
-                std::string_view(child_content))));
-        // return HTMLTagWriter(child_tag, child_content.get());
-    }
-    #endif
 
     operator std::string() const
     {
@@ -204,6 +168,9 @@ struct HTMLTagWriter
 private:
     std::string build() const
     {
+        if(Tag.Name.empty())
+            return Tag.Content.Underlying;
+
         std::string r;
         r += fmt::format("<{}", Tag.Name);
         if(! Tag.Id.empty())
@@ -257,12 +224,21 @@ buildTypeInfo(const TypeInfo& I)
 std::string
 buildParam(const Param& P)
 {
+    HTMLTagWriter param(buildTypeInfo(P.Type));
+    if(! P.Name.empty())
+        param.write(" ", P.Name);
+    if(! P.Default.empty())
+        param.write(" = ", P.Default);
+    return param;
+#if 0
+
     std::string r = buildTypeInfo(P.Type);
     if(! P.Name.empty())
         r += fmt::format(" {}", P.Name);
     if(! P.Default.empty())
         r += fmt::format(" = {}", P.Default);
     return r;
+#endif
 }
 
 void
@@ -276,8 +252,7 @@ writeSpec(
         .Name = "span",
         .Class = {"kw-storage-class-kind"},
         .Content = toString(kind)
-    });
-    tag.write(" ");
+    }).write(" ");
 }
 
 void
@@ -289,14 +264,58 @@ writeSpec(
         return;
     tag.write({
         .Name = "span",
-        .Class = {"constexpr-kind"},
+        .Class = {"kw-constexpr-kind"},
+        .Content = toString(kind)
+    }).write(" ");
+}
+
+
+void
+writeSpec(
+    HTMLTagWriter& tag,
+    ExplicitKind kind)
+{
+    if(kind == ExplicitKind::None)
+        return;
+    tag.write({
+        .Name = "span",
+        .Class = {"kw-explicit-kind"},
+        .Content = toString(kind)
+    }).write(" ");
+}
+
+void
+writeSpec(
+    HTMLTagWriter& tag,
+    ReferenceKind kind)
+{
+    if(kind == ReferenceKind::None)
+        return;
+    std::string_view refqual =
+        kind == ReferenceKind::LValue ?
+        "&" : "&&";
+    tag.write(" ").write({
+        .Name = "span",
+        .Class = {"tk-refqual-kind"},
+        .Content = refqual
+    });
+}
+
+void
+writeSpec(
+    HTMLTagWriter& tag,
+    NoexceptKind kind)
+{
+    if(kind == NoexceptKind::None)
+        return;
+    tag.write(" ").write({
+        .Name = "span",
+        .Class = {"kw-noexcept-kind"},
         .Content = toString(kind)
     });
-    tag.write(" ");
 }
 
 } // (anon)
-
 
 std::string
 Builder::
@@ -307,48 +326,35 @@ buildInfo(const FunctionInfo& I)
         .Id = toBase16(I.id),
         .Class = {"function-info"}
     });
+    writeSpec(div, I.specs1.explicitSpec);
     writeSpec(div, I.specs0.storageClass);
     writeSpec(div, I.specs0.constexprKind);
-#if 0
-    if(I.specs0.storageClass != StorageClassKind::None)
-    {
-        div.write({
-            .Name = "span",
-            .Class = {"kw-storage-class-kind"}
-        }, toString(I.specs0.storageClass));
-        div.write(" ");
-    }
-    if(I.specs0.constexprKind != ConstexprKind::None)
-    {
-        div.write({
-            .Name = "span",
-            .Class = {"kw-constexpr-kind"}
-        }, toString(I.specs0.constexprKind));
-        div.write(" ");
-    }
-#endif
-    div.write(buildTypeInfo(I.ReturnType));
-    div.write(fmt::format(" {}(", I.Name));
 
-    div.write(join(std::views::transform(
-        I.Params, buildParam), ", "));
-#if 0
-    div.write(join(std::views::transform(I.Params,
-        [](const Param& p)
-        {
-            return buildParam(p);
-        }), ", "));
-#endif
-#if 0
-    if(! I.Params.empty())
-    {
-        auto first = I.Params.begin();
-        div.write(buildParam(*first++));
-        for(; first != I.Params.end(); ++first)
-            div.write(fmt::format(", {}", buildParam(*first)));
-    }
-#endif
-    div.write(")");
+    div.write(buildTypeInfo(I.ReturnType));
+
+    div.write(
+        " ",
+        I.Name,
+        "(",
+        join(std::views::transform(I.Params, buildParam), ", "),
+        ")");
+
+    if(I.specs0.isConst)
+        div.write(" ").write({
+            .Name = "span",
+            .Class = {"kw-const"},
+            .Content = "const"});
+
+    if(I.specs0.isVolatile)
+        div.write(" ").write({
+            .Name = "span",
+            .Class = {"kw-volatile"},
+            .Content = "volatile"});
+
+    writeSpec(div, I.specs0.refQualifier);
+    writeSpec(div, I.specs0.exceptionSpec);
+
+    // div.write(")");
     return div;
 }
 
@@ -362,7 +368,7 @@ buildInfo(const FieldInfo& I)
         .Class = {"field-info"}
     });
     div.write(buildTypeInfo(I.Type));
-    div.write(fmt::format(" {}", I.Name));
+    div.write(" ", I.Name);
     return div;
 }
 
