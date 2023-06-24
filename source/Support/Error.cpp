@@ -40,7 +40,8 @@ appendSourceLocation(
 
 Error::
 Error(
-    std::vector<Error> const& errors)
+    std::vector<Error> const& errors,
+    std::source_location loc)
 {
     MRDOX_ASSERT(errors.size() > 0);
     if(errors.size() == 1)
@@ -56,6 +57,8 @@ Error(
         message_.append(err.message());
         message_.push_back('\n');
     }
+    reason_ = message_;
+    loc_ = loc;
 }
 
 SourceLocation::

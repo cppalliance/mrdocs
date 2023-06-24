@@ -16,6 +16,7 @@
 #include <mrdox/Support/Format.hpp>
 #include <exception>
 #include <iterator>
+#include <source_location>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -37,7 +38,8 @@ class [[nodiscard]] MRDOX_DECL
     static
     std::string
     appendSourceLocation(
-        std::string&&, std::source_location const&);
+        std::string&&,
+        std::source_location const&);
 
 public:
     /** Constructor.
@@ -76,9 +78,9 @@ public:
         std::string reason,
         std::source_location loc =
             std::source_location::current())
-        : message_(appendSourceLocation(
-            std::string(reason), loc))
+        : message_(appendSourceLocation(std::string(reason), loc))
         , reason_(std::move(reason))
+        , loc_(loc)
     {
         MRDOX_ASSERT(! message_.empty());
     }
@@ -101,7 +103,10 @@ public:
     }
 
     explicit
-    Error(std::vector<Error> const& errors);
+    Error(
+        std::vector<Error> const& errors,
+        std::source_location loc =
+            std::source_location::current());
 
     /** Return true if this holds an error.
     */
