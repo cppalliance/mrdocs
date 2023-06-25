@@ -40,7 +40,7 @@ Builder(
             config.addonsDir, "js", "handlebars.js");
         auto fileText = files::getFileText(handlebarsPath);
         if(! fileText)
-            throw fileText.getError();
+            throw fileText.error();
         if(auto err = scope.script(*fileText))
             throw err;
     }
@@ -72,7 +72,7 @@ Builder(
             name.remove_suffix(ext.size());
             auto text = files::getFileText(pathName);
             if(! text)
-                return text.getError();
+                return text.error();
             Handlebars.call("registerPartial", name, *text);
             return Error::success();
         });
@@ -145,7 +145,7 @@ callTemplate(
     auto pathName = files::appendPath(layoutDir, name);
     auto fileText = files::getFileText(pathName);
     if(! fileText)
-        return fileText.getError();
+        return fileText.error();
     js::Object options(scope);
     options.insert("noEscape", true);
     options.insert("allowProtoPropertiesByDefault", true);
@@ -154,7 +154,7 @@ callTemplate(
 
     auto result = js::tryCall(templateFn, context);
     if(! result)
-        return result.getError();
+        return result.error();
     js::String adocText(*result);
     return std::string(adocText);
 }

@@ -157,7 +157,7 @@ build(
                 auto infos = readBitcode(bitcode);
                 if(! infos)
                 {
-                    reportError(infos.getError(), "read bitcode");
+                    reportError(infos.error(), "read bitcode");
                     GotFailure = true;
                     return;
                 }

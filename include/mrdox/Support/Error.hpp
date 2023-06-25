@@ -29,7 +29,7 @@ namespace mrdox {
 /** Holds the description of an error, or success.
 */
 class [[nodiscard]] MRDOX_DECL
-    Error final : public std::exception
+    Error final
 {
     std::string message_;
     std::string reason_;
@@ -47,11 +47,11 @@ public:
         A default constructed error is
         equivalent to success.
     */
-    Error() = default;
+    Error() noexcept = default;
 
     /** Constructor.
     */
-    Error(Error&&) = default;
+    Error(Error&&) noexcept = default;
 
     /** Constructor.
     */
@@ -59,7 +59,7 @@ public:
 
     /** Constructor.
     */
-    Error& operator=(Error&&) = default;
+    Error& operator=(Error&&) noexcept = default;
 
     /** Assignment.
     */
@@ -110,14 +110,15 @@ public:
 
     /** Return true if this holds an error.
     */
-    bool failed() const noexcept
+    constexpr bool
+    failed() const noexcept
     {
         return ! message_.empty();
     }
 
     /** Return true if this holds an error.
     */
-    explicit
+    constexpr explicit
     operator bool() const noexcept
     {
         return failed();
@@ -125,7 +126,7 @@ public:
 
     /** Return the error string.
     */
-    std::string_view
+    constexpr std::string_view
     message() const noexcept
     {
         return message_;
@@ -133,7 +134,7 @@ public:
 
     /** Return the reason string.
     */
-    std::string_view
+    constexpr std::string_view
     reason() const noexcept
     {
         return reason_;
@@ -141,20 +142,21 @@ public:
 
     /** Return the source location.
     */
-    std::source_location
+    constexpr std::source_location
     location() const noexcept
     {
         return loc_;
     }
 
-    /** Return true if this equals other.
+    /** Return true if this equals rhs.
     */
-    bool
-    operator==(Error const& other) const noexcept
+    constexpr bool
+    operator==(Error const& rhs) const noexcept
     {
-        return message_ == other.message_;
+        return message_ == rhs.message_;
     }
 
+#if 0
     /** Return a null-terminated error string.
     */
     char const*
@@ -162,12 +164,25 @@ public:
     {
         return reason_.c_str();
     }
+#endif
+
+    constexpr void swap(Error& rhs) noexcept
+    {
+        using std::swap;
+        swap(message_, rhs.message_);
+        swap(reason_, rhs.reason_);
+        swap(loc_, rhs.loc_);
+    }
+
+    friend constexpr void swap(
+        Error& lhs, Error& rhs) noexcept
+    {
+        lhs.swap(rhs);
+    }
 
     /** Return a value indicating success.
     */
-    static
-    Error
-    success() noexcept;
+    static Error success() noexcept;
 };
 
 inline

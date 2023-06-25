@@ -87,7 +87,7 @@ int mrdox_main(int argc, char const** argv)
         auto absPath = files::makeAbsolute(
             toolArgs.addonsDir.getValue());
         if(! absPath)
-            reportError(absPath.getError(), "set the addons directory");
+            reportError(absPath.error(), "set the addons directory");
         addonsDir = files::makeDirsy(files::normalizePath(*absPath));
         if(auto err = files::requireDirectory(addonsDir))
         {
@@ -161,6 +161,7 @@ int mrdox_main(int argc, char const** argv)
 
 int main(int argc, char const** argv)
 {
+    //clang::mrdox::lua::lua_main();
     try
     {
         return clang::mrdox::mrdox_main(argc, argv);

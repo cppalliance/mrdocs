@@ -56,48 +56,48 @@ getInfos()
         {
             auto I = readInfo<NamespaceBlock>(ID);
             if(! I)
-                return I.getError();
-            Infos.emplace_back(std::move(I.get()));
+                return I.error();
+            Infos.emplace_back(I.release());
                 continue;
         }
         case BI_RECORD_BLOCK_ID:
         {
             auto I = readInfo<RecordBlock>(ID);
             if(! I)
-                return I.getError();
-            Infos.emplace_back(std::move(I.get()));
+                return I.error();
+            Infos.emplace_back(I.release());
                 continue;
         }
         case BI_FUNCTION_BLOCK_ID:
         {
             auto I = readInfo<FunctionBlock>(ID);
             if(! I)
-                return I.getError();
-            Infos.emplace_back(std::move(I.get()));
+                return I.error();
+            Infos.emplace_back(I.release());
                 continue;
         }
         case BI_TYPEDEF_BLOCK_ID:
         {
             auto I = readInfo<TypedefBlock>(ID);
             if(! I)
-                return I.getError();
-            Infos.emplace_back(std::move(I.get()));
+                return I.error();
+            Infos.emplace_back(I.release());
                 continue;
         }
         case BI_ENUM_BLOCK_ID:
         {
             auto I = readInfo<EnumBlock>(ID);
             if(! I)
-                return I.getError();
-            Infos.emplace_back(std::move(I.get()));
+                return I.error();
+            Infos.emplace_back(I.release());
                 continue;
         }
         case BI_VARIABLE_BLOCK_ID:
         {
             auto I = readInfo<VarBlock>(ID);
             if(! I)
-                return I.getError();
-            Infos.emplace_back(std::move(I.get()));
+                return I.error();
+            Infos.emplace_back(I.release());
                 continue;
         }
         // although fields can only be members of records,
@@ -106,8 +106,8 @@ getInfos()
         {
             auto I = readInfo<FieldBlock>(ID);
             if(! I)
-                return I.getError();
-            Infos.emplace_back(std::move(I.get()));
+                return I.error();
+            Infos.emplace_back(I.release());
                 continue;
         }
 
@@ -115,8 +115,8 @@ getInfos()
         {
             auto I = readInfo<SpecializationBlock>(ID);
             if(! I)
-                return I.getError();
-            Infos.emplace_back(std::move(I.get()));
+                return I.error();
+            Infos.emplace_back(I.release());
                 continue;
         }
 

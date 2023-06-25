@@ -209,10 +209,10 @@ loadConfigFile(
     // load the config file into a string
     auto absPath = files::makeAbsolute(temp);
     if(! absPath)
-        return absPath.getError();
+        return absPath.error();
     auto text = files::getFileText(*absPath);
     if(! text)
-        return text.getError();
+        return text.error();
 
     // calculate the working directory
     auto workingDir = files::getParentDir(*absPath);

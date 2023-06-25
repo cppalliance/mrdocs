@@ -42,7 +42,7 @@ DoGenerateAction()
     auto config = loadConfigFile(
         toolArgs.configPath, toolArgs.addonsDir, extraYaml);
     if(! config)
-        return config.getError();
+        return config.error();
 
     // Load the compilation database
     if(toolArgs.inputPaths.empty())
@@ -59,7 +59,7 @@ DoGenerateAction()
     // Calculate the working directory
     auto absPath = files::makeAbsolute(compilationsPath);
     if(! absPath)
-        return absPath.getError();
+        return absPath.error();
     auto workingDir = files::getParentDir(*absPath);
 
     // normalize outputPath
@@ -85,10 +85,10 @@ DoGenerateAction()
     // Run the tool, this can take a while
     auto corpus = CorpusImpl::build(*ex, *config);
     if(! corpus)
-        return formatError("CorpusImpl::build returned \"{}\"", corpus.getError());
+        return formatError("CorpusImpl::build returned \"{}\"", corpus.error());
 
     // Run the generator.
-    if(config.get()->verboseOutput)
+    if((*config)->verboseOutput)
         reportInfo("Generating docs...\n");
     return generator->build(toolArgs.outputPath.getValue(), **corpus);
 }

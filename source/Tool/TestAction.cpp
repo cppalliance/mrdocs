@@ -146,7 +146,7 @@ makeConfig(
     auto config = loadConfigString(
         workingDir, toolArgs.addonsDir, configYaml);
     if (!config)
-      reportError(config.getError(), "load the configuration string");
+      reportError(config.error(), "load the configuration string");
     MRDOX_ASSERT(config);
     return *config;
 }
@@ -201,10 +201,10 @@ handleFile(
         auto result = CorpusImpl::build(ex, config);
         if(! result)
         {
-            reportError(result.getError(), "build Corpus for \"{}\"", filePath);
+            reportError(result.error(), "build Corpus for \"{}\"", filePath);
             return Error::success(); // keep going
         }
-        corpus = std::move(result.get());
+        corpus = result.release();
     }
 
     // Generate XML

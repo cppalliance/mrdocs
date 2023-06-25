@@ -29,7 +29,7 @@ createExecutors(
 {
     auto options = loadOptions(corpus);
     if(! options)
-        return options.getError();
+        return options.error();
 
     auto const& config = corpus.config;
     auto& threadPool = config.threadPool();
@@ -65,7 +65,7 @@ build(
 
     auto ex = createExecutors(corpus);
     if(! ex)
-        return ex.getError();
+        return ex.error();
 
     MultiPageVisitor visitor(*ex, outputPath, corpus);
     visitor(corpus.globalNamespace());
@@ -83,7 +83,7 @@ buildOne(
 {
     auto ex = createExecutors(corpus);
     if(! ex)
-        return ex.getError();
+        return ex.error();
 
     std::vector<Error> errors;
 
@@ -93,7 +93,7 @@ buildOne(
             auto pageText =
                 builder.renderSinglePageHeader();
             if(! pageText)
-                throw pageText.getError();
+                throw pageText.error();
             os.write(pageText->data(), pageText->size());
         });
     errors = ex->wait();
@@ -112,7 +112,7 @@ buildOne(
             auto pageText =
                 builder.renderSinglePageFooter();
             if(! pageText)
-                throw pageText.getError();
+                throw pageText.error();
             os.write(pageText->data(), pageText->size());
         });
     errors = ex->wait();

@@ -439,7 +439,7 @@ getGlobal(
 {
     auto object = tryGetGlobal(name);
     if(! object)
-        throw object.getError();
+        throw object.error();
     return *object;
 }
 

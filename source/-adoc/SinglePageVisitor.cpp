@@ -41,7 +41,7 @@ renderPage(
         {
             auto pageText = builder(I);
             if(! pageText)
-                throw pageText.getError();
+                throw pageText.error();
             endPage(std::move(*pageText), pageNumber);
         });
 }

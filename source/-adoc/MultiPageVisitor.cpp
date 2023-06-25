@@ -38,7 +38,7 @@ renderPage(
         {
             auto pageText = builder(I);
             if(! pageText)
-                throw pageText.getError();
+                throw pageText.error();
 
             std::string fileName = files::appendPath(
                 outputPath_, toBase16(I.id) + ".adoc");
