@@ -149,12 +149,6 @@ public:
     */
     ~Param();
 
-    /** Constructor.
-
-        Default constructed params have type undefined.
-    */
-    Param() noexcept;
-
     Param(std::nullptr_t) noexcept;
     Param(bool) noexcept;
     Param(int) noexcept;

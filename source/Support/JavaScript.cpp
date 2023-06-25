@@ -224,25 +224,25 @@ Param(
     case Kind::Null:
         break;
     case Kind::Boolean:
-        b_ = other.b_;
+        std::construct_at(&b_, other.b_);
         break;
     case Kind::Integer:
-        i_ = other.i_;
+        std::construct_at(&i_, other.i_);
         break;
     case Kind::Unsigned:
-        u_ = other.u_;
+        std::construct_at(&u_, other.u_);
         break;
     case Kind::Double:
-        d_ = other.d_;
+        std::construct_at(&d_, other.d_);
         break;
     case Kind::String:
-        s_ = other.s_;
+        std::construct_at(&s_, other.s_);
         break;
     case Kind::Value:
-        idx_ = other.idx_;
+        std::construct_at(&idx_, other.idx_);
         break;
     case Kind::DomObject:
-        obj_ = other.obj_;
+        std::construct_at(&obj_, other.obj_);
         break;
     }
 }
@@ -268,20 +268,17 @@ Param::
     case Kind::Double:
         break;
     case Kind::String:
-        s_.~basic_string_view();
+        std::destroy_at(&s_);
         break;
     case Kind::Value:
         break;
     case Kind::DomObject:
-        obj_.~Pointer();
+        std::destroy_at(&obj_);
         break;
     default:
         MRDOX_UNREACHABLE();
     }
 }
-
-Param::
-Param() noexcept = default;
 
 Param::
 Param(
