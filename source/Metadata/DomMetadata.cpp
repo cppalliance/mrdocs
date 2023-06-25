@@ -11,6 +11,7 @@
 #include "Support/Radix.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/DomMetadata.hpp>
+#include <mrdox/Support/SharedPtr.hpp>
 
 #include "-adoc/DocVisitor.hpp" // VFALCO NO!
 
@@ -572,12 +573,12 @@ template<class T>
 class DomTrancheArray : public dom::Array
 {
     std::span<T const*> list_;
-    std::shared_ptr<Interface> sp_;
+    SharedPtr<Interface> sp_;
 
 public:
     DomTrancheArray(
         std::span<T const*> list,
-        std::shared_ptr<Interface> const& sp)
+        SharedPtr<Interface> const& sp)
         : list_(list)
         , sp_(sp)
     {
@@ -600,15 +601,15 @@ public:
 
 class DomTranche : public dom::Object
 {
-    std::shared_ptr<Interface> sp_;
+    SharedPtr<Interface> sp_;
     Interface::Tranche const& tranche_;
 
     template<class T>
     static
     dom::Value
-    domCreateTrancheArray(
+    init(
         std::span<T const*> list,
-        std::shared_ptr<Interface> const& sp)
+        SharedPtr<Interface> const& sp)
     {
         return dom::create<DomTrancheArray<T>>(list, sp);
     }
@@ -616,15 +617,15 @@ class DomTranche : public dom::Object
 public:
     DomTranche(
         Interface::Tranche const& tranche,
-        std::shared_ptr<Interface> const& sp) noexcept
+        SharedPtr<Interface> const& sp) noexcept
         : dom::Object({
-            { "records",    domCreateTrancheArray(tranche.Records, sp) },
-            { "functions",  domCreateTrancheArray(tranche.Functions, sp) },
-            { "enums",      domCreateTrancheArray(tranche.Enums, sp) },
-            { "types",      domCreateTrancheArray(tranche.Types, sp) },
-            { "field",      domCreateTrancheArray(tranche.Data, sp) },
-            { "staticfuncs",domCreateTrancheArray(tranche.StaticFunctions, sp) },
-            { "staticdata", domCreateTrancheArray(tranche.StaticData, sp) }
+            { "records",    init(tranche.Records, sp) },
+            { "functions",  init(tranche.Functions, sp) },
+            { "enums",      init(tranche.Enums, sp) },
+            { "types",      init(tranche.Types, sp) },
+            { "field",      init(tranche.Data, sp) },
+            { "staticfuncs",init(tranche.StaticFunctions, sp) },
+            { "staticdata", init(tranche.StaticData, sp) }
             })
         , sp_(sp)
         , tranche_(tranche)
@@ -635,8 +636,7 @@ public:
 class DomInterface : public dom::LazyObject
 {
     RecordInfo const& I_;
-    std::atomic<std::shared_ptr<
-        Interface>> mutable sp_;
+    AtomicSharedPtr<Interface> mutable sp_;
     Corpus const& corpus_;
 
 public:
@@ -648,18 +648,14 @@ public:
     {
     }
 
-    std::shared_ptr<Interface>
+    SharedPtr<Interface>
     getInterface() const
     {
-        if(auto sp = sp_.load())
-            return sp;
-        // If there is a data race, there might
-        // be one or more superfluous constructions.
-        auto sp = makeInterface(I_, corpus_);
-        std::shared_ptr<Interface> expected;
-        if(sp_.compare_exchange_strong(expected, sp))
-            return sp;
-        return expected;
+        return sp_.load(
+            [&]
+            {
+                return makeInterface(I_, corpus_);
+            });
     }
 
     dom::ObjectPtr construct() const override

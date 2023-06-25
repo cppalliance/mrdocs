@@ -15,6 +15,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Metadata/Record.hpp>
+#include <mrdox/Support/SharedPtr.hpp>
 #include <memory>
 #include <span>
 #include <utility>
@@ -57,7 +58,7 @@ public:
 
     MRDOX_DECL
     friend
-    std::shared_ptr<Interface>
+    SharedPtr<Interface>
     makeInterface(
         RecordInfo const& Derived,
         Corpus const& corpus);
@@ -89,7 +90,7 @@ private:
     @param corpus The complete metadata.
 */
 MRDOX_DECL
-std::shared_ptr<Interface>
+SharedPtr<Interface>
 makeInterface(
     RecordInfo const& Derived,
     Corpus const& corpus);
