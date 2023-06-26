@@ -422,6 +422,16 @@ visitBlockCommandComment(
         doc::Returns returns;
         Scope scope(returns, paragraph_);
         visitChildren(C->getParagraph());
+
+        auto itr = std::find_if(
+                blocks_.begin(), blocks_.end(),
+                [&](const std::unique_ptr<doc::Block> & b)
+                {
+                    return b->kind != doc::Kind::returns;
+                });
+        if (itr != blocks_.end()) // duplicate
+            reportWarning("{}: Duplicate @returns statement", C->getBeginLoc().printToString(sm_));
+
         Javadoc::append(blocks_, std::make_unique<
             doc::Returns>(std::move(returns)));
         return;
@@ -516,6 +526,22 @@ visitParamCommandComment(
     Scope scope(param, paragraph_);
     //if(C->hasNonWhitespaceParagraph())
     visitChildren(C->getParagraph());
+
+    auto itr = std::find_if(
+        blocks_.begin(), blocks_.end(),
+        [&](const std::unique_ptr<doc::Block> & b)
+        {
+            if (b->kind != doc::Kind::param)
+                return false;
+            auto p = static_cast<const doc::Param*>(b.get());
+            return p->name == param.name;
+        });
+
+
+    if (itr != blocks_.end()) // duplicate
+        reportWarning("{}: Duplicate @param for argument {}",
+                      C->getBeginLoc().printToString(sm_), param.name);
+
     Javadoc::append(blocks_, std::make_unique<
         doc::Param>(std::move(param)));
 }
@@ -533,6 +559,21 @@ visitTParamCommandComment(
     Scope scope(tparam, paragraph_);
     //if(C->hasNonWhitespaceParagraph())
     visitChildren(C->getParagraph());
+
+    auto itr = std::find_if(
+            blocks_.begin(), blocks_.end(),
+            [&](const std::unique_ptr<doc::Block> & b)
+            {
+                if (b->kind != doc::Kind::tparam)
+                    return false;
+                auto tp = static_cast<const doc::TParam*>(b.get());
+                return tp->name == tparam.name;
+            });
+
+    if (itr != blocks_.end()) // duplicate
+        reportWarning("{}: Duplicate @tparam for argument {}",
+                      C->getBeginLoc().printToString(sm_), tparam.name);
+
     Javadoc::append(blocks_, std::make_unique<
         doc::TParam>(std::move(tparam)));
 }
