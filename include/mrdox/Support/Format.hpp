@@ -12,8 +12,8 @@
 #define MRDOX_API_SUPPORT_FORMAT_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/source_location.hpp>
 #include <fmt/format.h>
-#include <source_location>
 
 namespace clang {
 namespace mrdox {
@@ -24,8 +24,8 @@ struct FormatString
     template<class T>
     FormatString(
         T const& fs_,
-        std::source_location loc_ =
-            std::source_location::current())
+        source_location loc_ =
+            source_location::current())
         : fs(fs_)
         , loc(loc_)
     {
@@ -34,7 +34,7 @@ struct FormatString
     }
 
     std::string_view fs;
-    std::source_location loc;
+    source_location loc;
 };
 
 } // mrdox

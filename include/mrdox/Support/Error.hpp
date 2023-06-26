@@ -14,9 +14,9 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Format.hpp>
+#include <mrdox/Support/source_location.hpp>
 #include <exception>
 #include <iterator>
-#include <source_location>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -33,13 +33,13 @@ class [[nodiscard]] MRDOX_DECL
 {
     std::string message_;
     std::string reason_;
-    std::source_location loc_;
+    source_location loc_;
 
     static
     std::string
     appendSourceLocation(
         std::string&&,
-        std::source_location const&);
+        source_location const&);
 
 public:
     /** Constructor.
@@ -76,8 +76,8 @@ public:
     explicit
     Error(
         std::string reason,
-        std::source_location loc =
-            std::source_location::current())
+        source_location loc =
+            source_location::current())
         : message_(appendSourceLocation(std::string(reason), loc))
         , reason_(std::move(reason))
         , loc_(loc)
@@ -92,8 +92,8 @@ public:
     explicit
     Error(
         std::error_code const& ec,
-        std::source_location loc =
-            std::source_location::current())
+        source_location loc =
+            source_location::current())
     {
         if(! ec)
             return;
@@ -105,8 +105,8 @@ public:
     explicit
     Error(
         std::vector<Error> const& errors,
-        std::source_location loc =
-            std::source_location::current());
+        source_location loc =
+            source_location::current());
 
     /** Return true if this holds an error.
     */
@@ -142,7 +142,7 @@ public:
 
     /** Return the source location.
     */
-    constexpr std::source_location
+    constexpr source_location
     location() const noexcept
     {
         return loc_;
@@ -229,7 +229,7 @@ class MRDOX_DECL
 
 public:
     SourceLocation(
-        std::source_location const& loc) noexcept;
+        source_location const& loc) noexcept;
 
     std::string_view file_name() const noexcept
     {

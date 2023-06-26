@@ -18,7 +18,7 @@ std::string
 Error::
 appendSourceLocation(
     std::string&& text,
-    std::source_location const& loc)
+    source_location const& loc)
 {
 #if 0
     fmt::format_to(
@@ -41,7 +41,7 @@ appendSourceLocation(
 Error::
 Error(
     std::vector<Error> const& errors,
-    std::source_location loc)
+    source_location loc)
 {
     MRDOX_ASSERT(errors.size() > 0);
     if(errors.size() == 1)
@@ -63,7 +63,7 @@ Error(
 
 SourceLocation::
 SourceLocation(
-    std::source_location const& loc) noexcept
+    source_location const& loc) noexcept
     : file_(files::getSourceFilename(loc.file_name()))
     , line_(loc.line())
     , col_(loc.column())
