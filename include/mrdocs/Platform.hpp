@@ -72,6 +72,10 @@ namespace mrdocs {
 # endif
 #endif
 
+#if ! defined(__x86_64__) &&  ! defined(_WIN64)
+# error mrdox requires a 64-bit archtecture
+#endif
+
 } // mrdocs
 } // clang
 
