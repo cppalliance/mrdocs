@@ -46,3 +46,7 @@ cmake --install .
 * brand-new program with no technical debt
 * written by me
 
+=== Requirements
+
+* x64 build
+* C++20

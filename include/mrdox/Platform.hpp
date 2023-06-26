@@ -82,6 +82,10 @@ namespace mrdox {
 #define FMT_CONSTEVAL
 #endif
 
+#if ! defined(__x86_64__) &&  ! defined(_WIN64)
+#error mrdox must bebuilt for x64
+#endif
+
 } // mrdox
 } // clang
 
