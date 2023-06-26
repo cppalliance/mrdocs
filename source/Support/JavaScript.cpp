@@ -167,8 +167,12 @@ Context(
 
 //------------------------------------------------
 
-static void obj_construct(
-    duk_context*, duk_idx_t, dom::Object*);
+static
+void
+duk_setproto_domObject(
+    duk_context*,
+    duk_idx_t,
+    SharedPtr<dom::Object> const&);
 
 //------------------------------------------------
 
@@ -206,7 +210,7 @@ push(void* ctx_) const
         break;
     case Kind::DomObject:
         duk_push_object(ctx);
-        obj_construct(ctx, -1, obj_.get());
+        duk_setproto_domObject(ctx, -1, obj_);
         break;
     default:
         MRDOX_UNREACHABLE();
@@ -622,35 +626,10 @@ get() const noexcept
 //
 //------------------------------------------------
 
-static duk_ret_t arr_finalizer(duk_context*);
 static duk_ret_t arr_get_prop(duk_context*);
 
 static
-void
-arr_construct(
-    duk_context* ctx,
-    duk_idx_t idx,
-    dom::Array* arr)
-{
-    idx = duk_normalize_index(ctx, idx);
-    duk_push_pointer(ctx, arr->addref());
-    duk_put_prop_string(ctx, idx, "ptr");
-
-    duk_push_c_function(ctx, &arr_finalizer, 0);
-    duk_set_finalizer(ctx, idx);
-
-    for(std::size_t i = 0; i < arr->length(); ++i)
-    {
-        duk_push_int(ctx, i);
-        duk_push_c_function(ctx, &arr_get_prop, 1);
-        duk_def_prop(ctx, idx,
-            DUK_DEFPROP_HAVE_GETTER |
-            DUK_DEFPROP_SET_ENUMERABLE);
-    }
-}
-
-static
-dom::Array*
+SharedPtr<dom::Array>
 arr_get_impl(
     duk_context* ctx, duk_idx_t idx)
 {
@@ -658,19 +637,42 @@ arr_get_impl(
     [[maybe_unused]] auto found =
         duk_get_prop_string(ctx, idx, "ptr");
     MRDOX_ASSERT(found == 1);
-    auto impl = reinterpret_cast<dom::Array*>(
-        duk_get_pointer(ctx, -1));
+    auto sp = makeSharedImpl<dom::Array>(
+        static_cast<SharedImpl*>(
+            duk_get_pointer(ctx, -1)));
     duk_pop(ctx);
-    return impl;
+    return sp;
 }
 
 static
-duk_ret_t
-arr_finalizer(duk_context* ctx)
+void
+arr_construct(
+    duk_context* ctx,
+    duk_idx_t idx,
+    SharedPtr<dom::Array> const& arr)
 {
-    duk_push_this(ctx);
-    arr_get_impl(ctx, -1)->release();
-    return 0;
+    idx = duk_normalize_index(ctx, idx);
+    duk_push_pointer(ctx, arr.getImpl());
+    duk_put_prop_string(ctx, idx, "ptr");
+    duk_push_c_function(ctx,
+        [](duk_context* ctx) -> duk_ret_t
+        {
+            duk_push_this(ctx);
+            // remove shared ownership
+            arr_get_impl(ctx, -1).unshareImpl();
+            return 0;
+        }, 0);
+    duk_set_finalizer(ctx, idx);
+    arr.shareImpl(); // transfer shared ownership
+
+    for(std::size_t i = 0; i < arr->size(); ++i)
+    {
+        duk_push_int(ctx, i);
+        duk_push_c_function(ctx, &arr_get_prop, 1);
+        duk_def_prop(ctx, idx,
+            DUK_DEFPROP_HAVE_GETTER |
+            DUK_DEFPROP_SET_ENUMERABLE);
+    }
 }
 
 static
@@ -688,13 +690,13 @@ arr_get_prop(duk_context* ctx)
     case dom::Kind::Object:
     {
         duk_push_object(ctx);
-        obj_construct(ctx, -1, value.getObject().get());
+        duk_setproto_domObject(ctx, -1, value.getObject());
         break;
     }
     case dom::Kind::Array:
     {
         duk_push_array(ctx);
-        arr_construct(ctx, -1, value.getArray().get());
+        arr_construct(ctx, -1, value.getArray());
         break;
     }
     case dom::Kind::String:
@@ -781,28 +783,50 @@ push_back(
 //
 //------------------------------------------------
 
-static duk_ret_t obj_finalizer(duk_context*);
-static duk_ret_t obj_get_prop(duk_context*);
+static duk_ret_t domObject_get_prop(duk_context*);
+
+static
+SharedPtr<dom::Object>
+duk_get_domObject(
+    duk_context* ctx, duk_idx_t idx)
+{
+    duk_require_object(ctx, idx);
+    [[maybe_unused]] auto found =
+        duk_get_prop_string(ctx, idx, "ptr");
+    MRDOX_ASSERT(found == 1);
+    auto sp = makeSharedImpl<dom::Object>(
+        static_cast<SharedImpl*>(
+            duk_get_pointer(ctx, -1)));
+    duk_pop(ctx);
+    return sp;
+}
+
 
 static
 void
-obj_construct(
+duk_setproto_domObject(
     duk_context* ctx,
     duk_idx_t idx,
-    dom::Object* obj)
+    SharedPtr<dom::Object> const& obj)
 {
     idx = duk_normalize_index(ctx, idx);
-
-    duk_push_pointer(ctx, obj->addref());
+    duk_push_pointer(ctx, obj.getImpl());
     duk_put_prop_string(ctx, idx, "ptr");
-
-    duk_push_c_function(ctx, &obj_finalizer, 0);
+    duk_push_c_function(ctx,
+        [](duk_context* ctx) -> duk_ret_t
+        {
+            duk_push_this(ctx);
+            // remove shared ownership
+            duk_get_domObject(ctx, -1).unshareImpl();
+            return 0;
+        }, 0);
     duk_set_finalizer(ctx, idx);
+    obj.shareImpl();
 
     for(auto const& prop : obj->props())
     {
         duk_push_lstring(ctx, prop.data(), prop.size());
-        duk_push_c_function(ctx, &obj_get_prop, 1);
+        duk_push_c_function(ctx, &domObject_get_prop, 1);
         duk_def_prop(ctx, idx,
             DUK_DEFPROP_HAVE_GETTER |
             DUK_DEFPROP_SET_ENUMERABLE);
@@ -810,32 +834,8 @@ obj_construct(
 }
 
 static
-dom::Object*
-obj_get_impl(
-    duk_context* ctx, duk_idx_t idx)
-{
-    duk_require_object(ctx, idx);
-    [[maybe_unused]] auto found =
-        duk_get_prop_string(ctx, idx, "ptr");
-    MRDOX_ASSERT(found == 1);
-    auto impl = reinterpret_cast<dom::Object*>(
-        duk_get_pointer(ctx, -1));
-    duk_pop(ctx);
-    return impl;
-}
-
-static
 duk_ret_t
-obj_finalizer(duk_context* ctx)
-{
-    duk_push_this(ctx);
-    obj_get_impl(ctx, -1)->release();
-    return 0;
-}
-
-static
-duk_ret_t
-obj_get_prop(duk_context* ctx)
+domObject_get_prop(duk_context* ctx)
 {
     duk_size_t size;
     auto const data =
@@ -843,7 +843,7 @@ obj_get_prop(duk_context* ctx)
     std::string_view key(data, size);
 
     duk_push_this(ctx);
-    auto obj = obj_get_impl(ctx, -1);
+    auto obj = duk_get_domObject(ctx, -1);
 
     auto value = obj->get(key);
     switch(value.kind())
@@ -851,13 +851,13 @@ obj_get_prop(duk_context* ctx)
     case dom::Kind::Object:
     {
         duk_push_object(ctx);
-        obj_construct(ctx, -1, value.getObject().get());
+        duk_setproto_domObject(ctx, -1, value.getObject());
         break;
     }
     case dom::Kind::Array:
     {
         duk_push_array(ctx);
-        arr_construct(ctx, -1, value.getArray().get());
+        arr_construct(ctx, -1, value.getArray());
         break;
     }
     case dom::Kind::String:
@@ -889,7 +889,7 @@ Object(
     : Value(duk_push_object(Access(scope)), scope)
 {
     Access A(*scope_);
-    obj_construct(A, idx_, obj.get());
+    duk_setproto_domObject(A, idx_, obj);
 }
 
 Object::

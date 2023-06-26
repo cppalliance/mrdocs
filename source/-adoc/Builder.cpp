@@ -10,7 +10,6 @@
 
 #include "Builder.hpp"
 #include "Support/Radix.hpp"
-#include <mrdox/Metadata/DomContext.hpp>
 #include <mrdox/Metadata/DomMetadata.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
@@ -19,6 +18,11 @@
 
 namespace clang {
 namespace mrdox {
+
+namespace lua {
+extern void lua_dump(dom::ObjectPtr const& obj);
+}
+
 namespace adoc {
 
 Builder::
@@ -152,6 +156,8 @@ callTemplate(
     options.insert("allowProtoMethodsByDefault", true);
     auto templateFn = Handlebars.call("compile", *fileText, options);
 
+//auto v = context.getObject()->get("symbol");
+//if(v.isObject()) lua::lua_dump(v.getObject());
     auto result = js::tryCall(templateFn, context);
     if(! result)
         return result.error();
@@ -163,7 +169,7 @@ Expected<std::string>
 Builder::
 renderSinglePageHeader()
 {
-    auto obj = dom::create<dom::Object>();
+    auto obj = makeShared<dom::Object>();
     auto text = callTemplate("single-header.adoc.hbs", obj);
     return text;
 }
@@ -172,7 +178,7 @@ Expected<std::string>
 Builder::
 renderSinglePageFooter()
 {
-    auto obj = dom::create<dom::Object>();
+    auto obj = makeShared<dom::Object>();
     auto text = callTemplate("single-footer.adoc.hbs", obj);
     return text;
 }
@@ -184,11 +190,10 @@ Builder::
 createContext(
     SymbolID const& id)
 {
-    return dom::create<DomContext>(
-        DomContext::Hash({
+    return dom::createObject({
             { "document", "test" },
             { "symbol", domCreateInfo(id, corpus_) }
-        }));
+        });
 }
 
 template<class T>

@@ -191,7 +191,7 @@ if (WIN32)
             /permissive-    # strict C++
             /W4             # enable all warnings
             /MP             # multi-processor compilation
-            /EHsc           # C++ Exception handling
+            /EHs            # C++ Exception handling
         )
     endif()
 endif ()

@@ -156,12 +156,16 @@ int mrdox_main(int argc, char const** argv)
     return DoTestAction();
 }
 
+namespace lua {
+extern void lua_main();
+}
+
 } // mrdox
 } // clang
 
 int main(int argc, char const** argv)
 {
-    clang::mrdox::lua::lua_main();
+//clang::mrdox::lua::lua_main();
     try
     {
         return clang::mrdox::mrdox_main(argc, argv);

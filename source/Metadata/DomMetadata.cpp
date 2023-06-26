@@ -57,11 +57,11 @@ domEagerCreateInfo(
 //
 //------------------------------------------------
 
-class DomSymbolArray : public dom::Array
+class DomSymbolArray : public dom::LazyArray
 {
     std::vector<SymbolID> const& list_;
     Corpus const& corpus_;
-    //dom::Pointer<> ref_; // keep owner of list_ alive
+    //SharedPtr<> ref_; // keep owner of list_ alive
 
 public:
     DomSymbolArray(
@@ -72,16 +72,15 @@ public:
     {
     }
 
-    std::size_t length() const noexcept override
+    dom::ArrayPtr
+    construct() const override
     {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        if(i < list_.size())
-            return domCreateInfo(list_[i], corpus_);
-        return nullptr;
+        dom::Array::list_type list;
+        list.reserve(list_.size());
+        for(auto const& id : list_)
+            list.emplace_back(
+                domCreateInfo(id, corpus_));
+        return makeShared<dom::Array>(std::move(list));
     }
 };
 
@@ -129,7 +128,7 @@ public:
                 list.emplace_back("description", std::move(s));
         }
 
-        return dom::create<dom::Object>(std::move(list));
+        return makeShared<dom::Object>(std::move(list));
     }
 };
 
@@ -139,7 +138,7 @@ domCreate(
     std::unique_ptr<Javadoc> const& jd)
 {
     if(jd)
-        return dom::create<DomJavadoc>(*jd);
+        return makeShared<DomJavadoc>(*jd);
     return nullptr;
 }
 
@@ -175,7 +174,7 @@ public:
     {
     }
 
-    std::size_t length() const noexcept override
+    std::size_t size() const noexcept override
     {
         return list_.size();
     }
@@ -183,7 +182,7 @@ public:
     dom::Value get(std::size_t i) const override
     {
         if(i < list_.size())
-            return dom::create<DomLocation>(list_[i]);
+            return makeShared<DomLocation>(list_[i]);
         return nullptr;
     }
 };
@@ -197,11 +196,11 @@ public:
     {
         if(I.DefLoc)
             append({
-                { "def", dom::create<
+                { "def", makeShared<
                     DomLocation>(*I.DefLoc) }});
         if(! I.Loc.empty())
             append({
-                { "decl", dom::create<
+                { "decl", makeShared<
                     DomLocationArray>(I.Loc) }});
     }
 };
@@ -235,7 +234,7 @@ domCreate(
     Corpus const& corpus)
 {
     if(I)
-        return dom::create<DomTypeInfo>(*I, corpus);
+        return makeShared<DomTypeInfo>(*I, corpus);
     return nullptr;
 }
 
@@ -255,7 +254,7 @@ public:
         Corpus const& corpus) noexcept
         : Object({
             {"name", dom::stringOrNull(I.Name)},
-            {"type", dom::create<DomTypeInfo>(I.Type, corpus)},
+            {"type", makeShared<DomTypeInfo>(I.Type, corpus)},
             {"default", dom::stringOrNull(I.Default)}
         })
     {
@@ -278,7 +277,7 @@ public:
     {
     }
 
-    std::size_t length() const noexcept override
+    std::size_t size() const noexcept override
     {
         return list_.size();
     }
@@ -286,7 +285,7 @@ public:
     dom::Value get(std::size_t index) const override
     {
         if(index < list_.size())
-            return dom::create<DomParam>(
+            return makeShared<DomParam>(
                 list_[index], corpus_);
         return nullptr;
     }
@@ -335,7 +334,7 @@ public:
     {
     }
 
-    std::size_t length() const noexcept override
+    std::size_t size() const noexcept override
     {
         return list_.size();
     }
@@ -344,7 +343,7 @@ public:
     {
         if(index >= list_.size())
             return nullptr;
-        return dom::create<DomTParam>(
+        return makeShared<DomTParam>(
             list_[index], corpus_);
     }
 };
@@ -365,7 +364,7 @@ public:
     {
     }
 
-    std::size_t length() const noexcept override
+    std::size_t size() const noexcept override
     {
         return list_.size();
     }
@@ -374,7 +373,7 @@ public:
     {
         if(index >= list_.size())
             return nullptr;
-        return dom::create<DomTArg>(
+        return makeShared<DomTArg>(
             list_[index], corpus_);
     }
 };
@@ -389,9 +388,9 @@ public:
             {"kind", toString(I.specializationKind())},
             {"primary", domCreateInfoOrNull(
                 *I.Primary, corpus) },
-            {"params", dom::create<DomTParamArray>(
+            {"params", makeShared<DomTParamArray>(
                 I.Params, corpus)},
-            {"args", dom::create<DomTArgArray>(
+            {"args", makeShared<DomTArgArray>(
                 I.Args, corpus)}
         })
     {
@@ -411,7 +410,7 @@ getTParamDefault(
         const auto& P = I.get<TypeTParam>();
         if(! P.Default)
             return nullptr;
-        return dom::create<DomTypeInfo>(
+        return makeShared<DomTypeInfo>(
             *P.Default, corpus);
     }
     case TParamKind::NonType:
@@ -443,11 +442,11 @@ DomTParam(
         {"name", dom::stringOrNull(I.Name)},
         {"is-pack", I.IsParameterPack},
         {"type", I.Kind == TParamKind::NonType ?
-            dom::create<DomTypeInfo>(
+            makeShared<DomTypeInfo>(
                 I.get<NonTypeTParam>().Type, corpus) :
             dom::Value()},
         {"params", I.Kind == TParamKind::Template ?
-            dom::create<DomTParamArray>(
+            makeShared<DomTParamArray>(
                 I.get<TemplateTParam>().Params, corpus) :
             dom::Value()},
         {"default", getTParamDefault(I, corpus)}
@@ -462,7 +461,7 @@ domCreate(
     Corpus const& corpus)
 {
     if(I)
-        return dom::create<DomTemplate>(*I, corpus);
+        return makeShared<DomTemplate>(*I, corpus);
     return nullptr;
 }
 
@@ -502,7 +501,7 @@ public:
     {
     }
 
-    std::size_t length() const noexcept override
+    std::size_t size() const noexcept override
     {
         return list_.size();
     }
@@ -510,7 +509,7 @@ public:
     dom::Value get(std::size_t index) const override
     {
         if(index < list_.size())
-            return dom::create<DomBaseInfo>(
+            return makeShared<DomBaseInfo>(
                 list_[index], corpus_);
         return nullptr;
     }
@@ -550,7 +549,7 @@ public:
     {
     }
 
-    std::size_t length() const noexcept override
+    std::size_t size() const noexcept override
     {
         return list_.size();
     }
@@ -558,7 +557,7 @@ public:
     dom::Value get(std::size_t i) const override
     {
         if(i < list_.size())
-            return dom::create<DomEnumValue>(list_[i]);
+            return makeShared<DomEnumValue>(list_[i]);
         return nullptr;
     }
 };
@@ -584,7 +583,7 @@ public:
     {
     }
 
-    std::size_t length() const noexcept override
+    std::size_t size() const noexcept override
     {
         return list_.size();
     }
@@ -611,7 +610,7 @@ class DomTranche : public dom::Object
         std::span<T const*> list,
         SharedPtr<Interface> const& sp)
     {
-        return dom::create<DomTrancheArray<T>>(list, sp);
+        return makeShared<DomTrancheArray<T>>(list, sp);
     }
 
 public:
@@ -636,7 +635,7 @@ public:
 class DomInterface : public dom::LazyObject
 {
     RecordInfo const& I_;
-    AtomicSharedPtr<Interface> mutable sp_;
+    AtomicSharedPtr<Interface> sp_;
     Corpus const& corpus_;
 
 public:
@@ -660,18 +659,18 @@ public:
 
     dom::ObjectPtr construct() const override
     {
-        return dom::create<dom::Object>(
+        return makeShared<dom::Object>(
             dom::Object::list_type({
                 { "public",
-                    dom::create<DomTranche>(
+                    makeShared<DomTranche>(
                         getInterface()->Public,
                         getInterface()) },
                 { "protected",
-                    dom::create<DomTranche>(
+                    makeShared<DomTranche>(
                         getInterface()->Protected,
                         getInterface()) },
                 { "private",
-                    dom::create<DomTranche>(
+                    makeShared<DomTranche>(
                         getInterface()->Private,
                         getInterface()) },
                 }));
@@ -732,19 +731,19 @@ construct() const
         { "kind", toString(I_.Kind) },
         { "access", toString(I_.Access) },
         { "name", I_.Name },
-        { "namespace", dom::create<DomSymbolArray>(
+        { "namespace", makeShared<DomSymbolArray>(
             I_.Namespace, corpus_) },
         { "doc", domCreate(I_.javadoc) }
         });
     if constexpr(std::derived_from<T, SourceInfo>)
     {
         list.emplace_back(
-            "loc", dom::create<DomSourceInfo>(I_));
+            "loc", makeShared<DomSourceInfo>(I_));
     }
     if constexpr(T::isNamespace())
     {
         list.insert(list.end(), {
-            { "members", dom::create<DomSymbolArray>(
+            { "members", makeShared<DomSymbolArray>(
                 I_.Members, corpus_) },
             { "specializations", nullptr }
             });
@@ -755,22 +754,22 @@ construct() const
             { "tag", toString(I_.KeyKind) },
             { "defaultAccess", getDefaultAccess(I_) },
             { "isTypedef", I_.IsTypeDef },
-            { "bases", dom::create<DomBaseArray>(I_.Bases, corpus_) },
-            { "friends",  dom::create<DomSymbolArray>(
+            { "bases", makeShared<DomBaseArray>(I_.Bases, corpus_) },
+            { "friends",  makeShared<DomSymbolArray>(
                 I_.Friends, corpus_) },
-            { "members", dom::create<DomSymbolArray>(
+            { "members", makeShared<DomSymbolArray>(
                 I_.Members, corpus_) },
-            { "specializations", dom::create<DomSymbolArray>(
+            { "specializations", makeShared<DomSymbolArray>(
                 I_.Specializations, corpus_) },
-            { "interface", dom::create<DomInterface>(I_, corpus_) },
+            { "interface", makeShared<DomInterface>(I_, corpus_) },
             { "template", domCreate(I_.Template, corpus_) }
             });
     }
     if constexpr(T::isFunction())
     {
         list.insert(list.end(), {
-            { "params",     dom::create<DomParamArray>(I_.Params, corpus_) },
-            { "return",     dom::create<DomTypeInfo>(I_.ReturnType, corpus_) },
+            { "params",     makeShared<DomParamArray>(I_.Params, corpus_) },
+            { "return",     makeShared<DomTypeInfo>(I_.ReturnType, corpus_) },
             { "template",   domCreate(I_.Template, corpus_) },
 
             { "isVariadic",         I_.specs0.isVariadic.get() },
@@ -801,7 +800,7 @@ construct() const
     {
         list.insert(list.end(), {
             { "type", domCreate(I_.BaseType, corpus_) },
-            { "members", dom::create<DomEnumValueArray>(I_.Members) },
+            { "members", makeShared<DomEnumValueArray>(I_.Members) },
             { "isScoped", I_.Scoped }
             });
     }
@@ -814,7 +813,7 @@ construct() const
     if constexpr(T::isVariable())
     {
         list.insert(list.end(), {
-            { "type", dom::create<DomTypeInfo>(I_.Type, corpus_) },
+            { "type", makeShared<DomTypeInfo>(I_.Type, corpus_) },
             { "template", domCreate(I_.Template, corpus_) },
             { "storageClass", toString(I_.specs.storageClass) }
             });
@@ -822,7 +821,7 @@ construct() const
     if constexpr(T::isField())
     {
         list.insert(list.end(), {
-            { "type", dom::create<DomTypeInfo>(I_.Type, corpus_) },
+            { "type", makeShared<DomTypeInfo>(I_.Type, corpus_) },
             { "default", dom::stringOrNull(I_.Default) },
             { "isNodiscard", I_.specs.isNodiscard.get() },
             { "isDeprecated", I_.specs.isDeprecated.get() },
@@ -832,7 +831,7 @@ construct() const
     if constexpr(T::isSpecialization())
     {
     }
-    return dom::create<dom::Object>(std::move(list));
+    return makeShared<dom::Object>(std::move(list));
 }
 
 //------------------------------------------------
@@ -871,7 +870,7 @@ domCreateInfo(
         [&corpus]<class T>(T const& I) ->
             dom::Value
         {
-            return dom::create<DomInfo<T>>(I, corpus);
+            return makeShared<DomInfo<T>>(I, corpus);
         });
 }
 

@@ -20,6 +20,20 @@
 namespace clang {
 namespace mrdox {
 
+/*
+class DomFrame
+{
+    struct Impl;
+
+    std::unique_ptr<Impl> impl_;
+
+public:
+    DomFrame(Corpus const& corpus);
+
+    dom::Value get(SymbolID const& id);
+};
+*/
+
 /** Return a Dom node for the given metadata.
 */
 MRDOX_DECL

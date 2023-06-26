@@ -12,6 +12,7 @@
 #define MRDOX_API_SUPPORT_DOM_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/SharedPtr.hpp>
 #include <fmt/format.h>
 #include <atomic>
 #include <cstdint>
@@ -44,198 +45,105 @@ enum class Kind
 
 //------------------------------------------------
 //
-// Any
-//
-//------------------------------------------------
-
-/** Reference-counting base class for dynamic types.
-*/
-class MRDOX_DECL
-    Any
-{
-    std::atomic<std::size_t> mutable refs_ = 1;
-
-protected:
-    /** Destructor.
-    */
-    virtual ~Any() = 0;
-
-    /** Constructor.
-    */
-    Any() noexcept;
-
-    /** Constructor.
-
-        The caller will have exclusive ownership
-        immediately after construction is complete.
-    */
-    Any(Any const&) noexcept;
-
-public:
-    /** Return a pointer with shared ownership.
-    */
-    Any* addref() noexcept
-    {
-        ++refs_;
-        return this;
-    }
-
-    /** Return a pointer with shared ownership.
-    */
-    Any const* addref() const noexcept
-    {
-        ++refs_;
-        return this;
-    }
-
-    /** Release shared ownership.
-
-        If this is the last remaining owner,
-        then this will be deleted.
-    */
-    void release() const noexcept
-    {
-        if(--refs_ > 0)
-            return;
-        delete this;
-    }
-};
-
-template<class U, class... Args>
-auto create(Args&&... args);
-
-//------------------------------------------------
-//
-// Pointer
-//
-//------------------------------------------------
-
-/** A pointer container for dynamic objects.
-*/
-template<class T>
-class Pointer
-{
-    Any* any_;
-
-    static_assert(std::derived_from<T, Any>);
-
-    template<class U>
-    friend class Pointer;
-
-    explicit
-    Pointer(
-        Any* any) noexcept
-        : any_(any)
-    {
-    }
-
-public:
-    Pointer() = delete;
-
-    ~Pointer()
-    {
-        any_->release();
-    }
-
-    Pointer(
-        Pointer const& other) noexcept
-        : any_(other.any_->addref())
-    {
-    }
-
-    template<class U>
-    requires(
-        std::convertible_to<U*, T*> &&
-        std::derived_from<U, Any>)
-    Pointer(
-        U* u) noexcept
-        : any_(u->addref())
-    {
-    }
-
-    template<class U>
-    requires(
-        std::convertible_to<U*, T*> &&
-        std::derived_from<U, Any>)
-    Pointer(
-        Pointer<U> const& other) noexcept
-        : any_(other.any_->addref())
-    {
-    }
-
-    template<class U>
-    requires(
-        std::convertible_to<U*, T*> &&
-        std::derived_from<U, Any>)
-    Pointer&
-    operator=(
-        Pointer<U> const& other) noexcept
-    {
-        Pointer temp(other);
-        temp.swap(*this);
-        return *this;
-    }
-
-    T* get() const noexcept
-    {
-        return static_cast<T*>(any_);
-    }
-
-    T* operator->() const noexcept
-    {
-        return get();
-    }
-
-    T& operator*() const noexcept
-    {
-        return *get();
-    }
-
-    void swap(Pointer& other) noexcept
-    {
-        auto temp = any_;
-        any_ = other.any_;
-        other.any_ = temp;
-    }
-
-    friend
-    void
-    swap(Pointer& p0, Pointer& p1) noexcept
-    {
-        p0.swap(p1);
-    }
-
-    template<class U, class... Args>
-    friend auto create(Args&&... args);
-};
-
-template<class U, class... Args>
-auto create(Args&&... args)
-{
-    return Pointer<U>(new U(
-        std::forward<Args>(args)...));
-}
-
-//------------------------------------------------
-//
 // Array
 //
 //------------------------------------------------
 
 class MRDOX_DECL
-    Array : public Any
+    Array
 {
 public:
-    virtual std::size_t length() const noexcept;
+    using value_type = Value;
+
+    using list_type = std::vector<value_type>;
+
+    /** Destructor.
+    */
+    virtual ~Array();
+
+    /** Constructor.
+
+        Default-constructed arrays are empty.
+    */
+    Array() noexcept;
+
+    /** Constructor.
+
+        The newly constructed array will retain
+        a copy of the list of values in `other`.
+    */
+    Array(Array const& other);
+
+    /** Constructor.
+
+        Upon construction, the object will retain
+        ownership of a shallow copy of the specified
+        list. In particular, dynamic objects will
+        be acquired with shared ownership.
+
+        @param list The initial list of values.
+    */
+    explicit Array(list_type list);
+
+    virtual bool empty() const noexcept;
+    virtual std::size_t size() const noexcept;
     virtual Value get(std::size_t) const;
+
+    /** Return a deep copy of the container.
+
+        In particular, dynamic objects will be
+        deeply copied; changes to the copy are
+        not reflected in the original.
+    */
+    virtual Value copy() const;
+
+    list_type const& values() const noexcept;
 
     /** Return a diagnostic string.
     */
     std::string
     displayString() const;
+
+private:
+    std::vector<Value> list_;
 };
 
-using ArrayPtr = Pointer<Array>;
+using ArrayPtr = SharedPtr<Array>;
+
+//------------------------------------------------
+//
+// LazyArray
+//
+//------------------------------------------------
+
+/** An Array whose construction is deferred.
+*/
+class MRDOX_DECL
+    LazyArray
+{
+    AtomicSharedPtr<Array> sp_;
+
+    /** Return the array.
+    */
+    virtual ArrayPtr construct() const = 0;
+
+public:
+    /** Destructor.
+    */
+    virtual ~LazyArray() = 0;
+
+    /** Constructor.
+    */
+    LazyArray() noexcept;
+
+    /** Return the object.
+    */
+    ArrayPtr get() const;
+};
+
+/** Alias for a pointer to a LazyArray.
+*/
+using LazyArrayPtr = SharedPtr<LazyArray>;
 
 //------------------------------------------------
 //
@@ -246,11 +154,8 @@ using ArrayPtr = Pointer<Array>;
 /** A container of key and value pairs.
 */
 class MRDOX_DECL
-    Object : public Any
+    Object
 {
-    template<class U, class... Args>
-    friend auto create(Args&&... args);
-
 public:
     /** The type of an element in this container.
     */
@@ -260,7 +165,10 @@ public:
     */
     using list_type = std::vector<value_type>;
 
-protected:
+    /** Destructor.
+    */
+    virtual ~Object();
+
     /** Constructor.
 
         Default-constructed objects are empty.
@@ -285,10 +193,17 @@ protected:
     */
     explicit Object(list_type list);
 
-public:
-    /** Return an iterable range with the contents.
+    /** Return true if the container is empty.
     */
-    list_type const& list() const noexcept;
+    bool empty() const noexcept;
+
+    /** Return the number of elements.
+    */
+    std::size_t size() const noexcept;
+
+    /** Return the range of contained values.
+    */
+    list_type const& values() const noexcept;
 
     /** Add elements to the container.
 
@@ -311,10 +226,6 @@ public:
         not reflected in the original.
     */
     virtual Value copy() const;
-
-    /** Return true if the container is empty.
-    */
-    virtual bool empty() const noexcept;
 
     /** Return the value for a given key.
 
@@ -353,14 +264,7 @@ private:
 
 /** Alias for a pointer to an Object.
 */
-using ObjectPtr = Pointer<Object>;
-
-/** Return a new object with a given list of properties.
-*/
-MRDOX_DECL
-ObjectPtr
-createObject(
-    Object::list_type list);
+using ObjectPtr = SharedPtr<Object>;
 
 //------------------------------------------------
 //
@@ -371,9 +275,9 @@ createObject(
 /** An Object whose construction is deferred.
 */
 class MRDOX_DECL
-    LazyObject : public Any
+    LazyObject
 {
-    std::atomic<Object*> mutable p_ = nullptr;
+    AtomicSharedPtr<Object> sp_;
 
     /** Return the object.
     */
@@ -382,7 +286,7 @@ class MRDOX_DECL
 public:
     /** Destructor.
     */
-    ~LazyObject() noexcept;
+    virtual ~LazyObject() = 0;
 
     /** Constructor.
     */
@@ -395,7 +299,7 @@ public:
 
 /** Alias for a pointer to a LazyObject.
 */
-using LazyObjectPtr = Pointer<LazyObject>;
+using LazyObjectPtr = SharedPtr<LazyObject>;
 
 //------------------------------------------------
 
@@ -412,6 +316,7 @@ class MRDOX_DECL
         String,
         Array,
         Object,
+        LazyArray,
         LazyObject
     };
 
@@ -424,6 +329,7 @@ class MRDOX_DECL
         std::string   str_;
         ArrayPtr      arr_;
         ObjectPtr     obj_;
+        LazyArrayPtr  lazy_arr_;
         LazyObjectPtr lazy_obj_;
     };
 
@@ -440,6 +346,7 @@ public:
     Value(std::string s) noexcept;
     Value(ArrayPtr arr) noexcept;
     Value(ObjectPtr obj) noexcept;
+    Value(LazyArrayPtr lazy_arr) noexcept;
     Value(LazyObjectPtr lazy_obj) noexcept;
     Value& operator=(Value&&) noexcept;
     Value& operator=(Value const&);
@@ -467,21 +374,28 @@ public:
 
     template<class T>
     requires std::derived_from<T, Array>
-    Value(Pointer<T> const& ptr) noexcept
+    Value(SharedPtr<T> const& ptr) noexcept
         : Value(ArrayPtr(ptr))
     {
     }
 
     template<class T>
     requires std::derived_from<T, Object>
-    Value(Pointer<T> const& ptr) noexcept
+    Value(SharedPtr<T> const& ptr) noexcept
         : Value(ObjectPtr(ptr))
     {
     }
 
     template<class T>
+    requires std::derived_from<T, LazyArray>
+    Value(SharedPtr<T> const& ptr) noexcept
+        : Value(LazyArrayPtr(ptr))
+    {
+    }
+
+    template<class T>
     requires std::derived_from<T, LazyObject>
-    Value(Pointer<T> const& ptr) noexcept
+    Value(SharedPtr<T> const& ptr) noexcept
         : Value(LazyObjectPtr(ptr))
     {
     }
@@ -520,7 +434,12 @@ public:
 
     /** Return true if this is an array.
     */
-    bool isArray() const noexcept { return kind_ == Kind::Array; }
+    bool isArray() const noexcept
+    {
+        return
+            kind_ == Kind::Array ||
+            kind_ == Kind::LazyArray;
+    }
 
     /** Return true if this is an object.
     */
@@ -551,12 +470,12 @@ public:
         return str_;
     }
 
-    ArrayPtr const&
-    getArray() const noexcept
-    {
-        MRDOX_ASSERT(kind_ == Kind::Array);
-        return arr_;
-    }
+    /** Return the array if this is an object.
+
+        @throw Error `! isArray()`
+    */
+    ArrayPtr
+    getArray() const;
 
     /** Return the object if this is an object.
 
@@ -592,6 +511,18 @@ private:
     std::string
     displayString1() const;
 };
+
+//------------------------------------------------
+
+/** Create an object from an initializer list.
+*/
+inline
+ObjectPtr
+createObject(
+    std::initializer_list<Object::value_type> init)
+{
+    return makeShared<Object>(Object::list_type(init));
+}
 
 /** Return a non-empty string, or a null.
 */

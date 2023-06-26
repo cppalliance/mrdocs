@@ -17,48 +17,84 @@ namespace clang {
 namespace mrdox {
 namespace dom {
 
-Any::
-Any() noexcept = default;
-
-Any::
-Any(Any const&) noexcept
-{
-    MRDOX_ASSERT(refs_ == 1);
-}
-
-Any::
-~Any() = default;
-
 //------------------------------------------------
 //
 // Array
 //
 //------------------------------------------------
 
+Array::
+~Array() = default;
+
+Array::
+Array() noexcept = default;
+
+Array::
+Array(
+    Array const& other)
+{
+    // deep-copy the list
+    list_.reserve(other.list_.size());
+    for(auto const& value : other.list_)
+        list_.emplace_back(value.copy());
+}
+
+Array::
+Array(
+    list_type list)
+    : list_(std::move(list))
+{
+}
+
+bool
+Array::
+empty() const noexcept
+{
+    return list_.empty();
+}
+
 std::size_t
 Array::
-length() const noexcept
+size() const noexcept
 {
-    return 0;
+    return list_.size();
 }
 
 Value
 Array::
-get(std::size_t) const
+get(std::size_t index) const
 {
+    if(index < list_.size())
+        return list_[index];
     return nullptr;
+}
+
+auto
+Array::
+values() const noexcept ->
+    list_type const&
+{
+    return list_;
+}
+
+Value
+Array::
+copy() const
+{
+    return makeShared<Array>(list_);
 }
 
 std::string
 Array::
 displayString() const
 {
-    if(length() == 0)
+    if(empty())
         return "[]";
     std::string s = "[";
     {
+        auto const n = size();
         auto insert = std::back_inserter(s);
-        for(std::size_t i = 0; i < length(); ++i)
+        for(std::size_t i = 0; i < n; ++i)
         {
             if(i != 0)
                 fmt::format_to(insert,
@@ -75,10 +111,32 @@ displayString() const
 }
 
 //------------------------------------------------
+
+LazyArray::
+~LazyArray() = default;
+
+LazyArray::
+LazyArray() noexcept = default;
+
+ArrayPtr
+LazyArray::
+get() const
+{
+    return sp_.load(
+        [&]
+        {
+            return this->construct();
+        });
+}
+
+//------------------------------------------------
 //
 // Object
 //
 //------------------------------------------------
+
+Object::
+~Object() = default;
 
 Object::
 Object() noexcept = default;
@@ -86,7 +144,6 @@ Object() noexcept = default;
 Object::
 Object(
     Object const& other)
-    : Any()
 {
     // deep-copy the list
     list_.reserve(other.list_.size());
@@ -102,9 +159,23 @@ Object(
 {
 }
 
+bool
+Object::
+empty() const noexcept
+{
+    return list_.empty();
+}
+
+std::size_t
+Object::
+size() const noexcept
+{
+    return list_.size();
+}
+
 auto
 Object::
-list() const noexcept ->
+values() const noexcept ->
     list_type const&
 {
     return list_;
@@ -131,14 +202,7 @@ Value
 Object::
 copy() const
 {
-    return create<Object>(list_);
-}
-
-bool
-Object::
-empty() const noexcept
-{
-    return list_.empty();
+    return makeShared<Object>(list_);
 }
 
 Value
@@ -216,42 +280,23 @@ props() const ->
     return list;
 }
 
-ObjectPtr
-createObject(
-    Object::list_type list)
-{
-    return create<Object>(std::move(list));
-}
-
 //------------------------------------------------
 
 LazyObject::
-LazyObject() noexcept = default;
+~LazyObject() = default;
 
 LazyObject::
-~LazyObject() noexcept
-{
-    if(auto obj = p_.load())
-        obj->release();
-}
+LazyObject() noexcept = default;
 
 ObjectPtr
 LazyObject::
 get() const
 {
-    if(Object* obj = p_.load())
-        return obj;
-    // If there is a data race, there might
-    // be one or more superfluous constructions.
-    ObjectPtr obj = construct();
-    Object* expected = nullptr;
-    if(p_.compare_exchange_strong(
-        expected, obj.get()))
-    {
-        obj->addref();
-        return obj;
-    }
-    return expected;
+    return sp_.load(
+        [&]
+        {
+            return this->construct();
+        });
 }
 
 //------------------------------------------------
@@ -273,6 +318,9 @@ Value::
         break;
     case Kind::Object:
         std::destroy_at(&obj_);
+        break;
+    case Kind::LazyArray:
+        std::destroy_at(&lazy_arr_);
         break;
     case Kind::LazyObject:
         std::destroy_at(&lazy_obj_);
@@ -312,6 +360,9 @@ Value(
     case Kind::Object:
         std::construct_at(&obj_, other.obj_);
         break;
+    case Kind::LazyArray:
+        std::construct_at(&lazy_arr_, other.lazy_arr_);
+        break;
     case Kind::LazyObject:
         std::construct_at(&lazy_obj_, other.lazy_obj_);
         break;
@@ -347,9 +398,13 @@ Value(
         std::construct_at(&obj_, std::move(other.obj_));
         std::destroy_at(&other.obj_);
         break;
+    case Kind::LazyArray:
+        std::construct_at(&lazy_arr_, std::move(other.lazy_arr_));
+        std::destroy_at(&other.lazy_arr_);
+        break;
     case Kind::LazyObject:
         std::construct_at(&lazy_obj_, std::move(other.lazy_obj_));
-        std::destroy_at(&lazy_obj_);
+        std::destroy_at(&other.lazy_obj_);
         break;
     default:
         MRDOX_UNREACHABLE();
@@ -398,6 +453,14 @@ Value(
 
 Value::
 Value(
+    LazyArrayPtr lazy_arr) noexcept
+    : kind_(Kind::LazyArray)
+    , lazy_arr_(std::move(lazy_arr))
+{
+}
+
+Value::
+Value(
     LazyObjectPtr lazy_obj) noexcept
     : kind_(Kind::LazyObject)
     , lazy_obj_(std::move(lazy_obj))
@@ -436,11 +499,11 @@ copy() const
     case Kind::String:
         return *this;
     case Kind::Array:
-        // VFALCO currently, arrays are immutable so
-        // we can just give the caller shared ownership.
-        return *this;
+        return arr_->copy();
     case Kind::Object:
         return obj_->copy();
+    case Kind::LazyArray:
+        return lazy_arr_->get()->copy();
     case Kind::LazyObject:
         return lazy_obj_->get()->copy();
     default:
@@ -459,7 +522,8 @@ kind() const noexcept
     case Kind::Integer:     return dom::Kind::Integer;
     case Kind::String:      return dom::Kind::String;
     case Kind::Array:       return dom::Kind::Array;
-    case Kind::Object:
+    case Kind::Object:      return dom::Kind::Object;
+    case Kind::LazyArray:   return dom::Kind::Array;
     case Kind::LazyObject:  return dom::Kind::Object;
     default:
         MRDOX_UNREACHABLE();
@@ -476,12 +540,27 @@ isTruthy() const noexcept
     case Kind::Boolean: return b_;
     case Kind::Integer: return i_ != 0;
     case Kind::String: return str_.size() > 0;
-    case Kind::Array: return arr_->length() > 0;
+    case Kind::Array: return ! arr_->empty();
     case Kind::Object: return ! obj_->empty();
+
+    // These construct the object
+    case Kind::LazyArray: return ! lazy_arr_->get()->empty();
     case Kind::LazyObject: return ! lazy_obj_->get()->empty();
+
     default:
         MRDOX_UNREACHABLE();
     }
+}
+
+ArrayPtr
+Value::
+getArray() const
+{
+    if(kind_ == Kind::Array)
+        return arr_;
+    if(kind_ == Kind::LazyArray)
+        return lazy_arr_->get();
+    throw Error("not an Array");
 }
 
 ObjectPtr
@@ -540,19 +619,20 @@ displayString1() const
         return fmt::format("\"{}\"", str_);
     case Kind::Array:
     {
-        if(arr_->length() > 0)
+        if(! arr_->empty())
             return "[...]";
         return "[]";
     }
     case Kind::Object:
     {
-        if(! obj_->list().empty())
+        if(! obj_->empty())
             return "{...}";
         return "{}";
     }
     case Kind::LazyObject:
     {
-        if(! lazy_obj_->get()->list().empty())
+        // NOTE This creates the Object
+        if(! lazy_obj_->get()->empty())
             return "{...}";
         return "{}";
     }
@@ -562,6 +642,34 @@ displayString1() const
 }
 
 //------------------------------------------------
+#if 0
+struct Handlebars
+{
+    std::string
+    renderTemplate(
+        std::string Template,
+        Value context)
+    {
+    /*
+        Add:
+
+        @root
+        @level
+    */
+        Value data(makeShared<dom::Object>());
+        data.getObject()->set("root", context);
+    }
+
+    std::string
+    renderPartial(
+        std::string partial,
+        std::vector<Value>& path,
+        Value context)
+    {
+        // {{>detail ../../members}}
+    }
+};
+#endif
 
 } // dom
 } // mrdox

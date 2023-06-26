@@ -389,7 +389,7 @@ class Object : public Value
 
 public:
     MRDOX_DECL Object(Scope&,
-        dom::Pointer<dom::Object> const& obj);
+        SharedPtr<dom::Object> const& obj);
     MRDOX_DECL Object(Value value);
     MRDOX_DECL Object& operator=(Value value);
     MRDOX_DECL explicit Object(Scope& scope);
@@ -419,10 +419,8 @@ public:
         std::string_view name,
         Args&&... args) const
     {
-        auto result = tryCall(name, std::forward<Args>(args)...);
-        if(! result)
-            throw result;
-        return *result;
+        return tryCall(name,
+            std::forward<Args>(args)...).release();
     }
 };
 
