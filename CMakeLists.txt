@@ -125,7 +125,6 @@ find_package(fmt REQUIRED CONFIG)
 #
 #-------------------------------------------------
 
-configure_file(source/Version.hpp.in "${PROJECT_SOURCE_DIR}/include/mrdox/Version.hpp")
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp source/*.in source/*.natvis)
 file(GLOB_RECURSE INCLUDES CONFIGURE_DEPENDS include/*.hpp)
 add_executable(mrdox ${SOURCES} ${INCLUDES})
