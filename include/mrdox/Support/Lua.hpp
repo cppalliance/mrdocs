@@ -239,10 +239,6 @@ public:
         , i_(static_cast<int>(v))
     {
     }
-
-    //Param(Value (*function)(std::vector<Value>)) noexcept
-    //{
-    //}
 };
 
 //------------------------------------------------

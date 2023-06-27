@@ -16,23 +16,28 @@
 #include <mrdox/Support/Dom.hpp>
 #include <mrdox/Metadata.hpp>
 #include <type_traits>
+#include <memory>
 
 namespace clang {
 namespace mrdox {
 
-/*
-class DomFrame
+class MRDOX_DECL
+    DomCorpus
 {
     struct Impl;
 
+    Corpus const& corpus_;
     std::unique_ptr<Impl> impl_;
 
 public:
-    DomFrame(Corpus const& corpus);
+    ~DomCorpus();
 
-    dom::Value get(SymbolID const& id);
+    explicit
+    DomCorpus(Corpus const&);
+
+    dom::ObjectPtr
+    get(SymbolID const& id);
 };
-*/
 
 /** Return a Dom node for the given metadata.
 */

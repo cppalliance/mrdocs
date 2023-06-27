@@ -13,7 +13,7 @@
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/DomMetadata.hpp>
 #include <mrdox/Support/SharedPtr.hpp>
-
+#include <llvm/ADT/StringMap.h>
 #include "-adoc/DocVisitor.hpp" // VFALCO NO!
 
 namespace clang {
@@ -991,8 +991,45 @@ domCreateInfo(
     // being emitted without the corresponding data.
     auto I = corpus.find(id);
     if(I)
-        return domCreateInfo(*I, corpus);
+        //return domCreateInfo(*I, corpus);
+        return visit(*I,
+            [&corpus]<class T>(T const& I) ->
+                dom::Value
+            {
+                return DomInfo<T>(I, corpus).construct();
+            });
     return nullptr;
+}
+
+//------------------------------------------------
+
+struct DomCorpus::Impl
+{
+    struct value_type
+    {
+        std::weak_ptr<dom::Object> weak;
+        std::shared_ptr<dom::Object> strong;
+    };
+
+    llvm::StringMap<dom::ObjectPtr> cache_;
+};
+
+DomCorpus::
+~DomCorpus() = default;
+
+DomCorpus::
+DomCorpus(
+    Corpus const& corpus)
+    : corpus_(corpus)
+    , impl_(std::make_unique<Impl>())
+{
+}
+
+dom::ObjectPtr
+DomCorpus::
+get(SymbolID const& id)
+{
+    return makeShared<dom::Object>();
 }
 
 } // mrdox

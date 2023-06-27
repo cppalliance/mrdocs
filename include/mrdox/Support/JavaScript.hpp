@@ -103,73 +103,6 @@ public:
 
 //------------------------------------------------
 
-/** A bound value which can be passed to JavaScript.
-
-    Objects of this type are used as parameter
-    types in signatures of C++ functions. They
-    should not be used anywhere else, otherwise
-    the behavior is undefined.
-*/
-class MRDOX_DECL
-    Param
-{
-    enum class Kind
-    {
-        Undefined,
-        Null,
-        Boolean,
-        Integer,
-        Unsigned,
-        Double,
-        String,
-        Value,
-        DomObject
-    };
-
-    Kind kind_ = Kind::Undefined;
-
-    union
-    {
-        bool b_;
-        int i_;
-        unsigned int u_;
-        double d_;
-        std::string_view s_;
-        int idx_;
-        dom::ObjectPtr obj_;
-    };
-
-    friend struct Access;
-    void push(void*) const;
-    Param(Param&&) noexcept;
-    Param(dom::ObjectPtr const&) noexcept;
-
-public:
-    /** Destructor.
-    */
-    ~Param();
-
-    Param(std::nullptr_t) noexcept;
-    Param(bool) noexcept;
-    Param(int) noexcept;
-    Param(unsigned int) noexcept;
-    Param(double) noexcept;
-    Param(std::string_view) noexcept;
-    Param(Value const&) noexcept;
-    Param(dom::Value const&) noexcept;
-
-    template<class String>
-    requires std::is_convertible_v<
-        String, std::string_view>
-    Param(
-        String const& string)
-        : Param(std::string_view(string))
-    {
-    }
-};
-
-//------------------------------------------------
-
 class Scope
 {
     Context ctx_;
@@ -195,19 +128,104 @@ public:
 
     /** Return the global object.
     */
-    MRDOX_DECL Object getGlobalObject();
+    MRDOX_DECL
+    Value
+    getGlobalObject();
 
     /** Return a global object if it exists.
     */
     MRDOX_DECL
-    Expected<Object>
-    tryGetGlobal(std::string_view name);
-
-    /** Return a global object if it exists.
-    */
-    MRDOX_DECL
-    Object
+    Expected<Value>
     getGlobal(std::string_view name);
+};
+
+//------------------------------------------------
+
+/** A bound value which can be passed to JavaScript.
+
+    Objects of this type are used as parameter
+    types in signatures of C++ functions. They
+    should not be used anywhere else, otherwise
+    the behavior is undefined.
+*/
+class MRDOX_DECL
+    Param
+{
+    enum class Kind
+    {
+        Undefined,
+        Null,
+        Boolean,
+        Integer,
+        Unsigned,
+        Double,
+        String,
+        Value,
+        DomArray,
+        DomObject
+    };
+
+    Kind kind_ = Kind::Undefined;
+
+    union
+    {
+        bool b_;
+        int i_;
+        unsigned int u_;
+        double d_;
+        int idx_; // for Value
+        std::string_view s_;
+        dom::ArrayPtr arr_;
+        dom::ObjectPtr obj_;
+    };
+
+    friend struct Access;
+    void push(Scope&) const;
+    Param(Param&&) noexcept;
+
+public:
+    ~Param();
+    Param(std::nullptr_t) noexcept;
+    Param(int) noexcept;
+    Param(unsigned int) noexcept;
+    Param(double) noexcept;
+    Param(std::string_view s) noexcept;
+    Param(Value const& value) noexcept;
+    Param(dom::ArrayPtr const& arr) noexcept;
+    Param(dom::ObjectPtr const& obj) noexcept;
+    Param(dom::Value const& value) noexcept;
+
+    Param(Param const&) = delete;
+    Param& operator=(Param const&) = delete;
+
+    template<class Boolean>
+    requires std::is_same_v<Boolean, bool>
+    Param(Boolean const& b) noexcept
+        : kind_(Kind::Boolean)
+        , b_(b)
+    {
+    }
+
+    Param(char const* s) noexcept
+        : Param(std::string_view(s))
+    {
+    }
+
+    template<class String>
+    requires std::is_convertible_v<
+        String, std::string_view>
+    Param(String const& s)
+        : Param(std::string_view(s))
+    {
+    }
+
+    template<class Enum>
+    requires std::is_enum_v<Enum>
+    Param(Enum v) noexcept
+        : kind_(Kind::Integer)
+        , i_(static_cast<int>(v))
+    {
+    }
 };
 
 //------------------------------------------------
@@ -234,55 +252,47 @@ public:
 
     MRDOX_DECL Type type() const noexcept;
 
-    bool isUndefined() const noexcept
-    {
-        return type() == Type::undefined;
-    }
+    bool isUndefined() const noexcept;
+    bool isNull() const noexcept;
+    bool isBoolean() const noexcept;
+    bool isNumber() const noexcept;
+    bool isString() const noexcept;
+    bool isArray() const noexcept;
+    bool isObject() const noexcept;
 
-    bool isNull() const noexcept
-    {
-        return type() == Type::null;
-    }
+    std::string getString() const;
 
-    bool isBoolean() const noexcept
-    {
-        return type() == Type::boolean;
-    }
-
-    bool isNumber() const noexcept
-    {
-        return type() == Type::number;
-    }
-
-    bool isString() const noexcept
-    {
-        return type() == Type::string;
-    }
-
-    MRDOX_DECL bool isArray() const noexcept;
-
-    bool isObject() const noexcept
-    {
-        return type() == Type::object;
-    }
-
+void setlog();
     /** Call a function.
     */
     template<class... Args>
-    friend
     Expected<Value>
-    tryCall(
-        Value const& fn,
-        Args&&... args);
+    call(Args&&... args) const
+    {
+        std::array<Param, sizeof...(args)> va{ Param(args)... };
+        return callImpl(va.data(), va.size());
+    }
 
     /** Call a function.
     */
     template<class... Args>
-    friend
     Value
-    call(
-        Value const& fn,
-        Args&&... args);
+    operator()(Args&&... args) const
+    {
+        return call(std::forward<Args>(args)...).value();
+    }
+
+    /** Call a method.
+    */
+    template<class... Args>
+    Expected<Value>
+    callProp(
+        std::string_view prop,
+        Args&&... args) const
+    {
+        std::array<Param, sizeof...(args)> va{ Param(args)... };
+        return callPropImpl(prop, va.data(), va.size());
+    }
 
 private:
     MRDOX_DECL
@@ -290,139 +300,44 @@ private:
     callImpl(
         Param const* data,
         std::size_t size) const;
-};
-
-template<class... Args>
-Expected<Value>
-tryCall(
-    Value const& fn,
-    Args&&... args)
-{
-    std::array<Param, sizeof...(args)> va{ Param(args)... };
-    return fn.callImpl(va.data(), va.size());
-}
-
-/** Call a function.
-*/
-template<class... Args>
-Value
-call(
-    Value const& fn,
-    Args&&... args)
-{
-    auto result = tryCall(fn,
-        std::forward<Args>(args)...);
-    if(result)
-        throw result;
-}
-
-//------------------------------------------------
-
-/** An ECMAScript Object.
-*/
-class String : public Value
-{
-    friend struct Access;
-
-    String(int idx, Scope&) noexcept;
-
-public:
-    MRDOX_DECL String(Value value);
-    MRDOX_DECL String& operator=(Value value);
-    MRDOX_DECL explicit String(std::string_view s);
-
-    MRDOX_DECL std::string_view get() const noexcept;
-
-    std::string_view operator*() const noexcept
-    {
-        return get();
-    }
-
-    operator std::string_view() const noexcept
-    {
-        return get();
-    }
-};
-
-//------------------------------------------------
-
-/** An ECMAScript Array.
-
-    An Array is an Object which has the internal
-    class Array prototype.
-*/
-class Array : public Value
-{
-    friend struct Access;
-
-    Array(int idx, Scope&) noexcept;
-
-public:
-    MRDOX_DECL Array(Value value);
-    MRDOX_DECL Array& operator=(Value value);
-    MRDOX_DECL explicit Array(Scope& scope);
 
     MRDOX_DECL
-    std::size_t
-    size() const;
-
-    MRDOX_DECL
-    void
-    push_back(
-        Param value) const;
-};
-
-//------------------------------------------------
-
-/** An ECMAScript Object.
-*/
-class Object : public Value
-{
-    friend struct Access;
-
-    Object(int idx, Scope&) noexcept;
-
-    Expected<Value> callImpl(
-        std::string_view name,
+    Expected<Value>
+    callPropImpl(
+        std::string_view prop,
         Param const* data,
         std::size_t size) const;
-
-public:
-    MRDOX_DECL Object(Scope&,
-        SharedPtr<dom::Object> const& obj);
-    MRDOX_DECL Object(Value value);
-    MRDOX_DECL Object& operator=(Value value);
-    MRDOX_DECL explicit Object(Scope& scope);
-
-    MRDOX_DECL
-    void
-    insert(
-        std::string_view name, Param value) const;
-
-    /** Call a member or function.
-    */
-    template<class... Args>
-    Expected<Value>
-    tryCall(
-        std::string_view name,
-        Args&&... args) const
-    {
-        std::array<Param, sizeof...(args)> va{ Param(args)... };
-        return callImpl(name, va.data(), va.size());
-    }
-
-    /** Call a member or function.
-    */
-    template<class... Args>
-    Value
-    call(
-        std::string_view name,
-        Args&&... args) const
-    {
-        return tryCall(name,
-            std::forward<Args>(args)...).release();
-    }
 };
+
+inline bool Value::isUndefined() const noexcept
+{
+    return type() == Type::undefined;
+}
+
+inline bool Value::isNull() const noexcept
+{
+    return type() == Type::null;
+}
+
+inline bool Value::isBoolean() const noexcept
+{
+    return type() == Type::boolean;
+}
+
+inline bool Value::isNumber() const noexcept
+{
+    return type() == Type::number;
+}
+
+inline bool Value::isString() const noexcept
+{
+    return type() == Type::string;
+}
+
+inline bool Value::isObject() const noexcept
+{
+    return type() == Type::object;
+}
 
 } // js
 } // mrdox

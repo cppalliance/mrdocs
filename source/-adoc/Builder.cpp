@@ -48,8 +48,8 @@ Builder(
         if(auto err = scope.script(*fileText))
             throw err;
     }
-    auto Handlebars = scope.getGlobal("Handlebars");
-
+    auto Handlebars = scope.getGlobal("Handlebars").value();
+Handlebars.setlog();
     // load templates
 #if 0
     err = forEachFile(options_.template_dir,
@@ -77,8 +77,8 @@ Builder(
             auto text = files::getFileText(pathName);
             if(! text)
                 return text.error();
-            Handlebars.call("registerPartial", name, *text);
-            return Error::success();
+            return Handlebars.callProp(
+                "registerPartial", name, *text).error();
         });
     if(err)
         throw err;
@@ -95,7 +95,7 @@ Builder(
                 return Error::success();
             auto name = files::getFileName(pathName);
             name.remove_suffix(ext.size());
-            //Handlebars.call("registerHelper", name, *text);
+            //Handlebars.callProp("registerHelper", name, *text);
             auto err = ctx_.scriptFromFile(pathName);
             return Error::success();
         });
@@ -162,19 +162,19 @@ callTemplate(
     auto fileText = files::getFileText(pathName);
     if(! fileText)
         return fileText.error();
-    js::Object options(scope);
-    options.insert("noEscape", true);
-    options.insert("allowProtoPropertiesByDefault", true);
-    options.insert("allowProtoMethodsByDefault", true);
-    auto templateFn = Handlebars.call("compile", *fileText, options);
-
-//auto v = context.getObject()->get("symbol");
-//if(v.isObject()) lua::lua_dump(v.getObject());
-    auto result = js::tryCall(templateFn, context);
+    auto options = makeShared<dom::Object>();
+    options->set("noEscape", true);
+    options->set("allowProtoPropertiesByDefault", true);
+    // VFALCO This makes Proxy objects stop working
+    //options->set("allowProtoMethodsByDefault", true);
+    auto templateFn = Handlebars->callProp(
+        "compile", *fileText, options);
+    if(! templateFn)
+        return templateFn.error();
+    auto result = templateFn->call(context, options);
     if(! result)
         return result.error();
-    js::String adocText(*result);
-    return std::string(adocText);
+    return result->getString();
 }
 
 Expected<std::string>
