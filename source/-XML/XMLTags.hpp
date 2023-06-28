@@ -21,6 +21,7 @@
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
 #include <optional>
+#include <vector>
 
 /*
     Object for assisting with generating
@@ -127,20 +128,26 @@ struct Attribute
 
 //------------------------------------------------
 
-/** An init-list of zero or more XML attributes.
+/** An vector of zero or more XML attributes.
 */
 struct Attributes
 {
-    std::initializer_list<Attribute> init_;
+    std::vector<Attribute> attrs_;
 
     Attributes() = default;
-    Attributes(std::initializer_list<Attribute> init);
+    Attributes(std::initializer_list<Attribute> attrs);
+    Attributes(const std::vector<Attribute>& attrs);
+    Attributes(std::vector<Attribute>&& attrs);
+
+    void push(const Attribute& attr);
+    void push(Attribute&& attr);
 
     friend
     llvm::raw_ostream& operator<<(
         llvm::raw_ostream& os,
         Attributes const& attrs);
 };
+
 
 //------------------------------------------------
 

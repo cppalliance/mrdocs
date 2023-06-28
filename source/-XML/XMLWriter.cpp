@@ -293,7 +293,7 @@ writeEnum(
     if(I.BaseType)
     {
         tags_.open(baseTagName);
-        writeType(I.BaseType);
+        writeType(I.BaseType, tags_);
         tags_.close(baseTagName);
     }
 #endif
@@ -392,7 +392,7 @@ writeRecord(
             { B.Access },
             { "class", "virtual", B.IsVirtual },
         });
-        writeType(B.Type);
+        writeType(B.Type, tags_);
         tags_.close(baseTagName);
     }
 #endif
@@ -434,7 +434,7 @@ writeTypedef(
 
     writeSourceInfo(I);
 
-    writeType(I.Underlying);
+    writeType(I.Underlying, tags_);
 #if 0
     tags_.write("type", "", {
         { "name", I.Underlying.Name },
@@ -466,7 +466,7 @@ writeField(
 
     write(I.specs, tags_);
 
-    writeType(I.Type);
+    writeType(I.Type, tags_);
 #if 0
     tags_.write("type", {}, {
         { "name", I.Type.Name },
@@ -498,7 +498,7 @@ writeVar(
 
     write(I.specs, tags_);
 
-    writeType(I.Type);
+    writeType(I.Type, tags_);
 #if 0
     tags_.write("type", {}, {
         { "name", I.Type.Name },
@@ -608,6 +608,7 @@ writeSpecialization(
 
 //------------------------------------------------
 
+#if 0
 void
 XMLWriter::
 writeType(
@@ -615,11 +616,15 @@ writeType(
 {
     if(! type)
         return;
-
+#if 0
     tags_.write("type", {}, {
         { "name", toString(*type) },
     });
+#else
+
+#endif
 }
+#endif
 
 //------------------------------------------------
 

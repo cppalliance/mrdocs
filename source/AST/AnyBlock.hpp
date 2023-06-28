@@ -371,43 +371,6 @@ public:
 
 //------------------------------------------------
 
-#if 0
-class TypeBlock
-    : public BitcodeReader::AnyBlock
-{
-protected:
-    BitcodeReader& br_;
-    TypeInfo& I_;
-
-public:
-    TypeBlock(
-        TypeInfo& I,
-        BitcodeReader& br) noexcept
-        : br_(br)
-        , I_(I)
-    {
-    }
-
-    Error
-    parseRecord(
-        Record const& R,
-        unsigned ID,
-        llvm::StringRef Blob) override
-    {
-        switch(ID)
-        {
-        case TYPE_ID:
-            return decodeRecord(R, I_.id, Blob);
-        case TYPE_NAME:
-            return decodeRecord(R, I_.Name, Blob);
-        default:
-            return AnyBlock::parseRecord(R, ID, Blob);
-        }
-    }
-};
-#endif
-//------------------------------------------------
-
 class TypeInfoBlock
     : public BitcodeReader::AnyBlock
 {
@@ -499,22 +462,22 @@ public:
                         return Error("wrong TypeInfo kind");
                 });
         case TYPEINFO_REFQUAL:
-            if(I_->Kind != TypeKind::Function)
+            if(! I_->isFunction())
                 return Error("wrong TypeInfo kind");
             return decodeRecord(R, static_cast<
                 FunctionTypeInfo&>(*I_).RefQualifier, Blob);
         case TYPEINFO_EXCEPTION_SPEC:
-            if(I_->Kind != TypeKind::Function)
+            if(! I_->isFunction())
                 return Error("wrong TypeInfo kind");
             return decodeRecord(R, static_cast<
                 FunctionTypeInfo&>(*I_).ExceptionSpec, Blob);
         case TYPEINFO_BOUNDS_EXPR:
-            if(I_->Kind != TypeKind::Array)
+            if(! I_->isArray())
                 return Error("wrong TypeInfo kind");
             return decodeRecord(R, static_cast<
                 ArrayTypeInfo&>(*I_).BoundsExpr, Blob);
         case TYPEINFO_BOUNDS_VALUE:
-            if(I_->Kind != TypeKind::Array)
+            if(! I_->isArray())
                 return Error("wrong TypeInfo kind");
             return decodeRecord(R, static_cast<
                 ArrayTypeInfo&>(*I_).BoundsValue, Blob);
@@ -794,11 +757,11 @@ readSubBlock(unsigned ID)
                 std::unique_ptr<TypeInfo>* child = nullptr;
                 if constexpr(requires { t.PointeeType; })
                     child = &t.PointeeType;
-                else if constexpr(std::same_as<T, PackTypeInfo>)
+                else if constexpr(T::isPack())
                     child = &t.PatternType;
-                else if constexpr(std::same_as<T, ArrayTypeInfo>)
+                else if constexpr(T::isArray())
                     child = &t.ElementType;
-                else if constexpr(std::same_as<T, FunctionTypeInfo>)
+                else if constexpr(T::isFunction())
                     child = &t.ReturnType;
 
                 if(! child)
@@ -819,7 +782,7 @@ readSubBlock(unsigned ID)
 
     case BI_TYPEINFO_PARAM_BLOCK_ID:
     {
-        if(I_->Kind != TypeKind::Function)
+        if(! I_->isFunction())
             return Error("wrong TypeInfo kind");
         auto& F = static_cast<FunctionTypeInfo&>(*I_);
         TypeInfoBlock B(F.ParamTypes.emplace_back(), br_);
@@ -828,7 +791,7 @@ readSubBlock(unsigned ID)
     case BI_TEMPLATE_ARG_BLOCK_ID:
         return visit(*I_, [&]<typename T>(T& t)
             {
-                if constexpr(requires { t.TemplateArgs; })
+                if constexpr(T::isSpecialization())
                 {
                     TemplateArgBlock B(t.TemplateArgs.emplace_back());
                     return br_.readBlock(B, ID);

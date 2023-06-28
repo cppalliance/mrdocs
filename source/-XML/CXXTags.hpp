@@ -185,43 +185,138 @@ inline void write(VariableFlags0 const& bits, XMLTags& tags)
     fw.write(&VariableFlags0::storageClass, "storage-class");
 }
 
+inline
+void
+writeTemplateArg(const TArg& I, XMLTags& tags);
+
+inline
+void
+writeType(
+    TypeInfo const& I,
+    XMLTags& tags,
+    std::string_view type_tag = "type")
+{
+    visit(I, [&]<typename T>(
+        const T& t)
+        {
+            Attributes attrs = {
+                { "class", toString(T::kind_id),
+                    T::kind_id != TypeKind::Builtin }
+            };
+
+            if constexpr(requires { t.id; })
+            {
+                attrs.push({t.id});
+            }
+
+            // KRYSTIAN FIXME: parent should is a type itself
+            if constexpr(requires { t.ParentType; })
+            {
+                if(t.ParentType)
+                    attrs.push({"parent", toString(*t.ParentType)});
+            }
+
+            if constexpr(requires { t.Name; })
+            {
+                attrs.push({"name", t.Name});
+            }
+
+            if constexpr(requires { t.CVQualifiers; })
+            {
+                if(t.CVQualifiers != QualifierKind::None)
+                    attrs.push({"cv-qualifiers", toString(t.CVQualifiers)});
+            }
+
+            if constexpr(T::isArray())
+            {
+                if(! t.BoundsValue.empty())
+                    attrs.push({"bounds-value", t.BoundsValue});
+                if(t.BoundsValue != t.BoundsExpr &&
+                    ! t.BoundsExpr.empty())
+                    attrs.push({"bounds-expr", t.BoundsExpr});
+            }
+
+            if constexpr(T::isFunction())
+            {
+                if(t.RefQualifier != ReferenceKind::None)
+                    attrs.push({"ref-qualifier", toString(t.RefQualifier)});
+
+                if(t.ExceptionSpec != NoexceptKind::None)
+                    attrs.push({"exception-spec", toString(t.ExceptionSpec)});
+            }
+
+            // ----------------------------------------------------------------
+
+            // no nested types; write as self closing tag
+            if constexpr(T::isBuiltin() || T::isTag())
+            {
+                tags.write(type_tag, {}, std::move(attrs));
+                return;
+            }
+
+            tags.open(type_tag, std::move(attrs));
+
+            if constexpr(T::isSpecialization())
+            {
+                for(const auto& targ : t.TemplateArgs)
+                    writeTemplateArg(targ, tags);
+            }
+
+            if constexpr(requires { t.PointeeType; })
+            {
+                writeType(*t.PointeeType, tags, "pointee-type");
+            }
+
+            if constexpr(T::isPack())
+            {
+                writeType(*t.PatternType, tags, "pattern-type");
+            }
+
+            if constexpr(T::isArray())
+            {
+                writeType(*t.ElementType, tags, "element-type");
+            }
+
+            if constexpr(T::isFunction())
+            {
+                writeType(*t.ReturnType, tags, "return-type");
+                for(const auto& p : t.ParamTypes)
+                    writeType(*p, tags, "param-type");
+            }
+
+            tags.close(type_tag);
+        });
+}
+
+inline
+void
+writeType(
+    const std::unique_ptr<TypeInfo>& type,
+    XMLTags& tags)
+{
+    if(! type)
+        return;
+    writeType(*type, tags);
+}
+
 inline void writeReturnType(TypeInfo const& I, XMLTags& tags)
 {
-#if 0
-    if(I.Name == "void")
+    // KRYSTIAN NOTE: we don't *have* to do this...
+    if(toString(I) == "void")
         return;
-    tags.write(returnTagName, {}, {
-        { "type", I.Name },
-        { I.id }
-        });
-#else
-    std::string type_str = toString(I);
-    if(type_str == "void")
-        return;
-    tags.write(returnTagName, {}, {
-        { "type", type_str },
-        // { I.id }
-        });
-#endif
+    tags.open(returnTagName);
+    writeType(I, tags);
+    tags.close(returnTagName);
 }
 
 inline void writeParam(Param const& P, XMLTags& tags)
 {
-#if 0
-    tags.write(paramTagName, {}, {
+    tags.open(paramTagName, {
         { "name", P.Name, ! P.Name.empty() },
-        { "type", P.Type.Name },
         { "default", P.Default, ! P.Default.empty() },
-        { P.Type.id } });
-#else
-    std::string type_str = toString(*P.Type);
-    tags.write(paramTagName, {}, {
-        { "name", P.Name, ! P.Name.empty() },
-        { "type", type_str },
-        { "default", P.Default, ! P.Default.empty() },
-        // { P.Type.id }
         });
-#endif
+    writeType(*P.Type, tags);
+    tags.close(paramTagName);
 }
 
 inline void writeTemplateParam(const TParam& I, XMLTags& tags)
@@ -231,15 +326,10 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
     case TParamKind::Type:
     {
         const auto& t = I.get<TypeTParam>();
-#if 0
-        std::string_view default_val;
-        if(t.Default)
-            default_val = t.Default->Name;
-#else
+
         std::string default_val;
         if(t.Default)
             default_val = toString(*t.Default);
-#endif
 
         tags.write(tparamTagName, {}, {
             { "name", I.Name, ! I.Name.empty() },
@@ -258,11 +348,8 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
         tags.write(tparamTagName, {}, {
             { "name", I.Name, ! I.Name.empty() },
             { "class", "non-type" },
-#if 0
-            { "type", t.Type.Name },
-#else
+            // KRYSTIAN FIXME: we can use writeType if really care
             { "type", toString(*t.Type) },
-#endif
             { "default", default_val, ! default_val.empty() }
         });
         break;

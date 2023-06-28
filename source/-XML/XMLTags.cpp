@@ -101,9 +101,37 @@ toString(
 
 Attributes::
 Attributes(
-    std::initializer_list<Attribute> init)
-    : init_(init)
+    std::initializer_list<Attribute> attrs)
+    : attrs_(attrs)
 {
+}
+
+Attributes::
+Attributes(
+    const std::vector<Attribute>& attrs)
+    : attrs_(attrs)
+{
+}
+
+Attributes::
+Attributes(
+    std::vector<Attribute>&& attrs)
+    : attrs_(std::move(attrs))
+{
+}
+
+void
+Attributes::
+push(const Attribute& attr)
+{
+    attrs_.push_back(attr);
+}
+
+void
+Attributes::
+push(Attribute&& attr)
+{
+    attrs_.push_back(std::move(attr));
 }
 
 llvm::raw_ostream&
@@ -111,7 +139,7 @@ operator<<(
     llvm::raw_ostream& os,
     Attributes const& attrs)
 {
-    for(auto const& attr : attrs.init_)
+    for(auto const& attr : attrs.attrs_)
         if(attr.pred)
             os <<
                 ' ' << attr.name << '=' <<

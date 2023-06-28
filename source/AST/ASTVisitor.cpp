@@ -298,6 +298,8 @@ buildTypeInfoForType(
         auto I = std::make_unique<ArrayTypeInfo>();
         I->ElementType = buildTypeInfoForType(
             T->getElementType());
+        // KRYSTIAN FIXME: this is broken; cannonical
+        // constant array types never have a size expression
         if(auto* E = T->getSizeExpr())
             I->BoundsExpr = getSourceCode(E->getSourceRange());
         I->BoundsValue = toString(T->getSize(), 10, false);
