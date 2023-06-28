@@ -224,14 +224,14 @@ Interface(
 {
 }
 
-SharedPtr<Interface>
+Interface
 makeInterface(
     RecordInfo const& Derived,
     Corpus const& corpus)
 {
     Interface I(corpus);
     Interface::Build(I, Derived, corpus);
-    return makeShared<Interface>(std::move(I));
+    return I;
 }
 
 } // mrdox

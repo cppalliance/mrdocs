@@ -664,12 +664,12 @@ template<class T>
 class DomTrancheArray : public dom::Array
 {
     std::span<T const*> list_;
-    SharedPtr<Interface> sp_;
+    std::shared_ptr<Interface> sp_;
 
 public:
     DomTrancheArray(
         std::span<T const*> list,
-        SharedPtr<Interface> const& sp)
+        std::shared_ptr<Interface> const& sp)
         : list_(list)
         , sp_(sp)
     {
@@ -692,7 +692,7 @@ public:
 
 class DomTranche : public dom::Object
 {
-    SharedPtr<Interface> sp_;
+    std::shared_ptr<Interface> sp_;
     Interface::Tranche const& tranche_;
 
     template<class T>
@@ -700,7 +700,7 @@ class DomTranche : public dom::Object
     dom::Value
     init(
         std::span<T const*> list,
-        SharedPtr<Interface> const& sp)
+        std::shared_ptr<Interface> const& sp)
     {
         return makeShared<DomTrancheArray<T>>(list, sp);
     }
@@ -708,7 +708,7 @@ class DomTranche : public dom::Object
 public:
     DomTranche(
         Interface::Tranche const& tranche,
-        SharedPtr<Interface> const& sp) noexcept
+        std::shared_ptr<Interface> const& sp) noexcept
         : dom::Object({
             { "records",    init(tranche.Records, sp) },
             { "functions",  init(tranche.Functions, sp) },
@@ -727,8 +727,8 @@ public:
 class DomInterface : public dom::LazyObject
 {
     RecordInfo const& I_;
-    AtomicSharedPtr<Interface> sp_;
     Corpus const& corpus_;
+    //std::shared_ptr<Interface> sp_;
 
 public:
     DomInterface(
@@ -739,32 +739,22 @@ public:
     {
     }
 
-    SharedPtr<Interface>
-    getInterface() const
+    dom::ObjectPtr
+    construct() const override
     {
-        return sp_.load(
-            [&]
-            {
-                return makeInterface(I_, corpus_);
-            });
-    }
-
-    dom::ObjectPtr construct() const override
-    {
+        auto sp = std::make_shared<Interface>(
+            makeInterface(I_, corpus_));
         return makeShared<dom::Object>(
             dom::Object::list_type({
                 { "public",
                     makeShared<DomTranche>(
-                        getInterface()->Public,
-                        getInterface()) },
+                        sp->Public, sp) },
                 { "protected",
                     makeShared<DomTranche>(
-                        getInterface()->Protected,
-                        getInterface()) },
+                        sp->Protected, sp) },
                 { "private",
                     makeShared<DomTranche>(
-                        getInterface()->Private,
-                        getInterface()) },
+                        sp->Private, sp) }
                 }));
     }
 };
