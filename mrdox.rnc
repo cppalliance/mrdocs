@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
 # Copyright (c) 2023 Klemens Morgenstern (klemens.morgenstern@gmx.net)
+# Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 #
 # Official repository: https://github.com/cppalliance/mrdox
 #
@@ -59,10 +60,9 @@ grammar
     BaseInfo =
         element base
         {
-            Name,
             Access ?,
             attribute class { "virtual" } ?,
-            ID
+            TypeInfo
         }
 
     #---------------------------------------------
@@ -76,13 +76,13 @@ grammar
             Location *,
             (
                 Attr * |
-                element return { attribute type { text }, ID ? } |
+                element return { TypeInfo } |
                 element param
                 {
                     Name?,
-                    attribute type { text },
                     attribute default { text } ?,
-                    ID ?
+                    ID ?,
+                    TypeInfo
                 } * |
                 Javadoc ?
             ) *
@@ -95,9 +95,9 @@ grammar
         {
             Name,
             attribute class {"scoped"} ?,
-            attribute type { text } ?,
             ID,
             Location *,
+            BaseInfo ?,
             element value
             {
                 Name,
@@ -114,14 +114,14 @@ grammar
             Name,
             ID,
             Location *,
-            element type { Name, ID ? }
+            TypeInfo
         } |
         element typedef
         {
             Name,
             ID,
             Location *,
-            element type { Name, ID ? }
+            TypeInfo
         }
 
     #---------------------------------------------
@@ -136,7 +136,7 @@ grammar
             Location,
             (
                 Attr * &
-                element type { Name, ID ? } &
+                TypeInfo &
                 Javadoc ?
             )
         }
@@ -152,7 +152,7 @@ grammar
             Location *,
             (
                 Attr * &
-                element type { Name, ID ? } &
+                TypeInfo &
                 Javadoc ?
             )
         }
@@ -293,4 +293,40 @@ grammar
     Name = attribute name { text }
 
     Attr = element attr { ID, Name ?, attribute value { text } ? }
+
+    TypeInfo = (
+        element (
+            type |
+            pointee-type |
+            pattern-type |
+            element-type |
+            return-type |
+            param-type
+        )
+        {
+            attribute class
+            {
+                "builtin" |
+                "tag" |
+                "specialization" |
+                "lvalue-reference" |
+                "rvalue-reference" |
+                "pointer" |
+                "member-pointer" |
+                "array" |
+                "function" |
+                "pack"
+            } ?,
+            ID ?,
+            Name ?,
+            attribute parent { text } ?,
+            attribute cv-qualifiers { "const"|"volatile"|"const volatile" } ?,
+            attribute ref-qualifier { "&"|"&&" } ?,
+            attribute exception-spec { text } ?,
+            attribute bounds-value { text } ?,
+            attribute bounds-expr { text } ?,
+            TemplateArg *,
+            TypeInfo *
+        }
+    )
 }
