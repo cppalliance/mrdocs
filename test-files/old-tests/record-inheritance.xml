@@ -18,76 +18,76 @@
   <struct name="S2" id="SjrYNgntOvtz+y7yw+WmqLzVdW0=">
     <file path="record-inheritance.cpp" line="8" class="def"/>
     <base>
-      <type name="S0"/>
+      <type class="tag" id="u38+snleg17KL7EQuD9FV1Z8b9E=" name="S0"/>
     </base>
   </struct>
   <struct name="S3" id="ftBcWCAw4uNtak9kOXMXaOe13YU=">
     <file path="record-inheritance.cpp" line="9" class="def"/>
     <base>
-      <type name="S1"/>
+      <type class="tag" id="Tu+ql/Sdpk31DKHwwD/67uI3OZE=" name="S1"/>
     </base>
   </struct>
   <struct name="S4" id="OkKbIK8En3Y5FbOBQVeHnAsZ0aY=">
     <file path="record-inheritance.cpp" line="10" class="def"/>
     <base>
-      <type name="S2"/>
+      <type class="tag" id="SjrYNgntOvtz+y7yw+WmqLzVdW0=" name="S2"/>
     </base>
     <base>
-      <type name="S3"/>
+      <type class="tag" id="ftBcWCAw4uNtak9kOXMXaOe13YU=" name="S3"/>
     </base>
   </struct>
   <class name="C1" id="tm2khHa6qZM0lj1f7IwBdxVxDgE=">
     <file path="record-inheritance.cpp" line="12" class="def"/>
     <base access="private">
-      <type name="C0"/>
+      <type class="tag" id="sTaqkoFcVbtntbfpe777v5/pWL0=" name="C0"/>
     </base>
   </class>
   <class name="C2" id="a3f8uSFf+Hih/eqmCQtqTCDw3EY=">
     <file path="record-inheritance.cpp" line="13" class="def"/>
     <base>
-      <type name="C0"/>
+      <type class="tag" id="sTaqkoFcVbtntbfpe777v5/pWL0=" name="C0"/>
     </base>
   </class>
   <class name="C3" id="5eVHvnJpHGl0uaFQWGNZbAUi+rA=">
     <file path="record-inheritance.cpp" line="14" class="def"/>
     <base access="protected">
-      <type name="C0"/>
+      <type class="tag" id="sTaqkoFcVbtntbfpe777v5/pWL0=" name="C0"/>
     </base>
   </class>
   <class name="C4" id="TwgjmiSc5xz28SnTBuPcppQrwcY=">
     <file path="record-inheritance.cpp" line="15" class="def"/>
     <base access="private">
-      <type name="C0"/>
+      <type class="tag" id="sTaqkoFcVbtntbfpe777v5/pWL0=" name="C0"/>
     </base>
   </class>
   <class name="C5" id="+FCicEQuRpyoPB1uYTGhWVcrlcE=">
     <file path="record-inheritance.cpp" line="17" class="def"/>
     <base access="private" class="virtual">
-      <type name="C0"/>
+      <type class="tag" id="sTaqkoFcVbtntbfpe777v5/pWL0=" name="C0"/>
     </base>
   </class>
   <class name="C6" id="KS3H76wGd00jB2pnPVvaBxXfMk8=">
     <file path="record-inheritance.cpp" line="18" class="def"/>
     <base access="private" class="virtual">
-      <type name="C1"/>
+      <type class="tag" id="tm2khHa6qZM0lj1f7IwBdxVxDgE=" name="C1"/>
     </base>
   </class>
   <class name="C7" id="RoJyFLcF4tn+I7Xvlv0H+vBkIE4=">
     <file path="record-inheritance.cpp" line="19" class="def"/>
     <base>
-      <type name="C5"/>
+      <type class="tag" id="+FCicEQuRpyoPB1uYTGhWVcrlcE=" name="C5"/>
     </base>
     <base>
-      <type name="C6"/>
+      <type class="tag" id="KS3H76wGd00jB2pnPVvaBxXfMk8=" name="C6"/>
     </base>
   </class>
   <struct name="S5" id="HQ5z8M+Q3IIXdW9oiD6jtd0TL94=">
     <file path="record-inheritance.cpp" line="21" class="def"/>
     <base access="private">
-      <type name="S0"/>
+      <type class="tag" id="u38+snleg17KL7EQuD9FV1Z8b9E=" name="S0"/>
     </base>
     <base access="protected">
-      <type name="S1"/>
+      <type class="tag" id="Tu+ql/Sdpk31DKHwwD/67uI3OZE=" name="S1"/>
     </base>
   </struct>
 </namespace>

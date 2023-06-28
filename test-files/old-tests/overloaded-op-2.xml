@@ -7,8 +7,12 @@
     <function name="operator+" id="LhEvBUAmiZm97R+EE8Wp8+CtOwU=">
       <file path="overloaded-op-2.cpp" line="3"/>
       <attr id="operator" name="plus" value="5"/>
-      <return type="T"/>
-      <param type="T"/>
+      <return>
+        <type class="tag" id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
+      </return>
+      <param>
+        <type class="tag" id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
+      </param>
     </function>
   </struct>
 </namespace>

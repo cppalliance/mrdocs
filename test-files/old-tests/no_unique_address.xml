@@ -15,7 +15,7 @@
       <file path="no_unique_address.cpp" line="8" class="def"/>
       <attr id="nodiscard"/>
       <attr id="deprecated"/>
-      <type name="Empty"/>
+      <type class="tag" id="iczIHP1J59EwYw3xxL3w2C3Q43Q=" name="Empty"/>
     </field>
   </struct>
 </namespace>

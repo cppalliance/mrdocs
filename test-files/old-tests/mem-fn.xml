@@ -19,14 +19,14 @@
     <file path="mem-fn.cpp" line="5" class="def"/>
     <function name="f" id="p6A5dCCvCkASDE6pH4cJA/27/o8=">
       <file path="mem-fn.cpp" line="5"/>
-      <attr id="ref-qualifier" name="lvalue" value="1"/>
+      <attr id="ref-qualifier" name="&amp;" value="1"/>
     </function>
   </struct>
   <struct name="T04" id="MBpLzhyCDdQBHul4AN2i2fR8fw0=">
     <file path="mem-fn.cpp" line="6" class="def"/>
     <function name="f" id="G71rDzcAZPSKGoGGoDswQjD1JuA=">
       <file path="mem-fn.cpp" line="6"/>
-      <attr id="ref-qualifier" name="rvalue" value="2"/>
+      <attr id="ref-qualifier" name="&amp;&amp;" value="2"/>
     </function>
   </struct>
   <struct name="T05" id="5s81XyCIgauM5viJN9KAwx2A6DU=">
@@ -68,7 +68,9 @@
     <function name="f" id="+NevzZlqigIe1KSKS7eqq7pCd40=">
       <file path="mem-fn.cpp" line="13"/>
       <attr id="has-trailing-return"/>
-      <return type="int"/>
+      <return>
+        <type name="int"/>
+      </return>
     </function>
   </struct>
   <struct name="T12" id="7rg34TfmIwu+7zOd7DN+Dq8mLCc=">
@@ -110,7 +112,7 @@
   <struct name="T17" id="HL3/1NhKSels2G5ay7F0IYzlSLs=">
     <file path="mem-fn.cpp" line="20" class="def"/>
     <base>
-      <type name="T14"/>
+      <type class="tag" id="SLJhBKx+2u4KxSJ78Fg6wqlObPc=" name="T14"/>
     </base>
     <function name="f" id="5+yfyWtDpz80IwKT3xugro18Ev0=">
       <file path="mem-fn.cpp" line="20"/>
@@ -134,7 +136,9 @@
       <attr id="constexpr-kind" name="constexpr" value="1"/>
       <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="storage-class" name="static" value="2"/>
-      <return type="char"/>
+      <return>
+        <type name="char"/>
+      </return>
     </function>
     <function name="f3" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
       <file path="mem-fn.cpp" line="26"/>
@@ -143,13 +147,15 @@
       <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="is-const"/>
       <attr id="is-volatile"/>
-      <return type="int"/>
+      <return>
+        <type name="int"/>
+      </return>
     </function>
   </struct>
   <struct name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
     <file path="mem-fn.cpp" line="29" class="def"/>
     <base>
-      <type name="U"/>
+      <type class="tag" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=" name="U"/>
     </base>
     <function name="f3" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
       <file path="mem-fn.cpp" line="31"/>
@@ -157,7 +163,9 @@
       <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="is-const"/>
       <attr id="is-volatile"/>
-      <return type="int"/>
+      <return>
+        <type name="int"/>
+      </return>
     </function>
   </struct>
 </namespace>

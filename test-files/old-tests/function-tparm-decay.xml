@@ -35,7 +35,7 @@
   </alias>
   <alias name="U" id="h6hupdyuT6SfsCGFl6UUFGtvrcc=">
     <file path="function-tparm-decay.cpp" line="31" class="def"/>
-    <type name="const int"/>
+    <type name="int" cv-qualifiers="const"/>
   </alias>
   <template>
     <tparam class="non-type" type="T"/>

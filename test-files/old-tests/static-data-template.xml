@@ -12,7 +12,7 @@
         <variable name="x" id="7L90lvoKPW80F2cnMs0e05abtuk=">
           <file path="static-data-template.cpp" line="5" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
-          <type name="const T"/>
+          <type name="T" cv-qualifiers="const"/>
         </variable>
       </template>
       <template class="partial" id="7L90lvoKPW80F2cnMs0e05abtuk=">
@@ -22,7 +22,7 @@
         <variable name="x" id="odTOUblgmooUozrBqW3qKzPWSO4=">
           <file path="static-data-template.cpp" line="7" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
-          <type name="const T"/>
+          <type name="T" cv-qualifiers="const"/>
         </variable>
       </template>
       <template class="explicit" id="7L90lvoKPW80F2cnMs0e05abtuk=">
@@ -31,7 +31,7 @@
         <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=">
           <file path="static-data-template.cpp" line="10" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
-          <type name="const bool"/>
+          <type name="bool" cv-qualifiers="const"/>
         </variable>
       </template>
     </struct>

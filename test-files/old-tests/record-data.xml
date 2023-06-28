@@ -17,7 +17,7 @@
     <file path="record-data.cpp" line="9" class="def"/>
     <field name="t" id="LvEIBVXJYQQL4yraOaQv7ijMDng=">
       <file path="record-data.cpp" line="11" class="def"/>
-      <type name="T"/>
+      <type class="tag" id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
     </field>
   </struct>
   <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
@@ -39,7 +39,9 @@
     <file path="record-data.cpp" line="23" class="def"/>
     <field name="buf" id="2akJUSKKPN7IylZjqGMRlhXupds=">
       <file path="record-data.cpp" line="25" class="def"/>
-      <type name="char[64]"/>
+      <type class="array" bounds-value="64">
+        <element-type name="char"/>
+      </type>
     </field>
   </struct>
 </namespace>

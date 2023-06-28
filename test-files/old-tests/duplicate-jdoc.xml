@@ -4,7 +4,9 @@
 <namespace name="">
   <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
     <file path="duplicate-jdoc.cpp" line="5" class="def"/>
-    <return type="int"/>
+    <return>
+      <type name="int"/>
+    </return>
     <doc>
       <brief>
         <text> f0 brief</text>
@@ -21,7 +23,9 @@
   </function>
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file path="duplicate-jdoc.cpp" line="11" class="def"/>
-    <return type="int"/>
+    <return>
+      <type name="int"/>
+    </return>
     <doc>
       <brief>
         <text> f1 brief</text>
@@ -38,7 +42,9 @@
   </function>
   <function name="g0" id="Vn88rrW6JgrUc7j/24MUTRnpkRg=">
     <file path="duplicate-jdoc.cpp" line="17" class="def"/>
-    <param name="a" type="int"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text> g0 brief</text>
@@ -55,7 +61,9 @@
   </function>
   <function name="g1" id="99zzvQbBwXKh7ewapNRMnAKND3I=">
     <file path="duplicate-jdoc.cpp" line="23" class="def"/>
-    <param name="a" type="int"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text> g1 brief</text>

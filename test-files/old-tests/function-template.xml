@@ -6,14 +6,18 @@
     <tparam name="T" class="type"/>
     <function name="f0" id="G5Gycl5fXkd7l6yntSV6MMQr5ec=">
       <file path="function-template.cpp" line="2" class="def"/>
-      <param name="x" type="int"/>
+      <param name="x">
+        <type name="int"/>
+      </param>
     </function>
   </template>
   <template>
     <tparam name="T" class="type"/>
     <function name="f1" id="fpfzj7NvP0RymD19kc9AegA13cE=">
       <file path="function-template.cpp" line="5" class="def"/>
-      <param name="t" type="T"/>
+      <param name="t">
+        <type name="T"/>
+      </param>
     </function>
   </template>
   <template>
@@ -33,7 +37,9 @@
     <tparam name="I" class="non-type" type="int"/>
     <function name="g0" id="10VGELAizJ5U/4YaDXaQcV9P5IU=">
       <file path="function-template.cpp" line="14" class="def"/>
-      <param name="x" type="int"/>
+      <param name="x">
+        <type name="int"/>
+      </param>
     </function>
   </template>
   <template>
@@ -53,7 +59,9 @@
     <tparam name="x:auto" class="type"/>
     <function name="h0" id="7dJfgpH2aNKlsNFBU9eGpEy7mW8=">
       <file path="function-template.cpp" line="22" class="def"/>
-      <param name="x" type="auto"/>
+      <param name="x">
+        <type name="auto"/>
+      </param>
     </function>
   </template>
   <template>
@@ -61,8 +69,12 @@
     <tparam name="auto:2" class="type"/>
     <function name="h1" id="CSSRf8UFPpR/4f+ymxsrA3bG2gs=">
       <file path="function-template.cpp" line="24" class="def"/>
-      <param name="x" type="auto"/>
-      <param type="auto"/>
+      <param name="x">
+        <type name="auto"/>
+      </param>
+      <param>
+        <type name="auto"/>
+      </param>
     </function>
   </template>
   <template>

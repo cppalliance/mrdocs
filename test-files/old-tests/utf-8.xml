@@ -4,7 +4,9 @@
 <namespace name="">
   <function name="Христос_воскрес" id="s6XCVcQ8RMTkyc8SmoMVVgJrVgs=">
     <file path="utf-8.cpp" line="1" class="def"/>
-    <return type="bool"/>
+    <return>
+      <type name="bool"/>
+    </return>
   </function>
 </namespace>
 </mrdox>

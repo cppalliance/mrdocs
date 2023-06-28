@@ -4,7 +4,9 @@
 <namespace name="">
   <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
     <file path="param.cpp" line="4" class="def"/>
-    <param name="x" type="int"/>
+    <param name="x">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -15,8 +17,12 @@
   </function>
   <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
     <file path="param.cpp" line="10" class="def"/>
-    <param name="x" type="int"/>
-    <param name="y" type="int"/>
+    <param name="x">
+      <type name="int"/>
+    </param>
+    <param name="y">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -30,9 +36,15 @@
   </function>
   <function name="h" id="rxzCccrw6I3QTAhGPnAfCKLwzTA=">
     <file path="param.cpp" line="17" class="def"/>
-    <param name="x" type="int"/>
-    <param name="y" type="int"/>
-    <param name="z" type="int"/>
+    <param name="x">
+      <type name="int"/>
+    </param>
+    <param name="y">
+      <type name="int"/>
+    </param>
+    <param name="z">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -49,10 +61,18 @@
   </function>
   <function name="i" id="owRiLpD5mLW5E/kfLQC0oOzxkDM=">
     <file path="param.cpp" line="25" class="def"/>
-    <param name="w" type="int"/>
-    <param name="x" type="int"/>
-    <param name="y" type="int"/>
-    <param name="z" type="int"/>
+    <param name="w">
+      <type name="int"/>
+    </param>
+    <param name="x">
+      <type name="int"/>
+    </param>
+    <param name="y">
+      <type name="int"/>
+    </param>
+    <param name="z">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>

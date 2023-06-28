@@ -4,7 +4,9 @@
 <namespace name="">
   <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
     <file path="param-direction.cpp" line="4" class="def"/>
-    <param name="x0" type="int"/>
+    <param name="x0">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -15,8 +17,12 @@
   </function>
   <function name="g" id="wOc7mtwXPodKdeWFmSfib8PaSww=">
     <file path="param-direction.cpp" line="10" class="def"/>
-    <param name="x1" type="int"/>
-    <param name="y1" type="int"/>
+    <param name="x1">
+      <type name="int"/>
+    </param>
+    <param name="y1">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -30,8 +36,12 @@
   </function>
   <function name="h" id="SUTpP/LXJ8XB7ZE93wUMkKJEFzE=">
     <file path="param-direction.cpp" line="16" class="def"/>
-    <param name="x2" type="int"/>
-    <param name="y2" type="int"/>
+    <param name="x2">
+      <type name="int"/>
+    </param>
+    <param name="y2">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -45,8 +55,12 @@
   </function>
   <function name="i" id="r7dQzLcKLYSiiLyeiW1mNXI0/dk=">
     <file path="param-direction.cpp" line="22" class="def"/>
-    <param name="x3" type="int"/>
-    <param name="y3" type="int"/>
+    <param name="x3">
+      <type name="int"/>
+    </param>
+    <param name="y3">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -60,8 +74,12 @@
   </function>
   <function name="j" id="r31pQ1z3fOa9WmZAd065l+zwBuo=">
     <file path="param-direction.cpp" line="28" class="def"/>
-    <param name="x4" type="int"/>
-    <param name="y4" type="int"/>
+    <param name="x4">
+      <type name="int"/>
+    </param>
+    <param name="y4">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -75,9 +93,15 @@
   </function>
   <function name="k" id="/AoXdw7cVEwQaKQbx9cHio6Nmg4=">
     <file path="param-direction.cpp" line="35" class="def"/>
-    <param name="x5" type="int"/>
-    <param name="y5" type="int"/>
-    <param name="z5" type="int"/>
+    <param name="x5">
+      <type name="int"/>
+    </param>
+    <param name="y5">
+      <type name="int"/>
+    </param>
+    <param name="z5">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -94,10 +118,18 @@
   </function>
   <function name="l" id="IcsfRcafZ9MAxyscbeqD6JBWohA=">
     <file path="param-direction.cpp" line="42" class="def"/>
-    <param name="x6" type="int"/>
-    <param name="y6" type="int"/>
-    <param type="int"/>
-    <param name="z6" type="int"/>
+    <param name="x6">
+      <type name="int"/>
+    </param>
+    <param name="y6">
+      <type name="int"/>
+    </param>
+    <param>
+      <type name="int"/>
+    </param>
+    <param name="z6">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -115,8 +147,12 @@
   <function name="m" id="F8cRGf9/eHn/XbtREVgRcfoLdZQ=">
     <file path="param-direction.cpp" line="47"/>
     <file path="param-direction.cpp" line="52"/>
-    <param name="x7" type="int"/>
-    <param name="y7" type="int"/>
+    <param name="x7">
+      <type name="int"/>
+    </param>
+    <param name="y7">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -133,7 +169,9 @@
   <function name="n" id="VQbsVNVJyIh3DE7+az/K+7nc2nA=">
     <file path="param-direction.cpp" line="57"/>
     <file path="param-direction.cpp" line="62"/>
-    <param name="x8" type="int"/>
+    <param name="x8">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>
@@ -145,7 +183,9 @@
   <function name="o" id="AnuHurRy/SuMp7tO9bRT33UqDko=">
     <file path="param-direction.cpp" line="67"/>
     <file path="param-direction.cpp" line="72"/>
-    <param name="x9" type="int"/>
+    <param name="x9">
+      <type name="int"/>
+    </param>
     <doc>
       <brief>
         <text></text>

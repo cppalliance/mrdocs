@@ -19,7 +19,9 @@
     <tparam name="T" class="type"/>
     <alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
       <file path="alias-template.cpp" line="8" class="def"/>
-      <type name="A&lt;T&gt;"/>
+      <type class="specialization" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=" name="A">
+        <targ value="T"/>
+      </type>
     </alias>
   </template>
   <template>
@@ -30,7 +32,10 @@
         <tparam name="U" class="type"/>
         <alias name="E" id="STM3CgeaOEakPrQJdlRWWM4MMFo=">
           <file path="alias-template.cpp" line="14" class="def"/>
-          <type name="B&lt;T, U&gt;"/>
+          <type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B">
+            <targ value="T"/>
+            <targ value="U"/>
+          </type>
         </alias>
       </template>
     </struct>

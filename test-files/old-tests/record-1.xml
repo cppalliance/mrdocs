@@ -17,11 +17,15 @@
     </function>
     <function name="f2" id="w0ONazxXaWlB0RQLjfDqDWICUwo=">
       <file path="record-1.cpp" line="7"/>
-      <return type="int"/>
+      <return>
+        <type name="int"/>
+      </return>
     </function>
     <function name="f3" id="TkBjWwqMDycyUbq+TJZ9qfUhSn0=">
       <file path="record-1.cpp" line="8"/>
-      <return type="char"/>
+      <return>
+        <type name="char"/>
+      </return>
     </function>
     <function name="g1" access="protected" id="/xzUDYrXtCl2xCoyCvXqIZ4fKfA=">
       <file path="record-1.cpp" line="15"/>
@@ -36,7 +40,9 @@
     </function>
     <function name="g2" access="protected" id="flHl59B/bdRwuiNeh3sHqCycic0=">
       <file path="record-1.cpp" line="21"/>
-      <return type="int"/>
+      <return>
+        <type name="int"/>
+      </return>
       <doc>
         <brief>
           <text> brief-g2</text>
@@ -51,8 +57,12 @@
     </function>
     <function name="g3" access="protected" id="DKxv4h+rP37b0u6O1qbB+u416ZY=">
       <file path="record-1.cpp" line="28"/>
-      <return type="char"/>
-      <param name="x" type="int"/>
+      <return>
+        <type name="char"/>
+      </return>
+      <param name="x">
+        <type name="int"/>
+      </param>
       <doc>
         <brief>
           <text> brief-g3</text>
