@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Support/TypeTraits.hpp"
 #include <mrdox/Metadata/Function.hpp>
+#include <mrdox/Support/TypeTraits.hpp>
 #include <utility>
 
 namespace clang {

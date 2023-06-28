@@ -139,15 +139,6 @@ Builder(
         {
             return a && b;
         });
-
-        Handlebars.registerHelper(
-            'concat', function()
-        {
-            var result = '';
-            for(var i = 0; i < arguments.length - 1; ++i)
-                result += arguments[i];
-            return result;
-        });
     )");
     if(err)
         throw err;

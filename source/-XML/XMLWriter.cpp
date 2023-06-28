@@ -275,15 +275,6 @@ XMLWriter::
 writeEnum(
     EnumInfo const& I)
 {
-#if 0
-    tags_.open(enumTagName, {
-        { "name", I.Name },
-        { "class", "scoped", I.Scoped },
-        { I.BaseType },
-        { I.Access },
-        { I.id }
-        });
-#else
     tags_.open(enumTagName, {
         { "name", I.Name },
         { "class", "scoped", I.Scoped },
@@ -296,7 +287,6 @@ writeEnum(
         writeType(I.BaseType, tags_);
         tags_.close(baseTagName);
     }
-#endif
 
     writeSourceInfo(I);
 
@@ -377,15 +367,6 @@ writeRecord(
 
     write(I.specs, tags_);
 
-#if 0
-    for(auto const& B : I.Bases)
-        tags_.write(baseTagName, "", {
-            { "name", B.Type.Name },
-            { B.Access },
-            { "class", "virtual", B.IsVirtual },
-            { B.Type.id }
-            });
-#else
     for(auto const& B : I.Bases)
     {
         tags_.open(baseTagName, {
@@ -395,8 +376,6 @@ writeRecord(
         writeType(B.Type, tags_);
         tags_.close(baseTagName);
     }
-#endif
-
 
     // Friends
     for(auto const& id : I.Friends)
@@ -435,11 +414,6 @@ writeTypedef(
     writeSourceInfo(I);
 
     writeType(I.Underlying, tags_);
-#if 0
-    tags_.write("type", "", {
-        { "name", I.Underlying.Name },
-        { I.Underlying.id } });
-#endif
 
     writeJavadoc(I.javadoc);
 
@@ -467,12 +441,6 @@ writeField(
     write(I.specs, tags_);
 
     writeType(I.Type, tags_);
-#if 0
-    tags_.write("type", {}, {
-        { "name", I.Type.Name },
-        { I.Type.id }
-        });
-#endif
 
     writeJavadoc(I.javadoc);
 
@@ -499,12 +467,6 @@ writeVar(
     write(I.specs, tags_);
 
     writeType(I.Type, tags_);
-#if 0
-    tags_.write("type", {}, {
-        { "name", I.Type.Name },
-        { I.Type.id }
-        });
-#endif
 
     writeJavadoc(I.javadoc);
 
@@ -549,23 +511,13 @@ openTemplate(
 {
     if(! I)
         return;
-    const char* spec = nullptr;
-    switch(I->specializationKind())
-    {
-    case TemplateSpecKind::Explicit:
-        spec = "explicit";
-        break;
-    case TemplateSpecKind::Partial:
-        spec = "partial";
-        break;
-    default:
-        break;
-    }
+
     const SymbolID& id = I->Primary ?
         *I->Primary : SymbolID::zero;
 
     tags_.open(templateTagName, {
-        {"class", spec, !! spec},
+        {"class", toString(I->specializationKind()),
+            I->specializationKind() != TemplateSpecKind::Primary},
         {id}
     });
 
@@ -605,26 +557,6 @@ writeSpecialization(
 
     return true;
 }
-
-//------------------------------------------------
-
-#if 0
-void
-XMLWriter::
-writeType(
-    const std::unique_ptr<TypeInfo>& type)
-{
-    if(! type)
-        return;
-#if 0
-    tags_.write("type", {}, {
-        { "name", toString(*type) },
-    });
-#else
-
-#endif
-}
-#endif
 
 //------------------------------------------------
 

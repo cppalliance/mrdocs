@@ -134,7 +134,6 @@ public:
     void emitBlock(VariableInfo const& I);
     void emitBlock(FieldInfo const& I);
 
-    // void emitBlock(TypeInfo const& I);
     void emitBlock(std::unique_ptr<TypeInfo> const& TI);
     void emitBlock(std::unique_ptr<TypeInfo> const& TI, BlockID ID);
 

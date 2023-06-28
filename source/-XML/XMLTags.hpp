@@ -88,16 +88,6 @@ struct Attribute
     {
     }
 
-#if 0
-    Attribute(
-        AccessSpecifier access) noexcept
-        : name("access")
-        , value(clang::getAccessSpelling(access))
-        , pred(access != AccessSpecifier::AS_none)
-    {
-    }
-#endif
-
     Attribute(
         SymbolID id)
         : name("id")

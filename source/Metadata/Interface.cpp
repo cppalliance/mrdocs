@@ -10,8 +10,8 @@
 //
 
 #include "Support/Debug.hpp"
-#include "Support/TypeTraits.hpp"
 #include <mrdox/Metadata/Interface.hpp>
+#include <mrdox/Support/TypeTraits.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata/Enum.hpp>

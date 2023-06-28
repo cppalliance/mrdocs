@@ -139,46 +139,6 @@ public:
 
 //------------------------------------------------
 
-/** Invoke a function object with an Info-derived type.
-*/
-template<class F, class... Args>
-auto
-visit(
-    Info const& I, F&& f, Args&&... args)
-{
-    switch(I.Kind)
-    {
-    case InfoKind::Namespace:
-        return f(static_cast<NamespaceInfo const&>(I),
-            std::forward<Args>(args)...);
-    case InfoKind::Record:
-        return f(static_cast<RecordInfo const&>(I),
-            std::forward<Args>(args)...);
-    case InfoKind::Function:
-        return f(static_cast<FunctionInfo const&>(I),
-            std::forward<Args>(args)...);
-    case InfoKind::Enum:
-        return f(static_cast<EnumInfo const&>(I),
-            std::forward<Args>(args)...);
-    case InfoKind::Field:
-        return f(static_cast<FieldInfo const&>(I),
-            std::forward<Args>(args)...);
-    case InfoKind::Typedef:
-        return f(static_cast<TypedefInfo const&>(I),
-            std::forward<Args>(args)...);
-    case InfoKind::Variable:
-        return f(static_cast<VariableInfo const&>(I),
-            std::forward<Args>(args)...);
-    case InfoKind::Specialization:
-        return f(static_cast<SpecializationInfo const&>(I),
-            std::forward<Args>(args)...);
-    default:
-        MRDOX_UNREACHABLE();
-    }
-}
-
-//------------------------------------------------
-
 template<class T>
 T const&
 Corpus::

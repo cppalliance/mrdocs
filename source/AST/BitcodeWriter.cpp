@@ -201,13 +201,10 @@ BlockIdNameMap = []()
         {BI_ENUM_BLOCK_ID, "EnumBlock"},
         {BI_ENUM_VALUE_BLOCK_ID, "EnumValueBlock"},
         {BI_TYPEDEF_BLOCK_ID, "TypedefBlock"},
-        // {BI_TYPE_BLOCK_ID, "TypeBlock"},
-
         {BI_TYPEINFO_BLOCK_ID, "TypeInfoBlock"},
         {BI_TYPEINFO_PARENT_BLOCK_ID, "TypeInfoParentBlock"},
         {BI_TYPEINFO_CHILD_BLOCK_ID, "TypeInfoChildBlock"},
         {BI_TYPEINFO_PARAM_BLOCK_ID, "TypeInfoParamBlock"},
-
         {BI_FIELD_BLOCK_ID, "FieldBlock"},
         {BI_RECORD_BLOCK_ID, "RecordBlock"},
         {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
@@ -396,36 +393,10 @@ bool
 BitcodeWriter::
 dispatchInfoForWrite(Info const* I)
 {
-    switch (I->Kind)
-    {
-    case InfoKind::Namespace:
-        emitBlock(*static_cast<NamespaceInfo const*>(I));
-        break;
-    case InfoKind::Record:
-        emitBlock(*static_cast<RecordInfo const*>(I));
-        break;
-    case InfoKind::Function:
-        emitBlock(*static_cast<FunctionInfo const*>(I));
-        break;
-    case InfoKind::Enum:
-        emitBlock(*static_cast<EnumInfo const*>(I));
-        break;
-    case InfoKind::Typedef:
-        emitBlock(*static_cast<TypedefInfo const*>(I));
-        break;
-    case InfoKind::Variable:
-        emitBlock(*static_cast<VariableInfo const*>(I));
-        break;
-    case InfoKind::Field:
-        emitBlock(*static_cast<FieldInfo const*>(I));
-        break;
-    case InfoKind::Specialization:
-        emitBlock(*static_cast<SpecializationInfo const*>(I));
-        break;
-    default:
-        llvm::errs() << "Unexpected info, unable to write.\n";
-        return true;
-    }
+    visit(*I, [this](const auto& info)
+        {
+            emitBlock(info);
+        });
     return false;
 }
 
@@ -948,17 +919,17 @@ emitBlock(
             if constexpr(requires { t.CVQualifiers; })
                 emitRecord(t.CVQualifiers, TYPEINFO_CVQUAL);
 
-            if constexpr(requires { t.ParentType; })
-                emitBlock(t.ParentType, BI_TYPEINFO_PARENT_BLOCK_ID);
-
-            if constexpr(requires { t.PointeeType; })
-                emitBlock(t.PointeeType, BI_TYPEINFO_CHILD_BLOCK_ID);
-
             if constexpr(T::isSpecialization())
             {
                 for(const auto& targ : t.TemplateArgs)
                     emitBlock(targ);
             }
+
+            if constexpr(requires { t.ParentType; })
+                emitBlock(t.ParentType, BI_TYPEINFO_PARENT_BLOCK_ID);
+
+            if constexpr(requires { t.PointeeType; })
+                emitBlock(t.PointeeType, BI_TYPEINFO_CHILD_BLOCK_ID);
 
             if constexpr(T::isPack())
                 emitBlock(t.PatternType, BI_TYPEINFO_CHILD_BLOCK_ID);

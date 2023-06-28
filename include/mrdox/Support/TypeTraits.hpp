@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -28,6 +29,15 @@ to_underlying(
     return static_cast<
         std::underlying_type_t<Enum>>(value);
 }
+
+template<typename T, typename U>
+struct make_dependent
+{
+    using type = T;
+};
+
+template<typename T, typename U>
+using make_dependent_t = make_dependent<T, U>::type;
 
 } // mrdox
 } // clang

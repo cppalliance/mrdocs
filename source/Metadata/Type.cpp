@@ -8,7 +8,6 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Support/TypeTraits.hpp"
 #include <mrdox/Metadata/Type.hpp>
 #include <mrdox/Metadata/Template.hpp>
 
@@ -127,7 +126,6 @@ visitChildType(
         }())
         visit(*child, visitor, args...);
 }
-
 
 template<
     typename T,
@@ -270,7 +268,6 @@ toString(
     const TypeInfo& T,
     std::string_view Name)
 {
-
     auto write = [result = std::string()](
         auto&&... args) mutable
         {

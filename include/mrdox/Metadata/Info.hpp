@@ -16,6 +16,7 @@
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/Specifiers.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
+#include <mrdox/Support/TypeTraits.hpp>
 #include <array>
 #include <memory>
 #include <string>
@@ -29,6 +30,7 @@ struct NamespaceInfo;
 struct RecordInfo;
 struct FunctionInfo;
 struct EnumInfo;
+struct FieldInfo;
 struct TypedefInfo;
 struct VariableInfo;
 struct SpecializationInfo;
@@ -155,6 +157,57 @@ protected:
     {
     }
 };
+
+/** Invoke a function object with an Info-derived type.
+*/
+template<
+    class F,
+    class... Args,
+    class Dependent = void>
+auto
+visit(
+    Info const& I,
+    F&& f,
+    Args&&... args)
+{
+    switch(I.Kind)
+    {
+    case InfoKind::Namespace:
+        return f(static_cast<make_dependent_t<
+            NamespaceInfo const&, Dependent>>(I),
+            std::forward<Args>(args)...);
+    case InfoKind::Record:
+        return f(static_cast<make_dependent_t<
+            RecordInfo const&, Dependent>>(I),
+            std::forward<Args>(args)...);
+    case InfoKind::Function:
+        return f(static_cast<make_dependent_t<
+            FunctionInfo const&, Dependent>>(I),
+            std::forward<Args>(args)...);
+    case InfoKind::Enum:
+        return f(static_cast<make_dependent_t<
+            EnumInfo const&, Dependent>>(I),
+            std::forward<Args>(args)...);
+    case InfoKind::Field:
+        return f(static_cast<make_dependent_t<
+        FieldInfo const&, Dependent>>(I),
+            std::forward<Args>(args)...);
+    case InfoKind::Typedef:
+        return f(static_cast<make_dependent_t<
+        TypedefInfo const&, Dependent>>(I),
+            std::forward<Args>(args)...);
+    case InfoKind::Variable:
+        return f(static_cast<make_dependent_t<
+        VariableInfo const&, Dependent>>(I),
+            std::forward<Args>(args)...);
+    case InfoKind::Specialization:
+        return f(static_cast<make_dependent_t<
+        SpecializationInfo const&, Dependent>>(I),
+            std::forward<Args>(args)...);
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
 
 } // mrdox
 } // clang
