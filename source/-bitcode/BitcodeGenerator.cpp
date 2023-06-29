@@ -21,7 +21,7 @@ namespace clang {
 namespace mrdox {
 namespace bitcode {
 
-class MultiFileBuilder : public Corpus::Visitor
+class MultiFileBuilder
 {
     Corpus const& corpus_;
     std::string_view outputPath_;
@@ -42,7 +42,8 @@ public:
     Error
     build()
     {
-        corpus_.traverse(*this, SymbolID::zero);
+        corpus_.traverse(
+            corpus_.globalNamespace(), *this);
         auto errors = taskGroup_.wait();
         if(! errors.empty())
             return Error(errors);
@@ -50,7 +51,7 @@ public:
     }
 
     template<class T>
-    void build(T const& I)
+    void operator()(T const& I)
     {
         namespace fs = llvm::sys::fs;
         namespace path = llvm::sys::path;
@@ -77,43 +78,15 @@ public:
                 }
                 os.write(bc.data.data(), bc.data.size());
             });
-    }
 
-    bool visit(NamespaceInfo const& I) override
-    {
-        corpus_.traverse(*this, I);
-        return true;
-    }
-
-    bool visit(RecordInfo const& I) override
-    {
-        build(I);
-        corpus_.traverse(*this, I);
-        return true;
-    }
-
-    bool visit(FunctionInfo const& I) override
-    {
-        build(I);
-        return true;
-    }
-
-    bool visit(TypedefInfo const& I) override
-    {
-        build(I);
-        return true;
-    }
-
-    bool visit(EnumInfo const& I) override
-    {
-        build(I);
-        return true;
+        if constexpr(T::isRecord())
+            corpus_.traverse(I, *this);
     }
 };
 
 //------------------------------------------------
 
-class SingleFileBuilder : public Corpus::Visitor
+class SingleFileBuilder
 {
     Corpus const& corpus_;
     std::ostream& os_;
@@ -130,46 +103,18 @@ public:
     Error
     build()
     {
-        corpus_.traverse(*this, SymbolID::zero);
-        return Error();
+        corpus_.traverse(corpus_.globalNamespace(), *this);
+        return Error::success();
     }
 
     template<class T>
-    void build(T const& I)
+    void
+    operator()(T const& I)
     {
         auto bc = writeBitcode(I);
         os_.write(bc.data.data(), bc.data.size());
-    }
-
-    bool visit(NamespaceInfo const& I) override
-    {
-        corpus_.traverse(*this, I);
-        return true;
-    }
-
-    bool visit(RecordInfo const& I) override
-    {
-        build(I);
-        corpus_.traverse(*this, I);
-        return true;
-    }
-
-    bool visit(FunctionInfo const& I) override
-    {
-        build(I);
-        return true;
-    }
-
-    bool visit(TypedefInfo const& I) override
-    {
-        build(I);
-        return true;
-    }
-
-    bool visit(EnumInfo const& I) override
-    {
-        build(I);
-        return true;
+        if constexpr(T::isRecord())
+            corpus_.traverse(I, *this);
     }
 };
 

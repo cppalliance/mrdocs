@@ -32,7 +32,7 @@ namespace {
     function templates
     class templates
 */
-class PrettyBuilder : public Corpus::Visitor
+class PrettyBuilder
 {
     llvm::raw_ostream* os_ = nullptr;
     std::string prefix_;
@@ -45,7 +45,7 @@ public:
         : corpus_(corpus)
     {
         prefix_.reserve(512);
-        corpus_.traverse(*this, SymbolID::zero);
+        visit(corpus_.globalNamespace(), *this);
         /* auto result =*/ map.try_emplace(
             llvm::StringRef(SymbolID::zero), std::string());
 
@@ -63,7 +63,7 @@ public:
         corpus_(corpus)
     {
         prefix_.reserve(512);
-        corpus_.traverse(*this, SymbolID::zero);
+        visit(corpus_.globalNamespace(), *this);
         /* auto result =*/ map.try_emplace(
             llvm::StringRef(SymbolID::zero), std::string());
         if(os_)
@@ -72,7 +72,6 @@ public:
 
     llvm::StringMap<std::string> map;
 
-private:
     using ScopeInfos = std::vector<Info const*>;
 
     ScopeInfos
@@ -204,27 +203,27 @@ private:
         {
             prefix_.append(getSafe(*I));
             prefix_.push_back('-');
-            corpus_.traverse(*this, *I);
+            ::clang::mrdox::visit(*I, *this);
             prefix_.resize(n0);
         }
     }
 
     //--------------------------------------------
 
-    bool visit(NamespaceInfo const& I) override
+    template<class T>
+    void operator()(T const& I)
     {
-        auto infos = buildScope(I);
-        insertScope(infos);
-        visitInfos(infos);
-        return true;
-    }
-
-    bool visit(RecordInfo const& I) override
-    {
-        auto infos = buildScope(I);
-        insertScope(infos);
-        visitInfos(infos);
-        return true;
+        if constexpr(
+            T::isNamespace() ||
+            T::isRecord())
+        {
+            auto infos = buildScope(I);
+            insertScope(infos);
+            visitInfos(infos);
+        }
+        else
+        {
+        }
     }
 
 private:
@@ -234,7 +233,7 @@ private:
 //------------------------------------------------
 
 // Always works but isn't the prettiest...
-class UglyBuilder : public Corpus::Visitor
+class UglyBuilder
 {
     Corpus const& corpus_;
 

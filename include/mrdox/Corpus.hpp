@@ -90,33 +90,6 @@ public:
 
     //--------------------------------------------
 
-    /** Base class used to visit elements of the corpus.
-    */
-    struct Visitor
-    {
-        MRDOX_DECL virtual ~Visitor() noexcept;
-
-        MRDOX_DECL virtual bool visit(NamespaceInfo const&);
-        MRDOX_DECL virtual bool visit(RecordInfo const&);
-        MRDOX_DECL virtual bool visit(FunctionInfo const&);
-        MRDOX_DECL virtual bool visit(TypedefInfo const&);
-        MRDOX_DECL virtual bool visit(EnumInfo const&);
-        MRDOX_DECL virtual bool visit(VariableInfo const&);
-        MRDOX_DECL virtual bool visit(FieldInfo const&);
-        MRDOX_DECL virtual bool visit(SpecializationInfo const&);
-    };
-
-    /** Traverse the symbol, list, or its children.
-    */
-    /** @{ */
-    MRDOX_DECL bool traverse(Visitor&, Info const& I) const;
-    MRDOX_DECL bool traverse(Visitor&, NamespaceInfo const& I) const;
-    MRDOX_DECL bool traverse(Visitor&, RecordInfo const& I) const;
-    MRDOX_DECL bool traverse(Visitor&, SpecializationInfo const& I) const;
-    MRDOX_DECL bool traverse(Visitor&, SymbolID id) const;
-    MRDOX_DECL bool traverse(Visitor&, std::vector<SymbolID> const& R) const;
-    /** @} */
-
     template<class F, class... Args>
     void traverse(
         NamespaceInfo const& I,
@@ -125,6 +98,11 @@ public:
     template<class F, class... Args>
     void traverse(
         RecordInfo const& I,
+        F&& f, Args&&... args) const;
+
+    template<class F, class... Args>
+    void traverse(
+        SpecializationInfo const& I,
         F&& f, Args&&... args) const;
 
     //--------------------------------------------
@@ -169,6 +147,9 @@ traverse(
     for(auto const& id : I.Members)
         visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
+    for(auto const& id : I.Specializations)
+        visit(get(id), std::forward<F>(f),
+            std::forward<Args>(args)...);
 }
 
 template<class F, class... Args>
@@ -181,12 +162,22 @@ traverse(
     for(auto const& id : I.Members)
         visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
-    for(auto const& id : I.Friends)
-        visit(get(id), std::forward<F>(f),
-            std::forward<Args>(args)...);
     for(auto const& id : I.Specializations)
         visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverse(
+    SpecializationInfo const& I,
+    F&& f, Args&&... args) const
+{
+    for(auto const& J : I.Members)
+        visit(get(J.Specialized),
+            std::forward<F>(f),
+                std::forward<Args>(args)...);
 }
 
 } // mrdox

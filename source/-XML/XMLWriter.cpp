@@ -148,8 +148,7 @@ build()
     if(options_.index || options_.safe_names)
         writeIndex();
 
-    if(! corpus_.traverse(*this, SymbolID::zero))
-        return formatError("visitation aborted");
+    visit(corpus_.globalNamespace(), *this);
 
     if(options_.prolog)
         os_ << "</mrdox>\n";
@@ -192,85 +191,41 @@ writeIndex()
 
 //------------------------------------------------
 
-bool
+template<class T>
+void
 XMLWriter::
-visit(
-    NamespaceInfo const& I)
+operator()(
+    T const& I)
 {
-    tags_.open(namespaceTagName, {
-        { "name", I.Name },
-        { I.id }
-        });
-
-    writeJavadoc(I.javadoc);
-
-    if(! corpus_.traverse(*this, I))
-        return false;
-
-    tags_.close(namespaceTagName);
-
-    return true;
-}
-
-bool
-XMLWriter::
-visit(
-    RecordInfo const& I)
-{
-    return writeRecord(I);
-}
-
-bool
-XMLWriter::
-visit(
-    FunctionInfo const& I)
-{
-    return writeFunction(I);
-}
-
-bool
-XMLWriter::
-visit(
-    TypedefInfo const& I)
-{
-    return writeTypedef(I);
-}
-
-bool
-XMLWriter::
-visit(
-    EnumInfo const& I)
-{
-    return writeEnum(I);
-}
-
-bool
-XMLWriter::
-visit(
-    FieldInfo const& I)
-{
-    return writeField(I);
-}
-
-bool
-XMLWriter::
-visit(
-    VariableInfo const& I)
-{
-    return writeVar(I);
-}
-
-bool
-XMLWriter::
-visit(
-    SpecializationInfo const& I)
-{
-    return writeSpecialization(I);
+    if constexpr(T::isNamespace())
+    {
+        tags_.open(namespaceTagName, {
+            { "name", I.Name },
+            { I.id }
+            });
+        writeJavadoc(I.javadoc);
+        corpus_.traverse(I, *this);
+        tags_.close(namespaceTagName);
+    }
+    if constexpr(T::isRecord())
+        writeRecord(I);
+    if constexpr(T::isFunction())
+        writeFunction(I);
+    if constexpr(T::isEnum())
+        writeEnum(I);
+    if constexpr(T::isTypedef())
+        writeTypedef(I);
+    if constexpr(T::isField())
+        writeField(I);
+    if constexpr(T::isVariable())
+        writeVar(I);
+    if constexpr(T::isSpecialization())
+        writeSpecialization(I);
 }
 
 //------------------------------------------------
 
-bool
+void
 XMLWriter::
 writeEnum(
     EnumInfo const& I)
@@ -313,10 +268,9 @@ writeEnum(
     writeJavadoc(I.javadoc);
 
     tags_.close(enumTagName);
-    return true;
 }
 
-bool
+void
 XMLWriter::
 writeFunction(
     FunctionInfo const& I)
@@ -344,10 +298,9 @@ writeFunction(
     tags_.close(functionTagName);
 
     closeTemplate(I.Template);
-    return true;
 }
 
-bool
+void
 XMLWriter::
 writeRecord(
     RecordInfo const& I)
@@ -383,17 +336,14 @@ writeRecord(
 
     writeJavadoc(I.javadoc);
 
-    if(! corpus_.traverse(*this, I))
-        return false;
+    corpus_.traverse(I, *this);
 
     tags_.close(tagName);
 
     closeTemplate(I.Template);
-
-    return true;
 }
 
-bool
+void
 XMLWriter::
 writeTypedef(
     TypedefInfo const& I)
@@ -420,11 +370,9 @@ writeTypedef(
     tags_.close(tag);
 
     closeTemplate(I.Template);
-
-    return true;
 }
 
-bool
+void
 XMLWriter::
 writeField(
     const FieldInfo& I)
@@ -445,11 +393,9 @@ writeField(
     writeJavadoc(I.javadoc);
 
     tags_.close(dataMemberTagName);
-
-    return true;
 }
 
-bool
+void
 XMLWriter::
 writeVar(
     VariableInfo const& I)
@@ -473,8 +419,6 @@ writeVar(
     tags_.close(varTagName);
 
     closeTemplate(I.Template);
-
-    return true;
 }
 
 //------------------------------------------------
@@ -537,7 +481,7 @@ closeTemplate(
     tags_.close(templateTagName);
 }
 
-bool
+void
 XMLWriter::
 writeSpecialization(
     const SpecializationInfo& I)
@@ -550,12 +494,9 @@ writeSpecialization(
     for(const TArg& targ : I.Args)
         writeTemplateArg(targ, tags_);
 
-    if(! corpus_.traverse(*this, I))
-        return false;
+    corpus_.traverse(I, *this);
 
     tags_.close(specializationTagName);
-
-    return true;
 }
 
 //------------------------------------------------

@@ -2,26 +2,12 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <variable name="i" id="C9UHMk+lrMjCQ//ZLEsEfWY2fvY=">
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="test.cpp" line="1" class="def"/>
-    <type name="int"/>
-  </variable>
-  <variable name="j" id="pKvK/kHXdM/1/pu86JcSrLqVypE=">
-    <file path="test.cpp" line="2" class="def"/>
-    <type name="void *"/>
-  </variable>
-  <variable name="c" id="iioAt3yDydhhvIYN2uDSaCApJ00=">
-    <file path="test.cpp" line="8" class="def"/>
-    <attr id="storage-class" name="static" value="2"/>
-    <type name="char"/>
-    <doc>
-      <brief>
-        <text> brief</text>
-      </brief>
-      <para>
-        <text>    desc</text>
-      </para>
-    </doc>
-  </variable>
+    <field name="u" id="Ffa+L6sOn4eypa/s+KMKpu+ym2g=">
+      <file path="test.cpp" line="3" class="def"/>
+      <type name="int"/>
+    </field>
+  </struct>
 </namespace>
 </mrdox>

@@ -28,7 +28,6 @@ class jit_indenter;
 /** A writer which outputs XML.
 */
 class XMLWriter
-    : public Corpus::Visitor
 {
     template<class T>
     friend struct llvm::yaml::MappingTraits;
@@ -55,25 +54,18 @@ public:
 
     Error build();
 
-private:
     void writeIndex();
 
-    bool visit(NamespaceInfo const&) override;
-    bool visit(RecordInfo const&) override;
-    bool visit(FunctionInfo const&) override;
-    bool visit(TypedefInfo const&) override;
-    bool visit(EnumInfo const&) override;
-    bool visit(VariableInfo const&) override;
-    bool visit(SpecializationInfo const&) override;
-    bool visit(FieldInfo const&) override;
+    template<class T>
+    void operator()(T const&);
 
-    bool writeEnum(EnumInfo const&);
-    bool writeFunction(FunctionInfo const&);
-    bool writeRecord(RecordInfo const&);
-    bool writeTypedef(TypedefInfo const&);
-    bool writeField(FieldInfo const&);
-    bool writeVar(VariableInfo const&);
-    bool writeSpecialization(const SpecializationInfo&);
+    void writeRecord(RecordInfo const&);
+    void writeFunction(FunctionInfo const&);
+    void writeEnum(EnumInfo const&);
+    void writeField(FieldInfo const&);
+    void writeTypedef(TypedefInfo const&);
+    void writeVar(VariableInfo const&);
+    void writeSpecialization(const SpecializationInfo&);
 
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);
