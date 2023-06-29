@@ -13,6 +13,7 @@
 #define MRDOX_API_METADATA_ENUM_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Expression.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Type.hpp>
@@ -29,14 +30,8 @@ struct EnumValueInfo
 {
     std::string Name;
 
-    // The computed value of the enumeration constant. This could be the result of
-    // evaluating the ValueExpr, or it could be automatically generated according
-    // to C rules.
-    std::string Value;
-
-    // Stores the user-supplied initialization expression for this enumeration
-    // constant. This will be empty for implicit enumeration values.
-    std::string ValueExpr;
+    /** The initializer expression, if any */
+    ConstantExprInfo<std::uint64_t> Initializer;
 
     /** The documentation for the value, if any.
     */
@@ -46,12 +41,8 @@ struct EnumValueInfo
 
     explicit
     EnumValueInfo(
-        std::string_view Name = "",
-        std::string_view Value = "0",
-        std::string_view ValueExpr = "")
+        std::string_view Name = "")
         : Name(Name)
-        , Value(Value)
-        , ValueExpr(ValueExpr)
     {
     }
 };
@@ -70,7 +61,7 @@ struct EnumInfo
     // Set to nonempty to the type when this is an explicitly typed enum. For
     //   enum Foo : short { ... };
     // this will be "short".
-    std::unique_ptr<TypeInfo> BaseType;
+    std::unique_ptr<TypeInfo> UnderlyingType;
 
     // Enumeration members.
     std::vector<EnumValueInfo> Members;

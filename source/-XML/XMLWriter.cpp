@@ -236,10 +236,10 @@ writeEnum(
         { I.Access },
         { I.id }
     });
-    if(I.BaseType)
+    if(I.UnderlyingType)
     {
         tags_.open(baseTagName);
-        writeType(I.BaseType, tags_);
+        writeType(I.UnderlyingType, tags_);
         tags_.close(baseTagName);
     }
 
@@ -247,18 +247,21 @@ writeEnum(
 
     for(auto const& V : I.Members)
     {
+        std::string val = V.Initializer.Value ?
+            std::to_string(*V.Initializer.Value) :
+            V.Initializer.Written;
         if(! V.javadoc)
         {
             tags_.write("value", {}, {
                 { "name", V.Name },
-                { "value", V.Value },
+                { "value", val },
                 });
         }
         else
         {
             tags_.open("value", {
                 { "name", V.Name },
-                { "value", V.Value }
+                { "value", val }
             });
             writeJavadoc(V.javadoc);
             tags_.close("value");
@@ -363,7 +366,7 @@ writeTypedef(
 
     writeSourceInfo(I);
 
-    writeType(I.Underlying, tags_);
+    writeType(I.Type, tags_);
 
     writeJavadoc(I.javadoc);
 

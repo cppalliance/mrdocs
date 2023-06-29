@@ -229,11 +229,11 @@ writeType(
 
             if constexpr(T::isArray())
             {
-                if(! t.BoundsValue.empty())
-                    attrs.push({"bounds-value", t.BoundsValue});
-                if(t.BoundsValue != t.BoundsExpr &&
-                    ! t.BoundsExpr.empty())
-                    attrs.push({"bounds-expr", t.BoundsExpr});
+                std::string bounds = t.Bounds.Value ?
+                    std::to_string(*t.Bounds.Value) :
+                    t.Bounds.Written;
+                if(! bounds.empty())
+                    attrs.push({"bounds", bounds});
             }
 
             if constexpr(T::isFunction())

@@ -12,6 +12,7 @@
 #define MRDOX_API_METADATA_TYPE_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Expression.hpp>
 #include <mrdox/Metadata/Specifiers.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/MetadataFwd.hpp>
@@ -161,8 +162,7 @@ struct ArrayTypeInfo
     : IsType<TypeKind::Array>
 {
     std::unique_ptr<TypeInfo> ElementType;
-    std::string BoundsValue;
-    std::string BoundsExpr;
+    ConstantExprInfo<std::uint64_t> Bounds;
 };
 
 struct FunctionTypeInfo

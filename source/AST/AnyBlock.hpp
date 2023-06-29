@@ -536,16 +536,6 @@ public:
                 return Error("wrong TypeInfo kind");
             return decodeRecord(R, static_cast<
                 FunctionTypeInfo&>(*I_).ExceptionSpec, Blob);
-        case TYPEINFO_BOUNDS_EXPR:
-            if(! I_->isArray())
-                return Error("wrong TypeInfo kind");
-            return decodeRecord(R, static_cast<
-                ArrayTypeInfo&>(*I_).BoundsExpr, Blob);
-        case TYPEINFO_BOUNDS_VALUE:
-            if(! I_->isArray())
-                return Error("wrong TypeInfo kind");
-            return decodeRecord(R, static_cast<
-                ArrayTypeInfo&>(*I_).BoundsValue, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -849,20 +839,26 @@ readSubBlock(unsigned ID)
     {
         if(! I_->isFunction())
             return Error("wrong TypeInfo kind");
-        auto& F = static_cast<FunctionTypeInfo&>(*I_);
-        TypeInfoBlock B(F.ParamTypes.emplace_back(), br_);
+        auto& I = static_cast<FunctionTypeInfo&>(*I_);
+        TypeInfoBlock B(I.ParamTypes.emplace_back(), br_);
         return br_.readBlock(B, ID);
     }
     case BI_TEMPLATE_ARG_BLOCK_ID:
-        return visit(*I_, [&]<typename T>(T& t)
-            {
-                if constexpr(T::isSpecialization())
-                {
-                    TemplateArgBlock B(t.TemplateArgs.emplace_back());
-                    return br_.readBlock(B, ID);
-                }
-                return Error("wrong TypeInfo kind");
-            });
+    {
+        if(! I_->isSpecialization())
+            return Error("wrong TypeInfo kind");
+        auto& I = static_cast<SpecializationTypeInfo&>(*I_);
+        TemplateArgBlock B(I.TemplateArgs.emplace_back());
+        return br_.readBlock(B, ID);
+    }
+    case BI_EXPR_BLOCK_ID:
+    {
+        if(! I_->isArray())
+            return Error("wrong TypeInfo kind");
+        auto& I = static_cast<ArrayTypeInfo&>(*I_);
+        ExprBlock B(I.Bounds, br_);
+        return br_.readBlock(B, ID);
+    }
     default:
         return AnyBlock::readSubBlock(ID);
     }
@@ -1129,7 +1125,7 @@ public:
         {
         case BI_TYPEINFO_BLOCK_ID:
         {
-            TypeInfoBlock B(I->Underlying, br_);
+            TypeInfoBlock B(I->Type, br_);
             return br_.readBlock(B, ID);
         }
         case BI_TEMPLATE_BLOCK_ID:
@@ -1168,10 +1164,6 @@ public:
         {
         case ENUM_VALUE_NAME:
             return decodeRecord(R, I_.Name, Blob);
-        case ENUM_VALUE_VALUE:
-            return decodeRecord(R, I_.Value, Blob);
-        case ENUM_VALUE_EXPR:
-            return decodeRecord(R, I_.ValueExpr, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -1186,6 +1178,11 @@ public:
         case BI_JAVADOC_BLOCK_ID:
         {
             JavadocBlock B(I_.javadoc, br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock B(I_.Initializer, br_);
             return br_.readBlock(B, ID);
         }
         default:
@@ -1226,7 +1223,7 @@ public:
         {
         case BI_TYPEINFO_BLOCK_ID:
         {
-            TypeInfoBlock B(I->BaseType, br_);
+            TypeInfoBlock B(I->UnderlyingType, br_);
             return br_.readBlock(B, ID);
         }
         case BI_ENUM_VALUE_BLOCK_ID:

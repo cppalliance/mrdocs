@@ -210,8 +210,8 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
     MRDOX_ASSERT(canMerge(I, Other));
     if (!I.IsUsing)
         I.IsUsing = Other.IsUsing;
-    if (! I.Underlying)
-        I.Underlying = std::move(Other.Underlying);
+    if (! I.Type)
+        I.Type = std::move(Other.Type);
     if(! I.Template)
         I.Template = std::move(Other.Template);
     mergeSourceInfo(I, std::move(Other));

@@ -455,10 +455,11 @@ domCreate(
         {
             entries.emplace_back("element-type",
                 domCreate(t.ElementType, corpus));
-            entries.emplace_back("bounds-value",
-                t.BoundsValue);
+            if(t.Bounds.Value)
+                entries.emplace_back("bounds-value",
+                    *t.Bounds.Value);
             entries.emplace_back("bounds-expr",
-                t.BoundsExpr);
+                t.Bounds.Written);
         }
 
         if constexpr(T::isFunction())
@@ -540,8 +541,9 @@ public:
         auto const& I = list_.at(i);
         return dom::Object({
             { "name", I.Name },
-            { "value", I.Value },
-            { "expr", I.ValueExpr },
+            { "value", I.Initializer.Value ?
+                *I.Initializer.Value : dom::Value() },
+            { "expr", I.Initializer.Written },
             { "doc", domCreate(I.javadoc) }
             });
     }
@@ -761,7 +763,7 @@ DomInfo<T>::construct() const
     if constexpr(T::isEnum())
     {
         entries.insert(entries.end(), {
-            { "type", domCreate(I_.BaseType, corpus_) },
+            { "type", domCreate(I_.UnderlyingType, corpus_) },
             { "members", dom::newArray<DomEnumValueArray>(I_.Members) },
             { "isScoped", I_.Scoped }
             });
@@ -769,7 +771,7 @@ DomInfo<T>::construct() const
     if constexpr(T::isTypedef())
     {
         entries.insert(entries.end(), {
-            { "type", domCreate(I_.Underlying, corpus_) },
+            { "type", domCreate(I_.Type, corpus_) },
             { "template", domCreate(I_.Template, corpus_) },
             { "isUsing", I_.IsUsing }
             });

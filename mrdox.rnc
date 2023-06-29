@@ -324,8 +324,7 @@ grammar
             attribute cv-qualifiers { "const"|"volatile"|"const volatile" } ?,
             attribute ref-qualifier { "&"|"&&" } ?,
             attribute exception-spec { text } ?,
-            attribute bounds-value { text } ?,
-            attribute bounds-expr { text } ?,
+            attribute bounds { text } ?,
             TemplateArg *,
             TypeInfo *
         }

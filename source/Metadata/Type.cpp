@@ -221,8 +221,9 @@ operator()(
         write(')');
 
     if constexpr(T::isArray())
-        write('[', t.BoundsValue.empty() ?
-            t.BoundsExpr : t.BoundsValue, ']');
+        write('[', t.Bounds.Value ?
+            std::to_string(*t.Bounds.Value) :
+            t.Bounds.Written, ']');
 
     if constexpr(T::isFunction())
     {

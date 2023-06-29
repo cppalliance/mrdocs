@@ -106,6 +106,10 @@ public:
     buildTypeInfoForType(
         const NestedNameSpecifier* N);
 
+    template<typename Integer>
+    Integer
+    getValue(const llvm::APInt& V);
+
     std::unique_ptr<TypeInfo>
     buildTypeInfoForType(
         QualType T);
@@ -120,6 +124,13 @@ public:
     buildExprInfoForExpr(
         ConstantExprInfo<T>& I,
         const Expr* E);
+
+    template<typename T>
+    void
+    buildExprInfoForExpr(
+        ConstantExprInfo<T>& I,
+        const Expr* E,
+        const llvm::APInt& V);
 
     void
     parseParameters(

@@ -52,7 +52,7 @@
     <file path="record-data.cpp" line="28" class="def"/>
     <field name="buf" id="2akJUSKKPN7IylZjqGMRlhXupds=">
       <file path="record-data.cpp" line="30" class="def"/>
-      <type class="array" bounds-value="64">
+      <type class="array" bounds="64">
         <element-type name="char"/>
       </type>
     </field>
@@ -76,7 +76,7 @@
       </field>
       <field name="x2" id="BBtkYfP6w9XgHxk01Va2e1WZHo0=">
         <file path="record-data.cpp" line="40" class="def"/>
-        <type class="array" bounds-value="32">
+        <type class="array" bounds="32">
           <element-type name="P" cv-qualifiers="const"/>
         </type>
       </field>

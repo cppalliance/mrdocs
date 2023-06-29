@@ -296,8 +296,6 @@ RecordIDNameMap = []()
         {TYPEINFO_ID, {"TypeinfoID", &SymbolIDAbbrev}},
         {TYPEINFO_NAME, {"TypeinfoName", &StringAbbrev}},
         {TYPEINFO_CVQUAL, {"TypeinfoCV", &Integer32Abbrev}},
-        {TYPEINFO_BOUNDS_VALUE, {"TypeinfoBoundsVal", &StringAbbrev}},
-        {TYPEINFO_BOUNDS_EXPR, {"TypeinfoBoundsExpr", &StringAbbrev}},
         {TYPEINFO_EXCEPTION_SPEC, {"TypeinfoNoexcept", &Integer32Abbrev}},
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
@@ -382,8 +380,7 @@ RecordsByBlock{
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
         {TYPEINFO_KIND, TYPEINFO_ID, TYPEINFO_NAME,
-        TYPEINFO_CVQUAL, TYPEINFO_BOUNDS_VALUE, TYPEINFO_BOUNDS_EXPR,
-        TYPEINFO_EXCEPTION_SPEC, TYPEINFO_REFQUAL}},
+        TYPEINFO_CVQUAL, TYPEINFO_EXCEPTION_SPEC, TYPEINFO_REFQUAL}},
     {BI_TYPEINFO_PARENT_BLOCK_ID,
         {}},
     {BI_TYPEINFO_CHILD_BLOCK_ID,
@@ -792,7 +789,7 @@ emitBlock(
     emitInfoPart(I);
     emitSourceInfo(I, I);
     emitRecord(I.Scoped, ENUM_SCOPED);
-    emitBlock(I.BaseType);
+    emitBlock(I.UnderlyingType);
     for (const auto& N : I.Members)
         emitBlock(N);
 }
@@ -804,8 +801,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_ENUM_VALUE_BLOCK_ID);
     emitRecord(I.Name, ENUM_VALUE_NAME);
-    emitRecord(I.Value, ENUM_VALUE_VALUE);
-    emitRecord(I.ValueExpr, ENUM_VALUE_EXPR);
+    emitBlock(I.Initializer);
     emitBlock(I.javadoc);
 }
 
@@ -983,8 +979,7 @@ emitBlock(
             if constexpr(T::isArray())
             {
                 emitBlock(t.ElementType, BI_TYPEINFO_CHILD_BLOCK_ID);
-                emitRecord(t.BoundsValue, TYPEINFO_BOUNDS_VALUE);
-                emitRecord(t.BoundsExpr, TYPEINFO_BOUNDS_EXPR);
+                emitBlock(t.Bounds);
             }
 
             if constexpr(T::isFunction())
@@ -1121,7 +1116,7 @@ emitBlock(
     emitInfoPart(I);
     emitSourceInfo(I, I);
     emitRecord(I.IsUsing, TYPEDEF_IS_USING);
-    emitBlock(I.Underlying);
+    emitBlock(I.Type);
     if(I.Template)
         emitBlock(*I.Template);
 }

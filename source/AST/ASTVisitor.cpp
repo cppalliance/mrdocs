@@ -300,9 +300,8 @@ buildTypeInfoForType(
             T->getElementType());
         // KRYSTIAN FIXME: this is broken; cannonical
         // constant array types never have a size expression
-        if(auto* E = T->getSizeExpr())
-            I->BoundsExpr = getSourceCode(E->getSourceRange());
-        I->BoundsValue = toString(T->getSize(), 10, false);
+        buildExprInfoForExpr(I->Bounds,
+            T->getSizeExpr(), T->getSize());
         return I;
     }
     case Type::DependentSizedArray:
@@ -311,8 +310,7 @@ buildTypeInfoForType(
         auto I = std::make_unique<ArrayTypeInfo>();
         I->ElementType = buildTypeInfoForType(
             T->getElementType());
-        if(auto* E = T->getSizeExpr())
-            I->BoundsExpr = getSourceCode(E->getSourceRange());
+        buildExprInfoForExpr(I->Bounds, T->getSizeExpr());
         return I;
     }
     case Type::Auto:
@@ -466,12 +464,27 @@ buildTypeInfoForType(
     }
 }
 
+template<typename Integer>
+Integer
+ASTVisitor::
+getValue(const llvm::APInt& V)
+{
+    if constexpr(std::is_signed_v<Integer>)
+        return static_cast<Integer>(
+            V.getSExtValue());
+    else
+        return static_cast<Integer>(
+            V.getZExtValue());
+}
+
 void
 ASTVisitor::
 buildExprInfoForExpr(
     ExprInfo& I,
     const Expr* E)
 {
+    if(! E)
+        return;
     I.Written = getSourceCode(
         E->getSourceRange());
 }
@@ -487,13 +500,22 @@ buildExprInfoForExpr(
         static_cast<ExprInfo&>(I), E);
     // if the expression is dependent,
     // we cannot get its value
-    if(E->isValueDependent())
+    if(! E || E->isValueDependent())
         return;
-    llvm::APSInt value = E->EvaluateKnownConstInt(*astContext_);
-    if constexpr(std::is_signed_v<T>)
-        I.Value.emplace(value.getSExtValue());
-    else
-        I.Value.emplace(value.getZExtValue());
+    I.Value.emplace(getValue<T>(
+        E->EvaluateKnownConstInt(*astContext_)));
+}
+
+template<typename T>
+void
+ASTVisitor::
+buildExprInfoForExpr(
+    ConstantExprInfo<T>& I,
+    const Expr* E,
+    const llvm::APInt& V)
+{
+    buildExprInfoForExpr(I, E);
+    I.Value.emplace(getValue<T>(V));
 }
 
 void
@@ -791,14 +813,14 @@ parseEnumerators(
 {
     for(const EnumConstantDecl* E : D->enumerators())
     {
-        std::string ValueExpr;
-        if(const Expr* InitExpr = E->getInitExpr())
-            ValueExpr = getSourceCode(InitExpr->getSourceRange());
+        auto& M = I.Members.emplace_back(
+            E->getNameAsString());
 
-        I.Members.emplace_back(
-            E->getNameAsString(),
-            toString(E->getInitVal(), 10),
-            ValueExpr);
+        buildExprInfoForExpr(
+            M.Initializer,
+            E->getInitExpr(),
+            E->getInitVal());
+
         parseRawComment(I.Members.back().javadoc, E);
     }
 }
@@ -1274,7 +1296,7 @@ buildEnum(
         I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
     I.Scoped = D->isScoped();
     if(D->isFixed())
-        I.BaseType = buildTypeInfoForType(
+        I.UnderlyingType = buildTypeInfoForType(
             D->getIntegerType());
 
     parseEnumerators(I, D);
@@ -1385,11 +1407,11 @@ buildTypedef(
 {
     if(! extractInfo(I, D))
         return;
-    I.Underlying = buildTypeInfoForType(
+    I.Type = buildTypeInfoForType(
         D->getUnderlyingType());
 
 #if 0
-    if(I.Underlying.Name.empty())
+    if(I.Type.Name.empty())
     {
         // Typedef for an unnamed type. This is like
         // "typedef struct { } Foo;". The record serializer
