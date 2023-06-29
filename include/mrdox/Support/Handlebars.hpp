@@ -12,159 +12,486 @@
 #define MRDOX_TOOL_SUPPORT_PATH_HPP
 
 #include <mrdox/Support/String.hpp>
-#include "llvm/Support/JSON.h"
+#include <mrdox/Support/Dom.hpp>
 #include <string_view>
 #include <unordered_map>
 #include <functional>
 #include <type_traits>
+#include <vector>
 
 namespace clang {
 namespace mrdox {
 
-struct HandlebarsOptions {
-    /// Escape HTML entities
+/** Options for handlebars
+
+    In particular, we have the noHTMLEscape option, which we
+    use to disable HTML escaping when rendering asciidoc templates.
+
+    This struct is analogous to the Handlebars.compile options.
+
+ */
+struct HandlebarsOptions
+{
+    /** Escape HTML entities
+     */
     bool noHTMLEscape = false;
+
+    /** Templates will throw rather than ignore missing fields
+     */
+    bool strict = false;
+
+    /** Disable the auto-indent feature
+
+        By default, an indented partial-call causes the output of the
+        whole partial being indented by the same amount.
+     */
+    bool preventIndent = false;
+
+    /** Disables standalone tag removal when set to true
+
+        When set, blocks and partials that are on their own line will not
+        remove the whitespace on that line
+     */
+    bool ignoreStandalone = false;
 };
 
-class MRDOX_DECL HandlebarsCallback {
-private:
-    std::function<std::string(llvm::json::Object const&)> fn_;
-    std::function<std::string(llvm::json::Object const&)> inverse_;
+// Objects such as llvm::raw_string_ostream
+template <typename Os>
+concept LHROStreamable =
+requires(Os &os, std::string_view sv)
+{
+    { os << sv } -> std::convertible_to<Os &>;
+};
+
+// Objects such as std::ofstream
+template <typename Os>
+concept StdLHROStreamable = LHROStreamable<Os> && std::convertible_to<Os*, std::ostream*>;
+
+// Objects such as std::string
+template <typename St>
+concept SVAppendable =
+requires(St &st, std::string_view sv)
+{
+    st.append( sv.data(), sv.data() + sv.size() );
+};
+
+/** Reference to output stream used by handlebars
+
+    This class is used to internally pass an output stream to the
+    handlebars engine.
+
+    It allows many types to be used as output streams, including
+    std::string, std::ostream, llvm::raw_string_ostream, and others.
+
+ */
+class MRDOX_DECL OutputRef
+{
     friend class Handlebars;
-public:
-    /// Render the block content with the specified context
-    /**
-     * This function renders the block content with the specified context.
-     *
-     * For example, the following template calls the helper "list" with a block section:
-     *
-     *   {{#list people}}{{name}}{{/list}}
-     *
-     * In this context, this function would render the {{name}} block content with
-     * any specified context.
-     *
-     * To list all people, a helper such as "list" would usually call this function once for each
-     * person, passing the person's object as the context argument.
-     *
-     * If this is not a block helper, this function returns an empty string.
-     *
-     * @param context The context to render the block content with
-     * @return The rendered block content
-     */
-    [[nodiscard]]
-    std::string
-    fn(llvm::json::Object const& context) const {
-        if (isBlock()) {
-            return fn_(context);
-        } else {
-            return {};
-        }
+
+    using fptr = void (*)(void * out, std::string_view sv);
+    void * out_;
+    fptr fptr_;
+
+private:
+    template<class St>
+    static
+    void
+    append_to_output(void * out, std::string_view sv) {
+        St& st = *static_cast<St*>( out );
+        st.append( sv.data(), sv.data() + sv.size() );
     }
 
-    /// Create frame around value so that { "this": context } and call fn
-    [[nodiscard]]
-    std::string
-    fn(llvm::json::Value const& context) const;
+    // write to output
+    template<class Os>
+    static
+    void
+    write_to_output(void * out, std::string_view sv) {
+        Os& os = *static_cast<Os*>( out );
+        os.write( sv.data(), sv.size() );
+    }
 
-    /// Render the inverse block content with the specified context
-    /**
-     * This function renders the inverse block content with the specified context.
-     *
-     * For example, the following template calls the helper "list" with a block section:
-     *
-     *  {{#list people}}{{name}}{{else}}No people{{/list}}
-     *
-     * In this context, this function would render the {{else}}...{{/list}} block content with
-     * any specified context.
-     *
-     * When there are no people, a helper such as "list" would usually call this function once, passing
-     * the original context argument instead of a person on the list.
-     *
-     * @param context The context to render the block content with
-     * @return The rendered block content
+    // stream to output
+    template<class Os>
+    static
+    void
+    stream_to_output(void * out, std::string_view sv) {
+        Os& os = *static_cast<Os*>( out );
+        os << sv;
+    }
+
+    // stream to output
+    static
+    void
+    noop_output(void *, std::string_view) {}
+
+    // Noop constructor
+    // Used as implementation detail by Handlebars engine
+    OutputRef()
+        : out_( nullptr )
+        , fptr_( &noop_output )
+    {}
+
+public:
+    /** Constructor for std::string output
+
+        @param st The string to append to
+     */
+    template<SVAppendable St>
+    requires std::same_as<typename St::value_type, char>
+    OutputRef( St& st )
+      : out_( &st )
+      , fptr_( &append_to_output<St> )
+    {
+    }
+
+    /** Constructor for llvm::raw_string_ostream output
+
+        @param os The output stream to write to
+     */
+    template <StdLHROStreamable Os>
+    requires std::is_convertible_v<Os*, std::ostream*>
+    OutputRef( Os& os )
+        : out_( &os )
+        , fptr_( &write_to_output<Os> )
+    {
+    }
+
+    /** Constructor for std::ostream& output
+
+        @param os The output stream to write to
+     */
+    template <LHROStreamable Os>
+    requires std::is_convertible_v<Os*, std::ostream*>
+    OutputRef( Os& os )
+        : out_( &os )
+        , fptr_( &write_to_output<Os> )
+    {
+    }
+
+    /** Write to output
+
+        @param sv The string to write
+        @return A reference to this object
+     */
+    OutputRef&
+    operator<<( std::string_view sv )
+    {
+        fptr_( out_, sv );
+        return *this;
+    }
+
+    /** Write to output
+
+        @param c The character to write
+        @return A reference to this object
+     */
+    OutputRef&
+    operator<<( char c )
+    {
+        fptr_( out_, std::string_view( &c, 1 ) );
+        return *this;
+    }
+
+    /** Write to output
+
+        @param c The character to write
+        @return A reference to this object
+     */
+    template <class T>
+    requires fmt::has_formatter<T, fmt::format_context>::value
+    OutputRef&
+    operator<<( T v )
+    {
+        std::string s = fmt::format( "{}", v );
+        fptr_( out_, s );
+        return *this;
+    }
+};
+
+/** Callback information for handlebars helpers
+
+    This class is used to pass information about the current
+    context to handlebars helpers.
+
+    It allows the helpers to access the current context,
+    the current output stream, and render the current block.
+
+ */
+class MRDOX_DECL HandlebarsCallback
+{
+private:
+    std::function<void(OutputRef, dom::Value const&)> fn_;
+    std::function<void(OutputRef, dom::Value const&)> inverse_;
+    dom::Value const* context_{ nullptr };
+    OutputRef* output_{ nullptr };
+    dom::Object data_;
+    dom::Object hashes_;
+    dom::Array blockParams_;
+    friend class Handlebars;
+    HandlebarsCallback();
+
+public:
+    /** Render the block content with the specified context
+
+        This function renders the block content with the specified context.
+
+        For example, the following template calls the helper "list" with a block section:
+
+        @code{.handlebars}
+          {{#list people}}{{name}}{{/list}}
+        @endcode
+
+        In this context, this function would render the `{{name}}` block
+        content with any specified context.
+
+        To list all people, a helper such as "list" would usually call this function once for each
+        person, passing the person's object as the context argument.
+
+        If this is not a block helper, this function returns an empty string.
+
+        @param context The context to render the block content with
+        @return The rendered block content
+
      */
     [[nodiscard]]
     std::string
-    inverse(llvm::json::Object const& context) const{
-        return inverse_(context);
-    };
+    fn(dom::Value const& context) const;
 
-    /// Create frame around value so that { "this": context } and call inverse
+    /** Render the block content with the specified context
+
+        This overload renders the block directly to the OutputRef
+        instead of generating a string.
+
+        This overload is particularly helpful in C++ block helpers
+        where allocating a string is unnecessary, including built-in
+        helpers. Other helpers can still use the first overload that
+        allocates the string to obtain the same results.
+
+        @param out Reference to the output
+        @param context The context to render the block content with
+
+     */
+    void
+    fn(OutputRef out, dom::Value const& context) const;
+
+    /** Render the block content with the original context
+     */
     [[nodiscard]]
     std::string
-    inverse(llvm::json::Value const& context) const;
+    fn() const {
+        return fn( *context_ );
+    }
 
-    /// Determine if helper is being called from a block section
-    /**
-     * This function returns true if the helper is being called from a block section.
-     *
-     * For example, the following template calls the helper "list" with a block section:
-     *
-     *    {{#list people}}{{name}}{{/list}}
-     *
-     * The helper "list" is called with a block section because it is called with a block of text.
-     * On the other hand, the following template calls the helper "year" without a block section:
-     *
-     *   {{year}}
-     *
-     * Helpers can be called with or without a block section. For example, the following template
-     * calls the helper "loud" with a block section, and the same helper "loud" without a block
-     * section:
-     *
-     *  {{#loud}}HELLO{{/loud}} {{loud "Hello"}}
-     *
-     * This function can be used from within the helper to determine which behavior is expected
-     * from the template.
-     *
-     * @return true if the helper is being called from a block section
+    /** Render the block content with the original context
+
+        @param out Reference to the output
+     */
+    void
+    fn(OutputRef out) const {
+        fn( out, *context_ );
+    }
+
+    /** Render the inverse block content with the specified context
+
+        This function renders the inverse block content with the specified context.
+
+        For example, the following template calls the helper "list" with a
+        block section:
+
+        @code{.handlebars}
+         {{#list people}}{{name}}{{else}}No people{{/list}}
+        @endcode
+
+        In this context, this `inverse` function would render the
+        `No people` block content with any specified context.
+
+        When there are no people, a helper such as "list" would usually
+        call this function once, passing the original context argument instead
+        of a person on the list.
+
+        @param context The context to render the block content with
+        @return The rendered block content
+     */
+    [[nodiscard]]
+    std::string
+    inverse(dom::Value const& context) const;
+
+    /** Render the inverse block content with the specified context
+
+        This overload renders the block directly to the OutputRef
+        instead of generating a string.
+
+        This overload is particularly helpful in C++ block helpers
+        where allocating a string is unnecessary, including built-in
+        helpers. Other helpers can still use the first overload that
+        allocates the string to obtain the same results.
+
+        @param out Reference to the output
+        @param context The context to render the block content with
+
+     */
+    void
+    inverse(OutputRef out, dom::Value const& context) const;
+
+    /** Render the inverse block content with the original context
+     */
+    [[nodiscard]]
+    std::string
+    inverse() const {
+        return inverse( *context_ );
+    }
+
+    /** Render the inverse block content with the original context
+
+        @param out Reference to the output
+     */
+    void
+    inverse(OutputRef out) const {
+        inverse( out, *context_ );
+    }
+
+    /** Determine if helper is being called from a block section
+
+        This function returns `true` if the helper is being called from a
+        block section.
+
+        For example, the following template calls the helper "list" with a
+        block section:
+
+        @code{.handlebars}
+           {{#list people}}{{name}}{{/list}}
+        @endcode
+
+        The helper "list" is called with a block section because it is
+        called with a block of text.
+
+        On the other hand, the following template calls the helper "year"
+        without a block section:
+
+        @code{.handlebars}
+          {{year}}
+        @endcode
+
+        This function also enables helpers to adjust its behavior based on
+        whether it is being called from a block section, where it would
+        typically use the block content, or an expression, where it would
+        typically use its arguments:
+
+        @code{.handlebars}
+          {{! using helper arguments }}
+          {{loud "Hello"}}
+
+          {{! using helper block content }}
+          {{#loud}}hello{{/loud}}
+        @endcode
+
+        This function can be used from within the helper to determine which
+        behavior is expected from the template.
+
+        @return `true` if the helper is being called from a block section
      */
     [[nodiscard]]
     bool isBlock() const {
         return static_cast<bool>(fn_);
     }
 
-    /// Log a message
-    /**
-     * Helpers can use this callback function to log messages.
-     *
-     * The behavior of this function can be overriden with the handlebars hooks.
+    /** Log a message
+
+        Helpers can use this callback function to log messages.
+
+        The behavior of this function can be overriden with handlebars hooks.
+
+        The built-in helper "log" uses this function to log messages.
+
      */
-    void log(
-        llvm::json::Value const& level,
-        llvm::json::Array const& args) const;
+    void
+    log(dom::Value const& level, dom::Array const& args) const;
 
-    // Return context from callback to simplify helper implementation
-    // llvm::json::Object const&
-    // context() const;
+    /** Get the current context where the helper is being called
 
-    // AFREITAS: we need extra overloads of fn and inverse for blockParams
-    // (as |userId user|) and private data (@index, @key, ...) as frames.
+        This function returns the current handlebars context at the
+        moment the helper is being called.
+
+        In most cases, the context is an object. However, it can also
+        other types, in which case they are accessed from the handlebars
+        templates with the `this` keyword.
+
+        @return The current handlebars context
+     */
+    [[nodiscard]]
+    dom::Value const&
+    context() const {
+        MRDOX_ASSERT(context_);
+        return *context_;
+    }
+
+    /// Private data passed to the callback
+    dom::Object&
+    data() {
+        return data_;
+    }
+
+    /// Private data passed to the callback
+    [[nodiscard]]
+    dom::Object const&
+    data() const {
+        return data_;
+    }
 
     /// Extra key value pairs passed to the callback
-    llvm::json::Object hashes;
+    dom::Object&
+    hashes() {
+        return hashes_;
+    }
+
+    /// Extra key value pairs passed to the callback
+    [[nodiscard]]
+    dom::Object const&
+    hashes() const {
+        return hashes_;
+    }
 
     /// Block parameters passed to the callback
-    llvm::json::Array blockParams;
+    dom::Array&
+    blockParams() {
+        return blockParams_;
+    }
 
-    /// Name of the helper being called
+    /// Block parameters passed to the callback
+    [[nodiscard]]
+    dom::Array const&
+    blockParams() const {
+        return blockParams_;
+    }
+
+    /** Name of the helper being called
+
+        This is the name of the helper being called from the handlebars
+        template.
+
+        It is useful for debugging purposes, where the helper function name
+        doesn't match the name the helper was registered with.
+
+     */
     std::string_view name;
 };
 
-/// A handlebars template engine
-/**
- *    This class implements a handlebars template engine.
- *    The template text is rendered using the data provided
- *    as a JSON array. The result is returned as a string.
- *
- *    @see https://handlebarsjs.com/
+/** A handlebars template engine environment
+
+    This class implements a handlebars template engine environment.
+    It is analogous to the complete state held by the handlebars.js
+    module, including registered helpers and partials.
+
+    A handlebars template can be rendered using the context data provided
+    as a dom::Value, which is usually a dom::Object at the first level.
+
+    The result can returned as a string or rendered directly to an
+    stream.
+
+    @see https://handlebarsjs.com/
  */
 class Handlebars {
-    using helper_type = std::function<
-        llvm::json::Value(
-            llvm::json::Object const& /* context */,
-            llvm::json::Array const& /* args */,
-            HandlebarsCallback const& /* callback params */)>;
-
+    // Heterogeneous lookup support
     struct string_hash {
         using is_transparent = void;
         [[nodiscard]] size_t operator()(const char *txt) const {
@@ -178,269 +505,252 @@ class Handlebars {
         }
     };
 
-    using partials_map = std::unordered_map<std::string, std::string, string_hash, std::equal_to<>>;
-    using helpers_map = std::unordered_map<std::string, helper_type, string_hash, std::equal_to<>>;
+    using partials_map = std::unordered_map<
+        std::string, std::string, string_hash, std::equal_to<>>;
+
+    using helper_type = std::function<
+        dom::Value(dom::Array const&, HandlebarsCallback const&)>;
+
+    using helpers_map = std::unordered_map<
+        std::string, helper_type, string_hash, std::equal_to<>>;
 
     partials_map partials_;
     helpers_map helpers_;
 
 public:
-    /// Render a handlebars template
-    /**
-       This function renders the specified handlebars template
+    Handlebars();
 
-       @param templateText The handlebars template text
-       @param data The data to render
-       @param opt The options to use
-       @return The rendered text
+    /** Render a handlebars template
+
+        This function renders the specified handlebars template and
+        returns the result as a string.
+
+        The context data to render is passed as a dom::Value, which is
+        usually a dom::Object at the first level. When the context is
+        not an object, it is accessed from the handlebars template with
+        the `this` keyword.
+
+        @param templateText The handlebars template text
+        @param context The data to render
+        @param options The options to use
+        @return The rendered text
      */
     std::string
     render(
         std::string_view templateText,
-        llvm::json::Object const &data,
-        HandlebarsOptions opt = {}) const;
+        dom::Value const & context,
+        HandlebarsOptions options = {}) const;
 
-    /// Render a handlebars template
-    /**
-       This function renders the specified handlebars template
+    /** Render a handlebars template
 
-       @param templateText The handlebars template text
-       @param data The data to render
-       @param opt The options to use
-       @return The rendered text
+        This function renders the specified handlebars template and
+        writes the result to the specified output stream.
+
+        The output stream can be any type convertible to OutputRef, which is
+        a reference to a stream that can be written to with the << operator.
+
+        @param templateText The handlebars template text
+        @param context The data to render
+        @param options The options to use
+        @return The rendered text
+
      */
     void
     render_to(
-        llvm::raw_string_ostream& out,
+        OutputRef& out,
         std::string_view templateText,
-        llvm::json::Object const &data,
-        HandlebarsOptions opt = {}) const;
+        dom::Value const & context,
+        HandlebarsOptions options = {}) const;
 
-    /// Register a partial
-    /**
-       This function registers a partial with the handlebars engine.
+    /** Register a partial
 
-       A partial is a template that can be referenced from another
-       template. The partial is rendered in the context of the
-       template that references it.
+        This function registers a partial with the handlebars engine.
 
-       @see https://handlebarsjs.com/guide/partials.html
+        A partial is a template that can be referenced from another
+        template. The partial is rendered in the context of the
+        template that references it.
 
-       @param name The name of the partial
-       @param text The text of the partial
+        For instance, a partial can be used to render a header or
+        footer that is common to several pages. It can also be used
+        to render a list of items that is used in several places.
+
+        The following example template uses the partial `item` to render a
+        list of items:
+
+        @code{.handlebars}
+        <ul>
+        {{#each items}}
+            {{> item}}
+        {{/each}}
+        </ul>
+        @endcode
+
+        @param name The name of the partial
+        @param text The content of the partial
+
+        @see https://handlebarsjs.com/guide/partials.html
+
      */
     void
     registerPartial(std::string_view name, std::string_view text);
 
-    /// Register a helper with context, arguments, and callback parameters
-    /**
-       This function registers a helper with the handlebars engine.
+    /** Unregister a partial
 
-       A helper is a function that can be called from a template.
+        This function unregisters a partial with the handlebars engine.
 
-       The helper function is passed the current context and
-       the parameters from the template. The context is a JSON
-       object, and the parameters are a JSON array.
-
-       It should return a JSON object, which is rendered in the
-       context of the template that calls it.
-
-       @see https://handlebarsjs.com/guide/builtin-helpers.html
-
-       @param name The name of the helper
-       @param helper The helper function
+        @param name The name of the partial
      */
     void
-    registerHelper(std::string_view name, helper_type const &helper);
+    unregisterPartial(std::string_view name) {
+        auto it = partials_.find(name);
+        if (it != partials_.end())
+            partials_.erase(it);
+    }
 
-    // AFREITAS: registering helpers with all the parameters they support
-    // is very tedious. The following functions are convenience overloads
-    // that allow registering helpers with fewer parameters. However,
-    // more work needs to be done to better generalize the
-    // convenience registerHelper functions below.
-    // These overloads can also generalize the error messages when the
-    // number of parameters is incorrect, or the parameters don't have
-    // the appropriate type, which is very helpful for correctness.
+    /** Register a helper with arguments and callback parameters
 
-    /// Register a helper context and arguments
-    /**
-       This overload registers a helper with context and arguments only.
+        This function registers a helper with the handlebars engine.
+        A helper is a function that can be called from a template.
 
-       @tparam F The type of the helper function
-       @param name The name of the helper
-       @param helper The helper function
+        The helper function the parameters from the template as a
+        dom::Array.
+
+        This overload uses the canonical helper type, which is
+        a function that returns a `dom::Value` and takes the following
+        arguments:
+
+        @li dom::Array const&: The list of arguments passed to the helper in
+            the template.
+
+        @li HandlebarsCallback const&: Contains information about the current
+            context. This is useful for block helpers that want to change the
+            current context or render the internal blocks.
+
+        When the helper is used in an subexpression, the `dom::Value` return
+        value is used as the intermediary result. When the helper is used in
+        a block or a final expression, the `dom::Value` return value will be
+        formatted to the output.
+
+        @param name The name of the helper in the handlebars template
+        @param helper The helper function
+
+        @see https://handlebarsjs.com/guide/builtin-helpers.html
      */
-    template <std::invocable<llvm::json::Object const&, llvm::json::Array const&> F>
+    void
+    registerHelper(
+        std::string_view name,
+        std::function<dom::Value(
+            dom::Array const&, HandlebarsCallback const&)> const &helper);
+
+    /** Register a helper with arguments and callback parameters
+
+        This overload registers a helper that returns `void`.
+
+        @param name The name of the helper
+        @param helper The helper function
+     */
+    template <std::invocable<dom::Array const&, HandlebarsCallback const&> F>
+    requires std::same_as<std::invoke_result_t<F, dom::Array const&, HandlebarsCallback const&>, void>
     void
     registerHelper(std::string_view name, F&& helper)
     {
         registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            llvm::json::Object const& ctx,
-            llvm::json::Array const& args,
-            HandlebarsCallback const&) -> llvm::json::Value {
-            return f(ctx, args);
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            f(args, cb);
+            return dom::Value(nullptr);
         }));
     }
 
-    /// Register a helper with arguments only
-    /**
-       This overload registers a helper with arguments only.
+    /** Register a helper with no callback parameters
 
-       @tparam F The type of the helper function
-       @param name The name of the helper
-       @param helper The helper function
+        This convenience overload registers a helper with the signature
+
+        @code{.cpp}
+        `R(dom::Array const&)`
+        @endcode
+
+        where `R` is either `void` or `dom::Value`.
+
+        When compared to the canonical helper signature, this overload
+        registers helpers that ignore the callback parameter.
+
+        This is useful for simple custom helpers that are meant to be used
+        in subexpressions.
+
+        @param name The name of the helper
+        @param helper The helper function
      */
-    template <std::invocable<llvm::json::Array const&> F>
+    template <std::invocable<dom::Array const&> F>
     void
     registerHelper(std::string_view name, F&& helper)
     {
+        using R = std::invoke_result_t<F, dom::Array const&>;
+        static_assert(std::same_as<R, void> || std::same_as<R, dom::Value>);
         registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            llvm::json::Object const&,
-            llvm::json::Array const& args,
-            HandlebarsCallback const&) -> llvm::json::Value {
-            return f(args);
+            dom::Array const& args, HandlebarsCallback const&) {
+            if constexpr (!std::same_as<R, void>)
+            {
+                return f(args);
+            }
+            else
+            {
+                f(args);
+                return dom::Value(nullptr);
+            }
         }));
     }
 
-    /// Register a helper with a single JSON value argument
-    /**
-       This overload registers a helper that transforms a single JSON value.
+    /** Register a nullary helper
 
-       @tparam F The type of the helper function
-       @param name The name of the helper
-       @param helper The helper function
+        This convenience overload registers a helper with the signature
+
+        @code{.cpp}
+        `R()`
+        @endcode
+
+        where `R` is either `void` or `dom::Value`.
+
+        When compared to the canonical helper signature, this overload
+        registers helpers that require no arguments and can ignore the
+        callback parameter.
+
+        This is useful for custom helpers that return dynamic data:
+
+        @code{.handlebars}
+        {{ year }}
+        @endcode
+
+        @param name The name of the helper
+        @param helper The helper function
      */
-    template <std::invocable<llvm::json::Value const&> F>
+    template<std::invocable<> F>
     void
-    registerHelper(std::string_view name, F&& helper)
-    {
+    registerHelper(std::string_view name, F &&helper) {
+        using R = std::invoke_result_t<F>;
+        static_assert(std::same_as<R, void> || std::same_as<R, dom::Value>);
         registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            llvm::json::Object const&,
-            llvm::json::Array const& args,
-            HandlebarsCallback const&) -> llvm::json::Value {
-            return f(args[0]);
+                dom::Array const&, HandlebarsCallback const &) {
+            if constexpr (!std::same_as<R, void>) {
+                return f();
+            } else
+            {
+                f();
+                return dom::Value(nullptr);
+            }
         }));
     }
 
-    /// Register a helper with single string argument
-    /**
-       This overload registers a helper that transforms a string.
+    /** Unregister a helper
 
-       @tparam F The type of the helper function
-       @param name The name of the helper
-       @param helper The helper function
+        This function unregisters a helper with the handlebars engine.
+
+        @param name The name of the helper
      */
-    template <std::invocable<std::string_view> F>
     void
-    registerHelper(std::string_view name, F&& helper)
-    {
-        registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            llvm::json::Object const&,
-            llvm::json::Array const& args,
-            HandlebarsCallback const&) -> llvm::json::Value {
-            return f(std::string_view(args[0].getAsString().value()));
-        }));
-    }
-
-    /// Register a helper with no arguments
-    /**
-       This overload registers a helper that transforms a single JSON value.
-
-       @tparam F The type of the helper function
-       @param name The name of the helper
-       @param helper The helper function
-     */
-    template <std::invocable<> F>
-    void
-    registerHelper(std::string_view name, F&& helper)
-    {
-        registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            llvm::json::Object const&,
-            llvm::json::Array const&,
-            HandlebarsCallback const&) -> llvm::json::Value {
-            return f();
-        }));
-    }
-
-    /// Register a helper with arguments and callback
-    /**
-       This overload registers a helper with arguments only.
-
-       @tparam F The type of the helper function
-       @param name The name of the helper
-       @param helper The helper function
-     */
-    template <std::invocable<llvm::json::Array const&, HandlebarsCallback const&> F>
-    void
-    registerHelper(std::string_view name, F&& helper)
-    {
-        registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            llvm::json::Object const&,
-            llvm::json::Array const& args,
-            HandlebarsCallback const& cb) -> llvm::json::Value {
-            return f(args, cb);
-        }));
-    }
-
-    /// Register a helper with a single JSON value argument and callback
-    /**
-       This overload registers a helper that transforms a single JSON value.
-
-       @tparam F The type of the helper function
-       @param name The name of the helper
-       @param helper The helper function
-     */
-    template <std::invocable<llvm::json::Value const&, HandlebarsCallback const&> F>
-    void
-    registerHelper(std::string_view name, F&& helper)
-    {
-        registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            llvm::json::Object const&,
-            llvm::json::Array const& args,
-            HandlebarsCallback const& cb) -> llvm::json::Value {
-            MRDOX_ASSERT(!args.empty());
-            return f(args[0], cb);
-        }));
-    }
-
-    /// Register a helper with single string argument and callback
-    /**
-       This overload registers a helper that transforms a string.
-
-       @tparam F The type of the helper function
-       @param name The name of the helper
-       @param helper The helper function
-     */
-    template <std::invocable<std::string_view, HandlebarsCallback const&> F>
-    void
-    registerHelper(std::string_view name, F&& helper)
-    {
-        registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            llvm::json::Object const&,
-            llvm::json::Array const& args,
-            HandlebarsCallback const& cb) -> llvm::json::Value {
-            return f(std::string_view(args[0].getAsString().value()), cb);
-        }));
-    }
-
-    /// Register a helper with no arguments and callback
-    /**
-       This overload registers a helper that transforms a single JSON value.
-
-       @tparam F The type of the helper function
-       @param name The name of the helper
-       @param helper The helper function
-     */
-    template <std::invocable<HandlebarsCallback const&> F>
-    void
-    registerHelper(std::string_view name, F&& helper)
-    {
-        registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            llvm::json::Object const&,
-            llvm::json::Array const&,
-            HandlebarsCallback const& cb) -> llvm::json::Value {
-            return f(cb);
-        }));
+    unregisterHelper(std::string_view name) {
+        auto it = helpers_.find(name);
+        if (it != helpers_.end())
+            helpers_.erase(it);
     }
 
     struct Tag;
@@ -449,160 +759,152 @@ private:
     // render to ostream using extra partials from parent contexts
     void
     render_to(
-        llvm::raw_string_ostream& out,
+        OutputRef& out,
         std::string_view templateText,
-        llvm::json::Object const &data,
+        dom::Value const &context,
         HandlebarsOptions opt,
-        partials_map& inlinePartials) const;
+        partials_map& inlinePartials,
+        dom::Object& private_data) const;
 
     void
     renderTag(
         Tag const& tag,
-        llvm::raw_string_ostream& out,
+        OutputRef& out,
         std::string_view& templateText,
-        llvm::json::Object const &data,
+        dom::Value const &context,
         HandlebarsOptions opt,
-        partials_map& inlinePartials) const;
+        partials_map& inlinePartials,
+        dom::Object& private_data) const;
 
     void
     renderBlock(
         std::string_view blockName,
-        Handlebars::Tag const& tag,
-        llvm::raw_string_ostream &out,
+        Handlebars::Tag const &tag,
+        OutputRef &out,
         std::string_view &templateText,
-        llvm::json::Object const& data,
+        dom::Value const& context,
         HandlebarsOptions const& opt,
-        Handlebars::partials_map &inlinePartials) const;
+        Handlebars::partials_map &extra_partials,
+        dom::Object& private_data) const;
 
     void
     renderPartial(
         Handlebars::Tag const& tag,
-        llvm::raw_string_ostream &out,
+        OutputRef &out,
         std::string_view &templateText,
-        llvm::json::Object const& data,
+        dom::Value const& data,
         HandlebarsOptions &opt,
-        Handlebars::partials_map &inlinePartials) const;
+        Handlebars::partials_map &inlinePartials,
+        dom::Object& private_data) const;
 
     void
     renderDecorator(
         Handlebars::Tag const& tag,
-        llvm::raw_string_ostream &out,
+        OutputRef &out,
         std::string_view &templateText,
-        llvm::json::Object const& data,
-        Handlebars::partials_map &inlinePartials) const;
+        dom::Value const& data,
+        Handlebars::partials_map &inlinePartials,
+        dom::Object& private_data) const;
 
     void
     renderExpression(
         Handlebars::Tag const& tag,
-        llvm::raw_string_ostream &out,
+        OutputRef &out,
         std::string_view &templateText,
-        llvm::json::Object const& data,
-        HandlebarsOptions const& opt) const;
+        dom::Value const& data,
+        HandlebarsOptions const& opt,
+        dom::Object& private_data) const;
 
     void
     setupArgs(
         std::string_view expression,
-        llvm::json::Object const& data,
-        llvm::json::Array &args,
+        dom::Value const& data,
+        dom::Array &args,
         HandlebarsCallback &cb) const;
 
-    llvm::json::Value
+    dom::Value
     evalExpr(
-        llvm::json::Object const &data,
+        dom::Value const &context,
         std::string_view expression) const;
 
     helper_type const&
     getHelper(std::string_view name, bool isBlock) const;
 };
 
-/// Determine if a JSON value is truthy
-/**
- * A JSON value is truthy if it is a boolean and is true, a number and not
- * zero, or an non-empty string, array or object.
- *
- * @param arg The JSON value to test
- *
- * @return True if the value is truthy, false otherwise
+/** Determine if a value is truthy
+
+    A JSON value is truthy if it is a boolean and is true, a number and not
+    zero, or an non-empty string, array or object.
+
+    @param arg The value to test
+
+    @return True if the value is truthy, false otherwise
+
  */
 MRDOX_DECL
 bool
-isTruthy(llvm::json::Value const& arg);
+isTruthy(dom::Value const& arg);
 
-/// Lookup a property in a JSON object
-/**
-   @param data The JSON object to look up the property in
+/** Determine if a value is empty
+
+    This is used by the built-in if and with helpers to control their
+    execution flow.
+
+    The Handlebars definition of empty is any of:
+
+    - Array with length 0
+    - falsy values other than 0
+
+    This is intended to match the Mustache Behaviour.
+
+    @param arg The value to test
+    @return True if the value is empty, false otherwise
+
+    @see https://mustache.github.io/mustache.5.html#Sections
+ */
+MRDOX_DECL
+bool
+isEmpty(dom::Value const& arg);
+
+/** Lookup a property in an object
+
+   @param data The object to look up the property in
    @param path The path to the property to look up
 
    @return The value of the property, or nullptr if the property does not exist
  */
 MRDOX_DECL
-llvm::json::Value const*
+dom::Value
 lookupProperty(
-    llvm::json::Value const &data,
+    dom::Value const &data,
     std::string_view path);
+
+/** Stringify a value as JSON
+
+    This function converts a dom::Value to a string as if
+    JSON.stringify() had been called on it.
+
+    Recursive objects are identified.
+
+    @param v The value to stringify
+    @return The stringified value
+ */
+MRDOX_DECL
+std::string
+JSON_stringify(dom::Value const& value);
 
 namespace helpers {
 
-/// Register all the standard helpers into a Handlebars instance
-/**
-   @see https://github.com/handlebars-lang/handlebars.js/tree/master/lib/handlebars/helpers
+/** Register all the standard helpers into a Handlebars instance
 
-   @param hbs The Handlebars instance to register the helpers into
+    @see https://github.com/handlebars-lang/handlebars.js/tree/master/lib/handlebars/helpers
+    @see https://handlebarsjs.com/guide/builtin-helpers.html
+
+    @param hbs The Handlebars instance to register the helpers into
  */
 MRDOX_DECL
 void
 registerBuiltinHelpers(Handlebars& hbs);
-
-/// Register all the Antora helpers into a Handlebars instance
-/**
-   @see https://gitlab.com/antora/antora-ui-default/-/tree/master/src/helpers
-
-   @param hbs The Handlebars instance to register the helpers into
- */
-MRDOX_DECL
-void
-registerAntoraHelpers(Handlebars& hbs);
-
-MRDOX_DECL
-llvm::json::Value
-and_fn(llvm::json::Array const& args);
-
-MRDOX_DECL
-llvm::json::Value
-or_fn(llvm::json::Array const& args);
-
-MRDOX_DECL
-llvm::json::Value
-eq_fn(llvm::json::Array const& args);
-
-MRDOX_DECL
-llvm::json::Value
-ne_fn(llvm::json::Array const& args);
-
-MRDOX_DECL
-llvm::json::Value
-not_fn(llvm::json::Value const& arg);
-
-MRDOX_DECL
-llvm::json::Value
-increment_fn(llvm::json::Value const &arg);
-
-MRDOX_DECL
-llvm::json::Value
-detag_fn(std::string_view html);
-
-MRDOX_DECL
-llvm::json::Value
-relativize_fn(
-    llvm::json::Object const& ctx0,
-    llvm::json::Array const& args);
-
-MRDOX_DECL
-llvm::json::Value
-year_fn();
-
-// https://github.com/handlebars-lang/handlebars.js/tree/master/lib/handlebars/helpers
-
 
 /// "if" helper function
 /**
@@ -610,10 +912,9 @@ year_fn();
  * "", 0, or [], Handlebars will not render the block.
  */
 MRDOX_DECL
-llvm::json::Value
+dom::Value
 if_fn(
-    llvm::json::Object const& context,
-    llvm::json::Array const& args,
+    dom::Array const& args,
     HandlebarsCallback const& cb);
 
 /// "unless" helper function
@@ -622,10 +923,9 @@ if_fn(
  * returns a falsy value.
  */
 MRDOX_DECL
-llvm::json::Value
+dom::Value
 unless_fn(
-    llvm::json::Object const& context,
-    llvm::json::Array const& args,
+    dom::Array const& args,
     HandlebarsCallback const& cb);
 
 
@@ -634,10 +934,9 @@ unless_fn(
  * The with-helper allows you to change the evaluation context of template-part.
  */
 MRDOX_DECL
-llvm::json::Value
+dom::Value
 with_fn(
-    llvm::json::Object const& context,
-    llvm::json::Array const& args,
+    dom::Array const& args,
     HandlebarsCallback const& cb);
 
 /// "each" helper function
@@ -647,10 +946,9 @@ with_fn(
  * Inside the block, you can use {{this}} to reference the element being iterated over.
  */
 MRDOX_DECL
-llvm::json::Value
+dom::Value
 each_fn(
-    llvm::json::Object const& context,
-    llvm::json::Array const& args,
+    dom::Array const& args,
     HandlebarsCallback const& cb);
 
 /// "log" helper function
@@ -658,10 +956,9 @@ each_fn(
  * The lookup helper allows for dynamic parameter resolution using Handlebars variables.
  */
 MRDOX_DECL
-llvm::json::Value
+dom::Value
 lookup_fn(
-    llvm::json::Object const& context,
-    llvm::json::Array const& args,
+    dom::Array const& args,
     HandlebarsCallback const& cb);
 
 /// "log" helper function
@@ -669,18 +966,69 @@ lookup_fn(
  * The log helper allows for logging of context state while executing a template.
  */
 MRDOX_DECL
-llvm::json::Value
+void
 log_fn(
-    llvm::json::Object const& context,
-    llvm::json::Array const& conditional,
+    dom::Array const& conditional,
     HandlebarsCallback const& cb);
 
 /// No operation helper
-llvm::json::Value
+dom::Value
 noop_fn(
-    llvm::json::Object const& context,
-    llvm::json::Array const& /* args */,
+    dom::Array const& args,
     HandlebarsCallback const& cb);
+
+
+/** Register all the Antora helpers into a Handlebars instance
+
+    @see https://gitlab.com/antora/antora-ui-default/-/tree/master/src/helpers
+
+    @param hbs The Handlebars instance to register the helpers into
+ */
+MRDOX_DECL
+void
+registerAntoraHelpers(Handlebars& hbs);
+
+MRDOX_DECL
+dom::Value
+and_fn(dom::Array const& args);
+
+MRDOX_DECL
+dom::Value
+or_fn(dom::Array const& args);
+
+MRDOX_DECL
+dom::Value
+eq_fn(dom::Array const& args);
+
+MRDOX_DECL
+dom::Value
+ne_fn(dom::Array const& args);
+
+MRDOX_DECL
+dom::Value
+not_fn(dom::Array const& arg);
+
+MRDOX_DECL
+dom::Value
+increment_fn(
+    dom::Array const &args,
+    HandlebarsCallback const& cb);
+
+MRDOX_DECL
+dom::Value
+detag_fn(
+    dom::Array const& args,
+    HandlebarsCallback const& cb);
+
+MRDOX_DECL
+dom::Value
+relativize_fn(
+    dom::Array const& args,
+    HandlebarsCallback const& cb);
+
+MRDOX_DECL
+dom::Value
+year_fn();
 
 } // helpers
 } // mrdox

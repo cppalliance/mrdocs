@@ -8,7 +8,9 @@
 #include <mrdox/Support/Handlebars.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/String.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include "test_macros.hpp"
+#include "diff.hpp"
 #include <fmt/format.h>
 #include <ranges>
 
@@ -17,7 +19,7 @@ void splitLines(std::string_view text, std::vector<std::string_view> &lines);
 using namespace clang::mrdox;
 
 template<>
-class fmt::formatter<llvm::json::Value::Kind, char> {
+class fmt::formatter<dom::Kind, char> {
 public:
     template<typename ParseContext>
     constexpr auto parse(ParseContext& ctx) {
@@ -25,374 +27,31 @@ public:
     }
 
     template<typename FormatContext>
-    auto format(llvm::json::Value::Kind const& value, FormatContext& ctx) {
+    auto format(dom::Kind const& value, FormatContext& ctx) {
         switch (value) {
-            case llvm::json::Value::Kind::Null:
+            case dom::Kind::Null:
                 return format_to(ctx.out(), "null");
-            case llvm::json::Value::Kind::Boolean:
+            case dom::Kind::Boolean:
                 return format_to(ctx.out(), "boolean");
-            case llvm::json::Value::Kind::Number:
-                return format_to(ctx.out(), "number");
-            case llvm::json::Value::Kind::String:
+            case dom::Kind::Integer:
+                return format_to(ctx.out(), "integer");
+            case dom::Kind::String:
                 return format_to(ctx.out(), "string");
-            case llvm::json::Value::Kind::Array:
+            case dom::Kind::Array:
                 return format_to(ctx.out(), "array");
-            case llvm::json::Value::Kind::Object:
+            case dom::Kind::Object:
                 return format_to(ctx.out(), "object");
         }
         return format_to(ctx.out(), "unknown");
     }
 };
 
-template<>
-class fmt::formatter<llvm::json::Value, char> {
-public:
-    template<typename ParseContext>
-    constexpr auto parse(ParseContext& ctx) {
-        return ctx.begin();
-    }
-
-    template<typename FormatContext>
-    auto format(llvm::json::Value const& value, FormatContext& ctx) {
-        switch (value.kind()) {
-            case llvm::json::Value::Kind::Null:
-                return format_to(ctx.out(), "null");
-            case llvm::json::Value::Kind::Boolean:
-                return format_to(ctx.out(), "{}", value.getAsBoolean().value());
-            case llvm::json::Value::Kind::Number:
-                return format_to(ctx.out(), "{}", value.getAsNumber().value());
-            case llvm::json::Value::Kind::String:
-                return format_to(ctx.out(), "{}", std::string_view(value.getAsString().value()));
-            case llvm::json::Value::Kind::Array:
-                return format_to(ctx.out(), "[array]");
-            case llvm::json::Value::Kind::Object:
-                return format_to(ctx.out(), "[object]");
-        }
-        return format_to(ctx.out(), "unknown");
-    }
-};
-
-namespace {
-    // Helpers from the handlebars documentation
-    llvm::json::Value
-    bold_fn(
-        llvm::json::Object const& ctx,
-        llvm::json::Array const& /* args */,
-        HandlebarsCallback const& cb) {
-        return fmt::format(R"(<div class="mybold">{}</div>)", cb.fn(ctx));
-    }
-
-    llvm::json::Value
-    link_fn(
-            llvm::json::Array const& args,
-            HandlebarsCallback const& cb) {
-        if (args.empty()) {
-            return "no arguments provided to link helper";
-        }
-        if (!std::ranges::all_of(args, [](const auto& v){ return v.kind() == llvm::json::Value::Kind::String; })) {
-            return "link helper requires string arguments";
-        }
-        std::string out;
-        auto it = cb.hashes.find("href");
-        if (it != cb.hashes.end()) {
-            out += it->second.getAsString().value();
-        } else if (args.size() > 1) {
-            out += args[1].getAsString().value();
-        } else {
-            out += "#";
-        }
-        out += '[';
-        out += args[0].getAsString().value();
-        // more attributes from hashes
-        for (auto const& [key, value] : cb.hashes) {
-            if (key == "href" || value.kind() != llvm::json::Value::Kind::String) {
-                continue;
-            }
-            out += ',';
-            out += llvm::StringRef(key);
-            out += '=';
-            out += value.getAsString().value();
-        }
-        out += ']';
-        return out;
-    }
-
-    llvm::json::Value
-    progress_fn(llvm::json::Array const& args) {
-        // All the validation below could be provided by the registerHelper
-        // overloads once we better generalize it.
-        if (args.size() < 3) {
-            return fmt::format("progress helper requires 3 arguments: {} provided", args.size());
-        }
-        if (args[0].kind() != llvm::json::Value::Kind::String) {
-            return fmt::format("progress helper requires string argument: {} received", args[0]);
-        }
-        if (args[1].kind() != llvm::json::Value::Kind::Number) {
-            return fmt::format("progress helper requires number argument: {} received", args[1]);
-        }
-        if (args[2].kind() != llvm::json::Value::Kind::Boolean) {
-            return fmt::format("progress helper requires boolean argument: {} received", args[2]);
-        }
-        std::string_view name = args[0].getAsString().value();
-        std::uint64_t percent = args[1].getAsUINT64().value();
-        bool stalled = args[2].getAsBoolean().value();
-        std::uint64_t barWidth = percent / 5;
-        std::string bar = std::string(20, '*').substr(0, barWidth);
-        std::string stalledStr = stalled ? "stalled" : "";
-        return fmt::format("{} {}% {} {}", bar, percent, name, stalledStr);
-    }
-
-    llvm::json::Value
-    to_string_fn(
-        llvm::json::Value const& arg) {
-        std::string out;
-        llvm::raw_string_ostream stream(out);
-        stream << arg;
-        return out;
-    }
-
-    llvm::json::Value
-    list_fn(
-        llvm::json::Object const& context,
-        llvm::json::Array const& args,
-        HandlebarsCallback const& cb) {
-        // Built-in helper to change the context for each object in args
-        MRDOX_ASSERT(args.size() == 1);
-        MRDOX_ASSERT(args[0].kind() == llvm::json::Value::Kind::Array);
-        MRDOX_ASSERT(args[0].getAsArray()->front().kind() == llvm::json::Value::Kind::Object);
-        llvm::json::Array const& items = *args[0].getAsArray();
-        if (!items.empty()) {
-            std::string out = "<ul";
-            for (auto const& [key, value] : cb.hashes) {
-                out += " ";
-                out += llvm::StringRef(key);
-                out += "=\"";
-                out += value.getAsString().value();
-                out += "\"";
-            }
-            out += ">";
-            std::size_t i = 0;
-            for (auto const& item : items) {
-                llvm::json::Object frame = *item.getAsObject();
-                frame.try_emplace("..", llvm::json::Object(context));
-                frame.try_emplace("@key", i);
-                frame.try_emplace("@first", i == 0);
-                frame.try_emplace("@last", i == items.size() - 1);
-                frame.try_emplace("@index", i);
-                MRDOX_ASSERT(frame.find("@index") != frame.end());
-                MRDOX_ASSERT(frame["@index"].kind() == llvm::json::Value::Kind::Number);
-                MRDOX_ASSERT(frame["@index"].getAsUINT64().value() == i);
-                out += "<li>" + cb.fn(frame) + "</li>";
-                ++i;
-            }
-            return out + "</ul>";
-        }
-        return cb.inverse(context);
-    }
-
-    llvm::json::Value
-    loud_fn(
-        llvm::json::Object const& ctx,
-        llvm::json::Array const& args,
-        HandlebarsCallback const& cb) {
-        if (cb.isBlock()) {
-            // "loud" is used as a block helper
-            std::string res = cb.fn(ctx);
-            res = llvm::StringRef(res).upper();
-            return res;
-        } else {
-            // "loud" is used as an expression helper
-            llvm::StringRef str = args[0].getAsString().value();
-            std::string res = str.upper();
-            return res;
-        }
-    }
-}
-
-struct DiffStringsResult {
-    std::string diff;
-    int added{0};
-    int removed{0};
-    int unchanged{0};
-};
-
-std::string_view
-trim_spaces(std::string_view expression)
-{
-    auto pos = expression.find_first_not_of(" \t\r\n");
-    if (pos == std::string_view::npos)
-        return "";
-    expression.remove_prefix(pos);
-    pos = expression.find_last_not_of(" \t\r\n");
-    if (pos == std::string_view::npos)
-        return "";
-    expression.remove_suffix(expression.size() - pos - 1);
-    return expression;
-}
-
-
-// Diff two strings and return the result as a string with additional stats
-DiffStringsResult
-diffStrings(std::string_view str1, std::string_view str2, std::size_t context_size = 3) {
-    std::vector<std::string_view> lines1;
-    splitLines(str1, lines1);
-    std::vector<std::string_view> lines2;
-    splitLines(str2, lines2);
-
-    // Initialize the Longest Common Subsequence (LCS) table
-    // A Longest Common Subsequence (LCS) is a sequence that appears
-    // as a subsequence in two or more given sequences.
-    // In diff, the LCS refers to the longest sequence of lines that are
-    // common between two multiline strings.
-    // It has dimensions (lines1.size() + 1) x (lines2.size() + 1), where lines1.size() and lines2.size()
-    // represent the lengths of lines1 and lines2 respectively.
-    // Each cell of the table holds the length of the LCS for the
-    // corresponding prefixes of lines1 and lines2
-    // The initialization sets all values in the table to 0,
-    // indicating that there is no common subsequence found yet
-    std::vector<std::vector<size_t>> lcsTable(
-            lines1.size() + 1,
-            std::vector<size_t>(
-                    lines2.size() + 1, 0));
-
-    // Build the LCS table
-    // This code builds the LCS table by iteratively comparing each
-    // line of lines1 with each line of lines2.
-    // The LCS algorithm populates the table based on the lengths
-    // of the longest common subsequences found so far
-    for (size_t i = 0; i < lines1.size(); ++i) {
-        for (size_t j = 0; j < lines2.size(); ++j) {
-            if (trim_spaces(lines1[i]) == trim_spaces(lines2[j])) {
-                // If the lines are equal, it means they contribute to the common subsequence.
-                // In this case, the value in the current cell lcsTable[i + 1][j + 1] is set
-                // to the value in the diagonal cell lcsTable[i][j] incremented by 1
-                lcsTable[i + 1][j + 1] = lcsTable[i][j] + 1;
-            } else {
-                // If the lines are not equal, the algorithm takes the maximum value between
-                // the cell on the left (lcsTable[i + 1][j]) and the cell above (lcsTable[i][j + 1])
-                // and stores it in the current cell lcsTable[i + 1][j + 1].
-                // This step ensures that the table holds the length of the longest common
-                // subsequence found so far.
-                lcsTable[i + 1][j + 1] = std::max(lcsTable[i + 1][j], lcsTable[i][j + 1]);
-            }
-        }
-    }
-
-    // Traceback to find the differences
-    DiffStringsResult result;
-    struct DiffLineResult {
-        std::string line;
-        bool added{false};
-        bool removed{false};
-    };
-    std::vector<DiffLineResult> diffLines;
-    size_t i = lines1.size();
-    size_t j = lines2.size();
-
-    // Traverse the LCS table
-    // The algorithm starts in the bottom right corner of the table
-    // Starting from the bottom-right cell of the LCS table, it examines
-    // the adjacent cells to determine the direction of the LCS
-    while (i > 0 && j > 0) {
-        if (lines1[i - 1] == lines2[j - 1]) {
-            // If the current lines lines1[i-1] and lines2[j-1] are equal,
-            // it means the line is common to both multiline strings. It
-            // is added to diffLines with a space prefix, indicating no change.
-            diffLines.push_back({std::string(lines1[i - 1]), false, false});
-            --i;
-            --j;
-            result.unchanged++;
-        } else if (lcsTable[i][j - 1] >= lcsTable[i - 1][j]) {
-            // If the value in the cell on the left, lcsTable[i][j-1], is
-            // greater than or equal to the value in the cell above,
-            // lcsTable[i-1][j], it means the line in lines2[j-1] is
-            // part of the LCS. Thus, it is added to diffLines with
-            // a "+" prefix to indicate an addition.
-            diffLines.push_back({std::string(lines2[j - 1]), true, false});
-            --j;
-            result.added++;
-        } else {
-            // Otherwise, the line in lines1[i-1] is part of the LCS, and it
-            // is added to diffLines with a "-" prefix to indicate a deletion.
-            diffLines.push_back({std::string(lines1[i - 1]), false, true});
-            --i;
-            result.removed++;
-        }
-    }
-
-    while (i > 0) {
-        diffLines.push_back({std::string(lines1[i - 1]), false, true});
-        --i;
-        result.removed++;
-    }
-
-    while (j > 0) {
-        diffLines.push_back({std::string(lines2[j - 1]), true, false});
-        --j;
-        result.added++;
-    }
-
-    // Reverse the diff lines to match the original order
-    std::reverse(diffLines.begin(), diffLines.end());
-
-    // Concatenate diff lines into a single string considering number of unchanged lines in the context
-    std::size_t unchanged = 0;
-    std::size_t last_rendered = std::size_t(-1);
-    for (i = 0; i < diffLines.size(); ++i) {
-        auto& diffLine = diffLines[i];
-        if (diffLine.added || diffLine.removed) {
-            std::size_t context_begin = std::max(i - context_size, (last_rendered == std::size_t(-1) ? 0 : last_rendered + 1));
-            std::size_t out_of_context = unchanged - (i - context_begin);
-            if (out_of_context > 0) {
-                result.diff += fmt::format("... {} unchanged line(s)\n", out_of_context);
-                unchanged = 0;
-            }
-            for (j = context_begin; j < i; ++j) {
-                result.diff += fmt::format("{}\n", diffLines[j].line);
-            }
-            result.diff += fmt::format("{} {}\n", diffLine.added ? '+' : '-', diffLine.line.empty() ? "     (empty line)" : diffLine.line);
-            std::size_t next_changed = i + 1;
-            while (
-                next_changed < diffLines.size() &&
-                !(diffLines[next_changed].added || diffLines[next_changed].removed) &&
-                next_changed - i < context_size) {
-                next_changed++;
-            }
-            std::size_t context_end = std::min(i + context_size + 1, next_changed);
-            for (j = i + 1; j < context_end; ++j) {
-                result.diff += fmt::format("{}\n", diffLines[j].line);
-            }
-            // not really changed but rendered
-            last_rendered = context_end - 1;
-        } else {
-            unchanged++;
-        }
-    }
-    if (unchanged <= context_size) {
-        for (i = std::max(diffLines.size() - context_size, i); i < diffLines.size(); ++i) {
-            result.diff += fmt::format("{}\n", diffLines[i].line);
-        }
-    } else {
-        result.diff += fmt::format("... {} unchanged line(s)\n", unchanged);
-    }
-
-    return result;
-}
-
-void splitLines(std::string_view text, std::vector<std::string_view> &lines) {
-    size_t pos = 0;
-    while (pos < text.length()) {
-        size_t newPos = text.find('\n', pos);
-        if (newPos == std::string::npos) {
-            newPos = text.length();
-        }
-        lines.push_back(text.substr(pos, newPos - pos));
-        pos = newPos + 1;
-    }
-}
 
 int
 main() {
+    /////////////////////////////////////////////////////////////////
+    // Fixtures
+    /////////////////////////////////////////////////////////////////
     std::string_view template_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc.hbs";
     std::string_view partial_paths[] = {
         MRDOX_UNIT_TEST_DIR "/fixtures/record-detail.adoc.hbs",
@@ -408,179 +67,339 @@ main() {
     HandlebarsOptions options;
     options.noHTMLEscape = true;
 
-    // Create context for tests
-    llvm::json::Object context;
-    llvm::json::Object page;
-    page["kind"] = "record";
-    page["name"] = "from_chars";
-    page["decl"] = "std::from_chars";
-    page["loc"] = "charconv";
-    llvm::json::Object javadoc;
-    javadoc["brief"] = "Converts strings to numbers";
-    javadoc["details"] = "This function converts strings to numbers";
-    page["javadoc"] = std::move(javadoc);
-    page["synopsis"] = "This is the from_chars function";
-    llvm::json::Object person;
-    person["firstname"] = "John";
-    person["lastname"] = "Doe";
-    page["person"] = std::move(person);
-    llvm::json::Array people;
+    /////////////////////////////////////////////////////////////////
+    // Context
+    /////////////////////////////////////////////////////////////////
+    dom::Object context;
+    dom::Object page;
+    page.set("kind", "record");
+    page.set("name", "from_chars");
+    page.set("decl", "std::from_chars");
+    page.set("loc", "charconv");
+    dom::Object javadoc;
+    javadoc.set("brief", "Converts strings to numbers");
+    javadoc.set("details", "This function converts strings to numbers");
+    page.set("javadoc", javadoc);
+    page.set("synopsis", "This is the from_chars function");
+    dom::Object person;
+    person.set("firstname", "John");
+    person.set("lastname", "Doe");
+    page.set("person", person);
+    dom::Array people = dom::newArray<dom::DefaultArrayImpl>();
     auto first_and_last_names = {
             std::make_pair("Alice", "Doe"),
             std::make_pair("Bob", "Doe"),
             std::make_pair("Carol", "Smith")};
     for (auto [firstname, lastname]: first_and_last_names) {
         person = {};
-        person["firstname"] = firstname;
-        person["lastname"] = lastname;
-        person["book"] = llvm::json::Array{
-            llvm::json::Object{},
-            llvm::json::Object{},
-            llvm::json::Object{},
-            llvm::json::Object{}};
-        people.push_back(std::move(person));
+        person.set("firstname", firstname);
+        person.set("lastname", lastname);
+        dom::Array arr = dom::newArray<dom::DefaultArrayImpl>();
+        arr.emplace_back(dom::Object{});
+        arr.emplace_back(dom::Object{});
+        arr.emplace_back(dom::Object{});
+        arr.emplace_back(dom::Object{});
+        person.set("book", arr);
+        people.emplace_back(person);
     }
-    page["people"] = std::move(people);
-    page["prefix"] = "Hello";
-    page["specialChars"] = "& < > \" ' ` =";
-    page["url"] = "https://cppalliance.org/";
-    llvm::json::Object page_author;
-    page_author["firstname"] = "Yehuda";
-    page_author["lastname"] = "Katz";
-    page["author"] = std::move(page_author);
-    context["page"] = std::move(page);
-    context["nav"] = llvm::json::Array{
-            llvm::json::Object{
-                    {"url", "foo"},
-                    {"test", true},
-                    {"title", "bar"}},
-            llvm::json::Object{
-                    {"url", "bar"}}};
-    context["myVariable"] = "lookupMyPartial";
-    context["myOtherContext"] = llvm::json::Object{};
-    context["myOtherContext"].getAsObject()->operator[]("information") = "Interesting!";
-    context["favoriteNumber"] = 123;
-    context["prefix"] = "Hello";
-    context["title"] = "My Title";
-    context["body"] = "My Body";
-    llvm::json::Object story;
-    story["intro"] = "Before the jump";
-    story["body"] = "After the jump";
-    context["story"] = std::move(story);
-    llvm::json::Array comments;
-    comments.push_back(llvm::json::Object{
-            {"subject", "subject 1"},
-            {"body", "body 1"}});
-    comments.push_back(llvm::json::Object{
-            {"subject", "subject 2"},
-            {"body", "body 2"}});
-    context["comments"] = std::move(comments);
-    context["isActive"] = true;
-    context["isInactive"] = false;
-    llvm::json::Object peopleObj;
+    page.set("people", people);
+    page.set("prefix", "Hello");
+    page.set("specialChars", "& < > \" ' ` =");
+    page.set("url", "https://cppalliance.org/");
+    dom::Object page_author;
+    page_author.set("firstname", "Yehuda");
+    page_author.set("lastname", "Katz");
+    page.set("author", page_author);
+    context.set("page", page);
+    dom::Array nav = dom::newArray<dom::DefaultArrayImpl>();
+    dom::Object nav1;
+    nav1.set("url", "foo");
+    nav1.set("test", true);
+    nav1.set("title", "bar");
+    nav.emplace_back(nav1);
+    dom::Object nav2;
+    nav2.set("url", "bar");
+    nav.emplace_back(nav2);
+    context.set("nav", nav);
+    context.set("myVariable", "lookupMyPartial");
+    dom::Object myOtherContext;
+    myOtherContext.set("information", "Interesting!");
+    context.set("myOtherContext", myOtherContext);
+    context.set("favoriteNumber", 123);
+    context.set("prefix", "Hello");
+    context.set("title", "My Title");
+    context.set("body", "My Body");
+    dom::Object story;
+    story.set("intro", "Before the jump");
+    story.set("body", "After the jump");
+    context.set("story", story);
+    dom::Array comments = dom::newArray<dom::DefaultArrayImpl>();
+    dom::Object comment1;
+    comment1.set("subject", "subject 1");
+    comment1.set("body", "body 1");
+    comments.emplace_back(comment1);
+    dom::Object comment2;
+    comment2.set("subject", "subject 2");
+    comment2.set("body", "body 2");
+    comments.emplace_back(comment2);
+    context.set("comments", comments);
+    context.set("isActive", true);
+    context.set("isInactive", false);
+    dom::Object peopleObj;
     for (auto [firstname, lastname]: first_and_last_names) {
         person = {};
-        person["firstname"] = firstname;
-        person["lastname"] = lastname;
-        peopleObj[firstname] = std::move(person);
+        person.set("firstname", firstname);
+        person.set("lastname", lastname);
+        peopleObj.set(firstname, person);
     }
-    context["peopleobj"] = std::move(peopleObj);
-    context["author"] = true;
-    context["firstname"] = "Yehuda";
-    context["lastname"] = "Katz";
-    llvm::json::Array names;
-    names.push_back("Yehuda Katz");
-    names.push_back("Alan Johnson");
-    names.push_back("Charles Jolley");
-    context["names"] = std::move(names);
-    llvm::json::Object namesobj;
-    namesobj["Yehuda"] = "Yehuda Katz";
-    namesobj["Alan"] = "Alan Johnson";
-    namesobj["Charles"] = "Charles Jolley";
-    context["namesobj"] = std::move(namesobj);
-    llvm::json::Object city;
-    city["name"] = "San Francisco";
-    city["summary"] = "San Francisco is the <b>cultural center</b> of <b>Northern California</b>";
-    llvm::json::Object location;
-    location["north"] = "37.73,";
-    location["east"] = -122.44;
-    city["location"] = std::move(location);
-    city["population"] = 883305;
-    context["city"] = std::move(city);
+    context.set("peopleobj", peopleObj);
+    context.set("author", true);
+    context.set("firstname", "Yehuda");
+    context.set("lastname", "Katz");
+    dom::Array names = dom::newArray<dom::DefaultArrayImpl>();
+    names.emplace_back("Yehuda Katz");
+    names.emplace_back("Alan Johnson");
+    names.emplace_back("Charles Jolley");
+    context.set("names", names);
+    dom::Object namesobj;
+    namesobj.set("Yehuda", "Yehuda Katz");
+    namesobj.set("Alan", "Alan Johnson");
+    namesobj.set("Charles", "Charles Jolley");
+    context.set("namesobj", namesobj);
+    dom::Object city;
+    city.set("name", "San Francisco");
+    city.set("summary", "San Francisco is the <b>cultural center</b> of <b>Northern California</b>");
+    dom::Object location;
+    location.set("north", "37.73,");
+    location.set("east", "-122.44");
+    city.set("location", location);
+    city.set("population", 883305);
+    context.set("city", city);
 
-    llvm::json::Object lookup_test;
-    lookup_test["people"] = llvm::json::Array{"Nils", "Yehuda"};
-    lookup_test["cities"] = llvm::json::Array{"Darmstadt", "San Francisco"};
-    context["lookup_test"] = std::move(lookup_test);
+    dom::Object lookup_test;
+    dom::Array people_lookup = dom::newArray<dom::DefaultArrayImpl>();
+    people_lookup.emplace_back("Nils");
+    people_lookup.emplace_back("Yehuda");
+    lookup_test.set("people", people_lookup);
+    dom::Array cities_lookup = dom::newArray<dom::DefaultArrayImpl>();
+    cities_lookup.emplace_back("Darmstadt");
+    cities_lookup.emplace_back("San Francisco");
+    lookup_test.set("cities", cities_lookup);
+    context.set("lookup_test", lookup_test);
 
-    llvm::json::Object lookup_test2;
-    llvm::json::Array persons;
-    persons.push_back(llvm::json::Object{
-            {"name", "Nils"},
-            {"resident-in", "darmstadt"}});
-    persons.push_back(llvm::json::Object{
-            {"name", "Yehuda"},
-            {"resident-in", "san-francisco"}});
-    lookup_test2["persons"] = std::move(persons);
-    llvm::json::Object cities;
-    cities["darmstadt"] = llvm::json::Object{
-            {"name", "Darmstadt"},
-            {"country", "Germany"}};
-    cities["san-francisco"] = llvm::json::Object{
-            {"name", "San Francisco"},
-            {"country", "USA"}};
-    lookup_test2["cities"] = std::move(cities);
-    context["lookup_test2"] = std::move(lookup_test2);
+    dom::Object lookup_test2;
+    dom::Array persons = dom::newArray<dom::DefaultArrayImpl>();
+    dom::Object person1;
+    person1.set("name", "Nils");
+    person1.set("resident-in", "darmstadt");
+    persons.emplace_back(person1);
+    dom::Object person2;
+    person2.set("name", "Yehuda");
+    person2.set("resident-in", "san-francisco");
+    persons.emplace_back(person2);
+    lookup_test2.set("persons", persons);
+    dom::Object cities;
+    dom::Object darmstadt;
+    darmstadt.set("name", "Darmstadt");
+    darmstadt.set("country", "Germany");
+    cities.set("darmstadt", darmstadt);
+    dom::Object san_francisco;
+    san_francisco.set("name", "San Francisco");
+    san_francisco.set("country", "USA");
+    cities.set("san-francisco", san_francisco);
+    lookup_test2.set("cities", cities);
+    context.set("lookup_test2", lookup_test2);
 
-
-    // Register some extra test helpers
+    /////////////////////////////////////////////////////////////////
+    // Register helpers
+    /////////////////////////////////////////////////////////////////
     Handlebars hbs;
-    helpers::registerBuiltinHelpers(hbs);
     helpers::registerAntoraHelpers(hbs);
-    hbs.registerHelper("progress", progress_fn);
+    hbs.registerHelper("progress", [](dom::Array const& args) -> dom::Value {
+        if (args.size() < 3) {
+            return fmt::format("progress helper requires 3 arguments: {} provided", args.size());
+        }
+        if (!args[0].isString()) {
+            return fmt::format("progress helper requires string argument: {} received", args[0]);
+        }
+        if (!args[1].isInteger()) {
+            return fmt::format("progress helper requires number argument: {} received", args[1]);
+        }
+        if (!args[2].isBoolean()) {
+            return fmt::format("progress helper requires boolean argument: {} received", args[2]);
+        }
+        dom::Value nameV = args[0];
+        std::string_view name = nameV.getString();
+        std::uint64_t percent = args[1].getInteger();
+        bool stalled = args[2].getBool();
+        std::uint64_t barWidth = percent / 5;
+        std::string bar = std::string(20, '*').substr(0, barWidth);
+        std::string stalledStr = stalled ? "stalled" : "";
+        std::string res = fmt::format("{} {}% {} {}", bar, percent, name, stalledStr);
+        return res;
+    });
+
     hbs.registerHelper("noop", helpers::noop_fn);
     hbs.registerHelper("raw", helpers::noop_fn);
-    hbs.registerHelper("link", link_fn);
-    hbs.registerHelper("loud", loud_fn);
-    hbs.registerHelper("to_string", to_string_fn);
-    hbs.registerHelper("bold", bold_fn);
-    hbs.registerHelper("list", list_fn);
-    hbs.registerHelper("isdefined", [](llvm::json::Array const& args) -> llvm::json::Value {
-        return args[0].kind() != llvm::json::Value::Kind::Null;
-    });
-    hbs.registerHelper("helperMissing", [](
-        llvm::json::Array const& args,
-        HandlebarsCallback const& cb) -> llvm::json::Value {
+
+    hbs.registerHelper("link", [](dom::Array const& args, HandlebarsCallback const& cb) -> dom::Value {
+        if (args.empty()) {
+            return "no arguments provided to link helper";
+        }
+        for (std::size_t i = 1; i < args.size(); ++i) {
+            if (!args[i].isString()) {
+                return fmt::format("link helper requires string arguments: {} provided", args.size());
+            }
+        }
+
         std::string out;
-        llvm::raw_string_ostream os(out);
+        auto h = cb.hashes().find("href");
+        if (h.isString()) {
+            out += h.getString();
+        } else if (args.size() > 1) {
+            if (!args[1].isString()) {
+                return fmt::format("link helper requires string argument: {} provided", args[1].kind());
+            }
+            auto href = args[1];
+            out += href.getString();
+        } else {
+            out += "#";
+        }
+
+        out += '[';
+        out += args[0].getString();
+        // more attributes from hashes
+        for (auto const& [key, value] : cb.hashes()) {
+            if (key == "href" || !value.isString()) {
+                continue;
+            }
+            out += ',';
+            out += key;
+            out += '=';
+            out += value.getString();
+        }
+        out += ']';
+
+        return out;
+    });
+
+    hbs.registerHelper("loud", [](
+        dom::Array const& args,
+        HandlebarsCallback const& cb) -> dom::Value {
+        std::string res;
+        if (cb.isBlock()) {
+            res = cb.fn();
+        } else {
+            if (args.empty()) {
+                return "loud helper requires at least one argument";
+            }
+            if (!args[0].isString()) {
+                return fmt::format("loud helper requires string argument: {} provided", args[0].kind());
+            }
+            res = args[0].getString();
+        }
+        for (char& c : res) {
+            if (c >= 'a' && c <= 'z')
+                c += 'A' - 'a';
+        }
+        return res;
+    });
+
+    hbs.registerHelper("to_string", [](
+        dom::Array const& args) -> dom::Value {
+        if (args.empty()) {
+            return "to_string helper requires at least one argument";
+        }
+        dom::Value arg = args[0];
+        return JSON_stringify(arg);
+    });
+
+    hbs.registerHelper("bold", [](
+        dom::Array const& /* args */,
+        HandlebarsCallback const& cb) -> dom::Value {
+        return fmt::format(R"(<div class="mybold">{}</div>)", cb.fn());
+    });
+
+    hbs.registerHelper("list", [](
+        dom::Array const& args,
+        HandlebarsCallback const& cb) -> dom::Value {
+        // Built-in helper to change the context for each object in args
+        if (args.size() != 1) {
+            return fmt::format("list helper requires 1 argument: {} provided", args.size());
+        }
+        if (!args[0].isArray()) {
+            return fmt::format("list helper requires array argument: {} provided", args[0].kind());
+        }
+        dom::Value itemsV = args[0];
+        dom::Array items = itemsV.getArray();
+        if (!items.empty()) {
+            std::string out = "<ul";
+            for (auto const& [key, value] : cb.hashes()) {
+                out += " ";
+                out += key;
+                out += "=\"";
+                out += value.getString();
+                out += "\"";
+            }
+            out += ">";
+            for (std::size_t i = 0; i < items.size(); ++i) {
+                dom::Value item = items[i];
+                // AFREITAS: this logic should be in private data
+                dom::Object frame = item.getObject();
+                frame.set("..", cb.context());
+                frame.set("@key", i);
+                frame.set("@first", i == 0);
+                frame.set("@last", i == items.size() - 1);
+                frame.set("@index", i);
+                out += "<li>" + cb.fn(frame) + "</li>";
+            }
+            return out + "</ul>";
+        }
+        return cb.inverse();
+    });
+
+    hbs.registerHelper("isdefined", [](dom::Array const& args) -> dom::Value {
+        if (args.empty()) {
+            return "isdefined helper requires at least one argument";
+        }
+        // There's no distinction between null and undefined in mrdox::dom
+        return !args[0].isNull();
+    });
+
+    hbs.registerHelper("helperMissing", [](
+        dom::Array const& args,
+        HandlebarsCallback const& cb) -> dom::Value {
+        std::string out;
+        OutputRef os(out);
         os << "Missing: ";
         os << cb.name;
         os << "(";
-        bool first = true;
-        for (auto const& arg: args) {
-            if (!first) {
+        for (std::size_t i = 0; i < args.size(); ++i) {
+            if (i != 0) {
                 os << ", ";
             }
-            first = false;
-            os << arg;
+            os << args[i];
         }
         os << ")";
         return out;
     });
+
     hbs.registerHelper("blockHelperMissing", [](
-        llvm::json::Object const& context,
-        llvm::json::Array const& args,
-        HandlebarsCallback const& cb) -> llvm::json::Value {
+        dom::Array const& args,
+        HandlebarsCallback const& cb) -> dom::Value {
         std::string out;
-        llvm::raw_string_ostream os(out);
+        OutputRef os(out);
         os << "Helper '";
         os << cb.name;
         os << "' not found. Printing block: ";
-        os << cb.fn(context);
+        os << cb.fn();
         return out;
     });
 
-
+    /////////////////////////////////////////////////////////////////
+    // Register partials
+    /////////////////////////////////////////////////////////////////
+    // From files
     for (auto partial_path: partial_paths) {
         auto partial_text_r = files::getFileText(partial_path);
         REQUIRE(partial_text_r);
@@ -592,12 +411,12 @@ main() {
         hbs.registerPartial(filename, *partial_text_r);
     }
 
-    hbs.registerHelper("whichPartial", [](
-            llvm::json::Object const& /* context */,
-            llvm::json::Array const& /* args */,
-            HandlebarsCallback const& /* callback params */) -> llvm::json::Value {
+    // Dynamic partial helpers
+    hbs.registerHelper("whichPartial", []() -> dom::Value {
         return "dynamicPartial";
     });
+
+    // Literal partials
     hbs.registerPartial("dynamicPartial", "Dynamo!");
     hbs.registerPartial("lookupMyPartial", "Found!");
     hbs.registerPartial("myPartialContext", "{{information}}");
@@ -606,7 +425,9 @@ main() {
     hbs.registerPartial("layoutTemplate", "Site Content {{> @partial-block }}");
     hbs.registerPartial("pageLayout", "<div class=\"nav\">\n  {{> nav}}\n</div>\n<div class=\"content\">\n  {{> content}}\n</div>");
 
-    // Render template with all handlebars features
+    /////////////////////////////////////////////////////////////////
+    // Render and diff
+    /////////////////////////////////////////////////////////////////
     std::string rendered_text = hbs.render(template_str, context, options);
     REQUIRE_FALSE(rendered_text.empty());
 
@@ -634,8 +455,6 @@ main() {
         REQUIRE(rendered_text == master_file_contents);
     }
 
-    // Continue from:
-    // https://handlebarsjs.com/guide/expressions.html#whitespace-control
     fmt::println("All tests passed!");
     return EXIT_SUCCESS;
 }

@@ -44,18 +44,18 @@ People:
 == Expressions
 
 // Render complete context with "." as key
-{"lastname": Katz , "names": [Yehuda Katz ,Alan Johnson ,Charles Jolley] , "firstname": Yehuda , "myOtherContext": {"information": Interesting!} , "body": My Body , "favoriteNumber": 123 , "prefix": Hello , "comments": [{"body": body 1 , "subject": subject 1} ,{"body": body 2 , "subject": subject 2}] , "city": {"name": San Francisco , "population": 883305 , "summary": San Francisco is the <b>cultural center</b> of <b>Northern California</b> , "location": {"east": -1.224400e+02 , "north": 37.73,}} , "namesobj": {"Charles": Charles Jolley , "Yehuda": Yehuda Katz , "Alan": Alan Johnson} , "myVariable": lookupMyPartial , "nav": [{"test": true , "url": foo , "title": bar} ,{"url": bar}] , "isActive": true , "isInactive": true , "lookup_test": {"cities": [Darmstadt ,San Francisco] , "people": [Nils ,Yehuda]} , "lookup_test2": {"persons": [{"name": Nils , "resident-in": darmstadt} ,{"name": Yehuda , "resident-in": san-francisco}] , "cities": {"darmstadt": {"country": Germany , "name": Darmstadt} , "san-francisco": {"country": USA , "name": San Francisco}}} , "title": My Title , "story": {"body": After the jump , "intro": Before the jump} , "peopleobj": {"Carol": {"lastname": Smith , "firstname": Carol} , "Alice": {"lastname": Doe , "firstname": Alice} , "Bob": {"lastname": Doe , "firstname": Bob}} , "author": true , "page": {"specialChars": & < > " ' ` = , "url": https://cppalliance.org/ , "javadoc": {"brief": Converts strings to numbers , "details": This function converts strings to numbers} , "name": from_chars , "prefix": Hello , "person": {"lastname": Doe , "firstname": John} , "synopsis": This is the from_chars function , "kind": record , "decl": std::from_chars , "loc": charconv , "people": [{"lastname": Doe , "firstname": Alice , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Doe , "firstname": Bob , "book": [{} ,{} ,{} ,{}]} ,{"lastname": Smith , "firstname": Carol , "book": [{} ,{} ,{} ,{}]}] , "author": {"lastname": Katz , "firstname": Yehuda}}}
+[object Object]
 
 // Use to_string
-{"author":true,"body":"My Body","city":{"location":{"east":-122.44,"north":"37.73,"},"name":"San Francisco","population":883305,"summary":"San Francisco is the <b>cultural center</b> of <b>Northern California</b>"},"comments":[{"body":"body 1","subject":"subject 1"},{"body":"body 2","subject":"subject 2"}],"favoriteNumber":123,"firstname":"Yehuda","isActive":true,"isInactive":false,"lastname":"Katz","lookup_test":{"cities":["Darmstadt","San Francisco"],"people":["Nils","Yehuda"]},"lookup_test2":{"cities":{"darmstadt":{"country":"Germany","name":"Darmstadt"},"san-francisco":{"country":"USA","name":"San Francisco"}},"persons":[{"name":"Nils","resident-in":"darmstadt"},{"name":"Yehuda","resident-in":"san-francisco"}]},"myOtherContext":{"information":"Interesting!"},"myVariable":"lookupMyPartial","names":["Yehuda Katz","Alan Johnson","Charles Jolley"],"namesobj":{"Alan":"Alan Johnson","Charles":"Charles Jolley","Yehuda":"Yehuda Katz"},"nav":[{"test":true,"title":"bar","url":"foo"},{"url":"bar"}],"page":{"author":{"firstname":"Yehuda","lastname":"Katz"},"decl":"std::from_chars","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"kind":"record","loc":"charconv","name":"from_chars","people":[{"book":[{},{},{},{}],"firstname":"Alice","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Bob","lastname":"Doe"},{"book":[{},{},{},{}],"firstname":"Carol","lastname":"Smith"}],"person":{"firstname":"John","lastname":"Doe"},"prefix":"Hello","specialChars":"& < > \" ' ` =","synopsis":"This is the from_chars function","url":"https://cppalliance.org/"},"peopleobj":{"Alice":{"firstname":"Alice","lastname":"Doe"},"Bob":{"firstname":"Bob","lastname":"Doe"},"Carol":{"firstname":"Carol","lastname":"Smith"}},"prefix":"Hello","story":{"body":"After the jump","intro":"Before the jump"},"title":"My Title"}
+{"page":{"kind":"record","name":"from_chars","decl":"std::from_chars","loc":"charconv","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"synopsis":"This is the from_chars function","person":{"firstname":"John","lastname":"Doe","..":[Circular]},"people":[{"firstname":"Alice","lastname":"Doe","book":[{},{},{},{} ],"..":[Circular],"@key":0,"@first":true,"@last":false,"@index":0},{"firstname":"Bob","lastname":"Doe","book":[{},{},{},{} ],"..":[Circular],"@key":1,"@first":false,"@last":false,"@index":1},{"firstname":"Carol","lastname":"Smith","book":[{},{},{},{} ],"..":[Circular],"@key":2,"@first":false,"@last":true,"@index":2} ],"prefix":"Hello","specialChars":"& < > " ' ` =","url":"https://cppalliance.org/","author":{"firstname":"Yehuda","lastname":"Katz"}},"nav":[{"url":"foo","test":true,"title":"bar"},{"url":"bar"} ],"myVariable":"lookupMyPartial","myOtherContext":{"information":"Interesting!"},"favoriteNumber":123,"prefix":"Hello","title":"My Title","body":"My Body","story":{"intro":"Before the jump","body":"After the jump"},"comments":[{"subject":"subject 1","body":"body 1"},{"subject":"subject 2","body":"body 2"} ],"isActive":true,"isInactive":false,"peopleobj":{"Alice":{"firstname":"Alice","lastname":"Doe"},"Bob":{"firstname":"Bob","lastname":"Doe"},"Carol":{"firstname":"Carol","lastname":"Smith"}},"author":true,"firstname":"Yehuda","lastname":"Katz","names":["Yehuda Katz","Alan Johnson","Charles Jolley" ],"namesobj":{"Yehuda":"Yehuda Katz","Alan":"Alan Johnson","Charles":"Charles Jolley"},"city":{"name":"San Francisco","summary":"San Francisco is the <b>cultural center</b> of <b>Northern California</b>","location":{"north":"37.73,","east":"-122.44"},"population":883305},"lookup_test":{"people":["Nils","Yehuda" ],"cities":["Darmstadt","San Francisco" ]},"lookup_test2":{"persons":[{"name":"Nils","resident-in":"darmstadt"},{"name":"Yehuda","resident-in":"san-francisco"} ],"cities":{"darmstadt":{"name":"Darmstadt","country":"Germany"},"san-francisco":{"name":"San Francisco","country":"USA"}}}}
 
 // Literals
 true = true
-false = true
+false = false
 null = Missing: null()
 undefined = Missing: undefined()
 ./[true] = true
-./[false] = true
+./[false] = false
 ./[null] = Missing: ./[null]()
 ./[undefined] = Missing: ./[undefined]()
 'See Website' = See Website
@@ -246,7 +246,7 @@ Site Content My Content
 
 
 // Block hash arguments
-<ul class="top" id="nav-bar"><li>    <a href="foo">bar</a>
+<ul id="nav-bar" class="top"><li>    <a href="foo">bar</a>
 </li><li>    <a href="bar">Missing: title()</a>
 </li></ul>
 
@@ -257,9 +257,9 @@ Site Content My Content
 </li></ul>
 
 // Iterate objects
-    Id: 0, Key: Carol, Name: Carol Smith
-    Id: 1, Key: Alice, Name: Alice Doe
-    Id: 2, Key: Bob, Name: Bob Doe
+    Id: 0, Key: Alice, Name: Alice Doe
+    Id: 1, Key: Bob, Name: Bob Doe
+    Id: 2, Key: Carol, Name: Carol Smith
 
 
 // Block parameters
@@ -333,14 +333,14 @@ value2 undefined
 
 // indexes and keys
  0: Yehuda Katz  1: Alan Johnson  2: Charles Jolley 
- Charles: Charles Jolley  Yehuda: Yehuda Katz  Alan: Alan Johnson 
+ Yehuda: Yehuda Katz  Alan: Alan Johnson  Charles: Charles Jolley 
 
 // with
 Yehuda Katz
 
 
 // with block parameters
-      San Francisco: 37.73, -1.224400e+02
+      San Francisco: 37.73, -122.44
 
 
 
