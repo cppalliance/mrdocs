@@ -4,6 +4,10 @@ extern "C" {
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wcast-qual"
 # pragma clang diagnostic ignored "-Wimplicit-fallthrough"
+#elif defined(__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wcast-qual"
+# pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #elif defined(_MSC_VER)
 # pragma warning(push)
 # pragma warning(disable: 4334) // result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
@@ -46,6 +50,8 @@ extern "C" {
 
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#elif defined(__GNUC__)
+# pragma GCC diagnostic pop
 #elif defined(_MSC_VER)
 # pragma warning(pop)
 #endif
