@@ -1247,12 +1247,12 @@ public:
     {
         switch(ID)
         {
-        case FIELD_NAME:
-            return decodeRecord(R, I->Name, Blob);
         case FIELD_DEFAULT:
             return decodeRecord(R, I->Default, Blob);
         case FIELD_ATTRIBUTES:
             return decodeRecord(R, {&I->specs.raw}, Blob);
+        case FIELD_IS_MUTABLE:
+            return decodeRecord(R, I->IsMutable, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

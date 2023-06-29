@@ -242,9 +242,9 @@ RecordIDNameMap = []()
         {ENUM_VALUE_NAME, {"Name", &StringAbbrev}},
         {ENUM_VALUE_VALUE, {"Value", &StringAbbrev}},
         {ENUM_VALUE_EXPR, {"Expr", &StringAbbrev}},
-        {FIELD_NAME, {"Name", &StringAbbrev}},
         {FIELD_DEFAULT, {"DefaultValue", &StringAbbrev}},
         {FIELD_ATTRIBUTES, {"FieldAttributes", &Integer32ArrayAbbrev}},
+        {FIELD_IS_MUTABLE, {"FieldIsMutable", &BoolAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
         {FUNCTION_PARAM_DEFAULT, {"Default", &StringAbbrev}},
@@ -322,7 +322,7 @@ RecordsByBlock{
         {ENUM_VALUE_NAME, ENUM_VALUE_VALUE, ENUM_VALUE_EXPR}},
     // FieldInfo
     {BI_FIELD_BLOCK_ID,
-        {FIELD_NAME, FIELD_DEFAULT, FIELD_ATTRIBUTES}},
+        {FIELD_DEFAULT, FIELD_ATTRIBUTES, FIELD_IS_MUTABLE}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
         {FUNCTION_BITS}},
@@ -790,9 +790,9 @@ emitBlock(
     emitInfoPart(F);
     emitSourceInfo(F, F);
     emitBlock(F.Type);
-    emitRecord(F.Name, FIELD_NAME);
     emitRecord(F.Default, FIELD_DEFAULT);
     emitRecord({F.specs.raw}, FIELD_ATTRIBUTES);
+    emitRecord(F.IsMutable, FIELD_IS_MUTABLE);
 }
 
 void

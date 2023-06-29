@@ -386,6 +386,11 @@ writeField(
 
     writeSourceInfo(I);
 
+    if(I.IsMutable)
+        tags_.write(attributeTagName, {}, {
+            {"id", "is-mutable"}
+        });
+
     write(I.specs, tags_);
 
     writeType(I.Type, tags_);

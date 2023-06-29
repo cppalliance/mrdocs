@@ -218,6 +218,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;
+    I.IsMutable |= Other.IsMutable;
     if(I.Default.empty())
         I.Default = std::move(Other.Default);
 }

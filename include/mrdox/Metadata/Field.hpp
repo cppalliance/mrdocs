@@ -52,6 +52,9 @@ struct FieldInfo
     // attributes (maybe_unused, no_unique_address, deprecated)
     FieldFlags specs;
 
+    /** Whether the field is declared mutable */
+    bool IsMutable = false;
+
     //--------------------------------------------
 
     explicit

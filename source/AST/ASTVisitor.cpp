@@ -1275,6 +1275,8 @@ buildField(
     I.Type = buildTypeInfoForType(D->getType());
 #endif
 
+    I.IsMutable = D->isMutable();
+
     I.specs.hasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
     I.specs.isDeprecated = D->hasAttr<DeprecatedAttr>();
     I.specs.isMaybeUnused = D->hasAttr<UnusedAttr>();

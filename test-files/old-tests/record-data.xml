@@ -12,37 +12,70 @@
       <file path="record-data.cpp" line="6" class="def"/>
       <type name="double"/>
     </field>
+    <field name="k" id="DDn/yzxAAKSmBASeK+/IuU+FvzM=">
+      <file path="record-data.cpp" line="7" class="def"/>
+      <attr id="is-mutable"/>
+      <type name="int"/>
+    </field>
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
-    <file path="record-data.cpp" line="9" class="def"/>
+    <file path="record-data.cpp" line="10" class="def"/>
     <field name="t" id="LvEIBVXJYQQL4yraOaQv7ijMDng=">
-      <file path="record-data.cpp" line="11" class="def"/>
+      <file path="record-data.cpp" line="12" class="def"/>
       <type class="tag" id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
     </field>
   </struct>
   <class name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
-    <file path="record-data.cpp" line="14" class="def"/>
+    <file path="record-data.cpp" line="15" class="def"/>
     <field name="i" access="private" id="EWXCzRl9erjnMQFZ8VmHC5cVkLM=">
-      <file path="record-data.cpp" line="16" class="def"/>
+      <file path="record-data.cpp" line="17" class="def"/>
       <type name="int"/>
     </field>
     <field name="j" access="protected" id="VKvx+Pci4bUmtjCsXJqKb7SNYqw=">
-      <file path="record-data.cpp" line="18" class="def"/>
+      <file path="record-data.cpp" line="19" class="def"/>
       <type name="unsigned long"/>
     </field>
     <field name="k" access="private" id="iKr1oLycejUWY6AnSgoQnbmaCEE=">
-      <file path="record-data.cpp" line="20" class="def"/>
+      <file path="record-data.cpp" line="21" class="def"/>
       <type name="double"/>
     </field>
   </class>
   <struct name="W" id="6OhcFM3BV6KlrvmfpsljaMHxpdA=">
-    <file path="record-data.cpp" line="23" class="def"/>
+    <file path="record-data.cpp" line="24" class="def"/>
     <field name="buf" id="2akJUSKKPN7IylZjqGMRlhXupds=">
-      <file path="record-data.cpp" line="25" class="def"/>
+      <file path="record-data.cpp" line="26" class="def"/>
       <type class="array" bounds-value="64">
         <element-type name="char"/>
       </type>
     </field>
   </struct>
+  <template>
+    <tparam name="P" class="type"/>
+    <struct name="X" id="Zeeg2JUaOx6DlmptHhtEOTBqph8=">
+      <file path="record-data.cpp" line="30" class="def"/>
+      <alias name="Q" id="0ejZoZxNr1jbR7TmB6l+FL8J8sM=">
+        <file path="record-data.cpp" line="32" class="def"/>
+        <type name="P"/>
+      </alias>
+      <field name="x0" id="3/WSDyWN8Jo2uDqMI73W6O8PgZc=">
+        <file path="record-data.cpp" line="34" class="def"/>
+        <type name="int"/>
+      </field>
+      <field name="x1" id="rmZrg8Gl/RS4M9btLqQLTh2hIEY=">
+        <file path="record-data.cpp" line="35" class="def"/>
+        <type name="P"/>
+      </field>
+      <field name="x2" id="/8F/7HHyEkn08QLH9YBLyi9XC+g=">
+        <file path="record-data.cpp" line="36" class="def"/>
+        <type class="array" bounds-value="32">
+          <element-type name="P" cv-qualifiers="const"/>
+        </type>
+      </field>
+      <field name="x3" id="HbM0nu73RkZDGG6emSsnJEt+chI=">
+        <file path="record-data.cpp" line="37" class="def"/>
+        <type class="tag" id="0ejZoZxNr1jbR7TmB6l+FL8J8sM=" name="Q"/>
+      </field>
+    </struct>
+  </template>
 </namespace>
 </mrdox>
