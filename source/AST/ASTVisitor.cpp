@@ -1277,8 +1277,7 @@ buildField(
 
     I.specs.hasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
     I.specs.isDeprecated = D->hasAttr<DeprecatedAttr>();
-    // KRYSTIAN FIXME: isNodiscard should be isMaybeUnused
-    I.specs.isNodiscard = D->hasAttr<UnusedAttr>();
+    I.specs.isMaybeUnused = D->hasAttr<UnusedAttr>();
 
     bool member_spec = getParentNamespaces(I.Namespace, D);
 

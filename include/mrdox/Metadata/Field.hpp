@@ -29,7 +29,7 @@ union FieldFlags
 
     // KRYSTIAN FIXME: nodiscard cannot be applied to fields; this should
     // instead be isMaybeUnused. we should also store the spelling
-    BitFlag<0> isNodiscard;
+    BitFlag<0> isMaybeUnused;
     BitFlag<1> isDeprecated;
     BitFlag<2> hasNoUniqueAddress;
 };
@@ -49,7 +49,7 @@ struct FieldInfo
     */
     std::string Default;
 
-    // attributes (nodiscard, no_unique_address, deprecated)
+    // attributes (maybe_unused, no_unique_address, deprecated)
     FieldFlags specs;
 
     //--------------------------------------------

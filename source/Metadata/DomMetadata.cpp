@@ -787,7 +787,7 @@ DomInfo<T>::construct() const
         entries.insert(entries.end(), {
             { "type", domCreate(I_.Type, corpus_) },
             { "default", dom::stringOrNull(I_.Default) },
-            { "isNodiscard", I_.specs.isNodiscard.get() },
+            { "isMaybeUnused", I_.specs.isMaybeUnused.get() },
             { "isDeprecated", I_.specs.isDeprecated.get() },
             { "hasNoUniqueAddress", I_.specs.hasNoUniqueAddress.get() }
             });
