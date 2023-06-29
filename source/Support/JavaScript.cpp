@@ -362,7 +362,7 @@ domArray_push(
         {
             auto i = duk_get_int(A, 1);
             duk_pop_n(A, duk_get_top(A));
-            if(i < arr.size())
+            if(i < static_cast<duk_int_t>(arr.size()))
                 domValue_push(A, arr.at(i));
             else
                 duk_push_undefined(A);
