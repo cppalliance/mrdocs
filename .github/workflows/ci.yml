@@ -90,7 +90,7 @@ jobs:
         uses: alandefreitas/cpp-actions/package-install@v1.5.0
         id: package-install
         with:
-          apt-get: ${{ matrix.install }} openjdk-11-jdk ninja-build
+          apt-get: ${{ matrix.install }} openjdk-11-jdk ninja-build ${{ matrix.compiler == 'clang' && 'libstdc++-12-dev' || '' }}
           vcpkg: fmt libxml2[tools]
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
           ccflags: ${{ matrix.ccflags }}
