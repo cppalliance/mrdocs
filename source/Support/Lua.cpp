@@ -511,7 +511,8 @@ domObject_push_metatable(
                 return 2;
             }
             auto index = lua_tonumber(A, lua_upvalueindex(1));
-            auto const& kv = obj.entries()[index];
+            auto entries = obj.entries();
+            auto const& kv = entries[index];
             luaM_pushstring(A, kv.first);
             domValue_push(A, kv.second);
             ++index;
