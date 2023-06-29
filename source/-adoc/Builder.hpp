@@ -13,7 +13,7 @@
 
 #include "Options.hpp"
 #include "Support/Radix.hpp"
-#include <mrdox/Corpus.hpp>
+#include <mrdox/Metadata/DomMetadata.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/JavaScript.hpp>
 #include <ostream>
@@ -31,13 +31,14 @@ namespace adoc {
 */
 class Builder
 {
+    DomCorpus const& domCorpus_;
     Corpus const& corpus_;
     Options options_;
     js::Context ctx_;
 
 public:
     Builder(
-        Corpus const& corpus,
+        DomCorpus const& domCorpus,
         Options const& options);
 
     dom::Value createContext(SymbolID const& id);

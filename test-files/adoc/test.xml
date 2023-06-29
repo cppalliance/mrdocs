@@ -2,12 +2,17 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace name="">
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file path="test.cpp" line="1" class="def"/>
-    <field name="u" id="Ffa+L6sOn4eypa/s+KMKpu+ym2g=">
-      <file path="test.cpp" line="3" class="def"/>
-      <type name="int"/>
-    </field>
-  </struct>
+  <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
+    <file path="test.cpp" line="5"/>
+    <doc>
+      <brief>
+        <text> brief</text>
+      </brief>
+      <para>
+        <text></text>
+      </para>
+      <head>Exception Safety</head>
+    </doc>
+  </function>
 </namespace>
 </mrdox>

@@ -27,15 +27,16 @@ namespace adoc {
 
 Builder::
 Builder(
-    Corpus const& corpus,
+    DomCorpus const& domCorpus,
     Options const& options)
-    : corpus_(corpus)
+    : domCorpus_(domCorpus)
+    , corpus_(domCorpus_.corpus)
     , options_(options)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    Config const& config = corpus.config;
+    Config const& config = corpus_.config;
 
     js::Scope scope(ctx_);
 
@@ -206,7 +207,7 @@ createContext(
     return dom::Object({
         { "document", "test" },
         { "test", "===" },
-        { "symbol", domCreateInfo(id, corpus_) }
+        { "symbol", domCorpus_.get(id) }
         });
 }
 

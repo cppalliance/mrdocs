@@ -21,10 +21,12 @@
 namespace clang {
 namespace mrdox {
 
+/** Front-end factory for producing Dom nodes.
+*/
 class MRDOX_DECL
     DomCorpus
 {
-    struct Impl;
+    class Impl;
 
     std::unique_ptr<Impl> impl_;
 
@@ -37,16 +39,17 @@ public:
     DomCorpus(Corpus const&);
 
     dom::Object
-    get(SymbolID const& id);
-};
+    get(SymbolID const& id) const;
 
-/** Return a Dom node for the given metadata.
-*/
-MRDOX_DECL
-dom::Object
-domCreateInfo(
-    SymbolID const& id,
-    Corpus const& corpus);
+    dom::Object
+    get(Info const& I) const;
+
+    /** Return the object for id, or null if id is zero.
+    */
+    dom::Value
+    getOptional(
+        SymbolID const& id) const;
+};
 
 } // mrdox
 } // clang

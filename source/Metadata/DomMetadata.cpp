@@ -20,38 +20,7 @@
 namespace clang {
 namespace mrdox {
 
-class DomStyle
-{
-public:
-    virtual ~DomStyle() = 0;
-    virtual dom::Value createJavadoc(Javadoc const&) const = 0;
-};
-
 namespace {
-
-//------------------------------------------------
-
-/** Return a Dom node for the given metadata.
-
-    If `id` is equal to @ref SymbolID::zero, a
-    null value is returned.
-*/
-inline
-dom::Value
-domCreateInfoOrNull(
-    SymbolID const& id,
-    Corpus const& corpus)
-{
-    if(id != SymbolID::zero)
-        return domCreateInfo(id, corpus);
-    return nullptr;
-}
-
-template<class T>
-dom::Value
-domEagerCreateInfo(
-    T const* I,
-    Corpus const& corpus);
 
 //------------------------------------------------
 //
@@ -62,15 +31,15 @@ domEagerCreateInfo(
 class DomSymbolArray : public dom::ArrayImpl
 {
     std::vector<SymbolID> const& list_;
-    Corpus const& corpus_;
+    DomCorpus const& domCorpus_;
     //SharedPtr<> ref_; // keep owner of list_ alive
 
 public:
     DomSymbolArray(
         std::vector<SymbolID> const& list,
-        Corpus const& corpus) noexcept
+        DomCorpus const& domCorpus) noexcept
         : list_(list)
-        , corpus_(corpus)
+        , domCorpus_(domCorpus)
     {
     }
 
@@ -83,7 +52,7 @@ public:
     dom::Value
     at(std::size_t index) const override
     {
-        return domCreateInfo(list_.at(index), corpus_);
+        return domCorpus_.get(list_.at(index));
     }
 };
 
@@ -203,19 +172,20 @@ domCreate(SourceInfo const& I)
 //
 //------------------------------------------------
 
-static dom::Value domCreate(std::unique_ptr<TypeInfo> const&, Corpus const&);
+static dom::Value domCreate(
+    std::unique_ptr<TypeInfo> const&, DomCorpus const&);
 
 class DomTypeInfoArray : public dom::ArrayImpl
 {
     std::vector<std::unique_ptr<TypeInfo>> const& list_;
-    Corpus const& corpus_;
+    DomCorpus const& domCorpus_;
 
 public:
     DomTypeInfoArray(
         std::vector<std::unique_ptr<TypeInfo>> const& list,
-        Corpus const& corpus) noexcept
+        DomCorpus const& domCorpus) noexcept
         : list_(list)
-        , corpus_(corpus)
+        , domCorpus_(domCorpus)
     {
     }
 
@@ -227,7 +197,7 @@ public:
     dom::Value at(std::size_t index) const override
     {
         MRDOX_ASSERT(index < list_.size());
-        return domCreate(list_[index], corpus_);
+        return domCreate(list_[index], domCorpus_);
     }
 };
 
@@ -242,14 +212,14 @@ public:
 class DomParamArray : public dom::ArrayImpl
 {
     std::vector<Param> const& list_;
-    Corpus const& corpus_;
+    DomCorpus const& domCorpus_;
 
 public:
     DomParamArray(
         std::vector<Param> const& list,
-        Corpus const& corpus) noexcept
+        DomCorpus const& domCorpus) noexcept
         : list_(list)
-        , corpus_(corpus)
+        , domCorpus_(domCorpus)
     {
     }
 
@@ -264,7 +234,7 @@ public:
         auto const& I = list_[index];
         return dom::Object({
             { "name", dom::stringOrNull(I.Name) },
-            { "type", domCreate(I.Type, corpus_) },
+            { "type", domCreate(I.Type, domCorpus_) },
             { "default", dom::stringOrNull(I.Default) }
             });
     }
@@ -276,11 +246,11 @@ public:
 //
 //------------------------------------------------
 
-static dom::Value domCreate(TArg const&, Corpus const&);
-static dom::Value domCreate(TParam const&, Corpus const&);
+static dom::Value domCreate(TArg const&, DomCorpus const&);
+static dom::Value domCreate(TParam const&, DomCorpus const&);
 static dom::Value domCreate(
-    std::unique_ptr<TemplateInfo> const& I, Corpus const&);
-static dom::Value getTParamDefault(TParam const& I, Corpus const&);
+    std::unique_ptr<TemplateInfo> const& I, DomCorpus const&);
+static dom::Value getTParamDefault(TParam const& I, DomCorpus const&);
 
 //------------------------------------------------
 
@@ -289,14 +259,14 @@ static dom::Value getTParamDefault(TParam const& I, Corpus const&);
 class DomTArgArray : public dom::ArrayImpl
 {
     std::vector<TArg> const& list_;
-    Corpus const& corpus_;
+    DomCorpus const& domCorpus_;
 
 public:
     DomTArgArray(
         std::vector<TArg> const& list,
-        Corpus const& corpus) noexcept
+        DomCorpus const& domCorpus) noexcept
         : list_(list)
-        , corpus_(corpus)
+        , domCorpus_(domCorpus)
     {
     }
 
@@ -307,7 +277,7 @@ public:
 
     dom::Value at(std::size_t index) const override
     {
-        return domCreate(list_.at(index), corpus_);
+        return domCreate(list_.at(index), domCorpus_);
     }
 };
 
@@ -316,14 +286,14 @@ public:
 class DomTParamArray : public dom::ArrayImpl
 {
     std::vector<TParam> const& list_;
-    Corpus const& corpus_;
+    DomCorpus const& domCorpus_;
 
 public:
     DomTParamArray(
         std::vector<TParam> const& list,
-        Corpus const& corpus) noexcept
+        DomCorpus const& domCorpus) noexcept
         : list_(list)
-        , corpus_(corpus)
+        , domCorpus_(domCorpus)
     {
     }
 
@@ -334,7 +304,7 @@ public:
 
     dom::Value at(std::size_t index) const override
     {
-        return domCreate(list_.at(index), corpus_);
+        return domCreate(list_.at(index), domCorpus_);
     }
 };
 
@@ -343,7 +313,7 @@ public:
 static
 dom::Value
 domCreate(
-    TArg const& I, Corpus const& corpus)
+    TArg const& I, DomCorpus const& domCorpus)
 {
     return dom::Object({
         { "value", dom::stringOrNull(I.Value) }
@@ -354,20 +324,20 @@ static
 dom::Value
 domCreate(
     TParam const& I,
-    Corpus const& corpus)
+    DomCorpus const& domCorpus)
 {
     return dom::Object({
         { "kind", toString(I.Kind)},
         { "name", dom::stringOrNull(I.Name)},
         { "is-pack", I.IsParameterPack},
         { "type", I.Kind == TParamKind::NonType
-            ? domCreate(I.get<NonTypeTParam>().Type, corpus)
+            ? domCreate(I.get<NonTypeTParam>().Type, domCorpus)
             : dom::Value()},
         { "params", I.Kind == TParamKind::Template
             ? dom::newArray<DomTParamArray>(
-                I.get<TemplateTParam>().Params, corpus)
+                I.get<TemplateTParam>().Params, domCorpus)
             : dom::Value()},
-        { "default", getTParamDefault(I, corpus) }
+        { "default", getTParamDefault(I, domCorpus) }
     });
 }
 
@@ -375,14 +345,14 @@ static
 dom::Value
 domCreate(
     std::unique_ptr<TemplateInfo> const& I,
-    Corpus const& corpus)
+    DomCorpus const& domCorpus)
 {
     if(I)
         return dom::Object({
             { "kind", toString(I->specializationKind()) },
-            { "primary", domCreateInfoOrNull( *I->Primary, corpus) },
-            { "params", dom::newArray<DomTParamArray>( I->Params, corpus) },
-            { "args", dom::newArray<DomTArgArray>(I->Args, corpus) }
+            { "primary", domCorpus.getOptional(*I->Primary) },
+            { "params", dom::newArray<DomTParamArray>( I->Params, domCorpus) },
+            { "args", dom::newArray<DomTArgArray>(I->Args, domCorpus) }
             });
     return nullptr;
 }
@@ -391,12 +361,12 @@ static
 dom::Value
 getTParamDefault(
     TParam const& I,
-    Corpus const& corpus)
+    DomCorpus const& domCorpus)
 {
     switch(I.Kind)
     {
     case TParamKind::Type:
-        return domCreate(I.get<TypeTParam>().Default, corpus);
+        return domCreate(I.get<TypeTParam>().Default, domCorpus);
     case TParamKind::NonType:
         return dom::Value(I.get<NonTypeTParam>().Default);
     case TParamKind::Template:
@@ -412,7 +382,7 @@ static
 dom::Value
 domCreate(
     std::unique_ptr<TypeInfo> const& I,
-    Corpus const& corpus)
+    DomCorpus const& domCorpus)
 {
     if(! I)
         return nullptr;
@@ -427,13 +397,13 @@ domCreate(
         if constexpr(requires { t.id; })
         {
             // VFALCO hack for missing symbols?
-            if(t.id != SymbolID::zero && corpus.find(t.id))
+            if(t.id != SymbolID::zero && domCorpus.corpus.find(t.id))
                 entries.emplace_back("id", toBase16(t.id));
         }
 
         if constexpr(T::isSpecialization())
             entries.emplace_back("template-args",
-                dom::newArray<DomTArgArray>(t.TemplateArgs, corpus));
+                dom::newArray<DomTArgArray>(t.TemplateArgs, domCorpus));
 
         if constexpr(requires { t.CVQualifiers; })
             entries.emplace_back("cv-qualifiers",
@@ -441,20 +411,20 @@ domCreate(
 
         if constexpr(requires { t.ParentType; })
             entries.emplace_back("parent-type",
-                domCreate(t.ParentType, corpus));
+                domCreate(t.ParentType, domCorpus));
 
         if constexpr(requires { t.PointeeType; })
             entries.emplace_back("pointee-type",
-                domCreate(t.PointeeType, corpus));
+                domCreate(t.PointeeType, domCorpus));
 
         if constexpr(T::isPack())
             entries.emplace_back("pattern-type",
-                domCreate(t.PatternType, corpus));
+                domCreate(t.PatternType, domCorpus));
 
         if constexpr(T::isArray())
         {
             entries.emplace_back("element-type",
-                domCreate(t.ElementType, corpus));
+                domCreate(t.ElementType, domCorpus));
             if(t.Bounds.Value)
                 entries.emplace_back("bounds-value",
                     *t.Bounds.Value);
@@ -465,9 +435,9 @@ domCreate(
         if constexpr(T::isFunction())
         {
             entries.emplace_back("return-type",
-                domCreate(t.ReturnType, corpus));
+                domCreate(t.ReturnType, domCorpus));
             entries.emplace_back("param-types",
-                dom::newArray<DomTypeInfoArray>(t.ParamTypes, corpus));
+                dom::newArray<DomTypeInfoArray>(t.ParamTypes, domCorpus));
             entries.emplace_back("exception-spec",
                 toString(t.ExceptionSpec));
             entries.emplace_back("ref-qualifier",
@@ -486,14 +456,14 @@ domCreate(
 class DomBaseArray : public dom::ArrayImpl
 {
     std::vector<BaseInfo> const& list_;
-    Corpus const& corpus_;
+    DomCorpus const& domCorpus_;
 
 public:
     DomBaseArray(
         std::vector<BaseInfo> const& list,
-        Corpus const& corpus) noexcept
+        DomCorpus const& domCorpus) noexcept
         : list_(list)
-        , corpus_(corpus)
+        , domCorpus_(domCorpus)
     {
     }
 
@@ -508,7 +478,7 @@ public:
         return dom::Object({
             { "access", toString(I.Access) },
             { "isVirtual", I.IsVirtual },
-            { "type", domCreate(I.Type, corpus_) }
+            { "type", domCreate(I.Type, domCorpus_) }
             });
     }
 };
@@ -560,13 +530,16 @@ class DomTrancheArray : public dom::ArrayImpl
 {
     std::span<T const*> list_;
     std::shared_ptr<Interface> sp_;
+    DomCorpus const& domCorpus_;
 
 public:
     DomTrancheArray(
         std::span<T const*> list,
-        std::shared_ptr<Interface> const& sp)
+        std::shared_ptr<Interface> const& sp,
+        DomCorpus const& domCorpus)
         : list_(list)
         , sp_(sp)
+        , domCorpus_(domCorpus)
     {
     }
 
@@ -579,8 +552,7 @@ public:
     at(std::size_t index) const override
     {
         if(index < list_.size())
-            return domEagerCreateInfo(
-                *list_[index], sp_->corpus);
+            return domCorpus_.get(*list_[index]);
         throw std::out_of_range("index");
     }
 };
@@ -589,32 +561,36 @@ class DomTranche : public dom::DefaultObjectImpl
 {
     std::shared_ptr<Interface> sp_;
     Interface::Tranche const& tranche_;
+    DomCorpus const& domCorpus_;
 
     template<class T>
     static
     dom::Value
     init(
         std::span<T const*> list,
-        std::shared_ptr<Interface> const& sp)
+        std::shared_ptr<Interface> const& sp,
+        DomCorpus const& domCorpus)
     {
-        return dom::newArray<DomTrancheArray<T>>(list, sp);
+        return dom::newArray<DomTrancheArray<T>>(list, sp, domCorpus);
     }
 
 public:
     DomTranche(
         Interface::Tranche const& tranche,
-        std::shared_ptr<Interface> const& sp) noexcept
+        std::shared_ptr<Interface> const& sp,
+        DomCorpus const& domCorpus) noexcept
         : dom::DefaultObjectImpl({
-            { "records",    init(tranche.Records, sp) },
-            { "functions",  init(tranche.Functions, sp) },
-            { "enums",      init(tranche.Enums, sp) },
-            { "types",      init(tranche.Types, sp) },
-            { "field",      init(tranche.Data, sp) },
-            { "staticfuncs",init(tranche.StaticFunctions, sp) },
-            { "staticdata", init(tranche.StaticData, sp) }
+            { "records",    init(tranche.Records, sp, domCorpus) },
+            { "functions",  init(tranche.Functions, sp, domCorpus) },
+            { "enums",      init(tranche.Enums, sp, domCorpus) },
+            { "types",      init(tranche.Types, sp, domCorpus) },
+            { "field",      init(tranche.Data, sp, domCorpus) },
+            { "staticfuncs",init(tranche.StaticFunctions, sp, domCorpus) },
+            { "staticdata", init(tranche.StaticData, sp, domCorpus) }
             })
         , sp_(sp)
         , tranche_(tranche)
+        , domCorpus_(domCorpus)
     {
     }
 };
@@ -622,26 +598,26 @@ public:
 class DomInterface : public dom::LazyObjectImpl
 {
     RecordInfo const& I_;
-    Corpus const& corpus_;
+    DomCorpus const& domCorpus_;
     std::shared_ptr<Interface> mutable sp_;
 
 public:
     DomInterface(
         RecordInfo const& I,
-        Corpus const& corpus)
+        DomCorpus const& domCorpus)
         : I_(I)
-        , corpus_(corpus)
+        , domCorpus_(domCorpus)
     {
     }
 
     dom::Object
     construct() const override
     {
-        sp_ = std::make_shared<Interface>(makeInterface(I_, corpus_));
+        sp_ = std::make_shared<Interface>(makeInterface(I_, domCorpus_.corpus));
         return dom::Object({
-            { "public", dom::newObject<DomTranche>(sp_->Public, sp_) },
-            { "protected", dom::newObject<DomTranche>(sp_->Protected, sp_) },
-            { "private", dom::newObject<DomTranche>(sp_->Private, sp_) }
+            { "public", dom::newObject<DomTranche>(sp_->Public, sp_, domCorpus_) },
+            { "protected", dom::newObject<DomTranche>(sp_->Protected, sp_, domCorpus_) },
+            { "private", dom::newObject<DomTranche>(sp_->Private, sp_, domCorpus_) }
             });
     }
 };
@@ -674,14 +650,14 @@ requires std::derived_from<T, Info>
 class DomInfo : public dom::LazyObjectImpl
 {
     T const& I_;
-    Corpus const& corpus_;
+    DomCorpus const& domCorpus_;
 
 public:
     DomInfo(
         T const& I,
-        Corpus const& corpus) noexcept
+        DomCorpus const& domCorpus) noexcept
         : I_(I)
-        , corpus_(corpus)
+        , domCorpus_(domCorpus)
     {
     }
 
@@ -695,13 +671,13 @@ DomInfo<T>::construct() const
 {
     entries_type entries;
     entries.insert(entries.end(), {
-        { "id", toBase16(I_.id) },
-        { "kind", toString(I_.Kind) },
-        { "access", toString(I_.Access) },
-        { "name", I_.Name },
-        { "namespace", dom::newArray<DomSymbolArray>(
-            I_.Namespace, corpus_) },
-        { "doc", domCreate(I_.javadoc) }
+        { "id",         toBase16(I_.id) },
+        { "kind",       toString(I_.Kind) },
+        { "access",     toString(I_.Access) },
+        { "name",       I_.Name },
+        { "namespace",  dom::newArray<DomSymbolArray>(
+                            I_.Namespace, domCorpus_) },
+        { "doc",        domCreate(I_.javadoc) }
         });
     if constexpr(std::derived_from<T, SourceInfo>)
     {
@@ -711,7 +687,7 @@ DomInfo<T>::construct() const
     {
         entries.insert(entries.end(), {
             { "members", dom::newArray<DomSymbolArray>(
-                I_.Members, corpus_) },
+                I_.Members, domCorpus_) },
             { "specializations", nullptr }
             });
     }
@@ -721,20 +697,20 @@ DomInfo<T>::construct() const
             { "tag",            toString(I_.KeyKind) },
             { "defaultAccess",  getDefaultAccess(I_) },
             { "isTypedef",      I_.IsTypeDef },
-            { "bases",          dom::newArray<DomBaseArray>(I_.Bases, corpus_) },
-            { "friends",        dom::newArray<DomSymbolArray>(I_.Friends, corpus_) },
-            { "members",        dom::newArray<DomSymbolArray>(I_.Members, corpus_) },
-            { "specializations",dom::newArray<DomSymbolArray>(I_.Specializations, corpus_) },
-            { "interface",      dom::newObject<DomInterface>(I_, corpus_) },
-            { "template",       domCreate(I_.Template, corpus_) }
+            { "bases",          dom::newArray<DomBaseArray>(I_.Bases, domCorpus_) },
+            { "friends",        dom::newArray<DomSymbolArray>(I_.Friends, domCorpus_) },
+            { "members",        dom::newArray<DomSymbolArray>(I_.Members, domCorpus_) },
+            { "specializations",dom::newArray<DomSymbolArray>(I_.Specializations, domCorpus_) },
+            { "interface",      dom::newObject<DomInterface>(I_, domCorpus_) },
+            { "template",       domCreate(I_.Template, domCorpus_) }
             });
     }
     if constexpr(T::isFunction())
     {
         entries.insert(entries.end(), {
-            { "params",     dom::newArray<DomParamArray>(I_.Params, corpus_) },
-            { "return",     domCreate(I_.ReturnType, corpus_) },
-            { "template",   domCreate(I_.Template, corpus_) },
+            { "params",     dom::newArray<DomParamArray>(I_.Params, domCorpus_) },
+            { "return",     domCreate(I_.ReturnType, domCorpus_) },
+            { "template",   domCreate(I_.Template, domCorpus_) },
 
             { "isVariadic",         I_.specs0.isVariadic.get() },
             { "isVirtual",          I_.specs0.isVirtual.get() },
@@ -763,34 +739,34 @@ DomInfo<T>::construct() const
     if constexpr(T::isEnum())
     {
         entries.insert(entries.end(), {
-            { "type", domCreate(I_.UnderlyingType, corpus_) },
-            { "members", dom::newArray<DomEnumValueArray>(I_.Members) },
-            { "isScoped", I_.Scoped }
+            { "type",       domCreate(I_.UnderlyingType, domCorpus_) },
+            { "members",    dom::newArray<DomEnumValueArray>(I_.Members) },
+            { "isScoped",   I_.Scoped }
             });
     }
     if constexpr(T::isTypedef())
     {
         entries.insert(entries.end(), {
-            { "type", domCreate(I_.Type, corpus_) },
-            { "template", domCreate(I_.Template, corpus_) },
-            { "isUsing", I_.IsUsing }
+            { "type",       domCreate(I_.Type, domCorpus_) },
+            { "template",   domCreate(I_.Template, domCorpus_) },
+            { "isUsing",    I_.IsUsing }
             });
     }
     if constexpr(T::isVariable())
     {
         entries.insert(entries.end(), {
-            { "type", domCreate(I_.Type, corpus_) },
-            { "template", domCreate(I_.Template, corpus_) },
-            { "storageClass", toString(I_.specs.storageClass) }
+            { "type",           domCreate(I_.Type, domCorpus_) },
+            { "template",       domCreate(I_.Template, domCorpus_) },
+            { "storageClass",   toString(I_.specs.storageClass) }
             });
     }
     if constexpr(T::isField())
     {
         entries.insert(entries.end(), {
-            { "type", domCreate(I_.Type, corpus_) },
-            { "default", dom::stringOrNull(I_.Default) },
-            { "isMaybeUnused", I_.specs.isMaybeUnused.get() },
-            { "isDeprecated", I_.specs.isDeprecated.get() },
+            { "type",           domCreate(I_.Type, domCorpus_) },
+            { "default",        dom::stringOrNull(I_.Default) },
+            { "isMaybeUnused",  I_.specs.isMaybeUnused.get() },
+            { "isDeprecated",   I_.specs.isDeprecated.get() },
             { "hasNoUniqueAddress", I_.specs.hasNoUniqueAddress.get() }
             });
     }
@@ -804,55 +780,9 @@ DomInfo<T>::construct() const
 
 } // (anon)
 
-// Return a possibly-lazy Info node
-dom::Value
-domCreateInfo(
-    Info const& I,
-    Corpus const& corpus)
-{
-    return visit(I,
-        [&corpus]<class T>(T const& I) ->
-            dom::Value
-        {
-            return dom::newObject<DomInfo<T>>(I, corpus);
-        });
-}
-
-// Return a never-lazy Info node
-template<class T>
-static
-dom::Value
-domEagerCreateInfo(
-    T const& I,
-    Corpus const& corpus)
-{
-    return DomInfo<T>(I, corpus).construct();
-}
-
 //------------------------------------------------
 
-// The returned value can sometimes be lazy
-dom::Object
-domCreateInfo(
-    SymbolID const& id,
-    Corpus const& corpus)
-{
-    // VFALCO Hack to deal with symbol IDs
-    // being emitted without the corresponding data.
-    auto I = corpus.find(id);
-    if(I)
-        //return domCreateInfo(*I, corpus);
-        return visit(*I,
-            [&corpus]<class T>(T const& I)
-            {
-                return dom::newObject<DomInfo<T>>(I, corpus);
-            });
-    return {};
-}
-
-//------------------------------------------------
-
-struct DomCorpus::Impl
+class DomCorpus::Impl
 {
     struct value_type
     {
@@ -860,8 +790,69 @@ struct DomCorpus::Impl
         std::shared_ptr<dom::ObjectImpl> strong;
     };
 
+    DomCorpus const& domCorpus_;
+    Corpus const& corpus_;
     llvm::StringMap<value_type> infoCache_;
     std::mutex mutex_;
+
+public:
+    Impl(
+        DomCorpus const& domCorpus,
+        Corpus const& corpus) noexcept
+        : domCorpus_(domCorpus)
+        , corpus_(corpus)
+    {
+    }
+
+    dom::Object
+    create(SymbolID const& id)
+    {
+        // VFALCO Hack to deal with symbol IDs
+        // being emitted without the corresponding data.
+        auto I = corpus_.find(id);
+        if(I)
+        {
+            return visit(*I,
+                [&]<class T>(T const& I)
+                {
+                    return dom::newObject<DomInfo<T>>(I, domCorpus_);
+                });
+        }
+        return {}; // VFALCO Hack
+    }
+
+    dom::Object
+    get(Info const& I)
+    {
+        return visit(I,
+            [&]<class T>(T const& I)
+            {
+                return dom::newObject<DomInfo<T>>(I, domCorpus_);
+            });
+    }
+
+    dom::Object
+    get(SymbolID const& id)
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        auto it = infoCache_.find(llvm::StringRef(id));
+        if(it == infoCache_.end())
+        {
+            auto obj = create(id);
+            auto impl = obj.impl();
+            infoCache_.insert(
+                { llvm::StringRef(id), { impl, nullptr } });
+            return obj;
+        }
+        if(it->second.strong)
+            return dom::Object(it->second.strong);
+        auto sp = it->second.weak.lock();
+        if(sp)
+            return dom::Object(sp);
+        auto obj = create(id);
+        it->second.weak = obj.impl();
+        return obj;
+    }
 };
 
 DomCorpus::
@@ -870,33 +861,32 @@ DomCorpus::
 DomCorpus::
 DomCorpus(
     Corpus const& corpus_)
-    : impl_(std::make_unique<Impl>())
+    : impl_(std::make_unique<Impl>(*this, corpus_))
     , corpus(corpus_)
 {
 }
 
 dom::Object
 DomCorpus::
-get(SymbolID const& id)
+get(SymbolID const& id) const
 {
-    std::lock_guard<std::mutex> lock(impl_->mutex_);
-    auto it = impl_->infoCache_.find(llvm::StringRef(id));
-    if(it == impl_->infoCache_.end())
-    {
-        auto obj = domCreateInfo(id, corpus);
-        auto impl = obj.impl();
-        impl_->infoCache_.insert(
-            { llvm::StringRef(id), { impl, nullptr } });
-        return obj;
-    }
-    if(it->second.strong)
-        return dom::Object(it->second.strong);
-    auto sp = it->second.weak.lock();
-    if(sp)
-        return dom::Object(sp);
-    auto obj = domCreateInfo(id, corpus);
-    it->second.weak = obj.impl();
-    return obj;
+    return impl_->get(id);
+}
+
+dom::Object
+DomCorpus::
+get(Info const& I) const
+{
+    return impl_->get(I);
+}
+
+dom::Value
+DomCorpus::
+getOptional(SymbolID const& id) const
+{
+    if(id == SymbolID::zero)
+        return nullptr;
+    return impl_->get(id);
 }
 
 } // mrdox

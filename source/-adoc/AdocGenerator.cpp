@@ -14,6 +14,7 @@
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
 #include "Support/SafeNames.hpp"
+#include <mrdox/Metadata/DomMetadata.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/Report.hpp>
 #include <optional>
@@ -25,20 +26,20 @@ namespace adoc {
 
 Expected<ExecutorGroup<Builder>>
 createExecutors(
-    Corpus const& corpus)
+    DomCorpus const& domCorpus)
 {
-    auto options = loadOptions(corpus);
+    auto options = loadOptions(domCorpus.corpus);
     if(! options)
         return options.error();
 
-    auto const& config = corpus.config;
+    auto const& config = domCorpus.corpus.config;
     auto& threadPool = config.threadPool();
     ExecutorGroup<Builder> group(threadPool);
     for(auto i = threadPool.getThreadCount(); i--;)
     {
         try
         {
-           group.emplace(corpus, *options);
+           group.emplace(domCorpus, *options);
         }
         catch(Error const& e)
         {
@@ -63,7 +64,8 @@ build(
     if(! corpus.config.multiPage)
         return Generator::build(outputPath, corpus);
 
-    auto ex = createExecutors(corpus);
+    DomCorpus domCorpus(corpus);
+    auto ex = createExecutors(domCorpus);
     if(! ex)
         return ex.error();
 
@@ -81,7 +83,8 @@ buildOne(
     std::ostream& os,
     Corpus const& corpus) const
 {
-    auto ex = createExecutors(corpus);
+    DomCorpus domCorpus(corpus);
+    auto ex = createExecutors(domCorpus);
     if(! ex)
         return ex.error();
 
