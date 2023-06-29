@@ -26,23 +26,24 @@ class MRDOX_DECL
 {
     struct Impl;
 
-    Corpus const& corpus_;
     std::unique_ptr<Impl> impl_;
 
 public:
+    Corpus const& corpus;
+
     ~DomCorpus();
 
     explicit
     DomCorpus(Corpus const&);
 
-    dom::ObjectPtr
+    dom::Object
     get(SymbolID const& id);
 };
 
 /** Return a Dom node for the given metadata.
 */
 MRDOX_DECL
-dom::Value
+dom::Object
 domCreateInfo(
     SymbolID const& id,
     Corpus const& corpus);

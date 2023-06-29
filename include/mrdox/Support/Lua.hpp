@@ -16,6 +16,7 @@
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Expected.hpp>
 #include <mrdox/Support/SharedPtr.hpp>
+#include <mrdox/Support/source_location.hpp>
 #include <fmt/format.h>
 #include <cstdlib>
 #include <string>
@@ -126,8 +127,8 @@ public:
     loadChunk(
         std::string_view luaChunk,
         zstring chunkName,
-        std::source_location loc =
-            std::source_location::current());
+        source_location loc =
+            source_location::current());
 
     /** Load a Lua chunk
     */
@@ -135,8 +136,8 @@ public:
     Expected<Function>
     loadChunk(
         std::string_view luaChunk,
-        std::source_location loc =
-            std::source_location::current());
+        source_location loc =
+            source_location::current());
 
     /** Run a Lua chunk.
     */
@@ -144,8 +145,8 @@ public:
     Expected<Function>
     loadChunkFromFile(
         std::string_view fileName,
-        std::source_location loc =
-            std::source_location::current());
+        source_location loc =
+            source_location::current());
 
     /** Return the global table.
     */
@@ -159,8 +160,8 @@ public:
     Expected<Value>
     getGlobal(
         std::string_view key,
-        std::source_location loc =
-            std::source_location::current());
+        source_location loc =
+            source_location::current());
 };
 
 //------------------------------------------------
@@ -189,8 +190,8 @@ class MRDOX_DECL
         int i_;
         int index_; // for Value
         std::string_view s_;
-        dom::ArrayPtr arr_;
-        dom::ObjectPtr obj_;
+        dom::Array arr_;
+        dom::Object obj_;
     };
 
     friend struct Access;
@@ -204,8 +205,8 @@ public:
     Param(std::int64_t) noexcept;
     Param(std::string_view s) noexcept;
     Param(Value const& value) noexcept;
-    Param(dom::ArrayPtr const& arr) noexcept;
-    Param(dom::ObjectPtr const& obj) noexcept;
+    Param(dom::Array arr) noexcept;
+    Param(dom::Object obj) noexcept;
     Param(dom::Value const& value) noexcept;
 
     Param(Param const&) = delete;
@@ -444,8 +445,7 @@ class Table : public Value
         std::size_t size) const;
 
 public:
-    MRDOX_DECL Table(Scope&,
-        SharedPtr<dom::Object> const& obj);
+    MRDOX_DECL Table(Scope&, dom::Object const& obj);
     MRDOX_DECL Table(Value value);
     MRDOX_DECL explicit Table(Scope& scope);
 
