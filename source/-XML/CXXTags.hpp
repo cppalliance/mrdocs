@@ -34,6 +34,7 @@ constexpr llvm::StringRef accessTagName         = "access";
 constexpr llvm::StringRef aliasTagName          = "alias";
 constexpr llvm::StringRef attributeTagName      = "attr";
 constexpr llvm::StringRef baseTagName           = "base";
+constexpr llvm::StringRef bitfieldTagName       = "bitfield";
 constexpr llvm::StringRef classTagName          = "class";
 constexpr llvm::StringRef dataMemberTagName     = "field";
 constexpr llvm::StringRef javadocTagName        = "doc";

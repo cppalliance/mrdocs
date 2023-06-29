@@ -127,11 +127,12 @@ grammar
     #---------------------------------------------
 
     Field =
-        element field
+        element (field|bitfield)
         {
             Name,
             Access ?,
             ID,
+            attribute width { text } ?,
             attribute default { text } ?,
             Location,
             (

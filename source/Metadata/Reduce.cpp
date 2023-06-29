@@ -104,6 +104,25 @@ static void mergeSourceInfo(
     I.Loc.erase(Last, I.Loc.end());
 }
 
+static void mergeExprInfo(
+    ExprInfo& I,
+    ExprInfo&& Other)
+{
+    if(I.Written.empty())
+        I.Written = std::move(Other.Written);
+}
+
+template<typename T>
+static void mergeExprInfo(
+    ConstantExprInfo<T>& I,
+    ConstantExprInfo<T>&& Other)
+{
+    mergeExprInfo(
+        static_cast<ExprInfo&>(I),
+        static_cast<ExprInfo&&>(Other));
+    if(! I.Value)
+        I.Value = std::move(Other.Value);
+}
 
 static
 void
@@ -221,6 +240,10 @@ void merge(FieldInfo& I, FieldInfo&& Other)
     I.IsMutable |= Other.IsMutable;
     if(I.Default.empty())
         I.Default = std::move(Other.Default);
+
+    I.IsBitfield |= Other.IsBitfield;
+    mergeExprInfo(I.BitfieldWidth,
+        std::move(Other.BitfieldWidth));
 }
 
 void merge(VariableInfo& I, VariableInfo&& Other)

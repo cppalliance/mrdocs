@@ -14,6 +14,7 @@
 #define MRDOX_API_METADATA_FIELD_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Metadata/Expression.hpp>
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Type.hpp>
@@ -54,6 +55,12 @@ struct FieldInfo
 
     /** Whether the field is declared mutable */
     bool IsMutable = false;
+
+    /** Whether the field is a bitfield */
+    bool IsBitfield = false;
+
+    /** The width of the bitfield */
+    ConstantExprInfo<std::uint64_t> BitfieldWidth;
 
     //--------------------------------------------
 

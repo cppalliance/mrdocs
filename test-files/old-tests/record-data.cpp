@@ -5,6 +5,10 @@ struct T
     int i;
     double j;
     mutable int k;
+    int l : 8;
+    int m : 4 + 4;
+    int : 1;
+    int : 0;
 };
 
 struct U
@@ -26,7 +30,7 @@ struct W
     char buf[64];
 };
 
-template<typename P>
+template<typename P, int I>
 struct X
 {
     using Q = P;
@@ -35,4 +39,6 @@ struct X
     P x1;
     const P x2[32];
     Q x3;
+
+    int x4 : I + 4;
 };

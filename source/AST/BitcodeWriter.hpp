@@ -70,13 +70,7 @@ public:
     //--------------------------------------------
 
     template<class Integer>
-    requires
-        std::is_integral_v<Integer> &&
-        (sizeof(Integer) > 4)
-    void emitRecord(Integer Value, RecordID ID) = delete;
-
-    template<class Integer>
-    requires std::is_integral_v<Integer>
+    requires std::integral<Integer>
     void emitRecord(Integer Value, RecordID ID);
 
     template<class Enum>
@@ -136,6 +130,10 @@ public:
 
     void emitBlock(std::unique_ptr<TypeInfo> const& TI);
     void emitBlock(std::unique_ptr<TypeInfo> const& TI, BlockID ID);
+
+    template<typename ExprInfoTy>
+        requires std::derived_from<ExprInfoTy, ExprInfo>
+    void emitBlock(ExprInfoTy const& E);
 
     //--------------------------------------------
 

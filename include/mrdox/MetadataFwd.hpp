@@ -54,6 +54,10 @@ struct TypedefInfo;
 struct VariableInfo;
 struct VerbatimBlock;
 
+struct ExprInfo;
+template<typename T>
+struct ConstantExprInfo;
+
 struct TemplateInfo;
 struct TArg;
 struct TParam;

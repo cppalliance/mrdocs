@@ -377,10 +377,21 @@ XMLWriter::
 writeField(
     const FieldInfo& I)
 {
-    tags_.open(dataMemberTagName, {
+    std::string_view tag_name = dataMemberTagName;
+    std::string bit_width;
+    if(I.IsBitfield)
+    {
+        tag_name = bitfieldTagName;
+        bit_width = I.BitfieldWidth.Value ?
+            std::to_string(*I.BitfieldWidth.Value) :
+            I.BitfieldWidth.Written;
+    }
+
+    tags_.open(tag_name, {
         { "name", I.Name },
         { I.Access },
         { I.id },
+        { "width", bit_width, I.IsBitfield },
         { "default", I.Default, ! I.Default.empty() }
     });
 
@@ -397,7 +408,7 @@ writeField(
 
     writeJavadoc(I.javadoc);
 
-    tags_.close(dataMemberTagName);
+    tags_.close(tag_name);
 }
 
 void

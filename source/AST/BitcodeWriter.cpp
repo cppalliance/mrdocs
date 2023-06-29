@@ -81,6 +81,18 @@ static void Integer32ArrayAbbrev(
             llvm::BitCodeAbbrevOp::Fixed, 32) });
 }
 
+static void Integer64Abbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // 0. 64-bit signed or unsigned integer
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 32),
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 32),
+    });
+}
+
 #if 0
 static void Integer16Abbrev(
     std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
@@ -200,6 +212,7 @@ BlockIdNameMap = []()
         {BI_NAMESPACE_BLOCK_ID, "NamespaceBlock"},
         {BI_ENUM_BLOCK_ID, "EnumBlock"},
         {BI_ENUM_VALUE_BLOCK_ID, "EnumValueBlock"},
+        {BI_EXPR_BLOCK_ID, "ExprBlock"},
         {BI_TYPEDEF_BLOCK_ID, "TypedefBlock"},
         {BI_TYPEINFO_BLOCK_ID, "TypeInfoBlock"},
         {BI_TYPEINFO_PARENT_BLOCK_ID, "TypeInfoParentBlock"},
@@ -242,9 +255,12 @@ RecordIDNameMap = []()
         {ENUM_VALUE_NAME, {"Name", &StringAbbrev}},
         {ENUM_VALUE_VALUE, {"Value", &StringAbbrev}},
         {ENUM_VALUE_EXPR, {"Expr", &StringAbbrev}},
+        {EXPR_WRITTEN, {"ExprWritten", &StringAbbrev}},
+        {EXPR_VALUE, {"ExprValue", &Integer64Abbrev}},
         {FIELD_DEFAULT, {"DefaultValue", &StringAbbrev}},
         {FIELD_ATTRIBUTES, {"FieldAttributes", &Integer32ArrayAbbrev}},
         {FIELD_IS_MUTABLE, {"FieldIsMutable", &BoolAbbrev}},
+        {FIELD_IS_BITFIELD, {"FieldIsBitfield", &BoolAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
         {FUNCTION_PARAM_DEFAULT, {"Default", &StringAbbrev}},
@@ -317,12 +333,16 @@ RecordsByBlock{
     // EnumInfo
     {BI_ENUM_BLOCK_ID,
         {ENUM_SCOPED}},
+    // ExprInfo and ConstantExprInfo
+    {BI_EXPR_BLOCK_ID,
+        {EXPR_WRITTEN, EXPR_VALUE}},
     // EnumValue
     {BI_ENUM_VALUE_BLOCK_ID,
         {ENUM_VALUE_NAME, ENUM_VALUE_VALUE, ENUM_VALUE_EXPR}},
     // FieldInfo
     {BI_FIELD_BLOCK_ID,
-        {FIELD_DEFAULT, FIELD_ATTRIBUTES, FIELD_IS_MUTABLE}},
+        {FIELD_DEFAULT, FIELD_ATTRIBUTES,
+        FIELD_IS_MUTABLE, FIELD_IS_BITFIELD}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
         {FUNCTION_BITS}},
@@ -510,16 +530,26 @@ emitAbbrev(
 
 // Integer
 template<class Integer>
-requires std::is_integral_v<Integer>
+requires std::integral<Integer>
 void
 BitcodeWriter::
 emitRecord(
     Integer Value, RecordID ID)
 {
     MRDOX_ASSERT(RecordIDNameMap[ID]);
-    if constexpr(sizeof(Integer) == 4)
+    if (!prepRecordData(ID, Value))
+        return;
+    if constexpr(sizeof(Integer) == 8)
+    {
+        MRDOX_ASSERT(RecordIDNameMap[ID].Abbrev == &Integer64Abbrev);
+        Record.push_back(static_cast<RecordValue>(Value));
+        Record.push_back(static_cast<RecordValue>(
+            static_cast<std::uint64_t>(Value) >> 32));
+    }
+    else if constexpr(sizeof(Integer) == 4)
     {
         MRDOX_ASSERT(RecordIDNameMap[ID].Abbrev == &Integer32Abbrev);
+        Record.push_back(static_cast<RecordValue>(Value));
     }
 #if 0
     else if constexpr(sizeof(Integer) == 2)
@@ -531,9 +561,7 @@ emitRecord(
     {
         static_error("can't use Integer type", Value);
     }
-    if (!prepRecordData(ID, Value))
-        return;
-    Record.push_back(static_cast<RecordValue>(Value));
+
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
@@ -793,6 +821,8 @@ emitBlock(
     emitRecord(F.Default, FIELD_DEFAULT);
     emitRecord({F.specs.raw}, FIELD_ATTRIBUTES);
     emitRecord(F.IsMutable, FIELD_IS_MUTABLE);
+    emitRecord(F.IsBitfield, FIELD_IS_BITFIELD);
+    emitBlock(F.BitfieldWidth);
 }
 
 void
@@ -884,6 +914,22 @@ emitBlock(
                 MRDOX_UNREACHABLE();
             }
         });
+}
+
+template<typename ExprInfoTy>
+    requires std::derived_from<ExprInfoTy, ExprInfo>
+void
+BitcodeWriter::
+emitBlock(
+    ExprInfoTy const& E)
+{
+    StreamSubBlockGuard Block(Stream, BI_EXPR_BLOCK_ID);
+    emitRecord(E.Written, EXPR_WRITTEN);
+    if constexpr(requires { E.Value; })
+    {
+        if(E.Value)
+            emitRecord(*E.Value, EXPR_VALUE);
+    }
 }
 
 void

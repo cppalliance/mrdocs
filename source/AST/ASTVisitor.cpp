@@ -468,6 +468,36 @@ buildTypeInfoForType(
 
 void
 ASTVisitor::
+buildExprInfoForExpr(
+    ExprInfo& I,
+    const Expr* E)
+{
+    I.Written = getSourceCode(
+        E->getSourceRange());
+}
+
+template<typename T>
+void
+ASTVisitor::
+buildExprInfoForExpr(
+    ConstantExprInfo<T>& I,
+    const Expr* E)
+{
+    buildExprInfoForExpr(
+        static_cast<ExprInfo&>(I), E);
+    // if the expression is dependent,
+    // we cannot get its value
+    if(E->isValueDependent())
+        return;
+    llvm::APSInt value = E->EvaluateKnownConstInt(*astContext_);
+    if constexpr(std::is_signed_v<T>)
+        I.Value.emplace(value.getSExtValue());
+    else
+        I.Value.emplace(value.getZExtValue());
+}
+
+void
+ASTVisitor::
 parseParameters(
     FunctionInfo& I,
     FunctionDecl const* D)
@@ -1276,6 +1306,14 @@ buildField(
 #endif
 
     I.IsMutable = D->isMutable();
+
+    if(D->isBitField())
+    {
+        I.IsBitfield = true;
+        buildExprInfoForExpr(
+            I.BitfieldWidth,
+            D->getBitWidth());
+    }
 
     I.specs.hasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
     I.specs.isDeprecated = D->hasAttr<DeprecatedAttr>();

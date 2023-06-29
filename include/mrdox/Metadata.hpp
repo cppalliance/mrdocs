@@ -18,6 +18,7 @@
 // metadata extracted from AST
 
 #include <mrdox/Metadata/Enum.hpp>
+#include <mrdox/Metadata/Expression.hpp>
 #include <mrdox/Metadata/Field.hpp>
 #include <mrdox/Metadata/Function.hpp>
 #include <mrdox/Metadata/Info.hpp>

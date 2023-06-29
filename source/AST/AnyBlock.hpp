@@ -371,6 +371,71 @@ public:
 
 //------------------------------------------------
 
+class ExprBlock
+    : public BitcodeReader::AnyBlock
+{
+private:
+
+protected:
+    BitcodeReader& br_;
+    ExprInfo& I_;
+    void(*on_value)(
+        ExprInfo&,
+        std::uint64_t) = nullptr;
+
+public:
+    ExprBlock(
+        ExprInfo& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I_(I)
+    {
+    }
+
+    template<typename T>
+    ExprBlock(
+        ConstantExprInfo<T>& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I_(I)
+        , on_value([](
+            ExprInfo& expr, std::uint64_t val)
+            {
+                static_cast<ConstantExprInfo<T>&>(
+                    expr).Value.emplace(val);
+            })
+    {
+    }
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case EXPR_WRITTEN:
+            return decodeRecord(R, I_.Written, Blob);
+        case EXPR_VALUE:
+        {
+            if(! on_value)
+                return Error("EXPR_VALUE for expression without value");
+            std::uint64_t value = 0;
+            if(auto err = decodeRecord(R, value, Blob))
+                return err;
+            on_value(I_, value);
+            return Error::success();
+
+        }
+        default:
+            return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+};
+
+//------------------------------------------------
+
 class TypeInfoBlock
     : public BitcodeReader::AnyBlock
 {
@@ -1253,6 +1318,8 @@ public:
             return decodeRecord(R, {&I->specs.raw}, Blob);
         case FIELD_IS_MUTABLE:
             return decodeRecord(R, I->IsMutable, Blob);
+        case FIELD_IS_BITFIELD:
+            return decodeRecord(R, I->IsBitfield, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }
@@ -1267,6 +1334,11 @@ public:
         case BI_TYPEINFO_BLOCK_ID:
         {
             TypeInfoBlock B(I->Type, br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock B(I->BitfieldWidth, br_);
             return br_.readBlock(B, ID);
         }
         default:

@@ -29,9 +29,9 @@ decodeRecord(
     return Error::success();
 }
 
-// integral types
+// 32 bit integral types
 template<class IntTy>
-requires std::is_integral_v<IntTy>
+requires std::integral<IntTy>
 Error
 decodeRecord(
     Record const& R,
@@ -42,6 +42,22 @@ decodeRecord(
     if (R[0] > (std::numeric_limits<IntTy>::max)())
         return formatError("integer overflow");
     v = static_cast<IntTy>(R[0]);
+    return Error::success();
+}
+
+// integral types wider than 32 bits
+template<class IntTy>
+requires (std::integral<IntTy> &&
+    sizeof(IntTy) > 4)
+Error
+decodeRecord(
+    Record const& R,
+    IntTy& v,
+    llvm::StringRef Blob)
+{
+    v = static_cast<IntTy>(
+        static_cast<std::uint64_t>(R[0]) |
+        (static_cast<std::uint64_t>(R[1]) << 32));
     return Error::success();
 }
 

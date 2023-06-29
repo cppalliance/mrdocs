@@ -111,6 +111,17 @@ public:
         QualType T);
 
     void
+    buildExprInfoForExpr(
+        ExprInfo& I,
+        const Expr* E);
+
+    template<typename T>
+    void
+    buildExprInfoForExpr(
+        ConstantExprInfo<T>& I,
+        const Expr* E);
+
+    void
     parseParameters(
         FunctionInfo& I,
         FunctionDecl const* D);
