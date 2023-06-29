@@ -20,7 +20,7 @@ namespace clang {
 namespace mrdox {
 
 namespace lua {
-extern void lua_dump(dom::ObjectPtr const& obj);
+extern void lua_dump(dom::Object const& obj);
 }
 
 namespace adoc {
@@ -162,13 +162,12 @@ callTemplate(
     auto fileText = files::getFileText(pathName);
     if(! fileText)
         return fileText.error();
-    auto options = makeShared<dom::Object>();
-    options->set("noEscape", true);
-    options->set("allowProtoPropertiesByDefault", true);
+    dom::Object options;
+    options.set("noEscape", true);
+    options.set("allowProtoPropertiesByDefault", true);
     // VFALCO This makes Proxy objects stop working
-    //options->set("allowProtoMethodsByDefault", true);
-    auto templateFn = Handlebars->callProp(
-        "compile", *fileText, options);
+    //options.set("allowProtoMethodsByDefault", true);
+    auto templateFn = Handlebars->callProp("compile", *fileText, options);
     if(! templateFn)
         return templateFn.error();
     auto result = templateFn->call(context, options);
@@ -181,8 +180,10 @@ Expected<std::string>
 Builder::
 renderSinglePageHeader()
 {
-    auto obj = makeShared<dom::Object>();
-    auto text = callTemplate("single-header.adoc.hbs", obj);
+    auto text = callTemplate("single-header.adoc.hbs",
+        dom::Object({
+        { "test", dom::Value("===") }
+        }));
     return text;
 }
 
@@ -191,7 +192,7 @@ Builder::
 renderSinglePageFooter()
 {
     auto obj = makeShared<dom::Object>();
-    auto text = callTemplate("single-footer.adoc.hbs", obj);
+    auto text = callTemplate("single-footer.adoc.hbs", {});
     return text;
 }
 
@@ -202,9 +203,10 @@ Builder::
 createContext(
     SymbolID const& id)
 {
-    return dom::createObject({
-            { "document", "test" },
-            { "symbol", domCreateInfo(id, corpus_) }
+    return dom::Object({
+        { "document", "test" },
+        { "test", "===" },
+        { "symbol", domCreateInfo(id, corpus_) }
         });
 }
 

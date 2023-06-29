@@ -175,8 +175,8 @@ class MRDOX_DECL
         double d_;
         int idx_; // for Value
         std::string_view s_;
-        dom::ArrayPtr arr_;
-        dom::ObjectPtr obj_;
+        dom::Array arr_;
+        dom::Object obj_;
     };
 
     friend struct Access;
@@ -191,8 +191,8 @@ public:
     Param(double) noexcept;
     Param(std::string_view s) noexcept;
     Param(Value const& value) noexcept;
-    Param(dom::ArrayPtr const& arr) noexcept;
-    Param(dom::ObjectPtr const& obj) noexcept;
+    Param(dom::Array const& arr) noexcept;
+    Param(dom::Object const& obj) noexcept;
     Param(dom::Value const& value) noexcept;
 
     Param(Param const&) = delete;

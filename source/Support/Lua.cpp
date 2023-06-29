@@ -210,8 +210,8 @@ static
 void
 luaM_report(
     Error const& err,
-    std::source_location loc =
-        std::source_location::current())
+    source_location loc =
+        source_location::current())
 {
     SourceLocation Loc(err.location());
     fmt::print(
@@ -229,8 +229,8 @@ static
 Error
 luaM_popError(
     lua_State* L,
-    std::source_location loc =
-        std::source_location::current())
+    source_location loc =
+        source_location::current())
 {
     std::size_t len;
     auto const data = lua_tolstring(L, -1, &len);
@@ -268,13 +268,13 @@ luaM_pushstring(
 
 // Return a userdata as a dom::ArrayPtr&
 static
-dom::ArrayPtr&
+dom::Array&
 domArray_get(
     Access& A, int index)
 {
     MRDOX_ASSERT(
         lua_type(A, index) == LUA_TUSERDATA);
-    return *static_cast<dom::ArrayPtr*>(
+    return *static_cast<dom::Array*>(
         lua_touserdata(A, index));
 }
 
@@ -308,8 +308,8 @@ domArray_push_metatable(
         std::size_t index = lua_tonumber(A, 2);
         auto const& arr = domArray_get(A, 1);
         lua_pop(A, lua_gettop(A));
-        if(index < arr->size())
-            domValue_push(A, arr->get(index));
+        if(index < arr.size())
+            domValue_push(A, arr.at(index));
         else
             lua_pushnil(A);
         return 1;
@@ -336,7 +336,7 @@ domArray_push_metatable(
         auto const narg = lua_gettop(A);
         auto arr = domArray_get(A, 1);
         lua_pop(A, narg);
-        if( arr->empty() ||
+        if( arr.empty() ||
             lua_isnil(A, lua_upvalueindex(1)))
         {
             lua_pushnil(A);
@@ -345,9 +345,9 @@ domArray_push_metatable(
         }
         auto index = lua_tonumber(A, lua_upvalueindex(1));
         lua_pushnumber(A, index);
-        domValue_push(A, arr->values()[index]);
+        domValue_push(A, arr.at(index));
         ++index;
-        if(index < arr->size())
+        if(index < arr.size())
             lua_pushnumber(A, index);
         else
             lua_pushnil(A);
@@ -363,7 +363,7 @@ domArray_push_metatable(
     {
         Access A(L);
         auto arr = domArray_get(A, 1);
-        if(! arr->empty())
+        if(! arr.empty())
             lua_pushnumber(A, 0);
         else
             lua_pushnil(A);
@@ -398,13 +398,13 @@ domArray_push_metatable(
 
 // Return a userdata as a dom::ObjectPtr&
 static
-dom::ObjectPtr&
+dom::Object&
 domObject_get(
     Access& A, int index)
 {
     MRDOX_ASSERT(
         lua_type(A, index) == LUA_TUSERDATA);
-    return *static_cast<dom::ObjectPtr*>(
+    return *static_cast<dom::Object*>(
         lua_touserdata(A, index));
 }
 
@@ -430,7 +430,7 @@ domObject_push_metatable(
     {
         Access A(L);
         domValue_push(A,
-            domObject_get(A, 1)->get(
+            domObject_get(A, 1).get(
                 luaM_getstring(A, 2)));
         lua_replace(A, 1);
         return 1;
@@ -444,24 +444,24 @@ domObject_push_metatable(
     [](lua_State* L)
     {
         Access A(L);
-        auto obj = domObject_get(A, 1);
+        auto& obj = domObject_get(A, 1);
         auto key = luaM_getstring(A, 2);
         switch(lua_type(A, 3))
         {
         case LUA_TNIL:
             // VFALCO should erase instead?
-            obj->set(key, nullptr);
+            obj.set(key, nullptr);
             break;
         case LUA_TBOOLEAN:
-            obj->set(key, lua_toboolean(A, 3) != 0);
+            obj.set(key, lua_toboolean(A, 3) != 0);
             break;
         case LUA_TLIGHTUSERDATA:
             MRDOX_UNREACHABLE();
         case LUA_TNUMBER:
-            obj->set(key, lua_tonumber(A, 3));
+            obj.set(key, lua_tonumber(A, 3));
             break;
         case LUA_TSTRING:
-            obj->set(key, luaM_getstring(A, 3));
+            obj.set(key, luaM_getstring(A, 3));
             break;
         case LUA_TTABLE:
             // VFALCO TODO
@@ -489,8 +489,8 @@ domObject_push_metatable(
     [](lua_State* L)
     {
         Access A(L);
-        auto obj = domObject_get(A, 1);
-        if(! obj->empty())
+        auto& obj = domObject_get(A, 1);
+        if(! obj.empty())
             lua_pushnumber(A, 0);
         else
             lua_pushnil(A);
@@ -501,9 +501,9 @@ domObject_push_metatable(
         {
             Access A(L);
             auto const narg = lua_gettop(A);
-            auto obj = domObject_get(A, 1);
+            auto& obj = domObject_get(A, 1);
             lua_pop(A, narg);
-            if( obj->empty() ||
+            if( obj.empty() ||
                 lua_isnil(A, lua_upvalueindex(1)))
             {
                 lua_pushnil(A);
@@ -511,11 +511,11 @@ domObject_push_metatable(
                 return 2;
             }
             auto index = lua_tonumber(A, lua_upvalueindex(1));
-            auto const& kv = obj->values()[index];
+            auto const& kv = obj.entries()[index];
             luaM_pushstring(A, kv.first);
             domValue_push(A, kv.second);
             ++index;
-            if(index < obj->size())
+            if(index < obj.size())
                 lua_pushnumber(A, index);
             else
                 lua_pushnil(A);
@@ -549,12 +549,11 @@ static
 void
 domObject_push(
     Access& A,
-    dom::ObjectPtr const& obj)
+    dom::Object const& obj)
 {
-    MRDOX_ASSERT(obj);
-    dom::ObjectPtr& obj_ = *static_cast<
-        dom::ObjectPtr*>(lua_newuserdatauv(
-            A, sizeof(dom::ObjectPtr), 0));
+    auto& obj_ = *static_cast<
+        dom::Object*>(lua_newuserdatauv(
+            A, sizeof(dom::Object), 0));
     domObject_push_metatable(A);
     lua_setmetatable(A, -2);
     std::construct_at(&obj_, obj);
@@ -583,6 +582,7 @@ domValue_push(
         return luaM_pushstring(A, value.getString());
     case dom::Kind::Array:
         MRDOX_UNREACHABLE();
+        //return domArray_push(A, value.getArray());
     case dom::Kind::Object:
         return domObject_push(A, value.getObject());
     default:
@@ -617,7 +617,7 @@ Scope::
 loadChunk(
     std::string_view luaChunk,
     zstring chunkName,
-    std::source_location loc)
+    source_location loc)
 {
     Access A(*this);
     auto rc = lua_load(A,
@@ -631,7 +631,7 @@ Expected<Function>
 Scope::
 loadChunk(
     std::string_view luaChunk,
-    std::source_location loc)
+    source_location loc)
 {
     SourceLocation Loc(loc);
     return loadChunk(
@@ -646,7 +646,7 @@ Expected<Function>
 Scope::
 loadChunkFromFile(
     std::string_view fileName,
-    std::source_location loc)
+    source_location loc)
 {
     auto luaChunk = files::getFileText(fileName);
     if(! luaChunk)
@@ -667,7 +667,7 @@ Expected<Value>
 Scope::
 getGlobal(
     std::string_view key,
-    std::source_location loc)
+    source_location loc)
 {
     Access A(*this);
     lua_pushglobaltable(A);
@@ -806,17 +806,17 @@ Param(
 
 Param::
 Param(
-    dom::ArrayPtr const& arr) noexcept
+    dom::Array arr) noexcept
     : kind_(Kind::domArray)
-    , arr_(arr)
+    , arr_(std::move(arr))
 {
 }
 
 Param::
 Param(
-    dom::ObjectPtr const& obj) noexcept
+    dom::Object obj) noexcept
     : kind_(Kind::domObject)
-    , obj_(obj)
+    , obj_(std::move(obj))
 {
 }
 
@@ -1060,7 +1060,7 @@ Function(
 Table::
 Table(
     Scope& scope,
-    dom::ObjectPtr const& obj)
+    dom::Object const& obj)
     : Value(
         [&]
         {
@@ -1155,7 +1155,7 @@ callImpl(
 //------------------------------------------------
 
 void
-lua_dump(dom::ObjectPtr const& obj)
+lua_dump(dom::Object const& obj)
 {
     Context ctx;
 
@@ -1195,8 +1195,7 @@ lua_main()
         end
     )").value()();
     auto testFunc = scope.getGlobal("testFunc").value();
-    auto obj = makeShared<dom::Object>(
-        dom::Object::list_type{
+    dom::Object obj({
             { "x", "0" },
             { "y", "1" }
             });

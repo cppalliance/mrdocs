@@ -23,17 +23,18 @@ namespace js {
 
 /*  Proxy Traps
 
-    get                 [[Get]]	
-    deleteProperty      [[Delete]]
-    ownKeys             [[OwnPropertyKeys]]
     has                 [[HasProperty]]
+    get                 [[Get]]	
+
+    ownKeys             [[OwnPropertyKeys]]
+    enumerate           [[Enumerate]]
+    deleteProperty      [[Delete]]
     apply               [[Call]]
     defineProperty      [[DefineOwnProperty]]
     getPrototypeOf      [[GetPrototypeOf]]
     setPrototypeOf      [[SetPrototypeOf]]
     isExtensible        [[IsExtensible]]
     preventExtensions   [[PreventExtensions]]
-    enumerate           [[Enumerate]]
     construct           [[Construct]]
     getOwnPropertyDescriptor    [[GetOwnProperty]]
 
@@ -275,11 +276,8 @@ getGlobal(
 
 //------------------------------------------------
 
-static void domObject_push(
-    Access& A, dom::ObjectPtr const& obj);
-
-static void domValue_push(
-    Access& A, dom::Value const& value);
+static void domObject_push(Access& A, dom::Object const& obj);
+static void domValue_push(Access& A, dom::Value const& value);
 
 //------------------------------------------------
 //
@@ -288,7 +286,7 @@ static void domValue_push(
 //------------------------------------------------
 
 static
-dom::ArrayPtr&
+dom::Array&
 domArray_get(
     Access& A, duk_idx_t idx)
 {
@@ -299,17 +297,17 @@ domArray_get(
     else
         data = duk_get_buffer_data(A, idx, nullptr);
     duk_pop(A);
-    return *static_cast<dom::ArrayPtr*>(data);
+    return *static_cast<dom::Array*>(data);
 }
 
 static
 void
 domArray_push(
-    Access& A, dom::ArrayPtr const& arr)
+    Access& A, dom::Array const& arr)
 {
     duk_push_array(A);
-    auto& arr_ = *static_cast<dom::ArrayPtr*>(
-        duk_push_fixed_buffer(A, sizeof(dom::ArrayPtr)));
+    auto& arr_ = *static_cast<dom::Array*>(
+        duk_push_fixed_buffer(A, sizeof(dom::Array)));
     dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
 
     // Effects:     ~ArrayPtr
@@ -344,7 +342,7 @@ domArray_push(
         duk_push_this(A);
         auto& arr = domArray_get(A, -1);
         auto i = duk_to_number(A, 1);
-        duk_push_boolean(A, i < arr->size());
+        duk_push_boolean(A, i < arr.size());
         return 1;
     }, 2);
     dukM_put_prop_string(A, -2, "has");
@@ -363,9 +361,11 @@ domArray_push(
         case DUK_TYPE_NUMBER:
         {
             auto i = duk_get_int(A, 1);
-            auto const& v = arr->get(i);
             duk_pop_n(A, duk_get_top(A));
-            domValue_push(A, v);
+            if(i < arr.size())
+                domValue_push(A, arr.at(i));
+            else
+                duk_push_undefined(A);
             break;
         }
         case DUK_TYPE_STRING:
@@ -374,7 +374,7 @@ domArray_push(
             if(prop == "length")
             {
                 duk_pop_n(A, duk_get_top(A));
-                duk_push_number(A, arr->size());
+                duk_push_number(A, arr.size());
             }
             else
             {
@@ -391,19 +391,161 @@ domArray_push(
     dukM_put_prop_string(A, -2, "get");
 
 #if 1
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "ownKeys");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "enumerate");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "deleteProperty");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "apply");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "defineProperty");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "getPrototypeOf");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "setPrototypeOf");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "isExtensible");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "preventExtensions");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "construct");
+
+    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
+        return 0;
+    }, 0); dukM_put_prop_string(A, -2, "getOwnPropertyDescriptor");
+#endif
+
+    duk_push_proxy(A, 0);
+}
+
+//------------------------------------------------
+//
+// dom::Object
+//
+//------------------------------------------------
+
+static
+dom::Object&
+domObject_get(
+    Access& A, duk_idx_t idx)
+{
+    duk_get_prop_string(A, idx, DUK_HIDDEN_SYMBOL("dom"));
+    void* data;
+    if(duk_get_type(A, -1) == DUK_TYPE_POINTER)
+        data = duk_get_pointer(A, -1);
+    else
+        data = duk_get_buffer_data(A, idx, nullptr);
+    duk_pop(A);
+    return *static_cast<dom::Object*>(data);
+}
+
+static
+void
+domObject_push(
+    Access& A, dom::Object const& obj)
+{
+    duk_push_object(A);
+    auto& obj_ = *static_cast<dom::Object*>(
+        duk_push_fixed_buffer(A, sizeof(dom::Object)));
+    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
+
+    // Effects:     ~ObjectPtr
+    // Signature    ()
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        Access A(ctx);
+        duk_push_this(ctx);
+        std::destroy_at(&domObject_get(A, -1));
+        return 0;
+    }, 0);
+    duk_set_finalizer(A, -2);
+    std::construct_at(&obj_, obj);
+
+    // Proxy
+
+    duk_push_object(A);
+
+    // store a pointer so we can
+    // get to it from the proxy.
+    duk_push_pointer(A, &obj_);
+    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
+
+    // Trap:        [[Get]]
+    // Effects:     return target[prop]
+    // Signature:   (target, prop, receiver)
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        Access A(ctx);
+        duk_push_this(A); // the proxy
+        auto& obj = domObject_get(A, -1);
+        auto key = dukM_get_string(A, 1);
+        auto const& v = obj.get(key);
+        duk_pop_n(A, duk_get_top(A));
+        domValue_push(A, v);
+        return 1;
+    }, 3);
+    dukM_put_prop_string(A, -2, "get");
+
+    // Trap:        [[HasProperty]]
+    // Effects:     return t[k] != null
+    // Signature:   (t, k, r)
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        Access A(ctx);
+        duk_push_this(A);
+        auto& obj = domObject_get(A, -1);
+        auto key = dukM_get_string(A, 1);
+        auto const& v = obj.get(key);
+        duk_pop_n(A, duk_get_top(A));
+        // VFALCO should add dom::Object::exists(k) for this
+        duk_push_boolean(A, ! v.isNull());
+        return 1;
+    }, 3);
+    dukM_put_prop_string(A, -2, "has");
+
+#if 1
     // Trap:        [[OwnPropertyKeys]]
-    // Effects:
+    // Effects:     return entries()
     // Signature:   ()
     duk_push_c_function(A,
     [](duk_context* ctx) -> duk_ret_t
     {
-        /*
         Access A(ctx);
+        duk_push_this(A);
+        auto& obj = domObject_get(A, -1);
+        duk_pop(A);
         duk_push_array(A);
-        dukM_push_string(A, "length");
-        duk_put_prop_index(A, -2, 0);
-        */
-        return 0;
+        for(auto const& kv : obj.entries())
+        {
+            dukM_push_string(A, kv.first);
+            domValue_push(A, kv.second);
+            duk_put_prop(A, -3);
+        }
+        return 1;
     }, 0);
     dukM_put_prop_string(A, -2, "ownKeys");
 
@@ -447,114 +589,6 @@ domArray_push(
         return 0;
     }, 0); dukM_put_prop_string(A, -2, "getOwnPropertyDescriptor");
 #endif
-
-/*
-    get                 [[Get]]	
-    deleteProperty      [[Delete]]
-    ownKeys             [[OwnPropertyKeys]]
-    has                 [[HasProperty]]
-    apply               [[Call]]
-    defineProperty      [[DefineOwnProperty]]
-    getPrototypeOf      [[GetPrototypeOf]]
-    setPrototypeOf      [[SetPrototypeOf]]
-    isExtensible        [[IsExtensible]]
-    preventExtensions   [[PreventExtensions]]
-    enumerate           [[Enumerate]]
-    construct           [[Construct]]
-    getOwnPropertyDescriptor    [[GetOwnProperty]]
-*/
-    duk_push_proxy(A, 0);
-}
-
-//------------------------------------------------
-//
-// dom::Object
-//
-//------------------------------------------------
-
-static
-dom::ObjectPtr&
-domObject_get(
-    Access& A, duk_idx_t idx)
-{
-    duk_get_prop_string(A, idx, DUK_HIDDEN_SYMBOL("dom"));
-    void* data;
-    if(duk_get_type(A, -1) == DUK_TYPE_POINTER)
-        data = duk_get_pointer(A, -1);
-    else
-        data = duk_get_buffer_data(A, idx, nullptr);
-    duk_pop(A);
-    return *static_cast<dom::ObjectPtr*>(data);
-}
-
-static
-void
-domObject_push(
-    Access& A, dom::ObjectPtr const& obj)
-{
-    duk_push_object(A);
-    auto& obj_ = *static_cast<dom::ObjectPtr*>(
-        duk_push_fixed_buffer(A, sizeof(dom::ObjectPtr)));
-    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
-
-    // Effects:     ~ObjectPtr
-    // Signature    ()
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        Access A(ctx);
-        duk_push_this(ctx);
-        std::destroy_at(&domObject_get(A, -1));
-        return 0;
-    }, 0);
-    duk_set_finalizer(A, -2);
-    std::construct_at(&obj_, obj);
-
-    // Proxy
-
-    duk_push_object(A);
-
-    // store a pointer so we can
-    // get to it from the proxy.
-    duk_push_pointer(A, &obj_);
-    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
-
-    // Trap:        [[Get]]
-    // Effects:     return target[prop]
-    // Signature:   (target, prop, receiver)
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        Access A(ctx);
-        duk_push_this(A); // the proxy
-        auto& obj = domObject_get(A, -1);
-        //auto t0 = duk_get_type(A, 0); // DUK_TYPE_OBJECT
-        auto key = dukM_get_string(A, 1);
-        //auto t2 = duk_get_type(A, 2); // DUK_TYPE_OBJECT
-        auto const& v = obj->get(key);
-        duk_pop_n(A, duk_get_top(A));
-        domValue_push(A, v);
-        return 1;
-    }, 3);
-    dukM_put_prop_string(A, -2, "get");
-
-    // Trap:        [[HasProperty]]
-    // Effects:     return t[k] != null
-    // Signature:   (t, k, r)
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        Access A(ctx);
-        duk_push_this(A);
-        auto& obj = domObject_get(A, -1);
-        auto key = dukM_get_string(A, 1);
-        auto const& v = obj->get(key);
-        duk_pop_n(A, duk_get_top(A));
-        // VFALCO should add dom::Object::exists(k) for this
-        duk_push_boolean(A, ! v.isNull());
-        return 1;
-    }, 3);
-    dukM_put_prop_string(A, -2, "has");
 
     duk_push_proxy(A, 0);
 }
@@ -721,7 +755,7 @@ Param(
 
 Param::
 Param(
-    dom::ArrayPtr const& arr) noexcept
+    dom::Array const& arr) noexcept
     : kind_(Kind::DomArray)
     , arr_(arr)
 {
@@ -729,7 +763,7 @@ Param(
 
 Param::
 Param(
-    dom::ObjectPtr const& obj) noexcept
+    dom::Object const& obj) noexcept
     : kind_(Kind::DomObject)
     , obj_(obj)
 {

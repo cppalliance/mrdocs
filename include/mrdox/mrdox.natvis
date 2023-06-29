@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <Type Name="clang::mrdox::Expected&lt;*&gt;">
+    <DisplayString Condition="! has_error_">{v_}</DisplayString>
+    <DisplayString Condition="has_error_">{e_}</DisplayString>
+  </Type>
+
+  <Type Name="clang::mrdox::dom::Array">
+    <DisplayString>[ dom::Array ]</DisplayString>
+  </Type>
+
+  <Type Name="clang::mrdox::dom::Object">
+    <DisplayString>[ dom::Object ]</DisplayString>
+  </Type>
+
+  <Type Name="clang::mrdox::dom::Value">
+    <DisplayString Condition="kind_==Value::Kind::Null">null</DisplayString>
+    <DisplayString Condition="kind_==Value::Kind::Boolean">{b_}</DisplayString>
+    <DisplayString Condition="kind_==Value::Kind::Integer">{i_}</DisplayString>
+    <DisplayString Condition="kind_==Value::Kind::String">{str_}</DisplayString>
+    <DisplayString Condition="kind_==Value::Kind::Array">{arr_}</DisplayString>
+    <DisplayString Condition="kind_==Value::Kind::Object">{obj_}</DisplayString>
+  </Type>
+
+<!-- <mrdox/Support/Javascript.hpp> -->
+
+  <Type Name="clang::mrdox::js::Access">
+    <DisplayString>[ js::Access ]</DisplayString>
+  </Type>
+
+  <Type Name="clang::mrdox::js::Scope">
+    <DisplayString>[ js::Scope ]</DisplayString>
+  </Type>
+
+  <Type Name="clang::mrdox::js::Param">
+    <DisplayString Condition="kind_==Param::Kind::Undefined">undefined</DisplayString>
+    <DisplayString Condition="kind_==Param::Kind::Null">null</DisplayString>
+    <DisplayString Condition="kind_==Param::Kind::Boolean">{b_}</DisplayString>
+    <DisplayString Condition="kind_==Param::Kind::Integer">{i_}</DisplayString>
+    <DisplayString Condition="kind_==Param::Kind::Unsigned">{u_}</DisplayString>
+    <DisplayString Condition="kind_==Param::Kind::Double">{d_}</DisplayString>
+    <DisplayString Condition="kind_==Param::Kind::String">{s_}</DisplayString>
+    <DisplayString Condition="kind_==Param::Kind::Value">{idx_}</DisplayString>
+    <DisplayString Condition="kind_==Param::Kind::DomArray">{arr_}</DisplayString>
+    <DisplayString Condition="kind_==Param::Kind::DomObject">{obj_}</DisplayString>
+  </Type>
+
+  <Type Name="clang::mrdox::js::Value">
+    <DisplayString>duk_value@{idx_}</DisplayString>
+  </Type>
+
+</AutoVisualizer>

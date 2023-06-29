@@ -12,12 +12,14 @@
 #define MRDOX_API_SUPPORT_DOM_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/ADT/Optional.hpp>
 #include <mrdox/Support/SharedPtr.hpp>
 #include <fmt/format.h>
 #include <atomic>
 #include <cstdint>
 #include <initializer_list>
 #include <memory>
+#include <optional>
 #include <string_view>
 #include <type_traits>
 #include <utility>
@@ -49,101 +51,109 @@ enum class Kind
 //
 //------------------------------------------------
 
+/** Abstract array interface.
+
+    This interface is used by Array types.
+*/
 class MRDOX_DECL
-    Array
+    ArrayImpl
 {
 public:
-    using value_type = Value;
+    virtual ~ArrayImpl() = 0;
+    virtual std::size_t size() const noexcept = 0;
+    virtual Value at(std::size_t) const = 0;
+};
 
-    using list_type = std::vector<value_type>;
+/** An array of values.
+*/
+class MRDOX_DECL
+    Array final
+{
+    std::shared_ptr<ArrayImpl> impl_;
+
+public:
+    using impl_type = std::shared_ptr<ArrayImpl>;
 
     /** Destructor.
     */
-    virtual ~Array();
+    ~Array();
 
     /** Constructor.
 
-        Default-constructed arrays are empty.
+        Default-constructed arrays refer to a new,
+        empty array which is distinct from every
+        other empty array.
     */
-    Array() noexcept;
+private:
+    Array();
+public:
 
     /** Constructor.
 
-        The newly constructed array will retain
-        a copy of the list of values in `other`.
+        The newly constructed array will contain
+        copies of the scalars in other, and
+        references to its structured data.
     */
     Array(Array const& other);
 
     /** Constructor.
 
-        Upon construction, the object will retain
-        ownership of a shallow copy of the specified
-        list. In particular, dynamic objects will
-        be acquired with shared ownership.
-
-        @param list The initial list of values.
+        This constructs an array from an existing
+        implementation, with shared ownership. The
+        pointer cannot not be null.
     */
-    explicit Array(list_type list);
+    Array(std::shared_ptr<ArrayImpl> impl) noexcept
+        : impl_(std::move(impl))
+    {
+        MRDOX_ASSERT(impl_);
+    }
 
-    virtual bool empty() const noexcept;
-    virtual std::size_t size() const noexcept;
-    virtual Value get(std::size_t) const;
-
-    /** Return a deep copy of the container.
-
-        In particular, dynamic objects will be
-        deeply copied; changes to the copy are
-        not reflected in the original.
+    /** Return the implementation used by this object.
     */
-    virtual Value copy() const;
+    auto
+    impl() const noexcept ->
+        impl_type const&
+    {
+        return impl_;
+    }
 
-    list_type const& values() const noexcept;
+    /** Return true if the array is empty.
+    */
+    bool empty() const noexcept
+    {
+        return impl_->size() == 0;
+    }
+
+    /** Return the number of elements in the array.
+    */
+    std::size_t size() const noexcept
+    {
+        return impl_->size();
+    }
+
+    /** Return the zero-based element from the array.
+
+        @throw std::out_of_range `index >= this->size()`
+    */
+    Value at(std::size_t index) const;
 
     /** Return a diagnostic string.
     */
+    friend
     std::string
-    displayString() const;
-
-private:
-    std::vector<Value> list_;
+    toString(Array const&);
 };
 
-using ArrayPtr = SharedPtr<Array>;
-
-//------------------------------------------------
-//
-// LazyArray
-//
-//------------------------------------------------
-
-/** An Array whose construction is deferred.
+/** Return a new array using a custom implementation.
 */
-class MRDOX_DECL
-    LazyArray
+template<class T, class... Args>
+requires std::derived_from<T, ArrayImpl>
+Array
+newArray(Args&&... args)
 {
-    AtomicSharedPtr<Array> sp_;
-
-    /** Return the array.
-    */
-    virtual ArrayPtr construct() const = 0;
-
-public:
-    /** Destructor.
-    */
-    virtual ~LazyArray() = 0;
-
-    /** Constructor.
-    */
-    LazyArray() noexcept;
-
-    /** Return the object.
-    */
-    ArrayPtr get() const;
-};
-
-/** Alias for a pointer to a LazyArray.
-*/
-using LazyArrayPtr = SharedPtr<LazyArray>;
+    return Array(std::make_shared<T>(
+        std::forward<Args>(args)...));
+}
 
 //------------------------------------------------
 //
@@ -151,36 +161,64 @@ using LazyArrayPtr = SharedPtr<LazyArray>;
 //
 //------------------------------------------------
 
+/** Abstract object interface.
+
+    This interface is used by Object types.
+*/
+class MRDOX_DECL
+    ObjectImpl
+{
+public:
+    using value_type = std::pair<std::string_view, Value>;
+    using entries_type = std::vector<value_type>;
+
+    virtual ~ObjectImpl() = 0;
+    virtual std::size_t size() const noexcept = 0;
+    virtual bool exists(std::string_view key) const = 0;
+    virtual Value get(std::string_view key) const = 0;
+    virtual void set(std::string_view key, Value value) = 0;
+    virtual entries_type entries() const = 0;
+};
+
 /** A container of key and value pairs.
 */
 class MRDOX_DECL
-    Object
+    Object final
 {
+    std::shared_ptr<ObjectImpl> impl_;
+
 public:
     /** The type of an element in this container.
     */
-    using value_type = std::pair<std::string, Value>;
+    using value_type = ObjectImpl::value_type;
 
     /** The underlying, iterable range used by this container.
     */
-    using list_type = std::vector<value_type>;
+    using entries_type = ObjectImpl::entries_type;
+
+    /** The type of implementation.
+    */
+    using impl_type = std::shared_ptr<ObjectImpl>;
 
     /** Destructor.
     */
-    virtual ~Object();
+    ~Object();
 
     /** Constructor.
 
-        Default-constructed objects are empty.
+        Default-constructed objects refer to a new,
+        empty array which is distinct from every
+        other empty object.
     */
-    Object() noexcept;
+    Object();
 
     /** Constructor.
 
-        The newly constructed object will retain
-        a copy of the list of values in `other`.
+        The newly constructed array will contain
+        copies of the scalars in other, and
+        references to its structured data.
     */
-    Object(Object const& other);
+    Object(Object const& other) noexcept;
 
     /** Constructor.
 
@@ -191,7 +229,29 @@ public:
 
         @param list The initial list of values.
     */
-    explicit Object(list_type list);
+    explicit Object(entries_type list);
+
+    /** Constructor.
+
+        This constructs an object from an existing
+        implementation, with shared ownership. The
+        pointer cannot not be null.
+    */
+    explicit
+    Object(impl_type impl) noexcept
+        : impl_(std::move(impl))
+    {
+        MRDOX_ASSERT(impl_);
+    }
+
+    /** Return the implementation used by this object.
+    */
+    auto
+    impl() const noexcept ->
+        impl_type const&
+    {
+        return impl_;
+    }
 
     /** Return true if the container is empty.
     */
@@ -201,31 +261,9 @@ public:
     */
     std::size_t size() const noexcept;
 
-    /** Return the range of contained values.
+    /** Return true if a key exists.
     */
-    list_type const& values() const noexcept;
-
-    /** Add elements to the container.
-
-        No checking is performed to prevent
-        the insertion of duplicate keys.
-    */
-    void append(std::string_view key, Value value);
-
-    /** Add elements to the container.
-
-        No checking is performed to prevent
-        the insertion of duplicate keys.
-    */
-    void append(std::initializer_list<value_type>);
-
-    /** Return a deep copy of the container.
-
-        In particular, dynamic objects will be
-        deeply copied; changes to the copy are
-        not reflected in the original.
-    */
-    virtual Value copy() const;
+    bool exists(std::string_view key) const;
 
     /** Return the value for a given key.
 
@@ -236,7 +274,7 @@ public:
 
         @param key The key.
     */
-    virtual Value get(std::string_view key) const;
+    Value get(std::string_view key) const;
 
     /** Set or replace the value for a given key.
 
@@ -248,60 +286,92 @@ public:
 
         @param value The value to set.
     */
-    virtual void set(std::string_view key, Value value);
+    void set(std::string_view key, Value value) const;
+
+    /** Return the range of contained values.
+    */
+    entries_type entries() const noexcept;
+
+    //--------------------------------------------
 
     /** Return a diagnostic string.
     */
+    friend
     std::string
-    displayString() const;
-
-    // VFALCO DEPRECATED (for duktape)
-    virtual std::vector<std::string_view> props() const;
-
-private:
-    list_type list_;
+    toString(Object const&);
 };
 
-/** Alias for a pointer to an Object.
+/** Return a new object using a custom implementation.
 */
-using ObjectPtr = SharedPtr<Object>;
+template<class T, class... Args>
+requires std::derived_from<T, ObjectImpl>
+Object
+newObject(Args&&... args)
+{
+    return Object(std::make_shared<T>(
+        std::forward<Args>(args)...));
+}
 
 //------------------------------------------------
 //
-// LazyObject
+// DefaultObjectImpl
 //
 //------------------------------------------------
 
-/** An Object whose construction is deferred.
+/** The default Object implementation.
 */
 class MRDOX_DECL
-    LazyObject
+    DefaultObjectImpl : public ObjectImpl
 {
-    AtomicSharedPtr<Object> sp_;
-
-    /** Return the object.
-    */
-    virtual ObjectPtr construct() const = 0;
+    entries_type entries_;
 
 public:
-    /** Destructor.
-    */
-    virtual ~LazyObject() = 0;
-
-    /** Constructor.
-    */
-    LazyObject() noexcept;
-
-    /** Return the object.
-    */
-    ObjectPtr get() const;
+    DefaultObjectImpl() noexcept;
+    explicit DefaultObjectImpl(entries_type entries) noexcept;
+    std::size_t size() const noexcept override;
+    bool exists(std::string_view key) const override;
+    Value get(std::string_view key) const override;
+    void set(std::string_view key, Value value) override;
+    entries_type entries() const override;
 };
 
-/** Alias for a pointer to a LazyObject.
+//------------------------------------------------
+//
+// LazyObjectImpl
+//
+//------------------------------------------------
+
+/** A lazy Object implementation.
 */
-using LazyObjectPtr = SharedPtr<LazyObject>;
+class MRDOX_DECL
+    LazyObjectImpl : public ObjectImpl
+{
+    std::atomic<std::shared_ptr<ObjectImpl>> mutable sp_;
+
+    using impl_type = Object::impl_type;
+
+    ObjectImpl& obj() const;
+    virtual Object construct() const = 0;
+
+public:
+    std::size_t size() const noexcept override;
+    bool exists(std::string_view key) const override;
+    Value get(std::string_view key) const override;
+    void set(std::string_view key, Value value) override;
+    entries_type entries() const override;
+};
 
 //------------------------------------------------
+
+struct literal
+{
+    std::string_view s;
+
+    literal(std::string_view s_)
+        : s(s_)
+    {
+    }
+};
 
 /** A variant container for any kind of Dom value.
 */
@@ -315,22 +385,18 @@ class MRDOX_DECL
         Integer,
         String,
         Array,
-        Object,
-        LazyArray,
-        LazyObject
+        Object
     };
 
     Kind kind_;
 
     union
     {
-        bool          b_;
-        std::int64_t  i_;
-        std::string   str_;
-        ArrayPtr      arr_;
-        ObjectPtr     obj_;
-        LazyArrayPtr  lazy_arr_;
-        LazyObjectPtr lazy_obj_;
+        bool                b_;
+        std::int64_t        i_;
+        std::string         str_;
+        Array               arr_;
+        Object              obj_;
     };
 
     friend class Array;
@@ -344,10 +410,9 @@ public:
     Value(std::nullptr_t) noexcept;
     Value(std::int64_t) noexcept;
     Value(std::string s) noexcept;
-    Value(ArrayPtr arr) noexcept;
-    Value(ObjectPtr obj) noexcept;
-    Value(LazyArrayPtr lazy_arr) noexcept;
-    Value(LazyObjectPtr lazy_obj) noexcept;
+    Value(literal const& lit) noexcept;
+    Value(Array arr) noexcept;
+    Value(Object obj) noexcept;
     Value& operator=(Value&&) noexcept;
     Value& operator=(Value const&);
 
@@ -372,34 +437,6 @@ public:
     {
     }
 
-    template<class T>
-    requires std::derived_from<T, Array>
-    Value(SharedPtr<T> const& ptr) noexcept
-        : Value(ArrayPtr(ptr))
-    {
-    }
-
-    template<class T>
-    requires std::derived_from<T, Object>
-    Value(SharedPtr<T> const& ptr) noexcept
-        : Value(ObjectPtr(ptr))
-    {
-    }
-
-    template<class T>
-    requires std::derived_from<T, LazyArray>
-    Value(SharedPtr<T> const& ptr) noexcept
-        : Value(LazyArrayPtr(ptr))
-    {
-    }
-
-    template<class T>
-    requires std::derived_from<T, LazyObject>
-    Value(SharedPtr<T> const& ptr) noexcept
-        : Value(LazyObjectPtr(ptr))
-    {
-    }
-
     template<class Enum>
     requires std::is_enum_v<Enum>
     Value(Enum v) noexcept
@@ -408,80 +445,100 @@ public:
     {
     }
 
-    /** Return a copy.
-    */
-    Value copy() const;
+    template<class T>
+    requires std::constructible_from<Value, T>
+    Value(std::optional<T> const& opt)
+        : Value(opt ? Value(*opt) : Value())
+    {
+    }
 
-    /** Return the type of value contained.|
+    template<class T>
+    requires std::constructible_from<Value, T>
+    Value(Optional<T> const& opt)
+        : Value(opt ? Value(*opt) : Value())
+    {
+    }
+
+    /** Return the type of value contained.
     */
     dom::Kind kind() const noexcept;
 
     /** Return true if this is null.
     */
-    bool isNull() const noexcept { return kind_ == Kind::Null; }
+    bool isNull() const noexcept
+    {
+        return kind_ == Kind::Null;
+    }
 
     /** Return true if this is a boolean.
     */
-    bool isBool() const noexcept { return kind_ == Kind::Boolean; }
+    bool isBoolean() const noexcept
+    {
+        return kind_ == Kind::Boolean;
+    }
 
     /** Return true if this is an integer.
     */
-    bool isInteger() const noexcept { return kind_ == Kind::Integer; }
+    bool isInteger() const noexcept
+    {
+        return kind_ == Kind::Integer;
+    }
 
     /** Return true if this is a string.
     */
-    bool isString() const noexcept { return kind_ == Kind::String; }
+    bool isString() const noexcept
+    {
+        return kind_ == Kind::String;
+    }
 
     /** Return true if this is an array.
     */
     bool isArray() const noexcept
     {
-        return
-            kind_ == Kind::Array ||
-            kind_ == Kind::LazyArray;
+        return kind_ == Kind::Array;
     }
 
     /** Return true if this is an object.
     */
     bool isObject() const noexcept
     {
-        return
-            kind_ == Kind::Object ||
-            kind_ == Kind::LazyObject;
+        return kind_ == Kind::Object;
     }
 
     bool isTruthy() const noexcept;
 
     bool getBool() const noexcept
     {
-        MRDOX_ASSERT(kind_ == Kind::Boolean);
+        MRDOX_ASSERT(isBoolean());
         return b_ != 0;
     }
 
-    std::int64_t getInteger() const noexcept
+    std::int64_t
+    getInteger() const noexcept
     {
-        MRDOX_ASSERT(kind_ == Kind::Integer);
+        MRDOX_ASSERT(isInteger());
         return i_;
     }
 
-    std::string_view getString() const noexcept
+    std::string_view
+    getString() const noexcept
     {
-        MRDOX_ASSERT(kind_ == Kind::String);
+        MRDOX_ASSERT(isString());
         return str_;
     }
 
-    /** Return the array if this is an object.
+    /** Return the array.
 
         @throw Error `! isArray()`
     */
-    ArrayPtr
+    Array const&
     getArray() const;
 
-    /** Return the object if this is an object.
+    /** Return the object.
 
         @throw Error `! isObject()`
     */
-    ObjectPtr
+    Object const&
     getObject() const;
 
     /** Swap two values.
@@ -500,29 +557,57 @@ public:
 
     /** Return a diagnostic string.
     */
+    friend
     std::string
-    displayString() const;
+    toString(Value const&);
 
-private:
     /** Return a diagnostic string.
 
         This function will not traverse children.
     */
+    friend
     std::string
-    displayString1() const;
+    toStringChild(Value const&);
 };
 
 //------------------------------------------------
 
-/** Create an object from an initializer list.
-*/
-inline
-ObjectPtr
-createObject(
-    std::initializer_list<Object::value_type> init)
+inline Value Array::at(std::size_t index) const
 {
-    return makeShared<Object>(Object::list_type(init));
+    return impl_->at(index);
 }
+
+inline bool Object::empty() const noexcept
+{
+    return impl_->size() == 0;
+}
+
+inline std::size_t Object::size() const noexcept
+{
+    return impl_->size();
+}
+
+inline bool Object::exists(std::string_view key) const
+{
+    return impl_->exists(key);
+}
+
+inline Value Object::get(std::string_view key) const
+{
+    return impl_->get(key);
+}
+
+inline void Object::set(std::string_view key, Value value) const
+{
+    impl_->set(key, std::move(value));
+}
+
+inline auto Object::entries() const noexcept -> entries_type
+{
+    return impl_->entries();
+}
+
+//------------------------------------------------
 
 /** Return a non-empty string, or a null.
 */
@@ -551,7 +636,7 @@ struct fmt::formatter<clang::mrdox::dom::Object>
         fmt::format_context& ctx) const
     {
         return fmt::formatter<std::string>::format(
-            value.displayString(), ctx);
+            toString(value), ctx);
     }
 };
 
@@ -564,7 +649,7 @@ struct fmt::formatter<clang::mrdox::dom::Value>
         fmt::format_context& ctx) const
     {
         return fmt::formatter<std::string>::format(
-            value.displayString(), ctx);
+            toString(value), ctx);
     }
 };
 
