@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace>
+  <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
+    <function name="f0" id="ORL9/51wI1T8sdK1zKvAQJvBXXE=">
+      <file path="namespace.cpp" line="3"/>
+    </function>
+    <namespace name="B" id="4hr3niqdAlVLoJDRDfOf4nP1zbU=">
+      <function name="f1" id="RAcSjxVkWvI/awJiHw3JE6+Sqi0=">
+        <file path="namespace.cpp" line="7"/>
+      </function>
+    </namespace>
+    <namespace name="C" id="tNUg3mGNhZhJy+kbMOJmCB7CUds=" is-inline="1">
+      <function name="f2" id="HaQCsemzdIbo/5b1lSoHbiA1j68=">
+        <file path="namespace.cpp" line="12"/>
+      </function>
+    </namespace>
+    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1" is-inline="1">
+      <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
+        <file path="namespace.cpp" line="17"/>
+      </function>
+      <function name="f8" id="DySJ4/Mh2WNuu9mIEcqNSCSDJYk=">
+        <file path="namespace.cpp" line="37"/>
+      </function>
+      <function name="f10" id="JFdBEye4uXzw0ilTytFZ8c1sSbg=">
+        <file path="namespace.cpp" line="43"/>
+      </function>
+      <namespace name="G" id="Wst/dadHi6Smk6pSpSEAkzhH8+M=">
+        <function name="f11" id="Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=">
+          <file path="namespace.cpp" line="47"/>
+        </function>
+      </namespace>
+      <namespace name="H" id="0bLp2uJCrLh6KF6tdyR+5EFm3JA=" is-inline="1">
+        <function name="f12" id="emiOGg7QaKWV17XaWH2S5DJ+vL0=">
+          <file path="namespace.cpp" line="52"/>
+        </function>
+      </namespace>
+      <function name="f14" id="nNa4hlu4nXFlhTbAMLUSo8W55Dc=">
+        <file path="namespace.cpp" line="67"/>
+      </function>
+    </namespace>
+  </namespace>
+  <namespace name="D" id="ZzEKHnfY4xmz/e4XegZ+zBdBnKE=" is-inline="1">
+    <function name="f5" id="fxIH/xCm0IKZv739SRjeEnzqXCc=">
+      <file path="namespace.cpp" line="23"/>
+    </function>
+    <namespace name="E" id="ztz7MOWesSViYVR7u+aEiSORqG0=">
+      <function name="f6" id="Qf4PvJJjCKOCzviJDkpMntv8z48=">
+        <file path="namespace.cpp" line="27"/>
+      </function>
+    </namespace>
+    <namespace name="F" id="CcY0g7ewX4RTWRubHOPJAn5T8uY=" is-inline="1">
+      <function name="f7" id="Vi90nY9KWrCv3wWIlvgWi9fs//E=">
+        <file path="namespace.cpp" line="32"/>
+      </function>
+    </namespace>
+    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1" is-inline="1">
+      <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
+        <file path="namespace.cpp" line="17"/>
+      </function>
+      <function name="f8" id="DySJ4/Mh2WNuu9mIEcqNSCSDJYk=">
+        <file path="namespace.cpp" line="37"/>
+      </function>
+      <function name="f10" id="JFdBEye4uXzw0ilTytFZ8c1sSbg=">
+        <file path="namespace.cpp" line="43"/>
+      </function>
+      <namespace name="G" id="Wst/dadHi6Smk6pSpSEAkzhH8+M=">
+        <function name="f11" id="Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=">
+          <file path="namespace.cpp" line="47"/>
+        </function>
+      </namespace>
+      <namespace name="H" id="0bLp2uJCrLh6KF6tdyR+5EFm3JA=" is-inline="1">
+        <function name="f12" id="emiOGg7QaKWV17XaWH2S5DJ+vL0=">
+          <file path="namespace.cpp" line="52"/>
+        </function>
+      </namespace>
+      <function name="f14" id="nNa4hlu4nXFlhTbAMLUSo8W55Dc=">
+        <file path="namespace.cpp" line="67"/>
+      </function>
+    </namespace>
+  </namespace>
+  <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1" is-inline="1">
+    <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
+      <file path="namespace.cpp" line="17"/>
+    </function>
+    <function name="f8" id="DySJ4/Mh2WNuu9mIEcqNSCSDJYk=">
+      <file path="namespace.cpp" line="37"/>
+    </function>
+    <function name="f10" id="JFdBEye4uXzw0ilTytFZ8c1sSbg=">
+      <file path="namespace.cpp" line="43"/>
+    </function>
+    <namespace name="G" id="Wst/dadHi6Smk6pSpSEAkzhH8+M=">
+      <function name="f11" id="Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=">
+        <file path="namespace.cpp" line="47"/>
+      </function>
+    </namespace>
+    <namespace name="H" id="0bLp2uJCrLh6KF6tdyR+5EFm3JA=" is-inline="1">
+      <function name="f12" id="emiOGg7QaKWV17XaWH2S5DJ+vL0=">
+        <file path="namespace.cpp" line="52"/>
+      </function>
+    </namespace>
+    <function name="f14" id="nNa4hlu4nXFlhTbAMLUSo8W55Dc=">
+      <file path="namespace.cpp" line="67"/>
+    </function>
+  </namespace>
+  <namespace name="I" id="+dTV+2puUwO4arfDuNZCVAzk0M0=">
+    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1" is-inline="1">
+      <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
+        <file path="namespace.cpp" line="17"/>
+      </function>
+      <function name="f8" id="DySJ4/Mh2WNuu9mIEcqNSCSDJYk=">
+        <file path="namespace.cpp" line="37"/>
+      </function>
+      <function name="f10" id="JFdBEye4uXzw0ilTytFZ8c1sSbg=">
+        <file path="namespace.cpp" line="43"/>
+      </function>
+      <namespace name="G" id="Wst/dadHi6Smk6pSpSEAkzhH8+M=">
+        <function name="f11" id="Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=">
+          <file path="namespace.cpp" line="47"/>
+        </function>
+      </namespace>
+      <namespace name="H" id="0bLp2uJCrLh6KF6tdyR+5EFm3JA=" is-inline="1">
+        <function name="f12" id="emiOGg7QaKWV17XaWH2S5DJ+vL0=">
+          <file path="namespace.cpp" line="52"/>
+        </function>
+      </namespace>
+      <function name="f14" id="nNa4hlu4nXFlhTbAMLUSo8W55Dc=">
+        <file path="namespace.cpp" line="67"/>
+      </function>
+    </namespace>
+  </namespace>
+</namespace>
+</mrdox>

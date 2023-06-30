@@ -1197,8 +1197,9 @@ buildNamespace(
 {
     if(! extractInfo(I, D))
         return;
-    if(D->isAnonymousNamespace())
-        I.Name = "@nonymous_namespace"; // VFALCO BAD!
+
+    I.specs.isAnonymous = D->isAnonymousNamespace();
+    I.specs.isInline = D->isInline();
 
     bool member_spec = getParentNamespaces(I.Namespace, D);
 

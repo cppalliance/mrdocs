@@ -14,10 +14,19 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Metadata/Info.hpp>
+#include <mrdox/ADT/BitField.hpp>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
+
+union NamespaceFlags
+{
+    BitFieldFullValue raw{.value=0u};
+
+    BitFlag<0> isInline;
+    BitFlag<1> isAnonymous;
+};
 
 /** Describes a namespace.
 */
@@ -26,6 +35,8 @@ struct NamespaceInfo
 {
     std::vector<SymbolID> Members;
     std::vector<SymbolID> Specializations;
+
+    NamespaceFlags specs;
 
     //--------------------------------------------
 

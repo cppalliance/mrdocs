@@ -162,6 +162,7 @@ reduceSpecializedMembers(
 void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 {
     MRDOX_ASSERT(canMerge(I, Other));
+    I.specs.raw.value |= Other.specs.raw.value;
     reduceSymbolIDs(I.Members, std::move(Other.Members));
     reduceSymbolIDs(I.Specializations, std::move(Other.Specializations));
     mergeInfo(I, std::move(Other));

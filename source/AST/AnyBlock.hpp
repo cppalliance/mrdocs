@@ -969,6 +969,8 @@ public:
             return decodeRecord(R, I->Members, Blob);
         case NAMESPACE_SPECIALIZATIONS:
             return decodeRecord(R, I->Specializations, Blob);
+        case NAMESPACE_BITS:
+            return decodeRecord(R, {&I->specs.raw}, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

@@ -200,8 +200,10 @@ operator()(
     if constexpr(T::isNamespace())
     {
         tags_.open(namespaceTagName, {
-            { "name", I.Name },
-            { I.id }
+            { "name", I.Name, ! I.Name.empty() },
+            { I.id },
+            { "is-anonymous", "1", I.specs.isAnonymous},
+            { "is-inline", "1", I.specs.isInline}
             });
         writeJavadoc(I.javadoc);
         corpus_.traverse(I, *this);

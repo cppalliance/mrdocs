@@ -276,6 +276,7 @@ RecordIDNameMap = []()
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {NAMESPACE_MEMBERS, {"NamespaceMembers", &SymbolIDsAbbrev}},
         {NAMESPACE_SPECIALIZATIONS, {"NamespaceSpecializations", &SymbolIDsAbbrev}},
+        {NAMESPACE_BITS, {"NamespaceBits", &Integer32ArrayAbbrev}},
         {RECORD_KEY_KIND, {"KeyKind", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
@@ -359,7 +360,7 @@ RecordsByBlock{
          JAVADOC_NODE_ADMONISH, JAVADOC_PARAM_DIRECTION}},
     // NamespaceInfo
     {BI_NAMESPACE_BLOCK_ID,
-        {NAMESPACE_MEMBERS, NAMESPACE_SPECIALIZATIONS}},
+        {NAMESPACE_MEMBERS, NAMESPACE_SPECIALIZATIONS, NAMESPACE_BITS}},
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
         {RECORD_KEY_KIND, RECORD_IS_TYPE_DEF, RECORD_BITS,
@@ -1003,6 +1004,7 @@ emitBlock(
     emitInfoPart(I);
     emitRecord(I.Members, NAMESPACE_MEMBERS);
     emitRecord(I.Specializations, NAMESPACE_SPECIALIZATIONS);
+    emitRecord({I.specs.raw}, NAMESPACE_BITS);
 }
 
 void

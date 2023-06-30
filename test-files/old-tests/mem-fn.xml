@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
-<namespace name="">
+<namespace>
   <struct name="T01" id="O2UBDeG42PMrk1up8f8PGVFhIGk=">
     <file path="mem-fn.cpp" line="3" class="def"/>
     <function name="f" id="dmtEtFE6EVKE6hWuugP9vFuib6Y=">

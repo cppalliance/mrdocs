@@ -29,8 +29,10 @@ grammar
     Namespace =
         element namespace
         {
-            Name,
+            Name?,
             ID?,
+            attribute is-inline { "1" }?,
+            attribute is-anonymous { "1" }?,
             Javadoc?,
             Scope
         }
