@@ -4,17 +4,37 @@
 <namespace name="">
   <variable name="i" id="X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=">
     <file path="ns-variables.cpp" line="3" class="def"/>
+    <attr id="constexpr-kind" name="constexpr" value="1"/>
     <type name="int" cv-qualifiers="const"/>
   </variable>
+  <variable name="j" id="pKvK/kHXdM/1/pu86JcSrLqVypE=">
+    <file path="ns-variables.cpp" line="4" class="def"/>
+    <attr id="is-constinit"/>
+    <type name="int"/>
+  </variable>
+  <variable name="k" id="Fr1KYTKmyLHGW9rPSpCZK82iRqQ=">
+    <file path="ns-variables.cpp" line="9" class="def"/>
+    <file path="ns-variables.cpp" line="6"/>
+    <attr id="storage-class" name="extern" value="1"/>
+    <attr id="constexpr-kind" name="constexpr" value="1"/>
+    <type name="int" cv-qualifiers="const"/>
+  </variable>
+  <variable name="l" id="h5r4fNloVAMKqMyVJI+iWTxRjhM=">
+    <file path="ns-variables.cpp" line="10" class="def"/>
+    <file path="ns-variables.cpp" line="7"/>
+    <attr id="storage-class" name="extern" value="1"/>
+    <attr id="is-constinit"/>
+    <type name="int"/>
+  </variable>
   <variable name="pi" id="EgqLVTs3FIJjFIODa5OOP2hmEI0=">
-    <file path="ns-variables.cpp" line="5" class="def"/>
+    <file path="ns-variables.cpp" line="12" class="def"/>
     <type name="double"/>
   </variable>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file path="ns-variables.cpp" line="7" class="def"/>
+    <file path="ns-variables.cpp" line="14" class="def"/>
   </struct>
   <variable name="t" id="eFAdMVIx9F2Zyx0LmK/nCDOhmhA=">
-    <file path="ns-variables.cpp" line="9"/>
+    <file path="ns-variables.cpp" line="16"/>
     <attr id="storage-class" name="extern" value="1"/>
     <type class="tag" id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
   </variable>

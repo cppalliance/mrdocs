@@ -8,7 +8,19 @@
       <file path="static-data-def-constexpr.cpp" line="5" class="def"/>
       <file path="static-data-def-constexpr.cpp" line="3"/>
       <attr id="storage-class" name="static" value="2"/>
+      <attr id="constexpr-kind" name="constexpr" value="1"/>
       <type class="tag" id="pOYGF6pLJlICuiGO0Xj0daDb/to=" name="S" cv-qualifiers="const"/>
+    </variable>
+  </struct>
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="static-data-def-constexpr.cpp" line="7" class="def"/>
+    <variable name="t" id="+nDx93NmBRbrBZ8RlBwzPk8rp8I=">
+      <file path="static-data-def-constexpr.cpp" line="12" class="def"/>
+      <file path="static-data-def-constexpr.cpp" line="9"/>
+      <attr id="storage-class" name="static" value="2"/>
+      <attr id="constexpr-kind" name="constexpr" value="1"/>
+      <attr id="is-constinit"/>
+      <type name="int" cv-qualifiers="const"/>
     </variable>
   </struct>
 </namespace>

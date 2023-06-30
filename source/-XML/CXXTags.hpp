@@ -183,6 +183,8 @@ inline void write(VariableFlags0 const& bits, XMLTags& tags)
 {
     BitFieldWriter<VariableFlags0> fw(bits, tags);
     fw.write(&VariableFlags0::storageClass, "storage-class");
+    fw.write(&VariableFlags0::constexprKind, "constexpr-kind");
+    fw.write(&VariableFlags0::isConstinit, "is-constinit");
 }
 
 inline

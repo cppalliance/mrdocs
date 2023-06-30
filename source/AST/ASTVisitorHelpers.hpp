@@ -69,7 +69,11 @@ convertToConstexprKind(
     case OldKind::Unspecified: return NewKind::None;
     case OldKind::Constexpr:   return NewKind::Constexpr;
     case OldKind::Consteval:   return NewKind::Consteval;
-    case OldKind::Constinit:   return NewKind::Constinit;
+    // KRYSTIAN NOTE: ConstexprSpecKind::Constinit exists,
+    // but I don't think it's ever used because a variable
+    // can be declared both constexpr and constinit
+    // (but not both in the same declaration)
+    case OldKind::Constinit:
     default:
         MRDOX_UNREACHABLE();
     }

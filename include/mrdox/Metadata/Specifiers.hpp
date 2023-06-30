@@ -55,7 +55,7 @@ enum class StorageClassKind
     Register
 };
 
-/** `constexpr`/`consteval`/`constinit` specifier kinds
+/** `constexpr`/`consteval` specifier kinds
 
     [dcl.spec.general] p2: At most one of the `constexpr`, `consteval`,
     and `constinit` keywords shall appear in a decl-specifier-seq
@@ -66,8 +66,6 @@ enum class ConstexprKind
     Constexpr,
     // only valid for functions
     Consteval,
-    // only valid for variables
-    Constinit
 };
 
 /** Explicit specifier kinds

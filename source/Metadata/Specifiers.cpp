@@ -50,7 +50,6 @@ toString(ConstexprKind kind)
     case ConstexprKind::None:      return "";
     case ConstexprKind::Constexpr: return "constexpr";
     case ConstexprKind::Consteval: return "consteval";
-    case ConstexprKind::Constinit: return "constinit";
     default:
         MRDOX_UNREACHABLE();
     }

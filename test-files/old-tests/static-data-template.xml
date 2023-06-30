@@ -12,6 +12,7 @@
         <variable name="x" id="7L90lvoKPW80F2cnMs0e05abtuk=">
           <file path="static-data-template.cpp" line="5" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
+          <attr id="constexpr-kind" name="constexpr" value="1"/>
           <type name="T" cv-qualifiers="const"/>
         </variable>
       </template>
@@ -22,6 +23,7 @@
         <variable name="x" id="odTOUblgmooUozrBqW3qKzPWSO4=">
           <file path="static-data-template.cpp" line="7" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
+          <attr id="constexpr-kind" name="constexpr" value="1"/>
           <type name="T" cv-qualifiers="const"/>
         </variable>
       </template>
@@ -31,6 +33,7 @@
         <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=">
           <file path="static-data-template.cpp" line="10" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
+          <attr id="constexpr-kind" name="constexpr" value="1"/>
           <type name="bool" cv-qualifiers="const"/>
         </variable>
       </template>

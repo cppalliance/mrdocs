@@ -27,6 +27,8 @@ union VariableFlags0
     BitFieldFullValue raw;
 
     BitField<0, 3, StorageClassKind> storageClass;
+    BitField<3, 2, ConstexprKind> constexprKind;
+    BitFlag<5> isConstinit;
 };
 
 /** A variable.

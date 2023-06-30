@@ -1320,12 +1320,7 @@ buildField(
     int line = getLine(D);
     I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
 
-#if 0
-    I.Type = buildTypeInfoForType(
-        D->getTypeSourceInfo()->getType());
-#else
     I.Type = buildTypeInfoForType(D->getType());
-#endif
 
     I.IsMutable = D->isMutable();
 
@@ -1362,15 +1357,22 @@ buildVar(
         I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
     else
         I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
-#if 0
-    I.Type = buildTypeInfoForType(
-        D->getTypeSourceInfo()->getType());
-#else
+
     I.Type = buildTypeInfoForType(D->getType());
-#endif
+
     I.specs.storageClass =
         convertToStorageClassKind(
             D->getStorageClass());
+
+    // KRYSTIAN NOTE: VarDecl does not provide getConstexprKind,
+    // nor does it use getConstexprKind to store whether
+    // a variable is constexpr/constinit. Although
+    // only one is permitted in a variable declaration,
+    // it is possible to declare a static data member
+    // as both constexpr and constinit in separate declarations..
+    I.specs.isConstinit = D->hasAttr<ConstInitAttr>();
+    if(D->isConstexpr())
+        I.specs.constexprKind = ConstexprKind::Constexpr;
 
     bool member_spec = getParentNamespaces(I.Namespace, D);
 

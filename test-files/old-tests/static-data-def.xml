@@ -22,6 +22,7 @@
         <file path="static-data-def.cpp" line="21" class="def"/>
         <file path="static-data-def.cpp" line="6"/>
         <attr id="storage-class" name="static" value="2"/>
+        <attr id="constexpr-kind" name="constexpr" value="1"/>
         <type name="int" cv-qualifiers="const"/>
       </variable>
       <variable name="v3" id="Wx5S5oWv5o4nV7I+zFEKTvWl40g=">
@@ -49,6 +50,7 @@
       <variable name="v7" id="VCnmz8Cp9RtJzQQQ7yw57uzbQAY=">
         <file path="static-data-def.cpp" line="12" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
+        <attr id="constexpr-kind" name="constexpr" value="1"/>
         <type name="int" cv-qualifiers="const"/>
       </variable>
     </struct>
