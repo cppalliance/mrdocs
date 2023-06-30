@@ -17,6 +17,7 @@
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Type.hpp>
+#include <mrdox/Support/String.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
@@ -65,7 +66,6 @@ private:
 
 // Converters for attributes
 std::string toString(SymbolID const& id);
-llvm::StringRef toString(InfoKind) noexcept;
 llvm::StringRef toString(doc::Style style) noexcept;
 
 //------------------------------------------------
@@ -74,12 +74,12 @@ llvm::StringRef toString(doc::Style style) noexcept;
 */
 struct Attribute
 {
-    llvm::StringRef name;
+    StringLiteral name;
     std::string value;
     bool pred;
 
     Attribute(
-        llvm::StringRef name_,
+        StringLiteral name_,
         llvm::StringRef value_,
         bool pred_ = true) noexcept
         : name(name_)
