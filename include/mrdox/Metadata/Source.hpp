@@ -31,7 +31,7 @@ struct MRDOX_DECL
 
     /** Line number within the file
     */
-    int LineNumber;
+    unsigned LineNumber;
 
     /** Whether the file is inside the source root directory
     */
@@ -40,7 +40,7 @@ struct MRDOX_DECL
     //--------------------------------------------
 
     Location(
-        int line = 0,
+        unsigned line = 0,
         std::string_view filename = "",
         bool in_root_dir = false)
         : Filename(filename)

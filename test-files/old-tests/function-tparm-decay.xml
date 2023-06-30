@@ -12,7 +12,7 @@
     </function>
   </template>
   <template>
-    <tparam name="x" class="non-type" type="int*"/>
+    <tparam name="x" class="non-type" type="int[4]"/>
     <function name="g" id="WsEgNgLbqe3a0eM5Bqsuf58XoH0=">
       <file path="function-tparm-decay.cpp" line="13"/>
       <file path="function-tparm-decay.cpp" line="15"/>
@@ -21,7 +21,7 @@
     </function>
   </template>
   <template>
-    <tparam name="x" class="non-type" type="int(bool)"/>
+    <tparam name="x" class="non-type" type="int(*)(const bool)"/>
     <function name="h" id="TjNHTu8/auH8QPVcgjW7FUo2dFM=">
       <file path="function-tparm-decay.cpp" line="22"/>
       <file path="function-tparm-decay.cpp" line="24"/>
@@ -38,7 +38,7 @@
     <type name="int" cv-qualifiers="const"/>
   </alias>
   <template>
-    <tparam class="non-type" type="T"/>
+    <tparam class="non-type" type="int"/>
     <function name="i" id="2woLp3PdyOT/I0DFMkY8OAli5YM=">
       <file path="function-tparm-decay.cpp" line="34"/>
       <file path="function-tparm-decay.cpp" line="36"/>

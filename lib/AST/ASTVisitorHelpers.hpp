@@ -227,47 +227,14 @@ QualifierKind
 convertToQualifierKind(
     unsigned quals)
 {
-    auto kind = Qualifiers::fromCVRMask(quals);
-    return static_cast<QualifierKind>(
-        (kind.hasConst() ? QualifierKind::Const : QualifierKind::None) |
-        (kind.hasVolatile() ? QualifierKind::Volatile : QualifierKind::None));
-}
-
-template<typename T, typename... Args>
-void insertChild(NamespaceInfo& I, Args&&... args)
-{
-    if constexpr(std::is_constructible_v<SymbolID, Args...>)
-    {
-        if constexpr(T::isField())
-            // invalid namespace member
-            MRDOX_UNREACHABLE();
-        else if constexpr(T::isSpecialization())
-            I.Specializations.emplace_back(std::forward<Args>(args)...);
-        else
-            I.Members.emplace_back(std::forward<Args>(args)...);
-    }
-    else
-    {
-        // invalid arguments
-        MRDOX_UNREACHABLE();
-    }
-}
-
-template<typename T, typename... Args>
-void insertChild(RecordInfo& I, Args&&... args)
-{
-    if constexpr(std::is_constructible_v<SymbolID, Args...>)
-    {
-        if constexpr(T::isSpecialization())
-            I.Specializations.emplace_back(std::forward<Args>(args)...);
-        else
-            I.Members.emplace_back(std::forward<Args>(args)...);
-    }
-    else
-    {
-        // invalid arguments
-        MRDOX_UNREACHABLE();
-    }
+    std::underlying_type_t<
+        QualifierKind> result = QualifierKind::None;
+    if(quals & Qualifiers::Const)
+        result |= QualifierKind::Const;
+    if(quals & Qualifiers::Volatile)
+        result |= QualifierKind::Volatile;
+    return static_cast<QualifierKind>(result);
+    
 }
 
 } // mrdox

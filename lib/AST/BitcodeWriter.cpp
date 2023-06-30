@@ -760,16 +760,13 @@ emitInfoPart(
 void
 BitcodeWriter::
 emitSourceInfo(
-    const Info& I,
     const SourceInfo& S)
 {
     StreamSubBlockGuard Block(Stream, BI_SOURCE_INFO_ID);
     if(S.DefLoc)
         emitRecord(*S.DefLoc, SOURCE_INFO_DEFLOC);
-    // VFALCO hack to squelch refs from typedefs
-    if(I.Kind != InfoKind::Typedef)
-        for(const auto& L : S.Loc)
-            emitRecord(L, SOURCE_INFO_LOC);
+    for(const auto& L : S.Loc)
+        emitRecord(L, SOURCE_INFO_LOC);
 }
 
 void
@@ -790,7 +787,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
     emitInfoPart(I);
-    emitSourceInfo(I, I);
+    emitSourceInfo(I);
     emitRecord(I.Scoped, ENUM_SCOPED);
     emitBlock(I.UnderlyingType);
     for (const auto& N : I.Members)
@@ -815,7 +812,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_FIELD_BLOCK_ID);
     emitInfoPart(F);
-    emitSourceInfo(F, F);
+    emitSourceInfo(F);
     emitBlock(F.Type);
     emitRecord(F.Default, FIELD_DEFAULT);
     emitRecord({F.specs.raw}, FIELD_ATTRIBUTES);
@@ -842,7 +839,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_FUNCTION_BLOCK_ID);
     emitInfoPart(I);
-    emitSourceInfo(I, I);
+    emitSourceInfo(I);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
@@ -1002,7 +999,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
     emitInfoPart(I);
-    emitSourceInfo(I, I);
+    emitSourceInfo(I);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord(I.KeyKind, RECORD_KEY_KIND);
@@ -1104,7 +1101,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_TYPEDEF_BLOCK_ID);
     emitInfoPart(I);
-    emitSourceInfo(I, I);
+    emitSourceInfo(I);
     emitRecord(I.IsUsing, TYPEDEF_IS_USING);
     emitBlock(I.Type);
     if(I.Template)
@@ -1118,7 +1115,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_VARIABLE_BLOCK_ID);
     emitInfoPart(I);
-    emitSourceInfo(I, I);
+    emitSourceInfo(I);
     if(I.Template)
         emitBlock(*I.Template);
     emitBlock(I.Type);

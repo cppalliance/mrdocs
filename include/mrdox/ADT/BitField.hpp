@@ -67,6 +67,14 @@ struct BitField
     }
 
     constexpr T operator=(T val) noexcept { set(val); return val;}
+
+    constexpr T operator|=(T val) noexcept
+    {
+        underlying_type prev = value;
+        set(val);
+        value |= prev;
+        return get();
+    }
 };
 
 template<unsigned char Offset>

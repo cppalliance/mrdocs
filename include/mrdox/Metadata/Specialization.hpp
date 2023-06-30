@@ -40,6 +40,8 @@ struct SpecializedMember
         , Specialized(specialized)
     {
     }
+
+    bool operator==(const SpecializedMember&) const = default;
 };
 
 /** Specialization info for members of implicit instantiations

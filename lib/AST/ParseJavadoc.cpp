@@ -726,15 +726,11 @@ parseJavadoc(
         {
             jd = std::make_unique<Javadoc>(std::move(result));
         }
-        else
+        else if(*jd != result)
         {
             // merge
-            MRDOX_UNREACHABLE();
+            jd->append(std::move(result));
         }
-    }
-    else
-    {
-        MRDOX_ASSERT(jd == nullptr);
     }
 }
 

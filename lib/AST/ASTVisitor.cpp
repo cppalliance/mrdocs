@@ -35,6 +35,56 @@
 namespace clang {
 namespace mrdox {
 
+std::size_t
+InfoPtrHasher::
+operator()(
+    const InfoPtr& I) const
+{
+    // the info set should never contain nullptrs
+    MRDOX_ASSERT(I);
+    return std::hash<SymbolID>()(I->id);
+}
+
+std::size_t
+InfoPtrHasher::
+operator()(
+    const SymbolID& id) const
+{
+    return std::hash<SymbolID>()(id);
+}
+
+bool
+InfoPtrEqual::
+operator()(
+    const InfoPtr& a,
+    const InfoPtr& b) const
+{
+    MRDOX_ASSERT(a && b);
+    if(a == b)
+        return true;
+    return a->id == b->id;
+}
+
+bool
+InfoPtrEqual::
+operator()(
+    const InfoPtr& a,
+    const SymbolID& b) const
+{
+    MRDOX_ASSERT(a);
+    return a->id == b;
+}
+
+bool
+InfoPtrEqual::
+operator()(
+    const SymbolID& a,
+    const InfoPtr& b) const
+{
+    MRDOX_ASSERT(b);
+    return b->id == a;
+}
+
 //------------------------------------------------
 //
 // ASTVisitor
@@ -55,8 +105,61 @@ ASTVisitor(
 
 //------------------------------------------------
 
+Info*
+ASTVisitor::
+getInfo(const SymbolID& id)
+{
+    if(auto it = info_.find(id); it != info_.end())
+        return it->get();
+    return nullptr;
+}
+
+template<typename InfoTy>
+InfoTy&
+ASTVisitor::
+createInfo(const SymbolID& id)
+{
+    auto [it, inserted] = info_.emplace(
+        std::make_unique<InfoTy>(id));
+    MRDOX_ASSERT(inserted);
+    return static_cast<InfoTy&>(*it->get());
+}
+
+template<typename InfoTy>
+std::pair<InfoTy&, bool>
+ASTVisitor::
+getOrCreateInfo(const SymbolID& id)
+{
+    if(Info* info = getInfo(id))
+    {
+        MRDOX_ASSERT(info->Kind == InfoTy::kind_id);
+        return {static_cast<InfoTy&>(*info), false};
+    }
+    return {createInfo<InfoTy>(id), true};
+}
+
+Info&
+ASTVisitor::
+getOrBuildInfo(Decl* D)
+{
+    SymbolID id = extractSymbolID(D);
+    if(Info* info = getInfo(id))
+        return *info;
+
+    // KRYSTIAN FIXME: this is terrible
+    bool force = forceExtract_;
+    forceExtract_ = true;
+    traverseDecl(D);
+    forceExtract_ = force;
+
+    MRDOX_ASSERT(getInfo(id));
+    return *getInfo(id);
+}
+
+//------------------------------------------------
+
 // Function to hash a given USR value for storage.
-// As USRs (Unified Symbol Resolution) could be
+// As USRs (Unified Symbol Resolution) could bef
 // large, especially for functions with long type
 // arguments, we use 160-bits SHA1(USR) values to
 // guarantee the uniqueness of symbols while using
@@ -69,6 +172,12 @@ extractSymbolID(
     const Decl* D,
     SymbolID& id)
 {
+    // functions require their parameter types to be decayed
+    // prior to USR generator to ensure that declarations
+    // with parameter types which decay to the same type
+    // generate the same USR
+    if(const auto* FD = dyn_cast<FunctionDecl>(D))
+        applyDecayToParameters(FD);
     usr_.clear();
     if(index::generateUSRForDecl(D, usr_))
         return false;
@@ -117,13 +226,40 @@ shouldSerializeInfo(
 
 //------------------------------------------------
 
-int
+unsigned
 ASTVisitor::
 getLine(
     const NamedDecl* D) const
 {
     return sourceManager_->getPresumedLoc(
         D->getBeginLoc()).getLine();
+}
+
+void
+ASTVisitor::
+addSourceLocation(
+    SourceInfo& I,
+    unsigned line,
+    bool definition)
+{
+    if(definition)
+    {
+        if(I.DefLoc)
+            return;
+        I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
+    }
+    else
+    {
+        auto existing = std::find_if(I.Loc.begin(), I.Loc.end(),
+            [this, line](const Location& l)
+            {
+                return l.LineNumber == line &&
+                    l.Filename == File_.str();
+            });
+        if(existing != I.Loc.end())
+            return;
+        I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
+    }
 }
 
 std::string
@@ -161,37 +297,90 @@ makeTypeInfo(
     return I;
 }
 
+static
+NamedDecl*
+lookupTypedefInPrimary(
+    TypedefNameDecl* TD)
+{
+    if(auto* R = dyn_cast<CXXRecordDecl>(
+        TD->getDeclContext()))
+    {
+        if(CXXRecordDecl* IP = R->getTemplateInstantiationPattern())
+            R = IP;
+        if(DeclarationName TDN = TD->getDeclName();
+            R && ! TDN.isEmpty())
+        {
+            auto found = R->lookup(TDN);
+            MRDOX_ASSERT(found.isSingleResult());
+            MRDOX_ASSERT(isa<TypedefNameDecl>(found.front()) ||
+                isa<TypeAliasTemplateDecl>(found.front()));
+            return found.front();
+        }
+    }
+    return nullptr;
+}
+
 template<typename TypeInfoTy>
 std::unique_ptr<TypeInfoTy>
 ASTVisitor::
 makeTypeInfo(
-    const NamedDecl* N,
+    NamedDecl* N,
     unsigned quals)
 {
     auto I = std::make_unique<TypeInfoTy>();
     I->CVQualifiers = convertToQualifierKind(quals);
-    if(N)
+    if(! N)
+        return I;
+    if(const auto* II = N->getIdentifier())
+        I->Name = II->getName();
+    // do not generate references to implicit declarations,
+    // template template parameters, or builtin templates
+    if(! N->isImplicit() &&
+        ! isa<TemplateTemplateParmDecl>(N) &&
+        ! isa<BuiltinTemplateDecl>(N))
     {
+        if(auto* R = dyn_cast<CXXRecordDecl>(N))
+        {
+            if(auto* P = R->getTemplateInstantiationPattern())
+                N = P;
+        }
+        else if(auto* TD = dyn_cast<TypedefNameDecl>(N))
+        {
+            if(auto* PTD = lookupTypedefInPrimary(TD))
+                N = PTD;
+        }
+        else if(auto* ATD = dyn_cast<TypeAliasTemplateDecl>(N))
+        {
+            if(auto* MT = ATD->getInstantiatedFromMemberTemplate())
+                ATD = MT;
+            auto* TD = ATD->getTemplatedDecl();
+            if(auto* R = dyn_cast<CXXRecordDecl>(TD->getDeclContext()))
+            {
+            // KRYSTIAN FIXME: this appears to not work
+            if(auto* PATD = lookupTypedefInPrimary(TD))
+                N = PATD;
+            }
+        }
+
         extractSymbolID(N, I->id);
-        if(const auto* II = N->getIdentifier())
-            I->Name = II->getName();
+        getOrBuildInfo(N);
     }
     return I;
 }
 
 std::unique_ptr<TypeInfo>
 ASTVisitor::
-buildTypeInfoForType(
+buildTypeInfo(
     const NestedNameSpecifier* N)
 {
     if(N)
     {
         if(const auto* T = N->getAsType())
-            return buildTypeInfoForType(QualType(T, 0));
+            return buildTypeInfo(QualType(T, 0));
         if(const auto* I = N->getAsIdentifier())
         {
             auto R = std::make_unique<TagTypeInfo>();
-            R->ParentType = buildTypeInfoForType(N->getPrefix());
+            R->ParentType = buildTypeInfo(N->getPrefix());
             R->Name = I->getName();
             return R;
         }
@@ -201,7 +390,7 @@ buildTypeInfoForType(
 
 std::unique_ptr<TypeInfo>
 ASTVisitor::
-buildTypeInfoForType(
+buildTypeInfo(
     QualType qt,
     unsigned quals)
 {
@@ -217,14 +406,14 @@ buildTypeInfoForType(
     case Type::Paren:
     {
         auto* T = cast<ParenType>(type);
-        return buildTypeInfoForType(
+        return buildTypeInfo(
             T->getInnerType(), quals);
     }
     // type with __atribute__
     case Type::Attributed:
     {
         auto* T = cast<AttributedType>(type);
-        return buildTypeInfoForType(
+        return buildTypeInfo(
             T->getModifiedType(), quals);
     }
     // adjusted and decayed types
@@ -232,7 +421,7 @@ buildTypeInfoForType(
     case Type::Adjusted:
     {
         auto* T = cast<AdjustedType>(type);
-        return buildTypeInfoForType(
+        return buildTypeInfo(
             T->getOriginalType(), quals);
     }
     // using declarations
@@ -241,7 +430,7 @@ buildTypeInfoForType(
         auto* T = cast<UsingType>(type);
         // look through the using declaration and
         // use the the type from the referenced declaration
-        return buildTypeInfoForType(
+        return buildTypeInfo(
             T->getUnderlyingType(), quals);
     }
     // pointers
@@ -249,7 +438,7 @@ buildTypeInfoForType(
     {
         auto* T = cast<PointerType>(type);
         auto I = std::make_unique<PointerTypeInfo>();
-        I->PointeeType = buildTypeInfoForType(
+        I->PointeeType = buildTypeInfo(
             T->getPointeeType());
         I->CVQualifiers = convertToQualifierKind(quals);
         return I;
@@ -259,7 +448,7 @@ buildTypeInfoForType(
     {
         auto* T = cast<LValueReferenceType>(type);
         auto I = std::make_unique<LValueReferenceTypeInfo>();
-        I->PointeeType = buildTypeInfoForType(
+        I->PointeeType = buildTypeInfo(
             T->getPointeeType());
         return I;
     }
@@ -267,7 +456,7 @@ buildTypeInfoForType(
     {
         auto* T = cast<RValueReferenceType>(type);
         auto I = std::make_unique<RValueReferenceTypeInfo>();
-        I->PointeeType = buildTypeInfoForType(
+        I->PointeeType = buildTypeInfo(
             T->getPointeeType());
         return I;
     }
@@ -276,9 +465,9 @@ buildTypeInfoForType(
     {
         auto* T = cast<MemberPointerType>(type);
         auto I = std::make_unique<MemberPointerTypeInfo>();
-        I->PointeeType = buildTypeInfoForType(
+        I->PointeeType = buildTypeInfo(
             T->getPointeeType());
-        I->ParentType = buildTypeInfoForType(
+        I->ParentType = buildTypeInfo(
             QualType(T->getClass(), 0));
         I->CVQualifiers = convertToQualifierKind(quals);
         return I;
@@ -288,7 +477,7 @@ buildTypeInfoForType(
     {
         auto* T = cast<PackExpansionType>(type);
         auto I = std::make_unique<PackTypeInfo>();
-        I->PatternType = buildTypeInfoForType(T->getPattern());
+        I->PatternType = buildTypeInfo(T->getPattern());
         return I;
     }
     // KRYSTIAN NOTE: we don't handle FunctionNoProto here,
@@ -299,11 +488,11 @@ buildTypeInfoForType(
     {
         auto* T = cast<FunctionProtoType>(type);
         auto I = std::make_unique<FunctionTypeInfo>();
-        I->ReturnType = buildTypeInfoForType(
+        I->ReturnType = buildTypeInfo(
             T->getReturnType());
         for(QualType PT : T->getParamTypes())
             I->ParamTypes.emplace_back(
-                buildTypeInfoForType(PT));
+                buildTypeInfo(PT));
         I->RefQualifier = convertToReferenceKind(
             T->getRefQualifier());
         I->CVQualifiers = convertToQualifierKind(
@@ -319,7 +508,7 @@ buildTypeInfoForType(
     {
         auto* T = cast<IncompleteArrayType>(type);
         auto I = std::make_unique<ArrayTypeInfo>();
-        I->ElementType = buildTypeInfoForType(
+        I->ElementType = buildTypeInfo(
             T->getElementType());
         return I;
     }
@@ -327,11 +516,11 @@ buildTypeInfoForType(
     {
         auto* T = cast<ConstantArrayType>(type);
         auto I = std::make_unique<ArrayTypeInfo>();
-        I->ElementType = buildTypeInfoForType(
+        I->ElementType = buildTypeInfo(
             T->getElementType());
         // KRYSTIAN FIXME: this is broken; cannonical
         // constant array types never have a size expression
-        buildExprInfoForExpr(I->Bounds,
+        buildExprInfo(I->Bounds,
             T->getSizeExpr(), T->getSize());
         return I;
     }
@@ -339,9 +528,10 @@ buildTypeInfoForType(
     {
         auto* T = cast<DependentSizedArrayType>(type);
         auto I = std::make_unique<ArrayTypeInfo>();
-        I->ElementType = buildTypeInfoForType(
+        I->ElementType = buildTypeInfo(
             T->getElementType());
-        buildExprInfoForExpr(I->Bounds, T->getSizeExpr());
+        buildExprInfo(I->Bounds,
+            T->getSizeExpr());
         return I;
     }
     case Type::Auto:
@@ -352,7 +542,7 @@ buildTypeInfoForType(
         // return true if the type is dependent
         // if the type has been deduced, use the deduced type
         if(! deduced.isNull())
-            return buildTypeInfoForType(deduced);
+            return buildTypeInfo(deduced);
         auto I = std::make_unique<BuiltinTypeInfo>();
         I->Name = getTypeAsString(
             qt.withoutLocalFastQualifiers());
@@ -363,7 +553,7 @@ buildTypeInfoForType(
     {
         auto* T = cast<DeducedTemplateSpecializationType>(type);
         if(T->isDeduced())
-            return buildTypeInfoForType(T->getDeducedType());
+            return buildTypeInfo(T->getDeducedType());
         auto I = makeTypeInfo<TagTypeInfo>(
             T->getTemplateName().getAsTemplateDecl(), quals);
         return I;
@@ -373,7 +563,7 @@ buildTypeInfoForType(
     case Type::Elaborated:
     {
         auto* T = cast<ElaboratedType>(type);
-        auto I = buildTypeInfoForType(
+        auto I = buildTypeInfo(
             T->getNamedType(), quals);
         // ignore elaborated-type-specifiers
         if(auto kw = T->getKeyword();
@@ -384,11 +574,14 @@ buildTypeInfoForType(
         {
         case TypeKind::Tag:
             static_cast<TagTypeInfo&>(*I).ParentType =
-                buildTypeInfoForType(T->getQualifier());
+                buildTypeInfo(T->getQualifier());
             break;
         case TypeKind::Specialization:
             static_cast<SpecializationTypeInfo&>(*I).ParentType =
-                buildTypeInfoForType(T->getQualifier());
+                buildTypeInfo(T->getQualifier());
+            break;
+        case TypeKind::Builtin:
+            // KRYSTIAN FIXME: is this correct?
             break;
         default:
             MRDOX_UNREACHABLE();
@@ -401,7 +594,7 @@ buildTypeInfoForType(
         auto* T = cast<DependentTemplateSpecializationType>(type);
         auto I = makeTypeInfo<SpecializationTypeInfo>(
             T->getIdentifier(), quals);
-        I->ParentType = buildTypeInfoForType(
+        I->ParentType = buildTypeInfo(
             T->getQualifier());
         buildTemplateArgs(I->TemplateArgs, T->template_arguments());
         return I;
@@ -411,8 +604,10 @@ buildTypeInfoForType(
     case Type::TemplateSpecialization:
     {
         auto* T = cast<TemplateSpecializationType>(type);
+        auto name = T->getTemplateName();
+        MRDOX_ASSERT(! name.isNull());
         auto I = makeTypeInfo<SpecializationTypeInfo>(
-            T->getTemplateName().getAsTemplateDecl(), quals);
+            name.getAsTemplateDecl(), quals);
         buildTemplateArgs(I->TemplateArgs, T->template_arguments());
         return I;
     }
@@ -422,7 +617,7 @@ buildTypeInfoForType(
         auto* T = cast<DependentNameType>(type);
         auto I = makeTypeInfo<TagTypeInfo>(
             T->getIdentifier(), quals);
-        I->ParentType = buildTypeInfoForType(
+        I->ParentType = buildTypeInfo(
             T->getQualifier());
         return I;
     }
@@ -487,7 +682,7 @@ getValue(const llvm::APInt& V)
 
 void
 ASTVisitor::
-buildExprInfoForExpr(
+buildExprInfo(
     ExprInfo& I,
     const Expr* E)
 {
@@ -500,11 +695,11 @@ buildExprInfoForExpr(
 template<typename T>
 void
 ASTVisitor::
-buildExprInfoForExpr(
+buildExprInfo(
     ConstantExprInfo<T>& I,
     const Expr* E)
 {
-    buildExprInfoForExpr(
+    buildExprInfo(
         static_cast<ExprInfo&>(I), E);
     // if the expression is dependent,
     // we cannot get its value
@@ -517,28 +712,13 @@ buildExprInfoForExpr(
 template<typename T>
 void
 ASTVisitor::
-buildExprInfoForExpr(
+buildExprInfo(
     ConstantExprInfo<T>& I,
     const Expr* E,
     const llvm::APInt& V)
 {
-    buildExprInfoForExpr(I, E);
+    buildExprInfo(I, E);
     I.Value.emplace(getValue<T>(V));
-}
-
-void
-ASTVisitor::
-parseParameters(
-    FunctionInfo& I,
-    FunctionDecl const* D)
-{
-    for(const ParmVarDecl* P : D->parameters())
-    {
-        I.Params.emplace_back(
-            buildTypeInfoForType(P->getOriginalType()),
-            P->getNameAsString(),
-            getSourceCode(P->getDefaultArgRange()));
-    }
 }
 
 TParam
@@ -559,7 +739,7 @@ buildTemplateParam(
             TypeTParam>();
         if(TP->hasDefaultArgument())
         {
-            extinfo.Default = buildTypeInfoForType(
+            extinfo.Default = buildTypeInfo(
                 TP->getDefaultArgument());
         }
     }
@@ -568,7 +748,7 @@ buildTemplateParam(
     {
         auto& extinfo = info.emplace<
             NonTypeTParam>();
-        extinfo.Type = buildTypeInfoForType(
+        extinfo.Type = buildTypeInfo(
             TP->getType());
         if(TP->hasDefaultArgument())
         {
@@ -622,7 +802,7 @@ buildTemplateArgs(
             // KRYSTIAN FIXME: we *really* should not be
             // converting types to strings like this.
             // TArg needs to be a variant type anyways.
-            arg_str = toString(*buildTypeInfoForType(qt));
+            arg_str = toString(*buildTypeInfo(qt));
         }
         else
         {
@@ -753,7 +933,7 @@ parseTemplateParams(
 void
 ASTVisitor::
 applyDecayToParameters(
-    FunctionDecl* D)
+    const FunctionDecl* D)
 {
     // apply the type adjustments specified in [dcl.fct] p5
     // to ensure that the USR of the corresponding function matches
@@ -779,34 +959,6 @@ parseRawComment(
 
 //------------------------------------------------
 
-template<class Child>
-requires std::derived_from<Child, Info>
-static
-Bitcode
-writeParent(
-    Child const& I,
-    bool parent_is_record)
-{
-    MRDOX_ASSERT(! I.Namespace.empty());
-    // Create an dummy parent and insert the child
-    // Then return the parent as a serialized bitcode.
-    if(parent_is_record)
-    {
-        MRDOX_ASSERT(Child::isSpecialization() ||
-            I.Access != AccessKind::None);
-        RecordInfo P(I.Namespace.front());
-        insertChild<Child>(P, I.id);
-        return writeBitcode(P);
-    }
-    else
-    {
-        MRDOX_ASSERT(I.Access == AccessKind::None);
-        NamespaceInfo P(I.Namespace.front());
-        insertChild<Child>(P, I.id);
-        return writeBitcode(P);
-    }
-}
-
 void
 ASTVisitor::
 parseEnumerators(
@@ -818,7 +970,7 @@ parseEnumerators(
         auto& M = I.Members.emplace_back(
             E->getNameAsString());
 
-        buildExprInfoForExpr(
+        buildExprInfo(
             M.Initializer,
             E->getInitExpr(),
             E->getInitVal());
@@ -838,11 +990,8 @@ shouldExtract(
     namespace path = llvm::sys::path;
 
     // skip system header
-    if(sourceManager_->isInSystemHeader(D->getLocation()))
+    if(! forceExtract_ && sourceManager_->isInSystemHeader(D->getLocation()))
         return false;
-
-    // we should never visit block scope declarations
-    MRDOX_ASSERT(! D->getParentFunctionOrMethod());
 
     const PresumedLoc loc =
         sourceManager_->getPresumedLoc(D->getBeginLoc());
@@ -860,7 +1009,7 @@ shouldExtract(
 
     // don't extract if the declaration is in a file
     // that should not be visited
-    if(! ff.include)
+    if(! forceExtract_ && ! ff.include)
         return false;
     // VFALCO we could assert that the prefix
     //        matches and just lop off the
@@ -869,23 +1018,6 @@ shouldExtract(
 
     IsFileInRootDir_ = true;
 
-    return true;
-}
-
-bool
-ASTVisitor::
-extractInfo(
-    Info& I,
-    const NamedDecl* D)
-{
-    if(! shouldSerializeInfo(D))
-        return false;
-    if(! extractSymbolID(D, I.id))
-        return false;
-    I.Name = extractName(D);
-    // do not extract javadocs for namespaces
-    if(! I.isNamespace())
-        parseRawComment(I.javadoc, D);
     return true;
 }
 
@@ -921,7 +1053,7 @@ extractName(
         // KRYSTIAN FIXME: we *really* should not be
         // converting types to strings like this
         result.append(toString(
-            *buildTypeInfoForType(
+            *buildTypeInfo(
                 CD->getReturnType())));
         break;
     }
@@ -947,38 +1079,51 @@ extractName(
 
 //------------------------------------------------
 
-bool
+void
 ASTVisitor::
 getParentNamespaces(
-    std::vector<SymbolID>& Namespaces,
-    const Decl* D)
+    Info& I,
+    Decl* D)
 {
-    bool member_specialization = false;
-    const Decl* child = D;
-    const DeclContext* parent_context = child->getDeclContext();
+    // this function should be called once per Info
+    MRDOX_ASSERT(I.Namespace.empty());
+
+    Decl* child = D;
+    SymbolID child_id = I.id;
+    DeclContext* parent_context = child->getDeclContext();
     do
     {
-        const Decl* parent = cast<Decl>(parent_context);
-
-        SymbolID id = SymbolID::zero;
+        // Decl* parent = getInstantiatedFrom(
+        //     cast<Decl>(parent_context));
+        // parent_context = cast<DeclContext>(parent);
+        Decl* parent = cast<Decl>(parent_context);
+        SymbolID parent_id = extractSymbolID(parent);
         switch(parent_context->getDeclKind())
         {
-        default:
-            // we consider all other DeclContexts to be "transparent"
-            // and do not include them in the list of parents.
-            continue;
-        // the TranslationUnit DeclContext
-        // is the global namespace; use SymbolID::zero
+        // the TranslationUnit DeclContext is the global namespace;
+        // it uses SymbolID::zero and should *always* exist
         case Decl::TranslationUnit:
+        {
+            auto [P, created] = getOrCreateInfo<
+                NamespaceInfo>(SymbolID::zero);
+            emplaceChild(P, child_id);
             break;
+        }
+        case Decl::Namespace:
+        {
+            auto [P, created] = getOrCreateInfo<
+                NamespaceInfo>(parent_id);
+            buildNamespace(P, created, cast<NamespaceDecl>(parent));
+            emplaceChild(P, child_id);
+            break;
+        }
         // special case for an explicit specializations of
         // a member of an implicit instantiation.
         case Decl::ClassTemplateSpecialization:
         case Decl::ClassTemplatePartialSpecialization:
-        if(const auto* S = dyn_cast<ClassTemplateSpecializationDecl>(parent_context);
+        if(auto* S = dyn_cast<ClassTemplateSpecializationDecl>(parent_context);
             S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
         {
-            member_specialization = true;
             // KRYSTIAN FIXME: i'm pretty sure DeclContext::getDeclKind()
             // will never be Decl::ClassTemplatePartialSpecialization for
             // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
@@ -987,35 +1132,64 @@ getParentNamespaces(
             MRDOX_ASSERT(parent_context->getDeclKind() !=
                 Decl::ClassTemplatePartialSpecialization);
 
-            SpecializationInfo I;
-            buildSpecialization(I, S, child);
+            auto [P, created] = getOrCreateInfo<
+                SpecializationInfo>(parent_id);
+            buildSpecialization(P, created, S);
+            // KRYSTIAN FIXME: extract primary/specialized ID properly
+            emplaceChild(P, SpecializedMember(child_id, child_id));
+            break;
         }
+        // non-implicit instantiations should be
+        // treated like normal CXXRecordDecls
         [[fallthrough]];
         // we should never encounter a Record
         // that is not a CXXRecord
-        // case Decl::Record:
-        case Decl::Namespace:
         case Decl::CXXRecord:
-        case Decl::Enum:
-        // we currently don't handle local classes,
-        // but will at some point. only functions that may
-        // be declared to return a placeholder for a deduced type
-        // can return local classes, so ignore other function DeclContexts.
-        // deduction guides, constructors, and destructors do not have
-        // declared return types, so we do not need to consider them.
-        case Decl::Function:
-        case Decl::CXXMethod:
-        case Decl::CXXConversion:
         {
-            extractSymbolID(parent, id);
+            auto [P, created] = getOrCreateInfo<
+                RecordInfo>(parent_id);
+            buildRecord(P, created, cast<CXXRecordDecl>(parent));
+            emplaceChild(P, child_id);
             break;
         }
+        // KRYSTIAN FIXME: we may need to handle
+        // enumerators separately at some point 
+        // case Decl::Enum:
+        default:
+            // we consider all other DeclContexts to be "transparent"
+            // and do not include them in the list of parents.
+            continue;
         }
-        Namespaces.emplace_back(id);
+        I.Namespace.emplace_back(parent_id);
         child = parent;
+        child_id = parent_id;
     }
     while((parent_context = parent_context->getParent()));
-    return member_specialization;
+}
+
+template<
+    typename InfoTy,
+    typename Child>
+void
+ASTVisitor::
+emplaceChild(
+    InfoTy& I,
+    Child&& C)
+{
+    if constexpr(requires { I.Specializations; })
+    {
+        auto& S = I.Members;
+        if(Info* child = getInfo(C); 
+            child && child->isSpecialization())
+        {
+            if(std::find(S.begin(), S.end(), C) == S.end())
+                S.emplace_back(C);
+            return;
+        }
+    }
+    auto& M = I.Members;
+    if(std::find(M.begin(), M.end(), C) == M.end())
+        M.emplace_back(C);
 }
 
 //------------------------------------------------
@@ -1024,55 +1198,54 @@ void
 ASTVisitor::
 buildSpecialization(
     SpecializationInfo& I,
-    const ClassTemplateSpecializationDecl* P,
-    const Decl* C)
+    bool created,
+    ClassTemplateSpecializationDecl* D)
 {
+    if(! created)
+        return;
+
     const CXXRecordDecl* RD =
-        P->getTemplateInstantiationPattern();
+        D->getTemplateInstantiationPattern();
     MRDOX_ASSERT(RD);
 
-    extractSymbolID(P, I.id);
-    extractSymbolID(RD, I.Primary);
     buildTemplateArgs(I.Args,
-        P->getTemplateArgs().asArray());
-    I.Name = RD->getNameAsString();
+        D->getTemplateArgs().asArray());
 
-    SymbolID child = extractSymbolID(C);
-    // KRYSTIAN TODO: properly extract the primary ID
-    // of the specialized member
-    I.Members.emplace_back(child, child);
+    extractSymbolID(RD, I.Primary);
+    I.Name = extractName(RD);
 
-    bool member_spec = getParentNamespaces(I.Namespace, P);
-
-    insertBitcode(ex_, writeBitcode(I));
-    if(! member_spec)
-        insertBitcode(ex_, writeParent(I,
-            P->getDeclContext()->isRecord()));
-            // ! P->getDeclContext()->isFileContext()));
-
+    getParentNamespaces(I, D);
 }
 
 //------------------------------------------------
+// Decl types which have isThisDeclarationADefinition:
+//
+// VarTemplateDecl
+// FunctionTemplateDecl
+// FunctionDecl
+// TagDecl
+// ClassTemplateDecl
+// CXXDeductionGuideDecl
 
 void
 ASTVisitor::
-extractBases(
-    RecordInfo& I,
-    CXXRecordDecl* D)
+buildNamespace(
+    NamespaceInfo& I,
+    bool created,
+    NamespaceDecl* D)
 {
-    // Base metadata is only available for definitions.
-    if(! D->isThisDeclarationADefinition())
+    if(! created)
         return;
 
-    // Only direct bases
-    for(CXXBaseSpecifier const& B : D->bases())
-    {
-        I.Bases.emplace_back(
-            buildTypeInfoForType(B.getType()),
-            convertToAccessKind(
-                B.getAccessSpecifier()),
-            B.isVirtual());
-    }
+    // KRYSTIAN NOTE: we do not extract
+    // javadocs for namespaces
+    if(D->isAnonymousNamespace())
+        I.specs.isAnonymous = true;
+    else
+        I.Name = extractName(D);
+    I.specs.isInline = D->isInline();
+
+    getParentNamespaces(I, D);
 }
 
 //------------------------------------------------
@@ -1081,115 +1254,257 @@ void
 ASTVisitor::
 buildRecord(
     RecordInfo& I,
+    bool created,
     CXXRecordDecl* D)
 {
-    if(! extractInfo(I, D))
+    parseRawComment(I.javadoc, D);
+    addSourceLocation(I, getLine(D),
+        D->isThisDeclarationADefinition());
+
+    if(! created)
         return;
-    int line = getLine(D);
-    if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
-    else
-        I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
+
+    NamedDecl* ND = D;
+    if(TypedefNameDecl* TD =
+        D->getTypedefNameForAnonDecl())
+    {
+        I.IsTypeDef = true;
+        ND = TD;
+    }
+    I.Name = extractName(ND);
 
     I.KeyKind = convertToRecordKeyKind(D->getTagKind());
 
     // These are from CXXRecordDecl::isEffectivelyFinal()
     I.specs.isFinal = D->template hasAttr<FinalAttr>();
-    if(auto const DT = D->getDestructor())
+    if(const auto* DT = D->getDestructor())
         I.specs.isFinalDestructor = DT->template hasAttr<FinalAttr>();
 
-    if(TypedefNameDecl const* TD = D->getTypedefNameForAnonDecl())
+    // extract direct bases. D->bases() will get the bases
+    // from whichever declaration is the definition (if any)
+    if(D->hasDefinition())
     {
-        I.Name = TD->getNameAsString();
-        I.IsTypeDef = true;
+        for(const CXXBaseSpecifier& B : D->bases())
+        {
+            I.Bases.emplace_back(
+                buildTypeInfo(B.getType()),
+                convertToAccessKind(
+                    B.getAccessSpecifier()),
+                B.isVirtual());
+        }
     }
 
-    extractBases(I, D);
+    getParentNamespaces(I, D);
+}
 
-    bool member_spec = getParentNamespaces(I.Namespace, D);
+//------------------------------------------------
 
-    insertBitcode(ex_, writeBitcode(I));
-    if(! member_spec)
-        insertBitcode(ex_, writeParent(I,
-            D->getDeclContext()->isRecord()));
+void
+ASTVisitor::
+buildEnum(
+    EnumInfo& I,
+    bool created,
+    EnumDecl* D)
+{
+    parseRawComment(I.javadoc, D);
+    addSourceLocation(I, getLine(D),
+        D->isThisDeclarationADefinition());
+
+    if(! created)
+        return;
+
+    I.Name = extractName(D);
+
+    I.Scoped = D->isScoped();
+
+    if(D->isFixed())
+        I.UnderlyingType = buildTypeInfo(
+            D->getIntegerType());
+
+    parseEnumerators(I, D);
+
+    getParentNamespaces(I, D);
+}
+
+//------------------------------------------------
+
+void
+ASTVisitor::
+buildTypedef(
+    TypedefInfo& I,
+    bool created,
+    TypedefNameDecl* D)
+{
+    parseRawComment(I.javadoc, D);
+    // KRYSTIAN FIXME: we currently treat typedef/alias
+    // declarations as having a single definition; however,
+    // such declarations are never definitions and can
+    // be redeclared multiple times (even in the same scope)
+    addSourceLocation(I, getLine(D), true);
+
+    if(! created)
+        return;
+
+    I.Name = extractName(D);
+
+    I.Type = buildTypeInfo(
+        D->getUnderlyingType());
+
+#if 0
+    if(I.Type.Name.empty())
+    {
+        // Typedef for an unnamed type. This is like
+        // "typedef struct { } Foo;". The record serializer
+        // explicitly checks for this syntax and constructs
+        // a record with that name, so we don't want to emit
+        // a duplicate here.
+        return;
+    }
+#endif
+
+    getParentNamespaces(I, D);
+}
+
+//------------------------------------------------
+
+void
+ASTVisitor::
+buildVariable(
+    VariableInfo& I,
+    bool created,
+    VarDecl* D)
+{
+    parseRawComment(I.javadoc, D);
+    addSourceLocation(I, getLine(D),
+        D->isThisDeclarationADefinition());
+
+    // KRYSTIAN FIXME: we need to properly merge storage class
+    I.specs.storageClass |=
+        convertToStorageClassKind(
+            D->getStorageClass());
+
+    // this handles thread_local, as well as the C
+    // __thread and __Thread_local specifiers
+    I.specs.isThreadLocal |= D->getTSCSpec() !=
+        ThreadStorageClassSpecifier::TSCS_unspecified;
+
+    // KRYSTIAN NOTE: VarDecl does not provide getConstexprKind,
+    // nor does it use getConstexprKind to store whether
+    // a variable is constexpr/constinit. Although
+    // only one is permitted in a variable declaration,
+    // it is possible to declare a static data member
+    // as both constexpr and constinit in separate declarations..
+    I.specs.isConstinit |= D->hasAttr<ConstInitAttr>();
+    if(D->isConstexpr())
+        I.specs.constexprKind = ConstexprKind::Constexpr;
+
+    if(! created)
+        return;
+
+    I.Name = extractName(D);
+
+    I.Type = buildTypeInfo(D->getType());
+
+    getParentNamespaces(I, D);
+}
+
+//------------------------------------------------
+
+void
+ASTVisitor::
+buildField(
+    FieldInfo& I,
+    bool created,
+    FieldDecl* D)
+{
+    parseRawComment(I.javadoc, D);
+    // fields (i.e. non-static data members)
+    // cannot have multiple declarations
+    addSourceLocation(I, getLine(D), true);
+
+    if(! created)
+        return;
+
+    I.Name = extractName(D);
+
+    I.Type = buildTypeInfo(D->getType());
+
+    I.IsMutable = D->isMutable();
+
+    if(D->isBitField())
+    {
+        I.IsBitfield = true;
+        buildExprInfo(
+            I.BitfieldWidth,
+            D->getBitWidth());
+    }
+
+    I.specs.hasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
+    I.specs.isDeprecated = D->hasAttr<DeprecatedAttr>();
+    I.specs.isMaybeUnused = D->hasAttr<UnusedAttr>();
+
+    getParentNamespaces(I, D);
 }
 
 //------------------------------------------------
 
 template<class DeclTy>
-bool
+void
 ASTVisitor::
-constructFunction(
+buildFunction(
     FunctionInfo& I,
+    bool created,
     DeclTy* D)
 {
-    // adjust parameter types
-    applyDecayToParameters(D);
-    if(! extractInfo(I, D))
-        return false;
-    // if(name)
-    //     I.Name = name;
-    int line = getLine(D);
-    if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
-    else
-        I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
-    parseParameters(I, D);
-    I.ReturnType = buildTypeInfoForType(
-        D->getReturnType());
-
-    if(const auto* ftsi = D->getTemplateSpecializationInfo())
-    {
-        if(! I.Template)
-            I.Template = std::make_unique<TemplateInfo>();
-        parseTemplateArgs(*I.Template, ftsi);
-    }
+    parseRawComment(I.javadoc, D);
+    addSourceLocation(I, getLine(D),
+        D->isThisDeclarationADefinition());
 
     //
     // FunctionDecl
     //
-    I.specs0.isVariadic = D->isVariadic();
-    I.specs0.isDefaulted = D->isDefaulted();
-    I.specs0.isExplicitlyDefaulted = D->isExplicitlyDefaulted();
-    I.specs0.isDeleted = D->isDeleted();
-    I.specs0.isDeletedAsWritten = D->isDeletedAsWritten();
-    I.specs0.isNoReturn = D->isNoReturn();
+    I.specs0.isVariadic |= D->isVariadic();
+    I.specs0.isDefaulted |= D->isDefaulted();
+    I.specs0.isExplicitlyDefaulted |= D->isExplicitlyDefaulted();
+    I.specs0.isDeleted |= D->isDeleted();
+    I.specs0.isDeletedAsWritten |= D->isDeletedAsWritten();
+    I.specs0.isNoReturn |= D->isNoReturn();
         // subsumes D->hasAttr<NoReturnAttr>()
         // subsumes D->hasAttr<CXX11NoReturnAttr>()
         // subsumes D->hasAttr<C11NoReturnAttr>()
         // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
-    I.specs0.hasOverrideAttr = D->template hasAttr<OverrideAttr>();
+    I.specs0.hasOverrideAttr |= D->template hasAttr<OverrideAttr>();
     if(auto const* FP = D->getType()->template getAs<FunctionProtoType>())
-        I.specs0.hasTrailingReturn= FP->hasTrailingReturn();
-    I.specs0.constexprKind =
+        I.specs0.hasTrailingReturn |= FP->hasTrailingReturn();
+    I.specs0.constexprKind |=
         convertToConstexprKind(
             D->getConstexprKind());
-    I.specs0.exceptionSpec =
+    I.specs0.exceptionSpec |=
         convertToNoexceptKind(
             D->getExceptionSpecType());
-    I.specs0.overloadedOperator =
+    I.specs0.overloadedOperator |=
         convertToOperatorKind(
             D->getOverloadedOperator());
-    I.specs0.storageClass =
+    I.specs0.storageClass |=
         convertToStorageClassKind(
             D->getStorageClass());
 
-    I.specs1.isNodiscard = D->template hasAttr<WarnUnusedResultAttr>();
+    I.specs1.isNodiscard |= D->template hasAttr<WarnUnusedResultAttr>();
 
     //
     // CXXMethodDecl
     //
     if constexpr(std::derived_from<DeclTy, CXXMethodDecl>)
     {
-        I.specs0.isVirtual = D->isVirtual();
-        I.specs0.isVirtualAsWritten = D->isVirtualAsWritten();
-        I.specs0.isPure = D->isPure();
-        I.specs0.isConst = D->isConst();
-        I.specs0.isVolatile = D->isVolatile();
-        I.specs0.refQualifier =
+        I.specs0.isVirtual |= D->isVirtual();
+        I.specs0.isVirtualAsWritten |= D->isVirtualAsWritten();
+        I.specs0.isPure |= D->isPure();
+        I.specs0.isConst |= D->isConst();
+        I.specs0.isVolatile |= D->isVolatile();
+        I.specs0.refQualifier |=
             convertToReferenceKind(
                 D->getRefQualifier());
-        I.specs0.isFinal = D->template hasAttr<FinalAttr>();
+        I.specs0.isFinal |= D->template hasAttr<FinalAttr>();
         //D->isCopyAssignmentOperator()
         //D->isMoveAssignmentOperator()
         //D->isOverloadedOperator();
@@ -1208,7 +1523,7 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
     {
-        I.specs1.explicitSpec =
+        I.specs1.explicitSpec |=
             convertToExplicitKind(
                 D->getExplicitSpecifier());
     }
@@ -1218,7 +1533,7 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
     {
-        I.specs1.explicitSpec =
+        I.specs1.explicitSpec |=
             convertToExplicitKind(
                 D->getExplicitSpecifier());
     }
@@ -1228,43 +1543,38 @@ constructFunction(
     //
     if constexpr(std::derived_from<DeclTy, CXXDeductionGuideDecl>)
     {
-        I.specs1.explicitSpec =
+        I.specs1.explicitSpec |=
             convertToExplicitKind(
                 D->getExplicitSpecifier());
     }
 
-    return true;
+    if(! created)
+        return;
+
+    I.Name = extractName(D);
+
+    for(const ParmVarDecl* P : D->parameters())
+    {
+        I.Params.emplace_back(
+            buildTypeInfo(P->getOriginalType()),
+            P->getNameAsString(),
+            getSourceCode(P->getDefaultArgRange()));
+    }
+
+    I.ReturnType = buildTypeInfo(
+        D->getReturnType());
+
+    if(const auto* ftsi = D->getTemplateSpecializationInfo())
+    {
+        if(! I.Template)
+            I.Template = std::make_unique<TemplateInfo>();
+        parseTemplateArgs(*I.Template, ftsi);
+    }
+
+    getParentNamespaces(I, D);
 }
 
 //------------------------------------------------
-
-// Decl types which have isThisDeclarationADefinition:
-//
-// VarTemplateDecl
-// FunctionTemplateDecl
-// FunctionDecl
-// TagDecl
-// ClassTemplateDecl
-// CXXDeductionGuideDecl
-
-void
-ASTVisitor::
-buildNamespace(
-    NamespaceInfo& I,
-    NamespaceDecl* D)
-{
-    if(! extractInfo(I, D))
-        return;
-
-    I.specs.isAnonymous = D->isAnonymousNamespace();
-    I.specs.isInline = D->isInline();
-
-    bool member_spec = getParentNamespaces(I.Namespace, D);
-
-    insertBitcode(ex_, writeBitcode(I));
-    if(! member_spec)
-        insertBitcode(ex_, writeParent(I, false));
-}
 
 void
 ASTVisitor::
@@ -1278,39 +1588,24 @@ buildFriend(
         {
             if(! shouldExtract(FD))
                 return;
-            FunctionInfo I;
-            if(! constructFunction(I, FD))
-                return;
-#if 0
+
             SymbolID id;
-            getParent(id, D);
-#else
+            if(! extractSymbolID(FD, id))
+                return;
+            auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
+            buildFunction(I, created, FD);
+
             const DeclContext* DC = D->getDeclContext();
             const auto* RD = dyn_cast<CXXRecordDecl>(DC);
             // the semantic DeclContext of a FriendDecl must be a class
             MRDOX_ASSERT(RD);
-            RecordInfo P;
-            extractSymbolID(RD, P.id);
+            SymbolID parent_id = extractSymbolID(RD);
+            if(Info* parent = getInfo(parent_id))
+            {
+                MRDOX_ASSERT(parent->isRecord());
+                static_cast<RecordInfo*>(parent)->Friends.emplace_back(I.id);
+            }
 
-#if 0
-            SymbolID id_;
-            getParent(id_, D);
-            MRDOX_ASSERT(id_ == id);
-#endif
-#endif
-            P.Friends.emplace_back(I.id);
-#if 0
-            bool isInAnonymous;
-            getParentNamespaces(P.Namespace, ND, isInAnonymous);
-            MRDOX_ASSERT(isInAnonymous == ND->isInAnonymousNamespace());
-#else
-            getParentNamespaces(I.Namespace, FD);
-            getParentNamespaces(P.Namespace, ND);
-#endif
-            insertBitcode(ex_, writeBitcode(I));
-            insertBitcode(ex_, writeParent(I, false));
-            insertBitcode(ex_, writeBitcode(P));
-            insertBitcode(ex_, writeParent(P, false));
             return;
         }
         if(FunctionTemplateDecl* FT = dyn_cast<FunctionTemplateDecl>(ND))
@@ -1340,168 +1635,6 @@ buildFriend(
     return;
 }
 
-void
-ASTVisitor::
-buildEnum(
-    EnumInfo& I,
-    EnumDecl* D)
-{
-    if(! extractInfo(I, D))
-        return;
-    int line = getLine(D);
-    if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
-    else
-        I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
-    I.Scoped = D->isScoped();
-    if(D->isFixed())
-        I.UnderlyingType = buildTypeInfoForType(
-            D->getIntegerType());
-
-    parseEnumerators(I, D);
-
-    bool member_spec = getParentNamespaces(I.Namespace, D);
-
-    insertBitcode(ex_, writeBitcode(I));
-    if(! member_spec)
-        insertBitcode(ex_, writeParent(I,
-            D->getDeclContext()->isRecord()));
-}
-
-void
-ASTVisitor::
-buildField(
-    FieldInfo& I,
-    FieldDecl* D)
-{
-    if(! extractInfo(I, D))
-        return;
-    int line = getLine(D);
-    I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
-
-    I.Type = buildTypeInfoForType(D->getType());
-
-    I.IsMutable = D->isMutable();
-
-    if(D->isBitField())
-    {
-        I.IsBitfield = true;
-        buildExprInfoForExpr(
-            I.BitfieldWidth,
-            D->getBitWidth());
-    }
-
-    I.specs.hasNoUniqueAddress = D->hasAttr<NoUniqueAddressAttr>();
-    I.specs.isDeprecated = D->hasAttr<DeprecatedAttr>();
-    I.specs.isMaybeUnused = D->hasAttr<UnusedAttr>();
-
-    bool member_spec = getParentNamespaces(I.Namespace, D);
-
-    insertBitcode(ex_, writeBitcode(I));
-    if(! member_spec)
-        insertBitcode(ex_, writeParent(I,
-            D->getDeclContext()->isRecord()));
-}
-
-void
-ASTVisitor::
-buildVar(
-    VariableInfo& I,
-    VarDecl* D)
-{
-    if(! extractInfo(I, D))
-        return;
-    int line = getLine(D);
-    if(D->isThisDeclarationADefinition())
-        I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
-    else
-        I.Loc.emplace_back(line, File_.str(), IsFileInRootDir_);
-
-    I.Type = buildTypeInfoForType(D->getType());
-
-    I.specs.storageClass =
-        convertToStorageClassKind(
-            D->getStorageClass());
-
-    // this handles thread_local, as well as the C
-    // __thread and __Thread_local specifiers
-    I.specs.isThreadLocal = D->getTSCSpec() !=
-        ThreadStorageClassSpecifier::TSCS_unspecified;
-
-    // KRYSTIAN NOTE: VarDecl does not provide getConstexprKind,
-    // nor does it use getConstexprKind to store whether
-    // a variable is constexpr/constinit. Although
-    // only one is permitted in a variable declaration,
-    // it is possible to declare a static data member
-    // as both constexpr and constinit in separate declarations..
-    I.specs.isConstinit = D->hasAttr<ConstInitAttr>();
-    if(D->isConstexpr())
-        I.specs.constexprKind = ConstexprKind::Constexpr;
-
-    bool member_spec = getParentNamespaces(I.Namespace, D);
-
-    insertBitcode(ex_, writeBitcode(I));
-    if(! member_spec)
-        insertBitcode(ex_, writeParent(I,
-            D->getDeclContext()->isRecord()));
-}
-
-template<class DeclTy>
-void
-ASTVisitor::
-buildFunction(
-    FunctionInfo& I,
-    DeclTy* D)
-{
-    if(! constructFunction(I, D))
-        return;
-
-    bool member_spec = getParentNamespaces(I.Namespace, D);
-
-    insertBitcode(ex_, writeBitcode(I));
-    if(! member_spec)
-        insertBitcode(ex_, writeParent(I,
-            D->getDeclContext()->isRecord()));
-}
-
-template<class DeclTy>
-void
-ASTVisitor::
-buildTypedef(
-    TypedefInfo& I,
-    DeclTy* D)
-{
-    if(! extractInfo(I, D))
-        return;
-    I.Type = buildTypeInfoForType(
-        D->getUnderlyingType());
-
-#if 0
-    if(I.Type.Name.empty())
-    {
-        // Typedef for an unnamed type. This is like
-        // "typedef struct { } Foo;". The record serializer
-        // explicitly checks for this syntax and constructs
-        // a record with that name, so we don't want to emit
-        // a duplicate here.
-        return;
-    }
-#endif
-
-    int line = getLine(D);
-    // D->isThisDeclarationADefinition(); // not available
-    I.DefLoc.emplace(line, File_.str(), IsFileInRootDir_);
-    // KRYSTIAN NOTE: IsUsing is set by TraverseTypeAlias
-    // I.IsUsing = std::is_same_v<DeclTy, TypeAliasDecl>;
-
-    bool member_spec = getParentNamespaces(I.Namespace, D);
-
-    insertBitcode(ex_, writeBitcode(I));
-    if(! member_spec)
-        insertBitcode(ex_, writeParent(I,
-            D->getDeclContext()->isRecord()));
-}
-
 //------------------------------------------------
 
 bool
@@ -1514,9 +1647,12 @@ traverse(NamespaceDecl* D)
         D->isAnonymousNamespace())
         return true;
 
-    NamespaceInfo I;
-    buildNamespace(I, D);
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return true;
+    auto [I, created] = getOrCreateInfo<NamespaceInfo>(id);
 
+    buildNamespace(I, created, D);
     return traverseContext(D);
 }
 
@@ -1532,12 +1668,36 @@ traverse(CXXRecordDecl* D,
     MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
-    RecordInfo I(std::move(Template));
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<RecordInfo>(id);
+    I.Access = convertToAccessKind(A);
+    I.Template = std::move(Template);
+
+    buildRecord(I, created, D);
+    return traverseContext(D);
+}
+
+bool
+ASTVisitor::
+traverse(EnumDecl* D,
+    AccessSpecifier A)
+{
+    if(! shouldExtract(D))
+        return true;
+
+    MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
+        A != AccessSpecifier::AS_none);
+
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<EnumInfo>(id);
     I.Access = convertToAccessKind(A);
 
-    buildRecord(I, D);
-
-    return traverseContext(D);
+    buildEnum(I, created, D);
+    return true;
 }
 
 bool
@@ -1551,10 +1711,13 @@ traverse(TypedefDecl* D,
     MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
-    TypedefInfo I;
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<TypedefInfo>(id);
     I.Access = convertToAccessKind(A);
 
-    buildTypedef(I, D);
+    buildTypedef(I, created, D);
     return true;
 }
 
@@ -1570,11 +1733,15 @@ traverse(TypeAliasDecl* D,
     MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
-    TypedefInfo I(std::move(Template));
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<TypedefInfo>(id);
     I.Access = convertToAccessKind(A);
     I.IsUsing = true;
+    I.Template = std::move(Template);
 
-    buildTypedef(I, D);
+    buildTypedef(I, created, D);
     return true;
 }
 
@@ -1590,10 +1757,35 @@ traverse(VarDecl* D,
     MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
         A != AccessSpecifier::AS_none);
 
-    VariableInfo I(std::move(Template));
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<VariableInfo>(id);
+    I.Access = convertToAccessKind(A);
+    I.Template = std::move(Template);
+
+    buildVariable(I, created, D);
+    return true;
+}
+
+bool
+ASTVisitor::
+traverse(FieldDecl* D,
+    AccessSpecifier A)
+{
+    if(! shouldExtract(D))
+        return true;
+
+    MRDOX_ASSERT(D->getDeclContext()->isRecord());
+    MRDOX_ASSERT(A != AccessSpecifier::AS_none);
+
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<FieldInfo>(id);
     I.Access = convertToAccessKind(A);
 
-    buildVar(I, D);
+    buildField(I, created, D);
     return true;
 }
 
@@ -1609,11 +1801,14 @@ traverse(FunctionDecl* D,
     MRDOX_ASSERT(! D->getDeclContext()->isRecord());
     MRDOX_ASSERT(A == AccessSpecifier::AS_none);
 
-    FunctionInfo I(std::move(Template));
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
     I.Access = convertToAccessKind(A);
+    I.Template = std::move(Template);
 
-    buildFunction(I, D);
-
+    buildFunction(I, created, D);
     return true;
 }
 
@@ -1629,10 +1824,14 @@ traverse(CXXMethodDecl* D,
     MRDOX_ASSERT(D->getDeclContext()->isRecord());
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
-    FunctionInfo I(std::move(Template));
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
     I.Access = convertToAccessKind(A);
+    I.Template = std::move(Template);
 
-    buildFunction(I, D);
+    buildFunction(I, created, D);
     return true;
 }
 
@@ -1642,24 +1841,21 @@ traverse(CXXConstructorDecl* D,
     AccessSpecifier A,
     std::unique_ptr<TemplateInfo>&& Template = nullptr)
 {
-    /*
-    auto s = D->getParent()->getName();
-    std::string s;
-    DeclarationName DN = D->getDeclName();
-    if(DN)
-        s = DN.getAsString();
-    */
     if(! shouldExtract(D))
         return true;
 
     MRDOX_ASSERT(D->getDeclContext()->isRecord());
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
-    FunctionInfo I(std::move(Template));
-    I.Class = FunctionClass::Constructor;
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
     I.Access = convertToAccessKind(A);
+    I.Template = std::move(Template);
+    I.Class = FunctionClass::Constructor;
 
-    buildFunction(I, D);
+    buildFunction(I, created, D);
     return true;
 }
 
@@ -1675,11 +1871,15 @@ traverse(CXXConversionDecl* D,
     MRDOX_ASSERT(D->getDeclContext()->isRecord());
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
-    FunctionInfo I(std::move(Template));
-    I.Class = FunctionClass::Conversion;
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
     I.Access = convertToAccessKind(A);
+    I.Template = std::move(Template);
+    I.Class = FunctionClass::Conversion;
 
-    buildFunction(I, D);
+    buildFunction(I, created, D);
     return true;
 }
 
@@ -1692,11 +1892,15 @@ traverse(CXXDeductionGuideDecl* D,
     if(! shouldExtract(D))
         return true;
 
-    FunctionInfo I(std::move(Template));
-    I.Class = FunctionClass::Deduction;
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
     I.Access = convertToAccessKind(A);
+    I.Template = std::move(Template);
+    I.Class = FunctionClass::Deduction;
 
-    buildFunction(I, D);
+    buildFunction(I, created, D);
     return true;
 }
 
@@ -1711,11 +1915,14 @@ traverse(CXXDestructorDecl* D,
     MRDOX_ASSERT(D->getDeclContext()->isRecord());
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
-    FunctionInfo I;
-    I.Class = FunctionClass::Destructor;
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return false;
+    auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
     I.Access = convertToAccessKind(A);
+    I.Class = FunctionClass::Destructor;
 
-    buildFunction(I, D);
+    buildFunction(I, created, D);
     return true;
 }
 
@@ -1727,41 +1934,7 @@ traverse(FriendDecl* D)
     return true;
 }
 
-bool
-ASTVisitor::
-traverse(EnumDecl* D,
-    AccessSpecifier A)
-{
-    if(! shouldExtract(D))
-        return true;
-
-    MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
-        A != AccessSpecifier::AS_none);
-
-    EnumInfo I;
-    I.Access = convertToAccessKind(A);
-
-    buildEnum(I, D);
-    return true;
-}
-
-bool
-ASTVisitor::
-traverse(FieldDecl* D,
-    AccessSpecifier A)
-{
-    if(! shouldExtract(D))
-        return true;
-
-    MRDOX_ASSERT(D->getDeclContext()->isRecord());
-    MRDOX_ASSERT(A != AccessSpecifier::AS_none);
-
-    FieldInfo I;
-    I.Access = convertToAccessKind(A);
-
-    buildField(I, D);
-    return true;
-}
+//------------------------------------------------
 
 bool
 ASTVisitor::
@@ -2061,51 +2234,6 @@ traverseContext(
     return true;
 }
 
-// An instance of Visitor runs on one translation unit.
-void
-ASTVisitor::
-HandleTranslationUnit(
-    ASTContext& Context)
-{
-    // the ASTContext and Sema better be the same
-    // as those set by Initialize and InitializeSema
-    MRDOX_ASSERT(astContext_ == &Context);
-    MRDOX_ASSERT(sema_);
-
-    // Install handlers for our custom commands
-    initCustomCommentCommands(Context);
-
-    std::optional<llvm::StringRef> filePath =
-        Context.getSourceManager().getNonBuiltinFilenameForID(
-            Context.getSourceManager().getMainFileID());
-    if(! filePath)
-        return;
-
-    // Filter out TUs we don't care about
-    File_ = *filePath;
-    convert_to_slash(File_);
-    if(! config_.shouldVisitTU(File_))
-        return;
-
-    TranslationUnitDecl* TU =
-        Context.getTranslationUnitDecl();
-    // the traversal scope should *only* consist of the
-    // top-level TranslationUnitDecl. if this assert fires,
-    // then it means ASTContext::setTraversalScope is being
-    // (erroneously) used somewhere
-    MRDOX_ASSERT(Context.getTraversalScope() ==
-        std::vector<Decl*>{TU});
-
-    for(auto* C : TU->decls())
-        traverseDecl(C);
-
-    // VFALCO If we returned from the function early
-    // then this line won't execute, which means we
-    // will miss error and warnings emitted before
-    // the return.
-    ex_.report(std::move(diags_));
-}
-
 void
 ASTVisitor::
 Initialize(ASTContext& Context)
@@ -2146,6 +2274,54 @@ ASTVisitor::
 HandleCXXImplicitFunctionInstantiation(FunctionDecl* D)
 {
     D->setImplicit();
+}
+
+// An instance of Visitor runs on one translation unit.
+void
+ASTVisitor::
+HandleTranslationUnit(
+    ASTContext& Context)
+{
+    // the ASTContext and Sema better be the same
+    // as those set by Initialize and InitializeSema
+    MRDOX_ASSERT(astContext_ == &Context);
+    MRDOX_ASSERT(sema_);
+
+    // Install handlers for our custom commands
+    initCustomCommentCommands(Context);
+
+    std::optional<llvm::StringRef> filePath =
+        Context.getSourceManager().getNonBuiltinFilenameForID(
+            Context.getSourceManager().getMainFileID());
+    if(! filePath)
+        return;
+
+    // Filter out TUs we don't care about
+    File_ = *filePath;
+    convert_to_slash(File_);
+    if(! config_.shouldVisitTU(File_))
+        return;
+
+    TranslationUnitDecl* TU =
+        Context.getTranslationUnitDecl();
+    // the traversal scope should *only* consist of the
+    // top-level TranslationUnitDecl. if this assert fires,
+    // then it means ASTContext::setTraversalScope is being
+    // (erroneously) used somewhere
+    MRDOX_ASSERT(Context.getTraversalScope() ==
+        std::vector<Decl*>{TU});
+
+    // traverse the translation unit
+    traverseContext(TU);
+
+    // VFALCO If we returned from the function early
+    // then this line won't execute, which means we
+    // will miss error and warnings emitted before
+    // the return.
+    ex_.report(std::move(diags_));
+
+    for(auto& info : info_)
+        insertBitcode(ex_, writeBitcode(*info));
 }
 
 } // mrdox

@@ -123,4 +123,15 @@ compareSymbolNames(
 } // mrdox
 } // clang
 
+template<>
+struct std::hash<clang::mrdox::SymbolID>
+{
+    std::size_t operator()(
+        const clang::mrdox::SymbolID& id) const
+    {
+        return std::hash<std::string_view>()(
+            std::string_view(id));
+    }
+};
+
 #endif

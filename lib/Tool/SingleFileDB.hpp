@@ -33,6 +33,7 @@ public:
     {
         std::vector<std::string> cmds;
         cmds.emplace_back("clang");
+        cmds.emplace_back("-fsyntax-only");
         cmds.emplace_back("-std=c++20");
         cmds.emplace_back("-pedantic-errors");
         cmds.emplace_back("-Werror");

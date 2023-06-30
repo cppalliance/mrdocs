@@ -23,7 +23,8 @@ operator()(T const& I)
     renderPage(I, numPages_++);
     if constexpr(
             T::isNamespace() ||
-            T::isRecord())
+            T::isRecord() ||
+            T::isSpecialization())
         corpus_.traverse(I, *this);
 }
 

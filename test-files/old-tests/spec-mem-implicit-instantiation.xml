@@ -29,24 +29,6 @@
       </template>
     </struct>
   </template>
-  <struct name="D" id="CSFzdUEgi4+pu0K2D3isHXeaoFQ=">
-    <file path="spec-mem-implicit-instantiation.cpp" line="45" class="def"/>
-    <template>
-      <tparam name="T" class="type"/>
-      <struct name="E" id="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
-        <file path="spec-mem-implicit-instantiation.cpp" line="48" class="def"/>
-        <function name="f" id="nxF8MdADIr6UZe8NnMsl1r561d0=">
-          <file path="spec-mem-implicit-instantiation.cpp" line="50" class="def"/>
-        </function>
-      </struct>
-    </template>
-    <specialization id="27+9TQyh1Vcx+C3POBLdyXJP8bo=" primary="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
-      <targ value="int"/>
-      <function name="f" id="BL/+D2PyDBFwjwkcczCrXeCBouI=">
-        <file path="spec-mem-implicit-instantiation.cpp" line="54" class="def"/>
-      </function>
-    </specialization>
-  </struct>
   <specialization id="AKwlChAOi+0ttIAPsD7uitS+gk0=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ value="int"/>
     <function name="f" id="5vQMmBbKdcjmr6fZ5KE/+hqkRD0=">
@@ -65,6 +47,9 @@
       <tparam name="U" class="type"/>
       <struct name="C" id="bJ8v5jNLvcM2EtaEdF2cpbTmU5s=">
         <file path="spec-mem-implicit-instantiation.cpp" line="26" class="def"/>
+        <function name="i" id="FnUXB08e7tKDcXA1I7E6hiu2/i0=">
+          <file path="spec-mem-implicit-instantiation.cpp" line="30" class="def"/>
+        </function>
       </struct>
     </template>
   </specialization>
@@ -75,6 +60,9 @@
       <targ value="U*"/>
       <struct name="C" id="xYK8qpEgWzczUMGnNUx+ozeBle0=">
         <file path="spec-mem-implicit-instantiation.cpp" line="34" class="def"/>
+        <function name="j" id="ks7mzzkRLaNXkyZ4CdZPO75g8js=">
+          <file path="spec-mem-implicit-instantiation.cpp" line="38" class="def"/>
+        </function>
       </struct>
     </template>
     <specialization id="EyperGIiZ7cSv/PB2BApKjPRQVA=" primary="xYK8qpEgWzczUMGnNUx+ozeBle0=">
@@ -84,5 +72,23 @@
       </function>
     </specialization>
   </specialization>
+  <struct name="D" id="CSFzdUEgi4+pu0K2D3isHXeaoFQ=">
+    <file path="spec-mem-implicit-instantiation.cpp" line="45" class="def"/>
+    <template>
+      <tparam name="T" class="type"/>
+      <struct name="E" id="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
+        <file path="spec-mem-implicit-instantiation.cpp" line="48" class="def"/>
+        <function name="k" id="cJsLsaJ126sgoCXsFOa+lMSNEVI=">
+          <file path="spec-mem-implicit-instantiation.cpp" line="50" class="def"/>
+        </function>
+      </struct>
+    </template>
+    <specialization id="27+9TQyh1Vcx+C3POBLdyXJP8bo=" primary="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
+      <targ value="int"/>
+      <function name="k" id="ePyn5n+volZWM9Xn5rQhbb07Yn8=">
+        <file path="spec-mem-implicit-instantiation.cpp" line="54" class="def"/>
+      </function>
+    </specialization>
+  </struct>
 </namespace>
 </mrdox>

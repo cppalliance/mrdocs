@@ -17,13 +17,46 @@
 #include "Tool/Diagnostics.hpp"
 #include "Tool/ExecutionContext.hpp"
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Metadata/Info.hpp>
 #include <clang/Sema/SemaConsumer.h>
 #include <clang/Tooling/Execution.h>
+#include <memory>
 #include <optional>
 #include <unordered_map>
+#include <unordered_set>
 
 namespace clang {
 namespace mrdox {
+
+using InfoPtr = std::unique_ptr<Info>;
+
+struct InfoPtrHasher
+{
+    using is_transparent = void;
+
+    std::size_t operator()(
+        const InfoPtr& I) const;
+
+    std::size_t operator()(
+        const SymbolID& id) const;
+};
+
+struct InfoPtrEqual
+{
+    using is_transparent = void;
+
+    bool operator()(
+        const InfoPtr& a,
+        const InfoPtr& b) const;
+
+    bool operator()(
+        const InfoPtr& a,
+        const SymbolID& b) const;
+
+    bool operator()(
+        const SymbolID& a,
+        const InfoPtr& b) const;
+};
 
 /** Convert AST to our metadata and serialize to bitcode.
 
@@ -65,6 +98,14 @@ public:
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
 
+    std::unordered_set<
+        InfoPtr,
+        InfoPtrHasher,
+        InfoPtrEqual> info_;
+
+    // KRYSTIAN FIXME: this is terrible
+    bool forceExtract_ = false;
+
 public:
     ASTVisitor(
         tooling::ExecutionContext& ex,
@@ -87,18 +128,40 @@ public:
     shouldExtract(
         const Decl* D);
 
-    bool
-    extractInfo(
-        Info& I,
-        const NamedDecl* D);
-
     std::string
     extractName(
         const NamedDecl* D);
 
-    int
+    Info* getInfo(const SymbolID& id);
+
+    template<typename InfoTy>
+    InfoTy&
+    createInfo(const SymbolID& id);
+
+    template<typename InfoTy>
+    std::pair<InfoTy&, bool>
+    getOrCreateInfo(const SymbolID& id);
+
+    Info&
+    getOrBuildInfo(Decl* D);
+
+    template<
+        typename InfoTy,
+        typename Child>
+    void
+    emplaceChild(
+        InfoTy& I,
+        Child&& C);
+
+    unsigned
     getLine(
         const NamedDecl* D) const;
+
+    void
+    addSourceLocation(
+        SourceInfo& I,
+        unsigned line,
+        bool definition);
 
     std::string
     getSourceCode(
@@ -117,15 +180,15 @@ public:
     template<typename TypeInfoTy>
     std::unique_ptr<TypeInfoTy>
     makeTypeInfo(
-        const NamedDecl* N,
+        NamedDecl* N,
         unsigned quals);
 
     std::unique_ptr<TypeInfo>
-    buildTypeInfoForType(
+    buildTypeInfo(
         const NestedNameSpecifier* N);
 
     std::unique_ptr<TypeInfo>
-    buildTypeInfoForType(
+    buildTypeInfo(
         QualType T,
         unsigned quals = 0);
 
@@ -134,31 +197,26 @@ public:
     getValue(const llvm::APInt& V);
 
     void
-    buildExprInfoForExpr(
+    buildExprInfo(
         ExprInfo& I,
         const Expr* E);
 
     template<typename T>
     void
-    buildExprInfoForExpr(
+    buildExprInfo(
         ConstantExprInfo<T>& I,
         const Expr* E);
 
     template<typename T>
     void
-    buildExprInfoForExpr(
+    buildExprInfo(
         ConstantExprInfo<T>& I,
         const Expr* E,
         const llvm::APInt& V);
 
     void
-    parseParameters(
-        FunctionInfo& I,
-        FunctionDecl const* D);
-
-    void
     applyDecayToParameters(
-        FunctionDecl* D);
+        const FunctionDecl* D);
 
     void
     parseTemplateParams(
@@ -205,66 +263,64 @@ public:
         EnumInfo& I,
         const EnumDecl* D);
 
-    bool
-    getParentNamespaces(
-        std::vector<SymbolID>& Namespaces,
-        const Decl* D);
-
     void
-    buildSpecialization(
-        SpecializationInfo& I,
-        const ClassTemplateSpecializationDecl* P,
-        const Decl* C);
+    getParentNamespaces(
+        Info& I,
+        Decl* D);
 
-    void extractBases(
+    void buildSpecialization(
+        SpecializationInfo& I,
+        bool created,
+        ClassTemplateSpecializationDecl* D);
+
+    void buildNamespace(
+        NamespaceInfo& I,
+        bool created,
+        NamespaceDecl* D);
+
+    void buildRecord(
         RecordInfo& I,
+        bool created,
         CXXRecordDecl* D);
 
-    template<class DeclTy>
-    bool constructFunction(
-        FunctionInfo& I,
-        DeclTy* D);
+    void buildEnum(
+        EnumInfo& I,
+        bool created,
+        EnumDecl* D);
+
+    void buildTypedef(
+        TypedefInfo& I,
+        bool created,
+        TypedefNameDecl* D);
+
+    void buildVariable(
+        VariableInfo& I,
+        bool created,
+        VarDecl* D);
+
+    void buildField(
+        FieldInfo& I,
+        bool created,
+        FieldDecl* D);
 
     template<class DeclTy>
     void buildFunction(
         FunctionInfo& I,
+        bool created,
         DeclTy* D);
-
-    void buildRecord(
-        RecordInfo& I,
-        CXXRecordDecl* D);
-
-    void buildNamespace(
-        NamespaceInfo& I,
-        NamespaceDecl* D);
 
     void buildFriend(
         FriendDecl* D);
 
-    void buildEnum(
-        EnumInfo& I,
-        EnumDecl* D);
-
-    void buildField(
-        FieldInfo& I,
-        FieldDecl* D);
-
-    void buildVar(
-        VariableInfo& I,
-        VarDecl* D);
-
-    template<class DeclTy>
-    void buildTypedef(
-        TypedefInfo& I,
-        DeclTy* D);
-
     // --------------------------------------------------------
 
     bool traverse(NamespaceDecl*);
+    bool traverse(CXXRecordDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(EnumDecl*, AccessSpecifier);
     bool traverse(TypedefDecl*, AccessSpecifier);
     bool traverse(TypeAliasDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
-    bool traverse(CXXRecordDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
     bool traverse(VarDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
+    bool traverse(FieldDecl*, AccessSpecifier);
     bool traverse(FunctionDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
     bool traverse(CXXMethodDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
     bool traverse(CXXConstructorDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
@@ -272,8 +328,6 @@ public:
     bool traverse(CXXDeductionGuideDecl*, AccessSpecifier, std::unique_ptr<TemplateInfo>&&);
     // destructors cannot be templates
     bool traverse(CXXDestructorDecl*, AccessSpecifier);
-    bool traverse(EnumDecl*, AccessSpecifier);
-    bool traverse(FieldDecl*, AccessSpecifier);
 
     // KRYSTIAN TODO: friends are a can of worms
     // we do not wish to open just yet
@@ -305,8 +359,10 @@ public:
     bool traverseDecl(Decl* D, Args&&... args);
     bool traverseContext(DeclContext* D);
 
-    void HandleTranslationUnit(ASTContext& Context) override;
-
+    void Initialize(ASTContext& Context) override;
+    void InitializeSema(Sema& S) override;
+    void ForgetSema() override;
+    
     /** Skip function bodies
 
         This is called by Sema when parsing a function that has a body and:
@@ -319,12 +375,10 @@ public:
     */
     bool shouldSkipFunctionBody(Decl* D) override { return true; }
 
-    void Initialize(ASTContext& Context) override;
-    void InitializeSema(Sema& S) override;
-    void ForgetSema() override;
-
     void HandleCXXStaticMemberVarInstantiation(VarDecl* D) override;
     void HandleCXXImplicitFunctionInstantiation(FunctionDecl* D) override;
+    
+    void HandleTranslationUnit(ASTContext& Context) override;
 };
 
 } // mrdox

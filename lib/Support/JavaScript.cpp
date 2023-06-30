@@ -24,7 +24,7 @@ namespace js {
 /*  Proxy Traps
 
     has                 [[HasProperty]]
-    get                 [[Get]]	
+    get                 [[Get]]
 
     ownKeys             [[OwnPropertyKeys]]
     enumerate           [[Enumerate]]
@@ -546,7 +546,7 @@ push(
             auto obj = get(A, 1);
             duk_pop_n(A, duk_get_top(A));
             domValue_push(A, obj.find(key));
-            return 1;      
+            return 1;
         }, 1);
         duk_def_prop(A, idx,
             DUK_DEFPROP_HAVE_GETTER |
@@ -887,7 +887,7 @@ Param(
             default:
                 MRDOX_UNREACHABLE();
             }
-        }())  
+        }())
 {
 }
 
@@ -1049,7 +1049,7 @@ Value::
 setlog()
 {
     Access A(*scope_);
-    // Effects:     
+    // Effects:
     // Signature    (level, message)
     duk_push_c_function(A,
     [](duk_context* ctx) -> duk_ret_t

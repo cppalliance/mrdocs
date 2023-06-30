@@ -103,6 +103,8 @@ toString(InfoKind kind) noexcept
         return "typedef";
     case InfoKind::Variable:
         return "variable";
+    case InfoKind::Specialization:
+        return "specialization";
     default:
         MRDOX_UNREACHABLE();
     }

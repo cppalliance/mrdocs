@@ -16,7 +16,7 @@
         <file path="namespace.cpp" line="12"/>
       </function>
     </namespace>
-    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1" is-inline="1">
+    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1">
       <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
         <file path="namespace.cpp" line="17"/>
       </function>
@@ -55,7 +55,7 @@
         <file path="namespace.cpp" line="32"/>
       </function>
     </namespace>
-    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1" is-inline="1">
+    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1">
       <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
         <file path="namespace.cpp" line="17"/>
       </function>
@@ -80,7 +80,7 @@
       </function>
     </namespace>
   </namespace>
-  <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1" is-inline="1">
+  <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1">
     <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
       <file path="namespace.cpp" line="17"/>
     </function>
@@ -105,7 +105,7 @@
     </function>
   </namespace>
   <namespace name="I" id="+dTV+2puUwO4arfDuNZCVAzk0M0=">
-    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1" is-inline="1">
+    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1">
       <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
         <file path="namespace.cpp" line="17"/>
       </function>

@@ -47,9 +47,9 @@ struct D
     template<typename T>
     struct E
     {
-        void f() { }
+        void k() { }
     };
 };
 
 template<>
-void D::E<int>::f() { }
+void D::E<int>::k() { }

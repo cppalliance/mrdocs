@@ -17,7 +17,6 @@
 #include <mrdox/Generators.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
-#include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/JSONCompilationDatabase.h>
 #include <cstdlib>
 
