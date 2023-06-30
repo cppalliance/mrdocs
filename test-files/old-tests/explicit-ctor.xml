@@ -114,11 +114,11 @@
     <tparam name="B" class="non-type" type="bool"/>
     <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
       <file path="explicit-ctor.cpp" line="25" class="def"/>
-      <function class="constructor" name="ExplicitExpression&lt;B&gt;" id="s6L5UKI8FLTRiyny1rXgYxG/f/0=">
+      <function class="constructor" name="ExplicitExpression" id="s6L5UKI8FLTRiyny1rXgYxG/f/0=">
         <file path="explicit-ctor.cpp" line="26"/>
         <attr id="explicit-spec" name="explicit(expr)" value="4"/>
       </function>
-      <function class="constructor" name="ExplicitExpression&lt;B&gt;" id="Ty1Sv+L6at7TykYdCITSQKmXwVs=">
+      <function class="constructor" name="ExplicitExpression" id="Ty1Sv+L6at7TykYdCITSQKmXwVs=">
         <file path="explicit-ctor.cpp" line="27"/>
         <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <param>
@@ -127,7 +127,7 @@
           </type>
         </param>
       </function>
-      <function class="constructor" name="ExplicitExpression&lt;B&gt;" id="gDoLCstIvgYYJng1jhLOLe/yz+Q=">
+      <function class="constructor" name="ExplicitExpression" id="gDoLCstIvgYYJng1jhLOLe/yz+Q=">
         <file path="explicit-ctor.cpp" line="28"/>
         <attr id="exception-spec" name="noexcept" value="5"/>
         <attr id="explicit-spec" name="explicit(expr)" value="4"/>
@@ -137,7 +137,7 @@
           </type>
         </param>
       </function>
-      <function class="constructor" name="ExplicitExpression&lt;B&gt;" id="J31K1hQq31LWiQhVy5ro0V+1pD0=">
+      <function class="constructor" name="ExplicitExpression" id="J31K1hQq31LWiQhVy5ro0V+1pD0=">
         <file path="explicit-ctor.cpp" line="29"/>
         <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <param>

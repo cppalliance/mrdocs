@@ -90,6 +90,10 @@ public:
         Info& I,
         const NamedDecl* D);
 
+    std::string
+    extractName(
+        const NamedDecl* D);
+
     int
     getLine(
         const NamedDecl* D) const;
@@ -102,17 +106,30 @@ public:
     getTypeAsString(
         QualType T);
 
+    template<typename TypeInfoTy>
+    std::unique_ptr<TypeInfoTy>
+    makeTypeInfo(
+        const IdentifierInfo* II,
+        unsigned quals);
+
+    template<typename TypeInfoTy>
+    std::unique_ptr<TypeInfoTy>
+    makeTypeInfo(
+        const NamedDecl* N,
+        unsigned quals);
+
     std::unique_ptr<TypeInfo>
     buildTypeInfoForType(
         const NestedNameSpecifier* N);
 
+    std::unique_ptr<TypeInfo>
+    buildTypeInfoForType(
+        QualType T,
+        unsigned quals = 0);
+
     template<typename Integer>
     Integer
     getValue(const llvm::APInt& V);
-
-    std::unique_ptr<TypeInfo>
-    buildTypeInfoForType(
-        QualType T);
 
     void
     buildExprInfoForExpr(

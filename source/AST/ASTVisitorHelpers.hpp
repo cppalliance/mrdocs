@@ -225,8 +225,9 @@ convertToRecordKeyKind(
 
 QualifierKind
 convertToQualifierKind(
-    Qualifiers kind)
+    unsigned quals)
 {
+    auto kind = Qualifiers::fromCVRMask(quals);
     return static_cast<QualifierKind>(
         (kind.hasConst() ? QualifierKind::Const : QualifierKind::None) |
         (kind.hasVolatile() ? QualifierKind::Volatile : QualifierKind::None));
