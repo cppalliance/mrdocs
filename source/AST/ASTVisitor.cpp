@@ -1364,6 +1364,11 @@ buildVar(
         convertToStorageClassKind(
             D->getStorageClass());
 
+    // this handles thread_local, as well as the C
+    // __thread and __Thread_local specifiers
+    I.specs.isThreadLocal = D->getTSCSpec() !=
+        ThreadStorageClassSpecifier::TSCS_unspecified;
+
     // KRYSTIAN NOTE: VarDecl does not provide getConstexprKind,
     // nor does it use getConstexprKind to store whether
     // a variable is constexpr/constinit. Although

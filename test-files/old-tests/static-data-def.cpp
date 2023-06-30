@@ -12,6 +12,12 @@ struct A
     static constexpr int v7 = 7;
 };
 
+struct B
+{
+    static thread_local const int x0 = 0;
+    static constexpr thread_local int x1 = 0;
+};
+
 template<typename T>
 int A<T>::v0 = 0;
 
@@ -39,3 +45,5 @@ auto f()
         A<int>::v6 +
         A<int>::v7;
 }
+
+thread_local const int B::x0;

@@ -29,6 +29,7 @@ union VariableFlags0
     BitField<0, 3, StorageClassKind> storageClass;
     BitField<3, 2, ConstexprKind> constexprKind;
     BitFlag<5> isConstinit;
+    BitFlag<6> isThreadLocal;
 };
 
 /** A variable.

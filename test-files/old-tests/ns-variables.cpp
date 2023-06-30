@@ -14,3 +14,7 @@ double pi = 3.14;
 struct T {};
 
 extern T t;
+
+thread_local int x0 = 0;
+thread_local static int x1 = 0;
+constexpr thread_local static int x2 = 0;

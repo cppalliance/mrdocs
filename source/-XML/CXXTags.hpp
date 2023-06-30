@@ -185,6 +185,7 @@ inline void write(VariableFlags0 const& bits, XMLTags& tags)
     fw.write(&VariableFlags0::storageClass, "storage-class");
     fw.write(&VariableFlags0::constexprKind, "constexpr-kind");
     fw.write(&VariableFlags0::isConstinit, "is-constinit");
+    fw.write(&VariableFlags0::isThreadLocal, "is-thread-local");
 }
 
 inline

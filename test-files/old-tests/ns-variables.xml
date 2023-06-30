@@ -38,5 +38,23 @@
     <attr id="storage-class" name="extern" value="1"/>
     <type class="tag" id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
   </variable>
+  <variable name="x0" id="LESPWJfwRpePfANf2Vm0O/W1Lfw=">
+    <file path="ns-variables.cpp" line="18" class="def"/>
+    <attr id="is-thread-local"/>
+    <type name="int"/>
+  </variable>
+  <variable name="x1" id="bMKl4XYJf8MQ48jSHwRmFHM3MiA=">
+    <file path="ns-variables.cpp" line="19" class="def"/>
+    <attr id="storage-class" name="static" value="2"/>
+    <attr id="is-thread-local"/>
+    <type name="int"/>
+  </variable>
+  <variable name="x2" id="EpcDWput1W/SJ3IYEINS0W815Zw=">
+    <file path="ns-variables.cpp" line="20" class="def"/>
+    <attr id="storage-class" name="static" value="2"/>
+    <attr id="constexpr-kind" name="constexpr" value="1"/>
+    <attr id="is-thread-local"/>
+    <type name="int" cv-qualifiers="const"/>
+  </variable>
 </namespace>
 </mrdox>
