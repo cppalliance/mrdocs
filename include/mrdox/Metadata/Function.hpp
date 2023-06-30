@@ -47,6 +47,21 @@ std::string_view
 getSafeOperatorName(
     OperatorKind kind) noexcept;
 
+/** Function classifications */
+enum class FunctionClass
+{
+    Normal = 0,
+    Constructor,
+    // conversion function
+    Conversion,
+    Destructor,
+    // deduction guide
+    Deduction,
+};
+
+MRDOX_DECL
+std::string_view
+toString(FunctionClass kind);
 
 /** Bit constants used with function specifiers.
 */
@@ -130,6 +145,9 @@ struct FunctionInfo
 
     // When present, this function is a template or specialization.
     std::unique_ptr<TemplateInfo> Template;
+
+    // the class of function this is
+    FunctionClass Class = FunctionClass::Normal;
 
     FnFlags0 specs0{.raw{0}};
     FnFlags1 specs1{.raw{0}};

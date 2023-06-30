@@ -1598,6 +1598,7 @@ traverse(CXXConstructorDecl* D,
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
+    I.Class = FunctionClass::Constructor;
     I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);
@@ -1617,6 +1618,7 @@ traverse(CXXConversionDecl* D,
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I(std::move(Template));
+    I.Class = FunctionClass::Conversion;
     I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);
@@ -1633,6 +1635,7 @@ traverse(CXXDeductionGuideDecl* D,
         return true;
 
     FunctionInfo I(std::move(Template));
+    I.Class = FunctionClass::Deduction;
     I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);
@@ -1651,6 +1654,7 @@ traverse(CXXDestructorDecl* D,
     MRDOX_ASSERT(A != AccessSpecifier::AS_none);
 
     FunctionInfo I;
+    I.Class = FunctionClass::Destructor;
     I.Access = convertToAccessKind(A);
 
     buildFunction(I, D);

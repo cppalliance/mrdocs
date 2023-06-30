@@ -662,6 +662,7 @@ DomInfo<T>::construct() const
     if constexpr(T::isFunction())
     {
         entries.insert(entries.end(), {
+            { "class",      toString(I_.Class) },
             { "params",     dom::newArray<DomParamArray>(I_.Params, domCorpus_) },
             { "return",     domCreate(I_.ReturnType, domCorpus_) },
             { "template",   domCreate(I_.Template, domCorpus_) },

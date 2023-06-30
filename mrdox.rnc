@@ -75,6 +75,7 @@ grammar
             Name,
             Access?,
             ID,
+            attribute class { "constructor"|"destructor"|"conversion"|"deduction" } ?,
             Location *,
             (
                 Attr * |

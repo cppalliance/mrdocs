@@ -283,6 +283,8 @@ writeFunction(
     openTemplate(I.Template);
 
     tags_.open(functionTagName, {
+        { "class", toString(I.Class),
+            I.Class != FunctionClass::Normal },
         { "name", I.Name },
         { I.Access },
         { I.id }

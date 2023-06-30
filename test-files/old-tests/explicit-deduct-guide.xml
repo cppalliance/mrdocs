@@ -8,7 +8,7 @@
       <file path="explicit-deduct-guide.cpp" line="4" class="def"/>
     </struct>
   </template>
-  <function name="&lt;deduction guide for X&gt;" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
+  <function class="deduction" name="&lt;deduction guide for X&gt;" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
     <file path="explicit-deduct-guide.cpp" line="6"/>
     <attr id="has-trailing-return"/>
     <attr id="explicit-spec" name="explicit" value="1"/>
@@ -21,7 +21,7 @@
       <type name="bool"/>
     </param>
   </function>
-  <function name="&lt;deduction guide for X&gt;" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
+  <function class="deduction" name="&lt;deduction guide for X&gt;" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
     <file path="explicit-deduct-guide.cpp" line="8"/>
     <attr id="has-trailing-return"/>
     <attr id="explicit-spec" name="explicit(true)" value="3"/>
@@ -34,7 +34,7 @@
       <type name="char"/>
     </param>
   </function>
-  <function name="&lt;deduction guide for X&gt;" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
+  <function class="deduction" name="&lt;deduction guide for X&gt;" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
     <file path="explicit-deduct-guide.cpp" line="10"/>
     <attr id="has-trailing-return"/>
     <attr id="explicit-spec" name="explicit(false)" value="2"/>
@@ -49,7 +49,7 @@
   </function>
   <template>
     <tparam name="B" class="non-type" type="bool" default="true"/>
-    <function name="&lt;deduction guide for X&gt;" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
+    <function class="deduction" name="&lt;deduction guide for X&gt;" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
       <file path="explicit-deduct-guide.cpp" line="13"/>
       <attr id="has-trailing-return"/>
       <attr id="explicit-spec" name="explicit(expr)" value="4"/>

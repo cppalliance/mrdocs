@@ -114,6 +114,26 @@ getSafeOperatorName(
     return Table[to_underlying(kind)].safe_name;
 }
 
+std::string_view
+toString(FunctionClass kind)
+{
+    switch(kind)
+    {
+    case FunctionClass::Normal:
+        return "normal";
+    case FunctionClass::Constructor:
+        return "constructor";
+    case FunctionClass::Conversion:
+        return "conversion";
+    case FunctionClass::Deduction:
+        return "deduction";
+    case FunctionClass::Destructor:
+        return "destructor";
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
 } // mrdox
 } // clang
 

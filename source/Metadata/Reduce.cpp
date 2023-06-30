@@ -194,6 +194,8 @@ void merge(RecordInfo& I, RecordInfo&& Other)
 void merge(FunctionInfo& I, FunctionInfo&& Other)
 {
     MRDOX_ASSERT(canMerge(I, Other));
+    if(I.Class == FunctionClass::Normal)
+        I.Class = Other.Class;
     if (! I.ReturnType)
         I.ReturnType = std::move(Other.ReturnType);
     if (I.Params.empty())

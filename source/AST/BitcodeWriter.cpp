@@ -262,6 +262,7 @@ RecordIDNameMap = []()
         {FIELD_IS_MUTABLE, {"FieldIsMutable", &BoolAbbrev}},
         {FIELD_IS_BITFIELD, {"FieldIsBitfield", &BoolAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
+        {FUNCTION_CLASS, {"FunctionClass", &Integer32Abbrev}},
         {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
         {FUNCTION_PARAM_DEFAULT, {"Default", &StringAbbrev}},
         {INFO_PART_ACCESS, {"InfoAccess", &Integer32Abbrev}},
@@ -344,7 +345,7 @@ RecordsByBlock{
         FIELD_IS_MUTABLE, FIELD_IS_BITFIELD}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
-        {FUNCTION_BITS}},
+        {FUNCTION_BITS, FUNCTION_CLASS}},
     // Param
     {BI_FUNCTION_PARAM_BLOCK_ID,
         {FUNCTION_PARAM_NAME, FUNCTION_PARAM_DEFAULT}},
@@ -844,6 +845,7 @@ emitBlock(
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
+    emitRecord(I.Class, FUNCTION_CLASS);
     emitBlock(I.ReturnType);
     for (const auto& N : I.Params)
         emitBlock(N);

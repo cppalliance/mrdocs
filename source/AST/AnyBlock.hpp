@@ -1059,6 +1059,8 @@ public:
         {
         case FUNCTION_BITS:
             return decodeRecord(R, {&I->specs0.raw, &I->specs1.raw}, Blob);
+        case FUNCTION_CLASS:
+            return decodeRecord(R, I->Class, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }
