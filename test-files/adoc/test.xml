@@ -3,11 +3,17 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file path="test.cpp" line="5"/>
+    <file path="test.cpp" line="7"/>
     <doc>
       <brief>
         <text> brief</text>
       </brief>
+      <para>
+        <text></text>
+      </para>
+      <para class="warning">
+        <text> uh oh!</text>
+      </para>
       <para>
         <text></text>
       </para>

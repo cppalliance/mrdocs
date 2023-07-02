@@ -260,36 +260,50 @@ grammar
             Specialization
         )*
 
+    #---------------------------------------------
+    #
+    # <doc>
+    #
+    #---------------------------------------------
+
+    # VFALCO What does this mean?
     # JavaDoc not in a nested grammar , so we can convert it to a XSD
 
-    Javadoc = element doc {Brief ?, Node* }
-    Text = element text { text }
-    Brief = element brief { Node * }
-    Node = (Text | Styled | Paragraph | Brief | Admonition | Code | Param | TParam | Returns)
+    Javadoc = element doc { Brief ?, BlockNode * }
+
+    Brief = element brief { TextNode * }
+
+    BlockNode = (
+        Admonition | Code | Heading | ListItem |
+        Paragraph | Param | Returns | TParam )
+
+    Admonition = Paragraph
+    Code = element code { TextNode* }
+    Heading = element head { text }
+    ListItem = Paragraph
+    Paragraph = element para {
+        attribute class { text } ?,
+        TextNode * }
+    Param = element param {
+        attribute name { text } ?,
+        attribute class { text } ?,
+        TextNode * }
+    Returns = element returns { TextNode * }
+    TParam = element tparam {
+        attribute name { text } ?,
+        TextNode * }
+
+    TextNode = ( Link | Styled | Text )
+
+    Link = element link { attribute href { text }, text }
     Styled = (
         element none { text } |
         element mono { text } |
         element bold { text } |
-        element italic { text })
-    Paragraph = element para {
-        attribute class { text } ?,
-        Node*
-    }
+        element italic { text } )
+    Text = element text { text }
 
-    Admonition = Paragraph
-    Code = element code { Node * }
-    Param = element param {
-        attribute name { text } ?,
-        attribute class { text } ?,
-        Node*
-    }
-
-    TParam = element tparam {
-        attribute name { text } ?,
-        Node*
-    }
-
-    Returns = element returns { Node * }
+    #---------------------------------------------
 
     ID   = attribute id { text }
 
