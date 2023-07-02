@@ -110,7 +110,7 @@ static
 dom::Object
 domCreate(SourceInfo const& I)
 {
-    dom::Object::entries_type entries;
+    dom::Object::storage_type entries;
     if(I.DefLoc)
         entries.emplace_back("def", domCreate(*I.DefLoc));
     if(! I.Loc.empty())
@@ -338,7 +338,7 @@ domCreate(
 {
     if(! I)
         return nullptr;
-    dom::Object::entries_type entries = {
+    dom::Object::storage_type entries = {
         { "kind", toString(I->Kind) }
     };
     visit(*I, [&]<typename T>(const T& t)
@@ -623,7 +623,7 @@ requires std::derived_from<T, Info>
 dom::Object
 DomInfo<T>::construct() const
 {
-    entries_type entries;
+    storage_type entries;
     entries.insert(entries.end(), {
         { "id",         toBase16(I_.id) },
         { "kind",       toString(I_.Kind) },

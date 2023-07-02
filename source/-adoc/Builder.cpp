@@ -199,8 +199,6 @@ createContext(
     SymbolID const& id)
 {
     return dom::Object({
-        { "document", "test" },
-        { "test", "===" },
         { "symbol", domCorpus_.get(id) }
         });
 }

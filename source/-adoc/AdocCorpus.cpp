@@ -264,7 +264,7 @@ public:
     dom::Object
     construct() const override
     {
-        entries_type list;
+        storage_type list;
         list.reserve(2);
 
         // brief

@@ -430,7 +430,7 @@ domObject_push_metatable(
     {
         Access A(L);
         domValue_push(A,
-            domObject_get(A, 1).get(
+            domObject_get(A, 1).find(
                 luaM_getstring(A, 2)));
         lua_replace(A, 1);
         return 1;
@@ -511,10 +511,9 @@ domObject_push_metatable(
                 return 2;
             }
             auto index = lua_tonumber(A, lua_upvalueindex(1));
-            auto entries = obj.entries();
-            auto const& kv = entries[index];
-            luaM_pushstring(A, kv.first);
-            domValue_push(A, kv.second);
+            auto const& kv = obj[index];
+            luaM_pushstring(A, kv.key);
+            domValue_push(A, kv.value);
             ++index;
             if(index < obj.size())
                 lua_pushnumber(A, index);

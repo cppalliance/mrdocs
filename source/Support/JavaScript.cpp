@@ -275,20 +275,61 @@ getGlobal(
 }
 
 //------------------------------------------------
+//
+// Array, Object
+//
+//------------------------------------------------
 
-static void domObject_push(Access& A, dom::Object const& obj);
+struct ArrayBase
+{
+    static dom::Array& get(Access& A, duk_idx_t idx);
+};
+
+// Uses ES6 Getters/Setters
+struct ArrayGetSet : ArrayBase
+{
+    static void push(Access& A, dom::Array const& arr);
+};
+
+// Uses ES6 Proxy
+struct ArrayProxy : ArrayBase
+{
+    static void push(Access& A, dom::Array const& arr);
+
+};
+
+struct ObjectBase
+{
+    static dom::Object& get(Access& A, duk_idx_t idx);
+};
+
+// Uses ES6 Getters/Setters
+struct ObjectGetSet : ObjectBase
+{
+    static void push(Access& A, dom::Object const& obj);
+};
+
+// Uses ES6 Proxy
+struct ObjectProxy : ObjectBase
+{
+    static void push(Access& A, dom::Object const& obj);
+};
+
+#if 1
+using ArrayRep  = ArrayProxy; //ArrayGetSet;
+using ObjectRep = ObjectGetSet;
+#else
+using ArrayRep  = ArrayProxy;
+using ObjectRep = ObjectProxy;
+#endif
+
 static void domValue_push(Access& A, dom::Value const& value);
 
 //------------------------------------------------
-//
-// dom::Array
-//
-//------------------------------------------------
 
-static
 dom::Array&
-domArray_get(
-    Access& A, duk_idx_t idx)
+ArrayBase::
+get(Access& A, duk_idx_t idx)
 {
     duk_get_prop_string(A, idx, DUK_HIDDEN_SYMBOL("dom"));
     void* data;
@@ -300,9 +341,16 @@ domArray_get(
     return *static_cast<dom::Array*>(data);
 }
 
-static
 void
-domArray_push(
+ArrayGetSet::
+push(
+    Access& A, dom::Array const& obj)
+{
+}
+
+void
+ArrayProxy::
+push(
     Access& A, dom::Array const& arr)
 {
     duk_push_array(A);
@@ -317,7 +365,7 @@ domArray_push(
     {
         Access A(ctx);
         duk_push_this(ctx);
-        std::destroy_at(&domArray_get(A, -1));
+        std::destroy_at(&get(A, -1));
         return 0;
     }, 0);
     duk_set_finalizer(A, -2);
@@ -340,7 +388,7 @@ domArray_push(
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& arr = domArray_get(A, -1);
+        auto& arr = get(A, -1);
         auto i = duk_to_number(A, 1);
         duk_push_boolean(A, i < arr.size());
         return 1;
@@ -355,7 +403,7 @@ domArray_push(
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& arr = domArray_get(A, -1);
+        auto& arr = get(A, -1);
         switch(duk_get_type(A, 1))
         {
         case DUK_TYPE_NUMBER:
@@ -440,29 +488,76 @@ domArray_push(
 }
 
 //------------------------------------------------
-//
-// dom::Object
-//
-//------------------------------------------------
 
-static
 dom::Object&
-domObject_get(
-    Access& A, duk_idx_t idx)
+ObjectBase::
+get(Access& A, duk_idx_t idx)
 {
     duk_get_prop_string(A, idx, DUK_HIDDEN_SYMBOL("dom"));
     void* data;
-    if(duk_get_type(A, -1) == DUK_TYPE_POINTER)
+    auto const ty = duk_get_type(A, -1);
+    if(ty == DUK_TYPE_POINTER)
         data = duk_get_pointer(A, -1);
+    else if(ty == DUK_TYPE_BUFFER)
+        data = duk_get_buffer_data(A, -1, nullptr);
     else
-        data = duk_get_buffer_data(A, idx, nullptr);
+        MRDOX_UNREACHABLE();
     duk_pop(A);
     return *static_cast<dom::Object*>(data);
 }
 
-static
 void
-domObject_push(
+ObjectGetSet::
+push(
+    Access& A, dom::Object const& obj)
+{
+    duk_push_object(A);
+    auto idx = duk_normalize_index(A, -1);
+    auto& obj_ = *static_cast<dom::Object*>(
+        duk_push_fixed_buffer(A, sizeof(dom::Object)));
+    dukM_put_prop_string(A, idx, DUK_HIDDEN_SYMBOL("dom"));
+
+    // Effects:     ~ObjectPtr
+    // Signature    ()
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        Access A(ctx);
+        duk_push_this(ctx);
+        std::destroy_at(&get(A, -1));
+        return 0;
+    }, 0);
+    duk_set_finalizer(A, idx);
+    std::construct_at(&obj_, obj);
+
+    for(auto const& kv : obj)
+    {
+        dukM_push_string(A, kv.key);
+
+        // Method:      Getter
+        // Effects:     return obj[key]
+        // Signature:   (key)
+        duk_push_c_function(A,
+        [](duk_context* ctx) -> duk_ret_t
+        {
+            Access A(ctx);
+            auto key = dukM_get_string(A, 0);
+            duk_push_this(A);
+            auto obj = get(A, 1);
+            auto const& value = obj.find(key);
+            duk_pop_n(A, duk_get_top(A));
+            domValue_push(A, obj.find(key));
+            return 1;      
+        }, 1);
+        duk_def_prop(A, idx,
+            DUK_DEFPROP_HAVE_GETTER |
+            DUK_DEFPROP_SET_ENUMERABLE);
+    }
+}
+
+void
+ObjectProxy::
+push(
     Access& A, dom::Object const& obj)
 {
     duk_push_object(A);
@@ -477,7 +572,7 @@ domObject_push(
     {
         Access A(ctx);
         duk_push_this(ctx);
-        std::destroy_at(&domObject_get(A, -1));
+        std::destroy_at(&get(A, -1));
         return 0;
     }, 0);
     duk_set_finalizer(A, -2);
@@ -500,9 +595,9 @@ domObject_push(
     {
         Access A(ctx);
         duk_push_this(A); // the proxy
-        auto& obj = domObject_get(A, -1);
+        auto& obj = get(A, -1);
         auto key = dukM_get_string(A, 1);
-        auto const& v = obj.get(key);
+        auto const& v = obj.find(key);
         duk_pop_n(A, duk_get_top(A));
         domValue_push(A, v);
         return 1;
@@ -517,9 +612,9 @@ domObject_push(
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& obj = domObject_get(A, -1);
+        auto& obj = get(A, -1);
         auto key = dukM_get_string(A, 1);
-        auto const& v = obj.get(key);
+        auto const& v = obj.find(key);
         duk_pop_n(A, duk_get_top(A));
         // VFALCO should add dom::Object::exists(k) for this
         duk_push_boolean(A, ! v.isNull());
@@ -529,20 +624,20 @@ domObject_push(
 
 #if 1
     // Trap:        [[OwnPropertyKeys]]
-    // Effects:     return entries()
+    // Effects:     return range(Object())
     // Signature:   ()
     duk_push_c_function(A,
     [](duk_context* ctx) -> duk_ret_t
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& obj = domObject_get(A, -1);
+        auto& obj = get(A, -1);
         duk_pop(A);
         duk_push_array(A);
-        for(auto const& kv : obj.entries())
+        for(auto const& kv : obj)
         {
-            dukM_push_string(A, kv.first);
-            domValue_push(A, kv.second);
+            dukM_push_string(A, kv.key);
+            domValue_push(A, kv.value);
             duk_put_prop(A, -3);
         }
         return 1;
@@ -631,10 +726,10 @@ push(Scope& scope) const
         duk_dup(A, idx_);
         break;
     case Kind::DomArray:
-        domArray_push(A, arr_);
+        ArrayRep::push(A, arr_);
         break;
     case Kind::DomObject:
-        domObject_push(A, obj_);
+        ObjectRep::push(A, obj_);
         break;
     default:
         MRDOX_UNREACHABLE();
@@ -824,10 +919,10 @@ domValue_push(
         dukM_push_string(A, value.getString());
         return;
     case dom::Kind::Array:
-        domArray_push(A, value.getArray());
+        ArrayRep::push(A, value.getArray());
         return;
     case dom::Kind::Object:
-        domObject_push(A, value.getObject());
+        ObjectRep::push(A, value.getObject());
         return;
     default:
         MRDOX_UNREACHABLE();

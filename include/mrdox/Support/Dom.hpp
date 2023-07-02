@@ -13,6 +13,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/Optional.hpp>
+#include <mrdox/Support/String.hpp>
 #include <fmt/format.h>
 #include <atomic>
 #include <cstdint>
@@ -160,24 +161,7 @@ newArray(Args&&... args)
 //
 //------------------------------------------------
 
-/** Abstract object interface.
-
-    This interface is used by Object types.
-*/
-class MRDOX_DECL
-    ObjectImpl
-{
-public:
-    using value_type = std::pair<std::string_view, Value>;
-    using entries_type = std::vector<value_type>;
-
-    virtual ~ObjectImpl() = 0;
-    virtual std::size_t size() const noexcept = 0;
-    virtual bool exists(std::string_view key) const = 0;
-    virtual Value get(std::string_view key) const = 0;
-    virtual void set(std::string_view key, Value value) = 0;
-    virtual entries_type entries() const = 0;
-};
+class ObjectImpl;
 
 /** A container of key and value pairs.
 */
@@ -187,17 +171,39 @@ class MRDOX_DECL
     std::shared_ptr<ObjectImpl> impl_;
 
 public:
-    /** The type of an element in this container.
-    */
-    using value_type = ObjectImpl::value_type;
+    /** A key/value pair.
 
-    /** The underlying, iterable range used by this container.
+        This is a copyable, movable value type.
     */
-    using entries_type = ObjectImpl::entries_type;
+    struct value_type;
+
+    /** A key/value pair.
+
+        This is a read-only reference to the underlying data.
+    */
+    struct reference;
+
+    using difference_type = std::ptrdiff_t;
+    using size_type = std::size_t;
+    using pointer = reference;
+
+    /** A constant iterator referencing an element in an Object.
+    */
+    class iterator;
+
+    /** A constant iterator referencing an element in an Object.
+    */
+    using const_iterator = iterator;
+
+    /** The type of storage used by the default implementation.
+    */
+    using storage_type = std::vector<value_type>;
 
     /** The type of implementation.
     */
     using impl_type = std::shared_ptr<ObjectImpl>;
+
+    //--------------------------------------------
 
     /** Destructor.
     */
@@ -228,7 +234,7 @@ public:
 
         @param list The initial list of values.
     */
-    explicit Object(entries_type list);
+    explicit Object(storage_type list);
 
     /** Constructor.
 
@@ -254,11 +260,17 @@ public:
 
     /** Return true if the container is empty.
     */
-    bool empty() const noexcept;
+    bool empty() const;
 
     /** Return the number of elements.
     */
-    std::size_t size() const noexcept;
+    std::size_t size() const;
+
+    /** Return the i-th key/value pair, without bounds checking.
+
+        @param i The zero-based index of the element.
+    */
+    reference get(std::size_t i) const;
 
     /** Return true if a key exists.
     */
@@ -273,7 +285,7 @@ public:
 
         @param key The key.
     */
-    Value get(std::string_view key) const;
+    Value find(std::string_view key) const;
 
     /** Set or replace the value for a given key.
 
@@ -287,17 +299,71 @@ public:
     */
     void set(std::string_view key, Value value) const;
 
-    /** Return the range of contained values.
+    /** Return an iterator to the beginning of the range of elements.
     */
-    entries_type entries() const noexcept;
+    iterator begin() const;
+
+    /** Return an iterator to the end of the range of elements.
+    */
+    iterator end() const;
+
+    /** Return the i-th element, without bounds checking.
+    */
+    reference operator[](size_type i) const;
+
+    /** Return the i-th element, without bounds checking.
+    */
+    reference at(size_type i) const;
 
     //--------------------------------------------
 
     /** Return a diagnostic string.
     */
-    friend
-    std::string
-    toString(Object const&);
+    friend std::string toString(Object const&);
+};
+
+//------------------------------------------------
+//
+// ObjectImpl
+//
+//------------------------------------------------
+
+/** Abstract object interface.
+
+    This interface is used by Object types.
+*/
+class MRDOX_DECL
+    ObjectImpl
+{
+public:
+    /// @copydoc Object::storage_type
+    using storage_type = Object::storage_type;
+
+    /// @copydoc Object::reference
+    using reference = Object::reference;
+
+    /// @copydoc Object::iterator
+    using iterator = Object::iterator;
+
+    /** Destructor.
+    */
+    virtual ~ObjectImpl() = 0;
+
+    /** Return the number of key/value pairs in the object.
+    */
+    virtual std::size_t size() const = 0;
+
+    /** Return the i-th key/value pair, without bounds checking.
+    */
+    virtual reference get(std::size_t i) const = 0;
+
+    /** Return the value for the specified key, or null.
+    */
+    virtual Value find(std::string_view key) const = 0;
+
+    /** Insert or set the given key/value pair.
+    */
+    virtual void set(std::string_view key, Value value) = 0;
 };
 
 /** Return a new object using a custom implementation.
@@ -322,16 +388,19 @@ newObject(Args&&... args)
 class MRDOX_DECL
     DefaultObjectImpl : public ObjectImpl
 {
-    entries_type entries_;
-
 public:
     DefaultObjectImpl() noexcept;
-    explicit DefaultObjectImpl(entries_type entries) noexcept;
-    std::size_t size() const noexcept override;
-    bool exists(std::string_view key) const override;
-    Value get(std::string_view key) const override;
-    void set(std::string_view key, Value value) override;
-    entries_type entries() const override;
+
+    explicit DefaultObjectImpl(
+        storage_type entries) noexcept;
+
+    std::size_t size() const override;
+    reference get(std::size_t) const override;
+    Value find(std::string_view) const override;
+    void set(std::string_view, Value) override;
+
+private:
+    storage_type entries_;
 };
 
 //------------------------------------------------
@@ -350,27 +419,27 @@ class MRDOX_DECL
     using impl_type = Object::impl_type;
 
     ObjectImpl& obj() const;
+
+protected:
+    /** Return the constructed object.
+
+        Subclasses override this.
+        The function is invoked just in time.
+    */
     virtual Object construct() const = 0;
 
 public:
-    std::size_t size() const noexcept override;
-    bool exists(std::string_view key) const override;
-    Value get(std::string_view key) const override;
+    std::size_t size() const override;
+    reference get(std::size_t i) const override;
+    Value find(std::string_view key) const override;
     void set(std::string_view key, Value value) override;
-    entries_type entries() const override;
 };
 
 //------------------------------------------------
-
-struct literal
-{
-    std::string_view s;
-
-    literal(std::string_view s_)
-        : s(s_)
-    {
-    }
-};
+//
+// Value
+//
+//------------------------------------------------
 
 /** A variant container for any kind of Dom value.
 */
@@ -409,7 +478,6 @@ public:
     Value(std::nullptr_t) noexcept;
     Value(std::int64_t) noexcept;
     Value(std::string s) noexcept;
-    Value(literal const& lit) noexcept;
     Value(Array arr) noexcept;
     Value(Object obj) noexcept;
     Value& operator=(Value&&) noexcept;
@@ -570,30 +638,255 @@ public:
 };
 
 //------------------------------------------------
+//
+// Object::value_type
+//
+//------------------------------------------------
+
+struct Object::value_type
+{
+    std::string_view key;
+    Value value;
+
+    value_type() = default;
+
+    value_type(
+        std::string_view const& key_,
+        Value value_) noexcept
+        : key(key_)
+        , value(std::move(value_))
+    {
+    }
+
+    template<class U>
+    requires std::constructible_from<
+        std::pair<std::string_view, Value>, U>
+    value_type(
+        U&& u)
+        : value_type(
+            [&u]
+            {
+                std::pair<std::string_view, Value> p(
+                    std::forward<U>(u));
+                return value_type(
+                    p.first, std::move(p).second);
+            })
+    {
+    }
+
+    value_type* operator->() noexcept
+    {
+        return this;
+    }
+
+    value_type const* operator->() const noexcept
+    {
+        return this;
+    }
+};
+
+//------------------------------------------------
+//
+// Object::reference
+//
+//------------------------------------------------
+
+struct Object::reference
+{
+    std::string_view const key;
+    Value const& value;
+
+    reference(reference const&) = default;
+
+    reference(
+        std::string_view const& key_,
+        Value const& value_) noexcept
+        : key(key_)
+        , value(value_)
+    {
+    }
+
+    reference(
+        value_type const& kv) noexcept
+        : key(kv.key)
+        , value(kv.value)
+    {
+    }
+
+    operator value_type() const
+    {
+        return value_type(key, value);
+    }
+
+    reference const* operator->() noexcept
+    {
+        return this;
+    }
+
+    reference const* operator->() const noexcept
+    {
+        return this;
+    }
+};
+
+//------------------------------------------------
+//
+// Object::iterator
+//
+//------------------------------------------------
+
+class MRDOX_DECL
+    Object::iterator
+{
+    ObjectImpl const* obj_ = nullptr;
+    std::size_t i_ = 0;
+
+    friend class Object;
+
+    iterator(
+        ObjectImpl const& obj,
+        std::size_t i) noexcept
+        : obj_(&obj)
+        , i_(i)
+    {
+    }
+
+public:
+    using value_type = Object::value_type;
+    using reference = Object::reference;
+    using difference_type = std::ptrdiff_t;
+    using size_type  = std::size_t;
+    using pointer = reference;
+    using iterator_category =
+        std::random_access_iterator_tag;
+
+    iterator() = default;
+
+    reference operator*() const noexcept
+    {
+        return obj_->get(i_);
+    }
+
+    pointer operator->() const noexcept
+    {
+        return obj_->get(i_);
+    }
+
+    reference operator[](difference_type n) const noexcept
+    {
+        return obj_->get(i_ + n);
+    }
+
+    iterator& operator--() noexcept
+    {
+        --i_;
+        return *this;
+    }
+
+    iterator operator--(int) noexcept
+    {
+        auto temp = *this;
+        --*this;
+        return temp;
+    }
+
+    iterator& operator++() noexcept
+    {
+        ++i_;
+        return *this;
+    }
+
+    iterator operator++(int) noexcept
+    {
+        auto temp = *this;
+        ++*this;
+        return temp;
+    }
+
+    auto operator<=>(iterator const& other) const noexcept
+    {
+        MRDOX_ASSERT(obj_ == other.obj_);
+        return i_ <=> other.i_;
+    }
+
+#if 1
+    // VFALCO Why does ranges need these? Isn't <=> enough?
+    bool operator==(iterator const& other) const noexcept
+    {
+        MRDOX_ASSERT(obj_ == other.obj_);
+        return i_ == other.i_;
+    }
+
+    bool operator!=(iterator const& other) const noexcept
+    {
+        MRDOX_ASSERT(obj_ == other.obj_);
+        return i_ != other.i_;
+    }
+#endif
+
+    iterator& operator-=(difference_type n) noexcept
+    {
+        i_ -= n;
+        return *this;
+    }
+
+    iterator& operator+=(difference_type n) noexcept
+    {
+        i_ += n;
+        return *this;
+    }
+
+    iterator operator-(difference_type n) const noexcept
+    {
+        return iterator(*obj_, i_ - n);
+    }
+
+    iterator operator+(difference_type n) const noexcept
+    {
+        return iterator(*obj_, i_ + n);
+    }
+
+    difference_type operator-(iterator other) const noexcept
+    {
+        MRDOX_ASSERT(obj_ == other.obj_);
+        return static_cast<difference_type>(i_) - other.i_;
+    }
+
+    friend iterator operator+(difference_type n, iterator it) noexcept
+    {
+        return it + n;
+    }
+};
+
+//------------------------------------------------
+
+//
+// implementation
+//
 
 inline Value Array::at(std::size_t index) const
 {
     return impl_->at(index);
 }
 
-inline bool Object::empty() const noexcept
+inline bool Object::empty() const
 {
-    return impl_->size() == 0;
+    return size() == 0;
 }
 
-inline std::size_t Object::size() const noexcept
+inline std::size_t Object::size() const
 {
     return impl_->size();
 }
 
-inline bool Object::exists(std::string_view key) const
+inline auto Object::get(std::size_t i) const -> reference
 {
-    return impl_->exists(key);
+    return impl_->get(i);
 }
 
-inline Value Object::get(std::string_view key) const
+inline Value Object::find(std::string_view key) const
 {
-    return impl_->get(key);
+    return impl_->find(key);
 }
 
 inline void Object::set(std::string_view key, Value value) const
@@ -601,9 +894,19 @@ inline void Object::set(std::string_view key, Value value) const
     impl_->set(key, std::move(value));
 }
 
-inline auto Object::entries() const noexcept -> entries_type
+inline auto Object::begin() const -> iterator
 {
-    return impl_->entries();
+    return iterator(*impl_, 0);
+}
+
+inline auto Object::end() const -> iterator
+{
+    return iterator(*impl_, impl_->size());
+}
+
+inline auto Object::operator[](size_type i) const -> reference
+{
+    return impl_->get(i);
 }
 
 //------------------------------------------------
@@ -623,6 +926,33 @@ stringOrNull(
 } // dom
 } // mrdox
 } // clang
+
+//------------------------------------------------
+
+// VFALCO These needs to be constrained to indicate
+// that the common reference is always constant.
+
+template<
+    template <class> class TQual, 
+    template <class> class UQual>
+struct std::basic_common_reference<
+    ::clang::mrdox::dom::Object::value_type,
+    ::clang::mrdox::dom::Object::reference,
+    TQual, UQual>
+{
+    using type = ::clang::mrdox::dom::Object::reference;
+};
+
+template<
+    template <class> class TQual, 
+    template <class> class UQual>
+struct std::basic_common_reference<
+    ::clang::mrdox::dom::Object::reference,
+    ::clang::mrdox::dom::Object::value_type,
+    TQual, UQual>
+{
+    using type = ::clang::mrdox::dom::Object::reference;
+};
 
 //------------------------------------------------
 

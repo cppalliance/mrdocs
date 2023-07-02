@@ -50,16 +50,16 @@ public:
         return { data_, size_ };
     }
 
-    std::string_view const&
+    std::string_view
     get() const noexcept
     {
-        return { data_, size_ };
+        return std::string_view(*this);
     }
 
-    std::string_view const&
+    std::string_view
     operator*() const noexcept
     {
-        return get();
+        return std::string_view(*this);
     }
 };
 

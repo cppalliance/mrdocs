@@ -12,10 +12,14 @@
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/RangeFor.hpp>
 #include <algorithm>
+#include <ranges>
 
 namespace clang {
 namespace mrdox {
 namespace dom {
+
+static_assert(std::random_access_iterator<Object::iterator>);
+static_assert(std::ranges::random_access_range<Object>);
 
 //------------------------------------------------
 //
@@ -119,10 +123,20 @@ Object(
 
 Object::
 Object(
-    entries_type list)
+    storage_type list)
     : impl_(std::make_shared<
         DefaultObjectImpl>(std::move(list)))
 {
+}
+
+auto
+Object::
+at(size_type i) const ->
+    reference
+{
+    if(i >= size())
+        throw Error("out of range");
+    return impl_->get(i);
 }
 
 std::string
@@ -134,14 +148,14 @@ toString(
     std::string s = "{";
     {
         auto insert = std::back_inserter(s);
-        for(auto const& kv : RangeFor(obj.entries()))
+        for(auto const& kv : RangeFor(obj))
         {
             if(! kv.first)
                 s.push_back(',');
             fmt::format_to(insert,
                 " {} : {}",
-                kv.value.first,
-                toStringChild(kv.value.second));
+                kv.value.key,
+                toStringChild(kv.value.value));
         }
     }
     s += " }";
@@ -159,69 +173,57 @@ DefaultObjectImpl() noexcept = default;
 
 DefaultObjectImpl::
 DefaultObjectImpl(
-    entries_type entries) noexcept
+    storage_type entries) noexcept
     : entries_(std::move(entries))
 {
 }
 
 std::size_t
 DefaultObjectImpl::
-size() const noexcept
+size() const
 {
     return entries_.size();
 }
 
-bool
+auto
 DefaultObjectImpl::
-exists(
-    std::string_view key) const
+get(std::size_t i) const ->
+    reference
 {
-    return std::find_if(
-        entries_.begin(), entries_.end(),
-        [key](value_type const& kv)
-        {
-            return kv.first == key;
-        }) != entries_.end();
+    MRDOX_ASSERT(i < entries_.size());
+    return entries_[i];
 }
 
 Value
 DefaultObjectImpl::
-get(std::string_view key) const
+find(std::string_view key) const
 {
     auto it = std::find_if(
         entries_.begin(), entries_.end(),
-        [key](value_type const& kv)
+        [key](auto const& kv)
         {
-            return kv.first == key;
+            return kv.key == key;
         });
-    if(it != entries_.end())
-        return it->second;
-    return nullptr;
+    if(it == entries_.end())
+        return nullptr;
+    return it->value;
 }
 
 void
 DefaultObjectImpl::
 set(std::string_view key, Value value)
 {
-    auto it =  std::find_if(
+    auto it = std::find_if(
         entries_.begin(), entries_.end(),
-        [key](value_type const& kv)
+        [key](auto const& kv)
         {
-            return kv.first == key;
+            return kv.key == key;
         });
     if(it == entries_.end())
         entries_.emplace_back(
             key, std::move(value));
     else
-        it->second = std::move(value);
-}
-
-auto
-DefaultObjectImpl::
-entries() const ->
-    entries_type
-{
-    return entries_;
+        it->value = std::move(value);
 }
 
 //------------------------------------------------
@@ -246,24 +248,24 @@ obj() const
 
 std::size_t
 LazyObjectImpl::
-size() const noexcept
+size() const
 {
     return obj().size();
 }
 
-bool
+auto
 LazyObjectImpl::
-exists(
-    std::string_view key) const
+get(std::size_t i) const ->
+    reference
 {
-    return obj().exists(key);
+    return obj().get(i);
 }
 
 Value
 LazyObjectImpl::
-get(std::string_view key) const
+find(std::string_view key) const
 {
-    return obj().get(key);
+    return obj().find(key);
 }
 
 void
@@ -272,14 +274,6 @@ set(
     std::string_view key, Value value)
 {
     obj().set(key, value);
-}
-
-auto
-LazyObjectImpl::
-entries() const ->
-    entries_type
-{
-    return obj().entries();
 }
 
 //------------------------------------------------
