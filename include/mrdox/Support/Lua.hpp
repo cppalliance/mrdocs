@@ -15,10 +15,10 @@
 #include <mrdox/Support/Dom.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Expected.hpp>
-#include <mrdox/Support/SharedPtr.hpp>
 #include <mrdox/Support/source_location.hpp>
 #include <fmt/format.h>
 #include <cstdlib>
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -78,7 +78,7 @@ class MRDOX_DECL
 {
     struct Impl;
 
-    SharedPtr<Impl> impl_;
+    std::shared_ptr<Impl> impl_;
 
     friend struct Access;
     friend class Scope;

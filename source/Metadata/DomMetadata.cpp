@@ -12,8 +12,8 @@
 #include "Support/Radix.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/DomMetadata.hpp>
-#include <mrdox/Support/SharedPtr.hpp>
 #include <llvm/ADT/StringMap.h>
+#include <memory>
 #include <mutex>
 #include "-adoc/DocVisitor.hpp" // VFALCO NO!
 

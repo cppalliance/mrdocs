@@ -181,20 +181,14 @@ Expected<std::string>
 Builder::
 renderSinglePageHeader()
 {
-    auto text = callTemplate("single-header.adoc.hbs",
-        dom::Object({
-        { "test", dom::Value("===") }
-        }));
-    return text;
+    return callTemplate("single-header.adoc.hbs", {});
 }
 
 Expected<std::string>
 Builder::
 renderSinglePageFooter()
 {
-    auto obj = makeShared<dom::Object>();
-    auto text = callTemplate("single-footer.adoc.hbs", {});
-    return text;
+    return callTemplate("single-footer.adoc.hbs", {});
 }
 
 //------------------------------------------------

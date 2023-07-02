@@ -13,7 +13,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/Optional.hpp>
-#include <mrdox/Support/SharedPtr.hpp>
 #include <fmt/format.h>
 #include <atomic>
 #include <cstdint>
