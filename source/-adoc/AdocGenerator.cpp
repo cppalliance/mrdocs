@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "AdocCorpus.hpp"
 #include "AdocGenerator.hpp"
 #include "Builder.hpp"
 #include "MultiPageVisitor.hpp"
@@ -64,7 +65,7 @@ build(
     if(! corpus.config.multiPage)
         return Generator::build(outputPath, corpus);
 
-    DomCorpus domCorpus(corpus);
+    AdocCorpus domCorpus(corpus);
     auto ex = createExecutors(domCorpus);
     if(! ex)
         return ex.error();
@@ -83,7 +84,7 @@ buildOne(
     std::ostream& os,
     Corpus const& corpus) const
 {
-    DomCorpus domCorpus(corpus);
+    AdocCorpus domCorpus(corpus);
     auto ex = createExecutors(domCorpus);
     if(! ex)
         return ex.error();

@@ -4,62 +4,22 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TOOL_ADOC_DOCVISITOR_HPP
-#define MRDOX_TOOL_ADOC_DOCVISITOR_HPP
-
-#include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Javadoc.hpp>
+#include "AdocCorpus.hpp"
 #include <mrdox/Support/RangeFor.hpp>
+#include <mrdox/Support/String.hpp>
 #include <fmt/format.h>
+#include <iterator>
 
 namespace clang {
 namespace mrdox {
 namespace adoc {
 
-inline
-std::string_view
-ltrim(std::string_view s)
-{
-    auto it = s.begin();
-    for (;; ++it)
-    {
-        if (it == s.end())
-            return {};
-        if (!isspace(*it))
-            break;
-    }
-    return s.substr(it - s.begin());
-}
-
-inline
-std::string_view
-rtrim(std::string_view s)
-{
-    auto it = s.end() - 1;
-    for (; it > s.begin() && isspace(*it); --it);
-    return s.substr(0, it - s.begin());
-}
-
-inline
-std::string_view
-trim(std::string_view s)
-{
-    auto left = s.begin();
-    for (;; ++left)
-    {
-        if (left == s.end())
-            return {};
-        if (!isspace(*left))
-            break;
-    }
-    auto right = s.end() - 1;
-    for (; right > left && isspace(*right); --right);
-    return std::string_view(&*left, right - left + 1);
-}
+namespace {
 
 class DocVisitor
 {
@@ -87,7 +47,6 @@ public:
         doc::List<doc::Text> const& list);
 };
 
-inline
 DocVisitor::
 DocVisitor(
     std::string& dest) noexcept
@@ -96,7 +55,6 @@ DocVisitor(
 {
 }
 
-inline
 void
 DocVisitor::
 operator()(
@@ -106,7 +64,6 @@ operator()(
         doc::visit(*block, *this);
 }
 
-inline
 void
 DocVisitor::
 operator()(
@@ -115,7 +72,6 @@ operator()(
     //dest_ += I.string;
 }
 
-inline
 void
 DocVisitor::
 operator()(
@@ -149,7 +105,6 @@ operator()(
     dest_ += "----\n";
 }
 
-inline
 void
 DocVisitor::
 operator()(
@@ -159,7 +114,6 @@ operator()(
 }
 
 //void operator()(doc::Brief const& I)
-inline
 void
 DocVisitor::
 operator()(
@@ -182,7 +136,6 @@ operator()(
     dest_.push_back('\n');
 }
 
-inline
 void
 DocVisitor::
 operator()(
@@ -195,7 +148,6 @@ operator()(
     dest_.push_back(']');
 }
 
-inline
 void
 DocVisitor::
 operator()(
@@ -219,7 +171,6 @@ operator()(
     dest_.push_back('\n');
 }
 
-inline
 void
 DocVisitor::
 operator()(doc::Param const& I)
@@ -227,7 +178,6 @@ operator()(doc::Param const& I)
     //dest_ += I.string;
 }
 
-inline
 void
 DocVisitor::
 operator()(doc::Returns const& I)
@@ -235,7 +185,6 @@ operator()(doc::Returns const& I)
     //dest_ += I.string;
 }
 
-inline
 void
 DocVisitor::
 operator()(doc::Text const& I)
@@ -246,7 +195,6 @@ operator()(doc::Text const& I)
     dest_.append(s);
 }
 
-inline
 void
 DocVisitor::
 operator()(doc::Styled const& I)
@@ -273,7 +221,6 @@ operator()(doc::Styled const& I)
     }
 }
 
-inline
 void
 DocVisitor::
 operator()(doc::TParam const& I)
@@ -281,7 +228,6 @@ operator()(doc::TParam const& I)
     //dest_ += I.string;
 }
 
-inline
 std::size_t
 DocVisitor::
 measureLeftMargin(
@@ -302,8 +248,61 @@ measureLeftMargin(
     return n;
 }
 
+//------------------------------------------------
+
+class DomJavadoc : public dom::LazyObjectImpl
+{
+    Javadoc const& jd_;
+
+public:
+    DomJavadoc(
+        Javadoc const& jd) noexcept
+        : jd_(jd)
+    {
+    }
+
+    dom::Object
+    construct() const override
+    {
+        entries_type list;
+        list.reserve(2);
+
+        // brief
+        if(auto brief = jd_.getBrief())
+        {
+            std::string s;
+            DocVisitor visitor(s);
+            s.clear();
+            visitor(*brief);
+            if(! s.empty())
+                list.emplace_back("brief", std::move(s));
+        }
+
+        // description
+        if(! jd_.getBlocks().empty())
+        {
+            std::string s;
+            DocVisitor visitor(s);
+            s.clear();
+            visitor(jd_.getBlocks());
+            if(! s.empty())
+                list.emplace_back("description", std::move(s));
+        }
+
+        return dom::Object(std::move(list));
+    }
+};
+
+} // (anon)
+
+dom::Value
+AdocCorpus::
+getJavadoc(
+    Javadoc const& jd) const
+{
+    return dom::newObject<DomJavadoc>(jd);
+}
+
 } // adoc
 } // mrdox
 } // clang
-
-#endif

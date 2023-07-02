@@ -15,7 +15,6 @@
 #include <llvm/ADT/StringMap.h>
 #include <memory>
 #include <mutex>
-#include "-adoc/DocVisitor.hpp" // VFALCO NO!
 
 namespace clang {
 namespace mrdox {
@@ -27,6 +26,17 @@ namespace {
 // Helpers
 //
 //------------------------------------------------
+
+static
+dom::Value
+domCreate(
+    std::unique_ptr<Javadoc> const& jd,
+    DomCorpus const& domCorpus)
+{
+    if(! jd)
+        return nullptr;
+    return domCorpus.getJavadoc(*jd);
+}
 
 class DomSymbolArray : public dom::ArrayImpl
 {
@@ -55,64 +65,6 @@ public:
         return domCorpus_.get(list_.at(index));
     }
 };
-
-//------------------------------------------------
-//
-// Javadoc
-//
-//------------------------------------------------
-
-class DomJavadoc : public dom::LazyObjectImpl
-{
-    Javadoc const& jd_;
-
-public:
-    DomJavadoc(
-        Javadoc const& jd) noexcept
-        : jd_(jd)
-    {
-    }
-
-    dom::Object construct() const override
-    {
-        dom::ObjectImpl::entries_type list;
-        list.reserve(2);
-
-        // brief
-        if(auto brief = jd_.getBrief())
-        {
-            std::string s;
-            adoc::DocVisitor visitor(s);
-            s.clear();
-            visitor(*brief);
-            if(! s.empty())
-                list.emplace_back("brief", std::move(s));
-        }
-
-        // description
-        if(! jd_.getBlocks().empty())
-        {
-            std::string s;
-            adoc::DocVisitor visitor(s);
-            s.clear();
-            visitor(jd_.getBlocks());
-            if(! s.empty())
-                list.emplace_back("description", std::move(s));
-        }
-
-        return dom::Object(std::move(list));
-    }
-};
-
-static
-dom::Value
-domCreate(
-    std::unique_ptr<Javadoc> const& jd)
-{
-    if(jd)
-        return dom::newObject<DomJavadoc>(*jd);
-    return nullptr;
-}
 
 //------------------------------------------------
 //
@@ -492,12 +444,14 @@ public:
 class DomEnumValueArray : public dom::ArrayImpl
 {
     std::vector<EnumValueInfo> const& list_;
+    DomCorpus const& domCorpus_;
 
 public:
-    explicit
     DomEnumValueArray(
-        std::vector<EnumValueInfo> const& list) noexcept
+        std::vector<EnumValueInfo> const& list,
+        DomCorpus const& domCorpus) noexcept
         : list_(list)
+        , domCorpus_(domCorpus)
     {
     }
 
@@ -514,7 +468,7 @@ public:
             { "value", I.Initializer.Value ?
                 *I.Initializer.Value : dom::Value() },
             { "expr", I.Initializer.Written },
-            { "doc", domCreate(I.javadoc) }
+            { "doc", domCreate(I.javadoc, domCorpus_) }
             });
     }
 };
@@ -677,7 +631,7 @@ DomInfo<T>::construct() const
         { "name",       I_.Name },
         { "namespace",  dom::newArray<DomSymbolArray>(
                             I_.Namespace, domCorpus_) },
-        { "doc",        domCreate(I_.javadoc) }
+        { "doc",        domCreate(I_.javadoc, domCorpus_) }
         });
     if constexpr(std::derived_from<T, SourceInfo>)
     {
@@ -740,7 +694,7 @@ DomInfo<T>::construct() const
     {
         entries.insert(entries.end(), {
             { "type",       domCreate(I_.UnderlyingType, domCorpus_) },
-            { "members",    dom::newArray<DomEnumValueArray>(I_.Members) },
+            { "members",    dom::newArray<DomEnumValueArray>(I_.Members, domCorpus_) },
             { "isScoped",   I_.Scoped }
             });
     }
@@ -887,6 +841,15 @@ getOptional(SymbolID const& id) const
     if(id == SymbolID::zero)
         return nullptr;
     return impl_->get(id);
+}
+
+dom::Value
+DomCorpus::
+getJavadoc(
+    Javadoc const& jd) const
+{
+    // Default implementation returns null.
+    return nullptr;
 }
 
 } // mrdox

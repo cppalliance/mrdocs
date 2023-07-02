@@ -22,6 +22,10 @@ namespace clang {
 namespace mrdox {
 
 /** Front-end factory for producing Dom nodes.
+
+    A @ref Generator subclasses this object and
+    then uses it to create the Dom nodes used for
+    rendering in template engines.
 */
 class MRDOX_DECL
     DomCorpus
@@ -31,24 +35,65 @@ class MRDOX_DECL
     std::unique_ptr<Impl> impl_;
 
 public:
+    /** The Corpus associated with the Dom.
+    */
     Corpus const& corpus;
 
+    /** Destructor.
+
+        Ownership of the corpus is not released.
+    */
     ~DomCorpus();
 
-    explicit
-    DomCorpus(Corpus const&);
+    /** Constructor.
 
+        @param corpus The Corpus whose metadata to use.
+    */
+    explicit
+    DomCorpus(Corpus const& corpus);
+
+    /** Return a Dom object representing the given symbol.
+
+        @return A value containing the symbol contents.
+
+        @param id The id of the symbol to return.
+    */
     dom::Object
     get(SymbolID const& id) const;
 
+    /** Return a Dom object representing the given symbol.
+
+        @return A value containing the symbol contents.
+
+        @param I The metadata for the symbol.
+    */
     dom::Object
     get(Info const& I) const;
 
-    /** Return the object for id, or null if id is zero.
+    /** Return a Dom object representing the given symbol.
+
+        When `id` is zero, this function returns null.
+
+        @return A value containing the symbol
+        contents, or null if `id` equals zero.
+
+        @param id The id of the symbol to return.
     */
     dom::Value
     getOptional(
         SymbolID const& id) const;
+
+    /** Return a Dom value representing the Javadoc.
+
+        The default implementation returns null. A
+        @ref Generator should override this member
+        and return a value that has suitable strings
+        in the generator's output format.
+    */
+    virtual
+    dom::Value
+    getJavadoc(
+        Javadoc const& jd) const;
 };
 
 } // mrdox
