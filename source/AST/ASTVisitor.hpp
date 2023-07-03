@@ -13,6 +13,7 @@
 #ifndef MRDOX_TOOL_AST_ASTVISITOR_HPP
 #define MRDOX_TOOL_AST_ASTVISITOR_HPP
 
+#include "Diagnostics.hpp"
 #include "Tool/ConfigImpl.hpp"
 #include <mrdox/MetadataFwd.hpp>
 #include <clang/Sema/SemaConsumer.h>
@@ -47,6 +48,12 @@ public:
 
     tooling::ExecutionContext& ex_;
     ConfigImpl const& config_;
+    clang::CompilerInstance& compiler_;
+    Diagnostics diags_;
+
+    ASTContext* astContext_ = nullptr;
+    SourceManager* sourceManager_ = nullptr;
+    Sema* sema_ = nullptr;
 
     llvm::SmallString<512> File_;
     bool IsFileInRootDir_;
@@ -56,12 +63,6 @@ public:
     std::unordered_map<
         clang::SourceLocation::UIntTy,
         FileFilter> fileFilter_;
-
-    clang::CompilerInstance& compiler_;
-
-    ASTContext* astContext_ = nullptr;
-    SourceManager* sourceManager_ = nullptr;
-    Sema* sema_ = nullptr;
 
 public:
     ASTVisitor(

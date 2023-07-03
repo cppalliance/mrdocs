@@ -48,8 +48,8 @@ ASTVisitor(
     clang::CompilerInstance& compiler) noexcept
     : ex_(ex)
     , config_(config)
-    , IsFileInRootDir_(true)
     , compiler_(compiler)
+    , IsFileInRootDir_(true)
 {
 }
 
