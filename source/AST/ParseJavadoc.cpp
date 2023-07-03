@@ -11,8 +11,8 @@
 
 #include "ParseJavadoc.hpp"
 #include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
-#include <mrdox/Support/Report.hpp>
 #include <mrdox/Support/String.hpp>
 #include <clang/AST/CommentCommandTraits.h>
 #include <clang/AST/ASTContext.h>

@@ -14,9 +14,8 @@
 #include "CorpusImpl.hpp"
 #include "Metadata/Reduce.hpp"
 #include "Support/Error.hpp"
-#include <mrdox/Support/Report.hpp>
 #include <mrdox/Metadata.hpp>
-#include <mrdox/Support/Report.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang {

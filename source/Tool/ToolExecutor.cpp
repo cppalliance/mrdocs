@@ -10,7 +10,7 @@
 //
 
 #include "ToolExecutor.hpp"
-#include <mrdox/Support/Report.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
 #include <clang/Tooling/ToolExecutorPluginRegistry.h>
 #include <llvm/Support/Regex.h>

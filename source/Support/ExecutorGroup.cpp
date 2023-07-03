@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/ExecutorGroup.hpp>
-#include <mrdox/Support/Report.hpp>
 #include <mrdox/Support/unlock_guard.hpp>
 #include <condition_variable>
 #include <unordered_set>

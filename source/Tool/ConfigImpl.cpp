@@ -22,8 +22,6 @@
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
-#include <mrdox/Support/Report.hpp>
-
 //------------------------------------------------
 //
 // YAML

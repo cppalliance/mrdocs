@@ -13,7 +13,6 @@
 #include "Support/Error.hpp"
 #include "Support/SafeNames.hpp"
 #include "AST/Bitcode.hpp"
-#include <mrdox/Support/Report.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
 #include <mrdox/Metadata.hpp>
 

@@ -34,8 +34,8 @@
 
 #include "ToolArgs.hpp"
 #include "Support/Debug.hpp"
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
-#include <mrdox/Support/Report.hpp>
 #include <mrdox/Version.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Process.h>

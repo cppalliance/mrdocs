@@ -15,7 +15,7 @@
 #include "ToolExecutor.hpp"
 #include "AST/AbsoluteCompilationDatabase.hpp"
 #include <mrdox/Generators.hpp>
-#include <mrdox/Support/Report.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <clang/Tooling/JSONCompilationDatabase.h>

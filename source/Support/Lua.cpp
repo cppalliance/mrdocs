@@ -9,8 +9,8 @@
 //
 
 #include <mrdox/Support/Lua.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
-#include <mrdox/Support/Report.hpp>
 #include "../../lua/src/lua.hpp"
 #include <fmt/format.h>
 

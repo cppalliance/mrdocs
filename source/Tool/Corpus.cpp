@@ -11,9 +11,8 @@
 
 #include "Tool/ConfigImpl.hpp"
 #include <mrdox/Corpus.hpp>
-#include <mrdox/Support/Report.hpp>
 #include <mrdox/Metadata.hpp>
-#include <mrdox/Platform.hpp>
+#include <mrdox/Support/Error.hpp>
 
 namespace clang {
 namespace mrdox {

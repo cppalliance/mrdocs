@@ -16,8 +16,8 @@
 #include "SinglePageVisitor.hpp"
 #include "Support/SafeNames.hpp"
 #include <mrdox/Metadata/DomMetadata.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
-#include <mrdox/Support/Report.hpp>
 #include <optional>
 #include <vector>
 
