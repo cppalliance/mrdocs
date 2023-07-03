@@ -27,34 +27,6 @@ static_assert(std::ranges::random_access_range<Object>);
 //
 //------------------------------------------------
 
-namespace {
-
-class DefaultArrayImpl : public ArrayImpl
-{
-    std::vector<Value> v_;
-
-public:
-    std::size_t
-    size() const noexcept override
-    {
-        return v_.size();
-    }
-
-    Value get(std::size_t i) const override
-    {
-        MRDOX_ASSERT(i < v_.size());
-        return v_[i];
-    }
-};
-
-} // (anon)
-
-//------------------------------------------------
-//
-// Array
-//
-//------------------------------------------------
-
 Array::
 ~Array() = default;
 
@@ -98,18 +70,59 @@ toString(
 }
 
 //------------------------------------------------
+//
+// ArrayImpl
+//
+//------------------------------------------------
 
 ArrayImpl::
 ~ArrayImpl() = default;
+
+void
+ArrayImpl::
+emplace_back(
+    value_type value)
+{
+    Error("Array is const").Throw();
+}
+
+//------------------------------------------------
+//
+// DefaultArrayImpl
+//
+//------------------------------------------------
+
+auto
+DefaultArrayImpl::
+size() const ->
+    size_type
+{
+    return elements_.size();
+}
+
+auto
+DefaultArrayImpl::
+get(
+    size_type i) const ->
+        value_type
+{
+    MRDOX_ASSERT(i < elements_.size());
+    return elements_[i];
+}
+
+void
+DefaultArrayImpl::
+emplace_back(
+    value_type value)
+{
+    elements_.emplace_back(std::move(value));
+}
 
 //------------------------------------------------
 //
 // Object
 //
 //------------------------------------------------
-
-ObjectImpl::
-~ObjectImpl() = default;
 
 Object::
 ~Object() = default;
@@ -168,6 +181,15 @@ toString(
     s += " }";
     return s;
 }
+
+//------------------------------------------------
+//
+// ObjectImpl
+//
+//------------------------------------------------
+
+ObjectImpl::
+~ObjectImpl() = default;
 
 //------------------------------------------------
 //

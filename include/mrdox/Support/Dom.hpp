@@ -124,6 +124,13 @@ public:
     */
     value_type at(size_type i) const;
 
+    /** Append an element to the end of the array.
+
+        If the array is read-only, an exception
+        is thrown.
+    */
+    void emplace_back(value_type value);
+
     /** Return a diagnostic string.
     */
     friend
@@ -162,6 +169,46 @@ public:
     /** Return the i-th element, without bounds checking.
     */
     virtual value_type get(size_type i) const = 0;
+
+    /** Append an element to the end of the array.
+
+        The default implementation throws an exception,
+        making the array effectively read-only.
+    */
+    virtual void emplace_back(value_type value);
+};
+
+//------------------------------------------------
+//
+// DefaultArrayImpl
+//
+//------------------------------------------------
+
+/** The default array implementation.
+
+    This implementation is backed by a simple
+    vector and allows appending.
+*/
+class MRDOX_DECL
+    DefaultArrayImpl : public ArrayImpl
+{
+public:
+    /// @copydoc Array::value_type
+    using value_type = Array::value_type;
+
+    /// @copydoc Array::size_type
+    using size_type = Array::size_type;
+
+    /** The type of storage used by the default implementation.
+    */
+    using storage_type = std::vector<value_type>;
+
+    size_type size() const override;
+    value_type get(size_type i) const override;
+    void emplace_back(value_type value) override;
+
+private:
+    std::vector<value_type> elements_;
 };
 
 /** Return a new array using a custom implementation.
@@ -921,6 +968,11 @@ inline auto Array::at(std::size_t i) const -> value_type
     if(i < size())
         return get(i);
     Error("out of range").Throw();
+}
+
+inline void Array::emplace_back(value_type value)
+{
+    impl_->emplace_back(std::move(value));
 }
 
 //------------------------------------------------
