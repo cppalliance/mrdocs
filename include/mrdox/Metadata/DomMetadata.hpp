@@ -40,12 +40,14 @@ public:
     Corpus const& corpus;
 
     /** Destructor.
-
-        Ownership of the corpus is not released.
     */
-    ~DomCorpus();
+    virtual ~DomCorpus();
 
     /** Constructor.
+
+        Ownership of the specified Corpus is not
+        transferred; the caller is responsible for
+        ensuring the lifetime extension of the object.
 
         @param corpus The Corpus whose metadata to use.
     */
