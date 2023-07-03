@@ -13,6 +13,7 @@
 #include "ConfigImpl.hpp"
 #include "CorpusImpl.hpp"
 #include "AST/AbsoluteCompilationDatabase.hpp"
+#include "AST/ToolExecutor.hpp"
 #include <mrdox/Generators.hpp>
 #include <mrdox/Support/Report.hpp>
 #include <mrdox/Support/Path.hpp>
@@ -74,13 +75,13 @@ DoGenerateAction()
         workingDir, *jsonCompilations, *config);
 
     // Create the ToolExecutor from the compilation database
-    int ThreadCount = 0;
-    auto ex = std::make_unique<tooling::AllTUsToolExecutor>(compilations, ThreadCount);
+    auto ex = std::make_unique<ToolExecutor>(**config, compilations);
 
     // Create the generator
     auto generator = generators.find(toolArgs.formatType.getValue());
     if(! generator)
-        return formatError("the Generator \"{}\" was not found", toolArgs.formatType.getValue());
+        return formatError("the Generator \"{}\" was not found",
+            toolArgs.formatType.getValue());
 
     // Run the tool, this can take a while
     auto corpus = CorpusImpl::build(*ex, *config);
