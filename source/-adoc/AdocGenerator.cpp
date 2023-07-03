@@ -42,9 +42,9 @@ createExecutors(
         {
            group.emplace(domCorpus, *options);
         }
-        catch(Error const& e)
+        catch(Exception const& ex)
         {
-            return e;
+            return ex.error();
         }
     }
     return group;

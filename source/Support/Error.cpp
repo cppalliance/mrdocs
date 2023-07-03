@@ -84,13 +84,16 @@ Error(
     loc_ = loc;
 }
 
-void
-Error::
-Throw() const
+void Error::Throw() const&
 {
     MRDOX_ASSERT(failed());
-    // VFALCO should we use std::move?
     throw Exception(*this);
+}
+
+void Error::Throw() &&
+{
+    MRDOX_ASSERT(failed());
+    throw Exception(std::move(*this));
 }
 
 SourceLocation::

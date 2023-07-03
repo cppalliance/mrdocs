@@ -170,10 +170,17 @@ int main(int argc, char const** argv)
     {
         return clang::mrdox::mrdox_main(argc, argv);
     }
+    catch(clang::mrdox::Exception const& ex)
+    {
+        // Any exception derived from Exception should
+        // be caught and handled, and never make it here.
+        MRDOX_UNREACHABLE();
+    }
     catch(std::exception const& ex)
     {
-        // Any exception not derived from Error should be
-        // reported and terminate the process immediately.
+        // Any exception not derived from Exception which
+        // makes it here must be reported and terminate the
+        // process immediately.
         clang::mrdox::reportUnhandledException(ex);
         return EXIT_FAILURE;
     }

@@ -100,6 +100,10 @@ buildOneString(
         dest = ss.str();
         return {};
     }
+    catch(Exception const& ex)
+    {
+        return ex.error();
+    }
     catch(std::exception const& ex)
     {
         return formatError("buildOne threw \"{}\"", ex.what());

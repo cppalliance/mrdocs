@@ -74,21 +74,21 @@ post(
     auto sp = std::make_shared<
         any_callable<void(void)>>(std::move(f));
     impl_->async(
-        [sp]
+    [sp]
+    {
+        try
         {
-            try
-            {
-                (*sp)();
-            }
-            catch(std::exception const& ex)
-            {
-                // Any exception which is not
-                // derived from Error should
-                // be reported and terminate
-                // the process immediately.
-                reportUnhandledException(ex);
-            }
-        });
+            (*sp)();
+        }
+        catch(std::exception const& ex)
+        {
+            // Any exception which is not
+            // derived from Error should
+            // be reported and terminate
+            // the process immediately.
+            reportUnhandledException(ex);
+        }
+    });
 }
 
 //------------------------------------------------
@@ -155,26 +155,26 @@ post(
     auto sp = std::make_shared<
         any_callable<void(void)>>(std::move(f));
     impl_->taskGroup.async(
-        [&, sp]
+    [&, sp]
+    {
+        try
         {
-            try
-            {
-                (*sp)();
-            }
-            catch(Error const& err)
-            {
-                std::lock_guard<std::mutex> lock(impl_->mutex);
-                impl_->errors.emplace(std::move(err));
-            }
-            catch(std::exception const& ex)
-            {
-                // Any exception which is not
-                // derived from Error should
-                // be reported and terminate
-                // the process immediately.
-                reportUnhandledException(ex);
-            }
-        });
+            (*sp)();
+        }
+        catch(Exception const& ex)
+        {
+            std::lock_guard<std::mutex> lock(impl_->mutex);
+            impl_->errors.emplace(ex.error());
+        }
+        catch(std::exception const& ex)
+        {
+            // Any exception which is not
+            // derived from Error should
+            // be reported and terminate
+            // the process immediately.
+            reportUnhandledException(ex);
+        }
+    });
 }
 
 } // mrdox

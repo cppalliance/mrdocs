@@ -117,15 +117,15 @@ run(std::unique_lock<std::mutex> lock)
                         work(scope.get());
                         lock.lock();
                     }
-                    catch(Error const& err)
+                    catch(Exception const& ex)
                     {
                         lock.lock();
-                        impl_->errors.emplace(err);
+                        impl_->errors.emplace(ex.error());
                     }
                     catch(std::exception const& ex)
                     {
                         // Any exception which is not
-                        // derived from Error should
+                        // derived from Exception should
                         // be reported and terminate
                         // the process immediately.
                         reportUnhandledException(ex);

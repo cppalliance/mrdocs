@@ -169,11 +169,26 @@ public:
 
         @pre this->failed()
     */
-    [[noreturn]] void Throw() const;
+    [[noreturn]] void Throw() const&;
+
+    /** Throw Exception(std::move(*this))
+
+        @pre this->failed()
+    */
+    [[noreturn]] void Throw() &&;
 
     /** Throw Exception(*this), or do nothing if no failure.
     */
-    void maybeThrow() const
+    void maybeThrow() const&
+    {
+        if(! failed())
+            return;
+        Throw();
+    }
+
+    /** Throw Exception(std::move(*this)), or do nothing if no failure.
+    */
+    void maybeThrow() &&
     {
         if(! failed())
             return;

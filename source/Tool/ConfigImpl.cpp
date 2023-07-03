@@ -187,9 +187,9 @@ createConfigFromYAML(
             workingDir, addonsDir, configYaml, extraYaml);
         return config;
     }
-    catch(Error const& err)
+    catch(Exception const& ex)
     {
-        return err;
+        return ex.error();
     }
 }
 
@@ -222,9 +222,9 @@ loadConfigFile(
             workingDir, addonsDir, *text, extraYaml);
         return config;
     }
-    catch(Error const& err)
+    catch(Exception const& ex)
     {
-        return err;
+        return ex.error();
     }
 }
 
