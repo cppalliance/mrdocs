@@ -9,15 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-//===- lib/Tooling/AllTUsExecution.cpp - Execute actions on all TUs. ------===//
-//
-// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
-// See https://llvm.org/LICENSE.txt for license information.
-// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-//
-//===----------------------------------------------------------------------===//
-
 #include "ToolExecutor.hpp"
+#include <mrdox/Support/ThreadPool.hpp>
 #include <clang/Tooling/ToolExecutorPluginRegistry.h>
 #include <llvm/Support/Regex.h>
 #include <llvm/Support/ThreadPool.h>
@@ -132,38 +125,36 @@ execute(
 
     auto& Action = Actions.front();
 
+    TaskGroup taskGroup(config_.threadPool());
+
+    for (std::string File : Files)
     {
-        llvm::ThreadPool Pool(llvm::hardware_concurrency(0));
-        for (std::string File : Files)
+        taskGroup.async(
+        [&, Path = std::move(File)]()
         {
-            Pool.async(
-            [&](std::string Path)
-            {
+            if(config_.verboseOutput)
                 Log("[" + std::to_string(Count()) + "/" + TotalNumStr + "] Processing file " + Path);
 
-                // Each thread gets an independent copy of a VFS to allow different
-                // concurrent working directories.
-                IntrusiveRefCntPtr<llvm::vfs::FileSystem> FS =
-                    llvm::vfs::createPhysicalFileSystem();
+            // Each thread gets an independent copy of a VFS to allow different
+            // concurrent working directories.
+            IntrusiveRefCntPtr<llvm::vfs::FileSystem> FS =
+                llvm::vfs::createPhysicalFileSystem();
 
-                tooling::ClangTool Tool( Compilations, { Path },
-                    std::make_shared<PCHContainerOperations>(), FS);
-                Tool.appendArgumentsAdjuster(Action.second);
-                Tool.appendArgumentsAdjuster(getDefaultArgumentsAdjusters());
+            tooling::ClangTool Tool( Compilations, { Path },
+                std::make_shared<PCHContainerOperations>(), FS);
+            Tool.appendArgumentsAdjuster(Action.second);
+            Tool.appendArgumentsAdjuster(getDefaultArgumentsAdjusters());
 
-                for (const auto& FileAndContent : OverlayFiles)
-                    Tool.mapVirtualFile(FileAndContent.first(),
-                        FileAndContent.second);
+            for (const auto& FileAndContent : OverlayFiles)
+                Tool.mapVirtualFile(FileAndContent.first(),
+                    FileAndContent.second);
 
-                if (Tool.run(Action.first.get()))
-                    AppendError(llvm::Twine("Failed to run action on ") + Path + "\n");
-            },
-            File);
-        }
-
-        // Make sure all tasks have finished before resetting the working directory.
-        Pool.wait();
+            if (Tool.run(Action.first.get()))
+                AppendError(llvm::Twine("Failed to run action on ") + Path + "\n");
+        });
     }
+
+    auto errors = taskGroup.wait();
 
     if (!ErrorMsg.empty())
         return make_string_error(ErrorMsg);
