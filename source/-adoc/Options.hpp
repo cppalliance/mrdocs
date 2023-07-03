@@ -11,7 +11,7 @@
 #ifndef MRDOX_TOOL_ADOC_OPTIONS_HPP
 #define MRDOX_TOOL_ADOC_OPTIONS_HPP
 
-#include <mrdox/Support/Expected.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <string>
 
 namespace clang {

@@ -19,10 +19,9 @@
 // the set of infos that it represents.
 //
 
-#include <mrdox/Platform.hpp>
 #include "BitcodeIDs.hpp"
-#include <mrdox/Support/Expected.hpp>
 #include <mrdox/Metadata.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <clang/AST/AST.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/Bitstream/BitstreamReader.h>

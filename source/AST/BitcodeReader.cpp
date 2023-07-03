@@ -14,7 +14,7 @@
 #include "DecodeRecord.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Error.hpp"
-#include <mrdox/Support/Expected.hpp>
+#include <mrdox/Support/Error.hpp>
 
 namespace clang {
 namespace mrdox {

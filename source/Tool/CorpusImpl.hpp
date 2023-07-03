@@ -16,7 +16,7 @@
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Platform.hpp>
-#include <mrdox/Support/Expected.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/ADT/StringMap.h>
 #include <llvm/Support/Mutex.h>

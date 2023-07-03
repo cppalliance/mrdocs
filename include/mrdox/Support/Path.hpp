@@ -13,7 +13,6 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Expected.hpp>
 #include <string>
 #include <string_view>
 

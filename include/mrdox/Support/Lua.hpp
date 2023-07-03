@@ -14,7 +14,6 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Dom.hpp>
 #include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Expected.hpp>
 #include <mrdox/Support/source_location.hpp>
 #include <fmt/format.h>
 #include <cstdlib>

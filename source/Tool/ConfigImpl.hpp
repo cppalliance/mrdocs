@@ -14,7 +14,7 @@
 
 #include "Support/YamlFwd.hpp"
 #include <mrdox/Config.hpp>
-#include <mrdox/Support/Expected.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/ThreadPool.h>
