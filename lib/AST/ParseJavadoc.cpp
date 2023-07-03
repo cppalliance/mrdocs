@@ -29,8 +29,215 @@
 #include <clang/Basic/SourceManager.h>
 #include <llvm/Support/JSON.h>
 
-/*
-    Comment Types
+/*  Doxygen commands
+
+Italics                         \a
+Italics                         \e
+Italics                         \em
+
+                                \addindex
+                                \addtogroup
+                                \anchor
+                                \arg
+                                \attention
+                                \author
+                                \authors
+                                \b
+                                \brief
+                                \bug
+                                \c
+                                \callergraph
+                                \callgraph
+                                \category
+                                \cite
+                                \class
+                                \code
+                                \concept
+                                \cond
+                                \copybrief
+                                \copydetails
+                                \copydoc
+                                \copyright
+                                \date
+                                \def
+                                \defgroup
+                                \deprecated
+                                \details
+                                \diafile
+                                \dir
+                                \docbookinclude
+                                \docbookonly
+                                \dontinclude
+                                \dot
+                                \dotfile
+                                \doxyconfig
+                                \else
+                                \elseif
+                                \emoji
+                                \endcode
+                                \endcond
+                                \enddocbookonly
+                                \enddot
+                                \endhtmlonly
+                                \endif
+                                \endinternal
+                                \endlatexonly
+                                \endlink
+                                \endmanonly
+                                \endmsc
+                                \endparblock
+                                \endrtfonly
+                                \endsecreflist
+                                \endverbatim
+                                \enduml
+                                \endxmlonly
+                                \enum
+                                \example
+                                \exception
+                                \extends
+                                \f(
+                                \f)
+                                \f$
+                                \f[
+                                \f]
+                                \f{
+                                \f}
+                                \file
+                                \fileinfo
+                                \fn
+                                \headerfile
+                                \hidecallergraph
+                                \hidecallgraph
+                                \hiderefby
+                                \hiderefs
+                                \hideinitializer
+                                \htmlinclude
+                                \htmlonly
+                                \idlexcept
+                                \if
+                                \ifnot
+                                \image
+                                \implements
+                                \include
+                                \includedoc
+                                \includelineno
+                                \ingroup
+                                \internal
+                                \invariant
+                                \interface
+                                \latexinclude
+                                \latexonly
+                                \li
+                                \line
+                                \lineinfo
+                                \link
+                                \mainpage
+                                \maninclude
+                                \manonly
+                                \memberof
+                                \msc
+                                \mscfile
+                                \n
+                                \name
+                                \namespace
+                                \noop
+                                \nosubgrouping
+                                \note
+                                \overload
+                                \p
+                                \package
+                                \page
+                                \par
+                                \paragraph
+                                \param
+                                \parblock
+                                \post
+                                \pre
+                                \private
+                                \privatesection
+                                \property
+                                \protected
+                                \protectedsection
+                                \protocol
+                                \public
+                                \publicsection
+                                \pure
+                                \qualifier
+                                \raisewarning
+                                \ref
+                                \refitem
+                                \related
+                                \relates
+                                \relatedalso
+                                \relatesalso
+                                \remark
+                                \remarks
+                                \result
+                                \return
+                                \returns
+                                \retval
+                                \rtfinclude
+                                \rtfonly
+                                \sa
+                                \secreflist
+                                \section
+                                \see
+                                \short
+                                \showdate
+                                \showinitializer
+                                \showrefby
+                                \showrefs
+                                \since
+                                \skip
+                                \skipline
+                                \snippet
+                                \snippetdoc
+                                \snippetlineno
+                                \static
+                                \startuml
+                                \struct
+                                \subpage
+                                \subsection
+                                \subsubsection
+                                \tableofcontents
+                                \test
+                                \throw
+                                \throws
+                                \todo
+                                \tparam
+                                \typedef
+                                \union
+                                \until
+                                \var
+                                \verbatim
+                                \verbinclude
+                                \version
+                                \vhdlflow
+                                \warning
+                                \weakgroup
+                                \xmlinclude
+                                \xmlonly
+                                \xrefitem
+                                \$
+                                \@
+                                \\
+                                \&
+                                \~
+                                \<
+                                \=
+                                \>
+                                \#
+                                \%
+                                \"
+                                \.
+                                \::
+                                \|
+                                \--
+                                \---
+
+--------------------------------------------------
+
+AST Types
 
     Comment
         abstract base for all comments
@@ -83,10 +290,10 @@
 
         VerbatimBlockLineComment : Comment
             A line of text contained in a verbatim block.
-*/
-/*
+
     BlockCommandComment
         Always has one child of type ParagraphComment child?
+
 */
 
 namespace clang {
@@ -106,6 +313,7 @@ class JavadocVisitor
     SourceManager const& sm_;
     FullComment const* FC_;
     Javadoc jd_;
+    Diagnostics& diags_;
     doc::List<doc::Param> params_;
     doc::Paragraph* paragraph_ = nullptr;
     std::size_t htmlTagNesting_ = 0;
@@ -117,7 +325,8 @@ class JavadocVisitor
 
 public:
     JavadocVisitor(
-        RawComment const*, Decl const*, Config const&);
+        RawComment const*, Decl const*,
+        Config const&, Diagnostics&);
     Javadoc build();
 
     void visitComment(Comment const* C);
@@ -201,11 +410,13 @@ JavadocVisitor::
 JavadocVisitor(
     RawComment const* RC,
     Decl const* D,
-    Config const& config)
+    Config const& config,
+    Diagnostics& diags)
     : config_(config)
     , ctx_(D->getASTContext())
     , sm_(ctx_.getSourceManager())
     , FC_(RC->parse(D->getASTContext(), nullptr, D))
+    , diags_(diags)
 {
 }
 
@@ -331,6 +542,20 @@ JavadocVisitor::
 visitInlineCommandComment(
     InlineCommandComment const* C)
 {
+    auto const* cmd = ctx_
+        .getCommentCommandTraits()
+        .getCommandInfo(C->getCommandID());
+
+    if( cmd->getID() == CommandTraits::KCI_copybrief ||
+        cmd->getID() == CommandTraits::KCI_copydetails ||
+        cmd->getID() == CommandTraits::KCI_copydoc)
+    {
+        if(C->getNumArgs() != 1)
+        {
+            // throw an error
+        }
+    }
+
     doc::Style style(doc::Style::none);
     switch (C->getRenderKind())
     {
@@ -420,7 +645,7 @@ visitBlockCommandComment(
         jd_.emplace_back(std::move(returns));
         return;
     }
-    if(cmd->getID() == CommandTraits::KCI_note)
+   if(cmd->getID() == CommandTraits::KCI_note)
     {
         doc::Admonition paragraph(doc::Admonish::note);
         Scope scope(paragraph, paragraph_);
@@ -714,23 +939,27 @@ parseJavadoc(
     std::unique_ptr<Javadoc>& jd,
     RawComment* RC,
     Decl const* D,
-    Config const& config)
+    Config const& config,
+    Diagnostics& diags)
 {
-    if(RC)
+    if(! RC)
     {
-        RC->setAttached();
+        MRDOX_ASSERT(! jd);
+        return;
+    }
 
-        auto result = JavadocVisitor(RC, D, config).build();
+    RC->setAttached();
 
-        if(jd == nullptr)
-        {
-            jd = std::make_unique<Javadoc>(std::move(result));
-        }
-        else if(*jd != result)
-        {
-            // merge
-            jd->append(std::move(result));
-        }
+    auto result = JavadocVisitor(RC, D, config, diags).build();
+
+    if(jd == nullptr)
+    {
+        jd = std::make_unique<Javadoc>(std::move(result));
+    }
+    else if(*jd != result)
+    {
+        // merge
+        jd->append(std::move(result));
     }
 }
 

@@ -12,6 +12,7 @@
 #ifndef MRDOX_TOOL_AST_PARSEJAVADOC_HPP
 #define MRDOX_TOOL_AST_PARSEJAVADOC_HPP
 
+#include "Lib/Diagnostics.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Config.hpp>
 #include <mrdox/Metadata/Javadoc.hpp>
@@ -40,7 +41,8 @@ parseJavadoc(
     std::unique_ptr<Javadoc>& jd,
     RawComment* RC,
     Decl const* D,
-    Config const& config);
+    Config const& config,
+    Diagnostics& diags);
 
 } // mrdox
 } // clang

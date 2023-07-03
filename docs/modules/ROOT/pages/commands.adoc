@@ -1,0 +1,14 @@
+= Commands
+
+These are the Doxygen-style "@" commands recognized by MrDox:
+
+== Italics / Emphasis
+[]
+----
+@a   [word]
+@e   [word]
+@em  [word]
+
+<em>[text]</em>
+----
+

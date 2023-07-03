@@ -998,7 +998,7 @@ public:
         // ASTContext::getCommentForDecl instead
         RawComment* RC =
             D->getASTContext().getRawCommentForDeclNoCache(D);
-        parseJavadoc(javadoc, RC, D, config_);
+        parseJavadoc(javadoc, RC, D, config_, diags_);
     }
 
     //------------------------------------------------
