@@ -31,6 +31,8 @@ namespace mrdox {
 // Error
 //
 
+class Exception;
+
 /** Holds the description of an error, or success.
 */
 class [[nodiscard]] MRDOX_DECL
@@ -161,15 +163,28 @@ public:
         return message_ == rhs.message_;
     }
 
-#if 0
     /** Return a null-terminated error string.
     */
     char const*
-    what() const noexcept override
+    what() const noexcept
     {
         return reason_.c_str();
     }
-#endif
+
+    /** Throw Exception(*this)
+
+        @pre this->failed()
+    */
+    void Throw() const;
+
+    /** Throw Exception(*this), or do nothing if no failure.
+    */
+    void maybeThrow() const
+    {
+        if(! failed())
+            return;
+        Throw();
+    }
 
     constexpr void swap(Error& rhs) noexcept
     {
@@ -192,8 +207,49 @@ public:
 
 //------------------------------------------------
 //
+// Exception
+//
+//------------------------------------------------
+
+/** Type of all exceptions thrown by the API.
+*/
+class MRDOX_DECL
+    Exception final : public std::exception
+{
+    Error err_;
+
+public:
+    /** Constructor.
+    */
+    explicit
+    Exception(
+        Error err) noexcept
+        : err_(std::move(err))
+    {
+    }
+
+    /** Return the Error stored in the exception.
+    */
+    Error const&
+    error() const noexcept
+    {
+        return err_;
+    }
+
+    /** Return a null-terminated error string.
+    */
+    char const*
+    what() const noexcept override
+    {
+        return err_.what();
+    }
+};
+
+//------------------------------------------------
+//
 // Expected
 //
+//------------------------------------------------
 
 /** A container holding an error or a value.
 */
