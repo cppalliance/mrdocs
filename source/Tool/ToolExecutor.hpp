@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TOOL_AST_EXECUTION_HPP
-#define MRDOX_TOOL_AST_EXECUTION_HPP
+#ifndef MRDOX_TOOL_TOOL_TOOLEXECUTOR_HPP
+#define MRDOX_TOOL_TOOL_TOOLEXECUTOR_HPP
 
 #include <mrdox/Config.hpp>
 #include <clang/Tooling/ArgumentsAdjusters.h>

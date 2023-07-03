@@ -10,6 +10,7 @@
 //
 
 #include "ToolExecutor.hpp"
+#include <mrdox/Support/Report.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
 #include <clang/Tooling/ToolExecutorPluginRegistry.h>
 #include <llvm/Support/Regex.h>
@@ -112,10 +113,11 @@ execute(
         llvm::errs() << Msg.str() << "\n";
     };
 
-    auto Files = Compilations.getAllFiles();
+    // Get a copy of the filename strings
+    std::vector<std::string> Files = Compilations.getAllFiles();
 
     // Add a counter to track the progress.
-    const std::string TotalNumStr = std::to_string(Files.size());
+    auto const TotalNumStr = std::to_string(Files.size());
     unsigned Counter = 0;
     auto Count = [&]()
     {
@@ -123,38 +125,63 @@ execute(
         return ++Counter;
     };
 
-    auto& Action = Actions.front();
+    auto const& Action = Actions.front();
 
-    TaskGroup taskGroup(config_.threadPool());
-
-    for (std::string File : Files)
+    auto const processFile =
+    [&](std::string Path)
     {
-        taskGroup.async(
-        [&, Path = std::move(File)]()
+        if(config_.verboseOutput)
+            Log("[" + std::to_string(Count()) + "/" + TotalNumStr + "] Processing file " + Path);
+
+        // Each thread gets an independent copy of a VFS to allow different
+        // concurrent working directories.
+        IntrusiveRefCntPtr<llvm::vfs::FileSystem> FS =
+            llvm::vfs::createPhysicalFileSystem();
+
+        tooling::ClangTool Tool( Compilations, { Path },
+            std::make_shared<PCHContainerOperations>(), FS);
+        Tool.appendArgumentsAdjuster(Action.second);
+        Tool.appendArgumentsAdjuster(getDefaultArgumentsAdjusters());
+
+        for (const auto& FileAndContent : OverlayFiles)
+            Tool.mapVirtualFile(FileAndContent.first(),
+                FileAndContent.second);
+
+        // VFALCO This needs to be tested
+        if (Tool.run(Action.first.get()))
+            AppendError(llvm::Twine("Failed to run action on ") + Path + "\n");
+    };
+
+    // Run the action on all files in the database
+    std::vector<Error> errors;
+    if(Files.size() > 1)
+    {
+        TaskGroup taskGroup(config_.threadPool());
+        // VFALCO is File move-constructed?
+        for(std::string File : std::move(Files))
         {
-            if(config_.verboseOutput)
-                Log("[" + std::to_string(Count()) + "/" + TotalNumStr + "] Processing file " + Path);
-
-            // Each thread gets an independent copy of a VFS to allow different
-            // concurrent working directories.
-            IntrusiveRefCntPtr<llvm::vfs::FileSystem> FS =
-                llvm::vfs::createPhysicalFileSystem();
-
-            tooling::ClangTool Tool( Compilations, { Path },
-                std::make_shared<PCHContainerOperations>(), FS);
-            Tool.appendArgumentsAdjuster(Action.second);
-            Tool.appendArgumentsAdjuster(getDefaultArgumentsAdjusters());
-
-            for (const auto& FileAndContent : OverlayFiles)
-                Tool.mapVirtualFile(FileAndContent.first(),
-                    FileAndContent.second);
-
-            if (Tool.run(Action.first.get()))
-                AppendError(llvm::Twine("Failed to run action on ") + Path + "\n");
-        });
+            taskGroup.async(
+            [&, Path = std::move(File)]()
+            {
+                processFile(std::move(Path));
+            });
+        }
+        errors = taskGroup.wait();
+    }
+    else
+    {
+        try
+        {
+            processFile(std::move(Files.front()));
+        }
+        catch(Exception const& ex)
+        {
+            errors.push_back(ex.error());
+        }
     }
 
-    auto errors = taskGroup.wait();
+    if(! errors.empty())
+        reportError(errors, "Could not run the tool executor");
 
     if (!ErrorMsg.empty())
         return make_string_error(ErrorMsg);

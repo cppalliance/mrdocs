@@ -96,7 +96,14 @@ public:
         source_location loc =
             source_location::current());
 
-    explicit
+    /** Constructor.
+
+        This constructs a new error from a list
+        of zero or more errors. If the list is empty,
+        or if all of the errors in the list indicate
+        success, then newly constructed object will
+        indicate success.
+    */
     Error(
         std::vector<Error> const& errors,
         source_location loc =

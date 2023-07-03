@@ -8,10 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "SingleFileDB.hpp"
-#include "ToolArgs.hpp"
 #include "ConfigImpl.hpp"
 #include "CorpusImpl.hpp"
+#include "SingleFileDB.hpp"
+#include "ToolArgs.hpp"
+#include "ToolExecutor.hpp"
 #include "Support/Error.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Generators.hpp>
@@ -197,7 +198,7 @@ handleFile(
     std::unique_ptr<Corpus> corpus;
     {
         SingleFileDB db(dirPath, filePath);
-        tooling::StandaloneToolExecutor ex(db, { std::string(filePath) });
+        ToolExecutor ex(*config, db);
         auto result = CorpusImpl::build(ex, config);
         if(! result)
         {
