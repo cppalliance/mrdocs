@@ -14,7 +14,10 @@
 namespace clang {
 namespace mrdox {
 
-// C Functions use "throw Error" for errors
+// VFALCO:
+// C Functions use "Error::Throw" for C++ errors
+// Or.. should we push an error object onto the stack?
+
 static
 lua::Value
 escapeExpression(

@@ -40,19 +40,20 @@ public:
         return v_.size();
     }
 
-    Value
-    at(std::size_t i) const override
+    Value get(std::size_t i) const override
     {
-        if(i < v_.size())
-            return v_[i];
-        throw std::out_of_range("v_[i]");
+        MRDOX_ASSERT(i < v_.size());
+        return v_[i];
     }
 };
 
 } // (anon)
 
-ArrayImpl::
-~ArrayImpl() = default;
+//------------------------------------------------
+//
+// Array
+//
+//------------------------------------------------
 
 Array::
 ~Array() = default;
@@ -97,6 +98,11 @@ toString(
 }
 
 //------------------------------------------------
+
+ArrayImpl::
+~ArrayImpl() = default;
+
+//------------------------------------------------
 //
 // Object
 //
@@ -129,14 +135,15 @@ Object(
 {
 }
 
-auto
+bool
 Object::
-at(size_type i) const ->
-    reference
+exists(std::string_view key) const
 {
-    if(i >= size())
-        throw Error("out of range");
-    return impl_->get(i);
+    for(auto const& kv : *this)
+        if(kv.key == key)
+            return true;
+
+    return false;
 }
 
 std::string
@@ -474,7 +481,7 @@ getArray() const
 {
     if(kind_ == Kind::Array)
         return arr_;
-    throw Error("not an Array");
+    Error("not an Array").Throw();
 }
 
 Object const&
@@ -483,7 +490,7 @@ getObject() const
 {
     if(kind_ == Kind::Object)
         return obj_;
-    throw Error("not an Object");
+    Error("not an Object").Throw();
 }
 
 void

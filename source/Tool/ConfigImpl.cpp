@@ -78,11 +78,11 @@ ConfigImpl(
     namespace path = llvm::sys::path;
 
     if(! files::isAbsolute(workingDir_))
-        throw formatError("working path \"{}\" is not absolute", workingDir_);
+        formatError("working path \"{}\" is not absolute", workingDir_).Throw();
     workingDir = files::makeDirsy(files::normalizePath(workingDir_));
 
     if(auto err = files::requireDirectory(addonsDir_))
-        throw formatError("addons path \"{}\" is not absolute", addonsDir_);
+        formatError("addons path \"{}\" is not absolute", addonsDir_).Throw();
     MRDOX_ASSERT(files::isDirsy(addonsDir_));
     addonsDir = addonsDir_;
 
@@ -94,15 +94,13 @@ ConfigImpl(
         llvm::yaml::Input yin(configYaml, this, yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
         yin >> *this;
-        if(auto ec = yin.error())
-            throw Error(ec);
+        Error(yin.error()).maybeThrow();
     }
     {
         llvm::yaml::Input yin(extraYaml, this, yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
         yin >> *this;
-        if(auto ec = yin.error())
-            throw Error(ec);
+        Error(yin.error()).maybeThrow();
     }
 
     // Post-process as needed

@@ -40,6 +40,29 @@ appendSourceLocation(
 
 Error::
 Error(
+    std::string reason,
+    source_location loc)
+    : message_(appendSourceLocation(std::string(reason), loc))
+    , reason_(std::move(reason))
+    , loc_(loc)
+{
+    MRDOX_ASSERT(! message_.empty());
+}
+
+Error::
+Error(
+    std::error_code const& ec,
+    source_location loc)
+{
+    if(! ec)
+        return;
+    message_ = appendSourceLocation(ec.message(), loc);
+    reason_ = ec.message();
+    loc_ = loc;
+}
+
+Error::
+Error(
     std::vector<Error> const& errors,
     source_location loc)
 {
@@ -59,6 +82,15 @@ Error(
     }
     reason_ = message_;
     loc_ = loc;
+}
+
+void
+Error::
+Throw() const
+{
+    MRDOX_ASSERT(failed());
+    // VFALCO should we use std::move?
+    throw Exception(*this);
 }
 
 SourceLocation::

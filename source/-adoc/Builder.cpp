@@ -40,17 +40,15 @@ Builder(
 
     js::Scope scope(ctx_);
 
-    {
-        auto handlebarsPath = files::appendPath(
-            config.addonsDir, "js", "handlebars.js");
-        auto fileText = files::getFileText(handlebarsPath);
-        if(! fileText)
-            throw fileText.error();
-        if(auto err = scope.script(*fileText))
-            throw err;
-    }
+    scope.script(files::getFileText(
+        files::appendPath(
+            config.addonsDir, "js", "handlebars.js")
+        ).value()).maybeThrow();
     auto Handlebars = scope.getGlobal("Handlebars").value();
+
+// VFALCO refactor this
 Handlebars.setlog();
+
     // load templates
 #if 0
     err = forEachFile(options_.template_dir,
@@ -65,7 +63,7 @@ Handlebars.setlog();
     Error err;
 
     // load partials
-    err = forEachFile(
+    forEachFile(
         files::appendPath(config.addonsDir,
             "generator", "asciidoc", "partials"),
         [&](std::string_view pathName)
@@ -80,9 +78,7 @@ Handlebars.setlog();
                 return text.error();
             return Handlebars.callProp(
                 "registerPartial", name, *text).error();
-        });
-    if(err)
-        throw err;
+        }).maybeThrow();
 
     // load helpers
 #if 0
@@ -99,12 +95,10 @@ Handlebars.setlog();
             //Handlebars.callProp("registerHelper", name, *text);
             auto err = ctx_.scriptFromFile(pathName);
             return Error::success();
-        });
-    if(err)
-        throw err;
+        }).maybeThrow();
 #endif
 
-    err = scope.script(R"(
+    scope.script(R"(
         Handlebars.registerHelper(
             'to_string', function(context, depth)
         {
@@ -140,9 +134,7 @@ Handlebars.setlog();
         {
             return a && b;
         });
-    )");
-    if(err)
-        throw err;
+    )").maybeThrow();
 }
 
 //------------------------------------------------

@@ -1013,7 +1013,7 @@ String(
     case LUA_TSTRING:
         break;
     default:
-        throw Error("not a string");
+        Error("not a string").Throw();
     }
 }
 
@@ -1048,7 +1048,7 @@ Function(
 {
     Access A(*scope_);
     if(lua_type(A, index_) != LUA_TFUNCTION)
-        throw Error("not a function");
+        Error("not a function").Throw();
 }
 
 //------------------------------------------------
@@ -1081,7 +1081,7 @@ Table(
         return;
     Access A(*scope_);
     if(lua_type(A, index_) != LUA_TTABLE)
-        throw Error("not a Table");
+        Error("not a Table").Throw();
 }
 
 Table::
@@ -1091,7 +1091,7 @@ Table(
 {
     Access A(*scope_);
     if(lua_type(A, index_) != LUA_TTABLE)
-        throw Error("not a Table");
+        Error("not a Table").Throw();
 }
 
 Table::

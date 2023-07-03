@@ -53,16 +53,15 @@ public:
     {
     }
 
-    std::size_t
-    size() const noexcept override
+    std::size_t size() const noexcept override
     {
         return list_.size();
     }
 
-    dom::Value
-    at(std::size_t index) const override
+    dom::Value get(std::size_t i) const override
     {
-        return domCorpus_.get(list_.at(index));
+        MRDOX_ASSERT(i < list_.size());
+        return domCorpus_.get(list_[i]);
     }
 };
 
@@ -100,9 +99,10 @@ public:
         return list_.size();
     }
 
-    dom::Value at(std::size_t i) const override
+    dom::Value get(std::size_t i) const override
     {
-        return domCreate(list_.at(i));
+        MRDOX_ASSERT(i < list_.size());
+        return domCreate(list_[i]);
     }
 };
 
@@ -146,10 +146,10 @@ public:
         return list_.size();
     }
 
-    dom::Value at(std::size_t index) const override
+    dom::Value get(std::size_t i) const override
     {
-        MRDOX_ASSERT(index < list_.size());
-        return domCreate(list_[index], domCorpus_);
+        MRDOX_ASSERT(i < list_.size());
+        return domCreate(list_[i], domCorpus_);
     }
 };
 
@@ -180,10 +180,10 @@ public:
         return list_.size();
     }
 
-    dom::Value at(std::size_t index) const override
+    dom::Value get(std::size_t i) const override
     {
-        MRDOX_ASSERT(index < list_.size());
-        auto const& I = list_[index];
+        MRDOX_ASSERT(i < list_.size());
+        auto const& I = list_[i];
         return dom::Object({
             { "name", dom::stringOrNull(I.Name) },
             { "type", domCreate(I.Type, domCorpus_) },
@@ -227,9 +227,10 @@ public:
         return list_.size();
     }
 
-    dom::Value at(std::size_t index) const override
+    dom::Value get(std::size_t i) const override
     {
-        return domCreate(list_.at(index), domCorpus_);
+        MRDOX_ASSERT(i < list_.size());
+        return domCreate(list_[i], domCorpus_);
     }
 };
 
@@ -254,9 +255,9 @@ public:
         return list_.size();
     }
 
-    dom::Value at(std::size_t index) const override
+    dom::Value get(std::size_t i) const override
     {
-        return domCreate(list_.at(index), domCorpus_);
+        return domCreate(list_[i], domCorpus_);
     }
 };
 
@@ -424,9 +425,9 @@ public:
         return list_.size();
     }
 
-    dom::Value at(std::size_t index) const override
+    dom::Value get(std::size_t i) const override
     {
-        auto const& I = list_.at(index);
+        auto const& I = list_[i];
         return dom::Object({
             { "access", toString(I.Access) },
             { "isVirtual", I.IsVirtual },
@@ -460,7 +461,7 @@ public:
         return list_.size();
     }
 
-    dom::Value at(std::size_t i) const override
+    dom::Value get(std::size_t i) const override
     {
         auto const& I = list_.at(i);
         return dom::Object({
@@ -502,12 +503,10 @@ public:
         return list_.size();
     }
 
-    dom::Value
-    at(std::size_t index) const override
+    dom::Value get(std::size_t i) const override
     {
-        if(index < list_.size())
-            return domCorpus_.get(*list_[index]);
-        throw std::out_of_range("index");
+        MRDOX_ASSERT(i < list_.size());
+        return domCorpus_.get(*list_[i]);
     }
 };
 

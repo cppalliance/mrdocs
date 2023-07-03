@@ -36,9 +36,7 @@ renderPage(
     ex_.async(
         [this, &I](Builder& builder)
         {
-            auto pageText = builder(I);
-            if(! pageText)
-                throw pageText.error();
+            auto pageText = builder(I).value();
 
             std::string fileName = files::appendPath(
                 outputPath_, toBase16(I.id) + ".adoc");
@@ -50,11 +48,11 @@ renderPage(
                         std::ios_base::out |
                         std::ios_base::trunc // | std::ios_base::noreplace
                     );
-                os.write(pageText->data(), pageText->size());
+                os.write(pageText.data(), pageText.size());
             }
             catch(std::exception const& ex)
             {
-                throw formatError("std::ofstream(\"{}\") threw \"{}\"", fileName, ex.what());
+                formatError("std::ofstream(\"{}\") threw \"{}\"", fileName, ex.what()).Throw();
             }
         });
 }

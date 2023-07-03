@@ -94,11 +94,8 @@ buildOne(
     ex->async(
         [&os](Builder& builder)
         {
-            auto pageText =
-                builder.renderSinglePageHeader();
-            if(! pageText)
-                throw pageText.error();
-            os.write(pageText->data(), pageText->size());
+            auto pageText = builder.renderSinglePageHeader().value();
+            os.write(pageText.data(), pageText.size());
         });
     errors = ex->wait();
     if(! errors.empty())
@@ -113,11 +110,8 @@ buildOne(
     ex->async(
         [ &os](Builder& builder)
         {
-            auto pageText =
-                builder.renderSinglePageFooter();
-            if(! pageText)
-                throw pageText.error();
-            os.write(pageText->data(), pageText->size());
+            auto pageText = builder.renderSinglePageFooter().value();
+            os.write(pageText.data(), pageText.size());
         });
     errors = ex->wait();
     if(! errors.empty())

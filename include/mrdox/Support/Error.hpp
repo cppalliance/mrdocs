@@ -84,13 +84,7 @@ public:
     Error(
         std::string reason,
         source_location loc =
-            source_location::current())
-        : message_(appendSourceLocation(std::string(reason), loc))
-        , reason_(std::move(reason))
-        , loc_(loc)
-    {
-        MRDOX_ASSERT(! message_.empty());
-    }
+            source_location::current());
 
     /** Constructor.
 
@@ -100,14 +94,7 @@ public:
     Error(
         std::error_code const& ec,
         source_location loc =
-            source_location::current())
-    {
-        if(! ec)
-            return;
-        message_ = appendSourceLocation(ec.message(), loc);
-        reason_ = ec.message();
-        loc_ = loc;
-    }
+            source_location::current());
 
     explicit
     Error(
@@ -175,7 +162,7 @@ public:
 
         @pre this->failed()
     */
-    void Throw() const;
+    [[noreturn]] void Throw() const;
 
     /** Throw Exception(*this), or do nothing if no failure.
     */
@@ -513,7 +500,7 @@ value() &
 {
     if(has_value())
         return v_;
-    throw e_;
+    e_.Throw();
 }
 
 template<class T>
@@ -524,7 +511,7 @@ value() const&
 {
     if(has_value())
         return v_;
-    throw e_;
+    e_.Throw();
 }
 
 template<class T>

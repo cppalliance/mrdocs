@@ -39,10 +39,7 @@ renderPage(
     ex_.async(
         [this, &I, pageNumber](Builder& builder)
         {
-            auto pageText = builder(I);
-            if(! pageText)
-                throw pageText.error();
-            endPage(std::move(*pageText), pageNumber);
+            endPage(builder(I).value(), pageNumber);
         });
 }
 

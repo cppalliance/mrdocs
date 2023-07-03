@@ -13,6 +13,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/Optional.hpp>
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/String.hpp>
 #include <fmt/format.h>
 #include <atomic>
@@ -51,18 +52,7 @@ enum class Kind
 //
 //------------------------------------------------
 
-/** Abstract array interface.
-
-    This interface is used by Array types.
-*/
-class MRDOX_DECL
-    ArrayImpl
-{
-public:
-    virtual ~ArrayImpl() = 0;
-    virtual std::size_t size() const noexcept = 0;
-    virtual Value at(std::size_t) const = 0;
-};
+class ArrayImpl;
 
 /** An array of values.
 */
@@ -72,6 +62,8 @@ class MRDOX_DECL
     std::shared_ptr<ArrayImpl> impl_;
 
 public:
+    using value_type = Value;
+    using size_type = std::size_t;
     using impl_type = std::shared_ptr<ArrayImpl>;
 
     /** Destructor.
@@ -102,46 +94,74 @@ public:
         implementation, with shared ownership. The
         pointer cannot not be null.
     */
-    Array(std::shared_ptr<ArrayImpl> impl) noexcept
-        : impl_(std::move(impl))
-    {
-        MRDOX_ASSERT(impl_);
-    }
+    Array(impl_type impl) noexcept;
 
     /** Return the implementation used by this object.
     */
-    auto
-    impl() const noexcept ->
-        impl_type const&
-    {
-        return impl_;
-    }
+    auto impl() const noexcept -> impl_type const&;
 
     /** Return true if the array is empty.
     */
-    bool empty() const noexcept
-    {
-        return impl_->size() == 0;
-    }
+    bool empty() const noexcept;
 
     /** Return the number of elements in the array.
     */
-    std::size_t size() const noexcept
-    {
-        return impl_->size();
-    }
+    size_type size() const noexcept;
 
-    /** Return the zero-based element from the array.
+    /** Return the i-th element, without bounds checking.
 
-        @throw std::out_of_range `index >= this->size()`
+        @param i The zero-based index of the element.
     */
-    Value at(std::size_t index) const;
+    value_type get(size_type i) const;
+
+    /** Return the i-th element, without bounds checking.
+    */
+    value_type operator[](size_type i) const;
+
+    /** Return the i-th element.
+
+        @throw Exception `i >= size()`
+    */
+    value_type at(size_type i) const;
 
     /** Return a diagnostic string.
     */
     friend
     std::string
     toString(Array const&);
+};
+
+//------------------------------------------------
+//
+// ArrayImpl
+//
+//------------------------------------------------
+
+/** Abstract array interface.
+
+    This interface is used by Array types.
+*/
+class MRDOX_DECL
+    ArrayImpl
+{
+public:
+    /// @copydoc Array::value_type
+    using value_type = Array::value_type;
+
+    /// @copydoc Array::size_type
+    using size_type = Array::size_type;
+
+    /** Destructor.
+    */
+    virtual ~ArrayImpl() = 0;
+
+    /** Return the number of elements in the array.
+    */
+    virtual size_type size() const = 0;
+
+    /** Return the i-th element, without bounds checking.
+    */
+    virtual value_type get(size_type i) const = 0;
 };
 
 /** Return a new array using a custom implementation.
@@ -266,11 +286,21 @@ public:
     */
     std::size_t size() const;
 
-    /** Return the i-th key/value pair, without bounds checking.
+    /** Return the i-th element, without bounds checking.
 
         @param i The zero-based index of the element.
     */
     reference get(std::size_t i) const;
+
+    /** Return the i-th element, without bounds checking.
+    */
+    reference operator[](size_type i) const;
+
+    /** Return the i-th element.
+
+        @throw Exception `i >= size()`
+    */
+    reference at(size_type i) const;
 
     /** Return true if a key exists.
     */
@@ -306,14 +336,6 @@ public:
     /** Return an iterator to the end of the range of elements.
     */
     iterator end() const;
-
-    /** Return the i-th element, without bounds checking.
-    */
-    reference operator[](size_type i) const;
-
-    /** Return the i-th element, without bounds checking.
-    */
-    reference at(size_type i) const;
 
     //--------------------------------------------
 
@@ -596,14 +618,14 @@ public:
 
     /** Return the array.
 
-        @throw Error `! isArray()`
+        @throw Exception `! isArray()`
     */
     Array const&
     getArray() const;
 
     /** Return the object.
 
-        @throw Error `! isObject()`
+        @throw Exception `! isObject()`
     */
     Object const&
     getObject() const;
@@ -864,10 +886,44 @@ public:
 // implementation
 //
 
-inline Value Array::at(std::size_t index) const
+inline Array::Array(impl_type impl) noexcept
+    : impl_(std::move(impl))
 {
-    return impl_->at(index);
+    MRDOX_ASSERT(impl_);
 }
+inline auto Array::impl() const noexcept -> impl_type const&
+{
+    return impl_;
+}
+
+inline bool Array::empty() const noexcept
+{
+    return impl_->size() == 0;
+}
+
+inline auto Array::size() const noexcept -> size_type
+{
+    return impl_->size();
+}
+
+inline auto Array::get(std::size_t i) const -> value_type
+{
+    return impl_->get(i);
+}
+
+inline auto Array::operator[](std::size_t i) const -> value_type
+{
+    return get(i);
+}
+
+inline auto Array::at(std::size_t i) const -> value_type
+{
+    if(i < size())
+        return get(i);
+    Error("out of range").Throw();
+}
+
+//------------------------------------------------
 
 inline bool Object::empty() const
 {
@@ -882,6 +938,18 @@ inline std::size_t Object::size() const
 inline auto Object::get(std::size_t i) const -> reference
 {
     return impl_->get(i);
+}
+
+inline auto Object::operator[](size_type i) const -> reference
+{
+    return get(i);
+}
+
+inline auto Object::at(size_type i) const -> reference
+{
+    if(i < size())
+        return get(i);
+    Error("out of range").Throw();
 }
 
 inline Value Object::find(std::string_view key) const
@@ -904,10 +972,6 @@ inline auto Object::end() const -> iterator
     return iterator(*impl_, impl_->size());
 }
 
-inline auto Object::operator[](size_type i) const -> reference
-{
-    return impl_->get(i);
-}
 
 //------------------------------------------------
 

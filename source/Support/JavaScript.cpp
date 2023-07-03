@@ -183,7 +183,7 @@ dukM_get_prop_string(
     Access A(scope);
     MRDOX_ASSERT(duk_get_type(A, -1) == DUK_TYPE_OBJECT);
     if(! duk_get_prop_lstring(A, -1, name.data(), name.size()))
-        throw formatError("missing property {}", name);
+        formatError("missing property {}", name).Throw();
     char const* s;
     if(duk_get_type(A, -1) != DUK_TYPE_STRING)
         duk_to_string(A, -1);
@@ -544,7 +544,6 @@ push(
             auto key = dukM_get_string(A, 0);
             duk_push_this(A);
             auto obj = get(A, 1);
-            auto const& value = obj.find(key);
             duk_pop_n(A, duk_get_top(A));
             domValue_push(A, obj.find(key));
             return 1;      
