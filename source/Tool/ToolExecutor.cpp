@@ -182,7 +182,8 @@ execute(
     }
 
     // Report warning and error totals
-    Context.reportEnd();
+    if(config_.verboseOutput)
+        Context.reportEnd();
 
     if(! errors.empty())
         reportError(errors, "Could not run the tool executor");
