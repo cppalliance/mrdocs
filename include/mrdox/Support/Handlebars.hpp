@@ -253,7 +253,6 @@ public:
         @return The rendered block content
 
      */
-    [[nodiscard]]
     std::string
     fn(dom::Value const& context) const;
 
@@ -276,7 +275,6 @@ public:
 
     /** Render the block content with the original context
      */
-    [[nodiscard]]
     std::string
     fn() const {
         return fn( *context_ );
@@ -312,7 +310,6 @@ public:
         @param context The context to render the block content with
         @return The rendered block content
      */
-    [[nodiscard]]
     std::string
     inverse(dom::Value const& context) const;
 
@@ -335,7 +332,6 @@ public:
 
     /** Render the inverse block content with the original context
      */
-    [[nodiscard]]
     std::string
     inverse() const {
         return inverse( *context_ );
@@ -390,7 +386,6 @@ public:
 
         @return `true` if the helper is being called from a block section
      */
-    [[nodiscard]]
     bool isBlock() const {
         return static_cast<bool>(fn_);
     }
@@ -418,7 +413,6 @@ public:
 
         @return The current handlebars context
      */
-    [[nodiscard]]
     dom::Value const&
     context() const {
         MRDOX_ASSERT(context_);
@@ -432,7 +426,6 @@ public:
     }
 
     /// Private data passed to the callback
-    [[nodiscard]]
     dom::Object const&
     data() const {
         return data_;
@@ -445,7 +438,6 @@ public:
     }
 
     /// Extra key value pairs passed to the callback
-    [[nodiscard]]
     dom::Object const&
     hashes() const {
         return hashes_;
@@ -458,7 +450,6 @@ public:
     }
 
     /// Block parameters passed to the callback
-    [[nodiscard]]
     dom::Array const&
     blockParams() const {
         return blockParams_;
@@ -494,13 +485,13 @@ class Handlebars {
     // Heterogeneous lookup support
     struct string_hash {
         using is_transparent = void;
-        [[nodiscard]] size_t operator()(const char *txt) const {
+        size_t operator()(const char *txt) const {
             return std::hash<std::string_view>{}(txt);
         }
-        [[nodiscard]] size_t operator()(std::string_view txt) const {
+        size_t operator()(std::string_view txt) const {
             return std::hash<std::string_view>{}(txt);
         }
-        [[nodiscard]] size_t operator()(const std::string &txt) const {
+        size_t operator()(const std::string &txt) const {
             return std::hash<std::string>{}(txt);
         }
     };
