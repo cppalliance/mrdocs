@@ -197,6 +197,18 @@ public:
         @param c The character to write
         @return A reference to this object
      */
+    OutputRef&
+    operator<<( char const * c )
+    {
+        fptr_( out_, std::string_view( c ) );
+        return *this;
+    }
+
+    /** Write to output
+
+        @param c The character to write
+        @return A reference to this object
+     */
     template <class T>
     requires fmt::has_formatter<T, fmt::format_context>::value
     OutputRef&

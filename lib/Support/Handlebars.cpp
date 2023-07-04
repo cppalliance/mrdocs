@@ -823,7 +823,12 @@ JSON_stringify(
     case dom::Kind::Integer:
         return std::to_string(value.getInteger());
     case dom::Kind::String:
-        return fmt::format("\"{}\"", value.getString());
+    {
+        std::string s = "\"";
+        s += value.getString();
+        s += "\"";
+        return s;
+    }
     case dom::Kind::Array:
     {
         dom::Array arr = value.getArray();
@@ -860,7 +865,11 @@ JSON_stringify(
                 if (i != 0)
                     s += ',';
                 dom::Object::reference item = obj.get(i);
-                s += fmt::format("\"{}\":{}", item.key, JSON_stringify(item.value, done));
+                s += '"';
+                s += item.key;
+                s += "\":";
+                std::string tmp = JSON_stringify(item.value, done);
+                s += tmp;
             }
         }
         s += "}";

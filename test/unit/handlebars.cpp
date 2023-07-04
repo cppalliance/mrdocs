@@ -236,7 +236,13 @@ main() {
         std::uint64_t barWidth = percent / 5;
         std::string bar = std::string(20, '*').substr(0, barWidth);
         std::string stalledStr = stalled ? "stalled" : "";
-        std::string res = fmt::format("{} {}% {} {}", bar, percent, name, stalledStr);
+        std::string res = bar;
+        res += ' ';
+        res += std::to_string(percent);
+        res += "% ";
+        res += name;
+        res += ' ';
+        res += stalledStr;
         return res;
     });
 
