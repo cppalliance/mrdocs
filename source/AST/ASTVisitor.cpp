@@ -46,7 +46,7 @@ ASTVisitor(
     tooling::ExecutionContext& ex,
     ConfigImpl const& config,
     clang::CompilerInstance& compiler) noexcept
-    : ex_(ex)
+    : ex_(static_cast<ExecutionContext&>(ex))
     , config_(config)
     , compiler_(compiler)
     , IsFileInRootDir_(true)
@@ -2107,6 +2107,12 @@ HandleTranslationUnit(
 
     for(auto* C : TU->decls())
         traverseDecl(C);
+
+    // VFALCO If we returned from the function early
+    // then this line won't execute, which means we
+    // will miss error and warnings emitted before
+    // the return.
+    ex_.report(std::move(diags_));
 }
 
 void

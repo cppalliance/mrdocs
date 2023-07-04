@@ -12,17 +12,28 @@
 #ifndef MRDOX_TOOL_TOOL_TOOLEXECUTOR_HPP
 #define MRDOX_TOOL_TOOL_TOOLEXECUTOR_HPP
 
+#include "ExecutionContext.hpp"
 #include <mrdox/Config.hpp>
 #include <clang/Tooling/ArgumentsAdjusters.h>
 #include <clang/Tooling/Execution.h>
 #include <llvm/ADT/SmallString.h>
+#include <llvm/Support/Mutex.h>
 #include <optional>
 
 namespace clang {
 namespace mrdox {
 
-/// Executes given frontend actions on all files/TUs in the compilation
-/// database.
+/** A custom tool executor to run a front-end action.
+
+    This tool executor permits running one action
+    on all the TUs in a compilation database, using
+    the settings specified in the @ref Config.
+
+    In addition, the executor uses a custom
+    execution context which the visitor retrieves
+    from the regular execution context by using
+    a downcast.
+*/
 class ToolExecutor : public tooling::ToolExecutor
 {
 public:
@@ -69,8 +80,8 @@ private:
     Config const& config_;
     tooling::CompilationDatabase const& Compilations;
     std::unique_ptr<tooling::ToolResults> Results;
-    tooling::ExecutionContext Context;
     llvm::StringMap<std::string> OverlayFiles;
+    ExecutionContext Context;
 };
 
 } // mrdox
