@@ -52,8 +52,9 @@ public:
         Results.addResult(Key, Value);
     }
 
-    std::vector<std::pair<llvm::StringRef, llvm::StringRef>>
-        AllKVResults() override
+    std::vector<std::pair<
+        llvm::StringRef, llvm::StringRef>>
+    AllKVResults() override
     {
         return Results.AllKVResults();
     }
@@ -179,6 +180,9 @@ execute(
             errors.push_back(ex.error());
         }
     }
+
+    // Report warning and error totals
+    Context.reportEnd();
 
     if(! errors.empty())
         reportError(errors, "Could not run the tool executor");

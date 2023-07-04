@@ -13,8 +13,9 @@
 #ifndef MRDOX_TOOL_AST_ASTVISITOR_HPP
 #define MRDOX_TOOL_AST_ASTVISITOR_HPP
 
-#include "Diagnostics.hpp"
 #include "Tool/ConfigImpl.hpp"
+#include "Tool/Diagnostics.hpp"
+#include "Tool/ExecutionContext.hpp"
 #include <mrdox/MetadataFwd.hpp>
 #include <clang/Sema/SemaConsumer.h>
 #include <clang/Tooling/Execution.h>
@@ -46,7 +47,7 @@ public:
         bool include = true;
     };
 
-    tooling::ExecutionContext& ex_;
+    ExecutionContext& ex_;
     ConfigImpl const& config_;
     clang::CompilerInstance& compiler_;
     Diagnostics diags_;
