@@ -33,11 +33,15 @@ struct Node;
 using String = std::string;
 
 template<typename T>
-    requires std::derived_from<T, doc::Node>
+requires std::derived_from<T, doc::Node>
 using List = std::vector<std::unique_ptr<T>>;
 
 enum class Kind
 {
+    // VFALCO Don't forget to update
+    // Node::isText() and Node::isBlock()
+    // when changing this enum!
+
     text = 1, // needed by bitstream
     admonition,
     brief,
@@ -88,16 +92,20 @@ enum class ParamDirection : int
 
 /** This is a variant-like list element.
 */
-struct Node
+struct MRDOX_DECL
+    Node
 {
     Kind kind;
+
+    virtual ~Node() = default;
 
     explicit Node(Kind kind_) noexcept
         : kind(kind_)
     {
     }
 
-    virtual ~Node() = default;
+    bool isBlock() const noexcept;
+    bool isText() const noexcept;
 
     bool operator==(const Node&)const noexcept = default;
     virtual bool equals(const Node& other) const noexcept
@@ -209,7 +217,8 @@ struct Link : Text
 
     The top level is a list of blocks.
 */
-struct Block : Node
+struct MRDOX_DECL
+    Block : Node
 {
     List<Text> children;
 
@@ -230,11 +239,19 @@ struct Block : Node
             });
     }
 
-    bool equals(const Node& other) const noexcept override
+    bool equals(Node const& other) const noexcept override
     {
         return kind == other.kind &&
             *this == static_cast<const Block&>(other);
     }
+
+    template<std::derived_from<Text> T>
+    void emplace_back(T&& text)
+    {
+        emplace_back(std::make_unique<T>(std::move(text)));
+    }
+
+    void append(List<Node>&& blocks);
 
 protected:
     explicit
@@ -245,6 +262,9 @@ protected:
         , children(std::move(children_))
     {
     }
+
+private:
+    void emplace_back(std::unique_ptr<Text> text);
 };
 
 /** A manually specified section heading.
@@ -321,13 +341,13 @@ struct Brief : Paragraph
 */
 struct Admonition : Paragraph
 {
-    Admonish style;
+    Admonish admonish;
 
     explicit
     Admonition(
-        Admonish style_ = Admonish::none) noexcept
+        Admonish admonish_ = Admonish::none) noexcept
         : Paragraph(Kind::admonition)
-        , style(style_)
+        , admonish(admonish_)
     {
     }
 
@@ -559,9 +579,9 @@ void traverse(
 
 struct Overview
 {
-    Paragraph const* brief;
+    Paragraph const* brief = nullptr;
     std::vector<Block const*> blocks;
-    Returns const* returns;
+    Returns const* returns = nullptr;
     std::vector<Param const*> params;
     std::vector<TParam const*> tparams;
 };
@@ -572,35 +592,30 @@ struct Overview
 
 /** A processed Doxygen-style comment attached to a declaration.
 */
-struct MRDOX_VISIBLE
+class MRDOX_DECL
     Javadoc
 {
-    MRDOX_DECL
+public:
     Javadoc() noexcept;
 
     /** Constructor
     */
-    MRDOX_DECL
     explicit
     Javadoc(
         doc::List<doc::Block> blocks);
 
     /** Return true if this is empty
     */
-    MRDOX_DECL
     bool
-    empty() const noexcept;
+    empty() const noexcept
+    {
+        return blocks_.empty();
+    }
 
     /** Return the brief, or nullptr if there is none.
-
-        This function should only be called
-        after postProcess() has been invoked.
     */
     doc::Paragraph const*
-    getBrief() const noexcept
-    {
-        return brief_.get();
-    }
+    brief() const noexcept;
 
     /** Return the list of top level blocks.
     */
@@ -608,30 +623,6 @@ struct MRDOX_VISIBLE
     getBlocks() const noexcept
     {
         return blocks_;
-    }
-
-    /** Return the element describing the return type.
-    */
-    doc::Returns const*
-    getReturns() const noexcept
-    {
-        return returns_.get();
-    }
-
-    /** Return the list of top level blocks.
-    */
-    doc::List<doc::Param> const&
-    getParams() const noexcept
-    {
-        return params_;
-    }
-
-    /** Return the list of top level blocks.
-    */
-    doc::List<doc::TParam> const&
-    getTParams() const noexcept
-    {
-        return tparams_;
     }
 
     // VFALCO This is unfortunately necessary for
@@ -651,33 +642,9 @@ struct MRDOX_VISIBLE
         output format.
     */
     /** @{ */
-    MRDOX_DECL bool operator==(Javadoc const&) const noexcept;
-    MRDOX_DECL bool operator!=(Javadoc const&) const noexcept;
+    bool operator==(Javadoc const&) const noexcept;
+    bool operator!=(Javadoc const&) const noexcept;
     /* @} */
-
-    /** Apply post-processing to the final object.
-
-        The implementation calls this function once,
-        after all doc comments have been merged
-        and attached, to calculate the brief as
-        follows:
-
-        @li Sets the brief to the first paragraph
-            in which a "brief" command exists, or
-
-        @li Sets the first paragraph as the brief if
-            no "brief" is found.
-
-        @li Otherwise, the brief is set to a
-            null pointer to indicate absence.
-
-        Furthermore, the Params and TParams are
-        spliced out of the top level list of
-        blocks into their own lists.
-    */
-    MRDOX_DECL
-    void
-    postProcess();
 
     /** Return an overview of the javadoc.
 
@@ -692,54 +659,35 @@ struct MRDOX_VISIBLE
         the returend overview is invalidated if the
         javadoc object is destroyed.
     */
-    MRDOX_DECL doc::Overview makeOverview() const;
+    doc::Overview makeOverview() const;
 
     //--------------------------------------------
 
-    /** These are used to bottleneck all insertions.
+    /** Attempt to append a block.
+
+        @return An empty string on success, otherwise
+        a string indicating the reason for the failure.
+
+        @param block The block to append.
     */
-    /** @{ */
-    template<class T, class U>
-    static
-    void
-    append(doc::List<T>& list, doc::List<U>&& other) noexcept
+    template<std::derived_from<doc::Block> T>
+    std::string
+    emplace_back(T&& block)
     {
-        list.reserve(list.size() + other.size());
-        for(auto& p : other)
-            list.emplace_back(static_cast<T*>(p.release()));
-        other.clear();
+        return emplace_back(std::make_unique<T>(std::move(block)));
     }
 
-    template<class T, class Child>
-    static
-    void
-    append(
-        doc::List<T>& list,
-        std::unique_ptr<Child>&& child)
-    {
-        list.emplace_back(
-            std::move(child));
-    }
+    /** Append blocks from another javadoc to this.
+    */
+    void append(Javadoc&& other);
 
-    template<class Parent, class Child>
-    static
-    void
-    append(
-        Parent& parent,
-        std::unique_ptr<Child>&& child)
-    {
-        append(parent.children,
-            std::move(child));
-    }
-
-    //--------------------------------------------
+    void append(doc::List<doc::Node>&& blocks);
 
 private:
-    std::unique_ptr<doc::Paragraph> brief_;
-    std::unique_ptr<doc::Returns> returns_;
+    std::string emplace_back(std::unique_ptr<doc::Block>);
+
+    doc::Paragraph const* brief_ = nullptr;
     doc::List<doc::Block> blocks_;
-    doc::List<doc::Param> params_;
-    doc::List<doc::TParam> tparams_;
 };
 
 } // mrdox

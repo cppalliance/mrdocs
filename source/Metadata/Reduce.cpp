@@ -68,7 +68,7 @@ static void merge(Javadoc& I, Javadoc&& other)
     {
         // Unconditionally extend the blocks
         // since each decl may have a comment.
-        I.append(I.getBlocks(), std::move(other.getBlocks()));
+        I.append(std::move(other));
     }
 }
 

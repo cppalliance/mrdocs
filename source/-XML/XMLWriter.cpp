@@ -532,13 +532,7 @@ writeJavadoc(
     if(! javadoc)
         return;
     tags_.open(javadocTagName);
-    if(auto brief = javadoc->getBrief())
-        writeBrief(*brief);
     writeNodes(javadoc->getBlocks());
-    if(auto returns = javadoc->getReturns())
-        writeNode(*returns);
-    writeNodes(javadoc->getParams());
-    writeNodes(javadoc->getTParams());
     tags_.close(javadocTagName);
 }
 
@@ -678,7 +672,7 @@ writeAdmonition(
     doc::Admonition const& admonition)
 {
     llvm::StringRef tag;
-    switch(admonition.style)
+    switch(admonition.admonish)
     {
     case doc::Admonish::note:
         tag = "note";

@@ -29,8 +29,6 @@ class DocVisitor
 public:
     explicit DocVisitor(std::string& dest) noexcept;
 
-    void operator()(doc::List<doc::Block> const& list);
-
     void operator()(doc::Admonition const& I);
     void operator()(doc::Code const& I);
     void operator()(doc::Heading const& I);
@@ -53,15 +51,6 @@ DocVisitor(
     : dest_(dest)
     , ins_(std::back_inserter(dest_))
 {
-}
-
-void
-DocVisitor::
-operator()(
-    doc::List<doc::Block> const& list)
-{
-    for(auto const& block : list)
-        doc::visit(*block, *this);
 }
 
 void
@@ -113,7 +102,7 @@ operator()(
     fmt::format_to(ins_, "=== {}\n", I.string);
 }
 
-//void operator()(doc::Brief const& I)
+// Also handles doc::Brief
 void
 DocVisitor::
 operator()(
@@ -261,33 +250,51 @@ public:
     {
     }
 
+    template<std::derived_from<doc::Node> T>
+    void
+    maybeEmplace(
+        storage_type& list,
+        std::string_view key,
+        T const& I) const
+    {
+        std::string s;
+        DocVisitor visitor(s);
+        doc::visit(I, visitor);
+        if(! s.empty())
+            list.emplace_back(key, std::move(s));
+    };
+
+    template<class T>
+    void
+    maybeEmplace(
+        storage_type& list,
+        std::string_view key,
+        std::vector<T const*> const& nodes) const
+    {
+        std::string s;
+        DocVisitor visitor(s);
+        for(auto const& t : nodes)
+            doc::visit(*t, visitor);
+        if(! s.empty())
+            list.emplace_back(key, std::move(s));
+    };
+
     dom::Object
     construct() const override
     {
         storage_type list;
         list.reserve(2);
 
-        // brief
-        if(auto brief = jd_.getBrief())
-        {
-            std::string s;
-            DocVisitor visitor(s);
-            s.clear();
-            visitor(*brief);
-            if(! s.empty())
-                list.emplace_back("brief", std::move(s));
-        }
+        auto ov = jd_.makeOverview();
 
-        // description
-        if(! jd_.getBlocks().empty())
-        {
-            std::string s;
-            DocVisitor visitor(s);
-            s.clear();
-            visitor(jd_.getBlocks());
-            if(! s.empty())
-                list.emplace_back("description", std::move(s));
-        }
+        // brief
+        if(ov.brief)
+            maybeEmplace(list, "brief", *ov.brief);
+        maybeEmplace(list, "description", ov.blocks);
+        if(ov.returns)
+            maybeEmplace(list, "returns", *ov.returns);
+        maybeEmplace(list, "params", ov.params);
+        maybeEmplace(list, "tparams", ov.tparams);
 
         return dom::Object(std::move(list));
     }

@@ -105,7 +105,7 @@ class JavadocVisitor
     ASTContext const& ctx_;
     SourceManager const& sm_;
     FullComment const* FC_;
-    doc::List<doc::Block> blocks_;
+    Javadoc jd_;
     doc::List<doc::Param> params_;
     doc::Paragraph* paragraph_ = nullptr;
     std::size_t htmlTagNesting_ = 0;
@@ -208,14 +208,13 @@ JavadocVisitor(
     , FC_(RC->parse(D->getASTContext(), nullptr, D))
 {
 }
+
 Javadoc
 JavadocVisitor::
 build()
 {
     visit(FC_);
-
-    // This must cause has_value() to return true
-    return Javadoc(std::move(blocks_));
+    return std::move(jd_);
 }
 
 void
@@ -255,8 +254,7 @@ visitTextComment(
 #if 0
     if(! s.empty())
 #endif
-        Javadoc::append(*paragraph_, std::make_unique<
-            doc::Text>(ensureUTF8(s.str())));
+        paragraph_->emplace_back(doc::Text(ensureUTF8(s.str())));
 }
 
 void
@@ -310,8 +308,9 @@ visitHTMLStartTagComment(
                 break;
             }
         }
-        Javadoc::append(*paragraph_, std::make_unique<doc::Link>(
-            ensureUTF8(std::move(text)), ensureUTF8(std::move(href))));
+        paragraph_->emplace_back(doc::Link(
+            ensureUTF8(std::move(text)),
+            ensureUTF8(std::move(href))));
 
         it_ += 2; // bit of a hack
     }
@@ -365,11 +364,9 @@ visitInlineCommandComment(
         s.append(C->getArgText(i));
 
     if(style != doc::Style::none)
-        Javadoc::append(*paragraph_, std::make_unique<
-            doc::Styled>(std::move(s), style));
+        paragraph_->emplace_back(doc::Styled(std::move(s), style));
     else
-        Javadoc::append(*paragraph_, std::make_unique<
-            doc::Text>(std::move(s)));
+        paragraph_->emplace_back(doc::Text(std::move(s)));
 }
 
 //------------------------------------------------
@@ -390,8 +387,7 @@ visitParagraphComment(
     visitChildren(C);
     // VFALCO Figure out why we get empty ParagraphComment
     if(! paragraph.empty())
-        Javadoc::append(blocks_, std::make_unique<
-            doc::Paragraph>(std::move(paragraph)));
+        jd_.emplace_back(std::move(paragraph));
 }
 
 void
@@ -413,8 +409,7 @@ visitBlockCommandComment(
         doc::Brief brief;
         Scope scope(brief, paragraph_);
         visitChildren(C->getParagraph());
-        Javadoc::append(blocks_, std::make_unique<
-            doc::Brief>(std::move(brief)));
+        jd_.emplace_back(std::move(brief));
         return;
     }
     if(cmd->IsReturnsCommand)
@@ -422,8 +417,7 @@ visitBlockCommandComment(
         doc::Returns returns;
         Scope scope(returns, paragraph_);
         visitChildren(C->getParagraph());
-        Javadoc::append(blocks_, std::make_unique<
-            doc::Returns>(std::move(returns)));
+        jd_.emplace_back(std::move(returns));
         return;
     }
     if(cmd->getID() == CommandTraits::KCI_note)
@@ -431,8 +425,7 @@ visitBlockCommandComment(
         doc::Admonition paragraph(doc::Admonish::note);
         Scope scope(paragraph, paragraph_);
         visitChildren(C->getParagraph());
-        Javadoc::append(blocks_, std::make_unique<
-            doc::Admonition>(std::move(paragraph)));
+        jd_.emplace_back(std::move(paragraph));
         return;
     }
     if(cmd->getID() == CommandTraits::KCI_warning)
@@ -440,8 +433,7 @@ visitBlockCommandComment(
         doc::Admonition paragraph(doc::Admonish::warning);
         Scope scope(paragraph, paragraph_);
         visitChildren(C->getParagraph());
-        Javadoc::append(blocks_, std::make_unique<
-            doc::Admonition>(std::move(paragraph)));
+        jd_.emplace_back(std::move(paragraph));
         return;
     }
     if(cmd->getID() == CommandTraits::KCI_par)
@@ -466,14 +458,12 @@ visitBlockCommandComment(
                 text = s;
 
             doc::Heading heading(std::move(text));
-            Javadoc::append(blocks_, std::make_unique<
-                doc::Heading>(std::move(heading)));
+            jd_.emplace_back(std::move(heading));
 
             // remaining TextComment, if any
             paragraph.children.erase(paragraph.children.begin());
             if(! paragraph.children.empty())
-            Javadoc::append(blocks_, std::make_unique<
-                doc::Paragraph>(std::move(paragraph)));
+                jd_.emplace_back(std::move(paragraph));
         }
         return;
     }
@@ -482,8 +472,7 @@ visitBlockCommandComment(
         doc::ListItem paragraph;
         Scope scope(paragraph, paragraph_);
         visitChildren(C->getParagraph());
-        Javadoc::append(blocks_, std::make_unique<
-            doc::ListItem>(std::move(paragraph)));
+        jd_.emplace_back(std::move(paragraph));
         return;
     }
 }
@@ -516,8 +505,7 @@ visitParamCommandComment(
     Scope scope(param, paragraph_);
     //if(C->hasNonWhitespaceParagraph())
     visitChildren(C->getParagraph());
-    Javadoc::append(blocks_, std::make_unique<
-        doc::Param>(std::move(param)));
+    jd_.emplace_back(std::move(param));
 }
 
 void
@@ -533,8 +521,7 @@ visitTParamCommandComment(
     Scope scope(tparam, paragraph_);
     //if(C->hasNonWhitespaceParagraph())
     visitChildren(C->getParagraph());
-    Javadoc::append(blocks_, std::make_unique<
-        doc::TParam>(std::move(tparam)));
+    jd_.emplace_back(std::move(tparam));
 }
 
 void
@@ -546,8 +533,7 @@ visitVerbatimBlockComment(
     Scope scope(code, paragraph_);
     //if(C->hasNonWhitespaceParagraph())
     visitChildren(C);
-    Javadoc::append(blocks_, std::make_unique<
-        doc::Code>(std::move(code)));
+    jd_.emplace_back(std::move(code));
 }
 
 void
@@ -564,8 +550,7 @@ JavadocVisitor::
 visitVerbatimBlockLineComment(
     VerbatimBlockLineComment const* C)
 {
-    Javadoc::append(*paragraph_, std::make_unique<
-        doc::Text>(C->getText().str()));
+    paragraph_->emplace_back(doc::Text(C->getText().str()));
 }
 
 //------------------------------------------------
@@ -724,13 +709,33 @@ initCustomCommentCommands(ASTContext& context)
     (void)traits;
 }
 
-Javadoc
+void
 parseJavadoc(
-    RawComment const* RC,
+    std::unique_ptr<Javadoc>& jd,
+    RawComment* RC,
     Decl const* D,
     Config const& config)
 {
-    return JavadocVisitor(RC, D, config).build();
+    if(RC)
+    {
+        RC->setAttached();
+
+        auto result = JavadocVisitor(RC, D, config).build();
+
+        if(jd == nullptr)
+        {
+            jd = std::make_unique<Javadoc>(std::move(result));
+        }
+        else
+        {
+            // merge
+            MRDOX_UNREACHABLE();
+        }
+    }
+    else
+    {
+        MRDOX_ASSERT(jd == nullptr);
+    }
 }
 
 } // mrdox

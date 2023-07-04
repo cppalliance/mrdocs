@@ -100,15 +100,13 @@ public:
         {
         case JAVADOC_NODE_ADMONISH:
         {
-            doc::Admonish admonish =
-                doc::Admonish::none;
+            doc::Admonish admonish = doc::Admonish::none;
             if(auto err = decodeRecord(R, admonish, Blob))
                 return err;
             auto node = nodes.back().get();
             if(node->kind != doc::Kind::admonition)
                 return formatError("admonish on wrong kind");
-            static_cast<doc::Admonition*>(
-                node)->style = admonish;
+            static_cast<doc::Admonition*>(node)->admonish = admonish;
             return Error::success();
         }
 
@@ -188,8 +186,7 @@ public:
 
         case JAVADOC_NODE_STYLE:
         {
-            doc::Style style =
-                doc::Style::none;
+            doc::Style style = doc::Style::none;
             if(auto err = decodeRecord(R, style, Blob))
                 return err;
             auto node = nodes.back().get();
@@ -222,8 +219,7 @@ public:
             JavadocNodesBlock B(br_);
             if(auto err = br_.readBlock(B, ID))
                 return err;
-            Javadoc::append(static_cast<
-                doc::Block*>(node)->children,
+            static_cast<doc::Block*>(node)->append(
                 std::move(B.nodes));
             return Error::success();
         }
@@ -268,9 +264,7 @@ public:
             JavadocNodesBlock B(br_);
             if(auto err = br_.readBlock(B, ID))
                 return err;
-            Javadoc::append(
-                I_->getBlocks(),
-                std::move(B.nodes));
+            I_->append(std::move(B.nodes));
             return Error::success();
         }
         default:

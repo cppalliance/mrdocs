@@ -41,7 +41,7 @@ struct EnumInfo;
 struct FieldInfo;
 struct FunctionInfo;
 struct Info;
-struct Javadoc;
+class Javadoc;
 struct Location;
 struct NamespaceInfo;
 struct RecordInfo;

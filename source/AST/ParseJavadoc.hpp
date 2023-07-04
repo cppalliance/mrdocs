@@ -33,11 +33,12 @@ void
 initCustomCommentCommands(
     ASTContext& ctx);
 
-/** Return a complete javadoc object for a raw comment.
+/** Parse a javadoc.
 */
-Javadoc
+void
 parseJavadoc(
-    RawComment const* RC,
+    std::unique_ptr<Javadoc>& jd,
+    RawComment* RC,
     Decl const* D,
     Config const& config);
 

@@ -1,53 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 
-  <Type Name="clang::mrdox::Expected&lt;*&gt;">
-    <DisplayString Condition="! has_error_">{v_}</DisplayString>
-    <DisplayString Condition="has_error_">{e_}</DisplayString>
-  </Type>
+<!-- All unique_ptr show their contents instead -->
+    <Type Name="std::unique_ptr&lt;*&gt;">
+        <SmartPointer Usage="Minimal">_Mypair._Myval2</SmartPointer>
+        <DisplayString Condition="_Mypair._Myval2 == 0">nullptr</DisplayString>
+        <DisplayString Condition="_Mypair._Myval2 != 0">{*_Mypair._Myval2}</DisplayString>
+        <Expand>
+            <ExpandedItem Condition="_Mypair._Myval2 != 0">_Mypair._Myval2</ExpandedItem>
+        </Expand>
+    </Type>
 
-  <Type Name="clang::mrdox::dom::Array">
-    <DisplayString>[ dom::Array ]</DisplayString>
-  </Type>
+    <!-- Error Types -->
 
-  <Type Name="clang::mrdox::dom::Object">
-    <DisplayString>[ dom::Object ]</DisplayString>
-  </Type>
+    <Type Name="clang::mrdox::Expected&lt;*&gt;">
+        <DisplayString Condition="! has_error_">{v_}</DisplayString>
+        <DisplayString Condition="has_error_">{e_}</DisplayString>
+    </Type>
 
-  <Type Name="clang::mrdox::dom::Value">
-    <DisplayString Condition="kind_==Value::Kind::Null">null</DisplayString>
-    <DisplayString Condition="kind_==Value::Kind::Boolean">{b_}</DisplayString>
-    <DisplayString Condition="kind_==Value::Kind::Integer">{i_}</DisplayString>
-    <DisplayString Condition="kind_==Value::Kind::String">{str_}</DisplayString>
-    <DisplayString Condition="kind_==Value::Kind::Array">{arr_}</DisplayString>
-    <DisplayString Condition="kind_==Value::Kind::Object">{obj_}</DisplayString>
-  </Type>
+    <Type Name="clang::mrdox::dom::Array">
+        <DisplayString>[ dom::Array ]</DisplayString>
+    </Type>
 
-<!-- <mrdox/Support/Javascript.hpp> -->
+    <Type Name="clang::mrdox::dom::Object">
+        <DisplayString>[ dom::Object ]</DisplayString>
+    </Type>
 
-  <Type Name="clang::mrdox::js::Access">
-    <DisplayString>[ js::Access ]</DisplayString>
-  </Type>
+    <Type Name="clang::mrdox::dom::Value">
+        <DisplayString Condition="kind_==Value::Kind::Null">null</DisplayString>
+        <DisplayString Condition="kind_==Value::Kind::Boolean">{b_}</DisplayString>
+        <DisplayString Condition="kind_==Value::Kind::Integer">{i_}</DisplayString>
+        <DisplayString Condition="kind_==Value::Kind::String">{str_}</DisplayString>
+        <DisplayString Condition="kind_==Value::Kind::Array">{arr_}</DisplayString>
+        <DisplayString Condition="kind_==Value::Kind::Object">{obj_}</DisplayString>
+    </Type>
 
-  <Type Name="clang::mrdox::js::Scope">
-    <DisplayString>[ js::Scope ]</DisplayString>
-  </Type>
+<!-- Javadocs -->
+    <Type Name="std::vector&lt;std::unique_ptr&lt;clang::mrdox::doc::Block,std::default_delete&lt;clang::mrdox::doc::Block&gt;&gt;,std::allocator&lt;std::unique_ptr&lt;clang::mrdox::doc::Block,std::default_delete&lt;clang::mrdox::doc::Block&gt;&gt;&gt;&gt;">
+        <DisplayString>doc::Block[{_Mypair._Myval2._Myend-_Mypair._Myval2._Myfirst}]</DisplayString>
+        <Expand>
+            <ArrayItems>
+                <Size>_Mypair._Myval2._Myend-_Mypair._Myval2._Myfirst</Size>
+                <ValuePointer>_Mypair._Myval2._Myfirst</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+    <Type Name="std::vector&lt;std::unique_ptr&lt;clang::mrdox::doc::Text,std::default_delete&lt;clang::mrdox::doc::Text&gt;&gt;,std::allocator&lt;std::unique_ptr&lt;clang::mrdox::doc::Text,std::default_delete&lt;clang::mrdox::doc::Text&gt;&gt;&gt;&gt;">
+        <DisplayString>doc::Block[{_Mypair._Myval2._Myend-_Mypair._Myval2._Myfirst}]</DisplayString>
+        <Expand>
+            <ArrayItems>
+                <Size>_Mypair._Myval2._Myend-_Mypair._Myval2._Myfirst</Size>
+                <ValuePointer>_Mypair._Myval2._Myfirst</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
 
-  <Type Name="clang::mrdox::js::Param">
-    <DisplayString Condition="kind_==Param::Kind::Undefined">undefined</DisplayString>
-    <DisplayString Condition="kind_==Param::Kind::Null">null</DisplayString>
-    <DisplayString Condition="kind_==Param::Kind::Boolean">{b_}</DisplayString>
-    <DisplayString Condition="kind_==Param::Kind::Integer">{i_}</DisplayString>
-    <DisplayString Condition="kind_==Param::Kind::Unsigned">{u_}</DisplayString>
-    <DisplayString Condition="kind_==Param::Kind::Double">{d_}</DisplayString>
-    <DisplayString Condition="kind_==Param::Kind::String">{s_}</DisplayString>
-    <DisplayString Condition="kind_==Param::Kind::Value">{idx_}</DisplayString>
-    <DisplayString Condition="kind_==Param::Kind::DomArray">{arr_}</DisplayString>
-    <DisplayString Condition="kind_==Param::Kind::DomObject">{obj_}</DisplayString>
-  </Type>
+    <Type Name="clang::mrdox::doc::Block" Inheritable="true">
+        <DisplayString Condition="kind==Kind::admonition">
+            [ Admonition {(*(clang::mrdox::doc::Admonition*)this).admonish} ]</DisplayString>
+        <DisplayString Condition="kind==Kind::brief">[ Brief ]</DisplayString>
+        <DisplayString Condition="kind==Kind::code">[ Code] </DisplayString>
+        <DisplayString Condition="kind==Kind::heading">[ doc::Heading ]</DisplayString>
+        <DisplayString Condition="kind==Kind::list_item">[ doc::ListItem ]</DisplayString>
+        <DisplayString Condition="kind==Kind::paragraph">[ doc::Paragraph ]</DisplayString>
+        <DisplayString Condition="kind==Kind::param">[ doc::Param ]</DisplayString>
+        <DisplayString Condition="kind==Kind::returns">[ doc::Returns ]</DisplayString>
+        <DisplayString Condition="kind==Kind::tparam">[ doc::TParam ]</DisplayString>
+        <DisplayString>{kind}</DisplayString>
+        <Expand>
+            <ExpandedItem>children</ExpandedItem>
+        </Expand>
+    </Type>
 
-  <Type Name="clang::mrdox::js::Value">
-    <DisplayString>duk_value@{idx_}</DisplayString>
-  </Type>
+    <Type Name="clang::mrdox::doc::Text" Inheritable="true">
+        <DisplayString Condition="kind==Kind::styled">[ doc::Styled ]</DisplayString>
+        <DisplayString Condition="kind==Kind::link">[ doc::Link ]</DisplayString>
+        <DisplayString>{string}</DisplayString>
+        <Expand>
+        </Expand>
+    </Type>
+
+    <!-- <mrdox/Support/Javascript.hpp> -->
+
+    <Type Name="clang::mrdox::js::Access">
+        <DisplayString>[ js::Access ]</DisplayString>
+    </Type>
+
+    <Type Name="clang::mrdox::js::Scope">
+        <DisplayString>[ js::Scope ]</DisplayString>
+    </Type>
+
+    <Type Name="clang::mrdox::js::Param">
+        <DisplayString Condition="kind_==Param::Kind::Undefined">undefined</DisplayString>
+        <DisplayString Condition="kind_==Param::Kind::Null">null</DisplayString>
+        <DisplayString Condition="kind_==Param::Kind::Boolean">{b_}</DisplayString>
+        <DisplayString Condition="kind_==Param::Kind::Integer">{i_}</DisplayString>
+        <DisplayString Condition="kind_==Param::Kind::Unsigned">{u_}</DisplayString>
+        <DisplayString Condition="kind_==Param::Kind::Double">{d_}</DisplayString>
+        <DisplayString Condition="kind_==Param::Kind::String">{s_}</DisplayString>
+        <DisplayString Condition="kind_==Param::Kind::Value">{idx_}</DisplayString>
+        <DisplayString Condition="kind_==Param::Kind::DomArray">{arr_}</DisplayString>
+        <DisplayString Condition="kind_==Param::Kind::DomObject">{obj_}</DisplayString>
+    </Type>
+
+    <Type Name="clang::mrdox::js::Value">
+        <DisplayString>duk_value@{idx_}</DisplayString>
+    </Type>
 
 </AutoVisualizer>

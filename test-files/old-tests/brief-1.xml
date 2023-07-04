@@ -5,20 +5,20 @@
   <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
     <file path="brief-1.cpp" line="30"/>
     <doc>
-      <brief>
+      <para>
         <text> brief</text>
         <bold>bold</bold>
         <text> it</text>
         <text>continues to the line.</text>
-      </brief>
+      </para>
     </doc>
   </function>
   <function name="f6" id="NEkWCLiknLGzCD6JnXuBTSAAne8=">
     <file path="brief-1.cpp" line="39"/>
     <doc>
-      <brief>
+      <para>
         <text> brief</text>
-      </brief>
+      </para>
       <para>
         <text>    many lined</text>
         <text></text>

@@ -14,11 +14,88 @@
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
+#include <fmt/format.h>
 
 namespace clang {
 namespace mrdox {
 
 namespace doc {
+
+bool
+Node::
+isBlock() const noexcept
+{
+    switch(kind)
+    {
+    case Kind::text:
+    case Kind::link:
+    case Kind::styled:
+        return false;
+
+    case Kind::admonition:
+    case Kind::brief:
+    case Kind::code:
+    case Kind::heading:
+    case Kind::list_item:
+    case Kind::paragraph:
+    case Kind::param:
+    case Kind::returns:
+    case Kind::tparam:
+        return true;
+
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+bool
+Node::
+isText() const noexcept
+{
+    switch(kind)
+    {
+    case Kind::text:
+    case Kind::link:
+    case Kind::styled:
+        return true;
+
+    case Kind::admonition:
+    case Kind::brief:
+    case Kind::code:
+    case Kind::heading:
+    case Kind::list_item:
+    case Kind::paragraph:
+    case Kind::param:
+    case Kind::returns:
+    case Kind::tparam:
+        return false;
+
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+void
+Block::
+emplace_back(
+    std::unique_ptr<Text> text)
+{
+    MRDOX_ASSERT(text->isText());
+    children.emplace_back(std::move(text));
+}
+
+void
+Block::
+append(List<Node>&& blocks)
+{
+    children.reserve(children.size() + blocks.size());
+    for(auto&& block : blocks)
+    {
+        MRDOX_ASSERT(block->isText());
+        emplace_back(std::unique_ptr<Text>(
+            static_cast<Text*>(block.release())));
+    }
+}
 
 static
 Overview
@@ -96,16 +173,17 @@ Javadoc(
 {
 }
 
-bool
+doc::Paragraph const*
 Javadoc::
-empty() const noexcept
+brief() const noexcept
 {
-    if( ! brief_ &&
-        blocks_.empty())
-    {
-        return true;
-    }
-    return false;
+    if(brief_)
+        return brief_;
+    for(auto const& block : blocks_)
+        if(block->kind == doc::Kind::paragraph)
+            return static_cast<
+                doc::Paragraph const*>(block.get());
+    return nullptr;
 }
 
 bool
@@ -138,94 +216,101 @@ operator!=(
     return !(*this == other);
 }
 
-void
-Javadoc::
-postProcess()
-{
-    doc::Paragraph* brief = nullptr;
-    auto it = blocks_.begin();
-    while(it != blocks_.end())
-    {
-        auto& block_ptr = *it;
-        if(block_ptr->kind == doc::Kind::brief)
-        {
-            brief = static_cast<doc::Paragraph*>(block_ptr.get());
-            goto done;
-        }
-        else if(block_ptr->kind == doc::Kind::returns)
-        {
-            if(! returns_)
-                returns_.reset(static_cast<
-                    doc::Returns*>(block_ptr.release()));
-            // unconditionally consume the Returns element
-            it = blocks_.erase(it);
-            // KRYSTIAN TODO: emit a warning for duplicate @returns
-            continue;
-        }
-        else if(block_ptr->kind == doc::Kind::param)
-        {
-            it = move_to(params_, blocks_, it);
-            continue;
-        }
-        else if(block_ptr->kind == doc::Kind::tparam)
-        {
-            it = move_to(tparams_, blocks_, it);
-            continue;
-        }
-        if(block_ptr->kind == doc::Kind::paragraph && ! brief)
-        {
-            brief = static_cast<doc::Paragraph*>(block_ptr.get());
-            ++it;
-            goto find_brief;
-        }
-        ++it;
-    }
-    goto done;
-find_brief:
-    while(it != blocks_.end())
-    {
-        auto& block_ptr = *it;
-        if(block_ptr->kind == doc::Kind::brief)
-        {
-            brief = static_cast<doc::Paragraph*>(block_ptr.get());
-            break;
-        }
-        else if(block_ptr->kind == doc::Kind::param)
-        {
-            it = move_to(params_, blocks_, it);
-            continue;
-        }
-        else if(block_ptr->kind == doc::Kind::tparam)
-        {
-            it = move_to(tparams_, blocks_, it);
-            continue;
-        }
-        ++it;
-    }
-done:
-    if(brief != nullptr)
-    {
-        auto match = std::find_if(blocks_.begin(), blocks_.end(),
-            [brief](std::unique_ptr<doc::Block>& block)
-            {
-                return brief == block.get();
-            });
-        MRDOX_ASSERT(match != blocks_.end());
-        brief_.reset(static_cast<doc::Paragraph*>(
-            match->release()));
-        blocks_.erase(match);
-    }
-    // KRYSTIAN FIXME: should an empty paragraph be used
-    // as the brief when no written brief exists?
-}
-
-//------------------------------------------------
-
 doc::Overview
 Javadoc::
 makeOverview() const
 {
     return doc::makeOverview(blocks_);
+}
+
+std::string
+Javadoc::
+emplace_back(
+    std::unique_ptr<doc::Block> block)
+{
+    MRDOX_ASSERT(block->isBlock());
+
+    std::string result;
+    switch(block->kind)
+    {
+    case doc::Kind::brief:
+    {
+        // check for multiple briefs
+        if(brief_ != nullptr)
+            result = "multiple briefs";
+        else
+            brief_ = static_cast<
+                doc::Paragraph const*>(block.get());
+        break;
+    }
+    case doc::Kind::param:
+    {
+        // check for duplicate parameter name
+        auto t = static_cast<doc::Param const*>(block.get());
+        for(auto const& q : blocks_)
+        {
+            if(q->kind == doc::Kind::param)
+            {
+                auto u = static_cast<doc::Param const*>(q.get());
+                if(u->name == t->name)
+                {
+                    result = fmt::format(
+                        "duplicate param {}", t->name);
+                    break;
+                }
+            }
+        }
+        break;
+    }
+    case doc::Kind::tparam:
+    {
+        // check for duplicate template parameter name
+        auto t = static_cast<doc::TParam const*>(block.get());
+        for(auto const& q : blocks_)
+        {
+            if(q->kind == doc::Kind::tparam)
+            {
+                auto u = static_cast<doc::TParam const*>(q.get());
+                if(u->name == t->name)
+                {
+                    result = fmt::format(
+                        "duplicate tparam {}", t->name);
+                    break;
+                }
+            }
+        }
+        break;
+    }
+    default:
+        break;
+    }
+
+    blocks_.emplace_back(std::move(block));
+    return result;
+}
+
+void
+Javadoc::
+append(
+    Javadoc&& other)
+{
+    // VFALCO What about the returned strings,
+    // for warnings and errors?
+    for(auto&& block : other.blocks_)
+        emplace_back(std::move(block));
+}
+
+void
+Javadoc::
+append(doc::List<doc::Node>&& blocks)
+{
+    blocks_.reserve(blocks_.size() + blocks.size());
+    for(auto&& block : blocks)
+    {
+        MRDOX_ASSERT(block->isBlock());
+        blocks_.emplace_back(
+            static_cast<doc::Block*>(block.release()));
+    }
 }
 
 } // mrdox

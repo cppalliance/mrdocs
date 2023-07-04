@@ -270,15 +270,14 @@ grammar
     # VFALCO What does this mean?
     # JavaDoc not in a nested grammar , so we can convert it to a XSD
 
-    Javadoc = element doc { Brief ?, BlockNode * }
-
-    Brief = element brief { TextNode * }
+    Javadoc = element doc { BlockNode * }
 
     BlockNode = (
-        Admonition | Code | Heading | ListItem |
+        Admonition | Brief | Code | Heading | ListItem |
         Paragraph | Param | Returns | TParam )
 
     Admonition = Paragraph
+    Brief = element brief { TextNode * }
     Code = element code { TextNode* }
     Heading = element head { text }
     ListItem = Paragraph

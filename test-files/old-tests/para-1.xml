@@ -18,9 +18,9 @@
   <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
     <file path="para-1.cpp" line="27"/>
     <doc>
-      <brief>
+      <para>
         <text> brief</text>
-      </brief>
+      </para>
       <para>
         <text>    a</text>
       </para>

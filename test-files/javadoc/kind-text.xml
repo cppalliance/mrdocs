@@ -2,16 +2,15 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace>
-  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
-    <file path="friend-2.cpp" line="1" class="def"/>
-    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
-  </struct>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
-    <file path="friend-2.cpp" line="4"/>
-    <file path="friend-2.cpp" line="7"/>
+    <file path="kind-text.cpp" line="6"/>
     <doc>
       <para>
-        <text> f</text>
+        <text> brief</text>
+      </para>
+      <para>
+        <text>    desc1</text>
+        <text>    desc2</text>
       </para>
     </doc>
   </function>

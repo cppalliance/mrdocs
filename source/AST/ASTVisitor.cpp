@@ -774,16 +774,7 @@ parseRawComment(
     // ASTContext::getCommentForDecl instead
     RawComment* RC =
         D->getASTContext().getRawCommentForDeclNoCache(D);
-    if(RC)
-    {
-        RC->setAttached();
-        javadoc = std::make_unique<Javadoc>(
-            parseJavadoc(RC, D, config_));
-    }
-    else
-    {
-        javadoc.reset();
-    }
+    parseJavadoc(javadoc, RC, D, config_);
 }
 
 //------------------------------------------------

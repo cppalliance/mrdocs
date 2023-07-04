@@ -1,7 +1,7 @@
 /** brief
 
-    @warning uh oh!
+    desc
 
-    @par Exception Safety
+    @warning caution
 */
 void f();

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
+      <file path="kind-tparam.cpp" line="6"/>
+      <doc>
+        <para>
+          <text> brief</text>
+        </para>
+        <para>
+          <text></text>
+        </para>
+        <tparam name="T">
+          <text> type</text>
+        </tparam>
+      </doc>
+    </function>
+  </template>
+</namespace>
+</mrdox>

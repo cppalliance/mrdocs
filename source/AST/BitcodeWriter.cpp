@@ -738,7 +738,8 @@ BitcodeWriter::
 emitBlock(
     const doc::List<T>& list)
 {
-    StreamSubBlockGuard Block(Stream, BI_JAVADOC_LIST_BLOCK_ID);
+    StreamSubBlockGuard Block(
+        Stream, BI_JAVADOC_LIST_BLOCK_ID);
     for(const auto& node : list)
         emitBlock(*node);
 }
@@ -869,50 +870,35 @@ BitcodeWriter::
 emitBlock(
     doc::Node const& I)
 {
-    StreamSubBlockGuard Block(Stream, BI_JAVADOC_NODE_BLOCK_ID);
+    StreamSubBlockGuard Block(
+        Stream, BI_JAVADOC_NODE_BLOCK_ID);
     emitRecord(I.kind, JAVADOC_NODE_KIND);
     doc::visit(I.kind,
-        [&]<class T>()
+    [&]<class T>()
+    {
+        if constexpr(! std::is_void_v<T>)
         {
-            if constexpr(! std::is_void_v<T>)
-            {
-                auto const& J = static_cast<T const&>(I);
-
-                if constexpr(std::derived_from<T, doc::Link>)
-                    emitRecord(J.href, JAVADOC_NODE_HREF);
-
-                if constexpr(
-                        std::derived_from<T, doc::Heading> ||
-                        std::derived_from<T, doc::Text> ||
-                        std::derived_from<T, doc::Link>)
-                    emitRecord(J.string, JAVADOC_NODE_STRING);
-
-                if constexpr(std::derived_from<T, doc::Admonition>)
-                    emitRecord(J.style, JAVADOC_NODE_ADMONISH);
-
-                if constexpr(std::derived_from<T, doc::Styled>)
-                    emitRecord(J.style, JAVADOC_NODE_STYLE);
-
-                if constexpr(
-                        std::derived_from<T, doc::Param>)
-                {
-                    emitRecord(J.name, JAVADOC_NODE_STRING);
-                    emitRecord(J.direction, JAVADOC_PARAM_DIRECTION);
-                }
-
-                if constexpr(std::derived_from<T, doc::TParam>)
-                {
-                    emitRecord(J.name, JAVADOC_NODE_STRING);
-                }
-
-                if constexpr(std::derived_from<T, doc::Block>)
-                    emitBlock(J.children);
-            }
-            else
-            {
-                MRDOX_UNREACHABLE();
-            }
-        });
+            auto const& J = static_cast<T const&>(I);
+            if constexpr(requires { J.href; })
+                emitRecord(J.href, JAVADOC_NODE_HREF);
+            if constexpr(requires { J.string; })
+                emitRecord(J.string, JAVADOC_NODE_STRING);
+            if constexpr(requires { J.style; })
+                emitRecord(J.style, JAVADOC_NODE_STYLE);
+            if constexpr(requires { J.admonish; })
+                emitRecord(J.admonish, JAVADOC_NODE_ADMONISH);
+            if constexpr(requires { J.direction; })
+                emitRecord(J.direction, JAVADOC_PARAM_DIRECTION);
+            if constexpr(requires { J.name; })
+                emitRecord(J.name, JAVADOC_NODE_STRING);
+            if constexpr(requires { J.children; })
+                emitBlock(J.children);
+        }
+        else
+        {
+            MRDOX_UNREACHABLE();
+        }
+    });
 }
 
 template<typename ExprInfoTy>

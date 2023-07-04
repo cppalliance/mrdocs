@@ -126,7 +126,7 @@ find_package(fmt REQUIRED CONFIG)
 #-------------------------------------------------
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp source/*.in source/*.natvis)
-file(GLOB_RECURSE INCLUDES CONFIGURE_DEPENDS include/*.hpp)
+file(GLOB_RECURSE INCLUDES CONFIGURE_DEPENDS include/*.hpp include/*.natvis)
 add_executable(mrdox ${SOURCES} ${INCLUDES})
 
 target_compile_features(mrdox PUBLIC cxx_std_20)

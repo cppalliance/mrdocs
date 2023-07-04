@@ -37,8 +37,7 @@ public:
 
     void reportWarning(std::string s)
     {
-        auto result =
-            messages_.emplace(std::move(s), false);
+        messages_.emplace(std::move(s), false);
     }
 
     void reportTotals(
