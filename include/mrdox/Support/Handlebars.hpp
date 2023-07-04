@@ -635,20 +635,30 @@ public:
 
     /** Register a helper with arguments and callback parameters
 
-        This overload registers a helper that returns `void`.
+        This overload registers a helper that returns `void` or any value
+        convertible to `dom::Value`.
 
         @param name The name of the helper
         @param helper The helper function
      */
     template <std::invocable<dom::Array const&, HandlebarsCallback const&> F>
-    requires std::same_as<std::invoke_result_t<F, dom::Array const&, HandlebarsCallback const&>, void>
+    requires (!std::same_as<F, helper_type>)
     void
     registerHelper(std::string_view name, F&& helper)
     {
-        registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            dom::Array const& args, HandlebarsCallback const& cb) {
-            f(args, cb);
-            return dom::Value(nullptr);
+        using R = std::invoke_result_t<F, dom::Array const&, HandlebarsCallback const&>;
+        static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
+        registerHelper(name, helper_type([helper = std::forward<F>(helper)](
+            dom::Array const& args, HandlebarsCallback const& cb) -> dom::Value {
+           if constexpr (!std::same_as<R, void>)
+           {
+               return helper(args, cb);
+           }
+           else
+           {
+               helper(args, cb);
+               return nullptr;
+           }
         }));
     }
 
@@ -660,7 +670,7 @@ public:
         `R(dom::Array const&)`
         @endcode
 
-        where `R` is either `void` or `dom::Value`.
+        where `R` is either `void` or any value convertible to `dom::Value`.
 
         When compared to the canonical helper signature, this overload
         registers helpers that ignore the callback parameter.
@@ -676,9 +686,9 @@ public:
     registerHelper(std::string_view name, F&& helper)
     {
         using R = std::invoke_result_t<F, dom::Array const&>;
-        static_assert(std::same_as<R, void> || std::same_as<R, dom::Value>);
+        static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
         registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            dom::Array const& args, HandlebarsCallback const&) {
+            dom::Array const& args, HandlebarsCallback const&) -> dom::Value {
             if constexpr (!std::same_as<R, void>)
             {
                 return f(args);
@@ -686,7 +696,7 @@ public:
             else
             {
                 f(args);
-                return dom::Value(nullptr);
+                return nullptr;
             }
         }));
     }
@@ -718,15 +728,15 @@ public:
     void
     registerHelper(std::string_view name, F &&helper) {
         using R = std::invoke_result_t<F>;
-        static_assert(std::same_as<R, void> || std::same_as<R, dom::Value>);
+        static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
         registerHelper(name, helper_type([f = std::forward<F>(helper)](
-                dom::Array const&, HandlebarsCallback const &) {
+                dom::Array const&, HandlebarsCallback const &) -> dom::Value {
             if constexpr (!std::same_as<R, void>) {
                 return f();
             } else
             {
                 f();
-                return dom::Value(nullptr);
+                return nullptr;
             }
         }));
     }

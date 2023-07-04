@@ -215,7 +215,8 @@ main() {
     /////////////////////////////////////////////////////////////////
     Handlebars hbs;
     helpers::registerAntoraHelpers(hbs);
-    hbs.registerHelper("progress", [](dom::Array const& args) -> dom::Value {
+
+    hbs.registerHelper("progress", [](dom::Array const& args) {
         if (args.size() < 3) {
             return fmt::format("progress helper requires 3 arguments: {} provided", args.size());
         }
@@ -242,7 +243,7 @@ main() {
     hbs.registerHelper("noop", helpers::noop_fn);
     hbs.registerHelper("raw", helpers::noop_fn);
 
-    hbs.registerHelper("link", [](dom::Array const& args, HandlebarsCallback const& cb) -> dom::Value {
+    hbs.registerHelper("link", [](dom::Array const& args, HandlebarsCallback const& cb) -> std::string {
         if (args.empty()) {
             return "no arguments provided to link helper";
         }
@@ -285,7 +286,7 @@ main() {
 
     hbs.registerHelper("loud", [](
         dom::Array const& args,
-        HandlebarsCallback const& cb) -> dom::Value {
+        HandlebarsCallback const& cb) -> std::string {
         std::string res;
         if (cb.isBlock()) {
             res = cb.fn();
@@ -306,7 +307,7 @@ main() {
     });
 
     hbs.registerHelper("to_string", [](
-        dom::Array const& args) -> dom::Value {
+        dom::Array const& args) -> std::string {
         if (args.empty()) {
             return "to_string helper requires at least one argument";
         }
@@ -316,13 +317,13 @@ main() {
 
     hbs.registerHelper("bold", [](
         dom::Array const& /* args */,
-        HandlebarsCallback const& cb) -> dom::Value {
+        HandlebarsCallback const& cb) {
         return fmt::format(R"(<div class="mybold">{}</div>)", cb.fn());
     });
 
     hbs.registerHelper("list", [](
         dom::Array const& args,
-        HandlebarsCallback const& cb) -> dom::Value {
+        HandlebarsCallback const& cb) {
         // Built-in helper to change the context for each object in args
         if (args.size() != 1) {
             return fmt::format("list helper requires 1 argument: {} provided", args.size());
@@ -362,13 +363,14 @@ main() {
         if (args.empty()) {
             return "isdefined helper requires at least one argument";
         }
+        // This is an example from the handlebars.js documentation
         // There's no distinction between null and undefined in mrdox::dom
         return !args[0].isNull();
     });
 
     hbs.registerHelper("helperMissing", [](
         dom::Array const& args,
-        HandlebarsCallback const& cb) -> dom::Value {
+        HandlebarsCallback const& cb) {
         std::string out;
         OutputRef os(out);
         os << "Missing: ";
@@ -386,7 +388,7 @@ main() {
 
     hbs.registerHelper("blockHelperMissing", [](
         dom::Array const& args,
-        HandlebarsCallback const& cb) -> dom::Value {
+        HandlebarsCallback const& cb) {
         std::string out;
         OutputRef os(out);
         os << "Helper '";
@@ -412,7 +414,7 @@ main() {
     }
 
     // Dynamic partial helpers
-    hbs.registerHelper("whichPartial", []() -> dom::Value {
+    hbs.registerHelper("whichPartial", []() {
         return "dynamicPartial";
     });
 
