@@ -90,7 +90,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
                 // and stores it in the current cell lcsTable[i + 1][j + 1].
                 // This step ensures that the table holds the length of the longest common
                 // subsequence found so far.
-                lcsTable[i + 1][j + 1] = std::max(lcsTable[i + 1][j], lcsTable[i][j + 1]);
+                lcsTable[i + 1][j + 1] = (std::max)(lcsTable[i + 1][j], lcsTable[i][j + 1]);
             }
         }
     }
@@ -158,7 +158,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
     for (i = 0; i < diffLines.size(); ++i) {
         auto& diffLine = diffLines[i];
         if (diffLine.added || diffLine.removed) {
-            std::size_t context_begin = std::max(i - context_size, (last_rendered == std::size_t(-1) ? 0 : last_rendered + 1));
+            std::size_t context_begin = (std::max)(i - context_size, (last_rendered == std::size_t(-1) ? 0 : last_rendered + 1));
             std::size_t out_of_context = unchanged - (i - context_begin);
             if (out_of_context > 0) {
                 result.diff += fmt::format("... {} unchanged line(s)\n", out_of_context);
@@ -175,7 +175,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
                 next_changed - i < context_size) {
                 next_changed++;
             }
-            std::size_t context_end = std::min(i + context_size + 1, next_changed);
+            std::size_t context_end = (std::min)(i + context_size + 1, next_changed);
             for (j = i + 1; j < context_end; ++j) {
                 result.diff += fmt::format("{}\n", diffLines[j].line);
             }
@@ -186,7 +186,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
         }
     }
     if (unchanged <= context_size) {
-        for (i = std::max(diffLines.size() - context_size, i); i < diffLines.size(); ++i) {
+        for (i = (std::max)(diffLines.size() - context_size, i); i < diffLines.size(); ++i) {
             result.diff += fmt::format("{}\n", diffLines[i].line);
         }
     } else {
