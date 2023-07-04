@@ -694,7 +694,7 @@ DomInfo<T>::construct() const
             {
                 if(set)
                     entries.emplace_back(std::move(key), true);
-            });
+            };
         set_flag("isVariadic",         I_.specs0.isVariadic.get());
         set_flag("isVirtual",          I_.specs0.isVirtual.get());
         set_flag("isVirtualAsWritten", I_.specs0.isVirtualAsWritten.get());
@@ -716,7 +716,7 @@ DomInfo<T>::construct() const
             {
                 if(! value.empty())
                     entries.emplace_back(std::move(key), std::move(value));
-            });
+            };
         set_string("constexprKind", toString(I_.specs0.constexprKind.get()));
         set_string("exceptionSpec", toString(I_.specs0.exceptionSpec.get()));
         set_string("storageClass",  toString(I_.specs0.storageClass.get()));

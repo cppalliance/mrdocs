@@ -6,7 +6,7 @@
     <file path="brief-1.cpp" line="30"/>
     <doc>
       <para>
-        <text> brief</text>
+        <text>brief </text>
         <bold>bold</bold>
         <text> it</text>
         <text>continues to the line.</text>
@@ -17,11 +17,10 @@
     <file path="brief-1.cpp" line="39"/>
     <doc>
       <para>
-        <text> brief</text>
+        <text>brief</text>
       </para>
       <para>
-        <text>    many lined</text>
-        <text></text>
+        <text>many lined</text>
         <bold>bold</bold>
         <text>    what will</text>
         <text>    happen?</text>

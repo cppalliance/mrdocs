@@ -599,6 +599,9 @@ class MRDOX_DECL
     Javadoc
 {
 public:
+    /** Constructor.
+    */
+    MRDOX_DECL
     Javadoc() noexcept;
 
     /** Constructor

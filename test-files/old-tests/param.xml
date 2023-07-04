@@ -8,9 +8,6 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x">
       </param>
     </doc>
@@ -24,11 +21,7 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x">
-        <text></text>
       </param>
       <param name="y">
       </param>
@@ -46,14 +39,9 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x">
-        <text></text>
       </param>
       <param name="y">
-        <text></text>
       </param>
       <param name="z">
       </param>
@@ -74,17 +62,11 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="w">
-        <text></text>
       </param>
       <param name="x">
-        <text></text>
       </param>
       <param name="y">
-        <text></text>
       </param>
       <param name="z">
       </param>
