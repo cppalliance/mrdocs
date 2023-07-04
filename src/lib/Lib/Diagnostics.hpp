@@ -63,6 +63,8 @@ public:
                     warnCount, warnCount > 1
                         ? "warnings" : "warning");
             }
+            fmt::format_to(std::back_inserter(s),
+                " total.");
         }
         else
         {

@@ -271,9 +271,6 @@ grammar
     #
     #---------------------------------------------
 
-    # VFALCO What does this mean?
-    # JavaDoc not in a nested grammar , so we can convert it to a XSD
-
     Javadoc = element doc { BlockNode * }
 
     BlockNode = (
@@ -284,7 +281,7 @@ grammar
     Brief = element brief { TextNode * }
     Code = element code { TextNode* }
     Heading = element head { text }
-    ListItem = Paragraph
+    ListItem = element listitem { TextNode* }
     Paragraph = element para {
         attribute class { text } ?,
         TextNode * }

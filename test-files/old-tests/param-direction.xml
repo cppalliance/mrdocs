@@ -8,9 +8,6 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x0">
       </param>
     </doc>
@@ -24,11 +21,7 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x1">
-        <text></text>
       </param>
       <param name="y1" class="in">
       </param>
@@ -43,11 +36,7 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x2">
-        <text></text>
       </param>
       <param name="y2" class="out">
       </param>
@@ -62,11 +51,7 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x3" class="in">
-        <text></text>
       </param>
       <param name="y3" class="out">
       </param>
@@ -81,11 +66,7 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x4">
-        <text></text>
       </param>
       <param name="y4" class="inout">
       </param>
@@ -103,14 +84,9 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x5" class="out">
-        <text></text>
       </param>
       <param name="y5" class="in">
-        <text></text>
       </param>
       <param name="z5">
       </param>
@@ -131,14 +107,9 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x6" class="out">
-        <text></text>
       </param>
       <param name="y6">
-        <text></text>
       </param>
       <param name="z6" class="in">
       </param>
@@ -154,14 +125,8 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x7" class="in">
       </param>
-      <para>
-        <text></text>
-      </para>
       <param name="y7" class="out">
       </param>
     </doc>
@@ -173,9 +138,6 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x8" class="in">
       </param>
     </doc>
@@ -187,14 +149,8 @@
       <type name="int"/>
     </param>
     <doc>
-      <para>
-        <text></text>
-      </para>
       <param name="x9" class="in">
       </param>
-      <para>
-        <text></text>
-      </para>
       <param name="x9" class="out">
       </param>
     </doc>
