@@ -2154,18 +2154,20 @@ lookup_fn(
     if (!r.empty()) {
         return r;
     }
-    if (args[1].isString()) {
+    dom::Value objArg = args[0];
+    dom::Value keyArg = args[1];
+    if (keyArg.isString()) {
         // Second argument is a string, so we're looking up a property
-        std::string_view key = args[1].getString();
-        dom::Value v = lookupProperty(args[0], key);
+        std::string_view key = keyArg.getString();
+        dom::Value v = lookupProperty(objArg, key);
         if (!v.isNull()) {
             return v;
         }
-    } else if (args[1].isInteger()) {
+    } else if (keyArg.isInteger()) {
         // Second argument is a number, so we're looking up an array index
-        if (args[0].isArray()) {
-            dom::Array a = args[0].getArray();
-            auto indexR = args[1].getInteger();
+        if (objArg.isArray()) {
+            dom::Array const& a = objArg.getArray();
+            auto indexR = keyArg.getInteger();
             auto index = static_cast<std::size_t>(indexR);
             if (index < a.size()) {
                 return a[index];
