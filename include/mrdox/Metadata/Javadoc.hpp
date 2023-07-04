@@ -557,6 +557,15 @@ void traverse(
             std::forward<Args>(args)...);
 }
 
+struct Overview
+{
+    Paragraph const* brief;
+    std::vector<Block const*> blocks;
+    Returns const* returns;
+    std::vector<Param const*> params;
+    std::vector<TParam const*> tparams;
+};
+
 } // doc
 
 //------------------------------------------------
@@ -566,9 +575,6 @@ void traverse(
 struct MRDOX_VISIBLE
     Javadoc
 {
-
-    //--------------------------------------------
-
     MRDOX_DECL
     Javadoc() noexcept;
 
@@ -672,6 +678,21 @@ struct MRDOX_VISIBLE
     MRDOX_DECL
     void
     postProcess();
+
+    /** Return an overview of the javadoc.
+
+        The Javadoc is stored as a list of blocks,
+        in the order of appearance in the corresponding
+        source code. This function separates elements
+        according to their semantic content and returns
+        the result as a set of collated lists and
+        individual elements.
+
+        Ownership of the nodes is not transferred;
+        the returend overview is invalidated if the
+        javadoc object is destroyed.
+    */
+    MRDOX_DECL doc::Overview makeOverview() const;
 
     //--------------------------------------------
 

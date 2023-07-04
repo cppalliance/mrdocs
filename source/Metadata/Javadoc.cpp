@@ -18,6 +18,55 @@
 namespace clang {
 namespace mrdox {
 
+namespace doc {
+
+static
+Overview
+makeOverview(
+    List<Block> const& list)
+{
+    doc::Overview ov;
+
+    // VFALCO dupes should already be reported as
+    // warnings or errors by now so we don't have
+    // to care about it here.
+
+    for(auto it = list.begin();
+        it != list.end(); ++it)
+    {
+        switch((*it)->kind)
+        {
+        case Kind::brief:
+            ov.brief = static_cast<
+                Paragraph const*>(it->get());
+            break;
+        case Kind::returns:
+            ov.returns = static_cast<
+                Returns const*>(it->get());
+            break;
+        case Kind::param:
+            ov.params.push_back(static_cast<
+                Param const*>(it->get()));
+            break;
+        case Kind::tparam:
+            ov.tparams.push_back(static_cast<
+                TParam const*>(it->get()));
+            break;
+        case Kind::paragraph:
+            ov.brief = static_cast<
+                Paragraph const*>(it->get());
+            break;
+        default:
+            ov.blocks.push_back(it->get());
+            break;
+        }
+    }
+
+    return ov;
+}
+
+} // doc
+
 //------------------------------------------------
 
 template<typename T, typename U>
@@ -168,6 +217,15 @@ done:
     }
     // KRYSTIAN FIXME: should an empty paragraph be used
     // as the brief when no written brief exists?
+}
+
+//------------------------------------------------
+
+doc::Overview
+Javadoc::
+makeOverview() const
+{
+    return doc::makeOverview(blocks_);
 }
 
 } // mrdox
