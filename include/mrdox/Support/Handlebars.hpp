@@ -859,10 +859,28 @@ isEmpty(dom::Value const& arg);
 
 /** Lookup a property in an object
 
-   @param data The object to look up the property in
-   @param path The path to the property to look up
+    Handlebars expressions can also use dot-separated paths to indicate
+    nested object values.
 
-   @return The value of the property, or nullptr if the property does not exist
+    @code{.handlebars}
+    {{person.firstname}} {{person.lastname}}
+    @endcode
+
+    This expression looks up the `person` property in the input object
+    and in turn looks up the `firstname` and `lastname` property within
+    the `person` object.
+
+    Handlebars also supports a `/` syntax so you could write the above
+    template as:
+
+    @code{.handlebars}
+    {{person/firstname}} {{person/lastname}}
+    @endcode
+
+    @param data The object to look up the property in
+    @param path The path to the property to look up
+
+    @return The value of the property, or nullptr if the property does not exist
  */
 MRDOX_DECL
 dom::Value
