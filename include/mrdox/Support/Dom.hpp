@@ -527,11 +527,6 @@ public:
     */
     Object(storage_type list);
 
-    Object(std::initializer_list<value_type> init)
-        : Object(storage_type(init))
-    {
-    }
-
     /** Constructor.
 
         This constructs an object from an existing
