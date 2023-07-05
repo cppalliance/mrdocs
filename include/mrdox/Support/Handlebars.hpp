@@ -220,15 +220,19 @@ public:
 class MRDOX_DECL HandlebarsCallback
 {
 private:
-    std::function<void(OutputRef, dom::Value const&)> fn_;
-    std::function<void(OutputRef, dom::Value const&)> inverse_;
+    using callback_type = std::function<
+        void(OutputRef, dom::Value const&, dom::Object const&, dom::Object const&)>;
+
+    callback_type fn_;
+    callback_type inverse_;
     dom::Value const* context_{ nullptr };
     OutputRef* output_{ nullptr };
     dom::Object data_;
+    std::vector<std::string_view> ids_;
     dom::Object hashes_;
-    dom::Array blockParams_;
+    std::string_view name_;
+    std::vector<std::string_view> blockParams_;
     friend class Handlebars;
-    HandlebarsCallback();
 
 public:
     /** Render the block content with the specified context
@@ -289,6 +293,42 @@ public:
         fn( out, *context_ );
     }
 
+    /** Render the block content with specified private data and block parameters
+
+        This is the most complete overload of the `fn` function. It allows
+        the caller to specify the new private data and values for
+        block parameters to use when rendering the block content.
+
+        @param context The context to render the block content with
+        @param data The private data to render the block content with
+        @param blockParams The block parameters to render the block content with
+        @return The rendered block content
+
+     */
+    std::string
+    fn(dom::Value const& context,
+       dom::Object const& data,
+       dom::Object const& blockValues) const;
+
+    /** Render the block content with specified private data and block parameters
+
+        This is the most complete overload of the `fn` function. It allows
+        the caller to specify the new private data and values for
+        block parameters to use when rendering the block content.
+
+        @param out Reference to the output
+        @param context The context to render the block content with
+        @param data The private data to render the block content with
+        @param blockParams The block parameters to render the block content with
+        @return The rendered block content
+
+     */
+    void
+    fn(OutputRef out,
+       dom::Value const& context,
+       dom::Object const& data,
+       dom::Object const& blockValues) const;
+
     /** Render the inverse block content with the specified context
 
         This function renders the inverse block content with the specified context.
@@ -345,6 +385,44 @@ public:
     inverse(OutputRef out) const {
         inverse( out, *context_ );
     }
+
+    /** Render the inverse block content with private data and block parameters
+
+        This is the most complete overload of the `inverse` function. It allows
+        the caller to specify the new private data and values for
+        block parameters to use when rendering the block content.
+
+        @param context The context to render the block content with
+        @param data The private data to render the block content with
+        @param blockParams The block parameters to render the block content with
+        @return The rendered block content
+
+     */
+    std::string
+    inverse(
+        dom::Value const& context,
+        dom::Object const& data,
+        dom::Object const& blockValues) const;
+
+    /** Render the inverse block content with private data and block parameters
+
+        This is the most complete overload of the `inverse` function. It allows
+        the caller to specify the new private data and values for
+        block parameters to use when rendering the block content.
+
+        @param out Reference to the output
+        @param context The context to render the block content with
+        @param data The private data to render the block content with
+        @param blockParams The block parameters to render the block content with
+        @return The rendered block content
+
+     */
+    void
+    inverse(
+        OutputRef out,
+        dom::Value const& context,
+        dom::Object const& data,
+        dom::Object const& blockValues) const;
 
     /** Determine if helper is being called from a block section
 
@@ -443,14 +521,26 @@ public:
         return hashes_;
     }
 
+    /// Ids of the expression parameters
+    std::vector<std::string_view>&
+    ids() {
+        return ids_;
+    }
+
+    /// Ids of the expression parameters
+    std::vector<std::string_view> const&
+    ids() const {
+        return ids_;
+    }
+
     /// Block parameters passed to the callback
-    dom::Array&
+    std::vector<std::string_view>&
     blockParams() {
         return blockParams_;
     }
 
     /// Block parameters passed to the callback
-    dom::Array const&
+    std::vector<std::string_view> const&
     blockParams() const {
         return blockParams_;
     }
@@ -464,7 +554,10 @@ public:
         doesn't match the name the helper was registered with.
 
      */
-    std::string_view name;
+    std::string_view
+    name() const {
+        return name_;
+    }
 };
 
 /** A handlebars template engine environment
@@ -765,7 +858,8 @@ private:
         dom::Value const &context,
         HandlebarsOptions opt,
         partials_map& inlinePartials,
-        dom::Object& private_data) const;
+        dom::Object const& private_data,
+        dom::Object const& blockValues) const;
 
     void
     renderTag(
@@ -775,7 +869,8 @@ private:
         dom::Value const &context,
         HandlebarsOptions opt,
         partials_map& inlinePartials,
-        dom::Object& private_data) const;
+        dom::Object const& private_data,
+        dom::Object const& blockValues) const;
 
     void
     renderBlock(
@@ -786,7 +881,8 @@ private:
         dom::Value const& context,
         HandlebarsOptions const& opt,
         Handlebars::partials_map &extra_partials,
-        dom::Object& private_data) const;
+        dom::Object const& data,
+        dom::Object const& blockValues) const;
 
     void
     renderPartial(
@@ -796,36 +892,43 @@ private:
         dom::Value const& data,
         HandlebarsOptions &opt,
         Handlebars::partials_map &inlinePartials,
-        dom::Object& private_data) const;
+        dom::Object const& private_data,
+        dom::Object const& blockValues) const;
 
     void
     renderDecorator(
         Handlebars::Tag const& tag,
         OutputRef &out,
         std::string_view &templateText,
-        dom::Value const& data,
+        dom::Value const& context,
         Handlebars::partials_map &inlinePartials,
-        dom::Object& private_data) const;
+        dom::Object const& private_data,
+        dom::Object const& blockValues) const;
 
     void
     renderExpression(
         Handlebars::Tag const& tag,
         OutputRef &out,
         std::string_view &templateText,
-        dom::Value const& data,
+        dom::Value const& context,
         HandlebarsOptions const& opt,
-        dom::Object& private_data) const;
+        dom::Object const& private_data,
+        dom::Object const& blockValues) const;
 
     void
     setupArgs(
         std::string_view expression,
-        dom::Value const& data,
+        dom::Value const& context,
+        dom::Object const& data,
+        dom::Object const& blockValues,
         dom::Array &args,
         HandlebarsCallback &cb) const;
 
     dom::Value
     evalExpr(
         dom::Value const &context,
+        dom::Object const &data,
+        dom::Object const &blockValues,
         std::string_view expression) const;
 
     helper_type const&
@@ -866,6 +969,32 @@ isTruthy(dom::Value const& arg);
 MRDOX_DECL
 bool
 isEmpty(dom::Value const& arg);
+
+/** Create child data objects.
+
+    This function can be used by block helpers to create child
+    data objects.
+
+    The child data object is an overlay frame object implementation
+    that will first look for a value in the child object and if
+    not found will look in the parent object.
+
+    Helpers that modify the data state should create a new frame
+    object when doing so, to isolate themselves and avoid corrupting
+    the state of any parents.
+
+    Generally, only one frame needs to be created per helper
+    execution. For example, the each iterator creates a single
+    frame which is reused for all child execution.
+
+    @param arg The value to test
+    @return True if the value is empty, false otherwise
+
+    @see https://mustache.github.io/mustache.5.html#Sections
+ */
+MRDOX_DECL
+dom::Object
+createFrame(dom::Object const& parent);
 
 /** Lookup a property in an object
 

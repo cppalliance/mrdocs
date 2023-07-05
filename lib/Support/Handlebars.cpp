@@ -58,6 +58,63 @@ isEmpty(dom::Value const& arg)
     return !isTruthy(arg);
 }
 
+class OverlayObjectImpl : public dom::ObjectImpl
+{
+    dom::Object parent_;
+    dom::Object child_;
+
+public:
+    ~OverlayObjectImpl() override = default;
+
+    OverlayObjectImpl(dom::Object parent)
+        : parent_(parent)
+    {}
+
+    OverlayObjectImpl(dom::Object child, dom::Object parent)
+        : parent_(parent)
+        , child_(child)
+    {}
+
+    std::size_t size() const override {
+        std::size_t n = parent_.size() + child_.size();
+        for (auto const& [key, value] : child_) {
+            if (parent_.exists(key))
+                    --n;
+            }
+        return n;
+    };
+
+    reference get(std::size_t i) const override {
+        if (i < child_.size())
+                return child_.get(i);
+            return parent_.get(i - child_.size());
+    };
+
+    dom::Value find(std::string_view key) const override {
+        if (child_.exists(key))
+            return child_.find(key);
+        if (parent_.exists(key))
+            return parent_.find(key);
+        return nullptr;
+    }
+
+    void set(std::string_view key, dom::Value value) override {
+        child_.set(key, std::move(value));
+    };
+};
+
+dom::Object
+createFrame(dom::Object const& parent)
+{
+    return dom::newObject<OverlayObjectImpl>(parent);
+}
+
+dom::Object
+createFrame(dom::Object const& child, dom::Object const& parent)
+{
+    return dom::newObject<OverlayObjectImpl>(child, parent);
+}
+
 void
 escape_to(
     OutputRef out,
@@ -174,19 +231,15 @@ trim_rspaces(std::string_view expression)
 // Helper Callback
 /////////////////////////////////////////////////////////////////
 
-HandlebarsCallback::
-HandlebarsCallback()
-    : blockParams_(dom::newArray<dom::DefaultArrayImpl>())
-{
-}
-
 std::string
 HandlebarsCallback::
-fn(dom::Value const& context) const {
+fn(dom::Value const& context,
+   dom::Object const& data,
+   dom::Object const& blockValues) const {
     if (isBlock()) {
         std::string result;
         OutputRef out(result);
-        fn_(out, context);
+        fn_(out, context, data, blockValues);
         return result;
     } else {
         return {};
@@ -195,31 +248,63 @@ fn(dom::Value const& context) const {
 
 void
 HandlebarsCallback::
-fn(OutputRef out, dom::Value const& context) const {
+fn(OutputRef out,
+   dom::Value const& context,
+   dom::Object const& data,
+   dom::Object const& blockValues) const {
     if (isBlock()) {
-        fn_(out, context);
+        fn_(out, context, data, blockValues);
+    }
+}
+
+std::string
+HandlebarsCallback::
+fn(dom::Value const& context) const {
+    return fn(context, data(), dom::Object{});
+}
+
+void
+HandlebarsCallback::
+fn(OutputRef out, dom::Value const& context) const {
+    fn(out, context, data(), dom::Object{});
+}
+
+std::string
+HandlebarsCallback::
+inverse(dom::Value const& context,
+   dom::Object const& data,
+   dom::Object const& blockValues) const {
+    if (isBlock()) {
+        std::string result;
+        OutputRef out(result);
+        inverse_(out, context, data, blockValues);
+        return result;
+    } else {
+        return {};
+    }
+}
+
+void
+HandlebarsCallback::
+inverse(OutputRef out,
+   dom::Value const& context,
+   dom::Object const& data,
+   dom::Object const& blockValues) const {
+    if (isBlock()) {
+        inverse_(out, context, data, blockValues);
     }
 }
 
 std::string
 HandlebarsCallback::
 inverse(dom::Value const& context) const {
-    if (isBlock()) {
-        std::string result;
-        OutputRef out(result);
-        inverse_(out, context);
-        return result;
-    } else {
-        return {};
-    }
+    return inverse(context, data(), dom::Object{});
 }
 
 void
 HandlebarsCallback::
 inverse(OutputRef out, dom::Value const& context) const {
-    if (isBlock()) {
-        inverse_(out, context);
-    }
+    inverse(out, context, data(), dom::Object{});
 }
 
 void
@@ -568,9 +653,11 @@ render_to(
     partials_map extra_partials;
     dom::Object private_data;
     private_data.set("root", context);
+    private_data.set("level", "warn");
+    dom::Object blockValues;
     render_to(
         out, templateText, context, options,
-        extra_partials, private_data);
+        extra_partials, private_data, blockValues);
 }
 
 void
@@ -581,7 +668,8 @@ render_to(
     dom::Value const &data,
     HandlebarsOptions opt,
     partials_map& extra_partials,
-    dom::Object& private_data) const
+    dom::Object const& private_data,
+    dom::Object const& blockValues) const
 {
     while (!templateText.empty()) {
         std::string_view tagStr;
@@ -594,7 +682,8 @@ render_to(
         Tag tag = parseTag(tagStr);
         std::size_t templateEndPos = tagStartPos;
         if (tag.removeLWhitespace) {
-            auto pos = templateText.substr(0, tagStartPos).find_last_not_of(" \t\r\n");
+            std::string_view beforeTag = templateText.substr(0, tagStartPos);
+            auto pos = beforeTag.find_last_not_of(" \t\r\n");
             if (pos != std::string_view::npos) {
                 templateEndPos = pos + 1;
             } else {
@@ -604,7 +693,9 @@ render_to(
         out << templateText.substr(0, templateEndPos);
         templateText.remove_prefix(tagStartPos + tagStr.size());
         if (!tag.escaped) {
-            renderTag(tag, out, templateText, data, opt, extra_partials, private_data);
+            renderTag(
+                tag, out, templateText, data, opt,
+                extra_partials, private_data, blockValues);
         } else {
             out << tag.content;
         }
@@ -711,9 +802,9 @@ dom::Value
 lookupProperty(
     dom::Value const &data,
     std::string_view path) {
+    if (path == "." || path == "this" || path == "[.]" || path == "[this]" || path.empty())
+        return data;
     if (data.kind() != dom::Kind::Object) {
-        if (path == "." || path == "this" || path == "[.]" || path == "[this]" || path.empty())
-            return data;
         return nullptr;
     }
     return lookupProperty(data.getObject(), path);
@@ -887,10 +978,36 @@ std::string unescapeString(std::string_view str) {
     return unescapedString;
 }
 
+std::string
+appendContextPath(dom::Value contextPath, std::string_view id) {
+    if (contextPath.isString()) {
+        return std::string(contextPath.getString()) + "." + std::string(id);
+    } else {
+        return std::string(id);
+    }
+}
+
+bool
+popContextSegment(std::string_view& contextPath) {
+    if (contextPath.empty())
+        return false;
+    auto pos = contextPath.find_last_of('.');
+    if (pos == std::string_view::npos)
+    {
+        contextPath.remove_prefix(contextPath.size());
+        return false;
+    }
+    contextPath = contextPath.substr(0, pos);
+    return true;
+}
+
+
 dom::Value
 Handlebars::
 evalExpr(
-    dom::Value const &data,
+    dom::Value const & context,
+    dom::Object const & data,
+    dom::Object const & blockValues,
     std::string_view expression) const
 {
     expression = trim_spaces(expression);
@@ -908,9 +1025,9 @@ evalExpr(
     }
     else if (expression == "." || expression == "this")
     {
-        if (data.isObject() && data.getObject().exists("this"))
-            return data.getObject().find("this");
-        return data;
+        if (context.isObject() && context.getObject().exists("this"))
+            return context.getObject().find("this");
+        return context;
     }
     else if (is_literal_string(expression))
     {
@@ -936,14 +1053,53 @@ evalExpr(
         all.remove_prefix(helper.data() + helper.size() - all.data());
         dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
         HandlebarsCallback cb;
-        cb.name = helper;
-        cb.context_ = &data;
-        setupArgs(all, data, args, cb);
+        cb.name_ = helper;
+        cb.context_ = &context;
+        setupArgs(all, context, data, blockValues, args, cb);
         return fn(args, cb);
     }
     else
     {
-        return lookupProperty(data, expression);
+        if (expression.starts_with('@'))
+        {
+            expression.remove_prefix(1);
+            return lookupProperty(data, expression);
+        }
+        if (expression.starts_with("..")) {
+            auto contextPathV = data.find("contextPath");
+            if (!contextPathV.isString())
+                return nullptr;
+            std::string_view contextPath = contextPathV.getString();
+            while (expression.starts_with("..")) {
+                if (!popContextSegment(contextPath))
+                    return nullptr;
+                expression.remove_prefix(2);
+                if (!expression.empty()) {
+                    if (expression.front() != '/') {
+                        return nullptr;
+                    }
+                    expression.remove_prefix(1);
+                }
+            }
+            std::string absContextPath;
+            dom::Value root = data.find("root");
+            do {
+                absContextPath = contextPath;
+                absContextPath += '.';
+                absContextPath += expression;
+                dom::Value v = lookupProperty(root, absContextPath);
+                if (!v.isNull()) {
+                    return v;
+                }
+                popContextSegment(contextPath);
+            } while (!contextPath.empty());
+            return lookupProperty(root, expression);
+        }
+        dom::Value cv = lookupProperty(context, expression);
+        if (!cv.isNull()) {
+            return cv;
+        }
+        return lookupProperty(blockValues, expression);
     }
 }
 
@@ -972,7 +1128,7 @@ getHelper(std::string_view helper, bool isNoArgBlock) const -> helper_type const
         thread_local static helper_type h = [](
                 dom::Array const &args,
                 HandlebarsCallback const &cb) -> dom::Value {
-            return fmt::format(R"([undefined helper "{}"])", cb.name);
+            return fmt::format(R"([undefined helper "{}"])", cb.name());
         };
         return h;
     }
@@ -1108,22 +1264,23 @@ renderTag(
     dom::Value const &data,
     HandlebarsOptions opt,
     partials_map& extra_partials,
-    dom::Object& private_data) const {
+    dom::Object const& private_data,
+    dom::Object const& blockValues) const {
     if (tag.type == '#')
     {
-        renderBlock(tag.helper, tag, out, templateText, data, opt, extra_partials, private_data);
+        renderBlock(tag.helper, tag, out, templateText, data, opt, extra_partials, private_data, blockValues);
     }
     else if (tag.type == '>')
     {
-        renderPartial(tag, out, templateText, data, opt, extra_partials, private_data);
+        renderPartial(tag, out, templateText, data, opt, extra_partials, private_data, blockValues);
     }
     else if (tag.type == '*')
     {
-        renderDecorator(tag, out, templateText, data, extra_partials, private_data);
+        renderDecorator(tag, out, templateText, data, extra_partials, private_data, blockValues);
     }
     else if (tag.type != '/' && tag.type != '!')
     {
-        renderExpression(tag, out, templateText, data, opt, private_data);
+        renderExpression(tag, out, templateText, data, opt, private_data, blockValues);
     }
 }
 
@@ -1133,9 +1290,10 @@ renderExpression(
     Handlebars::Tag const &tag,
     OutputRef &out,
     std::string_view &templateText,
-    dom::Value const &data,
+    dom::Value const & context,
     HandlebarsOptions const &opt,
-    dom::Object& /* private_data */) const
+    dom::Object const& private_data,
+    dom::Object const& blockValues) const
 {
     if (tag.helper.empty())
         return;
@@ -1148,9 +1306,10 @@ renderExpression(
         helper_type const& fn = getHelper(tag.helper, false);
         dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
         HandlebarsCallback cb;
-        cb.name = tag.helper;
-        cb.context_ = &data;
-        setupArgs(tag.arguments, data, args, cb);
+        cb.name_ = tag.helper;
+        cb.context_ = &context;
+        cb.data_ = private_data;
+        setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
         dom::Value res = fn(args, cb);
         format_to(out, res, opt2);
         if (tag.removeRWhitespace) {
@@ -1159,8 +1318,8 @@ renderExpression(
         return;
     }
 
-    dom::Value v = evalExpr(data, tag.helper);
-    if (v.kind() != dom::Kind::Null)
+    dom::Value v = evalExpr(context, private_data, blockValues, tag.helper);
+    if (!v.isNull())
     {
         format_to(out, v, opt2);
         return;
@@ -1170,8 +1329,8 @@ renderExpression(
     helper_type const& fn = getHelper(tag.helper, false);
     dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
     HandlebarsCallback cb;
-    cb.name = tag.helper;
-    setupArgs(tag.arguments, data, args, cb);
+    cb.name_ = tag.helper;
+    setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
     dom::Value res = fn(args, cb);
     format_to(out, res, opt2);
     if (tag.removeRWhitespace) {
@@ -1183,7 +1342,9 @@ void
 Handlebars::
 setupArgs(
     std::string_view expression,
-    dom::Value const& data,
+    dom::Value const& context,
+    dom::Object const& data,
+    dom::Object const& blockValues,
     dom::Array &args,
     HandlebarsCallback &cb) const
 {
@@ -1194,11 +1355,12 @@ setupArgs(
         auto [k, v] = findKeyValuePair(expr);
         if (k.empty())
         {
-            args.emplace_back(this->evalExpr(data, expr));
+            args.emplace_back(this->evalExpr(context, data, blockValues, expr));
+            cb.ids_.push_back(expr);
         }
         else
         {
-            cb.hashes_.set(k, this->evalExpr(data, v));
+            cb.hashes_.set(k, this->evalExpr(context, data, blockValues, v));
         }
     }
 }
@@ -1209,9 +1371,10 @@ renderDecorator(
     Handlebars::Tag const& tag,
     OutputRef &out,
     std::string_view &templateText,
-    dom::Value const& data,
+    dom::Value const& context,
     Handlebars::partials_map &extra_partials,
-    dom::Object&) const {
+    dom::Object const& data,
+    dom::Object const& blockValues) const {
     // Validate decorator
     if (tag.helper != "inline")
     {
@@ -1222,7 +1385,7 @@ renderDecorator(
     // Evaluate expression
     std::string_view expr;
     findExpr(expr, tag.arguments);
-    dom::Value value = this->evalExpr(data, expr);
+    dom::Value value = this->evalExpr(context, data, blockValues, expr);
     if (!value.isString())
     {
         out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.arguments, tag.buffer);
@@ -1253,13 +1416,14 @@ renderPartial(
     dom::Value const &data,
     HandlebarsOptions &opt,
     Handlebars::partials_map &extra_partials,
-    dom::Object& private_data) const {
+    dom::Object const& private_data,
+    dom::Object const& blockValues) const {
     // Evaluate dynamic partial
     std::string helper(tag.helper);
     if (helper.starts_with('(')) {
         std::string_view expr;
         findExpr(expr, helper);
-        dom::Value value = this->evalExpr(data, expr);
+        dom::Value value = this->evalExpr(data, private_data, blockValues, expr);
         if (value.isString()) {
             helper = value.getString();
         }
@@ -1300,12 +1464,16 @@ renderPartial(
         if (tag.type2 == '#') {
             // evaluate fnBlock to populate extra partials
             OutputRef dumb{};
-            this->render_to(dumb, fnBlock, data, opt, extra_partials, private_data);
+            this->render_to(
+                dumb, fnBlock, data, opt,
+                extra_partials, private_data, blockValues);
             // also add @partial-block to extra partials
             extra_partials["@partial-block"] = std::string(fnBlock);
         }
         // Render partial with current context
-        this->render_to(out, partial_content, data, opt, extra_partials, private_data);
+        this->render_to(
+            out, partial_content, data, opt,
+            extra_partials, private_data, blockValues);
         if (tag.type2 == '#') {
             extra_partials.erase("@partial-block");
         }
@@ -1322,7 +1490,7 @@ renderPartial(
             auto [partialKey, contextKey] = findKeyValuePair(expr);
             if (partialKey.empty())
             {
-                dom::Value value = lookupProperty(data, expr);
+                dom::Value value = evalExpr(data, private_data, blockValues, expr);
                 if (!value.isNull() && value.isObject())
                 {
                     partialCtx = value.getObject();
@@ -1330,7 +1498,7 @@ renderPartial(
                 continue;
             }
             if (contextKey != ".") {
-                dom::Value value = lookupProperty(data, contextKey);
+                dom::Value value = evalExpr(data, private_data, blockValues, contextKey);
                 if (!value.isNull())
                 {
                     partialCtx.set(partialKey, value);
@@ -1339,7 +1507,9 @@ renderPartial(
                 partialCtx.set(partialKey, data);
             }
         }
-        this->render_to(out, partial_content, partialCtx, opt, extra_partials, private_data);
+        this->render_to(
+            out, partial_content, partialCtx, opt,
+            extra_partials, private_data, blockValues);
     }
 
     if (tag.removeRWhitespace) {
@@ -1354,10 +1524,11 @@ renderBlock(
     Handlebars::Tag const &tag,
     OutputRef &out,
     std::string_view &templateText,
-    dom::Value const& data,
+    dom::Value const& context,
     HandlebarsOptions const& opt,
     Handlebars::partials_map &extra_partials,
-    dom::Object& private_data) const {
+    dom::Object const & data,
+    dom::Object const &blockValues) const {
     // Opening a section tag
     // Find closing tag
     if (tag.removeRWhitespace) {
@@ -1373,48 +1544,68 @@ renderBlock(
 
     dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
     HandlebarsCallback cb;
-    cb.name = tag.helper;
-    cb.context_ = &data;
-    setupArgs(tag.arguments, data, args, cb);
+    cb.name_ = tag.helper;
+    cb.context_ = &context;
+    cb.data_ = data;
+    setupArgs(tag.arguments, context, data, blockValues, args, cb);
 
     // Setup block params
     std::string_view expr;
     std::string_view bps = tag.blockParams;
-    cb.blockParams_ = dom::newArray<dom::DefaultArrayImpl>();
     while (findExpr(expr, bps))
     {
         bps = bps.substr(expr.data() + expr.size() - bps.data());
-        cb.blockParams_.emplace_back(dom::Value(expr));
+        cb.blockParams_.push_back(expr);
     }
 
     // Setup callback functions
     if (!tag.rawBlock) {
-        cb.fn_ = [this, fnBlock, opt, &extra_partials, &private_data](
+        cb.fn_ = [this, fnBlock, opt, &extra_partials, &blockValues](
             OutputRef os,
-            dom::Value const &item) -> void {
-            // Render one element in the list with the fnBlock template
-            this->render_to(os, fnBlock, item, opt, extra_partials, private_data);
+            dom::Value const &item,
+            dom::Object const &data,
+            dom::Object const &newBlockValues) -> void {
+            if (!newBlockValues.empty()) {
+                dom::Object blockValuesOverlay =
+                    createFrame(newBlockValues, blockValues);
+                this->render_to(os, fnBlock, item, opt, extra_partials, data, blockValuesOverlay);
+            } else {
+                this->render_to(os, fnBlock, item, opt, extra_partials, data, blockValues);
+            }
         };
-        cb.inverse_ = [this, inverseTag, inverseBlock, opt, &extra_partials, &private_data, blockName](
+        cb.inverse_ =
+            [this, inverseTag, inverseBlock, opt, &extra_partials, blockName, &blockValues](
             OutputRef os,
-            dom::Value const &item) -> void {
+            dom::Value const &item,
+            dom::Object const &data,
+            dom::Object const &newBlockValues) -> void {
             if (inverseTag.helper.empty()) {
                 os << inverseBlock;
                 return;
             }
             std::string_view inverseText = inverseBlock;
-            renderBlock(blockName, inverseTag, os, inverseText, item, opt, extra_partials, private_data);
+            if (!newBlockValues.empty()) {
+                dom::Object blockValuesOverlay =
+                    createFrame(newBlockValues, blockValues);
+                renderBlock(blockName, inverseTag, os, inverseText, item, opt, extra_partials, data, blockValuesOverlay);
+            } else {
+                renderBlock(blockName, inverseTag, os, inverseText, item, opt, extra_partials, data, blockValues);
+            }
         };
     } else {
         cb.fn_ = [fnBlock](
             OutputRef os,
-            dom::Value const &item) -> void {
+            dom::Value const & /* item */,
+            dom::Object const & /* data */,
+            dom::Object const & /* newBlockValues */) -> void {
             // Render raw fnBlock
             os << fnBlock;
         };
         cb.inverse_ = [](
-            OutputRef os,
-            dom::Value const &item) -> void {
+            OutputRef /* os */,
+            dom::Value const &/* item */,
+            dom::Object const &/* data */,
+            dom::Object const &/* newBlockValues */) -> void {
             // noop: No inverseBlock for raw block
         };
     }
@@ -1650,7 +1841,7 @@ increment_fn(
     dom::Array const &args,
     HandlebarsCallback const& cb)
 {
-    auto r = validateArgs(cb.name, 1, args);
+    auto r = validateArgs(cb.name(), 1, args);
     if (!r.empty()) {
         return r;
     }
@@ -1671,7 +1862,7 @@ detag_fn(
     // equivalent to:
     // static const std::regex tagRegex("<[^>]+>");
     // return std::regex_replace(html, tagRegex, "");
-    auto r = validateArgs(cb.name, {dom::Kind::String}, args);
+    auto r = validateArgs(cb.name(), {dom::Kind::String}, args);
     if (!r.empty()) {
         return r;
     }
@@ -1790,7 +1981,7 @@ if_fn(
     // The if block helper has a special logic where is uses the first
     // argument as a conditional but uses the content itself as the
     // item to render the callback
-    auto r = validateArgs(cb.name, 1, args);
+    auto r = validateArgs(cb.name(), 1, args);
     if (!r.empty()) {
         return r;
     }
@@ -1824,7 +2015,7 @@ unless_fn(
     dom::Array const& args,
     HandlebarsCallback const& cb) {
     // Same as "if". Swap inverse and fn.
-    auto r = validateArgs(cb.name, 1, args);
+    auto r = validateArgs(cb.name(), 1, args);
     if (!r.empty()) {
         return r;
     }
@@ -1858,24 +2049,22 @@ with_fn(
     dom::Array const& args,
     HandlebarsCallback const& cb) {
     // Built-in helper to change the context
-    auto r = validateArgs(cb.name, 1, args);
+    auto r = validateArgs(cb.name(), 1, args);
     if (!r.empty()) {
         return r;
     }
-    dom::Value value = args[0];
-    if (isTruthy(value)) {
-        // AFREITAS: Handlebars should handle this logic with private data
-        dom::Object frame;
-        if (value.isObject()) {
-            frame = value.getObject();
-        } else {
-            frame.set("this", value);
-        }
+
+    dom::Value newContext = args[0];
+    if (!isEmpty(newContext)) {
+        dom::Object data = createFrame(cb.data());
+        std::string contextPath = appendContextPath(
+              cb.data().find("contextPath"), cb.ids()[0]);
+        data.set("contextPath", contextPath);
+        dom::Object blockValues;
         if (!cb.blockParams().empty()) {
-            frame.set(cb.blockParams()[0].getString(), value);
+            blockValues.set(cb.blockParams()[0], newContext);
         }
-        frame.set("..", cb.context());
-        return cb.fn(frame);
+        return cb.fn(newContext, data, blockValues);
     }
     return cb.inverse();
 }
@@ -1884,82 +2073,65 @@ dom::Value
 each_fn(
     dom::Array const& args,
     HandlebarsCallback const& cb) {
-    auto r = validateArgs(cb.name, 1, args);
+    auto r = validateArgs(cb.name(), 1, args);
     if (!r.empty()) {
         return r;
     }
 
-    std::size_t index = 0;
+    MRDOX_ASSERT(!cb.ids().empty());
+    std::string contextPath = appendContextPath(
+        cb.data().find("contextPath"), cb.ids()[0]) + '.';
+
+    dom::Object data = createFrame(cb.data());
+    dom::Object blockValues;
+
     std::string out;
-    dom::Value itemsV = args[0];
-    if (itemsV.kind() == dom::Kind::Array) {
-        dom::Array items = itemsV.getArray();
-        for (std::size_t i = 0; i < items.size(); ++i) {
-            // AFREITAS: Handlebars should handle this internally as private data
-            auto item = items[i];
-            dom::Object frame;
-            if (item.isObject()) {
-                frame = item.getObject();
-            } else {
-                frame.set("this", item);
-            }
-            // Pass as frame
-            frame.set("..", cb.context());
-            // Pass as private data object
-            frame.set("@key", index);
-            frame.set("@first", index == 0);
-            frame.set("@last", index == items.size() - 1);
-            frame.set("@index", index);
-            // Pass a blockParams array
-            std::string block1key;
-            std::string block2key;
+    dom::Value context = args[0];
+    if (context.isArray()) {
+        dom::Array items = context.getArray();
+        for (std::size_t index = 0; index < items.size(); ++index) {
+            dom::Value item = items.at(index);
+
+            // Private values frame
+            data.set("key", index);
+            data.set("index", index);
+            data.set("first", index == 0);
+            data.set("last", index == items.size() - 1);
+            data.set("contextPath", contextPath + std::to_string(index));
+
+            // Block values
             if (cb.blockParams().size() > 0) {
-                dom::Value block1 = cb.blockParams()[0];
-                block1key = block1.getString();
-                frame.set(block1key, item);
+                blockValues.set(cb.blockParams()[0], item);
                 if (cb.blockParams().size() > 1) {
-                    dom::Value block2 = cb.blockParams()[1];
-                    block2key = block2.getString();
-                    frame.set(block2key, index);
+                    blockValues.set(cb.blockParams()[1], index);
                 }
             }
-            ++index;
-            out += cb.fn(frame);
+
+            out += cb.fn(item, data, blockValues);
         }
-    } else if (itemsV.kind() == dom::Kind::Object) {
-        dom::Object items = itemsV.getObject();
-        for (std::size_t i = 0; i < items.size(); ++i) {
-            dom::Object::reference item = items[i];
-            // AFREITAS: Handlebars should handle this internally as private data
-            dom::Object frame;
-            if (item.value.isObject()) {
-                dom::Object this_obj = item.value.getObject();
-                for (std::size_t j = 0; j < this_obj.size(); ++j) {
-                    std::string_view key = this_obj[j].key;
-                    dom::Value value = this_obj[j].value;
-                    frame.set(key, value);
-                }
-            } else {
-                frame.set("this", item.value);
-            }
-            frame.set("..", cb.context());
-            frame.set("@key", item.key);
-            frame.set("@first", index == 0);
-            frame.set("@last", index == items.size() - 1);
-            frame.set("@index", index);
+    } else if (context.kind() == dom::Kind::Object) {
+        dom::Object items = context.getObject();
+        for (std::size_t index = 0; index < items.size(); ++index) {
+            dom::Object::reference item = items[index];
+
+            // Private values frame
+            data.set("key", item.key);
+            data.set("index", index);
+            data.set("first", index == 0);
+            data.set("last", index == items.size() - 1);
+            data.set("contextPath", contextPath + std::string(item.key));
+
+            // Block values
             if (cb.blockParams().size() > 0) {
-                dom::Value block1 = cb.blockParams()[0];
-                frame.set(block1.getString(), item.value);
+                blockValues.set(cb.blockParams()[0], item.value);
                 if (cb.blockParams().size() > 1) {
-                    dom::Value block2 = cb.blockParams()[1];
-                    frame.set(block2.getString(), index);
+                    blockValues.set(cb.blockParams()[1], item.key);
                 }
             }
-            ++index;
-            out += cb.fn(frame);
+
+            out += cb.fn(item.value, data, blockValues);
         }
-    }
-    if (index == 0) {
+    } else {
         out += cb.inverse();
     }
     return out;
@@ -1969,7 +2141,7 @@ dom::Value
 lookup_fn(
     dom::Array const& args,
     HandlebarsCallback const& cb) {
-    auto r = validateArgs(cb.name, 2, args);
+    auto r = validateArgs(cb.name(), 2, args);
     if (!r.empty()) {
         return r;
     }
@@ -2017,7 +2189,7 @@ noop_fn(
     if (args.empty()) {
         return nullptr;
     }
-    return fmt::format(R"(Missing helper: "{}")", cb.name);
+    return fmt::format(R"(Missing helper: "{}")", cb.name());
 }
 
 } // helpers

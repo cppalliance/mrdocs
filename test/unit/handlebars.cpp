@@ -331,6 +331,8 @@ main() {
         if (!args[0].isArray()) {
             return fmt::format("list helper requires array argument: {} provided", args[0].kind());
         }
+
+        dom::Object data = createFrame(cb.data());
         dom::Value itemsV = args[0];
         dom::Array items = itemsV.getArray();
         if (!items.empty()) {
@@ -346,13 +348,11 @@ main() {
             for (std::size_t i = 0; i < items.size(); ++i) {
                 dom::Value item = items[i];
                 // AFREITAS: this logic should be in private data
-                dom::Object frame = item.getObject();
-                frame.set("..", cb.context());
-                frame.set("@key", i);
-                frame.set("@first", i == 0);
-                frame.set("@last", i == items.size() - 1);
-                frame.set("@index", i);
-                out += "<li>" + cb.fn(frame) + "</li>";
+                data.set("key", i);
+                data.set("first", i == 0);
+                data.set("last", i == items.size() - 1);
+                data.set("index", i);
+                out += "<li>" + cb.fn(item, data, {}) + "</li>";
             }
             return out + "</ul>";
         }
@@ -374,7 +374,7 @@ main() {
         std::string out;
         OutputRef os(out);
         os << "Missing: ";
-        os << cb.name;
+        os << cb.name();
         os << "(";
         for (std::size_t i = 0; i < args.size(); ++i) {
             if (i != 0) {
@@ -392,7 +392,7 @@ main() {
         std::string out;
         OutputRef os(out);
         os << "Helper '";
-        os << cb.name;
+        os << cb.name();
         os << "' not found. Printing block: ";
         os << cb.fn();
         return out;
