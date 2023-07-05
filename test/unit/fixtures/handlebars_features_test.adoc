@@ -52,12 +52,12 @@ People:
 // Literals
 true = true
 false = false
-null = Missing: null()
-undefined = Missing: undefined()
+null = null
+undefined = null
 ./[true] = true
 ./[false] = false
-./[null] = Missing: ./[null]()
-./[undefined] = Missing: ./[undefined]()
+./[null] = null
+./[undefined] = null
 'See Website' = See Website
 "See Website" = See Website
 

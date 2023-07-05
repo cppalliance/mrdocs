@@ -163,19 +163,17 @@ format_to(
     dom::Value const& value,
     HandlebarsOptions opt)
 {
-    namespace stdr = std::ranges;
-    namespace stdv = stdr::views;
     if (value.isString()) {
         escape_to(out, value.getString(), opt);
-    } else if (value.kind() == dom::Kind::Integer) {
+    } else if (value.isInteger()) {
         out << value.getInteger();
-    } else if (value.kind() == dom::Kind::Boolean) {
+    } else if (value.isBoolean()) {
         if (value.getBool()) {
             out << "true";
         } else {
             out << "false";
         }
-    } else if (value.kind() == dom::Kind::Array) {
+    } else if (value.isArray()) {
         out << "[";
         dom::Array const& array = value.getArray();
         if (!array.empty()) {
@@ -186,9 +184,9 @@ format_to(
             }
         }
         out << "]";
-    } else if (value.kind() == dom::Kind::Object) {
+    } else if (value.isObject()) {
         out << "[object Object]";
-    } else if (value.kind() != dom::Kind::Null) {
+    } else if (value.isNull()) {
         out << "null";
     }
 }
@@ -702,7 +700,7 @@ render_to(
     }
 }
 
-dom::Value
+std::pair<dom::Value, bool>
 lookupProperty(
     dom::Object const &data,
     std::string_view path)
@@ -755,7 +753,7 @@ lookupProperty(
     std::string_view segment;
     std::tie(segment, path) = nextSegment(path);
     if (!data.exists(segment))
-        return nullptr;
+        return {nullptr, false};
     dom::Value cur = data.find(segment);
 
     // Recursively get more values from current value
@@ -769,7 +767,7 @@ lookupProperty(
             if (obj.exists(segment))
                 cur = obj.find(segment);
             else
-                return nullptr;
+                return {nullptr, false};
         }
         // If current value is an Array, get the next value the stripped index
         else if (cur.isArray())
@@ -780,32 +778,32 @@ lookupProperty(
                 segment.data() + segment.size(),
                 index);
             if (res.ec != std::errc())
-                return nullptr;
+                return {nullptr, false};
             auto& arr = cur.getArray();
             if (index >= arr.size())
-                return nullptr;
+                return {nullptr, false};
             cur = arr.at(index);
         }
         else
         {
             // Current value is not an Object or Array, so we can't get any more
             // segments from it
-            return nullptr;
+            return {nullptr, false};
         }
         // Consume more segments to get into the array element
         std::tie(segment, path) = nextSegment(path);
     }
-    return cur;
+    return {cur, true};
 }
 
-dom::Value
+std::pair<dom::Value, bool>
 lookupProperty(
     dom::Value const &data,
     std::string_view path) {
     if (path == "." || path == "this" || path == "[.]" || path == "[this]" || path.empty())
-        return data;
+        return {data, true};
     if (data.kind() != dom::Kind::Object) {
-        return nullptr;
+        return {nullptr, false};
     }
     return lookupProperty(data.getObject(), path);
 }
@@ -831,7 +829,7 @@ JSON_stringify(
     }
     case dom::Kind::Array:
     {
-        dom::Array arr = value.getArray();
+        dom::Array const& arr = value.getArray();
         if (done.find(arr.impl().get()) != done.end())
             return "[Circular]";
         done.insert(arr.impl().get());
@@ -852,7 +850,7 @@ JSON_stringify(
     }
     case dom::Kind::Object:
     {
-        dom::Object obj = value.getObject();
+        dom::Object const& obj = value.getObject();
         if (done.find(obj.impl().get()) != done.end())
             return "[Circular]";
         done.insert(obj.impl().get());
@@ -988,7 +986,7 @@ std::string unescapeString(std::string_view str) {
 }
 
 std::string
-appendContextPath(dom::Value contextPath, std::string_view id) {
+appendContextPath(dom::Value const& contextPath, std::string_view id) {
     if (contextPath.isString()) {
         return std::string(contextPath.getString()) + "." + std::string(id);
     } else {
@@ -1011,7 +1009,7 @@ popContextSegment(std::string_view& contextPath) {
 }
 
 
-dom::Value
+std::pair<dom::Value, bool>
 Handlebars::
 evalExpr(
     dom::Value const & context,
@@ -1022,27 +1020,25 @@ evalExpr(
     expression = trim_spaces(expression);
     if (is_literal_value(expression, "true"))
     {
-        return true;
+        return {true, true};
     }
-    else if (is_literal_value(expression, "false"))
+    if (is_literal_value(expression, "false"))
     {
-        return false;
+        return {false, true};
     }
     if (is_literal_value(expression, "null") || is_literal_value(expression, "undefined") || expression.empty())
     {
-        return nullptr;
+        return {nullptr, true};
     }
-    else if (expression == "." || expression == "this")
+    if (expression == "." || expression == "this")
     {
-        if (context.isObject() && context.getObject().exists("this"))
-            return context.getObject().find("this");
-        return context;
+        return {context, true};
     }
-    else if (is_literal_string(expression))
+    if (is_literal_string(expression))
     {
-        return unescapeString(expression.substr(1, expression.size() - 2));
+        return {unescapeString(expression.substr(1, expression.size() - 2)), true};
     }
-    else if (is_literal_integer(expression))
+    if (is_literal_integer(expression))
     {
         std::int64_t value;
         auto res = std::from_chars(
@@ -1050,99 +1046,78 @@ evalExpr(
             expression.data() + expression.size(),
             value);
         if (res.ec != std::errc())
-            return std::int64_t(0);
-        return value;
+            return {std::int64_t(0), true};
+        return {value, true};
     }
-    else if (expression.starts_with('(') && expression.ends_with(')'))
+    if (expression.starts_with('(') && expression.ends_with(')'))
     {
         std::string_view all = expression.substr(1, expression.size() - 2);
         std::string_view helper;
         findExpr(helper, all);
-        helper_type const& fn = getHelper(helper, false);
+        auto [fn, found] = getHelper(helper, false);
         all.remove_prefix(helper.data() + helper.size() - all.data());
         dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
         HandlebarsCallback cb;
         cb.name_ = helper;
         cb.context_ = &context;
         setupArgs(all, context, data, blockValues, args, cb);
-        return fn(args, cb);
+        return {fn(args, cb).first, true};
     }
-    else
+    if (expression.starts_with('@'))
     {
-        if (expression.starts_with('@'))
-        {
-            expression.remove_prefix(1);
-            return lookupProperty(data, expression);
-        }
-        if (expression.starts_with("..")) {
-            auto contextPathV = data.find("contextPath");
-            if (!contextPathV.isString())
-                return nullptr;
-            std::string_view contextPath = contextPathV.getString();
-            while (expression.starts_with("..")) {
-                if (!popContextSegment(contextPath))
-                    return nullptr;
-                expression.remove_prefix(2);
-                if (!expression.empty()) {
-                    if (expression.front() != '/') {
-                        return nullptr;
-                    }
-                    expression.remove_prefix(1);
-                }
-            }
-            std::string absContextPath;
-            dom::Value root = data.find("root");
-            do {
-                absContextPath = contextPath;
-                absContextPath += '.';
-                absContextPath += expression;
-                dom::Value v = lookupProperty(root, absContextPath);
-                if (!v.isNull()) {
-                    return v;
-                }
-                popContextSegment(contextPath);
-            } while (!contextPath.empty());
-            return lookupProperty(root, expression);
-        }
-        dom::Value cv = lookupProperty(context, expression);
-        if (!cv.isNull()) {
-            return cv;
-        }
-        return lookupProperty(blockValues, expression);
+        expression.remove_prefix(1);
+        return lookupProperty(data, expression);
     }
+    if (expression.starts_with("..")) {
+        auto contextPathV = data.find("contextPath");
+        if (!contextPathV.isString())
+            return {nullptr, false};
+        std::string_view contextPath = contextPathV.getString();
+        while (expression.starts_with("..")) {
+            if (!popContextSegment(contextPath))
+                return {nullptr, false};
+            expression.remove_prefix(2);
+            if (!expression.empty()) {
+                if (expression.front() != '/') {
+                    return {nullptr, false};
+                }
+                expression.remove_prefix(1);
+            }
+        }
+        std::string absContextPath;
+        dom::Value root = data.find("root");
+        do {
+            absContextPath = contextPath;
+            absContextPath += '.';
+            absContextPath += expression;
+            auto [v, defined] = lookupProperty(root, absContextPath);
+            if (defined) {
+                return {v, defined};
+            }
+            popContextSegment(contextPath);
+        } while (!contextPath.empty());
+        return lookupProperty(root, expression);
+    }
+    auto [cv, defined] = lookupProperty(context, expression);
+    if (defined) {
+        return {cv, defined};
+    }
+    return lookupProperty(blockValues, expression);
 }
 
 auto
 Handlebars::
-getHelper(std::string_view helper, bool isNoArgBlock) const -> helper_type const& {
+getHelper(std::string_view helper, bool isNoArgBlock) const -> std::pair<helper_type const&, bool> {
     auto it = helpers_.find(helper);
     if (it != helpers_.end()) {
-        return it->second;
+        return {it->second, true};
     }
-    // This hook is called when a mustache or a block-statement
-    // - a simple mustache-expression is not a registered helper AND
-    // - is not a property of the current evaluation context.
-    // you can add custom handling for those situations by registering the helper helperMissing
-    // The helper receives
-    // the same arguments and options (hash, name, etc.) as any custom helper
-    // or block-helper. The options.name is the name of the helper being called.
-    // If no parameters are passed to the mustache, the default behavior is to do nothing
-    // and ignore the whole mustache expression or the whole block (noop_fn)
-    it = helpers_.find(!isNoArgBlock ? "helperMissing" : "blockHelperMissing");
+    helper = !isNoArgBlock ? "helperMissing" : "blockHelperMissing";
+    it = helpers_.find(helper);
     if (it != helpers_.end()) {
-        return it->second;
+        return {it->second, false};
     }
-    if (it == helpers_.end())
-    {
-        thread_local static helper_type h = [](
-                dom::Array const &args,
-                HandlebarsCallback const &cb) -> dom::Value {
-            return fmt::format(R"([undefined helper "{}"])", cb.name());
-        };
-        return h;
-    }
-    thread_local static helper_type noop_v = helpers::noop_fn;
-    return noop_v;
+    throw std::logic_error("Helper not found: " + std::string(helper));
 }
 
 // Parse a block starting at templateText
@@ -1312,36 +1287,40 @@ renderExpression(
 
     auto it = helpers_.find(tag.helper);
     if (it != helpers_.end()) {
-        helper_type const& fn = getHelper(tag.helper, false);
+        auto [fn, found] = getHelper(tag.helper, false);
         dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
         HandlebarsCallback cb;
         cb.name_ = tag.helper;
         cb.context_ = &context;
         cb.data_ = private_data;
         setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
-        dom::Value res = fn(args, cb);
-        format_to(out, res, opt2);
+        auto [res, render] = fn(args, cb);
+        if (render) {
+            format_to(out, res, opt2);
+        }
         if (tag.removeRWhitespace) {
             templateText = trim_lspaces(templateText);
         }
         return;
     }
 
-    dom::Value v = evalExpr(context, private_data, blockValues, tag.helper);
-    if (!v.isNull())
+    auto [v, defined] = evalExpr(context, private_data, blockValues, tag.helper);
+    if (defined)
     {
         format_to(out, v, opt2);
         return;
     }
 
     // Let it decay to helperMissing hook
-    helper_type const& fn = getHelper(tag.helper, false);
+    auto [fn, found] = getHelper(tag.helper, false);
     dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
     HandlebarsCallback cb;
     cb.name_ = tag.helper;
     setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
-    dom::Value res = fn(args, cb);
-    format_to(out, res, opt2);
+    auto [res, render] = fn(args, cb);
+    if (render) {
+        format_to(out, res, opt2);
+    }
     if (tag.removeRWhitespace) {
         templateText = trim_lspaces(templateText);
     }
@@ -1364,12 +1343,12 @@ setupArgs(
         auto [k, v] = findKeyValuePair(expr);
         if (k.empty())
         {
-            args.emplace_back(this->evalExpr(context, data, blockValues, expr));
+            args.emplace_back(evalExpr(context, data, blockValues, expr).first);
             cb.ids_.push_back(expr);
         }
         else
         {
-            cb.hashes_.set(k, this->evalExpr(context, data, blockValues, v));
+            cb.hashes_.set(k, evalExpr(context, data, blockValues, v).first);
         }
     }
 }
@@ -1394,7 +1373,7 @@ renderDecorator(
     // Evaluate expression
     std::string_view expr;
     findExpr(expr, tag.arguments);
-    dom::Value value = this->evalExpr(context, data, blockValues, expr);
+    auto [value, defined] = evalExpr(context, data, blockValues, expr);
     if (!value.isString())
     {
         out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.arguments, tag.buffer);
@@ -1413,7 +1392,6 @@ renderDecorator(
     }
     fnBlock = trim_rspaces(fnBlock);
     extra_partials[std::string(partial_name)] = std::string(fnBlock);
-    // continue as usual with this new extra partial
 }
 
 void
@@ -1432,7 +1410,7 @@ renderPartial(
     if (helper.starts_with('(')) {
         std::string_view expr;
         findExpr(expr, helper);
-        dom::Value value = this->evalExpr(data, private_data, blockValues, expr);
+        auto [value, defined] = evalExpr(data, private_data, blockValues, expr);
         if (value.isString()) {
             helper = value.getString();
         }
@@ -1499,16 +1477,16 @@ renderPartial(
             auto [partialKey, contextKey] = findKeyValuePair(expr);
             if (partialKey.empty())
             {
-                dom::Value value = evalExpr(data, private_data, blockValues, expr);
-                if (!value.isNull() && value.isObject())
+                auto [value, defined] = evalExpr(data, private_data, blockValues, expr);
+                if (defined && value.isObject())
                 {
                     partialCtx = value.getObject();
                 }
                 continue;
             }
             if (contextKey != ".") {
-                dom::Value value = evalExpr(data, private_data, blockValues, contextKey);
-                if (!value.isNull())
+                auto [value, defined] = evalExpr(data, private_data, blockValues, contextKey);
+                if (defined)
                 {
                     partialCtx.set(partialKey, value);
                 }
@@ -1556,7 +1534,15 @@ renderBlock(
     cb.name_ = tag.helper;
     cb.context_ = &context;
     cb.data_ = data;
-    setupArgs(tag.arguments, context, data, blockValues, args, cb);
+    cb.output_ = &out;
+    bool const isNoArgBlock = tag.arguments.empty();
+    auto [fn, found] = getHelper(tag.helper, isNoArgBlock);
+    std::string_view arguments = tag.arguments;
+    bool const emulateMustache = !found && isNoArgBlock;
+    if (emulateMustache) {
+        arguments = tag.helper;
+    }
+    setupArgs(arguments, context, data, blockValues, args, cb);
 
     // Setup block params
     std::string_view expr;
@@ -1620,11 +1606,12 @@ renderBlock(
     }
 
     // Call helper
-    helper_type const& fn = getHelper(tag.helper, args.empty());
-    dom::Value res = fn(args, cb);
-    HandlebarsOptions opt2 = opt;
-    opt2.noHTMLEscape = true;
-    format_to(out, res, opt2);
+    auto [res, render] = fn(args, cb);
+    if (render) {
+        HandlebarsOptions opt2 = opt;
+        opt2.noHTMLEscape = true;
+        format_to(out, res, opt2);
+    }
 }
 
 void
@@ -1638,10 +1625,11 @@ registerPartial(
 
 void
 Handlebars::
-registerHelper(
+registerHelperImpl(
     std::string_view name,
     helper_type const &helper)
 {
+    unregisterHelper(name);
     helpers_.emplace(std::string(name), helper);
 }
 
@@ -1656,6 +1644,8 @@ registerBuiltinHelpers(Handlebars& hbs)
     hbs.registerHelper("each", each_fn);
     hbs.registerHelper("lookup", lookup_fn);
     hbs.registerHelper("log", log_fn);
+    hbs.registerHelper("helperMissing", helper_missing_fn);
+    hbs.registerHelper("blockHelperMissing", block_helper_missing_fn);
 }
 
 void
@@ -1700,16 +1690,15 @@ isSame(dom::Object const& a, dom::Object const& b) {
     if (a.size() != b.size()) {
         return false;
     }
-    for (std::size_t i = 0; i < a.size(); ++i) {
-        std::string_view k = a[i].key;
+    return std::ranges::all_of(a, [&b](const auto & i) {
+        std::string_view k = i.key;
         if (!b.exists(k)) {
             return false;
         }
-        if (!isSame(a[i].value, b.find(k))) {
+        if (!isSame(i.value, b.find(k))) {
             return false;
         }
-    }
-    return true;
+    });
 }
 
 bool
@@ -1842,7 +1831,12 @@ validateArgs(
 
 dom::Value
 not_fn(dom::Array const& args) {
-    return !isTruthy(args[0]);
+    for (std::size_t i = 0; i < args.size(); ++i) {
+        if (!isTruthy(args[i])) {
+            return true;
+        }
+    }
+    return false;
 }
 
 dom::Value
@@ -1927,11 +1921,11 @@ relativize_fn(
     }
 
     if (from.empty() && ctx.isObject()) {
-        dom::Value v = lookupProperty(ctx, "data.root.page");
+        auto [v, defined] = lookupProperty(ctx, "data.root.page");
         if (v.isString()) {
             from = v.getString();
         } else {
-            v = lookupProperty(ctx, "data.root.site.path");
+            std::tie(v, defined) = lookupProperty(ctx, "data.root.site.path");
             if (v.isString()) {
                 std::string fromStr(v.getString());
                 fromStr += to;
@@ -2097,41 +2091,41 @@ each_fn(
     std::string out;
     dom::Value context = args[0];
     if (context.isArray()) {
-        dom::Array items = context.getArray();
+        dom::Array const& items = context.getArray();
         for (std::size_t index = 0; index < items.size(); ++index) {
             dom::Value item = items.at(index);
 
             // Private values frame
-            data.set("key", index);
-            data.set("index", index);
+            data.set("key", static_cast<std::int64_t>(index));
+            data.set("index", static_cast<std::int64_t>(index));
             data.set("first", index == 0);
             data.set("last", index == items.size() - 1);
             data.set("contextPath", contextPath + std::to_string(index));
 
             // Block values
-            if (cb.blockParams().size() > 0) {
+            if (!cb.blockParams().empty()) {
                 blockValues.set(cb.blockParams()[0], item);
                 if (cb.blockParams().size() > 1) {
-                    blockValues.set(cb.blockParams()[1], index);
+                    blockValues.set(cb.blockParams()[1], static_cast<std::int64_t>(index));
                 }
             }
 
             out += cb.fn(item, data, blockValues);
         }
     } else if (context.kind() == dom::Kind::Object) {
-        dom::Object items = context.getObject();
+        dom::Object const& items = context.getObject();
         for (std::size_t index = 0; index < items.size(); ++index) {
             dom::Object::reference item = items[index];
 
             // Private values frame
             data.set("key", item.key);
-            data.set("index", index);
+            data.set("index", static_cast<std::int64_t>(index));
             data.set("first", index == 0);
             data.set("last", index == items.size() - 1);
             data.set("contextPath", contextPath + std::string(item.key));
 
             // Block values
-            if (cb.blockParams().size() > 0) {
+            if (!cb.blockParams().empty()) {
                 blockValues.set(cb.blockParams()[0], item.value);
                 if (cb.blockParams().size() > 1) {
                     blockValues.set(cb.blockParams()[1], item.key);
@@ -2159,8 +2153,8 @@ lookup_fn(
     if (keyArg.isString()) {
         // Second argument is a string, so we're looking up a property
         std::string_view key = keyArg.getString();
-        dom::Value v = lookupProperty(objArg, key);
-        if (!v.isNull()) {
+        auto [v, defined] = lookupProperty(objArg, key);
+        if (defined) {
             return v;
         }
     } else if (keyArg.isInteger()) {
@@ -2186,6 +2180,63 @@ log_fn(
         level = 1;
     }
     cb.log(level, args);
+}
+
+void
+helper_missing_fn(
+    dom::Array const& args,
+    HandlebarsCallback const& cb) {
+    if (!args.empty()) {
+        std::string msg = fmt::format(R"(Missing helper: "{}")", cb.name());
+        throw std::runtime_error(msg);
+    }
+}
+
+dom::Value
+block_helper_missing_fn(
+    dom::Array const& args,
+    HandlebarsCallback const& cb) {
+    auto r = validateArgs(cb.name(), 1, args);
+    if (!r.empty()) {
+        return r;
+    }
+    dom::Value context = args[0];
+    if (context.isBoolean()) {
+        if (context.getBool()) {
+            return cb.fn();
+        } else {
+            return cb.inverse();
+        }
+    } else if (context.isNull()) {
+        return cb.inverse();
+    } else if (context.isArray()) {
+        // If the context is an array, then we'll iterate over it, rendering
+        // the block for each item in the array like mustache does.
+        dom::Array const& items = context.getArray();
+        if (items.empty()) {
+            return cb.inverse();
+        }
+        dom::Object data = createFrame(cb.data());
+        std::string contextPath = appendContextPath(
+            cb.data().find("contextPath"), cb.ids()[0]) + '.';
+        std::string out;
+        for (std::size_t index = 0; index < items.size(); ++index) {
+            dom::Value item = items.at(index);
+            data.set("key", static_cast<std::int64_t>(index));
+            data.set("index", static_cast<std::int64_t>(index));
+            data.set("first", index == 0);
+            data.set("last", index == items.size() - 1);
+            data.set("contextPath", contextPath + std::to_string(index));
+            out += cb.fn(item, data, {});
+        }
+        return out;
+    } else {
+        // If the context is not an array, then we'll render the block once
+        // with the context as the data.
+        dom::Object data = createFrame(cb.data());
+        data.set("contextPath", appendContextPath(data.find("contextPath"), cb.name()));
+        return cb.fn(context, data, {});
+    }
 }
 
 dom::Value

@@ -605,7 +605,8 @@ class Handlebars {
         std::string, std::string, string_hash, std::equal_to<>>;
 
     using helper_type = std::function<
-        dom::Value(dom::Array const&, HandlebarsCallback const&)>;
+        std::pair<dom::Value, bool>(
+            dom::Array const&, HandlebarsCallback const&)>;
 
     using helpers_map = std::unordered_map<
         std::string, helper_type, string_hash, std::equal_to<>>;
@@ -732,20 +733,6 @@ public:
 
         @see https://handlebarsjs.com/guide/builtin-helpers.html
      */
-    void
-    registerHelper(
-        std::string_view name,
-        std::function<dom::Value(
-            dom::Array const&, HandlebarsCallback const&)> const &helper);
-
-    /** Register a helper with arguments and callback parameters
-
-        This overload registers a helper that returns `void` or any value
-        convertible to `dom::Value`.
-
-        @param name The name of the helper
-        @param helper The helper function
-     */
     template <std::invocable<dom::Array const&, HandlebarsCallback const&> F>
     requires (!std::same_as<F, helper_type>)
     void
@@ -753,16 +740,16 @@ public:
     {
         using R = std::invoke_result_t<F, dom::Array const&, HandlebarsCallback const&>;
         static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
-        registerHelper(name, helper_type([helper = std::forward<F>(helper)](
-            dom::Array const& args, HandlebarsCallback const& cb) -> dom::Value {
+        registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
+            dom::Array const& args, HandlebarsCallback const& cb) -> std::pair<dom::Value, bool> {
            if constexpr (!std::same_as<R, void>)
            {
-               return helper(args, cb);
+               return {helper(args, cb), true};
            }
            else
            {
                helper(args, cb);
-               return nullptr;
+               return {nullptr, false};
            }
         }));
     }
@@ -792,16 +779,16 @@ public:
     {
         using R = std::invoke_result_t<F, dom::Array const&>;
         static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
-        registerHelper(name, helper_type([f = std::forward<F>(helper)](
-            dom::Array const& args, HandlebarsCallback const&) -> dom::Value {
+        registerHelperImpl(name, helper_type([f = std::forward<F>(helper)](
+            dom::Array const& args, HandlebarsCallback const&) -> std::pair<dom::Value, bool> {
             if constexpr (!std::same_as<R, void>)
             {
-                return f(args);
+                return {f(args), true};
             }
             else
             {
                 f(args);
-                return nullptr;
+                return {nullptr, false};
             }
         }));
     }
@@ -834,14 +821,14 @@ public:
     registerHelper(std::string_view name, F &&helper) {
         using R = std::invoke_result_t<F>;
         static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
-        registerHelper(name, helper_type([f = std::forward<F>(helper)](
-                dom::Array const&, HandlebarsCallback const &) -> dom::Value {
+        registerHelperImpl(name, helper_type([f = std::forward<F>(helper)](
+                dom::Array const&, HandlebarsCallback const &) -> std::pair<dom::Value, bool> {
             if constexpr (!std::same_as<R, void>) {
-                return f();
+                return {f(), true};
             } else
             {
                 f();
-                return nullptr;
+                return {nullptr, false};
             }
         }));
     }
@@ -862,6 +849,11 @@ public:
     struct Tag;
 
 private:
+    void
+    registerHelperImpl(
+        std::string_view name,
+        helper_type const &helper);
+
     // render to ostream using extra partials from parent contexts
     void
     render_to(
@@ -936,14 +928,14 @@ private:
         dom::Array &args,
         HandlebarsCallback &cb) const;
 
-    dom::Value
+    std::pair<dom::Value, bool>
     evalExpr(
         dom::Value const &context,
         dom::Object const &data,
         dom::Object const &blockValues,
         std::string_view expression) const;
 
-    helper_type const&
+    std::pair<helper_type const&, bool>
     getHelper(std::string_view name, bool isBlock) const;
 };
 
@@ -1032,9 +1024,10 @@ createFrame(dom::Object const& parent);
     @param path The path to the property to look up
 
     @return The value of the property, or nullptr if the property does not exist
+    @return `true` if the property was defined, `false` otherwise
  */
 MRDOX_DECL
-dom::Value
+std::pair<dom::Value, bool>
 lookupProperty(
     dom::Value const &data,
     std::string_view path);
@@ -1131,6 +1124,69 @@ log_fn(
     dom::Array const& conditional,
     HandlebarsCallback const& cb);
 
+/// "helperMissing" helper function
+/**
+ * The helperMissing helper defines a function to be called when:
+ *
+ * 1) a helper is not found by the name, and
+ * 2) the helper does not match a context property, and
+ * 3) there might be one or more arguments for the helper
+ *
+ * For instance,
+ *
+ * @code{.handlebars}
+ * {{foo 1 2 3}}
+ * @endcode
+ *
+ * where the context key foo is not a helper and not a defined key, will
+ * call the helperMissing helper with the values 1, 2, 3 as its arguments.
+ *
+ * The default implementation of helperMissing is:
+ *
+ * 1) if there are no arguments, render nothing to indicate the undefined value
+ * 2) if there are one or more arguments, in which case it seems like a
+ *    function call was intended, throw an error indicating the missing helper.
+ *
+ * This default behavior can be overridden by registering a custom
+ * helperMissing helper.
+ */
+void
+helper_missing_fn(
+    dom::Array const& args,
+    HandlebarsCallback const& cb);
+
+/// "blockHelperMissing" helper function
+/**
+ * The blockHelperMissing helper defines a function to be called when:
+ *
+ * 1) a block helper is not found by the name, and
+ * 2) the helper name matches a context property, and
+ * 3) there are no arguments for the helper
+ *
+ * For instance,
+ *
+ * @code{.handlebars}
+ * {{#foo}}
+ *    Block content
+ * {{/foo}}
+ * @endcode
+ *
+ * where the context key foo is not a helper, will call the
+ * blockHelperMissing helper with the value of foo as the first argument.
+ *
+ * The default implementation of blockHelperMissing is to render the block
+ * with the usual logic used by mustache, where the context becomes the
+ * value of the key or, if the value is an array, the context becomes
+ * each element of the array as if the "each" helper has been called on it.
+ *
+ * This default behavior can be overridden by registering a custom
+ * blockHelperMissing helper.
+ */
+dom::Value
+block_helper_missing_fn(
+    dom::Array const& args,
+    HandlebarsCallback const& cb);
+
 /// No operation helper
 dom::Value
 noop_fn(
@@ -1148,44 +1204,82 @@ MRDOX_DECL
 void
 registerAntoraHelpers(Handlebars& hbs);
 
+/** "and" helper function
+ *
+ *  The "and" helper returns true if all of the values are truthy.
+ */
 MRDOX_DECL
 dom::Value
 and_fn(dom::Array const& args);
 
+/** "or" helper function
+ *
+ *  The "or" helper returns true if any of the values are truthy.
+ */
 MRDOX_DECL
 dom::Value
 or_fn(dom::Array const& args);
 
+/** "eq" helper function
+ *
+ *  The "eq" helper returns true if all of the values are equal.
+ */
 MRDOX_DECL
 dom::Value
 eq_fn(dom::Array const& args);
 
+/** "ne" helper function
+ *
+ *  The "ne" helper returns true if any of the values are not equal.
+ */
 MRDOX_DECL
 dom::Value
 ne_fn(dom::Array const& args);
 
+/** "not" helper function
+ *
+ *  The "not" helper returns true if not all of the values are truthy.
+ */
 MRDOX_DECL
 dom::Value
 not_fn(dom::Array const& arg);
 
+/** "increment" helper function
+ *
+ *  The "increment" helper adds 1 to the value if it's an integer and converts
+ *  booleans to `true`. Other values are returned as-is.
+ */
 MRDOX_DECL
 dom::Value
 increment_fn(
     dom::Array const &args,
     HandlebarsCallback const& cb);
 
+/** "detag" helper function
+ *
+ *  The "detag" helper applies the regex expression "<[^>]+>" to the
+ *  input to remove all HTML tags.
+ */
 MRDOX_DECL
 dom::Value
 detag_fn(
     dom::Array const& args,
     HandlebarsCallback const& cb);
 
+/** "relativize" helper function
+ *
+ *  The "relativize" helper makes the first path relative to the second path.
+ */
 MRDOX_DECL
 dom::Value
 relativize_fn(
     dom::Array const& args,
     HandlebarsCallback const& cb);
 
+/** "year" helper function
+ *
+ *  The "year" helper returns the current year as an integer.
+ */
 MRDOX_DECL
 dom::Value
 year_fn();
