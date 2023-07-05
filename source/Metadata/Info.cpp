@@ -84,7 +84,7 @@ getFullyQualifiedName(
 }
 #endif
 
-std::string_view
+dom::String
 toString(InfoKind kind) noexcept
 {
     switch(kind)

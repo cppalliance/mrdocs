@@ -37,25 +37,6 @@ enum class AccessKind
     None
 };
 
-/** Storage class kinds
-
-    [dcl.stc] p1: At most one storage-class-specifier shall appear
-    in a given decl-specifier-seq, except that `thread_local`
-    may appear with `static` or `extern`.
-*/
-enum class StorageClassKind
-{
-    None = 0,
-    Extern,
-    Static,
-    // auto storage-class-specifier (removed in C++11)
-    // only valid for variables
-    Auto,
-    // register storage-class-specifier (removed in C++17)
-    // only valid for variables
-    Register
-};
-
 /** `constexpr`/`consteval` specifier kinds
 
     [dcl.spec.general] p2: At most one of the `constexpr`, `consteval`,
@@ -176,12 +157,31 @@ enum class ReferenceKind
     RValue
 };
 
+/** Storage class kinds
+
+    [dcl.stc] p1: At most one storage-class-specifier shall appear
+    in a given decl-specifier-seq, except that `thread_local`
+    may appear with `static` or `extern`.
+*/
+enum class StorageClassKind
+{
+    None = 0,
+    Extern,
+    Static,
+    // auto storage-class-specifier (removed in C++11)
+    // only valid for variables
+    Auto,
+    // register storage-class-specifier (removed in C++17)
+    // only valid for variables
+    Register
+};
+
 MRDOX_DECL dom::String toString(AccessKind kind) noexcept;
-MRDOX_DECL dom::String toString(StorageClassKind kind) noexcept;
 MRDOX_DECL dom::String toString(ConstexprKind kind) noexcept;
 MRDOX_DECL dom::String toString(ExplicitKind kind) noexcept;
 MRDOX_DECL dom::String toString(NoexceptKind kind) noexcept;
 MRDOX_DECL dom::String toString(ReferenceKind kind) noexcept;
+MRDOX_DECL dom::String toString(StorageClassKind kind) noexcept;
 
 } // mrdox
 } // clang

@@ -114,8 +114,9 @@ getSafeOperatorName(
     return Table[to_underlying(kind)].safe_name;
 }
 
-std::string_view
-toString(FunctionClass kind)
+dom::String
+toString(
+    FunctionClass kind) noexcept
 {
     switch(kind)
     {

@@ -74,8 +74,9 @@ TArg(
 {
 }
 
-std::string_view
-toString(TParamKind kind)
+dom::String
+toString(
+    TParamKind kind) noexcept
 {
     switch(kind)
     {
@@ -92,7 +93,8 @@ toString(TParamKind kind)
 }
 
 std::string_view
-toString(TemplateSpecKind kind)
+toString(
+    TemplateSpecKind kind)
 {
     switch(kind)
     {

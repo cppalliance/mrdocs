@@ -35,9 +35,7 @@ enum class TParamKind : int
     Template
 };
 
-MRDOX_DECL
-std::string_view
-toString(TParamKind kind);
+MRDOX_DECL dom::String toString(TParamKind kind) noexcept;
 
 struct TParam;
 

@@ -314,8 +314,7 @@ writeRecord(
 {
     openTemplate(I.Template);
 
-    llvm::StringRef tagName =
-        toString(I.KeyKind);
+    auto tagName = toString(I.KeyKind);
 
     tags_.open(tagName, {
         { "name", I.Name },

@@ -200,10 +200,10 @@ public:
     llvm::raw_ostream& indent();
     jit_indenter jit_indent() noexcept;
 
-    void open(llvm::StringRef, Attributes = {});
-    void write(llvm::StringRef tag,
+    void open(dom::String const&, Attributes = {});
+    void write(dom::String const&,
         llvm::StringRef value = {}, Attributes = {});
-    void close(llvm::StringRef);
+    void close(dom::String const&);
 
     void nest(int levels);
 };

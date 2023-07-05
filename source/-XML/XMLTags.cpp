@@ -173,7 +173,7 @@ jit_indent() noexcept ->
 void
 XMLTags::
 open(
-    llvm::StringRef tag,
+    dom::String const& tag,
     Attributes attrs)
 {
     indent() << '<' << tag << attrs << ">\n";
@@ -183,7 +183,7 @@ open(
 void
 XMLTags::
 close(
-    llvm::StringRef tag)
+    dom::String const& tag)
 {
     nest(-1);
     indent() << "</" << tag << ">\n";
@@ -192,7 +192,7 @@ close(
 void
 XMLTags::
 write(
-    llvm::StringRef tag,
+    dom::String const& tag,
     llvm::StringRef value,
     Attributes attrs)
 {
