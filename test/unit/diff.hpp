@@ -9,6 +9,7 @@
 #define MRDOX_DIFF_H
 
 #include <fmt/core.h>
+#include <fmt/color.h>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -101,6 +102,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
         std::string line;
         bool added{false};
         bool removed{false};
+        bool in_context = false;
     };
     std::vector<DiffLineResult> diffLines;
     size_t i = lines1.size();
@@ -152,45 +154,52 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
     // Reverse the diff lines to match the original order
     std::reverse(diffLines.begin(), diffLines.end());
 
-    // Concatenate diff lines into a single string considering number of unchanged lines in the context
-    std::size_t unchanged = 0;
-    auto last_rendered = std::size_t(-1);
+    // Mark diffLines in context
+    std::vector<size_t> modifiedIndexes;
     for (i = 0; i < diffLines.size(); ++i) {
         auto& diffLine = diffLines[i];
         if (diffLine.added || diffLine.removed) {
-            std::size_t context_begin = (std::max)(i - context_size, (last_rendered == std::size_t(-1) ? 0 : last_rendered + 1));
-            std::size_t out_of_context = unchanged - (i - context_begin);
-            if (out_of_context > 0) {
-                result.diff += fmt::format("... {} unchanged line(s)\n", out_of_context);
-                unchanged = 0;
-            }
-            for (j = context_begin; j < i; ++j) {
-                result.diff += fmt::format("{}\n", diffLines[j].line);
-            }
-            result.diff += fmt::format("{} {}\n", diffLine.added ? '+' : '-', diffLine.line.empty() ? "     (empty line)" : diffLine.line);
-            std::size_t next_changed = i + 1;
-            while (
-                next_changed < diffLines.size() &&
-                !(diffLines[next_changed].added || diffLines[next_changed].removed) &&
-                next_changed - i < context_size) {
-                next_changed++;
-            }
-            std::size_t context_end = (std::min)(i + context_size + 1, next_changed);
-            for (j = i + 1; j < context_end; ++j) {
-                result.diff += fmt::format("{}\n", diffLines[j].line);
-            }
-            // not really changed but rendered
-            last_rendered = context_end - 1;
-        } else {
-            unchanged++;
+           modifiedIndexes.push_back(i);
         }
     }
-    if (unchanged <= context_size) {
-        for (i = (std::max)(diffLines.size() - context_size, i); i < diffLines.size(); ++i) {
-            result.diff += fmt::format("{}\n", diffLines[i].line);
+
+    // Mark diffLines in context
+    for (i = 0; i < modifiedIndexes.size(); ++i) {
+        auto& diffLine = diffLines[modifiedIndexes[i]];
+        diffLine.in_context = true;
+        for (j = 1; j <= context_size; ++j) {
+            if (modifiedIndexes[i] >= j) {
+                diffLines[modifiedIndexes[i] - j].in_context = true;
+            }
+            if (modifiedIndexes[i] + j < diffLines.size()) {
+                diffLines[modifiedIndexes[i] + j].in_context = true;
+            }
         }
-    } else {
-        result.diff += fmt::format("... {} unchanged line(s)\n", unchanged);
+    }
+
+    // Concatenate diff lines into a single string considering number of unchanged lines in the context
+    std::size_t out_of_context = 0;
+    for (auto diffLine : diffLines) {
+        if (!diffLine.in_context) {
+            out_of_context++;
+            continue;
+        }
+        if (out_of_context > 0) {
+            result.diff += fmt::format(fmt::fg(fmt::color::gray), "... {} unmodified line(s)\n", out_of_context);
+            out_of_context = 0;
+        }
+        if (diffLine.added || diffLine.removed) {
+            result.diff += fmt::format(
+                fmt::fg(diffLine.added ? fmt::color::light_green : fmt::color::orange_red),
+                "{} {}\n",
+                diffLine.added ? '+' : '-',
+                diffLine.line.empty() ? "     (empty line)" : diffLine.line);
+        } else {
+            result.diff += fmt::format("{}\n", diffLine.line);
+        }
+    }
+    if (out_of_context > 0) {
+        result.diff += fmt::format(fmt::fg(fmt::color::gray), "... {} unmodified line(s)", out_of_context);
     }
 
     return result;
