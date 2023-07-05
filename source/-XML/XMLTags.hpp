@@ -17,7 +17,7 @@
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Type.hpp>
-#include <mrdox/Support/String.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
@@ -74,12 +74,12 @@ llvm::StringRef toString(doc::Style style) noexcept;
 */
 struct Attribute
 {
-    StringLiteral name;
+    dom::String name;
     std::string value;
     bool pred;
 
     Attribute(
-        StringLiteral name_,
+        std::string_view name_,
         llvm::StringRef value_,
         bool pred_ = true) noexcept
         : name(name_)

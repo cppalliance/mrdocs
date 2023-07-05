@@ -18,53 +18,6 @@
 namespace clang {
 namespace mrdox {
 
-/** A string literal.
-*/
-class StringLiteral
-{
-    char const* data_;
-    std::size_t size_;
-
-public:
-    /** Constructor.
-
-        If the passed string is not literal,
-        the behavior of the program is undefined.
-
-        @param s A literal string constant.
-    */
-    template<class String>
-    requires std::constructible_from<
-        std::string_view, String>
-    constexpr
-    StringLiteral(
-        String s) noexcept
-    {
-        std::string_view sv(s);
-        data_ = sv.data();
-        size_ = sv.size();
-    }
-
-    operator std::string_view() const noexcept
-    {
-        return { data_, size_ };
-    }
-
-    std::string_view
-    get() const noexcept
-    {
-        return std::string_view(*this);
-    }
-
-    std::string_view
-    operator*() const noexcept
-    {
-        return std::string_view(*this);
-    }
-};
-
-//------------------------------------------------
-
 /** Return the substring without leading horizontal whitespace.
 */
 std::string_view ltrim(std::string_view s) noexcept;

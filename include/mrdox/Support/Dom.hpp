@@ -48,6 +48,226 @@ enum class Kind
 
 //------------------------------------------------
 //
+// String
+//
+//------------------------------------------------
+
+class String;
+
+/** Satisfied if StringTy is convertible to String but not a String.
+*/
+template<class StringTy>
+concept StringLikeTy =
+    ! std::is_same_v<StringTy, String> &&
+    std::convertible_to<StringTy, std::string_view>;
+
+/** An immutable string with shared ownership.
+*/
+class MRDOX_DECL
+    String final
+{
+    struct Impl;
+
+    std::uintptr_t u_;
+
+    static Impl* allocate(std::string_view s);
+    static void deallocate(Impl*) noexcept;
+    char const* get_literal() const noexcept;
+    String(char const*, std::size_t) noexcept;
+
+public:
+    /** Destructor.
+    */
+    ~String();
+
+    /** Constructor.
+
+        Default constructed strings have a zero size,
+        and include a null terminator.
+    */
+    String() noexcept;
+
+    /** Constructor.
+
+        Ownership of the string is transferred to
+        the newly constructed string. The moved-from
+        string behaves as if default constructed.
+    */
+    String(String&& other) noexcept;
+
+    /** Constructor.
+
+        The newly constructed string acquries shared
+        ownership of the string referenced by other.
+    */
+    String(String const& other) noexcept;
+
+    /** Constructor.
+
+        This function constructs a new string from
+        the buffer pointed to by `s`.
+
+        @param s The string to construct with.
+        A copy of this string is made.
+    */
+    String(std::string_view s);
+
+    /** Constructor.
+
+        This function constructs a new string from
+        s, which must be convertible to `std::string_view`.
+
+        @param s The string to construct with.
+        A copy of this string is made.
+    */
+    template<StringLikeTy StringLike>
+    String(StringLike const& s)
+        : String(std::string_view(s))
+    {
+    }
+
+    /** Constructor.
+
+        This function constructs a string literal
+        which references the buffer pointed to by
+        sz. Ownership is not transferred; the lifetime
+        of the buffer must extend until the string is
+        destroyed, otherwise the behavior is undefined.
+
+        @param sz A null-terminated string. If the
+        string is not null-terminated, the result is
+        undefined.
+    */
+    template<std::size_t N>
+    String(char const(&sz)[N])
+        : String(sz, N - 1)
+    {
+        static_assert(N > 0);
+    }
+
+    /** Assignment.
+
+        This transfers ownership of the string
+        referenced by other to this. Ownership of
+        the previously referened string is released.
+        After the assignment, the moved-from string
+        behaves as if default constructed.
+    */
+    String& operator=(String&& other) noexcept;
+
+    /** Assignment.
+
+        This acquires shared ownership of the
+        string referenced by other. Ownership of
+        the previously referenced string is released.
+    */
+    String& operator=(String const& other) noexcept;
+
+    /** Return the string.
+    */
+    std::string_view
+    get() const noexcept;
+
+    /** Return the string.
+    */
+    operator std::string_view() const noexcept
+    {
+        return get();
+    }
+
+    /** Return the string.
+    */
+    std::string str() const noexcept
+    {
+        return std::string(get());
+    }
+
+    /** Return the size.
+    */
+    std::size_t size() const noexcept
+    {
+        return get().size();
+    }
+
+    /** Return the size.
+    */
+    char const* data() const noexcept
+    {
+        return get().data();
+    }
+
+    /** Return the string.
+
+        The pointed-to character buffer returned
+        by this function is always null-terminated.
+    */
+    char const* c_str() const noexcept;
+
+    /** Swap two strings.
+    */
+    void swap(String& other) noexcept
+    {
+        std::swap(u_, other.u_);
+    }
+
+    /** Swap two strings.
+    */
+    friend void swap(String& lhs, String& rhs) noexcept
+    {
+        lhs.swap(rhs);
+    }
+
+    /** Return the result of comparing two strings.
+    */
+    template<StringLikeTy StringLike>
+    friend bool operator==(String const& lhs, StringLike const& rhs) noexcept
+    {
+        return lhs.get() == std::string_view(rhs);
+    }
+
+    /** Return the result of comparing two strings.
+    */
+    template<StringLikeTy StringLike>
+    friend bool operator!=(String const& lhs, StringLike const& rhs) noexcept
+    {
+        return lhs.get() != std::string_view(rhs);
+    }
+
+    /** Return the result of comparing two strings.
+    */
+    template<StringLikeTy StringLike>
+    friend auto operator<=>(String const& lhs, StringLike const& rhs) noexcept
+    {
+        return lhs.get() <=> std::string_view(rhs);
+    }
+
+    /** Return the result of comparing two strings.
+    */
+    friend bool operator==(
+        String const& lhs, String const& rhs) noexcept
+    {
+        return lhs.get() == rhs.get();
+    }
+
+    /** Return the result of comparing two strings.
+    */
+    friend bool operator!=(
+        String const& lhs, String const& rhs) noexcept
+    {
+        return lhs.get() != rhs.get();
+    }
+
+    /** Return the result of comparing two strings.
+    */
+    friend auto operator<=>(
+        String const& lhs, String const& rhs) noexcept
+    {
+        return lhs.get() <=> rhs.get();
+    }
+};
+
+//------------------------------------------------
+//
 // Array
 //
 //------------------------------------------------
@@ -301,7 +521,12 @@ public:
 
         @param list The initial list of values.
     */
-    explicit Object(storage_type list);
+    Object(storage_type list);
+
+    Object(std::initializer_list<value_type> init)
+        : Object(storage_type(init))
+    {
+    }
 
     /** Constructor.
 
@@ -310,7 +535,8 @@ public:
         pointer cannot not be null.
     */
     explicit
-    Object(impl_type impl) noexcept
+    Object(
+        impl_type impl) noexcept
         : impl_(std::move(impl))
     {
         MRDOX_ASSERT(impl_);
@@ -374,7 +600,7 @@ public:
 
         @param value The value to set.
     */
-    void set(std::string_view key, Value value) const;
+    void set(String key, Value value) const;
 
     /** Return an iterator to the beginning of the range of elements.
     */
@@ -432,7 +658,7 @@ public:
 
     /** Insert or set the given key/value pair.
     */
-    virtual void set(std::string_view key, Value value) = 0;
+    virtual void set(String key, Value value) = 0;
 };
 
 /** Return a new object using a custom implementation.
@@ -466,7 +692,7 @@ public:
     std::size_t size() const override;
     reference get(std::size_t) const override;
     Value find(std::string_view) const override;
-    void set(std::string_view, Value) override;
+    void set(String, Value) override;
 
 private:
     storage_type entries_;
@@ -501,7 +727,7 @@ public:
     std::size_t size() const override;
     reference get(std::size_t i) const override;
     Value find(std::string_view key) const override;
-    void set(std::string_view key, Value value) override;
+    void set(String key, Value value) override;
 };
 
 //------------------------------------------------
@@ -531,7 +757,7 @@ class MRDOX_DECL
     {
         bool                b_;
         std::int64_t        i_;
-        std::string         str_;
+        String              str_;
         Array               arr_;
         Object              obj_;
     };
@@ -546,7 +772,7 @@ public:
     Value(Value&&) noexcept;
     Value(std::nullptr_t) noexcept;
     Value(std::int64_t) noexcept;
-    Value(std::string s) noexcept;
+    Value(String str) noexcept;
     Value(Array arr) noexcept;
     Value(Object obj) noexcept;
     Value& operator=(Value&&) noexcept;
@@ -560,24 +786,33 @@ public:
     {
     }
 
-    Value(char const* s)
-        : Value(std::string(s))
-    {
-    }
-
-    template<class String>
-    requires std::is_convertible_v<
-        String, std::string_view>
-    Value(String const& s)
-        : Value(std::string(s))
-    {
-    }
-
     template<class Enum>
     requires std::is_enum_v<Enum>
     Value(Enum v) noexcept
         : Value(static_cast<
             std::underlying_type_t<Enum>>(v))
+    {
+    }
+
+    template<std::size_t N>
+    Value(char const(&sz)[N])
+        : Value(String(sz))
+    {
+    }
+
+    // VFALCO Should this be a literal?
+#if 0
+    Value(char const* s)
+        : Value(String(s))
+    {
+    }
+#endif
+
+    template<class StringLike>
+    requires std::convertible_to<
+        StringLike, String>
+    Value(StringLike const& s)
+        : Value(String(s))
     {
     }
 
@@ -656,7 +891,7 @@ public:
         return i_;
     }
 
-    std::string_view
+    String const&
     getString() const noexcept
     {
         MRDOX_ASSERT(isString());
@@ -714,31 +949,32 @@ public:
 
 struct Object::value_type
 {
-    std::string_view key;
+    String key;
     Value value;
 
     value_type() = default;
 
     value_type(
-        std::string_view const& key_,
+        String key_,
         Value value_) noexcept
-        : key(key_)
+        : key(std::move(key_))
         , value(std::move(value_))
     {
     }
 
     template<class U>
     requires std::constructible_from<
-        std::pair<std::string_view, Value>, U>
+        std::pair<String, Value>, U>
     value_type(
         U&& u)
         : value_type(
             [&u]
             {
-                std::pair<std::string_view, Value> p(
+                std::pair<String, Value> p(
                     std::forward<U>(u));
                 return value_type(
-                    p.first, std::move(p).second);
+                    std::move(p).first,
+                    std::move(p).second);
             })
     {
     }
@@ -760,15 +996,16 @@ struct Object::value_type
 //
 //------------------------------------------------
 
-struct Object::reference
+struct MRDOX_DECL
+    Object::reference
 {
-    std::string_view const key;
+    String const& key;
     Value const& value;
 
     reference(reference const&) = default;
 
     reference(
-        std::string_view const& key_,
+        String const& key_,
         Value const& value_) noexcept
         : key(key_)
         , value(value_)
@@ -1009,9 +1246,9 @@ inline Value Object::find(std::string_view key) const
     return impl_->find(key);
 }
 
-inline void Object::set(std::string_view key, Value value) const
+inline void Object::set(String key, Value value) const
 {
-    impl_->set(key, std::move(value));
+    impl_->set(std::move(key), std::move(value));
 }
 
 inline auto Object::begin() const -> iterator
@@ -1071,6 +1308,19 @@ struct std::basic_common_reference<
 };
 
 //------------------------------------------------
+
+template<>
+struct fmt::formatter<clang::mrdox::dom::String>
+    : fmt::formatter<std::string_view>
+{
+    auto format(
+        clang::mrdox::dom::String const& value,
+        fmt::format_context& ctx) const
+    {
+        return fmt::formatter<std::string_view>::format(
+            value.get(), ctx);
+    }
+};
 
 template<>
 struct fmt::formatter<clang::mrdox::dom::Object>
