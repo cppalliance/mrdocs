@@ -14,6 +14,7 @@
 #define MRDOX_API_METADATA_JAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <memory>
 #include <string>
@@ -585,6 +586,8 @@ struct Overview
     std::vector<Param const*> params;
     std::vector<TParam const*> tparams;
 };
+
+MRDOX_DECL dom::String toString(Style style) noexcept;
 
 } // doc
 

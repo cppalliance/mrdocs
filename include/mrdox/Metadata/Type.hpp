@@ -16,6 +16,7 @@
 #include <mrdox/Metadata/Specifiers.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -31,9 +32,7 @@ enum QualifierKind : int
     Volatile
 };
 
-MRDOX_DECL
-std::string_view
-toString(QualifierKind kind);
+MRDOX_DECL dom::String toString(QualifierKind kind) noexcept;
 
 enum class TypeKind
 {
@@ -49,17 +48,13 @@ enum class TypeKind
     Pack
 };
 
-MRDOX_DECL
-std::string_view
-toString(TypeKind kind);
+MRDOX_DECL dom::String toString(TypeKind kind) noexcept;
 
 struct TypeInfo
 {
     TypeKind Kind;
 
-    constexpr
-    virtual
-    ~TypeInfo() = default;
+    constexpr virtual ~TypeInfo() = default;
 
     constexpr bool isBuiltin()         const noexcept { return Kind == TypeKind::Builtin ; }
     constexpr bool isTag()             const noexcept { return Kind == TypeKind::Tag; }
@@ -271,6 +266,7 @@ visit(
     }
 }
 
+// VFALCO maybe we should rename this to `renderType` or something?
 MRDOX_DECL
 std::string
 toString(

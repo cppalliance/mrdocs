@@ -142,6 +142,25 @@ makeOverview(
     return ov;
 }
 
+dom::String
+toString(
+    doc::Style style) noexcept
+{
+    switch(style)
+    {
+    case doc::Style::bold:   return "bold";
+    case doc::Style::mono:   return "mono";
+    case doc::Style::italic: return "italic";
+
+    // should never get here
+    case doc::Style::none: return "";
+
+    default:
+        // unknown style
+        MRDOX_UNREACHABLE();
+    }
+}
+
 } // doc
 
 //------------------------------------------------

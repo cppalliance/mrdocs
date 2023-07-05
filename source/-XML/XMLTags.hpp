@@ -67,9 +67,6 @@ private:
 // Converters for attributes
 std::string toString(SymbolID const& id);
 
-// VFALCO This belongs in Javadoc.hpp!
-llvm::StringRef toString(doc::Style style) noexcept;
-
 //------------------------------------------------
 
 /** A single XML attribute.
