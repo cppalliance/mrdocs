@@ -314,8 +314,7 @@ writeRecord(
 {
     openTemplate(I.Template);
 
-    llvm::StringRef tagName =
-        toString(I.KeyKind);
+    auto tagName = toString(I.KeyKind);
 
     tags_.open(tagName, {
         { "name", I.Name },
@@ -728,9 +727,12 @@ XMLWriter::
 writeJParam(
     doc::Param const& param)
 {
-    const char* direction = nullptr;
+    dom::String direction;
     switch(param.direction)
     {
+    case doc::ParamDirection::none:
+        direction = "";
+        break;
     case doc::ParamDirection::in:
         direction = "in";
         break;
@@ -741,11 +743,11 @@ writeJParam(
         direction = "inout";
         break;
     default:
-        break;
+        MRDOX_UNREACHABLE();
     }
     tags_.open("param", {
         { "name", param.name, ! param.name.empty() },
-        { "class", direction, !! direction }
+        { "class", direction, ! direction.empty() }
     });
     writeNodes(param.children);
     tags_.close("param");

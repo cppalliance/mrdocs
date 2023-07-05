@@ -12,6 +12,9 @@
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/RangeFor.hpp>
 #include <algorithm>
+#include <atomic>
+#include <memory>
+#include <new>
 #include <ranges>
 
 namespace clang {
@@ -20,6 +23,228 @@ namespace dom {
 
 static_assert(std::random_access_iterator<Object::iterator>);
 static_assert(std::ranges::random_access_range<Object>);
+
+//------------------------------------------------
+//
+// String
+//
+//------------------------------------------------
+
+namespace {
+
+// Variable-length integer
+template<std::unsigned_integral U>
+class varint
+{
+    using Digit = std::uint8_t;
+    static_assert(CHAR_BIT == 8);
+    static_assert(sizeof(Digit) == 1);
+    static_assert(std::unsigned_integral<Digit>);
+    static constexpr auto N = (sizeof(U) * 8 + 6) / 7;
+    static constexpr Digit Bits = 8 * sizeof(Digit) - 1;
+    static constexpr Digit EndBit = 1 << Bits;
+    static constexpr Digit DigMask = (1 << Bits) - 1;
+    char buf_[N];
+    std::size_t n_ = 0;
+
+public:
+    explicit varint(U u) noexcept
+    {
+        auto p = buf_;
+        for(;;)
+        {
+            ++n_;
+            auto dig = u & DigMask;
+            u >>= Bits;
+            if(u == 0)
+            {
+                // hi bit set means stop
+                dig |= EndBit;
+                *p = static_cast<char>(dig);
+                break;
+            }
+            *p++ = static_cast<char>(dig);
+        }
+    }
+
+    std::string_view get() const noexcept
+    {
+        return { buf_, n_ };
+    }
+
+    static U read(char const*& p) noexcept
+    {
+        Digit dig = *p++;
+        if(dig & EndBit)
+            return dig & DigMask;
+        U u = dig;
+        unsigned Shift = Bits;
+        for(;;)
+        {
+            auto dig = *p++;
+            if(dig & EndBit)
+            {
+                dig &= DigMask;
+                u |= dig << Shift;
+                return u;
+            }
+            u |= dig << Shift;
+            Shift += Bits;
+        }
+    }
+};
+
+static constinit char sz_empty[1] = { '\0' };
+
+} // (anon)
+
+// An allocated string is stored in one buffer
+// laid out thusly:
+//
+// Impl
+// size     varint
+// chars    char[]
+//
+struct String::Impl
+{
+    std::atomic<std::size_t> refs;
+
+    explicit Impl(
+        std::string_view s,
+        varint<std::size_t> const& uv) noexcept
+        : refs(1)
+    {
+        auto p = reinterpret_cast<char*>(this+1);
+        auto vs = uv.get();
+        std::memcpy(p, vs.data(), vs.size());
+        p += vs.size();
+        std::memcpy(p, s.data(), s.size());
+        p[s.size()] = '\0';
+    }
+
+    std::string_view get() const noexcept
+    {
+        auto p = reinterpret_cast<char const*>(this+1);
+        auto const size = varint<std::size_t>::read(p);
+        return { p, size };
+    }
+};
+
+auto
+String::
+allocate(
+    std::string_view s) ->
+    Impl*
+{
+    std::allocator<Impl> alloc;
+    varint<std::size_t> uv(s.size());   
+    auto n =
+        sizeof(Impl) +      // header
+        uv.get().size() +   // size (varint)
+        s.size() +          // string data
+        1 +                 // null term '\0'
+        (sizeof(Impl) - 1); // round up to nearest sizeof(Impl)
+    return new(alloc.allocate(n / sizeof(Impl))) Impl(s, uv);
+}
+
+void
+String::
+deallocate(
+    Impl* impl) noexcept
+{
+    std::allocator<Impl> alloc;
+    auto const s = impl->get();
+    varint<std::size_t> uv(s.size());
+    auto n =
+        sizeof(Impl) +      // header
+        uv.get().size() +   // size (varint)
+        s.size() +          // string data
+        1 +                 // null term '\0'
+        (sizeof(Impl) - 1); // round up to nearest sizeof(Impl)
+    std::destroy_at(impl);
+    alloc.deallocate(impl, n / sizeof(Impl));
+}
+
+//------------------------------------------------
+
+String::
+~String()
+{
+    if(! impl_)
+        return;
+    if(--impl_->refs > 0)
+        return;
+    deallocate(impl_);
+}
+
+String::
+String() noexcept
+    : psz_(&sz_empty[0])
+{
+}
+
+String::
+String(
+    String&& other) noexcept
+    : String()
+{
+    swap(other);
+}
+
+String::
+String(
+    String const& other) noexcept
+    : impl_(other.impl_)
+    , psz_(other.psz_)
+{
+    if(impl_)
+        ++impl_->refs;
+}
+
+String::
+String(
+    std::string_view s)
+    : impl_(allocate(s))
+{
+}
+
+String&
+String::
+operator=(
+    String&& other) noexcept
+{
+    String temp(std::move(other));
+    swap(temp);
+    return *this;
+}
+
+String&
+String::
+operator=(
+    String const& other) noexcept
+{
+    String temp(other);
+    swap(temp);
+    return *this;
+}
+
+bool
+String::
+empty() const noexcept
+{
+    if(impl_)
+        return impl_->get().size() == 0;
+    return psz_[0] == '\0';
+}
+
+std::string_view
+String::
+get() const noexcept
+{
+    if(psz_)
+        return std::string_view(psz_);
+    return impl_->get();
+}
 
 //------------------------------------------------
 //
@@ -240,7 +465,7 @@ find(std::string_view key) const
 
 void
 DefaultObjectImpl::
-set(std::string_view key, Value value)
+set(String key, Value value)
 {
     auto it = std::find_if(
         entries_.begin(), entries_.end(),
@@ -299,10 +524,9 @@ find(std::string_view key) const
 
 void
 LazyObjectImpl::
-set(
-    std::string_view key, Value value)
+set(String key, Value value)
 {
-    obj().set(key, value);
+    obj().set(std::move(key), value);
 }
 
 //------------------------------------------------
@@ -419,9 +643,9 @@ Value(
 
 Value::
 Value(
-    std::string s) noexcept
+    String str) noexcept
     : kind_(Kind::String)
-    , str_(std::move(s))
+    , str_(std::move(str))
 {
 }
 

@@ -22,6 +22,7 @@
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
 #include <mrdox/Metadata/Variable.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -68,9 +69,7 @@ enum class RecordKeyKind
     Union
 };
 
-MRDOX_DECL
-std::string_view
-toString(RecordKeyKind kind) noexcept;
+MRDOX_DECL dom::String toString(RecordKeyKind kind) noexcept;
 
 /** Metadata for struct, class, or union.
 */

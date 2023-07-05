@@ -78,25 +78,6 @@ toString(
     return toBase64(id);
 }
 
-llvm::StringRef
-toString(
-    doc::Style style) noexcept
-{
-    switch(style)
-    {
-    case doc::Style::bold: return "bold";
-    case doc::Style::mono: return "mono";
-    case doc::Style::italic: return "italic";
-
-    // should never get here
-    case doc::Style::none: return "";
-
-    default:
-        // unknown style
-        MRDOX_UNREACHABLE();
-    }
-}
-
 //------------------------------------------------
 
 Attributes::
@@ -173,7 +154,7 @@ jit_indent() noexcept ->
 void
 XMLTags::
 open(
-    llvm::StringRef tag,
+    dom::String const& tag,
     Attributes attrs)
 {
     indent() << '<' << tag << attrs << ">\n";
@@ -183,7 +164,7 @@ open(
 void
 XMLTags::
 close(
-    llvm::StringRef tag)
+    dom::String const& tag)
 {
     nest(-1);
     indent() << "</" << tag << ">\n";
@@ -192,7 +173,7 @@ close(
 void
 XMLTags::
 write(
-    llvm::StringRef tag,
+    dom::String const& tag,
     llvm::StringRef value,
     Attributes attrs)
 {

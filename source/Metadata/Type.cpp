@@ -14,8 +14,9 @@
 namespace clang {
 namespace mrdox {
 
-std::string_view
-toString(QualifierKind kind)
+dom::String
+toString(
+    QualifierKind kind) noexcept
 {
     switch(+kind)
     {
@@ -32,8 +33,9 @@ toString(QualifierKind kind)
     }
 }
 
-std::string_view
-toString(TypeKind kind)
+dom::String
+toString(
+    TypeKind kind) noexcept
 {
     switch(kind)
     {

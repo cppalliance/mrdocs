@@ -13,8 +13,7 @@
 namespace clang {
 namespace mrdox {
 
-std::string_view
-toString(AccessKind kind)
+dom::String toString(AccessKind kind) noexcept
 {
     switch(kind)
     {
@@ -27,8 +26,7 @@ toString(AccessKind kind)
     }
 }
 
-std::string_view
-toString(StorageClassKind kind)
+dom::String toString(StorageClassKind kind) noexcept
 {
     switch(kind)
     {
@@ -42,8 +40,7 @@ toString(StorageClassKind kind)
     }
 }
 
-std::string_view
-toString(ConstexprKind kind)
+dom::String toString(ConstexprKind kind) noexcept
 {
     switch(kind)
     {
@@ -55,8 +52,7 @@ toString(ConstexprKind kind)
     }
 }
 
-std::string_view
-toString(ExplicitKind kind)
+dom::String toString(ExplicitKind kind) noexcept
 {
     switch(kind)
     {
@@ -70,8 +66,7 @@ toString(ExplicitKind kind)
     }
 }
 
-std::string_view
-toString(NoexceptKind kind)
+dom::String toString(NoexceptKind kind) noexcept
 {
     switch(kind)
     {
@@ -92,8 +87,7 @@ toString(NoexceptKind kind)
     }
 }
 
-std::string_view
-toString(ReferenceKind kind)
+dom::String toString(ReferenceKind kind) noexcept
 {
     switch(kind)
     {

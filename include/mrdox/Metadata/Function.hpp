@@ -19,6 +19,7 @@
 #include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <memory>
 #include <string>
 #include <vector>
@@ -59,9 +60,7 @@ enum class FunctionClass
     Deduction,
 };
 
-MRDOX_DECL
-std::string_view
-toString(FunctionClass kind);
+MRDOX_DECL dom::String toString(FunctionClass kind) noexcept;
 
 /** Bit constants used with function specifiers.
 */

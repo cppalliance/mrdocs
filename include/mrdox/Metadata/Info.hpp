@@ -16,6 +16,7 @@
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/Specifiers.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <mrdox/Support/TypeTraits.hpp>
 #include <array>
 #include <memory>
@@ -49,9 +50,7 @@ enum class InfoKind
     Specialization
 };
 
-MRDOX_DECL
-std::string_view
-toString(InfoKind kind) noexcept;
+MRDOX_DECL dom::String toString(InfoKind kind) noexcept;
 
 /** Common properties of all symbols
 */

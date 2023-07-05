@@ -12,6 +12,7 @@
 #define MRDOX_API_METADATA_SPECIFIERS_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <string_view>
 
 namespace clang {
@@ -34,25 +35,6 @@ enum class AccessKind
     Protected,
     Private,
     None
-};
-
-/** Storage class kinds
-
-    [dcl.stc] p1: At most one storage-class-specifier shall appear
-    in a given decl-specifier-seq, except that `thread_local`
-    may appear with `static` or `extern`.
-*/
-enum class StorageClassKind
-{
-    None = 0,
-    Extern,
-    Static,
-    // auto storage-class-specifier (removed in C++11)
-    // only valid for variables
-    Auto,
-    // register storage-class-specifier (removed in C++17)
-    // only valid for variables
-    Register
 };
 
 /** `constexpr`/`consteval` specifier kinds
@@ -175,29 +157,31 @@ enum class ReferenceKind
     RValue
 };
 
-MRDOX_DECL
-std::string_view
-toString(AccessKind kind);
+/** Storage class kinds
 
-MRDOX_DECL
-std::string_view
-toString(StorageClassKind kind);
+    [dcl.stc] p1: At most one storage-class-specifier shall appear
+    in a given decl-specifier-seq, except that `thread_local`
+    may appear with `static` or `extern`.
+*/
+enum class StorageClassKind
+{
+    None = 0,
+    Extern,
+    Static,
+    // auto storage-class-specifier (removed in C++11)
+    // only valid for variables
+    Auto,
+    // register storage-class-specifier (removed in C++17)
+    // only valid for variables
+    Register
+};
 
-MRDOX_DECL
-std::string_view
-toString(ConstexprKind kind);
-
-MRDOX_DECL
-std::string_view
-toString(ExplicitKind kind);
-
-MRDOX_DECL
-std::string_view
-toString(NoexceptKind kind);
-
-MRDOX_DECL
-std::string_view
-toString(ReferenceKind kind);
+MRDOX_DECL dom::String toString(AccessKind kind) noexcept;
+MRDOX_DECL dom::String toString(ConstexprKind kind) noexcept;
+MRDOX_DECL dom::String toString(ExplicitKind kind) noexcept;
+MRDOX_DECL dom::String toString(NoexceptKind kind) noexcept;
+MRDOX_DECL dom::String toString(ReferenceKind kind) noexcept;
+MRDOX_DECL dom::String toString(StorageClassKind kind) noexcept;
 
 } // mrdox
 } // clang

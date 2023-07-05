@@ -17,7 +17,7 @@
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Type.hpp>
-#include <mrdox/Support/String.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
@@ -41,7 +41,7 @@ struct xmlEscape
 {
     explicit
     xmlEscape(
-        llvm::StringRef const& s) noexcept
+        std::string_view const& s) noexcept
         : s_(s)
     {
     }
@@ -66,7 +66,6 @@ private:
 
 // Converters for attributes
 std::string toString(SymbolID const& id);
-llvm::StringRef toString(doc::Style style) noexcept;
 
 //------------------------------------------------
 
@@ -74,16 +73,16 @@ llvm::StringRef toString(doc::Style style) noexcept;
 */
 struct Attribute
 {
-    StringLiteral name;
-    std::string value;
+    dom::String name;
+    dom::String value;
     bool pred;
 
     Attribute(
-        StringLiteral name_,
-        llvm::StringRef value_,
+        dom::String name_,
+        dom::String value_,
         bool pred_ = true) noexcept
-        : name(name_)
-        , value(value_)
+        : name(std::move(name_))
+        , value(std::move(value_))
         , pred(pred_)
     {
     }
@@ -129,7 +128,7 @@ struct Attributes
     Attributes(const std::vector<Attribute>& attrs);
     Attributes(std::vector<Attribute>&& attrs);
 
-    void push(const Attribute& attr);
+    void push(Attribute const& attr);
     void push(Attribute&& attr);
 
     friend
@@ -198,10 +197,10 @@ public:
     llvm::raw_ostream& indent();
     jit_indenter jit_indent() noexcept;
 
-    void open(llvm::StringRef, Attributes = {});
-    void write(llvm::StringRef tag,
+    void open(dom::String const&, Attributes = {});
+    void write(dom::String const&,
         llvm::StringRef value = {}, Attributes = {});
-    void close(llvm::StringRef);
+    void close(dom::String const&);
 
     void nest(int levels);
 };

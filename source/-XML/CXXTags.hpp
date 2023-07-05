@@ -30,60 +30,60 @@ namespace clang {
 namespace mrdox {
 namespace xml {
 
-constexpr llvm::StringRef accessTagName         = "access";
-constexpr llvm::StringRef aliasTagName          = "alias";
-constexpr llvm::StringRef attributeTagName      = "attr";
-constexpr llvm::StringRef baseTagName           = "base";
-constexpr llvm::StringRef bitfieldTagName       = "bitfield";
-constexpr llvm::StringRef classTagName          = "class";
-constexpr llvm::StringRef dataMemberTagName     = "field";
-constexpr llvm::StringRef javadocTagName        = "doc";
-constexpr llvm::StringRef enumTagName           = "enum";
-constexpr llvm::StringRef friendTagName         = "friend";
-constexpr llvm::StringRef functionTagName       = "function";
-constexpr llvm::StringRef namespaceTagName      = "namespace";
-constexpr llvm::StringRef paramTagName          = "param";
-constexpr llvm::StringRef returnTagName         = "return";
-constexpr llvm::StringRef structTagName         = "struct";
-constexpr llvm::StringRef specializationTagName = "specialization";
-constexpr llvm::StringRef targTagName           = "targ";
-constexpr llvm::StringRef templateTagName       = "template";
-constexpr llvm::StringRef tparamTagName         = "tparam";
-constexpr llvm::StringRef typedefTagName        = "typedef";
-constexpr llvm::StringRef unionTagName          = "union";
-constexpr llvm::StringRef varTagName            = "variable";
+constexpr auto accessTagName         = "access";
+constexpr auto aliasTagName          = "alias";
+constexpr auto attributeTagName      = "attr";
+constexpr auto baseTagName           = "base";
+constexpr auto bitfieldTagName       = "bitfield";
+constexpr auto classTagName          = "class";
+constexpr auto dataMemberTagName     = "field";
+constexpr auto javadocTagName        = "doc";
+constexpr auto enumTagName           = "enum";
+constexpr auto friendTagName         = "friend";
+constexpr auto functionTagName       = "function";
+constexpr auto namespaceTagName      = "namespace";
+constexpr auto paramTagName          = "param";
+constexpr auto returnTagName         = "return";
+constexpr auto structTagName         = "struct";
+constexpr auto specializationTagName = "specialization";
+constexpr auto targTagName           = "targ";
+constexpr auto templateTagName       = "template";
+constexpr auto tparamTagName         = "tparam";
+constexpr auto typedefTagName        = "typedef";
+constexpr auto unionTagName          = "union";
+constexpr auto varTagName            = "variable";
 
-constexpr llvm::StringRef getNameForValue(...)
+inline dom::String getNameForValue(...)
 {
     return "";
 }
 
-inline llvm::StringRef getNameForValue(ConstexprKind kind)
+inline dom::String getNameForValue(ConstexprKind kind)
 {
     return toString(kind);
 }
 
-inline llvm::StringRef getNameForValue(NoexceptKind kind)
+inline dom::String getNameForValue(NoexceptKind kind)
 {
     return toString(kind);
 }
 
-inline llvm::StringRef getNameForValue(StorageClassKind kind)
+inline dom::String getNameForValue(StorageClassKind kind)
 {
     return toString(kind);
 }
 
-inline llvm::StringRef getNameForValue(ReferenceKind kind)
+inline dom::String getNameForValue(ReferenceKind kind)
 {
     return toString(kind);
 }
 
-inline llvm::StringRef getNameForValue(ExplicitKind kind)
+inline dom::String getNameForValue(ExplicitKind kind)
 {
     return toString(kind);
 }
 
-inline llvm::StringRef getNameForValue(OperatorKind kind)
+inline dom::String getNameForValue(OperatorKind kind)
 {
     return getSafeOperatorName(kind);
 }

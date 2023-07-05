@@ -13,8 +13,9 @@
 namespace clang {
 namespace mrdox {
 
-std::string_view
-toString(RecordKeyKind kind) noexcept
+dom::String
+toString(
+    RecordKeyKind kind) noexcept
 {
     switch(kind)
     {
