@@ -300,9 +300,15 @@ public:
         empty array which is distinct from every
         other empty array.
     */
-private:
     Array();
-public:
+
+    /** Constructor.
+
+        Ownership of the contents is transferred
+        to the new object. The moved-from array
+        will behave as if default-constructed.
+    */
+    Array(Array&& other);
 
     /** Constructor.
 
@@ -319,6 +325,23 @@ public:
         pointer cannot not be null.
     */
     Array(impl_type impl) noexcept;
+
+    /** Assignment.
+
+        Ownership of the array is transferred
+        to this, and ownership of the previous
+        contents is released. The moved-from
+        array behaves as if default constructed.
+    */
+    Array& operator=(Array&&);
+
+    /** Assignment.
+
+        This acquires shared ownership of the copied
+        array, and ownership of the previous contents
+        is released.
+    */
+    Array& operator=(Array const&) = default;
 
     /** Return the implementation used by this object.
     */
@@ -354,6 +377,20 @@ public:
         is thrown.
     */
     void emplace_back(value_type value);
+
+    /** Swap two arrays.
+    */
+    void swap(Array& other) noexcept
+    {
+        std::swap(impl_, other.impl_);
+    }
+
+    /** Swap two arrays.
+    */
+    friend void swap(Array& lhs, Array& rhs) noexcept
+    {
+        lhs.swap(rhs);
+    }
 
     /** Return a diagnostic string.
     */
@@ -510,6 +547,14 @@ public:
 
     /** Constructor.
 
+        Ownership of the contents is transferred
+        to the new object. The moved-from object
+        will behave as if default-constructed.
+    */
+    Object(Object&& other);
+
+    /** Constructor.
+
         The newly constructed array will contain
         copies of the scalars in other, and
         references to its structured data.
@@ -540,6 +585,15 @@ public:
     {
         MRDOX_ASSERT(impl_);
     }
+
+    /** Assignment.
+
+        Ownership of the object is transferred
+        to this, and ownership of the previous
+        contents is released. The moved-from
+        object behaves as if default constructed.
+    */
+    Object& operator=(Object&&);
 
     /** Return the implementation used by this object.
     */
@@ -600,6 +654,20 @@ public:
         @param value The value to set.
     */
     void set(String key, Value value) const;
+
+    /** Swap two objects.
+    */
+    void swap(Object& other) noexcept
+    {
+        std::swap(impl_, other.impl_);
+    }
+
+    /** Swap two objects.
+    */
+    friend void swap(Object& lhs, Object& rhs) noexcept
+    {
+        lhs.swap(rhs);
+    }
 
     /** Return an iterator to the beginning of the range of elements.
     */

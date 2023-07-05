@@ -263,9 +263,28 @@ Array()
 
 Array::
 Array(
+    Array&& other)
+    : Array()
+{
+    swap(other);
+}
+
+Array::
+Array(
     Array const& other)
     : impl_(other.impl_)
 {
+}
+
+Array&
+Array::
+operator=(
+    Array&& other)
+{
+    Array temp;
+    swap(temp);
+    swap(other);
+    return *this;
 }
 
 std::string
@@ -360,6 +379,14 @@ Object()
 
 Object::
 Object(
+    Object&& other)
+    : Object()
+{
+    swap(other);
+}
+
+Object::
+Object(
     Object const& other) noexcept
     : impl_(other.impl_)
 {
@@ -371,6 +398,16 @@ Object(
     : impl_(std::make_shared<
         DefaultObjectImpl>(std::move(list)))
 {
+}
+
+Object&
+Object::
+operator=(Object&& other)
+{
+    Object temp;
+    swap(temp);
+    swap(other);
+    return *this;
 }
 
 bool
