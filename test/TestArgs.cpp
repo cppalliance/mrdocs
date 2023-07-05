@@ -8,25 +8,24 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "ToolArgs.hpp"
+#include "TestArgs.hpp"
+#include <fmt/format.h>
 #include <cstddef>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
 
-ToolArgs ToolArgs::instance_;
+TestArgs TestArgs::instance_;
 
 //------------------------------------------------
 
-ToolArgs::
-ToolArgs()
+TestArgs::
+TestArgs()
     : commonCat("COMMON")
-    , generateCat("GENERATE")
-    , testCat("TEST")
 
     , usageText(
-R"( Generate C++ reference documentation
+R"(MrDox Test Program
 )")
 
     , extraHelp(
@@ -39,24 +38,23 @@ ADDONS:
     3. The environment variable MRDOX_ADDONS_DIR if set.
 
 EXAMPLES:
-    mrdox .. ( compile-commands )
-    mrdox .. --action ( "test" | "update" ) ( dir | file )...
-    mrdox --action test friend.cpp
-    mrdox --format adoc compile_commands.json
+    mrdox-test .. ( compile-commands )
+    mrdox-test .. --action ( "test" | "update" ) ( dir | file )...
+    mrdox-test --action test friend.cpp
+    mrdox-test --format adoc compile_commands.json
 )")
 
 //
 // Common options
 //
 
-, toolAction(
+, action(
     "action",
     llvm::cl::desc(R"(Which action should be performed:)"),
-    llvm::cl::init(Action::generate),
+    llvm::cl::init(test),
     llvm::cl::values(
         clEnumVal(test, "Compare output against expected."),
-        clEnumVal(update, "Update all expected xml files."),
-        clEnumVal(generate, "Generate reference documentation.")),
+        clEnumVal(update, "Update all expected xml files.")),
     llvm::cl::cat(commonCat))
 
 , addonsDir(
@@ -64,38 +62,11 @@ EXAMPLES:
     llvm::cl::desc("The path to the addons directory."),
     llvm::cl::cat(commonCat))
 
-, configPath(
-    "config",
-    llvm::cl::desc(R"(The config filename relative to the repository root.)"),
-    llvm::cl::cat(commonCat))
-
-, outputPath(
-    "output",
-    llvm::cl::desc("Directory or file for generating output."),
-    llvm::cl::init("."),
-    llvm::cl::cat(commonCat))
-
 , inputPaths(
     "inputs",
     llvm::cl::Sink,
-    llvm::cl::desc("The path to the compilation database, or one or more .cpp files to test."),
+    llvm::cl::desc("A list of directories and/or .cpp files to test."),
     llvm::cl::cat(commonCat))
-
-//
-// Generate options
-//
-
-, formatType(
-    "format",
-    llvm::cl::desc("Format for outputted docs (\"adoc\" or \"xml\")."),
-    llvm::cl::init("adoc"),
-    llvm::cl::cat(generateCat))
-
-, ignoreMappingFailures(
-    "ignore-map-errors",
-    llvm::cl::desc("Continue if files are not mapped correctly."),
-    llvm::cl::init(true),
-    llvm::cl::cat(generateCat))
 
 //
 // Test options
@@ -104,13 +75,17 @@ EXAMPLES:
 , badOption(
     "bad",
     llvm::cl::desc("Write a .bad.xml file for each test failure."),
-    llvm::cl::init(true),
-    llvm::cl::cat(testCat))
+    llvm::cl::init(true))
+
+, unitOption(
+    "unit",
+    llvm::cl::desc("Run all or selected unit test suites."),
+    llvm::cl::init(true))
 {
 }
 
 void
-ToolArgs::
+TestArgs::
 hideForeignOptions()
 {
     // VFALCO When adding an option, it must
@@ -118,14 +93,11 @@ hideForeignOptions()
     // will stay hidden.
 
     std::vector<llvm::cl::Option const*> ours({
-        &toolAction,
+        &action,
         &addonsDir,
-        &configPath,
-        &outputPath,
         std::addressof(inputPaths),
-        &formatType,
-        &ignoreMappingFailures,
-        &badOption
+        &badOption,
+        &unitOption
     });
 
     // Really hide the clang/llvm default

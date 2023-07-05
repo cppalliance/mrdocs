@@ -17,13 +17,6 @@
 namespace clang {
 namespace mrdox {
 
-enum Action : int
-{
-    test,
-    update,
-    generate
-};
-
 /** Command line options and tool settings.
 */
 class ToolArgs
@@ -31,8 +24,6 @@ class ToolArgs
     ToolArgs();
 
     llvm::cl::OptionCategory    commonCat;
-    llvm::cl::OptionCategory    generateCat;
-    llvm::cl::OptionCategory    testCat;
 
 public:
     static ToolArgs instance_;
@@ -40,19 +31,12 @@ public:
     char const*                 usageText;
     llvm::cl::extrahelp         extraHelp;
 
-    // Common options
-    llvm::cl::opt<Action>       toolAction;
     llvm::cl::opt<std::string>  addonsDir;
     llvm::cl::opt<std::string>  configPath;
     llvm::cl::opt<std::string>  outputPath;
     llvm::cl::list<std::string> inputPaths;
-
-    // Generate options
     llvm::cl::opt<std::string>  formatType;
     llvm::cl::opt<bool>         ignoreMappingFailures;
-
-    // Test options
-    llvm::cl::opt<bool>         badOption;
 
     // Hide all options which don't belong to us
     void hideForeignOptions();

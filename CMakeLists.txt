@@ -121,13 +121,81 @@ find_package(fmt REQUIRED CONFIG)
 
 #-------------------------------------------------
 #
+# mrdox-core
+#
+#-------------------------------------------------
+
+file(GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS lib/*.cpp lib/*.hpp lib/*.natvis)
+file(GLOB_RECURSE LIB_INCLUDES CONFIGURE_DEPENDS include/*.hpp include/*.natvis)
+add_library(mrdox-core ${LIB_SOURCES} ${LIB_INCLUDES})
+target_compile_features(mrdox-core PUBLIC cxx_std_20)
+target_include_directories(mrdox-core
+    PUBLIC
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
+    PRIVATE
+    "${PROJECT_SOURCE_DIR}/lib"
+    "${PROJECT_SOURCE_DIR}/include")
+target_compile_definitions(
+    mrdox-core
+    PUBLIC
+    ${MRDOX_LINK_MODE_DEFINITION}
+    PRIVATE
+    -DMRDOX_TOOL
+)
+
+# Deps
+target_include_directories(mrdox-core SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
+target_include_directories(mrdox-core SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
+target_link_libraries(mrdox-core PUBLIC fmt::fmt duktape::duktape)
+
+# Windows, Win64
+if (WIN32)
+    target_compile_definitions(
+        mrdox-core
+        PUBLIC
+        -D_WIN32_WINNT=0x0601
+        -D_CRT_SECURE_NO_WARNINGS
+        -D_SILENCE_CXX20_CISO646_REMOVED_WARNING
+        -DFMT_HEADER_ONLY # because of _ITERATOR_DEBUG_LEVEL
+    )
+    get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
+    if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
+        target_compile_definitions(mrdox-core PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
+        target_compile_options(mrdox-core PUBLIC /MD)
+    endif()
+    if(MSVC)
+        target_compile_options(
+            mrdox-core
+            PUBLIC
+            /permissive-    # strict C++
+            /W4             # enable all warnings
+            /MP             # multi-processor compilation
+            /EHs            # C++ Exception handling
+        )
+    endif()
+endif ()
+
+if (MRDOX_CLANG)
+    target_compile_options(
+        mrdox-core
+        PUBLIC
+        -Wno-unused-private-field
+        -Wno-unused-value
+        PRIVATE
+        -Wno-covered-switch-default
+    )
+endif ()
+
+#-------------------------------------------------
+#
 # Tool
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp source/*.in source/*.natvis)
-file(GLOB_RECURSE INCLUDES CONFIGURE_DEPENDS include/*.hpp include/*.natvis)
-add_executable(mrdox ${SOURCES} ${INCLUDES})
+file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS tool/*.cpp)
+file(GLOB_RECURSE TOOL_INCLUDES CONFIGURE_DEPENDS tool/*.hpp)
+add_executable(mrdox ${TOOL_SOURCES} ${TOOL_INCLUDES})
 
 target_compile_features(mrdox PUBLIC cxx_std_20)
 target_include_directories(mrdox
@@ -135,8 +203,9 @@ target_include_directories(mrdox
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
-    "${PROJECT_SOURCE_DIR}/source"
     "${PROJECT_SOURCE_DIR}/include"
+    "${PROJECT_SOURCE_DIR}/lib"
+    "${PROJECT_SOURCE_DIR}/tool"
 )
 target_compile_definitions(
     mrdox
@@ -145,6 +214,8 @@ target_compile_definitions(
     PRIVATE
     -DMRDOX_TOOL
 )
+
+target_link_libraries(mrdox PUBLIC mrdox-core)
 
 # LLVM
 target_link_libraries(mrdox PUBLIC ${llvm_libs})
@@ -207,6 +278,96 @@ if (MRDOX_CLANG)
     )
 endif ()
 
+
+#-------------------------------------------------
+#
+# Tests
+#
+#-------------------------------------------------
+
+file(GLOB_RECURSE TEST_SOURCES  CONFIGURE_DEPENDS test/*.cpp)
+file(GLOB_RECURSE TEST_INCLUDES CONFIGURE_DEPENDS test/*.hpp)
+add_executable(mrdox-test ${TEST_SOURCES} ${TEST_INCLUDES})
+
+target_compile_features(mrdox-test PUBLIC cxx_std_20)
+target_include_directories(mrdox-test
+    PRIVATE
+    "${PROJECT_SOURCE_DIR}/include"
+    "${PROJECT_SOURCE_DIR}/lib"
+    "${PROJECT_SOURCE_DIR}/test"
+    "${PROJECT_SOURCE_DIR}/tool"
+)
+target_compile_definitions(
+    mrdox-test
+    PUBLIC
+    ${MRDOX_LINK_MODE_DEFINITION}
+    PRIVATE
+    -DMRDOX_TOOL
+)
+
+target_link_libraries(mrdox-test PUBLIC mrdox-core)
+
+# LLVM
+target_link_libraries(mrdox-test PUBLIC ${llvm_libs})
+target_include_directories(mrdox-test SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
+
+# Clang
+if (CLANG_SIMPLE_LIBS)
+    target_link_libraries(mrdox-test PUBLIC LLVM clang clang-cpp)
+else()
+    target_link_libraries(mrdox-test
+        PUBLIC
+        clangAST
+        clangBasic
+        clangFrontend
+        clangIndex
+        clangTooling
+        clangToolingCore
+        clangToolingInclusions)
+endif()
+target_include_directories(mrdox-test SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
+
+# fmt
+target_link_libraries(mrdox-test PUBLIC fmt::fmt duktape::duktape)
+
+# Windows, Win64
+if (WIN32)
+    target_compile_definitions(
+        mrdox-test
+        PUBLIC
+        -D_WIN32_WINNT=0x0601
+        -D_CRT_SECURE_NO_WARNINGS
+        -D_SILENCE_CXX20_CISO646_REMOVED_WARNING
+        -DFMT_HEADER_ONLY # because of _ITERATOR_DEBUG_LEVEL
+    )
+    get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
+    if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
+        target_compile_definitions(mrdox-test PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
+        target_compile_options(mrdox-test PUBLIC /MD)
+    endif()
+    if(MSVC)
+        target_compile_options(
+            mrdox-test
+            PUBLIC
+            /permissive-    # strict C++
+            /W4             # enable all warnings
+            /MP             # multi-processor compilation
+            /EHs            # C++ Exception handling
+        )
+    endif()
+endif ()
+
+if (MRDOX_CLANG)
+    target_compile_options(
+        mrdox-test
+        PUBLIC
+        -Wno-unused-private-field
+        -Wno-unused-value
+        PRIVATE
+        -Wno-covered-switch-default
+    )
+endif ()
+
 #-------------------------------------------------------------------------------
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -223,7 +384,7 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 if (MRDOX_BUILD_TESTS)
     # if we run tests, we need the addons in the right place.
     add_custom_command(
-            TARGET mrdox
+            TARGET mrdox-test
             POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
                     ${CMAKE_SOURCE_DIR}/addons
@@ -233,7 +394,7 @@ if (MRDOX_BUILD_TESTS)
 
     file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
     enable_testing()
-    add_test(NAME mrdox-test COMMAND mrdox --action test
+    add_test(NAME mrdox-test COMMAND mrdox-test --action test
             "${PROJECT_SOURCE_DIR}/test-files/old-tests"
             )
 
@@ -258,7 +419,7 @@ if (MRDOX_BUILD_TESTS)
         endif()
 
         add_custom_command(
-            COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/tools/trang.jar
+            COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/util/trang.jar
                 ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng
             OUTPUT mrdox.rng
             DEPENDS mrdox.rnc)

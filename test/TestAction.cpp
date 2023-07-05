@@ -8,18 +8,17 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "ConfigImpl.hpp"
-#include "CorpusImpl.hpp"
-#include "SingleFileDB.hpp"
-#include "ToolArgs.hpp"
-#include "ToolExecutor.hpp"
+#include "TestArgs.hpp"
 #include "Support/Error.hpp"
+#include "Tool/ConfigImpl.hpp"
+#include "Tool/CorpusImpl.hpp"
+#include "Tool/SingleFileDB.hpp"
+#include "Tool/ToolExecutor.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Generators.hpp>
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
-#include <clang/Tooling/StandaloneExecution.h>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -32,9 +31,6 @@
 
 namespace clang {
 namespace mrdox {
-
-extern void dumpCommentTypes();
-extern void dumpCommentCommands();
 
 using SmallString = llvm::SmallString<0>;
 
@@ -145,7 +141,7 @@ makeConfig(
 
     std::error_code ec;
     auto config = loadConfigString(
-        workingDir, toolArgs.addonsDir, configYaml);
+        workingDir, testArgs.addonsDir, configYaml);
     if (!config)
       reportError(config.error(), "load the configuration string");
     MRDOX_ASSERT(config);
@@ -217,7 +213,7 @@ handleFile(
         return Error::success(); // keep going
     }
 
-    if(toolArgs.toolAction == Action::test)
+    if(testArgs.action == Action::test)
     {
         // Open and load XML comparison file
         std::unique_ptr<llvm::MemoryBuffer> expectedXml;
@@ -255,7 +251,7 @@ handleFile(
             results_.numberOfFailures++;
             reportError("Test for \"{}\" failed", filePath);
 
-            if(toolArgs.badOption.getValue())
+            if(testArgs.badOption.getValue())
             {
                 // Write the .bad.xml file
                 auto bad = outputPath;
@@ -290,7 +286,7 @@ handleFile(
             // success
         }
     }
-    else if(toolArgs.toolAction == Action::update)
+    else if(testArgs.action == Action::update)
     {
         // Refresh the expected output file
         if(auto err = writeFile(outputPath, generatedXml))
@@ -405,7 +401,7 @@ DoTestAction()
     llvm::raw_string_ostream(extraYaml) <<
         "concurrency: 1\n";
     Results results;
-    for(auto const& inputPath : toolArgs.inputPaths)
+    for(auto const& inputPath : testArgs.inputPaths)
     {
         TestRunner instance(results, extraYaml);
         if(auto err = instance.checkPath(inputPath))
