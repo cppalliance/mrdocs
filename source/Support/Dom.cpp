@@ -94,23 +94,6 @@ public:
     }
 };
 
-static
-std::uintptr_t
-encode_ptr(
-    char const* p) noexcept
-{
-    auto u = reinterpret_cast<std::uintptr_t>(p);
-    MRDOX_ASSERT(! (u & 1U));
-    return u | 1U;
-}
-
-static
-std::uintptr_t
-encode_ptr(void* p) noexcept
-{
-    return reinterpret_cast<std::uintptr_t>(p);
-}
-
 static constinit char sz_empty[1] = { '\0' };
 
 } // (anon)
@@ -181,41 +164,22 @@ deallocate(
     alloc.deallocate(impl, n / sizeof(Impl));
 }
 
-char const*
-String::
-get_literal() const noexcept
-{
-    if((u_ & 1U) == 0)
-        return nullptr;
-    return reinterpret_cast<
-        char const*>(u_ ^ 1);
-}
-
-String::
-String(
-    char const* data,
-    std::size_t size) noexcept
-{
-    MRDOX_ASSERT(data[size] == '\0');
-    u_ = encode_ptr(data);
-}
+//------------------------------------------------
 
 String::
 ~String()
 {
-    if(! get_literal())
-    {
-        auto impl = reinterpret_cast<Impl*>(u_);
-        if(--impl->refs > 0)
-            return;
-        deallocate(impl);
-    }
+    if(! impl_)
+        return;
+    if(--impl_->refs > 0)
+        return;
+    deallocate(impl_);
 }
 
 String::
 String() noexcept
+    : psz_(&sz_empty[0])
 {
-    u_ = encode_ptr(&sz_empty[0]);
 }
 
 String::
@@ -229,17 +193,17 @@ String(
 String::
 String(
     String const& other) noexcept
-    : u_(other.u_)
+    : impl_(other.impl_)
+    , psz_(other.psz_)
 {
-    if(get_literal())
-        return;
-    ++reinterpret_cast<Impl*>(u_)->refs;
+    if(impl_)
+        ++impl_->refs;
 }
 
 String::
 String(
     std::string_view s)
-    : u_(encode_ptr(allocate(s)))
+    : impl_(allocate(s))
 {
 }
 
@@ -263,13 +227,22 @@ operator=(
     return *this;
 }
 
+bool
+String::
+empty() const noexcept
+{
+    if(impl_)
+        return impl_->get().size() == 0;
+    return psz_[0] == '\0';
+}
+
 std::string_view
 String::
 get() const noexcept
 {
-    if(auto sz = get_literal())
-        return std::string_view(sz);
-    return reinterpret_cast<Impl const*>(u_)->get();
+    if(psz_)
+        return std::string_view(psz_);
+    return impl_->get();
 }
 
 //------------------------------------------------

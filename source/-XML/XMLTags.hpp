@@ -41,7 +41,7 @@ struct xmlEscape
 {
     explicit
     xmlEscape(
-        llvm::StringRef const& s) noexcept
+        std::string_view const& s) noexcept
         : s_(s)
     {
     }
@@ -66,6 +66,8 @@ private:
 
 // Converters for attributes
 std::string toString(SymbolID const& id);
+
+// VFALCO This belongs in Javadoc.hpp!
 llvm::StringRef toString(doc::Style style) noexcept;
 
 //------------------------------------------------
@@ -75,15 +77,15 @@ llvm::StringRef toString(doc::Style style) noexcept;
 struct Attribute
 {
     dom::String name;
-    std::string value;
+    dom::String value;
     bool pred;
 
     Attribute(
-        std::string_view name_,
-        llvm::StringRef value_,
+        dom::String name_,
+        dom::String value_,
         bool pred_ = true) noexcept
-        : name(name_)
-        , value(value_)
+        : name(std::move(name_))
+        , value(std::move(value_))
         , pred(pred_)
     {
     }
@@ -129,7 +131,7 @@ struct Attributes
     Attributes(const std::vector<Attribute>& attrs);
     Attributes(std::vector<Attribute>&& attrs);
 
-    void push(const Attribute& attr);
+    void push(Attribute const& attr);
     void push(Attribute&& attr);
 
     friend

@@ -68,12 +68,11 @@ class MRDOX_DECL
 {
     struct Impl;
 
-    std::uintptr_t u_;
+    Impl* impl_ = nullptr;
+    char const* psz_ = nullptr;
 
     static Impl* allocate(std::string_view s);
     static void deallocate(Impl*) noexcept;
-    char const* get_literal() const noexcept;
-    String(char const*, std::size_t) noexcept;
 
 public:
     /** Destructor.
@@ -134,13 +133,13 @@ public:
         of the buffer must extend until the string is
         destroyed, otherwise the behavior is undefined.
 
-        @param sz A null-terminated string. If the
+        @param psz A null-terminated string. If the
         string is not null-terminated, the result is
         undefined.
     */
     template<std::size_t N>
-    String(char const(&sz)[N])
-        : String(sz, N - 1)
+    constexpr String(char const(&psz)[N]) noexcept
+        : psz_(psz)
     {
         static_assert(N > 0);
     }
@@ -162,6 +161,10 @@ public:
         the previously referenced string is released.
     */
     String& operator=(String const& other) noexcept;
+
+    /** Return true if the string is empty.
+    */
+    bool empty() const noexcept;
 
     /** Return the string.
     */
@@ -207,7 +210,8 @@ public:
     */
     void swap(String& other) noexcept
     {
-        std::swap(u_, other.u_);
+        std::swap(impl_, other.impl_);
+        std::swap(psz_, other.psz_);
     }
 
     /** Swap two strings.

@@ -12,6 +12,7 @@
 #define MRDOX_API_METADATA_SPECIFIERS_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Support/Dom.hpp>
 #include <string_view>
 
 namespace clang {
@@ -175,29 +176,12 @@ enum class ReferenceKind
     RValue
 };
 
-MRDOX_DECL
-std::string_view
-toString(AccessKind kind);
-
-MRDOX_DECL
-std::string_view
-toString(StorageClassKind kind);
-
-MRDOX_DECL
-std::string_view
-toString(ConstexprKind kind);
-
-MRDOX_DECL
-std::string_view
-toString(ExplicitKind kind);
-
-MRDOX_DECL
-std::string_view
-toString(NoexceptKind kind);
-
-MRDOX_DECL
-std::string_view
-toString(ReferenceKind kind);
+MRDOX_DECL dom::String toString(AccessKind kind) noexcept;
+MRDOX_DECL dom::String toString(StorageClassKind kind) noexcept;
+MRDOX_DECL dom::String toString(ConstexprKind kind) noexcept;
+MRDOX_DECL dom::String toString(ExplicitKind kind) noexcept;
+MRDOX_DECL dom::String toString(NoexceptKind kind) noexcept;
+MRDOX_DECL dom::String toString(ReferenceKind kind) noexcept;
 
 } // mrdox
 } // clang
