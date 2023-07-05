@@ -119,6 +119,7 @@ struct String::Impl
         std::memcpy(p, vs.data(), vs.size());
         p += vs.size();
         std::memcpy(p, s.data(), s.size());
+        p[s.size()] = '\0';
     }
 
     std::string_view get() const noexcept
