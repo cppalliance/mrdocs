@@ -44,6 +44,13 @@ cmake --build . -j <threads>
 cmake --install .
 ----
 
+Required Libraries:
+
+* fmt >= 10
+* duktape
+* zlib
+* libtinfo
+
 === MrDox
 
 Once the LLVM variants are available in `/path/to/llvm+clang`, you can download MrDox:
