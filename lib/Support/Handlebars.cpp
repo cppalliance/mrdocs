@@ -308,45 +308,36 @@ inverse(OutputRef out, dom::Value const& context) const {
 
 void
 HandlebarsCallback::
-log(dom::Value const& level0,
+log(dom::Value const& level,
     dom::Array const& args) const {
-    dom::Value level = level0;
-    if (level.isString()) {
-        std::string_view levelStr = level.getString();
-        if (levelStr == "debug") {
-            level = std::int64_t(0);
-        } else if (levelStr == "info") {
-            level = 1;
-        } else if (levelStr == "warn") {
-            level = 2;
-        } else if (levelStr == "error") {
-            level = 3;
-        } else {
-            int levelInt = 0;
-            auto res = std::from_chars(
-                levelStr.data(),
-                levelStr.data() + levelStr.size(),
-                levelInt);
-            if (res.ec == std::errc()) {
-                level = levelInt;
-            } else {
-                level = std::int64_t(0);
-            }
+    MRDOX_ASSERT(logger_);
+    (*logger_)(level, args);
+}
+
+/////////////////////////////////////////////////////////////////
+// Engine
+/////////////////////////////////////////////////////////////////
+
+struct defaultLogger {
+    static constexpr std::array<std::string_view, 4> methodMap =
+        {"debug", "info", "warn", "error"};
+    std::int64_t level_ = 1;
+
+    void
+    operator()(dom::Value const& level0, dom::Array const& args) const {
+        dom::Value level = lookupLevel(level0);
+        if (!level.isInteger()) {
+            return;
         }
-    }
-
-    if (!level.getInteger()) {
-        return;
-    }
-
-    // AFREITAS: handlebars should propagate its log level to the callback
-    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/lib/handlebars/helpers/log.js
-    // https://github.com/handlebars-lang/handlebars.js/blob/master/lib/handlebars/logger.js
-    static constexpr int hbs_log_level = 4;
-
-    if (level.getInteger() < hbs_log_level) {
+        if (level.getInteger() > level_) {
+            return;
+        }
+        std::string_view method = methodMap[level.getInteger()];
         std::string out;
         OutputRef os(out);
+        os << '[';
+        os << method;
+        os << ']';
         for (std::size_t i = 0; i < args.size(); ++i) {
             HandlebarsOptions opt;
             opt.noHTMLEscape = true;
@@ -355,14 +346,39 @@ log(dom::Value const& level0,
         }
         fmt::println("{}", out);
     }
-}
 
-/////////////////////////////////////////////////////////////////
-// Engine
-/////////////////////////////////////////////////////////////////
+    dom::Value
+    lookupLevel(dom::Value level) const {
+        if (level.isString()) {
+            // Find level from map
+            std::string levelStr(level.getString());
+            // convert level string to lowercase
+            auto tolower = [](char c) {
+                return c + ('A' - 'a') * (c >= 'a' && c <= 'z');
+            };
+            std::ranges::transform(levelStr, levelStr.begin(), tolower);
+            auto levelMap = std::ranges::find(methodMap, levelStr);
+            if (levelMap != methodMap.end()) {
+                return std::int64_t(levelMap - methodMap.begin());
+            }
+
+            // Find level as integer string
+            int levelInt = 0;
+            auto res = std::from_chars(
+                levelStr.data(),
+                levelStr.data() + levelStr.size(),
+                levelInt);
+            if (res.ec == std::errc()) {
+                return levelInt;
+            }
+        }
+        return level;
+    }
+};
 
 Handlebars::Handlebars() {
     helpers::registerBuiltinHelpers(*this);
+    registerLogger(defaultLogger{});
 }
 
 std::string
@@ -807,6 +823,25 @@ lookupProperty(
         return {nullptr, false};
     }
     return lookupProperty(data.getObject(), path);
+}
+
+std::pair<dom::Value, bool>
+lookupProperty(
+    dom::Value const& data,
+    dom::Value const& path)
+{
+    if (path.isString())
+        return lookupProperty(data, path.getString());
+    if (path.isInteger()) {
+        if (data.isArray()) {
+            auto& arr = data.getArray();
+            if (path.getInteger() >= arr.size())
+                return {nullptr, false};
+            return {arr.at(path.getInteger()), true};
+        }
+        return lookupProperty(data, std::to_string(path.getInteger()));
+    }
+    return {nullptr, false};
 }
 
 std::string
@@ -1294,6 +1329,7 @@ renderExpression(
         cb.name_ = tag.helper;
         cb.context_ = &context;
         cb.data_ = &private_data;
+        cb.logger_ = &logger_;
         setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
         auto [res, render] = fn(args, cb);
         if (render) {
@@ -1535,6 +1571,7 @@ renderBlock(
     cb.name_ = tag.helper;
     cb.context_ = &context;
     cb.data_ = &data;
+    cb.logger_ = &logger_;
     cb.output_ = &out;
     bool const isNoArgBlock = tag.arguments.empty();
     auto [fn, found] = getHelper(tag.helper, isNoArgBlock);
@@ -1634,6 +1671,14 @@ registerHelperImpl(
     helpers_.emplace(std::string(name), helper);
 }
 
+void
+Handlebars::
+registerLogger(
+    std::function<void(dom::Value, dom::Array const&)> fn)
+{
+    logger_ = std::move(fn);
+}
+
 namespace helpers {
 
 void
@@ -1663,7 +1708,7 @@ registerAntoraHelpers(Handlebars& hbs)
     hbs.registerHelper("year", year_fn);
 }
 
-dom::Value
+bool
 and_fn(dom::Array const& args) {
     for (std::size_t i = 0; i < args.size(); ++i) {
         if (!isTruthy(args[i])) {
@@ -1673,7 +1718,7 @@ and_fn(dom::Array const& args) {
     return true;
 }
 
-dom::Value
+bool
 or_fn(dom::Array const& args) {
     for (std::size_t i = 0; i < args.size(); ++i) {
         if (isTruthy(args[i])) {
@@ -1699,6 +1744,7 @@ isSame(dom::Object const& a, dom::Object const& b) {
         if (!isSame(i.value, b.find(k))) {
             return false;
         }
+        return true;
     });
 }
 
@@ -1737,7 +1783,7 @@ isSame(dom::Value const& a, dom::Value const& b) {
     return false;
 }
 
-dom::Value
+bool
 eq_fn(dom::Array const& args) {
     if (args.empty()) {
         return true;
@@ -1751,9 +1797,9 @@ eq_fn(dom::Array const& args) {
     return true;
 }
 
-dom::Value
+bool
 ne_fn(dom::Array const& args) {
-    return !eq_fn(args).getBool();
+    return !eq_fn(args);
 }
 
 std::string_view
@@ -1830,7 +1876,7 @@ validateArgs(
     return {};
 }
 
-dom::Value
+bool
 not_fn(dom::Array const& args) {
     for (std::size_t i = 0; i < args.size(); ++i) {
         if (!isTruthy(args[i])) {
@@ -1843,9 +1889,9 @@ not_fn(dom::Array const& args) {
 dom::Value
 increment_fn(
     dom::Array const &args,
-    HandlebarsCallback const& cb)
+    HandlebarsCallback const& options)
 {
-    auto r = validateArgs(cb.name(), 1, args);
+    auto r = validateArgs(options.name(), 1, args);
     if (!r.empty()) {
         return r;
     }
@@ -1858,15 +1904,12 @@ increment_fn(
         return arg;
 }
 
-dom::Value
+std::string
 detag_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb)
+    HandlebarsCallback const& options)
 {
-    // equivalent to:
-    // static const std::regex tagRegex("<[^>]+>");
-    // return std::regex_replace(html, tagRegex, "");
-    auto r = validateArgs(cb.name(), {dom::Kind::String}, args);
+    auto r = validateArgs(options.name(), {dom::Kind::String}, args);
     if (!r.empty()) {
         return r;
     }
@@ -1893,7 +1936,7 @@ detag_fn(
 dom::Value
 relativize_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
+    HandlebarsCallback const& options) {
     if (args.empty()) {
         return "#";
     }
@@ -1912,7 +1955,7 @@ relativize_fn(
 
     // Source path
     std::string_view from;
-    dom::Value ctx = cb.context();
+    dom::Value ctx = options.context();
     if (args.size() > 1)
     {
         if (args[1].kind() == dom::Kind::String)
@@ -1969,258 +2012,250 @@ relativize_fn(
     }
 }
 
-dom::Value
+int
 year_fn() {
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
     std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
     std::tm* localTime = std::localtime(&currentTime);
-    int year = localTime->tm_year + 1900;
-    return year;
+    return localTime->tm_year + 1900;
 }
 
-dom::Value
+void
 if_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
-    // The if block helper has a special logic where is uses the first
-    // argument as a conditional but uses the content itself as the
-    // item to render the callback
-    auto r = validateArgs(cb.name(), 1, args);
+    HandlebarsCallback const& options) {
+    OutputRef out = options.output();
+    auto r = validateArgs(options.name(), 1, args);
     if (!r.empty()) {
-        return r;
+        out << r;
+        return;
     }
+
     dom::Value const& conditional = args[0];
     if (conditional.kind() == dom::Kind::Integer) {
         // Treat the zero path separately
         std::int64_t v = conditional.getInteger();
         if (v == 0) {
             bool includeZero = false;
-            if (cb.hashes().exists("includeZero")) {
-                auto zeroV = cb.hashes().find("includeZero");
+            if (options.hashes().exists("includeZero")) {
+                auto zeroV = options.hashes().find("includeZero");
                 if (zeroV.isBoolean()) {
                     includeZero = zeroV.getBool();
                 }
             }
             if (includeZero) {
-                return cb.fn();
+                options.fn(out);
             } else {
-                return cb.inverse();
+                options.inverse(out);
             }
+            return;
         }
     }
     if (isTruthy(conditional)) {
-        return cb.fn();
+        options.fn(out);
+        return;
     }
-    return cb.inverse();
+    options.inverse(out);
 }
 
-dom::Value
+void
 unless_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
-    // Same as "if". Swap inverse and fn.
-    auto r = validateArgs(cb.name(), 1, args);
+    HandlebarsCallback const& options) {
+    OutputRef out = options.output();
+    auto r = validateArgs(options.name(), 1, args);
     if (!r.empty()) {
-        return r;
+        out << r;
+        return;
     }
+
     dom::Value const& conditional = args[0];
     if (conditional.kind() == dom::Kind::Integer) {
         // Treat the zero path separately
         std::int64_t v = conditional.getInteger();
         if (v == 0) {
             bool includeZero = false;
-            if (cb.hashes().exists("includeZero")) {
-                auto zeroV = cb.hashes().find("includeZero");
+            if (options.hashes().exists("includeZero")) {
+                auto zeroV = options.hashes().find("includeZero");
                 if (zeroV.isBoolean()) {
                     includeZero = zeroV.getBool();
                 }
             }
             if (includeZero) {
-                return cb.inverse();
+                options.inverse(out);
             } else {
-                return cb.fn();
+                options.fn(out);
             }
+            return;
         }
     }
     if (isTruthy(conditional)) {
-        return cb.inverse();
+        options.inverse(out);
+        return;
     }
-    return cb.fn();
+    options.fn(out);
 }
 
-dom::Value
+void
 with_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
-    // Built-in helper to change the context
-    auto r = validateArgs(cb.name(), 1, args);
+    HandlebarsCallback const& options) {
+    OutputRef out = options.output();
+    auto r = validateArgs(options.name(), 1, args);
     if (!r.empty()) {
-        return r;
+        out << r;
+        return;
     }
-
     dom::Value newContext = args[0];
     if (!isEmpty(newContext)) {
-        dom::Object data = createFrame(cb.data());
+        dom::Object data = createFrame(options.data());
         std::string contextPath = appendContextPath(
-              cb.data().find("contextPath"), cb.ids()[0]);
+            options.data().find("contextPath"),
+            options.ids()[0]);
         data.set("contextPath", contextPath);
         dom::Object blockValues;
-        if (!cb.blockParams().empty()) {
-            blockValues.set(cb.blockParams()[0], newContext);
+        if (!options.blockParams().empty()) {
+            blockValues.set(options.blockParams()[0], newContext);
         }
-        return cb.fn(newContext, data, blockValues);
+        options.fn(out, newContext, data, blockValues);
+        return;
     }
-    return cb.inverse();
+    options.inverse(out);
 }
 
-dom::Value
+void
 each_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
-    auto r = validateArgs(cb.name(), 1, args);
+    HandlebarsCallback const& options) {
+    OutputRef out = options.output();
+    auto r = validateArgs(options.name(), 1, args);
     if (!r.empty()) {
-        return r;
+        out << r;
+        return;
     }
 
-    MRDOX_ASSERT(!cb.ids().empty());
+    MRDOX_ASSERT(!options.ids().empty());
     std::string contextPath = appendContextPath(
-        cb.data().find("contextPath"), cb.ids()[0]) + '.';
+        options.data().find("contextPath"), options.ids()[0]) + '.';
 
-    dom::Object data = createFrame(cb.data());
+    dom::Object data = createFrame(options.data());
     dom::Object blockValues;
 
-    std::string out;
     dom::Value context = args[0];
+    std::size_t index = 0;
     if (context.isArray()) {
         dom::Array const& items = context.getArray();
-        for (std::size_t index = 0; index < items.size(); ++index) {
+        for (index = 0; index < items.size(); ++index) {
             dom::Value item = items.at(index);
-
-            // Private values frame
             data.set("key", static_cast<std::int64_t>(index));
             data.set("index", static_cast<std::int64_t>(index));
             data.set("first", index == 0);
             data.set("last", index == items.size() - 1);
             data.set("contextPath", contextPath + std::to_string(index));
-
-            // Block values
-            if (!cb.blockParams().empty()) {
-                blockValues.set(cb.blockParams()[0], item);
-                if (cb.blockParams().size() > 1) {
-                    blockValues.set(cb.blockParams()[1], static_cast<std::int64_t>(index));
+            if (!options.blockParams().empty()) {
+                blockValues.set(options.blockParams()[0], item);
+                if (options.blockParams().size() > 1) {
+                    blockValues.set(
+                        options.blockParams()[1], static_cast<std::int64_t>(index));
                 }
             }
-
-            out += cb.fn(item, data, blockValues);
+            options.fn(out, item, data, blockValues);
         }
     } else if (context.kind() == dom::Kind::Object) {
         dom::Object const& items = context.getObject();
-        for (std::size_t index = 0; index < items.size(); ++index) {
+        for (index = 0; index < items.size(); ++index) {
             dom::Object::reference item = items[index];
-
-            // Private values frame
             data.set("key", item.key);
             data.set("index", static_cast<std::int64_t>(index));
             data.set("first", index == 0);
             data.set("last", index == items.size() - 1);
             data.set("contextPath", contextPath + std::string(item.key));
-
-            // Block values
-            if (!cb.blockParams().empty()) {
-                blockValues.set(cb.blockParams()[0], item.value);
-                if (cb.blockParams().size() > 1) {
-                    blockValues.set(cb.blockParams()[1], item.key);
+            if (!options.blockParams().empty()) {
+                blockValues.set(options.blockParams()[0], item.value);
+                if (options.blockParams().size() > 1) {
+                    blockValues.set(options.blockParams()[1], item.key);
                 }
             }
-
-            out += cb.fn(item.value, data, blockValues);
+            options.fn(out, item.value, data, blockValues);
         }
-    } else {
-        out += cb.inverse();
     }
-    return out;
+    if (index == 0) {
+        options.inverse(out);
+    }
 }
 
 dom::Value
 lookup_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
-    auto r = validateArgs(cb.name(), 2, args);
+    HandlebarsCallback const& options) {
+    auto r = validateArgs(options.name(), 2, args);
     if (!r.empty()) {
-        return r;
+        throw std::runtime_error(r);
     }
-    dom::Value objArg = args[0];
-    dom::Value keyArg = args[1];
-    if (keyArg.isString()) {
-        // Second argument is a string, so we're looking up a property
-        std::string_view key = keyArg.getString();
-        auto [v, defined] = lookupProperty(objArg, key);
-        if (defined) {
-            return v;
-        }
-    } else if (keyArg.isInteger()) {
-        // Second argument is a number, so we're looking up an array index
-        if (objArg.isArray()) {
-            dom::Array const& a = objArg.getArray();
-            auto indexR = keyArg.getInteger();
-            auto index = static_cast<std::size_t>(indexR);
-            if (index < a.size()) {
-                return a[index];
-            }
-        }
+    dom::Value obj = args[0];
+    dom::Value field = args[1];
+    if (!isTruthy(obj)) {
+        return obj;
     }
-    return nullptr;
+    return lookupProperty(obj, field).first;
 }
 
 void
 log_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
-    dom::Value level = cb.hashes().find("level");
-    if (level.isNull()) {
-        level = 1;
+    HandlebarsCallback const& options) {
+    dom::Value level = 1;
+    if (auto hl = options.hashes().find("level"); !hl.isNull()) {
+        level = hl;
+    } else if (auto ol = options.hashes().find("level"); !ol.isNull()) {
+        level = ol;
     }
-    cb.log(level, args);
+    options.log(level, args);
 }
 
 void
 helper_missing_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
+    HandlebarsCallback const& options) {
     if (!args.empty()) {
-        std::string msg = fmt::format(R"(Missing helper: "{}")", cb.name());
+        std::string msg = fmt::format(R"(Missing helper: "{}")", options.name());
         throw std::runtime_error(msg);
     }
 }
 
-dom::Value
+void
 block_helper_missing_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
-    auto r = validateArgs(cb.name(), 1, args);
+    HandlebarsCallback const& options) {
+    OutputRef out = options.output();
+    auto r = validateArgs(options.name(), 1, args);
     if (!r.empty()) {
-        return r;
+        out << r;
+        return;
     }
     dom::Value context = args[0];
     if (context.isBoolean()) {
         if (context.getBool()) {
-            return cb.fn();
+            options.fn(out);
+            return;
         } else {
-            return cb.inverse();
+            options.inverse(out);
+            return;
         }
     } else if (context.isNull()) {
-        return cb.inverse();
+        options.inverse(out);
+        return;
     } else if (context.isArray()) {
         // If the context is an array, then we'll iterate over it, rendering
         // the block for each item in the array like mustache does.
         dom::Array const& items = context.getArray();
         if (items.empty()) {
-            return cb.inverse();
+            options.inverse(out);
+            return;
         }
-        dom::Object data = createFrame(cb.data());
+        dom::Object data = createFrame(options.data());
         std::string contextPath = appendContextPath(
-            cb.data().find("contextPath"), cb.ids()[0]) + '.';
-        std::string out;
+            options.data().find("contextPath"), options.ids()[0]) + '.';
         for (std::size_t index = 0; index < items.size(); ++index) {
             dom::Value item = items.at(index);
             data.set("key", static_cast<std::int64_t>(index));
@@ -2228,31 +2263,31 @@ block_helper_missing_fn(
             data.set("first", index == 0);
             data.set("last", index == items.size() - 1);
             data.set("contextPath", contextPath + std::to_string(index));
-            out += cb.fn(item, data, {});
+            options.fn(out, item, data, {});
         }
-        return out;
     } else {
         // If the context is not an array, then we'll render the block once
         // with the context as the data.
-        dom::Object data = createFrame(cb.data());
-        data.set("contextPath", appendContextPath(data.find("contextPath"), cb.name()));
-        return cb.fn(context, data, {});
+        dom::Object data = createFrame(options.data());
+        data.set("contextPath", appendContextPath(data.find("contextPath"), options.name()));
+        options.fn(out, context, data, {});
     }
 }
 
-dom::Value
+void
 noop_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb) {
-    if (cb.isBlock()) {
+    HandlebarsCallback const& options) {
+    OutputRef out = options.output();
+    if (options.isBlock()) {
         // If the hook is not overridden, then the default implementation will
         // mimic the behavior of Mustache and just render the block.
-        return cb.fn();
+        options.fn(out);
+        return;
     }
-    if (args.empty()) {
-        return nullptr;
+    if (!args.empty()) {
+        out << fmt::format(R"(Missing helper: "{}")", options.name());
     }
-    return fmt::format(R"(Missing helper: "{}")", cb.name());
 }
 
 } // helpers

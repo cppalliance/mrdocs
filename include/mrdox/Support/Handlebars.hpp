@@ -244,6 +244,7 @@ private:
     dom::Object hashes_;
     std::string_view name_;
     std::vector<std::string_view> blockParams_;
+    std::function<void(dom::Value, dom::Array const&)> const* logger_;
     friend class Handlebars;
 
 public:
@@ -564,6 +565,22 @@ public:
     name() const {
         return name_;
     }
+
+    /** Get the output stream used by the engine to render the template
+
+        This function returns an output stream where a helper can directly
+        write its output.
+
+        This is particularly useful for helpers that render long blocks,
+        so that they can write directly to the output stream instead of
+        building a string in dynamic memory before returning it.
+
+        @return The output stream of the parent template engine context
+     */
+    OutputRef
+    output() const {
+        return *output_;
+    }
 };
 
 /** A handlebars template engine environment
@@ -607,6 +624,7 @@ class Handlebars {
 
     partials_map partials_;
     helpers_map helpers_;
+    std::function<void(dom::Value, dom::Array const&)> logger_;
 
 public:
     Handlebars();
@@ -735,14 +753,14 @@ public:
         using R = std::invoke_result_t<F, dom::Array const&, HandlebarsCallback const&>;
         static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
         registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
-            dom::Array const& args, HandlebarsCallback const& cb) -> std::pair<dom::Value, bool> {
+            dom::Array const& args, HandlebarsCallback const& options) -> std::pair<dom::Value, bool> {
            if constexpr (!std::same_as<R, void>)
            {
-               return {helper(args, cb), true};
+               return {helper(args, options), true};
            }
            else
            {
-               helper(args, cb);
+               helper(args, options);
                return {nullptr, false};
            }
         }));
@@ -840,6 +858,23 @@ public:
             helpers_.erase(it);
     }
 
+    /** Register a logger
+
+        This function registers a logger with the handlebars engine.
+        A logger is a function that is called from the built-in
+        "log" helper function.
+
+        The logger can also be called from any helper through the
+        `HandlebarsCallback` parameter.
+
+        The logger function is called with a `dom::Value` indicating the
+        current level and a `dom::Array` containing values to be logged.
+
+        @param fn The logger function
+     */
+    void
+    registerLogger(std::function<void(dom::Value, dom::Array const&)> fn);
+
     struct Tag;
 
 private:
@@ -920,7 +955,7 @@ private:
         dom::Object const& data,
         dom::Object const& blockValues,
         dom::Array &args,
-        HandlebarsCallback &cb) const;
+        HandlebarsCallback &options) const;
 
     std::pair<dom::Value, bool>
     evalExpr(
@@ -1026,6 +1061,29 @@ lookupProperty(
     dom::Value const &data,
     std::string_view path);
 
+/// @copydoc lookupProperty
+MRDOX_DECL
+std::pair<dom::Value, bool>
+lookupProperty(
+    dom::Object const &data,
+    std::string_view path);
+
+/// @copydoc lookupProperty
+MRDOX_DECL
+std::pair<dom::Value, bool>
+lookupProperty(
+    dom::Value const& data,
+    dom::Value const& path);
+
+/// @copydoc lookupProperty
+template <std::convertible_to<std::string_view> S>
+std::pair<dom::Value, bool>
+lookupProperty(
+    dom::Value const& data,
+    S const& path) {
+    return lookupProperty(data, std::string_view(path));
+}
+
 /** Stringify a value as JSON
 
     This function converts a dom::Value to a string as if
@@ -1055,25 +1113,30 @@ registerBuiltinHelpers(Handlebars& hbs);
 
 /// "if" helper function
 /**
- * You can use the if helper to conditionally render a block. If its argument returns false, undefined, null,
- * "", 0, or [], Handlebars will not render the block.
+ * You can use the if helper to conditionally render a block.
+ * If its argument returns false, undefined, null, "", 0, or [],
+ * Handlebars will not render the block.
+ *
+ * The if block helper has special logic where is uses the first
+ * argument as a conditional but uses the block content itself as the
+ * item to render.
  */
 MRDOX_DECL
-dom::Value
+void
 if_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /// "unless" helper function
 /**
- * You can use the unless helper as the inverse of the if helper. Its block will be rendered if the expression
- * returns a falsy value.
+ * You can use the unless helper as the inverse of the if helper. Its block
+ * will be rendered if the expression returns a falsy value.
  */
 MRDOX_DECL
-dom::Value
+void
 unless_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 
 /// "unless" helper function
@@ -1081,10 +1144,10 @@ unless_fn(
  * The with-helper allows you to change the evaluation context of template-part.
  */
 MRDOX_DECL
-dom::Value
+void
 with_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /// "each" helper function
 /**
@@ -1093,10 +1156,10 @@ with_fn(
  * Inside the block, you can use {{this}} to reference the element being iterated over.
  */
 MRDOX_DECL
-dom::Value
+void
 each_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /// "log" helper function
 /**
@@ -1106,7 +1169,7 @@ MRDOX_DECL
 dom::Value
 lookup_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /// "log" helper function
 /**
@@ -1116,7 +1179,7 @@ MRDOX_DECL
 void
 log_fn(
     dom::Array const& conditional,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /// "helperMissing" helper function
 /**
@@ -1147,7 +1210,7 @@ log_fn(
 void
 helper_missing_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /// "blockHelperMissing" helper function
 /**
@@ -1176,17 +1239,16 @@ helper_missing_fn(
  * This default behavior can be overridden by registering a custom
  * blockHelperMissing helper.
  */
-dom::Value
+void
 block_helper_missing_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /// No operation helper
-dom::Value
+void
 noop_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
-
+    HandlebarsCallback const& options);
 
 /** Register all the Antora helpers into a Handlebars instance
 
@@ -1203,7 +1265,7 @@ registerAntoraHelpers(Handlebars& hbs);
  *  The "and" helper returns true if all of the values are truthy.
  */
 MRDOX_DECL
-dom::Value
+bool
 and_fn(dom::Array const& args);
 
 /** "or" helper function
@@ -1211,7 +1273,7 @@ and_fn(dom::Array const& args);
  *  The "or" helper returns true if any of the values are truthy.
  */
 MRDOX_DECL
-dom::Value
+bool
 or_fn(dom::Array const& args);
 
 /** "eq" helper function
@@ -1219,7 +1281,7 @@ or_fn(dom::Array const& args);
  *  The "eq" helper returns true if all of the values are equal.
  */
 MRDOX_DECL
-dom::Value
+bool
 eq_fn(dom::Array const& args);
 
 /** "ne" helper function
@@ -1227,7 +1289,7 @@ eq_fn(dom::Array const& args);
  *  The "ne" helper returns true if any of the values are not equal.
  */
 MRDOX_DECL
-dom::Value
+bool
 ne_fn(dom::Array const& args);
 
 /** "not" helper function
@@ -1235,7 +1297,7 @@ ne_fn(dom::Array const& args);
  *  The "not" helper returns true if not all of the values are truthy.
  */
 MRDOX_DECL
-dom::Value
+bool
 not_fn(dom::Array const& arg);
 
 /** "increment" helper function
@@ -1247,7 +1309,7 @@ MRDOX_DECL
 dom::Value
 increment_fn(
     dom::Array const &args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /** "detag" helper function
  *
@@ -1255,10 +1317,10 @@ increment_fn(
  *  input to remove all HTML tags.
  */
 MRDOX_DECL
-dom::Value
+std::string
 detag_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /** "relativize" helper function
  *
@@ -1268,14 +1330,14 @@ MRDOX_DECL
 dom::Value
 relativize_fn(
     dom::Array const& args,
-    HandlebarsCallback const& cb);
+    HandlebarsCallback const& options);
 
 /** "year" helper function
  *
  *  The "year" helper returns the current year as an integer.
  */
 MRDOX_DECL
-dom::Value
+int
 year_fn();
 
 } // helpers

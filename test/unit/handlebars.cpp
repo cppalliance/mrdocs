@@ -52,17 +52,26 @@ main() {
     /////////////////////////////////////////////////////////////////
     // Fixtures
     /////////////////////////////////////////////////////////////////
-    std::string_view template_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc.hbs";
+    std::string_view template_path =
+        MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc.hbs";
     std::string_view partial_paths[] = {
         MRDOX_UNIT_TEST_DIR "/fixtures/record-detail.adoc.hbs",
         MRDOX_UNIT_TEST_DIR "/fixtures/escaped.adoc.hbs"};
-    std::string_view output_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc";
-    std::string_view error_output_path = MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test_error.adoc";
+    std::string_view output_path =
+        MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc";
+    std::string_view error_output_path =
+        MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test_error.adoc";
+    std::string_view logger_output_path =
+        MRDOX_UNIT_TEST_DIR "/fixtures/logger_output.txt";
+    std::string_view logger_error_output_path =
+        MRDOX_UNIT_TEST_DIR "/fixtures/logger_output_error.txt";
+
     auto template_text_r = files::getFileText(template_path);
     REQUIRE(template_text_r);
     auto master_file_contents_r = files::getFileText(output_path);
     auto template_str = *template_text_r;
     REQUIRE_FALSE(template_str.empty());
+    auto master_logger_output_r = files::getFileText(logger_output_path);
 
     HandlebarsOptions options;
     options.noHTMLEscape = true;
@@ -405,6 +414,21 @@ main() {
     });
 
     /////////////////////////////////////////////////////////////////
+    // Register logger
+    /////////////////////////////////////////////////////////////////
+    std::string log;
+    hbs.registerLogger([&log](dom::Value level, dom::Array const& args){
+        log += fmt::format("[{}] ", level);
+        for (std::size_t i = 0; i < args.size(); ++i) {
+            if (i != 0) {
+                log += ", ";
+            }
+            log += args[i].getString();
+        }
+        log += '\n';
+    });
+
+    /////////////////////////////////////////////////////////////////
     // Register partials
     /////////////////////////////////////////////////////////////////
     // From files
@@ -461,6 +485,33 @@ main() {
         }
         REQUIRE(rendered_text.size() == master_file_contents.size());
         REQUIRE(rendered_text == master_file_contents);
+    }
+
+    /////////////////////////////////////////////////////////////////
+    // Render and diff logger output
+    /////////////////////////////////////////////////////////////////
+    // Compare template with reference
+    if (!master_logger_output_r || master_logger_output_r->empty()) {
+        // Write logger output to file with ofstream
+        std::ofstream out((std::string(logger_output_path)));
+        REQUIRE(out);
+        fmt::println("Logger output:\n{}", log);
+        out << log;
+    } else {
+        // Compare logger output with reference
+        auto master_logger_output = *master_logger_output_r;
+        DiffStringsResult diff = diffStrings(master_logger_output, log);
+        if (diff.added > 0 || diff.removed > 0) {
+            std::ofstream out((std::string(logger_error_output_path)));
+            REQUIRE(out);
+            out << log;
+
+            fmt::println("DIFF:\n=====================\n{}\n=====================", diff.diff);
+            REQUIRE(diff.added == 0);
+            REQUIRE(diff.removed == 0);
+        }
+        REQUIRE(log.size() == master_logger_output.size());
+        REQUIRE(log == master_logger_output);
     }
 
     fmt::println("All tests passed!");
