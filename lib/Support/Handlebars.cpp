@@ -18,6 +18,7 @@
 #include <chrono>
 #include <algorithm>
 #include <unordered_set>
+#include <utility>
 
 namespace clang {
 namespace mrdox {
@@ -67,12 +68,12 @@ public:
     ~OverlayObjectImpl() override = default;
 
     OverlayObjectImpl(dom::Object parent)
-        : parent_(parent)
+        : parent_(std::move(parent))
     {}
 
     OverlayObjectImpl(dom::Object child, dom::Object parent)
-        : parent_(parent)
-        , child_(child)
+        : parent_(std::move(parent))
+        , child_(std::move(child))
     {}
 
     std::size_t size() const override {
@@ -98,7 +99,7 @@ public:
         return nullptr;
     }
 
-    void set(std::string_view key, dom::Value value) override {
+    void set(dom::String key, dom::Value value) override {
         child_.set(key, std::move(value));
     };
 };
@@ -1292,7 +1293,7 @@ renderExpression(
         HandlebarsCallback cb;
         cb.name_ = tag.helper;
         cb.context_ = &context;
-        cb.data_ = private_data;
+        cb.data_ = &private_data;
         setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
         auto [res, render] = fn(args, cb);
         if (render) {
@@ -1480,7 +1481,7 @@ renderPartial(
                 auto [value, defined] = evalExpr(data, private_data, blockValues, expr);
                 if (defined && value.isObject())
                 {
-                    partialCtx = value.getObject();
+                    partialCtx = createFrame(value.getObject());
                 }
                 continue;
             }
@@ -1533,7 +1534,7 @@ renderBlock(
     HandlebarsCallback cb;
     cb.name_ = tag.helper;
     cb.context_ = &context;
-    cb.data_ = data;
+    cb.data_ = &data;
     cb.output_ = &out;
     bool const isNoArgBlock = tag.arguments.empty();
     auto [fn, found] = getHelper(tag.helper, isNoArgBlock);

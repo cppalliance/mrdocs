@@ -239,7 +239,7 @@ private:
     callback_type inverse_;
     dom::Value const* context_{ nullptr };
     OutputRef* output_{ nullptr };
-    dom::Object data_;
+    dom::Object const* data_;
     std::vector<std::string_view> ids_;
     dom::Object hashes_;
     std::string_view name_;
@@ -510,15 +510,9 @@ public:
     }
 
     /// Private data passed to the callback
-    dom::Object&
-    data() {
-        return data_;
-    }
-
-    /// Private data passed to the callback
     dom::Object const&
     data() const {
-        return data_;
+        return *data_;
     }
 
     /// Extra key value pairs passed to the callback
