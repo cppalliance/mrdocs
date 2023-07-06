@@ -82,6 +82,41 @@ forEachFile(
 
 namespace files {
 
+Expected<FileType>
+getFileType(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if(auto ec = fs::status(pathName, fileStatus))
+    {
+        if(ec == std::errc::no_such_file_or_directory)
+            return FileType::not_found;
+        return Error(ec);
+    }
+    switch(fileStatus.type())
+    {
+    case fs::file_type::regular_file:
+        return FileType::regular;
+
+    case fs::file_type::directory_file:
+        return FileType::directory;
+
+    case fs::file_type::symlink_file:
+    case fs::file_type::block_file:
+    case fs::file_type::character_file:
+    case fs::file_type::fifo_file:
+    case fs::file_type::socket_file:
+    case fs::file_type::type_unknown:
+        return FileType::other;
+
+    case fs::file_type::file_not_found:
+    case fs::file_type::status_error:
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
 bool
 isAbsolute(
     std::string_view pathName) noexcept
@@ -224,6 +259,19 @@ makePosixStyle(
         if(c == '\\')
             c = '/';
     return result;
+}
+
+std::string
+withExtension(
+    std::string_view fileName,
+    std::string_view ext)
+{
+    namespace path = llvm::sys::path;
+
+    SmallPathString temp(fileName);
+    path::replace_extension(
+        temp, ext, path::Style::windows_slash);
+    return std::string(temp);
 }
 
 std::string

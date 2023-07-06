@@ -13,7 +13,7 @@
 #include "CorpusImpl.hpp"
 #include "ToolArgs.hpp"
 #include "ToolExecutor.hpp"
-#include "AST/AbsoluteCompilationDatabase.hpp"
+#include "Tool/AbsoluteCompilationDatabase.hpp"
 #include <mrdox/Generators.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>

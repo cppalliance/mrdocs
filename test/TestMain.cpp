@@ -10,6 +10,7 @@
 
 #include "test_suite.hpp"
 #include "TestArgs.hpp"
+#include "TestRunner.hpp"
 #include "Tool/Addons.hpp"
 #include "Support/Debug.hpp"
 #include <mrdox/Platform.hpp>
@@ -27,7 +28,65 @@ int main(int argc, char** argv);
 namespace clang {
 namespace mrdox {
 
-extern int DoTestAction();
+int
+DoTestAction()
+{
+    using namespace clang::mrdox;
+
+    TestRunner runner;
+    for(auto const& inputPath : testArgs.inputPaths)
+        if(auto err = runner.checkPath(inputPath))
+            reportError(err, "check path \"{}\"", inputPath);
+
+    auto& os = debug_outs();
+    if(runner.results.numberofFilesWritten > 0)
+        os <<
+            runner.results.numberofFilesWritten << " files written\n";
+    os <<
+        "Checked " <<
+        runner.results.numberOfFiles << " files (" <<
+        runner.results.numberOfDirs << " dirs)";
+    if( runner.results.numberOfErrors > 0 ||
+        runner.results.numberOfFailures > 0)
+    {
+        if( runner.results.numberOfErrors > 0)
+        {
+            os <<
+                ", with " <<
+                runner.results.numberOfErrors << " errors";
+            if(runner.results.numberOfFailures > 0)
+                os <<
+                    " and " << runner.results.numberOfFailures <<
+                    " failures";
+        }
+        else
+        {
+            os <<
+                ", with " <<
+                runner.results.numberOfFailures <<
+                " failures";
+        }
+    }
+    auto milli = runner.results.elapsedMilliseconds();
+    if(milli < 10000)
+        os <<
+            " in " << milli << " milliseconds\n";
+#if 0
+    else if(milli < 10000)
+        os <<
+            " in " << std::setprecision(1) <<
+            double(milli) / 1000 << " seconds\n";
+#endif
+    else
+        os <<
+            " in " << ((milli + 500) / 1000) <<
+            " seconds\n";
+
+    if( runner.results.numberOfFailures > 0 ||
+        runner.results.numberOfErrors > 0)
+        return EXIT_FAILURE;
+    return EXIT_SUCCESS;
+}
 
 int test_main(int argc, char const* const* argv)
 {

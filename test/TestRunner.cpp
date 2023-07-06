@@ -8,8 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "TestRunner.hpp"
 #include "TestArgs.hpp"
 #include "Support/Error.hpp"
+#include "Support/Path.hpp"
+#include "Tool/AbsoluteCompilationDatabase.hpp"
 #include "Tool/ConfigImpl.hpp"
 #include "Tool/CorpusImpl.hpp"
 #include "Tool/SingleFileDB.hpp"
@@ -32,120 +35,13 @@
 namespace clang {
 namespace mrdox {
 
-using SmallString = llvm::SmallString<0>;
-
-//------------------------------------------------
-
-struct Results
-{
-    using clock_type = std::chrono::system_clock;
-
-    clock_type::time_point startTime;
-    std::atomic<std::size_t> numberOfDirs = 0;
-    std::atomic<std::size_t> numberOfFiles = 0;
-    std::atomic<std::size_t> numberOfErrors = 0;
-    std::atomic<std::size_t> numberOfFailures = 0;
-    std::atomic<std::size_t> numberofFilesWritten = 0;
-
-    Results()
-        : startTime(clock_type::now())
-    {
-    }
-
-    // Return the number of milliseconds of elapsed time
-    auto
-    elapsedMilliseconds() const noexcept
-    {
-        return std::chrono::duration_cast<
-            std::chrono::milliseconds>(
-                clock_type::now() - startTime).count();
-    }
-};
-
-//------------------------------------------------
-
-// We need a different config for each directory
-// or file passed on the command line, and thus
-// each input path must have a separate TestRunner.
-
-class TestRunner
-{
-    ThreadPool threadPool_;
-    Results& results_;
-    std::string extraYaml_;
-    llvm::ErrorOr<std::string> diff_;
-    Generator const* xmlGen_;
-
-    std::shared_ptr<Config const>
-    makeConfig(
-        llvm::StringRef workingDir);
-
-    Error
-    writeFile(
-        llvm::StringRef filePath,
-        llvm::StringRef contents);
-
-    Error
-    handleFile(
-        llvm::StringRef filePath,
-        std::shared_ptr<Config const> const& config);
-
-    Error
-    handleDir(
-        llvm::StringRef dirPath);
-
-public:
-    TestRunner(
-        Results& results,
-        llvm::StringRef extraYaml);
-
-    /** Check a single file, or a directory recursively.
-
-        This function checks the specified path
-        and blocks until completed.
-    */
-    Error
-    checkPath(
-        llvm::StringRef inputPath);
-};
-
-//------------------------------------------------
-
 TestRunner::
-TestRunner(
-    Results& results,
-    llvm::StringRef extraYaml)
+TestRunner()
     : threadPool_(1)
-    , results_(results)
-    , extraYaml_(extraYaml)
-    , diff_(llvm::sys::findProgramByName("diff"))
+    , diffCmdPath_(llvm::sys::findProgramByName("diff"))
     , xmlGen_(getGenerators().find("xml"))
 {
     MRDOX_ASSERT(xmlGen_ != nullptr);
-}
-
-std::shared_ptr<Config const>
-TestRunner::
-makeConfig(
-    llvm::StringRef workingDir)
-{
-    std::string configYaml;
-    llvm::raw_string_ostream(configYaml) <<
-        "verbose: false\n"
-        "source-root: " << workingDir << "\n"
-        "with-private: true\n"
-        "generator:\n"
-        "  xml:\n"
-        "    index: false\n"
-        "    prolog: true\n";
-
-    std::error_code ec;
-    auto config = loadConfigString(
-        workingDir, testArgs.addonsDir, configYaml);
-    if (!config)
-      reportError(config.error(), "load the configuration string");
-    MRDOX_ASSERT(config);
-    return *config;
 }
 
 Error
@@ -158,16 +54,16 @@ writeFile(
     llvm::raw_fd_ostream os(filePath, ec, llvm::sys::fs::OF_None);
     if(ec)
     {
-        results_.numberOfErrors++;
+        results.numberOfErrors++;
         return formatError("raw_fd_ostream(\"{}\") returned \"{}\"", filePath, ec);
     }
     os << contents;
     if(os.error())
     {
-        results_.numberOfErrors++;
+        results.numberOfErrors++;
         return formatError("raw_fd_ostream::write returned \"{}\"", os.error());
     }
-    results_.numberofFilesWritten++;
+    results.numberofFilesWritten++;
     return Error::success();
 }
 
@@ -175,25 +71,56 @@ Error
 TestRunner::
 handleFile(
     llvm::StringRef filePath,
-    std::shared_ptr<Config const> const& config)
+    std::shared_ptr<ConfigImpl const> config)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
     MRDOX_ASSERT(path::extension(filePath).compare_insensitive(".cpp") == 0);
 
-    results_.numberOfFiles++;
+    // Check file-specific config
+    if(! config)
+    {
+        auto configPath = files::withExtension(filePath, "yml");
+        auto ft = files::getFileType(configPath);
+        if(! ft)
+            return ft.error();
+        if(ft.value() == files::FileType::regular)
+        {
+            auto result = loadConfigFile(
+                configPath, testArgs.addonsDir, "", config);
+            if(! result)
+            {
+                results.numberOfErrors++;
+                reportWarning("Error loading \"{}\": {}", filePath, result.error());
+                return Error::success();
+            }
+            config = result.value();
+        }
 
-    SmallString dirPath = filePath;
+        if(! config)
+        {
+            reportWarning(fmt::format("Error: \"{}\", missing configuration file", filePath));
+            return Error::success();
+        }
+    }
+
+    results.numberOfFiles++;
+
+    SmallPathString dirPath = filePath;
     path::remove_filename(dirPath);
 
-    SmallString outputPath = filePath;
+    SmallPathString outputPath = filePath;
     path::replace_extension(outputPath, xmlGen_->fileExtension());
 
     // Build Corpus
     std::unique_ptr<Corpus> corpus;
     {
-        SingleFileDB db(dirPath, filePath);
+        SingleFileDB db1(filePath);
+        auto workingDir = files::getParentDir(filePath);
+        // Convert relative paths to absolute
+        AbsoluteCompilationDatabase db(
+            llvm::StringRef(workingDir), db1, config);
         ToolExecutor ex(*config, db);
         auto result = CorpusImpl::build(ex, config);
         if(! result)
@@ -209,7 +136,7 @@ handleFile(
     if(auto err = xmlGen_->buildOneString(generatedXml, *corpus))
     {
         reportError(err, "build XML string for \"{}\"", filePath);
-        results_.numberOfErrors++;
+        results.numberOfErrors++;
         return Error::success(); // keep going
     }
 
@@ -222,7 +149,7 @@ handleFile(
             if(! result)
             {
                 // File could not be loaded
-                results_.numberOfErrors++;
+                results.numberOfErrors++;
 
                 if( result.getError() != std::errc::no_such_file_or_directory)
                 {
@@ -248,7 +175,7 @@ handleFile(
             generatedXml != expectedXml->getBuffer())
         {
             // The output did not match
-            results_.numberOfFailures++;
+            results.numberOfFailures++;
             reportError("Test for \"{}\" failed", filePath);
 
             if(testArgs.badOption.getValue())
@@ -261,19 +188,19 @@ handleFile(
                     llvm::raw_fd_ostream os(bad, ec, llvm::sys::fs::OF_None);
                     if (ec)
                     {
-                        results_.numberOfErrors++;
+                        results.numberOfErrors++;
                         return formatError("raw_fd_ostream(\"{}\") returned \"{}\"", bad, ec);
                     }
                     os << generatedXml;
                 }
 
                 // VFALCO We are calling this over and over again instead of once?
-                if(! diff_.getError())
+                if(! diffCmdPath_.getError())
                 {
                     path::replace_extension(bad, "xml");
                     std::array<llvm::StringRef, 5u> args {
-                        diff_.get(), "-u", "--color", outputPath, bad };
-                    llvm::sys::ExecuteAndWait(diff_.get(), args);
+                        diffCmdPath_.get(), "-u", "--color", outputPath, bad };
+                    llvm::sys::ExecuteAndWait(diffCmdPath_.get(), args);
                 }
 
                 // Fix the path for the code that follows
@@ -291,7 +218,7 @@ handleFile(
         // Refresh the expected output file
         if(auto err = writeFile(outputPath, generatedXml))
         {
-            results_.numberOfErrors++;
+            results.numberOfErrors++;
             return Error::success();
         }
     }
@@ -302,27 +229,44 @@ handleFile(
 Error
 TestRunner::
 handleDir(
-    llvm::StringRef dirPath)
+    std::string dirPath,
+    std::shared_ptr<ConfigImpl const> config)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    results_.numberOfDirs++;
+    dirPath = files::makeDirsy(dirPath);
+
+    results.numberOfDirs++;
 
     // Set up directory iterator
     std::error_code ec;
     fs::directory_iterator iter(dirPath, ec, false);
     if(ec)
-        return formatError("fs::directory_iterator(\"{}\") returned \"{}\"", dirPath, ec);
+        return Error(ec);
     fs::directory_iterator const end{};
 
-    auto const config = makeConfig(dirPath);
+    // Check directory-wide config
+    {
+        auto configPath = files::appendPath(dirPath, "mrdox.yml");
+        auto ft = files::getFileType(configPath);
+        if(! ft)
+            return ft.error();
+        if(ft.value() == files::FileType::regular)
+        {
+            auto result = loadConfigFile(
+                configPath, testArgs.addonsDir, "", config);
+            if(! result)
+                return result.error();
+            config = result.value();
+        }
+    }
 
     while(iter != end)
     {
         if(iter->type() == fs::file_type::directory_file)
         {
-            if(auto err = handleDir(iter->path()))
+            if(auto err = handleDir(iter->path(), config))
                 return err;
         }
         else if(
@@ -330,7 +274,7 @@ handleDir(
             path::extension(iter->path()).equals_insensitive(".cpp"))
         {
             threadPool_.async(
-                [this, config, filePath = SmallString(iter->path())]
+                [this, config, filePath = SmallPathString(iter->path())]
                 {
                     handleFile(filePath, config).operator bool();
                 });
@@ -349,116 +293,63 @@ handleDir(
 Error
 TestRunner::
 checkPath(
-    llvm::StringRef inputPath)
+    std::string inputPath)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    // See if inputPath references a file or directory
-    fs::file_status fileStatus;
-    if(auto ec = fs::status(inputPath, fileStatus))
-    {
-        results_.numberOfErrors++;
-        return formatError("fs::status(\"{}\") returned \"{}\"", inputPath, ec);
-    }
+    inputPath = files::normalizePath(inputPath);
 
-    if(fileStatus.type() == fs::file_type::regular_file)
+    // See if inputPath references a file or directory
+    auto fileType = files::getFileType(inputPath);
+    if(! fileType)
+        return fileType.error();
+
+    switch(fileType.value())
+    {
+    case files::FileType::regular:
     {
         auto const ext = path::extension(inputPath);
         if(! ext.equals_insensitive(".cpp"))
             return formatError("\"{}\" is not a .cpp file");
 
-        // Calculate the workingDir
-        SmallString workingDir(inputPath);
-        path::remove_filename(workingDir);
-        path::remove_dots(workingDir, true);
+        std::shared_ptr<ConfigImpl const> config;
 
-        auto config = makeConfig(workingDir);
+        // Check directory-wide config
+        {
+            auto configPath = files::appendPath(
+                files::getParentDir(inputPath), "mrdox.yml");
+            auto ft = files::getFileType(configPath);
+            if(ft && ft.value() == files::FileType::regular)
+            {
+                auto result = loadConfigFile(
+                    configPath, testArgs.addonsDir);
+                if(! result)
+                    return result.error();
+                config = result.value();
+            }
+        }
+
         auto err = handleFile(inputPath, config);
         threadPool_.wait();
         return err;
     }
 
-    if(fileStatus.type() == fs::file_type::directory_file)
+    case files::FileType::directory:
     {
         // Iterate this directory and all its children
-        SmallString dirPath(inputPath);
-        path::remove_dots(dirPath, true);
-        auto err = handleDir(dirPath);
+        auto err = handleDir(files::makeDirsy(inputPath), nullptr);
         threadPool_.wait();
         return err;
     }
 
-    return formatError("fs::file_type was not directory_file");
-}
+    case files::FileType::not_found:
+        return Error(std::make_error_code(
+            std::errc::no_such_file_or_directory));
 
-int
-DoTestAction()
-{
-    using namespace clang::mrdox;
-
-    std::string extraYaml;
-    llvm::raw_string_ostream(extraYaml) <<
-        "concurrency: 1\n";
-    Results results;
-    for(auto const& inputPath : testArgs.inputPaths)
-    {
-        TestRunner instance(results, extraYaml);
-        if(auto err = instance.checkPath(inputPath))
-        {
-            reportError(err, "check path \"{}\"", inputPath);
-            break;
-        }
+    default:
+        return Error("unknown FileType");
     }
-
-    auto& os = debug_outs();
-    if(results.numberofFilesWritten > 0)
-        os <<
-            results.numberofFilesWritten << " files written\n";
-    os <<
-        "Checked " <<
-        results.numberOfFiles << " files (" <<
-        results.numberOfDirs << " dirs)";
-    if( results.numberOfErrors > 0 ||
-        results.numberOfFailures > 0)
-    {
-        if( results.numberOfErrors > 0)
-        {
-            os <<
-                ", with " <<
-                results.numberOfErrors << " errors";
-            if(results.numberOfFailures > 0)
-                os <<
-                    " and " << results.numberOfFailures <<
-                    " failures";
-        }
-        else
-        {
-            os <<
-                ", with " <<
-                results.numberOfFailures <<
-                " failures";
-        }
-    }
-    auto milli = results.elapsedMilliseconds();
-    if(milli < 10000)
-        os <<
-            " in " << milli << " milliseconds\n";
-#if 0
-    else if(milli < 10000)
-        os <<
-            " in " << std::setprecision(1) <<
-            double(milli) / 1000 << " seconds\n";
-#endif
-    else
-        os <<
-            " in " << ((milli + 500) / 1000) <<
-            " seconds\n";
-
-    if( results.numberOfFailures > 0 ||
-        results.numberOfErrors > 0)
-        return EXIT_FAILURE;
-    return EXIT_SUCCESS;
 }
 
 } // mrdox

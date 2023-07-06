@@ -1,0 +1,5 @@
+#ignore-failures: true
+verbose: false
+concurrency: 1
+source-root: .
+single-page: true
