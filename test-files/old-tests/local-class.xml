@@ -2,20 +2,20 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace>
-  <struct name="A" id="iyPnRqvK5CeWtYJ+M257FJexgOs=">
-    <file path="local-class.cpp" line="3" class="def"/>
-    <function name="g" id="40OVwcIE9X1XM0YEYllS8H21wzk=">
-      <file path="local-class.cpp" line="5"/>
+  <struct name="A" id="OhDTqBe4/sw3kfEe1/rfVoLg//I=">
+    <file path="local-class.cpp" line="1" class="def"/>
+    <function name="g" id="3q6bOh6HrO+T0TeZ36BHKWeZRv4=">
+      <file path="local-class.cpp" line="1"/>
     </function>
   </struct>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file path="local-class.cpp" line="1" class="def"/>
     <return>
-      <type class="tag" id="iyPnRqvK5CeWtYJ+M257FJexgOs=" name="A"/>
+      <type class="tag" id="OhDTqBe4/sw3kfEe1/rfVoLg//I=" name="A"/>
     </return>
   </function>
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
-    <file path="local-class.cpp" line="10" class="def"/>
+    <file path="local-class.cpp" line="1" class="def"/>
     <base>
       <type name="decltype(f())"/>
     </base>
