@@ -78,7 +78,7 @@ requires(St &st, std::string_view sv)
 /** Reference to output stream used by handlebars
 
     This class is used to internally pass an output stream to the
-    handlebars engine.
+    handlebars environment.
 
     It allows many types to be used as output streams, including
     std::string, std::ostream, llvm::raw_string_ostream, and others.
@@ -125,7 +125,7 @@ private:
     noop_output(void *, std::string_view) {}
 
     // Noop constructor
-    // Used as implementation detail by Handlebars engine
+    // Used as implementation detail by Handlebars environment
     OutputRef()
         : out_( nullptr )
         , fptr_( &noop_output )
@@ -566,7 +566,7 @@ public:
         return name_;
     }
 
-    /** Get the output stream used by the engine to render the template
+    /** Get the output stream used by the environment to render the template
 
         This function returns an output stream where a helper can directly
         write its output.
@@ -575,7 +575,7 @@ public:
         so that they can write directly to the output stream instead of
         building a string in dynamic memory before returning it.
 
-        @return The output stream of the parent template engine context
+        @return The output stream of the parent template environment context
      */
     OutputRef
     output() const {
@@ -583,17 +583,145 @@ public:
     }
 };
 
-/** A handlebars template engine environment
+/** A handlebars environment
 
-    This class implements a handlebars template engine environment.
+    This class implements a handlebars template environment.
+
     It is analogous to the complete state held by the handlebars.js
     module, including registered helpers and partials.
 
-    A handlebars template can be rendered using the context data provided
-    as a dom::Value, which is usually a dom::Object at the first level.
+    In the general case, handlebars.js provides a global `Handlebars`
+    environment where helpers and partials are registered:
 
-    The result can returned as a string or rendered directly to an
-    stream.
+    @code{.js}
+      let template = Handlebars.compile("{{foo}}");
+      let result = template({foo: "bar"});
+    @endcode
+
+    but also provides a way to create a new isolated environment with its own
+    helpers and partials:
+
+    @code{.js}
+      let OtherHandlebars = Handlebars.create();
+      let template = OtherHandlebars.compile("{{foo}}");
+      let result = template({foo: "bar"});
+    @endcode
+
+    In this implementation, however, there's no global environment.
+    A new environment needs to be created explicitly be instantiating
+    this class:
+
+    @code{.cpp}
+      Handlebars env;
+      dom::Object context;
+      context["foo"] = "bar";
+      std::string result = env.render("{{ foo }}", context);
+      assert(result == "bar");
+    @endcode
+
+    A handlebars template can be rendered using the context data provided
+    as a `dom::Value`, which is usually a `dom::Object` at the first level
+    when calling `render`.
+
+    In the most general case, the result can returned as a string or rendered
+    directly to a buffer or stream. The render function provides an overload
+    that allows the caller to provide an output stream where the template
+    will be rendered directly without allocating a string:
+
+    @code{.cpp}
+      Handlebars env;
+      dom::Object context;
+      context["foo"] = "bar";
+      env.render_to(std::cout, "{{ foo }}", context);
+      // prints "bar" to stdout
+    @endcode
+
+    @code{.cpp}
+      Handlebars env;
+      dom::Object context;
+      context["foo"] = "bar";
+      std::string result;
+      env.render_to(result, "{{ foo }}", context);
+      assert(result == "bar");
+    @endcode
+
+    Design considerations:
+
+    The following notes include some design considerations for the current
+    implementation of this class. These are intended to describe the
+    current state of the class rather than to provide the final specification
+    of the class behavior.
+
+    Compiled templates:
+
+    Unlike handlebars.js, this implementation renders the template
+    directly to the output stream, without requiring an intermediary
+    object to store a representation of the compiled template
+    (`Handlebars.precompile`) or an intermediary callable object
+    required to ultimately render the template (`Handlebars.precompile`).
+
+    The rationale is that there is not much benefit in pre-compiling templates
+    in C++, since both iterating the input string and a pre-compiled template
+    would have very similar costs even in optimal implementations of the
+    compiled template.
+
+    The most significant benefit of pre-compiling templates in C++ would
+    be the faster identification of the ends of blocks, which would
+    allow the engine iterate the block only once. For this reason,
+    compiled templates will still be considered in a future version
+    of this sub-library.
+
+    Also note that compiled templates cannot avoid exceptions, because
+    a compiled template can still invoke a helper that throws exceptions
+    and evaluate dynamic expressions that cannot be identified during the
+    first pass.
+
+    Incremental rendering and compilation:
+
+    Although this is not supported by handlebars.js, it's common for
+    C++ template engines to support incremental rendering, where the
+    template is compiled or rendered in chunks as it is parsed.
+    This implementation does not yet support this feature.
+
+    This is useful for streaming templates, where the template is
+    rendered to a stream as it is parsed, without requiring the
+    entire template to be parsed and compiled before rendering
+    starts.
+
+    There are two types of incremental rendering and compilation
+    supported by this implementation:
+
+    - Incremental rendering of a partial template input to a stream
+    - Incremental rendering into an output buffer of fixed size
+
+    In each of these cases, the template is rendered in chunks
+    until the end of the partial template is reached or the output buffer
+    is full.
+
+    In a scenario with compiled templates, the complexity of incremental
+    rendering needs to be implemented for both compilation and rendering.
+
+    The main difficulty to implement incremental rendering for handlebars.js
+    is that helpers can be invoked from anywhere in the template, and
+    most content is actually rendered by helpers. This means that
+    helpers would need to be able to interoperate with whatever mechanism
+    is designed to support suspension in this recursive-coroutine-like
+    interface.
+
+    Error propagation:
+
+    The main logic to render a template is implemented in the `render`
+    function, does not throws by itself. How identifying the next tag
+    in a template string, the algorithms uses a loose implementation
+    where unclosed tags are rendered as-is instead of throwing errors.
+
+    However, helpers are allowed to throw exceptions to propagate errors,
+    so the `render` function is not `noexcept`.
+
+    For this reason, exceptions thrown by helpers are in fact exceptional
+    conditions that should be handled by the caller. In general,
+    exceptions can be avoided completely by not throwing exceptions from
+    helpers.
 
     @see https://handlebarsjs.com/
  */
@@ -627,6 +755,17 @@ class Handlebars {
     std::function<void(dom::Value, dom::Array const&)> logger_;
 
 public:
+    /** Construct a handlebars environment
+
+        This constructor creates a new handlebars environment with the
+        built-in helpers and default logger.
+
+        Each environment has its own helpers and partials. Multiple
+        environments are only necessary for use cases that demand distinct
+        helpers or partials.
+
+        @see helpers::registerBuiltinHelpers
+     */
     Handlebars();
 
     /** Render a handlebars template
@@ -662,7 +801,6 @@ public:
         @param context The data to render
         @param options The options to use
         @return The rendered text
-
      */
     void
     render_to(
@@ -673,7 +811,7 @@ public:
 
     /** Register a partial
 
-        This function registers a partial with the handlebars engine.
+        This function registers a partial with the handlebars environment.
 
         A partial is a template that can be referenced from another
         template. The partial is rendered in the context of the
@@ -705,7 +843,7 @@ public:
 
     /** Unregister a partial
 
-        This function unregisters a partial with the handlebars engine.
+        This function unregisters a partial with the handlebars environment.
 
         @param name The name of the partial
      */
@@ -718,7 +856,7 @@ public:
 
     /** Register a helper with arguments and callback parameters
 
-        This function registers a helper with the handlebars engine.
+        This function registers a helper with the handlebars environment.
         A helper is a function that can be called from a template.
 
         The helper function the parameters from the template as a
@@ -847,7 +985,7 @@ public:
 
     /** Unregister a helper
 
-        This function unregisters a helper with the handlebars engine.
+        This function unregisters a helper with the handlebars environment.
 
         @param name The name of the helper
      */
@@ -860,7 +998,7 @@ public:
 
     /** Register a logger
 
-        This function registers a logger with the handlebars engine.
+        This function registers a logger with the handlebars environment.
         A logger is a function that is called from the built-in
         "log" helper function.
 
