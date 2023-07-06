@@ -11,6 +11,7 @@
 #ifndef MRDOX_TOOL_SINGLEFILEDB_HPP
 #define MRDOX_TOOL_SINGLEFILEDB_HPP
 
+#include <mrdox/Support/Path.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <string>
 #include <utility>
@@ -27,21 +28,24 @@ class SingleFileDB
     std::vector<tooling::CompileCommand> cc_;
 
 public:
+    explicit
     SingleFileDB(
-        llvm::StringRef dir,
-        llvm::StringRef file)
+        llvm::StringRef pathName)
     {
+        auto fileName = files::getFileName(pathName);
+        auto parentDir = files::getParentDir(pathName);
+
         std::vector<std::string> cmds;
         cmds.emplace_back("clang");
         cmds.emplace_back("-std=c++20");
         cmds.emplace_back("-pedantic-errors");
         cmds.emplace_back("-Werror");
-        cmds.emplace_back(file);
+        cmds.emplace_back(fileName);
         cc_.emplace_back(
-            dir,
-            file,
+            parentDir,
+            fileName,
             std::move(cmds),
-            dir);
+            parentDir);
         cc_.back().Heuristic = "unit test";
     }
 

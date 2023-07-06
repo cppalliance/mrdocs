@@ -9,10 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Tool/ConfigImpl.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Path.hpp"
-#include "AST/AbsoluteCompilationDatabase.hpp"
+#include "Tool/ConfigImpl.hpp"
+#include "Tool/AbsoluteCompilationDatabase.hpp"
 #include <fmt/format.h>
 #include <clang/Basic/LangStandard.h>
 #include <clang/Driver/Driver.h>

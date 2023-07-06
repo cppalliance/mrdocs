@@ -72,6 +72,24 @@ forEachFile(
 
 namespace files {
 
+enum class FileType
+{
+    not_found,
+    regular,
+    directory,
+    other
+};
+
+/** Return the file type or an error
+
+    @param pathName The absolute or relative path
+    to the file.
+*/
+MRDOX_DECL
+Expected<FileType>
+getFileType(
+    std::string_view pathName);
+
 /** Return true if pathName is absolute.
 */
 MRDOX_DECL
@@ -170,6 +188,22 @@ MRDOX_DECL
 std::string
 makePosixStyle(
     std::string_view pathName);
+
+/** Return the filename with a new or different extension.
+
+    @param fileName The absolute or relative path
+    to the directory or file.
+
+    @param ext The extension to use, without a
+    leading dot. If this is empty and the path
+    contains an extension, then the extension is
+    removed.
+*/
+MRDOX_DECL
+std::string
+withExtension(
+    std::string_view fileName,
+    std::string_view ext);
 
 MRDOX_DECL
 std::string
