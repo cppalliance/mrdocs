@@ -47,7 +47,8 @@ public:
         FileFilter input;
     };
 
-    Settings const& settings() const noexcept
+    Settings const&
+    settings()const noexcept override
     {
         return settings_;
     }
@@ -78,7 +79,8 @@ public:
         llvm::StringRef workingDir,
         llvm::StringRef addonsDir,
         llvm::StringRef configYaml,
-        llvm::StringRef extraYaml);
+        llvm::StringRef extraYaml,
+        ConfigImpl const* base);
 
     ThreadPool&
     threadPool() const noexcept override
@@ -219,13 +221,18 @@ createConfigFromYAML(
     @param extraYaml An optional string containing
     additional valid YAML which will be parsed and
     applied to the existing configuration.
+
+    @param baseConfig An optional configuration
+    object. If specified, its settings will be
+    first copied before the file is loaded.
 */
 MRDOX_DECL
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
     std::string_view configFilePath,
     std::string_view addonsDir,
-    std::string_view extraYaml = "");
+    std::string_view extraYaml = "",
+    std::shared_ptr<ConfigImpl const> base = nullptr);
 
 /** Create a configuration by loading a YAML string.
 
