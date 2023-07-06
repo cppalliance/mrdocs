@@ -1150,10 +1150,8 @@ getHelper(std::string_view helper, bool isNoArgBlock) const -> std::pair<helper_
     }
     helper = !isNoArgBlock ? "helperMissing" : "blockHelperMissing";
     it = helpers_.find(helper);
-    if (it != helpers_.end()) {
-        return {it->second, false};
-    }
-    throw std::logic_error("Helper not found: " + std::string(helper));
+    MRDOX_ASSERT(it != helpers_.end());
+    return {it->second, false};
 }
 
 // Parse a block starting at templateText
@@ -1663,11 +1661,26 @@ registerPartial(
 
 void
 Handlebars::
+unregisterHelper(std::string_view name) {
+    auto it = helpers_.find(name);
+    if (it != helpers_.end())
+        helpers_.erase(it);
+    // Re-register mandatory helpers
+    if (name == "helperMissing")
+        registerHelper("helperMissing", helpers::helper_missing_fn);
+    else if (name == "blockHelperMissing")
+        registerHelper("blockHelperMissing", helpers::block_helper_missing_fn);
+}
+
+void
+Handlebars::
 registerHelperImpl(
     std::string_view name,
     helper_type const &helper)
 {
-    unregisterHelper(name);
+    auto it = helpers_.find(name);
+    if (it != helpers_.end())
+        helpers_.erase(it);
     helpers_.emplace(std::string(name), helper);
 }
 

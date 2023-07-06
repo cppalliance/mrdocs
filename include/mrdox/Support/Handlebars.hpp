@@ -990,11 +990,7 @@ public:
         @param name The name of the helper
      */
     void
-    unregisterHelper(std::string_view name) {
-        auto it = helpers_.find(name);
-        if (it != helpers_.end())
-            helpers_.erase(it);
-    }
+    unregisterHelper(std::string_view name);
 
     /** Register a logger
 
