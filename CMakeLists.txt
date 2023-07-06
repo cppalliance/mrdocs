@@ -26,14 +26,6 @@ project(
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
-#set(BUILD_SHARED_LIBS OFF CACHE STRING "")
-#set(CMAKE_CXX_EXTENSIONS OFF CACHE STRING "")
-# VFALCO this is to link optimized llvm for debug builds
-#set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL" CACHE STRING "")
-#set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON CACHE STRING "")
-#set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL ON CACHE STRING "")
-#set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO ON CACHE STRING "")
-
 option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 option(MRDOX_BUILD_SHARED "Link shared" OFF)
 option(MRDOX_BUILD_DOCS "Configure install target" OFF)
@@ -58,11 +50,7 @@ if (WIN32)
     add_definitions(
         -D_CRT_SECURE_NO_WARNINGS
         -D_SILENCE_CXX20_CISO646_REMOVED_WARNING)
-    if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win32") # 32-bit
-        add_compile_options(
-            /arch:SSE2
-        )
-    elseif("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win64") # 64-bit
+    if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win64") # 64-bit
         add_compile_options(
             /arch:AMD64
         )
@@ -149,6 +137,21 @@ target_include_directories(mrdox-core SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
 target_include_directories(mrdox-core SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
 target_link_libraries(mrdox-core PUBLIC fmt::fmt duktape::duktape)
 
+# Clang
+if (CLANG_SIMPLE_LIBS)
+    target_link_libraries(mrdox-core PUBLIC LLVM clang clang-cpp)
+else()
+    target_link_libraries(mrdox-core
+            PUBLIC
+            clangAST
+            clangBasic
+            clangFrontend
+            clangIndex
+            clangTooling
+            clangToolingCore
+            clangToolingInclusions)
+endif()
+
 # Windows, Win64
 if (WIN32)
     target_compile_definitions(
@@ -197,7 +200,6 @@ file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS tool/*.cpp)
 file(GLOB_RECURSE TOOL_INCLUDES CONFIGURE_DEPENDS tool/*.hpp)
 add_executable(mrdox ${TOOL_SOURCES} ${TOOL_INCLUDES})
 
-target_compile_features(mrdox PUBLIC cxx_std_20)
 target_include_directories(mrdox
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
@@ -207,72 +209,12 @@ target_include_directories(mrdox
     "${PROJECT_SOURCE_DIR}/lib"
     "${PROJECT_SOURCE_DIR}/tool"
 )
-target_compile_definitions(
-    mrdox
-    PUBLIC
-    ${MRDOX_LINK_MODE_DEFINITION}
-    PRIVATE
-    -DMRDOX_TOOL
-)
 
+target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
 target_link_libraries(mrdox PUBLIC mrdox-core)
-
-# LLVM
-target_link_libraries(mrdox PUBLIC ${llvm_libs})
-target_include_directories(mrdox SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
-
-# Clang
-if (CLANG_SIMPLE_LIBS)
-    target_link_libraries(mrdox PUBLIC LLVM clang clang-cpp)
-else()
-    target_link_libraries(mrdox
-        PUBLIC
-        clangAST
-        clangBasic
-        clangFrontend
-        clangIndex
-        clangTooling
-        clangToolingCore
-        clangToolingInclusions)
-endif()
-target_include_directories(mrdox SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
-
-# fmt
-target_link_libraries(mrdox PUBLIC fmt::fmt duktape::duktape)
-
-# Windows, Win64
-if (WIN32)
-    target_compile_definitions(
-        mrdox
-        PUBLIC
-        -D_WIN32_WINNT=0x0601
-        -D_CRT_SECURE_NO_WARNINGS
-        -D_SILENCE_CXX20_CISO646_REMOVED_WARNING
-        -DFMT_HEADER_ONLY # because of _ITERATOR_DEBUG_LEVEL
-    )
-    get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
-    if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
-        target_compile_definitions(mrdox PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
-        target_compile_options(mrdox PUBLIC /MD)
-    endif()
-    if(MSVC)
-        target_compile_options(
-            mrdox
-            PUBLIC
-            /permissive-    # strict C++
-            /W4             # enable all warnings
-            /MP             # multi-processor compilation
-            /EHs            # C++ Exception handling
-        )
-    endif()
-endif ()
-
 if (MRDOX_CLANG)
     target_compile_options(
         mrdox
-        PUBLIC
-        -Wno-unused-private-field
-        -Wno-unused-value
         PRIVATE
         -Wno-covered-switch-default
     )
@@ -289,7 +231,6 @@ file(GLOB_RECURSE TEST_SOURCES  CONFIGURE_DEPENDS test/*.cpp)
 file(GLOB_RECURSE TEST_INCLUDES CONFIGURE_DEPENDS test/*.hpp)
 add_executable(mrdox-test ${TEST_SOURCES} ${TEST_INCLUDES})
 
-target_compile_features(mrdox-test PUBLIC cxx_std_20)
 target_include_directories(mrdox-test
     PRIVATE
     "${PROJECT_SOURCE_DIR}/include"
@@ -297,72 +238,13 @@ target_include_directories(mrdox-test
     "${PROJECT_SOURCE_DIR}/test"
     "${PROJECT_SOURCE_DIR}/tool"
 )
-target_compile_definitions(
-    mrdox-test
-    PUBLIC
-    ${MRDOX_LINK_MODE_DEFINITION}
-    PRIVATE
-    -DMRDOX_TOOL
-)
 
+target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
 target_link_libraries(mrdox-test PUBLIC mrdox-core)
-
-# LLVM
-target_link_libraries(mrdox-test PUBLIC ${llvm_libs})
-target_include_directories(mrdox-test SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
-
-# Clang
-if (CLANG_SIMPLE_LIBS)
-    target_link_libraries(mrdox-test PUBLIC LLVM clang clang-cpp)
-else()
-    target_link_libraries(mrdox-test
-        PUBLIC
-        clangAST
-        clangBasic
-        clangFrontend
-        clangIndex
-        clangTooling
-        clangToolingCore
-        clangToolingInclusions)
-endif()
-target_include_directories(mrdox-test SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
-
-# fmt
-target_link_libraries(mrdox-test PUBLIC fmt::fmt duktape::duktape)
-
-# Windows, Win64
-if (WIN32)
-    target_compile_definitions(
-        mrdox-test
-        PUBLIC
-        -D_WIN32_WINNT=0x0601
-        -D_CRT_SECURE_NO_WARNINGS
-        -D_SILENCE_CXX20_CISO646_REMOVED_WARNING
-        -DFMT_HEADER_ONLY # because of _ITERATOR_DEBUG_LEVEL
-    )
-    get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
-    if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
-        target_compile_definitions(mrdox-test PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
-        target_compile_options(mrdox-test PUBLIC /MD)
-    endif()
-    if(MSVC)
-        target_compile_options(
-            mrdox-test
-            PUBLIC
-            /permissive-    # strict C++
-            /W4             # enable all warnings
-            /MP             # multi-processor compilation
-            /EHs            # C++ Exception handling
-        )
-    endif()
-endif ()
 
 if (MRDOX_CLANG)
     target_compile_options(
         mrdox-test
-        PUBLIC
-        -Wno-unused-private-field
-        -Wno-unused-value
         PRIVATE
         -Wno-covered-switch-default
     )
