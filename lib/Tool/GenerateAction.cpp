@@ -68,7 +68,7 @@ DoGenerateAction()
         return formatError("output path is empty");
     toolArgs.outputPath = files::normalizePath(
         files::makeAbsolute(toolArgs.outputPath,
-            (*config)->workingDir));
+            (**config)->workingDir));
 
     // Convert relative paths to absolute
     AbsoluteCompilationDatabase compilations(
@@ -89,7 +89,7 @@ DoGenerateAction()
         return formatError("CorpusImpl::build returned \"{}\"", corpus.error());
 
     // Run the generator.
-    if((*config)->verboseOutput)
+    if((**config)->verboseOutput)
         reportInfo("Generating docs...\n");
     return generator->build(toolArgs.outputPath.getValue(), **corpus);
 }

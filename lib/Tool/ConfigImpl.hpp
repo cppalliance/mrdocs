@@ -28,25 +28,40 @@ class ConfigImpl
     , public std::enable_shared_from_this<ConfigImpl>
 {
 public:
-    //--------------------------------------------
-    //
-    // YAML
-    //
-    //--------------------------------------------
-
-    struct FileFilter
+    struct SettingsImpl : Settings
     {
-        std::vector<std::string> include;
+        struct FileFilter
+        {
+            std::vector<std::string> include;
+        };
+
+        std::vector<std::string> additionalDefines;
+
+        /** The full path to the source root directory.
+
+            The returned path will always be POSIX
+            style and have a trailing separator.
+        */
+        std::string sourceRoot;
+
+        FileFilter input;
     };
 
-    std::vector<std::string> additionalDefines_;
-    std::string sourceRoot_;
+    Settings const& settings() const noexcept
+    {
+        return settings_;
+    }
 
-    FileFilter input_;
+    constexpr SettingsImpl const*
+    operator->() const noexcept
+    {
+        return &settings_;
+    }
 
     //--------------------------------------------
 
 private:
+    SettingsImpl settings_;
     ThreadPool mutable threadPool_;
     llvm::SmallString<0> outputPath_;
     std::vector<std::string> inputFileIncludes_;
@@ -69,17 +84,6 @@ public:
     threadPool() const noexcept override
     {
         return threadPool_;
-    }
-
-    /** Return the full path to the source root directory.
-
-        The returned path will always be POSIX
-        style and have a trailing separator.
-    */
-    std::string_view
-    sourceRoot() const noexcept
-    {
-        return sourceRoot_;
     }
 
     //--------------------------------------------

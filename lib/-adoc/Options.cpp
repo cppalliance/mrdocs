@@ -100,7 +100,7 @@ loadOptions(
     // config
     {
         llvm::yaml::Input yin(
-            corpus.config.configYaml, nullptr,
+            corpus.config->configYaml, nullptr,
                 ConfigImpl::yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
         yin >> opt;
@@ -111,7 +111,7 @@ loadOptions(
     // extra
     {
         llvm::yaml::Input yin(
-            corpus.config.extraYaml, nullptr,
+            corpus.config->extraYaml, nullptr,
                 ConfigImpl::yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
         yin >> opt;
@@ -125,7 +125,7 @@ loadOptions(
     {
         opt.template_dir = files::makeAbsolute(
             opt.template_dir,
-            corpus.config.workingDir);
+            corpus.config->workingDir);
     }
     else
     {
@@ -138,7 +138,7 @@ loadOptions(
         opt.template_dir = files::makeDirsy(
             files::makeAbsolute(
                 opt.template_dir,
-                corpus.config.workingDir));
+                corpus.config->workingDir));
     }
     else
     {

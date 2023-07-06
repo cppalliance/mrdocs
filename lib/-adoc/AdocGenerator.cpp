@@ -62,7 +62,7 @@ build(
     std::string_view outputPath,
     Corpus const& corpus) const
 {
-    if(! corpus.config.multiPage)
+    if(! corpus.config->multiPage)
         return Generator::build(outputPath, corpus);
 
     AdocCorpus domCorpus(corpus);
