@@ -113,9 +113,8 @@ find_package(fmt REQUIRED CONFIG)
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS lib/*.cpp lib/*.hpp lib/*.natvis)
-file(GLOB_RECURSE LIB_INCLUDES CONFIGURE_DEPENDS include/*.hpp include/*.natvis)
-add_library(mrdox-core ${LIB_SOURCES} ${LIB_INCLUDES})
+file(GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS lib/*.cpp lib/*.hpp lib/*.natvis include/*.hpp include/*.natvis)
+add_library(mrdox-core ${LIB_SOURCES})
 target_compile_features(mrdox-core PUBLIC cxx_std_20)
 target_include_directories(mrdox-core
     PUBLIC
@@ -196,9 +195,8 @@ endif ()
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS tool/*.cpp)
-file(GLOB_RECURSE TOOL_INCLUDES CONFIGURE_DEPENDS tool/*.hpp)
-add_executable(mrdox ${TOOL_SOURCES} ${TOOL_INCLUDES})
+file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS tool/*.cpp tool/*.hpp)
+add_executable(mrdox ${TOOL_SOURCES})
 
 target_include_directories(mrdox
     PUBLIC
@@ -227,9 +225,8 @@ endif ()
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE TEST_SOURCES  CONFIGURE_DEPENDS test/*.cpp)
-file(GLOB_RECURSE TEST_INCLUDES CONFIGURE_DEPENDS test/*.hpp)
-add_executable(mrdox-test ${TEST_SOURCES} ${TEST_INCLUDES})
+file(GLOB_RECURSE TEST_SOURCES  CONFIGURE_DEPENDS test/*.cpp test/*.hpp)
+add_executable(mrdox-test ${TEST_SOURCES})
 
 target_include_directories(mrdox-test
     PRIVATE
