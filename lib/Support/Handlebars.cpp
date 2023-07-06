@@ -125,7 +125,7 @@ safeString(std::string_view str)
 }
 
 void
-escape_to(
+escapeExpression(
     OutputRef out,
     std::string_view str,
     HandlebarsOptions opt)
@@ -136,34 +136,52 @@ escape_to(
     }
     else
     {
-        for (auto c : str)
+        escapeExpression(out, str);
+    }
+}
+
+void
+escapeExpression(
+    OutputRef out,
+    std::string_view str)
+{
+    for (auto c : str)
+    {
+        switch (c)
         {
-            switch (c)
-            {
-            case '&':
-                out << "&amp;";
-                break;
-            case '<':
-                out << "&lt;";
-                break;
-            case '>':
-                out << "&gt;";
-                break;
-            case '"':
-                out << "&quot;";
-                break;
-            case '\'':
-                out << "&#x27;";
-                break;
-            case '`':
-                out << "&#x60;";
-                break;
-            default:
-                out << c;
-                break;
-            }
+        case '&':
+            out << "&amp;";
+            break;
+        case '<':
+            out << "&lt;";
+            break;
+        case '>':
+            out << "&gt;";
+            break;
+        case '"':
+            out << "&quot;";
+            break;
+        case '\'':
+            out << "&#x27;";
+            break;
+        case '`':
+            out << "&#x60;";
+            break;
+        default:
+            out << c;
+            break;
         }
     }
+}
+
+std::string
+escapeExpression(
+    std::string_view str)
+{
+    std::string res;
+    OutputRef out(res);
+    escapeExpression(out, str);
+    return res;
 }
 
 void
@@ -173,7 +191,7 @@ format_to(
     HandlebarsOptions opt)
 {
     if (value.isString()) {
-        escape_to(out, value.getString(), opt);
+        escapeExpression(out, value.getString(), opt);
     } else if (value.isInteger()) {
         out << value.getInteger();
     } else if (value.isBoolean()) {

@@ -1226,6 +1226,37 @@ MRDOX_DECL
 detail::safeStringWrapper
 safeString(std::string_view str);
 
+/** HTML escapes the specified string
+
+    This function HTML escapes the specified string, making it safe for
+    rendering as text within HTML content.
+
+    Replaces `&`, `<`, `>`, `"`, `'`, ```, `=` with the HTML entity
+    equivalent value for string values.
+
+    The output of all expressions except for triple-braced expressions
+    are passed through this method. Helpers should also use this method
+    when returning HTML content via a SafeString instance, to prevent
+    possible code injection.
+
+    Helper values created by the SafeString function are left untouched
+    by the template and are not passed through this function.
+
+    @param str The string to escape
+    @return The escaped string
+ */
+MRDOX_DECL
+std::string
+escapeExpression(
+    std::string_view str);
+
+/// @overload escapeExpression(std::string_view)
+MRDOX_DECL
+void
+escapeExpression(
+    OutputRef out,
+    std::string_view str);
+
 /** Lookup a property in an object
 
     Handlebars expressions can also use dot-separated paths to indicate
