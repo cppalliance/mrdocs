@@ -70,10 +70,15 @@ ConfigImpl(
     llvm::StringRef workingDir_,
     llvm::StringRef addonsDir_,
     llvm::StringRef configYaml_,
-    llvm::StringRef extraYaml_)
+    llvm::StringRef extraYaml_,
+    ConfigImpl const* base)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
+
+    // copy the base settings if present
+    if(base)
+        settings_ = base->settings_;
 
     if(! files::isAbsolute(workingDir_))
         formatError("working path \"{}\" is not absolute", workingDir_).Throw();
@@ -187,7 +192,7 @@ createConfigFromYAML(
     try
     {
         auto config = std::make_shared<ConfigImpl>(
-            workingDir, addonsDir, configYaml, extraYaml);
+            workingDir, addonsDir, configYaml, extraYaml, nullptr);
         return config;
     }
     catch(Exception const& ex)
@@ -200,7 +205,8 @@ Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
     std::string_view configFilePath,
     std::string_view addonsDir,
-    std::string_view extraYaml)
+    std::string_view extraYaml,
+    std::shared_ptr<ConfigImpl const> base)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -222,7 +228,7 @@ loadConfigFile(
     try
     {
         auto config = std::make_shared<ConfigImpl>(
-            workingDir, addonsDir, *text, extraYaml);
+            workingDir, addonsDir, *text, extraYaml, base.get());
         return config;
     }
     catch(Exception const& ex)
