@@ -1643,7 +1643,7 @@ traverse(NamespaceDecl* D)
 {
     if(! shouldExtract(D))
         return true;
-    if(! config_.includeAnonymous &&
+    if(! config_->includeAnonymous &&
         D->isAnonymousNamespace())
         return true;
 

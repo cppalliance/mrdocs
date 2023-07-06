@@ -30,10 +30,10 @@
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::ConfigImpl::FileFilter>
+    clang::mrdox::ConfigImpl::SettingsImpl::FileFilter>
 {
     static void mapping(IO &io,
-        clang::mrdox::ConfigImpl::FileFilter& f)
+        clang::mrdox::ConfigImpl::SettingsImpl::FileFilter& f)
     {
         io.mapOptional("include", f.include);
     }
@@ -41,10 +41,10 @@ struct llvm::yaml::MappingTraits<
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::ConfigImpl>
+    clang::mrdox::ConfigImpl::SettingsImpl>
 {
-    static void mapping(
-        IO& io, clang::mrdox::ConfigImpl& cfg)
+    static void mapping(IO& io,
+        clang::mrdox::ConfigImpl::SettingsImpl& cfg)
     {
         io.mapOptional("ignore-failures",   cfg.ignoreFailures);
         io.mapOptional("multipage",         cfg.multiPage);
@@ -53,10 +53,10 @@ struct llvm::yaml::MappingTraits<
         io.mapOptional("with-anonymous",    cfg.includeAnonymous);
         io.mapOptional("concurrency",       cfg.concurrency);
 
-        io.mapOptional("defines",           cfg.additionalDefines_);
-        io.mapOptional("source-root",       cfg.sourceRoot_);
+        io.mapOptional("defines",           cfg.additionalDefines);
+        io.mapOptional("source-root",       cfg.sourceRoot);
 
-        io.mapOptional("input",             cfg.input_);
+        io.mapOptional("input",             cfg.input);
     }
 };
 
@@ -77,44 +77,46 @@ ConfigImpl(
 
     if(! files::isAbsolute(workingDir_))
         formatError("working path \"{}\" is not absolute", workingDir_).Throw();
-    workingDir = files::makeDirsy(files::normalizePath(workingDir_));
+    settings_.workingDir = files::makeDirsy(files::normalizePath(workingDir_));
 
     if(auto err = files::requireDirectory(addonsDir_))
         formatError("addons path \"{}\" is not absolute", addonsDir_).Throw();
     MRDOX_ASSERT(files::isDirsy(addonsDir_));
-    addonsDir = addonsDir_;
+    settings_.addonsDir = addonsDir_;
 
-    configYaml = configYaml_;
-    extraYaml = extraYaml_;
+    settings_.configYaml = configYaml_;
+    settings_.extraYaml = extraYaml_;
 
     // Parse the YAML strings
     {
-        llvm::yaml::Input yin(configYaml, this, yamlDiagnostic);
+        llvm::yaml::Input yin(
+            settings_.configYaml, this, yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
-        yin >> *this;
+        yin >> settings_;
         Error(yin.error()).maybeThrow();
     }
     {
-        llvm::yaml::Input yin(extraYaml, this, yamlDiagnostic);
+        llvm::yaml::Input yin(
+            settings_.extraYaml, this, yamlDiagnostic);
         yin.setAllowUnknownKeys(true);
-        yin >> *this;
+        yin >> settings_;
         Error(yin.error()).maybeThrow();
     }
 
     // Post-process as needed
-    if( concurrency == 0)
-        concurrency = llvm::thread::hardware_concurrency();
+    if( settings_.concurrency == 0)
+        settings_.concurrency = llvm::thread::hardware_concurrency();
 
     // This has to be forward slash style
-    sourceRoot_ = files::makePosixStyle(files::makeDirsy(
-        files::makeAbsolute(sourceRoot_, workingDir)));
+    settings_.sourceRoot = files::makePosixStyle(files::makeDirsy(
+        files::makeAbsolute(settings_.sourceRoot, settings_.workingDir)));
 
     // adjust input files
     for(auto& name : inputFileIncludes_)
         name = files::makePosixStyle(
-            files::makeAbsolute(name, workingDir));
+            files::makeAbsolute(name, settings_.workingDir));
 
-    threadPool_.reset(concurrency);
+    threadPool_.reset(settings_.concurrency);
 }
 
 //------------------------------------------------
@@ -144,16 +146,19 @@ shouldExtractFromFile(
     if(! files::isAbsolute(filePath))
     {
         temp = files::makePosixStyle(
-            files::makeAbsolute(filePath, workingDir));
+            files::makeAbsolute(filePath, settings_.workingDir));
     }
     else
     {
         temp = filePath;
     }
-    if(! path::replace_path_prefix(temp, sourceRoot_, "", path::Style::posix))
+    if(! path::replace_path_prefix(temp,
+            settings_.sourceRoot, "", path::Style::posix))
         return false;
-    MRDOX_ASSERT(files::isDirsy(sourceRoot_));
-    prefixPath.assign(sourceRoot_.begin(), sourceRoot_.end());
+    MRDOX_ASSERT(files::isDirsy(settings_.sourceRoot));
+    prefixPath.assign(
+        settings_.sourceRoot.begin(),
+        settings_.sourceRoot.end());
     return true;
 }
 

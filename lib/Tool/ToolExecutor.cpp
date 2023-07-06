@@ -131,7 +131,7 @@ execute(
     auto const processFile =
     [&](std::string Path)
     {
-        if(config_.verboseOutput)
+        if(config_->verboseOutput)
             Log("[" + std::to_string(Count()) + "/" + TotalNumStr + "] Processing file " + Path);
 
         // Each thread gets an independent copy of a VFS to allow different
@@ -182,7 +182,7 @@ execute(
     }
 
     // Report warning and error totals
-    if(config_.verboseOutput)
+    if(config_->verboseOutput)
         Context.reportEnd();
 
     if(! errors.empty())

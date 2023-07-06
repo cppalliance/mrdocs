@@ -35,13 +35,102 @@ class ThreadPool;
     particular directory from which absolute paths
     are calculated from relative paths.
 */
-class MRDOX_VISIBLE
+class MRDOX_DECL
     Config
 {
 protected:
     Config() noexcept;
 
 public:
+    struct Settings
+    {
+        /** `true` if AST visitation failures should not stop the program.
+
+            @code
+            ignore-failures: true
+            @endcode
+        */
+        bool ignoreFailures = false;
+
+        /** `true` if output should consist of multiple files.
+        */
+        bool multiPage = false;
+
+        /** `true` if tool output should be verbose.
+
+            @code
+            verbose: true
+            @endcode
+        */
+        bool verboseOutput = false;
+
+        /** `true` if private members should be extracted and displayed.
+
+            In some cases private members will be listed
+            even if this configuration value is set to
+            `false`. For example, when extracting private
+            virtual functions in a base class.
+        */
+        bool includePrivate = false;
+
+        /** `true` if anonymous namespace members should be extracted and displayed.
+
+            In some cases anonymous namespace members will
+            be listed even if this configuration value is set to
+            `false`. For example, this may occur for a class derived
+            from one declared within an anonymous namespace.
+        */
+        bool includeAnonymous = true;
+
+        /** The level of concurrency desired.
+
+            This will always be greater than zero.
+        */
+        unsigned int concurrency = 0;
+
+        //--------------------------------------------
+
+        /** Full path to the working directory
+
+            The working directory is used to calculate
+            full paths from relative paths.
+
+            This string will always be native style
+            and have a trailing directory separator.
+        */
+        std::string workingDir;
+
+        /** Full path to the Addons directory.
+
+            This string will always be native style
+            and have a trailing directory separator.
+        */
+        std::string addonsDir;
+
+        /** A string holding the complete configuration YAML.
+        */
+        std::string configYaml;
+
+        /** A string holding extra configuration YAML.
+
+            Any keys in this string which match keys used
+            in @ref configYaml will effectively replace
+            those entries in the configuration.
+
+            A @ref Generator that wishes to implement
+            format-specific options, should parse and
+            apply `configYaml`, then parse and apply
+            this string to the same settings.
+        */
+        std::string extraYaml;
+
+        constexpr Settings const*
+        operator->() const noexcept
+        {
+            return this;
+        }
+    };
+
     /** Destructor.
     */
     MRDOX_DECL
@@ -55,91 +144,13 @@ public:
     ThreadPool&
     threadPool() const noexcept = 0;
 
-    //--------------------------------------------
-    //
-    // YAML
-    //
-    //--------------------------------------------
+    constexpr Settings const*
+    operator->() const noexcept
+    {
+        return &settings();
+    }
 
-    /** `true` if AST visitation failures should not stop the program.
-
-        @code
-        ignore-failures: true
-        @endcode
-    */
-    bool ignoreFailures = false;
-
-    /** `true` if output should consist of multiple files.
-    */
-    bool multiPage = false;
-
-    /** `true` if tool output should be verbose.
-
-        @code
-        verbose: true
-        @endcode
-    */
-    bool verboseOutput = false;
-
-    /** `true` if private members should be extracted and displayed.
-
-        In some cases private members will be listed
-        even if this configuration value is set to
-        `false`. For example, when extracting private
-        virtual functions in a base class.
-    */
-    bool includePrivate = false;
-
-    /** `true` if anonymous namespace members should be extracted and displayed.
-
-        In some cases anonymous namespace members will
-        be listed even if this configuration value is set to
-        `false`. For example, this may occur for a class derived
-        from one declared within an anonymous namespace.
-    */
-    bool includeAnonymous = true;
-
-    /** The level of concurrency desired.
-
-        This will always be greater than zero.
-    */
-    unsigned int concurrency = 0;
-
-    //--------------------------------------------
-
-    /** Full path to the working directory
-
-        The working directory is used to calculate
-        full paths from relative paths.
-
-        This string will always be native style
-        and have a trailing directory separator.
-    */
-    std::string workingDir;
-
-    /** Full path to the Addons directory.
-
-        This string will always be native style
-        and have a trailing directory separator.
-    */
-    std::string addonsDir;
-
-    /** A string holding the complete configuration YAML.
-    */
-    std::string configYaml;
-
-    /** A string holding extra configuration YAML.
-
-        Any keys in this string which match keys used
-        in @ref configYaml will effectively replace
-        those entries in the configuration.
-
-        A @ref Generator that wishes to implement
-        format-specific options, should parse and
-        apply `configYaml`, then parse and apply
-        this string to the same settings.
-    */
-    std::string extraYaml;
+    virtual Settings const& settings() const noexcept = 0;
 };
 
 } // mrdox

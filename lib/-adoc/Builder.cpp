@@ -42,7 +42,7 @@ Builder(
 
     scope.script(files::getFileText(
         files::appendPath(
-            config.addonsDir, "js", "handlebars.js")
+            config->addonsDir, "js", "handlebars.js")
         ).value()).maybeThrow();
     auto Handlebars = scope.getGlobal("Handlebars").value();
 
@@ -64,7 +64,7 @@ Handlebars.setlog();
 
     // load partials
     forEachFile(
-        files::appendPath(config.addonsDir,
+        files::appendPath(config->addonsDir,
             "generator", "asciidoc", "partials"),
         [&](std::string_view pathName)
         {
@@ -83,7 +83,7 @@ Handlebars.setlog();
     // load helpers
 #if 0
     err = forEachFile(
-        files::appendPath(config.addonsDir,
+        files::appendPath(config->addonsDir,
             "generator", "js", "helpers"),
         [&](std::string_view pathName)
         {
@@ -149,7 +149,7 @@ callTemplate(
 
     js::Scope scope(ctx_);
     auto Handlebars = scope.getGlobal("Handlebars");
-    auto layoutDir = files::appendPath(config.addonsDir,
+    auto layoutDir = files::appendPath(config->addonsDir,
             "generator", "asciidoc", "layouts");
     auto pathName = files::appendPath(layoutDir, name);
     auto fileText = files::getFileText(pathName);
