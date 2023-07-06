@@ -55,25 +55,31 @@ struct HandlebarsOptions
     bool ignoreStandalone = false;
 };
 
-// Objects such as llvm::raw_string_ostream
-template <typename Os>
-concept LHROStreamable =
-requires(Os &os, std::string_view sv)
-{
-    { os << sv } -> std::convertible_to<Os &>;
-};
+namespace detail {
+    // Objects such as llvm::raw_string_ostream
+    template <typename Os>
+    concept LHROStreamable =
+        requires(Os &os, std::string_view sv)
+    {
+        { os << sv } -> std::convertible_to<Os &>;
+    };
 
-// Objects such as std::ofstream
-template <typename Os>
-concept StdLHROStreamable = LHROStreamable<Os> && std::convertible_to<Os*, std::ostream*>;
+    // Objects such as std::ofstream
+    template <typename Os>
+    concept StdLHROStreamable = LHROStreamable<Os> && std::convertible_to<Os*, std::ostream*>;
 
-// Objects such as std::string
-template <typename St>
-concept SVAppendable =
-requires(St &st, std::string_view sv)
-{
-    st.append( sv.data(), sv.data() + sv.size() );
-};
+    // Objects such as std::string
+    template <typename St>
+    concept SVAppendable =
+        requires(St &st, std::string_view sv)
+    {
+        st.append( sv.data(), sv.data() + sv.size() );
+    };
+
+    struct MRDOX_DECL safeStringWrapper {
+        std::string v_;
+    };
+}
 
 /** Reference to output stream used by handlebars
 
@@ -136,7 +142,7 @@ public:
 
         @param st The string to append to
      */
-    template<SVAppendable St>
+    template<detail::SVAppendable St>
     requires std::same_as<typename St::value_type, char>
     OutputRef( St& st )
       : out_( &st )
@@ -148,7 +154,7 @@ public:
 
         @param os The output stream to write to
      */
-    template <StdLHROStreamable Os>
+    template <detail::StdLHROStreamable Os>
     requires std::is_convertible_v<Os*, std::ostream*>
     OutputRef( Os& os )
         : out_( &os )
@@ -160,7 +166,7 @@ public:
 
         @param os The output stream to write to
      */
-    template <LHROStreamable Os>
+    template <detail::LHROStreamable Os>
     requires std::is_convertible_v<Os*, std::ostream*>
     OutputRef( Os& os )
         : out_( &os )
@@ -743,8 +749,14 @@ class Handlebars {
     using partials_map = std::unordered_map<
         std::string, std::string, string_hash, std::equal_to<>>;
 
+    enum class HelperBehavior {
+        NO_RENDER,
+        RENDER_RESULT,
+        RENDER_RESULT_NOESCAPE,
+    };
+
     using helper_type = std::function<
-        std::pair<dom::Value, bool>(
+        std::pair<dom::Value, HelperBehavior>(
             dom::Array const&, HandlebarsCallback const&)>;
 
     using helpers_map = std::unordered_map<
@@ -884,22 +896,29 @@ public:
         @see https://handlebarsjs.com/guide/builtin-helpers.html
      */
     template <std::invocable<dom::Array const&, HandlebarsCallback const&> F>
-    requires (!std::same_as<F, helper_type>)
     void
     registerHelper(std::string_view name, F&& helper)
     {
         using R = std::invoke_result_t<F, dom::Array const&, HandlebarsCallback const&>;
-        static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
+        static_assert(
+            std::same_as<R, void> ||
+            std::convertible_to<R, dom::Value> ||
+            std::same_as<R, detail::safeStringWrapper>);
         registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
-            dom::Array const& args, HandlebarsCallback const& options) -> std::pair<dom::Value, bool> {
-           if constexpr (!std::same_as<R, void>)
+            dom::Array const& args, HandlebarsCallback const& options)
+                -> std::pair<dom::Value, HelperBehavior> {
+           if constexpr (std::convertible_to<R, dom::Value>)
            {
-               return {helper(args, options), true};
+               return {helper(args, options), HelperBehavior::RENDER_RESULT};
            }
-           else
+           else if constexpr (std::same_as<R, void>)
            {
                helper(args, options);
-               return {nullptr, false};
+               return {nullptr, HelperBehavior::NO_RENDER};
+           }
+           else if constexpr (std::same_as<R, detail::safeStringWrapper>)
+           {
+               return {helper(args, options).v_, HelperBehavior::RENDER_RESULT_NOESCAPE};
            }
         }));
     }
@@ -928,17 +947,25 @@ public:
     registerHelper(std::string_view name, F&& helper)
     {
         using R = std::invoke_result_t<F, dom::Array const&>;
-        static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
-        registerHelperImpl(name, helper_type([f = std::forward<F>(helper)](
-            dom::Array const& args, HandlebarsCallback const&) -> std::pair<dom::Value, bool> {
-            if constexpr (!std::same_as<R, void>)
+        static_assert(
+            std::same_as<R, void> ||
+            std::convertible_to<R, dom::Value> ||
+            std::same_as<R, detail::safeStringWrapper>);
+        registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
+            dom::Array const& args, HandlebarsCallback const&)
+                -> std::pair<dom::Value, HelperBehavior> {
+            if constexpr (std::convertible_to<R, dom::Value>)
             {
-                return {f(args), true};
+                return {helper(args), HelperBehavior::RENDER_RESULT};
             }
-            else
+            else if constexpr (std::same_as<R, void>)
             {
-                f(args);
-                return {nullptr, false};
+                helper(args);
+                return {nullptr, HelperBehavior::NO_RENDER};
+            }
+            else if constexpr (std::same_as<R, detail::safeStringWrapper>)
+            {
+                return {helper(args).v_, HelperBehavior::RENDER_RESULT_NOESCAPE};
             }
         }));
     }
@@ -970,15 +997,25 @@ public:
     void
     registerHelper(std::string_view name, F &&helper) {
         using R = std::invoke_result_t<F>;
-        static_assert(std::same_as<R, void> || std::convertible_to<R, dom::Value>);
-        registerHelperImpl(name, helper_type([f = std::forward<F>(helper)](
-                dom::Array const&, HandlebarsCallback const &) -> std::pair<dom::Value, bool> {
-            if constexpr (!std::same_as<R, void>) {
-                return {f(), true};
-            } else
+        static_assert(
+            std::same_as<R, void> ||
+            std::convertible_to<R, dom::Value> ||
+            std::same_as<R, detail::safeStringWrapper>);
+        registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
+                dom::Array const&, HandlebarsCallback const&)
+                    -> std::pair<dom::Value, HelperBehavior> {
+            if constexpr (std::convertible_to<R, dom::Value>)
             {
-                f();
-                return {nullptr, false};
+                return {helper(), HelperBehavior::RENDER_RESULT};
+            }
+            else if constexpr (std::same_as<R, void>)
+            {
+                helper();
+                return {nullptr, HelperBehavior::NO_RENDER};
+             }
+            else if constexpr (std::same_as<R, detail::safeStringWrapper>)
+            {
+                return {helper().v_, HelperBehavior::RENDER_RESULT_NOESCAPE};
             }
         }));
     }
@@ -1162,6 +1199,32 @@ isEmpty(dom::Value const& arg);
 MRDOX_DECL
 dom::Object
 createFrame(dom::Object const& parent);
+
+/** Create child data objects.
+
+    This function can be used by block helpers to create child
+    data objects.
+
+    The child data object is an overlay frame object implementation
+    that will first look for a value in the child object and if
+    not found will look in the parent object.
+
+    Helpers that modify the data state should create a new frame
+    object when doing so, to isolate themselves and avoid corrupting
+    the state of any parents.
+
+    Generally, only one frame needs to be created per helper
+    execution. For example, the each iterator creates a single
+    frame which is reused for all child execution.
+
+    @param arg The value to test
+    @return True if the value is empty, false otherwise
+
+    @see https://mustache.github.io/mustache.5.html#Sections
+ */
+MRDOX_DECL
+detail::safeStringWrapper
+safeString(std::string_view str);
 
 /** Lookup a property in an object
 

@@ -116,6 +116,14 @@ createFrame(dom::Object const& child, dom::Object const& parent)
     return dom::newObject<OverlayObjectImpl>(child, parent);
 }
 
+detail::safeStringWrapper
+safeString(std::string_view str)
+{
+    detail::safeStringWrapper w;
+    w.v_ = str;
+    return w;
+}
+
 void
 escape_to(
     OutputRef out,
@@ -1330,7 +1338,10 @@ renderExpression(
         cb.logger_ = &logger_;
         setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
         auto [res, render] = fn(args, cb);
-        if (render) {
+        if (render == HelperBehavior::RENDER_RESULT) {
+            format_to(out, res, opt2);
+        } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
+            opt2.noHTMLEscape = true;
             format_to(out, res, opt2);
         }
         if (tag.removeRWhitespace) {
@@ -1353,7 +1364,10 @@ renderExpression(
     cb.name_ = tag.helper;
     setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
     auto [res, render] = fn(args, cb);
-    if (render) {
+    if (render == HelperBehavior::RENDER_RESULT) {
+        format_to(out, res, opt2);
+    } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
+        opt2.noHTMLEscape = true;
         format_to(out, res, opt2);
     }
     if (tag.removeRWhitespace) {
@@ -1643,7 +1657,9 @@ renderBlock(
 
     // Call helper
     auto [res, render] = fn(args, cb);
-    if (render) {
+    if (render == HelperBehavior::RENDER_RESULT) {
+        format_to(out, res, opt);
+    } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
         HandlebarsOptions opt2 = opt;
         opt2.noHTMLEscape = true;
         format_to(out, res, opt2);

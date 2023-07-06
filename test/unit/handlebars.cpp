@@ -514,6 +514,39 @@ main() {
         REQUIRE(log == master_logger_output);
     }
 
+    /////////////////////////////////////////////////////////////////
+    // Safe string
+    /////////////////////////////////////////////////////////////////
+    {
+        Handlebars hbs2;
+        hbs2.registerHelper("bold", [](dom::Array const& args) -> dom::Value {
+            if (args.empty() || !args[0].isString()) {
+                return "bold helper requires at least one argument";
+            }
+            std::string_view text = args[0].getString().get();
+            return fmt::format("<b>{}</b>", text);
+        });
+        std::string templ = "{{bold 'text'}}";
+        std::string res = hbs2.render(templ, {});
+        REQUIRE_FALSE(res == "<b>text</b>");
+        REQUIRE(res == "&lt;b&gt;text&lt;/b&gt;");
+
+        res = hbs2.render(templ, {}, options);
+        REQUIRE(res == "<b>text</b>");
+        REQUIRE_FALSE(res == "&lt;b&gt;text&lt;/b&gt;");
+
+        hbs2.registerHelper("bold", [](dom::Array const& args) {
+            if (args.empty() || !args[0].isString()) {
+                return safeString("bold helper requires at least one argument");
+            }
+            std::string_view text = args[0].getString().get();
+            return safeString(fmt::format("<b>{}</b>", text));
+        });
+        res = hbs2.render(templ, {});
+        REQUIRE(res == "<b>text</b>");
+        REQUIRE_FALSE(res == "&lt;b&gt;text&lt;/b&gt;");
+    }
+
     fmt::println("All tests passed!");
     return EXIT_SUCCESS;
 }
