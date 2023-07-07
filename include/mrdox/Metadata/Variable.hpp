@@ -41,8 +41,6 @@ struct VariableInfo
     : IsInfo<InfoKind::Variable>
     , SourceInfo
 {
-    friend class ASTVisitor;
-
     /** The type of the variable */
     std::unique_ptr<TypeInfo> Type;
 
@@ -57,15 +55,6 @@ struct VariableInfo
         SymbolID ID = SymbolID::zero) noexcept
         : IsInfo(ID)
     {
-    }
-
-private:
-    explicit
-    VariableInfo(
-        std::unique_ptr<TemplateInfo>&& T) noexcept
-        : Template(std::move(T))
-    {
-
     }
 };
 

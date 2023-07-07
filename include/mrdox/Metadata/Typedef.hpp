@@ -27,8 +27,6 @@ struct TypedefInfo
     : IsInfo<InfoKind::Typedef>
     , SourceInfo
 {
-    friend class ASTVisitor;
-
     std::unique_ptr<TypeInfo> Type;
 
     // Indicates if this is a new C++ "using"-style typedef:
@@ -45,16 +43,6 @@ struct TypedefInfo
     TypedefInfo(
         SymbolID ID = SymbolID::zero)
         : IsInfo(ID)
-    {
-    }
-
-private:
-    // KRYSTIAN NOTE: if Template is non-null,
-    // then IsUsing *must* be set; should we do it here?
-    explicit
-    TypedefInfo(
-        std::unique_ptr<TemplateInfo>&& T)
-        : Template(std::move(T))
     {
     }
 };

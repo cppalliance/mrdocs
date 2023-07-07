@@ -137,8 +137,6 @@ struct FunctionInfo
     : IsInfo<InfoKind::Function>
     , SourceInfo
 {
-    friend class ASTVisitor;
-
     std::unique_ptr<TypeInfo> ReturnType; // Info about the return type of this function.
     std::vector<Param> Params; // List of parameters.
 
@@ -157,14 +155,6 @@ struct FunctionInfo
     FunctionInfo(
         SymbolID ID = SymbolID::zero)
         : IsInfo(ID)
-    {
-    }
-
-private:
-    explicit
-    FunctionInfo(
-        std::unique_ptr<TemplateInfo>&& T)
-        : Template(std::move(T))
     {
     }
 };

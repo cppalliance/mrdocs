@@ -34,9 +34,9 @@ struct Action
     PrepareToExecuteAction(
         CompilerInstance& Compiler) override
     {
-        FrontendOptions& fe_opts =
+        FrontendOptions& FEOpts =
             Compiler.getFrontendOpts();
-        fe_opts.SkipFunctionBodies = true;
+        FEOpts.SkipFunctionBodies = true;
         return true;
     }
 
@@ -45,8 +45,8 @@ struct Action
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
-        return std::make_unique<ASTVisitor>(
-            ex_, config_, Compiler);
+        return std::make_unique<ASTVisitorConsumer>(
+            config_, ex_, Compiler);
     }
 
 private:

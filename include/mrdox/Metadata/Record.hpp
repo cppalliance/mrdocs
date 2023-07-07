@@ -77,8 +77,6 @@ struct RecordInfo
     : IsInfo<InfoKind::Record>
     , SourceInfo
 {
-    friend class ASTVisitor;
-
     /** Kind of record this is (class, struct, or union).
     */
     RecordKeyKind KeyKind = RecordKeyKind::Struct;
@@ -117,14 +115,6 @@ struct RecordInfo
     RecordInfo(
         SymbolID ID = SymbolID::zero)
         : IsInfo(ID)
-    {
-    }
-
-private:
-    explicit
-    RecordInfo(
-        std::unique_ptr<TemplateInfo>&& T)
-        : Template(std::move(T))
     {
     }
 };
