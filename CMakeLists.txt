@@ -225,7 +225,7 @@ endif ()
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE TEST_SOURCES  CONFIGURE_DEPENDS test/*.cpp test/*.hpp)
+file(GLOB TEST_SOURCES CONFIGURE_DEPENDS test/*.cpp test/*.hpp)
 add_executable(mrdox-test ${TEST_SOURCES})
 
 target_include_directories(mrdox-test
