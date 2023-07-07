@@ -219,12 +219,71 @@ main() {
     lookup_test2.set("cities", cities);
     context.set("lookup_test2", lookup_test2);
 
+    dom::Object containers;
+    dom::Array array;
+    array.emplace_back("a");
+    array.emplace_back("b");
+    array.emplace_back("c");
+    array.emplace_back("d");
+    array.emplace_back("e");
+    array.emplace_back("f");
+    array.emplace_back("g");
+    containers.set("array", array);
+
+    dom::Array array2;
+    array2.emplace_back("e");
+    array2.emplace_back("f");
+    array2.emplace_back("g");
+    array2.emplace_back("h");
+    array2.emplace_back("i");
+    array2.emplace_back("j");
+    array2.emplace_back("k");
+    containers.set("array2", array2);
+
+    dom::Object object;
+    object.set("a", "a");
+    object.set("b", "b");
+    object.set("c", "c");
+    object.set("d", "d");
+    object.set("e", "e");
+    object.set("f", "f");
+    object.set("g", "g");
+    containers.set("object", object);
+
+    dom::Object object2;
+    object2.set("e", "e");
+    object2.set("f", "f");
+    object2.set("g", "g");
+    object2.set("h", "h");
+    object2.set("i", "i");
+    object2.set("j", "j");
+    object2.set("k", "k");
+    containers.set("object2", object2);
+
+    dom::Array object_array;
+    dom::Object account_x10;
+    account_x10.set("account_id", "account-x10");
+    account_x10.set("product", "Chair");
+    object_array.emplace_back(account_x10);
+    dom::Object account_x11;
+    account_x11.set("account_id", "account-x10");
+    account_x11.set("product", "Bookcase");
+    object_array.emplace_back(account_x11);
+    dom::Object account_x12;
+    account_x12.set("account_id", "account-x11");
+    account_x12.set("product", "Desk");
+    object_array.emplace_back(account_x12);
+    containers.set("object_array", object_array);
+
+    context.set("containers", containers);
+
     /////////////////////////////////////////////////////////////////
     // Register helpers
     /////////////////////////////////////////////////////////////////
     Handlebars hbs;
     helpers::registerAntoraHelpers(hbs);
     helpers::registerStringHelpers(hbs);
+    helpers::registerContainerHelpers(hbs);
 
     hbs.registerHelper("progress", [](dom::Array const& args) {
         if (args.size() < 3) {

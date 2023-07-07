@@ -670,3 +670,174 @@ No city found
 {{#strip_namespace }}std::memory_order::memory_order_acquire{{/strip_namespace}}
 {{ strip_namespace 'std::basic_string<char, typename B::value_type>' }}
 {{#strip_namespace }}std::basic_string<char, typename B::value_type>{{/strip_namespace}}
+
+== Containers
+
+// size
+{{ size containers.array }}
+{{ size containers.object }}
+{{ size containers.object_array }}
+// len
+{{ len containers.array }}
+{{ len containers.object }}
+{{ len containers.object_array }}
+// keys
+{{! keys containers.array }}
+{{ keys containers.object }}
+{{! keys containers.object_array }}
+// list
+{{! list containers.array }}
+{{ list containers.object }}
+{{! list containers.object_array }}
+// iter
+{{! iter containers.array }}
+{{ iter containers.object }}
+{{! iter containers.object_array }}
+// values
+{{ values containers.array }}
+{{ values containers.object }}
+{{ to_string (values containers.object_array) }}
+// del
+{{ del containers.array 'c' }}
+{{ to_string (del containers.object 'c') }}
+{{ to_string (del containers.object_array 'c') }}
+// delete
+{{ delete containers.array 'c' }}
+{{ to_string (delete containers.object 'c') }}
+{{ to_string (delete containers.object_array 'c') }}
+// has
+{{ has containers.array 'c' }}
+{{ has containers.object 'c' }}
+{{ has containers.object_array 'c' }}
+// exist
+{{ exist containers.array 'c' }}
+{{ exist containers.array 'z' }}
+{{ exist containers.object 'c' }}
+{{ exist containers.object 'z' }}
+{{ exist containers.object_array 'c' }}
+// contains
+{{ contains containers.array 'c' }}
+{{ contains containers.array 'z' }}
+{{ contains containers.object 'c' }}
+{{ contains containers.object 'z' }}
+{{ contains containers.object_array 'c' }}
+// has_any
+{{ has_any containers.array (split 'z,b,c' ',') }}
+{{ has_any containers.array (split '' ',') }}
+{{ has_any containers.array (split 'z' ',') }}
+{{ has_any containers.object (split 'z,b,c' ',') }}
+{{ has_any containers.object (split '' ',') }}
+{{ has_any containers.object (split 'z' ',') }}
+{{ has_any containers.object_array (split 'z,b,c' ',') }}
+// exist_any
+{{ exist_any containers.array (split 'a,b,c' ',') }}
+{{ exist_any containers.object (split 'a,b,c' ',') }}
+{{ exist_any containers.object_array (split 'a,b,c' ',') }}
+// contains_any
+{{ contains_any containers.array (split 'a,b,c' ',') }}
+{{ contains_any containers.object (split 'a,b,c' ',') }}
+{{ contains_any containers.object_array (split 'a,b,c' ',') }}
+// get
+{{ get containers.array 2 }}
+{{ get containers.object 'c' }}
+{{ to_string (get containers.object_array 2) }}
+// get_or
+{{ get_or containers.array 30 'y' }}
+{{ get_or containers.object 'z' 'y' }}
+{{ get_or containers.object_array 30 'y' }}
+// items
+{{ items containers.array }}
+{{ items containers.object }}
+{{ to_string (items containers.object_array) }}
+// entries
+{{ entries containers.array }}
+{{ entries containers.object }}
+{{ to_string (entries containers.object_array) }}
+// first
+{{ first containers.array }}
+{{ to_string (first containers.object) }}
+{{ to_string (first containers.object_array) }}
+// head
+{{ head containers.array }}
+{{ to_string (head containers.object) }}
+{{ to_string (head containers.object_array) }}
+// front
+{{ front containers.array }}
+{{ to_string (front containers.object) }}
+{{ to_string (front containers.object_array) }}
+// last
+{{ last containers.array }}
+{{ to_string (last containers.object) }}
+{{ to_string (last containers.object_array) }}
+// tail
+{{ tail containers.array }}
+{{ to_string (tail containers.object) }}
+{{ to_string (tail containers.object_array) }}
+// back
+{{ back containers.array }}
+{{ to_string (back containers.object) }}
+{{ to_string (back containers.object_array) }}
+// reverse
+{{ reverse containers.array }}
+{{ to_string (reverse containers.object) }}
+{{ to_string (reverse containers.object_array) }}
+// reversed
+{{ reversed containers.array }}
+{{ to_string (reversed containers.object) }}
+{{ to_string (reversed containers.object_array) }}
+// update
+{{ update containers.array containers.array2 }}
+{{ to_string (update containers.object containers.object2) }}
+{{ to_string (update containers.object_array containers.array2) }}
+// merge
+{{ merge containers.array containers.array2 }}
+{{ to_string (merge containers.object containers.object2) }}
+{{ to_string (merge containers.object_array containers.array2) }}
+// sort
+{{ sort containers.array }}
+{{ to_string (sort containers.object) }}
+{{ to_string (sort containers.object_array) }}
+// sort_by
+{{! sort_by containers.array 'account_id' }}
+{{! sort_by containers.object 'account_id' }}
+{{ to_string (sort_by containers.object_array 'account_id') }}
+// at
+{{ at containers.array 2 }}
+{{ at containers.object 'c' }}
+{{ to_string (at containers.object_array 2) }}
+// fill
+{{ fill containers.array '-' 2 5 }}
+{{ fill containers.array '-' 2 -1 }}
+{{! fill containers.object }}
+{{! fill containers.object_array }}
+// count
+{{ count containers.array 'c' }}
+{{ count containers.object 'c' }}
+{{ count containers.object_array 'c' }}
+// concat
+{{ concat containers.array containers.array2 }}
+{{ concat containers.object containers.object2 }}
+{{ concat containers.object_array containers.array2 }}
+// replace
+{{ replace containers.array 'c' 'd' }}
+{{ replace containers.array 'c' 'd' }}
+{{ to_string (replace containers.object 'c' 'd') }}
+{{ to_string (replace containers.object_array 'c' 'd') }}
+// chunk
+{{ chunk containers.array 3 }}
+{{ to_string (chunk containers.object 3) }}
+{{ to_string (chunk containers.object_array 2) }}
+// group_by
+{{! to_string (group_by containers.array 'account_id') }}
+{{! to_string (group_by containers.object 'account_id') }}
+{{ to_string (group_by containers.object_array 'account_id') }}
+{{ to_string (group_by containers.object_array 'product') }}
+// pluck
+{{! to_string (pluck containers.array 'account_id') }}
+{{! to_string (pluck containers.object 'account_id') }}
+{{ to_string (pluck containers.object_array 'account_id') }}
+{{ to_string (pluck containers.object_array 'product') }}
+// unique
+{{ to_string (unique (concat containers.array containers.array2)) }}
+{{! to_string (unique (concat containers.object containers.object2)) }}
+{{! to_string (unique containers.object_array) }}

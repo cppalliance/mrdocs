@@ -911,7 +911,7 @@ JSON_stringify(
                 s += JSON_stringify(arr.at(i), done);
             }
         }
-        s += " ]";
+        s += "]";
         return s;
     }
     case dom::Kind::Object:
@@ -1840,6 +1840,81 @@ isSame(dom::Value const& a, dom::Value const& b) {
 }
 
 bool
+isLt(dom::Value const& a, dom::Value const& b);
+
+bool
+isLt(dom::Object const& a, dom::Object const& b) {
+    if (a.size() < b.size()) {
+        return true;
+    }
+    if (b.size() < a.size()) {
+        return false;
+    }
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        auto refa = a.get(i);
+        auto refb = b.get(i);
+        if (isLt(refa.key, refb.key)) {
+            return true;
+        }
+        if (isLt(refb.key, refa.key)) {
+            return false;
+        }
+        if (isLt(refa.value, refb.value)) {
+            return true;
+        }
+        if (isLt(refb.value, refa.value)) {
+            return false;
+        }
+    }
+    return false;
+}
+
+bool
+isLt(dom::Array const& a, dom::Array const& b) {
+    if (a.size() < b.size()) {
+        return true;
+    }
+    if (b.size() < a.size()) {
+        return true;
+    }
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        if (isLt(a[i], b[i])) {
+            return true;
+        }
+        if (isLt(b[i], a[i])) {
+            return false;
+        }
+    }
+    return false;
+}
+
+bool
+isLt(dom::Value const& a, dom::Value const& b) {
+    using kind_t = std::underlying_type_t<dom::Kind>;
+    if (static_cast<kind_t>(a.kind()) < static_cast<kind_t>(b.kind())) {
+        return true;
+    }
+    if (static_cast<kind_t>(b.kind()) < static_cast<kind_t>(a.kind())) {
+        return false;
+    }
+    switch (a.kind()) {
+        case dom::Kind::Null:
+            return false;
+        case dom::Kind::Boolean:
+            return !a.getBool() && b.getBool();
+        case dom::Kind::Integer:
+            return a.getInteger() < b.getInteger();
+        case dom::Kind::String:
+            return a.getString().get() < b.getString().get();
+        case dom::Kind::Array:
+            return isLt(a.getArray(), b.getArray());
+        case dom::Kind::Object:
+            return isLt(a.getObject(), b.getObject());
+    }
+    return false;
+}
+
+bool
 eq_fn(dom::Array const& args) {
     if (args.empty()) {
         return true;
@@ -2320,6 +2395,241 @@ noop_fn(
     }
 }
 
+constexpr
+std::int64_t
+normalize_index(std::int64_t i, std::int64_t n) {
+    if (i < 0 || i > n) {
+        return (i % n + n) % n;
+    }
+    return i;
+}
+
+dom::Value
+at_fn(dom::Array const& args, HandlebarsCallback const& options) {
+    dom::Value range;
+    dom::Value field;
+    std::int64_t index = 0;
+    if (options.isBlock()) {
+        range = options.fn();
+        field = args.at(0);
+    } else {
+        range = args.at(0);
+        field = args.at(1);
+    }
+    if (field.isInteger()) {
+        index = field.getInteger();
+    }
+    if (range.isString()) {
+        std::string str(range.getString().get());
+        index = normalize_index(index, static_cast<std::int64_t>(str.size()));
+        return std::string(1, str.at(index));
+    } else if (range.isArray()) {
+        dom::Array const& arr = range.getArray();
+        index = normalize_index(index, static_cast<std::int64_t>(arr.size()));
+        return arr.at(index);
+    } else if (range.isObject()) {
+        dom::Object const& obj = range.getObject();
+        if (!field.isString()) {
+            return nullptr;
+        }
+        std::string key(field.getString().get());
+        if (obj.exists(key)) {
+            return obj.find(key);
+        }
+        return nullptr;
+    } else {
+        return range;
+    }
+}
+
+dom::Value
+concat_fn(dom::Array const& args, HandlebarsCallback const& options) {
+    if (args.at(0).isString()) {
+        std::string str;
+        std::string sep;
+        std::string str2;
+        if (options.isBlock()) {
+            str = options.fn();
+            sep = args.at(0).getString();
+            str2 = args.at(1).getString();
+        } else {
+            str = args.at(0).getString();
+            sep = args.at(1).getString();
+            str2 = args.at(2).getString();
+        }
+        return str + sep + str2;
+    } else if (args.at(0).isArray()) {
+        dom::Array res;
+        for (std::size_t i = 0; i < args.size(); ++i) {
+            dom::Value cur = args.at(i);
+            auto const& curArray = cur.getArray();
+            for (std::size_t j = 0; j < curArray.size(); ++j) {
+                res.emplace_back(curArray.at(j));
+            }
+        }
+        return res;
+    } else {
+        return args.at(0);
+    }
+}
+
+std::int64_t
+count_fn(dom::Array const& args, HandlebarsCallback const& options) {
+    bool const stringOverload =
+        (options.isBlock() && args.at(0).isString()) ||
+        (args.at(0).isString() && args.at(1).isString());
+    if (stringOverload) {
+        std::string str;
+        std::string sub;
+        std::int64_t start = 0;
+        std::int64_t end = 0;
+        if (options.isBlock()) {
+            str = options.fn();
+            sub = args.at(0).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 1) {
+                start = args.at(1).getInteger();
+                if (args.size() > 2) {
+                    end = args.at(2).getInteger();
+                }
+            }
+        } else {
+            str = args.at(0).getString();
+            sub = args.at(1).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 2) {
+                start = args.at(2).getInteger();
+                if (args.size() > 3) {
+                    end = args.at(3).getInteger();
+                }
+            }
+        }
+        start = normalize_index(start, static_cast<std::int64_t>(str.size()));
+        end = normalize_index(end, static_cast<std::int64_t>(str.size()));
+        std::int64_t count = 0;
+        for (std::int64_t pos = start; pos < end; ++pos) {
+            if (str.compare(pos, sub.size(), sub) == 0) {
+                ++count;
+            }
+        }
+        return count;
+    } else {
+        dom::Value range = args.at(0);
+        dom::Value item = args.at(1);
+        if (range.isString()) {
+            std::string str(range.getString().get());
+            std::int64_t count = 0;
+            for (char i : str) {
+                if (i == item.getString().get().at(0)) {
+                    ++count;
+                }
+            }
+            return count;
+        } else if (range.isArray()) {
+            dom::Array const& arr = range.getArray();
+            std::int64_t count = 0;
+            for (std::size_t i = 0; i < arr.size(); ++i) {
+                if (isSame(arr.at(i), item)) {
+                    ++count;
+                }
+            }
+            return count;
+        } else if (range.isObject()) {
+            dom::Object const& obj = range.getObject();
+            std::int64_t count = 0;
+            for (auto const& [key, val] : obj) {
+                if (isSame(val, item)) {
+                    ++count;
+                }
+            }
+            return count;
+        } else {
+            return 0;
+        }
+    }
+}
+
+dom::Value
+replace_fn(dom::Array const& args, HandlebarsCallback const& options) {
+    bool const stringOverload =
+        (options.isBlock() && args.at(0).isString()) ||
+        (args.at(0).isString() && args.at(1).isString());
+    if (stringOverload) {
+        std::string str;
+        std::string old;
+        std::string new_str;
+        std::int64_t count = -1;
+        if (options.isBlock()) {
+            str = options.fn();
+            old = args.at(0).getString();
+            new_str = args.at(1).getString();
+            if (args.size() > 2)
+            count = args.at(2).getInteger();
+        } else {
+            str = args.at(0).getString();
+            old = args.at(1).getString();
+            new_str = args.at(2).getString();
+            if (args.size() > 3)
+            count = args.at(3).getInteger();
+        }
+        std::string res;
+        std::size_t pos = 0;
+        std::size_t old_len = old.size();
+        while (count != 0) {
+            std::size_t next = str.find(old, pos);
+            if (next == std::string::npos) {
+                res += str.substr(pos);
+                break;
+            }
+            res += str.substr(pos, next - pos);
+            res += new_str;
+            pos = next + old_len;
+            if (count > 0) {
+                --count;
+            }
+        }
+        return res;
+    }
+    dom::Value range = args.at(0);
+    dom::Value item = args.at(1);
+    dom::Value replacement = args.at(2);
+    if (range.isString()) {
+        std::string str(range.getString().get());
+        for (std::int64_t i = 0; i < static_cast<std::int64_t>(str.size()); ++i) {
+            if (str.at(i) == item.getString().get().at(0)) {
+                str.replace(
+                    str.begin() + i,
+                    str.begin() + i + 1,
+                    replacement.getString().get());
+                i += static_cast<std::int64_t>(replacement.getString().get().size()) - 1;
+            }
+        }
+        return str;
+    } else if (range.isArray()) {
+        dom::Array const& arr = range.getArray();
+        dom::Array res;
+        for (std::size_t i = 0; i < arr.size(); ++i) {
+            dom::Value v = arr.at(i);
+            if (isSame(v, item)) {
+                res.emplace_back(replacement);
+            } else {
+                res.emplace_back(v);
+            }
+        }
+        return res;
+    } else if (range.isObject()) {
+        dom::Object obj = createFrame(range.getObject());
+        for (auto const& [key, val] : obj) {
+            if (isSame(val, item)) {
+                obj.set(key, replacement);
+            }
+        }
+        return obj;
+    } else {
+        return range;
+    }
+}
+
 void
 registerStringHelpers(Handlebars& hbs)
 {
@@ -2329,14 +2639,6 @@ registerStringHelpers(Handlebars& hbs)
 
     static constexpr auto tolower = [](char c) -> char {
         return static_cast<char>(c >= 'A' && c <= 'Z' ? c + ('a' - 'A') : c);
-    };
-
-    static constexpr auto normalize_index = [](std::int64_t i, std::int64_t n)
-        -> std::int64_t {
-        if (i < 0 || i > n) {
-            return (i % n + n) % n;
-        }
-        return i;
     };
 
     hbs.registerHelper("capitalize", [](
@@ -2441,43 +2743,7 @@ registerStringHelpers(Handlebars& hbs)
     hbs.registerHelper("rjust", rjust_fn);
     hbs.registerHelper("pad_start", rjust_fn);
 
-    hbs.registerHelper("count", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        std::string str;
-        std::string sub;
-        std::int64_t start = 0;
-        std::int64_t end = 0;
-        if (options.isBlock()) {
-            str = options.fn();
-            sub = args.at(0).getString();
-            end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 1) {
-                start = args.at(1).getInteger();
-                if (args.size() > 2) {
-                    end = args.at(2).getInteger();
-                }
-            }
-        } else {
-            str = args.at(0).getString();
-            sub = args.at(1).getString();
-            end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 2) {
-                start = args.at(2).getInteger();
-                if (args.size() > 3) {
-                    end = args.at(3).getInteger();
-                }
-            }
-        }
-        start = normalize_index(start, static_cast<std::int64_t>(str.size()));
-        end = normalize_index(end, static_cast<std::int64_t>(str.size()));
-        std::int64_t count = 0;
-        for (std::int64_t pos = start; pos < end; ++pos) {
-            if (str.compare(pos, sub.size(), sub) == 0) {
-                ++count;
-            }
-        }
-        return count;
-    });
+    hbs.registerHelper("count", count_fn);
 
     hbs.registerHelper("ends_with", [](
         dom::Array const& args, HandlebarsCallback const& options) {
@@ -2656,20 +2922,6 @@ registerStringHelpers(Handlebars& hbs)
     hbs.registerHelper("rindex_of", rfind_index_fn);
     hbs.registerHelper("last_index_of", rfind_index_fn);
 
-    auto at_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        std::string str;
-        std::int64_t index = 0;
-        if (options.isBlock()) {
-            str = options.fn();
-            index = args.at(0).getInteger();
-        } else {
-            str = args.at(0).getString();
-            index = args.at(1).getInteger();
-        }
-        index = normalize_index(index, static_cast<std::int64_t>(str.size()));
-        return std::string(1, str.at(index));
-    };
     hbs.registerHelper("at", at_fn);
     hbs.registerHelper("char_at", at_fn);
 
@@ -2865,7 +3117,7 @@ registerStringHelpers(Handlebars& hbs)
         return res;
     });
 
-    hbs.registerHelper("join", [](
+    static constexpr auto join_fn = [](
         dom::Array const& args, HandlebarsCallback const& options) {
         std::string str;
         dom::Array arr;
@@ -2885,24 +3137,12 @@ registerStringHelpers(Handlebars& hbs)
             res += item.getString();
         }
         return res;
-    });
+    };
 
-    hbs.registerHelper("concat", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        std::string str;
-        std::string sep;
-        std::string str2;
-        if (options.isBlock()) {
-            str = options.fn();
-            sep = args.at(0).getString();
-            str2 = args.at(1).getString();
-        } else {
-            str = args.at(0).getString();
-            sep = args.at(1).getString();
-            str2 = args.at(2).getString();
-        }
-        return str + sep + str2;
-    });
+    hbs.registerHelper("join", join_fn);
+    hbs.registerHelper("implode", join_fn);
+
+    hbs.registerHelper("concat", concat_fn);
 
     static constexpr auto strip_fn = [](
         dom::Array const& args, HandlebarsCallback const& options) {
@@ -3064,45 +3304,9 @@ registerStringHelpers(Handlebars& hbs)
         return str.substr(0, str.size() - suffix.size());
     });
 
-    hbs.registerHelper("replace", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        std::string str;
-        std::string old;
-        std::string new_str;
-        std::int64_t count = -1;
-        if (options.isBlock()) {
-            str = options.fn();
-            old = args.at(0).getString();
-            new_str = args.at(1).getString();
-            if (args.size() > 2)
-                count = args.at(2).getInteger();
-        } else {
-            str = args.at(0).getString();
-            old = args.at(1).getString();
-            new_str = args.at(2).getString();
-            if (args.size() > 3)
-                count = args.at(3).getInteger();
-        }
-        std::string res;
-        std::size_t pos = 0;
-        std::size_t old_len = old.size();
-        while (count != 0) {
-            std::size_t next = str.find(old, pos);
-            if (next == std::string::npos) {
-                res += str.substr(pos);
-                break;
-            }
-            res += str.substr(pos, next - pos);
-            res += new_str;
-            pos = next + old_len;
-            if (count > 0) {
-                --count;
-            }
-        }
-        return res;
-    });
+    hbs.registerHelper("replace", replace_fn);
 
-    hbs.registerHelper("split", [](
+    static constexpr auto split_fn = [](
         dom::Array const& args, HandlebarsCallback const& options) {
         std::string str;
         std::string sep = " ";
@@ -3136,7 +3340,10 @@ registerStringHelpers(Handlebars& hbs)
             }
         }
         return res;
-    });
+    };
+
+    hbs.registerHelper("split", split_fn);
+    hbs.registerHelper("explode", split_fn);
 
     hbs.registerHelper("rsplit", [](
         dom::Array const& args, HandlebarsCallback const& options) {
@@ -3365,6 +3572,556 @@ registerStringHelpers(Handlebars& hbs)
             return res;
         }
     });
+}
+
+void
+registerContainerHelpers(Handlebars& hbs)
+{
+    static constexpr auto size_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        auto const& val = args.at(0);
+        switch (val.kind()) {
+        case dom::Kind::Array:
+            return static_cast<std::int64_t>(val.getArray().size());
+        case dom::Kind::Object:
+            return static_cast<std::int64_t>(val.getObject().size());
+        case dom::Kind::String:
+            return static_cast<std::int64_t>(val.getString().size());
+        case dom::Kind::Null:
+            return static_cast<std::int64_t>(0);
+        default:
+            return static_cast<std::int64_t>(1);
+        }
+    };
+
+    hbs.registerHelper("size", size_fn);
+    hbs.registerHelper("len", size_fn);
+
+    static constexpr auto keys_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        auto const& obj = args.at(0).getObject();
+        dom::Array res;
+        for (auto const& [key, _]: obj)
+        {
+            res.emplace_back(key);
+        }
+        return res;
+    };
+
+    hbs.registerHelper("keys", keys_fn);
+    hbs.registerHelper("list", keys_fn);
+    hbs.registerHelper("iter", keys_fn);
+
+    static constexpr auto values_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        auto container = args.at(0);
+        if (!container.isObject()) {
+            return container;
+        }
+        auto const& obj = container.getObject();
+        dom::Array res;
+        for (auto const& [_, value]: obj)
+        {
+            res.emplace_back(value);
+        }
+        return res;
+    };
+
+    hbs.registerHelper("values", values_fn);
+
+    static constexpr auto del_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        dom::Value range = args.at(0);
+        dom::Value item = args.at(1);
+        if (range.isArray()) {
+            auto const& arr = range.getArray();
+            auto const& val = item;
+            dom::Array res;
+            for (std::int64_t i = 0; i < static_cast<std::int64_t>(arr.size()); i++)
+            {
+                if (!isSame(arr[i], val))
+                    res.emplace_back(arr.at(i));
+            }
+            return res;
+        } else if (range.isObject()) {
+            auto const& obj = range.getObject();
+            auto const& key = item.getString();
+            dom::Object res;
+            for (auto const& [k, v]: obj)
+            {
+                if (k != key)
+                res.set(k, v);
+            }
+            return res;
+        } else {
+            return range;
+        }
+    };
+
+    hbs.registerHelper("del", del_fn);
+    hbs.registerHelper("delete", del_fn);
+
+    static constexpr auto has_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        if (args.at(0).isObject()) {
+            dom::Value objV = args.at(0);
+            auto const& obj = objV.getObject();
+            auto const& key = args.at(1).getString();
+            return obj.exists(key);
+        } else if (args.at(0).isArray()){
+            dom::Value arrV = args.at(0);
+            auto const& arr = arrV.getArray();
+            auto value = args.at(1);
+            for (std::size_t i = 0; i < arr.size(); ++i) {
+                if (isSame(arr[i], value))
+                    return true;
+            }
+        }
+        return false;
+    };
+
+    hbs.registerHelper("has", has_fn);
+    hbs.registerHelper("exist", has_fn);
+    hbs.registerHelper("contains", has_fn);
+
+    static constexpr auto has_any_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        auto container = args.at(0);
+        auto item = args.at(1);
+        if (container.isObject()) {
+            dom::Value objV = container;
+            auto const& obj = objV.getObject();
+            dom::Value keysV = item;
+            auto const& keys = keysV.getArray();
+            for (std::int64_t i = 0; i < static_cast<std::int64_t>(keys.size()); ++i) {
+                dom::Value k = keys[i];
+                if (obj.exists(k.getString()))
+                    return true;
+            }
+            return false;
+        } else if (container.isArray()){
+            auto const& arr = container.getArray();
+            auto const& values = item.getArray();
+            for (std::int64_t i = 0; i < static_cast<std::int64_t>(values.size()); ++i) {
+                for (std::size_t j = 0; j < arr.size(); ++j) {
+                    dom::Value a = arr[j];
+                    dom::Value b = values[i];
+                    if (isSame(a, b)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } else {
+            return false;
+        }
+    };
+
+    hbs.registerHelper("has_any", has_any_fn);
+    hbs.registerHelper("exist_any", has_any_fn);
+    hbs.registerHelper("contains_any", has_any_fn);
+
+    static constexpr auto get_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        auto fieldV = args.at(1);
+        dom::Value default_value = nullptr;
+        if (args.size() > 2)
+            default_value = args.at(2);
+        dom::Value argsV = args.at(0);
+        if (argsV.isArray()) {
+            auto const& arr = argsV.getArray();
+            auto index = fieldV.getInteger();
+            if (index < 0)
+                index = normalize_index(index, static_cast<std::int64_t>(arr.size()));
+            if (index >= static_cast<std::int64_t>(arr.size()))
+                return default_value;
+            return arr.at(index);
+        } else if (argsV.isObject()) {
+            auto const& obj = argsV.getObject();
+            auto const& key = fieldV.getString();
+            if (obj.exists(key))
+                return obj.find(key);
+            return default_value;
+        } else {
+            return default_value;
+        }
+    };
+
+    hbs.registerHelper("get", get_fn);
+    hbs.registerHelper("get_or", get_fn);
+
+    static constexpr auto items_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        if (args.at(0).isObject()) {
+            auto const& obj = args.at(0).getObject();
+            dom::Array res;
+            for (auto const& [key, value]: obj)
+            {
+                dom::Array item;
+                item.emplace_back(key);
+                item.emplace_back(value);
+                res.emplace_back(item);
+            }
+            return res;
+        } else {
+            return args.at(0);
+        }
+    };
+
+    hbs.registerHelper("items", items_fn);
+    hbs.registerHelper("entries", items_fn);
+
+    static constexpr auto first_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        auto range = args.at(0);
+        if (range.isArray()) {
+            auto const& arr = range.getArray();
+            if (arr.empty())
+                return nullptr;
+            return arr.at(0);
+        } else if (range.isObject()) {
+            auto const& obj = range.getObject();
+            if (obj.empty())
+                return nullptr;
+            return obj.get(0).value;
+        } else {
+            return range;
+        }
+    };
+
+    hbs.registerHelper("first", first_fn);
+    hbs.registerHelper("head", first_fn);
+    hbs.registerHelper("front", first_fn);
+
+    static constexpr auto last_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        auto range = args.at(0);
+        if (range.isArray()) {
+            auto const& arr = range.getArray();
+            if (arr.empty())
+                return nullptr;
+            return arr.at(arr.size() - 1);
+        } else if (range.isObject()) {
+            auto const& obj = range.getObject();
+            if (obj.empty())
+                return nullptr;
+            return obj.get(obj.size() - 1).value;
+        } else {
+            return range;
+        }
+    };
+
+    hbs.registerHelper("last", last_fn);
+    hbs.registerHelper("tail", last_fn);
+    hbs.registerHelper("back", last_fn);
+
+    static constexpr auto reverse_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        dom::Value container = args.at(0);
+        if (container.isArray()) {
+            auto const& arr = container.getArray();
+            dom::Array res;
+            for (std::size_t i = arr.size(); i > 0; --i) {
+                res.emplace_back(arr.at(i - 1));
+            }
+            return res;
+        } else if (container.isObject()) {
+            auto const& obj = container.getObject();
+            dom::Array res;
+            for (auto const& [key, value]: obj)
+            {
+                dom::Array item;
+                item.emplace_back(key);
+                item.emplace_back(value);
+                res.emplace_back(item);
+            }
+            dom::Array reversed;
+            for (std::size_t i = res.size(); i > 0; --i) {
+                reversed.emplace_back(res.at(i - 1));
+            }
+            return reversed;
+        } else {
+            return container;
+        }
+    };
+
+    hbs.registerHelper("reverse", reverse_fn);
+    hbs.registerHelper("reversed", reverse_fn);
+
+    static constexpr auto update_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        auto container = args.at(0);
+        auto otherContainer = args.at(1);
+        if (container.isObject()) {
+            auto const& obj = container.getObject();
+            auto const& other = otherContainer.getObject();
+            dom::Object res = createFrame(obj);
+            for (auto const& [k, v]: other) {
+                res.set(k, v);
+            }
+            return res;
+        } else if (container.isArray()) {
+            auto const& arr = container.getArray();
+            auto const& other = otherContainer.getArray();
+            dom::Array res;
+            for (std::size_t i = 0; i < arr.size(); ++i) {
+                res.emplace_back(arr.at(i));
+            }
+            for (std::size_t i = 0; i < other.size(); ++i) {
+                bool arr_contains = false;
+                for (std::size_t j = 0; j < res.size(); ++j) {
+                    if (isSame(res.at(j), other.at(i))) {
+                        arr_contains = true;
+                        break;
+                    }
+                }
+                if (!arr_contains) {
+                    res.emplace_back(other.at(i));
+                }
+            }
+            return res;
+        } else {
+            return container;
+        }
+    };
+
+    hbs.registerHelper("update", update_fn);
+    hbs.registerHelper("merge", update_fn);
+
+    static constexpr auto sort_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        auto container = args.at(0);
+        if (container.isArray()) {
+            auto const& arr = container.getArray();
+            std::vector<dom::Value> res;
+            for (std::size_t i = 0; i < arr.size(); ++i) {
+                res.emplace_back(arr.at(i));
+            }
+            std::sort(res.begin(), res.end(), [](auto const& a, auto const& b) {
+                return isLt(a, b);
+            });
+            dom::Array res2;
+            for (const auto & re : res) {
+                res2.emplace_back(re);
+            }
+            return res2;
+        } else {
+            return container;
+        }
+    };
+
+    hbs.registerHelper("sort", sort_fn);
+
+    static constexpr auto sort_by_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        // Given an array of objects, sort these objects by their value at
+        // a given key
+        auto container = args.at(0);
+        if (container.isArray()) {
+            auto const& arr = container.getArray();
+            auto const& key = args.at(1).getString();
+            std::vector<dom::Value> res;
+            for (std::size_t i = 0; i < arr.size(); ++i) {
+                res.emplace_back(arr.at(i));
+            }
+            std::sort(res.begin(), res.end(), [&key](dom::Value const& a, dom::Value const& b) {
+                if (!a.isObject() || !b.isObject()) {
+                    if (a.isObject())
+                        return true;
+                    if (b.isObject())
+                        return false;
+                    return isLt(a, b);
+                }
+                const bool ak = a.getObject().exists(key);
+                const bool bk = b.getObject().exists(key);
+                if (!ak) {
+                    return bk;
+                }
+                if (!bk) {
+                    return false;
+                }
+                return isLt(a.getObject().find(key), b.getObject().find(key));
+            });
+            dom::Array res2;
+            for (const auto & re : res) {
+                res2.emplace_back(re);
+            }
+            return res2;
+        } else {
+            return container;
+        }
+    };
+
+    hbs.registerHelper("sort_by", sort_by_fn);
+
+    hbs.registerHelper("at", at_fn);
+
+    static constexpr auto fill_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        auto container = args.at(0);
+        if (container.isArray()) {
+            auto const& arr = container.getArray();
+            dom::Value fill_value = args.at(1);
+            std::int64_t start = 0;
+            if (args.size() > 2)
+                start = args.at(2).getInteger();
+            auto stop = static_cast<std::int64_t>(arr.size());
+            if (args.size() > 3)
+                stop = args.at(3).getInteger();
+            start = normalize_index(start, static_cast<std::int64_t>(arr.size()));
+            stop = normalize_index(stop, static_cast<std::int64_t>(arr.size()));
+            dom::Array res;
+            for (std::int64_t i = 0; i < static_cast<std::int64_t>(arr.size()); ++i) {
+                if (i >= start && i < stop)
+                    res.emplace_back(fill_value);
+                else
+                    res.emplace_back(arr.at(i));
+            }
+            return res;
+        } else {
+            return container;
+        }
+    };
+
+    hbs.registerHelper("fill", fill_fn);
+
+    hbs.registerHelper("count", count_fn);
+    hbs.registerHelper("replace", replace_fn);
+
+    hbs.registerHelper("chunk", [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        dom::Value range = args.at(0);
+        std::int64_t size = args.at(1).getInteger();
+        if (range.isArray()) {
+            auto const& arr = range.getArray();
+            dom::Array res;
+            std::int64_t i = 0;
+            while (i < static_cast<std::int64_t>(arr.size())) {
+                dom::Array chunk;
+                for (std::int64_t j = 0; j < size && i < static_cast<std::int64_t>(arr.size()); ++j) {
+                    chunk.emplace_back(arr.at(i));
+                    ++i;
+                }
+                res.emplace_back(chunk);
+            }
+            return res;
+        } else if (range.isString()) {
+            auto const& str = range.getString();
+            dom::Array res;
+            std::int64_t i = 0;
+            while (i < static_cast<std::int64_t>(str.size())) {
+                std::string chunk;
+                for (std::int64_t j = 0;
+                     j < size && i < static_cast<std::int64_t>(str.size());
+                     ++j)
+                {
+                    chunk += str.get()[i];
+                    ++i;
+                }
+                res.emplace_back(chunk);
+            }
+            return res;
+        } else if (range.isObject()) {
+            auto const& obj = range.getObject();
+            dom::Array res;
+            std::int64_t i = 0;
+            while (i < static_cast<std::int64_t>(obj.size())) {
+                dom::Object chunk;
+                for (std::int64_t j = 0; j < size && i < static_cast<std::int64_t>(obj.size()); ++j) {
+                    auto const& [k, v] = obj.at(i);
+                    chunk.set(k, v);
+                    ++i;
+                }
+                res.emplace_back(chunk);
+            }
+            return res;
+        } else {
+            return range;
+        }
+    });
+
+    hbs.registerHelper("group_by", [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        // given an array of objects, group these objects by a key in each them
+        // the result is
+        dom::Value range = args.at(0);
+        if (!range.isArray()) {
+            return range;
+        }
+        dom::Array const& array = range.getArray();
+        std::string key(args.at(1).getString());
+        std::vector<std::uint8_t> copied(array.size(), 0);
+        dom::Object res;
+        for (std::size_t i = 0; i < array.size(); ++i) {
+            if (copied[i] || !array[i].getObject().exists(key)) {
+                // object already copied or doesn't have the key
+                copied[i] = 0x01;
+                continue;
+            }
+            copied[i] = 0x01;
+            // Create a group name for this key value
+            std::string group_name(array[i].getObject().find(key).getString());
+            dom::Array group;
+            group.emplace_back(array[i]);
+            for (std::size_t j = i; j < array.size(); ++j) {
+                if (copied[j]) {
+                    continue;
+                }
+                if (array[j].getObject().find(key).getString() ==
+                    array[i].getObject().find(key).getString()) {
+                    group.emplace_back(array[j]);
+                    copied[j] = 0x01;
+                }
+            }
+            res.set(group_name, group);
+        }
+        return res;
+    });
+
+    hbs.registerHelper("pluck", [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        // given an array of objects, take the value of a key from each object
+        dom::Value rangeV = args.at(0);
+        if (!rangeV.isArray()) {
+            return rangeV;
+        }
+        dom::Array const& range = rangeV.getArray();
+        std::string key(args.at(1).getString());
+        dom::Array res;
+        for (std::int64_t i = 0; i < static_cast<std::int64_t>(range.size()); ++i) {
+            if (range[i].isObject() && range[i].getObject().exists(key)) {
+                res.emplace_back(range[i].getObject().find(key));
+            }
+        }
+        return res;
+    });
+
+    hbs.registerHelper("unique", [](
+        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+        dom::Value const& rangeV = args.at(0);
+        if (!rangeV.isArray()) {
+            return rangeV;
+        }
+        dom::Array const& range = rangeV.getArray();
+        std::vector<dom::Value> res;
+        for (std::int64_t i = 0; i < static_cast<std::int64_t>(range.size()); ++i) {
+            res.push_back(range[i]);
+        }
+        std::sort(res.begin(), res.end(), [](dom::Value const& a, dom::Value const& b) {
+            return isLt(a, b);
+        });
+        auto last = std::unique(res.begin(), res.end(), [](dom::Value const& a, dom::Value const& b) {
+            return isSame(a, b);
+        });
+        res.erase(last, res.end());
+        dom::Array res2;
+        for (auto const& v : res) {
+            res2.emplace_back(v);
+        }
+        return res2;
+    });
+
+    hbs.registerHelper("concat", concat_fn);
 }
 
 } // helpers

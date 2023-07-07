@@ -47,7 +47,7 @@ People:
 [object Object]
 
 // Use to_string
-{"page":{"kind":"record","name":"from_chars","decl":"std::from_chars","loc":"charconv","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"synopsis":"This is the from_chars function","person":{"firstname":"John","lastname":"Doe"},"people":[{"firstname":"Alice","lastname":"Doe","book":[{},{},{},{} ]},{"firstname":"Bob","lastname":"Doe","book":[{},{},{},{} ]},{"firstname":"Carol","lastname":"Smith","book":[{},{},{},{} ]} ],"prefix":"Hello","specialChars":"& < > " ' ` =","url":"https://cppalliance.org/","author":{"firstname":"Yehuda","lastname":"Katz"}},"nav":[{"url":"foo","test":true,"title":"bar"},{"url":"bar"} ],"myVariable":"lookupMyPartial","myOtherContext":{"information":"Interesting!"},"favoriteNumber":123,"prefix":"Hello","title":"My Title","body":"My Body","story":{"intro":"Before the jump","body":"After the jump"},"comments":[{"subject":"subject 1","body":"body 1"},{"subject":"subject 2","body":"body 2"} ],"isActive":true,"isInactive":false,"peopleobj":{"Alice":{"firstname":"Alice","lastname":"Doe"},"Bob":{"firstname":"Bob","lastname":"Doe"},"Carol":{"firstname":"Carol","lastname":"Smith"}},"author":true,"firstname":"Yehuda","lastname":"Katz","names":["Yehuda Katz","Alan Johnson","Charles Jolley" ],"namesobj":{"Yehuda":"Yehuda Katz","Alan":"Alan Johnson","Charles":"Charles Jolley"},"city":{"name":"San Francisco","summary":"San Francisco is the <b>cultural center</b> of <b>Northern California</b>","location":{"north":"37.73,","east":"-122.44"},"population":883305},"lookup_test":{"people":["Nils","Yehuda" ],"cities":["Darmstadt","San Francisco" ]},"lookup_test2":{"persons":[{"name":"Nils","resident-in":"darmstadt"},{"name":"Yehuda","resident-in":"san-francisco"} ],"cities":{"darmstadt":{"name":"Darmstadt","country":"Germany"},"san-francisco":{"name":"San Francisco","country":"USA"}}}}
+{"page":{"kind":"record","name":"from_chars","decl":"std::from_chars","loc":"charconv","javadoc":{"brief":"Converts strings to numbers","details":"This function converts strings to numbers"},"synopsis":"This is the from_chars function","person":{"firstname":"John","lastname":"Doe"},"people":[{"firstname":"Alice","lastname":"Doe","book":[{},{},{},{}]},{"firstname":"Bob","lastname":"Doe","book":[{},{},{},{}]},{"firstname":"Carol","lastname":"Smith","book":[{},{},{},{}]}],"prefix":"Hello","specialChars":"& < > " ' ` =","url":"https://cppalliance.org/","author":{"firstname":"Yehuda","lastname":"Katz"}},"nav":[{"url":"foo","test":true,"title":"bar"},{"url":"bar"}],"myVariable":"lookupMyPartial","myOtherContext":{"information":"Interesting!"},"favoriteNumber":123,"prefix":"Hello","title":"My Title","body":"My Body","story":{"intro":"Before the jump","body":"After the jump"},"comments":[{"subject":"subject 1","body":"body 1"},{"subject":"subject 2","body":"body 2"}],"isActive":true,"isInactive":false,"peopleobj":{"Alice":{"firstname":"Alice","lastname":"Doe"},"Bob":{"firstname":"Bob","lastname":"Doe"},"Carol":{"firstname":"Carol","lastname":"Smith"}},"author":true,"firstname":"Yehuda","lastname":"Katz","names":["Yehuda Katz","Alan Johnson","Charles Jolley"],"namesobj":{"Yehuda":"Yehuda Katz","Alan":"Alan Johnson","Charles":"Charles Jolley"},"city":{"name":"San Francisco","summary":"San Francisco is the <b>cultural center</b> of <b>Northern California</b>","location":{"north":"37.73,","east":"-122.44"},"population":883305},"lookup_test":{"people":["Nils","Yehuda"],"cities":["Darmstadt","San Francisco"]},"lookup_test2":{"persons":[{"name":"Nils","resident-in":"darmstadt"},{"name":"Yehuda","resident-in":"san-francisco"}],"cities":{"darmstadt":{"name":"Darmstadt","country":"Germany"},"san-francisco":{"name":"San Francisco","country":"USA"}}},"containers":{"array":["a","b","c","d","e","f","g"],"array2":["e","f","g","h","i","j","k"],"object":{"a":"a","b":"b","c":"c","d":"d","e":"e","f":"f","g":"g"},"object2":{"e":"e","f":"f","g":"g","h":"h","i":"i","j":"j","k":"k"},"object_array":[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"}]}}
 
 // Literals
 true = true
@@ -660,3 +660,173 @@ memory_order_acquire
 memory_order_acquire
 basic_string<char, typename B::value_type>
 basic_string<char, typename B::value_type>
+
+== Containers
+
+// size
+7
+7
+3
+// len
+7
+7
+3
+// keys
+
+[a,b,c,d,e,f,g]
+
+// list
+
+list helper requires array argument: object provided
+
+// iter
+
+[a,b,c,d,e,f,g]
+
+// values
+[a,b,c,d,e,f,g]
+[a,b,c,d,e,f,g]
+[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"}]
+// del
+[a,b,d,e,f,g]
+{"a":"a","b":"b","d":"d","e":"e","f":"f","g":"g"}
+[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"}]
+// delete
+[a,b,d,e,f,g]
+{"a":"a","b":"b","d":"d","e":"e","f":"f","g":"g"}
+[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"}]
+// has
+true
+true
+false
+// exist
+true
+false
+true
+false
+false
+// contains
+true
+false
+true
+false
+false
+// has_any
+true
+false
+false
+true
+false
+false
+false
+// exist_any
+true
+true
+false
+// contains_any
+true
+true
+false
+// get
+c
+c
+{"account_id":"account-x11","product":"Desk"}
+// get_or
+y
+y
+y
+// items
+[a,b,c,d,e,f,g]
+[[a,a],[b,b],[c,c],[d,d],[e,e],[f,f],[g,g]]
+[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"}]
+// entries
+[a,b,c,d,e,f,g]
+[[a,a],[b,b],[c,c],[d,d],[e,e],[f,f],[g,g]]
+[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"}]
+// first
+a
+"a"
+{"account_id":"account-x10","product":"Chair"}
+// head
+a
+"a"
+{"account_id":"account-x10","product":"Chair"}
+// front
+a
+"a"
+{"account_id":"account-x10","product":"Chair"}
+// last
+g
+"g"
+{"account_id":"account-x11","product":"Desk"}
+// tail
+g
+"g"
+{"account_id":"account-x11","product":"Desk"}
+// back
+g
+"g"
+{"account_id":"account-x11","product":"Desk"}
+// reverse
+[g,f,e,d,c,b,a]
+[["g","g"],["f","f"],["e","e"],["d","d"],["c","c"],["b","b"],["a","a"]]
+[{"account_id":"account-x11","product":"Desk"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x10","product":"Chair"}]
+// reversed
+[g,f,e,d,c,b,a]
+[["g","g"],["f","f"],["e","e"],["d","d"],["c","c"],["b","b"],["a","a"]]
+[{"account_id":"account-x11","product":"Desk"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x10","product":"Chair"}]
+// update
+[a,b,c,d,e,f,g,h,i,j,k]
+{"e":"e","f":"f","g":"g","h":"h","i":"i","j":"j","k":"k","a":"a","b":"b","c":"c","d":"d"}
+[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"},"e","f","g","h","i","j","k"]
+// merge
+[a,b,c,d,e,f,g,h,i,j,k]
+{"e":"e","f":"f","g":"g","h":"h","i":"i","j":"j","k":"k","a":"a","b":"b","c":"c","d":"d"}
+[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"},"e","f","g","h","i","j","k"]
+// sort
+[a,b,c,d,e,f,g]
+{"a":"a","b":"b","c":"c","d":"d","e":"e","f":"f","g":"g"}
+[{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x11","product":"Desk"}]
+// sort_by
+
+
+[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"}]
+// at
+c
+c
+{"account_id":"account-x11","product":"Desk"}
+// fill
+[a,b,-,-,-,f,g]
+[a,b,-,-,-,-,g]
+
+
+// count
+1
+1
+0
+// concat
+[a,b,c,d,e,f,g,e,f,g,h,i,j,k]
+[object Object]
+[[object Object],[object Object],[object Object],e,f,g,h,i,j,k]
+// replace
+[a,b,d,d,e,f,g]
+[a,b,d,d,e,f,g]
+{"c":"d","a":"a","b":"b","c":"c","d":"d","e":"e","f":"f"}
+[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"},{"account_id":"account-x11","product":"Desk"}]
+// chunk
+[[a,b,c],[d,e,f],[g]]
+[{"a":"a","b":"b","c":"c"},{"d":"d","e":"e","f":"f"},{"g":"g"}]
+[[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"}],[{"account_id":"account-x11","product":"Desk"}]]
+// group_by
+
+
+{"account-x10":[{"account_id":"account-x10","product":"Chair"},{"account_id":"account-x10","product":"Bookcase"}],"account-x11":[{"account_id":"account-x11","product":"Desk"}]}
+{"Chair":[{"account_id":"account-x10","product":"Chair"}],"Bookcase":[{"account_id":"account-x10","product":"Bookcase"}],"Desk":[{"account_id":"account-x11","product":"Desk"}]}
+// pluck
+
+
+["account-x10","account-x10","account-x11"]
+["Chair","Bookcase","Desk"]
+// unique
+["a","b","c","d","e","f","g","h","i","j","k"]
+

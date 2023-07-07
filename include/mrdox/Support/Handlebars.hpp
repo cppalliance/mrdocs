@@ -1328,7 +1328,14 @@ JSON_stringify(dom::Value const& value);
 
 namespace helpers {
 
-/** Register all the standard helpers into a Handlebars instance
+/** Register all the built-in helpers into a Handlebars instance
+
+    Individual built-in helpers can also be registered with the
+    public `*_fn` functions in this namespace.
+
+    This allows the user to override only some of the built-in
+    helpers. In particular, this is important for mandatory
+    helpers, such as `blockHelperMissing` and `helperMissing`.
 
     @see https://github.com/handlebars-lang/handlebars.js/tree/master/lib/handlebars/helpers
     @see https://handlebarsjs.com/guide/builtin-helpers.html
@@ -1480,6 +1487,17 @@ noop_fn(
 
 /** Register all the Antora helpers into a Handlebars instance
 
+    This function registers all the helpers that are part of the
+    default Antora UI.
+
+    Individual Antora helpers can also be registered with the
+    public `*_fn` functions in this namespace.
+
+    Since the Antora helpers are not mandatory and include
+    many functions not applicable to all applications,
+    this allows the user to register only some of the Antora
+    helpers.
+
     @see https://gitlab.com/antora/antora-ui-default/-/tree/master/src/helpers
 
     @param hbs The Handlebars instance to register the helpers into
@@ -1504,11 +1522,35 @@ registerAntoraHelpers(Handlebars& hbs);
     in multiple programming languages, such as Python and Javascript,
     for their default string types.
 
+    The individual helpers are defined as an implementation detail and
+    cannot be registered individually.
+
     @param hbs The Handlebars instance to register the helpers into
  */
 MRDOX_DECL
 void
 registerStringHelpers(Handlebars& hbs);
+
+/** Register helpers to manipulate composite data types
+
+    This function registers a number of common helpers that operate on
+    Objects and Arrays. Object and Array helpers are particularly useful
+    because most applications will need to manipulate Objects and Arrays
+    to extract information from them, such as object keys or specific
+    Array items known ahead of time.
+
+    The helper names are inspired by the default functions provided
+    in multiple programming languages for dictionaries, objects, and arrays,
+    such as Python and Javascript, for their default types.
+
+    The individual helpers are defined as an implementation detail and
+    cannot be registered individually.
+
+    @param hbs The Handlebars instance to register the helpers into
+ */
+MRDOX_DECL
+void
+registerContainerHelpers(Handlebars& hbs);
 
 /** "and" helper function
  *
