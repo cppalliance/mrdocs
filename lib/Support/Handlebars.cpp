@@ -42,8 +42,9 @@ isTruthy(dom::Value const& arg)
         case dom::Kind::Object:
             return !arg.getObject().empty();
         case dom::Kind::Null:
-        default:
             return false;
+        default:
+            MRDOX_UNREACHABLE();
     }
 }
 
@@ -1873,7 +1874,7 @@ kindToString(dom::Kind kind) {
         case dom::Kind::Boolean:
             return "boolean";
         default:
-            return "unknown";
+            MRDOX_UNREACHABLE();
     }
 }
 
@@ -3349,6 +3350,7 @@ registerStringHelpers(Handlebars& hbs)
                 if (inside == 0) {
                     offset = count + 1;
                 }
+                break;
             }
             default:
             {
