@@ -218,6 +218,7 @@ format_to(
     }
 }
 
+constexpr
 std::string_view
 trim_spaces(std::string_view expression)
 {
@@ -232,6 +233,7 @@ trim_spaces(std::string_view expression)
     return expression;
 }
 
+constexpr
 std::string_view
 trim_lspaces(std::string_view expression)
 {
@@ -242,6 +244,7 @@ trim_lspaces(std::string_view expression)
     return expression;
 }
 
+constexpr
 std::string_view
 trim_rspaces(std::string_view expression)
 {
@@ -861,7 +864,7 @@ lookupProperty(
     if (path.isInteger()) {
         if (data.isArray()) {
             auto& arr = data.getArray();
-            if (path.getInteger() >= arr.size())
+            if (path.getInteger() >= static_cast<std::int64_t>(arr.size()))
                 return {nullptr, false};
             return {arr.at(path.getInteger()), true};
         }
@@ -981,8 +984,13 @@ constexpr
 bool
 is_literal_integer(std::string_view expression)
 {
-    if (expression.empty())
+    expression = trim_spaces(expression);
+    if (expression.empty()) {
         return false;
+    }
+    if (expression.front() == '-' || expression.front() == '+') {
+        expression = expression.substr(1);
+    }
     return std::ranges::all_of(expression, [](char c) {
         return std::isdigit(c);
     });
@@ -1897,32 +1905,6 @@ validateArgs(
     return {};
 }
 
-std::string
-validateArgs(
-    std::string_view helper,
-    std::initializer_list<std::initializer_list<dom::Kind>> il,
-    dom::Array const& args) {
-    auto r = validateArgs(helper, il.size(), args);
-    if (!r.empty()) {
-        return r;
-    }
-    for (size_t i = 0; i < args.size(); ++i) {
-        auto allowed = il.begin()[i];
-        bool const any_valid = std::ranges::any_of(allowed, [&](dom::Kind a) {
-            return args[i].kind() == a;
-        });
-        if (!any_valid) {
-            std::string allowed_str(kindToString(allowed.begin()[0]));
-            for (auto a : std::views::drop(allowed, 1)) {
-                allowed_str += ", or ";
-                allowed_str += kindToString(a);
-            }
-            return fmt::format(R"(["{}" helper requires argument {} to be of type {}: {} provided])", helper, i, allowed_str, kindToString(args[i].kind()));
-        }
-    }
-    return {};
-}
-
 bool
 not_fn(dom::Array const& args) {
     for (std::size_t i = 0; i < args.size(); ++i) {
@@ -2335,6 +2317,1052 @@ noop_fn(
     if (!args.empty()) {
         out << fmt::format(R"(Missing helper: "{}")", options.name());
     }
+}
+
+void
+registerStringHelpers(Handlebars& hbs)
+{
+    static constexpr auto toupper = [](char c) -> char {
+        return static_cast<char>(c >= 'a' && c <= 'z' ? c - ('a' - 'A') : c);
+    };
+
+    static constexpr auto tolower = [](char c) -> char {
+        return static_cast<char>(c >= 'A' && c <= 'Z' ? c + ('a' - 'A') : c);
+    };
+
+    static constexpr auto normalize_index = [](std::int64_t i, std::int64_t n)
+        -> std::int64_t {
+        if (i < 0 || i > n) {
+            return (i % n + n) % n;
+        }
+        return i;
+    };
+
+    hbs.registerHelper("capitalize", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        if (!res.empty()) {
+            res[0] = toupper(res[0]);
+        }
+        return res;
+    });
+
+    hbs.registerHelper("center", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        std::int64_t width = 0;
+        char fillchar = ' ';
+        if (options.isBlock()) {
+            res = options.fn();
+            width = args.at(0).getInteger();
+            if (args.size() > 1) {
+                fillchar = args.at(1).getString().get()[0];
+            }
+        } else {
+            res = args.at(0).getString();
+            width = args.at(1).getInteger();
+            if (args.size() > 2) {
+                fillchar = args.at(2).getString().get()[0];
+            }
+        }
+        if (width > static_cast<std::int64_t>(res.size())) {
+            std::size_t pad = (width - res.size()) / 2;
+            res.insert(0, pad, fillchar);
+            res.append(pad, fillchar);
+        }
+        return res;
+    });
+
+    constexpr auto ljust_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        std::int64_t width = 0;
+        std::string fill = " ";
+        if (options.isBlock()) {
+            res = options.fn();
+            width = args.at(0).getInteger();
+            if (args.size() > 1) {
+                fill = args.at(1).getString();
+            }
+        } else {
+            res = args.at(0).getString();
+            width = args.at(1).getInteger();
+            if (args.size() > 2) {
+                fill = args.at(2).getString();
+            }
+        }
+        while (static_cast<std::int64_t>(res.size()) < width) {
+            if (static_cast<std::int64_t>(res.size() + fill.size()) > width) {
+                res.append(fill, 0, width - res.size());
+            } else {
+                res.append(fill);
+            }
+        }
+        return res;
+    };
+
+    hbs.registerHelper("ljust", ljust_fn);
+    hbs.registerHelper("pad_end", ljust_fn);
+
+    static constexpr auto rjust_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        std::int64_t width = 0;
+        std::string fill = " ";
+        if (options.isBlock()) {
+            res = options.fn();
+            width = args.at(0).getInteger();
+            if (args.size() > 1) {
+                fill = args.at(1).getString();
+            }
+        } else {
+            res = args.at(0).getString();
+            width = args.at(1).getInteger();
+            if (args.size() > 2) {
+                fill = args.at(2).getString();
+            }
+        }
+        while (static_cast<std::int64_t>(res.size()) < width) {
+            if (static_cast<std::int64_t>(res.size() + fill.size()) > width) {
+                res.insert(0, fill, 0, width - res.size());
+            } else {
+                res.insert(0, fill);
+            }
+        }
+        return res;
+    };
+
+    hbs.registerHelper("rjust", rjust_fn);
+    hbs.registerHelper("pad_start", rjust_fn);
+
+    hbs.registerHelper("count", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string sub;
+        std::int64_t start = 0;
+        std::int64_t end = 0;
+        if (options.isBlock()) {
+            str = options.fn();
+            sub = args.at(0).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 1) {
+                start = args.at(1).getInteger();
+                if (args.size() > 2) {
+                    end = args.at(2).getInteger();
+                }
+            }
+        } else {
+            str = args.at(0).getString();
+            sub = args.at(1).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 2) {
+                start = args.at(2).getInteger();
+                if (args.size() > 3) {
+                    end = args.at(3).getInteger();
+                }
+            }
+        }
+        start = normalize_index(start, static_cast<std::int64_t>(str.size()));
+        end = normalize_index(end, static_cast<std::int64_t>(str.size()));
+        std::int64_t count = 0;
+        for (std::int64_t pos = start; pos < end; ++pos) {
+            if (str.compare(pos, sub.size(), sub) == 0) {
+                ++count;
+            }
+        }
+        return count;
+    });
+
+    hbs.registerHelper("ends_with", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string suffix;
+        std::int64_t start = 0;
+        std::int64_t end = 0;
+        if (options.isBlock()) {
+            str = options.fn();
+            suffix = args.at(0).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 1) {
+                start = args.at(1).getInteger();
+                if (args.size() > 2) {
+                    end = args.at(2).getInteger();
+                }
+            }
+        } else {
+            str = args.at(0).getString();
+            suffix = args.at(1).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 2) {
+                start = args.at(2).getInteger();
+                if (args.size() > 3) {
+                    end = args.at(3).getInteger();
+                }
+            }
+        }
+        start = normalize_index(start, static_cast<std::int64_t>(str.size()));
+        end = normalize_index(end, static_cast<std::int64_t>(str.size()));
+        std::string substr = str.substr(start, end - start);
+        return substr.ends_with(suffix);
+    });
+
+    hbs.registerHelper("starts_with", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string prefix;
+        std::int64_t start = 0;
+        std::int64_t end = 0;
+        if (options.isBlock()) {
+            str = options.fn();
+            prefix = args.at(0).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 1) {
+                start = args.at(1).getInteger();
+                if (args.size() > 2) {
+                    end = args.at(2).getInteger();
+                }
+            }
+        } else {
+            str = args.at(0).getString();
+            prefix = args.at(1).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 2) {
+                start = args.at(2).getInteger();
+                if (args.size() > 3) {
+                    end = args.at(3).getInteger();
+                }
+            }
+        }
+        start = normalize_index(start, static_cast<std::int64_t>(str.size()));
+        end = normalize_index(end, static_cast<std::int64_t>(str.size()));
+        std::string substr = str.substr(start, end - start);
+        return substr.starts_with(prefix);
+    });
+
+    hbs.registerHelper("expandtabs", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::int64_t tabsize = 8;
+        if (options.isBlock()) {
+            str = options.fn();
+            if (!args.empty()) {
+                tabsize = args.at(0).getInteger();
+            }
+        } else {
+            str = args.at(0).getString();
+            if (args.size() > 1) {
+                tabsize = args.at(1).getInteger();
+            }
+        }
+        std::string res;
+        res.reserve(str.size());
+        for (char c : str) {
+            if (c == '\t') {
+                res.append(tabsize, ' ');
+            } else {
+                res.push_back(c);
+            }
+        }
+        return res;
+    });
+
+    static constexpr auto find_index_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string sub;
+        std::int64_t start = 0;
+        std::int64_t end = 0;
+        if (options.isBlock()) {
+            str = options.fn();
+            sub = args.at(0).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 1) {
+                start = args.at(1).getInteger();
+                if (args.size() > 2) {
+                    end = args.at(2).getInteger();
+                }
+            }
+        } else {
+            str = args.at(0).getString();
+            sub = args.at(1).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 2) {
+                start = args.at(2).getInteger();
+                if (args.size() > 3) {
+                    end = args.at(3).getInteger();
+                }
+            }
+        }
+        start = normalize_index(start, static_cast<std::int64_t>(str.size()));
+        end = normalize_index(end, static_cast<std::int64_t>(str.size()));
+        std::size_t pos = str.find(sub, start);
+        if (pos == std::string::npos || static_cast<std::int64_t>(pos) >= end) {
+            return static_cast<std::int64_t>(-1);
+        }
+        return static_cast<std::int64_t>(pos);
+    };
+
+    hbs.registerHelper("find", find_index_fn);
+    hbs.registerHelper("index_of", find_index_fn);
+
+    hbs.registerHelper("includes", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        return find_index_fn(args, options) != -1;
+    });
+
+    auto rfind_index_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string sub;
+        std::int64_t start = 0;
+        std::int64_t end = 0;
+        if (options.isBlock()) {
+            str = options.fn();
+            sub = args.at(0).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 1) {
+                start = args.at(1).getInteger();
+                if (args.size() > 2) {
+                    end = args.at(2).getInteger();
+                }
+            }
+        } else {
+            str = args.at(0).getString();
+            sub = args.at(1).getString();
+            end = static_cast<std::int64_t>(str.size());
+            if (args.size() > 2) {
+                start = args.at(2).getInteger();
+                if (args.size() > 3) {
+                    end = args.at(3).getInteger();
+                }
+            }
+        }
+        start = normalize_index(start, static_cast<std::int64_t>(str.size()));
+        end = normalize_index(end, static_cast<std::int64_t>(str.size()));
+        std::size_t pos = str.rfind(sub, start);
+        if (pos == std::string::npos || static_cast<std::int64_t>(pos) >= end) {
+            return static_cast<std::int64_t>(-1);
+        }
+        return static_cast<std::int64_t>(pos);
+    };
+
+    hbs.registerHelper("rfind", rfind_index_fn);
+    hbs.registerHelper("rindex_of", rfind_index_fn);
+    hbs.registerHelper("last_index_of", rfind_index_fn);
+
+    auto at_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::int64_t index = 0;
+        if (options.isBlock()) {
+            str = options.fn();
+            index = args.at(0).getInteger();
+        } else {
+            str = args.at(0).getString();
+            index = args.at(1).getInteger();
+        }
+        index = normalize_index(index, static_cast<std::int64_t>(str.size()));
+        return std::string(1, str.at(index));
+    };
+    hbs.registerHelper("at", at_fn);
+    hbs.registerHelper("char_at", at_fn);
+
+    hbs.registerHelper("is_alnum", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        return std::ranges::all_of(res, [](char c) {
+            return (c >= '0' && c <= '9') ||
+                   (c >= 'A' && c <= 'Z') ||
+                   (c >= 'a' && c <= 'z');
+        });
+    });
+
+    hbs.registerHelper("is_alpha", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        return std::ranges::all_of(res, [](char c) {
+            return (c >= 'A' && c <= 'Z') ||
+                   (c >= 'a' && c <= 'z');
+        });
+    });
+
+    hbs.registerHelper("is_ascii", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        return std::ranges::all_of(res, [](char c) {
+            auto uc = static_cast<unsigned char>(c);
+            return uc <= 127;
+        });
+    });
+
+    auto is_digits_fn = [](dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        return std::ranges::all_of(res, [](char c) {
+            return c >= '0' && c <= '9';
+        });
+    };
+
+    hbs.registerHelper("is_decimal", is_digits_fn);
+    hbs.registerHelper("is_digit", is_digits_fn);
+
+    hbs.registerHelper("is_lower",
+       [](dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        return std::ranges::all_of(res, [](char c) {
+            return c >= 'a' && c <= 'z';
+        });
+    });
+
+    hbs.registerHelper("is_upper",
+       [](dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        return std::ranges::all_of(res, [](char c) {
+            return c >= 'A' && c <= 'Z';
+        });
+    });
+
+    hbs.registerHelper("is_printable",
+       [](dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        return std::ranges::all_of(res, [](char c) {
+            return c >= 32 && c <= 126;
+        });
+    });
+
+    hbs.registerHelper("is_space",
+       [](dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        return std::ranges::all_of(res, [](char c) {
+            return c == ' ' || (c >= 9 && c <= 13);
+        });
+    });
+
+    hbs.registerHelper("is_title",
+       [](dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        bool prev_is_cased = false;
+        bool res_is_title = false;
+        for (char c : res) {
+            if (c >= 'A' && c <= 'Z') {
+                if (prev_is_cased) {
+                    return false;
+                }
+                prev_is_cased = true;
+                res_is_title = true;
+            } else if (c >= 'a' && c <= 'z') {
+                if (!prev_is_cased) {
+                    return false;
+                }
+                prev_is_cased = true;
+            } else {
+                prev_is_cased = false;
+            }
+        }
+        return res_is_title;
+    });
+
+    static constexpr auto to_upper_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        std::ranges::transform(res, res.begin(), toupper);
+        return res;
+    };
+
+    hbs.registerHelper("upper", to_upper_fn);
+    hbs.registerHelper("to_upper", to_upper_fn);
+
+    static constexpr auto to_lower_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        std::ranges::transform(res, res.begin(), tolower);
+        return res;
+    };
+
+    hbs.registerHelper("lower", to_lower_fn);
+    hbs.registerHelper("to_lower", to_lower_fn);
+
+    hbs.registerHelper("swap_case", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        if (res.empty()) {
+            return res;
+        }
+        std::ranges::transform(res, res.begin(), [](char c) -> char {
+            if (c >= 'A' && c <= 'Z') {
+                return tolower(c);
+            } else if (c >= 'a' && c <= 'z') {
+                return toupper(c);
+            } else {
+                return c;
+            }
+        });
+        return res;
+    });
+
+    hbs.registerHelper("join", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        dom::Array arr;
+        if (options.isBlock()) {
+            str = options.fn();
+            arr = args.at(0).getArray();
+        } else {
+            str = args.at(0).getString();
+            arr = args.at(1).getArray();
+        }
+        std::string res;
+        for (std::size_t i = 0; i < arr.size(); ++i) {
+            if (!res.empty()) {
+                res += str;
+            }
+            auto const& item = arr.at(i);
+            res += item.getString();
+        }
+        return res;
+    });
+
+    hbs.registerHelper("concat", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string sep;
+        std::string str2;
+        if (options.isBlock()) {
+            str = options.fn();
+            sep = args.at(0).getString();
+            str2 = args.at(1).getString();
+        } else {
+            str = args.at(0).getString();
+            sep = args.at(1).getString();
+            str2 = args.at(2).getString();
+        }
+        return str + sep + str2;
+    });
+
+    static constexpr auto strip_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string chars = " \t\r\n";
+        if (options.isBlock()) {
+            str = options.fn();
+            if (!args.empty())
+                chars = args.at(0).getString();
+        } else {
+            str = args.at(0).getString();
+            if (args.size() > 1)
+                chars = args.at(1).getString();
+        }
+        std::size_t pos = str.find_first_not_of(chars);
+        if (pos == std::string::npos) {
+            return std::string();
+        }
+        std::size_t endpos = str.find_last_not_of(chars);
+        return str.substr(pos, endpos - pos + 1);
+    };
+
+    hbs.registerHelper("strip", strip_fn);
+    hbs.registerHelper("trim", strip_fn);
+
+    static constexpr auto lstrip_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string chars = " \t\r\n";
+        if (options.isBlock()) {
+            str = options.fn();
+            if (!args.empty())
+                chars = args.at(0).getString();
+        } else {
+            str = args.at(0).getString();
+            if (args.size() > 1)
+                chars = args.at(1).getString();
+        }
+        std::size_t pos = str.find_first_not_of(chars);
+        if (pos == std::string::npos) {
+            return std::string();
+        }
+        return str.substr(pos);
+    };
+
+    hbs.registerHelper("lstrip", lstrip_fn);
+    hbs.registerHelper("trim_start", lstrip_fn);
+
+    static constexpr auto rstrip_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string chars = " \t\r\n";
+        if (options.isBlock()) {
+            str = options.fn();
+            if (!args.empty())
+                chars = args.at(0).getString();
+        } else {
+            str = args.at(0).getString();
+            if (args.size() > 1)
+                chars = args.at(1).getString();
+        }
+        std::size_t pos = str.find_last_not_of(chars);
+        if (pos == std::string::npos) {
+            return std::string();
+        }
+        return str.substr(0, pos + 1);
+    };
+
+    hbs.registerHelper("rstrip", rstrip_fn);
+    hbs.registerHelper("trim_end", rstrip_fn);
+
+    hbs.registerHelper("partition", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string sep;
+        if (options.isBlock()) {
+            str = options.fn();
+            sep = args.at(0).getString();
+        } else {
+            str = args.at(0).getString();
+            sep = args.at(1).getString();
+        }
+        dom::Array res;
+        std::size_t pos = str.find(sep);
+        if (pos == std::string::npos) {
+            res.emplace_back(str);
+            res.emplace_back(std::string());
+            res.emplace_back(std::string());
+        } else {
+            res.emplace_back(str.substr(0, pos));
+            res.emplace_back(sep);
+            res.emplace_back(str.substr(pos + sep.size()));
+        }
+        return res;
+    });
+
+    hbs.registerHelper("rpartition", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string sep;
+        if (options.isBlock()) {
+            str = options.fn();
+            sep = args.at(0).getString();
+        } else {
+            str = args.at(0).getString();
+            sep = args.at(1).getString();
+        }
+        dom::Array res;
+        std::size_t pos = str.rfind(sep);
+        if (pos == std::string::npos) {
+            res.emplace_back(str);
+            res.emplace_back(std::string());
+            res.emplace_back(std::string());
+        } else {
+            res.emplace_back(str.substr(0, pos));
+            res.emplace_back(sep);
+            res.emplace_back(str.substr(pos + sep.size()));
+        }
+        return res;
+    });
+
+    hbs.registerHelper("remove_prefix", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string prefix;
+        if (options.isBlock()) {
+            str = options.fn();
+            prefix = args.at(0).getString();
+        } else {
+            str = args.at(0).getString();
+            prefix = args.at(1).getString();
+        }
+        if (str.size() < prefix.size()) {
+            return str;
+        }
+        if (str.substr(0, prefix.size()) != prefix) {
+            return str;
+        }
+        return str.substr(prefix.size());
+    });
+
+    hbs.registerHelper("remove_suffix", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string suffix;
+        if (options.isBlock()) {
+            str = options.fn();
+            suffix = args.at(0).getString();
+        } else {
+            str = args.at(0).getString();
+            suffix = args.at(1).getString();
+        }
+        if (str.size() < suffix.size()) {
+            return str;
+        }
+        if (str.substr(str.size() - suffix.size()) != suffix) {
+            return str;
+        }
+        return str.substr(0, str.size() - suffix.size());
+    });
+
+    hbs.registerHelper("replace", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string old;
+        std::string new_str;
+        std::int64_t count = -1;
+        if (options.isBlock()) {
+            str = options.fn();
+            old = args.at(0).getString();
+            new_str = args.at(1).getString();
+            if (args.size() > 2)
+                count = args.at(2).getInteger();
+        } else {
+            str = args.at(0).getString();
+            old = args.at(1).getString();
+            new_str = args.at(2).getString();
+            if (args.size() > 3)
+                count = args.at(3).getInteger();
+        }
+        std::string res;
+        std::size_t pos = 0;
+        std::size_t old_len = old.size();
+        while (count != 0) {
+            std::size_t next = str.find(old, pos);
+            if (next == std::string::npos) {
+                res += str.substr(pos);
+                break;
+            }
+            res += str.substr(pos, next - pos);
+            res += new_str;
+            pos = next + old_len;
+            if (count > 0) {
+                --count;
+            }
+        }
+        return res;
+    });
+
+    hbs.registerHelper("split", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string sep = " ";
+        std::int64_t maxsplit = -1;
+        if (options.isBlock()) {
+            str = options.fn();
+            if (!args.empty())
+                sep = args.at(0).getString();
+            if (args.size() > 1)
+                maxsplit = args.at(1).getInteger();
+        } else {
+            str = args.at(0).getString();
+            if (args.size() > 1)
+                sep = args.at(1).getString();
+            if (args.size() > 2)
+                maxsplit = args.at(2).getInteger();
+        }
+        dom::Array res;
+        std::size_t pos = 0;
+        std::size_t sep_len = sep.size();
+        while (maxsplit != 0) {
+            std::size_t next = str.find(sep, pos);
+            if (next == std::string::npos) {
+                res.emplace_back(str.substr(pos));
+                break;
+            }
+            res.emplace_back(str.substr(pos, next - pos));
+            pos = next + sep_len;
+            if (maxsplit > 0) {
+                --maxsplit;
+            }
+        }
+        return res;
+    });
+
+    hbs.registerHelper("rsplit", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        std::string sep = " ";
+        std::int64_t maxsplit = -1;
+        if (options.isBlock()) {
+            str = options.fn();
+            if (!args.empty())
+                sep = args.at(0).getString();
+            if (args.size() > 1)
+                maxsplit = args.at(1).getInteger();
+        } else {
+            str = args.at(0).getString();
+            if (args.size() > 1)
+                sep = args.at(1).getString();
+            if (args.size() > 2)
+                maxsplit = args.at(2).getInteger();
+        }
+        dom::Array res;
+        std::size_t pos = str.size();
+        std::size_t sep_len = sep.size();
+        while (maxsplit != 0) {
+            std::size_t next = str.rfind(sep, pos);
+            if (next == std::string::npos) {
+                res.emplace_back(str.substr(0, pos));
+                break;
+            }
+            res.emplace_back(str.substr(next + sep_len, pos - next - sep_len));
+            if (next == 0) {
+                break;
+            }
+            pos = next - 1;
+            if (maxsplit > 0) {
+                --maxsplit;
+            }
+        }
+        return res;
+    });
+
+    hbs.registerHelper("split_lines", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string str;
+        bool keepends = false;
+        if (options.isBlock()) {
+            str = options.fn();
+            if (!args.empty())
+                keepends = args.at(0).getBool();
+        } else {
+            str = args.at(0).getString();
+            if (args.size() > 1)
+                keepends = args.at(1).getBool();
+        }
+        dom::Array res;
+        std::size_t pos = 0;
+        std::size_t len = str.size();
+        while (pos < len) {
+            std::size_t next = str.find_first_of("\r\n", pos);
+            if (next == std::string::npos) {
+                res.emplace_back(str.substr(pos));
+                break;
+            }
+            if (keepends) {
+                res.emplace_back(str.substr(pos, next - pos + 1));
+            } else {
+                res.emplace_back(str.substr(pos, next - pos));
+            }
+            pos = next + 1;
+        }
+        return res;
+    });
+
+    hbs.registerHelper("zfill", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        std::int64_t width = 0;
+        if (options.isBlock()) {
+            res = options.fn();
+            width = args.at(0).getInteger();
+        } else {
+            res = args.at(0).getString();
+            width = args.at(1).getInteger();
+        }
+        if (width <= static_cast<std::int64_t>(res.size())) {
+            return res;
+        }
+        std::string prefix;
+        if (res[0] == '+' || res[0] == '-') {
+            prefix = res[0];
+            res = res.substr(1);
+            if (width != static_cast<std::int64_t>(res.size()))
+                --width;
+        }
+        std::string padding(width - res.size(), '0');
+        return prefix + padding + res;
+    });
+
+    hbs.registerHelper("repeat", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        std::int64_t count = 0;
+        if (options.isBlock()) {
+            res = options.fn();
+            count = args.at(0).getInteger();
+        } else {
+            res = args.at(0).getString();
+            count = args.at(1).getInteger();
+        }
+        if (count <= 0) {
+            return std::string();
+        }
+        std::string tmp;
+        while (count > 0) {
+            tmp += res;
+            --count;
+        }
+        return tmp;
+    });
+
+    hbs.registerHelper("escape", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        return escapeExpression(res);
+    });
+
+    static constexpr auto slice_fn = [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        std::int64_t start = 0;
+        std::int64_t stop = 0;
+        if (options.isBlock()) {
+            res = options.fn();
+            stop = static_cast<std::int64_t>(res.size());
+            start = args.at(0).getInteger();
+            if (args.size() > 1)
+                stop = args.at(1).getInteger();
+        } else {
+            res = args.at(0).getString();
+            stop = static_cast<std::int64_t>(res.size());
+            start = args.at(1).getInteger();
+            if (args.size() > 2)
+                stop = args.at(2).getInteger();
+        }
+        if (res.empty()) {
+            return std::string();
+        }
+        start = normalize_index(start, static_cast<std::int64_t>(res.size()));
+        stop = normalize_index(stop, static_cast<std::int64_t>(res.size()));
+        if (start >= stop) {
+            return std::string();
+        }
+        return res.substr(start, stop - start);
+    };
+
+    hbs.registerHelper("slice", slice_fn);
+    hbs.registerHelper("substr", slice_fn);
+
+    hbs.registerHelper("safe_anchor_id", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        std::ranges::transform(res, res.begin(), [](char c) {
+            if (c == ' ' || c == '_')
+                return '-';
+           return tolower(c);
+        });
+        // remove any ":" from the string
+        auto it = std::remove(res.begin(), res.end(), ':');
+        res.erase(it, res.end());
+        return res;
+    });
+
+    hbs.registerHelper("strip_namespace", [](
+        dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res;
+        if (options.isBlock()) {
+            res = options.fn();
+        } else {
+            res = args.at(0).getString();
+        }
+        auto inside = 0;
+        size_t count = 0;
+        size_t offset = std::string::npos;
+        for (auto const& c: res) {
+            switch (c) {
+            case '(':
+            case '[':
+            case '<':
+            {
+                inside++;
+                break;
+            }
+            case ')':
+            case ']':
+            case '>':
+            {
+                inside--;
+                break;
+            }
+            case ':':
+            {
+                if (inside == 0) {
+                    offset = count + 1;
+                }
+            }
+            default:
+            {
+                break;
+            }
+            }
+            count++;
+        }
+        if (offset != std::string::npos) {
+            return res.substr(offset);
+        } else {
+            return res;
+        }
+    });
 }
 
 } // helpers

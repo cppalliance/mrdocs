@@ -315,13 +315,13 @@ if (MRDOX_BUILD_TESTS)
     add_executable(handlebars-test
             test/unit/handlebars.cpp
             include/mrdox/Support/Handlebars.hpp
-            source/Support/Handlebars.cpp
+            lib/Support/Handlebars.cpp
             include/mrdox/Support/Path.hpp
-            source/Support/Path.cpp
+            lib/Support/Path.cpp
             include/mrdox/Support/Error.hpp
-            source/Support/Error.cpp
+            lib/Support/Error.cpp
             include/mrdox/Support/Dom.hpp
-            source/Support/Dom.cpp
+            lib/Support/Dom.cpp
             )
     target_include_directories(handlebars-test PRIVATE include)
     target_compile_features(handlebars-test PRIVATE cxx_std_20)

@@ -380,3 +380,283 @@ Helper 'foo' not found. Printing block: block content
 
 // Block helper missing
 Helper 'person' not found. Printing block:     Yehuda Katz
+
+
+== String helpers
+
+// capitalize
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+// center
+                   Hello world!                   
+                   Hello world!                   
+-------------------Hello world!-------------------
+-------------------Hello world!-------------------
+// ljust
+Hello world!                                      
+Hello world!                                      
+Hello world!--------------------------------------
+Hello world!--------------------------------------
+// pad_end
+Hello world!                                      
+Hello world!                                      
+Hello world!--------------------------------------
+Hello world!--------------------------------------
+// rjust
+                                      Hello world!
+                                      Hello world!
+--------------------------------------Hello world!
+--------------------------------------Hello world!
+// pad_start
+                                      Hello world!
+                                      Hello world!
+--------------------------------------Hello world!
+--------------------------------------Hello world!
+// count
+2
+2
+1
+1
+1
+1
+// ends_with
+true
+true
+true
+true
+true
+true
+false
+false
+// starts_with
+true
+true
+true
+true
+true
+true
+false
+false
+// expandtabs
+Hello        world!
+Hello        world!
+Hello world!
+Hello world!
+Helloworld!
+Helloworld!
+// find
+6
+6
+// index_of
+6
+6
+// includes
+true
+true
+false
+false
+// rfind
+-1
+-1
+-1
+-1
+// rindex_of
+-1
+-1
+-1
+-1
+// last_index_of
+-1
+-1
+-1
+-1
+// at
+e
+e
+// char_at
+e
+e
+// isalnum
+true
+true
+false
+false
+// isalpha
+true
+true
+true
+true
+false
+false
+// isascii
+true
+true
+// isdecimal
+false
+false
+true
+true
+// isdigit
+false
+false
+true
+true
+// islower
+false
+false
+false
+false
+// isupper
+false
+false
+false
+false
+// isprintable
+true
+true
+false
+false
+// isspace
+false
+false
+true
+true
+true
+true
+// istitle
+false
+false
+true
+true
+// upper
+HELLO WORLD!
+HELLO WORLD!
+// to_upper
+HELLO WORLD!
+HELLO WORLD!
+// lower
+hello world!
+hello world!
+// to_lower
+hello world!
+hello world!
+// swapcase
+hELLO WORLD!
+hELLO WORLD!
+// join
+Hello,world!
+Hello,world!
+// concat
+Hello world!,Bye!
+Hello world!,Bye!
+// strip
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+// trim
+Hello world!
+Hello world!
+Hello world!
+Hello world!--------'
+// lstrip
+Hello world!        
+Hello world!        
+Hello world!--------
+Hello world!--------
+// trim_start
+Hello world!         
+Hello world!         
+Hello world!--------
+Hello world!--------
+// rstrip
+           Hello world!
+           Hello world!
+--------Hello world!
+--------Hello world!
+// trim_end
+         Hello world!
+         Hello world!
+--------Hello world!
+--------Hello world!
+// partition
+[Hello, ,world!]
+[Hello, ,world!]
+[Hello world!,,]
+[Hello world!,,]
+// rpartition
+[Hello, ,world!]
+[Hello, ,world!]
+[Hello world!,,]
+[Hello world!,,]
+// remove_prefix
+ world!
+ world!
+// remove_suffix
+Hello 
+Hello 
+Hello world
+Hello world
+// replace
+Hello!
+Hello!
+// split
+[Hello,world!]
+[Hello,world!]
+[He,]
+[He,]
+// rsplit
+[world!,Hell]
+[world!,Hell]
+[d!,o wo]
+[d!,o wo]
+// splitlines
+[Hello world!\nBye!]
+[Hello world!\nBye!]
+// zfill
+00000000000000000000000000000000000000Hello world!
+00000000000000000000000000000000000000Hello world!
+00000000000000000000000000000000000000000000000000000000000000000000000000000030
+00000000000000000000000000000000000000000000000000000000000000000000000000000030
+-0000000000000000000000000000000000000000000000000000000000000000000000000000030
+-0000000000000000000000000000000000000000000000000000000000000000000000000000030
+// repeat
+Hello world!Hello world!Hello world!
+Hello world!Hello world!Hello world!
+// escape
+Hello world!
+Hello world!
+&lt;Hello world!&gt;&lt;/Hello&gt;
+&lt;Hello world!&gt;&lt;/Hello&gt;
+// slice
+ello
+ello
+ello world!
+ello world!
+ello world
+ello world
+ell
+ell
+// substr
+ello
+ello
+ello world!
+ello world!
+ello world
+ello world
+ell
+ell
+// safe_anchor_id
+hello-world!
+hello-world!
+// strip_namespace
+Hello world!
+Hello world!
+memory_order
+memory_order
+memory_order_acquire
+memory_order_acquire
+basic_string<char, typename B::value_type>
+basic_string<char, typename B::value_type>

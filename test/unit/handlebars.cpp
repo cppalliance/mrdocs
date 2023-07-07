@@ -224,6 +224,7 @@ main() {
     /////////////////////////////////////////////////////////////////
     Handlebars hbs;
     helpers::registerAntoraHelpers(hbs);
+    helpers::registerStringHelpers(hbs);
 
     hbs.registerHelper("progress", [](dom::Array const& args) {
         if (args.size() < 3) {
@@ -349,7 +350,7 @@ main() {
 
         dom::Object data = createFrame(cb.data());
         dom::Value itemsV = args[0];
-        dom::Array items = itemsV.getArray();
+        dom::Array const& items = itemsV.getArray();
         if (!items.empty()) {
             std::string out = "<ul";
             for (auto const& [key, value] : cb.hashes()) {
@@ -363,10 +364,10 @@ main() {
             for (std::size_t i = 0; i < items.size(); ++i) {
                 dom::Value item = items[i];
                 // AFREITAS: this logic should be in private data
-                data.set("key", i);
+                data.set("key", static_cast<std::int64_t>(i));
                 data.set("first", i == 0);
                 data.set("last", i == items.size() - 1);
-                data.set("index", i);
+                data.set("index", static_cast<std::int64_t>(i));
                 out += "<li>" + cb.fn(item, data, {}) + "</li>";
             }
             return out + "</ul>";

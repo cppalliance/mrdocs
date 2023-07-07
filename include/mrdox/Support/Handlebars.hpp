@@ -1488,6 +1488,28 @@ MRDOX_DECL
 void
 registerAntoraHelpers(Handlebars& hbs);
 
+/** Register string helpers into a Handlebars instance
+
+    This function registers a number of common helpers that operate on
+    strings. String helpers are particularly useful because most
+    applications will need to manipulate strings for presentation
+    purposes.
+
+    All helpers can be used as either block helpers or inline helpers.
+    When used as a block helper, the block content is used as the first
+    argument to the helper function. When used as an inline helper, the
+    first argument is the value of the helper.
+
+    The helper names are inspired by the default string functions provided
+    in multiple programming languages, such as Python and Javascript,
+    for their default string types.
+
+    @param hbs The Handlebars instance to register the helpers into
+ */
+MRDOX_DECL
+void
+registerStringHelpers(Handlebars& hbs);
+
 /** "and" helper function
  *
  *  The "and" helper returns true if all of the values are truthy.

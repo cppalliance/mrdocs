@@ -6,7 +6,7 @@
 
 === Synopsis
 
-{{ # if page.decl }}
+{{#if page.decl }}
 [,cpp]
 ----
 {{page.decl}}
@@ -114,7 +114,7 @@ html-escaped: {{page.specialChars}}
 
 // Basic partials
 {{>record-detail}}
-{{ > record-detail}}
+{{> record-detail}}
 
 // Dynamic partials
 {{> (whichPartial) }}
@@ -391,3 +391,282 @@ No city found
 {{#person}}
     {{firstname}} {{lastname}}
 {{/person}}
+
+== String helpers
+
+// capitalize
+{{ capitalize 'Hello world!' }}
+{{#capitalize }}Hello world!{{/capitalize}}
+{{ capitalize 'hello world!' }}
+{{#capitalize }}hello world!{{/capitalize}}
+// center
+{{ center 'Hello world!' 50 }}
+{{#center 50 }}Hello world!{{/center}}
+{{ center 'Hello world!' 50 '-' }}
+{{#center 50 '-' }}Hello world!{{/center}}
+// ljust
+{{ ljust 'Hello world!' 50 }}
+{{#ljust 50 }}Hello world!{{/ljust}}
+{{ ljust 'Hello world!' 50 '-' }}
+{{#ljust 50 '-' }}Hello world!{{/ljust}}
+// pad_end
+{{ pad_end 'Hello world!' 50 }}
+{{#pad_end 50 }}Hello world!{{/pad_end}}
+{{ pad_end 'Hello world!' 50 '-' }}
+{{#pad_end 50 '-' }}Hello world!{{/pad_end}}
+// rjust
+{{ rjust 'Hello world!' 50 }}
+{{#rjust 50 }}Hello world!{{/rjust}}
+{{ rjust 'Hello world!' 50 '-' }}
+{{#rjust 50 '-' }}Hello world!{{/rjust}}
+// pad_start
+{{ pad_start 'Hello world!' 50 }}
+{{#pad_start 50 }}Hello world!{{/pad_start}}
+{{ pad_start 'Hello world!' 50 '-' }}
+{{#pad_start 50 '-' }}Hello world!{{/pad_start}}
+// count
+{{ count 'Hello world!' 'o' }}
+{{#count 'o' }}Hello world!{{/count}}
+{{ count 'Hello world!' 'o' 5 }}
+{{#count 'o' 5 }}Hello world!{{/count}}
+{{ count 'Hello world!' 'o' 0 5 }}
+{{#count 'o' 0 5 }}Hello world!{{/count}}
+// ends_with
+{{ ends_with 'Hello world!' 'world!' }}
+{{#ends_with 'world!' }}Hello world!{{/ends_with}}
+{{ ends_with 'Hello world!' 'world!' 5 }}
+{{#ends_with 'world!' 5 }}Hello world!{{/ends_with}}
+{{ ends_with 'Hello world!' 'o' 0 5 }}
+{{#ends_with 'o' 0 5 }}Hello world!{{/ends_with}}
+{{ ends_with 'Hello world!' 'Japan' 0 5 }}
+{{#ends_with 'Japan' 0 5 }}Hello world!{{/ends_with}}
+// starts_with
+{{ starts_with 'Hello world!' 'Hello' }}
+{{#starts_with 'Hello' }}Hello world!{{/starts_with}}
+{{ starts_with 'Hello world!' 'world!' 6 }}
+{{#starts_with 'world!' 6 }}Hello world!{{/starts_with}}
+{{ starts_with 'Hello world!' 'Hello' 0 5 }}
+{{#starts_with 'Hello' 0 5 }}Hello world!{{/starts_with}}
+{{ starts_with 'Hello world!' 'Japan' 0 5 }}
+{{#starts_with 'Japan' 0 5 }}Hello world!{{/starts_with}}
+// expandtabs
+{{ expandtabs 'Hello	world!' }}
+{{#expandtabs }}Hello	world!{{/expandtabs}}
+{{ expandtabs 'Hello	world!' 1 }}
+{{#expandtabs 1 }}Hello	world!{{/expandtabs}}
+{{ expandtabs 'Hello	world!' 0 }}
+{{#expandtabs 0 }}Hello	world!{{/expandtabs}}
+// find
+{{ find 'Hello world!' 'world' }}
+{{#find 'world' }}Hello world!{{/find}}
+// index_of
+{{ index_of 'Hello world!' 'world' }}
+{{#index_of 'world' }}Hello world!{{/index_of}}
+// includes
+{{ includes 'Hello world!' 'Hello' }}
+{{#includes 'Hello' }}Hello world!{{/includes}}
+{{ includes 'Hello world!' 'Bye' }}
+{{#includes 'Bye' }}Hello world!{{/includes}}
+// rfind
+{{ rfind 'Hello world!' 'world' }}
+{{#rfind 'world' }}Hello world!{{/rfind}}
+{{ rfind 'Hello world!' 'o' }}
+{{#rfind 'o' }}Hello world!{{/rfind}}
+// rindex_of
+{{ rindex_of 'Hello world!' 'world' }}
+{{#rindex_of 'world' }}Hello world!{{/rindex_of}}
+{{ rindex_of 'Hello world!' 'o' }}
+{{#rindex_of 'o' }}Hello world!{{/rindex_of}}
+// last_index_of
+{{ last_index_of 'Hello world!' 'world' }}
+{{#last_index_of 'world' }}Hello world!{{/last_index_of}}
+{{ last_index_of 'Hello world!' 'o' }}
+{{#last_index_of 'o' }}Hello world!{{/last_index_of}}
+// at
+{{ at 'Hello world!' 1 }}
+{{#at 1 }}Hello world!{{/at}}
+// char_at
+{{ char_at 'Hello world!' 1 }}
+{{#char_at 1 }}Hello world!{{/char_at}}
+// isalnum
+{{ is_alnum 'h3llo1' }}
+{{#is_alnum }}h3llo1{{/is_alnum}}
+{{ is_alnum 'Hello world!' }}
+{{#is_alnum }}Hello world!{{/is_alnum}}
+// isalpha
+{{ is_alnum 'hello' }}
+{{#is_alnum }}hello{{/is_alnum}}
+{{ is_alnum 'h3llo' }}
+{{#is_alnum }}h3llo{{/is_alnum}}
+{{ is_alpha 'Hello world!' }}
+{{#is_alpha }}Hello world!{{/is_alpha}}
+// isascii
+{{ is_ascii 'Hello world!' }}
+{{#is_ascii }}Hello world!{{/is_ascii}}
+// isdecimal
+{{ is_decimal 'Hello world!' }}
+{{#is_decimal }}Hello world!{{/is_decimal}}
+{{ is_decimal '0123' }}
+{{#is_decimal }}0123{{/is_decimal}}
+// isdigit
+{{ is_digit 'Hello world!' }}
+{{#is_digit }}Hello world!{{/is_digit}}
+{{ is_digit '0123' }}
+{{#is_digit }}0123{{/is_digit}}
+// islower
+{{ is_lower 'Hello world!' }}
+{{#is_lower }}Hello world!{{/is_lower}}
+{{ is_lower 'hello world!' }}
+{{#is_lower }}hello world!{{/is_lower}}
+// isupper
+{{ is_upper 'Hello world!' }}
+{{#is_upper }}Hello world!{{/is_upper}}
+{{ is_upper 'HELLO WORLD!' }}
+{{#is_upper }}HELLO WORLD!{{/is_upper}}
+// isprintable
+{{ is_printable 'Hello world!' }}
+{{#is_printable }}Hello world!{{/is_printable}}
+{{ is_printable 'Hello	world!' }}
+{{#is_printable }}Hello	world!{{/is_printable}}
+// isspace
+{{ is_space 'Hello world!' }}
+{{#is_space }}Hello world!{{/is_space}}
+{{ is_space '    ' }}
+{{#is_space }}    {{/is_space}}
+{{ is_space '' }}
+{{#is_space }}{{/is_space}}
+// istitle
+{{ is_title 'Hello world!' }}
+{{#is_title }}Hello world!{{/is_title}}
+{{ is_title 'Hello World!' }}
+{{#is_title }}Hello World!{{/is_title}}
+// upper
+{{ upper 'Hello world!' }}
+{{#upper }}Hello world!{{/upper}}
+// to_upper
+{{ to_upper 'Hello world!' }}
+{{#to_upper }}Hello world!{{/to_upper}}
+// lower
+{{ lower 'Hello world!' }}
+{{#lower }}Hello world!{{/lower}}
+// to_lower
+{{ to_lower 'Hello world!' }}
+{{#to_lower }}Hello world!{{/to_lower}}
+// swapcase
+{{ swap_case 'Hello world!' }}
+{{#swap_case }}Hello world!{{/swap_case}}
+// join
+{{ join ',' (split 'Hello,world!' '/') }}
+{{#join (split 'Hello/world!' '/') }},{{/join}}
+// concat
+{{ concat 'Hello world!' ',' 'Bye!' }}
+{{#concat ',' 'Bye!' }}Hello world!{{/concat}}
+// strip
+{{ strip '      Hello world!        ' }}
+{{#strip }}      Hello world!        {{/strip}}
+{{ strip '--------Hello world!--------' '-' }}
+{{#strip '-' }}--------Hello world!--------{{/strip}}
+// trim
+{{ trim '       Hello world!        ' }}
+{{#trim }}       Hello world!        {{/trim}}
+{{ trim '--------Hello world!--------' '-' }}
+{{#trim '-' }}--------Hello world!--------'{{/trim}}
+// lstrip
+{{ lstrip '     Hello world!        ' }}
+{{#lstrip }}     Hello world!        {{/lstrip}}
+{{ lstrip '--------Hello world!--------' '-' }}
+{{#lstrip '-' }}--------Hello world!--------{{/lstrip}}
+// trim_start
+{{ trim_start '       Hello world!         ' }}
+{{#trim_start }}       Hello world!         {{/trim_start}}
+{{ trim_start '--------Hello world!--------' '-' }}
+{{#trim_start '-' }}--------Hello world!--------{{/trim_start}}
+// rstrip
+{{ rstrip '           Hello world!         ' }}
+{{#rstrip }}           Hello world!         {{/rstrip}}
+{{ rstrip '--------Hello world!--------' '-' }}
+{{#rstrip '-' }}--------Hello world!--------{{/rstrip}}
+// trim_end
+{{ trim_end '         Hello world!         ' }}
+{{#trim_end }}         Hello world!         {{/trim_end}}
+{{ trim_end '--------Hello world!--------' '-' }}
+{{#trim_end '-' }}--------Hello world!--------{{/trim_end}}
+// partition
+{{ partition 'Hello world!' ' ' }}
+{{#partition ' ' }}Hello world!{{/partition}}
+{{ partition 'Hello world!' '?' }}
+{{#partition '?' }}Hello world!{{/partition}}
+// rpartition
+{{ rpartition 'Hello world!' ' ' }}
+{{#rpartition ' ' }}Hello world!{{/rpartition}}
+{{ rpartition 'Hello world!' '?' }}
+{{#rpartition '?' }}Hello world!{{/rpartition}}
+// remove_prefix
+{{ remove_prefix 'Hello world!' 'Hello' }}
+{{#remove_prefix 'Hello' }}Hello world!{{/remove_prefix}}
+// remove_suffix
+{{ remove_suffix 'Hello world!' 'world!' }}
+{{#remove_suffix 'world!' }}Hello world!{{/remove_suffix}}
+{{ remove_suffix 'Hello world!' '!' }}
+{{#remove_suffix '!' }}Hello world!{{/remove_suffix}}
+// replace
+{{ replace 'Hello world!' ' world' '' }}
+{{#replace ' world' '' }}Hello world!{{/replace}}
+// split
+{{ split 'Hello world!' ' ' }}
+{{#split ' ' }}Hello world!{{/split}}
+{{ split 'Hello world!' 'l' 2 }}
+{{#split 'l' 2 }}Hello world!{{/split}}
+// rsplit
+{{ rsplit 'Hello world!' ' ' }}
+{{#rsplit ' ' }}Hello world!{{/rsplit}}
+{{ rsplit 'Hello world!' 'l' 2}}
+{{#rsplit 'l' 2 }}Hello world!{{/rsplit}}
+// splitlines
+{{ split_lines 'Hello world!\nBye!' }}
+{{#split_lines }}Hello world!\nBye!{{/split_lines}}
+// zfill
+{{ zfill 'Hello world!' 50 }}
+{{#zfill 50 }}Hello world!{{/zfill}}
+{{ zfill '30' 80 }}
+{{#zfill 80 }}30{{/zfill}}
+{{ zfill '-30' 80 }}
+{{#zfill 80 }}-30{{/zfill}}
+// repeat
+{{ repeat 'Hello world!' 3 }}
+{{#repeat 3 }}Hello world!{{/repeat}}
+// escape
+{{ escape 'Hello world!' }}
+{{#escape }}Hello world!{{/escape}}
+{{ escape '<Hello world!></Hello>' }}
+{{#escape }}<Hello world!></Hello>{{/escape}}
+// slice
+{{ slice 'Hello world!' 1 5 }}
+{{#slice 1 5 }}Hello world!{{/slice}}
+{{ slice 'Hello world!' 1 }}
+{{#slice 1 }}Hello world!{{/slice}}
+{{ slice 'Hello world!' 1 -1 }}
+{{#slice 1 -1 }}Hello world!{{/slice}}
+{{ slice 'Hello world!' 1 -44 }}
+{{#slice 1 -44 }}Hello world!{{/slice}}
+// substr
+{{ substr 'Hello world!' 1 5 }}
+{{#substr 1 5 }}Hello world!{{/substr}}
+{{ substr 'Hello world!' 1 }}
+{{#substr 1 }}Hello world!{{/substr}}
+{{ substr 'Hello world!' 1 -1 }}
+{{#substr 1 -1 }}Hello world!{{/substr}}
+{{ substr 'Hello world!' 1 -44 }}
+{{#substr 1 -44 }}Hello world!{{/substr}}
+// safe_anchor_id
+{{ safe_anchor_id 'Hello world!' }}
+{{#safe_anchor_id }}Hello world!{{/safe_anchor_id}}
+// strip_namespace
+{{ strip_namespace 'Hello world!' }}
+{{#strip_namespace }}Hello world!{{/strip_namespace}}
+{{ strip_namespace 'std::memory_order' }}
+{{#strip_namespace }}std::memory_order{{/strip_namespace}}
+{{ strip_namespace 'std::memory_order::memory_order_acquire' }}
+{{#strip_namespace }}std::memory_order::memory_order_acquire{{/strip_namespace}}
+{{ strip_namespace 'std::basic_string<char, typename B::value_type>' }}
+{{#strip_namespace }}std::basic_string<char, typename B::value_type>{{/strip_namespace}}
