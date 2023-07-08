@@ -48,6 +48,20 @@ EXAMPLES:
 // Common options
 //
 
+, addonsDir(
+    "addons",
+    llvm::cl::desc("The path to the addons directory."),
+    llvm::cl::cat(commonCat))
+
+, reportLevel(
+    "report",
+    llvm::cl::desc("The minimum reporting level (0 to 4)."),
+    llvm::cl::cat(commonCat))
+
+//
+// Test options
+//
+
 , action(
     "action",
     llvm::cl::desc(R"(Which action should be performed:)"),
@@ -58,21 +72,6 @@ EXAMPLES:
         clEnumVal(update, "Update all expected xml files.")),
     llvm::cl::cat(commonCat))
 
-, addonsDir(
-    "addons",
-    llvm::cl::desc("The path to the addons directory."),
-    llvm::cl::cat(commonCat))
-
-, inputPaths(
-    "inputs",
-    llvm::cl::Sink,
-    llvm::cl::desc("A list of directories and/or .cpp files to test."),
-    llvm::cl::cat(commonCat))
-
-//
-// Test options
-//
-
 , badOption(
     "bad",
     llvm::cl::desc("Write a .bad.xml file for each test failure."),
@@ -82,6 +81,12 @@ EXAMPLES:
     "unit",
     llvm::cl::desc("Run all or selected unit test suites."),
     llvm::cl::init(true))
+
+, inputPaths(
+    "inputs",
+    llvm::cl::Sink,
+    llvm::cl::desc("A list of directories and/or .cpp files to test."),
+    llvm::cl::cat(commonCat))
 {
 }
 

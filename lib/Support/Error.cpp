@@ -144,6 +144,13 @@ static unsigned reportLevel_ = 0;
 
 constinit Results results{};
 
+void setMinimumLevel(unsigned level) noexcept
+{
+    if( level > 4)
+        level = 4;
+    reportLevel_ = level;
+}
+
 void
 print_impl(
     unsigned level,

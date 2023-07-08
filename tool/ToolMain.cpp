@@ -55,6 +55,9 @@ int mrdox_main(int argc, char const** argv)
             argc, argv, toolArgs.usageText))
         return EXIT_FAILURE;
 
+    // Apply reportLevel
+    report::setMinimumLevel(toolArgs.reportLevel.getValue());
+
     if(! setupAddonsDir(toolArgs.addonsDir, argv[0],
             reinterpret_cast<void*>(&main)))
         return EXIT_FAILURE;

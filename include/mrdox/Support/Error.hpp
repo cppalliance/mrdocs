@@ -739,7 +739,7 @@ extern MRDOX_DECL Results results;
     that errors will still count as errors even if
     they are not displayed.
 */
-MRDOX_DECL void setMinimumLevel(unsigned level);
+MRDOX_DECL void setMinimumLevel(unsigned level) noexcept;
 
 /** Report a message to the console.
 

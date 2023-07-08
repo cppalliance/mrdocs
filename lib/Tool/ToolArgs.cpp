@@ -50,22 +50,23 @@ EXAMPLES:
     llvm::cl::desc("The path to the addons directory."),
     llvm::cl::cat(commonCat))
 
+, reportLevel(
+    "report",
+    llvm::cl::desc("The minimum reporting level (0 to 4)."),
+    llvm::cl::cat(commonCat))
+
+//
+// Tool options
+//
+
 , configPath(
     "config",
-    llvm::cl::desc(R"(The config filename relative to the repository root.)"),
-    llvm::cl::cat(commonCat))
+    llvm::cl::desc(R"(The config filename relative to the repository root.)"))
 
 , outputPath(
     "output",
     llvm::cl::desc("Directory or file for generating output."),
-    llvm::cl::init("."),
-    llvm::cl::cat(commonCat))
-
-, inputPaths(
-    "inputs",
-    llvm::cl::Sink,
-    llvm::cl::desc("The path to the compilation database."),
-    llvm::cl::cat(commonCat))
+    llvm::cl::init("."))
 
 , formatType(
     "format",
@@ -76,6 +77,11 @@ EXAMPLES:
     "ignore-map-errors",
     llvm::cl::desc("Continue if files are not mapped correctly."),
     llvm::cl::init(true))
+
+, inputPaths(
+    "inputs",
+    llvm::cl::Sink,
+    llvm::cl::desc("The path to the compilation database."))
 {
 }
 

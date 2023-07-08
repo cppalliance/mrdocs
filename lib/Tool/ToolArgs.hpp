@@ -32,11 +32,13 @@ public:
     llvm::cl::extrahelp         extraHelp;
 
     llvm::cl::opt<std::string>  addonsDir;
+    llvm::cl::opt<unsigned>     reportLevel;
+
     llvm::cl::opt<std::string>  configPath;
     llvm::cl::opt<std::string>  outputPath;
-    llvm::cl::list<std::string> inputPaths;
     llvm::cl::opt<std::string>  formatType;
     llvm::cl::opt<bool>         ignoreMappingFailures;
+    llvm::cl::list<std::string> inputPaths;
 
     // Hide all options which don't belong to us
     void hideForeignOptions();

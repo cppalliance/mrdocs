@@ -39,13 +39,14 @@ public:
     llvm::cl::extrahelp         extraHelp;
 
     // Common options
-    llvm::cl::opt<Action>       action;
     llvm::cl::opt<std::string>  addonsDir;
-    llvm::cl::list<std::string> inputPaths;
+    llvm::cl::opt<unsigned>     reportLevel;
 
     // Test options
+    llvm::cl::opt<Action>       action;
     llvm::cl::opt<bool>         badOption;
     llvm::cl::opt<bool>         unitOption;
+    llvm::cl::list<std::string> inputPaths;
 
     // Hide all options which don't belong to us
     void hideForeignOptions();

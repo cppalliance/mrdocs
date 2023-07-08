@@ -81,6 +81,9 @@ int test_main(int argc, char const* const* argv)
             argc, argv, testArgs.usageText))
         return EXIT_FAILURE;
 
+    // Apply reportLevel
+    report::setMinimumLevel(testArgs.reportLevel.getValue());
+
     if(! testArgs.inputPaths.empty())
         DoTestAction();
 
