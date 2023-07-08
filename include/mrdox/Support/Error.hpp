@@ -39,7 +39,7 @@ struct Located
 
     template<class Arg>
     requires std::is_constructible_v<T, Arg>
-    constexpr Located(
+    Located(
         Arg&& arg,
         source_location const& loc =
             source_location::current())
@@ -717,6 +717,17 @@ swap(Expected& rhs) noexcept
 */
 namespace report {
 
+/** Severity levels attached to reported messags.
+*/
+enum class Level
+{
+    debug = 0,
+    info,
+    warn,
+    error,
+    fatal
+};
+
 /** Provides statistics on the number of reported messages.
 */
 struct Results
@@ -739,7 +750,10 @@ extern MRDOX_DECL Results results;
     that errors will still count as errors even if
     they are not displayed.
 */
-MRDOX_DECL void setMinimumLevel(unsigned level) noexcept;
+MRDOX_DECL
+void
+setMinimumLevel(
+    Level level) noexcept;
 
 /** Report a message to the console.
 
@@ -756,9 +770,9 @@ MRDOX_DECL void setMinimumLevel(unsigned level) noexcept;
 MRDOX_DECL
 void
 print_impl(
-    unsigned level,
+    Level level,
     std::string_view text,
-    source_location const* loc);
+    source_location const* loc = nullptr);
 
 /** Report a message to the console.
 
@@ -775,71 +789,102 @@ print_impl(
 template<class... Args>
 void
 print(
-    unsigned level,
+    Level level,
     Located<std::string_view> format,
     Args&&... args)
 {
-    if constexpr(sizeof...(args) == 0)
-        return print_impl(
-            level, format.value, &format.where);
-    else
-        return print_impl(
-            level,
-            fmt::vformat(
-                format.value,
-                fmt::make_format_args(
-                    std::forward<Args>(args)...)),
-            &format.where);
+    return print_impl(
+        level,
+        fmt::vformat(
+            format.value,
+            fmt::make_format_args(
+                std::forward<Args>(args)...)),
+        &format.where);
 }
 
 /** Report a message to the console.
 */
 template<class... Args>
-inline void debug(
+void
+debug(
     Located<std::string_view> format,
     Args&&... args)
 {
-    print(0, std::move(format), std::forward<Args>(args)...);
+    return print_impl(
+        Level::debug,
+        fmt::vformat(
+            format.value,
+            fmt::make_format_args(
+                std::forward<Args>(args)...)),
+        &format.where);
 }
 
 /** Report a message to the console.
 */
 template<class... Args>
-inline void info(
+void
+info(
     Located<std::string_view> format,
     Args&&... args)
 {
-    print(1, std::move(format), std::forward<Args>(args)...);
+    return print_impl(
+        Level::info,
+        fmt::vformat(
+            format.value,
+            fmt::make_format_args(
+                std::forward<Args>(args)...)),
+        &format.where);
 }
 
 /** Report a message to the console.
 */
 template<class... Args>
-inline void warn(
+void
+warn(
     Located<std::string_view> format,
     Args&&... args)
 {
-    print(2, std::move(format), std::forward<Args>(args)...);
+    return print_impl(
+        Level::warn,
+        fmt::vformat(
+            format.value,
+            fmt::make_format_args(
+                std::forward<Args>(args)...)),
+        &format.where);
 }
 
 /** Report a message to the console.
 */
 template<class... Args>
-inline void error(
+void
+error(
     Located<std::string_view> format,
     Args&&... args)
 {
-    print(3, std::move(format), std::forward<Args>(args)...);
+    return print_impl(
+        Level::error,
+        fmt::vformat(
+            format.value,
+            fmt::make_format_args(
+                std::forward<Args>(args)...)),
+        &format.where);
 }
 
 /** Report a message to the console.
 */
 template<class... Args>
-inline void fatal(
+void
+fatal(
     Located<std::string_view> format,
     Args&&... args)
 {
-    print(4, std::move(format), std::forward<Args>(args)...);
+    return print_impl(
+        Level::fatal,
+        fmt::vformat(
+            format.value,
+            fmt::make_format_args(
+                std::forward<Args>(args)...)),
+        &format.where);
 }
 
 } // report
@@ -904,66 +949,6 @@ reportError(
         "Could not {} because {}",
         fmt::format(fs, std::forward<Args>(args)...),
         err.message()));
-}
-
-/** Report a warning to the console.
-
-    @param text The message contents. A newline
-    will be added automatically to the output.
-*/
-MRDOX_DECL
-void
-reportWarning(
-    std::string_view text);
-
-/** Format a warning to the console.
-
-    @param fs The message format string.
-    A newline will be added automatically
-    to the output.
-
-    @param arg0,args The arguments to use
-    with the format string.
-*/
-template<class Arg0, class... Args>
-void
-reportWarning(
-    fmt::format_string<Arg0, Args...> fs,
-    Arg0&& arg0, Args&&... args)
-{
-    reportWarning(fmt::format(fs,
-        std::forward<Arg0>(arg0),
-        std::forward<Args>(args)...));
-}
-
-/** Report information to the console.
-
-    @param text The message contents. A newline
-    will be added automatically to the output.
-*/
-MRDOX_DECL
-void
-reportInfo(
-    std::string_view text);
-
-/** Format information to the console.
-
-    @param fs The message format string.
-    A newline will be added automatically
-    to the output.
-
-    @param arg0,args The arguments to use
-    with the format string.
-*/
-template<class Arg0, class... Args>
-void
-reportInfo(
-    fmt::format_string<Arg0, Args...> fs,
-    Arg0&& arg0, Args&&... args)
-{
-    reportInfo(fmt::format(fs,
-        std::forward<Arg0>(arg0),
-        std::forward<Args>(args)...));
 }
 
 /** Report an unhandled exception

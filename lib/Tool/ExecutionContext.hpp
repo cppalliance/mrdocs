@@ -42,7 +42,7 @@ public:
     }
 
     void report(Diagnostics&& diags);
-    void reportEnd();
+    void reportEnd(report::Level level);
 };
 
 } // mrdox

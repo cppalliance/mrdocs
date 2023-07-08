@@ -25,9 +25,9 @@ report(
 
 void
 ExecutionContext::
-reportEnd()
+reportEnd(report::Level level)
 {
-    diags_.reportTotals(llvm::outs());
+    diags_.reportTotals(level);
 }
 
 } // mrdox

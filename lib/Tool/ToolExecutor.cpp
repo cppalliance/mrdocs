@@ -24,7 +24,7 @@ namespace mrdox {
 namespace {
 
 llvm::Error
-make_string_error(
+makeError(
     const llvm::Twine& Message)
 {
     return llvm::make_error<llvm::StringError>(
@@ -76,10 +76,12 @@ private:
 
 ToolExecutor::
 ToolExecutor(
+    report::Level reportLevel,
     Config const& config,
     tooling::CompilationDatabase const& Compilations,
     std::shared_ptr<PCHContainerOperations> PCHContainerOps)
-    : config_(config)
+    : reportLevel_(reportLevel)
+    , config_(config)
     , Compilations(Compilations)
     , Results(new ThreadSafeToolResults)
     , Context(Results.get())
@@ -94,10 +96,10 @@ execute(
         tooling::ArgumentsAdjuster>> Actions)
 {
     if (Actions.empty())
-        return make_string_error("No action to execute.");
+        return makeError("No action to execute.");
 
     if (Actions.size() != 1)
-        return make_string_error(
+        return makeError(
             "Only support executing exactly 1 action at this point.");
 
     std::string ErrorMsg;
@@ -131,8 +133,8 @@ execute(
     auto const processFile =
     [&](std::string Path)
     {
-        if(config_->verboseOutput)
-            Log("[" + std::to_string(Count()) + "/" + TotalNumStr + "] Processing file " + Path);
+        report::print(reportLevel_,
+            "[{}/{}] \"{}\"", Count(), TotalNumStr, Path);
 
         // Each thread gets an independent copy of a VFS to allow different
         // concurrent working directories.
@@ -182,14 +184,13 @@ execute(
     }
 
     // Report warning and error totals
-    if(config_->verboseOutput)
-        Context.reportEnd();
+    Context.reportEnd(reportLevel_);
 
     if(! errors.empty())
         reportError(errors, "Could not run the tool executor");
 
     if (!ErrorMsg.empty())
-        return make_string_error(ErrorMsg);
+        return makeError(ErrorMsg);
 
     return llvm::Error::success();
 }

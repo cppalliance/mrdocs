@@ -20,14 +20,14 @@ YamlReporter::
 diag(
     llvm::SMDiagnostic const& D)
 {
-    int level = 0;
+    report::Level level = report::Level::debug;
     switch(D.getKind())
     {
     case llvm::SourceMgr::DiagKind::DK_Remark:
-        level = 0;
+        level = report::Level::debug;
         break;
     case llvm::SourceMgr::DiagKind::DK_Note:
-        level = 1;
+        level = report::Level::info;
         break;
     case llvm::SourceMgr::DiagKind::DK_Warning:
     {
@@ -36,17 +36,18 @@ diag(
             // don't show these
             return;
         }
-        level = 2;
+        level = report::Level::warn;
         break;
     }
     case llvm::SourceMgr::DiagKind::DK_Error:
-        level = 3;
+        level = report::Level::error;
         break;
     default:
         MRDOX_UNREACHABLE();
     }
 
-    report::call_impl(level,
+    report::call_impl(
+        level,
         [&](llvm::raw_ostream& os)
         {
             D.print("mrdox", os, true, true);

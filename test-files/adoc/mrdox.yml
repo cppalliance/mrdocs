@@ -1,5 +1,4 @@
 #ignore-failures: true
-#verbose: false
 with-private: false
 concurrency: 1
 source-root: .

@@ -56,14 +56,6 @@ public:
         */
         bool multiPage = false;
 
-        /** `true` if tool output should be verbose.
-
-            @code
-            verbose: true
-            @endcode
-        */
-        bool verboseOutput = false;
-
         /** `true` if private members should be extracted and displayed.
 
             In some cases private members will be listed

@@ -12,7 +12,7 @@
 #include "Tool/Addons.hpp"
 #include "Tool/ToolArgs.hpp"
 #include "Support/Debug.hpp"
-#include <mrdox/Support/Error.hpp>
+#include "Support/Error.hpp"
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Version.hpp>
 #include <llvm/Support/FileSystem.h>
@@ -56,7 +56,8 @@ int mrdox_main(int argc, char const** argv)
         return EXIT_FAILURE;
 
     // Apply reportLevel
-    report::setMinimumLevel(toolArgs.reportLevel.getValue());
+    report::setMinimumLevel(report::getLevel(
+        toolArgs.reportLevel.getValue()));
 
     if(! setupAddonsDir(toolArgs.addonsDir, argv[0],
             reinterpret_cast<void*>(&main)))

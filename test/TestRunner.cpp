@@ -51,7 +51,8 @@ writeFile(
     llvm::StringRef contents)
 {
     std::error_code ec;
-    llvm::raw_fd_ostream os(filePath, ec, llvm::sys::fs::OF_None);
+    llvm::raw_fd_ostream os(
+        filePath, ec, llvm::sys::fs::OF_None);
     if(ec)
         return Error(ec);
     os << contents;
@@ -113,7 +114,7 @@ handleFile(
         // Convert relative paths to absolute
         AbsoluteCompilationDatabase db(
             llvm::StringRef(workingDir), db1, config);
-        ToolExecutor ex(*config, db);
+        ToolExecutor ex(report::Level::debug, *config, db);
         auto result = CorpusImpl::build(ex, config);
         if(! result)
             report::error("{}: \"{}\"", result.error(), filePath);

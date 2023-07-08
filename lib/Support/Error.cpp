@@ -140,20 +140,18 @@ static llvm::sys::Mutex reportMutex_;
 namespace report {
 
 // minimum level to print
-static unsigned reportLevel_ = 0;
+static Level reportLevel_ = Level::debug;
 
 constinit Results results{};
 
-void setMinimumLevel(unsigned level) noexcept
+void setMinimumLevel(Level level) noexcept
 {
-    if( level > 4)
-        level = 4;
     reportLevel_ = level;
 }
 
 void
 print_impl(
-    unsigned level,
+    Level level,
     std::string_view text,
     source_location const* loc)
 {
@@ -164,42 +162,59 @@ print_impl(
         }, loc);
 }
 
+Level
+getLevel(unsigned level)
+{
+    switch(level)
+    {
+    case 0: return Level::debug;
+    case 1: return Level::info;
+    case 2: return Level::warn;
+    case 3: return Level::error;
+    default:
+        return Level::fatal;
+    }
+}
+
 void
 call_impl(
-    unsigned level,
+    Level level,
     std::function<void(llvm::raw_ostream&)> f,
     source_location const* loc)
 {
-    MRDOX_ASSERT(level <= 4);
-    if( level > 4)
-        level = 4;
     std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
     if(level >= reportLevel_)
     {
         f(llvm::errs());
-        if(loc)
+        if(loc && (
+            level == Level::warn ||
+            level == Level::error ||
+            level == Level::fatal))
+        {
             llvm::errs() << "\n" <<
                 fmt::format(
                     "    Reported at {}({})",
                     ::SourceFileNames::getFileName(loc->file_name()),
                     loc->line());
+            // VFALCO attach a stack trace for Level::fatal
+        }
         llvm::errs() << '\n';
     }
     switch(level)
     {
-    case 0:
+    case Level::debug:
         ++results.debugCount;
         break;
-    case 1:
+    case Level::info:
         ++results.infoCount;
         break;
-    case 2:
+    case Level::warn:
         ++results.warnCount;
         break;
-    case 3:
+    case Level::error:
         ++results.errorCount;
         break;
-    case 4:
+    case Level::fatal:
         ++results.fatalCount;
         break;
     default:
@@ -213,22 +228,6 @@ call_impl(
 
 void
 reportError(
-    std::string_view text)
-{
-    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
-    llvm::errs() << text << '\n';
-}
-
-void
-reportWarning(
-    std::string_view text)
-{
-    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
-    llvm::errs() << text << '\n';
-}
-
-void
-reportInfo(
     std::string_view text)
 {
     std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);

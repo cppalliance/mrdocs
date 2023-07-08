@@ -40,9 +40,10 @@ public:
         messages_.emplace(std::move(s), false);
     }
 
-    void reportTotals(
-        llvm::raw_ostream& os)
+    void reportTotals(report::Level level)
     {
+        std::string s;
+        llvm::raw_string_ostream os(s);
         if(! messages_.empty())
         {
             auto warnCount = messages_.size() - errorCount_;
@@ -60,12 +61,12 @@ public:
                     warnCount, warnCount > 1
                         ? "warnings" : "warning");
             }
-            os << '\n';
         }
         else
         {
             os << "No errors or warnings.\n";
         }
+        report::print_impl(level, s, nullptr);
     }
 
     void

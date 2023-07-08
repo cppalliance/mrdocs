@@ -40,10 +40,16 @@ public:
     using tooling::ToolExecutor::execute;
 
     ToolExecutor(
+        report::Level reportLevel,
         Config const& config,
         tooling::CompilationDatabase const& Compilations,
         std::shared_ptr<PCHContainerOperations> PCHContainerOps =
             std::make_shared<PCHContainerOperations>());
+
+    constexpr report::Level getReportLevel() const noexcept
+    {
+        return reportLevel_;
+    }
 
     StringRef
     getExecutorName() const override
@@ -77,6 +83,7 @@ public:
     }
 
 private:
+    report::Level reportLevel_;
     Config const& config_;
     tooling::CompilationDatabase const& Compilations;
     std::unique_ptr<tooling::ToolResults> Results;

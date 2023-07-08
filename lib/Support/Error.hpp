@@ -24,6 +24,8 @@ namespace mrdox {
 
 inline Error toError(llvm::Error err)
 {
+    if(! err)
+        return {};
     return Error(toString(std::move(err)));
 }
 
@@ -100,12 +102,20 @@ public:
 
 //------------------------------------------------
 
+/** Return a level from an integer.
+*/
+MRDOX_DECL
+Level
+getLevel(unsigned level);
+
 /** Formatted reporting to a live stream.
 
     A trailing newline will be added automatically.
 */
-MRDOX_DECL void
-call_impl(unsigned level,
+MRDOX_DECL
+void
+call_impl(
+    Level level,
     std::function<void(llvm::raw_ostream&)> f,
     source_location const* loc);
 
@@ -114,7 +124,8 @@ call_impl(unsigned level,
     A trailing newline will be added automatically.
 */
 inline void
-call(unsigned level,
+call(
+    Level level,
     std::function<void(llvm::raw_ostream&)> f,
     source_location const& loc =
         source_location::current())

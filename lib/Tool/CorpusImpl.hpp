@@ -12,12 +12,12 @@
 #define MRDOX_TOOL_CORPUSIMPL_HPP
 
 #include "Tool/ConfigImpl.hpp"
+#include "Tool/ToolExecutor.hpp"
 #include "Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
-#include <clang/Tooling/Execution.h>
 #include <llvm/ADT/StringMap.h>
 #include <llvm/Support/Mutex.h>
 #include <string>
@@ -54,7 +54,7 @@ public:
     static
     mrdox::Expected<std::unique_ptr<Corpus>>
     build(
-        tooling::ToolExecutor& ex,
+        ToolExecutor& ex,
         std::shared_ptr<Config const> config);
 
 private:

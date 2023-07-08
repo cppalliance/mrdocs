@@ -53,6 +53,7 @@ EXAMPLES:
 , reportLevel(
     "report",
     llvm::cl::desc("The minimum reporting level (0 to 4)."),
+    llvm::cl::init(1),
     llvm::cl::cat(commonCat))
 
 //

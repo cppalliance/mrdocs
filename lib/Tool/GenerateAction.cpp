@@ -74,7 +74,8 @@ DoGenerateAction()
         workingDir, *jsonCompilations, *config);
 
     // Create the ToolExecutor from the compilation database
-    auto ex = std::make_unique<ToolExecutor>(**config, compilations);
+    auto ex = std::make_unique<ToolExecutor>(
+        report::Level::info, **config, compilations);
 
     // Create the generator
     auto generator = generators.find(toolArgs.formatType.getValue());
@@ -88,8 +89,7 @@ DoGenerateAction()
         return formatError("CorpusImpl::build returned \"{}\"", corpus.error());
 
     // Run the generator.
-    if((**config)->verboseOutput)
-        reportInfo("Generating docs...\n");
+    report::info("Generating docs\n");
     return generator->build(toolArgs.outputPath.getValue(), **corpus);
 }
 

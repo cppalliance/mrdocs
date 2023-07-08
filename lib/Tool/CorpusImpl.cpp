@@ -98,7 +98,7 @@ insert(std::unique_ptr<Info> I)
 mrdox::Expected<std::unique_ptr<Corpus>>
 CorpusImpl::
 build(
-    tooling::ToolExecutor& ex,
+    ToolExecutor& ex,
     std::shared_ptr<Config const> config_)
 {
     auto config = std::dynamic_pointer_cast<ConfigImpl const>(config_);
@@ -107,15 +107,15 @@ build(
     // Traverse the AST for all translation units
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
-    if(corpus->config->verboseOutput)
-        reportInfo("Mapping declarations");
-    if(auto err = ex.execute(
+    report::print(ex.getReportLevel(), "Mapping declarations");
+    if(Error err = toError(ex.execute(
         makeFrontendActionFactory(
-            *ex.getExecutionContext(), *config)))
+            *ex.getExecutionContext(), *config))))
     {
         if(! corpus->config->ignoreFailures)
-            return toError(std::move(err));
-        reportWarning("warning: mapping failed because ", toString(std::move(err)));
+            return err;
+        report::warn(
+            "Warning: mapping failed because ", err);
     }
 
     // Inject the global namespace
@@ -131,13 +131,12 @@ build(
     // Collect the symbols. Each symbol will have
     // a vector of one or more bitcodes. These will
     // be merged later.
-    if(corpus->config->verboseOutput)
-        reportInfo("Collecting symbols");
+    report::print(ex.getReportLevel(), "Collecting symbols");
     auto bitcodes = collectBitcodes(ex);
 
     // First reducing phase (reduce all decls into one info per decl).
-    if(corpus->config->verboseOutput)
-        reportInfo("Reducing {} declarations", bitcodes.size());
+    report::print(ex.getReportLevel(),
+        "Reducing {} declarations", bitcodes.size());
     std::atomic<bool> GotFailure;
     GotFailure = false;
     auto errors = corpus->config.threadPool().forEach(
@@ -178,8 +177,8 @@ build(
     if(! errors.empty())
         return Error(errors);
 
-    if(corpus->config->verboseOutput)
-        llvm::outs() << "Collected " << corpus->InfoMap.size() << " symbols.\n";
+    report::print(ex.getReportLevel(),
+        "Symbols collected: {}", corpus->InfoMap.size());
 
     if(GotFailure)
         return formatError("multiple errors occurred");
