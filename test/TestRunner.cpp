@@ -53,21 +53,14 @@ writeFile(
     std::error_code ec;
     llvm::raw_fd_ostream os(filePath, ec, llvm::sys::fs::OF_None);
     if(ec)
-    {
-        results.numberOfErrors++;
-        return formatError("raw_fd_ostream(\"{}\") returned \"{}\"", filePath, ec);
-    }
+        return Error(ec);
     os << contents;
     if(os.error())
-    {
-        results.numberOfErrors++;
-        return formatError("raw_fd_ostream::write returned \"{}\"", os.error());
-    }
-    results.numberofFilesWritten++;
+        return Error(os.error());
     return Error::success();
 }
 
-Error
+void
 TestRunner::
 handleFile(
     llvm::StringRef filePath,
@@ -84,34 +77,33 @@ handleFile(
         auto configPath = files::withExtension(filePath, "yml");
         auto ft = files::getFileType(configPath);
         if(! ft)
-            return ft.error();
+            return report::error("{}: \"{}\"",
+                ft.error(), configPath);
         if(ft.value() == files::FileType::regular)
         {
-            auto result = loadConfigFile(
+            auto configFile = loadConfigFile(
                 configPath, testArgs.addonsDir, "", config);
-            if(! result)
-            {
-                results.numberOfErrors++;
-                reportWarning("Error loading \"{}\": {}", filePath, result.error());
-                return Error::success();
-            }
-            config = result.value();
+            if(! configFile)
+                return report::error("{}: \"{}\"",
+                    configPath, configFile.error());
+            config = configFile.value();
+        }
+        else if(ft.value() != files::FileType::not_found)
+        {
+            return report::error("{}: \"{}\"",
+                Error("not a regular file"), configPath);
         }
 
         if(! config)
-        {
-            reportWarning(fmt::format("Error: \"{}\", missing configuration file", filePath));
-            return Error::success();
-        }
+            return report::error("{}: \"{}\"",
+                Error("missing config"), filePath);
     }
-
-    results.numberOfFiles++;
 
     SmallPathString dirPath = filePath;
     path::remove_filename(dirPath);
 
-    SmallPathString outputPath = filePath;
-    path::replace_extension(outputPath, xmlGen_->fileExtension());
+    SmallPathString expectedPath = filePath;
+    path::replace_extension(expectedPath, xmlGen_->fileExtension());
 
     // Build Corpus
     std::unique_ptr<Corpus> corpus;
@@ -124,109 +116,97 @@ handleFile(
         ToolExecutor ex(*config, db);
         auto result = CorpusImpl::build(ex, config);
         if(! result)
-        {
-            reportError(result.error(), "build Corpus for \"{}\"", filePath);
-            return Error::success(); // keep going
-        }
+            report::error("{}: \"{}\"", result.error(), filePath);
         corpus = result.release();
     }
 
     // Generate XML
     std::string generatedXml;
     if(auto err = xmlGen_->buildOneString(generatedXml, *corpus))
+        return report::error("{}: \"{}\"", err, filePath);
+
+    // Get expected XML if it exists
+    std::unique_ptr<llvm::MemoryBuffer> expectedXml;
     {
-        reportError(err, "build XML string for \"{}\"", filePath);
-        results.numberOfErrors++;
-        return Error::success(); // keep going
+        auto fileResult = llvm::MemoryBuffer::getFile(expectedPath, false);
+        if(fileResult)
+            expectedXml = std::move(fileResult.get());
+        else if(fileResult.getError() != std::errc::no_such_file_or_directory)
+            return report::error("{}: \"{}\"", fileResult.getError(), expectedPath);
     }
 
-    if(testArgs.action == Action::test)
+    if(! expectedXml)
     {
-        // Open and load XML comparison file
-        std::unique_ptr<llvm::MemoryBuffer> expectedXml;
+        if(testArgs.action == Action::test)
         {
-            auto result = llvm::MemoryBuffer::getFile(outputPath, false);
-            if(! result)
-            {
-                // File could not be loaded
-                results.numberOfErrors++;
-
-                if( result.getError() != std::errc::no_such_file_or_directory)
-                {
-                    // Some kind of system problem
-                    reportError(
-                        Error("MemoryBuffer::getFile(\"{}\") returned \"{}\""),
-                        "load the reference XML");
-                    return Error::success(); // keep going
-                }
-
-                // File does not exist, so write it
-                if(auto err = writeFile(outputPath, generatedXml))
-                    return Error::success();
-            }
-            else
-            {
-                expectedXml = std::move(result.get());
-            }
+            // Can't test without expected XML file
+            return report::error("{}: \"{}\"",
+                Error("missing xml file"), expectedPath);
         }
 
-        // Compare the generated output with the expected output
-        if( expectedXml &&
-            generatedXml != expectedXml->getBuffer())
+        if(testArgs.action == Action::create)
         {
-            // The output did not match
-            results.numberOfFailures++;
-            reportError("Test for \"{}\" failed", filePath);
+            // Create expected XML file
+            if(auto err = writeFile(expectedPath, generatedXml))
+                return report::error("{}: \"{}\"", err, expectedPath);
+            report::info("\"{}\" created", expectedPath);
+            ++results.expectedXmlWritten;
+            return;
+        }
+    }
+    else if(
+        testArgs.action == Action::test ||
+        testArgs.action == Action::create)
+    {
+        // Compare the generated output with the expected output
+        if(generatedXml != expectedXml->getBuffer())
+        {
+            // mismatch
+            report::error("{}: \"{}\"",
+                Error("incorrect results"), filePath);
 
             if(testArgs.badOption.getValue())
             {
                 // Write the .bad.xml file
-                auto bad = outputPath;
-                path::replace_extension(bad, "bad.xml");
-                {
-                    std::error_code ec;
-                    llvm::raw_fd_ostream os(bad, ec, llvm::sys::fs::OF_None);
-                    if (ec)
-                    {
-                        results.numberOfErrors++;
-                        return formatError("raw_fd_ostream(\"{}\") returned \"{}\"", bad, ec);
-                    }
-                    os << generatedXml;
-                }
+                auto badPath = expectedPath;
+                path::replace_extension(badPath, "bad.xml");
+                if(auto err = writeFile(badPath, generatedXml))
+                    return report::error("{}: \"{}\"", err, badPath);
+                report::info("\"{}\" written", badPath);
 
                 // VFALCO We are calling this over and over again instead of once?
                 if(! diffCmdPath_.getError())
                 {
-                    path::replace_extension(bad, "xml");
+                    path::replace_extension(badPath, "xml");
                     std::array<llvm::StringRef, 5u> args {
-                        diffCmdPath_.get(), "-u", "--color", outputPath, bad };
+                        diffCmdPath_.get(), "-u", "--color", expectedPath, badPath };
                     llvm::sys::ExecuteAndWait(diffCmdPath_.get(), args);
                 }
-
-                // Fix the path for the code that follows
-                outputPath.pop_back_n(8);
-                path::replace_extension(outputPath, "xml");
             }
         }
         else
         {
-            // success
+            ++results.expectedXmlMatching;
         }
-    }
-    else if(testArgs.action == Action::update)
-    {
-        // Refresh the expected output file
-        if(auto err = writeFile(outputPath, generatedXml))
-        {
-            results.numberOfErrors++;
-            return Error::success();
-        }
+        return;
     }
 
-    return Error::success();
+    // update action
+    if(testArgs.action == Action::update)
+    {
+        if(! expectedXml || generatedXml != expectedXml->getBuffer())
+        {
+            // Update the expected XML
+            if(auto err = writeFile(expectedPath, generatedXml))
+                return report::error("{}: \"{}\"", err, expectedPath);
+            report::info("\"{}\" updated", expectedPath);
+            ++results.expectedXmlWritten;
+        }
+        return;
+    }
 }
 
-Error
+void
 TestRunner::
 handleDir(
     std::string dirPath,
@@ -241,33 +221,40 @@ handleDir(
 
     // Set up directory iterator
     std::error_code ec;
+    fs::directory_iterator const end{};
     fs::directory_iterator iter(dirPath, ec, false);
     if(ec)
-        return Error(ec);
-    fs::directory_iterator const end{};
+        return report::error("{}: \"{}\"", dirPath, Error(ec));
 
-    // Check directory-wide config
+    // Check for a directory-wide config
     {
         auto configPath = files::appendPath(dirPath, "mrdox.yml");
         auto ft = files::getFileType(configPath);
         if(! ft)
-            return ft.error();
+            return report::error("{}: \"{}\"",
+                ft.error(), configPath);
         if(ft.value() == files::FileType::regular)
         {
-            auto result = loadConfigFile(
+            auto configFile = loadConfigFile(
                 configPath, testArgs.addonsDir, "", config);
-            if(! result)
-                return result.error();
-            config = result.value();
+            if(! configFile)
+                return report::error("{}: \"{}\"",
+                    configPath, configFile.error());
+            config = configFile.value();
+        }
+        else if(ft.value() != files::FileType::not_found)
+        {
+            return report::error("{}: \"{}\"",
+                Error("not a regular file"), configPath);
         }
     }
 
+    // Visit each item in the directory
     while(iter != end)
     {
         if(iter->type() == fs::file_type::directory_file)
         {
-            if(auto err = handleDir(iter->path(), config))
-                return err;
+            handleDir(iter->path(), config);
         }
         else if(
             iter->type() == fs::file_type::regular_file &&
@@ -276,7 +263,7 @@ handleDir(
             threadPool_.async(
                 [this, config, filePath = SmallPathString(iter->path())]
                 {
-                    handleFile(filePath, config).operator bool();
+                    handleFile(filePath, config);
                 });
         }
         else
@@ -285,12 +272,12 @@ handleDir(
         }
         iter.increment(ec);
         if(ec)
-            return formatError("directory_iterator::increment returned \"{}\"", ec);
+            return report::error("{}: \"{}\"",
+                Error(ec), dirPath);
     }
-    return Error::success();
 }
 
-Error
+void
 TestRunner::
 checkPath(
     std::string inputPath)
@@ -303,52 +290,69 @@ checkPath(
     // See if inputPath references a file or directory
     auto fileType = files::getFileType(inputPath);
     if(! fileType)
-        return fileType.error();
+        return report::error("{}: \"{}\"",
+            fileType.error(), inputPath);
 
     switch(fileType.value())
     {
     case files::FileType::regular:
     {
-        auto const ext = path::extension(inputPath);
-        if(! ext.equals_insensitive(".cpp"))
-            return formatError("\"{}\" is not a .cpp file");
+        // Require a .cpp file
+        if(! path::extension(inputPath).equals_insensitive(".cpp"))
+        {
+            Error err("not a .cpp file");
+            return report::error("{}: \"{}\"",
+                err, inputPath);
+        }
 
         std::shared_ptr<ConfigImpl const> config;
 
-        // Check directory-wide config
+        // Check for a directory-wide config
         {
             auto configPath = files::appendPath(
                 files::getParentDir(inputPath), "mrdox.yml");
             auto ft = files::getFileType(configPath);
-            if(ft && ft.value() == files::FileType::regular)
+            if(! ft)
+                return report::error("{}: \"{}\"",
+                    ft.error(), configPath);
+            if(ft.value() == files::FileType::regular)
             {
-                auto result = loadConfigFile(
+                auto configFile = loadConfigFile(
                     configPath, testArgs.addonsDir);
-                if(! result)
-                    return result.error();
-                config = result.value();
+                if(! configFile)
+                    return report::error("{}: \"{}\"",
+                        configPath, configFile.error());
+                config = configFile.value();
+            }
+            else if(ft.value() != files::FileType::not_found)
+            {
+                return report::error("{}: \"{}\"",
+                    Error("not a regular file"), configPath);
             }
         }
 
-        auto err = handleFile(inputPath, config);
+        handleFile(inputPath, config);
         threadPool_.wait();
-        return err;
+        return;
     }
 
     case files::FileType::directory:
     {
         // Iterate this directory and all its children
-        auto err = handleDir(files::makeDirsy(inputPath), nullptr);
+        handleDir(files::makeDirsy(inputPath), nullptr);
         threadPool_.wait();
-        return err;
+        return;
     }
 
     case files::FileType::not_found:
-        return Error(std::make_error_code(
-            std::errc::no_such_file_or_directory));
+        return report::error("{}: \"{}\"",
+            Error(std::make_error_code(
+                std::errc::no_such_file_or_directory)),
+            inputPath);
 
     default:
-        return Error("unknown FileType");
+        return report::error("{}: \"{}\"",
+            Error("unknown file type"), inputPath);
     }
 }
 

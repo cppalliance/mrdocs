@@ -217,7 +217,7 @@ luaM_report(
     fmt::print(
         "{}\n"
         //"    at {}({})\n",
-        ,err.reason()
+        ,err.message()
         ,Loc.file_name()
         //,Loc.line()
         );

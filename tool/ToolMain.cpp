@@ -66,6 +66,9 @@ int mrdox_main(int argc, char const** argv)
         reportError(err, "generate reference documentation");
         return EXIT_FAILURE;
     }
+    if( report::results.errorCount > 0 ||
+        report::results.fatalCount > 0)
+        return EXIT_FAILURE;
     return EXIT_SUCCESS;
 }
 

@@ -10,6 +10,7 @@
 //
 
 #include "Options.hpp"
+#include "Support/Yaml.hpp"
 #include "Tool/ConfigImpl.hpp" // VFALCO This is a problem
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Support/Path.hpp>
@@ -97,11 +98,13 @@ loadOptions(
 {
     Options opt;
 
+    YamlReporter reporter;
+
     // config
     {
         llvm::yaml::Input yin(
-            corpus.config->configYaml, nullptr,
-                ConfigImpl::yamlDiagnostic);
+            corpus.config->configYaml,
+                &reporter, reporter);
         yin.setAllowUnknownKeys(true);
         yin >> opt;
         if(auto ec = yin.error())
@@ -111,8 +114,8 @@ loadOptions(
     // extra
     {
         llvm::yaml::Input yin(
-            corpus.config->extraYaml, nullptr,
-                ConfigImpl::yamlDiagnostic);
+            corpus.config->extraYaml,
+                &reporter, reporter);
         yin.setAllowUnknownKeys(true);
         yin >> opt;
         if(auto ec = yin.error())

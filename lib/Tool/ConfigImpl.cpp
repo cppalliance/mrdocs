@@ -13,7 +13,7 @@
 #include "Support/Debug.hpp"
 #include "Support/Error.hpp"
 #include "Support/Path.hpp"
-#include "Support/YamlFwd.hpp"
+#include "Support/Yaml.hpp"
 #include <mrdox/Support/Path.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
@@ -93,16 +93,17 @@ ConfigImpl(
     settings_.extraYaml = extraYaml_;
 
     // Parse the YAML strings
+    YamlReporter reporter;
     {
-        llvm::yaml::Input yin(
-            settings_.configYaml, this, yamlDiagnostic);
+        llvm::yaml::Input yin(settings_.configYaml,
+            &reporter, reporter);
         yin.setAllowUnknownKeys(true);
         yin >> settings_;
         Error(yin.error()).maybeThrow();
     }
     {
-        llvm::yaml::Input yin(
-            settings_.extraYaml, this, yamlDiagnostic);
+        llvm::yaml::Input yin(settings_.extraYaml,
+            &reporter, reporter);
         yin.setAllowUnknownKeys(true);
         yin >> settings_;
         Error(yin.error()).maybeThrow();
@@ -165,19 +166,6 @@ shouldExtractFromFile(
         settings_.sourceRoot.begin(),
         settings_.sourceRoot.end());
     return true;
-}
-
-void
-ConfigImpl::
-yamlDiagnostic(
-    llvm::SMDiagnostic const& D, void* Ctx)
-{
-    if(D.getKind() == llvm::SourceMgr::DK_Warning)
-        return;
-    if(D.getKind() == llvm::SourceMgr::DK_Error)
-        llvm::errs() << D.getMessage();
-    else
-        llvm::outs() << D.getMessage();
 }
 
 //------------------------------------------------

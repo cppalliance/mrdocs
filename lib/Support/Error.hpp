@@ -8,13 +8,124 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#ifndef MRDOX_TOOL_SUPPORT_ERROR_HPP
-#define MRDOX_TOOL_SUPPORT_ERROR_HPP
+#ifndef MRDOX_LIB_SUPPORT_ERROR_HPP
+#define MRDOX_LIB_SUPPORT_ERROR_HPP
 
 #include <mrdox/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
+#include <llvm/Support/raw_ostream.h>
+#include <functional>
+#include <utility>
+
+namespace clang {
+namespace mrdox {
+
+inline Error toError(llvm::Error err)
+{
+    return Error(toString(std::move(err)));
+}
+
+//------------------------------------------------
+
+namespace report {
+
+/** Helper for ensuring correct grammar in expository output.
+*/
+template<std::integral T>
+class numberOf
+{
+    T t_;
+    std::string_view one_;
+    std::string_view notOne_;
+
+public:
+    numberOf(
+        T t,
+        std::string_view one,
+        std::string_view notOne) noexcept
+        : t_(t)
+        , one_(one)
+        , notOne_(notOne)
+    {
+    }
+
+    friend
+    llvm::raw_ostream&
+    operator<<(
+        llvm::raw_ostream& os,
+        numberOf const& u)
+    {
+        os << u.t_ << ' ';
+        if(u.t_ == 1)
+            os << u.one_;
+        else
+            os << u.notOne_;
+        return os;
+    }
+};
+
+template<class T>
+numberOf(T, std::string_view, std::string_view) -> numberOf<T>;
+
+//------------------------------------------------
+
+/** Helper for inserting separators into a list.
+*/
+class separator
+{
+    char c0_ = ',';
+    char c_ = 0;
+
+public:
+    constexpr separator();
+    constexpr explicit separator(char c)
+        : c0_(c)
+    {
+    }
+
+    friend
+    llvm::raw_ostream&
+    operator<<(
+        llvm::raw_ostream& os,
+        separator& u)
+    {
+        if(u.c_)
+            return os << u.c_ << ' ';
+        u.c_ = u.c0_;
+        return os;
+    }
+};
+
+//------------------------------------------------
+
+/** Formatted reporting to a live stream.
+
+    A trailing newline will be added automatically.
+*/
+MRDOX_DECL void
+call_impl(unsigned level,
+    std::function<void(llvm::raw_ostream&)> f,
+    source_location const* loc);
+
+/** Formatted reporting to a live stream.
+
+    A trailing newline will be added automatically.
+*/
+inline void
+call(unsigned level,
+    std::function<void(llvm::raw_ostream&)> f,
+    source_location const& loc =
+        source_location::current())
+{
+    call_impl(level, std::move(f), &loc);
+}
+
+} // report
+
+} // mrdox
+} // clang
 
 template<>
 struct fmt::formatter<llvm::StringRef>
@@ -41,18 +152,5 @@ struct fmt::formatter<llvm::SmallString<InternalLen>>
             std::string_view(s.data(), s.size()), ctx);
     }
 };
-
-namespace clang {
-namespace mrdox {
-
-inline
-Error
-toError(llvm::Error err)
-{
-    return Error(toString(std::move(err)));
-}
-
-} // mrdox
-} // clang
 
 #endif

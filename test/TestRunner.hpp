@@ -26,27 +26,17 @@ namespace mrdox {
 
 struct TestResults
 {
-    using clock_type = std::chrono::system_clock;
+    // Number of expected XML files written
+    std::atomic<std::size_t> expectedXmlWritten = 0;
 
-    clock_type::time_point startTime;
+    // Number of matching expected XML files
+    std::atomic<std::size_t> expectedXmlMatching= 0;
+
+    // Number of directories visited
     std::atomic<std::size_t> numberOfDirs = 0;
-    std::atomic<std::size_t> numberOfFiles = 0;
-    std::atomic<std::size_t> numberOfErrors = 0;
-    std::atomic<std::size_t> numberOfFailures = 0;
-    std::atomic<std::size_t> numberofFilesWritten = 0;
 
     TestResults() noexcept
-        : startTime(clock_type::now())
     {
-    }
-
-    // Return the number of milliseconds of elapsed time
-    auto
-    elapsedMilliseconds() const noexcept
-    {
-        return std::chrono::duration_cast<
-            std::chrono::milliseconds>(
-                clock_type::now() - startTime).count();
     }
 };
 
@@ -68,11 +58,11 @@ class TestRunner
         llvm::StringRef filePath,
         llvm::StringRef contents);
 
-    Error handleFile(
+    void handleFile(
         llvm::StringRef filePath,
         std::shared_ptr<ConfigImpl const> config);
 
-    Error handleDir(
+    void handleDir(
         std::string dirPath,
         std::shared_ptr<ConfigImpl const> config);
 
@@ -86,7 +76,7 @@ public:
         This function checks the specified path
         and blocks until completed.
     */
-    Error checkPath(std::string inputPath);
+    void checkPath(std::string inputPath);
 };
 
 } // mrdox

@@ -8,13 +8,17 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Support/Error.hpp>
+#include "Support/Error.hpp"
 #include <mrdox/Support/Path.hpp>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/Signals.h>
 #include <cstdlib>
 #include <mutex>
+
+namespace SourceFileNames {
+extern char const* getFileName(char const*) noexcept;
+} // SourceFileNames
 
 namespace clang {
 namespace mrdox {
@@ -27,34 +31,37 @@ namespace mrdox {
 
 std::string
 Error::
-appendSourceLocation(
-    std::string&& text,
+formatWhere(
     source_location const& loc)
 {
-#if 0
-    fmt::format_to(
-        std::back_inserter(text),
-        "\n"
-        "    function `{}` at {}({})",
+    return fmt::format(
+        "{}@{}({})",
         loc.function_name(),
-        files::getSourceFilename(loc.file_name()),
+        ::SourceFileNames::getFileName(
+            loc.file_name()),
         loc.line());
-#else
-    fmt::format_to(
-        std::back_inserter(text),
-        " at {}({})",
-        files::getSourceFilename(loc.file_name()),
-        loc.line());
-#endif
-    return std::move(text);
+}
+
+std::string
+Error::
+formatMessage(
+    std::string_view const& reason,
+    std::string_view const& where)
+{
+    std::string result;
+    result = reason;
+    result.append(": ");
+    result.append(where);
+    return result;
 }
 
 Error::
 Error(
     std::string reason,
     source_location loc)
-    : message_(appendSourceLocation(std::string(reason), loc))
+    : where_(formatWhere(loc))
     , reason_(std::move(reason))
+    , message_(formatMessage(reason_, where_))
     , loc_(loc)
 {
     MRDOX_ASSERT(! message_.empty());
@@ -67,8 +74,9 @@ Error(
 {
     if(! ec)
         return;
-    message_ = appendSourceLocation(ec.message(), loc);
+    where_ = formatWhere(loc);
     reason_ = ec.message();
+    message_ = formatMessage(reason_, where_);
     loc_ = loc;
 }
 
@@ -80,18 +88,20 @@ Error(
     MRDOX_ASSERT(errors.size() > 0);
     if(errors.size() == 1)
     {
-        message_ = errors.front().message();
+        *this = errors.front();
         return;
     }
 
-    message_ = fmt::format("{} errors occurred:\n", errors.size());
+    where_ = formatWhere(loc);
+    reason_ = fmt::format(
+        "{} errors occurred:\n", errors.size());
     for(auto const& err : errors)
     {
-        message_.append("    ");
-        message_.append(err.message());
-        message_.push_back('\n');
+        reason_.append("    ");
+        reason_.append(err.message());
+        reason_.push_back('\n');
     }
-    reason_ = message_;
+    message_ = formatMessage(reason_, where_);
     loc_ = loc;
 }
 
@@ -125,13 +135,80 @@ SourceLocation(
 //
 //------------------------------------------------
 
-static llvm::sys::Mutex report_mutex_;
+static llvm::sys::Mutex reportMutex_;
+
+namespace report {
+
+// minimum level to print
+static unsigned reportLevel_ = 0;
+
+constinit Results results{};
+
+void
+print_impl(
+    unsigned level,
+    std::string_view text,
+    source_location const* loc)
+{
+    call_impl(level,
+        [&](llvm::raw_ostream& os)
+        {
+            os << text;
+        }, loc);
+}
+
+void
+call_impl(
+    unsigned level,
+    std::function<void(llvm::raw_ostream&)> f,
+    source_location const* loc)
+{
+    MRDOX_ASSERT(level <= 4);
+    if( level > 4)
+        level = 4;
+    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
+    if(level >= reportLevel_)
+    {
+        f(llvm::errs());
+        if(loc)
+            llvm::errs() << "\n" <<
+                fmt::format(
+                    "    Reported at {}({})",
+                    ::SourceFileNames::getFileName(loc->file_name()),
+                    loc->line());
+        llvm::errs() << '\n';
+    }
+    switch(level)
+    {
+    case 0:
+        ++results.debugCount;
+        break;
+    case 1:
+        ++results.infoCount;
+        break;
+    case 2:
+        ++results.warnCount;
+        break;
+    case 3:
+        ++results.errorCount;
+        break;
+    case 4:
+        ++results.fatalCount;
+        break;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+} // report
+
+//------------------------------------------------
 
 void
 reportError(
     std::string_view text)
 {
-    std::lock_guard<llvm::sys::Mutex> lock(report_mutex_);
+    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
     llvm::errs() << text << '\n';
 }
 
@@ -139,7 +216,7 @@ void
 reportWarning(
     std::string_view text)
 {
-    std::lock_guard<llvm::sys::Mutex> lock(report_mutex_);
+    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
     llvm::errs() << text << '\n';
 }
 
@@ -147,7 +224,7 @@ void
 reportInfo(
     std::string_view text)
 {
-    std::lock_guard<llvm::sys::Mutex> lock(report_mutex_);
+    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
     llvm::errs() << text << '\n';
 }
 
@@ -157,7 +234,7 @@ reportUnhandledException(
 {
     namespace sys = llvm::sys;
 
-    std::lock_guard<llvm::sys::Mutex> lock(report_mutex_);
+    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
     llvm::errs() <<
         "Unhandled exception: " << ex.what() << '\n';
     sys::PrintStackTrace(llvm::errs());

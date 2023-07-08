@@ -20,6 +20,7 @@ namespace mrdox {
 enum Action : int
 {
     test,
+    create,
     update,
 };
 

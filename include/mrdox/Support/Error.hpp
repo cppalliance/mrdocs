@@ -13,8 +13,8 @@
 #define MRDOX_API_SUPPORT_ERROR_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Support/Format.hpp>
 #include <mrdox/Support/source_location.hpp>
+#include <fmt/format.h>
 #include <exception>
 #include <iterator>
 #include <memory>
@@ -26,6 +26,28 @@
 
 namespace clang {
 namespace mrdox {
+
+//------------------------------------------------
+
+/** Parameter type that adds a source location to a value.
+*/
+template<class T>
+struct Located
+{
+    T value;
+    source_location where;
+
+    template<class Arg>
+    requires std::is_constructible_v<T, Arg>
+    constexpr Located(
+        Arg&& arg,
+        source_location const& loc =
+            source_location::current())
+        : value(std::forward<Arg>(arg))
+        , where(loc)
+    {
+    }
+};
 
 //------------------------------------------------
 //
@@ -40,16 +62,14 @@ class Exception;
 class [[nodiscard]] MRDOX_DECL
     Error final
 {
-    std::string message_;
+    std::string where_;
     std::string reason_;
+    std::string message_;
     source_location loc_;
 
-    static
-    std::string
-    appendSourceLocation(
-        std::string&&,
-        source_location const&);
-
+    static std::string formatWhere(source_location const&);
+    static std::string formatMessage(
+        std::string_view const&, std::string_view const&);
 public:
     /** Constructor.
 
@@ -76,8 +96,9 @@ public:
 
     /** Constructor.
 
-        @param message The text of the error.
-        This must not be empty.
+        @param reason A string indicating the
+        cause of the failure. This must not
+        be empty.
 
         @param loc The source location where
         the error occurred.
@@ -127,25 +148,33 @@ public:
         return failed();
     }
 
-    /** Return the error string.
+    /** Return the location string.
     */
-    constexpr std::string_view
-    message() const noexcept
+    constexpr std::string const&
+    where() const noexcept
     {
-        return message_;
+        return where_;
     }
 
     /** Return the reason string.
     */
-    constexpr std::string_view
+    constexpr std::string const&
     reason() const noexcept
     {
         return reason_;
     }
 
+    /** Return the error string.
+    */
+    constexpr std::string const&
+    message() const noexcept
+    {
+        return message_;
+    }
+
     /** Return the source location.
     */
-    constexpr source_location
+    constexpr source_location const&
     location() const noexcept
     {
         return loc_;
@@ -157,14 +186,6 @@ public:
     operator==(Error const& rhs) const noexcept
     {
         return message_ == rhs.message_;
-    }
-
-    /** Return a null-terminated error string.
-    */
-    char const*
-    what() const noexcept
-    {
-        return reason_.c_str();
     }
 
     /** Throw Exception(*this)
@@ -252,7 +273,7 @@ public:
     char const*
     what() const noexcept override
     {
-        return err_.what();
+        return err_.message().c_str();
     }
 };
 
@@ -387,6 +408,25 @@ public:
 // Implementation
 //
 //------------------------------------------------
+
+template<class... Args>
+struct FormatString
+{
+    template<class T>
+    FormatString(
+        T const& fs_,
+        source_location loc_ =
+            source_location::current())
+        : fs(fs_)
+        , loc(loc_)
+    {
+        static_assert(std::is_constructible_v<
+            std::string_view, T const&>);
+    }
+
+    std::string_view fs;
+    source_location loc;
+};
 
 inline
 Error
@@ -673,6 +713,139 @@ swap(Expected& rhs) noexcept
 //
 //------------------------------------------------
 
+/** Front-end for writing messages to the console.
+*/
+namespace report {
+
+/** Provides statistics on the number of reported messages.
+*/
+struct Results
+{
+    std::size_t debugCount;
+    std::size_t infoCount;
+    std::size_t warnCount;
+    std::size_t errorCount;
+    std::size_t fatalCount;
+};
+
+/** Holds current statistics on reported messages.
+*/
+extern MRDOX_DECL Results results;
+
+/** Set the minimum threshold level for reporting.
+
+    Messages below this level will not be printed.
+    A value of 5 will suppress all messages. Note
+    that errors will still count as errors even if
+    they are not displayed.
+*/
+MRDOX_DECL void setMinimumLevel(unsigned level);
+
+/** Report a message to the console.
+
+    @param level 0 to 4 The severity of the
+    report. 0 is debug and 4 is fatal.
+
+    @param text The message to print. A
+    trailing newline will be added to the
+    message automatically.
+
+    @param loc The source location of the report.
+    If this value is null, no location is printed.
+*/
+MRDOX_DECL
+void
+print_impl(
+    unsigned level,
+    std::string_view text,
+    source_location const* loc);
+
+/** Report a message to the console.
+
+    @param level 0 to 4 The severity of the
+    report. 0 is debug and 4 is fatal.
+
+    @param format The format string.
+
+    @param args... Optional additional arguments
+    used to format a message to print. A trailing
+    newline will be added to the message
+    automatically.
+*/
+template<class... Args>
+void
+print(
+    unsigned level,
+    Located<std::string_view> format,
+    Args&&... args)
+{
+    if constexpr(sizeof...(args) == 0)
+        return print_impl(
+            level, format.value, &format.where);
+    else
+        return print_impl(
+            level,
+            fmt::vformat(
+                format.value,
+                fmt::make_format_args(
+                    std::forward<Args>(args)...)),
+            &format.where);
+}
+
+/** Report a message to the console.
+*/
+template<class... Args>
+inline void debug(
+    Located<std::string_view> format,
+    Args&&... args)
+{
+    print(0, std::move(format), std::forward<Args>(args)...);
+}
+
+/** Report a message to the console.
+*/
+template<class... Args>
+inline void info(
+    Located<std::string_view> format,
+    Args&&... args)
+{
+    print(1, std::move(format), std::forward<Args>(args)...);
+}
+
+/** Report a message to the console.
+*/
+template<class... Args>
+inline void warn(
+    Located<std::string_view> format,
+    Args&&... args)
+{
+    print(2, std::move(format), std::forward<Args>(args)...);
+}
+
+/** Report a message to the console.
+*/
+template<class... Args>
+inline void error(
+    Located<std::string_view> format,
+    Args&&... args)
+{
+    print(3, std::move(format), std::forward<Args>(args)...);
+}
+
+/** Report a message to the console.
+*/
+template<class... Args>
+inline void fatal(
+    Located<std::string_view> format,
+    Args&&... args)
+{
+    print(4, std::move(format), std::forward<Args>(args)...);
+}
+
+} // report
+
+//------------------------------------------------
+
 /** Report an error to the console.
 
     @param text The message contents. A newline
@@ -828,7 +1001,7 @@ struct fmt::formatter<clang::mrdox::Error>
         clang::mrdox::Error const& err,
         fmt::format_context& ctx) const
     {
-        return fmt::formatter<std::string_view>::format(err.message(), ctx);
+        return fmt::formatter<std::string_view>::format(err.reason(), ctx);
     }
 };
 

@@ -39,7 +39,7 @@ ADDONS:
 
 EXAMPLES:
     mrdox-test .. ( compile-commands )
-    mrdox-test .. --action ( "test" | "update" ) ( dir | file )...
+    mrdox-test .. --action ( "test" | "create" | "update" ) ( dir | file )...
     mrdox-test --action test friend.cpp
     mrdox-test --format adoc compile_commands.json
 )")
@@ -54,6 +54,7 @@ EXAMPLES:
     llvm::cl::init(test),
     llvm::cl::values(
         clEnumVal(test, "Compare output against expected."),
+        clEnumVal(create, "Create missing expected xml files."),
         clEnumVal(update, "Update all expected xml files.")),
     llvm::cl::cat(commonCat))
 

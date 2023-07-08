@@ -13,6 +13,7 @@
 #include "TestRunner.hpp"
 #include "Tool/Addons.hpp"
 #include "Support/Debug.hpp"
+#include "Support/Error.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/Version.hpp>
 #include <mrdox/Support/Error.hpp>
@@ -28,64 +29,38 @@ int main(int argc, char** argv);
 namespace clang {
 namespace mrdox {
 
-int
-DoTestAction()
+void DoTestAction()
 {
     using namespace clang::mrdox;
 
     TestRunner runner;
     for(auto const& inputPath : testArgs.inputPaths)
-        if(auto err = runner.checkPath(inputPath))
-            reportError(err, "check path \"{}\"", inputPath);
+        runner.checkPath(inputPath);
+    auto const& results = runner.results;
 
-    auto& os = debug_outs();
-    if(runner.results.numberofFilesWritten > 0)
-        os <<
-            runner.results.numberofFilesWritten << " files written\n";
-    os <<
-        "Checked " <<
-        runner.results.numberOfFiles << " files (" <<
-        runner.results.numberOfDirs << " dirs)";
-    if( runner.results.numberOfErrors > 0 ||
-        runner.results.numberOfFailures > 0)
+    auto& os = llvm::errs();
+
+    switch(testArgs.action)
     {
-        if( runner.results.numberOfErrors > 0)
-        {
-            os <<
-                ", with " <<
-                runner.results.numberOfErrors << " errors";
-            if(runner.results.numberOfFailures > 0)
-                os <<
-                    " and " << runner.results.numberOfFailures <<
-                    " failures";
-        }
-        else
-        {
-            os <<
-                ", with " <<
-                runner.results.numberOfFailures <<
-                " failures";
-        }
+    case Action::test:
+        os << "Test action: ";
+        break;
+    case Action::create:
+        os << "Create action: ";
+        break;
+    case Action::update:
+        os << "Update action: ";
+        break;
     }
-    auto milli = runner.results.elapsedMilliseconds();
-    if(milli < 10000)
-        os <<
-            " in " << milli << " milliseconds\n";
-#if 0
-    else if(milli < 10000)
-        os <<
-            " in " << std::setprecision(1) <<
-            double(milli) / 1000 << " seconds\n";
-#endif
-    else
-        os <<
-            " in " << ((milli + 500) / 1000) <<
-            " seconds\n";
 
-    if( runner.results.numberOfFailures > 0 ||
-        runner.results.numberOfErrors > 0)
-        return EXIT_FAILURE;
-    return EXIT_SUCCESS;
+    os <<
+        report::numberOf(results.numberOfDirs.load(),
+        "directory", "directories") << " visited";
+    if(auto n = results.expectedXmlMatching.load())
+        os << ", " << report::numberOf(n, "file", "files") << " matched";
+    if(auto n = results.expectedXmlWritten.load())
+        os << report::numberOf(n, "file", "files") << " written";
+    os << ".\n";
 }
 
 int test_main(int argc, char const* const* argv)
@@ -106,15 +81,16 @@ int test_main(int argc, char const* const* argv)
             argc, argv, testArgs.usageText))
         return EXIT_FAILURE;
 
-    int failure = 0;
-
     if(! testArgs.inputPaths.empty())
-        failure |= DoTestAction();
+        DoTestAction();
 
     if(testArgs.unitOption.getValue())
-        failure |= test_suite::unit_test_main(argc, argv);
+        test_suite::unit_test_main(argc, argv);
 
-    return failure;
+    if( report::results.errorCount > 0 ||
+        report::results.fatalCount > 0)
+        return EXIT_FAILURE;
+    return EXIT_SUCCESS;
 }
 
 } // mrdox

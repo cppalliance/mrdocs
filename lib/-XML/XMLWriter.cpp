@@ -10,9 +10,10 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "CXXTags.hpp"
 #include "XMLWriter.hpp"
 #include "Tool/ConfigImpl.hpp"
-#include "CXXTags.hpp"
+#include "Support/Yaml.hpp"
 #include "Support/Radix.hpp"
 #include "Support/SafeNames.hpp"
 #include <mrdox/Platform.hpp>
@@ -120,10 +121,12 @@ Error
 XMLWriter::
 build()
 {
+    YamlReporter reporter;
+
     {
         llvm::yaml::Input yin(
             corpus_.config->configYaml,
-                this, ConfigImpl::yamlDiagnostic);
+                &reporter, reporter);
         yin.setAllowUnknownKeys(true);
         yin >> options_;
         if(auto ec = yin.error())
@@ -132,7 +135,7 @@ build()
     {
         llvm::yaml::Input yin(
             corpus_.config->extraYaml,
-                this, ConfigImpl::yamlDiagnostic);
+                &reporter, reporter);
         yin.setAllowUnknownKeys(true);
         yin >> options_;
         if(auto ec = yin.error())

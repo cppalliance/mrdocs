@@ -113,7 +113,14 @@ find_package(fmt REQUIRED CONFIG)
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS lib/*.cpp lib/*.hpp lib/*.natvis include/*.hpp include/*.natvis)
+file(
+    GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS
+        lib/*.cpp
+        lib/*.hpp
+        lib/*.natvis
+        include/*.hpp
+        include/*.natvis
+        SourceFileNames.cpp)
 add_library(mrdox-core ${LIB_SOURCES})
 target_compile_features(mrdox-core PUBLIC cxx_std_20)
 target_include_directories(mrdox-core
@@ -225,7 +232,9 @@ endif ()
 #
 #-------------------------------------------------
 
-file(GLOB TEST_SOURCES CONFIGURE_DEPENDS test/*.cpp test/*.hpp)
+file(GLOB TEST_SOURCES CONFIGURE_DEPENDS
+    test/*.cpp
+    test/*.hpp)
 add_executable(mrdox-test ${TEST_SOURCES})
 
 target_include_directories(mrdox-test
@@ -312,33 +321,6 @@ if (MRDOX_BUILD_TESTS)
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
 
-    add_executable(handlebars-test
-            test/unit/handlebars.cpp
-            include/mrdox/Support/Handlebars.hpp
-            lib/Support/Handlebars.cpp
-            include/mrdox/Support/Path.hpp
-            lib/Support/Path.cpp
-            include/mrdox/Support/Error.hpp
-            lib/Support/Error.cpp
-            include/mrdox/Support/Dom.hpp
-            lib/Support/Dom.cpp
-            )
-    target_include_directories(handlebars-test PRIVATE include)
-    target_compile_features(handlebars-test PRIVATE cxx_std_20)
-    target_link_libraries(handlebars-test PRIVATE fmt::fmt)
-    target_link_libraries(handlebars-test PUBLIC clangToolingInclusions)
-    target_include_directories(handlebars-test SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
-    target_compile_definitions(handlebars-test PRIVATE MRDOX_UNIT_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test/unit")
-    target_compile_definitions(handlebars-test PRIVATE MRDOX_STATIC_LINK)
-    target_compile_definitions(handlebars-test PUBLIC -DFMT_HEADER_ONLY)
-    if(MSVC)
-        target_compile_options(handlebars-test PRIVATE /EHsc)
-    endif()
-    if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
-        target_compile_definitions(handlebars-test PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
-        target_compile_options(handlebars-test PUBLIC /MD)
-    endif()
-    add_test(NAME handlebars-test COMMAND handlebars-test)
 endif()
 
 

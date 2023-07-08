@@ -122,10 +122,6 @@ public:
         llvm::StringRef filePath,
         std::string& prefix) const noexcept;
 
-    /** A diagnostic handler for reading YAML files.
-    */
-    static void yamlDiagnostic(llvm::SMDiagnostic const&, void*);
-
     friend
     Expected<std::shared_ptr<ConfigImpl const>>
     createConfigFromYAML(
