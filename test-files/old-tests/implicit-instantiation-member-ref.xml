@@ -88,24 +88,6 @@
     <file path="implicit-instantiation-member-ref.cpp" line="36" class="def"/>
     <type class="tag" id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" parent="M1&lt;short&gt;" name="M0"/>
   </alias>
-  <specialization id="BWgkCsMw6w/Tkzj0tkQJ8/AWTUo=" primary="P9+etXi0Ae+VNs1u8rYrHIbi6qE=">
-    <targ value="void"/>
-    <template>
-      <tparam name="U" class="type"/>
-      <struct name="S2" id="3bDJlUJg+Wg63OKbCChN7xs/THg=">
-        <file path="implicit-instantiation-member-ref.cpp" line="12"/>
-      </struct>
-    </template>
-    <specialization id="bVVV1DwNNSTWpMFhwwdHrVv/ukc=" primary="gxI8lOzHEX5mX3u/0hCHnvUY1OM=">
-      <targ value="float"/>
-      <template>
-        <tparam name="V" class="type"/>
-        <struct name="S4" id="EhzWWaZ1d3+IOrPprDaSCyXTqjg=">
-          <file path="implicit-instantiation-member-ref.cpp" line="22"/>
-        </struct>
-      </template>
-    </specialization>
-  </specialization>
   <alias name="A7" id="9O5BsaAyDC9AuDDe/ftxNrckbjY=">
     <file path="implicit-instantiation-member-ref.cpp" line="37" class="def"/>
     <type class="tag" id="NnkA706kKqg/azveB/lExZwRfFI=" parent="S2&lt;bool&gt;" name="M2"/>

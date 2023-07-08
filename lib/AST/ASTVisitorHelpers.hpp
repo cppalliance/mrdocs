@@ -11,11 +11,12 @@
 #define MRDOX_TOOL_AST_ASTVISITORHELPERS_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Record.hpp>
-#include <mrdox/Metadata/Namespace.hpp>
+#include <mrdox/Metadata.hpp>
+#include <mrdox/Support/TypeTraits.hpp>
+#include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
-#include <clang/AST/Decl.h>
-#include <clang/AST/DeclCXX.h>
+#include <clang/AST/DeclFriend.h>
+#include <clang/AST/DeclOpenMP.h>
 #include <type_traits>
 
 namespace clang {
@@ -236,6 +237,46 @@ convertToQualifierKind(
     return static_cast<QualifierKind>(result);
     
 }
+
+template<
+    typename Visitor,
+    typename... Args,
+    typename Dependent = void>
+decltype(auto)
+visit(
+    Decl* D,
+    Visitor&& visitor,
+    Args&&... args)
+{
+    switch(D->getKind())
+    {
+    #define ABSTRACT_DECL(DECL)
+    #define DECL(DERIVED, BASE) \
+        case Decl::DERIVED: \
+            return std::forward<Visitor>(visitor)( \
+                static_cast<DERIVED##Decl*>(D), \
+                    std::forward<Args>(args)...);
+
+    #include <clang/AST/DeclNodes.inc>
+    
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+template<typename DeclTy>
+consteval 
+Decl::Kind 
+DeclToKind() = delete;
+
+#define ABSTRACT_DECL(DECL)
+#define DECL(DERIVED, BASE) \
+    template<> \
+    consteval \
+    Decl::Kind \
+    DeclToKind<DERIVED##Decl>() { return Decl::DERIVED; }
+
+#include <clang/AST/DeclNodes.inc>
 
 } // mrdox
 } // clang

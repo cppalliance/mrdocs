@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace>
+  <template>
+    <tparam name="T" class="type"/>
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+      <file path="class-template-specializations-2.cpp" line="2" class="def"/>
+    </struct>
+  </template>
+  <template class="partial" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <tparam name="T" class="type"/>
+    <targ value="T*"/>
+    <struct name="A" id="Nkvb8FA0/0YIpaybicEkWLwFOPo=">
+      <file path="class-template-specializations-2.cpp" line="4" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="B" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
+          <file path="class-template-specializations-2.cpp" line="8" class="def"/>
+        </struct>
+      </template>
+      <template class="partial" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
+        <tparam name="U" class="type"/>
+        <targ value="U*"/>
+        <struct name="B" id="HP4W/UatJ6BMg+LZKC5cQM4kCzw=">
+          <file path="class-template-specializations-2.cpp" line="10" class="def"/>
+          <struct name="C" id="qgS1WVyttKFsoadDE/OO4QyodlM=">
+            <file path="class-template-specializations-2.cpp" line="11" class="def"/>
+          </struct>
+        </struct>
+      </template>
+      <template class="explicit" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
+        <targ value="int"/>
+        <struct name="B" id="vuv6bo9spUYsHZ3uwTm6i6UxSNI=">
+          <file path="class-template-specializations-2.cpp" line="13" class="def"/>
+        </struct>
+      </template>
+    </struct>
+  </template>
+  <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
+    <targ value="double"/>
+    <struct name="A" id="bcCFiKKGBMnWrAf/IBu1R/sC07s=">
+      <file path="class-template-specializations-2.cpp" line="17" class="def"/>
+      <template>
+        <tparam name="U" class="type"/>
+        <struct name="D" id="t1k8CaeFknlnAWQfa52he803Mcw=">
+          <file path="class-template-specializations-2.cpp" line="21" class="def"/>
+          <template>
+            <tparam name="T" class="type"/>
+            <struct name="E" id="GhbkOB/0KLVvGJAl1Q3aM43ZocQ=">
+              <file path="class-template-specializations-2.cpp" line="24" class="def"/>
+            </struct>
+          </template>
+          <template class="partial" id="GhbkOB/0KLVvGJAl1Q3aM43ZocQ=">
+            <tparam name="T" class="type"/>
+            <targ value="T*"/>
+            <struct name="E" id="TpBRSCUm33PjLoWxW50FZsR1GSM=">
+              <file path="class-template-specializations-2.cpp" line="26" class="def"/>
+              <struct name="F" id="lKNoRiq1oi0XgdyuRlHKmVsSkus=">
+                <file path="class-template-specializations-2.cpp" line="29" class="def"/>
+              </struct>
+            </struct>
+          </template>
+        </struct>
+      </template>
+      <template class="explicit" id="t1k8CaeFknlnAWQfa52he803Mcw=">
+        <targ value="float"/>
+        <struct name="D" id="RdjbfZA0y514GFSR1pCAjUyfq24=">
+          <file path="class-template-specializations-2.cpp" line="33" class="def"/>
+          <template>
+            <tparam name="T" class="type"/>
+            <struct name="G" id="ZbjwxkmALgjx71k6/JAk0jbwrlo=">
+              <file path="class-template-specializations-2.cpp" line="37" class="def"/>
+            </struct>
+          </template>
+          <template class="partial" id="ZbjwxkmALgjx71k6/JAk0jbwrlo=">
+            <tparam name="T" class="type"/>
+            <targ value="T*"/>
+            <struct name="G" id="zPgrcrIOrcVWP7Qpw8x3Zl2fIpI=">
+              <file path="class-template-specializations-2.cpp" line="45" class="def"/>
+            </struct>
+          </template>
+        </struct>
+      </template>
+      <specialization id="flW1A8++hJYAIoinZHMJ/EargvI=" primary="t1k8CaeFknlnAWQfa52he803Mcw=">
+        <targ value="short"/>
+        <specialization id="HzSR9lAhcaSZke6x6ggUIqnawQw=" primary="TpBRSCUm33PjLoWxW50FZsR1GSM=">
+          <targ value="int*"/>
+          <struct name="F" id="UkRYUyzSKKaCbVo7DS8mUuPk5Qs=">
+            <file path="class-template-specializations-2.cpp" line="48" class="def"/>
+          </struct>
+        </specialization>
+      </specialization>
+    </struct>
+  </template>
+  <specialization id="K6BawvzqAtXZLU2Hm0qPq6aGiS8=" primary="Nkvb8FA0/0YIpaybicEkWLwFOPo=">
+    <targ value="long*"/>
+    <specialization id="WeO5ITJRmNS4Q90O2A5hmw/KZc8=" primary="HP4W/UatJ6BMg+LZKC5cQM4kCzw=">
+      <targ value="int*"/>
+      <struct name="C" id="W4yrcTF+RN1qGXUi97b5Tcm2v60=">
+        <file path="class-template-specializations-2.cpp" line="41" class="def"/>
+      </struct>
+    </specialization>
+  </specialization>
+</namespace>
+</mrdox>
