@@ -16,7 +16,7 @@
 #include "ParseJavadoc.hpp"
 #include "Support/Path.hpp"
 #include "Support/Debug.hpp"
-#include "Tool/Diagnostics.hpp"
+#include "Lib/Diagnostics.hpp"
 #include <mrdox/Metadata.hpp>
 #include <clang/AST/Attr.h>
 #include <clang/AST/Decl.h>

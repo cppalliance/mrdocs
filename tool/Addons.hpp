@@ -11,6 +11,7 @@
 #ifndef MRDOX_TOOL_ADDONS_HPP
 #define MRDOX_TOOL_ADDONS_HPP
 
+#include <mrdox/Support/Error.hpp>
 #include <llvm/Support/CommandLine.h>
 #include <string>
 
@@ -19,9 +20,9 @@ namespace mrdox {
 
 /** Set the addons directory using the argument as a hint.
 
-    @return `true` if the operation was successful.
+    @return The error if any occurred.
 */
-bool
+Error
 setupAddonsDir(
     llvm::cl::opt<std::string>& addonsDirArg,
     char const* argv0,

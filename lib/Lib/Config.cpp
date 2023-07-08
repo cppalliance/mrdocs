@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Tool/ConfigImpl.hpp"
+#include "Lib/ConfigImpl.hpp"
 #include "Support/Path.hpp"
 #include <mrdox/Support/Error.hpp>
 #include <llvm/Config/llvm-config.h>

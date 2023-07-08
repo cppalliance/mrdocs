@@ -13,8 +13,8 @@
 #ifndef MRDOX_TOOL_AST_ASTVISITOR_HPP
 #define MRDOX_TOOL_AST_ASTVISITOR_HPP
 
-#include "Tool/ConfigImpl.hpp"
-#include "Tool/ExecutionContext.hpp"
+#include "Lib/ConfigImpl.hpp"
+#include "Lib/ExecutionContext.hpp"
 #include <mrdox/Platform.hpp>
 #include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>

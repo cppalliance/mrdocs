@@ -227,14 +227,6 @@ call_impl(
 //------------------------------------------------
 
 void
-reportError(
-    std::string_view text)
-{
-    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
-    llvm::errs() << text << '\n';
-}
-
-void
 reportUnhandledException(
     std::exception const& ex)
 {

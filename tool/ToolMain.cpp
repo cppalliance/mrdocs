@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Tool/Addons.hpp"
-#include "Tool/ToolArgs.hpp"
+#include "Addons.hpp"
+#include "ToolArgs.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Error.hpp"
 #include <mrdox/Support/Path.hpp>
@@ -59,17 +59,23 @@ int mrdox_main(int argc, char const** argv)
     report::setMinimumLevel(report::getLevel(
         toolArgs.reportLevel.getValue()));
 
-    if(! setupAddonsDir(toolArgs.addonsDir, argv[0],
-            reinterpret_cast<void*>(&main)))
-        return EXIT_FAILURE;
-
-    // Generate
-    auto err = DoGenerateAction();
-    if(err)
+    if(auto err = setupAddonsDir(toolArgs.addonsDir,
+        argv[0], reinterpret_cast<void*>(&main)))
     {
-        reportError(err, "generate reference documentation");
+        report::error("{}: \"{}\"", err, toolArgs.addonsDir);
+        report::error(
+            "Could not locate the addons directory because "
+            "the MRDOX_ADDONS_DIR environment variable is not set, "
+            "no valid addons location was specified on the command line, "
+            "and no addons directory exists in the same directory as "
+            "the executable.");
         return EXIT_FAILURE;
     }
+
+    // Generate
+    if(auto err = DoGenerateAction())
+        report::error("Generating reference failed: ", err);
+
     if( report::results.errorCount > 0 ||
         report::results.fatalCount > 0)
         return EXIT_FAILURE;

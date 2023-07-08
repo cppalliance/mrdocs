@@ -17,7 +17,7 @@
 namespace clang {
 namespace mrdox {
 
-bool
+Error
 setupAddonsDir(
     llvm::cl::opt<std::string>& addonsDirArg,
     char const* argv0,
@@ -26,21 +26,19 @@ setupAddonsDir(
     namespace fs = llvm::sys::fs;
     using Process = llvm::sys::Process;
 
-    // Set addons dir
     std::string addonsDir;
+
+    // Set addons dir
     if(! addonsDirArg.getValue().empty())
     {
         // from command line
         auto absPath = files::makeAbsolute(
             addonsDirArg.getValue());
         if(! absPath)
-            reportError(absPath.error(), "set the addons directory");
+            return absPath.error();
         addonsDir = files::makeDirsy(files::normalizePath(*absPath));
         if(auto err = files::requireDirectory(addonsDir))
-        {
-            reportError(err, "set the addons directory");
-            return false;
-        }
+            return err;
         addonsDirArg.getValue() = addonsDir;
     }
     else
@@ -48,12 +46,7 @@ setupAddonsDir(
         // check process working directory
         addonsDir = fs::getMainExecutable(argv0, addressOfMain);
         if(addonsDir.empty())
-        {
-            reportError(
-                "Could locate the executable because "
-                "fs::getMainExecutable failed.");
-            return false;
-        }
+            return Error("getMainExecutable failed");
         addonsDir = files::makeDirsy(files::appendPath(
             files::getParentDir(addonsDir), "addons"));
         if(! files::requireDirectory(addonsDir).failed())
@@ -65,28 +58,18 @@ setupAddonsDir(
         {
             auto addonsEnvVar = Process::GetEnv("MRDOX_ADDONS_DIR");
             if(! addonsEnvVar.has_value())
-            {
-                reportError(
-                    "Could not locate the addons directory because "
-                    "the MRDOX_ADDONS_DIR environment variable is not set, "
-                    "no addons location was specified on the command line, "
-                    "and no addons directory exists in the same directory as "
-                    "the executable.");
-                return false;
-            }
+                return Error("no MRDOX_ADDONS_DIR in environment");
+
             // from environment variable
             addonsDir = files::makeDirsy(files::normalizePath(*addonsEnvVar));
             if(auto err = files::requireAbsolute(addonsDir))
-                reportError(err, "set the addons directory");
+                return err;
             if(auto err = files::requireDirectory(addonsDir))
-            {
-                reportError(err, "set the addons directory");
-                return false;
-            }
+                return err;
             addonsDirArg.getValue() = addonsDir;
         }
     }
-    return true;
+    return Error::success();
 }
 
 } // mrdox

@@ -152,7 +152,7 @@ build(
                 auto infos = readBitcode(bitcode);
                 if(! infos)
                 {
-                    reportError(infos.error(), "read bitcode");
+                    report::error("{}: reading bitcode", infos.error());
                     GotFailure = true;
                     return;
                 }
@@ -165,7 +165,7 @@ build(
             auto merged = mergeInfos(Infos);
             if(! merged)
             {
-                reportError(toError(merged.takeError()), "merge metadata");
+                report::error("{}: merging metadata", toError(merged.takeError()));
                 GotFailure = true;
                 return;
             }

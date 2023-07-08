@@ -166,9 +166,11 @@ public:
     for calculating filenames from relative
     paths.
 
-    @param addonsDir A valid directory to determine
-    the location of the addons/ folder.
-    This must be an absolute path.
+    @param addonsDir An optional, valid directory
+    to determine the location of the addons/ folder.
+    If the path is not absolute, it will be resolved
+    relative to the current working directory of
+    the process.
 
     @param configYaml A string containing valid
     YAML which will be parsed and applied to create
@@ -210,9 +212,11 @@ createConfigFromYAML(
     directory of the process. POSIX or Windows style
     path separators are accepted.
 
-    @param addonsDir A valid directory to determine
-    the location of the addons/ folder.
-    This must be an absolute path.
+    @param addonsDir An optional, valid directory
+    to determine the location of the addons/ folder.
+    If the path is not absolute, it will be resolved
+    relative to the current working directory of
+    the process.
 
     @param extraYaml An optional string containing
     additional valid YAML which will be parsed and
@@ -247,9 +251,11 @@ loadConfigFile(
     calculating filenames from relative paths.
     This must be an absolute path.
 
-    @param addonsDir A valid directory to determine
-    the location of the addons/ folder.
-    This must be an absolute path.
+    @param addonsDir An optional, valid directory
+    to determine the location of the addons/ folder.
+    If the path is not absolute, it will be resolved
+    relative to the current working directory of
+    the process.
 
     @param configYaml A string containing valid
     YAML which will be parsed and applied to create

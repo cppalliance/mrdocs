@@ -27,7 +27,7 @@ class Diagnostics
     std::unordered_map<std::string, bool> messages_;
 
 public:
-    void reportError(std::string s)
+    void error(std::string s)
     {
         auto result =
             messages_.emplace(std::move(s), true);
@@ -35,7 +35,7 @@ public:
             ++errorCount_;
     }
 
-    void reportWarning(std::string s)
+    void warn(std::string s)
     {
         messages_.emplace(std::move(s), false);
     }
@@ -66,7 +66,7 @@ public:
         {
             os << "No errors or warnings.\n";
         }
-        report::print_impl(level, s, nullptr);
+        report::print_impl(level, s);
     }
 
     void

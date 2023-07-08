@@ -65,17 +65,13 @@ public:
                 std::error_code ec;
                 llvm::raw_fd_ostream os(filePath, ec, fs::CD_CreateAlways);
                 if(ec)
-                {
-                    reportError(Error(ec), "open \"{}\"", filePath);
-                    return;
-                }
+                    Error(ec).Throw();
                 auto bc = writeBitcode(I);
-                if(auto ec = os.error())
-                {
-                    reportError(Error(ec), "write \"{}\"", filePath);
-                    return;
-                }
+                if((ec = os.error()))
+                    Error(ec).Throw();
                 os.write(bc.data.data(), bc.data.size());
+                if((ec = os.error()))
+                    Error(ec).Throw();
             });
 
         if constexpr(T::isRecord())

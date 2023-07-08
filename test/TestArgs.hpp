@@ -39,7 +39,6 @@ public:
     llvm::cl::extrahelp         extraHelp;
 
     // Common options
-    llvm::cl::opt<std::string>  addonsDir;
     llvm::cl::opt<unsigned>     reportLevel;
 
     // Test options

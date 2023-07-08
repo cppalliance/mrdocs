@@ -12,11 +12,11 @@
 #include "TestArgs.hpp"
 #include "Support/Error.hpp"
 #include "Support/Path.hpp"
-#include "Tool/AbsoluteCompilationDatabase.hpp"
-#include "Tool/ConfigImpl.hpp"
-#include "Tool/CorpusImpl.hpp"
-#include "Tool/SingleFileDB.hpp"
-#include "Tool/ToolExecutor.hpp"
+#include "Lib/AbsoluteCompilationDatabase.hpp"
+#include "Lib/ConfigImpl.hpp"
+#include "Lib/CorpusImpl.hpp"
+#include "Lib/SingleFileDB.hpp"
+#include "Lib/ToolExecutor.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Generators.hpp>
 #include <mrdox/Platform.hpp>
@@ -83,7 +83,7 @@ handleFile(
         if(ft.value() == files::FileType::regular)
         {
             auto configFile = loadConfigFile(
-                configPath, testArgs.addonsDir, "", config);
+                configPath, "", "", config);
             if(! configFile)
                 return report::error("{}: \"{}\"",
                     configPath, configFile.error());
@@ -203,6 +203,10 @@ handleFile(
             report::info("\"{}\" updated", expectedPath);
             ++results.expectedXmlWritten;
         }
+        else
+        {
+            ++results.expectedXmlMatching;
+        }
         return;
     }
 }
@@ -237,7 +241,7 @@ handleDir(
         if(ft.value() == files::FileType::regular)
         {
             auto configFile = loadConfigFile(
-                configPath, testArgs.addonsDir, "", config);
+                configPath, "", "", config);
             if(! configFile)
                 return report::error("{}: \"{}\"",
                     configPath, configFile.error());
@@ -318,8 +322,7 @@ checkPath(
                     ft.error(), configPath);
             if(ft.value() == files::FileType::regular)
             {
-                auto configFile = loadConfigFile(
-                    configPath, testArgs.addonsDir);
+                auto configFile = loadConfigFile(configPath, "");
                 if(! configFile)
                     return report::error("{}: \"{}\"",
                         configPath, configFile.error());

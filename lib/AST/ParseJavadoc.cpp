@@ -271,7 +271,7 @@ visitHTMLStartTagComment(
         if(end_ - it_ < 3)
         {
             // error
-            reportError(
+            report::error(
                 "warning: invalid HTML <a> tag at {}({})",
                 files::makePosixStyle(loc.getFilename()),
                 loc.getLine());

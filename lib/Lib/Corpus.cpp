@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Tool/ConfigImpl.hpp"
+#include "Lib/ConfigImpl.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Support/Error.hpp>

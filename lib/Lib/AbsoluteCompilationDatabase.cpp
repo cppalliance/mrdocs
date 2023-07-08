@@ -11,8 +11,8 @@
 
 #include "Support/Debug.hpp"
 #include "Support/Path.hpp"
-#include "Tool/ConfigImpl.hpp"
-#include "Tool/AbsoluteCompilationDatabase.hpp"
+#include "Lib/ConfigImpl.hpp"
+#include "Lib/AbsoluteCompilationDatabase.hpp"
 #include <fmt/format.h>
 #include <clang/Basic/LangStandard.h>
 #include <clang/Driver/Driver.h>

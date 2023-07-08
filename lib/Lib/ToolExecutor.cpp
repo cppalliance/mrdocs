@@ -110,12 +110,6 @@ execute(
         ErrorMsg += Err.str();
     };
 
-    auto Log = [&](llvm::Twine Msg)
-    {
-        std::unique_lock<std::mutex> LockGuard(TUMutex);
-        llvm::errs() << Msg.str() << "\n";
-    };
-
     // Get a copy of the filename strings
     std::vector<std::string> Files = Compilations.getAllFiles();
 
@@ -187,7 +181,7 @@ execute(
     Context.reportEnd(reportLevel_);
 
     if(! errors.empty())
-        reportError(errors, "Could not run the tool executor");
+        return makeError(Error(errors).message());
 
     if (!ErrorMsg.empty())
         return makeError(ErrorMsg);

@@ -11,7 +11,6 @@
 #include "test_suite.hpp"
 #include "TestArgs.hpp"
 #include "TestRunner.hpp"
-#include "Tool/Addons.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Error.hpp"
 #include <mrdox/Platform.hpp>
@@ -71,10 +70,6 @@ int test_main(int argc, char const* const* argv)
 
     llvm::EnablePrettyStackTrace();
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-
-    if(! setupAddonsDir(testArgs.addonsDir, argv[0],
-            reinterpret_cast<void*>(&main)))
-        return EXIT_FAILURE;
 
     testArgs.hideForeignOptions();
     if(! llvm::cl::ParseCommandLineOptions(

@@ -11,7 +11,7 @@
 
 #include "Options.hpp"
 #include "Support/Yaml.hpp"
-#include "Tool/ConfigImpl.hpp" // VFALCO This is a problem
+#include "Lib/ConfigImpl.hpp" // VFALCO This is a problem
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <llvm/Support/YAMLParser.h>

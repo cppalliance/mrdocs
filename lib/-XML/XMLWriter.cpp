@@ -12,7 +12,7 @@
 
 #include "CXXTags.hpp"
 #include "XMLWriter.hpp"
-#include "Tool/ConfigImpl.hpp"
+#include "Lib/ConfigImpl.hpp"
 #include "Support/Yaml.hpp"
 #include "Support/Radix.hpp"
 #include "Support/SafeNames.hpp"

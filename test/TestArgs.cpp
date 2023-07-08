@@ -30,28 +30,15 @@ R"(MrDox Test Program
 
     , extraHelp(
 R"(
-ADDONS:
-    The location of the addons directory is determined in this order:
-
-    1. The --addons command line argument if present, or
-    2. The directory containing the mrdox tool executable, otherwise
-    3. The environment variable MRDOX_ADDONS_DIR if set.
-
 EXAMPLES:
     mrdox-test .. ( compile-commands )
     mrdox-test .. --action ( "test" | "create" | "update" ) ( dir | file )...
     mrdox-test --action test friend.cpp
-    mrdox-test --format adoc compile_commands.json
 )")
 
 //
 // Common options
 //
-
-, addonsDir(
-    "addons",
-    llvm::cl::desc("The path to the addons directory."),
-    llvm::cl::cat(commonCat))
 
 , reportLevel(
     "report",
@@ -101,7 +88,6 @@ hideForeignOptions()
 
     std::vector<llvm::cl::Option const*> ours({
         &action,
-        &addonsDir,
         std::addressof(inputPaths),
         &badOption,
         &unitOption

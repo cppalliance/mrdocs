@@ -11,8 +11,8 @@
 #ifndef MRDOX_TOOL_CORPUSIMPL_HPP
 #define MRDOX_TOOL_CORPUSIMPL_HPP
 
-#include "Tool/ConfigImpl.hpp"
-#include "Tool/ToolExecutor.hpp"
+#include "Lib/ConfigImpl.hpp"
+#include "Lib/ToolExecutor.hpp"
 #include "Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>

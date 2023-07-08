@@ -9,11 +9,11 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "ConfigImpl.hpp"
-#include "CorpusImpl.hpp"
 #include "ToolArgs.hpp"
-#include "ToolExecutor.hpp"
-#include "Tool/AbsoluteCompilationDatabase.hpp"
+#include "Lib/AbsoluteCompilationDatabase.hpp"
+#include "Lib/ConfigImpl.hpp"
+#include "Lib/CorpusImpl.hpp"
+#include "Lib/ToolExecutor.hpp"
 #include <mrdox/Generators.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>

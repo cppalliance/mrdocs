@@ -108,7 +108,7 @@ buildOne(
         return Error(errors);
 
     ex->async(
-        [ &os](Builder& builder)
+        [&os](Builder& builder)
         {
             auto pageText = builder.renderSinglePageFooter().value();
             os.write(pageText.data(), pageText.size());

@@ -9,7 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "Tool/ConfigImpl.hpp"
+#include "Lib/ConfigImpl.hpp"
 #include "Support/Debug.hpp"
 #include "Support/Error.hpp"
 #include "Support/Path.hpp"
@@ -83,10 +83,12 @@ ConfigImpl(
         formatError("working path \"{}\" is not absolute", workingDir_).Throw();
     settings_.workingDir = files::makeDirsy(files::normalizePath(workingDir_));
 
-    if(auto err = files::requireDirectory(addonsDir_))
-        formatError("addons path \"{}\" is not absolute", addonsDir_).Throw();
-    MRDOX_ASSERT(files::isDirsy(addonsDir_));
-    settings_.addonsDir = addonsDir_;
+    // Addons directory
+    {
+        settings_.addonsDir = files::makeAbsolute(addonsDir_).value();
+        files::requireDirectory(settings_.addonsDir).maybeThrow();
+        MRDOX_ASSERT(files::isDirsy(settings_.addonsDir));
+    }
 
     settings_.configYaml = configYaml_;
     settings_.extraYaml = extraYaml_;

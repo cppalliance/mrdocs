@@ -11,7 +11,7 @@
 #ifndef MRDOX_TEST_TESTRUNNER_HPP
 #define MRDOX_TEST_TESTRUNNER_HPP
 
-#include "Tool/ConfigImpl.hpp"
+#include "Lib/ConfigImpl.hpp"
 #include <mrdox/Generator.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
 #include <llvm/ADT/StringRef.h>
