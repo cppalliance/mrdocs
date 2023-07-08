@@ -16,6 +16,7 @@
 #include "ParseJavadoc.hpp"
 #include "Support/Path.hpp"
 #include "Support/Debug.hpp"
+#include "Tool/Diagnostics.hpp"
 #include <mrdox/Metadata.hpp>
 #include <clang/AST/Attr.h>
 #include <clang/AST/Decl.h>
@@ -24,6 +25,7 @@
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
+#include <clang/Sema/SemaConsumer.h>
 #include <llvm/ADT/Hashing.h>
 #include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/Error.h>
@@ -1712,24 +1714,7 @@ public:
     bool traverseContext(DeclContext* D);
 };
 
-
-
-
-
-
-
-
-
-
 //------------------------------------------------
-
-
-
-
-
-
-
-
 
 bool
 ASTVisitor::
@@ -2328,147 +2313,224 @@ traverseContext(
     return true;
 }
 
-} // (anon)
-
 //------------------------------------------------
 //
 // ASTVisitorConsumer
 //
 //------------------------------------------------
 
-ASTVisitorConsumer::
-ASTVisitorConsumer(
-    const ConfigImpl& config,
-    tooling::ExecutionContext& ex,
-    CompilerInstance& compiler) noexcept
-    : ex_(static_cast<ExecutionContext&>(ex))
-    , config_(config)
-    , compiler_(compiler)
+class ASTVisitorConsumer
+    : public SemaConsumer
 {
-}
+    const ConfigImpl& config_;
+    ExecutionContext& ex_;
+    CompilerInstance& compiler_;
 
-void
-ASTVisitorConsumer::
-InitializeSema(Sema& S)
-{
-    // Sema should not have been initialized yet
-    MRDOX_ASSERT(! sema_);
-    sema_ = &S;
-}
+    Sema* sema_ = nullptr;
 
-void
-ASTVisitorConsumer::
-ForgetSema()
-{
-    sema_ = nullptr;
-}
+    void
+    InitializeSema(Sema& S) override
+    {
+        // Sema should not have been initialized yet
+        MRDOX_ASSERT(! sema_);
+        sema_ = &S;
+    }
 
-void
-ASTVisitorConsumer::
-HandleTranslationUnit(
-    ASTContext& Context)
-{
-    // the Sema better be valid
-    MRDOX_ASSERT(sema_);
+    void
+    ForgetSema() override
+    {
+        sema_ = nullptr;
+    }
 
-    // initialize the diagnostics reporter first 
-    // so errors prior to traversal are reported
-    Diagnostics diags;
+    void
+    HandleTranslationUnit(ASTContext& Context) override
+    {
+        // the Sema better be valid
+        MRDOX_ASSERT(sema_);
 
-    SourceManager& source = Context.getSourceManager();
-    // get the name of the translation unit.
-    // will be std::nullopt_t if it isn't a file
-    std::optional<llvm::SmallString<128>> file_name =
-        source.getNonBuiltinFilenameForID(source.getMainFileID());
-    // KRYSTIAN NOTE: should we report anything here?
-    if(! file_name)
-        return;
+        // initialize the diagnostics reporter first 
+        // so errors prior to traversal are reported
+        Diagnostics diags;
 
-    // skip the translation unit if configured to do so
-    if(! config_.shouldVisitTU(
-        convert_to_slash(*file_name)))
-        return;
+        SourceManager& source = Context.getSourceManager();
+        // get the name of the translation unit.
+        // will be std::nullopt_t if it isn't a file
+        std::optional<llvm::SmallString<128>> file_name =
+            source.getNonBuiltinFilenameForID(source.getMainFileID());
+        // KRYSTIAN NOTE: should we report anything here?
+        if(! file_name)
+            return;
 
-    ASTVisitor visitor(
-        config_, 
-        diags, 
-        compiler_, 
-        Context, 
-        *sema_);
+        // skip the translation unit if configured to do so
+        if(! config_.shouldVisitTU(
+            convert_to_slash(*file_name)))
+            return;
 
-    // traverse the translation unit
-    visitor.traverseContext(
-        Context.getTranslationUnitDecl());
+        ASTVisitor visitor(
+            config_, 
+            diags, 
+            compiler_, 
+            Context, 
+            *sema_);
+
+        // traverse the translation unit
+        visitor.traverseContext(
+            Context.getTranslationUnitDecl());
    
-    // convert results to bitcode
-    for(auto& info : visitor.results())
-        insertBitcode(ex_, writeBitcode(*info));
+        // convert results to bitcode
+        for(auto& info : visitor.results())
+            insertBitcode(ex_, writeBitcode(*info));
 
-    // VFALCO If we returned from the function early
-    // then this line won't execute, which means we
-    // will miss error and warnings emitted before
-    // the return.
-    ex_.report(std::move(diags));
-}
+        // VFALCO If we returned from the function early
+        // then this line won't execute, which means we
+        // will miss error and warnings emitted before
+        // the return.
+        ex_.report(std::move(diags));
+    }
 
-/** Skip function bodies
+    /** Skip function bodies
 
-    This is called by Sema when parsing a function that has a body and:
-    - is constexpr, or
-    - uses a placeholder for a deduced return type
+        This is called by Sema when parsing a function that has a body and:
+        - is constexpr, or
+        - uses a placeholder for a deduced return type
 
-    We always return `true` because whenever this function *is* called,
-    it will be for a function that cannot be used in a constant expression,
-    nor one that introduces a new type via returning a local class.
-*/
-bool 
-ASTVisitorConsumer::
-shouldSkipFunctionBody(Decl* D)
+        We always return `true` because whenever this function *is* called,
+        it will be for a function that cannot be used in a constant expression,
+        nor one that introduces a new type via returning a local class.
+    */
+    bool 
+    shouldSkipFunctionBody(Decl* D) override
+    {
+        return true;
+    }
+
+    bool 
+    HandleTopLevelDecl(DeclGroupRef DG) override
+    {
+        return true; 
+    }
+
+    ASTMutationListener*
+    GetASTMutationListener() override
+    { 
+        return nullptr; 
+    }
+
+    void
+    HandleCXXStaticMemberVarInstantiation(VarDecl* D) override
+    {
+        // implicitly instantiated definitions of non-inline
+        // static data members of class templates are added to
+        // the end of the TU DeclContext. Decl::isImplicit returns
+        // false for these VarDecls, so we manually set it here.
+        D->setImplicit();
+    }
+
+    void
+    HandleCXXImplicitFunctionInstantiation(FunctionDecl* D) override
+    {
+        D->setImplicit();
+    }
+
+    void HandleInlineFunctionDefinition(FunctionDecl* D) override { }
+    void HandleTagDeclDefinition(TagDecl* D) { }
+    void HandleTagDeclRequiredDefinition(const TagDecl* D) override { }
+    void HandleInterestingDecl(DeclGroupRef DG) override { }
+    void CompleteTentativeDefinition(VarDecl* D) override { }
+    void CompleteExternalDeclaration(VarDecl* D) override { }
+    void AssignInheritanceModel(CXXRecordDecl* D) override { }
+    void HandleVTable(CXXRecordDecl* D) override { }
+    void HandleImplicitImportDecl(ImportDecl* D) override { }
+    void HandleTopLevelDeclInObjCContainer(DeclGroupRef DG) override { }
+
+public:
+    ASTVisitorConsumer(
+        const ConfigImpl& config,
+        tooling::ExecutionContext& ex,
+        CompilerInstance& compiler) noexcept
+        : ex_(static_cast<ExecutionContext&>(ex))
+        , config_(config)
+        , compiler_(compiler)
+    {
+    }
+};
+
+//------------------------------------------------
+//
+// ASTAction
+//
+//------------------------------------------------
+
+struct ASTAction
+    : public clang::ASTFrontendAction
 {
-    return true;
-}
+    ASTAction(
+        tooling::ExecutionContext& ex,
+        ConfigImpl const& config) noexcept
+        : ex_(ex)
+        , config_(config)
+    {
+    }
 
-bool 
-ASTVisitorConsumer::
-HandleTopLevelDecl(DeclGroupRef D) 
-{ 
-    return true; 
-}
+    bool
+    PrepareToExecuteAction(
+        CompilerInstance& Compiler) override
+    {
+        FrontendOptions& FEOpts =
+            Compiler.getFrontendOpts();
+        FEOpts.SkipFunctionBodies = true;
+        return true;
+    }
 
-ASTMutationListener*
-ASTVisitorConsumer::GetASTMutationListener() 
-{ 
-    return nullptr; 
-}
+    std::unique_ptr<clang::ASTConsumer>
+    CreateASTConsumer(
+        clang::CompilerInstance& Compiler,
+        llvm::StringRef InFile) override
+    {
+        return std::make_unique<ASTVisitorConsumer>(
+            config_, ex_, Compiler);
+    }
 
-void
-ASTVisitorConsumer::
-HandleCXXStaticMemberVarInstantiation(VarDecl* D)
+private:
+    tooling::ExecutionContext& ex_;
+    ConfigImpl const& config_;
+};
+
+//------------------------------------------------
+
+struct ASTActionFactory : 
+    tooling::FrontendActionFactory
 {
-    // implicitly instantiated definitions of non-inline
-    // static data members of class templates are added to
-    // the end of the TU DeclContext. Decl::isImplicit returns
-    // false for these VarDecls, so we manually set it here.
-    D->setImplicit();
-}
+    ASTActionFactory(
+        tooling::ExecutionContext& ex,
+        ConfigImpl const& config) noexcept
+        : ex_(ex)
+        , config_(config)
+    {
+    }
 
-void
-ASTVisitorConsumer::
-HandleCXXImplicitFunctionInstantiation(FunctionDecl* D)
+    std::unique_ptr<FrontendAction>
+    create() override
+    {
+        return std::make_unique<ASTAction>(ex_, config_);
+    }
+
+private:
+    tooling::ExecutionContext& ex_;
+    ConfigImpl const& config_;
+};
+
+} // (anon)
+
+//------------------------------------------------
+
+std::unique_ptr<tooling::FrontendActionFactory>
+makeFrontendActionFactory(
+    tooling::ExecutionContext& ex,
+    ConfigImpl const& config)
 {
-    D->setImplicit();
+    return std::make_unique<ASTActionFactory>(ex, config);
 }
-
-void ASTVisitorConsumer::HandleInlineFunctionDefinition(FunctionDecl* D) { }
-void ASTVisitorConsumer::HandleTagDeclDefinition(TagDecl* D) { }
-void ASTVisitorConsumer::HandleTagDeclRequiredDefinition(const TagDecl* D) { }
-void ASTVisitorConsumer::HandleInterestingDecl(DeclGroupRef D) { }
-void ASTVisitorConsumer::CompleteTentativeDefinition(VarDecl* D) { }
-void ASTVisitorConsumer::CompleteExternalDeclaration(VarDecl* D) { }
-void ASTVisitorConsumer::AssignInheritanceModel(CXXRecordDecl* D) { }
-void ASTVisitorConsumer::HandleVTable(CXXRecordDecl* D) { }
-void ASTVisitorConsumer::HandleImplicitImportDecl(ImportDecl* D) { }
-void ASTVisitorConsumer::HandleTopLevelDeclInObjCContainer(DeclGroupRef D) { }
 
 } // mrdox
 } // clang

@@ -10,7 +10,7 @@
 //
 
 #include "AST/Bitcode.hpp"
-#include "AST/FrontendAction.hpp"
+#include "AST/ASTVisitor.hpp"
 #include "CorpusImpl.hpp"
 #include "Metadata/Reduce.hpp"
 #include "Support/Error.hpp"
