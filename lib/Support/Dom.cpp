@@ -94,7 +94,7 @@ public:
     }
 };
 
-static constinit char sz_empty[1] = { '\0' };
+static constinit char sz_empty = { '\0' };
 
 } // (anon)
 
@@ -130,21 +130,24 @@ struct String::Impl
     }
 };
 
-auto
+void
 String::
 allocate(
-    std::string_view s) ->
-    Impl*
+    std::string_view s,
+    Impl*& impl,
+    char const*& psz)
 {
     std::allocator<Impl> alloc;
-    varint<std::size_t> uv(s.size());   
+    varint<std::size_t> uv(s.size());
+    auto const varlen = uv.get().size();
     auto n =
         sizeof(Impl) +      // header
-        uv.get().size() +   // size (varint)
+        varlen +            // size (varint)
         s.size() +          // string data
         1 +                 // null term '\0'
         (sizeof(Impl) - 1); // round up to nearest sizeof(Impl)
-    return new(alloc.allocate(n / sizeof(Impl))) Impl(s, uv);
+    impl = new(alloc.allocate(n / sizeof(Impl))) Impl(s, uv);
+    psz = reinterpret_cast<char const*>(impl + 1) + varlen;
 }
 
 void
@@ -155,9 +158,10 @@ deallocate(
     std::allocator<Impl> alloc;
     auto const s = impl->get();
     varint<std::size_t> uv(s.size());
+    auto const varlen = uv.get().size();
     auto n =
         sizeof(Impl) +      // header
-        uv.get().size() +   // size (varint)
+        varlen +            // size (varint)
         s.size() +          // string data
         1 +                 // null term '\0'
         (sizeof(Impl) - 1); // round up to nearest sizeof(Impl)
@@ -170,7 +174,7 @@ deallocate(
 String::
 ~String()
 {
-    if(! impl_)
+    if(is_literal())
         return;
     if(--impl_->refs > 0)
         return;
@@ -179,7 +183,8 @@ String::
 
 String::
 String() noexcept
-    : psz_(&sz_empty[0])
+    : len_(len(0))
+    , psz_(&sz_empty)
 {
 }
 
@@ -197,15 +202,16 @@ String(
     : impl_(other.impl_)
     , psz_(other.psz_)
 {
-    if(impl_)
+    if(! is_literal())
         ++impl_->refs;
 }
 
 String::
 String(
     std::string_view s)
-    : impl_(allocate(s))
 {
+    allocate(s, impl_, psz_);
+    MRDOX_ASSERT(! is_literal());
 }
 
 String&
@@ -228,21 +234,14 @@ operator=(
     return *this;
 }
 
-bool
-String::
-empty() const noexcept
-{
-    if(impl_)
-        return impl_->get().size() == 0;
-    return psz_[0] == '\0';
-}
-
 std::string_view
 String::
 get() const noexcept
 {
-    if(psz_)
-        return std::string_view(psz_);
+    if(is_literal())
+        return std::string_view(psz_,
+            (len_ & ((std::size_t(-1) >> 1) & ~std::size_t(1))) |
+            (len_ >> (sizeof(std::size_t)*8 - 1)));
     return impl_->get();
 }
 

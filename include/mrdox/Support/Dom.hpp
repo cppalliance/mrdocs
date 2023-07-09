@@ -68,11 +68,26 @@ class MRDOX_DECL
 {
     struct Impl;
 
-    Impl* impl_ = nullptr;
-    char const* psz_ = nullptr;
+    union
+    {
+        Impl* impl_;
+        // len is stored with the low bit moved to
+        // the hi bit, and the low bit always set.
+        std::size_t len_;
+    };
+    char const* psz_;
 
-    static Impl* allocate(std::string_view s);
+    static void allocate(std::string_view s,Impl*&,  char const*&);
     static void deallocate(Impl*) noexcept;
+    static consteval std::size_t len(std::size_t n)
+    {
+        return (n << (sizeof(std::size_t)*8 - 1)) | n | 1UL;
+    }
+
+    constexpr bool is_literal() const noexcept
+    {
+        return (len_ & 1) != 0;
+    }
 
 public:
     /** Destructor.
@@ -139,9 +154,11 @@ public:
     */
     template<std::size_t N>
     constexpr String(char const(&psz)[N]) noexcept
-        : psz_(psz)
+        : len_(len(N-1))
+        , psz_(psz)
     {
         static_assert(N > 0);
+        static_assert(N <= std::size_t(-1)>>1);
     }
 
     /** Assignment.
@@ -164,7 +181,10 @@ public:
 
     /** Return true if the string is empty.
     */
-    bool empty() const noexcept;
+    constexpr bool empty() const noexcept
+    {
+        return psz_[0] == '\0';
+    }
 
     /** Return the string.
     */
@@ -204,7 +224,10 @@ public:
         The pointed-to character buffer returned
         by this function is always null-terminated.
     */
-    char const* c_str() const noexcept;
+    char const* c_str() const noexcept
+    {
+        return psz_;
+    }
 
     /** Swap two strings.
     */
