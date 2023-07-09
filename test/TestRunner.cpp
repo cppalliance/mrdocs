@@ -187,6 +187,7 @@ handleFile(
         }
         else
         {
+            report::info("\"{}\" passed", filePath);
             ++results.expectedXmlMatching;
         }
         return;
