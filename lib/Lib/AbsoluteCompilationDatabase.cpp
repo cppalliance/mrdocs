@@ -201,7 +201,7 @@ AbsoluteCompilationDatabase(
         cmd.Output = cmd0.Output;
         cmd.CommandLine = adjustCommandLine(
             cmd0.CommandLine,
-            (*config_impl)->additionalDefines);
+            (*config_impl)->defines);
 
         if(path::is_absolute(cmd0.Directory))
         {

@@ -1,0 +1,64 @@
+= The Configuration File
+
+[,yaml]
+----
+concurrency: # <.>
+defines: # <.>
+ignore-failures: # <.>
+include-anonymous: # <.>
+include-private: # <.>
+input:
+  include: # <.>
+multipage: # <.>
+source-root: # <.>
+----
+<.> Optional `concurrency` key
+<.> Optional `defines` key
+<.> Optional `ignore-failures` key
+<.> Optional `include-anonymous` key
+<.> Optional `include-private` key
+<.> Optional `include` key
+<.> Optional `multipage` key
+<.> Optional `source-root` key
+
+== Available configuration keys
+
+[cols="3,6,1"]
+|===
+|Keys |Description |Required
+
+|concurrency
+|The amount of parallelism desired. 0 to use
+the hardware-suggested concurrency.
+|No
+
+|defines
+|Additional preprocessor directives in the form "NAME=VALUE".
+|No
+
+|ignore-failures
+|Whether to ignore failures during symbol extraction. `true` or `false`.
+|No
+
+|include-anonymous
+|Whether to extract symbols from anonymous namespaces. `true` or `false`.
+|No
+
+|include-private
+|Whether to extract private members. `true` or `false`.
+|No
+
+|include
+|The amount of parallelism desired. 0 to use
+the hardware-suggested concurrency.
+|No
+
+|multipage
+|Whether to emit the reference as a set of files or just one file. `true` or `false`.
+|No
+
+|source-root
+|The absolute or relative path to the directory containing the
+input file hierarchy.
+|No
+|===

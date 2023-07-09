@@ -99,9 +99,8 @@ mrdox::Expected<std::unique_ptr<Corpus>>
 CorpusImpl::
 build(
     ToolExecutor& ex,
-    std::shared_ptr<Config const> config_)
+    std::shared_ptr<ConfigImpl const> config)
 {
-    auto config = std::dynamic_pointer_cast<ConfigImpl const>(config_);
     auto corpus = std::make_unique<CorpusImpl>(config);
 
     // Traverse the AST for all translation units
@@ -112,7 +111,7 @@ build(
         makeFrontendActionFactory(
             *ex.getExecutionContext(), *config))))
     {
-        if(! corpus->config->ignoreFailures)
+        if(! (*config)->ignoreFailures)
             return err;
         report::warn(
             "Warning: mapping failed because ", err);

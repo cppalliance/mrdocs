@@ -35,7 +35,17 @@ public:
             std::vector<std::string> include;
         };
 
-        std::vector<std::string> additionalDefines;
+        /** Additional defines passed to the compiler.
+        */
+        std::vector<std::string> defines;
+
+        /** `true` if AST visitation failures should not stop the program.
+
+            @code
+            ignore-failures: true
+            @endcode
+        */
+        bool ignoreFailures = false;
 
         /** The full path to the source root directory.
 

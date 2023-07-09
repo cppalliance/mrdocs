@@ -46,13 +46,12 @@ struct llvm::yaml::MappingTraits<
     static void mapping(IO& io,
         clang::mrdox::ConfigImpl::SettingsImpl& cfg)
     {
-        io.mapOptional("ignore-failures",   cfg.ignoreFailures);
-        io.mapOptional("multipage",         cfg.multiPage);
-        io.mapOptional("with-private",      cfg.includePrivate);
-        io.mapOptional("with-anonymous",    cfg.includeAnonymous);
         io.mapOptional("concurrency",       cfg.concurrency);
-
-        io.mapOptional("defines",           cfg.additionalDefines);
+        io.mapOptional("defines",           cfg.defines);
+        io.mapOptional("ignore-failures",   cfg.ignoreFailures);
+        io.mapOptional("include-anonymous", cfg.includeAnonymous);
+        io.mapOptional("include-private",   cfg.includePrivate);
+        io.mapOptional("multipage",         cfg.multiPage);
         io.mapOptional("source-root",       cfg.sourceRoot);
 
         io.mapOptional("input",             cfg.input);

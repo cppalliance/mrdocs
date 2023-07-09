@@ -44,26 +44,11 @@ protected:
 public:
     struct Settings
     {
-        /** `true` if AST visitation failures should not stop the program.
+        /** The level of concurrency desired.
 
-            @code
-            ignore-failures: true
-            @endcode
+            This will always be greater than zero.
         */
-        bool ignoreFailures = false;
-
-        /** `true` if output should consist of multiple files.
-        */
-        bool multiPage = false;
-
-        /** `true` if private members should be extracted and displayed.
-
-            In some cases private members will be listed
-            even if this configuration value is set to
-            `false`. For example, when extracting private
-            virtual functions in a base class.
-        */
-        bool includePrivate = false;
+        unsigned int concurrency = 0;
 
         /** `true` if anonymous namespace members should be extracted and displayed.
 
@@ -74,11 +59,18 @@ public:
         */
         bool includeAnonymous = true;
 
-        /** The level of concurrency desired.
+        /** `true` if private members should be extracted and displayed.
 
-            This will always be greater than zero.
+            In some cases private members will be listed
+            even if this configuration value is set to
+            `false`. For example, when extracting private
+            virtual functions in a base class.
         */
-        unsigned int concurrency = 0;
+        bool includePrivate = false;
+
+        /** `true` if output should consist of multiple files.
+        */
+        bool multiPage = false;
 
         //--------------------------------------------
 

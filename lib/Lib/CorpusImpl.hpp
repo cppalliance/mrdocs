@@ -55,7 +55,7 @@ public:
     mrdox::Expected<std::unique_ptr<Corpus>>
     build(
         ToolExecutor& ex,
-        std::shared_ptr<Config const> config);
+        std::shared_ptr<ConfigImpl const> config);
 
 private:
     std::vector<Info const*> const&
