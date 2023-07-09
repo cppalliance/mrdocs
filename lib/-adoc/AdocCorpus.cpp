@@ -15,6 +15,8 @@
 #include <fmt/format.h>
 #include <iterator>
 
+#include <llvm/Support/raw_ostream.h>
+
 namespace clang {
 namespace mrdox {
 namespace adoc {
@@ -58,7 +60,29 @@ DocVisitor::
 operator()(
     doc::Admonition const& I)
 {
-    //dest_ += I.string;
+    std::string_view label;
+    switch(I.admonish)
+    {
+    case doc::Admonish::note:
+        label = "NOTE";
+        break;
+    case doc::Admonish::tip:
+        label = "TIP";
+        break;
+    case doc::Admonish::important:
+        label = "IMPORTANT";
+        break;
+    case doc::Admonish::caution:
+        label = "CAUTION";
+        break;
+    case doc::Admonish::warning:
+        label = "WARNING";
+        break;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+    dest_ += fmt::format("[{}]\n", label);
+    (*this)(static_cast<doc::Paragraph const&>(I));
 }
 
 void
@@ -122,6 +146,7 @@ operator()(
                 dest_.append("\n");
         }
     }
+    dest_.push_back('\n');
     dest_.push_back('\n');
 }
 
@@ -276,7 +301,9 @@ public:
         for(auto const& t : nodes)
             doc::visit(*t, visitor);
         if(! s.empty())
+        {
             list.emplace_back(key, std::move(s));
+        }
     };
 
     dom::Object

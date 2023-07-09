@@ -130,8 +130,11 @@ makeOverview(
                 TParam const*>(it->get()));
             break;
         case Kind::paragraph:
-            ov.brief = static_cast<
-                Paragraph const*>(it->get());
+            if(! ov.brief)
+                ov.brief = static_cast<
+                    Paragraph const*>(it->get());
+            else
+                ov.blocks.push_back(it->get());
             break;
         default:
             ov.blocks.push_back(it->get());
