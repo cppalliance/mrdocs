@@ -1,6 +1,5 @@
 #ignore-failures: true
-with-private: false
-concurrency: 1
+include-private: false
 source-root: .
 single-page: true
 input:
