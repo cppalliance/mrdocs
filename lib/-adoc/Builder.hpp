@@ -15,10 +15,9 @@
 #include "Support/Radix.hpp"
 #include <mrdox/Metadata/DomMetadata.hpp>
 #include <mrdox/Support/Error.hpp>
+#include <mrdox/Support/Handlebars.hpp>
 #include <mrdox/Support/JavaScript.hpp>
 #include <ostream>
-
-#include <mrdox/Support/Dom.hpp>
 
 namespace clang {
 namespace mrdox {
@@ -34,7 +33,7 @@ class Builder
     DomCorpus const& domCorpus_;
     Corpus const& corpus_;
     Options options_;
-    js::Context ctx_;
+    Handlebars hbs_;
 
 public:
     Builder(
