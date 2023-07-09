@@ -91,10 +91,9 @@ MRDOX_DECL void debugEnableHeapChecking();
     // effectively the same as c++23 <print>,
     // except using debug_outs() as the output stream
     template<
-        typename Format,
         typename... Args>
     void print_debug(
-        Format fmt,
+        fmt::format_string<std::type_identity_t<Args>...> fmt,
         Args&&... args)
     {
         debug_outs() << fmt::vformat(fmt,
