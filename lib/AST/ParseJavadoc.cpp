@@ -943,15 +943,9 @@ parseJavadoc(
     Diagnostics& diags)
 {
     if(! RC)
-    {
-        MRDOX_ASSERT(! jd);
         return;
-    }
-
     RC->setAttached();
-
     auto result = JavadocVisitor(RC, D, config, diags).build();
-
     if(jd == nullptr)
     {
         jd = std::make_unique<Javadoc>(std::move(result));
