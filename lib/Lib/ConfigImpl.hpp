@@ -39,6 +39,10 @@ public:
         */
         std::vector<std::string> defines;
 
+        /** The list of formats to generate
+        */
+        std::vector<std::string> generate;
+
         /** `true` if AST visitation failures should not stop the program.
 
             @code
@@ -73,13 +77,12 @@ public:
 
 private:
     SettingsImpl settings_;
-    ThreadPool mutable threadPool_;
+    ThreadPool& threadPool_;
     llvm::SmallString<0> outputPath_;
     std::vector<std::string> inputFileIncludes_;
 
     friend class Config;
     friend class Options;
-    friend class WorkGroup;
 
     template<class T>
     friend struct llvm::yaml::MappingTraits;
@@ -90,7 +93,8 @@ public:
         llvm::StringRef addonsDir,
         llvm::StringRef configYaml,
         llvm::StringRef extraYaml,
-        ConfigImpl const* base);
+        std::shared_ptr<ConfigImpl const> baseConfig,
+        ThreadPool& threadPool);
 
     ThreadPool&
     threadPool() const noexcept override
@@ -134,68 +138,23 @@ public:
 
     friend
     Expected<std::shared_ptr<ConfigImpl const>>
-    createConfigFromYAML(
+    createConfig(
         std::string_view workingDir,
         std::string_view addonsDir,
         std::string_view configYaml,
-        std::string_view extraYaml);
+        ThreadPool& threadPool);
 
     friend
     Expected<std::shared_ptr<ConfigImpl const>>
     loadConfigFile(
-        std::string_view configFilePath,
+        std::string_view filePath,
         std::string_view addonsDir,
-        std::string_view extraYaml);
+        std::string_view extraYaml,
+        std::shared_ptr<ConfigImpl const>,
+        ThreadPool& threadPool);
 };
 
 //------------------------------------------------
-
-/** Return a configuration by loading one or both YAML strings.
-
-    This function attempts to parse the given
-    YAML string and apply the results to create
-    a configuration. The working directory of
-    the config object will be set to the specified
-    full path. If the specified path is empty,
-    then the current working directory of the
-    process will be used instead.
-
-    If the `extraYaml` string is not empty, then
-    after the YAML file is applied the string
-    will be parsed as YAML and the results will
-    be applied to the configuration. And keys
-    and values in the extra YAML which are the
-    same as elements from the file will replace
-    existing settings.
-
-    @return The configuration upon success,
-        otherwise an error.
-
-    @param workingDir The directory which
-    should be considered the working directory
-    for calculating filenames from relative
-    paths.
-
-    @param addonsDir An optional, valid directory
-    to determine the location of the addons/ folder.
-    If the path is not absolute, it will be resolved
-    relative to the current working directory of
-    the process.
-
-    @param configYaml A string containing valid
-    YAML which will be parsed and applied to create
-    the configuration.
-
-    @param extraYaml An optional string containing
-    additional valid YAML which will be parsed and
-    applied to the existing configuration.
-*/
-Expected<std::shared_ptr<ConfigImpl const>>
-createConfigFromYAML(
-    std::string_view workingDir,
-    std::string_view addonsDir,
-    std::string_view configYaml,
-    std::string_view extraYaml = "");
 
 /** Create a configuration by loading a YAML file.
 
@@ -213,14 +172,60 @@ createConfigFromYAML(
     same as elements from the file will replace
     existing settings.
 
-    @return A valid object upon success, otherwise
-    an error.
+    @return The configuration upon success,
+    otherwise an error.
 
-    @param configFilePath A relative or absolute
-    path to the configuration file. Relative paths
-    will be resolved according to the current working
-    directory of the process. POSIX or Windows style
-    path separators are accepted.
+    @param workingDir The path to consider as the
+    working directory when resolving relative paths
+    in the configuration and compilation databases.
+    Relative paths will be resolved according to
+    the current working directory of the process.
+    POSIX or Windows style path separators are
+    accepted.
+
+    @param addonsDir An optional, valid directory
+    to determine the location of the addons/ folder.
+    If the path is not absolute, it will be resolved
+    relative to the current working directory of
+    the process.
+
+    @param configYaml A string containing YAML
+    which will be parsed to produce the
+    configuraton settings.
+
+    @param threadPool The thread pool to use.
+*/
+Expected<std::shared_ptr<ConfigImpl const>>
+createConfig(
+    std::string_view workingDir,
+    std::string_view addonsDir,
+    std::string_view configYaml,
+    ThreadPool& threadPool);
+
+/** Create a configuration by loading a YAML file.
+
+    This function attemtps to load the given
+    YAML file and apply the results to create
+    a configuration. The working directory of
+    the config object will be set to the
+    directory containing the file.
+
+    If the `extraYaml` string is not empty, then
+    after the YAML file is applied the string
+    will be parsed as YAML and the results will
+    be applied to the configuration. And keys
+    and values in the extra YAML which are the
+    same as elements from the file will replace
+    existing settings.
+
+    @return The configuration upon success,
+    otherwise an error.
+
+    @param filePath A relative or absolute path
+    to the configuration file. Relative paths will
+    be resolved according to the current working
+    directory of the process. POSIX or Windows
+    style path separators are accepted.
 
     @param addonsDir An optional, valid directory
     to determine the location of the addons/ folder.
@@ -232,56 +237,20 @@ createConfigFromYAML(
     additional valid YAML which will be parsed and
     applied to the existing configuration.
 
-    @param baseConfig An optional configuration
-    object. If specified, its settings will be
-    first copied before the file is loaded.
+    @param baseConfig A configuration to copy
+    first, or nullptr if unspecified. This has
+    the effect of inheriting settings.
+
+    @param threadPool The thread pool to use.
 */
 MRDOX_DECL
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
-    std::string_view configFilePath,
+    std::string_view filePath,
     std::string_view addonsDir,
-    std::string_view extraYaml = "",
-    std::shared_ptr<ConfigImpl const> base = nullptr);
-
-/** Create a configuration by loading a YAML string.
-
-    This function attempts to parse the given
-    YAML string and apply the results to create
-    a configuration. The working directory of
-    the config object will be set to the specified
-    full path. If the specified path is empty,
-    then the current working directory of the
-    process will be used instead.
-
-    @return A valid object upon success.
-
-    @param workingDir The directory which should
-    be considered the working directory for
-    calculating filenames from relative paths.
-    This must be an absolute path.
-
-    @param addonsDir An optional, valid directory
-    to determine the location of the addons/ folder.
-    If the path is not absolute, it will be resolved
-    relative to the current working directory of
-    the process.
-
-    @param configYaml A string containing valid
-    YAML which will be parsed and applied to create
-    the configuration.
-
-    @param ec [out] Set to the error, if any occurred.
-*/
-inline
-Expected<std::shared_ptr<ConfigImpl const>>
-loadConfigString(
-    std::string_view workingDir,
-    std::string_view addonsDir,
-    std::string_view configYaml)
-{
-    return createConfigFromYAML(workingDir, addonsDir, configYaml);
-}
+    std::string_view extraYaml,
+    std::shared_ptr<ConfigImpl const> baseConfig,
+    ThreadPool& threadPool);
 
 } // mrdox
 } // clang

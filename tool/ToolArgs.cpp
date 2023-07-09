@@ -56,6 +56,12 @@ EXAMPLES:
     llvm::cl::init(1),
     llvm::cl::cat(commonCat))
 
+, concurrency(
+    "concurrency",
+    llvm::cl::desc("The desired level of concurrency (0 for hardware-suggested)."),
+    llvm::cl::init(0),
+    llvm::cl::cat(commonCat))
+
 //
 // Tool options
 //

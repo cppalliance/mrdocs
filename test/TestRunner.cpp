@@ -37,8 +37,7 @@ namespace mrdox {
 
 TestRunner::
 TestRunner()
-    : threadPool_(1)
-    , diffCmdPath_(llvm::sys::findProgramByName("diff"))
+    : diffCmdPath_(llvm::sys::findProgramByName("diff"))
     , xmlGen_(getGenerators().find("xml"))
 {
     MRDOX_ASSERT(xmlGen_ != nullptr);
@@ -83,7 +82,11 @@ handleFile(
         if(ft.value() == files::FileType::regular)
         {
             auto configFile = loadConfigFile(
-                configPath, "", "", config);
+                configPath,
+                    "",
+                    "",
+                    config,
+                    threadPool_);
             if(! configFile)
                 return report::error("{}: \"{}\"",
                     configPath, configFile.error());
@@ -242,7 +245,11 @@ handleDir(
         if(ft.value() == files::FileType::regular)
         {
             auto configFile = loadConfigFile(
-                configPath, "", "", config);
+                configPath,
+                "",
+                "",
+                config,
+                threadPool_);
             if(! configFile)
                 return report::error("{}: \"{}\"",
                     configPath, configFile.error());
@@ -254,6 +261,9 @@ handleDir(
                 Error("not a regular file"), configPath);
         }
     }
+
+    if(! config)
+        return report::error("missing configuration: \"{}\"", dirPath);
 
     // Visit each item in the directory
     while(iter != end)
@@ -323,7 +333,12 @@ checkPath(
                     ft.error(), configPath);
             if(ft.value() == files::FileType::regular)
             {
-                auto configFile = loadConfigFile(configPath, "");
+                auto configFile = loadConfigFile(
+                    configPath,
+                    "",
+                    "",
+                    config,
+                    threadPool_);
                 if(! configFile)
                     return report::error("{}: \"{}\"",
                         configPath, configFile.error());

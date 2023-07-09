@@ -44,12 +44,6 @@ protected:
 public:
     struct Settings
     {
-        /** The level of concurrency desired.
-
-            This will always be greater than zero.
-        */
-        unsigned int concurrency = 0;
-
         /** `true` if anonymous namespace members should be extracted and displayed.
 
             In some cases anonymous namespace members will

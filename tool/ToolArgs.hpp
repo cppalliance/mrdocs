@@ -33,6 +33,7 @@ public:
 
     llvm::cl::opt<std::string>  addonsDir;
     llvm::cl::opt<unsigned>     reportLevel;
+    llvm::cl::opt<unsigned>     concurrency;
 
     llvm::cl::opt<std::string>  configPath;
     llvm::cl::opt<std::string>  outputPath;

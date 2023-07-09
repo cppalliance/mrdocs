@@ -54,8 +54,10 @@ public:
 
     /** Constructor.
 
-        Default constructed thread pools may only
-        be reset or destroyed.
+        Default constructed thread pools have
+        concurrency equal to one and never spawn
+        new threads. Submitted work blocks the
+        caller until the work is complete.
     */
     MRDOX_DECL
     explicit
@@ -66,13 +68,6 @@ public:
     MRDOX_DECL
     explicit
     ThreadPool(
-        unsigned concurrency);
-
-    /** Reset the pool to the specified concurrency.
-    */
-    MRDOX_DECL
-    void
-    reset(
         unsigned concurrency);
 
     /** Return the number of threads in the pool.

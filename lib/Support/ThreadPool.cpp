@@ -38,32 +38,30 @@ ThreadPool::
 ThreadPool(
     unsigned concurrency)
 {
-    reset(concurrency);
-}
-
-void
-ThreadPool::
-reset(
-    unsigned concurrency)
-{
-    llvm::ThreadPoolStrategy S;
-    S.ThreadsRequested = concurrency;
-    S.Limit = true;
-    impl_ = std::make_unique<llvm::ThreadPool>(S);
+    if(concurrency != 1)
+    {
+        llvm::ThreadPoolStrategy S;
+        S.ThreadsRequested = concurrency;
+        S.Limit = true;
+        impl_ = std::make_unique<llvm::ThreadPool>(S);
+    }
 }
 
 unsigned
 ThreadPool::
 getThreadCount() const noexcept
 {
-    return impl_->getThreadCount();
+    if(impl_)
+        return impl_->getThreadCount();
+    return 1;
 }
 
 void
 ThreadPool::
 wait()
 {
-    impl_->wait();
+    if( impl_)
+        impl_->wait();
 }
 
 void
@@ -71,24 +69,32 @@ ThreadPool::
 post(
     any_callable<void(void)> f)
 {
-    auto sp = std::make_shared<
-        any_callable<void(void)>>(std::move(f));
-    impl_->async(
-    [sp]
+    if(impl_)
     {
-        try
+        impl_->async(
+        [sp = std::make_shared<
+            any_callable<void(void)>>(std::move(f))]
         {
-            (*sp)();
-        }
-        catch(std::exception const& ex)
-        {
-            // Any exception which is not
-            // derived from Error should
-            // be reported and terminate
-            // the process immediately.
-            reportUnhandledException(ex);
-        }
-    });
+            try
+            {
+                (*sp)();
+            }
+            catch(std::exception const& ex)
+            {
+                reportUnhandledException(ex);
+            }
+        });
+        return;
+    }
+
+    try
+    {
+        f();
+    }
+    catch(std::exception const& ex)
+    {
+        reportUnhandledException(ex);
+    }
 }
 
 //------------------------------------------------
@@ -102,16 +108,19 @@ struct TaskGroup::
 {
     std::mutex mutex;
     std::unordered_set<Error> errors;
-    llvm::ThreadPoolTaskGroup taskGroup;
+    std::unique_ptr<
+        llvm::ThreadPoolTaskGroup> taskGroup;
 
     explicit
     Impl(
-        llvm::ThreadPool& threadPool)
-        : taskGroup(threadPool)
+        llvm::ThreadPool* threadPool)
+        : taskGroup(threadPool
+            ? std::make_unique<
+                llvm::ThreadPoolTaskGroup>(*threadPool)
+            : nullptr)
     {
     }
 };
-
 
 TaskGroup::
 ~TaskGroup()
@@ -121,7 +130,8 @@ TaskGroup::
 TaskGroup::
 TaskGroup(
     ThreadPool& threadPool)
-    : impl_(std::make_unique<Impl>(*threadPool.impl_))
+    : impl_(std::make_unique<Impl>(
+        threadPool.impl_.get()))
 {
 }
 
@@ -129,7 +139,8 @@ std::vector<Error>
 TaskGroup::
 wait()
 {
-    impl_->taskGroup.wait();
+    if( impl_->taskGroup)
+        impl_->taskGroup->wait();
 
     // VFALCO We could have a small data race here
     // where another thread posts work after the
@@ -152,10 +163,26 @@ TaskGroup::
 post(
     any_callable<void(void)> f)
 {
-    auto sp = std::make_shared<
-        any_callable<void(void)>>(std::move(f));
-    impl_->taskGroup.async(
-    [&, sp]
+    if(! impl_->taskGroup)
+    {
+        try
+        {
+            f();
+        }
+        catch(Exception const& ex)
+        {
+            std::lock_guard<std::mutex> lock(impl_->mutex);
+            impl_->errors.emplace(ex.error());
+        }
+        catch(std::exception const& ex)
+        {
+            reportUnhandledException(ex);
+        }
+        return;
+    }
+    impl_->taskGroup->async(
+    [&, sp = std::make_shared<
+        any_callable<void(void)>>(std::move(f))]
     {
         try
         {

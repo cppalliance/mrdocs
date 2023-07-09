@@ -28,6 +28,8 @@ DoGenerateAction()
 {
     auto& generators = getGenerators();
 
+    ThreadPool threadPool(toolArgs.concurrency);
+
     // Calculate additional YAML settings from command line options.
     std::string extraYaml;
     {
@@ -40,7 +42,11 @@ DoGenerateAction()
     if(toolArgs.configPath.empty())
         return formatError("the config path argument is missing");
     auto config = loadConfigFile(
-        toolArgs.configPath, toolArgs.addonsDir, extraYaml);
+        toolArgs.configPath,
+        toolArgs.addonsDir,
+        extraYaml,
+        nullptr,
+        threadPool);
     if(! config)
         return config.error();
 

@@ -46,7 +46,6 @@ struct llvm::yaml::MappingTraits<
     static void mapping(IO& io,
         clang::mrdox::ConfigImpl::SettingsImpl& cfg)
     {
-        io.mapOptional("concurrency",       cfg.concurrency);
         io.mapOptional("defines",           cfg.defines);
         io.mapOptional("ignore-failures",   cfg.ignoreFailures);
         io.mapOptional("include-anonymous", cfg.includeAnonymous);
@@ -65,32 +64,33 @@ namespace mrdox {
 
 ConfigImpl::
 ConfigImpl(
-    llvm::StringRef workingDir_,
-    llvm::StringRef addonsDir_,
-    llvm::StringRef configYaml_,
-    llvm::StringRef extraYaml_,
-    ConfigImpl const* base)
+    llvm::StringRef workingDir,
+    llvm::StringRef addonsDir,
+    llvm::StringRef configYaml,
+    llvm::StringRef extraYaml,
+    std::shared_ptr<ConfigImpl const> baseConfig,
+    ThreadPool& threadPool)
+    : threadPool_(threadPool)
 {
+    if(baseConfig)
+        settings_ = baseConfig->settings_;
+
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    // copy the base settings if present
-    if(base)
-        settings_ = base->settings_;
-
-    if(! files::isAbsolute(workingDir_))
-        formatError("working path \"{}\" is not absolute", workingDir_).Throw();
-    settings_.workingDir = files::makeDirsy(files::normalizePath(workingDir_));
+    if(! files::isAbsolute(workingDir))
+        formatError("working path \"{}\" is not absolute", workingDir).Throw();
+    settings_.workingDir = files::makeDirsy(files::normalizePath(workingDir));
 
     // Addons directory
     {
-        settings_.addonsDir = files::makeAbsolute(addonsDir_).value();
+        settings_.addonsDir = files::makeAbsolute(addonsDir).value();
         files::requireDirectory(settings_.addonsDir).maybeThrow();
         MRDOX_ASSERT(files::isDirsy(settings_.addonsDir));
     }
 
-    settings_.configYaml = configYaml_;
-    settings_.extraYaml = extraYaml_;
+    settings_.configYaml = configYaml;
+    settings_.extraYaml = extraYaml;
 
     // Parse the YAML strings
     YamlReporter reporter;
@@ -109,10 +109,6 @@ ConfigImpl(
         Error(yin.error()).maybeThrow();
     }
 
-    // Post-process as needed
-    if( settings_.concurrency == 0)
-        settings_.concurrency = llvm::thread::hardware_concurrency();
-
     // This has to be forward slash style
     settings_.sourceRoot = files::makePosixStyle(files::makeDirsy(
         files::makeAbsolute(settings_.sourceRoot, settings_.workingDir)));
@@ -121,8 +117,6 @@ ConfigImpl(
     for(auto& name : inputFileIncludes_)
         name = files::makePosixStyle(
             files::makeAbsolute(name, settings_.workingDir));
-
-    threadPool_.reset(settings_.concurrency);
 }
 
 //------------------------------------------------
@@ -171,17 +165,56 @@ shouldExtractFromFile(
 //------------------------------------------------
 
 Expected<std::shared_ptr<ConfigImpl const>>
-createConfigFromYAML(
+createConfig(
     std::string_view workingDir,
     std::string_view addonsDir,
     std::string_view configYaml,
-    std::string_view extraYaml)
+    ThreadPool& threadPool)
 {
+    return std::make_shared<ConfigImpl>(
+        workingDir,
+        addonsDir,
+        configYaml,
+        "",
+        nullptr,
+        threadPool);
+}
+
+static
+Expected<std::shared_ptr<ConfigImpl const>>
+loadConfig(
+    std::string_view filePath,
+    std::string_view addonsDir,
+    std::string_view extraYaml,
+    std::shared_ptr<ConfigImpl const> const& baseConfig,
+    ThreadPool& threadPool)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    auto temp = files::normalizePath(filePath);
+
+    // load the config file into a string
+    auto absPath = files::makeAbsolute(temp);
+    if(! absPath)
+        return absPath.error();
+    auto configYaml = files::getFileText(*absPath);
+    if(! configYaml)
+        return configYaml.error();
+
+    // calculate the working directory
+    auto workingDir = files::getParentDir(*absPath);
+
+    // attempt to create the config
     try
     {
-        auto config = std::make_shared<ConfigImpl>(
-            workingDir, addonsDir, configYaml, extraYaml, nullptr);
-        return config;
+        return std::make_shared<ConfigImpl>(
+            workingDir,
+            addonsDir,
+            configYaml.value(),
+            extraYaml,
+            baseConfig,
+            threadPool);
     }
     catch(Exception const& ex)
     {
@@ -194,35 +227,15 @@ loadConfigFile(
     std::string_view configFilePath,
     std::string_view addonsDir,
     std::string_view extraYaml,
-    std::shared_ptr<ConfigImpl const> base)
+    std::shared_ptr<ConfigImpl const> baseConfig,
+    ThreadPool& threadPool)
 {
-    namespace fs = llvm::sys::fs;
-    namespace path = llvm::sys::path;
-
-    auto temp = files::normalizePath(configFilePath);
-
-    // load the config file into a string
-    auto absPath = files::makeAbsolute(temp);
-    if(! absPath)
-        return absPath.error();
-    auto text = files::getFileText(*absPath);
-    if(! text)
-        return text.error();
-
-    // calculate the working directory
-    auto workingDir = files::getParentDir(*absPath);
-
-    // attempt to create the config
-    try
-    {
-        auto config = std::make_shared<ConfigImpl>(
-            workingDir, addonsDir, *text, extraYaml, base.get());
-        return config;
-    }
-    catch(Exception const& ex)
-    {
-        return ex.error();
-    }
+    return loadConfig(
+        configFilePath,
+        addonsDir,
+        extraYaml,
+        baseConfig,
+        threadPool);
 }
 
 } // mrdox
