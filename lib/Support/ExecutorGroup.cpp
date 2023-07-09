@@ -97,42 +97,43 @@ run(std::unique_lock<std::mutex> lock)
     std::unique_ptr<AnyAgent> agent(std::move(agents_.back()));
     agents_.pop_back();
     ++impl_->busy;
+    lock.unlock();
 
     impl_->threadPool.async(
-        [this, agent = std::move(agent)]() mutable
+    [this, agent = std::move(agent)]() mutable
+    {
+        std::unique_lock<std::mutex> lock(impl_->mutex);
+        scoped_agent scope(*this, std::move(agent));
+        for(;;)
         {
-            std::unique_lock<std::mutex> lock(impl_->mutex);
-            scoped_agent scope(*this, std::move(agent));
-            for(;;)
+            if(work_.empty())
+                break;
+            any_callable<void(void*)> work(
+                std::move(work_.front()));
+            work_.pop_front();
             {
-                if(work_.empty())
-                    break;
-                any_callable<void(void*)> work(
-                    std::move(work_.front()));
-                work_.pop_front();
+                lock.unlock();
+                try
                 {
-                    lock.unlock();
-                    try
-                    {
-                        work(scope.get());
-                        lock.lock();
-                    }
-                    catch(Exception const& ex)
-                    {
-                        lock.lock();
-                        impl_->errors.emplace(ex.error());
-                    }
-                    catch(std::exception const& ex)
-                    {
-                        // Any exception which is not
-                        // derived from Exception should
-                        // be reported and terminate
-                        // the process immediately.
-                        reportUnhandledException(ex);
-                    }
+                    work(scope.get());
+                    lock.lock();
+                }
+                catch(Exception const& ex)
+                {
+                    lock.lock();
+                    impl_->errors.emplace(ex.error());
+                }
+                catch(std::exception const& ex)
+                {
+                    // Any exception which is not
+                    // derived from Exception should
+                    // be reported and terminate
+                    // the process immediately.
+                    reportUnhandledException(ex);
                 }
             }
-        });
+        }
+    });
 }
 
 std::vector<Error>
