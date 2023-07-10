@@ -49,13 +49,14 @@ public:
 
 int
 main() {
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     // Fixtures
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     std::string_view template_path =
         MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc.hbs";
     std::string_view partial_paths[] = {
         MRDOX_UNIT_TEST_DIR "/fixtures/record-detail.adoc.hbs",
+        MRDOX_UNIT_TEST_DIR "/fixtures/record.adoc.hbs",
         MRDOX_UNIT_TEST_DIR "/fixtures/escaped.adoc.hbs"};
     std::string_view output_path =
         MRDOX_UNIT_TEST_DIR "/fixtures/handlebars_features_test.adoc";
@@ -74,11 +75,11 @@ main() {
     auto master_logger_output_r = files::getFileText(logger_output_path);
 
     HandlebarsOptions options;
-    options.noHTMLEscape = true;
+    options.noEscape = true;
 
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     // Context
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     dom::Object context;
     dom::Object page;
     page.set("kind", "record");
@@ -277,9 +278,15 @@ main() {
 
     context.set("containers", containers);
 
-    /////////////////////////////////////////////////////////////////
+    dom::Object symbol;
+    symbol.set("tag", "struct");
+    symbol.set("kind", "record");
+    symbol.set("name", "T");
+    context.set("symbol", symbol);
+
+    // ==============================================================
     // Register helpers
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     Handlebars hbs;
     helpers::registerAntoraHelpers(hbs);
     helpers::registerStringHelpers(hbs);
@@ -473,9 +480,9 @@ main() {
         return out;
     });
 
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     // Register logger
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     std::string log;
     hbs.registerLogger([&log](dom::Value level, dom::Array const& args){
         log += fmt::format("[{}] ", level);
@@ -488,9 +495,9 @@ main() {
         log += '\n';
     });
 
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     // Register partials
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     // From files
     for (auto partial_path: partial_paths) {
         auto partial_text_r = files::getFileText(partial_path);
@@ -517,9 +524,9 @@ main() {
     hbs.registerPartial("layoutTemplate", "Site Content {{> @partial-block }}");
     hbs.registerPartial("pageLayout", "<div class=\"nav\">\n  {{> nav}}\n</div>\n<div class=\"content\">\n  {{> content}}\n</div>");
 
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     // Render and diff
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     std::string rendered_text = hbs.render(template_str, context, options);
     REQUIRE_FALSE(rendered_text.empty());
 
@@ -547,9 +554,9 @@ main() {
         REQUIRE(rendered_text == master_file_contents);
     }
 
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     // Render and diff logger output
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     // Compare template with reference
     if (!master_logger_output_r || master_logger_output_r->empty()) {
         // Write logger output to file with ofstream
@@ -574,9 +581,9 @@ main() {
         REQUIRE(log == master_logger_output);
     }
 
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     // Safe string
-    /////////////////////////////////////////////////////////////////
+    // ==============================================================
     {
         Handlebars hbs2;
         hbs2.registerHelper("bold", [](dom::Array const& args) -> dom::Value {

@@ -131,7 +131,7 @@ escapeExpression(
     std::string_view str,
     HandlebarsOptions opt)
 {
-    if (opt.noHTMLEscape)
+    if (opt.noEscape)
     {
         out << str;
     }
@@ -370,7 +370,7 @@ struct defaultLogger {
         os << ']';
         for (std::size_t i = 0; i < args.size(); ++i) {
             HandlebarsOptions opt;
-            opt.noHTMLEscape = true;
+            opt.noEscape = true;
             format_to(os, args.at(i), opt);
             os << " ";
         }
@@ -695,14 +695,14 @@ render_to(
     dom::Value const & context,
     HandlebarsOptions options) const
 {
-    partials_map extra_partials;
-    dom::Object private_data;
-    private_data.set("root", context);
-    private_data.set("level", "warn");
+    partials_map inlinePartials;
+    dom::Object data;
+    data.set("root", context);
+    data.set("level", "warn");
     dom::Object blockValues;
     render_to(
         out, templateText, context, options,
-        extra_partials, private_data, blockValues);
+        inlinePartials, data, blockValues);
 }
 
 void
@@ -710,10 +710,10 @@ Handlebars::
 render_to(
     OutputRef& out,
     std::string_view templateText,
-    dom::Value const &data,
+    dom::Value const& context,
     HandlebarsOptions opt,
-    partials_map& extra_partials,
-    dom::Object const& private_data,
+    partials_map& inlinePartials,
+    dom::Object const& data,
     dom::Object const& blockValues) const
 {
     while (!templateText.empty()) {
@@ -739,8 +739,10 @@ render_to(
         templateText.remove_prefix(tagStartPos + tagStr.size());
         if (!tag.escaped) {
             renderTag(
-                tag, out, templateText, data, opt,
-                extra_partials, private_data, blockValues);
+                tag, out, templateText,
+                context, opt,
+                inlinePartials,
+                data, blockValues);
         } else {
             out << tag.content;
         }
@@ -749,7 +751,7 @@ render_to(
 
 std::pair<dom::Value, bool>
 lookupProperty(
-    dom::Object const &data,
+    dom::Object const& context,
     std::string_view path)
 {
     auto nextSegment = [](std::string_view path)
@@ -799,9 +801,9 @@ lookupProperty(
     // Get first value from Object
     std::string_view segment;
     std::tie(segment, path) = nextSegment(path);
-    if (!data.exists(segment))
+    if (!context.exists(segment))
         return {nullptr, false};
-    dom::Value cur = data.find(segment);
+    dom::Value cur = context.find(segment);
 
     // Recursively get more values from current value
     std::tie(segment, path) = nextSegment(path);
@@ -845,31 +847,31 @@ lookupProperty(
 
 std::pair<dom::Value, bool>
 lookupProperty(
-    dom::Value const &data,
+    dom::Value const& context,
     std::string_view path) {
     if (path == "." || path == "this" || path == "[.]" || path == "[this]" || path.empty())
-        return {data, true};
-    if (data.kind() != dom::Kind::Object) {
+        return { context, true};
+    if (context.kind() != dom::Kind::Object) {
         return {nullptr, false};
     }
-    return lookupProperty(data.getObject(), path);
+    return lookupProperty(context.getObject(), path);
 }
 
 std::pair<dom::Value, bool>
 lookupProperty(
-    dom::Value const& data,
+    dom::Value const& context,
     dom::Value const& path)
 {
     if (path.isString())
-        return lookupProperty(data, path.getString());
+        return lookupProperty(context, path.getString());
     if (path.isInteger()) {
-        if (data.isArray()) {
-            auto& arr = data.getArray();
+        if (context.isArray()) {
+            auto& arr = context.getArray();
             if (path.getInteger() >= static_cast<std::int64_t>(arr.size()))
                 return {nullptr, false};
             return {arr.at(path.getInteger()), true};
         }
-        return lookupProperty(data, std::to_string(path.getInteger()));
+        return lookupProperty(context, std::to_string(path.getInteger()));
     }
     return {nullptr, false};
 }
@@ -1314,26 +1316,30 @@ renderTag(
     Tag const& tag,
     OutputRef& out,
     std::string_view& templateText,
-    dom::Value const &data,
+    dom::Value const& context,
     HandlebarsOptions opt,
-    partials_map& extra_partials,
-    dom::Object const& private_data,
+    partials_map& inlinePartials,
+    dom::Object const& data,
     dom::Object const& blockValues) const {
     if (tag.type == '#')
     {
-        renderBlock(tag.helper, tag, out, templateText, data, opt, extra_partials, private_data, blockValues);
+        renderBlock(tag.helper, tag, out, templateText,
+            context, opt, inlinePartials, data, blockValues);
     }
     else if (tag.type == '>')
     {
-        renderPartial(tag, out, templateText, data, opt, extra_partials, private_data, blockValues);
+        renderPartial(tag, out, templateText, context,
+            opt, inlinePartials, data, blockValues);
     }
     else if (tag.type == '*')
     {
-        renderDecorator(tag, out, templateText, data, extra_partials, private_data, blockValues);
+        renderDecorator(tag, out, templateText, context,
+            inlinePartials, data, blockValues);
     }
     else if (tag.type != '/' && tag.type != '!')
     {
-        renderExpression(tag, out, templateText, data, opt, private_data, blockValues);
+        renderExpression(tag, out, templateText,
+            context, opt, data, blockValues);
     }
 }
 
@@ -1345,14 +1351,14 @@ renderExpression(
     std::string_view &templateText,
     dom::Value const & context,
     HandlebarsOptions const &opt,
-    dom::Object const& private_data,
+    dom::Object const& data,
     dom::Object const& blockValues) const
 {
     if (tag.helper.empty())
         return;
 
     auto opt2 = opt;
-    opt2.noHTMLEscape = tag.forceNoHTMLEscape || opt.noHTMLEscape;
+    opt2.noEscape = tag.forceNoHTMLEscape || opt.noEscape;
 
     auto it = helpers_.find(tag.helper);
     if (it != helpers_.end()) {
@@ -1361,14 +1367,14 @@ renderExpression(
         HandlebarsCallback cb;
         cb.name_ = tag.helper;
         cb.context_ = &context;
-        cb.data_ = &private_data;
+        cb.data_ = &data;
         cb.logger_ = &logger_;
-        setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
+        setupArgs(tag.arguments, context, data, blockValues, args, cb);
         auto [res, render] = fn(args, cb);
         if (render == HelperBehavior::RENDER_RESULT) {
             format_to(out, res, opt2);
         } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
-            opt2.noHTMLEscape = true;
+            opt2.noEscape = true;
             format_to(out, res, opt2);
         }
         if (tag.removeRWhitespace) {
@@ -1377,7 +1383,7 @@ renderExpression(
         return;
     }
 
-    auto [v, defined] = evalExpr(context, private_data, blockValues, tag.helper);
+    auto [v, defined] = evalExpr(context, data, blockValues, tag.helper);
     if (defined)
     {
         format_to(out, v, opt2);
@@ -1389,12 +1395,12 @@ renderExpression(
     dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
     HandlebarsCallback cb;
     cb.name_ = tag.helper;
-    setupArgs(tag.arguments, context, private_data, blockValues, args, cb);
+    setupArgs(tag.arguments, context, data, blockValues, args, cb);
     auto [res, render] = fn(args, cb);
     if (render == HelperBehavior::RENDER_RESULT) {
         format_to(out, res, opt2);
     } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
-        opt2.noHTMLEscape = true;
+        opt2.noEscape = true;
         format_to(out, res, opt2);
     }
     if (tag.removeRWhitespace) {
@@ -1436,7 +1442,7 @@ renderDecorator(
     OutputRef &out,
     std::string_view &templateText,
     dom::Value const& context,
-    Handlebars::partials_map &extra_partials,
+    Handlebars::partials_map &inlinePartials,
     dom::Object const& data,
     dom::Object const& blockValues) const {
     // Validate decorator
@@ -1467,7 +1473,7 @@ renderDecorator(
         }
     }
     fnBlock = trim_rspaces(fnBlock);
-    extra_partials[std::string(partial_name)] = std::string(fnBlock);
+    inlinePartials[std::string(partial_name)] = std::string(fnBlock);
 }
 
 void
@@ -1476,17 +1482,17 @@ renderPartial(
     Handlebars::Tag const &tag,
     OutputRef &out,
     std::string_view &templateText,
-    dom::Value const &data,
+    dom::Value const &context,
     HandlebarsOptions &opt,
-    Handlebars::partials_map &extra_partials,
-    dom::Object const& private_data,
+    Handlebars::partials_map &inlinePartials,
+    dom::Object const& data,
     dom::Object const& blockValues) const {
     // Evaluate dynamic partial
     std::string helper(tag.helper);
     if (helper.starts_with('(')) {
         std::string_view expr;
         findExpr(expr, helper);
-        auto [value, defined] = evalExpr(data, private_data, blockValues, expr);
+        auto [value, defined] = evalExpr(context, data, blockValues, expr);
         if (value.isString()) {
             helper = value.getString();
         }
@@ -1505,10 +1511,14 @@ renderPartial(
     // Partial
     auto it = this->partials_.find(helper);
     std::string_view partial_content;
-    if (it == this->partials_.end())
+    if (it != this->partials_.end())
     {
-        it = extra_partials.find(helper);
-        if (it == extra_partials.end()) {
+        partial_content = it->second;
+    }
+    else
+    {
+        it = inlinePartials.find(helper);
+        if (it == inlinePartials.end()) {
             if (tag.type2 == '#') {
                 partial_content = fnBlock;
             } else {
@@ -1518,8 +1528,6 @@ renderPartial(
         } else {
             partial_content = it->second;
         }
-    } else {
-        partial_content = it->second;
     }
 
     if (tag.arguments.empty())
@@ -1528,17 +1536,21 @@ renderPartial(
             // evaluate fnBlock to populate extra partials
             OutputRef dumb{};
             this->render_to(
-                dumb, fnBlock, data, opt,
-                extra_partials, private_data, blockValues);
+                dumb, fnBlock,
+                context, opt,
+                inlinePartials,
+                data, blockValues);
             // also add @partial-block to extra partials
-            extra_partials["@partial-block"] = std::string(fnBlock);
+            inlinePartials["@partial-block"] = std::string(fnBlock);
         }
         // Render partial with current context
         this->render_to(
-            out, partial_content, data, opt,
-            extra_partials, private_data, blockValues);
+            out, partial_content,
+            context, opt,
+            inlinePartials,
+            data, blockValues);
         if (tag.type2 == '#') {
-            extra_partials.erase("@partial-block");
+            inlinePartials.erase("@partial-block");
         }
     }
     else
@@ -1553,7 +1565,7 @@ renderPartial(
             auto [partialKey, contextKey] = findKeyValuePair(expr);
             if (partialKey.empty())
             {
-                auto [value, defined] = evalExpr(data, private_data, blockValues, expr);
+                auto [value, defined] = evalExpr(context, data, blockValues, expr);
                 if (defined && value.isObject())
                 {
                     partialCtx = createFrame(value.getObject());
@@ -1561,18 +1573,19 @@ renderPartial(
                 continue;
             }
             if (contextKey != ".") {
-                auto [value, defined] = evalExpr(data, private_data, blockValues, contextKey);
+                auto [value, defined] = evalExpr(context, data, blockValues, contextKey);
                 if (defined)
                 {
                     partialCtx.set(partialKey, value);
                 }
             } else {
-                partialCtx.set(partialKey, data);
+                partialCtx.set(partialKey, context);
             }
         }
         this->render_to(
             out, partial_content, partialCtx, opt,
-            extra_partials, private_data, blockValues);
+            inlinePartials,
+            data, blockValues);
     }
 
     if (tag.removeRWhitespace) {
@@ -1589,7 +1602,7 @@ renderBlock(
     std::string_view &templateText,
     dom::Value const& context,
     HandlebarsOptions const& opt,
-    Handlebars::partials_map &extra_partials,
+    Handlebars::partials_map &inlinePartials,
     dom::Object const & data,
     dom::Object const &blockValues) const {
     // Opening a section tag
@@ -1632,7 +1645,7 @@ renderBlock(
 
     // Setup callback functions
     if (!tag.rawBlock) {
-        cb.fn_ = [this, fnBlock, opt, &extra_partials, &blockValues](
+        cb.fn_ = [this, fnBlock, opt, &inlinePartials, &blockValues](
             OutputRef os,
             dom::Value const &item,
             dom::Object const &data,
@@ -1640,28 +1653,32 @@ renderBlock(
             if (!newBlockValues.empty()) {
                 dom::Object blockValuesOverlay =
                     createFrame(newBlockValues, blockValues);
-                this->render_to(os, fnBlock, item, opt, extra_partials, data, blockValuesOverlay);
+                this->render_to(os, fnBlock, item, opt, inlinePartials, data, blockValuesOverlay);
             } else {
-                this->render_to(os, fnBlock, item, opt, extra_partials, data, blockValues);
+                this->render_to(os, fnBlock, item, opt, inlinePartials, data, blockValues);
             }
         };
         cb.inverse_ =
-            [this, inverseTag, inverseBlock, opt, &extra_partials, blockName, &blockValues](
+            [this, inverseTag, inverseBlock, opt, &inlinePartials, blockName, &blockValues](
             OutputRef os,
             dom::Value const &item,
             dom::Object const &data,
             dom::Object const &newBlockValues) -> void {
             if (inverseTag.helper.empty()) {
-                os << inverseBlock;
+                // Inverse tag does not contain its own helper
+                // i.e. {{#helper}}...{{^}}...{{/helper}} instead of
+                //      {{#helper}}...{{^helper2}}...{{/helper}}
+                // Render the inverse block with the specified context
+                render_to(os, inverseBlock, item, opt, inlinePartials, data, blockValues);
                 return;
             }
             std::string_view inverseText = inverseBlock;
             if (!newBlockValues.empty()) {
                 dom::Object blockValuesOverlay =
                     createFrame(newBlockValues, blockValues);
-                renderBlock(blockName, inverseTag, os, inverseText, item, opt, extra_partials, data, blockValuesOverlay);
+                renderBlock(blockName, inverseTag, os, inverseText, item, opt, inlinePartials, data, blockValuesOverlay);
             } else {
-                renderBlock(blockName, inverseTag, os, inverseText, item, opt, extra_partials, data, blockValues);
+                renderBlock(blockName, inverseTag, os, inverseText, item, opt, inlinePartials, data, blockValues);
             }
         };
     } else {
@@ -1688,7 +1705,7 @@ renderBlock(
         format_to(out, res, opt);
     } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
         HandlebarsOptions opt2 = opt;
-        opt2.noHTMLEscape = true;
+        opt2.noEscape = true;
         format_to(out, res, opt2);
     }
 }

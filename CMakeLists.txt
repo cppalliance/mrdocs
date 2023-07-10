@@ -321,6 +321,9 @@ if (MRDOX_BUILD_TESTS)
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
 
+    add_executable(handlebars-test test/unit/handlebars.cpp)
+    target_link_libraries(handlebars-test PUBLIC mrdox-core)
+    target_compile_definitions(handlebars-test PRIVATE -DMRDOX_UNIT_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test/unit")
 endif()
 
 
