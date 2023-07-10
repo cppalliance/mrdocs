@@ -5,92 +5,103 @@
 // https://www.boost.org/LICENSE_1_0.txt
 //
 
-#ifndef MRDOX_TEST_MACROS_H
-#define MRDOX_TEST_MACROS_H
+#ifndef BOOST_URL_EXTRA_TEST_SUITE_DECOMPOSER_HPP
+#define BOOST_URL_EXTRA_TEST_SUITE_DECOMPOSER_HPP
 
-#include <fmt/format.h>
-#include <fmt/ostream.h>
 #include <type_traits>
 #include <string_view>
 #include <sstream>
 
-#if __has_include(<cxxabi.h>)
-
-#include <cxxabi.h>
-
+#if defined(__has_include) && __has_include(<fmt/format.h>)
+#include <fmt/format.h>
+#include <fmt/ostream.h>
+#define BOOST_URL_EXTRA_TEST_SUITE_HAS_FMT
 #endif
 
 // These are test macros we can use to test our code without having to
 // integrate a test framework for now.
 
-namespace test::detail {
+namespace test_suite::detail
+{
     template<typename T, typename = void>
-    struct has_ostream_op : std::false_type {
-    };
+    struct has_ostream_op : std::false_type
+    {};
 
     template<typename T>
     struct has_ostream_op<T, std::void_t<decltype(std::declval<std::ostream &>() << std::declval<const T &>())>>
-            : std::true_type {
-    };
+            : std::true_type
+    {};
 
-    std::string demangle(const char *mangled) {
-#if __has_include(<cxxabi.h>)
-        int status;
-        char *demangled = abi::__cxa_demangle(mangled, nullptr, nullptr, &status);
-        std::string result;
-        if (status == 0) {
-            result = demangled;
-        } else {
-            result = mangled;
-        }
-        std::free(demangled);
-        return result;
-#else
-        return mangled;
-#endif
+    std::string
+    demangle(const char *mangled);
+
+    template <class T>
+    std::string
+    demangle()
+    {
+        return demangle(typeid(T).name());
     }
 
     template<class T>
-    std::string format_value(const T &value) {
+    std::string
+    format_value(T const& value)
+    {
         std::string out;
+#ifdef BOOST_URL_EXTRA_TEST_SUITE_HAS_FMT
         if constexpr (fmt::has_formatter<T, fmt::format_context>::value) {
             out += fmt::format("{}", value);
-        } else if constexpr (has_ostream_op<T>::value) {
+        } else
+#endif
+        if constexpr (has_ostream_op<T>::value) {
             std::stringstream ss;
             ss << value;
             out += ss.str();
         } else {
-            out += fmt::format("{}", demangle(typeid(T).name()));
+            out += demangle<T>();
         }
         return out;
     }
 
     template<class T, class U>
-    class binary_operands {
+    class binary_operands
+    {
         bool result_;
         T lhs_;
         std::string_view op_;
         U rhs_;
-    public:
-        binary_operands(bool comparisonResult, T lhs, std::string_view op, U rhs)
-                : result_(comparisonResult),
-                  lhs_(lhs),
-                  op_(op),
-                  rhs_(rhs) {}
 
-        [[nodiscard]] bool get_result() const {
+    public:
+        binary_operands(
+            bool result, T lhs, std::string_view op, U rhs)
+                : result_(result), lhs_(lhs), op_(op), rhs_(rhs) {}
+
+        [[nodiscard]]
+        bool
+        get_result() const
+        {
             return result_;
         }
 
-        [[nodiscard]] std::string format() const {
-            return fmt::format("{} {} {}", format_value(lhs_), op_, format_value(rhs_));
+        [[nodiscard]]
+        std::string
+        format() const
+        {
+            std::string out;
+            out += format_value(lhs_);
+            out += " ";
+            out += op_;
+            out += " ";
+            out += format_value(rhs_);
+            return out;
         }
     };
 
-    // Wraps the first element in an expression so that other elements are also evaluated as wrappers
-    // when compared with it
+    // Wraps the first element in an expression so that other
+    // elements can also be evaluated as wrappers when compared
+    // with it
     template<class T>
-    class first_operand {
+    class first_operand
+    {
         T lhs_;
 
     public:
@@ -98,55 +109,73 @@ namespace test::detail {
 
         template<class U>
         friend
-        binary_operands<T, U const &> operator==(first_operand &&lhs, U &&rhs) {
+        binary_operands<T, U const &>
+        operator==(first_operand &&lhs, U &&rhs)
+        {
             return {static_cast<bool>( lhs.lhs_ == rhs ), lhs.lhs_, "==", rhs};
         }
 
         template<class U>
         friend
-        binary_operands<T, U const &> operator!=(first_operand &&lhs, U &&rhs) {
+        binary_operands<T, U const &>
+        operator!=(first_operand &&lhs, U &&rhs)
+        {
             return {static_cast<bool>( lhs.lhs_ != rhs ), lhs.lhs_, "!=", rhs};
         }
 
         template<class U>
         friend
-        binary_operands<T, U const &> operator<(first_operand &&lhs, U &&rhs) {
+        binary_operands<T, U const &>
+        operator<(first_operand &&lhs, U &&rhs)
+        {
             return {static_cast<bool>( lhs.lhs_ < rhs ), lhs.lhs_, "<", rhs};
         }
 
         template<class U>
         friend
-        binary_operands<T, U const &> operator<=(first_operand &&lhs, U &&rhs) {
+        binary_operands<T, U const &>
+        operator<=(first_operand &&lhs, U &&rhs)
+        {
             return {static_cast<bool>( lhs.lhs_ <= rhs ), lhs.lhs_, "<=", rhs};
         }
 
         template<class U>
         friend
-        binary_operands<T, U const &> operator>(first_operand &&lhs, U &&rhs) {
+        binary_operands<T, U const &>
+        operator>(first_operand &&lhs, U &&rhs)
+        {
             return {static_cast<bool>( lhs.lhs_ > rhs ), lhs.lhs_, ">", rhs};
         }
 
         template<class U>
         friend
-        binary_operands<T, U const &> operator>=(first_operand &&lhs, U &&rhs) {
+        binary_operands<T, U const &>
+        operator>=(first_operand &&lhs, U &&rhs)
+        {
             return {static_cast<bool>( lhs.lhs_ >= rhs ), lhs.lhs_, ">=", rhs};
         }
 
         template<class U>
         friend
-        binary_operands<T, U const &> operator|(first_operand &&lhs, U &&rhs) {
+        binary_operands<T, U const &>
+        operator|(first_operand &&lhs, U &&rhs)
+        {
             return {static_cast<bool>( lhs.lhs_ | rhs ), lhs.lhs_, "|", rhs};
         }
 
         template<class U>
         friend
-        binary_operands<T, U const &> operator&(first_operand &&lhs, U &&rhs) {
+        binary_operands<T, U const &>
+        operator&(first_operand &&lhs, U &&rhs)
+        {
             return {static_cast<bool>( lhs.lhs_ & rhs ), lhs.lhs_, "&", rhs};
         }
 
         template<class U>
         friend
-        binary_operands<T, U const &> operator^(first_operand &&lhs, U &&rhs) {
+        binary_operands<T, U const &>
+        operator^(first_operand &&lhs, U &&rhs)
+        {
             return {static_cast<bool>( lhs.lhs_ ^ rhs ), lhs.lhs_, "^", rhs};
         }
 
@@ -154,33 +183,47 @@ namespace test::detail {
         // use two requires instead of &&
         template<class U>
         friend
-        binary_operands<T, U const &> operator&&(first_operand &&lhs, U &&rhs) = delete;
+        binary_operands<T, U const &>
+        operator&&(first_operand &&lhs, U &&rhs) = delete;
 
         // && and || are not supported because of operator precedence
         // use parenthesis instead of ||
         template<class U>
         friend
-        binary_operands<T, U const &> operator||(first_operand &&lhs, U &&rhs) = delete;
+        binary_operands<T, U const &>
+        operator||(first_operand &&lhs, U &&rhs) = delete;
 
-        [[nodiscard]] std::string format() const {
+        [[nodiscard]]
+        std::string
+        format() const
+        {
             return format_value(lhs_);
         }
     };
 
-    // Converts the first elements in the expression to an first_operand wrapper
+    // Converts the first elements in the expression to a first_operand wrapper
     // first_operand wrapper will then wrap the other elements in the expression
     // These wrappers allow the application to have access to all elements in an
     // expression and evaluate them as needed to generate proper error messages
-    struct decomposer {
+    struct decomposer
+    {
         template<class T>
-        friend auto operator<=(decomposer &&, T &&lhs) -> first_operand<T const &> {
+        friend
+        first_operand<T const&>
+        operator<=(decomposer &&, T &&lhs)
+        {
             return first_operand<T const &>{lhs};
         }
     };
 }
 
-#define DETAIL_STRINGIFY(...) #__VA_ARGS__
-
+/*
+ * Macros to suppress -Wparentheses warnings
+ *
+ * These warnings are suppressed because they are triggered by macros
+ * including extra parentheses to avoid errors related to operator
+ * precedence.
+ */
 #if defined(__clang__)
 #    define DETAIL_START_WARNINGS_SUPPRESSION _Pragma( "clang diagnostic push" )
 #    define DETAIL_STOP_WARNINGS_SUPPRESSION  _Pragma( "clang diagnostic pop" )
@@ -197,18 +240,4 @@ namespace test::detail {
 #    define DETAIL_SUPPRESS_PARENTHESES_WARNINGS
 #endif
 
-#define DETAIL_REQUIRE(macro_name, operation, ...) \
-  if (!(operation static_cast<bool>(__VA_ARGS__))) { \
-    DETAIL_START_WARNINGS_SUPPRESSION \
-    DETAIL_SUPPRESS_PARENTHESES_WARNINGS \
-    fmt::println("{} failed:\n    {} ({})\n    file: {}\n    line: {}", DETAIL_STRINGIFY(macro_name), DETAIL_STRINGIFY(__VA_ARGS__), (test::detail::decomposer() <= __VA_ARGS__).format(), __FILE__, __LINE__); \
-    DETAIL_STOP_WARNINGS_SUPPRESSION  \
-    return EXIT_FAILURE; \
-  } \
-  (void) 0
-
-#define REQUIRE(...) DETAIL_REQUIRE(REQUIRE, true ==, __VA_ARGS__)
-
-#define REQUIRE_FALSE(...) DETAIL_REQUIRE(REQUIRE_FALSE, false ==, __VA_ARGS__)
-
-#endif //MRDOX_TEST_MACROS_H
+#endif //BOOST_URL_EXTRA_TEST_SUITE_DECOMPOSER_HPP

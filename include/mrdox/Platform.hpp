@@ -78,8 +78,10 @@ namespace mrdox {
 # endif
 #endif
 
-#if ! defined(__GNUC__) && defined(_MSC_VER)
-#define FMT_CONSTEVAL
+#ifndef FMT_CONSTEVAL
+# if !defined(__GNUC__) && defined(_MSC_VER)
+#  define FMT_CONSTEVAL
+# endif
 #endif
 
 } // mrdox

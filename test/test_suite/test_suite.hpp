@@ -18,6 +18,7 @@
 #include <cctype>
 #include <sstream>
 #include <type_traits>
+#include "detail/decomposer.hpp"
 
 //  This is a derivative work
 //  Copyright 2002-2018 Peter Dimov
@@ -141,52 +142,6 @@ struct make_void
 template<class... Ts>
 using void_t = typename make_void<Ts...>::type;
 
-template <class T, class = void>
-struct is_streamable : std::false_type
-{};
-
-template <class T>
-struct is_streamable<
-    T, void_t<decltype(std::declval<
-        std::ostream&>() << std::declval<T&>())
-    > > : std::true_type
-{};
-
-template <class T>
-auto
-test_output_impl(T const& v) ->
-    typename std::enable_if<
-        is_streamable<T>::value,
-        T const&>::type
-{
-    return v;
-}
-
-template <class T>
-auto
-test_output_impl(T const&) ->
-    typename std::enable_if<
-        ! is_streamable<T>::value,
-        std::string>::type
-{
-    return "?";
-}
-
-// specialize test output for char pointers to avoid printing as cstring
-template<class T>
-       const void* test_output_impl(T volatile* v) { return const_cast<T*>(v); }
-inline const void* test_output_impl(const char* v) { return v; }
-inline const void* test_output_impl(const unsigned char* v) { return v; }
-inline const void* test_output_impl(const signed char* v) { return v; }
-inline const void* test_output_impl(char* v) { return v; }
-inline const void* test_output_impl(unsigned char* v) { return v; }
-inline const void* test_output_impl(signed char* v) { return v; }
-inline const void* test_output_impl(std::nullptr_t) { return nullptr; }
-
-// print chars as numeric
-inline int test_output_impl( signed char const& v ) { return v; }
-inline unsigned test_output_impl( unsigned char const& v ) { return v; }
-
 // Whether wchar_t is signed is implementation-defined
 template<bool Signed> struct lwt_long_type {};
 template<> struct lwt_long_type<true> { typedef long type; };
@@ -254,129 +209,7 @@ no_throw_failed_impl(
     char const* file,
     int line);
 
-struct lw_test_eq
-{
-    template <typename T, typename U>
-    bool operator()(const T& t, const U& u) const
-    {
-        return t == u;
-    }
-};
-
-struct lw_test_ne
-{
-
-    template <typename T, typename U>
-    bool operator()(const T& t, const U& u) const
-    {
-        return t != u;
-    }
-};
-
-struct lw_test_lt
-{
-    template <typename T, typename U>
-    bool operator()(const T& t, const U& u) const
-    {
-        return t < u;
-    }
-};
-
-struct lw_test_gt
-{
-    template <typename T, typename U>
-    bool operator()(const T& t, const U& u) const
-    {
-        return t > u;
-    }
-};
-
-struct lw_test_le
-{
-    template <typename T, typename U>
-    bool operator()(const T& t, const U& u) const
-    {
-        return t <= u;
-    }
-};
-
-struct lw_test_ge
-{
-    template <typename T, typename U>
-    bool operator()(const T& t, const U& u) const
-    {
-        return t >= u;
-    }
-};
-
-// lwt_predicate_name
-
-template<class T> char const * lwt_predicate_name( T const& )
-{
-    return "~=";
-}
-
-inline char const * lwt_predicate_name( lw_test_eq const& )
-{
-    return "==";
-}
-
-inline char const * lwt_predicate_name( lw_test_ne const& )
-{
-    return "!=";
-}
-
-inline char const * lwt_predicate_name( lw_test_lt const& )
-{
-    return "<";
-}
-
-inline char const * lwt_predicate_name( lw_test_le const& )
-{
-    return "<=";
-}
-
-inline char const * lwt_predicate_name( lw_test_gt const& )
-{
-    return ">";
-}
-
-inline char const * lwt_predicate_name( lw_test_ge const& )
-{
-    return ">=";
-}
-
 //------------------------------------------------
-
-template<class Pred, class T, class U>
-bool
-test_with_impl(
-    Pred pred,
-    char const* expr1,
-    char const* expr2,
-    char const* func,
-    char const* file,
-    int line,
-    T const& t, U const& u)
-{
-    if(pred(t, u))
-    {
-        any_runner::instance().test(
-            true, "", func, file, line);
-        return true;
-    }
-    std::stringstream ss;
-    ss <<
-        "\"" << test_output_impl(t) << "\" " <<
-        lwt_predicate_name(pred) <<
-        " \"" << test_output_impl(u) << "\" (" <<
-        expr1 << " " <<
-        lwt_predicate_name(pred) <<
-        " " << expr2 << ")";
-    any_runner::instance().test(
-        false, ss.str().c_str(), func, file, line);
-    return false;
-}
 
 #if defined(__clang__) && defined(__has_warning)
 # if __has_warning("-Wsign-compare")
@@ -410,46 +243,59 @@ struct log_type
 */
 constexpr detail::log_type log{};
 
-#define BOOST_TEST(expr) ( \
-    ::test_suite::detail::test_impl( \
-        (expr) ? true : false, #expr, \
-            "@anon", __FILE__, __LINE__ ) )
+#define DETAIL_STRINGIFY(...) #__VA_ARGS__
+
+#define BOOST_TEST(...)                                          \
+  [&] {                                                          \
+  if (!(static_cast<bool>(__VA_ARGS__)))                         \
+  {                                                              \
+      DETAIL_START_WARNINGS_SUPPRESSION                          \
+      std::string d = DETAIL_STRINGIFY(__VA_ARGS__);             \
+      d += " (";                                                 \
+      DETAIL_SUPPRESS_PARENTHESES_WARNINGS                       \
+      d += (test_suite::detail::decomposer() <= __VA_ARGS__).format(); \
+      DETAIL_STOP_WARNINGS_SUPPRESSION                           \
+      d += ")";                                                  \
+      return ::test_suite::detail::test_impl(                    \
+          false,                                                 \
+          d.data(),                                              \
+          "@anon",                                               \
+          __FILE__,                                              \
+          __LINE__ );                                            \
+  } else {                                                       \
+      return ::test_suite::detail::test_impl(                    \
+          true,                                                  \
+          DETAIL_STRINGIFY(__VA_ARGS__),                         \
+          "@anon",                                               \
+          __FILE__,                                              \
+          __LINE__ );                                            \
+  }                                                              \
+  }()
 
 #define BOOST_ERROR(msg) \
     ::test_suite::detail::test_impl( \
         false, msg, "@anon", __FILE__, __LINE__ )
 
-#define BOOST_TEST_WITH(expr1,expr2,predicate) ( \
-    ::test_suite::detail::test_with_impl( \
-        predicate, #expr1, #expr2, "@anon", \
-        __FILE__, __LINE__, expr1, expr2) )
-
 #define BOOST_TEST_EQ(expr1,expr2) \
-    BOOST_TEST_WITH( expr1, expr2, \
-        ::test_suite::detail::lw_test_eq() )
+    BOOST_TEST( (expr1) == (expr2) )
 
 #define BOOST_TEST_CSTR_EQ(expr1,expr2) \
-    BOOST_TEST_EQ( string_view(expr1), string_view(expr2) )
+    BOOST_TEST( string_view(expr1) == string_view(expr2) )
 
 #define BOOST_TEST_NE(expr1,expr2) \
-    BOOST_TEST_WITH( expr1, expr2, \
-        ::test_suite::detail::lw_test_ne() )
+    BOOST_TEST( (expr1) != (expr2) )
 
 #define BOOST_TEST_LT(expr1,expr2) \
-    BOOST_TEST_WITH( expr1, expr2, \
-        ::test_suite::detail::lw_test_lt() )
+    BOOST_TEST( (expr1) < (expr2) )
 
 #define BOOST_TEST_LE(expr1,expr2) \
-    BOOST_TEST_WITH( expr1, expr2, \
-        ::test_suite::detail::lw_test_le() )
+    BOOST_TEST( (expr1) <= (expr2) )
 
 #define BOOST_TEST_GT(expr1,expr2) \
-    BOOST_TEST_WITH( expr1, expr2, \
-        ::test_suite::detail::lw_test_gt() )
+    BOOST_TEST( (expr1) > (expr2) )
 
 #define BOOST_TEST_GE(expr1,expr2) \
-    BOOST_TEST_WITH( expr1, expr2, \
-        ::test_suite::detail::lw_test_ge() )
+    BOOST_TEST ( (expr1) >= (expr2) )
 
 #define BOOST_TEST_PASS() BOOST_TEST(true)
 
