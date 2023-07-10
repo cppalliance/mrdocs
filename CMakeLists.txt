@@ -28,7 +28,7 @@ include(GNUInstallDirs)
 
 option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 option(MRDOX_BUILD_SHARED "Link shared" OFF)
-option(MRDOX_BUILD_DOCS "Configure install target" OFF)
+option(MRDOX_BUILD_DOCS "Build documentation" OFF)
 option(MRDOX_INSTALL "Configure install target" ON)
 option(MRDOX_PACKAGE "Build install package" ON)
 option(MRDOX_GENERATE_REFERENCE "Generate reference.xml/reference.adoc" ON)
@@ -204,6 +204,7 @@ endif ()
 
 file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS tool/*.cpp tool/*.hpp)
 add_executable(mrdox ${TOOL_SOURCES})
+target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
 
 target_include_directories(mrdox
     PUBLIC
@@ -225,39 +226,6 @@ if (MRDOX_CLANG)
     )
 endif ()
 
-
-#-------------------------------------------------
-#
-# Tests
-#
-#-------------------------------------------------
-
-file(GLOB TEST_SOURCES CONFIGURE_DEPENDS
-    test/*.cpp
-    test/*.hpp)
-add_executable(mrdox-test ${TEST_SOURCES})
-
-target_include_directories(mrdox-test
-    PRIVATE
-    "${PROJECT_SOURCE_DIR}/include"
-    "${PROJECT_SOURCE_DIR}/lib"
-    "${PROJECT_SOURCE_DIR}/test"
-    "${PROJECT_SOURCE_DIR}/tool"
-)
-
-target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
-target_link_libraries(mrdox-test PUBLIC mrdox-core)
-
-if (MRDOX_CLANG)
-    target_compile_options(
-        mrdox-test
-        PRIVATE
-        -Wno-covered-switch-default
-    )
-endif ()
-
-#-------------------------------------------------------------------------------
-
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 #source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${INCLUDES})
@@ -270,8 +238,27 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 #-------------------------------------------------
 
 if (MRDOX_BUILD_TESTS)
-    # if we run tests, we need the addons in the right place.
+    #-------------------------------------------------
+    # Unit tests
+    #-------------------------------------------------
+    include(CTest)
+    file(GLOB_RECURSE TEST_SUITE_FILES CONFIGURE_DEPENDS test/test_suite/*.cpp test/test_suite/*.hpp)
+    file(GLOB_RECURSE UNIT_TEST_SOURCES CONFIGURE_DEPENDS test/unit/*.cpp test/unit/*.hpp)
+    add_executable(mrdox-test ${TEST_SUITE_FILES} ${UNIT_TEST_SOURCES})
+    target_include_directories(mrdox-test
+            PRIVATE
+            "${PROJECT_SOURCE_DIR}/include"
+            "${PROJECT_SOURCE_DIR}/lib"
+            "${PROJECT_SOURCE_DIR}/tool"
+            "${PROJECT_SOURCE_DIR}/test/test_suite"
+            )
+    target_link_libraries(mrdox-test PUBLIC mrdox-core)
+    if (MRDOX_CLANG)
+        target_compile_options(mrdox-test PRIVATE -Wno-covered-switch-default)
+    endif ()
+    target_compile_definitions(mrdox-test PRIVATE -DMRDOX_UNIT_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test/unit")
     add_custom_command(
+            # if we run tests, we need the addons in the right place.
             TARGET mrdox-test
             POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
@@ -280,25 +267,28 @@ if (MRDOX_BUILD_TESTS)
             BYPRODUCTS ${CMAKE_BINARY_DIR}/addons
             DEPENDS ${CMAKE_SOURCE_DIR}/addons
     )
+    add_test(NAME mrdox-test COMMAND mrdox-test --action test "${PROJECT_SOURCE_DIR}/test-files/old-tests")
 
-    file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
-    enable_testing()
-    add_test(NAME mrdox-test COMMAND mrdox-test --action test
-            "${PROJECT_SOURCE_DIR}/test-files/old-tests"
-            )
-
+    #-------------------------------------------------
+    # Reference documentation
+    #-------------------------------------------------
     if (MRDOX_GENERATE_REFERENCE)
         # test run
+        file(GLOB_RECURSE REFERENCE_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
+
         set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
         include(mrdox.cmake)
 
-        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
-        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${TEST_SOURCES})
+        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${REFERENCE_SOURCES})
+        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${REFERENCE_SOURCES})
 
         add_custom_target(reference_adoc ALL DEPENDS reference.adoc)
         add_custom_target(reference_xml  ALL DEPENDS reference.xml)
     endif()
 
+    #-------------------------------------------------
+    # XML lint
+    #-------------------------------------------------
     find_package(LibXml2)
     if (LibXml2_FOUND)
         find_package(Java REQUIRED Runtime)
@@ -321,9 +311,6 @@ if (MRDOX_BUILD_TESTS)
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
 
-    add_executable(handlebars-test test/unit/handlebars.cpp)
-    target_link_libraries(handlebars-test PUBLIC mrdox-core)
-    target_compile_definitions(handlebars-test PRIVATE -DMRDOX_UNIT_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test/unit")
 endif()
 
 

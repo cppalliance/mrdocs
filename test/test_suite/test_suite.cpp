@@ -133,7 +133,7 @@ instance() noexcept
         std::vector<any_suite const*> v_;
 
     public:
-        virtual ~suites_impl() = default;
+        ~suites_impl() override = default;
 
         void
         insert(any_suite const& t) override
@@ -318,7 +318,7 @@ operator<<(
             os.precision()};
         os << std::fixed <<
             std::setprecision(1) <<
-            (ms.count() / 1000.0) << "s";
+            (static_cast<double>(ms.count()) / 1000.0) << "s";
         os.precision(precision);
         os.width(width);
     }
@@ -339,7 +339,7 @@ class simple_runner : public any_runner
     {
         char const* name;
         clock_type::time_point start;
-        clock_type::duration elapsed;
+        clock_type::duration elapsed{};
         std::atomic<std::size_t> failed;
         std::atomic<std::size_t> total;
 
@@ -377,7 +377,7 @@ public:
         v_.reserve(256);
     }
 
-    virtual ~simple_runner()
+    ~simple_runner() override
     {
         log_ <<
             elapsed{clock_type::now() -
@@ -459,7 +459,7 @@ test(
     (void)func;
     log_ <<
         "#" << id << " " <<
-        filename(file) << "(" << line << ") "
+        file << "(" << line << ") "
         "failed: " << expr <<
         //" in " << func <<
         "\n";
@@ -499,7 +499,7 @@ run(std::ostream& out,
         std::vector<std::string> args;
         args.reserve(argc - 1);
         for(int i = 0; i < argc - 1; ++i)
-            args.push_back(argv[i + 1]);
+            args.emplace_back(argv[i + 1]);
         for(auto const& e : suites::instance())
         {
             std::string s(e->name());
@@ -528,8 +528,8 @@ run(std::ostream& out,
 
 //------------------------------------------------
 
-// Simple main used to produce stand
-// alone executables that run unit tests.
+// Simple main used to produce standalone
+// executables that run unit tests.
 int unit_test_main(int argc, char const* const* argv)
 {
 #if 0
@@ -540,8 +540,8 @@ int unit_test_main(int argc, char const* const* argv)
 #endif
 #endif
 
-    ::test_suite::debug_stream log(std::cerr);
-    return ::test_suite::detail::run(log, argc, argv);
+    ::test_suite::debug_stream dstream(std::cerr);
+    return ::test_suite::detail::run(dstream, argc, argv);
 }
 
 } // test_suite
