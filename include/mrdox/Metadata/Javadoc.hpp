@@ -16,6 +16,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Dom.hpp>
 #include <mrdox/Support/Error.hpp>
+#include <mrdox/Metadata/Symbols.hpp>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -52,6 +53,7 @@ enum class Kind
     list_item,
     paragraph,
     param,
+    ref,
     returns,
     styled,
     tparam,
@@ -205,6 +207,26 @@ struct Link : Text
     {
         return kind == other.kind &&
             *this == static_cast<const Link&>(other);
+    }
+};
+
+/** A reference to a symbol.
+*/
+struct Ref : Text
+{
+    OptionalSymbolID id;
+
+    explicit Ref(OptionalSymbolID id_ = {})
+        : Text("", Kind::ref)
+        , id(id_)
+    {
+    }
+
+    bool operator==(const Ref&) const noexcept = default;
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<Ref const&>(other);
     }
 };
 
@@ -503,6 +525,8 @@ visit(
         return f.template operator()<Paragraph>(std::forward<Args>(args)...);
     case Kind::param:
         return f.template operator()<Param>(std::forward<Args>(args)...);
+    case Kind::ref:
+        return f.template operator()<Ref>(std::forward<Args>(args)...);
     case Kind::returns:
         return f.template operator()<Returns>(std::forward<Args>(args)...);
     case Kind::styled:
@@ -548,6 +572,9 @@ visit(
             std::forward<Args>(args)...);
     case Kind::param:
         return f(static_cast<Param const&>(node),
+            std::forward<Args>(args)...);
+    case Kind::ref:
+        return f(static_cast<Ref const&>(node),
             std::forward<Args>(args)...);
     case Kind::returns:
         return f(static_cast<Returns const&>(node),

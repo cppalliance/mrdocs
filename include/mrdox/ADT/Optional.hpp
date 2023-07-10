@@ -125,6 +125,22 @@ public:
     {
         return ! EmptyPredicate()(t_);
     }
+
+    constexpr bool operator==(
+        Optional const& other) const noexcept
+    {
+        if(has_value())
+        {
+            if(! other.has_value())
+                return false;
+            return value() == other.value();
+        }
+        else if(other.has_value())
+        {
+            return false;
+        }
+        return true;
+    }
 };
 
 } // mrdox

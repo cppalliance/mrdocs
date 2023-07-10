@@ -198,6 +198,18 @@ public:
 
         }
 
+        case JAVADOC_NODE_ID:
+        {
+            SymbolID id;
+            if(auto err = decodeRecord(R, id, Blob))
+                return err;
+            auto node = nodes.back().get();
+            if(node->kind != doc::Kind::ref)
+                return formatError("id on wrong kind");
+            static_cast<doc::Ref*>(node)->id.emplace(id);
+            return Error::success();
+        }
+
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }

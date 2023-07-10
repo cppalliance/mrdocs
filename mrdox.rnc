@@ -297,6 +297,7 @@ grammar
     TextNode = ( Link | Styled | Text )
 
     Link = element link { attribute href { text }, text }
+    Ref = element ref { ID, text }
     Styled = (
         element none { text } |
         element mono { text } |

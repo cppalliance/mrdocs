@@ -1,27 +1,39 @@
-/** The type of string_view used by the library
+/// Nothing much
+struct U {};
 
-    String views are used to pass character
-    buffers into or out of functions. Ownership
-    of the underlying character buffer is not
-    transferred; the caller is responsible for
-    ensuring that the lifetime of character
-    buffer extends until it is no longer
-    referenced.
+struct T
+{
+    /** Append a header
 
-    @note This alias is no longer supported and
-    should not be used in new code. Please use
-    `core::string_view` instead.
+        This function appends a new header.
+        Existing headers with the same name are
+        not changed. Names are not case-sensitive.
+        <br>
+        No iterators are invalidated.
 
-    This alias is included for backwards
-    compatibility with earlier versions of the
-    library.
+        @par Example
+        @code
+        request req;
 
-    However, it will be removed in future releases,
-    and using it in new code is not recommended.
+        req.append( field::user_agent, "Boost" );
+        @endcode
 
-    Please use the updated version instead to
-    ensure compatibility with future versions of
-    the library.
+        @par Complexity
+        Linear in `to_string( id ).size() + value.size()`.
 
-*/
-struct string_view{};
+        @par Exception Safety
+        Strong guarantee.
+        Calls to allocate may throw.
+
+        @param id The field name constant,
+        which may not be @ref U.
+
+        @param value A value, which
+        @li Must be syntactically valid for the header,
+        @li Must be semantically valid for the message, and
+        @li May not contain leading or trailing whitespace.
+
+        @return nothing.
+    */
+    void append(int id, char const* value);
+};

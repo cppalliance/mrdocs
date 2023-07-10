@@ -2,44 +2,73 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace>
-  <struct name="string_view" id="AbyPschn1Km27CQSV03D1w7MAo0=">
-    <file path="test.cpp" line="27" class="def"/>
+  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+    <file path="test.cpp" line="2" class="def"/>
     <doc>
       <para>
-        <text> The type of string_view used by the library</text>
-      </para>
-      <para>
-        <text>    String views are used to pass character</text>
-        <text>    buffers into or out of functions. Ownership</text>
-        <text>    of the underlying character buffer is not</text>
-        <text>    transferred; the caller is responsible for</text>
-        <text>    ensuring that the lifetime of character</text>
-        <text>    buffer extends until it is no longer</text>
-        <text>    referenced.</text>
-      </para>
-      <para>
-        <text></text>
-      </para>
-      <para class="note">
-        <text> This alias is no longer supported and</text>
-        <text>    should not be used in new code. Please use</text>
-        <text>    `core::string_view` instead.</text>
-      </para>
-      <para>
-        <text>    This alias is included for backwards</text>
-        <text>    compatibility with earlier versions of the</text>
-        <text>    library.</text>
-      </para>
-      <para>
-        <text>    However, it will be removed in future releases,</text>
-        <text>    and using it in new code is not recommended.</text>
-      </para>
-      <para>
-        <text>    Please use the updated version instead to</text>
-        <text>    ensure compatibility with future versions of</text>
-        <text>    the library.</text>
+        <text>Nothing much</text>
       </para>
     </doc>
+  </struct>
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="test.cpp" line="4" class="def"/>
+    <function name="append" id="xjY/VUr5jz8MT4EaU0VNyCMBfgA=">
+      <file path="test.cpp" line="38"/>
+      <param name="id">
+        <type name="int"/>
+      </param>
+      <param name="value">
+        <type class="pointer">
+          <pointee-type name="char" cv-qualifiers="const"/>
+        </type>
+      </param>
+      <doc>
+        <para>
+          <text>Append a header</text>
+        </para>
+        <para>
+          <text>This function appends a new header.</text>
+          <text>        Existing headers with the same name are</text>
+          <text>        not changed. Names are not case-sensitive.</text>
+          <text>        No iterators are invalidated.</text>
+        </para>
+        <head>Example</head>
+        <code>
+          <text>        request req;</text>
+          <text></text>
+          <text>        req.append( field::user_agent, &quot;Boost&quot; );</text>
+        </code>
+        <head>Complexity</head>
+        <para>
+          <text>        Linear in `to_string( id ).size() + value.size()`.</text>
+        </para>
+        <head>Exception Safety</head>
+        <para>
+          <text>        Strong guarantee.</text>
+          <text>        Calls to allocate may throw.</text>
+        </para>
+        <param name="id">
+          <text>The field name constant,</text>
+          <text>        which may not be</text>
+          <text>U.</text>
+        </param>
+        <param name="value">
+          <text>A value, which</text>
+        </param>
+        <listitem>
+          <text>Must be syntactically valid for the header,</text>
+        </listitem>
+        <listitem>
+          <text>Must be semantically valid for the message, and</text>
+        </listitem>
+        <listitem>
+          <text>May not contain leading or trailing whitespace.</text>
+        </listitem>
+        <returns>
+          <text>nothing.</text>
+        </returns>
+      </doc>
+    </function>
   </struct>
 </namespace>
 </mrdox>

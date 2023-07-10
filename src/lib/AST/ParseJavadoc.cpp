@@ -340,7 +340,7 @@ visitInlineCommandComment(
 
     switch(cmd->getID())
     {
-    // Emphasis
+    // @a, @e, @em
     case CommandTraits::KCI_a:
     case CommandTraits::KCI_e:
     case CommandTraits::KCI_em:
@@ -353,7 +353,7 @@ visitInlineCommandComment(
         return;
     }
 
-    // copy
+    // @copybrief, @copydetails, @copydoc
     case CommandTraits::KCI_copybrief:
     case CommandTraits::KCI_copydetails:
     case CommandTraits::KCI_copydoc:
@@ -364,6 +364,15 @@ visitInlineCommandComment(
             diags_.error("getNumArgs() != 1");
             return;
         }
+        return;
+    }
+
+    // @ref
+    case CommandTraits::KCI_ref:
+    {
+        MRDOX_ASSERT(C->getNumArgs() == 1);
+        auto name = C->getArgText(0);
+
         return;
     }
 
@@ -387,7 +396,6 @@ visitInlineCommandComment(
     case InlineCommandComment::RenderKind::RenderAnchor:
         break;
     default:
-        // unknown RenderKind
         MRDOX_UNREACHABLE();
     }
 
@@ -447,6 +455,7 @@ visitBlockCommandComment(
 
     switch(cmd->getID())
     {
+    // @brief, @short
     case CommandTraits::KCI_brief:
     case CommandTraits::KCI_short:
     {
@@ -459,6 +468,7 @@ visitBlockCommandComment(
         return;
     }
 
+    // @return, @returns
     case CommandTraits::KCI_return:
     case CommandTraits::KCI_returns:
     {
@@ -594,7 +604,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_pure:
     //case CommandTraits::KCI_qualifier:
     //case CommandTraits::KCI_raisewarning:
-    case CommandTraits::KCI_ref:
     case CommandTraits::KCI_refitem:
     case CommandTraits::KCI_related:
     case CommandTraits::KCI_relates:
@@ -665,15 +674,6 @@ visitBlockCommandComment(
         @---
     */
         break;
-
-    // inline commands handled elsewhere
-    case CommandTraits::KCI_a:
-    case CommandTraits::KCI_e:
-    case CommandTraits::KCI_em:
-    case CommandTraits::KCI_copybrief:
-    case CommandTraits::KCI_copydetails:
-    case CommandTraits::KCI_copydoc:
-        MRDOX_UNREACHABLE();
 
     default:
         MRDOX_UNREACHABLE();
