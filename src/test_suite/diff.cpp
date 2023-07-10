@@ -277,8 +277,7 @@ BOOST_TEST_DIFF(
     else
     {
         // Compare rendered template with reference
-        auto success_contents = expected_contents;
-        DiffStringsResult diff = diffStrings(success_contents, rendered_contents);
+        DiffStringsResult diff = diffStrings(expected_contents, rendered_contents);
         if (diff.added > 0 || diff.removed > 0)
         {
             std::ofstream out((std::string(error_output_path)));
@@ -292,8 +291,8 @@ BOOST_TEST_DIFF(
             BOOST_TEST(diff.added == 0);
             BOOST_TEST(diff.removed == 0);
         }
-        BOOST_TEST(rendered_contents.size() == success_contents.size());
-        BOOST_TEST(rendered_contents == success_contents);
+        BOOST_TEST(rendered_contents.size() == expected_contents.size());
+        BOOST_TEST((rendered_contents == expected_contents));
     }
 }
 

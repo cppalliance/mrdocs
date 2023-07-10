@@ -18,6 +18,7 @@
 #include <functional>
 #include <type_traits>
 #include <vector>
+#include <variant>
 
 namespace clang {
 namespace mrdox {
@@ -79,6 +80,25 @@ namespace detail {
     struct MRDOX_DECL safeStringWrapper {
         std::string v_;
     };
+
+    struct RenderState;
+
+    // Heterogeneous lookup support
+    struct string_hash {
+        using is_transparent = void;
+        size_t operator()(const char *txt) const {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(std::string_view txt) const {
+            return std::hash<std::string_view>{}(txt);
+        }
+        size_t operator()(const std::string &txt) const {
+            return std::hash<std::string>{}(txt);
+        }
+    };
+
+    using partials_map = std::unordered_map<
+        std::string, std::string, string_hash, std::equal_to<>>;
 }
 
 /** Reference to output stream used by handlebars
@@ -251,6 +271,7 @@ private:
     std::string_view name_;
     std::vector<std::string_view> blockParams_;
     std::function<void(dom::Value, dom::Array const&)> const* logger_;
+    detail::RenderState* renderState_;
     friend class Handlebars;
 
 public:
@@ -587,6 +608,38 @@ public:
     output() const {
         return *output_;
     }
+
+    /** Lookup a property in an object
+
+        Handlebars expressions can also use dot-separated paths to indicate
+        nested object values.
+
+        @code{.handlebars}
+        {{person.firstname}} {{person.lastname}}
+        @endcode
+
+        This expression looks up the `person` property in the input object
+        and in turn looks up the `firstname` and `lastname` property within
+        the `person` object.
+
+        Handlebars also supports a `/` syntax so you could write the above
+        template as:
+
+        @code{.handlebars}
+        {{person/firstname}} {{person/lastname}}
+        @endcode
+
+        @param context The object to look up the property in
+        @param path The path to the property to look up
+
+        @return The value of the property, or nullptr if the property does not exist
+        @return `true` if the property was defined, `false` otherwise
+     */
+    MRDOX_DECL
+    std::pair<dom::Value, bool>
+    lookupProperty(
+        dom::Value const& context,
+        dom::Value const& path) const;
 };
 
 /** A handlebars environment
@@ -732,23 +785,6 @@ public:
     @see https://handlebarsjs.com/
  */
 class Handlebars {
-    // Heterogeneous lookup support
-    struct string_hash {
-        using is_transparent = void;
-        size_t operator()(const char *txt) const {
-            return std::hash<std::string_view>{}(txt);
-        }
-        size_t operator()(std::string_view txt) const {
-            return std::hash<std::string_view>{}(txt);
-        }
-        size_t operator()(const std::string &txt) const {
-            return std::hash<std::string>{}(txt);
-        }
-    };
-
-    using partials_map = std::unordered_map<
-        std::string, std::string, string_hash, std::equal_to<>>;
-
     enum class HelperBehavior {
         NO_RENDER,
         RENDER_RESULT,
@@ -760,8 +796,9 @@ class Handlebars {
             dom::Array const&, HandlebarsCallback const&)>;
 
     using helpers_map = std::unordered_map<
-        std::string, helper_type, string_hash, std::equal_to<>>;
+        std::string, helper_type, detail::string_hash, std::equal_to<>>;
 
+    using partials_map = detail::partials_map;
     partials_map partials_;
     helpers_map helpers_;
     std::function<void(dom::Value, dom::Array const&)> logger_;
@@ -798,7 +835,7 @@ public:
     std::string
     render(
         std::string_view templateText,
-        dom::Value const & context,
+        dom::Value const & context = {},
         HandlebarsOptions options = {}) const;
 
     /** Render a handlebars template
@@ -1058,82 +1095,64 @@ private:
     void
     render_to(
         OutputRef& out,
-        std::string_view templateText,
         dom::Value const &context,
         HandlebarsOptions opt,
-        partials_map& inlinePartials,
-        dom::Object const& data,
-        dom::Object const& blockValues) const;
+        detail::RenderState& state) const;
 
     void
     renderTag(
         Tag const& tag,
         OutputRef& out,
-        std::string_view& templateText,
         dom::Value const &context,
         HandlebarsOptions opt,
-        partials_map& inlinePartials,
-        dom::Object const& data,
-        dom::Object const& blockValues) const;
+        detail::RenderState& state) const;
 
     void
     renderBlock(
         std::string_view blockName,
         Handlebars::Tag const &tag,
         OutputRef &out,
-        std::string_view &templateText,
         dom::Value const& context,
         HandlebarsOptions const& opt,
-        Handlebars::partials_map &extra_partials,
-        dom::Object const& data,
-        dom::Object const& blockValues) const;
+        detail::RenderState& state) const;
 
     void
     renderPartial(
         Handlebars::Tag const& tag,
         OutputRef &out,
-        std::string_view &templateText,
         dom::Value const& context,
         HandlebarsOptions &opt,
-        Handlebars::partials_map &inlinePartials,
-        dom::Object const& data,
-        dom::Object const& blockValues) const;
+        detail::RenderState& state) const;
 
     void
     renderDecorator(
         Handlebars::Tag const& tag,
         OutputRef &out,
-        std::string_view &templateText,
         dom::Value const& context,
-        Handlebars::partials_map &inlinePartials,
-        dom::Object const& private_data,
-        dom::Object const& blockValues) const;
+        detail::RenderState& state) const;
 
     void
     renderExpression(
         Handlebars::Tag const& tag,
         OutputRef &out,
-        std::string_view &templateText,
         dom::Value const& context,
         HandlebarsOptions const& opt,
-        dom::Object const& data,
-        dom::Object const& blockValues) const;
+        detail::RenderState& state) const;
 
     void
     setupArgs(
         std::string_view expression,
         dom::Value const& context,
-        dom::Object const& data,
-        dom::Object const& blockValues,
+        detail::RenderState& state,
         dom::Array &args,
         HandlebarsCallback &options) const;
 
     std::pair<dom::Value, bool>
     evalExpr(
         dom::Value const &context,
-        dom::Object const &data,
-        dom::Object const &blockValues,
-        std::string_view expression) const;
+        std::string_view expression,
+        detail::RenderState &state,
+        bool evalLiterals) const;
 
     std::pair<helper_type const&, bool>
     getHelper(std::string_view name, bool isBlock) const;
@@ -1254,61 +1273,6 @@ escapeExpression(
     OutputRef out,
     std::string_view str);
 
-/** Lookup a property in an object
-
-    Handlebars expressions can also use dot-separated paths to indicate
-    nested object values.
-
-    @code{.handlebars}
-    {{person.firstname}} {{person.lastname}}
-    @endcode
-
-    This expression looks up the `person` property in the input object
-    and in turn looks up the `firstname` and `lastname` property within
-    the `person` object.
-
-    Handlebars also supports a `/` syntax so you could write the above
-    template as:
-
-    @code{.handlebars}
-    {{person/firstname}} {{person/lastname}}
-    @endcode
-
-    @param context The object to look up the property in
-    @param path The path to the property to look up
-
-    @return The value of the property, or nullptr if the property does not exist
-    @return `true` if the property was defined, `false` otherwise
- */
-MRDOX_DECL
-std::pair<dom::Value, bool>
-lookupProperty(
-    dom::Value const & context,
-    std::string_view path);
-
-/// @copydoc lookupProperty
-MRDOX_DECL
-std::pair<dom::Value, bool>
-lookupProperty(
-    dom::Object const & context,
-    std::string_view path);
-
-/// @copydoc lookupProperty
-MRDOX_DECL
-std::pair<dom::Value, bool>
-lookupProperty(
-    dom::Value const& context,
-    dom::Value const& path);
-
-/// @copydoc lookupProperty
-template <std::convertible_to<std::string_view> S>
-std::pair<dom::Value, bool>
-lookupProperty(
-    dom::Value const& data,
-    S const& path) {
-    return lookupProperty(data, std::string_view(path));
-}
-
 /** Stringify a value as JSON
 
     This function converts a dom::Value to a string as if
@@ -1322,6 +1286,187 @@ lookupProperty(
 MRDOX_DECL
 std::string
 JSON_stringify(dom::Value const& value);
+
+/** An error thrown or returned by Handlebars
+
+    An error returned or thrown by Handlebars environment when
+    an error occurs during template rendering.
+
+    The error message will be the same as the error message
+    returned by Handlebars.js.
+
+    The object will also contain the line, column and position
+    of the error in the template. These can be used to by the
+    caller to provide more detailed error messages.
+ */
+struct HandlebarsError
+    : public std::runtime_error
+{
+    static constexpr std::size_t npos = std::size_t(-1);
+    std::size_t line = std::size_t(-1);
+    std::size_t column = std::size_t(-1);
+    std::size_t pos = std::size_t(-1);
+
+    HandlebarsError(std::string_view msg)
+        : std::runtime_error(std::string(msg)) {}
+
+    HandlebarsError(
+        std::string_view msg,
+        std::size_t line_,
+        std::size_t column_,
+        std::size_t pos_)
+        : std::runtime_error(fmt::format("{} - {}:{}", msg, line_, column_))
+        , line(line_)
+        , column(column_)
+        , pos(pos_) {}
+};
+
+/** An expected value or error
+
+    This class is used to return a value or error from a function.
+
+    It allows the caller to check if the value is valid or if an
+    error occurred without having to throw an exception.
+
+    @tparam T The type of the value
+ */
+template <class T>
+class HandlebarsExpected
+{
+    std::variant<T, HandlebarsError> value_;
+public:
+    /** Construct a valid value
+
+        @param value The value
+     */
+    HandlebarsExpected(T const& value)
+        : value_(value) {}
+
+    /** Construct a valid value
+
+        @param value The value
+     */
+    HandlebarsExpected(T&& value)
+        : value_(std::move(value)) {}
+
+    /** Construct an error
+
+        @param error The error
+     */
+    HandlebarsExpected(HandlebarsError const& error)
+        : value_(error) {}
+
+    /** Construct an error
+
+        @param error The error
+     */
+    HandlebarsExpected(HandlebarsError&& error)
+        : value_(std::move(error)) {}
+
+    /** Check if the value is valid
+
+        @return True if the value is valid, false otherwise
+     */
+    bool
+    has_value() const noexcept
+    {
+        return std::holds_alternative<T>(value_);
+    }
+
+    /** Check if the value is an error
+
+        @return True if the value is an error, false otherwise
+     */
+    bool
+    has_error() const noexcept
+    {
+        return std::holds_alternative<HandlebarsError>(value_);
+    }
+
+    /** Get the value
+
+        @return The value
+
+        @throws HandlebarsError if the value is an error
+     */
+    T const&
+    value() const
+    {
+        if (has_error())
+            throw std::get<HandlebarsError>(value_);
+        return std::get<T>(value_);
+    }
+
+    /// @copydoc value()
+    T&
+    value()
+    {
+        if (error())
+            throw std::get<HandlebarsError>(value_);
+        return std::get<T>(value_);
+    }
+
+    /** Get the value
+
+        @return The value
+
+        @throws HandlebarsError if the value is an error
+     */
+    T const&
+    operator*() const
+    {
+        return std::get<T>(value_);
+    }
+
+    /// @copydoc operator*() const
+    T&
+    operator*()
+    {
+        return std::get<T>(value_);
+    }
+
+    /** Get a pointer to the value
+
+        @return The value
+
+        @throws HandlebarsError if the value is an error
+     */
+    T const*
+    operator->() const
+    {
+        return &value();
+    }
+
+    /// @copydoc operator->() const
+    T*
+    operator->()
+    {
+        return &value();
+    }
+
+    /** Get the error
+
+        @return The error
+
+        @throws std::logic_error if the value is not an error
+     */
+    HandlebarsError const&
+    error() const
+    {
+        if (has_value())
+            throw std::logic_error("value is not an error");
+        return std::get<HandlebarsError>(value_);
+    }
+
+    /// @copydoc error()
+    HandlebarsError&
+    error()
+    {
+        if (has_value())
+            throw std::logic_error("value is not an error");
+        return std::get<HandlebarsError>(value_);
+    }
+};
 
 namespace helpers {
 
