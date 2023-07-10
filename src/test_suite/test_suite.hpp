@@ -251,7 +251,7 @@ constexpr detail::log_type log{};
   {                                                              \
       DETAIL_START_WARNINGS_SUPPRESSION                          \
       std::string d = DETAIL_STRINGIFY(__VA_ARGS__);             \
-      d += " (";                                                 \
+      d += "\n    (";                                            \
       DETAIL_SUPPRESS_PARENTHESES_WARNINGS                       \
       d += (test_suite::detail::decomposer() <= __VA_ARGS__).format(); \
       DETAIL_STOP_WARNINGS_SUPPRESSION                           \
@@ -304,6 +304,24 @@ constexpr detail::log_type log{};
 #define BOOST_TEST_NOT(expr) BOOST_TEST(!(expr))
 
 #ifndef BOOST_NO_EXCEPTIONS
+# define BOOST_TEST_THROW_WITH( expr, ex, msg ) \
+    try { \
+        (void)(expr); \
+        ::test_suite::detail::throw_failed_impl( \
+            #expr, #ex, "@anon", \
+            __FILE__, __LINE__); \
+    } \
+    catch(ex const& e) {                 \
+        BOOST_TEST(std::string_view(e.what()) == std::string_view(msg)); \
+    } \
+    catch(...) { \
+        ::test_suite::detail::throw_failed_impl( \
+            #expr, #ex, "@anon", \
+            __FILE__, __LINE__); \
+    }                            \
+    (void) 0
+   //
+
 # define BOOST_TEST_THROWS( expr, ex ) \
     try { \
         (void)(expr); \
@@ -311,20 +329,17 @@ constexpr detail::log_type log{};
             #expr, #ex, "@anon", \
             __FILE__, __LINE__); \
     } \
-    catch(ex const&) { \
+    catch(ex const&) {                 \
         BOOST_TEST_PASS(); \
     } \
     catch(...) { \
         ::test_suite::detail::throw_failed_impl( \
             #expr, #ex, "@anon", \
             __FILE__, __LINE__); \
-    }
+    }                            \
+    (void) 0
    //
-#else
-   #define BOOST_TEST_THROWS( expr, ex )
-#endif
 
-#ifndef BOOST_NO_EXCEPTIONS
 # define BOOST_TEST_NO_THROW( expr ) \
     try { \
         (void)(expr); \
@@ -340,7 +355,9 @@ constexpr detail::log_type log{};
     }
     //
 #else
-# define BOOST_TEST_NO_THROW( expr ) ( [&]{ expr; return true; }() )
+   #define BOOST_TEST_THROWS( expr, ex )
+   #define BOOST_TEST_THROW_WITH( expr, ex, msg )
+   #define BOOST_TEST_NO_THROW( expr ) ( [&]{ expr; return true; }() )
 #endif
 
 #define TEST_SUITE(type, name) \

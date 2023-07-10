@@ -47,6 +47,10 @@ namespace test_suite::detail
     format_value(T const& value)
     {
         std::string out;
+        if constexpr (std::is_convertible_v<std::decay_t<T>, std::string_view>)
+        {
+            out += '\"';
+        }
 #ifdef MRDOX_TEST_HAS_FMT
         if constexpr (fmt::has_formatter<T, fmt::format_context>::value) {
             out += fmt::format("{}", value);
@@ -58,6 +62,10 @@ namespace test_suite::detail
             out += ss.str();
         } else {
             out += demangle<T>();
+        }
+        if constexpr (std::is_convertible_v<std::decay_t<T>, std::string_view>)
+        {
+            out += '\"';
         }
         return out;
     }

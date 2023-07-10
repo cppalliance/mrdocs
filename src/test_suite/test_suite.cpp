@@ -459,10 +459,10 @@ test(
     (void)func;
     log_ <<
         "#" << id << " " <<
-        file << "(" << line << ") "
-        "failed: " << expr <<
+        file << "(" << line << ")\n"
+        "failed:\n    " << expr <<
         //" in " << func <<
-        "\n";
+        "\n\n";
     log_.flush();
     return false;
 }

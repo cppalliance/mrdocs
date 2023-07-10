@@ -8,7 +8,6 @@
 #include <test_suite/detail/decomposer.hpp>
 #include <test_suite/diff.hpp>
 #include <test_suite/test_suite.hpp>
-#include <ranges>
 #include <fmt/format.h>
 #include <mrdox/Support/Dom.hpp>
 #include <mrdox/Support/Handlebars.hpp>
@@ -67,6 +66,7 @@ setup_fixtures()
         MRDOX_TEST_FILES_DIR "/handlebars/features_test.adoc.hbs";
     master.partial_paths = {
         MRDOX_TEST_FILES_DIR "/handlebars/record-detail.adoc.hbs",
+        MRDOX_TEST_FILES_DIR "/handlebars/record.adoc.hbs",
         MRDOX_TEST_FILES_DIR "/handlebars/escaped.adoc.hbs"};
     master.output_path =
         MRDOX_TEST_FILES_DIR "/handlebars/features_test.adoc";
@@ -101,7 +101,7 @@ setup_fixtures()
 }
 
 void
-setup_context()
+setup_context() const
 {
     dom::Object page;
     page.set("kind", "record");
@@ -299,8 +299,13 @@ setup_context()
     account_x12.set("product", "Desk");
     object_array.emplace_back(account_x12);
     containers.set("object_array", object_array);
-
     master.context.set("containers", containers);
+
+    dom::Object symbol;
+    symbol.set("tag", "struct");
+    symbol.set("kind", "record");
+    symbol.set("name", "T");
+    master.context.set("symbol", symbol);
 }
 
 void
@@ -644,10 +649,565 @@ safe_string()
     BOOST_TEST_NOT(res == "&lt;b&gt;text&lt;/b&gt;");
 }
 
-void run()
+void
+basic_context()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/basic.js
+    Handlebars hbs;
+
+    // most basic
+    {
+        dom::Object ctx;
+        ctx.set("foo", "foo");
+        BOOST_TEST(hbs.render("{{foo}}", ctx) == "foo");
+    }
+
+    // escaping
+    {
+        dom::Object ctx;
+        ctx.set("foo", "food");
+        BOOST_TEST(hbs.render("\\{{foo}}", ctx) == "{{foo}}");
+        BOOST_TEST(hbs.render("content \\{{foo}}", ctx) == "content {{foo}}");
+        BOOST_TEST(hbs.render("\\\\{{foo}}", ctx) == "\\food");
+        BOOST_TEST(hbs.render("\\\\{{foo}}", ctx) == "\\food");
+        BOOST_TEST(hbs.render("content \\\\{{foo}}", ctx) == "content \\food");
+        BOOST_TEST(hbs.render("\\\\ {{foo}}", ctx) == "\\\\ food");
+    }
+
+    // compiling with a basic context
+    {
+        dom::Object ctx;
+        ctx.set("cruel", "cruel");
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render("Goodbye\n{{cruel}}\n{{world}}!", ctx) == "Goodbye\ncruel\nworld!");
+    }
+
+    // compiling with an undefined context
+    {
+        dom::Value ctx = nullptr;
+        BOOST_TEST(hbs.render("Goodbye\n{{cruel}}\n{{world.bar}}!", ctx) == "Goodbye\n\n!");
+        BOOST_TEST(hbs.render("{{#unless foo}}Goodbye{{../test}}{{test2}}{{/unless}}", ctx) == "Goodbye");
+    }
+
+    // comments
+    {
+        dom::Object ctx;
+        ctx.set("cruel", "cruel");
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render("{{! Goodbye}}Goodbye\\n{{cruel}}\\n{{world}}!", ctx) == "Goodbye\\ncruel\\nworld!");
+        BOOST_TEST(hbs.render("    {{~! comment ~}}      blah", ctx) == "blah");
+        BOOST_TEST(hbs.render("    {{~!-- long-comment --~}}      blah", ctx) == "blah");
+        BOOST_TEST(hbs.render("    {{! comment ~}}      blah", ctx) == "    blah");
+        BOOST_TEST(hbs.render("    {{!-- long-comment --~}}      blah", ctx) == "    blah");
+        BOOST_TEST(hbs.render("    {{~! comment}}      blah", ctx) == "      blah");
+        BOOST_TEST(hbs.render("    {{~!-- long-comment --}}      blah", ctx) == "      blah");
+    }
+
+    // boolean
+    {
+        std::string string = "{{#goodbye}}GOODBYE {{/goodbye}}cruel {{world}}!";
+        dom::Object ctx;
+        ctx.set("goodbye", true);
+        ctx.set("world", "world");
+        // booleans show the contents when true
+        BOOST_TEST(hbs.render(string, ctx) == "GOODBYE cruel world!");
+        ctx.set("goodbye", false);
+        // booleans do not show the contents when false
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+    }
+
+    // zeros
+    {
+        dom::Object ctx;
+        ctx.set("num1", 42);
+        ctx.set("num2", std::int64_t(0));
+        BOOST_TEST(hbs.render("num1: {{num1}}, num2: {{num2}}", ctx) == "num1: 42, num2: 0");
+        BOOST_TEST(hbs.render("num: {{.}}", std::int64_t(0)) == "num: 0");
+        ctx = dom::Object();
+        dom::Object num1;
+        num1.set("num2", std::int64_t(0));
+        ctx.set("num1", num1);
+        BOOST_TEST(hbs.render("num: {{num1/num2}}", ctx) == "num: 0");
+    }
+
+    // false
+    {
+        dom::Object ctx;
+        ctx.set("val1", false);
+        ctx.set("val2", false);
+        BOOST_TEST(hbs.render("val1: {{val1}}, val2: {{val2}}", ctx) == "val1: false, val2: false");
+        BOOST_TEST(hbs.render("val: {{.}}", false) == "val: false");
+        ctx = dom::Object();
+        dom::Object val1;
+        val1.set("val2", false);
+        ctx.set("val1", val1);
+        BOOST_TEST(hbs.render("val: {{val1/val2}}", ctx) == "val: false");
+        ctx = dom::Object();
+        ctx.set("val1", false);
+        ctx.set("val2", false);
+        BOOST_TEST(hbs.render("val1: {{{val1}}}, val2: {{{val2}}}", ctx) == "val1: false, val2: false");
+        ctx = dom::Object();
+        val1.set("val2", false);
+        ctx.set("val1", val1);
+        BOOST_TEST(hbs.render("val: {{{val1/val2}}}", ctx) == "val: false");
+    }
+
+    // should handle undefined and null
+    {
+        {
+            hbs.registerHelper("awesome", [](
+                dom::Array const& args, HandlebarsCallback const& cb) {
+                BOOST_TEST(args.size() == 2u);
+                std::string result;
+                if (args[0].isNull()) {
+                    result += "true ";
+                }
+                if (args[1].isNull()) {
+                    result += "true";
+                }
+                return result;
+            });
+            dom::Object ctx;
+            BOOST_TEST(hbs.render("{{awesome undefined null}}", nullptr) == "true true");
+            hbs.unregisterHelper("awesome");
+        }
+        {
+            hbs.registerHelper("undefined", [](
+                dom::Array const& args, HandlebarsCallback const& cb) {
+                BOOST_TEST(args.empty());
+                return "undefined!";
+            });
+            dom::Object ctx;
+            BOOST_TEST(hbs.render("{{undefined}}", nullptr) == "undefined!");
+            hbs.unregisterHelper("undefined");
+        }
+        {
+            hbs.registerHelper("null", [](
+                dom::Array const& args, HandlebarsCallback const& cb) {
+                BOOST_TEST(args.empty());
+                return "null!";
+            });
+            dom::Object ctx;
+            BOOST_TEST(hbs.render("{{null}}", nullptr) == "null!");
+            hbs.unregisterHelper("null");
+        }
+    }
+
+    // newlines
+    {
+        BOOST_TEST(hbs.render("Alan's\nTest") == "Alan's\nTest");
+        BOOST_TEST(hbs.render("Alan's\rTest") == "Alan's\rTest");
+    }
+
+    // escaping text
+    {
+        BOOST_TEST(hbs.render("Awesome's") == "Awesome's");
+        BOOST_TEST(hbs.render("Awesome\\") == "Awesome\\");
+        BOOST_TEST(hbs.render("Awesome\\\\ foo") == "Awesome\\\\ foo");
+        dom::Object ctx;
+        ctx.set("foo", "\\");
+        BOOST_TEST(hbs.render("Awesome {{foo}}", ctx) == "Awesome \\");
+        BOOST_TEST(hbs.render(" ' ' ") == " ' ' ");
+    }
+
+    // escaping expressions
+    {
+        dom::Object ctx;
+        ctx.set("awesome", "&'\\<>");
+        // expressions with 3 handlebars aren't escaped
+        BOOST_TEST(hbs.render("{{{awesome}}}", ctx) == "&'\\<>");
+        // expressions with {{& handlebars aren't escaped
+        BOOST_TEST(hbs.render("{{&awesome}}", ctx) == "&'\\<>");
+        // by default expressions should be escaped
+        ctx.set("awesome", R"(&"'`\<>)");
+        BOOST_TEST(hbs.render("{{awesome}}", ctx) == "&amp;&quot;&#x27;&#x60;\\&lt;&gt;");
+        // escaping should properly handle amperstands
+        ctx.set("awesome", "Escaped, <b> looks like: &lt;b&gt;");
+        BOOST_TEST(hbs.render("{{awesome}}", ctx) == "Escaped, &lt;b&gt; looks like: &amp;lt;b&amp;gt;");
+    }
+
+    // functions returning safestrings shouldn't be escaped
+    {
+        hbs.registerHelper("awesome", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            return safeString("&'\\<>");
+        });
+        BOOST_TEST(hbs.render("{{awesome}}") == "&'\\<>");
+        hbs.unregisterHelper("awesome");
+    }
+
+    // functions
+    {
+        hbs.registerHelper("awesome", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            return "Awesome";
+        });
+        BOOST_TEST(hbs.render("{{awesome}}") == "Awesome");
+        hbs.unregisterHelper("awesome");
+
+        hbs.registerHelper("awesome", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            return cb.context().getObject().find("more");
+        });
+        dom::Object ctx;
+        ctx.set("more", "More awesome");
+        BOOST_TEST(hbs.render("{{awesome}}", ctx) == "More awesome");
+        hbs.unregisterHelper("awesome");
+    }
+
+    // functions with context argument
+    {
+        hbs.registerHelper("awesome", [](dom::Array const& args) {
+            return args[0];
+        });
+        dom::Object ctx;
+        ctx.set("frank", "Frank");
+        BOOST_TEST(hbs.render("{{awesome frank}}", ctx) == "Frank");
+        hbs.unregisterHelper("awesome");
+    }
+
+    // pathed functions with context argument
+    {
+        // This test uses helpers in C++. The Handlebars.js test uses a
+        // function in the "bar.awesome" context that is accessed as
+        // "bar/awesome" from the parent context.
+        hbs.registerHelper("awesome", [](dom::Array const& args) {
+            return args[0];
+        });
+        dom::Object ctx;
+        ctx.set("frank", "Frank");
+        BOOST_TEST(hbs.render("{{awesome frank}}", ctx) == "Frank");
+    }
+
+    // depthed functions with context argument
+    {
+        // This test uses helpers in C++. The Handlebars.js test uses a
+        // function in the context that is accessed as "../awesome" from
+        // the "frank" context.
+        hbs.registerHelper("awesome", [](dom::Array const& args) {
+            return args[0];
+        });
+        dom::Object ctx;
+        ctx.set("frank", "Frank");
+        BOOST_TEST(hbs.render("{{#with frank}}{{awesome .}}{{/with}}", ctx) == "Frank");
+    }
+
+    // block functions with context argument
+    {
+        hbs.registerHelper("awesome", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            return cb.fn(args[0]);
+        });
+        BOOST_TEST(hbs.render("{{#awesome 1}}inner {{.}}{{/awesome}}") == "inner 1");
+    }
+
+    // depthed block functions with context argument
+    {
+        // This test uses helpers in C++. The Handlebars.js test uses a
+        // function in the context that is accessed as "../awesome" from
+        // the "value" context.
+        hbs.registerHelper("awesome", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            return cb.fn(args[0]);
+        });
+        dom::Object ctx;
+        ctx.set("value", true);
+        BOOST_TEST(hbs.render("{{#with value}}{{#awesome 1}}inner {{.}}{{/awesome}}{{/with}}", ctx) == "inner 1");
+    }
+
+    // block functions without context argument
+    {
+        // block functions are called with options
+        hbs.registerHelper("awesome", [](
+            dom::Array const&, HandlebarsCallback const& cb) {
+            return cb.fn();
+        });
+        BOOST_TEST(hbs.render("{{#awesome}}inner{{/awesome}}") == "inner");
+    }
+
+    // pathed block functions without context argument
+    {
+        // This test uses helpers in C++. The Handlebars.js test uses a
+        // function in the "foo.awesome" context that is accessed as
+        // "/foo/awesome" from the root context.
+        hbs.registerHelper("awesome", [](
+            dom::Array const&, HandlebarsCallback const& cb) {
+            return cb.fn();
+        });
+        BOOST_TEST(hbs.render("{{#awesome}}inner{{/awesome}}") == "inner");
+    }
+
+    // depthed block functions without context argument
+    {
+        // This test uses helpers in C++. The Handlebars.js test uses a
+        // function "awesome" in the root context that is accessed as
+        // "../awesome" from the "value" context.
+        hbs.registerHelper("awesome", [](
+            dom::Array const&, HandlebarsCallback const& cb) {
+            return cb.fn();
+        });
+        dom::Object ctx;
+        ctx.set("value", true);
+        BOOST_TEST(hbs.render("{{#with value}}{{#awesome}}inner{{/awesome}}{{/with}}", ctx) == "inner");
+    }
+
+    // paths with hyphens
+    {
+        dom::Object foo;
+        foo.set("foo-bar", "baz");
+        BOOST_TEST(hbs.render("{{foo-bar}}", foo) == "baz");
+
+        dom::Object ctx;
+        ctx.set("foo", foo);
+        BOOST_TEST(hbs.render("{{foo.foo-bar}}", ctx) == "baz");
+        BOOST_TEST(hbs.render("{{foo/foo-bar}}", ctx) == "baz");
+    }
+
+    // nested paths
+    {
+        dom::Object alan;
+        alan.set("expression", "beautiful");
+        dom::Object ctx;
+        ctx.set("alan", alan);
+        BOOST_TEST(hbs.render("Goodbye {{alan/expression}} world!", ctx) == "Goodbye beautiful world!");
+    }
+
+    // nested paths with empty string value
+    {
+        dom::Object alan;
+        alan.set("expression", "");
+        dom::Object ctx;
+        ctx.set("alan", alan);
+        BOOST_TEST(hbs.render("Goodbye {{alan/expression}} world!", ctx) == "Goodbye  world!");
+    }
+
+    // literal paths
+    {
+        dom::Object alan;
+        alan.set("expression", "beautiful");
+        dom::Object ctx;
+        ctx.set("@alan", alan);
+        BOOST_TEST(hbs.render("Goodbye {{[@alan]/expression}} world!", ctx) == "Goodbye beautiful world!");
+
+        ctx = dom::Object();
+        ctx.set("foo bar", alan);
+        BOOST_TEST(hbs.render("Goodbye {{[foo bar]/expression}} world!", ctx) == "Goodbye beautiful world!");
+    }
+
+    // literal references
+    {
+        dom::Object ctx;
+        ctx.set("foo bar", "beautiful");
+        ctx.set("foo'bar", "beautiful");
+        ctx.set("foo\"bar", "beautiful");
+        ctx.set("foo[bar", "beautiful");
+        BOOST_TEST(hbs.render("Goodbye {{[foo bar]}} world!", ctx) == "Goodbye beautiful world!");
+        BOOST_TEST(hbs.render("Goodbye {{\"foo bar\"}} world!", ctx) == "Goodbye beautiful world!");
+        BOOST_TEST(hbs.render("Goodbye {{'foo bar'}} world!", ctx) == "Goodbye beautiful world!");
+        BOOST_TEST(hbs.render("Goodbye {{\"foo[bar\"}} world!", ctx) == "Goodbye beautiful world!");
+        BOOST_TEST(hbs.render("Goodbye {{\"foo'bar\"}} world!", ctx) == "Goodbye beautiful world!");
+        BOOST_TEST(hbs.render("Goodbye {{'foo\"bar'}} world!", ctx) == "Goodbye beautiful world!");
+    }
+
+    // that current context path ({{.}}) doesn't hit helpers
+    {
+        hbs.registerHelper("awesome", [](
+            dom::Array const&, HandlebarsCallback const& cb) {
+            return cb.fn();
+        });
+        BOOST_TEST(hbs.render("test: {{.}}", nullptr) == "test: ");
+    }
+
+    // complex but empty paths
+    {
+        dom::Object person;
+        person.set("name", nullptr);
+        dom::Object ctx;
+        ctx.set("person", person);
+        BOOST_TEST(hbs.render("{{person/name}}", ctx).empty());
+
+        ctx = dom::Object();
+        ctx.set("person", dom::Object());
+        BOOST_TEST(hbs.render("{{person/name}}", ctx).empty());
+    }
+
+    // this keyword in paths
+    {
+        dom::Object ctx;
+        dom::Array goodbyes;
+        goodbyes.emplace_back("goodbye");
+        goodbyes.emplace_back("Goodbye");
+        goodbyes.emplace_back("GOODBYE");
+        ctx.set("goodbyes", goodbyes);
+        BOOST_TEST(hbs.render("{{#goodbyes}}{{this}}{{/goodbyes}}", ctx) == "goodbyeGoodbyeGOODBYE");
+
+        dom::Array hellos;
+        dom::Object hello1;
+        hello1.set("text", "hello");
+        hellos.emplace_back(hello1);
+        dom::Object hello2;
+        hello2.set("text", "Hello");
+        hellos.emplace_back(hello2);
+        dom::Object hello3;
+        hello3.set("text", "HELLO");
+        hellos.emplace_back(hello3);
+        ctx.set("hellos", hellos);
+        BOOST_TEST(hbs.render("{{#hellos}}{{this/text}}{{/hellos}}", ctx) == "helloHelloHELLO");
+    }
+
+    // this keyword nested inside path
+    {
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{text/this/foo}}"),
+            HandlebarsError, "Invalid path: text/this - 1:2");
+        dom::Object ctx;
+        dom::Array hellos;
+        dom::Object hello1;
+        hello1.set("text", "hello");
+        hellos.emplace_back(hello1);
+        ctx.set("hellos", hellos);
+        hbs.registerHelper("foo", [](dom::Array const& args) {
+            return args[0];
+        });
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{#hellos}}{{foo text/this/foo}}{{/hellos}}", ctx),
+            HandlebarsError, "Invalid path: text/this - 1:17");
+        ctx.set("this", "bar");
+        BOOST_TEST(hbs.render("{{foo [this]}}", ctx) == "bar");
+        dom::Object this_obj;
+        this_obj.set("this", "bar");
+        ctx.set("text", this_obj);
+        BOOST_TEST(hbs.render("{{foo text/[this]}}", ctx) == "bar");
+    }
+
+    // this keyword in helpers
+    {
+        hbs.registerHelper("foo", [](dom::Array const& args) {
+            std::string res = "bar ";
+            res += args[0].getString();
+            return res;
+        });
+
+        // This keyword in paths evaluates to current context
+        dom::Object ctx;
+        dom::Array goodbyes;
+        goodbyes.emplace_back("goodbye");
+        goodbyes.emplace_back("Goodbye");
+        goodbyes.emplace_back("GOODBYE");
+        ctx.set("goodbyes", goodbyes);
+        BOOST_TEST(hbs.render("{{#goodbyes}}{{foo this}}{{/goodbyes}}", ctx) == "bar goodbyebar Goodbyebar GOODBYE");
+
+        // This keyword evaluates in more complex paths
+        dom::Array hellos;
+        dom::Object hello1;
+        hello1.set("text", "hello");
+        hellos.emplace_back(hello1);
+        dom::Object hello2;
+        hello2.set("text", "Hello");
+        hellos.emplace_back(hello2);
+        dom::Object hello3;
+        hello3.set("text", "HELLO");
+        hellos.emplace_back(hello3);
+        ctx.set("hellos", hellos);
+        BOOST_TEST(hbs.render("{{#hellos}}{{foo this/text}}{{/hellos}}", ctx) == "bar hellobar Hellobar HELLO");
+    }
+
+    // this keyword nested inside helpers param
+    {
+        hbs.registerHelper("foo", [](dom::Array const& args) {
+            return args[0];
+        });
+        dom::Object ctx;
+        dom::Array hellos;
+        dom::Object hello1;
+        hello1.set("text", "hello");
+        hellos.emplace_back(hello1);
+        ctx.set("hellos", hellos);
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{#hellos}}{{foo text/this/foo}}{{/hellos}}", ctx),
+            HandlebarsError, "Invalid path: text/this - 1:17");
+
+        ctx.set("this", "bar");
+        BOOST_TEST(hbs.render("{{foo [this]}}", ctx) == "bar");
+
+        dom::Object this_obj;
+        this_obj.set("this", "bar");
+        ctx.set("text", this_obj);
+        BOOST_TEST(hbs.render("{{foo text/[this]}}", ctx) == "bar");
+
+        hbs.unregisterHelper("foo");
+    }
+
+    // pass string literals
+    {
+        BOOST_TEST(hbs.render("{{\"foo\"}}").empty());
+
+        dom::Object ctx;
+        ctx.set("foo", "bar");
+        BOOST_TEST(hbs.render("{{\"foo\"}}", ctx) == "bar");
+
+        ctx = dom::Object();
+        dom::Array foo;
+        foo.emplace_back("bar");
+        foo.emplace_back("baz");
+        ctx.set("foo", foo);
+        BOOST_TEST(hbs.render("{{#\"foo\"}}{{.}}{{/\"foo\"}}", ctx) == "barbaz");
+    }
+
+    // pass number literals
+    {
+        BOOST_TEST(hbs.render("{{12}}").empty());
+
+        dom::Object ctx;
+        ctx.set("12", "bar");
+        BOOST_TEST(hbs.render("{{12}}", ctx) == "bar");
+
+        BOOST_TEST(hbs.render("{{12.34}}").empty());
+
+        ctx = dom::Object();
+        ctx.set("12.34", "bar");
+        BOOST_TEST(hbs.render("{{12.34}}", ctx) == "bar");
+
+        hbs.registerHelper("12.34", [](dom::Array const& args) {
+            std::string res = "bar";
+            res += std::to_string(args[0].getInteger());
+            return res;
+        });
+        BOOST_TEST(hbs.render("{{12.34 1}}") == "bar1");
+        hbs.unregisterHelper("12.34");
+    }
+
+    // pass boolean literals
+    {
+        BOOST_TEST(hbs.render("{{true}}").empty());
+
+        dom::Object ctx;
+        ctx.set("", "foo");
+        BOOST_TEST(hbs.render("{{true}}").empty());
+
+        ctx = dom::Object();
+        ctx.set("false", "foo");
+        BOOST_TEST(hbs.render("{{false}}", ctx) == "foo");
+    }
+
+    // should handle literals in subexpression
+    {
+        hbs.registerHelper("foo", [](dom::Array const& args) {
+            return args[0];
+        });
+        hbs.registerHelper("false", [](dom::Array const& args) {
+            return "bar";
+        });
+        BOOST_TEST(hbs.render("{{foo (false)}}") == "bar");
+    }
+}
+
+void
+run()
 {
     master_test();
     safe_string();
+    basic_context();
 }
 
 };
