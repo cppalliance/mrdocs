@@ -841,3 +841,8 @@ No city found
 {{ to_string (unique (concat containers.array containers.array2)) }}
 {{! to_string (unique (concat containers.object containers.object2)) }}
 {{! to_string (unique containers.object_array) }}
+
+// Inverse block with no helper expands expressions
+{{#with symbol}}
+    {{> (lookup . 'kind') symbol=.}}
+{{/with}}

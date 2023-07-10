@@ -34,7 +34,7 @@ struct HandlebarsOptions
 {
     /** Escape HTML entities
      */
-    bool noHTMLEscape = false;
+    bool noEscape = false;
 
     /** Templates will throw rather than ignore missing fields
      */
@@ -1062,7 +1062,7 @@ private:
         dom::Value const &context,
         HandlebarsOptions opt,
         partials_map& inlinePartials,
-        dom::Object const& private_data,
+        dom::Object const& data,
         dom::Object const& blockValues) const;
 
     void
@@ -1073,7 +1073,7 @@ private:
         dom::Value const &context,
         HandlebarsOptions opt,
         partials_map& inlinePartials,
-        dom::Object const& private_data,
+        dom::Object const& data,
         dom::Object const& blockValues) const;
 
     void
@@ -1093,10 +1093,10 @@ private:
         Handlebars::Tag const& tag,
         OutputRef &out,
         std::string_view &templateText,
-        dom::Value const& data,
+        dom::Value const& context,
         HandlebarsOptions &opt,
         Handlebars::partials_map &inlinePartials,
-        dom::Object const& private_data,
+        dom::Object const& data,
         dom::Object const& blockValues) const;
 
     void
@@ -1116,7 +1116,7 @@ private:
         std::string_view &templateText,
         dom::Value const& context,
         HandlebarsOptions const& opt,
-        dom::Object const& private_data,
+        dom::Object const& data,
         dom::Object const& blockValues) const;
 
     void
@@ -1277,7 +1277,7 @@ escapeExpression(
     {{person/firstname}} {{person/lastname}}
     @endcode
 
-    @param data The object to look up the property in
+    @param context The object to look up the property in
     @param path The path to the property to look up
 
     @return The value of the property, or nullptr if the property does not exist
@@ -1286,21 +1286,21 @@ escapeExpression(
 MRDOX_DECL
 std::pair<dom::Value, bool>
 lookupProperty(
-    dom::Value const &data,
+    dom::Value const & context,
     std::string_view path);
 
 /// @copydoc lookupProperty
 MRDOX_DECL
 std::pair<dom::Value, bool>
 lookupProperty(
-    dom::Object const &data,
+    dom::Object const & context,
     std::string_view path);
 
 /// @copydoc lookupProperty
 MRDOX_DECL
 std::pair<dom::Value, bool>
 lookupProperty(
-    dom::Value const& data,
+    dom::Value const& context,
     dom::Value const& path);
 
 /// @copydoc lookupProperty
