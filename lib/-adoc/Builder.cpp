@@ -145,7 +145,7 @@ callTemplate(
     if(! fileText)
         return fileText.error();
     HandlebarsOptions options;
-    options.noHTMLEscape = true;
+    options.noEscape = true;
     return hbs_.render(*fileText, context, options);
 }
 
