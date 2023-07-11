@@ -490,9 +490,9 @@ openTemplate(
         {id}
     });
 
-    for(const TParam& tparam : I->Params)
-        writeTemplateParam(tparam, tags_);
-    for(const TArg& targ : I->Args)
+    for(const auto& tparam : I->Params)
+        writeTemplateParam(*tparam, tags_);
+    for(const auto& targ : I->Args)
         writeTemplateArg(targ, tags_);
 }
 

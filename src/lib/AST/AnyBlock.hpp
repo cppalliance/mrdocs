@@ -627,11 +627,11 @@ class TemplateParamBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
-    TParam& I_;
+    std::unique_ptr<TParam>& I_;
 
 public:
     TemplateParamBlock(
-        TParam& I,
+        std::unique_ptr<TParam>& I,
         BitcodeReader& br) noexcept
         : br_(br)
         , I_(I)
@@ -648,27 +648,27 @@ public:
         {
         case TEMPLATE_PARAM_NAME:
         {
-            return decodeRecord(R, I_.Name, Blob);
+            return decodeRecord(R, I_->Name, Blob);
         }
         case TEMPLATE_PARAM_IS_PACK:
         {
-            return decodeRecord(R, I_.IsParameterPack, Blob);
+            return decodeRecord(R, I_->IsParameterPack, Blob);
         }
         case TEMPLATE_PARAM_KIND:
         {
-            TParamKind kind = TParamKind::None;
+            TParamKind kind;
             if(auto err = decodeRecord(R, kind, Blob))
                 return err;
             switch(kind)
             {
             case TParamKind::Type:
-                I_.emplace<TypeTParam>();
+                I_ = std::make_unique<TypeTParam>();
                 break;
             case TParamKind::NonType:
-                I_.emplace<NonTypeTParam>();
+                I_ = std::make_unique<NonTypeTParam>();
                 break;
             case TParamKind::Template:
-                I_.emplace<TemplateTParam>();
+                I_= std::make_unique<TemplateTParam>();
                 break;
             default:
                 return formatError("invalid template parameter kind");
@@ -677,17 +677,15 @@ public:
         }
         case TEMPLATE_PARAM_DEFAULT:
         {
-            switch(I_.Kind)
+            return visit(*I_, [&]<typename T>(T& P)
             {
-            case TParamKind::NonType:
-                return decodeRecord(R,
-                    I_.get<NonTypeTParam>().Default.emplace(), Blob);
-            case TParamKind::Template:
-                return decodeRecord(R,
-                    I_.get<TemplateTParam>().Default.emplace(), Blob);
-            default:
-                return formatError("invalid template parameter kind");
-            }
+                if constexpr(T::isType())
+                    return formatError(
+                        "invalid template parameter kind");
+                else
+                    return decodeRecord(R, 
+                        P.Default.emplace(), Blob);
+            });
         }
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
@@ -702,27 +700,28 @@ public:
         {
         case BI_TEMPLATE_PARAM_BLOCK_ID:
         {
-            if(I_.Kind != TParamKind::Template)
+            if(! I_->isTemplate())
                 return formatError("only TemplateTParam may have template parameters");
-            TemplateParamBlock P(I_.get<TemplateTParam>().Params.emplace_back(), br_);
+            TemplateParamBlock P(
+                static_cast<TemplateTParam&>(
+                    *I_.get()).Params.emplace_back(), br_);
             return br_.readBlock(P, ID);
         }
         case BI_TYPEINFO_BLOCK_ID:
         {
-            std::unique_ptr<TypeInfo>* t = nullptr;
-            switch(I_.Kind)
+            return visit(*I_, [&]<typename T>(T& P)
             {
-            case TParamKind::Type:
-                t = &I_.get<TypeTParam>().Default;
-                break;
-            case TParamKind::NonType:
-                t = &I_.get<NonTypeTParam>().Type;
-                break;
-            default:
-                return formatError("invalid TypeInfo block in TParam");
-            }
-            TypeInfoBlock B(*t, br_);
-            return br_.readBlock(B, ID);
+                if constexpr(T::isTemplate())
+                    return formatError("invalid TypeInfo block in TParam");
+                    
+                std::unique_ptr<TypeInfo>* R = nullptr;
+                if constexpr(T::isType())
+                    R = &P.Default;
+                else if constexpr(T::isNonType())
+                    R = &P.Type;
+                TypeInfoBlock B(*R, br_);
+                return br_.readBlock(B, ID);
+            });
         }
         default:
             return AnyBlock::readSubBlock(ID);

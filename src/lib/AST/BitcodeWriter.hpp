@@ -122,7 +122,7 @@ public:
     void emitBlock(RecordInfo const& I);
     void emitBlock(SpecializationInfo const& T);
     void emitBlock(TemplateInfo const& T);
-    void emitBlock(TParam const& T);
+    void emitBlock(std::unique_ptr<TParam> const& T);
     void emitBlock(TArg const& T);
     void emitBlock(TypedefInfo const& I);
     void emitBlock(VariableInfo const& I);

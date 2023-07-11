@@ -1049,40 +1049,31 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    const TParam& T)
+    const std::unique_ptr<TParam>& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_PARAM_BLOCK_ID);
-    emitRecord(T.Kind, TEMPLATE_PARAM_KIND);
-    emitRecord(T.Name, TEMPLATE_PARAM_NAME);
-    emitRecord(T.IsParameterPack, TEMPLATE_PARAM_IS_PACK);
-    switch(T.Kind)
-    {
-    case TParamKind::Type:
-    {
-        const auto& info = T.get<TypeTParam>();
-        emitBlock(info.Default);
-        break;
-    }
-    case TParamKind::NonType:
-    {
-        const auto& info = T.get<NonTypeTParam>();
-        emitBlock(info.Type);
-        if(info.Default)
-            emitRecord(*info.Default, TEMPLATE_PARAM_DEFAULT);
-        break;
-    }
-    case TParamKind::Template:
-    {
-        const auto& info = T.get<TemplateTParam>();
-        for(const auto& P : info.Params)
-            emitBlock(P);
-        if(info.Default)
-            emitRecord(*info.Default, TEMPLATE_PARAM_DEFAULT);
-        break;
-    }
-    default:
-        break;
-    }
+    visit(*T, [&]<typename T>(const T& P)
+        {
+            emitRecord(P.Kind, TEMPLATE_PARAM_KIND);
+            emitRecord(P.Name, TEMPLATE_PARAM_NAME);
+            emitRecord(P.IsParameterPack, TEMPLATE_PARAM_IS_PACK);
+        
+            if constexpr(T::isType())
+                emitBlock(P.Default);
+            else if constexpr(T::isNonType())
+            {
+                emitBlock(P.Type);
+                if(P.Default)
+                    emitRecord(*P.Default, TEMPLATE_PARAM_DEFAULT);   
+            }
+            else if constexpr(T::isTemplate())
+            {
+                for(const auto& P : P.Params)
+                    emitBlock(P);
+                if(P.Default)
+                    emitRecord(*P.Default, TEMPLATE_PARAM_DEFAULT);
+            }
+        });
 }
 
 void

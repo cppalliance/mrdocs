@@ -21,6 +21,7 @@
 
 namespace clang {
 namespace mrdox {
+namespace {
 
 AccessKind
 convertToAccessKind(
@@ -238,27 +239,34 @@ convertToQualifierKind(
     
 }
 
+// ----------------------------------------------------------------
+
 template<
+    typename DeclTy,
     typename Visitor,
-    typename... Args,
-    typename Dependent = void>
+    typename... Args>
+    requires std::derived_from<DeclTy, Decl>
 decltype(auto)
 visit(
-    Decl* D,
+    DeclTy* d,
     Visitor&& visitor,
     Args&&... args)
 {
-    switch(D->getKind())
+    switch(d->getKind())
     {
     #define ABSTRACT_DECL(DECL)
     #define DECL(DERIVED, BASE) \
         case Decl::DERIVED: \
+        if constexpr(std::derived_from<DERIVED##Decl, DeclTy>) \
             return std::forward<Visitor>(visitor)( \
-                static_cast<DERIVED##Decl*>(D), \
-                    std::forward<Args>(args)...);
+                static_cast<add_cv_from_t<DeclTy, \
+                    DERIVED##Decl>*>(d), \
+                std::forward<Args>(args)...); \
+        else \
+            MRDOX_UNREACHABLE();
 
     #include <clang/AST/DeclNodes.inc>
-    
+
     default:
         MRDOX_UNREACHABLE();
     }
@@ -267,17 +275,139 @@ visit(
 template<typename DeclTy>
 consteval 
 Decl::Kind 
-DeclToKind() = delete;
+DeclToKindImpl() = delete;
 
 #define ABSTRACT_DECL(DECL)
 #define DECL(DERIVED, BASE) \
     template<> \
     consteval \
     Decl::Kind \
-    DeclToKind<DERIVED##Decl>() { return Decl::DERIVED; }
+    DeclToKindImpl<DERIVED##Decl>() { return Decl::DERIVED; }
 
 #include <clang/AST/DeclNodes.inc>
 
+template<typename DeclTy>
+consteval 
+Decl::Kind 
+DeclToKind()
+{
+    return DeclToKindImpl<
+        std::remove_cvref_t<DeclTy>>();
+}
+
+// ----------------------------------------------------------------
+
+template<
+    typename TypeTy,
+    typename Visitor,
+    typename... Args>
+    requires std::derived_from<TypeTy, Type>
+decltype(auto)
+visit(
+    TypeTy* t,
+    Visitor&& visitor,
+    Args&&... args)
+{
+    switch(t->getTypeClass())
+    {
+    #define ABSTRACT_TYPE(DERIVED, BASE)
+    #define TYPE(DERIVED, BASE) \
+        case Type::DERIVED: \
+        if constexpr(std::derived_from<DERIVED##Type, TypeTy>) \
+            return std::forward<Visitor>(visitor)( \
+                static_cast<add_cv_from_t<TypeTy, \
+                    DERIVED##Type>*>(t), \
+                std::forward<Args>(args)...); \
+        else \
+            MRDOX_UNREACHABLE();
+
+    #include <clang/AST/TypeNodes.inc>
+
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+template<typename TypeTy>
+consteval 
+Type::TypeClass
+TypeToKindImpl() = delete;
+
+#define ABSTRACT_TYPE(DERIVED, BASE)
+#define TYPE(DERIVED, BASE) \
+    template<> \
+    consteval \
+    Type::TypeClass \
+    TypeToKindImpl<DERIVED##Type>() { return Type::DERIVED; }
+
+#include <clang/AST/TypeNodes.inc>
+
+template<typename TypeTy>
+consteval 
+Type::TypeClass
+TypeToKind()
+{
+    return TypeToKindImpl<
+        std::remove_cvref_t<TypeTy>>();
+}
+
+// ----------------------------------------------------------------
+
+template<
+    typename TypeLocTy,
+    typename Visitor,
+    typename... Args>
+    requires std::derived_from<TypeLocTy, TypeLoc>
+decltype(auto)
+visit(
+    TypeLocTy* t,
+    Visitor&& visitor,
+    Args&&... args)
+{
+    switch(t->getTypeLocClass())
+    {
+    #define ABSTRACT_TYPELOC(DERIVED, BASE)
+    #define TYPELOC(DERIVED, BASE) \
+        case TypeLoc::DERIVED: \
+        if constexpr(std::derived_from<DERIVED##TypeLoc, TypeLocTy>) \
+            return std::forward<Visitor>(visitor)( \
+                static_cast<add_cv_from_t<TypeLocTy, \
+                    DERIVED##TypeLoc>*>(t), \
+                std::forward<Args>(args)...); \
+        else \
+            MRDOX_UNREACHABLE();
+
+    #include <clang/AST/TypeLocNodes.def>
+    
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+template<typename TypeLocTy>
+consteval 
+TypeLoc::TypeLocClass
+TypeLocToKindImpl() = delete;
+
+#define ABSTRACT_TYPELOC(DERIVED, BASE)
+#define TYPELOC(DERIVED, BASE) \
+    template<> \
+    consteval \
+    TypeLoc::TypeLocClass \
+    TypeLocToKindImpl<DERIVED##TypeLoc>() { return TypeLoc::DERIVED; }
+
+#include <clang/AST/TypeLocNodes.def>
+
+template<typename TypeLocTy>
+consteval 
+TypeLoc::TypeLocClass
+TypeLocToKind()
+{
+    return TypeLocToKindImpl<
+        std::remove_cvref_t<TypeLocTy>>();
+}
+
+} // (anon)
 } // mrdox
 } // clang
 

@@ -15,58 +15,6 @@
 namespace clang {
 namespace mrdox {
 
-void
-TParam::
-destroy() const noexcept
-{
-    switch(Kind)
-    {
-    case TParamKind::Type:
-        return Variant_.Type.~TypeTParam();
-    case TParamKind::NonType:
-        return Variant_.NonType.~NonTypeTParam();
-    case TParamKind::Template:
-        return Variant_.Template.~TemplateTParam();
-    default:
-        return;
-    }
-}
-
-TParam::
-TParam(
-    TParam&& other) noexcept
-    : Name(std::move(other.Name))
-    , IsParameterPack(other.IsParameterPack)
-{
-    construct(std::move(other));
-}
-
-TParam::
-TParam(
-    std::string&& name,
-    bool is_pack)
-    : Name(std::move(name))
-    , IsParameterPack(is_pack)
-{
-}
-
-TParam::
-~TParam()
-{
-    destroy();
-}
-
-TParam&
-TParam::
-operator=(TParam&& other) noexcept
-{
-    destroy();
-    construct(std::move(other));
-    Name = std::move(other.Name);
-    IsParameterPack = other.IsParameterPack;
-    return *this;
-}
-
 TArg::
 TArg(
     std::string&& value)
@@ -87,7 +35,6 @@ toString(
     case TParamKind::Template:
         return "template";
     default:
-        // kind should never be None
         MRDOX_UNREACHABLE();
     }
 }
