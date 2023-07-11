@@ -107,6 +107,14 @@ For later versions of Visual Studio, no setup is required.
     <DisplayString Optional="true" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 1">
       {($T5)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)}
     </DisplayString>
+
+    <DisplayString Optional="true" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 2">
+      {($T6)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)}
+    </DisplayString>
+    <DisplayString Optional="true" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 3">
+      {($T7)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)}
+    </DisplayString>
+
     <DisplayString>Unexpected index in PointerUnion: {(*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask}</DisplayString>
     <Expand>
       <Item Name="[Holds]" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 0">"$T4",s8b</Item>
@@ -117,6 +125,16 @@ For later versions of Visual Studio, no setup is required.
       <Item Name="[Ptr]" Optional="true"  Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 1">
         ($T5)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)
       </Item>
+
+      <Item Name="[Holds]" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 2">"$T6",s8b</Item>
+      <Item Name="[Ptr]" Optional="true"  Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 2">
+        ($T6)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)
+      </Item>
+      <Item Name="[Holds]" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 3">"$T7",s8b</Item>
+      <Item Name="[Ptr]" Optional="true"  Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 3">
+        ($T7)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)
+      </Item>
+
     </Expand>
   </Type>
 

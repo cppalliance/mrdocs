@@ -189,87 +189,6 @@ For later versions of Visual Studio, no setup is required-->
     <DisplayString>{ModifiedType} Attribute={(clang::AttributedType::Kind)AttributedTypeBits.AttrKind}</DisplayString>
   </Type>
 
-  <!-- Unfortunately, Visual Studio has trouble seeing the PointerBitMask member PointerIntUnion, so I hardwire it to 2 bits-->
-  <Type Name="clang::DeclContext">
-    <DisplayString>{(clang::Decl::Kind)DeclContextBits.DeclKind,en}Decl</DisplayString>
-    <Expand>
-      <!--<Item Name="DeclKind">(clang::Decl::Kind)DeclContextBits.DeclKind,en</Item>-->
-      <Synthetic Name="Members">
-        <DisplayString></DisplayString>
-        <Expand>
-          <LinkedListItems>
-            <HeadPointer>FirstDecl</HeadPointer>
-            <NextPointer>(clang::Decl *)(*(intptr_t *)NextInContextAndBits.Value.Data &amp; ~3)</NextPointer>
-            <ValueNode>*this</ValueNode>
-          </LinkedListItems>
-        </Expand>
-      </Synthetic>
-    </Expand>
-  </Type>
-  <Type Name="clang::FieldDecl">
-    <DisplayString>Field {{{*(clang::DeclaratorDecl *)this,view(cpp)nd}}}</DisplayString>
-    <Expand>
-      <ExpandedItem>*(DeclaratorDecl*)this,nd</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::CXXMethodDecl">
-    <DisplayString IncludeView="cpp">{*(clang::FunctionDecl *)this,nd}</DisplayString>
-    <DisplayString>Method {{{*this,view(cpp)}}}</DisplayString>
-    <Expand>
-      <ExpandedItem>*(FunctionDecl*)this,nd</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::CXXConstructorDecl">
-    <DisplayString>Constructor {{{Name,view(cpp)}({*(clang::FunctionDecl *)this,view(parm0)nd})}}</DisplayString>
-    <Expand>
-      <ExpandedItem>*(FunctionDecl*)this,nd</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::CXXDestructorDecl">
-    <DisplayString>Destructor {{~{Name,view(cpp)}()}}</DisplayString>
-    <Expand>
-      <ExpandedItem>*(FunctionDecl*)this,nd</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::TemplateTypeParmDecl">
-    <DisplayString IncludeView="TorC" Condition="Typename">typename</DisplayString>
-    <DisplayString IncludeView="TorC" Condition="!Typename">class</DisplayString>
-    <DisplayString IncludeView="MaybeEllipses" Condition="TypeForDecl == nullptr">(not yet known if parameter pack) </DisplayString>
-    <DisplayString IncludeView="MaybeEllipses" Condition="((TemplateTypeParmType *)(((clang::ExtQualsTypeCommonBase *)(((uintptr_t)TypeForDecl->CanonicalType.Value.Value.Data) &amp; ~(uintptr_t)((1 &lt;&lt; 4) - 1)))-&gt;BaseType))->CanTTPTInfo.ParameterPack">...</DisplayString>
-    <DisplayString IncludeView="MaybeEllipses" Condition="!((TemplateTypeParmType *)(((clang::ExtQualsTypeCommonBase *)(((uintptr_t)TypeForDecl->CanonicalType.Value.Value.Data) &amp; ~(uintptr_t)((1 &lt;&lt; 4) - 1)))-&gt;BaseType))->CanTTPTInfo.ParameterPack"></DisplayString>
-    <DisplayString IncludeView="DefaultArg" Condition="((*(uintptr_t*)DefaultArgument.ValueOrInherited.Val.Value.Data)&amp;3LL) == 0">{(TypeSourceInfo *)((*(uintptr_t*)DefaultArgument.ValueOrInherited.Val.Value.Data)&amp;~3LL),view(cpp)}</DisplayString>
-    <DisplayString IncludeView="DefaultArg">{{InheritedInitializer}}</DisplayString>
-    <DisplayString IncludeView="Initializer" Condition="(*(uintptr_t*)DefaultArgument.ValueOrInherited.Val.Value.Data)&amp;~3LL">= {this,view(DefaultArg)na}</DisplayString>
-    <DisplayString IncludeView="Initializer"></DisplayString>
-    <DisplayString>{*this,view(TorC)} {*this,view(MaybeEllipses)}{Name,view(cpp)} {this,view(Initializer)na}</DisplayString>
-  </Type>
-  <Type Name="clang::TemplateDecl">
-    <DisplayString IncludeView="cpp">{*TemplatedDecl,view(cpp)}</DisplayString>
-    <DisplayString>template{TemplateParams,na} {*TemplatedDecl};</DisplayString>
-    <Expand>
-      <ExpandedItem>*(NamedDecl *)this,nd</ExpandedItem>
-      <Item Name="TemplateParams">TemplateParams,na</Item>
-      <Item Name="TemplatedDecl">TemplatedDecl,na</Item>
-    </Expand>
-  </Type>
-  <!-- Unfortunately, visualization of PointerIntPair<PointerUnion> doesn't work due to limitations in natvis, so we will barehad it-->
-  <Type Name="clang::TypedefNameDecl">
-    <DisplayString Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)==0" IncludeView="type">{(clang::TypeSourceInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL),view(cpp)na}</DisplayString>
-    <DisplayString Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)!=0" IncludeView="type">{(clang::TypedefNameDecl::ModedTInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL),view(cpp)na}</DisplayString>
-    <DisplayString IncludeView="name">{(TypeDecl *)this,view(cpp)nand}</DisplayString>
-    <DisplayString>typedef {this,view(type)na} {this,view(name)na};</DisplayString>
-    <Expand>
-      <ExpandedItem>*(TypeDecl *)this,nd</ExpandedItem>
-      <Item Name="IsTransparent" Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 1)==0">"Not yet calculated",sb</Item>
-      <Item Name="IsTransparent" Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 1)!=0">(bool)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 2)</Item>
-      <Item Name="TypeSourceInfo" Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)==0">(clang::TypeSourceInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL)</Item>
-      <Item Name="ModedTInfo" Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)!=0">(clang::TypedefNameDecl::ModedTInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL)</Item>
-    </Expand>
-  </Type>
-  <Type Name="clang::TypeAliasDecl">
-    <DisplayString IncludeView="cpp">{(TypedefNameDecl *)this,view(name)nand}</DisplayString>
-    <DisplayString>using {(TypedefNameDecl *)this,view(name)nand} = {(TypedefNameDecl *)this,view(type)nand}</DisplayString>
-  </Type>
   <Type Name="clang::AssumedTemplateStorage">
     <DisplayString>{Name}</DisplayString>
   </Type>
@@ -295,91 +214,11 @@ For later versions of Visual Studio, no setup is required-->
       <ExpandedItem Condition="Bits.Kind==UncommonTemplateNameStorage::SubstTemplateTemplateParmPack">(SubstTemplateTemplateParmPackStorage*)this</ExpandedItem>
     </Expand>
   </Type>
-  <!-- clang::TemplateName::StorageType -->
-  <Type Name="llvm::PointerUnion&lt;clang::TemplateDecl *, clang::UncommonTemplateNameStorage *,
-                          clang::QualifiedTemplateName *, clang::DependentTemplateName *&gt;">
-    <!-- Expand this out by hand to get cpp view -->
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 0" IncludeView="cpp">
-      {(clang::TemplateDecl *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),view(cpp)na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 0">
-      {(clang::TemplateDecl *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 1" IncludeView="cpp">
-      {(clang::UncommonTemplateNameStorage *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),view(cpp)na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 1">
-      {(clang::UncommonTemplateNameStorage *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 2" IncludeView="cpp">
-      {(clang::QualifiedTemplateName *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),view(cpp)na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 2">
-      {(clang::QualifiedTemplateName *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 3" IncludeView="cpp">
-      {(clang::DependentTemplateName *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),view(cpp)na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 3">
-      {(clang::DependentTemplateName *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),na}
-    </DisplayString>
-    <Expand>
-      <Item Name="[Holds]" Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 0">"TemplateDecl",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 0">
-        (clang::TemplateDecl *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL)
-      </Item>
-      <Item Name="[Holds]" Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 1">"UncommonTemplateNameStorage",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 1">
-        (clang::UncommonTemplateNameStorage *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL)
-      </Item>
-      <Item Name="[Holds]" Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 2">"QualifiedTemplateName",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 2">
-        (clang::QualifiedTemplateName *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL)
-      </Item>
-      <Item Name="[Holds]" Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 3">"DependentTemplateName",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 3">
-        (clang::DependentTemplateName *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL)
-      </Item>
-      <Item Name="[Val]">Val</Item>
-
-    </Expand>
-  </Type>
   <Type Name="clang::TemplateName">
     <DisplayString IncludeView="cpp">{Storage,view(cpp)na}</DisplayString>
     <DisplayString>{Storage,na}</DisplayString>
     <Expand>
       <ExpandedItem>Storage</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::Decl">
-    <DisplayString>{(clang::Decl::Kind)DeclKind,en}Decl</DisplayString>
-    <Expand>
-      <Item Name="DeclKind">(clang::Decl::Kind)DeclKind,en</Item>
-      <Item Name="Implicit">Implicit</Item>
-      <Item Name="Access">(AccessSpecifier)Access</Item>
-      <ExpandedItem Condition="dynamic_cast&lt;clang::DeclContext*&gt;(this)">*dynamic_cast&lt;clang::DeclContext*&gt;(this)</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::NamedDecl" >
-    <DisplayString IncludeView="cpp">{Name,view(cpp)}</DisplayString>
-    <DisplayString>{Name}</DisplayString>
-    <Expand>
-      <ExpandedItem>*(clang::Decl*)this,nd</ExpandedItem>
-      <Item Name="Name">Name</Item>
-    </Expand>
-  </Type>
-  <Type Name="clang::TagDecl">
-    <DisplayString IncludeView="implicit" Condition="Implicit">implicit{" ",sb}</DisplayString>
-    <DisplayString IncludeView="implicit"></DisplayString>
-    <DisplayString IncludeView="modifiers">{*this,view(implicit)nd}</DisplayString>
-    <DisplayString IncludeView="cpp">{*this,view(modifiers)}{Name,view(cpp)}</DisplayString>
-    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Struct">{*this,view(modifiers)nd}struct {Name,view(cpp)}</DisplayString>
-    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Interface">{*this,view(modifiers)nd}interface {Name,view(cpp)}</DisplayString>
-    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Union">{*this,view(modifiers)nd}union {Name,view(cpp)}</DisplayString>
-    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Class">{*this,view(modifiers)nd}class {Name,view(cpp)}</DisplayString>
-    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Enum">{*this,view(modifiers)nd}enum {Name,view(cpp)}</DisplayString>
-    <Expand>
-      <ExpandedItem>*(clang::Decl *)this,nd</ExpandedItem>
     </Expand>
   </Type>
   <Type Name="clang::TagType">
@@ -909,6 +748,123 @@ For later versions of Visual Studio, no setup is required-->
   <Type Name="clang::DirectoryEntry">
     <DisplayString>{Name,s}</DisplayString>
   </Type>
+
+  <Type Name="clang::Decl">
+    <DisplayString>{(clang::Decl::Kind)DeclKind,en}Decl</DisplayString>
+    <Expand>
+      <Item Name="DeclKind">(clang::Decl::Kind)DeclKind,en</Item>
+      <Item Name="ID">(uintptr_t)this,x</Item>
+      <Item Name="Implicit">Implicit</Item>
+      <Item Name="Access">(AccessSpecifier)Access</Item>
+      <ExpandedItem Condition="dynamic_cast&lt;clang::DeclContext*&gt;(this)">*dynamic_cast&lt;clang::DeclContext*&gt;(this)</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="clang::NamedDecl" >
+    <DisplayString IncludeView="cpp">{Name,view(cpp)}</DisplayString>
+    <DisplayString>{Name}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(clang::Decl*)this,nd</ExpandedItem>
+      <Item Name="Name">Name</Item>
+    </Expand>
+  </Type>
+
+    <!-- Unfortunately, Visual Studio has trouble seeing the PointerBitMask member PointerIntUnion, so I hardwire it to 2 bits-->
+  <Type Name="clang::DeclContext">
+    <DisplayString>{(clang::Decl::Kind)DeclContextBits.DeclKind,en}Decl</DisplayString>
+    <Expand>
+      <!--<Item Name="DeclKind">(clang::Decl::Kind)DeclContextBits.DeclKind,en</Item>-->
+      <Synthetic Name="Members">
+        <DisplayString></DisplayString>
+        <Expand>
+          <LinkedListItems>
+            <HeadPointer>FirstDecl</HeadPointer>
+            <NextPointer>(clang::Decl *)(*(intptr_t *)NextInContextAndBits.Value.Data &amp; ~3)</NextPointer>
+            <ValueNode>*this</ValueNode>
+          </LinkedListItems>
+        </Expand>
+      </Synthetic>
+    </Expand>
+  </Type>
+  <Type Name="clang::FieldDecl">
+    <DisplayString>Field {{{*(clang::DeclaratorDecl *)this,view(cpp)nd}}}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(DeclaratorDecl*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="clang::CXXMethodDecl">
+    <DisplayString IncludeView="cpp">{*(clang::FunctionDecl *)this,nd}</DisplayString>
+    <DisplayString>Method {{{*this,view(cpp)}}}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(FunctionDecl*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="clang::CXXConstructorDecl">
+    <DisplayString>Constructor {{{Name,view(cpp)}({*(clang::FunctionDecl *)this,view(parm0)nd})}}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(FunctionDecl*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="clang::CXXDestructorDecl">
+    <DisplayString>Destructor {{~{Name,view(cpp)}()}}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(FunctionDecl*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="clang::TemplateTypeParmDecl">
+    <DisplayString IncludeView="TorC" Condition="Typename">typename</DisplayString>
+    <DisplayString IncludeView="TorC" Condition="!Typename">class</DisplayString>
+    <DisplayString IncludeView="MaybeEllipses" Condition="TypeForDecl == nullptr">(not yet known if parameter pack) </DisplayString>
+    <DisplayString IncludeView="MaybeEllipses" Condition="((TemplateTypeParmType *)(((clang::ExtQualsTypeCommonBase *)(((uintptr_t)TypeForDecl->CanonicalType.Value.Value.Data) &amp; ~(uintptr_t)((1 &lt;&lt; 4) - 1)))-&gt;BaseType))->CanTTPTInfo.ParameterPack">...</DisplayString>
+    <DisplayString IncludeView="MaybeEllipses" Condition="!((TemplateTypeParmType *)(((clang::ExtQualsTypeCommonBase *)(((uintptr_t)TypeForDecl->CanonicalType.Value.Value.Data) &amp; ~(uintptr_t)((1 &lt;&lt; 4) - 1)))-&gt;BaseType))->CanTTPTInfo.ParameterPack"></DisplayString>
+    <DisplayString IncludeView="DefaultArg" Condition="((*(uintptr_t*)DefaultArgument.ValueOrInherited.Val.Value.Data)&amp;3LL) == 0">{(TypeSourceInfo *)((*(uintptr_t*)DefaultArgument.ValueOrInherited.Val.Value.Data)&amp;~3LL),view(cpp)}</DisplayString>
+    <DisplayString IncludeView="DefaultArg">{{InheritedInitializer}}</DisplayString>
+    <DisplayString IncludeView="Initializer" Condition="(*(uintptr_t*)DefaultArgument.ValueOrInherited.Val.Value.Data)&amp;~3LL">= {this,view(DefaultArg)na}</DisplayString>
+    <DisplayString IncludeView="Initializer"></DisplayString>
+    <DisplayString>{*this,view(TorC)} {*this,view(MaybeEllipses)}{Name,view(cpp)} {this,view(Initializer)na}</DisplayString>
+  </Type>
+  <Type Name="clang::TemplateDecl">
+    <DisplayString IncludeView="cpp">{*TemplatedDecl,view(cpp)}</DisplayString>
+    <DisplayString>template{TemplateParams,na} {*TemplatedDecl};</DisplayString>
+    <Expand>
+      <ExpandedItem>*(NamedDecl *)this,nd</ExpandedItem>
+      <Item Name="TemplateParams">TemplateParams,na</Item>
+      <Item Name="TemplatedDecl">TemplatedDecl,na</Item>
+    </Expand>
+  </Type>
+  <!-- Unfortunately, visualization of PointerIntPair<PointerUnion> doesn't work due to limitations in natvis, so we will barehad it-->
+  <Type Name="clang::TypedefNameDecl">
+    <DisplayString Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)==0" IncludeView="type">{(clang::TypeSourceInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL),view(cpp)na}</DisplayString>
+    <DisplayString Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)!=0" IncludeView="type">{(clang::TypedefNameDecl::ModedTInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL),view(cpp)na}</DisplayString>
+    <DisplayString IncludeView="name">{(TypeDecl *)this,view(cpp)nand}</DisplayString>
+    <DisplayString>typedef {this,view(type)na} {this,view(name)na};</DisplayString>
+    <Expand>
+      <ExpandedItem>*(TypeDecl *)this,nd</ExpandedItem>
+      <Item Name="IsTransparent" Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 1)==0">"Not yet calculated",sb</Item>
+      <Item Name="IsTransparent" Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 1)!=0">(bool)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 2)</Item>
+      <Item Name="TypeSourceInfo" Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)==0">(clang::TypeSourceInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL)</Item>
+      <Item Name="ModedTInfo" Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)!=0">(clang::TypedefNameDecl::ModedTInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL)</Item>
+    </Expand>
+  </Type>
+  <Type Name="clang::TypeAliasDecl">
+    <DisplayString IncludeView="cpp">{(TypedefNameDecl *)this,view(name)nand}</DisplayString>
+    <DisplayString>using {(TypedefNameDecl *)this,view(name)nand} = {(TypedefNameDecl *)this,view(type)nand}</DisplayString>
+  </Type>
+
+  <Type Name="clang::TagDecl">
+    <DisplayString IncludeView="implicit" Condition="Implicit">implicit{" ",sb}</DisplayString>
+    <DisplayString IncludeView="implicit"></DisplayString>
+    <DisplayString IncludeView="modifiers">{*this,view(implicit)nd}</DisplayString>
+    <DisplayString IncludeView="cpp">{*this,view(modifiers)}{Name,view(cpp)}</DisplayString>
+    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Struct">{*this,view(modifiers)nd}struct {Name,view(cpp)}</DisplayString>
+    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Interface">{*this,view(modifiers)nd}interface {Name,view(cpp)}</DisplayString>
+    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Union">{*this,view(modifiers)nd}union {Name,view(cpp)}</DisplayString>
+    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Class">{*this,view(modifiers)nd}class {Name,view(cpp)}</DisplayString>
+    <DisplayString Condition="TagDeclBits.TagDeclKind==clang::TagTypeKind::TTK_Enum">{*this,view(modifiers)nd}enum {Name,view(cpp)}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(clang::Decl *)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+
   <Type Name="clang::VarDecl::VarDeclBitfields">
     <Expand>
       <Item Name="StorageClass">(clang::StorageClass)SClass</Item>
@@ -954,52 +910,20 @@ For later versions of Visual Studio, no setup is required-->
     </Expand>
   </Type>
 
-  <Type Name="llvm::PointerUnion&lt;clang::NamedDecl*, clang::MemberSpecializationInfo*, clang::FunctionTemplateSpecializationInfo*, clang::DependentFunctionTemplateSpecializationInfo*&gt;">
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 0" IncludeView="cpp">
-      {(clang::NamedDecl *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),view(cpp)na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 0">
-      {(clang::NamedDecl *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 1" IncludeView="cpp">
-      {(clang::MemberSpecializationInfo *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),view(cpp)na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 1">
-      {(clang::MemberSpecializationInfo *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 2" IncludeView="cpp">
-      {(clang::FunctionTemplateSpecializationInfo *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),view(cpp)na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 2">
-      {(clang::FunctionTemplateSpecializationInfo *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 3" IncludeView="cpp">
-      {(clang::DependentFunctionTemplateSpecializationInfo *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),view(cpp)na}
-    </DisplayString>
-    <DisplayString Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 3">
-      {(clang::DependentFunctionTemplateSpecializationInfo *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL),na}
-    </DisplayString>
-
+  <Type Name="clang::FriendDecl">
+    <DisplayString>{(Decl*)this,nand}</DisplayString>
     <Expand>
-      <Item Name="[Holds]" Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 0">"NamedDecl",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 0">
-        (clang::NamedDecl *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL)
-      </Item>
-      <Item Name="[Holds]" Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 1">"MemberSpecializationInfo",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 1">
-        (clang::MemberSpecializationInfo *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL)
-      </Item>
-      <Item Name="[Holds]" Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 2">"FunctionTemplateSpecializationInfo",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 2">
-        (clang::FunctionTemplateSpecializationInfo *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL)
-      </Item>
-      <Item Name="[Holds]" Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 3">"DependentFunctionTemplateSpecializationInfo",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="(*((uintptr_t*)Val.Value.Data) &amp;3) == 3">
-        (clang::DependentFunctionTemplateSpecializationInfo *)(*((uintptr_t*)Val.Value.Data) &amp; ~3LL)
-      </Item>
+      <ExpandedItem>*(Decl*)this,nd</ExpandedItem>
+      <Item Name="Friend">Friend</Item>
+    </Expand>
+  </Type>
 
-      <Item Name="[Val]">Val</Item>
-
+  <Type Name="clang::ClassScopeFunctionSpecializationDecl">
+    <DisplayString>{(Decl*)this,nand}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(Decl*)this,nd</ExpandedItem>
+      <Item Name="TemplateArgs">TemplateArgs</Item>
+      <Item Name="Specialization">Specialization</Item>
     </Expand>
   </Type>
 
