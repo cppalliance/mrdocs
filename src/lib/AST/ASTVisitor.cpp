@@ -1348,7 +1348,7 @@ public:
     template<typename Range>
     void
     buildTemplateArgs(
-        std::vector<TArg>& result,
+        std::vector<std::unique_ptr<TArg>>& result,
         Range&& range)
     {
         // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
@@ -1363,21 +1363,92 @@ public:
         const auto& policy = context_.getPrintingPolicy();
         for(const TemplateArgument& arg : range)
         {
-            std::string arg_str;
-            if(arg.getKind() == TemplateArgument::Type)
+            switch(arg.getKind())
             {
-                QualType qt = arg.getAsType();
-                // KRYSTIAN FIXME: we *really* should not be
-                // converting types to strings like this.
-                // TArg needs to be a variant type anyways.
-                arg_str = toString(*buildTypeInfo(qt));
-            }
-            else
+            // empty template argument (e.g. not yet deduced)
+            case TemplateArgument::Null:
+                break;
+
+            // a template argument pack (any kind)
+            case TemplateArgument::Pack:
             {
-                llvm::raw_string_ostream stream(arg_str);
-                arg.print(policy, stream, false);
+                // KRYSTIAN NOTE: is this correct? should we have a
+                // separate TArgKind for packs instead of "unlaminating"
+                // them as we are doing here?
+                buildTemplateArgs(result, arg.pack_elements());
+                break;
             }
-            result.emplace_back(std::move(arg_str));
+            // type
+            case TemplateArgument::Type:
+            {
+                auto R = std::make_unique<TypeTArg>();
+                QualType QT = arg.getAsType();
+                MRDOX_ASSERT(! QT.isNull());
+                // if the template argument is a pack expansion,
+                // use the expansion pattern as the type & mark
+                // the template argument as a pack expansion
+                if(const Type* T = QT.getTypePtr(); 
+                    auto* PT = dyn_cast<PackExpansionType>(T))
+                {
+                    R->IsPackExpansion = true;
+                    QT = PT->getPattern();
+                }
+                R->Type = buildTypeInfo(QT);
+
+                result.emplace_back(std::move(R));
+                break;
+            }
+            // pack expansion of a template name
+            case TemplateArgument::TemplateExpansion:
+            // template name
+            case TemplateArgument::Template:
+            {
+                auto R = std::make_unique<TemplateTArg>();
+                R->IsPackExpansion = arg.isPackExpansion();
+                TemplateName TN = arg.getAsTemplateOrTemplatePattern();
+                TemplateDecl* TD = cast<TemplateDecl>(
+                    getInstantiatedFrom(TN.getAsTemplateDecl()));
+                MRDOX_ASSERT(TD);
+                if(auto* II = TD->getIdentifier())
+                    R->Name = II->getName();
+                // do not extract a SymbolID or build Info if 
+                // the template template parameter names a
+                // template template parameter or builtin template
+                if(! isa<TemplateTemplateParmDecl>(TD) &&
+                    ! isa<BuiltinTemplateDecl>(TD))
+                {
+                    extractSymbolID(TD, R->Template);
+                    getOrBuildInfo(TD);
+                }
+                result.emplace_back(std::move(R));
+                break;
+            }
+            // nullptr value
+            case TemplateArgument::NullPtr:
+            // expression referencing a declaration
+            case TemplateArgument::Declaration:
+            // integral expression
+            case TemplateArgument::Integral:
+            // expression
+            case TemplateArgument::Expression:
+            {
+                auto R = std::make_unique<NonTypeTArg>();
+                R->IsPackExpansion = arg.isPackExpansion();
+                // if this is a pack expansion, use the template argument
+                // expansion pattern in place of the template argument pack
+                const TemplateArgument& adjusted = 
+                    R->IsPackExpansion ?
+                    arg.getPackExpansionPattern() : arg;
+                
+                llvm::raw_string_ostream stream(R->Value.Written);
+                adjusted.print(policy, stream, false);
+                
+                result.emplace_back(std::move(R));
+                break;
+            }
+            default:
+                MRDOX_UNREACHABLE();
+            }
         }
     }
 

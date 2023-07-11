@@ -123,7 +123,7 @@ public:
     void emitBlock(SpecializationInfo const& T);
     void emitBlock(TemplateInfo const& T);
     void emitBlock(std::unique_ptr<TParam> const& T);
-    void emitBlock(TArg const& T);
+    void emitBlock(std::unique_ptr<TArg> const& T);
     void emitBlock(TypedefInfo const& I);
     void emitBlock(VariableInfo const& I);
     void emitBlock(FieldInfo const& I);

@@ -15,8 +15,8 @@
       </template>
       <template class="partial" id="7XlFKPcXRfyYPWc4WPN3PAH+m58=">
         <tparam name="R" class="type"/>
-        <targ value="R"/>
-        <targ value="false"/>
+        <targ class="type" type="R"/>
+        <targ class="non-type" value="false"/>
         <struct name="impl" access="private" id="BCRU3eMBRSysyvFsjJj+0yg+Vfc=">
           <file path="nested-private-template.cpp" line="8" class="def"/>
         </struct>

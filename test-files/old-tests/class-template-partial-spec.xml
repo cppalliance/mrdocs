@@ -15,15 +15,15 @@
       </template>
       <template class="partial" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
         <tparam name="U" class="type"/>
-        <targ value="U*"/>
-        <targ value="T"/>
+        <targ class="type" type="U*"/>
+        <targ class="type" type="T"/>
         <struct name="B" id="Y/lm1lkT88vf1Ml123mbuN6Fp2Y=">
           <file path="class-template-partial-spec.cpp" line="7" class="def"/>
         </struct>
       </template>
       <template class="explicit" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
-        <targ value="T"/>
-        <targ value="long"/>
+        <targ class="type" type="T"/>
+        <targ class="type" type="long"/>
         <struct name="B" id="RB9DBMAJDxjxuRQCinQOVPFSNek=">
           <file path="class-template-partial-spec.cpp" line="10" class="def"/>
         </struct>

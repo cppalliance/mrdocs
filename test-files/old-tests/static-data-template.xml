@@ -18,8 +18,8 @@
       </template>
       <template class="partial" id="7L90lvoKPW80F2cnMs0e05abtuk=">
         <tparam name="U" class="type"/>
-        <targ value="U*"/>
-        <targ value="T"/>
+        <targ class="type" type="U*"/>
+        <targ class="type" type="T"/>
         <variable name="x" id="odTOUblgmooUozrBqW3qKzPWSO4=">
           <file path="static-data-template.cpp" line="7" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
@@ -28,8 +28,8 @@
         </variable>
       </template>
       <template class="explicit" id="7L90lvoKPW80F2cnMs0e05abtuk=">
-        <targ value="T"/>
-        <targ value="long"/>
+        <targ class="type" type="T"/>
+        <targ class="type" type="long"/>
         <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=">
           <file path="static-data-template.cpp" line="10" class="def"/>
           <attr id="storage-class" name="static" value="2"/>

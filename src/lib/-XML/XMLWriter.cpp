@@ -493,7 +493,7 @@ openTemplate(
     for(const auto& tparam : I->Params)
         writeTemplateParam(*tparam, tags_);
     for(const auto& targ : I->Args)
-        writeTemplateArg(targ, tags_);
+        writeTemplateArg(*targ, tags_);
 }
 
 void
@@ -516,8 +516,8 @@ writeSpecialization(
         {"primary", toString(I.Primary) }
     });
 
-    for(const TArg& targ : I.Args)
-        writeTemplateArg(targ, tags_);
+    for(const auto& targ : I.Args)
+        writeTemplateArg(*targ, tags_);
 
     corpus_.traverse(I, *this);
 

@@ -50,7 +50,7 @@ struct SpecializationInfo
     : IsInfo<InfoKind::Specialization>
 {
     /** The template arguments the parent template is specialized for */
-    std::vector<TArg> Args;
+    std::vector<std::unique_ptr<TArg>> Args;
 
     /** ID of the template to which the arguments pertain */
     SymbolID Primary = SymbolID::zero;

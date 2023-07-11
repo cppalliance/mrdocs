@@ -169,10 +169,32 @@ operator()(
         write('<');
         if(! t.TemplateArgs.empty())
         {
-            write(t.TemplateArgs.front().Value);
+            auto targ_writer = 
+                [&]<typename U>(const U& u)
+                {
+                    if constexpr(U::isType())
+                    {
+                        if(u.Type)
+                            writeFullType(*u.Type, write);
+                    }
+                    if constexpr(U::isNonType())
+                    {
+                        write(u.Value.Written);
+                    }
+                    if constexpr(U::isTemplate())
+                    {
+                        write(u.Name);
+                    }
+                    if(u.IsPackExpansion)
+                        write("...");
+                };
+            visit(*t.TemplateArgs.front(), targ_writer);
             for(auto first = t.TemplateArgs.begin();
                 ++first != t.TemplateArgs.end();)
-                write(", ", first->Value);
+            {
+                write(", ");
+                visit(**first, targ_writer);
+            }
         }
         write('>');
     }

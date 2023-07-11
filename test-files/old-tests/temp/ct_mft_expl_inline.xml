@@ -13,7 +13,7 @@
         </function>
       </template>
       <template class="explicit">
-        <targ value="int"/>
+        <targ class="type" type="int"/>
         <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
           <file path="ct_mft_expl_inline.cpp" line="7" class="def"/>
         </function>

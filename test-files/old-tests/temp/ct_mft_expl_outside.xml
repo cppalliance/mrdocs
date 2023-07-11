@@ -15,9 +15,9 @@
     </struct>
   </template>
   <specialization id="AKwlChAOi+0ttIAPsD7uitS+gk0=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ value="int"/>
+    <targ class="type" type="int"/>
     <template class="explicit" id="fycIFVnUjGsczEihLemEC7pcV4w=">
-      <targ value="int"/>
+      <targ class="type" type="int"/>
       <function name="f" id="fjcm9F09lrCrLSgw6Swqw9KOBlM=">
         <file path="ct_mft_expl_outside.cpp" line="8" class="def"/>
       </function>

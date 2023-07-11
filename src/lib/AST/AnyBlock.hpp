@@ -596,12 +596,15 @@ public:
 class TemplateArgBlock
     : public BitcodeReader::AnyBlock
 {
-    TArg& I_;
+    BitcodeReader& br_;
+    std::unique_ptr<TArg>& I_;
 
 public:
     TemplateArgBlock(
-        TArg& I) noexcept
-        : I_(I)
+        std::unique_ptr<TArg>& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I_(I)
     {
     }
 
@@ -613,10 +616,75 @@ public:
     {
         switch(ID)
         {
-        case TEMPLATE_ARG_VALUE:
-            return decodeRecord(R, I_.Value, Blob);
+        case TEMPLATE_ARG_KIND:
+        {
+            TArgKind kind{};
+            if(auto err = decodeRecord(R, kind, Blob))
+                return err;
+            switch(kind)
+            {
+            case TArgKind::Type:
+                I_ = std::make_unique<TypeTArg>();
+                break;
+            case TArgKind::NonType:
+                I_ = std::make_unique<NonTypeTArg>();
+                break;
+            case TArgKind::Template:
+                I_= std::make_unique<TemplateTArg>();
+                break;
+            default:
+                return formatError("invalid template argument kind");
+            }
+            return Error::success();
+        }
+        case TEMPLATE_ARG_IS_PACK:
+        {
+            return decodeRecord(R, I_->IsPackExpansion, Blob);
+        }
+        case TEMPLATE_ARG_TEMPLATE:
+        {
+            if(! I_->isTemplate())
+                return formatError("only TemplateTArgs may reference a template");
+            return decodeRecord(R, 
+                static_cast<TemplateTArg&>(
+                    *I_.get()).Template, Blob);
+        }
+        case TEMPLATE_ARG_NAME:
+        {
+            if(! I_->isTemplate())
+                return formatError("only TemplateTArgs may have a template name");
+            return decodeRecord(R, 
+                static_cast<TemplateTArg&>(
+                    *I_.get()).Name, Blob);
+        }
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_TYPEINFO_BLOCK_ID:
+        {
+            if(! I_->isType())
+                return formatError("only TypeTArgs may have types");
+            TypeInfoBlock B(static_cast<TypeTArg&>(
+                *I_.get()).Type, br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_EXPR_BLOCK_ID:
+        {
+            if(! I_->isNonType())
+                return formatError("only NonTypeTArgs may have expressions");
+            ExprBlock B(static_cast<NonTypeTArg&>(
+                *I_.get()).Value, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return AnyBlock::readSubBlock(ID);
         }
     }
 };
@@ -646,17 +714,9 @@ public:
     {
         switch(ID)
         {
-        case TEMPLATE_PARAM_NAME:
-        {
-            return decodeRecord(R, I_->Name, Blob);
-        }
-        case TEMPLATE_PARAM_IS_PACK:
-        {
-            return decodeRecord(R, I_->IsParameterPack, Blob);
-        }
         case TEMPLATE_PARAM_KIND:
         {
-            TParamKind kind;
+            TParamKind kind{};
             if(auto err = decodeRecord(R, kind, Blob))
                 return err;
             switch(kind)
@@ -674,6 +734,14 @@ public:
                 return formatError("invalid template parameter kind");
             }
             return Error::success();
+        }
+        case TEMPLATE_PARAM_NAME:
+        {
+            return decodeRecord(R, I_->Name, Blob);
+        }
+        case TEMPLATE_PARAM_IS_PACK:
+        {
+            return decodeRecord(R, I_->IsParameterPack, Blob);
         }
         case TEMPLATE_PARAM_DEFAULT:
         {
@@ -769,7 +837,7 @@ public:
         case BI_TEMPLATE_ARG_BLOCK_ID:
         {
             TemplateArgBlock A(
-                I_.Args.emplace_back());
+                I_.Args.emplace_back(), br_);
             return br_.readBlock(A, ID);
         }
         case BI_TEMPLATE_PARAM_BLOCK_ID:
@@ -841,7 +909,7 @@ readSubBlock(unsigned ID)
         if(! I_->isSpecialization())
             return Error("wrong TypeInfo kind");
         auto& I = static_cast<SpecializationTypeInfo&>(*I_);
-        TemplateArgBlock B(I.TemplateArgs.emplace_back());
+        TemplateArgBlock B(I.TemplateArgs.emplace_back(), br_);
         return br_.readBlock(B, ID);
     }
     case BI_EXPR_BLOCK_ID:
@@ -1386,7 +1454,7 @@ public:
         {
         case BI_TEMPLATE_ARG_BLOCK_ID:
         {
-            TemplateArgBlock B(I->Args.emplace_back());
+            TemplateArgBlock B(I->Args.emplace_back(), br_);
             return br_.readBlock(B, ID);
         }
         default:

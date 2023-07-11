@@ -18,7 +18,7 @@
         <alias name="M1" id="14SKPuw/wwAUmFZKoonB8Uu8gaY=">
           <file path="implicit-instantiation-member-ref.cpp" line="9" class="def"/>
           <type class="specialization" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0">
-            <targ value="U"/>
+            <targ class="type" type="U"/>
           </type>
         </alias>
       </template>
@@ -38,7 +38,7 @@
             <alias name="M3" id="TBl15ml95lYP4APzAuH1VpGgjgs=">
               <file path="implicit-instantiation-member-ref.cpp" line="19" class="def"/>
               <type class="specialization" id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=" name="S2">
-                <targ value="U"/>
+                <targ class="type" type="U"/>
               </type>
             </alias>
           </template>
@@ -59,7 +59,7 @@
   <alias name="A0" id="ApI0xrWYyA88AQ9a3mi+ochJbJc=">
     <file path="implicit-instantiation-member-ref.cpp" line="29" class="def"/>
     <type class="specialization" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0">
-      <targ value="int"/>
+      <targ class="type" type="int"/>
     </type>
   </alias>
   <alias name="A1" id="zbm2FwMgaOYZ1PJI3zAcR9gD1DE=">
@@ -81,7 +81,7 @@
   <alias name="A5" id="1Z8U4eFyt2XClP+7afzwsuyeXAI=">
     <file path="implicit-instantiation-member-ref.cpp" line="35" class="def"/>
     <type class="specialization" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0">
-      <targ value="void"/>
+      <targ class="type" type="void"/>
     </type>
   </alias>
   <alias name="A6" id="JkIeD9nM+5+XWFXDHaK2rwRsuXA=">

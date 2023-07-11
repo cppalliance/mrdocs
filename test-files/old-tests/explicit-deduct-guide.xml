@@ -14,7 +14,7 @@
     <attr id="explicit-spec" name="explicit" value="1"/>
     <return>
       <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
-        <targ value="0"/>
+        <targ class="non-type" value="0"/>
       </type>
     </return>
     <param>
@@ -27,7 +27,7 @@
     <attr id="explicit-spec" name="explicit(true)" value="3"/>
     <return>
       <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
-        <targ value="0"/>
+        <targ class="non-type" value="0"/>
       </type>
     </return>
     <param>
@@ -40,7 +40,7 @@
     <attr id="explicit-spec" name="explicit(false)" value="2"/>
     <return>
       <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
-        <targ value="0"/>
+        <targ class="non-type" value="0"/>
       </type>
     </return>
     <param>
@@ -55,7 +55,7 @@
       <attr id="explicit-spec" name="explicit(expr)" value="4"/>
       <return>
         <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
-          <targ value="0"/>
+          <targ class="non-type" value="0"/>
         </type>
       </return>
       <param>

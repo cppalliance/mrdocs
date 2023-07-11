@@ -16,12 +16,122 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/ADT/Optional.hpp>
 #include <mrdox/Metadata/Type.hpp>
+#include <mrdox/Support/TypeTraits.hpp>
 #include <optional>
 #include <string>
 #include <vector>
 
 namespace clang {
 namespace mrdox {
+
+enum class TArgKind : int
+{
+    // type arguments
+    Type = 1, // for bitstream
+    // non-type arguments, i.e. expressions
+    NonType,
+    // template template arguments, i.e. template names
+    Template
+};
+
+MRDOX_DECL dom::String toString(TArgKind kind) noexcept;
+
+struct TArg
+{
+    /** The kind of template argument this is. */
+    TArgKind Kind;
+
+    /** Whether this template argument is a parameter expansion. */
+    bool IsPackExpansion = false;
+
+    constexpr virtual ~TArg() = default;
+
+    constexpr bool isType()     const noexcept { return Kind == TArgKind::Type; }
+    constexpr bool isNonType()  const noexcept { return Kind == TArgKind::NonType; }
+    constexpr bool isTemplate() const noexcept { return Kind == TArgKind::Template; }
+
+protected:
+    constexpr
+    TArg(
+        TArgKind kind) noexcept
+        : Kind(kind)
+    {
+    }
+};
+
+template<TArgKind K>
+struct IsTArg : TArg
+{
+    static constexpr TArgKind kind_id = K;
+
+    static constexpr bool isType()     noexcept { return K == TArgKind::Type; }
+    static constexpr bool isNonType()  noexcept { return K == TArgKind::NonType; }
+    static constexpr bool isTemplate() noexcept { return K == TArgKind::Template; }
+
+protected:
+    constexpr
+    IsTArg() noexcept
+        : TArg(K)
+    {
+    }
+};
+
+struct TypeTArg
+    : IsTArg<TArgKind::Type>
+{
+    /** Template argument type. */
+    std::unique_ptr<TypeInfo> Type;
+};
+
+struct NonTypeTArg
+    : IsTArg<TArgKind::NonType>
+{
+    /** Template argument expression. */
+    ExprInfo Value;
+};
+
+struct TemplateTArg
+    : IsTArg<TArgKind::Template>
+{
+    /** SymbolID of the referenced template. */
+    SymbolID Template;
+
+    /** Name of the referenced template. */
+    std::string Name;
+};
+
+template<
+    typename TArgTy,
+    typename F,
+    typename... Args>
+    requires std::derived_from<TArgTy, TArg>
+constexpr
+decltype(auto)
+visit(
+    TArgTy& A,
+    F&& f,
+    Args&&... args)
+{
+    switch(A.Kind)
+    {
+    case TArgKind::Type:
+        return f(static_cast<add_cv_from_t<
+            TArgTy, TypeTArg>&>(A),
+            std::forward<Args>(args)...);
+    case TArgKind::NonType:
+        return f(static_cast<add_cv_from_t<
+            TArgTy, NonTypeTArg>&>(A),
+            std::forward<Args>(args)...);
+    case TArgKind::Template:
+        return f(static_cast<add_cv_from_t<
+            TArgTy, TemplateTArg>&>(A),
+            std::forward<Args>(args)...);
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+// ----------------------------------------------------------------
 
 enum class TParamKind : int
 {
@@ -103,48 +213,31 @@ struct TemplateTParam
     Optional<std::string> Default;
 };
 
-template<typename F, typename... Args>
+template<
+    typename TParamTy,
+    typename F,
+    typename... Args>
+    requires std::derived_from<TParamTy, TParam>
 constexpr
 decltype(auto)
 visit(
-    TParam& P,
+    TParamTy& P,
     F&& f,
     Args&&... args)
 {
     switch(P.Kind)
     {
     case TParamKind::Type:
-        return f(static_cast<TypeTParam&>(P),
+        return f(static_cast<add_cv_from_t<
+            TParamTy, TypeTParam>&>(P),
             std::forward<Args>(args)...);
     case TParamKind::NonType:
-        return f(static_cast<NonTypeTParam&>(P),
+        return f(static_cast<add_cv_from_t<
+            TParamTy, NonTypeTParam>&>(P),
             std::forward<Args>(args)...);
     case TParamKind::Template:
-        return f(static_cast<TemplateTParam&>(P),
-            std::forward<Args>(args)...);
-    default:
-        MRDOX_UNREACHABLE();
-    }
-}
-
-template<typename F, typename... Args>
-constexpr
-decltype(auto)
-visit(
-    const TParam& P,
-    F&& f,
-    Args&&... args)
-{
-    switch(P.Kind)
-    {
-    case TParamKind::Type:
-        return f(static_cast<const TypeTParam&>(P),
-            std::forward<Args>(args)...);
-    case TParamKind::NonType:
-        return f(static_cast<const NonTypeTParam&>(P),
-            std::forward<Args>(args)...);
-    case TParamKind::Template:
-        return f(static_cast<const TemplateTParam&>(P),
+        return f(static_cast<add_cv_from_t<
+            TParamTy, TemplateTParam>&>(P),
             std::forward<Args>(args)...);
     default:
         MRDOX_UNREACHABLE();
@@ -153,6 +246,7 @@ visit(
 
 // ----------------------------------------------------------------
 
+#if 0
 struct TArg
 {
     std::string Value;
@@ -162,6 +256,7 @@ struct TArg
     MRDOX_DECL
     TArg(std::string&& value);
 };
+#endif
 
 // ----------------------------------------------------------------
 
@@ -191,7 +286,7 @@ struct TemplateInfo
              once in Args outside of a non-deduced context
     */
     std::vector<std::unique_ptr<TParam>> Params;
-    std::vector<TArg> Args;
+    std::vector<std::unique_ptr<TArg>> Args;
 
     /** Primary template ID for partial and explicit specializations.
     */

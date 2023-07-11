@@ -9,7 +9,7 @@
     </function>
   </template>
   <template class="explicit" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
-    <targ value="int"/>
+    <targ class="type" type="int"/>
     <function name="f" id="ytuvwgqk+lakIfCF209MYkKEp4k=">
       <file path="ft_expl.cpp" line="4" class="def"/>
     </function>

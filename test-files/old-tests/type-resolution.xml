@@ -19,8 +19,8 @@
   <alias name="D" id="LXTs1uTCF/vevZU29QYVICehLFQ=">
     <file path="type-resolution.cpp" line="8" class="def"/>
     <type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B">
-      <targ value="short"/>
-      <targ value="long"/>
+      <targ class="type" type="short"/>
+      <targ class="type" type="long"/>
     </type>
   </alias>
   <template>
@@ -28,8 +28,8 @@
     <alias name="E" id="ikh/cWe22atB10u7UsOKS5W39CA=">
       <file path="type-resolution.cpp" line="11" class="def"/>
       <type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B">
-        <targ value="T"/>
-        <targ value="long"/>
+        <targ class="type" type="T"/>
+        <targ class="type" type="long"/>
       </type>
     </alias>
   </template>
@@ -185,8 +185,8 @@
     <file path="type-resolution.cpp" line="33"/>
     <param>
       <type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B">
-        <targ value="short"/>
-        <targ value="long"/>
+        <targ class="type" type="short"/>
+        <targ class="type" type="long"/>
       </type>
     </param>
   </function>
@@ -194,8 +194,8 @@
     <file path="type-resolution.cpp" line="34"/>
     <param>
       <type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B" cv-qualifiers="const">
-        <targ value="short"/>
-        <targ value="long"/>
+        <targ class="type" type="short"/>
+        <targ class="type" type="long"/>
       </type>
     </param>
   </function>
@@ -204,8 +204,8 @@
     <param>
       <type class="lvalue-reference">
         <pointee-type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B">
-          <targ value="short"/>
-          <targ value="long"/>
+          <targ class="type" type="short"/>
+          <targ class="type" type="long"/>
         </pointee-type>
       </type>
     </param>
@@ -215,8 +215,8 @@
     <param>
       <type class="lvalue-reference">
         <pointee-type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B" cv-qualifiers="const">
-          <targ value="short"/>
-          <targ value="long"/>
+          <targ class="type" type="short"/>
+          <targ class="type" type="long"/>
         </pointee-type>
       </type>
     </param>
@@ -226,8 +226,8 @@
     <param>
       <type class="pointer">
         <pointee-type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B">
-          <targ value="short"/>
-          <targ value="long"/>
+          <targ class="type" type="short"/>
+          <targ class="type" type="long"/>
         </pointee-type>
       </type>
     </param>
@@ -237,8 +237,8 @@
     <param>
       <type class="pointer">
         <pointee-type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B" cv-qualifiers="const">
-          <targ value="short"/>
-          <targ value="long"/>
+          <targ class="type" type="short"/>
+          <targ class="type" type="long"/>
         </pointee-type>
       </type>
     </param>
@@ -249,8 +249,8 @@
       <type class="pointer">
         <pointee-type class="pointer">
           <pointee-type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B">
-            <targ value="short"/>
-            <targ value="long"/>
+            <targ class="type" type="short"/>
+            <targ class="type" type="long"/>
           </pointee-type>
         </pointee-type>
       </type>
@@ -262,8 +262,8 @@
       <type class="pointer">
         <pointee-type class="pointer">
           <pointee-type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B" cv-qualifiers="const">
-            <targ value="short"/>
-            <targ value="long"/>
+            <targ class="type" type="short"/>
+            <targ class="type" type="long"/>
           </pointee-type>
         </pointee-type>
       </type>
@@ -275,8 +275,8 @@
       <type class="pointer">
         <pointee-type class="pointer" cv-qualifiers="const">
           <pointee-type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B" cv-qualifiers="const">
-            <targ value="short"/>
-            <targ value="long"/>
+            <targ class="type" type="short"/>
+            <targ class="type" type="long"/>
           </pointee-type>
         </pointee-type>
       </type>
@@ -360,7 +360,7 @@
     <file path="type-resolution.cpp" line="53"/>
     <param>
       <type class="specialization" id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E">
-        <targ value="short"/>
+        <targ class="type" type="short"/>
       </type>
     </param>
   </function>
@@ -368,7 +368,7 @@
     <file path="type-resolution.cpp" line="54"/>
     <param>
       <type class="specialization" id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E" cv-qualifiers="const">
-        <targ value="short"/>
+        <targ class="type" type="short"/>
       </type>
     </param>
   </function>
@@ -377,7 +377,7 @@
     <param>
       <type class="lvalue-reference">
         <pointee-type class="specialization" id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E">
-          <targ value="short"/>
+          <targ class="type" type="short"/>
         </pointee-type>
       </type>
     </param>
@@ -387,7 +387,7 @@
     <param>
       <type class="lvalue-reference">
         <pointee-type class="specialization" id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E" cv-qualifiers="const">
-          <targ value="short"/>
+          <targ class="type" type="short"/>
         </pointee-type>
       </type>
     </param>
@@ -397,7 +397,7 @@
     <param>
       <type class="pointer">
         <pointee-type class="specialization" id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E">
-          <targ value="short"/>
+          <targ class="type" type="short"/>
         </pointee-type>
       </type>
     </param>
@@ -407,7 +407,7 @@
     <param>
       <type class="pointer">
         <pointee-type class="specialization" id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E" cv-qualifiers="const">
-          <targ value="short"/>
+          <targ class="type" type="short"/>
         </pointee-type>
       </type>
     </param>
@@ -418,7 +418,7 @@
       <type class="pointer">
         <pointee-type class="pointer">
           <pointee-type class="specialization" id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E">
-            <targ value="short"/>
+            <targ class="type" type="short"/>
           </pointee-type>
         </pointee-type>
       </type>
@@ -430,7 +430,7 @@
       <type class="pointer">
         <pointee-type class="pointer">
           <pointee-type class="specialization" id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E" cv-qualifiers="const">
-            <targ value="short"/>
+            <targ class="type" type="short"/>
           </pointee-type>
         </pointee-type>
       </type>
@@ -442,7 +442,7 @@
       <type class="pointer">
         <pointee-type class="pointer" cv-qualifiers="const">
           <pointee-type class="specialization" id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E" cv-qualifiers="const">
-            <targ value="short"/>
+            <targ class="type" type="short"/>
           </pointee-type>
         </pointee-type>
       </type>

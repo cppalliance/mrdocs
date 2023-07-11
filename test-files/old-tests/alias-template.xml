@@ -20,7 +20,7 @@
     <alias name="C" id="f75RIL8qKOwbyH6ffvrv59F0nCA=">
       <file path="alias-template.cpp" line="8" class="def"/>
       <type class="specialization" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=" name="A">
-        <targ value="T"/>
+        <targ class="type" type="T"/>
       </type>
     </alias>
   </template>
@@ -33,8 +33,8 @@
         <alias name="E" id="STM3CgeaOEakPrQJdlRWWM4MMFo=">
           <file path="alias-template.cpp" line="14" class="def"/>
           <type class="specialization" id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B">
-            <targ value="T"/>
-            <targ value="U"/>
+            <targ class="type" type="T"/>
+            <targ class="type" type="U"/>
           </type>
         </alias>
       </template>

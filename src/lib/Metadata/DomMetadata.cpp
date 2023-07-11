@@ -198,7 +198,8 @@ public:
 //
 //------------------------------------------------
 
-static dom::Value domCreate(TArg const&, DomCorpus const&);
+static dom::Value domCreate(
+    std::unique_ptr<TArg> const&, DomCorpus const&);
 static dom::Value domCreate(
     std::unique_ptr<TParam> const&, DomCorpus const&);
 static dom::Value domCreate(
@@ -210,12 +211,12 @@ static dom::Value domCreate(
 */
 class DomTArgArray : public dom::ArrayImpl
 {
-    std::vector<TArg> const& list_;
+    std::vector<std::unique_ptr<TArg>> const& list_;
     DomCorpus const& domCorpus_;
 
 public:
     DomTArgArray(
-        std::vector<TArg> const& list,
+        std::vector<std::unique_ptr<TArg>> const& list,
         DomCorpus const& domCorpus) noexcept
         : list_(list)
         , domCorpus_(domCorpus)
@@ -266,11 +267,39 @@ public:
 static
 dom::Value
 domCreate(
-    TArg const& I, DomCorpus const& domCorpus)
+    std::unique_ptr<TArg> const& I, 
+    DomCorpus const& domCorpus)
 {
-    return dom::Object({
-        { "value", dom::stringOrNull(I.Value) }
-    });
+    if(! I)
+        return nullptr;
+    dom::Object::storage_type entries = {
+        { "kind", toString(I->Kind) },
+        { "is-pack", I->IsPackExpansion }
+    };
+    visit(*I, [&]<typename T>(const T& t)
+        {
+            if constexpr(T::isType())
+            {
+                entries.emplace_back("type", 
+                    domCreate(t.Type, domCorpus));
+            }
+            else if constexpr(T::isNonType())
+            {
+                entries.emplace_back("value", 
+                    t.Value.Written);
+            }
+            else if constexpr(T::isTemplate())
+            {
+                entries.emplace_back("name", 
+                    t.Name);
+                // KRYSTIAN NOTE: hack for missing SymbolIDs
+                if(t.Template != SymbolID::zero && 
+                    domCorpus.corpus.find(t.Template))
+                    entries.emplace_back("template", 
+                        toBase16(t.Template));
+            }
+        });
+    return dom::Object(std::move(entries));
 }
 
 static
@@ -283,8 +312,8 @@ domCreate(
         return nullptr;
     dom::Object::storage_type entries = {
         { "kind", toString(I->Kind) },
-        { "name", dom::stringOrNull(I->Name)},
-        { "is-pack", I->IsParameterPack}
+        { "name", dom::stringOrNull(I->Name) },
+        { "is-pack", I->IsParameterPack }
     };
     visit(*I, [&]<typename T>(const T& t)
         {

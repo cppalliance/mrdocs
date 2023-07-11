@@ -60,6 +60,9 @@ struct ConstantExprInfo;
 
 struct TemplateInfo;
 struct TArg;
+struct TypeTArg;
+struct NonTypeTArg;
+struct TemplateTArg;
 struct TParam;
 struct TypeTParam;
 struct NonTypeTParam;

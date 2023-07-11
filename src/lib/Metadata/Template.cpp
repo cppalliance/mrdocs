@@ -15,11 +15,30 @@
 namespace clang {
 namespace mrdox {
 
+#if 0
 TArg::
 TArg(
     std::string&& value)
     : Value(std::move(value))
 {
+}
+#endif
+
+dom::String
+toString(
+    TArgKind kind) noexcept
+{
+    switch(kind)
+    {
+    case TArgKind::Type:
+        return "type";
+    case TArgKind::NonType:
+        return "non-type";
+    case TArgKind::Template:
+        return "template";
+    default:
+        MRDOX_UNREACHABLE();
+    }
 }
 
 dom::String

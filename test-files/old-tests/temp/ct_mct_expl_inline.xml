@@ -16,7 +16,7 @@
         </struct>
       </template>
       <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-        <targ value="int"/>
+        <targ class="type" type="int"/>
         <struct name="B" id="bHsbts/3qH4qdnqFkFXkR6e8OCw=">
           <file path="ct_mct_expl_inline.cpp" line="7" class="def"/>
           <function name="g" id="ymRqXpmLCXBjCy4HMrul4HOObrs=">

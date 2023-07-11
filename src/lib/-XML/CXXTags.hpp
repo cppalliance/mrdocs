@@ -262,7 +262,7 @@ writeType(
             if constexpr(T::isSpecialization())
             {
                 for(const auto& targ : t.TemplateArgs)
-                    writeTemplateArg(targ, tags);
+                    writeTemplateArg(*targ, tags);
             }
 
             if constexpr(requires { t.PointeeType; })
@@ -365,9 +365,22 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
 
 inline void writeTemplateArg(const TArg& I, XMLTags& tags)
 {
-    tags.write(targTagName, {}, {
-        { "value", I.Value }
-    });
+    visit(I, [&]<typename T>(const T& A)
+        {
+            Attributes attrs = {
+                {"class", toString(T::kind_id)}
+            };
+
+            if constexpr(T::isType())
+                attrs.push({"type", toString(*A.Type)});
+            else if constexpr(T::isNonType())
+                attrs.push({"value", A.Value.Written});
+            else if constexpr(T::isTemplate())
+                attrs.push({A.Template});
+                
+            tags.write(targTagName, {}, 
+                std::move(attrs));
+        });
 }
 
 /** Return the xml tag name for the Info.

@@ -30,19 +30,19 @@
     </struct>
   </template>
   <specialization id="AKwlChAOi+0ttIAPsD7uitS+gk0=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ value="int"/>
+    <targ class="type" type="int"/>
     <function name="f" id="5vQMmBbKdcjmr6fZ5KE/+hqkRD0=">
       <file path="spec-mem-implicit-instantiation.cpp" line="19" class="def"/>
     </function>
     <specialization id="kLfkJ6zwS7/fgRzTYaPfbg3WHg8=" primary="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-      <targ value="long"/>
+      <targ class="type" type="long"/>
       <function name="g" id="7fGykhsl+TDnhidf/wArzvaeUXY=">
         <file path="spec-mem-implicit-instantiation.cpp" line="22" class="def"/>
       </function>
     </specialization>
   </specialization>
   <specialization id="C6fFmGgpPJ7jgwKJA98mfx5cxts=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ value="short"/>
+    <targ class="type" type="short"/>
     <template>
       <tparam name="U" class="type"/>
       <struct name="C" id="bJ8v5jNLvcM2EtaEdF2cpbTmU5s=">
@@ -54,10 +54,10 @@
     </template>
   </specialization>
   <specialization id="/vjeowK9rbOfBZNuMjVMRn2iGMo=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ value="bool"/>
+    <targ class="type" type="bool"/>
     <template class="partial" id="UYi0dO2mWSf0nD8WRfX9JD1eJyw=">
       <tparam name="U" class="type"/>
-      <targ value="U*"/>
+      <targ class="type" type="U*"/>
       <struct name="C" id="xYK8qpEgWzczUMGnNUx+ozeBle0=">
         <file path="spec-mem-implicit-instantiation.cpp" line="34" class="def"/>
         <function name="j" id="ks7mzzkRLaNXkyZ4CdZPO75g8js=">
@@ -66,7 +66,7 @@
       </struct>
     </template>
     <specialization id="EyperGIiZ7cSv/PB2BApKjPRQVA=" primary="xYK8qpEgWzczUMGnNUx+ozeBle0=">
-      <targ value="double*"/>
+      <targ class="type" type="double*"/>
       <function name="j" id="4hePn1dLCqLal3xld/sSlBvpu6U=">
         <file path="spec-mem-implicit-instantiation.cpp" line="41" class="def"/>
       </function>
@@ -84,7 +84,7 @@
       </struct>
     </template>
     <specialization id="27+9TQyh1Vcx+C3POBLdyXJP8bo=" primary="7FuwQh5wWHsQZAFDRF5GiHXiYdI=">
-      <targ value="int"/>
+      <targ class="type" type="int"/>
       <function name="k" id="ePyn5n+volZWM9Xn5rQhbb07Yn8=">
         <file path="spec-mem-implicit-instantiation.cpp" line="54" class="def"/>
       </function>

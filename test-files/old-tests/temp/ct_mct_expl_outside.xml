@@ -18,9 +18,9 @@
     </struct>
   </template>
   <specialization id="AKwlChAOi+0ttIAPsD7uitS+gk0=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-    <targ value="int"/>
+    <targ class="type" type="int"/>
     <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-      <targ value="int"/>
+      <targ class="type" type="int"/>
       <struct name="B" id="IMS2etMN5nj/r7pRC8mVNme6K+o=">
         <file path="ct_mct_expl_outside.cpp" line="8" class="def"/>
         <function name="g" id="wgUjzBOiB/QKB2Z0bKQ7J2DgRR0=">

@@ -289,7 +289,10 @@ RecordIDNameMap = []()
         {SOURCE_INFO_DEFLOC, {"SourceDefLoc", &LocationAbbrev}},
         {SOURCE_INFO_LOC,    {"SourceLoc", &LocationAbbrev}},
         {TEMPLATE_PRIMARY_USR,   {"Primary", &SymbolIDAbbrev}},
-        {TEMPLATE_ARG_VALUE,     {"Value", &StringAbbrev}},
+        {TEMPLATE_ARG_KIND,      {"TArgKind", &Integer32Abbrev}},
+        {TEMPLATE_ARG_IS_PACK,   {"IsPack", &BoolAbbrev}},
+        {TEMPLATE_ARG_TEMPLATE,  {"TemplateID", &SymbolIDAbbrev}},
+        {TEMPLATE_ARG_NAME,      {"TemplateName", &StringAbbrev}},
         {TEMPLATE_PARAM_KIND,    {"Kind", &Integer32Abbrev}},
         {TEMPLATE_PARAM_NAME,    {"Name", &StringAbbrev}},
         {TEMPLATE_PARAM_IS_PACK, {"IsPack", &BoolAbbrev}},
@@ -368,7 +371,8 @@ RecordsByBlock{
         RECORD_FRIENDS, RECORD_MEMBERS, RECORD_SPECIALIZATIONS}},
     // TArg
     {BI_TEMPLATE_ARG_BLOCK_ID,
-        {TEMPLATE_ARG_VALUE}},
+        {TEMPLATE_ARG_KIND, TEMPLATE_ARG_IS_PACK, 
+        TEMPLATE_ARG_TEMPLATE, TEMPLATE_ARG_NAME}},
     // TemplateInfo
     {BI_TEMPLATE_BLOCK_ID,
         {TEMPLATE_PRIMARY_USR}},
@@ -1079,10 +1083,28 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    const TArg& T)
+    const std::unique_ptr<TArg>& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_ARG_BLOCK_ID);
-    emitRecord(T.Value, TEMPLATE_ARG_VALUE);
+    visit(*T, [&]<typename T>(const T& A)
+        {
+            emitRecord(A.Kind, TEMPLATE_ARG_KIND);
+            emitRecord(A.IsPackExpansion, TEMPLATE_ARG_IS_PACK);
+            
+            if constexpr(T::isType())
+            {
+                emitBlock(A.Type);
+            }
+            else if constexpr(T::isNonType())
+            {
+                emitBlock(A.Value);
+            }
+            else if constexpr(T::isTemplate())
+            {
+                emitRecord(A.Template, TEMPLATE_ARG_TEMPLATE);
+                emitRecord(A.Name, TEMPLATE_ARG_NAME);
+            }
+        });
 }
 
 void
