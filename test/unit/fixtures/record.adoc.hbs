@@ -1,9 +1,0 @@
-{{#if symbol.template}}
-    {{>template-head symbol.template}}
-    {{symbol.tag}} {{symbol.name~}}
-    {{#if (neq symbol.template.kind "primary")~}}
-        {{>template-args args=symbol.template.args}}
-    {{/if}}
-{{else}}
-    {{symbol.tag}} {{symbol.name~}}
-{{/if}}
