@@ -1191,8 +1191,8 @@ isEmpty(dom::Value const& arg);
     execution. For example, the each iterator creates a single
     frame which is reused for all child execution.
 
-    @param arg The value to test
-    @return True if the value is empty, false otherwise
+    @param parent The underlying frame object
+    @return The overlay object
 
     @see https://mustache.github.io/mustache.5.html#Sections
  */
@@ -1200,27 +1200,24 @@ MRDOX_DECL
 dom::Object
 createFrame(dom::Object const& parent);
 
-/** Create child data objects.
+/** Create a wrapper for a safe string.
 
-    This function can be used by block helpers to create child
-    data objects.
+    This string wrapper prevents the string from being escaped
+    when the template is rendered.
 
-    The child data object is an overlay frame object implementation
-    that will first look for a value in the child object and if
-    not found will look in the parent object.
+    When a helper returns a safe string, it will be marked
+    as safe and will not be escaped when rendered. The
+    string will be rendered as if converted to a `dom::Value`
+    and rendered as-is.
 
-    Helpers that modify the data state should create a new frame
-    object when doing so, to isolate themselves and avoid corrupting
-    the state of any parents.
+    When constructing the string that will be marked as safe, any
+    external content should be properly escaped using the
+    `escapeExpression` function to avoid potential security concerns.
 
-    Generally, only one frame needs to be created per helper
-    execution. For example, the each iterator creates a single
-    frame which is reused for all child execution.
+    @param str The string to mark as safe
+    @return The safe string wrapper
 
-    @param arg The value to test
-    @return True if the value is empty, false otherwise
-
-    @see https://mustache.github.io/mustache.5.html#Sections
+    @see https://handlebarsjs.com/api-reference/utilities.html#handlebars-safestring-string
  */
 MRDOX_DECL
 detail::safeStringWrapper
