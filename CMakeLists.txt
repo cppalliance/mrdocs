@@ -115,9 +115,9 @@ find_package(fmt REQUIRED CONFIG)
 
 file(
     GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS
-        lib/*.cpp
-        lib/*.hpp
-        lib/*.natvis
+        src/lib/*.cpp
+        src/lib/*.hpp
+        src/lib/*.natvis
         include/*.hpp
         include/*.natvis
         SourceFileNames.cpp)
@@ -128,7 +128,7 @@ target_include_directories(mrdox-core
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
-    "${PROJECT_SOURCE_DIR}/lib"
+    "${PROJECT_SOURCE_DIR}/src"
     "${PROJECT_SOURCE_DIR}/include")
 target_compile_definitions(
     mrdox-core
@@ -202,7 +202,7 @@ endif ()
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS tool/*.cpp tool/*.hpp)
+file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS src/tool/*.cpp src/tool/*.hpp)
 add_executable(mrdox ${TOOL_SOURCES})
 target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
 
@@ -212,8 +212,7 @@ target_include_directories(mrdox
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
     "${PROJECT_SOURCE_DIR}/include"
-    "${PROJECT_SOURCE_DIR}/lib"
-    "${PROJECT_SOURCE_DIR}/tool"
+    "${PROJECT_SOURCE_DIR}/src"
 )
 
 target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
@@ -242,21 +241,19 @@ if (MRDOX_BUILD_TESTS)
     # Unit tests
     #-------------------------------------------------
     include(CTest)
-    file(GLOB_RECURSE TEST_SUITE_FILES CONFIGURE_DEPENDS test/test_suite/*.cpp test/test_suite/*.hpp)
-    file(GLOB_RECURSE UNIT_TEST_SOURCES CONFIGURE_DEPENDS test/unit/*.cpp test/unit/*.hpp)
+    file(GLOB_RECURSE TEST_SUITE_FILES CONFIGURE_DEPENDS src/test/test_suite/*.cpp src/test/test_suite/*.hpp)
+    file(GLOB_RECURSE UNIT_TEST_SOURCES CONFIGURE_DEPENDS src/test/unit/*.cpp src/test/unit/*.hpp)
     add_executable(mrdox-test ${TEST_SUITE_FILES} ${UNIT_TEST_SOURCES})
     target_include_directories(mrdox-test
             PRIVATE
             "${PROJECT_SOURCE_DIR}/include"
-            "${PROJECT_SOURCE_DIR}/lib"
-            "${PROJECT_SOURCE_DIR}/tool"
-            "${PROJECT_SOURCE_DIR}/test/test_suite"
+            "${PROJECT_SOURCE_DIR}/src"
             )
     target_link_libraries(mrdox-test PUBLIC mrdox-core)
     if (MRDOX_CLANG)
         target_compile_options(mrdox-test PRIVATE -Wno-covered-switch-default)
     endif ()
-    target_compile_definitions(mrdox-test PRIVATE -DMRDOX_UNIT_TEST_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test/unit")
+    target_compile_definitions(mrdox-test PRIVATE -DMRDOX_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_custom_command(
             # if we run tests, we need the addons in the right place.
             TARGET mrdox-test
