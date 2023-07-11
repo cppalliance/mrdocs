@@ -125,11 +125,8 @@ run(std::unique_lock<std::mutex> lock)
                 }
                 catch(std::exception const& ex)
                 {
-                    // Any exception which is not
-                    // derived from Exception should
-                    // be reported and terminate
-                    // the process immediately.
-                    reportUnhandledException(ex);
+                    lock.lock();
+                    impl_->errors.emplace(Error(ex));
                 }
             }
         }

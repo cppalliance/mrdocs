@@ -75,26 +75,14 @@ post(
         [sp = std::make_shared<
             any_callable<void(void)>>(std::move(f))]
         {
-            try
-            {
-                (*sp)();
-            }
-            catch(std::exception const& ex)
-            {
-                reportUnhandledException(ex);
-            }
+            // do NOT catch exceptions here
+            (*sp)();
         });
         return;
     }
 
-    try
-    {
-        f();
-    }
-    catch(std::exception const& ex)
-    {
-        reportUnhandledException(ex);
-    }
+    // do NOT catch exceptions here
+    f();
 }
 
 //------------------------------------------------
@@ -180,11 +168,8 @@ post(
             }
             catch(std::exception const& ex)
             {
-                // Any exception which is not
-                // derived from Error should
-                // be reported and terminate
-                // the process immediately.
-                reportUnhandledException(ex);
+                std::lock_guard<std::mutex> lock(impl_->mutex);
+                impl_->errors.emplace(Error(ex));
             }
         });
         return;
@@ -200,9 +185,8 @@ post(
     }
     catch(std::exception const& ex)
     {
-        reportUnhandledException(ex);
+        impl_->errors.emplace(Error(ex));
     }
-    return;
 }
 
 } // mrdox

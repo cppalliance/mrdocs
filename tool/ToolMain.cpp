@@ -82,6 +82,16 @@ int mrdox_main(int argc, char const** argv)
     return EXIT_SUCCESS;
 }
 
+static void reportUnhandledException(
+    std::exception const& ex)
+{
+    namespace sys = llvm::sys;
+
+    llvm::errs() <<
+        "Unhandled exception: " << ex.what() << '\n';
+    sys::PrintStackTrace(llvm::errs());
+}
+
 } // mrdox
 } // clang
 
@@ -93,17 +103,12 @@ int main(int argc, char const** argv)
     }
     catch(clang::mrdox::Exception const& ex)
     {
-        // Any exception derived from Exception should
-        // be caught and handled, and never make it here.
+        // thrown Exception should never get here.
         clang::mrdox::reportUnhandledException(ex);
-        MRDOX_UNREACHABLE();
     }
     catch(std::exception const& ex)
     {
-        // Any exception not derived from Exception which
-        // makes it here must be reported and terminate the
-        // process immediately.
         clang::mrdox::reportUnhandledException(ex);
-        return EXIT_FAILURE;
     }
+    return EXIT_FAILURE;
 }

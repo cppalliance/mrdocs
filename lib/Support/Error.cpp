@@ -82,6 +82,17 @@ Error(
 
 Error::
 Error(
+    std::exception const& ex)
+{
+    std::string_view s(ex.what());
+    if(s.empty())
+        s = "unknown exception";
+    reason_ = s;
+    message_ = s;
+}
+
+Error::
+Error(
     std::vector<Error> const& errors,
     source_location loc)
 {
@@ -223,21 +234,6 @@ call_impl(
 }
 
 } // report
-
-//------------------------------------------------
-
-void
-reportUnhandledException(
-    std::exception const& ex)
-{
-    namespace sys = llvm::sys;
-
-    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
-    llvm::errs() <<
-        "Unhandled exception: " << ex.what() << '\n';
-    sys::PrintStackTrace(llvm::errs());
-    std::exit(EXIT_FAILURE);
-}
 
 } // mrdox
 } // clang

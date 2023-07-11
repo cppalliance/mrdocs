@@ -121,6 +121,14 @@ public:
 
     /** Constructor.
 
+        The constructed object will always
+        indicate a failure, even if the message
+        in the exception is empty.
+    */
+    explicit Error(std::exception const& ex);
+
+    /** Constructor.
+
         This constructs a new error from a list
         of zero or more errors. If the list is empty,
         or if all of the errors in the list indicate
@@ -888,16 +896,6 @@ fatal(
 }
 
 } // report
-
-//------------------------------------------------
-
-/** Report an unhandled exception
-*/
-MRDOX_DECL
-[[noreturn]]
-void
-reportUnhandledException(
-    std::exception const& ex);
 
 } // mrdox
 } // clang
