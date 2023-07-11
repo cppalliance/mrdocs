@@ -15,16 +15,7 @@
 namespace clang {
 namespace mrdox {
 
-#if 0
-TArg::
-TArg(
-    std::string&& value)
-    : Value(std::move(value))
-{
-}
-#endif
-
-dom::String
+std::string_view
 toString(
     TArgKind kind) noexcept
 {
@@ -41,7 +32,7 @@ toString(
     }
 }
 
-dom::String
+std::string_view
 toString(
     TParamKind kind) noexcept
 {
@@ -53,6 +44,21 @@ toString(
         return "non-type";
     case TParamKind::Template:
         return "template";
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+std::string_view
+toString(
+    TParamKeyKind kind) noexcept
+{
+    switch(kind)
+    {
+    case TParamKeyKind::Class:
+        return "class";
+    case TParamKeyKind::Typename:
+        return "typename";
     default:
         MRDOX_UNREACHABLE();
     }
@@ -73,6 +79,34 @@ toString(
     default:
         MRDOX_UNREACHABLE();
     }
+}
+
+std::string
+toString(
+    const TArg& arg) noexcept
+{
+    return visit(arg, 
+        []<typename T>(const T& t)
+    {
+        std::string result;
+        if constexpr(T::isType())
+        {
+            if(t.Type)
+                result += toString(*t.Type);
+        }
+        if constexpr(T::isNonType())
+        {
+            result += t.Value.Written;
+        }
+        if constexpr(T::isTemplate())
+        {
+            result += t.Name;
+        }
+
+        if(t.IsPackExpansion)
+            result += "...";
+        return result;
+    });
 }
 
 } // mrdox

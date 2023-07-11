@@ -335,17 +335,7 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
                 attrs.push({"type", toString(*P.Type)});
                 
             if(P.Default)
-            {
-                std::string default_val;
-                if constexpr(T::isType())
-                    default_val = toString(*P.Default);
-                else if constexpr(T::isNonType())
-                    default_val = *P.Default;
-                else if constexpr(T::isTemplate())
-                    default_val = *P.Default;
-                    
-                attrs.push({"default", std::move(default_val)});
-            }
+                attrs.push({"default", toString(*P.Default)});
 
             if constexpr(T::isTemplate())
             {
@@ -372,11 +362,18 @@ inline void writeTemplateArg(const TArg& I, XMLTags& tags)
             };
 
             if constexpr(T::isType())
+            {
                 attrs.push({"type", toString(*A.Type)});
-            else if constexpr(T::isNonType())
+            }
+            if constexpr(T::isNonType())
+            {
                 attrs.push({"value", A.Value.Written});
-            else if constexpr(T::isTemplate())
+            }
+            if constexpr(T::isTemplate())
+            {
+                attrs.push({"name", A.Name});
                 attrs.push({A.Template});
+            }
                 
             tags.write(targTagName, {}, 
                 std::move(attrs));

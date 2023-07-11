@@ -1298,10 +1298,15 @@ public:
             if constexpr(kind == Decl::TemplateTypeParm)
             {
                 auto R = std::make_unique<TypeTParam>();
+                if(P->wasDeclaredWithTypename())
+                    R->KeyKind = TParamKeyKind::Typename;
                 if(P->hasDefaultArgument())
                 {
-                    R->Default = buildTypeInfo(
-                        P->getDefaultArgument());
+                    QualType QT = P->getDefaultArgument();
+                    R->Default = buildTemplateArg(
+                        TemplateArgument(QT, QT.isNull(), true));
+                    // R->Default = buildTypeInfo(
+                    //     P->getDefaultArgument());
                 }
                 return R;
             }
@@ -1312,8 +1317,10 @@ public:
                     P->getType());
                 if(P->hasDefaultArgument())
                 {
-                    R->Default.emplace(getSourceCode(
-                        P->getDefaultArgumentLoc()));
+                    R->Default = buildTemplateArg(
+                        TemplateArgument(P->getDefaultArgument(), true));
+                    // R->Default.emplace(getSourceCode(
+                    //     P->getDefaultArgumentLoc()));
                 }
                 return R;
             }
@@ -1328,8 +1335,10 @@ public:
 
                 if(P->hasDefaultArgument())
                 {
-                    R->Default.emplace(getSourceCode(
-                        P->getDefaultArgumentLoc()));
+                    R->Default = buildTemplateArg(
+                        P->getDefaultArgument().getArgument());
+                    // R->Default.emplace(getSourceCode(
+                    //     P->getDefaultArgumentLoc()));
                 }
                 return R;
             }
@@ -1345,11 +1354,9 @@ public:
         return TP;
     }
 
-    template<typename Range>
-    void
-    buildTemplateArgs(
-        std::vector<std::unique_ptr<TArg>>& result,
-        Range&& range)
+    std::unique_ptr<TArg>
+    buildTemplateArg(
+        const TemplateArgument& A)
     {
         // TypePrinter generates an internal placeholder name (e.g. type-parameter-0-0)
         // for template type parameters used as arguments. it also cannonicalizes
@@ -1360,55 +1367,47 @@ public:
         // the argument as written when it is not dependent and is a type.
         // FIXME: constant folding behavior should be consistent with that of other
         // constructs, e.g. noexcept specifiers & explicit specifiers
-        const auto& policy = context_.getPrintingPolicy();
-        for(const TemplateArgument& arg : range)
+        switch(A.getKind())
         {
-            switch(arg.getKind())
-            {
-            // empty template argument (e.g. not yet deduced)
-            case TemplateArgument::Null:
-                break;
+        // empty template argument (e.g. not yet deduced)
+        case TemplateArgument::Null:
+            break;
 
-            // a template argument pack (any kind)
-            case TemplateArgument::Pack:
+        // a template argument pack (any kind)
+        case TemplateArgument::Pack:
+        {
+            // we should never a TemplateArgument::Pack here
+            MRDOX_UNREACHABLE();
+            break;
+        }
+        // type
+        case TemplateArgument::Type:
+        {
+            auto R = std::make_unique<TypeTArg>();
+            QualType QT = A.getAsType();
+            MRDOX_ASSERT(! QT.isNull());
+            // if the template argument is a pack expansion,
+            // use the expansion pattern as the type & mark
+            // the template argument as a pack expansion
+            if(const Type* T = QT.getTypePtr(); 
+                auto* PT = dyn_cast<PackExpansionType>(T))
             {
-                // KRYSTIAN NOTE: is this correct? should we have a
-                // separate TArgKind for packs instead of "unlaminating"
-                // them as we are doing here?
-                buildTemplateArgs(result, arg.pack_elements());
-                break;
+                R->IsPackExpansion = true;
+                QT = PT->getPattern();
             }
-            // type
-            case TemplateArgument::Type:
+            R->Type = buildTypeInfo(QT);
+            return R;
+        }
+        // pack expansion of a template name
+        case TemplateArgument::TemplateExpansion:
+        // template name
+        case TemplateArgument::Template:
+        {
+            auto R = std::make_unique<TemplateTArg>();
+            R->IsPackExpansion = A.isPackExpansion();
+            TemplateName TN = A.getAsTemplateOrTemplatePattern();
+            if(auto* TD = TN.getAsTemplateDecl())
             {
-                auto R = std::make_unique<TypeTArg>();
-                QualType QT = arg.getAsType();
-                MRDOX_ASSERT(! QT.isNull());
-                // if the template argument is a pack expansion,
-                // use the expansion pattern as the type & mark
-                // the template argument as a pack expansion
-                if(const Type* T = QT.getTypePtr(); 
-                    auto* PT = dyn_cast<PackExpansionType>(T))
-                {
-                    R->IsPackExpansion = true;
-                    QT = PT->getPattern();
-                }
-                R->Type = buildTypeInfo(QT);
-
-                result.emplace_back(std::move(R));
-                break;
-            }
-            // pack expansion of a template name
-            case TemplateArgument::TemplateExpansion:
-            // template name
-            case TemplateArgument::Template:
-            {
-                auto R = std::make_unique<TemplateTArg>();
-                R->IsPackExpansion = arg.isPackExpansion();
-                TemplateName TN = arg.getAsTemplateOrTemplatePattern();
-                TemplateDecl* TD = cast<TemplateDecl>(
-                    getInstantiatedFrom(TN.getAsTemplateDecl()));
-                MRDOX_ASSERT(TD);
                 if(auto* II = TD->getIdentifier())
                     R->Name = II->getName();
                 // do not extract a SymbolID or build Info if 
@@ -1417,38 +1416,56 @@ public:
                 if(! isa<TemplateTemplateParmDecl>(TD) &&
                     ! isa<BuiltinTemplateDecl>(TD))
                 {
-                    extractSymbolID(TD, R->Template);
-                    getOrBuildInfo(TD);
+                    Decl* D = getInstantiatedFrom(TD);
+                    extractSymbolID(D, R->Template);
+                    getOrBuildInfo(D);
                 }
-                result.emplace_back(std::move(R));
-                break;
             }
-            // nullptr value
-            case TemplateArgument::NullPtr:
-            // expression referencing a declaration
-            case TemplateArgument::Declaration:
-            // integral expression
-            case TemplateArgument::Integral:
-            // expression
-            case TemplateArgument::Expression:
-            {
-                auto R = std::make_unique<NonTypeTArg>();
-                R->IsPackExpansion = arg.isPackExpansion();
-                // if this is a pack expansion, use the template argument
-                // expansion pattern in place of the template argument pack
-                const TemplateArgument& adjusted = 
-                    R->IsPackExpansion ?
-                    arg.getPackExpansionPattern() : arg;
+            return R;
+        }
+        // nullptr value
+        case TemplateArgument::NullPtr:
+        // expression referencing a declaration
+        case TemplateArgument::Declaration:
+        // integral expression
+        case TemplateArgument::Integral:
+        // expression
+        case TemplateArgument::Expression:
+        {
+            auto R = std::make_unique<NonTypeTArg>();
+            R->IsPackExpansion = A.isPackExpansion();
+            // if this is a pack expansion, use the template argument
+            // expansion pattern in place of the template argument pack
+            const TemplateArgument& adjusted = 
+                R->IsPackExpansion ?
+                A.getPackExpansionPattern() : A;
                 
-                llvm::raw_string_ostream stream(R->Value.Written);
-                adjusted.print(policy, stream, false);
+            llvm::raw_string_ostream stream(R->Value.Written);
+            adjusted.print(context_.getPrintingPolicy(), stream, false);
                 
-                result.emplace_back(std::move(R));
-                break;
-            }
-            default:
-                MRDOX_UNREACHABLE();
-            }
+            return R;
+        }
+        default:
+            MRDOX_UNREACHABLE();
+        }
+        return nullptr;
+    }
+
+    template<typename Range>
+    void
+    buildTemplateArgs(
+        std::vector<std::unique_ptr<TArg>>& result,
+        Range&& range)
+    {
+        for(const TemplateArgument& arg : range)
+        {
+            // KRYSTIAN NOTE: is this correct? should we have a
+            // separate TArgKind for packs instead of "unlaminating"
+            // them as we are doing here?
+            if(arg.getKind() == TemplateArgument::Pack)
+                buildTemplateArgs(result, arg.pack_elements());
+            else
+                result.emplace_back(buildTemplateArg(arg));
         }
     }
 

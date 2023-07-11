@@ -34,7 +34,7 @@ enum class TArgKind : int
     Template
 };
 
-MRDOX_DECL dom::String toString(TArgKind kind) noexcept;
+MRDOX_DECL std::string_view toString(TArgKind kind) noexcept;
 
 struct TArg
 {
@@ -131,6 +131,8 @@ visit(
     }
 }
 
+MRDOX_DECL std::string toString(const TArg& arg) noexcept;
+
 // ----------------------------------------------------------------
 
 enum class TParamKind : int
@@ -143,20 +145,23 @@ enum class TParamKind : int
     Template
 };
 
-MRDOX_DECL dom::String toString(TParamKind kind) noexcept;
+MRDOX_DECL std::string_view toString(TParamKind kind) noexcept;
 
 struct TParam
 {
-    /** The kind of template parameter this is. */
+    /** The kind of template parameter this is */
     TParamKind Kind;
 
     /** The template parameters name, if any */
     std::string Name;
 
-    /** Whether this template parameter is a parameter pack. */
+    /** Whether this template parameter is a parameter pack */
     bool IsParameterPack = false;
 
-    constexpr virtual ~TParam() = default;
+    /** The default template argument, if any */
+    std::unique_ptr<TArg> Default;
+
+    virtual ~TParam() = default;
 
     constexpr bool isType()     const noexcept { return Kind == TParamKind::Type; }
     constexpr bool isNonType()  const noexcept { return Kind == TParamKind::NonType; }
@@ -188,11 +193,20 @@ protected:
     }
 };
 
+/** The keyword a template parameter was declared with */
+enum class TParamKeyKind : int
+{
+    Class = 0,
+    Typename
+};
+
+MRDOX_DECL std::string_view toString(TParamKeyKind kind) noexcept;
+
 struct TypeTParam
     : IsTParam<TParamKind::Type>
 {
-    /** Default type for the type template parameter */
-    std::unique_ptr<TypeInfo> Default;
+    /** Keyword (class/typename) the parameter uses **/
+    TParamKeyKind KeyKind = TParamKeyKind::Class;
 };
 
 struct NonTypeTParam
@@ -200,8 +214,6 @@ struct NonTypeTParam
 {
     /** Type of the non-type template parameter */
     std::unique_ptr<TypeInfo> Type;
-    // Non-type template parameter default value (if any)
-    Optional<std::string> Default;
 };
 
 struct TemplateTParam
@@ -209,8 +221,6 @@ struct TemplateTParam
 {
     /** Template parameters for the template template parameter */
     std::vector<std::unique_ptr<TParam>> Params;
-    /** Non-type template parameter default value (if any) */
-    Optional<std::string> Default;
 };
 
 template<
@@ -243,20 +253,6 @@ visit(
         MRDOX_UNREACHABLE();
     }
 }
-
-// ----------------------------------------------------------------
-
-#if 0
-struct TArg
-{
-    std::string Value;
-
-    TArg() = default;
-
-    MRDOX_DECL
-    TArg(std::string&& value);
-};
-#endif
 
 // ----------------------------------------------------------------
 

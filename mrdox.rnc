@@ -205,7 +205,11 @@ grammar
     TemplateArg =
         element targ
         {
-            attribute value { text }
+            attribute class { "type"|"non-type"|"template" },
+            attribute name { text } ?,
+            ID ?,
+            attribute type { text } ?,
+            attribute value { text } ?
         }
 
     TemplateParam =

@@ -296,7 +296,7 @@ RecordIDNameMap = []()
         {TEMPLATE_PARAM_KIND,    {"Kind", &Integer32Abbrev}},
         {TEMPLATE_PARAM_NAME,    {"Name", &StringAbbrev}},
         {TEMPLATE_PARAM_IS_PACK, {"IsPack", &BoolAbbrev}},
-        {TEMPLATE_PARAM_DEFAULT, {"Default", &StringAbbrev}},
+        {TEMPLATE_PARAM_KEY_KIND,{"TParamKeyKind", &Integer32Abbrev}},
         {TYPEINFO_KIND, {"TypeinfoKind", &Integer32Abbrev}},
         {TYPEINFO_ID, {"TypeinfoID", &SymbolIDAbbrev}},
         {TYPEINFO_NAME, {"TypeinfoName", &StringAbbrev}},
@@ -379,7 +379,7 @@ RecordsByBlock{
     // TParam
     {BI_TEMPLATE_PARAM_BLOCK_ID,
         {TEMPLATE_PARAM_KIND, TEMPLATE_PARAM_NAME,
-        TEMPLATE_PARAM_IS_PACK, TEMPLATE_PARAM_DEFAULT}},
+        TEMPLATE_PARAM_IS_PACK, TEMPLATE_PARAM_KEY_KIND}},
     // SpecializationInfo
     {BI_SPECIALIZATION_BLOCK_ID,
         {SPECIALIZATION_PRIMARY, SPECIALIZATION_MEMBERS}},
@@ -1062,20 +1062,21 @@ emitBlock(
             emitRecord(P.Name, TEMPLATE_PARAM_NAME);
             emitRecord(P.IsParameterPack, TEMPLATE_PARAM_IS_PACK);
         
-            if constexpr(T::isType())
+            if(P.Default)
                 emitBlock(P.Default);
-            else if constexpr(T::isNonType())
+            
+            if constexpr(T::isType())
+            {
+                emitRecord(P.KeyKind, TEMPLATE_PARAM_KEY_KIND);
+            }
+            if constexpr(T::isNonType())
             {
                 emitBlock(P.Type);
-                if(P.Default)
-                    emitRecord(*P.Default, TEMPLATE_PARAM_DEFAULT);   
             }
-            else if constexpr(T::isTemplate())
+            if constexpr(T::isTemplate())
             {
                 for(const auto& P : P.Params)
                     emitBlock(P);
-                if(P.Default)
-                    emitRecord(*P.Default, TEMPLATE_PARAM_DEFAULT);
             }
         });
 }

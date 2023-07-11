@@ -743,17 +743,12 @@ public:
         {
             return decodeRecord(R, I_->IsParameterPack, Blob);
         }
-        case TEMPLATE_PARAM_DEFAULT:
+        case TEMPLATE_PARAM_KEY_KIND:
         {
-            return visit(*I_, [&]<typename T>(T& P)
-            {
-                if constexpr(T::isType())
-                    return formatError(
-                        "invalid template parameter kind");
-                else
-                    return decodeRecord(R, 
-                        P.Default.emplace(), Blob);
-            });
+            if(! I_->isType())
+                return formatError("only TypeTParams have a key kind");
+            return decodeRecord(R, static_cast<
+                TypeTParam&>(*I_.get()).KeyKind, Blob);
         }
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
@@ -770,26 +765,23 @@ public:
         {
             if(! I_->isTemplate())
                 return formatError("only TemplateTParam may have template parameters");
-            TemplateParamBlock P(
+            TemplateParamBlock B(
                 static_cast<TemplateTParam&>(
                     *I_.get()).Params.emplace_back(), br_);
-            return br_.readBlock(P, ID);
+            return br_.readBlock(B, ID);
+        }
+        case BI_TEMPLATE_ARG_BLOCK_ID:
+        {
+            TemplateArgBlock B(I_->Default, br_);
+            return br_.readBlock(B, ID);
         }
         case BI_TYPEINFO_BLOCK_ID:
         {
-            return visit(*I_, [&]<typename T>(T& P)
-            {
-                if constexpr(T::isTemplate())
-                    return formatError("invalid TypeInfo block in TParam");
-                    
-                std::unique_ptr<TypeInfo>* R = nullptr;
-                if constexpr(T::isType())
-                    R = &P.Default;
-                else if constexpr(T::isNonType())
-                    R = &P.Type;
-                TypeInfoBlock B(*R, br_);
-                return br_.readBlock(B, ID);
-            });
+            if(! I_->isNonType())
+                return formatError("only NonTypeTParams may have a type");
+            TypeInfoBlock B(static_cast<
+                NonTypeTParam&>(*I_.get()).Type, br_);
+            return br_.readBlock(B, ID);
         }
         default:
             return AnyBlock::readSubBlock(ID);

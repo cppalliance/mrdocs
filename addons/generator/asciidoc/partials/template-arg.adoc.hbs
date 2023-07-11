@@ -1,0 +1,8 @@
+{{#if (eq kind "type")~}}
+{{~>declarator type decl-name=""~}}
+{{else if (eq kind "non-type")~}}
+{{~value~}}
+{{else if (eq kind "template")~}}
+{{#if template}}xref:{{template}}[{{name~}}]{{else~}}{{name~}}{{/if~}}
+{{/if~}}
+{{~#if is-pack}}...{{/if~}}

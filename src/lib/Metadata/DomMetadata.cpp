@@ -283,12 +283,12 @@ domCreate(
                 entries.emplace_back("type", 
                     domCreate(t.Type, domCorpus));
             }
-            else if constexpr(T::isNonType())
+            if constexpr(T::isNonType())
             {
                 entries.emplace_back("value", 
                     t.Value.Written);
             }
-            else if constexpr(T::isTemplate())
+            if constexpr(T::isTemplate())
             {
                 entries.emplace_back("name", 
                     t.Name);
@@ -317,25 +317,25 @@ domCreate(
     };
     visit(*I, [&]<typename T>(const T& t)
         {
-            if constexpr(T::isType())
-            {
+            if(t.Default)
                 entries.emplace_back("default", 
                     domCreate(t.Default, domCorpus));
+
+            if constexpr(T::isType())
+            {
+                entries.emplace_back("key", 
+                    toString(t.KeyKind));
             }
-            else if constexpr(T::isNonType())
+            if constexpr(T::isNonType())
             {
                 entries.emplace_back("type", 
                     domCreate(t.Type, domCorpus));
-                entries.emplace_back("default", 
-                    t.Default);
             }
-            else if constexpr(T::isTemplate())
+            if constexpr(T::isTemplate())
             {
                 entries.emplace_back("params",
                     dom::newArray<DomTParamArray>(
                         t.Params, domCorpus));
-                entries.emplace_back("default", 
-                    t.Default);
             }
         });
     return dom::Object(std::move(entries));
