@@ -36,6 +36,9 @@ Builder(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
+    helpers::registerAntoraHelpers(hbs_);
+    hbs_.registerHelper("neq", helpers::ne_fn);
+
     Config const& config = corpus_.config;
 
     // load templates
