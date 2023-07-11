@@ -9,6 +9,8 @@ For later versions of Visual Studio, no setup is required-->
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 
   <Type Name="clang::Type">
+    <Intrinsic Name="is_canonical" Expression="CanonicalType.Value.get_void_ptr() == this" />
+    
     <!-- To visualize clang::Types, we need to look at TypeBits.TC to determine the actual
          type subclass and manually dispatch accordingly (Visual Studio can't identify the real type
          because clang::Type has no virtual members hence no RTTI).
@@ -304,8 +306,8 @@ For later versions of Visual Studio, no setup is required-->
     </Expand>
   </Type>
   <Type Name="clang::TemplateTypeParmType">
-    <DisplayString IncludeView="cpp" Condition="CanonicalType.Value.Value != this">{TTPDecl->Name,view(cpp)}</DisplayString>
-    <DisplayString Condition="CanonicalType.Value.Value != this">Non-canonical: {*TTPDecl}</DisplayString>
+    <DisplayString IncludeView="cpp" Condition="! is_canonical()">{TTPDecl->Name,view(cpp)}</DisplayString>
+    <DisplayString Condition="! is_canonical()">Non-canonical: {*TTPDecl}</DisplayString>
     <DisplayString>Canonical: {CanTTPTInfo}</DisplayString>
     <Expand>
       <ExpandedItem>*(clang::Type *)this, view(cmn)</ExpandedItem>
@@ -542,8 +544,8 @@ For later versions of Visual Studio, no setup is required-->
     <DisplayString IncludeView="arg1">, {((clang::TemplateArgument *)(this+1))[1],view(cpp)}{*this,view(arg2)}</DisplayString>
     <DisplayString IncludeView="arg2" Condition="TemplateSpecializationTypeBits.NumArgs==2"></DisplayString>
     <DisplayString IncludeView="arg2">, {((clang::TemplateArgument *)(this+1))[2],view(cpp)}{*this,view(arg3)}</DisplayString>
-    <DisplayString Condition="(Template.Storage.Val.Value &amp; 3) == 0">
-      {*((clang::TemplateDecl *)(Template.Storage.Val.Value))->TemplatedDecl,view(cpp)}&lt;{*this,view(arg0)}&gt;
+    <DisplayString Condition="Template.Storage.get_int() == 0">
+      {*((clang::TemplateDecl *)(Template.Storage.get_ptr()))->TemplatedDecl,view(cpp)}&lt;{*this,view(arg0)}&gt;
     </DisplayString>
     <DisplayString>Can't visualize this TemplateSpecializationType</DisplayString>
     <Expand>
@@ -557,26 +559,19 @@ For later versions of Visual Studio, no setup is required-->
   </Type>
   <Type Name="clang::DeducedType">
     <Expand>
-      <Item Name="isDeduced">(CanonicalType.Value.Value != this) || TypeBits.Dependent</Item>
+      <Item Name="isDeduced">! is_canonical() || TypeBits.Dependent</Item>
       <ExpandedItem>*(clang::Type *)this,view(cmn)</ExpandedItem>
     </Expand>
   </Type>
   <Type Name="clang::DeducedTemplateSpecializationType">
-    <DisplayString Condition="(CanonicalType.Value.Value != this) || TypeBits.Dependent">{CanonicalType,view(cpp)}</DisplayString>
+    <DisplayString Condition="! is_canonical() || TypeBits.Dependent">{CanonicalType,view(cpp)}</DisplayString>
     <DisplayString IncludeView="cpp">{Template,view(cpp)}</DisplayString>
     <DisplayString>{Template}</DisplayString>
     <Expand>
       <Item Name="Template">Template</Item>
-      <Item Name="Deduced As" Condition="(CanonicalType.Value.Value != this) || TypeBits.Dependent">CanonicalType,view(cpp)</Item>
+      <Item Name="Deduced As" Condition="! is_canonical() || TypeBits.Dependent">CanonicalType,view(cpp)</Item>
       <ExpandedItem>(clang::DeducedType *)this</ExpandedItem>
       <Item Name="Template">Template</Item>
-    </Expand>
-  </Type>
-  <Type Name="clang::ClassTemplateSpecializationDecl">
-    <DisplayString>{*(CXXRecordDecl *)this,nd}{*TemplateArgs}</DisplayString>
-    <Expand>
-      <ExpandedItem>(CXXRecordDecl *)this,nd</ExpandedItem>
-      <Item Name="TemplateArgs">TemplateArgs</Item>
     </Expand>
   </Type>
   <Type Name="clang::IdentifierInfo">
@@ -748,49 +743,583 @@ For later versions of Visual Studio, no setup is required-->
   <Type Name="clang::DirectoryEntry">
     <DisplayString>{Name,s}</DisplayString>
   </Type>
+  <Type Name="clang::SourceLocation">
+    <DisplayString Condition="ID == 0">invalid</DisplayString>
+    <DisplayString Condition="ID != 0">{ID}</DisplayString>
+    <Expand HideRawView="true"/>
+  </Type>
 
+  <Type Name="clang::UnqualifiedId">
+    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_Identifier">[IK_Identifier] {*Identifier}</DisplayString>
+    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_OperatorFunctionId">[IK_OperatorFunctionId] {OperatorFunctionId}</DisplayString>
+    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_ConversionFunctionId">[IK_ConversionFunctionId] {ConversionFunctionId}</DisplayString>
+    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_ConstructorName">[IK_ConstructorName] {ConstructorName}</DisplayString>
+    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_DestructorName">[IK_DestructorName] {DestructorName}</DisplayString>
+    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_DeductionGuideName">[IK_DeductionGuideName] {TemplateName}</DisplayString>
+    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_TemplateId">[IK_TemplateId] {TemplateId}</DisplayString>
+    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_ConstructorTemplateId">[IK_ConstructorTemplateId] {TemplateId}</DisplayString>
+    <DisplayString>Kind</DisplayString>
+    <Expand>
+      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_Identifier">Identifier</ExpandedItem>
+      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_OperatorFunctionId">OperatorFunctionId</ExpandedItem>
+      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_ConversionFunctionId">ConversionFunctionId</ExpandedItem>
+      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_ConstructorName">ConstructorName</ExpandedItem>
+      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_DestructorName">DestructorName</ExpandedItem>
+      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_DeductionGuideName">TemplateName</ExpandedItem>
+      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_TemplateId">TemplateId</ExpandedItem>
+      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_ConstructorTemplateId">TemplateId</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="clang::OpaquePtr&lt;*&gt;">
+    <DisplayString>{*($T1*)&amp;Ptr}</DisplayString>
+    <Expand>
+      <ExpandedItem>($T1*)&amp;Ptr</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="clang::UnionOpaquePtr&lt;*&gt;">
+    <DisplayString>{($T1 *)Ptr}</DisplayString>
+    <Expand>
+      <ExpandedItem>($T1 *)Ptr</ExpandedItem>
+    </Expand>
+  </Type>
+  <Type Name="clang::Stmt">
+    <DisplayString>{(clang::Stmt::StmtClass)StmtBits.sClass,en}</DisplayString>
+    <Expand>
+      <Item Name="Class">(clang::Stmt::StmtClass)StmtBits.sClass,en</Item>
+    </Expand>
+  </Type>
+  <Type Name="clang::Expr">
+    <DisplayString>Expression of class {(clang::Stmt::StmtClass)StmtBits.sClass,en} and type {TR,view(cpp)}</DisplayString>
+  </Type>
+  <Type Name="clang::TemplateParameterList">
+    <DisplayString IncludeView="parm0" Condition="NumParams==0"></DisplayString>
+    <DisplayString IncludeView="parm0">{*((NamedDecl **)(this+1))[0],view(cpp)}{*this,view(parm1)}</DisplayString>
+    <DisplayString IncludeView="parm1" Condition="NumParams==1"></DisplayString>
+    <DisplayString IncludeView="parm1">, {*((NamedDecl **)(this+1))[1],view(cpp)}{*this,view(parm2)}</DisplayString>
+    <DisplayString IncludeView="parm2" Condition="NumParams==2"></DisplayString>
+    <DisplayString IncludeView="parm2">, {*((NamedDecl **)(this+1))[2],view(cpp)}{*this,view(parm3)}</DisplayString>
+    <DisplayString IncludeView="parm3" Condition="NumParams==3"></DisplayString>
+    <DisplayString IncludeView="parm3">, {*((NamedDecl **)(this+1))[3],view(cpp)}{*this,view(parm4)}</DisplayString>
+    <DisplayString IncludeView="parm4" Condition="NumParams==4"></DisplayString>
+    <DisplayString IncludeView="parm4">, {*((NamedDecl **)(this+1))[4],view(cpp)}{*this,view(parm5)}</DisplayString>
+    <DisplayString IncludeView="parm5" Condition="NumParams==5"></DisplayString>
+    <DisplayString IncludeView="parm5">, /* Expand for more params */</DisplayString>
+    <DisplayString>&lt;{*this,view(parm0)}&gt;</DisplayString>
+    <Expand>
+      <ArrayItems>
+        <Size>NumParams</Size>
+        <ValuePointer>(NamedDecl **)(this+1)</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+
+
+
+
+
+  <!-- ================================================================================================ -->
+
+  <Type Name="clang::Redeclarable&lt;*&gt;::DeclLink">
+    <Intrinsic Category="Data" Name="get_value" Expression="*(uintptr_t*)(&amp;Link)" />
+    <Intrinsic Category="Data" Name="get_int" Expression="get_value() &amp; 7" />
+    <Intrinsic Category="Data" Name="get_void_ptr" Expression="(void*)(get_value() &amp; ~7ull)" />
+    <Intrinsic Category="Data" Name="get_ptr" Expression="($T1*)(get_int() != 5 ? get_void_ptr() : 
+      ((KnownLatest::LazyData*)get_void_ptr())-&gt;LastValue)" />
+    <Expand>
+      <Item Name="[int]">get_int()</Item>
+      <Item Name="[ptr]">get_ptr()</Item>
+    </Expand>
+  </Type>
+  
+  <Type Name="clang::Redeclarable&lt;*&gt;">
+    <Intrinsic Category="Data" Name="get_previous" Expression="(Redeclarable&lt;$T1&gt;*)(RedeclLink.get_ptr())" />
+    <Intrinsic Category="Data" Name="get_first" Expression="(Redeclarable&lt;$T1&gt;*)First" />
+    <Intrinsic Category="Data" Name="get_latest" Expression="get_first()-&gt;get_previous()" />
+    <Intrinsic Category="Data" Name="is_first" Expression="get_first() == this" />
+    <Expand>
+      
+      <Synthetic Name="[redeclarations]">
+        <DisplayString></DisplayString>
+        <Expand>
+          <LinkedListItems>
+            <HeadPointer>get_first()</HeadPointer>
+            <NextPointer>get_previous()</NextPointer>
+            <ValueNode>($T1*)this</ValueNode>
+          </LinkedListItems>
+        </Expand>
+      </Synthetic>
+    </Expand>
+  </Type>
+
+  <!-- ================================================================================================ -->
+  
   <Type Name="clang::Decl">
-    <DisplayString>{(clang::Decl::Kind)DeclKind,en}Decl</DisplayString>
-    <Expand>
-      <Item Name="DeclKind">(clang::Decl::Kind)DeclKind,en</Item>
-      <Item Name="ID">(uintptr_t)this,x</Item>
-      <Item Name="Implicit">Implicit</Item>
-      <Item Name="Access">(AccessSpecifier)Access</Item>
-      <ExpandedItem Condition="dynamic_cast&lt;clang::DeclContext*&gt;(this)">*dynamic_cast&lt;clang::DeclContext*&gt;(this)</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::NamedDecl" >
-    <DisplayString IncludeView="cpp">{Name,view(cpp)}</DisplayString>
-    <DisplayString>{Name}</DisplayString>
-    <Expand>
-      <ExpandedItem>*(clang::Decl*)this,nd</ExpandedItem>
-      <Item Name="Name">Name</Item>
-    </Expand>
-  </Type>
+    <Intrinsic Category="Data" Name="get_kind" Expression="(clang::Decl::Kind)DeclKind" />
 
-    <!-- Unfortunately, Visual Studio has trouble seeing the PointerBitMask member PointerIntUnion, so I hardwire it to 2 bits-->
-  <Type Name="clang::DeclContext">
-    <DisplayString>{(clang::Decl::Kind)DeclContextBits.DeclKind,en}Decl</DisplayString>
+    <DisplayString Condition="Implicit">{get_kind(),en}Decl (implicit)</DisplayString>
+    <DisplayString>{get_kind(),en}Decl</DisplayString>
+    
     <Expand>
-      <!--<Item Name="DeclKind">(clang::Decl::Kind)DeclContextBits.DeclKind,en</Item>-->
-      <Synthetic Name="Members">
+      <Item Name="Kind">get_kind(),en</Item>
+      <Item Name="ID">(uintptr_t)this,x</Item>
+      <Synthetic Name="Access">
+        <DisplayString Condition="Access == clang::AccessSpecifier::AS_public">public</DisplayString>
+        <DisplayString Condition="Access == clang::AccessSpecifier::AS_protected">protected</DisplayString>
+        <DisplayString Condition="Access == clang::AccessSpecifier::AS_private">private</DisplayString>
+        <DisplayString Condition="Access == clang::AccessSpecifier::AS_none">none</DisplayString>
+        <DisplayString>invalid</DisplayString>
+      </Synthetic>
+    </Expand>
+  </Type>
+  
+  <Type Name="clang::DeclContext">
+    <!--<DisplayString>{(clang::Decl::Kind)DeclContextBits.DeclKind,en}Decl</DisplayString>-->
+    <Expand>
+      <Synthetic Name="[members]" Condition="FirstDecl != LastDecl">
         <DisplayString></DisplayString>
         <Expand>
           <LinkedListItems>
             <HeadPointer>FirstDecl</HeadPointer>
-            <NextPointer>(clang::Decl *)(*(intptr_t *)NextInContextAndBits.Value.Data &amp; ~3)</NextPointer>
+            <NextPointer>(clang::Decl *)(*(intptr_t*)NextInContextAndBits.Value.Data &amp; ~3)</NextPointer>
             <ValueNode>*this</ValueNode>
           </LinkedListItems>
         </Expand>
       </Synthetic>
     </Expand>
   </Type>
+
+  <!-- ================================================================================================ -->
+  
+  <Type Name="clang::NamedDecl">
+    <DisplayString>{Name}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(Decl*)this,nd</ExpandedItem>
+      <Item Name="Name">Name</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::ValueDecl">
+    <DisplayString>{Name}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(NamedDecl*)this,nd</ExpandedItem>
+      <Item Name="Type">DeclType</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::DeclaratorDecl">
+    <Intrinsic Category="Data" Name="get_type_as_written"
+      Expression="DeclInfo.is_null() ? nullptr : (TypeSourceInfo*)(DeclInfo.get_int() == 0 ?
+        DeclInfo.get_ptr() : ((clang::DeclaratorDecl::ExtInfo*)DeclInfo.get_ptr())-&gt;TInfo)"/>
+    <DisplayString>{Name}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(NamedDecl*)this,nd</ExpandedItem>
+      <Synthetic Name="Type">
+        <DisplayString>{DeclType}</DisplayString>
+        <Expand>
+          <Item Name="Type">DeclType</Item>
+          <Item Name="TypeAsWritten">get_type_as_written(),na</Item>
+        </Expand>
+      </Synthetic>
+    </Expand>
+  </Type>
+
+  
+
+  <!-- ================================================================================================ -->
+
+
+  <Type Name="clang::FunctionDecl" Inheritable="false">
+    <AlternativeType Name="clang::CXXMethodDecl" Inheritable="false" />
+    <AlternativeType Name="clang::CXXConstructorDecl" Inheritable="false" />
+    <AlternativeType Name="clang::CXXConversionDecl" Inheritable="false" />
+    <AlternativeType Name="clang::CXXDestructorDecl" Inheritable="false" />
+    <AlternativeType Name="clang::CXXDeductionGuide" Inheritable="false" />
+    <Expand>
+      <!--<ExpandedItem>*(Decl*)this,nd</ExpandedItem>-->
+      <ExpandedItem>*(DeclaratorDecl*)this,nd</ExpandedItem>
+
+      <Item Name="DescribedTemplate" Condition="! TemplateOrSpecialization.is_null() &amp;&amp; 
+        TemplateOrSpecialization.get_int() == 0 &amp;&amp;
+          ((NamedDecl*)TemplateOrSpecialization.get_ptr())-&gt;get_kind() == Decl::FunctionTemplate">
+        (FunctionTemplateDecl*)TemplateOrSpecialization.get_ptr()
+      </Item>
+      <Item Name="InstantiatedFrom" Condition="! TemplateOrSpecialization.is_null() &amp;&amp; 
+        TemplateOrSpecialization.get_int() == 0 &amp;&amp;
+          ((NamedDecl*)TemplateOrSpecialization.get_ptr())-&gt;get_kind() == Decl::Function">
+        (FunctionDecl*)TemplateOrSpecialization.get_ptr()
+      </Item>
+      
+      <Item Name="MemberSpecialization" Condition="! TemplateOrSpecialization.is_null() &amp;&amp; TemplateOrSpecialization.get_int() == 1">
+        (MemberSpecializationInfo*)TemplateOrSpecialization.get_ptr()
+      </Item>
+      
+      <Item Name="TemplateSpecialization" Condition="! TemplateOrSpecialization.is_null() &amp;&amp; TemplateOrSpecialization.get_int() == 2">
+        (FunctionTemplateSpecializationInfo*)TemplateOrSpecialization.get_ptr()
+      </Item>
+      
+      
+      <ExpandedItem>*(redeclarable_base*)this,nd</ExpandedItem>
+      <ExpandedItem>*(DeclContext*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::TagDecl">
+    <Expand>
+      <!--<ExpandedItem>*(Decl*)this,nd</ExpandedItem>-->
+      <ExpandedItem>*(NamedDecl*)this,nd</ExpandedItem>
+      <ExpandedItem>*(redeclarable_base*)this,nd</ExpandedItem>
+      <ExpandedItem>*(DeclContext*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+  
+  <Type Name="clang::TemplateDecl">
+    <Expand>
+      <!--<ExpandedItem>*(Decl*)this,nd</ExpandedItem>-->
+      <ExpandedItem>*(NamedDecl*)this,nd</ExpandedItem>
+      <Item Name="TemplateParams">TemplateParams,na</Item>
+      <Item Name="TemplatedDecl">TemplatedDecl,na</Item>
+    </Expand>
+  </Type>
+  
+  <!-- ================================================================================================ -->
+  
+  <Type Name="clang::ClassTemplateDecl::Common">
+    <Expand>
+      <ExpandedItem>*(RedeclarableTemplateDecl::CommonBase*)this,nd</ExpandedItem>
+      <!--
+      <Item Name="Specializations">Specializations</Item>
+      <Item Name="PartialSpecializations">PartialSpecializations</Item>
+      -->
+      <Item Name="InjectedClassNameType">InjectedClassNameType</Item>
+      <Synthetic Name="[specializations]">
+        <DisplayString Condition="Specializations.Vector.Size == 0">empty</DisplayString>
+        <DisplayString Condition="Specializations.Vector.Size != 0">{Specializations.Vector.Size} elements</DisplayString>
+        <Expand>
+          <ArrayItems>
+            <Size>Specializations.Vector.Size</Size>
+            <ValuePointer>(ClassTemplateSpecializationDecl**)Specializations.Vector.BeginX</ValuePointer>
+          </ArrayItems>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="[partial specializations]">
+        <DisplayString Condition="PartialSpecializations.Vector.Size == 0">empty</DisplayString>
+        <DisplayString Condition="PartialSpecializations.Vector.Size != 0">{PartialSpecializations.Vector.Size} elements</DisplayString>
+        <Expand>
+          <ArrayItems>
+            <Size>PartialSpecializations.Vector.Size</Size>
+            <ValuePointer>(ClassTemplatePartialSpecializationDecl**)PartialSpecializations.Vector.BeginX</ValuePointer>
+          </ArrayItems>
+        </Expand>
+      </Synthetic>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::VarTemplateDecl::Common">
+    <Expand>
+      <ExpandedItem>*(RedeclarableTemplateDecl::CommonBase*)this,nd</ExpandedItem>
+      <!--
+      <Item Name="Specializations">Specializations</Item>
+      <Item Name="PartialSpecializations">PartialSpecializations</Item>
+      -->
+      <Synthetic Name="[specializations]">
+        <DisplayString Condition="Specializations.Vector.Size == 0">empty</DisplayString>
+        <DisplayString Condition="Specializations.Vector.Size != 0">{Specializations.Vector.Size} elements</DisplayString>
+        <Expand>
+          <ArrayItems>
+            <Size>Specializations.Vector.Size</Size>
+            <ValuePointer>(VarTemplateSpecializationDecl**)Specializations.Vector.BeginX</ValuePointer>
+          </ArrayItems>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="[partial specializations]">
+        <DisplayString Condition="PartialSpecializations.Vector.Size == 0">empty</DisplayString>
+        <DisplayString Condition="PartialSpecializations.Vector.Size != 0">{PartialSpecializations.Vector.Size} elements</DisplayString>
+        <Expand>
+          <ArrayItems>
+            <Size>PartialSpecializations.Vector.Size</Size>
+            <ValuePointer>(VarTemplatePartialSpecializationDecl**)PartialSpecializations.Vector.BeginX</ValuePointer>
+          </ArrayItems>
+        </Expand>
+      </Synthetic>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::FunctionTemplateDecl::Common">
+    <Expand>
+      <ExpandedItem>*(RedeclarableTemplateDecl::CommonBase*)this,nd</ExpandedItem>
+      <!--<Item Name="Specializations">Specializations</Item>-->
+      <Synthetic Name="[specializations]">
+        <DisplayString Condition="Specializations.Vector.Size == 0">empty</DisplayString>
+        <DisplayString Condition="Specializations.Vector.Size != 0">{Specializations.Vector.Size} elements</DisplayString>
+        <Expand>
+          <ArrayItems>
+            <Size>Specializations.Vector.Size</Size>
+            <ValuePointer>(FunctionTemplateSpecializationInfo**)Specializations.Vector.BeginX</ValuePointer>
+          </ArrayItems>
+        </Expand>
+      </Synthetic>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::TypeAliasTemplateDecl::Common">
+    <Expand>
+      <ExpandedItem>*(RedeclarableTemplateDecl::CommonBase*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::RedeclarableTemplateDecl::CommonBase">
+    <Expand>
+      <Item Name="IsMemberSpecialization">InstantiatedFromMember.get_int()</Item>
+      <Item Name="InstantiatedFromMember" Condition="! InstantiatedFromMember.is_null()">InstantiatedFromMember.get_ptr()</Item>
+      <Item Name="LazySpecializations" Condition="LazySpecializations != nullptr">LazySpecializations</Item>
+      <Item Name="InjectedArgs" Condition="InjectedArgs != nullptr">InjectedArgs</Item>
+    </Expand>
+  </Type>
+
+  <!-- ================================================================================================ -->
+
   <Type Name="clang::FieldDecl">
-    <DisplayString>Field {{{*(clang::DeclaratorDecl *)this,view(cpp)nd}}}</DisplayString>
+    <!--<DisplayString>Field {{{*(clang::DeclaratorDecl *)this,view(cpp)nd}}}</DisplayString>-->
     <Expand>
       <ExpandedItem>*(DeclaratorDecl*)this,nd</ExpandedItem>
     </Expand>
   </Type>
+  
+  <!-- ================================================================================================ -->
+
+  <Type Name="clang::FriendDecl">
+    <DisplayString>{(Decl*)this,nand}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(Decl*)this,nd</ExpandedItem>
+      <Synthetic Name="TemplateParams" Condition="NumTPLists">
+        <Expand>
+          <ArrayItems>
+            <Size>NumTPLists</Size>
+            <ValuePointer>(TemplateParameterList**)(this + 1)</ValuePointer>
+          </ArrayItems>
+        </Expand>
+      </Synthetic>
+      
+      <Item Name="FriendDecl" Condition="! Friend.is_null() &amp;&amp; Friend.get_int() == 0">(NamedDecl*)Friend.get_ptr()</Item>
+      <Item Name="FriendType" Condition="! Friend.is_null() &amp;&amp; Friend.get_int() == 1">(TypeSourceInfo*)Friend.get_ptr()</Item>
+      <Item Name="Unsupported">(bool)UnsupportedFriend</Item>
+    </Expand>
+  </Type>
+
+  <!-- FriendTemplateDecl is not currently used 
+  <Type Name="clang::FriendTemplateDecl">
+    <DisplayString>{(Decl*)this,nand}</DisplayString>
+    <Expand>
+      <ExpandedItem>*(Decl*)this,nd</ExpandedItem>
+
+      <Item Name="FriendDecl" Condition="! Friend.is_null() &amp;&amp; Friend.get_int() == 0">(NamedDecl*)Friend.get_ptr()</Item>
+      <Item Name="FriendType" Condition="! Friend.is_null() &amp;&amp; Friend.get_int() == 1">(TypeSourceInfo*)Friend.get_ptr()</Item>
+    </Expand>
+  </Type>
+  -->
+
+  <!-- ================================================================================================ -->
+
+  <Type Name="clang::RedeclarableTemplateDecl">
+    <Intrinsic Category="Data" Name="get_common_ptr" Expression="((RedeclarableTemplateDecl*)get_first())-&gt;Common"/>
+    <Expand>
+      <ExpandedItem>*(TemplateDecl*)this,nd</ExpandedItem>
+
+      <!-- 
+      KRYSTIAN NOTE: this implements RedeclarableTemplateDecl::getCommonPtr without allocating/updating redeclarations.
+      however, i think that using the CommonPtr stored in the first declaration should be good enough since it is propagated to
+      all previous declarations upon access. as far as i know the only circumstance using the CommonPtr from the first
+      declaration would not work is in an intermediate state during parsing... right?
+      <CustomListItems Optional="true">
+        <Variable Name="decl" InitialValue="this"/>
+        <Variable Name="common" InitialValue="decl-&gt;Common"/>
+        <Loop Condition="! common &amp;&amp; ! decl-&gt;is_first()">
+          <Exec>decl = (RedeclarableTemplateDecl*)(decl-&gt;get_previous())</Exec>
+          <Exec>common = decl ? decl-&gt;Common : nullptr</Exec>
+        </Loop>
+        <If Condition="common">
+          <Item Condition="get_kind() == Decl::ClassTemplate" Name="[common base]">(ClassTemplateDecl::Common*)common</Item>
+          <Item Condition="get_kind() == Decl::VarTemplate" Name="[common base]">(VarTemplateDecl::Common*)common</Item>
+          <Item Condition="get_kind() == Decl::FunctionTemplate" Name="[common base]">(FunctionTemplateDecl::Common*)common</Item>
+          <Item Condition="get_kind() == Decl::TypeAliasTemplate" Name="[common base]">(TypeAliasTemplateDecl::Common*)common</Item>
+        </If>
+      </CustomListItems>
+      -->
+      <ExpandedItem Condition="get_common_ptr() != nullptr &amp;&amp; get_kind() == Decl::ClassTemplate">
+        *(ClassTemplateDecl::Common*)get_common_ptr()
+      </ExpandedItem>
+      <ExpandedItem Condition="get_common_ptr() != nullptr &amp;&amp; get_kind() == Decl::VarTemplate">
+        *(VarTemplateDecl::Common*)get_common_ptr()
+      </ExpandedItem>
+      <ExpandedItem Condition="get_common_ptr() != nullptr &amp;&amp; get_kind() == Decl::FunctionTemplate">
+        *(FunctionTemplateDecl::Common*)get_common_ptr()
+      </ExpandedItem>
+      <ExpandedItem Condition="get_common_ptr() != nullptr &amp;&amp; get_kind() == Decl::TypeAliasTemplate">
+        *(TypeAliasTemplateDecl::Common*)get_common_ptr()
+      </ExpandedItem>
+
+      <ExpandedItem>*(redeclarable_base*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+  
+  <!-- ================================================================================================ -->
+
+  <Type Name="clang::FunctionTemplateDecl">
+    <Expand>
+      <ExpandedItem>*(RedeclarableTemplateDecl*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::FunctionTemplateSpecializationInfo">
+    <Expand>
+      <Item Name="SpecializationKind">clang::TemplateSpecializationKind(Template.get_int() + 1),en</Item>
+      <Item Name="IsMemberSpecialization">Function.get_int()</Item>
+      <Item Name="InstantiatedFromMember" Condition="Function.get_int()">
+        *reinterpret_cast&lt;MemberSpecializationInfo**&gt;(this + 1)
+      </Item>
+      <Item Name="Function" Condition="! Function.is_null()">Function.get_ptr()</Item>
+      <Item Name="Template" Condition="! Template.is_null()">Template.get_ptr()</Item>
+      <Item Name="TemplateArguments">TemplateArguments</Item>
+      <Item Name="TemplateArgumentsAsWritten">TemplateArgumentsAsWritten</Item>
+      <Item Name="PointOfInstantiation">PointOfInstantiation</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::ClassScopeFunctionSpecializationDecl">
+    <Expand>
+      <ExpandedItem>*(Decl*)this,nd</ExpandedItem>
+      <Item Name="TemplateArgs">TemplateArgs,na</Item>
+      <Item Name="Specialization">Specialization</Item>
+    </Expand>
+  </Type>
+  
+  <!-- ================================================================================================ -->
+
+  <Type Name="clang::MemberSpecializationInfo">
+    <Expand>
+      <Item Name="SpecializationKind">clang::TemplateSpecializationKind(MemberAndTSK.get_int() + 1),en</Item>
+      <Item Name="InstantiatedFrom" Condition="! MemberAndTSK.is_null()">
+        MemberAndTSK.get_ptr()
+      </Item>
+      <Item Name="PointOfInstantiation">PointOfInstantiation</Item>
+    </Expand>
+  </Type>
+
+  <!-- ================================================================================================ -->
+
+  <Type Name="clang::ParmVarDecl">
+    <DisplayString>{*(VarDecl*)this,nd}</DisplayString>
+    <Expand>
+      <Item Name="ParmVarDeclBits">ParmVarDeclBits</Item>
+      <ExpandedItem>*(VarDecl*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+
+  <Type Name="clang::VarDecl">
+    <AlternativeType Name="clang::VarTemplatePartialSpecializationDecl" Inheritable="false" />
+    <AlternativeType Name="clang::VarTemplateSpecializationDecl" Inheritable="false" />
+    <Intrinsic Category="Data" Name="is_vtpsd" Expression="get_kind() == Decl::VarTemplatePartialSpecialization" />
+    <Intrinsic Category="Data" Name="as_vtpsd" Expression="(VarTemplatePartialSpecializationDecl*)this" />
+    <Intrinsic Category="Data" Name="is_vtsd" Expression="get_kind() == Decl::VarTemplateSpecialization || is_vtpsd()" />
+    <Intrinsic Category="Data" Name="as_vtsd" Expression="(VarTemplateSpecializationDecl*)this" />
+    <Expand>
+      <!--<ExpandedItem>*(Decl*)this,nd</ExpandedItem>-->
+      <ExpandedItem>*(DeclaratorDecl*)this,nd</ExpandedItem>
+
+      <Item Name="TemplateParams" Condition="is_vtpsd()">as_vtpsd()-&gt;TemplateParams,na</Item>
+      <Item Name="TemplateArgs" Condition="is_vtsd()">as_vtsd()-&gt;TemplateArgs,na</Item>
+
+      <Item Name="SpecializationKind" Condition="is_vtsd()">
+        clang::TemplateSpecializationKind(as_vtsd()-&gt;SpecializationKind),en
+      </Item>
+      <!-- KRYSTIAN TODO: this is stored in a DenseMap in ASTContext...
+      <Item Name="SpecializationKind" Condition="! is_vtsd() &amp;&amp; ! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
+        clang::TemplateSpecializationKind(
+        ((MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr())-&gt;MemberAndTSK.get_int() + 1),en
+      </Item>
+      -->
+      
+      <!-- KRYSTIAN TODO: this is stored in a DenseMap in ASTContext...
+      <Item Name="DescribedTemplate" Condition="! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 0">
+        (VarTemplateDecl*)TemplateOrInstantiation.get_ptr()
+      </Item>
+      <Item Name="MemberSpecialization" Condition="! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
+        (MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr()
+      </Item>
+      -->
+      <Item Name="IsMemberSpecialization" Condition="is_vtpsd()">as_vtpsd()-&gt;InstantiatedFromMember.get_int()</Item>
+      <Item Name="InstantiatedFromMember" Condition="is_vtpsd() &amp;&amp; ! as_vtpsd()-&gt;InstantiatedFromMember.is_null()">
+        as_vtpsd()-&gt;InstantiatedFromMember.get_ptr()
+      </Item>
+      
+
+      <Item Name="SpecializedTemplate" Condition="is_vtsd() &amp;&amp; as_vtsd()-&gt;SpecializedTemplate.get_int() == 0">
+        (VarTemplateDecl*)as_vtsd()-&gt;SpecializedTemplate.get_ptr()
+      </Item>
+      <Item Name="SpecializedPartial" Condition="is_vtsd() &amp;&amp; as_vtsd()-&gt;SpecializedTemplate.get_int() == 1">
+        ((VarTemplateSpecializationDecl::SpecializedPartialSpecialization*)(as_vtsd()-&gt;SpecializedTemplate).get_ptr())-&gt;PartialSpecialization
+      </Item>
+      <Item Name="PointOfInstantiation" Condition="is_vtsd()">as_vtsd()-&gt;PointOfInstantiation</Item>
+      
+      <ExpandedItem>*(redeclarable_base*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+
+
+  <!-- ================================================================================================ -->
+
+  <Type Name="clang::CXXRecordDecl" Inheritable="false" >
+    <AlternativeType Name="clang::ClassTemplatePartialSpecializationDecl" Inheritable="false" />
+    <AlternativeType Name="clang::ClassTemplateSpecializationDecl" Inheritable="false" />
+    <Intrinsic Category="Data" Name="is_ctpsd" Expression="get_kind() == Decl::ClassTemplatePartialSpecialization" />
+    <Intrinsic Category="Data" Name="as_ctpsd" Expression="(ClassTemplatePartialSpecializationDecl*)this" />
+    <Intrinsic Category="Data" Name="is_ctsd" Expression="get_kind() == Decl::ClassTemplateSpecialization || is_ctpsd()" />
+    <Intrinsic Category="Data" Name="as_ctsd" Expression="(ClassTemplateSpecializationDecl*)this" />
+
+    <Expand>
+      <!--<ExpandedItem>*(Decl*)this,nd</ExpandedItem>-->
+      <ExpandedItem>*(NamedDecl*)this,nd</ExpandedItem>
+      <Item Name="TemplateParams" Condition="is_ctpsd()">as_ctpsd()-&gt;TemplateParams,na</Item>
+      <Item Name="TemplateArgs" Condition="is_ctsd()">as_ctsd()-&gt;TemplateArgs,na</Item>
+
+      <Item Name="SpecializationKind" Condition="is_ctsd()">
+        clang::TemplateSpecializationKind(as_ctsd()-&gt;SpecializationKind),en
+      </Item>
+      <Item Name="SpecializationKind" Condition="! is_ctsd() &amp;&amp; ! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
+        clang::TemplateSpecializationKind(
+        ((MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr())-&gt;MemberAndTSK.get_int() + 1),en
+      </Item>
+
+      <Item Name="IsMemberSpecialization" Condition="is_ctpsd()">as_ctpsd()-&gt;InstantiatedFromMember.get_int()</Item>
+      <Item Name="InstantiatedFromMember" Condition="is_ctpsd() &amp;&amp; ! as_ctpsd()-&gt;InstantiatedFromMember.is_null()">
+        as_ctpsd()-&gt;InstantiatedFromMember.get_ptr()
+      </Item>
+
+      <Item Name="DescribedTemplate" Condition="! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 0">
+        (ClassTemplateDecl*)TemplateOrInstantiation.get_ptr()
+      </Item>
+      <Item Name="MemberSpecialization" Condition="! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
+        (MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr()
+      </Item>
+
+      <Item Name="SpecializedTemplate" Condition="is_ctsd() &amp;&amp; as_ctsd()-&gt;SpecializedTemplate.get_int() == 0">
+        (ClassTemplateDecl*)as_ctsd()-&gt;SpecializedTemplate.get_ptr()
+      </Item>
+      <Item Name="SpecializedPartial" Condition="is_ctsd() &amp;&amp; as_ctsd()-&gt;SpecializedTemplate.get_int() == 1">
+        ((ClassTemplateSpecializationDecl::SpecializedPartialSpecialization*)(as_ctsd()-&gt;SpecializedTemplate).get_ptr())-&gt;PartialSpecialization
+      </Item>
+      <Item Name="PointOfInstantiation" Condition="is_ctsd()">as_ctsd()-&gt;PointOfInstantiation</Item>
+
+      <ExpandedItem>*(redeclarable_base*)this,nd</ExpandedItem>
+      <ExpandedItem>*(DeclContext*)this,nd</ExpandedItem>
+    </Expand>
+  </Type>
+
+  <!-- ================================================================================================ -->
+  
+  <!--
+  
   <Type Name="clang::CXXMethodDecl">
     <DisplayString IncludeView="cpp">{*(clang::FunctionDecl *)this,nd}</DisplayString>
     <DisplayString>Method {{{*this,view(cpp)}}}</DisplayString>
@@ -831,7 +1360,6 @@ For later versions of Visual Studio, no setup is required-->
       <Item Name="TemplatedDecl">TemplatedDecl,na</Item>
     </Expand>
   </Type>
-  <!-- Unfortunately, visualization of PointerIntPair<PointerUnion> doesn't work due to limitations in natvis, so we will barehad it-->
   <Type Name="clang::TypedefNameDecl">
     <DisplayString Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)==0" IncludeView="type">{(clang::TypeSourceInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL),view(cpp)na}</DisplayString>
     <DisplayString Condition="(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; 4)!=0" IncludeView="type">{(clang::TypedefNameDecl::ModedTInfo *)(*(uintptr_t *)MaybeModedTInfo.Value.Data &amp; ~7LL),view(cpp)na}</DisplayString>
@@ -947,6 +1475,7 @@ For later versions of Visual Studio, no setup is required-->
     <DisplayString>{this,view(retType)nand} {Name,view(cpp)nd}({*this,view(parm0)nd})</DisplayString>
     <Expand>
       <ExpandedItem>(clang::DeclaratorDecl *)this,nd</ExpandedItem>
+      <ExpandedItem>(clang::Redeclarable&lt;clang::FunctionDecl&gt; *)this,nd</ExpandedItem>
       <Item Name="ReturnType">((clang::FunctionProtoType *)((clang::ExtQualsTypeCommonBase *)((*(uintptr_t *)DeclType.Value.Value.Data) &amp; ~15))-&gt;BaseType)->ResultType</Item>
       <Synthetic Name="Parameter Types">
         <DisplayString>{*this,view(parm0)nd}</DisplayString>
@@ -960,48 +1489,12 @@ For later versions of Visual Studio, no setup is required-->
       <Item Name="TemplateOrSpecialization">TemplateOrSpecialization</Item>
     </Expand>
   </Type>
-  <Type Name="clang::OpaquePtr&lt;*&gt;">
-    <DisplayString>{*($T1*)&amp;Ptr}</DisplayString>
-    <Expand>
-      <ExpandedItem>($T1*)&amp;Ptr</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::UnionOpaquePtr&lt;*&gt;">
-    <DisplayString>{($T1 *)Ptr}</DisplayString>
-    <Expand>
-      <ExpandedItem>($T1 *)Ptr</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::TemplateParameterList">
-    <DisplayString IncludeView="parm0" Condition="NumParams==0"></DisplayString>
-    <DisplayString IncludeView="parm0">{*((NamedDecl **)(this+1))[0],view(cpp)}{*this,view(parm1)}</DisplayString>
-    <DisplayString IncludeView="parm1" Condition="NumParams==1"></DisplayString>
-    <DisplayString IncludeView="parm1">, {*((NamedDecl **)(this+1))[1],view(cpp)}{*this,view(parm2)}</DisplayString>
-    <DisplayString IncludeView="parm2" Condition="NumParams==2"></DisplayString>
-    <DisplayString IncludeView="parm2">, {*((NamedDecl **)(this+1))[2],view(cpp)}{*this,view(parm3)}</DisplayString>
-    <DisplayString IncludeView="parm3" Condition="NumParams==3"></DisplayString>
-    <DisplayString IncludeView="parm3">, {*((NamedDecl **)(this+1))[3],view(cpp)}{*this,view(parm4)}</DisplayString>
-    <DisplayString IncludeView="parm4" Condition="NumParams==4"></DisplayString>
-    <DisplayString IncludeView="parm4">, {*((NamedDecl **)(this+1))[4],view(cpp)}{*this,view(parm5)}</DisplayString>
-    <DisplayString IncludeView="parm5" Condition="NumParams==5"></DisplayString>
-    <DisplayString IncludeView="parm5">, /* Expand for more params */</DisplayString>
-    <DisplayString>&lt;{*this,view(parm0)}&gt;</DisplayString>
-    <Expand>
-      <ArrayItems>
-        <Size>NumParams</Size>
-      <ValuePointer>(NamedDecl **)(this+1)</ValuePointer>
-      </ArrayItems>
-    </Expand>
-  </Type>
-  <Type Name="clang::Stmt">
-    <DisplayString>{(clang::Stmt::StmtClass)StmtBits.sClass,en}</DisplayString>
-    <Expand>
-      <Item Name="Class">(clang::Stmt::StmtClass)StmtBits.sClass,en</Item>
-    </Expand>
-  </Type>
-  <Type Name="clang::Expr">
-    <DisplayString>Expression of class {(clang::Stmt::StmtClass)StmtBits.sClass,en} and type {TR,view(cpp)}</DisplayString>
-  </Type>
+  -->
+
+  
+  
+  
+  <!--
   <Type Name="clang::DeclAccessPair">
     <DisplayString IncludeView="access" Condition="(Ptr&amp;Mask) == clang::AS_public">public</DisplayString>
     <DisplayString IncludeView="access" Condition="(Ptr&amp;Mask) == clang::AS_protected">protected</DisplayString>
@@ -1014,27 +1507,7 @@ For later versions of Visual Studio, no setup is required-->
       <Item Name="decl">*(clang::NamedDecl *)(Ptr&amp;~Mask)</Item>
     </Expand>
   </Type>
-  <Type Name="clang::UnqualifiedId">
-    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_Identifier">[IK_Identifier] {*Identifier}</DisplayString>
-    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_OperatorFunctionId">[IK_OperatorFunctionId] {OperatorFunctionId}</DisplayString>
-    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_ConversionFunctionId">[IK_ConversionFunctionId] {ConversionFunctionId}</DisplayString>
-    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_ConstructorName">[IK_ConstructorName] {ConstructorName}</DisplayString>
-    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_DestructorName">[IK_DestructorName] {DestructorName}</DisplayString>
-    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_DeductionGuideName">[IK_DeductionGuideName] {TemplateName}</DisplayString>
-    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_TemplateId">[IK_TemplateId] {TemplateId}</DisplayString>
-    <DisplayString Condition="Kind==UnqualifiedIdKind::IK_ConstructorTemplateId">[IK_ConstructorTemplateId] {TemplateId}</DisplayString>
-    <DisplayString>Kind</DisplayString>
-    <Expand>
-      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_Identifier">Identifier</ExpandedItem>
-      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_OperatorFunctionId">OperatorFunctionId</ExpandedItem>
-      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_ConversionFunctionId">ConversionFunctionId</ExpandedItem>
-      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_ConstructorName">ConstructorName</ExpandedItem>
-      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_DestructorName">DestructorName</ExpandedItem>
-      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_DeductionGuideName">TemplateName</ExpandedItem>
-      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_TemplateId">TemplateId</ExpandedItem>
-      <ExpandedItem Condition="Kind==UnqualifiedIdKind::IK_ConstructorTemplateId">TemplateId</ExpandedItem>
-    </Expand>
-  </Type>
+  
   <Type Name="clang::DeclGroup">
     <DisplayString>NumDecls={NumDecls}</DisplayString>
     <Expand>
@@ -1052,31 +1525,6 @@ For later versions of Visual Studio, no setup is required-->
       <ExpandedItem Condition="(Kind)((uintptr_t)D&amp;1)==DeclGroupKind">(DeclGroup *)((uintptr_t)D&amp;~1)</ExpandedItem>
     </Expand>
   </Type>
-  <Type Name="clang::Declarator">
-    <DisplayString>{DS} {Name}</DisplayString>
-  </Type>
-  <Type Name="clang::UnresolvedSet&lt;*&gt;">
-    <DisplayString>{Decls}</DisplayString>
-    <Expand>
-      <ExpandedItem>Decls</ExpandedItem>
-    </Expand>
-  </Type>
-  <Type Name="clang::LookupResult">
-    <DisplayString Condition="ResultKind == clang::LookupResult::Ambiguous">{Ambiguity,en}: {Decls}</DisplayString>
-    <DisplayString>{ResultKind,en}: {Decls}</DisplayString>
-  </Type>
-  <Type Name="clang::ActionResult&lt;*, 0&gt;">
-    <DisplayString Condition="Invalid">Invalid</DisplayString>
-    <DisplayString Condition="!*(void **)&amp;Val">Unset</DisplayString>
-    <DisplayString>{Val}</DisplayString>
-  </Type>
-  <Type Name="clang::ActionResult&lt;*, 1&gt;">
-    <DisplayString Condition="PtrWithInvalid&amp;1">Invalid</DisplayString>
-    <DisplayString Condition="!PtrWithInvalid">Unset</DisplayString>
-    <DisplayString>{($T1)(PtrWithInvalid&amp;~1)}</DisplayString>
-    <Expand>
-      <Item Name="Invalid">(bool)(PtrWithInvalid&amp;1)</Item>
-      <Item Name="Val">($T1)(PtrWithInvalid&amp;~1)</Item>
-    </Expand>
-  </Type>
+  -->
+  
 </AutoVisualizer>
