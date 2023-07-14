@@ -5,9 +5,9 @@
 // https://www.boost.org/LICENSE_1_0.txt
 //
 
-#include <test/test_suite/detail/decomposer.hpp>
-#include <test/test_suite/diff.hpp>
-#include <test/test_suite/test_suite.hpp>
+#include <test_suite/detail/decomposer.hpp>
+#include <test_suite/diff.hpp>
+#include <test_suite/test_suite.hpp>
 #include <ranges>
 #include <fmt/format.h>
 #include <mrdox/Support/Dom.hpp>

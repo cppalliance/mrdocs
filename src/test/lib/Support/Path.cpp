@@ -9,7 +9,7 @@
 //
 
 #include "lib/Support/Path.hpp"
-#include <test/test_suite/test_suite.hpp>
+#include <test_suite/test_suite.hpp>
 
 namespace clang {
 namespace mrdox {
