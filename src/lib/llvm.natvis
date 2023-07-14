@@ -68,76 +68,58 @@ For later versions of Visual Studio, no setup is required.
     </Expand>
   </Type>
 
-  <Type Name="llvm::PunnedPointer">
-    <DisplayString>{($T1)*(intptr_t *)Data}</DisplayString>
-  </Type>
-
-  <!-- PointerIntPair. In addition to the regular view, it is possible to view
-       just the pointer or just the int. The same code is duplicated from the
-       regular viewer to improve the performance of the common case. Note, we
-       need to specify PointerIntPair<PointerUnion<*>, *> differently because
-       we need to "look through" the PointerUnion to display it. Otherwise, we
-       get errors about ambiguous conversion from uintptr_t to PointerUnion.-->
-  <Type Name="llvm::PointerIntPair&lt;llvm::PointerUnion&lt;*&gt;, *&gt;">
-    <!-- $T1 is the parameter pack of PointerUnion, $T3 is IntBits,
-         $T4 is IntType, $T5 is PtrTraits, and $T6 is Info. -->
-    <DisplayString IncludeView="ptr">{($T1)(*(intptr_t *)Value.Data &amp; $T6::PointerBitMask)}</DisplayString>
-    <DisplayString IncludeView="int">{($T4)((*(intptr_t *)Value.Data &gt;&gt; $T6::IntShift) &amp; $T6::IntMask)}</DisplayString>
-    <DisplayString>{$T6::IntMask}: {($T1)(*(intptr_t *)Value.Data &amp; $T6::PointerBitMask)} [{($T4)((*(intptr_t *)Value.Data &gt;&gt; $T6::IntShift) &amp; $T6::IntMask)}]</DisplayString>
+  <Type Name="llvm::detail::PunnedPointer&lt;*&gt;">
+    <Intrinsic Category="Data" Name="get_value" Expression="*(uintptr_t*)Data" />
     <Expand>
-      <Item Name="[ptr]">($T1)(*(intptr_t *)Value.Data &amp; $T6::PointerBitMask)</Item>
-      <Item Name="[int]">($T4)((*(intptr_t *)Value.Data &gt;&gt; $T6::IntShift) &amp; $T6::IntMask)</Item>
+      <Synthetic Name="Data">
+        <DisplayString>{get_value(),nrx}</DisplayString>
+      </Synthetic>
     </Expand>
   </Type>
 
   <Type Name="llvm::PointerIntPair&lt;*&gt;">
-    <DisplayString IncludeView="ptr">{($T1)(*(intptr_t *)Value.Data &amp; $T5::PointerBitMask)}</DisplayString>
-    <DisplayString IncludeView="int">{($T3)((*(intptr_t *)Value.Data &gt;&gt; $T5::IntShift) &amp; $T5::IntMask)}</DisplayString>
-    <DisplayString>{$T5::IntMask}: {($T1)(*(intptr_t *)Value.Data &amp; $T5::PointerBitMask)} [{($T3)((*(intptr_t *)Value.Data &gt;&gt; $T5::IntShift) &amp; $T5::IntMask)}]</DisplayString>
+    <Intrinsic Category="Data" Name="get_void_ptr" Expression="reinterpret_cast&lt;void*&gt;(Value.get_value() &amp; $T5::PointerBitMask)" />
+    <Intrinsic Category="Data" Name="get_ptr_helper" Expression="reinterpret_cast&lt;$T1&amp;&gt;(ptr)"><Parameter Type="uintptr_t" Name="ptr"/></Intrinsic>
+    <Intrinsic Category="Data" Name="get_ptr" Expression="get_ptr_helper((uintptr_t)get_void_ptr())"/>
+    <Intrinsic Category="Data" Name="get_int" Expression="($T3)((Value.get_value() &gt;&gt; $T5::IntShift) &amp; $T5::IntMask)" />
+    <Intrinsic Category="Data" Name="is_null" Expression="! (Value.get_value() &amp; $T5::PointerBitMask)" />
+
+    <DisplayString IncludeView="ptr">{get_ptr()}</DisplayString>
+    <DisplayString IncludeView="int">{get_int()}</DisplayString>
+    <DisplayString>{$T5::IntMask}: {get_ptr()} [{get_int()}]</DisplayString>
     <Expand>
-      <Item Name="[ptr]">($T1)(*(intptr_t *)Value.Data &amp; $T5::PointerBitMask)</Item>
-      <Item Name="[int]">($T3)((*(intptr_t *)Value.Data &gt;&gt; $T5::IntShift) &amp; $T5::IntMask)</Item>
-    </Expand>
-  </Type>
-  <!-- PointerUnion types -->
-  <Type Name="llvm::pointer_union_detail::PointerUnionMembers&lt;*&gt;">
-    <DisplayString Optional="true" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 0">
-      {($T4)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)}
-    </DisplayString>
-    <DisplayString Optional="true" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 1">
-      {($T5)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)}
-    </DisplayString>
-
-    <DisplayString Optional="true" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 2">
-      {($T6)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)}
-    </DisplayString>
-    <DisplayString Optional="true" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 3">
-      {($T7)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)}
-    </DisplayString>
-
-    <DisplayString>Unexpected index in PointerUnion: {(*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask}</DisplayString>
-    <Expand>
-      <Item Name="[Holds]" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 0">"$T4",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 0">
-        ($T4)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)
-      </Item>
-      <Item Name="[Holds]" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 1">"$T5",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 1">
-        ($T5)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)
-      </Item>
-
-      <Item Name="[Holds]" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 2">"$T6",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 2">
-        ($T6)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)
-      </Item>
-      <Item Name="[Holds]" Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 3">"$T7",s8b</Item>
-      <Item Name="[Ptr]" Optional="true"  Condition="((*(intptr_t *)Val.Value.Data&gt;&gt;$T2::InfoTy::IntShift) &amp; $T2::InfoTy::IntMask) == 3">
-        ($T7)(*(intptr_t *)Val.Value.Data &amp; $T2::InfoTy::PointerBitMask)
-      </Item>
-
+      <Item Name="[ptr]">get_ptr()</Item>
+      <Item Name="[int]">get_int()</Item>
     </Expand>
   </Type>
 
+  <Type Name="llvm::PointerUnion&lt;*&gt;">
+    <Intrinsic Category="Data" Name="get_ptr" Expression="Val.get_ptr()" />
+    <Intrinsic Category="Data" Name="get_int" Expression="Val.get_int()" />
+    <Intrinsic Category="Data" Name="is_null" Expression="! (uintptr_t)(Val.get_ptr())" />
+    
+    <Expand>
+      <Synthetic Name="[Holds]">
+        <DisplayString Optional="true" Condition="get_int() == 0">{"$T1",sb}</DisplayString>
+        <DisplayString Optional="true" Condition="get_int() == 1">{"$T2",sb}</DisplayString>
+        <DisplayString Optional="true" Condition="get_int() == 2">{"$T3",sb}</DisplayString>
+        <DisplayString Optional="true" Condition="get_int() == 3">{"$T4",sb}</DisplayString>
+        <DisplayString Optional="true" Condition="get_int() == 4">{"$T5",sb}</DisplayString>
+        <DisplayString Optional="true" Condition="get_int() == 5">{"$T6",sb}</DisplayString>
+        <DisplayString Optional="true" Condition="get_int() == 6">{"$T7",sb}</DisplayString>
+        <DisplayString Optional="true" Condition="get_int() == 7">{"$T8",sb}</DisplayString>
+      </Synthetic>
+      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 0">($T1)get_ptr()</Item>
+      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 1">($T2)get_ptr()</Item>
+      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 2">($T3)get_ptr()</Item>
+      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 3">($T4)get_ptr()</Item>
+      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 4">($T5)get_ptr()</Item>
+      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 5">($T6)get_ptr()</Item>
+      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 6">($T7)get_ptr()</Item>
+      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 7">($T8)get_ptr()</Item>
+    </Expand>
+  </Type>
+  
   <Type Name="llvm::iplist&lt;*,*&gt;">
     <DisplayString Condition="Head == 0">{{ empty }}</DisplayString>
     <DisplayString Condition="Head != 0">{{ head={Head} }}</DisplayString>
@@ -152,8 +134,13 @@ For later versions of Visual Studio, no setup is required.
 
   <Type Name="llvm::IntrusiveRefCntPtr&lt;*&gt;">
     <DisplayString Condition="Obj == 0">empty</DisplayString>
-    <DisplayString Condition="(Obj != 0) &amp;&amp; (Obj-&gt;RefCount == 1)">RefPtr [1 ref] {*Obj}</DisplayString>
-    <DisplayString Condition="(Obj != 0) &amp;&amp; (Obj-&gt;RefCount != 1)">RefPtr [{Obj-&gt;RefCount} refs] {*Obj}</DisplayString>
+    <!-- used for llvm::RefCountedBase -->
+    <DisplayString Optional="true" Condition="(Obj != 0) &amp;&amp; (Obj-&gt;RefCount == 1)">RefPtr [1 ref] {*Obj}</DisplayString>
+    <DisplayString Optional="true" Condition="(Obj != 0) &amp;&amp; (Obj-&gt;RefCount != 1)">RefPtr [{Obj-&gt;RefCount} refs] {*Obj}</DisplayString>
+    <!-- used for llvm::ThreadSafeRefCountedBase -->
+    <DisplayString Optional="true" Condition="(Obj != 0) &amp;&amp; (Obj-&gt;RefCount.value() == 1)">RefPtr [1 ref] {*Obj}</DisplayString>
+    <DisplayString Optional="true" Condition="(Obj != 0) &amp;&amp; (Obj-&gt;RefCount.value() != 1)">RefPtr [{Obj-&gt;RefCount} refs] {*Obj}</DisplayString>
+
     <Expand>
       <Item Condition="Obj != 0" Name="[refs]">Obj-&gt;RefCount</Item>
       <ExpandedItem Condition="Obj != 0">Obj</ExpandedItem>
@@ -183,6 +170,40 @@ For later versions of Visual Studio, no setup is required.
         <Size>NumBuckets</Size>
         <ValuePointer>Buckets</ValuePointer>
       </ArrayItems>
+    </Expand>
+  </Type>
+
+  <Type Name="llvm::FoldingSet&lt;*&gt;">
+    <DisplayString Condition="NumNodes == 0">empty</DisplayString>
+    <DisplayString Condition="NumNodes != 0">{{ size={NumNodes}, buckets={NumBuckets} }}</DisplayString>
+    <Expand>
+      <Item Name="[size]">NumNodes</Item>
+      <Item Name="[buckets]">NumBuckets</Item>
+      <ArrayItems>
+        <Size>NumBuckets</Size>
+        <ValuePointer>($T1**)Buckets</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <Type Name="llvm::ContextualFoldingSet&lt;*,*&gt;">
+    <DisplayString Condition="NumNodes == 0">empty</DisplayString>
+    <DisplayString Condition="NumNodes != 0">{{ size={NumNodes}, buckets={NumBuckets} }}</DisplayString>
+    <Expand>
+      <Item Name="[context]">Context</Item>
+      <Item Name="[size]">NumNodes</Item>
+      <Item Name="[buckets]">NumBuckets</Item>
+      <ArrayItems>
+        <Size>NumBuckets</Size>
+        <ValuePointer>($T1**)Buckets</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <Type Name="llvm::FoldingSetVector&lt;*,*&gt;">
+    <Expand>
+      <Item Name="[set]">Set</Item>
+      <ExpandedItem>Vector</ExpandedItem>
     </Expand>
   </Type>
 
