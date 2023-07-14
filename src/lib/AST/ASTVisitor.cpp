@@ -24,6 +24,7 @@
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
+#include <clang/Parse/ParseAST.h>
 #include <clang/Sema/SemaConsumer.h>
 #include <llvm/ADT/Hashing.h>
 #include <llvm/ADT/StringExtras.h>
@@ -2767,14 +2768,20 @@ struct ASTAction
     {
     }
 
-    bool
-    PrepareToExecuteAction(
-        CompilerInstance& Compiler) override
+    void
+    ExecuteAction() override
     {
-        FrontendOptions& FEOpts =
-            Compiler.getFrontendOpts();
-        FEOpts.SkipFunctionBodies = true;
-        return true;
+        CompilerInstance& CI = getCompilerInstance();
+        if(! CI.hasPreprocessor())
+            return;
+
+        if(! CI.hasSema())
+            CI.createSema(getTranslationUnitKind(), nullptr);
+
+        ParseAST(
+            CI.getSema(),
+            false, // ShowStats
+            true); // SkipFunctionBodies
     }
 
     std::unique_ptr<clang::ASTConsumer>
