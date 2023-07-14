@@ -16,7 +16,7 @@
 #include <mrdox/Metadata/Javadoc.hpp>
 #include <mrdox/Metadata/Specifiers.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <mrdox/Support/TypeTraits.hpp>
 #include <array>
 #include <memory>

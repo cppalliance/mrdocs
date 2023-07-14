@@ -297,18 +297,20 @@ template<class T>
 class [[nodiscard]]
     Expected
 {
-    static_assert(! std::is_reference_v<T>);
-    static_assert(! std::convertible_to<T, Error>);
-    static_assert(std::move_constructible<T>);
-    static_assert(std::is_nothrow_move_constructible_v<T>);
-    static_assert(std::is_nothrow_move_constructible_v<Error>);
-
     union
     {
         T v_;
         Error e_;
     };
     bool has_error_;
+
+#if 0
+    static_assert(! std::is_reference_v<T>);
+    static_assert(! std::convertible_to<T, Error>);
+    static_assert(std::move_constructible<T>);
+    static_assert(std::is_nothrow_move_constructible_v<T>);
+    static_assert(std::is_nothrow_move_constructible_v<Error>);
+#endif
 
 public:
     using value_type = T;

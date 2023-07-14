@@ -12,7 +12,7 @@
 #define MRDOX_API_METADATA_SPECIFIERS_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <string_view>
 
 namespace clang {
