@@ -1,0 +1,46 @@
+{{#if tranche.records}}
+    <div>
+        <h3>{{label}} Types</h3>
+        {{>info-list tranche.records}}
+    </div>
+{{/if}}
+{{#if tranche.types}}
+    <div>
+        {{#if label}}
+            <h3>{{label}} Types</h3>
+        {{else}}
+            <h3>Types</h3>
+        {{/if}}
+        {{>info-list tranche.types}}
+    </div>
+{{/if}}
+{{#if tranche.functions}}
+    <div>
+        <h3>{{label}} Member Functions</h3>
+        {{>info-list tranche.functions}}
+    </div>
+{{/if}}
+{{#if tranche.enums}}
+    <div>
+        <h3>{{label}} Enums</h3>
+        {{>info-list tranche.enums}}
+    </div>
+{{/if}}
+{{#if tranche.fields}}
+    <div>
+        <h3>{{label}} Data Members</h3>
+        {{>info-list tranche.fields}}
+    </div>
+{{/if}}
+{{#if tranche.staticfunctions}}
+    <div>
+        <h3>{{label}} Static Member Functions</h3>
+        {{>info-list tranche.staticfunctions}}
+    </div>
+{{/if}}
+{{#if tranche.staticdata}}
+    <div>
+        <h3>{{label}} Static Data Members</h3>
+        {{>info-list tranche.staticdata}}
+    </div>
+{{/if}}

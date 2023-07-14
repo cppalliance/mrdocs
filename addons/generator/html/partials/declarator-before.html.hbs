@@ -1,0 +1,34 @@
+{{#if (eq kind "builtin")~}}
+    {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
+    {{name~}}
+{{~else if (eq kind "tag")~}}
+    {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
+    {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::{{/if~}}
+    {{#if id}}{{>xref id=id content=name}}{{else}}{{name~}}{{/if}}
+{{~else if (eq kind "specialization")~}}
+    {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
+    {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::{{/if~}}
+    {{#if id}}{{>xref id=id content=name}}{{else}}{{name~}}{{/if}}
+    {{~>template-args args=template-args~}}
+{{~else if (eq kind "lvalue-reference")~}}
+    {{~>declarator-before pointee-type~}}
+    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}&
+{{~else if (eq kind "rvalue-reference")~}}
+    {{~>declarator-before pointee-type~}}
+    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}&&
+{{~else if (eq kind "pointer")~}}
+    {{~>declarator-before pointee-type~}}
+    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}*
+    {{~#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
+{{~else if (eq kind "member-pointer")~}}
+    {{~>declarator-before pointee-type~}}
+    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}
+    {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::*{{/if~}}
+    {{#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
+{{~else if (eq kind "pack")~}}
+    {{~>declarator-before pattern-type~}}...
+{{~else if (eq kind "array")~}}
+    {{~>declarator-before element-type~}}
+{{~else if (eq kind "function")~}}
+    {{~>declarator-before return-type~}}
+{{/if}}
