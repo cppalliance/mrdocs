@@ -1,0 +1,17 @@
+{{#if params~}}
+template&lt;
+{{#each params}}
+    {{#if (eq kind "type")}}
+    {{>tparam-type~}}
+    {{else if (eq kind "non-type")}}
+    {{>tparam-nontype~}}
+    {{else if (eq kind "template")}}
+    {{>tparam-template~}}
+    {{/if}}
+    {{~#unless @last}},
+    {{else}}
+    {{/unless}}
+{{/each}}&gt;
+{{else~}}
+template&lt;&gt;
+{{/if}}

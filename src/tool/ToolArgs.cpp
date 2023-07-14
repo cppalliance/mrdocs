@@ -77,7 +77,7 @@ EXAMPLES:
 
 , formatType(
     "format",
-    llvm::cl::desc("Format for the emitted documentation (\"adoc\" or \"xml\")."),
+    llvm::cl::desc("Format for the emitted documentation (\"adoc\", \"xml\", or \"html\")."),
     llvm::cl::init("adoc"))
 
 , ignoreMappingFailures(

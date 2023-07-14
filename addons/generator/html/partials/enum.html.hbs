@@ -1,0 +1,65 @@
+{{!-- enum --}}
+<div id="{{symbol.id}}">
+    <div>
+        <h2>{{symbol.name}}</h2>
+        {{{symbol.doc.brief}}}
+    </div>
+    <div>
+        <h3>Synopsis</h3>
+        <div>
+            <code>
+                enum {{name}};
+            </code>
+        </div>
+        <div>{{>source symbol.loc}}</div>
+    </div>
+
+    {{#if symbol.members}}
+    <div>
+        <h3>Members</h3>
+        <div>
+            <table>
+                <colgroup>
+                    <col style="width: 50%;">
+                    <col style="width: 50%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each symbol.members}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{{doc.brief}}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{/if}}
+
+    {{#if symbol.doc.description}}
+        <div>
+            <h3>Description</h3>
+            {{{symbol.doc.description}}}
+        </div>
+    {{/if}}
+
+    {{#if symbol.members}}
+    <div>
+        {{#each symbol.members}}
+        {{#if doc.description}}
+        <div>
+            <h4>{{name}}</h4>
+            {{{doc.description}}}
+        </div>
+        {{/if}}
+        {{/each}}
+    </div>
+    {{/if}}
+
+</div>

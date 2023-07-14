@@ -26,6 +26,10 @@ extern
 std::unique_ptr<Generator>
 makeXMLGenerator();
 
+extern
+std::unique_ptr<Generator>
+makeHTMLGenerator();
+
 Generators::
 ~Generators() noexcept = default;
 
@@ -46,6 +50,7 @@ GeneratorsImpl()
     err = insert(makeAdocGenerator());
     err = insert(makeBitcodeGenerator());
     err = insert(makeXMLGenerator());
+    err = insert(makeHTMLGenerator());
 }
 
 Generator const*

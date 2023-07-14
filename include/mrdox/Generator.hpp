@@ -63,6 +63,7 @@ public:
 
         @li "adoc" Asciidoctor
         @li "xml" XML
+        @li "html" HTML
 
         The returned string should not include
         a leading period.
