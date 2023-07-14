@@ -266,3 +266,34 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  website:
+    defaults:
+      run:
+        shell: bash
+
+    name: Upload to website
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Clone mrdox
+        uses: actions/checkout@v3
+
+      - name: Add SSH key
+        env:
+            SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+            mkdir -p /home/runner/.ssh
+            ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
+            # DEV_WEBSITES_SSH_KEY is the name of the repository secret
+            echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
+            chmod 600 /home/runner/.ssh/github_actions
+            ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+            ssh-add /home/runner/.ssh/github_actions
+
+      - name: Copy files
+        # An example of uploading files via ssh. Adjust this as necessary
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh ubuntu@dev-websites.cpp.al "mkdir -p /var/www/mrdox.com/example1"
+          scp -r $(pwd) ubuntu@dev-websites.cpp.al:/var/www/mrdox.com/example1/
+
