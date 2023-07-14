@@ -1,0 +1,3 @@
+= Third-party dependencies
+
+This directory contains third-party dependencies that are bundled with the mrdox source files. These dependencies might be bundled because they are not available as packages in the other repositories or need patches to work with mrdox.

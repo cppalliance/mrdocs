@@ -2745,8 +2745,8 @@ public:
         const ConfigImpl& config,
         tooling::ExecutionContext& ex,
         CompilerInstance& compiler) noexcept
-        : ex_(static_cast<ExecutionContext&>(ex))
-        , config_(config)
+        : config_(config)
+        , ex_(static_cast<ExecutionContext&>(ex))
         , compiler_(compiler)
     {
     }

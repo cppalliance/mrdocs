@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.4.0
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.5.0
         id: cpp-matrix
         with:
           compilers: |
@@ -76,7 +76,25 @@ jobs:
           substring="C:/Program Files/Microsoft Visual Studio/2022/Community/DIA SDK/lib/amd64/diaguids.lib;"
           sed -i "s|$substring||g" "$llvm_dir/RelWithDebInfo/lib/cmake/llvm/LLVMExports.cmake"
           echo "llvm_dir=$llvm_dir"
-          find "$llvm_dir" -type f
+          # find "$llvm_dir" -type f
+
+      - name: Install Duktape
+        id: duktape-install
+        shell: bash
+        run: |
+          set -xe
+          curl -L -o "duktape-2.7.0.tar.xz" "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz"
+          duktape_dir="${{runner.tool_cache}}/duktape"
+          duktape_dir=$(echo "$duktape_dir" | sed 's/\\/\//g')
+          mkdir -p "$duktape_dir"
+          tar -xvf "duktape-2.7.0.tar.xz" -C "$duktape_dir"
+          echo "duktape-dir=$duktape_dir/duktape-2.7.0" >> $GITHUB_OUTPUT
+          echo "duktape_dir=$duktape_dir/duktape-2.7.0"
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
       - name: Setup C++
         uses: alandefreitas/cpp-actions/setup-cpp@v1.5.0
@@ -110,13 +128,13 @@ jobs:
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           install-prefix: .local
-          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-dir || '/usr/local') }}
+          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D DUKTAPE_SOURCE_ROOT="{1}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-dir || '/usr/local', steps.duktape-install.outputs.duktape-dir) }}
           export-compile-commands: ${{ matrix.time-trace }}
           package: ${{ matrix.is-main }}
           package-dir: packages
 
       - name: Upload GitHub Release Artifacts
-        if: ${{ matrix.is-main && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+        if: ${{ matrix.is-main && matrix.compiler != 'clang' }}
         uses: actions/upload-artifact@v3
         with:
           name: release-packages-${{ runner.os }}
@@ -157,12 +175,11 @@ jobs:
 
   docs:
     needs: build
-    if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
     defaults:
       run:
         shell: bash
 
-    name: Publish docs
+    name: Documentation
     timeout-minutes: 30
     runs-on: ubuntu-22.04
     permissions:
@@ -193,20 +210,152 @@ jobs:
           fi
 
       - name: Publish to GitHub Pages
+        if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/build/site
           force_orphan: true
 
-  releases:
+      - name: Update website
+        if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          # Add SSH key
+          mkdir -p /home/runner/.ssh
+          ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
+          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
+          chmod 600 /home/runner/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add /home/runner/.ssh/github_actions
+          
+          # Copy files
+          scp -r $(pwd)/docs/build/site/* ubuntu@dev-websites.cpp.al:/var/www/mrdox.com/
+
+  demos:
     needs: build
-    if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
     defaults:
       run:
         shell: bash
 
-    name: Create Release Packages
+    name: Demos
+    timeout-minutes: 120
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+
+    steps:
+      - name: Clone mrdox
+        uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: release-packages-Linux
+          path: packages
+
+      - name: List artifacts
+        run: ls -R
+        working-directory: packages
+
+      - name: Setup C++
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.5.0
+        id: setup-cpp
+        with:
+          compiler: clang
+          version: 16
+          check-latest: true
+
+      - name: Install packages
+        uses: alandefreitas/cpp-actions/package-install@v1.5.0
+        id: package-install
+        with:
+          apt-get: libstdc++-12-dev
+          cc: ${{ steps.setup-cpp.outputs.cc }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+
+      - name: Install mrdox from release package
+        run: |
+          set -x
+          sudo find packages -name 'MrDox-*-Linux.tar.gz' -exec tar -xzf {} -C /usr/local --strip-components=1 \;
+          mrdox --version
+
+      - name: Clone Boost.URL
+        uses: alandefreitas/cpp-actions/boost-clone@v1.5.0
+        id: boost-url-clone
+        with:
+          branch: master
+          modules: url
+          boost-dir: boost
+          modules-scan-paths: '"test example"'
+          modules-exclude-paths: ''
+          trace-commands: true
+
+      - name: Configure Boost.URL
+        working-directory: boost/libs/url
+        run: |
+          set -x
+          if [ -d "__build__" ]; then
+              rm -rf __build__
+          fi
+          mkdir __build__
+          cd __build__
+          mkdir __include_dirs__
+          cd __include_dirs__
+          output_file="include_dirs.txt"
+          echo "cmake_minimum_required(VERSION 3.22)" > CMakeLists.txt
+          echo "project(get_implicit_dirs)" >> CMakeLists.txt
+          echo "file(WRITE \"${output_file}\" \"\${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES}\")" >> CMakeLists.txt
+          mkdir __build__
+          cd __build__
+          cmake -D CMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx  }} -D CMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc  }} ..
+          cd ..
+          default_includes=$(cat "$output_file")
+          cd ..
+          cmake -D BOOST_URL_BUILD_TESTS=OFF -D BOOST_URL_BUILD_EXAMPLES=OFF -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES="$default_includes" -D CMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx  }} -D CMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc  }} ..
+
+      - name: Generate reference
+        run: |
+          echo "verbose: true" > $(pwd)/boost/libs/url/mrdox-single.yml
+          echo "source-root: ." >> $(pwd)/boost/libs/url/mrdox-single.yml
+          echo "multipage: false" >> $(pwd)/boost/libs/url/mrdox-single.yml
+          
+          echo "verbose: true" > $(pwd)/boost/libs/url/mrdox-multi.yml
+          echo "source-root: ." >> $(pwd)/boost/libs/url/mrdox-multi.yml
+          echo "multipage: true" >> $(pwd)/boost/libs/url/mrdox-multi.yml
+          
+          set -x
+          for variant in single multi; do
+            for format in adoc html xml; do
+              mkdir -p "demos/boost-url/$variant/$format"
+              mrdox --config="$(pwd)/boost/libs/url/mrdox-$variant.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --addons="$(pwd)/share/mrdox/addons" --format="$format" --output="$(pwd)/demos/boost-url/$variant/$format"
+            done
+          done
+
+      - name: Update website demos
+        if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          # Add SSH key
+          mkdir -p /home/runner/.ssh
+          ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
+          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
+          chmod 600 /home/runner/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add /home/runner/.ssh/github_actions
+          
+          # Copy files
+          ssh ubuntu@dev-websites.cpp.al "mkdir -p /var/www/mrdox.com/demos/${{ github.ref_name }}"
+          scp -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:/var/www/mrdox.com/demos/${{ github.ref_name }}/
+
+  releases:
+    needs: build
+    defaults:
+      run:
+        shell: bash
+
+    name: Releases
     timeout-minutes: 120
     runs-on: ubuntu-22.04
     permissions:
@@ -239,7 +388,7 @@ jobs:
           limit: 150
 
       - name: Remove branch release
-        if: ${{ github.event_name == 'push' && contains(fromJSON('["master", "develop"]'), github.ref_name) }}
+        if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name)) }}
         uses: dev-drprasad/delete-tag-and-release@v1.0
         with:
           tag_name: ${{ github.ref_name }}-release

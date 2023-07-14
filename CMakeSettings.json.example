@@ -5,7 +5,7 @@
       "generator": "Visual Studio 17 2022 Win64",
       "configurationType": "Debug",
       "buildRoot": "${workspaceRoot}/build/cmake-msvc/${name}",
-      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\Debug\"",
+      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\Debug\" -DDUKTAPE_SOURCE_ROOT=\"C:\\Users\\vinnie\\src\\duktape"",
       "buildCommandArgs": ""
     },
     {
@@ -13,7 +13,7 @@
       "generator": "Visual Studio 17 2022 Win64",
       "configurationType": "Debug",
       "buildRoot": "${workspaceRoot}/build/cmake-msvc/${name}",
-      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\RelWithDebInfo\"",
+      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\RelWithDebInfo\" -DDUKTAPE_SOURCE_ROOT=\"C:\\Users\\vinnie\\src\\duktape"",
       "buildCommandArgs": ""
     },
     {
@@ -21,7 +21,7 @@
       "generator": "Visual Studio 17 2022 Win64",
       "configurationType": "RelWithDebInfo",
       "buildRoot": "${workspaceRoot}/build/cmake-msvc/${name}",
-      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\RelWithDebInfo\"",
+      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\RelWithDebInfo\" -DDUKTAPE_SOURCE_ROOT=\"C:\\Users\\vinnie\\src\\duktape"",
       "buildCommandArgs": ""
     },
     {
@@ -29,7 +29,7 @@
       "generator": "Visual Studio 17 2022 Win64",
       "configurationType": "Release",
       "buildRoot": "${workspaceRoot}/build/cmake-msvc/${name}",
-      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\Release\"",
+      "cmakeCommandArgs": "-DCMAKE_PREFIX_PATH=\"C:\\Users\\vinnie\\src\\llvm-install\\Release\" -DDUKTAPE_SOURCE_ROOT=\"C:\\Users\\vinnie\\src\\duktape"",
       "buildCommandArgs": ""
     }
   ]

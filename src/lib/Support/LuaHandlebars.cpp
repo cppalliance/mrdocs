@@ -16,8 +16,9 @@ namespace mrdox {
 
 // VFALCO:
 // C Functions use "Error::Throw" for C++ errors
-// Or.. should we push an error object onto the stack?
+// Or should we push an error object onto the stack?
 
+[[maybe_unused]]
 static
 lua::Value
 escapeExpression(

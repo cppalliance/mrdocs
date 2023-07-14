@@ -3872,15 +3872,17 @@ registerContainerHelpers(Handlebars& hbs)
 
     static constexpr auto has_fn = [](
         dom::Array const& args, HandlebarsCallback const& options) {
-        if (args.at(0).isObject()) {
-            dom::Value objV = args.at(0);
+        dom::Value ctx = args.at(0);
+        dom::Value prop = args.at(1);
+        if (ctx.isObject()) {
+            dom::Value objV = ctx;
             auto const& obj = objV.getObject();
-            auto const& key = args.at(1).getString();
+            auto const& key = prop.getString();
             return obj.exists(key);
-        } else if (args.at(0).isArray()){
-            dom::Value arrV = args.at(0);
+        } else if (ctx.isArray()){
+            dom::Value arrV = ctx;
             auto const& arr = arrV.getArray();
-            auto value = args.at(1);
+            auto value = prop;
             for (std::size_t i = 0; i < arr.size(); ++i) {
                 if (isSame(arr[i], value))
                     return true;
@@ -3961,8 +3963,9 @@ registerContainerHelpers(Handlebars& hbs)
 
     static constexpr auto items_fn = [](
         dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        if (args.at(0).isObject()) {
-            auto const& obj = args.at(0).getObject();
+        dom::Value itemsV = args.at(0);
+        if (itemsV.isObject()) {
+            auto const& obj = itemsV.getObject();
             dom::Array res;
             for (auto const& [key, value]: obj)
             {
@@ -3973,7 +3976,7 @@ registerContainerHelpers(Handlebars& hbs)
             }
             return res;
         } else {
-            return args.at(0);
+            return itemsV;
         }
     };
 
@@ -4128,7 +4131,8 @@ registerContainerHelpers(Handlebars& hbs)
         auto container = args.at(0);
         if (container.isArray()) {
             auto const& arr = container.getArray();
-            auto const& key = args.at(1).getString();
+            dom::Value keyV = args.at(1);
+            auto const& key = keyV.getString();
             std::vector<dom::Value> res;
             for (std::size_t i = 0; i < arr.size(); ++i) {
                 res.emplace_back(arr.at(i));

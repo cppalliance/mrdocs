@@ -5,4 +5,5 @@
 * xref:commands.adoc[]
 * xref:design-notes.adoc[]
 * xref:contribute.adoc[]
+* xref:reference/reference.adoc[]
 * xref:license.adoc[]
