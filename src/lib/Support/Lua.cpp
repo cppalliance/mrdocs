@@ -11,7 +11,7 @@
 #include <mrdox/Support/Lua.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
-#include "../../../lua/src/lua.hpp"
+#include "../../../third-party/lua/src/lua.hpp"
 #include <fmt/format.h>
 
 #include <llvm/Support/raw_ostream.h>
@@ -279,6 +279,7 @@ domArray_get(
 }
 
 // Push the domObject metatable onto the stack
+[[maybe_unused]]
 static
 void
 domArray_push_metatable(

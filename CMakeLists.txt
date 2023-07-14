@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
 # Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+# Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 #
 # Official repository: https://github.com/cppalliance/mrdox
 #
@@ -15,6 +16,11 @@
 #-------------------------------------------------
 
 cmake_minimum_required(VERSION 3.13)
+if (GENERATOR_IS_MULTI_CONFIG AND NOT CMAKE_CONFIGURATION_TYPES)
+    set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configurations" FORCE)
+elseif(NOT GENERATOR_IS_MULTI_CONFIG AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
+endif()
 cmake_policy(SET CMP0111 OLD)
 project(
     MrDox
@@ -26,12 +32,17 @@ project(
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
-option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
-option(MRDOX_BUILD_SHARED "Link shared" OFF)
-option(MRDOX_BUILD_DOCS "Build documentation" OFF)
 option(MRDOX_INSTALL "Configure install target" ON)
 option(MRDOX_PACKAGE "Build install package" ON)
-option(MRDOX_GENERATE_REFERENCE "Generate reference.xml/reference.adoc" ON)
+option(MRDOX_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
+option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
+if (MRDOX_BUILD_TESTS OR MRDOX_INSTALL)
+    option(MRDOX_BUILD_DOCS "Build documentation" ON)
+else()
+    option(MRDOX_BUILD_DOCS "Build documentation" OFF)
+endif()
+option(MRDOX_GENERATE_REFERENCE "Generate MrDox reference" ${MRDOX_BUILD_DOCS})
+option(MRDOX_GENERATE_ANTORA_REFERENCE "Generate MrDox reference in Antora module pages" OFF)
 
 if (MRDOX_BUILD_SHARED)
     set(MRDOX_LINK_MODE SHARED)
@@ -44,17 +55,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(MRDOX_GCC ON)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang$")
     set(MRDOX_CLANG ON)
-endif()
-
-if (WIN32)
-    add_definitions(
-        -D_CRT_SECURE_NO_WARNINGS
-        -D_SILENCE_CXX20_CISO646_REMOVED_WARNING)
-    if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win64") # 64-bit
-        add_compile_options(
-            /arch:AMD64
-        )
-    endif()
 endif()
 
 #-------------------------------------------------
@@ -76,26 +76,18 @@ string(REGEX REPLACE " /W[0-4]" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 # Duktape
-if(NOT DEFINED DUKTAPE_SOURCE_ROOT)
-    set(DUKTAPE_SOURCE_ROOT $ENV{DUKTAPE_SOURCE_ROOT})
-endif()
+set(DUKTAPE_SOURCE_ROOT "" CACHE STRING "Root of the Duktape source tree")
 if (NOT DUKTAPE_SOURCE_ROOT)
-    include(FetchContent)
-    if (POLICY CMP0135)
-        cmake_policy(SET CMP0135 NEW)
-    endif()
-    FetchContent_Declare(
-            duktape
-            URL https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz
-    )
-    FetchContent_GetProperties(duktape)
-    if(NOT duktape_POPULATED)
-        FetchContent_Populate(duktape)
-        set(DUKTAPE_SOURCE_ROOT ${duktape_SOURCE_DIR})
-    endif()
+    message(FATAL_ERROR
+            "Duktape source root not found.\n"
+            "Please set DUKTAPE_SOURCE_ROOT to the root of the Duktape source tree.\n"
+            "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz\n")
 endif()
 add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
-target_include_directories(duktape PUBLIC ${DUKTAPE_SOURCE_ROOT}/src)
+target_include_directories(
+    duktape PUBLIC
+        "$<BUILD_INTERFACE:${DUKTAPE_SOURCE_ROOT}/src>"
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 add_library(duktape::duktape ALIAS duktape)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     target_compile_options(duktape PRIVATE -w)
@@ -104,8 +96,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 # fmt
-unset(CMAKE_FOLDER)
 find_package(fmt REQUIRED CONFIG)
+unset(CMAKE_FOLDER)
 
 #-------------------------------------------------
 #
@@ -174,6 +166,9 @@ if (WIN32)
         target_compile_options(mrdox-core PUBLIC /MD)
     endif()
     if(MSVC)
+        if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win64") # 64-bit
+            target_compile_options(mrdox-core PUBLIC /arch:AMD64)
+        endif()
         target_compile_options(
             mrdox-core
             PUBLIC
@@ -226,7 +221,6 @@ if (MRDOX_CLANG)
 endif ()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-#source_group(TREE ${PROJECT_SOURCE_DIR} PREFIX "" FILES CMakeLists.txt)
 source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${INCLUDES})
 source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 
@@ -259,29 +253,12 @@ if (MRDOX_BUILD_TESTS)
             TARGET mrdox-test
             POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
-                    ${CMAKE_SOURCE_DIR}/addons
+                    ${CMAKE_SOURCE_DIR}/share/mrdox/addons
                     ${CMAKE_BINARY_DIR}/addons
             BYPRODUCTS ${CMAKE_BINARY_DIR}/addons
-            DEPENDS ${CMAKE_SOURCE_DIR}/addons
+            DEPENDS ${CMAKE_SOURCE_DIR}/share/mrdox/addons
     )
     add_test(NAME mrdox-test COMMAND mrdox-test --action test "${PROJECT_SOURCE_DIR}/test-files/old-tests")
-
-    #-------------------------------------------------
-    # Reference documentation
-    #-------------------------------------------------
-    if (MRDOX_GENERATE_REFERENCE)
-        # test run
-        file(GLOB_RECURSE REFERENCE_SOURCES CONFIGURE_DEPENDS source/*.cpp source/*.hpp)
-
-        set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-        include(mrdox.cmake)
-
-        mrdox(FORMAT adoc CONFIG docs/mrdox.yml SOURCES ${REFERENCE_SOURCES})
-        mrdox(FORMAT xml  CONFIG docs/mrdox.yml SOURCES ${REFERENCE_SOURCES})
-
-        add_custom_target(reference_adoc ALL DEPENDS reference.adoc)
-        add_custom_target(reference_xml  ALL DEPENDS reference.xml)
-    endif()
 
     #-------------------------------------------------
     # XML lint
@@ -307,9 +284,7 @@ if (MRDOX_BUILD_TESTS)
                      --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng ${XML_SOURCES}
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
-
 endif()
-
 
 #-------------------------------------------------
 #
@@ -318,6 +293,32 @@ endif()
 #-------------------------------------------------
 
 if (MRDOX_BUILD_DOCS)
+    #-------------------------------------------------
+    # Reference
+    #-------------------------------------------------
+    if (MRDOX_GENERATE_REFERENCE)
+        include(share/cmake/MrDox.cmake)
+        set(MRDOX_REFERENCE_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs/reference)
+        file(GLOB_RECURSE REFERENCE_SOURCES CONFIGURE_DEPENDS include/*.hpp)
+        set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+        add_mrdox(generate_reference
+                CONFIG docs/mrdox.yml
+                FORMAT adoc
+                COMMENT "Generate MrDox reference"
+                OUTPUT ${MRDOX_REFERENCE_OUTPUT_DIR}
+                ${REFERENCE_SOURCES})
+        if (MRDOX_GENERATE_ANTORA_REFERENCE)
+            set(MRDOX_ANTORA_REFERENCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/modules/ROOT/pages/reference)
+            add_custom_target(generate_antora_reference
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory ${MRDOX_REFERENCE_OUTPUT_DIR} ${MRDOX_ANTORA_REFERENCE_DIR}
+                    DEPENDS generate_reference
+                    COMMENT "Copy MrDox reference to Antora")
+        endif()
+    endif()
+
+    #-------------------------------------------------
+    # Exposition
+    #-------------------------------------------------
     find_program(NPM_EXECUTABLE npm)
     find_program(NPX_EXECUTABLE npx)
 
@@ -331,11 +332,18 @@ if (MRDOX_BUILD_DOCS)
 
         # Add custom target for generating documentation
         add_custom_target(generate_docs
+                ALL
+                COMMAND ${CMAKE_COMMAND} -E echo "Install npm dependencies"
                 COMMAND ${NPM_EXECUTABLE} install
+                COMMAND ${CMAKE_COMMAND} -E echo "Run Antora"
                 COMMAND ${NPX_EXECUTABLE} antora local-antora-playbook.yml
                 WORKING_DIRECTORY ${DOCS_SOURCE_DIR}
                 COMMENT "Generating MrDox documentation"
+                USES_TERMINAL
                 )
+        if (MRDOX_GENERATE_REFERENCE AND MRDOX_GENERATE_ANTORA_REFERENCE)
+            add_dependencies(generate_docs generate_antora_reference)
+        endif()
     else()
         message(WARNING "NPM or NPX not found. Unable to generate documentation.")
     endif()
@@ -348,12 +356,25 @@ endif ()
 #-------------------------------------------------
 
 if (MRDOX_INSTALL)
-    # Create and install mrdox-targets.cmake
+    #-------------------------------------------------
+    # bin
+    #-------------------------------------------------
     install(TARGETS mrdox
             EXPORT mrdox-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+            )
+    set(MRDOX_EXECUTABLE $<TARGET_FILE:mrdox>)
+
+    #-------------------------------------------------
+    # lib
+    #-------------------------------------------------
+    install(TARGETS mrdox-core duktape
+            EXPORT mrdox-targets
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            COMPONENT development
             )
 
     install(EXPORT mrdox-targets
@@ -361,24 +382,52 @@ if (MRDOX_INSTALL)
             NAMESPACE mrdox::
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
 
-    # Headers
+    #-------------------------------------------------
+    # include
+    #-------------------------------------------------
     install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdox
             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-            FILES_MATCHING PATTERN "*.[hic]pp")
+            COMPONENT development
+            FILES_MATCHING
+            PATTERN "*.[hi]pp")
 
-    # Set installation rules for generated documentation
-    if (MRDOX_BUILD_DOCS)
-        install(DIRECTORY ${DOCS_BUILD_DIR}
-                DESTINATION ${DOCS_INSTALL_DIR}
-                COMPONENT documentation
-                )
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/third-party/duktape/src/
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+            COMPONENT development
+            FILES_MATCHING
+            PATTERN "*.h")
+
+    #-------------------------------------------------
+    # share
+    #-------------------------------------------------
+    file(GLOB SHARE_SUBDIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/share ${CMAKE_CURRENT_SOURCE_DIR}/share/*)
+    foreach (dir ${SHARE_SUBDIRS})
+        if (NOT IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/${dir})
+            continue()
+        endif()
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/${dir}
+                DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${dir}
+                FILES_MATCHING PATTERN "*")
+    endforeach()
+
+    #-------------------------------------------------
+    # doc
+    #-------------------------------------------------
+    if (MRDOX_BUILD_DOCS AND NPM_EXECUTABLE AND NPX_EXECUTABLE)
+        if (EXISTS ${DOCS_BUILD_DIR})
+            install(DIRECTORY ${DOCS_BUILD_DIR}
+                    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+                    COMPONENT documentation
+                    )
+        endif()
     endif()
 
-    # Set variable where the cmake config is
-    # https://cliutils.gitlab.io/modern-cmake/chapters/install/installing.html
+    #-------------------------------------------------
+    # lib/cmake
+    #-------------------------------------------------
     set(CONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
 
-    # Create and install mrdox-config-version.cmake
+    # mrdox-config-version.cmake
     if (CMAKE_PROJECT_VERSION VERSION_LESS 1.0.0)
         set(compatibility_mode SameMajorVersion)
     else ()
@@ -391,7 +440,7 @@ if (MRDOX_INSTALL)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mrdox-config-version.cmake
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
 
-    # Create and install mrdox-config.cmake
+    # mrdox-config.cmake
     set(INCLUDE_INSTALL_DIR include/)
     set(LIB_INSTALL_DIR lib/)
     configure_package_config_file(
@@ -409,10 +458,7 @@ endif ()
 #
 #-------------------------------------------------
 if (MRDOX_INSTALL AND MRDOX_PACKAGE)
-    # Set the cpack variables
-    # https://cliutils.gitlab.io/modern-cmake/chapters/install/packaging.html
-
-    # The most common cpack variables
+    # Project description
     set(CPACK_PACKAGE_VENDOR "mrdox")
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION})
     set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -421,13 +467,12 @@ if (MRDOX_INSTALL AND MRDOX_PACKAGE)
     set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
     set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.adoc")
 
-    # Set CPACK_SOURCE_IGNORE_FILES with files source packages shouldn't install
-    # We get these from .gitignore to avoid redundancy
+    # Ignore files
     FILE(READ .gitignore GITIGNORE_CONTENTS)
     STRING(REGEX REPLACE ";" "\\\\;" GITIGNORE_CONTENTS "${GITIGNORE_CONTENTS}")
     STRING(REGEX REPLACE "\n" ";" GITIGNORE_CONTENTS "${GITIGNORE_CONTENTS}")
     set(CPACK_SOURCE_IGNORE_FILES ${GITIGNORE_CONTENTS})
 
-    # Always include CPack at last
+    # CPack variables
     include(CPack)
 endif ()
