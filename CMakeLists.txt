@@ -107,10 +107,9 @@ unset(CMAKE_FOLDER)
 
 file(
     GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS
-        src/lib/*.cpp
-        src/lib/*.hpp
+        src/lib/*.cpp src/lib/*.hpp src/lib/*.ipp
         src/lib/*.natvis
-        include/*.hpp
+        include/*.hpp include/*.ipp
         include/*.natvis
         SourceFileNames.cpp)
 add_library(mrdox-core ${LIB_SOURCES})

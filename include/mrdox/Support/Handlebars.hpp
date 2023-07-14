@@ -12,7 +12,7 @@
 #define MRDOX_TOOL_SUPPORT_PATH_HPP
 
 #include <mrdox/Support/String.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <string_view>
 #include <unordered_map>
 #include <functional>
@@ -1272,20 +1272,6 @@ void
 escapeExpression(
     OutputRef out,
     std::string_view str);
-
-/** Stringify a value as JSON
-
-    This function converts a dom::Value to a string as if
-    JSON.stringify() had been called on it.
-
-    Recursive objects are identified.
-
-    @param v The value to stringify
-    @return The stringified value
- */
-MRDOX_DECL
-std::string
-JSON_stringify(dom::Value const& value);
 
 /** An error thrown or returned by Handlebars
 

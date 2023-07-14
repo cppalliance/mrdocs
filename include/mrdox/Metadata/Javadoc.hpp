@@ -14,7 +14,7 @@
 #define MRDOX_API_METADATA_JAVADOC_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <memory>
 #include <string>

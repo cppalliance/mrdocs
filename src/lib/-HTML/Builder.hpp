@@ -18,8 +18,6 @@
 #include <mrdox/Support/JavaScript.hpp>
 #include <ostream>
 
-#include <mrdox/Support/Dom.hpp>
-
 namespace clang {
 namespace mrdox {
 namespace html {

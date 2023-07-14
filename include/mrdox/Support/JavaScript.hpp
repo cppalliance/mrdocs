@@ -12,7 +12,7 @@
 #define MRDOX_API_SUPPORT_JAVASCRIPT_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <cstdlib>
 #include <string_view>
