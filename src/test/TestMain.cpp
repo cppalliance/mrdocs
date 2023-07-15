@@ -8,7 +8,6 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "test_suite.hpp"
 #include "TestArgs.hpp"
 #include "TestRunner.hpp"
 #include "lib/Support/Debug.hpp"
@@ -17,6 +16,7 @@
 #include <mrdox/Version.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
+#include <test_suite/test_suite.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/PrettyStackTrace.h>

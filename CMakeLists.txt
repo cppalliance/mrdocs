@@ -242,7 +242,7 @@ if (MRDOX_BUILD_TESTS)
     #-------------------------------------------------
     include(CTest)
     file(GLOB_RECURSE TEST_SUITE_FILES CONFIGURE_DEPENDS src/test_suite/*.cpp src/test_suite/*.hpp)
-    file(GLOB_RECURSE UNIT_TEST_SOURCES CONFIGURE_DEPENDS src/test/lib/*.cpp src/test/lib/*.hpp)
+    file(GLOB_RECURSE UNIT_TEST_SOURCES CONFIGURE_DEPENDS src/test/*.cpp src/test/*.hpp)
     add_executable(mrdox-test ${TEST_SUITE_FILES} ${UNIT_TEST_SOURCES})
     target_include_directories(mrdox-test
             PRIVATE
