@@ -469,57 +469,13 @@ test(
 
 //------------------------------------------------
 
-int
-run(std::ostream& out,
-    int argc, char const* const* argv)
+int run(std::ostream& out)
 {
-    if(argc == 2)
-    {
-        std::string arg(argv[1]);
-        if(arg == "-h" || arg == "--help")
-        {
-            log <<
-                "Usage:\n"
-                "  " << argv[0] << ": { <suite-name>... }" <<
-                std::endl;
-            return EXIT_SUCCESS;
-        }
-    }
-
     simple_runner any_runner(out);
     suites::instance().sort();
-    if(argc == 1)
-    {
-        for(any_suite const* sp :
-                suites::instance())
-            any_runner.run(*sp);
-    }
-    else
-    {
-        std::vector<std::string> args;
-        args.reserve(argc - 1);
-        for(int i = 0; i < argc - 1; ++i)
-            args.emplace_back(argv[i + 1]);
-        for(auto const& e : suites::instance())
-        {
-            std::string s(e->name());
-            if(std::find_if(
-                args.begin(), args.end(),
-                [&](std::string const& arg)
-                {
-                    if(arg.size() > s.size())
-                        return false;
-                    return s.compare(
-                        s.size() - arg.size(),
-                        arg.size(),
-                        arg.data(),
-                        arg.size()) == 0;
-                }) != args.end())
-            {
-                any_runner.run(*e);
-            }
-        }
-    }
+    for(any_suite const* sp :
+            suites::instance())
+        any_runner.run(*sp);
     return any_runner.success() ?
         EXIT_SUCCESS : EXIT_FAILURE;
 }
@@ -541,7 +497,7 @@ int unit_test_main(int argc, char const* const* argv)
 #endif
 
     ::test_suite::debug_stream dstream(std::cerr);
-    return ::test_suite::detail::run(dstream, argc, argv);
+    return ::test_suite::detail::run(dstream);
 }
 
 } // test_suite
