@@ -74,7 +74,8 @@ public:
 
 /** A reference to an instance of a JavaScript interpreter.
 */
-class Context
+class MRDOX_DECL
+    Context
 {
     struct Impl;
 
@@ -89,15 +90,15 @@ public:
 
     /** Destructor.
     */
-    MRDOX_DECL ~Context();
+    ~Context();
 
     /** Constructor.
     */
-    MRDOX_DECL Context();
+    Context();
 
     /** Constructor.
     */
-    MRDOX_DECL Context(Context const&) noexcept;
+    Context(Context const&) noexcept;
 };
 
 //------------------------------------------------
@@ -140,95 +141,6 @@ public:
 
 //------------------------------------------------
 
-/** A bound value which can be passed to JavaScript.
-
-    Objects of this type are used as parameter
-    types in signatures of C++ functions. They
-    should not be used anywhere else, otherwise
-    the behavior is undefined.
-*/
-class MRDOX_DECL
-    Param
-{
-    enum class Kind
-    {
-        Undefined,
-        Null,
-        Boolean,
-        Integer,
-        Unsigned,
-        Double,
-        String,
-        Value,
-        DomArray,
-        DomObject
-    };
-
-    Kind kind_ = Kind::Undefined;
-
-    union
-    {
-        bool b_;
-        int i_;
-        unsigned int u_;
-        double d_;
-        int idx_; // for Value
-        std::string_view s_;
-        dom::Array arr_;
-        dom::Object obj_;
-    };
-
-    friend struct Access;
-    void push(Scope&) const;
-    Param(Param&&) noexcept;
-
-public:
-    ~Param();
-    Param(std::nullptr_t) noexcept;
-    Param(int) noexcept;
-    Param(unsigned int) noexcept;
-    Param(double) noexcept;
-    Param(std::string_view s) noexcept;
-    Param(Value const& value) noexcept;
-    Param(dom::Array const& arr) noexcept;
-    Param(dom::Object const& obj) noexcept;
-    Param(dom::Value const& value) noexcept;
-
-    Param(Param const&) = delete;
-    Param& operator=(Param const&) = delete;
-
-    template<class Boolean>
-    requires std::is_same_v<Boolean, bool>
-    Param(Boolean const& b) noexcept
-        : kind_(Kind::Boolean)
-        , b_(b)
-    {
-    }
-
-    Param(char const* s) noexcept
-        : Param(std::string_view(s))
-    {
-    }
-
-    template<class String>
-    requires std::is_convertible_v<
-        String, std::string_view>
-    Param(String const& s)
-        : Param(std::string_view(s))
-    {
-    }
-
-    template<class Enum>
-    requires std::is_enum_v<Enum>
-    Param(Enum v) noexcept
-        : kind_(Kind::Integer)
-        , i_(static_cast<int>(v))
-    {
-    }
-};
-
-//------------------------------------------------
-
 /** An ECMAScript value.
 */
 class Value
@@ -262,14 +174,14 @@ public:
     std::string getString() const;
 
 void setlog();
+
     /** Call a function.
     */
     template<class... Args>
     Expected<Value>
     call(Args&&... args) const
     {
-        std::array<Param, sizeof...(args)> va{ Param(args)... };
-        return callImpl(va.data(), va.size());
+        return callImpl({ dom::Value(std::forward<Args>(args))... });
     }
 
     /** Call a function.
@@ -289,23 +201,21 @@ void setlog();
         std::string_view prop,
         Args&&... args) const
     {
-        std::array<Param, sizeof...(args)> va{ Param(args)... };
-        return callPropImpl(prop, va.data(), va.size());
+        return callPropImpl(prop,
+            { dom::Value(std::forward<Args>(args))... });
     }
 
 private:
     MRDOX_DECL
     Expected<Value>
     callImpl(
-        Param const* data,
-        std::size_t size) const;
+        std::initializer_list<dom::Value> args) const;
 
     MRDOX_DECL
     Expected<Value>
     callPropImpl(
         std::string_view prop,
-        Param const* data,
-        std::size_t size) const;
+        std::initializer_list<dom::Value> args) const;
 };
 
 inline bool Value::isUndefined() const noexcept
