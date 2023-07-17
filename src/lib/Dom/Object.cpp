@@ -220,7 +220,7 @@ void
 LazyObjectImpl::
 set(String key, Value value)
 {
-    obj().set(std::move(key), value);
+    return obj().set(std::move(key), std::move(value));
 }
 
 } // dom

@@ -27,16 +27,13 @@ namespace adoc {
 
 Builder::
 Builder(
-    DomCorpus const& domCorpus,
-    Options const& options)
-    : domCorpus_(domCorpus)
-    , corpus_(domCorpus_.corpus)
-    , options_(options)
+    AdocCorpus const& corpus)
+    : domCorpus(corpus)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    Config const& config = corpus_.config;
+    Config const& config = domCorpus.getCorpus().config;
 
     js::Scope scope(ctx_);
 
@@ -152,7 +149,7 @@ callTemplate(
     std::string_view name,
     dom::Value const& context)
 {
-    Config const& config = corpus_.config;
+    Config const& config = domCorpus.getCorpus().config;
 
     js::Scope scope(ctx_);
     auto Handlebars = scope.getGlobal("Handlebars");
@@ -195,11 +192,22 @@ renderSinglePageFooter()
 dom::Value
 Builder::
 createContext(
-    SymbolID const& id)
+    Info const& I)
 {
-    return dom::Object({
-        { "symbol", domCorpus_.get(id) }
-        });
+    dom::Object::storage_type props;
+    props.emplace_back("symbol", domCorpus.get(I.id));
+    std::string rel_prefix;
+    if(domCorpus.options.safe_names &&
+        domCorpus.getCorpus().config->multiPage &&
+        ! I.Namespace.empty())
+    {
+        auto depth = I.Namespace.size() - 1;
+        rel_prefix.reserve(depth * 3);
+        while(depth--)
+            rel_prefix.append("../");
+    }
+    props.emplace_back("relfileprefix", std::move(rel_prefix));
+    return dom::Object(std::move(props));
 }
 
 template<class T>
@@ -209,7 +217,7 @@ operator()(T const& I)
 {
     return callTemplate(
         "single-symbol.adoc.hbs",
-        createContext(I.id));
+        createContext(I));
 }
 
 #define DEFINE(T) template Expected<std::string> \

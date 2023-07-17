@@ -30,7 +30,7 @@ Builder(
     DomCorpus const& domCorpus,
     Options const& options)
     : domCorpus_(domCorpus)
-    , corpus_(domCorpus_.corpus)
+    , corpus_(domCorpus_.getCorpus())
     , options_(options)
 {
     namespace fs = llvm::sys::fs;

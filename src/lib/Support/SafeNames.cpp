@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -11,294 +12,356 @@
 #include "lib/Support/Radix.hpp"
 #include "lib/Support/SafeNames.hpp"
 #include "lib/Support/Validate.hpp"
+#include "lib/Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Platform.hpp>
-#include <llvm/ADT/STLExtras.h>
-#include <llvm/ADT/StringExtras.h>
-#include <llvm/ADT/StringMap.h>
+#include <mrdox/Support/TypeTraits.hpp>
+#include <fmt/format.h>
 #include <algorithm>
+#include <ranges>
+#include <string_view>
+#include <unordered_map>
 
 namespace clang {
 namespace mrdox {
 
-namespace {
-
-/*
-    Unsafe names:
-
-    destructors
-    overloaded operators
-    function templates
-    class templates
-*/
-class PrettyBuilder
+class SafeNames::Impl
 {
-    llvm::raw_ostream* os_ = nullptr;
-    std::string prefix_;
-    std::string temp_;
+    Corpus const& corpus_;
 
-public:
-    explicit
-    PrettyBuilder(
-        Corpus const& corpus)
-        : corpus_(corpus)
+    // store all info required to generate a safename
+    struct SafeNameInfo
     {
-        prefix_.reserve(512);
-        visit(corpus_.globalNamespace(), *this);
-        /* auto result =*/ map.try_emplace(
-            llvm::StringRef(SymbolID::zero), std::string());
+        // safename without disambiguation characters
+        std::string_view unqualified;
+        // number of characters from the SymbolID string
+        // required to uniquely identify this symbol
+        std::uint8_t disambig_chars;
+        // SymbolID converted to a string
+        std::string id_str;
+    };
 
-    #ifndef NDEBUG
-        //for(auto const& N : map)
-            //MRDOX_ASSERT(validAdocSectionID(N.second));
-    #endif
-    }
+    std::unordered_map<SymbolID, SafeNameInfo> map_;
 
-    PrettyBuilder(
-        llvm::raw_ostream& os,
-        Corpus const& corpus)
-        :
-        //os_(&os),
-        corpus_(corpus)
+    std::string_view
+    getReserved(const Info& I)
     {
-        prefix_.reserve(512);
-        visit(corpus_.globalNamespace(), *this);
-        /* auto result =*/ map.try_emplace(
-            llvm::StringRef(SymbolID::zero), std::string());
-        if(os_)
-            *os_ << "\n\n";
-    }
-
-    llvm::StringMap<std::string> map;
-
-    using ScopeInfos = std::vector<Info const*>;
-
-    ScopeInfos
-    buildScope(
-        NamespaceInfo const& I)
-    {
-        ScopeInfos infos;
-        infos.reserve(I.Members.size());
-        for(auto const& id : I.Members)
-            infos.emplace_back(corpus_.find(id));
-        // KRYSTIAN FIXME: include specializations
-        if(infos.size() < 2)
-            return infos;
-        std::string s0, s1;
-        llvm::sort(infos,
-            [&](Info const* I0, Info const* I1)
-            {
-                return compareSymbolNames(I0->Name, I1->Name) < 0;
-            });
-        return infos;
-    }
-
-    ScopeInfos
-    buildScope(
-        RecordInfo const& I)
-    {
-        ScopeInfos infos;
-        infos.reserve(I.Members.size());
-        for(auto const& id : I.Members)
-            infos.emplace_back(corpus_.find(id));
-        // KRYSTIAN FIXME: include specializations and friends
-        if(infos.size() < 2)
-            return infos;
-        std::string s0, s1;
-        llvm::sort(infos,
-            [&](Info const* I0, Info const* I1)
-            {
-                return compareSymbolNames(I0->Name, I1->Name) < 0;
-            });
-        return infos;
-    }
-
-    llvm::StringRef
-    getSafe(Info const& I)
-    {
-        if(I.Kind != InfoKind::Function)
-            return I.Name;
-        auto const& FI = static_cast<
-            FunctionInfo const&>(I);
-        auto OOK = FI.specs0.overloadedOperator.get();
-        if(OOK == OperatorKind::None)
-            return I.Name;
-        temp_ = '0';
-        temp_.append(getSafeOperatorName(OOK));
-        return temp_;
-    }
-
-    void insertScope(ScopeInfos const& infos)
-    {
-        if(os_)
+        // all valid c++ identifiers begin with
+        // an underscore or alphabetic character,
+        // so a numeric prefix ensures no conflicts
+        static
+        std::string_view
+        reserved[] = {
+            "0namespace",
+            "1record",
+            "2function",
+            "3enum",
+            "4typedef",
+            "5variable",
+            "6field",
+            "7specialization",
+        };
+        if(I.isFunction())
         {
-            std::string temp;
-            if( infos.size() > 0 &&
-                infos.front()->Namespace.size() > 0)
+            static
+            std::string_view
+            func_reserved[] = {
+                "2function",
+                "2constructor",
+                "2conversion",
+                "2destructor",
+                "2deduction_guide",
+            };
+            const auto& FI = static_cast<
+                const FunctionInfo&>(I);
+            // don't use the reserved prefix for overloaded operators
+            if(FI.Class == FunctionClass::Normal &&
+                FI.specs0.overloadedOperator.get() !=
+                    OperatorKind::None)
             {
-                auto const& P = corpus_.get<Info>(infos.front()->Namespace[0]);
-                corpus_.getFullyQualifiedName(P, temp);
-                temp.push_back(' ');
+                return getSafeOperatorName(
+                    FI.specs0.overloadedOperator.get(), true);
             }
-            *os_ <<
-                "------------------------\n" <<
-                "Scope " << temp <<
-                "with " << infos.size() << " names:\n\n";
-            for(auto const& I : infos)
-                *os_ << I->Name << '\n';
-            *os_ << '\n';
+            std::size_t func_idx = to_underlying(FI.Class);
+            MRDOX_ASSERT(func_idx < std::size(func_reserved));
+            return func_reserved[func_idx];
         }
 
-        auto it0 = infos.begin();
-        while(it0 != infos.end())
-        {
-            auto it = std::find_if(
-                it0 + 1, infos.end(),
-                [it0](auto I)
+        std::size_t idx = to_underlying(I.Kind);
+        MRDOX_ASSERT(idx < std::size(reserved));
+        return reserved[idx];
+    }
+
+    std::string_view
+    getUnqualified(
+        const Info& I)
+    {
+        return visit(I, [&]<typename T>(
+            const T& t) -> std::string_view
+            {
+                // namespaces can be unnamed (i.e. anonymous)
+                if constexpr(T::isNamespace())
                 {
-                    return
-                        llvm::StringRef((*it0)->Name).compare_insensitive(
-                        llvm::StringRef(I->Name)) != 0;
-                });
-            std::size_t n = std::distance(it0, it);
-            if(n < 2)
-            {
-                // unique
-                std::string s;
-                s.assign(prefix_);
-                s.append(getSafe(**it0));
-                if(os_)
-                    *os_ << getSafe(**it0) << "\n";
-                /*auto result =*/ map.try_emplace(
-                    llvm::StringRef((*it0)->id),
-                    std::move(s));
-                it0 = it;
-                continue;
-            }
-            // conflicting
-            for(std::size_t i = 0; i < n; ++i)
-            {
-                std::string s;
-                s.assign(prefix_);
-                std::string suffix;
-                suffix = std::to_string(i + 1);
-                //s.push_back('@');
-                suffix.append(getSafe(**it0));
-                if(os_)
-                    *os_ << suffix << "\n";
-                s.append(suffix);
-                /*auto result =*/ map.try_emplace(
-                    llvm::StringRef(it0[i]->id),
-                    std::move(s));
-            }
-            it0 = it;
-        }
+                    // special case for the global namespace
+                    if(t.id == SymbolID::zero)
+                        return std::string_view();
+
+                    if(t.specs.isAnonymous.get())
+                        return getReserved(t);
+                    MRDOX_ASSERT(! t.Name.empty());
+                    return t.Name;
+                }
+                // fields and typedefs cannot be overloaded
+                // or partially/explicitly specialized,
+                // but must have names
+                if constexpr(
+                    T::isField() ||
+                    T::isTypedef())
+                {
+                    MRDOX_ASSERT(! t.Name.empty());
+                    return t.Name;
+                }
+
+                // variables can be partially/explicitly
+                // specialized, but must have names and
+                // cannot be overloaded
+                if constexpr(T::isVariable())
+                {
+                    MRDOX_ASSERT(! t.Name.empty());
+                    return t.Name;
+                }
+
+                // enums cannot be overloaded or partially/
+                // explicitly specialized, but can be unnamed
+                if constexpr(T::isEnum())
+                {
+                    /** KRYSTIAN FIXME: [dcl.enum] p12 states (paraphrased):
+
+                        an unnamed enumeration type that has a first enumerator
+                        and does not have a typedef name for linkage purposes
+                        is denoted by its underlying type and its
+                        first enumerator for linkage purposes.
+
+                        should we also take this approach? note that this would not
+                        address unnamed enumeration types without any enumerators.
+                    */
+                    if(t.Name.empty())
+                        return getReserved(t);
+                    return t.Name;
+                }
+
+                // records can be partially/explicitly specialized,
+                // and can be unnamed, but cannot be overloaded
+                if constexpr(T::isRecord())
+                {
+                    if(t.Name.empty())
+                        return getReserved(t);
+                    return t.Name;
+                }
+
+                // functions must have named,
+                // can be explicitly specialized,
+                // and can be overloaded
+                if constexpr(T::isFunction())
+                {
+                    if(t.Class != FunctionClass::Normal ||
+                        t.specs0.overloadedOperator.get() != OperatorKind::None)
+                        return getReserved(t);
+                    MRDOX_ASSERT(! t.Name.empty());
+                    return t.Name;
+                }
+
+                if constexpr(T::isSpecialization())
+                {
+                    MRDOX_ASSERT(! t.Name.empty());
+                    return t.Name;
+                }
+
+                MRDOX_UNREACHABLE();
+            });
     }
 
-    void visitInfos(ScopeInfos const& infos)
+    //--------------------------------------------
+
+    template<typename Range>
+    void
+    buildSafeMembers(
+        const Range& Members)
     {
-        auto const n0 = prefix_.size();
-        for(auto const I : infos)
+        // maps unqualified names to a vector of all symbols
+        // with that name within the current scope
+        std::unordered_map<std::string_view,
+            std::vector<SymbolID>> disambiguation_map;
+        disambiguation_map.reserve(Members.size());
+
+        for(const SymbolID& id : Members)
         {
-            prefix_.append(getSafe(*I));
-            prefix_.push_back('-');
-            ::clang::mrdox::visit(*I, *this);
-            prefix_.resize(n0);
+            const Info* I = corpus_.find(id);
+            if(! I)
+                continue;
+            // generate the unqualified name and SymbolID string
+            auto [it, emplaced] = map_.emplace(I->id, SafeNameInfo(
+                getUnqualified(*I), 0, toBase16(I->id, true)));
+            // update the disambiguation map
+            auto [disambig_it, disambig_emplaced] =
+                disambiguation_map.try_emplace(it->second.unqualified);
+
+            // if there are other symbols with the same name, then disambiguation
+            // is required. iterate over the other symbols with the same unqualified name,
+            // and calculate the minimum number of characters from the SymbolID needed
+            // to uniquely identify each symbol. then, update all symbols with the new value.
+            if(! disambig_emplaced)
+            {
+                std::uint8_t n_chars = 1;
+                std::string_view id_str = it->second.id_str;
+                for(const SymbolID& other : disambig_it->second)
+                {
+                    std::string_view other_id_str =
+                        map_.find(other)->second.id_str;
+                    auto [mismatch_id, mismatch_other] =
+                        std::mismatch(id_str.begin(), id_str.end(),
+                            other_id_str.begin(), other_id_str.end());
+                    const auto n_required = std::distance(
+                        id_str.begin(), mismatch_id) + 1;
+                    n_chars = std::max(n_chars,
+                        static_cast<std::uint8_t>(n_required));
+                }
+
+                // update the number of disambiguation characters for each symbol
+                it->second.disambig_chars = n_chars;
+                for(const SymbolID& other : disambig_it->second)
+                    map_.find(other)->second.disambig_chars = n_chars;
+
+            }
+            disambig_it->second.push_back(I->id);
         }
     }
 
     //--------------------------------------------
 
+public:
+    explicit
+    Impl(Corpus const& corpus)
+        : corpus_(corpus)
+    {
+        map_.try_emplace(SymbolID::zero, SafeNameInfo(
+            "global_namespace", 0, toBase16(SymbolID::zero, true)));
+
+        visit(corpus_.globalNamespace(), *this);
+    }
+
+    void
+    getSafeUnqualified(
+        std::string& result,
+        const SymbolID& id)
+    {
+        MRDOX_ASSERT(corpus_.exists(id));
+        auto const it = map_.find(id);
+        MRDOX_ASSERT(it != map_.end());
+        auto& [unqualified, n_disambig, id_str] = it->second;
+        result.reserve(
+            result.size() +
+            unqualified.size() +
+            n_disambig ? n_disambig + 2 : 0);
+        result.append(unqualified);
+        if(n_disambig)
+        {
+            // KRYSTIAN FIXME: the SymbolID chars must be prefixed with
+            // a reserved character, otherwise there could be a
+            // conflict with a name in an inner scope. this could be
+            // resolved by using the base-10 representation of the SymbolID
+            result.append("-0");
+            result.append(id_str.c_str(), n_disambig);
+        }
+    }
+
+    void
+    getSafeQualified(
+        std::string& result,
+        const SymbolID& id,
+        char delim)
+    {
+        MRDOX_ASSERT(corpus_.exists(id));
+        auto const& parents = corpus_.get(id).Namespace;
+        if(parents.size() > 1)
+        {
+            for(auto const& parent : parents |
+                std::views::reverse |
+                std::views::drop(1))
+            {
+                getSafeUnqualified(result, parent);
+                result.push_back(delim);
+            }
+        }
+        getSafeUnqualified(result, id);
+    }
+
     template<class T>
     void operator()(T const& I)
     {
-        if constexpr(
-            T::isNamespace() ||
-            T::isRecord())
+        if constexpr(T::isNamespace() || T::isRecord())
         {
-            auto infos = buildScope(I);
-            insertScope(infos);
-            visitInfos(infos);
+            buildSafeMembers(I.Members);
+            for(const SymbolID& C : I.Members)
+            {
+                if(const Info* CI = corpus_.find(C))
+                {
+                    visit(*CI, *this);
+                }
+            }
         }
-        else
+
+        if constexpr(T::isSpecialization())
         {
+            buildSafeMembers(
+                std::views::transform(I.Members,
+                    [](const SpecializedMember& M) ->
+                        const SymbolID&
+                    {
+                        return M.Specialized;
+                    }));
+            for(const SpecializedMember& M : I.Members)
+            {
+                if(const Info* CI = corpus_.find(M.Specialized))
+                {
+                    visit(*CI, *this);
+                }
+            }
         }
     }
-
-private:
-    Corpus const& corpus_;
 };
 
 //------------------------------------------------
 
-// Always works but isn't the prettiest...
-class UglyBuilder
-{
-    Corpus const& corpus_;
-
-public:
-    llvm::StringMap<std::string> map;
-
-    explicit
-    UglyBuilder(
-        Corpus const& corpus)
-        : corpus_(corpus)
-    {
-        llvm::SmallString<64> temp;
-        for(Info const* I : corpus_.index())
-            map.try_emplace(
-                llvm::StringRef(I->id),
-                toBase16(I->id, true));
-    }
-};
-
-} // (anon)
-
-//------------------------------------------------
-
 SafeNames::
-SafeNames(
-    llvm::raw_ostream& os,
-    Corpus const& corpus)
-    : corpus_(corpus)
-    //, map_(PrettyBuilder(corpus).map)
-    , map_(UglyBuilder(corpus).map)
+SafeNames(Corpus const& corpus)
+    : impl_(std::make_unique<Impl>(corpus))
 {
 }
 
 SafeNames::
-SafeNames(
-    Corpus const& corpus)
-    : corpus_(corpus)
-    //, map_(PrettyBuilder(corpus).map)
-    , map_(UglyBuilder(corpus).map)
+~SafeNames() noexcept = default;
+
+std::string
+SafeNames::
+getUnqualified(
+    SymbolID const& id) const
 {
+    std::string result;
+    impl_->getSafeUnqualified(result, id);
+    return result;
 }
 
-llvm::StringRef
+std::string
 SafeNames::
-get(
-    SymbolID const &id) const noexcept
+getQualified(
+    SymbolID const& id,
+    char delim) const
 {
-    auto const it = map_.find(llvm::StringRef(id));
-    MRDOX_ASSERT(it != map_.end());
-    return it->getValue();
-}
-
-std::vector<llvm::StringRef>&
-SafeNames::
-getPath(
-    std::vector<llvm::StringRef>& dest,
-    SymbolID id) const
-{
-    auto const& Parents = corpus_.get<Info>(id).Namespace;
-    dest.clear();
-    dest.reserve(1 + Parents.size());
-    dest.push_back(get(id));
-    for(auto const& id : llvm::reverse(Parents))
-        dest.push_back(get(id));
-    return dest;
+    std::string result;
+    impl_->getSafeQualified(result, id, delim);
+    return result;
 }
 
 } // mrdox

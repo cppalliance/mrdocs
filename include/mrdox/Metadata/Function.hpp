@@ -28,11 +28,15 @@ namespace clang {
 namespace mrdox {
 
 /** Return the name of an operator as a string.
+
+    @param include_keyword Whether the name
+    should be prefixed with the `operator` keyword.
 */
 MRDOX_DECL
 std::string_view
 getOperatorName(
-    OperatorKind kind) noexcept;
+    OperatorKind kind,
+    bool include_keyword = false) noexcept;
 
 /** Return the short name of an operator as a string.
 */
@@ -42,11 +46,15 @@ getShortOperatorName(
     OperatorKind kind) noexcept;
 
 /** Return the safe name of an operator as a string.
+
+    @param include_keyword Whether the name
+    should be prefixed with `operator_`.
 */
 MRDOX_DECL
 std::string_view
 getSafeOperatorName(
-    OperatorKind kind) noexcept;
+    OperatorKind kind,
+    bool include_keyword = false) noexcept;
 
 /** Function classifications */
 enum class FunctionClass

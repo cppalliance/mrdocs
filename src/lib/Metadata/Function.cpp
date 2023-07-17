@@ -36,52 +36,52 @@ static constinit Item const Table[] = {
         ::= ad # & (unary)
         ::= de # * (unary)
     */
-    { "",         "",          "",    OperatorKind::None                },
-    { "new",      "new",       "nw",  OperatorKind::New                 },
-    { "delete",   "del",       "dl",  OperatorKind::Delete              },
-    { "new[]",    "arr_new",   "na",  OperatorKind::ArrayNew            },
-    { "delete[]", "arr_del",   "da",  OperatorKind::ArrayDelete         },
-    { "+",        "plus",      "pl",  OperatorKind::Plus                },
-    { "-",        "minus",     "mi",  OperatorKind::Minus               },
-    { "*",        "star",      "ml",  OperatorKind::Star                },
-    { "/",        "slash",     "dv",  OperatorKind::Slash               },
-    { "%",        "mod",       "rm",  OperatorKind::Percent             },
-    { "^",        "xor",       "eo",  OperatorKind::Caret               },
-    { "&",        "bitand",    "an",  OperatorKind::Amp                 },
-    { "|",        "bitor",     "or",  OperatorKind::Pipe                },
-    { "~",        "bitnot",    "co",  OperatorKind::Tilde               },
-    { "!",        "not",       "nt",  OperatorKind::Exclaim             },
-    { "=",        "assign",    "as",  OperatorKind::Equal               },
-    { "<",        "lt",        "lt",  OperatorKind::Less                },
-    { ">",        "gt",        "gt",  OperatorKind::Greater             },
-    { "+=",       "plus_eq",   "ple", OperatorKind::PlusEqual           },
-    { "-=",       "minus_eq",  "mie", OperatorKind::MinusEqual          },
-    { "*=",       "star_eq",   "mle", OperatorKind::StarEqual           },
-    { "/=",       "slash_eq",  "dve", OperatorKind::SlashEqual          },
-    { "%=",       "mod_eq",    "rme", OperatorKind::PercentEqual        },
-    { "^=",       "xor_eq",    "eoe", OperatorKind::CaretEqual          },
-    { "&=",       "and_eq",    "ane", OperatorKind::AmpEqual            },
-    { "|=",       "or_eq",     "ore", OperatorKind::PipeEqual           },
-    { "<<",       "lshift",    "ls",  OperatorKind::LessLess            },
-    { ">>",       "rshift",    "rs",  OperatorKind::GreaterGreater      },
-    { "<<=",      "lshift_eq", "lse", OperatorKind::LessLessEqual       },
-    { ">>=",      "rshift_eq", "rse", OperatorKind::GreaterGreaterEqual },
-    { "==",       "eq",        "eq",  OperatorKind::EqualEqual          },
-    { "!=",       "not_eq",    "ne",  OperatorKind::ExclaimEqual        },
-    { "<=",       "le",        "le",  OperatorKind::LessEqual           },
-    { ">=",       "ge",        "ge",  OperatorKind::GreaterEqual        },
-    { "<=>",      "3way",      "ss",  OperatorKind::Spaceship           },
-    { "&&",       "and",       "aa",  OperatorKind::AmpAmp              },
-    { "||",       "or",        "oo",  OperatorKind::PipePipe            },
-    { "++",       "inc",       "pp",  OperatorKind::PlusPlus            },
-    { "--",       "dec",       "mm",  OperatorKind::MinusMinus          },
-    { ",",        "comma",     "cm",  OperatorKind::Comma               },
-    { "->*",      "ptrmem",    "pm",  OperatorKind::ArrowStar           },
-    { "->",       "ptr",       "pt",  OperatorKind::Arrow               },
-    { "()",       "call",      "cl",  OperatorKind::Call                },
-    { "[]",       "subs",      "ix",  OperatorKind::Subscript           },
-    { "?",        "ternary",   "qu",  OperatorKind::Conditional         },
-    { "co_await", "coawait",   "ca",  OperatorKind::Coawait             },
+    { "",                  "",                   "",    OperatorKind::None                },
+    { "operator new",      "operator_new",       "nw",  OperatorKind::New                 },
+    { "operator delete",   "operator_del",       "dl",  OperatorKind::Delete              },
+    { "operator new[]",    "operator_arr_new",   "na",  OperatorKind::ArrayNew            },
+    { "operator delete[]", "operator_arr_del",   "da",  OperatorKind::ArrayDelete         },
+    { "operator+",         "operator_plus",      "pl",  OperatorKind::Plus                },
+    { "operator-",         "operator_minus",     "mi",  OperatorKind::Minus               },
+    { "operator*",         "operator_star",      "ml",  OperatorKind::Star                },
+    { "operator/",         "operator_slash",     "dv",  OperatorKind::Slash               },
+    { "operator%",         "operator_mod",       "rm",  OperatorKind::Percent             },
+    { "operator^",         "operator_xor",       "eo",  OperatorKind::Caret               },
+    { "operator&",         "operator_bitand",    "an",  OperatorKind::Amp                 },
+    { "operator|",         "operator_bitor",     "or",  OperatorKind::Pipe                },
+    { "operator~",         "operator_bitnot",    "co",  OperatorKind::Tilde               },
+    { "operator!",         "operator_not",       "nt",  OperatorKind::Exclaim             },
+    { "operator=",         "operator_assign",    "as",  OperatorKind::Equal               },
+    { "operator<",         "operator_lt",        "lt",  OperatorKind::Less                },
+    { "operator>",         "operator_gt",        "gt",  OperatorKind::Greater             },
+    { "operator+=",        "operator_plus_eq",   "ple", OperatorKind::PlusEqual           },
+    { "operator-=",        "operator_minus_eq",  "mie", OperatorKind::MinusEqual          },
+    { "operator*=",        "operator_star_eq",   "mle", OperatorKind::StarEqual           },
+    { "operator/=",        "operator_slash_eq",  "dve", OperatorKind::SlashEqual          },
+    { "operator%=",        "operator_mod_eq",    "rme", OperatorKind::PercentEqual        },
+    { "operator^=",        "operator_xor_eq",    "eoe", OperatorKind::CaretEqual          },
+    { "operator&=",        "operator_and_eq",    "ane", OperatorKind::AmpEqual            },
+    { "operator|=",        "operator_or_eq",     "ore", OperatorKind::PipeEqual           },
+    { "operator<<",        "operator_lshift",    "ls",  OperatorKind::LessLess            },
+    { "operator>>",        "operator_rshift",    "rs",  OperatorKind::GreaterGreater      },
+    { "operator<<=",       "operator_lshift_eq", "lse", OperatorKind::LessLessEqual       },
+    { "operator>>=",       "operator_rshift_eq", "rse", OperatorKind::GreaterGreaterEqual },
+    { "operator==",        "operator_eq",        "eq",  OperatorKind::EqualEqual          },
+    { "operator!=",        "operator_not_eq",    "ne",  OperatorKind::ExclaimEqual        },
+    { "operator<=",        "operator_le",        "le",  OperatorKind::LessEqual           },
+    { "operator>=",        "operator_ge",        "ge",  OperatorKind::GreaterEqual        },
+    { "operator<=>",       "operator_3way",      "ss",  OperatorKind::Spaceship           },
+    { "operator&&",        "operator_and",       "aa",  OperatorKind::AmpAmp              },
+    { "operator||",        "operator_or",        "oo",  OperatorKind::PipePipe            },
+    { "operator++",        "operator_inc",       "pp",  OperatorKind::PlusPlus            },
+    { "operator--",        "operator_dec",       "mm",  OperatorKind::MinusMinus          },
+    { "operator,",         "operator_comma",     "cm",  OperatorKind::Comma               },
+    { "operator->*",       "operator_ptrmem",    "pm",  OperatorKind::ArrowStar           },
+    { "operator->",        "operator_ptr",       "pt",  OperatorKind::Arrow               },
+    { "operator()",        "operator_call",      "cl",  OperatorKind::Call                },
+    { "operator[]",        "operator_subs",      "ix",  OperatorKind::Subscript           },
+    { "operator?",         "operator_ternary",   "qu",  OperatorKind::Conditional         },
+    { "operator co_await", "operator_coawait",   "ca",  OperatorKind::Coawait             },
     // { "~",         "dt",  FunctionKind::Destructor },
     // { "",          "ct",  FunctionKind::Constructor },
     // { "",          "cv",  FunctionKind::Conversion }
@@ -92,10 +92,20 @@ static constinit Item const Table[] = {
 
 std::string_view
 getOperatorName(
-    OperatorKind kind) noexcept
+    OperatorKind kind,
+    bool include_keyword) noexcept
 {
     MRDOX_ASSERT(Table[to_underlying(kind)].kind == kind);
-    return Table[to_underlying(kind)].name;
+    std::string_view full =
+        Table[to_underlying(kind)].name;
+    if(include_keyword || kind == OperatorKind::None)
+        return full;
+    // remove "operator"
+    full.remove_prefix(8);
+    // remove the space, if any
+    if(full.front() == ' ')
+        full.remove_prefix(1);
+    return full;
 }
 
 std::string_view
@@ -108,10 +118,15 @@ getShortOperatorName(
 
 std::string_view
 getSafeOperatorName(
-    OperatorKind kind) noexcept
+    OperatorKind kind,
+    bool include_keyword) noexcept
 {
     MRDOX_ASSERT(Table[to_underlying(kind)].kind == kind);
-    return Table[to_underlying(kind)].safe_name;
+    std::string_view full = Table[to_underlying(kind)].safe_name;
+    if(include_keyword || kind == OperatorKind::None)
+        return full;
+    // remove "operator_"
+    return full.substr(9);
 }
 
 dom::String

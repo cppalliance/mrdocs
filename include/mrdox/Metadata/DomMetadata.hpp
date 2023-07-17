@@ -35,10 +35,6 @@ class MRDOX_DECL
     std::unique_ptr<Impl> impl_;
 
 public:
-    /** The Corpus associated with the Dom.
-    */
-    Corpus const& corpus;
-
     /** Destructor.
     */
     virtual ~DomCorpus();
@@ -51,8 +47,21 @@ public:
 
         @param corpus The Corpus whose metadata to use.
     */
-    explicit
     DomCorpus(Corpus const& corpus);
+
+    /** Returns the Corpus associated with the Dom.
+    */
+    Corpus const& getCorpus() const;
+
+    /** Construct a Dom object representing the given symbol.
+
+        This function is called internally when a `dom::Object`
+        representing a symbol needs to be constructed because
+        it was not found in the cache.
+    */
+    virtual
+    dom::Object
+    construct(Info const& I) const;
 
     /** Return a Dom object representing the given symbol.
 
@@ -62,15 +71,6 @@ public:
     */
     dom::Object
     get(SymbolID const& id) const;
-
-    /** Return a Dom object representing the given symbol.
-
-        @return A value containing the symbol contents.
-
-        @param I The metadata for the symbol.
-    */
-    dom::Object
-    get(Info const& I) const;
 
     /** Return a Dom object representing the given symbol.
 

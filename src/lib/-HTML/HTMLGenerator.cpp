@@ -29,11 +29,11 @@ Expected<ExecutorGroup<Builder>>
 createExecutors(
     DomCorpus const& domCorpus)
 {
-    auto options = loadOptions(domCorpus.corpus);
+    auto options = loadOptions(domCorpus.getCorpus());
     if(! options)
         return options.error();
 
-    auto const& config = domCorpus.corpus.config;
+    auto const& config = domCorpus.getCorpus().config;
     auto& threadPool = config.threadPool();
     ExecutorGroup<Builder> group(threadPool);
     for(auto i = threadPool.getThreadCount(); i--;)

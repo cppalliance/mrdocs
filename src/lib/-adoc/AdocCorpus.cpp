@@ -10,6 +10,7 @@
 //
 
 #include "AdocCorpus.hpp"
+#include "lib/Support/Radix.hpp"
 #include <mrdox/Support/RangeFor.hpp>
 #include <mrdox/Support/String.hpp>
 #include <fmt/format.h>
@@ -328,6 +329,50 @@ public:
 };
 
 } // (anon)
+
+dom::Object
+AdocCorpus::
+construct(Info const& I) const
+{
+    // wraps a DomInfo with a lazy object which
+    // adds additional properties to the wrapped
+    // object once constructed.
+    struct AdocInfo :
+        public dom::LazyObjectImpl
+    {
+        Info const& I_;
+        AdocCorpus const& adocCorpus_;
+
+    public:
+        AdocInfo(
+            Info const& I,
+            AdocCorpus const& adocCorpus) noexcept
+            : I_(I)
+            , adocCorpus_(adocCorpus)
+        {
+        }
+
+        dom::Object construct() const override
+        {
+            auto obj = adocCorpus_.DomCorpus::construct(I_);
+            obj.set("ref", adocCorpus_.getXref(I_.id));
+            return obj;
+        }
+    };
+    return dom::newObject<AdocInfo>(I, *this);
+}
+
+std::string
+AdocCorpus::
+getXref(SymbolID const& id) const
+{
+    if(! safe_names)
+        // no safenames, use the SymbolID for references
+        return toBase16(id);
+    // use '/' as the seperator for multi-page, and '-' for single-page
+    return safe_names->getQualified(id,
+        getCorpus().config->multiPage ? '/' : '-');
+}
 
 dom::Value
 AdocCorpus::

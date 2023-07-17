@@ -12,7 +12,10 @@
 #define MRDOX_LIB_ADOC_ADOCCORPUS_HPP
 
 #include <mrdox/Platform.hpp>
+#include "lib/Support/SafeNames.hpp"
+#include "Options.hpp"
 #include <mrdox/Metadata/DomMetadata.hpp>
+#include <optional>
 
 namespace clang {
 namespace mrdox {
@@ -21,12 +24,24 @@ namespace adoc {
 class AdocCorpus : public DomCorpus
 {
 public:
-    explicit
+    Options options;
+    std::optional<SafeNames> safe_names;
+
     AdocCorpus(
-        Corpus const& corpus)
+        Corpus const& corpus,
+        Options&& opts)
         : DomCorpus(corpus)
+        , options(std::move(opts))
     {
+        if(options.safe_names)
+            safe_names.emplace(corpus);
     }
+
+    dom::Object
+    construct(Info const& I) const override;
+
+    std::string
+    getXref(SymbolID const& id) const;
 
     dom::Value
     getJavadoc(
