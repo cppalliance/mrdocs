@@ -27,20 +27,16 @@ namespace adoc {
 
 Expected<ExecutorGroup<Builder>>
 createExecutors(
-    DomCorpus const& domCorpus)
+    AdocCorpus const& adocCorpus)
 {
-    auto options = loadOptions(domCorpus.corpus);
-    if(! options)
-        return options.error();
-
-    auto const& config = domCorpus.corpus.config;
+    auto const& config = adocCorpus.getCorpus().config;
     auto& threadPool = config.threadPool();
     ExecutorGroup<Builder> group(threadPool);
     for(auto i = threadPool.getThreadCount(); i--;)
     {
         try
         {
-           group.emplace(domCorpus, *options);
+           group.emplace(adocCorpus);
         }
         catch(Exception const& ex)
         {
@@ -65,7 +61,11 @@ build(
     if(! corpus.config->multiPage)
         return Generator::build(outputPath, corpus);
 
-    AdocCorpus domCorpus(corpus);
+    auto options = loadOptions(corpus);
+    if(! options)
+        return options.error();
+
+    AdocCorpus domCorpus(corpus, options.release());
     auto ex = createExecutors(domCorpus);
     if(! ex)
         return ex.error();
@@ -84,7 +84,11 @@ buildOne(
     std::ostream& os,
     Corpus const& corpus) const
 {
-    AdocCorpus domCorpus(corpus);
+    auto options = loadOptions(corpus);
+    if(! options)
+        return options.error();
+
+    AdocCorpus domCorpus(corpus, options.release());
     auto ex = createExecutors(domCorpus);
     if(! ex)
         return ex.error();

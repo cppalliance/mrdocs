@@ -75,7 +75,7 @@ int mrdox_main(int argc, char const** argv)
 
     // Generate
     if(auto err = DoGenerateAction())
-        report::error("Generating reference failed: ", err);
+        report::error("Generating reference failed: {}", err);
 
     if( report::results.errorCount > 0 ||
         report::results.fatalCount > 0)

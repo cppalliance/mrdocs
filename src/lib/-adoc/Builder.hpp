@@ -12,6 +12,7 @@
 #define MRDOX_LIB_ADOC_BUILDER_HPP
 
 #include "Options.hpp"
+#include "AdocCorpus.hpp"
 #include "lib/Support/Radix.hpp"
 #include <mrdox/Metadata/DomMetadata.hpp>
 #include <mrdox/Support/Error.hpp>
@@ -31,17 +32,16 @@ namespace adoc {
 */
 class Builder
 {
-    DomCorpus const& domCorpus_;
-    Corpus const& corpus_;
-    Options options_;
     js::Context ctx_;
 
 public:
-    Builder(
-        DomCorpus const& domCorpus,
-        Options const& options);
+    AdocCorpus const& domCorpus;
 
-    dom::Value createContext(SymbolID const& id);
+    explicit
+    Builder(
+        AdocCorpus const& corpus);
+
+    dom::Value createContext(Info const& I);
 
     Expected<std::string>
     callTemplate(

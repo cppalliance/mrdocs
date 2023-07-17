@@ -10,6 +10,7 @@
 //
 
 #include "lib/Support/Radix.hpp"
+#include "lib/Support/SafeNames.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Metadata/DomMetadata.hpp>
 #include <llvm/ADT/StringMap.h>
@@ -292,11 +293,8 @@ domCreate(
             {
                 entries.emplace_back("name",
                     t.Name);
-                // KRYSTIAN NOTE: hack for missing SymbolIDs
-                if(t.Template != SymbolID::zero &&
-                    domCorpus.corpus.find(t.Template))
-                    entries.emplace_back("template",
-                        toBase16(t.Template));
+                entries.emplace_back("template",
+                    domCorpus.getOptional(t.Template));
             }
         });
     return dom::Object(std::move(entries));
@@ -376,11 +374,7 @@ domCreate(
             entries.emplace_back("name", t.Name);
 
         if constexpr(requires { t.id; })
-        {
-            // VFALCO hack for missing symbols?
-            if(t.id != SymbolID::zero && domCorpus.corpus.find(t.id))
-                entries.emplace_back("id", toBase16(t.id));
-        }
+            entries.emplace_back("symbol", domCorpus.getOptional(t.id));
 
         if constexpr(T::isSpecialization())
             entries.emplace_back("args",
@@ -534,7 +528,7 @@ public:
     dom::Value get(std::size_t i) const override
     {
         MRDOX_ASSERT(i < list_.size());
-        return domCorpus_.get(*list_[i]);
+        return domCorpus_.get(list_[i]->id);
     }
 };
 
@@ -594,7 +588,7 @@ public:
     dom::Object
     construct() const override
     {
-        sp_ = std::make_shared<Interface>(makeInterface(I_, domCorpus_.corpus));
+        sp_ = std::make_shared<Interface>(makeInterface(I_, domCorpus_.getCorpus()));
         return dom::Object({
             { "public", dom::newObject<DomTranche>(sp_->Public, sp_, domCorpus_) },
             { "protected", dom::newObject<DomTranche>(sp_->Protected, sp_, domCorpus_) },
@@ -787,73 +781,56 @@ DomInfo<T>::construct() const
 
 class DomCorpus::Impl
 {
-    struct value_type
-    {
-        std::weak_ptr<dom::ObjectImpl> weak;
-        std::shared_ptr<dom::ObjectImpl> strong;
-    };
+    using value_type = std::weak_ptr<dom::ObjectImpl>;
 
     DomCorpus const& domCorpus_;
     Corpus const& corpus_;
-    llvm::StringMap<value_type> infoCache_;
+    std::unordered_map<SymbolID, value_type> cache_;
     std::mutex mutex_;
 
 public:
     Impl(
         DomCorpus const& domCorpus,
-        Corpus const& corpus) noexcept
+        Corpus const& corpus)
         : domCorpus_(domCorpus)
         , corpus_(corpus)
     {
     }
 
-    dom::Object
-    create(SymbolID const& id)
+    Corpus const&
+    getCorpus() const
     {
-        // VFALCO Hack to deal with symbol IDs
-        // being emitted without the corresponding data.
-        auto I = corpus_.find(id);
-        if(I)
-        {
-            return visit(*I,
-                [&]<class T>(T const& I)
-                {
-                    return dom::newObject<DomInfo<T>>(I, domCorpus_);
-                });
-        }
-        return {}; // VFALCO Hack
+        return corpus_;
     }
 
     dom::Object
-    get(Info const& I)
+    create(Info const& I)
     {
-        return visit(I,
-            [&]<class T>(T const& I)
-            {
-                return dom::newObject<DomInfo<T>>(I, domCorpus_);
-            });
+        return domCorpus_.construct(I);
     }
 
     dom::Object
     get(SymbolID const& id)
     {
+        // VFALCO Hack to deal with symbol IDs
+        // being emitted without the corresponding data.
+        const Info* I = corpus_.find(id);
+        if(! I)
+            return {}; // VFALCO Hack
+
         std::lock_guard<std::mutex> lock(mutex_);
-        auto it = infoCache_.find(llvm::StringRef(id));
-        if(it == infoCache_.end())
+        auto it = cache_.find(id);
+        if(it == cache_.end())
         {
-            auto obj = create(id);
-            auto impl = obj.impl();
-            infoCache_.insert(
-                { llvm::StringRef(id), { impl, nullptr } });
+            auto obj = create(*I);
+            cache_.insert(
+                { id, obj.impl() });
             return obj;
         }
-        if(it->second.strong)
-            return dom::Object(it->second.strong);
-        auto sp = it->second.weak.lock();
-        if(sp)
+        if(auto sp = it->second.lock())
             return dom::Object(sp);
-        auto obj = create(id);
-        it->second.weak = obj.impl();
+        auto obj = create(*I);
+        it->second = obj.impl();
         return obj;
     }
 };
@@ -862,11 +839,28 @@ DomCorpus::
 ~DomCorpus() = default;
 
 DomCorpus::
-DomCorpus(
-    Corpus const& corpus_)
-    : impl_(std::make_unique<Impl>(*this, corpus_))
-    , corpus(corpus_)
+DomCorpus(Corpus const& corpus_)
+    : impl_(std::make_unique<Impl>(
+        *this, corpus_))
 {
+}
+
+Corpus const&
+DomCorpus::
+getCorpus() const
+{
+    return impl_->getCorpus();
+}
+
+dom::Object
+DomCorpus::
+construct(Info const& I) const
+{
+    return visit(I,
+        [&]<class T>(T const& I)
+        {
+            return dom::newObject<DomInfo<T>>(I, *this);
+        });
 }
 
 dom::Object
@@ -876,20 +870,13 @@ get(SymbolID const& id) const
     return impl_->get(id);
 }
 
-dom::Object
-DomCorpus::
-get(Info const& I) const
-{
-    return impl_->get(I);
-}
-
 dom::Value
 DomCorpus::
 getOptional(SymbolID const& id) const
 {
     if(id == SymbolID::zero)
         return nullptr;
-    return impl_->get(id);
+    return get(id);
 }
 
 dom::Value

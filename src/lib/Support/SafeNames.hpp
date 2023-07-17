@@ -13,9 +13,7 @@
 
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
-#include <llvm/ADT/SmallString.h>
-#include <llvm/ADT/StringMap.h>
-#include <llvm/Support/raw_ostream.h>
+#include <memory>
 #include <string>
 
 namespace clang {
@@ -32,12 +30,9 @@ namespace mrdox {
 */
 class SafeNames
 {
-    Corpus const& corpus_;
-    llvm::StringMap<std::string> map_;
+    class Impl;
 
-    SafeNames(
-        llvm::raw_ostream& os,
-        Corpus const&);
+    std::unique_ptr<Impl> impl_;
 
 public:
     /** Constructor.
@@ -46,24 +41,18 @@ public:
         safe names is built from the corpus.
     */
     explicit
-    SafeNames(
-        Corpus const& corpus);
+    SafeNames(Corpus const& corpus);
 
-    llvm::StringRef
-    get(SymbolID const& id) const noexcept;
+    ~SafeNames() noexcept;
 
-    std::vector<llvm::StringRef>&
-    getPath(
-        std::vector<llvm::StringRef>& dest,
-        SymbolID id) const;
+    std::string
+    getUnqualified(
+        SymbolID const& id) const;
 
-    std::vector<llvm::StringRef>
-    getPath(SymbolID const& id) const
-    {
-        std::vector<llvm::StringRef> v;
-        getPath(v, id);
-        return v;
-    }
+    std::string
+    getQualified(
+        SymbolID const& id,
+        char delim = '-') const;
 };
 
 } // mrdox

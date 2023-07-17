@@ -59,8 +59,7 @@ public:
             [&]
             {
                 llvm::SmallString<512> filePath(outputPath_);
-                llvm::StringRef name = names_.get(I.id);
-                path::append(filePath, name);
+                path::append(filePath, names_.getUnqualified(I.id));
                 filePath.append(".bc");
                 std::error_code ec;
                 llvm::raw_fd_ostream os(filePath, ec, fs::CD_CreateAlways);

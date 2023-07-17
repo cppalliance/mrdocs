@@ -173,11 +173,11 @@ writeIndex()
         SafeNames names(corpus_);
         for(auto I : corpus_.index())
         {
-            auto safe_name = names.get(I->id);
+            auto safe_name = names.getUnqualified(I->id);
             tags_.write("symbol", {}, {
                 { "safe", safe_name },
                 { "name", corpus_.getFullyQualifiedName(*I, temp) },
-                { "tag", getTagName(*I) },
+                { "tag", toString(I->Kind) },
                 { I->id } });
         }
     }
@@ -186,7 +186,7 @@ writeIndex()
         for(auto I : corpus_.index())
             tags_.write("symbol", {}, {
                 { "name", corpus_.getFullyQualifiedName(*I, temp) },
-                { "tag", getTagName(*I) },
+                { "tag", toString(I->Kind) },
                 { I->id } });
     }
     tags_.close("symbols");

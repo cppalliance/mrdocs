@@ -1,6 +1,6 @@
 {{!-- record --}}
 [#{{symbol.id}}]
-== {{symbol.name}}
+== {{#if symbol.name}}Class {{symbol.name}}{{else}}Unnamed class{{/if}}
 
 {{symbol.doc.brief}}
 
