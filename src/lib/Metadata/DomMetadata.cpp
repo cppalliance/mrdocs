@@ -689,34 +689,46 @@ DomInfo<T>::construct() const
     }
     if constexpr(T::isFunction())
     {
+        auto const set_flag =
+            [&](dom::String key, bool set)
+            {
+                if(set)
+                    entries.emplace_back(std::move(key), true);
+            });
+        set_flag("isVariadic",         I_.specs0.isVariadic.get());
+        set_flag("isVirtual",          I_.specs0.isVirtual.get());
+        set_flag("isVirtualAsWritten", I_.specs0.isVirtualAsWritten.get());
+        set_flag("isPure",             I_.specs0.isPure.get());
+        set_flag("isDefaulted",        I_.specs0.isDefaulted.get());
+        set_flag("isExplicitlyDefaulted",I_.specs0.isExplicitlyDefaulted.get());
+        set_flag("isDeleted",          I_.specs0.isDeleted.get());
+        set_flag("isDeletedAsWritten", I_.specs0.isDeletedAsWritten.get());
+        set_flag("isNoReturn",         I_.specs0.isNoReturn.get());
+        set_flag("hasOverrideAttr",    I_.specs0.hasOverrideAttr.get());
+        set_flag("hasTrailingReturn",  I_.specs0.hasTrailingReturn.get());
+        set_flag("isConst",            I_.specs0.isConst.get());
+        set_flag("isVolatile",         I_.specs0.isVolatile.get());
+        set_flag("isFinal",            I_.specs0.isFinal.get());
+        set_flag("isNodiscard",        I_.specs1.isNodiscard.get());
+
+        auto const set_string =
+            [&](dom::String key, dom::String value)
+            {
+                if(! value.empty())
+                    entries.emplace_back(std::move(key), std::move(value));
+            });
+        set_string("constexprKind", toString(I_.specs0.constexprKind.get()));
+        set_string("exceptionSpec", toString(I_.specs0.exceptionSpec.get()));
+        set_string("storageClass",  toString(I_.specs0.storageClass.get()));
+        set_string("refQualifier",  toString(I_.specs0.refQualifier.get()));
+        set_string("explicitSpec",  toString(I_.specs1.explicitSpec.get()));
+
         entries.insert(entries.end(), {
             { "class",      toString(I_.Class) },
             { "params",     dom::newArray<DomParamArray>(I_.Params, domCorpus_) },
             { "return",     domCreate(I_.ReturnType, domCorpus_) },
             { "template",   domCreate(I_.Template, domCorpus_) },
-
-            { "isVariadic",         I_.specs0.isVariadic.get() },
-            { "isVirtual",          I_.specs0.isVirtual.get() },
-            { "isVirtualAsWritten", I_.specs0.isVirtualAsWritten.get() },
-            { "isPure",             I_.specs0.isPure.get() },
-            { "isDefaulted",        I_.specs0.isDefaulted.get() },
-          { "isExplicitlyDefaulted",I_.specs0.isExplicitlyDefaulted.get() },
-            { "isDeleted",          I_.specs0.isDeleted.get() },
-            { "isDeletedAsWritten", I_.specs0.isDeletedAsWritten.get() },
-            { "isNoReturn",         I_.specs0.isNoReturn.get() },
-            { "hasOverrideAttr",    I_.specs0.hasOverrideAttr.get() },
-            { "hasTrailingReturn",  I_.specs0.hasTrailingReturn.get() },
-            { "isConst",            I_.specs0.isConst.get() },
-            { "isVolatile",         I_.specs0.isVolatile.get() },
-            { "isFinal",            I_.specs0.isFinal.get() },
-            { "isNodiscard",        I_.specs1.isNodiscard.get() },
-
-            { "constexprKind",      toString(I_.specs0.constexprKind.get()) },
-            { "exceptionSpec",      toString(I_.specs0.exceptionSpec.get()) },
             { "overloadedOperator", I_.specs0.overloadedOperator.get() },
-            { "storageClass",       toString(I_.specs0.storageClass.get()) },
-            { "refQualifier",       toString(I_.specs0.refQualifier.get()) },
-            { "explicitSpec",       toString(I_.specs1.explicitSpec.get()) }
             });
     }
     if constexpr(T::isEnum())
