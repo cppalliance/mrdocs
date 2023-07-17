@@ -2,44 +2,17 @@
 <mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
 <namespace>
-  <struct name="string_view" id="AbyPschn1Km27CQSV03D1w7MAo0=">
-    <file path="test.cpp" line="27" class="def"/>
-    <doc>
-      <para>
-        <text> The type of string_view used by the library</text>
-      </para>
-      <para>
-        <text>    String views are used to pass character</text>
-        <text>    buffers into or out of functions. Ownership</text>
-        <text>    of the underlying character buffer is not</text>
-        <text>    transferred; the caller is responsible for</text>
-        <text>    ensuring that the lifetime of character</text>
-        <text>    buffer extends until it is no longer</text>
-        <text>    referenced.</text>
-      </para>
-      <para>
-        <text></text>
-      </para>
-      <para class="note">
-        <text> This alias is no longer supported and</text>
-        <text>    should not be used in new code. Please use</text>
-        <text>    `core::string_view` instead.</text>
-      </para>
-      <para>
-        <text>    This alias is included for backwards</text>
-        <text>    compatibility with earlier versions of the</text>
-        <text>    library.</text>
-      </para>
-      <para>
-        <text>    However, it will be removed in future releases,</text>
-        <text>    and using it in new code is not recommended.</text>
-      </para>
-      <para>
-        <text>    Please use the updated version instead to</text>
-        <text>    ensure compatibility with future versions of</text>
-        <text>    the library.</text>
-      </para>
-    </doc>
-  </struct>
+  <function name="f" id="x6Ni4dvBptm7c2wBnFt6c4AQz4A=">
+    <file path="test.cpp" line="1"/>
+    <param name="a">
+      <type name="int"/>
+    </param>
+    <param name="b">
+      <type name="char"/>
+    </param>
+    <param name="c">
+      <type name="double"/>
+    </param>
+  </function>
 </namespace>
 </mrdox>

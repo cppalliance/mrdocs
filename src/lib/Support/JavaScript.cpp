@@ -316,7 +316,7 @@ struct ObjectProxy : ObjectBase
     static void push(Access& A, dom::Object const& obj);
 };
 
-#if 1
+#if 0
 using ArrayRep  = ArrayProxy; //ArrayGetSet;
 using ObjectRep = ObjectGetSet;
 #else
@@ -611,10 +611,10 @@ push(
     [](duk_context* ctx) -> duk_ret_t
     {
         Access A(ctx);
+        std::string_view key = dukM_get_string(A, 1);
         duk_push_this(A); // the proxy
-        auto& obj = *get(A, -1);
-        auto key = dukM_get_string(A, 1);
-        auto const& v = obj.find(key);
+        dom::Object& obj = *get(A, -1);
+        dom::Value const& v = obj.find(key);
         duk_pop_n(A, duk_get_top(A));
         domValue_push(A, v);
         return 1;
@@ -629,9 +629,9 @@ push(
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& obj = *get(A, -1);
-        auto key = dukM_get_string(A, 1);
-        auto const& v = obj.find(key);
+        dom::Object& obj = *get(A, -1);
+        std::string_view key = dukM_get_string(A, 1);
+        dom::Value const& v = obj.find(key);
         duk_pop_n(A, duk_get_top(A));
         // VFALCO should add dom::Object::exists(k) for this
         duk_push_boolean(A, ! v.isNull());
@@ -639,7 +639,6 @@ push(
     }, 3);
     dukM_put_prop_string(A, -2, "has");
 
-#if 1
     // Trap:        [[OwnPropertyKeys]]
     // Effects:     return range(Object())
     // Signature:   ()
@@ -648,15 +647,17 @@ push(
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& obj = *get(A, -1);
+        dom::Object obj = *get(A, -1);
         duk_pop(A);
         duk_push_array(A);
+        duk_uarridx_t i = 0;
         for(auto const& kv : obj)
         {
             dukM_push_string(A, kv.key);
-            domValue_push(A, kv.value);
-            duk_put_prop(A, -3);
+            duk_put_prop_index(A, -2, i++);
         }
+auto top = duk_get_top(A);
+auto topidx = duk_get_top_index(A);
         return 1;
     }, 0);
     dukM_put_prop_string(A, -2, "ownKeys");
@@ -700,16 +701,52 @@ push(
     duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
         return 0;
     }, 0); dukM_put_prop_string(A, -2, "getOwnPropertyDescriptor");
-#endif
 
     duk_push_proxy(A, 0);
 }
 
 //------------------------------------------------
 //
-// Value
+// dom::Value
 //
 //------------------------------------------------
+
+namespace {
+
+class NativeObjectImpl : public dom::ObjectImpl
+{
+    Scope& scope_;
+    duk_idx_t idx_;
+
+public:
+    NativeObjectImpl(
+        Scope& scope, duk_idx_t idx) noexcept
+        : scope_(scope)
+        , idx_(idx)
+    {
+    }
+
+    std::size_t size() const override
+    {
+        return 0;
+    }
+
+    reference get(std::size_t) const override
+    {
+        return { "", {} };
+    }
+
+    dom::Value find(std::string_view) const override
+    {
+        return nullptr;
+    }
+
+    void set(dom::String, dom::Value) override
+    {
+    }
+};
+
+} // (anon)
 
 // return a dom::Value from a stack element
 static
@@ -732,7 +769,13 @@ domValue_get(
         return dukM_get_string(A, idx);
     case DUK_TYPE_OBJECT:
     {
-        return nullptr;
+        // check for dom::Object
+        auto const obj = ObjectRep::get(A, idx);
+        if(obj)
+        {
+            return *obj;
+        }
+        return dom::newObject<NativeObjectImpl>(scope, idx);
     }
     case DUK_TYPE_BUFFER:
     case DUK_TYPE_POINTER:
