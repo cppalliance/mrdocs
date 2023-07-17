@@ -1438,8 +1438,9 @@ public:
             // it uses SymbolID::zero and should *always* exist
             case Decl::TranslationUnit:
             {
+                parent_id = SymbolID::zero;
                 auto [P, created] = getOrCreateInfo<
-                    NamespaceInfo>(SymbolID::zero);
+                    NamespaceInfo>(parent_id);
                 emplaceChild(P, child_id);
                 break;
             }
