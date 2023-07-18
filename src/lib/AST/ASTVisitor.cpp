@@ -1145,6 +1145,12 @@ public:
         {
             auto R = std::make_unique<TemplateTArg>();
             R->IsPackExpansion = A.isPackExpansion();
+
+            // KRYSTIAN FIXME: template template arguments are
+            // id-expression, so we don't properly support them yet.
+            // for the time being, we will use the name & SymbolID of
+            // the referenced declaration (if it isn't dependent),
+            // and fallback to printing the template name otherwise
             TemplateName TN = A.getAsTemplateOrTemplatePattern();
             if(auto* TD = TN.getAsTemplateDecl())
             {
@@ -1160,6 +1166,12 @@ public:
                     extractSymbolID(D, R->Template);
                     getOrBuildInfo(D);
                 }
+            }
+            else
+            {
+                llvm::raw_string_ostream stream(R->Name);
+                TN.print(stream, context_.getPrintingPolicy(),
+                    TemplateName::Qualified::AsWritten);
             }
             return R;
         }
