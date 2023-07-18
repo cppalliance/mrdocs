@@ -267,6 +267,7 @@ RecordIDNameMap = []()
         {FUNCTION_PARAM_DEFAULT, {"Default", &StringAbbrev}},
         {INFO_PART_ACCESS, {"InfoAccess", &Integer32Abbrev}},
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
+        {INFO_PART_IMPLICIT, {"InfoImplicit", &BoolAbbrev}},
         {INFO_PART_NAME, {"InfoName", &StringAbbrev}},
         {INFO_PART_PARENTS, {"InfoParents", &SymbolIDsAbbrev}},
         {JAVADOC_NODE_ADMONISH, {"JavadocNodeAdmonish", &Integer32Abbrev}},
@@ -325,7 +326,7 @@ RecordsByBlock{
     {BI_VERSION_BLOCK_ID, {VERSION}},
     // Info part
     {BI_INFO_PART_ID,
-        {INFO_PART_ID, INFO_PART_ACCESS,
+        {INFO_PART_ID, INFO_PART_ACCESS, INFO_PART_IMPLICIT,
          INFO_PART_NAME, INFO_PART_PARENTS}},
     // SourceInfo
     {BI_SOURCE_INFO_ID,
@@ -756,6 +757,7 @@ emitInfoPart(
     StreamSubBlockGuard Block(Stream, BI_INFO_PART_ID);
     emitRecord(I.id, INFO_PART_ID);
     emitRecord(I.Access, INFO_PART_ACCESS);
+    emitRecord(I.Implicit, INFO_PART_IMPLICIT);
     emitRecord(I.Name, INFO_PART_NAME);
     emitRecord(I.Namespace, INFO_PART_PARENTS);
     emitBlock(I.javadoc);

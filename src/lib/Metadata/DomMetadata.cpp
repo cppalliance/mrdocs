@@ -655,6 +655,7 @@ DomInfo<T>::construct() const
         { "id",         toBase16(I_.id) },
         { "kind",       toString(I_.Kind) },
         { "access",     toString(I_.Access) },
+        { "implicit",   I_.Implicit },
         { "name",       I_.Name },
         { "namespace",  dom::newArray<DomSymbolArray>(
                             I_.Namespace, domCorpus_) },

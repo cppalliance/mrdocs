@@ -187,25 +187,21 @@ public:
     }
 
     template<typename InfoTy>
-    InfoTy&
-    createInfo(const SymbolID& id)
-    {
-        auto [it, inserted] = info_.emplace(
-            std::make_unique<InfoTy>(id));
-        MRDOX_ASSERT(inserted);
-        return static_cast<InfoTy&>(*it->get());
-    }
-
-    template<typename InfoTy>
     std::pair<InfoTy&, bool>
     getOrCreateInfo(const SymbolID& id)
     {
-        if(Info* info = getInfo(id))
+        Info* info = getInfo(id);
+        bool created = false;
+        if(! info)
         {
-            MRDOX_ASSERT(info->Kind == InfoTy::kind_id);
-            return {static_cast<InfoTy&>(*info), false};
+            auto [it, inserted] = info_.emplace(
+                std::make_unique<InfoTy>(id));
+            info = it->get();
+            created = true;
         }
-        return {createInfo<InfoTy>(id), true};
+        MRDOX_ASSERT(info->Kind == InfoTy::kind_id);
+        info->Implicit &= forceExtract_;
+        return {static_cast<InfoTy&>(*info), created};
     }
 
     Info&
@@ -1971,6 +1967,7 @@ public:
                 if(Info* parent = getInfo(parent_id))
                 {
                     MRDOX_ASSERT(parent->isRecord());
+                    parent->Implicit &= forceExtract_;
                     static_cast<RecordInfo*>(parent)->Friends.emplace_back(I.id);
                 }
 
