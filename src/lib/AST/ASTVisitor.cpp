@@ -398,7 +398,7 @@ public:
             ! isa<TemplateTemplateParmDecl>(N) &&
             ! isa<BuiltinTemplateDecl>(N))
         {
-            N = cast<NamedDecl>(getInstantiatedFrom(N));   
+            N = cast<NamedDecl>(getInstantiatedFrom(N));
             if(auto* TD = dyn_cast<TypedefNameDecl>(N))
             {
                 if(auto* PTD = lookupTypedefInPrimary(TD))
@@ -463,6 +463,12 @@ public:
             auto* T = cast<ParenType>(type);
             return buildTypeInfo(
                 T->getInnerType(), quals);
+        }
+        case Type::MacroQualified:
+        {
+            auto* T = cast<MacroQualifiedType>(type);
+            return buildTypeInfo(
+                T->getUnderlyingType(), quals);
         }
         // type with __atribute__
         case Type::Attributed:
@@ -694,23 +700,35 @@ public:
                 T->getQualifier());
             return I;
         }
-        // record & enum types, as well as injected class names
+        case Type::Record:
+        {
+            auto* T = cast<RecordType>(type);
+            RecordDecl* RD = T->getDecl();
+            // if this is an instantiation of a class template,
+            // create a SpecializationTypeInfo & extract the template arguments
+            if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(RD))
+            {
+                auto I = makeTypeInfo<SpecializationTypeInfo>(CTSD, quals);
+                buildTemplateArgs(I->TemplateArgs,
+                    CTSD->getTemplateArgs().asArray());
+                return I;
+            }
+            return makeTypeInfo<TagTypeInfo>(RD, quals);
+        }
+        // enum types, as well as injected class names
         // within a class template (or specializations thereof)
         case Type::InjectedClassName:
-        case Type::Record:
         case Type::Enum:
         {
-            auto I = makeTypeInfo<TagTypeInfo>(
+            return makeTypeInfo<TagTypeInfo>(
                 type->getAsTagDecl(), quals);
-            return I;
         }
         // typedef/alias type
         case Type::Typedef:
         {
             auto* T = cast<TypedefType>(type);
-            auto I = makeTypeInfo<TagTypeInfo>(
+            return makeTypeInfo<TagTypeInfo>(
                 T->getDecl(), quals);
-            return I;
         }
         case Type::TemplateTypeParm:
         {
@@ -726,6 +744,20 @@ public:
                     I->Name = II->getName();
             }
             I->CVQualifiers = convertToQualifierKind(quals);
+            return I;
+        }
+        case Type::SubstTemplateTypeParm:
+        {
+            auto* T = cast<SubstTemplateTypeParmType>(type);
+            return buildTypeInfo(
+                T->getReplacementType(), quals);
+        }
+        case Type::SubstTemplateTypeParmPack:
+        {
+            auto* T = cast<SubstTemplateTypeParmPackType>(type);
+            auto I = std::make_unique<PackTypeInfo>();
+            I->PatternType = makeTypeInfo<BuiltinTypeInfo>(
+                T->getIdentifier(), quals);
             return I;
         }
         // builtin/unhandled type
@@ -745,7 +777,7 @@ public:
         Given a `Decl` `D`, `getInstantiatedFrom` will return the
         user-written `Decl` corresponding to `D`. For specializations
         which were implicitly instantiated, this will be whichever `Decl`
-        was used as the pattern for instantiation. 
+        was used as the pattern for instantiation.
     */
     Decl*
     getInstantiatedFrom(
@@ -758,7 +790,7 @@ public:
         return visit(D, [&]<typename DeclTy>(
             DeclTy* DT) -> Decl*
             {
-                constexpr Decl::Kind kind = 
+                constexpr Decl::Kind kind =
                     DeclToKind<DeclTy>();
 
                 // ------------------------------------------------
@@ -776,7 +808,7 @@ public:
                 }
                 else if constexpr(kind == Decl::ClassScopeFunctionSpecialization)
                 {
-                    // ClassScopeFunctionSpecializationDecls only exist within the lexical 
+                    // ClassScopeFunctionSpecializationDecls only exist within the lexical
                     // definition of a ClassTemplateDecl or ClassTemplatePartialSpecializationDecl.
                     // they are never created during instantiation -- not even during the instantiation
                     // of a class template with a member class template containing such a declaration.
@@ -794,7 +826,7 @@ public:
 
                     for(auto* R : FD->redecls())
                     {
-                        if(MemberSpecializationInfo* MSI = 
+                        if(MemberSpecializationInfo* MSI =
                             R->getMemberSpecializationInfo())
                         {
                             if(MSI->isExplicitSpecialization())
@@ -816,7 +848,7 @@ public:
                             break;
                         }
                     }
-                    
+
                     if(FunctionDecl* DD = FD->getDefinition())
                         FD = DD;
 
@@ -840,7 +872,7 @@ public:
                 else if constexpr(kind == Decl::ClassTemplatePartialSpecialization)
                 {
                     while(auto* MT = DT->getInstantiatedFromMember())
-                    {                    
+                    {
                         if(DT->isMemberSpecialization())
                             break;
                         DT = MT;
@@ -872,7 +904,7 @@ public:
                 if constexpr(std::derived_from<DeclTy, CXXRecordDecl>)
                 {
                     CXXRecordDecl* RD = DT;
-                    while(MemberSpecializationInfo* MSI = 
+                    while(MemberSpecializationInfo* MSI =
                         RD->getMemberSpecializationInfo())
                     {
                         // if this is a member of an explicit specialization,
@@ -882,7 +914,7 @@ public:
                         RD = cast<CXXRecordDecl>(MSI->getInstantiatedFrom());
                     }
                     return RD;
-                } 
+                }
 
                 // ------------------------------------------------
 
@@ -901,7 +933,7 @@ public:
                 else if constexpr(kind == Decl::VarTemplatePartialSpecialization)
                 {
                     while(auto* MT = DT->getInstantiatedFromMember())
-                    {                    
+                    {
                         if(DT->isMemberSpecialization())
                             break;
                         DT = MT;
@@ -933,7 +965,7 @@ public:
                 if constexpr(std::derived_from<DeclTy, VarDecl>)
                 {
                     VarDecl* VD = DT;
-                    while(MemberSpecializationInfo* MSI = 
+                    while(MemberSpecializationInfo* MSI =
                         VD->getMemberSpecializationInfo())
                     {
                         if(MSI->isExplicitSpecialization())
@@ -941,7 +973,7 @@ public:
                         VD = cast<VarDecl>(MSI->getInstantiatedFrom());
                     }
                     return VD;
-                } 
+                }
 
                 return DT;
             });
@@ -1006,9 +1038,9 @@ public:
             const DeclTy* P) ->
                 std::unique_ptr<TParam>
         {
-            constexpr Decl::Kind kind = 
+            constexpr Decl::Kind kind =
                 DeclToKind<DeclTy>();
-                
+
             if constexpr(kind == Decl::TemplateTypeParm)
             {
                 auto R = std::make_unique<TypeTParam>();
@@ -1056,9 +1088,9 @@ public:
         TP->Name = extractName(N);
         // KRYSTIAN NOTE: Decl::isParameterPack
         // returns true for function parameter packs
-        TP->IsParameterPack = 
+        TP->IsParameterPack =
             N->isTemplateParameterPack();
-        
+
         return TP;
     }
 
@@ -1097,7 +1129,7 @@ public:
             // if the template argument is a pack expansion,
             // use the expansion pattern as the type & mark
             // the template argument as a pack expansion
-            if(const Type* T = QT.getTypePtr(); 
+            if(const Type* T = QT.getTypePtr();
                 auto* PT = dyn_cast<PackExpansionType>(T))
             {
                 R->IsPackExpansion = true;
@@ -1118,7 +1150,7 @@ public:
             {
                 if(auto* II = TD->getIdentifier())
                     R->Name = II->getName();
-                // do not extract a SymbolID or build Info if 
+                // do not extract a SymbolID or build Info if
                 // the template template parameter names a
                 // template template parameter or builtin template
                 if(! isa<TemplateTemplateParmDecl>(TD) &&
@@ -1144,13 +1176,13 @@ public:
             R->IsPackExpansion = A.isPackExpansion();
             // if this is a pack expansion, use the template argument
             // expansion pattern in place of the template argument pack
-            const TemplateArgument& adjusted = 
+            const TemplateArgument& adjusted =
                 R->IsPackExpansion ?
                 A.getPackExpansionPattern() : A;
-                
+
             llvm::raw_string_ostream stream(R->Value.Written);
             adjusted.print(context_.getPrintingPolicy(), stream, false);
-                
+
             return R;
         }
         default:
@@ -1488,7 +1520,7 @@ public:
                 break;
             }
             // KRYSTIAN FIXME: we may need to handle
-            // enumerators separately at some point 
+            // enumerators separately at some point
             // case Decl::Enum:
             default:
                 // we consider all other DeclContexts to be "transparent"
@@ -1513,7 +1545,7 @@ public:
         if constexpr(requires { I.Specializations; })
         {
             auto& S = I.Members;
-            if(Info* child = getInfo(C); 
+            if(Info* child = getInfo(C);
                 child && child->isSpecialization())
             {
                 if(std::find(S.begin(), S.end(), C) == S.end())
@@ -1539,14 +1571,14 @@ public:
 
         NamedDecl* PD = cast<NamedDecl>(
             getInstantiatedFrom(D));
-        
+
         buildTemplateArgs(I.Args,
             D->getTemplateArgs().asArray());
 
         extractSymbolID(PD, I.Primary);
         I.Name = extractName(PD);
 
-        getParentNamespaces(I, D);        
+        getParentNamespaces(I, D);
     }
 
     //------------------------------------------------
@@ -2643,7 +2675,7 @@ class ASTVisitorConsumer
         // the Sema better be valid
         MRDOX_ASSERT(sema_);
 
-        // initialize the diagnostics reporter first 
+        // initialize the diagnostics reporter first
         // so errors prior to traversal are reported
         Diagnostics diags;
 
@@ -2662,18 +2694,18 @@ class ASTVisitorConsumer
             return;
 
         ASTVisitor visitor(
-            config_, 
-            diags, 
-            compiler_, 
-            Context, 
+            config_,
+            diags,
+            compiler_,
+            Context,
             *sema_);
 
         // traverse the translation unit
         visitor.traverseContext(
             Context.getTranslationUnitDecl());
-        
+
         // dumpDeclTree(Context.getTranslationUnitDecl());
-   
+
         // convert results to bitcode
         for(auto& info : visitor.results())
             insertBitcode(ex_, writeBitcode(*info));
@@ -2695,22 +2727,22 @@ class ASTVisitorConsumer
         it will be for a function that cannot be used in a constant expression,
         nor one that introduces a new type via returning a local class.
     */
-    bool 
+    bool
     shouldSkipFunctionBody(Decl* D) override
     {
         return true;
     }
 
-    bool 
+    bool
     HandleTopLevelDecl(DeclGroupRef DG) override
     {
-        return true; 
+        return true;
     }
 
     ASTMutationListener*
     GetASTMutationListener() override
-    { 
-        return nullptr; 
+    {
+        return nullptr;
     }
 
     void
@@ -2801,7 +2833,7 @@ private:
 
 //------------------------------------------------
 
-struct ASTActionFactory : 
+struct ASTActionFactory :
     tooling::FrontendActionFactory
 {
     ASTActionFactory(
