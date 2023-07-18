@@ -2,6 +2,6 @@
 |===
 |Name |Description
 {{#each .}}
-|xref:{{id}}[`{{name}}`] |{{doc.brief}}
+|{{>xref .}}[`pass:v[{{name}}]`] |pass:v[{{doc.brief}}]
 {{/each}}
 |===
