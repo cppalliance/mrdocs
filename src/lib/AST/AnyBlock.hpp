@@ -289,6 +289,9 @@ public:
         : br_(br)
         , I(I)
     {
+        // we have to clear Info::Implicit here
+        // because bitstream elides zero values
+        I.Implicit = false;
     }
 
     Error
@@ -301,6 +304,8 @@ public:
             return decodeRecord(R, I.id, Blob);
         case INFO_PART_ACCESS:
             return decodeRecord(R, I.Access, Blob);
+        case INFO_PART_IMPLICIT:
+            return decodeRecord(R, I.Implicit, Blob);
         case INFO_PART_NAME:
             return decodeRecord(R, I.Name, Blob);
         case INFO_PART_PARENTS:

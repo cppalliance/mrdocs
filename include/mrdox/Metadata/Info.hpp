@@ -80,6 +80,19 @@ struct MRDOX_VISIBLE
     */
     AccessKind Access = AccessKind::None;
 
+    /** Implicitly extracted flag.
+
+        This flag distinguishes primary `Info` from `Info` dependencies.
+
+        A primary `Info` is one which was extracted during AST traversal
+        because it satisfied all configured conditions to be extracted.
+
+        An `Info` dependency is one which does not meet the configured
+        conditions for extraction, but was extracted due to it being used
+        by a primary `Info`.
+    */
+    bool Implicit = true;
+
     /** In-order List of parent namespaces.
     */
     std::vector<SymbolID> Namespace;

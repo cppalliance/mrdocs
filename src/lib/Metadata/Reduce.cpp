@@ -83,6 +83,7 @@ void mergeInfo(Info& I, Info&& Other)
         I.Namespace = std::move(Other.Namespace);
     if(I.Access == AccessKind::None)
         I.Access = Other.Access;
+    I.Implicit &= Other.Implicit;
     // append javadocs
     if(! I.javadoc)
         I.javadoc = std::move(Other.javadoc);
