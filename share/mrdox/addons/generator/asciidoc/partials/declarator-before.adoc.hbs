@@ -4,11 +4,11 @@
 {{~else if (eq kind "tag")~}}
     {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
     {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::{{/if~}}
-    {{#if id}}xref:{{id}}[{{name~}}]{{else}}{{name~}}{{/if}}
+    {{#if id}}{{>xref .}}[{{name~}}]{{else}}{{name~}}{{/if}}
 {{~else if (eq kind "specialization")~}}
     {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
     {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::{{/if~}}
-    {{#if id}}xref:{{id}}[{{name~}}]{{else}}{{name~}}{{/if}}
+    {{#if id}}{{>xref .}}[{{name~}}]{{else}}{{name~}}{{/if}}
     {{~>template-args args=template-args~}}
 {{~else if (eq kind "lvalue-reference")~}}
     {{~>declarator-before pointee-type~}}

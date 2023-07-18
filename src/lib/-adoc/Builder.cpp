@@ -97,6 +97,13 @@ Handlebars.setlog();
             return Error::success();
         }).maybeThrow();
 #endif
+    scope.script(fmt::format(
+        R"(Handlebars.registerHelper(
+            'is_multipage', function()
+        {{
+            return {};
+        }});
+        )", config->multiPage)).maybeThrow();
 
     scope.script(R"(
         Handlebars.registerHelper(
