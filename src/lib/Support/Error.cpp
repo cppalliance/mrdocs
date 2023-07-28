@@ -161,7 +161,7 @@ void setMinimumLevel(Level level) noexcept
 }
 
 void
-print_impl(
+print(
     Level level,
     std::string_view text,
     source_location const* loc)

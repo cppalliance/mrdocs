@@ -127,7 +127,7 @@ execute(
     auto const processFile =
     [&](std::string Path)
     {
-        report::print(reportLevel_,
+        report::format(reportLevel_,
             "[{}/{}] \"{}\"", Count(), TotalNumStr, Path);
 
         // Each thread gets an independent copy of a VFS to allow different

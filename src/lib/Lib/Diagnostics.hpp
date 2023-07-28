@@ -66,7 +66,7 @@ public:
         {
             os << "No errors or warnings.\n";
         }
-        report::print_impl(level, s);
+        report::print(level, s);
     }
 
     void

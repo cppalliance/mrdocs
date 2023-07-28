@@ -777,7 +777,7 @@ setMinimumLevel(
 */
 MRDOX_DECL
 void
-print_impl(
+print(
     Level level,
     std::string_view text,
     source_location const* loc = nullptr);
@@ -787,7 +787,7 @@ print_impl(
     @param level 0 to 4 The severity of the
     report. 0 is debug and 4 is fatal.
 
-    @param format The format string.
+    @param fs The format string.
 
     @param args... Optional additional arguments
     used to format a message to print. A trailing
@@ -796,18 +796,18 @@ print_impl(
 */
 template<class... Args>
 void
-print(
+format(
     Level level,
-    Located<std::string_view> format,
+    Located<std::string_view> fs,
     Args&&... args)
 {
-    return print_impl(
+    return print(
         level,
         fmt::vformat(
-            format.value,
+            fs.value,
             fmt::make_format_args(
                 std::forward<Args>(args)...)),
-        &format.where);
+        &fs.where);
 }
 
 /** Report a message to the console.
@@ -818,7 +818,7 @@ debug(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print_impl(
+    return print(
         Level::debug,
         fmt::vformat(
             format.value,
@@ -835,7 +835,7 @@ info(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print_impl(
+    return print(
         Level::info,
         fmt::vformat(
             format.value,
@@ -852,7 +852,7 @@ warn(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print_impl(
+    return print(
         Level::warn,
         fmt::vformat(
             format.value,
@@ -869,7 +869,7 @@ error(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print_impl(
+    return print(
         Level::error,
         fmt::vformat(
             format.value,
@@ -886,7 +886,7 @@ fatal(
     Located<std::string_view> format,
     Args&&... args)
 {
-    return print_impl(
+    return print(
         Level::fatal,
         fmt::vformat(
             format.value,

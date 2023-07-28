@@ -134,7 +134,7 @@ build(
     auto bitcodes = collectBitcodes(ex);
 
     // First reducing phase (reduce all decls into one info per decl).
-    report::print(ex.getReportLevel(),
+    report::format(ex.getReportLevel(),
         "Reducing {} declarations", bitcodes.size());
     std::atomic<bool> GotFailure;
     GotFailure = false;
@@ -176,7 +176,7 @@ build(
     if(! errors.empty())
         return Error(errors);
 
-    report::print(ex.getReportLevel(),
+    report::format(ex.getReportLevel(),
         "Symbols collected: {}", corpus->InfoMap.size());
 
     if(GotFailure)
