@@ -73,41 +73,12 @@ struct fmt::formatter<clang::mrdox::Info>
 namespace clang {
 namespace mrdox {
 
-/** Return a stream which writes output to the debugger.
-*/
-/** @{ */
-MRDOX_DECL llvm::raw_ostream& debug_outs();
-
-/** @} */
-
 /** Enable debug heap checking.
 */
 MRDOX_DECL void debugEnableHeapChecking();
 
 #define static_error(msg, value) \
     static_assert(!std::is_same_v<decltype(value),decltype(value)>,msg)
-
-#ifndef NDEBUG
-    // effectively the same as c++23 <print>,
-    // except using debug_outs() as the output stream
-    template<
-        typename Format,
-        typename... Args>
-    void print_debug(
-        Format fmt,
-        Args&&... args)
-    {
-        debug_outs() << fmt::vformat(fmt,
-            fmt::make_format_args(std::forward<Args>(args)...));
-    }
-#else
-    template<typename... Args>
-    void print_debug(
-        Args&&...)
-    {
-        // if <format> isn't supported, ignore the call
-    }
-#endif
 
 } // mrdox
 } // clang

@@ -784,7 +784,7 @@ template<class Pred>
 void
 dumpCommandTraits(
     char const* title,
-    llvm::raw_ostream& os,
+    std::ostream& os,
     Pred&& pred)
 {
     using namespace comments;
@@ -873,19 +873,16 @@ dumpCommandTraits(
 void
 dumpCommentTypes()
 {
-    auto& os = llvm::outs();
-
-    #define COMMENT(Type, Base) os << #Type << " : " << #Base << '\n';
-    #include <clang/AST/CommentNodes.inc>
-    #undef COMMENT
-
-    os << "\n\n";
+#define COMMENT(Type, Base) report::info("{} : {}", #Type, #Base);
+#include <clang/AST/CommentNodes.inc>
+#undef COMMENT
+report::info("");
 }
 
 void
 dumpCommentCommands()
 {
-    auto& os = llvm::outs();
+    std::stringstream os;
 
     dumpCommandTraits(
         "Inline Commands\n"
@@ -913,6 +910,8 @@ dumpCommentCommands()
                 cmd.IsVerbatimBlockEndCommand ||
                 cmd.IsVerbatimLineCommand;
         });
+
+    report::print(report::Level::info, os.str());
 }
 
 //------------------------------------------------

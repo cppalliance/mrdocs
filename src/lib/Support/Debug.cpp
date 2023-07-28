@@ -19,11 +19,6 @@
 namespace clang {
 namespace mrdox {
 
-llvm::raw_ostream& debug_outs()
-{
-    return llvm::outs();
-}
-
 void
 debugEnableHeapChecking()
 {

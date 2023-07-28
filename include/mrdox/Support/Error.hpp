@@ -721,8 +721,6 @@ swap(Expected& rhs) noexcept
 //
 //------------------------------------------------
 
-/** Front-end for writing messages to the console.
-*/
 namespace report {
 
 /** Severity levels attached to reported messags.
@@ -749,19 +747,33 @@ struct Results
 
 /** Holds current statistics on reported messages.
 */
-extern MRDOX_DECL Results results;
+extern
+MRDOX_DECL
+Results
+results;
 
 /** Set the minimum threshold level for reporting.
 
     Messages below this level will not be printed.
     A value of 5 will suppress all messages. Note
-    that errors will still count as errors even if
-    they are not displayed.
+    that messages will still be counted towards
+    result totals even if they are not displayed.
 */
 MRDOX_DECL
 void
 setMinimumLevel(
     Level level) noexcept;
+
+/** Report a message to the console.
+
+    @param text The message to print. A
+    trailing newline will be added to the
+    message automatically.
+*/
+MRDOX_DECL
+void
+print(
+    std::string const& text);
 
 /** Report a message to the console.
 
@@ -779,10 +791,10 @@ MRDOX_DECL
 void
 print(
     Level level,
-    std::string_view text,
+    std::string const& text,
     source_location const* loc = nullptr);
 
-/** Report a message to the console.
+/** Format a message to the console.
 
     @param level 0 to 4 The severity of the
     report. 0 is debug and 4 is fatal.

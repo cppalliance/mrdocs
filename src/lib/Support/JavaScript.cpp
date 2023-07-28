@@ -8,7 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include <mrdox/Platform.hpp>
+#include "lib/Support/Error.hpp"
+#include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/JavaScript.hpp>
 #include <llvm/Support/MemoryBuffer.h>
@@ -1055,8 +1056,9 @@ setlog()
     [](duk_context* ctx) -> duk_ret_t
     {
         Access A(ctx);
-        auto s = dukM_get_string(A, 1);
-        llvm::outs() << s;
+        auto level = duk_get_uint(ctx, 0);
+        std::string s(dukM_get_string(A, 1));
+        report::print(report::getLevel(level), s);
         return 0;
     }, 2);
     dukM_put_prop_string(A, idx_, "log");

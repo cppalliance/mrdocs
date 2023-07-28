@@ -37,7 +37,7 @@ void DoTestAction()
         runner.checkPath(inputPath);
     auto const& results = runner.results;
 
-    auto& os = llvm::errs();
+    std::stringstream os;
 
     switch(testArgs.action)
     {
@@ -59,7 +59,9 @@ void DoTestAction()
         os << ", " << report::numberOf(n, "file", "files") << " matched";
     if(auto n = results.expectedXmlWritten.load())
         os << report::numberOf(n, "file", "files") << " written";
-    os << ".\n";
+    os << ".";
+
+    report::print(os.str());
 }
 
 int test_main(int argc, char const* const* argv)
@@ -97,8 +99,7 @@ static void reportUnhandledException(
 {
     namespace sys = llvm::sys;
 
-    llvm::errs() <<
-        "Unhandled exception: " << ex.what() << '\n';
+    report::error("Unhandled exception: {}\n", ex.what());
     sys::PrintStackTrace(llvm::errs());
 }
 

@@ -16,6 +16,14 @@
 #include <cstdlib>
 #include <mutex>
 
+#ifdef _MSC_VER
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <debugapi.h>
+#include <crtdbg.h>
+#include <sstream>
+#endif
+
 namespace SourceFileNames {
 extern char const* getFileName(char const*) noexcept;
 } // SourceFileNames
@@ -146,24 +154,46 @@ SourceLocation(
 //
 //------------------------------------------------
 
-static llvm::sys::Mutex reportMutex_;
-
 namespace report {
 
-// minimum level to print
-static Level reportLevel_ = Level::debug;
+static llvm::sys::Mutex mutex_;
+static Level level_ = Level::debug;
 
 constinit Results results{};
 
-void setMinimumLevel(Level level) noexcept
+static
+void
+print_impl(
+    std::string const& s)
 {
-    reportLevel_ = level;
+    llvm::errs() << s << '\n';
+#ifdef _MSC_VER
+    if(::IsDebuggerPresent() != 0)
+    {
+        ::OutputDebugStringA(s.c_str());
+        ::OutputDebugStringA("\n");
+    }
+#endif
+}
+
+void
+setMinimumLevel(
+    Level level) noexcept
+{
+    level_ = level;
+}
+
+void
+print(
+    std::string const& text)
+{
+    print_impl(text);
 }
 
 void
 print(
     Level level,
-    std::string_view text,
+    std::string const& text,
     source_location const* loc)
 {
     call_impl(level,
@@ -173,8 +203,10 @@ print(
         }, loc);
 }
 
+//------------------------------------------------
+
 Level
-getLevel(unsigned level)
+getLevel(unsigned level) noexcept
 {
     switch(level)
     {
@@ -193,24 +225,28 @@ call_impl(
     std::function<void(llvm::raw_ostream&)> f,
     source_location const* loc)
 {
-    std::lock_guard<llvm::sys::Mutex> lock(reportMutex_);
-    if(level >= reportLevel_)
+    std::string s;
+    if(level >= level_)
     {
-        f(llvm::errs());
+        llvm::raw_string_ostream os(s);
+        f(os);
         if(loc && (
             level == Level::warn ||
             level == Level::error ||
             level == Level::fatal))
         {
-            llvm::errs() << "\n" <<
+            os << "\n" <<
                 fmt::format(
                     "    Reported at {}({})",
                     ::SourceFileNames::getFileName(loc->file_name()),
                     loc->line());
             // VFALCO attach a stack trace for Level::fatal
         }
-        llvm::errs() << '\n';
+        os << '\n';
     }
+    std::lock_guard<llvm::sys::Mutex> lock(mutex_);
+    if(! s.empty())
+        llvm::errs() << s;
     switch(level)
     {
     case Level::debug:

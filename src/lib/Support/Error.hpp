@@ -17,6 +17,7 @@
 #include <llvm/Support/Error.h>
 #include <llvm/Support/raw_ostream.h>
 #include <functional>
+#include <ostream>
 #include <utility>
 
 namespace clang {
@@ -54,9 +55,9 @@ public:
     }
 
     friend
-    llvm::raw_ostream&
+    std::ostream&
     operator<<(
-        llvm::raw_ostream& os,
+        std::ostream& os,
         numberOf const& u)
     {
         os << u.t_ << ' ';
@@ -88,9 +89,9 @@ public:
     }
 
     friend
-    llvm::raw_ostream&
+    std::ostream&
     operator<<(
-        llvm::raw_ostream& os,
+        std::ostream& os,
         separator& u)
     {
         if(u.c_)
@@ -106,7 +107,8 @@ public:
 */
 MRDOX_DECL
 Level
-getLevel(unsigned level);
+getLevel(
+    unsigned level) noexcept;
 
 /** Formatted reporting to a live stream.
 

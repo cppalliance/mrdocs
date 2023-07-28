@@ -43,36 +43,38 @@ public:
     void reportTotals(report::Level level)
     {
         std::string s;
-        llvm::raw_string_ostream os(s);
         if(! messages_.empty())
         {
             auto warnCount = messages_.size() - errorCount_;
             if(errorCount_ > 0)
             {
-                os << fmt::format("{} {}",
+                fmt::format_to(std::back_inserter(s),
+                    "{} {}",
                     errorCount_, errorCount_ > 1
                         ? "errors" : "error");
             }
             if(warnCount > 0)
             {
                 if(errorCount_ > 0)
-                    os << " and ";
-                os << fmt::format("{} {}.\n",
+                    fmt::format_to(std::back_inserter(s),
+                        " and " );
+                fmt::format_to(std::back_inserter(s),
+                    "{} {}.\n",
                     warnCount, warnCount > 1
                         ? "warnings" : "warning");
             }
         }
         else
         {
-            os << "No errors or warnings.\n";
+            fmt::format_to(std::back_inserter(s),
+                "No errors or warnings.\n");
         }
         report::print(level, s);
     }
 
     void
-    merge(
-        Diagnostics&& other,
-        llvm::raw_ostream* os = nullptr)
+    mergeAndReport(
+        Diagnostics&& other)
     {
         for(auto&& m : other.messages_)
         {
@@ -81,9 +83,11 @@ public:
             {
                 if(result.first->second)
                     ++errorCount_;
-                if(os && result.second)
-                    *os << result.first->first;
-                *os << '\n';
+                auto const level = result.first->second
+                    ? report::Level::error
+                    : report::Level::warn;
+                report::print(
+                    level, result.first->first);
             }
         }
         other.messages_.clear();

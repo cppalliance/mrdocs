@@ -20,7 +20,7 @@ report(
     Diagnostics&& diags)
 {
     std::lock_guard<llvm::sys::Mutex> lock(mutex_);
-    diags_.merge(std::move(diags), &llvm::outs());
+    diags_.mergeAndReport(std::move(diags));
 }
 
 void

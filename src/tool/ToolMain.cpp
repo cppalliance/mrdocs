@@ -62,13 +62,14 @@ int mrdox_main(int argc, char const** argv)
     if(auto err = setupAddonsDir(toolArgs.addonsDir,
         argv[0], reinterpret_cast<void*>(&main)))
     {
-        report::error("{}: \"{}\"", err, toolArgs.addonsDir);
         report::error(
+            "{}: \"{}\"\n"
             "Could not locate the addons directory because "
             "the MRDOX_ADDONS_DIR environment variable is not set, "
             "no valid addons location was specified on the command line, "
             "and no addons directory exists in the same directory as "
-            "the executable.");
+            "the executable.",
+            err, toolArgs.addonsDir);
         return EXIT_FAILURE;
     }
 
@@ -87,8 +88,7 @@ static void reportUnhandledException(
 {
     namespace sys = llvm::sys;
 
-    llvm::errs() <<
-        "Unhandled exception: " << ex.what() << '\n';
+    report::fatal("Unhandled exception: {}\n", ex.what());
     sys::PrintStackTrace(llvm::errs());
 }
 
