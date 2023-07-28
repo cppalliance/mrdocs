@@ -1,26 +1,17 @@
-{{#if (eq kind "lvalue-reference")~}}
-    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}){{~/if~}}
+{{#if pointee-type~}}
+    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))}}){{/if~}}
     {{~>declarator-after pointee-type~}}
-{{~else if (eq kind "rvalue-reference")~}}
-    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}){{~/if~}}
-    {{~>declarator-after pointee-type~}}
-{{~else if (eq kind "pointer")~}}
-    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}){{~/if~}}
-    {{~>declarator-after pointee-type~}}
-{{~else if (eq kind "member-pointer")~}}
-    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}){{~/if~}}
-    {{~>declarator-after pointee-type~}}
-{{~else if (eq kind "pack")~}}
+{{else if (eq kind "pack")~}}
     {{~>declarator-after pattern-type~}}
-{{~else if (eq kind "array")~}}
+{{else if (eq kind "array")~}}
     [{{bounds-value}}]
     {{~>declarator-after element-type~}}
-{{~else if (eq kind "function")~}}
-    ({{~#each param-types~}}
-        {{~>declarator decl-name="" decl-name-targs=""~}}{{~#unless @last}}, {{/unless~}}
-    {{~/each~}})
+{{else if (eq kind "function")~}}
+    ({{#each param-types~}}
+        {{~>declarator~}}{{~#unless @last}}, {{/unless~}}
+    {{/each~}})
     {{~#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
-    {{~#if (eq ref-qualifier "lvalue")}} &{{else if (eq ref-qualifier "rvalue")}} &&{{/if~}}
-    {{~#if exception-spec}} {{exception-spec}}{{~/if~}}
+    {{#if (eq ref-qualifier "lvalue")}} &{{else if (eq ref-qualifier "rvalue")}} &&{{/if~}}
+    {{#if exception-spec}} {{exception-spec}}{{/if~}}
     {{~>declarator-after return-type~}}
 {{/if}}

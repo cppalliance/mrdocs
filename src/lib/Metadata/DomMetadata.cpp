@@ -267,7 +267,7 @@ public:
 static
 dom::Value
 domCreate(
-    std::unique_ptr<TArg> const& I, 
+    std::unique_ptr<TArg> const& I,
     DomCorpus const& domCorpus)
 {
     if(! I)
@@ -280,22 +280,22 @@ domCreate(
         {
             if constexpr(T::isType())
             {
-                entries.emplace_back("type", 
+                entries.emplace_back("type",
                     domCreate(t.Type, domCorpus));
             }
             if constexpr(T::isNonType())
             {
-                entries.emplace_back("value", 
+                entries.emplace_back("value",
                     t.Value.Written);
             }
             if constexpr(T::isTemplate())
             {
-                entries.emplace_back("name", 
+                entries.emplace_back("name",
                     t.Name);
                 // KRYSTIAN NOTE: hack for missing SymbolIDs
-                if(t.Template != SymbolID::zero && 
+                if(t.Template != SymbolID::zero &&
                     domCorpus.corpus.find(t.Template))
-                    entries.emplace_back("template", 
+                    entries.emplace_back("template",
                         toBase16(t.Template));
             }
         });
@@ -318,17 +318,17 @@ domCreate(
     visit(*I, [&]<typename T>(const T& t)
         {
             if(t.Default)
-                entries.emplace_back("default", 
+                entries.emplace_back("default",
                     domCreate(t.Default, domCorpus));
 
             if constexpr(T::isType())
             {
-                entries.emplace_back("key", 
+                entries.emplace_back("key",
                     toString(t.KeyKind));
             }
             if constexpr(T::isNonType())
             {
-                entries.emplace_back("type", 
+                entries.emplace_back("type",
                     domCreate(t.Type, domCorpus));
             }
             if constexpr(T::isTemplate())
@@ -383,7 +383,7 @@ domCreate(
         }
 
         if constexpr(T::isSpecialization())
-            entries.emplace_back("template-args",
+            entries.emplace_back("args",
                 dom::newArray<DomTArgArray>(t.TemplateArgs, domCorpus));
 
         if constexpr(requires { t.CVQualifiers; })
@@ -752,18 +752,26 @@ DomInfo<T>::construct() const
         entries.insert(entries.end(), {
             { "type",           domCreate(I_.Type, domCorpus_) },
             { "template",       domCreate(I_.Template, domCorpus_) },
-            { "storageClass",   toString(I_.specs.storageClass) }
+            { "constexprKind",  toString(I_.specs.constexprKind.get()) },
+            { "storageClass",   toString(I_.specs.storageClass.get()) },
+            { "isConstinit",    I_.specs.isConstinit.get() },
+            { "isThreadLocal",  I_.specs.isThreadLocal.get() }
             });
     }
     if constexpr(T::isField())
     {
         entries.insert(entries.end(), {
-            { "type",           domCreate(I_.Type, domCorpus_) },
-            { "default",        dom::stringOrNull(I_.Default) },
-            { "isMaybeUnused",  I_.specs.isMaybeUnused.get() },
-            { "isDeprecated",   I_.specs.isDeprecated.get() },
+            { "type",               domCreate(I_.Type, domCorpus_) },
+            { "default",            dom::stringOrNull(I_.Default) },
+            { "isMaybeUnused",      I_.specs.isMaybeUnused.get() },
+            { "isDeprecated",       I_.specs.isDeprecated.get() },
+            { "isMutable",          I_.IsMutable },
+            { "isBitfield",         I_.IsBitfield },
             { "hasNoUniqueAddress", I_.specs.hasNoUniqueAddress.get() }
             });
+        if(I_.IsBitfield)
+            entries.emplace_back("bitfieldWidth",
+                I_.BitfieldWidth.Written);
     }
     if constexpr(T::isSpecialization())
     {

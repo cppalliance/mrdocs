@@ -81,7 +81,7 @@ operator()(
     default:
         MRDOX_UNREACHABLE();
     }
-    dest_ += fmt::format("[{}]\n", label);
+    fmt::format_to(std::back_inserter(dest_), "[{}]\n", label);
     (*this)(static_cast<doc::Paragraph const&>(I));
 }
 
@@ -203,10 +203,10 @@ void
 DocVisitor::
 operator()(doc::Text const& I)
 {
-    // Asciidoc text must not have leading 
+    // Asciidoc text must not have leading
     // else they can be rendered up as code.
     std::string_view s = trim(I.string);
-    dest_.append(s);
+    fmt::format_to(std::back_inserter(dest_), "pass:v,q[{}]", s);
 }
 
 void

@@ -6,17 +6,14 @@
 
 === Synopsis
 
-[source,cpp,subs=+macros]
+[source,cpp,subs="verbatim,macros,-callouts"]
 ----
-{{#if symbol.template}}
-{{>template-head symbol.template}}
+{{#if template}}{{>template-head template}}
+{{/if~}}
 {{symbol.tag}} {{symbol.name~}}
-{{#if (neq symbol.template.kind "primary")~}}
-{{>template-args args=symbol.template.args}}
-{{/if}}
-{{else}}
-{{symbol.tag}} {{symbol.name~}}
-{{/if}}
+{{#if (or (eq symbol.template.kind "explicit") (eq symbol.template.kind "partial"))~}}
+    {{~>template-args args=symbol.template.args}}
+{{/if~}}
 {{#unless symbol.bases}}
 ;
 {{else}}{{"\n"}}
@@ -24,7 +21,7 @@
     {{#if @first}}:{{else}},{{/if}}
     {{~#unless (eq access ../symbol.defaultAccess)}} {{access}}{{/unless}}
     {{~#if isVirtual}} virtual{{/if}}
-    {{~null}} {{>declarator type decl-name=""}}
+    {{~null}} {{>declarator type}}
     {{~#if @last}};{{/if}}
 {{/each}}
 {{/unless}}

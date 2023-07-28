@@ -1,27 +1,43 @@
-[source,cpp,subs=+macros]
+[source,cpp,subs="verbatim,macros,-callouts"]
 ----
-{{#if template}}{{>template-head template}}{{/if~}}
-{{#if (eq storageClass "static")}}static
+{{#if template}}{{>template-head template}}
 {{/if~}}
+{{#if constexprKind}}{{constexprKind}}
+{{/if~}}
+{{#if storageClass}}{{storageClass}}
+{{/if~}}
+{{#if isVirtual}}virtual
+{{/if~}}
+
+{{#if (eq class "normal")~}}
 {{>declarator-before return}}
 
 {{name~}}
 {{#if (eq template.kind "explicit")~}}
     {{~>template-args args=template.args~}}
-{{~/if~}}
-
-{{~#if params}}
-(
+{{/if~}}
+{{else if (neq class "conversion")~}}
+{{name~}}
+{{else~}}
+operator {{>declarator return~}}
+{{/if~}}
+({{#if params}}
 {{#each params}}
     {{>declarator type decl-name=name~}}
-    {{~#if @last}}){{else}},
-    {{/if}}
-{{~/each}}
-{{~else~}}
-()
-{{~/if~}}
+    {{#if default}} = {{default}}{{/if~}}
+{{#unless @last}},
+{{/unless~}}
+{{/each~}}
+{{/if~}})
+{{~#if isConst}} const{{/if~}}
+{{#if isVolatile}} volatile{{/if~}}
+{{#if refQualifier}} {{refQualifier}}{{/if~}}
 {{#if (eq exceptionSpec "noexcept")}} noexcept{{/if~}}
-{{~>declarator-after return~}}
+{{#if (eq class "normal")}}{{>declarator-after return}}{{/if~}}
+{{#if hasOverrideAttr}} override{{/if~}}
+{{#if isFinal}} final{{/if~}}
+{{#if isPure}} = 0{{/if~}}
 {{#if isDeleted}} = delete{{/if~}}
+{{#if isDefaulted}} = default{{/if~}}
 ;
 ----
