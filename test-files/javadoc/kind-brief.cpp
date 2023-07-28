@@ -1,3 +1,0 @@
-/** @brief brief
-*/
-void f();

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace>
+  <function name="f0" id="e1UQQek5v3C9OClW5cGf57XvwQo=">
+    <file path="brief-2.cpp" line="5"/>
+    <doc>
+      <para>
+        <text>brief</text>
+      </para>
+    </doc>
+  </function>
+  <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
+    <file path="brief-2.cpp" line="11"/>
+    <doc>
+      <brief>
+      </brief>
+    </doc>
+  </function>
+  <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
+    <file path="brief-2.cpp" line="15"/>
+    <doc>
+      <brief>
+      </brief>
+    </doc>
+  </function>
+  <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
+    <file path="brief-2.cpp" line="19"/>
+    <doc>
+      <brief>
+        <text>brief</text>
+      </brief>
+    </doc>
+  </function>
+  <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
+    <file path="brief-2.cpp" line="24"/>
+    <doc>
+      <para>
+        <text>brief</text>
+      </para>
+    </doc>
+  </function>
+  <function name="f5" id="RnDTZyCZuSqydMEPutN0yG4E/xg=">
+    <file path="brief-2.cpp" line="29"/>
+    <doc>
+      <brief>
+        <text>brief</text>
+      </brief>
+    </doc>
+  </function>
+</namespace>
+</mrdox>

@@ -614,9 +614,9 @@ XMLWriter::
 writeListItem(
     doc::ListItem const& node)
 {
-    tags_.open("item");
+    tags_.open("listitem");
     writeNodes(node.children);
-    tags_.close("item");
+    tags_.close("listitem");
 }
 
 void

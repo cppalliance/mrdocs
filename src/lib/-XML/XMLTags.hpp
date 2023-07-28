@@ -17,7 +17,7 @@
 #include <mrdox/Metadata/Record.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Type.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>

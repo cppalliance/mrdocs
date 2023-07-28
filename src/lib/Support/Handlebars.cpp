@@ -2043,6 +2043,8 @@ isSame(dom::Value const& a, dom::Value const& b) {
             return isSame(a.getArray(), b.getArray());
         case dom::Kind::Object:
             return isSame(a.getObject(), b.getObject());
+        case dom::Kind::Function:
+            return isSame(a.getFunction(), b.getFunction());
     }
     return false;
 }

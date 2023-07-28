@@ -12,7 +12,7 @@
 #define MRDOX_SUPPORT_LUA_HPP
 
 #include <mrdox/Platform.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/source_location.hpp>
 #include <fmt/format.h>

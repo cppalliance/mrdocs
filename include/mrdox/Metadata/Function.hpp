@@ -19,7 +19,7 @@
 #include <mrdox/Metadata/Source.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/Metadata/Template.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <memory>
 #include <string>
 #include <vector>

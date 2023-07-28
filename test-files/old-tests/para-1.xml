@@ -7,28 +7,24 @@
   </function>
   <function name="f2" id="0MJUv5yGFR9nXWFLeYc+rjOY+iM=">
     <file path="para-1.cpp" line="10"/>
-    <doc>
-    </doc>
   </function>
   <function name="f3" id="khwJweIqd5FuWAg8T+l+GEljQVc=">
     <file path="para-1.cpp" line="17"/>
-    <doc>
-    </doc>
   </function>
   <function name="f4" id="5wJFEWD4Ev/Vf3QN/mFlKhtbC6E=">
     <file path="para-1.cpp" line="27"/>
     <doc>
       <para>
-        <text> brief</text>
+        <text>brief</text>
       </para>
       <para>
-        <text>    a</text>
+        <text>a</text>
       </para>
       <para>
-        <text>    b</text>
+        <text>b </text>
       </para>
       <para>
-        <text>    c</text>
+        <text>c </text>
       </para>
     </doc>
   </function>

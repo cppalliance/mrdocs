@@ -108,11 +108,6 @@ struct Access
         return ctx_;
     }
 
-    static void push(Param const& param, Scope& scope)
-    {
-        param.push(scope);
-    }
-
     static duk_idx_t idx(Value const& value) noexcept
     {
         return value.idx_;
@@ -149,6 +144,7 @@ struct Access
 //
 //------------------------------------------------
 
+// return string_view at stack idx
 static
 std::string_view
 dukM_get_string(
@@ -160,6 +156,7 @@ dukM_get_string(
     return std::string_view(data, size);
 }
 
+// push string onto stack
 static
 void
 dukM_push_string(
@@ -168,6 +165,7 @@ dukM_push_string(
     duk_push_lstring(A, s.data(), s.size());
 }
 
+// set an object's property
 static
 void
 dukM_put_prop_string(
@@ -176,6 +174,7 @@ dukM_put_prop_string(
     duk_put_prop_lstring(A, idx, s.data(), s.size());
 }
 
+// get the property of an object as a string
 static
 std::string
 dukM_get_prop_string(
@@ -196,6 +195,7 @@ dukM_get_prop_string(
     return result;
 }
 
+// return an Error from a JavaScript Error on the stack
 static
 Error
 dukM_popError(Scope& scope)
@@ -283,7 +283,7 @@ getGlobal(
 
 struct ArrayBase
 {
-    static dom::Array& get(Access& A, duk_idx_t idx);
+    static dom::Array* get(Access& A, duk_idx_t idx);
 };
 
 // Uses ES6 Getters/Setters
@@ -301,7 +301,7 @@ struct ArrayProxy : ArrayBase
 
 struct ObjectBase
 {
-    static dom::Object& get(Access& A, duk_idx_t idx);
+    static dom::Object* get(Access& A, duk_idx_t idx);
 };
 
 // Uses ES6 Getters/Setters
@@ -328,18 +328,27 @@ static void domValue_push(Access& A, dom::Value const& value);
 
 //------------------------------------------------
 
-dom::Array&
+dom::Array*
 ArrayBase::
 get(Access& A, duk_idx_t idx)
 {
     duk_get_prop_string(A, idx, DUK_HIDDEN_SYMBOL("dom"));
     void* data;
-    if(duk_get_type(A, -1) == DUK_TYPE_POINTER)
+    switch(duk_get_type(A, -1))
+    {
+    case DUK_TYPE_POINTER:
         data = duk_get_pointer(A, -1);
-    else
-        data = duk_get_buffer_data(A, idx, nullptr);
+        break;
+    case DUK_TYPE_BUFFER:
+        data = duk_get_buffer_data(A, -1, nullptr);
+        break;
+    case DUK_TYPE_UNDEFINED:
+        return nullptr;
+    default:
+        MRDOX_UNREACHABLE();
+    }
     duk_pop(A);
-    return *static_cast<dom::Array*>(data);
+    return static_cast<dom::Array*>(data);
 }
 
 void
@@ -366,7 +375,7 @@ push(
     {
         Access A(ctx);
         duk_push_this(ctx);
-        std::destroy_at(&get(A, -1));
+        std::destroy_at(get(A, -1));
         return 0;
     }, 0);
     duk_set_finalizer(A, -2);
@@ -389,7 +398,7 @@ push(
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& arr = get(A, -1);
+        auto& arr = *get(A, -1);
         auto i = duk_to_number(A, 1);
         duk_push_boolean(A, i < arr.size());
         return 1;
@@ -404,7 +413,7 @@ push(
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& arr = get(A, -1);
+        auto& arr = *get(A, -1);
         switch(duk_get_type(A, 1))
         {
         case DUK_TYPE_NUMBER:
@@ -490,21 +499,27 @@ push(
 
 //------------------------------------------------
 
-dom::Object&
+dom::Object*
 ObjectBase::
 get(Access& A, duk_idx_t idx)
 {
     duk_get_prop_string(A, idx, DUK_HIDDEN_SYMBOL("dom"));
     void* data;
-    auto const ty = duk_get_type(A, -1);
-    if(ty == DUK_TYPE_POINTER)
+    switch(duk_get_type(A, -1))
+    {
+    case DUK_TYPE_POINTER:
         data = duk_get_pointer(A, -1);
-    else if(ty == DUK_TYPE_BUFFER)
+        break;
+    case DUK_TYPE_BUFFER:
         data = duk_get_buffer_data(A, -1, nullptr);
-    else
+        break;
+    case DUK_TYPE_UNDEFINED:
+        return nullptr;
+    default:
         MRDOX_UNREACHABLE();
+    }
     duk_pop(A);
-    return *static_cast<dom::Object*>(data);
+    return static_cast<dom::Object*>(data);
 }
 
 void
@@ -525,7 +540,7 @@ push(
     {
         Access A(ctx);
         duk_push_this(ctx);
-        std::destroy_at(&get(A, -1));
+        std::destroy_at(get(A, -1));
         return 0;
     }, 0);
     duk_set_finalizer(A, idx);
@@ -544,7 +559,9 @@ push(
             Access A(ctx);
             auto key = dukM_get_string(A, 0);
             duk_push_this(A);
-            auto obj = get(A, 1);
+            // get obj by value because
+            // duk_pop_n would invalidate it
+            dom::Object obj = *get(A, 1);
             duk_pop_n(A, duk_get_top(A));
             domValue_push(A, obj.find(key));
             return 1;
@@ -572,7 +589,7 @@ push(
     {
         Access A(ctx);
         duk_push_this(ctx);
-        std::destroy_at(&get(A, -1));
+        std::destroy_at(get(A, -1));
         return 0;
     }, 0);
     duk_set_finalizer(A, -2);
@@ -595,7 +612,7 @@ push(
     {
         Access A(ctx);
         duk_push_this(A); // the proxy
-        auto& obj = get(A, -1);
+        auto& obj = *get(A, -1);
         auto key = dukM_get_string(A, 1);
         auto const& v = obj.find(key);
         duk_pop_n(A, duk_get_top(A));
@@ -612,7 +629,7 @@ push(
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& obj = get(A, -1);
+        auto& obj = *get(A, -1);
         auto key = dukM_get_string(A, 1);
         auto const& v = obj.find(key);
         duk_pop_n(A, duk_get_top(A));
@@ -631,7 +648,7 @@ push(
     {
         Access A(ctx);
         duk_push_this(A);
-        auto& obj = get(A, -1);
+        auto& obj = *get(A, -1);
         duk_pop(A);
         duk_push_array(A);
         for(auto const& kv : obj)
@@ -690,213 +707,41 @@ push(
 
 //------------------------------------------------
 //
-// Param
-//
-//------------------------------------------------
-
-void
-Param::
-push(Scope& scope) const
-{
-    Access A(scope);
-    switch(kind_)
-    {
-    case Kind::Undefined:
-        duk_push_undefined(A);
-        break;
-    case Kind::Null:
-        duk_push_null(A);
-        break;
-    case Kind::Boolean:
-        duk_push_boolean(A, b_);
-        break;
-    case Kind::Integer:
-        duk_push_int(A, i_);
-        break;
-    case Kind::Unsigned:
-        duk_push_uint(A, u_);
-        break;
-    case Kind::Double:
-        duk_push_number(A, d_);
-        break;
-    case Kind::String:
-        dukM_push_string(A, s_);
-        break;
-    case Kind::Value:
-        duk_dup(A, idx_);
-        break;
-    case Kind::DomArray:
-        ArrayRep::push(A, arr_);
-        break;
-    case Kind::DomObject:
-        ObjectRep::push(A, obj_);
-        break;
-    default:
-        MRDOX_UNREACHABLE();
-    }
-}
-
-Param::
-Param(
-    Param&& other) noexcept
-{
-    kind_ = other.kind_;
-    switch(other.kind_)
-    {
-    case Kind::Undefined:
-    case Kind::Null:
-        break;
-    case Kind::Boolean:
-        std::construct_at(&b_, other.b_);
-        break;
-    case Kind::Integer:
-        std::construct_at(&i_, other.i_);
-        break;
-    case Kind::Unsigned:
-        std::construct_at(&u_, other.u_);
-        break;
-    case Kind::Double:
-        std::construct_at(&d_, other.d_);
-        break;
-    case Kind::String:
-        std::construct_at(&s_, other.s_);
-        break;
-    case Kind::Value:
-        std::construct_at(&idx_, other.idx_);
-        break;
-    case Kind::DomArray:
-        std::construct_at(&arr_, other.arr_);
-        break;
-    case Kind::DomObject:
-        std::construct_at(&obj_, other.obj_);
-        break;
-    }
-}
-
-Param::
-~Param()
-{
-    switch(kind_)
-    {
-    case Kind::Undefined:
-    case Kind::Null:
-    case Kind::Boolean:
-    case Kind::Integer:
-    case Kind::Unsigned:
-    case Kind::Double:
-        break;
-    case Kind::String:
-        std::destroy_at(&s_);
-        break;
-    case Kind::Value:
-        break;
-    case Kind::DomArray:
-        std::destroy_at(&arr_);
-        break;
-    case Kind::DomObject:
-        std::destroy_at(&obj_);
-        break;
-    default:
-        MRDOX_UNREACHABLE();
-    }
-}
-
-Param::
-Param(
-    std::nullptr_t) noexcept
-    : kind_(Kind::Null)
-{
-}
-
-Param::
-Param(
-    int i) noexcept
-    : kind_(Kind::Integer)
-    , i_(i)
-{
-}
-
-Param::
-Param(
-    unsigned int u) noexcept
-    : kind_(Kind::Unsigned)
-    , u_(u)
-{
-}
-
-Param::
-Param(
-    double d) noexcept
-    : kind_(Kind::Double)
-    , d_(d)
-{
-}
-
-Param::
-Param(
-    std::string_view s) noexcept
-    : kind_(Kind::String)
-    , s_(s)
-{
-}
-
-Param::
-Param(
-    Value const& value) noexcept
-    : kind_(Kind::Value)
-    , idx_(Access::idx(value))
-{
-}
-
-Param::
-Param(
-    dom::Array const& arr) noexcept
-    : kind_(Kind::DomArray)
-    , arr_(arr)
-{
-}
-
-Param::
-Param(
-    dom::Object const& obj) noexcept
-    : kind_(Kind::DomObject)
-    , obj_(obj)
-{
-}
-
-Param::
-Param(
-    dom::Value const& value) noexcept
-    : Param(
-        [&value]() -> Param
-        {
-            switch(value.kind())
-            {
-            case dom::Kind::Null:
-                return nullptr;
-            case dom::Kind::Boolean:
-                return value.getBool();
-            case dom::Kind::Integer:
-                return static_cast<int>(
-                    value.getInteger());
-            case dom::Kind::String:
-                return value.getString();
-            case dom::Kind::Array:
-                return value.getArray();
-            case dom::Kind::Object:
-                return value.getObject();
-            default:
-                MRDOX_UNREACHABLE();
-            }
-        }())
-{
-}
-
-//------------------------------------------------
-//
 // Value
 //
 //------------------------------------------------
+
+// return a dom::Value from a stack element
+static
+dom::Value
+domValue_get(
+    Scope& scope, duk_idx_t idx)
+{
+    Access A(scope);
+    idx = duk_require_normalize_index(A, idx);
+    switch(duk_get_type(A, idx))
+    {
+    case DUK_TYPE_UNDEFINED:
+    case DUK_TYPE_NULL:
+        return nullptr;
+    case DUK_TYPE_BOOLEAN:
+        return duk_get_boolean(A, idx);
+    case DUK_TYPE_NUMBER:
+        return duk_get_number(A, idx);
+    case DUK_TYPE_STRING:
+        return dukM_get_string(A, idx);
+    case DUK_TYPE_OBJECT:
+    {
+        return nullptr;
+    }
+    case DUK_TYPE_BUFFER:
+    case DUK_TYPE_POINTER:
+    case DUK_TYPE_LIGHTFUNC:
+    default:
+        MRDOX_UNREACHABLE();
+    }
+    A.addref(scope);
+}
 
 static
 void
@@ -928,6 +773,8 @@ domValue_push(
         MRDOX_UNREACHABLE();
     }
 }
+
+//------------------------------------------------
 
 Value::
 Value(
@@ -1067,14 +914,13 @@ setlog()
 Expected<Value>
 Value::
 callImpl(
-    Param const* data,
-    std::size_t size) const
+    std::initializer_list<dom::Value> args) const
 {
     Access A(*scope_);
     duk_dup(A, idx_);
-    for(std::size_t i = 0; i < size; ++i)
-        A.push(data[i], *scope_);
-    auto result = duk_pcall(A, size);
+    for(auto const& arg : args)
+        domValue_push(A, arg);
+    auto result = duk_pcall(A, args.size());
     if(result == DUK_EXEC_ERROR)
         return dukM_popError(*scope_);
     return A.construct<Value>(-1, *scope_);
@@ -1084,17 +930,16 @@ Expected<Value>
 Value::
 callPropImpl(
     std::string_view prop,
-    Param const* data,
-    std::size_t size) const
+    std::initializer_list<dom::Value> args) const
 {
     Access A(*scope_);
     if(! duk_get_prop_lstring(A,
             idx_, prop.data(), prop.size()))
         return formatError("method {} not found", prop);
     duk_dup(A, idx_);
-    for(std::size_t i = 0; i < size; ++i)
-        A.push(data[i], *scope_);
-    auto rc = duk_pcall_method(A, size);
+    for(auto const& arg : args)
+        domValue_push(A, arg);
+    auto rc = duk_pcall_method(A, args.size());
     if(rc == DUK_EXEC_ERROR)
     {
         Error err = dukM_popError(*scope_);

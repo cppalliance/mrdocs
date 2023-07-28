@@ -16,7 +16,7 @@
 #include <mrdox/Metadata/Specifiers.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <memory>
 #include <string>
 #include <string_view>

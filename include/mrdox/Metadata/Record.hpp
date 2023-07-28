@@ -22,7 +22,7 @@
 #include <mrdox/Metadata/Template.hpp>
 #include <mrdox/Metadata/Typedef.hpp>
 #include <mrdox/Metadata/Variable.hpp>
-#include <mrdox/Support/Dom.hpp>
+#include <mrdox/Dom.hpp>
 #include <memory>
 #include <string>
 #include <string_view>

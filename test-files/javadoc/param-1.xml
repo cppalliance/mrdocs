@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace>
+  <function name="f0" id="06c9/cj7ynxO8s2xGFiUMmPoJrQ=">
+    <file path="param-1.cpp" line="2"/>
+    <param name="i">
+      <type name="int"/>
+    </param>
+    <doc>
+      <param name="i">
+        <text>int</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f1" id="5jofYOgd8K45NHlUAz2rdRdXV8c=">
+    <file path="param-1.cpp" line="5"/>
+    <param name="i">
+      <type name="int"/>
+    </param>
+    <doc>
+      <param name="i" class="in">
+        <text>int</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f2" id="RSBDchPpm5nUn2mXG3zSA6ly9zE=">
+    <file path="param-1.cpp" line="8"/>
+    <param name="i">
+      <type class="lvalue-reference">
+        <pointee-type name="int"/>
+      </type>
+    </param>
+    <doc>
+      <param name="i" class="out">
+        <text>int</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f3" id="EL2iVro4/+6fOXPPcX7IoMmSMZk=">
+    <file path="param-1.cpp" line="11"/>
+    <param name="i">
+      <type class="lvalue-reference">
+        <pointee-type name="int"/>
+      </type>
+    </param>
+    <doc>
+      <param name="i" class="inout">
+        <text>int</text>
+      </param>
+    </doc>
+  </function>
+  <function name="f4" id="IUsMOl+tEebMT021/9YMOSRZVIY=">
+    <file path="param-1.cpp" line="14"/>
+    <param name="i">
+      <type name="int"/>
+    </param>
+    <param name="j">
+      <type name="double"/>
+    </param>
+    <doc>
+      <param name="i,j">
+        <text>numbers</text>
+      </param>
+    </doc>
+  </function>
+</namespace>
+</mrdox>
