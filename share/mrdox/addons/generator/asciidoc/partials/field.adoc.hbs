@@ -1,1 +1,26 @@
-{{!-- data --}}
+{{!-- field --}}
+[#{{symbol.id}}]
+== {{symbol.name}}
+
+{{symbol.doc.brief}}
+
+=== Synopsis
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{#if symbol.isMutable}}mutable
+{{/if~}}
+{{>declarator-before symbol.type}} {{symbol.name~}}
+{{#if symbol.isBitfield}} : {{symbol.bitfieldWidth}}{{/if~}}
+{{>declarator-after symbol.type~}}
+;
+----
+
+{{>source symbol.loc}}
+
+{{#if symbol.doc.description}}
+=== Description
+
+{{symbol.doc.description}}
+
+{{/if}}

@@ -6,10 +6,11 @@
 
 === Synopsis
 
-[source,cpp,subs=+macros]
+[source,cpp,subs="verbatim,macros,-callouts"]
 ----
 {{#if symbol.isUsing~}}
-    {{~#if symbol.template}}{{>template-head symbol.template}}{{/if~}}
+    {{~#if symbol.template}}{{>template-head symbol.template}}
+    {{/if~}}
     using {{symbol.name}} = {{>declarator symbol.type}}
 {{~else~}}
     typedef {{>declarator symbol.type decl-name=symbol.name}}

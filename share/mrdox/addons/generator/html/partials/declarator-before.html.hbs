@@ -9,7 +9,7 @@
     {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
     {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::{{/if~}}
     {{#if id}}{{>xref id=id content=name}}{{else}}{{name~}}{{/if}}
-    {{~>template-args args=template-args~}}
+    {{~>template-args args=args~}}
 {{~else if (eq kind "lvalue-reference")~}}
     {{~>declarator-before pointee-type~}}
     {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}&

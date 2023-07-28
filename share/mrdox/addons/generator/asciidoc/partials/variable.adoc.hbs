@@ -6,14 +6,21 @@
 
 === Synopsis
 
-[source,cpp,subs=+macros]
+[source,cpp,subs="verbatim,macros,-callouts"]
 ----
-{{#if symbol.template}}{{>template-head symbol.template}}{{/if~}}
+{{#if symbol.template}}{{>template-head symbol.template}}
+{{/if~}}
+{{#if symbol.constexprKind}}{{symbol.constexprKind}}
+{{/if~}}
+{{#if symbol.storageClass}}{{symbol.storageClass}}
+{{/if~}}
+{{#if symbol.isThreadLocal}}thread_local
+{{/if~}}
+{{>declarator-before symbol.type}} {{symbol.name~}}
 {{#if (or (eq symbol.template.kind "explicit") (eq symbol.template.kind "partial"))~}}
-    {{~>declarator symbol.type decl-name=symbol.name decl-name-targs=symbol.template.args~}}
-{{~else~}}
-    {{~>declarator symbol.type decl-name=symbol.name decl-name-targs=""~}}
-{{~/if}}
+    {{~>template-args args=symbol.template.args}}
+{{/if~}}
+{{>declarator-after symbol.type~}}
 ;
 ----
 
