@@ -77,23 +77,39 @@ string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 # Duktape
 set(DUKTAPE_SOURCE_ROOT "" CACHE STRING "Root of the Duktape source tree")
-if (NOT DUKTAPE_SOURCE_ROOT)
-    message(FATAL_ERROR
-            "Duktape source root not found.\n"
-            "Please set DUKTAPE_SOURCE_ROOT to the root of the Duktape source tree.\n"
-            "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz\n")
+
+if (DUKTAPE_SOURCE_ROOT)
+    add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
+    target_include_directories(
+            duktape PUBLIC
+            "$<BUILD_INTERFACE:${DUKTAPE_SOURCE_ROOT}/src>"
+            "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+        target_compile_options(duktape PRIVATE -w)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_compile_options(duktape PRIVATE /w)
+    endif()
+    set(DUKTAPE_INSTALL duktape)
+else () # NOT DUKTAPE_SOURCE_ROOT
+    # try to find it on the machine
+    find_file(DUKTAPE_HEADER duktape.h)
+    find_library(DUKTAPE_LIBRARY duktape)
+    if (NOT DUKTAPE_HEADER STREQUAL DUKTAPE_HEADER-NOTFOUND
+        AND NOT DUKTAPE_LIBRARY STREQUAL DUKTAPE_LIBRARY-NOTFOUND)
+        add_library(duktape SHARED IMPORTED)
+        get_filename_component(DUKTAPE_INCLUDE_DIRECTORY ${DUKTAPE_HEADER} DIRECTORY)
+        set_target_properties(duktape PROPERTIES
+                IMPORTED_LOCATION ${DUKTAPE_LIBRARY}
+                INTERFACE_INCLUDE_DIRECTORIES ${DUKTAPE_INCLUDE_DIRECTORY})
+    else()
+        message(FATAL_ERROR
+                "Duktape source root not found.\n"
+                "Please set DUKTAPE_SOURCE_ROOT to the root of the Duktape source tree.\n"
+                "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz\n")
+    endif()
 endif()
-add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
-target_include_directories(
-    duktape PUBLIC
-        "$<BUILD_INTERFACE:${DUKTAPE_SOURCE_ROOT}/src>"
-        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 add_library(duktape::duktape ALIAS duktape)
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-    target_compile_options(duktape PRIVATE -w)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(duktape PRIVATE /w)
-endif()
 
 # fmt
 find_package(fmt REQUIRED CONFIG)
@@ -369,7 +385,7 @@ if (MRDOX_INSTALL)
     #-------------------------------------------------
     # lib
     #-------------------------------------------------
-    install(TARGETS mrdox-core duktape
+    install(TARGETS mrdox-core ${DUKTAPE_INSTALL}
             EXPORT mrdox-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
