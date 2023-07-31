@@ -27,7 +27,7 @@ class Value;
 
 /** A container of key and value pairs.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     Object final
 {
     std::shared_ptr<ObjectImpl> impl_;
@@ -262,7 +262,7 @@ public:
 
     This interface is used by Object types.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     ObjectImpl
 {
 public:
@@ -319,7 +319,7 @@ newObject(Args&&... args)
 
 /** The default Object implementation.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     DefaultObjectImpl : public ObjectImpl
 {
 public:
@@ -344,7 +344,7 @@ private:
 
 /** A lazy Object implementation.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     LazyObjectImpl : public ObjectImpl
 {
     std::atomic<std::shared_ptr<ObjectImpl>> mutable sp_;

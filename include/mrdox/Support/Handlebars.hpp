@@ -110,7 +110,7 @@ namespace detail {
     std::string, std::ostream, llvm::raw_string_ostream, and others.
 
  */
-class MRDOX_DECL OutputRef
+class MRDOX_VISIBLE OutputRef
 {
     friend class Handlebars;
 
@@ -255,7 +255,7 @@ public:
     the current output stream, and render the current block.
 
  */
-class MRDOX_DECL HandlebarsCallback
+class MRDOX_VISIBLE HandlebarsCallback
 {
 private:
     using callback_type = std::function<

@@ -595,7 +595,7 @@ MRDOX_DECL dom::String toString(Style style) noexcept;
 
 /** A processed Doxygen-style comment attached to a declaration.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     Javadoc
 {
 public:

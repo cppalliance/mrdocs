@@ -18,7 +18,7 @@
 namespace clang {
 namespace mrdox {
 
-class MRDOX_DECL
+class MRDOX_VISIBLE
     YamlReporter
 {
     void diag(llvm::SMDiagnostic const&);

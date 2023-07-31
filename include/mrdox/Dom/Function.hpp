@@ -32,7 +32,7 @@ class Value;
 
 class FunctionImpl;
 
-class MRDOX_DECL
+class MRDOX_VISIBLE
     Function
 {
     std::shared_ptr<FunctionImpl> impl_;
@@ -134,7 +134,7 @@ public:
 //
 //------------------------------------------------
 
-class MRDOX_DECL
+class MRDOX_VISIBLE
     FunctionImpl
 {
 public:

@@ -27,7 +27,7 @@ namespace mrdox {
     then uses it to create the Dom nodes used for
     rendering in template engines.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     DomCorpus
 {
     class Impl;

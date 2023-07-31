@@ -35,7 +35,7 @@ class ThreadPool;
     particular directory from which absolute paths
     are calculated from relative paths.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     Config
 {
 protected:

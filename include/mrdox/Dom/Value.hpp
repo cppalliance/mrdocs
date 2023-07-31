@@ -28,7 +28,7 @@ namespace dom {
 
 /** A variant container for any kind of Dom value.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     Value
 {
     enum class Kind

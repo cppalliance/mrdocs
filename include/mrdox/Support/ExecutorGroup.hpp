@@ -23,7 +23,7 @@
 namespace clang {
 namespace mrdox {
 
-class MRDOX_DECL
+class MRDOX_VISIBLE
     ExecutorGroupBase
 {
     class scoped_agent;

@@ -72,7 +72,7 @@ public:
 
 /** A reference to an instance of a Lua interpreter.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     Context
 {
     struct Impl;
@@ -167,7 +167,7 @@ public:
 
 /** A lazy container to push values to the Lua stack.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     Param
 {
     enum class Kind
@@ -257,7 +257,7 @@ enum class Type
 
 /** A Lua value.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     Value
 {
 protected:
@@ -416,7 +416,7 @@ public:
 
 /** A Lua function.
 */
-class MRDOX_DECL
+class MRDOX_VISIBLE
     Function : public Value
 {
     friend struct Access;
