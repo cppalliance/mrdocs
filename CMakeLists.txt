@@ -228,6 +228,11 @@ if (MRDOX_CLANG)
     )
 endif ()
 
+set_target_properties(mrdox PROPERTIES
+        ENABLE_EXPORTS ON
+        POSITION_INDEPENDENT_CODE ON)
+
+
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${INCLUDES})
 source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
@@ -256,17 +261,17 @@ if (MRDOX_BUILD_TESTS)
         target_compile_options(mrdox-test PRIVATE -Wno-covered-switch-default)
     endif ()
     target_compile_definitions(mrdox-test PRIVATE -DMRDOX_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
-    add_custom_command(
-            # if we run tests, we need the addons in the right place.
-            TARGET mrdox-test
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy
-                    ${CMAKE_SOURCE_DIR}/share/mrdox/addons
-                    ${CMAKE_BINARY_DIR}/addons
-            BYPRODUCTS ${CMAKE_BINARY_DIR}/addons
-            DEPENDS ${CMAKE_SOURCE_DIR}/share/mrdox/addons
-    )
+    file (COPY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdox/addons DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
     add_test(NAME mrdox-test COMMAND mrdox-test --action test "${PROJECT_SOURCE_DIR}/test-files/old-tests")
+
+    #-------------------------------------------------
+    # test plugin to be loaded when running mrdox
+    #-------------------------------------------------
+
+    add_library(mrdox-test-plugin SHARED src/test-plugin/test-plugin.cpp)
+    target_link_libraries(mrdox-test-plugin PRIVATE mrdox)
+    set_target_properties(mrdox-test-plugin PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/addons/plugins)
 
     #-------------------------------------------------
     # XML lint
