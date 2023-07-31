@@ -10,9 +10,11 @@
 //
 
 #include "Addons.hpp"
+#include "Plugins.hpp"
 #include "ToolArgs.hpp"
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Error.hpp"
+#include "lib/Support/GeneratorsImpl.hpp"
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Version.hpp>
 #include <llvm/Support/FileSystem.h>
@@ -38,9 +40,19 @@ print_version(llvm::raw_ostream& os)
        << "\n    built with LLVM " << LLVM_VERSION_STRING;
 }
 
+struct Cleanup
+{
+    ~Cleanup()
+    {
+        getGeneratorsImpl().clear();
+    }
+};
+
 int mrdox_main(int argc, char const** argv)
 {
     namespace fs = llvm::sys::fs;
+
+    Cleanup cleanup;
 
     // VFALCO this heap checking is too strong for
     // a clang tool's model of what is actually a leak.
@@ -73,9 +85,13 @@ int mrdox_main(int argc, char const** argv)
         return EXIT_FAILURE;
     }
 
+    // Load plugins
+    if (auto err = loadPlugins(toolArgs.addonsDir.getValue()))
+        report::warn("Loading plugins generated some errors: {}", err);
+
     // Generate
     if(auto err = DoGenerateAction())
-        report::error("Generating reference failed: ", err);
+        report::error("Generating reference failed: {}", err);
 
     if( report::results.errorCount > 0 ||
         report::results.fatalCount > 0)

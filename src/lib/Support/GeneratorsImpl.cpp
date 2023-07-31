@@ -76,6 +76,14 @@ insert(
     return Error::success();
 }
 
+void
+GeneratorsImpl::
+clear()
+{
+    plist_.clear();
+    list_.clear();
+}
+
 //------------------------------------------------
 
 GeneratorsImpl&

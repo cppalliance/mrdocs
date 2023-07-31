@@ -55,6 +55,11 @@ public:
     */
     Error
     insert(std::unique_ptr<Generator> G);
+
+    /** Remove all generators
+    */
+    void
+    clear();
 };
 
 /** Return a reference to the global GeneratorsImpl instance.
