@@ -54,29 +54,65 @@ jobs:
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
-    container: ${{ ( !startsWith( matrix.runs-on , 'windows' ) && 'cppalliance/droneubuntu2204:llvm-731264b' ) || null }}
+    container: ${{ matrix.container }}
     permissions:
       contents: write
 
     steps:
-      - name: Clone mrdox
+      - name: Clone MrDox
         uses: actions/checkout@v3
 
       - name: Install LLVM
         id: llvm-install
-        if: ${{ startsWith( matrix.runs-on , 'windows' ) }}
         shell: bash
         run: |
           set -xe
-          curl -L -o "RelWithDebInfo-731264b0.7z" "https://github.com/cppalliance/mrdox/releases/download/llvm-package-release/RelWithDebInfo-731264b0.7z"
-          llvm_dir="${{runner.tool_cache}}/llvm-install"
-          llvm_dir=$(echo "$llvm_dir" | sed 's/\\/\//g')
-          7z x RelWithDebInfo-731264b0.7z -o"${llvm_dir}"
-          echo "llvm-dir=$llvm_dir/RelWithDebInfo" >> $GITHUB_OUTPUT
-          substring="C:/Program Files/Microsoft Visual Studio/2022/Community/DIA SDK/lib/amd64/diaguids.lib;"
-          sed -i "s|$substring||g" "$llvm_dir/RelWithDebInfo/lib/cmake/llvm/LLVMExports.cmake"
-          echo "llvm_dir=$llvm_dir"
-          # find "$llvm_dir" -type f
+          
+          # Determine LLVM configuration type
+          llvm_config_type="${{ matrix.build-type }}"
+          if [ "${{ runner.os }}" == "Windows" ]; then
+              llvm_runner_os="Windows"
+              if [ "$llvm_config_type" == "Release" ]; then
+                  llvm_config_type="RelWithDebInfo"
+              fi
+              llvm_archive_type="7z"
+          else
+              llvm_runner_os="Linux"
+              llvm_archive_type="tar.xz"
+          fi
+          llvm_commit_id=731264b0
+          llvm_archive_filename="$llvm_runner_os-$llvm_config_type-$llvm_commit_id.$llvm_archive_type"
+          llvm_url="https://github.com/cppalliance/mrdox/releases/download/llvm-package-release/$llvm_archive_filename"
+          
+          release_url_exists=$(curl --head --silent --fail "$llvm_url")
+          if [ -z "$release_url_exists" ]; then
+              llvm_url="https://mrdox.com/llvm+clang/$llvm_archive_filename"
+          fi
+
+          # Download LLVM binaries
+          curl -L -o "$llvm_archive_filename" "$llvm_url"
+          
+          # Install LLVM to runner.tool_cache/llvm+clang
+          llvm_root="${{runner.tool_cache}}/llvm+clang"
+          llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
+          mkdir -p "$llvm_root"
+          if [ "${{ runner.os }}" != "Windows" ]; then
+              tar -xvf "$llvm_archive_filename" -C "$llvm_root" --strip-components=1
+          else
+              7z x "$llvm_archive_filename"
+              cd "$llvm_config_type"
+              mv * "$llvm_root"
+              cd ..
+              rm -rf "$llvm_config_type"
+          
+              # Patch LLVMExports.cmake
+              substring="C:/Program Files/Microsoft Visual Studio/2022/Community/DIA SDK/lib/amd64/diaguids.lib;"
+              sed -i "s|$substring||g" "$llvm_root/lib/cmake/llvm/LLVMExports.cmake"
+          fi
+          
+          # Export LLVM_ROOT
+          echo "llvm_root=$llvm_root"
+          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
 
       - name: Install Duktape
         id: duktape-install
@@ -128,7 +164,7 @@ jobs:
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           install-prefix: .local
-          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D DUKTAPE_SOURCE_ROOT="{1}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-dir || '/usr/local', steps.duktape-install.outputs.duktape-dir) }}
+          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D DUKTAPE_SOURCE_ROOT="{1}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-root || '/usr/local', steps.duktape-install.outputs.duktape-dir) }}
           export-compile-commands: ${{ matrix.time-trace }}
           package: ${{ matrix.is-main }}
           package-dir: packages
