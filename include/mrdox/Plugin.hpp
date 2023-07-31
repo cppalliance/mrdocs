@@ -23,9 +23,6 @@ class PluginEnvironment
 public:
     virtual
     void
-    reportError(Error error) = 0;
-    virtual
-    void
     addGenerator(std::unique_ptr<Generator> generator) = 0;
 };
 

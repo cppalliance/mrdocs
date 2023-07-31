@@ -23,14 +23,6 @@ namespace mrdox {
 class PluginEnvironmentImpl final : public PluginEnvironment
 {
 public:
-    std::vector<Error> errors;
-
-    void
-    reportError(
-        Error error) override
-    {
-        errors.push_back(error);
-    }
     void
     addGenerator(
         std::unique_ptr<Generator> generator) override
@@ -67,19 +59,12 @@ loadPlugins(
 {
     auto pluginDir = files::appendPath(addonsDir, "plugins");
     PluginEnvironmentImpl env;
-    auto err = forEachFile(
+    return forEachFile(
         pluginDir,
         [&](std::string_view path) -> Error
         {
             return loadOnePlugin(std::string(path), env);
         });
-
-    if (err.failed())
-        env.errors.push_back(std::move(err));
-
-    if (env.errors.empty())
-        return Error::success();
-    return env.errors;
 }
 
 }
