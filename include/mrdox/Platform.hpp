@@ -37,12 +37,7 @@ namespace mrdox {
 //------------------------------------------------
 
 // static linking
-#if defined(MRDOX_STATIC_LINK)
-# define MRDOX_DECL
-# define MRDOX_VISIBLE
-
-// MSVC
-#elif defined(_MSC_VER)
+#if defined(_MSC_VER)
 # define MRDOX_SYMBOL_EXPORT __declspec(dllexport)
 # define MRDOX_SYMBOL_IMPORT __declspec(dllimport)
 # if defined(MRDOX_TOOL) // building tool
@@ -54,10 +49,12 @@ namespace mrdox {
 
 // (unknown)
 #elif defined(__GNUC__)
+# define MRDOX_SYMBOL_EXPORT __attribute__((visibility("default")))
+# define MRDOX_SYMBOL_IMPORT
 # if defined(MRDOX_TOOL) // building library
-#   define MRDOX_DECL
+#   define MRDOX_DECL MRDOX_SYMBOL_EXPORT
 # else
-#   define MRDOX_DECL __attribute__((__visibility__("default")))
+#   define MRDOX_DECL MRDOX_SYMBOL_IMPORT
 #endif
 # define MRDOX_VISIBLE __attribute__((__visibility__("default")))
 #else

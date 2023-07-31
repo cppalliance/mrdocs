@@ -34,7 +34,6 @@ include(GNUInstallDirs)
 
 option(MRDOX_INSTALL "Configure install target" ON)
 option(MRDOX_PACKAGE "Build install package" ON)
-option(MRDOX_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
 option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 if (MRDOX_BUILD_TESTS OR MRDOX_INSTALL)
     option(MRDOX_BUILD_DOCS "Build documentation" ON)
@@ -44,12 +43,6 @@ endif()
 option(MRDOX_GENERATE_REFERENCE "Generate MrDox reference" ${MRDOX_BUILD_DOCS})
 option(MRDOX_GENERATE_ANTORA_REFERENCE "Generate MrDox reference in Antora module pages" OFF)
 
-if (MRDOX_BUILD_SHARED)
-    set(MRDOX_LINK_MODE SHARED)
-    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_SHARED_LINK)
-else()
-    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_STATIC_LINK)
-endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(MRDOX_GCC ON)
@@ -129,6 +122,7 @@ file(
         include/*.natvis
         SourceFileNames.cpp)
 add_library(mrdox-core ${LIB_SOURCES})
+target_compile_definitions(mrdox-core PRIVATE MRDOX_TOOL=1)
 target_compile_features(mrdox-core PUBLIC cxx_std_20)
 target_include_directories(mrdox-core
     PUBLIC
@@ -140,7 +134,6 @@ target_include_directories(mrdox-core
 target_compile_definitions(
     mrdox-core
     PUBLIC
-    ${MRDOX_LINK_MODE_DEFINITION}
     PRIVATE
     -DMRDOX_TOOL
 )
@@ -214,7 +207,7 @@ endif ()
 
 file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS src/tool/*.cpp src/tool/*.hpp)
 add_executable(mrdox ${TOOL_SOURCES})
-target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
+target_compile_definitions(mrdox PRIVATE MRDOX_TOOL=1)
 
 target_include_directories(mrdox
     PUBLIC
