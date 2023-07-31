@@ -1,0 +1,96 @@
+{
+  "version": 5,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 10,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "Debug-MSVC",
+      "inherits": "Debug",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/debug-msvc",
+      "toolchainFile": "C:\\source\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
+      "cacheVariables": {
+        "LLVM_ROOT": "C:\\source\\llvm+clang\\Debug",
+        "Clang_ROOT": "C:\\source\\llvm+clang\\Debug",
+        "DUKTAPE_SOURCE_ROOT": "C:\\source\\duktape-2.7.0"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [ "Windows" ],
+          "intelliSenseMode": "windows-msvc-x64"
+        }
+      }
+    },
+    {
+      "name": "DebWithOpt-MSVC",
+      "inherits": "Debug-MSVC",
+      "binaryDir": "${sourceDir}/build/debwithopt-msvc",
+      "cacheVariables": {
+        "LLVM_ROOT": "C:\\source\\llvm+clang\\DebWithOpt",
+        "Clang_ROOT": "C:\\source\\llvm+clang\\DebWithOpt"
+      }
+    },
+    {
+      "name": "Release-MSVC",
+      "inherits": "Debug-MSVC",
+      "binaryDir": "${sourceDir}/build/release-msvc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "LLVM_ROOT": "C:\\source\\llvm+clang\\Release",
+        "Clang_ROOT": "C:\\source\\llvm+clang\\Release"
+      }
+    },
+    {
+      "name": "RelWithDebInfo-MSVC",
+      "inherits": "Debug-MSVC",
+      "binaryDir": "${sourceDir}/build/relwithdebinfo-msvc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "LLVM_ROOT": "C:\\source\\llvm+clang\\RelWithDebInfo",
+        "Clang_ROOT": "C:\\source\\llvm+clang\\RelWithDebInfo"
+      }
+    },
+    {
+      "name": "Debug-GCC",
+      "inherits": "Debug",
+      "binaryDir": "${sourceDir}/build/debug-gcc",
+      "toolchainFile": "/home/$env{USER}/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_C_COMPILER": "gcc",
+        "LLVM_ROOT": "/usr/local/llvm+clang",
+        "Clang_ROOT": "/usr/local/llvm+clang",
+        "DUKTAPE_SOURCE_ROOT": "/home/$env{USER}/source/duktape/duktape-2.7.0"
+      },
+      "condition": {
+        "type": "notEquals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": ["Linux"],
+          "intelliSenseMode": "windows-msvc-x64"
+        }
+      }
+    },
+    {
+      "name": "Debug-Clang",
+      "inherits": "Debug-GCC",
+      "binaryDir": "${sourceDir}/build/debug-clang",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "clang"
+      }
+    }
+  ]
+}
