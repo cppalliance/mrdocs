@@ -1,7 +1,7 @@
 /.idea
 /.vs
 /.vscode
-/CMakePresets.json
+/CMakeUserPresets.json
 /CMakeSettings.json
 /build
 /local
