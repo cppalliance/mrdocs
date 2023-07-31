@@ -17,6 +17,7 @@
 #include "lib/Support/Path.hpp"
 #include "lib/Support/Debug.hpp"
 #include "lib/Lib/Diagnostics.hpp"
+#include "lib/Lib/Filters.hpp"
 #include <mrdox/Metadata.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
@@ -94,6 +95,59 @@ struct InfoPtrEqual
     }
 };
 
+//------------------------------------------------
+
+struct SymbolFilter
+{
+    const FilterNode& root;
+    const FilterNode* current = nullptr;
+    const FilterNode* last_explicit = nullptr;
+    bool detached = false;
+
+    SymbolFilter(const FilterNode& root_node)
+        : root(root_node)
+    {
+        setCurrent(&root, false);
+    }
+
+    SymbolFilter(const SymbolFilter&) = delete;
+    SymbolFilter(SymbolFilter&&) = delete;
+
+    void
+    setCurrent(
+        const FilterNode* node,
+        bool node_detached)
+    {
+        current = node;
+        detached = node_detached;
+        if(node && node->Explicit)
+            last_explicit = node;
+    }
+
+    class FilterScope
+    {
+        SymbolFilter& filter_;
+        const FilterNode* current_prev_;
+        const FilterNode* last_explicit_prev_;
+        bool detached_prev_;
+
+    public:
+        FilterScope(SymbolFilter& filter)
+            : filter_(filter)
+            , current_prev_(filter.current)
+            , last_explicit_prev_(filter.last_explicit)
+            , detached_prev_(filter.detached)
+        {
+        }
+
+        ~FilterScope()
+        {
+            filter_.current = current_prev_;
+            filter_.last_explicit = last_explicit_prev_;
+            filter_.detached = detached_prev_;
+        }
+    };
+};
 
 //------------------------------------------------
 //
@@ -147,6 +201,8 @@ public:
     // KRYSTIAN FIXME: this is terrible
     bool forceExtract_ = false;
 
+    SymbolFilter symbolFilter_;
+
     ASTVisitor(
         const ConfigImpl& config,
         Diagnostics& diags,
@@ -159,6 +215,7 @@ public:
         , context_(context)
         , source_(context.getSourceManager())
         , sema_(sema)
+        , symbolFilter_(config->symbolFilter)
     {
         // install handlers for our custom commands
         initCustomCommentCommands(context_);
@@ -1360,12 +1417,97 @@ public:
 
     //------------------------------------------------
 
+    bool
+    checkSymbolFilter(const NamedDecl* ND)
+    {
+        if(forceExtract_ || symbolFilter_.detached)
+            return true;
+
+        std::string name = extractName(ND);
+        const FilterNode* parent = symbolFilter_.current;
+        if(const FilterNode* child = parent->findChild(name))
+        {
+            // if there is a matching node, skip extraction if it's
+            // explicitly excluded AND has no children. the presence
+            // of child nodes indicates that some child exists that
+            // is explicitly whitelisted
+            if(child->Explicit && child->Excluded &&
+                child->isTerminal())
+                return false;
+            symbolFilter_.setCurrent(child, false);
+        }
+        else
+        {
+            // if there was no matching node, check the most
+            // recently entered explicitly specified parent node.
+            // if it's blacklisted, then the "filtering default"
+            // is to exclude symbols unless a child is explicitly
+            // whitelisted
+            if(symbolFilter_.last_explicit &&
+                symbolFilter_.last_explicit->Excluded)
+                return false;
+
+            if(const auto* DC = dyn_cast<DeclContext>(ND);
+                ! DC || ! DC->isInlineNamespace())
+            {
+                // if this namespace does not match a child
+                // of the current filter node, set the detached flag
+                // so we don't update the namespace filter state
+                // while traversing the children of this namespace
+                symbolFilter_.detached = true;
+            }
+        }
+        return true;
+    }
+
     // This also sets IsFileInRootDir
     bool
     shouldExtract(
         const Decl* D)
     {
         namespace path = llvm::sys::path;
+
+        if(const auto* ND = dyn_cast<NamedDecl>(D))
+        {
+            // out-of-line declarations require us to rebuild
+            // the symbol filtering state
+            if(ND->isOutOfLine())
+            {
+                symbolFilter_.setCurrent(
+                    &symbolFilter_.root, false);
+
+                // collect all parent classes/enums/namespaces
+                llvm::SmallVector<const NamedDecl*, 8> parents;
+                const DeclContext* parent = ND->getDeclContext();
+                do
+                {
+                    switch(parent->getDeclKind())
+                    {
+                    case Decl::Namespace:
+                    case Decl::Enum:
+                    case Decl::CXXRecord:
+                    case Decl::ClassTemplateSpecialization:
+                    case Decl::ClassTemplatePartialSpecialization:
+                        parents.push_back(cast<NamedDecl>(parent));
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                while((parent = parent->getParent()));
+
+                // check whether each parent passes the symbol filters
+                // as-if the declaration was inline
+                for(const auto* PND : std::views::reverse(parents))
+                {
+                    if(! checkSymbolFilter(PND))
+                        return false;
+                }
+            }
+
+            if(! checkSymbolFilter(ND))
+                return false;
+        }
 
         // skip system header
         if(! forceExtract_ && source_.isInSystemHeader(D->getLocation()))
@@ -2497,6 +2639,8 @@ traverseDecl(
     MRDOX_ASSERT(D);
     if(D->isInvalidDecl() || D->isImplicit())
         return true;
+
+    SymbolFilter::FilterScope scope(symbolFilter_);
 
     AccessSpecifier access =
         D->getAccessUnsafe();

@@ -41,6 +41,29 @@ struct llvm::yaml::MappingTraits<
 
 template<>
 struct llvm::yaml::MappingTraits<
+    clang::mrdox::ConfigImpl::SettingsImpl::FilterConfig::FilterList>
+{
+    static void mapping(IO &io,
+        clang::mrdox::ConfigImpl::SettingsImpl::FilterConfig::FilterList& f)
+    {
+        io.mapOptional("symbols", f.symbols);
+    }
+};
+
+template<>
+struct llvm::yaml::MappingTraits<
+    clang::mrdox::ConfigImpl::SettingsImpl::FilterConfig>
+{
+    static void mapping(IO &io,
+        clang::mrdox::ConfigImpl::SettingsImpl::FilterConfig& f)
+    {
+        io.mapOptional("include", f.include);
+        io.mapOptional("exclude", f.exclude);
+    }
+};
+
+template<>
+struct llvm::yaml::MappingTraits<
     clang::mrdox::ConfigImpl::SettingsImpl>
 {
     static void mapping(IO& io,
@@ -54,6 +77,8 @@ struct llvm::yaml::MappingTraits<
         io.mapOptional("source-root",       cfg.sourceRoot);
 
         io.mapOptional("input",             cfg.input);
+
+        io.mapOptional("filters",           cfg.filters);
     }
 };
 
@@ -61,6 +86,34 @@ struct llvm::yaml::MappingTraits<
 
 namespace clang {
 namespace mrdox {
+
+namespace {
+
+void
+parseSymbolFilter(
+    FilterNode& root,
+    std::string_view str,
+    bool excluded)
+{
+    // FIXME: this does not handle invalid qualified-ids
+    std::vector<FilterPattern> parts;
+    if(str.starts_with("::"))
+        str.remove_prefix(2);
+    do
+    {
+        std::size_t idx = str.find("::");
+        parts.emplace_back(str.substr(0, idx));
+        if(idx == std::string_view::npos)
+            break;
+        str.remove_prefix(idx + 2);
+    }
+    while(! str.empty());
+    // merge the parsed patterns into the filter tree
+    // mergeFilter(root, parts);
+    root.mergePattern(parts, excluded);
+}
+
+} // (anon)
 
 ConfigImpl::
 ConfigImpl(
@@ -117,6 +170,13 @@ ConfigImpl(
     for(auto& name : inputFileIncludes_)
         name = files::makePosixStyle(
             files::makeAbsolute(name, settings_.workingDir));
+
+    // Parse the symbol filters
+    for(std::string_view pattern : settings_.filters.exclude.symbols)
+        parseSymbolFilter(settings_.symbolFilter, pattern, true);
+    for(std::string_view pattern : settings_.filters.include.symbols)
+        parseSymbolFilter(settings_.symbolFilter, pattern, false);
+    settings_.symbolFilter.finalize(false, false, false);
 }
 
 //------------------------------------------------

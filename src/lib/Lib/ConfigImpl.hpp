@@ -12,6 +12,7 @@
 #ifndef MRDOX_LIB_CONFIGIMPL_HPP
 #define MRDOX_LIB_CONFIGIMPL_HPP
 
+#include "lib/Lib/Filters.hpp"
 #include "lib/Support/YamlFwd.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Support/Error.hpp>
@@ -33,6 +34,17 @@ public:
         struct FileFilter
         {
             std::vector<std::string> include;
+        };
+
+        struct FilterConfig
+        {
+            struct FilterList
+            {
+                std::vector<std::string> symbols;
+            };
+
+            FilterList include;
+            FilterList exclude;
         };
 
         /** Additional defines passed to the compiler.
@@ -59,6 +71,16 @@ public:
         std::string sourceRoot;
 
         FileFilter input;
+
+        FilterConfig filters;
+
+        /** Symbol filter root node.
+
+            Root node of a preparsed tree of FilterNodes
+            used during AST traversal to determine whether
+            a symbol should be extracted.
+        */
+        FilterNode symbolFilter;
     };
 
     Settings const&

@@ -1,0 +1,14 @@
+filters:
+  exclude:
+    symbols:
+      - 'N0::N1_BL'
+      - 'N0::S0_BL'
+      - 'N2_BL'
+      - 'N2_BL::N3_BL'
+      - 'N2_BL::f0_BL'
+      - 'N3::f*'
+      - 'N4::N*::f0_BL'
+      - 'N7::N*::f*'
+      - 'N7::N8::g*'
+  include:
+    symbols:
