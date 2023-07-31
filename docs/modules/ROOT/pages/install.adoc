@@ -6,41 +6,39 @@ Binary packages are available from our https://github.com/cppalliance/mrdox/rele
 
 == Source
 
-For consistency, these instructions assume you are using the `SRC_DIR` variable to refer to the directory where you are going to clone MrDox and any other requirements.
-Please create an environment variable with that directory and adjust it accordingly.
-For instance:
+=== Cloning MrDox
 
-Windows (Command Prompt):
-
-[source,commandline]
-----
-set SRC_DIR=C:\Users\%USERNAME%\src
-echo %SRC_DIR%
-----
-
-Windows (PowerShell):
+Clone the MrDox repository with:
 
 [source,bash]
 ----
-$env:SRC_DIR = "C:\Users\$env:USERNAME\src"
-echo $env:SRC_DIR
-----
-
-Unix-variants (Linux, macOS, etc.):
-
-[source,bash]
-----
-export SRC_DIR="$HOME/src"
-echo $SRC_DIR
+git clone https://github.com/cppalliance/mrdox
 ----
 
 === Requirements
 
-==== LLVM
+Create and go to the `third-party` directory, where we are going to download and install our custom dependencies:
 
-MrDox depends on a recent version of LLVM.
+[source,bash]
+----
+mkdir third-party
+cd third-party
+----
 
-Here are the instructions to clone LLVM version required by this project.
+[NOTE]
+====
+These instructions assume all dependencies are installed in the `third-party` directory for simplicity.
+Fell free to install them anywhere you want and adjust the main MrDox configuration command later.
+====
+
+=== LLVM
+
+MrDox depends on a specific recent version of LLVM: https://github.com/llvm/llvm-project/tree/731264b0c2af7aa46bd39625202a99e06cfccff9[731264b0]
+
+Because building LLVM may take many hours to complete, we provide pre-built binaries for Windows and Linux: https://mrdox.com/llvm+clang/[LLVM Releases].
+You can download the binaries and uncompress them in the `./third-party/llvm+clang` directory.
+
+Alternatively, if building LLVM from source, you can clone the project from the official repository:
 
 [source,bash]
 ----
@@ -49,106 +47,160 @@ cd llvm-project
 git checkout 731264b0c2af7aa46bd39625202a99e06cfccff9
 ----
 
-Here are the instructions to build and install LLVM with the settings required by this project.
+Configure LLVM with the settings required by MrDox:
 
-Windows:
+Windows (from administrator `cmd.exe`, after running `vcvars64.bat`):
 
 [source,commandline]
 ----
-# From Administrator CMD.EXE, after running vcvars64.bat
-cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_CONFIGURATION_TYPES="Debug;RelWithDebInfo" -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=%SRC_DIR%/llvm+clang -D LLVM_ENABLE_IDE=OFF -D LLVM_ENABLE_DIA_SDK=OFF
-cd build
-cmake --build . --config RelWithDebInfo -j %NUMBER_OF_PROCESSORS%
-cmake --build . --config Debug -j %NUMBER_OF_PROCESSORS%
-cmake --install . --prefix "%SRC_DIR%/llvm+clang/Debug" --config Debug
-cmake --install . --prefix "%SRC_DIR%/llvm+clang/RelWithDebInfo" --config RelWithDebInfo
+cmake -S llvm -B build -G "Visual Studio 17 2022" -A x64 -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_CONFIGURATION_TYPES="RelWithDebInfo" -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=../llvm+clang/RelWithDebInfo -D LLVM_ENABLE_IDE=OFF -D LLVM_ENABLE_DIA_SDK=OFF
 ----
 
 Unix variants:
 
 [source,bash]
 ----
-cmake -S llvm -B build -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_BUILD_TYPE=RelWithDebInfo -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=$SRC_DIR/llvm+clang/RelWithDebInfo
+cmake -S llvm -B build -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_BUILD_TYPE=RelWithDebInfo -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=../llvm+clang/RelWithDebInfo
+----
+
+As you can see from the step above, we configure a `RelWithDebInfo` version of LLVM for MrDox by default.
+This is a release build with debug information.
+Other possible CMake configurations supported by LLVM are `Debug` (including debug information and no optimizations), `Release` (including optimizations and no debug information), and `MinSizeRel` (which optimizes for size).
+
+[NOTE]
+====
+Developers might also want to build a custom `Debug` LLVM configuration including optimizations, which allows for faster execution of tests.
+To create such an installation, set `CMAKE_CONFIGURATION_TYPES` or `CMAKE_BUILD_TYPE` to `Debug` and manually include the optimization flags to `-D CMAKE_CXX_FLAGS="/O2 /Zi"` (MSVC) or `-D CMAKE_CXX_FLAGS="-Og -g"`.
+
+This should give you an optimized build with all debug features and flags, such as an appropriate https://learn.microsoft.com/en-us/cpp/standard-library/iterator-debug-level[`_ITERATOR_DEBUG_LEVEL`] and the `/MDd` flag in MSVC.
+In other platforms, this should give you a release somewhat equivalent to `RelWithDebInfo` optimized for debugging experience. `-Og` offers a reasonable level of optimization while maintaining fast compilation and a good debugging experience.
+
+This custom configuration can be installed in an alternative directory, such as `../llvm+clang/DebWithOpt`, to be used by the MrDox `Debug` builds by developers.
+====
+
+Then build and install it:
+
+[source,bash]
+----
 cd build
-cmake --build . -j "$(nproc)"
-cmake --install .
+cmake --build . --config RelWithDebInfo
+cmake --install . --prefix ../../llvm+clang/RelWithDebInfo" --config RelWithDebInfo
+----
+
+Return from `./third-party/llvm-project/build` to the parent `third-party` directory to install other dependencies:
+
+[source,bash]
+----
+cd ../..
 ----
 
 ==== Duktape
 
 Duktape is a JavaScript engine that is used by MrDox to parse and evaluate JavaScript code.
-It provides no CMake integration scripts.
-The MrDox configuration script needs direct access to the installed source files for Duktape.
 
 The release files can be obtained from the Duktape repository:
+
+[source,bash]
+----
+curl -L -o "duktape-2.7.0.tar.xz" "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz"
+tar -xvf "duktape-2.7.0.tar.xz"
+----
+
+Duktape provides no CMake integration scripts.
+The MrDox configuration script needs direct access to the installed source files for Duktape so that's all you need to do.
+
+==== VcPkg dependencies
+
+These other dependencies provide CMake integration scripts and can be obtained from https://www.vcpkg.io/[vcpkg] or installed manually.
+These instructions assume you are using VcPkg.
+
+* `fmt` >= 10
+* `zlib`
+
+For development builds, which include tests, you will also need:
+
+* `libxml2[tools]`
+
+To install these dependencies with VcPkg, first clone the repository:
+
+[source,bash]
+----
+git clone https://github.com/microsoft/vcpkg.git -b master
+cd vcpkg
+----
+
+Then bootstrap it and install the required dependencies:
+
+Windows:
+
+[source,bash]
+----
+bootstrap-vcpkg.bat
+vcpkg.exe fmt zlib libxml2[tools] --triplet x64-windows
+----
+
+Unix variants:
+
+[source,bash]
+----
+./bootstrap-vcpkg.sh
+./vcpkg fmt zlib libxml2[tools]
+----
+
+Return from `./third-party/vcpkg` to the parent directory of `third-party` (the one containing the `mrdox` directory) to build and install MrDox:
+
+[source,bash]
+----
+cd ../..
+----
+
+=== MrDox
+
+Once the dependencies are available in `third-party`, you can configure MrDox with:
 
 Windows:
 
 [source,commandline]
 ----
-curl -L -o "duktape-2.7.0.tar.xz" "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz"
-duktape_dir="%SRC_DIR%\duktape"
-mkdir "%duktape_dir%"
-tar -xvf "duktape-2.7.0.tar.xz" -C "%duktape_dir%"
+cmake -S mrdox -B build -G "Visual Studio 17 2022" -A x64 -D CMAKE_CONFIGURATION_TYPES="RelWithDebInfo" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D LLVM_ROOT="%cd%/third-party/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="%cd%/third-party/duktape-2.7.0" -D CMAKE_TOOLCHAIN_FILE="%cd%/third-party/vcpkg/scripts/buildsystems/vcpkg.cmake"
 ----
 
 Unix variants:
 
 [source,bash]
 ----
-curl -L -o "duktape-2.7.0.tar.xz" "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz"
-duktape_dir="$SRC_DIR/duktape"
-mkdir -p "$duktape_dir"
-tar -xvf "duktape-2.7.0.tar.xz" -C "$duktape_dir"
+cmake -S mrdox -B build -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D LLVM_ROOT="$(pwd)/third-party/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="$(pwd)/third-party/duktape-2.7.0" -D CMAKE_TOOLCHAIN_FILE="$(pwd)/third-party/vcpkg/scripts/buildsystems/vcpkg.cmake"
 ----
 
-==== Other dependencies
+[TIP]
+====
+The MrDox repository also includes a `CMakePresets.json` file that contains the parameters to configure MrDox with CMake.
 
-These other dependencies provide CMake integration scripts.
-They can be obtained from https://www.vcpkg.io/[vcpkg] or installed manually.
+To specify the installation directories, you can use the `LLVM_ROOT`, `DUKTAPE_SOURCE_ROOT`, `CMAKE_TOOLCHAIN_FILE` environment variables.
+To specify a generator (`-G`) and platform name (`-A`), you can use the `CMAKE_GENERATOR` and `CMAKE_GENERATOR_PLATFORM` environment variables.
 
-* fmt >= 10
-* zlib
-* libtinfo
-
-=== MrDox
-
-Once the dependencies are available in `SRC_DIR`, you can download MrDox:
-
-[source,bash]
-----
-git clone https://github.com/cppalliance/mrdox
-cd mrdox
-----
-
-Configure it with:
-
-Windows:
-
-[source,bash]
-----
-git clone https://github.com/cppalliance/mrdox
-cd mrdox
-cmake -G "Visual Studio 17 2022" -A x64 -B bin64 -D CMAKE_PREFIX_PATH="%SRC_DIR%/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="%SRC_DIR%\duktape\duktape-2.7.0"
-----
-
-Unix variants:
-
-[source,bash]
-----
-git clone https://github.com/cppalliance/mrdox
-cd mrdox
-cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LLVM_ROOT=/path/to/llvm+clang/RelWithDebInfo -D Clang_ROOT=/path/to/llvm+clang/RelWithDebInfo -D DUKTAPE_SOURCE_ROOT="$SRC_DIR/duktape/duktape-2.7.0"
-----
+Alternatively, you can create a `CMakeUserPresets.json` file in the `mrdox` directory with the specific values you want to override in each configuration.
+This is typically more convenient than using environment variables when working on an IDE.
+The repository includes a `CMakeUserPresets.json.example` file that can be used as a template.
+====
 
 Then build and install it with:
 
 [source,bash]
 ----
 cd build
-cmake --build . -j <threads>
+cmake --build .
 cmake --install .
 ----
+
+To customize the installation directory, use the `CMAKE_INSTALL_PREFIX` option or use the `--prefix` option for the `cmake --install .` command.
+To customize the C and C++ compilers, use the `CMAKE_C_COMPILER` and `CMAKE_CXX_COMPILER` options.
+
+[NOTE]
+====
+Developers should also enable `-D BUILD_TESTING=ON`.
+If any custom build of LLVM is being used (such as `DebWithOpt`), the `LLVM_ROOT` variable should be set to the installation directory of that build.
+====
 
 == Package layout
 

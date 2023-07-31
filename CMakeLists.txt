@@ -65,7 +65,31 @@ endif()
 
 set(CMAKE_FOLDER Dependencies)
 
-# LLVM
+# LLVM + Clang
+if (LLVM_ROOT)
+    # LLVM_ROOT is absolute
+    get_filename_component(LLVM_ROOT "${LLVM_ROOT}" ABSOLUTE)
+    set(LLVM_ROOT "${LLVM_ROOT}" CACHE PATH "Root of LLVM install." FORCE)
+    if (NOT EXISTS "${LLVM_ROOT}")
+        message(FATAL_ERROR
+               "LLVM_ROOT (${LLVM_ROOT}) provided does not exist.\n"
+                "Please set LLVM_ROOT to the root of LLVM install.\n")
+    endif()
+    if (NOT EXISTS "${LLVM_ROOT}/lib/cmake/llvm")
+        message(FATAL_ERROR
+                "LLVM_ROOT (${LLVM_ROOT}) provided is invalid.\n"
+                "No <LLVM_ROOT>/lib/cmake/llvm found.\n"
+                "Please set LLVM_ROOT to the root of LLVM install.\n")
+    endif()
+endif()
+if (Clang_ROOT)
+    # Clang_ROOT is absolute
+    get_filename_component(Clang_ROOT "${Clang_ROOT}" ABSOLUTE)
+    set(LLVM_ROOT "${LLVM_ROOT}" CACHE PATH "Root of Clang install." FORCE)
+elseif (LLVM_ROOT)
+    # Clang_ROOT matches LLVM_ROOT by default
+    set(Clang_ROOT "${LLVM_ROOT}" CACHE PATH "Root of Clang install." FORCE)
+endif()
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
@@ -83,6 +107,17 @@ if (NOT DUKTAPE_SOURCE_ROOT)
             "Please set DUKTAPE_SOURCE_ROOT to the root of the Duktape source tree.\n"
             "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz\n")
 endif()
+if (NOT EXISTS "${DUKTAPE_SOURCE_ROOT}")
+    message(FATAL_ERROR
+            "DUKTAPE_SOURCE_ROOT (${DUKTAPE_SOURCE_ROOT}) does not exist.\n")
+endif()
+if (NOT EXISTS "${DUKTAPE_SOURCE_ROOT}/src/duktape.c")
+    message(FATAL_ERROR
+            "DUKTAPE_SOURCE_ROOT (${DUKTAPE_SOURCE_ROOT}) is invalid.\n"
+            "No /src/duktape.c found.\n"
+            "Please set DUKTAPE_SOURCE_ROOT to the root of the Duktape source tree.\n")
+endif()
+get_filename_component(DUKTAPE_SOURCE_ROOT "${DUKTAPE_SOURCE_ROOT}" ABSOLUTE)
 add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
 target_include_directories(
     duktape PUBLIC
@@ -159,12 +194,13 @@ if (WIN32)
         -D_SILENCE_CXX20_CISO646_REMOVED_WARNING
         -DFMT_HEADER_ONLY # because of _ITERATOR_DEBUG_LEVEL
     )
-    get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
-    if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
-        target_compile_definitions(mrdox-core PUBLIC -D_ITERATOR_DEBUG_LEVEL=0)
-        target_compile_options(mrdox-core PUBLIC /MD)
-    endif()
     if(MSVC)
+        get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
+        if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
+            # Handle Debug/RelWithDebInfo mismatch between mrdox and LLVM
+            target_compile_definitions(mrdox-core PUBLIC $<$<CONFIG:Debug>:-D_ITERATOR_DEBUG_LEVEL=0>)
+            target_compile_options(mrdox-core PUBLIC $<$<CONFIG:Debug>:/MD>)
+        endif()
         if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win64") # 64-bit
             target_compile_options(mrdox-core PUBLIC /arch:AMD64)
         endif()
@@ -343,8 +379,12 @@ if (MRDOX_BUILD_DOCS)
         if (MRDOX_GENERATE_REFERENCE AND MRDOX_GENERATE_ANTORA_REFERENCE)
             add_dependencies(generate_docs generate_antora_reference)
         endif()
+    elseif (NOT NPM_EXECUTABLE AND NPX_EXECUTABLE)
+        message(WARNING "NPM not found. Unable to generate documentation.")
+    elseif (NPM_EXECUTABLE AND NOT NPX_EXECUTABLE)
+        message(WARNING "NPX not found. Unable to generate documentation.")
     else()
-        message(WARNING "NPM or NPX not found. Unable to generate documentation.")
+        message(WARNING "NPM and NPX not found. Unable to generate documentation.")
     endif()
 endif ()
 
