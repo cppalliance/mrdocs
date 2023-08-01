@@ -219,39 +219,60 @@ format_to(
 
 constexpr
 std::string_view
-trim_spaces(std::string_view expression)
+trim_delimiters(std::string_view expression, std::string_view delimiters)
 {
-    auto pos = expression.find_first_not_of(" \t\r\n");
+    auto pos = expression.find_first_not_of(delimiters);
     if (pos == std::string_view::npos)
         return "";
     expression.remove_prefix(pos);
-    pos = expression.find_last_not_of(" \t\r\n");
+    pos = expression.find_last_not_of(delimiters);
     if (pos == std::string_view::npos)
         return "";
     expression.remove_suffix(expression.size() - pos - 1);
     return expression;
+}
+
+constexpr
+std::string_view
+trim_ldelimiters(std::string_view expression, std::string_view delimiters)
+{
+    auto pos = expression.find_first_not_of(delimiters);
+    if (pos == std::string_view::npos)
+        return "";
+    expression.remove_prefix(pos);
+    return expression;
+}
+
+constexpr
+std::string_view
+trim_rdelimiters(std::string_view expression, std::string_view delimiters)
+{
+    auto pos = expression.find_last_not_of(delimiters);
+    if (pos == std::string_view::npos)
+        return "";
+    expression.remove_suffix(expression.size() - pos - 1);
+    return expression;
+}
+
+constexpr
+std::string_view
+trim_spaces(std::string_view expression)
+{
+    return trim_delimiters(expression, " \t\r\n");
 }
 
 constexpr
 std::string_view
 trim_lspaces(std::string_view expression)
 {
-    auto pos = expression.find_first_not_of(" \t\r\n");
-    if (pos == std::string_view::npos)
-        return "";
-    expression.remove_prefix(pos);
-    return expression;
+    return trim_ldelimiters(expression, " \t\r\n");
 }
 
 constexpr
 std::string_view
 trim_rspaces(std::string_view expression)
 {
-    auto pos = expression.find_last_not_of(" \t\r\n");
-    if (pos == std::string_view::npos)
-        return "";
-    expression.remove_suffix(expression.size() - pos - 1);
-    return expression;
+    return trim_rdelimiters(expression, " \t\r\n");
 }
 
 // ==============================================================
@@ -658,7 +679,7 @@ Handlebars::
 render(
     std::string_view templateText,
     dom::Value const & context,
-    HandlebarsOptions options) const
+    HandlebarsOptions const& options) const
 {
     std::string out;
     OutputRef os(out);
@@ -889,6 +910,18 @@ parseTag(std::string_view tagStr)
         tagStr = trim_spaces(tagStr);
     }
 
+    // Force no HTML escape after whitespace removal
+    if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
+    {
+        t.forceNoHTMLEscape = true;
+        tagStr = tagStr.substr(1, tagStr.size() - 2);
+        if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
+        {
+            t.rawBlock = true;
+            tagStr = tagStr.substr(1, tagStr.size() - 2);
+        }
+    }
+
     // Empty tag
     if (tagStr.empty())
     {
@@ -980,14 +1013,21 @@ Handlebars::
 render_to(
     OutputRef& out,
     std::string_view templateText,
-    dom::Value const & context,
-    HandlebarsOptions options) const
+    dom::Value const& context,
+    HandlebarsOptions const& options) const
 {
     detail::RenderState state;
     state.templateText0 = templateText;
     state.templateText = templateText;
-    state.data.set("root", context);
-    state.data.set("level", "warn");
+    if (options.data.isNull())
+    {
+        state.data.set("root", context);
+        state.data.set("level", "warn");
+    }
+    else if (options.data.isObject())
+    {
+        state.data = options.data.getObject();
+    }
     render_to(out, context, options, state);
 }
 
@@ -996,7 +1036,7 @@ Handlebars::
 render_to(
     OutputRef& out,
     dom::Value const& context,
-    HandlebarsOptions opt,
+    HandlebarsOptions const& opt,
     detail::RenderState& state) const
 {
     while (!state.templateText.empty()) {
@@ -1485,9 +1525,9 @@ renderTag(
     Tag const& tag,
     OutputRef& out,
     dom::Value const& context,
-    HandlebarsOptions opt,
+    HandlebarsOptions const& opt,
     detail::RenderState& state) const {
-    if (tag.type == '#')
+    if (tag.type == '#' || tag.type == '^')
     {
         renderBlock(tag.helper, tag, out, context, opt, state);
     }
@@ -1588,7 +1628,7 @@ setupArgs(
     dom::Value const& context,
     detail::RenderState & state,
     dom::Array &args,
-    HandlebarsCallback &cb) const
+    HandlebarsCallback& cb) const
 {
     std::string_view expr;
     while (findExpr(expr, expression))
@@ -1652,7 +1692,7 @@ renderPartial(
     Handlebars::Tag const &tag,
     OutputRef &out,
     dom::Value const &context,
-    HandlebarsOptions &opt,
+    HandlebarsOptions const& opt,
     detail::RenderState& state) const {
     // Evaluate dynamic partial
     std::string helper(tag.helper);
@@ -1689,8 +1729,7 @@ renderPartial(
             if (tag.type2 == '#') {
                 partial_content = fnBlock;
             } else {
-                out << "[undefined partial in \"" << tag.buffer << "\"]";
-                return;
+                throw HandlebarsError(fmt::format("The partial {} could not be found", helper));
             }
         } else {
             partial_content = it->second;
@@ -1754,6 +1793,23 @@ renderPartial(
 
     if (tag.removeRWhitespace) {
         state.templateText = trim_lspaces(state.templateText);
+    }
+    else if (!opt.ignoreStandalone)
+    {
+        auto beforePartial = state.templateText0.substr(
+            0, tag.buffer.data() - state.templateText0.data());
+        std::string_view lastLine = beforePartial;
+        auto pos = beforePartial.find_last_of("\r\n");
+        if (pos != std::string_view::npos)
+        {
+            lastLine = beforePartial.substr(pos + 1);
+        }
+        bool const isStandalone = std::ranges::all_of(
+            lastLine, [](char c) { return c == ' '; });
+        if (isStandalone)
+        {
+            state.templateText = trim_ldelimiters(state.templateText, " ");
+        }
     }
 }
 
@@ -2120,6 +2176,8 @@ isLt(dom::Value const& a, dom::Value const& b) {
             return isLt(a.getArray(), b.getArray());
         case dom::Kind::Object:
             return isLt(a.getObject(), b.getObject());
+        case dom::Kind::Function:
+            return true;
     }
     return false;
 }
