@@ -29,7 +29,6 @@ struct from_chars
 };
 ----
 
-
 // #with to change context
 Person: John Doe in page about `from_chars`
 
@@ -327,7 +326,6 @@ Missing: true()
 {{BAR}}
 
 
-
 == Partials
 
 // Basic partials
@@ -337,7 +335,6 @@ struct from_chars
 {
 };
 ----
-
 [,cpp]
 ----
 struct from_chars
@@ -345,17 +342,12 @@ struct from_chars
 };
 ----
 
-
 // Dynamic partials
-Dynamo!
-Found!
-
+Dynamo!Found!
 // Partial context switch
 Interesting!
-
 // Partial parameters
 The result is 123
-
   Hello, Alice Doe.
   Hello, Bob Doe.
   Hello, Carol Smith.
@@ -364,25 +356,17 @@ The result is 123
 // Partial blocks
   Failover content
 
-
 // Pass templates to partials
 Site Content My Content
 
-
 // Inline partials
-    My Content
-    My Content
-    My Content
-
+    My Content    My Content    My Content
 
 // Block inline partials
 <div class="nav">
-      My Nav
-</div>
+      My Nav</div>
 <div class="content">
-      My Content
-</div>
-
+      My Content</div>
 == Blocks
 
 // Block noop
@@ -1438,6 +1422,5 @@ c
 
 // Inverse block with no helper expands expressions
     
-    struct T
-
+        struct T
 

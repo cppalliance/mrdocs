@@ -1,0 +1,24 @@
+= GDB pretty printers
+
+Create or modify your `.gdbinit` file to contain the following:
+
+[source,python]
+----
+python
+import sys
+sys.path.insert(0, '/path/share/gdb') <1>
+from mrdox_printers import register_mrdox_printers <2>
+register_mrdox_printers() <3>
+end
+----
+
+<1> Make GDB see the directory with the printers
+<2> Import the function that registers the printers with GDB
+<3> Effectively register the printers
+
+Note that this pattern does not register the printers unless the user explicitly asks for it by calling the `register_mrdox_printers` function.
+This helps the scripts separate these concerns.
+
+NOTE: The printers require Python 3
+
+

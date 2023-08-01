@@ -55,6 +55,20 @@ struct HandlebarsOptions
      */
     bool ignoreStandalone = false;
 
+    /** Disables implicit context for partials
+
+        When enabled, partials that are not passed a context value will
+        execute against an empty object.
+     */
+    bool explicitPartialContext = false;
+
+    /** Enable recursive field lookup
+
+        When enabled, fields will be looked up recursively in objects
+        and arrays.
+     */
+    bool compat = false;
+
     /** Custom private data object
 
         This variable can be used to pass in an object to define custom
@@ -106,6 +120,9 @@ namespace detail {
 
     using partials_map = std::unordered_map<
         std::string, std::string, string_hash, std::equal_to<>>;
+
+    using partials_view_map = std::unordered_map<
+        std::string, std::string_view, string_hash, std::equal_to<>>;
 }
 
 /** Reference to output stream used by handlebars
@@ -124,8 +141,8 @@ class MRDOX_DECL OutputRef
     using fptr = void (*)(void * out, std::string_view sv);
     void * out_;
     fptr fptr_;
+    std::size_t indent_ = 0;
 
-private:
     template<class St>
     static
     void
@@ -163,6 +180,9 @@ private:
         : out_( nullptr )
         , fptr_( &noop_output )
     {}
+
+    OutputRef&
+    write_impl( std::string_view sv );
 
 public:
     /** Constructor for std::string output
@@ -209,8 +229,7 @@ public:
     OutputRef&
     operator<<( std::string_view sv )
     {
-        fptr_( out_, sv );
-        return *this;
+        return write_impl( sv );
     }
 
     /** Write to output
@@ -221,8 +240,7 @@ public:
     OutputRef&
     operator<<( char c )
     {
-        fptr_( out_, std::string_view( &c, 1 ) );
-        return *this;
+        return write_impl( std::string_view( &c, 1 ) );
     }
 
     /** Write to output
@@ -233,8 +251,7 @@ public:
     OutputRef&
     operator<<( char const * c )
     {
-        fptr_( out_, std::string_view( c ) );
-        return *this;
+        return write_impl( std::string_view( c ) );
     }
 
     /** Write to output
@@ -248,8 +265,19 @@ public:
     operator<<( T v )
     {
         std::string s = fmt::format( "{}", v );
-        fptr_( out_, s );
-        return *this;
+        return write_impl( s );
+    }
+
+    void
+    setIndent(std::size_t indent)
+    {
+        indent_ = indent;
+    }
+
+    std::size_t
+    getIndent() noexcept
+    {
+        return indent_;
     }
 };
 
@@ -842,8 +870,15 @@ public:
     std::string
     render(
         std::string_view templateText,
-        dom::Value const& context = {},
+        dom::Value const& context,
         HandlebarsOptions const& options = {}) const;
+
+    std::string
+    render(std::string_view templateText) const
+    {
+        dom::Object const& context = {};
+        return render(templateText, context);
+    }
 
     /** Render a handlebars template
 
@@ -1136,6 +1171,7 @@ private:
         Handlebars::Tag const& tag,
         OutputRef &out,
         dom::Value const& context,
+        HandlebarsOptions const& opt,
         detail::RenderState& state) const;
 
     void
@@ -1152,17 +1188,24 @@ private:
         dom::Value const& context,
         detail::RenderState& state,
         dom::Array &args,
-        HandlebarsCallback& opt) const;
+        HandlebarsCallback& cb,
+        HandlebarsOptions const& opt) const;
 
     std::pair<dom::Value, bool>
     evalExpr(
         dom::Value const &context,
         std::string_view expression,
         detail::RenderState &state,
+        HandlebarsOptions const& opt,
         bool evalLiterals) const;
 
     std::pair<helper_type const&, bool>
     getHelper(std::string_view name, bool isBlock) const;
+
+    std::pair<std::string_view, bool>
+    getPartial(
+        std::string_view name,
+        detail::RenderState const& state) const;
 };
 
 /** Determine if a value is truthy

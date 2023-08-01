@@ -1280,12 +1280,618 @@ whitespace_control()
 }
 
 void
+partials()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/partials.js
+
+    Handlebars hbs;
+    HandlebarsOptions emptyDataOptions;
+    emptyDataOptions.data = false;
+
+    dom::Object hash;
+    dom::Array dudes;
+    dom::Object dude1;
+    dude1.set("name", "Yehuda");
+    dude1.set("url", "http://yehuda");
+    dudes.emplace_back(dude1);
+    dom::Object dude2;
+    dude2.set("name", "Alan");
+    dude2.set("url", "http://alan");
+    dudes.emplace_back(dude2);
+    hash.set("dudes", dudes);
+
+    // basic partials
+    {
+        std::string str = "Dudes: {{#dudes}}{{> dude}}{{/dudes}}";
+        std::string partial = "{{name}} ({{url}}) ";
+
+        hbs.registerPartial("dude", partial);
+        BOOST_TEST(hbs.render(str, hash) == "Dudes: Yehuda (http://yehuda) Alan (http://alan) ");
+        BOOST_TEST(hbs.render(str, hash, emptyDataOptions) == "Dudes: Yehuda (http://yehuda) Alan (http://alan) ");
+    }
+
+    // dynamic partials
+    {
+        std::string str = "Dudes: {{#dudes}}{{> (partial)}}{{/dudes}}";
+        std::string partial = "{{name}} ({{url}}) ";
+        hbs.registerHelper("partial", []() {
+            return "dude";
+        });
+        hbs.registerPartial("dude", partial);
+        BOOST_TEST(hbs.render(str, hash) == "Dudes: Yehuda (http://yehuda) Alan (http://alan) ");
+        BOOST_TEST(hbs.render(str, hash, emptyDataOptions) == "Dudes: Yehuda (http://yehuda) Alan (http://alan) ");
+        hbs.unregisterPartial("dude");
+    }
+
+    // failing dynamic partials
+    {
+        std::string str = "Dudes: {{#dudes}}{{> (partial)}}{{/dudes}}";
+        std::string partial = "{{name}} ({{url}}) ";
+        hbs.registerHelper("partial", []() {
+            return "missing";
+        });
+        hbs.registerPartial("dude", partial);
+        BOOST_TEST_THROW_WITH(
+            hbs.render(str, hash),
+            HandlebarsError, "The partial missing could not be found");
+    }
+
+    // partials with context
+    {
+        // Partials can be passed a context
+        std::string str = "Dudes: {{>dude dudes}}";
+        hbs.registerPartial("dude", "{{#this}}{{name}} ({{url}}) {{/this}}");
+        BOOST_TEST(hbs.render(str, hash) == "Dudes: Yehuda (http://yehuda) Alan (http://alan) ");
+    }
+
+    // partials with no context
+    {
+        hbs.registerPartial("dude", "{{name}} ({{url}}) ");
+        HandlebarsOptions opt2;
+        opt2.explicitPartialContext = true;
+        BOOST_TEST(hbs.render("Dudes: {{#dudes}}{{>dude}}{{/dudes}}", hash, opt2) == "Dudes:  ()  () ");
+        BOOST_TEST(hbs.render("Dudes: {{#dudes}}{{>dude name=\"foo\"}}{{/dudes}}", hash, opt2) == "Dudes: foo () foo () ");
+    }
+
+    // partials with string context
+    {
+        hbs.registerPartial("dude", "{{.}}");
+        BOOST_TEST(hbs.render("Dudes: {{>dude \"dudes\"}}") == "Dudes: dudes");
+    }
+
+    // partials with undefined context
+    {
+        hbs.registerPartial("dude", "{{foo}} Empty");
+        BOOST_TEST(hbs.render("Dudes: {{>dude dudes}}") == "Dudes:  Empty");
+    }
+
+    // partials with duplicate parameters
+    {
+        BOOST_TEST_THROW_WITH(
+            hbs.render("Dudes: {{>dude dudes foo bar=baz}}"),
+            HandlebarsError,
+            "Unsupported number of partial arguments: 2 - 1:7");
+    }
+
+    // partials with parameters
+    {
+        // Basic partials output based on current context.
+        hash.set("foo", "bar");
+        hbs.registerPartial("dude", "{{others.foo}}{{name}} ({{url}}) ");
+        BOOST_TEST(
+            hbs.render("Dudes: {{#dudes}}{{> dude others=..}}{{/dudes}}", hash) ==
+            "Dudes: barYehuda (http://yehuda) barAlan (http://alan) ");
+    }
+
+    // partial in a partial
+    {
+        hbs.registerPartial("dude", "{{name}} {{> url}} ");
+        hbs.registerPartial("url", "<a href=\"{{url}}\">{{url}}</a>");
+        BOOST_TEST(
+            hbs.render("Dudes: {{#dudes}}{{>dude}}{{/dudes}}", hash) ==
+            "Dudes: Yehuda <a href=\"http://yehuda\">http://yehuda</a> Alan <a href=\"http://alan\">http://alan</a> ");
+    }
+
+    // rendering undefined partial throws an exception
+    {
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{> whatever}}"),
+            HandlebarsError, "The partial whatever could not be found");
+    }
+
+    // registering undefined partial throws an exception
+    {
+        // Nothing to test since this is a type error in C++.
+    }
+
+    // rendering function partial in vm mode
+    {
+        // Unsupported by this implementation.
+    }
+
+    // a partial preceding a selector
+    {
+        // Regular selectors can follow a partial
+        dom::Object ctx;
+        ctx.set("name", "Jeepers");
+        ctx.set("anotherDude", "Creepers");
+        hbs.registerPartial("dude", "{{name}}");
+        BOOST_TEST(
+            hbs.render("Dudes: {{>dude}} {{anotherDude}}", ctx) ==
+            "Dudes: Jeepers Creepers");
+    }
+
+    // Partials with slash paths
+    {
+        dom::Object ctx;
+        ctx.set("name", "Jeepers");
+        ctx.set("anotherDude", "Creepers");
+        hbs.registerPartial("shared/dude", "{{name}}");
+        BOOST_TEST(
+            hbs.render("Dudes: {{> shared/dude}}", ctx) ==
+            "Dudes: Jeepers");
+    }
+
+    // Partials with slash and point paths
+    {
+        dom::Object ctx;
+        ctx.set("name", "Jeepers");
+        ctx.set("anotherDude", "Creepers");
+        hbs.registerPartial("shared/dude.thing", "{{name}}");
+        BOOST_TEST(
+            hbs.render("Dudes: {{> shared/dude.thing}}", ctx) ==
+            "Dudes: Jeepers");
+    }
+
+    // Global Partials
+    {
+        // There's no global environment in this implementation
+        dom::Object ctx;
+        ctx.set("name", "Jeepers");
+        ctx.set("anotherDude", "Creepers");
+        hbs.registerPartial("shared/dude", "{{name}}");
+        hbs.registerPartial("globalTest", "{{anotherDude}}");
+        BOOST_TEST(
+            hbs.render("Dudes: {{> shared/dude}} {{> globalTest}}", ctx) ==
+            "Dudes: Jeepers Creepers");
+    }
+
+    // Multiple partial registration
+    {
+        // This feature is not supported by this implementation.
+    }
+
+    // Partials with integer path
+    {
+        dom::Object ctx;
+        ctx.set("name", "Jeepers");
+        ctx.set("anotherDude", "Creepers");
+        hbs.registerPartial("404", "{{name}}");
+        BOOST_TEST(
+            hbs.render("Dudes: {{> 404}}", ctx) ==
+            "Dudes: Jeepers");
+    }
+
+    // Partials with complex path
+    {
+        dom::Object ctx;
+        ctx.set("name", "Jeepers");
+        ctx.set("anotherDude", "Creepers");
+        hbs.registerPartial("404/asdf?.bar", "{{name}}");
+        BOOST_TEST(
+            hbs.render("Dudes: {{> 404/asdf?.bar}}", ctx) ==
+            "Dudes: Jeepers");
+    }
+
+    // Partials with string
+    {
+        dom::Object ctx;
+        ctx.set("name", "Jeepers");
+        ctx.set("anotherDude", "Creepers");
+        hbs.registerPartial("+404/asdf?.bar", "{{name}}");
+        BOOST_TEST(
+            hbs.render("Dudes: {{> '+404/asdf?.bar'}}", ctx) ==
+            "Dudes: Jeepers");
+    }
+
+    // should handle empty partial
+    {
+        hbs.registerPartial("dude", "");
+        BOOST_TEST(
+            hbs.render("Dudes: {{#dudes}}{{> dude}}{{/dudes}}", hash) ==
+            "Dudes: ");
+    }
+
+    // throw on missing partial
+    {
+        hbs.unregisterPartial("dude");
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{> dude}}", hash),
+            HandlebarsError, "The partial dude could not be found");
+    }
+}
+
+void
+partial_blocks()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/partials.js
+
+    Handlebars hbs;
+
+    // should render partial block as default
+    {
+        BOOST_TEST(hbs.render("{{#> dude}}success{{/dude}}") == "success");
+    }
+
+    // should execute default block with proper context
+    {
+        dom::Object context;
+        context.set("value", "success");
+        BOOST_TEST(hbs.render("{{#> dude context}}{{value}}{{/dude}}", context) == "success");
+    }
+
+    // should propagate block parameters to default block
+    {
+        dom::Object context;
+        dom::Object value;
+        value.set("value", "success");
+        context.set("context", value);
+        BOOST_TEST(hbs.render("{{#with context as |me|}}{{#> dude}}{{me.value}}{{/dude}}{{/with}}", context) == "success");
+    }
+
+    // should not use partial block if partial exists
+    {
+        hbs.registerPartial("dude", "success");
+        BOOST_TEST(hbs.render("{{#> dude}}fail{{/dude}}") == "success");
+    }
+
+    // should render block from partial
+    {
+        hbs.registerPartial("dude", "{{> @partial-block }}");
+        BOOST_TEST(hbs.render("{{#> dude}}success{{/dude}}") == "success");
+    }
+
+    // should be able to render the partial-block twice
+    {
+        hbs.registerPartial("dude", "{{> @partial-block }} {{> @partial-block }}");
+        BOOST_TEST(hbs.render("{{#> dude}}success{{/dude}}") == "success success");
+    }
+
+    // should render block from partial with context
+    {
+        dom::Object value;
+        value.set("value", "success");
+        dom::Object ctx;
+        ctx.set("context", value);
+        hbs.registerPartial("dude", "{{#with context}}{{> @partial-block }}{{/with}}");
+        BOOST_TEST(hbs.render("{{#> dude}}{{value}}{{/dude}}", ctx) == "success");
+    }
+
+    // should be able to access the @data frame from a partial-block
+    {
+        dom::Object ctx;
+        ctx.set("value", "success");
+        hbs.registerPartial("dude", "<code>before-block: {{@root/value}} {{>   @partial-block }}</code>");
+        BOOST_TEST(
+            hbs.render("{{#> dude}}in-block: {{@root/value}}{{/dude}}", ctx) ==
+            "<code>before-block: success in-block: success</code>");
+    }
+
+    // should allow the #each-helper to be used along with partial-blocks
+    {
+        dom::Object ctx;
+        dom::Array values;
+        values.emplace_back("a");
+        values.emplace_back("b");
+        values.emplace_back("c");
+        ctx.set("value", values);
+        hbs.registerPartial("list", "<list>{{#each .}}<item>{{> @partial-block}}</item>{{/each}}</list>");
+        BOOST_TEST(
+            hbs.render("<template>{{#> list value}}value = {{.}}{{/list}}</template>", ctx) ==
+            "<template><list><item>value = a</item><item>value = b</item><item>value = c</item></list></template>");
+    }
+
+    // should render block from partial with context (twice)
+    {
+        dom::Object value;
+        value.set("value", "success");
+        dom::Object ctx;
+        ctx.set("context", value);
+        hbs.registerPartial("dude", "{{#with context}}{{> @partial-block }} {{> @partial-block }}{{/with}}");
+        BOOST_TEST(hbs.render("{{#> dude}}{{value}}{{/dude}}", ctx) == "success success");
+    }
+
+    // should render block from partial with context
+    {
+        dom::Object value;
+        value.set("value", "success");
+        dom::Object ctx;
+        ctx.set("context", value);
+        hbs.registerPartial("dude", "{{#with context}}{{> @partial-block }}{{/with}}");
+        BOOST_TEST(hbs.render("{{#> dude}}{{../context/value}}{{/dude}}", ctx) == "success");
+    }
+
+    // should render block from partial with block params
+    {
+        dom::Object value;
+        value.set("value", "success");
+        dom::Object ctx;
+        ctx.set("context", value);
+        hbs.registerPartial("dude", "{{> @partial-block }}");
+        BOOST_TEST(hbs.render("{{#with context as |me|}}{{#> dude}}{{me.value}}{{/dude}}{{/with}}", ctx) == "success");
+    }
+
+    // should render nested partial blocks
+    {
+        dom::Object value;
+        value.set("value", "success");
+        hbs.registerPartial("outer", "<outer>{{#> nested}}<outer-block>{{> @partial-block}}</outer-block>{{/nested}}</outer>");
+        hbs.registerPartial("nested", "<nested>{{> @partial-block}}</nested>");
+        BOOST_TEST(
+            hbs.render("<template>{{#> outer}}{{value}}{{/outer}}</template>", value) ==
+            "<template><outer><nested><outer-block>success</outer-block></nested></outer></template>");
+    }
+
+    // should render nested partial blocks at different nesting levels
+    {
+        dom::Object value;
+        value.set("value", "success");
+        hbs.registerPartial("outer", "<outer>{{#> nested}}<outer-block>{{> @partial-block}}</outer-block>{{/nested}}{{> @partial-block}}</outer>");
+        hbs.registerPartial("nested", "<nested>{{> @partial-block}}</nested>");
+        BOOST_TEST(
+            hbs.render("<template>{{#> outer}}{{value}}{{/outer}}</template>", value) ==
+            "<template><outer><nested><outer-block>success</outer-block></nested>success</outer></template>");
+    }
+
+    // should render nested partial blocks at different nesting levels (twice)
+    {
+        dom::Object value;
+        value.set("value", "success");
+        hbs.registerPartial("outer", "<outer>{{#> nested}}<outer-block>{{> @partial-block}} {{> @partial-block}}</outer-block>{{/nested}}{{> @partial-block}}+{{> @partial-block}}</outer>");
+        hbs.registerPartial("nested", "<nested>{{> @partial-block}}</nested>");
+        BOOST_TEST(
+            hbs.render("<template>{{#> outer}}{{value}}{{/outer}}</template>", value) ==
+            "<template><outer><nested><outer-block>success success</outer-block></nested>success+success</outer></template>");
+    }
+
+    // should render nested partial blocks (twice at each level)
+    {
+        dom::Object value;
+        value.set("value", "success");
+        hbs.registerPartial("outer", "<outer>{{#> nested}}<outer-block>{{> @partial-block}} {{> @partial-block}}</outer-block>{{/nested}}</outer>");
+        hbs.registerPartial("nested", "<nested>{{> @partial-block}}{{> @partial-block}}</nested>");
+        BOOST_TEST(
+            hbs.render("<template>{{#> outer}}{{value}}{{/outer}}</template>", value) ==
+            "<template><outer><nested><outer-block>success success</outer-block><outer-block>success success</outer-block></nested></outer></template>");
+    }
+}
+
+void
+inline_partials()
+{
+    Handlebars hbs;
+
+    // should define inline partials for template
+    {
+        BOOST_TEST(
+            hbs.render("{{#*inline \"myPartial\"}}success{{/inline}}{{> myPartial}}") ==
+            "success");
+    }
+
+    // should overwrite multiple partials in the same template
+    {
+        BOOST_TEST(
+            hbs.render("{{#*inline \"myPartial\"}}fail{{/inline}}{{#*inline \"myPartial\"}}success{{/inline}}{{> myPartial}}") ==
+            "success");
+    }
+
+    // should define inline partials for block
+    {
+        BOOST_TEST(
+            hbs.render("{{#with .}}{{#*inline \"myPartial\"}}success{{/inline}}{{> myPartial}}{{/with}}") ==
+            "success");
+
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{#with .}}{{#*inline \"myPartial\"}}success{{/inline}}{{/with}}{{> myPartial}}"),
+            HandlebarsError, "The partial myPartial could not be found");
+    }
+
+    // should override global partials
+    {
+        hbs.registerPartial("myPartial", "fail");
+        BOOST_TEST(
+            hbs.render("{{#*inline \"myPartial\"}}success{{/inline}}{{> myPartial}}") ==
+            "success");
+        hbs.unregisterPartial("myPartial");
+    }
+
+    // should override template partials
+    {
+        BOOST_TEST(
+            hbs.render("{{#*inline \"myPartial\"}}fail{{/inline}}{{#with .}}{{#*inline \"myPartial\"}}success{{/inline}}{{> myPartial}}{{/with}}") ==
+            "success");
+    }
+
+    // should override partials down the entire stack
+    {
+        BOOST_TEST(
+            hbs.render("{{#with .}}{{#*inline \"myPartial\"}}success{{/inline}}{{#with .}}{{#with .}}{{> myPartial}}{{/with}}{{/with}}{{/with}}") ==
+            "success");
+    }
+
+    // should define inline partials for partial call
+    {
+        hbs.registerPartial("dude", "{{> myPartial }}");
+        BOOST_TEST(
+            hbs.render("{{#*inline \"myPartial\"}}success{{/inline}}{{> dude}}") ==
+            "success");
+        hbs.unregisterPartial("dude");
+    }
+
+    // should define inline partials in partial block call
+    {
+        hbs.registerPartial("dude", "{{> myPartial }}");
+        BOOST_TEST(
+            hbs.render("{{#> dude}}{{#*inline \"myPartial\"}}success{{/inline}}{{/dude}}") ==
+            "success");
+        hbs.unregisterPartial("dude");
+    }
+
+    // should render nested inline partials
+    {
+        dom::Object ctx;
+        ctx.set("value", "success");
+        BOOST_TEST(
+            hbs.render(
+                "{{#*inline \"outer\"}}{{#>inner}}<outer-block>{{>@partial-block}}</outer-block>{{/inner}}{{/inline}}"
+                "{{#*inline \"inner\"}}<inner>{{>@partial-block}}</inner>{{/inline}}"
+                "{{#>outer}}{{value}}{{/outer}}", ctx) ==
+                "<inner><outer-block>success</outer-block></inner>");
+    }
+
+    // should render nested inline partials with partial-blocks on different nesting levels
+    {
+        dom::Object ctx;
+        ctx.set("value", "success");
+        BOOST_TEST(
+            hbs.render(
+                "{{#*inline \"outer\"}}{{#>inner}}<outer-block>{{>@partial-block}}</outer-block>{{/inner}}{{>@partial-block}}{{/inline}}"
+                "{{#*inline \"inner\"}}<inner>{{>@partial-block}}</inner>{{/inline}}"
+                "{{#>outer}}{{value}}{{/outer}}", ctx) ==
+            "<inner><outer-block>success</outer-block></inner>success");
+        // {{#>outer}}{{value}}{{/outer}}
+        // {{#>inner}}<outer-block>{{value}}</outer-block>{{/inner}}{{value}}
+        // <inner><outer-block>{{value}}</outer-block>{{/inner}}</inner>{{value}}
+        // <inner><outer-block>success</outer-block>{{/inner}}</inner>success
+    }
+
+    // should render nested inline partials (twice at each level)
+    {
+        dom::Object ctx;
+        ctx.set("value", "success");
+        BOOST_TEST(
+            hbs.render(
+                "{{#*inline \"outer\"}}{{#>inner}}<outer-block>{{>@partial-block}} {{>@partial-block}}</outer-block>{{/inner}}{{/inline}}"
+                "{{#*inline \"inner\"}}<inner>{{>@partial-block}}{{>@partial-block}}</inner>{{/inline}}"
+                "{{#>outer}}{{value}}{{/outer}}", ctx) ==
+            "<inner><outer-block>success success</outer-block><outer-block>success success</outer-block></inner>");
+    }
+}
+
+void
+standalone_partials()
+{
+    Handlebars hbs;
+
+    dom::Object hash;
+    dom::Array dudes;
+    dom::Object dude1;
+    dude1.set("name", "Yehuda");
+    dude1.set("url", "http://yehuda");
+    dudes.emplace_back(dude1);
+    dom::Object dude2;
+    dude2.set("name", "Alan");
+    dude2.set("url", "http://alan");
+    dudes.emplace_back(dude2);
+    hash.set("dudes", dudes);
+
+    // indented partials
+    {
+        hbs.registerPartial("dude", "{{name}}\n");
+        BOOST_TEST(
+            hbs.render("Dudes:\n{{#dudes}}\n  {{>dude}}\n{{/dudes}}", hash) ==
+            "Dudes:\n  Yehuda\n  Alan\n");
+    }
+
+    // nested indented partials
+    {
+        hbs.registerPartial("dude", "{{name}}\n {{> url}}");
+        hbs.registerPartial("url", "{{url}}!\n");
+        BOOST_TEST(
+            hbs.render("Dudes:\n{{#dudes}}\n  {{>dude}}\n{{/dudes}}", hash) ==
+            "Dudes:\n  Yehuda\n   http://yehuda!\n  Alan\n   http://alan!\n");
+    }
+
+    // prevent nested indented partials
+    {
+        hbs.registerPartial("dude", "{{name}}\n {{> url}}");
+        hbs.registerPartial("url", "{{url}}!\n");
+        HandlebarsOptions opt;
+        opt.preventIndent = true;
+        BOOST_TEST(
+            hbs.render("Dudes:\n{{#dudes}}\n  {{>dude}}\n{{/dudes}}", hash, opt) ==
+            "Dudes:\n  Yehuda\n http://yehuda!\n  Alan\n http://alan!\n");
+    }
+}
+
+void
+partial_compat_mode()
+{
+    Handlebars hbs;
+
+    dom::Object root;
+    root.set("root", "yes");
+    dom::Array dudes;
+    dom::Object dude1;
+    dude1.set("name", "Yehuda");
+    dude1.set("url", "http://yehuda");
+    dudes.emplace_back(dude1);
+    dom::Object dude2;
+    dude2.set("name", "Alan");
+    dude2.set("url", "http://alan");
+    dudes.emplace_back(dude2);
+    root.set("dudes", dudes);
+
+    HandlebarsOptions compat;
+    compat.compat = true;
+
+    // partials can access parents
+    {
+        hbs.registerPartial("dude", "{{name}} ({{url}}) {{root}} ");
+        BOOST_TEST(
+            hbs.render("Dudes: {{#dudes}}{{> dude}}{{/dudes}}", root, compat) ==
+            "Dudes: Yehuda (http://yehuda) yes Alan (http://alan) yes ");
+    }
+
+    // partials can access parents with custom context
+    {
+        hbs.registerPartial("dude", "{{name}} ({{url}}) {{root}} ");
+        BOOST_TEST(
+            hbs.render("Dudes: {{#dudes}}{{> dude \"test\"}}{{/dudes}}", root, compat) ==
+            "Dudes: Yehuda (http://yehuda) yes Alan (http://alan) yes ");
+    }
+
+    // partials can access parents without data
+    {
+        hbs.registerPartial("dude", "{{name}} ({{url}}) {{root}} ");
+        compat.data = false;
+        BOOST_TEST(
+            hbs.render("Dudes: {{#dudes}}{{> dude}}{{/dudes}}", root, compat) ==
+            "Dudes: Yehuda (http://yehuda) yes Alan (http://alan) yes ");
+        compat.data = nullptr;
+    }
+
+    // partials inherit compat
+    {
+        hbs.registerPartial("dude", "{{#dudes}}{{name}} ({{url}}) {{root}} {{/dudes}}");
+        BOOST_TEST(
+            hbs.render("Dudes: {{> dude}}", root, compat) ==
+            "Dudes: Yehuda (http://yehuda) yes Alan (http://alan) yes ");
+    }
+}
+
+void
 run()
 {
     master_test();
     safe_string();
     basic_context();
     whitespace_control();
+    partials();
+    partial_blocks();
+    inline_partials();
+    standalone_partials();
+    partial_compat_mode();
 }
 
 };
