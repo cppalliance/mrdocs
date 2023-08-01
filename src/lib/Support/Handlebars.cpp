@@ -24,6 +24,46 @@ namespace clang {
 namespace mrdox {
 
 // ==============================================================
+// Output
+// ==============================================================
+OutputRef&
+OutputRef::
+write_impl( std::string_view sv )
+{
+    if (indent_ == 0)
+    {
+        fptr_( out_, sv );
+        return *this;
+    }
+
+    std::size_t pos = sv.find('\n');
+    if (pos == std::string_view::npos)
+    {
+        fptr_( out_, sv );
+        return *this;
+    }
+
+    fptr_( out_, sv.substr(0, pos + 1) );
+    ++pos;
+    while (pos < sv.size())
+    {
+        for (std::size_t i = 0; i < indent_; ++i)
+        {
+            fptr_( out_, std::string_view(" ") );
+        }
+        std::size_t next = sv.find('\n', pos);
+        if (next == std::string_view::npos)
+        {
+            fptr_( out_, sv.substr(pos) );
+            return *this;
+        }
+        fptr_( out_, sv.substr(pos, next - pos + 1) );
+        pos = next + 1;
+    }
+    return *this;
+}
+
+// ==============================================================
 // Utility functions
 // ==============================================================
 
@@ -38,9 +78,8 @@ isTruthy(dom::Value const& arg)
         case dom::Kind::String:
             return !arg.getString().empty();
         case dom::Kind::Array:
-            return !arg.getArray().empty();
         case dom::Kind::Object:
-            return !arg.getObject().empty();
+            return true;
         case dom::Kind::Null:
             return false;
         default:
@@ -53,8 +92,6 @@ isEmpty(dom::Value const& arg)
 {
     if (arg.isArray())
         return arg.getArray().empty();
-    if (arg.isObject())
-        return arg.getObject().empty();
     if (arg.isInteger())
         return false;
     return !isTruthy(arg);
@@ -284,9 +321,12 @@ namespace detail {
     {
         std::string_view templateText0;
         std::string_view templateText;
-        detail::partials_map inlinePartials;
+        std::vector<detail::partials_view_map> inlinePartials;
+        std::vector<std::string_view> partialBlocks;
+        std::size_t partialBlockLevel = 0;
         dom::Object data;
         dom::Object blockValues;
+        std::vector<dom::Value> compatStack;
     };
 }
 
@@ -452,6 +492,39 @@ popFirstSegment(std::string_view& path0)
     return path.substr(0, pos);
 }
 
+struct position_in_text
+{
+    std::size_t line = std::size_t(-1);
+    std::size_t column = std::size_t(-1);
+    std::size_t pos = std::size_t(-1);
+
+    constexpr
+    operator bool() const
+    {
+        return line != std::size_t(-1);
+    }
+};
+
+constexpr
+position_in_text
+find_position_in_text(
+    std::string_view text,
+    std::string_view substr)
+{
+    position_in_text res;
+    if (substr.data() >= text.data() &&
+        substr.data() <= text.data() + text.size())
+    {
+        res.pos = substr.data() - text.data();
+        res.line = std::ranges::count(text.substr(0, res.pos), '\n') + 1;
+        if (res.line == 1)
+            res.column = res.pos;
+        else
+            res.column = res.pos - text.rfind('\n', res.pos);
+    }
+    return res;
+}
+
 void
 checkPath(std::string_view path0, detail::RenderState const& state)
 {
@@ -464,19 +537,10 @@ checkPath(std::string_view path0, detail::RenderState const& state)
             std::string msg =
                 "Invalid path: " +
                 std::string(path0.substr(0, seg.data() + seg.size() - path0.data()));
-            std::size_t pos(-1);
-            std::size_t line(-1);
-            std::size_t col(-1);
-            if (path0.data() >= state.templateText0.data() &&
-                path0.data() <= state.templateText0.data() + state.templateText0.size())
+            auto res = find_position_in_text(state.templateText0, path0);
+            if (res)
             {
-                pos = path0.data() - state.templateText0.data();
-                line = std::ranges::count(state.templateText0.substr(0, pos), '\n') + 1;
-                if (line == 1)
-                    col = pos;
-                else
-                    col = pos - state.templateText0.rfind('\n', pos);
-                throw HandlebarsError(msg, line, col, pos);
+                throw HandlebarsError(msg, res.line, res.column, res.pos);
             }
             throw HandlebarsError(msg);
         }
@@ -1028,6 +1092,8 @@ render_to(
     {
         state.data = options.data.getObject();
     }
+    state.inlinePartials.emplace_back();
+    state.compatStack.emplace_back(context);
     render_to(out, context, options, state);
 }
 
@@ -1281,9 +1347,11 @@ popContextSegment(std::string_view& contextPath) {
     if (pos == std::string_view::npos)
     {
         contextPath.remove_prefix(contextPath.size());
-        return false;
     }
-    contextPath = contextPath.substr(0, pos);
+    else
+    {
+        contextPath = contextPath.substr(0, pos);
+    }
     return true;
 }
 
@@ -1294,6 +1362,7 @@ evalExpr(
     dom::Value const & context,
     std::string_view expression,
     detail::RenderState& state,
+    HandlebarsOptions const& opt,
     bool evalLiterals) const
 {
     expression = trim_spaces(expression);
@@ -1341,7 +1410,7 @@ evalExpr(
             HandlebarsCallback cb;
             cb.name_ = helper;
             cb.context_ = &context;
-            setupArgs(all, context, state, args, cb);
+            setupArgs(all, context, state, args, cb, opt);
             return {fn(args, cb).first, true};
         }
     }
@@ -1355,6 +1424,19 @@ evalExpr(
         if (!contextPathV.isString())
             return {nullptr, false};
         std::string_view contextPath = contextPathV.getString();
+        // Remove last segment if it's a literal integer
+        if (!contextPath.empty())
+        {
+            auto pos = contextPath.find_last_of('.');
+            if (pos != std::string_view::npos)
+            {
+                auto lastSegment = contextPath.substr(pos + 1);
+                if (is_literal_integer(lastSegment))
+                {
+                    contextPath = contextPath.substr(0, pos);
+                }
+            }
+        }
         while (expression.starts_with("..")) {
             if (!popContextSegment(contextPath))
                 return {nullptr, false};
@@ -1370,8 +1452,11 @@ evalExpr(
         dom::Value root = state.data.find("root");
         do {
             absContextPath = contextPath;
-            absContextPath += '.';
-            absContextPath += expression;
+            if (!expression.empty())
+            {
+                absContextPath += '.';
+                absContextPath += expression;
+            }
             auto [v, defined] = lookupPropertyImpl(root, absContextPath, state);
             if (defined) {
                 return {v, defined};
@@ -1380,24 +1465,80 @@ evalExpr(
         } while (!contextPath.empty());
         return lookupPropertyImpl(root, expression, state);
     }
-    auto [cv, defined] = lookupPropertyImpl(context, expression, state);
+    auto [r, defined] = lookupPropertyImpl(context, expression, state);
     if (defined) {
-        return {cv, defined};
+        return {r, defined};
     }
-    return lookupPropertyImpl(state.blockValues, expression, state);
+    std::tie(r, defined) = lookupPropertyImpl(state.blockValues, expression, state);
+    if (defined)
+    {
+        return {r, defined};
+    }
+    if (opt.compat)
+    {
+        auto parentContexts = std::ranges::views::reverse(state.compatStack);
+        for (auto parentContext: parentContexts)
+        {
+            std::tie(r, defined) = lookupPropertyImpl(parentContext, expression, state);
+            if (defined)
+            {
+                return {r, defined};
+            }
+        }
+    }
+    return {nullptr, false};
 }
 
 auto
 Handlebars::
-getHelper(std::string_view helper, bool isNoArgBlock) const -> std::pair<helper_type const&, bool> {
+getHelper(std::string_view helper, bool isNoArgBlock) const
+    -> std::pair<helper_type const&, bool>
+{
     auto it = helpers_.find(helper);
-    if (it != helpers_.end()) {
+    if (it != helpers_.end())
+    {
         return {it->second, true};
     }
     helper = !isNoArgBlock ? "helperMissing" : "blockHelperMissing";
     it = helpers_.find(helper);
     MRDOX_ASSERT(it != helpers_.end());
     return {it->second, false};
+}
+
+auto
+Handlebars::
+getPartial(
+    std::string_view name,
+    detail::RenderState const& state) const
+    -> std::pair<std::string_view, bool>
+{
+    // Inline partials
+    auto blockPartials = std::ranges::views::reverse(state.inlinePartials);
+    for (auto blockInlinePartials: blockPartials)
+    {
+        auto it = blockInlinePartials.find(name);
+        if (it != blockInlinePartials.end())
+        {
+            return {it->second, true};
+        }
+    }
+
+    // Main partials
+    auto it = this->partials_.find(name);
+    if (it != this->partials_.end())
+    {
+        return {it->second, true};
+    }
+
+    // Partial block
+    if (name == "@partial-block")
+    {
+        return {
+            state.partialBlocks[state.partialBlockLevel - 1],
+            true};
+    }
+
+    return { {}, false };
 }
 
 // Parse a block starting at templateText
@@ -1537,7 +1678,7 @@ renderTag(
     }
     else if (tag.type == '*')
     {
-        renderDecorator(tag, out, context, state);
+        renderDecorator(tag, out, context, opt, state);
     }
     else if (tag.type != '/' && tag.type != '!')
     {
@@ -1574,7 +1715,7 @@ renderExpression(
         cb.context_ = &context;
         cb.data_ = &state.data;
         cb.logger_ = &logger_;
-        setupArgs(tag.arguments, context, state, args, cb);
+        setupArgs(tag.arguments, context, state, args, cb, opt);
         auto [res, render] = fn(args, cb);
         if (render == HelperBehavior::RENDER_RESULT) {
             format_to(out, res, opt2);
@@ -1596,7 +1737,7 @@ renderExpression(
         unescaped = unescapeString(helper_expr);
         helper_expr = unescaped;
     }
-    auto [v, defined] = evalExpr(context, helper_expr, state, false);
+    auto [v, defined] = evalExpr(context, helper_expr, state, opt, false);
     if (defined)
     {
         format_to(out, v, opt2);
@@ -1608,7 +1749,7 @@ renderExpression(
     dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
     HandlebarsCallback cb;
     cb.name_ = helper_expr;
-    setupArgs(tag.arguments, context, state, args, cb);
+    setupArgs(tag.arguments, context, state, args, cb, opt);
     auto [res, render] = fn(args, cb);
     if (render == HelperBehavior::RENDER_RESULT) {
         format_to(out, res, opt2);
@@ -1628,7 +1769,8 @@ setupArgs(
     dom::Value const& context,
     detail::RenderState & state,
     dom::Array &args,
-    HandlebarsCallback& cb) const
+    HandlebarsCallback& cb,
+    HandlebarsOptions const& opt) const
 {
     std::string_view expr;
     while (findExpr(expr, expression))
@@ -1637,12 +1779,12 @@ setupArgs(
         auto [k, v] = findKeyValuePair(expr);
         if (k.empty())
         {
-            args.emplace_back(evalExpr(context, expr, state, true).first);
+            args.emplace_back(evalExpr(context, expr, state, opt, true).first);
             cb.ids_.push_back(expr);
         }
         else
         {
-            cb.hashes_.set(k, evalExpr(context, v, state, true).first);
+            cb.hashes_.set(k, evalExpr(context, v, state, opt, true).first);
         }
     }
     cb.renderState_ = &state;
@@ -1654,6 +1796,7 @@ renderDecorator(
     Handlebars::Tag const& tag,
     OutputRef &out,
     dom::Value const& context,
+    HandlebarsOptions const& opt,
     detail::RenderState& state) const {
     // Validate decorator
     if (tag.helper != "inline")
@@ -1665,7 +1808,7 @@ renderDecorator(
     // Evaluate expression
     std::string_view expr;
     findExpr(expr, tag.arguments);
-    auto [value, defined] = evalExpr(context, expr, state, true);
+    auto [value, defined] = evalExpr(context, expr, state, opt, true);
     if (!value.isString())
     {
         out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.arguments, tag.buffer);
@@ -1683,7 +1826,7 @@ renderDecorator(
         }
     }
     fnBlock = trim_rspaces(fnBlock);
-    state.inlinePartials[std::string(partial_name)] = std::string(fnBlock);
+    state.inlinePartials.back()[std::string(partial_name)] = fnBlock;
 }
 
 void
@@ -1693,122 +1836,246 @@ renderPartial(
     OutputRef &out,
     dom::Value const &context,
     HandlebarsOptions const& opt,
-    detail::RenderState& state) const {
-    // Evaluate dynamic partial
-    std::string helper(tag.helper);
-    if (helper.starts_with('(')) {
+    detail::RenderState& state) const
+{
+    // ==============================================================
+    // Evaluate partial name
+    // ==============================================================
+    std::string partialName(tag.helper);
+    bool const isDynamicPartial = partialName.starts_with('(');
+    bool const isEscapedPartialName =
+        !partialName.empty() &&
+        partialName.front() == '[' &&
+        partialName.back() == ']';
+    if (isDynamicPartial)
+    {
         std::string_view expr;
-        findExpr(expr, helper);
-        auto [value, defined] = evalExpr(context, expr, state, true);
-        if (value.isString()) {
-            helper = value.getString();
+        findExpr(expr, partialName);
+        auto [value, defined] = evalExpr(context, expr, state, opt, true);
+        if (value.isString())
+        {
+            partialName = value.getString();
         }
     }
+    else if (isEscapedPartialName)
+    {
+        partialName = partialName.substr(1, partialName.size() - 2);
+    }
+    else if (is_literal_string(partialName))
+    {
+        partialName = unescapeString(partialName);
+    }
 
-    // Parse block
+    // ==============================================================
+    // Parse Block
+    // ==============================================================
     std::string_view fnBlock;
     std::string_view inverseBlock;
     Tag inverseTag;
-    if (tag.type2 == '#') {
-        if (!parseBlock(tag.helper, tag, state.templateText, out, fnBlock, inverseBlock, inverseTag)) {
+    if (tag.type2 == '#')
+    {
+        if (!parseBlock(tag.helper, tag, state.templateText, out, fnBlock, inverseBlock, inverseTag))
+        {
             return;
         }
     }
 
-    // Partial
-    auto it = this->partials_.find(helper);
-    std::string_view partial_content;
-    if (it != this->partials_.end())
+    // ==============================================================
+    // Find partial content
+    // ==============================================================
+    // Look for registered partial
+    auto [partial_content, found] = getPartial(partialName, state);
+    if (!found)
     {
-        partial_content = it->second;
-    }
-    else
-    {
-        it = state.inlinePartials.find(helper);
-        if (it == state.inlinePartials.end()) {
-            if (tag.type2 == '#') {
-                partial_content = fnBlock;
-            } else {
-                throw HandlebarsError(fmt::format("The partial {} could not be found", helper));
-            }
-        } else {
-            partial_content = it->second;
+        if (tag.type2 == '#')
+        {
+            partial_content = fnBlock;
+        }
+        else
+        {
+            throw HandlebarsError(fmt::format("The partial {} could not be found",
+                                              partialName));
         }
     }
 
-    if (tag.arguments.empty())
+    // ==============================================================
+    // Evaluate partial block to extract inline partials
+    // ==============================================================
+    if (tag.type2 == '#')
     {
-        if (tag.type2 == '#') {
-            // evaluate fnBlock to potentially populate extra partials
-            OutputRef dumb{};
-            std::string_view templateText = state.templateText;
-            state.templateText = fnBlock;
-            this->render_to(dumb, context, opt, state);
-            state.templateText = templateText;
-            state.inlinePartials["@partial-block"] = std::string(fnBlock);
-        }
-        // Render partial with current context
+        state.inlinePartials.emplace_back();
+        OutputRef dumb{};
         std::string_view templateText = state.templateText;
-        state.templateText = partial_content;
-        this->render_to(out, context, opt, state);
+        state.templateText = fnBlock;
+        this->render_to(dumb, context, opt, state);
         state.templateText = templateText;
-        if (tag.type2 == '#') {
-            state.inlinePartials.erase("@partial-block");
+    }
+
+    // ==============================================================
+    // Set @partial-block
+    // ==============================================================
+    if (tag.type2 == '#')
+    {
+        state.partialBlocks.emplace_back(fnBlock);
+        ++state.partialBlockLevel;
+    }
+
+    // ==============================================================
+    // Setup partial context
+    // ==============================================================
+    // Default context
+    dom::Value partialCtx = dom::Object{};
+    if (!opt.explicitPartialContext)
+    {
+        if (context.isObject())
+        {
+            partialCtx = createFrame(context.getObject());
+        }
+        else
+        {
+            partialCtx = context;
         }
     }
-    else
+
+    // Populate with arguments
+    if (!tag.arguments.empty())
     {
         // create context from specified keys
         auto tagContent = tag.arguments;
-        dom::Object partialCtx;
+        bool partialCtxDefined = false;
         std::string_view expr;
         while (findExpr(expr, tagContent))
         {
             tagContent = tagContent.substr(expr.data() + expr.size() - tagContent.data());
             auto [partialKey, contextKey] = findKeyValuePair(expr);
-            if (partialKey.empty())
+            bool const isContextReplacement = partialKey.empty();
+            if (isContextReplacement)
             {
-                auto [value, defined] = evalExpr(context, expr, state, true);
-                if (defined && value.isObject())
+                // Check if context has been replaced before
+                if (partialCtxDefined)
                 {
-                    partialCtx = createFrame(value.getObject());
+                    std::size_t n = 2;
+                    while (findExpr(expr, tagContent))
+                    {
+                        auto [partialKey2, _] = findKeyValuePair(expr);
+                        if (!partialKey2.empty()) {
+                            break;
+                        }
+                        ++n;
+                    }
+                    std::string msg = fmt::format(
+                        "Unsupported number of partial arguments: {}", n);
+                    auto res = find_position_in_text(state.templateText0, tag.buffer);
+                    if (res)
+                    {
+                        throw HandlebarsError(msg, res.line, res.column, res.pos);
+                    }
+                    throw HandlebarsError(msg);
                 }
-                continue;
-            }
-            if (contextKey != ".") {
-                auto [value, defined] = evalExpr(context, contextKey, state, true);
+
+                // Replace context
+                auto [value, defined] = evalExpr(context, expr, state, opt, true);
                 if (defined)
                 {
-                    partialCtx.set(partialKey, value);
+                    if (value.isObject())
+                    {
+                        partialCtx = createFrame(value.getObject());
+                    }
+                    else
+                    {
+                        partialCtx = value;
+                    }
                 }
-            } else {
-                partialCtx.set(partialKey, context);
+                partialCtxDefined = true;
+                continue;
+            }
+
+            // Argument is key=value pair
+            dom::Value value;
+            bool defined;
+            if (contextKey != ".")
+            {
+                std::tie(value, defined) = evalExpr(context, contextKey, state, opt, true);
+            }
+            else
+            {
+                value = context;
+                defined = true;
+            }
+            if (defined)
+            {
+                bool const needs_reset_context = !partialCtx.isObject();
+                if (needs_reset_context)
+                {
+                    if (!opt.explicitPartialContext &&
+                        context.isObject())
+                    {
+                        partialCtx = createFrame(context.getObject());
+                    }
+                    else
+                    {
+                        partialCtx = dom::Object{};
+                    }
+                }
+                partialCtx.getObject().set(partialKey, value);
             }
         }
-        std::string_view templateText = state.templateText;
-        state.templateText = partial_content;
-        this->render_to(out, partialCtx, opt, state);
-        state.templateText = templateText;
     }
 
-    if (tag.removeRWhitespace) {
+    // ==============================================================
+    // Determine if partial is standalone
+    // ==============================================================
+    auto beforePartial = state.templateText0.substr(
+        0, tag.buffer.data() - state.templateText0.data());
+    std::string_view lastLine = beforePartial;
+    auto pos = beforePartial.find_last_of("\r\n");
+    if (pos != std::string_view::npos)
+    {
+        lastLine = beforePartial.substr(pos + 1);
+    }
+    bool const isStandalone = std::ranges::all_of(
+        lastLine, [](char c) { return c == ' '; });
+    std::size_t const partialIndent =
+        !opt.preventIndent && isStandalone ? lastLine.size() : 0;
+
+    // ==============================================================
+    // Render partial
+    // ==============================================================
+    std::string_view templateText = state.templateText;
+    state.templateText = partial_content;
+    bool const isPartialBlock = partialName == "@partial-block";
+    state.partialBlockLevel -= isPartialBlock;
+    out.setIndent(out.getIndent() + partialIndent);
+    state.compatStack.emplace_back(context);
+    this->render_to(out, partialCtx, opt, state);
+    state.compatStack.pop_back();
+    out.setIndent(out.getIndent() - partialIndent);
+    state.partialBlockLevel += isPartialBlock;
+    state.templateText = templateText;
+
+    if (tag.type2 == '#')
+    {
+        state.inlinePartials.pop_back();
+        state.partialBlocks.pop_back();
+        --state.partialBlockLevel;
+    }
+
+    // ==============================================================
+    // Remove standalone whitespace
+    // ==============================================================
+    if (tag.removeRWhitespace)
+    {
         state.templateText = trim_lspaces(state.templateText);
     }
     else if (!opt.ignoreStandalone)
     {
-        auto beforePartial = state.templateText0.substr(
-            0, tag.buffer.data() - state.templateText0.data());
-        std::string_view lastLine = beforePartial;
-        auto pos = beforePartial.find_last_of("\r\n");
-        if (pos != std::string_view::npos)
-        {
-            lastLine = beforePartial.substr(pos + 1);
-        }
-        bool const isStandalone = std::ranges::all_of(
-            lastLine, [](char c) { return c == ' '; });
         if (isStandalone)
         {
             state.templateText = trim_ldelimiters(state.templateText, " ");
+            if (state.templateText.starts_with('\n'))
+            {
+                state.templateText.remove_prefix(1);
+            }
         }
     }
 }
@@ -1822,12 +2089,13 @@ renderBlock(
     dom::Value const& context,
     HandlebarsOptions const& opt,
     detail::RenderState& state) const {
-    // Opening a section tag
-    // Find closing tag
     if (tag.removeRWhitespace) {
         state.templateText = trim_lspaces(state.templateText);
     }
 
+    // ==============================================================
+    // Parse block
+    // ==============================================================
     std::string_view fnBlock;
     std::string_view inverseBlock;
     Tag inverseTag;
@@ -1835,6 +2103,9 @@ renderBlock(
         return;
     }
 
+    // ==============================================================
+    // Setup helper parameters
+    // ==============================================================
     dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
     HandlebarsCallback cb;
     cb.name_ = tag.helper;
@@ -1858,9 +2129,11 @@ renderBlock(
             arguments = tag.helper;
         }
     }
-    setupArgs(arguments, context, state, args, cb);
+    setupArgs(arguments, context, state, args, cb, opt);
 
-    // Setup block params
+    // ==============================================================
+    // Setup block parameters
+    // ==============================================================
     std::string_view expr;
     std::string_view bps = tag.blockParams;
     while (findExpr(expr, bps))
@@ -1869,7 +2142,9 @@ renderBlock(
         cb.blockParams_.push_back(expr);
     }
 
-    // Setup callback functions
+    // ==============================================================
+    // Setup callbacks
+    // ==============================================================
     if (!tag.rawBlock) {
         cb.fn_ = [this, fnBlock, opt, &state](
             OutputRef os,
@@ -1946,7 +2221,11 @@ renderBlock(
         };
     }
 
+    // ==============================================================
     // Call helper
+    // ==============================================================
+    state.inlinePartials.emplace_back();
+    state.compatStack.emplace_back(context);
     auto [res, render] = fn(args, cb);
     if (render == HelperBehavior::RENDER_RESULT) {
         format_to(out, res, opt);
@@ -1955,6 +2234,8 @@ renderBlock(
         opt2.noEscape = true;
         format_to(out, res, opt2);
     }
+    state.inlinePartials.pop_back();
+    state.compatStack.pop_back();
 }
 
 void
@@ -1963,6 +2244,9 @@ registerPartial(
     std::string_view name,
     std::string_view text)
 {
+    auto it = partials_.find(name);
+    if (it != partials_.end())
+        partials_.erase(it);
     partials_.emplace(std::string(name), std::string(text));
 }
 
