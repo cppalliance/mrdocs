@@ -1205,13 +1205,87 @@ basic_context()
 }
 
 void
+whitespace_control()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/whitespace-control.js
+    Handlebars hbs;
+    dom::Object hash;
+    hash.set("foo", "bar<");
+
+    // should strip whitespace around mustache calls
+    {
+        BOOST_TEST(hbs.render(" {{~foo~}} ", hash) == "bar&lt;");
+        BOOST_TEST(hbs.render(" {{~foo}} ", hash) == "bar&lt; ");
+        BOOST_TEST(hbs.render(" {{foo~}} ", hash) == " bar&lt;");
+        BOOST_TEST(hbs.render(" {{~&foo~}} ", hash) == "bar<");
+        BOOST_TEST(hbs.render(" {{~{foo}~}} ", hash) == "bar<");
+        BOOST_TEST(hbs.render("1\n{{foo~}} \n\n 23\n{{bar}}4") == "1\n23\n4");
+    }
+
+    // blocks
+    {
+        // should strip whitespace around simple block calls
+        {
+            BOOST_TEST(hbs.render(" {{~#if foo~}} bar {{~/if~}} ", hash) == "bar");
+            BOOST_TEST(hbs.render(" {{#if foo~}} bar {{/if~}} ", hash) == " bar ");
+            BOOST_TEST(hbs.render(" {{~#if foo}} bar {{~/if}} ", hash) == " bar ");
+            BOOST_TEST(hbs.render(" {{#if foo}} bar {{/if}} ", hash) == "  bar  ");
+            BOOST_TEST(hbs.render(" \n\n{{~#if foo~}} \n\nbar \n\n{{~/if~}}\n\n ", hash) == "bar");
+            BOOST_TEST(hbs.render(" a\n\n{{~#if foo~}} \n\nbar \n\n{{~/if~}}\n\na ", hash) == " abara ");
+        }
+
+        // should strip whitespace around inverse block calls
+        {
+            BOOST_TEST(hbs.render(" {{~^if foo~}} bar {{~/if~}} ", hash) == "bar");
+            BOOST_TEST(hbs.render(" {{^if foo~}} bar {{/if~}} ", hash) == " bar ");
+            BOOST_TEST(hbs.render(" {{~^if foo}} bar {{~/if}} ", hash) == " bar ");
+            BOOST_TEST(hbs.render(" {{^if foo}} bar {{/if}} ", hash) == "  bar  ");
+            BOOST_TEST(hbs.render(" \n\n{{~^if foo~}} \n\nbar \n\n{{~/if~}}\n\n ", hash) == "bar");
+        }
+
+        // should strip whitespace around complex block calls
+        {
+            BOOST_TEST(hbs.render("{{#if foo~}} bar {{~^~}} baz {{~/if}}", hash) == "bar");
+            BOOST_TEST(hbs.render("{{#if foo~}} bar {{^~}} baz {{/if}}", hash) == "bar ");
+            BOOST_TEST(hbs.render("{{#if foo}} bar {{~^~}} baz {{~/if}}", hash) == " bar");
+            BOOST_TEST(hbs.render("{{#if foo}} bar {{^~}} baz {{/if}}", hash) == " bar ");
+            BOOST_TEST(hbs.render("{{#if foo~}} bar {{~else~}} baz {{~/if}}", hash) == "bar");
+            BOOST_TEST(hbs.render("\n\n{{~#if foo~}} \n\nbar \n\n{{~^~}} \n\nbaz \n\n{{~/if~}}\n\n", hash) == "bar");
+            BOOST_TEST(hbs.render("\n\n{{~#if foo~}} \n\n{{{foo}}} \n\n{{~^~}} \n\nbaz \n\n{{~/if~}}\n\n", hash) == "bar<");
+            BOOST_TEST(hbs.render("{{#if foo~}} bar {{~^~}} baz {{~/if}}") == "baz");
+            BOOST_TEST(hbs.render("{{#if foo}} bar {{~^~}} baz {{/if}}") == "baz ");
+            BOOST_TEST(hbs.render("{{#if foo~}} bar {{~^}} baz {{~/if}}") == " baz");
+            BOOST_TEST(hbs.render("{{#if foo~}} bar {{~^}} baz {{/if}}") == " baz ");
+            BOOST_TEST(hbs.render("{{#if foo~}} bar {{~else~}} baz {{~/if}}") == "baz");
+            BOOST_TEST(hbs.render("\n\n{{~#if foo~}} \n\nbar \n\n{{~^~}} \n\nbaz \n\n{{~/if~}}\n\n") == "baz");
+        }
+    }
+
+    // should strip whitespace around partials
+    {
+        hbs.registerPartial("dude", "bar");
+        BOOST_TEST(hbs.render("foo {{~> dude~}} ") == "foobar");
+        BOOST_TEST(hbs.render("foo {{> dude~}} ") == "foo bar");
+        BOOST_TEST(hbs.render("foo {{> dude}} ") == "foo bar ");
+        BOOST_TEST(hbs.render("foo\n {{~> dude}} ") == "foobar");
+        BOOST_TEST(hbs.render("foo\n {{> dude}} ") == "foo\n bar");
+    }
+
+    // should only strip whitespace once
+    {
+        dom::Object ctx;
+        ctx.set("foo", "bar");
+        BOOST_TEST(hbs.render(" {{~foo~}} {{foo}} {{foo}} ", ctx) == "barbar bar ");
+    }
+}
+
+void
 run()
 {
-#if 0
     master_test();
     safe_string();
     basic_context();
-#endif
+    whitespace_control();
 }
 
 };

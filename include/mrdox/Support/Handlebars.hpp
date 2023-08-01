@@ -54,6 +54,13 @@ struct HandlebarsOptions
         remove the whitespace on that line
      */
     bool ignoreStandalone = false;
+
+    /** Custom private data object
+
+        This variable can be used to pass in an object to define custom
+        private variables.
+     */
+    dom::Value data = {nullptr};
 };
 
 namespace detail {
@@ -835,8 +842,8 @@ public:
     std::string
     render(
         std::string_view templateText,
-        dom::Value const & context = {},
-        HandlebarsOptions options = {}) const;
+        dom::Value const& context = {},
+        HandlebarsOptions const& options = {}) const;
 
     /** Render a handlebars template
 
@@ -855,8 +862,8 @@ public:
     render_to(
         OutputRef& out,
         std::string_view templateText,
-        dom::Value const & context,
-        HandlebarsOptions options = {}) const;
+        dom::Value const& context,
+        HandlebarsOptions const& options = {}) const;
 
     /** Register a partial
 
@@ -1096,7 +1103,7 @@ private:
     render_to(
         OutputRef& out,
         dom::Value const &context,
-        HandlebarsOptions opt,
+        HandlebarsOptions const& opt,
         detail::RenderState& state) const;
 
     void
@@ -1104,7 +1111,7 @@ private:
         Tag const& tag,
         OutputRef& out,
         dom::Value const &context,
-        HandlebarsOptions opt,
+        HandlebarsOptions const& opt,
         detail::RenderState& state) const;
 
     void
@@ -1121,7 +1128,7 @@ private:
         Handlebars::Tag const& tag,
         OutputRef &out,
         dom::Value const& context,
-        HandlebarsOptions &opt,
+        HandlebarsOptions const& opt,
         detail::RenderState& state) const;
 
     void
@@ -1145,7 +1152,7 @@ private:
         dom::Value const& context,
         detail::RenderState& state,
         dom::Array &args,
-        HandlebarsCallback &options) const;
+        HandlebarsCallback& opt) const;
 
     std::pair<dom::Value, bool>
     evalExpr(

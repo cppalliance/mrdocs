@@ -282,6 +282,44 @@ swap(
 
 //------------------------------------------------
 
+void
+JSON_escape(
+    std::string& dest,
+    std::string_view value)
+{
+    dest.reserve(dest.size() + value.size());
+    for(auto c : value)
+    {
+        switch (c)
+        {
+        case '"':
+            dest.append("\\\"");
+            break;
+        case '\\':
+            dest.append("\\\\");
+            break;
+        case '\b':
+            dest.append("\\b");
+            break;
+        case '\f':
+            dest.append("\\f");
+            break;
+        case '\n':
+            dest.append("\\n");
+            break;
+        case '\r':
+            dest.append("\\r");
+            break;
+        case '\t':
+            dest.append("\\t");
+            break;
+        default:
+            dest.push_back(c);
+            break;
+        }
+    }
+}
+
 static
 void
 JSON_stringify(
@@ -306,13 +344,12 @@ JSON_stringify(
         break;
     case Kind::String:
     {
-        // VFALCO need escapes
         std::string_view const s =
             value.getString().get();
         dest.reserve(dest.size() +
             1 + s.size() + 1);
         dest.push_back('"');
-        dest.append(s.data(), s.size());
+        JSON_escape(dest, s);
         dest.push_back('"');
         break;
     }
@@ -337,10 +374,11 @@ JSON_stringify(
             JSON_stringify(dest, arr.get(i), indent, visited);
             if(i != arr.size() - 1)
                 dest.push_back(',');
-            else
-                dest.append(" ]\n");
+            dest.push_back('\n');
         }
         indent.resize(indent.size() - 4);
+        dest.append(indent);
+        dest.append("]");
         break;
     }
     case Kind::Object:
@@ -363,15 +401,19 @@ JSON_stringify(
             auto it0 = it++;
             dest.append(indent);
             dest.push_back('"');
+            JSON_escape(dest, it0->key);
             dest.append("\" : ");
             JSON_stringify(dest,
                 it0->value, indent, visited);
             if(it != obj.end())
+            {
                 dest.push_back(',');
-            else
-                dest.append(" }\n");
+            }
+            dest.push_back('\n');
         }
         indent.resize(indent.size() - 4);
+        dest.append(indent);
+        dest.append("}");
         break;
     }
     case Kind::Function:
