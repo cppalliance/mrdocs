@@ -254,6 +254,8 @@ struct MRDOX_DECL
 
     void append(List<Node>&& blocks);
 
+    Block(const Block & ) = delete;
+    Block(Block && ) noexcept = default;
 protected:
     explicit
     Block(

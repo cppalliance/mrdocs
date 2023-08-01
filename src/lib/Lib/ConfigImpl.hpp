@@ -136,6 +136,7 @@ public:
         llvm::StringRef filePath,
         std::string& prefix) const noexcept;
 
+    MRDOX_DECL
     friend
     Expected<std::shared_ptr<ConfigImpl const>>
     createConfig(
@@ -144,6 +145,7 @@ public:
         std::string_view configYaml,
         ThreadPool& threadPool);
 
+    MRDOX_DECL
     friend
     Expected<std::shared_ptr<ConfigImpl const>>
     loadConfigFile(
