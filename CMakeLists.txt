@@ -121,7 +121,7 @@ file(
         include/*.hpp include/*.ipp
         include/*.natvis
         SourceFileNames.cpp)
-add_library(mrdox-core ${LIB_SOURCES})
+add_library(mrdox-core OBJECT ${LIB_SOURCES})
 target_compile_definitions(mrdox-core PRIVATE MRDOX_TOOL=1)
 target_compile_features(mrdox-core PUBLIC cxx_std_20)
 target_include_directories(mrdox-core
