@@ -74,7 +74,7 @@ public:
 
 /** A reference to an instance of a JavaScript interpreter.
 */
-class MRDOX_VISIBLE
+class MRDOX_DECL
     Context
 {
     struct Impl;

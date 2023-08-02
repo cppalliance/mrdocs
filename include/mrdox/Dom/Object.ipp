@@ -115,7 +115,7 @@ struct MRDOX_DECL
 //
 //------------------------------------------------
 
-class MRDOX_VISIBLE
+class MRDOX_DECL
     Object::iterator
 {
     ObjectImpl const* obj_ = nullptr;

@@ -26,7 +26,7 @@ class Value;
 
 /** An array of values.
 */
-class MRDOX_VISIBLE
+class MRDOX_DECL
     Array final
 {
     std::shared_ptr<ArrayImpl> impl_;
@@ -219,7 +219,7 @@ public:
 
     This interface is used by Array types.
 */
-class MRDOX_VISIBLE
+class MRDOX_DECL
     ArrayImpl
 {
 public:
@@ -264,7 +264,7 @@ public:
     This implementation is backed by a simple
     vector and allows appending.
 */
-class MRDOX_VISIBLE
+class MRDOX_DECL
     DefaultArrayImpl : public ArrayImpl
 {
 public:

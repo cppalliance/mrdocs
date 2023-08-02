@@ -253,7 +253,7 @@ public:
 
 /** Type of all exceptions thrown by the API.
 */
-class MRDOX_VISIBLE
+class MRDOX_DECL
     Exception final : public std::exception
 {
     Error err_;
@@ -380,7 +380,7 @@ public:
 
 /** A source location with filename prettification.
 */
-class MRDOX_VISIBLE
+class MRDOX_DECL
     SourceLocation
 {
     std::string_view file_;

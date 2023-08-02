@@ -30,7 +30,7 @@ concept StringLikeTy =
 
 /** An immutable string with shared ownership.
 */
-class MRDOX_VISIBLE
+class MRDOX_DECL
     String final
 {
     struct Impl;
