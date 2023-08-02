@@ -12,8 +12,10 @@
 #ifndef MRDOX_LIB_AST_BITCODE_HPP
 #define MRDOX_LIB_AST_BITCODE_HPP
 
+#include "lib/Lib/ToolExecutor.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
+#include <mrdox/Metadata/Info.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <clang/Tooling/Execution.h>
 #include <llvm/ADT/SmallVector.h>
@@ -21,6 +23,7 @@
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 namespace llvm {
@@ -81,28 +84,6 @@ writeBitcode(
 */
 mrdox::Expected<std::vector<std::unique_ptr<Info>>>
 readBitcode(llvm::StringRef bitcode);
-
-/** Store a key/value pair in the tool results.
-
-    This function inserts the bitcode for the
-    specified symbol ID into the tool results
-    of the execution context.
-
-    Each symbol ID can have multiple bitcodes.
-*/
-void
-insertBitcode(
-    tooling::ExecutionContext& ex,
-    Bitcode&& bitcode);
-
-/** Return the bitcodes grouped by matching ID.
-
-    Each ID may have one or more associated
-    bitcodes, with duplicate bitcodes possible.
-*/
-Bitcodes
-collectBitcodes(
-    tooling::ToolExecutor& ex);
 
 } // mrdox
 } // clang

@@ -16,7 +16,6 @@
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/ExecutionContext.hpp"
 #include <mrdox/Platform.hpp>
-#include <clang/Tooling/Execution.h>
 #include <clang/Tooling/Tooling.h>
 
 namespace clang {
@@ -26,7 +25,7 @@ namespace mrdox {
 */
 std::unique_ptr<tooling::FrontendActionFactory>
 makeFrontendActionFactory(
-    tooling::ExecutionContext& ex,
+    ExecutionContext& ex,
     ConfigImpl const& config);
 
 } // mrdox

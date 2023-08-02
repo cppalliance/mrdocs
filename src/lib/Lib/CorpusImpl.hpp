@@ -12,6 +12,7 @@
 #define MRDOX_LIB_CORPUSIMPL_HPP
 
 #include "lib/Lib/ConfigImpl.hpp"
+#include "lib/Lib/Info.hpp"
 #include "lib/Lib/ToolExecutor.hpp"
 #include "lib/Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
@@ -19,7 +20,7 @@
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <llvm/ADT/StringMap.h>
-#include <llvm/Support/Mutex.h>
+#include <mutex>
 #include <string>
 
 namespace clang {
@@ -82,7 +83,7 @@ private:
         @param Thread Safety
         May be called concurrently.
     */
-    void insert(std::unique_ptr<Info> Ip);
+    void insert(std::unique_ptr<Info> I);
 
 private:
     struct Temps;
@@ -90,11 +91,11 @@ private:
 
     std::shared_ptr<ConfigImpl const> config_;
 
-    // Table of Info keyed on Symbol ID.
-    llvm::StringMap<std::unique_ptr<Info>> InfoMap;
+    // Info keyed on Symbol ID.
+    InfoSet info_;
     std::vector<Info const*> index_;
 
-    llvm::sys::Mutex mutex_;
+    std::mutex mutex_;
 };
 
 template<class T>

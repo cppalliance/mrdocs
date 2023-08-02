@@ -105,24 +105,20 @@ handleFile(
     SmallPathString expectedPath = filePath;
     path::replace_extension(expectedPath, xmlGen_->fileExtension());
 
+    SingleFileDB db1(filePath);
+    auto workingDir = files::getParentDir(filePath);
+    // Convert relative paths to absolute
+    AbsoluteCompilationDatabase db(
+        llvm::StringRef(workingDir), db1, config);
     // Build Corpus
-    std::unique_ptr<Corpus> corpus;
-    {
-        SingleFileDB db1(filePath);
-        auto workingDir = files::getParentDir(filePath);
-        // Convert relative paths to absolute
-        AbsoluteCompilationDatabase db(
-            llvm::StringRef(workingDir), db1, config);
-        ToolExecutor ex(report::Level::debug, *config, db);
-        auto result = CorpusImpl::build(ex, config);
-        if(! result)
-            report::error("{}: \"{}\"", result.error(), filePath);
-        corpus = *std::move(result);
-    }
+    ToolExecutor ex(report::Level::debug, *config, db);
+    auto corpus = CorpusImpl::build(ex, config);
+    if(! corpus)
+        return report::error("{}: \"{}\"", corpus.error(), filePath);
 
     // Generate XML
     std::string generatedXml;
-    if(auto err = xmlGen_->buildOneString(generatedXml, *corpus))
+    if(auto err = xmlGen_->buildOneString(generatedXml, **corpus))
         return report::error("{}: \"{}\"", err, filePath);
 
     // Get expected XML if it exists

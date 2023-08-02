@@ -173,49 +173,51 @@ protected:
 /** Invoke a function object with an Info-derived type.
 */
 template<
+    class InfoTy,
     class F,
-    class... Args,
-    class Dependent = void>
-auto
+    class... Args>
+    requires std::derived_from<InfoTy, Info>
+decltype(auto)
 visit(
-    Info const& I,
+    InfoTy& I,
     F&& f,
     Args&&... args)
 {
+    add_cv_from_t<InfoTy, Info>& II = I;
     switch(I.Kind)
     {
     case InfoKind::Namespace:
-        return f(static_cast<make_dependent_t<
-            NamespaceInfo const&, Dependent>>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            InfoTy, NamespaceInfo>&>(II),
+                std::forward<Args>(args)...);
     case InfoKind::Record:
-        return f(static_cast<make_dependent_t<
-            RecordInfo const&, Dependent>>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            InfoTy, RecordInfo>&>(II),
+                std::forward<Args>(args)...);
     case InfoKind::Function:
-        return f(static_cast<make_dependent_t<
-            FunctionInfo const&, Dependent>>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            InfoTy, FunctionInfo>&>(II),
+                std::forward<Args>(args)...);
     case InfoKind::Enum:
-        return f(static_cast<make_dependent_t<
-            EnumInfo const&, Dependent>>(I),
-            std::forward<Args>(args)...);
-    case InfoKind::Field:
-        return f(static_cast<make_dependent_t<
-        FieldInfo const&, Dependent>>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            InfoTy, EnumInfo>&>(II),
+                std::forward<Args>(args)...);
     case InfoKind::Typedef:
-        return f(static_cast<make_dependent_t<
-        TypedefInfo const&, Dependent>>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            InfoTy, TypedefInfo>&>(II),
+                std::forward<Args>(args)...);
     case InfoKind::Variable:
-        return f(static_cast<make_dependent_t<
-        VariableInfo const&, Dependent>>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            InfoTy, VariableInfo>&>(II),
+                std::forward<Args>(args)...);
+    case InfoKind::Field:
+        return f(static_cast<add_cv_from_t<
+            InfoTy, FieldInfo>&>(II),
+                std::forward<Args>(args)...);
     case InfoKind::Specialization:
-        return f(static_cast<make_dependent_t<
-        SpecializationInfo const&, Dependent>>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            InfoTy, SpecializationInfo>&>(II),
+                std::forward<Args>(args)...);
     default:
         MRDOX_UNREACHABLE();
     }

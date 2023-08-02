@@ -42,35 +42,30 @@ public:
 
     void reportTotals(report::Level level)
     {
+        if(messages_.empty())
+            return;
+
         std::string s;
-        if(! messages_.empty())
+        auto warnCount = messages_.size() - errorCount_;
+        if(errorCount_ > 0)
         {
-            auto warnCount = messages_.size() - errorCount_;
+            fmt::format_to(std::back_inserter(s),
+                "{} {}",
+                errorCount_, errorCount_ > 1
+                    ? "errors" : "error");
+        }
+        if(warnCount > 0)
+        {
             if(errorCount_ > 0)
-            {
                 fmt::format_to(std::back_inserter(s),
-                    "{} {}",
-                    errorCount_, errorCount_ > 1
-                        ? "errors" : "error");
-            }
-            if(warnCount > 0)
-            {
-                if(errorCount_ > 0)
-                    fmt::format_to(std::back_inserter(s),
-                        " and " );
-                fmt::format_to(std::back_inserter(s),
-                    "{} {}.\n",
-                    warnCount, warnCount > 1
-                        ? "warnings" : "warning");
-            }
+                    " and " );
             fmt::format_to(std::back_inserter(s),
-                " total.");
+                "{} {}.\n",
+                warnCount, warnCount > 1
+                    ? "warnings" : "warning");
         }
-        else
-        {
-            fmt::format_to(std::back_inserter(s),
-                "No errors or warnings.\n");
-        }
+        fmt::format_to(std::back_inserter(s),
+            " total.");
         report::print(level, s);
     }
 

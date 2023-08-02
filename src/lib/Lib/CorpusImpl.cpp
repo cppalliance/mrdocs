@@ -28,31 +28,14 @@ namespace mrdox {
 llvm::Expected<std::unique_ptr<Info>>
 mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
 {
-    if (Values.empty() || !Values[0])
+    if(Values.empty() || ! Values[0])
         return llvm::createStringError(llvm::inconvertibleErrorCode(),
             "no info values to merge");
 
-    switch (Values[0]->Kind) {
-    case InfoKind::Namespace:
-        return reduce<NamespaceInfo>(Values);
-    case InfoKind::Record:
-        return reduce<RecordInfo>(Values);
-    case InfoKind::Enum:
-        return reduce<EnumInfo>(Values);
-    case InfoKind::Function:
-        return reduce<FunctionInfo>(Values);
-    case InfoKind::Typedef:
-        return reduce<TypedefInfo>(Values);
-    case InfoKind::Variable:
-        return reduce<VariableInfo>(Values);
-    case InfoKind::Field:
-        return reduce<FieldInfo>(Values);
-    case InfoKind::Specialization:
-        return reduce<SpecializationInfo>(Values);
-    default:
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "unexpected info type");
-    }
+    return visit(*Values[0], [&]<typename T>(T&) mutable
+        {
+            return reduce<T>(Values);
+        });
 }
 
 //------------------------------------------------
@@ -62,9 +45,9 @@ CorpusImpl::
 find(
     SymbolID const& id) noexcept
 {
-    auto it = InfoMap.find(StringRef(id));
-    if(it != InfoMap.end())
-        return it->second.get();
+    auto it = info_.find(id);
+    if(it != info_.end())
+        return it->get();
     return nullptr;
 }
 
@@ -73,9 +56,9 @@ CorpusImpl::
 find(
     SymbolID const& id) const noexcept
 {
-    auto it = InfoMap.find(StringRef(id));
-    if(it != InfoMap.end())
-        return it->second.get();
+    auto it = info_.find(id);
+    if(it != info_.end())
+        return it->get();
     return nullptr;
 }
 
@@ -85,12 +68,12 @@ void
 CorpusImpl::
 insert(std::unique_ptr<Info> I)
 {
-    std::lock_guard<llvm::sys::Mutex> Guard(mutex_);
+    std::lock_guard<std::mutex> lock(mutex_);
 
     index_.emplace_back(I.get());
 
     // This has to come last because we move I.
-    InfoMap[StringRef(I->id)] = std::move(I);
+    info_.emplace(std::move(I));
 }
 
 //------------------------------------------------
@@ -107,9 +90,9 @@ build(
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
     report::print(ex.getReportLevel(), "Mapping declarations");
-    if(Error err = toError(ex.execute(
+    if(Error err = ex.execute(
         makeFrontendActionFactory(
-            *ex.getExecutionContext(), *config))))
+            ex.getExecutionContext(), *config)))
     {
         if(! (*config)->ignoreFailures)
             return Unexpected(err);
@@ -117,21 +100,12 @@ build(
             "Warning: mapping failed because ", err);
     }
 
-    // Inject the global namespace
-    {
-        // default-constructed NamespaceInfo
-        // describes the global namespace
-        NamespaceInfo I;
-        insertBitcode(
-            *ex.getExecutionContext(),
-            writeBitcode(I));
-    }
-
     // Collect the symbols. Each symbol will have
     // a vector of one or more bitcodes. These will
     // be merged later.
     report::print(ex.getReportLevel(), "Collecting symbols");
-    auto bitcodes = collectBitcodes(ex);
+    auto bitcodes = std::move(
+        ex.getExecutionContext().getBitcode());
 
     // First reducing phase (reduce all decls into one info per decl).
     report::format(ex.getReportLevel(),
@@ -146,7 +120,7 @@ build(
             std::vector<std::unique_ptr<Info>> Infos;
 
             // Each Bitcode can have multiple Infos
-            for (auto& bitcode : Group.getValue())
+            for(auto& bitcode : Group.second)
             {
                 auto infos = readBitcode(bitcode);
                 if(! infos)
@@ -170,14 +144,15 @@ build(
             }
 
             std::unique_ptr<Info> I(merged.get().release());
-            MRDOX_ASSERT(Group.getKey() == StringRef(I->id));
+            MRDOX_ASSERT(Group.first == I->id);
             corpus->insert(std::move(I));
         });
+
     if(! errors.empty())
         return Unexpected(Error(errors));
 
     report::format(ex.getReportLevel(),
-        "Symbols collected: {}", corpus->InfoMap.size());
+        "Symbols collected: {}", corpus->info_.size());
 
     if(GotFailure)
         return Unexpected(formatError("multiple errors occurred"));

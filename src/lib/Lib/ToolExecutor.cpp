@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
@@ -12,141 +13,52 @@
 #include "ToolExecutor.hpp"
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/ThreadPool.hpp>
-#include <clang/Tooling/ToolExecutorPluginRegistry.h>
-#include <llvm/Support/Regex.h>
-#include <llvm/Support/ThreadPool.h>
-#include <llvm/Support/Threading.h>
+#include <clang/Tooling/Tooling.h>
 #include <llvm/Support/VirtualFileSystem.h>
 
 namespace clang {
 namespace mrdox {
 
-namespace {
-
-llvm::Error
-makeError(
-    const llvm::Twine& Message)
-{
-    return llvm::make_error<llvm::StringError>(
-        Message, llvm::inconvertibleErrorCode());
-}
-
-tooling::ArgumentsAdjuster
-getDefaultArgumentsAdjusters()
-{
-    return tooling::combineAdjusters(
-        tooling::getClangStripOutputAdjuster(),
-        tooling::combineAdjusters(
-            tooling::getClangSyntaxOnlyAdjuster(),
-            tooling::getClangStripDependencyFileAdjuster()));
-}
-
-//------------------------------------------------
-
-class ThreadSafeToolResults : public tooling::ToolResults
-{
-public:
-    void addResult(StringRef Key, StringRef Value) override
-    {
-        std::unique_lock<std::mutex> LockGuard(Mutex);
-        Results.addResult(Key, Value);
-    }
-
-    std::vector<std::pair<
-        llvm::StringRef, llvm::StringRef>>
-    AllKVResults() override
-    {
-        return Results.AllKVResults();
-    }
-
-    void forEachResult(llvm::function_ref<
-        void(StringRef Key, StringRef Value)> Callback) override
-    {
-        Results.forEachResult(Callback);
-    }
-
-private:
-    tooling::InMemoryToolResults Results;
-    std::mutex Mutex;
-};
-
-//------------------------------------------------
-
-} // (anon)
-
 ToolExecutor::
 ToolExecutor(
     report::Level reportLevel,
     Config const& config,
-    tooling::CompilationDatabase const& Compilations,
-    std::shared_ptr<PCHContainerOperations> PCHContainerOps)
+    tooling::CompilationDatabase const& Compilations)
     : reportLevel_(reportLevel)
     , config_(config)
     , Compilations(Compilations)
-    , Results(new ThreadSafeToolResults)
-    , Context(Results.get())
 {
 }
 
-llvm::Error
+Error
 ToolExecutor::
 execute(
-    llvm::ArrayRef<std::pair<
-        std::unique_ptr<tooling::FrontendActionFactory>,
-        tooling::ArgumentsAdjuster>> Actions)
+    std::unique_ptr<tooling::FrontendActionFactory> Action)
 {
-    if (Actions.empty())
-        return makeError("No action to execute.");
-
-    if (Actions.size() != 1)
-        return makeError(
-            "Only support executing exactly 1 action at this point.");
-
-    std::string ErrorMsg;
-    std::mutex TUMutex;
-    auto AppendError = [&](llvm::Twine Err)
-    {
-        std::unique_lock<std::mutex> LockGuard(TUMutex);
-        ErrorMsg += Err.str();
-    };
+    if(! Action)
+        return formatError("No action to execute.");
 
     // Get a copy of the filename strings
     std::vector<std::string> Files = Compilations.getAllFiles();
 
-    // Add a counter to track the progress.
-    auto const TotalNumStr = std::to_string(Files.size());
-    unsigned Counter = 0;
-    auto Count = [&]()
-    {
-        std::unique_lock<std::mutex> LockGuard(TUMutex);
-        return ++Counter;
-    };
-
-    auto const& Action = Actions.front();
-
     auto const processFile =
     [&](std::string Path)
     {
-        report::format(reportLevel_,
-            "[{}/{}] \"{}\"", Count(), TotalNumStr, Path);
-
         // Each thread gets an independent copy of a VFS to allow different
         // concurrent working directories.
         IntrusiveRefCntPtr<llvm::vfs::FileSystem> FS =
             llvm::vfs::createPhysicalFileSystem();
 
-        tooling::ClangTool Tool( Compilations, { Path },
+        // KRYSTIAN NOTE: ClangTool applies the SyntaxOnly, StripOutput,
+        // and StripDependencyFile argument adjusters
+        tooling::ClangTool Tool(Compilations, { Path },
             std::make_shared<PCHContainerOperations>(), FS);
-        Tool.appendArgumentsAdjuster(Action.second);
-        Tool.appendArgumentsAdjuster(getDefaultArgumentsAdjusters());
 
-        for (const auto& FileAndContent : OverlayFiles)
-            Tool.mapVirtualFile(FileAndContent.first(),
-                FileAndContent.second);
+        // suppress error messages from the tool
+        Tool.setPrintErrorMessage(false);
 
-        // VFALCO This needs to be tested
-        if (Tool.run(Action.first.get()))
-            AppendError(llvm::Twine("Failed to run action on ") + Path + "\n");
+        if(Tool.run(Action.get()))
+            formatError("Failed to run action on {}", Path).Throw();
     };
 
     // Run the action on all files in the database
@@ -154,12 +66,15 @@ execute(
     if(Files.size() > 1)
     {
         TaskGroup taskGroup(config_.threadPool());
-        // VFALCO is File move-constructed?
-        for(std::string File : std::move(Files))
+        for(std::size_t Index = 0;
+            std::string& File : Files)
         {
             taskGroup.async(
-            [&, Path = std::move(File)]()
+            [&, Idx = ++Index, Path = std::move(File)]()
             {
+                report::format(reportLevel_,
+                    "[{}/{}] \"{}\"", Idx, Files.size(), Path);
+
                 processFile(std::move(Path));
             });
         }
@@ -181,12 +96,9 @@ execute(
     Context.reportEnd(reportLevel_);
 
     if(! errors.empty())
-        return makeError(Error(errors).message());
+        return Error(errors);
 
-    if (!ErrorMsg.empty())
-        return makeError(ErrorMsg);
-
-    return llvm::Error::success();
+    return Error::success();
 }
 
 } // mrdox

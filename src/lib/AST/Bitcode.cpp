@@ -14,11 +14,13 @@
 namespace clang {
 namespace mrdox {
 
+#if 0
 void
 insertBitcode(
-    tooling::ExecutionContext& ex,
+    ExecutionContext& ex,
     Bitcode&& bitcode)
 {
+    // bitcode.data.
     ex.reportResult(
         StringRef(bitcode.id),
         std::move(bitcode.data));
@@ -26,7 +28,7 @@ insertBitcode(
 
 Bitcodes
 collectBitcodes(
-    tooling::ToolExecutor& ex)
+    ToolExecutor& ex)
 {
     Bitcodes results;
     ex.getToolResults()->forEachResult(
@@ -38,6 +40,7 @@ collectBitcodes(
         });
     return results;
 }
+#endif
 
 } // mrdox
 } // clang
