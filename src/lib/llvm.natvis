@@ -77,10 +77,30 @@ For later versions of Visual Studio, no setup is required.
     </Expand>
   </Type>
 
+  <!--
+  <Type Name="llvm::PointerIntPair&lt;llvm::PointerUnion&lt;*, *&gt;, *&gt;">
+    <Intrinsic Category="Data" Name="get_void_ptr" Expression="reinterpret_cast&lt;void*&gt;(Value.get_value() &amp; InfoTy::PointerBitMask)" />
+    <Intrinsic Category="Data" Name="get_ptr_helper" Expression="reinterpret_cast&lt;PointerUnion&lt;$T1, $T2&gt;&amp;&gt;(ptr)">
+      <Parameter Type="void*" Name="ptr"/>
+    </Intrinsic>
+    <Intrinsic Category="Data" Name="get_ptr" Expression="get_ptr_helper(get_void_ptr())"/>
+    <Intrinsic Category="Data" Name="get_int" Expression="($T3)((Value.get_value() &gt;&gt; InfoTy::IntShift) &amp; InfoTy::IntMask)" />
+    <Intrinsic Category="Data" Name="is_null" Expression="! (Value.get_value() &amp; InfoTy::PointerBitMask)" />
+
+    <DisplayString IncludeView="ptr">{get_ptr()}</DisplayString>
+    <DisplayString IncludeView="int">{get_int()}</DisplayString>
+    <DisplayString>{InfoTy::IntMask}: {get_ptr()} [{get_int()}]</DisplayString>
+    <Expand>
+      <Item Name="[ptr]">get_ptr()</Item>
+      <Item Name="[int]">get_int()</Item>
+    </Expand>
+  </Type>
+  -->
+
   <Type Name="llvm::PointerIntPair&lt;*&gt;">
     <Intrinsic Category="Data" Name="get_void_ptr" Expression="reinterpret_cast&lt;void*&gt;(Value.get_value() &amp; $T5::PointerBitMask)" />
-    <Intrinsic Category="Data" Name="get_ptr_helper" Expression="reinterpret_cast&lt;$T1&amp;&gt;(ptr)"><Parameter Type="uintptr_t" Name="ptr"/></Intrinsic>
-    <Intrinsic Category="Data" Name="get_ptr" Expression="get_ptr_helper((uintptr_t)get_void_ptr())"/>
+    <Intrinsic Category="Data" Name="get_ptr_helper" Expression="reinterpret_cast&lt;$T1&amp;&gt;(ptr)"><Parameter Type="void*" Name="ptr"/></Intrinsic>
+    <Intrinsic Category="Data" Name="get_ptr" Expression="get_ptr_helper(get_void_ptr())"/>
     <Intrinsic Category="Data" Name="get_int" Expression="($T3)((Value.get_value() &gt;&gt; $T5::IntShift) &amp; $T5::IntMask)" />
     <Intrinsic Category="Data" Name="is_null" Expression="! (Value.get_value() &amp; $T5::PointerBitMask)" />
 
@@ -94,12 +114,12 @@ For later versions of Visual Studio, no setup is required.
   </Type>
 
   <Type Name="llvm::PointerUnion&lt;*&gt;">
-    <Intrinsic Category="Data" Name="get_ptr" Expression="Val.get_ptr()" />
+    <Intrinsic Category="Data" Name="get_ptr" Expression="Val.get_void_ptr()" />
     <Intrinsic Category="Data" Name="get_int" Expression="Val.get_int()" />
-    <Intrinsic Category="Data" Name="is_null" Expression="! (uintptr_t)(Val.get_ptr())" />
-    
+    <Intrinsic Category="Data" Name="is_null" Expression="Val.is_null()" />
+
     <Expand>
-      <Synthetic Name="[Holds]">
+      <Synthetic Name="[holds]">
         <DisplayString Optional="true" Condition="get_int() == 0">{"$T1",sb}</DisplayString>
         <DisplayString Optional="true" Condition="get_int() == 1">{"$T2",sb}</DisplayString>
         <DisplayString Optional="true" Condition="get_int() == 2">{"$T3",sb}</DisplayString>
@@ -109,17 +129,17 @@ For later versions of Visual Studio, no setup is required.
         <DisplayString Optional="true" Condition="get_int() == 6">{"$T7",sb}</DisplayString>
         <DisplayString Optional="true" Condition="get_int() == 7">{"$T8",sb}</DisplayString>
       </Synthetic>
-      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 0">($T1)get_ptr()</Item>
-      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 1">($T2)get_ptr()</Item>
-      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 2">($T3)get_ptr()</Item>
-      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 3">($T4)get_ptr()</Item>
-      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 4">($T5)get_ptr()</Item>
-      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 5">($T6)get_ptr()</Item>
-      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 6">($T7)get_ptr()</Item>
-      <Item Name="[Ptr]" Optional="true" Condition="get_int() == 7">($T8)get_ptr()</Item>
+      <Item Name="[ptr]" Optional="true" Condition="get_int() == 0">($T1)get_ptr()</Item>
+      <Item Name="[ptr]" Optional="true" Condition="get_int() == 1">($T2)get_ptr()</Item>
+      <Item Name="[ptr]" Optional="true" Condition="get_int() == 2">($T3)get_ptr()</Item>
+      <Item Name="[ptr]" Optional="true" Condition="get_int() == 3">($T4)get_ptr()</Item>
+      <Item Name="[ptr]" Optional="true" Condition="get_int() == 4">($T5)get_ptr()</Item>
+      <Item Name="[ptr]" Optional="true" Condition="get_int() == 5">($T6)get_ptr()</Item>
+      <Item Name="[ptr]" Optional="true" Condition="get_int() == 6">($T7)get_ptr()</Item>
+      <Item Name="[ptr]" Optional="true" Condition="get_int() == 7">($T8)get_ptr()</Item>
     </Expand>
   </Type>
-  
+
   <Type Name="llvm::iplist&lt;*,*&gt;">
     <DisplayString Condition="Head == 0">{{ empty }}</DisplayString>
     <DisplayString Condition="Head != 0">{{ head={Head} }}</DisplayString>
@@ -220,11 +240,13 @@ For later versions of Visual Studio, no setup is required.
   </Type>
 
   <Type Name="llvm::StringMapEntry&lt;*&gt;">
-    <DisplayString Condition="keyLength == 0">empty</DisplayString>
-    <DisplayString Condition="keyLength != 0">({this+1,s8}, {second})</DisplayString>
+    <Intrinsic Category="Data" Name="key_data" Expression="(const char*)(this + 1)" />
+    <Intrinsic Category="Data" Name="key_size" Expression="(size_t)keyLength" />
+    <DisplayString Condition="key_size()">{{ key={key_data(),s8}, value={second,na} }}</DisplayString>
+    <DisplayString>empty</DisplayString>
     <Expand>
-      <Item Name="[key]">this+1,s</Item>
-      <Item Name="[value]" Condition="keyLength != 0">second</Item>
+      <Item Name="[key]">key_data(),[key_size()]na</Item>
+      <Item Name="[value]">second</Item>
     </Expand>
   </Type>
 

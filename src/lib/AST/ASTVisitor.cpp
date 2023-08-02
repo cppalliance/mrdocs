@@ -2567,7 +2567,7 @@ auto
 ASTVisitor::
 traverse(Args&&...)
 {
-    // no matching Traverse overload found
+    // no matching traverse overload found
     MRDOX_UNREACHABLE();
 }
 
@@ -2798,7 +2798,8 @@ class ASTVisitorConsumer
             *sema_);
 
         // traverse the translation unit
-        visitor.traverseContext(
+        // visitor.traverseContext(
+        visitor.traverseDecl(
             Context.getTranslationUnitDecl());
 
         // VFALCO If we returned from the function early
