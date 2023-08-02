@@ -18,13 +18,18 @@ namespace clang {
 namespace mrdox {
 
 class Generator;
-class PluginEnvironment
+class MRDOX_DECL PluginInfo
 {
-public:
-    virtual
-    void
-    addGenerator(std::unique_ptr<Generator> generator) = 0;
+ public:
+  const std::size_t size;
+  const int abiVersion;
+
+  bool
+  requireVersion(
+      int abiVersion_) const;
 };
+
+static_assert(std::is_standard_layout_v<PluginInfo>);
 
 }
 }
@@ -33,10 +38,8 @@ public:
 // this function must return false on version conflicts!
 extern "C"
 MRDOX_SYMBOL_EXPORT
-bool
+void
 MrDoxMain(
-    int versionMajor,
-    int versionMinor,
-    clang::mrdox::PluginEnvironment & env);
+    const clang::mrdox::PluginInfo & pluginInfo);
 
 #endif //MRDOX_PLUGIN_HPP

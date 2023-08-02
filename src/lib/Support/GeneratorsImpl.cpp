@@ -99,5 +99,12 @@ getGenerators() noexcept
     return getGeneratorsImpl();
 }
 
+void
+addGenerator(
+    std::unique_ptr<Generator> generator)
+{
+  getGeneratorsImpl().insert(std::move(generator));
+}
+
 } // mrdox
 } // clang

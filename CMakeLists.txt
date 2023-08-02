@@ -218,17 +218,19 @@ target_include_directories(mrdox
     "${PROJECT_SOURCE_DIR}/src"
 )
 
-target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
+target_compile_definitions(mrdox PRIVATE MRDOX_TOOL=1)
 target_link_libraries(mrdox PUBLIC mrdox-core)
+target_compile_features(mrdox PUBLIC cxx_std_20)
+
 if (MRDOX_CLANG)
     target_compile_options(
         mrdox
         PRIVATE
         -Wno-covered-switch-default
     )
-endif ()
+endif()
 
-set_target_properties(mrdox PROPERTIES
+set_target_properties(mrdox mrdox-core PROPERTIES
         ENABLE_EXPORTS ON
         POSITION_INDEPENDENT_CODE ON)
 
@@ -269,10 +271,10 @@ if (MRDOX_BUILD_TESTS)
     # test plugin to be loaded when running mrdox
     #-------------------------------------------------
 
-    add_library(mrdox-test-plugin SHARED src/test-plugin/test-plugin.cpp)
-    target_link_libraries(mrdox-test-plugin PRIVATE mrdox)
-    set_target_properties(mrdox-test-plugin PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/addons/plugins)
-
+    add_library(mrdox-test-plugin MODULE src/test-plugin/test-plugin.cpp)
+    set_target_properties(mrdox-test-plugin PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/addons/plugins)
+    target_link_libraries(mrdox-test-plugin PUBLIC mrdox)
     #-------------------------------------------------
     # XML lint
     #-------------------------------------------------

@@ -7,13 +7,12 @@
 #include <mrdox/Version.hpp>
 
 
-bool
+void
 MrDoxMain(
-    int versionMajor,
-    int versionMinor,
-    clang::mrdox::PluginEnvironment & env)
+    const clang::mrdox::PluginInfo & info)
 {
-    if (versionMajor != clang::mrdox::projectVersionMajor)
-        return false;
-    return true;
+    if (!info.requireVersion(clang::mrdox::projectVersionMajor))
+        return;
+
+    clang::mrdox::report::info("It works!");
 }

@@ -76,6 +76,15 @@ MRDOX_DECL
 Generators const&
 getGenerators() noexcept;
 
+/** Add a generator to the tool
+ *
+ * @param generator A unique ptr to the generator to add.
+ */
+MRDOX_DECL
+void
+addGenerator(
+    std::unique_ptr<Generator> generator);
+
 } // mrdox
 } // clang
 

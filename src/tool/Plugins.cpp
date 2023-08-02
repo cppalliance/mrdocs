@@ -15,40 +15,55 @@
 
 #include "lib/Support/GeneratorsImpl.hpp"
 
+#include <llvm/ADT/StringExtras.h>
 #include <llvm/Support/DynamicLibrary.h>
 
 namespace clang {
 namespace mrdox {
 
-class PluginEnvironmentImpl final : public PluginEnvironment
+bool
+PluginInfo
+::requireVersion(
+    int abiVersion_) const
 {
-public:
-    void
-    addGenerator(
-        std::unique_ptr<Generator> generator) override
+    if (abiVersion_ != projectVersionMajor)
     {
-        getGeneratorsImpl().insert(std::move(generator));
+        report::warn(
+            "Plugin not loaded because it required version {} but tool is version {}",
+            abiVersion_,
+            projectVersionMajor);
+        return false;
     }
-};
+    else
+        return true;
+}
+
+
+static const PluginInfo pluginInfo{
+    .size=sizeof(PluginInfo),
+    .abiVersion=projectVersionMajor};
 
 Error loadOnePlugin(
-    std::string pth,
-    PluginEnvironment & env)
+    std::string_view pluginPath_)
 {
-    if (pth.ends_with(".so") || pth.ends_with(".dll"))
+    std::string pluginPath;
+    pluginPath.resize(pluginPath_.size());
+    std::transform(pluginPath_.begin(), pluginPath_.end(), pluginPath.begin(), llvm::toLower);
+
+    if (pluginPath.ends_with(".so") || pluginPath.ends_with(".dll"))
     {
         std::string errMsg;
-        auto res = llvm::sys::DynamicLibrary::getPermanentLibrary(pth.c_str(), &errMsg);
+        auto res = llvm::sys::DynamicLibrary::getPermanentLibrary(pluginPath.c_str(), &errMsg);
         if (!res.isValid())
-            return formatError("Couldn't load {}, because '{}'", pth, errMsg);
+            return formatError("Couldn't load {}, because '{}'", pluginPath, errMsg);
 
         auto f = res.getAddressOfSymbol("MrDoxMain");
         if (f == nullptr)
-            return formatError("{}, doesn't export MrDoxMain symbol", pth);
+            return formatError("{}, doesn't export MrDoxMain symbol", pluginPath);
 
-        auto func = reinterpret_cast<decltype(&MrDoxMain)>(f);
-        if (!func(projectVersionMajor, projectVersionMinor, env))
-            return formatError("Couldn't load {} - version mismatch.", pth);
+        // so the user can see which plugin caused a version mismatch
+        report::info("Loading plugin {}", pluginPath);
+        reinterpret_cast<decltype(&MrDoxMain)>(f)(pluginInfo);
     }
     return Error::success();
 }
@@ -58,13 +73,7 @@ loadPlugins(
     const std::string & addonsDir)
 {
     auto pluginDir = files::appendPath(addonsDir, "plugins");
-    PluginEnvironmentImpl env;
-    return forEachFile(
-        pluginDir,
-        [&](std::string_view path) -> Error
-        {
-            return loadOnePlugin(std::string(path), env);
-        });
+    return forEachFile(pluginDir, &loadOnePlugin);
 }
 
 }
