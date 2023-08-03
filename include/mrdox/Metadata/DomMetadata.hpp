@@ -43,6 +43,12 @@ public:
     */
     virtual ~DomCorpus();
 
+    DomCorpus(DomCorpus const& corpus) = delete;
+    DomCorpus(DomCorpus&& corpus) noexcept;
+
+    DomCorpus& operator=(DomCorpus const& corpus) = delete;
+    DomCorpus& operator=(DomCorpus&& corpus) noexcept = delete;
+
     /** Constructor.
 
         Ownership of the specified Corpus is not

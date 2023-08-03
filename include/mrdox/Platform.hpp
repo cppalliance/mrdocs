@@ -38,6 +38,7 @@ namespace mrdox {
 
 // static linking
 #if defined(_MSC_VER)
+#pragma warning(disable:4251)
 # define MRDOX_SYMBOL_EXPORT __declspec(dllexport)
 # define MRDOX_SYMBOL_IMPORT __declspec(dllimport)
 # if defined(MRDOX_TOOL) // building tool

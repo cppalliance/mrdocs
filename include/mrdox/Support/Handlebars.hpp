@@ -635,7 +635,6 @@ public:
         @return The value of the property, or nullptr if the property does not exist
         @return `true` if the property was defined, `false` otherwise
      */
-    MRDOX_DECL
     std::pair<dom::Value, bool>
     lookupProperty(
         dom::Value const& context,

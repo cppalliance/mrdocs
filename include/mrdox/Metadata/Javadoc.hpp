@@ -605,6 +605,12 @@ public:
     */
     Javadoc() noexcept;
 
+    Javadoc(const Javadoc & ) = delete;
+    Javadoc& operator=(const Javadoc & ) = delete;
+
+    Javadoc(Javadoc && ) noexcept;
+    Javadoc& operator=(Javadoc && ) noexcept;
+
     /** Constructor
     */
     explicit
