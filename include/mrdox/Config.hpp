@@ -42,8 +42,37 @@ protected:
     Config() noexcept;
 
 public:
+    struct ExtractOptions
+    {
+        enum class Policy
+        {
+            Always,
+            Dependency,
+            Never
+        };
+
+        /** Extraction policy for references to external declarations.
+
+            This determines how declarations which are referenced by
+            explicitly extracted declarations are extracted.
+
+            Given a function parameter of type `std::string`, `std::string`
+            would be extracted if this option is set to `Policy::Always`.
+        */
+        Policy referencedDeclarations = Policy::Dependency;
+
+        Policy anonymousNamespaces = Policy::Always;
+
+        Policy inaccessibleMembers = Policy::Always;
+
+        Policy inaccessibleBases = Policy::Always;
+    };
+
     struct Settings
     {
+
+        ExtractOptions extractOptions;
+
         /** `true` if anonymous namespace members should be extracted and displayed.
 
             In some cases anonymous namespace members will

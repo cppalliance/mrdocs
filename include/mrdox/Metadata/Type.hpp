@@ -45,6 +45,7 @@ enum class TypeKind
     MemberPointer,
     Array,
     Function,
+    // KRYSTIAN FIXME: get rid of PackTypeInfo
     Pack
 };
 

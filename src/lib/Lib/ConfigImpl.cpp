@@ -32,10 +32,39 @@ template<>
 struct llvm::yaml::MappingTraits<
     clang::mrdox::ConfigImpl::SettingsImpl::FileFilter>
 {
-    static void mapping(IO &io,
+    static void mapping(IO& io,
         clang::mrdox::ConfigImpl::SettingsImpl::FileFilter& f)
     {
         io.mapOptional("include", f.include);
+    }
+};
+
+template<>
+struct llvm::yaml::ScalarEnumerationTraits<
+    clang::mrdox::Config::ExtractOptions::Policy>
+{
+    using Policy = clang::mrdox::Config::ExtractOptions::Policy;
+
+    static void enumeration(IO& io,
+        Policy& value)
+    {
+        io.enumCase(value, "always", Policy::Always);
+        io.enumCase(value, "dependency", Policy::Dependency);
+        io.enumCase(value, "never", Policy::Never);
+    }
+};
+
+template<>
+struct llvm::yaml::MappingTraits<
+    clang::mrdox::Config::ExtractOptions>
+{
+    static void mapping(IO &io,
+        clang::mrdox::Config::ExtractOptions& opts)
+    {
+        io.mapOptional("referenced-declarations", opts.referencedDeclarations);
+        io.mapOptional("anonymous-namespaces", opts.anonymousNamespaces);
+        io.mapOptional("inaccessible-members", opts.inaccessibleMembers);
+        io.mapOptional("inaccessible-bases", opts.inaccessibleBases);
     }
 };
 
@@ -71,6 +100,9 @@ struct llvm::yaml::MappingTraits<
     {
         io.mapOptional("defines",           cfg.defines);
         io.mapOptional("ignore-failures",   cfg.ignoreFailures);
+
+        io.mapOptional("extract-options",   cfg.extractOptions);
+
         io.mapOptional("include-anonymous", cfg.includeAnonymous);
         io.mapOptional("include-private",   cfg.includePrivate);
         io.mapOptional("multipage",         cfg.multiPage);

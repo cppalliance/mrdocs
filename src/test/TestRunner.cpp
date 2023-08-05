@@ -124,7 +124,7 @@ handleFile(
     // Get expected XML if it exists
     std::unique_ptr<llvm::MemoryBuffer> expectedXml;
     {
-        auto fileResult = llvm::MemoryBuffer::getFile(expectedPath, false);
+        auto fileResult = llvm::MemoryBuffer::getFile(expectedPath, false, true, true);
         if(fileResult)
             expectedXml = std::move(fileResult.get());
         else if(fileResult.getError() != std::errc::no_such_file_or_directory)

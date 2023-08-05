@@ -12,7 +12,7 @@
           <file path="ct_mft_expl_inline.cpp" line="5" class="def"/>
         </function>
       </template>
-      <template class="explicit">
+      <template class="explicit" id="fycIFVnUjGsczEihLemEC7pcV4w=">
         <targ class="type" type="int"/>
         <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
           <file path="ct_mft_expl_inline.cpp" line="7" class="def"/>

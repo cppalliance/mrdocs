@@ -12,9 +12,11 @@
 {{#if (eq class "normal")~}}
 {{>declarator-before return}}
 
-{{name~}}
 {{#if (eq template.kind "explicit")~}}
+    {{#if template.primary.id~}}{{>xref template.primary}}[{{name}}]{{else}}{{name}}{{/if~}}
     {{~>template-args args=template.args~}}
+{{else~}}
+    {{name~}}
 {{/if~}}
 {{else if (neq class "conversion")~}}
 {{name~}}

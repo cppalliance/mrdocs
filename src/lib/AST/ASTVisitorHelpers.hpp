@@ -236,7 +236,26 @@ convertToQualifierKind(
     if(quals & Qualifiers::Volatile)
         result |= QualifierKind::Volatile;
     return static_cast<QualifierKind>(result);
-    
+
+}
+
+FunctionClass
+convertToFunctionClass(
+    Decl::Kind kind)
+{
+    using OldKind = Decl::Kind;
+    using NewKind = FunctionClass;
+    switch(kind)
+    {
+    case OldKind::Function:          return NewKind::Normal;
+    case OldKind::CXXMethod:         return NewKind::Normal;
+    case OldKind::CXXConstructor:    return NewKind::Constructor;
+    case OldKind::CXXConversion:     return NewKind::Conversion;
+    case OldKind::CXXDestructor:     return NewKind::Destructor;
+    case OldKind::CXXDeductionGuide: return NewKind::Deduction;
+    default:
+        MRDOX_UNREACHABLE();
+    }
 }
 
 // ----------------------------------------------------------------
@@ -248,19 +267,19 @@ template<
     requires std::derived_from<DeclTy, Decl>
 decltype(auto)
 visit(
-    DeclTy* d,
+    DeclTy* D,
     Visitor&& visitor,
     Args&&... args)
 {
-    switch(d->getKind())
+    switch(D->getKind())
     {
-    #define ABSTRACT_DECL(DECL)
+    #define ABSTRACT_DECL(TYPE)
     #define DECL(DERIVED, BASE) \
         case Decl::DERIVED: \
         if constexpr(std::derived_from<DERIVED##Decl, DeclTy>) \
             return std::forward<Visitor>(visitor)( \
                 static_cast<add_cv_from_t<DeclTy, \
-                    DERIVED##Decl>*>(d), \
+                    DERIVED##Decl>*>(D), \
                 std::forward<Args>(args)...); \
         else \
             MRDOX_UNREACHABLE();
@@ -273,11 +292,11 @@ visit(
 }
 
 template<typename DeclTy>
-consteval 
-Decl::Kind 
+consteval
+Decl::Kind
 DeclToKindImpl() = delete;
 
-#define ABSTRACT_DECL(DECL)
+#define ABSTRACT_DECL(TYPE)
 #define DECL(DERIVED, BASE) \
     template<> \
     consteval \
@@ -287,8 +306,8 @@ DeclToKindImpl() = delete;
 #include <clang/AST/DeclNodes.inc>
 
 template<typename DeclTy>
-consteval 
-Decl::Kind 
+consteval
+Decl::Kind
 DeclToKind()
 {
     return DeclToKindImpl<
@@ -304,19 +323,19 @@ template<
     requires std::derived_from<TypeTy, Type>
 decltype(auto)
 visit(
-    TypeTy* t,
+    TypeTy* T,
     Visitor&& visitor,
     Args&&... args)
 {
-    switch(t->getTypeClass())
-    {
     #define ABSTRACT_TYPE(DERIVED, BASE)
+    switch(T->getTypeClass())
+    {
     #define TYPE(DERIVED, BASE) \
         case Type::DERIVED: \
         if constexpr(std::derived_from<DERIVED##Type, TypeTy>) \
             return std::forward<Visitor>(visitor)( \
                 static_cast<add_cv_from_t<TypeTy, \
-                    DERIVED##Type>*>(t), \
+                    DERIVED##Type>*>(T), \
                 std::forward<Args>(args)...); \
         else \
             MRDOX_UNREACHABLE();
@@ -329,7 +348,7 @@ visit(
 }
 
 template<typename TypeTy>
-consteval 
+consteval
 Type::TypeClass
 TypeToKindImpl() = delete;
 
@@ -343,7 +362,7 @@ TypeToKindImpl() = delete;
 #include <clang/AST/TypeNodes.inc>
 
 template<typename TypeTy>
-consteval 
+consteval
 Type::TypeClass
 TypeToKind()
 {
@@ -360,11 +379,11 @@ template<
     requires std::derived_from<TypeLocTy, TypeLoc>
 decltype(auto)
 visit(
-    TypeLocTy* t,
+    TypeLocTy* T,
     Visitor&& visitor,
     Args&&... args)
 {
-    switch(t->getTypeLocClass())
+    switch(T->getTypeLocClass())
     {
     #define ABSTRACT_TYPELOC(DERIVED, BASE)
     #define TYPELOC(DERIVED, BASE) \
@@ -372,20 +391,20 @@ visit(
         if constexpr(std::derived_from<DERIVED##TypeLoc, TypeLocTy>) \
             return std::forward<Visitor>(visitor)( \
                 static_cast<add_cv_from_t<TypeLocTy, \
-                    DERIVED##TypeLoc>*>(t), \
+                    DERIVED##TypeLoc>*>(T), \
                 std::forward<Args>(args)...); \
         else \
             MRDOX_UNREACHABLE();
 
     #include <clang/AST/TypeLocNodes.def>
-    
+
     default:
         MRDOX_UNREACHABLE();
     }
 }
 
 template<typename TypeLocTy>
-consteval 
+consteval
 TypeLoc::TypeLocClass
 TypeLocToKindImpl() = delete;
 
@@ -399,7 +418,7 @@ TypeLocToKindImpl() = delete;
 #include <clang/AST/TypeLocNodes.def>
 
 template<typename TypeLocTy>
-consteval 
+consteval
 TypeLoc::TypeLocClass
 TypeLocToKind()
 {

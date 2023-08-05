@@ -1,16 +1,11 @@
 {{#if pointee-type~}}
     {{~>declarator-before pointee-type~}}
     {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))}}({{/if~}}
-{{else if element-type~}}
-    {{~>declarator-before element-type~}}
-{{else if return-type~}}
-    {{~>declarator-before return-type~}}
-{{else if pattern-type~}}
-    {{~>declarator-before pattern-type}}...
 {{~/if~}}
-{{#if parent-type~}}
-    {{#if parent-type}}{{>declarator parent-type}}::{{/if~}}
-{{/if~}}
+{{#if element-type~}}{{~>declarator-before element-type~}}{{/if~}}
+{{#if return-type~}}{{~>declarator-before return-type~}}{{/if~}}
+{{#if pattern-type~}}{{~>declarator-before pattern-type}}...{{/if~}}
+{{#if parent-type~}}{{>declarator parent-type}}::{{/if~}}
 {{#if (eq kind "lvalue-reference")}}&{{/if~}}
 {{#if (eq kind "rvalue-reference")}}&&{{/if~}}
 {{#if (eq kind "pointer")}}*{{/if~}}

@@ -229,8 +229,8 @@ For later versions of Visual Studio, no setup is required-->
         <DisplayString>{Name,s}</DisplayString>
     </Type>
     <Type Name="clang::SourceLocation">
-        <DisplayString Condition="ID == 0">invalid</DisplayString>
         <DisplayString Condition="ID != 0">{ID}</DisplayString>
+        <DisplayString>invalid</DisplayString>
         <Expand HideRawView="true"/>
     </Type>
 
@@ -686,6 +686,7 @@ For later versions of Visual Studio, no setup is required-->
         <DisplayString Condition="Value.get_int() == 5">const volatile {get_type_ptr(),na}</DisplayString>
         <DisplayString Condition="Value.get_int() == 6">volatile restrict {get_type_ptr(),na}</DisplayString>
         <DisplayString Condition="Value.get_int() == 7">const volatile restrict {get_type_ptr(),na}</DisplayString>
+        <DisplayString>&lt;null&gt;</DisplayString>
 
         <Expand>
             <Synthetic Name="[fast qualifiers]" Condition="Value.get_int()">
@@ -1415,6 +1416,25 @@ For later versions of Visual Studio, no setup is required-->
             <Item Name="TemplateSpecialization" Condition="! TemplateOrSpecialization.is_null() &amp;&amp; TemplateOrSpecialization.get_int() == 2">
                 (FunctionTemplateSpecializationInfo*)TemplateOrSpecialization.get_ptr()
             </Item>
+
+            <Item Name="isDefinition">
+                (FunctionDeclBits.IsDeleted &amp;&amp; ! FunctionDeclBits.IsDefaulted) ||
+                ((! FunctionDeclBits.HasDefaultedFunctionInfo &amp;&amp; Body.Ptr) || FunctionDeclBits.IsLateTemplateParsed) ||
+                FunctionDeclBits.HasSkippedBody ||
+                FunctionDeclBits.WillHaveBody
+            </Item>
+            <!--
+            <Synthetic Name="[definition]">
+                <Expand>
+                    <Item Name="isDefinition">
+                        (FunctionDeclBits.IsDeleted &amp;&amp; ! FunctionDeclBits.IsDefaulted) ||
+                        ((! FunctionDeclBits.HasDefaultedFunctionInfo &amp;&amp; Body.Ptr) || FunctionDeclBits.IsLateTemplateParsed) ||
+                        FunctionDeclBits.HasSkippedBody ||
+                        FunctionDeclBits.WillHaveBody
+                    </Item>
+                </Expand>
+            </Synthetic>
+            -->
 
             <Synthetic Name="[parameters]">
                 <DisplayString Condition="ParamInfo &amp;&amp; DeclType.is(Type::FunctionProto)">size = {DeclType.get_type_ptr()-&gt;FunctionTypeBits.NumParams}</DisplayString>
