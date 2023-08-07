@@ -51,7 +51,7 @@ struct HandlebarsOptions
     /** Disables standalone tag removal when set to true
 
         When set, blocks and partials that are on their own line will not
-        remove the whitespace on that line
+        remove the whitespace on that line.
      */
     bool ignoreStandalone = false;
 
@@ -1156,7 +1156,8 @@ private:
         OutputRef &out,
         dom::Value const& context,
         HandlebarsOptions const& opt,
-        detail::RenderState& state) const;
+        detail::RenderState& state,
+        bool isChainedBlock) const;
 
     void
     renderPartial(

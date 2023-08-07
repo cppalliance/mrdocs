@@ -530,10 +530,17 @@ checkPath(std::string_view path0, detail::RenderState const& state)
 {
     std::string_view path = path0;
     std::string_view seg = popFirstSegment(path);
+    bool areDotDots = seg == "..";
     seg = popFirstSegment(path);
     while (!seg.empty())
     {
-        if (isCurrentContextSegment(seg)) {
+        bool isDotDot = seg == "..";
+        bool invalidPath =
+            (!areDotDots && isDotDot) ||
+            isCurrentContextSegment(seg);
+        areDotDots = areDotDots && isDotDot;
+        if (invalidPath)
+        {
             std::string msg =
                 "Invalid path: " +
                 std::string(path0.substr(0, seg.data() + seg.size() - path0.data()));
@@ -841,6 +848,12 @@ struct Handlebars::Tag {
 
     // Whether the whole tag content is escaped
     bool escaped{false};
+
+    // Tag is standalone in its context
+    bool isStandalone{false};
+
+    // Standalone tag indent
+    std::size_t standaloneIndent{0};
 };
 
 // Find next expression in tag content
@@ -926,7 +939,9 @@ findExpr(std::string_view & expr, std::string_view tagContent)
 
 // Parse a tag into helper, expression and content
 Handlebars::Tag
-parseTag(std::string_view tagStr)
+parseTag(
+    std::string_view tagStr,
+    std::string_view context)
 {
     MRDOX_ASSERT(tagStr.size() >= 4);
     Handlebars::Tag t;
@@ -938,7 +953,9 @@ parseTag(std::string_view tagStr)
     t.buffer = tagStr;
     tagStr = tagStr.substr(2 + t.escaped, tagStr.size() - 4 - t.escaped);
 
-    // Force no HTML escape
+    // ==============================================================
+    // No HTML escape {{{ ... }}}
+    // ==============================================================
     t.forceNoHTMLEscape = false;
     if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
     {
@@ -951,8 +968,11 @@ parseTag(std::string_view tagStr)
         }
     }
 
-    // Just get the content of expression is escaped
+    // ==============================================================
+    // Escaped tag \\{{ ... }}
+    // ==============================================================
     if (t.escaped) {
+        // Just get the content of expression is escaped
         t.content = tagStr;
         t.arguments = tagStr;
         return t;
@@ -962,13 +982,17 @@ parseTag(std::string_view tagStr)
     // This makes invalid tags like "{{ #if condition }}" work instead of failing.
     tagStr = trim_spaces(tagStr);
 
-    // Identify whitespace removal
+    // ==============================================================
+    // Whitespace control
+    // ==============================================================
     if (tagStr.starts_with('~')) {
+        // {{~ ... }}
         t.removeLWhitespace = true;
         tagStr.remove_prefix(1);
         tagStr = trim_spaces(tagStr);
     }
     if (tagStr.ends_with('~')) {
+        // {{ ... ~}}
         t.removeRWhitespace = true;
         tagStr.remove_suffix(1);
         tagStr = trim_spaces(tagStr);
@@ -977,6 +1001,7 @@ parseTag(std::string_view tagStr)
     // Force no HTML escape after whitespace removal
     if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
     {
+        // {{~{ ... }~}}
         t.forceNoHTMLEscape = true;
         tagStr = tagStr.substr(1, tagStr.size() - 2);
         if (!tagStr.empty() && tagStr.front() == '{' && tagStr.back() == '}')
@@ -986,7 +1011,9 @@ parseTag(std::string_view tagStr)
         }
     }
 
-    // Empty tag
+    // ==============================================================
+    // Empty tags
+    // ==============================================================
     if (tagStr.empty())
     {
         t.type = ' ';
@@ -997,6 +1024,9 @@ parseTag(std::string_view tagStr)
         return t;
     }
 
+    // ==============================================================
+    // Unescaped with '&' {{& ... }}
+    // ==============================================================
     // '&' is also used to unescape expressions
     if (tagStr.front() == '&') {
         t.forceNoHTMLEscape = true;
@@ -1004,7 +1034,9 @@ parseTag(std::string_view tagStr)
         tagStr = trim_spaces(tagStr);
     }
 
-    // Find tag type
+    // ==============================================================
+    // Tag type {{# ... }}, {{/ ... }}, {{^ ... }}, {{> ... }}, {{! ... }}
+    // ==============================================================
     if (tagStr.starts_with('^')) {
         t.type = '^';
         tagStr.remove_prefix(1);
@@ -1043,7 +1075,9 @@ parseTag(std::string_view tagStr)
         t.content = tagStr;
     }
 
-    // Get block parameters
+    // ==============================================================
+    // Block parameters {{# ... as | ... |}}
+    // ==============================================================
     if (tagStr.ends_with('|')) {
         auto blockStart = tagStr.find_last_of('|', tagStr.size() - 2);
         if (blockStart != std::string_view::npos) {
@@ -1059,7 +1093,9 @@ parseTag(std::string_view tagStr)
         }
     }
 
-    // Find helper and expression
+    // ==============================================================
+    // Helper and arguments {{ helper arg... }}
+    // ==============================================================
     std::string_view expr;
     if (findExpr(expr, tagStr)) {
         t.helper = expr;
@@ -1068,6 +1104,39 @@ parseTag(std::string_view tagStr)
     } else {
         t.helper = tagStr;
         t.arguments = {};
+    }
+
+    // ==============================================================
+    // Check if tag is standalone
+    // ==============================================================
+    static constexpr std::array<char, 5> block_tag_types({'#', '^', '/', '>', '*'});
+    bool const isBlock = std::ranges::find(
+        block_tag_types, t.type) != block_tag_types.end();
+    if (isBlock)
+    {
+        MRDOX_ASSERT(t.buffer.data() >= context.data());
+        MRDOX_ASSERT(t.buffer.data() + t.buffer.size() <= context.data() + context.size());
+
+        // Check if tag is standalone
+        std::string_view beforeTag = context.substr(
+            0, t.buffer.data() - context.data());
+        auto posL = beforeTag.find_last_not_of(' ');
+        bool const isStandaloneL =
+            posL == std::string_view::npos || beforeTag[posL] == '\n';
+        std::string_view afterTag = context.substr(
+            t.buffer.data() + t.buffer.size() - context.data());
+        auto posR = afterTag.find_first_not_of(' ');
+        bool const isStandaloneR =
+            posR == std::string_view::npos || afterTag[posR] == '\n';
+        t.isStandalone = isStandaloneL && isStandaloneR;
+
+        // Get standalone indent
+        std::string_view lastLine = beforeTag;
+        if (posL != std::string_view::npos)
+        {
+            lastLine = beforeTag.substr(posL + 1);
+        }
+        t.standaloneIndent = t.isStandalone ? lastLine.size() : 0;
     }
     return t;
 }
@@ -1106,34 +1175,59 @@ render_to(
     detail::RenderState& state) const
 {
     while (!state.templateText.empty()) {
+        // ==============================================================
+        // Find next tag
+        // ==============================================================
         std::string_view tagStr;
         if (!findTag(tagStr, state.templateText))
         {
             out << state.templateText;
             break;
         }
-        bool const doubleEscaped = tagStr.starts_with("\\\\");
-        if (doubleEscaped) {
+        bool const isDoubleEscaped = tagStr.starts_with("\\\\");
+        if (isDoubleEscaped) {
             tagStr.remove_prefix(2);
         }
         std::size_t tagStartPos = tagStr.data() - state.templateText.data();
-        Tag tag = parseTag(tagStr);
-        std::size_t templateEndPos = tagStartPos - doubleEscaped;
+        Tag tag = parseTag(tagStr, state.templateText0);
+
+        // ==============================================================
+        // Render template text before tag
+        // ==============================================================
+        std::string_view beforeTag = state.templateText.substr(0, tagStartPos - isDoubleEscaped);
         if (tag.removeLWhitespace) {
-            std::string_view beforeTag = state.templateText.substr(0, tagStartPos);
-            auto pos = beforeTag.find_last_not_of(" \t\r\n");
-            if (pos != std::string_view::npos) {
-                templateEndPos = pos + 1;
-            } else {
-                templateEndPos = 0;
+            beforeTag = trim_rspaces(beforeTag);
+        }
+        else if (!opt.ignoreStandalone && tag.isStandalone)
+        {
+            if (tag.type == '#' || tag.type == '^' || tag.type == '/')
+            {
+                beforeTag = trim_rdelimiters(beforeTag, " ");
             }
         }
-        out << state.templateText.substr(0, templateEndPos);
+        out << beforeTag;
+
+        // ==============================================================
+        // Render escaped tag
+        // ==============================================================
         state.templateText.remove_prefix(tagStartPos + tagStr.size());
-        if (!tag.escaped) {
-            renderTag(tag, out, context, opt, state);
-        } else {
+        if (tag.escaped)
+        {
             out << tag.buffer.substr(1);
+            continue;
+        }
+
+        // ==============================================================
+        // Render tag
+        // ==============================================================
+        renderTag(tag, out, context, opt, state);
+
+        // ==============================================================
+        // Advance template text
+        // ==============================================================
+        if (tag.removeRWhitespace)
+        {
+            state.templateText = trim_lspaces(state.templateText);
         }
     }
 }
@@ -1545,30 +1639,53 @@ getPartial(
 bool
 parseBlock(
     std::string_view blockName,
-    Handlebars::Tag const &tag,
+    Handlebars::Tag const& tag,
+    HandlebarsOptions const& opt,
+    detail::RenderState const& state,
     std::string_view &templateText,
     OutputRef &out,
     std::string_view &fnBlock,
-    std::string_view &inverseBlock,
-    Handlebars::Tag &inverseTag) {
+    std::string_view &inverseBlocks,
+    Handlebars::Tag &inverseTag)
+{
+    // ==============================================================
+    // Initial blocks
+    // ==============================================================
     fnBlock=templateText;
-    inverseBlock = {};
+    inverseBlocks = {};
+    if (!opt.ignoreStandalone && tag.isStandalone)
+    {
+        fnBlock = trim_ldelimiters(fnBlock, " ");
+        if (fnBlock.starts_with('\n'))
+        {
+            fnBlock.remove_prefix(1);
+        }
+    }
+
+    // ==============================================================
+    // Iterate over the template to find tags and blocks
+    // ==============================================================
     Handlebars::Tag closeTag;
     int l = 1;
     std::string_view* curBlock = &fnBlock;
     while (!templateText.empty())
     {
+        // ==============================================================
+        // Find next tag
+        // ==============================================================
         std::string_view tagStr;
         if (!findTag(tagStr, templateText))
             break;
 
-        Handlebars::Tag curTag = parseTag(tagStr);
+        Handlebars::Tag curTag = parseTag(tagStr, state.templateText0);
 
         // move template after the tag
         auto tag_pos = curTag.buffer.data() - templateText.data();
         templateText.remove_prefix(tag_pos + curTag.buffer.size());
 
-        // update section level
+        // ==============================================================
+        // Update section level
+        // ==============================================================
         if (!tag.rawBlock) {
             if (curTag.type == '#' || curTag.type2 == '#') {
                 // Opening a child section tag
@@ -1577,15 +1694,31 @@ parseBlock(
                 // Closing a section tag
                 --l;
                 if (l == 0) {
-                    // Closing the main section tag
+                    // ==============================================================
+                    // Close main section tag
+                    // ==============================================================
                     closeTag = curTag;
-                    if (closeTag.content != blockName) {
-                        out << fmt::format(R"([mismatched closing tag: "{}" for block name "{}")", closeTag.buffer, blockName);
+                    if (closeTag.content != blockName)
+                    {
+                        auto res = find_position_in_text(state.templateText0, blockName);
+                        std::string msg(blockName);
+                        msg += " doesn't match ";
+                        msg += closeTag.content;
+                        if (res)
+                        {
+                            throw HandlebarsError(msg, res.line, res.column, res.pos);
+                        }
+                        throw HandlebarsError(msg);
+
                         return false;
                     }
                     *curBlock = {curBlock->data(), closeTag.buffer.data()};
                     if (closeTag.removeLWhitespace) {
                         *curBlock = trim_rspaces(*curBlock);
+                    }
+                    else if (!opt.ignoreStandalone && closeTag.isStandalone)
+                    {
+                        *curBlock = trim_rdelimiters(*curBlock, " ");
                     }
                     if (closeTag.removeRWhitespace) {
                         templateText = trim_lspaces(templateText);
@@ -1594,27 +1727,51 @@ parseBlock(
                 }
             }
 
-            // check inversion
-            if (l == 1 && curBlock != &inverseBlock) {
+            // ==============================================================
+            // Check chained block inversion
+            // ==============================================================
+            bool const isMainBlock = curBlock != &inverseBlocks;
+            bool const isEndOfMainBlock = l == 1 && isMainBlock;
+            if (isEndOfMainBlock) {
                 if (curTag.type == '^') {
                     inverseTag = curTag;
+
+                    // ==============================================================
+                    // Finalize current block content
+                    // ==============================================================
                     *curBlock = {curBlock->data(), curTag.buffer.data()};
-                    if (curTag.removeLWhitespace) {
+                    if (inverseTag.removeLWhitespace) {
                         *curBlock = trim_rspaces(*curBlock);
                     }
                     if (tag.removeRWhitespace) {
                         *curBlock = trim_lspaces(*curBlock);
                     }
-                    curBlock = &inverseBlock;
+
+                    // ==============================================================
+                    // Inverse current block
+                    // ==============================================================
+                    curBlock = &inverseBlocks;
                     *curBlock = templateText;
-                    if (curTag.removeRWhitespace) {
+                    if (inverseTag.removeRWhitespace) {
                         *curBlock = trim_lspaces(*curBlock);
                         templateText = trim_lspaces(templateText);
                     }
+#if 0
+                    else if (!opt.ignoreStandalone && inverseTag.isStandalone)
+                    {
+                        *curBlock = trim_ldelimiters(*curBlock, " ");
+                        if (curBlock->starts_with('\n'))
+                        {
+                            curBlock->remove_prefix(1);
+                        }
+                    }
+#endif
                 }
             }
         } else {
-            // raw block
+            // ==============================================================
+            // Raw blocks
+            // ==============================================================
             if (curTag.type == '/' && tag.rawBlock == curTag.rawBlock && blockName == curTag.content) {
                 // Closing the raw section: l = 0;
                 closeTag = curTag;
@@ -1630,31 +1787,21 @@ parseBlock(
         }
     }
 
-    // If the first line of fnBlock is only whitespaces, remove it
-    // This is a small undocumented detail of handlebars.js that makes
-    // the output match what's expected by the users.
-    auto posLB = fnBlock.find_first_of("\r\n");
-    if (posLB != std::string_view::npos)
+    // ==============================================================
+    // Apply close tag whitespace control
+    // ==============================================================
+    if (closeTag.removeRWhitespace) {
+        templateText = trim_lspaces(templateText);
+    }
+    else if (!opt.ignoreStandalone && closeTag.isStandalone)
     {
-        std::string_view first_line = fnBlock.substr(0, posLB);
-        if (std::ranges::all_of(first_line, [](char c) { return c == ' '; })) {
-            fnBlock.remove_prefix(posLB);
-            posLB = fnBlock.find_first_not_of("\r\n");
-            if (posLB != std::string_view::npos)
-            {
-                fnBlock.remove_prefix(posLB);
-            }
+        templateText = trim_ldelimiters(templateText, " ");
+        if (templateText.starts_with('\n'))
+        {
+            templateText.remove_prefix(1);
         }
     }
-    // Do the same for the last line
-    auto posRB = fnBlock.find_last_of("\r\n");
-    if (posRB != std::string_view::npos)
-    {
-        std::string_view last_line = fnBlock.substr(posRB + 1);
-        if (std::ranges::all_of(last_line, [](char c) { return c == ' '; })) {
-            fnBlock.remove_suffix(last_line.size());
-        }
-    }
+
     return true;
 }
 
@@ -1670,7 +1817,7 @@ renderTag(
     detail::RenderState& state) const {
     if (tag.type == '#' || tag.type == '^')
     {
-        renderBlock(tag.helper, tag, out, context, opt, state);
+        renderBlock(tag.helper, tag, out, context, opt, state, false);
     }
     else if (tag.type == '>')
     {
@@ -1683,10 +1830,6 @@ renderTag(
     else if (tag.type != '/' && tag.type != '!')
     {
         renderExpression(tag, out, context, opt, state);
-    }
-    if (tag.removeRWhitespace)
-    {
-        state.templateText = trim_lspaces(state.templateText);
     }
 }
 
@@ -1821,7 +1964,7 @@ renderDecorator(
     std::string_view inverseBlock;
     Tag inverseTag;
     if (tag.type2 == '#') {
-        if (!parseBlock(tag.helper, tag, state.templateText, out, fnBlock, inverseBlock, inverseTag)) {
+        if (!parseBlock(tag.helper, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag)) {
             return;
         }
     }
@@ -1874,7 +2017,7 @@ renderPartial(
     Tag inverseTag;
     if (tag.type2 == '#')
     {
-        if (!parseBlock(tag.helper, tag, state.templateText, out, fnBlock, inverseBlock, inverseTag))
+        if (!parseBlock(tag.helper, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag))
         {
             return;
         }
@@ -2023,35 +2166,25 @@ renderPartial(
     }
 
     // ==============================================================
-    // Determine if partial is standalone
-    // ==============================================================
-    auto beforePartial = state.templateText0.substr(
-        0, tag.buffer.data() - state.templateText0.data());
-    std::string_view lastLine = beforePartial;
-    auto pos = beforePartial.find_last_of("\r\n");
-    if (pos != std::string_view::npos)
-    {
-        lastLine = beforePartial.substr(pos + 1);
-    }
-    bool const isStandalone = std::ranges::all_of(
-        lastLine, [](char c) { return c == ' '; });
-    std::size_t const partialIndent =
-        !opt.preventIndent && isStandalone ? lastLine.size() : 0;
-
-    // ==============================================================
     // Render partial
     // ==============================================================
+    // Partial state
+    std::string_view templateText0 = state.templateText0;
+    state.templateText0 = partial_content;
     std::string_view templateText = state.templateText;
     state.templateText = partial_content;
     bool const isPartialBlock = partialName == "@partial-block";
     state.partialBlockLevel -= isPartialBlock;
-    out.setIndent(out.getIndent() + partialIndent);
+    out.setIndent(out.getIndent() + tag.standaloneIndent * !opt.preventIndent);
     state.compatStack.emplace_back(context);
+    // Render
     this->render_to(out, partialCtx, opt, state);
+    // Restore state
     state.compatStack.pop_back();
-    out.setIndent(out.getIndent() - partialIndent);
+    out.setIndent(out.getIndent() - tag.standaloneIndent * !opt.preventIndent);
     state.partialBlockLevel += isPartialBlock;
     state.templateText = templateText;
+    state.templateText0 = templateText0;
 
     if (tag.type2 == '#')
     {
@@ -2063,19 +2196,12 @@ renderPartial(
     // ==============================================================
     // Remove standalone whitespace
     // ==============================================================
-    if (tag.removeRWhitespace)
+    if (!opt.ignoreStandalone && tag.isStandalone)
     {
-        state.templateText = trim_lspaces(state.templateText);
-    }
-    else if (!opt.ignoreStandalone)
-    {
-        if (isStandalone)
+        state.templateText = trim_ldelimiters(state.templateText, " ");
+        if (state.templateText.starts_with('\n'))
         {
-            state.templateText = trim_ldelimiters(state.templateText, " ");
-            if (state.templateText.starts_with('\n'))
-            {
-                state.templateText.remove_prefix(1);
-            }
+            state.templateText.remove_prefix(1);
         }
     }
 }
@@ -2088,7 +2214,8 @@ renderBlock(
     OutputRef &out,
     dom::Value const& context,
     HandlebarsOptions const& opt,
-    detail::RenderState& state) const {
+    detail::RenderState& state,
+    bool isChainedBlock) const {
     if (tag.removeRWhitespace) {
         state.templateText = trim_lspaces(state.templateText);
     }
@@ -2099,9 +2226,7 @@ renderBlock(
     std::string_view fnBlock;
     std::string_view inverseBlock;
     Tag inverseTag;
-    if (!parseBlock(blockName, tag, state.templateText, out, fnBlock, inverseBlock, inverseTag)) {
-        return;
-    }
+    parseBlock(blockName, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag);
 
     // ==============================================================
     // Setup helper parameters
@@ -2185,6 +2310,14 @@ renderBlock(
                 // i.e. {{#helper}}...{{^}}...{{/helper}} instead of
                 //      {{#helper}}...{{^helper2}}...{{/helper}}
                 // Render the inverse block with the specified context
+                if (!opt.ignoreStandalone && inverseTag.isStandalone)
+                {
+                    state.templateText = trim_ldelimiters(state.templateText, " ");
+                    if (state.templateText.starts_with('\n'))
+                    {
+                        state.templateText.remove_prefix(1);
+                    }
+                }
                 render_to(os, item, opt, state);
             }
             else
@@ -2194,10 +2327,10 @@ renderBlock(
                         createFrame(newBlockValues, state.blockValues);
                     dom::Object blockValues = state.blockValues;
                     state.blockValues = std::move(blockValuesOverlay);
-                    renderBlock(blockName, inverseTag, os, item, opt, state);
+                    renderBlock(blockName, inverseTag, os, item, opt, state, true);
                     state.blockValues = std::move(blockValues);
                 } else {
-                    renderBlock(blockName, inverseTag, os, item, opt, state);
+                    renderBlock(blockName, inverseTag, os, item, opt, state, true);
                 }
             }
             state.templateText = templateText;
@@ -2219,6 +2352,12 @@ renderBlock(
             dom::Object const &/* newBlockValues */) -> void {
             // noop: No inverseBlock for raw block
         };
+    }
+
+    bool const isStandaloneInvertedSection = tag.type == '^' && !isChainedBlock;
+    if (isStandaloneInvertedSection)
+    {
+        std::swap(cb.fn_, cb.inverse_);
     }
 
     // ==============================================================
