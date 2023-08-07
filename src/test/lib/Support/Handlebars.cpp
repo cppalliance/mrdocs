@@ -1236,11 +1236,11 @@ whitespace_control()
 
         // should strip whitespace around inverse block calls
         {
-            BOOST_TEST(hbs.render(" {{~^if foo~}} bar {{~/if~}} ", hash) == "bar");
-            BOOST_TEST(hbs.render(" {{^if foo~}} bar {{/if~}} ", hash) == " bar ");
-            BOOST_TEST(hbs.render(" {{~^if foo}} bar {{~/if}} ", hash) == " bar ");
-            BOOST_TEST(hbs.render(" {{^if foo}} bar {{/if}} ", hash) == "  bar  ");
-            BOOST_TEST(hbs.render(" \n\n{{~^if foo~}} \n\nbar \n\n{{~/if~}}\n\n ", hash) == "bar");
+            BOOST_TEST(hbs.render(" {{~^if foo~}} bar {{~/if~}} ") == "bar");
+            BOOST_TEST(hbs.render(" {{^if foo~}} bar {{/if~}} ") == " bar ");
+            BOOST_TEST(hbs.render(" {{~^if foo}} bar {{~/if}} ") == " bar ");
+            BOOST_TEST(hbs.render(" {{^if foo}} bar {{/if}} ") == "  bar  ");
+            BOOST_TEST(hbs.render(" \n\n{{~^if foo~}} \n\nbar \n\n{{~/if~}}\n\n ") == "bar");
         }
 
         // should strip whitespace around complex block calls
@@ -1669,6 +1669,7 @@ partial_blocks()
 void
 inline_partials()
 {
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/partials.js
     Handlebars hbs;
 
     // should define inline partials for template
@@ -1781,6 +1782,7 @@ inline_partials()
 void
 standalone_partials()
 {
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/partials.js
     Handlebars hbs;
 
     dom::Object hash;
@@ -1827,6 +1829,7 @@ standalone_partials()
 void
 partial_compat_mode()
 {
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/partials.js
     Handlebars hbs;
 
     dom::Object root;
@@ -1881,6 +1884,368 @@ partial_compat_mode()
 }
 
 void
+blocks()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/blocks.js
+    Handlebars hbs;
+
+    dom::Object ctx;
+    dom::Array goodbyes;
+    dom::Object goodbye1;
+    goodbye1.set("text", "goodbye");
+    goodbyes.emplace_back(goodbye1);
+    dom::Object goodbye2;
+    goodbye2.set("text", "Goodbye");
+    goodbyes.emplace_back(goodbye2);
+    dom::Object goodbye3;
+    goodbye3.set("text", "GOODBYE");
+    goodbyes.emplace_back(goodbye3);
+    ctx.set("goodbyes", goodbyes);
+    ctx.set("world", "world");
+    ctx.set("name", "Alan");
+
+    dom::Object emptyCtx;
+    dom::Array emptyGoodbyes;
+    emptyCtx.set("goodbyes", emptyGoodbyes);
+    emptyCtx.set("world", "world");
+    emptyCtx.set("name", "Alan");
+
+    // array
+    {
+        // Arrays iterate over the contents when not empty
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{text}}! {{/goodbyes}}cruel {{world}}!", ctx) ==
+            "goodbye! Goodbye! GOODBYE! cruel world!");
+
+        // Arrays ignore the contents when empty
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{text}}! {{/goodbyes}}cruel {{world}}!", emptyCtx) ==
+            "cruel world!");
+    }
+
+    // array without data
+    {
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{text}}{{/goodbyes}} {{#goodbyes}}{{text}}{{/goodbyes}}", ctx) ==
+            "goodbyeGoodbyeGOODBYE goodbyeGoodbyeGOODBYE");
+    }
+
+    // array with @index
+    {
+        // The @index variable is used
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{@index}}. {{text}}! {{/goodbyes}}cruel {{world}}!", ctx) ==
+            "0. goodbye! 1. Goodbye! 2. GOODBYE! cruel world!");
+    }
+
+    // empty block
+    {
+        // Arrays iterate over the contents when not empty
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{/goodbyes}}cruel {{world}}!", ctx) ==
+            "cruel world!");
+
+        // Arrays ignore the contents when empty
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{/goodbyes}}cruel {{world}}!", emptyCtx) ==
+            "cruel world!");
+    }
+
+    // block with complex lookup
+    {
+        // Templates can access variables in contexts up the stack with relative path syntax
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{text}} cruel {{../name}}! {{/goodbyes}}", ctx) ==
+            "goodbye cruel Alan! Goodbye cruel Alan! GOODBYE cruel Alan! ");
+    }
+
+    // multiple blocks with complex lookup
+    {
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{../name}}{{../name}}{{/goodbyes}}", ctx) ==
+            "AlanAlanAlanAlanAlanAlan");
+    }
+
+    // block with complex lookup using nested context
+    {
+        // In this test, we pass in the context so that the block is
+        // evaluated and the error is thrown in runtime.
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{#goodbyes}}{{text}} cruel {{foo/../name}}! {{/goodbyes}}", ctx),
+            HandlebarsError, "Invalid path: foo/.. - 1:30");
+    }
+
+    // block with deep nested complex lookup
+    {
+        // { omg: 'OMG!', outer: [{ sibling: 'sad', inner: [{ text: 'goodbye' }] }] }
+        dom::Object ctx2;
+        dom::Array outer;
+        dom::Object outer1;
+        dom::Array inner;
+        dom::Object inner1;
+        inner1.set("text", "goodbye");
+        inner.emplace_back(inner1);
+        outer1.set("sibling", "sad");
+        outer1.set("inner", inner);
+        outer.emplace_back(outer1);
+        ctx2.set("omg", "OMG!");
+        ctx2.set("outer", outer);
+
+        BOOST_TEST(
+            hbs.render("{{#outer}}Goodbye {{#inner}}cruel {{../sibling}} {{../../omg}}{{/inner}}{{/outer}}", ctx2) ==
+            "Goodbye cruel sad OMG!");
+    }
+
+    // works with cached blocks
+    {
+        // { person: [ { first: 'Alan', last: 'Johnson' }, { first: 'Alan', last: 'Johnson' } ] }
+        dom::Object ctx2;
+        dom::Array person;
+        dom::Object person1;
+        person1.set("first", "Alan");
+        person1.set("last", "Johnson");
+        person.emplace_back(person1);
+        person.emplace_back(person1);
+        ctx2.set("person", person);
+
+        HandlebarsOptions opt;
+        opt.data = false;
+        BOOST_TEST(
+            hbs.render("{{#each person}}{{#with .}}{{first}} {{last}}{{/with}}{{/each}}", ctx2, opt) ==
+            "Alan JohnsonAlan Johnson");
+    }
+}
+
+void
+block_inverted_sections()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/blocks.js
+    Handlebars hbs;
+
+    // inverted sections with unset value
+    {
+        // Inverted section rendered when value isn't set.
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{this}}{{/goodbyes}}{{^goodbyes}}Right On!{{/goodbyes}}") ==
+            "Right On!");
+    }
+
+    // inverted section with false value
+    {
+        // Inverted section rendered when value is false.
+        dom::Object ctx;
+        ctx.set("goodbyes", false);
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{this}}{{/goodbyes}}{{^goodbyes}}Right On!{{/goodbyes}}", ctx) ==
+            "Right On!");
+
+    }
+
+    // inverted section with empty set
+    {
+        // Inverted section rendered when value is empty set.
+        dom::Object ctx;
+        dom::Array goodbyes;
+        ctx.set("goodbyes", goodbyes);
+        BOOST_TEST(
+            hbs.render("{{#goodbyes}}{{this}}{{/goodbyes}}{{^goodbyes}}Right On!{{/goodbyes}}", ctx) ==
+            "Right On!");
+    }
+
+    // block inverted sections
+    {
+        dom::Object ctx;
+        ctx.set("none", "No people");
+        BOOST_TEST(
+            hbs.render("{{#people}}{{name}}{{^}}{{none}}{{/people}}", ctx) ==
+            "No people");
+    }
+
+    // chained inverted sections
+    {
+        dom::Object ctx;
+        ctx.set("none", "No people");
+        BOOST_TEST(
+            hbs.render("{{#people}}{{name}}{{else if none}}{{none}}{{/people}}", ctx) ==
+            "No people");
+        BOOST_TEST(
+            hbs.render("{{#people}}{{name}}{{else if nothere}}fail{{else unless nothere}}{{none}}{{/people}}", ctx) ==
+            "No people");
+        BOOST_TEST(
+            hbs.render("{{#people}}{{name}}{{else if none}}{{none}}{{else}}fail{{/people}}", ctx) ==
+            "No people");
+    }
+
+    // chained inverted sections with mismatch
+    {
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{#people}}{{name}}{{else if none}}{{none}}{{/if}}"),
+            HandlebarsError, "people doesn't match if - 1:3");
+    }
+
+    // block inverted sections with empty arrays
+    {
+        // { none: 'No people', people: [] }
+        dom::Object ctx;
+        ctx.set("none", "No people");
+        dom::Array people;
+        ctx.set("people", people);
+        BOOST_TEST(
+            hbs.render("{{#people}}{{name}}{{^}}{{none}}{{/people}}", ctx) ==
+            "No people");
+    }
+}
+
+void
+block_standalone_sections()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/blocks.js
+    Handlebars hbs;
+
+    // block standalone else sections
+    {
+        dom::Object ctx;
+        ctx.set("none", "No people");
+        BOOST_TEST(
+            hbs.render("{{#people}}\n{{name}}\n{{^}}\n{{none}}\n{{/people}}\n", ctx) ==
+            "No people\n");
+        BOOST_TEST(
+            hbs.render("{{#none}}\n{{.}}\n{{^}}\n{{none}}\n{{/none}}\n", ctx) ==
+            "No people\n");
+        BOOST_TEST(
+            hbs.render("{{#people}}\n{{name}}\n{{^}}\n{{none}}\n{{/people}}\n", ctx) ==
+            "No people\n");
+        BOOST_TEST(
+            hbs.render("  {{#people}}\n{{name}}\n{{^}}\n{{none}}\n{{/people}}\n", ctx) ==
+            "No people\n");
+
+    }
+
+    // block standalone else sections can be disabled
+    {
+        dom::Object ctx;
+        ctx.set("none", "No people");
+        HandlebarsOptions opt;
+        opt.ignoreStandalone = true;
+        BOOST_TEST(
+            hbs.render("{{#people}}\n{{name}}\n{{^}}\n{{none}}\n{{/people}}\n", ctx, opt) ==
+            "\nNo people\n\n");
+        BOOST_TEST(
+            hbs.render("{{#none}}\n{{.}}\n{{^}}\nFail\n{{/none}}\n", ctx, opt) ==
+            "\nNo people\n\n");
+    }
+
+    // block standalone chained else sections
+    {
+        dom::Object ctx;
+        ctx.set("none", "No people");
+        BOOST_TEST(
+            hbs.render("{{#people}}\n{{name}}\n{{else if none}}\n{{none}}\n{{/people}}\n", ctx) ==
+            "No people\n");
+        BOOST_TEST(
+            hbs.render("{{#people}}\n{{name}}\n{{else if none}}\n{{none}}\n{{^}}\n{{/people}}\n", ctx) ==
+            "No people\n");
+    }
+
+    // should handle nesting
+    {
+        // { data: [1, 3, 5] }
+        dom::Object ctx;
+        dom::Array data;
+        data.emplace_back(1);
+        data.emplace_back(3);
+        data.emplace_back(5);
+        ctx.set("data", data);
+        BOOST_TEST(
+            hbs.render("{{#data}}\n{{#if true}}\n{{.}}\n{{/if}}\n{{/data}}\nOK.", ctx) ==
+            "1\n3\n5\nOK.");
+    }
+}
+
+void
+block_compat_mode()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/blocks.js
+    Handlebars hbs;
+    HandlebarsOptions compat;
+    compat.compat = true;
+
+    // block with deep recursive lookup lookup
+    {
+         // { omg: 'OMG!', outer: [{ inner: [{ text: 'goodbye' }] }] }
+        dom::Object ctx;
+        ctx.set("omg", "OMG!");
+        dom::Array outer;
+        dom::Object outer1;
+        dom::Array inner;
+        dom::Object inner1;
+        inner1.set("text", "goodbye");
+        inner.emplace_back(inner1);
+        outer1.set("inner", inner);
+        outer.emplace_back(outer1);
+        ctx.set("outer", outer);
+        BOOST_TEST(
+            hbs.render("{{#outer}}Goodbye {{#inner}}cruel {{omg}}{{/inner}}{{/outer}}", ctx, compat) ==
+            "Goodbye cruel OMG!");
+    }
+
+    // block with deep recursive pathed lookup
+    {
+        // { omg: { yes: 'OMG!' }, outer: [{ inner: [{ yes: 'no', text: 'goodbye' }] }] }
+        dom::Object ctx;
+        dom::Object omg;
+        omg.set("yes", "OMG!");
+        ctx.set("omg", omg);
+        dom::Array outer;
+        dom::Object outer1;
+        dom::Array inner;
+        dom::Object inner1;
+        inner1.set("yes", "no");
+        inner1.set("text", "goodbye");
+        inner.emplace_back(inner1);
+        outer1.set("inner", inner);
+        outer.emplace_back(outer1);
+        ctx.set("outer", outer);
+        BOOST_TEST(
+            hbs.render("{{#outer}}Goodbye {{#inner}}cruel {{omg.yes}}{{/inner}}{{/outer}}", ctx, compat) ==
+            "Goodbye cruel OMG!");
+    }
+
+    // block with missed recursive lookup
+    {
+        // { omg: { no: 'OMG!' }, outer: [{ inner: [{ yes: 'no', text: 'goodbye' }] }] }
+        dom::Object ctx;
+        dom::Object omg;
+        omg.set("no", "OMG!");
+        ctx.set("omg", omg);
+        dom::Array outer;
+        dom::Object outer1;
+        dom::Array inner;
+        dom::Object inner1;
+        inner1.set("yes", "no");
+        inner1.set("text", "goodbye");
+        inner.emplace_back(inner1);
+        outer1.set("inner", inner);
+        outer.emplace_back(outer1);
+        ctx.set("outer", outer);
+        BOOST_TEST(
+            hbs.render("{{#outer}}Goodbye {{#inner}}cruel {{omg.yes}}{{/inner}}{{/outer}}", ctx, compat) ==
+            "Goodbye cruel ");
+    }
+}
+
+void
+block_decorators()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/blocks.js
+    // https://handlebarsjs.com/api-reference/runtime.html#handlebars-registerdecorator-name-helper-deprecated
+    // Custom decorators are deprecated and may vanish in the next major version
+    // of Handlebars. They expose a too large part of the private internal API
+    // which is difficult to port to other languages and makes to code harder
+    // to maintain.
+}
+
+void
 run()
 {
     master_test();
@@ -1892,6 +2257,11 @@ run()
     inline_partials();
     standalone_partials();
     partial_compat_mode();
+    blocks();
+    block_inverted_sections();
+    block_standalone_sections();
+    block_compat_mode();
+    block_decorators();
 }
 
 };
@@ -1902,4 +2272,5 @@ TEST_SUITE(
 
 } // mrdox
 } // clang
+
 

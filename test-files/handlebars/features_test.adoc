@@ -1,7 +1,6 @@
 == from_chars
 
 
-
 === Synopsis
 
 [,cpp]
@@ -9,12 +8,9 @@
 std::from_chars
 ----
 
-
 Declared in file <charconv>
 
-
 This is the from_chars function
-
 
 
 
@@ -32,13 +28,11 @@ struct from_chars
 // #with to change context
 Person: John Doe in page about `from_chars`
 
-
 // #each to iterate, change context, and access parent context
 People:
 * Person: Alice Doe in page about `from_chars`
 * Person: Bob Doe in page about `from_chars`
 * Person: Carol Smith in page about `from_chars`
-
 
 == Expressions
 
@@ -317,14 +311,11 @@ Missing: true()
 // Raw blocks
 {{escaped}}
 
-
 // Raw blocks
 {{bar}}
 
-
 // Raw block helper
 {{BAR}}
-
 
 == Partials
 
@@ -352,16 +343,12 @@ The result is 123
   Hello, Bob Doe.
   Hello, Carol Smith.
 
-
 // Partial blocks
   Failover content
-
 // Pass templates to partials
 Site Content My Content
-
 // Inline partials
     My Content    My Content    My Content
-
 // Block inline partials
 <div class="nav">
       My Nav</div>
@@ -388,20 +375,18 @@ Site Content My Content
 // Block helper parameter
 <div class="entry">
     <h1>My Title</h1>
-            <div class="intro">Before the jump</div>
+        <div class="intro">Before the jump</div>
         <div class="body">After the jump</div>
-
 </div>
 
 // Simple iterators
 <div class="entry">
   <h1>My Title</h1>
-      <div class="intro">Before the jump</div>
+    <div class="intro">Before the jump</div>
     <div class="body">After the jump</div>
-
 </div>
 <div class="comments">
-      <div class="comment">
+    <div class="comment">
       <h2>subject 1</h2>
       body 1
     </div>
@@ -409,99 +394,75 @@ Site Content My Content
       <h2>subject 2</h2>
       body 2
     </div>
-
 </div>
 
 // Custom list helper
 <ul><li>    <a href="foo">bar</a>
 </li><li>    <a href="bar">Missing: title()</a>
 </li></ul>
-
 // Conditionals
     <img src="star.gif" alt="Active">
 
-
   <img src="star.gif" alt="Active">
 
-
-
   <img src="cry.gif" alt="Inactive">
-
 
 // Chained blocks
 // 1
    HIT <img src="star.gif" alt="Active 1">
 
-
 // 2
    HIT <img src="star.gif" alt="Active 2">
 
-
 // 3
-
     HIT No User
-
 
 // Block hash arguments
 <ul id="nav-bar" class="top"><li>    <a href="foo">bar</a>
 </li><li>    <a href="bar">Missing: title()</a>
 </li></ul>
-
 // Private variables
 <ul><li>  0. foo
 </li><li>  1. bar
 </li></ul>
-
 // Iterate objects
     Id: 0, Key: Alice, Name: Alice Doe
     Id: 1, Key: Bob, Name: Bob Doe
     Id: 2, Key: Carol, Name: Carol Smith
-
 
 // Block parameters
     Id: 0 Name: Alice
     Id: 1 Name: Bob
     Id: 2 Name: Carol
 
-
 // Recursive block parameters
-            User Id: 0 Book Id: 0
+        User Id: 0 Book Id: 0
         User Id: 0 Book Id: 1
         User Id: 0 Book Id: 2
         User Id: 0 Book Id: 3
-
-            User Id: 1 Book Id: 0
+        User Id: 1 Book Id: 0
         User Id: 1 Book Id: 1
         User Id: 1 Book Id: 2
         User Id: 1 Book Id: 3
-
-            User Id: 2 Book Id: 0
+        User Id: 2 Book Id: 0
         User Id: 2 Book Id: 1
         User Id: 2 Book Id: 2
         User Id: 2 Book Id: 3
-
-
 
 == Built-in Helpers
 
 // Author
 <h1>Yehuda Katz</h1>
 
-
 // Unknown
 <div class="entry">
-
 <h1>Unknown Author</h1>
-
 </div>
 
 // Include zero
 <h1>Does render</h1>
 
-
-
 <h1>Does render</h1>
-
 
 // Custom
 author defined
@@ -510,50 +471,39 @@ value2 undefined
 // unless
 <div class="entry">
 <h3 class="warning">WARNING: This entry does not have a license!</h3>
-
 </div>
 
 // each with non objects
 <ul class="people_list">
-        <li>Yehuda Katz</li>
+    <li>Yehuda Katz</li>
     <li>Alan Johnson</li>
     <li>Charles Jolley</li>
-
 </ul>
 
 // No paragraphs
-
 <p class="empty">No paragraphs</p>
 
-
-// indexes and keys
+// indices and keys
  0: Yehuda Katz  1: Alan Johnson  2: Charles Jolley 
  Yehuda: Yehuda Katz  Alan: Alan Johnson  Charles: Charles Jolley 
 
 // with
 Yehuda Katz
 
-
 // with block parameters
-      San Francisco: 37.73, -122.44
-
-
+    San Francisco: 37.73, -122.44
 
 // with inverse
-
 No city found
-
 
 // lookup
 
 Nils lives in Darmstadt
 Yehuda lives in San Francisco
 
-
 // lookup2
     Nils lives in Darmstadt (Germany)
     Yehuda lives in San Francisco (USA)
-
 
 // log (there should be no rendered output)
 
@@ -575,7 +525,6 @@ Helper 'foo' not found. Printing block: block content
 
 // Block helper missing
 Helper 'person' not found. Printing block:     Yehuda Katz
-
 
 == String helpers
 
@@ -1421,6 +1370,4 @@ c
 
 
 // Inverse block with no helper expands expressions
-    
         struct T
-
