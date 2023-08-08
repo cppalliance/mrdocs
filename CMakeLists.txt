@@ -34,7 +34,6 @@ include(GNUInstallDirs)
 
 option(MRDOX_INSTALL "Configure install target" ON)
 option(MRDOX_PACKAGE "Build install package" ON)
-option(MRDOX_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
 option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
 if (MRDOX_BUILD_TESTS OR MRDOX_INSTALL)
     option(MRDOX_BUILD_DOCS "Build documentation" ON)
@@ -44,12 +43,6 @@ endif()
 option(MRDOX_GENERATE_REFERENCE "Generate MrDox reference" ${MRDOX_BUILD_DOCS})
 option(MRDOX_GENERATE_ANTORA_REFERENCE "Generate MrDox reference in Antora module pages" OFF)
 
-if (MRDOX_BUILD_SHARED)
-    set(MRDOX_LINK_MODE SHARED)
-    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_SHARED_LINK)
-else()
-    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_STATIC_LINK)
-endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(MRDOX_GCC ON)
@@ -77,23 +70,39 @@ string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 # Duktape
 set(DUKTAPE_SOURCE_ROOT "" CACHE STRING "Root of the Duktape source tree")
-if (NOT DUKTAPE_SOURCE_ROOT)
-    message(FATAL_ERROR
-            "Duktape source root not found.\n"
-            "Please set DUKTAPE_SOURCE_ROOT to the root of the Duktape source tree.\n"
-            "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz\n")
+
+if (DUKTAPE_SOURCE_ROOT)
+    add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
+    target_include_directories(
+            duktape PUBLIC
+            "$<BUILD_INTERFACE:${DUKTAPE_SOURCE_ROOT}/src>"
+            "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+        target_compile_options(duktape PRIVATE -w)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_compile_options(duktape PRIVATE /w)
+    endif()
+    set(DUKTAPE_INSTALL duktape)
+else () # NOT DUKTAPE_SOURCE_ROOT
+    # try to find it on the machine
+    find_file(DUKTAPE_HEADER duktape.h)
+    find_library(DUKTAPE_LIBRARY duktape)
+    if (NOT DUKTAPE_HEADER STREQUAL DUKTAPE_HEADER-NOTFOUND
+        AND NOT DUKTAPE_LIBRARY STREQUAL DUKTAPE_LIBRARY-NOTFOUND)
+        add_library(duktape SHARED IMPORTED)
+        get_filename_component(DUKTAPE_INCLUDE_DIRECTORY ${DUKTAPE_HEADER} DIRECTORY)
+        set_target_properties(duktape PROPERTIES
+                IMPORTED_LOCATION ${DUKTAPE_LIBRARY}
+                INTERFACE_INCLUDE_DIRECTORIES ${DUKTAPE_INCLUDE_DIRECTORY})
+    else()
+        message(FATAL_ERROR
+                "Duktape source root not found.\n"
+                "Please set DUKTAPE_SOURCE_ROOT to the root of the Duktape source tree.\n"
+                "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz\n")
+    endif()
 endif()
-add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
-target_include_directories(
-    duktape PUBLIC
-        "$<BUILD_INTERFACE:${DUKTAPE_SOURCE_ROOT}/src>"
-        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 add_library(duktape::duktape ALIAS duktape)
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-    target_compile_options(duktape PRIVATE -w)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(duktape PRIVATE /w)
-endif()
 
 # fmt
 find_package(fmt REQUIRED CONFIG)
@@ -112,7 +121,8 @@ file(
         include/*.hpp include/*.ipp
         include/*.natvis
         SourceFileNames.cpp)
-add_library(mrdox-core ${LIB_SOURCES})
+add_library(mrdox-core OBJECT ${LIB_SOURCES})
+target_compile_definitions(mrdox-core PRIVATE MRDOX_TOOL=1)
 target_compile_features(mrdox-core PUBLIC cxx_std_20)
 target_include_directories(mrdox-core
     PUBLIC
@@ -124,7 +134,6 @@ target_include_directories(mrdox-core
 target_compile_definitions(
     mrdox-core
     PUBLIC
-    ${MRDOX_LINK_MODE_DEFINITION}
     PRIVATE
     -DMRDOX_TOOL
 )
@@ -198,7 +207,7 @@ endif ()
 
 file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS src/tool/*.cpp src/tool/*.hpp)
 add_executable(mrdox ${TOOL_SOURCES})
-target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
+target_compile_definitions(mrdox PRIVATE MRDOX_TOOL=1)
 
 target_include_directories(mrdox
     PUBLIC
@@ -209,15 +218,22 @@ target_include_directories(mrdox
     "${PROJECT_SOURCE_DIR}/src"
 )
 
-target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
+target_compile_definitions(mrdox PRIVATE MRDOX_TOOL=1)
 target_link_libraries(mrdox PUBLIC mrdox-core)
+target_compile_features(mrdox PUBLIC cxx_std_20)
+
 if (MRDOX_CLANG)
     target_compile_options(
         mrdox
         PRIVATE
         -Wno-covered-switch-default
     )
-endif ()
+endif()
+
+set_target_properties(mrdox mrdox-core PROPERTIES
+        ENABLE_EXPORTS ON
+        POSITION_INDEPENDENT_CODE ON)
+
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${INCLUDES})
@@ -247,18 +263,18 @@ if (MRDOX_BUILD_TESTS)
         target_compile_options(mrdox-test PRIVATE -Wno-covered-switch-default)
     endif ()
     target_compile_definitions(mrdox-test PRIVATE -DMRDOX_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
-    add_custom_command(
-            # if we run tests, we need the addons in the right place.
-            TARGET mrdox-test
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy
-                    ${CMAKE_SOURCE_DIR}/share/mrdox/addons
-                    ${CMAKE_BINARY_DIR}/addons
-            BYPRODUCTS ${CMAKE_BINARY_DIR}/addons
-            DEPENDS ${CMAKE_SOURCE_DIR}/share/mrdox/addons
-    )
+    file (COPY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdox/addons DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
     add_test(NAME mrdox-test COMMAND mrdox-test --action test "${PROJECT_SOURCE_DIR}/test-files/old-tests")
 
+    #-------------------------------------------------
+    # test plugin to be loaded when running mrdox
+    #-------------------------------------------------
+
+    add_library(mrdox-test-plugin MODULE src/test-plugin/test-plugin.cpp)
+    set_target_properties(mrdox-test-plugin PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/addons/plugins)
+    target_link_libraries(mrdox-test-plugin PUBLIC mrdox)
     #-------------------------------------------------
     # XML lint
     #-------------------------------------------------
@@ -369,7 +385,7 @@ if (MRDOX_INSTALL)
     #-------------------------------------------------
     # lib
     #-------------------------------------------------
-    install(TARGETS mrdox-core duktape
+    install(TARGETS mrdox-core ${DUKTAPE_INSTALL}
             EXPORT mrdox-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

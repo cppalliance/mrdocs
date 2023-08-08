@@ -254,6 +254,8 @@ struct MRDOX_DECL
 
     void append(List<Node>&& blocks);
 
+    Block(const Block & ) = delete;
+    Block(Block && ) noexcept = default;
 protected:
     explicit
     Block(
@@ -601,8 +603,13 @@ class MRDOX_DECL
 public:
     /** Constructor.
     */
-    MRDOX_DECL
     Javadoc() noexcept;
+
+    Javadoc(const Javadoc & ) = delete;
+    Javadoc& operator=(const Javadoc & ) = delete;
+
+    Javadoc(Javadoc && ) noexcept;
+    Javadoc& operator=(Javadoc && ) noexcept;
 
     /** Constructor
     */

@@ -861,6 +861,9 @@ public:
 DomCorpus::
 ~DomCorpus() = default;
 
+
+DomCorpus::DomCorpus(DomCorpus&& corpus) noexcept = default;
+
 DomCorpus::
 DomCorpus(
     Corpus const& corpus_)

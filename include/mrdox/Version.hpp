@@ -16,9 +16,13 @@
 namespace clang {
 namespace mrdox {
 
-constexpr std::string_view project_version     = "1.0.0";
-constexpr std::string_view project_name        = "MrDox";
-constexpr std::string_view project_description = "C++ Documentation Tool";
+constexpr std::string_view projectVersion     = "1.0.0";
+constexpr std::string_view projectName        = "MrDox";
+constexpr std::string_view projectDescription = "C++ Documentation Tool";
+
+constexpr int projectVersionMajor = 1;
+constexpr int projectVersionMinor = 0;
+constexpr int projectVersionPatch = 0;
 
 } // mrdox
 } // clang

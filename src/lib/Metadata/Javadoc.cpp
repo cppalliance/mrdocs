@@ -195,6 +195,9 @@ Javadoc(
 {
 }
 
+Javadoc::Javadoc(Javadoc && ) noexcept = default;
+Javadoc& Javadoc::operator=(Javadoc && ) noexcept = default;
+
 doc::Paragraph const*
 Javadoc::
 brief() const noexcept

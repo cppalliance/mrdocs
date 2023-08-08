@@ -111,13 +111,11 @@ public:
 
     /** Destructor.
     */
-    MRDOX_DECL
     virtual
     ~Config() noexcept = 0;
 
     /** Return a pool of threads for executing work.
     */
-    MRDOX_DECL
     virtual
     ThreadPool&
     threadPool() const noexcept = 0;

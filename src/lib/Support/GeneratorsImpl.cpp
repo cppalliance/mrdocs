@@ -76,6 +76,14 @@ insert(
     return Error::success();
 }
 
+void
+GeneratorsImpl::
+clear()
+{
+    plist_.clear();
+    list_.clear();
+}
+
 //------------------------------------------------
 
 GeneratorsImpl&
@@ -89,6 +97,13 @@ Generators const&
 getGenerators() noexcept
 {
     return getGeneratorsImpl();
+}
+
+void
+addGenerator(
+    std::unique_ptr<Generator> generator)
+{
+  getGeneratorsImpl().insert(std::move(generator));
 }
 
 } // mrdox
