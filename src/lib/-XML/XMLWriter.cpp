@@ -171,23 +171,23 @@ writeIndex()
     if(options_.safe_names)
     {
         SafeNames names(corpus_);
-        for(auto I : corpus_.index())
+        for(auto& I : corpus_)
         {
-            auto safe_name = names.getUnqualified(I->id);
+            auto safe_name = names.getUnqualified(I.id);
             tags_.write("symbol", {}, {
                 { "safe", safe_name },
-                { "name", corpus_.getFullyQualifiedName(*I, temp) },
-                { "tag", toString(I->Kind) },
-                { I->id } });
+                { "name", corpus_.getFullyQualifiedName(I, temp) },
+                { "tag", toString(I.Kind) },
+                { I.id } });
         }
     }
     else
     {
-        for(auto I : corpus_.index())
+        for(auto& I : corpus_)
             tags_.write("symbol", {}, {
-                { "name", corpus_.getFullyQualifiedName(*I, temp) },
-                { "tag", toString(I->Kind) },
-                { I->id } });
+                { "name", corpus_.getFullyQualifiedName(I, temp) },
+                { "tag", toString(I.Kind) },
+                { I.id } });
     }
     tags_.close("symbols");
 }

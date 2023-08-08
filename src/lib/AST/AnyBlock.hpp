@@ -650,7 +650,7 @@ public:
         {
             if(! I_->isTemplate())
                 return formatError("only TemplateTArgs may reference a template");
-            return decodeRecord(R, 
+            return decodeRecord(R,
                 static_cast<TemplateTArg&>(
                     *I_.get()).Template, Blob);
         }
@@ -658,7 +658,7 @@ public:
         {
             if(! I_->isTemplate())
                 return formatError("only TemplateTArgs may have a template name");
-            return decodeRecord(R, 
+            return decodeRecord(R,
                 static_cast<TemplateTArg&>(
                     *I_.get()).Name, Blob);
         }

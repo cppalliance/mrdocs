@@ -13,13 +13,12 @@
 
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/Info.hpp"
-#include "lib/Lib/ToolExecutor.hpp"
 #include "lib/Support/Debug.hpp"
 #include <mrdox/Corpus.hpp>
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Platform.hpp>
 #include <mrdox/Support/Error.hpp>
-#include <llvm/ADT/StringMap.h>
+#include <clang/Tooling/CompilationDatabase.h>
 #include <mutex>
 #include <string>
 
@@ -41,30 +40,29 @@ public:
     {
     }
 
+    iterator begin() const noexcept override;
+    iterator end() const noexcept override;
+
     Info*
     find(
         SymbolID const& id) noexcept;
 
-
     /** Build metadata for a set of translation units.
 
+        @param reportLevel Error reporting level.
         @param config A shared pointer to the configuration.
+        @param compilations A compilations database for the input files.
     */
     // MRDOX_DECL
     [[nodiscard]]
     static
     mrdox::Expected<std::unique_ptr<Corpus>>
     build(
-        ToolExecutor& ex,
-        std::shared_ptr<ConfigImpl const> config);
+        report::Level reportLevel,
+        std::shared_ptr<ConfigImpl const> config,
+        tooling::CompilationDatabase const& compilations);
 
 private:
-    std::vector<Info const*> const&
-    index() const noexcept override
-    {
-        return index_;
-    }
-
     Info const*
     find(
         SymbolID const& id) const noexcept override;
@@ -78,24 +76,13 @@ private:
     get(
         SymbolID const& id) noexcept;
 
-    /** Insert this element and all its children into the Corpus.
-
-        @param Thread Safety
-        May be called concurrently.
-    */
-    void insert(std::unique_ptr<Info> I);
-
 private:
-    struct Temps;
     friend class Corpus;
 
     std::shared_ptr<ConfigImpl const> config_;
 
     // Info keyed on Symbol ID.
     InfoSet info_;
-    std::vector<Info const*> index_;
-
-    std::mutex mutex_;
 };
 
 template<class T>

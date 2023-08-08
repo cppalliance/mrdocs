@@ -12,7 +12,6 @@
 #ifndef MRDOX_LIB_AST_BITCODE_HPP
 #define MRDOX_LIB_AST_BITCODE_HPP
 
-#include "lib/Lib/ToolExecutor.hpp"
 #include <mrdox/Platform.hpp>
 #include <mrdox/MetadataFwd.hpp>
 #include <mrdox/Metadata/Info.hpp>

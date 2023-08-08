@@ -13,7 +13,6 @@
 #include "lib/Lib/AbsoluteCompilationDatabase.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
-#include "lib/Lib/ToolExecutor.hpp"
 #include <mrdox/Generators.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/Path.hpp>
@@ -38,17 +37,28 @@ DoGenerateAction()
             os << "ignore-failures: true\n";
     }
 
-    // Load configuration file
-    if(toolArgs.configPath.empty())
-        return formatError("the config path argument is missing");
-    auto config = loadConfigFile(
-        toolArgs.configPath,
-        toolArgs.addonsDir,
-        extraYaml,
-        nullptr,
-        threadPool);
-    if(! config)
-        return config.error();
+    std::shared_ptr<ConfigImpl const> config;
+    {
+        // Load configuration file
+        if(toolArgs.configPath.empty())
+            return formatError("the config path argument is missing");
+        auto configFile = loadConfigFile(
+            toolArgs.configPath,
+            toolArgs.addonsDir,
+            extraYaml,
+            nullptr,
+            threadPool);
+        if(! configFile)
+            return configFile.error();
+        config = std::move(configFile.value());
+    }
+
+
+    // Create the generator
+    auto generator = generators.find(toolArgs.formatType.getValue());
+    if(! generator)
+        return formatError("the Generator \"{}\" was not found",
+            toolArgs.formatType.getValue());
 
     // Load the compilation database
     if(toolArgs.inputPaths.empty())
@@ -73,24 +83,15 @@ DoGenerateAction()
         return formatError("output path is empty");
     toolArgs.outputPath = files::normalizePath(
         files::makeAbsolute(toolArgs.outputPath,
-            (**config)->workingDir));
+            (*config)->workingDir));
 
     // Convert relative paths to absolute
     AbsoluteCompilationDatabase compilations(
-        workingDir, *jsonCompilations, *config);
-
-    // Create the ToolExecutor from the compilation database
-    auto ex = std::make_unique<ToolExecutor>(
-        report::Level::info, **config, compilations);
-
-    // Create the generator
-    auto generator = generators.find(toolArgs.formatType.getValue());
-    if(! generator)
-        return formatError("the Generator \"{}\" was not found",
-            toolArgs.formatType.getValue());
+        workingDir, *jsonCompilations, config);
 
     // Run the tool, this can take a while
-    auto corpus = CorpusImpl::build(*ex, *config);
+    auto corpus = CorpusImpl::build(
+        report::Level::info, config, compilations);
     if(! corpus)
         return formatError("CorpusImpl::build returned \"{}\"", corpus.error());
 

@@ -14,7 +14,7 @@
 
 #include <mrdox/Metadata/Info.hpp>
 #include <mrdox/MetadataFwd.hpp>
-#include <llvm/Support/Error.h>
+#include <mrdox/Support/Error.hpp>
 #include <memory>
 #include <vector>
 
@@ -44,19 +44,17 @@ void merge(SpecializationInfo& I, SpecializationInfo&& Other);
 // on members on the forward declaration, but would have the class name).
 //
 
-template <typename T>
-llvm::Expected<std::unique_ptr<Info>>
+template<typename T>
+std::unique_ptr<Info>
 reduce(
     std::vector<std::unique_ptr<Info>>& Values)
 {
-    if (Values.empty() || !Values[0])
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "no value to reduce");
+    MRDOX_ASSERT(! Values.empty() && Values[0]);
     std::unique_ptr<Info> Merged = std::make_unique<T>(Values[0]->id);
     T* Tmp = static_cast<T*>(Merged.get());
     for (auto& I : Values)
         merge(*Tmp, std::move(*static_cast<T*>(I.get())));
-    return std::move(Merged);
+    return Merged;
 }
 
 // Return the index of the matching child in the list,

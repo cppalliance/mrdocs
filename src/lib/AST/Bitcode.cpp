@@ -14,33 +14,5 @@
 namespace clang {
 namespace mrdox {
 
-#if 0
-void
-insertBitcode(
-    ExecutionContext& ex,
-    Bitcode&& bitcode)
-{
-    // bitcode.data.
-    ex.reportResult(
-        StringRef(bitcode.id),
-        std::move(bitcode.data));
-}
-
-Bitcodes
-collectBitcodes(
-    ToolExecutor& ex)
-{
-    Bitcodes results;
-    ex.getToolResults()->forEachResult(
-        [&](StringRef Key, StringRef Value)
-        {
-            auto result = results.try_emplace(
-                Key, std::vector<StringRef>());
-            result.first->second.emplace_back(Value);
-        });
-    return results;
-}
-#endif
-
 } // mrdox
 } // clang

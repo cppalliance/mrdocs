@@ -16,7 +16,6 @@
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
 #include "lib/Lib/SingleFileDB.hpp"
-#include "lib/Lib/ToolExecutor.hpp"
 #include <mrdox/Config.hpp>
 #include <mrdox/Generators.hpp>
 #include <mrdox/Platform.hpp>
@@ -105,14 +104,13 @@ handleFile(
     SmallPathString expectedPath = filePath;
     path::replace_extension(expectedPath, xmlGen_->fileExtension());
 
-    SingleFileDB db1(filePath);
     auto workingDir = files::getParentDir(filePath);
     // Convert relative paths to absolute
-    AbsoluteCompilationDatabase db(
-        llvm::StringRef(workingDir), db1, config);
+    AbsoluteCompilationDatabase compilations(
+        llvm::StringRef(workingDir), SingleFileDB(filePath), config);
     // Build Corpus
-    ToolExecutor ex(report::Level::debug, *config, db);
-    auto corpus = CorpusImpl::build(ex, config);
+    auto corpus = CorpusImpl::build(
+        report::Level::debug, config, compilations);
     if(! corpus)
         return report::error("{}: \"{}\"", corpus.error(), filePath);
 

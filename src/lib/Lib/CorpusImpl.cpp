@@ -5,40 +5,49 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "lib/AST/Bitcode.hpp"
-#include "lib/AST/ASTVisitor.hpp"
 #include "CorpusImpl.hpp"
-#include "lib/Metadata/Reduce.hpp"
+#include "lib/AST/ASTVisitor.hpp"
 #include "lib/Support/Error.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <llvm/ADT/STLExtras.h>
+#include <chrono>
 
 namespace clang {
 namespace mrdox {
 
-// A standalone function to call to merge a vector of infos into one.
-// This assumes that all infos in the vector are of the same type, and will fail
-// if they are different.
-// Dispatch function.
-llvm::Expected<std::unique_ptr<Info>>
-mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
+auto
+CorpusImpl::
+begin() const noexcept ->
+    iterator
 {
-    if(Values.empty() || ! Values[0])
-        return llvm::createStringError(llvm::inconvertibleErrorCode(),
-            "no info values to merge");
-
-    return visit(*Values[0], [&]<typename T>(T&) mutable
+    if(info_.empty())
+        return end();
+    // KRYSTIAN NOTE: this is far from ideal, but i'm not sure
+    // to what extent implementation detail should be hidden.
+    return iterator(this, info_.begin()->get(),
+        [](const Corpus* corpus, const Info* val) ->
+            const Info*
         {
-            return reduce<T>(Values);
+            const CorpusImpl* impl =
+                static_cast<const CorpusImpl*>(corpus);
+            auto it = impl->info_.find(val->id);
+            return (++it)->get();
         });
 }
 
-//------------------------------------------------
+auto
+CorpusImpl::
+end() const noexcept ->
+    iterator
+{
+    return iterator();
+}
 
 Info*
 CorpusImpl::
@@ -64,98 +73,146 @@ find(
 
 //------------------------------------------------
 
-void
-CorpusImpl::
-insert(std::unique_ptr<Info> I)
-{
-    std::lock_guard<std::mutex> lock(mutex_);
-
-    index_.emplace_back(I.get());
-
-    // This has to come last because we move I.
-    info_.emplace(std::move(I));
-}
-
-//------------------------------------------------
-
 mrdox::Expected<std::unique_ptr<Corpus>>
 CorpusImpl::
 build(
-    ToolExecutor& ex,
-    std::shared_ptr<ConfigImpl const> config)
+    report::Level reportLevel,
+    std::shared_ptr<ConfigImpl const> config,
+    tooling::CompilationDatabase const& compilations)
 {
+    using clock_type = std::chrono::steady_clock;
+    const auto format_duration =
+        [](clock_type::duration delta)
+    {
+        auto delta_ms = std::chrono::duration_cast<
+            std::chrono::milliseconds>(delta).count();
+        if(delta_ms < 1000)
+            return fmt::format("{} ms", delta_ms);
+        else
+            return fmt::format("{:.02f} s",
+                delta_ms / 1000.0);
+    };
+    auto start_time = clock_type::now();
+
     auto corpus = std::make_unique<CorpusImpl>(config);
 
     // Traverse the AST for all translation units
     // and emit serializd bitcode into tool results.
     // This operation happens ona thread pool.
-    report::print(ex.getReportLevel(), "Mapping declarations");
-    if(Error err = ex.execute(
-        makeFrontendActionFactory(
-            ex.getExecutionContext(), *config)))
+    report::print(reportLevel, "Extracting declarations");
+
+    // #define USE_BITCODE
+
+    #ifdef USE_BITCODE
+        BitcodeExecutionContext context(*config);
+    #else
+        InfoExecutionContext context(*config);
+    #endif
+    std::unique_ptr<tooling::FrontendActionFactory> action =
+        makeFrontendActionFactory(context, *config);
+    MRDOX_ASSERT(action);
+
+    // Get a copy of the filename strings
+    std::vector<std::string> files =
+        compilations.getAllFiles();
+
+    if(files.empty())
+        return Unexpected(formatError("Compilations database is empty"));
+
+    auto const processFile =
+        [&](std::string path)
+        {
+            // Each thread gets an independent copy of a VFS to allow different
+            // concurrent working directories.
+            IntrusiveRefCntPtr<llvm::vfs::FileSystem> FS =
+                llvm::vfs::createPhysicalFileSystem();
+
+            // KRYSTIAN NOTE: ClangTool applies the SyntaxOnly, StripOutput,
+            // and StripDependencyFile argument adjusters
+            tooling::ClangTool Tool(compilations, { path },
+                std::make_shared<PCHContainerOperations>(), FS);
+
+            // suppress error messages from the tool
+            Tool.setPrintErrorMessage(false);
+
+            if(Tool.run(action.get()))
+                formatError("Failed to run action on {}", path).Throw();
+        };
+
+    // Run the action on all files in the database
+    std::vector<Error> errors;
+    if(files.size() == 1)
     {
+        try
+        {
+            processFile(std::move(files.front()));
+        }
+        catch(Exception const& ex)
+        {
+            errors.push_back(ex.error());
+        }
+    }
+    else
+    {
+        TaskGroup taskGroup(config->threadPool());
+        for(std::size_t index = 0;
+            std::string& file : files)
+        {
+            taskGroup.async(
+            [&, idx = ++index, path = std::move(file)]()
+            {
+                report::format(reportLevel,
+                    "[{}/{}] \"{}\"", idx, files.size(), path);
+
+                processFile(std::move(path));
+            });
+        }
+        errors = taskGroup.wait();
+    }
+
+    // Report warning and error totals
+    context.reportEnd(reportLevel);
+
+    if(! errors.empty())
+    {
+        Error err(errors);
         if(! (*config)->ignoreFailures)
             return Unexpected(err);
         report::warn(
             "Warning: mapping failed because ", err);
     }
 
-    // Collect the symbols. Each symbol will have
-    // a vector of one or more bitcodes. These will
-    // be merged later.
-    report::print(ex.getReportLevel(), "Collecting symbols");
-    auto bitcodes = std::move(
-        ex.getExecutionContext().getBitcode());
+    #ifdef USE_BITCODE
+        report::format(reportLevel,
+            "Extracted {} declarations in {}",
+            context.getBitcode().size(),
+            format_duration(clock_type::now() - start_time));
+        start_time = clock_type::now();
 
-    // First reducing phase (reduce all decls into one info per decl).
-    report::format(ex.getReportLevel(),
-        "Reducing {} declarations", bitcodes.size());
-    std::atomic<bool> GotFailure;
-    GotFailure = false;
-    auto errors = corpus->config.threadPool().forEach(
-        bitcodes,
-        [&](auto& Group)
-        {
-            // One or more Info for the same symbol ID
-            std::vector<std::unique_ptr<Info>> Infos;
+        // First reducing phase (reduce all decls into one info per decl).
+        report::format(reportLevel,
+            "Reducing declarations");
 
-            // Each Bitcode can have multiple Infos
-            for(auto& bitcode : Group.second)
-            {
-                auto infos = readBitcode(bitcode);
-                if(! infos)
-                {
-                    report::error("{}: reading bitcode", infos.error());
-                    GotFailure = true;
-                    return;
-                }
-                std::move(
-                    infos->begin(),
-                    infos->end(),
-                    std::back_inserter(Infos));
-            }
+        auto results = context.results();
+        if(! results)
+            return results.error();
+        corpus->info_ = results.release();
 
-            auto merged = mergeInfos(Infos);
-            if(! merged)
-            {
-                report::error("{}: merging metadata", toError(merged.takeError()));
-                GotFailure = true;
-                return;
-            }
+        report::format(reportLevel,
+            "Reduced {} symbols in {}",
+                corpus->info_.size(),
+                format_duration(clock_type::now() - start_time));
+    #else
+        auto results = context.results();
+        if(! results)
+            return Unexpected(results.error());
+        corpus->info_ = std::move(results.value());
 
-            std::unique_ptr<Info> I(merged.get().release());
-            MRDOX_ASSERT(Group.first == I->id);
-            corpus->insert(std::move(I));
-        });
-
-    if(! errors.empty())
-        return Unexpected(Error(errors));
-
-    report::format(ex.getReportLevel(),
-        "Symbols collected: {}", corpus->info_.size());
-
-    if(GotFailure)
-        return Unexpected(formatError("multiple errors occurred"));
+        report::format(reportLevel,
+            "Extracted {} declarations in {}",
+            corpus->info_.size(),
+            format_duration(clock_type::now() - start_time));
+    #endif
 
     return corpus;
 }

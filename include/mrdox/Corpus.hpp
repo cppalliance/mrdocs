@@ -37,6 +37,8 @@ protected:
     {
     }
 
+
+    class iterator;
 public:
     /** Destructor.
     */
@@ -50,12 +52,19 @@ public:
     */
     Config const& config;
 
-    /** Return a sorted index of all symbols.
+    /** Return the begin iterator for the index of all symbols.
     */
     MRDOX_DECL
     virtual
-    std::vector<Info const*> const&
-    index() const noexcept = 0;
+    iterator
+    begin() const noexcept = 0;
+
+    /** Return the end iterator for the index.
+    */
+    MRDOX_DECL
+    virtual
+    iterator
+    end() const noexcept = 0;
 
     /** Return the metadata for the global namespace.
     */
@@ -179,6 +188,73 @@ traverse(
             std::forward<F>(f),
                 std::forward<Args>(args)...);
 }
+
+class Corpus::iterator
+{
+    const Corpus* corpus_;
+    const Info* val_;
+    const Info*(*next_)(const Corpus*, const Info*);
+
+public:
+    using value_type = const Info;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;
+    using pointer = value_type*;
+    using reference = value_type&;
+    using const_pointer = const value_type*;
+    using const_reference = const value_type&;
+
+    iterator() = default;
+    iterator(const iterator&) = default;
+    iterator& operator=(const iterator&) = default;
+
+    iterator(
+        const Corpus* corpus,
+        const Info* val,
+        const Info*(*next)(const Corpus*, const Info*))
+        : corpus_(corpus)
+        , val_(val)
+        , next_(next)
+    {
+    }
+
+    iterator& operator++() noexcept
+    {
+        MRDOX_ASSERT(val_);
+        val_ = next_(corpus_, val_);
+        return *this;
+    }
+
+    iterator operator++(int) noexcept
+    {
+        MRDOX_ASSERT(val_);
+        auto temp = *this;
+        val_ = next_(corpus_, val_);
+        return temp;
+    }
+
+    const_pointer operator->() const noexcept
+    {
+        MRDOX_ASSERT(val_);
+        return val_;
+    }
+
+    const_reference operator*() const noexcept
+    {
+        MRDOX_ASSERT(val_);
+        return *val_;
+    }
+
+    bool operator==(iterator const& other) const noexcept
+    {
+        return val_ == other.val_;
+    }
+
+    bool operator!=(iterator const& other) const noexcept
+    {
+        return val_ != other.val_;
+    }
+};
 
 } // mrdox
 } // clang
