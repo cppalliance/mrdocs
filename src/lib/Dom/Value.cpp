@@ -463,7 +463,7 @@ toStringChild(
     case Value::Kind::Integer:
         return std::to_string(value.i_);
     case Value::Kind::String:
-        return fmt::format("\"{}\"", value.str_);
+        return fmt::format("{}", value.str_);
     case Value::Kind::Array:
     {
         if(! value.arr_.empty())

@@ -2246,6 +2246,287 @@ block_decorators()
 }
 
 void
+subexpressions()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/subexpressions.js
+    Handlebars hbs;
+
+    // arg-less helper
+    {
+        hbs.registerHelper("foo", [](dom::Array const& args) {
+            std::string res(args[0].getString());
+            res += args[0].getString();
+            return res;
+        });
+        hbs.registerHelper("bar", []() {
+            return "LOL";
+        });
+        BOOST_TEST(hbs.render("{{foo (bar)}}!") == "LOLLOL!");
+    }
+
+    // helper with args
+    {
+        hbs.registerHelper("blog", [](dom::Array const& args) {
+            std::string res = "val is ";
+            res += toString(args[0]);
+            return res;
+        });
+        hbs.registerHelper("equal", [](dom::Array const& args) {
+            return dom::JSON_stringify(args[0]) == dom::JSON_stringify(args[1]);
+        });
+        dom::Object ctx;
+        ctx.set("bar", "LOL");
+        BOOST_TEST(hbs.render("{{blog (equal a b)}}", ctx) == "val is true");
+    }
+
+    // mixed paths and helpers
+    {
+        dom::Object ctx;
+        ctx.set("bar", "LOL");
+        dom::Object baz;
+        baz.set("bat", "foo!");
+        baz.set("bar", "bar!");
+        ctx.set("baz", baz);
+        hbs.registerHelper("blog", [](dom::Array const& args) {
+            std::string res = "val is ";
+            res += toString(args[0]);
+            res += ", ";
+            res += toString(args[1]);
+            res += " and ";
+            res += toString(args[2]);
+            return res;
+        });
+        hbs.registerHelper("equal", [](dom::Array const& args) {
+            return dom::JSON_stringify(args[0]) == dom::JSON_stringify(args[1]);
+        });
+        BOOST_TEST(
+            hbs.render("{{blog baz.bat (equal a b) baz.bar}}", ctx) ==
+            "val is foo!, true and bar!");
+    }
+
+    // supports much nesting
+    {
+        dom::Object ctx;
+        ctx.set("bar", "LOL");
+        hbs.registerHelper("blog", [](dom::Array const& args) {
+            std::string res = "val is ";
+            res += toString(args[0]);
+            return res;
+        });
+        hbs.registerHelper("equal", [](dom::Array const& args) {
+            return dom::JSON_stringify(args[0]) == dom::JSON_stringify(args[1]);
+        });
+        BOOST_TEST(
+            hbs.render("{{blog (equal (equal true true) true)}}", ctx) == "val is true");
+    }
+
+    // GH-800 : Complex subexpressions
+    {
+        // { a: 'a', b: 'b', c: { c: 'c' }, d: 'd', e: { e: 'e' } };
+        dom::Object context;
+        context.set("a", "a");
+        context.set("b", "b");
+        dom::Object c;
+        c.set("c", "c");
+        context.set("c", c);
+        context.set("d", "d");
+        dom::Object e;
+        e.set("e", "e");
+        context.set("e", e);
+
+        hbs.registerHelper("dash", [](dom::Array const& args) {
+            std::string res = toString(args[0]);
+            res += "-";
+            res += toString(args[1]);
+            return res;
+        });
+        hbs.registerHelper("concat", [](dom::Array const& args) {
+            std::string res = toString(args[0]);
+            res += toString(args[1]);
+            return res;
+        });
+        BOOST_TEST(
+            hbs.render("{{dash 'abc' (concat a b)}}", context) == "abc-ab");
+        BOOST_TEST(
+            hbs.render("{{dash d (concat a b)}}", context) == "d-ab");
+        BOOST_TEST(
+            hbs.render("{{dash c.c (concat a b)}}", context) == "c-ab");
+        BOOST_TEST(
+            hbs.render("{{dash (concat a b) c.c}}", context) == "ab-c");
+        BOOST_TEST(
+            hbs.render("{{dash (concat a e.e) c.c}}", context) == "ae-c");
+    }
+
+    // provides each nested helper invocation its own options hash
+    {
+        HandlebarsCallback const* lastOptions = nullptr;
+        hbs.registerHelper("equal", [&](
+            dom::Array const& args, HandlebarsCallback const& options)
+        {
+            if (&options == lastOptions)
+            {
+                return false;
+            }
+            lastOptions = &options;
+            return dom::JSON_stringify(args[0]) == dom::JSON_stringify(args[1]);
+        });
+        BOOST_TEST(
+            hbs.render("{{equal (equal true true) true}}") == "true");
+    }
+
+    // with hashes
+    {
+        dom::Object ctx;
+        ctx.set("bar", "LOL");
+        hbs.registerHelper("blog", [](dom::Array const& args) {
+            std::string res = "val is ";
+            res += toString(args[0]);
+            return res;
+        });
+        hbs.registerHelper("equal", [](dom::Array const& args) {
+            return dom::JSON_stringify(args[0]) == dom::JSON_stringify(args[1]);
+        });
+        BOOST_TEST(
+            hbs.render("{{blog (equal (equal true true) true fun='yes')}}", ctx) ==
+            "val is true");
+    }
+
+    // as hashes
+    {
+        hbs.registerHelper("blog", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            std::string res = "val is ";
+            res += toString(cb.hashes().find("fun"));
+            return res;
+        });
+        hbs.registerHelper("equal", [](dom::Array const& args) {
+            return dom::JSON_stringify(args[0]) == dom::JSON_stringify(args[1]);
+        });
+        BOOST_TEST(
+            hbs.render("{{blog fun=(equal (blog fun=1) 'val is 1')}}") ==
+            "val is true");
+    }
+
+    // multiple subexpressions in a hash
+    {
+        hbs.registerHelper("input", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            auto hash = cb.hashes();
+            std::string ariaLabel = escapeExpression(hash.find("aria-label").getString());
+            std::string placeholder = escapeExpression(hash.find("placeholder").getString());
+            std::string res = "<input aria-label=\"";
+            res += ariaLabel;
+            res += "\" placeholder=\"";
+            res += placeholder;
+            res += "\" />";
+            return safeString(res);
+        });
+        hbs.registerHelper("t", [](dom::Array const& args) {
+            return safeString(args[0].getString());
+        });
+        BOOST_TEST(
+            hbs.render("{{input aria-label=(t \"Name\") placeholder=(t \"Example User\")}}") ==
+            "<input aria-label=\"Name\" placeholder=\"Example User\" />");
+    }
+
+    // multiple subexpressions in a hash with context
+    {
+        dom::Object ctx;
+        dom::Object item;
+        item.set("field", "Name");
+        item.set("placeholder", "Example User");
+        ctx.set("item", item);
+        hbs.registerHelper("input", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            auto hash = cb.hashes();
+            std::string ariaLabel = escapeExpression(hash.find("aria-label").getString());
+            std::string placeholder = escapeExpression(hash.find("placeholder").getString());
+            std::string res = "<input aria-label=\"";
+            res += ariaLabel;
+            res += "\" placeholder=\"";
+            res += placeholder;
+            res += "\" />";
+            return safeString(res);
+        });
+        hbs.registerHelper("t", [](dom::Array const& args) {
+            return safeString(args[0].getString());
+        });
+        BOOST_TEST(
+            hbs.render("{{input aria-label=(t item.field) placeholder=(t item.placeholder)}}", ctx) ==
+            "<input aria-label=\"Name\" placeholder=\"Example User\" />");
+    }
+
+    // in string params mode
+    {
+        dom::Object ctx;
+        ctx.set("foo", "foo");
+        ctx.set("yeah", "yeah");
+        hbs.registerHelper("snog", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            BOOST_TEST(args[0].getString() == "foo");
+            // string params for outer helper processed correctly
+            BOOST_TEST(args.size() == 2u);
+            std::string res(args[0].getString());
+            res += args[1].getString();
+            return safeString(res);
+        });
+        hbs.registerHelper("blorg", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            // string params for inner helper processed correctly
+            BOOST_TEST(args.size() == 1u);
+            return args[0];
+        });
+        BOOST_TEST(
+            hbs.render("{{snog (blorg foo x=y) yeah a=b}}", ctx) ==
+            "fooyeah");
+    }
+
+    // as hashes in string params mode
+    {
+        hbs.registerHelper("blog", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            std::string res = "val is ";
+            res += toString(cb.hashes().find("fun"));
+            return res;
+        });
+        hbs.registerHelper("bork", [](
+            dom::Array const& args, HandlebarsCallback const& cb) {
+            return "BORK";
+        });
+        BOOST_TEST(hbs.render("{{blog fun=(bork)}}") == "val is BORK");
+    }
+
+    // subexpression functions on the context
+    {
+        hbs.registerHelper("bar", []() {
+            return "LOL";
+        });
+        hbs.registerHelper("foo", [](dom::Array const& args) {
+            dom::Value val = args[0];
+            std::string res(val.getString());
+            res += val.getString();
+            return res;
+        });
+        BOOST_TEST(hbs.render("{{foo (bar)}}!") == "LOLLOL!");
+    }
+
+    // subexpressions can't just be property lookups
+    {
+        dom::Object ctx;
+        ctx.set("bar", "LOL");
+        hbs.unregisterHelper("bar");
+        hbs.registerHelper("foo", [](dom::Array const& args) {
+            dom::Value val = args[0];
+            std::string res(val.getString());
+            res += val.getString();
+            return res;
+        });
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{foo (bar)}}!"), HandlebarsError, "bar is not a function - 1:7");
+    }
+}
+
+void
 run()
 {
     master_test();
@@ -2262,6 +2543,7 @@ run()
     block_standalone_sections();
     block_compat_mode();
     block_decorators();
+    subexpressions();
 }
 
 };
