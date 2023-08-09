@@ -18,15 +18,10 @@
 // writer takes in a stream and emits the generated
 // bitcode to that stream.
 //
-
-#include <mrdox/Platform.hpp>
 #include "BitcodeIDs.hpp"
-#include <mrdox/MetadataFwd.hpp>
-#include <mrdox/ADT/BitField.hpp>
-#include <mrdox/Metadata/Javadoc.hpp>
-#include <clang/AST/AST.h>
+#include <mrdox/Metadata.hpp>
 #include <llvm/ADT/DenseMap.h>
-#include <llvm/ADT/SmallVector.h>
+#include <llvm/ADT/IndexedMap.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Bitstream/BitstreamWriter.h>
 #include <initializer_list>
@@ -34,7 +29,6 @@
 
 namespace clang {
 namespace mrdox {
-
 
 class BitcodeWriter
 {
@@ -44,14 +38,14 @@ public:
     // to this + 1.
     //
     using RecordValue = std::uint32_t;
-    using RecordType = SmallVector<
+    using RecordType = llvm::SmallVector<
         RecordValue, BitCodeConstants::RecordSize>;
 
     explicit
     BitcodeWriter(llvm::BitstreamWriter &Stream);
 
     // Write a specific info to a bitcode stream.
-    bool dispatchInfoForWrite(Info const* I);
+    bool dispatchInfoForWrite(const Info& I);
 
     void emitHeader();
     void emitBlockInfoBlock();
@@ -81,7 +75,7 @@ public:
     // void emitRecord(std::vector<SpecializedMember> const& list, RecordID ID);
 
     void emitRecord(SymbolID const& Str, RecordID ID);
-    void emitRecord(StringRef Str, RecordID ID);
+    void emitRecord(llvm::StringRef Str, RecordID ID);
     void emitRecord(Location const& Loc, RecordID ID);
     void emitRecord(bool Value, RecordID ID);
     void emitRecord(std::initializer_list<BitFieldFullValue> values, RecordID ID);

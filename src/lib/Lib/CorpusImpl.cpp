@@ -101,7 +101,7 @@ build(
     // This operation happens ona thread pool.
     report::print(reportLevel, "Extracting declarations");
 
-    // #define USE_BITCODE
+    #define USE_BITCODE
 
     #ifdef USE_BITCODE
         BitcodeExecutionContext context(*config);
@@ -195,8 +195,8 @@ build(
 
         auto results = context.results();
         if(! results)
-            return results.error();
-        corpus->info_ = results.release();
+            return Unexpected(results.error());
+        corpus->info_ = std::move(results.value());
 
         report::format(reportLevel,
             "Reduced {} symbols in {}",

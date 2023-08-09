@@ -22,7 +22,6 @@
 #include "BitcodeIDs.hpp"
 #include <mrdox/Metadata.hpp>
 #include <mrdox/Support/Error.hpp>
-#include <clang/AST/AST.h>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/Bitstream/BitstreamReader.h>
 #include <optional>

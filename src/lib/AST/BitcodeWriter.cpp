@@ -10,13 +10,9 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
-#include "BitcodeWriter.hpp"
 #include "Bitcode.hpp"
-#include "ParseJavadoc.hpp"
-#include "lib/Support/Debug.hpp"
-#include <mrdox/Metadata.hpp>
-#include <llvm/ADT/IndexedMap.h>
-#include <initializer_list>
+#include "BitcodeWriter.hpp"
+#include <memory>
 
 namespace clang {
 namespace mrdox {
@@ -372,7 +368,7 @@ RecordsByBlock{
         RECORD_FRIENDS, RECORD_MEMBERS, RECORD_SPECIALIZATIONS}},
     // TArg
     {BI_TEMPLATE_ARG_BLOCK_ID,
-        {TEMPLATE_ARG_KIND, TEMPLATE_ARG_IS_PACK, 
+        {TEMPLATE_ARG_KIND, TEMPLATE_ARG_IS_PACK,
         TEMPLATE_ARG_TEMPLATE, TEMPLATE_ARG_NAME}},
     // TemplateInfo
     {BI_TEMPLATE_BLOCK_ID,
@@ -415,9 +411,9 @@ BitcodeWriter(
 
 bool
 BitcodeWriter::
-dispatchInfoForWrite(Info const* I)
+dispatchInfoForWrite(const Info& I)
 {
-    visit(*I, [this](const auto& info)
+    visit(I, [this](const auto& info)
         {
             emitBlock(info);
         });
@@ -496,7 +492,7 @@ emitBlockID(BlockID BID)
     Record.push_back(BID);
     Stream.EmitRecord(llvm::bitc::BLOCKINFO_CODE_SETBID, Record);
     Stream.EmitRecord(llvm::bitc::BLOCKINFO_CODE_BLOCKNAME,
-        ArrayRef<unsigned char>(BlockIdName.bytes_begin(),
+        llvm::ArrayRef<unsigned char>(BlockIdName.bytes_begin(),
             BlockIdName.bytes_end()));
 }
 
@@ -540,31 +536,32 @@ BitcodeWriter::
 emitRecord(
     Integer Value, RecordID ID)
 {
+    constexpr std::size_t width = sizeof(Integer);
+    static_assert(width == 4 || width == 8,
+        "unsupported integer width");
+
     MRDOX_ASSERT(RecordIDNameMap[ID]);
     if (!prepRecordData(ID, Value))
         return;
-    if constexpr(sizeof(Integer) == 8)
+    if constexpr(width == 8)
     {
         MRDOX_ASSERT(RecordIDNameMap[ID].Abbrev == &Integer64Abbrev);
         Record.push_back(static_cast<RecordValue>(Value));
         Record.push_back(static_cast<RecordValue>(
             static_cast<std::uint64_t>(Value) >> 32));
     }
-    else if constexpr(sizeof(Integer) == 4)
+    else if constexpr(width == 4)
     {
         MRDOX_ASSERT(RecordIDNameMap[ID].Abbrev == &Integer32Abbrev);
         Record.push_back(static_cast<RecordValue>(Value));
     }
 #if 0
-    else if constexpr(sizeof(Integer) == 2)
+    else if constexpr(width == 2)
     {
         MRDOX_ASSERT(RecordIDNameMap[ID].Abbrev == &Integer16Abbrev);
     }
 #endif
-    else
-    {
-        static_error("can't use Integer type", Value);
-    }
+
 
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
@@ -1063,10 +1060,10 @@ emitBlock(
             emitRecord(P.Kind, TEMPLATE_PARAM_KIND);
             emitRecord(P.Name, TEMPLATE_PARAM_NAME);
             emitRecord(P.IsParameterPack, TEMPLATE_PARAM_IS_PACK);
-        
+
             if(P.Default)
                 emitBlock(P.Default);
-            
+
             if constexpr(T::isType())
             {
                 emitRecord(P.KeyKind, TEMPLATE_PARAM_KEY_KIND);
@@ -1093,7 +1090,7 @@ emitBlock(
         {
             emitRecord(A.Kind, TEMPLATE_ARG_KIND);
             emitRecord(A.IsPackExpansion, TEMPLATE_ARG_IS_PACK);
-            
+
             if constexpr(T::isType())
             {
                 emitBlock(A.Type);
@@ -1142,15 +1139,14 @@ emitBlock(
 
 /** Write an Info variant to the buffer as bitcode.
 */
-Bitcode
-writeBitcode(
-    Info const& I)
+llvm::SmallString<0>
+writeBitcode(const Info& info)
 {
-    SmallString<0> Buffer;
-    llvm::BitstreamWriter Stream(Buffer);
-    BitcodeWriter writer(Stream);
-    writer.dispatchInfoForWrite(&I);
-    return Bitcode{ I.id, std::move(Buffer) };
+    llvm::SmallString<0> buffer;
+    llvm::BitstreamWriter stream(buffer);
+    BitcodeWriter writer(stream);
+    writer.dispatchInfoForWrite(info);
+    return buffer;
 }
 
 } // mrdox

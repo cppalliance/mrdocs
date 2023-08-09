@@ -71,11 +71,11 @@ report(
     // info will only contain duplicates which will require merging
     info_.merge(info);
 
-    for(auto& src : info)
+    for(auto& other : info)
     {
-        auto dst = info_.find(src->id);
-        MRDOX_ASSERT(dst != info_.end());
-        merge(**dst, std::move(*src));
+        auto it = info_.find(other->id);
+        MRDOX_ASSERT(it != info_.end());
+        merge(**it, std::move(*other));
     }
 
     diags_.mergeAndReport(std::move(diags));
@@ -106,17 +106,16 @@ report(
     InfoSet&& results,
     Diagnostics&& diags)
 {
-    std::lock_guard<std::mutex> lock(mutex_);
+    InfoSet info = std::move(results);
 
-    for(auto& I : results)
+    std::lock_guard<std::mutex> lock(mutex_);
+    for(auto& I : info)
     {
-        Bitcode bitcode = writeBitcode(*I);
-        auto [it, created] = bitcode_.emplace(
-            I->id, std::vector<SmallString<0>>());
-        auto& codes = it->second;
-        if(created || std::find(codes.begin(), codes.end(),
-            bitcode.data) == codes.end())
-            codes.emplace_back(std::move(bitcode.data));
+        auto bitcode = writeBitcode(*I);
+        auto [it, created] = bitcode_.try_emplace(I->id);
+        if(auto& codes = it->second; created ||
+            std::find(codes.begin(), codes.end(), bitcode) == codes.end())
+            codes.emplace_back(std::move(bitcode));
     }
 
     diags_.mergeAndReport(std::move(diags));

@@ -15,6 +15,8 @@
 #include "lib/AST/Bitcode.hpp"
 #include <mrdox/Support/ThreadPool.hpp>
 #include <mrdox/Metadata.hpp>
+#include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Path.h>
 
 namespace clang {
 namespace mrdox {
@@ -68,7 +70,7 @@ public:
                 auto bc = writeBitcode(I);
                 if((ec = os.error()))
                     Error(ec).Throw();
-                os.write(bc.data.data(), bc.data.size());
+                os.write(bc.data(), bc.size());
                 if((ec = os.error()))
                     Error(ec).Throw();
             });
@@ -106,7 +108,7 @@ public:
     operator()(T const& I)
     {
         auto bc = writeBitcode(I);
-        os_.write(bc.data.data(), bc.data.size());
+        os_.write(bc.data(), bc.size());
         if constexpr(T::isRecord())
             corpus_.traverse(I, *this);
     }
