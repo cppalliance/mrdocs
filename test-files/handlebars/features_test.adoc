@@ -293,7 +293,7 @@ https://cppalliance.org/[See Website]
 ----
 
 // Undefined helper
-Missing: undefinedhelper("Doe")
+Missing: undefinedhelper(Doe)
 
 // Helpers with hashes
 https://chat.asciidoc.org[*project chat*^,role=green]

@@ -89,6 +89,13 @@ class DomValuePrinter:
         else:
             yield 'kind_', self.value['kind_']
 
+class DomStringPrinter:
+    def __init__(self, value):
+        self.value = value
+
+    def to_string(self):
+        return self.value['psz_']
+
 
 class EnumPrinter:
     def __init__(self, value):
@@ -107,6 +114,8 @@ if __name__ != "__main__":
         typename: str = utils.resolved_typename(val)
         if typename == 'clang::mrdox::dom::Value':
             return DomValuePrinter(val)
+        if typename == 'clang::mrdox::dom::String':
+            return DomStringPrinter(val)
         return None
 
 

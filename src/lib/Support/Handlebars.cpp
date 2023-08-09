@@ -420,24 +420,42 @@ isCurrentContextSegment(std::string_view path)
     return path == "." || path == "this";
 }
 
+bool
+isIdChar(char c)
+{
+    // Identifiers may be any unicode character except for the following:
+    // Whitespace ! " # % & ' ( ) * + , . / ; < = > @ [ \ ] ^ ` { | } ~
+    static constexpr std::array<char, 32> invalidChars = {
+        ' ', '!', '"', '#', '%', '&', '\'', '(', ')', '*', '+', ',', '.', '/',
+        ';', '<', '=', '>', '@', '[', '\\', ']', '^', '`', '{', '|', '}', '~',
+        '\t', '\r', '\n', '\0'};
+    return !std::ranges::any_of(invalidChars, [c](char invalid) { return c == invalid; });
+}
+
 std::string_view
 popFirstSegment(std::string_view& path0)
 {
+    // ==============================================================
     // Skip dot segments
+    // ==============================================================
     std::string_view path = path0;
     while (path.starts_with("./") || path.starts_with("[.]/") || path.starts_with("[.]."))
     {
         path.remove_prefix(path.front() == '.' ? 2 : 4);
     }
 
-    // All that's left is a dot segment, so there are no more valid paths
+    // ==============================================================
+    // Single dot segment
+    // ==============================================================
     if (path == "." || path == "[.]")
     {
         path0 = {};
         return {};
     }
 
-    // If path starts with "[" the logic changes for literal segments
+    // ==============================================================
+    // Literal segment [...]
+    // ==============================================================
     if (path.starts_with('['))
     {
         auto pos = path.find_first_of(']');
@@ -465,8 +483,10 @@ popFirstSegment(std::string_view& path0)
         return seg;
     }
 
-    // Check if we have a literal number segment, in which case the dots
-    // are part of the segment
+    // ==============================================================
+    // Literal number segment
+    // ==============================================================
+    // In a literal number segment the dots are part of the segment
     if (std::ranges::all_of(path, [](char c) { return c == '.' || std::isdigit(c); }))
     {
         if (std::ranges::count(path, '.') < 2)
@@ -477,18 +497,28 @@ popFirstSegment(std::string_view& path0)
         }
     }
 
+    // ==============================================================
+    // Dotdot segment
+    // ==============================================================
     // If path starts with dotdot segment, the delimiter needs to be a slash
-    // Otherwise, it can be either a slash or a dot
-    std::string_view delimiters = path.starts_with("..") ? "/" : "./";
-    auto pos = path.find_first_of(delimiters);
-    // If no delimiter, the whole path is the segment
-    if (pos == std::string_view::npos)
+    if (path.starts_with("../"))
+    {
+        path0 = path.substr(3);
+        return path.substr(0, 2);
+    }
+    if (path == "..")
     {
         path0 = {};
         return path;
     }
-    // Otherwise, the segment is up to the delimiter
-    path0 = path.substr(pos + 1);
+
+    // ==============================================================
+    // Regular ID
+    // ==============================================================
+    auto it = std::ranges::find_if_not(path, isIdChar);
+    auto pos = it - path.begin();
+    bool endsAtDelimiter = it != path.end() && (*it == '.' || *it == '/');
+    path0 = path.substr(pos + endsAtDelimiter);
     return path.substr(0, pos);
 }
 
@@ -630,11 +660,20 @@ lookupPropertyImpl(
     std::string_view path,
     detail::RenderState const& state) {
     checkPath(path, state);
+    // ==============================================================
+    // "." / "this"
+    // ==============================================================
     if (isCurrentContextSegment(path) || path.empty())
         return {context, true};
+    // ==============================================================
+    // Non-object key
+    // ==============================================================
     if (context.kind() != dom::Kind::Object) {
         return {nullptr, false};
     }
+    // ==============================================================
+    // Object path
+    // ==============================================================
     return lookupPropertyImpl(context.getObject(), path, state);
 }
 
@@ -858,82 +897,94 @@ struct Handlebars::Tag {
 
 // Find next expression in tag content
 bool
-findExpr(std::string_view & expr, std::string_view tagContent)
+findExpr(
+    std::string_view & expr,
+    std::string_view arguments,
+    bool allowKeyValue = true)
 {
-    tagContent = trim_spaces(tagContent);
-    if (tagContent.empty()) {
-        expr = tagContent;
+    // ==============================================================
+    // Empty arguments
+    // ==============================================================
+    arguments = trim_spaces(arguments);
+    if (arguments.empty()) {
+        expr = arguments;
         return false;
     }
 
-    // Look for quoted expression
+    // ==============================================================
+    // Literal strings
+    // ==============================================================
     for (auto quote: {'\"', '\''})
     {
-        if (tagContent.front() == quote)
+        if (arguments.front() == quote)
         {
-            auto close_pos = tagContent.find(quote, 1);
+            auto close_pos = arguments.find(quote, 1);
             while (
                 close_pos != std::string_view::npos &&
-                tagContent[close_pos - 1] == '\\')
+                arguments[close_pos - 1] == '\\')
             {
                 // Skip escaped quote
-                close_pos = tagContent.find(quote, close_pos + 1);
+                close_pos = arguments.find(quote, close_pos + 1);
             }
             if (close_pos == std::string_view::npos)
             {
                 // No closing quote found, invalid expression
                 return false;
             }
-            expr = tagContent.substr(0, close_pos + 1);
+            expr = arguments.substr(0, close_pos + 1);
             return true;
         }
     }
 
-    // Look for subexpressions
-    if (tagContent.front() == '(')
+    // ==============================================================
+    // Subexpressions
+    // ==============================================================
+    if (arguments.front() == '(')
     {
-        std::string_view all = tagContent.substr(1);
+        std::string_view all = arguments.substr(1);
         std::string_view sub;
         while (findExpr(sub, all)) {
             all.remove_prefix(sub.data() + sub.size() - all.data());
         }
         if (!all.starts_with(')'))
             return false;
-        expr = tagContent.substr(0, sub.data() + sub.size() - tagContent.data() + 1);
+        expr = arguments.substr(0, sub.data() + sub.size() - arguments.data() + 1);
         return true;
     }
 
-    // No quoted expression found, look for whitespace
-    auto pos = tagContent.find_first_of(" \t\r\n)");
-    if (pos == std::string_view::npos)
+    // ==============================================================
+    // Key=value pair
+    // ==============================================================
+    if (allowKeyValue)
     {
-        expr = tagContent;
-        return true;
-    }
-
-    // Check if whitespace is not inside a "[*]" path segment
-    auto openBracketPos = tagContent.substr(0, pos).find_first_of('[');
-    if (openBracketPos == std::string_view::npos)
-    {
-        expr = tagContent.substr(0, pos);
-        return pos != 0;
-    }
-
-    // Consume more "[*]" path segments
-    while (pos != std::string_view::npos)
-    {
-        std::string_view subexpr = tagContent.substr(0, pos);
-        auto obrakets = std::count(subexpr.begin(), subexpr.end(), '[');
-        auto cbrakets = std::count(subexpr.begin(), subexpr.end(), ']');
-        if (obrakets == cbrakets)
+        auto it = std::ranges::find_if_not(arguments, isIdChar);
+        if (it != arguments.end() && *it == '=')
         {
-            expr = subexpr;
-            return true;
+            std::string_view value = arguments.substr(it - arguments.begin() + 1);
+            if (findExpr(expr, value, false))
+            {
+                expr = arguments.substr(0, expr.data() + expr.size() - arguments.data());
+                return true;
+            }
         }
-        pos = tagContent.find_first_of(" \t\r\n)", pos + 1);
     }
-    expr = tagContent.substr(0, pos);
-    return pos != 0;
+
+    // ==============================================================
+    // Path segments
+    // ==============================================================
+    // Pop path segments while we can with popFirstSegment(...)
+    std::string_view arguments0 = arguments;
+    if (arguments.starts_with('@'))
+    {
+        arguments.remove_prefix(1);
+    }
+    std::string_view seg = popFirstSegment(arguments);
+    while (!seg.empty())
+    {
+        seg = popFirstSegment(arguments);
+    }
+    expr = arguments0.substr(0, arguments.data() - arguments0.data());
+    return !expr.empty();
 }
 
 
@@ -1359,7 +1410,8 @@ constexpr
 std::pair<std::string_view, std::string_view>
 findKeyValuePair(std::string_view expression)
 {
-    if (expression.empty())
+    if (expression.empty() ||
+        (expression.front() == '(' && expression.back() == ')'))
         return { {}, {} };
     auto pos = expression.find('=');
     if (pos == std::string_view::npos)
@@ -1462,6 +1514,9 @@ evalExpr(
     expression = trim_spaces(expression);
     if (evalLiterals)
     {
+        // ==============================================================
+        // Literal values
+        // ==============================================================
         if (is_literal_value(expression, "true"))
         {
             return {true, true};
@@ -1493,12 +1548,26 @@ evalExpr(
                 return {std::int64_t(0), true};
             return {value, true};
         }
+        // ==============================================================
+        // Subexpressions
+        // ==============================================================
         if (expression.starts_with('(') && expression.ends_with(')'))
         {
             std::string_view all = expression.substr(1, expression.size() - 2);
             std::string_view helper;
             findExpr(helper, all);
             auto [fn, found] = getHelper(helper, false);
+            if (!found)
+            {
+                auto res = find_position_in_text(state.templateText0, helper);
+                std::string msg(helper);
+                msg += " is not a function";
+                if (res)
+                {
+                    throw HandlebarsError(msg, res.line, res.column, res.pos);
+                }
+                throw HandlebarsError(msg);
+            }
             all.remove_prefix(helper.data() + helper.size() - all.data());
             dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
             HandlebarsCallback cb;
@@ -1508,11 +1577,17 @@ evalExpr(
             return {fn(args, cb).first, true};
         }
     }
+    // ==============================================================
+    // Private data
+    // ==============================================================
     if (expression.starts_with('@'))
     {
         expression.remove_prefix(1);
         return lookupPropertyImpl(state.data, expression, state);
     }
+    // ==============================================================
+    // Dotdot context path
+    // ==============================================================
     if (expression.starts_with("..")) {
         auto contextPathV = state.data.find("contextPath");
         if (!contextPathV.isString())
@@ -1559,15 +1634,34 @@ evalExpr(
         } while (!contextPath.empty());
         return lookupPropertyImpl(root, expression, state);
     }
+    // ==============================================================
+    // Whole context object key
+    // ==============================================================
+    if (context.kind() == dom::Kind::Object) {
+        auto& obj = context.getObject();
+        if (obj.exists(expression))
+        {
+            return {obj.find(expression), true};
+        }
+    }
+    // ==============================================================
+    // Context path
+    // ==============================================================
     auto [r, defined] = lookupPropertyImpl(context, expression, state);
     if (defined) {
         return {r, defined};
     }
+    // ==============================================================
+    // Block values
+    // ==============================================================
     std::tie(r, defined) = lookupPropertyImpl(state.blockValues, expression, state);
     if (defined)
     {
         return {r, defined};
     }
+    // ==============================================================
+    // Parent contexts
+    // ==============================================================
     if (opt.compat)
     {
         auto parentContexts = std::ranges::views::reverse(state.compatStack);
@@ -1709,8 +1803,6 @@ parseBlock(
                             throw HandlebarsError(msg, res.line, res.column, res.pos);
                         }
                         throw HandlebarsError(msg);
-
-                        return false;
                     }
                     *curBlock = {curBlock->data(), closeTag.buffer.data()};
                     if (closeTag.removeLWhitespace) {
@@ -1848,10 +1940,12 @@ renderExpression(
     auto opt2 = opt;
     opt2.noEscape = tag.forceNoHTMLEscape || opt.noEscape;
 
-    // Evaluate helper as function
+    // ==============================================================
+    // Helper as function
+    // ==============================================================
     auto it = helpers_.find(tag.helper);
     if (it != helpers_.end()) {
-        auto [fn, found] = getHelper(tag.helper, false);
+        auto fn = it->second;
         dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
         HandlebarsCallback cb;
         cb.name_ = tag.helper;
@@ -1872,7 +1966,9 @@ renderExpression(
         return;
     }
 
-    // Evaluate helper as expression
+    // ==============================================================
+    // Helper as expression
+    // ==============================================================
     std::string_view helper_expr = tag.helper;
     std::string unescaped;
     if (is_literal_string(tag.helper))
@@ -1887,7 +1983,9 @@ renderExpression(
         return;
     }
 
-    // Let it decay to helperMissing hook
+    // ==============================================================
+    // helperMissing hook
+    // ==============================================================
     auto [fn, found] = getHelper(helper_expr, false);
     dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
     HandlebarsCallback cb;
@@ -1918,7 +2016,9 @@ setupArgs(
     std::string_view expr;
     while (findExpr(expr, expression))
     {
-        expression = expression.substr(expr.data() + expr.size() - expression.data());
+        auto exprEndPos = expr.data() + expr.size() - expression.data();
+        expression = expression.substr(exprEndPos);
+        expression = trim_ldelimiters(expression, " ");
         auto [k, v] = findKeyValuePair(expr);
         if (k.empty())
         {

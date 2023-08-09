@@ -1,7 +1,7 @@
 [1] this is a simple log output
 [1] firstname, Yehuda, lastname, Katz
-["debug"] debug logging
-["info"] info logging
+[debug] debug logging
+[info] info logging
 [1] info logging is the default
-["warn"] logging a warning
-["error"] logging an error
+[warn] logging a warning
+[error] logging an error
