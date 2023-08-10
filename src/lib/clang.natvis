@@ -443,12 +443,30 @@ For later versions of Visual Studio, no setup is required-->
     </Type>
 
     <Type Name="clang::NestedNameSpecifier">
-        <DisplayString Condition="!Specifier"></DisplayString>
-        <DisplayString Condition="((*(uintptr_t *)Prefix.Value.Data&gt;&gt;1)&amp;3) == 0">{(IdentifierInfo*)Specifier,view(cpp)na}::</DisplayString>
-        <DisplayString Condition="((*(uintptr_t *)Prefix.Value.Data&gt;&gt;1)&amp;3) == 1">{(NamedDecl*)Specifier,view(cpp)na}::</DisplayString>
-        <DisplayString Condition="((*(uintptr_t *)Prefix.Value.Data&gt;&gt;1)&amp;3) == 2">{(Type*)Specifier,view(cpp)na}::</DisplayString>
+        <Intrinsic Category="Data" Name="as_decl" Expression="(clang::NamedDecl*)Specifier"/>
+        <Intrinsic Category="Data" Name="as_type" Expression="(clang::Type*)Specifier"/>
+        <Intrinsic Category="Data" Name="as_identifier" Expression="(clang::IdentifierInfo*)Specifier"/>
+        <Intrinsic Category="Data" Name="get_stored_kind" Expression="(NestedNameSpecifier::StoredSpecifierKind)Prefix.get_int()"/>
+        <Intrinsic Category="Data" Name="get_kind" Expression="(NestedNameSpecifier::SpecifierKind)(
+            Specifier ? (
+                get_stored_kind() != StoredSpecifierKind::StoredIdentifier ? (
+                    get_stored_kind() == StoredSpecifierKind::StoredDecl ? (
+                        as_decl()-&gt;is(Decl::Namespace) ? SpecifierKind::Namespace : (
+                            as_decl()-&gt;is(Decl::NamespaceAlias) ? SpecifierKind::NamespaceAlias : SpecifierKind::Super
+                        )
+                    ) : (get_stored_kind() == StoredSpecifierKind::StoredTypeSpec ? SpecifierKind::TypeSpec : SpecifierKind::TypeSpecWithTemplate)
+                ) : SpecifierKind::Identifier
+            ) : SpecifierKind::Global
+        )"/>
+
         <Expand>
-            <Item Name="Kind">(NestedNameSpecifier::StoredSpecifierKind)((*(uintptr_t *)Prefix.Value.Data&gt;&gt;1)&amp;3)</Item>
+            <!-- <Item Name="StoredKind">get_stored_kind(),en</Item> -->
+            <Item Name="Kind">get_kind(),en</Item>
+            <Item Name="Specifier" Condition="Specifier &amp;&amp; get_stored_kind() == StoredSpecifierKind::StoredIdentifier">as_identifier(),na</Item>
+            <Item Name="Specifier" Condition="Specifier &amp;&amp; get_stored_kind() == StoredSpecifierKind::StoredDecl">as_decl(),na</Item>
+            <Item Name="Specifier" Condition="Specifier &amp;&amp; get_stored_kind() == StoredSpecifierKind::StoredTypeSpec ||
+                get_stored_kind() == StoredSpecifierKind::StoredTypeSpecWithTemplate">as_type(),na</Item>
+            <Item Name="Prefix" Condition="! Prefix.is_null()">Prefix.get_ptr(),na</Item>
         </Expand>
     </Type>
 
@@ -946,7 +964,8 @@ For later versions of Visual Studio, no setup is required-->
             <ExpandedItem>*(clang::Type*)this,nd</ExpandedItem>
             <Item Name="[return type]">ResultType</Item>
             <Synthetic Name="[parameter types]">
-                <DisplayString>size = {FunctionTypeBits.NumParams}</DisplayString>
+                <DisplayString Condition="FunctionTypeBits.NumParams">size = {FunctionTypeBits.NumParams}</DisplayString>
+                <DisplayString>none</DisplayString>
                 <Expand>
                     <ArrayItems>
                         <Size>FunctionTypeBits.NumParams</Size>
@@ -1084,6 +1103,9 @@ For later versions of Visual Studio, no setup is required-->
     <!-- ================================================================================================ -->
 
     <Type Name="clang::Decl">
+        <Intrinsic Category="Data" Name="is" Expression="(Decl::Kind)DeclKind == k">
+            <Parameter Type="Decl::Kind" Name="k"/>
+        </Intrinsic>
         <Intrinsic Category="Data" Name="get_kind" Expression="(clang::Decl::Kind)DeclKind" />
         <Intrinsic Category="Data" Name="get_semantic_dc" Expression="(DeclContext*)(DeclCtx.is_null() ? nullptr :
             (DeclCtx.get_int() == 0 ? DeclCtx.get_ptr() : ((Decl::MultipleDC*)DeclCtx.get_ptr())-&gt;SemanticDC))" />
@@ -1279,11 +1301,15 @@ For later versions of Visual Studio, no setup is required-->
     <Type Name="clang::DeclaratorDecl">
         <Intrinsic Category="Data" Name="get_type_as_written"
             Expression="DeclInfo.is_null() ? nullptr : (TypeSourceInfo*)(DeclInfo.get_int() == 0 ?
-                DeclInfo.get_ptr() : ((clang::DeclaratorDecl::ExtInfo*)DeclInfo.get_ptr())-&gt;TInfo)"/>
+                DeclInfo.get_ptr() : ((DeclaratorDecl::ExtInfo*)DeclInfo.get_ptr())-&gt;TInfo)"/>
+        <Intrinsic Category="Data" Name="get_qualifier"
+            Expression="DeclInfo.is_null() || DeclInfo.get_int() == 0 ? nullptr :
+                (NestedNameSpecifier*)(((DeclaratorDecl::ExtInfo*)DeclInfo.get_ptr())-&gt;QualifierLoc.Qualifier)"/>
 
         <DisplayString>{(ValueDecl*)this,nand}</DisplayString>
         <Expand>
             <ExpandedItem>*(NamedDecl*)this,nd</ExpandedItem>
+            <Item Name="Qualifier" Condition="get_qualifier()">get_qualifier(),na</Item>
             <Synthetic Name="Type">
                 <DisplayString>{DeclType}</DisplayString>
                 <Expand>
@@ -1295,6 +1321,10 @@ For later versions of Visual Studio, no setup is required-->
     </Type>
 
     <Type Name="clang::TagDecl">
+        <Intrinsic Category="Data" Name="get_qualifier"
+            Expression="TypedefNameDeclOrQualifier.is_null() || TypedefNameDeclOrQualifier.get_int() == 0 ? nullptr :
+                (NestedNameSpecifier*)(((TagDecl::ExtInfo*)TypedefNameDeclOrQualifier.get_ptr())-&gt;QualifierLoc.Qualifier)"/>
+
         <DisplayString Condition="(TagTypeKind)TagDeclBits.TagDeclKind == TagTypeKind::TTK_Struct">{(Decl*)this,nand} struct {Name}</DisplayString>
         <DisplayString Condition="(TagTypeKind)TagDeclBits.TagDeclKind == TagTypeKind::TTK_Class">{(Decl*)this,nand} class {Name}</DisplayString>
         <DisplayString Condition="(TagTypeKind)TagDeclBits.TagDeclKind == TagTypeKind::TTK_Union">{(Decl*)this,nand} union {Name}</DisplayString>
@@ -1311,6 +1341,7 @@ For later versions of Visual Studio, no setup is required-->
                 <DisplayString Condition="(TagTypeKind)TagDeclBits.TagDeclKind == TagTypeKind::TTK_Interface">__interface</DisplayString>
                 <DisplayString>invalid</DisplayString>
             </Synthetic>
+            <Item Name="Qualifier" Condition="! TypedefNameDeclOrQualifier.is_null() &amp;&amp; TypedefNameDeclOrQualifier.get_int() == 1">get_qualifier(),na</Item>
             <ExpandedItem>*(redeclarable_base*)this,nd</ExpandedItem>
             <ExpandedItem>*(DeclContext*)this,nd</ExpandedItem>
         </Expand>
@@ -1345,7 +1376,7 @@ For later versions of Visual Studio, no setup is required-->
         <Expand>
             <ExpandedItem>*(NamedDecl*)this,nd</ExpandedItem>
             <Item Name="Type">get_type_as_written()</Item>
-            <Item Name="DescribedTemplate" Condition="Template">Template</Item>
+            <Item Name="DescribedTemplate" Condition="Template">Template,na</Item>
             <ExpandedItem>*(redeclarable_base*)this,nd</ExpandedItem>
         </Expand>
     </Type>
@@ -1396,7 +1427,28 @@ For later versions of Visual Studio, no setup is required-->
 
         <DisplayString>{(DeclaratorDecl*)this,nand}</DisplayString>
         <Expand>
-            <ExpandedItem>*(DeclaratorDecl*)this,nd</ExpandedItem>
+            <!-- <ExpandedItem>*(DeclaratorDecl*)this,nd</ExpandedItem> -->
+            <ExpandedItem>*(NamedDecl*)this,nd</ExpandedItem>
+            <Item Name="Qualifier" Condition="get_qualifier()">get_qualifier(),na</Item>
+
+            <Item Name="IsDefinition">
+                (FunctionDeclBits.IsDeleted &amp;&amp; ! FunctionDeclBits.IsDefaulted) ||
+                ((! FunctionDeclBits.HasDefaultedFunctionInfo &amp;&amp; Body.Ptr) || FunctionDeclBits.IsLateTemplateParsed) ||
+                FunctionDeclBits.HasSkippedBody ||
+                FunctionDeclBits.WillHaveBody
+            </Item>
+            <!--
+            <Synthetic Name="[definition]">
+                <Expand>
+                    <Item Name="IsDefinition">
+                        (FunctionDeclBits.IsDeleted &amp;&amp; ! FunctionDeclBits.IsDefaulted) ||
+                        ((! FunctionDeclBits.HasDefaultedFunctionInfo &amp;&amp; Body.Ptr) || FunctionDeclBits.IsLateTemplateParsed) ||
+                        FunctionDeclBits.HasSkippedBody ||
+                        FunctionDeclBits.WillHaveBody
+                    </Item>
+                </Expand>
+            </Synthetic>
+            -->
 
             <Item Name="DescribedTemplate" Condition="! TemplateOrSpecialization.is_null() &amp;&amp;
                 TemplateOrSpecialization.get_int() == 0 &amp;&amp;
@@ -1410,35 +1462,20 @@ For later versions of Visual Studio, no setup is required-->
             </Item>
 
             <Item Name="MemberSpecialization" Condition="! TemplateOrSpecialization.is_null() &amp;&amp; TemplateOrSpecialization.get_int() == 1">
-                (MemberSpecializationInfo*)TemplateOrSpecialization.get_ptr()
+                (MemberSpecializationInfo*)TemplateOrSpecialization.get_ptr(),na
             </Item>
 
             <Item Name="TemplateSpecialization" Condition="! TemplateOrSpecialization.is_null() &amp;&amp; TemplateOrSpecialization.get_int() == 2">
-                (FunctionTemplateSpecializationInfo*)TemplateOrSpecialization.get_ptr()
+                (FunctionTemplateSpecializationInfo*)TemplateOrSpecialization.get_ptr(),na
             </Item>
 
-            <Item Name="isDefinition">
-                (FunctionDeclBits.IsDeleted &amp;&amp; ! FunctionDeclBits.IsDefaulted) ||
-                ((! FunctionDeclBits.HasDefaultedFunctionInfo &amp;&amp; Body.Ptr) || FunctionDeclBits.IsLateTemplateParsed) ||
-                FunctionDeclBits.HasSkippedBody ||
-                FunctionDeclBits.WillHaveBody
-            </Item>
-            <!--
-            <Synthetic Name="[definition]">
-                <Expand>
-                    <Item Name="isDefinition">
-                        (FunctionDeclBits.IsDeleted &amp;&amp; ! FunctionDeclBits.IsDefaulted) ||
-                        ((! FunctionDeclBits.HasDefaultedFunctionInfo &amp;&amp; Body.Ptr) || FunctionDeclBits.IsLateTemplateParsed) ||
-                        FunctionDeclBits.HasSkippedBody ||
-                        FunctionDeclBits.WillHaveBody
-                    </Item>
-                </Expand>
-            </Synthetic>
-            -->
+            <Item Name="[returns]" Condition="DeclType.is(Type::FunctionProto)">((FunctionType*)(DeclType.get_type_ptr()))-&gt;ResultType</Item>
 
             <Synthetic Name="[parameters]">
-                <DisplayString Condition="ParamInfo &amp;&amp; DeclType.is(Type::FunctionProto)">size = {DeclType.get_type_ptr()-&gt;FunctionTypeBits.NumParams}</DisplayString>
-                <DisplayString>size = 0</DisplayString>
+                <DisplayString Condition="ParamInfo &amp;&amp; DeclType.is(Type::FunctionProto) &amp;&amp; DeclType.get_type_ptr()-&gt;FunctionTypeBits.NumParams">
+                    size = {DeclType.get_type_ptr()-&gt;FunctionTypeBits.NumParams}
+                </DisplayString>
+                <DisplayString>none</DisplayString>
                 <Expand>
                     <ArrayItems Condition="ParamInfo &amp;&amp; DeclType.is(Type::FunctionProto)">
                         <Size>DeclType.get_type_ptr()-&gt;FunctionTypeBits.NumParams</Size>
@@ -1682,13 +1719,7 @@ For later versions of Visual Studio, no setup is required-->
 
     <!-- ================================================================================================ -->
 
-    <Type Name="clang::ParmVarDecl">
-        <DisplayString>{*(VarDecl*)this,nand}</DisplayString>
-        <Expand>
-            <ExpandedItem>*(VarDecl*)this,nd</ExpandedItem>
-            <Item Name="ParmVarDeclBits">ParmVarDeclBits</Item>
-        </Expand>
-    </Type>
+
 
     <Type Name="clang::VarDecl">
         <AlternativeType Name="clang::VarTemplatePartialSpecializationDecl" Inheritable="false" />
@@ -1708,9 +1739,6 @@ For later versions of Visual Studio, no setup is required-->
             <Item Name="SpecializationKind" Optional="true">
                 clang::TemplateSpecializationKind(SpecializationKind),en
             </Item>
-
-            <Item Name="SpecializationType" Optional="true" Condition="ExplicitInfo">ExplicitInfo-&gt;TypeAsWritten</Item>
-
 
             <!-- KRYSTIAN TODO: this is stored in a DenseMap in ASTContext...
             <Item Name="SpecializationKind" Condition="! is_vtsd() &amp;&amp; ! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
@@ -1739,12 +1767,21 @@ For later versions of Visual Studio, no setup is required-->
             <Item Name="SpecializedPartial" Optional="true" Condition="SpecializedTemplate.get_int() == 1">
                 ((VarTemplateSpecializationDecl::SpecializedPartialSpecialization*)(SpecializedTemplate.get_ptr()))-&gt;PartialSpecialization
             </Item>
+
+            <Item Name="SpecializationType" Optional="true" Condition="ExplicitInfo">ExplicitInfo-&gt;TypeAsWritten</Item>
             <Item Name="PointOfInstantiation" Optional="true">PointOfInstantiation</Item>
 
             <ExpandedItem>*(redeclarable_base*)this,nd</ExpandedItem>
         </Expand>
     </Type>
 
+    <Type Name="clang::ParmVarDecl">
+        <DisplayString>{*(VarDecl*)this,nand}</DisplayString>
+        <Expand>
+            <ExpandedItem>*(VarDecl*)this,nd</ExpandedItem>
+            <!-- <Item Name="ParmVarDeclBits">ParmVarDeclBits</Item> -->
+        </Expand>
+    </Type>
 
     <!-- ================================================================================================ -->
 
@@ -1759,6 +1796,8 @@ For later versions of Visual Studio, no setup is required-->
         <DisplayString>{(TagDecl*)this,nand}</DisplayString>
         <Expand>
             <ExpandedItem>*(NamedDecl*)this,nd</ExpandedItem>
+
+            <Item Name="Qualifier" Condition="get_qualifier()">get_qualifier(),na</Item>
 
             <Item Name="TemplateParams" Optional="true">TemplateParams,na</Item>
             <Item Name="TemplateArgs"  Optional="true">TemplateArgs,na</Item>
@@ -1775,14 +1814,12 @@ For later versions of Visual Studio, no setup is required-->
                 (ClassTemplateDecl*)TemplateOrInstantiation.get_ptr()
             </Item>
             <Item Name="MemberSpecialization" Condition="! TemplateOrInstantiation.is_null() &amp;&amp; TemplateOrInstantiation.get_int() == 1">
-                (MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr()
+                (MemberSpecializationInfo*)TemplateOrInstantiation.get_ptr(),na
             </Item>
-
-            <Item Name="SpecializationType" Optional="true" Condition="ExplicitInfo">ExplicitInfo-&gt;TypeAsWritten</Item>
 
             <Item Name="IsMemberSpecialization" Optional="true">InstantiatedFromMember.get_int()</Item>
             <Item Name="InstantiatedFromMember" Optional="true" Condition="! InstantiatedFromMember.is_null()">
-                as_ctpsd()-&gt;InstantiatedFromMember.get_ptr()
+                InstantiatedFromMember.get_ptr()
             </Item>
 
             <Item Name="SpecializedTemplate" Optional="true" Condition="SpecializedTemplate.get_int() == 0">
@@ -1791,6 +1828,8 @@ For later versions of Visual Studio, no setup is required-->
             <Item Name="SpecializedPartial" Optional="true" Condition="SpecializedTemplate.get_int() == 1">
                 ((ClassTemplateSpecializationDecl::SpecializedPartialSpecialization*)(SpecializedTemplate.get_ptr()))-&gt;PartialSpecialization
             </Item>
+
+            <Item Name="SpecializationType" Optional="true" Condition="ExplicitInfo">ExplicitInfo-&gt;TypeAsWritten</Item>
 
             <Item Name="PointOfInstantiation" Optional="true">PointOfInstantiation</Item>
 
