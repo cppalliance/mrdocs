@@ -51,7 +51,9 @@ public:
         Corpus const& corpus) noexcept
         : I_(I)
         , corpus_(corpus)
-        , includePrivate_(corpus_.config->includePrivate)
+        , includePrivate_(
+            corpus_.config->extract.inaccessibleMembers !=
+            Config::ExtractOptions::Policy::Never)
     {
         // treat `Derived` as a public base,
         append(AccessKind::Public, Derived);

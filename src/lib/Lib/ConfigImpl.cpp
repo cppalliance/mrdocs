@@ -101,10 +101,8 @@ struct llvm::yaml::MappingTraits<
         io.mapOptional("defines",           cfg.defines);
         io.mapOptional("ignore-failures",   cfg.ignoreFailures);
 
-        io.mapOptional("extract-options",   cfg.extractOptions);
+        io.mapOptional("extract",           cfg.extract);
 
-        io.mapOptional("include-anonymous", cfg.includeAnonymous);
-        io.mapOptional("include-private",   cfg.includePrivate);
         io.mapOptional("multipage",         cfg.multiPage);
         io.mapOptional("source-root",       cfg.sourceRoot);
 

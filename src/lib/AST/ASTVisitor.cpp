@@ -258,11 +258,11 @@ public:
         SymbolID id = extractSymbolID(D);
         Info* info = getInfo(id);
 
-        if(config_->extractOptions.referencedDeclarations ==
+        if(config_->extract.referencedDeclarations ==
             Config::ExtractOptions::Policy::Never)
             return info;
 
-        if(config_->extractOptions.referencedDeclarations ==
+        if(config_->extract.referencedDeclarations ==
             Config::ExtractOptions::Policy::Dependency)
         {
             // if(currentMode() == ExtractMode::Normal)
@@ -2348,9 +2348,23 @@ traverse(NamespaceDecl* D)
 {
     if(! shouldExtract(D))
         return true;
-    if(! config_->includeAnonymous &&
-        D->isAnonymousNamespace())
-        return true;
+
+    if(D->isAnonymousNamespace() &&
+        config_->extract.anonymousNamespaces !=
+            Config::ExtractOptions::Policy::Always)
+    {
+        // always skip anonymous namespaces if so configured
+        if(config_->extract.anonymousNamespaces ==
+            Config::ExtractOptions::Policy::Never)
+            return true;
+
+        // otherwise, skip extraction if this isn't a dependency
+        // KRYSTIAN FIXME: is this correct? a namespace should not
+        // be extracted as a dependency (until namespace aliases and
+        // using directives are supported)
+        if(currentMode() == ExtractMode::Normal)
+            return true;
+    }
 
     SymbolID id;
     if(! extractSymbolID(D, id))

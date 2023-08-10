@@ -1,5 +1,6 @@
 #ignore-failures: true
-with-private: false
+extract:
+    inaccessible-members: never
 concurrency: 1
 source-root: .
 single-page: true

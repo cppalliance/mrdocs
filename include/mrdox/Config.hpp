@@ -61,8 +61,29 @@ public:
         */
         Policy referencedDeclarations = Policy::Dependency;
 
+        /** Extraction policy for anonymous namespace.
+
+            @li `Policy::Always`: anonymous namespaces and their
+            members will always be extracted.
+
+            @li `Policy::Dependency`: members of anonymous namespaces will only
+            be extracted via dependency.
+
+            @li `Policy::Never`: members of anonymous namespace will
+            never be extracted, regardless of how they are referenced.
+        */
         Policy anonymousNamespaces = Policy::Always;
 
+        /** Extraction policy for inaccessible members.
+
+            @li `Policy::Always`: all `private` and `protected` members
+            will be extracted.
+
+            @li `Policy::Dependency`: `private` and `protected` members will only
+            be extracted via dependency.
+
+            @li `Policy::Never`: `private` and `protected` will never be extracted.
+        */
         Policy inaccessibleMembers = Policy::Always;
 
         Policy inaccessibleBases = Policy::Always;
@@ -71,25 +92,9 @@ public:
     struct Settings
     {
 
-        ExtractOptions extractOptions;
-
-        /** `true` if anonymous namespace members should be extracted and displayed.
-
-            In some cases anonymous namespace members will
-            be listed even if this configuration value is set to
-            `false`. For example, this may occur for a class derived
-            from one declared within an anonymous namespace.
+        /** Options controlling when declarations are extracted.
         */
-        bool includeAnonymous = true;
-
-        /** `true` if private members should be extracted and displayed.
-
-            In some cases private members will be listed
-            even if this configuration value is set to
-            `false`. For example, when extracting private
-            virtual functions in a base class.
-        */
-        bool includePrivate = false;
+        ExtractOptions extract;
 
         /** `true` if output should consist of multiple files.
         */
