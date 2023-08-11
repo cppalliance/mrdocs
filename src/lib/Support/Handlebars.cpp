@@ -79,6 +79,7 @@ isTruthy(dom::Value const& arg)
             return !arg.getString().empty();
         case dom::Kind::Array:
         case dom::Kind::Object:
+        case dom::Kind::Function:
             return true;
         case dom::Kind::Null:
             return false;
@@ -1206,7 +1207,6 @@ render_to(
     if (options.data.isNull())
     {
         state.data.set("root", context);
-        state.data.set("level", "warn");
     }
     else if (options.data.isObject())
     {
@@ -1348,6 +1348,8 @@ JSON_stringify(
         s += "}";
         return s;
     }
+    case dom::Kind::Function:
+        return "[Function]";
     default:
         MRDOX_UNREACHABLE();
     }
@@ -2927,8 +2929,13 @@ if_fn(
         return;
     }
 
-    dom::Value const& conditional = args[0];
-    if (conditional.kind() == dom::Kind::Integer) {
+    dom::Value conditional = args[0];
+    if (conditional.isFunction())
+    {
+        conditional = conditional.getFunction()(options.context());
+    }
+
+    if (conditional.isInteger()) {
         // Treat the zero path separately
         std::int64_t v = conditional.getInteger();
         if (v == 0) {
@@ -2947,7 +2954,7 @@ if_fn(
             return;
         }
     }
-    if (isTruthy(conditional)) {
+    if (!isEmpty(conditional)) {
         options.fn(out);
         return;
     }
@@ -2958,38 +2965,9 @@ void
 unless_fn(
     dom::Array const& args,
     HandlebarsCallback const& options) {
-    OutputRef out = options.output();
-    auto r = validateArgs(options.name(), 1, args);
-    if (!r.empty()) {
-        out << r;
-        return;
-    }
-
-    dom::Value const& conditional = args[0];
-    if (conditional.kind() == dom::Kind::Integer) {
-        // Treat the zero path separately
-        std::int64_t v = conditional.getInteger();
-        if (v == 0) {
-            bool includeZero = false;
-            if (options.hashes().exists("includeZero")) {
-                auto zeroV = options.hashes().find("includeZero");
-                if (zeroV.isBoolean()) {
-                    includeZero = zeroV.getBool();
-                }
-            }
-            if (includeZero) {
-                options.inverse(out);
-            } else {
-                options.fn(out);
-            }
-            return;
-        }
-    }
-    if (isTruthy(conditional)) {
-        options.inverse(out);
-        return;
-    }
-    options.fn(out);
+    HandlebarsCallback options2 = options;
+    std::swap(options2.fn_, options2.inverse_);
+    return if_fn(args, options2);
 }
 
 void
@@ -3003,6 +2981,10 @@ with_fn(
         return;
     }
     dom::Value newContext = args[0];
+    if (newContext.isFunction()) {
+        newContext = newContext.getFunction()(options.context());
+    }
+
     if (!isEmpty(newContext)) {
         dom::Object data = createFrame(options.data());
         std::string contextPath = appendContextPath(
@@ -3023,13 +3005,11 @@ void
 each_fn(
     dom::Array const& args,
     HandlebarsCallback const& options) {
-    OutputRef out = options.output();
-    auto r = validateArgs(options.name(), 1, args);
-    if (!r.empty()) {
-        out << r;
-        return;
+    if (args.empty()) {
+        throw HandlebarsError("Must pass iterator to #each");
     }
 
+    OutputRef out = options.output();
     MRDOX_ASSERT(!options.ids().empty());
     std::string contextPath = appendContextPath(
         options.data().find("contextPath"), options.ids()[0]) + '.';
@@ -3038,6 +3018,10 @@ each_fn(
     dom::Object blockValues;
 
     dom::Value context = args[0];
+    if (context.isFunction()) {
+        context = context.getFunction()(options.context());
+    }
+
     std::size_t index = 0;
     if (context.isArray()) {
         dom::Array const& items = context.getArray();
@@ -3101,9 +3085,12 @@ log_fn(
     dom::Array const& args,
     HandlebarsCallback const& options) {
     dom::Value level = 1;
-    if (auto hl = options.hashes().find("level"); !hl.isNull()) {
+    if (auto hl = options.hashes().find("level"); !hl.isNull())
+    {
         level = hl;
-    } else if (auto ol = options.hashes().find("level"); !ol.isNull()) {
+    }
+    else if (auto ol = options.data().find("level"); !ol.isNull())
+    {
         level = ol;
     }
     options.log(level, args);

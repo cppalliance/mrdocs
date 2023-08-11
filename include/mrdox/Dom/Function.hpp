@@ -255,7 +255,7 @@ private:
 template<class F>
 Function makeInvocable(F&& f)
 {
-    return newFunction<InvocableImpl<F>>(
+    return newFunction<InvocableImpl<std::decay_t<F>>>(
         std::forward<F>(f));
 }
 
