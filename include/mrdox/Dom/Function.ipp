@@ -149,6 +149,8 @@ call_impl(
     Array const& args,
     std::index_sequence<I...>) const
 {
+    if (args.size() < sizeof...(I))
+        return Error("too few arguments");
     return f_(arg_type<std::decay_t<
         std::tuple_element_t<I, args_type> >
             >::get(args[I])...);

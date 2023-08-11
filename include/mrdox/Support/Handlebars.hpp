@@ -281,6 +281,15 @@ public:
     }
 };
 
+class HandlebarsCallback;
+
+namespace helpers {
+    void
+    unless_fn(
+        dom::Array const& args,
+        HandlebarsCallback const& options);
+}
+
 /** Callback information for handlebars helpers
 
     This class is used to pass information about the current
@@ -308,6 +317,12 @@ private:
     std::function<void(dom::Value, dom::Array const&)> const* logger_;
     detail::RenderState* renderState_;
     friend class Handlebars;
+
+    friend
+    void
+    helpers::unless_fn(
+        dom::Array const& args,
+        HandlebarsCallback const& options);
 
 public:
     /** Render the block content with the specified context

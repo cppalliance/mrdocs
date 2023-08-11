@@ -2527,6 +2527,657 @@ subexpressions()
 }
 
 void
+builtin_if()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/builtins.js
+    Handlebars hbs;
+
+    // if
+    {
+        std::string string = "{{#if goodbye}}GOODBYE {{/if}}cruel {{world}}!";
+
+        // if with boolean argument shows the contents when true
+        dom::Object ctx;
+        ctx.set("goodbye", true);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "GOODBYE cruel world!");
+
+        // if with string argument shows the contents
+        ctx.set("goodbye", "dummy");
+        BOOST_TEST(hbs.render(string, ctx) == "GOODBYE cruel world!");
+
+        // if with boolean argument does not show the contents when false
+        ctx.set("goodbye", false);
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+
+        // if with undefined does not show the contents
+        ctx = dom::Object();
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+
+        // if with non-empty array shows the contents
+        ctx = dom::Object();
+        dom::Array fooArray;
+        fooArray.emplace_back("foo");
+        ctx.set("goodbye", fooArray);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "GOODBYE cruel world!");
+
+        // if with empty array does not show the contents
+        dom::Array emptyArray;
+        ctx.set("goodbye", emptyArray);
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+
+        // if with zero does not show the contents
+        ctx.set("goodbye", std::int64_t(0));
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+
+        // if with zero does show the contents
+        BOOST_TEST(
+            hbs.render("{{#if goodbye includeZero=true}}GOODBYE {{/if}}cruel {{world}}!", ctx) ==
+            "GOODBYE cruel world!");
+    }
+
+    // if with function argument
+    {
+        std::string string = "{{#if goodbye}}GOODBYE {{/if}}cruel {{world}}!";
+
+        // if with function shows the contents when function returns true
+        dom::Object ctx;
+        ctx.set("goodbye", dom::makeInvocable([]() { return true; }));
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "GOODBYE cruel world!");
+
+        // if with function shows the contents when function returns string
+        ctx.set("goodbye", dom::makeInvocable([](dom::Object const& ctx) { return ctx.find("world"); }));
+        BOOST_TEST(hbs.render(string, ctx) == "GOODBYE cruel world!");
+
+        // if with function does not show the contents when returns false
+        ctx.set("goodbye", dom::makeInvocable([]() { return false; }));
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+
+        // if with function does not show the contents when returns undefined
+        ctx.set("goodbye", dom::makeInvocable([](dom::Object const& ctx) { return ctx.find("foo"); }));
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+    }
+
+    // should not change the depth list
+    {
+        std::string string = "{{#with foo}}{{#if goodbye}}GOODBYE cruel {{../world}}!{{/if}}{{/with}}";
+        dom::Object ctx;
+        dom::Object foo;
+        foo.set("goodbye", true);
+        ctx.set("foo", foo);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "GOODBYE cruel world!");
+    }
+}
+
+void
+builtin_with()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/builtins.js
+
+    Handlebars hbs;
+
+    // with
+    {
+        std::string string = "{{#with person}}{{first}} {{last}}{{/with}}";
+        dom::Object ctx;
+        dom::Object person;
+        person.set("first", "Alan");
+        person.set("last", "Johnson");
+        ctx.set("person", person);
+        BOOST_TEST(hbs.render(string, ctx) == "Alan Johnson");
+    }
+
+    // with helper with function argument
+    {
+        std::string string = "{{#with person}}{{first}} {{last}}{{/with}}";
+        dom::Object ctx;
+        ctx.set("person", dom::makeInvocable([]() {
+            dom::Object person;
+            person.set("first", "Alan");
+            person.set("last", "Johnson");
+            return dom::Value(person);
+        }));
+        BOOST_TEST(hbs.render(string, ctx) == "Alan Johnson");
+    }
+
+    // with helper with else
+    {
+        std::string string = "{{#with person}}Person is present{{else}}Person is not present{{/with}}";
+        dom::Object ctx;
+        BOOST_TEST(hbs.render(string, ctx) == "Person is not present");
+    }
+
+    // with provides block parameter
+    {
+        std::string string = "{{#with person as |foo|}}{{foo.first}} {{last}}{{/with}}";
+        dom::Object ctx;
+        dom::Object person;
+        person.set("first", "Alan");
+        person.set("last", "Johnson");
+        ctx.set("person", person);
+        BOOST_TEST(hbs.render(string, ctx) == "Alan Johnson");
+    }
+
+    // works when data is disabled
+    {
+        std::string string = "{{#with person as |foo|}}{{foo.first}} {{last}}{{/with}}";
+        dom::Object ctx;
+        dom::Object person;
+        person.set("first", "Alan");
+        person.set("last", "Johnson");
+        ctx.set("person", person);
+        HandlebarsOptions options;
+        options.data = false;
+        BOOST_TEST(hbs.render(string, ctx, options) == "Alan Johnson");
+    }
+}
+
+void
+builtin_each()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/builtins.js
+    Handlebars hbs;
+
+    // each
+    {
+        std::string string = "{{#each goodbyes}}{{text}}! {{/each}}cruel {{world}}!";
+
+        // each with array argument iterates over the contents when not empty
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        goodbyes.emplace_back(goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "goodbye! Goodbye! GOODBYE! cruel world!");
+
+        // each with array argument ignores the contents when empty
+        ctx.set("goodbyes", dom::Array());
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+    }
+
+    // each without data
+    {
+        std::string string = "{{#each goodbyes}}{{text}}! {{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        goodbyes.emplace_back(goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        HandlebarsOptions options;
+        options.data = false;
+        BOOST_TEST(hbs.render(string, ctx, options) == "goodbye! Goodbye! GOODBYE! cruel world!");
+
+        std::string string2 = "{{#each .}}{{.}}{{/each}}";
+        ctx.set("goodbyes", "cruel");
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string2, ctx, options) == "cruelworld");
+    }
+
+    // each without context
+    {
+        std::string string = "{{#each goodbyes}}{{text}}! {{/each}}cruel {{world}}!";
+        dom::Value ctx;
+        BOOST_TEST(hbs.render(string, ctx) == "cruel !");
+    }
+
+    // each with an object and @key
+    {
+        std::string string = "{{#each goodbyes}}{{@key}}. {{text}}! {{/each}}cruel {{world}}!";
+
+        dom::Value Clazz = dom::makeInvocable([]() {
+            dom::Object obj;
+            dom::Object goodbye1;
+            goodbye1.set("text", "goodbye");
+            obj.set("<b>#1</b>", goodbye1);
+            dom::Object goodbye2;
+            goodbye2.set("text", "GOODBYE");
+            obj.set("2", goodbye2);
+            return dom::Value(obj);
+        });
+        dom::Object hash;
+        hash.set("goodbyes", Clazz);
+        hash.set("world", "world");
+        BOOST_TEST(hbs.render(string, hash) == "&lt;b&gt;#1&lt;/b&gt;. goodbye! 2. GOODBYE! cruel world!");
+
+        dom::Object ctx;
+        ctx.set("goodbyes", dom::Object());
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+    }
+
+    // each with @index
+    {
+        std::string string = "{{#each goodbyes}}{{@index}}. {{text}}! {{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        goodbyes.emplace_back(goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "0. goodbye! 1. Goodbye! 2. GOODBYE! cruel world!");
+    }
+
+    // each with nested @index
+    {
+        std::string string = "{{#each goodbyes}}{{@index}}. {{text}}! {{#each ../goodbyes}}{{@index}} {{/each}}After {{@index}} {{/each}}{{@index}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        goodbyes.emplace_back(goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "0. goodbye! 0 1 2 After 0 1. Goodbye! 0 1 2 After 1 2. GOODBYE! 0 1 2 After 2 cruel world!");
+    }
+
+    // each with block params
+    {
+        std::string string = "{{#each goodbyes as |value index|}}{{index}}. {{value.text}}! {{#each ../goodbyes as |childValue childIndex|}} {{index}} {{childIndex}}{{/each}} After {{index}} {{/each}}{{index}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "0. goodbye!  0 0 0 1 After 0 1. Goodbye!  1 0 1 1 After 1 cruel world!");
+    }
+
+    // each with block params and strict compilation
+    {
+        std::string string = "{{#each goodbyes as |value index|}}{{index}}. {{value.text}}!{{/each}}";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        ctx.set("goodbyes", goodbyes);
+        HandlebarsOptions options;
+        options.strict = true;
+        BOOST_TEST(hbs.render(string, ctx, options) == "0. goodbye!1. Goodbye!");
+    }
+
+    // each object with @index
+    {
+        std::string string = "{{#each goodbyes}}{{@index}}. {{text}}! {{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Object goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.set("a", goodbye1);
+        goodbyes.set("b", goodbye2);
+        goodbyes.set("c", goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "0. goodbye! 1. Goodbye! 2. GOODBYE! cruel world!");
+    }
+
+    // each with @first
+    {
+        std::string string = "{{#each goodbyes}}{{#if @first}}{{text}}! {{/if}}{{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        goodbyes.emplace_back(goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "goodbye! cruel world!");
+    }
+
+    // each with nested @first
+    {
+        std::string string = "{{#each goodbyes}}({{#if @first}}{{text}}! {{/if}}{{#each ../goodbyes}}{{#if @first}}{{text}}!{{/if}}{{/each}}{{#if @first}} {{text}}!{{/if}}) {{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        goodbyes.emplace_back(goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "(goodbye! goodbye! goodbye!) (goodbye!) (goodbye!) cruel world!");
+    }
+
+    // each object with @first
+    {
+        std::string string = "{{#each goodbyes}}{{#if @first}}{{text}}! {{/if}}{{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Object goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        goodbyes.set("foo", goodbye1);
+        goodbyes.set("bar", goodbye2);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "goodbye! cruel world!");
+    }
+
+    // each with @last
+    {
+        std::string string = "{{#each goodbyes}}{{#if @last}}{{text}}! {{/if}}{{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        goodbyes.emplace_back(goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "GOODBYE! cruel world!");
+    }
+
+    // each object with @last
+    {
+        std::string string = "{{#each goodbyes}}{{#if @last}}{{text}}! {{/if}}{{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Object goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        goodbyes.set("foo", goodbye1);
+        goodbyes.set("bar", goodbye2);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "Goodbye! cruel world!");
+    }
+
+    // each with nested @last
+    {
+        std::string string = "{{#each goodbyes}}({{#if @last}}{{text}}! {{/if}}{{#each ../goodbyes}}{{#if @last}}{{text}}!{{/if}}{{/each}}{{#if @last}} {{text}}!{{/if}}) {{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.emplace_back(goodbye1);
+        goodbyes.emplace_back(goodbye2);
+        goodbyes.emplace_back(goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "(GOODBYE!) (GOODBYE!) (GOODBYE! GOODBYE! GOODBYE!) cruel world!");
+    }
+
+    // each with function argument
+    {
+        std::string string = "{{#each goodbyes}}{{text}}! {{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        ctx.set("goodbyes", dom::makeInvocable([]() {
+            dom::Array goodbyes;
+            dom::Object goodbye1;
+            goodbye1.set("text", "goodbye");
+            dom::Object goodbye2;
+            goodbye2.set("text", "Goodbye");
+            dom::Object goodbye3;
+            goodbye3.set("text", "GOODBYE");
+            goodbyes.emplace_back(goodbye1);
+            goodbyes.emplace_back(goodbye2);
+            goodbyes.emplace_back(goodbye3);
+            return dom::Value(goodbyes);
+        }));
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "goodbye! Goodbye! GOODBYE! cruel world!");
+
+        ctx.set("goodbyes", dom::makeInvocable([]() {
+            dom::Array goodbyes;
+            return dom::Value(goodbyes);
+        }));
+        BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
+    }
+
+    // each object when last key is an empty string
+    {
+        std::string string = "{{#each goodbyes}}{{@index}}. {{text}}! {{/each}}cruel {{world}}!";
+        dom::Object ctx;
+        dom::Object goodbyes;
+        dom::Object goodbye1;
+        goodbye1.set("text", "goodbye");
+        dom::Object goodbye2;
+        goodbye2.set("text", "Goodbye");
+        dom::Object goodbye3;
+        goodbye3.set("text", "GOODBYE");
+        goodbyes.set("a", goodbye1);
+        goodbyes.set("b", goodbye2);
+        goodbyes.set("", goodbye3);
+        ctx.set("goodbyes", goodbyes);
+        ctx.set("world", "world");
+        BOOST_TEST(hbs.render(string, ctx) == "0. goodbye! 1. Goodbye! 2. GOODBYE! cruel world!");
+    }
+
+    // data passed to helpers
+    {
+        std::string string = "{{#each letters}}{{this}}{{detectDataInsideEach}}{{/each}}";
+        dom::Object ctx;
+        dom::Array letters;
+        letters.emplace_back("a");
+        letters.emplace_back("b");
+        letters.emplace_back("c");
+        ctx.set("letters", letters);
+        hbs.registerHelper("detectDataInsideEach", [](
+            dom::Array const& args, HandlebarsCallback const& options)
+        {
+            return options.data().find("exclaim");
+        });
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("exclaim", "!");
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "a!b!c!");
+    }
+
+    // each on implicit context
+    {
+        std::string string = "{{#each}}{{text}}! {{/each}}cruel world!";
+        BOOST_TEST_THROW_WITH(
+            hbs.render(string, dom::Object()),
+            HandlebarsError, "Must pass iterator to #each");
+    }
+}
+
+void
+builtin_log()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/builtins.js
+    Handlebars hbs;
+
+    dom::Value levelArg;
+    dom::Array logArgs;
+    dom::Value logArg;
+
+    hbs.registerLogger([&](dom::Value level, dom::Array const& args) {
+        levelArg = level;
+        logArgs = args;
+        logArg = nullptr;
+        if (!args.empty())
+        {
+            logArg = args[0];
+        }
+    });
+
+    // should call logger at default level
+    {
+        std::string string = "{{log blah}}";
+        dom::Object ctx;
+        ctx.set("blah", "whee");
+        BOOST_TEST(hbs.render(string, ctx) == "");
+        BOOST_TEST(levelArg.isInteger());
+        BOOST_TEST(levelArg.getInteger() == 1);
+        BOOST_TEST(logArg.isString());
+        BOOST_TEST(logArg.getString() == "whee");
+    }
+
+    // should call logger at data level
+    {
+        std::string string = "{{log blah}}";
+        dom::Object ctx;
+        ctx.set("blah", "whee");
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("level", "03");
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "");
+        BOOST_TEST(levelArg.isString());
+        BOOST_TEST(levelArg.getString() == "03");
+        BOOST_TEST(logArg.isString());
+        BOOST_TEST(logArg.getString() == "whee");
+    }
+
+    // should handle string log levels
+    {
+        dom::Object ctx;
+        ctx.set("blah", "whee");
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("level", "error");
+        options.data = data;
+        BOOST_TEST(hbs.render("{{log blah}}", ctx, options) == "");
+        BOOST_TEST(levelArg.isString());
+        BOOST_TEST(levelArg.getString() == "error");
+        BOOST_TEST(logArg.isString());
+        BOOST_TEST(logArg.getString() == "whee");
+    }
+
+    // should handle hash log levels
+    {
+        dom::Object ctx;
+        ctx.set("blah", "whee");
+        BOOST_TEST(hbs.render("{{log blah level=\"debug\"}}", ctx) == "");
+        BOOST_TEST(levelArg.isString());
+        BOOST_TEST(levelArg.getString() == "debug");
+        BOOST_TEST(logArg.isString());
+        BOOST_TEST(logArg.getString() == "whee");
+    }
+
+    // should pass multiple log arguments
+    {
+        dom::Object ctx;
+        ctx.set("blah", "whee");
+        BOOST_TEST(hbs.render("{{log blah \"foo\" 1}}", ctx) == "");
+        BOOST_TEST(levelArg.isInteger());
+        BOOST_TEST(levelArg.getInteger() == 1);
+        BOOST_TEST(logArgs.size() == 3u);
+        BOOST_TEST(logArgs[0].isString());
+        BOOST_TEST(logArgs[0].getString() == "whee");
+        BOOST_TEST(logArgs[1].isString());
+        BOOST_TEST(logArgs[1].getString() == "foo");
+        BOOST_TEST(logArgs[2].isInteger());
+        BOOST_TEST(logArgs[2].getInteger() == 1);
+    }
+
+    // should pass zero log arguments
+    {
+        dom::Object ctx;
+        ctx.set("blah", "whee");
+        BOOST_TEST(hbs.render("{{log}}", ctx) == "");
+        BOOST_TEST(levelArg.isInteger());
+        BOOST_TEST(levelArg.getInteger() == 1);
+        BOOST_TEST(logArgs.empty());
+    }
+}
+
+void
+builtin_lookup()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/builtins.js
+    Handlebars hbs;
+
+    // should look up arbitrary content
+    {
+        std::string string = "{{#each goodbyes}}{{lookup ../data .}}{{/each}}";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        goodbyes.emplace_back(std::int64_t(0));
+        goodbyes.emplace_back(1);
+        ctx.set("goodbyes", goodbyes);
+        dom::Array data;
+        data.emplace_back("foo");
+        data.emplace_back("bar");
+        ctx.set("data", data);
+        BOOST_TEST(hbs.render(string, ctx) == "foobar");
+    }
+
+    // should not fail on undefined value
+    {
+        std::string string = "{{#each goodbyes}}{{lookup ../bar .}}{{/each}}";
+        dom::Object ctx;
+        dom::Array goodbyes;
+        goodbyes.emplace_back(std::int64_t(0));
+        goodbyes.emplace_back(1);
+        ctx.set("goodbyes", goodbyes);
+        dom::Array data;
+        data.emplace_back("foo");
+        data.emplace_back("bar");
+        ctx.set("data", data);
+        BOOST_TEST(hbs.render(string, ctx) == "");
+    }
+}
+
+void
 run()
 {
     master_test();
@@ -2544,6 +3195,11 @@ run()
     block_compat_mode();
     block_decorators();
     subexpressions();
+    builtin_if();
+    builtin_with();
+    builtin_each();
+    builtin_log();
+    builtin_lookup();
 }
 
 };
