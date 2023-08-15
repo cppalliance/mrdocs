@@ -72,6 +72,10 @@ public:
     Value(Object obj) noexcept;
     Value(Function fn) noexcept;
 
+    template <std::integral T>
+    requires (!std::same_as<T, bool>)
+    Value(T v) noexcept : Value(std::int64_t(v)) {}
+
     template<class Boolean>
     requires std::is_same_v<Boolean, bool>
     Value(Boolean const& b) noexcept

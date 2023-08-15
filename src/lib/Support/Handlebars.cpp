@@ -117,17 +117,36 @@ public:
 
     std::size_t size() const override {
         std::size_t n = parent_.size() + child_.size();
-        for (auto const& [key, value] : child_) {
+        for (auto const& [key, value] : child_)
+        {
             if (parent_.exists(key))
-                    --n;
+            {
+                --n;
             }
+        }
         return n;
     };
 
     reference get(std::size_t i) const override {
         if (i < child_.size())
-                return child_.get(i);
-            return parent_.get(i - child_.size());
+        {
+            return child_.get(i);
+        }
+        MRDOX_ASSERT(i < size());
+        std::size_t pi = i - child_.size();
+        for (std::size_t j = 0; j < parent_.size(); ++j)
+        {
+            auto el = parent_.get(j);
+            if (child_.exists(el.key))
+            {
+                ++pi;
+            }
+            else if (j == pi)
+            {
+                return el;
+            }
+        }
+        MRDOX_UNREACHABLE();
     };
 
     dom::Value find(std::string_view key) const override {
@@ -328,6 +347,7 @@ namespace detail {
         dom::Object data;
         dom::Object blockValues;
         std::vector<dom::Value> compatStack;
+        std::vector<dom::Object> dataStack;
     };
 }
 
@@ -560,6 +580,9 @@ void
 checkPath(std::string_view path0, detail::RenderState const& state)
 {
     std::string_view path = path0;
+    if (path.starts_with('@')) {
+        path.remove_prefix(1);
+    }
     std::string_view seg = popFirstSegment(path);
     bool areDotDots = seg == "..";
     seg = popFirstSegment(path);
@@ -1204,16 +1227,12 @@ render_to(
     detail::RenderState state;
     state.templateText0 = templateText;
     state.templateText = templateText;
-    if (options.data.isNull())
-    {
-        state.data.set("root", context);
-    }
-    else if (options.data.isObject())
-    {
+    if (options.data.isObject()) {
         state.data = options.data.getObject();
     }
     state.inlinePartials.emplace_back();
     state.compatStack.emplace_back(context);
+    state.dataStack.emplace_back(state.data);
     render_to(out, context, options, state);
 }
 
@@ -1490,7 +1509,9 @@ appendContextPath(dom::Value const& contextPath, std::string_view id) {
 bool
 popContextSegment(std::string_view& contextPath) {
     if (contextPath.empty())
+    {
         return false;
+    }
     auto pos = contextPath.find_last_of('.');
     if (pos == std::string_view::npos)
     {
@@ -1507,7 +1528,7 @@ popContextSegment(std::string_view& contextPath) {
 std::pair<dom::Value, bool>
 Handlebars::
 evalExpr(
-    dom::Value const & context,
+    dom::Value const& context,
     std::string_view expression,
     detail::RenderState& state,
     HandlebarsOptions const& opt,
@@ -1584,17 +1605,60 @@ evalExpr(
     // ==============================================================
     if (expression.starts_with('@'))
     {
+        checkPath(expression, state);
         expression.remove_prefix(1);
-        return lookupPropertyImpl(state.data, expression, state);
+        dom::Value data = state.data;
+        if (expression == "root" || expression.starts_with("root.") || expression.starts_with("root/"))
+        {
+            popFirstSegment(expression);
+            if (state.data.exists("root"))
+            {
+                data = state.data.find("root");
+            }
+            else if (!state.compatStack.empty())
+            {
+                MRDOX_ASSERT(!state.compatStack.empty());
+                data = state.compatStack.front();
+            }
+        }
+        else if (expression.starts_with("./") || expression.starts_with("../"))
+        {
+            auto rDataStack = std::ranges::views::reverse(state.dataStack);
+            auto dataIt = rDataStack.begin();
+            while (!expression.empty())
+            {
+                if (expression.starts_with("./"))
+                {
+                    expression.remove_prefix(2);
+                    continue;
+                }
+                if (expression.starts_with("../"))
+                {
+                    expression.remove_prefix(3);
+                    if (dataIt == rDataStack.end())
+                    {
+                        return {nullptr, false};
+                    }
+                    data = *dataIt;
+                    ++dataIt;
+                    continue;
+                }
+                break;
+            }
+        }
+        return lookupPropertyImpl(data, expression, state);
     }
     // ==============================================================
     // Dotdot context path
     // ==============================================================
     if (expression.starts_with("..")) {
-        auto contextPathV = state.data.find("contextPath");
-        if (!contextPathV.isString())
-            return {nullptr, false};
-        std::string_view contextPath = contextPathV.getString();
+        // Determine the context path, if any
+        dom::Value contextPathV = state.data.find("contextPath");
+        std::string_view contextPath;
+        if (contextPathV.isString())
+        {
+            contextPath = contextPathV.getString();
+        }
         // Remove last segment if it's a literal integer
         if (!contextPath.empty())
         {
@@ -1609,8 +1673,7 @@ evalExpr(
             }
         }
         while (expression.starts_with("..")) {
-            if (!popContextSegment(contextPath))
-                return {nullptr, false};
+            popContextSegment(contextPath);
             expression.remove_prefix(2);
             if (!expression.empty()) {
                 if (expression.front() != '/') {
@@ -1620,12 +1683,24 @@ evalExpr(
             }
         }
         std::string absContextPath;
-        dom::Value root = state.data.find("root");
+        dom::Value root = nullptr;
+        if (state.data.exists("root"))
+        {
+            root = state.data.find("root");
+        }
+        else
+        {
+            MRDOX_ASSERT(!state.compatStack.empty());
+            root = state.compatStack.front();
+        }
         do {
             absContextPath = contextPath;
             if (!expression.empty())
             {
-                absContextPath += '.';
+                if (!absContextPath.empty())
+                {
+                    absContextPath += '.';
+                }
                 absContextPath += expression;
             }
             auto [v, defined] = lookupPropertyImpl(root, absContextPath, state);
@@ -1909,19 +1984,19 @@ renderTag(
     dom::Value const& context,
     HandlebarsOptions const& opt,
     detail::RenderState& state) const {
-    if (tag.type == '#' || tag.type == '^')
+    if ('#' == tag.type || '^' == tag.type)
     {
         renderBlock(tag.helper, tag, out, context, opt, state, false);
     }
-    else if (tag.type == '>')
+    else if ('>' == tag.type)
     {
         renderPartial(tag, out, context, opt, state);
     }
-    else if (tag.type == '*')
+    else if ('*' == tag.type)
     {
         renderDecorator(tag, out, context, opt, state);
     }
-    else if (tag.type != '/' && tag.type != '!')
+    else if ('/' != tag.type && '!' != tag.type)
     {
         renderExpression(tag, out, context, opt, state);
     }
@@ -1981,7 +2056,19 @@ renderExpression(
     auto [v, defined] = evalExpr(context, helper_expr, state, opt, false);
     if (defined)
     {
-        format_to(out, v, opt2);
+        if (v.isFunction())
+        {
+            dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
+            HandlebarsCallback cb;
+            cb.name_ = helper_expr;
+            setupArgs(tag.arguments, context, state, args, cb, opt);
+            auto v2 = v.getFunction().call(args).value();
+            format_to(out, v2, opt2);
+        }
+        else
+        {
+            format_to(out, v, opt2);
+        }
         return;
     }
 
@@ -2279,10 +2366,12 @@ renderPartial(
     state.partialBlockLevel -= isPartialBlock;
     out.setIndent(out.getIndent() + tag.standaloneIndent * !opt.preventIndent);
     state.compatStack.emplace_back(context);
+    state.dataStack.emplace_back(state.data);
     // Render
     this->render_to(out, partialCtx, opt, state);
     // Restore state
     state.compatStack.pop_back();
+    state.dataStack.pop_back();
     out.setIndent(out.getIndent() - tag.standaloneIndent * !opt.preventIndent);
     state.partialBlockLevel += isPartialBlock;
     state.templateText = templateText;
@@ -2467,6 +2556,7 @@ renderBlock(
     // ==============================================================
     state.inlinePartials.emplace_back();
     state.compatStack.emplace_back(context);
+    state.dataStack.emplace_back(state.data);
     auto [res, render] = fn(args, cb);
     if (render == HelperBehavior::RENDER_RESULT) {
         format_to(out, res, opt);
@@ -2477,6 +2567,7 @@ renderBlock(
     }
     state.inlinePartials.pop_back();
     state.compatStack.pop_back();
+    state.dataStack.pop_back();
 }
 
 void

@@ -722,12 +722,12 @@ basic_context()
     {
         dom::Object ctx;
         ctx.set("num1", 42);
-        ctx.set("num2", std::int64_t(0));
+        ctx.set("num2", 0);
         BOOST_TEST(hbs.render("num1: {{num1}}, num2: {{num2}}", ctx) == "num1: 42, num2: 0");
-        BOOST_TEST(hbs.render("num: {{.}}", std::int64_t(0)) == "num: 0");
+        BOOST_TEST(hbs.render("num: {{.}}", 0) == "num: 0");
         ctx = dom::Object();
         dom::Object num1;
-        num1.set("num2", std::int64_t(0));
+        num1.set("num2", 0);
         ctx.set("num1", num1);
         BOOST_TEST(hbs.render("num: {{num1/num2}}", ctx) == "num: 0");
     }
@@ -1197,7 +1197,7 @@ basic_context()
         hbs.registerHelper("foo", [](dom::Array const& args) {
             return args[0];
         });
-        hbs.registerHelper("false", [](dom::Array const& args) {
+        hbs.registerHelper("false", []() {
             return "bar";
         });
         BOOST_TEST(hbs.render("{{foo (false)}}") == "bar");
@@ -2569,7 +2569,7 @@ builtin_if()
         BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
 
         // if with zero does not show the contents
-        ctx.set("goodbye", std::int64_t(0));
+        ctx.set("goodbye", 0);
         BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
 
         // if with zero does show the contents
@@ -2617,7 +2617,6 @@ void
 builtin_with()
 {
     // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/builtins.js
-
     Handlebars hbs;
 
     // with
@@ -3151,7 +3150,7 @@ builtin_lookup()
         std::string string = "{{#each goodbyes}}{{lookup ../data .}}{{/each}}";
         dom::Object ctx;
         dom::Array goodbyes;
-        goodbyes.emplace_back(std::int64_t(0));
+        goodbyes.emplace_back(0);
         goodbyes.emplace_back(1);
         ctx.set("goodbyes", goodbyes);
         dom::Array data;
@@ -3166,7 +3165,7 @@ builtin_lookup()
         std::string string = "{{#each goodbyes}}{{lookup ../bar .}}{{/each}}";
         dom::Object ctx;
         dom::Array goodbyes;
-        goodbyes.emplace_back(std::int64_t(0));
+        goodbyes.emplace_back(0);
         goodbyes.emplace_back(1);
         ctx.set("goodbyes", goodbyes);
         dom::Array data;
@@ -3174,6 +3173,408 @@ builtin_lookup()
         data.emplace_back("bar");
         ctx.set("data", data);
         BOOST_TEST(hbs.render(string, ctx) == "");
+    }
+}
+
+void
+data() const
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/data.js
+    Handlebars hbs;
+
+    // passing in data to a compiled function that expects data - works with helpers
+    {
+        std::string string = "{{hello}}";
+        dom::Object ctx;
+        ctx.set("noun", "cat");
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string a(options.data().find("adjective").getString());
+            std::string b(options.context().getObject().find("noun").getString());
+            return a + " " + b;
+        });
+        dom::Object data;
+        data.set("adjective", "happy");
+        HandlebarsOptions options;
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "happy cat");
+    }
+
+    // data can be looked up via @foo
+    {
+        std::string string = "{{@hello}}";
+        dom::Object ctx;
+        ctx.set("noun", "cat");
+        dom::Object data;
+        data.set("hello", "hello");
+        HandlebarsOptions options;
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "hello");
+    }
+
+    // deep @foo triggers automatic top-level data
+    {
+        std::string string = "{{#let world=\"world\"}}{{#if foo}}{{#if foo}}Hello {{@world}}{{/if}}{{/if}}{{/let}}";
+        dom::Object ctx;
+        ctx.set("foo", true);
+        hbs.registerHelper("let", [](dom::Array const& args, HandlebarsCallback const& options) {
+            dom::Object data = createFrame(options.data());
+            for (auto [k, v]: options.hashes())
+            {
+                data.set(k, v);
+            }
+            return options.fn(options.context(), data, {});
+        });
+        BOOST_TEST(hbs.render(string, ctx) == "Hello world");
+    }
+
+    // parameter data can be looked up via @foo
+    {
+        std::string string = "{{hello @world}}";
+        dom::Object data;
+        data.set("world", "world");
+        HandlebarsOptions options;
+        options.data = data;
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string noun(args[0].getString());
+            return "Hello " + noun;
+        });
+        BOOST_TEST(hbs.render(string, {}, options) == "Hello world");
+    }
+
+    // hash values can be looked up via @foo
+    {
+        std::string string = "{{hello noun=@world}}";
+        dom::Object data;
+        data.set("world", "world");
+        HandlebarsOptions options;
+        options.data = data;
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string noun(options.hashes().find("noun").getString());
+            return "Hello " + noun;
+        });
+        BOOST_TEST(hbs.render(string, {}, options) == "Hello world");
+    }
+
+    // nested parameter data can be looked up via @foo.bar
+    {
+        std::string string = "{{hello @world.bar}}";
+        dom::Object data;
+        dom::Object world;
+        world.set("bar", "world");
+        data.set("world", world);
+        HandlebarsOptions options;
+        options.data = data;
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string noun(args[0].getString());
+            return "Hello " + noun;
+        });
+        BOOST_TEST(hbs.render(string, {}, options) == "Hello world");
+    }
+
+    // nested parameter data does not fail with @world.bar
+    {
+        std::string string = "{{hello @world.bar}}";
+        dom::Object data;
+        dom::Object world;
+        world.set("bar", "world");
+        data.set("foo", world);
+        HandlebarsOptions options;
+        options.data = data;
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string noun = toString(args[0]);
+            return "Hello " + noun;
+        });
+        // There's no undefined in this dom implementation
+        // BOOST_TEST(hbs.render(string, {}, options) == "Hello undefined");
+        BOOST_TEST(hbs.render(string, {}, options) == "Hello null");
+    }
+
+    // parameter data throws when using complex scope references
+    {
+        dom::Object ctx;
+        ctx.set("goodbyes", true);
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{#goodbyes}}{{text}} cruel {{@foo/../name}}! {{/goodbyes}}", ctx),
+            HandlebarsError, "Invalid path: @foo/.. - 1:30");
+    }
+
+    // data can be functions
+    {
+        std::string string = "{{@hello}}";
+        dom::Object ctx;
+        dom::Object data;
+        data.set("hello", dom::makeInvocable([]() {
+            return dom::Value("hello");
+        }));
+        HandlebarsOptions options;
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "hello");
+    }
+
+    // data can be functions with params
+    {
+        std::string string = "{{@hello \"hello\"}}";
+        dom::Object ctx;
+        dom::Object data;
+        data.set("hello", dom::makeInvocable([](dom::Value const& arg) {
+            return arg;
+        }));
+        HandlebarsOptions options;
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "hello");
+    }
+
+    // data is inherited downstream
+    {
+        std::string string = "{{#let foo=1 bar=2}}{{#let foo=bar.baz}}{{@bar}}{{@foo}}{{/let}}{{@foo}}{{/let}}";
+        dom::Object ctx;
+        dom::Object bar;
+        bar.set("baz", "hello world");
+        ctx.set("bar", bar);
+        hbs.registerHelper("let", [](dom::Array const& args, HandlebarsCallback const& options) {
+            dom::Object frame = createFrame(options.data());
+            for (auto [k, v]: options.hashes())
+            {
+                frame.set(k, v);
+            }
+            return options.fn(options.context(), frame, {});
+        });
+        HandlebarsOptions options;
+        options.data = dom::Object();
+        BOOST_TEST(hbs.render(string, ctx, options) == "2hello world1");
+    }
+
+    // passing in data to a compiled function that expects data - works with helpers in partials
+    {
+        std::string string = "{{>myPartial}}";
+        hbs.registerPartial("myPartial", "{{hello}}");
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string a(options.data().find("adjective").getString());
+            std::string b(options.context().getObject().find("noun").getString());
+            return a + " " + b;
+        });
+        dom::Object ctx;
+        ctx.set("noun", "cat");
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("adjective", "happy");
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "happy cat");
+    }
+
+    // passing in data to a compiled function that expects data - works with helpers and parameters
+    {
+        std::string string = "{{hello world}}";
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string noun(args[0].getString());
+            std::string adjective(options.data().find("adjective").getString());
+            std::string exclaim(options.context().getObject().find("exclaim").getString());
+            return adjective + " " + noun + (exclaim == "true" ? "!" : "");
+        });
+        dom::Object ctx;
+        ctx.set("world", "world");
+        ctx.set("exclaim", "true");
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("adjective", "happy");
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "happy world!");
+    }
+
+    // passing in data to a compiled function that expects data - works with block helpers
+    {
+        std::string string = "{{#hello}}{{world}}{{/hello}}";
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            return options.fn(options.context());
+        });
+        hbs.registerHelper("world", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string adjective(options.data().find("adjective").getString());
+            bool exclaim = options.context().getObject().find("exclaim").getBool();
+            return adjective + " world" + (exclaim ? "!" : "");
+        });
+        dom::Object ctx;
+        ctx.set("exclaim", true);
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("adjective", "happy");
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "happy world!");
+    }
+
+    // passing in data to a compiled function that expects data - works with block helpers that use ..
+    {
+        std::string string = "{{#hello}}{{world ../zomg}}{{/hello}}";
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            dom::Object newContext;
+            newContext.set("exclaim", "?");
+            return options.fn(newContext);
+        });
+        hbs.registerHelper("world", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string thing(args[0].getString());
+            std::string adjective(options.data().find("adjective").getString());
+            dom::Value exclaim = options.context().getObject().find("exclaim");
+            if (isTruthy(exclaim))
+            {
+                std::string exclaimString = toString(exclaim);
+                return adjective + " " + thing + exclaimString;
+            }
+            else
+            {
+                return adjective + " " + thing;
+            }
+        });
+        dom::Object ctx;
+        ctx.set("exclaim", true);
+        ctx.set("zomg", "world");
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("adjective", "happy");
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "happy world?");
+    }
+
+    // passing in data to a compiled function that expects data - data is passed to with block helpers where children use ..
+    {
+        std::string string = "{{#hello}}{{world ../zomg}}{{/hello}}";
+        hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string res;
+            res += options.data().find("accessData").getString();
+            res += " ";
+            dom::Object newContext;
+            newContext.set("exclaim", "?");
+            res += options.fn(newContext);
+            return res;
+        });
+        hbs.registerHelper("world", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string thing(args[0].getString());
+            std::string adjective(options.data().find("adjective").getString());
+            dom::Value exclaim = options.context().getObject().find("exclaim");
+            if (isTruthy(exclaim))
+            {
+                std::string exclaimString = toString(exclaim);
+                return adjective + " " + thing + exclaimString;
+            }
+            else
+            {
+                return adjective + " " + thing;
+            }
+        });
+        dom::Object ctx;
+        ctx.set("exclaim", true);
+        ctx.set("zomg", "world");
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("adjective", "happy");
+        data.set("accessData", "#win");
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "#win happy world?");
+    }
+
+    // you can override inherited data when invoking a helper
+    {
+        std::string string = "{{#hello}}{{world zomg}}{{/hello}}";
+        hbs.registerHelper("hello", [](dom::Array const&, HandlebarsCallback const& options) {
+            dom::Object newContext;
+            newContext.set("exclaim", "?");
+            newContext.set("zomg", "world");
+            dom::Object newData;
+            newData.set("adjective", "sad");
+            return options.fn(newContext, newData, {});
+        });
+        hbs.registerHelper("world", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string thing(args[0].getString());
+            std::string adjective(options.data().find("adjective").getString());
+            dom::Value exclaim = options.context().getObject().find("exclaim");
+            if (isTruthy(exclaim))
+            {
+                std::string exclaimString = toString(exclaim);
+                return adjective + " " + thing + exclaimString;
+            }
+            else
+            {
+                return adjective + " " + thing;
+            }
+        });
+        dom::Object ctx;
+        ctx.set("exclaim", true);
+        ctx.set("zomg", "planet");
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("adjective", "happy");
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "sad world?");
+    }
+
+    // you can override inherited data when invoking a helper with depth
+    {
+        std::string string = "{{#hello}}{{world ../zomg}}{{/hello}}";
+        hbs.registerHelper("hello", [](dom::Array const&, HandlebarsCallback const& options) {
+            dom::Object newContext;
+            newContext.set("exclaim", "?");
+            dom::Object newData;
+            newData.set("adjective", "sad");
+            return options.fn(newContext, newData, {});
+        });
+        hbs.registerHelper("world", [](dom::Array const& args, HandlebarsCallback const& options) {
+            std::string thing(args[0].getString());
+            std::string adjective(options.data().find("adjective").getString());
+            dom::Value exclaim = options.context().getObject().find("exclaim");
+            if (isTruthy(exclaim))
+            {
+                std::string exclaimString = toString(exclaim);
+                return adjective + " " + thing + exclaimString;
+            }
+            else
+            {
+                return adjective + " " + thing;
+            }
+        });
+        dom::Object ctx;
+        ctx.set("exclaim", true);
+        ctx.set("zomg", "world");
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("adjective", "happy");
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "sad world?");
+    }
+
+    // @root
+    {
+        // the root context can be looked up via @root
+        std::string string = "{{@root.foo}}";
+        dom::Object ctx;
+        ctx.set("foo", "hello");
+        HandlebarsOptions options;
+        options.data = dom::Object();
+        BOOST_TEST(hbs.render(string, ctx, options) == "hello");
+        BOOST_TEST(hbs.render(string, ctx) == "hello");
+
+        // passed root values take priority
+        ctx.set("foo", "should not be used");
+        dom::Object data;
+        dom::Object root;
+        root.set("foo", "hello");
+        data.set("root", root);
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "hello");
+    }
+
+    // nesting
+    {
+        std::string string = "{{#helper}}{{#helper}}{{@./depth}} {{@../depth}} {{@../../depth}}{{/helper}}{{/helper}}";
+        hbs.registerHelper("helper", [](dom::Array const& args, HandlebarsCallback const& options) {
+            dom::Object frame = createFrame(options.data());
+            frame.set("depth", options.data().find("depth").getInteger() + 1);
+            return options.fn(options.context(), frame, {});
+        });
+        dom::Object ctx;
+        ctx.set("foo", "hello");
+        HandlebarsOptions options;
+        dom::Object data;
+        data.set("depth", 0);
+        options.data = data;
+        BOOST_TEST(hbs.render(string, ctx, options) == "2 1 0");
     }
 }
 
@@ -3200,6 +3601,7 @@ run()
     builtin_each();
     builtin_log();
     builtin_lookup();
+    data();
 }
 
 };
