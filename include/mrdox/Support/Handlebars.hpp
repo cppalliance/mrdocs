@@ -74,7 +74,7 @@ struct HandlebarsOptions
         This variable can be used to pass in an object to define custom
         private variables.
      */
-    dom::Value data = {nullptr};
+    dom::Value data = nullptr;
 };
 
 namespace detail {
