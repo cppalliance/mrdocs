@@ -8,7 +8,7 @@
   "configurePresets": [
     {
       "name": "Debug-MSVC",
-      "inherits": "Debug",
+      "inherits": "debug",
       "generator": "Visual Studio 17 2022",
       "architecture": "x64",
       "binaryDir": "${sourceDir}/build/debug-msvc",
@@ -61,7 +61,7 @@
     },
     {
       "name": "Debug-GCC",
-      "inherits": "Debug",
+      "inherits": "debug",
       "binaryDir": "${sourceDir}/build/debug-gcc",
       "toolchainFile": "/home/$env{USER}/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
