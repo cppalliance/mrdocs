@@ -675,14 +675,15 @@ public:
             case TypeKind::Function:
                 I_ = std::make_unique<FunctionTypeInfo>();
                 break;
-            case TypeKind::Pack:
-                I_ = std::make_unique<PackTypeInfo>();
-                break;
             default:
                 return Error("invalid TypeInfo kind");
             }
             return Error::success();
         }
+        case TYPEINFO_IS_PACK:
+            if(auto err = decodeRecord(R, I_->IsPackExpansion, Blob))
+                return err;
+            return Error::success();
         case TYPEINFO_ID:
             return visit(*I_, [&]<typename T>(T& t)
                 {
@@ -1104,8 +1105,6 @@ readSubBlock(unsigned ID)
                 std::unique_ptr<TypeInfo>* child = nullptr;
                 if constexpr(requires { t.PointeeType; })
                     child = &t.PointeeType;
-                else if constexpr(T::isPack())
-                    child = &t.PatternType;
                 else if constexpr(T::isArray())
                     child = &t.ElementType;
                 else if constexpr(T::isFunction())

@@ -57,8 +57,6 @@ toString(
         return "array";
     case TypeKind::Function:
         return "function";
-    case TypeKind::Pack:
-        return "pack";
     default:
         MRDOX_UNREACHABLE();
     }
@@ -120,8 +118,6 @@ visitChildType(
                 return t.ElementType.get();
             if constexpr(T::isFunction())
                 return t.ReturnType.get();
-            if constexpr(T::isPack())
-                return t.PatternType.get();
             if constexpr(requires { t.PointeeType; })
                 return t.PointeeType.get();
             return nullptr;
@@ -143,7 +139,7 @@ operator()(
     visitChildType(t, *this, write,
         std::bool_constant<requires { t.PointeeType; }>{});
 
-    if constexpr(T::isPack())
+    if(t.IsPackExpansion)
         write("...");
 
     if constexpr(requires { t.Name; })
@@ -169,7 +165,7 @@ operator()(
         write('<');
         if(! t.TemplateArgs.empty())
         {
-            auto targ_writer = 
+            auto targ_writer =
                 [&]<typename U>(const U& u)
                 {
                     if constexpr(U::isType())

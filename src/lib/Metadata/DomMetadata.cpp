@@ -366,7 +366,8 @@ domCreate(
     if(! I)
         return nullptr;
     dom::Object::storage_type entries = {
-        { "kind", toString(I->Kind) }
+        { "kind", toString(I->Kind) },
+        { "is-pack", I->IsPackExpansion },
     };
     visit(*I, [&]<typename T>(const T& t)
     {
@@ -391,10 +392,6 @@ domCreate(
         if constexpr(requires { t.PointeeType; })
             entries.emplace_back("pointee-type",
                 domCreate(t.PointeeType, domCorpus));
-
-        if constexpr(T::isPack())
-            entries.emplace_back("pattern-type",
-                domCreate(t.PatternType, domCorpus));
 
         if constexpr(T::isArray())
         {

@@ -204,7 +204,8 @@ writeType(
         {
             Attributes attrs = {
                 { "class", toString(T::kind_id),
-                    T::kind_id != TypeKind::Builtin }
+                    T::kind_id != TypeKind::Builtin },
+                { "is-pack", "1", t.IsPackExpansion }
             };
 
             if constexpr(requires { t.id; })
@@ -270,11 +271,6 @@ writeType(
                 writeType(*t.PointeeType, tags, "pointee-type");
             }
 
-            if constexpr(T::isPack())
-            {
-                writeType(*t.PatternType, tags, "pattern-type");
-            }
-
             if constexpr(T::isArray())
             {
                 writeType(*t.ElementType, tags, "element-type");
@@ -333,13 +329,13 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
 
             if constexpr(T::isNonType())
                 attrs.push({"type", toString(*P.Type)});
-                
+
             if(P.Default)
                 attrs.push({"default", toString(*P.Default)});
 
             if constexpr(T::isTemplate())
             {
-                tags.open(tparamTagName, 
+                tags.open(tparamTagName,
                     std::move(attrs));
                 for(const auto& tparam : P.Params)
                     writeTemplateParam(*tparam, tags);
@@ -347,7 +343,7 @@ inline void writeTemplateParam(const TParam& I, XMLTags& tags)
             }
             else
             {
-                tags.write(tparamTagName, {}, 
+                tags.write(tparamTagName, {},
                     std::move(attrs));
             }
         });
@@ -374,8 +370,8 @@ inline void writeTemplateArg(const TArg& I, XMLTags& tags)
                 attrs.push({"name", A.Name});
                 attrs.push({A.Template});
             }
-                
-            tags.write(targTagName, {}, 
+
+            tags.write(targTagName, {},
                 std::move(attrs));
         });
 }

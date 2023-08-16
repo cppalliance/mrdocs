@@ -295,6 +295,7 @@ RecordIDNameMap = []()
         {TEMPLATE_PARAM_IS_PACK, {"IsPack", &BoolAbbrev}},
         {TEMPLATE_PARAM_KEY_KIND,{"TParamKeyKind", &Integer32Abbrev}},
         {TYPEINFO_KIND, {"TypeinfoKind", &Integer32Abbrev}},
+        {TYPEINFO_IS_PACK, {"TypeinfoIsPack", &BoolAbbrev}},
         {TYPEINFO_ID, {"TypeinfoID", &SymbolIDAbbrev}},
         {TYPEINFO_NAME, {"TypeinfoName", &StringAbbrev}},
         {TYPEINFO_CVQUAL, {"TypeinfoCV", &Integer32Abbrev}},
@@ -382,7 +383,7 @@ RecordsByBlock{
         {SPECIALIZATION_PRIMARY, SPECIALIZATION_MEMBERS}},
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
-        {TYPEINFO_KIND, TYPEINFO_ID, TYPEINFO_NAME,
+        {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_ID, TYPEINFO_NAME,
         TYPEINFO_CVQUAL, TYPEINFO_EXCEPTION_SPEC, TYPEINFO_REFQUAL}},
     {BI_TYPEINFO_PARENT_BLOCK_ID,
         {}},
@@ -941,6 +942,7 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_TYPEINFO_BLOCK_ID);
 
     emitRecord(TI->Kind, TYPEINFO_KIND);
+    emitRecord(TI->IsPackExpansion, TYPEINFO_IS_PACK);
     visit(*TI, [&]<typename T>(const T& t)
         {
             if constexpr(requires { t.id; })
@@ -961,9 +963,6 @@ emitBlock(
 
             if constexpr(requires { t.PointeeType; })
                 emitBlock(t.PointeeType, BI_TYPEINFO_CHILD_BLOCK_ID);
-
-            if constexpr(T::isPack())
-                emitBlock(t.PatternType, BI_TYPEINFO_CHILD_BLOCK_ID);
 
             if constexpr(T::isArray())
             {

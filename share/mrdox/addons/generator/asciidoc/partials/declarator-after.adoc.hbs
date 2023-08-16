@@ -1,8 +1,6 @@
 {{#if pointee-type~}}
     {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))}}){{/if~}}
     {{~>declarator-after pointee-type~}}
-{{else if (eq kind "pack")~}}
-    {{~>declarator-after pattern-type~}}
 {{else if (eq kind "array")~}}
     [{{bounds-value}}]
     {{~>declarator-after element-type~}}

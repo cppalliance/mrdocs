@@ -25,10 +25,9 @@
     {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}
     {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::*{{/if~}}
     {{#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
-{{~else if (eq kind "pack")~}}
-    {{~>declarator-before pattern-type~}}...
 {{~else if (eq kind "array")~}}
     {{~>declarator-before element-type~}}
 {{~else if (eq kind "function")~}}
     {{~>declarator-before return-type~}}
-{{/if}}
+{{/if~}}
+{{~#if is-pack}}...{{/if~}}

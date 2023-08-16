@@ -12,11 +12,12 @@
 #define MRDOX_API_METADATA_TYPE_HPP
 
 #include <mrdox/Platform.hpp>
+#include <mrdox/Dom.hpp>
 #include <mrdox/Metadata/Expression.hpp>
 #include <mrdox/Metadata/Specifiers.hpp>
 #include <mrdox/Metadata/Symbols.hpp>
 #include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Dom.hpp>
+#include <mrdox/Support/TypeTraits.hpp>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -44,16 +45,20 @@ enum class TypeKind
     Pointer,
     MemberPointer,
     Array,
-    Function,
-    // KRYSTIAN FIXME: get rid of PackTypeInfo
-    Pack
+    Function
 };
 
 MRDOX_DECL dom::String toString(TypeKind kind) noexcept;
 
 struct TypeInfo
 {
+    /** The kind of TypeInfo this is
+    */
     TypeKind Kind;
+
+    /** Whether this is the pattern of a pack expansion.
+    */
+    bool IsPackExpansion = false;
 
     constexpr virtual ~TypeInfo() = default;
 
@@ -66,7 +71,6 @@ struct TypeInfo
     constexpr bool isMemberPointer()   const noexcept { return Kind == TypeKind::MemberPointer; }
     constexpr bool isArray()           const noexcept { return Kind == TypeKind::Array; }
     constexpr bool isFunction()        const noexcept { return Kind == TypeKind::Function; }
-    constexpr bool isPack()            const noexcept { return Kind == TypeKind::Pack; }
 
 protected:
     constexpr
@@ -91,7 +95,6 @@ struct IsType : TypeInfo
     static constexpr bool isMemberPointer()   noexcept { return K == TypeKind::MemberPointer; }
     static constexpr bool isArray()           noexcept { return K == TypeKind::Array; }
     static constexpr bool isFunction()        noexcept { return K == TypeKind::Function; }
-    static constexpr bool isPack()            noexcept { return K == TypeKind::Pack; }
 
 protected:
     constexpr
@@ -171,97 +174,56 @@ struct FunctionTypeInfo
     NoexceptKind ExceptionSpec = NoexceptKind::None;
 };
 
-struct PackTypeInfo
-    : IsType<TypeKind::Pack>
-{
-    std::unique_ptr<TypeInfo> PatternType;
-};
-
-template<typename F, typename... Args>
-constexpr
+template<
+    class TypeTy,
+    class F,
+    class... Args>
+    requires std::derived_from<TypeTy, TypeInfo>
 decltype(auto)
 visit(
-    TypeInfo& I,
+    TypeTy& I,
     F&& f,
     Args&&... args)
 {
+    add_cv_from_t<TypeTy, TypeInfo>& II = I;
     switch(I.Kind)
     {
     case TypeKind::Builtin:
-        return f(static_cast<BuiltinTypeInfo&>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            TypeTy, BuiltinTypeInfo>&>(II),
+                std::forward<Args>(args)...);
     case TypeKind::Tag:
-        return f(static_cast<TagTypeInfo&>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            TypeTy, TagTypeInfo>&>(II),
+                std::forward<Args>(args)...);
     case TypeKind::Specialization:
-        return f(static_cast<SpecializationTypeInfo&>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            TypeTy, SpecializationTypeInfo>&>(II),
+                std::forward<Args>(args)...);
     case TypeKind::LValueReference:
-        return f(static_cast<LValueReferenceTypeInfo&>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            TypeTy, LValueReferenceTypeInfo>&>(II),
+                std::forward<Args>(args)...);
     case TypeKind::RValueReference:
-        return f(static_cast<RValueReferenceTypeInfo&>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            TypeTy, RValueReferenceTypeInfo>&>(II),
+                std::forward<Args>(args)...);
     case TypeKind::Pointer:
-        return f(static_cast<PointerTypeInfo&>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            TypeTy, PointerTypeInfo>&>(II),
+                std::forward<Args>(args)...);
     case TypeKind::MemberPointer:
-        return f(static_cast<MemberPointerTypeInfo&>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            TypeTy, MemberPointerTypeInfo>&>(II),
+                std::forward<Args>(args)...);
     case TypeKind::Array:
-        return f(static_cast<ArrayTypeInfo&>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            TypeTy, ArrayTypeInfo>&>(II),
+                std::forward<Args>(args)...);
     case TypeKind::Function:
-        return f(static_cast<FunctionTypeInfo&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::Pack:
-        return f(static_cast<PackTypeInfo&>(I),
-            std::forward<Args>(args)...);
-    default:
-        MRDOX_UNREACHABLE();
-    }
-}
-
-template<typename F, typename... Args>
-constexpr
-decltype(auto)
-visit(
-    const TypeInfo& I,
-    F&& f,
-    Args&&... args)
-{
-    switch(I.Kind)
-    {
-    case TypeKind::Builtin:
-        return f(static_cast<BuiltinTypeInfo const&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::Tag:
-        return f(static_cast<TagTypeInfo const&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::Specialization:
-        return f(static_cast<SpecializationTypeInfo const&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::LValueReference:
-        return f(static_cast<LValueReferenceTypeInfo const&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::RValueReference:
-        return f(static_cast<RValueReferenceTypeInfo const&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::Pointer:
-        return f(static_cast<PointerTypeInfo const&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::MemberPointer:
-        return f(static_cast<MemberPointerTypeInfo const&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::Array:
-        return f(static_cast<ArrayTypeInfo const&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::Function:
-        return f(static_cast<FunctionTypeInfo const&>(I),
-            std::forward<Args>(args)...);
-    case TypeKind::Pack:
-        return f(static_cast<PackTypeInfo const&>(I),
-            std::forward<Args>(args)...);
+        return f(static_cast<add_cv_from_t<
+            TypeTy, FunctionTypeInfo>&>(II),
+                std::forward<Args>(args)...);
     default:
         MRDOX_UNREACHABLE();
     }

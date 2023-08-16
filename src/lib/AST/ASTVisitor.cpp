@@ -565,6 +565,9 @@ public:
         // nested name specifier used for the terminal type node
         NestedNameSpecifier* NNS = nullptr;
 
+        // whether this is a pack expansion
+        bool is_pack_expansion = false;
+
         while(true)
         {
             // should never be called for a null QualType
@@ -617,6 +620,16 @@ public:
                 qt = T->getReplacementType().withFastQualifiers(quals);
                 continue;
             }
+            // pack expansion
+            case Type::PackExpansion:
+            {
+                auto* T = cast<PackExpansionType>(type);
+                // we just use a flag to represent whether this is
+                // a pack expansion rather than a type kind
+                is_pack_expansion = true;
+                qt = T->getPattern().withFastQualifiers(quals);
+                continue;
+            }
             // pointers
             case Type::Pointer:
             {
@@ -655,15 +668,6 @@ public:
                 I->ParentType = buildTypeInfo(QualType(T->getClass(), 0));
                 *std::exchange(inner, &I->PointeeType) = std::move(I);
                 qt = T->getPointeeType();
-                continue;
-            }
-            // pack expansion
-            case Type::PackExpansion:
-            {
-                auto* T = cast<PackExpansionType>(type);
-                auto I = std::make_unique<PackTypeInfo>();
-                *std::exchange(inner, &I->PatternType) = std::move(I);
-                qt = T->getPattern();
                 continue;
             }
             // KRYSTIAN NOTE: we don't handle FunctionNoProto here,
@@ -847,15 +851,6 @@ public:
                     T->getDecl(), quals);
                 break;
             }
-            case Type::SubstTemplateTypeParmPack:
-            {
-                auto* T = cast<SubstTemplateTypeParmPackType>(type);
-                auto I = std::make_unique<PackTypeInfo>();
-                I->PatternType = makeTypeInfo<BuiltinTypeInfo>(
-                    T->getIdentifier(), quals);
-                *inner = std::move(I);
-                break;
-            }
             case Type::TemplateTypeParm:
             {
                 auto* T = cast<TemplateTypeParmType>(type);
@@ -871,6 +866,18 @@ public:
                         I->Name = II->getName();
                 }
                 *inner = std::move(I);
+                break;
+            }
+            // this only seems to appear when a template parameter pack
+            // from an enclosing template appears in a pack expansion which contains
+            // a template parameter pack from an inner template. this does not seem
+            // to appear when both packs are template arguments; e.g.
+            // A<sizeof...(Ts), sizeof...(Us)> will use this, but A<A<Ts, Us>...> will not
+            case Type::SubstTemplateTypeParmPack:
+            {
+                auto* T = cast<SubstTemplateTypeParmPackType>(type);
+                *inner = makeTypeInfo<BuiltinTypeInfo>(
+                    T->getIdentifier(), quals);
                 break;
             }
             // builtin/unhandled type
@@ -890,6 +897,10 @@ public:
                 (*inner)->isBuiltin() ||
                 (*inner)->isTag() ||
                 (*inner)->isSpecialization());
+
+            // set whether the root node is a pack
+            if(result)
+                result->IsPackExpansion = is_pack_expansion;
 
             // if there is no nested-name-specifier for
             // the terminal type, then we are done
