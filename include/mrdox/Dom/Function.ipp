@@ -35,9 +35,12 @@ operator()(Args&&... args) const
 {
     typename Array::storage_type elements;
     elements.reserve(sizeof...(Args));
-    [[maybe_unused]] int dummy[] = {
-        (elements.emplace_back(
-            std::forward<Args>(args)), 0)... };
+    if constexpr (sizeof...(Args) > 0)
+    {
+        [[maybe_unused]] int dummy[] = {
+            (elements.emplace_back(
+                 std::forward<Args>(args)), 0)... };
+    }
     return call(newArray<DefaultArrayImpl>(
         std::move(elements))).value();
 }

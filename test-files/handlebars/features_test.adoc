@@ -757,7 +757,7 @@ Hello!
 [d!,o wo]
 [d!,o wo]
 // splitlines
-[Hello world!\nBye!]
+[Hello world!,Bye!]
 [Hello world!\nBye!]
 // zfill
 00000000000000000000000000000000000000Hello world!

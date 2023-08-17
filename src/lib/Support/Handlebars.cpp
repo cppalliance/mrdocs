@@ -508,7 +508,7 @@ popFirstSegment(std::string_view& path0)
     // Literal number segment
     // ==============================================================
     // In a literal number segment the dots are part of the segment
-    if (std::ranges::all_of(path, [](char c) { return c == '.' || std::isdigit(c); }))
+    if (std::ranges::all_of(path, [](char c) { return c == '.' || std::isdigit(c) != 0; }))
     {
         if (std::ranges::count(path, '.') < 2)
         {
@@ -1459,7 +1459,7 @@ unescapeChar(char c)
     case '\\': return '\\';
     case '\'': return '\'';
     case '\"': return '\"';
-    default: return char(-1);
+    default: return static_cast<char>(-1);
     }
 }
 
@@ -1482,13 +1482,13 @@ unescapeString(std::string_view str) {
         } else {
             if (i + 1 < str.length()) {
                 char c = unescapeChar(str[i + 1]);
-                if (c != char(-1)) {
+                if (c == static_cast<char>(-1)) {
                     unescapedString.push_back('\\');
                     unescapedString.push_back(str[i + 1]);
-                    ++i;
                 } else {
                     unescapedString.push_back(c);
                 }
+                ++i;
             } else {
                 unescapedString.push_back('\\');
             }
@@ -1724,7 +1724,9 @@ evalExpr(
     // ==============================================================
     // Context path
     // ==============================================================
-    auto [r, defined] = lookupPropertyImpl(context, expression, state);
+    dom::Value r;
+    bool defined;
+    std::tie(r, defined) = lookupPropertyImpl(context, expression, state);
     if (defined) {
         return {r, defined};
     }
@@ -1817,7 +1819,8 @@ parseBlock(
     OutputRef &out,
     std::string_view &fnBlock,
     std::string_view &inverseBlocks,
-    Handlebars::Tag &inverseTag)
+    Handlebars::Tag &inverseTag,
+    bool isChainedBlock)
 {
     // ==============================================================
     // Initial blocks
@@ -1839,6 +1842,7 @@ parseBlock(
     Handlebars::Tag closeTag;
     int l = 1;
     std::string_view* curBlock = &fnBlock;
+    bool closed = false;
     while (!templateText.empty())
     {
         // ==============================================================
@@ -1846,7 +1850,9 @@ parseBlock(
         // ==============================================================
         std::string_view tagStr;
         if (!findTag(tagStr, templateText))
+        {
             break;
+        }
 
         Handlebars::Tag curTag = parseTag(tagStr, state.templateText0);
 
@@ -1869,7 +1875,8 @@ parseBlock(
                     // Close main section tag
                     // ==============================================================
                     closeTag = curTag;
-                    if (closeTag.content != blockName)
+                    bool const isBlockNameMismatch = closeTag.content != blockName;
+                    if (isBlockNameMismatch)
                     {
                         auto res = find_position_in_text(state.templateText0, blockName);
                         std::string msg(blockName);
@@ -1881,6 +1888,7 @@ parseBlock(
                         }
                         throw HandlebarsError(msg);
                     }
+                    closed = true;
                     *curBlock = {curBlock->data(), closeTag.buffer.data()};
                     if (closeTag.removeLWhitespace) {
                         *curBlock = trim_rspaces(*curBlock);
@@ -1943,6 +1951,7 @@ parseBlock(
             // ==============================================================
             if (curTag.type == '/' && tag.rawBlock == curTag.rawBlock && blockName == curTag.content) {
                 // Closing the raw section: l = 0;
+                closed = true;
                 closeTag = curTag;
                 *curBlock = {curBlock->data(), closeTag.buffer.data()};
                 if (closeTag.removeLWhitespace) {
@@ -1954,6 +1963,20 @@ parseBlock(
                 break;
             }
         }
+    }
+
+    // ==============================================================
+    // Check if block was closed
+    // ==============================================================
+    if (!closed && !isChainedBlock) {
+        auto res = find_position_in_text(state.templateText0, blockName);
+        std::string msg(blockName);
+        msg += " missing closing braces";
+        if (res)
+        {
+            throw HandlebarsError(msg, res.line, res.column, res.pos);
+        }
+        throw HandlebarsError(msg);
     }
 
     // ==============================================================
@@ -2016,6 +2039,19 @@ renderExpression(
 
     auto opt2 = opt;
     opt2.noEscape = tag.forceNoHTMLEscape || opt.noEscape;
+
+    // ==============================================================
+    // Helpers as block params
+    // ==============================================================
+    if (state.blockValues.exists(tag.helper))
+    {
+        auto v = state.blockValues.find(tag.helper);
+        format_to(out, v, opt2);
+        if (tag.removeRWhitespace) {
+            state.templateText = trim_lspaces(state.templateText);
+        }
+        return;
+    }
 
     // ==============================================================
     // Helper as function
@@ -2107,6 +2143,17 @@ setupArgs(
     {
         auto exprEndPos = expr.data() + expr.size() - expression.data();
         expression = expression.substr(exprEndPos);
+        if (!expression.empty() && expression.front() != ' ')
+        {
+            std::string msg = fmt::format(
+                "Parse error. Invalid helper expression. {}{}", expr, expression);
+            auto res = find_position_in_text(expression, state.templateText0);
+            if (res)
+            {
+                throw HandlebarsError(msg, res.line, res.column, res.pos);
+            }
+            throw HandlebarsError(msg);
+        }
         expression = trim_ldelimiters(expression, " ");
         auto [k, v] = findKeyValuePair(expr);
         if (k.empty())
@@ -2153,7 +2200,7 @@ renderDecorator(
     std::string_view inverseBlock;
     Tag inverseTag;
     if (tag.type2 == '#') {
-        if (!parseBlock(tag.helper, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag)) {
+        if (!parseBlock(tag.helper, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag, false)) {
             return;
         }
     }
@@ -2206,7 +2253,7 @@ renderPartial(
     Tag inverseTag;
     if (tag.type2 == '#')
     {
-        if (!parseBlock(tag.helper, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag))
+        if (!parseBlock(tag.helper, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag, false))
         {
             return;
         }
@@ -2417,7 +2464,9 @@ renderBlock(
     std::string_view fnBlock;
     std::string_view inverseBlock;
     Tag inverseTag;
-    parseBlock(blockName, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag);
+    parseBlock(
+        blockName, tag, opt, state, state.templateText, out,
+        fnBlock, inverseBlock, inverseTag, isChainedBlock);
 
     // ==============================================================
     // Setup helper parameters
@@ -2558,6 +2607,13 @@ renderBlock(
     state.compatStack.emplace_back(context);
     state.dataStack.emplace_back(state.data);
     auto [res, render] = fn(args, cb);
+    if (render != HelperBehavior::NO_RENDER) {
+        // Always unescaped
+        HandlebarsOptions opt2 = opt;
+        opt2.noEscape = true;
+        format_to(out, res, opt2);
+    }
+#if 0
     if (render == HelperBehavior::RENDER_RESULT) {
         format_to(out, res, opt);
     } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
@@ -2565,6 +2621,7 @@ renderBlock(
         opt2.noEscape = true;
         format_to(out, res, opt2);
     }
+#endif
     state.inlinePartials.pop_back();
     state.compatStack.pop_back();
     state.dataStack.pop_back();
@@ -3013,13 +3070,11 @@ void
 if_fn(
     dom::Array const& args,
     HandlebarsCallback const& options) {
-    OutputRef out = options.output();
-    auto r = validateArgs(options.name(), 1, args);
-    if (!r.empty()) {
-        out << r;
-        return;
+    if (args.size() != 1) {
+        throw HandlebarsError("#if requires exactly one argument");
     }
 
+    OutputRef out = options.output();
     dom::Value conditional = args[0];
     if (conditional.isFunction())
     {
@@ -3056,6 +3111,10 @@ void
 unless_fn(
     dom::Array const& args,
     HandlebarsCallback const& options) {
+    if (args.size() != 1) {
+        throw HandlebarsError("#unless requires exactly one argument");
+    }
+
     HandlebarsCallback options2 = options;
     std::swap(options2.fn_, options2.inverse_);
     return if_fn(args, options2);
@@ -3066,11 +3125,10 @@ with_fn(
     dom::Array const& args,
     HandlebarsCallback const& options) {
     OutputRef out = options.output();
-    auto r = validateArgs(options.name(), 1, args);
-    if (!r.empty()) {
-        out << r;
-        return;
+    if (args.size() != 1) {
+        throw HandlebarsError("#with requires exactly one argument");
     }
+
     dom::Value newContext = args[0];
     if (newContext.isFunction()) {
         newContext = newContext.getFunction()(options.context());
@@ -4666,18 +4724,19 @@ registerContainerHelpers(Handlebars& hbs)
     hbs.registerHelper("head", first_fn);
     hbs.registerHelper("front", first_fn);
 
-    static constexpr auto last_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+    static constexpr auto last_fn = [](dom::Array const& args) -> dom::Value {
         auto range = args.at(0);
         if (range.isArray()) {
             auto const& arr = range.getArray();
-            if (arr.empty())
+            if (arr.empty()) {
                 return nullptr;
+            }
             return arr.at(arr.size() - 1);
         } else if (range.isObject()) {
             auto const& obj = range.getObject();
-            if (obj.empty())
+            if (obj.empty()) {
                 return nullptr;
+            }
             return obj.get(obj.size() - 1).value;
         } else {
             return range;
@@ -4978,16 +5037,16 @@ registerContainerHelpers(Handlebars& hbs)
         }
         dom::Array const& range = rangeV.getArray();
         std::vector<dom::Value> res;
-        for (std::int64_t i = 0; i < static_cast<std::int64_t>(range.size()); ++i) {
-            res.push_back(range[i]);
+        for (const auto& el: range) {
+            res.push_back(el);
         }
-        std::sort(res.begin(), res.end(), [](dom::Value const& a, dom::Value const& b) {
+        std::ranges::sort(res, [](dom::Value const& a, dom::Value const& b) {
             return isLt(a, b);
         });
-        auto last = std::unique(res.begin(), res.end(), [](dom::Value const& a, dom::Value const& b) {
+        auto [first, last] = std::ranges::unique(res, [](dom::Value const& a, dom::Value const& b) {
             return isSame(a, b);
         });
-        res.erase(last, res.end());
+        res.erase(first, res.end());
         dom::Array res2;
         for (auto const& v : res) {
             res2.emplace_back(v);
