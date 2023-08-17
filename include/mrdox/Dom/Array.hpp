@@ -64,6 +64,14 @@ public:
     */
     using difference_type = std::ptrdiff_t;
 
+    /** A constant iterator referencing an element in an Array.
+    */
+    class iterator;
+
+    /** A constant iterator referencing an element in an Array.
+    */
+    using const_iterator = iterator;
+
     /** The type of storage used by the default implementation.
     */
     using storage_type = std::vector<value_type>;
@@ -176,6 +184,14 @@ public:
         @throw Exception `i >= size()`
     */
     value_type at(size_type i) const;
+
+    /** Return an iterator to the beginning of the range of elements.
+     */
+    iterator begin() const;
+
+    /** Return an iterator to the end of the range of elements.
+     */
+    iterator end() const;
 
     /** Append an element to the end of the array.
 
