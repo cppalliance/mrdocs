@@ -28,45 +28,40 @@ concept StringLikeTy =
     ! std::is_same_v<StringTy, String> &&
     std::convertible_to<StringTy, std::string_view>;
 
-/** An immutable string with shared ownership.
-*/
 class MRDOX_DECL
     String final
 {
-    struct Impl;
+    const char* ptr_ = nullptr;
 
-    union
+    bool
+    is_literal() const noexcept
     {
-        Impl* impl_;
-        // len is stored with the low bit moved to
-        // the hi bit, and the low bit always set.
-        std::size_t len_;
-    };
-    char const* psz_;
-
-    static void allocate(std::string_view s,Impl*&,  char const*&);
-    static void deallocate(Impl*) noexcept;
-    static consteval std::size_t len(std::size_t n)
-    {
-        return (n << (sizeof(std::size_t)*8 - 1)) | n | 1UL;
+        MRDOX_ASSERT(! empty());
+        // for string literals, data_ stores a pointer
+        // to the first character of the string.
+        // for ref-counted strings, data_ stores a pointer
+        // to the null-terminator of the string.
+        return *ptr_;
     }
 
-    constexpr bool is_literal() const noexcept
-    {
-        return (len_ & 1) != 0;
-    }
+    class impl_view;
+
+    impl_view impl() const noexcept;
+
+    /** Construct a ref-counted string.
+    */
+    void
+    construct(
+        const char* s,
+        std::size_t n);
 
 public:
-    /** Destructor.
-    */
-    ~String();
-
     /** Constructor.
 
         Default constructed strings have a zero size,
         and include a null terminator.
     */
-    String() noexcept;
+    constexpr String() noexcept = default;
 
     /** Constructor.
 
@@ -74,24 +69,73 @@ public:
         the newly constructed string. The moved-from
         string behaves as if default constructed.
     */
-    String(String&& other) noexcept;
+    constexpr String(String&& other) noexcept
+    {
+        swap(other);
+    }
 
     /** Constructor.
 
         The newly constructed string acquries shared
         ownership of the string referenced by other.
     */
-    String(String const& other) noexcept;
+    String(const String& other) noexcept;
+
+    /** Destructor.
+    */
+    ~String() noexcept;
+
+    /** Constructor.
+
+        This function constructs a string literal
+        which references the buffer pointed to by
+        `str`. Ownership is not transferred; the lifetime
+        of the buffer must extend until the string is
+        destroyed, otherwise the behavior is undefined.
+
+        @param str A null-terminated string. If the
+        string is not null-terminated, the result is
+        undefined.
+    */
+    template<std::size_t N>
+    constexpr
+    String(const char(&str)[N])
+    {
+        // empty strings are stored as nullptr
+        if constexpr(N > 1)
+            ptr_ = str;
+    }
 
     /** Constructor.
 
         This function constructs a new string from
-        the buffer pointed to by `s`.
+        the string pointed to by `str` of length `len`.
 
-        @param s The string to construct with.
+        @param `str` The string to construct with.
+        A copy of this string is made.
+        @param `len` The length of the string.
+    */
+    String(
+        const char* str,
+        std::size_t len)
+    {
+        // empty strings are stored as nullptr
+        if(len)
+            construct(str, len);
+    }
+
+    /** Constructor.
+
+        This function constructs a new string from
+        the buffer pointed to by `sv`.
+
+        @param sv The string to construct with.
         A copy of this string is made.
     */
-    String(std::string_view s);
+    String(std::string_view sv)
+        : String(sv.data(), sv.size())
+    {
+    }
 
     /** Constructor.
 
@@ -107,25 +151,19 @@ public:
     {
     }
 
-    /** Constructor.
+    /** Assignment.
 
-        This function constructs a string literal
-        which references the buffer pointed to by
-        sz. Ownership is not transferred; the lifetime
-        of the buffer must extend until the string is
-        destroyed, otherwise the behavior is undefined.
-
-        @param psz A null-terminated string. If the
-        string is not null-terminated, the result is
-        undefined.
+        This acquires shared ownership of the
+        string referenced by other. Ownership of
+        the previously referenced string is released.
     */
-    template<std::size_t N>
-    constexpr String(char const(&psz)[N]) noexcept
-        : len_(len(N-1))
-        , psz_(psz)
+    String&
+    operator=(
+        const String& other) noexcept
     {
-        static_assert(N > 0);
-        static_assert(N <= std::size_t(-1)>>1);
+        String temp(other);
+        swap(temp);
+        return *this;
     }
 
     /** Assignment.
@@ -136,27 +174,14 @@ public:
         After the assignment, the moved-from string
         behaves as if default constructed.
     */
-    String& operator=(String&& other) noexcept;
-
-    /** Assignment.
-
-        This acquires shared ownership of the
-        string referenced by other. Ownership of
-        the previously referenced string is released.
-    */
-    String& operator=(String const& other) noexcept;
-
-    /** Return true if the string is empty.
-    */
-    constexpr bool empty() const noexcept
+    String&
+    operator=(
+        String&& other) noexcept
     {
-        return psz_[0] == '\0';
+        String temp(std::move(other));
+        swap(temp);
+        return *this;
     }
-
-    /** Return the string.
-    */
-    std::string_view
-    get() const noexcept;
 
     /** Return the string.
     */
@@ -167,24 +192,38 @@ public:
 
     /** Return the string.
     */
+    std::string_view
+    get() const noexcept
+    {
+        return std::string_view(
+            data(), size());
+    }
+
+    /** Return the string.
+    */
     std::string str() const noexcept
     {
         return std::string(get());
     }
 
-    /** Return the size.
+    /** Return true if the string is empty.
     */
-    std::size_t size() const noexcept
+    bool
+    empty() const noexcept
     {
-        return get().size();
+        return ! ptr_;
     }
 
     /** Return the size.
     */
-    char const* data() const noexcept
-    {
-        return get().data();
-    }
+    std::size_t size() const noexcept;
+
+    /** Return the string.
+
+        The pointed-to character buffer returned
+        by this function is always null-terminated.
+    */
+    const char* data() const noexcept;
 
     /** Return the string.
 
@@ -193,20 +232,26 @@ public:
     */
     char const* c_str() const noexcept
     {
-        return psz_;
+        return data();
     }
 
     /** Swap two strings.
     */
-    void swap(String& other) noexcept
+    constexpr
+    void
+    swap(String& other) noexcept
     {
-        std::swap(impl_, other.impl_);
-        std::swap(psz_, other.psz_);
+        std::swap(ptr_, other.ptr_);
     }
 
     /** Swap two strings.
     */
-    friend void swap(String& lhs, String& rhs) noexcept
+    friend
+    constexpr
+    void
+    swap(
+        String& lhs,
+        String& rhs) noexcept
     {
         lhs.swap(rhs);
     }
