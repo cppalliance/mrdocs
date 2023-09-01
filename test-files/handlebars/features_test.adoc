@@ -28,7 +28,18 @@ struct from_chars
 // #with to change context
 Person: John Doe in page about `from_chars`
 
+
+// dotdot segments refer to parent helper context, not parent object
+Person: John Doe in page about `from_chars`
+
 // #each to iterate, change context, and access parent context
+People:
+* Person: Alice Doe in page about `from_chars`
+* Person: Bob Doe in page about `from_chars`
+* Person: Carol Smith in page about `from_chars`
+
+
+// dotdot segments refer to parent helper context, not parent object
 People:
 * Person: Alice Doe in page about `from_chars`
 * Person: Bob Doe in page about `from_chars`

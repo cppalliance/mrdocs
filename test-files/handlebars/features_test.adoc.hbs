@@ -36,12 +36,21 @@ Declared in file <{{page.loc}}>
 {{>record-detail}}
 
 // #with to change context
-{{#with page.person}}Person: {{firstname}} {{lastname}} in page about `{{../name}}`
+{{#with page}}{{#with person}}Person: {{firstname}} {{lastname}} in page about `{{../name}}`
+{{/with}}{{/with}}
+
+// dotdot segments refer to parent helper context, not parent object
+{{#with page.person}}Person: {{firstname}} {{lastname}} in page about `{{../page/name}}`
 {{/with}}
 
 // #each to iterate, change context, and access parent context
 People:
-{{#each page.people}}* Person: {{firstname}} {{lastname}} in page about `{{../name}}`
+{{#with page}}{{#each people}}* Person: {{firstname}} {{lastname}} in page about `{{../name}}`
+{{/each}}{{/with}}
+
+// dotdot segments refer to parent helper context, not parent object
+People:
+{{#each page.people}}* Person: {{firstname}} {{lastname}} in page about `{{../page/name}}`
 {{/each}}
 
 == Expressions
@@ -347,7 +356,7 @@ My Content
 // with block parameters
 {{#with city as | city |}}
   {{#with city.location as | loc |}}
-    {{../city.name}}: {{loc.north}} {{loc.east}}
+    {{../name}}: {{loc.north}} {{loc.east}}
   {{/with}}
 {{/with}}
 

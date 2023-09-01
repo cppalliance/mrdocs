@@ -69,6 +69,17 @@ struct HandlebarsOptions
      */
     bool compat = false;
 
+    /** Enable tracking of ids
+
+        When enabled, the ids of the expressions are tracked and
+        passed to the helpers.
+
+        Helpers often use this information to update the context
+        path to the current expression, which can later be used to
+        look up the value of the expression with ".." segments.
+     */
+    bool trackIds = false;
+
     /** Custom private data object
 
         This variable can be used to pass in an object to define custom
@@ -275,7 +286,7 @@ public:
     }
 
     std::size_t
-    getIndent() noexcept
+    getIndent() const noexcept
     {
         return indent_;
     }
@@ -303,17 +314,23 @@ class MRDOX_DECL HandlebarsCallback
 {
 private:
     using callback_type = std::function<
-        void(OutputRef, dom::Value const&, dom::Object const&, dom::Object const&)>;
+        void(
+            OutputRef,
+            dom::Value const& /* context */,
+            dom::Object const& /* data */,
+            dom::Object const& /* blockValues */,
+            dom::Object const& /* blockValuePaths */)>;
 
     callback_type fn_;
     callback_type inverse_;
     dom::Value const* context_{ nullptr };
     OutputRef* output_{ nullptr };
     dom::Object const* data_;
-    std::vector<std::string_view> ids_;
-    dom::Object hashes_;
+    std::vector<dom::Value> ids_;
+    dom::Object hash_;
+    dom::Object hashIds_;
     std::string_view name_;
-    std::vector<std::string_view> blockParams_;
+    std::vector<std::string_view> blockParamIds_;
     std::function<void(dom::Value, dom::Array const&)> const* logger_;
     detail::RenderState* renderState_;
     friend class Handlebars;
@@ -398,7 +415,8 @@ public:
     std::string
     fn(dom::Value const& context,
        dom::Object const& data,
-       dom::Object const& blockValues) const;
+       dom::Array const& blockParams,
+       dom::Array const& blockParamPaths) const;
 
     /** Render the block content with specified private data and block parameters
 
@@ -417,7 +435,8 @@ public:
     fn(OutputRef out,
        dom::Value const& context,
        dom::Object const& data,
-       dom::Object const& blockValues) const;
+       dom::Array const& blockParams,
+       dom::Array const& blockParamPaths) const;
 
     /** Render the inverse block content with the specified context
 
@@ -492,7 +511,8 @@ public:
     inverse(
         dom::Value const& context,
         dom::Object const& data,
-        dom::Object const& blockValues) const;
+        dom::Array const& blockParams,
+        dom::Array const& blockParamPaths) const;
 
     /** Render the inverse block content with private data and block parameters
 
@@ -512,7 +532,8 @@ public:
         OutputRef out,
         dom::Value const& context,
         dom::Object const& data,
-        dom::Object const& blockValues) const;
+        dom::Array const& blockParamPaths,
+        dom::Array const& blockParams) const;
 
     /** Determine if helper is being called from a block section
 
@@ -554,7 +575,9 @@ public:
 
         @return `true` if the helper is being called from a block section
      */
-    bool isBlock() const {
+    bool
+    isBlock() const
+    {
         return static_cast<bool>(fn_);
     }
 
@@ -593,40 +616,46 @@ public:
         return *data_;
     }
 
-    /// Extra key value pairs passed to the callback
-    dom::Object&
-    hashes() {
-        return hashes_;
-    }
-
-    /// Extra key value pairs passed to the callback
-    dom::Object const&
-    hashes() const {
-        return hashes_;
-    }
-
     /// Ids of the expression parameters
-    std::vector<std::string_view>&
+    std::vector<dom::Value>&
     ids() {
         return ids_;
     }
 
     /// Ids of the expression parameters
-    std::vector<std::string_view> const&
+    std::vector<dom::Value> const&
     ids() const {
         return ids_;
     }
 
-    /// Block parameters passed to the callback
-    std::vector<std::string_view>&
-    blockParams() {
-        return blockParams_;
+    /// Extra key value pairs passed to the callback
+    dom::Object&
+    hash() {
+        return hash_;
+    }
+
+    /// Extra key value pairs passed to the callback
+    dom::Object const&
+    hash() const {
+        return hash_;
+    }
+
+    /// Extra key value pairs passed to the callback
+    dom::Object&
+    hashIds() {
+        return hashIds_;
+    }
+
+    /// Extra key value pairs passed to the callback
+    dom::Object const&
+    hashIds() const {
+        return hashIds_;
     }
 
     /// Block parameters passed to the callback
-    std::vector<std::string_view> const&
+    std::size_t
     blockParams() const {
-        return blockParams_;
+        return blockParamIds_.size();
     }
 
     /** Name of the helper being called
@@ -1207,7 +1236,15 @@ private:
         HandlebarsCallback& cb,
         HandlebarsOptions const& opt) const;
 
-    std::pair<dom::Value, bool>
+    struct evalExprResult {
+        dom::Value value;
+        bool found = false;
+        bool isLiteral = false;
+        bool isSubexpr = false;
+        bool fromBlockParams = false;
+    };
+
+    evalExprResult
     evalExpr(
         dom::Value const &context,
         std::string_view expression,
