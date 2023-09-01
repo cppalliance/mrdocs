@@ -463,8 +463,7 @@ formatError(
     std::string s;
     fmt::vformat_to(
         std::back_inserter(s),
-        fs.fs, fmt::make_format_args(
-            std::forward<Args>(args)...));
+        fs.fs, fmt::make_format_args(args...));
     return Error(std::move(s), fs.loc);
 }
 
@@ -819,8 +818,7 @@ format(
         level,
         fmt::vformat(
             fs.value,
-            fmt::make_format_args(
-                std::forward<Args>(args)...)),
+            fmt::make_format_args(args...)),
         &fs.where);
 }
 
@@ -836,8 +834,7 @@ debug(
         Level::debug,
         fmt::vformat(
             format.value,
-            fmt::make_format_args(
-                std::forward<Args>(args)...)),
+            fmt::make_format_args(args...)),
         &format.where);
 }
 
@@ -853,8 +850,7 @@ info(
         Level::info,
         fmt::vformat(
             format.value,
-            fmt::make_format_args(
-                std::forward<Args>(args)...)),
+            fmt::make_format_args(args...)),
         &format.where);
 }
 
@@ -870,8 +866,7 @@ warn(
         Level::warn,
         fmt::vformat(
             format.value,
-            fmt::make_format_args(
-                std::forward<Args>(args)...)),
+            fmt::make_format_args(args...)),
         &format.where);
 }
 
@@ -887,8 +882,7 @@ error(
         Level::error,
         fmt::vformat(
             format.value,
-            fmt::make_format_args(
-                std::forward<Args>(args)...)),
+            fmt::make_format_args(args...)),
         &format.where);
 }
 
@@ -904,8 +898,7 @@ fatal(
         Level::fatal,
         fmt::vformat(
             format.value,
-            fmt::make_format_args(
-                std::forward<Args>(args)...)),
+            fmt::make_format_args(args...)),
         &format.where);
 }
 
