@@ -100,6 +100,7 @@ setup_fixtures()
     }
 
     master.options.noEscape = true;
+    master.options.trackIds = true;
 }
 
 void
@@ -370,7 +371,7 @@ setup_helpers()
         }
 
         std::string out;
-        auto h = cb.hashes().find("href");
+        auto h = cb.hash().find("href");
         if (h.isString())
         {
             out += h.getString();
@@ -392,7 +393,7 @@ setup_helpers()
         out += '[';
         out += args[0].getString();
         // more attributes from hashes
-        for (auto const& [key, value] : cb.hashes())
+        for (auto const& [key, value] : cb.hash())
         {
             if (key == "href" || !value.isString())
             {
@@ -472,7 +473,7 @@ setup_helpers()
         if (!items.empty())
         {
             std::string out = "<ul";
-            for (auto const& [key, value] : cb.hashes())
+            for (auto const& [key, value] : cb.hash())
             {
                 out += " ";
                 out += key;
@@ -489,7 +490,7 @@ setup_helpers()
                 data.set("first", i == 0);
                 data.set("last", i == items.size() - 1);
                 data.set("index", static_cast<std::int64_t>(i));
-                out += "<li>" + cb.fn(item, data, {}) + "</li>";
+                out += "<li>" + cb.fn(item, data, {}, {}) + "</li>";
             }
             return out + "</ul>";
         }
@@ -1603,9 +1604,10 @@ partial_blocks()
 
     // should render block from partial with context
     {
+        // { context: { value: 'success' } }
+        dom::Object ctx;
         dom::Object value;
         value.set("value", "success");
-        dom::Object ctx;
         ctx.set("context", value);
         hbs.registerPartial("dude", "{{#with context}}{{> @partial-block }}{{/with}}");
         BOOST_TEST(hbs.render("{{#> dude}}{{../context/value}}{{/dude}}", ctx) == "success");
@@ -1832,6 +1834,11 @@ partial_compat_mode()
     // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/partials.js
     Handlebars hbs;
 
+    // { root: 'yes',
+    //   dudes: [
+    //       { name: 'Yehuda', url: 'http://yehuda' },
+    //       { name: 'Alan', url: 'http://alan' }
+    //   ]}
     dom::Object root;
     root.set("root", "yes");
     dom::Array dudes;
@@ -2396,7 +2403,7 @@ subexpressions()
         hbs.registerHelper("blog", [](
             dom::Array const& args, HandlebarsCallback const& cb) {
             std::string res = "val is ";
-            res += toString(cb.hashes().find("fun"));
+            res += toString(cb.hash().find("fun"));
             return res;
         });
         hbs.registerHelper("equal", [](dom::Array const& args) {
@@ -2411,7 +2418,7 @@ subexpressions()
     {
         hbs.registerHelper("input", [](
             dom::Array const& args, HandlebarsCallback const& cb) {
-            auto hash = cb.hashes();
+            auto hash = cb.hash();
             std::string ariaLabel = escapeExpression(hash.find("aria-label").getString());
             std::string placeholder = escapeExpression(hash.find("placeholder").getString());
             std::string res = "<input aria-label=\"";
@@ -2438,7 +2445,7 @@ subexpressions()
         ctx.set("item", item);
         hbs.registerHelper("input", [](
             dom::Array const& args, HandlebarsCallback const& cb) {
-            auto hash = cb.hashes();
+            auto hash = cb.hash();
             std::string ariaLabel = escapeExpression(hash.find("aria-label").getString());
             std::string placeholder = escapeExpression(hash.find("placeholder").getString());
             std::string res = "<input aria-label=\"";
@@ -2486,7 +2493,7 @@ subexpressions()
         hbs.registerHelper("blog", [](
             dom::Array const& args, HandlebarsCallback const& cb) {
             std::string res = "val is ";
-            res += toString(cb.hashes().find("fun"));
+            res += toString(cb.hash().find("fun"));
             return res;
         });
         hbs.registerHelper("bork", [](
@@ -2604,6 +2611,7 @@ builtin_if()
     // should not change the depth list
     {
         std::string string = "{{#with foo}}{{#if goodbye}}GOODBYE cruel {{../world}}!{{/if}}{{/with}}";
+        // { foo: { goodbye: true }, world: 'world' }
         dom::Object ctx;
         dom::Object foo;
         foo.set("goodbye", true);
@@ -3218,11 +3226,11 @@ data() const
         ctx.set("foo", true);
         hbs.registerHelper("let", [](dom::Array const& args, HandlebarsCallback const& options) {
             dom::Object data = createFrame(options.data());
-            for (auto [k, v]: options.hashes())
+            for (auto [k, v]: options.hash())
             {
                 data.set(k, v);
             }
-            return options.fn(options.context(), data, {});
+            return options.fn(options.context(), data, {}, {});
         });
         BOOST_TEST(hbs.render(string, ctx) == "Hello world");
     }
@@ -3249,7 +3257,7 @@ data() const
         HandlebarsOptions options;
         options.data = data;
         hbs.registerHelper("hello", [](dom::Array const& args, HandlebarsCallback const& options) {
-            std::string noun(options.hashes().find("noun").getString());
+            std::string noun(options.hash().find("noun").getString());
             return "Hello " + noun;
         });
         BOOST_TEST(hbs.render(string, {}, options) == "Hello world");
@@ -3333,11 +3341,11 @@ data() const
         ctx.set("bar", bar);
         hbs.registerHelper("let", [](dom::Array const& args, HandlebarsCallback const& options) {
             dom::Object frame = createFrame(options.data());
-            for (auto [k, v]: options.hashes())
+            for (auto [k, v]: options.hash())
             {
                 frame.set(k, v);
             }
-            return options.fn(options.context(), frame, {});
+            return options.fn(options.context(), frame, {}, {});
         });
         HandlebarsOptions options;
         options.data = dom::Object();
@@ -3479,7 +3487,7 @@ data() const
             newContext.set("zomg", "world");
             dom::Object newData;
             newData.set("adjective", "sad");
-            return options.fn(newContext, newData, {});
+            return options.fn(newContext, newData, {}, {});
         });
         hbs.registerHelper("world", [](dom::Array const& args, HandlebarsCallback const& options) {
             std::string thing(args[0].getString());
@@ -3513,7 +3521,7 @@ data() const
             newContext.set("exclaim", "?");
             dom::Object newData;
             newData.set("adjective", "sad");
-            return options.fn(newContext, newData, {});
+            return options.fn(newContext, newData, {}, {});
         });
         hbs.registerHelper("world", [](dom::Array const& args, HandlebarsCallback const& options) {
             std::string thing(args[0].getString());
@@ -3566,7 +3574,7 @@ data() const
         hbs.registerHelper("helper", [](dom::Array const& args, HandlebarsCallback const& options) {
             dom::Object frame = createFrame(options.data());
             frame.set("depth", options.data().find("depth").getInteger() + 1);
-            return options.fn(options.context(), frame, {});
+            return options.fn(options.context(), frame, {}, {});
         });
         dom::Object ctx;
         ctx.set("foo", "hello");
@@ -3681,9 +3689,10 @@ helpers()
         ctx.set("name", "Alan");
         hbs.registerHelper("goodbyes", [](dom::Array const& args, HandlebarsCallback const& options) {
             std::string out;
-            out += "Goodbye " + options.fn(options.context()) + "! ";
-            out += "goodbye " + options.fn(options.context()) + "! ";
-            out += "GOODBYE " + options.fn(options.context()) + "! ";
+            dom::Object newContext = {};
+            out += "Goodbye " + options.fn(newContext) + "! ";
+            out += "goodbye " + options.fn(newContext) + "! ";
+            out += "GOODBYE " + options.fn(newContext) + "! ";
             return out;
         });
         BOOST_TEST(hbs.render(string, ctx) == "Goodbye Alan! goodbye Alan! GOODBYE Alan! ");
@@ -4099,11 +4108,11 @@ helpers()
             hbs.registerHelper("goodbye", [](dom::Array const& args, HandlebarsCallback const& options) {
                 std::string out;
                 out += "GOODBYE ";
-                out += options.hashes().find("cruel").getString();
+                out += options.hash().find("cruel").getString();
                 out += " ";
-                out += options.hashes().find("world").getString();
+                out += options.hash().find("world").getString();
                 out += " ";
-                out += toString(options.hashes().find("times"));
+                out += toString(options.hash().find("times"));
                 out += " TIMES";
                 return out;
             });
@@ -4113,16 +4122,16 @@ helpers()
         // helpers can take an optional hash with booleans
         {
             hbs.registerHelper("goodbye", [](dom::Array const& args, HandlebarsCallback const& options) -> std::string {
-                if (options.hashes().find("print").getBool())
+                if (options.hash().find("print").getBool())
                 {
                     std::string out;
                     out += "GOODBYE ";
-                    out += options.hashes().find("cruel").getString();
+                    out += options.hash().find("cruel").getString();
                     out += " ";
-                    out += options.hashes().find("world").getString();
+                    out += options.hash().find("world").getString();
                     return out;
                 }
-                else if (!options.hashes().find("print").getBool())
+                else if (!options.hash().find("print").getBool())
                 {
                     return "NOT PRINTING";
                 }
@@ -4142,11 +4151,11 @@ helpers()
             hbs.registerHelper("goodbye", [](dom::Array const& args, HandlebarsCallback const& options) {
                 std::string out;
                 out += "GOODBYE ";
-                out += options.hashes().find("cruel").getString();
+                out += options.hash().find("cruel").getString();
                 out += " ";
                 out += options.fn(options.context());
                 out += " ";
-                out += toString(options.hashes().find("times"));
+                out += toString(options.hash().find("times"));
                 out += " TIMES";
                 return out;
             });
@@ -4160,11 +4169,11 @@ helpers()
             hbs.registerHelper("goodbye", [](dom::Array const& args, HandlebarsCallback const& options) {
                 std::string out;
                 out += "GOODBYE ";
-                out += options.hashes().find("cruel").getString();
+                out += options.hash().find("cruel").getString();
                 out += " ";
                 out += options.fn(options.context());
                 out += " ";
-                out += toString(options.hashes().find("times"));
+                out += toString(options.hash().find("times"));
                 out += " TIMES";
                 return out;
             });
@@ -4174,16 +4183,16 @@ helpers()
         // block helpers can take an optional hash with booleans
         {
             hbs.registerHelper("goodbye", [](dom::Array const& args, HandlebarsCallback const& options) -> std::string {
-                if (options.hashes().find("print").getBool())
+                if (options.hash().find("print").getBool())
                 {
                     std::string out;
                     out += "GOODBYE ";
-                    out += options.hashes().find("cruel").getString();
+                    out += options.hash().find("cruel").getString();
                     out += " ";
                     out += options.fn(options.context());
                     return out;
                 }
-                else if (!options.hashes().find("print").getBool())
+                else if (!options.hash().find("print").getBool())
                 {
                     return "NOT PRINTING";
                 }
@@ -4449,12 +4458,12 @@ helpers()
             dom::Object ctx;
             ctx.set("value", "foo");
             hbs.registerHelper("goodbyes", [](dom::Array const& args, HandlebarsCallback const& options) {
-                BOOST_TEST(options.blockParams().size() == 1u);
+                BOOST_TEST(options.blockParams() == 1u);
                 dom::Object ctx;
                 ctx.set("value", "bar");
-                dom::Object blockValues;
-                blockValues.set(options.blockParams()[0], 1);
-                return options.fn(ctx, options.data(), blockValues);
+                dom::Array blockParams;
+                blockParams.emplace_back(1);
+                return options.fn(ctx, options.data(), blockParams, {});
             });
             BOOST_TEST(hbs.render("{{#goodbyes as |value|}}{{value}}{{/goodbyes}}{{value}}", ctx) == "1foo");
         }
@@ -4466,10 +4475,10 @@ helpers()
                 return "foo";
             });
             hbs.registerHelper("goodbyes", [](dom::Array const& args, HandlebarsCallback const& options) {
-                BOOST_TEST(options.blockParams().size() == 1u);
-                dom::Object blockValues;
-                blockValues.set(options.blockParams()[0], 1);
-                return options.fn({}, options.data(), blockValues);
+                BOOST_TEST(options.blockParams() == 1u);
+                dom::Array blockParams;
+                blockParams.emplace_back(1);
+                return options.fn({}, options.data(), blockParams, {});
             });
             BOOST_TEST(hbs.render(string) == "1foo");
         }
@@ -4482,10 +4491,10 @@ helpers()
                 return "foo";
             });
             hbs.registerHelper("goodbyes", [](dom::Array const& args, HandlebarsCallback const& options) {
-                BOOST_TEST(options.blockParams().size() == 1u);
-                dom::Object blockValues;
-                blockValues.set(options.blockParams()[0], 1);
-                return options.fn(options.context(), options.data(), blockValues);
+                BOOST_TEST(options.blockParams() == 1u);
+                dom::Array blockParams;
+                blockParams.emplace_back(1);
+                return options.fn(options.context(), options.data(), blockParams, {});
             });
             BOOST_TEST(hbs.render("{{#goodbyes as |value|}}{{./value}}{{/goodbyes}}{{value}}", ctx) == "barfoo");
         }
@@ -4498,13 +4507,13 @@ helpers()
             hbs.registerHelper("goodbyes", [&value](dom::Array const& args, HandlebarsCallback const& options) {
                 dom::Object ctx;
                 ctx.set("value", "bar");
-                dom::Object blockValues;
-                if (!options.blockParams().empty())
+                dom::Array blockParams;
+                if (options.blockParams() != 0)
                 {
-                    blockValues.set(options.blockParams()[0], value);
+                    blockParams.emplace_back(value);
                     value += 2;
                 }
-                return options.fn(ctx, options.data(), blockValues);
+                return options.fn(ctx, options.data(), blockParams, {});
             });
             std::string string = "{{#goodbyes as |value|}}{{#goodbyes}}{{value}}{{#goodbyes as |value|}}{{value}}{{/goodbyes}}{{/goodbyes}}{{/goodbyes}}{{value}}";
             BOOST_TEST(hbs.render(string, ctx) == "13foo");
@@ -4515,12 +4524,12 @@ helpers()
             dom::Object ctx;
             ctx.set("value", "foo");
             hbs.registerHelper("goodbyes", [](dom::Array const& args, HandlebarsCallback const& options) {
-                BOOST_TEST(options.blockParams().size() == 1u);
-                dom::Object blockValues;
-                blockValues.set(options.blockParams()[0], 1);
+                BOOST_TEST(options.blockParams() == 1u);
+                dom::Array blockParams;
+                blockParams.emplace_back(1);
                 dom::Object ctx;
                 ctx.set("value", "bar");
-                return options.fn(ctx, options.data(), blockValues);
+                return options.fn(ctx, options.data(), blockParams, {});
             });
             BOOST_TEST(hbs.render("{{#if bar}}{{else goodbyes as |value|}}{{value}}{{/if}}{{value}}", ctx) == "1foo");
         }
@@ -4595,6 +4604,371 @@ void
 track_ids()
 {
     // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/track-ids.js
+    Handlebars hbs;
+
+    // context = { is: { a: 'foo' }, slave: { driver: 'bar' } };
+    dom::Object context;
+    dom::Object is;
+    is.set("a", "foo");
+    context.set("is", is);
+    dom::Object slave;
+    slave.set("driver", "bar");
+    context.set("slave", slave);
+
+    HandlebarsOptions opt;
+    opt.trackIds = true;
+
+    // should not include anything without the flag
+    {
+        hbs.registerHelper("wycats", [](dom::Array const& args, HandlebarsCallback const& options) {
+            BOOST_TEST(options.ids().empty());
+            BOOST_TEST(options.hash().empty());
+            return "success";
+        });
+        BOOST_TEST(hbs.render("{{wycats is.a slave.driver}}", context) == "success");
+    }
+
+    // should include argument ids
+    {
+        hbs.registerHelper("wycats", [](dom::Array const& args, HandlebarsCallback const& options) {
+            BOOST_TEST(options.ids()[0].getString() == "is.a");
+            BOOST_TEST(options.ids()[1].getString() == "slave.driver");
+            std::string res = "HELP ME MY BOSS ";
+            res += toString(options.ids()[0]);
+            res += ":";
+            res += toString(args[0]);
+            res += " ";
+            res += toString(options.ids()[1]);
+            res += ":";
+            res += toString(args[1]);
+            return res;
+        });
+        BOOST_TEST(hbs.render("{{wycats is.a slave.driver}}", context, opt) == "HELP ME MY BOSS is.a:foo slave.driver:bar");
+    }
+
+    // should include hash ids
+    {
+        std::string string = "{{wycats bat=is.a baz=slave.driver}}";
+        hbs.registerHelper("wycats", [](dom::Array const& args, HandlebarsCallback const& options) {
+            BOOST_TEST(options.hashIds().find("bat").getString() == "is.a");
+            BOOST_TEST(options.hashIds().find("baz").getString() == "slave.driver");
+            std::string res = "HELP ME MY BOSS ";
+            res += toString(options.hashIds().find("bat"));
+            res += ":";
+            res += toString(options.hash().find("bat"));
+            res += " ";
+            res += toString(options.hashIds().find("baz"));
+            res += ":";
+            res += toString(options.hash().find("baz"));
+            return res;
+        });
+        BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS is.a:foo slave.driver:bar");
+    }
+
+    // should note ../ and ./ references
+    {
+        std::string string = "{{wycats ./is.a ../slave.driver this.is.a this}}";
+        hbs.registerHelper("wycats", [](dom::Array const& args, HandlebarsCallback const& options) {
+            BOOST_TEST(options.ids()[0].getString() == "is.a");
+            BOOST_TEST(options.ids()[1].getString() == "../slave.driver");
+            BOOST_TEST(options.ids()[2].getString() == "is.a");
+            BOOST_TEST(options.ids()[3].getString() == "");
+            std::string res = "HELP ME MY BOSS ";
+            res += toString(options.ids()[0]);
+            res += ":";
+            res += toString(args[0]);
+            res += " ";
+            res += toString(options.ids()[1]);
+            res += ":";
+            res += toString(args[1]);
+            return res;
+        });
+        // BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS is.a:foo ../slave.driver:undefined");
+        BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS is.a:foo ../slave.driver:null");
+    }
+
+    // should note @data references
+    {
+        std::string string = "{{wycats @is.a @slave.driver}}";
+        hbs.registerHelper("wycats", [](dom::Array const& args, HandlebarsCallback const& options) {
+            BOOST_TEST(options.ids()[0].getString() == "@is.a");
+            BOOST_TEST(options.ids()[1].getString() == "@slave.driver");
+            std::string res = "HELP ME MY BOSS ";
+            res += toString(options.ids()[0]);
+            res += ":";
+            res += toString(args[0]);
+            res += " ";
+            res += toString(options.ids()[1]);
+            res += ":";
+            res += toString(args[1]);
+            return res;
+        });
+        opt.data = context;
+        BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS @is.a:foo @slave.driver:bar");
+        opt.data = nullptr;
+    }
+
+    // should return null for constants
+    {
+        std::string string = "{{wycats 1 \"foo\" key=false}}";
+        hbs.registerHelper("wycats", [](dom::Array const& args, HandlebarsCallback const& options) {
+            BOOST_TEST(options.ids()[0].isNull());
+            BOOST_TEST(options.ids()[1].isNull());
+            BOOST_TEST(options.hashIds().find("key").isNull());
+            std::string res = "HELP ME MY BOSS ";
+            res += toString(args[0]);
+            res += " ";
+            res += toString(args[1]);
+            res += " ";
+            res += toString(options.hash().find("key"));
+            return res;
+        });
+        BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS 1 foo false");
+    }
+
+    // should return true for subexpressions
+    {
+        std::string string = "{{wycats (sub)}}";
+        hbs.registerHelper("sub", [](dom::Array const& args, HandlebarsCallback const& options) {
+            return 1;
+        });
+        hbs.registerHelper("wycats", [](dom::Array const& args, HandlebarsCallback const& options) {
+            BOOST_TEST(options.ids()[0].getBool());
+            return "HELP ME MY BOSS " + toString(args[0]);
+        });
+        BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS 1");
+    }
+
+    // should use block param paths
+    {
+        std::string string = "{{#doIt as |is|}}{{wycats is.a slave.driver is}}{{/doIt}}";
+        hbs.registerHelper("doIt", [](dom::Array const& args, HandlebarsCallback const& options) {
+            dom::Array blockParams;
+            blockParams.emplace_back(options.context().getObject().find("is"));
+            dom::Array blockParamPaths;
+            blockParamPaths.emplace_back("zomg");
+            return options.fn(options.context(), options.data(), blockParams, blockParamPaths);
+        });
+        hbs.registerHelper("wycats", [](dom::Array const& args, HandlebarsCallback const& options) {
+            BOOST_TEST(options.ids()[0].getString() == "zomg.a");
+            BOOST_TEST(options.ids()[1].getString() == "slave.driver");
+            BOOST_TEST(options.ids()[2].getString() == "zomg");
+            std::string res = "HELP ME MY BOSS ";
+            res += toString(options.ids()[0]);
+            res += ":";
+            res += toString(args[0]);
+            res += " ";
+            res += toString(options.ids()[1]);
+            res += ":";
+            res += toString(args[1]);
+            return res;
+        });
+        // context = { is: { a: 'foo' }, slave: { driver: 'bar' } };
+        BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS zomg.a:foo slave.driver:bar");
+    }
+
+    hbs.registerHelper("blockParams", [](dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res = toString(args[0]);
+        res += ":";
+        res += toString(options.ids()[0]);
+        res += "\n";
+        return res;
+    });
+    hbs.registerHelper("wycats", [](dom::Array const& args, HandlebarsCallback const& options) {
+        std::string res = toString(args[0]);
+        res += ":";
+        res += toString(options.data().find("contextPath"));
+        res += "\n";
+        return res;
+    });
+
+    // builtin helpers
+    {
+        // #each
+        {
+            // should track contextPath for arrays
+            {
+                dom::Object ctx;
+                dom::Array array;
+                dom::Object foo;
+                foo.set("name", "foo");
+                array.emplace_back(foo);
+                dom::Object bar;
+                bar.set("name", "bar");
+                array.emplace_back(bar);
+                ctx.set("array", array);
+                BOOST_TEST(hbs.render("{{#each array}}{{wycats name}}{{/each}}", ctx, opt) == "foo:array.0\nbar:array.1\n");
+            }
+
+            // should track contextPath for keys
+            {
+                dom::Object ctx;
+                dom::Object object;
+                dom::Object foo;
+                foo.set("name", "foo");
+                object.set("foo", foo);
+                dom::Object bar;
+                bar.set("name", "bar");
+                object.set("bar", bar);
+                ctx.set("object", object);
+                BOOST_TEST(hbs.render("{{#each object}}{{wycats name}}{{/each}}", ctx, opt) == "foo:object.foo\nbar:object.bar\n");
+            }
+
+            // should handle nesting
+            {
+                // { array: [{ name: 'foo' }, { name: 'bar' }] }
+                dom::Object ctx;
+                dom::Array array;
+                dom::Object foo;
+                foo.set("name", "foo");
+                array.emplace_back(foo);
+                dom::Object bar;
+                bar.set("name", "bar");
+                array.emplace_back(bar);
+                ctx.set("array", array);
+                BOOST_TEST(hbs.render("{{#each .}}{{#each .}}{{wycats name}}{{/each}}{{/each}}", ctx, opt) == "foo:.array..0\nbar:.array..1\n");
+            }
+
+            // should handle block params
+            {
+                // { array: [{ name: 'foo' }, { name: 'bar' }] }
+                dom::Object ctx;
+                dom::Array array;
+                dom::Object foo;
+                foo.set("name", "foo");
+                array.emplace_back(foo);
+                dom::Object bar;
+                bar.set("name", "bar");
+                array.emplace_back(bar);
+                ctx.set("array", array);
+                BOOST_TEST(hbs.render("{{#each array as |value|}}{{blockParams value.name}}{{/each}}", ctx, opt) == "foo:array.0.name\nbar:array.1.name\n");
+                // TODO: Just implement this thing... there's no way around it.
+            }
+        }
+
+        // #with
+        {
+            // should track contextPath
+            {
+                // { field: { name: 'foo' } }
+                dom::Object ctx;
+                dom::Object field;
+                field.set("name", "foo");
+                ctx.set("field", field);
+                BOOST_TEST(hbs.render("{{#with field}}{{wycats name}}{{/with}}", ctx, opt) == "foo:field\n");
+            }
+
+            // should handle nesting
+            {
+                // { bat: { field: { name: 'foo' } } }
+                dom::Object ctx;
+                dom::Object bat;
+                dom::Object field;
+                field.set("name", "foo");
+                bat.set("field", field);
+                ctx.set("bat", bat);
+                BOOST_TEST(hbs.render("{{#with bat}}{{#with field}}{{wycats name}}{{/with}}{{/with}}", ctx, opt) == "foo:bat.field\n");
+            }
+        }
+
+        // #blockHelperMissing
+        {
+            // should track contextPath for arrays
+            {
+                std::string string = "{{#field}}{{wycats name}}{{/field}}";
+                // { field: [{ name: 'foo' }] }
+                dom::Object ctx;
+                dom::Array array;
+                dom::Object foo;
+                foo.set("name", "foo");
+                array.emplace_back(foo);
+                ctx.set("field", array);
+                BOOST_TEST(hbs.render(string, ctx, opt) == "foo:field.0\n");
+            }
+
+            // should track contextPath for keys
+            {
+                std::string string = "{{#field}}{{wycats name}}{{/field}}";
+                // { field: { name: 'foo' } }
+                dom::Object ctx;
+                dom::Object field;
+                field.set("name", "foo");
+                ctx.set("field", field);
+                BOOST_TEST(hbs.render(string, ctx, opt) == "foo:field\n");
+            }
+
+            // should handle nesting
+            {
+                std::string string = "{{#bat}}{{#field}}{{wycats name}}{{/field}}{{/bat}}";
+                // { bat: { field: { name: 'foo' } } }
+                dom::Object ctx;
+                dom::Object bat;
+                dom::Object field;
+                field.set("name", "foo");
+                bat.set("field", field);
+                ctx.set("bat", bat);
+                BOOST_TEST(hbs.render(string, ctx, opt) == "foo:bat.field\n");
+            }
+        }
+    }
+
+    // partials
+    {
+        // should pass track id for basic partial
+        {
+            std::string string = "Dudes: {{#dudes}}{{> dude}}{{/dudes}}";
+            dom::Object ctx;
+            dom::Array dudes;
+            dom::Object yehuda;
+            yehuda.set("name", "Yehuda");
+            yehuda.set("url", "http://yehuda");
+            dudes.emplace_back(yehuda);
+            dom::Object alan;
+            alan.set("name", "Alan");
+            alan.set("url", "http://alan");
+            dudes.emplace_back(alan);
+            ctx.set("dudes", dudes);
+            hbs.registerPartial("dude", "{{wycats name}}");
+            BOOST_TEST(hbs.render(string, ctx, opt) == "Dudes: Yehuda:dudes.0\nAlan:dudes.1\n");
+        }
+
+        // should pass track id for context partial
+        {
+            std::string string = "Dudes: {{> dude dudes}}";
+            // { dudes: [ { name: 'Yehuda', url: 'http://yehuda' }, { name: 'Alan', url: 'http://alan' } ] }
+            dom::Object ctx;
+            dom::Array dudes;
+            dom::Object yehuda;
+            yehuda.set("name", "Yehuda");
+            yehuda.set("url", "http://yehuda");
+            dudes.emplace_back(yehuda);
+            dom::Object alan;
+            alan.set("name", "Alan");
+            alan.set("url", "http://alan");
+            dudes.emplace_back(alan);
+            ctx.set("dudes", dudes);
+            hbs.registerPartial("dude", "{{#each this}}{{wycats name}}{{/each}}");
+            BOOST_TEST(hbs.render(string, ctx, opt) == "Dudes: Yehuda:dudes..0\nAlan:dudes..1\n");
+        }
+
+        // should invalidate context for partials with parameters
+        {
+            std::string string = "Dudes: {{#dudes}}{{> dude . bar=\"foo\"}}{{/dudes}}";
+            dom::Object ctx;
+            dom::Array dudes;
+            dom::Object yehuda;
+            yehuda.set("name", "Yehuda");
+            yehuda.set("url", "http://yehuda");
+            dudes.emplace_back(yehuda);
+            dom::Object alan;
+            alan.set("name", "Alan");
+            alan.set("url", "http://alan");
+            dudes.emplace_back(alan);
+            ctx.set("dudes", dudes);
+            hbs.registerPartial("dude", "{{wycats name}}");
+            BOOST_TEST(hbs.render(string, ctx, opt) == "Dudes: Yehuda:true\nAlan:true\n");
+        }
+    }
 }
 
 void
