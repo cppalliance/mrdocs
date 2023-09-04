@@ -606,7 +606,7 @@ find_position_in_text(
         if (res.line == 1)
             res.column = res.pos;
         else
-            res.column = res.pos - text.rfind('\n', res.pos);
+            res.column = res.pos - text.rfind('\n', res.pos) - 1;
     }
     return res;
 }
@@ -648,7 +648,8 @@ std::pair<dom::Value, bool>
 lookupPropertyImpl(
     dom::Object const& context,
     std::string_view path,
-    detail::RenderState const& state)
+    detail::RenderState const& state,
+    HandlebarsOptions const& opt)
 {
     // Get first value from Object
     std::string_view segment = popFirstSegment(path);
@@ -661,7 +662,21 @@ lookupPropertyImpl(
     }
     else if (!context.exists(literalSegment))
     {
-        return {nullptr, false};
+        if (opt.strict || (opt.assumeObjects && !path.empty()))
+        {
+            std::string msg = fmt::format(
+                "\"{}\" not defined in {}", literalSegment, toString(context));
+            auto res = find_position_in_text(state.templateText0, literalSegment);
+            if (res)
+            {
+                throw HandlebarsError(msg, res.line, res.column, res.pos);
+            }
+            throw HandlebarsError(msg);
+        }
+        else
+        {
+            return {nullptr, false};
+        }
     }
     else
     {
@@ -679,9 +694,27 @@ lookupPropertyImpl(
         {
             auto obj = cur.getObject();
             if (obj.exists(literalSegment))
+            {
                 cur = obj.find(literalSegment);
+            }
             else
-                return {nullptr, false};
+            {
+                if (opt.strict)
+                {
+                    std::string msg = fmt::format(
+                        "\"{}\" not defined in {}", literalSegment, toString(cur));
+                    auto res = find_position_in_text(state.templateText0, literalSegment);
+                    if (res)
+                    {
+                        throw HandlebarsError(msg, res.line, res.column, res.pos);
+                    }
+                    throw HandlebarsError(msg);
+                }
+                else
+                {
+                    return {nullptr, false};
+                }
+            }
         }
         // If current value is an Array, get the next value the stripped index
         else if (cur.isArray())
@@ -717,7 +750,9 @@ std::pair<dom::Value, bool>
 lookupPropertyImpl(
     dom::Value const& context,
     std::string_view path,
-    detail::RenderState const& state) {
+    detail::RenderState const& state,
+    HandlebarsOptions const& opt)
+{
     checkPath(path, state);
     // ==============================================================
     // "." / "this"
@@ -728,12 +763,22 @@ lookupPropertyImpl(
     // Non-object key
     // ==============================================================
     if (context.kind() != dom::Kind::Object) {
+        if (opt.strict || opt.assumeObjects)
+        {
+            std::string msg = fmt::format("\"{}\" not defined in {}", path, context);
+            auto res = find_position_in_text(state.templateText0, path);
+            if (res)
+            {
+                throw HandlebarsError(msg, res.line, res.column, res.pos);
+            }
+            throw HandlebarsError(msg);
+        }
         return {nullptr, false};
     }
     // ==============================================================
     // Object path
     // ==============================================================
-    return lookupPropertyImpl(context.getObject(), path, state);
+    return lookupPropertyImpl(context.getObject(), path, state, opt);
 }
 
 template <std::convertible_to<std::string_view> S>
@@ -741,19 +786,21 @@ std::pair<dom::Value, bool>
 lookupPropertyImpl(
     dom::Value const& data,
     S const& path,
-    detail::RenderState const& state)
+    detail::RenderState const& state,
+    HandlebarsOptions const& opt)
 {
-    return lookupPropertyImpl(data, std::string_view(path), state);
+    return lookupPropertyImpl(data, std::string_view(path), state, opt);
 }
 
 std::pair<dom::Value, bool>
 lookupPropertyImpl(
     dom::Value const& context,
     dom::Value const& path,
-    detail::RenderState const& state)
+    detail::RenderState const& state,
+    HandlebarsOptions const& opt)
 {
     if (path.isString())
-        return lookupPropertyImpl(context, path.getString(), state);
+        return lookupPropertyImpl(context, path.getString(), state, opt);
     if (path.isInteger()) {
         if (context.isArray()) {
             auto& arr = context.getArray();
@@ -761,7 +808,7 @@ lookupPropertyImpl(
                 return {nullptr, false};
             return {arr.at(path.getInteger()), true};
         }
-        return lookupPropertyImpl(context, std::to_string(path.getInteger()), state);
+        return lookupPropertyImpl(context, std::to_string(path.getInteger()), state, opt);
     }
     return {nullptr, false};
 }
@@ -772,7 +819,7 @@ lookupProperty(
     dom::Value const& context,
     dom::Value const& path) const
 {
-    return lookupPropertyImpl(context, path, *renderState_);
+    return lookupPropertyImpl(context, path, *renderState_, *opt_);
 }
 
 
@@ -1679,12 +1726,15 @@ evalExpr(
                 break;
             }
         }
-        auto [res, found] = lookupPropertyImpl(data, expression, state);
+        auto [res, found] = lookupPropertyImpl(data, expression, state, opt);
         return {res, found, false};
     }
     // ==============================================================
     // Dotdot context path
     // ==============================================================
+    HandlebarsOptions noStrict = opt;
+    noStrict.strict = false;
+    noStrict.assumeObjects = false;
     if (expression.starts_with("..")) {
         // Get value from parent helper contexts
         std::size_t dotdots = 1;
@@ -1704,7 +1754,7 @@ evalExpr(
         }
         dom::Value parentCtx =
             state.parentContext[state.parentContext.size() - dotdots];
-        auto [res, found] = lookupPropertyImpl(parentCtx, expression, state);
+        auto [res, found] = lookupPropertyImpl(parentCtx, expression, state, noStrict);
         return {res, found, false};
     }
     // ==============================================================
@@ -1730,7 +1780,7 @@ evalExpr(
     bool defined;
     if (isPathedValue)
     {
-        std::tie(r, defined) = lookupPropertyImpl(context, expression, state);
+        std::tie(r, defined) = lookupPropertyImpl(context, expression, state, noStrict);
         if (defined) {
             return {r, defined, false};
         }
@@ -1739,7 +1789,7 @@ evalExpr(
     // ==============================================================
     // Block values
     // ==============================================================
-    std::tie(r, defined) = lookupPropertyImpl(state.blockValues, expression, state);
+    std::tie(r, defined) = lookupPropertyImpl(state.blockValues, expression, state, noStrict);
     if (defined)
     {
         return {r, defined, false, false, true};
@@ -1759,7 +1809,10 @@ evalExpr(
     // ==============================================================
     // Context values
     // ==============================================================
-    std::tie(r, defined) = lookupPropertyImpl(context, expression, state);
+    HandlebarsOptions strictOpt = opt;
+    strictOpt.strict = opt.strict && !opt.compat;
+    strictOpt.assumeObjects = opt.assumeObjects && !opt.compat;
+    std::tie(r, defined) = lookupPropertyImpl(context, expression, state, strictOpt);
     if (defined) {
         return {r, defined, false};
     }
@@ -1772,12 +1825,18 @@ evalExpr(
         auto parentContexts = std::ranges::views::reverse(state.parentContext);
         for (auto parentContext: parentContexts)
         {
-            std::tie(r, defined) = lookupPropertyImpl(parentContext, expression, state);
+            std::tie(r, defined) = lookupPropertyImpl(parentContext, expression, state, noStrict);
             if (defined)
             {
                 return {r, defined, false};
             }
         }
+    }
+
+    if (opt.strict)
+    {
+        std::string msg = fmt::format("\"{}\" not defined", expression);
+        throw HandlebarsError(msg);
     }
     return {nullptr, false, false};
 }
@@ -2093,7 +2152,9 @@ renderExpression(
         cb.context_ = &context;
         cb.data_ = &state.data;
         cb.logger_ = &logger_;
-        setupArgs(tag.arguments, context, state, args, cb, opt);
+        HandlebarsOptions noStrict = opt;
+        noStrict.strict = false;
+        setupArgs(tag.arguments, context, state, args, cb, noStrict);
         auto [res, render] = fn(args, cb);
         if (render == HelperBehavior::RENDER_RESULT) {
             format_to(out, res, opt2);
@@ -2125,7 +2186,9 @@ renderExpression(
             dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
             HandlebarsCallback cb;
             cb.name_ = helper_expr;
-            setupArgs(tag.arguments, context, state, args, cb, opt);
+            HandlebarsOptions noStrict = opt;
+            noStrict.strict = false;
+            setupArgs(tag.arguments, context, state, args, cb, noStrict);
             auto v2 = resV.value.getFunction().call(args).value();
             format_to(out, v2, opt2);
         }
@@ -2134,6 +2197,11 @@ renderExpression(
             format_to(out, resV.value, opt2);
         }
         return;
+    }
+    else if (opt.strict)
+    {
+        std::string msg = fmt::format("\"{}\" not defined in {}", helper_expr, toString(context));
+        throw HandlebarsError(msg);
     }
 
     // ==============================================================
@@ -2252,6 +2320,7 @@ setupArgs(
         }
     }
     cb.renderState_ = &state;
+    cb.opt_ = &opt;
 }
 
 void
@@ -2604,7 +2673,20 @@ renderBlock(
             arguments = tag.helper;
         }
     }
-    setupArgs(arguments, context, state, args, cb, opt);
+    else if (opt.strict && !found)
+    {
+        std::string msg = fmt::format(
+            "\"{}\" not defined in {}", tag.helper, toString(context));
+        auto res = find_position_in_text(state.templateText0, tag.helper);
+        if (res)
+        {
+            throw HandlebarsError(msg, res.line, res.column, res.pos);
+        }
+        throw HandlebarsError(msg);
+    }
+    HandlebarsOptions noStrict = opt;
+    noStrict.strict = opt.strict && emulateMustache;
+    setupArgs(arguments, context, state, args, cb, noStrict);
 
     // ==============================================================
     // Setup block parameters
