@@ -471,11 +471,7 @@ toStringChild(
         return "[]";
     }
     case Value::Kind::Object:
-    {
-        if(! value.obj_.empty())
-            return "{...}";
-        return "{}";
-    }
+        return "[object Object]";
     case Value::Kind::Function:
         return "[function]";
     default:

@@ -38,8 +38,19 @@ struct HandlebarsOptions
     bool noEscape = false;
 
     /** Templates will throw rather than ignore missing fields
+
+        Run in strict mode. In this mode, templates will throw rather than
+        silently ignore missing fields.
+
      */
     bool strict = false;
+
+    /** Removes object existence checks when traversing paths
+
+        This is a subset of strict mode that generates optimized
+        templates when the data inputs are known to be safe.
+     */
+    bool assumeObjects = false;
 
     /** Disable the auto-indent feature
 
@@ -333,6 +344,7 @@ private:
     std::vector<std::string_view> blockParamIds_;
     std::function<void(dom::Value, dom::Array const&)> const* logger_;
     detail::RenderState* renderState_;
+    HandlebarsOptions const* opt_;
     friend class Handlebars;
 
     friend

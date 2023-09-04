@@ -89,26 +89,9 @@ exists(std::string_view key) const
 }
 
 std::string
-toString(
-    Object const& obj)
+toString(Object const&)
 {
-    if(obj.empty())
-        return "{}";
-    std::string s = "{";
-    {
-        auto insert = std::back_inserter(s);
-        for(auto const& kv : RangeFor(obj))
-        {
-            if(! kv.first)
-                s.push_back(',');
-            fmt::format_to(insert,
-                " {} : {}",
-                kv.value.key,
-                toStringChild(kv.value.value));
-        }
-    }
-    s += " }";
-    return s;
+    return "[object Object]";
 }
 
 //------------------------------------------------

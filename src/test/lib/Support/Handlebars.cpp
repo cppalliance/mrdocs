@@ -4975,12 +4975,177 @@ void
 strict()
 {
     // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/strict.js
+
+    Handlebars hbs;
+
+    HandlebarsOptions opt;
+    opt.strict = true;
+
+    // should error on missing property lookup
+    {
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{hello}}", dom::Object{}, opt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:2");
+    }
+
+    // should error on missing child
+    {
+        // { hello: { bar: 'foo' } }
+        dom::Object ctx;
+        dom::Object hello;
+        hello.set("bar", "foo");
+        ctx.set("hello", hello);
+        BOOST_TEST(hbs.render("{{hello.bar}}", ctx, opt) == "foo");
+
+        // { hello: {} }
+        ctx.set("hello", dom::Object());
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{hello.bar}}", ctx, opt),
+            HandlebarsError, "\"bar\" not defined in [object Object] - 1:8");
+    }
+
+    // should handle explicit undefined
+    {
+        // { hello: { bar: undefined } }
+        dom::Object ctx;
+        dom::Object hello;
+        hello.set("bar", nullptr);
+        ctx.set("hello", hello);
+        BOOST_TEST(hbs.render("{{hello.bar}}", ctx, opt) == "");
+    }
+
+    // should error on missing property lookup in known helpers mode
+    {
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{hello}}", dom::Object{}, opt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:2");
+    }
+
+    // should error on missing context
+    {
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{hello}}", dom::Object{}, opt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:2");
+    }
+
+    // should error on missing data lookup
+    {
+        std::string string = "{{@hello}}";
+        BOOST_TEST_THROW_WITH(
+            hbs.render(string, dom::Object{}, opt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:3");
+        dom::Object data;
+        data.set("hello", "foo");
+        opt.data = data;
+        BOOST_TEST(hbs.render(string, dom::Object{}, opt) == "foo");
+        opt.data = nullptr;
+    }
+
+    // should not run helperMissing for helper calls
+    {
+        std::string string = "{{hello foo}}";
+        dom::Object ctx;
+        ctx.set("foo", true);
+        BOOST_TEST_THROW_WITH(
+            hbs.render(string, ctx, opt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:2");
+
+        string = "{{#hello foo}}{{/hello}}";
+        BOOST_TEST_THROW_WITH(
+            hbs.render(string, ctx, opt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:3");
+    }
+
+    // should throw on ambiguous blocks
+    {
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{#hello}}{{/hello}}", dom::Object{}, opt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:3");
+
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{^hello}}{{/hello}}", dom::Object{}, opt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:3");
+
+        dom::Object ctx;
+        ctx.set("hello", dom::Object());
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{#hello.bar}}{{/hello.bar}}", ctx, opt),
+            HandlebarsError, "\"bar\" not defined in [object Object] - 1:9");
+    }
+
+    // should allow undefined parameters when passed to helpers
+    {
+        BOOST_TEST(hbs.render("{{#unless foo}}success{{/unless}}", dom::Object{}, opt) == "success");
+    }
+
+    // should allow undefined hash when passed to helpers
+    {
+        std::string string = "{{helper value=@foo}}";
+        hbs.registerHelper("helper", [](dom::Array const& args, HandlebarsCallback const& options) {
+            BOOST_TEST(options.hash().exists("value"));
+            BOOST_TEST(options.hash().find("value").isNull());
+            return "success";
+        });
+        BOOST_TEST(hbs.render(string, dom::Object{}, opt) == "success");
+    }
+
+    // should show error location on missing property lookup
+    {
+        std::string string = "\n\n\n   {{hello}}";
+        BOOST_TEST_THROW_WITH(
+            hbs.render(string, dom::Object{}, opt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 4:5");
+    }
 }
 
 void
-mustache_compat_spec()
+assume_objects()
 {
-    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/spec.js
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/strict.js
+    Handlebars hbs;
+
+    HandlebarsOptions assumeOpt;
+    assumeOpt.assumeObjects = true;
+
+    // should ignore missing property
+    {
+        BOOST_TEST(hbs.render("{{hello}}", dom::Object{}, assumeOpt) == "");
+    }
+
+    // should ignore missing child
+    {
+        dom::Object ctx;
+        ctx.set("hello", dom::Object());
+        BOOST_TEST(hbs.render("{{hello.bar}}", ctx, assumeOpt) == "");
+    }
+
+    // should error on missing object
+    {
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{hello.bar}}", dom::Object{}, assumeOpt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:2");
+    }
+
+    // should error on missing context
+    {
+        dom::Value ctx(nullptr);
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{hello}}", ctx, assumeOpt),
+            HandlebarsError, "\"hello\" not defined in null - 1:2");
+    }
+
+    // should error on missing data lookup
+    {
+        dom::Value ctx(nullptr);
+        BOOST_TEST_THROW_WITH(
+            hbs.render("{{@hello.bar}}", ctx, assumeOpt),
+            HandlebarsError, "\"hello\" not defined in [object Object] - 1:3");
+    }
+
+    // should execute blockHelperMissing
+    {
+        BOOST_TEST(hbs.render("{{^hello}}foo{{/hello}}", dom::Object{}, assumeOpt) == "foo");
+    }
 }
 
 void
@@ -4989,6 +5154,11 @@ utils()
     // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/utils.js
 }
 
+void
+mustache_compat_spec()
+{
+    // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/spec.js
+}
 
 void
 run()
@@ -5017,8 +5187,9 @@ run()
     helpers();
     track_ids();
     strict();
-    mustache_compat_spec();
+    assume_objects();
     utils();
+    mustache_compat_spec();
 }
 
 };

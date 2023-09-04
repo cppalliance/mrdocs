@@ -54,24 +54,17 @@ toString(
     Array const& arr)
 {
     if(arr.empty())
-        return "[]";
-    std::string s = "[";
-    {
-        auto const n = arr.size();
-        auto insert = std::back_inserter(s);
-        for(std::size_t i = 0; i < n; ++i)
+        return "";
+    std::string s;
+    auto const n = arr.size();
+    if (n != 0) {
+        s += toString(arr.at(0));
+        for(std::size_t i = 1; i < n; ++i)
         {
-            if(i != 0)
-                fmt::format_to(insert,
-                    ", {}",
-                    toString(arr.at(i)));
-            else
-                fmt::format_to(insert,
-                    " {}",
-                    toStringChild(arr.at(i)));
+            s += ',';
+            s += toString(arr.at(i));
         }
     }
-    s += " ]";
     return s;
 }
 
