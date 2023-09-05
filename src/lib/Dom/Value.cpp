@@ -20,11 +20,13 @@ Value::
 {
     switch(kind_)
     {
+    case Kind::Undefined:
     case Kind::Null:
     case Kind::Boolean:
     case Kind::Integer:
         break;
     case Kind::String:
+    case Kind::SafeString:
         std::destroy_at(&str_);
         break;
     case Kind::Array:
@@ -54,6 +56,7 @@ Value(
 {
     switch(kind_)
     {
+    case Kind::Undefined:
     case Kind::Null:
         break;
     case Kind::Boolean:
@@ -63,6 +66,7 @@ Value(
         std::construct_at(&i_, other.i_);
         break;
     case Kind::String:
+    case Kind::SafeString:
         std::construct_at(&str_, other.str_);
         break;
     case Kind::Array:
@@ -86,6 +90,7 @@ Value(
 {
     switch(kind_)
     {
+    case Kind::Undefined:
     case Kind::Null:
         break;
     case Kind::Boolean:
@@ -95,6 +100,7 @@ Value(
         std::construct_at(&i_, other.i_);
         break;
     case Kind::String:
+    case Kind::SafeString:
         std::construct_at(&str_, std::move(other.str_));
         std::destroy_at(&other.str_);
         break;
@@ -137,6 +143,39 @@ operator=(
 }
 
 //------------------------------------------------
+
+Value::
+Value(dom::Kind kind) noexcept
+    : kind_(kind)
+{
+    switch(kind_)
+    {
+    case Kind::Undefined:
+    case Kind::Null:
+        break;
+    case Kind::Boolean:
+        std::construct_at(&b_, false);
+        break;
+    case Kind::Integer:
+        std::construct_at(&i_, 0);
+        break;
+    case Kind::String:
+    case Kind::SafeString:
+        std::construct_at(&str_);
+        break;
+    case Kind::Array:
+        std::construct_at(&arr_);
+        break;
+    case Kind::Object:
+        std::construct_at(&obj_);
+        break;
+    case Kind::Function:
+        std::construct_at(&fn_);
+        break;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
 
 Value::
 Value(
@@ -209,18 +248,7 @@ dom::Kind
 Value::
 kind() const noexcept
 {
-    switch(kind_)
-    {
-    case Kind::Null:        return dom::Kind::Null;
-    case Kind::Boolean:     return dom::Kind::Boolean;
-    case Kind::Integer:     return dom::Kind::Integer;
-    case Kind::String:      return dom::Kind::String;
-    case Kind::Array:       return dom::Kind::Array;
-    case Kind::Object:      return dom::Kind::Object;
-    case Kind::Function:    return dom::Kind::Function;
-    default:
-        MRDOX_UNREACHABLE();
-    }
+    return kind_;
 }
 
 bool
@@ -441,9 +469,9 @@ toString(
 {
     switch(value.kind_)
     {
-    case Value::Kind::Array:
+    case Kind::Array:
         return toString(value.arr_);
-    case Value::Kind::Object:
+    case Kind::Object:
         return toString(value.obj_);
     default:
         return toStringChild(value);
@@ -456,23 +484,27 @@ toStringChild(
 {
     switch(value.kind_)
     {
-    case Value::Kind::Null:
+    case Kind::Undefined:
+        return "undefined";
+    case Kind::Null:
         return "null";
-    case Value::Kind::Boolean:
+    case Kind::Boolean:
         return value.b_ ? "true" : "false";
-    case Value::Kind::Integer:
+    case Kind::Integer:
         return std::to_string(value.i_);
-    case Value::Kind::String:
+    case Kind::String:
         return fmt::format("{}", value.str_);
-    case Value::Kind::Array:
+    case Kind::SafeString:
+        return fmt::format("{}", value.str_);
+    case Kind::Array:
     {
         if(! value.arr_.empty())
             return "[...]";
         return "[]";
     }
-    case Value::Kind::Object:
+    case Kind::Object:
         return "[object Object]";
-    case Value::Kind::Function:
+    case Kind::Function:
         return "[function]";
     default:
         MRDOX_UNREACHABLE();

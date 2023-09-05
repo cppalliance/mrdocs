@@ -76,12 +76,14 @@ isTruthy(dom::Value const& arg)
         case dom::Kind::Integer:
             return arg.getInteger() != 0;
         case dom::Kind::String:
+        case dom::Kind::SafeString:
             return !arg.getString().empty();
         case dom::Kind::Array:
         case dom::Kind::Object:
         case dom::Kind::Function:
             return true;
         case dom::Kind::Null:
+        case dom::Kind::Undefined:
             return false;
         default:
             MRDOX_UNREACHABLE();
@@ -174,11 +176,11 @@ createFrame(dom::Object const& child, dom::Object const& parent)
     return dom::newObject<OverlayObjectImpl>(child, parent);
 }
 
-detail::safeStringWrapper
+dom::Value
 safeString(std::string_view str)
 {
-    detail::safeStringWrapper w;
-    w.v_ = str;
+    dom::Value w(str);
+    w.kind_ = dom::Kind::SafeString;
     return w;
 }
 
@@ -225,6 +227,9 @@ escapeExpression(
         case '`':
             out << "&#x60;";
             break;
+        case '=':
+            out << "&#x3D;";
+            break;
         default:
             out << c;
             break;
@@ -250,6 +255,8 @@ format_to(
 {
     if (value.isString()) {
         escapeExpression(out, value.getString(), opt);
+    } else if (value.isSafeString()) {
+        out << value.getString();
     } else if (value.isInteger()) {
         out << value.getInteger();
     } else if (value.isBoolean()) {
@@ -2157,9 +2164,7 @@ renderExpression(
         setupArgs(tag.arguments, context, state, args, cb, noStrict);
         auto [res, render] = fn(args, cb);
         if (render == HelperBehavior::RENDER_RESULT) {
-            format_to(out, res, opt2);
-        } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
-            opt2.noEscape = true;
+            opt2.noEscape = opt2.noEscape || res.isSafeString();
             format_to(out, res, opt2);
         }
         if (tag.removeRWhitespace) {
@@ -2214,9 +2219,7 @@ renderExpression(
     setupArgs(tag.arguments, context, state, args, cb, opt);
     auto [res, render] = fn(args, cb);
     if (render == HelperBehavior::RENDER_RESULT) {
-        format_to(out, res, opt2);
-    } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
-        opt2.noEscape = true;
+        opt2.noEscape = opt2.noEscape || res.isSafeString();
         format_to(out, res, opt2);
     }
     if (tag.removeRWhitespace) {
@@ -2820,20 +2823,11 @@ renderBlock(
     state.dataStack.emplace_back(state.data);
     auto [res, render] = fn(args, cb);
     if (render != HelperBehavior::NO_RENDER) {
-        // Always unescaped
+        // Block helpers are always unescaped
         HandlebarsOptions opt2 = opt;
         opt2.noEscape = true;
         format_to(out, res, opt2);
     }
-#if 0
-    if (render == HelperBehavior::RENDER_RESULT) {
-        format_to(out, res, opt);
-    } else if (render == HelperBehavior::RENDER_RESULT_NOESCAPE) {
-        HandlebarsOptions opt2 = opt;
-        opt2.noEscape = true;
-        format_to(out, res, opt2);
-    }
-#endif
     state.inlinePartials.pop_back();
     // state.parentContext.pop_back();
     state.dataStack.pop_back();
@@ -2972,6 +2966,7 @@ isSame(dom::Value const& a, dom::Value const& b) {
         return false;
     }
     switch (a.kind()) {
+        case dom::Kind::Undefined:
         case dom::Kind::Null:
             return true;
         case dom::Kind::Boolean:
@@ -2979,6 +2974,7 @@ isSame(dom::Value const& a, dom::Value const& b) {
         case dom::Kind::Integer:
             return a.getInteger() == b.getInteger();
         case dom::Kind::String:
+        case dom::Kind::SafeString:
             return a.getString() == b.getString();
         case dom::Kind::Array:
             return isSame(a.getArray(), b.getArray());
@@ -3049,6 +3045,7 @@ isLt(dom::Value const& a, dom::Value const& b) {
         return false;
     }
     switch (a.kind()) {
+        case dom::Kind::Undefined:
         case dom::Kind::Null:
             return false;
         case dom::Kind::Boolean:
@@ -3056,6 +3053,7 @@ isLt(dom::Value const& a, dom::Value const& b) {
         case dom::Kind::Integer:
             return a.getInteger() < b.getInteger();
         case dom::Kind::String:
+        case dom::Kind::SafeString:
             return a.getString().get() < b.getString().get();
         case dom::Kind::Array:
             return isLt(a.getArray(), b.getArray());

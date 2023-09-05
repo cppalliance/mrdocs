@@ -24,6 +24,10 @@
 
 namespace clang {
 namespace mrdox {
+
+dom::Value
+safeString(std::string_view str);
+
 namespace dom {
 
 /** A variant container for any kind of Dom value.
@@ -31,17 +35,6 @@ namespace dom {
 class MRDOX_DECL
     Value
 {
-    enum class Kind
-    {
-        Null,
-        Boolean,
-        Integer,
-        String,
-        Array,
-        Object,
-        Function
-    };
-
     Kind kind_;
 
     union
@@ -56,6 +49,7 @@ class MRDOX_DECL
 
     friend class Array;
     friend class Object;
+    friend Value clang::mrdox::safeString(std::string_view s);
 
 public:
     ~Value();
@@ -65,12 +59,14 @@ public:
     Value& operator=(Value const&);
     Value& operator=(Value&&) noexcept;
 
+    Value(dom::Kind kind) noexcept;
     Value(std::nullptr_t) noexcept;
     Value(std::int64_t) noexcept;
     Value(String str) noexcept;
     Value(Array arr) noexcept;
     Value(Object obj) noexcept;
     Value(Function fn) noexcept;
+
 
     template <std::integral T>
     requires (!std::same_as<T, bool>)
@@ -85,7 +81,7 @@ public:
     }
 
     template<class Enum>
-    requires std::is_enum_v<Enum>
+    requires std::is_enum_v<Enum> && (!std::same_as<Enum, dom::Kind>)
     Value(Enum v) noexcept
         : Value(static_cast<
             std::underlying_type_t<Enum>>(v))
@@ -99,16 +95,12 @@ public:
     }
 
     // VFALCO Should this be a literal?
-#if 0
     Value(char const* s)
         : Value(String(s))
     {
     }
-#endif
 
-    template<class StringLike>
-    requires std::convertible_to<
-        StringLike, String>
+    template <std::convertible_to<String> StringLike>
     Value(StringLike const& s)
         : Value(String(s))
     {
@@ -136,6 +128,13 @@ public:
     */
     dom::Kind kind() const noexcept;
 
+    /** Return true if this is undefined.
+    */
+    bool isUndefined() const noexcept
+    {
+        return kind_ == Kind::Undefined;
+    }
+
     /** Return true if this is null.
     */
     bool isNull() const noexcept
@@ -162,6 +161,13 @@ public:
     bool isString() const noexcept
     {
         return kind_ == Kind::String;
+    }
+
+    /** Return true if this is a safe string.
+    */
+    bool isSafeString() const noexcept
+    {
+        return kind_ == Kind::SafeString;
     }
 
     /** Return true if this is an array.
@@ -203,7 +209,7 @@ public:
     String const&
     getString() const noexcept
     {
-        MRDOX_ASSERT(isString());
+        MRDOX_ASSERT(isString() || isSafeString());
         return str_;
     }
 

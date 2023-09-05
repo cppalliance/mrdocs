@@ -524,8 +524,8 @@ Expected(
     U&& u)
     : has_error_(false)
 {
-    static_assert(std::is_nothrow_convertible_v<U, T>);
-    static_assert(! std::convertible_to<U, Error>);
+    static_assert(std::is_convertible_v<U, T>);
+    static_assert(!std::convertible_to<U, Error>);
 
     std::construct_at(&v_, std::forward<U>(u));
 }
