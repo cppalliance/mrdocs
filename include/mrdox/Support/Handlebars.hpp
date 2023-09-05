@@ -77,6 +77,9 @@ struct HandlebarsOptions
 
         When enabled, fields will be looked up recursively in objects
         and arrays.
+
+        This mode should be used to enable complete compatibility
+        with Mustache templates.
      */
     bool compat = false;
 

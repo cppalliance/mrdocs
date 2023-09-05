@@ -15,8 +15,6 @@ This is the from_chars function
 
 
 
-
-
 // Record detail partial
 [,cpp]
 ----
@@ -508,7 +506,6 @@ Yehuda Katz
 No city found
 
 // lookup
-
 Nils lives in Darmstadt
 Yehuda lives in San Francisco
 
@@ -827,17 +824,11 @@ basic_string<char, typename B::value_type>
 7
 3
 // keys
-
 [a,b,c,d,e,f,g]
-
 // list
-
 list helper requires array argument: object provided
-
 // iter
-
 [a,b,c,d,e,f,g]
-
 // values
 [a,b,c,d,e,f,g]
 [a,b,c,d,e,f,g]
@@ -1212,8 +1203,6 @@ g
     }
 ]
 // sort_by
-
-
 [
     {
         "account_id" : "account-x10",
@@ -1238,8 +1227,6 @@ c
 // fill
 [a,b,-,-,-,f,g]
 [a,b,-,-,-,-,g]
-
-
 // count
 1
 1
@@ -1310,8 +1297,6 @@ c
     ]
 ]
 // group_by
-
-
 {
     "account-x10" : [
         {
@@ -1351,8 +1336,6 @@ c
     ]
 }
 // pluck
-
-
 [
     "account-x10",
     "account-x10",
@@ -1377,8 +1360,6 @@ c
     "j",
     "k"
 ]
-
-
 
 // Inverse block with no helper expands expressions
         struct T

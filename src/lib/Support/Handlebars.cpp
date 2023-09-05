@@ -1203,11 +1203,13 @@ parseTag(
     // ==============================================================
     if (tagStr.starts_with('^')) {
         t.type = '^';
+        t.type2 = '^';
         tagStr.remove_prefix(1);
         tagStr = trim_spaces(tagStr);
         t.content = tagStr;
     } else if (tagStr.starts_with("else")) {
         t.type = '^';
+        t.type2 = 'e';
         tagStr.remove_prefix(4);
         tagStr = trim_spaces(tagStr);
         t.content = tagStr;
@@ -1273,10 +1275,10 @@ parseTag(
     // ==============================================================
     // Check if tag is standalone
     // ==============================================================
-    static constexpr std::array<char, 5> block_tag_types({'#', '^', '/', '>', '*'});
-    bool const isBlock = std::ranges::find(
-        block_tag_types, t.type) != block_tag_types.end();
-    if (isBlock)
+    static constexpr std::array<char, 6> standalone_tag_types({'#', '^', '/', '>', '*', '!'});
+    bool const checkStandalone = std::ranges::find(
+        standalone_tag_types, t.type) != standalone_tag_types.end();
+    if (checkStandalone)
     {
         MRDOX_ASSERT(t.buffer.data() >= context.data());
         MRDOX_ASSERT(t.buffer.data() + t.buffer.size() <= context.data() + context.size());
@@ -1285,13 +1287,22 @@ parseTag(
         std::string_view beforeTag = context.substr(
             0, t.buffer.data() - context.data());
         auto posL = beforeTag.find_last_not_of(' ');
-        bool const isStandaloneL =
+        bool isStandaloneL =
             posL == std::string_view::npos || beforeTag[posL] == '\n';
+        if (!isStandaloneL && posL != 0)
+        {
+            isStandaloneL = beforeTag[posL - 1] == '\r' && beforeTag[posL] == '\n';
+        }
         std::string_view afterTag = context.substr(
             t.buffer.data() + t.buffer.size() - context.data());
         auto posR = afterTag.find_first_not_of(' ');
-        bool const isStandaloneR =
+        bool isStandaloneR =
             posR == std::string_view::npos || afterTag[posR] == '\n';
+        if (!isStandaloneR && posR != afterTag.size() - 1)
+        {
+            isStandaloneR = afterTag[posR] == '\r' && afterTag[posR + 1] == '\n';
+        }
+
         t.isStandalone = isStandaloneL && isStandaloneR;
 
         // Get standalone indent
@@ -1359,7 +1370,7 @@ render_to(
         }
         else if (!opt.ignoreStandalone && tag.isStandalone)
         {
-            if (tag.type == '#' || tag.type == '^' || tag.type == '/')
+            if (tag.type == '#' || tag.type == '^' || tag.type == '/' || tag.type == '!')
             {
                 beforeTag = trim_rdelimiters(beforeTag, " ");
             }
@@ -1384,7 +1395,7 @@ render_to(
         // ==============================================================
         // Advance template text
         // ==============================================================
-        if (tag.removeRWhitespace)
+        if (tag.removeRWhitespace && tag.type != '#')
         {
             state.templateText = trim_lspaces(state.templateText);
         }
@@ -1829,6 +1840,32 @@ evalExpr(
     // ==============================================================
     if (opt.compat)
     {
+        // Dotted names should be resolved against former resolutions
+        bool isDotted = isPathedValue;
+        std::string_view firstSeg;
+        if (!isDotted)
+        {
+            std::string_view expression0 = expression;
+            firstSeg = popFirstSegment(expression);
+            isDotted = !expression.empty();
+            expression = expression0;
+        }
+
+        if (isDotted)
+        {
+            if (context.kind() == dom::Kind::Object)
+            {
+                // Context has first segment of dotted object.
+                // -> Context has priority even if result is undefined.
+                auto& obj = context.getObject();
+                if (obj.exists(firstSeg))
+                {
+                    return {r, false, false};
+                }
+            }
+        }
+
+        // Find in parent contexts
         auto parentContexts = std::ranges::views::reverse(state.parentContext);
         for (auto parentContext: parentContexts)
         {
@@ -1926,6 +1963,10 @@ parseBlock(
         {
             fnBlock.remove_prefix(1);
         }
+        else if (fnBlock.starts_with("\r\n"))
+        {
+            fnBlock.remove_prefix(2);
+        }
     }
 
     // ==============================================================
@@ -1956,7 +1997,14 @@ parseBlock(
         // Update section level
         // ==============================================================
         if (!tag.rawBlock) {
-            if (curTag.type == '#' || curTag.type2 == '#') {
+            bool isRegularBlock = curTag.type == '#' || curTag.type2 == '#';
+            // Nested invert blocks are blocks considered inside the current
+            // block rather than a new "else" block.
+            // {{^bool}}A{{^bool}}B{{/bool}}C{{/bool}} -> nested
+            // {{^bool}}A{{else if bool}}B{{/bool}} -> not nested
+            bool isNestedInvert =
+                curTag.type == '^' && curTag.type2 == '^' && !curTag.content.empty();
+            if (isRegularBlock || isNestedInvert) {
                 // Opening a child section tag
                 ++l;
             } else if (curTag.type == '/') {
@@ -2084,6 +2132,10 @@ parseBlock(
         {
             templateText.remove_prefix(1);
         }
+        else if (templateText.starts_with("\r\n"))
+        {
+            templateText.remove_prefix(2);
+        }
     }
 
     return true;
@@ -2114,6 +2166,22 @@ renderTag(
     else if ('/' != tag.type && '!' != tag.type)
     {
         renderExpression(tag, out, context, opt, state);
+    }
+    else if ('!' == tag.type)
+    {
+        // Remove standalone whitespace
+        if (!opt.ignoreStandalone && tag.isStandalone)
+        {
+            state.templateText = trim_ldelimiters(state.templateText, " ");
+            if (state.templateText.starts_with('\n'))
+            {
+                state.templateText.remove_prefix(1);
+            }
+            else if (state.templateText.starts_with("\r\n"))
+            {
+                state.templateText.remove_prefix(2);
+            }
+        }
     }
 }
 
@@ -2622,6 +2690,10 @@ renderPartial(
         if (state.templateText.starts_with('\n'))
         {
             state.templateText.remove_prefix(1);
+        }
+        else if (state.templateText.starts_with("\r\n"))
+        {
+            state.templateText.remove_prefix(2);
         }
     }
 }

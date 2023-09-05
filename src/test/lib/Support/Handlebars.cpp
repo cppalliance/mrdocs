@@ -13,6 +13,9 @@
 #include <mrdox/Support/Handlebars.hpp>
 #include <mrdox/Support/Path.hpp>
 #include <mrdox/Support/String.hpp>
+#include <llvm/Support/JSON.h>
+#include <llvm/Support/MemoryBuffer.h>
+#include <filesystem>
 
 namespace clang {
 namespace mrdox {
@@ -1281,6 +1284,14 @@ whitespace_control()
         dom::Object ctx;
         ctx.set("foo", "bar");
         BOOST_TEST(hbs.render(" {{~foo~}} {{foo}} {{foo}} ", ctx) == "barbar bar ");
+    }
+
+    // remove block right whitespace
+    {
+        std::string string = "{{#unless z ~}}\na\n{{~/unless}}\nb";
+        BOOST_TEST(hbs.render(string) == "ab");
+        string = "{{#unless z ~}}\na\n{{~/unless}}\n\nb";
+        BOOST_TEST(hbs.render(string) == "a\nb");
     }
 }
 
@@ -5218,10 +5229,173 @@ utils()
     }
 }
 
+static
+dom::Value
+to_dom(llvm::json::Value& val)
+{
+    dom::Value res;
+    // val is llvm::json::Object
+    llvm::json::Object* obj_ptr = val.getAsObject();
+    if (obj_ptr)
+    {
+        dom::Object obj;
+        auto it = obj_ptr->begin();
+        while (it != obj_ptr->end())
+        {
+            obj.set(it->first.str(), to_dom(it->second));
+            ++it;
+        }
+        res = obj;
+        return res;
+    }
+
+    // val is array
+    llvm::json::Array* arr_ptr = val.getAsArray();
+    if (arr_ptr)
+    {
+        dom::Array arr;
+        for (auto& item: *arr_ptr)
+        {
+            arr.emplace_back(to_dom(item));
+        }
+        res = arr;
+        return res;
+    }
+
+    // val is string
+    std::optional<llvm::StringRef> str_opt = val.getAsString();
+    if (str_opt) {
+        return dom::Value(str_opt.value().str());
+    }
+
+    // val is integer
+    std::optional<std::int64_t> int_opt = val.getAsInteger();
+    if (int_opt) {
+        return dom::Value(int_opt.value());
+    }
+
+    // val is double (convert to string)
+    std::optional<double> num_opt = val.getAsNumber();
+    if (num_opt) {
+        std::string double_str = std::to_string(num_opt.value());
+        double_str.erase(double_str.find_last_not_of('0') + 1, std::string::npos);
+        return dom::Value(double_str);
+    }
+
+    // val is bool
+    std::optional<bool> bool_opt = val.getAsBoolean();
+    if (bool_opt) {
+        return dom::Value(bool_opt.value());
+    }
+
+    return res;
+};
+
 void
 mustache_compat_spec()
 {
     // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/spec.js
+    std::string_view mustache_specs_dir =
+        MRDOX_TEST_FILES_DIR "/handlebars/mustache/";
+    std::vector<std::string> spec_files;
+    for (auto& p: std::filesystem::directory_iterator(mustache_specs_dir))
+    {
+        if (p.is_regular_file())
+        {
+            spec_files.emplace_back(p.path().filename().string());
+        }
+    }
+
+    for (auto spec_file: spec_files) {
+        // Skip mustache extensions (handlebars knowingly deviates from these)
+        if (spec_file.starts_with('~'))
+        {
+            continue;
+        }
+
+        // Load JSON file
+        std::string spec_path = std::string(mustache_specs_dir) + std::string(spec_file);
+        llvm::ErrorOr<std::unique_ptr<llvm::MemoryBuffer>> FileOrErr =
+            llvm::MemoryBuffer::getFile(spec_path, true);
+        BOOST_TEST(FileOrErr);
+        std::unique_ptr<llvm::MemoryBuffer> Buffer = std::move(*FileOrErr);
+
+        // Parse the JSON content
+        llvm::Expected<llvm::json::Value> jsonObj =
+            llvm::json::parse(Buffer->getBuffer());
+        BOOST_TEST(jsonObj);
+        llvm::json::Value jsonData = std::move(*jsonObj);
+        BOOST_TEST(jsonData.getAsObject());
+        llvm::json::Object data = std::move(*jsonData.getAsObject());
+
+        // Iterate tests
+        llvm::json::Array tests = std::move(*data.get("tests")->getAsArray());
+        for (auto testPtr: tests) {
+            llvm::json::Object test = *testPtr.getAsObject();
+            // Skip invalid partial tests
+            llvm::StringRef test_name =
+                *test.get("name")->getAsString();
+            if (
+                // Handlebars throws if partials are not found
+                (spec_file == "partials.json" && test_name == "Failed Lookup") ||
+                // Handlebars nests the entire response from partials, not just the literals
+                (spec_file == "partials.json" && test_name == "Standalone Indentation"))
+            {
+                continue;
+            }
+
+            // Get template
+            std::string template_str =test.get("template")->getAsString()->str();
+            if (template_str.find("{{=") != std::string::npos)
+            {
+                // "{{=" not supported by handlebars
+                continue;
+            }
+
+            // Get partials
+            std::vector<std::pair<std::string, std::string>> partials;
+            llvm::json::Value* partialsPtr = test.get("partials");
+            llvm::json::Object* partialsObj = partialsPtr ? partialsPtr->getAsObject() : nullptr;
+            if (partialsObj)
+            {
+                auto it = partialsObj->begin();
+                bool incompatiblePartial = false;
+                while (it != partialsObj->end())
+                {
+                    llvm::StringRef partial_string = *it->second.getAsString();
+                    if (partial_string.find("{{=") != llvm::StringRef::npos)
+                    {
+                        // "{{=" not supported by handlebars
+                        incompatiblePartial = true;
+                        break;
+                    }
+                    else
+                    {
+                        partials.emplace_back(it->first.str(), partial_string.str());
+                    }
+                    ++it;
+                }
+                if (incompatiblePartial) {
+                    continue;
+                }
+            }
+
+            // Render
+            Handlebars hbs;
+            for (auto [name, partial]: partials)
+            {
+                hbs.registerPartial(name, partial);
+            }
+            dom::Value context = to_dom(*test.get("data"));
+            HandlebarsOptions opt;
+            opt.compat = true;
+            std::string expected = test.get("expected")->getAsString().value().str();
+            std::string rendered = hbs.render(template_str, context, opt);
+            if (!BOOST_TEST(rendered == expected)) {
+                return;
+            }
+        }
+    }
 }
 
 void
