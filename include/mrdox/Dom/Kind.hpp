@@ -21,10 +21,12 @@ namespace dom {
 */
 enum class Kind
 {
+    Undefined,
     Null,
     Boolean,
     Integer,
     String,
+    SafeString,
     Array,
     Object,
     Function

@@ -74,17 +74,19 @@ class DomValuePrinter:
     def children(self):
         # Get kind enum
         kind = self.value['kind_']
-        if kind == 1:
+        if kind == 2:
             yield 'Boolean', self.value['b_']
-        elif kind == 2:
-            yield 'Integer', self.value['i_']
         elif kind == 3:
-            yield 'String', self.value['str_']
+            yield 'Integer', self.value['i_']
         elif kind == 4:
-            yield 'Array', self.value['arr_']
+            yield 'String', self.value['str_']
         elif kind == 5:
-            yield 'Object', self.value['obj_']['impl_']['_M_ptr']
+            yield 'SafeString', self.value['str_']
         elif kind == 6:
+            yield 'Array', self.value['arr_']
+        elif kind == 7:
+            yield 'Object', self.value['obj_']['impl_']['_M_ptr']
+        elif kind == 8:
             yield 'Function', self.value['fn_']
         else:
             yield 'kind_', self.value['kind_']

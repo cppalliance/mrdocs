@@ -120,10 +120,6 @@ namespace detail {
         st.append( sv.data(), sv.data() + sv.size() );
     };
 
-    struct MRDOX_DECL safeStringWrapper {
-        std::string v_;
-    };
-
     struct RenderState;
 
     // Heterogeneous lookup support
@@ -1037,8 +1033,7 @@ public:
         using R = std::invoke_result_t<F, dom::Array const&, HandlebarsCallback const&>;
         static_assert(
             std::same_as<R, void> ||
-            std::convertible_to<R, dom::Value> ||
-            std::same_as<R, detail::safeStringWrapper>);
+            std::convertible_to<R, dom::Value>);
         registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
             dom::Array const& args, HandlebarsCallback const& options)
                 -> std::pair<dom::Value, HelperBehavior> {
@@ -1050,10 +1045,6 @@ public:
            {
                helper(args, options);
                return {nullptr, HelperBehavior::NO_RENDER};
-           }
-           else if constexpr (std::same_as<R, detail::safeStringWrapper>)
-           {
-               return {helper(args, options).v_, HelperBehavior::RENDER_RESULT_NOESCAPE};
            }
         }));
     }
@@ -1084,8 +1075,7 @@ public:
         using R = std::invoke_result_t<F, dom::Array const&>;
         static_assert(
             std::same_as<R, void> ||
-            std::convertible_to<R, dom::Value> ||
-            std::same_as<R, detail::safeStringWrapper>);
+            std::convertible_to<R, dom::Value>);
         registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
             dom::Array const& args, HandlebarsCallback const&)
                 -> std::pair<dom::Value, HelperBehavior> {
@@ -1097,10 +1087,6 @@ public:
             {
                 helper(args);
                 return {nullptr, HelperBehavior::NO_RENDER};
-            }
-            else if constexpr (std::same_as<R, detail::safeStringWrapper>)
-            {
-                return {helper(args).v_, HelperBehavior::RENDER_RESULT_NOESCAPE};
             }
         }));
     }
@@ -1134,8 +1120,7 @@ public:
         using R = std::invoke_result_t<F>;
         static_assert(
             std::same_as<R, void> ||
-            std::convertible_to<R, dom::Value> ||
-            std::same_as<R, detail::safeStringWrapper>);
+            std::convertible_to<R, dom::Value>);
         registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
                 dom::Array const&, HandlebarsCallback const&)
                     -> std::pair<dom::Value, HelperBehavior> {
@@ -1147,10 +1132,6 @@ public:
             {
                 helper();
                 return {nullptr, HelperBehavior::NO_RENDER};
-             }
-            else if constexpr (std::same_as<R, detail::safeStringWrapper>)
-            {
-                return {helper().v_, HelperBehavior::RENDER_RESULT_NOESCAPE};
             }
         }));
     }
@@ -1354,7 +1335,7 @@ createFrame(dom::Object const& parent);
     @see https://handlebarsjs.com/api-reference/utilities.html#handlebars-safestring-string
  */
 MRDOX_DECL
-detail::safeStringWrapper
+dom::Value
 safeString(std::string_view str);
 
 /** HTML escapes the specified string
@@ -1387,6 +1368,32 @@ void
 escapeExpression(
     OutputRef out,
     std::string_view str);
+
+template <std::convertible_to<dom::Value> DomValue>
+requires (!std::convertible_to<DomValue, std::string_view>)
+std::string
+escapeExpression(
+    DomValue const& val)
+{
+    dom::Value v = val;
+    if (v.isString())
+    {
+        return escapeExpression(std::string_view(v.getString()));
+    }
+    if (v.isObject() && v.getObject().exists("toHTML"))
+    {
+        dom::Value fn = v.getObject().find("toHTML");
+        if (fn.isFunction()) {
+            return toString(fn.getFunction()());
+        }
+    }
+    if (v.isNull() || v.isUndefined())
+    {
+        return {};
+    }
+    return toString(v);
+}
+
 
 /** An error thrown or returned by Handlebars
 

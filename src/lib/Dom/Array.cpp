@@ -38,6 +38,14 @@ Array(
 {
 }
 
+Array::
+Array(storage_type elements)
+    : impl_(std::make_shared<DefaultArrayImpl>())
+{
+    for(auto const& e : elements)
+        impl_->emplace_back(e);
+}
+
 Array&
 Array::
 operator=(

@@ -26,6 +26,8 @@ to_string(clang::mrdox::dom::Kind const& value)
 {
     switch (value)
     {
+        case clang::mrdox::dom::Kind::Undefined:
+            return "undefined";
         case clang::mrdox::dom::Kind::Null:
             return "null";
         case clang::mrdox::dom::Kind::Boolean:
@@ -34,6 +36,8 @@ to_string(clang::mrdox::dom::Kind const& value)
             return "integer";
         case clang::mrdox::dom::Kind::String:
             return "string";
+        case clang::mrdox::dom::Kind::SafeString:
+            return "safeString";
         case clang::mrdox::dom::Kind::Array:
             return "array";
         case clang::mrdox::dom::Kind::Object:
@@ -3888,12 +3892,13 @@ helpers()
             return dom::Value("winning");
         });
         hash.set("helper", helper);
-        hash.set("hash", hash);
+        // hash.set("hash", hash);
+        dom::Object hash2;
+        hash2.set("helper", helper);
+        hash.set("hash", hash2);
         hbs.registerHelper("./helper", []() {
             return "fail";
         });
-        // BOOST_TEST(hbs.render("{{./helper 1}}", hash) == "winning");
-        // AFREITAS: Investigate rules to pick from context or helpers
         BOOST_TEST(hbs.render("{{./helper 1}}", hash) == "fail");
         BOOST_TEST(hbs.render("{{hash/helper 1}}", hash) == "winning");
     }
@@ -4975,7 +4980,6 @@ void
 strict()
 {
     // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/strict.js
-
     Handlebars hbs;
 
     HandlebarsOptions opt;
@@ -5152,6 +5156,66 @@ void
 utils()
 {
     // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/utils.js
+    Handlebars hbs;
+
+    // SafeString
+    {
+        // it should not escape SafeString properties
+        {
+            dom::Value name = safeString("<em>Sean O&#x27;Malley</em>");
+            dom::Object ctx;
+            ctx.set("name", name);
+            BOOST_TEST(hbs.render("{{name}}", ctx) == "<em>Sean O&#x27;Malley</em>");
+        }
+    }
+
+    // escapeExpression
+    {
+        // should escape html
+        {
+            BOOST_TEST(escapeExpression("foo<&\"'>") == "foo&lt;&amp;&quot;&#x27;&gt;");
+            BOOST_TEST(escapeExpression("foo=") == "foo&#x3D;");
+        }
+
+        // should not escape SafeString
+        {
+            dom::Value string = safeString("foo<&\"'>");
+            BOOST_TEST(escapeExpression(string) == "foo<&\"'>");
+
+            dom::Object ctx;
+            ctx.set("toHTML", dom::makeInvocable([]() {
+                return "foo<&\"'>";
+            }));
+            BOOST_TEST(escapeExpression(ctx) == "foo<&\"'>");
+        }
+
+        // should handle falsy
+        {
+            BOOST_TEST(escapeExpression("").empty());
+            BOOST_TEST(escapeExpression(dom::Value(dom::Kind::Undefined)).empty());
+            BOOST_TEST(escapeExpression(dom::Value(dom::Kind::Null)).empty());
+            BOOST_TEST(escapeExpression(false) == "false");
+            BOOST_TEST(escapeExpression(0) == "0");
+        }
+    }
+
+    // isEmpty
+    {
+        // should be empty
+        BOOST_TEST(isEmpty(dom::Value(dom::Kind::Undefined)));
+        BOOST_TEST(isEmpty(dom::Value(dom::Kind::Null)));
+        BOOST_TEST(isEmpty(false));
+        BOOST_TEST(isEmpty(""));
+        BOOST_TEST(isEmpty(dom::Array()));
+
+        // should not be empty
+        BOOST_TEST(!isEmpty(0));
+        BOOST_TEST(!isEmpty(dom::Array({1})));
+        BOOST_TEST(!isEmpty("foo"));
+        dom::Object ctx;
+        ctx.set("bar", 1);
+        BOOST_TEST(!isEmpty(ctx));
+    }
 }
 
 void
