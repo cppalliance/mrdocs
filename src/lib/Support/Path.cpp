@@ -354,6 +354,27 @@ getSourceFilename(
     return pathName;
 }
 
+Error
+createDirectory(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+
+    auto kind = files::getFileType(pathName);
+    if(kind.has_error())
+        return kind.error();
+    if(*kind == files::FileType::directory)
+        return Error::success();
+    else if(*kind != files::FileType::not_found)
+        return formatError("creating the directory \"{}\""
+            " would overwrite an existing file", pathName);
+
+    if(auto ec = fs::create_directories(pathName))
+        return formatError("fs::create_directories(\"{}\") returned {}", pathName, ec);
+
+    return Error::success();
+}
+
 } // files
 
 } // mrdox

@@ -54,7 +54,7 @@ forEachFile(
 
         explicit FileVisitor(Visitor& v)
             : visitor_(v)
-        {        
+        {
         }
 
         Error
@@ -238,6 +238,18 @@ requireDirectory(
 MRDOX_DECL
 std::string_view
 getSourceFilename(
+    std::string_view pathName);
+
+/** Create a directory.
+
+    Any missing parent directories will also be created.
+
+    @param pathName The absolute or relative path
+    to create.
+*/
+MRDOX_DECL
+Error
+createDirectory(
     std::string_view pathName);
 
 } // files
