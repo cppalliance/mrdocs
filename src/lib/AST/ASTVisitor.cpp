@@ -1573,6 +1573,7 @@ public:
     }
 
     // #define CHECK_IN_FILE_FILTER
+
     // This also sets IsFileInRootDir
     bool
     inExtractedFile(
@@ -1629,17 +1630,9 @@ public:
 
         file_ = files::makePosixStyle(loc.getFilename());
 
-        #ifdef CHECK_IN_FILE_FILTER
-        // skip system header
-        if(currentMode() == ExtractMode::Normal &&
-            source_.isInSystemHeader(D->getLocation()))
-        #else
-
         // skip system header
         if(source_.isInSystemHeader(D->getLocation()))
-        #endif
             return false;
-
 
         auto [it, inserted] = fileFilter_.emplace(
             loc.getIncludeLoc().getRawEncoding(),
@@ -1653,12 +1646,7 @@ public:
 
         // don't extract if the declaration is in a file
         // that should not be visited
-        #ifdef CHECK_IN_FILE_FILTER
-        if(currentMode() == ExtractMode::Normal &&
-            ! ff.include)
-        #else
         if(! ff.include)
-        #endif
             return false;
         // VFALCO we could assert that the prefix
         //        matches and just lop off the
@@ -1675,12 +1663,6 @@ public:
     shouldExtract(
         const Decl* D)
     {
-    #ifdef CHECK_IN_FILE_FILTER
-        return inExtractedFile(D);
-    #elif 0
-        return inExtractedFile(D) ||
-            currentMode() != ExtractMode::Normal;
-    #elif 1
         bool extract = inExtractedFile(D);
         // if we're extracting a declaration as a dependency,
         // override the current extraction mode if
@@ -1689,7 +1671,6 @@ public:
             mode = ExtractMode::Normal;
 
         return extract || currentMode() != ExtractMode::Normal;
-    #endif
     }
 
     std::string
@@ -2271,7 +2252,6 @@ public:
                     parent->Implicit &= currentMode() != ExtractMode::Normal;
                     static_cast<RecordInfo*>(parent)->Friends.emplace_back(I.id);
                 }
-
                 return;
             }
             if(FunctionTemplateDecl* FT = dyn_cast<FunctionTemplateDecl>(ND))
@@ -2396,9 +2376,6 @@ traverse(EnumDecl* D)
     if(! shouldExtract(D))
         return true;
 
-    // MRDOX_ASSERT(! D->getDeclContext()->isRecord() ||
-    //     A != AccessSpecifier::AS_none);
-
     SymbolID id;
     if(! extractSymbolID(D, id))
         return false;
@@ -2418,9 +2395,6 @@ traverse(FieldDecl* D)
 {
     if(! shouldExtract(D))
         return true;
-
-    // MRDOX_ASSERT(D->getDeclContext()->isRecord() &&
-    //     A != AccessSpecifier::AS_none);
 
     SymbolID id;
     if(! extractSymbolID(D, id))
@@ -2622,6 +2596,10 @@ traverse(TypedefNameTy* D,
 
 //------------------------------------------------
 
+/** This function will be unnecessary once ClassScopeFunctionSpecializationDecl is
+    removed (see https://github.com/llvm/llvm-project/pull/66636). For now we approximate
+    its changes by building a DependentFunctionTemplateSpecializationInfo from scratch.
+*/
 bool
 ASTVisitor::
 traverse(ClassScopeFunctionSpecializationDecl* D)
@@ -2633,12 +2611,8 @@ traverse(ClassScopeFunctionSpecializationDecl* D)
        are members of class templates, it is impossible to know what the
        primary template is until the enclosing class template is instantiated.
        while such declarations are valid C++ (see CWG 727, N4090, and [temp.expl.spec] p3),
-       GCC does not consider them to be valid. Consequently, we do not extract the SymbolID
-       of the primary template. In the future, we could take a best-effort approach to find
-       the primary template, but this is only possible when none of the candidates are dependent
-       upon a template parameter of the enclosing class template.
+       GCC does not consider them to be valid.
     */
-
     DeclContext* DC = D->getDeclContext();
     CXXMethodDecl* MD = D->getSpecialization();
 
@@ -2880,9 +2854,7 @@ class ASTVisitorConsumer
             *sema_);
 
         // traverse the translation unit
-        // visitor.traverseContext(
-        visitor.traverseDecl(
-            Context.getTranslationUnitDecl());
+        visitor.traverseDecl(Context.getTranslationUnitDecl());
 
         // VFALCO If we returned from the function early
         // then this line won't execute, which means we
@@ -2902,13 +2874,13 @@ class ASTVisitorConsumer
         nor one that introduces a new type via returning a local class.
     */
     bool
-    shouldSkipFunctionBody(Decl* D) override
+    shouldSkipFunctionBody(Decl*) override
     {
         return true;
     }
 
     bool
-    HandleTopLevelDecl(DeclGroupRef DG) override
+    HandleTopLevelDecl(DeclGroupRef) override
     {
         return true;
     }
@@ -2935,16 +2907,16 @@ class ASTVisitorConsumer
         D->setImplicit();
     }
 
-    void HandleInlineFunctionDefinition(FunctionDecl* D) override { }
-    void HandleTagDeclDefinition(TagDecl* D) override { }
-    void HandleTagDeclRequiredDefinition(const TagDecl* D) override { }
-    void HandleInterestingDecl(DeclGroupRef DG) override { }
-    void CompleteTentativeDefinition(VarDecl* D) override { }
-    void CompleteExternalDeclaration(VarDecl* D) override { }
-    void AssignInheritanceModel(CXXRecordDecl* D) override { }
-    void HandleVTable(CXXRecordDecl* D) override { }
-    void HandleImplicitImportDecl(ImportDecl* D) override { }
-    void HandleTopLevelDeclInObjCContainer(DeclGroupRef DG) override { }
+    void HandleInlineFunctionDefinition(FunctionDecl*) override { }
+    void HandleTagDeclDefinition(TagDecl*) override { }
+    void HandleTagDeclRequiredDefinition(const TagDecl*) override { }
+    void HandleInterestingDecl(DeclGroupRef) override { }
+    void CompleteTentativeDefinition(VarDecl*) override { }
+    void CompleteExternalDeclaration(VarDecl*) override { }
+    void AssignInheritanceModel(CXXRecordDecl*) override { }
+    void HandleVTable(CXXRecordDecl*) override { }
+    void HandleImplicitImportDecl(ImportDecl*) override { }
+    void HandleTopLevelDeclInObjCContainer(DeclGroupRef) override { }
 
 public:
     ASTVisitorConsumer(

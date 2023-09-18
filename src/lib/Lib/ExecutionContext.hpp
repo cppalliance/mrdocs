@@ -58,6 +58,8 @@ public:
     virtual
     mrdox::Expected<InfoSet>
     results() = 0;
+
+    virtual ~ExecutionContext() = default;
 };
 
 // ----------------------------------------------------------------
