@@ -170,6 +170,11 @@ inline auto Array::get(std::size_t i) const -> value_type
     return impl_->get(i);
 }
 
+inline void Array::set(std::size_t i, Value v)
+{
+    impl_->set(i, std::move(v));
+}
+
 inline auto Array::operator[](std::size_t i) const -> value_type
 {
     return get(i);
@@ -179,7 +184,17 @@ inline auto Array::at(std::size_t i) const -> value_type
 {
     if(i < size())
         return get(i);
-    Error("out of range").Throw();
+    return {};
+}
+
+inline auto Array::front() const -> value_type
+{
+    return at(0);
+}
+
+inline auto Array::back() const -> value_type
+{
+    return at(size() - 1);
 }
 
 inline auto Array::begin() const -> iterator
@@ -195,6 +210,17 @@ inline auto Array::end() const -> iterator
 inline void Array::emplace_back(value_type value)
 {
     impl_->emplace_back(std::move(value));
+}
+
+inline
+Array operator+(Array const& lhs, Array const& rhs)
+{
+    Array buf;
+    for (auto e: lhs)
+        buf.emplace_back(e);
+    for (auto e: rhs)
+        buf.emplace_back(e);
+    return buf;
 }
 
 } // dom

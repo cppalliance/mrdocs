@@ -30,6 +30,9 @@ OutputRef&
 OutputRef::
 write_impl( std::string_view sv )
 {
+    // ==========================================
+    // No indent
+    // ==========================================
     if (indent_ == 0)
     {
         fptr_( out_, sv );
@@ -43,6 +46,9 @@ write_impl( std::string_view sv )
         return *this;
     }
 
+    // ==========================================
+    // Indented
+    // ==========================================
     fptr_( out_, sv.substr(0, pos + 1) );
     ++pos;
     while (pos < sv.size())
@@ -57,7 +63,7 @@ write_impl( std::string_view sv )
             fptr_( out_, sv.substr(pos) );
             return *this;
         }
-        fptr_( out_, sv.substr(pos, next - pos + 1) );
+        fptr_( out_, sv.substr(pos, (next - pos) + 1) );
         pos = next + 1;
     }
     return *this;
@@ -68,36 +74,17 @@ write_impl( std::string_view sv )
 // ==============================================================
 
 bool
-isTruthy(dom::Value const& arg)
-{
-    switch (arg.kind()) {
-        case dom::Kind::Boolean:
-            return arg.getBool();
-        case dom::Kind::Integer:
-            return arg.getInteger() != 0;
-        case dom::Kind::String:
-        case dom::Kind::SafeString:
-            return !arg.getString().empty();
-        case dom::Kind::Array:
-        case dom::Kind::Object:
-        case dom::Kind::Function:
-            return true;
-        case dom::Kind::Null:
-        case dom::Kind::Undefined:
-            return false;
-        default:
-            MRDOX_UNREACHABLE();
-    }
-}
-
-bool
 isEmpty(dom::Value const& arg)
 {
     if (arg.isArray())
+    {
         return arg.getArray().empty();
+    }
     if (arg.isInteger())
+    {
         return false;
-    return !isTruthy(arg);
+    }
+    return !arg.isTruthy();
 }
 
 class OverlayObjectImpl : public dom::ObjectImpl
@@ -136,7 +123,8 @@ public:
         }
         MRDOX_ASSERT(i < size());
         std::size_t pi = i - child_.size();
-        for (std::size_t j = 0; j < parent_.size(); ++j)
+        size_t const n = parent_.size();
+        for (std::size_t j = 0; j < n; ++j)
         {
             auto el = parent_.get(j);
             if (child_.exists(el.key))
@@ -153,9 +141,13 @@ public:
 
     dom::Value find(std::string_view key) const override {
         if (child_.exists(key))
+        {
             return child_.find(key);
+        }
         if (parent_.exists(key))
+        {
             return parent_.find(key);
+        }
         return nullptr;
     }
 
@@ -176,6 +168,16 @@ createFrame(dom::Object const& child, dom::Object const& parent)
     return dom::newObject<OverlayObjectImpl>(child, parent);
 }
 
+dom::Object
+createFrame(dom::Value const& parent)
+{
+    if (parent.isObject())
+    {
+        return createFrame(parent.getObject());
+    }
+    return {};
+}
+
 dom::Value
 safeString(std::string_view str)
 {
@@ -184,11 +186,21 @@ safeString(std::string_view str)
     return w;
 }
 
+dom::Value
+safeString(dom::Value const& str)
+{
+    if (str.isString() || str.isSafeString())
+    {
+        return safeString(str.getString().get());
+    }
+    return {};
+}
+
 void
 escapeExpression(
     OutputRef out,
     std::string_view str,
-    HandlebarsOptions opt)
+    HandlebarsOptions const& opt)
 {
     if (opt.noEscape)
     {
@@ -247,92 +259,116 @@ escapeExpression(
     return res;
 }
 
-void
+static void
 format_to(
     OutputRef out,
     dom::Value const& value,
-    HandlebarsOptions opt)
+    HandlebarsOptions const& opt)
 {
-    if (value.isString()) {
+    if (value.isString())
+    {
         escapeExpression(out, value.getString(), opt);
-    } else if (value.isSafeString()) {
+    }
+    else if (value.isSafeString())
+    {
         out << value.getString();
-    } else if (value.isInteger()) {
+    }
+    else if (value.isInteger())
+    {
         out << value.getInteger();
-    } else if (value.isBoolean()) {
-        if (value.getBool()) {
+    }
+    else if (value.isBoolean())
+    {
+        if (value.getBool())
+        {
             out << "true";
-        } else {
+        }
+        else
+        {
             out << "false";
         }
-    } else if (value.isArray()) {
+    }
+    else if (value.isArray())
+    {
         out << "[";
         dom::Array const& array = value.getArray();
-        if (!array.empty()) {
+        if (!array.empty())
+        {
             format_to(out, array.at(0), opt);
-            for (std::size_t i = 1; i < array.size(); ++i) {
+            dom::Array::size_type const n = array.size();
+            for (std::size_t i = 1; i < n; ++i) {
                 out << ",";
                 format_to(out, array.at(i), opt);
             }
         }
         out << "]";
-    } else if (value.isObject()) {
+    }
+    else if (value.isObject())
+    {
         out << "[object Object]";
     }
 }
 
-constexpr
+static constexpr
 std::string_view
 trim_delimiters(std::string_view expression, std::string_view delimiters)
 {
     auto pos = expression.find_first_not_of(delimiters);
     if (pos == std::string_view::npos)
+    {
         return "";
+    }
     expression.remove_prefix(pos);
     pos = expression.find_last_not_of(delimiters);
     if (pos == std::string_view::npos)
+    {
         return "";
+    }
     expression.remove_suffix(expression.size() - pos - 1);
     return expression;
 }
 
-constexpr
+static constexpr
 std::string_view
 trim_ldelimiters(std::string_view expression, std::string_view delimiters)
 {
     auto pos = expression.find_first_not_of(delimiters);
     if (pos == std::string_view::npos)
+    {
         return "";
+    }
     expression.remove_prefix(pos);
     return expression;
 }
 
-constexpr
+static constexpr
 std::string_view
 trim_rdelimiters(std::string_view expression, std::string_view delimiters)
 {
     auto pos = expression.find_last_not_of(delimiters);
     if (pos == std::string_view::npos)
+    {
         return "";
+    }
     expression.remove_suffix(expression.size() - pos - 1);
     return expression;
 }
 
-constexpr
+static constexpr
 std::string_view
 trim_spaces(std::string_view expression)
 {
     return trim_delimiters(expression, " \t\r\n");
 }
 
-constexpr
+static constexpr
 std::string_view
 trim_lspaces(std::string_view expression)
 {
     return trim_ldelimiters(expression, " \t\r\n");
 }
 
-constexpr
+static constexpr
 std::string_view
 trim_rspaces(std::string_view expression)
 {
@@ -360,130 +396,130 @@ namespace detail {
     };
 }
 
-std::string
-HandlebarsCallback::
-fn(dom::Value const& context,
-   dom::Object const& data,
-   dom::Array const& blockParams,
-   dom::Array const& blockParamPaths) const {
-    std::string result;
-    OutputRef out(result);
-    fn(out, context, data, blockParams, blockParamPaths);
-    return result;
-}
+//std::string
+//HandlebarsCallback::
+//fn(dom::Value const& context,
+//   dom::Object const& data,
+//   dom::Array const& blockParams,
+//   dom::Array const& blockParamPaths) const {
+//    std::string result;
+//    OutputRef out(result);
+//    fn(out, context, data, blockParams, blockParamPaths);
+//    return result;
+//}
+//
+//void
+//HandlebarsCallback::
+//fn(OutputRef out,
+//   dom::Value const& context,
+//   dom::Object const& data,
+//   dom::Array const& blockParams,
+//   dom::Array const& blockParamPaths) const {
+//    if (!isBlock()) {
+//        return;
+//    }
+//    bool const sameContext =
+//        &context == context_ ||
+//        (context.isObject() && context_->isObject() && context.getObject().impl() == context_->getObject().impl()) ||
+//        (context.isArray() && context_->isArray() && context.getArray().impl() == context_->getArray().impl());
+//    if (!sameContext)
+//    {
+//        renderState_->parentContext.push_back(*context_);
+//    }
+//    dom::Object blockValues;
+//    dom::Object blockValuePaths;
+//    for (std::size_t i = 0; i < blockParamIds_.size(); ++i) {
+//        blockValues.set(blockParamIds_[i], blockParams[i]);
+//        if (blockParamPaths.size() > i) {
+//            blockValuePaths.set(blockParamIds_[i], blockParamPaths[i]);
+//        }
+//    }
+//    fn_(out, context, data, blockValues, blockValuePaths);
+//    if (!sameContext)
+//    {
+//        renderState_->parentContext.pop_back();
+//    }
+//}
+//
+//std::string
+//HandlebarsCallback::
+//fn(dom::Value const& context) const {
+//    return fn(context, data(), dom::Array{}, dom::Array{});
+//}
+//
+//void
+//HandlebarsCallback::
+//fn(OutputRef out, dom::Value const& context) const {
+//    fn(out, context, data(), dom::Array{}, dom::Array{});
+//}
+//
+//std::string
+//HandlebarsCallback::
+//inverse(
+//    dom::Value const& context,
+//    dom::Object const& data,
+//    dom::Array const& blockParams,
+//    dom::Array const& blockParamPaths) const {
+//    std::string result;
+//    OutputRef out(result);
+//    inverse(out, context, data, blockParams, blockParamPaths);
+//    return result;
+//}
+//
+//void
+//HandlebarsCallback::
+//inverse(OutputRef out,
+//   dom::Value const& context,
+//   dom::Object const& data,
+//   dom::Array const& blockParams,
+//   dom::Array const& blockParamPaths) const {
+//    if (!isBlock()) {
+//        return;
+//    }
+//    if (&context != context_)
+//    {
+//        renderState_->parentContext.push_back(*context_);
+//    }
+//    dom::Object blockValues;
+//    dom::Object blockValuePaths;
+//    for (std::size_t i = 0; i < blockParamIds_.size(); ++i) {
+//        blockValues.set(blockParamIds_[i], blockParams[i]);
+//        blockValuePaths.set(blockParamIds_[i], blockParamPaths[i]);
+//    }
+//    inverse_(out, context, data, blockValues, blockValuePaths);
+//    if (&context != context_)
+//    {
+//        renderState_->parentContext.pop_back();
+//    }
+//}
+//
+//std::string
+//HandlebarsCallback::
+//inverse(dom::Value const& context) const {
+//    return inverse(context, data(), dom::Array{}, dom::Array{});
+//}
+//
+//void
+//HandlebarsCallback::
+//inverse(OutputRef out, dom::Value const& context) const {
+//    inverse(out, context, data(), dom::Array{}, dom::Array{});
+//}
+//
+//void
+//HandlebarsCallback::
+//log(dom::Value const& level,
+//    dom::Array const& args) const {
+//    MRDOX_ASSERT(logger_);
+//    (*logger_)(level, args);
+//}
 
-void
-HandlebarsCallback::
-fn(OutputRef out,
-   dom::Value const& context,
-   dom::Object const& data,
-   dom::Array const& blockParams,
-   dom::Array const& blockParamPaths) const {
-    if (!isBlock()) {
-        return;
-    }
-    bool const sameContext =
-        &context == context_ ||
-        (context.isObject() && context_->isObject() && context.getObject().impl() == context_->getObject().impl()) ||
-        (context.isArray() && context_->isArray() && context.getArray().impl() == context_->getArray().impl());
-    if (!sameContext)
-    {
-        renderState_->parentContext.push_back(*context_);
-    }
-    dom::Object blockValues;
-    dom::Object blockValuePaths;
-    for (std::size_t i = 0; i < blockParamIds_.size(); ++i) {
-        blockValues.set(blockParamIds_[i], blockParams[i]);
-        if (blockParamPaths.size() > i) {
-            blockValuePaths.set(blockParamIds_[i], blockParamPaths[i]);
-        }
-    }
-    fn_(out, context, data, blockValues, blockValuePaths);
-    if (!sameContext)
-    {
-        renderState_->parentContext.pop_back();
-    }
-}
-
-std::string
-HandlebarsCallback::
-fn(dom::Value const& context) const {
-    return fn(context, data(), dom::Array{}, dom::Array{});
-}
-
-void
-HandlebarsCallback::
-fn(OutputRef out, dom::Value const& context) const {
-    fn(out, context, data(), dom::Array{}, dom::Array{});
-}
-
-std::string
-HandlebarsCallback::
-inverse(
-    dom::Value const& context,
-    dom::Object const& data,
-    dom::Array const& blockParams,
-    dom::Array const& blockParamPaths) const {
-    std::string result;
-    OutputRef out(result);
-    inverse(out, context, data, blockParams, blockParamPaths);
-    return result;
-}
-
-void
-HandlebarsCallback::
-inverse(OutputRef out,
-   dom::Value const& context,
-   dom::Object const& data,
-   dom::Array const& blockParams,
-   dom::Array const& blockParamPaths) const {
-    if (!isBlock()) {
-        return;
-    }
-    if (&context != context_)
-    {
-        renderState_->parentContext.push_back(*context_);
-    }
-    dom::Object blockValues;
-    dom::Object blockValuePaths;
-    for (std::size_t i = 0; i < blockParamIds_.size(); ++i) {
-        blockValues.set(blockParamIds_[i], blockParams[i]);
-        blockValuePaths.set(blockParamIds_[i], blockParamPaths[i]);
-    }
-    inverse_(out, context, data, blockValues, blockValuePaths);
-    if (&context != context_)
-    {
-        renderState_->parentContext.pop_back();
-    }
-}
-
-std::string
-HandlebarsCallback::
-inverse(dom::Value const& context) const {
-    return inverse(context, data(), dom::Array{}, dom::Array{});
-}
-
-void
-HandlebarsCallback::
-inverse(OutputRef out, dom::Value const& context) const {
-    inverse(out, context, data(), dom::Array{}, dom::Array{});
-}
-
-void
-HandlebarsCallback::
-log(dom::Value const& level,
-    dom::Array const& args) const {
-    MRDOX_ASSERT(logger_);
-    (*logger_)(level, args);
-}
-
-bool
+static bool
 isCurrentContextSegment(std::string_view path)
 {
     return path == "." || path == "this";
 }
 
-bool
+static bool
 isIdChar(char c)
 {
     // Identifiers may be any unicode character except for the following:
@@ -495,7 +531,7 @@ isIdChar(char c)
     return !std::ranges::any_of(invalidChars, [c](char invalid) { return c == invalid; });
 }
 
-std::string_view
+static std::string_view
 popFirstSegment(std::string_view& path0)
 {
     // ==============================================================
@@ -550,14 +586,13 @@ popFirstSegment(std::string_view& path0)
     // Literal number segment
     // ==============================================================
     // In a literal number segment the dots are part of the segment
-    if (std::ranges::all_of(path, [](char c) { return c == '.' || std::isdigit(c) != 0; }))
+    if (
+        std::ranges::all_of(path, [](char c) { return c == '.' || std::isdigit(c) != 0; }) &&
+        std::ranges::count(path, '.') < 2)
     {
-        if (std::ranges::count(path, '.') < 2)
-        {
-            // Number segment
-            path0 = {};
-            return path;
-        }
+        // Number segment
+        path0 = {};
+        return path;
     }
 
     // ==============================================================
@@ -579,46 +614,51 @@ popFirstSegment(std::string_view& path0)
     // Regular ID
     // ==============================================================
     auto it = std::ranges::find_if_not(path, isIdChar);
-    auto pos = it - path.begin();
+    auto pos = static_cast<std::size_t>(it - path.begin());
     bool endsAtDelimiter = it != path.end() && (*it == '.' || *it == '/');
-    path0 = path.substr(pos + endsAtDelimiter);
+    path0 = path.substr(pos + static_cast<std::size_t>(endsAtDelimiter));
     return path.substr(0, pos);
 }
 
 struct position_in_text
 {
-    std::size_t line = std::size_t(-1);
-    std::size_t column = std::size_t(-1);
-    std::size_t pos = std::size_t(-1);
+    std::size_t line = static_cast<std::size_t>(-1);
+    std::size_t column = static_cast<std::size_t>(-1);
+    std::size_t pos = static_cast<std::size_t>(-1);
 
     constexpr
     operator bool() const
     {
-        return line != std::size_t(-1);
+        return line != static_cast<std::size_t>(-1);
     }
 };
 
-constexpr
+static constexpr
 position_in_text
 find_position_in_text(
     std::string_view text,
     std::string_view substr)
 {
     position_in_text res;
-    if (substr.data() >= text.data() &&
-        substr.data() <= text.data() + text.size())
+    if ((substr.data() >= text.data()) &&
+        (substr.data() <= (text.data() + text.size())))
     {
-        res.pos = substr.data() - text.data();
-        res.line = std::ranges::count(text.substr(0, res.pos), '\n') + 1;
+        res.pos = static_cast<std::size_t>(substr.data() - text.data());
+        res.line = static_cast<std::size_t>(
+            std::ranges::count(text.substr(0, res.pos), '\n') + 1);
         if (res.line == 1)
+        {
             res.column = res.pos;
+        }
         else
+        {
             res.column = res.pos - text.rfind('\n', res.pos) - 1;
+        }
     }
     return res;
 }
 
-void
+static void
 checkPath(std::string_view path0, detail::RenderState const& state)
 {
     std::string_view path = path0;
@@ -651,7 +691,7 @@ checkPath(std::string_view path0, detail::RenderState const& state)
     }
 }
 
-std::pair<dom::Value, bool>
+static std::pair<dom::Value, bool>
 lookupPropertyImpl(
     dom::Object const& context,
     std::string_view path,
@@ -661,7 +701,9 @@ lookupPropertyImpl(
     // Get first value from Object
     std::string_view segment = popFirstSegment(path);
     bool isLiteral = segment.starts_with('[') && segment.ends_with(']');
-    std::string_view literalSegment = segment.substr(1 * isLiteral, segment.size() - 2 * isLiteral);
+    std::string_view literalSegment = segment.substr(
+        1 * static_cast<std::size_t>(isLiteral),
+        segment.size() - (2 * static_cast<std::size_t>(isLiteral)));
     dom::Value cur = nullptr;
     if (isCurrentContextSegment(segment))
     {
@@ -682,7 +724,7 @@ lookupPropertyImpl(
         }
         else
         {
-            return {nullptr, false};
+            return {dom::Kind::Undefined, false};
         }
     }
     else
@@ -693,7 +735,9 @@ lookupPropertyImpl(
     // Recursively get more values from current value
     segment = popFirstSegment(path);
     isLiteral = segment.starts_with('[') && segment.ends_with(']');
-    literalSegment = segment.substr(1 * isLiteral, segment.size() - 2 * isLiteral);
+    literalSegment = segment.substr(
+        1 * static_cast<std::size_t>(isLiteral),
+        segment.size() - (2 * static_cast<std::size_t>(isLiteral)));
     while (!literalSegment.empty())
     {
         // If current value is an Object, get the next value from it
@@ -719,41 +763,47 @@ lookupPropertyImpl(
                 }
                 else
                 {
-                    return {nullptr, false};
+                    return {dom::Kind::Undefined, false};
                 }
             }
         }
         // If current value is an Array, get the next value the stripped index
         else if (cur.isArray())
         {
-            size_t index;
+            size_t index = 0;
             std::from_chars_result res = std::from_chars(
                 literalSegment.data(),
                 literalSegment.data() + literalSegment.size(),
                 index);
             if (res.ec != std::errc())
+            {
                 return {nullptr, false};
+            }
             auto& arr = cur.getArray();
             if (index >= arr.size())
+            {
                 return {nullptr, false};
+            }
             cur = arr.at(index);
         }
         else
         {
             // Current value is not an Object or Array, so we can't get any more
             // segments from it
-            return {nullptr, false};
+            return {dom::Kind::Undefined, false};
         }
         // Consume more segments to get into the array element
         segment = popFirstSegment(path);
         isLiteral = segment.starts_with('[') && segment.ends_with(']');
-        literalSegment = segment.substr(1 * isLiteral, segment.size() - 2 * isLiteral);
+        literalSegment = segment.substr(
+            1 * static_cast<std::size_t>(isLiteral),
+            segment.size() - (2 * static_cast<std::size_t>(isLiteral)));
     }
     return {cur, true};
 }
 
 
-std::pair<dom::Value, bool>
+static std::pair<dom::Value, bool>
 lookupPropertyImpl(
     dom::Value const& context,
     std::string_view path,
@@ -765,7 +815,9 @@ lookupPropertyImpl(
     // "." / "this"
     // ==============================================================
     if (isCurrentContextSegment(path) || path.empty())
+    {
         return {context, true};
+    }
     // ==============================================================
     // Non-object key
     // ==============================================================
@@ -789,14 +841,15 @@ lookupPropertyImpl(
 }
 
 template <std::convertible_to<std::string_view> S>
-std::pair<dom::Value, bool>
+static std::pair<dom::Value, bool>
 lookupPropertyImpl(
     dom::Value const& data,
     S const& path,
     detail::RenderState const& state,
     HandlebarsOptions const& opt)
 {
-    return lookupPropertyImpl(data, std::string_view(path), state, opt);
+    return lookupPropertyImpl(
+        data, static_cast<std::string_view>(path), state, opt);
 }
 
 std::pair<dom::Value, bool>
@@ -807,27 +860,33 @@ lookupPropertyImpl(
     HandlebarsOptions const& opt)
 {
     if (path.isString())
+    {
         return lookupPropertyImpl(context, path.getString(), state, opt);
-    if (path.isInteger()) {
-        if (context.isArray()) {
+    }
+    if (path.isInteger())
+    {
+        if (context.isArray())
+        {
             auto& arr = context.getArray();
             if (path.getInteger() >= static_cast<std::int64_t>(arr.size()))
+            {
                 return {nullptr, false};
-            return {arr.at(path.getInteger()), true};
+            }
+            return {arr.at(static_cast<std::size_t>(path.getInteger())), true};
         }
         return lookupPropertyImpl(context, std::to_string(path.getInteger()), state, opt);
     }
     return {nullptr, false};
 }
 
-std::pair<dom::Value, bool>
-HandlebarsCallback::
-lookupProperty(
-    dom::Value const& context,
-    dom::Value const& path) const
-{
-    return lookupPropertyImpl(context, path, *renderState_, *opt_);
-}
+//std::pair<dom::Value, bool>
+//HandlebarsCallback::
+//lookupProperty(
+//    dom::Value const& context,
+//    dom::Value const& path) const
+//{
+//    return lookupPropertyImpl(context, path, *renderState_, *opt_);
+//}
 
 
 // ==============================================================
@@ -840,21 +899,20 @@ struct defaultLogger {
     std::int64_t level_ = 1;
 
     void
-    operator()(dom::Value const& level0, dom::Array const& args) const {
-        dom::Value level = lookupLevel(level0);
-        if (!level.isInteger()) {
+    operator()(dom::Array const& args) const {
+        dom::Value level = lookupLevel(args[0]);
+        if (!level.isInteger() || level.getInteger() > level_) {
             return;
         }
-        if (level.getInteger() > level_) {
-            return;
-        }
-        std::string_view method = methodMap[level.getInteger()];
+        std::string_view method = methodMap[
+            static_cast<std::size_t>(level.getInteger())];
         std::string out;
         OutputRef os(out);
         os << '[';
         os << method;
         os << ']';
-        for (std::size_t i = 0; i < args.size(); ++i) {
+        std::size_t const n = args.size();
+        for (std::size_t i = 1; i < n; ++i) {
             HandlebarsOptions opt;
             opt.noEscape = true;
             format_to(os, args.at(i), opt);
@@ -869,13 +927,15 @@ struct defaultLogger {
             // Find level from map
             std::string levelStr(level.getString());
             // convert level string to lowercase
-            auto tolower = [](char c) {
-                return c + ('A' - 'a') * (c >= 'a' && c <= 'z');
+            auto toLower = [](char c) {
+                int constexpr diff = 'A' - 'a';
+                bool const isLower = (c >= 'a' && c <= 'z');
+                return c + diff * isLower;
             };
-            std::ranges::transform(levelStr, levelStr.begin(), tolower);
+            std::ranges::transform(levelStr, levelStr.begin(), toLower);
             auto levelMap = std::ranges::find(methodMap, levelStr);
             if (levelMap != methodMap.end()) {
-                return std::int64_t(levelMap - methodMap.begin());
+                return levelMap - methodMap.begin();
             }
 
             // Find level as integer string
@@ -894,7 +954,7 @@ struct defaultLogger {
 
 Handlebars::Handlebars() {
     helpers::registerBuiltinHelpers(*this);
-    registerLogger(defaultLogger{});
+    registerLogger(dom::makeVariadicInvocable(defaultLogger{}));
 }
 
 std::string
@@ -917,22 +977,31 @@ bool
 findTag(std::string_view &tag, std::string_view templateText)
 {
     if (templateText.size() < 4)
+    {
         return false;
+    }
 
     // Find opening tag
     auto pos = templateText.find("{{");
     if (pos == std::string_view::npos)
+    {
         return false;
+    }
 
     // Find closing tag
     std::string_view closeTagToken = "}}";
     std::string_view closeTagToken2;
-    if (templateText.substr(pos).starts_with("{{!--")) {
+    if (templateText.substr(pos).starts_with("{{!--"))
+    {
         closeTagToken = "--}}";
         closeTagToken2 = "--~}}";
-    } else if (templateText.substr(pos).starts_with("{{{{")) {
+    }
+    else if (templateText.substr(pos).starts_with("{{{{"))
+    {
         closeTagToken = "}}}}";
-    } else if (templateText.substr(pos).starts_with("{{{")) {
+    }
+    else if (templateText.substr(pos).starts_with("{{{"))
+    {
         closeTagToken = "}}}";
     }
     auto end = templateText.find(closeTagToken, pos);
@@ -1213,7 +1282,9 @@ parseTag(
         tagStr.remove_prefix(4);
         tagStr = trim_spaces(tagStr);
         t.content = tagStr;
-    } else {
+    }
+    else
+    {
         static constexpr std::array<char, 5> tag_types({'#', '/', '>', '!'});
         auto it = std::ranges::find_if(tag_types, [tagStr](char c) { return c == tagStr.front(); });
         if (it != tag_types.end()) {
@@ -1235,7 +1306,9 @@ parseTag(
             tagStr = trim_spaces(tagStr);
         } else if (t.rawBlock) {
             t.type = '#';
-        } else {
+        }
+        else
+        {
             t.type = ' ';
         }
         t.content = tagStr;
@@ -1267,7 +1340,9 @@ parseTag(
         t.helper = expr;
         tagStr.remove_prefix(expr.data() + expr.size() - tagStr.data());
         t.arguments = trim_spaces(tagStr);
-    } else {
+    }
+    else
+    {
         t.helper = tagStr;
         t.arguments = {};
     }
@@ -1402,86 +1477,7 @@ render_to(
     }
 }
 
-std::string
-JSON_stringify(
-    dom::Value const& value,
-    std::unordered_set<void*>& done) {
-    switch(value.kind())
-    {
-    case dom::Kind::Null:
-        return "null";
-    case dom::Kind::Boolean:
-        return value.getBool() ? "true" : "false";
-    case dom::Kind::Integer:
-        return std::to_string(value.getInteger());
-    case dom::Kind::String:
-    {
-        std::string s = "\"";
-        s += value.getString();
-        s += "\"";
-        return s;
-    }
-    case dom::Kind::Array:
-    {
-        dom::Array const& arr = value.getArray();
-        if (done.find(arr.impl().get()) != done.end())
-            return "[Circular]";
-        done.insert(arr.impl().get());
-        if (arr.empty())
-            return "[]";
-        std::string s = "[";
-        {
-            auto const n = arr.size();
-            for(std::size_t i = 0; i < n; ++i)
-            {
-                if(i != 0)
-                    s += ',';
-                s += JSON_stringify(arr.at(i), done);
-            }
-        }
-        s += "]";
-        return s;
-    }
-    case dom::Kind::Object:
-    {
-        dom::Object const& obj = value.getObject();
-        if (done.find(obj.impl().get()) != done.end())
-            return "[Circular]";
-        done.insert(obj.impl().get());
-        if(obj.empty())
-            return "{}";
-        std::string s = "{";
-        {
-            for (std::size_t i = 0; i < obj.size(); ++i)
-            {
-                if (i != 0)
-                    s += ',';
-                dom::Object::reference item = obj.get(i);
-                s += '"';
-                s += item.key;
-                s += "\":";
-                std::string tmp = JSON_stringify(item.value, done);
-                s += tmp;
-            }
-        }
-        s += "}";
-        return s;
-    }
-    case dom::Kind::Function:
-        return "[Function]";
-    default:
-        MRDOX_UNREACHABLE();
-    }
-}
-
-std::string
-JSON_stringify(dom::Value const& value) {
-    // Store visited pointers to avoid infinite recursion
-    // similar to how JSON.stringify works
-    std::unordered_set<void*> done;
-    return JSON_stringify(value, done);
-}
-
+namespace {
 constexpr
 bool
 is_literal_value(
@@ -1579,17 +1575,23 @@ unescapeString(std::string_view str) {
     for (std::size_t i = 0; i < str.length(); ++i) {
         if (str[i] != '\\') {
             unescapedString.push_back(str[i]);
-        } else {
+        }
+        else
+        {
             if (i + 1 < str.length()) {
                 char c = unescapeChar(str[i + 1]);
                 if (c == static_cast<char>(-1)) {
                     unescapedString.push_back('\\');
                     unescapedString.push_back(str[i + 1]);
-                } else {
+                }
+                else
+                {
                     unescapedString.push_back(c);
                 }
                 ++i;
-            } else {
+            }
+            else
+            {
                 unescapedString.push_back('\\');
             }
         }
@@ -1601,28 +1603,190 @@ std::string
 appendContextPath(dom::Value const& contextPath, std::string_view id) {
     if (contextPath.isString()) {
         return std::string(contextPath.getString()) + "." + std::string(id);
-    } else {
+    }
+    else
+    {
         return std::string(id);
     }
 }
 
-bool
-popContextSegment(std::string_view& contextPath) {
-    if (contextPath.empty())
+std::string
+appendContextPath(dom::Value const& contextPath, dom::Value const& id) {
+    if (!id.isString() && !id.isSafeString())
     {
-        return false;
+        return std::string(contextPath);
     }
-    auto pos = contextPath.find_last_of('.');
-    if (pos == std::string_view::npos)
-    {
-        contextPath.remove_prefix(contextPath.size());
-    }
-    else
-    {
-        contextPath = contextPath.substr(0, pos);
-    }
-    return true;
+    return appendContextPath(contextPath, id.getString().get());
 }
+}
+
+struct HbsHelperObjectImpl
+    : public dom::ObjectImpl
+{
+    dom::Value name_;
+    dom::Value context_;
+    dom::Value data_;
+    dom::Value log_;
+    dom::Value hash_;
+    dom::Value ids_;
+    dom::Value hashIds_;
+    dom::Value lookupProperty_;
+    dom::Value blockParams_;
+    dom::Value write_;
+    dom::Value fn_;
+    dom::Value inverse_;
+    dom::Value write_inverse_;
+    dom::Object overlay_;
+
+public:
+    ~HbsHelperObjectImpl() override = default;
+
+    char const*
+    type_key() const noexcept override {
+        return "HandlebarsHelperObject";
+    }
+
+    std::size_t size() const override {
+        return 13 + overlay_.size();
+    }
+
+    reference get(std::size_t i) const override {
+        switch (i) {
+        case 0: return { "name", name_ };
+        case 1: return { "context", context_ };
+        case 2: return { "data", data_ };
+        case 3: return { "log", log_ };
+        case 4: return { "hash", hash_ };
+        case 5: return { "ids", ids_ };
+        case 6: return { "hashIds", hashIds_ };
+        case 7: return { "lookupProperty", lookupProperty_ };
+        case 8: return { "blockParams", blockParams_ };
+        case 9: return { "write", write_ };
+        case 10: return { "fn", fn_ };
+        case 11: return { "inverse", inverse_ };
+        case 12: return { "write_inverse", write_inverse_ };
+        default: return overlay_.get(i - 13);
+        }
+    }
+
+    dom::Value find(std::string_view key) const override {
+        if (key == "name")
+        {
+            return name_;
+        }
+        else if (key == "context")
+        {
+            return context_;
+        }
+        else if (key == "data")
+        {
+            return data_;
+        }
+        else if (key == "log")
+        {
+            return log_;
+        }
+        else if (key == "hash")
+        {
+            return hash_;
+        }
+        else if (key == "ids")
+        {
+            return ids_;
+        }
+        else if (key == "hashIds")
+        {
+            return hashIds_;
+        }
+        else if (key == "lookupProperty")
+        {
+            return lookupProperty_;
+        }
+        else if (key == "blockParams")
+        {
+            return blockParams_;
+        }
+        else if (key == "write")
+        {
+            return write_;
+        }
+        else if (key == "fn")
+        {
+            return fn_;
+        }
+        else if (key == "inverse")
+        {
+            return inverse_;
+        }
+        else if (key == "write_inverse")
+        {
+            return write_inverse_;
+        }
+        else
+        {
+            return overlay_.find(key);
+        }
+    }
+
+    void set(dom::String key, dom::Value value) override {
+        if (key == "name")
+        {
+            name_ = value;
+        }
+        else if (key == "context")
+        {
+            context_ = value;
+        }
+        else if (key == "data")
+        {
+            data_ = value;
+        }
+        else if (key == "log")
+        {
+            log_ = value;
+        }
+        else if (key == "hash")
+        {
+            hash_ = value;
+        }
+        else if (key == "ids")
+        {
+            ids_ = value;
+        }
+        else if (key == "hashIds")
+        {
+            hashIds_ = value;
+        }
+        else if (key == "lookupProperty")
+        {
+            lookupProperty_ = value;
+        }
+        else if (key == "blockParams")
+        {
+            blockParams_ = value;
+        }
+        else if (key == "write")
+        {
+            write_ = value;
+        }
+        else if (key == "fn")
+        {
+            fn_ = value;
+        }
+        else if (key == "inverse")
+        {
+            inverse_ = value;
+        }
+        else if (key == "write_inverse")
+        {
+            write_inverse_ = value;
+        }
+        else
+        {
+            overlay_.set(key, value);
+        }
+    }
+};
 
 Handlebars::evalExprResult
 Handlebars::
@@ -1647,9 +1811,13 @@ evalExpr(
         {
             return {false, true, true};
         }
-        if (is_literal_value(expression, "null") || is_literal_value(expression, "undefined") || expression.empty())
+        if (is_literal_value(expression, "null"))
         {
             return {nullptr, true, true};
+        }
+        if (is_literal_value(expression, "undefined") || expression.empty())
+        {
+            return {dom::Kind::Undefined, true, true};
         }
         if (expression == "." || expression == "this")
         {
@@ -1667,7 +1835,9 @@ evalExpr(
                 expression.data() + expression.size(),
                 value);
             if (res.ec != std::errc())
+            {
                 return {std::int64_t(0), true, true};
+            }
             return {value, true, true};
         }
         // ==============================================================
@@ -1692,11 +1862,12 @@ evalExpr(
             }
             all.remove_prefix(helper.data() + helper.size() - all.data());
             dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
-            HandlebarsCallback cb;
-            cb.name_ = helper;
-            cb.context_ = &context;
+            dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
+            cb.set("name", helper);
+            cb.set("context", context);
             setupArgs(all, context, state, args, cb, opt);
-            return {fn(args, cb).first, true, false, true};
+            return {fn.call(args).value(), true, false, true};
+            MRDOX_UNREACHABLE();
         }
     }
     // ==============================================================
@@ -1768,7 +1939,7 @@ evalExpr(
             }
         }
         if (dotdots > state.parentContext.size()) {
-            return {nullptr, false};
+            return {dom::Kind::Undefined, false};
         }
         dom::Value parentCtx =
             state.parentContext[state.parentContext.size() - dotdots];
@@ -1867,7 +2038,7 @@ evalExpr(
 
         // Find in parent contexts
         auto parentContexts = std::ranges::views::reverse(state.parentContext);
-        for (auto parentContext: parentContexts)
+        for (const auto& parentContext: parentContexts)
         {
             std::tie(r, defined) = lookupPropertyImpl(parentContext, expression, state, noStrict);
             if (defined)
@@ -1882,13 +2053,13 @@ evalExpr(
         std::string msg = fmt::format("\"{}\" not defined", expression);
         throw HandlebarsError(msg);
     }
-    return {nullptr, false, false};
+    return {dom::Kind::Undefined, false, false};
 }
 
 auto
 Handlebars::
 getHelper(std::string_view helper, bool isNoArgBlock) const
-    -> std::pair<helper_type const&, bool>
+    -> std::pair<dom::Function, bool>
 {
     auto it = helpers_.find(helper);
     if (it != helpers_.end())
@@ -1954,7 +2125,7 @@ parseBlock(
     // ==============================================================
     // Initial blocks
     // ==============================================================
-    fnBlock=templateText;
+    fnBlock = templateText;
     inverseBlocks = {};
     if (!opt.ignoreStandalone && tag.isStandalone)
     {
@@ -1998,8 +2169,8 @@ parseBlock(
         // ==============================================================
         if (!tag.rawBlock) {
             bool isRegularBlock = curTag.type == '#' || curTag.type2 == '#';
-            // Nested invert blocks are blocks considered inside the current
-            // block rather than a new "else" block.
+            // Sequential invert blocks {{^x}} are blocks nested inside the
+            // current block, different from than a new "else" block.
             // {{^bool}}A{{^bool}}B{{/bool}}C{{/bool}} -> nested
             // {{^bool}}A{{else if bool}}B{{/bool}} -> not nested
             bool isNestedInvert =
@@ -2073,19 +2244,11 @@ parseBlock(
                         *curBlock = trim_lspaces(*curBlock);
                         templateText = trim_lspaces(templateText);
                     }
-#if 0
-                    else if (!opt.ignoreStandalone && inverseTag.isStandalone)
-                    {
-                        *curBlock = trim_ldelimiters(*curBlock, " ");
-                        if (curBlock->starts_with('\n'))
-                        {
-                            curBlock->remove_prefix(1);
-                        }
-                    }
-#endif
                 }
             }
-        } else {
+        }
+        else
+        {
             // ==============================================================
             // Raw blocks
             // ==============================================================
@@ -2169,7 +2332,7 @@ renderTag(
     }
     else if ('!' == tag.type)
     {
-        // Remove standalone whitespace
+        // Remove whitespace around standalone comments
         if (!opt.ignoreStandalone && tag.isStandalone)
         {
             state.templateText = trim_ldelimiters(state.templateText, " ");
@@ -2222,16 +2385,16 @@ renderExpression(
     if (it != helpers_.end()) {
         auto fn = it->second;
         dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
-        HandlebarsCallback cb;
-        cb.name_ = tag.helper;
-        cb.context_ = &context;
-        cb.data_ = &state.data;
-        cb.logger_ = &logger_;
+        dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
+        cb.set("name", tag.helper);
+        cb.set("context", context);
+        cb.set("data", state.data);
+        cb.set("log", logger_);
         HandlebarsOptions noStrict = opt;
         noStrict.strict = false;
         setupArgs(tag.arguments, context, state, args, cb, noStrict);
-        auto [res, render] = fn(args, cb);
-        if (render == HelperBehavior::RENDER_RESULT) {
+        dom::Value res = fn.call(args).value();
+        if (!res.isUndefined()) {
             opt2.noEscape = opt2.noEscape || res.isSafeString();
             format_to(out, res, opt2);
         }
@@ -2257,8 +2420,11 @@ renderExpression(
         if (resV.value.isFunction())
         {
             dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
-            HandlebarsCallback cb;
-            cb.name_ = helper_expr;
+            dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
+            cb.set("name", helper_expr);
+            cb.set("context", context);
+            cb.set("data", state.data);
+            cb.set("log", logger_);
             HandlebarsOptions noStrict = opt;
             noStrict.strict = false;
             setupArgs(tag.arguments, context, state, args, cb, noStrict);
@@ -2282,31 +2448,42 @@ renderExpression(
     // ==============================================================
     auto [fn, found] = getHelper(helper_expr, false);
     dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
-    HandlebarsCallback cb;
-    cb.name_ = helper_expr;
-    setupArgs(tag.arguments, context, state, args, cb, opt);
-    auto [res, render] = fn(args, cb);
-    if (render == HelperBehavior::RENDER_RESULT) {
+    dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
+    cb.set("name", helper_expr);
+    cb.set("context", context);
+    cb.set("data", state.data);
+    cb.set("log", logger_);
+    HandlebarsOptions noStrict = opt;
+    noStrict.strict = false;
+    setupArgs(tag.arguments, context, state, args, cb, noStrict);
+    dom::Value res = fn.call(args).value();
+    if (!res.isUndefined())
+    {
         opt2.noEscape = opt2.noEscape || res.isSafeString();
         format_to(out, res, opt2);
     }
-    if (tag.removeRWhitespace) {
+    if (tag.removeRWhitespace)
+    {
         state.templateText = trim_lspaces(state.templateText);
     }
 }
 
 std::string_view
 remove_redundant_prefixes(std::string_view expr) {
-    if (expr.starts_with("./")) {
+    if (expr.starts_with("./"))
+    {
         expr.remove_prefix(2);
     }
-    else if (expr.starts_with("this.")) {
+    else if (expr.starts_with("this."))
+    {
         expr.remove_prefix(5);
     }
-    else if (expr == "this") {
+    else if (expr == "this")
+    {
         expr.remove_prefix(4);
     }
-    else if (expr == ".") {
+    else if (expr == ".")
+    {
         expr.remove_prefix(1);
     }
     return expr;
@@ -2319,12 +2496,30 @@ setupArgs(
     dom::Value const& context,
     detail::RenderState & state,
     dom::Array &args,
-    HandlebarsCallback& cb,
+    dom::Object& cb,
     HandlebarsOptions const& opt) const
 {
     std::string_view expr;
+    // ==========================================
+    // Initial setup
+    // ==========================================
+    cb.set("hash", dom::newObject<dom::DefaultObjectImpl>());
+    if (opt.trackIds)
+    {
+        cb.set("ids", dom::newArray<dom::DefaultArrayImpl>());
+        cb.set("hashIds", dom::newObject<dom::DefaultObjectImpl>());
+    }
+    else
+    {
+        cb.set("ids", {});
+        cb.set("hashIds", {});
+    }
+    dom::Object hash = cb.find("hash").getObject();
     while (findExpr(expr, expression))
     {
+        // ==========================================
+        // Find next expression
+        // ==========================================
         auto exprEndPos = expr.data() + expr.size() - expression.data();
         expression = expression.substr(exprEndPos);
         if (!expression.empty() && expression.front() != ' ')
@@ -2340,58 +2535,78 @@ setupArgs(
         }
         expression = trim_ldelimiters(expression, " ");
         auto [k, v] = findKeyValuePair(expr);
-        if (k.empty())
+        bool const isPositional = k.empty();
+        if (isPositional)
         {
+            // ==========================================
+            // Positional argument
+            // ==========================================
             auto res = evalExpr(context, expr, state, opt, true);
             args.emplace_back(res.value);
             if (opt.trackIds) {
-                if (res.isLiteral) {
-                    cb.ids_.emplace_back(nullptr);
+                dom::Array ids = cb.find("ids").getArray();
+                if (res.isLiteral)
+                {
+                    ids.emplace_back(nullptr);
                 }
-                else if (res.isSubexpr) {
-                    cb.ids_.emplace_back(true);
+                else if (res.isSubexpr)
+                {
+                    ids.emplace_back(true);
                 }
-                else if (res.fromBlockParams) {
+                else if (res.fromBlockParams)
+                {
                     std::size_t n = state.blockValuePaths.size();
                     dom::Value IdVal = expr;
                     for (std::size_t i = 0; i < n; ++i)
                     {
                         auto blockValuePath = state.blockValuePaths[i];
-                        if (expr.starts_with(blockValuePath.key)) {
-                            if (blockValuePath.value.isString()) {
-                                std::string res;
-                                res += blockValuePath.value.getString();
-                                res += expr.substr(blockValuePath.key.size());
-                                IdVal = res;
+                        if (expr.starts_with(blockValuePath.key))
+                        {
+                            if (blockValuePath.value.isString())
+                            {
+                                std::string idStr;
+                                idStr += blockValuePath.value.getString();
+                                idStr += expr.substr(blockValuePath.key.size());
+                                IdVal = idStr;
                             }
                             break;
                         }
                     }
-                    cb.ids_.emplace_back(IdVal);
-                } else {
-                    cb.ids_.emplace_back(remove_redundant_prefixes(expr));
+                    ids.emplace_back(IdVal);
+                }
+                else
+                {
+                    ids.emplace_back(remove_redundant_prefixes(expr));
                 }
             }
         }
         else
         {
+            // ==========================================
+            // Named argument
+            // ==========================================
             auto res = evalExpr(context, v, state, opt, true);
-            cb.hash_.set(k, res.value);
+            hash.set(k, res.value);
             if (opt.trackIds) {
+                dom::Object hashIds = cb.find("hashIds").getObject();
                 if (res.isLiteral) {
-                    cb.hashIds_.set(k, nullptr);
+                    hashIds.set(k, nullptr);
                 }
                 else if (res.isSubexpr) {
-                    cb.hashIds_.set(k, true);
+                    hashIds.set(k, true);
                 }
                 else {
-                    cb.hashIds_.set(k, remove_redundant_prefixes(v));
+                    hashIds.set(k, remove_redundant_prefixes(v));
                 }
             }
         }
     }
-    cb.renderState_ = &state;
-    cb.opt_ = &opt;
+    cb.set("lookupProperty", dom::makeInvocable([&state, &opt](
+        dom::Value const& obj, dom::Value const& field)
+    {
+        return lookupPropertyImpl(obj, field, state, opt).first;
+    }));
+    args.emplace_back(cb);
 }
 
 void
@@ -2402,14 +2617,18 @@ renderDecorator(
     dom::Value const& context,
     HandlebarsOptions const& opt,
     detail::RenderState& state) const {
+    // ==============================================================
     // Validate decorator
+    // ==============================================================
     if (tag.helper != "inline")
     {
         out << fmt::format(R"([undefined decorator "{}" in "{}"])", tag.helper, tag.buffer);
         return;
     }
 
+    // ==============================================================
     // Evaluate expression
+    // ==============================================================
     std::string_view expr;
     findExpr(expr, tag.arguments);
     auto res = evalExpr(context, expr, state, opt, true);
@@ -2420,7 +2639,9 @@ renderDecorator(
     }
     std::string_view partial_name = res.value.getString();
 
+    // ==============================================================
     // Parse block
+    // ==============================================================
     std::string_view fnBlock;
     std::string_view inverseBlock;
     Tag inverseTag;
@@ -2485,9 +2706,8 @@ renderPartial(
     }
 
     // ==============================================================
-    // Find partial content
+    // Find registered partial content
     // ==============================================================
-    // Look for registered partial
     auto [partial_content, found] = getPartial(partialName, state);
     if (!found)
     {
@@ -2497,8 +2717,8 @@ renderPartial(
         }
         else
         {
-            throw HandlebarsError(fmt::format("The partial {} could not be found",
-                                              partialName));
+            throw HandlebarsError(fmt::format(
+                "The partial {} could not be found", partialName));
         }
     }
 
@@ -2541,7 +2761,9 @@ renderPartial(
         }
     }
 
+    // ==========================================
     // Populate with arguments
+    // ==========================================
     bool partialCtxChanged = false;
     dom::Value prevContextPath = state.data.find("contextPath");
     if (!tag.arguments.empty())
@@ -2556,6 +2778,9 @@ renderPartial(
             bool const isContextReplacement = partialKey.empty();
             if (isContextReplacement)
             {
+                // ==========================================
+                // Replace context
+                // ==========================================
                 // Check if context has been replaced before
                 if (partialCtxChanged)
                 {
@@ -2578,7 +2803,7 @@ renderPartial(
                     throw HandlebarsError(msg);
                 }
 
-                // Replace context
+                // Do change the context
                 auto res = evalExpr(context, expr, state, opt, true);
                 if (opt.trackIds)
                 {
@@ -2601,7 +2826,9 @@ renderPartial(
                 continue;
             }
 
-            // Argument is key=value pair
+            // ==========================================
+            // Add named argument to context
+            // ==========================================
             evalExprResult res;
             if (contextKey != ".")
             {
@@ -2642,7 +2869,9 @@ renderPartial(
     // ==============================================================
     // Render partial
     // ==============================================================
-    // Partial state
+    // ==========================================
+    // Setup partial state
+    // ==========================================
     std::string_view templateText0 = state.templateText0;
     state.templateText0 = partial_content;
     std::string_view templateText = state.templateText;
@@ -2656,10 +2885,14 @@ renderPartial(
     }
     state.dataStack.emplace_back(state.data);
 
-    // Render
+    // ==========================================
+    // Render partial
+    // ==========================================
     this->render_to(out, partialCtx, opt, state);
 
+    // ==========================================
     // Restore state
+    // ==========================================
     if (partialCtxChanged)
     {
         state.parentContext.pop_back();
@@ -2682,7 +2915,7 @@ renderPartial(
     }
 
     // ==============================================================
-    // Remove standalone whitespace
+    // Remove partial standalone whitespace
     // ==============================================================
     if (!opt.ignoreStandalone && tag.isStandalone)
     {
@@ -2723,33 +2956,44 @@ renderBlock(
         fnBlock, inverseBlock, inverseTag, isChainedBlock);
 
     // ==============================================================
-    // Setup helper parameters
+    // Find helper
     // ==============================================================
-    dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
-    HandlebarsCallback cb;
-    cb.name_ = tag.helper;
-    cb.context_ = &context;
-    cb.data_ = &state.data;
-    cb.logger_ = &logger_;
-    cb.output_ = &out;
     bool const isNoArgBlock = tag.arguments.empty();
     auto [fn, found] = getHelper(tag.helper, isNoArgBlock);
-    std::string_view arguments = tag.arguments;
+    bool const useContextFunction = !found && !tag.arguments.empty();
+    if (useContextFunction)
+    {
+        auto res = evalExpr(context, tag.helper, state, opt, false);
+        if (res.found && res.value.isFunction())
+        {
+            fn = res.value.getFunction();
+            found = true;
+        }
+    }
+
+    std::string_view tagArgumentsStr = tag.arguments;
     bool const emulateMustache = !found && isNoArgBlock;
     std::string unescaped;
-    if (emulateMustache) {
+    if (emulateMustache)
+    {
+        // =========================================================
+        // Emulate mustache: helper expression becomes the argument
+        // =========================================================
         if (is_literal_string(tag.helper))
         {
             unescaped = unescapeString(tag.helper);
-            arguments = unescaped;
+            tagArgumentsStr = unescaped;
         }
         else
         {
-            arguments = tag.helper;
+            tagArgumentsStr = tag.helper;
         }
     }
     else if (opt.strict && !found)
     {
+        // ============================================
+        // Strict mode: throw when helper is not found
+        // ============================================
         std::string msg = fmt::format(
             "\"{}\" not defined in {}", tag.helper, toString(context));
         auto res = find_position_in_text(state.templateText0, tag.helper);
@@ -2759,142 +3003,333 @@ renderBlock(
         }
         throw HandlebarsError(msg);
     }
-    HandlebarsOptions noStrict = opt;
-    noStrict.strict = opt.strict && emulateMustache;
-    setupArgs(arguments, context, state, args, cb, noStrict);
 
     // ==============================================================
-    // Setup block parameters
+    // Setup helper context
     // ==============================================================
+    dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
+    dom::Object cb = dom::newObject<HbsHelperObjectImpl>();
+    cb.set("name", tag.helper);
+    cb.set("context", context);
+    cb.set("data", state.data);
+    cb.set("log", logger_);
+    HandlebarsOptions noStrict = opt;
+    noStrict.strict = opt.strict && emulateMustache;
+    setupArgs(tagArgumentsStr, context, state, args, cb, noStrict);
+
+    // ==========================================
+    // Setup block parameters
+    // ==========================================
     std::string_view expr;
     std::string_view bps = tag.blockParams;
+
+    std::vector<std::string_view> blockParamIds;
     while (findExpr(expr, bps))
     {
         bps = bps.substr(expr.data() + expr.size() - bps.data());
-        cb.blockParamIds_.push_back(expr);
+        blockParamIds.emplace_back(expr);
     }
+    cb.set("blockParams", blockParamIds.size());
 
     // ==============================================================
     // Setup callbacks
     // ==============================================================
-    if (!tag.rawBlock) {
-        cb.fn_ = [this, fnBlock, opt, &state](
-            OutputRef os,
-            dom::Value const &item,
-            dom::Object const &data,
-            dom::Object const &newBlockValues,
-            dom::Object const &newBlockValuePaths) -> void
+    auto write_nested_block =
+        [this, fnBlock, opt, &state, &context, &blockParamIds](
+            OutputRef out,
+            dom::Value newContext,
+            dom::Value const& options) -> void
+    {
+        // ==========================================
+        // Setup new render state
+        // ==========================================
+        std::string_view templateText = state.templateText;
+        state.templateText = fnBlock;
+        dom::Object prevStateData = state.data;
+        dom::Object prevBlockValues = state.blockValues;
+        dom::Object prevBlockValuePaths = state.blockValuePaths;
+
+        // Context
+        if (newContext.isUndefined())
         {
-            std::string_view templateText = state.templateText;
-            state.templateText = fnBlock;
-            dom::Object state_data = state.data;
-            state.data = dom::Object(data);
-            if (!newBlockValues.empty())
-            {
-                dom::Object blockValuesOverlay =
-                    createFrame(newBlockValues, state.blockValues);
-                dom::Object blockValues = state.blockValues;
-                state.blockValues = std::move(blockValuesOverlay);
-                dom::Object blockValuePathsOverlay =
-                    createFrame(newBlockValuePaths, state.blockValuePaths);
-                dom::Object blockValuePaths = state.blockValuePaths;
-                state.blockValuePaths = std::move(blockValuePathsOverlay);
-                render_to(os, item, opt, state);
-                state.blockValues = std::move(blockValues);
-                state.blockValuePaths = std::move(blockValuePaths);
-            }
-            else
-            {
-                render_to(os, item, opt, state);
-            }
-            state.templateText = templateText;
-            state.data = std::move(state_data);
-        };
-        cb.inverse_ =
-            [this, inverseTag, inverseBlock, opt, blockName, &state](
-            OutputRef os,
-            dom::Value const &item,
-            dom::Object const &data,
-            dom::Object const &newBlockValues,
-            dom::Object const &newBlockValuePaths) -> void
+            newContext = context;
+        }
+        bool const sameContext =
+            &newContext == &context ||
+            (newContext.isObject() && context.isObject() && newContext.getObject().impl() == context.getObject().impl()) ||
+            (newContext.isArray() && context.isArray() && newContext.getArray().impl() == context.getArray().impl());
+        if (!sameContext)
         {
-            std::string_view templateText = state.templateText;
-            state.templateText = inverseBlock;
-            dom::Object state_data = state.data;
-            state.data = dom::Object(data);
-            if (inverseTag.helper.empty()) {
-                // Inverse tag does not contain its own helper
-                // i.e. {{#helper}}...{{^}}...{{/helper}} instead of
-                //      {{#helper}}...{{^helper2}}...{{/helper}}
-                // Render the inverse block with the specified context
-                if (!opt.ignoreStandalone && inverseTag.isStandalone)
+            state.parentContext.push_back(context);
+        }
+
+        // Extra options from the helper
+        if (options.isObject())
+        {
+            dom::Object const& optObj = options.getObject();
+
+            // Data
+            if (optObj.exists("data"))
+            {
+                dom::Value dataV = optObj.find("data");
+                if (dataV.isObject())
                 {
-                    state.templateText = trim_ldelimiters(state.templateText, " ");
-                    if (state.templateText.starts_with('\n'))
-                    {
-                        state.templateText.remove_prefix(1);
-                    }
+                    state.data = dataV.getObject();
                 }
-                render_to(os, item, opt, state);
             }
-            else
+
+            // Block params
+            if (optObj.exists("blockParams"))
             {
-                if (!newBlockValues.empty())
+                dom::Value blockParamsV = optObj.find("blockParams");
+                if (blockParamsV.isArray())
                 {
+                    dom::Object newBlockValues;
+                    dom::Array const& blockParams = blockParamsV.getArray();
+                    for (std::size_t i = 0; i < blockParamIds.size(); ++i) {
+                        newBlockValues.set(blockParamIds[i], blockParams[i]);
+                    }
                     dom::Object blockValuesOverlay =
                         createFrame(newBlockValues, state.blockValues);
-                    dom::Object blockValues = state.blockValues;
                     state.blockValues = std::move(blockValuesOverlay);
-                    dom::Object blockValuePathsOverlay =
-                        createFrame(newBlockValuePaths, state.blockValuePaths);
-                    dom::Object blockValuePaths = state.blockValuePaths;
-                    state.blockValuePaths = std::move(blockValuePathsOverlay);
-                    renderBlock(blockName, inverseTag, os, item, opt, state, true);
-                    state.blockValues = std::move(blockValues);
-                    state.blockValuePaths = std::move(blockValuePaths);
-                }
-                else
-                {
-                    renderBlock(blockName, inverseTag, os, item, opt, state, true);
                 }
             }
-            state.templateText = templateText;
-            state.data = std::move(state_data);
-        };
-    } else {
-        cb.fn_ = [fnBlock](
-            OutputRef os,
-            dom::Value const & /* item */,
-            dom::Object const & /* data */,
-            dom::Object const & /* newBlockValues */,
-            dom::Object const & /* newBlockValuePaths */) -> void {
-            // Render raw fnBlock
-            os << fnBlock;
-        };
-        cb.inverse_ = [](
-            OutputRef /* os */,
-            dom::Value const &/* item */,
-            dom::Object const &/* data */,
-            dom::Object const &/* newBlockValues */,
-            dom::Object const &/* newBlockValuePaths */) -> void {
-            // noop: No inverseBlock for raw block
-        };
+
+            // Block param paths
+            if (optObj.exists("blockParamPaths"))
+            {
+                dom::Value blockParamPathsV = optObj.find("blockParamPaths");
+                if (blockParamPathsV.isArray())
+                {
+                    dom::Array const& blockParamPaths = blockParamPathsV.getArray();
+                    dom::Object newBlockValuePaths;
+                    for (std::size_t i = 0; i < blockParamIds.size(); ++i)
+                    {
+                        newBlockValuePaths.set(blockParamIds[i], blockParamPaths[i]);
+                    }
+                    dom::Object blockValuePathsOverlay =
+                        createFrame(newBlockValuePaths, state.blockValuePaths);
+                    state.blockValuePaths = std::move(blockValuePathsOverlay);
+                }
+            }
+        }
+
+        // ==========================================
+        // Render
+        // ==========================================
+        render_to(out, newContext, opt, state);
+
+        // ==========================================
+        // Restore state
+        // ==========================================
+        state.templateText = templateText;
+        state.data = std::move(prevStateData);
+        state.blockValues = std::move(prevBlockValues);
+        state.blockValuePaths = std::move(prevBlockValuePaths);
+        if (!sameContext)
+        {
+            state.parentContext.pop_back();
+        }
+    };
+
+    auto write_inverse_block =
+        [this, inverseTag, inverseBlock, opt, blockName, &state, &context, &blockParamIds](
+            OutputRef out,
+            dom::Value const& newContext,
+            dom::Value const& options) -> void
+    {
+        // ==========================================
+        // Setup new render state
+        // ==========================================
+        std::string_view templateText = state.templateText;
+        state.templateText = inverseBlock;
+        dom::Object prevStateData = state.data;
+        dom::Object prevBlockValues = state.blockValues;
+        dom::Object prevBlockValuePaths = state.blockValuePaths;
+
+        // Context
+        bool const sameContext =
+            &newContext == &context ||
+            (newContext.isObject() && context.isObject() && newContext.getObject().impl() == context.getObject().impl()) ||
+            (newContext.isArray() && context.isArray() && newContext.getArray().impl() == context.getArray().impl());
+        if (!sameContext)
+        {
+            state.parentContext.push_back(context);
+        }
+
+        // Extra options from the helper
+        if (options.isObject())
+        {
+            dom::Object const& optObj = options.getObject();
+
+            // Data
+            if (optObj.exists("data"))
+            {
+                dom::Value dataV = optObj.find("data");
+                if (dataV.isObject())
+                {
+                    state.data = dataV.getObject();
+                }
+            }
+
+            // Block params
+            if (optObj.exists("blockParams"))
+            {
+                dom::Value blockParamsV = optObj.find("blockParams");
+                if (blockParamsV.isArray())
+                {
+                    dom::Object newBlockValues;
+                    dom::Array const& blockParams = blockParamsV.getArray();
+                    for (std::size_t i = 0; i < blockParamIds.size(); ++i) {
+                        newBlockValues.set(blockParamIds[i], blockParams[i]);
+                    }
+                    dom::Object blockValuesOverlay =
+                        createFrame(newBlockValues, state.blockValues);
+                    state.blockValues = std::move(blockValuesOverlay);
+                }
+            }
+
+            // Block param paths
+            if (optObj.exists("blockParamPaths"))
+            {
+                dom::Value blockParamPathsV = optObj.find("blockParamPaths");
+                if (blockParamPathsV.isArray())
+                {
+                    dom::Array const& blockParamPaths = blockParamPathsV.getArray();
+                    dom::Object newBlockValuePaths;
+                    for (std::size_t i = 0; i < blockParamIds.size(); ++i)
+                    {
+                        newBlockValuePaths.set(blockParamIds[i], blockParamPaths[i]);
+                    }
+                    dom::Object blockValuePathsOverlay =
+                        createFrame(newBlockValuePaths, state.blockValuePaths);
+                    state.blockValuePaths = std::move(blockValuePathsOverlay);
+                }
+            }
+        }
+
+        // ==========================================
+        // Render
+        // ==========================================
+        bool const plainInverse = inverseTag.helper.empty();
+        if (plainInverse) {
+            // Inverse tag does not contain its own helper
+            // i.e. {{#helper}}...{{^}}...{{/helper}} instead of
+            //      {{#helper}}...{{^helper2}}...{{/helper}}
+            // Render the inverse block with the specified context
+            if (!opt.ignoreStandalone && inverseTag.isStandalone)
+            {
+                state.templateText = trim_ldelimiters(state.templateText, " ");
+                if (state.templateText.starts_with('\n'))
+                {
+                    state.templateText.remove_prefix(1);
+                }
+                else if (state.templateText.starts_with("\r\n"))
+                {
+                    state.templateText.remove_prefix(2);
+                }
+            }
+            render_to(out, newContext, opt, state);
+        }
+        else
+        {
+            // Inverse tag contains its own helper
+            // Go straight to the render block method, which will
+            // expect a closing tag matching the parent tag, and
+            // interpret sequential "else" tags as more chained
+            // inverse tags.
+            renderBlock(blockName, inverseTag, out, newContext, opt, state, true);
+        }
+
+        // ==========================================
+        // Restore state
+        // ==========================================
+        state.templateText = templateText;
+        state.data = std::move(prevStateData);
+        state.blockValues = std::move(prevBlockValues);
+        state.blockValuePaths = std::move(prevBlockValuePaths);
+        if (!sameContext)
+        {
+            state.parentContext.pop_back();
+        }
+    };
+
+    if (!tag.rawBlock) {
+        cb.set("write", dom::makeInvocable([&out, &write_nested_block](
+            dom::Value const& newContext,
+            dom::Value const& options) {
+            write_nested_block(out, newContext, options);
+            return dom::Value();
+        }));
+        cb.set("fn", dom::makeInvocable([&write_nested_block](
+            dom::Value const& newContext,
+            dom::Value const& options) {
+            std::string out;
+            OutputRef out2(out);
+            write_nested_block(out2, newContext, options);
+            return out;
+        }));
+        cb.set("write_inverse", dom::makeInvocable([&out, &write_inverse_block](
+            dom::Value const& newContext,
+            dom::Value const& options) {
+            write_inverse_block(out, newContext, options);
+            return dom::Value();
+        }));
+        cb.set("inverse", dom::makeInvocable([&write_inverse_block](
+            dom::Value const& newContext,
+            dom::Value const& options) {
+            std::string out;
+            OutputRef out2(out);
+            write_inverse_block(out2, newContext, options);
+            return out;
+        }));
+    }
+    else
+    {
+        cb.set("fn", dom::makeInvocable([fnBlock]() {
+            return fnBlock;
+        }));
+        cb.set("write", dom::makeInvocable([&out, fnBlock]() {
+            out << fnBlock;
+            return dom::Value();
+        }));
+        // noop: No inverseBlock for raw block
+        cb.set("write_inverse", dom::makeInvocable([]() {
+            return dom::Value();
+        }));
+        cb.set("inverse", dom::makeInvocable([]() -> dom::String {
+            return "";
+        }));
     }
 
     bool const isStandaloneInvertedSection = tag.type == '^' && !isChainedBlock;
     if (isStandaloneInvertedSection)
     {
-        std::swap(cb.fn_, cb.inverse_);
+        auto fnV = cb.find("fn");
+        auto inverse = cb.find("inverse");
+        cb.set("fn", inverse);
+        cb.set("inverse", fnV);
+        auto fn_write = cb.find("write");
+        auto write_inverse = cb.find("write_inverse");
+        cb.set("write", write_inverse);
+        cb.set("write_inverse", fn_write);
     }
 
     // ==============================================================
     // Call helper
     // ==============================================================
+    if (emulateMustache && args[0].isFunction())
+    {
+        // When emulating mustache, if the first argument
+        // is a function, we call this function before
+        // passing it to blockHelperMissing
+        args.set(0, args[0](cb));
+    }
     state.inlinePartials.emplace_back();
     // state.parentContext.emplace_back(context);
     state.dataStack.emplace_back(state.data);
-    auto [res, render] = fn(args, cb);
-    if (render != HelperBehavior::NO_RENDER) {
+    auto res = fn.call(args).value();
+    if (!res.isUndefined()) {
         // Block helpers are always unescaped
         HandlebarsOptions opt2 = opt;
         opt2.noEscape = true;
@@ -2919,22 +3354,7 @@ registerPartial(
 
 void
 Handlebars::
-unregisterHelper(std::string_view name) {
-    auto it = helpers_.find(name);
-    if (it != helpers_.end())
-        helpers_.erase(it);
-    // Re-register mandatory helpers
-    if (name == "helperMissing")
-        registerHelper("helperMissing", helpers::helper_missing_fn);
-    else if (name == "blockHelperMissing")
-        registerHelper("blockHelperMissing", helpers::block_helper_missing_fn);
-}
-
-void
-Handlebars::
-registerHelperImpl(
-    std::string_view name,
-    helper_type const &helper)
+registerHelper(std::string_view name, dom::Function const& helper)
 {
     auto it = helpers_.find(name);
     if (it != helpers_.end())
@@ -2944,8 +3364,31 @@ registerHelperImpl(
 
 void
 Handlebars::
-registerLogger(
-    std::function<void(dom::Value, dom::Array const&)> fn)
+unregisterHelper(std::string_view name) {
+    auto it = helpers_.find(name);
+    if (it != helpers_.end())
+        helpers_.erase(it);
+
+    // Re-register mandatory helpers
+    if (name == "helperMissing")
+    {
+        registerHelper(
+            "helperMissing",
+            dom::makeVariadicInvocable(
+                helpers::helper_missing_fn));
+    }
+    else if (name == "blockHelperMissing")
+    {
+        registerHelper(
+            "blockHelperMissing",
+            dom::makeInvocable(
+                helpers::block_helper_missing_fn));
+    }
+}
+
+void
+Handlebars::
+registerLogger(dom::Function fn)
 {
     logger_ = std::move(fn);
 }
@@ -2955,34 +3398,38 @@ namespace helpers {
 void
 registerBuiltinHelpers(Handlebars& hbs)
 {
-    hbs.registerHelper("if", if_fn);
-    hbs.registerHelper("unless", unless_fn);
-    hbs.registerHelper("with", with_fn);
-    hbs.registerHelper("each", each_fn);
-    hbs.registerHelper("lookup", lookup_fn);
-    hbs.registerHelper("log", log_fn);
-    hbs.registerHelper("helperMissing", helper_missing_fn);
-    hbs.registerHelper("blockHelperMissing", block_helper_missing_fn);
+    hbs.registerHelper("if", dom::makeVariadicInvocable(if_fn));
+    hbs.registerHelper("unless", dom::makeVariadicInvocable(unless_fn));
+    hbs.registerHelper("with", dom::makeVariadicInvocable(with_fn));
+    hbs.registerHelper("each", dom::makeInvocable(each_fn));
+    hbs.registerHelper("lookup", dom::makeInvocable(lookup_fn));
+    hbs.registerHelper("log", dom::makeVariadicInvocable(log_fn));
+    hbs.registerHelper("helperMissing", dom::makeVariadicInvocable(helper_missing_fn));
+    hbs.registerHelper("blockHelperMissing", dom::makeInvocable(block_helper_missing_fn));
 }
 
 void
 registerAntoraHelpers(Handlebars& hbs)
 {
-    hbs.registerHelper("and", and_fn);
-    hbs.registerHelper("detag", detag_fn);
-    hbs.registerHelper("eq", eq_fn);
-    hbs.registerHelper("increment", increment_fn);
-    hbs.registerHelper("ne", ne_fn);
-    hbs.registerHelper("not", not_fn);
-    hbs.registerHelper("or", or_fn);
-    hbs.registerHelper("relativize", relativize_fn);
-    hbs.registerHelper("year", year_fn);
+    hbs.registerHelper("and", dom::makeVariadicInvocable(and_fn));
+    hbs.registerHelper("detag", dom::makeInvocable(detag_fn));
+    hbs.registerHelper("eq", dom::makeVariadicInvocable(eq_fn));
+    hbs.registerHelper("increment", dom::makeInvocable(increment_fn));
+    hbs.registerHelper("ne", dom::makeVariadicInvocable(ne_fn));
+    hbs.registerHelper("not", dom::makeVariadicInvocable(not_fn));
+    hbs.registerHelper("or", dom::makeVariadicInvocable(or_fn));
+    hbs.registerHelper("relativize", dom::makeInvocable(relativize_fn));
+    hbs.registerHelper("year", dom::makeInvocable(year_fn));
 }
 
 bool
-and_fn(dom::Array const& args) {
-    for (std::size_t i = 0; i < args.size(); ++i) {
-        if (!isTruthy(args[i])) {
+and_fn(dom::Array const& args)
+{
+    std::size_t const n = args.size();
+    for (std::size_t i = 0; i < n - 1; ++i)
+    {
+        if (!args[i])
+        {
             return false;
         }
     }
@@ -2991,160 +3438,29 @@ and_fn(dom::Array const& args) {
 
 bool
 or_fn(dom::Array const& args) {
-    for (std::size_t i = 0; i < args.size(); ++i) {
-        if (isTruthy(args[i])) {
+    std::size_t const n = args.size();
+    for (std::size_t i = 0; i < n - 1; ++i)
+    {
+        if (args[i])
+        {
             return true;
         }
-    }
-    return false;
-}
-
-bool
-isSame(dom::Value const& a, dom::Value const& b);
-
-bool
-isSame(dom::Object const& a, dom::Object const& b) {
-    if (a.size() != b.size()) {
-        return false;
-    }
-    return std::ranges::all_of(a, [&b](const auto & i) {
-        std::string_view k = i.key;
-        if (!b.exists(k)) {
-            return false;
-        }
-        if (!isSame(i.value, b.find(k))) {
-            return false;
-        }
-        return true;
-    });
-}
-
-bool
-isSame(dom::Array const& a, dom::Array const& b) {
-    if (a.size() != b.size()) {
-        return false;
-    }
-    for (std::size_t i = 0; i < a.size(); ++i) {
-        if (!isSame(a[i], b[i])) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool
-isSame(dom::Value const& a, dom::Value const& b) {
-    if (a.kind() != b.kind()) {
-        return false;
-    }
-    switch (a.kind()) {
-        case dom::Kind::Undefined:
-        case dom::Kind::Null:
-            return true;
-        case dom::Kind::Boolean:
-            return a.getBool() == b.getBool();
-        case dom::Kind::Integer:
-            return a.getInteger() == b.getInteger();
-        case dom::Kind::String:
-        case dom::Kind::SafeString:
-            return a.getString() == b.getString();
-        case dom::Kind::Array:
-            return isSame(a.getArray(), b.getArray());
-        case dom::Kind::Object:
-            return isSame(a.getObject(), b.getObject());
-        case dom::Kind::Function:
-            return isSame(a.getFunction(), b.getFunction());
-    }
-    return false;
-}
-
-bool
-isLt(dom::Value const& a, dom::Value const& b);
-
-bool
-isLt(dom::Object const& a, dom::Object const& b) {
-    if (a.size() < b.size()) {
-        return true;
-    }
-    if (b.size() < a.size()) {
-        return false;
-    }
-    for (std::size_t i = 0; i < a.size(); ++i) {
-        auto refa = a.get(i);
-        auto refb = b.get(i);
-        if (isLt(refa.key, refb.key)) {
-            return true;
-        }
-        if (isLt(refb.key, refa.key)) {
-            return false;
-        }
-        if (isLt(refa.value, refb.value)) {
-            return true;
-        }
-        if (isLt(refb.value, refa.value)) {
-            return false;
-        }
-    }
-    return false;
-}
-
-bool
-isLt(dom::Array const& a, dom::Array const& b) {
-    if (a.size() < b.size()) {
-        return true;
-    }
-    if (b.size() < a.size()) {
-        return true;
-    }
-    for (std::size_t i = 0; i < a.size(); ++i) {
-        if (isLt(a[i], b[i])) {
-            return true;
-        }
-        if (isLt(b[i], a[i])) {
-            return false;
-        }
-    }
-    return false;
-}
-
-bool
-isLt(dom::Value const& a, dom::Value const& b) {
-    using kind_t = std::underlying_type_t<dom::Kind>;
-    if (static_cast<kind_t>(a.kind()) < static_cast<kind_t>(b.kind())) {
-        return true;
-    }
-    if (static_cast<kind_t>(b.kind()) < static_cast<kind_t>(a.kind())) {
-        return false;
-    }
-    switch (a.kind()) {
-        case dom::Kind::Undefined:
-        case dom::Kind::Null:
-            return false;
-        case dom::Kind::Boolean:
-            return !a.getBool() && b.getBool();
-        case dom::Kind::Integer:
-            return a.getInteger() < b.getInteger();
-        case dom::Kind::String:
-        case dom::Kind::SafeString:
-            return a.getString().get() < b.getString().get();
-        case dom::Kind::Array:
-            return isLt(a.getArray(), b.getArray());
-        case dom::Kind::Object:
-            return isLt(a.getObject(), b.getObject());
-        case dom::Kind::Function:
-            return true;
     }
     return false;
 }
 
 bool
 eq_fn(dom::Array const& args) {
-    if (args.empty()) {
+    if (args.empty())
+    {
         return true;
     }
     dom::Value first = args[0];
-    for (std::size_t i = 1; i < args.size(); ++i) {
-        if (!isSame(first, args[i])) {
+    std::size_t const n = args.size();
+    for (std::size_t i = 1; i < n - 1; ++i)
+    {
+        if (first != args[i])
+        {
             return false;
         }
     }
@@ -3176,38 +3492,13 @@ kindToString(dom::Kind kind) {
     }
 }
 
-std::string
-validateArgs(
-    std::string_view helper,
-    std::size_t n,
-    dom::Array const& args) {
-    if (args.size() != n) {
-        return fmt::format(R"(["{}" helper requires {} arguments: {} arguments provided])", helper, n, args.size());
-    }
-    return {};
-}
-
-std::string
-validateArgs(
-    std::string_view helper,
-    std::initializer_list<dom::Kind> il,
-    dom::Array const& args) {
-    auto r = validateArgs(helper, il.size(), args);
-    if (!r.empty()) {
-        return r;
-    }
-    for (size_t i = 0; i < args.size(); ++i) {
-        if (args[i].kind() != il.begin()[i]) {
-            return fmt::format(R"(["{}" helper requires argument {} to be of type {}: {} provided])", helper, i, kindToString(il.begin()[i]), kindToString(args[i].kind()));
-        }
-    }
-    return {};
-}
-
 bool
 not_fn(dom::Array const& args) {
-    for (std::size_t i = 0; i < args.size(); ++i) {
-        if (!isTruthy(args[i])) {
+    std::size_t const n = args.size();
+    for (std::size_t i = 0; i < n - 1; ++i)
+    {
+        if (!args[i])
+        {
             return true;
         }
     }
@@ -3215,46 +3506,41 @@ not_fn(dom::Array const& args) {
 }
 
 dom::Value
-increment_fn(
-    dom::Array const &args,
-    HandlebarsCallback const& options)
+increment_fn(dom::Value const& value)
 {
-    auto r = validateArgs(options.name(), 1, args);
-    if (!r.empty()) {
-        return r;
+    if (value)
+    {
+        return value + 1;
     }
-    dom::Value arg = args[0];
-    if (arg.kind() == dom::Kind::Integer)
-        return arg.getInteger() + 1;
-    if (arg.kind() == dom::Kind::Boolean)
-        return true;
-    else
-        return arg;
+    return 1;
 }
 
-std::string
-detag_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options)
+dom::Value
+detag_fn(dom::Value html)
 {
-    auto r = validateArgs(options.name(), {dom::Kind::String}, args);
-    if (!r.empty()) {
-        return r;
+    if (!html)
+    {
+        return html;
     }
-    std::string html(args[0].getString());
+
+    // remove instances of "/<[^>]+>/g"
     std::string result;
     result.reserve(html.size());
     bool insideTag = false;
-    for (char c : html) {
-        if (c == '<') {
+    for (char c: html.getString().get())
+    {
+        if (c == '<')
+        {
             insideTag = true;
             continue;
         }
-        if (c == '>') {
+        if (c == '>')
+        {
             insideTag = false;
             continue;
         }
-        if (!insideTag) {
+        if (!insideTag)
+        {
             result.push_back(c);
         }
     }
@@ -3262,81 +3548,85 @@ detag_fn(
 }
 
 dom::Value
-relativize_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
-    if (args.empty()) {
+relativize_fn(dom::Value to, dom::Value from, dom::Value context)
+{
+    // https://gitlab.com/antora/antora-ui-default/-/blob/master/src/helpers/relativize.js
+    if (!to)
+    {
         return "#";
     }
 
-    // Destination path
-    if (!args[0].isString()) {
-        return fmt::format(R"(["relativize" helper requires a string argument: {} provided])", kindToString(args[0].kind()));
-    }
-    std::string_view to = args[0].getString();
-    if (!isTruthy(to)) {
-        return "#";
-    }
-    if (to.front() != '/') {
+    if (to.isString() && !std::string_view(to.getString()).starts_with('/'))
+    {
         return to;
     }
 
-    // Source path
-    std::string_view from;
-    dom::Value ctx = options.context();
-    if (args.size() > 1)
+    if (!context)
     {
-        if (args[1].kind() == dom::Kind::String)
-            from = args[1].getString();
-        else if (args[1].kind() == dom::Kind::Object)
-            ctx = args[1];
+        // NOTE only legacy invocation provides both to and from
+        context = from;
+        from = context["data"]["root"]["page"]["url"];
     }
 
-    if (from.empty() && ctx.isObject()) {
-        auto [v, defined] = options.lookupProperty(ctx, "data.root.page");
-        if (v.isString()) {
-            from = v.getString();
-        } else {
-            std::tie(v, defined) = options.lookupProperty(ctx, "data.root.site.path");
-            if (v.isString()) {
-                std::string fromStr(v.getString());
-                fromStr += to;
-                return fromStr;
-            }
+    if (!from)
+    {
+        dom::Value sitePath = context["data"]["root"]["site"]["path"];
+        if (sitePath)
+        {
+            return sitePath + to;
         }
+        return to;
     }
 
-    auto hashIdx = std::ranges::find(to, '#') - to.begin();
-    std::string_view hash = to.substr(hashIdx);
-    to = to.substr(0, hashIdx);
+    dom::Value hash = "";
+    std::size_t hashIdx = to.getString().get().find('#');
+    if (hashIdx != std::string_view::npos)
+    {
+        hash = to.getString().get().substr(hashIdx);
+        to = to.getString().get().substr(0, hashIdx);
+    }
+
+    /// return to === from
+    //    ? hash || (isDir(to) ? './' : path.basename(to))
+    //    : (path.relative(path.dirname(from + '.'), to) || '.') + (isDir(to) ? '/' + hash : hash)
     if (to == from)
     {
-        if (!hash.empty())
-        {
+        if (hash) {
             return hash;
         }
-        if (files::isDirsy(to))
+        else if (to.isString() && files::isDirsy(to.getString().get()))
         {
             return "./";
         }
-        return {files::getFileName(to)};
+        else if (to.isString())
+        {
+            return files::getFileName(to.getString().get());
+        }
+        else
+        {
+            return to;
+        }
     }
     else
     {
         // AFREITAS: Implement this functionality without std::filesystem
-        std::string lhs = std::filesystem::relative(
-            std::filesystem::path(std::string_view(to)),
-            std::filesystem::path(std::string_view(from))).generic_string();
-        if (lhs.empty())
-        {
-            lhs = ".";
+        if (!to.isString() || !from.isString()) {
+            return to;
         }
-        if (files::isDirsy(to))
+        std::string relativePath = std::filesystem::relative(
+            std::filesystem::path(std::string_view(to.getString())),
+            std::filesystem::path(std::string_view(from.getString()))).generic_string();
+        if (relativePath.empty())
         {
-            lhs += '/';
+            relativePath = ".";
         }
-        lhs += hash;
-        return lhs;
+        if (files::isDirsy(to.getString())) {
+            return relativePath + '/' + hash;
+        }
+        else
+        {
+            return relativePath + hash;
+        }
     }
 }
 
@@ -3349,513 +3639,588 @@ year_fn() {
 }
 
 void
-if_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
-    if (args.size() != 1) {
+if_fn(dom::Array const& arguments)
+{
+    if (arguments.size() != 2)
+    {
         throw HandlebarsError("#if requires exactly one argument");
     }
 
-    OutputRef out = options.output();
-    dom::Value conditional = args[0];
+    dom::Value conditional = arguments[0];
+    dom::Value options = arguments[1];
+    dom::Value context = options["context"];
     if (conditional.isFunction())
     {
-        conditional = conditional.getFunction()(options.context());
+        conditional = conditional(context);
     }
 
-    if (conditional.isInteger()) {
-        // Treat the zero path separately
-        std::int64_t v = conditional.getInteger();
-        if (v == 0) {
-            bool includeZero = false;
-            if (options.hash().exists("includeZero")) {
-                auto zeroV = options.hash().find("includeZero");
-                if (zeroV.isBoolean()) {
-                    includeZero = zeroV.getBool();
-                }
-            }
-            if (includeZero) {
-                options.fn(out);
-            } else {
-                options.inverse(out);
-            }
-            return;
-        }
+    if ((!options["hash"]["includeZero"] && !conditional) || isEmpty(conditional)) {
+        options["write_inverse"](context);
     }
-    if (!isEmpty(conditional)) {
-        options.fn(out);
-        return;
+    else
+    {
+        options["write"](context);
     }
-    options.inverse(out);
 }
 
 void
-unless_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
-    if (args.size() != 1) {
+unless_fn(dom::Array const& arguments)
+{
+    if (arguments.size() != 2) {
         throw HandlebarsError("#unless requires exactly one argument");
     }
 
-    HandlebarsCallback options2 = options;
-    std::swap(options2.fn_, options2.inverse_);
-    return if_fn(args, options2);
+    dom::Value options = arguments[1];
+    dom::Value fn = options["fn"];
+    dom::Value inverse = options["inverse"];
+    options.set("fn", inverse);
+    options.set("inverse", fn);
+    dom::Value write = options["write"];
+    dom::Value write_inverse = options["write_inverse"];
+    options.set("write", write_inverse);
+    options.set("write_inverse", write);
+    dom::Array inv_arguments = arguments;
+    inv_arguments.set(1, options);
+    return if_fn(inv_arguments);
 }
 
 void
-with_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
-    OutputRef out = options.output();
-    if (args.size() != 1) {
+with_fn(dom::Array const& arguments)
+{
+    if (arguments.size() != 2) {
         throw HandlebarsError("#with requires exactly one argument");
     }
 
-    dom::Value newContext = args[0];
-    if (newContext.isFunction()) {
-        newContext = newContext.getFunction()(options.context());
+    dom::Value context = arguments[0];
+    dom::Value options = arguments[1];
+    if (context.isFunction()) {
+        context = context(options["context"]);
     }
 
-    if (!isEmpty(newContext)) {
-        dom::Object data = createFrame(options.data());
-        if (!options.ids().empty())
+    if (!isEmpty(context))
+    {
+        dom::Value data = options["data"];
+        if (data && options["ids"])
         {
-            std::string contextPath = appendContextPath(
-                options.data().find("contextPath"),
-                toString(options.ids()[0]));
-            data.set("contextPath", contextPath);
+            data = createFrame(data);
+            data.set("contextPath", appendContextPath(
+                data["contextPath"], options["ids"][0]));
         }
-        dom::Array blockParams;
-        blockParams.emplace_back(newContext);
-        dom::Array blockParamPaths;
-        blockParamPaths.emplace_back(data.find("contextPath"));
-        options.fn(out, newContext, data, blockParams, blockParamPaths);
-        return;
+        dom::Array blockParams = {{context}};
+        dom::Array blockParamPaths = {{data && data["contextPath"]}};
+        dom::Object cbOpt;
+        cbOpt.set("data", data);
+        cbOpt.set("blockParams", blockParams);
+        cbOpt.set("blockParamPaths", blockParamPaths);
+        options["write"](context, cbOpt);
     }
-    options.inverse(out);
+    else
+    {
+        options["write_inverse"](options["context"]);
+    }
 }
 
 void
-each_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
-    if (args.empty())
+each_fn(dom::Value context, dom::Value const& options)
+{
+    if (!options)
     {
         throw HandlebarsError("Must pass iterator to #each");
     }
 
-    OutputRef out = options.output();
+    dom::Value fn = options["write"];
+    dom::Value inverse = options["write_inverse"];
+    std::size_t i = 0;
+    dom::Value data;
     std::string contextPath;
-    if (!options.ids().empty())
-    {
+
+    if (options["data"] && options["ids"]) {
         contextPath = appendContextPath(
-            options.data().find("contextPath"), toString(options.ids()[0])) + '.';
+            options["data"]["contextPath"], options["ids"][0]) + '.';
     }
-    dom::Object data = createFrame(options.data());
 
-    dom::Value context = args[0];
     if (context.isFunction()) {
-        context = context.getFunction()(options.context());
+        context = context(options["context"]);
     }
 
-    std::size_t index = 0;
-    if (context.isArray()) {
-        dom::Array const& items = context.getArray();
-        for (index = 0; index < items.size(); ++index) {
-            dom::Value item = items.at(index);
-            data.set("key", static_cast<std::int64_t>(index));
-            data.set("index", static_cast<std::int64_t>(index));
+    if (options["data"]) {
+        data = createFrame(options["data"]);
+    }
+
+    auto execIteration = [&context, &data, &contextPath, &fn](
+        dom::Value const& field, std::size_t index, dom::Value const& last)
+    {
+        if (data)
+        {
+            data.set("key", field);
+            data.set("index", index);
             data.set("first", index == 0);
-            data.set("last", index == items.size() - 1);
-            if (!options.ids().empty())
-            {
-                data.set("contextPath", contextPath + std::to_string(index));
-            }
-            dom::Array blockParams;
-            blockParams.emplace_back(item);
-            blockParams.emplace_back(static_cast<std::int64_t>(index));
-            dom::Array blockParamPaths;
-            blockParamPaths.emplace_back(data.find("contextPath"));
-            blockParamPaths.emplace_back(nullptr);
-            options.fn(out, item, data, blockParams, blockParamPaths);
+            data.set("last", last.getBool());
         }
-    } else if (context.kind() == dom::Kind::Object) {
-        dom::Object const& items = context.getObject();
-        for (index = 0; index < items.size(); ++index) {
-            dom::Object::reference item = items[index];
-            data.set("key", item.key);
-            data.set("index", static_cast<std::int64_t>(index));
-            data.set("first", index == 0);
-            data.set("last", index == items.size() - 1);
-            if (!options.ids().empty())
+
+        if (!contextPath.empty())
+        {
+            data.set("contextPath", contextPath + field);
+        }
+
+        dom::Array blockParams = {{context[field], field}};
+        dom::Array blockParamPaths = {{data && data["contextPath"], nullptr}};
+        dom::Object cbOpt;
+        cbOpt.set("data", data);
+        cbOpt.set("blockParams", blockParams);
+        cbOpt.set("blockParamPaths", blockParamPaths);
+        fn(context[field], cbOpt);
+    };
+
+    bool const isJSObject = static_cast<bool>(
+        context && (context.isObject() || context.isArray()));
+    if (isJSObject)
+    {
+        if (context.isArray())
+        {
+            std::size_t const n = context.size();
+            for (; i < n; ++i)
             {
-                data.set("contextPath", contextPath + std::string(item.key));
+                bool const isLast = i == n - 1;
+                execIteration(i, static_cast<std::int64_t>(i), isLast);
             }
-            dom::Array blockParams;
-            blockParams.emplace_back(item.value);
-            blockParams.emplace_back(item.key);
-            dom::Array blockParamPaths;
-            blockParamPaths.emplace_back(data.find("contextPath"));
-            blockParamPaths.emplace_back(nullptr);
-            options.fn(out, item.value, data, blockParams, blockParamPaths);
+        }
+        else if (context.isObject())
+        {
+            dom::Value priorKey;
+            for (auto const& [key, value] : context.getObject())
+            {
+                if (!priorKey.isUndefined())
+                {
+                    execIteration(priorKey, i - 1, false);
+                }
+                priorKey = key;
+                ++i;
+            }
+            if (!priorKey.isUndefined())
+            {
+                execIteration(priorKey, i - 1, true);
+            }
         }
     }
-    if (index == 0) {
-        options.inverse(out);
+
+    if (i == 0)
+    {
+        inverse(options["context"]);
     }
 }
 
 dom::Value
-lookup_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
-    auto r = validateArgs(options.name(), 2, args);
-    if (!r.empty()) {
-        throw std::runtime_error(r);
-    }
-    dom::Value obj = args[0];
-    dom::Value field = args[1];
-    if (!isTruthy(obj)) {
+lookup_fn(dom::Value const& obj, dom::Value const& field, dom::Value const& options)
+{
+    if (!obj)
+    {
         return obj;
     }
-    return options.lookupProperty(obj, field).first;
+    return options["lookupProperty"](obj, field);
 }
 
 void
-log_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
+log_fn(dom::Array const& arguments)
+{
+    // {level, args}
+    dom::Array args = {{dom::Value{}}};
+    dom::Value options = arguments.back();
+    std::size_t const n = arguments.size();
+    for (std::size_t i = 0; i < n - 1; ++i)
+    {
+        args.emplace_back(arguments[i]);
+    }
+
     dom::Value level = 1;
-    if (auto hl = options.hash().find("level"); !hl.isNull())
+    dom::Value hash = options["hash"];
+    dom::Value data = options["data"];
+    if (hash.exists("level") && !hash["level"].isNull())
     {
-        level = hl;
+        level = options["hash"]["level"];
     }
-    else if (auto ol = options.data().find("level"); !ol.isNull())
+    else if (data.exists("level") && !data["level"].isNull())
     {
-        level = ol;
+        level = options["data"]["level"];
     }
-    options.log(level, args);
+    args.set(0, level);
+    options["log"].getFunction().call(args);
 }
 
-void
-helper_missing_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
-    if (!args.empty()) {
-        std::string msg = fmt::format(R"(Missing helper: "{}")", options.name());
-        throw std::runtime_error(msg);
+dom::Value
+helper_missing_fn(dom::Array const& arguments)
+{
+    if (arguments.size() == 1)
+    {
+        return {};
     }
+
+    throw std::runtime_error(fmt::format(
+        R"(Missing helper: "{}")",
+        arguments.back()["name"]));
 }
 
 void
 block_helper_missing_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
-    OutputRef out = options.output();
-    auto r = validateArgs(options.name(), 1, args);
-    if (!r.empty()) {
-        out << r;
-        return;
+    dom::Value const& context, dom::Value options)
+{
+    if (context == true) {
+        options["write"](options["context"]);
     }
-    dom::Value context = args[0];
-    if (context.isBoolean()) {
-        if (context.getBool()) {
-            options.fn(out);
-            return;
-        } else {
-            options.inverse(out);
-            return;
-        }
-    } else if (context.isNull()) {
-        options.inverse(out);
-        return;
-    } else if (context.isArray()) {
-        // If the context is an array, then we'll iterate over it, rendering
-        // the block for each item in the array like mustache does.
-        dom::Array const& items = context.getArray();
-        if (items.empty()) {
-            options.inverse(out);
-            return;
-        }
-        dom::Object data = createFrame(options.data());
-
-        std::string contextPath;
-        if (!options.ids().empty())
+    else if (context == false || context.isNull() || context.isUndefined())
+    {
+        options["write_inverse"](options["context"]);
+    }
+    else if (context.isArray())
+    {
+        if (!context.empty())
         {
-            contextPath = appendContextPath(
-                options.data().find("contextPath"), toString(options.ids()[0])) + '.';
-        }
-        for (std::size_t index = 0; index < items.size(); ++index) {
-            dom::Value item = items.at(index);
-            data.set("key", static_cast<std::int64_t>(index));
-            data.set("index", static_cast<std::int64_t>(index));
-            data.set("first", index == 0);
-            data.set("last", index == items.size() - 1);
-            if (!options.ids().empty())
+            if (options["ids"])
             {
-                data.set("contextPath", contextPath + std::to_string(index));
+                options.set("ids", dom::Array{{options["name"]}});
             }
-            options.fn(out, item, data, {}, {});
+            each_fn(context, options);
         }
-    } else {
-        // If the context is not an array, then we'll render the block once
-        // with the context as the data.
-        dom::Object data = createFrame(options.data());
-        if (!options.ids().empty()) {
+        else
+        {
+            options["write_inverse"](options["context"]);
+        }
+    }
+    else
+    {
+        dom::Object fnOpt;
+        if (options["data"] && options["ids"])
+        {
+            dom::Object data = createFrame(options["data"]);
             data.set(
-                "contextPath", appendContextPath(data.find("contextPath"), options.name()));
+                "contextPath",
+                appendContextPath(data["contextPath"], options["name"]));
+            fnOpt.set("data", data);
         }
-        options.fn(out, context, data, {}, {});
-    }
-}
-
-void
-noop_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options) {
-    OutputRef out = options.output();
-    if (options.isBlock()) {
-        // If the hook is not overridden, then the default implementation will
-        // mimic the behavior of Mustache and just render the block.
-        options.fn(out);
-        return;
-    }
-    if (!args.empty()) {
-        out << fmt::format(R"(Missing helper: "{}")", options.name());
+        options["write"](context, fnOpt);
     }
 }
 
 constexpr
 std::int64_t
 normalize_index(std::int64_t i, std::int64_t n) {
-    if (i < 0 || i > n) {
+    if (i < 0 || i > n)
+    {
         return (i % n + n) % n;
     }
     return i;
 }
 
 dom::Value
-at_fn(dom::Array const& args, HandlebarsCallback const& options) {
-    dom::Value range;
-    dom::Value field;
-    std::int64_t index = 0;
-    if (options.isBlock()) {
-        range = options.fn();
-        field = args.at(0);
-    } else {
-        range = args.at(0);
-        field = args.at(1);
+at_fn(dom::Value range, dom::Value field, dom::Value options)
+{
+    auto isBlock = options.isUndefined() && static_cast<bool>(field["fn"]);
+    if (isBlock)
+    {
+        options = field;
+        field = range;
+        range = options["fn"]();
     }
-    if (field.isInteger()) {
+
+    std::int64_t index = 0;
+    if (field.isInteger())
+    {
         index = field.getInteger();
     }
-    if (range.isString()) {
+
+    if (range.isString())
+    {
         std::string str(range.getString().get());
         index = normalize_index(index, static_cast<std::int64_t>(str.size()));
         return std::string(1, str.at(index));
-    } else if (range.isArray()) {
+    }
+    else if (range.isArray())
+    {
         dom::Array const& arr = range.getArray();
         index = normalize_index(index, static_cast<std::int64_t>(arr.size()));
         return arr.at(index);
-    } else if (range.isObject()) {
+    }
+    else if (range.isObject())
+    {
         dom::Object const& obj = range.getObject();
-        if (!field.isString()) {
+        if (!field.isString())
+        {
             return nullptr;
         }
         std::string key(field.getString().get());
-        if (obj.exists(key)) {
+        if (obj.exists(key))
+        {
             return obj.find(key);
         }
         return nullptr;
-    } else {
+    }
+    else
+    {
         return range;
     }
 }
 
 dom::Value
-concat_fn(dom::Array const& args, HandlebarsCallback const& options) {
-    if (args.at(0).isString()) {
-        std::string str;
-        std::string sep;
-        std::string str2;
-        if (options.isBlock()) {
-            str = options.fn();
-            sep = args.at(0).getString();
-            str2 = args.at(1).getString();
-        } else {
-            str = args.at(0).getString();
-            sep = args.at(1).getString();
-            str2 = args.at(2).getString();
-        }
-        return str + sep + str2;
-    } else if (args.at(0).isArray()) {
+concat_fn(
+    dom::Value range1,
+    dom::Value sep,
+    dom::Value range2,
+    dom::Value options)
+{
+    auto isBlock = options.isUndefined() && static_cast<bool>(range2["fn"]);
+    if (isBlock)
+    {
+        options = range2;
+        range2 = sep;
+        sep = range1;
+        range1 = options["fn"]();
+    }
+
+    if (range1.isString() || range2.isString())
+    {
+        return range1 + sep + range2;
+    }
+    else if (range1.isArray() && sep.isArray())
+    {
+        options = range2;
+        range2 = sep;
         dom::Array res;
-        for (std::size_t i = 0; i < args.size(); ++i) {
-            dom::Value cur = args.at(i);
-            auto const& curArray = cur.getArray();
-            for (std::size_t j = 0; j < curArray.size(); ++j) {
-                res.emplace_back(curArray.at(j));
-            }
+        for (dom::Value item : range1.getArray())
+        {
+            res.emplace_back(item);
+        }
+        for (dom::Value item : range2.getArray())
+        {
+            res.emplace_back(item);
         }
         return res;
-    } else {
-        return args.at(0);
     }
+    else if (range1.isObject() && sep.isObject())
+    {
+        options = range2;
+        range2 = sep;
+        return createFrame(range1.getObject(), range2.getObject());
+    }
+    return range1 + range2;
 }
 
 std::int64_t
-count_fn(dom::Array const& args, HandlebarsCallback const& options) {
+count_fn(dom::Array const& arguments)
+{
+    std::size_t const n = arguments.size();
+    dom::Value options = arguments.back();
+    dom::Value fn = options["fn"];
+    auto const isBlock = static_cast<bool>(fn);
+    dom::Value firstArg = arguments[0];
+    dom::Value secondArg = arguments[1];
     bool const stringOverload =
-        (options.isBlock() && args.at(0).isString()) ||
-        (args.at(0).isString() && args.at(1).isString());
-    if (stringOverload) {
+        (isBlock && firstArg.isString()) ||
+        (firstArg.isString() && secondArg.isString());
+    if (stringOverload)
+    {
         std::string str;
         std::string sub;
         std::int64_t start = 0;
         std::int64_t end = 0;
-        if (options.isBlock()) {
-            str = options.fn();
-            sub = args.at(0).getString();
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            sub = firstArg.getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 1) {
-                start = args.at(1).getInteger();
-                if (args.size() > 2) {
-                    end = args.at(2).getInteger();
+            if (n > 2)
+            {
+                start = arguments[1].getInteger();
+                if (n > 3)
+                {
+                    end = arguments[2].getInteger();
                 }
             }
-        } else {
-            str = args.at(0).getString();
-            sub = args.at(1).getString();
+        }
+        else /* !isBlock */
+        {
+            str = arguments[0].getString();
+            sub = arguments[1].getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 2) {
-                start = args.at(2).getInteger();
-                if (args.size() > 3) {
-                    end = args.at(3).getInteger();
+            if (n > 3)
+            {
+                start = arguments[2].getInteger();
+                if (n > 4)
+                {
+                    end = arguments[3].getInteger();
                 }
             }
         }
         start = normalize_index(start, static_cast<std::int64_t>(str.size()));
         end = normalize_index(end, static_cast<std::int64_t>(str.size()));
         std::int64_t count = 0;
-        for (std::int64_t pos = start; pos < end; ++pos) {
-            if (str.compare(pos, sub.size(), sub) == 0) {
+        for (std::int64_t pos = start; pos < end; ++pos)
+        {
+            if (str.compare(pos, sub.size(), sub) == 0)
+            {
                 ++count;
             }
         }
         return count;
-    } else {
-        dom::Value range = args.at(0);
-        dom::Value item = args.at(1);
-        if (range.isString()) {
+    }
+    else
+    {
+        // Generic range overload
+        dom::Value range = arguments[0];
+        dom::Value item = arguments[1];
+        if (range.isString())
+        {
+            // String overload: find chars in it
             std::string str(range.getString().get());
-            std::int64_t count = 0;
-            for (char i : str) {
-                if (i == item.getString().get().at(0)) {
-                    ++count;
-                }
-            }
-            return count;
-        } else if (range.isArray()) {
+            char x = item.getString().get().at(0);
+            return std::ranges::count(str, x);
+        }
+        else if (range.isArray())
+        {
+            // Array overload: find items in it
             dom::Array const& arr = range.getArray();
-            std::int64_t count = 0;
-            for (std::size_t i = 0; i < arr.size(); ++i) {
-                if (isSame(arr.at(i), item)) {
-                    ++count;
-                }
-            }
-            return count;
-        } else if (range.isObject()) {
+            return std::ranges::count(arr, item);
+        }
+        else if (range.isObject())
+        {
+            // Object overload: find values in it
             dom::Object const& obj = range.getObject();
             std::int64_t count = 0;
-            for (auto const& [key, val] : obj) {
-                if (isSame(val, item)) {
+            for (auto const& [key, val] : obj)
+            {
+                if (val == item)
+                {
                     ++count;
                 }
             }
             return count;
-        } else {
+        }
+        else
+        {
+            // Generic overload: return 0
             return 0;
         }
     }
 }
 
 dom::Value
-replace_fn(dom::Array const& args, HandlebarsCallback const& options) {
+replace_fn(dom::Array const& arguments)
+{
+    std::size_t const n = arguments.size();
+    dom::Value options = arguments.back();
+    dom::Value fn = options["fn"];
+    dom::Value firstArg = arguments[0];
+    dom::Value secondArg = arguments[1];
+    bool const isBlock = static_cast<bool>(fn);
     bool const stringOverload =
-        (options.isBlock() && args.at(0).isString()) ||
-        (args.at(0).isString() && args.at(1).isString());
-    if (stringOverload) {
+        (isBlock && firstArg.isString()) ||
+        (firstArg.isString() && secondArg.isString());
+    if (stringOverload)
+    {
+        // String overload: replace substrings
         std::string str;
         std::string old;
         std::string new_str;
         std::int64_t count = -1;
-        if (options.isBlock()) {
-            str = options.fn();
-            old = args.at(0).getString();
-            new_str = args.at(1).getString();
-            if (args.size() > 2)
-            count = args.at(2).getInteger();
-        } else {
-            str = args.at(0).getString();
-            old = args.at(1).getString();
-            new_str = args.at(2).getString();
-            if (args.size() > 3)
-            count = args.at(3).getInteger();
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            old = firstArg.getString();
+            new_str = secondArg.getString();
+            if (n > 3)
+            {
+                count = arguments.at(2).getInteger();
+            }
+        }
+        else
+        {
+            str = firstArg.getString();
+            old = secondArg.getString();
+            new_str = arguments.at(2).getString();
+            if (n > 4)
+            {
+                count = arguments.at(3).getInteger();
+            }
         }
         std::string res;
         std::size_t pos = 0;
         std::size_t old_len = old.size();
-        while (count != 0) {
+        while (count != 0)
+        {
             std::size_t next = str.find(old, pos);
-            if (next == std::string::npos) {
+            if (next == std::string::npos)
+            {
                 res += str.substr(pos);
                 break;
             }
             res += str.substr(pos, next - pos);
             res += new_str;
             pos = next + old_len;
-            if (count > 0) {
+            if (count > 0)
+            {
                 --count;
             }
         }
         return res;
     }
-    dom::Value range = args.at(0);
-    dom::Value item = args.at(1);
-    dom::Value replacement = args.at(2);
-    if (range.isString()) {
+    // Generic range overload
+    dom::Value range = firstArg;
+    dom::Value const& item = secondArg;
+    dom::Value replacement = arguments.at(2);
+    if (range.isString())
+    {
+        // String overload: replace chars in it
         std::string str(range.getString().get());
-        for (std::int64_t i = 0; i < static_cast<std::int64_t>(str.size()); ++i) {
-            if (str.at(i) == item.getString().get().at(0)) {
+        auto str_n = static_cast<std::int64_t>(str.size());
+        for (std::int64_t i = 0; i < str_n; ++i)
+        {
+            if (str.at(i) == item.getString().get().at(0))
+            {
                 str.replace(
                     str.begin() + i,
                     str.begin() + i + 1,
                     replacement.getString().get());
-                i += static_cast<std::int64_t>(replacement.getString().get().size()) - 1;
+                std::size_t n2 = replacement.getString().get().size();
+                i += static_cast<std::int64_t>(n2) - 1;
             }
         }
         return str;
-    } else if (range.isArray()) {
+    }
+    else if (range.isArray())
+    {
+        // Array overload: replace items in it
         dom::Array const& arr = range.getArray();
         dom::Array res;
-        for (std::size_t i = 0; i < arr.size(); ++i) {
+        std::size_t arr_n = arr.size();
+        for (std::size_t i = 0; i < arr_n; ++i)
+        {
             dom::Value v = arr.at(i);
-            if (isSame(v, item)) {
+            if (v == item)
+            {
                 res.emplace_back(replacement);
-            } else {
+            }
+            else
+            {
                 res.emplace_back(v);
             }
         }
         return res;
-    } else if (range.isObject()) {
+    }
+    else if (range.isObject())
+    {
+        // Object overload: replace values in it
         dom::Object obj = createFrame(range.getObject());
-        for (auto const& [key, val] : obj) {
-            if (isSame(val, item)) {
+        for (auto const& [key, val] : obj)
+        {
+            if (val == item)
+            {
                 obj.set(key, replacement);
             }
         }
         return obj;
-    } else {
+    }
+    else
+    {
+        // Generic overload: replace nothing
         return range;
     }
 }
@@ -3867,138 +4232,216 @@ registerStringHelpers(Handlebars& hbs)
         return static_cast<char>(c >= 'a' && c <= 'z' ? c - ('a' - 'A') : c);
     };
 
-    static constexpr auto tolower = [](char c) -> char {
+    static constexpr auto toLower = [](char c) -> char {
         return static_cast<char>(c >= 'A' && c <= 'Z' ? c + ('a' - 'A') : c);
     };
 
-    hbs.registerHelper("capitalize", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("to_json", [](dom::Value const& v) -> dom::Value {
+        return dom::JSON::stringify(v);
+    });
+
+    hbs.registerHelper("capitalize", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
         }
-        if (!res.empty()) {
+        else
+        {
+            res = firstArg.getString();
+        }
+        if (!res.empty())
+        {
             res[0] = toupper(res[0]);
         }
         return res;
-    });
+    }));
 
-    hbs.registerHelper("center", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("center", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
         std::int64_t width = 0;
         char fillchar = ' ';
-        if (options.isBlock()) {
-            res = options.fn();
-            width = args.at(0).getInteger();
-            if (args.size() > 1) {
-                fillchar = args.at(1).getString().get()[0];
-            }
-        } else {
-            res = args.at(0).getString();
-            width = args.at(1).getInteger();
-            if (args.size() > 2) {
-                fillchar = args.at(2).getString().get()[0];
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+            width = firstArg.getInteger();
+            if (n > 2)
+            {
+                fillchar = secondArg.getString().get()[0];
             }
         }
-        if (width > static_cast<std::int64_t>(res.size())) {
+        else
+        {
+            res = firstArg.getString();
+            width = secondArg.getInteger();
+            if (n > 3)
+            {
+                fillchar = arguments.at(2).getString().get()[0];
+            }
+        }
+        if (width > static_cast<std::int64_t>(res.size()))
+        {
             std::size_t pad = (width - res.size()) / 2;
             res.insert(0, pad, fillchar);
             res.append(pad, fillchar);
         }
         return res;
-    });
+    }));
 
     constexpr auto ljust_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+        dom::Array const& arguments)
+    {
         std::string res;
         std::int64_t width = 0;
         std::string fill = " ";
-        if (options.isBlock()) {
-            res = options.fn();
-            width = args.at(0).getInteger();
-            if (args.size() > 1) {
-                fill = args.at(1).getString();
-            }
-        } else {
-            res = args.at(0).getString();
-            width = args.at(1).getInteger();
-            if (args.size() > 2) {
-                fill = args.at(2).getString();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+            width = firstArg.getInteger();
+            if (n > 2)
+            {
+                fill = secondArg.getString();
             }
         }
-        while (static_cast<std::int64_t>(res.size()) < width) {
-            if (static_cast<std::int64_t>(res.size() + fill.size()) > width) {
+        else
+        {
+            res = firstArg.getString();
+            width = secondArg.getInteger();
+            if (n > 3)
+            {
+                fill = arguments.at(2).getString();
+            }
+        }
+        auto text_size = static_cast<std::int64_t>(res.size());
+        while (text_size < width)
+        {
+            auto const filled_size = text_size + static_cast<std::int64_t>(fill.size());
+            if (filled_size > width)
+            {
                 res.append(fill, 0, width - res.size());
-            } else {
+            }
+            else
+            {
                 res.append(fill);
             }
+            text_size = static_cast<std::int64_t>(res.size());
         }
         return res;
     };
 
-    hbs.registerHelper("ljust", ljust_fn);
-    hbs.registerHelper("pad_end", ljust_fn);
+    hbs.registerHelper("ljust", dom::makeVariadicInvocable(ljust_fn));
+    hbs.registerHelper("pad_end", dom::makeVariadicInvocable(ljust_fn));
 
     static constexpr auto rjust_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+        dom::Array const& arguments)
+    {
         std::string res;
         std::int64_t width = 0;
         std::string fill = " ";
-        if (options.isBlock()) {
-            res = options.fn();
-            width = args.at(0).getInteger();
-            if (args.size() > 1) {
-                fill = args.at(1).getString();
-            }
-        } else {
-            res = args.at(0).getString();
-            width = args.at(1).getInteger();
-            if (args.size() > 2) {
-                fill = args.at(2).getString();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+            width = firstArg.getInteger();
+            if (n > 2)
+            {
+                fill = secondArg.getString();
             }
         }
-        while (static_cast<std::int64_t>(res.size()) < width) {
-            if (static_cast<std::int64_t>(res.size() + fill.size()) > width) {
+        else
+        {
+            res = firstArg.getString();
+            width = secondArg.getInteger();
+            if (n > 3)
+            {
+                fill = arguments.at(2).getString();
+            }
+        }
+        auto text_size = static_cast<std::int64_t>(res.size());
+        while (text_size < width) {
+            auto filled_size = static_cast<std::int64_t>(
+                res.size() + fill.size());
+            if (filled_size > width)
+            {
                 res.insert(0, fill, 0, width - res.size());
-            } else {
+            }
+            else
+            {
                 res.insert(0, fill);
             }
+            text_size = static_cast<std::int64_t>(res.size());
         }
         return res;
     };
 
-    hbs.registerHelper("rjust", rjust_fn);
-    hbs.registerHelper("pad_start", rjust_fn);
+    hbs.registerHelper("rjust", dom::makeVariadicInvocable(rjust_fn));
+    hbs.registerHelper("pad_start", dom::makeVariadicInvocable(rjust_fn));
 
-    hbs.registerHelper("count", count_fn);
+    hbs.registerHelper("count", dom::makeVariadicInvocable(count_fn));
 
-    hbs.registerHelper("ends_with", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("ends_with", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string suffix;
         std::int64_t start = 0;
         std::int64_t end = 0;
-        if (options.isBlock()) {
-            str = options.fn();
-            suffix = args.at(0).getString();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            suffix = firstArg.getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 1) {
-                start = args.at(1).getInteger();
-                if (args.size() > 2) {
-                    end = args.at(2).getInteger();
+            if (n > 2)
+            {
+                start = secondArg.getInteger();
+                if (n > 3)
+                {
+                    end = arguments.at(2).getInteger();
                 }
             }
-        } else {
-            str = args.at(0).getString();
-            suffix = args.at(1).getString();
+        }
+        else
+        {
+            str = firstArg.getString();
+            suffix = secondArg.getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 2) {
-                start = args.at(2).getInteger();
-                if (args.size() > 3) {
-                    end = args.at(3).getInteger();
+            if (n > 3)
+            {
+                start = arguments.at(2).getInteger();
+                if (n > 4)
+                {
+                    end = arguments.at(3).getInteger();
                 }
             }
         }
@@ -4006,32 +4449,46 @@ registerStringHelpers(Handlebars& hbs)
         end = normalize_index(end, static_cast<std::int64_t>(str.size()));
         std::string substr = str.substr(start, end - start);
         return substr.ends_with(suffix);
-    });
+    }));
 
-    hbs.registerHelper("starts_with", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("starts_with", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string prefix;
         std::int64_t start = 0;
         std::int64_t end = 0;
-        if (options.isBlock()) {
-            str = options.fn();
-            prefix = args.at(0).getString();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        auto const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            prefix = firstArg.getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 1) {
-                start = args.at(1).getInteger();
-                if (args.size() > 2) {
-                    end = args.at(2).getInteger();
+            if (n > 2)
+            {
+                start = secondArg.getInteger();
+                if (n > 3)
+                {
+                    end = arguments.at(2).getInteger();
                 }
             }
-        } else {
-            str = args.at(0).getString();
-            prefix = args.at(1).getString();
+        }
+        else
+        {
+            str = firstArg.getString();
+            prefix = secondArg.getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 2) {
-                start = args.at(2).getInteger();
-                if (args.size() > 3) {
-                    end = args.at(3).getInteger();
+            if (n > 3)
+            {
+                start = arguments.at(2).getInteger();
+                if (n > 4)
+                {
+                    end = arguments.at(3).getInteger();
                 }
             }
         }
@@ -4039,59 +4496,89 @@ registerStringHelpers(Handlebars& hbs)
         end = normalize_index(end, static_cast<std::int64_t>(str.size()));
         std::string substr = str.substr(start, end - start);
         return substr.starts_with(prefix);
-    });
+    }));
 
-    hbs.registerHelper("expandtabs", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("expandtabs", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::int64_t tabsize = 8;
-        if (options.isBlock()) {
-            str = options.fn();
-            if (!args.empty()) {
-                tabsize = args.at(0).getInteger();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            if (n > 1)
+            {
+                tabsize = firstArg.getInteger();
             }
-        } else {
-            str = args.at(0).getString();
-            if (args.size() > 1) {
-                tabsize = args.at(1).getInteger();
+        }
+        else
+        {
+            str = firstArg.getString();
+            if (n > 2)
+            {
+                tabsize = secondArg.getInteger();
             }
         }
         std::string res;
         res.reserve(str.size());
-        for (char c : str) {
-            if (c == '\t') {
+        for (char c : str)
+        {
+            if (c == '\t')
+            {
                 res.append(tabsize, ' ');
-            } else {
+            }
+            else
+            {
                 res.push_back(c);
             }
         }
         return res;
-    });
+    }));
 
     static constexpr auto find_index_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string sub;
         std::int64_t start = 0;
         std::int64_t end = 0;
-        if (options.isBlock()) {
-            str = options.fn();
-            sub = args.at(0).getString();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            sub = firstArg.getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 1) {
-                start = args.at(1).getInteger();
-                if (args.size() > 2) {
-                    end = args.at(2).getInteger();
+            if (n > 2)
+            {
+                start = secondArg.getInteger();
+                if (n > 3)
+                {
+                    end = arguments.at(2).getInteger();
                 }
             }
-        } else {
-            str = args.at(0).getString();
-            sub = args.at(1).getString();
+        }
+        else
+        {
+            str = firstArg.getString();
+            sub = secondArg.getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 2) {
-                start = args.at(2).getInteger();
-                if (args.size() > 3) {
-                    end = args.at(3).getInteger();
+            if (n > 3)
+            {
+                start = arguments.at(2).getInteger();
+                if (n > 4)
+                {
+                    end = arguments.at(3).getInteger();
                 }
             }
         }
@@ -4104,174 +4591,264 @@ registerStringHelpers(Handlebars& hbs)
         return static_cast<std::int64_t>(pos);
     };
 
-    hbs.registerHelper("find", find_index_fn);
-    hbs.registerHelper("index_of", find_index_fn);
+    hbs.registerHelper("find", dom::makeVariadicInvocable(find_index_fn));
+    hbs.registerHelper("index_of", dom::makeVariadicInvocable(find_index_fn));
 
-    hbs.registerHelper("includes", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        return find_index_fn(args, options) != -1;
-    });
+    hbs.registerHelper("includes", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
+        return find_index_fn(arguments) != -1;
+    }));
 
     auto rfind_index_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string sub;
         std::int64_t start = 0;
         std::int64_t end = 0;
-        if (options.isBlock()) {
-            str = options.fn();
-            sub = args.at(0).getString();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            sub = firstArg.getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 1) {
-                start = args.at(1).getInteger();
-                if (args.size() > 2) {
-                    end = args.at(2).getInteger();
+            if (n > 2)
+            {
+                start = secondArg.getInteger();
+                if (n > 3)
+                {
+                    end = arguments.at(2).getInteger();
                 }
             }
-        } else {
-            str = args.at(0).getString();
-            sub = args.at(1).getString();
+        }
+        else
+        {
+            str = firstArg.getString();
+            sub = secondArg.getString();
             end = static_cast<std::int64_t>(str.size());
-            if (args.size() > 2) {
-                start = args.at(2).getInteger();
-                if (args.size() > 3) {
-                    end = args.at(3).getInteger();
+            if (n > 3)
+            {
+                start = arguments.at(2).getInteger();
+                if (n > 4)
+                {
+                    end = arguments.at(3).getInteger();
                 }
             }
         }
         start = normalize_index(start, static_cast<std::int64_t>(str.size()));
         end = normalize_index(end, static_cast<std::int64_t>(str.size()));
         std::size_t pos = str.rfind(sub, start);
-        if (pos == std::string::npos || static_cast<std::int64_t>(pos) >= end) {
+        bool const notFound = pos == std::string::npos ||
+                              static_cast<std::int64_t>(pos) >= end;
+        if (notFound)
+        {
             return static_cast<std::int64_t>(-1);
         }
         return static_cast<std::int64_t>(pos);
     };
 
-    hbs.registerHelper("rfind", rfind_index_fn);
-    hbs.registerHelper("rindex_of", rfind_index_fn);
-    hbs.registerHelper("last_index_of", rfind_index_fn);
+    hbs.registerHelper("rfind", dom::makeVariadicInvocable(rfind_index_fn));
+    hbs.registerHelper("rindex_of", dom::makeVariadicInvocable(rfind_index_fn));
+    hbs.registerHelper("last_index_of", dom::makeVariadicInvocable(rfind_index_fn));
 
-    hbs.registerHelper("at", at_fn);
-    hbs.registerHelper("char_at", at_fn);
+    hbs.registerHelper("at", dom::makeInvocable(at_fn));
+    hbs.registerHelper("char_at", dom::makeInvocable(at_fn));
 
-    hbs.registerHelper("is_alnum", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("is_alnum", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         return std::ranges::all_of(res, [](char c) {
             return (c >= '0' && c <= '9') ||
                    (c >= 'A' && c <= 'Z') ||
                    (c >= 'a' && c <= 'z');
         });
-    });
+    }));
 
-    hbs.registerHelper("is_alpha", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("is_alpha", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         return std::ranges::all_of(res, [](char c) {
             return (c >= 'A' && c <= 'Z') ||
                    (c >= 'a' && c <= 'z');
         });
-    });
+    }));
 
-    hbs.registerHelper("is_ascii", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("is_ascii", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         return std::ranges::all_of(res, [](char c) {
             auto uc = static_cast<unsigned char>(c);
             return uc <= 127;
         });
-    });
+    }));
 
-    auto is_digits_fn = [](dom::Array const& args, HandlebarsCallback const& options) {
+    auto is_digits_fn = dom::makeVariadicInvocable([](dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         return std::ranges::all_of(res, [](char c) {
             return c >= '0' && c <= '9';
         });
-    };
+    });
 
     hbs.registerHelper("is_decimal", is_digits_fn);
     hbs.registerHelper("is_digit", is_digits_fn);
 
     hbs.registerHelper("is_lower",
-       [](dom::Array const& args, HandlebarsCallback const& options) {
+       dom::makeVariadicInvocable([](dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         return std::ranges::all_of(res, [](char c) {
             return c >= 'a' && c <= 'z';
         });
-    });
+    }));
 
     hbs.registerHelper("is_upper",
-       [](dom::Array const& args, HandlebarsCallback const& options) {
+       dom::makeVariadicInvocable([](dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         return std::ranges::all_of(res, [](char c) {
             return c >= 'A' && c <= 'Z';
         });
-    });
+    }));
 
     hbs.registerHelper("is_printable",
-       [](dom::Array const& args, HandlebarsCallback const& options) {
+       dom::makeVariadicInvocable([](dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         return std::ranges::all_of(res, [](char c) {
             return c >= 32 && c <= 126;
         });
-    });
+    }));
 
     hbs.registerHelper("is_space",
-       [](dom::Array const& args, HandlebarsCallback const& options) {
+       dom::makeVariadicInvocable([](dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         return std::ranges::all_of(res, [](char c) {
             return c == ' ' || (c >= 9 && c <= 13);
         });
-    });
+    }));
 
     hbs.registerHelper("is_title",
-       [](dom::Array const& args, HandlebarsCallback const& options) {
+       dom::makeVariadicInvocable([](dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments[0];
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         bool prev_is_cased = false;
         bool res_is_title = false;
@@ -4287,381 +4864,584 @@ registerStringHelpers(Handlebars& hbs)
                     return false;
                 }
                 prev_is_cased = true;
-            } else {
+            }
+            else
+            {
                 prev_is_cased = false;
             }
         }
         return res_is_title;
-    });
+    }));
 
-    static constexpr auto to_upper_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    static auto to_upper_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments[0];
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         std::ranges::transform(res, res.begin(), toupper);
         return res;
-    };
+    });
 
     hbs.registerHelper("upper", to_upper_fn);
     hbs.registerHelper("to_upper", to_upper_fn);
 
-    static constexpr auto to_lower_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    static auto to_lower_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments[0];
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
         }
-        std::ranges::transform(res, res.begin(), tolower);
+        else
+        {
+            res = firstArg.getString();
+        }
+        std::ranges::transform(res, res.begin(), toLower);
         return res;
-    };
+    });
 
     hbs.registerHelper("lower", to_lower_fn);
     hbs.registerHelper("to_lower", to_lower_fn);
 
-    hbs.registerHelper("swap_case", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("swap_case", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments[0];
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         if (res.empty()) {
             return res;
         }
-        std::ranges::transform(res, res.begin(), [](char c) -> char {
-            if (c >= 'A' && c <= 'Z') {
-                return tolower(c);
-            } else if (c >= 'a' && c <= 'z') {
+        std::ranges::transform(res, res.begin(), [](char c) -> char
+        {
+            if (c >= 'A' && c <= 'Z')
+            {
+                return toLower(c);
+            }
+            else if (c >= 'a' && c <= 'z')
+            {
                 return toupper(c);
-            } else {
+            }
+            else
+            {
                 return c;
             }
         });
         return res;
-    });
+    }));
 
-    static constexpr auto join_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    static auto join_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         dom::Array arr;
-        if (options.isBlock()) {
-            str = options.fn();
-            arr = args.at(0).getArray();
-        } else {
-            str = args.at(0).getString();
-            arr = args.at(1).getArray();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            arr = firstArg.getArray();
+        }
+        else
+        {
+            str = firstArg.getString();
+            arr = secondArg.getArray();
         }
         std::string res;
-        for (std::size_t i = 0; i < arr.size(); ++i) {
-            if (!res.empty()) {
+        std::size_t const n = arr.size();
+        for (std::size_t i = 0; i < n; ++i)
+        {
+            if (!res.empty())
+            {
                 res += str;
             }
             auto const& item = arr.at(i);
             res += item.getString();
         }
         return res;
-    };
+    });
 
     hbs.registerHelper("join", join_fn);
     hbs.registerHelper("implode", join_fn);
 
-    hbs.registerHelper("concat", concat_fn);
+    hbs.registerHelper("concat", dom::makeInvocable(concat_fn));
 
-    static constexpr auto strip_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    static auto strip_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string chars = " \t\r\n";
-        if (options.isBlock()) {
-            str = options.fn();
-            if (!args.empty())
-                chars = args.at(0).getString();
-        } else {
-            str = args.at(0).getString();
-            if (args.size() > 1)
-                chars = args.at(1).getString();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            if (n > 1)
+            {
+                chars = firstArg.getString();
+            }
+        }
+        else
+        {
+            str = firstArg.getString();
+            if (n > 2)
+                chars = secondArg.getString();
         }
         std::size_t pos = str.find_first_not_of(chars);
-        if (pos == std::string::npos) {
+        if (pos == std::string::npos)
+        {
             return std::string();
         }
         std::size_t endpos = str.find_last_not_of(chars);
         return str.substr(pos, endpos - pos + 1);
-    };
+    });
 
     hbs.registerHelper("strip", strip_fn);
     hbs.registerHelper("trim", strip_fn);
 
-    static constexpr auto lstrip_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    static auto lstrip_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string chars = " \t\r\n";
-        if (options.isBlock()) {
-            str = options.fn();
-            if (!args.empty())
-                chars = args.at(0).getString();
-        } else {
-            str = args.at(0).getString();
-            if (args.size() > 1)
-                chars = args.at(1).getString();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            if (n > 1)
+            {
+                chars = firstArg.getString();
+            }
+        }
+        else
+        {
+            str = firstArg.getString();
+            if (n > 2)
+            {
+                chars = secondArg.getString();
+            }
         }
         std::size_t pos = str.find_first_not_of(chars);
-        if (pos == std::string::npos) {
+        if (pos == std::string::npos)
+        {
             return std::string();
         }
         return str.substr(pos);
-    };
+    });
 
     hbs.registerHelper("lstrip", lstrip_fn);
     hbs.registerHelper("trim_start", lstrip_fn);
 
-    static constexpr auto rstrip_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    static auto rstrip_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string chars = " \t\r\n";
-        if (options.isBlock()) {
-            str = options.fn();
-            if (!args.empty())
-                chars = args.at(0).getString();
-        } else {
-            str = args.at(0).getString();
-            if (args.size() > 1)
-                chars = args.at(1).getString();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            if (n > 1)
+            {
+                chars = firstArg.getString();
+            }
+        }
+        else
+        {
+            str = firstArg.getString();
+            if (n > 2)
+            {
+                chars = secondArg.getString();
+            }
         }
         std::size_t pos = str.find_last_not_of(chars);
         if (pos == std::string::npos) {
             return std::string();
         }
         return str.substr(0, pos + 1);
-    };
+    });
 
     hbs.registerHelper("rstrip", rstrip_fn);
     hbs.registerHelper("trim_end", rstrip_fn);
 
-    hbs.registerHelper("partition", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("partition", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string sep;
-        if (options.isBlock()) {
-            str = options.fn();
-            sep = args.at(0).getString();
-        } else {
-            str = args.at(0).getString();
-            sep = args.at(1).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            sep = firstArg.getString();
+        }
+        else
+        {
+            str = firstArg.getString();
+            sep = secondArg.getString();
         }
         dom::Array res;
         std::size_t pos = str.find(sep);
-        if (pos == std::string::npos) {
+        if (pos == std::string::npos)
+        {
             res.emplace_back(str);
             res.emplace_back(std::string());
             res.emplace_back(std::string());
-        } else {
+        }
+        else
+        {
             res.emplace_back(str.substr(0, pos));
             res.emplace_back(sep);
             res.emplace_back(str.substr(pos + sep.size()));
         }
         return res;
-    });
+    }));
 
-    hbs.registerHelper("rpartition", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("rpartition", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string sep;
-        if (options.isBlock()) {
-            str = options.fn();
-            sep = args.at(0).getString();
-        } else {
-            str = args.at(0).getString();
-            sep = args.at(1).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            sep = firstArg.getString();
+        }
+        else
+        {
+            str = firstArg.getString();
+            sep = secondArg.getString();
         }
         dom::Array res;
         std::size_t pos = str.rfind(sep);
-        if (pos == std::string::npos) {
+        if (pos == std::string::npos)
+        {
             res.emplace_back(str);
             res.emplace_back(std::string());
             res.emplace_back(std::string());
-        } else {
+        }
+        else
+        {
             res.emplace_back(str.substr(0, pos));
             res.emplace_back(sep);
             res.emplace_back(str.substr(pos + sep.size()));
         }
         return res;
-    });
+    }));
 
-    hbs.registerHelper("remove_prefix", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("remove_prefix", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string prefix;
-        if (options.isBlock()) {
-            str = options.fn();
-            prefix = args.at(0).getString();
-        } else {
-            str = args.at(0).getString();
-            prefix = args.at(1).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            prefix = firstArg.getString();
         }
-        if (str.size() < prefix.size()) {
+        else
+        {
+            str = firstArg.getString();
+            prefix = secondArg.getString();
+        }
+        if (str.size() < prefix.size())
+        {
             return str;
         }
-        if (str.substr(0, prefix.size()) != prefix) {
+        if (str.substr(0, prefix.size()) != prefix)
+        {
             return str;
         }
         return str.substr(prefix.size());
-    });
+    }));
 
-    hbs.registerHelper("remove_suffix", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("remove_suffix", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string suffix;
-        if (options.isBlock()) {
-            str = options.fn();
-            suffix = args.at(0).getString();
-        } else {
-            str = args.at(0).getString();
-            suffix = args.at(1).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            suffix = firstArg.getString();
         }
-        if (str.size() < suffix.size()) {
+        else
+        {
+            str = firstArg.getString();
+            suffix = secondArg.getString();
+        }
+        if (str.size() < suffix.size())
+        {
             return str;
         }
-        if (str.substr(str.size() - suffix.size()) != suffix) {
+        if (str.substr(str.size() - suffix.size()) != suffix)
+        {
             return str;
         }
         return str.substr(0, str.size() - suffix.size());
-    });
+    }));
 
-    hbs.registerHelper("replace", replace_fn);
+    hbs.registerHelper("replace", dom::makeVariadicInvocable(replace_fn));
 
-    static constexpr auto split_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    static auto split_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         std::string sep = " ";
         std::int64_t maxsplit = -1;
-        if (options.isBlock()) {
-            str = options.fn();
-            if (!args.empty())
-                sep = args.at(0).getString();
-            if (args.size() > 1)
-                maxsplit = args.at(1).getInteger();
-        } else {
-            str = args.at(0).getString();
-            if (args.size() > 1)
-                sep = args.at(1).getString();
-            if (args.size() > 2)
-                maxsplit = args.at(2).getInteger();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            if (n > 1) {
+                sep = firstArg.getString();
+                if (n > 2)
+                {
+                    maxsplit = secondArg.getInteger();
+                }
+            }
+        }
+        else
+        {
+            str = firstArg.getString();
+            if (n > 2)
+            {
+                sep = secondArg.getString();
+                if (n > 3)
+                {
+                    maxsplit = arguments.at(2).getInteger();
+                }
+            }
         }
         dom::Array res;
         std::size_t pos = 0;
         std::size_t sep_len = sep.size();
-        while (maxsplit != 0) {
+        while (maxsplit != 0)
+        {
             std::size_t next = str.find(sep, pos);
-            if (next == std::string::npos) {
+            if (next == std::string::npos)
+            {
                 res.emplace_back(str.substr(pos));
                 break;
             }
             res.emplace_back(str.substr(pos, next - pos));
             pos = next + sep_len;
-            if (maxsplit > 0) {
-                --maxsplit;
-            }
-        }
-        return res;
-    };
-
-    hbs.registerHelper("split", split_fn);
-    hbs.registerHelper("explode", split_fn);
-
-    hbs.registerHelper("rsplit", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        std::string str;
-        std::string sep = " ";
-        std::int64_t maxsplit = -1;
-        if (options.isBlock()) {
-            str = options.fn();
-            if (!args.empty())
-                sep = args.at(0).getString();
-            if (args.size() > 1)
-                maxsplit = args.at(1).getInteger();
-        } else {
-            str = args.at(0).getString();
-            if (args.size() > 1)
-                sep = args.at(1).getString();
-            if (args.size() > 2)
-                maxsplit = args.at(2).getInteger();
-        }
-        dom::Array res;
-        std::size_t pos = str.size();
-        std::size_t sep_len = sep.size();
-        while (maxsplit != 0) {
-            std::size_t next = str.rfind(sep, pos);
-            if (next == std::string::npos) {
-                res.emplace_back(str.substr(0, pos));
-                break;
-            }
-            res.emplace_back(str.substr(next + sep_len, pos - next - sep_len));
-            if (next == 0) {
-                break;
-            }
-            pos = next - 1;
-            if (maxsplit > 0) {
+            if (maxsplit > 0)
+            {
                 --maxsplit;
             }
         }
         return res;
     });
 
-    hbs.registerHelper("split_lines", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("split", split_fn);
+    hbs.registerHelper("explode", split_fn);
+
+    hbs.registerHelper("rsplit", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
+        std::string str;
+        std::string sep = " ";
+        std::int64_t maxsplit = -1;
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments[0];
+        dom::Value secondArg = arguments[1];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            if (n > 1)
+            {
+                sep = firstArg.getString();
+                if (n > 2)
+                {
+                    maxsplit = secondArg.getInteger();
+                }
+            }
+        }
+        else
+        {
+            str = firstArg.getString();
+            if (n > 2) {
+                sep = secondArg.getString();
+                if (n > 3)
+                {
+                    maxsplit = arguments.at(2).getInteger();
+                }
+            }
+        }
+        dom::Array res;
+        std::size_t pos = str.size();
+        std::size_t sep_len = sep.size();
+        while (maxsplit != 0)
+        {
+            std::size_t next = str.rfind(sep, pos);
+            if (next == std::string::npos)
+            {
+                res.emplace_back(str.substr(0, pos));
+                break;
+            }
+            res.emplace_back(str.substr(next + sep_len, pos - next - sep_len));
+            if (next == 0)
+            {
+                break;
+            }
+            pos = next - 1;
+            if (maxsplit > 0)
+            {
+                --maxsplit;
+            }
+        }
+        return res;
+    }));
+
+    hbs.registerHelper("split_lines", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string str;
         bool keepends = false;
-        if (options.isBlock()) {
-            str = options.fn();
-            if (!args.empty())
-                keepends = args.at(0).getBool();
-        } else {
-            str = args.at(0).getString();
-            if (args.size() > 1)
-                keepends = args.at(1).getBool();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value fn = options["fn"];
+        dom::Value firstArg = arguments.at(0);
+        dom::Value secondArg = arguments.at(1);
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            str = static_cast<std::string>(fn());
+            if (n > 1)
+            {
+                keepends = firstArg.getBool();
+            }
+        }
+        else
+        {
+            str = firstArg.getString();
+            if (n > 2)
+            {
+                keepends = secondArg.getBool();
+            }
         }
         dom::Array res;
         std::size_t pos = 0;
         std::size_t len = str.size();
-        while (pos < len) {
+        while (pos < len)
+        {
             std::size_t next = str.find_first_of("\r\n", pos);
-            if (next == std::string::npos) {
+            if (next == std::string::npos)
+            {
                 res.emplace_back(str.substr(pos));
                 break;
             }
-            if (keepends) {
+            if (keepends)
+            {
                 res.emplace_back(str.substr(pos, next - pos + 1));
-            } else {
+            }
+            else
+            {
                 res.emplace_back(str.substr(pos, next - pos));
             }
             pos = next + 1;
         }
         return res;
-    });
+    }));
 
-    hbs.registerHelper("zfill", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("zfill", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
         std::int64_t width = 0;
-        if (options.isBlock()) {
-            res = options.fn();
-            width = args.at(0).getInteger();
-        } else {
-            res = args.at(0).getString();
-            width = args.at(1).getInteger();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments.at(0);
+        dom::Value secondArg = arguments.at(1);
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+            width = firstArg.getInteger();
         }
-        if (width <= static_cast<std::int64_t>(res.size())) {
+        else
+        {
+            res = firstArg.getString();
+            width = secondArg.getInteger();
+        }
+        if (width <= static_cast<std::int64_t>(res.size()))
+        {
             return res;
         }
         std::string prefix;
-        if (res[0] == '+' || res[0] == '-') {
+        if (res[0] == '+' || res[0] == '-')
+        {
             prefix = res[0];
             res = res.substr(1);
             if (width != static_cast<std::int64_t>(res.size()))
@@ -4669,105 +5449,161 @@ registerStringHelpers(Handlebars& hbs)
         }
         std::string padding(width - res.size(), '0');
         return prefix + padding + res;
-    });
+    }));
 
-    hbs.registerHelper("repeat", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("repeat", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
         std::int64_t count = 0;
-        if (options.isBlock()) {
-            res = options.fn();
-            count = args.at(0).getInteger();
-        } else {
-            res = args.at(0).getString();
-            count = args.at(1).getInteger();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments.at(0);
+        dom::Value secondArg = arguments.at(1);
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+            count = firstArg.getInteger();
         }
-        if (count <= 0) {
+        else
+        {
+            res = firstArg.getString();
+            count = secondArg.getInteger();
+        }
+        if (count <= 0)
+        {
             return std::string();
         }
         std::string tmp;
-        while (count > 0) {
+        while (count > 0)
+        {
             tmp += res;
             --count;
         }
         return tmp;
-    });
+    }));
 
-    hbs.registerHelper("escape", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("escape", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments.at(0);
+        dom::Value secondArg = arguments.at(1);
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         return escapeExpression(res);
-    });
+    }));
 
-    static constexpr auto slice_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    static auto slice_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
         std::int64_t start = 0;
         std::int64_t stop = 0;
-        if (options.isBlock()) {
-            res = options.fn();
+        std::size_t const n = arguments.size();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments.at(0);
+        dom::Value secondArg = arguments.at(1);
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
             stop = static_cast<std::int64_t>(res.size());
-            start = args.at(0).getInteger();
-            if (args.size() > 1)
-                stop = args.at(1).getInteger();
-        } else {
-            res = args.at(0).getString();
-            stop = static_cast<std::int64_t>(res.size());
-            start = args.at(1).getInteger();
-            if (args.size() > 2)
-                stop = args.at(2).getInteger();
+            start = firstArg.getInteger();
+            if (n > 2)
+            {
+                stop = secondArg.getInteger();
+            }
         }
-        if (res.empty()) {
+        else
+        {
+            res = firstArg.getString();
+            stop = static_cast<std::int64_t>(res.size());
+            start = secondArg.getInteger();
+            if (n > 3)
+            {
+                stop = arguments.at(2).getInteger();
+            }
+        }
+        if (res.empty())
+        {
             return std::string();
         }
         start = normalize_index(start, static_cast<std::int64_t>(res.size()));
         stop = normalize_index(stop, static_cast<std::int64_t>(res.size()));
-        if (start >= stop) {
+        if (start >= stop)
+        {
             return std::string();
         }
         return res.substr(start, stop - start);
-    };
+    });
 
     hbs.registerHelper("slice", slice_fn);
     hbs.registerHelper("substr", slice_fn);
 
-    hbs.registerHelper("safe_anchor_id", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("safe_anchor_id", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments.at(0);
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
+        }
+        else
+        {
+            res = firstArg.getString();
         }
         std::ranges::transform(res, res.begin(), [](char c) {
             if (c == ' ' || c == '_')
+            {
                 return '-';
-           return tolower(c);
+            }
+           return toLower(c);
         });
         // remove any ":" from the string
         auto it = std::remove(res.begin(), res.end(), ':');
         res.erase(it, res.end());
         return res;
-    });
+    }));
 
-    hbs.registerHelper("strip_namespace", [](
-        dom::Array const& args, HandlebarsCallback const& options) {
+    hbs.registerHelper("strip_namespace", dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
         std::string res;
-        if (options.isBlock()) {
-            res = options.fn();
-        } else {
-            res = args.at(0).getString();
+        dom::Value options = arguments.back();
+        dom::Value firstArg = arguments.at(0);
+        dom::Value fn = options["fn"];
+        bool const isBlock = static_cast<bool>(fn);
+        if (isBlock)
+        {
+            res = static_cast<std::string>(fn());
         }
-        auto inside = 0;
+        else
+        {
+            res = firstArg.getString();
+        }
+        int inside = 0;
         size_t count = 0;
         size_t offset = std::string::npos;
-        for (auto const& c: res) {
-            switch (c) {
+        for (char c: res)
+        {
+            switch (c)
+            {
             case '(':
             case '[':
             case '<':
@@ -4796,40 +5632,36 @@ registerStringHelpers(Handlebars& hbs)
             }
             count++;
         }
-        if (offset != std::string::npos) {
+        if (offset != std::string::npos)
+        {
             return res.substr(offset);
-        } else {
+        }
+        else
+        {
             return res;
         }
-    });
+    }));
 }
 
 void
 registerContainerHelpers(Handlebars& hbs)
 {
-    static constexpr auto size_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        auto const& val = args.at(0);
-        switch (val.kind()) {
-        case dom::Kind::Array:
-            return static_cast<std::int64_t>(val.getArray().size());
-        case dom::Kind::Object:
-            return static_cast<std::int64_t>(val.getObject().size());
-        case dom::Kind::String:
-            return static_cast<std::int64_t>(val.getString().size());
-        case dom::Kind::Null:
-            return static_cast<std::int64_t>(0);
-        default:
-            return static_cast<std::int64_t>(1);
-        }
-    };
+    static auto size_fn = dom::makeInvocable([](
+        dom::Value const& val)
+    {
+        return val.size();
+    });
 
     hbs.registerHelper("size", size_fn);
     hbs.registerHelper("len", size_fn);
 
-    static constexpr auto keys_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        auto container = args.at(0);
+    static auto keys_fn = dom::makeInvocable([](
+        dom::Value container) -> dom::Value
+    {
+        if (!container.isObject())
+        {
+            return container;
+        }
         auto const& obj = container.getObject();
         dom::Array res;
         for (auto const& [key, _]: obj)
@@ -4837,16 +5669,17 @@ registerContainerHelpers(Handlebars& hbs)
             res.emplace_back(key);
         }
         return res;
-    };
+    });
 
     hbs.registerHelper("keys", keys_fn);
     hbs.registerHelper("list", keys_fn);
     hbs.registerHelper("iter", keys_fn);
 
-    static constexpr auto values_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        auto container = args.at(0);
-        if (!container.isObject()) {
+    static auto values_fn = dom::makeInvocable([](
+        dom::Value container) -> dom::Value
+    {
+        if (!container.isObject())
+        {
             return container;
         }
         auto const& obj = container.getObject();
@@ -4856,138 +5689,181 @@ registerContainerHelpers(Handlebars& hbs)
             res.emplace_back(value);
         }
         return res;
-    };
+    });
 
     hbs.registerHelper("values", values_fn);
 
-    static constexpr auto del_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        dom::Value range = args.at(0);
-        dom::Value item = args.at(1);
-        if (range.isArray()) {
+    static auto del_fn = dom::makeInvocable([](
+        dom::Value range, dom::Value const& item) -> dom::Value {
+        if (range.isArray())
+        {
             auto const& arr = range.getArray();
             auto const& val = item;
             dom::Array res;
-            for (std::int64_t i = 0; i < static_cast<std::int64_t>(arr.size()); i++)
+            auto const n = static_cast<std::int64_t>(arr.size());
+            for (std::int64_t i = 0; i < n; i++)
             {
-                if (!isSame(arr[i], val))
+                if (arr[i] != val)
+                {
                     res.emplace_back(arr.at(i));
+                }
             }
             return res;
-        } else if (range.isObject()) {
+        }
+        else if (range.isObject()) 
+        {
             auto const& obj = range.getObject();
             auto const& key = item.getString();
             dom::Object res;
             for (auto const& [k, v]: obj)
             {
                 if (k != key)
-                res.set(k, v);
+                {
+                    res.set(k, v);
+                }
             }
             return res;
-        } else {
+        }
+        else
+        {
             return range;
         }
-    };
+    });
 
     hbs.registerHelper("del", del_fn);
     hbs.registerHelper("delete", del_fn);
 
-    static constexpr auto has_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        dom::Value ctx = args.at(0);
-        dom::Value prop = args.at(1);
-        if (ctx.isObject()) {
-            dom::Value objV = ctx;
+    static auto has_fn = dom::makeInvocable([](
+        dom::Value const& ctx, dom::Value const& prop)
+    {
+        if (ctx.isObject())
+        {
+            dom::Value const& objV = ctx;
             auto const& obj = objV.getObject();
             auto const& key = prop.getString();
             return obj.exists(key);
-        } else if (ctx.isArray()){
-            dom::Value arrV = ctx;
+        }
+        else if (ctx.isArray())
+        {
+            dom::Value const& arrV = ctx;
             auto const& arr = arrV.getArray();
-            auto value = prop;
-            for (std::size_t i = 0; i < arr.size(); ++i) {
-                if (isSame(arr[i], value))
+            auto const& value = prop;
+            std::size_t const n = arr.size();
+            for (std::size_t i = 0; i < n; ++i)
+            {
+                if (arr[i] == value)
+                {
                     return true;
+                }
             }
         }
         return false;
-    };
+    });
 
     hbs.registerHelper("has", has_fn);
     hbs.registerHelper("exist", has_fn);
     hbs.registerHelper("contains", has_fn);
 
-    static constexpr auto has_any_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        auto container = args.at(0);
-        auto item = args.at(1);
-        if (container.isObject()) {
-            dom::Value const& objV = container;
-            auto const& obj = objV.getObject();
+    static auto has_any_fn = dom::makeInvocable([](
+        dom::Value const& container, dom::Value const& item)
+    {
+        if (container.isObject())
+        {
+            auto const& obj = container.getObject();
             dom::Value const& keysV = item;
             auto const& keys = keysV.getArray();
-            for (std::int64_t i = 0; i < static_cast<std::int64_t>(keys.size()); ++i) {
+            auto const n = static_cast<std::int64_t>(keys.size());
+            for (std::int64_t i = 0; i < n; ++i)
+            {
                 dom::Value k = keys[i];
                 if (obj.exists(k.getString()))
+                {
                     return true;
+                }
             }
             return false;
-        } else if (container.isArray()){
+        }
+        else if (container.isArray())
+        {
             auto const& arr = container.getArray();
             auto const& values = item.getArray();
-            for (std::int64_t i = 0; i < static_cast<std::int64_t>(values.size()); ++i) {
-                for (std::size_t j = 0; j < arr.size(); ++j) {
+            auto n = static_cast<std::int64_t>(values.size());
+            for (std::int64_t i = 0; i < n; ++i)
+            {
+                std::size_t const n2 = arr.size();
+                for (std::size_t j = 0; j < n2; ++j)
+                {
                     dom::Value a = arr[j];
                     dom::Value b = values[i];
-                    if (isSame(a, b)) {
+                    if (a == b)
+                    {
                         return true;
                     }
                 }
             }
             return false;
-        } else {
+        }
+        else
+        {
             return false;
         }
-    };
+    });
 
     hbs.registerHelper("has_any", has_any_fn);
     hbs.registerHelper("exist_any", has_any_fn);
     hbs.registerHelper("contains_any", has_any_fn);
 
-    static constexpr auto get_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) {
-        auto fieldV = args.at(1);
+    static auto get_fn = dom::makeVariadicInvocable([](
+        dom::Array const& arguments)
+    {
+        std::size_t const n = arguments.size();
+        dom::Value container = arguments.at(0);
+        dom::Value field = arguments.at(1);
         dom::Value default_value = nullptr;
-        if (args.size() > 2)
-            default_value = args.at(2);
-        dom::Value argsV = args.at(0);
-        if (argsV.isArray()) {
-            auto const& arr = argsV.getArray();
-            auto index = fieldV.getInteger();
+        if (n > 3)
+        {
+            default_value = arguments.at(2);
+        }
+
+        if (container.isArray())
+        {
+            auto const& arr = container.getArray();
+            auto index = field.getInteger();
             if (index < 0)
+            {
                 index = normalize_index(index, static_cast<std::int64_t>(arr.size()));
+            }
             if (index >= static_cast<std::int64_t>(arr.size()))
+            {
                 return default_value;
+            }
             return arr.at(index);
-        } else if (argsV.isObject()) {
-            auto const& obj = argsV.getObject();
-            auto const& key = fieldV.getString();
+        }
+        else if (container.isObject())
+        {
+            auto const& obj = container.getObject();
+            auto const& key = field.getString();
             if (obj.exists(key))
+            {
                 return obj.find(key);
-            return default_value;
-        } else {
+            }
             return default_value;
         }
-    };
+        else
+        {
+            return default_value;
+        }
+    });
 
     hbs.registerHelper("get", get_fn);
     hbs.registerHelper("get_or", get_fn);
 
-    static constexpr auto items_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        dom::Value itemsV = args.at(0);
-        if (itemsV.isObject()) {
-            auto const& obj = itemsV.getObject();
+    static auto items_fn = dom::makeInvocable([](
+        dom::Value items) -> dom::Value
+    {
+        if (items.isObject())
+        {
+            auto const& obj = items.getObject();
             dom::Array res;
             for (auto const& [key, value]: obj)
             {
@@ -4997,70 +5873,92 @@ registerContainerHelpers(Handlebars& hbs)
                 res.emplace_back(item);
             }
             return res;
-        } else {
-            return itemsV;
         }
-    };
+        else
+        {
+            return items;
+        }
+    });
 
     hbs.registerHelper("items", items_fn);
     hbs.registerHelper("entries", items_fn);
 
-    static constexpr auto first_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        auto range = args.at(0);
-        if (range.isArray()) {
+    static auto first_fn = dom::makeInvocable([](
+        dom::Value range) -> dom::Value {
+        if (range.isArray())
+        {
             auto const& arr = range.getArray();
             if (arr.empty())
+            {
                 return nullptr;
+            }
             return arr.at(0);
-        } else if (range.isObject()) {
+        }
+        else if (range.isObject())
+        {
             auto const& obj = range.getObject();
             if (obj.empty())
+            {
                 return nullptr;
+            }
             return obj.get(0).value;
-        } else {
+        }
+        else
+        {
             return range;
         }
-    };
+    });
 
     hbs.registerHelper("first", first_fn);
     hbs.registerHelper("head", first_fn);
     hbs.registerHelper("front", first_fn);
 
-    static constexpr auto last_fn = [](dom::Array const& args) -> dom::Value {
-        auto range = args.at(0);
-        if (range.isArray()) {
+    static auto last_fn = dom::makeInvocable([](
+        dom::Value range) -> dom::Value
+    {
+        if (range.isArray())
+        {
             auto const& arr = range.getArray();
-            if (arr.empty()) {
-                return nullptr;
+            if (arr.empty())
+            {
+                return {};
             }
-            return arr.at(arr.size() - 1);
-        } else if (range.isObject()) {
+            return arr.back();
+        }
+        else if (range.isObject())
+        {
             auto const& obj = range.getObject();
-            if (obj.empty()) {
+            if (obj.empty())
+            {
                 return nullptr;
             }
             return obj.get(obj.size() - 1).value;
-        } else {
+        }
+        else
+        {
             return range;
         }
-    };
+    });
 
     hbs.registerHelper("last", last_fn);
     hbs.registerHelper("tail", last_fn);
     hbs.registerHelper("back", last_fn);
 
-    static constexpr auto reverse_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        dom::Value container = args.at(0);
-        if (container.isArray()) {
+    static auto reverse_fn = dom::makeInvocable([](
+        dom::Value container) -> dom::Value
+    {
+        if (container.isArray())
+        {
             auto const& arr = container.getArray();
             dom::Array res;
-            for (std::size_t i = arr.size(); i > 0; --i) {
+            for (std::size_t i = arr.size(); i > 0; --i)
+            {
                 res.emplace_back(arr.at(i - 1));
             }
             return res;
-        } else if (container.isObject()) {
+        }
+        else if (container.isObject())
+        {
             auto const& obj = container.getObject();
             dom::Array res;
             for (auto const& [key, value]: obj)
@@ -5075,181 +5973,236 @@ registerContainerHelpers(Handlebars& hbs)
                 reversed.emplace_back(res.at(i - 1));
             }
             return reversed;
-        } else {
+        }
+        else
+        {
             return container;
         }
-    };
+    });
 
     hbs.registerHelper("reverse", reverse_fn);
     hbs.registerHelper("reversed", reverse_fn);
 
-    static constexpr auto update_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        auto container = args.at(0);
-        auto otherContainer = args.at(1);
-        if (container.isObject()) {
+    static auto update_fn = dom::makeInvocable([](
+        dom::Value container, dom::Value const& items) -> dom::Value {
+        if (container.isObject())
+        {
             auto const& obj = container.getObject();
-            auto const& other = otherContainer.getObject();
+            auto const& other = items.getObject();
             dom::Object res = createFrame(obj);
-            for (auto const& [k, v]: other) {
+            for (auto const& [k, v]: other)
+            {
                 res.set(k, v);
             }
             return res;
-        } else if (container.isArray()) {
+        }
+        else if (container.isArray())
+        {
             auto const& arr = container.getArray();
-            auto const& other = otherContainer.getArray();
+            auto const& other = items.getArray();
             dom::Array res;
-            for (std::size_t i = 0; i < arr.size(); ++i) {
+            std::size_t const n = arr.size();
+            for (std::size_t i = 0; i < n; ++i)
+            {
                 res.emplace_back(arr.at(i));
             }
-            for (std::size_t i = 0; i < other.size(); ++i) {
+            std::size_t const n2 = other.size();
+            for (std::size_t i = 0; i < n2; ++i)
+            {
                 bool arr_contains = false;
-                for (std::size_t j = 0; j < res.size(); ++j) {
-                    if (isSame(res.at(j), other.at(i))) {
+                std::size_t const n3 = res.size();
+                for (std::size_t j = 0; j < n3; ++j)
+                {
+                    if (res.at(j) == other.at(i))
+                    {
                         arr_contains = true;
                         break;
                     }
                 }
-                if (!arr_contains) {
+                if (!arr_contains)
+                {
                     res.emplace_back(other.at(i));
                 }
             }
             return res;
-        } else {
+        }
+        else
+        {
             return container;
         }
-    };
+    });
 
     hbs.registerHelper("update", update_fn);
     hbs.registerHelper("merge", update_fn);
 
-    static constexpr auto sort_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        auto container = args.at(0);
-        if (container.isArray()) {
+    static auto sort_fn = dom::makeInvocable([](
+        dom::Value container) -> dom::Value
+    {
+        if (container.isArray())
+        {
             auto const& arr = container.getArray();
             std::vector<dom::Value> res;
-            for (std::size_t i = 0; i < arr.size(); ++i) {
+            std::size_t const n = arr.size();
+            for (std::size_t i = 0; i < n; ++i)
+            {
                 res.emplace_back(arr.at(i));
             }
-            std::sort(res.begin(), res.end(), [](auto const& a, auto const& b) {
-                return isLt(a, b);
+            std::ranges::sort(res, [](auto const& a, auto const& b) {
+                return a < b;
             });
             dom::Array res2;
             for (const auto & re : res) {
                 res2.emplace_back(re);
             }
             return res2;
-        } else {
+        }
+        else
+        {
             return container;
         }
-    };
+    });
 
     hbs.registerHelper("sort", sort_fn);
 
-    static constexpr auto sort_by_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
+    static auto sort_by_fn = dom::makeInvocable([](
+        dom::Value container, dom::Value const& keyV) -> dom::Value
+    {
         // Given an array of objects, sort these objects by their value at
         // a given key
-        auto container = args.at(0);
-        if (container.isArray()) {
+        if (container.isArray())
+        {
             auto const& arr = container.getArray();
-            dom::Value keyV = args.at(1);
             auto const& key = keyV.getString();
             std::vector<dom::Value> res;
-            for (std::size_t i = 0; i < arr.size(); ++i) {
+            std::size_t const n = arr.size();
+            for (std::size_t i = 0; i < n; ++i) {
                 res.emplace_back(arr.at(i));
             }
-            std::sort(res.begin(), res.end(), [&key](dom::Value const& a, dom::Value const& b) {
-                if (!a.isObject() || !b.isObject()) {
+            std::ranges::sort(res, [&key](dom::Value const& a, dom::Value const& b)
+            {
+                // If the value is not an object, then we can't sort it
+                // by a key, so we just sort it by the value itself
+                if (!a.isObject() || !b.isObject())
+                {
                     if (a.isObject())
+                    {
                         return true;
+                    }
                     if (b.isObject())
+                    {
                         return false;
-                    return isLt(a, b);
+                    }
+                    return a < b;
                 }
+                // If the value is an object but the key doesn't exist,
+                // then we can't sort it by a key, so we just sort it by
+                // whichever has the key
                 const bool ak = a.getObject().exists(key);
                 const bool bk = b.getObject().exists(key);
-                if (!ak) {
+                if (!ak)
+                {
                     return bk;
                 }
-                if (!bk) {
+                if (!bk)
+                {
                     return false;
                 }
-                return isLt(a.getObject().find(key), b.getObject().find(key));
+                // If the value is an object and the key exists, then we
+                // sort it by the value at the key
+                return a.getObject().find(key) < b.getObject().find(key);
             });
-            dom::Array res2;
-            for (const auto & re : res) {
-                res2.emplace_back(re);
-            }
-            return res2;
-        } else {
+            return dom::Array(res);
+        }
+        else
+        {
+            // If the value is not an array, then we can't sort it
             return container;
         }
-    };
+    });
 
     hbs.registerHelper("sort_by", sort_by_fn);
 
-    hbs.registerHelper("at", at_fn);
+    hbs.registerHelper("at", dom::makeInvocable(at_fn));
 
-    static constexpr auto fill_fn = [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        auto container = args.at(0);
-        if (container.isArray()) {
+    static auto fill_fn = dom::makeInvocable([](
+        dom::Value container,
+        dom::Value const& fill_value,
+        dom::Value const& startV,
+        dom::Value const& stopV) -> dom::Value {
+        if (container.isArray())
+        {
             auto const& arr = container.getArray();
-            dom::Value fill_value = args.at(1);
             std::int64_t start = 0;
-            if (args.size() > 2)
-                start = args.at(2).getInteger();
-            auto stop = static_cast<std::int64_t>(arr.size());
-            if (args.size() > 3)
-                stop = args.at(3).getInteger();
-            start = normalize_index(start, static_cast<std::int64_t>(arr.size()));
-            stop = normalize_index(stop, static_cast<std::int64_t>(arr.size()));
+            if (startV.isInteger())
+            {
+                start = startV.getInteger();
+            }
+            auto const n = static_cast<std::int64_t>(arr.size());
+            auto stop = n;
+            if (stopV.isInteger())
+            {
+                stop = stopV.getInteger();
+            }
+            start = normalize_index(start, n);
+            stop = normalize_index(stop, n);
             dom::Array res;
-            for (std::int64_t i = 0; i < static_cast<std::int64_t>(arr.size()); ++i) {
+            for (std::int64_t i = 0; i < n; ++i)
+            {
                 if (i >= start && i < stop)
+                {
                     res.emplace_back(fill_value);
+                }
                 else
+                {
                     res.emplace_back(arr.at(i));
+                }
             }
             return res;
-        } else {
+        }
+        else
+        {
+            // If the value is not an array, then we can't fill it
             return container;
         }
-    };
+    });
 
     hbs.registerHelper("fill", fill_fn);
 
-    hbs.registerHelper("count", count_fn);
-    hbs.registerHelper("replace", replace_fn);
+    hbs.registerHelper("count", dom::makeVariadicInvocable(count_fn));
+    hbs.registerHelper("replace", dom::makeVariadicInvocable(replace_fn));
 
-    hbs.registerHelper("chunk", [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        dom::Value range = args.at(0);
-        std::int64_t size = args.at(1).getInteger();
-        if (range.isArray()) {
+    hbs.registerHelper("chunk", dom::makeInvocable([](
+        dom::Value range, dom::Value const& sizeV) -> dom::Value
+    {
+        std::int64_t chunkSize = sizeV.getInteger();
+        if (range.isArray())
+        {
             auto const& arr = range.getArray();
             dom::Array res;
             std::int64_t i = 0;
-            while (i < static_cast<std::int64_t>(arr.size())) {
+            auto const n = static_cast<std::int64_t>(arr.size());
+            while (i < n)
+            {
                 dom::Array chunk;
-                for (std::int64_t j = 0; j < size && i < static_cast<std::int64_t>(arr.size()); ++j) {
+                for (std::int64_t j = 0; j < chunkSize && i < n; ++j)
+                {
                     chunk.emplace_back(arr.at(i));
                     ++i;
                 }
                 res.emplace_back(chunk);
             }
             return res;
-        } else if (range.isString()) {
+        }
+        else if (range.isString())
+        {
             auto const& str = range.getString();
             dom::Array res;
             std::int64_t i = 0;
-            while (i < static_cast<std::int64_t>(str.size())) {
+            auto const n = static_cast<std::int64_t>(str.size());
+            while (i < n)
+            {
                 std::string chunk;
-                for (std::int64_t j = 0;
-                     j < size && i < static_cast<std::int64_t>(str.size());
-                     ++j)
+                for (std::int64_t j = 0; j < chunkSize && i < n; ++j)
                 {
                     chunk += str.get()[i];
                     ++i;
@@ -5257,54 +6210,73 @@ registerContainerHelpers(Handlebars& hbs)
                 res.emplace_back(chunk);
             }
             return res;
-        } else if (range.isObject()) {
+        }
+        else if (range.isObject())
+        {
             auto const& obj = range.getObject();
             dom::Array res;
-            std::int64_t i = 0;
-            while (i < static_cast<std::int64_t>(obj.size())) {
+            std::size_t i = 0;
+            std::size_t const n = obj.size();
+            while (i < n)
+            {
                 dom::Object chunk;
-                for (std::int64_t j = 0; j < size && i < static_cast<std::int64_t>(obj.size()); ++j) {
+                std::int64_t j = 0;
+                while (j < chunkSize && i < n)
+                {
                     auto const& [k, v] = obj.at(i);
                     chunk.set(k, v);
                     ++i;
+                    ++j;
                 }
                 res.emplace_back(chunk);
             }
             return res;
-        } else {
+        }
+        else
+        {
             return range;
         }
-    });
+    }));
 
-    hbs.registerHelper("group_by", [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        // given an array of objects, group these objects by a key in each them
-        // the result is
-        dom::Value range = args.at(0);
-        if (!range.isArray()) {
+    hbs.registerHelper("group_by", dom::makeInvocable([](
+        dom::Value range, dom::Value const& keyV) -> dom::Value
+    {
+        // Given an array of objects, group these objects by a key in each them
+        // The result is an object with keys being the values of the key in each
+        // object, and the values being arrays of objects with that key value
+        if (!range.isArray())
+        {
             return range;
         }
         dom::Array const& array = range.getArray();
-        std::string key(args.at(1).getString());
-        std::vector<std::uint8_t> copied(array.size(), 0);
+        std::string key(keyV.getString());
+        dom::Array::size_type n = array.size();
+        std::vector<std::uint8_t> copied(n, 0x00);
         dom::Object res;
-        for (std::size_t i = 0; i < array.size(); ++i) {
-            if (copied[i] || !array[i].getObject().exists(key)) {
+        for (std::size_t i = 0; i < n; ++i)
+        {
+            if (copied[i] != 0x00 || !array[i].isObject() || !array[i].getObject().exists(key))
+            {
                 // object already copied or doesn't have the key
                 copied[i] = 0x01;
                 continue;
             }
             copied[i] = 0x01;
-            // Create a group name for this key value
-            std::string group_name(array[i].getObject().find(key).getString());
+
+            // Create a group for this key value
+            std::string group_name(toString(array[i][key]));
             dom::Array group;
             group.emplace_back(array[i]);
-            for (std::size_t j = i; j < array.size(); ++j) {
-                if (copied[j]) {
+
+            // Copy any other equivalent keys to the same group
+            for (std::size_t j = i; j < n; ++j)
+            {
+                if (copied[j])
+                {
                     continue;
                 }
-                if (array[j].getObject().find(key).getString() ==
-                    array[i].getObject().find(key).getString()) {
+                if (array[j][key].getString() == array[i][key].getString())
+                {
                     group.emplace_back(array[j]);
                     copied[j] = 0x01;
                 }
@@ -5312,42 +6284,52 @@ registerContainerHelpers(Handlebars& hbs)
             res.set(group_name, group);
         }
         return res;
-    });
+    }));
 
-    hbs.registerHelper("pluck", [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        // given an array of objects, take the value of a key from each object
-        dom::Value rangeV = args.at(0);
-        if (!rangeV.isArray()) {
+    hbs.registerHelper("pluck", dom::makeInvocable([](
+        dom::Value rangeV, dom::Value const& keyV) -> dom::Value
+    {
+        if (!rangeV.isArray())
+        {
             return rangeV;
         }
+        // Given an array of objects, take the value of a key from each object
         dom::Array const& range = rangeV.getArray();
-        std::string key(args.at(1).getString());
+        std::string key(keyV.getString());
         dom::Array res;
-        for (std::int64_t i = 0; i < static_cast<std::int64_t>(range.size()); ++i) {
-            if (range[i].isObject() && range[i].getObject().exists(key)) {
+        auto n = static_cast<std::int64_t>(range.size());
+        for (std::int64_t i = 0; i < n; ++i)
+        {
+            if (range[i].isObject() && range[i].getObject().exists(key))
+            {
                 res.emplace_back(range[i].getObject().find(key));
             }
         }
         return res;
-    });
+    }));
 
-    hbs.registerHelper("unique", [](
-        dom::Array const& args, HandlebarsCallback const& options) -> dom::Value {
-        dom::Value const& rangeV = args.at(0);
-        if (!rangeV.isArray()) {
+    hbs.registerHelper("unique", dom::makeInvocable([](
+        dom::Value rangeV) -> dom::Value
+    {
+        if (!rangeV.isArray())
+        {
             return rangeV;
         }
+        // remove duplicates from an array
         dom::Array const& range = rangeV.getArray();
         std::vector<dom::Value> res;
-        for (const auto& el: range) {
+        for (const auto& el: range)
+        {
             res.push_back(el);
         }
-        std::ranges::sort(res, [](dom::Value const& a, dom::Value const& b) {
-            return isLt(a, b);
+        std::ranges::sort(res, [](dom::Value const& a, dom::Value const& b)
+        {
+            return a < b;
         });
-        auto [first, last] = std::ranges::unique(res, [](dom::Value const& a, dom::Value const& b) {
-            return isSame(a, b);
+        auto [first, last] = std::ranges::unique(res, [](
+            dom::Value const& a, dom::Value const& b)
+        {
+            return a == b;
         });
         res.erase(first, res.end());
         dom::Array res2;
@@ -5355,9 +6337,9 @@ registerContainerHelpers(Handlebars& hbs)
             res2.emplace_back(v);
         }
         return res2;
-    });
+    }));
 
-    hbs.registerHelper("concat", concat_fn);
+    hbs.registerHelper("concat", dom::makeInvocable(concat_fn));
 }
 
 } // helpers

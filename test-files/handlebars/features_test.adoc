@@ -1188,20 +1188,6 @@ g
     "f" : "f",
     "g" : "g"
 }
-[
-    {
-        "account_id" : "account-x10",
-        "product" : "Bookcase"
-    },
-    {
-        "account_id" : "account-x10",
-        "product" : "Chair"
-    },
-    {
-        "account_id" : "account-x11",
-        "product" : "Desk"
-    }
-]
 // sort_by
 [
     {

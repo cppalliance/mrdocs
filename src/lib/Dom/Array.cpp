@@ -14,6 +14,10 @@ namespace clang {
 namespace mrdox {
 namespace dom {
 
+void
+ArrayImpl::
+set(size_type, Value) {}
+
 Array::
 ~Array() = default;
 
@@ -55,6 +59,53 @@ operator=(
     swap(temp);
     swap(other);
     return *this;
+}
+
+bool
+operator==(dom::Array const& a, dom::Array const& b) noexcept
+{
+    Array::size_type const an = a.size();
+    Array::size_type const bn = b.size();
+    if (an != bn)
+    {
+        return false;
+    }
+    for (std::size_t i = 0; i < an; ++i)
+    {
+        if (a[i] != b[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+std::strong_ordering
+operator<=>(Array const& a, Array const& b) noexcept
+{
+    Array::size_type const an = a.size();
+    Array::size_type const bn = b.size();
+    if (an < bn)
+    {
+        return std::strong_ordering::less;
+    }
+    if (bn < an)
+    {
+        return std::strong_ordering::less;
+    }
+    Array::size_type const n = an;
+    for (std::size_t i = 0; i < n; ++i)
+    {
+        if (a[i] < b[i])
+        {
+            return std::strong_ordering::less;
+        }
+        if (b[i] < a[i])
+        {
+            return std::strong_ordering::greater;
+        }
+    }
+    return std::strong_ordering::greater;
 }
 
 std::string
@@ -130,8 +181,19 @@ get(
     size_type i) const ->
         value_type
 {
+    if (i < elements_.size())
+    {
+        return elements_[i];
+    }
+    return {};
+}
+
+void
+DefaultArrayImpl::
+set(size_type i, Value v)
+{
     MRDOX_ASSERT(i < elements_.size());
-    return elements_[i];
+    elements_[i] = std::move(v);
 }
 
 void

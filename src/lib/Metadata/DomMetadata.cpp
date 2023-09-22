@@ -489,7 +489,7 @@ public:
         return dom::Object({
             { "name", I.Name },
             { "value", I.Initializer.Value ?
-                *I.Initializer.Value : dom::Value() },
+                dom::Value(*I.Initializer.Value) : dom::Value() },
             { "expr", I.Initializer.Written },
             { "doc", domCreate(I.javadoc, domCorpus_) }
             });

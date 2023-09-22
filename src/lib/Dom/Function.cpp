@@ -21,7 +21,7 @@ struct NullFunction : public FunctionImpl
     Expected<Value>
     call(Array const&) const override
     {
-        return nullptr;
+        return dom::Value(dom::Kind::Undefined);
     }
 };
 

@@ -258,6 +258,36 @@ public:
     {
         return lhs.get() <=> rhs.get();
     }
+
+    /** Concatenate two strings.
+    */
+    friend auto operator+(
+        String const& lhs, String const& rhs) noexcept
+    {
+        std::string buf(lhs.get());
+        buf.append(rhs.get());
+        return String(buf);
+    }
+
+    /// @overload
+    template <std::convertible_to<std::string_view> S>
+    friend auto operator+(
+        S const& lhs, String const& rhs) noexcept
+    {
+        std::string buf(lhs);
+        buf.append(rhs.get());
+        return String(buf);
+    }
+
+    /// @overload
+    template <std::convertible_to<std::string_view> S>
+    friend auto operator+(
+        String const& lhs, S const& rhs) noexcept
+    {
+        std::string buf(lhs);
+        buf.append(rhs);
+        return String(buf);
+    }
 };
 
 } // dom

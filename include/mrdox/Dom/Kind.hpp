@@ -12,6 +12,7 @@
 #define MRDOX_API_DOM_KIND_HPP
 
 #include <mrdox/Platform.hpp>
+#include <string_view>
 
 namespace clang {
 namespace mrdox {
@@ -31,6 +32,25 @@ enum class Kind
     Object,
     Function
 };
+
+static constexpr
+std::string_view
+toString(Kind const& value)
+{
+    switch (value)
+    {
+    case Kind::Undefined:    return "undefined";
+    case Kind::Null:         return "null";
+    case Kind::Boolean:      return "boolean";
+    case Kind::Integer:      return "integer";
+    case Kind::String:       return "string";
+    case Kind::SafeString:   return "safeString";
+    case Kind::Array:        return "array";
+    case Kind::Object:       return "object";
+    case Kind::Function:     return "function";
+    }
+    return "unknown";
+}
 
 } // dom
 } // mrdox

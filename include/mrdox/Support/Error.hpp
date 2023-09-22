@@ -59,7 +59,7 @@ class Exception;
 
 /** Holds the description of an error, or success.
 */
-class [[nodiscard]] MRDOX_DECL
+class MRDOX_DECL
     Error final
 {
     std::string where_;
@@ -294,8 +294,7 @@ public:
 /** A container holding an error or a value.
 */
 template<class T>
-class [[nodiscard]]
-    Expected
+class Expected
 {
     union
     {

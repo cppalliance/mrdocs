@@ -108,25 +108,6 @@ public:
     */
     Array(Array const& other);
 
-    /** Assignment.
-
-        Ownership of the array is transferred
-        to this, and ownership of the previous
-        contents is released. The moved-from
-        array behaves as if default constructed.
-    */
-    Array& operator=(Array&&);
-
-    /** Assignment.
-
-        This acquires shared ownership of the copied
-        array, and ownership of the previous contents
-        is released.
-    */
-    Array& operator=(Array const&) = default;
-
-    //--------------------------------------------
-
     /** Constructor.
 
         This constructs an array from an existing
@@ -149,6 +130,25 @@ public:
         @param elements The elements to acquire.
     */
     Array(storage_type elements);
+
+    /** Assignment.
+
+        Ownership of the array is transferred
+        to this, and ownership of the previous
+        contents is released. The moved-from
+        array behaves as if default constructed.
+    */
+    Array& operator=(Array&&);
+
+    /** Assignment.
+
+        This acquires shared ownership of the copied
+        array, and ownership of the previous contents
+        is released.
+    */
+    Array& operator=(Array const&) = default;
+
+    //--------------------------------------------
 
     /** Return the implementation used by this object.
     */
@@ -175,6 +175,13 @@ public:
     */
     value_type get(size_type i) const;
 
+    /** Set the i-th element, without bounds checking.
+
+        @param i The zero-based index of the element.
+        @param v The value to set.
+    */
+    void set(size_type i, Value v);
+
     /** Return the i-th element, without bounds checking.
     */
     value_type operator[](size_type i) const;
@@ -184,6 +191,18 @@ public:
         @throw Exception `i >= size()`
     */
     value_type at(size_type i) const;
+
+    /** Return the first element.
+
+        @throw Exception `empty()`
+    */
+    value_type front() const;
+
+    /** Return the last element.
+
+        @throw Exception `empty()`
+    */
+    value_type back() const;
 
     /** Return an iterator to the beginning of the range of elements.
      */
@@ -200,6 +219,27 @@ public:
     */
     void emplace_back(value_type value);
 
+    /** Concatenate two arrays.
+    */
+    friend Array operator+(Array const& lhs, Array const& rhs);
+
+    /// @overload
+    template <std::convertible_to<Array> S>
+    friend auto operator+(
+        S const& lhs, Array const& rhs) noexcept
+    {
+        return Array(lhs) + rhs;
+    }
+
+    /// @overload
+    template <std::convertible_to<Array> S>
+    friend auto operator+(
+        Array const& lhs, S const& rhs) noexcept
+    {
+        return lhs + Array(rhs);
+    }
+
+
     /** Swap two arrays.
     */
     void swap(Array& other) noexcept
@@ -213,6 +253,18 @@ public:
     {
         lhs.swap(rhs);
     }
+
+    /** Compare two arrays for equality.
+     */
+    friend
+    bool
+    operator==(Array const&, Array const&) noexcept;
+
+    /** Compare two arrays for precedence.
+     */
+    friend
+    std::strong_ordering
+    operator<=>(Array const&, Array const&) noexcept;
 
     /** Return a diagnostic string.
     */
@@ -261,6 +313,10 @@ public:
     */
     virtual value_type get(size_type i) const = 0;
 
+    /** Set the i-th element, without bounds checking.
+    */
+    virtual void set(size_type, Value);
+
     /** Append an element to the end of the array.
 
         The default implementation throws an exception,
@@ -298,6 +354,7 @@ public:
         storage_type elements) noexcept;
     size_type size() const override;
     value_type get(size_type i) const override;
+    void set(size_type i, Value v) override;
     void emplace_back(value_type value) override;
 
 private:
