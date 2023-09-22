@@ -269,6 +269,11 @@ inline auto Object::operator[](size_type i) const -> reference
     return get(i);
 }
 
+inline auto Object::operator[](std::string_view key) const -> dom::Value
+{
+    return this->find(key);
+}
+
 inline auto Object::at(size_type i) const -> reference
 {
     if(i < size())

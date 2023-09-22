@@ -88,6 +88,12 @@ exists(std::string_view key) const
     return false;
 }
 
+bool
+operator==(Object const& a, Object const& b) noexcept
+{
+    return a.impl_ == b.impl_;
+}
+
 std::string
 toString(Object const&)
 {

@@ -47,19 +47,6 @@ operator()(Args&&... args) const
 
 //------------------------------------------------
 
-template<class F>
-auto
-InvocableImpl<F>::
-call(Array const& args) const ->
-    Expected<Value>
-{
-    return call_impl(args,
-        std::make_index_sequence<
-            std::tuple_size_v<args_type>>{});
-}
-
-//------------------------------------------------
-
 template<class T>
 struct arg_type;
 
@@ -145,18 +132,83 @@ struct arg_type<T>
 };
 
 template<class F>
+auto
+DefaultFunctionImpl<F>::
+call(Array const& args) const ->
+    Expected<Value>
+{
+    return call_impl(args,
+        std::make_index_sequence<
+            std::tuple_size_v<args_type>>{});
+}
+
+template<class F>
 template<std::size_t... I>
 Expected<Value>
-InvocableImpl<F>::
+DefaultFunctionImpl<F>::
 call_impl(
     Array const& args,
     std::index_sequence<I...>) const
 {
+    using R = decltype(
+        f_(arg_type<std::decay_t<
+            std::tuple_element_t<I, args_type> >
+                >::get(args[I])...));
     if (args.size() < sizeof...(I))
-        return Error("too few arguments");
-    return f_(arg_type<std::decay_t<
-        std::tuple_element_t<I, args_type> >
-            >::get(args[I])...);
+    {
+        Array clone;
+        for (std::size_t i = 0; i < args.size(); ++i)
+            clone.emplace_back(args[i]);
+        std::size_t const diff = sizeof...(I) - args.size();
+        for (std::size_t i = 0; i < diff; ++i)
+            clone.emplace_back(Value(Kind::Undefined));
+        if constexpr (std::is_void_v<R>)
+        {
+            f_(arg_type<std::decay_t<
+                std::tuple_element_t<I, args_type> >
+                    >::get(clone[I])...);
+            return Value(Kind::Undefined);
+        }
+        else
+        {
+            return f_(arg_type<std::decay_t<
+              std::tuple_element_t<I, args_type> >
+                   >::get(clone[I])...);
+        }
+    }
+    if constexpr (std::is_void_v<R>)
+    {
+        f_(arg_type<std::decay_t<
+            std::tuple_element_t<I, args_type> >
+                >::get(args[I])...);
+        return Value(Kind::Undefined);
+    }
+    else
+    {
+        return f_(arg_type<std::decay_t<
+            std::tuple_element_t<I, args_type> >
+                >::get(args[I])...);
+    }
+}
+
+//------------------------------------------------
+
+template<class F>
+auto
+VariadicFunctionImpl<F>::
+call(Array const& args) const ->
+    Expected<Value>
+{
+    using R = std::invoke_result_t<F, Array const&>;
+    if constexpr (std::is_void_v<R>)
+    {
+        f_(args);
+        return Value(Kind::Undefined);
+    }
+    else
+    {
+        return f_(args);
+    }
 }
 
 } // dom

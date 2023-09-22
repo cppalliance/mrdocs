@@ -114,6 +114,8 @@ if __name__ != "__main__":
             return EnumPrinter(val)
 
         typename: str = utils.resolved_typename(val)
+        if typename == 'clang::mrdox::dom::Kind':
+            return EnumPrinter(val)
         if typename == 'clang::mrdox::dom::Value':
             return DomValuePrinter(val)
         if typename == 'clang::mrdox::dom::String':

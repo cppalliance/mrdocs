@@ -753,6 +753,9 @@ domValue_push(
     case dom::Kind::Null:
         duk_push_null(A);
         return;
+    case dom::Kind::Undefined:
+        duk_push_undefined(A);
+        return;
     case dom::Kind::Boolean:
         duk_push_boolean(A, value.getBool());
         return;
@@ -761,6 +764,7 @@ domValue_push(
             duk_int_t>(value.getInteger()));
         return;
     case dom::Kind::String:
+    case dom::Kind::SafeString:
         dukM_push_string(A, value.getString());
         return;
     case dom::Kind::Array:

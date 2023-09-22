@@ -127,7 +127,7 @@ namespace detail {
 
     // Heterogeneous lookup support
     struct string_hash {
-        using is_transparent = void;
+        using is_transparent [[maybe_unused]] = void;
         size_t operator()(const char *txt) const {
             return std::hash<std::string_view>{}(txt);
         }
@@ -247,10 +247,11 @@ public:
         @param sv The string to write
         @return A reference to this object
      */
+    friend
     OutputRef&
-    operator<<( std::string_view sv )
+    operator<<( OutputRef& os, std::string_view sv )
     {
-        return write_impl( sv );
+        return os.write_impl( sv );
     }
 
     /** Write to output
@@ -258,10 +259,11 @@ public:
         @param c The character to write
         @return A reference to this object
      */
+    friend
     OutputRef&
-    operator<<( char c )
+    operator<<( OutputRef& os, char c )
     {
-        return write_impl( std::string_view( &c, 1 ) );
+        return os.write_impl( std::string_view( &c, 1 ) );
     }
 
     /** Write to output
@@ -269,10 +271,11 @@ public:
         @param c The character to write
         @return A reference to this object
      */
+    friend
     OutputRef&
-    operator<<( char const * c )
+    operator<<( OutputRef& os, char const * c )
     {
-        return write_impl( std::string_view( c ) );
+        return os.write_impl( std::string_view( c ) );
     }
 
     /** Write to output
@@ -282,11 +285,12 @@ public:
      */
     template <class T>
     requires fmt::has_formatter<T, fmt::format_context>::value
+    friend
     OutputRef&
-    operator<<( T v )
+    operator<<( OutputRef& os, T v )
     {
         std::string s = fmt::format( "{}", v );
-        return write_impl( s );
+        return os.write_impl( s );
     }
 
     void
@@ -300,436 +304,6 @@ public:
     {
         return indent_;
     }
-};
-
-class HandlebarsCallback;
-
-namespace helpers {
-    void
-    unless_fn(
-        dom::Array const& args,
-        HandlebarsCallback const& options);
-}
-
-/** Callback information for handlebars helpers
-
-    This class is used to pass information about the current
-    context to handlebars helpers.
-
-    It allows the helpers to access the current context,
-    the current output stream, and render the current block.
-
- */
-class MRDOX_DECL HandlebarsCallback
-{
-private:
-    using callback_type = std::function<
-        void(
-            OutputRef,
-            dom::Value const& /* context */,
-            dom::Object const& /* data */,
-            dom::Object const& /* blockValues */,
-            dom::Object const& /* blockValuePaths */)>;
-
-    callback_type fn_;
-    callback_type inverse_;
-    dom::Value const* context_{ nullptr };
-    OutputRef* output_{ nullptr };
-    dom::Object const* data_;
-    std::vector<dom::Value> ids_;
-    dom::Object hash_;
-    dom::Object hashIds_;
-    std::string_view name_;
-    std::vector<std::string_view> blockParamIds_;
-    std::function<void(dom::Value, dom::Array const&)> const* logger_;
-    detail::RenderState* renderState_;
-    HandlebarsOptions const* opt_;
-    friend class Handlebars;
-
-    friend
-    void
-    helpers::unless_fn(
-        dom::Array const& args,
-        HandlebarsCallback const& options);
-
-public:
-    /** Render the block content with the specified context
-
-        This function renders the block content with the specified context.
-
-        For example, the following template calls the helper "list" with a block section:
-
-        @code{.handlebars}
-          {{#list people}}{{name}}{{/list}}
-        @endcode
-
-        In this context, this function would render the `{{name}}` block
-        content with any specified context.
-
-        To list all people, a helper such as "list" would usually call this function once for each
-        person, passing the person's object as the context argument.
-
-        If this is not a block helper, this function returns an empty string.
-
-        @param context The context to render the block content with
-        @return The rendered block content
-
-     */
-    std::string
-    fn(dom::Value const& context) const;
-
-    /** Render the block content with the specified context
-
-        This overload renders the block directly to the OutputRef
-        instead of generating a string.
-
-        This overload is particularly helpful in C++ block helpers
-        where allocating a string is unnecessary, including built-in
-        helpers. Other helpers can still use the first overload that
-        allocates the string to obtain the same results.
-
-        @param out Reference to the output
-        @param context The context to render the block content with
-
-     */
-    void
-    fn(OutputRef out, dom::Value const& context) const;
-
-    /** Render the block content with the original context
-     */
-    std::string
-    fn() const {
-        return fn( *context_ );
-    }
-
-    /** Render the block content with the original context
-
-        @param out Reference to the output
-     */
-    void
-    fn(OutputRef out) const {
-        fn( out, *context_ );
-    }
-
-    /** Render the block content with specified private data and block parameters
-
-        This is the most complete overload of the `fn` function. It allows
-        the caller to specify the new private data and values for
-        block parameters to use when rendering the block content.
-
-        @param context The context to render the block content with
-        @param data The private data to render the block content with
-        @param blockParams The block parameters to render the block content with
-        @return The rendered block content
-
-     */
-    std::string
-    fn(dom::Value const& context,
-       dom::Object const& data,
-       dom::Array const& blockParams,
-       dom::Array const& blockParamPaths) const;
-
-    /** Render the block content with specified private data and block parameters
-
-        This is the most complete overload of the `fn` function. It allows
-        the caller to specify the new private data and values for
-        block parameters to use when rendering the block content.
-
-        @param out Reference to the output
-        @param context The context to render the block content with
-        @param data The private data to render the block content with
-        @param blockParams The block parameters to render the block content with
-        @return The rendered block content
-
-     */
-    void
-    fn(OutputRef out,
-       dom::Value const& context,
-       dom::Object const& data,
-       dom::Array const& blockParams,
-       dom::Array const& blockParamPaths) const;
-
-    /** Render the inverse block content with the specified context
-
-        This function renders the inverse block content with the specified context.
-
-        For example, the following template calls the helper "list" with a
-        block section:
-
-        @code{.handlebars}
-         {{#list people}}{{name}}{{else}}No people{{/list}}
-        @endcode
-
-        In this context, this `inverse` function would render the
-        `No people` block content with any specified context.
-
-        When there are no people, a helper such as "list" would usually
-        call this function once, passing the original context argument instead
-        of a person on the list.
-
-        @param context The context to render the block content with
-        @return The rendered block content
-     */
-    std::string
-    inverse(dom::Value const& context) const;
-
-    /** Render the inverse block content with the specified context
-
-        This overload renders the block directly to the OutputRef
-        instead of generating a string.
-
-        This overload is particularly helpful in C++ block helpers
-        where allocating a string is unnecessary, including built-in
-        helpers. Other helpers can still use the first overload that
-        allocates the string to obtain the same results.
-
-        @param out Reference to the output
-        @param context The context to render the block content with
-
-     */
-    void
-    inverse(OutputRef out, dom::Value const& context) const;
-
-    /** Render the inverse block content with the original context
-     */
-    std::string
-    inverse() const {
-        return inverse( *context_ );
-    }
-
-    /** Render the inverse block content with the original context
-
-        @param out Reference to the output
-     */
-    void
-    inverse(OutputRef out) const {
-        inverse( out, *context_ );
-    }
-
-    /** Render the inverse block content with private data and block parameters
-
-        This is the most complete overload of the `inverse` function. It allows
-        the caller to specify the new private data and values for
-        block parameters to use when rendering the block content.
-
-        @param context The context to render the block content with
-        @param data The private data to render the block content with
-        @param blockParams The block parameters to render the block content with
-        @return The rendered block content
-
-     */
-    std::string
-    inverse(
-        dom::Value const& context,
-        dom::Object const& data,
-        dom::Array const& blockParams,
-        dom::Array const& blockParamPaths) const;
-
-    /** Render the inverse block content with private data and block parameters
-
-        This is the most complete overload of the `inverse` function. It allows
-        the caller to specify the new private data and values for
-        block parameters to use when rendering the block content.
-
-        @param out Reference to the output
-        @param context The context to render the block content with
-        @param data The private data to render the block content with
-        @param blockParams The block parameters to render the block content with
-        @return The rendered block content
-
-     */
-    void
-    inverse(
-        OutputRef out,
-        dom::Value const& context,
-        dom::Object const& data,
-        dom::Array const& blockParamPaths,
-        dom::Array const& blockParams) const;
-
-    /** Determine if helper is being called from a block section
-
-        This function returns `true` if the helper is being called from a
-        block section.
-
-        For example, the following template calls the helper "list" with a
-        block section:
-
-        @code{.handlebars}
-           {{#list people}}{{name}}{{/list}}
-        @endcode
-
-        The helper "list" is called with a block section because it is
-        called with a block of text.
-
-        On the other hand, the following template calls the helper "year"
-        without a block section:
-
-        @code{.handlebars}
-          {{year}}
-        @endcode
-
-        This function also enables helpers to adjust its behavior based on
-        whether it is being called from a block section, where it would
-        typically use the block content, or an expression, where it would
-        typically use its arguments:
-
-        @code{.handlebars}
-          {{! using helper arguments }}
-          {{loud "Hello"}}
-
-          {{! using helper block content }}
-          {{#loud}}hello{{/loud}}
-        @endcode
-
-        This function can be used from within the helper to determine which
-        behavior is expected from the template.
-
-        @return `true` if the helper is being called from a block section
-     */
-    bool
-    isBlock() const
-    {
-        return static_cast<bool>(fn_);
-    }
-
-    /** Log a message
-
-        Helpers can use this callback function to log messages.
-
-        The behavior of this function can be overriden with handlebars hooks.
-
-        The built-in helper "log" uses this function to log messages.
-
-     */
-    void
-    log(dom::Value const& level, dom::Array const& args) const;
-
-    /** Get the current context where the helper is being called
-
-        This function returns the current handlebars context at the
-        moment the helper is being called.
-
-        In most cases, the context is an object. However, it can also
-        other types, in which case they are accessed from the handlebars
-        templates with the `this` keyword.
-
-        @return The current handlebars context
-     */
-    dom::Value const&
-    context() const {
-        MRDOX_ASSERT(context_);
-        return *context_;
-    }
-
-    /// Private data passed to the callback
-    dom::Object const&
-    data() const {
-        return *data_;
-    }
-
-    /// Ids of the expression parameters
-    std::vector<dom::Value>&
-    ids() {
-        return ids_;
-    }
-
-    /// Ids of the expression parameters
-    std::vector<dom::Value> const&
-    ids() const {
-        return ids_;
-    }
-
-    /// Extra key value pairs passed to the callback
-    dom::Object&
-    hash() {
-        return hash_;
-    }
-
-    /// Extra key value pairs passed to the callback
-    dom::Object const&
-    hash() const {
-        return hash_;
-    }
-
-    /// Extra key value pairs passed to the callback
-    dom::Object&
-    hashIds() {
-        return hashIds_;
-    }
-
-    /// Extra key value pairs passed to the callback
-    dom::Object const&
-    hashIds() const {
-        return hashIds_;
-    }
-
-    /// Block parameters passed to the callback
-    std::size_t
-    blockParams() const {
-        return blockParamIds_.size();
-    }
-
-    /** Name of the helper being called
-
-        This is the name of the helper being called from the handlebars
-        template.
-
-        It is useful for debugging purposes, where the helper function name
-        doesn't match the name the helper was registered with.
-
-     */
-    std::string_view
-    name() const {
-        return name_;
-    }
-
-    /** Get the output stream used by the environment to render the template
-
-        This function returns an output stream where a helper can directly
-        write its output.
-
-        This is particularly useful for helpers that render long blocks,
-        so that they can write directly to the output stream instead of
-        building a string in dynamic memory before returning it.
-
-        @return The output stream of the parent template environment context
-     */
-    OutputRef
-    output() const {
-        return *output_;
-    }
-
-    /** Lookup a property in an object
-
-        Handlebars expressions can also use dot-separated paths to indicate
-        nested object values.
-
-        @code{.handlebars}
-        {{person.firstname}} {{person.lastname}}
-        @endcode
-
-        This expression looks up the `person` property in the input object
-        and in turn looks up the `firstname` and `lastname` property within
-        the `person` object.
-
-        Handlebars also supports a `/` syntax so you could write the above
-        template as:
-
-        @code{.handlebars}
-        {{person/firstname}} {{person/lastname}}
-        @endcode
-
-        @param context The object to look up the property in
-        @param path The path to the property to look up
-
-        @return The value of the property, or nullptr if the property does not exist
-        @return `true` if the property was defined, `false` otherwise
-     */
-    MRDOX_DECL
-    std::pair<dom::Value, bool>
-    lookupProperty(
-        dom::Value const& context,
-        dom::Value const& path) const;
 };
 
 /** A handlebars environment
@@ -875,23 +449,13 @@ public:
     @see https://handlebarsjs.com/
  */
 class Handlebars {
-    enum class HelperBehavior {
-        NO_RENDER,
-        RENDER_RESULT,
-        RENDER_RESULT_NOESCAPE,
-    };
-
-    using helper_type = std::function<
-        std::pair<dom::Value, HelperBehavior>(
-            dom::Array const&, HandlebarsCallback const&)>;
-
     using helpers_map = std::unordered_map<
-        std::string, helper_type, detail::string_hash, std::equal_to<>>;
+        std::string, dom::Function, detail::string_hash, std::equal_to<>>;
 
     using partials_map = detail::partials_map;
     partials_map partials_;
     helpers_map helpers_;
-    std::function<void(dom::Value, dom::Array const&)> logger_;
+    dom::Function logger_;
 
 public:
     /** Construct a handlebars environment
@@ -926,13 +490,23 @@ public:
     render(
         std::string_view templateText,
         dom::Value const& context,
-        HandlebarsOptions const& options = {}) const;
+        HandlebarsOptions const& options) const;
 
+    /// @overload
+    std::string
+    render(
+        std::string_view templateText,
+        dom::Value const& context) const
+    {
+        return render(templateText, context, {});
+    }
+
+    /// @overload
     std::string
     render(std::string_view templateText) const
     {
         dom::Object const& context = {};
-        return render(templateText, context);
+        return render(templateText, context, {});
     }
 
     /** Render a handlebars template
@@ -953,7 +527,17 @@ public:
         OutputRef& out,
         std::string_view templateText,
         dom::Value const& context,
-        HandlebarsOptions const& options = {}) const;
+        HandlebarsOptions const& options) const;
+
+    /// @overload
+    void
+    render_to(
+        OutputRef& out,
+        std::string_view templateText,
+        dom::Value const& context) const
+    {
+        render_to(out, templateText, context, {});
+    }
 
     /** Register a partial
 
@@ -997,147 +581,42 @@ public:
     unregisterPartial(std::string_view name) {
         auto it = partials_.find(name);
         if (it != partials_.end())
+        {
             partials_.erase(it);
+        }
     }
 
-    /** Register a helper with arguments and callback parameters
+    /** Register a helper accessible by any template in the environment.
 
-        This function registers a helper with the handlebars environment.
-        A helper is a function that can be called from a template.
+        The helper type is a type erased function of type @ref dom::Function,
+        which receives the resolved template arguments as parameters as
+        a @ref dom::Value for each parameter.
 
-        The helper function the parameters from the template as a
-        dom::Array.
+        The helper function also receives an object populated with variables
+        that are accessible in the current context as its N+1-th parameter.
+        This object contains information about the current context and is
+        useful for helpers that want to change the current context or render
+        internal blocks.
 
-        This overload uses the canonical helper type, which is
-        a function that returns a `dom::Value` and takes the following
-        arguments:
+        As all instances of @ref dom::Function, the helper should also return
+        a @ref dom::Value. If the function semantics does not require a return
+        value, the function should return a @ref dom::Value of type
+        @ref dom::Kind::Undefined.
 
-        @li dom::Array const&: The list of arguments passed to the helper in
-            the template.
-
-        @li HandlebarsCallback const&: Contains information about the current
-            context. This is useful for block helpers that want to change the
-            current context or render the internal blocks.
-
-        When the helper is used in an subexpression, the `dom::Value` return
+        When the helper is used in an subexpression, the @ref dom::Value return
         value is used as the intermediary result. When the helper is used in
-        a block or a final expression, the `dom::Value` return value will be
+        a block or a final expression, the @ref dom::Value return value will be
         formatted to the output.
 
         @param name The name of the helper in the handlebars template
         @param helper The helper function
 
+        @see https://handlebarsjs.com/guide/expressions.html
+        @see https://handlebarsjs.com/guide/block-helpers.html
         @see https://handlebarsjs.com/guide/builtin-helpers.html
      */
-    template <std::invocable<dom::Array const&, HandlebarsCallback const&> F>
     void
-    registerHelper(std::string_view name, F&& helper)
-    {
-        using R = std::invoke_result_t<F, dom::Array const&, HandlebarsCallback const&>;
-        static_assert(
-            std::same_as<R, void> ||
-            std::convertible_to<R, dom::Value>);
-        registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
-            dom::Array const& args, HandlebarsCallback const& options)
-                -> std::pair<dom::Value, HelperBehavior> {
-           if constexpr (std::convertible_to<R, dom::Value>)
-           {
-               return {helper(args, options), HelperBehavior::RENDER_RESULT};
-           }
-           else if constexpr (std::same_as<R, void>)
-           {
-               helper(args, options);
-               return {nullptr, HelperBehavior::NO_RENDER};
-           }
-        }));
-    }
-
-    /** Register a helper with no callback parameters
-
-        This convenience overload registers a helper with the signature
-
-        @code{.cpp}
-        `R(dom::Array const&)`
-        @endcode
-
-        where `R` is either `void` or any value convertible to `dom::Value`.
-
-        When compared to the canonical helper signature, this overload
-        registers helpers that ignore the callback parameter.
-
-        This is useful for simple custom helpers that are meant to be used
-        in subexpressions.
-
-        @param name The name of the helper
-        @param helper The helper function
-     */
-    template <std::invocable<dom::Array const&> F>
-    void
-    registerHelper(std::string_view name, F&& helper)
-    {
-        using R = std::invoke_result_t<F, dom::Array const&>;
-        static_assert(
-            std::same_as<R, void> ||
-            std::convertible_to<R, dom::Value>);
-        registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
-            dom::Array const& args, HandlebarsCallback const&)
-                -> std::pair<dom::Value, HelperBehavior> {
-            if constexpr (std::convertible_to<R, dom::Value>)
-            {
-                return {helper(args), HelperBehavior::RENDER_RESULT};
-            }
-            else if constexpr (std::same_as<R, void>)
-            {
-                helper(args);
-                return {nullptr, HelperBehavior::NO_RENDER};
-            }
-        }));
-    }
-
-    /** Register a nullary helper
-
-        This convenience overload registers a helper with the signature
-
-        @code{.cpp}
-        `R()`
-        @endcode
-
-        where `R` is either `void` or `dom::Value`.
-
-        When compared to the canonical helper signature, this overload
-        registers helpers that require no arguments and can ignore the
-        callback parameter.
-
-        This is useful for custom helpers that return dynamic data:
-
-        @code{.handlebars}
-        {{ year }}
-        @endcode
-
-        @param name The name of the helper
-        @param helper The helper function
-     */
-    template<std::invocable<> F>
-    void
-    registerHelper(std::string_view name, F &&helper) {
-        using R = std::invoke_result_t<F>;
-        static_assert(
-            std::same_as<R, void> ||
-            std::convertible_to<R, dom::Value>);
-        registerHelperImpl(name, helper_type([helper = std::forward<F>(helper)](
-                dom::Array const&, HandlebarsCallback const&)
-                    -> std::pair<dom::Value, HelperBehavior> {
-            if constexpr (std::convertible_to<R, dom::Value>)
-            {
-                return {helper(), HelperBehavior::RENDER_RESULT};
-            }
-            else if constexpr (std::same_as<R, void>)
-            {
-                helper();
-                return {nullptr, HelperBehavior::NO_RENDER};
-            }
-        }));
-    }
+    registerHelper(std::string_view name, dom::Function const& helper);
 
     /** Unregister a helper
 
@@ -1163,16 +642,11 @@ public:
         @param fn The logger function
      */
     void
-    registerLogger(std::function<void(dom::Value, dom::Array const&)> fn);
+    registerLogger(dom::Function fn);
 
     struct Tag;
 
 private:
-    void
-    registerHelperImpl(
-        std::string_view name,
-        helper_type const &helper);
-
     // render to ostream using extra partials from parent contexts
     void
     render_to(
@@ -1229,7 +703,7 @@ private:
         dom::Value const& context,
         detail::RenderState& state,
         dom::Array &args,
-        HandlebarsCallback& cb,
+        dom::Object& cb,
         HandlebarsOptions const& opt) const;
 
     struct evalExprResult {
@@ -1248,7 +722,7 @@ private:
         HandlebarsOptions const& opt,
         bool evalLiterals) const;
 
-    std::pair<helper_type const&, bool>
+    std::pair<dom::Function, bool>
     getHelper(std::string_view name, bool isBlock) const;
 
     std::pair<std::string_view, bool>
@@ -1256,20 +730,6 @@ private:
         std::string_view name,
         detail::RenderState const& state) const;
 };
-
-/** Determine if a value is truthy
-
-    A JSON value is truthy if it is a boolean and is true, a number and not
-    zero, or an non-empty string, array or object.
-
-    @param arg The value to test
-
-    @return True if the value is truthy, false otherwise
-
- */
-MRDOX_DECL
-bool
-isTruthy(dom::Value const& arg);
 
 /** Determine if a value is empty
 
@@ -1318,28 +778,14 @@ MRDOX_DECL
 dom::Object
 createFrame(dom::Object const& parent);
 
-/** Create a wrapper for a safe string.
-
-    This string wrapper prevents the string from being escaped
-    when the template is rendered.
-
-    When a helper returns a safe string, it will be marked
-    as safe and will not be escaped when rendered. The
-    string will be rendered as if converted to a `dom::Value`
-    and rendered as-is.
-
-    When constructing the string that will be marked as safe, any
-    external content should be properly escaped using the
-    `escapeExpression` function to avoid potential security concerns.
-
-    @param str The string to mark as safe
-    @return The safe string wrapper
-
-    @see https://handlebarsjs.com/api-reference/utilities.html#handlebars-safestring-string
- */
+/// @overload
 MRDOX_DECL
-dom::Value
-safeString(std::string_view str);
+dom::Object
+createFrame(dom::Value const& parent);
+
+/// @overload
+dom::Object
+createFrame(dom::Object const& child, dom::Object const& parent);
 
 /** HTML escapes the specified string
 
@@ -1372,6 +818,14 @@ escapeExpression(
     OutputRef out,
     std::string_view str);
 
+/// @overload escapeExpression(std::string_view)
+MRDOX_DECL
+void
+escapeExpression(
+    OutputRef out,
+    std::string_view str,
+    HandlebarsOptions const& opt);
+
 template <std::convertible_to<dom::Value> DomValue>
 requires (!std::convertible_to<DomValue, std::string_view>)
 std::string
@@ -1381,7 +835,7 @@ escapeExpression(
     dom::Value v = val;
     if (v.isString())
     {
-        return escapeExpression(std::string_view(v.getString()));
+        return escapeExpression(v.getString().get());
     }
     if (v.isObject() && v.getObject().exists("toHTML"))
     {
@@ -1413,10 +867,9 @@ escapeExpression(
 struct HandlebarsError
     : public std::runtime_error
 {
-    static constexpr std::size_t npos = std::size_t(-1);
-    std::size_t line = std::size_t(-1);
-    std::size_t column = std::size_t(-1);
-    std::size_t pos = std::size_t(-1);
+    std::size_t line = static_cast<std::size_t>(-1);
+    std::size_t column = static_cast<std::size_t>(-1);
+    std::size_t pos = static_cast<std::size_t>(-1);
 
     HandlebarsError(std::string_view msg)
         : std::runtime_error(std::string(msg)) {}
@@ -1504,7 +957,9 @@ public:
     value() const
     {
         if (has_error())
+        {
             throw std::get<HandlebarsError>(value_);
+        }
         return std::get<T>(value_);
     }
 
@@ -1513,7 +968,9 @@ public:
     value()
     {
         if (error())
+        {
             throw std::get<HandlebarsError>(value_);
+        }
         return std::get<T>(value_);
     }
 
@@ -1565,7 +1022,9 @@ public:
     error() const
     {
         if (has_value())
+        {
             throw std::logic_error("value is not an error");
+        }
         return std::get<HandlebarsError>(value_);
     }
 
@@ -1574,7 +1033,9 @@ public:
     error()
     {
         if (has_value())
+        {
             throw std::logic_error("value is not an error");
+        }
         return std::get<HandlebarsError>(value_);
     }
 };
@@ -1611,9 +1072,7 @@ registerBuiltinHelpers(Handlebars& hbs);
  */
 MRDOX_DECL
 void
-if_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
+if_fn(dom::Array const& arguments);
 
 /// "unless" helper function
 /**
@@ -1622,10 +1081,7 @@ if_fn(
  */
 MRDOX_DECL
 void
-unless_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
-
+unless_fn(dom::Array const& arguments);
 
 /// "unless" helper function
 /**
@@ -1633,9 +1089,7 @@ unless_fn(
  */
 MRDOX_DECL
 void
-with_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
+with_fn(dom::Array const& arguments);
 
 /// "each" helper function
 /**
@@ -1645,9 +1099,7 @@ with_fn(
  */
 MRDOX_DECL
 void
-each_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
+each_fn(dom::Value context, dom::Value const& options);
 
 /// "log" helper function
 /**
@@ -1655,9 +1107,7 @@ each_fn(
  */
 MRDOX_DECL
 dom::Value
-lookup_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
+lookup_fn(dom::Value const& obj, dom::Value const& field, dom::Value const& options);
 
 /// "log" helper function
 /**
@@ -1665,9 +1115,7 @@ lookup_fn(
  */
 MRDOX_DECL
 void
-log_fn(
-    dom::Array const& conditional,
-    HandlebarsCallback const& options);
+log_fn(dom::Array const& arguments);
 
 /// "helperMissing" helper function
 /**
@@ -1695,10 +1143,8 @@ log_fn(
  * This default behavior can be overridden by registering a custom
  * helperMissing helper.
  */
-void
-helper_missing_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
+dom::Value
+helper_missing_fn(dom::Array const& args);
 
 /// "blockHelperMissing" helper function
 /**
@@ -1729,14 +1175,7 @@ helper_missing_fn(
  */
 void
 block_helper_missing_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
-
-/// No operation helper
-void
-noop_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
+    dom::Value const& context, dom::Value options);
 
 /** Register all the Antora helpers into a Handlebars instance
 
@@ -1852,9 +1291,7 @@ not_fn(dom::Array const& arg);
  */
 MRDOX_DECL
 dom::Value
-increment_fn(
-    dom::Array const &args,
-    HandlebarsCallback const& options);
+increment_fn(dom::Value const& value);
 
 /** "detag" helper function
  *
@@ -1862,10 +1299,8 @@ increment_fn(
  *  input to remove all HTML tags.
  */
 MRDOX_DECL
-std::string
-detag_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
+dom::Value
+detag_fn(dom::Value html);
 
 /** "relativize" helper function
  *
@@ -1873,9 +1308,7 @@ detag_fn(
  */
 MRDOX_DECL
 dom::Value
-relativize_fn(
-    dom::Array const& args,
-    HandlebarsCallback const& options);
+relativize_fn(dom::Value to, dom::Value from, dom::Value context);
 
 /** "year" helper function
  *

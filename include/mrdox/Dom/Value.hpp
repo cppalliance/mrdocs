@@ -21,12 +21,36 @@
 #include <mrdox/Support/Error.hpp>
 #include <optional> // BAD
 #include <string>
+#include <charconv>
+#include <compare>
 
 namespace clang {
 namespace mrdox {
 
+/** Create a wrapper for a safe string.
+
+    This string wrapper prevents the string from being escaped
+    when the template is rendered.
+
+    When a helper returns a safe string, it will be marked
+    as safe and will not be escaped when rendered. The
+    string will be rendered as if converted to a `dom::Value`
+    and rendered as-is.
+
+    When constructing the string that will be marked as safe, any
+    external content should be properly escaped using the
+    `escapeExpression` function to avoid potential security concerns.
+
+    @param str The string to mark as safe
+    @return The safe string wrapper
+
+    @see https://handlebarsjs.com/api-reference/utilities.html#handlebars-safestring-string
+ */
 dom::Value
 safeString(std::string_view str);
+
+dom::Value
+safeString(dom::Value const& str);
 
 namespace dom {
 
@@ -35,11 +59,11 @@ namespace dom {
 class MRDOX_DECL
     Value
 {
-    Kind kind_;
+    Kind kind_{Kind::Undefined};
 
     union
     {
-        bool                b_;
+        bool                b_{false};
         std::int64_t        i_;
         String              str_;
         Array               arr_;
@@ -49,28 +73,27 @@ class MRDOX_DECL
 
     friend class Array;
     friend class Object;
-    friend Value clang::mrdox::safeString(std::string_view s);
+    friend Value clang::mrdox::safeString(std::string_view str);
 
 public:
     ~Value();
     Value() noexcept;
-    Value(Value const&);
-    Value(Value&&) noexcept;
-    Value& operator=(Value const&);
-    Value& operator=(Value&&) noexcept;
-
+    Value(Value const& other);
+    Value(Value&& other) noexcept;
     Value(dom::Kind kind) noexcept;
-    Value(std::nullptr_t) noexcept;
-    Value(std::int64_t) noexcept;
+    Value(std::nullptr_t v) noexcept;
+    Value(std::int64_t v) noexcept;
     Value(String str) noexcept;
     Value(Array arr) noexcept;
     Value(Object obj) noexcept;
     Value(Function fn) noexcept;
 
-
-    template <std::integral T>
-    requires (!std::same_as<T, bool>)
-    Value(T v) noexcept : Value(std::int64_t(v)) {}
+    template<class F>
+    requires
+        function_traits_convertible_to_value<F>
+    Value(F const& f)
+        : Value(Function(f))
+    {}
 
     template<class Boolean>
     requires std::is_same_v<Boolean, bool>
@@ -80,13 +103,20 @@ public:
     {
     }
 
+    template <std::integral T>
+    requires (!std::same_as<T, bool> && !std::same_as<T, char>)
+    Value(T v) noexcept : Value(std::int64_t(v)) {}
+
+    template <std::floating_point T>
+    Value(T v) noexcept : Value(std::int64_t(v)) {}
+
+    Value(char c) noexcept : Value(std::string_view(&c, 1)) {}
+
     template<class Enum>
     requires std::is_enum_v<Enum> && (!std::same_as<Enum, dom::Kind>)
     Value(Enum v) noexcept
-        : Value(static_cast<
-            std::underlying_type_t<Enum>>(v))
-    {
-    }
+        : Value(static_cast<std::underlying_type_t<Enum>>(v))
+    {}
 
     template<std::size_t N>
     Value(char const(&sz)[N])
@@ -109,7 +139,7 @@ public:
     template<class T>
     requires std::constructible_from<Value, T>
     Value(std::optional<T> const& opt)
-        : Value(opt ? Value(*opt) : Value())
+        : Value(opt.value_or(Value()))
     {
     }
 
@@ -119,6 +149,14 @@ public:
         : Value(opt ? Value(*opt) : Value())
     {
     }
+
+    Value(Array::storage_type elements)
+        : Value(Array(std::move(elements)))
+    {
+    }
+
+    Value& operator=(Value const& other);
+    Value& operator=(Value&& other) noexcept;
 
     /** Return the type key of the value.
     */
@@ -191,6 +229,13 @@ public:
         return kind_ == Kind::Function;
     }
 
+    /** Determine if a value is truthy
+
+        A value is truthy if it is a boolean and is true, a number and not
+        zero, or an non-empty string, array or object.
+
+        @return `true` if the value is truthy, `false` otherwise
+    */
     bool isTruthy() const noexcept;
 
     bool getBool() const noexcept
@@ -234,6 +279,104 @@ public:
     Function const&
     getFunction() const;
 
+    /** Return the element for a given key.
+
+        If the Value is not an object, or the key
+        is not found, a Value of type @ref Kind::Undefined
+        is returned.
+    */
+    dom::Value
+    operator[](std::string_view key) const;
+
+    template <std::convertible_to<std::string_view> S>
+    dom::Value
+    operator[](S const& key) const
+    {
+        return operator[](std::string_view(key));
+    }
+
+    /** Return the element at a given index.
+    */
+    dom::Value
+    operator[](std::size_t i) const;
+
+    /** Return the element at a given index or key.
+    */
+    dom::Value
+    operator[](dom::Value const& i) const;
+
+    /** Return true if a key exists.
+    */
+    bool
+    exists(std::string_view key) const;
+
+    /** Invoke the function.
+
+        If the Value is not an object, or the key
+        is not found, a Value of type @ref Kind::Undefined
+        is returned.
+     */
+    template<class... Args>
+    Value operator()(Args&&... args) const
+    {
+        if (!isFunction())
+        {
+            return Kind::Undefined;
+        }
+        return getFunction()(std::forward<Args>(args)...);
+    }
+
+    /** Return if an Array or Object is empty.
+    */
+    bool
+    empty() const;
+
+    /** Return if an Array or Object is empty.
+    */
+    std::size_t
+    size() const;
+
+    /// @copydoc isTruthy()
+    explicit
+    operator bool() const noexcept
+    {
+        return isTruthy();
+    }
+
+    /** Return the string.
+     */
+    explicit
+    operator std::string() const noexcept
+    {
+        return toString(*this);
+    }
+
+    /** Set or replace the value for a given key.
+    */
+    void
+    set(String const& key, Value const& value)
+    {
+        if (isObject())
+        {
+            obj_.set(key, value);
+            return;
+        }
+        if (isArray())
+        {
+            std::string_view idxStr = key;
+            std::size_t idx = 0;
+            auto res = std::from_chars(
+                idxStr.data(),
+                idxStr.data() + idxStr.size(),
+                idx);
+            if (res.ec == std::errc())
+            {
+                arr_.set(idx, value);
+            }
+            return;
+        }
+    }
+
     /** Swap two values.
     */
     void
@@ -248,23 +391,135 @@ public:
         v0.swap(v1);
     }
 
+    /** Compare two values for equality.
+
+        This operator uses strict equality, meaning that
+        the types must match exactly, and for objects and
+        arrays the children must match exactly.
+
+        The `==` operator behaves differently for objects
+        compared to primitive data types like numbers and strings.
+        When comparing objects using `==`, it checks for
+        reference equality, not structural equality.
+
+        This means that two objects are considered equal with
+        `===` only if they reference the exact same object in
+        memory.
+
+        @note In JavaScript, this is equivalent to the `===`
+        operator, which does not perform type conversions.
+     */
+    friend
+    bool
+    operator==(
+        Value const& lhs,
+        Value const& rhs) noexcept;
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend auto operator==(
+        S const& lhs, Value const& rhs) noexcept
+    {
+        return Value(lhs) == rhs;
+    }
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend auto operator==(
+        Value const& lhs, S const& rhs) noexcept
+    {
+        return lhs == Value(rhs);
+    }
+
+    /** Compare two values for inequality.
+     */
+    friend
+    std::strong_ordering
+    operator<=>(
+        Value const& lhs,
+        Value const& rhs) noexcept;
+
+    /** Add or concatenate two values.
+     */
+    friend
+    dom::Value
+    operator+(Value const& lhs, Value const& rhs);
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend auto operator+(
+        S const& lhs, Value const& rhs) noexcept
+    {
+        return Value(lhs) + rhs;
+    }
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend auto operator+(
+        Value const& lhs, S const& rhs) noexcept
+    {
+        return lhs + Value(rhs);
+    }
+
+    /** Return the first dom::Value that is truthy, or the last one.
+
+        This function is equivalent to the JavaScript `||` operator.
+     */
+    friend
+    dom::Value
+    operator||(Value const& lhs, Value const& rhs);
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend auto operator||(
+        S const& lhs, Value const& rhs) noexcept
+    {
+        return Value(lhs) || rhs;
+    }
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend auto operator||(
+        Value const& lhs, S const& rhs) noexcept
+    {
+        return lhs || Value(rhs);
+    }
+
+    /** Return the first dom::Value that is not truthy, or the last one.
+
+        This function is equivalent to the JavaScript `&&` operator.
+     */
+    friend
+    dom::Value
+    operator&&(Value const& lhs, Value const& rhs);
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend auto operator&&(
+        S const& lhs, Value const& rhs) noexcept
+    {
+        return Value(lhs) && rhs;
+    }
+
+    /// @overload
+    template <std::convertible_to<Value> S>
+    friend auto operator&&(
+        Value const& lhs, S const& rhs) noexcept
+    {
+        return lhs && Value(rhs);
+    }
+
     /** Return a diagnostic string.
     */
     friend
     std::string
-    toString(Value const&);
-
-    /** Return a diagnostic string.
-
-        This function will not traverse children.
-    */
-    friend
-    std::string
-    toStringChild(Value const&);
+    toString(Value const& value);
 };
 
 //------------------------------------------------
 
+namespace JSON
+{
 /** Stringify a value as JSON
 
     This function serialized a @ref Value to a
@@ -279,7 +534,8 @@ public:
  */
 MRDOX_DECL
 std::string
-JSON_stringify(Value const& value);
+stringify(dom::Value const& value);
+}
 
 /** Return a non-empty string, or a null.
 */
@@ -288,14 +544,23 @@ Value
 stringOrNull(
     std::string_view s)
 {
-    if(! s.empty())
+    if(!s.empty())
+    {
         return s;
+    }
     return nullptr;
 }
 
 //------------------------------------------------
 
 } // dom
+
+template <std::convertible_to<std::string_view> SV>
+dom::Value
+safeString(SV const& str) {
+    return safeString(std::string_view(str));
+}
+
 } // mrdox
 } // clang
 
@@ -308,7 +573,7 @@ stringOrNull(
 
 template<>
 struct fmt::formatter<clang::mrdox::dom::Value>
-    : fmt::formatter<std::string>
+    : public fmt::formatter<std::string>
 {
     auto format(
         clang::mrdox::dom::Value const& value,

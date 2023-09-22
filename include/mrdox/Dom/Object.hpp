@@ -190,6 +190,10 @@ public:
     */
     reference operator[](size_type i) const;
 
+    /** Return the element for a given key.
+    */
+    dom::Value operator[](std::string_view key) const;
+
     /** Return the i-th element.
 
         @throw Exception `i >= size()`
@@ -243,6 +247,25 @@ public:
     friend void swap(Object& lhs, Object& rhs) noexcept
     {
         lhs.swap(rhs);
+    }
+
+    /** Compare two objects for equality.
+     */
+    friend
+    bool
+    operator==(Object const& a, Object const& b) noexcept;
+
+    /** Compare two objects for precedence.
+     */
+    friend
+    std::strong_ordering
+    operator<=>(Object const& a, Object const& b) noexcept
+    {
+        if (a.impl_ == b.impl_)
+        {
+            return std::strong_ordering::equal;
+        }
+        return std::strong_ordering::equivalent;
     }
 
     //--------------------------------------------
