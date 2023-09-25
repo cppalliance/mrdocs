@@ -25,7 +25,7 @@ namespace adoc {
 */
 struct Options
 {
-    bool safe_names = false;
+    bool safe_names = true;
     std::string template_dir;
 };
 
