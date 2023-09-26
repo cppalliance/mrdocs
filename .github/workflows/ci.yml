@@ -366,7 +366,7 @@ jobs:
               mkdir -p "demos/boost-url/$variant/$format"
               mrdox --config="$(pwd)/boost/libs/url/mrdox-$variant.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --addons="$(pwd)/share/mrdox/addons" --format="$format" --output="$(pwd)/demos/boost-url/$variant/$format"
             done
-            asciidoctor -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/*.adoc"
+            asciidoctor -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done
 
       - name: Update website demos
