@@ -213,25 +213,25 @@ class SafeNames::Impl
             // to uniquely identify each symbol. then, update all symbols with the new value.
             if(! disambig_emplaced)
             {
-                std::uint8_t n_chars = 1;
+                std::uint8_t n_chars = 0;
                 std::string_view id_str = it->second.id_str;
-                for(const SymbolID& other : disambig_it->second)
+                for(const SymbolID& other_id : disambig_it->second)
                 {
-                    std::string_view other_id_str =
-                        map_.find(other)->second.id_str;
+                    auto& other = map_.find(other_id)->second;
                     auto [mismatch_id, mismatch_other] =
                         std::mismatch(id_str.begin(), id_str.end(),
-                            other_id_str.begin(), other_id_str.end());
-                    const auto n_required = std::distance(
+                            other.id_str.begin(), other.id_str.end());
+                    std::uint8_t n_required = std::distance(
                         id_str.begin(), mismatch_id) + 1;
-                    n_chars = std::max(n_chars,
-                        static_cast<std::uint8_t>(n_required));
+                    n_chars = std::max({
+                        n_chars, other.disambig_chars, n_required});
                 }
 
+                MRDOX_ASSERT(n_chars);
                 // update the number of disambiguation characters for each symbol
                 it->second.disambig_chars = n_chars;
-                for(const SymbolID& other : disambig_it->second)
-                    map_.find(other)->second.disambig_chars = n_chars;
+                for(const SymbolID& other_id : disambig_it->second)
+                    map_.find(other_id)->second.disambig_chars = n_chars;
 
             }
             disambig_it->second.push_back(I->id);
