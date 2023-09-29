@@ -28,9 +28,11 @@ class SingleFileDB
     std::vector<tooling::CompileCommand> cc_;
 
 public:
-    explicit
     SingleFileDB(
-        llvm::StringRef pathName)
+        llvm::StringRef pathName,
+        std::string_view cxxstd = "c++20",
+        std::span<const std::string> extra_flags = {},
+        std::string_view heuristic = "unit test")
     {
         auto fileName = files::getFileName(pathName);
         auto parentDir = files::getParentDir(pathName);
@@ -38,7 +40,11 @@ public:
         std::vector<std::string> cmds;
         cmds.emplace_back("clang");
         cmds.emplace_back("-fsyntax-only");
-        cmds.emplace_back("-std=c++20");
+        llvm::raw_string_ostream{cmds.emplace_back()} << "-std=" << cxxstd;
+
+        for (const auto & fl : extra_flags)
+            cmds.emplace_back(fl);
+
         cmds.emplace_back("-pedantic-errors");
         cmds.emplace_back("-Werror");
         cmds.emplace_back(fileName);
@@ -47,7 +53,7 @@ public:
             fileName,
             std::move(cmds),
             parentDir);
-        cc_.back().Heuristic = "unit test";
+        cc_.back().Heuristic = heuristic;
     }
 
     std::vector<tooling::CompileCommand>
