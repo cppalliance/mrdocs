@@ -77,7 +77,8 @@ Handlebars.setlog();
             if(! text)
                 return text.error();
             return Handlebars.callProp(
-                "registerPartial", name, *text).error();
+                "registerPartial", name, *text)
+                .error_or(Error::success());
         }).maybeThrow();
 
     // load helpers
@@ -160,20 +161,14 @@ callTemplate(
     auto layoutDir = files::appendPath(config->addonsDir,
             "generator", "html", "layouts");
     auto pathName = files::appendPath(layoutDir, name);
-    auto fileText = files::getFileText(pathName);
-    if(! fileText)
-        return fileText.error();
+    MRDOX_TRY(auto fileText, files::getFileText(pathName));
     dom::Object options;
     options.set("allowProtoPropertiesByDefault", true);
     // VFALCO This makes Proxy objects stop working
     //options.set("allowProtoMethodsByDefault", true);
-    auto templateFn = Handlebars->callProp("compile", *fileText, options);
-    if(! templateFn)
-        return templateFn.error();
-    auto result = templateFn->call(context, options);
-    if(! result)
-        return result.error();
-    return result->getString();
+    MRDOX_TRY(auto templateFn, Handlebars->callProp("compile", fileText, options));
+    MRDOX_TRY(auto result, templateFn.call(context, options));
+    return result.getString();
 }
 
 Expected<std::string>

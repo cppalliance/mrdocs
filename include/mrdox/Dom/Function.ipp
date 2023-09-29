@@ -33,6 +33,14 @@ Value
 Function::
 operator()(Args&&... args) const
 {
+    return try_invoke(std::forward<Args>(args)...).value();
+}
+
+template<class... Args>
+Expected<Value>
+Function::
+try_invoke(Args&&... args) const
+{
     typename Array::storage_type elements;
     elements.reserve(sizeof...(Args));
     if constexpr (sizeof...(Args) > 0)
@@ -42,7 +50,7 @@ operator()(Args&&... args) const
                  std::forward<Args>(args)), 0)... };
     }
     return call(newArray<DefaultArrayImpl>(
-        std::move(elements))).value();
+        std::move(elements)));
 }
 
 //------------------------------------------------
@@ -169,6 +177,17 @@ call_impl(
                     >::get(clone[I])...);
             return Value(Kind::Undefined);
         }
+        else if constexpr (std::same_as<R, Expected<void>>)
+        {
+            auto exp = f_(arg_type<std::decay_t<
+                std::tuple_element_t<I, args_type> >
+                    >::get(clone[I])...);
+            if (!exp)
+            {
+                return Unexpected(exp.error());
+            }
+            return Value(Kind::Undefined);
+        }
         else
         {
             return f_(arg_type<std::decay_t<
@@ -181,6 +200,17 @@ call_impl(
         f_(arg_type<std::decay_t<
             std::tuple_element_t<I, args_type> >
                 >::get(args[I])...);
+        return Value(Kind::Undefined);
+    }
+    else if constexpr (std::same_as<R, Expected<void>>)
+    {
+        auto exp = f_(arg_type<std::decay_t<
+            std::tuple_element_t<I, args_type> >
+                >::get(args[I])...);
+        if (!exp)
+        {
+            return Unexpected(exp.error());
+        }
         return Value(Kind::Undefined);
     }
     else
@@ -203,6 +233,15 @@ call(Array const& args) const ->
     if constexpr (std::is_void_v<R>)
     {
         f_(args);
+        return Value(Kind::Undefined);
+    }
+    else if constexpr (std::is_same_v<R, Expected<void>>)
+    {
+        auto exp = f_(args);
+        if (!exp)
+        {
+            return Unexpected(exp.error());
+        }
         return Value(Kind::Undefined);
     }
     else

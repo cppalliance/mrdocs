@@ -108,7 +108,7 @@ loadOptions(
         yin.setAllowUnknownKeys(true);
         yin >> opt;
         if(auto ec = yin.error())
-            return Error(ec);
+            return Unexpected(Error(ec));
     }
 
     // extra
@@ -119,7 +119,7 @@ loadOptions(
         yin.setAllowUnknownKeys(true);
         yin >> opt;
         if(auto ec = yin.error())
-            return Error(ec);
+            return Unexpected(Error(ec));
     }
 
     // adjust relative paths

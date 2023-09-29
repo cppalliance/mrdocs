@@ -270,7 +270,7 @@ getGlobal(
         A, name.data(), name.size()))
     {
         duk_pop(A); // undefined
-        return formatError("global property {} not found", name);
+        return Unexpected(formatError("global property {} not found", name));
     }
     return A.construct<Value>(duk_get_top_index(A), *this);
 }
@@ -926,7 +926,7 @@ callImpl(
         domValue_push(A, arg);
     auto result = duk_pcall(A, args.size());
     if(result == DUK_EXEC_ERROR)
-        return dukM_popError(*scope_);
+        return Unexpected(dukM_popError(*scope_));
     return A.construct<Value>(-1, *scope_);
 }
 
@@ -939,7 +939,7 @@ callPropImpl(
     Access A(*scope_);
     if(! duk_get_prop_lstring(A,
             idx_, prop.data(), prop.size()))
-        return formatError("method {} not found", prop);
+        return Unexpected(formatError("method {} not found", prop));
     duk_dup(A, idx_);
     for(auto const& arg : args)
         domValue_push(A, arg);
@@ -948,7 +948,7 @@ callPropImpl(
     {
         Error err = dukM_popError(*scope_);
         duk_pop(A); // method
-        return err;
+        return Unexpected(err);
     }
     return A.construct<Value>(-1, *scope_);
 }

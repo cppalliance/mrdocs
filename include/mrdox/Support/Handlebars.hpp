@@ -23,6 +23,39 @@
 namespace clang {
 namespace mrdox {
 
+/** An error thrown or returned by Handlebars
+
+    An error returned or thrown by Handlebars environment when
+    an error occurs during template rendering.
+
+    The error message will be the same as the error message
+    returned by Handlebars.js.
+
+    The object will also contain the line, column and position
+    of the error in the template. These can be used to by the
+    caller to provide more detailed error messages.
+ */
+struct HandlebarsError
+    : public std::runtime_error
+{
+    std::size_t line = static_cast<std::size_t>(-1);
+    std::size_t column = static_cast<std::size_t>(-1);
+    std::size_t pos = static_cast<std::size_t>(-1);
+
+    HandlebarsError(std::string_view msg)
+        : std::runtime_error(std::string(msg)) {}
+
+    HandlebarsError(
+        std::string_view msg,
+        std::size_t line_,
+        std::size_t column_,
+        std::size_t pos_)
+        : std::runtime_error(fmt::format("{} - {}:{}", msg, line_, column_))
+        , line(line_)
+        , column(column_)
+        , pos(pos_) {}
+};
+
 /** Options for handlebars
 
     In particular, we have the noHTMLEscape option, which we
@@ -490,7 +523,15 @@ public:
     render(
         std::string_view templateText,
         dom::Value const& context,
-        HandlebarsOptions const& options) const;
+        HandlebarsOptions const& options) const
+    {
+        auto exp = try_render(templateText, context, options);
+        if (!exp)
+        {
+            throw exp.error();
+        }
+        return *exp;
+    }
 
     /// @overload
     std::string
@@ -498,7 +539,12 @@ public:
         std::string_view templateText,
         dom::Value const& context) const
     {
-        return render(templateText, context, {});
+        auto exp = try_render(templateText, context, {});
+        if (!exp)
+        {
+            throw exp.error();
+        }
+        return *exp;
     }
 
     /// @overload
@@ -506,7 +552,12 @@ public:
     render(std::string_view templateText) const
     {
         dom::Object const& context = {};
-        return render(templateText, context, {});
+        auto exp = try_render(templateText, context, {});
+        if (!exp)
+        {
+            throw exp.error();
+        }
+        return *exp;
     }
 
     /** Render a handlebars template
@@ -527,7 +578,14 @@ public:
         OutputRef& out,
         std::string_view templateText,
         dom::Value const& context,
-        HandlebarsOptions const& options) const;
+        HandlebarsOptions const& options) const
+    {
+        auto exp = try_render_to(out, templateText, context, options);
+        if (!exp)
+        {
+            throw exp.error();
+        }
+    }
 
     /// @overload
     void
@@ -536,7 +594,100 @@ public:
         std::string_view templateText,
         dom::Value const& context) const
     {
-        render_to(out, templateText, context, {});
+        auto exp = try_render_to(out, templateText, context, {});
+        if (!exp)
+        {
+            throw exp.error();
+        }
+    }
+
+    /// @overload
+    void
+    render_to(
+        OutputRef& out,
+        std::string_view templateText) const
+    {
+        dom::Object const& context = {};
+        auto exp = try_render_to(out, templateText, context, {});
+        if (!exp)
+        {
+            throw exp.error();
+        }
+    }
+
+    /** @copydoc render_to(OutputRef&, std::string_view, dom::Value const&, HandlebarsOptions const&) const
+     */
+    Expected<std::string, HandlebarsError>
+    try_render(
+        std::string_view templateText,
+        dom::Value const& context,
+        HandlebarsOptions const& options) const
+    {
+        std::string out;
+        OutputRef os(out);
+        auto exp = try_render_to(os, templateText, context, options);
+        if (!exp)
+        {
+            return Unexpected(exp.error());
+        }
+        return out;
+    }
+
+    /// @overload
+    Expected<std::string, HandlebarsError>
+    try_render(
+        std::string_view templateText,
+        dom::Value const& context) const
+    {
+        return try_render(templateText, context, {});
+    }
+
+    /// @overload
+    Expected<std::string, HandlebarsError>
+    try_render(std::string_view templateText) const
+    {
+        dom::Object const& context = {};
+        return try_render(templateText, context, {});
+    }
+
+    /** Render a handlebars template
+
+        This function renders the specified handlebars template and
+        writes the result to the specified output stream.
+
+        The output stream can be any type convertible to OutputRef, which is
+        a reference to a stream that can be written to with the << operator.
+
+        @param templateText The handlebars template text
+        @param context The data to render
+        @param options The options to use
+        @return The rendered text
+     */
+    Expected<void, HandlebarsError>
+    try_render_to(
+        OutputRef& out,
+        std::string_view templateText,
+        dom::Value const& context,
+        HandlebarsOptions const& options) const;
+
+    /// @overload
+    Expected<void, HandlebarsError>
+    try_render_to(
+        OutputRef& out,
+        std::string_view templateText,
+        dom::Value const& context) const
+    {
+        return try_render_to(out, templateText, context, {});
+    }
+
+    /// @overload
+    Expected<void, HandlebarsError>
+    try_render_to(
+        OutputRef& out,
+        std::string_view templateText) const
+    {
+        dom::Object const& context = {};
+        return try_render_to(out, templateText, context, {});
     }
 
     /** Register a partial
@@ -648,14 +799,14 @@ public:
 
 private:
     // render to ostream using extra partials from parent contexts
-    void
-    render_to(
+    Expected<void, HandlebarsError>
+    try_render_to_impl(
         OutputRef& out,
         dom::Value const &context,
         HandlebarsOptions const& opt,
         detail::RenderState& state) const;
 
-    void
+    Expected<void, HandlebarsError>
     renderTag(
         Tag const& tag,
         OutputRef& out,
@@ -663,7 +814,7 @@ private:
         HandlebarsOptions const& opt,
         detail::RenderState& state) const;
 
-    void
+    Expected<void, HandlebarsError>
     renderBlock(
         std::string_view blockName,
         Handlebars::Tag const &tag,
@@ -673,7 +824,7 @@ private:
         detail::RenderState& state,
         bool isChainedBlock) const;
 
-    void
+    Expected<void, HandlebarsError>
     renderPartial(
         Handlebars::Tag const& tag,
         OutputRef &out,
@@ -681,7 +832,7 @@ private:
         HandlebarsOptions const& opt,
         detail::RenderState& state) const;
 
-    void
+    Expected<void, HandlebarsError>
     renderDecorator(
         Handlebars::Tag const& tag,
         OutputRef &out,
@@ -689,7 +840,7 @@ private:
         HandlebarsOptions const& opt,
         detail::RenderState& state) const;
 
-    void
+    Expected<void, HandlebarsError>
     renderExpression(
         Handlebars::Tag const& tag,
         OutputRef &out,
@@ -697,7 +848,7 @@ private:
         HandlebarsOptions const& opt,
         detail::RenderState& state) const;
 
-    void
+    Expected<void, HandlebarsError>
     setupArgs(
         std::string_view expression,
         dom::Value const& context,
@@ -714,7 +865,8 @@ private:
         bool fromBlockParams = false;
     };
 
-    evalExprResult
+    [[nodiscard]]
+    Expected<evalExprResult, HandlebarsError>
     evalExpr(
         dom::Value const &context,
         std::string_view expression,
@@ -851,195 +1003,6 @@ escapeExpression(
     return toString(v);
 }
 
-
-/** An error thrown or returned by Handlebars
-
-    An error returned or thrown by Handlebars environment when
-    an error occurs during template rendering.
-
-    The error message will be the same as the error message
-    returned by Handlebars.js.
-
-    The object will also contain the line, column and position
-    of the error in the template. These can be used to by the
-    caller to provide more detailed error messages.
- */
-struct HandlebarsError
-    : public std::runtime_error
-{
-    std::size_t line = static_cast<std::size_t>(-1);
-    std::size_t column = static_cast<std::size_t>(-1);
-    std::size_t pos = static_cast<std::size_t>(-1);
-
-    HandlebarsError(std::string_view msg)
-        : std::runtime_error(std::string(msg)) {}
-
-    HandlebarsError(
-        std::string_view msg,
-        std::size_t line_,
-        std::size_t column_,
-        std::size_t pos_)
-        : std::runtime_error(fmt::format("{} - {}:{}", msg, line_, column_))
-        , line(line_)
-        , column(column_)
-        , pos(pos_) {}
-};
-
-/** An expected value or error
-
-    This class is used to return a value or error from a function.
-
-    It allows the caller to check if the value is valid or if an
-    error occurred without having to throw an exception.
-
-    @tparam T The type of the value
- */
-template <class T>
-class HandlebarsExpected
-{
-    std::variant<T, HandlebarsError> value_;
-public:
-    /** Construct a valid value
-
-        @param value The value
-     */
-    HandlebarsExpected(T const& value)
-        : value_(value) {}
-
-    /** Construct a valid value
-
-        @param value The value
-     */
-    HandlebarsExpected(T&& value)
-        : value_(std::move(value)) {}
-
-    /** Construct an error
-
-        @param error The error
-     */
-    HandlebarsExpected(HandlebarsError const& error)
-        : value_(error) {}
-
-    /** Construct an error
-
-        @param error The error
-     */
-    HandlebarsExpected(HandlebarsError&& error)
-        : value_(std::move(error)) {}
-
-    /** Check if the value is valid
-
-        @return True if the value is valid, false otherwise
-     */
-    bool
-    has_value() const noexcept
-    {
-        return std::holds_alternative<T>(value_);
-    }
-
-    /** Check if the value is an error
-
-        @return True if the value is an error, false otherwise
-     */
-    bool
-    has_error() const noexcept
-    {
-        return std::holds_alternative<HandlebarsError>(value_);
-    }
-
-    /** Get the value
-
-        @return The value
-
-        @throws HandlebarsError if the value is an error
-     */
-    T const&
-    value() const
-    {
-        if (has_error())
-        {
-            throw std::get<HandlebarsError>(value_);
-        }
-        return std::get<T>(value_);
-    }
-
-    /// @copydoc value()
-    T&
-    value()
-    {
-        if (error())
-        {
-            throw std::get<HandlebarsError>(value_);
-        }
-        return std::get<T>(value_);
-    }
-
-    /** Get the value
-
-        @return The value
-
-        @throws HandlebarsError if the value is an error
-     */
-    T const&
-    operator*() const
-    {
-        return std::get<T>(value_);
-    }
-
-    /// @copydoc operator*() const
-    T&
-    operator*()
-    {
-        return std::get<T>(value_);
-    }
-
-    /** Get a pointer to the value
-
-        @return The value
-
-        @throws HandlebarsError if the value is an error
-     */
-    T const*
-    operator->() const
-    {
-        return &value();
-    }
-
-    /// @copydoc operator->() const
-    T*
-    operator->()
-    {
-        return &value();
-    }
-
-    /** Get the error
-
-        @return The error
-
-        @throws std::logic_error if the value is not an error
-     */
-    HandlebarsError const&
-    error() const
-    {
-        if (has_value())
-        {
-            throw std::logic_error("value is not an error");
-        }
-        return std::get<HandlebarsError>(value_);
-    }
-
-    /// @copydoc error()
-    HandlebarsError&
-    error()
-    {
-        if (has_value())
-        {
-            throw std::logic_error("value is not an error");
-        }
-        return std::get<HandlebarsError>(value_);
-    }
-};
-
 namespace helpers {
 
 /** Register all the built-in helpers into a Handlebars instance
@@ -1059,123 +1022,6 @@ namespace helpers {
 MRDOX_DECL
 void
 registerBuiltinHelpers(Handlebars& hbs);
-
-/// "if" helper function
-/**
- * You can use the if helper to conditionally render a block.
- * If its argument returns false, undefined, null, "", 0, or [],
- * Handlebars will not render the block.
- *
- * The if block helper has special logic where is uses the first
- * argument as a conditional but uses the block content itself as the
- * item to render.
- */
-MRDOX_DECL
-void
-if_fn(dom::Array const& arguments);
-
-/// "unless" helper function
-/**
- * You can use the unless helper as the inverse of the if helper. Its block
- * will be rendered if the expression returns a falsy value.
- */
-MRDOX_DECL
-void
-unless_fn(dom::Array const& arguments);
-
-/// "unless" helper function
-/**
- * The with-helper allows you to change the evaluation context of template-part.
- */
-MRDOX_DECL
-void
-with_fn(dom::Array const& arguments);
-
-/// "each" helper function
-/**
- * You can iterate over a list or object using the built-in each helper.
- *
- * Inside the block, you can use {{this}} to reference the element being iterated over.
- */
-MRDOX_DECL
-void
-each_fn(dom::Value context, dom::Value const& options);
-
-/// "log" helper function
-/**
- * The lookup helper allows for dynamic parameter resolution using Handlebars variables.
- */
-MRDOX_DECL
-dom::Value
-lookup_fn(dom::Value const& obj, dom::Value const& field, dom::Value const& options);
-
-/// "log" helper function
-/**
- * The log helper allows for logging of context state while executing a template.
- */
-MRDOX_DECL
-void
-log_fn(dom::Array const& arguments);
-
-/// "helperMissing" helper function
-/**
- * The helperMissing helper defines a function to be called when:
- *
- * 1) a helper is not found by the name, and
- * 2) the helper does not match a context property, and
- * 3) there might be one or more arguments for the helper
- *
- * For instance,
- *
- * @code{.handlebars}
- * {{foo 1 2 3}}
- * @endcode
- *
- * where the context key foo is not a helper and not a defined key, will
- * call the helperMissing helper with the values 1, 2, 3 as its arguments.
- *
- * The default implementation of helperMissing is:
- *
- * 1) if there are no arguments, render nothing to indicate the undefined value
- * 2) if there are one or more arguments, in which case it seems like a
- *    function call was intended, throw an error indicating the missing helper.
- *
- * This default behavior can be overridden by registering a custom
- * helperMissing helper.
- */
-dom::Value
-helper_missing_fn(dom::Array const& args);
-
-/// "blockHelperMissing" helper function
-/**
- * The blockHelperMissing helper defines a function to be called when:
- *
- * 1) a block helper is not found by the name, and
- * 2) the helper name matches a context property, and
- * 3) there are no arguments for the helper
- *
- * For instance,
- *
- * @code{.handlebars}
- * {{#foo}}
- *    Block content
- * {{/foo}}
- * @endcode
- *
- * where the context key foo is not a helper, will call the
- * blockHelperMissing helper with the value of foo as the first argument.
- *
- * The default implementation of blockHelperMissing is to render the block
- * with the usual logic used by mustache, where the context becomes the
- * value of the key or, if the value is an array, the context becomes
- * each element of the array as if the "each" helper has been called on it.
- *
- * This default behavior can be overridden by registering a custom
- * blockHelperMissing helper.
- */
-void
-block_helper_missing_fn(
-    dom::Value const& context, dom::Value options);
 
 /** Register all the Antora helpers into a Handlebars instance
 

@@ -3013,7 +3013,7 @@ builtin_each()
     // each on implicit context
     {
         std::string string = "{{#each}}{{text}}! {{/each}}cruel world!";
-        BOOST_TEST_THROW_WITH(
+        BOOST_TEST_THROW_STARTS_WITH(
             hbs.render(string, dom::Object()),
             HandlebarsError, "Must pass iterator to #each");
     }
@@ -4166,7 +4166,7 @@ helpers()
         // if a context is not found, helperMissing is used
         {
             std::string string = "{{hello}} {{link_to world}}";
-            BOOST_TEST_THROW_WITH(
+            BOOST_TEST_THROW_STARTS_WITH(
                 hbs.render(string), std::runtime_error, "Missing helper: \"link_to\"");
         }
 
@@ -4486,49 +4486,49 @@ helpers()
     {
         // if helper - too few arguments
         {
-            BOOST_TEST_THROW_WITH(
+            BOOST_TEST_THROW_STARTS_WITH(
                 hbs.render("{{#if}}{{/if}}"), HandlebarsError, "#if requires exactly one argument");
         }
 
         // if helper - too many arguments, string
         {
-            BOOST_TEST_THROW_WITH(
+            BOOST_TEST_THROW_STARTS_WITH(
                 hbs.render("{{#if test \"string\"}}{{/if}}"), HandlebarsError, "#if requires exactly one argument");
         }
 
         // if helper - too many arguments, undefined
         {
-            BOOST_TEST_THROW_WITH(
+            BOOST_TEST_THROW_STARTS_WITH(
                 hbs.render("{{#if test undefined}}{{/if}}"), HandlebarsError, "#if requires exactly one argument");
         }
 
         // if helper - too many arguments, null
         {
-            BOOST_TEST_THROW_WITH(
+            BOOST_TEST_THROW_STARTS_WITH(
                 hbs.render("{{#if test null}}{{/if}}"), HandlebarsError, "#if requires exactly one argument");
         }
 
         // unless helper - too few arguments
         {
-            BOOST_TEST_THROW_WITH(
+            BOOST_TEST_THROW_STARTS_WITH(
                 hbs.render("{{#unless}}{{/unless}}"), HandlebarsError, "#unless requires exactly one argument");
         }
 
         // unless helper - too many arguments, null
         {
-            BOOST_TEST_THROW_WITH(
+            BOOST_TEST_THROW_STARTS_WITH(
                 hbs.render("{{#unless test null}}{{/unless}}"), HandlebarsError, "#unless requires exactly one argument");
         }
 
         // with helper - too few arguments
         {
-            BOOST_TEST_THROW_WITH(
+            BOOST_TEST_THROW_STARTS_WITH(
                 hbs.render("{{#with}}{{/with}}"), HandlebarsError, "#with requires exactly one argument");
         }
 
         // with helper - too many arguments
         {
-            BOOST_TEST_THROW_WITH(
+            BOOST_TEST_THROW_STARTS_WITH(
                 hbs.render("{{#with test \"string\"}}{{/with}}"), HandlebarsError, "#with requires exactly one argument");
         }
     }

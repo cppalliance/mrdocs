@@ -224,6 +224,12 @@ public:
     template<class... Args>
     Value operator()(Args&&... args) const;
 
+    /** Invoke the function.
+    */
+    template<class... Args>
+    Expected<Value>
+    try_invoke(Args&&... args) const;
+
     /** Swap two objects.
     */
     void swap(Function& other) noexcept

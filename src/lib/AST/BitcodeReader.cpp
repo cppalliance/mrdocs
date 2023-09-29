@@ -26,19 +26,21 @@ getInfos()
 {
     std::vector<std::unique_ptr<Info>> Infos;
     if (auto err = validateStream())
-        return err;
+    {
+        return Unexpected(err);
+    }
 
     // Read the top level blocks.
     while (!Stream.AtEndOfStream())
     {
         llvm::Expected<unsigned> MaybeCode = Stream.ReadCode();
         if (!MaybeCode)
-            return toError(MaybeCode.takeError());
+            return Unexpected(toError(MaybeCode.takeError()));
         if (MaybeCode.get() != llvm::bitc::ENTER_SUBBLOCK)
-            return formatError("no blocks in input");
+            return Unexpected(formatError("no blocks in input"));
         llvm::Expected<unsigned> MaybeID = Stream.ReadSubBlockID();
         if (!MaybeID)
-            return toError(MaybeID.takeError());
+            return Unexpected(toError(MaybeID.takeError()));
         unsigned ID = MaybeID.get();
         switch (ID)
         {
@@ -47,77 +49,61 @@ getInfos()
         {
             VersionBlock B;
             if (auto err = readBlock(B, ID))
-                return std::move(err);
+                return Unexpected(std::move(err));
             continue;
         }
 
         // Top level blocks
         case BI_NAMESPACE_BLOCK_ID:
         {
-            auto I = readInfo<NamespaceBlock>(ID);
-            if(! I)
-                return I.error();
-            Infos.emplace_back(I.release());
-                continue;
+            MRDOX_TRY(auto I, readInfo<NamespaceBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
         }
         case BI_RECORD_BLOCK_ID:
         {
-            auto I = readInfo<RecordBlock>(ID);
-            if(! I)
-                return I.error();
-            Infos.emplace_back(I.release());
-                continue;
+            MRDOX_TRY(auto I, readInfo<RecordBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
         }
         case BI_FUNCTION_BLOCK_ID:
         {
-            auto I = readInfo<FunctionBlock>(ID);
-            if(! I)
-                return I.error();
-            Infos.emplace_back(I.release());
-                continue;
+            MRDOX_TRY(auto I, readInfo<FunctionBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
         }
         case BI_TYPEDEF_BLOCK_ID:
         {
-            auto I = readInfo<TypedefBlock>(ID);
-            if(! I)
-                return I.error();
-            Infos.emplace_back(I.release());
-                continue;
+            MRDOX_TRY(auto I, readInfo<TypedefBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
         }
         case BI_ENUM_BLOCK_ID:
         {
-            auto I = readInfo<EnumBlock>(ID);
-            if(! I)
-                return I.error();
-            Infos.emplace_back(I.release());
-                continue;
+            MRDOX_TRY(auto I, readInfo<EnumBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
         }
         case BI_VARIABLE_BLOCK_ID:
         {
-            auto I = readInfo<VarBlock>(ID);
-            if(! I)
-                return I.error();
-            Infos.emplace_back(I.release());
-                continue;
+            MRDOX_TRY(auto I, readInfo<VarBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
         }
         // although fields can only be members of records,
         // they are emitted as top-level blocks anyway
         case BI_FIELD_BLOCK_ID:
         {
-            auto I = readInfo<FieldBlock>(ID);
-            if(! I)
-                return I.error();
-            Infos.emplace_back(I.release());
-                continue;
+            MRDOX_TRY(auto I, readInfo<FieldBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
         }
 
         case BI_SPECIALIZATION_BLOCK_ID:
         {
-            auto I = readInfo<SpecializationBlock>(ID);
-            if(! I)
-                return I.error();
-            Infos.emplace_back(I.release());
-                continue;
+            MRDOX_TRY(auto I, readInfo<SpecializationBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
         }
 
         // Comment blocks should
@@ -125,10 +111,10 @@ getInfos()
         case BI_JAVADOC_BLOCK_ID:
         case BI_JAVADOC_LIST_BLOCK_ID:
         case BI_JAVADOC_NODE_BLOCK_ID:
-            return formatError("invalid top level block");
+            return Unexpected(formatError("invalid top level block"));
         case llvm::bitc::BLOCKINFO_BLOCK_ID:
             if (auto err = readBlockInfoBlock())
-                return std::move(err);
+                return Unexpected(std::move(err));
             continue;
         default:
             if (llvm::Error err = Stream.SkipBlock())
@@ -188,7 +174,7 @@ readInfo(
 {
     T B(*this);
     if(auto err = readBlock(B, ID))
-        return err;
+        return Unexpected(err);
     return std::move(B.I);
 }
 

@@ -658,7 +658,9 @@ find_position_in_text(
     return res;
 }
 
-static void
+[[nodiscard]]
+static
+Expected<void, HandlebarsError>
 checkPath(std::string_view path0, detail::RenderState const& state)
 {
     std::string_view path = path0;
@@ -683,12 +685,14 @@ checkPath(std::string_view path0, detail::RenderState const& state)
             auto res = find_position_in_text(state.templateText0, path0);
             if (res)
             {
-                throw HandlebarsError(msg, res.line, res.column, res.pos);
+                return Unexpected(
+                    HandlebarsError(msg, res.line, res.column, res.pos));
             }
-            throw HandlebarsError(msg);
+            return Unexpected(HandlebarsError(msg));
         }
         seg = popFirstSegment(path);
     }
+    return {};
 }
 
 static std::pair<dom::Value, bool>
@@ -802,21 +806,24 @@ lookupPropertyImpl(
     return {cur, true};
 }
 
-
-static std::pair<dom::Value, bool>
+[[nodiscard]]
+static
+Expected<std::pair<dom::Value, bool>, HandlebarsError>
 lookupPropertyImpl(
     dom::Value const& context,
     std::string_view path,
     detail::RenderState const& state,
     HandlebarsOptions const& opt)
 {
-    checkPath(path, state);
+    using Res = std::pair<dom::Value, bool>;
+    MRDOX_TRY(checkPath(path, state));
+
     // ==============================================================
     // "." / "this"
     // ==============================================================
     if (isCurrentContextSegment(path) || path.empty())
     {
-        return {context, true};
+        return Res{context, true};
     }
     // ==============================================================
     // Non-object key
@@ -828,11 +835,11 @@ lookupPropertyImpl(
             auto res = find_position_in_text(state.templateText0, path);
             if (res)
             {
-                throw HandlebarsError(msg, res.line, res.column, res.pos);
+                return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
             }
-            throw HandlebarsError(msg);
+            return Unexpected(HandlebarsError(msg));
         }
-        return {nullptr, false};
+        return Res{nullptr, false};
     }
     // ==============================================================
     // Object path
@@ -841,7 +848,7 @@ lookupPropertyImpl(
 }
 
 template <std::convertible_to<std::string_view> S>
-static std::pair<dom::Value, bool>
+static Expected<std::pair<dom::Value, bool>, HandlebarsError>
 lookupPropertyImpl(
     dom::Value const& data,
     S const& path,
@@ -852,13 +859,15 @@ lookupPropertyImpl(
         data, static_cast<std::string_view>(path), state, opt);
 }
 
-std::pair<dom::Value, bool>
+[[nodiscard]]
+Expected<std::pair<dom::Value, bool>, HandlebarsError>
 lookupPropertyImpl(
     dom::Value const& context,
     dom::Value const& path,
     detail::RenderState const& state,
     HandlebarsOptions const& opt)
 {
+    using Res = std::pair<dom::Value, bool>;
     if (path.isString())
     {
         return lookupPropertyImpl(context, path.getString(), state, opt);
@@ -870,24 +879,14 @@ lookupPropertyImpl(
             auto& arr = context.getArray();
             if (path.getInteger() >= static_cast<std::int64_t>(arr.size()))
             {
-                return {nullptr, false};
+                return Res{nullptr, false};
             }
-            return {arr.at(static_cast<std::size_t>(path.getInteger())), true};
+            return Res{arr.at(static_cast<std::size_t>(path.getInteger())), true};
         }
         return lookupPropertyImpl(context, std::to_string(path.getInteger()), state, opt);
     }
-    return {nullptr, false};
+    return Res{nullptr, false};
 }
-
-//std::pair<dom::Value, bool>
-//HandlebarsCallback::
-//lookupProperty(
-//    dom::Value const& context,
-//    dom::Value const& path) const
-//{
-//    return lookupPropertyImpl(context, path, *renderState_, *opt_);
-//}
-
 
 // ==============================================================
 // Engine
@@ -955,19 +954,6 @@ struct defaultLogger {
 Handlebars::Handlebars() {
     helpers::registerBuiltinHelpers(*this);
     registerLogger(dom::makeVariadicInvocable(defaultLogger{}));
-}
-
-std::string
-Handlebars::
-render(
-    std::string_view templateText,
-    dom::Value const & context,
-    HandlebarsOptions const& options) const
-{
-    std::string out;
-    OutputRef os(out);
-    render_to(os, templateText, context, options);
-    return out;
 }
 
 // Find the next handlebars tag
@@ -1391,9 +1377,9 @@ parseTag(
     return t;
 }
 
-void
+Expected<void, HandlebarsError>
 Handlebars::
-render_to(
+try_render_to(
     OutputRef& out,
     std::string_view templateText,
     dom::Value const& context,
@@ -1408,12 +1394,12 @@ render_to(
     state.inlinePartials.emplace_back();
     state.rootContext = context;
     state.dataStack.emplace_back(state.data);
-    render_to(out, context, options, state);
+    return try_render_to_impl(out, context, options, state);
 }
 
-void
+Expected<void, HandlebarsError>
 Handlebars::
-render_to(
+try_render_to_impl(
     OutputRef& out,
     dom::Value const& context,
     HandlebarsOptions const& opt,
@@ -1465,7 +1451,7 @@ render_to(
         // ==============================================================
         // Render tag
         // ==============================================================
-        renderTag(tag, out, context, opt, state);
+        MRDOX_TRY(renderTag(tag, out, context, opt, state));
 
         // ==============================================================
         // Advance template text
@@ -1475,6 +1461,7 @@ render_to(
             state.templateText = trim_lspaces(state.templateText);
         }
     }
+    return {};
 }
 
 namespace {
@@ -1788,7 +1775,7 @@ public:
     }
 };
 
-Handlebars::evalExprResult
+Expected<Handlebars::evalExprResult, HandlebarsError>
 Handlebars::
 evalExpr(
     dom::Value const& context,
@@ -1797,6 +1784,7 @@ evalExpr(
     HandlebarsOptions const& opt,
     bool evalLiterals) const
 {
+    using Res = Handlebars::evalExprResult;
     expression = trim_spaces(expression);
     if (evalLiterals)
     {
@@ -1805,27 +1793,27 @@ evalExpr(
         // ==============================================================
         if (is_literal_value(expression, "true"))
         {
-            return {true, true, true};
+            return Res{true, true, true};
         }
         if (is_literal_value(expression, "false"))
         {
-            return {false, true, true};
+            return Res{false, true, true};
         }
         if (is_literal_value(expression, "null"))
         {
-            return {nullptr, true, true};
+            return Res{nullptr, true, true};
         }
         if (is_literal_value(expression, "undefined") || expression.empty())
         {
-            return {dom::Kind::Undefined, true, true};
+            return Res{dom::Kind::Undefined, true, true};
         }
         if (expression == "." || expression == "this")
         {
-            return {context, true, false};
+            return Res{context, true, false};
         }
         if (is_literal_string(expression))
         {
-            return {unescapeString(expression), true, true};
+            return Res{unescapeString(expression), true, true};
         }
         if (is_literal_integer(expression))
         {
@@ -1836,9 +1824,9 @@ evalExpr(
                 value);
             if (res.ec != std::errc())
             {
-                return {std::int64_t(0), true, true};
+                return Res{std::int64_t(0), true, true};
             }
-            return {value, true, true};
+            return Res{value, true, true};
         }
         // ==============================================================
         // Subexpressions
@@ -1856,9 +1844,9 @@ evalExpr(
                 msg += " is not a function";
                 if (res)
                 {
-                    throw HandlebarsError(msg, res.line, res.column, res.pos);
+                    return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
                 }
-                throw HandlebarsError(msg);
+                return Unexpected(HandlebarsError(msg));
             }
             all.remove_prefix(helper.data() + helper.size() - all.data());
             dom::Array args = dom::newArray<dom::DefaultArrayImpl>();
@@ -1866,7 +1854,7 @@ evalExpr(
             cb.set("name", helper);
             cb.set("context", context);
             setupArgs(all, context, state, args, cb, opt);
-            return {fn.call(args).value(), true, false, true};
+            return Res{fn.call(args).value(), true, false, true};
             MRDOX_UNREACHABLE();
         }
     }
@@ -1875,7 +1863,7 @@ evalExpr(
     // ==============================================================
     if (expression.starts_with('@'))
     {
-        checkPath(expression, state);
+        MRDOX_TRY(checkPath(expression, state));
         expression.remove_prefix(1);
         dom::Value data = state.data;
         if (expression == "root" || expression.starts_with("root.") || expression.starts_with("root/"))
@@ -1906,7 +1894,7 @@ evalExpr(
                     expression.remove_prefix(3);
                     if (dataIt == rDataStack.end())
                     {
-                        return {nullptr, false, false};
+                        return Res{nullptr, false, false};
                     }
                     data = *dataIt;
                     ++dataIt;
@@ -1915,9 +1903,11 @@ evalExpr(
                 break;
             }
         }
-        auto [res, found] = lookupPropertyImpl(data, expression, state, opt);
-        return {res, found, false};
+        MRDOX_TRY(auto r, lookupPropertyImpl(data, expression, state, opt));
+        auto [res, found] = r;
+        return Res{res, found, false};
     }
+
     // ==============================================================
     // Dotdot context path
     // ==============================================================
@@ -1939,12 +1929,13 @@ evalExpr(
             }
         }
         if (dotdots > state.parentContext.size()) {
-            return {dom::Kind::Undefined, false};
+            return Res{dom::Kind::Undefined, false};
         }
         dom::Value parentCtx =
             state.parentContext[state.parentContext.size() - dotdots];
-        auto [res, found] = lookupPropertyImpl(parentCtx, expression, state, noStrict);
-        return {res, found, false};
+        MRDOX_TRY(auto r, lookupPropertyImpl(parentCtx, expression, state, noStrict));
+        auto [res, found] = r;
+        return Res{res, found, false};
     }
     // ==============================================================
     // Pathed type
@@ -1969,9 +1960,9 @@ evalExpr(
     bool defined;
     if (isPathedValue)
     {
-        std::tie(r, defined) = lookupPropertyImpl(context, expression, state, noStrict);
+        MRDOX_TRY(std::tie(r, defined), lookupPropertyImpl(context, expression, state, noStrict));
         if (defined) {
-            return {r, defined, false};
+            return Res{r, defined, false};
         }
     }
 
@@ -1981,7 +1972,7 @@ evalExpr(
     std::tie(r, defined) = lookupPropertyImpl(state.blockValues, expression, state, noStrict);
     if (defined)
     {
-        return {r, defined, false, false, true};
+        return Res{r, defined, false, false, true};
     }
 
     // ==============================================================
@@ -1991,7 +1982,7 @@ evalExpr(
         auto& obj = context.getObject();
         if (obj.exists(expression))
         {
-            return {obj.find(expression), true, false};
+            return Res{obj.find(expression), true, false};
         }
     }
 
@@ -2001,9 +1992,9 @@ evalExpr(
     HandlebarsOptions strictOpt = opt;
     strictOpt.strict = opt.strict && !opt.compat;
     strictOpt.assumeObjects = opt.assumeObjects && !opt.compat;
-    std::tie(r, defined) = lookupPropertyImpl(context, expression, state, strictOpt);
+    MRDOX_TRY(std::tie(r, defined), lookupPropertyImpl(context, expression, state, strictOpt));
     if (defined) {
-        return {r, defined, false};
+        return Res{r, defined, false};
     }
 
     // ==============================================================
@@ -2031,7 +2022,7 @@ evalExpr(
                 auto& obj = context.getObject();
                 if (obj.exists(firstSeg))
                 {
-                    return {r, false, false};
+                    return Res{r, false, false};
                 }
             }
         }
@@ -2040,10 +2031,10 @@ evalExpr(
         auto parentContexts = std::ranges::views::reverse(state.parentContext);
         for (const auto& parentContext: parentContexts)
         {
-            std::tie(r, defined) = lookupPropertyImpl(parentContext, expression, state, noStrict);
+            MRDOX_TRY(std::tie(r, defined), lookupPropertyImpl(parentContext, expression, state, noStrict));
             if (defined)
             {
-                return {r, defined, false};
+                return Res{r, defined, false};
             }
         }
     }
@@ -2051,9 +2042,9 @@ evalExpr(
     if (opt.strict)
     {
         std::string msg = fmt::format("\"{}\" not defined", expression);
-        throw HandlebarsError(msg);
+        return Unexpected(HandlebarsError(msg));
     }
-    return {dom::Kind::Undefined, false, false};
+    return Res{dom::Kind::Undefined, false, false};
 }
 
 auto
@@ -2109,7 +2100,7 @@ getPartial(
 }
 
 // Parse a block starting at templateText
-bool
+Expected<void, HandlebarsError>
 parseBlock(
     std::string_view blockName,
     Handlebars::Tag const& tag,
@@ -2195,9 +2186,9 @@ parseBlock(
                         msg += closeTag.content;
                         if (res)
                         {
-                            throw HandlebarsError(msg, res.line, res.column, res.pos);
+                            return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
                         }
-                        throw HandlebarsError(msg);
+                        return Unexpected(HandlebarsError(msg));
                     }
                     closed = true;
                     *curBlock = {curBlock->data(), closeTag.buffer.data()};
@@ -2277,9 +2268,9 @@ parseBlock(
         msg += " missing closing braces";
         if (res)
         {
-            throw HandlebarsError(msg, res.line, res.column, res.pos);
+            return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
         }
-        throw HandlebarsError(msg);
+        return Unexpected(HandlebarsError(msg));
     }
 
     // ==============================================================
@@ -2300,13 +2291,12 @@ parseBlock(
             templateText.remove_prefix(2);
         }
     }
-
-    return true;
+    return {};
 }
 
 
 // Render a handlebars tag
-void
+Expected<void, HandlebarsError>
 Handlebars::
 renderTag(
     Tag const& tag,
@@ -2316,19 +2306,19 @@ renderTag(
     detail::RenderState& state) const {
     if ('#' == tag.type || '^' == tag.type)
     {
-        renderBlock(tag.helper, tag, out, context, opt, state, false);
+        return renderBlock(tag.helper, tag, out, context, opt, state, false);
     }
     else if ('>' == tag.type)
     {
-        renderPartial(tag, out, context, opt, state);
+        return renderPartial(tag, out, context, opt, state);
     }
     else if ('*' == tag.type)
     {
-        renderDecorator(tag, out, context, opt, state);
+        return renderDecorator(tag, out, context, opt, state);
     }
     else if ('/' != tag.type && '!' != tag.type)
     {
-        renderExpression(tag, out, context, opt, state);
+        return renderExpression(tag, out, context, opt, state);
     }
     else if ('!' == tag.type)
     {
@@ -2346,9 +2336,10 @@ renderTag(
             }
         }
     }
+    return {};
 }
 
-void
+Expected<void, HandlebarsError>
 Handlebars::
 renderExpression(
     Handlebars::Tag const &tag,
@@ -2359,7 +2350,7 @@ renderExpression(
 {
     if (tag.helper.empty())
     {
-        return;
+        return {};
     }
 
     auto opt2 = opt;
@@ -2375,7 +2366,7 @@ renderExpression(
         if (tag.removeRWhitespace) {
             state.templateText = trim_lspaces(state.templateText);
         }
-        return;
+        return {};
     }
 
     // ==============================================================
@@ -2392,7 +2383,7 @@ renderExpression(
         cb.set("log", logger_);
         HandlebarsOptions noStrict = opt;
         noStrict.strict = false;
-        setupArgs(tag.arguments, context, state, args, cb, noStrict);
+        MRDOX_TRY(setupArgs(tag.arguments, context, state, args, cb, noStrict));
         dom::Value res = fn.call(args).value();
         if (!res.isUndefined()) {
             opt2.noEscape = opt2.noEscape || res.isSafeString();
@@ -2401,7 +2392,7 @@ renderExpression(
         if (tag.removeRWhitespace) {
             state.templateText = trim_lspaces(state.templateText);
         }
-        return;
+        return {};
     }
 
     // ==============================================================
@@ -2414,7 +2405,7 @@ renderExpression(
         unescaped = unescapeString(helper_expr);
         helper_expr = unescaped;
     }
-    auto resV = evalExpr(context, helper_expr, state, opt, false);
+    MRDOX_TRY(auto resV, evalExpr(context, helper_expr, state, opt, false));
     if (resV.found)
     {
         if (resV.value.isFunction())
@@ -2435,12 +2426,12 @@ renderExpression(
         {
             format_to(out, resV.value, opt2);
         }
-        return;
+        return {};
     }
     else if (opt.strict)
     {
         std::string msg = fmt::format("\"{}\" not defined in {}", helper_expr, toString(context));
-        throw HandlebarsError(msg);
+        return Unexpected(HandlebarsError(msg));
     }
 
     // ==============================================================
@@ -2456,7 +2447,19 @@ renderExpression(
     HandlebarsOptions noStrict = opt;
     noStrict.strict = false;
     setupArgs(tag.arguments, context, state, args, cb, noStrict);
-    dom::Value res = fn.call(args).value();
+    Expected<dom::Value> exp2 = fn.call(args);
+    if (!exp2)
+    {
+        Error e = exp2.error();
+        auto res = find_position_in_text(state.templateText0, helper_expr);
+        std::string msg(e.reason());
+        if (res)
+        {
+            return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
+        }
+        return Unexpected(HandlebarsError(msg));
+    }
+    dom::Value res = *exp2;
     if (!res.isUndefined())
     {
         opt2.noEscape = opt2.noEscape || res.isSafeString();
@@ -2466,6 +2469,7 @@ renderExpression(
     {
         state.templateText = trim_lspaces(state.templateText);
     }
+    return {};
 }
 
 std::string_view
@@ -2489,7 +2493,7 @@ remove_redundant_prefixes(std::string_view expr) {
     return expr;
 }
 
-void
+Expected<void, HandlebarsError>
 Handlebars::
 setupArgs(
     std::string_view expression,
@@ -2529,9 +2533,9 @@ setupArgs(
             auto res = find_position_in_text(expression, state.templateText0);
             if (res)
             {
-                throw HandlebarsError(msg, res.line, res.column, res.pos);
+                return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
             }
-            throw HandlebarsError(msg);
+            return Unexpected(HandlebarsError(msg));
         }
         expression = trim_ldelimiters(expression, " ");
         auto [k, v] = findKeyValuePair(expr);
@@ -2541,7 +2545,7 @@ setupArgs(
             // ==========================================
             // Positional argument
             // ==========================================
-            auto res = evalExpr(context, expr, state, opt, true);
+            MRDOX_TRY(auto res, evalExpr(context, expr, state, opt, true));
             args.emplace_back(res.value);
             if (opt.trackIds) {
                 dom::Array ids = cb.find("ids").getArray();
@@ -2585,7 +2589,7 @@ setupArgs(
             // ==========================================
             // Named argument
             // ==========================================
-            auto res = evalExpr(context, v, state, opt, true);
+            MRDOX_TRY(auto res, evalExpr(context, v, state, opt, true));
             hash.set(k, res.value);
             if (opt.trackIds) {
                 dom::Object hashIds = cb.find("hashIds").getObject();
@@ -2604,12 +2608,13 @@ setupArgs(
     cb.set("lookupProperty", dom::makeInvocable([&state, &opt](
         dom::Value const& obj, dom::Value const& field)
     {
-        return lookupPropertyImpl(obj, field, state, opt).first;
+        return lookupPropertyImpl(obj, field, state, opt).value().first;
     }));
     args.emplace_back(cb);
+    return {};
 }
 
-void
+Expected<void, HandlebarsError>
 Handlebars::
 renderDecorator(
     Handlebars::Tag const& tag,
@@ -2623,7 +2628,7 @@ renderDecorator(
     if (tag.helper != "inline")
     {
         out << fmt::format(R"([undefined decorator "{}" in "{}"])", tag.helper, tag.buffer);
-        return;
+        return {};
     }
 
     // ==============================================================
@@ -2631,11 +2636,11 @@ renderDecorator(
     // ==============================================================
     std::string_view expr;
     findExpr(expr, tag.arguments);
-    auto res = evalExpr(context, expr, state, opt, true);
+    MRDOX_TRY(auto res, evalExpr(context, expr, state, opt, true));
     if (!res.value.isString())
     {
         out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.arguments, tag.buffer);
-        return;
+        return {};
     }
     std::string_view partial_name = res.value.getString();
 
@@ -2646,15 +2651,17 @@ renderDecorator(
     std::string_view inverseBlock;
     Tag inverseTag;
     if (tag.type2 == '#') {
-        if (!parseBlock(tag.helper, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag, false)) {
-            return;
+        if (!parseBlock(tag.helper, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag, false))
+        {
+            return {};
         }
     }
     fnBlock = trim_rspaces(fnBlock);
     state.inlinePartials.back()[std::string(partial_name)] = fnBlock;
+    return {};
 }
 
-void
+Expected<void, HandlebarsError>
 Handlebars::
 renderPartial(
     Handlebars::Tag const &tag,
@@ -2676,7 +2683,7 @@ renderPartial(
     {
         std::string_view expr;
         findExpr(expr, partialName);
-        auto res = evalExpr(context, expr, state, opt, true);
+        MRDOX_TRY(auto res, evalExpr(context, expr, state, opt, true));
         if (res.value.isString())
         {
             partialName = res.value.getString();
@@ -2701,7 +2708,7 @@ renderPartial(
     {
         if (!parseBlock(tag.helper, tag, opt, state, state.templateText, out, fnBlock, inverseBlock, inverseTag, false))
         {
-            return;
+            return {};
         }
     }
 
@@ -2717,8 +2724,8 @@ renderPartial(
         }
         else
         {
-            throw HandlebarsError(fmt::format(
-                "The partial {} could not be found", partialName));
+            return Unexpected(HandlebarsError(fmt::format(
+                "The partial {} could not be found", partialName)));
         }
     }
 
@@ -2731,7 +2738,7 @@ renderPartial(
         OutputRef dumb{};
         std::string_view templateText = state.templateText;
         state.templateText = fnBlock;
-        this->render_to(dumb, context, opt, state);
+        MRDOX_TRY(this->try_render_to_impl(dumb, context, opt, state));
         state.templateText = templateText;
     }
 
@@ -2798,13 +2805,13 @@ renderPartial(
                     auto res = find_position_in_text(state.templateText0, tag.buffer);
                     if (res)
                     {
-                        throw HandlebarsError(msg, res.line, res.column, res.pos);
+                        return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
                     }
-                    throw HandlebarsError(msg);
+                    return Unexpected(HandlebarsError(msg));
                 }
 
                 // Do change the context
-                auto res = evalExpr(context, expr, state, opt, true);
+                MRDOX_TRY(auto res, evalExpr(context, expr, state, opt, true));
                 if (opt.trackIds)
                 {
                     std::string contextPath = appendContextPath(
@@ -2832,7 +2839,7 @@ renderPartial(
             evalExprResult res;
             if (contextKey != ".")
             {
-                res = evalExpr(context, contextKey, state, opt, true);
+                MRDOX_TRY(res, evalExpr(context, contextKey, state, opt, true));
             }
             else
             {
@@ -2888,7 +2895,7 @@ renderPartial(
     // ==========================================
     // Render partial
     // ==========================================
-    this->render_to(out, partialCtx, opt, state);
+    MRDOX_TRY(this->try_render_to_impl(out, partialCtx, opt, state));
 
     // ==========================================
     // Restore state
@@ -2929,9 +2936,10 @@ renderPartial(
             state.templateText.remove_prefix(2);
         }
     }
+    return {};
 }
 
-void
+Expected<void, HandlebarsError>
 Handlebars::
 renderBlock(
     std::string_view blockName,
@@ -2951,9 +2959,9 @@ renderBlock(
     std::string_view fnBlock;
     std::string_view inverseBlock;
     Tag inverseTag;
-    parseBlock(
+    MRDOX_TRY(parseBlock(
         blockName, tag, opt, state, state.templateText, out,
-        fnBlock, inverseBlock, inverseTag, isChainedBlock);
+        fnBlock, inverseBlock, inverseTag, isChainedBlock));
 
     // ==============================================================
     // Find helper
@@ -2963,7 +2971,7 @@ renderBlock(
     bool const useContextFunction = !found && !tag.arguments.empty();
     if (useContextFunction)
     {
-        auto res = evalExpr(context, tag.helper, state, opt, false);
+        MRDOX_TRY(auto res, evalExpr(context, tag.helper, state, opt, false));
         if (res.found && res.value.isFunction())
         {
             fn = res.value.getFunction();
@@ -2999,9 +3007,9 @@ renderBlock(
         auto res = find_position_in_text(state.templateText0, tag.helper);
         if (res)
         {
-            throw HandlebarsError(msg, res.line, res.column, res.pos);
+            return Unexpected(HandlebarsError(msg, res.line, res.column, res.pos));
         }
-        throw HandlebarsError(msg);
+        return Unexpected(HandlebarsError(msg));
     }
 
     // ==============================================================
@@ -3038,7 +3046,7 @@ renderBlock(
         [this, fnBlock, opt, &state, &context, &blockParamIds](
             OutputRef out,
             dom::Value newContext,
-            dom::Value const& options) -> void
+            dom::Value const& options) -> Expected<void, HandlebarsError>
     {
         // ==========================================
         // Setup new render state
@@ -3117,7 +3125,7 @@ renderBlock(
         // ==========================================
         // Render
         // ==========================================
-        render_to(out, newContext, opt, state);
+        MRDOX_TRY(try_render_to_impl(out, newContext, opt, state));
 
         // ==========================================
         // Restore state
@@ -3130,13 +3138,14 @@ renderBlock(
         {
             state.parentContext.pop_back();
         }
+        return {};
     };
 
     auto write_inverse_block =
         [this, inverseTag, inverseBlock, opt, blockName, &state, &context, &blockParamIds](
             OutputRef out,
             dom::Value const& newContext,
-            dom::Value const& options) -> void
+            dom::Value const& options) -> Expected<void, HandlebarsError>
     {
         // ==========================================
         // Setup new render state
@@ -3229,7 +3238,7 @@ renderBlock(
                     state.templateText.remove_prefix(2);
                 }
             }
-            render_to(out, newContext, opt, state);
+            MRDOX_TRY(try_render_to_impl(out, newContext, opt, state));
         }
         else
         {
@@ -3238,7 +3247,7 @@ renderBlock(
             // expect a closing tag matching the parent tag, and
             // interpret sequential "else" tags as more chained
             // inverse tags.
-            renderBlock(blockName, inverseTag, out, newContext, opt, state, true);
+            MRDOX_TRY(renderBlock(blockName, inverseTag, out, newContext, opt, state, true));
         }
 
         // ==========================================
@@ -3252,35 +3261,57 @@ renderBlock(
         {
             state.parentContext.pop_back();
         }
+        return {};
     };
 
+    std::optional<HandlebarsError> hbs_error;
     if (!tag.rawBlock) {
-        cb.set("write", dom::makeInvocable([&out, &write_nested_block](
+        cb.set("write", dom::makeInvocable([&out, &write_nested_block, &hbs_error](
             dom::Value const& newContext,
-            dom::Value const& options) {
-            write_nested_block(out, newContext, options);
+            dom::Value const& options) -> Expected<dom::Value> {
+            auto exp = write_nested_block(out, newContext, options);
+            if (!exp)
+            {
+                hbs_error = exp.error();
+                return Unexpected(Error("Error in block helper"));
+            }
             return dom::Value();
         }));
-        cb.set("fn", dom::makeInvocable([&write_nested_block](
+        cb.set("fn", dom::makeInvocable([&write_nested_block, &hbs_error](
             dom::Value const& newContext,
-            dom::Value const& options) {
+            dom::Value const& options) -> Expected<dom::Value> {
             std::string out;
             OutputRef out2(out);
-            write_nested_block(out2, newContext, options);
+            auto exp = write_nested_block(out2, newContext, options);
+            if (!exp)
+            {
+                hbs_error = exp.error();
+                return Unexpected(Error("Error in block helper"));
+            }
             return out;
         }));
-        cb.set("write_inverse", dom::makeInvocable([&out, &write_inverse_block](
+        cb.set("write_inverse", dom::makeInvocable([&out, &write_inverse_block, &hbs_error](
             dom::Value const& newContext,
-            dom::Value const& options) {
-            write_inverse_block(out, newContext, options);
+            dom::Value const& options) -> Expected<dom::Value> {
+            auto exp = write_inverse_block(out, newContext, options);
+            if (!exp)
+            {
+                hbs_error = exp.error();
+                return Unexpected(Error("Error in block helper"));
+            }
             return dom::Value();
         }));
-        cb.set("inverse", dom::makeInvocable([&write_inverse_block](
+        cb.set("inverse", dom::makeInvocable([&write_inverse_block, &hbs_error](
             dom::Value const& newContext,
-            dom::Value const& options) {
+            dom::Value const& options) -> Expected<dom::Value> {
             std::string out;
             OutputRef out2(out);
-            write_inverse_block(out2, newContext, options);
+            auto exp = write_inverse_block(out2, newContext, options);
+            if (!exp)
+            {
+                hbs_error = exp.error();
+                return Unexpected(Error("Error in block helper"));
+            }
             return out;
         }));
     }
@@ -3328,7 +3359,28 @@ renderBlock(
     state.inlinePartials.emplace_back();
     // state.parentContext.emplace_back(context);
     state.dataStack.emplace_back(state.data);
-    auto res = fn.call(args).value();
+    Expected<dom::Value> exp2 = fn.call(args);
+    if (!exp2)
+    {
+        if (hbs_error)
+        {
+            // The error happened when the helper called fn or inverse,
+            // and we have the exact HandlebarsError for that.
+            return Unexpected(*hbs_error);
+        }
+
+        // The helper returned a regular Error, and we convert it to
+        // a HandlebarsError with the same message and the position of
+        // the helper call.
+        Error e = exp2.error();
+        auto res = find_position_in_text(state.templateText0, tag.buffer);
+        if (res)
+        {
+            return Unexpected(HandlebarsError(e.reason(), res.line, res.column, res.pos));
+        }
+        return Unexpected(HandlebarsError(e.reason()));
+    }
+    dom::Value res = *exp2;
     if (!res.isUndefined()) {
         // Block helpers are always unescaped
         HandlebarsOptions opt2 = opt;
@@ -3338,6 +3390,7 @@ renderBlock(
     state.inlinePartials.pop_back();
     // state.parentContext.pop_back();
     state.dataStack.pop_back();
+    return {};
 }
 
 void
@@ -3362,29 +3415,6 @@ registerHelper(std::string_view name, dom::Function const& helper)
     helpers_.emplace(std::string(name), helper);
 }
 
-void
-Handlebars::
-unregisterHelper(std::string_view name) {
-    auto it = helpers_.find(name);
-    if (it != helpers_.end())
-        helpers_.erase(it);
-
-    // Re-register mandatory helpers
-    if (name == "helperMissing")
-    {
-        registerHelper(
-            "helperMissing",
-            dom::makeVariadicInvocable(
-                helpers::helper_missing_fn));
-    }
-    else if (name == "blockHelperMissing")
-    {
-        registerHelper(
-            "blockHelperMissing",
-            dom::makeInvocable(
-                helpers::block_helper_missing_fn));
-    }
-}
 
 void
 Handlebars::
@@ -3394,6 +3424,279 @@ registerLogger(dom::Function fn)
 }
 
 namespace helpers {
+
+Expected<void>
+if_fn(dom::Array const& arguments)
+{
+    if (arguments.size() != 2)
+    {
+        return Unexpected(Error("#if requires exactly one argument"));
+    }
+
+    dom::Value conditional = arguments[0];
+    dom::Value options = arguments[1];
+    dom::Value context = options["context"];
+    if (conditional.isFunction())
+    {
+        MRDOX_TRY(conditional, conditional.getFunction().try_invoke(context));
+    }
+
+    if ((!options["hash"]["includeZero"] && !conditional) || isEmpty(conditional)) {
+        MRDOX_TRY(options["write_inverse"].getFunction().try_invoke(context));
+    }
+    else
+    {
+        MRDOX_TRY(options["write"].getFunction().try_invoke(context));
+    }
+    return {};
+}
+
+Expected<void>
+unless_fn(dom::Array const& arguments)
+{
+    if (arguments.size() != 2) {
+        return Unexpected(Error("#unless requires exactly one argument"));
+    }
+
+    dom::Value options = arguments[1];
+    dom::Value fn = options["fn"];
+    dom::Value inverse = options["inverse"];
+    options.set("fn", inverse);
+    options.set("inverse", fn);
+    dom::Value write = options["write"];
+    dom::Value write_inverse = options["write_inverse"];
+    options.set("write", write_inverse);
+    options.set("write_inverse", write);
+    dom::Array inv_arguments = arguments;
+    inv_arguments.set(1, options);
+    return if_fn(inv_arguments);
+}
+
+Expected<void>
+with_fn(dom::Array const& arguments)
+{
+    if (arguments.size() != 2) {
+        return Unexpected(Error("#with requires exactly one argument"));
+    }
+
+    dom::Value context = arguments[0];
+    dom::Value options = arguments[1];
+    if (context.isFunction()) {
+        MRDOX_TRY(context, context.getFunction().try_invoke(options["context"]));
+    }
+
+    if (!isEmpty(context))
+    {
+        dom::Value data = options["data"];
+        if (data && options["ids"])
+        {
+            data = createFrame(data);
+            data.set("contextPath", appendContextPath(
+                data["contextPath"], options["ids"][0]));
+        }
+        dom::Array blockParams = {{context}};
+        dom::Array blockParamPaths = {{data && data["contextPath"]}};
+        dom::Object cbOpt;
+        cbOpt.set("data", data);
+        cbOpt.set("blockParams", blockParams);
+        cbOpt.set("blockParamPaths", blockParamPaths);
+        MRDOX_TRY(options["write"].getFunction().try_invoke(context, cbOpt));
+    }
+    else
+    {
+        MRDOX_TRY(options["write_inverse"].getFunction().try_invoke(options["context"]));
+    }
+    return {};
+}
+
+Expected<void>
+each_fn(dom::Value context, dom::Value const& options)
+{
+    if (!options)
+    {
+        return Unexpected(Error("Must pass iterator to #each"));
+    }
+
+    dom::Value fn = options["write"];
+    dom::Value inverse = options["write_inverse"];
+    std::size_t i = 0;
+    dom::Value data;
+    std::string contextPath;
+
+    if (options["data"] && options["ids"]) {
+        contextPath = appendContextPath(
+            options["data"]["contextPath"], options["ids"][0]) + '.';
+    }
+
+    if (context.isFunction()) {
+        MRDOX_TRY(context, context.getFunction().try_invoke(options["context"]));
+    }
+
+    if (options["data"]) {
+        data = createFrame(options["data"]);
+    }
+
+    auto execIteration = [&context, &data, &contextPath, &fn](
+        dom::Value const& field, std::size_t index, dom::Value const& last)
+        -> Expected<dom::Value>
+    {
+        if (data)
+        {
+            data.set("key", field);
+            data.set("index", index);
+            data.set("first", index == 0);
+            data.set("last", last.getBool());
+        }
+
+        if (!contextPath.empty())
+        {
+            data.set("contextPath", contextPath + field);
+        }
+
+        dom::Array blockParams = {{context[field], field}};
+        dom::Array blockParamPaths = {{data && data["contextPath"], nullptr}};
+        dom::Object cbOpt;
+        cbOpt.set("data", data);
+        cbOpt.set("blockParams", blockParams);
+        cbOpt.set("blockParamPaths", blockParamPaths);
+        return fn.getFunction().try_invoke(context[field], cbOpt);
+    };
+
+    bool const isJSObject = static_cast<bool>(
+        context && (context.isObject() || context.isArray()));
+    if (isJSObject)
+    {
+        if (context.isArray())
+        {
+            std::size_t const n = context.size();
+            for (; i < n; ++i)
+            {
+                bool const isLast = i == n - 1;
+                MRDOX_TRY(execIteration(i, static_cast<std::int64_t>(i), isLast));
+            }
+        }
+        else if (context.isObject())
+        {
+            dom::Value priorKey;
+            for (auto const& [key, value] : context.getObject())
+            {
+                if (!priorKey.isUndefined())
+                {
+                    MRDOX_TRY(execIteration(priorKey, i - 1, false));
+                }
+                priorKey = key;
+                ++i;
+            }
+            if (!priorKey.isUndefined())
+            {
+                MRDOX_TRY(execIteration(priorKey, i - 1, true));
+            }
+        }
+    }
+
+    if (i == 0)
+    {
+        MRDOX_TRY(inverse.getFunction().try_invoke(options["context"]));
+    }
+    return {};
+}
+
+Expected<dom::Value>
+lookup_fn(dom::Value const& obj, dom::Value const& field, dom::Value const& options)
+{
+    if (!obj)
+    {
+        return obj;
+    }
+    return options["lookupProperty"].getFunction().try_invoke(obj, field);
+}
+
+Expected<void>
+log_fn(dom::Array const& arguments)
+{
+    // {level, args}
+    dom::Array args = {{dom::Value{}}};
+    dom::Value options = arguments.back();
+    std::size_t const n = arguments.size();
+    for (std::size_t i = 0; i < n - 1; ++i)
+    {
+        args.emplace_back(arguments[i]);
+    }
+
+    dom::Value level = 1;
+    dom::Value hash = options["hash"];
+    dom::Value data = options["data"];
+    if (hash.exists("level") && !hash["level"].isNull())
+    {
+        level = options["hash"]["level"];
+    }
+    else if (data.exists("level") && !data["level"].isNull())
+    {
+        level = options["data"]["level"];
+    }
+    args.set(0, level);
+    MRDOX_TRY(options["log"].getFunction().call(args));
+    return {};
+}
+
+Expected<dom::Value>
+helper_missing_fn(dom::Array const& arguments)
+{
+    if (arguments.size() == 1)
+    {
+        return {};
+    }
+
+    return Unexpected(Error(fmt::format(
+        R"(Missing helper: "{}")",
+        arguments.back()["name"])));
+}
+
+Expected<void>
+block_helper_missing_fn(
+    dom::Value const& context, dom::Value options)
+{
+    if (context == true)
+    {
+        MRDOX_TRY(options["write"].getFunction().try_invoke(options["context"]));
+    }
+    else if (
+        context == false ||
+        context.isNull() ||
+        context.isUndefined())
+    {
+        MRDOX_TRY(options["write_inverse"].getFunction().try_invoke(options["context"]));
+    }
+    else if (context.isArray())
+    {
+        if (!context.empty())
+        {
+            if (options["ids"])
+            {
+                options.set("ids", dom::Array{{options["name"]}});
+            }
+            MRDOX_TRY(each_fn(context, options));
+        }
+        else
+        {
+            MRDOX_TRY(options["write_inverse"].getFunction().try_invoke(options["context"]));
+        }
+    }
+    else
+    {
+        dom::Object fnOpt;
+        if (options["data"] && options["ids"])
+        {
+            dom::Object data = createFrame(options["data"]);
+            data.set(
+                "contextPath",
+                appendContextPath(data["contextPath"], options["name"]));
+            fnOpt.set("data", data);
+        }
+        MRDOX_TRY(options["write"].getFunction().try_invoke(context, fnOpt));
+    }
+    return {};
+}
 
 void
 registerBuiltinHelpers(Handlebars& hbs)
@@ -3636,269 +3939,6 @@ year_fn() {
     std::time_t currentTime = std::chrono::system_clock::to_time_t(now);
     std::tm* localTime = std::localtime(&currentTime);
     return localTime->tm_year + 1900;
-}
-
-void
-if_fn(dom::Array const& arguments)
-{
-    if (arguments.size() != 2)
-    {
-        throw HandlebarsError("#if requires exactly one argument");
-    }
-
-    dom::Value conditional = arguments[0];
-    dom::Value options = arguments[1];
-    dom::Value context = options["context"];
-    if (conditional.isFunction())
-    {
-        conditional = conditional(context);
-    }
-
-    if ((!options["hash"]["includeZero"] && !conditional) || isEmpty(conditional)) {
-        options["write_inverse"](context);
-    }
-    else
-    {
-        options["write"](context);
-    }
-}
-
-void
-unless_fn(dom::Array const& arguments)
-{
-    if (arguments.size() != 2) {
-        throw HandlebarsError("#unless requires exactly one argument");
-    }
-
-    dom::Value options = arguments[1];
-    dom::Value fn = options["fn"];
-    dom::Value inverse = options["inverse"];
-    options.set("fn", inverse);
-    options.set("inverse", fn);
-    dom::Value write = options["write"];
-    dom::Value write_inverse = options["write_inverse"];
-    options.set("write", write_inverse);
-    options.set("write_inverse", write);
-    dom::Array inv_arguments = arguments;
-    inv_arguments.set(1, options);
-    return if_fn(inv_arguments);
-}
-
-void
-with_fn(dom::Array const& arguments)
-{
-    if (arguments.size() != 2) {
-        throw HandlebarsError("#with requires exactly one argument");
-    }
-
-    dom::Value context = arguments[0];
-    dom::Value options = arguments[1];
-    if (context.isFunction()) {
-        context = context(options["context"]);
-    }
-
-    if (!isEmpty(context))
-    {
-        dom::Value data = options["data"];
-        if (data && options["ids"])
-        {
-            data = createFrame(data);
-            data.set("contextPath", appendContextPath(
-                data["contextPath"], options["ids"][0]));
-        }
-        dom::Array blockParams = {{context}};
-        dom::Array blockParamPaths = {{data && data["contextPath"]}};
-        dom::Object cbOpt;
-        cbOpt.set("data", data);
-        cbOpt.set("blockParams", blockParams);
-        cbOpt.set("blockParamPaths", blockParamPaths);
-        options["write"](context, cbOpt);
-    }
-    else
-    {
-        options["write_inverse"](options["context"]);
-    }
-}
-
-void
-each_fn(dom::Value context, dom::Value const& options)
-{
-    if (!options)
-    {
-        throw HandlebarsError("Must pass iterator to #each");
-    }
-
-    dom::Value fn = options["write"];
-    dom::Value inverse = options["write_inverse"];
-    std::size_t i = 0;
-    dom::Value data;
-    std::string contextPath;
-
-    if (options["data"] && options["ids"]) {
-        contextPath = appendContextPath(
-            options["data"]["contextPath"], options["ids"][0]) + '.';
-    }
-
-    if (context.isFunction()) {
-        context = context(options["context"]);
-    }
-
-    if (options["data"]) {
-        data = createFrame(options["data"]);
-    }
-
-    auto execIteration = [&context, &data, &contextPath, &fn](
-        dom::Value const& field, std::size_t index, dom::Value const& last)
-    {
-        if (data)
-        {
-            data.set("key", field);
-            data.set("index", index);
-            data.set("first", index == 0);
-            data.set("last", last.getBool());
-        }
-
-        if (!contextPath.empty())
-        {
-            data.set("contextPath", contextPath + field);
-        }
-
-        dom::Array blockParams = {{context[field], field}};
-        dom::Array blockParamPaths = {{data && data["contextPath"], nullptr}};
-        dom::Object cbOpt;
-        cbOpt.set("data", data);
-        cbOpt.set("blockParams", blockParams);
-        cbOpt.set("blockParamPaths", blockParamPaths);
-        fn(context[field], cbOpt);
-    };
-
-    bool const isJSObject = static_cast<bool>(
-        context && (context.isObject() || context.isArray()));
-    if (isJSObject)
-    {
-        if (context.isArray())
-        {
-            std::size_t const n = context.size();
-            for (; i < n; ++i)
-            {
-                bool const isLast = i == n - 1;
-                execIteration(i, static_cast<std::int64_t>(i), isLast);
-            }
-        }
-        else if (context.isObject())
-        {
-            dom::Value priorKey;
-            for (auto const& [key, value] : context.getObject())
-            {
-                if (!priorKey.isUndefined())
-                {
-                    execIteration(priorKey, i - 1, false);
-                }
-                priorKey = key;
-                ++i;
-            }
-            if (!priorKey.isUndefined())
-            {
-                execIteration(priorKey, i - 1, true);
-            }
-        }
-    }
-
-    if (i == 0)
-    {
-        inverse(options["context"]);
-    }
-}
-
-dom::Value
-lookup_fn(dom::Value const& obj, dom::Value const& field, dom::Value const& options)
-{
-    if (!obj)
-    {
-        return obj;
-    }
-    return options["lookupProperty"](obj, field);
-}
-
-void
-log_fn(dom::Array const& arguments)
-{
-    // {level, args}
-    dom::Array args = {{dom::Value{}}};
-    dom::Value options = arguments.back();
-    std::size_t const n = arguments.size();
-    for (std::size_t i = 0; i < n - 1; ++i)
-    {
-        args.emplace_back(arguments[i]);
-    }
-
-    dom::Value level = 1;
-    dom::Value hash = options["hash"];
-    dom::Value data = options["data"];
-    if (hash.exists("level") && !hash["level"].isNull())
-    {
-        level = options["hash"]["level"];
-    }
-    else if (data.exists("level") && !data["level"].isNull())
-    {
-        level = options["data"]["level"];
-    }
-    args.set(0, level);
-    options["log"].getFunction().call(args);
-}
-
-dom::Value
-helper_missing_fn(dom::Array const& arguments)
-{
-    if (arguments.size() == 1)
-    {
-        return {};
-    }
-
-    throw std::runtime_error(fmt::format(
-        R"(Missing helper: "{}")",
-        arguments.back()["name"]));
-}
-
-void
-block_helper_missing_fn(
-    dom::Value const& context, dom::Value options)
-{
-    if (context == true) {
-        options["write"](options["context"]);
-    }
-    else if (context == false || context.isNull() || context.isUndefined())
-    {
-        options["write_inverse"](options["context"]);
-    }
-    else if (context.isArray())
-    {
-        if (!context.empty())
-        {
-            if (options["ids"])
-            {
-                options.set("ids", dom::Array{{options["name"]}});
-            }
-            each_fn(context, options);
-        }
-        else
-        {
-            options["write_inverse"](options["context"]);
-        }
-    }
-    else
-    {
-        dom::Object fnOpt;
-        if (options["data"] && options["ids"])
-        {
-            dom::Object data = createFrame(options["data"]);
-            data.set(
-                "contextPath",
-                appendContextPath(data["contextPath"], options["name"]));
-            fnOpt.set("data", data);
-        }
-        options["write"](context, fnOpt);
-    }
 }
 
 constexpr
@@ -5710,7 +5750,7 @@ registerContainerHelpers(Handlebars& hbs)
             }
             return res;
         }
-        else if (range.isObject()) 
+        else if (range.isObject())
         {
             auto const& obj = range.getObject();
             auto const& key = item.getString();
@@ -6343,6 +6383,30 @@ registerContainerHelpers(Handlebars& hbs)
 }
 
 } // helpers
+
+void
+Handlebars::
+unregisterHelper(std::string_view name) {
+    auto it = helpers_.find(name);
+    if (it != helpers_.end())
+        helpers_.erase(it);
+
+    // Re-register mandatory helpers
+    if (name == "helperMissing")
+    {
+        registerHelper(
+            "helperMissing",
+            dom::makeVariadicInvocable(
+                helpers::helper_missing_fn));
+    }
+    else if (name == "blockHelperMissing")
+    {
+        registerHelper(
+            "blockHelperMissing",
+            dom::makeInvocable(
+                helpers::block_helper_missing_fn));
+    }
+}
 
 } // mrdox
 } // clang

@@ -322,6 +322,24 @@ constexpr detail::log_type log{};
     (void) 0
    //
 
+# define BOOST_TEST_THROW_STARTS_WITH( expr, ex, msg ) \
+    try { \
+        (void)(expr); \
+        ::test_suite::detail::throw_failed_impl( \
+            #expr, #ex, "@anon", \
+            __FILE__, __LINE__); \
+    } \
+    catch(ex const& e) {                 \
+        BOOST_TEST(std::string_view(e.what()).starts_with(std::string_view(msg))); \
+    } \
+    catch(...) { \
+        ::test_suite::detail::throw_failed_impl( \
+            #expr, #ex, "@anon", \
+            __FILE__, __LINE__); \
+    }                            \
+    (void) 0
+   //
+
 # define BOOST_TEST_THROWS( expr, ex ) \
     try { \
         (void)(expr); \

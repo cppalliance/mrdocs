@@ -92,7 +92,7 @@ getFileType(
     {
         if(ec == std::errc::no_such_file_or_directory)
             return FileType::not_found;
-        return Error(ec);
+        return Unexpected(Error(ec));
     }
     switch(fileStatus.type())
     {
@@ -186,14 +186,14 @@ getFileText(
 {
     std::ifstream file((std::string(pathName)));
     if(! file.good())
-        return formatError("std::ifstream(\"{}\" returned \"{}\"",
-            pathName, std::error_code(errno, std::generic_category()));
+        return Unexpected(formatError("std::ifstream(\"{}\" returned \"{}\"",
+            pathName, std::error_code(errno, std::generic_category())));
     std::istreambuf_iterator<char> it(file);
     std::istreambuf_iterator<char> const end;
     std::string text(it, end);
     if(! file.good())
-        return formatError("getFileText(\"{}\") returned \"{}\"",
-            pathName, std::error_code(errno, std::generic_category()));
+        return Unexpected(formatError("getFileText(\"{}\") returned \"{}\"",
+            pathName, std::error_code(errno, std::generic_category())));
     return text;
 }
 
@@ -224,7 +224,7 @@ makeAbsolute(
 
     SmallPathString result(pathName);
     if(auto ec = fs::make_absolute(result))
-        return formatError("fs::make_absolute(\"{}\") returned \"{}\"", pathName, ec);
+        return Unexpected(formatError("fs::make_absolute(\"{}\") returned \"{}\"", pathName, ec));
     return static_cast<std::string>(result);
 }
 
@@ -361,7 +361,7 @@ createDirectory(
     namespace fs = llvm::sys::fs;
 
     auto kind = files::getFileType(pathName);
-    if(kind.has_error())
+    if (!kind)
         return kind.error();
     if(*kind == files::FileType::directory)
         return Error::success();
