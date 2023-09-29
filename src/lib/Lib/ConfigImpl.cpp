@@ -195,15 +195,11 @@ loadConfig(
     auto temp = files::normalizePath(filePath);
 
     // load the config file into a string
-    auto absPath = files::makeAbsolute(temp);
-    if(! absPath)
-        return absPath.error();
-    auto configYaml = files::getFileText(*absPath);
-    if(! configYaml)
-        return configYaml.error();
+    MRDOX_TRY(auto absPath, files::makeAbsolute(temp));
+    MRDOX_TRY(auto configYaml, files::getFileText(absPath));
 
     // calculate the working directory
-    auto workingDir = files::getParentDir(*absPath);
+    auto workingDir = files::getParentDir(absPath);
 
     // attempt to create the config
     try
@@ -211,14 +207,14 @@ loadConfig(
         return std::make_shared<ConfigImpl>(
             workingDir,
             addonsDir,
-            configYaml.value(),
+            configYaml,
             extraYaml,
             baseConfig,
             threadPool);
     }
     catch(Exception const& ex)
     {
-        return ex.error();
+        return Unexpected(ex.error());
     }
 }
 

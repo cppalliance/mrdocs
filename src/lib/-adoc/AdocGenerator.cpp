@@ -40,7 +40,7 @@ createExecutors(
         }
         catch(Exception const& ex)
         {
-            return ex.error();
+            return Unexpected(ex.error());
         }
     }
     return group;
@@ -65,7 +65,7 @@ build(
     if(! options)
         return options.error();
 
-    AdocCorpus domCorpus(corpus, options.release());
+    AdocCorpus domCorpus(corpus, *std::move(options));
     auto ex = createExecutors(domCorpus);
     if(! ex)
         return ex.error();
@@ -88,7 +88,7 @@ buildOne(
     if(! options)
         return options.error();
 
-    AdocCorpus domCorpus(corpus, options.release());
+    AdocCorpus domCorpus(corpus, *std::move(options));
     auto ex = createExecutors(domCorpus);
     if(! ex)
         return ex.error();

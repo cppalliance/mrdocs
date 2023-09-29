@@ -344,8 +344,8 @@ public:
     template<class... Args>
     Value operator()(Args&&... args)
     {
-        return call(
-            std::forward<Args>(args)...).release();
+        return std::move(call(
+            std::forward<Args>(args)...)).value();
     }
 
 private:

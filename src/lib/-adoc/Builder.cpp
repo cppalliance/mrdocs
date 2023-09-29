@@ -63,7 +63,7 @@ Handlebars.setlog();
     forEachFile(
         files::appendPath(config->addonsDir,
             "generator", "asciidoc", "partials"),
-        [&](std::string_view pathName)
+        [&](std::string_view pathName) -> Error
         {
             constexpr std::string_view ext = ".adoc.hbs";
             if(! pathName.ends_with(ext))
@@ -73,9 +73,9 @@ Handlebars.setlog();
             auto text = files::getFileText(pathName);
             if(! text)
                 return text.error();
-            return Handlebars.callProp(
-                "registerPartial", name, *text).error();
-        }).maybeThrow();
+            return Handlebars.callProp("registerPartial", name, *text)
+                .error_or(Error::success());
+    }).maybeThrow();
 
     // load helpers
 #if 0
@@ -156,21 +156,15 @@ callTemplate(
     auto layoutDir = files::appendPath(config->addonsDir,
             "generator", "asciidoc", "layouts");
     auto pathName = files::appendPath(layoutDir, name);
-    auto fileText = files::getFileText(pathName);
-    if(! fileText)
-        return fileText.error();
+    MRDOX_TRY(auto fileText, files::getFileText(pathName));
     dom::Object options;
     options.set("noEscape", true);
     options.set("allowProtoPropertiesByDefault", true);
     // VFALCO This makes Proxy objects stop working
     //options.set("allowProtoMethodsByDefault", true);
-    auto templateFn = Handlebars->callProp("compile", *fileText, options);
-    if(! templateFn)
-        return templateFn.error();
-    auto result = templateFn->call(context, options);
-    if(! result)
-        return result.error();
-    return result->getString();
+    MRDOX_TRY(auto templateFn, Handlebars->callProp("compile", fileText, options));
+    MRDOX_TRY(auto result, templateFn.call(context, options));
+    return result.getString();
 }
 
 Expected<std::string>

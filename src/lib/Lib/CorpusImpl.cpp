@@ -112,7 +112,7 @@ build(
             *ex.getExecutionContext(), *config))))
     {
         if(! (*config)->ignoreFailures)
-            return err;
+            return Unexpected(err);
         report::warn(
             "Warning: mapping failed because ", err);
     }
@@ -174,13 +174,13 @@ build(
             corpus->insert(std::move(I));
         });
     if(! errors.empty())
-        return Error(errors);
+        return Unexpected(Error(errors));
 
     report::format(ex.getReportLevel(),
         "Symbols collected: {}", corpus->InfoMap.size());
 
     if(GotFailure)
-        return formatError("multiple errors occurred");
+        return Unexpected(formatError("multiple errors occurred"));
 
     return corpus;
 }

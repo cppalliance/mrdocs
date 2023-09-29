@@ -121,7 +121,7 @@ handleFile(
         auto result = CorpusImpl::build(ex, config);
         if(! result)
             report::error("{}: \"{}\"", result.error(), filePath);
-        corpus = result.release();
+        corpus = *std::move(result);
     }
 
     // Generate XML

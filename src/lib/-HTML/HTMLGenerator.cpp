@@ -29,10 +29,7 @@ Expected<ExecutorGroup<Builder>>
 createExecutors(
     DomCorpus const& domCorpus)
 {
-    auto options = loadOptions(domCorpus.getCorpus());
-    if(! options)
-        return options.error();
-
+    MRDOX_TRY(auto options, loadOptions(domCorpus.getCorpus()));
     auto const& config = domCorpus.getCorpus().config;
     auto& threadPool = config.threadPool();
     ExecutorGroup<Builder> group(threadPool);
@@ -40,11 +37,11 @@ createExecutors(
     {
         try
         {
-           group.emplace(domCorpus, *options);
+           group.emplace(domCorpus, options);
         }
         catch(Exception const& ex)
         {
-            return ex.error();
+            return Unexpected(ex.error());
         }
     }
     return group;

@@ -624,7 +624,7 @@ loadChunk(
     auto rc = lua_load(A,
         &Reader, &luaChunk, chunkName.c_str(), nullptr);
     if(rc != LUA_OK)
-        return luaM_popError(A, loc);
+        return Unexpected(luaM_popError(A, loc));
     return A.construct<Function>(-1, *this);
 }
 
@@ -649,10 +649,8 @@ loadChunkFromFile(
     std::string_view fileName,
     source_location loc)
 {
-    auto luaChunk = files::getFileText(fileName);
-    if(! luaChunk)
-        return luaChunk.error();
-    return loadChunk(*luaChunk, fileName, loc);
+    MRDOX_TRY(auto luaChunk, files::getFileText(fileName));
+    return loadChunk(luaChunk, fileName, loc);
 }
 
 Table
@@ -679,7 +677,7 @@ getGlobal(
     {
         MRDOX_ASSERT(lua_isnil(A, -1));
         lua_pop(A, 1);
-        return formatError("global key '{}' not found", key);
+        return Unexpected(formatError("global key '{}' not found", key));
     }
     return A.construct<Value>(-1, *this);
 }
@@ -982,7 +980,7 @@ callImpl(
         Access::push(args[i], *scope_);
     auto result = lua_pcall(A, narg, 1, 0);
     if(result != LUA_OK)
-        return luaM_popError(A);
+        return Unexpected(luaM_popError(A));
     return A.construct<Value>(-1, *scope_);
 }
 
@@ -1142,14 +1140,14 @@ callImpl(
     luaM_pushstring(A, key);
     lua_gettable(A, index_);
     if(lua_isnil(A, -1))
-        return formatError("method {} not found", key);
+        return Unexpected(formatError("method {} not found", key));
     if(! lua_isfunction(A, -1))
-        return formatError("table key '{}' is not a function", key);
+        return Unexpected(formatError("table key '{}' is not a function", key));
     for(std::size_t i = 0; i < size; ++i)
         A.push(data[i], *scope_);
     auto rc = lua_pcall(A, size, 1, 0);
     if(rc != LUA_OK)
-        return luaM_popError(A);
+        return Unexpected(luaM_popError(A));
     return A.construct<Value>(-1, *scope_);
 }
 
