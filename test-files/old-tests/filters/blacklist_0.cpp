@@ -64,3 +64,25 @@ namespace N7
         void g0();
     }
 }
+
+namespace N10
+{
+    void f0_BL();
+    namespace N11
+    {
+        void f1_BL();
+    }
+}
+
+namespace N12
+{
+    void f0_BL();
+    namespace N13
+    {
+        void f1_BL();
+        namespace N14
+        {
+            void f2_BL();
+        }
+    }
+}

@@ -10,5 +10,9 @@ filters:
       - 'N4::N*::f0_BL'
       - 'N7::N*::f*'
       - 'N7::N8::g*'
+      - 'N10'
+      - 'N10::N11'
+      - 'N12'
+      - 'N12::N14'
   include:
     symbols:

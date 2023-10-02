@@ -207,14 +207,17 @@ finalize(
             any_parent_excluded,
             any_parent_included);
 
+    if(! any_parent_explicit)
+        return;
+
     std::erase_if(Children, [&](const auto& child) -> bool
         {
+            // do not prune child nodes which are non-terminal
             if(! child.Children.empty())
                 return false;
             if(! (any_parent_excluded || child.Excluded))
                 return true;
-            if(! (any_parent_included || ! child.Excluded) &&
-                any_parent_explicit)
+            if(! (any_parent_included || ! child.Excluded))
                 return true;
             return false;
         });
