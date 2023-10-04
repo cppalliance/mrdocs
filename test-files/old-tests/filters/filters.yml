@@ -1,6 +1,6 @@
 filters:
-  exclude:
-    symbols:
+  symbols:
+    exclude:
       - '*::detail'
       - '*::detai*::X'
       - '*::detail::Y'
@@ -14,8 +14,7 @@ filters:
       # - 'A::detail::z0'
       # - 'A::f1'
       # - '*::detail::Z'
-  include:
-    symbols:
+    include:
       - 'F'
       - 'A::detail::g0'
       - 'C::g0'

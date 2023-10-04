@@ -36,15 +36,15 @@ public:
             std::vector<std::string> include;
         };
 
-        struct FilterConfig
+        struct Filters
         {
-            struct FilterList
+            struct Category
             {
-                std::vector<std::string> symbols;
+                std::vector<std::string> include;
+                std::vector<std::string> exclude;
             };
 
-            FilterList include;
-            FilterList exclude;
+            Category symbols;
         };
 
         /** Additional defines passed to the compiler.
@@ -72,7 +72,7 @@ public:
 
         FileFilter input;
 
-        FilterConfig filters;
+        Filters filters;
 
         /** Symbol filter root node.
 

@@ -1,6 +1,6 @@
 filters:
-  exclude:
-    symbols:
+  symbols:
+    exclude:
       - 'N0::N1_BL'
       - 'N0::S0_BL'
       - 'N2_BL'
@@ -14,5 +14,3 @@ filters:
       - 'N10::N11'
       - 'N12'
       - 'N12::N14'
-  include:
-    symbols:

@@ -41,24 +41,24 @@ struct llvm::yaml::MappingTraits<
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::ConfigImpl::SettingsImpl::FilterConfig::FilterList>
+    clang::mrdox::ConfigImpl::SettingsImpl::Filters::Category>
 {
     static void mapping(IO &io,
-        clang::mrdox::ConfigImpl::SettingsImpl::FilterConfig::FilterList& f)
+        clang::mrdox::ConfigImpl::SettingsImpl::Filters::Category& f)
     {
-        io.mapOptional("symbols", f.symbols);
+        io.mapOptional("include", f.include);
+        io.mapOptional("exclude", f.exclude);
     }
 };
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::ConfigImpl::SettingsImpl::FilterConfig>
+    clang::mrdox::ConfigImpl::SettingsImpl::Filters>
 {
     static void mapping(IO &io,
-        clang::mrdox::ConfigImpl::SettingsImpl::FilterConfig& f)
+        clang::mrdox::ConfigImpl::SettingsImpl::Filters& f)
     {
-        io.mapOptional("include", f.include);
-        io.mapOptional("exclude", f.exclude);
+        io.mapOptional("symbols", f.symbols);
     }
 };
 
@@ -172,9 +172,9 @@ ConfigImpl(
             files::makeAbsolute(name, settings_.workingDir));
 
     // Parse the symbol filters
-    for(std::string_view pattern : settings_.filters.exclude.symbols)
+    for(std::string_view pattern : settings_.filters.symbols.exclude)
         parseSymbolFilter(settings_.symbolFilter, pattern, true);
-    for(std::string_view pattern : settings_.filters.include.symbols)
+    for(std::string_view pattern : settings_.filters.symbols.include)
         parseSymbolFilter(settings_.symbolFilter, pattern, false);
     settings_.symbolFilter.finalize(false, false, false);
 }

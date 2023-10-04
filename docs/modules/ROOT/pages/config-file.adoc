@@ -11,6 +11,7 @@ input:
   include: # <.>
 multipage: # <.>
 source-root: # <.>
+filters: # <.>
 ----
 <.> Optional `concurrency` key
 <.> Optional `defines` key
@@ -20,6 +21,7 @@ source-root: # <.>
 <.> Optional `include` key
 <.> Optional `multipage` key
 <.> Optional `source-root` key
+<.> Optional `filters` key
 
 == Available configuration keys
 
@@ -60,5 +62,10 @@ the hardware-suggested concurrency.
 |source-root
 |The absolute or relative path to the directory containing the
 input file hierarchy.
+|No
+
+|filters
+|Patterns specifying symbols which should be included/excluded.
+See xref:filters[specifying filters] for details.
 |No
 |===

@@ -1,7 +1,6 @@
 filters:
-  exclude:
-    symbols:
+  symbols:
+    exclude:
       - 'blacklisted::*'
-  include:
-    symbols:
+    include:
       - 'blacklisted::whitelisted_function'
