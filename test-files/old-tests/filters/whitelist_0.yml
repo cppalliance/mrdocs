@@ -1,0 +1,11 @@
+filters:
+  symbols:
+    exclude:
+      - 'N0'
+      - 'N1'
+      - 'N5::N6_BL'
+    include:
+      - 'N0::f0_WL'
+      - 'N1::N3_WL'
+      - 'N1::N4::f1_WL'
+      - 'N5::N6_BL::*7'

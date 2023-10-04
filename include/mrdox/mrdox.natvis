@@ -140,4 +140,35 @@
         <DisplayString>duk_value@{idx_}</DisplayString>
     </Type>
 
+    <!-- ASTVisitor -->
+
+    <Type Name="clang::mrdox::FilterPattern">
+        <DisplayString>{pattern_}</DisplayString>
+    </Type>
+    <Type Name="clang::mrdox::FilterNode">
+        <Intrinsic Name="n_children" Expression="(size_t)(Children._Mypair._Myval2._Mylast - Children._Mypair._Myval2._Myfirst)" />
+        <!--
+        <DisplayString Condition="n_children() == 1">Excluded = {int(Excluded)}, {n_children()} child, Pattern = {Pattern}</DisplayString>
+        <DisplayString Condition="n_children() != 0">Excluded = {int(Excluded)}, {n_children()} children, Pattern = {Pattern}</DisplayString>
+        <DisplayString>Excluded = {int(Excluded)}, Pattern = {Pattern}</DisplayString>
+        -->
+        <DisplayString Condition="n_children() == 0">Excluded = {int(Excluded)}, Pattern = {Pattern}</DisplayString>
+        <DisplayString Condition="n_children() == 1">Excluded = {int(Excluded)}, Pattern = {Pattern}, {n_children()} child</DisplayString>
+        <DisplayString Condition="n_children() != 0">Excluded = {int(Excluded)}, Pattern = {Pattern}, {n_children()} children</DisplayString>
+        <Expand>
+            <Item Name="Pattern">Pattern</Item>
+            <Item Name="Excluded">Excluded</Item>
+            <Item Name="Explicit">Explicit</Item>
+            <Synthetic Name="Children" Condition="n_children() != 0">
+                <DisplayString>{Children._Mypair._Myval2._Myfirst,[n_children()]na}</DisplayString>
+                <Expand>
+                    <ArrayItems>
+                        <Size>n_children()</Size>
+                        <ValuePointer>Children._Mypair._Myval2._Myfirst</ValuePointer>
+                    </ArrayItems>
+                </Expand>
+            </Synthetic>
+        </Expand>
+    </Type>
+
 </AutoVisualizer>

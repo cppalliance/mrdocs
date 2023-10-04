@@ -350,15 +350,25 @@ jobs:
           cd ..
           cmake -D BOOST_URL_BUILD_TESTS=OFF -D BOOST_URL_BUILD_EXAMPLES=OFF -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES="$default_includes" -D CMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx  }} -D CMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc  }} ..
 
-      - name: Generate reference
+      - name: Generate demos
         run: |
           echo "verbose: true" > $(pwd)/boost/libs/url/mrdox-single.yml
           echo "source-root: ." >> $(pwd)/boost/libs/url/mrdox-single.yml
           echo "multipage: false" >> $(pwd)/boost/libs/url/mrdox-single.yml
+          echo "filters:" >> $(pwd)/boost/libs/url/mrdox-single.yml
+          echo "  symbols:" >> $(pwd)/boost/libs/url/mrdox-single.yml
+          echo "    exclude:" >> $(pwd)/boost/libs/url/mrdox-single.yml
+          echo "      - 'boost::urls::detail'" >> $(pwd)/boost/libs/url/mrdox-single.yml
+          echo "      - 'boost::urls::*::detail'" >> $(pwd)/boost/libs/url/mrdox-single.yml
           
           echo "verbose: true" > $(pwd)/boost/libs/url/mrdox-multi.yml
           echo "source-root: ." >> $(pwd)/boost/libs/url/mrdox-multi.yml
           echo "multipage: true" >> $(pwd)/boost/libs/url/mrdox-multi.yml
+          echo "filters:" >> $(pwd)/boost/libs/url/mrdox-multi.yml
+          echo "  symbols:" >> $(pwd)/boost/libs/url/mrdox-multi.yml
+          echo "    exclude:" >> $(pwd)/boost/libs/url/mrdox-multi.yml
+          echo "      - 'boost::urls::detail'" >> $(pwd)/boost/libs/url/mrdox-multi.yml
+          echo "      - 'boost::urls::*::detail'" >> $(pwd)/boost/libs/url/mrdox-multi.yml
           
           set -x
           for variant in single multi; do
@@ -368,6 +378,15 @@ jobs:
             done
             asciidoctor -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done
+          tar -cjf $(pwd)/demos.tar.gz -C $(pwd)/demos --strip-components 1 .
+          echo "demos_path=$(pwd)/demos.tar.gz" >> $GITHUB_ENV
+
+      - name: Upload demo artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: demos
+          path: ${{ env.demos_path }}
+          retention-days: 1
 
       - name: Update website demos
         if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}

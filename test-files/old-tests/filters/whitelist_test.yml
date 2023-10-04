@@ -1,0 +1,6 @@
+filters:
+  symbols:
+    exclude:
+      - 'blacklisted::*'
+    include:
+      - 'blacklisted::whitelisted_function'

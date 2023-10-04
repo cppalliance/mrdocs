@@ -1,0 +1,21 @@
+filters:
+  symbols:
+    exclude:
+      - '*::detail'
+      - '*::detai*::X'
+      - '*::detail::Y'
+      - '*::detail::Y::Z'
+      - 'C'
+      - 'C::f0'
+      - 'D::E::f0'
+      - 'F::f0'
+      # - 'A::detail'
+      # - '*::detail::Z'
+      # - 'A::detail::z0'
+      # - 'A::f1'
+      # - '*::detail::Z'
+    include:
+      - 'F'
+      - 'A::detail::g0'
+      - 'C::g0'
+      - 'D::E::g0'

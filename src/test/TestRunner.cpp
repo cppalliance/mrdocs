@@ -72,36 +72,32 @@ handleFile(
     MRDOX_ASSERT(path::extension(filePath).compare_insensitive(".cpp") == 0);
 
     // Check file-specific config
-    if(! config)
+    auto configPath = files::withExtension(filePath, "yml");
+    auto ft = files::getFileType(configPath);
+    if(! ft)
+        return report::error("{}: \"{}\"",
+            ft.error(), configPath);
+
+    // if(! config)
+    if (ft.value() != files::FileType::not_found)
     {
-        auto configPath = files::withExtension(filePath, "yml");
-        auto ft = files::getFileType(configPath);
-        if(! ft)
-            return report::error("{}: \"{}\"",
-                ft.error(), configPath);
-        if(ft.value() == files::FileType::regular)
-        {
-            auto configFile = loadConfigFile(
-                configPath,
-                    "",
-                    "",
-                    config,
-                    threadPool_);
-            if(! configFile)
-                return report::error("{}: \"{}\"",
-                    configPath, configFile.error());
-            config = configFile.value();
-        }
-        else if(ft.value() != files::FileType::not_found)
-        {
+        if(ft.value() != files::FileType::regular)
             return report::error("{}: \"{}\"",
                 Error("not a regular file"), configPath);
-        }
-
-        if(! config)
+        auto configFile = loadConfigFile(
+            configPath,
+                "",
+                "",
+                config,
+                threadPool_);
+        if(! configFile)
             return report::error("{}: \"{}\"",
-                Error("missing config"), filePath);
+                configPath, configFile.error());
+        config = configFile.value();
     }
+    if(! config)
+        return report::error("{}: \"{}\"",
+            Error("missing config"), filePath);
 
     SmallPathString dirPath = filePath;
     path::remove_filename(dirPath);

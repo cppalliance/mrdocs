@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<namespace>
+  <namespace name="to_be_documented" id="KKIBgglO5FoCXXJ/IxKq1Q+hmo0=">
+    <function name="documented_function" id="mjlSLZ6MNKOb3ya3pLpjPlr11sk=">
+      <file path="blacklist_test.cpp" line="2" class="def"/>
+    </function>
+  </namespace>
+  <namespace name="blacklisted" id="a+zPDnJeAEq0kDltrGFKVgmAkKg=">
+  </namespace>
+</namespace>
+</mrdox>
