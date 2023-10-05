@@ -244,11 +244,24 @@ script(
     Access A(*this);
     auto failed = duk_peval_lstring(
         A, jsCode.data(), jsCode.size());
-    if(failed)
+    if (failed)
         return dukM_popError(*this);
     MRDOX_ASSERT(duk_get_type(A, -1) == DUK_TYPE_UNDEFINED);
     duk_pop(A); // result
     return Error::success();
+}
+
+Expected<Value>
+Scope::
+compile(
+    std::string_view jsCode)
+{
+    Access A(*this);
+    auto failed = duk_pcompile_lstring(
+        A, 0, jsCode.data(), jsCode.size());
+    if (failed)
+        return Unexpected(dukM_popError(*this));
+    return Access::construct<js::Value>(-1, *this);
 }
 
 Value
@@ -719,9 +732,10 @@ domValue_get(
 {
     Access A(scope);
     idx = duk_require_normalize_index(A, idx);
-    switch(duk_get_type(A, idx))
+    switch (duk_get_type(A, idx))
     {
     case DUK_TYPE_UNDEFINED:
+        return dom::Kind::Undefined;
     case DUK_TYPE_NULL:
         return nullptr;
     case DUK_TYPE_BOOLEAN:
@@ -732,15 +746,39 @@ domValue_get(
         return dukM_get_string(A, idx);
     case DUK_TYPE_OBJECT:
     {
+        if (duk_is_array(A, idx))
+        {
+            dom::Array res;
+            duk_size_t len = duk_get_length(A, idx);
+            for (duk_size_t i = 0; i < len; ++i)
+            {
+                duk_get_prop_index(A, idx, i);
+                res.emplace_back(domValue_get(scope, -1));
+                duk_pop(A);
+            }
+        }
+        if (duk_is_function(A, idx))
+        {
+            return dom::Kind::Undefined;
+        }
+        if (duk_is_object(A, idx))
+        {
+            dom::Object res;
+            duk_enum(A, idx, DUK_ENUM_OWN_PROPERTIES_ONLY);
+            while (duk_next(A, -1, 1))
+            {
+                std::string_view key = dukM_get_string(A, -2);
+                res.set(key, domValue_get(scope, -1));
+                duk_pop(A);
+            }
+            return res;
+        }
         return nullptr;
     }
-    case DUK_TYPE_BUFFER:
-    case DUK_TYPE_POINTER:
-    case DUK_TYPE_LIGHTFUNC:
     default:
-        MRDOX_UNREACHABLE();
+        return dom::Kind::Undefined;
     }
-    A.addref(scope);
+    return dom::Kind::Undefined;
 }
 
 static
@@ -777,6 +815,7 @@ domValue_push(
         MRDOX_UNREACHABLE();
     }
 }
+
 
 //------------------------------------------------
 
@@ -869,7 +908,14 @@ type() const noexcept
     case DUK_TYPE_BOOLEAN:   return Type::boolean;
     case DUK_TYPE_NUMBER:    return Type::number;
     case DUK_TYPE_STRING:    return Type::string;
-    case DUK_TYPE_OBJECT:    return Type::object;
+    case DUK_TYPE_OBJECT:
+    {
+        if (duk_is_function(A, idx_))
+            return Type::function;
+        if (duk_is_array(A, idx_))
+            return Type::array;
+        return Type::object;
+    }
     case DUK_TYPE_NONE:
     default:
         // unknown type
@@ -894,6 +940,13 @@ getString() const
     Access A(*scope_);
     return std::string(
         dukM_get_string(A, idx_));
+}
+
+dom::Value
+js::Value::
+getDom() const
+{
+    return domValue_get(*scope_, idx_);
 }
 
 void
@@ -922,7 +975,21 @@ callImpl(
 {
     Access A(*scope_);
     duk_dup(A, idx_);
-    for(auto const& arg : args)
+    for (auto const& arg : args)
+        domValue_push(A, arg);
+    auto result = duk_pcall(A, args.size());
+    if(result == DUK_EXEC_ERROR)
+        return Unexpected(dukM_popError(*scope_));
+    return A.construct<Value>(-1, *scope_);
+}
+
+Expected<Value>
+Value::
+callImpl(std::span<dom::Value> args) const
+{
+    Access A(*scope_);
+    duk_dup(A, idx_);
+    for (auto const& arg : args)
         domValue_push(A, arg);
     auto result = duk_pcall(A, args.size());
     if(result == DUK_EXEC_ERROR)
@@ -950,6 +1017,36 @@ callPropImpl(
         duk_pop(A); // method
         return Unexpected(err);
     }
+    return A.construct<Value>(-1, *scope_);
+}
+
+void
+Value::
+set(
+    std::string_view key,
+    Value value) const
+{
+    Access A(*scope_);
+    // Push the key and value onto the stack
+    duk_push_lstring(A, key.data(), key.size());
+    duk_dup(A, value.idx_);
+    // Insert the key-value pair into the object
+    duk_put_prop(A, idx_);
+    // Clean up the stack
+    duk_pop_n(A, 2); // Remove the key and value from the stack
+}
+
+MRDOX_DECL
+Value
+Value::
+get(std::string_view key) const
+{
+    Access A(*scope_);
+    // Push the key for the value we want to retrieve
+    duk_push_lstring(A, key.data(), key.size());
+    // Get the value associated with the key
+    duk_get_prop(A, idx_);
+    // Return value or `undefined`
     return A.construct<Value>(-1, *scope_);
 }
 

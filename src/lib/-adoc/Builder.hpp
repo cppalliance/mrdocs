@@ -17,6 +17,7 @@
 #include <mrdox/Metadata/DomMetadata.hpp>
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Support/JavaScript.hpp>
+#include <mrdox/Support/Handlebars.hpp>
 #include <ostream>
 
 #include <mrdox/Dom.hpp>
@@ -33,6 +34,7 @@ namespace adoc {
 class Builder
 {
     js::Context ctx_;
+    Handlebars hbs_;
 
 public:
     AdocCorpus const& domCorpus;
