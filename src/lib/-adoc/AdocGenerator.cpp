@@ -103,13 +103,13 @@ buildOne(
         });
     errors = ex->wait();
     if(! errors.empty())
-        return Error(errors);
+        return {errors};
 
     SinglePageVisitor visitor(*ex, corpus, os);
     visitor(corpus.globalNamespace());
     errors = ex->wait();
     if(! errors.empty())
-        return Error(errors);
+        return {errors};
 
     ex->async(
         [&os](Builder& builder)
@@ -119,7 +119,7 @@ buildOne(
         });
     errors = ex->wait();
     if(! errors.empty())
-        return Error(errors);
+        return {errors};
 
     return Error::success();
 }

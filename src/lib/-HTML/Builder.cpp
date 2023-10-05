@@ -38,112 +38,105 @@ Builder(
 
     Config const& config = corpus_.config;
 
-    js::Scope scope(ctx_);
-
-    scope.script(files::getFileText(
-        files::appendPath(
-            config->addonsDir, "js", "handlebars.js")
-        ).value()).maybeThrow();
-    auto Handlebars = scope.getGlobal("Handlebars").value();
-
-// VFALCO refactor this
-Handlebars.setlog();
-
-    // load templates
-#if 0
-    err = forEachFile(options_.template_dir,
-        [&](std::string_view fileName)
-        {
-            if(! fileName.ends_with(".html.hbs"))
-                return Error::success();
-            return Error::success();
-        });
-#endif
-
-    Error err;
-
     // load partials
-    forEachFile(
-        files::appendPath(config->addonsDir,
-            "generator", "html", "partials"),
-        [&](std::string_view pathName)
+    std::string partialsPath = files::appendPath(
+        config->addonsDir, "generator", "html", "partials");
+    forEachFile(partialsPath,
+                [&](std::string_view pathName) -> Error
+    {
+        constexpr std::string_view ext = ".html.hbs";
+        if (!pathName.ends_with(ext))
         {
-            constexpr std::string_view ext = ".html.hbs";
-            if(! pathName.ends_with(ext))
-                return Error::success();
-            auto name = files::getFileName(pathName);
-            name.remove_suffix(ext.size());
-            auto text = files::getFileText(pathName);
-            if(! text)
-                return text.error();
-            return Handlebars.callProp(
-                "registerPartial", name, *text)
-                .error_or(Error::success());
-        }).maybeThrow();
+            return Error::success();
+        }
+        auto name = files::getFileName(pathName);
+        name.remove_suffix(ext.size());
+        auto text = files::getFileText(pathName);
+        if (!text)
+        {
+            return text.error();
+        }
+        hbs_.registerPartial(name, *text);
+        return Error::success();
+    }).maybeThrow();
 
     // load helpers
-#if 0
-    err = forEachFile(
-        files::appendPath(config->addonsDir,
-            "generator", "js", "helpers"),
-        [&](std::string_view pathName)
+    js::Scope scope(ctx_);
+    std::string helpersPath = files::appendPath(
+        config->addonsDir, "generator", "asciidoc", "helpers");
+    forEachFile(helpersPath,
+                [&](std::string_view pathName)
+    {
+        // Register JS helper function in the global object
+        constexpr std::string_view ext = ".js";
+        if (!pathName.ends_with(ext))
         {
-            constexpr std::string_view ext = ".js";
-            if(! pathName.ends_with(ext))
-                return Error::success();
-            auto name = files::getFileName(pathName);
-            name.remove_suffix(ext.size());
-            //Handlebars.callProp("registerHelper", name, *text);
-            auto err = ctx_.scriptFromFile(pathName);
             return Error::success();
-        }).maybeThrow();
-#endif
-
-    scope.script(fmt::format(
-        R"(Handlebars.registerHelper(
-            'is_multipage', function()
-        {{
-            return {};
-        }});
-        )", config->multiPage)).maybeThrow();
-
-    scope.script(R"(
-        Handlebars.registerHelper(
-            'to_string', function(context, depth)
+        }
+        auto name = files::getFileName(pathName);
+        name.remove_suffix(ext.size());
+        auto text = files::getFileText(pathName);
+        if (!text)
         {
-            return JSON.stringify(context, null, 2);
-        });
-
-        Handlebars.registerHelper(
-            'eq', function(a, b)
+            return text.error();
+        }
+        auto JSFn = scope.compile(*text);
+        if (!JSFn)
         {
-            return a === b;
-        });
+            return JSFn.error();
+        }
+        scope.getGlobalObject().set(name, *JSFn);
 
-        Handlebars.registerHelper(
-            'neq', function(a, b)
+        // Register C++ helper that retrieves the helper
+        // from the global object, converts the arguments,
+        // and invokes the JS function.
+        hbs_.registerHelper(name, dom::makeVariadicInvocable(
+                                      [this, name=std::string(name)](
+                                          dom::Array const& args) -> Expected<dom::Value>
         {
-            return a !== b;
-        });
+            // Get function from global scope
+            js::Scope scope(ctx_);
+            js::Value fn = scope.getGlobalObject().get(name);
+            if (fn.isUndefined())
+            {
+                return Unexpected(Error("helper not found"));
+            }
+            if (!fn.isFunction())
+            {
+                return Unexpected(Error("helper is not a function"));
+            }
 
-        Handlebars.registerHelper(
-            'not', function(a)
-        {
-            return ! a;
-        });
+            // Call function
+            std::vector<dom::Value> arg_span;
+            arg_span.reserve(args.size());
+            for (auto const& arg : args)
+            {
+                arg_span.push_back(arg);
+            }
+            auto result = fn.apply(arg_span);
+            if (!result)
+            {
+                return dom::Kind::Undefined;
+            }
 
-        Handlebars.registerHelper(
-            'or', function(a, b)
-        {
-            return a || b;
-        });
-
-        Handlebars.registerHelper(
-            'and', function(a, b)
-        {
-            return a && b;
-        });
-    )").maybeThrow();
+            // Convert result to dom::Value
+            return result->getDom();
+        }));
+        return Error::success();
+    }).maybeThrow();
+    hbs_.registerHelper(
+        "is_multipage",
+        dom::makeInvocable([res = config->multiPage]() -> Expected<dom::Value> {
+        return res;
+    }));
+    helpers::registerAntoraHelpers(hbs_);
+    hbs_.registerHelper("neq", dom::makeVariadicInvocable(helpers::ne_fn));
+    hbs_.registerHelper(
+        "to_string",
+        dom::makeInvocable(
+            [](dom::Value const& context) -> Expected<dom::Value> {
+        return dom::JSON::stringify(context);
+    }));
 }
 
 //------------------------------------------------
@@ -157,18 +150,23 @@ callTemplate(
     Config const& config = corpus_.config;
 
     js::Scope scope(ctx_);
+
+
     auto Handlebars = scope.getGlobal("Handlebars");
     auto layoutDir = files::appendPath(config->addonsDir,
             "generator", "html", "layouts");
     auto pathName = files::appendPath(layoutDir, name);
     MRDOX_TRY(auto fileText, files::getFileText(pathName));
-    dom::Object options;
-    options.set("allowProtoPropertiesByDefault", true);
-    // VFALCO This makes Proxy objects stop working
-    //options.set("allowProtoMethodsByDefault", true);
-    MRDOX_TRY(auto templateFn, Handlebars->callProp("compile", fileText, options));
-    MRDOX_TRY(auto result, templateFn.call(context, options));
-    return result.getString();
+    HandlebarsOptions options;
+    options.noEscape = true;
+
+    Expected<std::string, HandlebarsError> exp =
+        hbs_.try_render(fileText, context, options);
+    if (!exp)
+    {
+        return Unexpected(Error(exp.error().what()));
+    }
+    return *exp;
 }
 
 Expected<std::string>

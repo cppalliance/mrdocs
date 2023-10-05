@@ -16,6 +16,7 @@
 #include <mrdox/Support/Error.hpp>
 #include <cstdlib>
 #include <string_view>
+#include <span>
 
 namespace clang {
 namespace mrdox {
@@ -42,7 +43,9 @@ enum class Type
     boolean,
     number,
     string,
-    object
+    object,
+    function,
+    array
 };
 
 //------------------------------------------------
@@ -120,11 +123,17 @@ public:
     MRDOX_DECL
     ~Scope();
 
-    /** Run a script.
+    /** Compile and run a script.
     */
     MRDOX_DECL
     Error
     script(std::string_view jsCode);
+
+    /** Compile a script and push results to stack.
+    */
+    MRDOX_DECL
+    Expected<Value>
+    compile(std::string_view jsCode);
 
     /** Return the global object.
     */
@@ -170,10 +179,12 @@ public:
     bool isString() const noexcept;
     bool isArray() const noexcept;
     bool isObject() const noexcept;
+    bool isFunction() const noexcept;
 
     std::string getString() const;
+    dom::Value getDom() const;
 
-void setlog();
+    void setlog();
 
     /** Call a function.
     */
@@ -182,6 +193,15 @@ void setlog();
     call(Args&&... args) const
     {
         return callImpl({ dom::Value(std::forward<Args>(args))... });
+    }
+
+    /** Call a function with variadic arguments.
+    */
+    template<class... Args>
+    Expected<Value>
+    apply(std::span<dom::Value> args) const
+    {
+        return callImpl(args);
     }
 
     /** Call a function.
@@ -205,11 +225,29 @@ void setlog();
             { dom::Value(std::forward<Args>(args))... });
     }
 
+    /** Set a key.
+    */
+    MRDOX_DECL
+    void
+    set(
+        std::string_view key,
+        Value value) const;
+
+    /** Get a key.
+    */
+    MRDOX_DECL
+    Value
+    get(std::string_view key) const;
+
 private:
     MRDOX_DECL
     Expected<Value>
     callImpl(
         std::initializer_list<dom::Value> args) const;
+
+    MRDOX_DECL
+    Expected<Value>
+    callImpl(std::span<dom::Value> args) const;
 
     MRDOX_DECL
     Expected<Value>
@@ -246,6 +284,11 @@ inline bool Value::isString() const noexcept
 inline bool Value::isObject() const noexcept
 {
     return type() == Type::object;
+}
+
+inline bool Value::isFunction() const noexcept
+{
+    return type() == Type::function;
 }
 
 } // js
