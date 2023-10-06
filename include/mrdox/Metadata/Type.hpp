@@ -72,6 +72,16 @@ struct TypeInfo
     constexpr bool isArray()           const noexcept { return Kind == TypeKind::Array; }
     constexpr bool isFunction()        const noexcept { return Kind == TypeKind::Function; }
 
+    /** Return the inner type.
+
+        The inner type is the type which is modified
+        by a specifier (e.g. "int" in "pointer to int".
+    */
+    virtual TypeInfo* innerType() const noexcept
+    {
+        return nullptr;
+    }
+
 protected:
     constexpr
     TypeInfo(
@@ -134,12 +144,22 @@ struct LValueReferenceTypeInfo
     : IsType<TypeKind::LValueReference>
 {
     std::unique_ptr<TypeInfo> PointeeType;
+
+    TypeInfo* innerType() const noexcept override
+    {
+        return PointeeType.get();
+    }
 };
 
 struct RValueReferenceTypeInfo
     : IsType<TypeKind::RValueReference>
 {
     std::unique_ptr<TypeInfo> PointeeType;
+
+    TypeInfo* innerType() const noexcept override
+    {
+        return PointeeType.get();
+    }
 };
 
 struct PointerTypeInfo
@@ -147,6 +167,11 @@ struct PointerTypeInfo
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     std::unique_ptr<TypeInfo> PointeeType;
+
+    TypeInfo* innerType() const noexcept override
+    {
+        return PointeeType.get();
+    }
 };
 
 struct MemberPointerTypeInfo
@@ -155,6 +180,11 @@ struct MemberPointerTypeInfo
     QualifierKind CVQualifiers = QualifierKind::None;
     std::unique_ptr<TypeInfo> ParentType;
     std::unique_ptr<TypeInfo> PointeeType;
+
+    TypeInfo* innerType() const noexcept override
+    {
+        return PointeeType.get();
+    }
 };
 
 struct ArrayTypeInfo
@@ -162,6 +192,11 @@ struct ArrayTypeInfo
 {
     std::unique_ptr<TypeInfo> ElementType;
     ConstantExprInfo<std::uint64_t> Bounds;
+
+    TypeInfo* innerType() const noexcept override
+    {
+        return ElementType.get();
+    }
 };
 
 struct FunctionTypeInfo
@@ -172,6 +207,11 @@ struct FunctionTypeInfo
     QualifierKind CVQualifiers = QualifierKind::None;
     ReferenceKind RefQualifier = ReferenceKind::None;
     NoexceptKind ExceptionSpec = NoexceptKind::None;
+
+    TypeInfo* innerType() const noexcept override
+    {
+        return ReturnType.get();
+    }
 };
 
 template<

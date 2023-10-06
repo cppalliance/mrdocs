@@ -130,6 +130,7 @@ public:
     Sema& sema_;
 
     InfoSet info_;
+    std::unordered_set<Decl*> dependencies_;
 
     struct FileFilter
     {
@@ -224,6 +225,50 @@ public:
         return info_;
     }
 
+    void build()
+    {
+        // traverse the translation unit, only extracting
+        // declarations which satisfy all filter conditions.
+        // dependencies will be tracked, but not extracted
+        traverseDecl(context_.getTranslationUnitDecl());
+
+        // if dependency extraction is disabled, we are done
+        if(config_->extract.referencedDeclarations ==
+            Config::ExtractOptions::Policy::Never)
+            return;
+
+        // traverse the current set of dependencies,
+        // and generate a new set based on the results.
+        // if the new set is non-empty, perform another pass.
+        // do this until no new dependencies are generated
+        std::unordered_set<Decl*> previous;
+        buildDependencies(previous);
+    }
+
+    void buildDependencies(
+        std::unordered_set<Decl*>& previous)
+    {
+        auto scope = enterMode(
+            ExtractMode::DirectDependency);
+
+        previous.clear();
+        dependencies_.swap(previous);
+
+        for(Decl* D : previous)
+        {
+            SymbolID id = extractSymbolID(D);
+            // skip declarations which generate invalid symbol IDs,
+            // or which already have been extract
+            if(id == SymbolID::zero || info_.contains(id))
+                continue;
+            traverseDecl(D);
+        }
+
+        // perform another pass if there are new dependencies
+        if(! dependencies_.empty())
+            buildDependencies(previous);
+    }
+
     //------------------------------------------------
 
     Info*
@@ -252,55 +297,53 @@ public:
         return {static_cast<InfoTy&>(*info), created};
     }
 
-    Info*
-    getOrBuildInfo(Decl* D)
+    void
+    getDependencyID(
+        Decl* D,
+        SymbolID& id)
     {
-        SymbolID id = extractSymbolID(D);
-        Info* info = getInfo(id);
+        if(D->isImplicit() ||
+            isa<TemplateTemplateParmDecl>(D) ||
+            isa<BuiltinTemplateDecl>(D))
+            return;
 
+        id = extractSymbolID(D);
+
+        // don't register a dependency if we never extract them
         if(config_->extract.referencedDeclarations ==
             Config::ExtractOptions::Policy::Never)
-            return info;
+            return;
 
         if(config_->extract.referencedDeclarations ==
             Config::ExtractOptions::Policy::Dependency)
         {
-            // if(currentMode() == ExtractMode::Normal)
             if(currentMode() != ExtractMode::DirectDependency)
-                return info;
+                return;
         }
 
-        // KRYSTIAN FIXME: this terrible hack ensures that
-        // the underlying type of a typedef is extracted
-        // in cases where the TypedefInfo was extracted earlier
-        // without extracting the underlying type. fixing this will
-        // require deferred dependency extraction, which requires us
-        // to store Info references as Info* instead of SymbolID.
-        auto* TND = dyn_cast<TypedefNameDecl>(D);
-        if(auto* TATD = dyn_cast<TypeAliasTemplateDecl>(D))
-            TND = TATD->getTemplatedDecl();
-        if(TND)
+        // if it was already extracted, we are done
+        if(getInfo(id))
+            return;
+
+        // FIXME: we need to handle member specializations correctly.
+        // we do not want to extract all members of the enclosing
+        // implicit instantiation
+        Decl* Outer = D;
+        DeclContext* DC = D->getDeclContext();
+        do
         {
-            auto TI = buildTypeInfo(
-                TND->getUnderlyingType(),
-                ExtractMode::DirectDependency);
-            if(info && info->isTypedef())
-            {
-                static_cast<TypedefInfo*>(info)->Type =
-                    std::move(TI);
-            }
+            if(DC->isFileContext() ||
+                DC->isFunctionOrMethod())
+                break;
+            // when extracting dependencies, we want to extract
+            // all members of the containing class, not just this one
+            if(auto* TD = dyn_cast<TagDecl>(DC))
+                Outer = TD;
         }
+        while((DC = DC->getParent()));
 
-        if(info)
-            return info;
-
-        // make sure we restore the current mode upon return
-        ExtractionScope mode =
-            enterMode(currentMode());
-
-        traverseDecl(D);
-
-        return getInfo(id);
+        // add the adjusted declaration to the set of dependencies
+        dependencies_.insert(Outer);
     }
 
     //------------------------------------------------
@@ -491,14 +534,7 @@ public:
                 }
             }
 
-            // extractSymbolID(N, I->id);
-            // getOrBuildInfo(N);
-
-            if(! N->isImplicit())
-            {
-                if(Info* NI = getOrBuildInfo(N))
-                    I->id = NI->id;
-            }
+            getDependencyID(N, I->id);
         }
         return I;
     }
@@ -1310,9 +1346,9 @@ public:
                 if(! isa<TemplateTemplateParmDecl>(TD) &&
                     ! isa<BuiltinTemplateDecl>(TD))
                 {
-                    Decl* D = getInstantiatedFrom(TD);
-                    if(Info* I = getOrBuildInfo(D))
-                        R->Template = I->id;
+                    getDependencyID(
+                        getInstantiatedFrom(TD),
+                        R->Template);
                 }
             }
             else
@@ -1507,27 +1543,6 @@ public:
 
     //------------------------------------------------
 
-    void
-    parseEnumerators(
-        EnumInfo& I,
-        const EnumDecl* D)
-    {
-        for(const EnumConstantDecl* E : D->enumerators())
-        {
-            auto& M = I.Members.emplace_back(
-                E->getNameAsString());
-
-            buildExprInfo(
-                M.Initializer,
-                E->getInitExpr(),
-                E->getInitVal());
-
-            parseRawComment(I.Members.back().javadoc, E);
-        }
-    }
-
-    //------------------------------------------------
-
     bool
     checkSymbolFilter(const NamedDecl* ND)
     {
@@ -1571,8 +1586,6 @@ public:
         }
         return true;
     }
-
-    // #define CHECK_IN_FILE_FILTER
 
     // This also sets IsFileInRootDir
     bool
@@ -1663,6 +1676,7 @@ public:
     shouldExtract(
         const Decl* D)
     {
+    #if 0
         bool extract = inExtractedFile(D);
         // if we're extracting a declaration as a dependency,
         // override the current extraction mode if
@@ -1671,6 +1685,10 @@ public:
             mode = ExtractMode::Normal;
 
         return extract || currentMode() != ExtractMode::Normal;
+    #else
+        return inExtractedFile(D) ||
+            currentMode() != ExtractMode::Normal;
+    #endif
     }
 
     std::string
@@ -1967,7 +1985,18 @@ public:
             I.UnderlyingType = buildTypeInfo(
                 D->getIntegerType());
 
-        parseEnumerators(I, D);
+        for(const EnumConstantDecl* E : D->enumerators())
+        {
+            auto& M = I.Members.emplace_back(
+                E->getNameAsString());
+
+            buildExprInfo(
+                M.Initializer,
+                E->getInitExpr(),
+                E->getInitVal());
+
+            parseRawComment(I.Members.back().javadoc, E);
+        }
 
         getParentNamespaces(I, D);
     }
@@ -2854,7 +2883,7 @@ class ASTVisitorConsumer
             *sema_);
 
         // traverse the translation unit
-        visitor.traverseDecl(Context.getTranslationUnitDecl());
+        visitor.build();
 
         // VFALCO If we returned from the function early
         // then this line won't execute, which means we

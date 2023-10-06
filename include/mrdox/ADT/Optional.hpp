@@ -69,6 +69,11 @@ public:
     {
     }
 
+    constexpr void reset()
+    {
+        *this = Optional();
+    }
+
     template<typename... Args>
     requires std::is_constructible_v<T, Args...>
     constexpr value_type& emplace(Args&&... args)

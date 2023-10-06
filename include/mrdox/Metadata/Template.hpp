@@ -205,7 +205,7 @@ MRDOX_DECL std::string_view toString(TParamKeyKind kind) noexcept;
 struct TypeTParam
     : IsTParam<TParamKind::Type>
 {
-    /** Keyword (class/typename) the parameter uses **/
+    /** Keyword (class/typename) the parameter uses */
     TParamKeyKind KeyKind = TParamKeyKind::Class;
 };
 

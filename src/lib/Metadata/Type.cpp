@@ -104,27 +104,6 @@ writeFullType(
     visit(t, writeTypeAfter, write, std::false_type{});
 }
 
-template<typename T>
-void
-visitChildType(
-    const T& t,
-    auto& visitor,
-    auto&&... args)
-{
-    if(auto child = [&]()
-        -> const TypeInfo*
-        {
-            if constexpr(T::isArray())
-                return t.ElementType.get();
-            if constexpr(T::isFunction())
-                return t.ReturnType.get();
-            if constexpr(requires { t.PointeeType; })
-                return t.PointeeType.get();
-            return nullptr;
-        }())
-        visit(*child, visitor, args...);
-}
-
 template<
     typename T,
     bool NeedParens>
@@ -136,8 +115,9 @@ operator()(
     auto& write,
     std::bool_constant<NeedParens>) const
 {
-    visitChildType(t, *this, write,
-        std::bool_constant<requires { t.PointeeType; }>{});
+    if(TypeInfo* inner = t.innerType())
+        visit(*inner, *this, write, std::bool_constant<
+            requires { t.PointeeType; }>{});
 
     if(t.IsPackExpansion)
         write("...");
@@ -270,8 +250,9 @@ operator()(
             write(' ', toString(t.ExceptionSpec));
     }
 
-    visitChildType(t, *this, write,
-        std::bool_constant<requires { t.PointeeType; }>{});
+    if(TypeInfo* inner = t.innerType())
+        visit(*inner, *this, write, std::bool_constant<
+            requires { t.PointeeType; }>{});
 }
 
 void

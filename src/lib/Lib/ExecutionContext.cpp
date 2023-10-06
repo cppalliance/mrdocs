@@ -13,6 +13,7 @@
 #include "ExecutionContext.hpp"
 #include "lib/AST/Bitcode.hpp"
 #include "lib/Metadata/Reduce.hpp"
+#include "lib/Metadata/Finalize.hpp"
 #include <mrdox/Metadata.hpp>
 
 namespace clang {
@@ -93,6 +94,7 @@ mrdox::Expected<InfoSet>
 InfoExecutionContext::
 results()
 {
+    finalize(info_);
     return std::move(info_);
 }
 
@@ -160,6 +162,7 @@ results()
 
     if(! errors.empty())
         return Unexpected(errors);
+    finalize(result);
     return result;
 }
 
