@@ -74,25 +74,12 @@ adjustCommandLine(
 
     bool is_clang_cl = ! cmdline.empty() &&
         driver::IsClangCL(driver_mode);
-    int included_flags = 0;
-    int excluded_flags = 0;
-    if(is_clang_cl)
-    {
-        // suppress all warnings
-        new_cmdline.emplace_back("/w");
-        included_flags =
-            driver::options::CoreOption |
-            driver::options::CLOption |
-            driver::options::CLDXCOption;
-    }
-    else
-    {
-        // suppress all warnings
-        new_cmdline.emplace_back("-w");
-        excluded_flags =
-            driver::options::CLOption |
-            driver::options::CLDXCOption;
-    }
+    llvm::opt::Visibility visibility(is_clang_cl ?
+        driver::options::CLOption :
+        driver::options::ClangOption);
+    // suppress all warnings
+    new_cmdline.emplace_back(
+        is_clang_cl ? "/w" : "-w");
     new_cmdline.emplace_back("-fsyntax-only");
 
     for(const auto& def : additional_defines)
@@ -102,8 +89,7 @@ adjustCommandLine(
     {
         const unsigned old_idx = idx;
         std::unique_ptr<llvm::opt::Arg> arg =
-            opts_table.ParseOneArg(args, idx,
-                included_flags, excluded_flags);
+            opts_table.ParseOneArg(args, idx, visibility);
 
         if(! arg)
         {

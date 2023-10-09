@@ -996,14 +996,6 @@ public:
                     }
                     return DT;
                 }
-                else if constexpr(kind == Decl::ClassScopeFunctionSpecialization)
-                {
-                    // ClassScopeFunctionSpecializationDecls only exist within the lexical
-                    // definition of a ClassTemplateDecl or ClassTemplatePartialSpecializationDecl.
-                    // they are never created during instantiation -- not even during the instantiation
-                    // of a class template with a member class template containing such a declaration.
-                    return DT;
-                }
                 // FunctionDecl
                 // CXXMethodDecl
                 // CXXConstructorDecl
@@ -1470,36 +1462,20 @@ public:
         const DependentFunctionTemplateSpecializationInfo* spec)
     {
         // set the ID of the primary template if there is one candidate
-        if(spec->getNumTemplates() == 1)
+        if(auto candidates = spec->getCandidates();
+            candidates.size() == 1)
         {
-            if(Decl* primary = getInstantiatedFrom(spec->getTemplate(0)))
+            if(Decl* primary = getInstantiatedFrom(candidates.front()))
                 extractSymbolID(primary, I.Primary.emplace());
         }
 
-        buildTemplateArgs(I.Args, std::views::transform(
-            spec->arguments(), [](auto& x) -> auto&
-            {
-                return x.getArgument();
-            }));
-    }
-
-    void
-    parseTemplateArgs(
-        TemplateInfo& I,
-        const ClassScopeFunctionSpecializationDecl* spec)
-    {
-        // if(! spec->hasExplicitTemplateArgs())
-        //     return;
-        // KRYSTIAN NOTE: we have no way to get the ID of the primary template;
-        // it is unknown what function template this will be an explicit
-        // specialization of until the enclosing class template is instantiated.
-        // this also means that we can only extract the explicit template arguments.
-        // in the future, we could use name lookup to find matching declarations
-        if(auto* args_written = spec->getTemplateArgsAsWritten())
+        if(auto* args_written = spec->TemplateArgumentsAsWritten)
         {
-            auto args = args_written->arguments();
             buildTemplateArgs(I.Args, std::views::transform(
-                args, [](auto& x) -> auto& { return x.getArgument(); }));
+                args_written->arguments(), [](auto& x) -> auto&
+                {
+                    return x.getArgument();
+                }));
         }
     }
 
@@ -1513,7 +1489,6 @@ public:
             I.Params.emplace_back(
                 buildTemplateParam(ND));
         }
-
     }
 
     void
@@ -2325,9 +2300,6 @@ public:
     // non-static data members
     bool traverse(FieldDecl*);
 
-    // class scope function template explicit specializations
-    bool traverse(ClassScopeFunctionSpecializationDecl*);
-
     template<std::derived_from<CXXRecordDecl> CXXRecordTy>
     bool traverse(CXXRecordTy*, ClassTemplateDecl* = nullptr);
 
@@ -2559,10 +2531,8 @@ traverse(FunctionTy* D,
     auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
 
     AccessSpecifier access = D->getAccessUnsafe();
-
-    auto* FTSI = D->getTemplateSpecializationInfo();
-    auto* DFTSI = D->getDependentSpecializationInfo();
-    if(FTD || FTSI || DFTSI)
+    // D is the templated declaration if FTD is non-null
+    if(FTD || D->isFunctionTemplateSpecialization())
     {
         I.Template = std::make_unique<TemplateInfo>();
 
@@ -2572,11 +2542,11 @@ traverse(FunctionTy* D,
             parseTemplateParams(*I.Template,
                 FTD->getTemplateParameters());
         }
-        else if(FTSI)
+        else if(auto* FTSI = D->getTemplateSpecializationInfo())
         {
             parseTemplateArgs(*I.Template, FTSI);
         }
-        else if(DFTSI)
+        else if(auto* DFTSI = D->getDependentSpecializationInfo())
         {
             parseTemplateArgs(*I.Template, DFTSI);
         }
@@ -2625,72 +2595,6 @@ traverse(TypedefNameTy* D,
 
 //------------------------------------------------
 
-/** This function will be unnecessary once ClassScopeFunctionSpecializationDecl is
-    removed (see https://github.com/llvm/llvm-project/pull/66636). For now we approximate
-    its changes by building a DependentFunctionTemplateSpecializationInfo from scratch.
-*/
-bool
-ASTVisitor::
-traverse(ClassScopeFunctionSpecializationDecl* D)
-{
-    if(! shouldExtract(D))
-        return true;
-
-    /* For class scope explicit specializations of member function templates which
-       are members of class templates, it is impossible to know what the
-       primary template is until the enclosing class template is instantiated.
-       while such declarations are valid C++ (see CWG 727, N4090, and [temp.expl.spec] p3),
-       GCC does not consider them to be valid.
-    */
-    DeclContext* DC = D->getDeclContext();
-    CXXMethodDecl* MD = D->getSpecialization();
-
-    // create a set of all function templates declared in
-    // the enclosing class template which share the same name
-    // as this specialization. this will not include MD as it
-    // has not been added to the DeclContext yet
-    // UnresolvedSet<8> Candidates;
-    llvm::SmallPtrSet<NamedDecl*, 8> Found;
-    auto lookup_result = DC->lookup(MD->getDeclName());
-    for(auto first = lookup_result.begin(),
-        last = lookup_result.end();
-        first != last; ++first)
-    {
-        NamedDecl* ND = *first;
-        if(! isa<FunctionTemplateDecl>(ND))
-            continue;
-        Found.insert(ND);
-    }
-    // in theory we could check whether the declarations are
-    // lexically before the explicit specialization by comparing
-    // source locations, but i'm uncertain whether this would work.
-    for(Decl* next = D; (next = next->getNextDeclInContext());)
-    {
-        if(auto* N = dyn_cast<NamedDecl>(next))
-            Found.erase(N);
-    }
-
-    UnresolvedSet<8> Candidates;
-    for(auto* N : Found)
-        Candidates.addDecl(N);
-
-    TemplateArgumentListInfo args;
-    if(auto* args_written = D->getTemplateArgsAsWritten())
-    {
-        args.setLAngleLoc(args_written->getLAngleLoc());
-        args.setRAngleLoc(args_written->getRAngleLoc());
-        for(const auto& arg_loc : args_written->arguments())
-            args.addArgument(arg_loc);
-    }
-
-    MD->setDependentTemplateSpecialization(
-        MD->getASTContext(), Candidates, args);
-
-    return traverseDecl(MD);
-}
-
-//------------------------------------------------
-
 template<typename... Args>
 auto
 ASTVisitor::
@@ -2716,7 +2620,7 @@ traverseDecl(
 
     SymbolFilter::FilterScope scope(symbolFilter_);
 
-    visit(D, [&]<typename DeclTy>(DeclTy* DT)
+    visit(D, [&]<typename DeclTy>(DeclTy* DD)
     {
         // only ClassTemplateDecl, FunctionTemplateDecl, VarTemplateDecl,
         // and TypeAliasDecl are derived from RedeclarableTemplateDecl.
@@ -2726,21 +2630,21 @@ traverseDecl(
         {
             // call traverseDecl so traverse is called with
             // a pointer to the most derived type of the templated Decl
-            traverseDecl(DT->getTemplatedDecl(), DT);
+            traverseDecl(DD->getTemplatedDecl(), DD);
         }
         else if constexpr(std::derived_from<DeclTy,
             ClassTemplateSpecializationDecl>)
         {
-            traverse(DT, DT->getSpecializedTemplate());
+            traverse(DD, DD->getSpecializedTemplate());
         }
         else if constexpr(std::derived_from<DeclTy,
             VarTemplateSpecializationDecl>)
         {
-            traverse(DT, DT->getSpecializedTemplate());
+            traverse(DD, DD->getSpecializedTemplate());
         }
         else
         {
-            traverse(DT, std::forward<Args>(args)...);
+            traverse(DD, std::forward<Args>(args)...);
         }
     });
 
