@@ -28,12 +28,15 @@
 //
 //------------------------------------------------
 
+using ConfigImpl = clang::mrdox::ConfigImpl;
+using SettingsImpl = ConfigImpl::SettingsImpl;
+
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::ConfigImpl::SettingsImpl::FileFilter>
+    SettingsImpl::FileFilter>
 {
     static void mapping(IO& io,
-        clang::mrdox::ConfigImpl::SettingsImpl::FileFilter& f)
+        SettingsImpl::FileFilter& f)
     {
         io.mapOptional("include", f.include);
     }
@@ -41,9 +44,9 @@ struct llvm::yaml::MappingTraits<
 
 template<>
 struct llvm::yaml::ScalarEnumerationTraits<
-    clang::mrdox::Config::ExtractOptions::Policy>
+    SettingsImpl::ExtractPolicy>
 {
-    using Policy = clang::mrdox::Config::ExtractOptions::Policy;
+    using Policy = SettingsImpl::ExtractPolicy;
 
     static void enumeration(IO& io,
         Policy& value)
@@ -56,24 +59,10 @@ struct llvm::yaml::ScalarEnumerationTraits<
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::Config::ExtractOptions>
+    SettingsImpl::Filters::Category>
 {
     static void mapping(IO &io,
-        clang::mrdox::Config::ExtractOptions& opts)
-    {
-        io.mapOptional("referenced-declarations", opts.referencedDeclarations);
-        io.mapOptional("anonymous-namespaces", opts.anonymousNamespaces);
-        io.mapOptional("inaccessible-members", opts.inaccessibleMembers);
-        io.mapOptional("inaccessible-bases", opts.inaccessibleBases);
-    }
-};
-
-template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdox::ConfigImpl::SettingsImpl::Filters::Category>
-{
-    static void mapping(IO &io,
-        clang::mrdox::ConfigImpl::SettingsImpl::Filters::Category& f)
+        SettingsImpl::Filters::Category& f)
     {
         io.mapOptional("include", f.include);
         io.mapOptional("exclude", f.exclude);
@@ -82,26 +71,30 @@ struct llvm::yaml::MappingTraits<
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::ConfigImpl::SettingsImpl::Filters>
+    SettingsImpl::Filters>
 {
     static void mapping(IO &io,
-        clang::mrdox::ConfigImpl::SettingsImpl::Filters& f)
+        SettingsImpl::Filters& f)
     {
         io.mapOptional("symbols", f.symbols);
     }
 };
 
 template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdox::ConfigImpl::SettingsImpl>
+struct llvm::yaml::MappingTraits<SettingsImpl>
 {
     static void mapping(IO& io,
-        clang::mrdox::ConfigImpl::SettingsImpl& cfg)
+        SettingsImpl& cfg)
     {
         io.mapOptional("defines",           cfg.defines);
         io.mapOptional("ignore-failures",   cfg.ignoreFailures);
 
-        io.mapOptional("extract",           cfg.extract);
+        // io.mapOptional("extract",           cfg.extract);
+        io.mapOptional("referenced-declarations", cfg.referencedDeclarations);
+        io.mapOptional("anonymous-namespaces", cfg.anonymousNamespaces);
+        io.mapOptional("inaccessible-members", cfg.inaccessibleMembers);
+        io.mapOptional("inaccessible-bases", cfg.inaccessibleBases);
+
 
         io.mapOptional("multipage",         cfg.multiPage);
         io.mapOptional("source-root",       cfg.sourceRoot);

@@ -47,6 +47,51 @@ public:
             Category symbols;
         };
 
+        enum class ExtractPolicy
+        {
+            Always,
+            Dependency,
+            Never
+        };
+
+        /** Extraction policy for references to external declarations.
+
+            This determines how declarations which are referenced by
+            explicitly extracted declarations are extracted.
+
+            Given a function parameter of type `std::string`, `std::string`
+            would be extracted if this option is set to `Policy::Always`.
+        */
+        ExtractPolicy referencedDeclarations = ExtractPolicy::Dependency;
+
+        /** Extraction policy for anonymous namespace.
+
+            @li `ExtractPolicy::Always`: anonymous namespaces and their
+            members will always be extracted.
+
+            @li `ExtractPolicy::Dependency`: members of anonymous namespaces will only
+            be extracted via dependency.
+
+            @li `ExtractPolicy::Never`: members of anonymous namespace will
+            never be extracted, regardless of how they are referenced.
+        */
+        ExtractPolicy anonymousNamespaces = ExtractPolicy::Always;
+
+        /** Extraction policy for inaccessible members.
+
+            @li `ExtractPolicy::Always`: all `private` and `protected` members
+            will be extracted.
+
+            @li `ExtractPolicy::Dependency`: `private` and `protected` members will only
+            be extracted via dependency.
+
+            @li `ExtractPolicy::Never`: `private` and `protected` will never be extracted.
+        */
+        ExtractPolicy inaccessibleMembers = ExtractPolicy::Always;
+
+        ExtractPolicy inaccessibleBases = ExtractPolicy::Always;
+
+
         /** Additional defines passed to the compiler.
         */
         std::vector<std::string> defines;
@@ -81,6 +126,7 @@ public:
             a symbol should be extracted.
         */
         FilterNode symbolFilter;
+
     };
 
     Settings const&

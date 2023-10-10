@@ -233,8 +233,8 @@ public:
         traverseDecl(context_.getTranslationUnitDecl());
 
         // if dependency extraction is disabled, we are done
-        if(config_->extract.referencedDeclarations ==
-            Config::ExtractOptions::Policy::Never)
+        if(config_->referencedDeclarations ==
+            ConfigImpl::SettingsImpl::ExtractPolicy::Never)
             return;
 
         // traverse the current set of dependencies,
@@ -310,12 +310,12 @@ public:
         id = extractSymbolID(D);
 
         // don't register a dependency if we never extract them
-        if(config_->extract.referencedDeclarations ==
-            Config::ExtractOptions::Policy::Never)
+        if(config_->referencedDeclarations ==
+            ConfigImpl::SettingsImpl::ExtractPolicy::Never)
             return;
 
-        if(config_->extract.referencedDeclarations ==
-            Config::ExtractOptions::Policy::Dependency)
+        if(config_->referencedDeclarations ==
+            ConfigImpl::SettingsImpl::ExtractPolicy::Dependency)
         {
             if(currentMode() != ExtractMode::DirectDependency)
                 return;
@@ -2342,12 +2342,12 @@ traverse(NamespaceDecl* D)
         return true;
 
     if(D->isAnonymousNamespace() &&
-        config_->extract.anonymousNamespaces !=
-            Config::ExtractOptions::Policy::Always)
+        config_->anonymousNamespaces !=
+            ConfigImpl::SettingsImpl::ExtractPolicy::Always)
     {
         // always skip anonymous namespaces if so configured
-        if(config_->extract.anonymousNamespaces ==
-            Config::ExtractOptions::Policy::Never)
+        if(config_->anonymousNamespaces ==
+            ConfigImpl::SettingsImpl::ExtractPolicy::Never)
             return true;
 
         // otherwise, skip extraction if this isn't a dependency

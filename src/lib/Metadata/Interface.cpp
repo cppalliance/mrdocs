@@ -9,6 +9,7 @@
 // Official repository: https://github.com/cppalliance/mrdox
 //
 
+#include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Support/Debug.hpp"
 #include <mrdox/Metadata/Interface.hpp>
 #include <mrdox/Support/TypeTraits.hpp>
@@ -51,10 +52,11 @@ public:
         Corpus const& corpus) noexcept
         : I_(I)
         , corpus_(corpus)
-        , includePrivate_(
-            corpus_.config->extract.inaccessibleMembers !=
-            Config::ExtractOptions::Policy::Never)
     {
+        auto& config = static_cast<
+            ConfigImpl const&>(corpus_.config);
+        includePrivate_ = config->inaccessibleMembers !=
+            ConfigImpl::SettingsImpl::ExtractPolicy::Never;
         // treat `Derived` as a public base,
         append(AccessKind::Public, Derived);
 

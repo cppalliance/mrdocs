@@ -42,60 +42,9 @@ protected:
     Config() noexcept;
 
 public:
-    struct ExtractOptions
-    {
-        enum class Policy
-        {
-            Always,
-            Dependency,
-            Never
-        };
-
-        /** Extraction policy for references to external declarations.
-
-            This determines how declarations which are referenced by
-            explicitly extracted declarations are extracted.
-
-            Given a function parameter of type `std::string`, `std::string`
-            would be extracted if this option is set to `Policy::Always`.
-        */
-        Policy referencedDeclarations = Policy::Dependency;
-
-        /** Extraction policy for anonymous namespace.
-
-            @li `Policy::Always`: anonymous namespaces and their
-            members will always be extracted.
-
-            @li `Policy::Dependency`: members of anonymous namespaces will only
-            be extracted via dependency.
-
-            @li `Policy::Never`: members of anonymous namespace will
-            never be extracted, regardless of how they are referenced.
-        */
-        Policy anonymousNamespaces = Policy::Always;
-
-        /** Extraction policy for inaccessible members.
-
-            @li `Policy::Always`: all `private` and `protected` members
-            will be extracted.
-
-            @li `Policy::Dependency`: `private` and `protected` members will only
-            be extracted via dependency.
-
-            @li `Policy::Never`: `private` and `protected` will never be extracted.
-        */
-        Policy inaccessibleMembers = Policy::Always;
-
-        Policy inaccessibleBases = Policy::Always;
-    };
 
     struct Settings
     {
-
-        /** Options controlling when declarations are extracted.
-        */
-        ExtractOptions extract;
-
         /** `true` if output should consist of multiple files.
         */
         bool multiPage = false;
