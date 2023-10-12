@@ -72,20 +72,21 @@ jobs:
           llvm_config_type="${{ matrix.build-type }}"
           if [ "${{ runner.os }}" == "Windows" ]; then
               llvm_runner_os="Windows"
-              if [ "$llvm_config_type" == "Release" ]; then
-                  llvm_config_type="RelWithDebInfo"
-              fi
+              # if [ "$llvm_config_type" == "Release" ]; then
+              #     llvm_config_type="RelWithDebInfo"
+              # fi
               llvm_archive_type="7z"
+              llvm_config_type="Release"
           else
               llvm_runner_os="Linux"
               llvm_archive_type="tar.xz"
+              llvm_config_type="Release"
           fi
-          llvm_commit_id=731264b0
+          llvm_commit_id=29b20829
           llvm_archive_filename="$llvm_runner_os-$llvm_config_type-$llvm_commit_id.$llvm_archive_type"
           llvm_url="https://github.com/cppalliance/mrdox/releases/download/llvm-package-release/$llvm_archive_filename"
           
-          release_url_exists=$(curl --head --silent --fail "$llvm_url")
-          if [ -z "$release_url_exists" ]; then
+          if ! curl --head --silent --fail "$llvm_url"; then
               llvm_url="https://mrdox.com/llvm+clang/$llvm_archive_filename"
           fi
 
@@ -96,6 +97,7 @@ jobs:
           llvm_root="${{runner.tool_cache}}/llvm+clang"
           llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
           mkdir -p "$llvm_root"
+
           if [ "${{ runner.os }}" != "Windows" ]; then
               tar -xvf "$llvm_archive_filename" -C "$llvm_root" --strip-components=1
           else
@@ -104,12 +106,8 @@ jobs:
               mv * "$llvm_root"
               cd ..
               rm -rf "$llvm_config_type"
-          
-              # Patch LLVMExports.cmake
-              substring="C:/Program Files/Microsoft Visual Studio/2022/Community/DIA SDK/lib/amd64/diaguids.lib;"
-              sed -i "s|$substring||g" "$llvm_root/lib/cmake/llvm/LLVMExports.cmake"
           fi
-          
+
           # Export LLVM_ROOT
           echo "llvm_root=$llvm_root"
           echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
