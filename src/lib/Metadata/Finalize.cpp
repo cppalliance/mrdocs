@@ -138,11 +138,7 @@ class Finalizer
 
     template<typename Range>
         requires std::ranges::input_range<Range>
-    void finalize(Range&& range) requires
-        requires (std::ranges::range_reference_t<Range> elem)
-        {
-            this->finalize(elem);
-        }
+    void finalize(Range&& range)
     {
         for(auto&& elem : range)
             finalize(elem);
