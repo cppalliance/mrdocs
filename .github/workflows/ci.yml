@@ -400,8 +400,9 @@ jobs:
           ssh-add /home/runner/.ssh/github_actions
           
           # Copy files
-          ssh ubuntu@dev-websites.cpp.al "mkdir -p /var/www/mrdox.com/demos/${{ github.ref_name }}"
-          scp -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:/var/www/mrdox.com/demos/${{ github.ref_name }}/
+          demo_dir="/var/www/mrdox.com/demos/${{ github.ref_name }}"
+          ssh ubuntu@dev-websites.cpp.al "rm -rf $demo_dir; mkdir -p $demo_dir"
+          scp -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
   releases:
     needs: build
