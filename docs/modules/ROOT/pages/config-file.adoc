@@ -5,23 +5,27 @@
 concurrency: # <.>
 defines: # <.>
 ignore-failures: # <.>
-include-anonymous: # <.>
-include-private: # <.>
 input:
   include: # <.>
 multipage: # <.>
 source-root: # <.>
 filters: # <.>
+referenced-declarations: # <.>
+anonymous-namespaces: # <.>
+inaccessible-members: # <.>
+inaccessible-bases: # <.>
 ----
 <.> Optional `concurrency` key
 <.> Optional `defines` key
 <.> Optional `ignore-failures` key
-<.> Optional `include-anonymous` key
-<.> Optional `include-private` key
 <.> Optional `include` key
 <.> Optional `multipage` key
 <.> Optional `source-root` key
 <.> Optional `filters` key
+<.> Optional `referenced-declarations` key
+<.> Optional `anonymous-namespaces` key
+<.> Optional `inaccessible-members` key
+<.> Optional `inaccessible-bases` key
 
 == Available configuration keys
 
@@ -42,14 +46,6 @@ the hardware-suggested concurrency.
 |Whether to ignore failures during symbol extraction. `true` or `false`.
 |No
 
-|include-anonymous
-|Whether to extract symbols from anonymous namespaces. `true` or `false`.
-|No
-
-|include-private
-|Whether to extract private members. `true` or `false`.
-|No
-
 |include
 |The amount of parallelism desired. 0 to use
 the hardware-suggested concurrency.
@@ -68,4 +64,23 @@ input file hierarchy.
 |Patterns specifying symbols which should be included/excluded.
 See xref:filters[specifying filters] for details.
 |No
+
+|referenced-declarations
+|When to extract external declarations referenced by symbols.
+Unconditionally extracted when `always`, never extracted when `never`,
+and only extracted when used as a base class/deduced local class return type
+when set to `dependency`.
+|No
+
+|anonymous-namespaces
+|Whether to extract anonymous namespaces. `always` or `never`.
+|No
+
+|inaccessible-members
+|Whether to extract inaccessible members. Currently unimplemented.
+|No
+
+|inaccessible-bases
+|Whether to extract inaccessible bases. Currently unimplemented.
+
 |===
