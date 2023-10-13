@@ -413,6 +413,38 @@ public:
 
     //------------------------------------------------
 
+    AccessSpecifier
+    getAccess(const Decl* D)
+    {
+        // first, get the declaration this was instantiated from
+        D = getInstantiatedFrom(const_cast<Decl*>(D));
+        // if this is the template declaration of a template,
+        // use the access of the template
+        if(const TemplateDecl* TD = D->getDescribedTemplate())
+            return TD->getAccessUnsafe();
+
+        // for class/variable template partial/explicit specializations,
+        // we want to use the access of the primary template
+        if(const auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
+            return CTSD->getSpecializedTemplate()->getAccessUnsafe();
+
+        if(const auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
+            return VTSD->getSpecializedTemplate()->getAccessUnsafe();
+
+        // for function template specializations, use the access of the
+        // primary template if it has been resolved
+        if(const auto* FD = dyn_cast<FunctionDecl>(D))
+        {
+            if(const auto* FTD = FD->getPrimaryTemplate())
+                return FTD->getAccessUnsafe();
+        }
+
+        // in all other cases, use the access of this declaration
+        return D->getAccessUnsafe();
+    }
+
+    //------------------------------------------------
+
     unsigned
     getLine(
         const NamedDecl* D) const
@@ -1649,8 +1681,19 @@ public:
 
     bool
     shouldExtract(
-        const Decl* D)
+        const Decl* D,
+        AccessSpecifier access)
     {
+        if(config_->inaccessibleMembers !=
+            ConfigImpl::SettingsImpl::ExtractPolicy::Always)
+        {
+            // KRYSTIAN FIXME: this doesn't handle direct
+            // dependencies on inaccessible declarations
+            if(access == AccessSpecifier::AS_private ||
+                access == AccessSpecifier::AS_protected)
+                return false;
+        }
+
     #if 0
         bool extract = inExtractedFile(D);
         // if we're extracting a declaration as a dependency,
@@ -2236,7 +2279,7 @@ public:
             // D does not name a type
             if(FunctionDecl* FD = dyn_cast<FunctionDecl>(ND))
             {
-                if(! shouldExtract(FD))
+                if(! shouldExtract(FD, AccessSpecifier::AS_none))
                     return;
 
                 SymbolID id;
@@ -2338,7 +2381,7 @@ bool
 ASTVisitor::
 traverse(NamespaceDecl* D)
 {
-    if(! shouldExtract(D))
+    if(! shouldExtract(D, AccessSpecifier::AS_none))
         return true;
 
     if(D->isAnonymousNamespace() &&
@@ -2374,14 +2417,15 @@ bool
 ASTVisitor::
 traverse(EnumDecl* D)
 {
-    if(! shouldExtract(D))
+    AccessSpecifier access = getAccess(D);
+    if(! shouldExtract(D, access))
         return true;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
         return false;
     auto [I, created] = getOrCreateInfo<EnumInfo>(id);
-    I.Access = convertToAccessKind(D->getAccessUnsafe());
+    I.Access = convertToAccessKind(access);
 
     buildEnum(I, created, D);
     return true;
@@ -2394,14 +2438,15 @@ bool
 ASTVisitor::
 traverse(FieldDecl* D)
 {
-    if(! shouldExtract(D))
+    AccessSpecifier access = getAccess(D);
+    if(! shouldExtract(D, access))
         return true;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
         return false;
     auto [I, created] = getOrCreateInfo<FieldInfo>(id);
-    I.Access = convertToAccessKind(D->getAccessUnsafe());
+    I.Access = convertToAccessKind(access);
 
     buildField(I, created, D);
     return true;
@@ -2426,7 +2471,8 @@ ASTVisitor::
 traverse(CXXRecordTy* D,
     ClassTemplateDecl* CTD)
 {
-    if(! shouldExtract(D))
+    AccessSpecifier access = getAccess(D);
+    if(! shouldExtract(D, access))
         return true;
 
     SymbolID id;
@@ -2434,15 +2480,12 @@ traverse(CXXRecordTy* D,
         return false;
 
     auto [I, created] = getOrCreateInfo<RecordInfo>(id);
+    I.Access = convertToAccessKind(access);
 
-    AccessSpecifier access = D->getAccessUnsafe();
     // CTD is the specialized template if D is a partial or
     // explicit specialization, and the described template otherwise
     if(CTD)
     {
-        // use the access of the described/specialized template
-        access = CTD->getAccessUnsafe();
-
         I.Template = std::make_unique<TemplateInfo>();
         // if D is a partial/explicit specialization, extract the template arguments
         if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
@@ -2461,8 +2504,6 @@ traverse(CXXRecordTy* D,
         }
     }
 
-    I.Access = convertToAccessKind(access);
-
     buildRecord(I, created, D);
     return traverseContext(D);
 }
@@ -2473,7 +2514,8 @@ ASTVisitor::
 traverse(VarTy* D,
     VarTemplateDecl* VTD)
 {
-    if(! shouldExtract(D))
+    AccessSpecifier access = getAccess(D);
+    if(! shouldExtract(D, access))
         return true;
 
     SymbolID id;
@@ -2481,15 +2523,12 @@ traverse(VarTy* D,
         return false;
 
     auto [I, created] = getOrCreateInfo<VariableInfo>(id);
+    I.Access = convertToAccessKind(access);
 
-    AccessSpecifier access = D->getAccessUnsafe();
     // VTD is the specialized template if D is a partial or
     // explicit specialization, and the described template otherwise
     if(VTD)
     {
-        // use the access of the described/specialized template
-        access = VTD->getAccessUnsafe();
-
         I.Template = std::make_unique<TemplateInfo>();
         // if D is a partial/explicit specialization, extract the template arguments
         if(auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
@@ -2508,8 +2547,6 @@ traverse(VarTy* D,
         }
     }
 
-    I.Access = convertToAccessKind(access);
-
     buildVariable(I, created, D);
     return true;
 }
@@ -2521,7 +2558,8 @@ ASTVisitor::
 traverse(FunctionTy* D,
     FunctionTemplateDecl* FTD)
 {
-    if(! shouldExtract(D))
+    AccessSpecifier access = getAccess(D);
+    if(! shouldExtract(D, access))
         return true;
 
     SymbolID id;
@@ -2529,8 +2567,8 @@ traverse(FunctionTy* D,
         return false;
 
     auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
+    I.Access = convertToAccessKind(access);
 
-    AccessSpecifier access = D->getAccessUnsafe();
     // D is the templated declaration if FTD is non-null
     if(FTD || D->isFunctionTemplateSpecialization())
     {
@@ -2538,7 +2576,6 @@ traverse(FunctionTy* D,
 
         if(FTD)
         {
-            access = FTD->getAccessUnsafe();
             parseTemplateParams(*I.Template,
                 FTD->getTemplateParameters());
         }
@@ -2552,8 +2589,6 @@ traverse(FunctionTy* D,
         }
     }
 
-    I.Access = convertToAccessKind(access);
-
     buildFunction(I, created, D);
     return true;
 }
@@ -2564,7 +2599,8 @@ ASTVisitor::
 traverse(TypedefNameTy* D,
     TypeAliasTemplateDecl* ATD)
 {
-    if(! shouldExtract(D))
+    AccessSpecifier access = getAccess(D);
+    if(! shouldExtract(D, access))
         return true;
 
     SymbolID id;
@@ -2572,22 +2608,17 @@ traverse(TypedefNameTy* D,
         return false;
 
     auto [I, created] = getOrCreateInfo<TypedefInfo>(id);
+    I.Access = convertToAccessKind(access);
 
     if(isa<TypeAliasDecl>(D))
         I.IsUsing = true;
 
-    AccessSpecifier access = D->getAccessUnsafe();
-
     if(ATD)
     {
-        access = ATD->getAccessUnsafe();
-
         I.Template = std::make_unique<TemplateInfo>();
         parseTemplateParams(*I.Template,
             ATD->getTemplateParameters());
     }
-
-    I.Access = convertToAccessKind(access);
 
     buildTypedef(I, created, D);
     return true;
