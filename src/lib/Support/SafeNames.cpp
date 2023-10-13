@@ -30,6 +30,9 @@ class SafeNames::Impl
 {
     Corpus const& corpus_;
 
+    // name used for the global namespace
+    std::string global_ns_;
+
     // store all info required to generate a safename
     struct SafeNameInfo
     {
@@ -43,6 +46,11 @@ class SafeNames::Impl
     };
 
     std::unordered_map<SymbolID, SafeNameInfo> map_;
+
+    // maps unqualified names to all symbols
+    // with that name within the current scope
+    std::unordered_multimap<
+        std::string_view, SafeNameInfo*> disambiguation_map__;
 
     std::string_view
     getReserved(const Info& I)
@@ -97,16 +105,13 @@ class SafeNames::Impl
     getUnqualified(
         const Info& I)
     {
+        MRDOX_ASSERT(I.id != SymbolID::zero);
         return visit(I, [&]<typename T>(
             const T& t) -> std::string_view
             {
                 // namespaces can be unnamed (i.e. anonymous)
                 if constexpr(T::isNamespace())
                 {
-                    // special case for the global namespace
-                    if(t.id == SymbolID::zero)
-                        return std::string_view();
-
                     if(t.specs.isAnonymous.get())
                         return getReserved(t);
                     MRDOX_ASSERT(! t.Name.empty());
@@ -184,6 +189,73 @@ class SafeNames::Impl
 
     //--------------------------------------------
 
+    void
+    buildSafeMember(
+        const Info& I,
+        std::string_view name)
+    {
+        // generate the unqualified name and SymbolID string
+        auto it = map_.emplace(I.id, SafeNameInfo(
+            name, 0, toBase16(I.id, true))).first;
+        #if 0
+        // update the disambiguation map
+        auto [disambig_it, disambig_emplaced] =
+            disambiguation_map_.try_emplace(name);
+        // if there are other symbols with the same name, then disambiguation
+        // is required. iterate over the other symbols with the same unqualified name,
+        // and calculate the minimum number of characters from the SymbolID needed
+        // to uniquely identify each symbol. then, update all symbols with the new value.
+        if(! disambig_emplaced)
+        {
+            std::uint8_t n_chars = 0;
+            std::string_view id_str = it->second.id_str;
+            for(const SymbolID& other_id : disambig_it->second)
+            {
+                auto& other = map_.at(other_id);
+                auto mismatch_it = std::ranges::mismatch(
+                    id_str, other.id_str).in1;
+                std::uint8_t n_required = std::distance(
+                    id_str.begin(), mismatch_it) + 1;
+                n_chars = std::max({
+                    n_chars, other.disambig_chars, n_required});
+            }
+
+            MRDOX_ASSERT(n_chars);
+            // update the number of disambiguation characters for each symbol
+            it->second.disambig_chars = n_chars;
+            for(const SymbolID& other_id : disambig_it->second)
+                map_.at(other_id).disambig_chars = n_chars;
+        }
+        disambig_it->second.push_back(I.id);
+        #else
+        std::uint8_t n_chars = 0;
+        std::string_view id_str = it->second.id_str;
+        auto [first, last] = disambiguation_map__.equal_range(name);
+        for(const auto& other : std::ranges::subrange(
+            first, last) | std::views::values)
+        {
+            //auto& other = map_.at(other_id);
+            auto mismatch_it = std::ranges::mismatch(
+                id_str, other->id_str).in1;
+            std::uint8_t n_required = std::distance(
+                id_str.begin(), mismatch_it) + 1;
+            n_chars = std::max({
+                n_chars, other->disambig_chars, n_required});
+        }
+
+        if(n_chars)
+        {
+            for(const auto& other : std::ranges::subrange(
+                first, last) | std::views::values)
+                other->disambig_chars = n_chars;
+            it->second.disambig_chars = n_chars;
+        }
+        disambiguation_map__.emplace(name, &it->second);
+
+        #endif
+    }
+
+    #if 0
     template<typename Range>
     void
     buildSafeMembers(
@@ -237,18 +309,32 @@ class SafeNames::Impl
             disambig_it->second.push_back(I->id);
         }
     }
+    #endif
 
     //--------------------------------------------
 
 public:
-    explicit
-    Impl(Corpus const& corpus)
+    Impl(Corpus const& corpus, std::string_view global_ns)
         : corpus_(corpus)
+        , global_ns_(global_ns)
     {
+        #if 0
         map_.try_emplace(SymbolID::zero, SafeNameInfo(
             "global_namespace", 0, toBase16(SymbolID::zero, true)));
 
         visit(corpus_.globalNamespace(), *this);
+        #else
+        const NamespaceInfo& global =
+            corpus_.globalNamespace();
+        // treat the global namespace as-if its "name"
+        // is in the same scope as its members
+        buildSafeMember(global, global_ns_);
+        visit(global, *this);
+        // after generating safenames for every symbol,
+        // set the number of disambiguation characters
+        // used for the global namespace to zero
+        map_.at(global.id).disambig_chars = 0;
+        #endif
     }
 
     void
@@ -297,6 +383,48 @@ public:
         getSafeUnqualified(result, id);
     }
 
+    template<typename InfoTy, typename Fn>
+    void traverse(const InfoTy& I, Fn&& F)
+    {
+        static constexpr auto getMember = [](const auto& M)
+            {
+                if constexpr(requires { M.Specialized; })
+                    return M.Specialized;
+                else
+                    return M;
+            };
+
+        if constexpr(InfoTy::isSpecialization() ||
+            InfoTy::isNamespace() || InfoTy::isRecord())
+        {
+            std::ranges::for_each(I.Members, F, getMember);
+        }
+
+        if constexpr(InfoTy::isNamespace() || InfoTy::isRecord())
+        {
+            std::ranges::for_each(I.Specializations, F);
+        }
+    }
+
+    template<typename InfoTy>
+    void operator()(const InfoTy& I)
+    {
+        traverse(I, [this](const SymbolID& id)
+            {
+                if(const Info* M = corpus_.find(id))
+                    buildSafeMember(*M, getUnqualified(*M));
+            });
+        // clear the disambiguation map after visiting the members,
+        // then build disambiguation information for each member
+        disambiguation_map__.clear();
+        traverse(I, [this](const SymbolID& id)
+            {
+                if(const Info* M = corpus_.find(id))
+                    visit(*M, *this);
+            });
+    }
+
+    #if 0
     template<class T>
     void operator()(T const& I)
     {
@@ -330,13 +458,14 @@ public:
             }
         }
     }
+    #endif
 };
 
 //------------------------------------------------
 
 SafeNames::
 SafeNames(Corpus const& corpus)
-    : impl_(std::make_unique<Impl>(corpus))
+    : impl_(std::make_unique<Impl>(corpus, "index"))
 {
 }
 
