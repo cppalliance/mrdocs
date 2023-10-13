@@ -353,6 +353,7 @@ jobs:
           echo "verbose: true" > $(pwd)/boost/libs/url/mrdox-single.yml
           echo "source-root: ." >> $(pwd)/boost/libs/url/mrdox-single.yml
           echo "multipage: false" >> $(pwd)/boost/libs/url/mrdox-single.yml
+          echo "inaccessible-members: never" >> $(pwd)/boost/libs/url/mrdox-single.yml
           echo "filters:" >> $(pwd)/boost/libs/url/mrdox-single.yml
           echo "  symbols:" >> $(pwd)/boost/libs/url/mrdox-single.yml
           echo "    exclude:" >> $(pwd)/boost/libs/url/mrdox-single.yml
@@ -362,6 +363,7 @@ jobs:
           echo "verbose: true" > $(pwd)/boost/libs/url/mrdox-multi.yml
           echo "source-root: ." >> $(pwd)/boost/libs/url/mrdox-multi.yml
           echo "multipage: true" >> $(pwd)/boost/libs/url/mrdox-multi.yml
+          echo "inaccessible-members: never" >> $(pwd)/boost/libs/url/mrdox-multi.yml
           echo "filters:" >> $(pwd)/boost/libs/url/mrdox-multi.yml
           echo "  symbols:" >> $(pwd)/boost/libs/url/mrdox-multi.yml
           echo "    exclude:" >> $(pwd)/boost/libs/url/mrdox-multi.yml
