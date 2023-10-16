@@ -22,15 +22,12 @@
 {{name~}}
 {{else~}}
 operator {{>declarator return~}}
-{{/if~}}
-({{#if params}}
-{{#each params}}
-    {{>declarator type decl-name=name~}}
+{{/if}}
+({{#each params}}{{#unless (and @first @last)}}
+    {{/unless}}{{>declarator type decl-name=name~}}
     {{#if default}} = {{default}}{{/if~}}
-{{#unless @last}},
-{{/unless~}}
-{{/each~}}
-{{/if~}})
+    {{#unless @last}},{{/unless~}}
+{{/each~}})
 {{~#if isConst}} const{{/if~}}
 {{#if isVolatile}} volatile{{/if~}}
 {{#if refQualifier}} {{refQualifier}}{{/if~}}

@@ -29,9 +29,9 @@
 
 <!-- Error Types -->
 
-    <Type Name="clang::mrdox::Expected&lt;*&gt;">
-        <DisplayString Condition="! has_error_">{v_}</DisplayString>
-        <DisplayString Condition="has_error_">{e_}</DisplayString>
+    <Type Name="clang::mrdox::Expected&lt;*, *&gt;">
+        <DisplayString Condition="has_value_">{val_}</DisplayString>
+        <DisplayString Condition="! has_value_">{-&gt;unex_}</DisplayString>
     </Type>
 
 <!-- Dom Types -->
@@ -56,16 +56,45 @@
     </Type>
 
     <Type Name="clang::mrdox::dom::Object">
+        <Intrinsic Name="as_default" Expression="dynamic_cast&lt;DefaultObjectImpl*&gt;(impl_._Ptr)"/>
+        <Intrinsic Name="as_lazy" Expression="dynamic_cast&lt;LazyObjectImpl*&gt;(impl_._Ptr)"/>
+        <Intrinsic Name="as_overlay" Expression="dynamic_cast&lt;OverlayObjectImpl*&gt;(impl_._Ptr)"/>
+        <Intrinsic Name="as_hbs_helper" Expression="dynamic_cast&lt;HbsHelperObjectImpl*&gt;(impl_._Ptr)"/>
         <DisplayString>[ dom::Object ]</DisplayString>
+
+        <Expand>
+            <ExpandedItem Condition="as_default()">*as_default()</ExpandedItem>
+            <ExpandedItem Condition="as_lazy()">*as_lazy()</ExpandedItem>
+            <ExpandedItem Condition="as_overlay()">*as_overlay()</ExpandedItem>
+            <ExpandedItem Condition="as_hbs_helper()">*as_hbs_helper()</ExpandedItem>
+            <ExpandedItem Condition="! (as_default() || as_lazy() || as_overlay() || as_hbs_helper())">
+                *(ObjectImpl*)impl_._Ptr
+            </ExpandedItem>
+
+        </Expand>
     </Type>
 
     <Type Name="clang::mrdox::dom::Value">
-        <DisplayString Condition="kind_==Value::Kind::Null">null</DisplayString>
-        <DisplayString Condition="kind_==Value::Kind::Boolean">{b_}</DisplayString>
-        <DisplayString Condition="kind_==Value::Kind::Integer">{i_}</DisplayString>
-        <DisplayString Condition="kind_==Value::Kind::String">{str_}</DisplayString>
-        <DisplayString Condition="kind_==Value::Kind::Array">{arr_}</DisplayString>
-        <DisplayString Condition="kind_==Value::Kind::Object">{obj_}</DisplayString>
+        <DisplayString Condition="kind_==clang::mrdox::dom::Kind::Undefined">undefined</DisplayString>
+        <DisplayString Condition="kind_==clang::mrdox::dom::Kind::Null">null</DisplayString>
+        <DisplayString Condition="kind_==clang::mrdox::dom::Kind::Boolean">{b_}</DisplayString>
+        <DisplayString Condition="kind_==clang::mrdox::dom::Kind::Integer">{i_}</DisplayString>
+        <DisplayString Condition="kind_==clang::mrdox::dom::Kind::String">{str_}</DisplayString>
+        <DisplayString Condition="kind_==clang::mrdox::dom::Kind::SafeString">{str_}</DisplayString>
+        <DisplayString Condition="kind_==clang::mrdox::dom::Kind::Array">{arr_}</DisplayString>
+        <DisplayString Condition="kind_==clang::mrdox::dom::Kind::Object">{obj_}</DisplayString>
+        <DisplayString Condition="kind_==clang::mrdox::dom::Kind::Function">{fn_}</DisplayString>
+        <DisplayString>invalid</DisplayString>
+
+        <Expand>
+            <Item Condition="kind_==clang::mrdox::dom::Kind::Boolean" Name="Value">b_</Item>
+            <Item Condition="kind_==clang::mrdox::dom::Kind::Integer" Name="Value">i_</Item>
+            <ExpandedItem Condition="kind_==clang::mrdox::dom::Kind::String">str_</ExpandedItem>
+            <ExpandedItem Condition="kind_==clang::mrdox::dom::Kind::SafeString">str_</ExpandedItem>
+            <ExpandedItem Condition="kind_==clang::mrdox::dom::Kind::Array">arr_</ExpandedItem>
+            <ExpandedItem Condition="kind_==clang::mrdox::dom::Kind::Object">obj_</ExpandedItem>
+            <ExpandedItem Condition="kind_==clang::mrdox::dom::Kind::Function">fn_</ExpandedItem>
+        </Expand>
     </Type>
 
 <!-- Javadocs -->

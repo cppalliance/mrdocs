@@ -1,0 +1,7 @@
+{{#unless (contains @root.symbol.namespace symbol)~}}
+{{#if symbol.parent~}}
+{{>qualified-path symbol=symbol.parent~}}
+{{else~}}
+{{/if~}}
+{{#if symbol.name}}{{>xref symbol}}[{{~symbol.name}}]::{{/if~}}
+{{/unless}}

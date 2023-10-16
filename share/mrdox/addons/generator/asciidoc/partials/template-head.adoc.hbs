@@ -1,7 +1,4 @@
-template<{{#if params}}
-{{#each params}}
-    {{>template-param~}}
-{{#unless @last}},
-{{/unless~}}
-{{/each~}}
-{{/if~}}>
+template<{{#each params}}{{#unless (and @first @last)}}
+    {{/unless}}{{>template-param~}}
+    {{#unless @last}},{{/unless~}}
+{{/each~}}>

@@ -7,17 +7,18 @@
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-{{#if template}}{{>template-head template}}
+{{#if template}}{{>template-head symbol.template}}
 {{/if~}}
-{{#if (or (eq template.kind "explicit") (eq template.kind "partial"))~}}
-    {{tag}} {{#if template.primary.id~}}{{>xref template.primary}}[{{name}}]{{else}}{{name}}{{/if~}}
-    {{~>template-args args=template.args~}}
+{{#if (or (eq symbol.template.kind "explicit") (eq symbol.template.kind "partial"))~}}
+    {{symbol.tag}} {{#if symbol.template.primary.id~}}{{>xref symbol.template.primary}}[{{symbol.name}}]{{else}}{{symbol.name}}{{/if~}}
+    {{~>template-args args=symbol.template.args~}}
 {{else~}}
-    {{tag}} {{name~}}
+    {{symbol.tag}} {{symbol.name~}}
 {{/if~}}
 {{#unless symbol.bases}}
 ;
 {{else}}
+
 {{#each symbol.bases}}
     {{#if @first}}:{{else}},{{/if}}
     {{~#unless (eq access ../symbol.defaultAccess)}} {{access}}{{/unless}}
