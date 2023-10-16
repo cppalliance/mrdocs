@@ -1785,7 +1785,6 @@ evalExpr(
     bool evalLiterals) const
 {
     using Res = Handlebars::evalExprResult;
-    expression = trim_spaces(expression);
     if (evalLiterals)
     {
         // ==============================================================
