@@ -1012,6 +1012,10 @@ basic_context()
         BOOST_TEST(hbs.render("Goodbye {{\"foo[bar\"}} world!", ctx) == "Goodbye beautiful world!");
         BOOST_TEST(hbs.render("Goodbye {{\"foo'bar\"}} world!", ctx) == "Goodbye beautiful world!");
         BOOST_TEST(hbs.render("Goodbye {{'foo\"bar'}} world!", ctx) == "Goodbye beautiful world!");
+
+        // literal references only convert to strings as helper parameters
+        // literal references as main helper names will decay to context keys
+        BOOST_TEST(hbs.render("{{\"\\n\"}}") == "");
     }
 
     // that current context path ({{.}}) doesn't hit helpers
