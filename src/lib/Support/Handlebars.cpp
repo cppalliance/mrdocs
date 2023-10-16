@@ -5773,6 +5773,38 @@ registerContainerHelpers(Handlebars& hbs)
     hbs.registerHelper("del", del_fn);
     hbs.registerHelper("delete", del_fn);
 
+    static auto find_fn = dom::makeInvocable([](
+        dom::Value range, dom::Value const& val) -> dom::Value {
+        if (range.isArray())
+        {
+            auto const& arr = range.getArray();
+            auto const n = static_cast<std::int64_t>(arr.size());
+            for (std::int64_t i = 0; i < n; i++)
+            {
+                if (arr[i] == val)
+                    return i;
+            }
+            return static_cast<std::int64_t>(-1);
+        }
+        else if (range.isObject())
+        {
+            auto const& obj = range.getObject();
+            for (auto const& [k, v]: obj)
+            {
+                if (v == val)
+                    return k;
+            }
+            return nullptr;
+        }
+        else
+        {
+            return range;
+        }
+    });
+
+    hbs.registerHelper("find", find_fn);
+    hbs.registerHelper("index_of", find_fn);
+
     static auto has_fn = dom::makeInvocable([](
         dom::Value const& ctx, dom::Value const& prop)
     {
