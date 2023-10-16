@@ -17,7 +17,7 @@
 {{/if~}}
 {{#unless symbol.bases}}
 ;
-{{else}}{{"\n"}}
+{{else}}
 {{#each symbol.bases}}
     {{#if @first}}:{{else}},{{/if}}
     {{~#unless (eq access ../symbol.defaultAccess)}} {{access}}{{/unless}}
