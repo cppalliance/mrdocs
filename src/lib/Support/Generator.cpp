@@ -10,6 +10,7 @@
 //
 
 #include "lib/AST/ParseJavadoc.hpp"
+#include "lib/Support/Path.hpp"
 #include <mrdox/Support/Error.hpp>
 #include <mrdox/Generator.hpp>
 #include <llvm/ADT/SmallString.h>
@@ -59,8 +60,11 @@ buildOne(
     std::string_view fileName,
     Corpus const& corpus) const
 {
-    std::ofstream os;
+    std::string dir = files::getParentDir(fileName);
+    if(auto err = files::createDirectory(dir))
+        return err;
 
+    std::ofstream os;
     try
     {
         os.open(std::string(fileName),
