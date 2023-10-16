@@ -127,6 +127,8 @@ Builder(
         return res;
     }));
     helpers::registerAntoraHelpers(hbs_);
+    // helpers::registerStringHelpers(hbs_);
+    helpers::registerContainerHelpers(hbs_);
 }
 
 //------------------------------------------------
@@ -145,6 +147,7 @@ callTemplate(
     MRDOX_TRY(auto fileText, files::getFileText(pathName));
     HandlebarsOptions options;
     options.noEscape = true;
+    // options.compat = true;
 
     Expected<std::string, HandlebarsError> exp =
         hbs_.try_render(fileText, context, options);

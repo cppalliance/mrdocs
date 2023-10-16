@@ -652,6 +652,10 @@ DomInfo<T>::construct() const
                             I_.Namespace, domCorpus_) },
         { "doc",        domCreate(I_.javadoc, domCorpus_) }
         });
+    if(! I_.Namespace.empty())
+        entries.emplace_back("parent",
+            domCorpus_.get(I_.Namespace.front()));
+
     if constexpr(std::derived_from<T, SourceInfo>)
     {
         entries.emplace_back("loc", domCreate(I_));
