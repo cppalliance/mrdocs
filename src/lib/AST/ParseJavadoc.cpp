@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -115,10 +116,38 @@ class JavadocVisitor
     static std::string& ensureUTF8(std::string&&);
     void visitChildren(Comment const* C);
 
+
+    class [[nodiscard]] BlockScope
+    {
+        JavadocVisitor& visitor_;
+        doc::Block* prev_;
+
+    public:
+        BlockScope(
+            JavadocVisitor& visitor,
+            doc::Block* blk)
+            : visitor_(visitor)
+            , prev_(visitor.block_)
+        {
+            visitor_.block_ = blk;
+        }
+
+        ~BlockScope()
+        {
+            visitor_.block_ = prev_;
+        }
+    };
+
+    BlockScope enterScope(doc::Block& blk)
+    {
+        return BlockScope(*this, &blk);
+    }
+
 public:
     JavadocVisitor(
-        RawComment const*, Decl const*,
+        FullComment const*, Decl const*,
         Config const&, Diagnostics&);
+
     Javadoc build();
 
     void visitComment(Comment const* C);
@@ -141,33 +170,6 @@ public:
     // helpers
     bool goodArgCount(std::size_t n, InlineCommandComment const& C);
 };
-
-//------------------------------------------------
-
-template<class U, class T>
-struct Scope
-{
-    Scope(
-        U& u,
-        T*& t0) noexcept
-        : t0_(t0)
-        , pt_(t0)
-    {
-        pt_ = &u;
-    }
-
-    ~Scope()
-    {
-        pt_ = t0_;
-    }
-
-private:
-    T* t0_;
-    T*& pt_;
-};
-
-template<class U, class T>
-Scope(U&, T*&) -> Scope<T, T>;
 
 //------------------------------------------------
 
@@ -203,14 +205,14 @@ visitChildren(
 
 JavadocVisitor::
 JavadocVisitor(
-    RawComment const* RC,
+    FullComment const* FC,
     Decl const* D,
     Config const& config,
     Diagnostics& diags)
     : config_(config)
     , ctx_(D->getASTContext())
     , sm_(ctx_.getSourceManager())
-    , FC_(RC->parse(D->getASTContext(), nullptr, D))
+    , FC_(FC)
     , diags_(diags)
 {
 }
@@ -326,6 +328,61 @@ visitHTMLEndTagComment(
     --htmlTagNesting_;
 }
 
+static
+doc::Parts
+convertCopydoc(unsigned id)
+{
+    switch(id)
+    {
+    case CommandTraits::KCI_copydoc:
+        return doc::Parts::all;
+    case CommandTraits::KCI_copybrief:
+        return doc::Parts::brief;
+    case CommandTraits::KCI_copydetails:
+        return doc::Parts::description;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+static
+doc::Style
+convertStyle(InlineCommandComment::RenderKind kind)
+{
+    switch(kind)
+    {
+    case InlineCommandComment::RenderKind::RenderMonospaced:
+        return doc::Style::mono;
+    case InlineCommandComment::RenderKind::RenderBold:
+        return doc::Style::bold;
+    case InlineCommandComment::RenderKind::RenderEmphasized:
+        return doc::Style::italic;
+    case InlineCommandComment::RenderKind::RenderNormal:
+    case InlineCommandComment::RenderKind::RenderAnchor:
+        return doc::Style::none;
+    default:
+        // unknown RenderKind
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+static
+doc::ParamDirection
+convertDirection(ParamCommandComment::PassDirection kind)
+{
+    switch(kind)
+    {
+    case ParamCommandComment::PassDirection::In:
+        return doc::ParamDirection::in;
+    case ParamCommandComment::PassDirection::Out:
+        return doc::ParamDirection::out;
+    case ParamCommandComment::PassDirection::InOut:
+        return doc::ParamDirection::inout;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
 void
 JavadocVisitor::
 visitInlineCommandComment(
@@ -338,7 +395,10 @@ visitInlineCommandComment(
     // VFALCO I'd like to know when this happens
     MRDOCS_ASSERT(cmd != nullptr);
 
-    switch(cmd->getID())
+    // KRYSTIAN FIXME: the text for a copydoc/ref command
+    // should not include illegal characters
+    // (e.g. periods that occur after the symbol name)
+    switch(unsigned ID = cmd->getID())
     {
     // Emphasis
     case CommandTraits::KCI_a:
@@ -348,8 +408,8 @@ visitInlineCommandComment(
         if(! goodArgCount(1, *C))
             return;
         auto style = doc::Style::italic;
-        auto s = C->getArgText(0);
-        block_->emplace_back(doc::Styled(s.str(), style));
+        block_->emplace_back(doc::Styled(
+            C->getArgText(0).str(), style));
         return;
     }
 
@@ -358,37 +418,27 @@ visitInlineCommandComment(
     case CommandTraits::KCI_copydetails:
     case CommandTraits::KCI_copydoc:
     {
-        if(C->getNumArgs() != 1)
-        {
-            // report an error
-            diags_.error("getNumArgs() != 1");
+        if(! goodArgCount(1, *C))
             return;
-        }
+        // the referenced symbol will be resolved during
+        // the finalization step once all symbol are extracted
+        block_->emplace_back(doc::Copied(
+            C->getArgText(0).str(), convertCopydoc(ID)));
+        return;
+    }
+    case CommandTraits::KCI_ref:
+    {
+        if(! goodArgCount(1, *C))
+            return;
+        // the referenced symbol will be resolved during
+        // the finalization step once all symbol are extracted
+        block_->emplace_back(doc::Reference(
+            C->getArgText(0).str()));
         return;
     }
 
     default:
         break;
-    }
-
-    doc::Style style(doc::Style::none);
-    switch (C->getRenderKind())
-    {
-    case InlineCommandComment::RenderKind::RenderMonospaced:
-        style = doc::Style::mono;
-        break;
-    case InlineCommandComment::RenderKind::RenderBold:
-        style = doc::Style::bold;
-        break;
-    case InlineCommandComment::RenderKind::RenderEmphasized:
-        style = doc::Style::italic;
-        break;
-    case InlineCommandComment::RenderKind::RenderNormal:
-    case InlineCommandComment::RenderKind::RenderAnchor:
-        break;
-    default:
-        // unknown RenderKind
-        MRDOCS_UNREACHABLE();
     }
 
     // It looks like the clang parser does not
@@ -403,6 +453,7 @@ visitInlineCommandComment(
     for(unsigned i = 0; i < C->getNumArgs(); ++i)
         s.append(C->getArgText(i));
 
+    doc::Style style = convertStyle(C->getRenderKind());
     if(style != doc::Style::none)
         block_->emplace_back(doc::Styled(std::move(s), style));
     else
@@ -423,7 +474,7 @@ visitParagraphComment(
     if(block_)
         return visitChildren(C);
     doc::Paragraph paragraph;
-    Scope scope(paragraph, block_);
+    auto scope = enterScope(paragraph);
     visitChildren(C);
     // VFALCO Figure out why we get empty ParagraphComment
     if(! paragraph.empty())
@@ -451,7 +502,8 @@ visitBlockCommandComment(
     case CommandTraits::KCI_short:
     {
         doc::Brief brief;
-        Scope scope(brief, block_);
+        auto scope = enterScope(brief);
+        // Scope scope(brief, block_);
         visitChildren(C->getParagraph());
         // Here, we want empty briefs, because
         // the @brief command was explicitly given.
@@ -463,7 +515,8 @@ visitBlockCommandComment(
     case CommandTraits::KCI_returns:
     {
         doc::Returns returns;
-        Scope scope(returns, block_);
+        auto scope = enterScope(returns);
+        // Scope scope(returns, block_);
         visitChildren(C->getParagraph());
         jd_.emplace_back(std::move(returns));
         return;
@@ -684,7 +737,7 @@ visitBlockCommandComment(
    if(cmd->getID() == CommandTraits::KCI_note)
     {
         doc::Admonition paragraph(doc::Admonish::note);
-        Scope scope(paragraph, block_);
+        auto scope = enterScope(paragraph);
         visitChildren(C->getParagraph());
         jd_.emplace_back(std::move(paragraph));
         return;
@@ -692,7 +745,7 @@ visitBlockCommandComment(
     if(cmd->getID() == CommandTraits::KCI_warning)
     {
         doc::Admonition paragraph(doc::Admonish::warning);
-        Scope scope(paragraph, block_);
+        auto scope = enterScope(paragraph);
         visitChildren(C->getParagraph());
         jd_.emplace_back(std::move(paragraph));
         return;
@@ -703,7 +756,7 @@ visitBlockCommandComment(
         // for Boost libraries using @par as a
         // section heading.
         doc::Paragraph paragraph;
-        Scope scope(paragraph, block_);
+        auto scope = enterScope(paragraph);
         visitChildren(C->getParagraph());
         if(! paragraph.children.empty())
         {
@@ -731,7 +784,7 @@ visitBlockCommandComment(
     if(cmd->getID() == CommandTraits::KCI_li)
     {
         doc::ListItem paragraph;
-        Scope scope(paragraph, block_);
+        auto scope = enterScope(paragraph);
         visitChildren(C->getParagraph());
         jd_.emplace_back(std::move(paragraph));
         return;
@@ -755,21 +808,9 @@ visitParamCommandComment(
         param.name = "@anon";
     }
     if(C->isDirectionExplicit())
-    {
-        switch(C->getDirection())
-        {
-        case ParamCommandComment::PassDirection::In:
-            param.direction = doc::ParamDirection::in;
-            break;
-        case ParamCommandComment::PassDirection::Out:
-            param.direction = doc::ParamDirection::out;
-            break;
-        case ParamCommandComment::PassDirection::InOut:
-            param.direction = doc::ParamDirection::inout;
-            break;
-        }
-    }
-    Scope scope(param, block_);
+        param.direction = convertDirection(C->getDirection());
+
+    auto scope = enterScope(param);
     visitChildren(C->getParagraph());
     // We want the node even if it is empty
     jd_.emplace_back(std::move(param));
@@ -791,7 +832,7 @@ visitTParamCommandComment(
         diags_.error("Missing parameter name in @tparam");
         tparam.name = "@anon";
     }
-    Scope scope(tparam, block_);
+    auto scope = enterScope(tparam);
     visitChildren(C->getParagraph());
     // We want the node even if it is empty
     jd_.emplace_back(std::move(tparam));
@@ -803,7 +844,7 @@ visitVerbatimBlockComment(
     VerbatimBlockComment const* C)
 {
     doc::Code code;
-    Scope scope(code, block_);
+    auto scope = enterScope(code);
     //if(C->hasNonWhitespaceParagraph())
     visitChildren(C);
     jd_.emplace_back(std::move(code));
@@ -874,15 +915,14 @@ initCustomCommentCommands(ASTContext& context)
 void
 parseJavadoc(
     std::unique_ptr<Javadoc>& jd,
-    RawComment* RC,
+    FullComment* FC,
     Decl const* D,
     Config const& config,
     Diagnostics& diags)
 {
-    if(! RC)
+    if(! FC)
         return;
-    RC->setAttached();
-    auto result = JavadocVisitor(RC, D, config, diags).build();
+    auto result = JavadocVisitor(FC, D, config, diags).build();
     if(jd == nullptr)
     {
         // Do not create javadocs which have no nodes

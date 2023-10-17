@@ -1543,9 +1543,26 @@ public:
     {
         // VFALCO investigate whether we can use
         // ASTContext::getCommentForDecl instead
+        #if 1
         RawComment* RC =
             D->getASTContext().getRawCommentForDeclNoCache(D);
-        parseJavadoc(javadoc, RC, D, config_, diags_);
+        if(! RC)
+            return;
+        comments::FullComment* FC =
+            RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
+        #else
+        comments::FullComment* FC =
+            D->getASTContext().getCommentForDecl(
+                D, &sema_.getPreprocessor());
+        #endif
+        // KRYSTIAN FIXME: clang ignores documentation comments
+        // when there is a preprocessor directive between the end
+        // of the comment and the declaration location. there are two
+        // ways to fix this: either set the declaration begin location
+        // to be before and preprocessor directives, or submit a patch
+        // which disables this behavior (it's not entirely clear why
+        // this check occurs anyways, so some investigation is needed)
+        parseJavadoc(javadoc, FC, D, config_, diags_);
     }
 
     //------------------------------------------------

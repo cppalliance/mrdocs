@@ -12,11 +12,12 @@
 #define MRDOCS_LIB_METADATA_FINALIZE_HPP
 
 #include "lib/Lib/Info.hpp"
+#include "lib/Lib/Lookup.hpp"
 
 namespace clang {
 namespace mrdocs {
 
-void finalize(InfoSet& Info);
+void finalize(InfoSet& Info, SymbolLookup& Lookup);
 
 } // mrdocs
 } // clang

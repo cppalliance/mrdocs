@@ -103,7 +103,6 @@ private:
                 corpus_.get<RecordInfo>(B.Type.id));
 #endif
         }
-
         for(auto const& id : From.Members)
         {
             const auto& I = corpus_.get<Info>(id);

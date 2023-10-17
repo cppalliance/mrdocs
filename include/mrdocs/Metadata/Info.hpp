@@ -13,11 +13,11 @@
 #define MRDOCS_API_METADATA_INFO_HPP
 
 #include <mrdocs/Platform.hpp>
+#include <mrdocs/Dom.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Specifiers.hpp>
 #include <mrdocs/Metadata/Symbols.hpp>
-#include <mrdocs/Dom.hpp>
-#include <mrdocs/Support/TypeTraits.hpp>
+#include <mrdocs/Support/Visitor.hpp>
 #include <array>
 #include <memory>
 #include <string>
@@ -174,50 +174,36 @@ protected:
 */
 template<
     class InfoTy,
-    class F,
+    class Fn,
     class... Args>
     requires std::derived_from<InfoTy, Info>
 decltype(auto)
 visit(
-    InfoTy& I,
-    F&& f,
+    InfoTy& info,
+    Fn&& fn,
     Args&&... args)
 {
-    add_cv_from_t<InfoTy, Info>& II = I;
-    switch(I.Kind)
+    auto visitor = makeVisitor<Info>(
+        info, std::forward<Fn>(fn),
+        std::forward<Args>(args)...);
+    switch(info.Kind)
     {
     case InfoKind::Namespace:
-        return f(static_cast<add_cv_from_t<
-            InfoTy, NamespaceInfo>&>(II),
-                std::forward<Args>(args)...);
+        return visitor.template visit<NamespaceInfo>();
     case InfoKind::Record:
-        return f(static_cast<add_cv_from_t<
-            InfoTy, RecordInfo>&>(II),
-                std::forward<Args>(args)...);
+        return visitor.template visit<RecordInfo>();
     case InfoKind::Function:
-        return f(static_cast<add_cv_from_t<
-            InfoTy, FunctionInfo>&>(II),
-                std::forward<Args>(args)...);
+        return visitor.template visit<FunctionInfo>();
     case InfoKind::Enum:
-        return f(static_cast<add_cv_from_t<
-            InfoTy, EnumInfo>&>(II),
-                std::forward<Args>(args)...);
+        return visitor.template visit<EnumInfo>();
     case InfoKind::Typedef:
-        return f(static_cast<add_cv_from_t<
-            InfoTy, TypedefInfo>&>(II),
-                std::forward<Args>(args)...);
+        return visitor.template visit<TypedefInfo>();
     case InfoKind::Variable:
-        return f(static_cast<add_cv_from_t<
-            InfoTy, VariableInfo>&>(II),
-                std::forward<Args>(args)...);
+        return visitor.template visit<VariableInfo>();
     case InfoKind::Field:
-        return f(static_cast<add_cv_from_t<
-            InfoTy, FieldInfo>&>(II),
-                std::forward<Args>(args)...);
+        return visitor.template visit<FieldInfo>();
     case InfoKind::Specialization:
-        return f(static_cast<add_cv_from_t<
-            InfoTy, SpecializationInfo>&>(II),
-                std::forward<Args>(args)...);
+        return visitor.template visit<SpecializationInfo>();
     default:
         MRDOCS_UNREACHABLE();
     }

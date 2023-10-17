@@ -10,8 +10,10 @@
 
 #include "Finalize.hpp"
 #include "lib/Lib/Info.hpp"
+#include "lib/Support/NameParser.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <ranges>
+#include <span>
 
 namespace clang {
 namespace mrdocs {
@@ -26,6 +28,52 @@ namespace mrdocs {
 class Finalizer
 {
     InfoSet& info_;
+    SymbolLookup& lookup_;
+    Info* current_ = nullptr;
+
+    bool resolveReference(doc::Reference& ref)
+    {
+        auto parse_result = parseIdExpression(ref.string);
+        if(! parse_result)
+            return false;
+
+        if(parse_result->name.empty())
+            return false;
+
+        const Info* found = nullptr;
+        if(parse_result->qualified)
+        {
+            Info* context = current_;
+            std::vector<std::string_view> qualifier;
+            // KRYSTIAN FIXME: lookupQualified should accept
+            // std::vector<std::string> as the qualifier
+            for(auto& part : parse_result->qualifier)
+                qualifier.push_back(part);
+            if(parse_result->qualifier.empty())
+            {
+                MRDOCS_ASSERT(info_.contains(SymbolID::zero));
+                context = info_.find(SymbolID::zero)->get();
+            }
+            found = lookup_.lookupQualified(
+                context, qualifier, parse_result->name);
+        }
+        else
+        {
+            found = lookup_.lookupUnqualified(
+                current_, parse_result->name);
+        }
+
+        // prevent recursive documentation copies
+        if(ref.kind == doc::Kind::copied &&
+            found && found->id == current_->id)
+            return false;
+
+        // if we found a symbol, replace the reference
+        // ID with the SymbolID of that symbol
+        if(found)
+            ref.id = found->id;
+        return found;
+    }
 
     void finalize(SymbolID& id)
     {
@@ -107,13 +155,35 @@ class Finalizer
         });
     }
 
+    void finalize(doc::Node& node)
+    {
+        visit(node, [&]<typename NodeTy>(NodeTy& N)
+        {
+            if constexpr(requires { N.children; })
+                finalize(N.children);
+
+            if constexpr(std::derived_from<NodeTy, doc::Reference>)
+            {
+                if(! resolveReference(N))
+                {
+                    report::warn("Failed to resolve reference to '{}' from '{}'",
+                        N.string, current_->Name);
+                }
+            }
+        });
+    }
+
+    void finalize(Javadoc& javadoc)
+    {
+        finalize(javadoc.getBlocks());
+    }
+
     template<typename T>
     void finalize(Optional<T>& val) requires
         requires { this->finalize(*val); }
     {
-        if(! val)
-            return;
-        finalize(*val);
+        if(val)
+            finalize(*val);
     }
 
     template<typename T>
@@ -122,18 +192,16 @@ class Finalizer
         // name unless part of a class member access...
         requires { this->finalize(*ptr); }
     {
-        if(! ptr)
-            return;
-        finalize(*ptr);
+        if(ptr)
+            finalize(*ptr);
     }
 
     template<typename T>
     void finalize(std::unique_ptr<T>& ptr) requires
         requires { this->finalize(*ptr); }
     {
-        if(! ptr)
-            return;
-        finalize(*ptr);
+        if(ptr)
+            finalize(*ptr);
     }
 
     template<typename Range>
@@ -162,15 +230,25 @@ class Finalizer
 
 
 public:
-    Finalizer(InfoSet& IS)
-        : info_(IS)
+    Finalizer(
+        InfoSet& Info,
+        SymbolLookup& Lookup)
+        : info_(Info)
+        , lookup_(Lookup)
     {
+    }
+
+    void finalize(Info& I)
+    {
+        current_ = &I;
+        visit(I, *this);
     }
 
     void operator()(NamespaceInfo& I)
     {
         check(I.Namespace);
         check(I.Members);
+        finalize(I.javadoc);
         finalize(I.Specializations);
     }
 
@@ -178,16 +256,18 @@ public:
     {
         check(I.Namespace);
         check(I.Members);
+        finalize(I.javadoc);
         finalize(I.Specializations);
         finalize(I.Template);
         finalize(I.Bases);
-        finalize(I.Friends);
+        // finalize(I.Friends);
     }
 
     void operator()(SpecializationInfo& I)
     {
         check(I.Namespace);
         finalize(I.Members);
+        finalize(I.javadoc);
         finalize(I.Primary);
         finalize(I.Args);
     }
@@ -195,6 +275,7 @@ public:
     void operator()(FunctionInfo& I)
     {
         check(I.Namespace);
+        finalize(I.javadoc);
         finalize(I.Template);
         finalize(I.ReturnType);
         finalize(I.Params);
@@ -203,6 +284,7 @@ public:
     void operator()(TypedefInfo& I)
     {
         check(I.Namespace);
+        finalize(I.javadoc);
         finalize(I.Template);
         finalize(I.Type);
     }
@@ -210,28 +292,34 @@ public:
     void operator()(EnumInfo& I)
     {
         check(I.Namespace);
+        finalize(I.javadoc);
         finalize(I.UnderlyingType);
     }
 
     void operator()(FieldInfo& I)
     {
         check(I.Namespace);
+        finalize(I.javadoc);
         finalize(I.Type);
     }
 
     void operator()(VariableInfo& I)
     {
         check(I.Namespace);
+        finalize(I.javadoc);
         finalize(I.Template);
         finalize(I.Type);
     }
 };
 
-void finalize(InfoSet& IS)
+void finalize(InfoSet& Info, SymbolLookup& Lookup)
 {
-    Finalizer visitor(IS);
-    for(auto& I : IS)
-        visit(*I, visitor);
+    Finalizer visitor(Info, Lookup);
+    for(auto& I : Info)
+    {
+        MRDOCS_ASSERT(I);
+        visitor.finalize(*I);
+    }
 }
 
 } // mrdocs

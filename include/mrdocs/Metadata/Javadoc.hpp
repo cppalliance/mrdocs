@@ -15,7 +15,9 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <mrdocs/Metadata/Symbols.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Visitor.hpp>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -55,6 +57,8 @@ enum class Kind
     returns,
     styled,
     tparam,
+    reference,
+    copied
 };
 
 /** A text style.
@@ -81,12 +85,25 @@ enum class Admonish
 
 /** Parameter pass direction.
 */
-enum class ParamDirection : int
+enum class ParamDirection
 {
     none,
     in,
     out,
     inout
+};
+
+/** Which parts of the documentation to copy.
+
+    @li `all`: copy the brief and the description.
+    @li `brief`: only copy the brief.
+    @li `description`: only copy the description.
+*/
+enum class Parts
+{
+    all = 1, // needed by bitstream
+    brief,
+    description
 };
 
 //--------------------------------------------
@@ -208,6 +225,61 @@ struct Link : Text
     }
 };
 
+/** A reference to a symbol.
+*/
+struct Reference : Text
+{
+    SymbolID id = SymbolID::zero;
+
+    static constexpr Kind static_kind = Kind::reference;
+
+    explicit
+    Reference(
+        String string_ = String()) noexcept
+        : Text(std::move(string_), Kind::reference)
+    {
+    }
+
+    bool operator==(const Reference&) const noexcept = default;
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Reference&>(other);
+    }
+
+protected:
+    Reference(
+        String string_,
+        Kind kind_) noexcept
+        : Text(std::move(string_), kind_)
+    {
+    }
+};
+
+/** Documentation copied from another symbol.
+*/
+struct Copied : Reference
+{
+    Parts parts;
+
+    static constexpr Kind static_kind = Kind::copied;
+
+    Copied(
+        String string_ = String(),
+        Parts parts_ = Parts::all) noexcept
+        : Reference(std::move(string_), Kind::copied)
+        , parts(parts_)
+    {
+    }
+
+    bool operator==(Copied const&) const noexcept = default;
+    bool equals(Node const& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Copied&>(other);
+    }
+};
+
 //------------------------------------------------
 //
 // Block nodes
@@ -247,9 +319,10 @@ struct MRDOCS_DECL
     }
 
     template<std::derived_from<Text> T>
-    void emplace_back(T&& text)
+    T& emplace_back(T&& text)
     {
-        emplace_back(std::make_unique<T>(std::move(text)));
+        return static_cast<T&>(emplace_back(
+            std::make_unique<T>(std::move(text))));
     }
 
     void append(List<Node>&& blocks);
@@ -265,7 +338,7 @@ protected:
     }
 
 private:
-    void emplace_back(std::unique_ptr<Text> text);
+    Text& emplace_back(std::unique_ptr<Text> text);
 };
 
 /** A manually specified section heading.
@@ -497,6 +570,10 @@ visit(
         return f.template operator()<Heading>(std::forward<Args>(args)...);
     case Kind::link:
         return f.template operator()<Link>(std::forward<Args>(args)...);
+    case Kind::reference:
+        return f.template operator()<Reference>(std::forward<Args>(args)...);
+    case Kind::copied:
+        return f.template operator()<Copied>(std::forward<Args>(args)...);
     case Kind::list_item:
         return f.template operator()<ListItem>(std::forward<Args>(args)...);
     case Kind::paragraph:
@@ -516,51 +593,50 @@ visit(
     }
 }
 
-template<class F, class... Args>
-constexpr
-auto
+template<
+    class NodeTy,
+    class Fn,
+    class... Args>
+    requires std::derived_from<NodeTy, Node>
+decltype(auto)
 visit(
-    Node const& node,
-    F&& f, Args&&... args)
+    NodeTy& node,
+    Fn&& fn,
+    Args&&... args)
 {
+    auto visitor = makeVisitor<Node>(
+        node, std::forward<Fn>(fn),
+        std::forward<Args>(args)...);
     switch(node.kind)
     {
     case Kind::admonition:
-        return f(static_cast<Admonition const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Admonition>();
     case Kind::brief:
-        return f(static_cast<Brief const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Brief>();
     case Kind::code:
-        return f(static_cast<Code const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Code>();
     case Kind::heading:
-        return f(static_cast<Heading const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Heading>();
     case Kind::paragraph:
-        return f(static_cast<Paragraph const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Paragraph>();
     case Kind::link:
-        return f(static_cast<Link const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Link>();
+    case Kind::reference:
+        return visitor.template visit<Reference>();
+    case Kind::copied:
+        return visitor.template visit<Copied>();
     case Kind::list_item:
-        return f(static_cast<ListItem const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<ListItem>();
     case Kind::param:
-        return f(static_cast<Param const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Param>();
     case Kind::returns:
-        return f(static_cast<Returns const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Returns>();
     case Kind::styled:
-        return f(static_cast<Styled const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Styled>();
     case Kind::text:
-        return f(static_cast<Text const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<Text>();
     case Kind::tparam:
-        return f(static_cast<TParam const&>(node),
-            std::forward<Args>(args)...);
+        return visitor.template visit<TParam>();
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -593,6 +669,8 @@ MRDOCS_DECL dom::String toString(Style style) noexcept;
 
 //------------------------------------------------
 
+class Corpus;
+
 /** A processed Doxygen-style comment attached to a declaration.
 */
 class MRDOCS_DECL
@@ -621,7 +699,10 @@ public:
     /** Return the brief, or nullptr if there is none.
     */
     doc::Paragraph const*
-    brief() const noexcept;
+    getBrief(Corpus const& corpus) const noexcept;
+
+    doc::List<doc::Block> const&
+    getDescription(Corpus const& corpus) const noexcept;
 
     /** Return the list of top level blocks.
     */
@@ -665,7 +746,8 @@ public:
         the returend overview is invalidated if the
         javadoc object is destroyed.
     */
-    doc::Overview makeOverview() const;
+    doc::Overview
+    makeOverview(const Corpus& corpus) const;
 
     //--------------------------------------------
 
@@ -692,7 +774,6 @@ public:
 private:
     std::string emplace_back(std::unique_ptr<doc::Block>);
 
-    doc::Paragraph const* brief_ = nullptr;
     doc::List<doc::Block> blocks_;
 };
 

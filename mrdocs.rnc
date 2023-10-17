@@ -294,7 +294,7 @@ grammar
         attribute name { text } ?,
         TextNode * }
 
-    TextNode = ( Link | Styled | Text )
+    TextNode = ( Link | Styled | Text | Reference | Copied )
 
     Link = element link { attribute href { text }, text }
     Styled = (
@@ -303,6 +303,16 @@ grammar
         element bold { text } |
         element italic { text } )
     Text = element text { text }
+    Reference = element reference { ID ?, text }
+    Copied =
+        element (
+            copydoc |
+            copybrief |
+            copydetails
+        )
+        {
+            ID ?, text
+        }
 
     #---------------------------------------------
 

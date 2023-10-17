@@ -23,6 +23,10 @@ class Decl;
 class ASTContext;
 class RawComment;
 
+namespace comments {
+  class FullComment;
+} // comments
+
 namespace mrdocs {
 
 /** Initialize clang to recognize our custom comments.
@@ -39,7 +43,7 @@ initCustomCommentCommands(
 void
 parseJavadoc(
     std::unique_ptr<Javadoc>& jd,
-    RawComment* RC,
+    comments::FullComment* FC,
     Decl const* D,
     Config const& config,
     Diagnostics& diags);

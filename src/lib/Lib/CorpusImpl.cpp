@@ -12,6 +12,8 @@
 
 #include "CorpusImpl.hpp"
 #include "lib/AST/ASTVisitor.hpp"
+#include "lib/Metadata/Finalize.hpp"
+#include "lib/Lib/Lookup.hpp"
 #include "lib/Support/Error.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Support/Error.hpp>
@@ -34,10 +36,13 @@ begin() const noexcept ->
         [](const Corpus* corpus, const Info* val) ->
             const Info*
         {
+            MRDOCS_ASSERT(val);
             const CorpusImpl* impl =
                 static_cast<const CorpusImpl*>(corpus);
             auto it = impl->info_.find(val->id);
-            return (++it)->get();
+            if(++it == impl->info_.end())
+                return nullptr;
+            return it->get();
         });
 }
 
@@ -214,6 +219,9 @@ build(
             format_duration(clock_type::now() - start_time));
     #endif
 
+    auto lookup = std::make_unique<SymbolLookup>(*corpus);
+
+    finalize(corpus->info_, *lookup);
     return corpus;
 }
 

@@ -26,11 +26,19 @@ namespace {
 
 class DocVisitor
 {
+    const AdocCorpus& corpus_;
     std::string& dest_;
     std::back_insert_iterator<std::string> ins_;
 
 public:
-    explicit DocVisitor(std::string& dest) noexcept;
+    DocVisitor(
+        const AdocCorpus& corpus,
+        std::string& dest) noexcept
+        : corpus_(corpus)
+        , dest_(dest)
+        , ins_(std::back_inserter(dest_))
+    {
+    }
 
     void operator()(doc::Admonition const& I);
     void operator()(doc::Code const& I);
@@ -43,18 +51,11 @@ public:
     void operator()(doc::Text const& I);
     void operator()(doc::Styled const& I);
     void operator()(doc::TParam const& I);
+    void operator()(doc::Reference const& I);
 
     std::size_t measureLeftMargin(
         doc::List<doc::Text> const& list);
 };
-
-DocVisitor::
-DocVisitor(
-    std::string& dest) noexcept
-    : dest_(dest)
-    , ins_(std::back_inserter(dest_))
-{
-}
 
 void
 DocVisitor::
@@ -124,7 +125,7 @@ DocVisitor::
 operator()(
     doc::Heading const& I)
 {
-    fmt::format_to(ins_, "=== {}\n", I.string);
+    fmt::format_to(ins_, "\n=== {}\n", I.string);
 }
 
 // Also handles doc::Brief
@@ -148,7 +149,7 @@ operator()(
         }
     }
     dest_.push_back('\n');
-    dest_.push_back('\n');
+    // dest_.push_back('\n');
 }
 
 void
@@ -168,7 +169,7 @@ DocVisitor::
 operator()(
     doc::ListItem const& I)
 {
-    dest_.append("* ");
+    dest_.append("\n* ");
     for(auto const& it : RangeFor(I.children))
     {
         auto const n = dest_.size();
@@ -243,6 +244,17 @@ operator()(doc::TParam const& I)
     //dest_ += I.string;
 }
 
+void
+DocVisitor::
+operator()(doc::Reference const& I)
+{
+    //dest_ += I.string;
+    if(I.id == SymbolID::zero)
+        return (*this)(static_cast<const doc::Text&>(I));
+    fmt::format_to(std::back_inserter(dest_), "xref:{}[{}]",
+        corpus_.getXref(I.id), I.string);
+}
+
 std::size_t
 DocVisitor::
 measureLeftMargin(
@@ -267,12 +279,15 @@ measureLeftMargin(
 
 class DomJavadoc : public dom::LazyObjectImpl
 {
+    const AdocCorpus& corpus_;
     Javadoc const& jd_;
 
 public:
     DomJavadoc(
+        const AdocCorpus& corpus,
         Javadoc const& jd) noexcept
-        : jd_(jd)
+        : corpus_(corpus)
+        , jd_(jd)
     {
     }
 
@@ -284,7 +299,7 @@ public:
         T const& I) const
     {
         std::string s;
-        DocVisitor visitor(s);
+        DocVisitor visitor(corpus_, s);
         doc::visit(I, visitor);
         if(! s.empty())
             list.emplace_back(key, std::move(s));
@@ -298,7 +313,7 @@ public:
         std::vector<T const*> const& nodes) const
     {
         std::string s;
-        DocVisitor visitor(s);
+        DocVisitor visitor(corpus_, s);
         for(auto const& t : nodes)
             doc::visit(*t, visitor);
         if(! s.empty())
@@ -313,7 +328,7 @@ public:
         storage_type list;
         list.reserve(2);
 
-        auto ov = jd_.makeOverview();
+        auto ov = jd_.makeOverview(corpus_.getCorpus());
 
         // brief
         if(ov.brief)
@@ -381,7 +396,7 @@ AdocCorpus::
 getJavadoc(
     Javadoc const& jd) const
 {
-    return dom::newObject<DomJavadoc>(jd);
+    return dom::newObject<DomJavadoc>(*this, jd);
 }
 
 } // adoc

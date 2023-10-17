@@ -262,12 +262,15 @@ measureLeftMargin(
 
 class DomJavadoc : public dom::LazyObjectImpl
 {
+    const HTMLCorpus& corpus_;
     Javadoc const& jd_;
 
 public:
     DomJavadoc(
+        const HTMLCorpus& corpus,
         Javadoc const& jd) noexcept
-        : jd_(jd)
+        : corpus_(corpus)
+        , jd_(jd)
     {
     }
 
@@ -308,7 +311,7 @@ public:
         storage_type list;
         list.reserve(2);
 
-        auto ov = jd_.makeOverview();
+        auto ov = jd_.makeOverview(corpus_.getCorpus());
 
         // brief
         if(ov.brief)
@@ -330,7 +333,7 @@ HTMLCorpus::
 getJavadoc(
     Javadoc const& jd) const
 {
-    return dom::newObject<DomJavadoc>(jd);
+    return dom::newObject<DomJavadoc>(*this, jd);
 }
 
 } // html

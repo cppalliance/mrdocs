@@ -271,6 +271,8 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_KIND, {"JavadocNodeKind", &Integer32Abbrev}},
         {JAVADOC_NODE_STRING, {"JavadocNodeString", &StringAbbrev}},
         {JAVADOC_NODE_STYLE, {"JavadocNodeStyle", &Integer32Abbrev}},
+        {JAVADOC_NODE_PART, {"JavadocNodePart", &Integer32Abbrev}},
+        {JAVADOC_NODE_SYMBOLREF, {"JavadocNodeSymbol", &SymbolIDAbbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {NAMESPACE_MEMBERS, {"NamespaceMembers", &SymbolIDsAbbrev}},
         {NAMESPACE_SPECIALIZATIONS, {"NamespaceSpecializations", &SymbolIDsAbbrev}},
@@ -358,8 +360,9 @@ RecordsByBlock{
         {}},
     // doc::Node
     {BI_JAVADOC_NODE_BLOCK_ID,
-        {JAVADOC_NODE_KIND, JAVADOC_NODE_HREF, JAVADOC_NODE_STRING, JAVADOC_NODE_STYLE,
-         JAVADOC_NODE_ADMONISH, JAVADOC_PARAM_DIRECTION}},
+        {JAVADOC_NODE_KIND, JAVADOC_NODE_HREF, JAVADOC_NODE_STRING,
+        JAVADOC_NODE_STYLE, JAVADOC_NODE_ADMONISH, JAVADOC_PARAM_DIRECTION,
+        JAVADOC_NODE_PART, JAVADOC_NODE_SYMBOLREF}},
     // NamespaceInfo
     {BI_NAMESPACE_BLOCK_ID,
         {NAMESPACE_MEMBERS, NAMESPACE_SPECIALIZATIONS, NAMESPACE_BITS}},
@@ -874,31 +877,26 @@ emitBlock(
     StreamSubBlockGuard Block(
         Stream, BI_JAVADOC_NODE_BLOCK_ID);
     emitRecord(I.kind, JAVADOC_NODE_KIND);
-    doc::visit(I.kind,
-    [&]<class T>()
+    visit(I, [&]<typename NodeTy>(const NodeTy& J)
     {
-        if constexpr(! std::is_void_v<T>)
-        {
-            auto const& J = static_cast<T const&>(I);
-            if constexpr(requires { J.href; })
-                emitRecord(J.href, JAVADOC_NODE_HREF);
-            if constexpr(requires { J.string; })
-                emitRecord(J.string, JAVADOC_NODE_STRING);
-            if constexpr(requires { J.style; })
-                emitRecord(J.style, JAVADOC_NODE_STYLE);
-            if constexpr(requires { J.admonish; })
-                emitRecord(J.admonish, JAVADOC_NODE_ADMONISH);
-            if constexpr(requires { J.direction; })
-                emitRecord(J.direction, JAVADOC_PARAM_DIRECTION);
-            if constexpr(requires { J.name; })
-                emitRecord(J.name, JAVADOC_NODE_STRING);
-            if constexpr(requires { J.children; })
-                emitBlock(J.children);
-        }
-        else
-        {
-            MRDOCS_UNREACHABLE();
-        }
+        if constexpr(requires { J.href; })
+            emitRecord(J.href, JAVADOC_NODE_HREF);
+        if constexpr(requires { J.string; })
+            emitRecord(J.string, JAVADOC_NODE_STRING);
+        if constexpr(requires { J.style; })
+            emitRecord(J.style, JAVADOC_NODE_STYLE);
+        if constexpr(requires { J.admonish; })
+            emitRecord(J.admonish, JAVADOC_NODE_ADMONISH);
+        if constexpr(requires { J.direction; })
+            emitRecord(J.direction, JAVADOC_PARAM_DIRECTION);
+        if constexpr(requires { J.parts; })
+            emitRecord(J.parts, JAVADOC_NODE_PART);
+        if constexpr(requires { J.id; })
+            emitRecord(J.id, JAVADOC_NODE_SYMBOLREF);
+        if constexpr(requires { J.name; })
+            emitRecord(J.name, JAVADOC_NODE_STRING);
+        if constexpr(requires { J.children; })
+            emitBlock(J.children);
     });
 }
 
@@ -944,42 +942,42 @@ emitBlock(
     emitRecord(TI->Kind, TYPEINFO_KIND);
     emitRecord(TI->IsPackExpansion, TYPEINFO_IS_PACK);
     visit(*TI, [&]<typename T>(const T& t)
+    {
+        if constexpr(requires { t.id; })
+            emitRecord(t.id, TYPEINFO_ID);
+        if constexpr(requires { t.Name; })
+            emitRecord(t.Name, TYPEINFO_NAME);
+        if constexpr(requires { t.CVQualifiers; })
+            emitRecord(t.CVQualifiers, TYPEINFO_CVQUAL);
+
+        if constexpr(T::isSpecialization())
         {
-            if constexpr(requires { t.id; })
-                emitRecord(t.id, TYPEINFO_ID);
-            if constexpr(requires { t.Name; })
-                emitRecord(t.Name, TYPEINFO_NAME);
-            if constexpr(requires { t.CVQualifiers; })
-                emitRecord(t.CVQualifiers, TYPEINFO_CVQUAL);
+            for(const auto& targ : t.TemplateArgs)
+                emitBlock(targ);
+        }
 
-            if constexpr(T::isSpecialization())
-            {
-                for(const auto& targ : t.TemplateArgs)
-                    emitBlock(targ);
-            }
+        if constexpr(requires { t.ParentType; })
+            emitBlock(t.ParentType, BI_TYPEINFO_PARENT_BLOCK_ID);
 
-            if constexpr(requires { t.ParentType; })
-                emitBlock(t.ParentType, BI_TYPEINFO_PARENT_BLOCK_ID);
+        if constexpr(requires { t.PointeeType; })
+            emitBlock(t.PointeeType, BI_TYPEINFO_CHILD_BLOCK_ID);
 
-            if constexpr(requires { t.PointeeType; })
-                emitBlock(t.PointeeType, BI_TYPEINFO_CHILD_BLOCK_ID);
+        if constexpr(T::isArray())
+        {
+            emitBlock(t.ElementType, BI_TYPEINFO_CHILD_BLOCK_ID);
+            emitBlock(t.Bounds);
+        }
 
-            if constexpr(T::isArray())
-            {
-                emitBlock(t.ElementType, BI_TYPEINFO_CHILD_BLOCK_ID);
-                emitBlock(t.Bounds);
-            }
+        if constexpr(T::isFunction())
+        {
+            emitBlock(t.ReturnType, BI_TYPEINFO_CHILD_BLOCK_ID);
+            for(const auto& P : t.ParamTypes)
+                emitBlock(P, BI_TYPEINFO_PARAM_BLOCK_ID);
 
-            if constexpr(T::isFunction())
-            {
-                emitBlock(t.ReturnType, BI_TYPEINFO_CHILD_BLOCK_ID);
-                for(const auto& P : t.ParamTypes)
-                    emitBlock(P, BI_TYPEINFO_PARAM_BLOCK_ID);
-
-                emitRecord(t.RefQualifier, TYPEINFO_REFQUAL);
-                emitRecord(t.ExceptionSpec, TYPEINFO_EXCEPTION_SPEC);
-            }
-        });
+            emitRecord(t.RefQualifier, TYPEINFO_REFQUAL);
+            emitRecord(t.ExceptionSpec, TYPEINFO_EXCEPTION_SPEC);
+        }
+    });
 }
 
 void
@@ -1055,28 +1053,28 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_PARAM_BLOCK_ID);
     visit(*T, [&]<typename T>(const T& P)
+    {
+        emitRecord(P.Kind, TEMPLATE_PARAM_KIND);
+        emitRecord(P.Name, TEMPLATE_PARAM_NAME);
+        emitRecord(P.IsParameterPack, TEMPLATE_PARAM_IS_PACK);
+
+        if(P.Default)
+            emitBlock(P.Default);
+
+        if constexpr(T::isType())
         {
-            emitRecord(P.Kind, TEMPLATE_PARAM_KIND);
-            emitRecord(P.Name, TEMPLATE_PARAM_NAME);
-            emitRecord(P.IsParameterPack, TEMPLATE_PARAM_IS_PACK);
-
-            if(P.Default)
-                emitBlock(P.Default);
-
-            if constexpr(T::isType())
-            {
-                emitRecord(P.KeyKind, TEMPLATE_PARAM_KEY_KIND);
-            }
-            if constexpr(T::isNonType())
-            {
-                emitBlock(P.Type);
-            }
-            if constexpr(T::isTemplate())
-            {
-                for(const auto& P : P.Params)
-                    emitBlock(P);
-            }
-        });
+            emitRecord(P.KeyKind, TEMPLATE_PARAM_KEY_KIND);
+        }
+        if constexpr(T::isNonType())
+        {
+            emitBlock(P.Type);
+        }
+        if constexpr(T::isTemplate())
+        {
+            for(const auto& P : P.Params)
+                emitBlock(P);
+        }
+    });
 }
 
 void
@@ -1086,24 +1084,24 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_ARG_BLOCK_ID);
     visit(*T, [&]<typename T>(const T& A)
-        {
-            emitRecord(A.Kind, TEMPLATE_ARG_KIND);
-            emitRecord(A.IsPackExpansion, TEMPLATE_ARG_IS_PACK);
+    {
+        emitRecord(A.Kind, TEMPLATE_ARG_KIND);
+        emitRecord(A.IsPackExpansion, TEMPLATE_ARG_IS_PACK);
 
-            if constexpr(T::isType())
-            {
-                emitBlock(A.Type);
-            }
-            else if constexpr(T::isNonType())
-            {
-                emitBlock(A.Value);
-            }
-            else if constexpr(T::isTemplate())
-            {
-                emitRecord(A.Template, TEMPLATE_ARG_TEMPLATE);
-                emitRecord(A.Name, TEMPLATE_ARG_NAME);
-            }
-        });
+        if constexpr(T::isType())
+        {
+            emitBlock(A.Type);
+        }
+        else if constexpr(T::isNonType())
+        {
+            emitBlock(A.Value);
+        }
+        else if constexpr(T::isTemplate())
+        {
+            emitRecord(A.Template, TEMPLATE_ARG_TEMPLATE);
+            emitRecord(A.Name, TEMPLATE_ARG_NAME);
+        }
+    });
 }
 
 void

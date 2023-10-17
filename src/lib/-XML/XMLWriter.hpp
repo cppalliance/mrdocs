@@ -91,6 +91,8 @@ public:
     void writeStyledText(doc::Styled const& node);
     void writeText(doc::Text const& node);
     void writeTParam(doc::TParam const& node);
+    void writeReference(doc::Reference const& node);
+    void writeCopied(doc::Copied const& node);
 };
 
 } // xml

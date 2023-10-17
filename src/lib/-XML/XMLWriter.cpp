@@ -593,10 +593,51 @@ writeNode(
     case doc::Kind::returns:
         writeReturns(static_cast<doc::Returns const&>(node));
         break;
+    case doc::Kind::reference:
+        writeReference(static_cast<doc::Reference const&>(node));
+        break;
+    case doc::Kind::copied:
+        writeCopied(static_cast<doc::Copied const&>(node));
+        break;
     default:
         // unknown kind
         MRDOCS_UNREACHABLE();
     }
+}
+
+void
+XMLWriter::
+writeReference(
+    doc::Reference const& node)
+{
+    tags_.write("reference", node.string, {
+        { node.id }
+        });
+}
+
+void
+XMLWriter::
+writeCopied(
+    doc::Copied const& node)
+{
+    std::string_view tag_name;
+    switch(node.parts)
+    {
+    case doc::Parts::all:
+        tag_name = "copydoc";
+        break;
+    case doc::Parts::brief:
+        tag_name = "copybrief";
+        break;
+    case doc::Parts::description:
+        tag_name = "copydetails";
+        break;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+    tags_.write(tag_name, node.string, {
+        { node.id }
+        });
 }
 
 void

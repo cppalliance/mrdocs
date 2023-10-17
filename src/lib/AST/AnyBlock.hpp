@@ -261,14 +261,16 @@ class JavadocNodesBlock
     : public BitcodeReader::AnyBlock
 {
     BitcodeReader& br_;
+    Javadoc& jd_;
 
 public:
     doc::List<doc::Node> nodes;
 
-    explicit
     JavadocNodesBlock(
-        BitcodeReader& br) noexcept
+        BitcodeReader& br,
+        Javadoc& jd) noexcept
         : br_(br)
+        , jd_(jd)
     {
     }
 
@@ -289,6 +291,31 @@ public:
             if(node->kind != doc::Kind::admonition)
                 return formatError("admonish on wrong kind");
             static_cast<doc::Admonition*>(node)->admonish = admonish;
+            return Error::success();
+        }
+
+        case JAVADOC_NODE_PART:
+        {
+            doc::Parts parts = doc::Parts::all;
+            if(auto err = decodeRecord(R, parts, Blob))
+                return err;
+            auto node = nodes.back().get();
+            if(node->kind != doc::Kind::copied)
+                return formatError("part on wrong kind");
+            static_cast<doc::Copied*>(node)->parts = parts;
+            return Error::success();
+        }
+
+        case JAVADOC_NODE_SYMBOLREF:
+        {
+            SymbolID id;
+            if(auto err = decodeRecord(R, id, Blob))
+                return err;
+            auto node = nodes.back().get();
+            if(node->kind != doc::Kind::reference &&
+                node->kind != doc::Kind::copied)
+                return formatError("reference on wrong kind");
+            static_cast<doc::Reference*>(node)->id = id;
             return Error::success();
         }
 
@@ -324,19 +351,54 @@ public:
             doc::Kind kind{};
             if(auto err = decodeRecord(R, kind, Blob))
                 return err;
-            return visit(kind,
-                [&]<class T>()
-                {
-                    if constexpr(! std::is_same_v<T, void>)
-                    {
-                        nodes.emplace_back(std::make_unique<T>());
-                        return Error::success();
-                    }
-                    else
-                    {
-                        return formatError("unknown doc::Kind");
-                    }
-                });
+            switch(kind)
+            {
+            case doc::Kind::admonition:
+                nodes.emplace_back(std::make_unique<doc::Admonition>());
+                break;
+            case doc::Kind::brief:
+                nodes.emplace_back(std::make_unique<doc::Brief>());
+                break;
+            case doc::Kind::code:
+                nodes.emplace_back(std::make_unique<doc::Code>());
+                break;
+            case doc::Kind::heading:
+                nodes.emplace_back(std::make_unique<doc::Heading>());
+                break;
+            case doc::Kind::paragraph:
+                nodes.emplace_back(std::make_unique<doc::Paragraph>());
+                break;
+            case doc::Kind::link:
+                nodes.emplace_back(std::make_unique<doc::Link>());
+                break;
+            case doc::Kind::reference:
+                nodes.emplace_back(std::make_unique<doc::Reference>());
+                break;
+            case doc::Kind::copied:
+                nodes.emplace_back(std::make_unique<doc::Copied>());
+                break;
+            case doc::Kind::list_item:
+                nodes.emplace_back(std::make_unique<doc::ListItem>());
+                break;
+            case doc::Kind::param:
+                nodes.emplace_back(std::make_unique<doc::Param>());
+                break;
+            case doc::Kind::returns:
+                nodes.emplace_back(std::make_unique<doc::Returns>());
+                break;
+            case doc::Kind::styled:
+                nodes.emplace_back(std::make_unique<doc::Styled>());
+                break;
+            case doc::Kind::text:
+                nodes.emplace_back(std::make_unique<doc::Text>());
+                break;
+            case doc::Kind::tparam:
+                nodes.emplace_back(std::make_unique<doc::TParam>());
+                break;
+            default:
+                return formatError("unknown doc::Kind");
+            }
+            return Error::success();
         }
 
         case JAVADOC_NODE_STRING:
@@ -350,6 +412,8 @@ public:
             case doc::Kind::text:
             case doc::Kind::styled:
             case doc::Kind::link:
+            case doc::Kind::reference:
+            case doc::Kind::copied:
                 static_cast<doc::Text*>(
                     node)->string = Blob.str();
                 return Error::success();
@@ -398,7 +462,7 @@ public:
                 node->kind == doc::Kind::styled)
                 return formatError("text node cannot have list");
 
-            JavadocNodesBlock B(br_);
+            JavadocNodesBlock B(br_, jd_);
             if(auto err = br_.readBlock(B, ID))
                 return err;
             static_cast<doc::Block*>(node)->append(
@@ -428,7 +492,7 @@ class JavadocBlock
 public:
     JavadocBlock(
         std::unique_ptr<Javadoc>& I,
-        BitcodeReader& br) noexcept
+        BitcodeReader& br)
         : br_(br)
         , I_(I)
     {
@@ -443,7 +507,7 @@ public:
         {
         case BI_JAVADOC_LIST_BLOCK_ID:
         {
-            JavadocNodesBlock B(br_);
+            JavadocNodesBlock B(br_, *I_);
             if(auto err = br_.readBlock(B, ID))
                 return err;
             I_->append(std::move(B.nodes));

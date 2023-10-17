@@ -14,24 +14,33 @@
 <!-- Info Types -->
 
     <Type Name="clang::mrdocs::SymbolID">
-        <DisplayString Condition="strncmp((char*)data_, (char*)SymbolID::zero.data_, 20) != 0">{data_[0],nvoXb}{data_[1],nvoXb}{data_[2],nvoXb}{data_[3],nvoXb}{data_[4],nvoXb}{data_[5],nvoXb}{data_[6],nvoXb}{data_[7],nvoXb}{data_[8],nvoXb}{data_[9],nvoXb}{data_[10],nvoXb}{data_[11],nvoXb}{data_[12],nvoXb}{data_[13],nvoXb}{data_[14],nvoXb}{data_[15],nvoXb}{data_[16],nvoXb}{data_[17],nvoXb}{data_[18],nvoXb}{data_[19],nvoXb}</DisplayString>
-        <DisplayString Condition="strncmp((char*)data_, (char*)SymbolID::zero.data_, 20) == 0">empty SymbolID</DisplayString>
+        <DisplayString Condition="strncmp((char*)this, (char*)&amp;SymbolID::zero, 20) != 0">{data_[0],nvoXb}{data_[1],nvoXb}{data_[2],nvoXb}{data_[3],nvoXb}{data_[4],nvoXb}{data_[5],nvoXb}{data_[6],nvoXb}{data_[7],nvoXb}{data_[8],nvoXb}{data_[9],nvoXb}{data_[10],nvoXb}{data_[11],nvoXb}{data_[12],nvoXb}{data_[13],nvoXb}{data_[14],nvoXb}{data_[15],nvoXb}{data_[16],nvoXb}{data_[17],nvoXb}{data_[18],nvoXb}{data_[19],nvoXb}</DisplayString>
+        <DisplayString>empty SymbolID</DisplayString>
         <Expand>
         </Expand>
     </Type>
 
     <Type Name="clang::mrdocs::Optional&lt;clang::mrdocs::SymbolID, *&gt;">
-        <DisplayString Condition="strncmp((char*)t_.data_, (char*)SymbolID::zero.data_, 20) != 0">{t_}</DisplayString>
-        <DisplayString Condition="strncmp((char*)t_.data_, (char*)SymbolID::zero.data_, 20) == 0">empty</DisplayString>
+        <DisplayString Condition="strncmp((char*)t_.data_, (char*)&amp;SymbolID::zero, 20) != 0">{t_}</DisplayString>
+        <DisplayString>empty</DisplayString>
         <Expand>
         </Expand>
     </Type>
 
 <!-- Error Types -->
 
+    <Type Name="clang::mrdocs::Error">
+        <DisplayString>{reason_}</DisplayString>
+    </Type>
+
     <Type Name="clang::mrdocs::Expected&lt;*, *&gt;">
         <DisplayString Condition="has_value_">{val_}</DisplayString>
-        <DisplayString Condition="! has_value_">{-&gt;unex_}</DisplayString>
+        <DisplayString Condition="! has_value_">{unex_}</DisplayString>
+
+        <Expand>
+            <ExpandedItem Condition="has_value_">val_</ExpandedItem>
+            <ExpandedItem Condition="! has_value_">unex_</ExpandedItem>
+        </Expand>
     </Type>
 
 <!-- Dom Types -->
