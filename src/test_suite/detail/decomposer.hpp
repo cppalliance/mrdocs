@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <string_view>
 #include <sstream>
+#include <utility>
 
 #if defined(__has_include) && __has_include(<fmt/format.h>)
 #include <fmt/format.h>
@@ -112,6 +113,10 @@ namespace test_suite::detail
     {
         T lhs_;
 
+        template <class U>
+        static constexpr bool integral_comparison =
+            std::integral<std::decay_t<T>> && std::integral<std::decay_t<U>>;
+
     public:
         explicit first_operand(T lhs) : lhs_(lhs) {}
 
@@ -120,7 +125,14 @@ namespace test_suite::detail
         binary_operands<T, U const &>
         operator==(first_operand &&lhs, U &&rhs)
         {
-            return {static_cast<bool>( lhs.lhs_ == rhs ), lhs.lhs_, "==", rhs};
+            if constexpr (integral_comparison<U>)
+            {
+                return {std::cmp_equal( lhs.lhs_, rhs ), lhs.lhs_, "==", rhs};
+            }
+            else
+            {
+                return {static_cast<bool>( lhs.lhs_ == rhs ), lhs.lhs_, "==", rhs};
+            }
         }
 
         template<class U>
@@ -128,7 +140,14 @@ namespace test_suite::detail
         binary_operands<T, U const &>
         operator!=(first_operand &&lhs, U &&rhs)
         {
-            return {static_cast<bool>( lhs.lhs_ != rhs ), lhs.lhs_, "!=", rhs};
+            if constexpr (integral_comparison<U>)
+            {
+                return {std::cmp_not_equal( lhs.lhs_, rhs ), lhs.lhs_, "!=", rhs};
+            }
+            else
+            {
+                return {static_cast<bool>( lhs.lhs_ != rhs ), lhs.lhs_, "!=", rhs};
+            }
         }
 
         template<class U>
@@ -136,7 +155,14 @@ namespace test_suite::detail
         binary_operands<T, U const &>
         operator<(first_operand &&lhs, U &&rhs)
         {
-            return {static_cast<bool>( lhs.lhs_ < rhs ), lhs.lhs_, "<", rhs};
+            if constexpr (integral_comparison<U>)
+            {
+                return {std::cmp_less( lhs.lhs_, rhs ), lhs.lhs_, "<", rhs};
+            }
+            else
+            {
+                return {static_cast<bool>( lhs.lhs_ < rhs ), lhs.lhs_, "<", rhs};
+            }
         }
 
         template<class U>
@@ -144,7 +170,14 @@ namespace test_suite::detail
         binary_operands<T, U const &>
         operator<=(first_operand &&lhs, U &&rhs)
         {
-            return {static_cast<bool>( lhs.lhs_ <= rhs ), lhs.lhs_, "<=", rhs};
+            if constexpr (integral_comparison<U>)
+            {
+                return {std::cmp_less_equal( lhs.lhs_, rhs ), lhs.lhs_, "<=", rhs};
+            }
+            else
+            {
+                return {static_cast<bool>( lhs.lhs_ <= rhs ), lhs.lhs_, "<=", rhs};
+            }
         }
 
         template<class U>
@@ -152,7 +185,14 @@ namespace test_suite::detail
         binary_operands<T, U const &>
         operator>(first_operand &&lhs, U &&rhs)
         {
-            return {static_cast<bool>( lhs.lhs_ > rhs ), lhs.lhs_, ">", rhs};
+            if constexpr (integral_comparison<U>)
+            {
+                return {std::cmp_greater( lhs.lhs_, rhs ), lhs.lhs_, ">", rhs};
+            }
+            else
+            {
+                return {static_cast<bool>( lhs.lhs_ > rhs ), lhs.lhs_, ">", rhs};
+            }
         }
 
         template<class U>
@@ -160,7 +200,14 @@ namespace test_suite::detail
         binary_operands<T, U const &>
         operator>=(first_operand &&lhs, U &&rhs)
         {
-            return {static_cast<bool>( lhs.lhs_ >= rhs ), lhs.lhs_, ">=", rhs};
+            if constexpr (integral_comparison<U>)
+            {
+                return {std::cmp_greater_equal( lhs.lhs_, rhs ), lhs.lhs_, ">=", rhs};
+            }
+            else
+            {
+                return {static_cast<bool>( lhs.lhs_ >= rhs ), lhs.lhs_, ">=", rhs};
+            }
         }
 
         template<class U>
