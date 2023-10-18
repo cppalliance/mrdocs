@@ -4192,6 +4192,105 @@ replace_fn(dom::Array const& arguments)
     }
 }
 
+dom::Value
+find_index_fn(
+    dom::Array const& arguments)
+{
+    dom::Value range;
+    dom::Value val;
+    std::int64_t start = 0;
+    std::int64_t end = 0;
+
+    std::size_t const n = arguments.size();
+    dom::Value options = arguments.back();
+    dom::Value fn = options.get("fn");
+    dom::Value firstArg = arguments.get(0);
+    dom::Value secondArg = arguments.get(1);
+
+    bool const isBlock = static_cast<bool>(fn);
+    if (isBlock)
+    {
+        // val, start, end
+        range = static_cast<std::string>(fn());
+        val = firstArg.getString();
+        end = static_cast<std::int64_t>(range.size());
+        if (n > 2)
+        {
+            start = secondArg.getInteger();
+            if (n > 3)
+            {
+                end = arguments.get(2).getInteger();
+            }
+        }
+    }
+    else
+    {
+        // range, val, start, end
+        range = firstArg;
+        val = secondArg;
+        end = static_cast<std::int64_t>(range.size());
+        if (n > 3)
+        {
+            start = arguments.at(2).getInteger();
+            if (n > 4)
+            {
+                end = arguments.at(3).getInteger();
+            }
+        }
+    }
+    start = normalize_index(start, static_cast<std::int64_t>(range.size()));
+    end = normalize_index(end, static_cast<std::int64_t>(range.size()));
+    if (range.isString())
+    {
+        // Find position of substring val in range
+        std::size_t pos = range.getString().get().find(val.getString(), start);
+        if (pos == std::string::npos || static_cast<std::int64_t>(pos) >= end) {
+            return static_cast<std::int64_t>(-1);
+        }
+        return static_cast<std::int64_t>(pos);
+    }
+    if (range.isArray())
+    {
+        // Find position of item val in array
+        auto const& arr = range.getArray();
+        for (std::int64_t i = start; i < end; i++)
+        {
+            if (arr.get(i) == val)
+            {
+                return i;
+            }
+        }
+        return static_cast<std::int64_t>(-1);
+    }
+    else if (range.isObject())
+    {
+        // Find key of item val in object
+        auto const& obj = range.getObject();
+        dom::Value res(dom::Kind::Undefined);
+        auto i = 0;
+        obj.visit([&](dom::String const& k, dom::Value const& v) -> bool
+        {
+            if (i < start)
+            {
+                ++i;
+                return true;
+            }
+            if (i >= end)
+            {
+                return false;
+            }
+            if (v == val)
+            {
+                res = k;
+                return false;
+            }
+            return true;
+        });
+        return res;
+    }
+    return range;
+}
+
 void
 registerStringHelpers(Handlebars& hbs)
 {
@@ -4508,63 +4607,26 @@ registerStringHelpers(Handlebars& hbs)
         return res;
     }));
 
-    static constexpr auto find_index_fn = [](
-        dom::Array const& arguments)
-    {
-        std::string str;
-        std::string sub;
-        std::int64_t start = 0;
-        std::int64_t end = 0;
-        std::size_t const n = arguments.size();
-        dom::Value options = arguments.back();
-        dom::Value fn = options.get("fn");
-        dom::Value firstArg = arguments.get(0);
-        dom::Value secondArg = arguments.get(1);
-        bool const isBlock = static_cast<bool>(fn);
-        if (isBlock)
-        {
-            str = static_cast<std::string>(fn());
-            sub = firstArg.getString();
-            end = static_cast<std::int64_t>(str.size());
-            if (n > 2)
-            {
-                start = secondArg.getInteger();
-                if (n > 3)
-                {
-                    end = arguments.at(2).getInteger();
-                }
-            }
-        }
-        else
-        {
-            str = firstArg.getString();
-            sub = secondArg.getString();
-            end = static_cast<std::int64_t>(str.size());
-            if (n > 3)
-            {
-                start = arguments.at(2).getInteger();
-                if (n > 4)
-                {
-                    end = arguments.at(3).getInteger();
-                }
-            }
-        }
-        start = normalize_index(start, static_cast<std::int64_t>(str.size()));
-        end = normalize_index(end, static_cast<std::int64_t>(str.size()));
-        std::size_t pos = str.find(sub, start);
-        if (pos == std::string::npos || static_cast<std::int64_t>(pos) >= end) {
-            return static_cast<std::int64_t>(-1);
-        }
-        return static_cast<std::int64_t>(pos);
-    };
-
     hbs.registerHelper("find", dom::makeVariadicInvocable(find_index_fn));
     hbs.registerHelper("index_of", dom::makeVariadicInvocable(find_index_fn));
 
     hbs.registerHelper("includes", dom::makeVariadicInvocable([](
-        dom::Array const& arguments)
+        dom::Array const& arguments) -> bool
     {
-        return find_index_fn(arguments) != -1;
+        dom::Value res = find_index_fn(arguments);
+        if (res.isInteger())
+        {
+            return res.getInteger() >= 0;
+        }
+        if (res.isUndefined())
+        {
+            return false;
+        }
+        if (res.isString())
+        {
+            return true;
+        }
+        return res.isTruthy();
     }));
 
     auto rfind_index_fn = [](
@@ -5700,37 +5762,8 @@ registerContainerHelpers(Handlebars& hbs)
     hbs.registerHelper("del", del_fn);
     hbs.registerHelper("delete", del_fn);
 
-    static auto find_fn = dom::makeInvocable([](
-        dom::Value range, dom::Value const& val) -> dom::Value {
-        if (range.isArray())
-        {
-            auto const& arr = range.getArray();
-            auto const n = static_cast<std::int64_t>(arr.size());
-            for (std::int64_t i = 0; i < n; i++)
-            {
-                if (arr[i] == val)
-                    return i;
-            }
-            return static_cast<std::int64_t>(-1);
-        }
-        else if (range.isObject())
-        {
-            auto const& obj = range.getObject();
-            for (auto const& [k, v]: obj)
-            {
-                if (v == val)
-                    return k;
-            }
-            return nullptr;
-        }
-        else
-        {
-            return range;
-        }
-    });
-
-    hbs.registerHelper("find", find_fn);
-    hbs.registerHelper("index_of", find_fn);
+    hbs.registerHelper("find", dom::makeVariadicInvocable(find_index_fn));
+    hbs.registerHelper("index_of", dom::makeVariadicInvocable(find_index_fn));
 
     static auto has_fn = dom::makeInvocable([](
         dom::Value const& ctx, dom::Value const& prop)
