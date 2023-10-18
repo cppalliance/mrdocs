@@ -242,10 +242,12 @@ type_key() const noexcept
     switch(kind_)
     {
     using enum Kind;
+    case Undefined:   return "undefined";
     case Null:        return "null";
-    case Boolean:     return "bool";
+    case Boolean:     return "boolean";
     case Integer:     return "integer";
     case String:      return "string";
+    case SafeString:  return "safeString";
     case Array:       return arr_.type_key();
     case Object:      return obj_.type_key();
     case Function:    return fn_.type_key();
@@ -298,6 +300,17 @@ getArray() const
     Error("not an Array").Throw();
 }
 
+Array&
+Value::
+getArray()
+{
+    if(kind_ == Kind::Array)
+    {
+        return arr_;
+    }
+    Error("not an Array").Throw();
+}
+
 Object const&
 Value::
 getObject() const
@@ -322,13 +335,13 @@ getFunction() const
 
 dom::Value
 Value::
-operator[](std::string_view key) const
+get(std::string_view key) const
 {
     if (kind_ == Kind::Object)
     {
-        return obj_[key];
+        return obj_.get(key);
     }
-    if (kind_ == Kind::Array)
+    if (kind_ == Kind::Array || kind_ == Kind::String)
     {
         auto isDigit = [](auto c) {
             return c >= '0' && c <= '9';
@@ -340,7 +353,15 @@ operator[](std::string_view key) const
                 key.data(), key.data() + key.size(), idx);
             if (res.ec == std::errc())
             {
-                return arr_[idx];
+                if (kind_ == Kind::String && idx < str_.size())
+                {
+                    return String(std::string_view(
+                        str_.get().data() + idx, 1));
+                }
+                else if (kind_ == Kind::Array && idx < arr_.size())
+                {
+                    return arr_.get(idx);
+                }
             }
         }
     }
@@ -349,32 +370,86 @@ operator[](std::string_view key) const
 
 dom::Value
 Value::
-operator[](std::size_t i) const
+get(std::size_t i) const
 {
     if (kind_ == Kind::Array)
     {
-        return arr_[i];
+        return arr_.get(i);
+    }
+    if (kind_ == Kind::String)
+    {
+        if (i < str_.size())
+        {
+            return str_.get()[i];
+        }
     }
     if (kind_ == Kind::Object)
     {
-        return obj_[i].value;
+        std::string key = std::to_string(i);
+        return obj_.get(key);
     }
     return {};
 }
 
 dom::Value
 Value::
-operator[](dom::Value const& i) const
+get(dom::Value const& i) const
 {
     if (i.isInteger())
     {
-        return operator[](static_cast<std::size_t>(i.getInteger()));
+        return get(static_cast<std::size_t>(i.getInteger()));
     }
     if (i.isString() || i.isSafeString())
     {
-        return operator[](i.getString().get());
+        return get(i.getString().get());
     }
     return {};
+}
+
+dom::Value
+Value::
+lookup(std::string_view keys) const
+{
+    dom::Value cur = *this;
+    std::size_t pos = keys.find('.');
+    std::string_view key = keys.substr(0, pos);
+    while (pos != std::string_view::npos)
+    {
+        cur = cur.get(key);
+        if (cur.isUndefined())
+        {
+            return cur;
+        }
+        keys = keys.substr(pos + 1);
+        pos = keys.find('.');
+        key = keys.substr(0, pos);
+    }
+    return cur.get(key);
+}
+
+void
+Value::
+set(String const& key, Value const& value)
+{
+    if (isObject())
+    {
+        obj_.set(key, value);
+        return;
+    }
+    if (isArray())
+    {
+        std::string_view idxStr = key;
+        std::size_t idx = 0;
+        auto res = std::from_chars(
+            idxStr.data(),
+            idxStr.data() + idxStr.size(),
+            idx);
+        if (res.ec == std::errc())
+        {
+            arr_.set(idx, value);
+        }
+        return;
+    }
 }
 
 bool
@@ -597,7 +672,9 @@ stringify(
 {
     switch(value.kind())
     {
+    case Kind::Undefined:
     case Kind::Null:
+    case Kind::Function:
         dest.append("null");
         break;
     case Kind::Boolean:
@@ -614,6 +691,7 @@ stringify(
         dest.append(std::to_string(value.getInteger()));
         break;
     case Kind::String:
+    case Kind::SafeString:
     {
         std::string_view const s =
             value.getString().get();
@@ -642,8 +720,13 @@ stringify(
         Array::size_type n = arr.size();
         for(std::size_t i = 0; i < n; ++i)
         {
+            dom::Value value = arr.get(i);
+            if (value.isUndefined() || value.isFunction())
+            {
+                continue;
+            }
             dest.append(indent);
-            stringify(dest, arr.get(i), indent, visited);
+            stringify(dest, value, indent, visited);
             if(i != n - 1)
             {
                 dest.push_back(',');
@@ -670,30 +753,31 @@ stringify(
         }
         indent.append("    ");
         dest.append("{\n");
-        auto it = obj.begin();
-        while (it != obj.end())
+        bool is_first = true;
+        obj.visit([&](String const& key, Value const& value)
         {
-            auto it0 = it++;
-            dest.append(indent);
-            dest.push_back('"');
-            JSON::escape(dest, it0->key);
-            dest.append("\" : ");
-            stringify(dest,
-                it0->value, indent, visited);
-            if(it != obj.end())
+            if (value.isUndefined() || value.isFunction())
+            {
+                return;
+            }
+            if (!is_first)
             {
                 dest.push_back(',');
+                dest.push_back('\n');
             }
-            dest.push_back('\n');
-        }
+            is_first = false;
+            dest.append(indent);
+            dest.push_back('"');
+            JSON::escape(dest, key);
+            dest.append("\": ");
+            stringify(dest, value, indent, visited);
+        });
+        dest.push_back('\n');
         indent.resize(indent.size() - 4);
         dest.append(indent);
         dest.append("}");
         break;
     }
-    case Kind::Function:
-        dest.append("\"(function)\"");
-        break;
     default:
         MRDOX_UNREACHABLE();
     }
@@ -774,6 +858,10 @@ operator<=>(dom::Value const& lhs, dom::Value const& rhs) noexcept
     case Object:
         return lhs.obj_ <=> rhs.obj_;
     case Function:
+        if (lhs.fn_.impl() == rhs.fn_.impl())
+        {
+            return std::strong_ordering::equal;
+        }
         return std::strong_ordering::equivalent;
     default:
         MRDOX_UNREACHABLE();
@@ -803,7 +891,7 @@ toString(
     case Kind::SafeString:
         return std::string(value.str_.get());
     case Kind::Function:
-        return "[function]";
+        return "[object Function]";
     default:
         MRDOX_UNREACHABLE();
     }

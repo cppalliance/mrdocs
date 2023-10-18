@@ -139,14 +139,14 @@ public:
     template<class T>
     requires std::constructible_from<Value, T>
     Value(std::optional<T> const& opt)
-        : Value(opt.value_or(Value()))
+        : Value(opt.value_or(Value(Kind::Undefined)))
     {
     }
 
     template<class T>
     requires std::constructible_from<Value, T>
     Value(Optional<T> const& opt)
-        : Value(opt ? Value(*opt) : Value())
+        : Value(opt ? Value(*opt) : Value(Kind::Undefined))
     {
     }
 
@@ -265,6 +265,11 @@ public:
     Array const&
     getArray() const;
 
+    /** @copydoc getArray()
+    */
+    Array&
+    getArray();
+
     /** Return the object.
 
         @throw Exception `! isObject()`
@@ -286,24 +291,42 @@ public:
         is returned.
     */
     dom::Value
-    operator[](std::string_view key) const;
+    get(std::string_view key) const;
 
     template <std::convertible_to<std::string_view> S>
     dom::Value
-    operator[](S const& key) const
+    get(S const& key) const
     {
-        return operator[](std::string_view(key));
+        return get(std::string_view(key));
     }
 
     /** Return the element at a given index.
     */
     dom::Value
-    operator[](std::size_t i) const;
+    get(std::size_t i) const;
 
     /** Return the element at a given index or key.
     */
     dom::Value
-    operator[](dom::Value const& i) const;
+    get(dom::Value const& i) const;
+
+    /** Lookup a sequence of keys.
+
+        This function is equivalent to calling `get`
+        multiple times, once for each key in the sequence
+        of dot-separated keys.
+
+        @return The value at the end of the sequence, or
+        a Value of type @ref Kind::Undefined if any key
+        is not found.
+    */
+    dom::Value
+    lookup(std::string_view keys) const;
+
+    /** Set or replace the value for a given key.
+     */
+    void
+    set(String const& key, Value const& value);
 
     /** Return true if a key exists.
     */
@@ -349,32 +372,6 @@ public:
     operator std::string() const noexcept
     {
         return toString(*this);
-    }
-
-    /** Set or replace the value for a given key.
-    */
-    void
-    set(String const& key, Value const& value)
-    {
-        if (isObject())
-        {
-            obj_.set(key, value);
-            return;
-        }
-        if (isArray())
-        {
-            std::string_view idxStr = key;
-            std::size_t idx = 0;
-            auto res = std::from_chars(
-                idxStr.data(),
-                idxStr.data() + idxStr.size(),
-                idx);
-            if (res.ec == std::errc())
-            {
-                arr_.set(idx, value);
-            }
-            return;
-        }
     }
 
     /** Swap two values.

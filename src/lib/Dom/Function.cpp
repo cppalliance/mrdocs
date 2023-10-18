@@ -84,7 +84,7 @@ char const*
 FunctionImpl::
 type_key() const noexcept
 {
-    return "function";
+    return "Function";
 }
 
 } // dom

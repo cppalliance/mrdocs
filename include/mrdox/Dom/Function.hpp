@@ -90,10 +90,20 @@ concept has_function_traits = requires {
 };
 
 template<typename F>
-concept has_invoke_result_for_default_function_impl =
-    // Return type is void or convertible to dom::Value
+concept has_invoke_result_convertible_to_dom_value =
     std::convertible_to<typename function_traits<F>::return_type, Value> ||
     std::same_as<typename function_traits<F>::return_type, void>;
+
+template<typename F>
+concept has_invoke_expected_result_convertible_to_dom_value =
+    detail::isExpected<typename function_traits<F>::return_type> &&
+    (std::convertible_to<typename function_traits<F>::return_type::value_type, Value> ||
+     std::same_as<typename function_traits<F>::return_type::value_type, void>);
+
+template<typename F>
+concept has_invoke_result_for_default_function_impl =
+    has_invoke_result_convertible_to_dom_value<F> ||
+    has_invoke_expected_result_convertible_to_dom_value<F>;
 
 template<typename F>
 concept has_function_args_for_default_function_impl =
@@ -115,7 +125,8 @@ concept has_function_traits_for_default_function_impl =
 
 template<class F>
 concept function_traits_convertible_to_value =
-    has_function_traits<F> && has_function_traits_for_default_function_impl<F>;
+    has_function_traits<F> &&
+    has_function_traits_for_default_function_impl<F>;
 
 //------------------------------------------------
 //
@@ -306,7 +317,7 @@ public:
 
     char const* type_key() const noexcept override
     {
-        return "DefaultFunctionImpl";
+        return "Function";
     }
 
     Expected<Value>

@@ -16,6 +16,7 @@
 #include <llvm/Support/JSON.h>
 #include <llvm/Support/MemoryBuffer.h>
 #include <filesystem>
+#include <utility>
 
 namespace clang {
 namespace mrdox {
@@ -307,28 +308,28 @@ setup_helpers()
                 "progress helper requires 3 arguments: {} provided",
                 arguments.size());
         }
-        if (!arguments[0].isString())
+        if (!arguments.get(0).isString())
         {
             return fmt::format(
                 "progress helper requires string argument: {} received",
-                arguments[0]);
+                arguments.get(0));
         }
-        if (!arguments[1].isInteger())
+        if (!arguments.get(1).isInteger())
         {
             return fmt::format(
                 "progress helper requires number argument: {} received",
-                arguments[1]);
+                arguments.get(1));
         }
-        if (!arguments[2].isBoolean())
+        if (!arguments.get(2).isBoolean())
         {
             return fmt::format(
                 "progress helper requires boolean argument: {} received",
-                arguments[2]);
+                arguments.get(2));
         }
-        dom::Value nameV = arguments[0];
+        dom::Value nameV = arguments.get(0);
         std::string_view name = nameV.getString();
-        std::uint64_t percent = arguments[1].getInteger();
-        bool stalled = arguments[2].getBool();
+        std::uint64_t percent = arguments.get(1).getInteger();
+        bool stalled = arguments.get(2).getBool();
         std::uint64_t barWidth = percent / 5;
         std::string bar = std::string(20, '*').substr(0, barWidth);
         std::string stalledStr = stalled ? "stalled" : "";
@@ -346,16 +347,16 @@ setup_helpers()
         [](dom::Array const& arguments) -> dom::Value
     {
         dom::Value options = arguments.back();
-        if (options["fn"])
+        if (options.get("fn"))
         {
             // If the hook is not overridden, then the default implementation will
             // mimic the behavior of Mustache and just render the block.
-            options["write"](options["context"]);
+            options.get("write")(options.get("context"));
             return {};
         }
         if (arguments.size() > 1)
         {
-            return fmt::format(R"(Missing helper: "{}")", options["name"]);
+            return fmt::format(R"(Missing helper: "{}")", options.get("name"));
         }
         return {};
     });
@@ -372,7 +373,7 @@ setup_helpers()
         std::size_t const n = args.size();
         for (std::size_t i = 0; i < n - 1; ++i)
         {
-            if (!args[i].isString())
+            if (!args.get(i).isString())
             {
                 return fmt::format("link helper requires string arguments: {} provided", args.size());
             }
@@ -380,19 +381,19 @@ setup_helpers()
 
         std::string out;
         dom::Value options = args.back();
-        dom::Value hash = options["hash"];
-        auto h = hash["href"];
+        dom::Value hash = options.get("hash");
+        auto h = hash.get("href");
         if (h.isString())
         {
             out += h.getString();
         }
         else if (args.size() > 1)
         {
-            if (!args[1].isString())
+            if (!args.get(1).isString())
             {
-                return fmt::format("link helper requires string argument: {} provided", toString(args[1].kind()));
+                return fmt::format("link helper requires string argument: {} provided", toString(args.get(1).kind()));
             }
-            auto href = args[1];
+            auto href = args.get(1);
             out += href.getString();
         }
         else
@@ -401,23 +402,24 @@ setup_helpers()
         }
 
         out += '[';
-        out += args[0].getString();
+        out += args.get(0).getString();
 
         // more attributes from hashes
         if (hash)
         {
-            dom::Object hashObj = hash.getObject();
-            for (auto const& [key, value] : hashObj)
+            dom::Object const& hashObj = hash.getObject();
+            hashObj.visit([&](dom::String const& key, dom::Value const& value)
             {
                 if (key == "href" || !value.isString())
                 {
-                    continue;
+                    return true;
                 }
                 out += ',';
                 out += key;
                 out += '=';
                 out += value.getString();
-            }
+                return true;
+            });
         }
         out += ']';
 
@@ -429,7 +431,7 @@ setup_helpers()
     {
         std::string res;
         dom::Value options = args.back();
-        dom::Value fn = options["fn"];
+        dom::Value fn = options.get("fn");
         if (fn.isFunction())
         {
             res = static_cast<std::string>(fn());
@@ -440,7 +442,7 @@ setup_helpers()
             {
                 return "loud helper requires at least one argument";
             }
-            dom::Array::value_type const& firstArg = args[0];
+            dom::Array::value_type const& firstArg = args.get(0);
             if (!firstArg.isString())
             {
                 return fmt::format("loud helper requires string argument: {} provided", toString(firstArg.kind()));
@@ -463,7 +465,7 @@ setup_helpers()
     master.hbs.registerHelper("bold", dom::makeVariadicInvocable([](
         dom::Array const& args) {
         dom::Value options = args.back();
-        return fmt::format(R"(<div class="mybold">{}</div>)", options["fn"]());
+        return fmt::format(R"(<div class="mybold">{}</div>)", options.get("fn")());
     }));
 
     master.hbs.registerHelper("list", dom::makeVariadicInvocable([](
@@ -473,42 +475,42 @@ setup_helpers()
         {
             return fmt::format("list helper requires 1 argument: {} provided", args.size() - 1);
         }
-        if (!args[0].isArray())
+        if (!args.get(0).isArray())
         {
-            return fmt::format("list helper requires array argument: {} provided", toString(args[0].kind()));
+            return fmt::format("list helper requires array argument: {} provided", toString(args.get(0).kind()));
         }
 
         dom::Value options = args.back();
-        dom::Object data = createFrame(options["data"]);
-        dom::Value itemsV = args[0];
+        dom::Object data = createFrame(options.get("data"));
+        dom::Value itemsV = args.get(0);
         dom::Array const& items = itemsV.getArray();
         if (!items.empty())
         {
             std::string out = "<ul";
-            dom::Value hash = options["hash"];
-            for (auto const& [key, value] : hash.getObject())
+            dom::Value hash = options.get("hash");
+            hash.getObject().visit([&](dom::String const& key, dom::Value const& value)
             {
                 out += " ";
                 out += key;
                 out += "=\"";
                 out += value.getString();
                 out += "\"";
-            }
+            });
             out += ">";
             for (std::size_t i = 0; i < items.size(); ++i)
             {
-                dom::Value item = items[i];
+                dom::Value item = items.get(i);
                 data.set("key", static_cast<std::int64_t>(i));
                 data.set("first", i == 0);
                 data.set("last", i == items.size() - 1);
                 data.set("index", static_cast<std::int64_t>(i));
                 dom::Object fn_options;
                 fn_options.set("data", data);
-                out += toString("<li>" + options["fn"](item, fn_options) + "</li>");
+                out += toString("<li>" + options.get("fn")(item, fn_options) + "</li>");
             }
             return out + "</ul>";
         }
-        return options["inverse"]();
+        return options.get("inverse")();
     }));
 
     master.hbs.registerHelper("isdefined",
@@ -524,7 +526,7 @@ setup_helpers()
         dom::Value options = args.back();
         std::string out;
         out += "Missing: ";
-        out += toString(options["name"]);
+        out += toString(options.get("name"));
         out += "(";
         std::size_t const n = args.size();
         for (std::size_t i = 0; i < n - 1; ++i) {
@@ -532,7 +534,7 @@ setup_helpers()
             {
                 out += ", ";
             }
-            out += toString(args[i]);
+            out += toString(args.get(i));
         }
         out += ")";
         return out;
@@ -546,9 +548,9 @@ setup_helpers()
         OutputRef os(out);
         os << "Helper '";
         dom::Value options = args.back();
-        os << options["name"];
+        os << options.get("name");
         os << "' not found. Printing block: ";
-        os << options["fn"]();
+        os << options.get("fn")();
         return out;
     }));
 }
@@ -560,7 +562,7 @@ setup_logger()
         dom::makeVariadicInvocable([this](
         dom::Array const& args)
     {
-        dom::Value level = args[0];
+        dom::Value level = args.get(0);
         master.log += fmt::format("[{}] ", level);
         for (std::size_t i = 1; i < args.size(); ++i)
         {
@@ -568,7 +570,7 @@ setup_logger()
             {
                 master.log += ", ";
             }
-            master.log += args[i].getString();
+            master.log += args.get(i).getString();
         }
         master.log += '\n';
     }));
@@ -862,7 +864,7 @@ basic_context()
 
         ctx = {};
         ctx.set("awesome", [](dom::Value const& options){
-            return options["context"]["more"];
+            return options.lookup("context.more");
         });
         ctx.set("more", "More awesome");
         BOOST_TEST(hbs.render("{{awesome}}", ctx) == "More awesome");
@@ -907,7 +909,7 @@ basic_context()
         dom::Object ctx;
         ctx.set("awesome", [](
             dom::Value const& context, dom::Value const& options) {
-            return options["fn"](context);
+            return options.get("fn")(context);
         });
         BOOST_TEST(hbs.render("{{#awesome 1}}inner {{.}}{{/awesome}}", ctx) == "inner 1");
     }
@@ -918,7 +920,7 @@ basic_context()
         ctx.set("value", true);
         ctx.set("awesome", [](
             dom::Value const& context, dom::Value const& options) {
-            return options["fn"](context);
+            return options.get("fn")(context);
         });
         BOOST_TEST(hbs.render("{{#with value}}{{#../awesome 1}}inner {{.}}{{/../awesome}}{{/with}}", ctx) == "inner 1");
     }
@@ -928,7 +930,7 @@ basic_context()
         // block functions are called with options
         dom::Object ctx;
         ctx.set("awesome", [](dom::Value const& options) {
-            return options["fn"](options["context"]);
+            return options.get("fn")(options.get("context"));
         });
         BOOST_TEST(hbs.render("{{#awesome}}inner{{/awesome}}", ctx) == "inner");
     }
@@ -939,7 +941,7 @@ basic_context()
         dom::Object ctx;
         dom::Object foo;
         foo.set("awesome", [](dom::Value const& options) {
-            return options["context"];
+            return options.get("context");
         });
         ctx.set("foo", foo);
         BOOST_TEST(hbs.render("{{#foo.awesome}}inner{{/foo.awesome}}", ctx) == "inner");
@@ -951,7 +953,7 @@ basic_context()
         ctx.set("value", true);
         ctx.set("awesome", [](dom::Value const& options)
         {
-            return options["context"];
+            return options.get("context");
         });
         BOOST_TEST(hbs.render("{{#with value}}{{#../awesome}}inner{{/../awesome}}{{/with}}", ctx) == "inner");
     }
@@ -1015,7 +1017,7 @@ basic_context()
 
         // literal references only convert to strings as helper parameters
         // literal references as main helper names will decay to context keys
-        BOOST_TEST(hbs.render("{{\"\\n\"}}") == "");
+        BOOST_TEST(hbs.render("{{\"\\n\"}}").empty());
     }
 
     // that current context path ({{.}}) doesn't hit helpers
@@ -2398,7 +2400,7 @@ subexpressions()
     // as hashes
     {
         hbs.registerHelper("blog", [](dom::Value const& options) {
-            return "val is " + options["hash"]["fun"];
+            return "val is " + options.lookup("hash.fun");
         });
         hbs.registerHelper("equal", [](
             dom::Value const& x, dom::Value const& y) {
@@ -2412,9 +2414,9 @@ subexpressions()
     // multiple subexpressions in a hash
     {
         hbs.registerHelper("input", [](dom::Value const& options) {
-            dom::Value hash = options["hash"];
-            std::string ariaLabel = escapeExpression(hash["aria-label"]);
-            std::string placeholder = escapeExpression(hash["placeholder"]);
+            dom::Value hash = options.get("hash");
+            std::string ariaLabel = escapeExpression(hash.get("aria-label"));
+            std::string placeholder = escapeExpression(hash.get("placeholder"));
             std::string res = "<input aria-label=\"";
             res += ariaLabel;
             res += "\" placeholder=\"";
@@ -2438,9 +2440,9 @@ subexpressions()
         item.set("placeholder", "Example User");
         ctx.set("item", item);
         hbs.registerHelper("input", [](dom::Value const& options) {
-            auto hash = options["hash"];
-            std::string ariaLabel = escapeExpression(hash["aria-label"]);
-            std::string placeholder = escapeExpression(hash["placeholder"]);
+            auto hash = options.get("hash");
+            std::string ariaLabel = escapeExpression(hash.get("aria-label"));
+            std::string placeholder = escapeExpression(hash.get("placeholder"));
             std::string res = "<input aria-label=\"";
             res += ariaLabel;
             res += "\" placeholder=\"";
@@ -2479,7 +2481,7 @@ subexpressions()
     // as hashes in string params mode
     {
         hbs.registerHelper("blog", [](dom::Value const& options) {
-            return "val is " + options["hash"]["fun"];
+            return "val is " + options.lookup("hash.fun");
         });
         hbs.registerHelper("bork", []() {
             return "BORK";
@@ -2574,7 +2576,7 @@ builtin_if()
         BOOST_TEST(hbs.render(string, ctx) == "GOODBYE cruel world!");
 
         // if with function shows the contents when function returns string
-        ctx.set("goodbye", dom::makeInvocable([](dom::Object const& ctx) { return ctx.find("world"); }));
+        ctx.set("goodbye", dom::makeInvocable([](dom::Object const& ctx) { return ctx.get("world"); }));
         BOOST_TEST(hbs.render(string, ctx) == "GOODBYE cruel world!");
 
         // if with function does not show the contents when returns false
@@ -2582,7 +2584,7 @@ builtin_if()
         BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
 
         // if with function does not show the contents when returns undefined
-        ctx.set("goodbye", dom::makeInvocable([](dom::Object const& ctx) { return ctx.find("foo"); }));
+        ctx.set("goodbye", dom::makeInvocable([](dom::Object const& ctx) { return ctx.get("foo"); }));
         BOOST_TEST(hbs.render(string, ctx) == "cruel world!");
     }
 
@@ -3005,7 +3007,7 @@ builtin_each()
         ctx.set("letters", letters);
         hbs.registerHelper("detectDataInsideEach", [](dom::Value const& options)
         {
-            return options["data"] && options["data"]["exclaim"];
+            return options.get("data") && options.lookup("data.exclaim");
         });
         HandlebarsOptions options;
         dom::Object data;
@@ -3035,16 +3037,16 @@ builtin_log()
 
     hbs.registerLogger(dom::makeVariadicInvocable([&](dom::Array const& arguments)
     {
-        levelArg = arguments[0];
+        levelArg = arguments.get(0);
         logArgs = {};
         for (std::size_t i = 1; i < arguments.size(); ++i)
         {
-            logArgs.emplace_back(arguments[i]);
+            logArgs.emplace_back(arguments.get(i));
         }
         logArg = {};
         if (logArgs.size() == 1)
         {
-            logArg = logArgs[0];
+            logArg = logArgs.get(0);
         }
     }));
 
@@ -3110,12 +3112,12 @@ builtin_log()
         BOOST_TEST(levelArg.isInteger());
         BOOST_TEST(levelArg.getInteger() == 1);
         BOOST_TEST(logArgs.size() == 3u);
-        BOOST_TEST(logArgs[0].isString());
-        BOOST_TEST(logArgs[0].getString() == "whee");
-        BOOST_TEST(logArgs[1].isString());
-        BOOST_TEST(logArgs[1].getString() == "foo");
-        BOOST_TEST(logArgs[2].isInteger());
-        BOOST_TEST(logArgs[2].getInteger() == 1);
+        BOOST_TEST(logArgs.get(0).isString());
+        BOOST_TEST(logArgs.get(0).getString() == "whee");
+        BOOST_TEST(logArgs.get(1).isString());
+        BOOST_TEST(logArgs.get(1).getString() == "foo");
+        BOOST_TEST(logArgs.get(2).isInteger());
+        BOOST_TEST(logArgs.get(2).getInteger() == 1);
     }
 
     // should pass zero log arguments
@@ -3179,7 +3181,7 @@ data() const
         dom::Object ctx;
         ctx.set("noun", "cat");
         hbs.registerHelper("hello", [](dom::Value const& options) {
-            return options["data"]["adjective"] + ' ' + options["context"]["noun"];
+            return options.lookup("data.adjective") + ' ' + options.lookup("context.noun");
         });
         dom::Object data;
         data.set("adjective", "happy");
@@ -3206,18 +3208,18 @@ data() const
         dom::Object ctx;
         ctx.set("foo", true);
         hbs.registerHelper("let", [](dom::Value const& options) {
-            dom::Object frame = createFrame(options["data"]);
-            dom::Value hashV = options["hash"];
-            for (auto [prop, v]: hashV.getObject())
+            dom::Object frame = createFrame(options.get("data"));
+            dom::Value hashV = options.get("hash");
+            hashV.getObject().visit([&](dom::String const& prop, dom::Value v)
             {
                 if (hashV.exists(prop))
                 {
-                    frame.set(prop, v);
+                    frame.set(prop, std::move(v));
                 }
-            }
+            });
             dom::Object fnOpt;
             fnOpt.set("data", frame);
-            return options["fn"](options["context"], fnOpt);
+            return options.get("fn")(options.get("context"), fnOpt);
         });
         BOOST_TEST(hbs.render(string, ctx) == "Hello world");
     }
@@ -3243,7 +3245,7 @@ data() const
         HandlebarsOptions options;
         options.data = data;
         hbs.registerHelper("hello", [](dom::Value const& options) {
-            return "Hello " + options["hash"]["noun"];
+            return "Hello " + options.lookup("hash.noun");
         });
         BOOST_TEST(hbs.render(string, {}, options) == "Hello world");
     }
@@ -3322,18 +3324,18 @@ data() const
         bar.set("baz", "hello world");
         ctx.set("bar", bar);
         hbs.registerHelper("let", [](dom::Value const& options) {
-            dom::Object frame = createFrame(options["data"]);
-            dom::Value hashV = options["hash"];
-            for (auto [prop, v]: hashV.getObject())
+            dom::Object frame = createFrame(options.get("data"));
+            dom::Value hashV = options.get("hash");
+            hashV.getObject().visit([&](dom::String const& prop, dom::Value v)
             {
                 if (hashV.exists(prop))
                 {
-                    frame.set(prop, v);
+                    frame.set(prop, std::move(v));
                 }
-            }
+            });
             dom::Object fnOpt;
             fnOpt.set("data", frame);
-            return options["fn"](options["context"], fnOpt);
+            return options.get("fn")(options.get("context"), fnOpt);
         });
         HandlebarsOptions options;
         options.data = dom::Object();
@@ -3345,7 +3347,7 @@ data() const
         std::string string = "{{>myPartial}}";
         hbs.registerPartial("myPartial", "{{hello}}");
         hbs.registerHelper("hello", [](dom::Value const& options) {
-            return options["data"]["adjective"] + ' ' + options["context"]["noun"];
+            return options.lookup("data.adjective") + ' ' + options.lookup("context.noun");
         });
         dom::Object ctx;
         ctx.set("noun", "cat");
@@ -3361,7 +3363,7 @@ data() const
         std::string string = "{{hello world}}";
         hbs.registerHelper("hello", [](
             dom::Value const& noun, dom::Value const& options) {
-            return options["data"]["adjective"] + ' ' + noun + (options["context"]["exclaim"] ? "!" : "");
+            return options.lookup("data.adjective") + ' ' + noun + (options.lookup("context.exclaim") ? "!" : "");
         });
         dom::Object ctx;
         ctx.set("world", "world");
@@ -3377,10 +3379,10 @@ data() const
     {
         std::string string = "{{#hello}}{{world}}{{/hello}}";
         hbs.registerHelper("hello", [](dom::Value const& options) {
-            return options["fn"](options["context"]);
+            return options.get("fn")(options.get("context"));
         });
         hbs.registerHelper("world", [](dom::Value const& options) {
-            return options["data"]["adjective"] + " world" + (options["context"]["exclaim"] ? "!" : "");
+            return options.lookup("data.adjective") + " world" + (options.lookup("context.exclaim") ? "!" : "");
         });
         dom::Object ctx;
         ctx.set("exclaim", true);
@@ -3397,11 +3399,11 @@ data() const
         hbs.registerHelper("hello", [](dom::Value const& options) {
             dom::Object newContext;
             newContext.set("exclaim", "?");
-            return options["fn"](newContext);
+            return options.get("fn")(newContext);
         });
         hbs.registerHelper("world", [](
             dom::Value const& thing, dom::Value const& options) {
-            return options["data"]["adjective"] + ' ' + thing + (options["context"]["exclaim"] || "");
+            return options.lookup("data.adjective") + ' ' + thing + (options.lookup("context.exclaim") || "");
         });
         dom::Object ctx;
         ctx.set("exclaim", true);
@@ -3417,14 +3419,14 @@ data() const
     {
         std::string string = "{{#hello}}{{world ../zomg}}{{/hello}}";
         hbs.registerHelper("hello", [](dom::Value const& options) {
-            // return options.data.accessData + ' ' + options["fn"]({ exclaim: '?' });
+            // return options.data.accessData + ' ' + options.get("fn")({ exclaim: '?' });
             dom::Object newContext;
             newContext.set("exclaim", "?");
-            return options["data"]["accessData"] + ' ' + options["fn"](newContext);
+            return options.lookup("data.accessData") + ' ' + options.get("fn")(newContext);
         });
         hbs.registerHelper("world", [](
             dom::Value const& thing, dom::Value const& options) {
-            return options["data"]["adjective"] + ' ' + thing + (options["context"]["exclaim"] || "");
+            return options.lookup("data.adjective") + ' ' + thing + (options.lookup("context.exclaim") || "");
         });
         dom::Object ctx;
         ctx.set("exclaim", true);
@@ -3448,11 +3450,11 @@ data() const
             newData.set("adjective", "sad");
             dom::Object fnOpt;
             fnOpt.set("data", newData);
-            return options["fn"](newContext, fnOpt);
+            return options.get("fn")(newContext, fnOpt);
         });
         hbs.registerHelper("world", [](
             dom::Value const& thing, dom::Value const& options) {
-            return options["data"]["adjective"] + ' ' + thing + (options["context"]["exclaim"] || "");
+            return options.lookup("data.adjective") + ' ' + thing + (options.lookup("context.exclaim") || "");
         });
         dom::Object ctx;
         ctx.set("exclaim", true);
@@ -3474,11 +3476,11 @@ data() const
             newData.set("adjective", "sad");
             dom::Object fnOpt;
             fnOpt.set("data", newData);
-            return options["fn"](newContext, fnOpt);
+            return options.get("fn")(newContext, fnOpt);
         });
         hbs.registerHelper("world", [](
             dom::Value const& thing, dom::Value const& options) {
-            return options["data"]["adjective"] + ' ' + thing + (options["context"]["exclaim"] || "");
+            return options.lookup("data.adjective") + ' ' + thing + (options.lookup("context.exclaim") || "");
         });
         dom::Object ctx;
         ctx.set("exclaim", true);
@@ -3515,11 +3517,11 @@ data() const
     {
         std::string string = "{{#helper}}{{#helper}}{{@./depth}} {{@../depth}} {{@../../depth}}{{/helper}}{{/helper}}";
         hbs.registerHelper("helper", [](dom::Value const& options) {
-            dom::Object frame = createFrame(options["data"]);
-            frame.set("depth", options["data"]["depth"] + 1);
+            dom::Object frame = createFrame(options.get("data"));
+            frame.set("depth", options.lookup("data.depth") + 1);
             dom::Object fnOpt;
             fnOpt.set("data", frame);
-            return options["fn"](options["context"], fnOpt);
+            return options.get("fn")(options.get("context"), fnOpt);
         });
         dom::Object ctx;
         ctx.set("foo", "hello");
@@ -3549,7 +3551,7 @@ helpers()
         ctx.set("goodbyes", goodbyes);
         ctx.set("prefix", "/root");
         hbs.registerHelper("link", [](dom::Value const& prefix, dom::Value const& options) {
-            return "<a href=\"" + prefix + "/" + options["context"]["url"] + "\">" + options["context"]["text"] + "</a>";
+            return "<a href=\"" + prefix + "/" + options.lookup("context.url") + "\">" + options.lookup("context.text") + "</a>";
         });
         BOOST_TEST(hbs.render(string, ctx) == "<a href=\"/root/goodbye\">Goodbye</a>");
     }
@@ -3560,7 +3562,7 @@ helpers()
         dom::Object ctx;
         ctx.set("test", "hello");
         hbs.registerHelper("raw", [](dom::Value const& options) {
-            return options["fn"]();
+            return options.get("fn")();
         });
         BOOST_TEST(hbs.render(string, ctx) == " {{test}} ");
     }
@@ -3576,7 +3578,7 @@ helpers()
             dom::Value const& c,
             dom::Value const& options)
         {
-            return options["fn"]() + a + b + c;
+            return options.get("fn")() + a + b + c;
         });
         BOOST_TEST(hbs.render(string, ctx) == " {{test}} 123");
     }
@@ -3584,7 +3586,7 @@ helpers()
     // raw block parsing (with identity helper-function)
     {
         hbs.registerHelper("identity", [](dom::Value const& options) {
-            return options["fn"]();
+            return options.get("fn")();
         });
 
         // helper for nested raw block gets raw content
@@ -3617,9 +3619,9 @@ helpers()
         ctx.set("name", "Alan");
         hbs.registerHelper("goodbyes", [](dom::Value const& options) {
             std::string out;
-            out += toString("Goodbye " + options["fn"](options["context"]) + "! ");
-            out += toString("goodbye " + options["fn"](options["context"]) + "! ");
-            out += toString("GOODBYE " + options["fn"](options["context"]) + "! ");
+            out += toString("Goodbye " + options.get("fn")(options.get("context")) + "! ");
+            out += toString("goodbye " + options.get("fn")(options.get("context")) + "! ");
+            out += toString("GOODBYE " + options.get("fn")(options.get("context")) + "! ");
             return out;
         });
         BOOST_TEST(hbs.render(string, ctx) == "Goodbye Alan! goodbye Alan! GOODBYE Alan! ");
@@ -3633,9 +3635,9 @@ helpers()
         hbs.registerHelper("goodbyes", [](dom::Value const& options) {
             std::string out;
             dom::Object newContext = {};
-            out += toString("Goodbye " + options["fn"](newContext) + "! ");
-            out += toString("goodbye " + options["fn"](newContext) + "! ");
-            out += toString("GOODBYE " + options["fn"](newContext) + "! ");
+            out += toString("Goodbye " + options.get("fn")(newContext) + "! ");
+            out += toString("goodbye " + options.get("fn")(newContext) + "! ");
+            out += toString("GOODBYE " + options.get("fn")(newContext) + "! ");
             return out;
         });
         BOOST_TEST(hbs.render(string, ctx) == "Goodbye Alan! goodbye Alan! GOODBYE Alan! ");
@@ -3654,7 +3656,7 @@ helpers()
         ctx.set("goodbyes", goodbyes);
         ctx.set("prefix", "/root");
         hbs.registerHelper("link", [](dom::Value const& prefix, dom::Value const& options) {
-            return "<a href=\"" + prefix + "/" + options["context"]["url"] + "\">" + options["fn"](options["context"]) + "</a>";
+            return "<a href=\"" + prefix + "/" + options.lookup("context.url") + "\">" + options.get("fn")(options.get("context")) + "</a>";
         });
         BOOST_TEST(hbs.render(string, ctx) == "<a href=\"/root/goodbye\">Goodbye</a>");
     }
@@ -3677,7 +3679,7 @@ helpers()
         hbs.registerHelper("goodbyes", [](dom::Value const& options) {
             dom::Object ctx;
             ctx.set("text", "GOODBYE");
-            return options["fn"](ctx);
+            return options.get("fn")(ctx);
         });
         BOOST_TEST(hbs.render(string, ctx) == "GOODBYE! cruel world!");
     }
@@ -3688,7 +3690,7 @@ helpers()
         dom::Object ctx;
         ctx.set("name", "Yehuda");
         hbs.registerHelper("form", [](dom::Value const& options) {
-            return "<form>" + options["fn"](options["context"]) + "</form>";
+            return "<form>" + options.get("fn")(options.get("context")) + "</form>";
         });
         BOOST_TEST(hbs.render(string, ctx) == "<form><p>Yehuda</p></form>");
     }
@@ -3709,8 +3711,8 @@ helpers()
         ctx.set("people", people);
         hbs.registerHelper("link", [](dom::Value const& options) {
             std::string out;
-            out += toString("<a href=\"/people/" + options["context"]["id"] + "\">");
-            out += toString(options["fn"](options["context"]));
+            out += toString("<a href=\"/people/" + options.lookup("context.id") + "\">");
+            out += toString(options.get("fn")(options.get("context")));
             out += "</a>";
             return out;
         });
@@ -3731,7 +3733,7 @@ helpers()
         yehuda.set("name", "Yehuda");
         ctx.set("yehuda", yehuda);
         hbs.registerHelper("form", [](dom::Value const& context, dom::Value const& options) {
-            return "<form>" + options["fn"](context) + "</form>";
+            return "<form>" + options.get("fn")(context) + "</form>";
         });
         BOOST_TEST(hbs.render(string, ctx) == "<form><p>Yehuda</p></form>");
     }
@@ -3747,7 +3749,7 @@ helpers()
         yehuda.set("cat", cat);
         ctx.set("yehuda", yehuda);
         hbs.registerHelper("form", [](dom::Value const& context, dom::Value const& options) {
-            return "<form>" + options["fn"](context) + "</form>";
+            return "<form>" + options.get("fn")(context) + "</form>";
         });
         BOOST_TEST(hbs.render(string, ctx) == "<form><p>Harold</p></form>");
     }
@@ -3762,14 +3764,14 @@ helpers()
         hbs.registerHelper("link", [](dom::Value const& options) {
             std::string out;
             out += "<a href=\"";
-            out += toString(options["context"]["name"]);
+            out += toString(options.lookup("context.name"));
             out += "\">";
-            out += toString(options["fn"](options["context"]));
+            out += toString(options.get("fn")(options.get("context")));
             out += "</a>";
             return out;
         });
         hbs.registerHelper("form", [](dom::Value const& context, dom::Value const& options) {
-            return "<form>" + options["fn"](context) + "</form>";
+            return "<form>" + options.get("fn")(context) + "</form>";
         });
         BOOST_TEST(hbs.render(string, ctx) == "<form><p>Yehuda</p><a href=\"Yehuda\">Hello</a></form>");
     }
@@ -3784,13 +3786,13 @@ helpers()
                 for (auto const& person: context.getArray())
                 {
                     out += "<li>";
-                    out += toString(options["fn"](person));
+                    out += toString(options.get("fn")(person));
                     out += "</li>";
                 }
                 out += "</ul>";
                 return out;
             }
-            return "<p>" + options["inverse"](options["context"]) + "</p>";
+            return "<p>" + options.get("inverse")(options.get("context")) + "</p>";
         });
 
         // an inverse wrapper is passed in as a new context
@@ -4050,7 +4052,7 @@ helpers()
                 ctx.set("greeting", "Goodbye");
                 ctx.set("adj", cruel);
                 ctx.set("noun", world);
-                return options["fn"](ctx);
+                return options.get("fn")(ctx);
             });
             dom::Object ctx;
             ctx.set("cruel", "cruel");
@@ -4067,9 +4069,9 @@ helpers()
             hbs.registerHelper("goodbye", [](dom::Value const& options) {
                 return
                     "GOODBYE " +
-                    options["hash"]["cruel"] + " " +
-                    options["hash"]["world"] + " " +
-                    options["hash"]["times"] + " TIMES";
+                    options.lookup("hash.cruel") + " " +
+                    options.lookup("hash.world") + " " +
+                    options.lookup("hash.times") + " TIMES";
             });
             BOOST_TEST(hbs.render(string) == "GOODBYE CRUEL WORLD 12 TIMES");
         }
@@ -4077,16 +4079,16 @@ helpers()
         // helpers can take an optional hash with booleans
         {
             hbs.registerHelper("goodbye", [](dom::Value const& options) -> std::string {
-                if (options["hash"]["print"] == true)
+                if (options.lookup("hash.print") == true)
                 {
                     std::string out;
                     out += "GOODBYE ";
-                    out += toString(options["hash"]["cruel"]);
+                    out += toString(options.lookup("hash.cruel"));
                     out += " ";
-                    out += toString(options["hash"]["world"]);
+                    out += toString(options.lookup("hash.world"));
                     return out;
                 }
-                else if (options["hash"]["print"] == false)
+                else if (options.lookup("hash.print") == false)
                 {
                     return "NOT PRINTING";
                 }
@@ -4106,11 +4108,11 @@ helpers()
             hbs.registerHelper("goodbye", [](dom::Value const& options) {
                 std::string out;
                 out += "GOODBYE ";
-                out += toString(options["hash"]["cruel"]);
+                out += toString(options.lookup("hash.cruel"));
                 out += " ";
-                out += toString(options["fn"](options["context"]));
+                out += toString(options.get("fn")(options.get("context")));
                 out += " ";
-                out += toString(options["hash"]["times"]);
+                out += toString(options.lookup("hash.times"));
                 out += " TIMES";
                 return out;
             });
@@ -4124,11 +4126,11 @@ helpers()
             hbs.registerHelper("goodbye", [](dom::Value const& options) {
                 std::string out;
                 out += "GOODBYE ";
-                out += toString(options["hash"]["cruel"]);
+                out += toString(options.lookup("hash.cruel"));
                 out += " ";
-                out += toString(options["fn"](options["context"]));
+                out += toString(options.get("fn")(options.get("context")));
                 out += " ";
-                out += toString(options["hash"]["times"]);
+                out += toString(options.lookup("hash.times"));
                 out += " TIMES";
                 return out;
             });
@@ -4138,16 +4140,16 @@ helpers()
         // block helpers can take an optional hash with booleans
         {
             hbs.registerHelper("goodbye", [](dom::Value const& options) -> std::string {
-                if (options["hash"]["print"] == true)
+                if (options.lookup("hash.print") == true)
                 {
                     std::string out;
                     out += "GOODBYE ";
-                    out += toString(options["hash"]["cruel"]);
+                    out += toString(options.lookup("hash.cruel"));
                     out += " ";
-                    out += toString(options["fn"](options["context"]));
+                    out += toString(options.get("fn")(options.get("context")));
                     return out;
                 }
-                else if (options["hash"]["print"] == false)
+                else if (options.lookup("hash.print") == false)
                 {
                     return "NOT PRINTING";
                 }
@@ -4179,7 +4181,7 @@ helpers()
             std::string string = "{{hello}} {{link_to world}}";
             hbs.registerHelper("helperMissing", [](
                 dom::Value const& mesg, dom::Value const& options) {
-                if (options["name"] == "link_to")
+                if (options.get("name") == "link_to")
                 {
                     return safeString("<a>" + mesg + "</a>");
                 }
@@ -4195,7 +4197,7 @@ helpers()
         {
             std::string string = "{{hello}} {{link_to}}";
             hbs.registerHelper("helperMissing", [](dom::Value const& options) {
-                if (options["name"] == "link_to")
+                if (options.get("name") == "link_to")
                 {
                     return safeString("<a>winning</a>");
                 }
@@ -4225,7 +4227,7 @@ helpers()
             std::string string = "{{#truthy}}yep{{/truthy}}";
             dom::Object ctx;
             ctx.set("truthy", [](dom::Value const& options) {
-                return options["context"]["truthiness"]();
+                return options.lookup("context.truthiness")();
             });
             ctx.set("truthiness", []() {
                 return false;
@@ -4238,13 +4240,13 @@ helpers()
     {
         hbs = {};
         hbs.registerHelper("blockHelperMissing", dom::makeVariadicInvocable([](dom::Array const& args) {
-            return "missing: " + args.back()["name"];
+            return "missing: " + args.back().get("name");
         }));
         hbs.registerHelper("helperMissing", dom::makeVariadicInvocable([](dom::Array const& args) {
-            return "helper missing: " + args.back()["name"];
+            return "helper missing: " + args.back().get("name");
         }));
         hbs.registerHelper("helper", dom::makeVariadicInvocable([](dom::Array const& args) {
-            return "ran: " + args.back()["name"];
+            return "ran: " + args.back().get("name");
         }));
 
         // should include in ambiguous mustache calls
@@ -4307,7 +4309,7 @@ helpers()
             ctx.set("goodbye", "goodbye");
             ctx.set("world", "world");
             hbs.registerHelper("goodbye", [](dom::Value const& options) {
-                std::string res(options["context"]["goodbye"]);
+                std::string res(options.lookup("context.goodbye"));
                 std::transform(res.begin(), res.end(), res.begin(), [](char c) {
                     return static_cast<char>(std::toupper(c));
                 });
@@ -4329,11 +4331,11 @@ helpers()
             ctx.set("goodbye", "goodbye");
             ctx.set("world", "world");
             hbs.registerHelper("goodbye", [](dom::Value const& options) {
-                std::string res(options["context"]["goodbye"]);
+                std::string res(options.lookup("context.goodbye"));
                 std::transform(res.begin(), res.end(), res.begin(), [](char c) {
                     return static_cast<char>(std::toupper(c));
                 });
-                return res + options["fn"](options["context"]);
+                return res + options.get("fn")(options.get("context"));
             });
             hbs.registerHelper("cruel", [](dom::Value const& worldV) {
                 std::string world(worldV);
@@ -4351,7 +4353,7 @@ helpers()
             ctx.set("goodbye", "goodbye");
             ctx.set("world", "world");
             hbs.registerHelper("goodbye", [](dom::Value const& options) {
-                std::string res = toString(options["context"]["goodbye"]);
+                std::string res = toString(options.lookup("context.goodbye"));
                 std::transform(res.begin(), res.end(), res.begin(), [](char c) {
                 return static_cast<char>(std::toupper(c));
                 });
@@ -4373,11 +4375,11 @@ helpers()
             ctx.set("goodbye", "goodbye");
             ctx.set("world", "world");
             hbs.registerHelper("goodbye", [](dom::Value const& options) {
-                std::string res = toString(options["context"]["goodbye"]);
+                std::string res = toString(options.lookup("context.goodbye"));
                 std::transform(res.begin(), res.end(), res.begin(), [](char c) {
                     return static_cast<char>(std::toupper(c));
                 });
-                return res + options["fn"](options["context"]);
+                return res + options.get("fn")(options.get("context"));
             });
             hbs.registerHelper("cruel", [](dom::Value const& worldV) {
                 std::string world(worldV);
@@ -4397,14 +4399,14 @@ helpers()
             dom::Object ctx;
             ctx.set("value", "foo");
             hbs.registerHelper("goodbyes", [](dom::Value const& options) {
-                BOOST_TEST(options["blockParams"] == 1);
+                BOOST_TEST(options.get("blockParams") == 1);
                 dom::Object ctx;
                 ctx.set("value", "bar");
                 dom::Array blockParams;
                 blockParams.emplace_back(1);
                 dom::Object fnOpt;
                 fnOpt.set("blockParams", blockParams);
-                return options["fn"](ctx, fnOpt);
+                return options.get("fn")(ctx, fnOpt);
             });
             BOOST_TEST(hbs.render("{{#goodbyes as |value|}}{{value}}{{/goodbyes}}{{value}}", ctx) == "1foo");
         }
@@ -4416,12 +4418,12 @@ helpers()
                 return "foo";
             });
             hbs.registerHelper("goodbyes", [](dom::Value const& options) {
-                BOOST_TEST(options["blockParams"] == 1);
+                BOOST_TEST(options.get("blockParams") == 1);
                 dom::Array blockParams;
                 blockParams.emplace_back(1);
                 dom::Object fnOpt;
                 fnOpt.set("blockParams", blockParams);
-                return options["fn"](dom::Value{}, fnOpt);
+                return options.get("fn")(dom::Value{}, fnOpt);
             });
             BOOST_TEST(hbs.render(string) == "1foo");
         }
@@ -4434,12 +4436,12 @@ helpers()
                 return "foo";
             });
             hbs.registerHelper("goodbyes", [](dom::Value const& options) {
-                BOOST_TEST(options["blockParams"] == 1);
+                BOOST_TEST(options.get("blockParams") == 1);
                 dom::Array blockParams;
                 blockParams.emplace_back(1);
                 dom::Object fnOpt;
                 fnOpt.set("blockParams", blockParams);
-                return options["fn"](options["context"], fnOpt);
+                return options.get("fn")(options.get("context"), fnOpt);
             });
             BOOST_TEST(hbs.render("{{#goodbyes as |value|}}{{./value}}{{/goodbyes}}{{value}}", ctx) == "barfoo");
         }
@@ -4453,7 +4455,7 @@ helpers()
                 dom::Object ctx;
                 ctx.set("value", "bar");
                 dom::Value blockParams;
-                if (options["blockParams"] == 1)
+                if (options.get("blockParams") == 1)
                 {
                     dom::Array a;
                     a.emplace_back(value);
@@ -4462,7 +4464,7 @@ helpers()
                 }
                 dom::Object fnOpt;
                 fnOpt.set("blockParams", blockParams);
-                return options["fn"](ctx, fnOpt);
+                return options.get("fn")(ctx, fnOpt);
             });
             std::string string = "{{#goodbyes as |value|}}{{#goodbyes}}{{value}}{{#goodbyes as |value|}}{{value}}{{/goodbyes}}{{/goodbyes}}{{/goodbyes}}{{value}}";
             BOOST_TEST(hbs.render(string, ctx) == "13foo");
@@ -4473,14 +4475,14 @@ helpers()
             dom::Object ctx;
             ctx.set("value", "foo");
             hbs.registerHelper("goodbyes", [](dom::Value const& options) {
-                BOOST_TEST(options["blockParams"] == 1);
+                BOOST_TEST(options.get("blockParams") == 1);
                 dom::Object ctx;
                 ctx.set("value", "bar");
                 dom::Array blockParams;
                 blockParams.emplace_back(1);
                 dom::Object fnOpt;
                 fnOpt.set("blockParams", blockParams);
-                return options["fn"](ctx, fnOpt);
+                return options.get("fn")(ctx, fnOpt);
             });
             BOOST_TEST(hbs.render("{{#if bar}}{{else goodbyes as |value|}}{{value}}{{/if}}{{value}}", ctx) == "1foo");
         }
@@ -4542,7 +4544,7 @@ helpers()
         // should be passed to custom helpers
         {
             hbs.registerHelper("testHelper", [](dom::Value const& options) {
-                return options["lookupProperty"](options["context"], "testProperty");
+                return options.get("lookupProperty")(options.get("context"), "testProperty");
             });
             dom::Object ctx;
             ctx.set("testProperty", "abc");
@@ -4572,8 +4574,8 @@ track_ids()
     // should not include anything without the flag
     {
         hbs.registerHelper("wycats", [](dom::Value const& options) {
-            BOOST_TEST(options["ids"].empty());
-            BOOST_TEST(options["hash"].empty());
+            BOOST_TEST(options.get("ids").empty());
+            BOOST_TEST(options.get("hash").empty());
             return "success";
         });
         BOOST_TEST(hbs.render("{{wycats is.a slave.driver}}", context) == "success");
@@ -4583,14 +4585,14 @@ track_ids()
     {
         hbs.registerHelper("wycats", [](
             dom::Value const& passiveVoice, dom::Value const& noun, dom::Value const& options) {
-            BOOST_TEST(options["ids"][0] == "is.a");
-            BOOST_TEST(options["ids"][1] == "slave.driver");
+            BOOST_TEST(options.get("ids").get(0) == "is.a");
+            BOOST_TEST(options.get("ids").get(1) == "slave.driver");
             std::string res = "HELP ME MY BOSS ";
-            res += toString(options["ids"][0]);
+            res += toString(options.get("ids").get(0));
             res += ":";
             res += toString(passiveVoice);
             res += " ";
-            res += toString(options["ids"][1]);
+            res += toString(options.get("ids").get(1));
             res += ":";
             res += toString(noun);
             return res;
@@ -4602,16 +4604,16 @@ track_ids()
     {
         std::string string = "{{wycats bat=is.a baz=slave.driver}}";
         hbs.registerHelper("wycats", [](dom::Value const& options) {
-            BOOST_TEST(options["hashIds"]["bat"] == "is.a");
-            BOOST_TEST(options["hashIds"]["baz"] == "slave.driver");
+            BOOST_TEST(options.lookup("hashIds.bat") == "is.a");
+            BOOST_TEST(options.lookup("hashIds.baz") == "slave.driver");
             std::string res = "HELP ME MY BOSS ";
-            res += toString(options["hashIds"]["bat"]);
+            res += toString(options.lookup("hashIds.bat"));
             res += ":";
-            res += toString(options["hash"]["bat"]);
+            res += toString(options.lookup("hash.bat"));
             res += " ";
-            res += toString(options["hashIds"]["baz"]);
+            res += toString(options.lookup("hashIds.baz"));
             res += ":";
-            res += toString(options["hash"]["baz"]);
+            res += toString(options.lookup("hash.baz"));
             return res;
         });
         BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS is.a:foo slave.driver:bar");
@@ -4626,16 +4628,16 @@ track_ids()
             dom::Value const& thiz,
             dom::Value const& thiz2,
             dom::Value const& options) {
-            BOOST_TEST(options["ids"][0] == "is.a");
-            BOOST_TEST(options["ids"][1] == "../slave.driver");
-            BOOST_TEST(options["ids"][2] == "is.a");
-            BOOST_TEST(options["ids"][3].empty());
+            BOOST_TEST(options.get("ids").get(0) == "is.a");
+            BOOST_TEST(options.get("ids").get(1) == "../slave.driver");
+            BOOST_TEST(options.get("ids").get(2) == "is.a");
+            BOOST_TEST(options.get("ids").get(3).empty());
             std::string res = "HELP ME MY BOSS ";
-            res += toString(options["ids"][0]);
+            res += toString(options.get("ids").get(0));
             res += ":";
             res += toString(passiveVoice);
             res += " ";
-            res += toString(options["ids"][1]);
+            res += toString(options.get("ids").get(1));
             res += ":";
             res += toString(noun);
             return res;
@@ -4652,14 +4654,14 @@ track_ids()
             dom::Value const& noun,
             dom::Value const& options)
         {
-            BOOST_TEST(options["ids"][0].getString() == "@is.a");
-            BOOST_TEST(options["ids"][1].getString() == "@slave.driver");
+            BOOST_TEST(options.get("ids").get(0).getString() == "@is.a");
+            BOOST_TEST(options.get("ids").get(1).getString() == "@slave.driver");
             std::string res = "HELP ME MY BOSS ";
-            res += toString(options["ids"][0]);
+            res += toString(options.get("ids").get(0));
             res += ":";
             res += toString(passiveVoice);
             res += " ";
-            res += toString(options["ids"][1]);
+            res += toString(options.get("ids").get(1));
             res += ":";
             res += toString(noun);
             return res;
@@ -4677,15 +4679,15 @@ track_ids()
             dom::Value const& noun,
             dom::Value const& options)
         {
-            BOOST_TEST(options["ids"][0].isNull());
-            BOOST_TEST(options["ids"][1].isNull());
-            BOOST_TEST(options["hashIds"]["key"].isNull());
+            BOOST_TEST(options.get("ids").get(0).isNull());
+            BOOST_TEST(options.get("ids").get(1).isNull());
+            BOOST_TEST(options.lookup("hashIds.key").isNull());
             std::string res = "HELP ME MY BOSS ";
             res += toString(passiveVoice);
             res += " ";
             res += toString(noun);
             res += " ";
-            res += toString(options["hash"]["key"]);
+            res += toString(options.lookup("hash.key"));
             return res;
         });
         BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS 1 foo false");
@@ -4701,7 +4703,7 @@ track_ids()
             dom::Value const& passiveVoice,
             dom::Value const& options)
         {
-            BOOST_TEST(options["ids"][0] == true);
+            BOOST_TEST(options.get("ids").get(0) == true);
             return "HELP ME MY BOSS " + passiveVoice;
         });
         BOOST_TEST(hbs.render(string, context, opt) == "HELP ME MY BOSS 1");
@@ -4712,13 +4714,13 @@ track_ids()
         std::string string = "{{#doIt as |is|}}{{wycats is.a slave.driver is}}{{/doIt}}";
         hbs.registerHelper("doIt", [](dom::Value const& options) {
             dom::Array blockParams;
-            blockParams.emplace_back(options["context"]["is"]);
+            blockParams.emplace_back(options.lookup("context.is"));
             dom::Array blockParamPaths;
             blockParamPaths.emplace_back("zomg");
             dom::Object fnOpt;
             fnOpt.set("blockParams", blockParams);
             fnOpt.set("blockParamPaths", blockParamPaths);
-            return options["fn"](options["context"], fnOpt);
+            return options.get("fn")(options.get("context"), fnOpt);
         });
         hbs.registerHelper("wycats", [](
             dom::Value const& passiveVoice,
@@ -4726,15 +4728,15 @@ track_ids()
             dom::Value const& blah,
             dom::Value const& options)
         {
-            BOOST_TEST(options["ids"][0] == "zomg.a");
-            BOOST_TEST(options["ids"][1] == "slave.driver");
-            BOOST_TEST(options["ids"][2] == "zomg");
+            BOOST_TEST(options.get("ids").get(0) == "zomg.a");
+            BOOST_TEST(options.get("ids").get(1) == "slave.driver");
+            BOOST_TEST(options.get("ids").get(2) == "zomg");
             std::string res = "HELP ME MY BOSS ";
-            res += toString(options["ids"][0]);
+            res += toString(options.get("ids").get(0));
             res += ":";
             res += toString(passiveVoice);
             res += " ";
-            res += toString(options["ids"][1]);
+            res += toString(options.get("ids").get(1));
             res += ":";
             res += toString(noun);
             return res;
@@ -4745,11 +4747,11 @@ track_ids()
 
     hbs.registerHelper("blockParams", [](
         dom::Value const& name, dom::Value const& options) {
-        return name + ":" + options["ids"][0] + '\n';
+        return name + ":" + options.get("ids").get(0) + '\n';
     });
     hbs.registerHelper("wycats", [](
         dom::Value const& name, dom::Value const& options) {
-        return name + ":" + options["data"]["contextPath"] + '\n';
+        return name + ":" + options.lookup("data.contextPath") + '\n';
     });
 
     // builtin helpers
@@ -5050,8 +5052,8 @@ strict()
     {
         std::string string = "{{helper value=@foo}}";
         hbs.registerHelper("helper", [](dom::Value const& options) {
-            BOOST_TEST(options["hash"].exists("value"));
-            BOOST_TEST(options["hash"]["value"].isUndefined());
+            BOOST_TEST(options.get("hash").exists("value"));
+            BOOST_TEST(options.lookup("hash.value").isUndefined());
             return "success";
         });
         BOOST_TEST(hbs.render(string, dom::Object{}, opt) == "success");

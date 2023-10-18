@@ -19,6 +19,54 @@ namespace mrdox {
 namespace dom {
 
 /** The type of data in a Value.
+
+    This is the type of data stored in a Value.
+    These types are loosely modeled after the
+    JavaScript types and data structures.
+
+    Primitive values are Undefined, Null, Boolean,
+    Integer, and String.
+
+    Undefined and Null are inhabited by a single
+    value each. The difference between Undefined
+    and Null is that Undefined is the default
+    value for a Value, while Null represents a
+    value that is explicitly set. Undefined is
+    used to represent things such as:
+
+    @li An uninitialized Value
+    @li The Value returned from a function that failed to return a value
+    @li The result of accessing a nonexistent object property
+    @li The result of a `find` algorithm when no element is found
+
+    This distinction is semantically important as
+    algorithms frequently need to distinguish between
+    these two cases.
+
+    Booleans, Integers, and Strings are also primitive
+    values. This means they are deeply copied when assigned or
+    passed as a parameter.
+
+    Other value types, such as Array, Object, and Function
+    are reference types, meaning that they are not copied
+    when assigned or passed as a parameter. Instead, the
+    reference is copied, and the original value is shared.
+
+    These reference types are modeled after JavaScript
+    "Objects". All non-primitive types (Object types)
+    are derived from Object in Javascript. This means
+    types such as Array and Function represent a
+    relevant selection of built-in types that would
+    derive from Object in JavaScript.
+
+    Objects are a collection of properties, which are
+    equivalent to key-value pairs. Property values
+    can be any type, including other Objects, allowing
+    for the creation of arbitrarily complex data
+    structures.
+
+    @li https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures
+
 */
 enum class Kind
 {

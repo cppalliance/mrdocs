@@ -175,11 +175,6 @@ inline void Array::set(std::size_t i, Value v)
     impl_->set(i, std::move(v));
 }
 
-inline auto Array::operator[](std::size_t i) const -> value_type
-{
-    return get(i);
-}
-
 inline auto Array::at(std::size_t i) const -> value_type
 {
     if(i < size())
@@ -207,9 +202,15 @@ inline auto Array::end() const -> iterator
     return {*impl_, impl_->size()};
 }
 
-inline void Array::emplace_back(value_type value)
+inline void Array::push_back(value_type value)
 {
     impl_->emplace_back(std::move(value));
+}
+
+template< class... Args >
+void Array::emplace_back(Args&&... args)
+{
+    impl_->emplace_back(value_type(std::forward<Args>(args)...));
 }
 
 inline
