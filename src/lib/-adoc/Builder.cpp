@@ -127,13 +127,6 @@ Builder(
         return res;
     }));
     helpers::registerAntoraHelpers(hbs_);
-    hbs_.registerHelper("neq", dom::makeVariadicInvocable(helpers::ne_fn));
-    hbs_.registerHelper(
-        "to_string",
-        dom::makeInvocable(
-            [](dom::Value const& context) -> Expected<dom::Value> {
-        return dom::JSON::stringify(context);
-    }));
 }
 
 //------------------------------------------------
