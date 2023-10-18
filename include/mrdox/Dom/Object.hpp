@@ -26,6 +26,46 @@ class String;
 class Value;
 
 /** A container of key and value pairs.
+
+    Objects are a collection of properties, which are
+    equivalent to key-value pairs. Property values
+    can be any type, including other Objects, allowing
+    for the creation of arbitrarily complex data
+    structures.
+
+    An Object is a non-primitive (or reference) type,
+    meaning that they are not copied when assigned or
+    passed as a parameter. Instead, the reference is
+    copied, and the original value is shared.
+
+    These reference types are modeled after JavaScript
+    "Objects". All non-primitive types (Object types)
+    are derived from Object in Javascript. This means
+    types such as Array and Function represent a
+    relevant selection of built-in types that would
+    derive from Object in JavaScript.
+
+    @par Properties
+    @parblock
+    Objects are a collection of properties, which are
+    equivalent to key-value pairs. There are two
+    kinds of properties:
+
+    @li Data properties: Associates a key with a value.
+    @li Accessor properties: Associates a key with
+        one of two accessor functions (`get` and `set`),
+        which are used to retrieve or set the value.
+
+    The internal representation of objects can determine
+    how properties are stored and the type of properties
+    being represented.
+
+    Properties can also be enumerable or non-enumerable.
+    An enumerable property is one that is iterated by
+    the `visit` function. Non-enumerable properties can
+    only be accessed by name with the `get` and `set`
+    functions.
+    @endparblock
 */
 class MRDOX_DECL
     Object final
@@ -45,21 +85,21 @@ public:
 
         This is a read-only reference to an element.
     */
-    struct reference;
+    using reference = value_type;
 
     /** A reference to an element.
 
         This is a read-only reference to an element.
     */
-    struct const_reference;
+    using const_reference = reference;
 
     /** A pointer to an element.
     */
-    using pointer = reference;
+    using pointer = value_type const*;
 
     /** A pointer to an element.
     */
-    using const_pointer = reference;
+    using const_pointer = pointer;
 
     /** An unsigned integral type used for indexes and sizes.
     */
@@ -68,14 +108,6 @@ public:
     /** A signed integral type.
     */
     using difference_type = std::ptrdiff_t;
-
-    /** A constant iterator referencing an element in an Object.
-    */
-    class iterator;
-
-    /** A constant iterator referencing an element in an Object.
-    */
-    using const_iterator = iterator;
 
     /** The type of storage used by the default implementation.
     */
@@ -115,25 +147,6 @@ public:
     */
     Object(Object const& other) noexcept;
 
-    /** Assignment.
-
-        Ownership of the object is transferred
-        to this, and ownership of the previous
-        contents is released. The moved-from
-        object behaves as if default constructed.
-    */
-    Object& operator=(Object&&);
-
-    /** Assignment.
-
-        Shared ownership and copies of elements in
-        others are acquired by this. Ownership of
-        the previous contents is released.
-    */
-    Object& operator=(Object const&) noexcept;
-
-    //--------------------------------------------
-
     /** Constructor.
 
         This constructs an object from an existing
@@ -159,6 +172,25 @@ public:
     */
     explicit Object(storage_type list);
 
+    /** Assignment.
+
+        Ownership of the object is transferred
+        to this, and ownership of the previous
+        contents is released. The moved-from
+        object behaves as if default constructed.
+    */
+    Object& operator=(Object&&);
+
+    /** Assignment.
+
+        Shared ownership and copies of elements in
+        others are acquired by this. Ownership of
+        the previous contents is released.
+    */
+    Object& operator=(Object const&) noexcept;
+
+    //--------------------------------------------
+
     /** Return the implementation used by this object.
     */
     auto
@@ -180,40 +212,16 @@ public:
     */
     std::size_t size() const;
 
-    /** Return the i-th element, without bounds checking.
-
-        @param i The zero-based index of the element.
+    /** Return the element with the specified key
     */
-    reference get(std::size_t i) const;
+    Value get(std::string_view key) const;
 
-    /** Return the i-th element, without bounds checking.
-    */
-    reference operator[](size_type i) const;
-
-    /** Return the element for a given key.
-    */
-    dom::Value operator[](std::string_view key) const;
-
-    /** Return the i-th element.
-
-        @throw Exception `i >= size()`
-    */
-    reference at(size_type i) const;
+    /// @copydoc get
+    Value at(std::string_view i) const;
 
     /** Return true if a key exists.
     */
     bool exists(std::string_view key) const;
-
-    /** Return the value for a given key.
-
-        If the key does not exist, a null value
-        is returned.
-
-        @return The value, or null.
-
-        @param key The key.
-    */
-    Value find(std::string_view key) const;
 
     /** Set or replace the value for a given key.
 
@@ -227,13 +235,50 @@ public:
     */
     void set(String key, Value value) const;
 
-    /** Return an iterator to the beginning of the range of elements.
-    */
-    iterator begin() const;
+    /** Invoke the visitor for each key/value pair
 
-    /** Return an iterator to the end of the range of elements.
-    */
-    iterator end() const;
+        The visitor function must return `true` to
+        continue iteration, or `false` to stop
+        iteration early.
+
+        @return `true` if the visitor returned `true`
+        for all elements, otherwise `false`.
+
+     */
+    template <class F>
+    requires
+        std::invocable<F, String, Value> &&
+        std::same_as<std::invoke_result_t<F, String, Value>, bool>
+    bool visit(F&& fn) const;
+
+    /** Invoke the visitor for each key/value pair
+
+        The visitor function must return `void` to
+        continue iteration, or an `Unexpected<E>` to
+        stop iteration early.
+
+        If an error is returned, the iteration stops
+        and the error is returned from this function.
+
+        @return `void` if the visitor returned did not
+        return an error for any element, otherwise
+        `E`.
+
+     */
+    template <class F>
+    requires
+        std::invocable<F, String, Value> &&
+        detail::isExpected<std::invoke_result_t<F, String, Value>>
+    Expected<void, typename std::invoke_result_t<F, String, Value>::error_type>
+    visit(F&& fn) const;
+
+    /** Invoke the visitor for each key/value pair
+     */
+    template <class F>
+    requires
+        std::invocable<F, String, Value> &&
+        std::same_as<std::invoke_result_t<F, String, Value>, void>
+    void visit(F&& fn) const;
 
     /** Swap two objects.
     */
@@ -295,9 +340,6 @@ public:
     /// @copydoc Object::reference
     using reference = Object::reference;
 
-    /// @copydoc Object::iterator
-    using iterator = Object::iterator;
-
     /** Destructor.
     */
     virtual ~ObjectImpl();
@@ -306,21 +348,25 @@ public:
     */
     virtual char const* type_key() const noexcept;
 
-    /** Return the number of key/value pairs in the object.
-    */
-    virtual std::size_t size() const = 0;
-
-    /** Return the i-th key/value pair, without bounds checking.
-    */
-    virtual reference get(std::size_t i) const = 0;
-
     /** Return the value for the specified key, or null.
     */
-    virtual Value find(std::string_view key) const = 0;
+    virtual Value get(std::string_view key) const = 0;
 
     /** Insert or set the given key/value pair.
     */
     virtual void set(String key, Value value) = 0;
+
+    /** Invoke the visitor for each key/value pair.
+    */
+    virtual bool visit(std::function<bool(String, Value)>) const = 0;
+
+    /** Return the number of properties in the object.
+     */
+    virtual std::size_t size() const = 0;
+
+    /** Determine if a key exists.
+     */
+    virtual bool exists(std::string_view key) const;
 };
 
 /** Return a new object using a custom implementation.
@@ -351,9 +397,10 @@ public:
     explicit DefaultObjectImpl(
         storage_type entries) noexcept;
     std::size_t size() const override;
-    reference get(std::size_t) const override;
-    Value find(std::string_view) const override;
+    Value get(std::string_view) const override;
     void set(String, Value) override;
+    bool visit(std::function<bool(String, Value)>) const override;
+    bool exists(std::string_view key) const override;
 
 private:
     storage_type entries_;
@@ -366,6 +413,13 @@ private:
 //------------------------------------------------
 
 /** A lazy Object implementation.
+
+    This implementation is used to construct an
+    Object on demand.
+
+    The underlying object storage is only
+    initialized when the first property is
+    set or accessed.
 */
 class MRDOX_DECL
     LazyObjectImpl : public ObjectImpl
@@ -386,9 +440,10 @@ protected:
 
 public:
     std::size_t size() const override;
-    reference get(std::size_t i) const override;
-    Value find(std::string_view key) const override;
+    Value get(std::string_view key) const override;
     void set(String key, Value value) override;
+    bool visit(std::function<bool(String, Value)>) const override;
+    bool exists(std::string_view key) const override;
 };
 
 } // dom

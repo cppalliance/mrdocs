@@ -33,7 +33,12 @@ Value
 Function::
 operator()(Args&&... args) const
 {
-    return try_invoke(std::forward<Args>(args)...).value();
+    auto exp = try_invoke(std::forward<Args>(args)...);
+    if (exp)
+    {
+        return *exp;
+    }
+    throw Exception(std::move(exp.error()));
 }
 
 template<class... Args>
@@ -161,12 +166,12 @@ call_impl(
     using R = decltype(
         f_(arg_type<std::decay_t<
             std::tuple_element_t<I, args_type> >
-                >::get(args[I])...));
+                >::get(args.get(I))...));
     if (args.size() < sizeof...(I))
     {
         Array clone;
         for (std::size_t i = 0; i < args.size(); ++i)
-            clone.emplace_back(args[i]);
+            clone.emplace_back(args.get(i));
         std::size_t const diff = sizeof...(I) - args.size();
         for (std::size_t i = 0; i < diff; ++i)
             clone.emplace_back(Value(Kind::Undefined));
@@ -174,14 +179,14 @@ call_impl(
         {
             f_(arg_type<std::decay_t<
                 std::tuple_element_t<I, args_type> >
-                    >::get(clone[I])...);
+                    >::get(clone.get(I))...);
             return Value(Kind::Undefined);
         }
         else if constexpr (std::same_as<R, Expected<void>>)
         {
             auto exp = f_(arg_type<std::decay_t<
                 std::tuple_element_t<I, args_type> >
-                    >::get(clone[I])...);
+                    >::get(clone.get(I))...);
             if (!exp)
             {
                 return Unexpected(exp.error());
@@ -192,21 +197,21 @@ call_impl(
         {
             return f_(arg_type<std::decay_t<
               std::tuple_element_t<I, args_type> >
-                   >::get(clone[I])...);
+                   >::get(clone.get(I))...);
         }
     }
     if constexpr (std::is_void_v<R>)
     {
         f_(arg_type<std::decay_t<
             std::tuple_element_t<I, args_type> >
-                >::get(args[I])...);
+                >::get(args.get(I))...);
         return Value(Kind::Undefined);
     }
     else if constexpr (std::same_as<R, Expected<void>>)
     {
         auto exp = f_(arg_type<std::decay_t<
             std::tuple_element_t<I, args_type> >
-                >::get(args[I])...);
+                >::get(args.get(I))...);
         if (!exp)
         {
             return Unexpected(exp.error());
@@ -217,7 +222,7 @@ call_impl(
     {
         return f_(arg_type<std::decay_t<
             std::tuple_element_t<I, args_type> >
-                >::get(args[I])...);
+                >::get(args.get(I))...);
     }
 }
 

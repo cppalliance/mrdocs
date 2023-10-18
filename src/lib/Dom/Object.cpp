@@ -18,9 +18,6 @@ namespace clang {
 namespace mrdox {
 namespace dom {
 
-static_assert(std::random_access_iterator<Object::iterator>);
-static_assert(std::ranges::random_access_range<Object>);
-
 //------------------------------------------------
 //
 // Object
@@ -81,11 +78,7 @@ bool
 Object::
 exists(std::string_view key) const
 {
-    for(auto const& kv : *this)
-        if(kv.key == key)
-            return true;
-
-    return false;
+    return impl_->exists(key);
 }
 
 bool
@@ -95,9 +88,10 @@ operator==(Object const& a, Object const& b) noexcept
 }
 
 std::string
-toString(Object const&)
+toString(Object const& obj)
 {
-    return "[object Object]";
+    return fmt::format(
+        "[object {}]", obj.type_key());
 }
 
 //------------------------------------------------
@@ -113,7 +107,20 @@ char const*
 ObjectImpl::
 type_key() const noexcept
 {
-    return "object";
+    return "Object";
+}
+
+bool
+ObjectImpl::exists(std::string_view key) const
+{
+    return !visit([&](String const& k, Value const&)
+    {
+        if (k == key)
+        {
+            return false;
+        }
+        return true;
+    });
 }
 
 //------------------------------------------------
@@ -141,25 +148,19 @@ size() const
 
 auto
 DefaultObjectImpl::
-get(std::size_t i) const ->
-    reference
-{
-    MRDOX_ASSERT(i < entries_.size());
-    return entries_[i];
-}
-
-Value
-DefaultObjectImpl::
-find(std::string_view key) const
+get(std::string_view key) const ->
+    Value
 {
     auto it = std::ranges::find_if(
         entries_.begin(), entries_.end(),
         [key](auto const& kv)
-        {
-            return kv.key == key;
-        });
-    if(it == entries_.end())
-        return nullptr;
+    {
+        return kv.key == key;
+    });
+    if (it == entries_.end())
+    {
+        return Kind::Undefined;
+    }
     return it->value;
 }
 
@@ -167,6 +168,7 @@ void
 DefaultObjectImpl::
 set(String key, Value value)
 {
+
     auto it = std::ranges::find_if(
         entries_.begin(), entries_.end(),
         [key](auto const& kv)
@@ -178,6 +180,31 @@ set(String key, Value value)
             key, std::move(value));
     else
         it->value = std::move(value);
+}
+
+bool
+DefaultObjectImpl::
+visit(std::function<bool(String, Value)> visitor) const
+{
+    for (auto const& kv : entries_)
+    {
+        if (!visitor(kv.key, kv.value))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool
+DefaultObjectImpl::exists(std::string_view key) const {
+    auto it = std::ranges::find_if(
+        entries_.begin(), entries_.end(),
+        [key](auto const& kv)
+        {
+            return kv.key == key;
+        });
+    return it != entries_.end();
 }
 
 //------------------------------------------------
@@ -209,17 +236,10 @@ size() const
 
 auto
 LazyObjectImpl::
-get(std::size_t i) const ->
-    reference
+get(std::string_view key) const ->
+    Value
 {
-    return obj().get(i);
-}
-
-Value
-LazyObjectImpl::
-find(std::string_view key) const
-{
-    return obj().find(key);
+    return obj().get(key);
 }
 
 void
@@ -227,6 +247,20 @@ LazyObjectImpl::
 set(String key, Value value)
 {
     return obj().set(std::move(key), std::move(value));
+}
+
+bool
+LazyObjectImpl::
+visit(std::function<bool(String, Value)> visitor) const
+{
+    return obj().visit(std::move(visitor));
+}
+
+bool
+LazyObjectImpl::
+exists(std::string_view key) const
+{
+    return obj().exists(key);
 }
 
 } // dom

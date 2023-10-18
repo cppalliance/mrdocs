@@ -24,7 +24,15 @@ namespace dom {
 class ArrayImpl;
 class Value;
 
-/** An array of values.
+/** An array of values
+
+    Arrays are a collection of indexed values. They
+    are an extension of objects with a particular
+    relationship between integer-keyed properties
+    and some abstract length-property. Besides,
+    they include convenient methods to manipulate
+    these ordered sequences of values.
+
 */
 class MRDOX_DECL
     Array final
@@ -40,13 +48,13 @@ public:
 
         This is a read-only reference to an element.
     */
-    using reference = value_type const&;
+    using reference = value_type;
 
     /** A reference to an element.
 
         This is a read-only reference to an element.
     */
-    using const_reference = value_type const&;
+    using const_reference = value_type;
 
     /** A pointer to an element.
     */
@@ -182,10 +190,6 @@ public:
     */
     void set(size_type i, Value v);
 
-    /** Return the i-th element, without bounds checking.
-    */
-    value_type operator[](size_type i) const;
-
     /** Return the i-th element.
 
         @throw Exception `i >= size()`
@@ -217,7 +221,15 @@ public:
         If the array is read-only, an exception
         is thrown.
     */
-    void emplace_back(value_type value);
+    void push_back(value_type value);
+
+    /** Append an element to the end of the array.
+
+        If the array is read-only, an exception
+        is thrown.
+    */
+    template< class... Args >
+    void emplace_back(Args&&... args);
 
     /** Concatenate two arrays.
     */
@@ -356,6 +368,7 @@ public:
     value_type get(size_type i) const override;
     void set(size_type i, Value v) override;
     void emplace_back(value_type value) override;
+    char const* type_key() const noexcept override;
 
 private:
     std::vector<value_type> elements_;

@@ -270,7 +270,7 @@ public:
     }
 
     /// @overload
-    template <std::convertible_to<std::string_view> S>
+    template <StringLikeTy S>
     friend auto operator+(
         S const& lhs, String const& rhs) noexcept
     {
@@ -280,7 +280,7 @@ public:
     }
 
     /// @overload
-    template <std::convertible_to<std::string_view> S>
+    template <StringLikeTy S>
     friend auto operator+(
         String const& lhs, S const& rhs) noexcept
     {

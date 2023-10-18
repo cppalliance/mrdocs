@@ -991,7 +991,7 @@ escapeExpression(
     }
     if (v.isObject() && v.getObject().exists("toHTML"))
     {
-        dom::Value fn = v.getObject().find("toHTML");
+        dom::Value fn = v.getObject().get("toHTML");
         if (fn.isFunction()) {
             return toString(fn.getFunction()());
         }

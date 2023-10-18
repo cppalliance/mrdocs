@@ -64,6 +64,10 @@ operator=(
 bool
 operator==(dom::Array const& a, dom::Array const& b) noexcept
 {
+    if (a.impl_ == b.impl_)
+    {
+        return true;
+    }
     Array::size_type const an = a.size();
     Array::size_type const bn = b.size();
     if (an != bn)
@@ -72,7 +76,7 @@ operator==(dom::Array const& a, dom::Array const& b) noexcept
     }
     for (std::size_t i = 0; i < an; ++i)
     {
-        if (a[i] != b[i])
+        if (a.get(i) != b.get(i))
         {
             return false;
         }
@@ -96,16 +100,16 @@ operator<=>(Array const& a, Array const& b) noexcept
     Array::size_type const n = an;
     for (std::size_t i = 0; i < n; ++i)
     {
-        if (a[i] < b[i])
+        if (a.get(i) < b.get(i))
         {
             return std::strong_ordering::less;
         }
-        if (b[i] < a[i])
+        if (b.get(i) < a.get(i))
         {
             return std::strong_ordering::greater;
         }
     }
-    return std::strong_ordering::greater;
+    return std::strong_ordering::equal;
 }
 
 std::string
@@ -140,7 +144,7 @@ char const*
 ArrayImpl::
 type_key() const noexcept
 {
-    return "array";
+    return "Array";
 }
 
 void
@@ -192,7 +196,10 @@ void
 DefaultArrayImpl::
 set(size_type i, Value v)
 {
-    MRDOX_ASSERT(i < elements_.size());
+    if (i >= elements_.size())
+    {
+        elements_.resize(i + 1, Kind::Undefined);
+    }
     elements_[i] = std::move(v);
 }
 
@@ -202,6 +209,13 @@ emplace_back(
     value_type value)
 {
     elements_.emplace_back(std::move(value));
+}
+
+char const*
+DefaultArrayImpl::
+type_key() const noexcept
+{
+    return "Array";
 }
 
 } // dom
