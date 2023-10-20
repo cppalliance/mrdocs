@@ -238,12 +238,21 @@ public:
     */
     bool isTruthy() const noexcept;
 
+    /** Return the underlying boolean value.
+
+        @note Behaviour is undefined if `!isBoolean()`
+
+     */
     bool getBool() const noexcept
     {
         MRDOX_ASSERT(isBoolean());
         return b_ != 0;
     }
 
+    /** Return the underlying integer value.
+
+        @note Behaviour is undefined if `!isInteger()`
+    */
     std::int64_t
     getInteger() const noexcept
     {
@@ -251,6 +260,10 @@ public:
         return i_;
     }
 
+    /** Return the underlying string value.
+
+        @note Behaviour is undefined if `!isString()`
+    */
     String const&
     getString() const noexcept
     {
@@ -333,6 +346,16 @@ public:
     bool
     exists(std::string_view key) const;
 
+    /** Return if an Array or Object is empty.
+    */
+    bool
+    empty() const;
+
+    /** Return if an Array or Object is empty.
+    */
+    std::size_t
+    size() const;
+
     /** Invoke the function.
 
         If the Value is not an object, or the key
@@ -348,16 +371,6 @@ public:
         }
         return getFunction()(std::forward<Args>(args)...);
     }
-
-    /** Return if an Array or Object is empty.
-    */
-    bool
-    empty() const;
-
-    /** Return if an Array or Object is empty.
-    */
-    std::size_t
-    size() const;
 
     /// @copydoc isTruthy()
     explicit
@@ -506,7 +519,7 @@ public:
         return lhs && Value(rhs);
     }
 
-    /** Return a diagnostic string.
+    /** Return value as a string.
     */
     friend
     std::string

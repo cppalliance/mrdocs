@@ -80,7 +80,7 @@ Builder(
         {
             return text.error();
         }
-        auto JSFn = scope.compile(*text);
+        auto JSFn = scope.compile_function(*text);
         if (!JSFn)
         {
             return JSFn.error();

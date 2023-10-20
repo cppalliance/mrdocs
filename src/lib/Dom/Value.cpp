@@ -866,7 +866,7 @@ operator<=>(dom::Value const& lhs, dom::Value const& rhs) noexcept
     default:
         MRDOX_UNREACHABLE();
     }
-    return std::strong_ordering::greater;
+    return std::strong_ordering::equivalent;
 }
 
 std::string

@@ -150,10 +150,11 @@ std::string_view
 dukM_get_string(
     Access& A, duk_idx_t idx)
 {
+    MRDOX_ASSERT(duk_get_type(A, idx) == DUK_TYPE_STRING);
     duk_size_t size;
-    auto const data =
+    char const* const data =
         duk_get_lstring(A, idx, &size);
-    return std::string_view(data, size);
+    return {data, size};
 }
 
 // push string onto stack
@@ -236,32 +237,66 @@ Scope::
     reset();
 }
 
-Error
+Expected<void>
 Scope::
 script(
     std::string_view jsCode)
 {
     Access A(*this);
-    auto failed = duk_peval_lstring(
+    duk_int_t failed = duk_peval_lstring(
         A, jsCode.data(), jsCode.size());
     if (failed)
-        return dukM_popError(*this);
-    MRDOX_ASSERT(duk_get_type(A, -1) == DUK_TYPE_UNDEFINED);
-    duk_pop(A); // result
-    return Error::success();
+    {
+        return Unexpected(dukM_popError(*this));
+    }
+    // pop implicit expression result from the stack
+    duk_pop(A);
+    return {};
 }
 
 Expected<Value>
 Scope::
-compile(
+eval(
     std::string_view jsCode)
 {
     Access A(*this);
-    auto failed = duk_pcompile_lstring(
+    duk_int_t failed = duk_peval_lstring(
+        A, jsCode.data(), jsCode.size());
+    if (failed)
+    {
+        return Unexpected(dukM_popError(*this));
+    }
+    return Access::construct<Value>(duk_get_top_index(A), *this);
+}
+
+Expected<Value>
+Scope::
+compile_script(
+    std::string_view jsCode)
+{
+    Access A(*this);
+    duk_int_t failed = duk_pcompile_lstring(
         A, 0, jsCode.data(), jsCode.size());
     if (failed)
+    {
         return Unexpected(dukM_popError(*this));
-    return Access::construct<js::Value>(-1, *this);
+    }
+    return Access::construct<Value>(-1, *this);
+}
+
+Expected<Value>
+Scope::
+compile_function(
+    std::string_view jsCode)
+{
+    Access A(*this);
+    duk_int_t failed = duk_pcompile_lstring(
+        A, DUK_COMPILE_FUNCTION, jsCode.data(), jsCode.size());
+    if (failed)
+    {
+        return Unexpected(dukM_popError(*this));
+    }
+    return Access::construct<Value>(-1, *this);
 }
 
 Value
@@ -270,7 +305,7 @@ getGlobalObject()
 {
     Access A(*this);
     duk_push_global_object(A);
-    return A.construct<Value>(-1, *this);
+    return Access::construct<Value>(-1, *this);
 }
 
 Expected<Value>
@@ -285,7 +320,7 @@ getGlobal(
         duk_pop(A); // undefined
         return Unexpected(formatError("global property {} not found", name));
     }
-    return A.construct<Value>(duk_get_top_index(A), *this);
+    return Access::construct<Value>(duk_get_top_index(A), *this);
 }
 
 //------------------------------------------------
@@ -724,35 +759,102 @@ push(
 
 namespace {
 
-class NativeObjectImpl : public dom::ObjectImpl
+class JSObjectImpl : public dom::ObjectImpl
 {
     Scope& scope_;
     duk_idx_t idx_;
 
 public:
-    NativeObjectImpl(
+    ~JSObjectImpl() override = default;
+
+    JSObjectImpl(
         Scope& scope, duk_idx_t idx) noexcept
         : scope_(scope)
         , idx_(idx)
     {
+        MRDOX_ASSERT(duk_is_object(Access(scope_), idx_));
     }
 
-    std::size_t size() const override
+    char const* type_key() const noexcept override
     {
-        return 0;
+        return "JSObject";
     }
 
-    dom::Value get(std::string_view) const override
+    // Get an object property as a dom::Value
+    dom::Value get(std::string_view key) const override;
+
+    // Set an object enumerable property
+    void set(dom::String key, dom::Value value) override;
+
+    // Visit all enumerable properties
+    bool visit(std::function<bool(dom::String, dom::Value)> visitor) const override;
+
+    // Get number of enumerable properties in the object
+    std::size_t size() const override;
+
+    // Check if object contains the property
+    bool exists(std::string_view key) const override;
+};
+
+class JSArrayImpl : public dom::ArrayImpl
+{
+    Scope& scope_;
+    duk_idx_t idx_;
+
+public:
+    ~JSArrayImpl() override = default;
+
+    JSArrayImpl(
+        Scope& scope, duk_idx_t idx) noexcept
+        : scope_(scope)
+        , idx_(idx)
     {
-        return nullptr;
+        MRDOX_ASSERT(duk_is_array(Access(scope_), idx_));
     }
 
-    void set(dom::String, dom::Value) override
+    char const* type_key() const noexcept override
     {
+        return "JSArray";
     }
+
+    // Get an array value as a dom::Value
+    value_type get(size_type i) const override;
+
+    // Set an array value
+    void set(size_type, dom::Value) override;
+
+    // Push a value onto the array
+    void emplace_back(dom::Value value) override;
+
+    // Get number of enumerable properties in the object
+    size_type size() const override;
+};
+
+class JSFunctionImpl : public dom::FunctionImpl
+{
+    Scope& scope_;
+    duk_idx_t idx_;
+public:
+    ~JSFunctionImpl() override = default;
+
+    JSFunctionImpl(
+        Scope& scope, duk_idx_t idx) noexcept
+        : scope_(scope)
+        , idx_(idx)
+    {
+        MRDOX_ASSERT(duk_is_function(Access(scope_), idx_));
+    }
+
+    char const* type_key() const noexcept override
+    {
+        return "JSFunction";
+    }
+
+    Expected<dom::Value> call(dom::Array const& args) const override;
 };
 
 } // (anon)
+
 
 // return a dom::Value from a stack element
 static
@@ -769,7 +871,7 @@ domValue_get(
     case DUK_TYPE_NULL:
         return nullptr;
     case DUK_TYPE_BOOLEAN:
-        return duk_get_boolean(A, idx);
+        return static_cast<bool>(duk_get_boolean(A, idx));
     case DUK_TYPE_NUMBER:
         return duk_get_number(A, idx);
     case DUK_TYPE_STRING:
@@ -778,37 +880,15 @@ domValue_get(
     {
         if (duk_is_array(A, idx))
         {
-            dom::Array res;
-            duk_size_t len = duk_get_length(A, idx);
-            for (duk_size_t i = 0; i < len; ++i)
-            {
-                duk_get_prop_index(A, idx, i);
-                res.emplace_back(domValue_get(scope, -1));
-                duk_pop(A);
-            }
+            return {dom::newArray<JSArrayImpl>(scope, idx)};
         }
         if (duk_is_function(A, idx))
         {
-            return dom::Kind::Undefined;
+            return {dom::newFunction<JSFunctionImpl>(scope, idx)};
         }
         if (duk_is_object(A, idx))
         {
-            // Replace with NativeObjectImpl
-            // auto const obj = ObjectRep::get(A, idx);
-            // if(obj)
-            // {
-            //     return *obj;
-            // }
-            // return dom::newObject<NativeObjectImpl>(scope, idx);
-            dom::Object res;
-            duk_enum(A, idx, DUK_ENUM_OWN_PROPERTIES_ONLY);
-            while (duk_next(A, -1, 1))
-            {
-                std::string_view key = dukM_get_string(A, -2);
-                res.set(key, domValue_get(scope, -1));
-                duk_pop(A);
-            }
-            return res;
+            return {dom::newObject<JSObjectImpl>(scope, idx)};
         }
         return nullptr;
     }
@@ -818,6 +898,8 @@ domValue_get(
     return dom::Kind::Undefined;
 }
 
+// Push a dom::Value onto the JS stack
+// Objects are pushed as proxies
 static
 void
 domValue_push(
@@ -853,6 +935,161 @@ domValue_push(
     }
 }
 
+dom::Value
+JSObjectImpl::
+get(std::string_view key) const
+{
+    Access A(scope_);
+    MRDOX_ASSERT(duk_is_object(A, idx_));
+    // Put value on top of the stack
+    duk_get_prop_lstring(A, idx_, key.data(), key.size());
+    // Convert to dom::Value
+    return domValue_get(scope_, -1);
+}
+
+// Set an object enumerable property
+void
+JSObjectImpl::
+set(dom::String key, dom::Value value)
+{
+    Access A(scope_);
+    MRDOX_ASSERT(duk_is_object(A, idx_));
+    dukM_push_string(A, key);
+    domValue_push(A, value);
+    duk_put_prop(A, idx_);
+}
+
+// Visit all enumerable properties
+bool
+JSObjectImpl::
+visit(std::function<bool(dom::String, dom::Value)> visitor) const
+{
+    Access A(scope_);
+    MRDOX_ASSERT(duk_is_object(A, idx_));
+
+    // Enumerate only the object's own properties
+    // The enumerator is pushed on top of the stack
+    duk_enum(A, idx_, DUK_ENUM_OWN_PROPERTIES_ONLY);
+
+    // Iterates over each property of the object
+    while (duk_next(A, -1, 1))
+    {
+        // key and value are on top of the stack
+        dom::Value key = domValue_get(scope_, -2);
+        dom::Value value = domValue_get(scope_, -1);
+        if (!visitor(key.getString(), value)) {
+            return false;
+        }
+        // Pop both key and value
+        duk_pop_2(A);
+    }
+
+    // Pop the enum property
+    duk_pop(A);
+    return true;
+}
+
+// Get number of enumerable properties in the object
+std::size_t
+JSObjectImpl::
+size() const
+{
+    Access const& A = Access(scope_);
+    MRDOX_ASSERT(duk_is_object(A, idx_));
+    int numProperties = 0;
+
+    // Create an enumerator for the object
+    duk_enum(A, idx_, DUK_ENUM_OWN_PROPERTIES_ONLY);
+
+    while (duk_next(A, -1, 0))
+    {
+        // Iterates each enumerable property of the object
+        numProperties++;
+
+        // Pop the key from the stack
+        duk_pop(A);
+    }
+
+    // Pop the enumerator from the stack
+    duk_pop(A);
+
+    return numProperties;
+}
+
+// Check if object contains the property
+bool
+JSObjectImpl::
+exists(std::string_view key) const
+{
+    Access A(scope_);
+    MRDOX_ASSERT(duk_is_object(A, idx_));
+    return duk_has_prop_lstring(A, idx_, key.data(), key.size());
+}
+
+
+JSArrayImpl::value_type
+JSArrayImpl::
+get(size_type i) const
+{
+    Access A(scope_);
+    MRDOX_ASSERT(duk_is_array(A, idx_));
+    // Push result to top of the stack
+    duk_get_prop_index(A, idx_, i);
+    // Convert to dom::Value
+    return domValue_get(scope_, -1);
+}
+
+void
+JSArrayImpl::
+set(size_type idx, dom::Value value)
+{
+    Access A(scope_);
+    MRDOX_ASSERT(duk_is_array(A, idx_));
+    // Push value to top of the stack
+    domValue_push(A, value);
+    // Push to array
+    duk_put_prop_index(A, idx_, idx);
+}
+
+void
+JSArrayImpl::
+emplace_back(dom::Value value)
+{
+    Access A(scope_);
+    MRDOX_ASSERT(duk_is_array(A, idx_));
+    // Push value to top of the stack
+    domValue_push(A, value);
+    // Push to array
+    duk_put_prop_index(A, idx_, duk_get_length(A, idx_));
+}
+
+JSArrayImpl::size_type
+JSArrayImpl::
+size() const
+{
+    Access A(scope_);
+    MRDOX_ASSERT(duk_is_array(A, idx_));
+    return duk_get_length(A, idx_);
+}
+
+Expected<dom::Value>
+JSFunctionImpl::
+call(dom::Array const& args) const
+{
+    Access A(scope_);
+    MRDOX_ASSERT(duk_is_function(A, idx_));
+    duk_dup(A, idx_);
+    for (auto const& arg : args)
+    {
+        domValue_push(A, arg);
+    }
+    auto result = duk_pcall(A, static_cast<duk_idx_t>(args.size()));
+    if(result == DUK_EXEC_ERROR)
+    {
+        return Unexpected(dukM_popError(scope_));
+    }
+    return domValue_get(scope_, -1);
+}
 
 //------------------------------------------------
 
@@ -864,7 +1101,7 @@ Value(
 {
     Access A(*scope_);
     idx_ = duk_require_normalize_index(A, idx);
-    A.addref(*scope_);
+    Access::addref(*scope_);
 }
 
 Value::
@@ -875,7 +1112,7 @@ Value::
     Access A(*scope_);
     if(idx_ == duk_get_top(A) - 1)
         duk_pop(A);
-    A.release(*scope_);
+    Access::release(*scope_);
 }
 
 // construct an empty value
@@ -962,21 +1199,107 @@ type() const noexcept
 
 bool
 Value::
-isArray() const noexcept
+isInteger() const noexcept
 {
-    Access A(*scope_);
-    return
-        isObject() &&
-        duk_is_array(A, idx_);
+    if (isNumber())
+    {
+        Access A(*scope_);
+        auto n = duk_get_number(A, idx_);
+        return n == (double)(int)n;
+    }
+    return false;
 }
 
-std::string
+bool
+Value::
+isDouble() const noexcept
+{
+    return isNumber() && !isInteger();
+}
+
+bool
+Value::
+isTruthy() const noexcept
+{
+    Access A(*scope_);
+    switch(type())
+    {
+    using enum Type;
+    case boolean:
+        return getBool();
+    case number:
+        return getDouble() != 0;
+    case string:
+        return !getString().empty();
+    case array:
+    case object:
+    case function:
+        return true;
+    case null:
+    case undefined:
+    default:
+        return false;
+    }
+}
+
+std::string_view
 Value::
 getString() const
 {
+    MRDOX_ASSERT(isString());
     Access A(*scope_);
-    return std::string(
-        dukM_get_string(A, idx_));
+    return dukM_get_string(A, idx_);
+}
+
+bool
+Value::
+getBool() const noexcept
+{
+    MRDOX_ASSERT(isBoolean());
+    Access A(*scope_);
+    return duk_get_boolean(A, idx_) != 0;
+}
+
+std::int64_t
+Value::
+getInteger() const noexcept
+{
+    MRDOX_ASSERT(isNumber());
+    Access A(*scope_);
+    return duk_get_int(A, idx_);
+}
+
+double
+Value::
+getDouble() const noexcept
+{
+    MRDOX_ASSERT(isNumber());
+    Access A(*scope_);
+    return duk_get_number(A, idx_);
+}
+
+dom::Object
+Value::
+getObject() const noexcept
+{
+    MRDOX_ASSERT(isObject());
+    return dom::newObject<JSObjectImpl>(*scope_, idx_);
+}
+
+dom::Array
+Value::
+getArray() const noexcept
+{
+    MRDOX_ASSERT(isArray());
+    return dom::newArray<JSArrayImpl>(*scope_, idx_);
+}
+
+dom::Function
+Value::
+getFunction() const noexcept
+{
+    MRDOX_ASSERT(isFunction());
+    return dom::newFunction<JSFunctionImpl>(*scope_, idx_);
 }
 
 dom::Value
@@ -1017,7 +1340,7 @@ callImpl(
     auto result = duk_pcall(A, args.size());
     if(result == DUK_EXEC_ERROR)
         return Unexpected(dukM_popError(*scope_));
-    return A.construct<Value>(-1, *scope_);
+    return Access::construct<Value>(-1, *scope_);
 }
 
 Expected<Value>
@@ -1031,7 +1354,7 @@ callImpl(std::span<dom::Value> args) const
     auto result = duk_pcall(A, args.size());
     if(result == DUK_EXEC_ERROR)
         return Unexpected(dukM_popError(*scope_));
-    return A.construct<Value>(-1, *scope_);
+    return Access::construct<Value>(-1, *scope_);
 }
 
 Expected<Value>
@@ -1047,33 +1370,17 @@ callPropImpl(
     duk_dup(A, idx_);
     for(auto const& arg : args)
         domValue_push(A, arg);
-    auto rc = duk_pcall_method(A, args.size());
+    auto rc = duk_pcall_method(
+        A, static_cast<duk_idx_t>(args.size()));
     if(rc == DUK_EXEC_ERROR)
     {
         Error err = dukM_popError(*scope_);
         duk_pop(A); // method
         return Unexpected(err);
     }
-    return A.construct<Value>(-1, *scope_);
+    return Access::construct<Value>(-1, *scope_);
 }
 
-void
-Value::
-set(
-    std::string_view key,
-    Value value) const
-{
-    Access A(*scope_);
-    // Push the key and value onto the stack
-    duk_push_lstring(A, key.data(), key.size());
-    duk_dup(A, value.idx_);
-    // Insert the key-value pair into the object
-    duk_put_prop(A, idx_);
-    // Clean up the stack
-    duk_pop_n(A, 2); // Remove the key and value from the stack
-}
-
-MRDOX_DECL
 Value
 Value::
 get(std::string_view key) const
@@ -1084,8 +1391,242 @@ get(std::string_view key) const
     // Get the value associated with the key
     duk_get_prop(A, idx_);
     // Return value or `undefined`
-    return A.construct<Value>(-1, *scope_);
+    return Access::construct<Value>(-1, *scope_);
 }
+
+Value
+Value::
+get(std::size_t i) const
+{
+    Access A(*scope_);
+    duk_get_prop_index(A, idx_, i);
+    return Access::construct<Value>(-1, *scope_);
+}
+
+
+Value
+Value::
+get(dom::Value const& i) const
+{
+    if (i.isInteger())
+    {
+        return get(static_cast<std::size_t>(i.getInteger()));
+    }
+    if (i.isString() || i.isSafeString())
+    {
+        return get(i.getString().get());
+    }
+    return {};
+}
+
+Value
+Value::
+lookup(std::string_view keys) const
+{
+    Value cur = *this;
+    std::size_t pos = keys.find('.');
+    std::string_view key = keys.substr(0, pos);
+    while (pos != std::string_view::npos)
+    {
+        cur = cur.get(key);
+        if (cur.isUndefined())
+        {
+            return cur;
+        }
+        keys = keys.substr(pos + 1);
+        pos = keys.find('.');
+        key = keys.substr(0, pos);
+    }
+    return cur.get(key);
+}
+
+void
+Value::
+set(
+    std::string_view key,
+    Value const& value) const
+{
+    Access A(*scope_);
+    // Push the key and value onto the stack
+    duk_push_lstring(A, key.data(), key.size());
+    duk_dup(A, value.idx_);
+    // Insert the key-value pair into the object
+    duk_put_prop(A, idx_);
+}
+
+void
+Value::
+set(
+    std::string_view key,
+    dom::Value const& value) const
+{
+    Access A(*scope_);
+    // Push the key and value onto the stack
+    duk_push_lstring(A, key.data(), key.size());
+    domValue_push(A, value);
+    // Insert the key-value pair into the object
+    duk_put_prop(A, idx_);
+}
+
+bool
+Value::
+exists(std::string_view key) const
+{
+    Access A(*scope_);
+    duk_push_lstring(A, key.data(), key.size());
+    return duk_has_prop(A, idx_);
+}
+
+bool
+Value::
+empty() const
+{
+    switch(type())
+    {
+    using enum Type;
+    case undefined:
+    case null:
+        return true;
+    case boolean:
+    case number:
+        return false;
+    case string:
+        return getString().empty();
+    case array:
+        return getArray().empty();
+    case object:
+        return getObject().empty();
+    case function:
+        return false;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+std::size_t
+Value::
+size() const
+{
+    switch(type())
+    {
+    using enum Type;
+    case undefined:
+    case null:
+        return 0;
+    case boolean:
+    case number:
+        return 1;
+    case string:
+        return getString().size();
+    case array:
+        return getArray().size();
+    case object:
+        return getObject().size();
+    case function:
+        return 1;
+    default:
+        MRDOX_UNREACHABLE();
+    }
+}
+
+void
+Value::
+swap(Value& other) noexcept
+{
+    std::swap(scope_, other.scope_);
+    std::swap(idx_, other.idx_);
+}
+
+std::string
+toString(
+    Value const& value)
+{
+    Access A(*value.scope_);
+    duk_dup(A, value.idx_);
+    std::string s = duk_to_string(A, -1);
+    duk_pop(A);
+    return s;
+}
+
+bool
+operator==(
+    Value const& lhs,
+    Value const& rhs) noexcept
+{
+    if (lhs.isUndefined() || rhs.isUndefined())
+    {
+        return lhs.isUndefined() && rhs.isUndefined();
+    }
+    return duk_strict_equals(
+        Access(*lhs.scope_), lhs.idx_, rhs.idx_);
+}
+
+std::strong_ordering
+operator<=>(Value const& lhs, Value const& rhs) noexcept
+{
+    using kind_t = std::underlying_type_t<Type>;
+    if (static_cast<kind_t>(lhs.type()) < static_cast<kind_t>(rhs.type()))
+    {
+        return std::strong_ordering::less;
+    }
+    if (static_cast<kind_t>(rhs.type()) < static_cast<kind_t>(lhs.type()))
+    {
+        return std::strong_ordering::greater;
+    }
+    switch (lhs.type())
+    {
+    using enum Type;
+    case undefined:
+    case null:
+        return std::strong_ordering::equivalent;
+    case boolean:
+        return lhs.getBool() <=> rhs.getBool();
+    case number:
+        if (lhs.getDouble() < rhs.getDouble())
+        {
+            return std::strong_ordering::less;
+        }
+        if (rhs.getDouble() < lhs.getDouble())
+        {
+            return std::strong_ordering::greater;
+        }
+        return std::strong_ordering::equal;
+    case string:
+        return lhs.getString() <=> rhs.getString();
+    default:
+        if (duk_strict_equals(
+            Access(*lhs.scope_), lhs.idx_, rhs.idx_))
+        {
+            return std::strong_ordering::equal;
+        }
+        else
+        {
+            return std::strong_ordering::equivalent;
+        }
+    }
+    return std::strong_ordering::equivalent;
+}
+
+Value
+operator||(Value const& lhs, Value const& rhs)
+{
+    if (lhs.isTruthy())
+    {
+        return lhs;
+    }
+    return rhs;
+}
+
+Value
+operator&&(Value const& lhs, Value const& rhs)
+{
+    if (!lhs.isTruthy())
+    {
+        return lhs;
+    }
+    return rhs;
+}
+
 
 } // js
 } // mrdox

@@ -357,6 +357,14 @@ public:
     virtual void set(String key, Value value) = 0;
 
     /** Invoke the visitor for each key/value pair.
+
+        The visitor function must return `true` to
+        continue iteration, or `false` to stop.
+
+        The visit function returns `true` if the
+        visitor returned `true` for all elements,
+        otherwise `false`.
+
     */
     virtual bool visit(std::function<bool(String, Value)>) const = 0;
 
