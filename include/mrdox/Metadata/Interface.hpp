@@ -62,6 +62,7 @@ public:
         RecordInfo const& Derived,
         Corpus const& corpus);
 
+    virtual ~Interface() = default;
 private:
     class Build;
 
