@@ -366,12 +366,14 @@ std::string
 AdocCorpus::
 getXref(SymbolID const& id) const
 {
-    if(! safe_names)
-        // no safenames, use the SymbolID for references
-        return toBase16(id);
+    bool multipage = getCorpus().config->multiPage;
     // use '/' as the seperator for multi-page, and '-' for single-page
-    return safe_names->getQualified(id,
-        getCorpus().config->multiPage ? '/' : '-');
+    std::string xref = names_.getQualified(
+        id, multipage ? '/' : '-');
+    // add the file extension if in multipage mode
+    if(multipage)
+        xref.append(".adoc");
+    return xref;
 }
 
 dom::Value

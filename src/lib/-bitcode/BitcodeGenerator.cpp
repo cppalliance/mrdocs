@@ -35,7 +35,7 @@ public:
         Corpus const& corpus)
         : corpus_(corpus)
         , outputPath_(outputPath)
-        , names_(corpus_)
+        , names_(corpus_, true)
         , taskGroup_(corpus.config.threadPool())
     {
     }

@@ -38,9 +38,8 @@ renderPage(
         {
             auto pageText = builder(I).value();
 
-
             std::string fileName = files::appendPath(
-                outputPath_, builder.domCorpus.getXref(I.id) + ".adoc");
+                outputPath_, builder.domCorpus.getXref(I.id));
 
             std::string dir = files::getParentDir(fileName);
             if(auto err = files::createDirectory(dir))

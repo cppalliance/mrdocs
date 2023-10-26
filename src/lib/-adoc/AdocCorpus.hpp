@@ -25,16 +25,15 @@ class AdocCorpus : public DomCorpus
 {
 public:
     Options options;
-    std::optional<SafeNames> safe_names;
+    SafeNames names_;
 
     AdocCorpus(
         Corpus const& corpus,
         Options&& opts)
         : DomCorpus(corpus)
         , options(std::move(opts))
+        , names_(corpus, options.safe_names)
     {
-        if(options.safe_names)
-            safe_names.emplace(corpus);
     }
 
     dom::Object

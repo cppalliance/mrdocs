@@ -40,8 +40,9 @@ public:
         Upon construction, the entire table of
         safe names is built from the corpus.
     */
-    explicit
-    SafeNames(Corpus const& corpus);
+    SafeNames(
+        Corpus const& corpus,
+        bool enabled);
 
     ~SafeNames() noexcept;
 

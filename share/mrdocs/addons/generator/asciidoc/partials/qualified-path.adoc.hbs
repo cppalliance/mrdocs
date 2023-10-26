@@ -3,5 +3,5 @@
 {{>qualified-path symbol=symbol.parent~}}
 {{else~}}
 {{/if~}}
-{{#if symbol.name}}{{>xref symbol}}[{{~symbol.name}}]::{{/if~}}
+{{#if symbol.name}}xref:{{symbol.ref}}[{{symbol.name}}]::{{/if~}}
 {{/unless}}

@@ -170,7 +170,7 @@ writeIndex()
     tags_.open("symbols");
     if(options_.safe_names)
     {
-        SafeNames names(corpus_);
+        SafeNames names(corpus_, true);
         for(auto& I : corpus_)
         {
             auto safe_name = names.getUnqualified(I.id);

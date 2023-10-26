@@ -3,6 +3,6 @@
 {{else if (eq kind "non-type")~}}
 {{~value~}}
 {{else if (eq kind "template")~}}
-{{#if template}}{{>xref template}}[{{name~}}]{{else~}}{{name~}}{{/if~}}
+{{#if template}}xref:{{template.ref}}[{{name~}}]{{else~}}{{name~}}{{/if~}}
 {{/if~}}
 {{~#if is-pack}}...{{/if~}}

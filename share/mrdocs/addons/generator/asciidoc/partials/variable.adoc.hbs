@@ -16,7 +16,7 @@
 {{#if symbol.isThreadLocal}}thread_local
 {{/if~}}
 {{#if (or (eq symbol.template.kind "explicit") (eq symbol.template.kind "partial"))~}}
-    {{>declarator-before symbol.type}} {{#if symbol.template.primary.id~}}{{>xref symbol.template.primary}}[{{symbol.name}}]{{else}}{{symbol.name}}{{/if~}}
+    {{>declarator-before symbol.type}} {{#if symbol.template.primary.id~}}xref:{{symbol.template.primary.ref}}[{{symbol.name}}]{{else}}{{symbol.name}}{{/if~}}
     {{~>template-args args=symbol.template.args~}}
 {{else~}}
     {{>declarator-before symbol.type}} {{symbol.name~}}

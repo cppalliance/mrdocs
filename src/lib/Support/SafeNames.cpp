@@ -355,9 +355,12 @@ public:
 //------------------------------------------------
 
 SafeNames::
-SafeNames(Corpus const& corpus)
-    : impl_(std::make_unique<Impl>(corpus, "index"))
+SafeNames(
+    Corpus const& corpus,
+    bool enabled)
 {
+    if(enabled)
+        impl_ = std::make_unique<Impl>(corpus, "index");
 }
 
 SafeNames::
@@ -368,6 +371,8 @@ SafeNames::
 getUnqualified(
     SymbolID const& id) const
 {
+    if(! impl_)
+        return toBase16(id);
     std::string result;
     impl_->getSafeUnqualified(result, id);
     return result;
@@ -379,6 +384,8 @@ getQualified(
     SymbolID const& id,
     char delim) const
 {
+    if(! impl_)
+        return toBase16(id);
     std::string result;
     impl_->getSafeQualified(result, id, delim);
     return result;

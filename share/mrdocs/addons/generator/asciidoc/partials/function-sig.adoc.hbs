@@ -13,7 +13,7 @@
 {{>declarator-before return}}
 
 {{#if (eq template.kind "explicit")~}}
-    {{#if template.primary.id~}}{{>xref template.primary}}[{{name}}]{{else}}{{name}}{{/if~}}
+    {{#if template.primary.id~}}xref:{{template.primary.ref}}[{{name}}]{{else}}{{name}}{{/if~}}
     {{~>template-args args=template.args~}}
 {{else~}}
     {{name~}}
