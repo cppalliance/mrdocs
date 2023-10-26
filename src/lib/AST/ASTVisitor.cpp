@@ -7,7 +7,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "ASTVisitor.hpp"
@@ -19,7 +19,7 @@
 #include "lib/Lib/Diagnostics.hpp"
 #include "lib/Lib/Filters.hpp"
 #include "lib/Lib/Info.hpp"
-#include <mrdox/Metadata.hpp>
+#include <mrdocs/Metadata.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
 #include <clang/AST/DeclFriend.h>
@@ -44,7 +44,7 @@
 #include <unordered_set>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace {
 
@@ -216,7 +216,7 @@ public:
         // top-level TranslationUnitDecl. if this assert fires,
         // then it means ASTContext::setTraversalScope is being
         // (erroneously) used somewhere
-        MRDOX_ASSERT(context_.getTraversalScope() ==
+        MRDOCS_ASSERT(context_.getTraversalScope() ==
             std::vector<Decl*>{context_.getTranslationUnitDecl()});
     }
 
@@ -292,7 +292,7 @@ public:
             info = it->get();
             created = true;
         }
-        MRDOX_ASSERT(info->Kind == InfoTy::kind_id);
+        MRDOCS_ASSERT(info->Kind == InfoTy::kind_id);
         info->Implicit &= currentMode() != ExtractMode::Normal;
         return {static_cast<InfoTy&>(*info), created};
     }
@@ -511,8 +511,8 @@ public:
                 R && ! TDN.isEmpty())
             {
                 auto found = R->lookup(TDN);
-                MRDOX_ASSERT(found.isSingleResult());
-                MRDOX_ASSERT(isa<TypedefNameDecl>(found.front()) ||
+                MRDOCS_ASSERT(found.isSingleResult());
+                MRDOCS_ASSERT(isa<TypedefNameDecl>(found.front()) ||
                     isa<TypeAliasTemplateDecl>(found.front()));
                 return found.front();
             }
@@ -639,7 +639,7 @@ public:
         while(true)
         {
             // should never be called for a null QualType
-            MRDOX_ASSERT(! qt.isNull());
+            MRDOCS_ASSERT(! qt.isNull());
             const Type* type = qt.getTypePtr();
             unsigned quals = qt.getLocalFastQualifiers();
 
@@ -834,7 +834,7 @@ public:
                 auto* T = cast<ElaboratedType>(type);
                 // there should only ever be one
                 // nested-name-specifier for the terminal type
-                MRDOX_ASSERT(! NNS || ! T->getQualifier());
+                MRDOCS_ASSERT(! NNS || ! T->getQualifier());
                 NNS = T->getQualifier();
                 qt = T->getNamedType().withFastQualifiers(quals);
                 continue;
@@ -847,7 +847,7 @@ public:
                     T->getIdentifier(), quals, T->template_arguments());
                 // there should only ever be one
                 // nested-name-specifier for the terminal type
-                MRDOX_ASSERT(! NNS || ! T->getQualifier());
+                MRDOCS_ASSERT(! NNS || ! T->getQualifier());
                 NNS = T->getQualifier();
                 *inner = std::move(I);
                 break;
@@ -860,7 +860,7 @@ public:
                     T->getIdentifier(), quals);
                 // there should only ever be one
                 // nested-name-specifier for the terminal type
-                MRDOX_ASSERT(! NNS || ! T->getQualifier());
+                MRDOCS_ASSERT(! NNS || ! T->getQualifier());
                 NNS = T->getQualifier();
                 *inner = std::move(I);
                 break;
@@ -871,7 +871,7 @@ public:
             {
                 auto* T = cast<TemplateSpecializationType>(type);
                 auto name = T->getTemplateName();
-                MRDOX_ASSERT(! name.isNull());
+                MRDOCS_ASSERT(! name.isNull());
                 NamedDecl* ND = name.getAsTemplateDecl();
                 // if this is a specialization of a alias template,
                 // the canonical type will be the named type. in such cases,
@@ -961,7 +961,7 @@ public:
             }
             // the terminal type must be BuiltinTypeInfo,
             // TagTypeInfo, or SpecializationTypeInfo
-            MRDOX_ASSERT(
+            MRDOCS_ASSERT(
                 (*inner)->isBuiltin() ||
                 (*inner)->isTag() ||
                 (*inner)->isSpecialization());
@@ -1096,7 +1096,7 @@ public:
                         if(auto* CTPSD = inst_from.template dyn_cast<
                             ClassTemplatePartialSpecializationDecl*>())
                         {
-                            MRDOX_ASSERT(DT != CTPSD);
+                            MRDOCS_ASSERT(DT != CTPSD);
                             return getInstantiatedFrom(CTPSD);
                         }
                         // explicit instantiation declaration/definition
@@ -1157,7 +1157,7 @@ public:
                         if(auto* VTPSD = inst_from.template dyn_cast<
                             VarTemplatePartialSpecializationDecl*>())
                         {
-                            MRDOX_ASSERT(DT != VTPSD);
+                            MRDOCS_ASSERT(DT != VTPSD);
                             return getInstantiatedFrom(VTPSD);
                         }
                         // explicit instantiation declaration/definition
@@ -1290,7 +1290,7 @@ public:
                 }
                 return R;
             }
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         });
 
         TP->Name = extractName(N);
@@ -1325,7 +1325,7 @@ public:
         case TemplateArgument::Pack:
         {
             // we should never a TemplateArgument::Pack here
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
             break;
         }
         // type
@@ -1333,7 +1333,7 @@ public:
         {
             auto R = std::make_unique<TypeTArg>();
             QualType QT = A.getAsType();
-            MRDOX_ASSERT(! QT.isNull());
+            MRDOCS_ASSERT(! QT.isNull());
             // if the template argument is a pack expansion,
             // use the expansion pattern as the type & mark
             // the template argument as a pack expansion
@@ -1406,7 +1406,7 @@ public:
             return R;
         }
         default:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
         return nullptr;
     }
@@ -1646,7 +1646,7 @@ public:
         const PresumedLoc loc =
             source_.getPresumedLoc(D->getBeginLoc());
 
-        MRDOX_ASSERT(loc.isValid());
+        MRDOCS_ASSERT(loc.isValid());
 
         file_ = files::makePosixStyle(loc.getFilename());
 
@@ -1734,7 +1734,7 @@ public:
             break;
         case DeclarationName::CXXConversionFunctionName:
         {
-            MRDOX_ASSERT(isa<CXXConversionDecl>(D));
+            MRDOCS_ASSERT(isa<CXXConversionDecl>(D));
             const auto* CD = cast<CXXConversionDecl>(D);
             result.append("operator ");
             // KRYSTIAN FIXME: we *really* should not be
@@ -1759,7 +1759,7 @@ public:
         case DeclarationName::CXXUsingDirective:
             break;
         default:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
         return result;
     }
@@ -1772,7 +1772,7 @@ public:
         Decl* D)
     {
         // this function should be called once per Info
-        MRDOX_ASSERT(I.Namespace.empty());
+        MRDOCS_ASSERT(I.Namespace.empty());
 
         Decl* child = D;
         SymbolID child_id = I.id;
@@ -1813,7 +1813,7 @@ public:
                 // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
                 // is accessible through S->getSpecializedTemplateOrPartial
                 // if the implicit instantiation used a partially specialized template,
-                MRDOX_ASSERT(parent_context->getDeclKind() !=
+                MRDOCS_ASSERT(parent_context->getDeclKind() !=
                     Decl::ClassTemplatePartialSpecialization);
 
                 auto [P, created] = getOrCreateInfo<
@@ -2291,11 +2291,11 @@ public:
                 const DeclContext* DC = D->getDeclContext();
                 const auto* RD = dyn_cast<CXXRecordDecl>(DC);
                 // the semantic DeclContext of a FriendDecl must be a class
-                MRDOX_ASSERT(RD);
+                MRDOCS_ASSERT(RD);
                 SymbolID parent_id = extractSymbolID(RD);
                 if(Info* parent = getInfo(parent_id))
                 {
-                    MRDOX_ASSERT(parent->isRecord());
+                    MRDOCS_ASSERT(parent->isRecord());
                     parent->Implicit &= currentMode() != ExtractMode::Normal;
                     static_cast<RecordInfo*>(parent)->Friends.emplace_back(I.id);
                 }
@@ -2314,7 +2314,7 @@ public:
                 return;
             }
 
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
         else if(TypeSourceInfo* TS = D->getFriendType())
         {
@@ -2323,7 +2323,7 @@ public:
         }
         else
         {
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
         return;
     }
@@ -2644,7 +2644,7 @@ traverseDecl(
     Decl* D,
     Args&&... args)
 {
-    MRDOX_ASSERT(D);
+    MRDOCS_ASSERT(D);
 
     if(D->isInvalidDecl() || D->isImplicit())
         return true;
@@ -2687,7 +2687,7 @@ ASTVisitor::
 traverseContext(
     DeclContext* D)
 {
-    MRDOX_ASSERT(D);
+    MRDOCS_ASSERT(D);
     for(auto* C : D->decls())
         if(! traverseDecl(C))
             return false;
@@ -2771,7 +2771,7 @@ class ASTVisitorConsumer
     InitializeSema(Sema& S) override
     {
         // Sema should not have been initialized yet
-        MRDOX_ASSERT(! sema_);
+        MRDOCS_ASSERT(! sema_);
         sema_ = &S;
 
 #if 0
@@ -2790,7 +2790,7 @@ class ASTVisitorConsumer
     HandleTranslationUnit(ASTContext& Context) override
     {
         // the Sema better be valid
-        MRDOX_ASSERT(sema_);
+        MRDOCS_ASSERT(sema_);
 
         // initialize the diagnostics reporter first
         // so errors prior to traversal are reported
@@ -2977,5 +2977,5 @@ makeFrontendActionFactory(
     return std::make_unique<ASTActionFactory>(ex, config);
 }
 
-} // mrdox
+} // mrdocs
 } // clang

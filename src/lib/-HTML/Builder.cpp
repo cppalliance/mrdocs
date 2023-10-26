@@ -5,19 +5,19 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "Builder.hpp"
 #include "lib/Support/Radix.hpp"
-#include <mrdox/Metadata/DomMetadata.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Metadata/DomMetadata.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <fmt/format.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace lua {
 extern void lua_dump(dom::Object const& obj);
@@ -149,7 +149,7 @@ callTemplate(
     auto layoutDir = files::appendPath(config->addonsDir,
             "generator", "html", "layouts");
     auto pathName = files::appendPath(layoutDir, name);
-    MRDOX_TRY(auto fileText, files::getFileText(pathName));
+    MRDOCS_TRY(auto fileText, files::getFileText(pathName));
     HandlebarsOptions options;
     options.noEscape = true;
 
@@ -211,5 +211,5 @@ DEFINE(FieldInfo);
 DEFINE(SpecializationInfo);
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang

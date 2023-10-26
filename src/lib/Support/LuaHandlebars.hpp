@@ -5,26 +5,26 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_API_SUPPORT_LUAHANDLEBARS_HPP
-#define MRDOX_API_SUPPORT_LUAHANDLEBARS_HPP
+#ifndef MRDOCS_API_SUPPORT_LUAHANDLEBARS_HPP
+#define MRDOCS_API_SUPPORT_LUAHANDLEBARS_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Support/Lua.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Lua.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Add the Handlebars Lua instance as a global
 */
-MRDOX_DECL
+MRDOCS_DECL
 Error
 tryLoadHandlebars(
     lua::Context const& ctx);
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

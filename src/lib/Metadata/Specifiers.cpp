@@ -5,13 +5,13 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Metadata/Specifiers.hpp>
+#include <mrdocs/Metadata/Specifiers.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 dom::String toString(AccessKind kind) noexcept
 {
@@ -22,7 +22,7 @@ dom::String toString(AccessKind kind) noexcept
     case AccessKind::Protected: return "protected";
     case AccessKind::None:      return "";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -36,7 +36,7 @@ dom::String toString(StorageClassKind kind) noexcept
     case StorageClassKind::Auto:     return "auto";
     case StorageClassKind::Register: return "register";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -48,7 +48,7 @@ dom::String toString(ConstexprKind kind) noexcept
     case ConstexprKind::Constexpr: return "constexpr";
     case ConstexprKind::Consteval: return "consteval";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -62,7 +62,7 @@ dom::String toString(ExplicitKind kind) noexcept
     case ExplicitKind::ExplicitTrue:       return "explicit(true)";
     case ExplicitKind::ExplicitUnresolved: return "explicit(expr)";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -83,7 +83,7 @@ dom::String toString(NoexceptKind kind) noexcept
     case NoexceptKind::Uninstantiated:    return "";
     case NoexceptKind::Unparsed:          return "";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -95,9 +95,9 @@ dom::String toString(ReferenceKind kind) noexcept
     case ReferenceKind::LValue: return "&";
     case ReferenceKind::RValue: return "&&";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
 } // clang
-} // mrdox
+} // mrdocs

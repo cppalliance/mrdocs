@@ -7,13 +7,13 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Metadata/Template.hpp>
+#include <mrdocs/Metadata/Template.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 std::string_view
 toString(
@@ -28,7 +28,7 @@ toString(
     case TArgKind::Template:
         return "template";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -45,7 +45,7 @@ toString(
     case TParamKind::Template:
         return "template";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -60,7 +60,7 @@ toString(
     case TParamKeyKind::Typename:
         return "typename";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -77,7 +77,7 @@ toString(
     case TemplateSpecKind::Partial:
         return "partial";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -109,5 +109,5 @@ toString(
     });
 }
 
-} // mrdox
+} // mrdocs
 } // clang

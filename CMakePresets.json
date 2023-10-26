@@ -19,7 +19,7 @@
         "LLVM_ROOT": "$env{LLVM_ROOT}",
         "Clang_ROOT": "$env{LLVM_ROOT}",
         "DUKTAPE_SOURCE_ROOT": "$env{DUKTAPE_SOURCE_ROOT}",
-        "MRDOX_BUILD_TESTS": "ON"
+        "MRDOCS_BUILD_TESTS": "ON"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -55,7 +55,7 @@
       "description": "Release Config without Tests.",
       "binaryDir": "${sourceDir}/build/dist",
       "cacheVariables": {
-        "MRDOX_BUILD_TESTS": "OFF"
+        "MRDOCS_BUILD_TESTS": "OFF"
       }
     }
   ]

@@ -5,11 +5,11 @@
 //
 // Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Support/Handlebars.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Support/Handlebars.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <fmt/format.h>
 #include <ranges>
 #include <charconv>
@@ -21,7 +21,7 @@
 #include <utility>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 // ==============================================================
 // Output
@@ -516,7 +516,7 @@ namespace detail {
 //HandlebarsCallback::
 //log(dom::Value const& level,
 //    dom::Array const& args) const {
-//    MRDOX_ASSERT(logger_);
+//    MRDOCS_ASSERT(logger_);
 //    (*logger_)(level, args);
 //}
 
@@ -823,7 +823,7 @@ lookupPropertyImpl(
     HandlebarsOptions const& opt)
 {
     using Res = std::pair<dom::Value, bool>;
-    MRDOX_TRY(checkPath(path, state));
+    MRDOCS_TRY(checkPath(path, state));
 
     // ==============================================================
     // "." / "this"
@@ -1169,13 +1169,13 @@ parseTag(
     std::string_view tagStr,
     std::string_view context)
 {
-    MRDOX_ASSERT(tagStr.size() >= 4);
+    MRDOCS_ASSERT(tagStr.size() >= 4);
     Handlebars::Tag t;
     t.escaped = tagStr.front() == '\\';
-    MRDOX_ASSERT(tagStr[0 + t.escaped] == '{');
-    MRDOX_ASSERT(tagStr[1 + t.escaped] == '{');
-    MRDOX_ASSERT(tagStr[tagStr.size() - 1] == '}');
-    MRDOX_ASSERT(tagStr[tagStr.size() - 2] == '}');
+    MRDOCS_ASSERT(tagStr[0 + t.escaped] == '{');
+    MRDOCS_ASSERT(tagStr[1 + t.escaped] == '{');
+    MRDOCS_ASSERT(tagStr[tagStr.size() - 1] == '}');
+    MRDOCS_ASSERT(tagStr[tagStr.size() - 2] == '}');
     t.buffer = tagStr;
     tagStr = tagStr.substr(2 + t.escaped, tagStr.size() - 4 - t.escaped);
 
@@ -1348,8 +1348,8 @@ parseTag(
         standalone_tag_types, t.type) != standalone_tag_types.end();
     if (checkStandalone)
     {
-        MRDOX_ASSERT(t.buffer.data() >= context.data());
-        MRDOX_ASSERT(t.buffer.data() + t.buffer.size() <= context.data() + context.size());
+        MRDOCS_ASSERT(t.buffer.data() >= context.data());
+        MRDOCS_ASSERT(t.buffer.data() + t.buffer.size() <= context.data() + context.size());
 
         // Check if tag is standalone
         std::string_view beforeTag = context.substr(
@@ -1458,7 +1458,7 @@ try_render_to_impl(
         // ==============================================================
         // Render tag
         // ==============================================================
-        MRDOX_TRY(renderTag(tag, out, context, opt, state));
+        MRDOCS_TRY(renderTag(tag, out, context, opt, state));
 
         // ==============================================================
         // Advance template text
@@ -1798,7 +1798,7 @@ evalExpr(
             cb.set("context", context);
             setupArgs(all, context, state, args, cb, opt);
             return Res{fn.call(args).value(), true, false, true};
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
     }
     // ==============================================================
@@ -1806,7 +1806,7 @@ evalExpr(
     // ==============================================================
     if (expression.starts_with('@'))
     {
-        MRDOX_TRY(checkPath(expression, state));
+        MRDOCS_TRY(checkPath(expression, state));
         expression.remove_prefix(1);
         dom::Value data = state.data;
         if (expression == "root" || expression.starts_with("root.") || expression.starts_with("root/"))
@@ -1846,7 +1846,7 @@ evalExpr(
                 break;
             }
         }
-        MRDOX_TRY(auto r, lookupPropertyImpl(data, expression, state, opt));
+        MRDOCS_TRY(auto r, lookupPropertyImpl(data, expression, state, opt));
         auto [res, found] = r;
         return Res{res, found, false};
     }
@@ -1876,7 +1876,7 @@ evalExpr(
         }
         dom::Value parentCtx =
             state.parentContext[state.parentContext.size() - dotdots];
-        MRDOX_TRY(auto r, lookupPropertyImpl(parentCtx, expression, state, noStrict));
+        MRDOCS_TRY(auto r, lookupPropertyImpl(parentCtx, expression, state, noStrict));
         auto [res, found] = r;
         return Res{res, found, false};
     }
@@ -1903,7 +1903,7 @@ evalExpr(
     bool defined;
     if (isPathedValue)
     {
-        MRDOX_TRY(std::tie(r, defined), lookupPropertyImpl(context, expression, state, noStrict));
+        MRDOCS_TRY(std::tie(r, defined), lookupPropertyImpl(context, expression, state, noStrict));
         if (defined) {
             return Res{r, defined, false};
         }
@@ -1935,7 +1935,7 @@ evalExpr(
     HandlebarsOptions strictOpt = opt;
     strictOpt.strict = opt.strict && !opt.compat;
     strictOpt.assumeObjects = opt.assumeObjects && !opt.compat;
-    MRDOX_TRY(std::tie(r, defined), lookupPropertyImpl(context, expression, state, strictOpt));
+    MRDOCS_TRY(std::tie(r, defined), lookupPropertyImpl(context, expression, state, strictOpt));
     if (defined) {
         return Res{r, defined, false};
     }
@@ -1974,7 +1974,7 @@ evalExpr(
         auto parentContexts = std::ranges::views::reverse(state.parentContext);
         for (const auto& parentContext: parentContexts)
         {
-            MRDOX_TRY(std::tie(r, defined), lookupPropertyImpl(parentContext, expression, state, noStrict));
+            MRDOCS_TRY(std::tie(r, defined), lookupPropertyImpl(parentContext, expression, state, noStrict));
             if (defined)
             {
                 return Res{r, defined, false};
@@ -2002,7 +2002,7 @@ getHelper(std::string_view helper, bool isNoArgBlock) const
     }
     helper = !isNoArgBlock ? "helperMissing" : "blockHelperMissing";
     it = helpers_.find(helper);
-    MRDOX_ASSERT(it != helpers_.end());
+    MRDOCS_ASSERT(it != helpers_.end());
     return {it->second, false};
 }
 
@@ -2326,7 +2326,7 @@ renderExpression(
         cb.set("log", logger_);
         HandlebarsOptions noStrict = opt;
         noStrict.strict = false;
-        MRDOX_TRY(setupArgs(tag.arguments, context, state, args, cb, noStrict));
+        MRDOCS_TRY(setupArgs(tag.arguments, context, state, args, cb, noStrict));
         dom::Value res = fn.call(args).value();
         if (!res.isUndefined()) {
             opt2.noEscape = opt2.noEscape || res.isSafeString();
@@ -2348,7 +2348,7 @@ renderExpression(
         unescaped = unescapeString(helper_expr);
         helper_expr = unescaped;
     }
-    MRDOX_TRY(auto resV, evalExpr(context, helper_expr, state, opt, false));
+    MRDOCS_TRY(auto resV, evalExpr(context, helper_expr, state, opt, false));
     if (resV.found)
     {
         if (resV.value.isFunction())
@@ -2488,7 +2488,7 @@ setupArgs(
             // ==========================================
             // Positional argument
             // ==========================================
-            MRDOX_TRY(auto res, evalExpr(context, expr, state, opt, true));
+            MRDOCS_TRY(auto res, evalExpr(context, expr, state, opt, true));
             args.emplace_back(res.value);
             if (opt.trackIds) {
                 dom::Array ids = cb.get("ids").getArray();
@@ -2532,7 +2532,7 @@ setupArgs(
             // ==========================================
             // Named argument
             // ==========================================
-            MRDOX_TRY(auto res, evalExpr(context, v, state, opt, true));
+            MRDOCS_TRY(auto res, evalExpr(context, v, state, opt, true));
             hash.set(k, res.value);
             if (opt.trackIds) {
                 dom::Object hashIds = cb.get("hashIds").getObject();
@@ -2579,7 +2579,7 @@ renderDecorator(
     // ==============================================================
     std::string_view expr;
     findExpr(expr, tag.arguments);
-    MRDOX_TRY(auto res, evalExpr(context, expr, state, opt, true));
+    MRDOCS_TRY(auto res, evalExpr(context, expr, state, opt, true));
     if (!res.value.isString())
     {
         out << fmt::format(R"([invalid decorator expression "{}" in "{}"])", tag.arguments, tag.buffer);
@@ -2626,7 +2626,7 @@ renderPartial(
     {
         std::string_view expr;
         findExpr(expr, partialName);
-        MRDOX_TRY(auto res, evalExpr(context, expr, state, opt, true));
+        MRDOCS_TRY(auto res, evalExpr(context, expr, state, opt, true));
         if (res.value.isString())
         {
             partialName = res.value.getString();
@@ -2681,7 +2681,7 @@ renderPartial(
         OutputRef dumb{};
         std::string_view templateText = state.templateText;
         state.templateText = fnBlock;
-        MRDOX_TRY(this->try_render_to_impl(dumb, context, opt, state));
+        MRDOCS_TRY(this->try_render_to_impl(dumb, context, opt, state));
         state.templateText = templateText;
     }
 
@@ -2754,7 +2754,7 @@ renderPartial(
                 }
 
                 // Do change the context
-                MRDOX_TRY(auto res, evalExpr(context, expr, state, opt, true));
+                MRDOCS_TRY(auto res, evalExpr(context, expr, state, opt, true));
                 if (opt.trackIds)
                 {
                     std::string contextPath = appendContextPath(
@@ -2782,7 +2782,7 @@ renderPartial(
             evalExprResult res;
             if (contextKey != ".")
             {
-                MRDOX_TRY(res, evalExpr(context, contextKey, state, opt, true));
+                MRDOCS_TRY(res, evalExpr(context, contextKey, state, opt, true));
             }
             else
             {
@@ -2838,7 +2838,7 @@ renderPartial(
     // ==========================================
     // Render partial
     // ==========================================
-    MRDOX_TRY(this->try_render_to_impl(out, partialCtx, opt, state));
+    MRDOCS_TRY(this->try_render_to_impl(out, partialCtx, opt, state));
 
     // ==========================================
     // Restore state
@@ -2902,7 +2902,7 @@ renderBlock(
     std::string_view fnBlock;
     std::string_view inverseBlock;
     Tag inverseTag;
-    MRDOX_TRY(parseBlock(
+    MRDOCS_TRY(parseBlock(
         blockName, tag, opt, state, state.templateText, out,
         fnBlock, inverseBlock, inverseTag, isChainedBlock));
 
@@ -2914,7 +2914,7 @@ renderBlock(
     bool const useContextFunction = !found && !tag.arguments.empty();
     if (useContextFunction)
     {
-        MRDOX_TRY(auto res, evalExpr(context, tag.helper, state, opt, false));
+        MRDOCS_TRY(auto res, evalExpr(context, tag.helper, state, opt, false));
         if (res.found && res.value.isFunction())
         {
             fn = res.value.getFunction();
@@ -3068,7 +3068,7 @@ renderBlock(
         // ==========================================
         // Render
         // ==========================================
-        MRDOX_TRY(try_render_to_impl(out, newContext, opt, state));
+        MRDOCS_TRY(try_render_to_impl(out, newContext, opt, state));
 
         // ==========================================
         // Restore state
@@ -3181,7 +3181,7 @@ renderBlock(
                     state.templateText.remove_prefix(2);
                 }
             }
-            MRDOX_TRY(try_render_to_impl(out, newContext, opt, state));
+            MRDOCS_TRY(try_render_to_impl(out, newContext, opt, state));
         }
         else
         {
@@ -3190,7 +3190,7 @@ renderBlock(
             // expect a closing tag matching the parent tag, and
             // interpret sequential "else" tags as more chained
             // inverse tags.
-            MRDOX_TRY(renderBlock(blockName, inverseTag, out, newContext, opt, state, true));
+            MRDOCS_TRY(renderBlock(blockName, inverseTag, out, newContext, opt, state, true));
         }
 
         // ==========================================
@@ -3381,15 +3381,15 @@ if_fn(dom::Array const& arguments)
     dom::Value context = options.get("context");
     if (conditional.isFunction())
     {
-        MRDOX_TRY(conditional, conditional.getFunction().try_invoke(context));
+        MRDOCS_TRY(conditional, conditional.getFunction().try_invoke(context));
     }
 
     if ((!options.lookup("hash.includeZero") && !conditional) || isEmpty(conditional)) {
-        MRDOX_TRY(options.get("write_inverse").getFunction().try_invoke(context));
+        MRDOCS_TRY(options.get("write_inverse").getFunction().try_invoke(context));
     }
     else
     {
-        MRDOX_TRY(options.get("write").getFunction().try_invoke(context));
+        MRDOCS_TRY(options.get("write").getFunction().try_invoke(context));
     }
     return {};
 }
@@ -3425,7 +3425,7 @@ with_fn(dom::Array const& arguments)
     dom::Value context = arguments.get(0);
     dom::Value options = arguments.get(1);
     if (context.isFunction()) {
-        MRDOX_TRY(context, context.getFunction().try_invoke(options.get("context")));
+        MRDOCS_TRY(context, context.getFunction().try_invoke(options.get("context")));
     }
 
     if (!isEmpty(context))
@@ -3443,11 +3443,11 @@ with_fn(dom::Array const& arguments)
         cbOpt.set("data", data);
         cbOpt.set("blockParams", blockParams);
         cbOpt.set("blockParamPaths", blockParamPaths);
-        MRDOX_TRY(options.get("write").getFunction().try_invoke(context, cbOpt));
+        MRDOCS_TRY(options.get("write").getFunction().try_invoke(context, cbOpt));
     }
     else
     {
-        MRDOX_TRY(options.get("write_inverse").getFunction().try_invoke(options.get("context")));
+        MRDOCS_TRY(options.get("write_inverse").getFunction().try_invoke(options.get("context")));
     }
     return {};
 }
@@ -3472,7 +3472,7 @@ each_fn(dom::Value context, dom::Value const& options)
     }
 
     if (context.isFunction()) {
-        MRDOX_TRY(context, context.getFunction().try_invoke(options.get("context")));
+        MRDOCS_TRY(context, context.getFunction().try_invoke(options.get("context")));
     }
 
     if (options.get("data")) {
@@ -3515,7 +3515,7 @@ each_fn(dom::Value context, dom::Value const& options)
             for (; i < n; ++i)
             {
                 bool const isLast = i == n - 1;
-                MRDOX_TRY(execIteration(i, static_cast<std::int64_t>(i), isLast));
+                MRDOCS_TRY(execIteration(i, static_cast<std::int64_t>(i), isLast));
             }
         }
         else if (context.isObject())
@@ -3526,7 +3526,7 @@ each_fn(dom::Value context, dom::Value const& options)
             {
                 if (!priorKey.isUndefined())
                 {
-                    MRDOX_TRY(execIteration(priorKey, i - 1, false));
+                    MRDOCS_TRY(execIteration(priorKey, i - 1, false));
                 }
                 priorKey = key;
                 ++i;
@@ -3538,14 +3538,14 @@ each_fn(dom::Value context, dom::Value const& options)
             }
             if (!priorKey.isUndefined())
             {
-                MRDOX_TRY(execIteration(priorKey, i - 1, true));
+                MRDOCS_TRY(execIteration(priorKey, i - 1, true));
             }
         }
     }
 
     if (i == 0)
     {
-        MRDOX_TRY(inverse.getFunction().try_invoke(options.get("context")));
+        MRDOCS_TRY(inverse.getFunction().try_invoke(options.get("context")));
     }
     return {};
 }
@@ -3584,7 +3584,7 @@ log_fn(dom::Array const& arguments)
         level = options.lookup("data.level");
     }
     args.set(0, level);
-    MRDOX_TRY(options.get("log").getFunction().call(args));
+    MRDOCS_TRY(options.get("log").getFunction().call(args));
     return {};
 }
 
@@ -3607,14 +3607,14 @@ block_helper_missing_fn(
 {
     if (context == true)
     {
-        MRDOX_TRY(options.get("write").getFunction().try_invoke(options.get("context")));
+        MRDOCS_TRY(options.get("write").getFunction().try_invoke(options.get("context")));
     }
     else if (
         context == false ||
         context.isNull() ||
         context.isUndefined())
     {
-        MRDOX_TRY(options.get("write_inverse").getFunction().try_invoke(options.get("context")));
+        MRDOCS_TRY(options.get("write_inverse").getFunction().try_invoke(options.get("context")));
     }
     else if (context.isArray())
     {
@@ -3624,11 +3624,11 @@ block_helper_missing_fn(
             {
                 options.set("ids", dom::Array{{options.get("name")}});
             }
-            MRDOX_TRY(each_fn(context, options));
+            MRDOCS_TRY(each_fn(context, options));
         }
         else
         {
-            MRDOX_TRY(options.get("write_inverse").getFunction().try_invoke(options.get("context")));
+            MRDOCS_TRY(options.get("write_inverse").getFunction().try_invoke(options.get("context")));
         }
     }
     else
@@ -3642,7 +3642,7 @@ block_helper_missing_fn(
                 appendContextPath(data.get("contextPath"), options.get("name")));
             fnOpt.set("data", data);
         }
-        MRDOX_TRY(options.get("write").getFunction().try_invoke(context, fnOpt));
+        MRDOCS_TRY(options.get("write").getFunction().try_invoke(context, fnOpt));
     }
     return {};
 }
@@ -6410,6 +6410,6 @@ unregisterHelper(std::string_view name) {
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang
 

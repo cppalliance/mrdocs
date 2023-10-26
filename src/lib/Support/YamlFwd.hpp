@@ -6,13 +6,13 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_YAMLFWD_HPP
-#define MRDOX_LIB_SUPPORT_YAMLFWD_HPP
+#ifndef MRDOCS_LIB_SUPPORT_YAMLFWD_HPP
+#define MRDOCS_LIB_SUPPORT_YAMLFWD_HPP
 
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 
 namespace llvm {
 namespace yaml {

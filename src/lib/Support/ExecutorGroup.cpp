@@ -5,17 +5,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/ExecutorGroup.hpp>
-#include <mrdox/Support/unlock_guard.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/ExecutorGroup.hpp>
+#include <mrdocs/Support/unlock_guard.hpp>
 #include <condition_variable>
 #include <unordered_set>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 struct ExecutorGroupBase::
     Impl
@@ -151,5 +151,5 @@ wait() noexcept
     return errors;
 }
 
-} // mrdox
+} // mrdocs
 } // clang

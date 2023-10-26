@@ -6,21 +6,21 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "ToolArgs.hpp"
 #include "lib/Lib/AbsoluteCompilationDatabase.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
-#include <mrdox/Generators.hpp>
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Generators.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
 #include <cstdlib>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 Error
 DoGenerateAction()
@@ -100,5 +100,5 @@ DoGenerateAction()
     return generator->build(toolArgs.outputPath.getValue(), **corpus);
 }
 
-} // mrdox
+} // mrdocs
 } // clang

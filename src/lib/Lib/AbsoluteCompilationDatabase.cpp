@@ -6,7 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Debug.hpp"
@@ -25,7 +25,7 @@
 #include <llvm/Support/raw_ostream.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 static
 bool
@@ -260,5 +260,5 @@ getAllCompileCommands() const
     return AllCommands_;
 }
 
-} // mrdox
+} // mrdocs
 } // clang

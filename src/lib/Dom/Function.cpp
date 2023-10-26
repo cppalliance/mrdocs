@@ -5,13 +5,13 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Dom/Function.hpp>
+#include <mrdocs/Dom/Function.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace dom {
 
 namespace {
@@ -88,5 +88,5 @@ type_key() const noexcept
 }
 
 } // dom
-} // mrdox
+} // mrdocs
 } // clang

@@ -6,18 +6,18 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "Reduce.hpp"
 #include "lib/Support/Debug.hpp"
-#include <mrdox/Metadata/Namespace.hpp>
-#include <mrdox/Config.hpp>
+#include <mrdocs/Metadata/Namespace.hpp>
+#include <mrdocs/Config.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
-} // mrdox
+} // mrdocs
 } // clang

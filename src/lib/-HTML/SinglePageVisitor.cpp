@@ -5,14 +5,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "SinglePageVisitor.hpp"
-#include <mrdox/Support/unlock_guard.hpp>
+#include <mrdocs/Support/unlock_guard.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace html {
 
 template<class T>
@@ -96,5 +96,5 @@ DEFINE(FieldInfo);
 DEFINE(SpecializationInfo);
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang

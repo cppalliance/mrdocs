@@ -6,19 +6,19 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Radix.hpp"
 #include "lib/Support/SafeNames.hpp"
-#include <mrdox/Metadata.hpp>
-#include <mrdox/Metadata/DomMetadata.hpp>
+#include <mrdocs/Metadata.hpp>
+#include <mrdocs/Metadata/DomMetadata.hpp>
 #include <llvm/ADT/StringMap.h>
 #include <memory>
 #include <mutex>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace {
 
@@ -61,7 +61,7 @@ public:
 
     dom::Value get(std::size_t i) const override
     {
-        MRDOX_ASSERT(i < list_.size());
+        MRDOCS_ASSERT(i < list_.size());
         return domCorpus_.get(list_[i]);
     }
 };
@@ -102,7 +102,7 @@ public:
 
     dom::Value get(std::size_t i) const override
     {
-        MRDOX_ASSERT(i < list_.size());
+        MRDOCS_ASSERT(i < list_.size());
         return domCreate(list_[i]);
     }
 };
@@ -149,7 +149,7 @@ public:
 
     dom::Value get(std::size_t i) const override
     {
-        MRDOX_ASSERT(i < list_.size());
+        MRDOCS_ASSERT(i < list_.size());
         return domCreate(list_[i], domCorpus_);
     }
 };
@@ -183,7 +183,7 @@ public:
 
     dom::Value get(std::size_t i) const override
     {
-        MRDOX_ASSERT(i < list_.size());
+        MRDOCS_ASSERT(i < list_.size());
         auto const& I = list_[i];
         return dom::Object({
             { "name", dom::stringOrNull(I.Name) },
@@ -231,7 +231,7 @@ public:
 
     dom::Value get(std::size_t i) const override
     {
-        MRDOX_ASSERT(i < list_.size());
+        MRDOCS_ASSERT(i < list_.size());
         return domCreate(list_[i], domCorpus_);
     }
 };
@@ -524,7 +524,7 @@ public:
 
     dom::Value get(std::size_t i) const override
     {
-        MRDOX_ASSERT(i < list_.size());
+        MRDOCS_ASSERT(i < list_.size());
         return domCorpus_.get(list_[i]->id);
     }
 };
@@ -613,7 +613,7 @@ getDefaultAccess(
     case RecordKeyKind::Union:
         return "public";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -889,5 +889,5 @@ getJavadoc(
     return nullptr;
 }
 
-} // mrdox
+} // mrdocs
 } // clang

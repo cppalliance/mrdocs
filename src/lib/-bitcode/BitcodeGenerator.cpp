@@ -6,20 +6,20 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "BitcodeGenerator.hpp"
 #include "lib/Support/Error.hpp"
 #include "lib/Support/SafeNames.hpp"
 #include "lib/AST/Bitcode.hpp"
-#include <mrdox/Support/ThreadPool.hpp>
-#include <mrdox/Metadata.hpp>
+#include <mrdocs/Support/ThreadPool.hpp>
+#include <mrdocs/Metadata.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace bitcode {
 
 class MultiFileBuilder
@@ -144,5 +144,5 @@ makeBitcodeGenerator()
     return std::make_unique<bitcode::BitcodeGenerator>();
 }
 
-} // mrdox
+} // mrdocs
 } // clang

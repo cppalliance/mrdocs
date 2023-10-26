@@ -1,6 +1,6 @@
 = Commands
 
-These are the Doxygen-style "@" commands recognized by MrDox:
+These are the Doxygen-style "@" commands recognized by MrDocs:
 
 == Italics / Emphasis
 []

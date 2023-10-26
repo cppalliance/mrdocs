@@ -5,8 +5,8 @@
 // https://www.boost.org/LICENSE_1_0.txt
 //
 
-#ifndef MRDOX_TEST_DIFF_HPP
-#define MRDOX_TEST_DIFF_HPP
+#ifndef MRDOCS_TEST_DIFF_HPP
+#define MRDOCS_TEST_DIFF_HPP
 
 #include <string>
 #include <string_view>
@@ -69,4 +69,4 @@ BOOST_TEST_DIFF(
 
 }
 
-#endif //MRDOX_TEST_DIFF_HPP
+#endif //MRDOCS_TEST_DIFF_HPP

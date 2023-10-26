@@ -5,17 +5,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_RAWOSTREAM_HPP
-#define MRDOX_LIB_SUPPORT_RAWOSTREAM_HPP
+#ifndef MRDOCS_LIB_SUPPORT_RAWOSTREAM_HPP
+#define MRDOCS_LIB_SUPPORT_RAWOSTREAM_HPP
 
 #include <llvm/Support/raw_ostream.h>
 #include <ostream>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 class RawOstream : public llvm::raw_ostream
 {
@@ -50,7 +50,7 @@ private:
     }
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

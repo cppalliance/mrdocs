@@ -5,17 +5,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_TOOL_TOOLARGS_HPP
-#define MRDOX_TOOL_TOOLARGS_HPP
+#ifndef MRDOCS_TOOL_TOOLARGS_HPP
+#define MRDOCS_TOOL_TOOLARGS_HPP
 
 #include <llvm/Support/CommandLine.h>
 #include <string>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Command line options and tool settings.
 */
@@ -52,7 +52,7 @@ public:
 */
 constexpr static ToolArgs& toolArgs = ToolArgs::instance_;
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

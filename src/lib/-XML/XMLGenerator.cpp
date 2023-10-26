@@ -6,18 +6,18 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "XMLGenerator.hpp"
 #include "XMLWriter.hpp"
 #include "lib/Support/Radix.hpp"
 #include "lib/Support/RawOstream.hpp"
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Metadata.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Metadata.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace xml {
 
 Error
@@ -41,5 +41,5 @@ makeXMLGenerator()
     return std::make_unique<xml::XMLGenerator>();
 }
 
-} // mrdox
+} // mrdocs
 } // clang

@@ -6,24 +6,24 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Support/Debug.hpp"
-#include <mrdox/Metadata/Interface.hpp>
-#include <mrdox/Support/TypeTraits.hpp>
-#include <mrdox/Config.hpp>
-#include <mrdox/Corpus.hpp>
-#include <mrdox/Metadata/Enum.hpp>
-#include <mrdox/Metadata/Function.hpp>
-#include <mrdox/Metadata/Record.hpp>
-#include <mrdox/Metadata/Typedef.hpp>
-#include <mrdox/Metadata/Variable.hpp>
+#include <mrdocs/Metadata/Interface.hpp>
+#include <mrdocs/Support/TypeTraits.hpp>
+#include <mrdocs/Config.hpp>
+#include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/Enum.hpp>
+#include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Metadata/Record.hpp>
+#include <mrdocs/Metadata/Typedef.hpp>
+#include <mrdocs/Metadata/Variable.hpp>
 #include <algorithm>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 //------------------------------------------------
 
@@ -151,7 +151,7 @@ private:
                     static_cast<const VariableInfo*>(&I) });
                 break;
             default:
-                MRDOX_UNREACHABLE();
+                MRDOCS_UNREACHABLE();
             }
         }
     }
@@ -193,7 +193,7 @@ private:
                 return p.first == AccessKind::Protected;
             });
         std::size_t const nPrivate = src.end() - it;
-//MRDOX_ASSERT(nPrivate == 0);
+//MRDOCS_ASSERT(nPrivate == 0);
         I_.Public.*member    = { dest.begin(), dest.begin() + nPublic };
         I_.Protected.*member = { dest.begin() + nPublic, dest.end() - nPrivate };
         I_.Private.*member   = { dest.end() - nPrivate, dest.end() };
@@ -210,13 +210,13 @@ private:
         sort(&Interface::Tranche::StaticFunctions,  I_.staticfuncs_,staticfuncs_);
         sort(&Interface::Tranche::StaticData,       I_.staticdata_, staticdata_);
 #if 0
-MRDOX_ASSERT(I_.Private.Records.empty());
-MRDOX_ASSERT(I_.Private.Functions.empty());
-MRDOX_ASSERT(I_.Private.Enums.empty());
-MRDOX_ASSERT(I_.Private.Types.empty());
-MRDOX_ASSERT(I_.Private.Data.empty());
-MRDOX_ASSERT(I_.Private.StaticFunctions.empty());
-MRDOX_ASSERT(I_.Private.StaticData.empty());
+MRDOCS_ASSERT(I_.Private.Records.empty());
+MRDOCS_ASSERT(I_.Private.Functions.empty());
+MRDOCS_ASSERT(I_.Private.Enums.empty());
+MRDOCS_ASSERT(I_.Private.Types.empty());
+MRDOCS_ASSERT(I_.Private.Data.empty());
+MRDOCS_ASSERT(I_.Private.StaticFunctions.empty());
+MRDOCS_ASSERT(I_.Private.StaticData.empty());
 #endif
     }
 };
@@ -238,5 +238,5 @@ makeInterface(
     return I;
 }
 
-} // mrdox
+} // mrdocs
 } // clang

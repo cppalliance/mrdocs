@@ -5,19 +5,19 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_TOOL_DIAGNOSTICS_HPP
-#define MRDOX_LIB_TOOL_DIAGNOSTICS_HPP
+#ifndef MRDOCS_LIB_TOOL_DIAGNOSTICS_HPP
+#define MRDOCS_LIB_TOOL_DIAGNOSTICS_HPP
 
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <llvm/Support/raw_ostream.h>
 #include <string>
 #include <unordered_map>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Diagnostic information accumulated during visitation.
 */
@@ -91,7 +91,7 @@ public:
     }
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

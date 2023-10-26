@@ -6,20 +6,20 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_XML_XMLGENERATOR_HPP
-#define MRDOX_LIB_XML_XMLGENERATOR_HPP
+#ifndef MRDOCS_LIB_XML_XMLGENERATOR_HPP
+#define MRDOCS_LIB_XML_XMLGENERATOR_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Generator.hpp>
-#include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Generator.hpp>
+#include <mrdocs/MetadataFwd.hpp>
+#include <mrdocs/Metadata/Javadoc.hpp>
 #include <optional>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace xml {
 
 //------------------------------------------------
@@ -51,7 +51,7 @@ struct XMLGenerator : Generator
 };
 
 } // xml
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

@@ -5,18 +5,18 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_TOOL_ADDONS_HPP
-#define MRDOX_TOOL_ADDONS_HPP
+#ifndef MRDOCS_TOOL_ADDONS_HPP
+#define MRDOCS_TOOL_ADDONS_HPP
 
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <llvm/Support/CommandLine.h>
 #include <string>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Set the addons directory using the argument as a hint.
 
@@ -28,7 +28,7 @@ setupAddonsDir(
     char const* argv0,
     void* addressOfMain);
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

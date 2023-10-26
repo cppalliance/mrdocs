@@ -5,15 +5,15 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "MultiPageVisitor.hpp"
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <fstream>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace adoc {
 
 template<class T>
@@ -76,5 +76,5 @@ DEFINE(FieldInfo);
 DEFINE(SpecializationInfo);
 
 } // adoc
-} // mrdox
+} // mrdocs
 } // clang

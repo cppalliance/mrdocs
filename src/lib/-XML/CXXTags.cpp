@@ -6,14 +6,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "CXXTags.hpp"
-#include <mrdox/Metadata/Typedef.hpp>
+#include <mrdocs/Metadata/Typedef.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace xml {
 
 llvm::StringRef
@@ -48,10 +48,10 @@ getTagName(Info const& I) noexcept
     default:
         break;
     }
-    MRDOX_ASSERT(false);
+    MRDOCS_ASSERT(false);
     return "(unknown)";
 }
 
 } // xml
-} // mrdox
+} // mrdocs
 } // clang

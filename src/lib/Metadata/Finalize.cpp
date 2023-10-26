@@ -5,16 +5,16 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "Finalize.hpp"
 #include "lib/Lib/Info.hpp"
-#include <mrdox/Metadata.hpp>
+#include <mrdocs/Metadata.hpp>
 #include <ranges>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Finalizes a set of Info.
 
@@ -148,12 +148,12 @@ class Finalizer
 
     void check(const SymbolID& id)
     {
-        MRDOX_ASSERT(info_.contains(id));
+        MRDOCS_ASSERT(info_.contains(id));
     }
 
     void check(const std::vector<SymbolID>& ids)
     {
-        MRDOX_ASSERT(std::all_of(ids.begin(), ids.end(),
+        MRDOCS_ASSERT(std::all_of(ids.begin(), ids.end(),
             [this](const SymbolID& id)
             {
                 return info_.contains(id);
@@ -234,5 +234,5 @@ void finalize(InfoSet& IS)
         visit(*I, visitor);
 }
 
-} // mrdox
+} // mrdocs
 } // clang

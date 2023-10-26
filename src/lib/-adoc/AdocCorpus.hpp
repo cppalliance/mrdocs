@@ -5,20 +5,20 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_ADOC_ADOCCORPUS_HPP
-#define MRDOX_LIB_ADOC_ADOCCORPUS_HPP
+#ifndef MRDOCS_LIB_ADOC_ADOCCORPUS_HPP
+#define MRDOCS_LIB_ADOC_ADOCCORPUS_HPP
 
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #include "lib/Support/SafeNames.hpp"
 #include "Options.hpp"
-#include <mrdox/Metadata/DomMetadata.hpp>
+#include <mrdocs/Metadata/DomMetadata.hpp>
 #include <optional>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace adoc {
 
 class AdocCorpus : public DomCorpus
@@ -49,7 +49,7 @@ public:
 };
 
 } // adoc
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

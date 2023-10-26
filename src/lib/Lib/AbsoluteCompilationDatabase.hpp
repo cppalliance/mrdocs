@@ -5,19 +5,19 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_TOOL_ABSOLUTECOMPILATIONDATABASE_HPP
-#define MRDOX_LIB_TOOL_ABSOLUTECOMPILATIONDATABASE_HPP
+#ifndef MRDOCS_LIB_TOOL_ABSOLUTECOMPILATIONDATABASE_HPP
+#define MRDOCS_LIB_TOOL_ABSOLUTECOMPILATIONDATABASE_HPP
 
-#include <mrdox/Config.hpp>
+#include <mrdocs/Config.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
 #include <llvm/ADT/StringMap.h>
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** A compilation database where all paths are absolute.
 
@@ -56,7 +56,7 @@ public:
     getAllCompileCommands() const override;
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

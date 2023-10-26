@@ -5,7 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "TestRunner.hpp"
@@ -16,11 +16,11 @@
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
 #include "lib/Lib/SingleFileDB.hpp"
-#include <mrdox/Config.hpp>
-#include <mrdox/Generators.hpp>
-#include <mrdox/Platform.hpp>
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/ThreadPool.hpp>
+#include <mrdocs/Config.hpp>
+#include <mrdocs/Generators.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/ThreadPool.hpp>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -32,14 +32,14 @@
 #include <chrono>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 TestRunner::
 TestRunner()
     : diffCmdPath_(llvm::sys::findProgramByName("diff"))
     , xmlGen_(getGenerators().find("xml"))
 {
-    MRDOX_ASSERT(xmlGen_ != nullptr);
+    MRDOCS_ASSERT(xmlGen_ != nullptr);
 }
 
 Error
@@ -68,7 +68,7 @@ handleFile(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    MRDOX_ASSERT(path::extension(filePath).compare_insensitive(".cpp") == 0);
+    MRDOCS_ASSERT(path::extension(filePath).compare_insensitive(".cpp") == 0);
 
     // Check file-specific config
     auto configPath = files::withExtension(filePath, "yml");
@@ -227,7 +227,7 @@ handleDir(
 
     // Check for a directory-wide config
     {
-        auto configPath = files::appendPath(dirPath, "mrdox.yml");
+        auto configPath = files::appendPath(dirPath, "mrdocs.yml");
         auto ft = files::getFileType(configPath);
         if(! ft)
             return report::error("{}: \"{}\"",
@@ -316,7 +316,7 @@ checkPath(
         // Check for a directory-wide config
         {
             auto configPath = files::appendPath(
-                files::getParentDir(inputPath), "mrdox.yml");
+                files::getParentDir(inputPath), "mrdocs.yml");
             auto ft = files::getFileType(configPath);
             if(! ft)
                 return report::error("{}: \"{}\"",
@@ -366,5 +366,5 @@ checkPath(
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang

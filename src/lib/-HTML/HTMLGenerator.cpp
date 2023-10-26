@@ -6,7 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "HTMLCorpus.hpp"
@@ -15,21 +15,21 @@
 #include "MultiPageVisitor.hpp"
 #include "SinglePageVisitor.hpp"
 #include "lib/Support/SafeNames.hpp"
-#include <mrdox/Metadata/DomMetadata.hpp>
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Metadata/DomMetadata.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <optional>
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace html {
 
 Expected<ExecutorGroup<Builder>>
 createExecutors(
     DomCorpus const& domCorpus)
 {
-    MRDOX_TRY(auto options, loadOptions(domCorpus.getCorpus()));
+    MRDOCS_TRY(auto options, loadOptions(domCorpus.getCorpus()));
     auto const& config = domCorpus.getCorpus().config;
     auto& threadPool = config.threadPool();
     ExecutorGroup<Builder> group(threadPool);
@@ -127,5 +127,5 @@ makeHTMLGenerator()
     return std::make_unique<html::HTMLGenerator>();
 }
 
-} // mrdox
+} // mrdocs
 } // clang

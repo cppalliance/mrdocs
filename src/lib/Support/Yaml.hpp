@@ -6,19 +6,19 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_YAML_HPP
-#define MRDOX_LIB_SUPPORT_YAML_HPP
+#ifndef MRDOCS_LIB_SUPPORT_YAML_HPP
+#define MRDOCS_LIB_SUPPORT_YAML_HPP
 
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #include <llvm/Support/YAMLTraits.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
-class MRDOX_DECL
+class MRDOCS_DECL
     YamlReporter
 {
     void diag(llvm::SMDiagnostic const&);
@@ -33,7 +33,7 @@ public:
     }
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

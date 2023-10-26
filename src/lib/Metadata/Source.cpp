@@ -6,13 +6,13 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Metadata/Source.hpp>
+#include <mrdocs/Metadata/Source.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
-} // mrdox
+} // mrdocs
 } // clang

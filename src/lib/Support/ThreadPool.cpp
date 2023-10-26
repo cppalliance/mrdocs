@@ -5,12 +5,12 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Debug.hpp"
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/ThreadPool.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/ThreadPool.hpp>
 #include <llvm/Support/Signals.h>
 #include <llvm/Support/ThreadPool.h>
 #include <mutex>
@@ -18,7 +18,7 @@
 #include <utility>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 //------------------------------------------------
 //
@@ -189,5 +189,5 @@ post(
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang

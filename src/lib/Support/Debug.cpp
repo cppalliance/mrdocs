@@ -6,18 +6,18 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Radix.hpp"
-#include <mrdox/Metadata/Info.hpp>
-#include <mrdox/Metadata/Record.hpp>
-#include <mrdox/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Record.hpp>
+#include <mrdocs/Metadata/Symbols.hpp>
 #include <memory>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 void
 debugEnableHeapChecking()
@@ -30,60 +30,60 @@ debugEnableHeapChecking()
 #endif
 }
 
-} // mrdox
+} // mrdocs
 } // clang
 
 fmt::format_context::iterator
-fmt::formatter<clang::mrdox::SymbolID>::
+fmt::formatter<clang::mrdocs::SymbolID>::
 format(
-    const clang::mrdox::SymbolID& s,
+    const clang::mrdocs::SymbolID& s,
     fmt::format_context& ctx) const
 {
-    std::string str = s == clang::mrdox::SymbolID::zero ?
-        "<empty SymbolID>" : clang::mrdox::toBase64(s);
+    std::string str = s == clang::mrdocs::SymbolID::zero ?
+        "<empty SymbolID>" : clang::mrdocs::toBase64(s);
     return fmt::formatter<std::string>::format(std::move(str), ctx);
 }
 
 fmt::format_context::iterator
-fmt::formatter<clang::mrdox::OptionalSymbolID>::
+fmt::formatter<clang::mrdocs::OptionalSymbolID>::
 format(
-    const clang::mrdox::OptionalSymbolID& s,
+    const clang::mrdocs::OptionalSymbolID& s,
     fmt::format_context& ctx) const
 {
-    return fmt::formatter<clang::mrdox::SymbolID>::format(*s, ctx);
+    return fmt::formatter<clang::mrdocs::SymbolID>::format(*s, ctx);
 }
 
 fmt::format_context::iterator
-fmt::formatter<clang::mrdox::InfoKind>::
+fmt::formatter<clang::mrdocs::InfoKind>::
 format(
-    clang::mrdox::InfoKind t,
+    clang::mrdocs::InfoKind t,
     fmt::format_context& ctx) const
 {
     const char* str = "<unknown InfoKind>";
     switch(t)
     {
-    case clang::mrdox::InfoKind::Namespace:
+    case clang::mrdocs::InfoKind::Namespace:
         str = "namespace";
         break;
-    case clang::mrdox::InfoKind::Record:
+    case clang::mrdocs::InfoKind::Record:
         str = "record";
         break;
-    case clang::mrdox::InfoKind::Function:
+    case clang::mrdocs::InfoKind::Function:
         str = "function";
         break;
-    case clang::mrdox::InfoKind::Enum:
+    case clang::mrdocs::InfoKind::Enum:
         str = "enum";
         break;
-    case clang::mrdox::InfoKind::Typedef:
+    case clang::mrdocs::InfoKind::Typedef:
         str = "typedef";
         break;
-    case clang::mrdox::InfoKind::Variable:
+    case clang::mrdocs::InfoKind::Variable:
         str = "variable";
         break;
-    case clang::mrdox::InfoKind::Field:
+    case clang::mrdocs::InfoKind::Field:
         str = "field";
         break;
-    case clang::mrdox::InfoKind::Specialization:
+    case clang::mrdocs::InfoKind::Specialization:
         str = "specialization";
         break;
     default:
@@ -93,24 +93,24 @@ format(
 }
 
 fmt::format_context::iterator
-fmt::formatter<clang::mrdox::AccessKind>::
+fmt::formatter<clang::mrdocs::AccessKind>::
 format(
-    clang::mrdox::AccessKind a,
+    clang::mrdocs::AccessKind a,
     fmt::format_context& ctx) const
 {
     const char* str = "<unknown Access>";
     switch(a)
     {
-    case clang::mrdox::AccessKind::Public:
+    case clang::mrdocs::AccessKind::Public:
         str = "public";
         break;
-    case clang::mrdox::AccessKind::Protected:
+    case clang::mrdocs::AccessKind::Protected:
         str = "protected";
         break;
-    case clang::mrdox::AccessKind::Private:
+    case clang::mrdocs::AccessKind::Private:
         str = "private";
         break;
-    case clang::mrdox::AccessKind::None:
+    case clang::mrdocs::AccessKind::None:
         str = "none";
         break;
     default:
@@ -120,9 +120,9 @@ format(
 }
 
 fmt::format_context::iterator
-fmt::formatter<clang::mrdox::Info>::
+fmt::formatter<clang::mrdocs::Info>::
 format(
-    const clang::mrdox::Info& i,
+    const clang::mrdocs::Info& i,
     fmt::format_context& ctx) const
 {
     std::string str = fmt::format("Info: kind = {}", i.Kind);

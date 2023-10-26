@@ -5,20 +5,20 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_METADATA_FINALIZE_HPP
-#define MRDOX_LIB_METADATA_FINALIZE_HPP
+#ifndef MRDOCS_LIB_METADATA_FINALIZE_HPP
+#define MRDOCS_LIB_METADATA_FINALIZE_HPP
 
 #include "lib/Lib/Info.hpp"
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 void finalize(InfoSet& Info);
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

@@ -6,16 +6,16 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_AST_PARSEJAVADOC_HPP
-#define MRDOX_LIB_AST_PARSEJAVADOC_HPP
+#ifndef MRDOCS_LIB_AST_PARSEJAVADOC_HPP
+#define MRDOCS_LIB_AST_PARSEJAVADOC_HPP
 
 #include "lib/Lib/Diagnostics.hpp"
-#include <mrdox/Platform.hpp>
-#include <mrdox/Config.hpp>
-#include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Config.hpp>
+#include <mrdocs/Metadata/Javadoc.hpp>
 
 namespace clang {
 
@@ -23,7 +23,7 @@ class Decl;
 class ASTContext;
 class RawComment;
 
-namespace mrdox {
+namespace mrdocs {
 
 /** Initialize clang to recognize our custom comments.
 
@@ -44,7 +44,7 @@ parseJavadoc(
     Config const& config,
     Diagnostics& diags);
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

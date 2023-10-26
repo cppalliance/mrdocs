@@ -1,22 +1,22 @@
-= MrDox
+= MrDocs
 Alan Freitas <alandefreitas@gmail.com>
-:description: MrDox: A Clang/LLVM tool for building reference documentation from C++ code and javadoc comments.
+:description: MrDocs: A Clang/LLVM tool for building reference documentation from C++ code and javadoc comments.
 :sectanchors:
-:url-repo: https://github.com/cppalliance/mrdox
-:page-tags: mrdox
+:url-repo: https://github.com/cppalliance/mrdocs
+:page-tags: mrdocs
 :navtitle: Home
 
-image::MrDoxBanner.png[]
+image::MrDocsBanner.png[]
 
-Welcome to MrDox, the ultimate solution for generating comprehensive reference documentation from your {cpp} codebase and javadoc comments. MrDox harnesses the power of Clang/LLVM, offering a seamless and efficient way to document your {cpp} projects.
+Welcome to MrDocs, the ultimate solution for generating comprehensive reference documentation from your {cpp} codebase and javadoc comments. MrDocs harnesses the power of Clang/LLVM, offering a seamless and efficient way to document your {cpp} projects.
 
-With MrDox, you can effortlessly extract valuable insights and produce detailed documentation for your {cpp} code. By leveraging the rich semantic knowledge provided by Clang/LLVM, MrDox accurately captures the nuances of your codebase, including class hierarchies, functions, and their respective parameters and return types. This ensures that your documentation is not only informative but also up-to-date, eliminating the need for manual documentation maintenance.
+With MrDocs, you can effortlessly extract valuable insights and produce detailed documentation for your {cpp} code. By leveraging the rich semantic knowledge provided by Clang/LLVM, MrDocs accurately captures the nuances of your codebase, including class hierarchies, functions, and their respective parameters and return types. This ensures that your documentation is not only informative but also up-to-date, eliminating the need for manual documentation maintenance.
 
-The integration of javadoc-style comments takes your documentation to the next level. With MrDox, you can easily embed human-readable explanations, usage examples, and additional contextual information directly within your code. These comments serve as a valuable resource for both developers and consumers of your code, promoting clarity and understanding.
+The integration of javadoc-style comments takes your documentation to the next level. With MrDocs, you can easily embed human-readable explanations, usage examples, and additional contextual information directly within your code. These comments serve as a valuable resource for both developers and consumers of your code, promoting clarity and understanding.
 
-MrDox seamlessly fits into your development workflow, with the freedom to customize the output format to suit your project requirements. MrDox offers versatile options for output formats, including XML and Asciidoc. In addition to the provided output formats, MrDox empowers users to bring their own creativity and customization to the documentation generation process. With support for handlebars templates, you can create and apply your own unique templates to the generated documentation. This allows you to customize the styling, layout, and overall presentation of your documentation, making it truly personalized and aligned with your project's branding.
+MrDocs seamlessly fits into your development workflow, with the freedom to customize the output format to suit your project requirements. MrDocs offers versatile options for output formats, including XML and Asciidoc. In addition to the provided output formats, MrDocs empowers users to bring their own creativity and customization to the documentation generation process. With support for handlebars templates, you can create and apply your own unique templates to the generated documentation. This allows you to customize the styling, layout, and overall presentation of your documentation, making it truly personalized and aligned with your project's branding.
 
-MrDox empowers you to produce high-quality documentation that benefits both developers and users. Explore the power of MrDox today and experience the ease of building comprehensive reference documentation for your {cpp} projects. Say goodbye to tedious manual documentation and embrace the efficiency and accuracy of MrDox.
+MrDocs empowers you to produce high-quality documentation that benefits both developers and users. Explore the power of MrDocs today and experience the ease of building comprehensive reference documentation for your {cpp} projects. Say goodbye to tedious manual documentation and embrace the efficiency and accuracy of MrDocs.
 
 == Comparison
 
@@ -27,11 +27,11 @@ MrDox empowers you to produce high-quality documentation that benefits both deve
 * old program with lots of technical debt
 * not written by me
 
-=== MrDox:
+=== MrDocs:
 
 * narrow and deep focus on {cpp} only
 * uses clang's unstable libtooling API:
-** Understands ALL C++: if clang can compile it, MrDox knows about it
+** Understands ALL C++: if clang can compile it, MrDocs knows about it
 ** This includes up to {cpp}20 and even experimental things in {cpp}23
 * brand-new program with no technical debt
 * written by me

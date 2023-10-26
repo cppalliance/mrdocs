@@ -7,19 +7,19 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "CorpusImpl.hpp"
 #include "lib/AST/ASTVisitor.hpp"
 #include "lib/Support/Error.hpp"
-#include <mrdox/Metadata.hpp>
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Metadata.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <chrono>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 auto
 CorpusImpl::
@@ -73,7 +73,7 @@ find(
 
 //------------------------------------------------
 
-mrdox::Expected<std::unique_ptr<Corpus>>
+mrdocs::Expected<std::unique_ptr<Corpus>>
 CorpusImpl::
 build(
     report::Level reportLevel,
@@ -110,7 +110,7 @@ build(
     #endif
     std::unique_ptr<tooling::FrontendActionFactory> action =
         makeFrontendActionFactory(context, *config);
-    MRDOX_ASSERT(action);
+    MRDOCS_ASSERT(action);
 
     // Get a copy of the filename strings
     std::vector<std::string> files =
@@ -217,5 +217,5 @@ build(
     return corpus;
 }
 
-} // mrdox
+} // mrdocs
 } // clang

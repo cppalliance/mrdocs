@@ -1,5 +1,5 @@
-name: mrdox
-title: MrDox
+name: mrdocs
+title: MrDocs
 version: true
 start_page: index.adoc
 asciidoc:

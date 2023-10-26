@@ -5,11 +5,11 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Error.hpp"
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/Mutex.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/Signals.h>
@@ -29,7 +29,7 @@ extern char const* getFileName(char const*) noexcept;
 } // SourceFileNames
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 //------------------------------------------------
 //
@@ -72,7 +72,7 @@ Error(
     , message_(formatMessage(reason_, where_))
     , loc_(loc)
 {
-    MRDOX_ASSERT(! message_.empty());
+    MRDOCS_ASSERT(! message_.empty());
 }
 
 Error::
@@ -104,7 +104,7 @@ Error(
     std::vector<Error> const& errors,
     source_location loc)
 {
-    MRDOX_ASSERT(errors.size() > 0);
+    MRDOCS_ASSERT(errors.size() > 0);
     if(errors.size() == 1)
     {
         *this = errors.front();
@@ -126,13 +126,13 @@ Error(
 
 void Error::Throw() const&
 {
-    MRDOX_ASSERT(failed());
+    MRDOCS_ASSERT(failed());
     throw Exception(*this);
 }
 
 void Error::Throw() &&
 {
-    MRDOX_ASSERT(failed());
+    MRDOCS_ASSERT(failed());
     throw Exception(std::move(*this));
 }
 
@@ -265,11 +265,11 @@ call_impl(
         ++results.fatalCount;
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
 } // report
 
-} // mrdox
+} // mrdocs
 } // clang

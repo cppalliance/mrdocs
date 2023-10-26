@@ -9,17 +9,17 @@
 #include <test_suite/diff.hpp>
 #include <test_suite/test_suite.hpp>
 #include <fmt/format.h>
-#include <mrdox/Dom.hpp>
-#include <mrdox/Support/Handlebars.hpp>
-#include <mrdox/Support/Path.hpp>
-#include <mrdox/Support/String.hpp>
+#include <mrdocs/Dom.hpp>
+#include <mrdocs/Support/Handlebars.hpp>
+#include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/String.hpp>
 #include <llvm/Support/JSON.h>
 #include <llvm/Support/MemoryBuffer.h>
 #include <filesystem>
 #include <utility>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 struct Handlebars_test
 {
@@ -45,19 +45,19 @@ void
 setup_fixtures()
 {
     master.template_path =
-        MRDOX_TEST_FILES_DIR "/handlebars/features_test.adoc.hbs";
+        MRDOCS_TEST_FILES_DIR "/handlebars/features_test.adoc.hbs";
     master.partial_paths = {
-        MRDOX_TEST_FILES_DIR "/handlebars/record-detail.adoc.hbs",
-        MRDOX_TEST_FILES_DIR "/handlebars/record.adoc.hbs",
-        MRDOX_TEST_FILES_DIR "/handlebars/escaped.adoc.hbs"};
+        MRDOCS_TEST_FILES_DIR "/handlebars/record-detail.adoc.hbs",
+        MRDOCS_TEST_FILES_DIR "/handlebars/record.adoc.hbs",
+        MRDOCS_TEST_FILES_DIR "/handlebars/escaped.adoc.hbs"};
     master.output_path =
-        MRDOX_TEST_FILES_DIR "/handlebars/features_test.adoc";
+        MRDOCS_TEST_FILES_DIR "/handlebars/features_test.adoc";
     master.error_output_path =
-        MRDOX_TEST_FILES_DIR "/handlebars/features_test_error.adoc";
+        MRDOCS_TEST_FILES_DIR "/handlebars/features_test_error.adoc";
     master.logger_output_path =
-        MRDOX_TEST_FILES_DIR "/handlebars/logger_output.txt";
+        MRDOCS_TEST_FILES_DIR "/handlebars/logger_output.txt";
     master.logger_error_output_path =
-        MRDOX_TEST_FILES_DIR "/handlebars/logger_output_error.txt";
+        MRDOCS_TEST_FILES_DIR "/handlebars/logger_output_error.txt";
 
     Expected<std::string> template_text_r =
         files::getFileText(master.template_path);
@@ -5251,7 +5251,7 @@ mustache_compat_spec()
 {
     // https://github.com/handlebars-lang/handlebars.js/blob/4.x/spec/spec.js
     std::string_view mustache_specs_dir =
-        MRDOX_TEST_FILES_DIR "/handlebars/mustache/";
+        MRDOCS_TEST_FILES_DIR "/handlebars/mustache/";
     std::vector<std::string> spec_files;
     for (auto& p: std::filesystem::directory_iterator(mustache_specs_dir))
     {
@@ -5390,7 +5390,7 @@ run()
 
 TEST_SUITE(
     Handlebars_test,
-    "clang.mrdox.Handlebars");
+    "clang.mrdocs.Handlebars");
 
-} // mrdox
+} // mrdocs
 } // clang

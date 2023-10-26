@@ -7,17 +7,17 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Debug.hpp"
-#include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/Javadoc.hpp>
 #include <llvm/Support/Error.h>
 #include <llvm/Support/Path.h>
 #include <fmt/format.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace doc {
 
@@ -44,7 +44,7 @@ isBlock() const noexcept
         return true;
 
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -71,7 +71,7 @@ isText() const noexcept
         return false;
 
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -80,7 +80,7 @@ Block::
 emplace_back(
     std::unique_ptr<Text> text)
 {
-    MRDOX_ASSERT(text->isText());
+    MRDOCS_ASSERT(text->isText());
     children.emplace_back(std::move(text));
 }
 
@@ -91,7 +91,7 @@ append(List<Node>&& blocks)
     children.reserve(children.size() + blocks.size());
     for(auto&& block : blocks)
     {
-        MRDOX_ASSERT(block->isText());
+        MRDOCS_ASSERT(block->isText());
         emplace_back(std::unique_ptr<Text>(
             static_cast<Text*>(block.release())));
     }
@@ -160,7 +160,7 @@ toString(
 
     default:
         // unknown style
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -250,7 +250,7 @@ Javadoc::
 emplace_back(
     std::unique_ptr<doc::Block> block)
 {
-    MRDOX_ASSERT(block->isBlock());
+    MRDOCS_ASSERT(block->isBlock());
 
     std::string result;
     switch(block->kind)
@@ -329,11 +329,11 @@ append(doc::List<doc::Node>&& blocks)
     blocks_.reserve(blocks_.size() + blocks.size());
     for(auto&& block : blocks)
     {
-        MRDOX_ASSERT(block->isBlock());
+        MRDOCS_ASSERT(block->isBlock());
         blocks_.emplace_back(
             static_cast<doc::Block*>(block.release()));
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang

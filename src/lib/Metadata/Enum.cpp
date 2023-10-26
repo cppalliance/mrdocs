@@ -6,7 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 //
@@ -23,10 +23,10 @@
 // on members on the forward declaration, but would have the class name).
 //
 
-#include <mrdox/Metadata/Enum.hpp>
+#include <mrdocs/Metadata/Enum.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
-} // mrdox
+} // mrdocs
 } // clang

@@ -5,15 +5,15 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Dom/Value.hpp>
+#include <mrdocs/Dom/Value.hpp>
 #include <unordered_set>
 #include <algorithm>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace dom {
 
 Value::
@@ -41,7 +41,7 @@ Value::
         std::destroy_at(&fn_);
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -82,7 +82,7 @@ Value(
         std::construct_at(&fn_, other.fn_);
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -91,7 +91,7 @@ Value(
     Value&& other) noexcept
     : kind_(other.kind_)
 {
-    using enum clang::mrdox::dom::Kind;
+    using enum clang::mrdocs::dom::Kind;
     switch(kind_)
     {
     case Undefined:
@@ -121,7 +121,7 @@ Value(
         std::destroy_at(&other.fn_);
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
     other.kind_ = Null;
 }
@@ -182,7 +182,7 @@ Value(dom::Kind kind) noexcept
         std::construct_at(&fn_);
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -252,7 +252,7 @@ type_key() const noexcept
     case Object:      return obj_.type_key();
     case Function:    return fn_.type_key();
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -285,7 +285,7 @@ isTruthy() const noexcept
     case Undefined:
         return false;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -481,7 +481,7 @@ empty() const
 {
     switch(kind_)
     {
-    using enum clang::mrdox::dom::Kind;
+    using enum clang::mrdocs::dom::Kind;
     case Undefined:
     case Null:
         return true;
@@ -498,7 +498,7 @@ empty() const
     case Function:
         return false;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -508,7 +508,7 @@ size() const
 {
     switch(kind_)
     {
-    using enum clang::mrdox::dom::Kind;
+    using enum clang::mrdocs::dom::Kind;
     case Undefined:
     case Null:
         return 0;
@@ -525,7 +525,7 @@ size() const
     case Function:
         return 1;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -570,7 +570,7 @@ operator+(Value const& lhs, Value const& rhs)
         case Function:
             return {};
         default:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
     }
     bool const lhsIsArithmetic = lhs.isInteger() || lhs.isBoolean();
@@ -779,7 +779,7 @@ stringify(
         break;
     }
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -824,7 +824,7 @@ operator==(
         case Function:
             return lhs.fn_.impl() == rhs.fn_.impl();
         default:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
     }
 }
 
@@ -864,7 +864,7 @@ operator<=>(dom::Value const& lhs, dom::Value const& rhs) noexcept
         }
         return std::strong_ordering::equivalent;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
     return std::strong_ordering::equivalent;
 }
@@ -893,10 +893,10 @@ toString(
     case Kind::Function:
         return "[object Function]";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
 } // dom
-} // mrdox
+} // mrdocs
 } // clang

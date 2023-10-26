@@ -15,7 +15,7 @@
 #if defined(__has_include) && __has_include(<fmt/format.h>)
 #include <fmt/core.h>
 #include <fmt/color.h>
-#define MRDOX_TEST_HAS_FMT
+#define MRDOCS_TEST_HAS_FMT
 #else
 #include <iostream>
 #endif
@@ -213,7 +213,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
         }
         if (out_of_context > 0)
         {
-#ifdef MRDOX_TEST_HAS_FMT
+#ifdef MRDOCS_TEST_HAS_FMT
             result.diff += fmt::format(fmt::fg(fmt::color::gray), "... {} unmodified line(s)\n", out_of_context);
 #else
             result.diff += "... " + std::to_string(out_of_context) + " unmodified line(s)\n";
@@ -222,7 +222,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
         }
         if (diffLine.added || diffLine.removed)
         {
-#ifdef MRDOX_TEST_HAS_FMT
+#ifdef MRDOCS_TEST_HAS_FMT
             result.diff += fmt::format(
                 fmt::fg(diffLine.added ? fmt::color::light_green : fmt::color::orange_red),
                 "{} {}\n",
@@ -235,7 +235,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
         }
         else
         {
-#ifdef MRDOX_TEST_HAS_FMT
+#ifdef MRDOCS_TEST_HAS_FMT
             result.diff += fmt::format("{}\n", diffLine.line);
 #else
             result.diff += diffLine.line + '\n';
@@ -244,7 +244,7 @@ diffStrings(std::string_view str1, std::string_view str2, std::size_t context_si
     }
     if (out_of_context > 0)
     {
-#ifdef MRDOX_TEST_HAS_FMT
+#ifdef MRDOCS_TEST_HAS_FMT
         result.diff += fmt::format(fmt::fg(fmt::color::gray), "... {} unmodified line(s)", out_of_context);
 #else
         result.diff += "... " + std::to_string(out_of_context) + " unmodified line(s)";
@@ -267,7 +267,7 @@ BOOST_TEST_DIFF(
         // Write rendered template to file with ofstream
         std::ofstream out((std::string(expected_contents_path)));
         BOOST_TEST(out);
-#ifdef MRDOX_TEST_HAS_FMT
+#ifdef MRDOCS_TEST_HAS_FMT
         fmt::println("Parsed template:\n{}", rendered_contents);
 #else
         std::cout << "Parsed template:\n" << rendered_contents << std::endl;
@@ -283,7 +283,7 @@ BOOST_TEST_DIFF(
             std::ofstream out((std::string(error_output_path)));
             BOOST_TEST(out);
             out << rendered_contents;
-#ifdef MRDOX_TEST_HAS_FMT
+#ifdef MRDOCS_TEST_HAS_FMT
             fmt::println("DIFF:\n=====================\n{}\n=====================", diff.diff);
 #else
             std::cout << "DIFF:\n=====================\n" << diff.diff << "\n=====================" << std::endl;

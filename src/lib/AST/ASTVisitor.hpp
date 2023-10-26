@@ -7,19 +7,19 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_AST_ASTVISITOR_HPP
-#define MRDOX_LIB_AST_ASTVISITOR_HPP
+#ifndef MRDOCS_LIB_AST_ASTVISITOR_HPP
+#define MRDOCS_LIB_AST_ASTVISITOR_HPP
 
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/ExecutionContext.hpp"
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #include <clang/Tooling/Tooling.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Return a factory used to create our visitor.
 */
@@ -28,7 +28,7 @@ makeFrontendActionFactory(
     ExecutionContext& ex,
     ConfigImpl const& config);
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

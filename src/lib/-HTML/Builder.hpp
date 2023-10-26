@@ -5,22 +5,22 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_HTML_BUILDER_HPP
-#define MRDOX_LIB_HTML_BUILDER_HPP
+#ifndef MRDOCS_LIB_HTML_BUILDER_HPP
+#define MRDOCS_LIB_HTML_BUILDER_HPP
 
 #include "Options.hpp"
 #include "lib/Support/Radix.hpp"
-#include <mrdox/Metadata/DomMetadata.hpp>
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Handlebars.hpp>
-#include <mrdox/Support/JavaScript.hpp>
+#include <mrdocs/Metadata/DomMetadata.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Handlebars.hpp>
+#include <mrdocs/Support/JavaScript.hpp>
 #include <ostream>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace html {
 
 /** Builds reference output.
@@ -57,7 +57,7 @@ public:
 };
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

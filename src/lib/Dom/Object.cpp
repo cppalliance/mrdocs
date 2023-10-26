@@ -5,17 +5,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Dom/Object.hpp>
-#include <mrdox/Support/RangeFor.hpp>
+#include <mrdocs/Dom/Object.hpp>
+#include <mrdocs/Support/RangeFor.hpp>
 #include <fmt/format.h>
 #include <atomic>
 #include <ranges>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace dom {
 
 //------------------------------------------------
@@ -264,5 +264,5 @@ exists(std::string_view key) const
 }
 
 } // dom
-} // mrdox
+} // mrdocs
 } // clang

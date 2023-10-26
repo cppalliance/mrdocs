@@ -6,20 +6,20 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_METADATA_REDUCE_HPP
-#define MRDOX_LIB_METADATA_REDUCE_HPP
+#ifndef MRDOCS_LIB_METADATA_REDUCE_HPP
+#define MRDOCS_LIB_METADATA_REDUCE_HPP
 
-#include <mrdox/Metadata/Info.hpp>
-#include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/MetadataFwd.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <memory>
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 void merge(NamespaceInfo& I, NamespaceInfo&& Other);
 void merge(RecordInfo& I, RecordInfo&& Other);
@@ -49,7 +49,7 @@ std::unique_ptr<Info>
 reduce(
     std::vector<std::unique_ptr<Info>>& Values)
 {
-    MRDOX_ASSERT(! Values.empty() && Values[0]);
+    MRDOCS_ASSERT(! Values.empty() && Values[0]);
     std::unique_ptr<Info> Merged = std::make_unique<T>(Values[0]->id);
     T* Tmp = static_cast<T*>(Merged.get());
     for (auto& I : Values)
@@ -90,7 +90,7 @@ reduceChildren(
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang
 
 

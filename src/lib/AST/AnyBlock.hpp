@@ -7,16 +7,16 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_AST_ANYBLOCK_HPP
-#define MRDOX_LIB_AST_ANYBLOCK_HPP
+#ifndef MRDOCS_LIB_AST_ANYBLOCK_HPP
+#define MRDOCS_LIB_AST_ANYBLOCK_HPP
 
 #include "BitcodeReader.hpp"
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 // bool
 inline
@@ -1678,7 +1678,7 @@ readSubBlock(
     return AnyBlock::readSubBlock(ID);
 }
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

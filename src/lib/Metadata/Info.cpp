@@ -6,19 +6,19 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Radix.hpp"
-#include <mrdox/Metadata/Info.hpp>
-#include <mrdox/Metadata/Record.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Record.hpp>
 #include <clang/AST/Type.h>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 std::string
 Info::
@@ -61,7 +61,7 @@ extractName() const
             toBase16(id);
     default:
         // invalid InfoKind
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -106,9 +106,9 @@ toString(InfoKind kind) noexcept
     case InfoKind::Specialization:
         return "specialization";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang

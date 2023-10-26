@@ -6,17 +6,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_HTML_HTMLGENERATOR_HPP
-#define MRDOX_LIB_HTML_HTMLGENERATOR_HPP
+#ifndef MRDOCS_LIB_HTML_HTMLGENERATOR_HPP
+#define MRDOCS_LIB_HTML_HTMLGENERATOR_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Generator.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Generator.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace html {
 
 class HTMLGenerator
@@ -53,7 +53,7 @@ public:
 };
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

@@ -2,7 +2,7 @@
 #include "Info.hpp"
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 std::size_t
 InfoPtrHasher::
@@ -10,7 +10,7 @@ operator()(
     const std::unique_ptr<Info>& I) const
 {
     // the info set should never contain nullptrs
-    MRDOX_ASSERT(I);
+    MRDOCS_ASSERT(I);
     return std::hash<SymbolID>()(I->id);
 }
 
@@ -28,7 +28,7 @@ operator()(
     const std::unique_ptr<Info>& a,
     const std::unique_ptr<Info>& b) const
 {
-    MRDOX_ASSERT(a && b);
+    MRDOCS_ASSERT(a && b);
     if(a == b)
         return true;
     return a->id == b->id;
@@ -40,7 +40,7 @@ operator()(
     const std::unique_ptr<Info>& a,
     const SymbolID& b) const
 {
-    MRDOX_ASSERT(a);
+    MRDOCS_ASSERT(a);
     return a->id == b;
 }
 
@@ -50,9 +50,9 @@ operator()(
     const SymbolID& a,
     const std::unique_ptr<Info>& b) const
 {
-    MRDOX_ASSERT(b);
+    MRDOCS_ASSERT(b);
     return b->id == a;
 }
 
-} // mrdox
+} // mrdocs
 } // clang

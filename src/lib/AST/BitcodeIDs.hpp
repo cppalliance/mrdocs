@@ -7,17 +7,17 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_AST_BITCODEIDS_HPP
-#define MRDOX_LIB_AST_BITCODEIDS_HPP
+#ifndef MRDOCS_LIB_AST_BITCODEIDS_HPP
+#define MRDOCS_LIB_AST_BITCODEIDS_HPP
 
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #include <llvm/Bitstream/BitCodeEnums.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 // Current version number of clang-doc bitcode.
 // Should be bumped when removing or changing BlockIds, RecordIDs, or
@@ -150,7 +150,7 @@ enum RecordID
 static constexpr unsigned BlockIdCount = BI_LAST - BI_FIRST;
 static constexpr unsigned RecordIDCount = RI_LAST - RI_FIRST;
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

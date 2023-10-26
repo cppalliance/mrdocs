@@ -6,7 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Lib/ConfigImpl.hpp"
@@ -14,7 +14,7 @@
 #include "lib/Support/Error.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Support/Yaml.hpp"
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -28,7 +28,7 @@
 //
 //------------------------------------------------
 
-using ConfigImpl = clang::mrdox::ConfigImpl;
+using ConfigImpl = clang::mrdocs::ConfigImpl;
 using SettingsImpl = ConfigImpl::SettingsImpl;
 
 template<>
@@ -108,7 +108,7 @@ struct llvm::yaml::MappingTraits<SettingsImpl>
 //------------------------------------------------
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace {
 
@@ -162,7 +162,7 @@ ConfigImpl(
     {
         settings_.addonsDir = files::makeAbsolute(addonsDir).value();
         files::requireDirectory(settings_.addonsDir).maybeThrow();
-        MRDOX_ASSERT(files::isDirsy(settings_.addonsDir));
+        MRDOCS_ASSERT(files::isDirsy(settings_.addonsDir));
     }
 
     settings_.configYaml = configYaml;
@@ -238,7 +238,7 @@ shouldExtractFromFile(
     if(! path::replace_path_prefix(temp,
             settings_.sourceRoot, "", path::Style::posix))
         return false;
-    MRDOX_ASSERT(files::isDirsy(settings_.sourceRoot));
+    MRDOCS_ASSERT(files::isDirsy(settings_.sourceRoot));
     prefixPath.assign(
         settings_.sourceRoot.begin(),
         settings_.sourceRoot.end());
@@ -278,8 +278,8 @@ loadConfig(
     auto temp = files::normalizePath(filePath);
 
     // load the config file into a string
-    MRDOX_TRY(auto absPath, files::makeAbsolute(temp));
-    MRDOX_TRY(auto configYaml, files::getFileText(absPath));
+    MRDOCS_TRY(auto absPath, files::makeAbsolute(temp));
+    MRDOCS_TRY(auto configYaml, files::getFileText(absPath));
 
     // calculate the working directory
     auto workingDir = files::getParentDir(absPath);
@@ -317,5 +317,5 @@ loadConfigFile(
         threadPool);
 }
 
-} // mrdox
+} // mrdocs
 } // clang

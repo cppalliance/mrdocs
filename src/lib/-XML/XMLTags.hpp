@@ -6,18 +6,18 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_XML_XMLTAGS_HPP
-#define MRDOX_LIB_XML_XMLTAGS_HPP
+#ifndef MRDOCS_LIB_XML_XMLTAGS_HPP
+#define MRDOCS_LIB_XML_XMLTAGS_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Javadoc.hpp>
-#include <mrdox/Metadata/Record.hpp>
-#include <mrdox/Metadata/Symbols.hpp>
-#include <mrdox/Metadata/Type.hpp>
-#include <mrdox/Dom.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/Record.hpp>
+#include <mrdocs/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Dom.hpp>
 #include <clang/Basic/Specifiers.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/raw_ostream.h>
@@ -30,7 +30,7 @@
 */
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace xml {
 
 class jit_indenter;
@@ -206,7 +206,7 @@ public:
 };
 
 } // xml
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

@@ -6,15 +6,15 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "XMLTags.hpp"
 #include "lib/Support/Radix.hpp"
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace xml {
 
 //------------------------------------------------
@@ -200,11 +200,11 @@ nest(int levels)
     else
     {
         auto const n = static_cast<std::size_t>(levels * -2);
-        MRDOX_ASSERT(n <= indent_.size());
+        MRDOCS_ASSERT(n <= indent_.size());
         indent_.resize(indent_.size() - n);
     }
 }
 
 } // xml
-} // mrdox
+} // mrdocs
 } // clang

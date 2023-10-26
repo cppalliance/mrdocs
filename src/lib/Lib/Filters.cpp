@@ -5,13 +5,13 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "Filters.hpp"
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 FilterPattern::
 FilterPattern()
@@ -61,7 +61,7 @@ matchesSlow(
     std::string_view pattern,
     std::span<const std::size_t> parts) const
 {
-    MRDOX_ASSERT(! parts.empty());
+    MRDOCS_ASSERT(! parts.empty());
     const auto& part = pattern.substr(0, parts[0]);
     pattern.remove_prefix(parts[0]);
     parts = parts.subspan(1);
@@ -223,5 +223,5 @@ finalize(
         });
 }
 
-} // mrdox
+} // mrdocs
 } // clang

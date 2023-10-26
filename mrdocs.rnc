@@ -1,0 +1,349 @@
+#
+# Licensed under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+#
+# Copyright (c) 2023 Klemens Morgenstern (klemens.morgenstern@gmx.net)
+# Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+#
+# Official repository: https://github.com/cppalliance/mrdocs
+#
+# https://relaxng.org/compact-tutorial-20030326.html
+#
+# convert to mrdocs.rng with tools/trang.jar (https://relaxng.org/jclark/trang.html)
+# when commiting beacuse xmllint doesn't understand the compact format
+#
+
+namespace xsi= "http://www.w3.org/2001/XMLSchema-instance"
+
+grammar
+{
+    start = element mrdocs
+    {
+        attribute xsi:noNamespaceSchemaLocation {text}?,
+        Namespace
+    }
+
+    #---------------------------------------------
+
+    Namespace =
+        element namespace
+        {
+            Name?,
+            ID?,
+            attribute is-inline { "1" }?,
+            attribute is-anonymous { "1" }?,
+            Javadoc?,
+            Scope
+        }
+
+    #---------------------------------------------
+
+    Record =
+        element class  { RecordContent } |
+        element struct { RecordContent } |
+        element union  { RecordContent }
+
+    RecordContent =
+    (
+        Name,
+        Access ?,
+        ID,
+        Location *,
+        (
+            BaseInfo |
+            Attr |
+            element friend { ID } |
+            Javadoc? |
+            RecordScope
+        ) *
+    )
+
+    BaseInfo =
+        element base
+        {
+            Access ?,
+            attribute class { "virtual" } ?,
+            TypeInfo
+        }
+
+    #---------------------------------------------
+
+    Function =
+        element function
+        {
+            Name,
+            Access?,
+            ID,
+            attribute class { "constructor"|"destructor"|"conversion"|"deduction" } ?,
+            Location *,
+            (
+                Attr * |
+                element return { TypeInfo } |
+                element param
+                {
+                    Name?,
+                    attribute default { text } ?,
+                    ID ?,
+                    TypeInfo
+                } * |
+                Javadoc ?
+            ) *
+        }
+
+    #---------------------------------------------
+
+    Enum =
+        element enum
+        {
+            Name,
+            attribute class {"scoped"} ?,
+            ID,
+            Location *,
+            BaseInfo ?,
+            element value
+            {
+                Name,
+                attribute value { text }
+            } *,
+            Javadoc ?
+        }
+
+    #---------------------------------------------
+
+    Typedef =
+        element alias
+        {
+            Name,
+            ID,
+            Location *,
+            TypeInfo
+        } |
+        element typedef
+        {
+            Name,
+            ID,
+            Location *,
+            TypeInfo
+        }
+
+    #---------------------------------------------
+
+    Field =
+        element (field|bitfield)
+        {
+            Name,
+            Access ?,
+            ID,
+            attribute width { text } ?,
+            attribute default { text } ?,
+            Location,
+            (
+                Attr * &
+                TypeInfo &
+                Javadoc ?
+            )
+        }
+
+    #---------------------------------------------
+
+    Var =
+        element variable
+        {
+            Name,
+            Access ?,
+            ID,
+            Location *,
+            (
+                Attr * &
+                TypeInfo &
+                Javadoc ?
+            )
+        }
+
+    #---------------------------------------------
+
+    Symbol =
+    (
+        attribute Tag { text },
+        attribute Name { text },
+        ID
+    )
+
+    Symbols =
+        element symbols
+        {
+            element symbol { Symbol }
+        } *
+
+    Template =
+        element template
+        {
+            attribute class { "explicit"|"partial" } ?,
+            ID ?,
+            TemplateParam *,
+            TemplateArg *,
+            (
+                Record    |
+                Function  |
+                Typedef   |
+                Var       |
+                Template
+            )
+        }
+
+    Specialization =
+        element specialization
+        {
+            ID,
+            attribute primary { text },
+            TemplateArg *,
+            RecordScope
+        }
+
+
+    TemplateArg =
+        element targ
+        {
+            attribute class { "type"|"non-type"|"template" },
+            attribute name { text } ?,
+            ID ?,
+            attribute type { text } ?,
+            attribute value { text } ?
+        }
+
+    TemplateParam =
+        element tparam
+        {
+            attribute name { text } ?,
+            attribute class { "type"|"non-type"|"template" },
+            attribute type { text } ?,
+            attribute default { text } ?,
+            TemplateParam *
+        }
+
+    Location =
+        element file
+        {
+            attribute path {text},
+            attribute line {text},
+            attribute class {"def"} ?,
+            empty
+        }
+
+    Access = attribute access { "public"|"private"|"protected" }
+
+    StorageClass = (
+        element extern          {empty} |
+        element static          {empty} |
+        element private-extern  {empty} |
+        element sc-auto         {empty} |
+        element sc-register     {empty}
+    )
+
+    Scope =
+        (
+            Namespace      |
+            Record         |
+            Function       |
+            Typedef        |
+            Enum           |
+            Var            |
+            Template       |
+            Specialization
+        )*
+
+    RecordScope =
+        (
+            Record         |
+            Function       |
+            Typedef        |
+            Enum           |
+            Field          |
+            Var            |
+            Template       |
+            Specialization
+        )*
+
+    #---------------------------------------------
+    #
+    # <doc>
+    #
+    #---------------------------------------------
+
+    Javadoc = element doc { BlockNode * }
+
+    BlockNode = (
+        Admonition | Brief | Code | Heading | ListItem |
+        Paragraph | Param | Returns | TParam )
+
+    Admonition = Paragraph
+    Brief = element brief { TextNode * }
+    Code = element code { TextNode* }
+    Heading = element head { text }
+    ListItem = element listitem { TextNode* }
+    Paragraph = element para {
+        attribute class { text } ?,
+        TextNode * }
+    Param = element param {
+        attribute name { text } ?,
+        attribute class { text } ?,
+        TextNode * }
+    Returns = element returns { TextNode * }
+    TParam = element tparam {
+        attribute name { text } ?,
+        TextNode * }
+
+    TextNode = ( Link | Styled | Text )
+
+    Link = element link { attribute href { text }, text }
+    Styled = (
+        element none { text } |
+        element mono { text } |
+        element bold { text } |
+        element italic { text } )
+    Text = element text { text }
+
+    #---------------------------------------------
+
+    ID   = attribute id { text }
+
+    Name = attribute name { text }
+
+    Attr = element attr { ID, Name ?, attribute value { text } ? }
+
+    TypeInfo = (
+        element (
+            type |
+            pointee-type |
+            pattern-type |
+            element-type |
+            return-type |
+            param-type
+        )
+        {
+            attribute class
+            {
+                "builtin" |
+                "tag" |
+                "specialization" |
+                "lvalue-reference" |
+                "rvalue-reference" |
+                "pointer" |
+                "member-pointer" |
+                "array" |
+                "function" |
+                "pack"
+            } ?,
+            ID ?,
+            Name ?,
+            attribute parent { text } ?,
+            attribute cv-qualifiers { "const"|"volatile"|"const volatile" } ?,
+            attribute ref-qualifier { "&"|"&&" } ?,
+            attribute exception-spec { text } ?,
+            attribute bounds { text } ?,
+            TemplateArg *,
+            TypeInfo *
+        }
+    )
+}

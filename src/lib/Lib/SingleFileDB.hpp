@@ -5,20 +5,20 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SINGLEFILEDB_HPP
-#define MRDOX_LIB_SINGLEFILEDB_HPP
+#ifndef MRDOCS_LIB_SINGLEFILEDB_HPP
+#define MRDOCS_LIB_SINGLEFILEDB_HPP
 
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/CompilationDatabase.h>
 #include <string>
 #include <utility>
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Compilation database for a single .cpp file.
 */
@@ -72,7 +72,7 @@ public:
     }
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

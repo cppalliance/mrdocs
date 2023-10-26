@@ -6,19 +6,19 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "HTMLCorpus.hpp"
-#include <mrdox/Support/RangeFor.hpp>
-#include <mrdox/Support/String.hpp>
+#include <mrdocs/Support/RangeFor.hpp>
+#include <mrdocs/Support/String.hpp>
 #include <fmt/format.h>
 #include <iterator>
 
 #include <llvm/Support/raw_ostream.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace html {
 
 namespace {
@@ -79,7 +79,7 @@ operator()(
         label = "WARNING";
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
     fmt::format_to(std::back_inserter(dest_),
         "<div>\n<h4>{}</h4>\n", label);
@@ -111,7 +111,7 @@ operator()(
                 }
                 else
                 {
-                    MRDOX_UNREACHABLE();
+                    MRDOCS_UNREACHABLE();
                 }
             });
     }
@@ -227,7 +227,7 @@ operator()(doc::Styled const& I)
         fmt::format_to(std::back_inserter(dest_), "<i>{}</i>", s);
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -334,5 +334,5 @@ getJavadoc(
 }
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang

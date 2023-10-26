@@ -6,20 +6,20 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_AST_BITCODEWRITER_HPP
-#define MRDOX_LIB_AST_BITCODEWRITER_HPP
+#ifndef MRDOCS_LIB_AST_BITCODEWRITER_HPP
+#define MRDOCS_LIB_AST_BITCODEWRITER_HPP
 
 //
 // This file implements a writer for serializing the
-// mrdox internal representation to LLVM bitcode. The
+// mrdocs internal representation to LLVM bitcode. The
 // writer takes in a stream and emits the generated
 // bitcode to that stream.
 //
 #include "BitcodeIDs.hpp"
-#include <mrdox/Metadata.hpp>
+#include <mrdocs/Metadata.hpp>
 #include <llvm/ADT/DenseMap.h>
 #include <llvm/ADT/IndexedMap.h>
 #include <llvm/ADT/StringRef.h>
@@ -28,7 +28,7 @@
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 class BitcodeWriter
 {
@@ -176,7 +176,7 @@ private:
     AbbreviationMap Abbrevs;
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

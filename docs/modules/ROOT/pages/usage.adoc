@@ -1,18 +1,18 @@
 = Usage
 
-== MrDox invocation
+== MrDocs invocation
 
 For consistency, these instructions assume you have the following environment variables set:
 
 [source,bash]
 ----
-MRDOX_ROOT=/path/to/mrdox
+MRDOCS_ROOT=/path/to/mrdocs
 PROJECT_SOURCE_DIR=/path/to/your/project/source
-MRDOX_CONFIG=$PROJECT_SOURCE_DIR/docs/mrdox.yml
+MRDOCS_CONFIG=$PROJECT_SOURCE_DIR/docs/mrdocs.yml
 PROJECT_BUILD_DIR=$PROJECT_SOURCE_DIR/build-docs
 ----
 
-Where `MRDOX_ROOT` is the path of the mrdox executable, and `MRDOX_CONFIG` is the path to the `mrdox.yml` configuration file.
+Where `MRDOCS_ROOT` is the path of the mrdocs executable, and `MRDOCS_CONFIG` is the path to the `mrdocs.yml` configuration file.
 We also assume `PROJECT_SOURCE_DIR` is the path to the root of your project's source code, where its main `CMakeLists.txt` file is located, and `PROJECT_BUILD_DIR` is the path to the directory where you want to generate the documentation.
 Feel free to change these variables to suit your needs.
 
@@ -28,7 +28,7 @@ cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
 At this step, you can also add any other flags you want to pass to `cmake`, such as `-DCMAKE_BUILD_TYPE=Release` or `-DCMAKE_CXX_COMPILER=clang++`.
 By running CMake with the `CMAKE_EXPORT_COMPILE_COMMANDS` flag, you will generate a `compile_commands.json` file in your build directory.
-This file contains all the information mrdox needs to generate the documentation.
+This file contains all the information mrdocs needs to generate the documentation.
 
 Now let's generate the reference files.
 The following command will generate the documentation with the most common options:
@@ -36,66 +36,66 @@ The following command will generate the documentation with the most common optio
 [source,bash]
 ----
 cd $PROJECT_BUILD_DIR
-MRDOX_OUTPUT=$PROJECT_BUILD_DIR/docs/reference/adoc
-$MRDOX_ROOT/mrdox $PROJECT_BUILD_DIR/compile_commands.json --format=adoc --config=$MRDOX_CONFIG --addons=$MRDOX_ROOT/addons --output=$MRDOX_OUTPUT
+MRDOCS_OUTPUT=$PROJECT_BUILD_DIR/docs/reference/adoc
+$MRDOCS_ROOT/mrdocs $PROJECT_BUILD_DIR/compile_commands.json --format=adoc --config=$MRDOCS_CONFIG --addons=$MRDOCS_ROOT/addons --output=$MRDOCS_OUTPUT
 ----
 
 Here's a description of these options:
 
 * `--format=adoc`: the output format.
 It can be any of the generators available.
-* `--config=$MRDOX_CONFIG`: the path to the `mrdox.yml` configuration file.
+* `--config=$MRDOCS_CONFIG`: the path to the `mrdocs.yml` configuration file.
 This file more advanced information about the project.
-* `--addons=$MRDOX_ROOT/addons`: the path to the `addons` directory.
+* `--addons=$MRDOCS_ROOT/addons`: the path to the `addons` directory.
 This directory contains the addons that are used to generate the documentation.
 Among other things, it contains the default templates for the generator.
 This option defaults to current directory if not provided.
-* `--output=$MRDOX_ROOT/output/adoc`: the path to the output directory.
+* `--output=$MRDOCS_ROOT/output/adoc`: the path to the output directory.
 This is where the generated documentation will be placed.
 
-MrDox ignores non-c++ source files, so nothing more needs to be done to generate the documentation for your project.
+MrDocs ignores non-c++ source files, so nothing more needs to be done to generate the documentation for your project.
 
 == Demos
 
-A few examples of reference documentation generated with MrDox are available in https://mrdox.com/demos/.
+A few examples of reference documentation generated with MrDocs are available in https://mrdocs.com/demos/.
 
-== MrDox configuration file
+== MrDocs configuration file
 
-The `mrdox.yml` configuration file contains information about the project that is not available in the `compile_commands.json` file or from the command line.
-The most important information is the `source-root` options, which determines the root of the source tree relative to the `mrdox.yml` file.
+The `mrdocs.yml` configuration file contains information about the project that is not available in the `compile_commands.json` file or from the command line.
+The most important information is the `source-root` options, which determines the root of the source tree relative to the `mrdocs.yml` file.
 
-Other options are available, such as the `concurrency` option, which determines the number of threads mrdox will use to generate the documentation.
+Other options are available, such as the `concurrency` option, which determines the number of threads mrdocs will use to generate the documentation.
 This option defaults to the number of cores available on the machine.
 
 [source,yaml]
 ----
 concurrency: 1      # number of threads to use
-source-root: ../    # source files relative to the mrdox.yml file
+source-root: ../    # source files relative to the mrdocs.yml file
 multipage: false    # generate multiple pages
 verbose: true       # print verbose output
 ----
 
-== MrDox CMake Module
+== MrDocs CMake Module
 
-MrDox also provides a CMake module that can be used to generate the documentation from your project's script.
+MrDocs also provides a CMake module that can be used to generate the documentation from your project's script.
 You can include the CMake module with:
 
 [source,cmake]
 ----
-find_package(MrDox REQUIRED)
+find_package(MrDocs REQUIRED)
 # ...
-include(MrDox)
+include(MrDocs)
 ----
 
-The module will define the `add_mrdox` function, which can be used define a CMake target that generates the documentation for your project.
+The module will define the `add_mrdocs` function, which can be used define a CMake target that generates the documentation for your project.
 The syntax is similar to other cmake functions, such as `add_executable` or `add_library`:
 
 [source,cmake]
 ----
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-add_mrdox(<name>
+add_mrdocs(<name>
     [EXCLUDE_FROM_ALL]
-    [CONFIG <mrdox.yml>]
+    [CONFIG <mrdocs.yml>]
     [FORMAT <format>]
     [ADDONS <addons-dir>]
     [COMMENT comment]
@@ -109,13 +109,13 @@ The `<name>` corresponds to the logical target name and must be globally unique 
 * If `EXCLUDE_FROM_ALL` is given the corresponding property will be set on the created target.
 See documentation of the https://cmake.org/cmake/help/latest/prop_tgt/EXCLUDE_FROM_ALL.html[`EXCLUDE_FROM_ALL`] target property for details.
 
-* The `CONFIG` option specifies the path to the `mrdox.yml` configuration file.
+* The `CONFIG` option specifies the path to the `mrdocs.yml` configuration file.
 If not specified, the function will look for the configuration file in your project directory.
 
-* The `FORMAT` option specifies the generator used by MrDox.
+* The `FORMAT` option specifies the generator used by MrDocs.
 If this option is not specified, the function will use the default generator, which is `adoc`.
 
-* The `ADDONS` option specifies a custom path to the `addons` directory. By default, the function will use the `addons` directory in the MrDox installation directory.
+* The `ADDONS` option specifies a custom path to the `addons` directory. By default, the function will use the `addons` directory in the MrDocs installation directory.
 
 * The `OUTPUT` option specifies the path to the output directory.
 If not specified, the function will use the default output directory, which is relative to the current binary directory.

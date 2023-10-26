@@ -6,15 +6,15 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "Addons.hpp"
 #include "ToolArgs.hpp"
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Error.hpp"
-#include <mrdox/Support/Path.hpp>
-#include <mrdox/Version.hpp>
+#include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Version.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/PrettyStackTrace.h>
@@ -24,7 +24,7 @@
 extern int main(int argc, char const** argv);
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 extern int DoTestAction();
 extern Error DoGenerateAction();
@@ -38,7 +38,7 @@ print_version(llvm::raw_ostream& os)
        << "\n    built with LLVM " << LLVM_VERSION_STRING;
 }
 
-int mrdox_main(int argc, char const** argv)
+int mrdocs_main(int argc, char const** argv)
 {
     namespace fs = llvm::sys::fs;
 
@@ -65,7 +65,7 @@ int mrdox_main(int argc, char const** argv)
         report::error(
             "{}: \"{}\"\n"
             "Could not locate the addons directory because "
-            "the MRDOX_ADDONS_DIR environment variable is not set, "
+            "the MRDOCS_ADDONS_DIR environment variable is not set, "
             "no valid addons location was specified on the command line, "
             "and no addons directory exists in the same directory as "
             "the executable.",
@@ -92,23 +92,23 @@ static void reportUnhandledException(
     sys::PrintStackTrace(llvm::errs());
 }
 
-} // mrdox
+} // mrdocs
 } // clang
 
 int main(int argc, char const** argv)
 {
     try
     {
-        return clang::mrdox::mrdox_main(argc, argv);
+        return clang::mrdocs::mrdocs_main(argc, argv);
     }
-    catch(clang::mrdox::Exception const& ex)
+    catch(clang::mrdocs::Exception const& ex)
     {
         // thrown Exception should never get here.
-        clang::mrdox::reportUnhandledException(ex);
+        clang::mrdocs::reportUnhandledException(ex);
     }
     catch(std::exception const& ex)
     {
-        clang::mrdox::reportUnhandledException(ex);
+        clang::mrdocs::reportUnhandledException(ex);
     }
     return EXIT_FAILURE;
 }

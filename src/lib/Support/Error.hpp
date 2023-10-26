@@ -5,13 +5,13 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_ERROR_HPP
-#define MRDOX_LIB_SUPPORT_ERROR_HPP
+#ifndef MRDOCS_LIB_SUPPORT_ERROR_HPP
+#define MRDOCS_LIB_SUPPORT_ERROR_HPP
 
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Error.h>
@@ -21,7 +21,7 @@
 #include <utility>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 inline Error toError(llvm::Error err)
 {
@@ -105,7 +105,7 @@ public:
 
 /** Return a level from an integer.
 */
-MRDOX_DECL
+MRDOCS_DECL
 Level
 getLevel(
     unsigned level) noexcept;
@@ -114,7 +114,7 @@ getLevel(
 
     A trailing newline will be added automatically.
 */
-MRDOX_DECL
+MRDOCS_DECL
 void
 call_impl(
     Level level,
@@ -137,7 +137,7 @@ call(
 
 } // report
 
-} // mrdox
+} // mrdocs
 } // clang
 
 template<>

@@ -6,20 +6,20 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_BITCODE_BITCODEGENERATOR_HPP
-#define MRDOX_LIB_BITCODE_BITCODEGENERATOR_HPP
+#ifndef MRDOCS_LIB_BITCODE_BITCODEGENERATOR_HPP
+#define MRDOCS_LIB_BITCODE_BITCODEGENERATOR_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Generator.hpp>
-#include <mrdox/MetadataFwd.hpp>
-#include <mrdox/Metadata/Javadoc.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Generator.hpp>
+#include <mrdocs/MetadataFwd.hpp>
+#include <mrdocs/Metadata/Javadoc.hpp>
 #include <optional>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace bitcode {
 
 struct BitcodeGenerator : Generator
@@ -54,7 +54,7 @@ struct BitcodeGenerator : Generator
 };
 
 } // bitcode
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

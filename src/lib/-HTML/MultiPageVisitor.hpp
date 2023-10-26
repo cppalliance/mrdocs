@@ -5,21 +5,21 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_HTML_MULTIPAGEVISITOR_HPP
-#define MRDOX_LIB_HTML_MULTIPAGEVISITOR_HPP
+#ifndef MRDOCS_LIB_HTML_MULTIPAGEVISITOR_HPP
+#define MRDOCS_LIB_HTML_MULTIPAGEVISITOR_HPP
 
 #include "Builder.hpp"
-#include <mrdox/Support/ExecutorGroup.hpp>
+#include <mrdocs/Support/ExecutorGroup.hpp>
 #include <mutex>
 #include <ostream>
 #include <string>
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace html {
 
 /** Visitor which emites a multi-page reference.
@@ -47,7 +47,7 @@ public:
 };
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

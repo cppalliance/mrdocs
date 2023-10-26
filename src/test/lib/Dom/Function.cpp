@@ -5,14 +5,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Dom/Function.hpp>
+#include <mrdocs/Dom/Function.hpp>
 #include <test_suite/test_suite.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace dom {
 
 struct Function_test
@@ -39,9 +39,9 @@ struct Function_test
 
 TEST_SUITE(
     Function_test,
-    "clang.mrdox.dom.Function");
+    "clang.mrdocs.dom.Function");
 
 } // dom
-} // mrdox
+} // mrdocs
 } // clang
 
