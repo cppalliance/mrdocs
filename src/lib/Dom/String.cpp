@@ -15,219 +15,125 @@ namespace clang {
 namespace mrdox {
 namespace dom {
 
-namespace {
-
-// Variable-length integer
-template<std::unsigned_integral U>
-class varint
+class String::impl_view
 {
-    using Digit = std::uint8_t;
-    static_assert(CHAR_BIT == 8);
-    static_assert(sizeof(Digit) == 1);
-    static_assert(std::unsigned_integral<Digit>);
-    static constexpr auto N = (sizeof(U) * 8 + 6) / 7;
-    static constexpr Digit Bits = 8 * sizeof(Digit) - 1;
-    static constexpr Digit EndBit = 1 << Bits;
-    static constexpr Digit DigMask = (1 << Bits) - 1;
-    char buf_[N];
-    std::size_t n_ = 0;
+    char* impl_;
 
 public:
-    explicit varint(U u) noexcept
+    constexpr
+    impl_view(const char* ptr)
+        : impl_(const_cast<char*>(ptr))
     {
-        auto p = buf_;
-        for(;;)
-        {
-            ++n_;
-            auto dig = u & DigMask;
-            u >>= Bits;
-            if(u == 0)
-            {
-                // hi bit set means stop
-                dig |= EndBit;
-                *p = static_cast<char>(dig);
-                break;
-            }
-            *p++ = static_cast<char>(dig);
-        }
     }
 
-    std::string_view get() const noexcept
+    std::size_t size()
     {
-        return { buf_, n_ };
+        std::size_t n;
+        std::memcpy(&n, impl_ + 1, sizeof(std::size_t));
+        return n;
     }
 
-    static U read(char const*& p) noexcept
+    char* data()
     {
-        Digit dig = *p++;
-        if(dig & EndBit)
-            return dig & DigMask;
-        U u = dig;
-        unsigned Shift = Bits;
-        for(;;)
-        {
-            auto dig = *p++;
-            if(dig & EndBit)
-            {
-                dig &= DigMask;
-                u |= dig << Shift;
-                return u;
-            }
-            u |= dig << Shift;
-            Shift += Bits;
-        }
+        return impl_ - size();
+    }
+
+    char* base()
+    {
+        return data() - sizeof(std::atomic<std::size_t>);
+    }
+
+    std::atomic<std::size_t>& refs()
+    {
+        return *reinterpret_cast<
+            std::atomic<std::size_t>*>(base());
     }
 };
 
-static constinit char sz_empty = { '\0' };
-
-} // (anon)
-
-// An allocated string is stored in one buffer
-// laid out thusly:
-//
-// Impl
-// size     varint
-// chars    char[]
-//
-struct String::Impl
-{
-    std::atomic<std::size_t> refs;
-
-    explicit Impl(
-        std::string_view s,
-        varint<std::size_t> const& uv) noexcept
-        : refs(1)
-    {
-        auto p = reinterpret_cast<char*>(this+1);
-        auto vs = uv.get();
-        std::memcpy(p, vs.data(), vs.size());
-        p += vs.size();
-        std::memcpy(p, s.data(), s.size());
-        p[s.size()] = '\0';
-    }
-
-    std::string_view get() const noexcept
-    {
-        auto p = reinterpret_cast<char const*>(this+1);
-        auto const size = varint<std::size_t>::read(p);
-        return { p, size };
-    }
-};
-
-void
+String::impl_view
 String::
-allocate(
-    std::string_view s,
-    Impl*& impl,
-    char const*& psz)
+impl() const noexcept
 {
-    std::allocator<Impl> alloc;
-    varint<std::size_t> uv(s.size());
-    auto const varlen = uv.get().size();
-    auto n =
-        sizeof(Impl) +      // header
-        varlen +            // size (varint)
-        s.size() +          // string data
-        1 +                 // null term '\0'
-        (sizeof(Impl) - 1); // round up to nearest sizeof(Impl)
-    impl = new(alloc.allocate(n / sizeof(Impl))) Impl(s, uv);
-    psz = reinterpret_cast<char const*>(impl + 1) + varlen;
+    MRDOX_ASSERT(! empty() && ! is_literal());
+    return impl_view(ptr_);
 }
 
 void
 String::
-deallocate(
-    Impl* impl) noexcept
+construct(
+    const char* s,
+    std::size_t n)
 {
-    std::allocator<Impl> alloc;
-    auto const s = impl->get();
-    varint<std::size_t> uv(s.size());
-    auto const varlen = uv.get().size();
-    auto n =
-        sizeof(Impl) +      // header
-        varlen +            // size (varint)
-        s.size() +          // string data
-        1 +                 // null term '\0'
-        (sizeof(Impl) - 1); // round up to nearest sizeof(Impl)
-    std::destroy_at(impl);
-    alloc.deallocate(impl, n / sizeof(Impl));
+    char* ptr = static_cast<char*>(::operator new(
+        sizeof(std::atomic<std::size_t>) + // ref count
+        n + // string
+        1 + // null terminator
+        sizeof(std::size_t) // string length (unaligned)
+    ));
+    // initialize ref count
+    ::new(ptr) std::atomic<std::size_t>(1);
+    ptr += sizeof(std::atomic<std::size_t>);
+    // copy in the string
+    std::memcpy(ptr, s, n);
+    ptr += n;
+    // write the null terminator
+    *ptr = '\0';
+    // store the address of the null terminator into ptr_.
+    // it indicates that the string is ref-counted
+    ptr_ = ptr++;
+    // KRYSTIAN NOTE: the size is currently stored unaligned.
+    // in the future, we should investigate whether the cost
+    // of the cacheline split load is worth allocating
+    // additional bytes to properly align this.
+    // write the strings size
+    std::memcpy(ptr, &n, sizeof(std::size_t));
 }
 
-//------------------------------------------------
+String::
+String(const String& other) noexcept
+    : ptr_(other.ptr_)
+{
+    if(! empty() && ! is_literal())
+        ++impl().refs();
+}
 
 String::
-~String()
+~String() noexcept
 {
-    if(is_literal())
+    // this better be true, since we don't call
+    // any destructors when deallocating
+    static_assert(
+        std::is_trivially_destructible_v<
+            std::atomic<std::size_t>>);
+    if(empty() || is_literal())
         return;
-    if(--impl_->refs > 0)
-        return;
-    deallocate(impl_);
+    if(! --impl().refs())
+        ::operator delete(impl().base());
 }
 
+std::size_t
 String::
-String() noexcept
-    : len_(len(0))
-    , psz_(&sz_empty)
+size() const noexcept
 {
-}
-
-String::
-String(
-    String&& other) noexcept
-    : String()
-{
-    swap(other);
-}
-
-String::
-String(
-    String const& other) noexcept
-    : impl_(other.impl_)
-    , psz_(other.psz_)
-{
-    if(! is_literal())
-        ++impl_->refs;
-}
-
-String::
-String(
-    std::string_view s)
-{
-    allocate(s, impl_, psz_);
-    MRDOX_ASSERT(! is_literal());
-}
-
-String&
-String::
-operator=(
-    String&& other) noexcept
-{
-    String temp(std::move(other));
-    swap(temp);
-    return *this;
-}
-
-String&
-String::
-operator=(
-    String const& other) noexcept
-{
-    String temp(other);
-    swap(temp);
-    return *this;
-}
-
-std::string_view
-String::
-get() const noexcept
-{
+    if(empty())
+        return 0;
     if(is_literal())
-        return std::string_view(psz_,
-            (len_ & ((std::size_t(-1) >> 1) & ~std::size_t(1))) |
-            (len_ >> (sizeof(std::size_t)*8 - 1)));
-    return impl_->get();
+        return std::strlen(ptr_);
+    return impl().size();
+}
+
+const char*
+String::
+data() const noexcept
+{
+    // if the string is empty, the storage
+    // typically for the pointer is used
+    // as a empty null terminated string
+    if(empty())
+        return reinterpret_cast<const char*>(&ptr_);
+    if(is_literal())
+        return ptr_;
+    return impl().data();
 }
 
 } // dom
