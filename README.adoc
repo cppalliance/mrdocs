@@ -16,12 +16,12 @@ cmake --build . -j <threads> --config Release
 cmake --install .
 ----
 
-Once LLVM is available in `/path/to/llvm+clang`, you can build and install mrdox with:
+Once LLVM is available in `/path/to/llvm+clang`, you can build and install mrdocs with:
 
 [source,bash]
 ----
-git clone https://github.com/cppalliance/mrdox
-cd mrdox
+git clone https://github.com/cppalliance/mrdocs
+cd mrdocs
 cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LLVM_ROOT=/path/to/llvm+clang -D Clang_ROOT=/path/to/llvm+clang
 cd build
 cmake --build . -j <threads>
@@ -37,11 +37,11 @@ cmake --install .
 * old program with lots of technical debt
 * not written by me
 
-=== MrDox:
+=== MrDocs:
 
 * narrow and deep focus on {cpp} only
 * uses clang's unstable libtooling API:
-** Understands ALL C++: if clang can compile it, MrDox knows about it
+** Understands ALL C++: if clang can compile it, MrDocs knows about it
 ** This includes up to {cpp}20 and even experimental things in {cpp}23
 * brand-new program with no technical debt
 * written by me

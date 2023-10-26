@@ -5,15 +5,15 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Support/JavaScript.hpp>
+#include <mrdocs/Support/JavaScript.hpp>
 #include <test_suite/test_suite.hpp>
 #include <array>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace js {
 
 struct Path_test
@@ -788,9 +788,9 @@ struct Path_test
 
 TEST_SUITE(
     Path_test,
-    "clang.mrdox.Javascript");
+    "clang.mrdocs.Javascript");
 
 } // js
-} // mrdox
+} // mrdocs
 } // clang
 

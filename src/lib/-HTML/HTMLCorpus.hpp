@@ -5,17 +5,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_HTML_HTMLCORPUS_HPP
-#define MRDOX_LIB_HTML_HTMLCORPUS_HPP
+#ifndef MRDOCS_LIB_HTML_HTMLCORPUS_HPP
+#define MRDOCS_LIB_HTML_HTMLCORPUS_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/DomMetadata.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/DomMetadata.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace html {
 
 class HTMLCorpus : public DomCorpus
@@ -34,7 +34,7 @@ public:
 };
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

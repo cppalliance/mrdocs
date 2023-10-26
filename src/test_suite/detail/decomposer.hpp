@@ -5,8 +5,8 @@
 // https://www.boost.org/LICENSE_1_0.txt
 //
 
-#ifndef MRDOX_TEST_DECOMPOSER_HPP
-#define MRDOX_TEST_DECOMPOSER_HPP
+#ifndef MRDOCS_TEST_DECOMPOSER_HPP
+#define MRDOCS_TEST_DECOMPOSER_HPP
 
 #include <type_traits>
 #include <string_view>
@@ -16,7 +16,7 @@
 #if defined(__has_include) && __has_include(<fmt/format.h>)
 #include <fmt/format.h>
 #include <fmt/ostream.h>
-#define MRDOX_TEST_HAS_FMT
+#define MRDOCS_TEST_HAS_FMT
 #endif
 
 // These are test macros we can use to test our code without having to
@@ -52,7 +52,7 @@ namespace test_suite::detail
         {
             out += '\"';
         }
-#ifdef MRDOX_TEST_HAS_FMT
+#ifdef MRDOCS_TEST_HAS_FMT
         if constexpr (fmt::has_formatter<T, fmt::format_context>::value) {
             out += fmt::format("{}", value);
         } else
@@ -295,4 +295,4 @@ namespace test_suite::detail
 #    define DETAIL_SUPPRESS_PARENTHESES_WARNINGS
 #endif
 
-#endif //MRDOX_TEST_DECOMPOSER_HPP
+#endif //MRDOCS_TEST_DECOMPOSER_HPP

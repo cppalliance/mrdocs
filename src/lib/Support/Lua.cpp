@@ -5,12 +5,12 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Support/Lua.hpp>
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Support/Lua.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include "../../../third-party/lua/src/lua.hpp"
 #include <fmt/format.h>
 
@@ -18,7 +18,7 @@
 #include "lib/Support/LuaHandlebars.hpp"
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace lua {
 
 #define LUA_INVALID_INDEX 0
@@ -106,7 +106,7 @@ Scope(
 Scope::
 ~Scope()
 {
-    MRDOX_ASSERT(refs_ == 0);
+    MRDOCS_ASSERT(refs_ == 0);
     reset();
 }
 
@@ -272,7 +272,7 @@ dom::Array&
 domArray_get(
     Access& A, int index)
 {
-    MRDOX_ASSERT(
+    MRDOCS_ASSERT(
         lua_type(A, index) == LUA_TUSERDATA);
     return *static_cast<dom::Array*>(
         lua_touserdata(A, index));
@@ -403,7 +403,7 @@ dom::Object&
 domObject_get(
     Access& A, int index)
 {
-    MRDOX_ASSERT(
+    MRDOCS_ASSERT(
         lua_type(A, index) == LUA_TUSERDATA);
     return *static_cast<dom::Object*>(
         lua_touserdata(A, index));
@@ -457,7 +457,7 @@ domObject_push_metatable(
             obj.set(key, lua_toboolean(A, 3) != 0);
             break;
         case LUA_TLIGHTUSERDATA:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         case LUA_TNUMBER:
             obj.set(key, lua_tonumber(A, 3));
             break;
@@ -466,18 +466,18 @@ domObject_push_metatable(
             break;
         case LUA_TTABLE:
             // VFALCO TODO
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
             break;
         case LUA_TFUNCTION:
             // VFALCO TODO
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
             break;
         case LUA_TUSERDATA:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         case LUA_TTHREAD:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         default:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
         return 0;
     });
@@ -591,12 +591,12 @@ domValue_push(
     case dom::Kind::String:
         return luaM_pushstring(A, value.getString());
     case dom::Kind::Array:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
         //return domArray_push(A, value.getArray());
     case dom::Kind::Object:
         return domObject_push(A, value.getObject());
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -658,7 +658,7 @@ loadChunkFromFile(
     std::string_view fileName,
     source_location loc)
 {
-    MRDOX_TRY(auto luaChunk, files::getFileText(fileName));
+    MRDOCS_TRY(auto luaChunk, files::getFileText(fileName));
     return loadChunk(luaChunk, fileName, loc);
 }
 
@@ -684,7 +684,7 @@ getGlobal(
     lua_replace(A, -2);
     if(type == LUA_TNIL)
     {
-        MRDOX_ASSERT(lua_isnil(A, -1));
+        MRDOCS_ASSERT(lua_isnil(A, -1));
         lua_pop(A, 1);
         return Unexpected(formatError("global key '{}' not found", key));
     }
@@ -715,12 +715,12 @@ push(Scope& scope) const
     case Kind::value:
         return lua_pushvalue(A, index_);
     case Kind::domArray:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     case Kind::domObject:
         domObject_push(A, obj_);
         return;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -752,7 +752,7 @@ Param(
         std::construct_at(&obj_, other.obj_);
         return;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -777,7 +777,7 @@ Param::
         std::destroy_at(&obj_);
         return;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -850,7 +850,7 @@ Param(
             case dom::Kind::Object:
                 return Param(value.getObject());
             default:
-                MRDOX_UNREACHABLE();
+                MRDOCS_UNREACHABLE();
             }
         }())
 {
@@ -931,15 +931,15 @@ type() const noexcept
     case LUA_TNIL:      return Type::nil;
     case LUA_TBOOLEAN:  return Type::boolean;
     case LUA_TLIGHTUSERDATA:
-                        MRDOX_UNREACHABLE();
+                        MRDOCS_UNREACHABLE();
     case LUA_TNUMBER:   return Type::number;
     case LUA_TSTRING:   return Type::string;
     case LUA_TTABLE:    return Type::table;
     case LUA_TFUNCTION: return Type::function;
-    case LUA_TUSERDATA: MRDOX_UNREACHABLE();
-    case LUA_TTHREAD:   MRDOX_UNREACHABLE();
+    case LUA_TUSERDATA: MRDOCS_UNREACHABLE();
+    case LUA_TTHREAD:   MRDOCS_UNREACHABLE();
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -973,7 +973,7 @@ displayString() const
     case LUA_TTHREAD:
         return "[thread]";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -1211,5 +1211,5 @@ lua_main()
 }
 
 } // lua
-} // mrdox
+} // mrdocs
 } // clang

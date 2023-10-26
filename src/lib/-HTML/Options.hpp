@@ -5,17 +5,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_HTML_OPTIONS_HPP
-#define MRDOX_LIB_HTML_OPTIONS_HPP
+#ifndef MRDOCS_LIB_HTML_OPTIONS_HPP
+#define MRDOCS_LIB_HTML_OPTIONS_HPP
 
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <string>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 class Corpus;
 
@@ -36,7 +36,7 @@ loadOptions(
     Corpus const& corpus);
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

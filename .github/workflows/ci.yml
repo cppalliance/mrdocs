@@ -59,7 +59,7 @@ jobs:
       contents: write
 
     steps:
-      - name: Clone MrDox
+      - name: Clone MrDocs
         uses: actions/checkout@v3
 
       - name: Install LLVM
@@ -84,7 +84,7 @@ jobs:
           fi
           llvm_commit_id=29b20829
           llvm_archive_filename="$llvm_runner_os-$llvm_config_type-$llvm_commit_id.$llvm_archive_type"
-          llvm_url="https://github.com/cppalliance/mrdox/releases/download/llvm-package-release/$llvm_archive_filename"
+          llvm_url="https://github.com/cppalliance/mrdocs/releases/download/llvm-package-release/$llvm_archive_filename"
           
           if ! curl --head --silent --fail "$llvm_url"; then
               llvm_url="https://mrdox.com/llvm+clang/$llvm_archive_filename"
@@ -220,7 +220,7 @@ jobs:
       contents: write
 
     steps:
-      - name: Clone mrdox
+      - name: Clone mrdocs
         uses: actions/checkout@v3
 
       - name: Install Node.js
@@ -232,8 +232,8 @@ jobs:
         working-directory: docs
         run: |
           npm install
-          master_antora_exists=$(curl --silent --fail --head https://github.com/cppalliance/mrdox/blob/master/docs/antora.yml >/dev/null && echo "true" || echo "false")
-          develop_antora_exists=$(curl --silent --fail --head https://github.com/cppalliance/mrdox/blob/develop/docs/antora.yml >/dev/null && echo "true" || echo "false")
+          master_antora_exists=$(curl --silent --fail --head https://github.com/cppalliance/mrdocs/blob/master/docs/antora.yml >/dev/null && echo "true" || echo "false")
+          develop_antora_exists=$(curl --silent --fail --head https://github.com/cppalliance/mrdocs/blob/develop/docs/antora.yml >/dev/null && echo "true" || echo "false")
           if [ "$master_antora_exists" == "true" ] && [ "$develop_antora_exists" == "true" ]; then
               # Antora is set up in both master and develop: render complete playbook
               npx antora antora-playbook.yml
@@ -281,7 +281,7 @@ jobs:
       contents: write
 
     steps:
-      - name: Clone mrdox
+      - name: Clone mrdocs
         uses: actions/checkout@v3
 
       - uses: actions/download-artifact@v3
@@ -309,11 +309,11 @@ jobs:
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
 
-      - name: Install mrdox from release package
+      - name: Install mrdocs from release package
         run: |
           set -x
-          sudo find packages -name 'MrDox-*-Linux.tar.gz' -exec tar -xzf {} -C /usr/local --strip-components=1 \;
-          mrdox --version
+          sudo find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -xzf {} -C /usr/local --strip-components=1 \;
+          mrdocs --version
 
       - name: Clone Boost.URL
         uses: alandefreitas/cpp-actions/boost-clone@v1.5.0
@@ -351,31 +351,31 @@ jobs:
 
       - name: Generate demos
         run: |
-          echo "verbose: true" > $(pwd)/boost/libs/url/mrdox-single.yml
-          echo "source-root: ." >> $(pwd)/boost/libs/url/mrdox-single.yml
-          echo "multipage: false" >> $(pwd)/boost/libs/url/mrdox-single.yml
-          echo "inaccessible-members: never" >> $(pwd)/boost/libs/url/mrdox-single.yml
-          echo "filters:" >> $(pwd)/boost/libs/url/mrdox-single.yml
-          echo "  symbols:" >> $(pwd)/boost/libs/url/mrdox-single.yml
-          echo "    exclude:" >> $(pwd)/boost/libs/url/mrdox-single.yml
-          echo "      - 'boost::urls::detail'" >> $(pwd)/boost/libs/url/mrdox-single.yml
-          echo "      - 'boost::urls::*::detail'" >> $(pwd)/boost/libs/url/mrdox-single.yml
+          echo "verbose: true" > $(pwd)/boost/libs/url/mrdocs-single.yml
+          echo "source-root: ." >> $(pwd)/boost/libs/url/mrdocs-single.yml
+          echo "multipage: false" >> $(pwd)/boost/libs/url/mrdocs-single.yml
+          echo "inaccessible-members: never" >> $(pwd)/boost/libs/url/mrdocs-single.yml
+          echo "filters:" >> $(pwd)/boost/libs/url/mrdocs-single.yml
+          echo "  symbols:" >> $(pwd)/boost/libs/url/mrdocs-single.yml
+          echo "    exclude:" >> $(pwd)/boost/libs/url/mrdocs-single.yml
+          echo "      - 'boost::urls::detail'" >> $(pwd)/boost/libs/url/mrdocs-single.yml
+          echo "      - 'boost::urls::*::detail'" >> $(pwd)/boost/libs/url/mrdocs-single.yml
           
-          echo "verbose: true" > $(pwd)/boost/libs/url/mrdox-multi.yml
-          echo "source-root: ." >> $(pwd)/boost/libs/url/mrdox-multi.yml
-          echo "multipage: true" >> $(pwd)/boost/libs/url/mrdox-multi.yml
-          echo "inaccessible-members: never" >> $(pwd)/boost/libs/url/mrdox-multi.yml
-          echo "filters:" >> $(pwd)/boost/libs/url/mrdox-multi.yml
-          echo "  symbols:" >> $(pwd)/boost/libs/url/mrdox-multi.yml
-          echo "    exclude:" >> $(pwd)/boost/libs/url/mrdox-multi.yml
-          echo "      - 'boost::urls::detail'" >> $(pwd)/boost/libs/url/mrdox-multi.yml
-          echo "      - 'boost::urls::*::detail'" >> $(pwd)/boost/libs/url/mrdox-multi.yml
+          echo "verbose: true" > $(pwd)/boost/libs/url/mrdocs-multi.yml
+          echo "source-root: ." >> $(pwd)/boost/libs/url/mrdocs-multi.yml
+          echo "multipage: true" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
+          echo "inaccessible-members: never" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
+          echo "filters:" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
+          echo "  symbols:" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
+          echo "    exclude:" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
+          echo "      - 'boost::urls::detail'" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
+          echo "      - 'boost::urls::*::detail'" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
           
           set -x
           for variant in single multi; do
             for format in adoc html xml; do
               mkdir -p "demos/boost-url/$variant/$format"
-              mrdox --config="$(pwd)/boost/libs/url/mrdox-$variant.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --addons="$(pwd)/share/mrdox/addons" --format="$format" --output="$(pwd)/demos/boost-url/$variant/$format"
+              mrdocs --config="$(pwd)/boost/libs/url/mrdocs-$variant.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --addons="$(pwd)/share/mrdocs/addons" --format="$format" --output="$(pwd)/demos/boost-url/$variant/$format"
             done
             asciidoctor -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done
@@ -421,7 +421,7 @@ jobs:
       contents: write
 
     steps:
-      - name: Clone mrdox
+      - name: Clone mrdocs
         uses: actions/checkout@v3
 
       - uses: actions/download-artifact@v3
@@ -458,7 +458,7 @@ jobs:
         if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
         uses: softprops/action-gh-release@v1
         with:
-          files: build/MrDox-?.?.?-*.*
+          files: build/MrDocs-?.?.?-*.*
           name: ${{ github.ref_name || github.ref }}
           tag_name: ${{ github.ref_name || github.ref }}${{ ((!startsWith(github.ref, 'refs/tags/')) && '-release') || '' }}
           body_path: CHANGELOG.md

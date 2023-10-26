@@ -1,5 +1,5 @@
-= MrDox resources
+= MrDocs resources
 
-The share directory stores architecture-independent data files that are shared among multiple programs, including MrDox, or users. This can include things like cmake integration scripts and MrDox addons.
+The share directory stores architecture-independent data files that are shared among multiple programs, including MrDocs, or users. This can include things like cmake integration scripts and MrDocs addons.
 
 The subdirectories of share are installed into `CMAKE_INSTALL_DATAROOTDIR` (equivalent to `/usr/local/share` in unix variants). This README.adoc file is not installed.

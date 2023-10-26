@@ -6,13 +6,13 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/AST/ParseJavadoc.hpp"
 #include "lib/Support/Path.hpp"
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Generator.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Generator.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
@@ -20,7 +20,7 @@
 #include <sstream>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 Generator::
 ~Generator() noexcept = default;
@@ -114,5 +114,5 @@ buildOneString(
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang

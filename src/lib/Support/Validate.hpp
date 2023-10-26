@@ -5,23 +5,23 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_VALIDATE_HPP
-#define MRDOX_LIB_SUPPORT_VALIDATE_HPP
+#ifndef MRDOCS_LIB_SUPPORT_VALIDATE_HPP
+#define MRDOCS_LIB_SUPPORT_VALIDATE_HPP
 
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #include <llvm/ADT/StringRef.h>
 
 /*
-    Functions to check the validity of MrDox output
+    Functions to check the validity of MrDocs output
     to ensure conformance to specifications such
     as Asciidoc section identifiers or XML attributes.
 */
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Return true if s is a valid Asciidoc section ID.
 */
@@ -29,7 +29,7 @@ bool
 validAdocSectionID(
     llvm::StringRef s) noexcept;
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

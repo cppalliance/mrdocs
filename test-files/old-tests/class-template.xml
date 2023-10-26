@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
   <struct name="S" id="pOYGF6pLJlICuiGO0Xj0daDb/to=">
     <file path="class-template.cpp" line="1" class="def"/>
@@ -99,4 +99,4 @@
     </struct>
   </template>
 </namespace>
-</mrdox>
+</mrdocs>

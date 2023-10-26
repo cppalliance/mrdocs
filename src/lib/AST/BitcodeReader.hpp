@@ -6,28 +6,28 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_AST_BITCODEREADER_HPP
-#define MRDOX_LIB_AST_BITCODEREADER_HPP
+#ifndef MRDOCS_LIB_AST_BITCODEREADER_HPP
+#define MRDOCS_LIB_AST_BITCODEREADER_HPP
 
 //
 // This file implements a reader for parsing the
-// mrdox internal representation from LLVM bitcode.
+// mrdocs internal representation from LLVM bitcode.
 // The reader takes in a stream of bits and generates
 // the set of infos that it represents.
 //
 
 #include "BitcodeIDs.hpp"
-#include <mrdox/Metadata.hpp>
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Metadata.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallVector.h>
 #include <llvm/Bitstream/BitstreamReader.h>
 #include <optional>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 using Record = llvm::SmallVector<uint64_t, 1024>;
 
@@ -44,7 +44,7 @@ public:
     // Main entry point, calls readBlock to read each block in the given stream.
     auto
     getInfos() ->
-        mrdox::Expected<std::vector<std::unique_ptr<Info>>>;
+        mrdocs::Expected<std::vector<std::unique_ptr<Info>>>;
 public:
     struct AnyBlock;
 
@@ -62,7 +62,7 @@ public:
     /** Return the next decoded Info from the stream.
     */
     template<class T>
-    mrdox::Expected<std::unique_ptr<Info>>
+    mrdocs::Expected<std::unique_ptr<Info>>
     readInfo(unsigned ID);
 
     /** Read a single block.
@@ -87,7 +87,7 @@ public:
     std::vector<AnyBlock*> blockStack_;
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

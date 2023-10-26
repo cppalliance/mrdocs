@@ -6,7 +6,7 @@
 # Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 # Copyright (c) 2023 Alan de Freitas (alandefreitas@gmail.com)
 #
-# Official repository: https://github.com/cppalliance/mrdox
+# Official repository: https://github.com/cppalliance/mrdocs
 #
 
 #-------------------------------------------------
@@ -23,38 +23,38 @@ elseif(NOT GENERATOR_IS_MULTI_CONFIG AND NOT CMAKE_BUILD_TYPE)
 endif()
 cmake_policy(SET CMP0111 OLD)
 project(
-    MrDox
+    MrDocs
     VERSION 1.0.0
     DESCRIPTION "C++ Documentation Tool"
-    HOMEPAGE_URL "https://github.com/cppalliance/mrdox"
+    HOMEPAGE_URL "https://github.com/cppalliance/mrdocs"
     LANGUAGES CXX C
 )
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
-option(MRDOX_INSTALL "Configure install target" ON)
-option(MRDOX_PACKAGE "Build install package" ON)
-option(MRDOX_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
-option(MRDOX_BUILD_TESTS "Build tests" ${BUILD_TESTING})
-if (MRDOX_BUILD_TESTS OR MRDOX_INSTALL)
-    option(MRDOX_BUILD_DOCS "Build documentation" ON)
+option(MRDOCS_INSTALL "Configure install target" ON)
+option(MRDOCS_PACKAGE "Build install package" ON)
+option(MRDOCS_BUILD_SHARED "Link shared" ${BUILD_SHARED_LIBS})
+option(MRDOCS_BUILD_TESTS "Build tests" ${BUILD_TESTING})
+if (MRDOCS_BUILD_TESTS OR MRDOCS_INSTALL)
+    option(MRDOCS_BUILD_DOCS "Build documentation" ON)
 else()
-    option(MRDOX_BUILD_DOCS "Build documentation" OFF)
+    option(MRDOCS_BUILD_DOCS "Build documentation" OFF)
 endif()
-option(MRDOX_GENERATE_REFERENCE "Generate MrDox reference" ${MRDOX_BUILD_DOCS})
-option(MRDOX_GENERATE_ANTORA_REFERENCE "Generate MrDox reference in Antora module pages" OFF)
+option(MRDOCS_GENERATE_REFERENCE "Generate MrDocs reference" ${MRDOCS_BUILD_DOCS})
+option(MRDOCS_GENERATE_ANTORA_REFERENCE "Generate MrDocs reference in Antora module pages" OFF)
 
-if (MRDOX_BUILD_SHARED)
-    set(MRDOX_LINK_MODE SHARED)
-    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_SHARED_LINK)
+if (MRDOCS_BUILD_SHARED)
+    set(MRDOCS_LINK_MODE SHARED)
+    set(MRDOCS_LINK_MODE_DEFINITION -DMRDOCS_SHARED_LINK)
 else()
-    set(MRDOX_LINK_MODE_DEFINITION -DMRDOX_STATIC_LINK)
+    set(MRDOCS_LINK_MODE_DEFINITION -DMRDOCS_STATIC_LINK)
 endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(MRDOX_GCC ON)
+    set(MRDOCS_GCC ON)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang$")
-    set(MRDOX_CLANG ON)
+    set(MRDOCS_CLANG ON)
 endif()
 
 #-------------------------------------------------
@@ -136,7 +136,7 @@ unset(CMAKE_FOLDER)
 
 #-------------------------------------------------
 #
-# mrdox-core
+# mrdocs-core
 #
 #-------------------------------------------------
 
@@ -147,9 +147,9 @@ file(
         include/*.hpp include/*.ipp
         include/*.natvis
         SourceFileNames.cpp)
-add_library(mrdox-core ${LIB_SOURCES})
-target_compile_features(mrdox-core PUBLIC cxx_std_20)
-target_include_directories(mrdox-core
+add_library(mrdocs-core ${LIB_SOURCES})
+target_compile_features(mrdocs-core PUBLIC cxx_std_20)
+target_include_directories(mrdocs-core
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
@@ -157,23 +157,23 @@ target_include_directories(mrdox-core
     "${PROJECT_SOURCE_DIR}/src"
     "${PROJECT_SOURCE_DIR}/include")
 target_compile_definitions(
-    mrdox-core
+    mrdocs-core
     PUBLIC
-    ${MRDOX_LINK_MODE_DEFINITION}
+    ${MRDOCS_LINK_MODE_DEFINITION}
     PRIVATE
-    -DMRDOX_TOOL
+    -DMRDOCS_TOOL
 )
 
 # Deps
-target_include_directories(mrdox-core SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
-target_include_directories(mrdox-core SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
-target_link_libraries(mrdox-core PUBLIC fmt::fmt duktape::duktape)
+target_include_directories(mrdocs-core SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
+target_include_directories(mrdocs-core SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
+target_link_libraries(mrdocs-core PUBLIC fmt::fmt duktape::duktape)
 
 # Clang
 if (CLANG_SIMPLE_LIBS)
-    target_link_libraries(mrdox-core PUBLIC LLVM clang clang-cpp)
+    target_link_libraries(mrdocs-core PUBLIC LLVM clang clang-cpp)
 else()
-    target_link_libraries(mrdox-core
+    target_link_libraries(mrdocs-core
             PUBLIC
             clangAST
             clangBasic
@@ -187,7 +187,7 @@ endif()
 # Windows, Win64
 if (WIN32)
     target_compile_definitions(
-        mrdox-core
+        mrdocs-core
         PUBLIC
         -D_WIN32_WINNT=0x0601
         -D_CRT_SECURE_NO_WARNINGS
@@ -197,15 +197,15 @@ if (WIN32)
     if(MSVC)
         get_target_property(LLVM_CONFIGURATION_TYPE LLVMCore IMPORTED_CONFIGURATIONS)
         if (LLVM_CONFIGURATION_TYPE STREQUAL RELWITHDEBINFO)
-            # Handle Debug/RelWithDebInfo mismatch between mrdox and LLVM
-            target_compile_definitions(mrdox-core PUBLIC $<$<CONFIG:Debug>:-D_ITERATOR_DEBUG_LEVEL=0>)
-            target_compile_options(mrdox-core PUBLIC $<$<CONFIG:Debug>:/MD>)
+            # Handle Debug/RelWithDebInfo mismatch between mrdocs and LLVM
+            target_compile_definitions(mrdocs-core PUBLIC $<$<CONFIG:Debug>:-D_ITERATOR_DEBUG_LEVEL=0>)
+            target_compile_options(mrdocs-core PUBLIC $<$<CONFIG:Debug>:/MD>)
         endif()
         if("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win64") # 64-bit
-            target_compile_options(mrdox-core PUBLIC /arch:AMD64)
+            target_compile_options(mrdocs-core PUBLIC /arch:AMD64)
         endif()
         target_compile_options(
-            mrdox-core
+            mrdocs-core
             PUBLIC
             /permissive-    # strict C++
             /W4             # enable all warnings
@@ -215,9 +215,9 @@ if (WIN32)
     endif()
 endif ()
 
-if (MRDOX_CLANG)
+if (MRDOCS_CLANG)
     target_compile_options(
-        mrdox-core
+        mrdocs-core
         PUBLIC
         -Wno-unused-private-field
         -Wno-unused-value
@@ -233,10 +233,10 @@ endif ()
 #-------------------------------------------------
 
 file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS src/tool/*.cpp src/tool/*.hpp)
-add_executable(mrdox ${TOOL_SOURCES})
-target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
+add_executable(mrdocs ${TOOL_SOURCES})
+target_compile_definitions(mrdocs PRIVATE -DMRDOCS_TOOL)
 
-target_include_directories(mrdox
+target_include_directories(mrdocs
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
@@ -245,18 +245,18 @@ target_include_directories(mrdox
     "${PROJECT_SOURCE_DIR}/src"
 )
 
-target_compile_definitions(mrdox PRIVATE -DMRDOX_TOOL)
-target_link_libraries(mrdox PUBLIC mrdox-core)
-if (MRDOX_CLANG)
+target_compile_definitions(mrdocs PRIVATE -DMRDOCS_TOOL)
+target_link_libraries(mrdocs PUBLIC mrdocs-core)
+if (MRDOCS_CLANG)
     target_compile_options(
-        mrdox
+        mrdocs
         PRIVATE
         -Wno-covered-switch-default
     )
 endif ()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdox PREFIX "include" FILES ${INCLUDES})
+source_group(TREE ${PROJECT_SOURCE_DIR}/include/mrdocs PREFIX "include" FILES ${INCLUDES})
 source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 
 #-------------------------------------------------
@@ -265,35 +265,35 @@ source_group(TREE ${PROJECT_SOURCE_DIR}/source PREFIX "source" FILES ${SOURCES})
 #
 #-------------------------------------------------
 
-if (MRDOX_BUILD_TESTS)
+if (MRDOCS_BUILD_TESTS)
     #-------------------------------------------------
     # Unit tests
     #-------------------------------------------------
     include(CTest)
     file(GLOB_RECURSE TEST_SUITE_FILES CONFIGURE_DEPENDS src/test_suite/*.cpp src/test_suite/*.hpp)
     file(GLOB_RECURSE UNIT_TEST_SOURCES CONFIGURE_DEPENDS src/test/*.cpp src/test/*.hpp)
-    add_executable(mrdox-test ${TEST_SUITE_FILES} ${UNIT_TEST_SOURCES})
-    target_include_directories(mrdox-test
+    add_executable(mrdocs-test ${TEST_SUITE_FILES} ${UNIT_TEST_SOURCES})
+    target_include_directories(mrdocs-test
             PRIVATE
             "${PROJECT_SOURCE_DIR}/include"
             "${PROJECT_SOURCE_DIR}/src"
             )
-    target_link_libraries(mrdox-test PUBLIC mrdox-core)
-    if (MRDOX_CLANG)
-        target_compile_options(mrdox-test PRIVATE -Wno-covered-switch-default)
+    target_link_libraries(mrdocs-test PUBLIC mrdocs-core)
+    if (MRDOCS_CLANG)
+        target_compile_options(mrdocs-test PRIVATE -Wno-covered-switch-default)
     endif ()
-    target_compile_definitions(mrdox-test PRIVATE -DMRDOX_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
+    target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_custom_command(
             # if we run tests, we need the addons in the right place.
-            TARGET mrdox-test
+            TARGET mrdocs-test
             POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy
-                    ${CMAKE_SOURCE_DIR}/share/mrdox/addons
+                    ${CMAKE_SOURCE_DIR}/share/mrdocs/addons
                     ${CMAKE_BINARY_DIR}/addons
             BYPRODUCTS ${CMAKE_BINARY_DIR}/addons
-            DEPENDS ${CMAKE_SOURCE_DIR}/share/mrdox/addons
+            DEPENDS ${CMAKE_SOURCE_DIR}/share/mrdocs/addons
     )
-    add_test(NAME mrdox-test COMMAND mrdox-test --action test "${PROJECT_SOURCE_DIR}/test-files/old-tests")
+    add_test(NAME mrdocs-test COMMAND mrdocs-test --action test "${PROJECT_SOURCE_DIR}/test-files/old-tests")
 
     #-------------------------------------------------
     # XML lint
@@ -308,15 +308,15 @@ if (MRDOX_BUILD_TESTS)
 
         add_custom_command(
             COMMAND ${Java_JAVA_EXECUTABLE} -jar ${CMAKE_CURRENT_SOURCE_DIR}/util/trang.jar
-                ${CMAKE_CURRENT_SOURCE_DIR}/mrdox.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng
-            OUTPUT mrdox.rng
-            DEPENDS mrdox.rnc)
-        add_custom_target(mrdox_rng ALL DEPENDS mrdox.rng)
+                ${CMAKE_CURRENT_SOURCE_DIR}/mrdocs.rnc ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng
+            OUTPUT mrdocs.rng
+            DEPENDS mrdocs.rnc)
+        add_custom_target(mrdocs_rng ALL DEPENDS mrdocs.rng)
 
         file(GLOB_RECURSE XML_SOURCES CONFIGURE_DEPENDS test-files/*.xml)
         add_test(NAME xml-lint
                  COMMAND ${LIBXML2_XMLLINT_EXECUTABLE} --dropdtd --noout
-                     --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdox.rng ${XML_SOURCES}
+                     --relaxng ${CMAKE_CURRENT_BINARY_DIR}/mrdocs.rng ${XML_SOURCES}
                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     endif()
 endif()
@@ -327,27 +327,27 @@ endif()
 #
 #-------------------------------------------------
 
-if (MRDOX_BUILD_DOCS)
+if (MRDOCS_BUILD_DOCS)
     #-------------------------------------------------
     # Reference
     #-------------------------------------------------
-    if (MRDOX_GENERATE_REFERENCE)
-        include(share/cmake/MrDox.cmake)
-        set(MRDOX_REFERENCE_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs/reference)
+    if (MRDOCS_GENERATE_REFERENCE)
+        include(share/cmake/MrDocs.cmake)
+        set(MRDOCS_REFERENCE_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs/reference)
         file(GLOB_RECURSE REFERENCE_SOURCES CONFIGURE_DEPENDS include/*.hpp)
         set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-        add_mrdox(generate_reference
-                CONFIG docs/mrdox.yml
+        add_mrdocs(generate_reference
+                CONFIG docs/mrdocs.yml
                 FORMAT adoc
-                COMMENT "Generate MrDox reference"
-                OUTPUT ${MRDOX_REFERENCE_OUTPUT_DIR}
+                COMMENT "Generate MrDocs reference"
+                OUTPUT ${MRDOCS_REFERENCE_OUTPUT_DIR}
                 ${REFERENCE_SOURCES})
-        if (MRDOX_GENERATE_ANTORA_REFERENCE)
-            set(MRDOX_ANTORA_REFERENCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/modules/ROOT/pages/reference)
+        if (MRDOCS_GENERATE_ANTORA_REFERENCE)
+            set(MRDOCS_ANTORA_REFERENCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs/modules/ROOT/pages/reference)
             add_custom_target(generate_antora_reference
-                    COMMAND ${CMAKE_COMMAND} -E copy_directory ${MRDOX_REFERENCE_OUTPUT_DIR} ${MRDOX_ANTORA_REFERENCE_DIR}
+                    COMMAND ${CMAKE_COMMAND} -E copy_directory ${MRDOCS_REFERENCE_OUTPUT_DIR} ${MRDOCS_ANTORA_REFERENCE_DIR}
                     DEPENDS generate_reference
-                    COMMENT "Copy MrDox reference to Antora")
+                    COMMENT "Copy MrDocs reference to Antora")
         endif()
     endif()
 
@@ -363,7 +363,7 @@ if (MRDOX_BUILD_DOCS)
 
         set(DOCS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs)
         set(DOCS_BUILD_DIR ${DOCS_SOURCE_DIR}/build/site)
-        set(DOCS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/doc/mrdox/html)
+        set(DOCS_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/doc/mrdocs/html)
 
         # Add custom target for generating documentation
         add_custom_target(generate_docs
@@ -373,10 +373,10 @@ if (MRDOX_BUILD_DOCS)
                 COMMAND ${CMAKE_COMMAND} -E echo "Run Antora"
                 COMMAND ${NPX_EXECUTABLE} antora local-antora-playbook.yml
                 WORKING_DIRECTORY ${DOCS_SOURCE_DIR}
-                COMMENT "Generating MrDox documentation"
+                COMMENT "Generating MrDocs documentation"
                 USES_TERMINAL
                 )
-        if (MRDOX_GENERATE_REFERENCE AND MRDOX_GENERATE_ANTORA_REFERENCE)
+        if (MRDOCS_GENERATE_REFERENCE AND MRDOCS_GENERATE_ANTORA_REFERENCE)
             add_dependencies(generate_docs generate_antora_reference)
         endif()
     elseif (NOT NPM_EXECUTABLE AND NPX_EXECUTABLE)
@@ -394,37 +394,37 @@ endif ()
 #
 #-------------------------------------------------
 
-if (MRDOX_INSTALL)
+if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # bin
     #-------------------------------------------------
-    install(TARGETS mrdox
-            EXPORT mrdox-targets
+    install(TARGETS mrdocs
+            EXPORT mrdocs-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
             )
-    set(MRDOX_EXECUTABLE $<TARGET_FILE:mrdox>)
+    set(MRDOCS_EXECUTABLE $<TARGET_FILE:mrdocs>)
 
     #-------------------------------------------------
     # lib
     #-------------------------------------------------
-    install(TARGETS mrdox-core duktape
-            EXPORT mrdox-targets
+    install(TARGETS mrdocs-core duktape
+            EXPORT mrdocs-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
             COMPONENT development
             )
 
-    install(EXPORT mrdox-targets
-            FILE mrdox-targets.cmake
-            NAMESPACE mrdox::
-            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
+    install(EXPORT mrdocs-targets
+            FILE mrdocs-targets.cmake
+            NAMESPACE mrdocs::
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdocs)
 
     #-------------------------------------------------
     # include
     #-------------------------------------------------
-    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdox
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdocs
             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             COMPONENT development
             FILES_MATCHING
@@ -452,7 +452,7 @@ if (MRDOX_INSTALL)
     #-------------------------------------------------
     # doc
     #-------------------------------------------------
-    if (MRDOX_BUILD_DOCS AND NPM_EXECUTABLE AND NPX_EXECUTABLE)
+    if (MRDOCS_BUILD_DOCS AND NPM_EXECUTABLE AND NPX_EXECUTABLE)
         if (EXISTS ${DOCS_BUILD_DIR})
             install(DIRECTORY ${DOCS_BUILD_DIR}
                     DESTINATION ${CMAKE_INSTALL_DOCDIR}
@@ -464,31 +464,31 @@ if (MRDOX_INSTALL)
     #-------------------------------------------------
     # lib/cmake
     #-------------------------------------------------
-    set(CONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
+    set(CONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/mrdocs)
 
-    # mrdox-config-version.cmake
+    # mrdocs-config-version.cmake
     if (CMAKE_PROJECT_VERSION VERSION_LESS 1.0.0)
         set(compatibility_mode SameMajorVersion)
     else ()
         set(compatibility_mode SameMinorVersion)
     endif ()
     write_basic_package_version_file(
-            mrdox-config-version.cmake
+            mrdocs-config-version.cmake
             VERSION ${PACKAGE_VERSION}
             COMPATIBILITY ${compatibility_mode})
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mrdox-config-version.cmake
-            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mrdocs-config-version.cmake
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdocs)
 
-    # mrdox-config.cmake
+    # mrdocs-config.cmake
     set(INCLUDE_INSTALL_DIR include/)
     set(LIB_INSTALL_DIR lib/)
     configure_package_config_file(
-            ${CMAKE_CURRENT_SOURCE_DIR}/mrdox-config.cmake.in # input file
-            ${CMAKE_CURRENT_BINARY_DIR}/mrdox-config.cmake    # output file
-            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox
+            ${CMAKE_CURRENT_SOURCE_DIR}/mrdocs-config.cmake.in # input file
+            ${CMAKE_CURRENT_BINARY_DIR}/mrdocs-config.cmake    # output file
+            INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdocs
             PATH_VARS CMAKE_INSTALL_LIBDIR INCLUDE_INSTALL_DIR LIB_INSTALL_DIR)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mrdox-config.cmake
-            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdox)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/mrdocs-config.cmake
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mrdocs)
 endif ()
 
 #-------------------------------------------------
@@ -496,9 +496,9 @@ endif ()
 # Packages
 #
 #-------------------------------------------------
-if (MRDOX_INSTALL AND MRDOX_PACKAGE)
+if (MRDOCS_INSTALL AND MRDOCS_PACKAGE)
     # Project description
-    set(CPACK_PACKAGE_VENDOR "mrdox")
+    set(CPACK_PACKAGE_VENDOR "mrdocs")
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY ${PROJECT_DESCRIPTION})
     set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
     set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})

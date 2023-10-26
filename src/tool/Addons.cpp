@@ -5,17 +5,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "Addons.hpp"
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Process.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 Error
 setupAddonsDir(
@@ -56,9 +56,9 @@ setupAddonsDir(
         }
         else
         {
-            auto addonsEnvVar = Process::GetEnv("MRDOX_ADDONS_DIR");
+            auto addonsEnvVar = Process::GetEnv("MRDOCS_ADDONS_DIR");
             if(! addonsEnvVar.has_value())
-                return Error("no MRDOX_ADDONS_DIR in environment");
+                return Error("no MRDOCS_ADDONS_DIR in environment");
 
             // from environment variable
             addonsDir = files::makeDirsy(files::normalizePath(*addonsEnvVar));
@@ -72,5 +72,5 @@ setupAddonsDir(
     return Error::success();
 }
 
-} // mrdox
+} // mrdocs
 } // clang

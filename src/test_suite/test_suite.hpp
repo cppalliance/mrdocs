@@ -7,8 +7,8 @@
 // Official repository: https://github.com/boostorg/url
 //
 
-#ifndef MRDOX_TEST_HPP
-#define MRDOX_TEST_HPP
+#ifndef MRDOCS_TEST_HPP
+#define MRDOCS_TEST_HPP
 
 #if defined(_MSC_VER)
 # pragma once

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
   <namespace name="to_be_documented" id="KKIBgglO5FoCXXJ/IxKq1Q+hmo0=">
     <function name="documented_function" id="mjlSLZ6MNKOb3ya3pLpjPlr11sk=">
@@ -10,4 +10,4 @@
   <namespace name="blacklisted" id="a+zPDnJeAEq0kDltrGFKVgmAkKg=">
   </namespace>
 </namespace>
-</mrdox>
+</mrdocs>

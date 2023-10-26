@@ -7,7 +7,7 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "CXXTags.hpp"
@@ -16,7 +16,7 @@
 #include "lib/Support/Yaml.hpp"
 #include "lib/Support/Radix.hpp"
 #include "lib/Support/SafeNames.hpp"
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
@@ -27,7 +27,7 @@
 //------------------------------------------------
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace xml {
 
 struct XMLWriter::XmlKey
@@ -55,15 +55,15 @@ struct XMLWriter::GenKey
 };
 
 } // xml
-} // mrdox
+} // mrdocs
 } // clang
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::xml::XMLWriter::XmlKey>
+    clang::mrdocs::xml::XMLWriter::XmlKey>
 {
     static void mapping(IO& io,
-        clang::mrdox::xml::XMLWriter::XmlKey& opt_)
+        clang::mrdocs::xml::XMLWriter::XmlKey& opt_)
     {
         auto& opt= opt_.opt;
         io.mapOptional("index",  opt.index);
@@ -74,12 +74,12 @@ struct llvm::yaml::MappingTraits<
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::xml::XMLWriter::GenKey>
+    clang::mrdocs::xml::XMLWriter::GenKey>
 {
     static void mapping(IO& io,
-        clang::mrdox::xml::XMLWriter::GenKey& opt)
+        clang::mrdocs::xml::XMLWriter::GenKey& opt)
     {
-        clang::mrdox::xml::XMLWriter::XmlKey k(opt.opt);
+        clang::mrdocs::xml::XMLWriter::XmlKey k(opt.opt);
 
         io.mapOptional("xml",  k);
     }
@@ -87,18 +87,18 @@ struct llvm::yaml::MappingTraits<
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::xml::XMLWriter::Options>
+    clang::mrdocs::xml::XMLWriter::Options>
 {
     static void mapping(IO& io,
-        clang::mrdox::xml::XMLWriter::Options& opt)
+        clang::mrdocs::xml::XMLWriter::Options& opt)
     {
-        clang::mrdox::xml::XMLWriter::GenKey k(opt);
+        clang::mrdocs::xml::XMLWriter::GenKey k(opt);
         io.mapOptional("generator",  k);
     }
 };
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace xml {
 
 //------------------------------------------------
@@ -145,8 +145,8 @@ build()
     if(options_.prolog)
         os_ <<
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" <<
-            "<mrdox xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
-            "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc\">\n";
+            "<mrdocs xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
+            "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc\">\n";
 
     if(options_.index || options_.safe_names)
         writeIndex();
@@ -154,7 +154,7 @@ build()
     visit(corpus_.globalNamespace(), *this);
 
     if(options_.prolog)
-        os_ << "</mrdox>\n";
+        os_ << "</mrdocs>\n";
 
     return {};
 }
@@ -595,7 +595,7 @@ writeNode(
         break;
     default:
         // unknown kind
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -693,7 +693,7 @@ writeAdmonition(
         break;
     default:
         // unknown style
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
     writeParagraph(admonition, tag);
 }
@@ -746,7 +746,7 @@ writeJParam(
         direction = "inout";
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
     tags_.open("param", {
         { "name", param.name, ! param.name.empty() },
@@ -768,5 +768,5 @@ writeTParam(
 }
 
 } // xml
-} // mrdox
+} // mrdocs
 } // clang

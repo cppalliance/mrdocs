@@ -5,17 +5,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_TEST_TESTARGS_HPP
-#define MRDOX_TEST_TESTARGS_HPP
+#ifndef MRDOCS_TEST_TESTARGS_HPP
+#define MRDOCS_TEST_TESTARGS_HPP
 
 #include <llvm/Support/CommandLine.h>
 #include <string>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 enum Action : int
 {
@@ -58,7 +58,7 @@ public:
 */
 constexpr static TestArgs& testArgs = TestArgs::instance_;
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

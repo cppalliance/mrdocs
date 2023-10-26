@@ -6,16 +6,16 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "Reduce.hpp"
-#include <mrdox/Metadata.hpp>
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Metadata.hpp>
+#include <mrdocs/Platform.hpp>
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace {
 
@@ -74,7 +74,7 @@ static void merge(Javadoc& I, Javadoc&& other)
 
 void mergeInfo(Info& I, Info&& Other)
 {
-    MRDOX_ASSERT(canMerge(I, Other));
+    MRDOCS_ASSERT(canMerge(I, Other));
     if(I.id == SymbolID::zero)
         I.id = Other.id;
     if(I.Name == "")
@@ -162,7 +162,7 @@ reduceSpecializedMembers(
 
 void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 {
-    MRDOX_ASSERT(canMerge(I, Other));
+    MRDOCS_ASSERT(canMerge(I, Other));
     I.specs.raw.value |= Other.specs.raw.value;
     reduceSymbolIDs(I.Members, std::move(Other.Members));
     reduceSymbolIDs(I.Specializations, std::move(Other.Specializations));
@@ -171,7 +171,7 @@ void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 
 void merge(RecordInfo& I, RecordInfo&& Other)
 {
-    MRDOX_ASSERT(canMerge(I, Other));
+    MRDOCS_ASSERT(canMerge(I, Other));
     if(Other.KeyKind != RecordKeyKind::Struct &&
         I.KeyKind != Other.KeyKind)
         I.KeyKind = Other.KeyKind;
@@ -194,7 +194,7 @@ void merge(RecordInfo& I, RecordInfo&& Other)
 
 void merge(FunctionInfo& I, FunctionInfo&& Other)
 {
-    MRDOX_ASSERT(canMerge(I, Other));
+    MRDOCS_ASSERT(canMerge(I, Other));
     if(I.Class == FunctionClass::Normal)
         I.Class = Other.Class;
     if (! I.ReturnType)
@@ -211,7 +211,7 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
 
 void merge(TypedefInfo& I, TypedefInfo&& Other)
 {
-    MRDOX_ASSERT(canMerge(I, Other));
+    MRDOCS_ASSERT(canMerge(I, Other));
     if (!I.IsUsing)
         I.IsUsing = Other.IsUsing;
     if (! I.Type)
@@ -224,7 +224,7 @@ void merge(TypedefInfo& I, TypedefInfo&& Other)
 
 void merge(EnumInfo& I, EnumInfo&& Other)
 {
-    MRDOX_ASSERT(canMerge(I, Other));
+    MRDOCS_ASSERT(canMerge(I, Other));
     if(! I.Scoped)
         I.Scoped = Other.Scoped;
     if (I.Members.empty())
@@ -235,7 +235,7 @@ void merge(EnumInfo& I, EnumInfo&& Other)
 
 void merge(FieldInfo& I, FieldInfo&& Other)
 {
-    MRDOX_ASSERT(canMerge(I, Other));
+    MRDOCS_ASSERT(canMerge(I, Other));
     if(! I.Type)
         I.Type = std::move(Other.Type);
     mergeSourceInfo(I, std::move(Other));
@@ -252,7 +252,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
 
 void merge(VariableInfo& I, VariableInfo&& Other)
 {
-    MRDOX_ASSERT(canMerge(I, Other));
+    MRDOCS_ASSERT(canMerge(I, Other));
     if(! I.Type)
         I.Type = std::move(Other.Type);
     if(! I.Template)
@@ -264,7 +264,7 @@ void merge(VariableInfo& I, VariableInfo&& Other)
 
 void merge(SpecializationInfo& I, SpecializationInfo&& Other)
 {
-    MRDOX_ASSERT(canMerge(I, Other));
+    MRDOCS_ASSERT(canMerge(I, Other));
     if(I.Primary == SymbolID::zero)
         I.Primary = Other.Primary;
     if(I.Args.empty())
@@ -277,5 +277,5 @@ void merge(SpecializationInfo& I, SpecializationInfo&& Other)
 }
 
 
-} // mrdox
+} // mrdocs
 } // clang

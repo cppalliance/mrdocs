@@ -7,15 +7,15 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Metadata/Function.hpp>
-#include <mrdox/Support/TypeTraits.hpp>
+#include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Support/TypeTraits.hpp>
 #include <utility>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace {
 
@@ -95,7 +95,7 @@ getOperatorName(
     OperatorKind kind,
     bool include_keyword) noexcept
 {
-    MRDOX_ASSERT(Table[to_underlying(kind)].kind == kind);
+    MRDOCS_ASSERT(Table[to_underlying(kind)].kind == kind);
     std::string_view full =
         Table[to_underlying(kind)].name;
     if(include_keyword || kind == OperatorKind::None)
@@ -112,7 +112,7 @@ std::string_view
 getShortOperatorName(
     OperatorKind kind) noexcept
 {
-    MRDOX_ASSERT(Table[to_underlying(kind)].kind == kind);
+    MRDOCS_ASSERT(Table[to_underlying(kind)].kind == kind);
     return Table[to_underlying(kind)].short_name;
 }
 
@@ -121,7 +121,7 @@ getSafeOperatorName(
     OperatorKind kind,
     bool include_keyword) noexcept
 {
-    MRDOX_ASSERT(Table[to_underlying(kind)].kind == kind);
+    MRDOCS_ASSERT(Table[to_underlying(kind)].kind == kind);
     std::string_view full = Table[to_underlying(kind)].safe_name;
     if(include_keyword || kind == OperatorKind::None)
         return full;
@@ -146,10 +146,10 @@ toString(
     case FunctionClass::Destructor:
         return "destructor";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang
 

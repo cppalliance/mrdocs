@@ -5,14 +5,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "GeneratorsImpl.hpp"
 #include <llvm/ADT/STLExtras.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 extern
 std::unique_ptr<Generator>
@@ -91,5 +91,5 @@ getGenerators() noexcept
     return getGeneratorsImpl();
 }
 
-} // mrdox
+} // mrdocs
 } // clang

@@ -5,11 +5,11 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Support/Assert.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Support/Assert.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <fmt/format.h>
 #include <llvm/Support/raw_ostream.h>
 
@@ -18,7 +18,7 @@ extern char const* getFileName(char const*) noexcept;
 } // SourceFileNames
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 void
 assert_failed(
@@ -31,5 +31,5 @@ assert_failed(
         msg, line, ::SourceFileNames::getFileName(file));
 }
 
-} // mrdox
+} // mrdocs
 } // clang

@@ -5,13 +5,13 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Error.hpp"
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Path.hpp>
-#include <mrdox/Support/JavaScript.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/JavaScript.hpp>
 #include <llvm/Support/MemoryBuffer.h>
 #include <duktape.h>
 #include <utility>
@@ -19,7 +19,7 @@
 #include <llvm/Support/raw_ostream.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace js {
 
 /*  Proxy Traps
@@ -150,7 +150,7 @@ std::string_view
 dukM_get_string(
     Access& A, duk_idx_t idx)
 {
-    MRDOX_ASSERT(duk_get_type(A, idx) == DUK_TYPE_STRING);
+    MRDOCS_ASSERT(duk_get_type(A, idx) == DUK_TYPE_STRING);
     duk_size_t size;
     char const* const data =
         duk_get_lstring(A, idx, &size);
@@ -182,7 +182,7 @@ dukM_get_prop_string(
     std::string_view name, Scope& scope)
 {
     Access A(scope);
-    MRDOX_ASSERT(duk_get_type(A, -1) == DUK_TYPE_OBJECT);
+    MRDOCS_ASSERT(duk_get_type(A, -1) == DUK_TYPE_OBJECT);
     if(! duk_get_prop_lstring(A, -1, name.data(), name.size()))
         formatError("missing property {}", name).Throw();
     char const* s;
@@ -190,7 +190,7 @@ dukM_get_prop_string(
         duk_to_string(A, -1);
     duk_size_t len;
     s = duk_get_lstring(A, -1, &len);
-    MRDOX_ASSERT(s);
+    MRDOCS_ASSERT(s);
     std::string result = std::string(s, len);
     duk_pop(A);
     return result;
@@ -233,7 +233,7 @@ Scope(
 Scope::
 ~Scope()
 {
-    MRDOX_ASSERT(refs_ == 0);
+    MRDOCS_ASSERT(refs_ == 0);
     reset();
 }
 
@@ -393,7 +393,7 @@ get(Access& A, duk_idx_t idx)
     case DUK_TYPE_UNDEFINED:
         return nullptr;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
     duk_pop(A);
     return static_cast<dom::Array*>(data);
@@ -490,7 +490,7 @@ push(
             break;
         }
         default:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
         return 1;
     }, 2);
@@ -564,7 +564,7 @@ get(Access& A, duk_idx_t idx)
     case DUK_TYPE_UNDEFINED:
         return nullptr;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
     duk_pop(A);
     return static_cast<dom::Object*>(data);
@@ -772,7 +772,7 @@ public:
         : scope_(scope)
         , idx_(idx)
     {
-        MRDOX_ASSERT(duk_is_object(Access(scope_), idx_));
+        MRDOCS_ASSERT(duk_is_object(Access(scope_), idx_));
     }
 
     char const* type_key() const noexcept override
@@ -809,7 +809,7 @@ public:
         : scope_(scope)
         , idx_(idx)
     {
-        MRDOX_ASSERT(duk_is_array(Access(scope_), idx_));
+        MRDOCS_ASSERT(duk_is_array(Access(scope_), idx_));
     }
 
     char const* type_key() const noexcept override
@@ -842,7 +842,7 @@ public:
         : scope_(scope)
         , idx_(idx)
     {
-        MRDOX_ASSERT(duk_is_function(Access(scope_), idx_));
+        MRDOCS_ASSERT(duk_is_function(Access(scope_), idx_));
     }
 
     char const* type_key() const noexcept override
@@ -931,7 +931,7 @@ domValue_push(
         ObjectRep::push(A, value.getObject());
         return;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -940,7 +940,7 @@ JSObjectImpl::
 get(std::string_view key) const
 {
     Access A(scope_);
-    MRDOX_ASSERT(duk_is_object(A, idx_));
+    MRDOCS_ASSERT(duk_is_object(A, idx_));
     // Put value on top of the stack
     duk_get_prop_lstring(A, idx_, key.data(), key.size());
     // Convert to dom::Value
@@ -953,7 +953,7 @@ JSObjectImpl::
 set(dom::String key, dom::Value value)
 {
     Access A(scope_);
-    MRDOX_ASSERT(duk_is_object(A, idx_));
+    MRDOCS_ASSERT(duk_is_object(A, idx_));
     dukM_push_string(A, key);
     domValue_push(A, value);
     duk_put_prop(A, idx_);
@@ -965,7 +965,7 @@ JSObjectImpl::
 visit(std::function<bool(dom::String, dom::Value)> visitor) const
 {
     Access A(scope_);
-    MRDOX_ASSERT(duk_is_object(A, idx_));
+    MRDOCS_ASSERT(duk_is_object(A, idx_));
 
     // Enumerate only the object's own properties
     // The enumerator is pushed on top of the stack
@@ -995,7 +995,7 @@ JSObjectImpl::
 size() const
 {
     Access const& A = Access(scope_);
-    MRDOX_ASSERT(duk_is_object(A, idx_));
+    MRDOCS_ASSERT(duk_is_object(A, idx_));
     int numProperties = 0;
 
     // Create an enumerator for the object
@@ -1022,7 +1022,7 @@ JSObjectImpl::
 exists(std::string_view key) const
 {
     Access A(scope_);
-    MRDOX_ASSERT(duk_is_object(A, idx_));
+    MRDOCS_ASSERT(duk_is_object(A, idx_));
     return duk_has_prop_lstring(A, idx_, key.data(), key.size());
 }
 
@@ -1032,7 +1032,7 @@ JSArrayImpl::
 get(size_type i) const
 {
     Access A(scope_);
-    MRDOX_ASSERT(duk_is_array(A, idx_));
+    MRDOCS_ASSERT(duk_is_array(A, idx_));
     // Push result to top of the stack
     duk_get_prop_index(A, idx_, i);
     // Convert to dom::Value
@@ -1044,7 +1044,7 @@ JSArrayImpl::
 set(size_type idx, dom::Value value)
 {
     Access A(scope_);
-    MRDOX_ASSERT(duk_is_array(A, idx_));
+    MRDOCS_ASSERT(duk_is_array(A, idx_));
     // Push value to top of the stack
     domValue_push(A, value);
     // Push to array
@@ -1056,7 +1056,7 @@ JSArrayImpl::
 emplace_back(dom::Value value)
 {
     Access A(scope_);
-    MRDOX_ASSERT(duk_is_array(A, idx_));
+    MRDOCS_ASSERT(duk_is_array(A, idx_));
     // Push value to top of the stack
     domValue_push(A, value);
     // Push to array
@@ -1068,7 +1068,7 @@ JSArrayImpl::
 size() const
 {
     Access A(scope_);
-    MRDOX_ASSERT(duk_is_array(A, idx_));
+    MRDOCS_ASSERT(duk_is_array(A, idx_));
     return duk_get_length(A, idx_);
 }
 
@@ -1077,7 +1077,7 @@ JSFunctionImpl::
 call(dom::Array const& args) const
 {
     Access A(scope_);
-    MRDOX_ASSERT(duk_is_function(A, idx_));
+    MRDOCS_ASSERT(duk_is_function(A, idx_));
     duk_dup(A, idx_);
     for (auto const& arg : args)
     {
@@ -1193,7 +1193,7 @@ type() const noexcept
     case DUK_TYPE_NONE:
     default:
         // unknown type
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -1246,7 +1246,7 @@ std::string_view
 Value::
 getString() const
 {
-    MRDOX_ASSERT(isString());
+    MRDOCS_ASSERT(isString());
     Access A(*scope_);
     return dukM_get_string(A, idx_);
 }
@@ -1255,7 +1255,7 @@ bool
 Value::
 getBool() const noexcept
 {
-    MRDOX_ASSERT(isBoolean());
+    MRDOCS_ASSERT(isBoolean());
     Access A(*scope_);
     return duk_get_boolean(A, idx_) != 0;
 }
@@ -1264,7 +1264,7 @@ std::int64_t
 Value::
 getInteger() const noexcept
 {
-    MRDOX_ASSERT(isNumber());
+    MRDOCS_ASSERT(isNumber());
     Access A(*scope_);
     return duk_get_int(A, idx_);
 }
@@ -1273,7 +1273,7 @@ double
 Value::
 getDouble() const noexcept
 {
-    MRDOX_ASSERT(isNumber());
+    MRDOCS_ASSERT(isNumber());
     Access A(*scope_);
     return duk_get_number(A, idx_);
 }
@@ -1282,7 +1282,7 @@ dom::Object
 Value::
 getObject() const noexcept
 {
-    MRDOX_ASSERT(isObject());
+    MRDOCS_ASSERT(isObject());
     return dom::newObject<JSObjectImpl>(*scope_, idx_);
 }
 
@@ -1290,7 +1290,7 @@ dom::Array
 Value::
 getArray() const noexcept
 {
-    MRDOX_ASSERT(isArray());
+    MRDOCS_ASSERT(isArray());
     return dom::newArray<JSArrayImpl>(*scope_, idx_);
 }
 
@@ -1298,7 +1298,7 @@ dom::Function
 Value::
 getFunction() const noexcept
 {
-    MRDOX_ASSERT(isFunction());
+    MRDOCS_ASSERT(isFunction());
     return dom::newFunction<JSFunctionImpl>(*scope_, idx_);
 }
 
@@ -1499,7 +1499,7 @@ empty() const
     case function:
         return false;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -1525,7 +1525,7 @@ size() const
     case function:
         return 1;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -1629,5 +1629,5 @@ operator&&(Value const& lhs, Value const& rhs)
 
 
 } // js
-} // mrdox
+} // mrdocs
 } // clang

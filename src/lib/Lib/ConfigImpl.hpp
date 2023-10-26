@@ -6,23 +6,23 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_CONFIGIMPL_HPP
-#define MRDOX_LIB_CONFIGIMPL_HPP
+#ifndef MRDOCS_LIB_CONFIGIMPL_HPP
+#define MRDOCS_LIB_CONFIGIMPL_HPP
 
 #include "lib/Lib/Filters.hpp"
 #include "lib/Support/YamlFwd.hpp"
-#include <mrdox/Config.hpp>
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/ThreadPool.hpp>
+#include <mrdocs/Config.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/ThreadPool.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/ThreadPool.h>
 #include <memory>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 class ConfigImpl
     : public Config
@@ -311,7 +311,7 @@ createConfig(
 
     @param threadPool The thread pool to use.
 */
-MRDOX_DECL
+MRDOCS_DECL
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
     std::string_view filePath,
@@ -320,7 +320,7 @@ loadConfigFile(
     std::shared_ptr<ConfigImpl const> baseConfig,
     ThreadPool& threadPool);
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

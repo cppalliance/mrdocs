@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
   <function name="f" id="ackjGh57CJQLwtO8PihiSPPKIBY=">
     <file path="param-direction.cpp" line="4" class="def"/>
@@ -156,4 +156,4 @@
     </doc>
   </function>
 </namespace>
-</mrdox>
+</mrdocs>

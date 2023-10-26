@@ -6,19 +6,19 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "Options.hpp"
 #include "lib/Support/Yaml.hpp"
 #include "lib/Lib/ConfigImpl.hpp" // VFALCO This is a problem
-#include <mrdox/Corpus.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Corpus.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace html {
 
 struct YamlKey
@@ -46,15 +46,15 @@ struct YamlGenKey
 };
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::html::YamlKey>
+    clang::mrdocs::html::YamlKey>
 {
     static void mapping(IO& io,
-        clang::mrdox::html::YamlKey& yk)
+        clang::mrdocs::html::YamlKey& yk)
     {
         auto& opt= yk.opt;
         io.mapOptional("safe-names",  opt.safe_names);
@@ -64,24 +64,24 @@ struct llvm::yaml::MappingTraits<
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::html::YamlGenKey>
+    clang::mrdocs::html::YamlGenKey>
 {
     static void mapping(IO& io,
-        clang::mrdox::html::YamlGenKey& ygk)
+        clang::mrdocs::html::YamlGenKey& ygk)
     {
-        clang::mrdox::html::YamlKey yk(ygk.opt);
+        clang::mrdocs::html::YamlKey yk(ygk.opt);
         io.mapOptional("html",  yk);
     }
 };
 
 template<>
 struct llvm::yaml::MappingTraits<
-    clang::mrdox::html::Options>
+    clang::mrdocs::html::Options>
 {
     static void mapping(IO& io,
-        clang::mrdox::html::Options& opt)
+        clang::mrdocs::html::Options& opt)
     {
-        clang::mrdox::html::YamlGenKey ygk(opt);
+        clang::mrdocs::html::YamlGenKey ygk(opt);
         io.mapOptional("generator", ygk);
     }
 };
@@ -89,7 +89,7 @@ struct llvm::yaml::MappingTraits<
 //------------------------------------------------
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace html {
 
 Expected<Options>
@@ -153,5 +153,5 @@ loadOptions(
 }
 
 } // html
-} // mrdox
+} // mrdocs
 } // clang

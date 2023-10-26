@@ -5,18 +5,18 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Corpus.hpp>
-#include <mrdox/Metadata/Function.hpp>
-#include <mrdox/Metadata/Namespace.hpp>
-#include <mrdox/Metadata/Overloads.hpp>
+#include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Metadata/Namespace.hpp>
+#include <mrdocs/Metadata/Overloads.hpp>
 #include <llvm/ADT/STLExtras.h>
 #include <llvm/ADT/StringRef.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 NamespaceOverloads::
 NamespaceOverloads(
@@ -70,5 +70,5 @@ makeNamespaceOverloads(
     return NamespaceOverloads(I, std::move(data));
 }
 
-} // mrdox
+} // mrdocs
 } // clang

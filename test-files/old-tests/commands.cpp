@@ -3,6 +3,6 @@
 // custom command
 /** brief
 
-    mrdox hello
+    mrdocs hello
 */
 void f1();

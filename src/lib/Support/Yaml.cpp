@@ -6,14 +6,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Error.hpp"
 #include "lib/Support/Yaml.hpp"
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 void
 YamlReporter::
@@ -43,14 +43,14 @@ diag(
         level = report::Level::error;
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 
     report::call_impl(
         level,
         [&](llvm::raw_ostream& os)
         {
-            D.print("mrdox", os, true, true);
+            D.print("mrdocs", os, true, true);
         }, nullptr);
 }
 
@@ -62,5 +62,5 @@ diagFnImpl(
     reinterpret_cast<YamlReporter*>(ctx)->diag(D);
 }
 
-} // mrdox
+} // mrdocs
 } // clang

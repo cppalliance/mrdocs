@@ -6,17 +6,17 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Radix.hpp"
 #include "lib/Support/SafeNames.hpp"
 #include "lib/Support/Validate.hpp"
 #include "lib/Support/Debug.hpp"
-#include <mrdox/Corpus.hpp>
-#include <mrdox/Metadata.hpp>
-#include <mrdox/Platform.hpp>
-#include <mrdox/Support/TypeTraits.hpp>
+#include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/TypeTraits.hpp>
 #include <fmt/format.h>
 #include <algorithm>
 #include <ranges>
@@ -24,7 +24,7 @@
 #include <unordered_map>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 class SafeNames::Impl
 {
@@ -92,12 +92,12 @@ class SafeNames::Impl
                     FI.specs0.overloadedOperator.get(), true);
             }
             std::size_t func_idx = to_underlying(FI.Class);
-            MRDOX_ASSERT(func_idx < std::size(func_reserved));
+            MRDOCS_ASSERT(func_idx < std::size(func_reserved));
             return func_reserved[func_idx];
         }
 
         std::size_t idx = to_underlying(I.Kind);
-        MRDOX_ASSERT(idx < std::size(reserved));
+        MRDOCS_ASSERT(idx < std::size(reserved));
         return reserved[idx];
     }
 
@@ -105,7 +105,7 @@ class SafeNames::Impl
     getUnqualified(
         const Info& I)
     {
-        MRDOX_ASSERT(I.id != SymbolID::zero);
+        MRDOCS_ASSERT(I.id != SymbolID::zero);
         return visit(I, [&]<typename T>(
             const T& t) -> std::string_view
             {
@@ -114,7 +114,7 @@ class SafeNames::Impl
                 {
                     if(t.specs.isAnonymous.get())
                         return getReserved(t);
-                    MRDOX_ASSERT(! t.Name.empty());
+                    MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;
                 }
                 // fields and typedefs cannot be overloaded
@@ -124,7 +124,7 @@ class SafeNames::Impl
                     T::isField() ||
                     T::isTypedef())
                 {
-                    MRDOX_ASSERT(! t.Name.empty());
+                    MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;
                 }
 
@@ -133,7 +133,7 @@ class SafeNames::Impl
                 // cannot be overloaded
                 if constexpr(T::isVariable())
                 {
-                    MRDOX_ASSERT(! t.Name.empty());
+                    MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;
                 }
 
@@ -173,17 +173,17 @@ class SafeNames::Impl
                     if(t.Class != FunctionClass::Normal ||
                         t.specs0.overloadedOperator.get() != OperatorKind::None)
                         return getReserved(t);
-                    MRDOX_ASSERT(! t.Name.empty());
+                    MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;
                 }
 
                 if constexpr(T::isSpecialization())
                 {
-                    MRDOX_ASSERT(! t.Name.empty());
+                    MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;
                 }
 
-                MRDOX_UNREACHABLE();
+                MRDOCS_UNREACHABLE();
             });
     }
 
@@ -310,9 +310,9 @@ public:
         std::string& result,
         const SymbolID& id)
     {
-        MRDOX_ASSERT(corpus_.exists(id));
+        MRDOCS_ASSERT(corpus_.exists(id));
         auto const it = map_.find(id);
-        MRDOX_ASSERT(it != map_.end());
+        MRDOCS_ASSERT(it != map_.end());
         auto& [unqualified, n_disambig, id_str] = it->second;
         result.reserve(
             result.size() +
@@ -336,7 +336,7 @@ public:
         const SymbolID& id,
         char delim)
     {
-        MRDOX_ASSERT(corpus_.exists(id));
+        MRDOCS_ASSERT(corpus_.exists(id));
         auto const& parents = corpus_.get(id).Namespace;
         if(parents.size() > 1)
         {
@@ -384,5 +384,5 @@ getQualified(
     return result;
 }
 
-} // mrdox
+} // mrdocs
 } // clang

@@ -5,17 +5,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "TestArgs.hpp"
 #include "TestRunner.hpp"
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Error.hpp"
-#include <mrdox/Platform.hpp>
-#include <mrdox/Version.hpp>
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Version.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <test_suite/test_suite.hpp>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/raw_ostream.h>
@@ -26,11 +26,11 @@
 int main(int argc, char** argv);
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 void DoTestAction()
 {
-    using namespace clang::mrdox;
+    using namespace clang::mrdocs;
 
     TestRunner runner;
     for(auto const& inputPath : testArgs.inputPaths)
@@ -102,23 +102,23 @@ static void reportUnhandledException(
     sys::PrintStackTrace(llvm::errs());
 }
 
-} // mrdox
+} // mrdocs
 } // clang
 
 int main(int argc, char** argv)
 {
     try
     {
-        return clang::mrdox::test_main(argc, argv);
+        return clang::mrdocs::test_main(argc, argv);
     }
-    catch(clang::mrdox::Exception const& ex)
+    catch(clang::mrdocs::Exception const& ex)
     {
         // thrown Exception should never get here.
-        clang::mrdox::reportUnhandledException(ex);
+        clang::mrdocs::reportUnhandledException(ex);
     }
     catch(std::exception const& ex)
     {
-        clang::mrdox::reportUnhandledException(ex);
+        clang::mrdocs::reportUnhandledException(ex);
     }
     return EXIT_FAILURE;
 }

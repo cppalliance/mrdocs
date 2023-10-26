@@ -5,7 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "TestArgs.hpp"
@@ -14,7 +14,7 @@
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 TestArgs TestArgs::instance_;
 
@@ -25,15 +25,15 @@ TestArgs()
     : commonCat("COMMON")
 
     , usageText(
-R"(MrDox Test Program
+R"(MrDocs Test Program
 )")
 
     , extraHelp(
 R"(
 EXAMPLES:
-    mrdox-test .. ( compile-commands )
-    mrdox-test .. --action ( "test" | "create" | "update" ) ( dir | file )...
-    mrdox-test --action test friend.cpp
+    mrdocs-test .. ( compile-commands )
+    mrdocs-test .. --action ( "test" | "create" | "update" ) ( dir | file )...
+    mrdocs-test --action test friend.cpp
 )")
 
 //
@@ -105,5 +105,5 @@ hideForeignOptions()
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang

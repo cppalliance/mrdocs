@@ -6,13 +6,13 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_RADIX_HPP
-#define MRDOX_LIB_SUPPORT_RADIX_HPP
+#ifndef MRDOCS_LIB_SUPPORT_RADIX_HPP
+#define MRDOCS_LIB_SUPPORT_RADIX_HPP
 
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #include <llvm/ADT/ArrayRef.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
@@ -21,7 +21,7 @@
 #include <string_view>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 std::string
 toBase64(std::string_view str);
@@ -41,7 +41,7 @@ toBase16(
     std::string_view str,
     bool lowercase = false);
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

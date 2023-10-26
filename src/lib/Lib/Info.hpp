@@ -7,19 +7,19 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_TOOL_INFO_HPP
-#define MRDOX_LIB_TOOL_INFO_HPP
+#ifndef MRDOCS_LIB_TOOL_INFO_HPP
+#define MRDOCS_LIB_TOOL_INFO_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Info.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/Info.hpp>
 #include <memory>
 #include <unordered_set>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 struct InfoPtrHasher
 {
@@ -52,7 +52,7 @@ struct InfoPtrEqual
 using InfoSet = std::unordered_set<
     std::unique_ptr<Info>, InfoPtrHasher, InfoPtrEqual>;
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

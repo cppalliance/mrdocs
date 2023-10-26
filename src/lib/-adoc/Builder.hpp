@@ -5,25 +5,25 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_ADOC_BUILDER_HPP
-#define MRDOX_LIB_ADOC_BUILDER_HPP
+#ifndef MRDOCS_LIB_ADOC_BUILDER_HPP
+#define MRDOCS_LIB_ADOC_BUILDER_HPP
 
 #include "Options.hpp"
 #include "AdocCorpus.hpp"
 #include "lib/Support/Radix.hpp"
-#include <mrdox/Metadata/DomMetadata.hpp>
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/JavaScript.hpp>
-#include <mrdox/Support/Handlebars.hpp>
+#include <mrdocs/Metadata/DomMetadata.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/JavaScript.hpp>
+#include <mrdocs/Support/Handlebars.hpp>
 #include <ostream>
 
-#include <mrdox/Dom.hpp>
+#include <mrdocs/Dom.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace adoc {
 
 /** Builds reference output.
@@ -59,7 +59,7 @@ public:
 };
 
 } // adoc
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

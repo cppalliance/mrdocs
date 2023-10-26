@@ -6,20 +6,20 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "AnyBlock.hpp"
 #include "BitcodeReader.hpp"
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Error.hpp"
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Support/Error.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 // Entry point
-mrdox::Expected<std::vector<std::unique_ptr<Info>>>
+mrdocs::Expected<std::vector<std::unique_ptr<Info>>>
 BitcodeReader::
 getInfos()
 {
@@ -60,37 +60,37 @@ getInfos()
         // Top level Info blocks
         case BI_NAMESPACE_BLOCK_ID:
         {
-            MRDOX_TRY(auto I, readInfo<NamespaceBlock>(ID));
+            MRDOCS_TRY(auto I, readInfo<NamespaceBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }
         case BI_RECORD_BLOCK_ID:
         {
-            MRDOX_TRY(auto I, readInfo<RecordBlock>(ID));
+            MRDOCS_TRY(auto I, readInfo<RecordBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }
         case BI_FUNCTION_BLOCK_ID:
         {
-            MRDOX_TRY(auto I, readInfo<FunctionBlock>(ID));
+            MRDOCS_TRY(auto I, readInfo<FunctionBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }
         case BI_TYPEDEF_BLOCK_ID:
         {
-            MRDOX_TRY(auto I, readInfo<TypedefBlock>(ID));
+            MRDOCS_TRY(auto I, readInfo<TypedefBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }
         case BI_ENUM_BLOCK_ID:
         {
-            MRDOX_TRY(auto I, readInfo<EnumBlock>(ID));
+            MRDOCS_TRY(auto I, readInfo<EnumBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }
         case BI_VARIABLE_BLOCK_ID:
         {
-            MRDOX_TRY(auto I, readInfo<VarBlock>(ID));
+            MRDOCS_TRY(auto I, readInfo<VarBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }
@@ -98,14 +98,14 @@ getInfos()
         // they are emitted as top-level blocks anyway
         case BI_FIELD_BLOCK_ID:
         {
-            MRDOX_TRY(auto I, readInfo<FieldBlock>(ID));
+            MRDOCS_TRY(auto I, readInfo<FieldBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }
 
         case BI_SPECIALIZATION_BLOCK_ID:
         {
-            MRDOX_TRY(auto I, readInfo<SpecializationBlock>(ID));
+            MRDOCS_TRY(auto I, readInfo<SpecializationBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }
@@ -161,7 +161,7 @@ readBlockInfoBlock()
 //------------------------------------------------
 
 template<class T>
-mrdox::Expected<std::unique_ptr<Info>>
+mrdocs::Expected<std::unique_ptr<Info>>
 BitcodeReader::
 readInfo(
     unsigned ID)
@@ -278,17 +278,17 @@ skipUntilRecordOrBlock(
             return Cursor::BadBlock;
         case llvm::bitc::FIRST_APPLICATION_ABBREV:
             // Unexpected abbrev id
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
     }
     // Premature stream end
-    MRDOX_UNREACHABLE();
+    MRDOCS_UNREACHABLE();
 }
 
 //------------------------------------------------
 
 // Calls readBlock to read each block in the given bitcode.
-mrdox::Expected<std::vector<std::unique_ptr<Info>>>
+mrdocs::Expected<std::vector<std::unique_ptr<Info>>>
 readBitcode(llvm::StringRef bitcode)
 {
     llvm::BitstreamCursor Stream(bitcode);
@@ -296,5 +296,5 @@ readBitcode(llvm::StringRef bitcode)
     return reader.getInfos();
 }
 
-} // mrdox
+} // mrdocs
 } // clang

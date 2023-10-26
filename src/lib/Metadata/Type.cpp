@@ -5,14 +5,14 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Metadata/Type.hpp>
-#include <mrdox/Metadata/Template.hpp>
+#include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Metadata/Template.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 dom::String
 toString(
@@ -29,7 +29,7 @@ toString(
     case QualifierKind::Const | QualifierKind::Volatile:
         return "const volatile";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -58,7 +58,7 @@ toString(
     case TypeKind::Function:
         return "function";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -190,7 +190,7 @@ operator()(
             write('*');
             break;
         default:
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
         }
 
         if constexpr(requires { t.CVQualifiers; })
@@ -285,5 +285,5 @@ toString(
     return write();
 }
 
-} // mrdox
+} // mrdocs
 } // clang

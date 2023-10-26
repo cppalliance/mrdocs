@@ -7,27 +7,27 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_XML_CXXTAGS_HPP
-#define MRDOX_LIB_XML_CXXTAGS_HPP
+#ifndef MRDOCS_LIB_XML_CXXTAGS_HPP
+#define MRDOCS_LIB_XML_CXXTAGS_HPP
 
 #include "XMLTags.hpp"
-#include <mrdox/Metadata/Function.hpp>
-#include <mrdox/Metadata/Record.hpp>
-#include <mrdox/Metadata/Type.hpp>
-#include <mrdox/Metadata/Variable.hpp>
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Metadata/Record.hpp>
+#include <mrdocs/Metadata/Type.hpp>
+#include <mrdocs/Metadata/Variable.hpp>
+#include <mrdocs/Platform.hpp>
 
 /*
     This file holds the business logic for transforming
     metadata into XML tags. Constants here are reflected
-    in the MRDOX DTD XML schema.
+    in the MRDOCS DTD XML schema.
 */
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace xml {
 
 constexpr auto accessTagName         = "access";
@@ -382,7 +382,7 @@ llvm::StringRef
 getTagName(Info const& I) noexcept;
 
 } // xml
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

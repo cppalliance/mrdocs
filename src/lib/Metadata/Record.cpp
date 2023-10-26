@@ -5,13 +5,13 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Metadata/Record.hpp>
+#include <mrdocs/Metadata/Record.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 dom::String
 toString(
@@ -26,9 +26,9 @@ toString(
     case RecordKeyKind::Union:
         return "union";
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang

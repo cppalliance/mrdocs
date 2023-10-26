@@ -1,7 +1,7 @@
 # npm install
 # npx antora --fetch antora-playbook.yml
 site:
-  title: MrDox
+  title: MrDocs
   url: https://cppalliance.github.io/mrdox/
   start_page: mrdox::index.adoc
   robots: allow

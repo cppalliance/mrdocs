@@ -2,17 +2,17 @@
 
 == Binaries
 
-Binary packages are available from our https://github.com/cppalliance/mrdox/releases[Release Page,window="_blank"]
+Binary packages are available from our https://github.com/cppalliance/mrdocs/releases[Release Page,window="_blank"]
 
 == Source
 
-=== Cloning MrDox
+=== Cloning MrDocs
 
-Clone the MrDox repository with:
+Clone the MrDocs repository with:
 
 [source,bash]
 ----
-git clone https://github.com/cppalliance/mrdox
+git clone https://github.com/cppalliance/mrdocs
 ----
 
 === Requirements
@@ -28,14 +28,14 @@ cd third-party
 [NOTE]
 ====
 These instructions assume all dependencies are installed in the `third-party` directory for simplicity.
-Fell free to install them anywhere you want and adjust the main MrDox configuration command later.
+Fell free to install them anywhere you want and adjust the main MrDocs configuration command later.
 ====
 
 === LLVM
 
-MrDox depends on a specific recent version of LLVM: https://github.com/llvm/llvm-project/tree/731264b0c2af7aa46bd39625202a99e06cfccff9[731264b0]
+MrDocs depends on a specific recent version of LLVM: https://github.com/llvm/llvm-project/tree/731264b0c2af7aa46bd39625202a99e06cfccff9[731264b0]
 
-Because building LLVM may take many hours to complete, we provide pre-built binaries for Windows and Linux: https://mrdox.com/llvm+clang/[LLVM Releases].
+Because building LLVM may take many hours to complete, we provide pre-built binaries for Windows and Linux: https://mrdocs.com/llvm+clang/[LLVM Releases].
 You can download the binaries and uncompress them in the `./third-party/llvm+clang` directory.
 
 Alternatively, if building LLVM from source, you can clone the project from the official repository:
@@ -47,7 +47,7 @@ cd llvm-project
 git checkout 731264b0c2af7aa46bd39625202a99e06cfccff9
 ----
 
-Configure LLVM with the settings required by MrDox:
+Configure LLVM with the settings required by MrDocs:
 
 Windows (from administrator `cmd.exe`, after running `vcvars64.bat`):
 
@@ -63,7 +63,7 @@ Unix variants:
 cmake -S llvm -B build -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_BUILD_TYPE=RelWithDebInfo -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=../llvm+clang/RelWithDebInfo
 ----
 
-As you can see from the step above, we configure a `RelWithDebInfo` version of LLVM for MrDox by default.
+As you can see from the step above, we configure a `RelWithDebInfo` version of LLVM for MrDocs by default.
 This is a release build with debug information.
 Other possible CMake configurations supported by LLVM are `Debug` (including debug information and no optimizations), `Release` (including optimizations and no debug information), and `MinSizeRel` (which optimizes for size).
 
@@ -75,7 +75,7 @@ To create such an installation, set `CMAKE_CONFIGURATION_TYPES` or `CMAKE_BUILD_
 This should give you an optimized build with all debug features and flags, such as an appropriate https://learn.microsoft.com/en-us/cpp/standard-library/iterator-debug-level[`_ITERATOR_DEBUG_LEVEL`] and the `/MDd` flag in MSVC.
 In other platforms, this should give you a release somewhat equivalent to `RelWithDebInfo` optimized for debugging experience. `-Og` offers a reasonable level of optimization while maintaining fast compilation and a good debugging experience.
 
-This custom configuration can be installed in an alternative directory, such as `../llvm+clang/DebWithOpt`, to be used by the MrDox `Debug` builds by developers.
+This custom configuration can be installed in an alternative directory, such as `../llvm+clang/DebWithOpt`, to be used by the MrDocs `Debug` builds by developers.
 ====
 
 Then build and install it:
@@ -96,7 +96,7 @@ cd ../..
 
 ==== Duktape
 
-Duktape is a JavaScript engine that is used by MrDox to parse and evaluate JavaScript code.
+Duktape is a JavaScript engine that is used by MrDocs to parse and evaluate JavaScript code.
 
 The release files can be obtained from the Duktape repository:
 
@@ -107,7 +107,7 @@ tar -xvf "duktape-2.7.0.tar.xz"
 ----
 
 Duktape provides no CMake integration scripts.
-The MrDox configuration script needs direct access to the installed source files for Duktape so that's all you need to do.
+The MrDocs configuration script needs direct access to the installed source files for Duktape so that's all you need to do.
 
 ==== VcPkg dependencies
 
@@ -147,39 +147,39 @@ Unix variants:
 ./vcpkg fmt zlib libxml2[tools]
 ----
 
-Return from `./third-party/vcpkg` to the parent directory of `third-party` (the one containing the `mrdox` directory) to build and install MrDox:
+Return from `./third-party/vcpkg` to the parent directory of `third-party` (the one containing the `mrdocs` directory) to build and install MrDocs:
 
 [source,bash]
 ----
 cd ../..
 ----
 
-=== MrDox
+=== MrDocs
 
-Once the dependencies are available in `third-party`, you can configure MrDox with:
+Once the dependencies are available in `third-party`, you can configure MrDocs with:
 
 Windows:
 
 [source,commandline]
 ----
-cmake -S mrdox -B build -G "Visual Studio 17 2022" -A x64 -D CMAKE_CONFIGURATION_TYPES="RelWithDebInfo" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D LLVM_ROOT="%cd%/third-party/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="%cd%/third-party/duktape-2.7.0" -D CMAKE_TOOLCHAIN_FILE="%cd%/third-party/vcpkg/scripts/buildsystems/vcpkg.cmake"
+cmake -S mrdocs -B build -G "Visual Studio 17 2022" -A x64 -D CMAKE_CONFIGURATION_TYPES="RelWithDebInfo" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D LLVM_ROOT="%cd%/third-party/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="%cd%/third-party/duktape-2.7.0" -D CMAKE_TOOLCHAIN_FILE="%cd%/third-party/vcpkg/scripts/buildsystems/vcpkg.cmake"
 ----
 
 Unix variants:
 
 [source,bash]
 ----
-cmake -S mrdox -B build -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D LLVM_ROOT="$(pwd)/third-party/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="$(pwd)/third-party/duktape-2.7.0" -D CMAKE_TOOLCHAIN_FILE="$(pwd)/third-party/vcpkg/scripts/buildsystems/vcpkg.cmake"
+cmake -S mrdocs -B build -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D LLVM_ROOT="$(pwd)/third-party/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="$(pwd)/third-party/duktape-2.7.0" -D CMAKE_TOOLCHAIN_FILE="$(pwd)/third-party/vcpkg/scripts/buildsystems/vcpkg.cmake"
 ----
 
 [TIP]
 ====
-The MrDox repository also includes a `CMakePresets.json` file that contains the parameters to configure MrDox with CMake.
+The MrDocs repository also includes a `CMakePresets.json` file that contains the parameters to configure MrDocs with CMake.
 
 To specify the installation directories, you can use the `LLVM_ROOT`, `DUKTAPE_SOURCE_ROOT`, `CMAKE_TOOLCHAIN_FILE` environment variables.
 To specify a generator (`-G`) and platform name (`-A`), you can use the `CMAKE_GENERATOR` and `CMAKE_GENERATOR_PLATFORM` environment variables.
 
-Alternatively, you can create a `CMakeUserPresets.json` file in the `mrdox` directory with the specific values you want to override in each configuration.
+Alternatively, you can create a `CMakeUserPresets.json` file in the `mrdocs` directory with the specific values you want to override in each configuration.
 This is typically more convenient than using environment variables when working on an IDE.
 The repository includes a `CMakeUserPresets.json.example` file that can be used as a template.
 ====
@@ -204,12 +204,12 @@ If any custom build of LLVM is being used (such as `DebWithOpt`), the `LLVM_ROOT
 
 == Package layout
 
-The MrDox installation directory follows the "Filesystem Hierarchy Standard" (FHS) layout:
+The MrDocs installation directory follows the "Filesystem Hierarchy Standard" (FHS) layout:
 
-* `bin`: the MrDox executable intended to be used by users or invoked from the command line.
-* `share`: resource files installed by MrDox
-* `doc`: the MrDox documentation
-* `include`: the MrDox headers
-* `lib`: the MrDox library
+* `bin`: the MrDocs executable intended to be used by users or invoked from the command line.
+* `share`: resource files installed by MrDocs
+* `doc`: the MrDocs documentation
+* `include`: the MrDocs headers
+* `lib`: the MrDocs library
 
 The FHS layout provides a directory structure that also serves as a widely accepted convention for organizing files and directories in Unix-like systems, but that can be used in any operating system.

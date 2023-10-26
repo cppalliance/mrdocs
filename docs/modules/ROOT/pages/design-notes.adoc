@@ -13,7 +13,7 @@ full interface for user-defined types.
 == Bitcode
 
 AST traversal is performed in parallel on a per-translation-unit basis.
-To maximize the size of the code base MrDox is capable of processing, `Info`
+To maximize the size of the code base MrDocs is capable of processing, `Info`
 types generated during traversal are serialized to a compressed bitcode representation.
 Once AST traversal is complete for all translation units, the bitcode is deserialized
 back into `Info` types, and then merged to form the corpus. The merging step is necessar

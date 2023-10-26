@@ -5,7 +5,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "ToolArgs.hpp"
@@ -13,7 +13,7 @@
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 ToolArgs ToolArgs::instance_;
 
@@ -33,12 +33,12 @@ ADDONS:
     The location of the addons directory is determined in this order:
 
     1. The --addons command line argument if present, or
-    2. The directory containing the mrdox tool executable, otherwise
-    3. The environment variable MRDOX_ADDONS_DIR if set.
+    2. The directory containing the mrdocs tool executable, otherwise
+    3. The environment variable MRDOCS_ADDONS_DIR if set.
 
 EXAMPLES:
-    mrdox .. ( compile-commands )
-    mrdox --format adoc compile_commands.json
+    mrdocs .. ( compile-commands )
+    mrdocs --format adoc compile_commands.json
 )")
 
 //
@@ -121,5 +121,5 @@ hideForeignOptions()
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang

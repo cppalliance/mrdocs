@@ -7,17 +7,17 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "ExecutionContext.hpp"
 #include "lib/AST/Bitcode.hpp"
 #include "lib/Metadata/Reduce.hpp"
 #include "lib/Metadata/Finalize.hpp"
-#include <mrdox/Metadata.hpp>
+#include <mrdocs/Metadata.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace {
 
@@ -25,7 +25,7 @@ namespace {
 // This assumes that all infos in the vector are of the same type, and will fail
 // if they are different.
 // Dispatch function.
-mrdox::Expected<std::unique_ptr<Info>>
+mrdocs::Expected<std::unique_ptr<Info>>
 mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
 {
     if(Values.empty() || ! Values[0])
@@ -39,7 +39,7 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
 
 void merge(Info& I, Info&& Other)
 {
-    MRDOX_ASSERT(I.Kind == Other.Kind);
+    MRDOCS_ASSERT(I.Kind == Other.Kind);
     visit(I, [&]<typename InfoTy>(InfoTy& II) mutable
         {
             merge(II, static_cast<InfoTy&&>(Other));
@@ -75,7 +75,7 @@ report(
     for(auto& other : info)
     {
         auto it = info_.find(other->id);
-        MRDOX_ASSERT(it != info_.end());
+        MRDOCS_ASSERT(it != info_.end());
         merge(**it, std::move(*other));
     }
 
@@ -90,7 +90,7 @@ reportEnd(report::Level level)
 }
 
 
-mrdox::Expected<InfoSet>
+mrdocs::Expected<InfoSet>
 InfoExecutionContext::
 results()
 {
@@ -130,7 +130,7 @@ reportEnd(report::Level level)
     diags_.reportTotals(level);
 }
 
-mrdox::Expected<InfoSet>
+mrdocs::Expected<InfoSet>
 BitcodeExecutionContext::
 results()
 {
@@ -154,8 +154,8 @@ results()
 
             auto merged = mergeInfos(Infos);
             std::unique_ptr<Info> I = std::move(merged.value());
-            MRDOX_ASSERT(I);
-            MRDOX_ASSERT(Group.first == I->id);
+            MRDOCS_ASSERT(I);
+            MRDOCS_ASSERT(Group.first == I->id);
             std::lock_guard<std::mutex> lock(mutex_);
             result.emplace(std::move(I));
         });
@@ -167,5 +167,5 @@ results()
 }
 
 
-} // mrdox
+} // mrdocs
 } // clang

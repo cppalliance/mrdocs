@@ -7,16 +7,16 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_TOOL_EXECUTIONCONTEXT_HPP
-#define MRDOX_LIB_TOOL_EXECUTIONCONTEXT_HPP
+#ifndef MRDOCS_LIB_TOOL_EXECUTIONCONTEXT_HPP
+#define MRDOCS_LIB_TOOL_EXECUTIONCONTEXT_HPP
 
 #include "ConfigImpl.hpp"
 #include "Diagnostics.hpp"
 #include "Info.hpp"
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <mutex>
 #include <shared_mutex>
@@ -24,7 +24,7 @@
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** A custom execution context for visitation.
 
@@ -56,7 +56,7 @@ public:
     reportEnd(report::Level level) = 0;
 
     virtual
-    mrdox::Expected<InfoSet>
+    mrdocs::Expected<InfoSet>
     results() = 0;
 
     virtual ~ExecutionContext() = default;
@@ -82,7 +82,7 @@ public:
     void
     reportEnd(report::Level level) override;
 
-    mrdox::Expected<InfoSet>
+    mrdocs::Expected<InfoSet>
     results() override;
 };
 
@@ -108,7 +108,7 @@ public:
     void
     reportEnd(report::Level level) override;
 
-    mrdox::Expected<InfoSet>
+    mrdocs::Expected<InfoSet>
     results() override;
 
     auto& getBitcode()
@@ -118,7 +118,7 @@ public:
 };
 
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

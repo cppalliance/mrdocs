@@ -6,22 +6,22 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_AST_BITCODE_HPP
-#define MRDOX_LIB_AST_BITCODE_HPP
+#ifndef MRDOCS_LIB_AST_BITCODE_HPP
+#define MRDOCS_LIB_AST_BITCODE_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Metadata/Info.hpp>
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <memory>
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Return the serialized bitcode for a metadata node.
 */
@@ -30,10 +30,10 @@ writeBitcode(Info const& I);
 
 /** Return an array of Info read from a bitstream.
 */
-mrdox::Expected<std::vector<std::unique_ptr<Info>>>
+mrdocs::Expected<std::vector<std::unique_ptr<Info>>>
 readBitcode(llvm::StringRef bitcode);
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

@@ -6,20 +6,20 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_PATH_HPP
-#define MRDOX_LIB_SUPPORT_PATH_HPP
+#ifndef MRDOCS_LIB_SUPPORT_PATH_HPP
+#define MRDOCS_LIB_SUPPORT_PATH_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Support/Path.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/Path.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** A reasonably sized small string for paths.
 
@@ -41,7 +41,7 @@ convert_to_slash(
     llvm::sys::path::Style style =
         llvm::sys::path::Style::native);
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

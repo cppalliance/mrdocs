@@ -6,13 +6,13 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_DEBUG_HPP
-#define MRDOX_LIB_SUPPORT_DEBUG_HPP
+#ifndef MRDOCS_LIB_SUPPORT_DEBUG_HPP
+#define MRDOCS_LIB_SUPPORT_DEBUG_HPP
 
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #if ! defined(NDEBUG)
 #include <llvm/Support/ErrorHandling.h>
 #endif
@@ -20,50 +20,50 @@
 
 #include <fmt/format.h>
 #include <string>
-#include <mrdox/MetadataFwd.hpp>
+#include <mrdocs/MetadataFwd.hpp>
 
 template<>
-struct fmt::formatter<clang::mrdox::SymbolID>
+struct fmt::formatter<clang::mrdocs::SymbolID>
     : fmt::formatter<std::string>
 {
     fmt::format_context::iterator format(
-        const clang::mrdox::SymbolID& s,
+        const clang::mrdocs::SymbolID& s,
         fmt::format_context& ctx) const;
 };
 
 template<>
-struct fmt::formatter<clang::mrdox::OptionalSymbolID>
-    : fmt::formatter<clang::mrdox::SymbolID>
+struct fmt::formatter<clang::mrdocs::OptionalSymbolID>
+    : fmt::formatter<clang::mrdocs::SymbolID>
 {
     fmt::format_context::iterator format(
-        const clang::mrdox::OptionalSymbolID& s,
+        const clang::mrdocs::OptionalSymbolID& s,
         fmt::format_context& ctx) const;
 };
 
 template<>
-struct fmt::formatter<clang::mrdox::InfoKind>
+struct fmt::formatter<clang::mrdocs::InfoKind>
     : fmt::formatter<std::string>
 {
     fmt::format_context::iterator format(
-        clang::mrdox::InfoKind t,
+        clang::mrdocs::InfoKind t,
         fmt::format_context& ctx) const;
 };
 
 template<>
-struct fmt::formatter<clang::mrdox::AccessKind>
+struct fmt::formatter<clang::mrdocs::AccessKind>
     : fmt::formatter<std::string>
 {
     fmt::format_context::iterator format(
-        clang::mrdox::AccessKind a,
+        clang::mrdocs::AccessKind a,
         fmt::format_context& ctx) const;
 };
 
 template<>
-struct fmt::formatter<clang::mrdox::Info>
+struct fmt::formatter<clang::mrdocs::Info>
     : fmt::formatter<std::string>
 {
     fmt::format_context::iterator format(
-        const clang::mrdox::Info& i,
+        const clang::mrdocs::Info& i,
         fmt::format_context& ctx) const;
 };
 
@@ -71,16 +71,16 @@ struct fmt::formatter<clang::mrdox::Info>
 // and redirection to the Visual Studio output window.
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Enable debug heap checking.
 */
-MRDOX_DECL void debugEnableHeapChecking();
+MRDOCS_DECL void debugEnableHeapChecking();
 
 #define static_error(msg, value) \
     static_assert(!std::is_same_v<decltype(value),decltype(value)>,msg)
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

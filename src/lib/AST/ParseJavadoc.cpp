@@ -6,14 +6,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "ParseJavadoc.hpp"
-#include <mrdox/Metadata/Javadoc.hpp>
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Support/Path.hpp>
-#include <mrdox/Support/String.hpp>
+#include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Path.hpp>
+#include <mrdocs/Support/String.hpp>
 #include <clang/AST/CommentCommandTraits.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/RawCommentList.h>
@@ -89,7 +89,7 @@
 */
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace {
 
@@ -262,7 +262,7 @@ JavadocVisitor::
 visitHTMLStartTagComment(
     HTMLStartTagComment const* C)
 {
-    MRDOX_ASSERT(C->child_begin() == C->child_end());
+    MRDOCS_ASSERT(C->child_begin() == C->child_end());
     auto const tag = C->getTagName();
     if(tag == "a")
     {
@@ -322,7 +322,7 @@ JavadocVisitor::
 visitHTMLEndTagComment(
     HTMLEndTagComment const* C)
 {
-    MRDOX_ASSERT(C->child_begin() == C->child_end());
+    MRDOCS_ASSERT(C->child_begin() == C->child_end());
     --htmlTagNesting_;
 }
 
@@ -336,7 +336,7 @@ visitInlineCommandComment(
         .getCommandInfo(C->getCommandID());
 
     // VFALCO I'd like to know when this happens
-    MRDOX_ASSERT(cmd != nullptr);
+    MRDOCS_ASSERT(cmd != nullptr);
 
     switch(cmd->getID())
     {
@@ -388,7 +388,7 @@ visitInlineCommandComment(
         break;
     default:
         // unknown RenderKind
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 
     // It looks like the clang parser does not
@@ -673,10 +673,10 @@ visitBlockCommandComment(
     case CommandTraits::KCI_copybrief:
     case CommandTraits::KCI_copydetails:
     case CommandTraits::KCI_copydoc:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
 
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
     if(cmd->IsReturnsCommand)
     {
@@ -860,7 +860,7 @@ initCustomCommentCommands(ASTContext& context)
     auto& traits = context.getCommentCommandTraits();
 
     {
-        //auto cmd = traits.registerBlockCommand("mrdox");
+        //auto cmd = traits.registerBlockCommand("mrdocs");
         //auto cmd = traits.registerBlockCommand("par");
 
         //CommentOptions opt;
@@ -896,5 +896,5 @@ parseJavadoc(
     }
 }
 
-} // mrdox
+} // mrdocs
 } // clang

@@ -4,15 +4,15 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_AST_ASTVISITORHELPERS_HPP
-#define MRDOX_LIB_AST_ASTVISITORHELPERS_HPP
+#ifndef MRDOCS_LIB_AST_ASTVISITORHELPERS_HPP
+#define MRDOCS_LIB_AST_ASTVISITORHELPERS_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/Metadata.hpp>
-#include <mrdox/Support/TypeTraits.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Metadata.hpp>
+#include <mrdocs/Support/TypeTraits.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
 #include <clang/AST/DeclFriend.h>
@@ -20,7 +20,7 @@
 #include <type_traits>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace {
 
 AccessKind
@@ -36,7 +36,7 @@ convertToAccessKind(
     case OldKind::AS_private:   return NewKind::Private;
     case OldKind::AS_none:      return NewKind::None;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -56,7 +56,7 @@ convertToStorageClassKind(
     default:
         // SC_PrivateExtern (__private_extern__)
         // is a C only Apple extension
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -77,7 +77,7 @@ convertToConstexprKind(
     // (but not both in the same declaration)
     case OldKind::Constinit:
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -104,7 +104,7 @@ convertToExplicitKind(
     case OldKind::Unresolved:
         return NewKind::ExplicitUnresolved;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -129,7 +129,7 @@ convertToNoexceptKind(
     case OldKind::EST_Uninstantiated:    return NewKind::Uninstantiated;
     case OldKind::EST_Unparsed:          return NewKind::Unparsed;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -188,7 +188,7 @@ convertToOperatorKind(
     case OldKind::OO_Conditional:         return NewKind::Conditional;
     case OldKind::OO_Coawait:             return NewKind::Coawait;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -204,7 +204,7 @@ convertToReferenceKind(
     case OldKind::RQ_LValue: return NewKind::LValue;
     case OldKind::RQ_RValue: return NewKind::RValue;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -221,7 +221,7 @@ convertToRecordKeyKind(
     case OldKind::TTK_Union:  return NewKind::Union;
     default:
         // unsupported TagTypeKind
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -254,7 +254,7 @@ convertToFunctionClass(
     case OldKind::CXXDestructor:     return NewKind::Destructor;
     case OldKind::CXXDeductionGuide: return NewKind::Deduction;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -282,12 +282,12 @@ visit(
                     DERIVED##Decl>*>(D), \
                 std::forward<Args>(args)...); \
         else \
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
 
     #include <clang/AST/DeclNodes.inc>
 
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -338,12 +338,12 @@ visit(
                     DERIVED##Type>*>(T), \
                 std::forward<Args>(args)...); \
         else \
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
 
     #include <clang/AST/TypeNodes.inc>
 
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -394,12 +394,12 @@ visit(
                     DERIVED##TypeLoc>*>(T), \
                 std::forward<Args>(args)...); \
         else \
-            MRDOX_UNREACHABLE();
+            MRDOCS_UNREACHABLE();
 
     #include <clang/AST/TypeLocNodes.def>
 
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -427,7 +427,7 @@ TypeLocToKind()
 }
 
 } // (anon)
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

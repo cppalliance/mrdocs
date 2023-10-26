@@ -5,19 +5,19 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_SAFENAMES_HPP
-#define MRDOX_LIB_SUPPORT_SAFENAMES_HPP
+#ifndef MRDOCS_LIB_SUPPORT_SAFENAMES_HPP
+#define MRDOCS_LIB_SUPPORT_SAFENAMES_HPP
 
-#include <mrdox/Platform.hpp>
-#include <mrdox/MetadataFwd.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/MetadataFwd.hpp>
 #include <memory>
 #include <string>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** A table mapping symbolIDs to safe names.
 
@@ -55,7 +55,7 @@ public:
         char delim = '-') const;
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

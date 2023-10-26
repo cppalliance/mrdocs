@@ -5,15 +5,15 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_TEST_TESTRUNNER_HPP
-#define MRDOX_TEST_TESTRUNNER_HPP
+#ifndef MRDOCS_TEST_TESTRUNNER_HPP
+#define MRDOCS_TEST_TESTRUNNER_HPP
 
 #include "lib/Lib/ConfigImpl.hpp"
-#include <mrdox/Generator.hpp>
-#include <mrdox/Support/ThreadPool.hpp>
+#include <mrdocs/Generator.hpp>
+#include <mrdocs/Support/ThreadPool.hpp>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/ErrorOr.h>
 #include <atomic>
@@ -22,7 +22,7 @@
 #include <memory>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 struct TestResults
 {
@@ -79,7 +79,7 @@ public:
     void checkPath(std::string inputPath);
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

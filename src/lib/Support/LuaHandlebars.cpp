@@ -5,14 +5,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "LuaHandlebars.hpp"
-#include <mrdox/Support/Lua.hpp>
+#include <mrdocs/Support/Lua.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 // VFALCO:
 // C Functions use "Error::Throw" for C++ errors
@@ -69,5 +69,5 @@ tryLoadHandlebars(
 
 }
 
-} // mrdox
+} // mrdocs
 } // clang

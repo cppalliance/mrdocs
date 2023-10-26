@@ -5,25 +5,25 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_SUPPORT_GENERATORSIMPL_HPP
-#define MRDOX_LIB_SUPPORT_GENERATORSIMPL_HPP
+#ifndef MRDOCS_LIB_SUPPORT_GENERATORSIMPL_HPP
+#define MRDOCS_LIB_SUPPORT_GENERATORSIMPL_HPP
 
-#include <mrdox/Support/Error.hpp>
-#include <mrdox/Platform.hpp>
-#include <mrdox/Generators.hpp>
+#include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Platform.hpp>
+#include <mrdocs/Generators.hpp>
 #include <llvm/ADT/SmallVector.h>
 #include <memory>
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 /** Implementaiton of Generators.
 */
-class MRDOX_VISIBLE
+class MRDOCS_VISIBLE
     GeneratorsImpl : public Generators
 {
     llvm::SmallVector<Generator const*, 8> plist_;
@@ -62,7 +62,7 @@ public:
 GeneratorsImpl&
 getGeneratorsImpl() noexcept;
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

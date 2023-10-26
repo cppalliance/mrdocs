@@ -6,7 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "Path.hpp"
@@ -16,7 +16,7 @@
 #include <fstream>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 AnyFileVisitor::
 ~AnyFileVisitor() = default;
@@ -113,7 +113,7 @@ getFileType(
     case fs::file_type::file_not_found:
     case fs::file_type::status_error:
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -235,7 +235,7 @@ makeAbsolute(
 {
     namespace path = llvm::sys::path;
 
-    MRDOX_ASSERT(isDirsy(workingDir));
+    MRDOCS_ASSERT(isDirsy(workingDir));
 
     if(! path::is_absolute(pathName))
     {
@@ -377,5 +377,5 @@ createDirectory(
 
 } // files
 
-} // mrdox
+} // mrdocs
 } // clang

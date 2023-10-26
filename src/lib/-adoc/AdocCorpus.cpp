@@ -6,20 +6,20 @@
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "AdocCorpus.hpp"
 #include "lib/Support/Radix.hpp"
-#include <mrdox/Support/RangeFor.hpp>
-#include <mrdox/Support/String.hpp>
+#include <mrdocs/Support/RangeFor.hpp>
+#include <mrdocs/Support/String.hpp>
 #include <fmt/format.h>
 #include <iterator>
 
 #include <llvm/Support/raw_ostream.h>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace adoc {
 
 namespace {
@@ -80,7 +80,7 @@ operator()(
         label = "WARNING";
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
     fmt::format_to(std::back_inserter(dest_), "[{}]\n", label);
     (*this)(static_cast<doc::Paragraph const&>(I));
@@ -112,7 +112,7 @@ operator()(
                 }
                 else
                 {
-                    MRDOX_UNREACHABLE();
+                    MRDOCS_UNREACHABLE();
                 }
             });
     }
@@ -232,7 +232,7 @@ operator()(doc::Styled const& I)
         fmt::format_to(std::back_inserter(dest_), "_{}_", s);
         break;
     default:
-        MRDOX_UNREACHABLE();
+        MRDOCS_UNREACHABLE();
     }
 }
 
@@ -383,5 +383,5 @@ getJavadoc(
 }
 
 } // adoc
-} // mrdox
+} // mrdocs
 } // clang

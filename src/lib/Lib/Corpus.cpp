@@ -6,17 +6,17 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Lib/ConfigImpl.hpp"
-#include <mrdox/Corpus.hpp>
-#include <mrdox/Metadata.hpp>
-#include <mrdox/Support/Error.hpp>
+#include <mrdocs/Corpus.hpp>
+#include <mrdocs/Metadata.hpp>
+#include <mrdocs/Support/Error.hpp>
 #include <ranges>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 //------------------------------------------------
 
@@ -54,8 +54,8 @@ getFullyQualifiedName(
     if(I.id == SymbolID::zero)
         return temp;
 
-    MRDOX_ASSERT(! I.Namespace.empty());
-    MRDOX_ASSERT(I.Namespace.back() == SymbolID::zero);
+    MRDOCS_ASSERT(! I.Namespace.empty());
+    MRDOCS_ASSERT(I.Namespace.back() == SymbolID::zero);
     for(auto const& ns_id : I.Namespace |
         std::views::reverse |
         std::views::drop(1))
@@ -73,5 +73,5 @@ getFullyQualifiedName(
 }
 
 
-} // mrdox
+} // mrdocs
 } // clang

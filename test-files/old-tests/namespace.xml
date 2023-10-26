@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mrdox xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdox/raw/develop/mrdox.rnc">
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace>
   <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
     <function name="f0" id="ORL9/51wI1T8sdK1zKvAQJvBXXE=">
@@ -131,4 +131,4 @@
     </namespace>
   </namespace>
 </namespace>
-</mrdox>
+</mrdocs>

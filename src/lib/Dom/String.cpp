@@ -5,14 +5,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Dom/String.hpp>
+#include <mrdocs/Dom/String.hpp>
 #include <atomic>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace dom {
 
 class String::impl_view
@@ -54,7 +54,7 @@ String::impl_view
 String::
 impl() const noexcept
 {
-    MRDOX_ASSERT(! empty() && ! is_literal());
+    MRDOCS_ASSERT(! empty() && ! is_literal());
     return impl_view(ptr_);
 }
 
@@ -137,5 +137,5 @@ data() const noexcept
 }
 
 } // dom
-} // mrdox
+} // mrdocs
 } // clang

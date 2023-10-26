@@ -5,14 +5,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Path.hpp"
 #include <test_suite/test_suite.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 struct Path_test
 {
@@ -37,8 +37,8 @@ struct Path_test
 
 TEST_SUITE(
     Path_test,
-    "clang.mrdox.Path");
+    "clang.mrdocs.Path");
 
-} // mrdox
+} // mrdocs
 } // clang
 

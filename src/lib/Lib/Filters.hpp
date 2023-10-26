@@ -5,20 +5,20 @@
 //
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOX_LIB_FILTERS_HPP
-#define MRDOX_LIB_FILTERS_HPP
+#ifndef MRDOCS_LIB_FILTERS_HPP
+#define MRDOCS_LIB_FILTERS_HPP
 
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #include <span>
 #include <string>
 #include <string_view>
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 class FilterPattern
 {
@@ -137,7 +137,7 @@ struct FilterNode
         bool any_parent_included);
 };
 
-} // mrdox
+} // mrdocs
 } // clang
 
 #endif

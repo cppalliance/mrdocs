@@ -5,14 +5,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Dom.hpp>
+#include <mrdocs/Dom.hpp>
 #include <test_suite/test_suite.hpp>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 namespace dom {
 
 struct Dom_test
@@ -226,7 +226,7 @@ struct Dom_test
             BOOST_TEST(s3 == "helloworld");
         }
 
-        // fmt::formatter<clang::mrdox::dom::String>
+        // fmt::formatter<clang::mrdocs::dom::String>
         {
             String s("hello");
             BOOST_TEST(fmt::format("{}", s) == "hello");
@@ -2157,9 +2157,9 @@ struct Dom_test
 
 TEST_SUITE(
     Dom_test,
-    "clang.mrdox.dom");
+    "clang.mrdocs.dom");
 
 } // dom
-} // mrdox
+} // mrdocs
 } // clang
 

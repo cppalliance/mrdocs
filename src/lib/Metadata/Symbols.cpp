@@ -6,14 +6,14 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include <mrdox/Metadata/Symbols.hpp>
+#include <mrdocs/Metadata/Symbols.hpp>
 #include <climits>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 // Better have 8 bits per byte, otherwise
 // we are going to be having some problems...
@@ -86,5 +86,5 @@ do_tiebreak:
     return std::strong_ordering::equivalent;
 }
 
-} // mrdox
+} // mrdocs
 } // clang

@@ -6,18 +6,18 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 //
-// Official repository: https://github.com/cppalliance/mrdox
+// Official repository: https://github.com/cppalliance/mrdocs
 //
 
 #include "lib/Support/Radix.hpp"
 #include "lib/Support/Debug.hpp"
-#include <mrdox/Platform.hpp>
+#include <mrdocs/Platform.hpp>
 #include <llvm/ADT/StringExtras.h>
 #include <algorithm>
 #include <vector>
 
 namespace clang {
-namespace mrdox {
+namespace mrdocs {
 
 namespace {
 
@@ -300,7 +300,7 @@ toBase32(
         v.push_back((u & 0xff00) >> 8);
     }
     dest.clear();
-    MRDOX_ASSERT((v.size() & 1) == 0);
+    MRDOCS_ASSERT((v.size() & 1) == 0);
     dest.reserve(3 * (v.size() / 2));
     auto it = v.data();
     auto const end = it + v.size();
@@ -333,5 +333,5 @@ toBase16(
         lowercase);
 }
 
-} // mrdox
+} // mrdocs
 } // clang
