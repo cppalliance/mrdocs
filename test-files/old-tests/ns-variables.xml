@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace>
+<namespace id="//////////////////////////8=">
   <variable name="i" id="X2Wd7fyQ8BJNJ0tn4nnA77ckJM8=">
     <file path="ns-variables.cpp" line="3" class="def"/>
     <attr id="constexpr-kind" name="constexpr" value="1"/>

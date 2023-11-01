@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace>
+<namespace id="//////////////////////////8=">
   <namespace name="A" id="jQQu/8mLNzRQvGtbkKMwwloVDpw=">
     <function name="f0" id="ORL9/51wI1T8sdK1zKvAQJvBXXE=">
       <file path="filters.cpp" line="3"/>

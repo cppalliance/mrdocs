@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
-<namespace>
+<namespace id="//////////////////////////8=">
   <namespace name="N0" id="YAQKEfxRmUjg43kkhT1n65uziVY=">
     <function name="f0_WL" id="Wh1//CHkEeCK/Sbv3ShkayyURHI=">
       <file path="whitelist_0.cpp" line="3"/>
