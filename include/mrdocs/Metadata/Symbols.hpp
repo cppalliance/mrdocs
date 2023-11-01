@@ -32,10 +32,7 @@ namespace mrdocs {
 class SymbolID
 {
 public:
-    static const SymbolID zero;
-
     static const SymbolID invalid;
-
     static const SymbolID global;
 
     using value_type = std::uint8_t;
@@ -52,11 +49,6 @@ public:
     explicit operator bool() const noexcept
     {
         return *this != SymbolID::invalid;
-    }
-
-    constexpr bool empty() const noexcept
-    {
-        return *this == zero;
     }
 
     constexpr auto data() const noexcept
@@ -101,9 +93,6 @@ private:
     value_type data_[20];
 };
 
-
-constexpr inline SymbolID SymbolID::zero = SymbolID();
-
 /** The invalid Symbol ID.
 */
 // KRYSTIAN NOTE: msvc requires inline as it doesn't consider this
@@ -115,10 +104,6 @@ constexpr inline SymbolID SymbolID::invalid = SymbolID();
 constexpr inline SymbolID SymbolID::global =
     "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF"
     "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
-
-/** Like std::optional<SymbolID>
-*/
-using OptionalSymbolID = Optional<SymbolID>;
 
 /** Return the result of comparing s0 to s1.
 

@@ -1038,8 +1038,7 @@ emitBlock(
     const TemplateInfo& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_BLOCK_ID);
-    if(T.Primary)
-        emitRecord(*T.Primary, TEMPLATE_PRIMARY_USR);
+    emitRecord(T.Primary, TEMPLATE_PRIMARY_USR);
     for(const auto& targ : T.Args)
         emitBlock(targ);
     for(const auto& tparam : T.Params)

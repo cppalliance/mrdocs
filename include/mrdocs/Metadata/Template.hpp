@@ -286,7 +286,7 @@ struct TemplateInfo
 
     /** Primary template ID for partial and explicit specializations.
     */
-    OptionalSymbolID Primary;
+    SymbolID Primary = SymbolID::invalid;
 
     // KRYSTIAN NOTE: using the presence of args/params
     // to determine the specialization kind *should* work.

@@ -46,15 +46,6 @@ format(
 }
 
 fmt::format_context::iterator
-fmt::formatter<clang::mrdocs::OptionalSymbolID>::
-format(
-    const clang::mrdocs::OptionalSymbolID& s,
-    fmt::format_context& ctx) const
-{
-    return fmt::formatter<clang::mrdocs::SymbolID>::format(*s, ctx);
-}
-
-fmt::format_context::iterator
 fmt::formatter<clang::mrdocs::InfoKind>::
 format(
     clang::mrdocs::InfoKind t,

@@ -349,7 +349,7 @@ domCreate(
         return nullptr;
     return dom::Object({
         { "kind", toString(I->specializationKind()) },
-        { "primary", domCorpus.get(*I->Primary) },
+        { "primary", domCorpus.get(I->Primary) },
         { "params", dom::newArray<DomTParamArray>( I->Params, domCorpus) },
         { "args", dom::newArray<DomTArgArray>(I->Args, domCorpus) }
         });

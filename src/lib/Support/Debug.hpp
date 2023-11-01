@@ -32,15 +32,6 @@ struct fmt::formatter<clang::mrdocs::SymbolID>
 };
 
 template<>
-struct fmt::formatter<clang::mrdocs::OptionalSymbolID>
-    : fmt::formatter<clang::mrdocs::SymbolID>
-{
-    fmt::format_context::iterator format(
-        const clang::mrdocs::OptionalSymbolID& s,
-        fmt::format_context& ctx) const;
-};
-
-template<>
 struct fmt::formatter<clang::mrdocs::InfoKind>
     : fmt::formatter<std::string>
 {

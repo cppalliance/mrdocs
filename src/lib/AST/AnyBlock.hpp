@@ -1118,7 +1118,7 @@ public:
         switch(ID)
         {
         case TEMPLATE_PRIMARY_USR:
-            return decodeRecord(R, I_.Primary.emplace(), Blob);
+            return decodeRecord(R, I_.Primary, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }

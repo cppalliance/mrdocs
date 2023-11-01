@@ -1435,7 +1435,7 @@ public:
         ClassTemplateSpecializationDecl* spec)
     {
         if(Decl* primary = getInstantiatedFrom(spec->getSpecializedTemplate()))
-            extractSymbolID(primary, I.Primary.emplace());
+            extractSymbolID(primary, I.Primary);
         // KRYSTIAN NOTE: when this is a partial specialization, we could use
         // ClassTemplatePartialSpecializationDecl::getTemplateArgsAsWritten
         const TypeSourceInfo* type_written = spec->getTypeAsWritten();
@@ -1458,7 +1458,7 @@ public:
         // the USR of the templated VarDecl seems to be the correct one.
         if(auto* primary = dyn_cast<VarTemplateDecl>(
             getInstantiatedFrom(spec->getSpecializedTemplate())))
-            extractSymbolID(primary->getTemplatedDecl(), I.Primary.emplace());
+            extractSymbolID(primary->getTemplatedDecl(), I.Primary);
         const ASTTemplateArgumentListInfo* args_written = nullptr;
         // getTemplateArgsInfo returns nullptr for partial specializations,
         // so we use getTemplateArgsAsWritten if this is a partial specialization
@@ -1480,7 +1480,7 @@ public:
     {
         // KRYSTIAN NOTE: do we need to check I->Primary.has_value()?
         if(Decl* primary = getInstantiatedFrom(spec->getTemplate()))
-            extractSymbolID(primary, I.Primary.emplace());
+            extractSymbolID(primary, I.Primary);
         // TemplateArguments is used instead of TemplateArgumentsAsWritten
         // because explicit specializations of function templates may have
         // template arguments deduced from their return type and parameters
@@ -1498,7 +1498,7 @@ public:
             candidates.size() == 1)
         {
             if(Decl* primary = getInstantiatedFrom(candidates.front()))
-                extractSymbolID(primary, I.Primary.emplace());
+                extractSymbolID(primary, I.Primary);
         }
 
         if(auto* args_written = spec->TemplateArgumentsAsWritten)
@@ -1801,7 +1801,7 @@ public:
             switch(parent_context->getDeclKind())
             {
             // the TranslationUnit DeclContext is the global namespace;
-            // it uses SymbolID::zero and should *always* exist
+            // it uses SymbolID::global and should *always* exist
             case Decl::TranslationUnit:
             {
                 parent_id = SymbolID::global;

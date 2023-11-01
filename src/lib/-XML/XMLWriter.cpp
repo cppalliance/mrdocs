@@ -481,13 +481,10 @@ openTemplate(
     if(! I)
         return;
 
-    const SymbolID& id = I->Primary ?
-        *I->Primary : SymbolID::invalid;
-
     tags_.open(templateTagName, {
         {"class", toString(I->specializationKind()),
             I->specializationKind() != TemplateSpecKind::Primary},
-        {id}
+        {I->Primary}
     });
 
     for(const auto& tparam : I->Params)
