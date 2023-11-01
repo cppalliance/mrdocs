@@ -44,6 +44,7 @@ class Interface::Build
     Table<FieldInfo>        data_;
     Table<FunctionInfo>     staticfuncs_;
     Table<VariableInfo>     staticdata_;
+    Table<FriendInfo>       friends_;
 
 public:
     Build(
@@ -148,6 +149,10 @@ private:
                 staticdata_.push_back({ actualAccess,
                     static_cast<const VariableInfo*>(&I) });
                 break;
+            case InfoKind::Friend:
+                friends_.push_back({ actualAccess,
+                    static_cast<const FriendInfo*>(&I) });
+                break;
             default:
                 MRDOCS_UNREACHABLE();
             }
@@ -207,6 +212,7 @@ private:
         sort(&Interface::Tranche::Data,             I_.data_,       data_);
         sort(&Interface::Tranche::StaticFunctions,  I_.staticfuncs_,staticfuncs_);
         sort(&Interface::Tranche::StaticData,       I_.staticdata_, staticdata_);
+        sort(&Interface::Tranche::Friends,          I_.friends_,    friends_);
 #if 0
 MRDOCS_ASSERT(I_.Private.Records.empty());
 MRDOCS_ASSERT(I_.Private.Functions.empty());

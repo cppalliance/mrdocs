@@ -36,9 +36,10 @@ enum class ReferenceKind;
 enum class StorageClassKind;
 
 struct BaseInfo;
-struct EnumValueInfo;
 struct EnumInfo;
+struct EnumeratorInfo;
 struct FieldInfo;
+struct FriendInfo;
 struct FunctionInfo;
 struct Info;
 class Javadoc;

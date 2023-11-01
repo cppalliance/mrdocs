@@ -97,10 +97,6 @@ struct RecordInfo
     */
     std::vector<BaseInfo> Bases;
 
-    /** List of friend functions.
-    */
-    std::vector<SymbolID> Friends;
-
     /** Record members
     */
     std::vector<SymbolID> Members;
@@ -111,9 +107,7 @@ struct RecordInfo
 
     //--------------------------------------------
 
-    explicit
-    RecordInfo(
-        SymbolID ID = SymbolID::invalid)
+    explicit RecordInfo(SymbolID ID) noexcept
         : IsInfo(ID)
     {
     }

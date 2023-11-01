@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
+    <file path="friend-6.cpp" line="2" class="def"/>
+    <doc>
+      <para>
+        <text>Struct T brief</text>
+      </para>
+    </doc>
+    <friend id="TOrWTtN3z97T1vpET2Mp2ltgh8s=">
+      <file path="friend-6.cpp" line="5" class="def"/>
+      <doc>
+        <para>
+          <text>Friend int brief</text>
+        </para>
+      </doc>
+      <befriended type="int"/>
+    </friend>
+    <friend id="TLQbNh0kqPKHKwvF5LteCiWQUaA=">
+      <file path="friend-6.cpp" line="8" class="def"/>
+      <doc>
+        <para>
+          <text>Friend class Z brief</text>
+        </para>
+      </doc>
+      <befriended type="Z"/>
+    </friend>
+  </struct>
+  <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
+    <file path="friend-6.cpp" line="12" class="def"/>
+    <doc>
+      <para>
+        <text>Struct U brief</text>
+      </para>
+    </doc>
+    <friend id="T7nF9IMYV70RWbouk5w3/LkJ6qU=">
+      <file path="friend-6.cpp" line="15" class="def"/>
+      <doc>
+        <para>
+          <text>Friend T brief</text>
+        </para>
+      </doc>
+      <befriended type="T"/>
+    </friend>
+  </struct>
+  <struct name="V" id="9kzYwt0WPztMEDUaFxul1Jvqqs8=">
+    <file path="friend-6.cpp" line="19" class="def"/>
+    <doc>
+      <para>
+        <text>Struct V brief</text>
+      </para>
+    </doc>
+    <friend id="QnW+Cvcvia1JQtcG0VzR5BfLOi0=">
+      <file path="friend-6.cpp" line="22" class="def"/>
+      <doc>
+        <para>
+          <text>Friend struct U brief</text>
+        </para>
+      </doc>
+      <befriended type="U"/>
+    </friend>
+  </struct>
+</namespace>
+</mrdocs>

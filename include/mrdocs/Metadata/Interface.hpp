@@ -39,6 +39,7 @@ public:
         std::span<FieldInfo const*>     Data;
         std::span<FunctionInfo const*>  StaticFunctions;
         std::span<VariableInfo const*>  StaticData;
+        std::span<FriendInfo const*>    Friends;
     };
 
     Corpus const& corpus;
@@ -74,6 +75,7 @@ private:
     std::vector<FieldInfo const*>     data_;
     std::vector<FunctionInfo const*>  staticfuncs_;
     std::vector<VariableInfo const*>  staticdata_;
+    std::vector<FriendInfo const*>    friends_;
 };
 
 //------------------------------------------------

@@ -226,6 +226,10 @@ operator()(
         writeVar(I);
     if constexpr(T::isSpecialization())
         writeSpecialization(I);
+    if constexpr(T::isEnumerator())
+        writeEnumerator(I);
+    if constexpr(T::isFriend())
+        writeFriend(I);
 }
 
 //------------------------------------------------
@@ -250,32 +254,59 @@ writeEnum(
 
     writeSourceInfo(I);
 
-    for(auto const& V : I.Members)
-    {
-        std::string val = V.Initializer.Value ?
-            std::to_string(*V.Initializer.Value) :
-            V.Initializer.Written;
-        if(! V.javadoc)
-        {
-            tags_.write("value", {}, {
-                { "name", V.Name },
-                { "value", val },
-                });
-        }
-        else
-        {
-            tags_.open("value", {
-                { "name", V.Name },
-                { "value", val }
-            });
-            writeJavadoc(V.javadoc);
-            tags_.close("value");
-        }
-    }
+    writeJavadoc(I.javadoc);
+
+    corpus_.traverse(I, *this);
+
+    tags_.close(enumTagName);
+}
+
+void
+XMLWriter::
+writeEnumerator(
+    EnumeratorInfo const& I)
+{
+    std::string val = I.Initializer.Value ?
+        std::to_string(*I.Initializer.Value) :
+        I.Initializer.Written;
+
+    tags_.open(enumeratorTagName, {
+        { "name", I.Name },
+        { "initializer", val },
+        { I.Access },
+        { I.id }
+    });
+
+    writeSourceInfo(I);
 
     writeJavadoc(I.javadoc);
 
-    tags_.close(enumTagName);
+    tags_.close(enumeratorTagName);
+}
+
+void
+XMLWriter::
+writeFriend(
+    FriendInfo const& I)
+{
+    tags_.open(friendTagName, {
+        { I.Access },
+        { I.id }
+        });
+
+    writeSourceInfo(I);
+
+    writeJavadoc(I.javadoc);
+
+    Attributes attrs = {};
+    if(I.FriendSymbol)
+        attrs.push({I.FriendSymbol});
+    else if(I.FriendType)
+        attrs.push({"type", toString(*I.FriendType)});
+
+    tags_.write("befriended", {}, attrs);
+
+    tags_.close(friendTagName);
 }
 
 void
@@ -338,10 +369,6 @@ writeRecord(
         writeType(B.Type, tags_);
         tags_.close(baseTagName);
     }
-
-    // Friends
-    for(auto const& id : I.Friends)
-        tags_.write(friendTagName, "", { { id } });
 
     writeJavadoc(I.javadoc);
 

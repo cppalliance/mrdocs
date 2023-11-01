@@ -159,9 +159,7 @@ struct FunctionInfo
 
     //--------------------------------------------
 
-    explicit
-    FunctionInfo(
-        SymbolID ID = SymbolID::invalid)
+    explicit FunctionInfo(SymbolID ID) noexcept
         : IsInfo(ID)
     {
     }

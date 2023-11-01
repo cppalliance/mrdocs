@@ -35,19 +35,23 @@ struct FieldInfo;
 struct TypedefInfo;
 struct VariableInfo;
 struct SpecializationInfo;
+struct FriendInfo;
+struct EnumeratorInfo;
 
 /** Info variant discriminator
 */
 enum class InfoKind
 {
-    Namespace = 0,
+    Namespace = 1, // for bitstream
     Record,
     Function,
     Enum,
     Typedef,
     Variable,
     Field,
-    Specialization
+    Specialization,
+    Friend,
+    Enumerator
 };
 
 MRDOCS_DECL dom::String toString(InfoKind kind) noexcept;
@@ -59,7 +63,7 @@ struct MRDOCS_VISIBLE
 {
     /** The unique identifier for this symbol.
     */
-    SymbolID id = SymbolID::invalid;
+    SymbolID id;
 
     /** The unqualified name.
     */
@@ -91,7 +95,7 @@ struct MRDOCS_VISIBLE
         conditions for extraction, but was extracted due to it being used
         by a primary `Info`.
     */
-    bool Implicit = true;
+    bool Implicit = false;
 
     /** In-order List of parent namespaces.
     */
@@ -110,19 +114,11 @@ struct MRDOCS_VISIBLE
     explicit
     Info(
         InfoKind kind,
-        SymbolID ID = SymbolID::invalid) noexcept
+        SymbolID ID) noexcept
         : id(ID)
         , Kind(kind)
     {
     }
-
-    //
-    // Observers
-    //
-
-    MRDOCS_DECL
-    std::string
-    extractName() const;
 
     constexpr bool isNamespace()      const noexcept { return Kind == InfoKind::Namespace; }
     constexpr bool isRecord()         const noexcept { return Kind == InfoKind::Record; }
@@ -132,6 +128,8 @@ struct MRDOCS_VISIBLE
     constexpr bool isVariable()       const noexcept { return Kind == InfoKind::Variable; }
     constexpr bool isField()          const noexcept { return Kind == InfoKind::Field; }
     constexpr bool isSpecialization() const noexcept { return Kind == InfoKind::Specialization; }
+    constexpr bool isFriend()         const noexcept { return Kind == InfoKind::Friend; }
+    constexpr bool isEnumerator()     const noexcept { return Kind == InfoKind::Enumerator; }
 };
 
 //------------------------------------------------
@@ -157,13 +155,10 @@ struct IsInfo : Info
     static constexpr bool isVariable()       noexcept { return K == InfoKind::Variable; }
     static constexpr bool isField()          noexcept { return K == InfoKind::Field; }
     static constexpr bool isSpecialization() noexcept { return K == InfoKind::Specialization; }
+    static constexpr bool isFriend()         noexcept { return K == InfoKind::Friend; }
+    static constexpr bool isEnumerator()     noexcept { return K == InfoKind::Enumerator; }
 
 protected:
-    constexpr IsInfo()
-        : Info(K)
-    {
-    }
-
     constexpr explicit IsInfo(SymbolID ID)
         : Info(K, ID)
     {
@@ -204,6 +199,10 @@ visit(
         return visitor.template visit<FieldInfo>();
     case InfoKind::Specialization:
         return visitor.template visit<SpecializationInfo>();
+    case InfoKind::Friend:
+        return visitor.template visit<FriendInfo>();
+    case InfoKind::Enumerator:
+        return visitor.template visit<EnumeratorInfo>();
     default:
         MRDOCS_UNREACHABLE();
     }

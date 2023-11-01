@@ -20,70 +20,6 @@
 namespace clang {
 namespace mrdocs {
 
-std::string
-Info::
-extractName() const
-{
-    if (!Name.empty())
-        return Name;
-
-    switch(Kind)
-    {
-    case InfoKind::Namespace:
-        // Cover the case where the project contains a base namespace called
-        // 'GlobalNamespace' (i.e. a namespace at the same level as the global
-        // namespace, which would conflict with the hard-coded global namespace name
-        // below.)
-        if (Name == "GlobalNamespace" && Namespace.empty())
-            return "@GlobalNamespace";
-        // The case of anonymous namespaces is taken care of in serialization,
-        // so here we can safely assume an unnamed namespace is the global
-        // one.
-        return {}; //return std::string("GlobalNamespace");
-
-    // VFALCO This API makes assumptions about what is
-    //        valid in the output format. We could for
-    //        example use base64 or base41...
-    case InfoKind::Record:
-        return std::string("@nonymous_record_") +
-            toBase16(id);
-    case InfoKind::Function:
-        return std::string("@nonymous_function_") +
-            toBase16(id);
-    case InfoKind::Enum:
-        return std::string("@nonymous_enum_") +
-            toBase16(id);
-    case InfoKind::Typedef:
-        return std::string("@nonymous_typedef_") +
-            toBase16(id);
-    case InfoKind::Variable:
-        return std::string("@nonymous_var_") +
-            toBase16(id);
-    default:
-        // invalid InfoKind
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-//------------------------------------------------
-#if 0
-std::string&
-Info::
-getFullyQualifiedName(
-    std::string& temp) const
-{
-    temp.clear();
-    for(auto const& ns : llvm::reverse(Namespace))
-    {
-        temp.append(ns.Name.data(), ns.Name.size());
-        temp.append("::");
-    }
-    auto s = extractName();
-    temp.append(s.data(), s.size());
-    return temp;
-}
-#endif
-
 dom::String
 toString(InfoKind kind) noexcept
 {
@@ -105,6 +41,10 @@ toString(InfoKind kind) noexcept
         return "variable";
     case InfoKind::Specialization:
         return "specialization";
+    case InfoKind::Friend:
+        return "friend";
+    case InfoKind::Enumerator:
+        return "enumerator";
     default:
         MRDOCS_UNREACHABLE();
     }

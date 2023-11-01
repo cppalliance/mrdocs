@@ -67,8 +67,11 @@ getFullyQualifiedName(
 
         temp.append("::");
     }
-    auto s = I.extractName();
-    temp.append(s.data(), s.size());
+    if(I.Name.empty())
+        fmt::format_to(std::back_inserter(temp),
+            "<unnamed {}>", toString(I.Kind));
+    else
+        temp.append(I.Name);
     return temp;
 }
 

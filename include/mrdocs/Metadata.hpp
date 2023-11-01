@@ -18,8 +18,10 @@
 // metadata extracted from AST
 
 #include <mrdocs/Metadata/Enum.hpp>
+#include <mrdocs/Metadata/Enumerator.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Field.hpp>
+#include <mrdocs/Metadata/Friend.hpp>
 #include <mrdocs/Metadata/Function.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Interface.hpp>

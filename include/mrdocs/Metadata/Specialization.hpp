@@ -63,9 +63,7 @@ struct SpecializationInfo
     */
     std::vector<SpecializedMember> Members;
 
-    explicit
-    SpecializationInfo(
-        SymbolID ID = SymbolID::invalid)
+    explicit SpecializationInfo(SymbolID ID) noexcept
         : IsInfo(ID)
     {
     }

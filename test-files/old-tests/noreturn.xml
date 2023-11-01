@@ -4,12 +4,10 @@
 <namespace id="//////////////////////////8=">
   <function name="f1" id="CnO51rIKTzfiVKHkR3TdPa0eo+8=">
     <file path="noreturn.cpp" line="1"/>
-    <file path="noreturn.cpp" line="9"/>
     <attr id="is-no-return"/>
   </function>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="noreturn.cpp" line="3" class="def"/>
-    <friend id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
     <function name="f2" id="QjsWLydQujVa097RP8f2Lq3nLQ4=">
       <file path="noreturn.cpp" line="5"/>
       <attr id="is-no-return"/>
@@ -19,6 +17,10 @@
       <file path="noreturn.cpp" line="7"/>
       <attr id="is-no-return"/>
     </function>
+    <friend id="vtSOGI1LSo+Nkv4yPvufiluoyko=">
+      <file path="noreturn.cpp" line="9" class="def"/>
+      <befriended id="CnO51rIKTzfiVKHkR3TdPa0eo+8="/>
+    </friend>
   </struct>
 </namespace>
 </mrdocs>

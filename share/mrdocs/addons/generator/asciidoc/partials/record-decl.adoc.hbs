@@ -1,0 +1,27 @@
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{#if template}}{{>template-head template}}
+{{/if~}}
+{{#if (or (eq template.kind "explicit") (eq template.kind "partial"))~}}
+    {{#if isFriend}}friend {{/if~}}
+    {{tag}} {{#if template.primary.id~}}xref:{{template.primary.ref}}[{{name}}]{{else}}{{name}}{{/if~}}
+    {{~>template-args args=template.args~}}
+{{else~}}
+    {{#if isFriend}}friend {{/if~}}
+    {{tag}} {{name~}}
+{{/if~}}
+{{#unless bases}}
+;
+{{else if isFriend}}
+;
+{{else}}
+
+{{#each bases}}
+    {{#if @first}}:{{else}},{{/if}}
+    {{~#unless (eq access ../defaultAccess)}} {{access}}{{/unless}}
+    {{~#if isVirtual}} virtual{{/if}}
+    {{~null}} {{>declarator type}}
+    {{~#if @last}};{{/if}}
+{{/each}}
+{{/unless}}
+----

@@ -4,7 +4,15 @@
 <namespace id="//////////////////////////8=">
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
     <file path="friend-3.cpp" line="1" class="def"/>
-    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+    <friend id="MKqBnSfb2qzerVryOyz4f9W1BWM=">
+      <file path="friend-3.cpp" line="4" class="def"/>
+      <doc>
+        <para>
+          <text>T::f</text>
+        </para>
+      </doc>
+      <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+    </friend>
   </struct>
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file path="friend-3.cpp" line="4"/>
@@ -18,7 +26,10 @@
   </function>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
     <file path="friend-3.cpp" line="7" class="def"/>
-    <friend id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+    <friend id="Yz4fKLBfAghLfXF5KYrKPRlwXMA=">
+      <file path="friend-3.cpp" line="9" class="def"/>
+      <befriended id="s6nsa+zVhpzzrN+yUVPP5rvdXqs="/>
+    </friend>
   </struct>
 </namespace>
 </mrdocs>

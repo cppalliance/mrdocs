@@ -53,7 +53,6 @@ grammar
         (
             BaseInfo |
             Attr |
-            element friend { ID } |
             Javadoc? |
             RecordScope
         ) *
@@ -99,13 +98,21 @@ grammar
             Name,
             attribute class {"scoped"} ?,
             ID,
-            Location *,
             BaseInfo ?,
-            element value
-            {
-                Name,
-                attribute value { text }
-            } *,
+            Location *,
+            Javadoc ?,
+            EnumScope
+        }
+
+    #---------------------------------------------
+
+    Enumerator =
+        element enumerator
+        {
+            Name,
+            ID,
+            attribute initializer { text } ?,
+            Location *,
             Javadoc ?
         }
 
@@ -158,6 +165,24 @@ grammar
                 Attr * &
                 TypeInfo &
                 Javadoc ?
+            )
+        }
+
+    #---------------------------------------------
+
+    Friend =
+        element friend
+        {
+            Access ?,
+            ID,
+            Location *,
+            Javadoc ?,
+            (
+                element befriended
+                {
+                    ID |
+                    attribute type { text }
+                }
             )
         }
 
@@ -262,8 +287,11 @@ grammar
             Field          |
             Var            |
             Template       |
+            Friend         |
             Specialization
         )*
+
+    EnumScope = Enumerator *
 
     #---------------------------------------------
     #

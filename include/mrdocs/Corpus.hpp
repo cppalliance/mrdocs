@@ -113,6 +113,11 @@ public:
 
     template<class F, class... Args>
     void traverse(
+        EnumInfo const& I,
+        F&& f, Args&&... args) const;
+
+    template<class F, class... Args>
+    void traverse(
         SpecializationInfo const& I,
         F&& f, Args&&... args) const;
 
@@ -174,6 +179,18 @@ traverse(
         visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
     for(auto const& id : I.Specializations)
+        visit(get(id), std::forward<F>(f),
+            std::forward<Args>(args)...);
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverse(
+    EnumInfo const& I,
+    F&& f, Args&&... args) const
+{
+    for(auto const& id : I.Members)
         visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
 }

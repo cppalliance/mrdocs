@@ -39,9 +39,7 @@ struct TypedefInfo
 
     //--------------------------------------------
 
-    explicit
-    TypedefInfo(
-        SymbolID ID = SymbolID::invalid)
+    explicit TypedefInfo(SymbolID ID) noexcept
         : IsInfo(ID)
     {
     }

@@ -1,11 +1,14 @@
-{{!-- function --}}
+{{!-- enumerator --}}
 == {{symbol.name}}
 
 {{symbol.doc.brief}}
 
 === Synopsis
 
-{{>function-decl symbol isFriend=false}}
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{symbol.name}}{{#if symbol.initializer}} = {{symbol.initializer}}{{~/if}}
+----
 
 {{>source symbol.loc}}
 

@@ -1,0 +1,26 @@
+{{!-- friend --}}
+== Friend {{#if symbol.symbol}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}
+
+{{symbol.doc.brief}}
+
+=== Synopsis
+
+{{#if symbol.type~}}
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+friend {{>declarator symbol.type}};
+----
+{{else if (and symbol.symbol (eq symbol.symbol.kind "record"))~}}
+{{>record-decl symbol.symbol isFriend=true~}}
+{{else if (and symbol.symbol (eq symbol.symbol.kind "function"))~}}
+{{>function-decl symbol.symbol isFriend=true~}}
+{{/if}}
+
+{{>source symbol.loc}}
+
+{{#if symbol.doc.description}}
+=== Description
+
+{{symbol.doc.description}}
+
+{{/if}}

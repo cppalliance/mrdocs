@@ -21,6 +21,7 @@ bool supportsLookup(const Info* info)
     return info &&
         (info->isRecord() ||
         info->isNamespace() ||
+        info->isEnum() ||
         info->isSpecialization());
 }
 
@@ -32,7 +33,10 @@ buildLookups(
 {
     visit(info, [&]<typename InfoTy>(const InfoTy& I)
     {
-        if constexpr(InfoTy::isRecord() || InfoTy::isNamespace())
+        if constexpr(
+            InfoTy::isRecord() ||
+            InfoTy::isNamespace() ||
+            InfoTy::isEnum())
         {
             for(const SymbolID& M : I.Members)
             {
@@ -124,7 +128,7 @@ lookupInContext(
     context = lookThroughTypedefs(context);
     // KRYSTIAN FIXME: enumerators need to have their own
     // info type for lookup to work
-    if(! context || context->isEnum())
+    if(! context)
         return nullptr;
     LookupTable& table = lookup_tables_.at(context);
     // KRYSTIAN FIXME: disambiguation based on signature
@@ -135,13 +139,12 @@ lookupInContext(
         // - namespaces,
         // - types, and
         // - templates whose specializations are types
-        if(for_nns &&
-            (! result->isNamespace() &&
-            ! result->isRecord() &&
-            ! result->isEnum() &&
-            ! result->isTypedef()))
-            continue;
-        return result;
+        if(! for_nns ||
+            result->isNamespace() ||
+            result->isRecord() ||
+            result->isEnum() ||
+            result->isTypedef())
+            return result;
     }
 
     // if this is a record and nothing was found,

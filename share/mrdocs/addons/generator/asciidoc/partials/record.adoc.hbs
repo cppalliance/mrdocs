@@ -5,29 +5,7 @@
 
 === Synopsis
 
-[source,cpp,subs="verbatim,macros,-callouts"]
-----
-{{#if template}}{{>template-head symbol.template}}
-{{/if~}}
-{{#if (or (eq symbol.template.kind "explicit") (eq symbol.template.kind "partial"))~}}
-    {{symbol.tag}} {{#if symbol.template.primary.id~}}xref:{{symbol.template.primary.ref}}[{{symbol.name}}]{{else}}{{symbol.name}}{{/if~}}
-    {{~>template-args args=symbol.template.args~}}
-{{else~}}
-    {{symbol.tag}} {{symbol.name~}}
-{{/if~}}
-{{#unless symbol.bases}}
-;
-{{else}}
-
-{{#each symbol.bases}}
-    {{#if @first}}:{{else}},{{/if}}
-    {{~#unless (eq access ../symbol.defaultAccess)}} {{access}}{{/unless}}
-    {{~#if isVirtual}} virtual{{/if}}
-    {{~null}} {{>declarator type}}
-    {{~#if @last}};{{/if}}
-{{/each}}
-{{/unless}}
-----
+{{>record-decl symbol isFriend=false}}
 
 {{>source symbol.loc}}
 

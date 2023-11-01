@@ -69,6 +69,8 @@ class SafeNames::Impl
             "5variable",
             "6field",
             "7specialization",
+            "8friend",
+            "9enumeration",
         };
         if(I.isFunction())
         {
@@ -96,7 +98,7 @@ class SafeNames::Impl
             return func_reserved[func_idx];
         }
 
-        std::size_t idx = to_underlying(I.Kind);
+        std::size_t idx = to_underlying(I.Kind) - 1;
         MRDOCS_ASSERT(idx < std::size(reserved));
         return reserved[idx];
     }
@@ -183,6 +185,17 @@ class SafeNames::Impl
                     return t.Name;
                 }
 
+                if constexpr(T::isFriend())
+                {
+                    return getReserved(t);
+                }
+
+                if constexpr(T::isEnumerator())
+                {
+                    MRDOCS_ASSERT(! t.Name.empty());
+                    return t.Name;
+                }
+
                 MRDOCS_UNREACHABLE();
             });
     }
@@ -256,8 +269,11 @@ class SafeNames::Impl
                     return M;
             };
 
-        if constexpr(InfoTy::isSpecialization() ||
-            InfoTy::isNamespace() || InfoTy::isRecord())
+        if constexpr(
+            InfoTy::isSpecialization() ||
+            InfoTy::isNamespace() ||
+            InfoTy::isRecord() ||
+            InfoTy::isEnum())
         {
             std::ranges::for_each(I.Members, F, getMember);
         }

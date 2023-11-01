@@ -45,11 +45,14 @@ getTagName(Info const& I) noexcept
         return enumTagName;
     case InfoKind::Variable:
         return varTagName;
+    case InfoKind::Friend:
+        return friendTagName;
+    case InfoKind::Enumerator:
+        return enumeratorTagName;
     default:
         break;
     }
-    MRDOCS_ASSERT(false);
-    return "(unknown)";
+    MRDOCS_UNREACHABLE();
 }
 
 } // xml

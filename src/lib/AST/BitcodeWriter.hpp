@@ -107,7 +107,6 @@ public:
 
     void emitBlock(BaseInfo const& I);
     void emitBlock(EnumInfo const& I);
-    void emitBlock(EnumValueInfo const& I);
     void emitBlock(FunctionInfo const& I);
     void emitBlock(Param const& I);
     void emitBlock(std::unique_ptr<Javadoc> const& jd);
@@ -121,6 +120,8 @@ public:
     void emitBlock(TypedefInfo const& I);
     void emitBlock(VariableInfo const& I);
     void emitBlock(FieldInfo const& I);
+    void emitBlock(FriendInfo const& I);
+    void emitBlock(EnumeratorInfo const& I);
 
     void emitBlock(std::unique_ptr<TypeInfo> const& TI);
     void emitBlock(std::unique_ptr<TypeInfo> const& TI, BlockID ID);

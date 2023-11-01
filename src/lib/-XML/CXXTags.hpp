@@ -39,6 +39,7 @@ constexpr auto classTagName          = "class";
 constexpr auto dataMemberTagName     = "field";
 constexpr auto javadocTagName        = "doc";
 constexpr auto enumTagName           = "enum";
+constexpr auto enumeratorTagName     = "enumerator";
 constexpr auto friendTagName         = "friend";
 constexpr auto functionTagName       = "function";
 constexpr auto namespaceTagName      = "namespace";

@@ -25,30 +25,6 @@
 namespace clang {
 namespace mrdocs {
 
-// Information for a single possible value of an enumeration.
-struct EnumValueInfo
-{
-    std::string Name;
-
-    /** The initializer expression, if any */
-    ConstantExprInfo<std::uint64_t> Initializer;
-
-    /** The documentation for the value, if any.
-    */
-    std::unique_ptr<Javadoc> javadoc;
-
-    //--------------------------------------------
-
-    explicit
-    EnumValueInfo(
-        std::string_view Name = "")
-        : Name(Name)
-    {
-    }
-};
-
-//------------------------------------------------
-
 // TODO: Expand to allow for documenting templating.
 // Info for types.
 struct EnumInfo
@@ -64,13 +40,11 @@ struct EnumInfo
     std::unique_ptr<TypeInfo> UnderlyingType;
 
     // Enumeration members.
-    std::vector<EnumValueInfo> Members;
+    std::vector<SymbolID> Members;
 
     //--------------------------------------------
 
-    explicit
-    EnumInfo(
-        SymbolID ID = SymbolID::invalid)
+    explicit EnumInfo(SymbolID ID) noexcept
         : IsInfo(ID)
     {
     }

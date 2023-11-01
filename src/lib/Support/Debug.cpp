@@ -51,37 +51,7 @@ format(
     clang::mrdocs::InfoKind t,
     fmt::format_context& ctx) const
 {
-    const char* str = "<unknown InfoKind>";
-    switch(t)
-    {
-    case clang::mrdocs::InfoKind::Namespace:
-        str = "namespace";
-        break;
-    case clang::mrdocs::InfoKind::Record:
-        str = "record";
-        break;
-    case clang::mrdocs::InfoKind::Function:
-        str = "function";
-        break;
-    case clang::mrdocs::InfoKind::Enum:
-        str = "enum";
-        break;
-    case clang::mrdocs::InfoKind::Typedef:
-        str = "typedef";
-        break;
-    case clang::mrdocs::InfoKind::Variable:
-        str = "variable";
-        break;
-    case clang::mrdocs::InfoKind::Field:
-        str = "field";
-        break;
-    case clang::mrdocs::InfoKind::Specialization:
-        str = "specialization";
-        break;
-    default:
-        break;
-    }
-    return fmt::formatter<std::string>::format(str, ctx);
+    return fmt::formatter<std::string>::format(toString(t).str(), ctx);
 }
 
 fmt::format_context::iterator
@@ -90,25 +60,7 @@ format(
     clang::mrdocs::AccessKind a,
     fmt::format_context& ctx) const
 {
-    const char* str = "<unknown Access>";
-    switch(a)
-    {
-    case clang::mrdocs::AccessKind::Public:
-        str = "public";
-        break;
-    case clang::mrdocs::AccessKind::Protected:
-        str = "protected";
-        break;
-    case clang::mrdocs::AccessKind::Private:
-        str = "private";
-        break;
-    case clang::mrdocs::AccessKind::None:
-        str = "none";
-        break;
-    default:
-        break;
-    }
-    return fmt::formatter<std::string>::format(str, ctx);
+    return fmt::formatter<std::string>::format(toString(a).str(), ctx);
 }
 
 fmt::format_context::iterator

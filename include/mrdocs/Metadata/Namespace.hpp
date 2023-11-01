@@ -40,9 +40,7 @@ struct NamespaceInfo
 
     //--------------------------------------------
 
-    explicit
-    NamespaceInfo(
-        SymbolID ID = SymbolID::invalid)
+    explicit NamespaceInfo(SymbolID ID) noexcept
         : IsInfo(ID)
     {
     }

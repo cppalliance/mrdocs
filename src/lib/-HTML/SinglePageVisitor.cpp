@@ -24,6 +24,7 @@ operator()(T const& I)
     if constexpr(
             T::isNamespace() ||
             T::isRecord() ||
+            T::isEnum() ||
             T::isSpecialization())
         corpus_.traverse(I, *this);
 }
@@ -94,6 +95,8 @@ DEFINE(TypedefInfo);
 DEFINE(VariableInfo);
 DEFINE(FieldInfo);
 DEFINE(SpecializationInfo);
+DEFINE(FriendInfo);
+DEFINE(EnumeratorInfo);
 
 } // html
 } // mrdocs

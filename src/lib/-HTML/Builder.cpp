@@ -209,6 +209,8 @@ DEFINE(TypedefInfo);
 DEFINE(VariableInfo);
 DEFINE(FieldInfo);
 DEFINE(SpecializationInfo);
+DEFINE(FriendInfo);
+DEFINE(EnumeratorInfo);
 
 } // html
 } // mrdocs

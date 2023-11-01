@@ -94,8 +94,6 @@ getInfos()
             Infos.emplace_back(std::move(I));
             continue;
         }
-        // although fields can only be members of records,
-        // they are emitted as top-level blocks anyway
         case BI_FIELD_BLOCK_ID:
         {
             MRDOCS_TRY(auto I, readInfo<FieldBlock>(ID));
@@ -106,6 +104,18 @@ getInfos()
         case BI_SPECIALIZATION_BLOCK_ID:
         {
             MRDOCS_TRY(auto I, readInfo<SpecializationBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
+        }
+        case BI_FRIEND_BLOCK_ID:
+        {
+            MRDOCS_TRY(auto I, readInfo<FriendBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
+        }
+        case BI_ENUMERATOR_BLOCK_ID:
+        {
+            MRDOCS_TRY(auto I, readInfo<EnumeratorBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }
@@ -169,7 +179,7 @@ readInfo(
     T B(*this);
     if(auto err = readBlock(B, ID))
         return Unexpected(err);
-    return std::move(B.I);
+    return std::unique_ptr<Info>(B.I.release());
 }
 
 Error

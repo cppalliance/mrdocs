@@ -260,7 +260,6 @@ public:
         finalize(I.Specializations);
         finalize(I.Template);
         finalize(I.Bases);
-        // finalize(I.Friends);
     }
 
     void operator()(SpecializationInfo& I)
@@ -292,6 +291,7 @@ public:
     void operator()(EnumInfo& I)
     {
         check(I.Namespace);
+        check(I.Members);
         finalize(I.javadoc);
         finalize(I.UnderlyingType);
     }
@@ -309,6 +309,20 @@ public:
         finalize(I.javadoc);
         finalize(I.Template);
         finalize(I.Type);
+    }
+
+    void operator()(FriendInfo& I)
+    {
+        check(I.Namespace);
+        finalize(I.javadoc);
+        finalize(I.FriendSymbol);
+        finalize(I.FriendType);
+    }
+
+    void operator()(EnumeratorInfo& I)
+    {
+        check(I.Namespace);
+        finalize(I.javadoc);
     }
 };
 

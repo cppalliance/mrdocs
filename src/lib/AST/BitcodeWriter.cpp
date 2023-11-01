@@ -207,7 +207,6 @@ BlockIdNameMap = []()
         {BI_SOURCE_INFO_ID, "SourceInfoBlock"},
         {BI_NAMESPACE_BLOCK_ID, "NamespaceBlock"},
         {BI_ENUM_BLOCK_ID, "EnumBlock"},
-        {BI_ENUM_VALUE_BLOCK_ID, "EnumValueBlock"},
         {BI_EXPR_BLOCK_ID, "ExprBlock"},
         {BI_TYPEDEF_BLOCK_ID, "TypedefBlock"},
         {BI_TYPEINFO_BLOCK_ID, "TypeInfoBlock"},
@@ -225,6 +224,8 @@ BlockIdNameMap = []()
         {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
         {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"},
         {BI_SPECIALIZATION_BLOCK_ID, "SpecializationBlock"},
+        {BI_FRIEND_BLOCK_ID, "FriendBlock"},
+        {BI_ENUMERATOR_BLOCK_ID, "EnumeratorBlock"},
         {BI_VARIABLE_BLOCK_ID, "VarBlock"}
     };
     MRDOCS_ASSERT(Inits.size() == BlockIdCount);
@@ -248,15 +249,14 @@ RecordIDNameMap = []()
         {BASE_ACCESS, {"BaseAccess", &Integer32Abbrev}},
         {BASE_IS_VIRTUAL, {"BaseIsVirtual", &BoolAbbrev}},
         {ENUM_SCOPED, {"Scoped", &BoolAbbrev}},
-        {ENUM_VALUE_NAME, {"Name", &StringAbbrev}},
-        {ENUM_VALUE_VALUE, {"Value", &StringAbbrev}},
-        {ENUM_VALUE_EXPR, {"Expr", &StringAbbrev}},
+        {ENUM_MEMBERS, {"EnumMembers", &SymbolIDsAbbrev}},
         {EXPR_WRITTEN, {"ExprWritten", &StringAbbrev}},
         {EXPR_VALUE, {"ExprValue", &Integer64Abbrev}},
         {FIELD_DEFAULT, {"DefaultValue", &StringAbbrev}},
         {FIELD_ATTRIBUTES, {"FieldAttributes", &Integer32ArrayAbbrev}},
         {FIELD_IS_MUTABLE, {"FieldIsMutable", &BoolAbbrev}},
         {FIELD_IS_BITFIELD, {"FieldIsBitfield", &BoolAbbrev}},
+        {FRIEND_SYMBOL, {"FriendSymbol", &SymbolIDAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {FUNCTION_CLASS, {"FunctionClass", &Integer32Abbrev}},
         {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
@@ -280,7 +280,6 @@ RecordIDNameMap = []()
         {RECORD_KEY_KIND, {"KeyKind", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
-        {RECORD_FRIENDS, {"Friends", &SymbolIDsAbbrev}},
         {RECORD_MEMBERS, {"RecordMembers", &SymbolIDsAbbrev}},
         {RECORD_SPECIALIZATIONS, {"RecordSpecializations", &SymbolIDsAbbrev}},
         {SPECIALIZATION_PRIMARY, {"SpecializationPrimary", &SymbolIDAbbrev}},
@@ -335,13 +334,10 @@ RecordsByBlock{
         {BASE_ACCESS, BASE_IS_VIRTUAL}},
     // EnumInfo
     {BI_ENUM_BLOCK_ID,
-        {ENUM_SCOPED}},
+        {ENUM_SCOPED, ENUM_MEMBERS}},
     // ExprInfo and ConstantExprInfo
     {BI_EXPR_BLOCK_ID,
         {EXPR_WRITTEN, EXPR_VALUE}},
-    // EnumValue
-    {BI_ENUM_VALUE_BLOCK_ID,
-        {ENUM_VALUE_NAME, ENUM_VALUE_VALUE, ENUM_VALUE_EXPR}},
     // FieldInfo
     {BI_FIELD_BLOCK_ID,
         {FIELD_DEFAULT, FIELD_ATTRIBUTES,
@@ -369,7 +365,7 @@ RecordsByBlock{
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
         {RECORD_KEY_KIND, RECORD_IS_TYPE_DEF, RECORD_BITS,
-        RECORD_FRIENDS, RECORD_MEMBERS, RECORD_SPECIALIZATIONS}},
+        RECORD_MEMBERS, RECORD_SPECIALIZATIONS}},
     // TArg
     {BI_TEMPLATE_ARG_BLOCK_ID,
         {TEMPLATE_ARG_KIND, TEMPLATE_ARG_IS_PACK,
@@ -384,6 +380,12 @@ RecordsByBlock{
     // SpecializationInfo
     {BI_SPECIALIZATION_BLOCK_ID,
         {SPECIALIZATION_PRIMARY, SPECIALIZATION_MEMBERS}},
+    // FriendInfo
+    {BI_FRIEND_BLOCK_ID,
+        {FRIEND_SYMBOL}},
+    // FriendInfo
+    {BI_ENUMERATOR_BLOCK_ID,
+        {}},
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
         {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_ID, TYPEINFO_NAME,
@@ -790,31 +792,6 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    EnumInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
-    emitInfoPart(I);
-    emitSourceInfo(I);
-    emitRecord(I.Scoped, ENUM_SCOPED);
-    emitBlock(I.UnderlyingType);
-    for (const auto& N : I.Members)
-        emitBlock(N);
-}
-
-void
-BitcodeWriter::
-emitBlock(
-    EnumValueInfo const& I)
-{
-    StreamSubBlockGuard Block(Stream, BI_ENUM_VALUE_BLOCK_ID);
-    emitRecord(I.Name, ENUM_VALUE_NAME);
-    emitBlock(I.Initializer);
-    emitBlock(I.javadoc);
-}
-
-void
-BitcodeWriter::
-emitBlock(
     FieldInfo const& F)
 {
     StreamSubBlockGuard Block(Stream, BI_FIELD_BLOCK_ID);
@@ -1007,9 +984,21 @@ emitBlock(
     emitRecord({I.specs.raw}, RECORD_BITS);
     for (const auto& B : I.Bases)
         emitBlock(B);
-    emitRecord(I.Friends, RECORD_FRIENDS);
     emitRecord(I.Members, RECORD_MEMBERS);
     emitRecord(I.Specializations, RECORD_SPECIALIZATIONS);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    EnumInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
+    emitInfoPart(I);
+    emitSourceInfo(I);
+    emitRecord(I.Scoped, ENUM_SCOPED);
+    emitRecord(I.Members, ENUM_MEMBERS);
+    emitBlock(I.UnderlyingType);
 }
 
 void
@@ -1030,6 +1019,30 @@ emitBlock(
         members.emplace_back(mem.Specialized);
     }
     emitRecord(members, SPECIALIZATION_MEMBERS);
+}
+
+
+void
+BitcodeWriter::
+emitBlock(
+    const FriendInfo& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_FRIEND_BLOCK_ID);
+    emitInfoPart(I);
+    emitSourceInfo(I);
+    emitRecord(I.FriendSymbol, FRIEND_SYMBOL);
+    emitBlock(I.FriendType);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    const EnumeratorInfo& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_ENUMERATOR_BLOCK_ID);
+    emitInfoPart(I);
+    emitSourceInfo(I);
+    emitBlock(I.Initializer);
 }
 
 void

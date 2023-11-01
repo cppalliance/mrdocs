@@ -457,44 +457,6 @@ public:
 
 //------------------------------------------------
 //
-// EnumValueInfo
-//
-//------------------------------------------------
-
-class DomEnumValueArray : public dom::ArrayImpl
-{
-    std::vector<EnumValueInfo> const& list_;
-    DomCorpus const& domCorpus_;
-
-public:
-    DomEnumValueArray(
-        std::vector<EnumValueInfo> const& list,
-        DomCorpus const& domCorpus) noexcept
-        : list_(list)
-        , domCorpus_(domCorpus)
-    {
-    }
-
-    std::size_t size() const noexcept override
-    {
-        return list_.size();
-    }
-
-    dom::Value get(std::size_t i) const override
-    {
-        auto const& I = list_.at(i);
-        return dom::Object({
-            { "name", I.Name },
-            { "value", I.Initializer.Value ?
-                dom::Value(*I.Initializer.Value) : dom::Value() },
-            { "expr", I.Initializer.Written },
-            { "doc", domCreate(I.javadoc, domCorpus_) }
-            });
-    }
-};
-
-//------------------------------------------------
-//
 // Interface
 //
 //------------------------------------------------
@@ -558,7 +520,8 @@ public:
             { "types",      init(tranche.Types, sp, domCorpus) },
             { "field",      init(tranche.Data, sp, domCorpus) },
             { "staticfuncs",init(tranche.StaticFunctions, sp, domCorpus) },
-            { "staticdata", init(tranche.StaticData, sp, domCorpus) }
+            { "staticdata", init(tranche.StaticData, sp, domCorpus) },
+            { "friends",    init(tranche.Friends, sp, domCorpus) }
             })
         , sp_(sp)
         , tranche_(tranche)
@@ -647,11 +610,12 @@ DomInfo<T>::construct() const
         { "kind",       toString(I_.Kind) },
         { "access",     toString(I_.Access) },
         { "implicit",   I_.Implicit },
-        { "name",       I_.Name },
         { "namespace",  dom::newArray<DomSymbolArray>(
                             I_.Namespace, domCorpus_) },
         { "doc",        domCreate(I_.javadoc, domCorpus_) }
         });
+    if(! I_.Name.empty())
+        entries.emplace_back("name", I_.Name);
     if(! I_.Namespace.empty())
         entries.emplace_back("parent",
             domCorpus_.get(I_.Namespace.front()));
@@ -675,11 +639,19 @@ DomInfo<T>::construct() const
             { "defaultAccess",  getDefaultAccess(I_) },
             { "isTypedef",      I_.IsTypeDef },
             { "bases",          dom::newArray<DomBaseArray>(I_.Bases, domCorpus_) },
-            { "friends",        dom::newArray<DomSymbolArray>(I_.Friends, domCorpus_) },
             { "members",        dom::newArray<DomSymbolArray>(I_.Members, domCorpus_) },
             { "specializations",dom::newArray<DomSymbolArray>(I_.Specializations, domCorpus_) },
             { "interface",      dom::newObject<DomInterface>(I_, domCorpus_) },
             { "template",       domCreate(I_.Template, domCorpus_) }
+            });
+    }
+    if constexpr(T::isEnum())
+    {
+        entries.insert(entries.end(), {
+            { "type",       domCreate(I_.UnderlyingType, domCorpus_) },
+            { "members",    dom::newArray<DomSymbolArray>(
+                I_.Members, domCorpus_) },
+            { "isScoped",   I_.Scoped }
             });
     }
     if constexpr(T::isFunction())
@@ -726,14 +698,6 @@ DomInfo<T>::construct() const
             { "overloadedOperator", I_.specs0.overloadedOperator.get() },
             });
     }
-    if constexpr(T::isEnum())
-    {
-        entries.insert(entries.end(), {
-            { "type",       domCreate(I_.UnderlyingType, domCorpus_) },
-            { "members",    dom::newArray<DomEnumValueArray>(I_.Members, domCorpus_) },
-            { "isScoped",   I_.Scoped }
-            });
-    }
     if constexpr(T::isTypedef())
     {
         entries.insert(entries.end(), {
@@ -770,6 +734,27 @@ DomInfo<T>::construct() const
     }
     if constexpr(T::isSpecialization())
     {
+    }
+    if constexpr(T::isFriend())
+    {
+        if(I_.FriendSymbol)
+        {
+            auto befriended = domCorpus_.get(I_.FriendSymbol);
+            entries.emplace_back("name", befriended.get("name"));
+            entries.emplace_back("symbol", befriended);
+        }
+        else if(I_.FriendType)
+        {
+            auto befriended = domCreate(I_.FriendType, domCorpus_);
+            entries.emplace_back("name", befriended.get("name"));
+            entries.emplace_back("type", befriended);
+        }
+    }
+    if constexpr(T::isEnumerator())
+    {
+        entries.insert(entries.end(), {
+            { "initializer", dom::stringOrNull(I_.Initializer.Written) }
+            });
     }
     return dom::Object(std::move(entries));
 }

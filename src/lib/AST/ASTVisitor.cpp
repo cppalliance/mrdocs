@@ -284,16 +284,15 @@ public:
     getOrCreateInfo(const SymbolID& id)
     {
         Info* info = getInfo(id);
-        bool created = false;
+        bool created = ! info;
         if(! info)
         {
-            auto [it, inserted] = info_.emplace(
-                std::make_unique<InfoTy>(id));
-            info = it->get();
-            created = true;
+            info = info_.emplace(std::make_unique<
+                InfoTy>(id)).first->get();
+            if(currentMode() != ExtractMode::Normal)
+                info->Implicit = true;
         }
         MRDOCS_ASSERT(info->Kind == InfoTy::kind_id);
-        info->Implicit &= currentMode() != ExtractMode::Normal;
         return {static_cast<InfoTy&>(*info), created};
     }
 
@@ -348,6 +347,54 @@ public:
 
     //------------------------------------------------
 
+    /** Generates a USR for a declaration.
+
+        Returns true if USR generation failed,
+        and false otherwise.
+    */
+    bool
+    generateUSR(const Decl* D)
+    {
+        MRDOCS_ASSERT(D);
+        MRDOCS_ASSERT(usr_.empty());
+        // KRYSTIAN NOTE: clang doesn't currently support
+        // generating USRs for friend declarations, so we
+        // will improvise until i can merge a patch which
+        // adds support for them
+        if(const auto* FD = dyn_cast<FriendDecl>(D))
+        {
+            // first, generate the USR for the containing class
+            if(index::generateUSRForDecl(
+                cast<Decl>(FD->getDeclContext()), usr_))
+                return true;
+            // add a seperator for uniqueness
+            usr_.append("@FD");
+            // if the friend declaration names a type,
+            // use the USR generator for types
+            if(TypeSourceInfo* TSI = FD->getFriendType())
+                return index::generateUSRForType(
+                    TSI->getType(), context_, usr_);
+            // otherwise, fallthrough and append the
+            // USR of the nominated declaration
+            if(! (D = FD->getFriendDecl()))
+                return true;
+        }
+        // functions require their parameter types to be decayed
+        // prior to USR generator to ensure that declarations
+        // with parameter types which decay to the same type
+        // generate the same USR
+        if(const auto* FD = dyn_cast<FunctionDecl>(D))
+        {
+            // apply the type adjustments specified in [dcl.fct] p5
+            // to ensure that the USR of the corresponding function matches
+            // other declarations of the function that have parameters declared
+            // with different top-level cv-qualifiers.
+            for(ParmVarDecl* P : FD->parameters())
+                P->setType(context_.getSignatureParameterType(P->getType()));
+        }
+        return index::generateUSRForDecl(D, usr_);
+    }
+
     // Function to hash a given USR value for storage.
     // As USRs (Unified Symbol Resolution) could bef
     // large, especially for functions with long type
@@ -355,20 +402,13 @@ public:
     // guarantee the uniqueness of symbols while using
     // a relatively small amount of memory (vs storing
     // USRs directly).
-    //
     bool
     extractSymbolID(
         const Decl* D,
         SymbolID& id)
     {
-        // functions require their parameter types to be decayed
-        // prior to USR generator to ensure that declarations
-        // with parameter types which decay to the same type
-        // generate the same USR
-        if(const auto* FD = dyn_cast<FunctionDecl>(D))
-            applyDecayToParameters(FD);
         usr_.clear();
-        if(index::generateUSRForDecl(D, usr_))
+        if(generateUSR(D))
             return false;
         id = SymbolID(llvm::SHA1::hash(
             arrayRefFromStringRef(usr_)).data());
@@ -446,8 +486,7 @@ public:
     //------------------------------------------------
 
     unsigned
-    getLine(
-        const NamedDecl* D) const
+    getLine(const Decl* D) const
     {
         return source_.getPresumedLoc(
             D->getBeginLoc()).getLine();
@@ -1184,6 +1223,23 @@ public:
                     return VD;
                 }
 
+                // ------------------------------------------------
+                // EnumDecl
+
+                // VarTemplate
+                if constexpr(kind == Decl::Enum)
+                {
+                    EnumDecl* ED = DT;
+                    while(MemberSpecializationInfo* MSI =
+                        ED->getMemberSpecializationInfo())
+                    {
+                        if(MSI->isExplicitSpecialization())
+                            break;
+                        ED = cast<EnumDecl>(MSI->getInstantiatedFrom());
+                    }
+                    return ED;
+                }
+
                 return DT;
             });
     }
@@ -1524,19 +1580,6 @@ public:
     }
 
     void
-    applyDecayToParameters(
-        const FunctionDecl* D)
-    {
-        // apply the type adjustments specified in [dcl.fct] p5
-        // to ensure that the USR of the corresponding function matches
-        // other declarations of the function that have parameters declared
-        // with different top-level cv-qualifiers.
-        // this needs to be done prior to USR generation for the function
-        for(ParmVarDecl* P : D->parameters())
-            P->setType(context_.getSignatureParameterType(P->getType()));
-    }
-
-    void
     parseRawComment(
         std::unique_ptr<Javadoc>& javadoc,
         Decl const* D)
@@ -1853,9 +1896,14 @@ public:
                 emplaceChild(P, child_id);
                 break;
             }
-            // KRYSTIAN FIXME: we may need to handle
-            // enumerators separately at some point
-            // case Decl::Enum:
+            case Decl::Enum:
+            {
+                auto [P, created] = getOrCreateInfo<
+                    EnumInfo>(parent_id);
+                buildEnum(P, created, cast<EnumDecl>(parent));
+                emplaceChild(P, child_id);
+                break;
+            }
             default:
                 // we consider all other DeclContexts to be "transparent"
                 // and do not include them in the list of parents.
@@ -2020,18 +2068,29 @@ public:
             I.UnderlyingType = buildTypeInfo(
                 D->getIntegerType());
 
-        for(const EnumConstantDecl* E : D->enumerators())
-        {
-            auto& M = I.Members.emplace_back(
-                E->getNameAsString());
+        getParentNamespaces(I, D);
+    }
 
-            buildExprInfo(
-                M.Initializer,
-                E->getInitExpr(),
-                E->getInitVal());
+    //------------------------------------------------
 
-            parseRawComment(I.Members.back().javadoc, E);
-        }
+    void
+    buildEnumerator(
+        EnumeratorInfo& I,
+        bool created,
+        EnumConstantDecl* D)
+    {
+        parseRawComment(I.javadoc, D);
+        addSourceLocation(I, getLine(D), true);
+
+        if(! created)
+            return;
+
+        I.Name = extractName(D);
+
+        buildExprInfo(
+            I.Initializer,
+            D->getInitExpr(),
+            D->getInitVal());
 
         getParentNamespaces(I, D);
     }
@@ -2289,60 +2348,40 @@ public:
 
     void
     buildFriend(
+        FriendInfo& I,
+        bool created,
         FriendDecl* D)
     {
+        parseRawComment(I.javadoc, D);
+        addSourceLocation(I, getLine(D), true);
+
+        if(! created)
+            return;
+
+        // A NamedDecl nominated by a FriendDecl
+        // will be one of the following:
+        // - FunctionDecl
+        // - FunctionTemplateDecl
+        // - ClassTemplateDecl
         if(NamedDecl* ND = D->getFriendDecl())
         {
-            // D does not name a type
-            if(FunctionDecl* FD = dyn_cast<FunctionDecl>(ND))
-            {
-                if(! shouldExtract(FD, AccessSpecifier::AS_none))
-                    return;
-
-                SymbolID id;
-                if(! extractSymbolID(FD, id))
-                    return;
-                auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
-                buildFunction(I, created, FD);
-
-                const DeclContext* DC = D->getDeclContext();
-                const auto* RD = dyn_cast<CXXRecordDecl>(DC);
-                // the semantic DeclContext of a FriendDecl must be a class
-                MRDOCS_ASSERT(RD);
-                SymbolID parent_id = extractSymbolID(RD);
-                if(Info* parent = getInfo(parent_id))
-                {
-                    MRDOCS_ASSERT(parent->isRecord());
-                    parent->Implicit &= currentMode() != ExtractMode::Normal;
-                    static_cast<RecordInfo*>(parent)->Friends.emplace_back(I.id);
-                }
-                return;
-            }
-            if(FunctionTemplateDecl* FT = dyn_cast<FunctionTemplateDecl>(ND))
-            {
-                // VFALCO TODO
-                (void)FT;
-                return;
-            }
-            if(ClassTemplateDecl* CT = dyn_cast<ClassTemplateDecl>(ND))
-            {
-                // VFALCO TODO
-                (void)CT;
-                return;
-            }
-
-            MRDOCS_UNREACHABLE();
+            extractSymbolID(ND, I.FriendSymbol);
+            // If this is a friend function declaration naming
+            // a previously undeclared function, traverse it.
+            // in addition to this, traverse the declaration if
+            // it's a class templates first declared as a friend
+            if((ND->isFunctionOrFunctionTemplate() &&
+                ND->getFriendObjectKind() == Decl::FOK_Undeclared) ||
+                (isa<ClassTemplateDecl>(ND) && ND->isFirstDecl()))
+                traverseDecl(ND);
         }
-        else if(TypeSourceInfo* TS = D->getFriendType())
-        {
-            (void)TS;
-            return;
-        }
-        else
-        {
-            MRDOCS_UNREACHABLE();
-        }
-        return;
+        // Since a friend declaration which name non-class types
+        // will be ignored, a type nominated by a FriendDecl can
+        // essentially be anything
+        if(TypeSourceInfo* TSI = D->getFriendType())
+            I.FriendType = buildTypeInfo(TSI->getType());
+
+        getParentNamespaces(I, D);
     }
 
     //------------------------------------------------
@@ -2353,8 +2392,10 @@ public:
     // enums
     bool traverse(EnumDecl*);
 
-    // KRYSTIAN TODO: friends are a can of worms
-    // we do not wish to open just yet
+    // enumerators
+    bool traverse(EnumConstantDecl*);
+
+    // friends
     bool traverse(FriendDecl*);
 
     // non-static data members
@@ -2440,12 +2481,12 @@ traverse(EnumDecl* D)
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return false;
+        return true;
     auto [I, created] = getOrCreateInfo<EnumInfo>(id);
     I.Access = convertToAccessKind(access);
 
     buildEnum(I, created, D);
-    return true;
+    return traverseContext(D);
 }
 
 //------------------------------------------------
@@ -2461,11 +2502,32 @@ traverse(FieldDecl* D)
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return false;
+        return true;
     auto [I, created] = getOrCreateInfo<FieldInfo>(id);
     I.Access = convertToAccessKind(access);
 
     buildField(I, created, D);
+    return true;
+}
+
+//------------------------------------------------
+// EnumConstantDecl
+
+bool
+ASTVisitor::
+traverse(EnumConstantDecl* D)
+{
+    AccessSpecifier access = getAccess(D);
+    if(! shouldExtract(D, access))
+        return true;
+
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return true;
+    auto [I, created] = getOrCreateInfo<EnumeratorInfo>(id);
+    I.Access = convertToAccessKind(access);
+
+    buildEnumerator(I, created, D);
     return true;
 }
 
@@ -2476,7 +2538,18 @@ bool
 ASTVisitor::
 traverse(FriendDecl* D)
 {
-    buildFriend(D);
+    AccessSpecifier access = getAccess(D);
+    if(! shouldExtract(D, access))
+        return true;
+
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return true;
+
+    auto [I, created] = getOrCreateInfo<FriendInfo>(id);
+    I.Access = convertToAccessKind(access);
+
+    buildFriend(I, created, D);
     return true;
 }
 
@@ -2494,7 +2567,7 @@ traverse(CXXRecordTy* D,
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return false;
+        return true;
 
     auto [I, created] = getOrCreateInfo<RecordInfo>(id);
     I.Access = convertToAccessKind(access);
@@ -2537,7 +2610,7 @@ traverse(VarTy* D,
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return false;
+        return true;
 
     auto [I, created] = getOrCreateInfo<VariableInfo>(id);
     I.Access = convertToAccessKind(access);
@@ -2581,7 +2654,7 @@ traverse(FunctionTy* D,
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return false;
+        return true;
 
     auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
     I.Access = convertToAccessKind(access);
@@ -2622,7 +2695,7 @@ traverse(TypedefNameTy* D,
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return false;
+        return true;
 
     auto [I, created] = getOrCreateInfo<TypedefInfo>(id);
     I.Access = convertToAccessKind(access);
@@ -2706,8 +2779,7 @@ traverseContext(
 {
     MRDOCS_ASSERT(D);
     for(auto* C : D->decls())
-        if(! traverseDecl(C))
-            return false;
+        traverseDecl(C);
     return true;
 }
 

@@ -75,7 +75,10 @@ public:
                     Error(ec).Throw();
             });
 
-        if constexpr(T::isRecord())
+        if constexpr(
+            T::isRecord() ||
+            T::isNamespace() ||
+            T::isEnum())
             corpus_.traverse(I, *this);
     }
 };
@@ -109,7 +112,10 @@ public:
     {
         auto bc = writeBitcode(I);
         os_.write(bc.data(), bc.size());
-        if constexpr(T::isRecord())
+        if constexpr(
+            T::isRecord() ||
+            T::isNamespace() ||
+            T::isEnum())
             corpus_.traverse(I, *this);
     }
 };

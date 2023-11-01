@@ -62,6 +62,8 @@ public:
     void writeRecord(RecordInfo const&);
     void writeFunction(FunctionInfo const&);
     void writeEnum(EnumInfo const&);
+    void writeEnumerator(EnumeratorInfo const&);
+    void writeFriend(FriendInfo const&);
     void writeField(FieldInfo const&);
     void writeTypedef(TypedefInfo const&);
     void writeVar(VariableInfo const&);

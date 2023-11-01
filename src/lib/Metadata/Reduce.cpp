@@ -179,7 +179,6 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     if (I.Bases.empty())
         I.Bases = std::move(Other.Bases);
     // Reduce members if necessary.
-    reduceSymbolIDs(I.Friends, std::move(Other.Friends));
     reduceSymbolIDs(I.Members, std::move(Other.Members));
     reduceSymbolIDs(I.Specializations, std::move(Other.Specializations));
     // KRYSTIAN FIXME: really should use explicit cases here.
@@ -226,8 +225,9 @@ void merge(EnumInfo& I, EnumInfo&& Other)
     MRDOCS_ASSERT(canMerge(I, Other));
     if(! I.Scoped)
         I.Scoped = Other.Scoped;
-    if (I.Members.empty())
-        I.Members = std::move(Other.Members);
+    if (! I.UnderlyingType)
+        I.UnderlyingType = std::move(Other.UnderlyingType);
+    reduceSymbolIDs(I.Members, std::move(Other.Members));
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
 }
@@ -275,6 +275,25 @@ void merge(SpecializationInfo& I, SpecializationInfo&& Other)
 
 }
 
+void merge(FriendInfo& I, FriendInfo&& Other)
+{
+    MRDOCS_ASSERT(canMerge(I, Other));
+    mergeSourceInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
+    if(! I.FriendSymbol)
+        I.FriendSymbol = Other.FriendSymbol;
+    if(! I.FriendType)
+        I.FriendType = std::move(Other.FriendType);
+}
+
+void merge(EnumeratorInfo& I, EnumeratorInfo&& Other)
+{
+    MRDOCS_ASSERT(canMerge(I, Other));
+    if(I.Initializer.Written.empty())
+        I.Initializer = std::move(Other.Initializer);
+    mergeSourceInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
+}
 
 } // mrdocs
 } // clang

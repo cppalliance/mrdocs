@@ -50,9 +50,7 @@ struct VariableInfo
 
     //--------------------------------------------
 
-    explicit
-    VariableInfo(
-        SymbolID ID = SymbolID::invalid) noexcept
+    explicit VariableInfo(SymbolID ID) noexcept
         : IsInfo(ID)
     {
     }

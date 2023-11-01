@@ -71,6 +71,7 @@ decodeRecord(
     Enum& value,
     llvm::StringRef blob)
 {
+    static_assert(! std::same_as<Enum, InfoKind>);
     std::underlying_type_t<Enum> temp;
     if(auto err = decodeRecord(R, temp, blob))
         return err;
@@ -141,30 +142,6 @@ decodeRecord(
         return formatError("integer value {} too large", R[0]);
     Field.emplace((int)R[0], Blob, (bool)R[1]);
     return Error::success();
-}
-
-inline
-Error
-decodeRecord(
-    Record const& R,
-    InfoKind& Kind,
-    llvm::StringRef Blob)
-{
-    Kind = static_cast<InfoKind>(R[0]);
-    switch(Kind)
-    {
-    case InfoKind::Namespace:
-    case InfoKind::Record:
-    case InfoKind::Function:
-    case InfoKind::Enum:
-    case InfoKind::Typedef:
-    case InfoKind::Variable:
-    case InfoKind::Field:
-    case InfoKind::Specialization:
-        return Error::success();
-    default:
-        return formatError("InfoKind is invalid");
-    }
 }
 
 inline
@@ -521,23 +498,21 @@ public:
 
 //------------------------------------------------
 
+template<typename InfoTy>
 class InfoPartBlock
     : public BitcodeReader::AnyBlock
 {
 protected:
     BitcodeReader& br_;
-    Info& I;
+    std::unique_ptr<InfoTy>& I_;
 
 public:
     InfoPartBlock(
-        Info& I,
+        std::unique_ptr<InfoTy>& I,
         BitcodeReader& br) noexcept
         : br_(br)
-        , I(I)
+        , I_(I)
     {
-        // we have to clear Info::Implicit here
-        // because bitstream elides zero values
-        I.Implicit = false;
     }
 
     Error
@@ -547,15 +522,21 @@ public:
         switch(ID)
         {
         case INFO_PART_ID:
-            return decodeRecord(R, I.id, Blob);
+        {
+            SymbolID id = SymbolID::invalid;
+            if(auto err = decodeRecord(R, id, Blob))
+                return err;
+            I_ = std::make_unique<InfoTy>(id);
+            return Error::success();
+        }
         case INFO_PART_ACCESS:
-            return decodeRecord(R, I.Access, Blob);
+            return decodeRecord(R, I_->Access, Blob);
         case INFO_PART_IMPLICIT:
-            return decodeRecord(R, I.Implicit, Blob);
+            return decodeRecord(R, I_->Implicit, Blob);
         case INFO_PART_NAME:
-            return decodeRecord(R, I.Name, Blob);
+            return decodeRecord(R, I_->Name, Blob);
         case INFO_PART_PARENTS:
-            return decodeRecord(R, I.Namespace, Blob);
+            return decodeRecord(R, I_->Namespace, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -569,7 +550,7 @@ public:
         {
         case BI_JAVADOC_BLOCK_ID:
         {
-            JavadocBlock B(I.javadoc, br_);
+            JavadocBlock B(I_->javadoc, br_);
             return br_.readBlock(B, ID);
         }
         default:
@@ -835,58 +816,6 @@ public:
         case BI_TYPEINFO_BLOCK_ID:
         {
             TypeInfoBlock B(I_.Type, br_);
-            return br_.readBlock(B, ID);
-        }
-        default:
-            return AnyBlock::readSubBlock(ID);
-        }
-    }
-};
-
-//------------------------------------------------
-
-class EnumValueBlock :
-    public BitcodeReader::AnyBlock
-{
-    EnumValueInfo& I_;
-    BitcodeReader& br_;
-
-public:
-    EnumValueBlock(
-        EnumValueInfo& I,
-        BitcodeReader& br) noexcept
-        : I_(I)
-        , br_(br)
-    {
-    }
-
-    Error
-    parseRecord(Record const& R,
-        unsigned ID, llvm::StringRef Blob) override
-    {
-        switch(ID)
-        {
-        case ENUM_VALUE_NAME:
-            return decodeRecord(R, I_.Name, Blob);
-        default:
-            return AnyBlock::parseRecord(R, ID, Blob);
-        }
-    }
-
-    Error
-    readSubBlock(
-        unsigned ID) override
-    {
-        switch(ID)
-        {
-        case BI_JAVADOC_BLOCK_ID:
-        {
-            JavadocBlock B(I_.javadoc, br_);
-            return br_.readBlock(B, ID);
-        }
-        case BI_EXPR_BLOCK_ID:
-        {
-            ExprBlock B(I_.Initializer, br_);
             return br_.readBlock(B, ID);
         }
         default:
@@ -1285,13 +1214,12 @@ protected:
     BitcodeReader& br_;
 
 public:
-    std::unique_ptr<T> I;
+    std::unique_ptr<T> I = nullptr;
 
     explicit
     TopLevelBlock(
         BitcodeReader& br)
         : br_(br)
-        , I(std::make_unique<T>())
     {
     }
 
@@ -1303,14 +1231,8 @@ public:
 class NamespaceBlock
     : public TopLevelBlock<NamespaceInfo>
 {
-
 public:
-    explicit
-    NamespaceBlock(
-        BitcodeReader& br)
-        : TopLevelBlock(br)
-    {
-    }
+    using TopLevelBlock::TopLevelBlock;
 
     Error
     parseRecord(
@@ -1338,12 +1260,7 @@ class RecordBlock
     : public TopLevelBlock<RecordInfo>
 {
 public:
-    explicit
-    RecordBlock(
-        BitcodeReader& br)
-        : TopLevelBlock(br)
-    {
-    }
+    using TopLevelBlock::TopLevelBlock;
 
     Error
     parseRecord(
@@ -1359,8 +1276,6 @@ public:
             return decodeRecord(R, I->IsTypeDef, Blob);
         case RECORD_BITS:
             return decodeRecord(R, {&I->specs.raw}, Blob);
-        case RECORD_FRIENDS:
-            return decodeRecord(R, I->Friends, Blob);
         case RECORD_MEMBERS:
             return decodeRecord(R, I->Members, Blob);
         case RECORD_SPECIALIZATIONS:
@@ -1399,12 +1314,7 @@ class FunctionBlock
     : public TopLevelBlock<FunctionInfo>
 {
 public:
-    explicit
-    FunctionBlock(
-        BitcodeReader& br)
-        : TopLevelBlock(br)
-    {
-    }
+    using TopLevelBlock::TopLevelBlock;
 
     Error
     parseRecord(Record const& R,
@@ -1454,14 +1364,8 @@ public:
 class TypedefBlock
     : public TopLevelBlock<TypedefInfo>
 {
-
 public:
-    explicit
-    TypedefBlock(
-        BitcodeReader& br)
-        : TopLevelBlock(br)
-    {
-    }
+    using TopLevelBlock::TopLevelBlock;
 
     Error
     parseRecord(Record const& R,
@@ -1505,12 +1409,7 @@ class EnumBlock
     : public TopLevelBlock<EnumInfo>
 {
 public:
-    explicit
-    EnumBlock(
-        BitcodeReader& br)
-        : TopLevelBlock(br)
-    {
-    }
+    using TopLevelBlock::TopLevelBlock;
 
     Error
     parseRecord(Record const& R,
@@ -1520,6 +1419,8 @@ public:
         {
         case ENUM_SCOPED:
             return decodeRecord(R, I->Scoped, Blob);
+        case ENUM_MEMBERS:
+            return decodeRecord(R, I->Members, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }
@@ -1536,12 +1437,6 @@ public:
             TypeInfoBlock B(I->UnderlyingType, br_);
             return br_.readBlock(B, ID);
         }
-        case BI_ENUM_VALUE_BLOCK_ID:
-        {
-            I->Members.emplace_back();
-            EnumValueBlock B(I->Members.back(), br_);
-            return br_.readBlock(B, ID);
-        }
         default:
             return TopLevelBlock::readSubBlock(ID);
         }
@@ -1553,14 +1448,8 @@ public:
 class VarBlock
     : public TopLevelBlock<VariableInfo>
 {
-
 public:
-    explicit
-    VarBlock(
-        BitcodeReader& br)
-        : TopLevelBlock(br)
-    {
-    }
+    using TopLevelBlock::TopLevelBlock;
 
     Error
     parseRecord(Record const& R,
@@ -1604,12 +1493,7 @@ class FieldBlock
     : public TopLevelBlock<FieldInfo>
 {
 public:
-    explicit
-    FieldBlock(
-        BitcodeReader& br)
-        : TopLevelBlock(br)
-    {
-    }
+    using TopLevelBlock::TopLevelBlock;
 
     Error
     parseRecord(
@@ -1660,12 +1544,7 @@ class SpecializationBlock
     : public TopLevelBlock<SpecializationInfo>
 {
 public:
-    explicit
-    SpecializationBlock(
-        BitcodeReader& br)
-        : TopLevelBlock(br)
-    {
-    }
+    using TopLevelBlock::TopLevelBlock;
 
     Error
     parseRecord(
@@ -1710,6 +1589,86 @@ public:
 
 //------------------------------------------------
 
+class FriendBlock
+    : public TopLevelBlock<FriendInfo>
+{
+public:
+    using TopLevelBlock::TopLevelBlock;
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case FRIEND_SYMBOL:
+            return decodeRecord(R, I->FriendSymbol, Blob);
+        default:
+            return TopLevelBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_TYPEINFO_BLOCK_ID:
+        {
+            TypeInfoBlock B(I->FriendType, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
+class EnumeratorBlock
+    : public TopLevelBlock<EnumeratorInfo>
+{
+public:
+    using TopLevelBlock::TopLevelBlock;
+
+    #if 0
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        default:
+            return TopLevelBlock::parseRecord(R, ID, Blob);
+        }
+    }
+    #endif
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock B(I->Initializer, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
 template<class T>
 Error
 TopLevelBlock<T>::
@@ -1722,7 +1681,7 @@ readSubBlock(
     {
         if constexpr(std::derived_from<T, Info>)
         {
-            InfoPartBlock B(*I.get(), br_);
+            InfoPartBlock<T> B(I, br_);
             return br_.readBlock(B, ID);
         }
         break;
