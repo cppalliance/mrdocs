@@ -229,7 +229,7 @@ struct Link : Text
 */
 struct Reference : Text
 {
-    SymbolID id = SymbolID::zero;
+    SymbolID id = SymbolID::invalid;
 
     static constexpr Kind static_kind = Kind::reference;
 

@@ -75,8 +75,7 @@ static void merge(Javadoc& I, Javadoc&& other)
 void mergeInfo(Info& I, Info&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    if(I.id == SymbolID::zero)
-        I.id = Other.id;
+    MRDOCS_ASSERT(I.id);
     if(I.Name == "")
         I.Name = Other.Name;
     if(I.Namespace.empty())
@@ -265,7 +264,7 @@ void merge(VariableInfo& I, VariableInfo&& Other)
 void merge(SpecializationInfo& I, SpecializationInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
-    if(I.Primary == SymbolID::zero)
+    if(! I.Primary)
         I.Primary = Other.Primary;
     if(I.Args.empty())
         I.Args = std::move(Other.Args);

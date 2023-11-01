@@ -249,7 +249,7 @@ DocVisitor::
 operator()(doc::Reference const& I)
 {
     //dest_ += I.string;
-    if(I.id == SymbolID::zero)
+    if(I.id == SymbolID::invalid)
         return (*this)(static_cast<const doc::Text&>(I));
     fmt::format_to(std::back_inserter(dest_), "xref:{}[{}]",
         corpus_.getXref(I.id), I.string);

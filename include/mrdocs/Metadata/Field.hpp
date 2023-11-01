@@ -66,7 +66,7 @@ struct FieldInfo
 
     explicit
     FieldInfo(
-        SymbolID ID = SymbolID::zero) noexcept
+        SymbolID ID = SymbolID::invalid) noexcept
         : IsInfo(ID)
     {
     }

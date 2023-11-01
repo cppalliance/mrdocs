@@ -30,6 +30,7 @@ class MRDOCS_VISIBLE
     Corpus
 {
 protected:
+
     explicit
     Corpus(
         Config const& config_) noexcept
@@ -40,6 +41,7 @@ protected:
 
     class iterator;
 public:
+
     /** Destructor.
     */
     MRDOCS_DECL

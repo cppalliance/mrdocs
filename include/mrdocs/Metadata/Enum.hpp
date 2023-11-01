@@ -70,7 +70,7 @@ struct EnumInfo
 
     explicit
     EnumInfo(
-        SymbolID ID = SymbolID::zero)
+        SymbolID ID = SymbolID::invalid)
         : IsInfo(ID)
     {
     }

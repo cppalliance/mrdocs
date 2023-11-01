@@ -36,6 +36,12 @@ struct DefaultEmptyPredicate
     {
         return t.empty();
     }
+
+    template<class T>
+    constexpr bool operator()(T const& t) const noexcept
+    {
+        return ! t;
+    }
 };
 
 /** A compact optional.

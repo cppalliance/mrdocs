@@ -91,7 +91,7 @@ struct Attribute
         SymbolID id)
         : name("id")
         , value(toString(id))
-        , pred(id != SymbolID::zero)
+        , pred(id != SymbolID::invalid)
     {
     }
 

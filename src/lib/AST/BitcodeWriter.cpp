@@ -647,7 +647,7 @@ emitRecord(
     MRDOCS_ASSERT(RecordIDNameMap[ID] && "Unknown RecordID.");
     MRDOCS_ASSERT(RecordIDNameMap[ID].Abbrev == &SymbolIDAbbrev &&
         "Abbrev type mismatch.");
-    if (!prepRecordData(ID, Sym != SymbolID::zero))
+    if (!prepRecordData(ID, !! Sym))
         return;
     MRDOCS_ASSERT(Sym.size() == 20);
     Record.push_back(Sym.size());

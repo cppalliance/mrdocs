@@ -482,7 +482,7 @@ openTemplate(
         return;
 
     const SymbolID& id = I->Primary ?
-        *I->Primary : SymbolID::zero;
+        *I->Primary : SymbolID::invalid;
 
     tags_.open(templateTagName, {
         {"class", toString(I->specializationKind()),

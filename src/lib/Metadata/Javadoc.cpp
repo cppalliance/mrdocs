@@ -232,7 +232,7 @@ getBrief(Corpus const& corpus) const noexcept
             if(text->kind != doc::Kind::copied)
                 continue;
             auto* copy = static_cast<doc::Copied*>(text.get());
-            if(copy->id != SymbolID::zero &&
+            if(copy->id &&
                 (copy->parts == doc::Parts::all ||
                 copy->parts == doc::Parts::brief))
             {
@@ -261,7 +261,7 @@ getDescription(Corpus const& corpus) const noexcept
             if(text->kind != doc::Kind::copied)
                 continue;
             auto* copy = static_cast<doc::Copied*>(text.get());
-            if(copy->id != SymbolID::zero &&
+            if(copy->id &&
                 (copy->parts == doc::Parts::all ||
                 copy->parts == doc::Parts::description))
             {

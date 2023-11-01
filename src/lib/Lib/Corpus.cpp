@@ -34,7 +34,7 @@ NamespaceInfo const&
 Corpus::
 globalNamespace() const noexcept
 {
-    return get<NamespaceInfo>(SymbolID::zero);
+    return get<NamespaceInfo>(SymbolID::global);
 }
 
 //------------------------------------------------
@@ -51,11 +51,11 @@ getFullyQualifiedName(
     std::string& temp) const
 {
     temp.clear();
-    if(I.id == SymbolID::zero)
+    if(! I.id || I.id == SymbolID::global)
         return temp;
 
     MRDOCS_ASSERT(! I.Namespace.empty());
-    MRDOCS_ASSERT(I.Namespace.back() == SymbolID::zero);
+    MRDOCS_ASSERT(I.Namespace.back() == SymbolID::global);
     for(auto const& ns_id : I.Namespace |
         std::views::reverse |
         std::views::drop(1))

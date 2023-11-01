@@ -96,8 +96,7 @@ private:
             //        which for metadata that is not emitted
             continue;
 #if 0
-            if(B.Type.id == SymbolID::zero ||
-                ! corpus_.find(B.Type.id))
+            if(! B.Type.id || ! corpus_.find(B.Type.id))
                 continue;
             append(actualAccess,
                 corpus_.get<RecordInfo>(B.Type.id));

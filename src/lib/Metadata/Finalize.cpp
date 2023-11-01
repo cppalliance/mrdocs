@@ -51,8 +51,8 @@ class Finalizer
                 qualifier.push_back(part);
             if(parse_result->qualifier.empty())
             {
-                MRDOCS_ASSERT(info_.contains(SymbolID::zero));
-                context = info_.find(SymbolID::zero)->get();
+                MRDOCS_ASSERT(info_.contains(SymbolID::global));
+                context = info_.find(SymbolID::global)->get();
             }
             found = lookup_.lookupQualified(
                 context, qualifier, parse_result->name);
@@ -77,15 +77,15 @@ class Finalizer
 
     void finalize(SymbolID& id)
     {
-        if(! info_.contains(id))
-            id = SymbolID::zero;
+        if(id && ! info_.contains(id))
+            id = SymbolID::invalid;
     }
 
     void finalize(std::vector<SymbolID>& ids)
     {
         std::erase_if(ids, [this](const SymbolID& id)
         {
-            return ! info_.contains(id);
+            return ! id || ! info_.contains(id);
         });
     }
 

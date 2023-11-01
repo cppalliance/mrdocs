@@ -256,10 +256,10 @@ public:
 
         for(Decl* D : previous)
         {
-            SymbolID id = extractSymbolID(D);
             // skip declarations which generate invalid symbol IDs,
             // or which already have been extract
-            if(id == SymbolID::zero || info_.contains(id))
+            if(SymbolID id = extractSymbolID(D);
+                ! id || info_.contains(id))
                 continue;
             traverseDecl(D);
         }
@@ -379,7 +379,7 @@ public:
     extractSymbolID(
         const Decl* D)
     {
-        SymbolID id = SymbolID::zero;
+        SymbolID id = SymbolID::invalid;
         extractSymbolID(D, id);
         return id;
     }
@@ -1804,7 +1804,7 @@ public:
             // it uses SymbolID::zero and should *always* exist
             case Decl::TranslationUnit:
             {
-                parent_id = SymbolID::zero;
+                parent_id = SymbolID::global;
                 auto [P, created] = getOrCreateInfo<
                     NamespaceInfo>(parent_id);
                 emplaceChild(P, child_id);

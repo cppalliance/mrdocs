@@ -294,7 +294,7 @@ domCreate(
                 entries.emplace_back("name",
                     t.Name);
                 entries.emplace_back("template",
-                    domCorpus.getOptional(t.Template));
+                    domCorpus.get(t.Template));
             }
         });
     return dom::Object(std::move(entries));
@@ -349,7 +349,7 @@ domCreate(
         return nullptr;
     return dom::Object({
         { "kind", toString(I->specializationKind()) },
-        { "primary", domCorpus.getOptional(*I->Primary) },
+        { "primary", domCorpus.get(*I->Primary) },
         { "params", dom::newArray<DomTParamArray>( I->Params, domCorpus) },
         { "args", dom::newArray<DomTArgArray>(I->Args, domCorpus) }
         });
@@ -375,7 +375,7 @@ domCreate(
             entries.emplace_back("name", t.Name);
 
         if constexpr(requires { t.id; })
-            entries.emplace_back("symbol", domCorpus.getOptional(t.id));
+            entries.emplace_back("symbol", domCorpus.get(t.id));
 
         if constexpr(T::isSpecialization())
             entries.emplace_back("args",
@@ -864,20 +864,13 @@ construct(Info const& I) const
         });
 }
 
-dom::Object
+dom::Value
 DomCorpus::
 get(SymbolID const& id) const
 {
-    return impl_->get(id);
-}
-
-dom::Value
-DomCorpus::
-getOptional(SymbolID const& id) const
-{
-    if(id == SymbolID::zero)
+    if(! id)
         return nullptr;
-    return get(id);
+    return impl_->get(id);
 }
 
 dom::Value

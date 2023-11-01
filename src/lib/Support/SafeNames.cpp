@@ -105,7 +105,7 @@ class SafeNames::Impl
     getUnqualified(
         const Info& I)
     {
-        MRDOCS_ASSERT(I.id != SymbolID::zero);
+        MRDOCS_ASSERT(I.id && I.id != SymbolID::global);
         return visit(I, [&]<typename T>(
             const T& t) -> std::string_view
             {

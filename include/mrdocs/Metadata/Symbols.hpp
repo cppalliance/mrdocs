@@ -34,15 +34,24 @@ class SymbolID
 public:
     static const SymbolID zero;
 
+    static const SymbolID invalid;
+
+    static const SymbolID global;
+
     using value_type = std::uint8_t;
 
     constexpr SymbolID() = default;
 
     template<typename Elem>
-    SymbolID(const Elem* src)
+    constexpr SymbolID(const Elem* src)
     {
         for(auto& c : data_)
             c = *src++;
+    }
+
+    explicit operator bool() const noexcept
+    {
+        return *this != SymbolID::invalid;
     }
 
     constexpr bool empty() const noexcept
@@ -92,14 +101,20 @@ private:
     value_type data_[20];
 };
 
-/** The empty Symbol ID.
 
-    This is used to avoid unnecessary constructions,
-    and to identify the global namespace.
-*/
-// KRYSTIAN NOTE: msvc requires inline as it doesn't consider SymbolID::zero
-// to be an inline variable without it (it should; see [dcl.constexpr])
 constexpr inline SymbolID SymbolID::zero = SymbolID();
+
+/** The invalid Symbol ID.
+*/
+// KRYSTIAN NOTE: msvc requires inline as it doesn't consider this
+// to be an inline variable without it (it should; see [dcl.constexpr])
+constexpr inline SymbolID SymbolID::invalid = SymbolID();
+
+/** Symbol ID of the global namespace.
+*/
+constexpr inline SymbolID SymbolID::global =
+    "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF"
+    "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
 
 /** Like std::optional<SymbolID>
 */

@@ -65,25 +65,13 @@ public:
 
     /** Return a Dom object representing the given symbol.
 
-        @return A value containing the symbol contents.
-
-        @param id The id of the symbol to return.
-    */
-    dom::Object
-    get(SymbolID const& id) const;
-
-    /** Return a Dom object representing the given symbol.
-
-        When `id` is zero, this function returns null.
-
         @return A value containing the symbol
-        contents, or null if `id` equals zero.
+        contents, or null if `id` is invalid.
 
         @param id The id of the symbol to return.
     */
     dom::Value
-    getOptional(
-        SymbolID const& id) const;
+    get(SymbolID const& id) const;
 
     /** Return a Dom value representing the Javadoc.
 

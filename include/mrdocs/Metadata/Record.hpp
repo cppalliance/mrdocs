@@ -113,7 +113,7 @@ struct RecordInfo
 
     explicit
     RecordInfo(
-        SymbolID ID = SymbolID::zero)
+        SymbolID ID = SymbolID::invalid)
         : IsInfo(ID)
     {
     }

@@ -42,7 +42,7 @@ struct NamespaceInfo
 
     explicit
     NamespaceInfo(
-        SymbolID ID = SymbolID::zero)
+        SymbolID ID = SymbolID::invalid)
         : IsInfo(ID)
     {
     }

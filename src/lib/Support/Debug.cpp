@@ -39,8 +39,9 @@ format(
     const clang::mrdocs::SymbolID& s,
     fmt::format_context& ctx) const
 {
-    std::string str = s == clang::mrdocs::SymbolID::zero ?
-        "<empty SymbolID>" : clang::mrdocs::toBase64(s);
+    std::string str = s ?
+        "<invalid SymbolID>" :
+        clang::mrdocs::toBase64(s);
     return fmt::formatter<std::string>::format(std::move(str), ctx);
 }
 

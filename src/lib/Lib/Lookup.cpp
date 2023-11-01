@@ -97,9 +97,9 @@ getTypeAsTag(
     {
         if constexpr(T::isTag() || T::isSpecialization())
             return t.id;
-        return SymbolID::zero;
+        return SymbolID::invalid;
     });
-    if(id == SymbolID::zero)
+    if(! id)
         return nullptr;
     return corpus_.find(id);
 }

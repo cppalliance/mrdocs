@@ -59,7 +59,7 @@ struct MRDOCS_VISIBLE
 {
     /** The unique identifier for this symbol.
     */
-    SymbolID id = SymbolID::zero;
+    SymbolID id = SymbolID::invalid;
 
     /** The unqualified name.
     */
@@ -110,7 +110,7 @@ struct MRDOCS_VISIBLE
     explicit
     Info(
         InfoKind kind,
-        SymbolID ID = SymbolID::zero) noexcept
+        SymbolID ID = SymbolID::invalid) noexcept
         : id(ID)
         , Kind(kind)
     {

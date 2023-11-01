@@ -53,7 +53,7 @@ struct SpecializationInfo
     std::vector<std::unique_ptr<TArg>> Args;
 
     /** ID of the template to which the arguments pertain */
-    SymbolID Primary = SymbolID::zero;
+    SymbolID Primary = SymbolID::invalid;
 
     /** The specialized members.
 
@@ -65,7 +65,7 @@ struct SpecializationInfo
 
     explicit
     SpecializationInfo(
-        SymbolID ID = SymbolID::zero)
+        SymbolID ID = SymbolID::invalid)
         : IsInfo(ID)
     {
     }
