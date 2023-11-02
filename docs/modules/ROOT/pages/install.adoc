@@ -1,12 +1,11 @@
 = Install
 
+[#mrdocs-binaries]
 == Binaries
 
 Binary packages are available from our https://github.com/cppalliance/mrdocs/releases[Release Page,window="_blank"]
 
 == Source
-
-=== Cloning MrDocs
 
 Clone the MrDocs repository with:
 
@@ -15,9 +14,7 @@ Clone the MrDocs repository with:
 git clone https://github.com/cppalliance/mrdocs
 ----
 
-=== Requirements
-
-Create and go to the `third-party` directory, where we are going to download and install our custom dependencies:
+Also create and go to the `third-party` directory, where we are going to download and install our dependencies:
 
 [source,bash]
 ----
@@ -31,12 +28,100 @@ These instructions assume all dependencies are installed in the `third-party` di
 Fell free to install them anywhere you want and adjust the main MrDocs configuration command later.
 ====
 
-=== LLVM
+=== Installing LLVM
 
-MrDocs depends on a specific recent version of LLVM: https://github.com/llvm/llvm-project/tree/731264b0c2af7aa46bd39625202a99e06cfccff9[731264b0]
+MrDocs uses LLVM to parse C++ code and extract documentation from it.
+It depends on a recent version of LLVM: https://github.com/llvm/llvm-project/tree/29b20829cc6ce3e6d9c3809164994c1659e0da56[29b20829]
 
-Because building LLVM may take many hours to complete, we provide pre-built binaries for Windows and Linux: https://mrdocs.com/llvm+clang/[LLVM Releases].
-You can download the binaries and uncompress them in the `./third-party/llvm+clang` directory.
+[#llvm-binaries]
+**Binaries**:
+
+Because building LLVM may take many hours to complete, we provide pre-built binaries for Windows and Linux:
+
+|===
+| | https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html[CMake Preset,window=_blank] | https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html[CMake Build,window=_blank] | Debug Info | Optimized | https://learn.microsoft.com/en-us/visualstudio/ide/understanding-build-configurations?view=vs-2022[MSVC Build,window=_blank]
+
+| 🪟 https://mrdox.com/llvm+clang/Windows-Release-29b20829.7z[`Windows-Release-29b20829.7z`]
+| 🚀 Release
+| 🚀 Release
+| ❌
+| ✅
+| 🚀 Release
+
+| 🪟 https://mrdox.com/llvm+clang/Windows-Debug-29b20829.7z[`Windows-Debug-29b20829.7z`]
+| 🐞 Debug
+| 🐞 Debug
+| ✅
+| ❌
+| 🐞 Debug
+
+| 🪟 https://mrdox.com/llvm+clang/Windows-RelWithDebInfo-29b20829.7z[`Windows-RelWithDebInfo-29b20829.7z`]
+| 🕵️‍♂️ RelWithDebInfo
+| 🕵️‍♂️ RelWithDebInfo
+| ✅
+| ✅
+| 🚀 Release
+
+| 🪟 https://mrdox.com/llvm+clang/Windows-DebWithOpt-29b20829.7z[`Windows-DebWithOpt-29b20829.7z`]
+| 🔬 DebWithOpt
+| 🐞 Debug
+| ✅
+| ✅
+| 🐞 Debug
+
+| 🐧 https://mrdox.com/llvm+clang/Linux-Release-29b20829.tar.xz[`Linux-Release-29b20829.tar.xz`]
+| 🚀 Release
+| 🚀 Release
+| ❌
+| ✅
+| N/A
+
+| 🐧 https://mrdox.com/llvm+clang/Linux-Debug-29b20829.tar.xz[`Linux-Debug-29b20829.tar.xz`]
+| 🐞 Debug
+| 🐞 Debug
+| ✅
+| ❌
+| N/A
+
+| 🐧 https://mrdox.com/llvm+clang/Linux-RelWithDebInfo-29b20829.tar.xz[`Linux-RelWithDebInfo-29b20829.tar.xz`]
+| 🕵️‍♂️ RelWithDebInfo
+| 🕵️‍♂️ RelWithDebInfo
+| ✅
+| ✅
+| N/A
+
+| 🐧 https://mrdox.com/llvm+clang/Linux-DebWithOpt-29b20829.tar.xz[`Linux-DebWithOpt-29b20829.tar.xz`]
+| 🔬 DebWithOpt
+| 🐞 Debug
+| ✅
+| ✅
+| N/A
+|===
+
+IMPORTANT: The Linux binaries are built on Ubuntu 22.04 and may not work on other distributions.
+
+You can download the binaries and uncompress them in the `./third-party/llvm+clang` directory we created in the previous step.
+
+LLVM binaries are provided in a number of preset configurations.
+Here is a brief description of each preset:
+
+- `Release`: this is the preset users will typically use.
+It is optimized for speed and does not include debug information.
+- `Debug`: this is a preset developers can use.
+It includes debug information and no optimizations.
+However, using a `Debug` build of LLVM to debug MrDocs might be too slow.
+In this case, you can link MrDocs with `RelWithDebInfo` or `DebWithOpt`.
+- `RelWithDebInfo`: this is a release build with debug information.
+It is optimized for speed and includes debug information.
+However, if you are working with Windows+MSVC, this preset has a `Release` build type at the MSVC level.
+This means you can have conflicts with MrDocs in `Debug` mode because of LLVM setting flags such as the `_ITERATOR_DEBUG_LEVEL` and `/MDd`.
+In this case, you can use `DebWithOpt` instead to avoid the conflict and subsequent workarounds.
+- `DebWithOpt`: this is a debug build with optimizations.
+It includes all the default Debug flags for LLVM, it's optimized for speed, includes debug information, and causes no conflicts with MrDocs in `Debug` mode.
+
+If you chose to use the provided binaries instead of building LLVM from source, you can skip to the <<duktape>> section.
+
+**Download**:
 
 Alternatively, if building LLVM from source, you can clone the project from the official repository:
 
@@ -44,47 +129,82 @@ Alternatively, if building LLVM from source, you can clone the project from the 
 ----
 git clone https://github.com/llvm/llvm-project.git
 cd llvm-project
-git checkout 731264b0c2af7aa46bd39625202a99e06cfccff9
+git checkout 29b20829cc6ce3e6d9c3809164994c1659e0da56
+cd llvm
 ----
 
-Configure LLVM with the settings required by MrDocs:
+**Configure**:
+
+There are two ways to configure LLVM: using <<llvm-configure-presets, CMake presets>> or using <<llvm-configure-cmd-line, CMake directly>>.
+
+[#llvm-configure-presets]
+_Configure with CMake Presets_
+
+We recommend using https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html[CMake presets,window=_blank] to build LLVM.
+Preset files contain a replicable set of CMake configuration values that can be used to configure a project.
+
+Instead of passing all CMake configuration values on the command line, a template for the `CMakePresets.json` and `CMakeUserPresets.json` files is provided in the repository's `third-party/llvm` directory.
+Copy these files to the `llvm-project/llvm` directory and run a command such as the following to configure LLVM:
+
+[source,bash]
+----
+cmake -preset=relwithdebinfo-win
+----
+
+In the example above, we configure a `RelWithDebInfo` version of LLVM for MrDocs: a release build with debug information.
+
+Choose one of the presets from `CMakePresets.json` or edit the variants in `CMakeUserPresets.json` to customize the configurations.
+The `CMakeUserPresets.json` file comes with presets for all the configurations described in the <<llvm-binaries,Binaries>> section.
+
+[NOTE]
+====
+Developers might also want to build a custom `Debug` LLVM configuration including optimizations, which allows for faster execution of tests.
+The `relwithdebinfo` and `debwithopt` presets are provided for this purpose.
+Or if you prefer using the command line, set `CMAKE_CONFIGURATION_TYPES` or `CMAKE_BUILD_TYPE` to `Debug` and manually include the optimization flags to `-D CMAKE_CXX_FLAGS="/O2 /Zi"` (MSVC) or `-D CMAKE_CXX_FLAGS="-Og -g"`.
+
+This should give you an optimized build with all debug features and flags, such as an appropriate https://learn.microsoft.com/en-us/cpp/standard-library/iterator-debug-level[`_ITERATOR_DEBUG_LEVEL`] and the `/MDd` flag in MSVC.
+In other platforms, this should give you a release somewhat equivalent to `RelWithDebInfo` optimized for debugging experience. `-Og` offers a reasonable level of optimization while maintaining fast compilation and a good debugging experience.
+====
+
+[#llvm-configure-cmd-line]
+_Configure with Command Line Arguments_:
+
+You can also configure LLVM directly with the settings required by MrDocs:
 
 Windows (from administrator `cmd.exe`, after running `vcvars64.bat`):
 
 [source,commandline]
 ----
-cmake -S llvm -B build -G "Visual Studio 17 2022" -A x64 -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_CONFIGURATION_TYPES="RelWithDebInfo" -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=../llvm+clang/RelWithDebInfo -D LLVM_ENABLE_IDE=OFF -D LLVM_ENABLE_DIA_SDK=OFF
+cmake -S llvm -B build/MSVC/RelWithDebInfo -G "Ninja" -A x64 -D LLVM_ENABLE_PROJECTS="clang" -D CMAKE_CONFIGURATION_TYPES="RelWithDebInfo" -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=../llvm+clang/RelWithDebInfo -D LLVM_ENABLE_IDE=OFF -D LLVM_ENABLE_DIA_SDK=OFF
 ----
 
 Unix variants:
 
 [source,bash]
 ----
-cmake -S llvm -B build -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_BUILD_TYPE=RelWithDebInfo -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=../llvm+clang/RelWithDebInfo
+cmake -S llvm -B build/Linux/RelWithDebInfo -D LLVM_ENABLE_PROJECTS="clang" -D CMAKE_BUILD_TYPE=RelWithDebInfo -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=../llvm+clang/RelWithDebInfo
 ----
 
-As you can see from the step above, we configure a `RelWithDebInfo` version of LLVM for MrDocs by default.
-This is a release build with debug information.
-Other possible CMake configurations supported by LLVM are `Debug` (including debug information and no optimizations), `Release` (including optimizations and no debug information), and `MinSizeRel` (which optimizes for size).
+Unlike the <<llvm-configure-presets,CMake presets>>, this command does not a number of parameters that removes features that are not required by MrDocs, thus increasing the build time and size of the installation.
 
-[NOTE]
-====
-Developers might also want to build a custom `Debug` LLVM configuration including optimizations, which allows for faster execution of tests.
-To create such an installation, set `CMAKE_CONFIGURATION_TYPES` or `CMAKE_BUILD_TYPE` to `Debug` and manually include the optimization flags to `-D CMAKE_CXX_FLAGS="/O2 /Zi"` (MSVC) or `-D CMAKE_CXX_FLAGS="-Og -g"`.
+**Build**:
 
-This should give you an optimized build with all debug features and flags, such as an appropriate https://learn.microsoft.com/en-us/cpp/standard-library/iterator-debug-level[`_ITERATOR_DEBUG_LEVEL`] and the `/MDd` flag in MSVC.
-In other platforms, this should give you a release somewhat equivalent to `RelWithDebInfo` optimized for debugging experience. `-Og` offers a reasonable level of optimization while maintaining fast compilation and a good debugging experience.
-
-This custom configuration can be installed in an alternative directory, such as `../llvm+clang/DebWithOpt`, to be used by the MrDocs `Debug` builds by developers.
-====
-
-Then build and install it:
+Build and install the configured version of LLVM with:
 
 [source,bash]
 ----
 cd build
 cmake --build . --config RelWithDebInfo
 cmake --install . --prefix ../../llvm+clang/RelWithDebInfo" --config RelWithDebInfo
+----
+
+If you prefer using the provided CMake presets, you can also use the `--preset` option for the `build` command:
+
+[source,bash]
+----
+cd build
+cmake --build --preset=relwithdebinfo-win
+cmake --install MSVC/RelWithDebInfo --config RelWithDebInfo
 ----
 
 Return from `./third-party/llvm-project/build` to the parent `third-party` directory to install other dependencies:
@@ -94,9 +214,11 @@ Return from `./third-party/llvm-project/build` to the parent `third-party` direc
 cd ../..
 ----
 
-==== Duktape
+[#duktape]
+=== Downloading Duktape
 
-Duktape is a JavaScript engine that is used by MrDocs to parse and evaluate JavaScript code.
+MrDocs contains functionality to allow users to define their own templates for the documentation.
+Duktape is a JavaScript engine that is used by MrDocs to parse and evaluate template helpers.
 
 The release files can be obtained from the Duktape repository:
 
@@ -107,7 +229,8 @@ tar -xvf "duktape-2.7.0.tar.xz"
 ----
 
 Duktape provides no CMake integration scripts.
-The MrDocs configuration script needs direct access to the installed source files for Duktape so that's all you need to do.
+For this reason, MrDocs needs direct access to the source files for Duktape.
+This means that's all you need to do for `duktape`.
 
 === CMake dependencies
 
@@ -155,7 +278,7 @@ vcpkg has two operation modes with which you can install these dependencies: <<v
 [#vcpkg-classic-mode]
 _Classic mode_:
 
-In vcpkg @https://learn.microsoft.com/en-us/vcpkg/users/classic-mode[classic mode,window=blank_], vcpkg maintains a central installed tree inside the vcpkg instance built up by individual vcpkg install and vcpkg remove commands.
+In vcpkg https://learn.microsoft.com/en-us/vcpkg/users/classic-mode[classic mode,window=blank_], vcpkg maintains a central installed tree inside the vcpkg instance built up by individual `vcpkg install` and `vcpkg remove` commands.
 This central set of packages can then be shared by any number of projects.
 However, each instance of vcpkg (a separate git clone) will have its own set of packages installed.
 
@@ -178,16 +301,30 @@ Unix variants:
 [#vcpkg-manifest-mode]
 _Manifest mode_:
 
-In @https://learn.microsoft.com/en-us/vcpkg/users/manifests[manifest mode,windows=blank_], you declare your project's direct dependencies in a manifest file named `vcpkg.json`.
+In https://learn.microsoft.com/en-us/vcpkg/users/manifests[manifest mode,windows=blank_], you declare your project's direct dependencies in a manifest file named `vcpkg.json`.
 MrDocs includes a `vcpkg.json.example` file you can duplicate or create a symlink as `vcpkg.json` to use this mode.
 MrDocs is a CMake project that then already includes a `vcpkg.json` file, there's nothing else you need to run to install the dependencies.
 
 In this mode, vcpkg will create separate installed trees for each project and configuration.
-This is the recommended vcpkg mode for most users according to the @https://learn.microsoft.com/en-us/vcpkg/users/manifests[vcpkg documentation,window=blank_].
+This is the recommended vcpkg mode for most users according to the https://learn.microsoft.com/en-us/vcpkg/users/manifests[vcpkg documentation,window=blank_].
 
 === MrDocs
 
-Once the dependencies are available in `third-party`, you can configure MrDocs with:
+Return from `./third-party/vcpkg` to the parent directory of `third-party` (the one containing the `mrdocs` directory) to build and install MrDocs:
+
+[source,bash]
+----
+cd ../..
+----
+
+**Configure**:
+
+You can also configure MrDocs with <<mrdocs-configure-cmd-line, command line arguments>> or <<mrdocs-configure-presets, CMake presets>>.
+
+[#mrdocs-configure-cmd-line]
+_Configure with Command Line Arguments_:
+
+With the dependencies are available in `third-party`, you can configure MrDocs with:
 
 Windows:
 
@@ -203,19 +340,20 @@ Unix variants:
 cmake -S mrdocs -B build -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D LLVM_ROOT="$(pwd)/third-party/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="$(pwd)/third-party/duktape-2.7.0" -D CMAKE_TOOLCHAIN_FILE="$(pwd)/third-party/vcpkg/scripts/buildsystems/vcpkg.cmake"
 ----
 
-[TIP]
-====
+[#mrdocs-configure-presets]
+_Configure with CMake Presets_:
+
 The MrDocs repository also includes a `CMakePresets.json` file that contains the parameters to configure MrDocs with CMake.
 
 To specify the installation directories, you can use the `LLVM_ROOT`, `DUKTAPE_SOURCE_ROOT`, `CMAKE_TOOLCHAIN_FILE` environment variables.
 To specify a generator (`-G`) and platform name (`-A`), you can use the `CMAKE_GENERATOR` and `CMAKE_GENERATOR_PLATFORM` environment variables.
 
-Alternatively, you can create a `CMakeUserPresets.json` file in the `mrdocs` directory with the specific values you want to override in each configuration.
-This is typically more convenient than using environment variables when working on an IDE.
-The repository includes a `CMakeUserPresets.json.example` file that can be used as a template.
-====
+You can also customize the presets by duplicating and editing the `CMakeUserPresets.json.example` file in the `mrdocs` directory.
+This is typically more convenient than using environment variables.
 
-Then build and install it with:
+**Build**:
+
+Then build and install MrDocs with:
 
 [source,bash]
 ----
@@ -230,7 +368,7 @@ To customize the C and C++ compilers, use the `CMAKE_C_COMPILER` and `CMAKE_CXX_
 [NOTE]
 ====
 Developers should also enable `-D BUILD_TESTING=ON`.
-If any custom build of LLVM is being used (such as `DebWithOpt`), the `LLVM_ROOT` variable should be set to the installation directory of that build.
+If any custom build of LLVM other than `RelWithDebInfo` is being used, the `LLVM_ROOT` variable should be set to the installation directory of that build.
 ====
 
 == Package layout
