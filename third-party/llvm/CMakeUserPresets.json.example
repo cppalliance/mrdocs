@@ -1,0 +1,103 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "debug-msvc",
+      "inherits": "debug-win",
+      "binaryDir": "${sourceDir}/build/MSVC/Debug",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/MSVC/Debug"
+      }
+    },
+    {
+      "name": "debwithopt-msvc",
+      "inherits": "debwithopt-win",
+      "binaryDir": "${sourceDir}/build/MSVC/DebWithOpt",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/MSVC/DebWithOpt"
+      },
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "release-msvc",
+      "inherits": "release-win",
+      "binaryDir": "${sourceDir}/build/MSVC/Release",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/MSVC/Release"
+      },
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "relwithdebinfo-msvc",
+      "inherits": "relwithdebinfo-win",
+      "binaryDir": "${sourceDir}/build/MSVC/RelWithDebInfo",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/MSVC/RelWithDebInfo"
+      },
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "debug-linux",
+      "inherits": "debug-unix",
+      "binaryDir": "${sourceDir}/build/Linux/Debug",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/Linux/Debug",
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++-13",
+        "CMAKE_C_COMPILER": "/usr/bin/gcc-13"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "Linux"
+          ],
+          "intelliSenseMode": "windows-msvc-x64"
+        },
+        "jetbrains.com/clion": {
+          "toolchain": "WSL GCC"
+        }
+      }
+    },
+    {
+      "name": "debwithopt-linux",
+      "inherits": [
+        "debwithopt-unix",
+        "debug-linux"
+      ],
+      "binaryDir": "${sourceDir}/build/Linux/DebWithOpt",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/Linux/DebWithOpt"
+      }
+    },
+    {
+      "name": "release-linux",
+      "inherits": [
+        "release-unix",
+        "debug-linux"
+      ],
+      "binaryDir": "${sourceDir}/build/Linux/Release",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/Linux/Release"
+      }
+    },
+    {
+      "name": "relwithdebinfo-linux",
+      "inherits": [
+        "relwithdebinfo-unix",
+        "debug-linux"
+      ],
+      "binaryDir": "${sourceDir}/build/Linux/RelWithDebInfo",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/Linux/RelWithDebInfo"
+      }
+    }
+  ]
+}

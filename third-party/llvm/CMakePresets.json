@@ -1,0 +1,196 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 10,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "debug",
+      "displayName": "Debug-Base",
+      "description": "Debug Config.",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "LLVM_ENABLE_PROJECTS": "clang",
+        "LLVM_TARGETS_TO_BUILD": "X86",
+        "LLVM_UNREACHABLE_OPTIMIZE": false,
+        "LLVM_ADD_NATIVE_VISUALIZERS_TO_SOLUTION": false,
+        "LLVM_ENABLE_RTTI": true,
+        "LLVM_ENABLE_ASSERTIONS": true,
+        "LLVM_ENABLE_OCAMLDOC": false,
+        "LLVM_ENABLE_BINDINGS": false,
+        "LLVM_ENABLE_DIA_SDK": false,
+        "LLVM_INCLUDE_BENCHMARKS": false,
+        "LLVM_INCLUDE_DOCS": false,
+        "LLVM_INCLUDE_EXAMPLES": false,
+        "LLVM_INCLUDE_RUNTIMES": false,
+        "LLVM_INCLUDE_TESTS": false,
+        "LLVM_INCLUDE_TOOLS": true,
+        "LLVM_INCLUDE_UTILS": true,
+        "LLVM_BUILD_TOOLS": false,
+        "LLVM_BUILD_UTILS": false,
+        "LLVM_BUILD_RUNTIME": false,
+        "LLVM_BUILD_RUNTIMES": false,
+        "LLVM_BUILD_LLVM_C_DYLIB": false,
+        "LLVM_BUILD_TESTS": false,
+        "LLVM_BUILD_DOCS": false,
+        "LLVM_BUILD_EXAMPLES": false,
+        "CLANG_ENABLE_ARCMT": true,
+        "CLANG_ENABLE_HLSL": false,
+        "CLANG_ENABLE_OBJC_REWRITER": false,
+        "CLANG_ENABLE_PROTO_FUZZER": false,
+        "CLANG_ENABLE_STATIC_ANALYZER": true,
+        "CLANG_INCLUDE_TESTS": false,
+        "CLANG_INCLUDE_DOCS": false,
+        "CLANG_BUILD_EXAMPLES": false,
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}"
+      }
+    },
+    {
+      "name": "debwithopt",
+      "inherits": "debug",
+      "displayName": "DebWithOpt-Base",
+      "description": "Debug Config with Release Optimization",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "debug",
+      "displayName": "Release-Base",
+      "description": "Release Config.",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "relwithdebinfo",
+      "inherits": "release",
+      "displayName": "RelWithDebInfo-Base",
+      "description": "Release Config with Debug Info.",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "debug-win",
+      "inherits": "debug",
+      "displayName": "Debug-Base-Win",
+      "description": "Debug Config  without any extras and windows flags",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CONFIGURATION_TYPES": "Debug",
+        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS",
+        "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc",
+        "CMAKE_C_FLAGS_DEBUG": "/MDd /Zi /Ob0 /Od /RTC1",
+        "CMAKE_CXX_FLAGS_DEBUG": "/MDd /Zi /Ob0 /Od /RTC1",
+        "CMAKE_C_FLAGS_RELEASE": "/MD /O2 /Ob2 /DNDEBUG",
+        "CMAKE_CXX_FLAGS_RELEASE": "/MD /O2 /Ob2 /DNDEBUG",
+        "CMAKE_C_FLAGS_MINSIZEREL": "/MD /O1 /Ob1 /DNDEBUG",
+        "CMAKE_CXX_FLAGS_MINSIZEREL": "/MD /O1 /Ob1 /DNDEBUG",
+        "CMAKE_C_FLAGS_RELWITHDEBINFO": "/MD /Zi /O2 /Ob1",
+        "CMAKE_CXX_FLAGS_RELWITHDEBINFO": "/MD /Zi /O2 /Ob1"
+      }
+    },
+    {
+      "name": "debwithopt-win",
+      "inherits": [
+        "debug-win",
+        "debwithopt"
+      ],
+      "displayName": "DebWithOptde-Base-Win",
+      "description": "Debug Config with Release Optimization",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CONFIGURATION_TYPES": "Debug",
+        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi",
+        "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /Ob1 /O2 /Zi",
+        "CMAKE_C_FLAGS_DEBUG": "/Ob1 /O2 /Zi",
+        "CMAKE_CXX_FLAGS_DEBUG": "/Ob1 /O2 /Zi"
+      }
+    },
+    {
+      "name": "release-win",
+      "inherits": [
+        "debug-win",
+        "release"
+      ],
+      "displayName": "Release-Base-Win",
+      "description": "Release Config.",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CONFIGURATION_TYPES": "Release"
+      }
+    },
+    {
+      "name": "relwithdebinfo-win",
+      "inherits": "release",
+      "displayName": "RelWithDebInfo-Base-Unix",
+      "description": "Release Config with Debug Info.",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_CONFIGURATION_TYPES": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "debug-unix",
+      "inherits": "debug",
+      "displayName": "Debug-Base-Unix",
+      "description": "Debug Config  without any extras and windows flags",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "debwithopt-unix",
+      "inherits": [
+        "debug-unix",
+        "debwithopt"
+      ],
+      "displayName": "DebWithOpt-Base-Unix",
+      "description": "Debug Config with Release Optimization",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_FLAGS": "-Og -g",
+        "CMAKE_CXX_FLAGS": "-Og -g",
+        "CMAKE_C_FLAGS_DEBUG": "-Og -g",
+        "CMAKE_CXX_FLAGS_DEBUG": "-Og -g"
+      }
+    },
+    {
+      "name": "release-unix",
+      "inherits": [
+        "debug-unix",
+        "release"
+      ],
+      "displayName": "Release-Base-Unix",
+      "description": "Release Config.",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "relwithdebinfo-unix",
+      "inherits": "release",
+      "displayName": "RelWithDebInfo-Base-Unix",
+      "description": "Release Config with Debug Info.",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    }
+  ]
+}
