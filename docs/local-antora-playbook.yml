@@ -2,17 +2,17 @@
 # npx antora --fetch local-antora-playbook.yml
 site:
   title: MrDocs
-  url: https://cppalliance.github.io/mrdox/
-  start_page: mrdox::index.adoc
+  url: https://cppalliance.github.io/mrdocs/
+  start_page: mrdocs::index.adoc
   robots: allow
   keys:
-    repo_url: 'https://github.com/cppalliance/mrdox'
+    repo_url: 'https://github.com/cppalliance/mrdocs'
 
 content:
   sources:
     - url: ..
       start_path: docs
-      edit_url: 'https://github.com/cppalliance/mrdox/edit/{refname}/{path}'
+      edit_url: 'https://github.com/cppalliance/mrdocs/edit/{refname}/{path}'
 
 ui:
   bundle:
