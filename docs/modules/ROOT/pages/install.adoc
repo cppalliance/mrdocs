@@ -109,10 +109,9 @@ tar -xvf "duktape-2.7.0.tar.xz"
 Duktape provides no CMake integration scripts.
 The MrDocs configuration script needs direct access to the installed source files for Duktape so that's all you need to do.
 
-==== VcPkg dependencies
+=== CMake dependencies
 
-These other dependencies provide CMake integration scripts and can be obtained from https://www.vcpkg.io/[vcpkg] or installed manually.
-These instructions assume you are using VcPkg.
+All other dependencies provide CMake integration scripts and can be obtained from https://www.vcpkg.io/[vcpkg] or installed manually.
 
 * `fmt` >= 10
 * `zlib`
@@ -121,7 +120,11 @@ For development builds, which include tests, you will also need:
 
 * `libxml2[tools]`
 
-To install these dependencies with VcPkg, first clone the repository:
+The instructions in this documentation will use vcpkg for these.
+
+**Installing vcpkg**:
+
+If you don't have vcpkg installed, clone the repository:
 
 [source,bash]
 ----
@@ -129,14 +132,13 @@ git clone https://github.com/microsoft/vcpkg.git -b master
 cd vcpkg
 ----
 
-Then bootstrap it and install the required dependencies:
+and bootstrap it:
 
 Windows:
 
 [source,bash]
 ----
 bootstrap-vcpkg.bat
-vcpkg.exe fmt zlib libxml2[tools] --triplet x64-windows
 ----
 
 Unix variants:
@@ -144,15 +146,44 @@ Unix variants:
 [source,bash]
 ----
 ./bootstrap-vcpkg.sh
-./vcpkg fmt zlib libxml2[tools]
 ----
 
-Return from `./third-party/vcpkg` to the parent directory of `third-party` (the one containing the `mrdocs` directory) to build and install MrDocs:
+**Installing dependencies**:
+
+vcpkg has two operation modes with which you can install these dependencies: <<vcpkg-classic-mode,classic mode>> and <<vcpkg-manifest-mode,manifest mode>>.
+
+[#vcpkg-classic-mode]
+_Classic mode_:
+
+In vcpkg @https://learn.microsoft.com/en-us/vcpkg/users/classic-mode[classic mode,window=blank_], vcpkg maintains a central installed tree inside the vcpkg instance built up by individual vcpkg install and vcpkg remove commands.
+This central set of packages can then be shared by any number of projects.
+However, each instance of vcpkg (a separate git clone) will have its own set of packages installed.
+
+To install these dependencies with vcpkg in classic mode:
+
+Windows:
 
 [source,bash]
 ----
-cd ../..
+vcpkg.exe fmt zlib libxml2[tools] --triplet x64-windows
 ----
+
+Unix variants:
+
+[source,bash]
+----
+./vcpkg fmt zlib libxml2[tools]
+----
+
+[#vcpkg-manifest-mode]
+_Manifest mode_:
+
+In @https://learn.microsoft.com/en-us/vcpkg/users/manifests[manifest mode,windows=blank_], you declare your project's direct dependencies in a manifest file named `vcpkg.json`.
+MrDocs includes a `vcpkg.json.example` file you can duplicate or create a symlink as `vcpkg.json` to use this mode.
+MrDocs is a CMake project that then already includes a `vcpkg.json` file, there's nothing else you need to run to install the dependencies.
+
+In this mode, vcpkg will create separate installed trees for each project and configuration.
+This is the recommended vcpkg mode for most users according to the @https://learn.microsoft.com/en-us/vcpkg/users/manifests[vcpkg documentation,window=blank_].
 
 === MrDocs
 
