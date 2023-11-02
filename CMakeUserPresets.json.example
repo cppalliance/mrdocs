@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 3,
   "cmakeMinimumRequired": {
     "major": 3,
     "minor": 10,
@@ -9,14 +9,14 @@
     {
       "name": "Debug-MSVC",
       "inherits": "debug",
-      "generator": "Visual Studio 17 2022",
-      "architecture": "x64",
+      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/debug-msvc",
-      "toolchainFile": "C:\\source\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
+      "toolchainFile": "C:\\Users\\$env{USERNAME}\\Libraries\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
       "cacheVariables": {
-        "LLVM_ROOT": "C:\\source\\llvm+clang\\Debug",
-        "Clang_ROOT": "C:\\source\\llvm+clang\\Debug",
-        "DUKTAPE_SOURCE_ROOT": "C:\\source\\duktape-2.7.0"
+        "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Debug",
+        "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Debug",
+        "DUKTAPE_SOURCE_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\duktape-2.7.0",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
       "condition": {
         "type": "equals",
@@ -25,7 +25,9 @@
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [ "Windows" ],
+          "hostOS": [
+            "Windows"
+          ],
           "intelliSenseMode": "windows-msvc-x64"
         }
       }
@@ -35,8 +37,8 @@
       "inherits": "Debug-MSVC",
       "binaryDir": "${sourceDir}/build/debwithopt-msvc",
       "cacheVariables": {
-        "LLVM_ROOT": "C:\\source\\llvm+clang\\DebWithOpt",
-        "Clang_ROOT": "C:\\source\\llvm+clang\\DebWithOpt"
+        "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\DebWithOpt",
+        "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\DebWithOpt"
       }
     },
     {
@@ -45,8 +47,8 @@
       "binaryDir": "${sourceDir}/build/release-msvc",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
-        "LLVM_ROOT": "C:\\source\\llvm+clang\\Release",
-        "Clang_ROOT": "C:\\source\\llvm+clang\\Release"
+        "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Release",
+        "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Release"
       }
     },
     {
@@ -55,32 +57,71 @@
       "binaryDir": "${sourceDir}/build/relwithdebinfo-msvc",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-        "LLVM_ROOT": "C:\\source\\llvm+clang\\RelWithDebInfo",
-        "Clang_ROOT": "C:\\source\\llvm+clang\\RelWithDebInfo"
+        "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\RelWithDebInfo",
+        "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\RelWithDebInfo"
       }
     },
     {
       "name": "Debug-GCC",
       "inherits": "debug",
       "binaryDir": "${sourceDir}/build/debug-gcc",
-      "toolchainFile": "/home/$env{USER}/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "toolchainFile": "/home/$env{USER}/libraries/vcpkg/scripts/buildsystems/vcpkg.cmake",
       "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "g++",
-        "CMAKE_C_COMPILER": "gcc",
-        "LLVM_ROOT": "/usr/local/llvm+clang",
-        "Clang_ROOT": "/usr/local/llvm+clang",
-        "DUKTAPE_SOURCE_ROOT": "/home/$env{USER}/source/duktape/duktape-2.7.0"
-      },
-      "condition": {
-        "type": "notEquals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++-13",
+        "CMAKE_C_COMPILER": "/usr/bin/gcc-13",
+        "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
+        "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
+        "DUKTAPE_SOURCE_ROOT": "/home/$env{USER}/libraries/duktape-2.7.0",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": ["Linux"],
+          "hostOS": [
+            "Linux"
+          ],
           "intelliSenseMode": "windows-msvc-x64"
+        },
+        "jetbrains.com/clion": {
+          "toolchain": "WSL GCC"
         }
+      }
+    },
+    {
+      "name": "Debug-GCC-Asan",
+      "inherits": "Debug-GCC",
+      "binaryDir": "${sourceDir}/build/debug-gcc-asan",
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-fsanitize=address -fno-omit-frame-pointer -g -O0 -fno-inline-functions"
+      }
+    },
+    {
+      "name": "DebWithOpt-GCC",
+      "inherits": "Debug-GCC",
+      "binaryDir": "${sourceDir}/build/debwithopt-gcc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
+        "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
+      }
+    },
+    {
+      "name": "Release-GCC",
+      "inherits": "Debug-GCC",
+      "binaryDir": "${sourceDir}/build/release-gcc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
+        "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
+      }
+    },
+    {
+      "name": "RelWithDebInfo-GCC",
+      "inherits": "Debug-GCC",
+      "binaryDir": "${sourceDir}/build/relwithdebinfo-gcc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
+        "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release"
       }
     },
     {
@@ -88,8 +129,13 @@
       "inherits": "Debug-GCC",
       "binaryDir": "${sourceDir}/build/debug-clang",
       "cacheVariables": {
-        "CMAKE_CXX_COMPILER": "clang++",
-        "CMAKE_C_COMPILER": "clang"
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang++-16",
+        "CMAKE_C_COMPILER": "/usr/bin/clang-16"
+      },
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "WSL Clang"
+        }
       }
     }
   ]
