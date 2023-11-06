@@ -271,6 +271,7 @@ visit(
     Visitor&& visitor,
     Args&&... args)
 {
+    MRDOCS_ASSERT(D);
     switch(D->getKind())
     {
     #define ABSTRACT_DECL(TYPE)

@@ -22,7 +22,7 @@
 #include <mrdocs/Metadata.hpp>
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
-#include <clang/AST/DeclFriend.h>
+#include <clang/AST/DeclVisitor.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
@@ -407,6 +407,8 @@ public:
         const Decl* D,
         SymbolID& id)
     {
+        if(! D)
+            return false;
         usr_.clear();
         if(generateUSR(D))
             return false;
@@ -424,40 +426,13 @@ public:
         return id;
     }
 
-    bool
-    shouldSerializeInfo(
-        const NamedDecl* D) noexcept
-    {
-        // KRYSTIAN FIXME: getting the access of a members
-        // is not as simple as calling Decl::getAccessUnsafe.
-        // specifically, templates may not have
-        // their access set until they are actually instantiated.
-        return true;
-    #if 0
-        if(config_.includePrivate)
-            return true;
-        if(IsOrIsInAnonymousNamespace)
-            return false;
-        // bool isPublic()
-        AccessSpecifier access = D->getAccessUnsafe();
-        if(access == AccessSpecifier::AS_private)
-            return false;
-        Linkage linkage = D->getLinkageInternal();
-        if(linkage == Linkage::ModuleLinkage ||
-            linkage == Linkage::ExternalLinkage)
-            return true;
-        // some form of internal linkage
-        return false;
-    #endif
-    }
-
     //------------------------------------------------
 
     AccessSpecifier
     getAccess(const Decl* D)
     {
         // first, get the declaration this was instantiated from
-        D = getInstantiatedFrom(const_cast<Decl*>(D));
+        D = getInstantiatedFrom(D);
         // if this is the template declaration of a template,
         // use the access of the template
         if(const TemplateDecl* TD = D->getDescribedTemplate())
@@ -581,7 +556,7 @@ public:
         auto I = makeTypeInfo<TypeInfoTy>(
             N->getIdentifier(), quals);
 
-        N = cast<NamedDecl>(getInstantiatedFrom(N));
+        N = getInstantiatedFrom(N);
         // do not generate references to implicit declarations,
         // template template parameters, or builtin templates
         if(! isa<TemplateTemplateParmDecl>(N) &&
@@ -1040,210 +1015,35 @@ public:
         which were implicitly instantiated, this will be whichever `Decl`
         was used as the pattern for instantiation.
     */
-    Decl*
-    getInstantiatedFrom(
-        Decl* D)
+    template<typename DeclTy>
+    DeclTy* getInstantiatedFrom(DeclTy* D);
+
+    template<typename DeclTy>
+        requires std::derived_from<DeclTy, FunctionDecl> ||
+            std::same_as<FunctionTemplateDecl, std::remove_cv_t<DeclTy>>
+    FunctionDecl* getInstantiatedFrom(DeclTy* D)
     {
-        if(! D)
-            return nullptr;
-
-        // KRYSTIAN TODO: support enums & aliases/alias templates
-        return visit(D, [&]<typename DeclTy>(
-            DeclTy* DT) -> Decl*
-            {
-                constexpr Decl::Kind kind =
-                    DeclToKind<DeclTy>();
-
-                // ------------------------------------------------
-
-                // FunctionTemplate
-                if constexpr(kind == Decl::FunctionTemplate)
-                {
-                    while(auto* MT = DT->getInstantiatedFromMemberTemplate())
-                    {
-                        if(DT->isMemberSpecialization())
-                            break;
-                        DT = MT;
-                    }
-                    return DT;
-                }
-                // FunctionDecl
-                // CXXMethodDecl
-                // CXXConstructorDecl
-                // CXXConversionDecl
-                // CXXDeductionGuideDecl
-                // CXXDestructorDecl
-                if constexpr(std::derived_from<DeclTy, FunctionDecl>)
-                {
-                    FunctionDecl* FD = DT;
-
-                    const FunctionDecl* DD = nullptr;
-                    if(FD->isDefined(DD, false))
-                        FD = const_cast<FunctionDecl*>(DD);
-
-                    if(MemberSpecializationInfo* MSI =
-                        FD->getMemberSpecializationInfo())
-                    {
-                        if(! MSI->isExplicitSpecialization())
-                            FD = cast<FunctionDecl>(
-                                MSI->getInstantiatedFrom());
-                    }
-                    else if(FD->getTemplateSpecializationKind() !=
-                        TSK_ExplicitSpecialization)
-                    {
-                        FD = FD->getFirstDecl();
-                        if(auto* FTD = FD->getPrimaryTemplate())
-                        {
-                            FTD = cast<FunctionTemplateDecl>(
-                                getInstantiatedFrom(FTD));
-                            FD = FTD->getTemplatedDecl();
-                        }
-                    }
-
-                    return FD;
-                }
-
-                // ------------------------------------------------
-
-                // ClassTemplate
-                if constexpr(kind == Decl::ClassTemplate)
-                {
-                    while(auto* MT = DT->getInstantiatedFromMemberTemplate())
-                    {
-                        if(DT->isMemberSpecialization())
-                            break;
-                        DT = MT;
-                    }
-                    return DT;
-                }
-                // ClassTemplatePartialSpecialization
-                else if constexpr(kind == Decl::ClassTemplatePartialSpecialization)
-                {
-                    while(auto* MT = DT->getInstantiatedFromMember())
-                    {
-                        if(DT->isMemberSpecialization())
-                            break;
-                        DT = MT;
-                    }
-                }
-                // ClassTemplateSpecialization
-                else if constexpr(kind == Decl::ClassTemplateSpecialization)
-                {
-                    if(! DT->isExplicitSpecialization())
-                    {
-                        auto inst_from = DT->getSpecializedTemplateOrPartial();
-                        if(auto* CTPSD = inst_from.template dyn_cast<
-                            ClassTemplatePartialSpecializationDecl*>())
-                        {
-                            MRDOCS_ASSERT(DT != CTPSD);
-                            return getInstantiatedFrom(CTPSD);
-                        }
-                        // explicit instantiation declaration/definition
-                        else if(auto* CTD = inst_from.template dyn_cast<
-                            ClassTemplateDecl*>())
-                        {
-                            return getInstantiatedFrom(CTD);
-                        }
-                    }
-                }
-                // CXXRecordDecl
-                // ClassTemplateSpecialization
-                // ClassTemplatePartialSpecialization
-                if constexpr(std::derived_from<DeclTy, CXXRecordDecl>)
-                {
-                    CXXRecordDecl* RD = DT;
-                    while(MemberSpecializationInfo* MSI =
-                        RD->getMemberSpecializationInfo())
-                    {
-                        // if this is a member of an explicit specialization,
-                        // then we have the correct declaration
-                        if(MSI->isExplicitSpecialization())
-                            break;
-                        RD = cast<CXXRecordDecl>(MSI->getInstantiatedFrom());
-                    }
-                    return RD;
-                }
-
-                // ------------------------------------------------
-
-                // VarTemplate
-                if constexpr(kind == Decl::VarTemplate)
-                {
-                    while(auto* MT = DT->getInstantiatedFromMemberTemplate())
-                    {
-                        if(DT->isMemberSpecialization())
-                            break;
-                        DT = MT;
-                    }
-                    return DT;
-                }
-                // VarTemplatePartialSpecialization
-                else if constexpr(kind == Decl::VarTemplatePartialSpecialization)
-                {
-                    while(auto* MT = DT->getInstantiatedFromMember())
-                    {
-                        if(DT->isMemberSpecialization())
-                            break;
-                        DT = MT;
-                    }
-                }
-                // VarTemplateSpecialization
-                else if constexpr(kind == Decl::VarTemplateSpecialization)
-                {
-                    if(! DT->isExplicitSpecialization())
-                    {
-                        auto inst_from = DT->getSpecializedTemplateOrPartial();
-                        if(auto* VTPSD = inst_from.template dyn_cast<
-                            VarTemplatePartialSpecializationDecl*>())
-                        {
-                            MRDOCS_ASSERT(DT != VTPSD);
-                            return getInstantiatedFrom(VTPSD);
-                        }
-                        // explicit instantiation declaration/definition
-                        else if(auto* VTD = inst_from.template dyn_cast<
-                            VarTemplateDecl*>())
-                        {
-                            return getInstantiatedFrom(VTD);
-                        }
-                    }
-                }
-                // VarDecl
-                // VarTemplateSpecialization
-                // VarTemplatePartialSpecialization
-                if constexpr(std::derived_from<DeclTy, VarDecl>)
-                {
-                    VarDecl* VD = DT;
-                    while(MemberSpecializationInfo* MSI =
-                        VD->getMemberSpecializationInfo())
-                    {
-                        if(MSI->isExplicitSpecialization())
-                            break;
-                        VD = cast<VarDecl>(MSI->getInstantiatedFrom());
-                    }
-                    return VD;
-                }
-
-                // ------------------------------------------------
-                // EnumDecl
-
-                // VarTemplate
-                if constexpr(kind == Decl::Enum)
-                {
-                    EnumDecl* ED = DT;
-                    while(MemberSpecializationInfo* MSI =
-                        ED->getMemberSpecializationInfo())
-                    {
-                        if(MSI->isExplicitSpecialization())
-                            break;
-                        ED = cast<EnumDecl>(MSI->getInstantiatedFrom());
-                    }
-                    return ED;
-                }
-
-                return DT;
-            });
+        return dyn_cast_if_present<FunctionDecl>(
+            getInstantiatedFrom<Decl>(D));
     }
 
+    template<typename DeclTy>
+        requires std::derived_from<DeclTy, CXXRecordDecl> ||
+            std::same_as<ClassTemplateDecl, std::remove_cv_t<DeclTy>>
+    CXXRecordDecl* getInstantiatedFrom(DeclTy* D)
+    {
+        return dyn_cast_if_present<CXXRecordDecl>(
+            getInstantiatedFrom<Decl>(D));
+    }
+
+    template<typename DeclTy>
+        requires std::derived_from<DeclTy, VarDecl> ||
+            std::same_as<VarTemplateDecl, std::remove_cv_t<DeclTy>>
+    VarDecl* getInstantiatedFrom(DeclTy* D)
+    {
+        return dyn_cast_if_present<VarDecl>(
+            getInstantiatedFrom<Decl>(D));
+    }
 
     template<typename Integer>
     Integer
@@ -1356,6 +1156,18 @@ public:
             N->isTemplateParameterPack();
 
         return TP;
+    }
+
+    void
+    buildTemplateParams(
+        TemplateInfo& I,
+        const TemplateParameterList* TPL)
+    {
+        for(const NamedDecl* ND : *TPL)
+        {
+            I.Params.emplace_back(
+                buildTemplateParam(ND));
+        }
     }
 
     std::unique_ptr<TArg>
@@ -1471,9 +1283,9 @@ public:
     void
     buildTemplateArgs(
         std::vector<std::unique_ptr<TArg>>& result,
-        Range&& range)
+        Range&& args)
     {
-        for(const TemplateArgument& arg : range)
+        for(const TemplateArgument& arg : args)
         {
             // KRYSTIAN NOTE: is this correct? should we have a
             // separate TArgKind for packs instead of "unlaminating"
@@ -1486,97 +1298,16 @@ public:
     }
 
     void
-    parseTemplateArgs(
-        TemplateInfo& I,
-        ClassTemplateSpecializationDecl* spec)
+    buildTemplateArgs(
+        std::vector<std::unique_ptr<TArg>>& result,
+        const ASTTemplateArgumentListInfo* args)
     {
-        if(Decl* primary = getInstantiatedFrom(spec->getSpecializedTemplate()))
-            extractSymbolID(primary, I.Primary);
-        // KRYSTIAN NOTE: when this is a partial specialization, we could use
-        // ClassTemplatePartialSpecializationDecl::getTemplateArgsAsWritten
-        const TypeSourceInfo* type_written = spec->getTypeAsWritten();
-        // if the type as written is nullptr (it should never be), bail
-        if(! type_written)
-            return;
-        auto args = type_written->getType()->getAs<
-            TemplateSpecializationType>()->template_arguments();
-        buildTemplateArgs(I.Args, args);
-    }
-
-    void
-    parseTemplateArgs(
-        TemplateInfo& I,
-        VarTemplateSpecializationDecl* spec)
-    {
-        // unlike function and class templates, the USR generated
-        // for variable templates differs from that of the VarDecl
-        // returned by getTemplatedDecl. this might be a clang bug.
-        // the USR of the templated VarDecl seems to be the correct one.
-        if(auto* primary = dyn_cast<VarTemplateDecl>(
-            getInstantiatedFrom(spec->getSpecializedTemplate())))
-            extractSymbolID(primary->getTemplatedDecl(), I.Primary);
-        const ASTTemplateArgumentListInfo* args_written = nullptr;
-        // getTemplateArgsInfo returns nullptr for partial specializations,
-        // so we use getTemplateArgsAsWritten if this is a partial specialization
-        if(auto* partial = dyn_cast<VarTemplatePartialSpecializationDecl>(spec))
-            args_written = partial->getTemplateArgsAsWritten();
-        else
-            args_written = spec->getTemplateArgsInfo();
-        if(! args_written)
-            return;
-        auto args = args_written->arguments();
-        buildTemplateArgs(I.Args, std::views::transform(
-            args, [](auto& x) -> auto& { return x.getArgument(); }));
-    }
-
-    void
-    parseTemplateArgs(
-        TemplateInfo& I,
-        FunctionTemplateSpecializationInfo* spec)
-    {
-        // KRYSTIAN NOTE: do we need to check I->Primary.has_value()?
-        if(Decl* primary = getInstantiatedFrom(spec->getTemplate()))
-            extractSymbolID(primary, I.Primary);
-        // TemplateArguments is used instead of TemplateArgumentsAsWritten
-        // because explicit specializations of function templates may have
-        // template arguments deduced from their return type and parameters
-        if(auto* args = spec->TemplateArguments)
-            buildTemplateArgs(I.Args, args->asArray());
-    }
-
-    void
-    parseTemplateArgs(
-        TemplateInfo& I,
-        const DependentFunctionTemplateSpecializationInfo* spec)
-    {
-        // set the ID of the primary template if there is one candidate
-        if(auto candidates = spec->getCandidates();
-            candidates.size() == 1)
-        {
-            if(Decl* primary = getInstantiatedFrom(candidates.front()))
-                extractSymbolID(primary, I.Primary);
-        }
-
-        if(auto* args_written = spec->TemplateArgumentsAsWritten)
-        {
-            buildTemplateArgs(I.Args, std::views::transform(
-                args_written->arguments(), [](auto& x) -> auto&
-                {
+        return buildTemplateArgs(result,
+            std::views::transform(args->arguments(),
+                [](auto& x) -> auto&
+            {
                     return x.getArgument();
-                }));
-        }
-    }
-
-    void
-    parseTemplateParams(
-        TemplateInfo& I,
-        const TemplateParameterList* TPL)
-    {
-        for(const NamedDecl* ND : *TPL)
-        {
-            I.Params.emplace_back(
-                buildTemplateParam(ND));
-        }
+            }));
     }
 
     void
@@ -2387,60 +2118,61 @@ public:
     //------------------------------------------------
 
     // namespaces
-    bool traverse(NamespaceDecl*);
+    void traverse(NamespaceDecl*);
 
     // enums
-    bool traverse(EnumDecl*);
+    void traverse(EnumDecl*);
 
     // enumerators
-    bool traverse(EnumConstantDecl*);
+    void traverse(EnumConstantDecl*);
 
     // friends
-    bool traverse(FriendDecl*);
+    void traverse(FriendDecl*);
 
     // non-static data members
-    bool traverse(FieldDecl*);
+    void traverse(FieldDecl*);
 
     template<std::derived_from<CXXRecordDecl> CXXRecordTy>
-    bool traverse(CXXRecordTy*, ClassTemplateDecl* = nullptr);
+    void traverse(CXXRecordTy*, ClassTemplateDecl* = nullptr);
 
     template<std::derived_from<VarDecl> VarTy>
-    bool traverse(VarTy*, VarTemplateDecl* = nullptr);
+    void traverse(VarTy*, VarTemplateDecl* = nullptr);
 
     template<std::derived_from<FunctionDecl> FunctionTy>
-    bool traverse(FunctionTy*, FunctionTemplateDecl* = nullptr);
+    void traverse(FunctionTy*, FunctionTemplateDecl* = nullptr);
 
     template<std::derived_from<TypedefNameDecl> TypedefNameTy>
-    bool traverse(TypedefNameTy*, TypeAliasTemplateDecl* = nullptr);
+    void traverse(TypedefNameTy*, TypeAliasTemplateDecl* = nullptr);
 
 #if 0
     // includes both linkage-specification forms in [dcl.link]:
     //     extern string-literal { declaration-seq(opt) }
     //     extern string-literal name-declaration
-    bool traverse(LinkageSpecDecl*);
-    bool traverse(ExternCContextDecl*);
-    bool traverse(ExportDecl*);
+    void traverse(LinkageSpecDecl*);
+    void traverse(ExternCContextDecl*);
+    void traverse(ExportDecl*);
 #endif
 
     // catch-all function so overload resolution does not
     // cause a hard error in the Traverse function for Decl
     template<typename... Args>
-    auto traverse(Decl* D, Args&&...);
+    void traverse(Decl* D, Args&&...);
 
     template<typename... Args>
-    bool traverseDecl(Decl* D, Args&&... args);
-    bool traverseContext(DeclContext* D);
+    void traverseDecl(Decl* D, Args&&... args);
+
+    void traverseContext(DeclContext* DC);
 };
 
 //------------------------------------------------
 // NamespaceDecl
 
-bool
+void
 ASTVisitor::
 traverse(NamespaceDecl* D)
 {
     if(! shouldExtract(D, AccessSpecifier::AS_none))
-        return true;
+        return;
 
     if(D->isAnonymousNamespace() &&
         config_->anonymousNamespaces !=
@@ -2449,125 +2181,122 @@ traverse(NamespaceDecl* D)
         // always skip anonymous namespaces if so configured
         if(config_->anonymousNamespaces ==
             ConfigImpl::SettingsImpl::ExtractPolicy::Never)
-            return true;
+            return;
 
         // otherwise, skip extraction if this isn't a dependency
         // KRYSTIAN FIXME: is this correct? a namespace should not
         // be extracted as a dependency (until namespace aliases and
         // using directives are supported)
         if(currentMode() == ExtractMode::Normal)
-            return true;
+            return;
     }
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return true;
+        return;
     auto [I, created] = getOrCreateInfo<NamespaceInfo>(id);
 
     buildNamespace(I, created, D);
-    return traverseContext(D);
+    traverseContext(D);
 }
 
 //------------------------------------------------
 // EnumDecl
 
-bool
+void
 ASTVisitor::
 traverse(EnumDecl* D)
 {
     AccessSpecifier access = getAccess(D);
     if(! shouldExtract(D, access))
-        return true;
+        return;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return true;
+        return;
     auto [I, created] = getOrCreateInfo<EnumInfo>(id);
     I.Access = convertToAccessKind(access);
 
     buildEnum(I, created, D);
-    return traverseContext(D);
+    traverseContext(D);
 }
 
 //------------------------------------------------
 // FieldDecl
 
-bool
+void
 ASTVisitor::
 traverse(FieldDecl* D)
 {
     AccessSpecifier access = getAccess(D);
     if(! shouldExtract(D, access))
-        return true;
+        return;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return true;
+        return;
     auto [I, created] = getOrCreateInfo<FieldInfo>(id);
     I.Access = convertToAccessKind(access);
 
     buildField(I, created, D);
-    return true;
 }
 
 //------------------------------------------------
 // EnumConstantDecl
 
-bool
+void
 ASTVisitor::
 traverse(EnumConstantDecl* D)
 {
     AccessSpecifier access = getAccess(D);
     if(! shouldExtract(D, access))
-        return true;
+        return;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return true;
+        return;
     auto [I, created] = getOrCreateInfo<EnumeratorInfo>(id);
     I.Access = convertToAccessKind(access);
 
     buildEnumerator(I, created, D);
-    return true;
 }
 
 //------------------------------------------------
 // FriendDecl
 
-bool
+void
 ASTVisitor::
 traverse(FriendDecl* D)
 {
     AccessSpecifier access = getAccess(D);
     if(! shouldExtract(D, access))
-        return true;
+        return;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return true;
+        return;
 
     auto [I, created] = getOrCreateInfo<FriendInfo>(id);
     I.Access = convertToAccessKind(access);
 
     buildFriend(I, created, D);
-    return true;
 }
 
 //------------------------------------------------
 
 template<std::derived_from<CXXRecordDecl> CXXRecordTy>
-bool
+void
 ASTVisitor::
 traverse(CXXRecordTy* D,
     ClassTemplateDecl* CTD)
 {
     AccessSpecifier access = getAccess(D);
     if(! shouldExtract(D, access))
-        return true;
+        return;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return true;
+        return;
 
     auto [I, created] = getOrCreateInfo<RecordInfo>(id);
     I.Access = convertToAccessKind(access);
@@ -2576,41 +2305,46 @@ traverse(CXXRecordTy* D,
     // explicit specialization, and the described template otherwise
     if(CTD)
     {
-        I.Template = std::make_unique<TemplateInfo>();
+        auto& Template = I.Template = std::make_unique<TemplateInfo>();
         // if D is a partial/explicit specialization, extract the template arguments
         if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
         {
-            parseTemplateArgs(*I.Template, CTSD);
+            extractSymbolID(getInstantiatedFrom(CTD), Template->Primary);
+            // KRYSTIAN NOTE: when this is a partial specialization, we could use
+            // ClassTemplatePartialSpecializationDecl::getTemplateArgsAsWritten
+            MRDOCS_ASSERT(CTSD->getTypeAsWritten());
+            const TypeSourceInfo* TSI = CTSD->getTypeAsWritten();
+            buildTemplateArgs(Template->Args, TSI->getType()->getAs<
+                TemplateSpecializationType>()->template_arguments());
+
             // extract the template parameters if this is a partial specialization
             if(auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
-                parseTemplateParams(*I.Template,
-                    CTPSD->getTemplateParameters());
+                buildTemplateParams(*I.Template, CTPSD->getTemplateParameters());
         }
         else
         {
             // otherwise, extract the template parameter list from CTD
-            parseTemplateParams(*I.Template,
-                CTD->getTemplateParameters());
+            buildTemplateParams(*I.Template, CTD->getTemplateParameters());
         }
     }
 
     buildRecord(I, created, D);
-    return traverseContext(D);
+    traverseContext(D);
 }
 
 template<std::derived_from<VarDecl> VarTy>
-bool
+void
 ASTVisitor::
 traverse(VarTy* D,
     VarTemplateDecl* VTD)
 {
     AccessSpecifier access = getAccess(D);
     if(! shouldExtract(D, access))
-        return true;
+        return;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return true;
+        return;
 
     auto [I, created] = getOrCreateInfo<VariableInfo>(id);
     I.Access = convertToAccessKind(access);
@@ -2619,42 +2353,46 @@ traverse(VarTy* D,
     // explicit specialization, and the described template otherwise
     if(VTD)
     {
-        I.Template = std::make_unique<TemplateInfo>();
+        auto& Template = I.Template = std::make_unique<TemplateInfo>();
         // if D is a partial/explicit specialization, extract the template arguments
         if(auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
         {
-            parseTemplateArgs(*I.Template, VTSD);
+            extractSymbolID(getInstantiatedFrom(VTD), Template->Primary);
+            const ASTTemplateArgumentListInfo* Args = VTSD->getTemplateArgsInfo();
             // extract the template parameters if this is a partial specialization
             if(auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
-                parseTemplateParams(*I.Template,
-                    VTPSD->getTemplateParameters());
+            {
+                // getTemplateArgsInfo returns nullptr for partial specializations,
+                // so we use getTemplateArgsAsWritten if this is a partial specialization
+                Args = VTPSD->getTemplateArgsAsWritten();
+                buildTemplateParams(*I.Template, VTPSD->getTemplateParameters());
+            }
+            buildTemplateArgs(Template->Args, Args);
         }
         else
         {
             // otherwise, extract the template parameter list from VTD
-            parseTemplateParams(*I.Template,
-                VTD->getTemplateParameters());
+            buildTemplateParams(*I.Template, VTD->getTemplateParameters());
         }
     }
 
     buildVariable(I, created, D);
-    return true;
 }
 
 
 template<std::derived_from<FunctionDecl> FunctionTy>
-bool
+void
 ASTVisitor::
 traverse(FunctionTy* D,
     FunctionTemplateDecl* FTD)
 {
     AccessSpecifier access = getAccess(D);
     if(! shouldExtract(D, access))
-        return true;
+        return;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return true;
+        return;
 
     auto [I, created] = getOrCreateInfo<FunctionInfo>(id);
     I.Access = convertToAccessKind(access);
@@ -2662,40 +2400,50 @@ traverse(FunctionTy* D,
     // D is the templated declaration if FTD is non-null
     if(FTD || D->isFunctionTemplateSpecialization())
     {
-        I.Template = std::make_unique<TemplateInfo>();
+        auto& Template = I.Template = std::make_unique<TemplateInfo>();
 
-        if(FTD)
+        if(auto* FTSI = D->getTemplateSpecializationInfo())
         {
-            parseTemplateParams(*I.Template,
-                FTD->getTemplateParameters());
-        }
-        else if(auto* FTSI = D->getTemplateSpecializationInfo())
-        {
-            parseTemplateArgs(*I.Template, FTSI);
+            extractSymbolID(getInstantiatedFrom(
+                FTSI->getTemplate()), Template->Primary);
+            // TemplateArguments is used instead of TemplateArgumentsAsWritten
+            // because explicit specializations of function templates may have
+            // template arguments deduced from their return type and parameters
+            if(auto* Args = FTSI->TemplateArguments)
+                buildTemplateArgs(Template->Args, Args->asArray());
         }
         else if(auto* DFTSI = D->getDependentSpecializationInfo())
         {
-            parseTemplateArgs(*I.Template, DFTSI);
+            // Only extract the ID of the primary template if there is
+            // a single candidate primary template.
+            if(auto Candidates = DFTSI->getCandidates(); Candidates.size() == 1)
+                extractSymbolID(getInstantiatedFrom(
+                    Candidates.front()), Template->Primary);
+            if(auto* Args = DFTSI->TemplateArgumentsAsWritten)
+                buildTemplateArgs(Template->Args, Args);
+        }
+        else
+        {
+            buildTemplateParams(*Template, FTD->getTemplateParameters());
         }
     }
 
     buildFunction(I, created, D);
-    return true;
 }
 
 template<std::derived_from<TypedefNameDecl> TypedefNameTy>
-bool
+void
 ASTVisitor::
 traverse(TypedefNameTy* D,
     TypeAliasTemplateDecl* ATD)
 {
     AccessSpecifier access = getAccess(D);
     if(! shouldExtract(D, access))
-        return true;
+        return;
 
     SymbolID id;
     if(! extractSymbolID(D, id))
-        return true;
+        return;
 
     auto [I, created] = getOrCreateInfo<TypedefInfo>(id);
     I.Access = convertToAccessKind(access);
@@ -2706,21 +2454,19 @@ traverse(TypedefNameTy* D,
     if(ATD)
     {
         I.Template = std::make_unique<TemplateInfo>();
-        parseTemplateParams(*I.Template,
+        buildTemplateParams(*I.Template,
             ATD->getTemplateParameters());
     }
 
     buildTypedef(I, created, D);
-    return true;
 }
 
-//------------------------------------------------
-
 template<typename... Args>
-auto
+void
 ASTVisitor::
 traverse(Decl* D, Args&&...)
 {
+    // if this is a DeclContext, traverse its members
     if(auto* DC = dyn_cast<DeclContext>(D))
         traverseContext(DC);
 }
@@ -2728,7 +2474,7 @@ traverse(Decl* D, Args&&...)
 //------------------------------------------------
 
 template<typename... Args>
-bool
+void
 ASTVisitor::
 traverseDecl(
     Decl* D,
@@ -2737,7 +2483,7 @@ traverseDecl(
     MRDOCS_ASSERT(D);
 
     if(D->isInvalidDecl() || D->isImplicit())
-        return true;
+        return;
 
     SymbolFilter::FilterScope scope(symbolFilter_);
 
@@ -2768,19 +2514,193 @@ traverseDecl(
             traverse(DD, std::forward<Args>(args)...);
         }
     });
-
-    return true;
 }
 
-bool
+void
 ASTVisitor::
-traverseContext(
-    DeclContext* D)
+traverseContext(DeclContext* DC)
 {
-    MRDOCS_ASSERT(D);
-    for(auto* C : D->decls())
-        traverseDecl(C);
-    return true;
+    for(auto* D : DC->decls())
+        traverseDecl(D);
+}
+
+//------------------------------------------------
+
+class InstantiatedFromVisitor
+    : public DeclVisitor<InstantiatedFromVisitor, Decl*>
+{
+public:
+    Decl* VisitDecl(Decl* D) { return D; }
+
+    FunctionDecl* VisitFunctionTemplateDecl(FunctionTemplateDecl* D)
+    {
+        while(auto* MT = D->getInstantiatedFromMemberTemplate())
+        {
+            if(D->isMemberSpecialization())
+                break;
+            D = MT;
+        }
+        return D->getTemplatedDecl();
+    }
+
+    CXXRecordDecl* VisitClassTemplateDecl(ClassTemplateDecl* D)
+    {
+        while(auto* MT = D->getInstantiatedFromMemberTemplate())
+        {
+            if(D->isMemberSpecialization())
+                break;
+            D = MT;
+        }
+        return D->getTemplatedDecl();
+    }
+
+    VarDecl* VisitVarTemplateDecl(VarTemplateDecl* D)
+    {
+        while(auto* MT = D->getInstantiatedFromMemberTemplate())
+        {
+            if(D->isMemberSpecialization())
+                break;
+            D = MT;
+        }
+        return D->getTemplatedDecl();
+    }
+
+    FunctionDecl* VisitFunctionDecl(FunctionDecl* D)
+    {
+        const FunctionDecl* DD = nullptr;
+        if(D->isDefined(DD, false))
+            D = const_cast<FunctionDecl*>(DD);
+
+        if(MemberSpecializationInfo* MSI =
+            D->getMemberSpecializationInfo())
+        {
+            if(! MSI->isExplicitSpecialization())
+                D = cast<FunctionDecl>(
+                    MSI->getInstantiatedFrom());
+        }
+        else if(D->getTemplateSpecializationKind() !=
+            TSK_ExplicitSpecialization)
+        {
+            D = D->getFirstDecl();
+            if(auto* FTD = D->getPrimaryTemplate())
+                D = VisitFunctionTemplateDecl(FTD);
+        }
+
+        return D;
+    }
+
+    CXXRecordDecl* VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl* D)
+    {
+        while(auto* MT = D->getInstantiatedFromMember())
+        {
+            if(D->isMemberSpecialization())
+                break;
+            D = MT;
+        }
+        return VisitClassTemplateSpecializationDecl(D);
+    }
+
+    CXXRecordDecl* VisitClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl* D)
+    {
+        if(! D->isExplicitSpecialization())
+        {
+            auto inst_from = D->getSpecializedTemplateOrPartial();
+            if(auto* CTPSD = inst_from.dyn_cast<
+                ClassTemplatePartialSpecializationDecl*>())
+            {
+                MRDOCS_ASSERT(D != CTPSD);
+                return VisitClassTemplatePartialSpecializationDecl(CTPSD);
+            }
+            // explicit instantiation declaration/definition
+            else if(auto* CTD = inst_from.dyn_cast<
+                ClassTemplateDecl*>())
+            {
+                return VisitClassTemplateDecl(CTD);
+            }
+        }
+        return VisitCXXRecordDecl(D);
+    }
+
+    CXXRecordDecl* VisitCXXRecordDecl(CXXRecordDecl* D)
+    {
+        while(MemberSpecializationInfo* MSI =
+            D->getMemberSpecializationInfo())
+        {
+            // if this is a member of an explicit specialization,
+            // then we have the correct declaration
+            if(MSI->isExplicitSpecialization())
+                break;
+            D = cast<CXXRecordDecl>(MSI->getInstantiatedFrom());
+        }
+        return D;
+    }
+
+    VarDecl* VisitVarTemplatePartialSpecializationDecl(VarTemplatePartialSpecializationDecl* D)
+    {
+        while(auto* MT = D->getInstantiatedFromMember())
+        {
+            if(D->isMemberSpecialization())
+                break;
+            D = MT;
+        }
+        return VisitVarTemplateSpecializationDecl(D);
+    }
+
+    VarDecl* VisitVarTemplateSpecializationDecl(VarTemplateSpecializationDecl* D)
+    {
+        if(! D->isExplicitSpecialization())
+        {
+            auto inst_from = D->getSpecializedTemplateOrPartial();
+            if(auto* VTPSD = inst_from.dyn_cast<
+                VarTemplatePartialSpecializationDecl*>())
+            {
+                MRDOCS_ASSERT(D != VTPSD);
+                return VisitVarTemplatePartialSpecializationDecl(VTPSD);
+            }
+            // explicit instantiation declaration/definition
+            else if(auto* VTD = inst_from.dyn_cast<
+                VarTemplateDecl*>())
+            {
+                return VisitVarTemplateDecl(VTD);
+            }
+        }
+        return VisitVarDecl(D);
+    }
+
+    VarDecl* VisitVarDecl(VarDecl* D)
+    {
+        while(MemberSpecializationInfo* MSI =
+            D->getMemberSpecializationInfo())
+        {
+            if(MSI->isExplicitSpecialization())
+                break;
+            D = cast<VarDecl>(MSI->getInstantiatedFrom());
+        }
+        return D;
+    }
+
+    EnumDecl* VisitEnumDecl(EnumDecl* D)
+    {
+        while(MemberSpecializationInfo* MSI =
+            D->getMemberSpecializationInfo())
+        {
+            if(MSI->isExplicitSpecialization())
+                break;
+            D = cast<EnumDecl>(MSI->getInstantiatedFrom());
+        }
+        return D;
+    }
+};
+
+template<typename DeclTy>
+DeclTy*
+ASTVisitor::
+getInstantiatedFrom(DeclTy* D)
+{
+    if(! D)
+        return nullptr;
+    return cast<DeclTy>(InstantiatedFromVisitor().Visit(
+        const_cast<Decl*>(static_cast<const Decl*>(D))));
 }
 
 #if 0
