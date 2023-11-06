@@ -187,112 +187,49 @@ BitcodeReader::
 readBlock(
     AnyBlock& B, unsigned ID)
 {
-    blockStack_.push_back(&B);
     if (auto err = Stream.EnterSubBlock(ID))
         return toError(std::move(err));
-
+    blockStack_.push_back(&B);
+    Record RecordData;
     for(;;)
     {
-        unsigned BlockOrCode = 0;
-        Cursor Res = skipUntilRecordOrBlock(BlockOrCode);
-
-        switch (Res)
+        llvm::Expected<llvm::BitstreamEntry> MaybeEntry = Stream.advance();
+        if(! MaybeEntry)
+            return toError(MaybeEntry.takeError());
+        switch(llvm::BitstreamEntry Entry = MaybeEntry.get(); Entry.Kind)
         {
-        case Cursor::BadBlock:
-            return formatError("bad block found");
-        case Cursor::BlockEnd:
-            blockStack_.pop_back();
-            return Error::success();
-        case Cursor::BlockBegin:
-            if (auto err = blockStack_.back()->readSubBlock(BlockOrCode))
+        case llvm::BitstreamEntry::Record:
+        {
+            llvm::StringRef Blob;
+            llvm::Expected<unsigned> MaybeRecordID =
+                Stream.readRecord(Entry.ID, RecordData, &Blob);
+            if (! MaybeRecordID)
+                return toError(MaybeRecordID.takeError());
+            if(auto err = blockStack_.back()->parseRecord(
+                RecordData, MaybeRecordID.get(), Blob))
+                return err;
+            RecordData.clear();
+            continue;
+        }
+        case llvm::BitstreamEntry::SubBlock:
+        {
+            if(auto err = blockStack_.back()->readSubBlock(Entry.ID))
             {
-                if (llvm::Error Skipped = Stream.SkipBlock())
-                {
-                    return toError(std::move(Skipped));
-                }
+                if(auto skip_err = Stream.SkipBlock())
+                    return toError(std::move(skip_err));
                 return err;
             }
             continue;
-        case Cursor::Record:
-            break;
         }
-        if (auto err = readRecord(BlockOrCode))
-            return err;
-    }
-}
-
-//------------------------------------------------
-
-// Read records from bitcode into AnyBlock
-Error
-BitcodeReader::
-readRecord(unsigned ID)
-{
-    Record R;
-    llvm::StringRef Blob;
-    llvm::Expected<unsigned> MaybeRecID =
-        Stream.readRecord(ID, R, &Blob);
-    if (!MaybeRecID)
-        return toError(MaybeRecID.takeError());
-    return blockStack_.back()->parseRecord(R, MaybeRecID.get(), Blob);
-}
-
-//------------------------------------------------
-
-auto
-BitcodeReader::
-skipUntilRecordOrBlock(
-    unsigned& BlockOrRecordID) ->
-        Cursor
-{
-    BlockOrRecordID = 0;
-
-    while (!Stream.AtEndOfStream())
-    {
-        llvm::Expected<unsigned> MaybeCode = Stream.ReadCode();
-        if (!MaybeCode)
-        {
-            // FIXME this drops the error on the floor.
-            consumeError(MaybeCode.takeError());
-            return Cursor::BadBlock;
-        }
-
-        unsigned Code = MaybeCode.get();
-        if (Code >= static_cast<unsigned>(llvm::bitc::FIRST_APPLICATION_ABBREV))
-        {
-            BlockOrRecordID = Code;
-            return Cursor::Record;
-        }
-        switch (static_cast<llvm::bitc::FixedAbbrevIDs>(Code))
-        {
-        case llvm::bitc::ENTER_SUBBLOCK:
-            if (llvm::Expected<unsigned> MaybeID = Stream.ReadSubBlockID())
-                BlockOrRecordID = MaybeID.get();
-            else {
-                // FIXME this drops the error on the floor.
-                consumeError(MaybeID.takeError());
-            }
-            return Cursor::BlockBegin;
-        case llvm::bitc::END_BLOCK:
-            if (Stream.ReadBlockEnd())
-                return Cursor::BadBlock;
-            return Cursor::BlockEnd;
-        case llvm::bitc::DEFINE_ABBREV:
-            if (llvm::Error err = Stream.ReadAbbrevRecord())
-            {
-                // FIXME this drops the error on the floor.
-                consumeError(std::move(err));
-            }
-            continue;
-        case llvm::bitc::UNABBREV_RECORD:
-            return Cursor::BadBlock;
-        case llvm::bitc::FIRST_APPLICATION_ABBREV:
-            // Unexpected abbrev id
+        case llvm::BitstreamEntry::EndBlock:
+            blockStack_.pop_back();
+            return Error::success();
+        case llvm::BitstreamEntry::Error:
+            return formatError("bad block found");
+        default:
             MRDOCS_UNREACHABLE();
         }
     }
-    // Premature stream end
-    MRDOCS_UNREACHABLE();
 }
 
 //------------------------------------------------

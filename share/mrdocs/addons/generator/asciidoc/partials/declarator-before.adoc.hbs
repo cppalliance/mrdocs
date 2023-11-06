@@ -14,7 +14,9 @@
 {{/if~}}
 {{#if symbol~}}
     {{#if (not parent-type)}}{{>qualified-path symbol=symbol.parent}}{{/if~}}
-    xref:{{symbol.ref}}[{{name}}]{{else if name}}{{name~}}
+    xref:{{symbol.ref}}[{{name}}]
+{{~else if name}}{{name~}}
 {{/if~}}
+{{#if (eq kind "decltype")}}decltype({{operand}}){{/if~}}
 {{#if (eq kind "specialization")}}{{>template-args args=args}}{{/if~}}
 {{#if is-pack~}}...{{/if}}

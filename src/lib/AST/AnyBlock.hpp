@@ -702,6 +702,9 @@ public:
             case TypeKind::Specialization:
                 I_ = std::make_unique<SpecializationTypeInfo>();
                 break;
+            case TypeKind::Decltype:
+                I_ = std::make_unique<DecltypeTypeInfo>();
+                break;
             case TypeKind::LValueReference:
                 I_ = std::make_unique<LValueReferenceTypeInfo>();
                 break;
@@ -1137,11 +1140,19 @@ readSubBlock(unsigned ID)
     }
     case BI_EXPR_BLOCK_ID:
     {
-        if(! I_->isArray())
-            return Error("wrong TypeInfo kind");
-        auto& I = static_cast<ArrayTypeInfo&>(*I_);
-        ExprBlock B(I.Bounds, br_);
-        return br_.readBlock(B, ID);
+        if(I_->isArray())
+        {
+            auto& I = static_cast<ArrayTypeInfo&>(*I_);
+            ExprBlock B(I.Bounds, br_);
+            return br_.readBlock(B, ID);
+        }
+        else if(I_->isDecltype())
+        {
+            auto& I = static_cast<DecltypeTypeInfo&>(*I_);
+            ExprBlock B(I.Operand, br_);
+            return br_.readBlock(B, ID);
+        }
+        return Error("wrong TypeInfo kind");
     }
     default:
         return AnyBlock::readSubBlock(ID);

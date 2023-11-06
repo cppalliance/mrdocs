@@ -71,16 +71,6 @@ public:
     */
     Error readBlock(AnyBlock& B, unsigned ID);
 
-    /** Read a record into a data field.
-
-        This calls parseRecord after casting.
-    */
-    Error readRecord(unsigned ID);
-
-    // Helper function to step through blocks to find and dispatch the next record
-    // or block to be read.
-    Cursor skipUntilRecordOrBlock(unsigned &BlockOrRecordID);
-
 public:
     llvm::BitstreamCursor& Stream;
     std::optional<llvm::BitstreamBlockInfo> BlockInfo;

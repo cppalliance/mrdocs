@@ -365,6 +365,7 @@ grammar
                 "builtin" |
                 "tag" |
                 "specialization" |
+                "decltype" |
                 "lvalue-reference" |
                 "rvalue-reference" |
                 "pointer" |
@@ -380,6 +381,7 @@ grammar
             attribute ref-qualifier { "&"|"&&" } ?,
             attribute exception-spec { text } ?,
             attribute bounds { text } ?,
+            attribute operand { text } ?,
             TemplateArg *,
             TypeInfo *
         }

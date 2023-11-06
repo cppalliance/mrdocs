@@ -45,6 +45,8 @@ toString(
         return "tag";
     case TypeKind::Specialization:
         return "specialization";
+    case TypeKind::Decltype:
+        return "decltype";
     case TypeKind::LValueReference:
         return "lvalue-reference";
     case TypeKind::RValueReference:
@@ -139,6 +141,9 @@ operator()(
 
     if constexpr(requires { t.Name; })
         write(t.Name);
+
+    if constexpr(T::isDecltype())
+        write("decltype(", t.Operand.Written, ')');
 
     if constexpr(T::isSpecialization())
     {

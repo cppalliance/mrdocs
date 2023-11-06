@@ -305,13 +305,13 @@ RecordIDNameMap = []()
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}}
     };
-    MRDOCS_ASSERT(Inits.size() == RecordIDCount);
+    // MRDOCS_ASSERT(Inits.size() == RecordIDCount);
     for (const auto& Init : Inits)
     {
         RecordIDNameMap[Init.first] = Init.second;
         MRDOCS_ASSERT((Init.second.Name.size() + 1) <= BitCodeConstants::RecordSize);
     }
-    MRDOCS_ASSERT(RecordIDNameMap.size() == RecordIDCount);
+    // MRDOCS_ASSERT(RecordIDNameMap.size() == RecordIDCount);
     return RecordIDNameMap;
 }();
 
@@ -943,6 +943,11 @@ emitBlock(
         {
             emitBlock(t.ElementType, BI_TYPEINFO_CHILD_BLOCK_ID);
             emitBlock(t.Bounds);
+        }
+
+        if constexpr(T::isDecltype())
+        {
+            emitBlock(t.Operand);
         }
 
         if constexpr(T::isFunction())

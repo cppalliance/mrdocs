@@ -40,6 +40,7 @@ enum class TypeKind
     Builtin = 1, // for bitstream
     Tag,
     Specialization,
+    Decltype,
     LValueReference,
     RValueReference,
     Pointer,
@@ -65,6 +66,7 @@ struct TypeInfo
     constexpr bool isBuiltin()         const noexcept { return Kind == TypeKind::Builtin ; }
     constexpr bool isTag()             const noexcept { return Kind == TypeKind::Tag; }
     constexpr bool isSpecialization()  const noexcept { return Kind == TypeKind::Specialization; }
+    constexpr bool isDecltype()        const noexcept { return Kind == TypeKind::Decltype; }
     constexpr bool isLValueReference() const noexcept { return Kind == TypeKind::LValueReference; }
     constexpr bool isRValueReference() const noexcept { return Kind == TypeKind::RValueReference; }
     constexpr bool isPointer()         const noexcept { return Kind == TypeKind::Pointer; }
@@ -99,6 +101,7 @@ struct IsType : TypeInfo
     static constexpr bool isBuiltin()         noexcept { return K == TypeKind::Builtin; }
     static constexpr bool isTag()             noexcept { return K == TypeKind::Tag; }
     static constexpr bool isSpecialization()  noexcept { return K == TypeKind::Specialization; }
+    static constexpr bool isDecltype()        noexcept { return K == TypeKind::Decltype; }
     static constexpr bool isLValueReference() noexcept { return K == TypeKind::LValueReference; }
     static constexpr bool isRValueReference() noexcept { return K == TypeKind::RValueReference; }
     static constexpr bool isPointer()         noexcept { return K == TypeKind::Pointer; }
@@ -138,6 +141,13 @@ struct SpecializationTypeInfo
     std::string Name;
     SymbolID id = SymbolID::invalid;
     std::vector<std::unique_ptr<TArg>> TemplateArgs;
+};
+
+struct DecltypeTypeInfo
+    : IsType<TypeKind::Decltype>
+{
+    QualifierKind CVQualifiers = QualifierKind::None;
+    ExprInfo Operand;
 };
 
 struct LValueReferenceTypeInfo
@@ -239,6 +249,10 @@ visit(
     case TypeKind::Specialization:
         return f(static_cast<add_cv_from_t<
             TypeTy, SpecializationTypeInfo>&>(II),
+                std::forward<Args>(args)...);
+    case TypeKind::Decltype:
+        return f(static_cast<add_cv_from_t<
+            TypeTy, DecltypeTypeInfo>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::LValueReference:
         return f(static_cast<add_cv_from_t<

@@ -806,7 +806,15 @@ public:
 
             // ------------------------------------------------
             // terminal TypeInfo nodes
-
+            case Type::Decltype:
+            {
+                auto* T = cast<DecltypeType>(type);
+                auto I = std::make_unique<DecltypeTypeInfo>();
+                buildExprInfo(I->Operand, T->getUnderlyingExpr());
+                I->CVQualifiers = convertToQualifierKind(quals);
+                *inner = std::move(I);
+                break;
+            }
             case Type::Auto:
             {
                 auto* T = cast<AutoType>(type);
@@ -977,6 +985,7 @@ public:
             // TagTypeInfo, or SpecializationTypeInfo
             MRDOCS_ASSERT(
                 (*inner)->isBuiltin() ||
+                (*inner)->isDecltype() ||
                 (*inner)->isTag() ||
                 (*inner)->isSpecialization());
 

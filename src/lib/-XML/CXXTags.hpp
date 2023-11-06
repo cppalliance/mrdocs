@@ -241,6 +241,11 @@ writeType(
                     attrs.push({"bounds", bounds});
             }
 
+            if constexpr(T::isDecltype())
+            {
+                attrs.push({"operand", t.Operand.Written});
+            }
+
             if constexpr(T::isFunction())
             {
                 if(t.RefQualifier != ReferenceKind::None)

@@ -11,7 +11,8 @@
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
     <file path="local-class.cpp" line="1" class="def"/>
     <base>
-      <type name="decltype(f())"/>
+      <type class="decltype" operand="f()">
+      </type>
     </base>
   </struct>
   <struct name="A" id="OhDTqBe4/sw3kfEe1/rfVoLg//I=">

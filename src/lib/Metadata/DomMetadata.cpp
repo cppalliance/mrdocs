@@ -381,6 +381,9 @@ domCreate(
             entries.emplace_back("args",
                 dom::newArray<DomTArgArray>(t.TemplateArgs, domCorpus));
 
+        if constexpr(T::isDecltype())
+            entries.emplace_back("operand", t.Operand.Written);
+
         if constexpr(requires { t.CVQualifiers; })
             entries.emplace_back("cv-qualifiers",
                 toString(t.CVQualifiers));
