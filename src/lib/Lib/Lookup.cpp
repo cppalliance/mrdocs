@@ -25,6 +25,20 @@ bool supportsLookup(const Info* info)
         info->isSpecialization());
 }
 
+bool isTransparent(const Info* info)
+{
+    MRDOCS_ASSERT(info);
+    return visit(*info, []<typename InfoTy>(
+        const InfoTy& I) -> bool
+    {
+        if constexpr(InfoTy::isNamespace())
+            return I.specs.isInline;
+        if constexpr(InfoTy::isEnum())
+            return ! I.Scoped;
+        return false;
+    });
+}
+
 void
 buildLookups(
     const Corpus& corpus,
@@ -41,6 +55,11 @@ buildLookups(
             for(const SymbolID& M : I.Members)
             {
                 const Info* child = corpus.find(M);
+                // if the member is an inline namespace or
+                // an unscoped enumeration, add its members as well
+                if(isTransparent(child))
+                    buildLookups(corpus, *child, lookups);
+
                 // KRYSTIAN TODO: handle inline/anonymous namespaces
                 // KRYSTIAN TODO: injected class names?
                 if(child->Name.empty())
@@ -125,11 +144,11 @@ lookupInContext(
     std::string_view name,
     bool for_nns)
 {
-    context = lookThroughTypedefs(context);
-    // KRYSTIAN FIXME: enumerators need to have their own
-    // info type for lookup to work
-    if(! context)
+    // if the lookup context is a typedef, we want to
+    // lookup the name in the type it denotes
+    if(! (context = lookThroughTypedefs(context)))
         return nullptr;
+    MRDOCS_ASSERT(supportsLookup(context));
     LookupTable& table = lookup_tables_.at(context);
     // KRYSTIAN FIXME: disambiguation based on signature
     for(auto& result : table.lookup(name))
@@ -216,7 +235,7 @@ lookupQualified(
     while(! qualifier.empty())
     {
         if(! (context = lookupInContext(
-            context, qualifier.front())), true)
+            context, qualifier.front(), true)))
             return nullptr;
         qualifier = qualifier.subspan(1);
     }

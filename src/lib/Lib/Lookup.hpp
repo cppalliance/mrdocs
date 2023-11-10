@@ -26,6 +26,10 @@ namespace mrdocs {
 
 class LookupTable
 {
+    // maps unquaified names to symbols with that name.
+    // names from member symbols which are "transparent"
+    // (e.g. unscoped enums and inline namespaces) will
+    // have their members added to the table as well
     std::unordered_multimap<
         std::string_view, const Info*> lookups_;
 
