@@ -22,30 +22,46 @@
 namespace clang {
 namespace mrdocs {
 
+enum class FileKind
+{
+    // file in the source directory
+    Source,
+    // file in a system include directory
+    System,
+    // file outside the source directory
+    Other
+};
+
 struct MRDOCS_DECL
     Location
 {
+    /** The full file path
+    */
+    std::string Path;
+
     /** Name of the file
     */
     std::string Filename;
 
     /** Line number within the file
     */
-    unsigned LineNumber;
+    unsigned LineNumber = 0;
 
-    /** Whether the file is inside the source root directory
+    /** The kind of file this is
     */
-    bool IsFileInRootDir;
+    FileKind Kind = FileKind::Source;
 
     //--------------------------------------------
 
     Location(
-        unsigned line = 0,
+        std::string_view filepath = "",
         std::string_view filename = "",
-        bool in_root_dir = false)
-        : Filename(filename)
+        unsigned line = 0,
+        FileKind kind = FileKind::Source)
+        : Path(filepath)
+        , Filename(filename)
         , LineNumber(line)
-        , IsFileInRootDir(in_root_dir)
+        , Kind(kind)
     {
     }
 };

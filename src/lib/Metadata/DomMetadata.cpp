@@ -78,6 +78,7 @@ dom::Object
 domCreate(Location const& loc)
 {
     return dom::Object({
+        { "path", loc.Path },
         { "file", loc.Filename },
         { "line", loc.LineNumber}
         });

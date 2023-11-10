@@ -46,7 +46,7 @@
     <template>
       <tparam name="U" class="type"/>
       <struct name="C" id="bJ8v5jNLvcM2EtaEdF2cpbTmU5s=">
-        <file path="spec-mem-implicit-instantiation.cpp" line="26" class="def"/>
+        <file path="spec-mem-implicit-instantiation.cpp" line="28" class="def"/>
         <function name="i" id="FnUXB08e7tKDcXA1I7E6hiu2/i0=">
           <file path="spec-mem-implicit-instantiation.cpp" line="30" class="def"/>
         </function>
@@ -59,7 +59,7 @@
       <tparam name="U" class="type"/>
       <targ class="type" type="U*"/>
       <struct name="C" id="xYK8qpEgWzczUMGnNUx+ozeBle0=">
-        <file path="spec-mem-implicit-instantiation.cpp" line="34" class="def"/>
+        <file path="spec-mem-implicit-instantiation.cpp" line="36" class="def"/>
         <function name="j" id="ks7mzzkRLaNXkyZ4CdZPO75g8js=">
           <file path="spec-mem-implicit-instantiation.cpp" line="38" class="def"/>
         </function>

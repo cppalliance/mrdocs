@@ -22,7 +22,7 @@
           <template class="explicit" id="mavB0Yf/srdYpaA0qL6bxBdfPlk=">
             <targ class="type" type="bool"/>
             <struct name="D" id="8gtdVs8Zc/2hE1ugmc5SJaowDrk=">
-              <file path="class-template-specializations-3.cpp" line="12" class="def"/>
+              <file path="class-template-specializations-3.cpp" line="13" class="def"/>
             </struct>
           </template>
         </struct>
@@ -30,7 +30,7 @@
       <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
         <targ class="type" type="double"/>
         <struct name="B" id="Ax52oDYNHKdb/kayrTPXtP7EnLo=">
-          <file path="class-template-specializations-3.cpp" line="16" class="def"/>
+          <file path="class-template-specializations-3.cpp" line="17" class="def"/>
           <struct name="C" id="AwZsTwyQp9xqkJ5YDcGgbnNSg3Q=">
             <file path="class-template-specializations-3.cpp" line="19" class="def"/>
           </struct>
@@ -43,7 +43,7 @@
           <template class="explicit" id="mlI5CyZeYMi0hLKKprnY2lkWYuI=">
             <targ class="type" type="bool"/>
             <struct name="D" id="2n2EC+ZzX4R61vVgqMqWD1h4Fqc=">
-              <file path="class-template-specializations-3.cpp" line="24" class="def"/>
+              <file path="class-template-specializations-3.cpp" line="25" class="def"/>
             </struct>
           </template>
         </struct>
@@ -55,7 +55,7 @@
     <template>
       <tparam name="U" class="type"/>
       <struct name="B" id="sJKQ/XsqBeYlnpwi1s54+RRv5NA=">
-        <file path="class-template-specializations-3.cpp" line="29" class="def"/>
+        <file path="class-template-specializations-3.cpp" line="31" class="def"/>
         <struct name="C" id="Dpv+NzmwhV+wRSY65GFxl+38zQM=">
           <file path="class-template-specializations-3.cpp" line="33" class="def"/>
         </struct>
@@ -68,7 +68,7 @@
         <template class="explicit" id="AzqBWCSJNi1p7gzPriIyLxFdnrY=">
           <targ class="type" type="bool"/>
           <struct name="D" id="vu+upAyFdAr9NpomAT9maDrr5VU=">
-            <file path="class-template-specializations-3.cpp" line="38" class="def"/>
+            <file path="class-template-specializations-3.cpp" line="39" class="def"/>
           </struct>
         </template>
       </struct>
@@ -79,7 +79,7 @@
     <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
       <targ class="type" type="void"/>
       <struct name="B" id="AmrHzqMyGcAD714oirSEx/XCTwk=">
-        <file path="class-template-specializations-3.cpp" line="42" class="def"/>
+        <file path="class-template-specializations-3.cpp" line="44" class="def"/>
         <struct name="C" id="uGKF2n5ovA4i95uQxRmzyMq2uqY=">
           <file path="class-template-specializations-3.cpp" line="46" class="def"/>
         </struct>
@@ -92,7 +92,7 @@
         <template class="explicit" id="NXKMuGv+ES2JssXCxPAKpwv8kek=">
           <targ class="type" type="bool"/>
           <struct name="D" id="eYdoT3vlHlbkG+t3+ckhZAqrnlY=">
-            <file path="class-template-specializations-3.cpp" line="51" class="def"/>
+            <file path="class-template-specializations-3.cpp" line="52" class="def"/>
           </struct>
         </template>
       </struct>

@@ -18,7 +18,7 @@
         <targ class="type" type="R"/>
         <targ class="non-type" value="false"/>
         <struct name="impl" access="private" id="BCRU3eMBRSysyvFsjJj+0yg+Vfc=">
-          <file path="nested-private-template.cpp" line="8" class="def"/>
+          <file path="nested-private-template.cpp" line="10" class="def"/>
         </struct>
       </template>
     </class>

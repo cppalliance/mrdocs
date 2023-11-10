@@ -14,7 +14,7 @@
   <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ class="type" type="int"/>
     <struct name="A" id="AKwlChAOi+0ttIAPsD7uitS+gk0=">
-      <file path="class-template-spec.cpp" line="7" class="def"/>
+      <file path="class-template-spec.cpp" line="8" class="def"/>
       <function name="g" id="NCn1LYKSU8X/x/ejZTTGKsJQLug=">
         <file path="class-template-spec.cpp" line="10"/>
       </function>
@@ -23,7 +23,7 @@
   <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ class="type" type="long"/>
     <struct name="A" id="y/8TvVlacBAIG2ds2aYgZE+zGUU=">
-      <file path="class-template-spec.cpp" line="13" class="def"/>
+      <file path="class-template-spec.cpp" line="14" class="def"/>
       <function name="h" id="t1Sc28cdaNrQCdMKo/gCBCog34Q=">
         <file path="class-template-spec.cpp" line="16"/>
       </function>
@@ -42,7 +42,7 @@
     <tparam name="T" class="type"/>
     <targ class="type" type="T*"/>
     <struct name="B" id="dydGCFMdrM4nOwuv3RCXqg2KCUA=">
-      <file path="class-template-spec.cpp" line="25" class="def"/>
+      <file path="class-template-spec.cpp" line="26" class="def"/>
       <function name="g" id="YqMF7qPhrCzrLLwscZ76goyLl0k=">
         <file path="class-template-spec.cpp" line="28"/>
       </function>
@@ -52,7 +52,7 @@
     <tparam name="T" class="type"/>
     <targ class="type" type="T&amp;"/>
     <struct name="B" id="ZjUaxeOoGJ0Jol9Nmn7cGRE7RCo=">
-      <file path="class-template-spec.cpp" line="31" class="def"/>
+      <file path="class-template-spec.cpp" line="32" class="def"/>
       <function name="h" id="Y1o9DjZarkgpmS4JVrc/XkZMn3k=">
         <file path="class-template-spec.cpp" line="34"/>
       </function>
@@ -72,7 +72,7 @@
     <targ class="type" type="int"/>
     <targ class="type" type="int"/>
     <struct name="C" id="qrcrkE8Br83XKNMh95Dvwpph/M8=">
-      <file path="class-template-spec.cpp" line="43" class="def"/>
+      <file path="class-template-spec.cpp" line="44" class="def"/>
       <function name="g" id="xGwiZK/5LGsqcQUgiFrCHkH3zFU=">
         <file path="class-template-spec.cpp" line="46"/>
       </function>
@@ -83,7 +83,7 @@
     <targ class="type" type="T*"/>
     <targ class="type" type="int"/>
     <struct name="C" id="6zS87fCNnLtFfHbRWEmcdeAT1Zg=">
-      <file path="class-template-spec.cpp" line="49" class="def"/>
+      <file path="class-template-spec.cpp" line="50" class="def"/>
       <function name="h" id="N2KH/LGAYrCEUFXj6hyS4bkzaIs=">
         <file path="class-template-spec.cpp" line="52"/>
       </function>

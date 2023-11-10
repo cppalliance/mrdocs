@@ -89,7 +89,7 @@
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
     <targ class="non-type" value="0"/>
     <struct name="S0" id="vt6SAnqggizkWUqtSC5b9rVm+Qw=">
-      <file path="class-template-specializations-1.cpp" line="57" class="def"/>
+      <file path="class-template-specializations-1.cpp" line="58" class="def"/>
     </struct>
   </template>
   <template class="partial" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
@@ -97,21 +97,21 @@
     <targ class="non-type" value="1"/>
     <targ class="type" type="T*"/>
     <struct name="S0" id="xONzwxGiMBJrTYA5eosi4pOC0n0=">
-      <file path="class-template-specializations-1.cpp" line="60" class="def"/>
+      <file path="class-template-specializations-1.cpp" line="61" class="def"/>
     </struct>
   </template>
   <template class="explicit" id="z/QEAP16LEoD3NlABxA6BOFpYpA=">
     <targ class="non-type" value="1"/>
     <targ class="type" type="int*"/>
     <struct name="S0" id="IKgocAXkFMvNmDD+p5dZpSBSRHI=">
-      <file path="class-template-specializations-1.cpp" line="63" class="def"/>
+      <file path="class-template-specializations-1.cpp" line="64" class="def"/>
     </struct>
   </template>
   <specialization id="nJGs54s6oYf7fHzIpo0tyaCSH9M=" primary="z/QEAP16LEoD3NlABxA6BOFpYpA=">
     <targ class="non-type" value="2"/>
     <targ class="type" type="void"/>
     <struct name="S1" id="yY+X2/Fqu8ENz37/HFEJCBOSfVg=">
-      <file path="class-template-specializations-1.cpp" line="66" class="def"/>
+      <file path="class-template-specializations-1.cpp" line="67" class="def"/>
     </struct>
   </specialization>
   <specialization id="c7NNZfjOZ8Ztuw0u26xL/h7UKvA=" primary="z/QEAP16LEoD3NlABxA6BOFpYpA=">
@@ -123,7 +123,7 @@
         <tparam name="I" class="non-type" type="int"/>
         <tparam name="T" class="type" default="void"/>
         <struct name="S2" id="96AKnFS/OwIoVISFMJoJhA0YXIU=">
-          <file path="class-template-specializations-1.cpp" line="69" class="def"/>
+          <file path="class-template-specializations-1.cpp" line="71" class="def"/>
         </struct>
       </template>
     </struct>
@@ -136,7 +136,7 @@
       <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
         <targ class="non-type" value="5"/>
         <struct name="S2" id="8snJ9gp5ca88/AsWGEnFe6Ln6RQ=">
-          <file path="class-template-specializations-1.cpp" line="73" class="def"/>
+          <file path="class-template-specializations-1.cpp" line="75" class="def"/>
         </struct>
       </template>
     </struct>
@@ -151,14 +151,14 @@
         <targ class="non-type" value="7"/>
         <targ class="type" type="T*"/>
         <struct name="S2" id="ZyL4aBHmvCmfq+HyxDSySKwRsdA=">
-          <file path="class-template-specializations-1.cpp" line="77" class="def"/>
+          <file path="class-template-specializations-1.cpp" line="79" class="def"/>
         </struct>
       </template>
       <template class="explicit" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=">
         <targ class="non-type" value="7"/>
         <targ class="type" type="int*"/>
         <struct name="S2" id="eWg27/kfn86dUmPA26mcOo6kkfs=">
-          <file path="class-template-specializations-1.cpp" line="81" class="def"/>
+          <file path="class-template-specializations-1.cpp" line="83" class="def"/>
         </struct>
       </template>
     </struct>
@@ -172,7 +172,7 @@
         <targ class="non-type" value="9"/>
         <targ class="type" type="void"/>
         <struct name="S3" id="OuyCzwMT3B0xth9oee9dTlGkXVw=">
-          <file path="class-template-specializations-1.cpp" line="85" class="def"/>
+          <file path="class-template-specializations-1.cpp" line="87" class="def"/>
         </struct>
       </specialization>
     </struct>
@@ -189,7 +189,7 @@
           <tparam name="I" class="non-type" type="int"/>
           <tparam name="T" class="type" default="void"/>
           <struct name="S4" id="jsWbJZfAfgKMXbl9GaZXHLmhL2U=">
-            <file path="class-template-specializations-1.cpp" line="89" class="def"/>
+            <file path="class-template-specializations-1.cpp" line="92" class="def"/>
           </struct>
         </template>
       </specialization>
@@ -206,7 +206,7 @@
         <template class="explicit" id="8UtqZHVItGCqKLwlXny0WJDLkDQ=">
           <targ class="non-type" value="14"/>
           <struct name="S4" id="yPCRvP9B34hMThomBKlaCzkFM54=">
-            <file path="class-template-specializations-1.cpp" line="94" class="def"/>
+            <file path="class-template-specializations-1.cpp" line="97" class="def"/>
           </struct>
         </template>
       </specialization>
@@ -225,14 +225,14 @@
           <targ class="non-type" value="17"/>
           <targ class="type" type="T*"/>
           <struct name="S4" id="cV4O7e/J4xug1ZmsOQKwDVjE99M=">
-            <file path="class-template-specializations-1.cpp" line="99" class="def"/>
+            <file path="class-template-specializations-1.cpp" line="102" class="def"/>
           </struct>
         </template>
         <template class="explicit" id="8UtqZHVItGCqKLwlXny0WJDLkDQ=">
           <targ class="non-type" value="17"/>
           <targ class="type" type="int*"/>
           <struct name="S4" id="J3UZDljdSJ1mGU9Js0JpA3TjVtc=">
-            <file path="class-template-specializations-1.cpp" line="104" class="def"/>
+            <file path="class-template-specializations-1.cpp" line="107" class="def"/>
           </struct>
         </template>
       </specialization>
@@ -245,7 +245,7 @@
       <tparam name="I" class="non-type" type="int"/>
       <tparam name="T" class="type" default="void"/>
       <struct name="S5" id="camC/bDL1+gedizXtv+BQXm3/4s=">
-        <file path="class-template-specializations-1.cpp" line="109" class="def"/>
+        <file path="class-template-specializations-1.cpp" line="111" class="def"/>
       </struct>
     </template>
   </specialization>
@@ -255,7 +255,7 @@
     <template class="explicit" id="t/fAg/z+G5QClTBG74e6bR64CDI=">
       <targ class="non-type" value="20"/>
       <struct name="S5" id="dO93MwJZmA5Fpzul37ZMH6F1ong=">
-        <file path="class-template-specializations-1.cpp" line="113" class="def"/>
+        <file path="class-template-specializations-1.cpp" line="115" class="def"/>
       </struct>
     </template>
   </specialization>
@@ -267,14 +267,14 @@
       <targ class="non-type" value="22"/>
       <targ class="type" type="T*"/>
       <struct name="S5" id="umZ8gPZZ+qTWuYY3zYO/hx1XCGI=">
-        <file path="class-template-specializations-1.cpp" line="117" class="def"/>
+        <file path="class-template-specializations-1.cpp" line="119" class="def"/>
       </struct>
     </template>
     <template class="explicit" id="t/fAg/z+G5QClTBG74e6bR64CDI=">
       <targ class="non-type" value="22"/>
       <targ class="type" type="int*"/>
       <struct name="S5" id="NnzxSBCBz0/s6OkCTTL/yDO06Go=">
-        <file path="class-template-specializations-1.cpp" line="121" class="def"/>
+        <file path="class-template-specializations-1.cpp" line="123" class="def"/>
       </struct>
     </template>
   </specialization>
@@ -285,7 +285,7 @@
       <targ class="non-type" value="24"/>
       <targ class="type" type="void"/>
       <struct name="S6" id="w4IHOtNv5zozrqG240cCIM/ceiU=">
-        <file path="class-template-specializations-1.cpp" line="125" class="def"/>
+        <file path="class-template-specializations-1.cpp" line="127" class="def"/>
       </struct>
     </specialization>
   </specialization>
@@ -301,7 +301,7 @@
           <tparam name="I" class="non-type" type="int"/>
           <tparam name="T" class="type" default="void"/>
           <struct name="S7" id="ExhHzwlrMNSfv2bLNPrl3Ts+Nvk=">
-            <file path="class-template-specializations-1.cpp" line="129" class="def"/>
+            <file path="class-template-specializations-1.cpp" line="132" class="def"/>
           </struct>
         </template>
       </struct>
@@ -320,14 +320,14 @@
           <targ class="non-type" value="29"/>
           <targ class="type" type="T*"/>
           <struct name="S7" id="pbmVOgtPeZtTL7BQG/AM7NVsNdo=">
-            <file path="class-template-specializations-1.cpp" line="134" class="def"/>
+            <file path="class-template-specializations-1.cpp" line="137" class="def"/>
           </struct>
         </template>
         <template class="explicit" id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=">
           <targ class="non-type" value="29"/>
           <targ class="type" type="int*"/>
           <struct name="S7" id="3eTbiMMR3GPY7/xRty3EmJ9bdQU=">
-            <file path="class-template-specializations-1.cpp" line="139" class="def"/>
+            <file path="class-template-specializations-1.cpp" line="142" class="def"/>
           </struct>
         </template>
       </struct>
@@ -344,7 +344,7 @@
         <template class="explicit" id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=">
           <targ class="non-type" value="32"/>
           <struct name="S7" id="VxqDdgdkcw8E86ZiNolpXLlhyWs=">
-            <file path="class-template-specializations-1.cpp" line="144" class="def"/>
+            <file path="class-template-specializations-1.cpp" line="147" class="def"/>
           </struct>
         </template>
       </struct>
@@ -362,7 +362,7 @@
           <targ class="non-type" value="35"/>
           <targ class="type" type="void"/>
           <struct name="S8" id="3sBLDynoSyGl1xzXtqGZlO/q6dA=">
-            <file path="class-template-specializations-1.cpp" line="149" class="def"/>
+            <file path="class-template-specializations-1.cpp" line="152" class="def"/>
           </struct>
         </specialization>
       </struct>
@@ -383,7 +383,7 @@
             <tparam name="I" class="non-type" type="int"/>
             <tparam name="T" class="type" default="void"/>
             <struct name="S9" id="KChFuNDElPROHklvCtkJ+O4+io8=">
-              <file path="class-template-specializations-1.cpp" line="154" class="def"/>
+              <file path="class-template-specializations-1.cpp" line="158" class="def"/>
             </struct>
           </template>
         </specialization>
@@ -406,14 +406,14 @@
             <targ class="non-type" value="42"/>
             <targ class="type" type="T*"/>
             <struct name="S9" id="CvFJnK9Xu7B2Fbh91NqM0+gKVEU=">
-              <file path="class-template-specializations-1.cpp" line="160" class="def"/>
+              <file path="class-template-specializations-1.cpp" line="164" class="def"/>
             </struct>
           </template>
           <template class="explicit" id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=">
             <targ class="non-type" value="42"/>
             <targ class="type" type="int*"/>
             <struct name="S9" id="hwfbdkFRNunC/3V+s6HA5BwWiSQ=">
-              <file path="class-template-specializations-1.cpp" line="166" class="def"/>
+              <file path="class-template-specializations-1.cpp" line="170" class="def"/>
             </struct>
           </template>
         </specialization>
@@ -434,7 +434,7 @@
           <template class="explicit" id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=">
             <targ class="non-type" value="46"/>
             <struct name="S9" id="8PQtbs9xGpu1L+b0VOqfLlE6TnY=">
-              <file path="class-template-specializations-1.cpp" line="172" class="def"/>
+              <file path="class-template-specializations-1.cpp" line="176" class="def"/>
             </struct>
           </template>
         </specialization>

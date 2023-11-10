@@ -12,7 +12,7 @@
     <tparam name="T" class="type"/>
     <targ class="type" type="T*"/>
     <struct name="A" id="Nkvb8FA0/0YIpaybicEkWLwFOPo=">
-      <file path="class-template-specializations-2.cpp" line="4" class="def"/>
+      <file path="class-template-specializations-2.cpp" line="5" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <struct name="B" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
@@ -23,7 +23,7 @@
         <tparam name="U" class="type"/>
         <targ class="type" type="U*"/>
         <struct name="B" id="HP4W/UatJ6BMg+LZKC5cQM4kCzw=">
-          <file path="class-template-specializations-2.cpp" line="10" class="def"/>
+          <file path="class-template-specializations-2.cpp" line="11" class="def"/>
           <struct name="C" id="qgS1WVyttKFsoadDE/OO4QyodlM=">
             <file path="class-template-specializations-2.cpp" line="11" class="def"/>
           </struct>
@@ -32,7 +32,7 @@
       <template class="explicit" id="XTiSWRMM5OD8mjz+RJ6oZpKYgCQ=">
         <targ class="type" type="int"/>
         <struct name="B" id="vuv6bo9spUYsHZ3uwTm6i6UxSNI=">
-          <file path="class-template-specializations-2.cpp" line="13" class="def"/>
+          <file path="class-template-specializations-2.cpp" line="14" class="def"/>
         </struct>
       </template>
     </struct>
@@ -40,7 +40,7 @@
   <template class="explicit" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ class="type" type="double"/>
     <struct name="A" id="bcCFiKKGBMnWrAf/IBu1R/sC07s=">
-      <file path="class-template-specializations-2.cpp" line="17" class="def"/>
+      <file path="class-template-specializations-2.cpp" line="18" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <struct name="D" id="t1k8CaeFknlnAWQfa52he803Mcw=">
@@ -55,7 +55,7 @@
             <tparam name="T" class="type"/>
             <targ class="type" type="T*"/>
             <struct name="E" id="TpBRSCUm33PjLoWxW50FZsR1GSM=">
-              <file path="class-template-specializations-2.cpp" line="26" class="def"/>
+              <file path="class-template-specializations-2.cpp" line="27" class="def"/>
               <struct name="F" id="lKNoRiq1oi0XgdyuRlHKmVsSkus=">
                 <file path="class-template-specializations-2.cpp" line="29" class="def"/>
               </struct>
@@ -66,7 +66,7 @@
       <template class="explicit" id="t1k8CaeFknlnAWQfa52he803Mcw=">
         <targ class="type" type="float"/>
         <struct name="D" id="RdjbfZA0y514GFSR1pCAjUyfq24=">
-          <file path="class-template-specializations-2.cpp" line="33" class="def"/>
+          <file path="class-template-specializations-2.cpp" line="34" class="def"/>
           <template>
             <tparam name="T" class="type"/>
             <struct name="G" id="ZbjwxkmALgjx71k6/JAk0jbwrlo=">
@@ -77,7 +77,7 @@
             <tparam name="T" class="type"/>
             <targ class="type" type="T*"/>
             <struct name="G" id="zPgrcrIOrcVWP7Qpw8x3Zl2fIpI=">
-              <file path="class-template-specializations-2.cpp" line="45" class="def"/>
+              <file path="class-template-specializations-2.cpp" line="46" class="def"/>
             </struct>
           </template>
         </struct>
@@ -87,7 +87,7 @@
         <specialization id="HzSR9lAhcaSZke6x6ggUIqnawQw=" primary="TpBRSCUm33PjLoWxW50FZsR1GSM=">
           <targ class="type" type="int*"/>
           <struct name="F" id="UkRYUyzSKKaCbVo7DS8mUuPk5Qs=">
-            <file path="class-template-specializations-2.cpp" line="48" class="def"/>
+            <file path="class-template-specializations-2.cpp" line="50" class="def"/>
           </struct>
         </specialization>
       </specialization>
@@ -98,7 +98,7 @@
     <specialization id="WeO5ITJRmNS4Q90O2A5hmw/KZc8=" primary="HP4W/UatJ6BMg+LZKC5cQM4kCzw=">
       <targ class="type" type="int*"/>
       <struct name="C" id="W4yrcTF+RN1qGXUi97b5Tcm2v60=">
-        <file path="class-template-specializations-2.cpp" line="41" class="def"/>
+        <file path="class-template-specializations-2.cpp" line="43" class="def"/>
       </struct>
     </specialization>
   </specialization>

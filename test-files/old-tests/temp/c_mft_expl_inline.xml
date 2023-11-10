@@ -3,17 +3,17 @@
        xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
 <namespace id="//////////////////////////8=">
   <struct name="A" id="YrPSaKAbmXgzCAX5WByx4eVoqBM=">
-    <file path="c_mft_expl_inline.cpp" line="1" class="def"/>
+    <file path="temp/c_mft_expl_inline.cpp" line="1" class="def"/>
     <template>
       <tparam name="T" class="type"/>
       <function name="f" id="6UIt6/hx1mqXnkk0IbjFZNnVJ2Y=">
-        <file path="c_mft_expl_inline.cpp" line="4" class="def"/>
+        <file path="temp/c_mft_expl_inline.cpp" line="4" class="def"/>
       </function>
     </template>
     <template class="explicit" id="6UIt6/hx1mqXnkk0IbjFZNnVJ2Y=">
       <targ class="type" type="int"/>
       <function name="f" id="veV2posfyuimiNezTTVnomiz6tY=">
-        <file path="c_mft_expl_inline.cpp" line="6" class="def"/>
+        <file path="temp/c_mft_expl_inline.cpp" line="6" class="def"/>
       </function>
     </template>
   </struct>

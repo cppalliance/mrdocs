@@ -159,15 +159,18 @@ static void LocationAbbrev(
         llvm::BitCodeAbbrevOp(
             llvm::BitCodeAbbrevOp::Fixed,
             BitCodeConstants::LineNumberSize),
-        // 1. Boolean (IsFileInRootDir)
+        // 1. File kind
         llvm::BitCodeAbbrevOp(
-            llvm::BitCodeAbbrevOp::Fixed,
-            BitCodeConstants::BoolSize),
-        // 2. Fixed-size integer (length of the following string (filename))
+            llvm::BitCodeAbbrevOp::Fixed, 3),
+        // 2. Fixed-size integer, length of the path
         llvm::BitCodeAbbrevOp(
             llvm::BitCodeAbbrevOp::Fixed,
             BitCodeConstants::StringLengthSize),
-        // 3. The string blob
+        // 4. Fixed-size integer, length of the path + filename
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::StringLengthSize),
+        // 5. The string blob
         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
 }
 
@@ -685,10 +688,13 @@ emitRecord(
     // FIXME: Assert that the line number
     // is of the appropriate size.
     Record.push_back(Loc.LineNumber);
-    MRDOCS_ASSERT(Loc.Filename.size() < (1U << BitCodeConstants::StringLengthSize));
-    Record.push_back(Loc.IsFileInRootDir);
-    Record.push_back(Loc.Filename.size());
-    Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, Loc.Filename);
+    Record.push_back(static_cast<int>(Loc.Kind));
+    MRDOCS_ASSERT(Loc.Path.size() + Loc.Filename.size() <
+        (1U << BitCodeConstants::StringLengthSize));
+    Record.push_back(Loc.Path.size());
+    Record.push_back(Loc.Path.size() + Loc.Filename.size());
+    Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record,
+        Loc.Path + Loc.Filename);
 }
 
 void

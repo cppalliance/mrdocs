@@ -5,9 +5,9 @@
   <template>
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file path="ct_mf.cpp" line="2" class="def"/>
+      <file path="temp/ct_mf.cpp" line="2" class="def"/>
       <function name="f" id="c4jAAYDw9qnOxUCpXquNT7fALUY=">
-        <file path="ct_mf.cpp" line="4" class="def"/>
+        <file path="temp/ct_mf.cpp" line="4" class="def"/>
       </function>
     </struct>
   </template>

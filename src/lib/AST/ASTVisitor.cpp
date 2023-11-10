@@ -132,18 +132,22 @@ public:
     InfoSet info_;
     std::unordered_set<Decl*> dependencies_;
 
-    struct FileFilter
+    struct FileInfo
     {
-        std::string prefix;
-        bool include = true;
+        FileInfo(std::string_view path)
+            : full_path(path)
+            , short_path(full_path)
+        {
+        }
+
+        std::string full_path;
+        std::string_view short_path;
+        FileKind kind;
     };
 
     std::unordered_map<
-        clang::SourceLocation::UIntTy,
-        FileFilter> fileFilter_;
-
-    llvm::SmallString<512> file_;
-    bool isFileInRootDir_ = false;
+        const FileEntry*,
+        FileInfo> files_;
 
     llvm::SmallString<128> usr_;
 
@@ -218,6 +222,144 @@ public:
         // (erroneously) used somewhere
         MRDOCS_ASSERT(context_.getTraversalScope() ==
             std::vector<Decl*>{context_.getTranslationUnitDecl()});
+
+        using namespace llvm::sys;
+        Preprocessor& PP = sema_.getPreprocessor();
+        HeaderSearch& HS = PP.getHeaderSearchInfo();
+
+        auto normalize_path = [&](
+            std::string_view old_path,
+            bool remove_filename)
+        {
+            llvm::SmallString<128> new_path(old_path);
+            if(remove_filename)
+                path::remove_filename(new_path);
+            // KRYSTIAN FIXME: use FileManager::makeAbsolutePath?
+            if(! path::is_absolute(new_path))
+            {
+                auto& cwd = source_.getFileManager().
+                    getFileSystemOpts().WorkingDir;
+                // we can't normalize a relative path
+                // without a base directory
+                MRDOCS_ASSERT(! cwd.empty());
+                fs::make_absolute(cwd, new_path);
+            }
+            // remove ./ and ../
+            path::remove_dots(new_path, true, path::Style::posix);
+            // convert to posix style
+            path::native(new_path, path::Style::posix);
+            return std::string(new_path);
+        };
+
+        std::string source_root = normalize_path(
+            config_->sourceRoot, true);
+        std::vector<std::pair<std::string, FileKind>> search_dirs;
+
+        search_dirs.reserve(HS.search_dir_size());
+        // first, convert all the include search directories into POSIX style
+        for(const DirectoryLookup& DL : HS.search_dir_range())
+        {
+            OptionalDirectoryEntryRef DR = DL.getDirRef();
+            // only consider normal directories
+            if(! DL.isNormalDir() || ! DR)
+                continue;
+            // store the normalized path
+            search_dirs.emplace_back(
+                normalize_path(DR->getName(), false),
+                DL.isSystemHeaderDirectory() ?
+                    FileKind::System : FileKind::Other);
+        }
+
+        auto build_file_info = [&](const FileEntry* file)
+        {
+            // "try" implies this may fail, so fallback to getName
+            // if an empty string is returned
+            std::string_view file_path =
+                file->tryGetRealPathName();
+            if(file_path.empty())
+                file_path = file->getName();
+            files_.emplace(file,
+                getFileInfo(search_dirs,
+                    normalize_path(file_path, false),
+                    source_root));
+        };
+
+        // build the file info for the main file
+        build_file_info(
+            source_.getFileEntryForID(
+                source_.getMainFileID()));
+
+        // build the file info for all included files
+        for(const FileEntry* file : PP.getIncludedFiles())
+            build_file_info(file);
+    }
+
+    FileInfo
+    getFileInfo(
+        std::span<const std::pair<
+            std::string, FileKind>> search_dirs,
+        std::string_view file_path,
+        std::string_view source_root)
+    {
+        using namespace llvm::sys;
+        FileInfo file_info(file_path);
+
+        std::ptrdiff_t best_length = 0;
+        auto check_dir = [&](
+            std::string_view dir_path,
+            FileKind kind)
+        {
+            auto NI = path::begin(file_path), NE = path::end(file_path);
+            auto DI = path::begin(dir_path), DE = path::end(dir_path);
+
+            for(; NI != NE; ++NI, ++DI)
+            {
+                // reached the end of the directory path
+                if(DI == DE)
+                {
+                    // update the best prefix length
+                    if(std::ptrdiff_t length =
+                        NI - path::begin(file_path);
+                        length > best_length)
+                    {
+                        best_length = length;
+                        file_info.kind = kind;
+                        return true;
+                    }
+                    break;
+                }
+                // separators always match
+                if(NI->size() == 1 && DI->size() == 1 &&
+                    path::is_separator(NI->front()) &&
+                    path::is_separator(DI->front()))
+                    continue;
+                // components don't match
+                if(*NI != *DI)
+                    break;
+            }
+            return false;
+        };
+
+        bool in_source_root = check_dir(
+            source_root, FileKind::Source);
+
+        // only use a source_root relative path if we
+        // don't find anything in the include search directories
+        bool any_match = false;
+        for(const auto& [dir_path, kind] : search_dirs)
+            any_match |= check_dir(dir_path, kind);
+
+        // KRYSTIAN TODO: if we don't find any matches,
+        // make the path relative to source_root and return it
+        static_cast<void>(any_match);
+
+        // override the file kind if
+        // the file was found in source_root
+        if(in_source_root)
+            file_info.kind = FileKind::Source;
+
+        file_info.short_path.remove_prefix(best_length);
+        return file_info;
     }
 
     InfoSet& results()
@@ -460,36 +602,61 @@ public:
 
     //------------------------------------------------
 
-    unsigned
-    getLine(const Decl* D) const
+    // KRYSTIAN NOTE: we *really* should not have a
+    // type named "SourceLocation"...
+    FileInfo* getFileInfo(clang::SourceLocation loc)
     {
-        return source_.getPresumedLoc(
-            D->getBeginLoc()).getLine();
+        // KRYSTIAN FIXME: we really should not be
+        // calling getPresumedLoc this often,
+        // it's quite expensive
+        auto presumed = source_.getPresumedLoc(loc, false);
+        if(presumed.isInvalid())
+            return nullptr;
+        const FileEntry* file =
+            source_.getFileEntryForID(
+                presumed.getFileID());
+        // KRYSTIAN NOTE: i have no idea under what
+        // circumstances the file entry would be null
+        if(! file)
+            return nullptr;
+        // KRYSTIAN NOTE: i have no idea under what
+        // circumstances the file would not be in either
+        // the main file, or an included file
+        auto it = files_.find(file);
+        if(it == files_.end())
+            return nullptr;
+        return &it->second;
     }
 
     void
     addSourceLocation(
         SourceInfo& I,
-        unsigned line,
+        clang::SourceLocation loc,
         bool definition)
     {
+        unsigned line = source_.getPresumedLoc(
+            loc, false).getLine();
+        FileInfo* file = getFileInfo(loc);
+        MRDOCS_ASSERT(file);
         if(definition)
         {
             if(I.DefLoc)
                 return;
-            I.DefLoc.emplace(line, file_.str(), isFileInRootDir_);
+            I.DefLoc.emplace(file->full_path,
+                file->short_path, line, file->kind);
         }
         else
         {
             auto existing = std::find_if(I.Loc.begin(), I.Loc.end(),
-                [this, line](const Location& l)
+                [line, file](const Location& l)
                 {
                     return l.LineNumber == line &&
-                        l.Filename == file_.str();
+                        l.Path == file->full_path;
                 });
             if(existing != I.Loc.end())
                 return;
-            I.Loc.emplace_back(line, file_.str(), isFileInRootDir_);
+            I.Loc.emplace_back(file->full_path,
+                file->short_path, line, file->kind);
         }
     }
 
@@ -1443,40 +1610,12 @@ public:
                 return false;
         }
 
-        const PresumedLoc loc =
-            source_.getPresumedLoc(D->getBeginLoc());
-
-        MRDOCS_ASSERT(loc.isValid());
-
-        file_ = files::makePosixStyle(loc.getFilename());
-
-        // skip system header
-        if(source_.isInSystemHeader(D->getLocation()))
-            return false;
-
-        auto [it, inserted] = fileFilter_.emplace(
-            loc.getIncludeLoc().getRawEncoding(),
-            FileFilter());
-
-        FileFilter& ff = it->second;
-
-        // file has not been previously visited
-        if(inserted)
-            ff.include = config_.shouldExtractFromFile(file_, ff.prefix);
-
-        // don't extract if the declaration is in a file
-        // that should not be visited
-        if(! ff.include)
-            return false;
-        // VFALCO we could assert that the prefix
-        //        matches and just lop off the
-        //        first ff.prefix.size() characters.
-        path::replace_path_prefix(file_, ff.prefix, "");
-
-        // KRYSTIAN FIXME: once set, this never gets reset
-        isFileInRootDir_ = true;
-
-        return true;
+        FileInfo* file = getFileInfo(D->getBeginLoc());
+        // KRYSTIAN NOTE: i'm unsure under what conditions
+        // this assert would fire.
+        MRDOCS_ASSERT(file);
+        // only extract from files in source root
+        return file->kind == FileKind::Source;
     }
 
     bool
@@ -1742,7 +1881,7 @@ public:
         CXXRecordDecl* D)
     {
         parseRawComment(I.javadoc, D);
-        addSourceLocation(I, getLine(D),
+        addSourceLocation(I, D->getBeginLoc(),
             D->isThisDeclarationADefinition());
 
         if(! created)
@@ -1794,7 +1933,7 @@ public:
         EnumDecl* D)
     {
         parseRawComment(I.javadoc, D);
-        addSourceLocation(I, getLine(D),
+        addSourceLocation(I, D->getBeginLoc(),
             D->isThisDeclarationADefinition());
 
         if(! created)
@@ -1820,7 +1959,7 @@ public:
         EnumConstantDecl* D)
     {
         parseRawComment(I.javadoc, D);
-        addSourceLocation(I, getLine(D), true);
+        addSourceLocation(I, D->getBeginLoc(), true);
 
         if(! created)
             return;
@@ -1848,7 +1987,7 @@ public:
         // declarations as having a single definition; however,
         // such declarations are never definitions and can
         // be redeclared multiple times (even in the same scope)
-        addSourceLocation(I, getLine(D), true);
+        addSourceLocation(I, D->getBeginLoc(), true);
 
         if(! created)
             return;
@@ -1882,7 +2021,7 @@ public:
         VarDecl* D)
     {
         parseRawComment(I.javadoc, D);
-        addSourceLocation(I, getLine(D),
+        addSourceLocation(I, D->getBeginLoc(),
             D->isThisDeclarationADefinition());
 
         // KRYSTIAN FIXME: we need to properly merge storage class
@@ -1926,7 +2065,7 @@ public:
         parseRawComment(I.javadoc, D);
         // fields (i.e. non-static data members)
         // cannot have multiple declarations
-        addSourceLocation(I, getLine(D), true);
+        addSourceLocation(I, D->getBeginLoc(), true);
 
         if(! created)
             return;
@@ -1962,7 +2101,7 @@ public:
         DeclTy* D)
     {
         parseRawComment(I.javadoc, D);
-        addSourceLocation(I, getLine(D),
+        addSourceLocation(I, D->getBeginLoc(),
             D->isThisDeclarationADefinition());
 
         //
@@ -2093,7 +2232,7 @@ public:
         FriendDecl* D)
     {
         parseRawComment(I.javadoc, D);
-        addSourceLocation(I, getLine(D), true);
+        addSourceLocation(I, D->getBeginLoc(), true);
 
         if(! created)
             return;

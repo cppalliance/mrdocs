@@ -5,13 +5,13 @@
   <template>
     <tparam name="T" class="type"/>
     <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
-      <file path="ct_mct.cpp" line="2" class="def"/>
+      <file path="temp/ct_mct.cpp" line="2" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <struct name="B" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
-          <file path="ct_mct.cpp" line="5" class="def"/>
+          <file path="temp/ct_mct.cpp" line="5" class="def"/>
           <function name="f" id="E/7hys/9wYX9YmsaiN5VHroNb8A=">
-            <file path="ct_mct.cpp" line="5" class="def"/>
+            <file path="temp/ct_mct.cpp" line="5" class="def"/>
           </function>
         </struct>
       </template>
