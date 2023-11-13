@@ -596,6 +596,35 @@ public:
                 return FTD->getAccessUnsafe();
         }
 
+        // KRYSTIAN NOTE: since friend declarations are not members,
+        // this horrible hack computes their access based on the default
+        // access for the tag they appear in, and any AccessSpecDecls which
+        // appear lexically before them
+        if(const auto* FD = dyn_cast<FriendDecl>(D))
+        {
+            const auto* RD = dyn_cast<CXXRecordDecl>(
+                FD->getLexicalDeclContext());
+            // RD should never be null in well-formed code,
+            // but clang error recovery may build an AST
+            // where the assumption will not hold
+            if(! RD)
+                return AccessSpecifier::AS_public;
+            auto access = RD->isClass() ?
+                AccessSpecifier::AS_private :
+                AccessSpecifier::AS_public;
+            for(auto* M : RD->decls())
+            {
+                if(auto* AD = dyn_cast<AccessSpecDecl>(M))
+                    access = AD->getAccessUnsafe();
+                else if(M == FD)
+                    return access;
+            }
+            // KRYSTIAN FIXME: will this ever be hit?
+            // it would require a friend declaration that is
+            // not in the lexical traversal of its lexical context
+            MRDOCS_UNREACHABLE();
+        }
+
         // in all other cases, use the access of this declaration
         return D->getAccessUnsafe();
     }
