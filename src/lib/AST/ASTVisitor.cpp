@@ -2198,6 +2198,28 @@ public:
                     D->getExplicitSpecifier());
         }
 
+        for(const ParmVarDecl* P : D->parameters())
+        {
+            auto index = P->getFunctionScopeIndex();
+            Param& param = index < I.Params.size() ?
+                I.Params[index] : I.Params.emplace_back();
+            // KRYSTIAN NOTE: it's not clear what the correct thing
+            // to do here is. this will use the longest name seen
+            // in any redeclaration
+            if(std::string_view name = P->getName();
+                name.size() > param.Name.size())
+                param.Name = name;
+
+            if(! param.Type)
+                param.Type = buildTypeInfo(P->getOriginalType());
+
+            const Expr* default_arg = P->hasUninstantiatedDefaultArg() ?
+                P->getUninstantiatedDefaultArg() : P->getInit();
+            if(param.Default.empty() && default_arg)
+                param.Default = getSourceCode(
+                    default_arg->getSourceRange());
+        }
+
         if(! created)
             return;
 
@@ -2205,14 +2227,6 @@ public:
 
         I.Class = convertToFunctionClass(
             D->getDeclKind());
-
-        for(const ParmVarDecl* P : D->parameters())
-        {
-            I.Params.emplace_back(
-                buildTypeInfo(P->getOriginalType()),
-                P->getNameAsString(),
-                getSourceCode(P->getDefaultArgRange()));
-        }
 
         QualType RT = D->getReturnType();
         ExtractMode next_mode = ExtractMode::IndirectDependency;
