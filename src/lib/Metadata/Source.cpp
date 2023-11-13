@@ -14,5 +14,21 @@
 namespace clang {
 namespace mrdocs {
 
+std::string_view
+toString(FileKind kind)
+{
+    switch(kind)
+    {
+    case FileKind::Source:
+        return "source";
+    case FileKind::System:
+        return "system";
+    case FileKind::Other:
+        return "other";
+    default:
+        MRDOCS_UNREACHABLE();
+    };
+}
+
 } // mrdocs
 } // clang

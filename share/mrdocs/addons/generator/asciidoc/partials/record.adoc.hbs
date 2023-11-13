@@ -7,7 +7,7 @@
 
 {{>record-decl symbol isFriend=false}}
 
-{{>source symbol.loc}}
+{{>source dcl=(primary_location symbol)}}
 
 {{#with symbol.interface}}
 {{> tranche tranche=public label=""}}

@@ -143,8 +143,9 @@ decodeRecord(
     Location& loc = Field.emplace();
     loc.LineNumber = R[0];
     loc.Kind = static_cast<FileKind>(R[1]);
-    loc.Path.append(Blob.substr(0, R[2]));
-    loc.Filename.append(Blob.substr(R[2], R[3] - R[2]));
+    loc.Documented = static_cast<bool>(R[2]);
+    loc.Path.append(Blob.substr(0, R[3]));
+    loc.Filename.append(Blob.substr(R[3], R[4] - R[3]));
     return Error::success();
 }
 
@@ -160,8 +161,9 @@ decodeRecord(
     Location& loc = Field.emplace_back();
     loc.LineNumber = R[0];
     loc.Kind = static_cast<FileKind>(R[1]);
-    loc.Path.append(Blob.substr(0, R[2]));
-    loc.Filename.append(Blob.substr(R[2], R[3] - R[2]));
+    loc.Documented = static_cast<bool>(R[2]);
+    loc.Path.append(Blob.substr(0, R[3]));
+    loc.Filename.append(Blob.substr(R[3], R[4] - R[3]));
     return Error::success();
 }
 

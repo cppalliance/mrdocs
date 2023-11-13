@@ -162,7 +162,10 @@ static void LocationAbbrev(
         // 1. File kind
         llvm::BitCodeAbbrevOp(
             llvm::BitCodeAbbrevOp::Fixed, 3),
-        // 2. Fixed-size integer, length of the path
+        // 2. Whether this declaration has docs
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 1),
+        // 3. Fixed-size integer, length of the path
         llvm::BitCodeAbbrevOp(
             llvm::BitCodeAbbrevOp::Fixed,
             BitCodeConstants::StringLengthSize),
@@ -688,7 +691,8 @@ emitRecord(
     // FIXME: Assert that the line number
     // is of the appropriate size.
     Record.push_back(Loc.LineNumber);
-    Record.push_back(static_cast<int>(Loc.Kind));
+    Record.push_back(to_underlying(Loc.Kind));
+    Record.push_back(Loc.Documented);
     MRDOCS_ASSERT(Loc.Path.size() + Loc.Filename.size() <
         (1U << BitCodeConstants::StringLengthSize));
     Record.push_back(Loc.Path.size());

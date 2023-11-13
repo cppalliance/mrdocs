@@ -632,7 +632,8 @@ public:
     addSourceLocation(
         SourceInfo& I,
         clang::SourceLocation loc,
-        bool definition)
+        bool definition,
+        bool documented)
     {
         unsigned line = source_.getPresumedLoc(
             loc, false).getLine();
@@ -643,7 +644,8 @@ public:
             if(I.DefLoc)
                 return;
             I.DefLoc.emplace(file->full_path,
-                file->short_path, line, file->kind);
+                file->short_path, line, file->kind,
+                documented);
         }
         else
         {
@@ -656,7 +658,8 @@ public:
             if(existing != I.Loc.end())
                 return;
             I.Loc.emplace_back(file->full_path,
-                file->short_path, line, file->kind);
+                file->short_path, line, file->kind,
+                documented);
         }
     }
 
@@ -1486,7 +1489,7 @@ public:
             }));
     }
 
-    void
+    bool
     parseRawComment(
         std::unique_ptr<Javadoc>& javadoc,
         Decl const* D)
@@ -1497,7 +1500,7 @@ public:
         RawComment* RC =
             D->getASTContext().getRawCommentForDeclNoCache(D);
         if(! RC)
-            return;
+            return false;
         comments::FullComment* FC =
             RC->parse(D->getASTContext(), &sema_.getPreprocessor(), D);
         #else
@@ -1505,6 +1508,8 @@ public:
             D->getASTContext().getCommentForDecl(
                 D, &sema_.getPreprocessor());
         #endif
+        if(! FC)
+            return false;
         // KRYSTIAN FIXME: clang ignores documentation comments
         // when there is a preprocessor directive between the end
         // of the comment and the declaration location. there are two
@@ -1513,6 +1518,7 @@ public:
         // which disables this behavior (it's not entirely clear why
         // this check occurs anyways, so some investigation is needed)
         parseJavadoc(javadoc, FC, D, config_, diags_);
+        return true;
     }
 
     //------------------------------------------------
@@ -1880,9 +1886,9 @@ public:
         bool created,
         CXXRecordDecl* D)
     {
-        parseRawComment(I.javadoc, D);
+        bool documented = parseRawComment(I.javadoc, D);
         addSourceLocation(I, D->getBeginLoc(),
-            D->isThisDeclarationADefinition());
+            D->isThisDeclarationADefinition(), documented);
 
         if(! created)
             return;
@@ -1932,9 +1938,9 @@ public:
         bool created,
         EnumDecl* D)
     {
-        parseRawComment(I.javadoc, D);
+        bool documented = parseRawComment(I.javadoc, D);
         addSourceLocation(I, D->getBeginLoc(),
-            D->isThisDeclarationADefinition());
+            D->isThisDeclarationADefinition(), documented);
 
         if(! created)
             return;
@@ -1958,8 +1964,8 @@ public:
         bool created,
         EnumConstantDecl* D)
     {
-        parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(), true);
+        bool documented = parseRawComment(I.javadoc, D);
+        addSourceLocation(I, D->getBeginLoc(), true, documented);
 
         if(! created)
             return;
@@ -1982,12 +1988,12 @@ public:
         bool created,
         TypedefNameDecl* D)
     {
-        parseRawComment(I.javadoc, D);
+        bool documented = parseRawComment(I.javadoc, D);
         // KRYSTIAN FIXME: we currently treat typedef/alias
         // declarations as having a single definition; however,
         // such declarations are never definitions and can
         // be redeclared multiple times (even in the same scope)
-        addSourceLocation(I, D->getBeginLoc(), true);
+        addSourceLocation(I, D->getBeginLoc(), true, documented);
 
         if(! created)
             return;
@@ -2020,9 +2026,9 @@ public:
         bool created,
         VarDecl* D)
     {
-        parseRawComment(I.javadoc, D);
+        bool documented = parseRawComment(I.javadoc, D);
         addSourceLocation(I, D->getBeginLoc(),
-            D->isThisDeclarationADefinition());
+            D->isThisDeclarationADefinition(), documented);
 
         // KRYSTIAN FIXME: we need to properly merge storage class
         I.specs.storageClass |=
@@ -2062,10 +2068,10 @@ public:
         bool created,
         FieldDecl* D)
     {
-        parseRawComment(I.javadoc, D);
+        bool documented = parseRawComment(I.javadoc, D);
         // fields (i.e. non-static data members)
         // cannot have multiple declarations
-        addSourceLocation(I, D->getBeginLoc(), true);
+        addSourceLocation(I, D->getBeginLoc(), true, documented);
 
         if(! created)
             return;
@@ -2100,9 +2106,9 @@ public:
         bool created,
         DeclTy* D)
     {
-        parseRawComment(I.javadoc, D);
+        bool documented = parseRawComment(I.javadoc, D);
         addSourceLocation(I, D->getBeginLoc(),
-            D->isThisDeclarationADefinition());
+            D->isThisDeclarationADefinition(), documented);
 
         //
         // FunctionDecl
@@ -2231,8 +2237,8 @@ public:
         bool created,
         FriendDecl* D)
     {
-        parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(), true);
+        bool documented = parseRawComment(I.javadoc, D);
+        addSourceLocation(I, D->getBeginLoc(), true, documented);
 
         if(! created)
             return;

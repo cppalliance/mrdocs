@@ -16,7 +16,7 @@ friend {{>declarator symbol.type}};
 {{>function-decl symbol.symbol isFriend=true~}}
 {{/if}}
 
-{{>source symbol.loc}}
+{{>source dcl=(primary_location symbol)}}
 
 {{#if symbol.doc.description}}
 === Description

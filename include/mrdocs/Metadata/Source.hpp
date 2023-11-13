@@ -32,6 +32,10 @@ enum class FileKind
     Other
 };
 
+MRDOCS_DECL
+std::string_view
+toString(FileKind kind);
+
 struct MRDOCS_DECL
     Location
 {
@@ -51,17 +55,23 @@ struct MRDOCS_DECL
     */
     FileKind Kind = FileKind::Source;
 
+    /** Whether this location has documentation.
+    */
+    bool Documented = false;
+
     //--------------------------------------------
 
     Location(
         std::string_view filepath = "",
         std::string_view filename = "",
         unsigned line = 0,
-        FileKind kind = FileKind::Source)
+        FileKind kind = FileKind::Source,
+        bool documented = false)
         : Path(filepath)
         , Filename(filename)
         , LineNumber(line)
         , Kind(kind)
+        , Documented(documented)
     {
     }
 };

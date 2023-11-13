@@ -126,6 +126,42 @@ Builder(
         dom::makeInvocable([res = config->multiPage]() -> Expected<dom::Value> {
         return res;
     }));
+    hbs_.registerHelper("primary_location",
+        dom::makeInvocable([](dom::Value const& v) ->
+            dom::Value
+        {
+            dom::Value src_loc = v.get("loc");
+            if(! src_loc)
+                return nullptr;
+            dom::Value decls = src_loc.get("decl");
+            if(dom::Value def = src_loc.get("def"))
+            {
+                // for classes/enums, prefer the definition
+                dom::Value kind = v.get("kind");
+                if(kind == "record" || kind == "enum")
+                    return def;
+
+                // we only every want to use the definition
+                // for non-tag types when no other declaration
+                // exists
+                if(! decls)
+                    return def;
+            }
+            if(! decls.isArray())
+                return nullptr;
+            dom::Value first;
+            // otherwise, use whatever declaration had docs.
+            // if no declaration had docs, fallback to the
+            // first declaration
+            for(const dom::Value& loc : decls.getArray())
+            {
+                if(loc.get("documented"))
+                    return loc;
+                else if(! first)
+                    first = loc;
+            }
+            return first;
+        }));
     helpers::registerAntoraHelpers(hbs_);
     // helpers::registerStringHelpers(hbs_);
     helpers::registerContainerHelpers(hbs_);

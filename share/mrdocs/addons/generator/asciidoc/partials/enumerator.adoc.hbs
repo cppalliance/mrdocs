@@ -10,7 +10,7 @@
 {{symbol.name}}{{#if symbol.initializer}} = {{symbol.initializer}}{{~/if}}
 ----
 
-{{>source symbol.loc}}
+{{>source dcl=(primary_location symbol)}}
 
 {{#if symbol.doc.description}}
 === Description

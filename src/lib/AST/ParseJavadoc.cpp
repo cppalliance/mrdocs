@@ -920,8 +920,6 @@ parseJavadoc(
     Config const& config,
     Diagnostics& diags)
 {
-    if(! FC)
-        return;
     auto result = JavadocVisitor(FC, D, config, diags).build();
     if(jd == nullptr)
     {

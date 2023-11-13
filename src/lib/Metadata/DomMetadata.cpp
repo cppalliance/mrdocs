@@ -78,9 +78,11 @@ dom::Object
 domCreate(Location const& loc)
 {
     return dom::Object({
-        { "path", loc.Path },
-        { "file", loc.Filename },
-        { "line", loc.LineNumber}
+        { "path",       loc.Path },
+        { "file",       loc.Filename },
+        { "line",       loc.LineNumber },
+        { "kind",       toString(loc.Kind) },
+        { "documented", loc.Documented }
         });
 }
 

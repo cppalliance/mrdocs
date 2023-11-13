@@ -1,9 +1,1 @@
-{{#each decl as | dcl |}}
-{{#unless (eq dcl def)}}
 Declared in file <{{dcl.file}}> on line {{dcl.line}}
-
-{{/unless}}
-{{/each}}
-{{#if def}}
-Defined in file <{{def.file}}> on line {{def.line}}
-{{/if}}

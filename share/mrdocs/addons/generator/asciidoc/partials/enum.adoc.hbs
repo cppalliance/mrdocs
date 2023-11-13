@@ -10,7 +10,7 @@
 enum {{symbol.name}};
 ----
 
-{{>source symbol.loc}}
+{{>source dcl=(primary_location symbol)}}
 
 {{#if symbol.members}}
 === Members
