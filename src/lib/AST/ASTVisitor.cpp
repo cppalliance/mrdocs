@@ -1446,9 +1446,8 @@ public:
                 if(! isa<TemplateTemplateParmDecl>(TD) &&
                     ! isa<BuiltinTemplateDecl>(TD))
                 {
-                    getDependencyID(
-                        getInstantiatedFrom(TD),
-                        R->Template);
+                    getDependencyID(getInstantiatedFrom<
+                        NamedDecl>(TD), R->Template);
                 }
             }
             else
@@ -1865,8 +1864,7 @@ public:
         if(! created)
             return;
 
-        NamedDecl* PD = cast<NamedDecl>(
-            getInstantiatedFrom(D));
+        CXXRecordDecl* PD = getInstantiatedFrom(D);
 
         buildTemplateArgs(I.Args,
             D->getTemplateArgs().asArray());
