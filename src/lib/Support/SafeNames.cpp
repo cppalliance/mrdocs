@@ -103,6 +103,16 @@ class SafeNames::Impl
         return reserved[idx];
     }
 
+public:
+    std::string_view
+    getUnqualified(
+        const SymbolID& id)
+    {
+        const Info* I = corpus_.find(id);
+        MRDOCS_ASSERT(I);
+        return getUnqualified(*I);
+    }
+
     std::string_view
     getUnqualified(
         const Info& I)
@@ -260,27 +270,14 @@ class SafeNames::Impl
     template<typename InfoTy, typename Fn>
     void traverse(const InfoTy& I, Fn&& F)
     {
-        static constexpr auto getMember =
-            [](const auto& M)
-            {
-                if constexpr(requires { M.Specialized; })
-                    return M.Specialized;
-                else
-                    return M;
-            };
-
         if constexpr(
             InfoTy::isSpecialization() ||
             InfoTy::isNamespace() ||
             InfoTy::isRecord() ||
             InfoTy::isEnum())
         {
-            std::ranges::for_each(I.Members, F, getMember);
-        }
-
-        if constexpr(InfoTy::isNamespace() || InfoTy::isRecord())
-        {
-            std::ranges::for_each(I.Specializations, F);
+            for(const SymbolID& id : I.Members)
+                F(id);
         }
     }
 
@@ -396,6 +393,17 @@ getUnqualified(
 
 std::string
 SafeNames::
+getUnqualified(
+    OverloadSet const& os) const
+{
+    std::string result = "overload-";
+    // KRYSTIAN FIXME: the name needs to be hashed
+    result.append(os.Name);
+    return result;
+}
+
+std::string
+SafeNames::
 getQualified(
     SymbolID const& id,
     char delim) const
@@ -404,6 +412,29 @@ getQualified(
         return toBase16(id);
     std::string result;
     impl_->getSafeQualified(result, id, delim);
+    return result;
+}
+
+std::string
+SafeNames::
+getQualified(
+    OverloadSet const& os,
+    char delim) const
+{
+    if(! impl_)
+        return getUnqualified(os);
+    std::string result;
+    if(os.Parent != SymbolID::global)
+    {
+        impl_->getSafeQualified(result, os.Parent, delim);
+        result.push_back(delim);
+    }
+    // the safename for an overload set is the unqualified
+    // safe name of its members, without any disambiguation characters.
+    // members of an overload set use the same safe name regardless of
+    // whether they belong to an overload set
+    result.append(impl_->getUnqualified(
+        os.Members.front()));
     return result;
 }
 

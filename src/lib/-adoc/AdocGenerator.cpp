@@ -29,7 +29,7 @@ Expected<ExecutorGroup<Builder>>
 createExecutors(
     AdocCorpus const& adocCorpus)
 {
-    auto const& config = adocCorpus.getCorpus().config;
+    auto const& config = adocCorpus->config;
     auto& threadPool = config.threadPool();
     ExecutorGroup<Builder> group(threadPool);
     for(auto i = threadPool.getThreadCount(); i--;)
@@ -72,6 +72,7 @@ build(
 
     MultiPageVisitor visitor(*ex, outputPath, corpus);
     visitor(corpus.globalNamespace());
+
     auto errors = ex->wait();
     if(! errors.empty())
         return Error(errors);

@@ -30,6 +30,11 @@ class MultiPageVisitor
     std::string_view outputPath_;
     Corpus const& corpus_;
 
+    void
+    writePage(
+        std::string_view text,
+        std::string_view filename);
+
 public:
     MultiPageVisitor(
         ExecutorGroup<Builder>& ex,
@@ -43,7 +48,7 @@ public:
 
     template<class T>
     void operator()(T const& I);
-    void renderPage(auto const& I);
+    void operator()(OverloadSet const& OS);
 };
 
 } // adoc

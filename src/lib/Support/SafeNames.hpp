@@ -51,8 +51,17 @@ public:
         SymbolID const& id) const;
 
     std::string
+    getUnqualified(
+        OverloadSet const& os) const;
+
+    std::string
     getQualified(
         SymbolID const& id,
+        char delim = '-') const;
+
+    std::string
+    getQualified(
+        OverloadSet const& os,
         char delim = '-') const;
 };
 

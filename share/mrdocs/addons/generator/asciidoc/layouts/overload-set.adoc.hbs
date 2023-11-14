@@ -1,0 +1,15 @@
+{{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
+{{#with symbol}}
+[#{{#if (is_multipage)}}{{id}}{{else}}{{ref}}{{/if}}]
+
+== {{#if name}}Overload set {{name}}{{else}}Unnamed overload set{{/if}}
+
+[,cols=2]
+|===
+|Name |Description
+{{#each members}}
+|xref:{{ref}}[`pass:v[{{name}}]`] |{{doc.brief}}
+{{/each}}
+|===
+
+{{/with}}

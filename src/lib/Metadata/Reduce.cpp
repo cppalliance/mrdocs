@@ -48,6 +48,33 @@ struct LocationLess
     }
 };
 
+void
+reduceSymbolIDs(
+    std::vector<SymbolID>& list,
+    std::vector<SymbolID>&& otherList)
+{
+    for(auto const& id : otherList)
+    {
+        auto it = llvm::find(list, id);
+        if(it != list.end())
+            continue;
+        list.push_back(id);
+    }
+}
+
+void
+reduceLookups(
+    std::unordered_map<std::string, std::vector<SymbolID>>& I,
+    std::unordered_map<std::string, std::vector<SymbolID>>&& Other)
+{
+    I.merge(std::move(Other));
+    for(auto& [name, ids] : Other)
+    {
+        auto [it, created] = I.try_emplace(name);
+        reduceSymbolIDs(it->second, std::move(ids));
+    }
+}
+
 } // (anon)
 
 #ifndef NDEBUG
@@ -90,6 +117,12 @@ void mergeInfo(Info& I, Info&& Other)
         merge(*I.javadoc, std::move(*Other.javadoc));
 }
 
+void mergeScopeInfo(ScopeInfo& I, ScopeInfo&& Other)
+{
+    reduceSymbolIDs(I.Members, std::move(Other.Members));
+    reduceLookups(I.Lookups, std::move(Other.Lookups));
+}
+
 static void mergeSourceInfo(
     SourceInfo& I,
     SourceInfo&& Other)
@@ -124,47 +157,11 @@ static void mergeExprInfo(
         I.Value = std::move(Other.Value);
 }
 
-static
-void
-reduceSymbolIDs(
-    std::vector<SymbolID>& list,
-    std::vector<SymbolID>&& otherList)
-{
-    for(auto const& id : otherList)
-    {
-        auto it = llvm::find(list, id);
-        if(it != list.end())
-            continue;
-        list.push_back(id);
-    }
-}
-
-static
-void
-reduceSpecializedMembers(
-    std::vector<SpecializedMember>& list,
-    std::vector<SpecializedMember>&& otherList)
-{
-    for(auto const& ref : otherList)
-    {
-        auto it = llvm::find_if(
-            list,
-            [ref](SpecializedMember const& other) noexcept
-            {
-                return other.Specialized == ref.Specialized;
-            });
-        if(it != list.end())
-            continue;
-        list.push_back(ref);
-    }
-}
-
 void merge(NamespaceInfo& I, NamespaceInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     I.specs.raw.value |= Other.specs.raw.value;
-    reduceSymbolIDs(I.Members, std::move(Other.Members));
-    reduceSymbolIDs(I.Specializations, std::move(Other.Specializations));
+    mergeScopeInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
 }
 
@@ -178,14 +175,12 @@ void merge(RecordInfo& I, RecordInfo&& Other)
     I.specs.raw.value |= Other.specs.raw.value;
     if (I.Bases.empty())
         I.Bases = std::move(Other.Bases);
-    // Reduce members if necessary.
-    reduceSymbolIDs(I.Members, std::move(Other.Members));
-    reduceSymbolIDs(I.Specializations, std::move(Other.Specializations));
     // KRYSTIAN FIXME: really should use explicit cases here.
     // at a glance, it is not obvious that we are binding to
     // the SymboInfo base class subobject
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
+    mergeScopeInfo(I, std::move(Other));
     if (! I.Template)
         I.Template = std::move(Other.Template);
 }
@@ -227,7 +222,7 @@ void merge(EnumInfo& I, EnumInfo&& Other)
         I.Scoped = Other.Scoped;
     if (! I.UnderlyingType)
         I.UnderlyingType = std::move(Other.UnderlyingType);
-    reduceSymbolIDs(I.Members, std::move(Other.Members));
+    mergeScopeInfo(I, std::move(Other));
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
 }
@@ -268,11 +263,8 @@ void merge(SpecializationInfo& I, SpecializationInfo&& Other)
         I.Primary = Other.Primary;
     if(I.Args.empty())
         I.Args = std::move(Other.Args);
-    reduceSpecializedMembers(I.Members,
-        std::move(Other.Members));
-
     mergeInfo(I, std::move(Other));
-
+    mergeScopeInfo(I, std::move(Other));
 }
 
 void merge(FriendInfo& I, FriendInfo&& Other)

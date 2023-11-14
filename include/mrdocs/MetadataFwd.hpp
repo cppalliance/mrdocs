@@ -48,7 +48,6 @@ struct NamespaceInfo;
 struct RecordInfo;
 struct Param;
 struct SpecializationInfo;
-struct SpecializedMember;
 struct SourceInfo;
 struct TypeInfo;
 struct TypedefInfo;
@@ -75,6 +74,8 @@ struct MemberFunction;
 struct MemberRecord;
 struct MemberType;
 struct StaticDataMember;
+
+struct OverloadSet;
 
 template<unsigned char Offset,
          unsigned char Size,

@@ -89,12 +89,6 @@ class Finalizer
         });
     }
 
-    void finalize(SpecializedMember& member)
-    {
-        finalize(member.Primary);
-        finalize(member.Specialized);
-    }
-
     void finalize(TArg& arg)
     {
         visit(arg, [this]<typename Ty>(Ty& A)
@@ -249,7 +243,7 @@ public:
         check(I.Namespace);
         check(I.Members);
         finalize(I.javadoc);
-        finalize(I.Specializations);
+        // finalize(I.Specializations);
     }
 
     void operator()(RecordInfo& I)
@@ -257,7 +251,7 @@ public:
         check(I.Namespace);
         check(I.Members);
         finalize(I.javadoc);
-        finalize(I.Specializations);
+        // finalize(I.Specializations);
         finalize(I.Template);
         finalize(I.Bases);
     }
@@ -265,7 +259,7 @@ public:
     void operator()(SpecializationInfo& I)
     {
         check(I.Namespace);
-        finalize(I.Members);
+        check(I.Members);
         finalize(I.javadoc);
         finalize(I.Primary);
         finalize(I.Args);

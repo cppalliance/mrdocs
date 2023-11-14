@@ -12,6 +12,7 @@
 #define MRDOCS_LIB_ADOC_SINGLEPAGEVISITOR_HPP
 
 #include "Builder.hpp"
+#include <mrdocs/MetadataFwd.hpp>
 #include <mrdocs/Support/ExecutorGroup.hpp>
 #include <mutex>
 #include <ostream>
@@ -29,12 +30,13 @@ class SinglePageVisitor
     ExecutorGroup<Builder>& ex_;
     Corpus const& corpus_;
     std::ostream& os_;
-    std::size_t numPages_ = 0; 
+    std::size_t numPages_ = 0;
     std::mutex mutex_;
     std::size_t topPage_ = 0;
     std::vector<std::optional<
         std::string>> pages_;
 
+    void writePage(std::string pageText, std::size_t pageNumber);
 public:
     SinglePageVisitor(
         ExecutorGroup<Builder>& ex,
@@ -48,8 +50,8 @@ public:
 
     template<class T>
     void operator()(T const& I);
-    void renderPage(auto const& I, std::size_t pageNumber);
-    void endPage(std::string pageText, std::size_t pageNumber);
+    void operator()(OverloadSet const& OS);
+
 };
 
 } // adoc

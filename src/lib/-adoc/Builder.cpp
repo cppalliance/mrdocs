@@ -33,7 +33,7 @@ Builder(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    Config const& config = domCorpus.getCorpus().config;
+    Config const& config = domCorpus->config;
 
     // load partials
     std::string partialsPath = files::appendPath(
@@ -175,7 +175,7 @@ callTemplate(
     std::string_view name,
     dom::Value const& context)
 {
-    Config const& config = domCorpus.getCorpus().config;
+    Config const& config = domCorpus->config;
 
     auto layoutDir = files::appendPath(config->addonsDir,
             "generator", "asciidoc", "layouts");
@@ -210,24 +210,46 @@ renderSinglePageFooter()
 
 //------------------------------------------------
 
+
+std::string
+Builder::
+getRelPrefix(std::size_t depth)
+{
+    std::string rel_prefix;
+    if(! depth || ! domCorpus.options.safe_names ||
+        ! domCorpus->config->multiPage)
+        return rel_prefix;
+    --depth;
+    rel_prefix.reserve(depth * 3);
+    while(depth--)
+        rel_prefix.append("../");
+    return rel_prefix;
+}
+
 dom::Value
 Builder::
 createContext(
     Info const& I)
 {
     dom::Object::storage_type props;
-    props.emplace_back("symbol", domCorpus.get(I.id));
-    std::string rel_prefix;
-    if(domCorpus.options.safe_names &&
-        domCorpus.getCorpus().config->multiPage &&
-        ! I.Namespace.empty())
-    {
-        auto depth = I.Namespace.size() - 1;
-        rel_prefix.reserve(depth * 3);
-        while(depth--)
-            rel_prefix.append("../");
-    }
-    props.emplace_back("relfileprefix", std::move(rel_prefix));
+    props.emplace_back("symbol",
+        domCorpus.get(I.id));
+    props.emplace_back("relfileprefix",
+        getRelPrefix(I.Namespace.size()));
+    return dom::Object(std::move(props));
+}
+
+dom::Value
+Builder::
+createContext(
+    OverloadSet const& OS)
+{
+    dom::Object::storage_type props;
+    props.emplace_back("symbol",
+        domCorpus.getOverloads(OS));
+    const Info& Parent = domCorpus->get(OS.Parent);
+    props.emplace_back("relfileprefix",
+        getRelPrefix(Parent.Namespace.size() + 1));
     return dom::Object(std::move(props));
 }
 
@@ -239,6 +261,15 @@ operator()(T const& I)
     return callTemplate(
         "single-symbol.adoc.hbs",
         createContext(I));
+}
+
+Expected<std::string>
+Builder::
+operator()(OverloadSet const& OS)
+{
+    return callTemplate(
+        "overload-set.adoc.hbs",
+        createContext(OS));
 }
 
 #define DEFINE(T) template Expected<std::string> \

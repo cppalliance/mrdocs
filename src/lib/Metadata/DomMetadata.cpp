@@ -16,6 +16,7 @@
 #include <llvm/ADT/StringMap.h>
 #include <memory>
 #include <mutex>
+#include <variant>
 
 namespace clang {
 namespace mrdocs {
@@ -41,13 +42,13 @@ domCreate(
 
 class DomSymbolArray : public dom::ArrayImpl
 {
-    std::vector<SymbolID> const& list_;
+    std::span<const SymbolID> list_;
     DomCorpus const& domCorpus_;
     //SharedPtr<> ref_; // keep owner of list_ alive
 
 public:
     DomSymbolArray(
-        std::vector<SymbolID> const& list,
+        std::span<const SymbolID> list,
         DomCorpus const& domCorpus) noexcept
         : list_(list)
         , domCorpus_(domCorpus)
@@ -63,6 +64,63 @@ public:
     {
         MRDOCS_ASSERT(i < list_.size());
         return domCorpus_.get(list_[i]);
+    }
+};
+
+//------------------------------------------------
+
+static
+dom::Object
+domCreate(
+    OverloadSet const& overloads,
+    DomCorpus const& domCorpus)
+{
+    return dom::Object({
+        { "kind",       "overload"},
+        { "name",       overloads.Name },
+        { "members",    dom::newArray<DomSymbolArray>(
+            overloads.Members, domCorpus) }
+        });
+}
+
+class DomOverloadsArray : public dom::ArrayImpl
+{
+    std::vector<std::variant<
+        SymbolID, OverloadSet>> overloads_;
+
+    DomCorpus const& domCorpus_;
+
+public:
+    template<std::derived_from<ScopeInfo> ScopeInfoTy>
+    DomOverloadsArray(
+        const ScopeInfoTy& I,
+        DomCorpus const& domCorpus) noexcept
+        : domCorpus_(domCorpus)
+    {
+        overloads_.reserve(I.Lookups.size());
+        domCorpus_->traverseOverloads(I,
+            [&](const auto& C)
+        {
+            if constexpr(requires { C.id; })
+                overloads_.emplace_back(C.id);
+            else
+                overloads_.emplace_back(C);
+        });
+    }
+
+    std::size_t size() const noexcept override
+    {
+        return overloads_.size();
+    }
+
+    dom::Value get(std::size_t index) const override
+    {
+        MRDOCS_ASSERT(index < size());
+        const auto& member = overloads_[index];
+        if(auto* id = std::get_if<SymbolID>(&member))
+            return domCorpus_.get(*id);
+        return domCorpus_.getOverloads(
+            std::get<OverloadSet>(member));
     }
 };
 
@@ -554,11 +612,13 @@ public:
     dom::Object
     construct() const override
     {
-        sp_ = std::make_shared<Interface>(makeInterface(I_, domCorpus_.getCorpus()));
+        sp_ = std::make_shared<Interface>(makeInterface(I_, *domCorpus_));
         return dom::Object({
             { "public", dom::newObject<DomTranche>(sp_->Public, sp_, domCorpus_) },
             { "protected", dom::newObject<DomTranche>(sp_->Protected, sp_, domCorpus_) },
-            { "private", dom::newObject<DomTranche>(sp_->Private, sp_, domCorpus_) }
+            { "private", dom::newObject<DomTranche>(sp_->Private, sp_, domCorpus_) },
+            { "overloads", dom::newArray<DomOverloadsArray>(sp_->Overloads, domCorpus_) },
+            { "static-overloads", dom::newArray<DomOverloadsArray>(sp_->StaticOverloads, domCorpus_) }
             });
     }
 };
@@ -626,17 +686,16 @@ DomInfo<T>::construct() const
         entries.emplace_back("parent",
             domCorpus_.get(I_.Namespace.front()));
 
+    if constexpr(std::derived_from<T, ScopeInfo>)
+    {
+        entries.insert(entries.end(), {
+            { "members",   dom::newArray<DomSymbolArray>(I_.Members, domCorpus_) },
+            { "overloads", dom::newArray<DomOverloadsArray>(I_, domCorpus_)},
+            });
+    }
     if constexpr(std::derived_from<T, SourceInfo>)
     {
         entries.emplace_back("loc", domCreate(I_));
-    }
-    if constexpr(T::isNamespace())
-    {
-        entries.insert(entries.end(), {
-            { "members", dom::newArray<DomSymbolArray>(
-                I_.Members, domCorpus_) },
-            { "specializations", nullptr }
-            });
     }
     if constexpr(T::isRecord())
     {
@@ -645,8 +704,6 @@ DomInfo<T>::construct() const
             { "defaultAccess",  getDefaultAccess(I_) },
             { "isTypedef",      I_.IsTypeDef },
             { "bases",          dom::newArray<DomBaseArray>(I_.Bases, domCorpus_) },
-            { "members",        dom::newArray<DomSymbolArray>(I_.Members, domCorpus_) },
-            { "specializations",dom::newArray<DomSymbolArray>(I_.Specializations, domCorpus_) },
             { "interface",      dom::newObject<DomInterface>(I_, domCorpus_) },
             { "template",       domCreate(I_.Template, domCorpus_) }
             });
@@ -655,8 +712,6 @@ DomInfo<T>::construct() const
     {
         entries.insert(entries.end(), {
             { "type",       domCreate(I_.UnderlyingType, domCorpus_) },
-            { "members",    dom::newArray<DomSymbolArray>(
-                I_.Members, domCorpus_) },
             { "isScoped",   I_.Scoped }
             });
     }
@@ -844,6 +899,20 @@ getCorpus() const
     return impl_->getCorpus();
 }
 
+Corpus const&
+DomCorpus::
+operator*() const
+{
+    return getCorpus();
+}
+
+Corpus const*
+DomCorpus::
+operator->() const
+{
+    return &getCorpus();
+}
+
 dom::Object
 DomCorpus::
 construct(Info const& I) const
@@ -871,6 +940,14 @@ getJavadoc(
 {
     // Default implementation returns null.
     return nullptr;
+}
+
+dom::Object
+DomCorpus::
+getOverloads(
+    OverloadSet const& os) const
+{
+    return domCreate(os, *this);
 }
 
 } // mrdocs

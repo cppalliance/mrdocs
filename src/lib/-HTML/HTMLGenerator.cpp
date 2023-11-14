@@ -29,8 +29,8 @@ Expected<ExecutorGroup<Builder>>
 createExecutors(
     DomCorpus const& domCorpus)
 {
-    MRDOCS_TRY(auto options, loadOptions(domCorpus.getCorpus()));
-    auto const& config = domCorpus.getCorpus().config;
+    MRDOCS_TRY(auto options, loadOptions(*domCorpus));
+    auto const& config = domCorpus->config;
     auto& threadPool = config.threadPool();
     ExecutorGroup<Builder> group(threadPool);
     for(auto i = threadPool.getThreadCount(); i--;)

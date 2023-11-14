@@ -10,10 +10,12 @@
 {{/if}}
 {{>info-list tranche.types}}
 {{/if}}
+{{!--
 {{#if tranche.functions}}
 == {{label}} Member Functions
 {{>info-list tranche.functions}}
 {{/if}}
+--}}
 {{#if tranche.enums}}
 == {{label}} Enums
 {{>info-list tranche.enums}}
@@ -26,10 +28,12 @@
 == {{label}} Static Member Functions
 {{>info-list tranche.staticfunctions}}
 {{/if}}
+{{!--
 {{#if tranche.staticdata}}
 == {{label}} Static Data Members
 {{>info-list tranche.staticdata}}
 {{/if}}
+--}}
 {{#if tranche.friends}}
 == {{label}} Friends
 {{>info-list tranche.friends}}

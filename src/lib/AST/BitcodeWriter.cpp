@@ -211,6 +211,8 @@ BlockIdNameMap = []()
         {BI_BASE_BLOCK_ID, "BaseBlock"},
         {BI_INFO_PART_ID, "InfoPart"},
         {BI_SOURCE_INFO_ID, "SourceInfoBlock"},
+        {BI_SCOPE_INFO_ID, "ScopeInfoBlock"},
+        {BI_LOOKUP_INFO_ID, "LookupInfoBlock"},
         {BI_NAMESPACE_BLOCK_ID, "NamespaceBlock"},
         {BI_ENUM_BLOCK_ID, "EnumBlock"},
         {BI_EXPR_BLOCK_ID, "ExprBlock"},
@@ -255,7 +257,6 @@ RecordIDNameMap = []()
         {BASE_ACCESS, {"BaseAccess", &Integer32Abbrev}},
         {BASE_IS_VIRTUAL, {"BaseIsVirtual", &BoolAbbrev}},
         {ENUM_SCOPED, {"Scoped", &BoolAbbrev}},
-        {ENUM_MEMBERS, {"EnumMembers", &SymbolIDsAbbrev}},
         {EXPR_WRITTEN, {"ExprWritten", &StringAbbrev}},
         {EXPR_VALUE, {"ExprValue", &Integer64Abbrev}},
         {FIELD_DEFAULT, {"DefaultValue", &StringAbbrev}},
@@ -280,16 +281,14 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_PART, {"JavadocNodePart", &Integer32Abbrev}},
         {JAVADOC_NODE_SYMBOLREF, {"JavadocNodeSymbol", &SymbolIDAbbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
-        {NAMESPACE_MEMBERS, {"NamespaceMembers", &SymbolIDsAbbrev}},
-        {NAMESPACE_SPECIALIZATIONS, {"NamespaceSpecializations", &SymbolIDsAbbrev}},
         {NAMESPACE_BITS, {"NamespaceBits", &Integer32ArrayAbbrev}},
         {RECORD_KEY_KIND, {"KeyKind", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
-        {RECORD_MEMBERS, {"RecordMembers", &SymbolIDsAbbrev}},
-        {RECORD_SPECIALIZATIONS, {"RecordSpecializations", &SymbolIDsAbbrev}},
         {SPECIALIZATION_PRIMARY, {"SpecializationPrimary", &SymbolIDAbbrev}},
-        {SPECIALIZATION_MEMBERS, {"SpecializationMembers", &SymbolIDsAbbrev}},
+        {SCOPE_INFO_MEMBERS, {"ScopeMembers", &SymbolIDsAbbrev}},
+        {LOOKUP_NAME, {"LookupName", &StringAbbrev}},
+        {LOOKUP_MEMBERS, {"LookupMembers", &SymbolIDsAbbrev}},
         {SOURCE_INFO_DEFLOC, {"SourceDefLoc", &LocationAbbrev}},
         {SOURCE_INFO_LOC,    {"SourceLoc", &LocationAbbrev}},
         {TEMPLATE_PRIMARY_USR,   {"Primary", &SymbolIDAbbrev}},
@@ -335,12 +334,18 @@ RecordsByBlock{
     // SourceInfo
     {BI_SOURCE_INFO_ID,
         {SOURCE_INFO_DEFLOC, SOURCE_INFO_LOC}},
+    // ScopeInfo
+    {BI_SCOPE_INFO_ID,
+        {SCOPE_INFO_MEMBERS}},
+    // Lookup entry
+    {BI_LOOKUP_INFO_ID,
+        {LOOKUP_NAME, LOOKUP_MEMBERS}},
     // BaseInfo
     {BI_BASE_BLOCK_ID,
         {BASE_ACCESS, BASE_IS_VIRTUAL}},
     // EnumInfo
     {BI_ENUM_BLOCK_ID,
-        {ENUM_SCOPED, ENUM_MEMBERS}},
+        {ENUM_SCOPED}},
     // ExprInfo and ConstantExprInfo
     {BI_EXPR_BLOCK_ID,
         {EXPR_WRITTEN, EXPR_VALUE}},
@@ -367,11 +372,10 @@ RecordsByBlock{
         JAVADOC_NODE_PART, JAVADOC_NODE_SYMBOLREF}},
     // NamespaceInfo
     {BI_NAMESPACE_BLOCK_ID,
-        {NAMESPACE_MEMBERS, NAMESPACE_SPECIALIZATIONS, NAMESPACE_BITS}},
+        {NAMESPACE_BITS}},
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
-        {RECORD_KEY_KIND, RECORD_IS_TYPE_DEF, RECORD_BITS,
-        RECORD_MEMBERS, RECORD_SPECIALIZATIONS}},
+        {RECORD_KEY_KIND, RECORD_IS_TYPE_DEF, RECORD_BITS}},
     // TArg
     {BI_TEMPLATE_ARG_BLOCK_ID,
         {TEMPLATE_ARG_KIND, TEMPLATE_ARG_IS_PACK,
@@ -385,7 +389,7 @@ RecordsByBlock{
         TEMPLATE_PARAM_IS_PACK, TEMPLATE_PARAM_KEY_KIND}},
     // SpecializationInfo
     {BI_SPECIALIZATION_BLOCK_ID,
-        {SPECIALIZATION_PRIMARY, SPECIALIZATION_MEMBERS}},
+        {SPECIALIZATION_PRIMARY}},
     // FriendInfo
     {BI_FRIEND_BLOCK_ID,
         {FRIEND_SYMBOL}},
@@ -622,29 +626,6 @@ emitRecord(
     Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
 }
 
-#if 0
-// vector<SpecializedMember>
-void
-BitcodeWriter::
-emitRecord(
-    std::vector<SpecializedMember> const& list,
-    RecordID ID)
-{
-    MRDOCS_ASSERT(RecordIDNameMap[ID]);
-    MRDOCS_ASSERT(RecordIDNameMap[ID].Abbrev == &SpecializedMemAbbrev);
-    if (!prepRecordData(ID, ! list.empty()))
-        return;
-    for(auto const& mem : list)
-    {
-        Record.push_back(BitCodeConstants::USRHashSize);
-        Record.append(mem.Primary.begin(), mem.Primary.end());
-        Record.push_back(BitCodeConstants::USRHashSize);
-        Record.append(mem.Specialized.begin(), mem.Specialized.end());
-    }
-    Stream.EmitRecordWithAbbrev(Abbrevs.get(ID), Record);
-}
-#endif
-
 // SymbolID
 void
 BitcodeWriter::
@@ -786,6 +767,26 @@ emitSourceInfo(
         emitRecord(*S.DefLoc, SOURCE_INFO_DEFLOC);
     for(const auto& L : S.Loc)
         emitRecord(L, SOURCE_INFO_LOC);
+}
+
+void
+BitcodeWriter::
+emitScopeInfo(
+    const ScopeInfo& S)
+{
+    StreamSubBlockGuard Block(Stream, BI_SCOPE_INFO_ID);
+    emitRecord(S.Members, SCOPE_INFO_MEMBERS);
+    for(const auto& [name, symbols] : S.Lookups)
+        emitLookup(name, symbols);
+}
+
+void
+BitcodeWriter::
+emitLookup(llvm::StringRef Name, std::vector<SymbolID> const& Members)
+{
+    StreamSubBlockGuard Block(Stream, BI_LOOKUP_INFO_ID);
+    emitRecord(Name, LOOKUP_NAME);
+    emitRecord(Members, LOOKUP_MEMBERS);
 }
 
 void
@@ -979,8 +980,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_BLOCK_ID);
     emitInfoPart(I);
-    emitRecord(I.Members, NAMESPACE_MEMBERS);
-    emitRecord(I.Specializations, NAMESPACE_SPECIALIZATIONS);
+    emitScopeInfo(I);
     emitRecord({I.specs.raw}, NAMESPACE_BITS);
 }
 
@@ -992,6 +992,7 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_RECORD_BLOCK_ID);
     emitInfoPart(I);
     emitSourceInfo(I);
+    emitScopeInfo(I);
     if (I.Template)
         emitBlock(*I.Template);
     emitRecord(I.KeyKind, RECORD_KEY_KIND);
@@ -999,8 +1000,6 @@ emitBlock(
     emitRecord({I.specs.raw}, RECORD_BITS);
     for (const auto& B : I.Bases)
         emitBlock(B);
-    emitRecord(I.Members, RECORD_MEMBERS);
-    emitRecord(I.Specializations, RECORD_SPECIALIZATIONS);
 }
 
 void
@@ -1011,8 +1010,8 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_ENUM_BLOCK_ID);
     emitInfoPart(I);
     emitSourceInfo(I);
+    emitScopeInfo(I);
     emitRecord(I.Scoped, ENUM_SCOPED);
-    emitRecord(I.Members, ENUM_MEMBERS);
     emitBlock(I.UnderlyingType);
 }
 
@@ -1023,17 +1022,10 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_SPECIALIZATION_BLOCK_ID);
     emitInfoPart(I);
+    emitScopeInfo(I);
     emitRecord(I.Primary, SPECIALIZATION_PRIMARY);
     for(const auto& targ : I.Args)
         emitBlock(targ);
-    std::vector<SymbolID> members;
-    members.reserve(I.Members.size() * 2);
-    for(const auto& mem : I.Members)
-    {
-        members.emplace_back(mem.Primary);
-        members.emplace_back(mem.Specialized);
-    }
-    emitRecord(members, SPECIALIZATION_MEMBERS);
 }
 
 

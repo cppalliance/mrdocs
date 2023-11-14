@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/Scope.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <optional>
@@ -30,6 +31,7 @@ namespace mrdocs {
 struct EnumInfo
     : IsInfo<InfoKind::Enum>
     , SourceInfo
+    , ScopeInfo
 {
     // Indicates whether this enum is scoped (e.g. enum class).
     bool Scoped = false;
@@ -38,9 +40,6 @@ struct EnumInfo
     //   enum Foo : short { ... };
     // this will be "short".
     std::unique_ptr<TypeInfo> UnderlyingType;
-
-    // Enumeration members.
-    std::vector<SymbolID> Members;
 
     //--------------------------------------------
 

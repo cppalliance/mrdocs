@@ -2,6 +2,7 @@
 |===
 |Name |Description
 {{#each .}}
-|xref:{{ref}}[`pass:v[{{name}}]`] |{{doc.brief}}
+|xref:{{ref}}[`pass:v[{{name}}]`] | {{#if (ne kind "overload")}}{{doc.brief}}{{else}}{{#each (unique (pluck (pluck members "doc") "brief"))}}{{.}}
+{{/each}}{{/if}}
 {{/each}}
 |===

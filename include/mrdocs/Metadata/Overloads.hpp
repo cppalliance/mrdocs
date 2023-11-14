@@ -21,59 +21,37 @@
 namespace clang {
 namespace mrdocs {
 
-class Corpus;
-
-struct OverloadInfo
+struct OverloadSet
 {
-    /** The parent namespace or record.
-    */
-    Info const* Parent;
-
-    /** The name for this set of functions.
-    */
     std::string_view Name;
 
-    /** The list of overloads.
-    */
-    std::span<FunctionInfo const*> Functions;
+    SymbolID Parent;
+
+    std::span<const SymbolID> Members;
+
+    OverloadSet(
+        std::string_view name,
+        const SymbolID& parent,
+        std::span<const SymbolID> members)
+        : Name(name)
+        , Parent(parent)
+        , Members(members)
+    {
+    }
 };
 
-class MRDOCS_VISIBLE
-    NamespaceOverloads
+template<
+    class Fn,
+    class... Args>
+decltype(auto)
+visit(
+    const OverloadSet& overloads,
+    Fn&& fn,
+    Args&&... args)
 {
-public:
-    std::vector<OverloadInfo> list;
-
-    /** Constructor.
-
-        @par Complexity
-        `O(N * log(N))` in `data.size()`.
-    */
-    MRDOCS_DECL
-    NamespaceOverloads(
-        NamespaceInfo const& I,
-        std::vector<FunctionInfo const*> data);
-
-private:
-    std::vector<FunctionInfo const*> data_;
-};
-
-/** Create an overload set for all functions in a namespace.
-
-    This function organizes all functions in the
-    specified list into an overload set. The top
-    level set is sorted alphabetically using a
-    display sort.
-
-    @return The overload set.
-
-    @param list The list of function references to use.
-*/
-MRDOCS_DECL
-NamespaceOverloads
-makeNamespaceOverloads(
-    NamespaceInfo const& I,
-    Corpus const& corpus);
+    return std::forward<Fn>(fn)(overloads,
+        std::forward<Args>(args)...);
+}
 
 } // mrdocs
 } // clang

@@ -40,11 +40,18 @@ public:
     construct(Info const& I) const override;
 
     std::string
-    getXref(SymbolID const& id) const;
+    getXref(Info const& I) const;
+
+    std::string
+    getXref(OverloadSet const& os) const;
 
     dom::Value
     getJavadoc(
         Javadoc const& jd) const override;
+
+    dom::Object
+    getOverloads(
+        OverloadSet const& os) const override;
 };
 
 } // adoc

@@ -71,8 +71,9 @@ public:
     requires std::is_enum_v<Enum>
     void emitRecord(Enum Value, RecordID ID);
 
-    void emitRecord(std::vector<SymbolID> const& Values, RecordID ID);
-    // void emitRecord(std::vector<SpecializedMember> const& list, RecordID ID);
+    void emitRecord(
+        std::vector<SymbolID> const& Values,
+        RecordID ID);
 
     void emitRecord(SymbolID const& Str, RecordID ID);
     void emitRecord(llvm::StringRef Str, RecordID ID);
@@ -104,6 +105,11 @@ public:
 
     void emitInfoPart(Info const& I);
     void emitSourceInfo(SourceInfo const& S);
+    void emitScopeInfo(ScopeInfo const& S);
+    void
+    emitLookup(
+        llvm::StringRef Name,
+        std::vector<SymbolID> const& Members);
 
     void emitBlock(BaseInfo const& I);
     void emitBlock(EnumInfo const& I);

@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -101,6 +102,8 @@ public:
 
     //--------------------------------------------
 
+    // KRYSTIAN FIXME: this could just be a single
+    // overload constrained with std::derived_from<ScopeInfo>
     template<class F, class... Args>
     void traverse(
         NamespaceInfo const& I,
@@ -118,6 +121,36 @@ public:
 
     template<class F, class... Args>
     void traverse(
+        SpecializationInfo const& I,
+        F&& f, Args&&... args) const;
+
+    template<class F, class... Args>
+    void traverse(
+        OverloadSet const& OS,
+        F&& f, Args&&... args) const;
+
+    template<class F, class... Args>
+    void traverseOverloads(
+        ScopeInfo const& S,
+        F&& f, Args&&... args) const;
+
+    template<class F, class... Args>
+    void traverseOverloads(
+        RecordInfo const& I,
+        F&& f, Args&&... args) const;
+
+    template<class F, class... Args>
+    void traverseOverloads(
+        NamespaceInfo const& I,
+        F&& f, Args&&... args) const;
+
+    template<class F, class... Args>
+    void traverseOverloads(
+        EnumInfo const& I,
+        F&& f, Args&&... args) const;
+
+    template<class F, class... Args>
+    void traverseOverloads(
         SpecializationInfo const& I,
         F&& f, Args&&... args) const;
 
@@ -163,9 +196,6 @@ traverse(
     for(auto const& id : I.Members)
         visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
-    for(auto const& id : I.Specializations)
-        visit(get(id), std::forward<F>(f),
-            std::forward<Args>(args)...);
 }
 
 template<class F, class... Args>
@@ -176,9 +206,6 @@ traverse(
     F&& f, Args&&... args) const
 {
     for(auto const& id : I.Members)
-        visit(get(id), std::forward<F>(f),
-            std::forward<Args>(args)...);
-    for(auto const& id : I.Specializations)
         visit(get(id), std::forward<F>(f),
             std::forward<Args>(args)...);
 }
@@ -202,10 +229,147 @@ traverse(
     SpecializationInfo const& I,
     F&& f, Args&&... args) const
 {
-    for(auto const& J : I.Members)
-        visit(get(J.Specialized),
-            std::forward<F>(f),
+    for(auto const& id : I.Members)
+        visit(get(id), std::forward<F>(f),
+            std::forward<Args>(args)...);
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverse(
+    OverloadSet const& OS,
+    F&& f, Args&&... args) const
+{
+    for(auto const& id : OS.Members)
+        visit(get(id), std::forward<F>(f),
+            std::forward<Args>(args)...);
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverseOverloads(
+    ScopeInfo const& S,
+    F&& f, Args&&... args) const
+{
+    for(const SymbolID& id : S.Members)
+    {
+        const Info& member = get(id);
+        const auto& lookup = S.Lookups.at(member.Name);
+        if(lookup.size() == 1 || member.Name.empty())
+        {
+            visit(member, std::forward<F>(f),
                 std::forward<Args>(args)...);
+        }
+        else if(lookup.front() == id)
+        {
+            OverloadSet overloads(member.Name,
+                member.Namespace.front(), lookup);
+            visit(overloads, std::forward<F>(f),
+                std::forward<Args>(args)...);
+        }
+    }
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverseOverloads(
+    RecordInfo const& I,
+    F&& f, Args&&... args) const
+{
+    for(const SymbolID& id : I.Members)
+    {
+        const Info& member = get(id);
+        const auto& lookup = I.Lookups.at(member.Name);
+        if(lookup.size() == 1 || member.Name.empty())
+        {
+            visit(member, std::forward<F>(f),
+                std::forward<Args>(args)...);
+        }
+        else if(lookup.front() == id)
+        {
+            OverloadSet overloads(member.Name, I.id, lookup);
+            visit(overloads, std::forward<F>(f),
+                std::forward<Args>(args)...);
+        }
+    }
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverseOverloads(
+    NamespaceInfo const& I,
+    F&& f, Args&&... args) const
+{
+    for(const SymbolID& id : I.Members)
+    {
+        const Info& member = get(id);
+        const auto& lookup = I.Lookups.at(member.Name);
+        if(lookup.size() == 1 || member.Name.empty())
+        {
+            visit(member, std::forward<F>(f),
+                std::forward<Args>(args)...);
+        }
+        else if(lookup.front() == id)
+        {
+            OverloadSet overloads(member.Name, I.id, lookup);
+            visit(overloads, std::forward<F>(f),
+                std::forward<Args>(args)...);
+        }
+    }
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverseOverloads(
+    EnumInfo const& I,
+    F&& f, Args&&... args) const
+{
+    for(const SymbolID& id : I.Members)
+    {
+        const Info& member = get(id);
+        const auto& lookup = I.Lookups.at(member.Name);
+        if(lookup.size() == 1 || member.Name.empty())
+        {
+            visit(member, std::forward<F>(f),
+                std::forward<Args>(args)...);
+        }
+        else if(lookup.front() == id)
+        {
+            OverloadSet overloads(member.Name, I.id, lookup);
+            visit(overloads, std::forward<F>(f),
+                std::forward<Args>(args)...);
+        }
+    }
+}
+
+template<class F, class... Args>
+void
+Corpus::
+traverseOverloads(
+    SpecializationInfo const& I,
+    F&& f, Args&&... args) const
+{
+    for(const SymbolID& id : I.Members)
+    {
+        const Info& member = get(id);
+        const auto& lookup = I.Lookups.at(member.Name);
+        if(lookup.size() == 1 || member.Name.empty())
+        {
+            visit(member, std::forward<F>(f),
+                std::forward<Args>(args)...);
+        }
+        else if(lookup.front() == id)
+        {
+            OverloadSet overloads(member.Name, I.id, lookup);
+            visit(overloads, std::forward<F>(f),
+                std::forward<Args>(args)...);
+        }
+    }
 }
 
 class Corpus::iterator

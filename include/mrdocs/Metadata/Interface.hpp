@@ -56,6 +56,9 @@ public:
     */
     Tranche Private;
 
+    ScopeInfo Overloads;
+    ScopeInfo StaticOverloads;
+
     MRDOCS_DECL
     friend
     Interface

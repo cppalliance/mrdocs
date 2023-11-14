@@ -608,6 +608,93 @@ public:
 
 //------------------------------------------------
 
+class LookupBlock
+    : public BitcodeReader::AnyBlock
+{
+protected:
+    BitcodeReader& br_;
+    ScopeInfo& I;
+    std::string Name;
+
+public:
+    LookupBlock(
+        ScopeInfo& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I(I)
+    {
+    }
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case LOOKUP_NAME:
+            return decodeRecord(R, Name, Blob);
+        case LOOKUP_MEMBERS:
+            return decodeRecord(R,
+                I.Lookups.try_emplace(
+                    std::move(Name)).first->second, Blob);
+        default:
+            return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+};
+
+class ScopeInfoBlock
+    : public BitcodeReader::AnyBlock
+{
+protected:
+    BitcodeReader& br_;
+    ScopeInfo& I;
+
+public:
+    ScopeInfoBlock(
+        ScopeInfo& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I(I)
+    {
+    }
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case SCOPE_INFO_MEMBERS:
+            return decodeRecord(R, I.Members, Blob);
+        default:
+            return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_LOOKUP_INFO_ID:
+        {
+            LookupBlock B(I, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return AnyBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
 class ExprBlock
     : public BitcodeReader::AnyBlock
 {
@@ -1264,10 +1351,6 @@ public:
     {
         switch(ID)
         {
-        case NAMESPACE_MEMBERS:
-            return decodeRecord(R, I->Members, Blob);
-        case NAMESPACE_SPECIALIZATIONS:
-            return decodeRecord(R, I->Specializations, Blob);
         case NAMESPACE_BITS:
             return decodeRecord(R, {&I->specs.raw}, Blob);
         default:
@@ -1298,10 +1381,6 @@ public:
             return decodeRecord(R, I->IsTypeDef, Blob);
         case RECORD_BITS:
             return decodeRecord(R, {&I->specs.raw}, Blob);
-        case RECORD_MEMBERS:
-            return decodeRecord(R, I->Members, Blob);
-        case RECORD_SPECIALIZATIONS:
-            return decodeRecord(R, I->Specializations, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }
@@ -1441,8 +1520,6 @@ public:
         {
         case ENUM_SCOPED:
             return decodeRecord(R, I->Scoped, Blob);
-        case ENUM_MEMBERS:
-            return decodeRecord(R, I->Members, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }
@@ -1578,15 +1655,6 @@ public:
         {
         case SPECIALIZATION_PRIMARY:
             return decodeRecord(R, I->Primary, Blob);
-        case SPECIALIZATION_MEMBERS:
-        {
-            std::vector<SymbolID> members;
-            if(auto err = decodeRecord(R, members, Blob))
-                return err;
-            for(std::size_t i = 0; i < members.size(); i += 2)
-                I->Members.emplace_back(members[i + 0], members[i + 1]);
-            return Error::success();
-        }
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }
@@ -1713,6 +1781,15 @@ readSubBlock(
         if constexpr(std::derived_from<T, SourceInfo>)
         {
             SourceInfoBlock B(*I.get(), br_);
+            return br_.readBlock(B, ID);
+        }
+        break;
+    }
+    case BI_SCOPE_INFO_ID:
+    {
+        if constexpr(std::derived_from<T, ScopeInfo>)
+        {
+            ScopeInfoBlock B(*I.get(), br_);
             return br_.readBlock(B, ID);
         }
         break;

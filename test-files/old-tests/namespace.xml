@@ -55,80 +55,8 @@
         <file path="namespace.cpp" line="32"/>
       </function>
     </namespace>
-    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1">
-      <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
-        <file path="namespace.cpp" line="17"/>
-      </function>
-      <function name="f8" id="DySJ4/Mh2WNuu9mIEcqNSCSDJYk=">
-        <file path="namespace.cpp" line="37"/>
-      </function>
-      <function name="f10" id="JFdBEye4uXzw0ilTytFZ8c1sSbg=">
-        <file path="namespace.cpp" line="43"/>
-      </function>
-      <namespace name="G" id="Wst/dadHi6Smk6pSpSEAkzhH8+M=">
-        <function name="f11" id="Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=">
-          <file path="namespace.cpp" line="47"/>
-        </function>
-      </namespace>
-      <namespace name="H" id="0bLp2uJCrLh6KF6tdyR+5EFm3JA=" is-inline="1">
-        <function name="f12" id="emiOGg7QaKWV17XaWH2S5DJ+vL0=">
-          <file path="namespace.cpp" line="52"/>
-        </function>
-      </namespace>
-      <function name="f14" id="nNa4hlu4nXFlhTbAMLUSo8W55Dc=">
-        <file path="namespace.cpp" line="67"/>
-      </function>
-    </namespace>
-  </namespace>
-  <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1">
-    <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
-      <file path="namespace.cpp" line="17"/>
-    </function>
-    <function name="f8" id="DySJ4/Mh2WNuu9mIEcqNSCSDJYk=">
-      <file path="namespace.cpp" line="37"/>
-    </function>
-    <function name="f10" id="JFdBEye4uXzw0ilTytFZ8c1sSbg=">
-      <file path="namespace.cpp" line="43"/>
-    </function>
-    <namespace name="G" id="Wst/dadHi6Smk6pSpSEAkzhH8+M=">
-      <function name="f11" id="Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=">
-        <file path="namespace.cpp" line="47"/>
-      </function>
-    </namespace>
-    <namespace name="H" id="0bLp2uJCrLh6KF6tdyR+5EFm3JA=" is-inline="1">
-      <function name="f12" id="emiOGg7QaKWV17XaWH2S5DJ+vL0=">
-        <file path="namespace.cpp" line="52"/>
-      </function>
-    </namespace>
-    <function name="f14" id="nNa4hlu4nXFlhTbAMLUSo8W55Dc=">
-      <file path="namespace.cpp" line="67"/>
-    </function>
   </namespace>
   <namespace name="I" id="+dTV+2puUwO4arfDuNZCVAzk0M0=">
-    <namespace id="g8xS0yWD4HcXEKd0Legcg56VOsg=" is-anonymous="1">
-      <function name="f3" id="cg00N9kMKuqEA8yozUxpgawmf1w=">
-        <file path="namespace.cpp" line="17"/>
-      </function>
-      <function name="f8" id="DySJ4/Mh2WNuu9mIEcqNSCSDJYk=">
-        <file path="namespace.cpp" line="37"/>
-      </function>
-      <function name="f10" id="JFdBEye4uXzw0ilTytFZ8c1sSbg=">
-        <file path="namespace.cpp" line="43"/>
-      </function>
-      <namespace name="G" id="Wst/dadHi6Smk6pSpSEAkzhH8+M=">
-        <function name="f11" id="Hbja2CeJ1Aik0Wvl2z2Ywjfvz3Y=">
-          <file path="namespace.cpp" line="47"/>
-        </function>
-      </namespace>
-      <namespace name="H" id="0bLp2uJCrLh6KF6tdyR+5EFm3JA=" is-inline="1">
-        <function name="f12" id="emiOGg7QaKWV17XaWH2S5DJ+vL0=">
-          <file path="namespace.cpp" line="52"/>
-        </function>
-      </namespace>
-      <function name="f14" id="nNa4hlu4nXFlhTbAMLUSo8W55Dc=">
-        <file path="namespace.cpp" line="67"/>
-      </function>
-    </namespace>
   </namespace>
 </namespace>
 </mrdocs>

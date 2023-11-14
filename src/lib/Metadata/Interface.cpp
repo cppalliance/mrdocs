@@ -17,10 +17,13 @@
 #include <mrdocs/Corpus.hpp>
 #include <mrdocs/Metadata/Enum.hpp>
 #include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Metadata/Overloads.hpp>
 #include <mrdocs/Metadata/Record.hpp>
 #include <mrdocs/Metadata/Typedef.hpp>
 #include <mrdocs/Metadata/Variable.hpp>
 #include <algorithm>
+#include <ranges>
+#include <variant>
 
 namespace clang {
 namespace mrdocs {
@@ -46,6 +49,42 @@ class Interface::Build
     Table<VariableInfo>     staticdata_;
     Table<FriendInfo>       friends_;
 
+    void addOverload(const FunctionInfo& F, ScopeInfo& S)
+    {
+        if(std::ranges::find(S.Members, F.id) == S.Members.end())
+            S.Members.emplace_back(F.id);
+        auto& lookups = S.Lookups.try_emplace(F.Name).first->second;
+        if(std::ranges::find(lookups, F.id) == lookups.end())
+            lookups.emplace_back(F.id);
+    }
+
+    const Info*
+    getTypeAsTag(
+        const std::unique_ptr<TypeInfo>& T)
+    {
+        if(! T)
+            return nullptr;
+        SymbolID id = visit(*T, []<typename T>(const T& t)
+        {
+            if constexpr(T::isTag() || T::isSpecialization())
+                return t.id;
+            return SymbolID::invalid;
+        });
+        if(! id)
+            return nullptr;
+        return corpus_.find(id);
+    }
+
+
+    const Info*
+    lookThroughTypedefs(const Info* I)
+    {
+        if(! I || ! I->isTypedef())
+            return I;
+        auto* TI = static_cast<const TypedefInfo*>(I);
+        return lookThroughTypedefs(getTypeAsTag(TI->Type));
+    }
+
 public:
     Build(
         Interface& I,
@@ -59,7 +98,7 @@ public:
         includePrivate_ = config->inaccessibleMembers !=
             ConfigImpl::SettingsImpl::ExtractPolicy::Never;
         // treat `Derived` as a public base,
-        append(AccessKind::Public, Derived);
+        append(AccessKind::Public, Derived, true);
 
         finish();
     }
@@ -68,40 +107,38 @@ private:
     static
     AccessKind
     effectiveAccess(
-        AccessKind t0,
-        AccessKind t1) noexcept
+        AccessKind memberAccess,
+        AccessKind baseAccess) noexcept
     {
-        if( t0 ==  AccessKind::Private ||
-            t1 ==  AccessKind::Private)
+        if(memberAccess == AccessKind::Private ||
+            baseAccess == AccessKind::Private)
             return AccessKind::Private;
-
-        if( t0 ==  AccessKind::Protected ||
-            t1 ==  AccessKind::Protected)
+        if(memberAccess == AccessKind::Protected ||
+            baseAccess == AccessKind::Protected)
             return AccessKind::Protected;
-
         return AccessKind::Public;
     }
 
     void
     append(
         AccessKind access,
-        RecordInfo const& From)
+        RecordInfo const& From,
+        bool isDerived)
     {
         for(auto const& B : From.Bases)
         {
             auto actualAccess = effectiveAccess(access, B.Access);
+
             if( ! includePrivate_ &&
                 actualAccess == AccessKind::Private)
                 continue;
-            // VFALCO temporary hack to avoid looking up IDs
-            //        which for metadata that is not emitted
-            continue;
-#if 0
-            if(! B.Type.id || ! corpus_.find(B.Type.id))
+            const Info* Base = lookThroughTypedefs(
+                getTypeAsTag(B.Type));
+            if(! Base || ! Base->isRecord())
                 continue;
-            append(actualAccess,
-                corpus_.get<RecordInfo>(B.Type.id));
-#endif
+
+            append(actualAccess, *static_cast<
+                const RecordInfo*>(Base), false);
         }
         for(auto const& id : From.Members)
         {
@@ -110,15 +147,28 @@ private:
             if(I.Kind == InfoKind::Function)
             {
                 const auto& F = static_cast<FunctionInfo const&>(I);
+                // do not inherit constructors, destructors,
+                // or deduction guides
+                if(!isDerived &&
+                    (F.Class == FunctionClass::Constructor ||
+                    F.Class == FunctionClass::Destructor ||
+                    F.Class == FunctionClass::Deduction))
+                    continue;
                 auto const isRecFinal = From.specs.isFinal.get();
                 if( includePrivate_ ||
                     actualAccess != AccessKind::Private || (
                         ! isRecFinal && F.specs0.isVirtual))
                 {
                     if(F.specs0.storageClass == StorageClassKind::Static)
+                    {
+                        addOverload(F, I_.StaticOverloads);
                         staticfuncs_.push_back({ actualAccess, &F });
+                    }
                     else
+                    {
+                        addOverload(F, I_.Overloads);
                         functions_.push_back({ actualAccess, &F });
+                    }
                 }
                 continue;
             }

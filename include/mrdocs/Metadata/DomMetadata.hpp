@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -53,6 +54,14 @@ public:
     */
     Corpus const& getCorpus() const;
 
+    /** Returns the Corpus associated with the Dom.
+    */
+    Corpus const& operator*() const;
+
+    /** Returns the Corpus associated with the Dom.
+    */
+    Corpus const* operator->() const;
+
     /** Construct a Dom object representing the given symbol.
 
         This function is called internally when a `dom::Object`
@@ -84,6 +93,17 @@ public:
     dom::Value
     getJavadoc(
         Javadoc const& jd) const;
+
+    /** Return a Dom value representing an overload set.
+
+        A @ref Generator should override this member
+        and return suitable @ref dom::Value representing
+        the overload set.
+    */
+    virtual
+    dom::Object
+    getOverloads(
+        OverloadSet const& os) const;
 };
 
 } // mrdocs

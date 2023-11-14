@@ -16,51 +16,63 @@ namespace clang {
 namespace mrdocs {
 namespace adoc {
 
+void
+MultiPageVisitor::
+writePage(
+    std::string_view text,
+    std::string_view filename)
+{
+    std::string path = files::appendPath(outputPath_, filename);
+    std::string dir = files::getParentDir(path);
+    if(auto err = files::createDirectory(dir))
+        err.Throw();
+
+    std::ofstream os;
+    try
+    {
+        os.open(path,
+            std::ios_base::binary |
+                std::ios_base::out |
+                std::ios_base::trunc // | std::ios_base::noreplace
+            );
+        os.write(text.data(), text.size());
+    }
+    catch(std::exception const& ex)
+    {
+        formatError("std::ofstream(\"{}\") threw \"{}\"", path, ex.what()).Throw();
+    }
+}
+
 template<class T>
 void
 MultiPageVisitor::
 operator()(T const& I)
 {
-    renderPage(I);
-    if constexpr(
-            T::isNamespace() ||
-            T::isRecord() ||
-            T::isEnum())
-        corpus_.traverse(I, *this);
+    ex_.async([this, &I](Builder& builder)
+    {
+        writePage(builder(I).value(),
+            builder.domCorpus.getXref(I));
+        if constexpr(
+                T::isNamespace() ||
+                T::isRecord() ||
+                T::isEnum())
+        {
+            // corpus_.traverse(I, *this);
+            corpus_.traverseOverloads(I, *this);
+        }
+    });
 }
 
 void
 MultiPageVisitor::
-renderPage(
-    auto const& I)
+operator()(OverloadSet const& OS)
 {
-    ex_.async(
-        [this, &I](Builder& builder)
-        {
-            auto pageText = builder(I).value();
-
-            std::string fileName = files::appendPath(
-                outputPath_, builder.domCorpus.getXref(I.id));
-
-            std::string dir = files::getParentDir(fileName);
-            if(auto err = files::createDirectory(dir))
-                err.Throw();
-
-            std::ofstream os;
-            try
-            {
-                os.open(fileName,
-                    std::ios_base::binary |
-                        std::ios_base::out |
-                        std::ios_base::trunc // | std::ios_base::noreplace
-                    );
-                os.write(pageText.data(), pageText.size());
-            }
-            catch(std::exception const& ex)
-            {
-                formatError("std::ofstream(\"{}\") threw \"{}\"", fileName, ex.what()).Throw();
-            }
-        });
+    ex_.async([this, OS](Builder& builder)
+    {
+        writePage(builder(OS).value(),
+            builder.domCorpus.getXref(OS));
+        corpus_.traverse(OS, *this);
+    });
 }
 
 #define DEFINE(T) template void \

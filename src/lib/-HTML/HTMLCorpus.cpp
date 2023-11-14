@@ -311,7 +311,7 @@ public:
         storage_type list;
         list.reserve(2);
 
-        auto ov = jd_.makeOverview(corpus_.getCorpus());
+        auto ov = jd_.makeOverview(*corpus_);
 
         // brief
         if(ov.brief)

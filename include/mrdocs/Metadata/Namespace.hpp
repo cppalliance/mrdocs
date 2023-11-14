@@ -13,8 +13,9 @@
 #define MRDOCS_API_METADATA_NAMESPACE_HPP
 
 #include <mrdocs/Platform.hpp>
-#include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/ADT/BitField.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Scope.hpp>
 #include <vector>
 
 namespace clang {
@@ -32,10 +33,8 @@ union NamespaceFlags
 */
 struct NamespaceInfo
     : IsInfo<InfoKind::Namespace>
+    , ScopeInfo
 {
-    std::vector<SymbolID> Members;
-    std::vector<SymbolID> Specializations;
-
     NamespaceFlags specs;
 
     //--------------------------------------------

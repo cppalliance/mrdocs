@@ -10,6 +10,14 @@
 {{>record-decl symbol isFriend=false}}
 
 {{#with symbol.interface}}
+{{#if overloads}}
+== Member Functions
+{{>info-list overloads}}
+{{/if}}
+{{#if static-overloads}}
+== Static Member Functions
+{{>info-list static-overloads}}
+{{/if}}
 {{> tranche tranche=public label=""}}
 {{> tranche tranche=protected label="Protected"}}
 {{> tranche tranche=private label="Private"}}

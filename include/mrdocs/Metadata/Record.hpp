@@ -14,14 +14,10 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/BitField.hpp>
-#include <mrdocs/Metadata/Enum.hpp>
-#include <mrdocs/Metadata/Field.hpp>
-#include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Metadata/Info.hpp>
+#include <mrdocs/Metadata/Scope.hpp>
 #include <mrdocs/Metadata/Source.hpp>
-#include <mrdocs/Metadata/Symbols.hpp>
 #include <mrdocs/Metadata/Template.hpp>
-#include <mrdocs/Metadata/Typedef.hpp>
-#include <mrdocs/Metadata/Variable.hpp>
 #include <mrdocs/Dom.hpp>
 #include <memory>
 #include <string>
@@ -76,6 +72,7 @@ MRDOCS_DECL dom::String toString(RecordKeyKind kind) noexcept;
 struct RecordInfo
     : IsInfo<InfoKind::Record>
     , SourceInfo
+    , ScopeInfo
 {
     /** Kind of record this is (class, struct, or union).
     */
@@ -96,14 +93,6 @@ struct RecordInfo
     /** List of immediate bases.
     */
     std::vector<BaseInfo> Bases;
-
-    /** Record members
-    */
-    std::vector<SymbolID> Members;
-
-    /** Record member specializations
-    */
-    std::vector<SymbolID> Specializations;
 
     //--------------------------------------------
 

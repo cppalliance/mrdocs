@@ -252,7 +252,7 @@ operator()(doc::Reference const& I)
     if(I.id == SymbolID::invalid)
         return (*this)(static_cast<const doc::Text&>(I));
     fmt::format_to(std::back_inserter(dest_), "xref:{}[{}]",
-        corpus_.getXref(I.id), I.string);
+        corpus_.getXref(corpus_->get(I.id)), I.string);
 }
 
 std::size_t
@@ -328,7 +328,7 @@ public:
         storage_type list;
         list.reserve(2);
 
-        auto ov = jd_.makeOverview(corpus_.getCorpus());
+        auto ov = jd_.makeOverview(*corpus_);
 
         // brief
         if(ov.brief)
@@ -370,7 +370,7 @@ construct(Info const& I) const
         dom::Object construct() const override
         {
             auto obj = adocCorpus_.DomCorpus::construct(I_);
-            obj.set("ref", adocCorpus_.getXref(I_.id));
+            obj.set("ref", adocCorpus_.getXref(I_));
             return obj;
         }
     };
@@ -379,12 +379,26 @@ construct(Info const& I) const
 
 std::string
 AdocCorpus::
-getXref(SymbolID const& id) const
+getXref(Info const& I) const
 {
     bool multipage = getCorpus().config->multiPage;
     // use '/' as the seperator for multi-page, and '-' for single-page
     std::string xref = names_.getQualified(
-        id, multipage ? '/' : '-');
+        I.id, multipage ? '/' : '-');
+    // add the file extension if in multipage mode
+    if(multipage)
+        xref.append(".adoc");
+    return xref;
+}
+
+std::string
+AdocCorpus::
+getXref(OverloadSet const& os) const
+{
+    bool multipage = getCorpus().config->multiPage;
+    // use '/' as the seperator for multi-page, and '-' for single-page
+    std::string xref = names_.getQualified(
+        os, multipage ? '/' : '-');
     // add the file extension if in multipage mode
     if(multipage)
         xref.append(".adoc");
@@ -397,6 +411,22 @@ getJavadoc(
     Javadoc const& jd) const
 {
     return dom::newObject<DomJavadoc>(*this, jd);
+}
+
+dom::Object
+AdocCorpus::
+getOverloads(
+    OverloadSet const& os) const
+{
+    auto obj = DomCorpus::getOverloads(os);
+    // KRYSTIAN FIXME: need a better way to generate IDs
+    // std::string xref =
+    obj.set("ref", getXref(os));
+    // std::replace(xref.begin(), xref.end(), '/', '-');
+    obj.set("id", fmt::format("{}-{}",
+        toBase16(os.Parent), os.Name));
+    return obj;
+    // return dom::newObject<AdocOverloads>(os, *this);
 }
 
 } // adoc

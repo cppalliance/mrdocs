@@ -551,6 +551,11 @@ public:
     {
         if(! D)
             return false;
+        if(isa<TranslationUnitDecl>(D))
+        {
+            id = SymbolID::global;
+            return true;
+        }
         usr_.clear();
         if(generateUSR(D))
             return false;
@@ -1613,23 +1618,13 @@ public:
 
                 // collect all parent classes/enums/namespaces
                 llvm::SmallVector<const NamedDecl*, 8> parents;
-                const DeclContext* parent = ND->getDeclContext();
-                do
+                const Decl* P = ND;
+                while(P = getParentDecl(P))
                 {
-                    switch(parent->getDeclKind())
-                    {
-                    case Decl::Namespace:
-                    case Decl::Enum:
-                    case Decl::CXXRecord:
-                    case Decl::ClassTemplateSpecialization:
-                    case Decl::ClassTemplatePartialSpecialization:
-                        parents.push_back(cast<NamedDecl>(parent));
+                    if(isa<TranslationUnitDecl>(P))
                         break;
-                    default:
-                        break;
-                    }
+                    parents.push_back(cast<NamedDecl>(P));
                 }
-                while((parent = parent->getParent()));
 
                 // check whether each parent passes the symbol filters
                 // as-if the declaration was inline
@@ -1739,118 +1734,126 @@ public:
 
     //------------------------------------------------
 
+    const Decl* getParentDecl(const Decl* D)
+    {
+        return getParentDecl(const_cast<Decl*>(D));
+    }
+
+    Decl* getParentDecl(Decl* D)
+    {
+        while(D = cast_if_present<
+            Decl>(D->getDeclContext()))
+        {
+            switch(D->getKind())
+            {
+            case Decl::TranslationUnit:
+            case Decl::Namespace:
+            case Decl::Enum:
+            case Decl::CXXRecord:
+            case Decl::ClassTemplateSpecialization:
+            case Decl::ClassTemplatePartialSpecialization:
+                return D;
+            // we consider all other DeclContexts to be "transparent"
+            default:
+                break;
+            }
+        }
+        return nullptr;
+    }
+
     void
     getParentNamespaces(
         Info& I,
         Decl* D)
     {
-        // this function should be called once per Info
-        MRDOCS_ASSERT(I.Namespace.empty());
-
-        Decl* child = D;
-        SymbolID child_id = I.id;
-        DeclContext* parent_context = child->getDeclContext();
-        do
+        Decl* PD = getParentDecl(D);
+        SymbolID ParentID = extractSymbolID(PD);
+        switch(PD->getKind())
         {
-            Decl* parent = cast<Decl>(parent_context);
-            SymbolID parent_id = extractSymbolID(parent);
-            switch(parent_context->getDeclKind())
-            {
-            // the TranslationUnit DeclContext is the global namespace;
-            // it uses SymbolID::global and should *always* exist
-            case Decl::TranslationUnit:
-            {
-                parent_id = SymbolID::global;
-                auto [P, created] = getOrCreateInfo<
-                    NamespaceInfo>(parent_id);
-                emplaceChild(P, child_id);
-                break;
-            }
-            case Decl::Namespace:
-            {
-                auto [P, created] = getOrCreateInfo<
-                    NamespaceInfo>(parent_id);
-                buildNamespace(P, created, cast<NamespaceDecl>(parent));
-                emplaceChild(P, child_id);
-                break;
-            }
-            // special case for an explicit specializations of
-            // a member of an implicit instantiation.
-            case Decl::ClassTemplateSpecialization:
-            case Decl::ClassTemplatePartialSpecialization:
-            if(auto* S = dyn_cast<ClassTemplateSpecializationDecl>(parent_context);
-                S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
-            {
-                // KRYSTIAN FIXME: i'm pretty sure DeclContext::getDeclKind()
-                // will never be Decl::ClassTemplatePartialSpecialization for
-                // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
-                // is accessible through S->getSpecializedTemplateOrPartial
-                // if the implicit instantiation used a partially specialized template,
-                MRDOCS_ASSERT(parent_context->getDeclKind() !=
-                    Decl::ClassTemplatePartialSpecialization);
-
-                auto [P, created] = getOrCreateInfo<
-                    SpecializationInfo>(parent_id);
-                buildSpecialization(P, created, S);
-                // KRYSTIAN FIXME: extract primary/specialized ID properly
-                emplaceChild(P, SpecializedMember(child_id, child_id));
-                break;
-            }
-            // non-implicit instantiations should be
-            // treated like normal CXXRecordDecls
-            [[fallthrough]];
-            // we should never encounter a Record
-            // that is not a CXXRecord
-            case Decl::CXXRecord:
-            {
-                auto [P, created] = getOrCreateInfo<
-                    RecordInfo>(parent_id);
-                buildRecord(P, created, cast<CXXRecordDecl>(parent));
-                emplaceChild(P, child_id);
-                break;
-            }
-            case Decl::Enum:
-            {
-                auto [P, created] = getOrCreateInfo<
-                    EnumInfo>(parent_id);
-                buildEnum(P, created, cast<EnumDecl>(parent));
-                emplaceChild(P, child_id);
-                break;
-            }
-            default:
-                // we consider all other DeclContexts to be "transparent"
-                // and do not include them in the list of parents.
-                continue;
-            }
-            I.Namespace.emplace_back(parent_id);
-            child = parent;
-            child_id = parent_id;
+        // the TranslationUnit DeclContext is the global namespace;
+        // it uses SymbolID::global and should *always* exist
+        case Decl::TranslationUnit:
+        {
+            MRDOCS_ASSERT(ParentID == SymbolID::global);
+            auto [P, created] = getOrCreateInfo<
+                NamespaceInfo>(ParentID);
+            emplaceChild(P, I);
+            break;
         }
-        while((parent_context = parent_context->getParent()));
+        case Decl::Namespace:
+        {
+            auto [P, created] = getOrCreateInfo<
+                NamespaceInfo>(ParentID);
+            buildNamespace(P, created, cast<NamespaceDecl>(PD));
+            emplaceChild(P, I);
+            break;
+        }
+        // special case for an explicit specializations of
+        // a member of an implicit instantiation.
+        case Decl::ClassTemplateSpecialization:
+        case Decl::ClassTemplatePartialSpecialization:
+        if(auto* S = dyn_cast<ClassTemplateSpecializationDecl>(PD);
+            S && S->getSpecializationKind() == TSK_ImplicitInstantiation)
+        {
+            // KRYSTIAN FIXME: i'm pretty sure DeclContext::getDeclKind()
+            // will never be Decl::ClassTemplatePartialSpecialization for
+            // implicit instantiations; instead, the ClassTemplatePartialSpecializationDecl
+            // is accessible through S->getSpecializedTemplateOrPartial
+            // if the implicit instantiation used a partially specialized template,
+            MRDOCS_ASSERT(PD->getKind() !=
+                Decl::ClassTemplatePartialSpecialization);
+
+            auto [P, created] = getOrCreateInfo<
+                SpecializationInfo>(ParentID);
+            buildSpecialization(P, created, S);
+            emplaceChild(P, I);
+            break;
+        }
+        // non-implicit instantiations should be
+        // treated like normal CXXRecordDecls
+        [[fallthrough]];
+        // we should never encounter a Record
+        // that is not a CXXRecord
+        case Decl::CXXRecord:
+        {
+            auto [P, created] = getOrCreateInfo<
+                RecordInfo>(ParentID);
+            buildRecord(P, created, cast<CXXRecordDecl>(PD));
+            emplaceChild(P, I);
+            break;
+        }
+        case Decl::Enum:
+        {
+            auto [P, created] = getOrCreateInfo<
+                EnumInfo>(ParentID);
+            buildEnum(P, created, cast<EnumDecl>(PD));
+            emplaceChild(P, I);
+            break;
+        }
+        default:
+            MRDOCS_UNREACHABLE();
+        }
+
+        Info* P = getInfo(ParentID);
+        MRDOCS_ASSERT(P);
+
+        I.Namespace.emplace_back(ParentID);
+        I.Namespace.insert(I.Namespace.end(),
+            P->Namespace.begin(), P->Namespace.end());
     }
 
-    template<
-        typename InfoTy,
-        typename Child>
     void
     emplaceChild(
-        InfoTy& I,
-        Child&& C)
+        ScopeInfo& P,
+        Info& C)
     {
-        if constexpr(requires { I.Specializations; })
-        {
-            auto& S = I.Members;
-            if(Info* child = getInfo(C);
-                child && child->isSpecialization())
-            {
-                if(std::find(S.begin(), S.end(), C) == S.end())
-                    S.emplace_back(C);
-                return;
-            }
-        }
-        auto& M = I.Members;
-        if(std::find(M.begin(), M.end(), C) == M.end())
-            M.emplace_back(C);
+        if(std::ranges::find(P.Members, C.id) == P.Members.end())
+            P.Members.emplace_back(C.id);
+
+        // KRYSTIAN NOTE: i really hate std::unordered_map::operator[]
+        auto& lookups = P.Lookups.try_emplace(C.Name).first->second;
+        if(std::ranges::find(lookups, C.id) == lookups.end())
+            lookups.emplace_back(C.id);
     }
 
     //------------------------------------------------
