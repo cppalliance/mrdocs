@@ -29,7 +29,7 @@ function(add_mrdocs MRDOCS_TARGET_NAME)
     #-------------------------------------------------
     set(options_prefix MRDOCS_TARGET)
     set(options EXCLUDE_FROM_ALL)
-    set(oneValueArgs CONFIG OUTPUT FORMAT ADDONS)
+    set(oneValueArgs CONFIG OUTPUT ADDONS)
     set(multiValueArgs COMMENT)
     cmake_parse_arguments(${options_prefix} "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(MRDOCS_TARGET_SOURCES ${MRDOCS_TARGET_UNPARSED_ARGUMENTS})
@@ -98,13 +98,6 @@ function(add_mrdocs MRDOCS_TARGET_NAME)
     #-------------------------------------------------
     # Format
     #-------------------------------------------------
-    if (NOT MRDOCS_TARGET_FORMAT)
-        set(MRDOCS_TARGET_FORMAT adoc)
-    endif()
-
-    #-------------------------------------------------
-    # Format
-    #-------------------------------------------------
     if (MRDOCS_TARGET_ADDONS)
         if (NOT EXISTS ${MRDOCS_TARGET_ADDONS})
             message(FATAL_ERROR "MrDocs: ADDONS directory ${MRDOCS_TARGET_ADDONS} does not exist")
@@ -150,7 +143,7 @@ function(add_mrdocs MRDOCS_TARGET_NAME)
     # Output
     #-------------------------------------------------
     if (NOT MRDOCS_TARGET_OUTPUT)
-        set(MRDOCS_TARGET_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/mrdocs/${MRDOCS_TARGET_FORMAT})
+        set(MRDOCS_TARGET_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/mrdocs)
     endif()
 
 
@@ -159,7 +152,7 @@ function(add_mrdocs MRDOCS_TARGET_NAME)
     #-------------------------------------------------
     message(STATUS "MrDocs: Generating documentation for ${CMAKE_PROJECT_NAME} in ${MRDOCS_TARGET_OUTPUT}")
     set(MRDOCS_CMD_LINE_OPTIONS --config=${MRDOCS_TARGET_CONFIG} ${MRDOCS_COMPILE_COMMANDS}
-            --addons=${MRDOCS_TARGET_ADDONS} --format=${MRDOCS_TARGET_FORMAT} --output=${MRDOCS_TARGET_OUTPUT})
+            --addons=${MRDOCS_TARGET_ADDONS} --output=${MRDOCS_TARGET_OUTPUT})
     string(REPLACE ";" " " MRDOCS_WS_CMD_LINE_OPTIONS "${MRDOCS_CMD_LINE_OPTIONS}")
     message(STATUS "mrdocs ${MRDOCS_WS_CMD_LINE_OPTIONS}")
     add_custom_target(

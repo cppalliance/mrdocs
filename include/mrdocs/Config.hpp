@@ -45,6 +45,16 @@ public:
 
     struct Settings
     {
+        /** Selected documentation generator.
+
+            The currently supported generators are:
+
+            @li `adoc`: Generates documentation in the AsciiDoc format.
+            @li `html`: Generates documentation as plain HTML.
+            @li `xml`: Generates an XML representation of the corpus.
+        */
+        std::string generate = "adoc";
+
         /** `true` if output should consist of multiple files.
         */
         bool multiPage = false;

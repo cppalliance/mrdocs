@@ -50,15 +50,16 @@ DoGenerateAction()
             threadPool);
         if(! configFile)
             return configFile.error();
+
         config = std::move(configFile.value());
     }
 
 
     // Create the generator
-    auto generator = generators.find(toolArgs.formatType.getValue());
+    auto generator = generators.find(config->settings().generate);
     if(! generator)
         return formatError("the Generator \"{}\" was not found",
-            toolArgs.formatType.getValue());
+            config->settings().generate);
 
     // Load the compilation database
     if(toolArgs.inputPaths.empty())

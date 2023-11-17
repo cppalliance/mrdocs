@@ -2,6 +2,7 @@
 
 [,yaml]
 ----
+generate: # <.>
 concurrency: # <.>
 defines: # <.>
 ignore-failures: # <.>
@@ -15,6 +16,7 @@ anonymous-namespaces: # <.>
 inaccessible-members: # <.>
 inaccessible-bases: # <.>
 ----
+<.> Optional `generate` key
 <.> Optional `concurrency` key
 <.> Optional `defines` key
 <.> Optional `ignore-failures` key
@@ -32,6 +34,11 @@ inaccessible-bases: # <.>
 [cols="3,6,1"]
 |===
 |Keys |Description |Required
+
+|concurrency
+|The generator to use. Supported generators are
+`adoc`, `html`, and `xml`. Defaults to `adoc`.
+|No
 
 |concurrency
 |The amount of parallelism desired. 0 to use

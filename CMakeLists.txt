@@ -338,7 +338,6 @@ if (MRDOCS_BUILD_DOCS)
         set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
         add_mrdocs(generate_reference
                 CONFIG docs/mrdocs.yml
-                FORMAT adoc
                 COMMENT "Generate MrDocs reference"
                 OUTPUT ${MRDOCS_REFERENCE_OUTPUT_DIR}
                 ${REFERENCE_SOURCES})

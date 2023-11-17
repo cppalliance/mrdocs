@@ -96,10 +96,6 @@ public:
         */
         std::vector<std::string> defines;
 
-        /** The list of formats to generate
-        */
-        std::vector<std::string> generate;
-
         /** `true` if AST visitation failures should not stop the program.
 
             @code

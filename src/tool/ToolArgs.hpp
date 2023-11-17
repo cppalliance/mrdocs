@@ -37,7 +37,6 @@ public:
 
     llvm::cl::opt<std::string>  configPath;
     llvm::cl::opt<std::string>  outputPath;
-    llvm::cl::opt<std::string>  formatType;
     llvm::cl::opt<bool>         ignoreMappingFailures;
     llvm::cl::list<std::string> inputPaths;
 

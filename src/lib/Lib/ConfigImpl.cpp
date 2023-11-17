@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -96,6 +97,7 @@ struct llvm::yaml::MappingTraits<SettingsImpl>
         io.mapOptional("inaccessible-bases", cfg.inaccessibleBases);
 
 
+        io.mapOptional("generate",          cfg.generate);
         io.mapOptional("multipage",         cfg.multiPage);
         io.mapOptional("source-root",       cfg.sourceRoot);
 

@@ -38,7 +38,7 @@ ADDONS:
 
 EXAMPLES:
     mrdocs .. ( compile-commands )
-    mrdocs --format adoc compile_commands.json
+    mrdocs compile_commands.json
 )")
 
 //
@@ -75,11 +75,6 @@ EXAMPLES:
     llvm::cl::desc("Directory or file for generating output."),
     llvm::cl::init("."))
 
-, formatType(
-    "format",
-    llvm::cl::desc("Format for the emitted documentation (\"adoc\", \"xml\", or \"html\")."),
-    llvm::cl::init("adoc"))
-
 , ignoreMappingFailures(
     "ignore-map-errors",
     llvm::cl::desc("Continue if files are not mapped correctly."),
@@ -105,7 +100,6 @@ hideForeignOptions()
         &configPath,
         &outputPath,
         std::addressof(inputPaths),
-        &formatType,
         &ignoreMappingFailures,
     });
 

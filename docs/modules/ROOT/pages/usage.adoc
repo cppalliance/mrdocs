@@ -37,15 +37,14 @@ The following command will generate the documentation with the most common optio
 ----
 cd $PROJECT_BUILD_DIR
 MRDOCS_OUTPUT=$PROJECT_BUILD_DIR/docs/reference/adoc
-$MRDOCS_ROOT/mrdocs $PROJECT_BUILD_DIR/compile_commands.json --format=adoc --config=$MRDOCS_CONFIG --addons=$MRDOCS_ROOT/addons --output=$MRDOCS_OUTPUT
+$MRDOCS_ROOT/mrdocs $PROJECT_BUILD_DIR/compile_commands.json --config=$MRDOCS_CONFIG --addons=$MRDOCS_ROOT/addons --output=$MRDOCS_OUTPUT
 ----
 
 Here's a description of these options:
 
-* `--format=adoc`: the output format.
-It can be any of the generators available.
 * `--config=$MRDOCS_CONFIG`: the path to the `mrdocs.yml` configuration file.
-This file more advanced information about the project.
+This file configures which generator is used, which directory to process,
+and what symbols should be extracted.
 * `--addons=$MRDOCS_ROOT/addons`: the path to the `addons` directory.
 This directory contains the addons that are used to generate the documentation.
 Among other things, it contains the default templates for the generator.
@@ -96,7 +95,6 @@ set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTOR
 add_mrdocs(<name>
     [EXCLUDE_FROM_ALL]
     [CONFIG <mrdocs.yml>]
-    [FORMAT <format>]
     [ADDONS <addons-dir>]
     [COMMENT comment]
     [OUTPUT <output-dir>]
@@ -111,9 +109,6 @@ See documentation of the https://cmake.org/cmake/help/latest/prop_tgt/EXCLUDE_FR
 
 * The `CONFIG` option specifies the path to the `mrdocs.yml` configuration file.
 If not specified, the function will look for the configuration file in your project directory.
-
-* The `FORMAT` option specifies the generator used by MrDocs.
-If this option is not specified, the function will use the default generator, which is `adoc`.
 
 * The `ADDONS` option specifies a custom path to the `addons` directory. By default, the function will use the `addons` directory in the MrDocs installation directory.
 

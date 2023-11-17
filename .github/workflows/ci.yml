@@ -67,7 +67,7 @@ jobs:
         shell: bash
         run: |
           set -xe
-          
+
           # Determine LLVM configuration type
           llvm_config_type="${{ matrix.build-type }}"
           if [ "${{ runner.os }}" == "Windows" ]; then
@@ -85,14 +85,14 @@ jobs:
           llvm_commit_id=29b20829
           llvm_archive_filename="$llvm_runner_os-$llvm_config_type-$llvm_commit_id.$llvm_archive_type"
           llvm_url="https://github.com/cppalliance/mrdocs/releases/download/llvm-package-release/$llvm_archive_filename"
-          
+
           if ! curl --head --silent --fail "$llvm_url"; then
               llvm_url="https://mrdox.com/llvm+clang/$llvm_archive_filename"
           fi
 
           # Download LLVM binaries
           curl -L -o "$llvm_archive_filename" "$llvm_url"
-          
+
           # Install LLVM to runner.tool_cache/llvm+clang
           llvm_root="${{runner.tool_cache}}/llvm+clang"
           llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
@@ -194,10 +194,10 @@ jobs:
               gcov_tool="gcov-${{ steps.setup-cpp.outputs.version-major }}"
           fi
           lcov -c -q -o "./build/coverage.info" -d "./build" --include "$(pwd)/*" --gcov-tool "$gcov_tool"
-          
+
           # Upload to codecov
           bash <(curl -s https://codecov.io/bash) -f "./build/coverage.info"
-          
+
           # Update summary
           echo "# Coverage" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -263,7 +263,7 @@ jobs:
           chmod 600 /home/runner/.ssh/github_actions
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add /home/runner/.ssh/github_actions
-          
+
           # Copy files
           chmod 755 -R $(pwd)/docs/build/site
           scp -r $(pwd)/docs/build/site/* ubuntu@dev-websites.cpp.al:/var/www/mrdox.com/
@@ -351,31 +351,25 @@ jobs:
 
       - name: Generate demos
         run: |
-          echo "verbose: true" > $(pwd)/boost/libs/url/mrdocs-single.yml
-          echo "source-root: ." >> $(pwd)/boost/libs/url/mrdocs-single.yml
-          echo "multipage: false" >> $(pwd)/boost/libs/url/mrdocs-single.yml
-          echo "inaccessible-members: never" >> $(pwd)/boost/libs/url/mrdocs-single.yml
-          echo "filters:" >> $(pwd)/boost/libs/url/mrdocs-single.yml
-          echo "  symbols:" >> $(pwd)/boost/libs/url/mrdocs-single.yml
-          echo "    exclude:" >> $(pwd)/boost/libs/url/mrdocs-single.yml
-          echo "      - 'boost::urls::detail'" >> $(pwd)/boost/libs/url/mrdocs-single.yml
-          echo "      - 'boost::urls::*::detail'" >> $(pwd)/boost/libs/url/mrdocs-single.yml
-          
-          echo "verbose: true" > $(pwd)/boost/libs/url/mrdocs-multi.yml
-          echo "source-root: ." >> $(pwd)/boost/libs/url/mrdocs-multi.yml
-          echo "multipage: true" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
-          echo "inaccessible-members: never" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
-          echo "filters:" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
-          echo "  symbols:" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
-          echo "    exclude:" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
-          echo "      - 'boost::urls::detail'" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
-          echo "      - 'boost::urls::*::detail'" >> $(pwd)/boost/libs/url/mrdocs-multi.yml
-          
+          config_template=$(printf '%s\n'      \
+            "verbose: true"                    \
+            "source-root: ."                   \
+            "generate: %s"                     \
+            "multipage: %s"                    \
+            "inaccessible-members: never"      \
+            "filters:"                         \
+            "  symbols:"                       \
+            "    exclude:"                     \
+            "      - 'boost::urls::detail'"    \
+            "      - 'boost::urls::*::detail'" \
+          )
           set -x
           for variant in single multi; do
             for format in adoc html xml; do
+              [[ $variant = multi ]] && multiline="true" || multiline="false"
+              printf "$config_template\n" $format $multiline > $(pwd)/boost/libs/url/mrdocs.yml
               mkdir -p "demos/boost-url/$variant/$format"
-              mrdocs --config="$(pwd)/boost/libs/url/mrdocs-$variant.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --addons="$(pwd)/share/mrdocs/addons" --format="$format" --output="$(pwd)/demos/boost-url/$variant/$format"
+              mrdocs --config="$(pwd)/boost/libs/url/mrdocs.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --addons="$(pwd)/share/mrdocs/addons" --output="$(pwd)/demos/boost-url/$variant/$format"
             done
             asciidoctor -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done
@@ -401,7 +395,7 @@ jobs:
           chmod 600 /home/runner/.ssh/github_actions
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add /home/runner/.ssh/github_actions
-          
+
           # Copy files
           demo_dir="/var/www/mrdox.com/demos/${{ github.ref_name }}"
           ssh ubuntu@dev-websites.cpp.al "rm -rf $demo_dir; mkdir -p $demo_dir"

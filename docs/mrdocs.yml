@@ -1,3 +1,4 @@
 verbose: true
 source-root: ../include
 multipage: false
+generate: adoc
