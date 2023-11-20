@@ -32,7 +32,7 @@ jobs:
         id: cpp-matrix
         with:
           compilers: |
-            gcc 13.2
+            gcc 13.1
             clang 16
             msvc 14.34
           standards: '>=20'
