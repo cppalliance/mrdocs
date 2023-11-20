@@ -1020,7 +1020,7 @@ findTag(std::string_view &tag, std::string_view templateText)
     if (escaped)
     {
         bool const doubleEscaped = pos != 1 && templateText[pos - 2] == '\\';
-        tag = {tag.begin() - 1 - doubleEscaped, tag.end()};
+        tag = {tag.data() - 1 - doubleEscaped, tag.data() + tag.size()};
     }
     return true;
 }
