@@ -14,4 +14,31 @@
 
 {{symbol.doc.description}}
 
+{{! TODO: == Exceptions }}
+
+{{#if symbol.return}}
+== Return Value
+
+* `{{symbol.return.name}}` {{! TODO: symbol.doc.return }}
+
+{{/if}}
+
+{{#if symbol.params}}
+== Parameters
+
+|===
+| Name | Type {{! TODO: | Description }}
+
+{{#each symbol.params}}
+| *{{name}}*
+| `{{type.name}}`
+{{! TODO: symbol.doc.params.[name] }}
+
+{{/each}}
+|===
+
+{{/if}}
+
+{{! TODO: == See Also }}
+
 {{/if}}
