@@ -1,9 +1,9 @@
 {{!-- friend --}}
-== Friend {{#if symbol.symbol}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}
+= Friend {{#if symbol.symbol}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}
 
 {{symbol.doc.brief}}
 
-=== Synopsis
+== Synopsis
 
 {{#if symbol.type~}}
 [source,cpp,subs="verbatim,macros,-callouts"]
@@ -19,7 +19,7 @@ friend {{>declarator symbol.type}};
 {{>source dcl=(primary_location symbol)}}
 
 {{#if symbol.doc.description}}
-=== Description
+== Description
 
 {{symbol.doc.description}}
 

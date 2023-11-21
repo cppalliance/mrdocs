@@ -1,9 +1,9 @@
 {{!-- record --}}
-== {{#if symbol.name}}Class {{symbol.name}}{{else}}Unnamed class{{/if}}
+= {{#if symbol.name}}Class {{symbol.name}}{{else}}Unnamed class{{/if}}
 
 {{symbol.doc.brief}}
 
-=== Synopsis
+== Synopsis
 
 {{>record-decl symbol isFriend=false}}
 
@@ -16,7 +16,7 @@
 {{/with}}
 
 {{#if symbol.doc.description}}
-=== Description
+== Description
 
 {{symbol.doc.description}}
 

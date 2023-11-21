@@ -1,9 +1,9 @@
 {{!-- enum --}}
-== {{#if symbol.name}}Enum {{symbol.name}}{{else}}Unnamed enum{{/if}}
+= {{#if symbol.name}}Enum {{symbol.name}}{{else}}Unnamed enum{{/if}}
 
 {{symbol.doc.brief}}
 
-=== Synopsis
+== Synopsis
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -13,7 +13,7 @@ enum {{symbol.name}};
 {{>source dcl=(primary_location symbol)}}
 
 {{#if symbol.members}}
-=== Members
+== Members
 [,cols=2]
 |===
 |Name |Description
@@ -24,7 +24,7 @@ enum {{symbol.name}};
 {{/if}}
 
 {{#if symbol.doc.description}}
-=== Description
+== Description
 
 {{symbol.doc.description}}
 {{/if}}
