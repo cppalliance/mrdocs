@@ -5,6 +5,8 @@
 
 == Synopsis
 
+{{>source dcl=(primary_location symbol)}}
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 {{#if symbol.isMutable}}mutable
@@ -14,8 +16,6 @@
 {{>declarator-after symbol.type~}}
 ;
 ----
-
-{{>source dcl=(primary_location symbol)}}
 
 {{#if symbol.doc.description}}
 == Description
