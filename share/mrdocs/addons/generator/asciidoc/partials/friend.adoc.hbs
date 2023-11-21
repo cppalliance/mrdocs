@@ -5,6 +5,8 @@
 
 == Synopsis
 
+{{>source dcl=(primary_location symbol)}}
+
 {{#if symbol.type~}}
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
@@ -15,8 +17,6 @@ friend {{>declarator symbol.type}};
 {{else if (and symbol.symbol (eq symbol.symbol.kind "function"))~}}
 {{>function-decl symbol.symbol isFriend=true~}}
 {{/if}}
-
-{{>source dcl=(primary_location symbol)}}
 
 {{#if symbol.doc.description}}
 == Description

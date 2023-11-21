@@ -5,6 +5,8 @@
 
 == Synopsis
 
+{{>source dcl=(primary_location symbol)}}
+
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 {{#if symbol.isUsing~}}
@@ -16,8 +18,6 @@
 {{~/if}}
 ;
 ----
-
-{{>source dcl=(primary_location symbol)}}
 
 {{#if symbol.doc.description}}
 == Description
