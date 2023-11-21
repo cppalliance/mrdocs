@@ -1,10 +1,16 @@
 {{!-- namespace --}}
 = {{#if symbol.name}}Namespace {{symbol.name}}{{else if symbol.parent}}Unnamed namespace{{else}}Global namespace{{/if}}
 
+{{#each (group_by symbol.members "kind")}}
+== {{#if (eq @key "record")}}Classes{{else}}{{capitalize @key}}s{{/if}}
+
 [,cols=2]
 |===
 |Name |Description
-{{#each symbol.members}}
+{{#each .}}
 |xref:{{ref}}[`pass:v[{{name}}]`] |{{doc.brief}}
 {{/each}}
 |===
+
+{{/each}}
+
