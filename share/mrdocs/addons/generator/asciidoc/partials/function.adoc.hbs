@@ -1,16 +1,16 @@
 {{!-- function --}}
-== {{symbol.name}}
+= {{symbol.name}}
 
 {{symbol.doc.brief}}
 
-=== Synopsis
+== Synopsis
 
 {{>function-decl symbol isFriend=false}}
 
 {{>source dcl=(primary_location symbol)}}
 
 {{#if symbol.doc.description}}
-=== Description
+== Description
 
 {{symbol.doc.description}}
 
