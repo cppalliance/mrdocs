@@ -8,23 +8,20 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_ADOC_BUILDER_HPP
-#define MRDOCS_LIB_ADOC_BUILDER_HPP
+#ifndef MRDOCS_LIB_GEN_HTML_BUILDER_HPP
+#define MRDOCS_LIB_GEN_HTML_BUILDER_HPP
 
 #include "Options.hpp"
-#include "AdocCorpus.hpp"
 #include "lib/Support/Radix.hpp"
 #include <mrdocs/Metadata/DomMetadata.hpp>
 #include <mrdocs/Support/Error.hpp>
-#include <mrdocs/Support/JavaScript.hpp>
 #include <mrdocs/Support/Handlebars.hpp>
+#include <mrdocs/Support/JavaScript.hpp>
 #include <ostream>
-
-#include <mrdocs/Dom.hpp>
 
 namespace clang {
 namespace mrdocs {
-namespace adoc {
+namespace html {
 
 /** Builds reference output.
 
@@ -33,20 +30,18 @@ namespace adoc {
 */
 class Builder
 {
+    DomCorpus const& domCorpus_;
+    Corpus const& corpus_;
+    Options options_;
     js::Context ctx_;
     Handlebars hbs_;
 
-    std::string getRelPrefix(std::size_t depth);
-
 public:
-    AdocCorpus const& domCorpus;
-
-    explicit
     Builder(
-        AdocCorpus const& corpus);
+        DomCorpus const& domCorpus,
+        Options const& options);
 
-    dom::Value createContext(Info const& I);
-    dom::Value createContext(OverloadSet const& OS);
+    dom::Value createContext(SymbolID const& id);
 
     Expected<std::string>
     callTemplate(
@@ -59,12 +54,9 @@ public:
     template<class T>
     Expected<std::string>
     operator()(T const&);
-
-    Expected<std::string>
-    operator()(OverloadSet const&);
 };
 
-} // adoc
+} // html
 } // mrdocs
 } // clang
 

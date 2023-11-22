@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_HTML_OPTIONS_HPP
-#define MRDOCS_LIB_HTML_OPTIONS_HPP
+#ifndef MRDOCS_LIB_GEN_HTML_OPTIONS_HPP
+#define MRDOCS_LIB_GEN_HTML_OPTIONS_HPP
 
 #include <mrdocs/Support/Error.hpp>
 #include <string>

@@ -9,40 +9,42 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_XML_XMLGENERATOR_HPP
-#define MRDOCS_LIB_XML_XMLGENERATOR_HPP
+#ifndef MRDOCS_LIB_GEN_ADOC_ADOCGENERATOR_HPP
+#define MRDOCS_LIB_GEN_ADOC_ADOCGENERATOR_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Generator.hpp>
-#include <mrdocs/MetadataFwd.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
-#include <optional>
 
 namespace clang {
 namespace mrdocs {
-namespace xml {
+namespace adoc {
 
-//------------------------------------------------
-
-struct XMLGenerator : Generator
+class AdocGenerator
+    : public Generator
 {
+public:
     std::string_view
     id() const noexcept override
     {
-        return "xml";
+        return "adoc";
     }
 
     std::string_view
     displayName() const noexcept override
     {
-        return "Extensible Markup Language (XML)";
+        return "Asciidoc";
     }
 
     std::string_view
     fileExtension() const noexcept override
     {
-        return "xml";
+        return "adoc";
     }
+
+    Error
+    build(
+        std::string_view outputPath,
+        Corpus const& corpus) const override;
 
     Error
     buildOne(
@@ -50,7 +52,7 @@ struct XMLGenerator : Generator
         Corpus const& corpus) const override;
 };
 
-} // xml
+} // adoc
 } // mrdocs
 } // clang
 

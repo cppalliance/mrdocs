@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_HTML_SINGLEPAGEVISITOR_HPP
-#define MRDOCS_LIB_HTML_SINGLEPAGEVISITOR_HPP
+#ifndef MRDOCS_LIB_GEN_ADOC_MULTIPAGEVISITOR_HPP
+#define MRDOCS_LIB_GEN_ADOC_MULTIPAGEVISITOR_HPP
 
 #include "Builder.hpp"
 #include <mrdocs/Support/ExecutorGroup.hpp>
@@ -20,39 +20,38 @@
 
 namespace clang {
 namespace mrdocs {
-namespace html {
+namespace adoc {
 
-/** Visitor which writes everything to a single page.
+/** Visitor which emites a multi-page reference.
 */
-class SinglePageVisitor
+class MultiPageVisitor
 {
     ExecutorGroup<Builder>& ex_;
+    std::string_view outputPath_;
     Corpus const& corpus_;
-    std::ostream& os_;
-    std::size_t numPages_ = 0; 
-    std::mutex mutex_;
-    std::size_t topPage_ = 0;
-    std::vector<std::optional<
-        std::string>> pages_;
+
+    void
+    writePage(
+        std::string_view text,
+        std::string_view filename);
 
 public:
-    SinglePageVisitor(
+    MultiPageVisitor(
         ExecutorGroup<Builder>& ex,
-        Corpus const& corpus,
-        std::ostream& os) noexcept
+        std::string_view outputPath,
+        Corpus const& corpus) noexcept
         : ex_(ex)
+        , outputPath_(outputPath)
         , corpus_(corpus)
-        , os_(os)
     {
     }
 
     template<class T>
     void operator()(T const& I);
-    void renderPage(auto const& I, std::size_t pageNumber);
-    void endPage(std::string pageText, std::size_t pageNumber);
+    void operator()(OverloadSet const& OS);
 };
 
-} // html
+} // adoc
 } // mrdocs
 } // clang
 

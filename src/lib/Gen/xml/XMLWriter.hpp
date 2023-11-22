@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_XML_XMLWRITER_HPP
-#define MRDOCS_LIB_XML_XMLWRITER_HPP
+#ifndef MRDOCS_LIB_GEN_XML_XMLWRITER_HPP
+#define MRDOCS_LIB_GEN_XML_XMLWRITER_HPP
 
 #include "XMLTags.hpp"
 #include "lib/Support/YamlFwd.hpp"

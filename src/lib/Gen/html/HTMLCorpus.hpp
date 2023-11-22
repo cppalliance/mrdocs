@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_HTML_HTMLCORPUS_HPP
-#define MRDOCS_LIB_HTML_HTMLCORPUS_HPP
+#ifndef MRDOCS_LIB_GEN_HTML_HTMLCORPUS_HPP
+#define MRDOCS_LIB_GEN_HTML_HTMLCORPUS_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/DomMetadata.hpp>

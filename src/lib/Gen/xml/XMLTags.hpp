@@ -9,8 +9,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_XML_XMLTAGS_HPP
-#define MRDOCS_LIB_XML_XMLTAGS_HPP
+#ifndef MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
+#define MRDOCS_LIB_GEN_XML_XMLTAGS_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>

@@ -10,8 +10,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_XML_CXXTAGS_HPP
-#define MRDOCS_LIB_XML_CXXTAGS_HPP
+#ifndef MRDOCS_LIB_GEN_XML_CXXTAGS_HPP
+#define MRDOCS_LIB_GEN_XML_CXXTAGS_HPP
 
 #include "XMLTags.hpp"
 #include <mrdocs/Metadata/Function.hpp>

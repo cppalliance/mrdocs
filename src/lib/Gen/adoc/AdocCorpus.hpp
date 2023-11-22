@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_ADOC_ADOCCORPUS_HPP
-#define MRDOCS_LIB_ADOC_ADOCCORPUS_HPP
+#ifndef MRDOCS_LIB_GEN_ADOC_ADOCCORPUS_HPP
+#define MRDOCS_LIB_GEN_ADOC_ADOCCORPUS_HPP
 
 #include <mrdocs/Platform.hpp>
 #include "lib/Support/SafeNames.hpp"

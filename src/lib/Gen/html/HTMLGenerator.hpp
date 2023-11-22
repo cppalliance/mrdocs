@@ -9,37 +9,36 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_BITCODE_BITCODEGENERATOR_HPP
-#define MRDOCS_LIB_BITCODE_BITCODEGENERATOR_HPP
+#ifndef MRDOCS_LIB_GEN_HTML_HTMLGENERATOR_HPP
+#define MRDOCS_LIB_GEN_HTML_HTMLGENERATOR_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Generator.hpp>
-#include <mrdocs/MetadataFwd.hpp>
-#include <mrdocs/Metadata/Javadoc.hpp>
-#include <optional>
 
 namespace clang {
 namespace mrdocs {
-namespace bitcode {
+namespace html {
 
-struct BitcodeGenerator : Generator
+class HTMLGenerator
+    : public Generator
 {
+public:
     std::string_view
     id() const noexcept override
     {
-        return "bitcode";
+        return "html";
     }
 
     std::string_view
     displayName() const noexcept override
     {
-        return "LLVM Bitstream container";
+        return "HTML";
     }
 
     std::string_view
     fileExtension() const noexcept override
     {
-        return "bc";
+        return "html";
     }
 
     Error
@@ -53,7 +52,7 @@ struct BitcodeGenerator : Generator
         Corpus const& corpus) const override;
 };
 
-} // bitcode
+} // html
 } // mrdocs
 } // clang
 

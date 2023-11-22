@@ -8,10 +8,11 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_ADOC_MULTIPAGEVISITOR_HPP
-#define MRDOCS_LIB_ADOC_MULTIPAGEVISITOR_HPP
+#ifndef MRDOCS_LIB_GEN_ADOC_SINGLEPAGEVISITOR_HPP
+#define MRDOCS_LIB_GEN_ADOC_SINGLEPAGEVISITOR_HPP
 
 #include "Builder.hpp"
+#include <mrdocs/MetadataFwd.hpp>
 #include <mrdocs/Support/ExecutorGroup.hpp>
 #include <mutex>
 #include <ostream>
@@ -22,33 +23,35 @@ namespace clang {
 namespace mrdocs {
 namespace adoc {
 
-/** Visitor which emites a multi-page reference.
+/** Visitor which writes everything to a single page.
 */
-class MultiPageVisitor
+class SinglePageVisitor
 {
     ExecutorGroup<Builder>& ex_;
-    std::string_view outputPath_;
     Corpus const& corpus_;
+    std::ostream& os_;
+    std::size_t numPages_ = 0;
+    std::mutex mutex_;
+    std::size_t topPage_ = 0;
+    std::vector<std::optional<
+        std::string>> pages_;
 
-    void
-    writePage(
-        std::string_view text,
-        std::string_view filename);
-
+    void writePage(std::string pageText, std::size_t pageNumber);
 public:
-    MultiPageVisitor(
+    SinglePageVisitor(
         ExecutorGroup<Builder>& ex,
-        std::string_view outputPath,
-        Corpus const& corpus) noexcept
+        Corpus const& corpus,
+        std::ostream& os) noexcept
         : ex_(ex)
-        , outputPath_(outputPath)
         , corpus_(corpus)
+        , os_(os)
     {
     }
 
     template<class T>
     void operator()(T const& I);
     void operator()(OverloadSet const& OS);
+
 };
 
 } // adoc
