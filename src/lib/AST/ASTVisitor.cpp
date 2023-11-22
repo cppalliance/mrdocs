@@ -1619,7 +1619,7 @@ public:
                 // collect all parent classes/enums/namespaces
                 llvm::SmallVector<const NamedDecl*, 8> parents;
                 const Decl* P = ND;
-                while(P = getParentDecl(P))
+                while((P = getParentDecl(P)))
                 {
                     if(isa<TranslationUnitDecl>(P))
                         break;
@@ -1741,8 +1741,8 @@ public:
 
     Decl* getParentDecl(Decl* D)
     {
-        while(D = cast_if_present<
-            Decl>(D->getDeclContext()))
+        while((D = cast_if_present<
+            Decl>(D->getDeclContext())))
         {
             switch(D->getKind())
             {
