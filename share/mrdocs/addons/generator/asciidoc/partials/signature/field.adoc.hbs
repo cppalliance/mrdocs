@@ -1,0 +1,5 @@
+{{#if symbol.isMutable}}mutable
+{{/if~}}
+{{>declarator-before symbol.type}} {{>declarator-id symbol~}}
+{{#if symbol.isBitfield}} : {{symbol.bitfieldWidth}}{{/if~}}
+{{>declarator-after symbol.type}}

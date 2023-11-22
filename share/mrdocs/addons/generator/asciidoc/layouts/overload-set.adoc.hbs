@@ -1,15 +1,16 @@
 {{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
-{{#with symbol}}
-[#{{#if (is_multipage)}}{{id}}{{else}}{{ref}}{{/if}}]
+[#{{#if (is_multipage)}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}]
 
-== {{#if name}}Overload set {{name}}{{else}}Unnamed overload set{{/if}}
+== {{#if symbol.name}}Overload set {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
 
-[,cols=2]
-|===
-|Name |Description
-{{#each members}}
-|xref:{{ref}}[`pass:v[{{name}}]`] |{{doc.brief}}
+{{#each symbol.members as | member |}}
+
+{{member.doc.brief}}
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{> (concat 'signature' '/' (lookup member 'kind')) symbol=member}};
+  xref:{{ref}}[pass:c,q,m[*_» more..._*]]
+----
+
 {{/each}}
-|===
-
-{{/with}}

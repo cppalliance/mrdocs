@@ -1,5 +1,5 @@
 {{!-- enumerator --}}
-= {{symbol.name}}
+= {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}
 
 {{symbol.doc.brief}}
 
@@ -9,7 +9,7 @@
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-{{symbol.name}}{{#if symbol.initializer}} = {{symbol.initializer}}{{~/if}}
+{{>signature/enumerator symbol=symbol}};
 ----
 
 {{#if symbol.doc.description}}

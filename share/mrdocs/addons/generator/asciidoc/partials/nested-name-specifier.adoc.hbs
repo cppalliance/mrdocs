@@ -1,0 +1,8 @@
+{{#if (and symbol (or includeNamespace (ne symbol.kind "namespace")))~}}
+{{#if symbol.parent~}}
+{{>nested-name-specifier symbol=symbol.parent~}}
+{{else~}}
+{{/if~}}
+{{!-- {{#if symbol.name}}xref:{{symbol.ref}}[{{symbol.name}}]::{{/if~}} --}}
+{{#if symbol.name}}{{symbol.name}}::{{/if~}}
+{{/if}}

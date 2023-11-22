@@ -1,5 +1,5 @@
 {{!-- field --}}
-= {{symbol.name}}
+= {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}
 
 {{symbol.doc.brief}}
 
@@ -9,12 +9,7 @@
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-{{#if symbol.isMutable}}mutable
-{{/if~}}
-{{>declarator-before symbol.type}} {{symbol.name~}}
-{{#if symbol.isBitfield}} : {{symbol.bitfieldWidth}}{{/if~}}
-{{>declarator-after symbol.type~}}
-;
+{{>signature/field symbol=symbol}};
 ----
 
 {{#if symbol.doc.description}}

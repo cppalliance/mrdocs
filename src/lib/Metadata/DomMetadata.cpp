@@ -79,7 +79,8 @@ domCreate(
         { "kind",       "overload"},
         { "name",       overloads.Name },
         { "members",    dom::newArray<DomSymbolArray>(
-            overloads.Members, domCorpus) }
+            overloads.Members, domCorpus) },
+        { "parent",     domCorpus.get(overloads.Parent) }
         });
 }
 

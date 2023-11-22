@@ -1,5 +1,5 @@
 {{!-- enum --}}
-= {{#if symbol.name}}Enum {{symbol.name}}{{else}}Unnamed enum{{/if}}
+= {{#if symbol.name}}Enum {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed enum{{/if}}
 
 {{symbol.doc.brief}}
 
@@ -9,7 +9,7 @@
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-enum {{symbol.name}};
+{{>signature/enum symbol=symbol}};
 ----
 
 {{#if symbol.members}}

@@ -1,0 +1,28 @@
+{{#if symbol.template}}{{>template-head symbol.template}}
+{{/if~}}
+{{#if isFriend}}friend
+{{/if~}}
+{{#if symbol.constexprKind}}{{symbol.constexprKind}}
+{{/if~}}
+{{#if symbol.storageClass}}{{symbol.storageClass}}
+{{/if~}}
+{{#if symbol.isVirtual}}virtual
+{{/if~}}
+{{#if (eq symbol.class "normal")}}{{>declarator-before symbol.return}}
+{{/if~}}
+{{>declarator-id symbol link=symbol.template.primary}}
+({{#each symbol.params}}{{#unless (and @first @last)}}
+    {{/unless}}{{>declarator type decl-name=name~}}
+    {{#if default}} = {{default}}{{/if~}}
+    {{#unless @last}},{{/unless~}}
+{{/each~}})
+{{~#if symbol.isConst}} const{{/if~}}
+{{#if symbol.isVolatile}} volatile{{/if~}}
+{{#if symbol.refQualifier}} {{symbol.refQualifier}}{{/if~}}
+{{#if (eq symbol.exceptionSpec "noexcept")}} noexcept{{/if~}}
+{{#if (eq symbol.class "normal")}}{{>declarator-after symbol.return}}{{/if~}}
+{{#if symbol.hasOverrideAttr}} override{{/if~}}
+{{#if symbol.isFinal}} final{{/if~}}
+{{#if symbol.isPure}} = 0{{/if~}}
+{{#if symbol.isDeleted}} = delete{{/if~}}
+{{#if symbol.isDefaulted}} = default{{/if}}

@@ -1,5 +1,5 @@
 {{!-- function --}}
-= {{symbol.name}}
+= {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}
 
 {{symbol.doc.brief}}
 
@@ -7,7 +7,10 @@
 
 {{>source dcl=(primary_location symbol)}}
 
-{{>function-decl symbol isFriend=false}}
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{>signature/function symbol=symbol}};
+----
 
 {{#if symbol.doc.description}}
 == Description

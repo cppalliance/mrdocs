@@ -1,0 +1,20 @@
+{{!-- variable --}}
+= {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}
+
+{{symbol.doc.brief}}
+
+== Synopsis
+
+{{>source dcl=(primary_location symbol)}}
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{>signature/variable symbol=symbol}};
+----
+
+{{#if symbol.doc.description}}
+== Description
+
+{{symbol.doc.description}}
+
+{{/if}}

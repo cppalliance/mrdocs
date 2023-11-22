@@ -1,5 +1,4 @@
 {{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
-{{#with symbol}}
-[#{{#if (is_multipage)}}{{id}}{{else}}{{ref}}{{/if}}]
-{{> (lookup . 'kind') symbol=.}}
-{{/with}}
+[#{{#if (is_multipage)}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}]
+
+{{> (concat 'symbols' '/' (lookup symbol 'kind')) symbol=symbol}}

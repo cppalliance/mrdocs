@@ -1,0 +1,8 @@
+{{#if (and (eq kind "function") (eq class "conversion"))~}}
+    operator {{>declarator return~}}
+{{else~}}
+    {{#if link.ref}}xref:{{link.ref}}[{{name}}]{{else}}{{name}}{{/if~}}
+    {{#if (or (eq template.kind "explicit") (eq template.kind "partial"))~}}
+        {{>template-args args=template.args~}}
+    {{/if~}}
+{{/if}}

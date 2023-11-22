@@ -7,16 +7,10 @@
 
 {{>source dcl=(primary_location symbol)}}
 
-{{#if symbol.type~}}
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
-friend {{>declarator symbol.type}};
+{{>signature/friend symbol=symbol}};
 ----
-{{else if (and symbol.symbol (eq symbol.symbol.kind "record"))~}}
-{{>record-decl symbol.symbol isFriend=true~}}
-{{else if (and symbol.symbol (eq symbol.symbol.kind "function"))~}}
-{{>function-decl symbol.symbol isFriend=true~}}
-{{/if}}
 
 {{#if symbol.doc.description}}
 == Description
