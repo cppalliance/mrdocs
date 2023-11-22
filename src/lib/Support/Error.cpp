@@ -42,12 +42,18 @@ Error::
 formatWhere(
     source_location const& loc)
 {
+    return fmt::format("{}:{}",
+        ::SourceFileNames::getFileName(
+            loc.file_name()),
+        loc.line());
+#if 0
     return fmt::format(
         "{}@{}({})",
         loc.function_name(),
         ::SourceFileNames::getFileName(
             loc.file_name()),
         loc.line());
+#endif
 }
 
 std::string
@@ -58,8 +64,9 @@ formatMessage(
 {
     std::string result;
     result = reason;
-    result.append(": ");
+    result.append(" (");
     result.append(where);
+    result.append(")");
     return result;
 }
 

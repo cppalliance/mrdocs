@@ -50,8 +50,10 @@ operator()(T const& I)
 {
     ex_.async([this, &I](Builder& builder)
     {
-        writePage(builder(I).value(),
-            builder.domCorpus.getXref(I));
+        if(const auto r = builder(I))
+            writePage(*r, builder.domCorpus.getXref(I));
+        else
+            r.error().Throw();
         if constexpr(
                 T::isNamespace() ||
                 T::isRecord() ||
@@ -69,8 +71,10 @@ operator()(OverloadSet const& OS)
 {
     ex_.async([this, OS](Builder& builder)
     {
-        writePage(builder(OS).value(),
-            builder.domCorpus.getXref(OS));
+        if(const auto r = builder(OS))
+            writePage(*r, builder.domCorpus.getXref(OS));
+        else
+            r.error().Throw();
         corpus_.traverse(OS, *this);
     });
 }

@@ -2809,7 +2809,7 @@ struct fmt::formatter<clang::mrdocs::Error>
         clang::mrdocs::Error const& err,
         fmt::format_context& ctx) const
     {
-        return fmt::formatter<std::string_view>::format(err.reason(), ctx);
+        return fmt::formatter<std::string_view>::format(err.message(), ctx);
     }
 };
 

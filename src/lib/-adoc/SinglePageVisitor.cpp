@@ -20,11 +20,13 @@ void
 SinglePageVisitor::
 operator()(T const& I)
 {
-    ex_.async(
-       [this, &I, page = numPages_++](Builder& builder)
-       {
-           writePage(builder(I).value(), page);
-       });
+    ex_.async([this, &I, page = numPages_++](Builder& builder)
+    {
+        if(auto r = builder(I))
+            writePage(*r, page);
+        else
+            r.error().Throw();
+    });
     if constexpr(
             T::isNamespace() ||
             T::isRecord() ||
@@ -41,7 +43,10 @@ operator()(OverloadSet const& OS)
 {
     ex_.async([this, OS, page = numPages_++](Builder& builder)
     {
-        writePage(builder(OS).value(), page);
+        if(auto r = builder(OS))
+            writePage(*r, page);
+        else
+            r.error().Throw();
         corpus_.traverse(OS, *this);
     });
 }
