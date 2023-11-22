@@ -33,11 +33,15 @@ struct MRDOCS_VISIBLE
     This will iterate all the regular files in
     a directory and invoke the visitor with the
     path.
+
+    @param recursive If true, files in subdirectories are
+    also visited, recursively.
 */
 MRDOCS_DECL
 Error
 forEachFile(
     std::string_view dirPath,
+    bool recursive,
     AnyFileVisitor& visitor);
 
 /** Visit each file in a directory.
@@ -46,6 +50,7 @@ template<class Visitor>
 Error
 forEachFile(
     std::string_view dirPath,
+    bool recursive,
     Visitor&& visitor)
 {
     struct FileVisitor : AnyFileVisitor
@@ -65,7 +70,8 @@ forEachFile(
     };
 
     FileVisitor v{visitor};
-    return forEachFile(dirPath, static_cast<AnyFileVisitor&>(v));
+    return forEachFile(dirPath, recursive,
+        static_cast<AnyFileVisitor&>(v));
 }
 
 //------------------------------------------------

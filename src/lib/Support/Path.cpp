@@ -38,6 +38,7 @@ convert_to_slash(
 Error
 forEachFile(
     std::string_view dirPath,
+    bool recursive,
     AnyFileVisitor& visitor)
 {
     namespace fs = llvm::sys::fs;
@@ -56,6 +57,13 @@ forEachFile(
             auto err = visitor.visitFile(s);
             if(err)
                 return err;
+
+            if(recursive)
+            {
+                if(auto err = forEachFile(
+                    it->path(), recursive, visitor))
+                    return err;
+            }
         }
         else if(it->type() == fs::file_type::regular_file)
         {

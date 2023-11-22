@@ -15,6 +15,7 @@
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <fmt/format.h>
+#include <filesystem>
 
 namespace clang {
 namespace mrdocs {
@@ -33,30 +34,29 @@ Builder(
     , corpus_(domCorpus_.getCorpus())
     , options_(options)
 {
-    namespace fs = llvm::sys::fs;
-    namespace path = llvm::sys::path;
+    namespace fs = std::filesystem;
 
     Config const& config = corpus_.config;
 
     // load partials
     std::string partialsPath = files::appendPath(
         config->addonsDir, "generator", "html", "partials");
-    forEachFile(partialsPath,
+    forEachFile(partialsPath, true,
                 [&](std::string_view pathName) -> Error
     {
-        constexpr std::string_view ext = ".html.hbs";
-        if (!pathName.ends_with(ext))
-        {
+        fs::path path = pathName;
+        if(path.extension() != ".hbs")
             return Error::success();
-        }
-        auto name = files::getFileName(pathName);
-        name.remove_suffix(ext.size());
+        path = path.lexically_relative(partialsPath);
+        while(path.has_extension())
+            path.replace_extension();
+
         auto text = files::getFileText(pathName);
-        if (!text)
-        {
+        if (! text)
             return text.error();
-        }
-        hbs_.registerPartial(name, *text);
+
+        hbs_.registerPartial(
+            path.generic_string(), *text);
         return Error::success();
     }).maybeThrow();
 
@@ -64,7 +64,7 @@ Builder(
     js::Scope scope(ctx_);
     std::string helpersPath = files::appendPath(
         config->addonsDir, "generator", "asciidoc", "helpers");
-    forEachFile(helpersPath,
+    forEachFile(helpersPath, true,
                 [&](std::string_view pathName)
     {
         // Register JS helper function in the global object
