@@ -214,30 +214,12 @@ Return from `./third-party/llvm-project/build` to the parent `third-party` direc
 cd ../..
 ----
 
-[#duktape]
-=== Downloading Duktape
-
-MrDocs contains functionality to allow users to define their own templates for the documentation.
-Duktape is a JavaScript engine that is used by MrDocs to parse and evaluate template helpers.
-
-The release files can be obtained from the Duktape repository:
-
-[source,bash]
-----
-curl -L -o "duktape-2.7.0.tar.xz" "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz"
-tar -xvf "duktape-2.7.0.tar.xz"
-----
-
-Duktape provides no CMake integration scripts.
-For this reason, MrDocs needs direct access to the source files for Duktape.
-This means that's all you need to do for `duktape`.
-
 === CMake dependencies
 
 All other dependencies provide CMake integration scripts and can be obtained from https://www.vcpkg.io/[vcpkg] or installed manually.
 
 * `fmt` >= 10
-* `zlib`
+* `duktape`
 
 For development builds, which include tests, you will also need:
 

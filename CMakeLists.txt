@@ -100,35 +100,11 @@ string(REGEX REPLACE " /W[0-4]" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 # Duktape
-set(DUKTAPE_SOURCE_ROOT "" CACHE STRING "Root of the Duktape source tree")
-if (NOT DUKTAPE_SOURCE_ROOT)
-    message(FATAL_ERROR
-            "Duktape source root not found.\n"
-            "Please set DUKTAPE_SOURCE_ROOT to the root of the Duktape source tree.\n"
-            "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz\n")
+set(DUKTAPE_PACKAGE_NAME duktape)
+if (WIN32)
+    set(DUKTAPE_PACKAGE_NAME Duktape)
 endif()
-if (NOT EXISTS "${DUKTAPE_SOURCE_ROOT}")
-    message(FATAL_ERROR
-            "DUKTAPE_SOURCE_ROOT (${DUKTAPE_SOURCE_ROOT}) does not exist.\n")
-endif()
-if (NOT EXISTS "${DUKTAPE_SOURCE_ROOT}/src/duktape.c")
-    message(FATAL_ERROR
-            "DUKTAPE_SOURCE_ROOT (${DUKTAPE_SOURCE_ROOT}) is invalid.\n"
-            "No /src/duktape.c found.\n"
-            "Please set DUKTAPE_SOURCE_ROOT to the root of the Duktape source tree.\n")
-endif()
-get_filename_component(DUKTAPE_SOURCE_ROOT "${DUKTAPE_SOURCE_ROOT}" ABSOLUTE)
-add_library(duktape ${DUKTAPE_SOURCE_ROOT}/src/duktape.c ${DUKTAPE_SOURCE_ROOT}/src/duktape.h)
-target_include_directories(
-    duktape PUBLIC
-        "$<BUILD_INTERFACE:${DUKTAPE_SOURCE_ROOT}/src>"
-        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
-add_library(duktape::duktape ALIAS duktape)
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
-    target_compile_options(duktape PRIVATE -w)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(duktape PRIVATE /w)
-endif()
+find_package(${DUKTAPE_PACKAGE_NAME} REQUIRED)
 
 # fmt
 find_package(fmt REQUIRED CONFIG)
@@ -167,7 +143,9 @@ target_compile_definitions(
 # Deps
 target_include_directories(mrdocs-core SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
 target_include_directories(mrdocs-core SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
-target_link_libraries(mrdocs-core PUBLIC fmt::fmt duktape::duktape)
+target_link_libraries(mrdocs-core PUBLIC fmt::fmt)
+target_include_directories(mrdocs-core SYSTEM PRIVATE ${DUKTAPE_INCLUDE_DIRS})
+target_link_libraries(mrdocs-core PRIVATE ${DUKTAPE_LIBRARY})
 
 # Clang
 if (CLANG_SIMPLE_LIBS)
@@ -408,7 +386,7 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # lib
     #-------------------------------------------------
-    install(TARGETS mrdocs-core duktape
+    install(TARGETS mrdocs-core
             EXPORT mrdocs-targets
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -428,12 +406,6 @@ if (MRDOCS_INSTALL)
             COMPONENT development
             FILES_MATCHING
             PATTERN "*.[hi]pp")
-
-    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/third-party/duktape/src/
-            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-            COMPONENT development
-            FILES_MATCHING
-            PATTERN "*.h")
 
     #-------------------------------------------------
     # share

@@ -6,12 +6,20 @@
       "name": "fmt",
       "version>=": "10.0.0"
     },
-    {
-      "name": "libxml2",
-      "features": [
-        "tools"
+    "duktape"
+  ],
+  "features": {
+    "tests": {
+      "description": "Build tests",
+      "dependencies": [
+        {
+          "name": "libxml2",
+          "features": [
+            "tools"
+          ]
+        }
       ]
     }
-  ],
+  },
   "builtin-baseline": "3715d743ac08146d9b7714085c1babdba9f262d5"
 }
