@@ -15,7 +15,6 @@
       "cacheVariables": {
         "LLVM_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Debug",
         "Clang_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\llvm-project\\llvm\\install\\MSVC\\Debug",
-        "DUKTAPE_SOURCE_ROOT": "C:\\Users\\$env{USERNAME}\\Libraries\\duktape-2.7.0",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
       "condition": {
@@ -71,7 +70,6 @@
         "CMAKE_C_COMPILER": "/usr/bin/gcc-13",
         "LLVM_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
         "Clang_ROOT": "/home/$env{USER}/libraries/llvm-project/llvm/install/Linux/Release",
-        "DUKTAPE_SOURCE_ROOT": "/home/$env{USER}/libraries/duktape-2.7.0",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       },
       "vendor": {

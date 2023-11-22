@@ -112,19 +112,6 @@ jobs:
           echo "llvm_root=$llvm_root"
           echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
 
-      - name: Install Duktape
-        id: duktape-install
-        shell: bash
-        run: |
-          set -xe
-          curl -L -o "duktape-2.7.0.tar.xz" "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz"
-          duktape_dir="${{runner.tool_cache}}/duktape"
-          duktape_dir=$(echo "$duktape_dir" | sed 's/\\/\//g')
-          mkdir -p "$duktape_dir"
-          tar -xvf "duktape-2.7.0.tar.xz" -C "$duktape_dir"
-          echo "duktape-dir=$duktape_dir/duktape-2.7.0" >> $GITHUB_OUTPUT
-          echo "duktape_dir=$duktape_dir/duktape-2.7.0"
-
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -143,7 +130,7 @@ jobs:
         id: package-install
         with:
           apt-get: ${{ matrix.install }} openjdk-11-jdk ninja-build ${{ matrix.compiler == 'clang' && 'libstdc++-12-dev' || '' }}
-          vcpkg: fmt libxml2[tools]
+          vcpkg: fmt duktape libxml2[tools]
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
           ccflags: ${{ matrix.ccflags }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
@@ -162,7 +149,7 @@ jobs:
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           install-prefix: .local
-          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D DUKTAPE_SOURCE_ROOT="{1}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-root || '/usr/local', steps.duktape-install.outputs.duktape-dir) }}
+          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-root || '/usr/local') }}
           export-compile-commands: ${{ matrix.time-trace }}
           package: ${{ matrix.is-main }}
           package-dir: packages
