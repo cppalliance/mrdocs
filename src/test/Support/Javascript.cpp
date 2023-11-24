@@ -16,7 +16,7 @@ namespace clang {
 namespace mrdocs {
 namespace js {
 
-struct Path_test
+struct Javascript_test
 {
     void
     test_context()
@@ -163,6 +163,17 @@ struct Path_test
             js::Value x = *exp;
             BOOST_TEST(x.isNumber());
             BOOST_TEST(x.getDom() == 1);
+        }
+
+        // setGlobal
+        {
+            Scope scope(ctx);
+            scope.setGlobal("y", 1);
+            auto exp = scope.getGlobal("y");
+            BOOST_TEST(exp);
+            js::Value y = *exp;
+            BOOST_TEST(y.isNumber());
+            BOOST_TEST(y.getDom() == 1);
         }
 
         // getGlobalObject
@@ -778,16 +789,118 @@ struct Path_test
         }
     }
 
+    void
+    test_cpp_function()
+    {
+        Context context;
+
+        // Back and forth from JS
+        {
+            // Create JS function
+            Scope scope(context);
+            Value x = scope.eval("(function() { return 1; })").value();
+            BOOST_TEST(x.isFunction());
+            dom::Function f = x.getFunction();
+            BOOST_TEST(f() == 1);
+
+            // Register proxy to JS function as another object
+            scope.setGlobal("fn", f);
+
+            // Get new function as JS Value
+            auto fnexp = scope.getGlobal("fn");
+            BOOST_TEST(fnexp);
+            Value fn = *fnexp;
+            BOOST_TEST(fn.isFunction());
+            BOOST_TEST(fn.call().value().getDom() == 1);
+
+            // Get new function as dom::Value
+            dom::Value fnv = fn.getDom();
+            BOOST_TEST(fnv.isFunction());
+            BOOST_TEST(fnv() == 1);
+        }
+
+        // Back and forth from C++
+        {
+            // Create C++ function
+            Scope scope(context);
+            auto cpp_add = dom::makeInvocable(
+                [](int a, int b)
+                {
+                    return a + b;
+                });
+            BOOST_TEST(cpp_add(2, 3) == 5);
+
+            // Register proxy to C++ function as JS object
+            scope.setGlobal("fn", cpp_add);
+
+            // Test C++ function usage from JS
+            scope.eval("var x = fn(1, 2);");
+            auto exp = scope.getGlobal("x");
+            BOOST_TEST(exp);
+            Value x = *exp;
+            BOOST_TEST(x.isNumber());
+            BOOST_TEST(x.getDom() == 3);
+
+            // Get the C++ function as a JS Value
+            auto fnexp = scope.getGlobal("fn");
+            BOOST_TEST(fnexp);
+            Value fn = *fnexp;
+            BOOST_TEST(fn.isFunction());
+            BOOST_TEST(fn(1, 2).getDom() == 3);
+
+            // Get the C++ function as a dom::Value
+            dom::Value fnv = fn.getDom();
+            BOOST_TEST(fnv.isFunction());
+            BOOST_TEST(fnv(1, 2) == 3);
+        }
+
+        // C++ function with state
+        {
+            // Create C++ function
+            Scope scope(context);
+            int state = 3;
+            auto cpp_add = dom::makeInvocable(
+                [state](int a, int b)
+                {
+                    return a + b + state;
+                });
+            BOOST_TEST(cpp_add(1, 2) == 6);
+
+            // Register proxy to C++ function as JS object
+            scope.setGlobal("fn", cpp_add);
+
+            // Test C++ function usage from JS
+            scope.eval("var x = fn(1, 2);");
+            auto exp = scope.getGlobal("x");
+            BOOST_TEST(exp);
+            Value x = *exp;
+            BOOST_TEST(x.isNumber());
+            BOOST_TEST(x.getDom() == 6);
+
+            // Get the C++ function as a JS Value
+            auto fnexp = scope.getGlobal("fn");
+            BOOST_TEST(fnexp);
+            Value fn = *fnexp;
+            BOOST_TEST(fn.isFunction());
+
+            // Get the C++ function as a dom::Value
+            dom::Value fnv = fn.getDom();
+            BOOST_TEST(fnv.isFunction());
+            BOOST_TEST(fnv(1, 2) == 6);
+        }
+    }
+
     void run()
     {
         test_context();
         test_scope();
         test_value();
+        test_cpp_function();
     }
 };
 
 TEST_SUITE(
-    Path_test,
+    Javascript_test,
     "clang.mrdocs.Javascript");
 
 } // js
