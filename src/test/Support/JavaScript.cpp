@@ -890,12 +890,138 @@ struct JavaScript_test
         }
     }
 
+    void
+    test_cpp_object()
+    {
+        Context context;
+
+        // Back and forth from JS
+        {
+            // Create JS object
+            Scope scope(context);
+            Value x = scope.eval("({ a: 1 })").value();
+            BOOST_TEST(x.isObject());
+            dom::Object o1 = x.getObject();
+            BOOST_TEST(o1.get("a") == 1);
+
+            // Register proxy to JS object as another object
+            scope.setGlobal("o", o1);
+
+            // Get new function as JS Value
+            auto oexp = scope.getGlobal("o");
+            BOOST_TEST(oexp);
+            Value o2 = *oexp;
+            BOOST_TEST(o2.isObject());
+            BOOST_TEST(o2.get("a").getDom() == 1);
+
+            // Get new function as dom::Value
+            dom::Value o3 = o2.getDom();
+            BOOST_TEST(o3.isObject());
+            BOOST_TEST(o3.get("a") == 1);
+        }
+
+        // Back and forth from C++
+        {
+            // Create C++ function
+            Scope scope(context);
+            dom::Object o1;
+            o1.set("a", 1);
+            BOOST_TEST(o1.get("a") == 1);
+
+            // Register proxy to C++ object as JS object
+            scope.setGlobal("o", o1);
+
+            // Test C++ object usage from JS
+            scope.eval("var x = o.a;");
+            auto exp = scope.getGlobal("x");
+            BOOST_TEST(exp);
+            Value x = *exp;
+            BOOST_TEST(x.isNumber());
+            BOOST_TEST(x.getDom() == 1);
+
+            // JS changes affect C++ object via the Proxy
+            // "set"
+            scope.eval("o.a = 2;");
+            BOOST_TEST(o1.get("a") == 2);
+            // "has"
+            scope.eval("var y = 'a' in o;");
+            auto yexp = scope.getGlobal("y");
+            BOOST_TEST(yexp);
+            Value y = *yexp;
+            BOOST_TEST(y.isBoolean());
+            BOOST_TEST(y.getDom() == true);
+            // "deleteProperty" is not allowed
+            Expected<Value> de = scope.eval("delete o.a;");
+            BOOST_TEST(de);
+            BOOST_TEST(!de.value());
+            BOOST_TEST(o1.get("a") == 2);
+            // "ownKeys"
+            scope.eval("var z = Object.keys(o);");
+            auto zexp = scope.getGlobal("z");
+            BOOST_TEST(zexp);
+            Value z = *zexp;
+            BOOST_TEST(z.isArray());
+            // Missing functionality:
+            // https://github.com/svaarala/duktape/issues/2153
+            // BOOST_TEST(z.size() == 1);
+            // BOOST_TEST(z.get(0).isString());
+            // BOOST_TEST(z.get(0).getString() == "a");
+
+            // C++ changes affect JS object via the Proxy
+            // "set"
+            o1.set("a", 3);
+            scope.eval("var x = o.a;");
+            auto exp2 = scope.getGlobal("x");
+            BOOST_TEST(exp2);
+            Value x2 = *exp2;
+            BOOST_TEST(x2.isNumber());
+            BOOST_TEST(x2.getDom() == 3);
+            // "has"
+            o1.set("b", 4);
+            scope.eval("var y = 'b' in o;");
+            auto yexp2 = scope.getGlobal("y");
+            BOOST_TEST(yexp2);
+            Value y2 = *yexp2;
+            BOOST_TEST(y2.isBoolean());
+            BOOST_TEST(y2.getDom() == true);
+            // "ownKeys"
+            o1.set("c", 5);
+            scope.eval("var z = Object.keys(o);");
+            auto zexp2 = scope.getGlobal("z");
+            BOOST_TEST(zexp2);
+            Value z2 = *zexp2;
+            BOOST_TEST(z2.isArray());
+            // Missing functionality:
+            // https://github.com/svaarala/duktape/issues/2153
+            // BOOST_TEST(z2.size() == 3);
+            // BOOST_TEST(z2.get(0).isString());
+            // BOOST_TEST(z2.get(0).getString() == "a");
+            // BOOST_TEST(z2.get(1).isString());
+            // BOOST_TEST(z2.get(1).getString() == "b");
+            // BOOST_TEST(z2.get(2).isString());
+            // BOOST_TEST(z2.get(2).getString() == "c");
+
+            // Get the C++ object as a JS Value
+            auto oexp = scope.getGlobal("o");
+            BOOST_TEST(oexp);
+            Value o2 = *oexp;
+            BOOST_TEST(o2.isObject());
+            BOOST_TEST(o2.get("a").getDom() == 3);
+
+            // Get the C++ object as a dom::Value
+            dom::Value o3 = o2.getDom();
+            BOOST_TEST(o3.isObject());
+            BOOST_TEST(o3.get("a") == 3);
+        }
+    }
+
     void run()
     {
         test_context();
         test_scope();
         test_value();
         test_cpp_function();
+        test_cpp_object();
     }
 };
 
