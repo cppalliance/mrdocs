@@ -16,7 +16,7 @@ namespace clang {
 namespace mrdocs {
 namespace js {
 
-struct Javascript_test
+struct JavaScript_test
 {
     void
     test_context()
@@ -900,8 +900,8 @@ struct Javascript_test
 };
 
 TEST_SUITE(
-    Javascript_test,
-    "clang.mrdocs.Javascript");
+    JavaScript_test,
+    "clang.mrdocs.JavaScript");
 
 } // js
 } // mrdocs

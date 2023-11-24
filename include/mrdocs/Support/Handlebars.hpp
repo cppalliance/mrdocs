@@ -1057,7 +1057,7 @@ registerAntoraHelpers(Handlebars& hbs);
     first argument is the value of the helper.
 
     The helper names are inspired by the default string functions provided
-    in multiple programming languages, such as Python and Javascript,
+    in multiple programming languages, such as Python and JavaScript,
     for their default string types.
 
     The individual helpers are defined as an implementation detail and
@@ -1079,7 +1079,7 @@ registerStringHelpers(Handlebars& hbs);
 
     The helper names are inspired by the default functions provided
     in multiple programming languages for dictionaries, objects, and arrays,
-    such as Python and Javascript, for their default types.
+    such as Python and JavaScript, for their default types.
 
     The individual helpers are defined as an implementation detail and
     cannot be registered individually.

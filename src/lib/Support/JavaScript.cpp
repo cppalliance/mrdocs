@@ -851,7 +851,7 @@ public:
     size_type size() const override;
 };
 
-// A Javascript function defined in the scope as a dom::Function
+// A JavaScript function defined in the scope as a dom::Function
 class JSFunctionImpl : public dom::FunctionImpl
 {
     Access A_;
