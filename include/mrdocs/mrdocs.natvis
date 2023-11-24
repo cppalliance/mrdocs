@@ -151,7 +151,7 @@
         </Expand>
     </Type>
 
-    <!-- <mrdocs/Support/Javascript.hpp> -->
+    <!-- <mrdocs/Support/JavaScript.hpp> -->
 
     <Type Name="clang::mrdocs::js::Access">
         <DisplayString>[ js::Access ]</DisplayString>

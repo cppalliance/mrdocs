@@ -40,7 +40,7 @@ class Value;
 
     These reference types are modeled after JavaScript
     "Objects". All non-primitive types (Object types)
-    are derived from Object in Javascript. This means
+    are derived from Object in JavaScript. This means
     types such as Array and Function represent a
     relevant selection of built-in types that would
     derive from Object in JavaScript.
