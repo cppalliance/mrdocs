@@ -67,7 +67,8 @@ public:
     {
     }
 
-    constexpr bool isIndex() const noexcept
+    constexpr bool
+    isIndex() const noexcept
     {
         return name_.empty();
     }
@@ -82,10 +83,16 @@ public:
     objects to define variables and execute scripts.
 
     A context represents a JavaScript heap where
-    variables can be allocated.
+    variables can be allocated and will be later
+    garbage collected.
 
-    The heap is allocated with default memory
+    Each context is associated with a single
+    heap allocated with default memory
     management.
+
+    Once the context is created, a @ref Scope
+    in this context can be created to define
+    variables and execute scripts.
 
     @see Scope
 */
@@ -104,14 +111,41 @@ public:
     ~Context();
 
     /** Constructor.
+
+        Create a javascript execution context
+        associated with its own garbage-collected
+        heap.
     */
     Context();
 
     /** Constructor.
+
+        Create a javascript execution context
+        associated with the heap of another
+        context.
+
+        Both contexts will share the same
+        garbage-collected heap, which is
+        destroyed when the last context
+        is destroyed.
+
+        While they share the heap, their
+        scripts can include references
+        to the same variables.
+
+        There are multi-threading
+        restrictions, however: only one
+        native thread can execute any
+        code within a single heap at any
+        time.
+
     */
     Context(Context const&) noexcept;
 
     /** Copy assignment.
+
+        @copydetails Context(Context const&)
+
      */
     Context& operator=(Context const&) = delete;
 };
@@ -267,6 +301,12 @@ public:
     Expected<Value>
     getGlobal(std::string_view name);
 
+    /** Set a global object.
+    */
+    MRDOCS_DECL
+    void
+    setGlobal(std::string_view name, dom::Value const& value);
+
     /** Return the global object.
 
         This function returns a @ref Value that
@@ -400,34 +440,87 @@ public:
     MRDOCS_DECL Type type() const noexcept;
 
     /// Check if the value is undefined.
-    bool isUndefined() const noexcept;
+    bool
+    isUndefined() const noexcept;
 
     /// Check if the value is null.
-    bool isNull() const noexcept;
+    bool
+    isNull() const noexcept;
 
     /// Check if the value is a boolean.
-    bool isBoolean() const noexcept;
+    bool
+    isBoolean() const noexcept;
 
-    /// Check if the value is a number.
-    bool isNumber() const noexcept;
+    /** Check if the value is a number.
 
-    /// Check if the value is an integer number.
-    bool isInteger() const noexcept;
+        In ECMA, the number type is an IEEE double,
+        including +/- Infinity and NaN values.
+
+        Zero sign is also preserved.
+
+        An IEEE double can represent all integers
+        up to 53 bits accurately.
+
+        The user should not rely on NaNs preserving
+        their exact non-normalized form.
+
+     */
+    bool
+    isNumber() const noexcept;
+
+    /** Check if the value is an integer number.
+
+        All numbers are internally represented by
+        IEEE doubles, which are capable of
+        representing all integers up to
+        53 bits accurately.
+
+        This function returns `true` if the
+        value is a number with no precision
+        loss when representing an integer.
+
+        When `isNumber()` is `true`, the
+        function behaves as if evaluating
+        the condition
+        `d == static_cast<double>(static_cast<int>(d))`
+        where `d` is the result of `toDouble()`.
+
+     */
+    bool
+    isInteger() const noexcept;
 
     /// Check if the value is a floating point number.
-    bool isDouble() const noexcept;
+    bool
+    isDouble() const noexcept;
 
     /// Check if the value is a string.
-    bool isString() const noexcept;
+    bool
+    isString() const noexcept;
 
     /// Check if the value is an array.
-    bool isArray() const noexcept;
+    bool
+    isArray() const noexcept;
 
-    /// Check if the value is an object.
-    bool isObject() const noexcept;
+    /** Check if the value is an object.
+
+        Check if the value is an object but not
+        an array or function.
+
+        While in ECMA anything with properties
+        is an object, this function returns
+        `false` for arrays and functions.
+
+        Properties are key-value pairs with
+        a string key and an arbitrary value,
+        including undefined.
+
+     */
+    bool
+    isObject() const noexcept;
 
     /// Check if the value is a function.
-    bool isFunction() const noexcept;
+    bool
+    isFunction() const noexcept;
 
     /** Determine if a value is truthy
 
@@ -436,7 +529,8 @@ public:
 
         @return `true` if the value is truthy, `false` otherwise
     */
-    bool isTruthy() const noexcept;
+    bool
+    isTruthy() const noexcept;
 
     /** Return the underlying string
 
@@ -450,14 +544,16 @@ public:
         @note Behaviour is undefined if `!isString()`
 
      */
-    std::string_view getString() const;
+    std::string_view
+    getString() const;
 
     /** Return the underlying boolean value.
 
         @note Behaviour is undefined if `!isBoolean()`
 
      */
-    bool getBool() const noexcept;
+    bool
+    getBool() const noexcept;
 
     /** Return the underlying integer value.
 
@@ -813,42 +909,66 @@ private:
         std::initializer_list<dom::Value> args) const;
 };
 
-inline bool Value::isUndefined() const noexcept
+inline
+bool
+Value::
+isUndefined() const noexcept
 {
     return type() == Type::undefined;
 }
 
-inline bool Value::isNull() const noexcept
+inline
+bool
+Value::
+isNull() const noexcept
 {
     return type() == Type::null;
 }
 
-inline bool Value::isBoolean() const noexcept
+inline
+bool
+Value::
+isBoolean() const noexcept
 {
     return type() == Type::boolean;
 }
 
-inline bool Value::isNumber() const noexcept
+inline
+bool
+Value::
+isNumber() const noexcept
 {
     return type() == Type::number;
 }
 
-inline bool Value::isString() const noexcept
+inline
+bool
+Value::
+isString() const noexcept
 {
     return type() == Type::string;
 }
 
-inline bool Value::isObject() const noexcept
+inline
+bool
+Value::
+isObject() const noexcept
 {
     return type() == Type::object;
 }
 
-inline bool Value::isArray() const noexcept
+inline
+bool
+Value::
+isArray() const noexcept
 {
     return type() == Type::array;
 }
 
-inline bool Value::isFunction() const noexcept
+inline
+bool
+Value::
+isFunction() const noexcept
 {
     return type() == Type::function;
 }
