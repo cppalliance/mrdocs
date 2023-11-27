@@ -344,6 +344,7 @@ jobs:
             "generate: %s"                     \
             "multipage: %s"                    \
             "inaccessible-members: never"      \
+            "inaccessible-bases: never"        \
             "filters:"                         \
             "  symbols:"                       \
             "    exclude:"                     \

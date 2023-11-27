@@ -84,10 +84,10 @@ when set to `dependency`.
 |No
 
 |inaccessible-members
-|Whether to extract inaccessible members. Currently unimplemented.
+|Whether to extract private/protected members. `always` or `never`.
 |No
 
 |inaccessible-bases
-|Whether to extract inaccessible bases. Currently unimplemented.
+|Whether to extract private/protected bases. `always` or `never`.
 
 |===

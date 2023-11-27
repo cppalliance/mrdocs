@@ -1945,14 +1945,25 @@ public:
         {
             for(const CXXBaseSpecifier& B : D->bases())
             {
+                AccessSpecifier access = B.getAccessSpecifier();
+                // KRYSTIAN FIXME: we need finer-grained control
+                // for protected bases, since an inheriting class
+                // will have access to the bases public members...
+                if(config_->inaccessibleBases !=
+                    ConfigImpl::SettingsImpl::ExtractPolicy::Always)
+                {
+                    if(access == AccessSpecifier::AS_private ||
+                        access == AccessSpecifier::AS_protected)
+                        continue;
+                }
+
                 I.Bases.emplace_back(
                     // the extraction of the base type is
                     // performed in direct dependency mode
                     buildTypeInfo(
                         B.getType(),
                         ExtractMode::DirectDependency),
-                    convertToAccessKind(
-                        B.getAccessSpecifier()),
+                    convertToAccessKind(access),
                     B.isVirtual());
             }
         }
