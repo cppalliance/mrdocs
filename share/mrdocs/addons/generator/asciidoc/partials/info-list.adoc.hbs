@@ -1,8 +1,10 @@
+{{#if members}}
+== {{title}}
 [,cols=2]
 |===
 |Name |Description
-{{#each .}}
-|xref:{{ref}}[`pass:v[{{name}}]`] | {{#if (ne kind "overload")}}{{doc.brief}}{{else}}{{#each (unique (pluck (pluck members "doc") "brief"))}}{{.}}
-{{/each}}{{/if}}
+{{#each members}}
+{{>info-member .}}
 {{/each}}
 |===
+{{/if}}

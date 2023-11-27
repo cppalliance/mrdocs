@@ -1,8 +1,8 @@
 {{#if (and (eq kind "function") (eq class "conversion"))~}}
-    operator {{>declarator return~}}
+    operator {{>declarator return nolink=nolink~}}
 {{else~}}
-    {{#if link.ref}}xref:{{link.ref}}[{{name}}]{{else}}{{name}}{{/if~}}
+    {{#if (and link.ref (not nolink))}}xref:{{link.ref}}[{{name}}]{{else}}{{name}}{{/if~}}
     {{#if (or (eq template.kind "explicit") (eq template.kind "partial"))~}}
-        {{>template-args args=template.args~}}
+        {{>template-args args=template.args nolink=nolink~}}
     {{/if~}}
 {{/if}}

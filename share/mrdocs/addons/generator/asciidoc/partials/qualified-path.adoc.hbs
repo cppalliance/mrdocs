@@ -1,7 +1,7 @@
 {{#unless (contains @root.symbol.namespace symbol)~}}
 {{#if symbol.parent~}}
-{{>qualified-path symbol=symbol.parent~}}
+{{>qualified-path symbol=symbol.parent nolink=nolink~}}
 {{else~}}
 {{/if~}}
-{{#if symbol.name}}xref:{{symbol.ref}}[{{symbol.name}}]::{{/if~}}
+{{#if symbol.name}}{{#if (not nolink)}}xref:{{symbol.ref}}[{{symbol.name}}]{{else}}{{symbol.name}}{{/if}}::{{/if~}}
 {{/unless}}

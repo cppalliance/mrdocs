@@ -1,0 +1,9 @@
+{{!-- |xref:{{ref}}[`pass:v[{{name}}]`] | --}}
+|xref:{{ref}}[`pass:v[{{>declarator-id . nolink=true}}]`] |
+{{#if (ne kind "overload")~}}
+    {{~doc.brief}}
+{{else~}}
+    {{#each (unique (pluck (pluck members "doc") "brief"))~}}
+        {{.}}
+    {{/each~}}
+{{/if}}

@@ -134,26 +134,6 @@ public:
         ScopeInfo const& S,
         F&& f, Args&&... args) const;
 
-    template<class F, class... Args>
-    void traverseOverloads(
-        RecordInfo const& I,
-        F&& f, Args&&... args) const;
-
-    template<class F, class... Args>
-    void traverseOverloads(
-        NamespaceInfo const& I,
-        F&& f, Args&&... args) const;
-
-    template<class F, class... Args>
-    void traverseOverloads(
-        EnumInfo const& I,
-        F&& f, Args&&... args) const;
-
-    template<class F, class... Args>
-    void traverseOverloads(
-        SpecializationInfo const& I,
-        F&& f, Args&&... args) const;
-
     //--------------------------------------------
 
     // KRYSTIAN NOTE: temporary
@@ -257,115 +237,22 @@ traverseOverloads(
     {
         const Info& member = get(id);
         const auto& lookup = S.Lookups.at(member.Name);
-        if(lookup.size() == 1 || member.Name.empty())
+        auto first_func = std::ranges::find_if(
+            lookup, [this](const SymbolID& elem)
+            {
+                return get(elem).isFunction();
+            });
+        if(lookup.size() == 1 ||
+            first_func == lookup.end())
         {
             visit(member, std::forward<F>(f),
                 std::forward<Args>(args)...);
         }
-        else if(lookup.front() == id)
+        else if(*first_func == id)
         {
             OverloadSet overloads(member.Name,
-                member.Namespace.front(), lookup);
-            visit(overloads, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-    }
-}
-
-template<class F, class... Args>
-void
-Corpus::
-traverseOverloads(
-    RecordInfo const& I,
-    F&& f, Args&&... args) const
-{
-    for(const SymbolID& id : I.Members)
-    {
-        const Info& member = get(id);
-        const auto& lookup = I.Lookups.at(member.Name);
-        if(lookup.size() == 1 || member.Name.empty())
-        {
-            visit(member, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-        else if(lookup.front() == id)
-        {
-            OverloadSet overloads(member.Name, I.id, lookup);
-            visit(overloads, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-    }
-}
-
-template<class F, class... Args>
-void
-Corpus::
-traverseOverloads(
-    NamespaceInfo const& I,
-    F&& f, Args&&... args) const
-{
-    for(const SymbolID& id : I.Members)
-    {
-        const Info& member = get(id);
-        const auto& lookup = I.Lookups.at(member.Name);
-        if(lookup.size() == 1 || member.Name.empty())
-        {
-            visit(member, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-        else if(lookup.front() == id)
-        {
-            OverloadSet overloads(member.Name, I.id, lookup);
-            visit(overloads, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-    }
-}
-
-template<class F, class... Args>
-void
-Corpus::
-traverseOverloads(
-    EnumInfo const& I,
-    F&& f, Args&&... args) const
-{
-    for(const SymbolID& id : I.Members)
-    {
-        const Info& member = get(id);
-        const auto& lookup = I.Lookups.at(member.Name);
-        if(lookup.size() == 1 || member.Name.empty())
-        {
-            visit(member, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-        else if(lookup.front() == id)
-        {
-            OverloadSet overloads(member.Name, I.id, lookup);
-            visit(overloads, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-    }
-}
-
-template<class F, class... Args>
-void
-Corpus::
-traverseOverloads(
-    SpecializationInfo const& I,
-    F&& f, Args&&... args) const
-{
-    for(const SymbolID& id : I.Members)
-    {
-        const Info& member = get(id);
-        const auto& lookup = I.Lookups.at(member.Name);
-        if(lookup.size() == 1 || member.Name.empty())
-        {
-            visit(member, std::forward<F>(f),
-                std::forward<Args>(args)...);
-        }
-        else if(lookup.front() == id)
-        {
-            OverloadSet overloads(member.Name, I.id, lookup);
+                member.Namespace.front(),
+                member.Namespace, lookup);
             visit(overloads, std::forward<F>(f),
                 std::forward<Args>(args)...);
         }

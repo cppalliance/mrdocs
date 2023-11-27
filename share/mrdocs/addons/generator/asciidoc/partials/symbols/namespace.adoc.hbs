@@ -1,14 +1,4 @@
 {{!-- namespace --}}
 = {{#if symbol.name}}Namespace {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else if symbol.parent}}Unnamed namespace{{else}}Global namespace{{/if}}
 
-{{#each (group_by symbol.members "kind")}}
-== {{#if (eq @key "record")}}Types{{else if (eq @key "variable")}}Constants{{else}}{{capitalize @key}}s{{/if}}
-
-[,cols=2]
-|===
-|Name |Description
-{{#each (sort_by . "name")}}
-|xref:{{ref}}[`pass:v[{{name}}]`] |{{doc.brief}}
-{{/each}}
-|===
-{{/each}}
+{{> tranche tranche=symbol.interface label="" is-namespace=true}}

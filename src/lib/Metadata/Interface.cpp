@@ -1,10 +1,10 @@
 //
-// This is a derivative work. originally part of the LLVM Project.
 // Licensed under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -28,34 +28,90 @@
 namespace clang {
 namespace mrdocs {
 
-//------------------------------------------------
+namespace {
 
-class Interface::Build
+class TrancheBuilder
 {
-    Interface& I_;
-    Corpus const& corpus_;
-    bool includePrivate_;
+    const Corpus& corpus_;
+    const Info& parent_;
+    Tranche* none_;
+    Tranche* public_;
+    Tranche* protected_;
+    Tranche* private_;
 
-    template<class T>
-    using Table = std::vector<
-        std::pair<AccessKind, T const*>>;
+    bool includePrivate_ = true;
 
-    Table<RecordInfo>       records_;
-    Table<FunctionInfo>     functions_;
-    Table<EnumInfo>         enums_;
-    Table<TypedefInfo>      types_;
-    Table<FieldInfo>        data_;
-    Table<FunctionInfo>     staticfuncs_;
-    Table<VariableInfo>     staticdata_;
-    Table<FriendInfo>       friends_;
-
-    void addOverload(const FunctionInfo& F, ScopeInfo& S)
+    Tranche* trancheFor(AccessKind access)
     {
-        if(std::ranges::find(S.Members, F.id) == S.Members.end())
-            S.Members.emplace_back(F.id);
-        auto& lookups = S.Lookups.try_emplace(F.Name).first->second;
-        if(std::ranges::find(lookups, F.id) == lookups.end())
-            lookups.emplace_back(F.id);
+        switch(access)
+        {
+        case AccessKind::Public:
+            return public_;
+        case AccessKind::Protected:
+            return protected_;
+        case AccessKind::Private:
+            return private_;
+        case AccessKind::None:
+            return none_;
+        default:
+            MRDOCS_UNREACHABLE();
+        }
+    }
+
+    void
+    push(
+        ScopeInfo& S,
+        const Info& I)
+    {
+        if(std::ranges::find(S.Members, I.id) == S.Members.end())
+            S.Members.emplace_back(I.id);
+        auto& lookups = S.Lookups.try_emplace(I.Name).first->second;
+        if(std::ranges::find(lookups, I.id) == lookups.end())
+            lookups.emplace_back(I.id);
+    }
+
+    void
+    push(
+        std::vector<SymbolID>& M,
+        const Info& I)
+    {
+        M.emplace_back(I.id);
+    }
+
+    template<typename ListTy>
+    void
+    push(
+        ListTy Tranche::* list,
+        AccessKind access,
+        const Info& member)
+    {
+        if(Tranche* tranche = trancheFor(access))
+            push(tranche->*list, member);
+    }
+
+    static
+    AccessKind
+    effectiveAccess(
+        AccessKind memberAccess,
+        AccessKind baseAccess) noexcept
+    {
+        if(memberAccess == AccessKind::None ||
+            baseAccess == AccessKind::None)
+            return AccessKind::None;
+        if(memberAccess == AccessKind::Private ||
+            baseAccess == AccessKind::Private)
+            return AccessKind::Private;
+        if(memberAccess == AccessKind::Protected ||
+            baseAccess == AccessKind::Protected)
+            return AccessKind::Protected;
+        return AccessKind::Public;
+    }
+
+    bool
+    isFromParent(const Info& I)
+    {
+        return ! I.Namespace.empty() &&
+            I.Namespace.front() == parent_.id;
     }
 
     const Info*
@@ -86,48 +142,44 @@ class Interface::Build
     }
 
 public:
-    Build(
-        Interface& I,
-        RecordInfo const& Derived,
-        Corpus const& corpus) noexcept
-        : I_(I)
-        , corpus_(corpus)
+    TrancheBuilder(
+        const Corpus& corpus,
+        const Info& Parent,
+        Tranche* None,
+        Tranche* Public,
+        Tranche* Protected,
+        Tranche* Private)
+        : corpus_(corpus)
+        , parent_(Parent)
+        , none_(None)
+        , public_(Public)
+        , protected_(Protected)
+        , private_(Private)
     {
         auto& config = static_cast<
             ConfigImpl const&>(corpus_.config);
         includePrivate_ = config->inaccessibleMembers !=
             ConfigImpl::SettingsImpl::ExtractPolicy::Never;
-        // treat `Derived` as a public base,
-        append(AccessKind::Public, Derived, true);
-
-        finish();
-    }
-
-private:
-    static
-    AccessKind
-    effectiveAccess(
-        AccessKind memberAccess,
-        AccessKind baseAccess) noexcept
-    {
-        if(memberAccess == AccessKind::Private ||
-            baseAccess == AccessKind::Private)
-            return AccessKind::Private;
-        if(memberAccess == AccessKind::Protected ||
-            baseAccess == AccessKind::Protected)
-            return AccessKind::Protected;
-        return AccessKind::Public;
     }
 
     void
-    append(
-        AccessKind access,
-        RecordInfo const& From,
-        bool isDerived)
+    add(
+        const SymbolID& id,
+        AccessKind baseAccess)
     {
-        for(auto const& B : From.Bases)
+        const auto& I = corpus_.get<Info>(id);
+        auto actualAccess = effectiveAccess(I.Access, baseAccess);
+        visit(I, *this, actualAccess);
+    }
+
+    void
+    addFrom(
+        const RecordInfo& I,
+        AccessKind baseAccess)
+    {
+        for(auto const& B : I.Bases)
         {
-            auto actualAccess = effectiveAccess(access, B.Access);
+            auto actualAccess = effectiveAccess(baseAccess, B.Access);
 
             if( ! includePrivate_ &&
                 actualAccess == AccessKind::Private)
@@ -136,150 +188,143 @@ private:
                 getTypeAsTag(B.Type));
             if(! Base || ! Base->isRecord())
                 continue;
-
-            append(actualAccess, *static_cast<
-                const RecordInfo*>(Base), false);
+            addFrom(*static_cast<
+                const RecordInfo*>(Base), actualAccess);
         }
-        for(auto const& id : From.Members)
+        for(auto const& id : I.Members)
+            add(id, baseAccess);
+    }
+
+    void addFrom(const NamespaceInfo& I)
+    {
+        for(auto const& id : I.Members)
+            add(id, AccessKind::None);
+    }
+
+    void operator()(
+        const NamespaceInfo& I,
+        AccessKind access)
+    {
+        push(&Tranche::Namespaces, access, I);
+    }
+
+    void operator()(
+        const RecordInfo& I,
+        AccessKind access)
+    {
+        push(&Tranche::Records, access, I);
+    }
+
+    void operator()(
+        const SpecializationInfo& I,
+        AccessKind access)
+    {
+        // KRYSTIAN FIXME: currently unimplemented
+    }
+
+    void operator()(
+        const FunctionInfo& I,
+        AccessKind access)
+    {
+        // do not inherit constructors, destructors,
+        // or deduction guides
+        if(parent_.isRecord() && ! isFromParent(I) &&
+            (I.Class == FunctionClass::Constructor ||
+            I.Class == FunctionClass::Destructor ||
+            I.Class == FunctionClass::Deduction))
+            return;
+
+        bool isStatic = I.specs0.storageClass == StorageClassKind::Static;
+        if(! parent_.isRecord() || ! isStatic)
         {
-            const auto& I = corpus_.get<Info>(id);
-            auto actualAccess = effectiveAccess(access, I.Access);
-            if(I.Kind == InfoKind::Function)
-            {
-                const auto& F = static_cast<FunctionInfo const&>(I);
-                // do not inherit constructors, destructors,
-                // or deduction guides
-                if(!isDerived &&
-                    (F.Class == FunctionClass::Constructor ||
-                    F.Class == FunctionClass::Destructor ||
-                    F.Class == FunctionClass::Deduction))
-                    continue;
-                auto const isRecFinal = From.specs.isFinal.get();
-                if( includePrivate_ ||
-                    actualAccess != AccessKind::Private || (
-                        ! isRecFinal && F.specs0.isVirtual))
-                {
-                    if(F.specs0.storageClass == StorageClassKind::Static)
-                    {
-                        addOverload(F, I_.StaticOverloads);
-                        staticfuncs_.push_back({ actualAccess, &F });
-                    }
-                    else
-                    {
-                        addOverload(F, I_.Overloads);
-                        functions_.push_back({ actualAccess, &F });
-                    }
-                }
-                continue;
-            }
-            else if(! includePrivate_ &&
-                actualAccess == AccessKind::Private)
-            {
-                continue;
-            }
-            switch(I.Kind)
-            {
-            case InfoKind::Enum:
-                enums_.push_back({ actualAccess,
-                    static_cast<const EnumInfo*>(&I) });
-                break;
-            case InfoKind::Field:
-                data_.push_back({ actualAccess,
-                    static_cast<const FieldInfo*>(&I) });
-                break;
-            case InfoKind::Record:
-                records_.push_back({ actualAccess,
-                    static_cast<const RecordInfo*>(&I) });
-                break;
-            case InfoKind::Typedef:
-                types_.push_back({ actualAccess,
-                    static_cast<const TypedefInfo*>(&I) });
-                break;
-            case InfoKind::Variable:
-                staticdata_.push_back({ actualAccess,
-                    static_cast<const VariableInfo*>(&I) });
-                break;
-            case InfoKind::Friend:
-                friends_.push_back({ actualAccess,
-                    static_cast<const FriendInfo*>(&I) });
-                break;
-            default:
-                MRDOCS_UNREACHABLE();
-            }
+            push(&Tranche::Functions, access, I);
+            push(&Tranche::Overloads, access, I);
+        }
+        else if(isStatic)
+        {
+            push(&Tranche::StaticFunctions, access, I);
+            push(&Tranche::StaticOverloads, access, I);
         }
     }
 
-    template<class T, class U>
-    void
-    sort(
-        std::span<T const*> Interface::Tranche::*member,
-        std::vector<T const*>& dest,
-        Table<U>& src)
+    void operator()(
+        const TypedefInfo& I,
+        AccessKind access)
     {
-        std::ranges::stable_sort(
-            src,
-            []( auto const& p0,
-                auto const& p1) noexcept
-            {
-                return
-                    to_underlying(p0.first) <
-                    to_underlying(p1.first);
-            });
-        dest.resize(0);
-        dest.reserve(src.size());
-        for(auto const& v : src)
-            dest.push_back(v.second);
-
-        auto it0 = src.begin();
-        auto it = std::find_if_not(
-            it0, src.end(),
-            [](auto const& p) noexcept
-            {
-                return p.first == AccessKind::Public;
-            });
-        std::size_t const nPublic = it - it0;
-        it0 = it;
-        it = std::find_if_not(
-            it0, src.end(),
-            [](auto const& p) noexcept
-            {
-                return p.first == AccessKind::Protected;
-            });
-        std::size_t const nPrivate = src.end() - it;
-//MRDOCS_ASSERT(nPrivate == 0);
-        I_.Public.*member    = { dest.begin(), dest.begin() + nPublic };
-        I_.Protected.*member = { dest.begin() + nPublic, dest.end() - nPrivate };
-        I_.Private.*member   = { dest.end() - nPrivate, dest.end() };
+        push(&Tranche::Types, access, I);
     }
 
-    void
-    finish()
+    void operator()(
+        const EnumInfo& I,
+        AccessKind access)
     {
-        sort(&Interface::Tranche::Records,          I_.records_,    records_);
-        sort(&Interface::Tranche::Functions,        I_.functions_,  functions_);
-        sort(&Interface::Tranche::Enums,            I_.enums_,      enums_);
-        sort(&Interface::Tranche::Types,            I_.types_,      types_);
-        sort(&Interface::Tranche::Data,             I_.data_,       data_);
-        sort(&Interface::Tranche::StaticFunctions,  I_.staticfuncs_,staticfuncs_);
-        sort(&Interface::Tranche::StaticData,       I_.staticdata_, staticdata_);
-        sort(&Interface::Tranche::Friends,          I_.friends_,    friends_);
-#if 0
-MRDOCS_ASSERT(I_.Private.Records.empty());
-MRDOCS_ASSERT(I_.Private.Functions.empty());
-MRDOCS_ASSERT(I_.Private.Enums.empty());
-MRDOCS_ASSERT(I_.Private.Types.empty());
-MRDOCS_ASSERT(I_.Private.Data.empty());
-MRDOCS_ASSERT(I_.Private.StaticFunctions.empty());
-MRDOCS_ASSERT(I_.Private.StaticData.empty());
-#endif
+        push(&Tranche::Enums, access, I);
+    }
+
+    void operator()(
+        const FieldInfo& I,
+        AccessKind access)
+    {
+        push(&Tranche::Fields, access, I);
+    }
+
+    void operator()(
+        const VariableInfo& I,
+        AccessKind access)
+    {
+        push(&Tranche::Variables, access, I);
+    }
+
+    void operator()(
+        const FriendInfo& I,
+        AccessKind access)
+    {
+        push(&Tranche::Friends, access, I);
+    }
+
+    void operator()(
+        const EnumeratorInfo& I,
+        AccessKind access)
+    {
+        // KRYSTIAN FIXME: currently unimplemented
     }
 };
+
+void
+buildTranches(
+    const Corpus& corpus,
+    const Info& I,
+    Tranche* None,
+    Tranche* Public,
+    Tranche* Protected,
+    Tranche* Private)
+{
+    TrancheBuilder builder(
+        corpus,
+        I,
+        None,
+        Public,
+        Protected,
+        Private);
+    visit(I, [&]<typename InfoTy>(const InfoTy& II)
+    {
+        if constexpr(InfoTy::isRecord())
+            builder.addFrom(II, AccessKind::Public);
+        if constexpr(InfoTy::isNamespace())
+            builder.addFrom(II);
+    });
+}
+
+} // (anon)
 
 Interface::
 Interface(
     Corpus const& corpus_) noexcept
     : corpus(corpus_)
 {
+    Public = std::make_shared<Tranche>();
+    Protected = std::make_shared<Tranche>();
+    Private = std::make_shared<Tranche>();
 }
 
 Interface
@@ -288,9 +333,22 @@ makeInterface(
     Corpus const& corpus)
 {
     Interface I(corpus);
-    Interface::Build(I, Derived, corpus);
+    buildTranches(corpus, Derived, nullptr,
+        I.Public.get(), I.Protected.get(), I.Private.get());
     return I;
 }
+
+Tranche
+makeTranche(
+    NamespaceInfo const& Namespace,
+    Corpus const& corpus)
+{
+    Tranche T;
+    buildTranches(corpus, Namespace, &T,
+        nullptr, nullptr, nullptr);
+    return T;
+}
+
 
 } // mrdocs
 } // clang

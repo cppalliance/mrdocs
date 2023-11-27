@@ -80,6 +80,8 @@ domCreate(
         { "name",       overloads.Name },
         { "members",    dom::newArray<DomSymbolArray>(
             overloads.Members, domCorpus) },
+        { "namespace",  dom::newArray<DomSymbolArray>(
+            overloads.Namespace, domCorpus) },
         { "parent",     domCorpus.get(overloads.Parent) }
         });
 }
@@ -529,13 +531,13 @@ public:
 template<class T>
 class DomTrancheArray : public dom::ArrayImpl
 {
-    std::span<T const*> list_;
+    std::span<T const* const> list_;
     std::shared_ptr<Interface> sp_;
     DomCorpus const& domCorpus_;
 
 public:
     DomTrancheArray(
-        std::span<T const*> list,
+        std::span<T const* const> list,
         std::shared_ptr<Interface> const& sp,
         DomCorpus const& domCorpus)
         : list_(list)
@@ -558,37 +560,44 @@ public:
 
 class DomTranche : public dom::DefaultObjectImpl
 {
-    std::shared_ptr<Interface> sp_;
-    Interface::Tranche const& tranche_;
+    std::shared_ptr<Tranche> tranche_;
     DomCorpus const& domCorpus_;
 
-    template<class T>
     static
     dom::Value
     init(
-        std::span<T const*> list,
-        std::shared_ptr<Interface> const& sp,
+        std::span<const SymbolID> list,
         DomCorpus const& domCorpus)
     {
-        return dom::newArray<DomTrancheArray<T>>(list, sp, domCorpus);
+        return dom::newArray<DomSymbolArray>(list, domCorpus);
+    }
+
+    static
+    dom::Value
+    init(
+        const ScopeInfo& scope,
+        DomCorpus const& domCorpus)
+    {
+        return dom::newArray<DomOverloadsArray>(scope, domCorpus);
     }
 
 public:
     DomTranche(
-        Interface::Tranche const& tranche,
-        std::shared_ptr<Interface> const& sp,
+        std::shared_ptr<Tranche> const& tranche,
         DomCorpus const& domCorpus) noexcept
         : dom::DefaultObjectImpl({
-            { "records",    init(tranche.Records, sp, domCorpus) },
-            { "functions",  init(tranche.Functions, sp, domCorpus) },
-            { "enums",      init(tranche.Enums, sp, domCorpus) },
-            { "types",      init(tranche.Types, sp, domCorpus) },
-            { "field",      init(tranche.Data, sp, domCorpus) },
-            { "staticfuncs",init(tranche.StaticFunctions, sp, domCorpus) },
-            { "staticdata", init(tranche.StaticData, sp, domCorpus) },
-            { "friends",    init(tranche.Friends, sp, domCorpus) }
+            { "namespaces",       init(tranche->Namespaces, domCorpus) },
+            { "records",          init(tranche->Records, domCorpus) },
+            { "functions",        init(tranche->Functions, domCorpus) },
+            { "enums",            init(tranche->Enums, domCorpus) },
+            { "types",            init(tranche->Types, domCorpus) },
+            { "fields",           init(tranche->Fields, domCorpus) },
+            { "staticfuncs",      init(tranche->StaticFunctions, domCorpus) },
+            { "variables",        init(tranche->Variables, domCorpus) },
+            { "friends",          init(tranche->Friends, domCorpus) },
+            { "overloads",        init(tranche->Overloads, domCorpus) },
+            { "staticoverloads", init(tranche->StaticOverloads, domCorpus) }
             })
-        , sp_(sp)
         , tranche_(tranche)
         , domCorpus_(domCorpus)
     {
@@ -615,11 +624,11 @@ public:
     {
         sp_ = std::make_shared<Interface>(makeInterface(I_, *domCorpus_));
         return dom::Object({
-            { "public", dom::newObject<DomTranche>(sp_->Public, sp_, domCorpus_) },
-            { "protected", dom::newObject<DomTranche>(sp_->Protected, sp_, domCorpus_) },
-            { "private", dom::newObject<DomTranche>(sp_->Private, sp_, domCorpus_) },
-            { "overloads", dom::newArray<DomOverloadsArray>(sp_->Overloads, domCorpus_) },
-            { "static-overloads", dom::newArray<DomOverloadsArray>(sp_->StaticOverloads, domCorpus_) }
+            { "public", dom::newObject<DomTranche>(sp_->Public, domCorpus_) },
+            { "protected", dom::newObject<DomTranche>(sp_->Protected, domCorpus_) },
+            { "private", dom::newObject<DomTranche>(sp_->Private, domCorpus_) },
+            // { "overloads", dom::newArray<DomOverloadsArray>(sp_->Overloads, domCorpus_) },
+            // { "static-overloads", dom::newArray<DomOverloadsArray>(sp_->StaticOverloads, domCorpus_) }
             });
     }
 };
@@ -697,6 +706,13 @@ DomInfo<T>::construct() const
     if constexpr(std::derived_from<T, SourceInfo>)
     {
         entries.emplace_back("loc", domCreate(I_));
+    }
+    if constexpr(T::isNamespace())
+    {
+        entries.emplace_back("interface", dom::newObject<DomTranche>(
+            std::make_shared<Tranche>(
+                makeTranche(I_, *domCorpus_)),
+            domCorpus_));
     }
     if constexpr(T::isRecord())
     {

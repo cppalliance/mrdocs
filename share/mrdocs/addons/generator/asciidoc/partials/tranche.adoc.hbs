@@ -1,40 +1,13 @@
-{{#if tranche.records}}
-== {{label}} Types
-{{>info-list tranche.records}}
-{{/if}}
-{{#if tranche.types}}
-{{#if label}}
-== {{label}} Types
+{{>info-list members=tranche.namespaces title="Namespaces"}}
+{{>info-list members=(concat tranche.records tranche.types) title=(concat label " " "Types")}}
+{{>info-list members=tranche.enums title=(concat label " " "Enums")}}
+{{#if is-namespace}}
+{{>info-list members=tranche.overloads title="Functions"}}
+{{>info-list members=tranche.variables title="Variables"}}
 {{else}}
-==  Types
-{{/if}}
-{{>info-list tranche.types}}
-{{/if}}
-{{!--
-{{#if tranche.functions}}
-== {{label}} Member Functions
-{{>info-list tranche.functions}}
-{{/if}}
---}}
-{{#if tranche.enums}}
-== {{label}} Enums
-{{>info-list tranche.enums}}
-{{/if}}
-{{#if tranche.fields}}
-== {{label}} Data Members
-{{>info-list tranche.fields}}
-{{/if}}
-{{#if tranche.staticfunctions}}
-== {{label}} Static Member Functions
-{{>info-list tranche.staticfunctions}}
-{{/if}}
-{{!--
-{{#if tranche.staticdata}}
-== {{label}} Static Data Members
-{{>info-list tranche.staticdata}}
-{{/if}}
---}}
-{{#if tranche.friends}}
-== {{label}} Friends
-{{>info-list tranche.friends}}
+{{>info-list members=tranche.overloads title=(concat label " " "Member Functions")}}
+{{>info-list members=tranche.staticoverloads title=(concat label " " "Static Member Functions")}}
+{{>info-list members=tranche.fields title=(concat label " " "Data Members")}}
+{{>info-list members=tranche.variables title=(concat label " " "Static Data Members")}}
+{{>info-list members=tranche.friends title=(concat label " " "Friends")}}
 {{/if}}

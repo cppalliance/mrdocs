@@ -1,10 +1,10 @@
 //
-// This is a derivative work. originally part of the LLVM Project.
 // Licensed under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -23,41 +23,42 @@
 namespace clang {
 namespace mrdocs {
 
+/** A group of children that have the same access specifier.
+*/
+struct Tranche
+{
+    std::vector<SymbolID> Namespaces;
+    std::vector<SymbolID> Records;
+    std::vector<SymbolID> Functions;
+    std::vector<SymbolID> Enums;
+    std::vector<SymbolID> Types;
+    std::vector<SymbolID> Fields;
+    std::vector<SymbolID> StaticFunctions;
+    std::vector<SymbolID> Variables;
+    std::vector<SymbolID> Friends;
+
+    ScopeInfo Overloads;
+    ScopeInfo StaticOverloads;
+};
+
 /** The aggregated interface for a given struct, class, or union.
 */
 class Interface
 {
 public:
-    /** A group of children that have the same access specifier.
-    */
-    struct Tranche
-    {
-        std::span<RecordInfo const*>    Records;
-        std::span<FunctionInfo const*>  Functions;
-        std::span<EnumInfo const*>      Enums;
-        std::span<TypedefInfo const*>   Types;
-        std::span<FieldInfo const*>     Data;
-        std::span<FunctionInfo const*>  StaticFunctions;
-        std::span<VariableInfo const*>  StaticData;
-        std::span<FriendInfo const*>    Friends;
-    };
-
     Corpus const& corpus;
 
     /** The aggregated public interfaces.
     */
-    Tranche Public;
+    std::shared_ptr<Tranche> Public;
 
     /** The aggregated protected interfaces.
     */
-    Tranche Protected;
+    std::shared_ptr<Tranche> Protected;
 
     /** The aggregated private interfaces.
     */
-    Tranche Private;
-
-    ScopeInfo Overloads;
-    ScopeInfo StaticOverloads;
+    std::shared_ptr<Tranche> Private;
 
     MRDOCS_DECL
     friend
@@ -67,18 +68,7 @@ public:
         Corpus const& corpus);
 
 private:
-    class Build;
-
     explicit Interface(Corpus const&) noexcept;
-
-    std::vector<RecordInfo const*>    records_;
-    std::vector<FunctionInfo const*>  functions_;
-    std::vector<EnumInfo const*>      enums_;
-    std::vector<TypedefInfo const*>   types_;
-    std::vector<FieldInfo const*>     data_;
-    std::vector<FunctionInfo const*>  staticfuncs_;
-    std::vector<VariableInfo const*>  staticdata_;
-    std::vector<FriendInfo const*>    friends_;
 };
 
 //------------------------------------------------
@@ -97,6 +87,20 @@ MRDOCS_DECL
 Interface
 makeInterface(
     RecordInfo const& Derived,
+    Corpus const& corpus);
+
+/** Return a tranche representing the members of a namespace.
+
+    @return The tranche.
+
+    @param Derived The namespace to build the tranche for.
+
+    @param corpus The complete metadata.
+*/
+MRDOCS_DECL
+Tranche
+makeTranche(
+    NamespaceInfo const& Namespace,
     Corpus const& corpus);
 
 } // mrdocs
