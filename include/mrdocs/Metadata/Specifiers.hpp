@@ -31,10 +31,10 @@ namespace mrdocs {
 */
 enum class AccessKind
 {
-    Public = 0,
+    None = 0,
+    Public,
     Protected,
     Private,
-    None
 };
 
 /** `constexpr`/`consteval` specifier kinds
