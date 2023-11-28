@@ -3,7 +3,7 @@
 [,cols=2]
 |===
 |Name |Description
-{{#each members}}
+{{#each (sort_by members "name")}}
 {{>info-member .}}
 {{/each}}
 |===
