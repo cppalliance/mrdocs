@@ -11,12 +11,10 @@
 
 #include "lib/Support/Error.hpp"
 #include <mrdocs/Support/Error.hpp>
-#include <mrdocs/Support/Path.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
-#include <llvm/Support/MemoryBuffer.h>
 #include <duktape.h>
 #include <utility>
-
+#include <variant>
 #include <llvm/Support/raw_ostream.h>
 
 namespace clang {
@@ -310,240 +308,7 @@ setGlobal(
 
 //------------------------------------------------
 //
-// Array, Object
-//
-//------------------------------------------------
-
-struct ArrayBase
-{
-    static dom::Array* get(Access& A, duk_idx_t idx);
-};
-
-// Uses ES6 Getters/Setters
-struct ArrayGetSet : ArrayBase
-{
-    static void push(Access& A, dom::Array const& arr);
-};
-
-// Uses ES6 Proxy
-struct ArrayProxy : ArrayBase
-{
-    static void push(Access& A, dom::Array const& arr);
-
-};
-
-struct ObjectBase
-{
-    static dom::Object* get(Access& A, duk_idx_t idx);
-};
-
-#if 0
-using ArrayRep  = ArrayProxy; //ArrayGetSet;
-#else
-using ArrayRep  = ArrayProxy;
-#endif
-
-static void domValue_push(Access& A, dom::Value const& value);
-
-//------------------------------------------------
-
-dom::Array*
-ArrayBase::
-get(Access& A, duk_idx_t idx)
-{
-    duk_get_prop_string(A, idx, DUK_HIDDEN_SYMBOL("dom"));
-    void* data;
-    switch(duk_get_type(A, -1))
-    {
-    case DUK_TYPE_POINTER:
-        data = duk_get_pointer(A, -1);
-        break;
-    case DUK_TYPE_BUFFER:
-        data = duk_get_buffer_data(A, -1, nullptr);
-        break;
-    case DUK_TYPE_UNDEFINED:
-        return nullptr;
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-    duk_pop(A);
-    return static_cast<dom::Array*>(data);
-}
-
-void
-ArrayGetSet::
-push(
-    Access& A, dom::Array const& obj)
-{
-}
-
-void
-ArrayProxy::
-push(
-    Access& A, dom::Array const& arr)
-{
-    duk_push_array(A);
-    auto& arr_ = *static_cast<dom::Array*>(
-        duk_push_fixed_buffer(A, sizeof(dom::Array)));
-    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
-
-    // Effects:     ~ArrayPtr
-    // Signature    ()
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        Access A(ctx);
-        duk_push_this(ctx);
-        std::destroy_at(get(A, -1));
-        return 0;
-    }, 0);
-    duk_set_finalizer(A, -2);
-    std::construct_at(&arr_, arr);
-
-    // Proxy
-
-    duk_push_object(A);
-
-    // store a pointer so we can
-    // get to it from the proxy.
-    duk_push_pointer(A, &arr_);
-    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
-
-    // Trap:        [[HasProperty]]
-    // Effects:     return a[i] != undefined
-    // Signature:   (a, i)
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        Access A(ctx);
-        duk_push_this(A);
-        auto& arr = *get(A, -1);
-        auto i = duk_to_number(A, 1);
-        duk_push_boolean(A, i < arr.size());
-        return 1;
-    }, 2);
-    dukM_put_prop_string(A, -2, "has");
-
-    // Trap:        [[Get]]
-    // Effects:     return a[i]
-    // Signature:   (a, i)
-    duk_push_c_function(A,
-    [](duk_context* ctx) -> duk_ret_t
-    {
-        Access A(ctx);
-        duk_push_this(A);
-        auto& arr = *get(A, -1);
-        switch(duk_get_type(A, 1))
-        {
-        case DUK_TYPE_NUMBER:
-        {
-            auto i = duk_get_int(A, 1);
-            duk_pop_n(A, duk_get_top(A));
-            if(i < static_cast<duk_int_t>(arr.size()))
-                domValue_push(A, arr.at(i));
-            else
-                duk_push_undefined(A);
-            break;
-        }
-        case DUK_TYPE_STRING:
-        {
-            auto prop = dukM_get_string(A, 1);
-            if(prop == "length")
-            {
-                duk_pop_n(A, duk_get_top(A));
-                duk_push_number(A, arr.size());
-            }
-            else
-            {
-                duk_pop_n(A, duk_get_top(A));
-                duk_push_undefined(A);
-            }
-            break;
-        }
-        default:
-            MRDOCS_UNREACHABLE();
-        }
-        return 1;
-    }, 2);
-    dukM_put_prop_string(A, -2, "get");
-
-#if 1
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "ownKeys");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "enumerate");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "deleteProperty");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "apply");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "defineProperty");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "getPrototypeOf");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "setPrototypeOf");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "isExtensible");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "preventExtensions");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "construct");
-
-    duk_push_c_function(A, [](duk_context* ctx) -> duk_ret_t {
-        return 0;
-    }, 0); dukM_put_prop_string(A, -2, "getOwnPropertyDescriptor");
-#endif
-
-    duk_push_proxy(A, 0);
-}
-
-//------------------------------------------------
-
-dom::Object*
-ObjectBase::
-get(Access& A, duk_idx_t idx)
-{
-    duk_get_prop_string(A, idx, DUK_HIDDEN_SYMBOL("dom"));
-    void* data;
-    switch(duk_get_type(A, -1))
-    {
-    case DUK_TYPE_POINTER:
-        data = duk_get_pointer(A, -1);
-        break;
-    case DUK_TYPE_BUFFER:
-        data = duk_get_buffer_data(A, -1, nullptr);
-        break;
-    case DUK_TYPE_UNDEFINED:
-        return nullptr;
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-    duk_pop(A);
-    return static_cast<dom::Object*>(data);
-}
-
-//------------------------------------------------
-//
-// dom::Value
+// JS -> C++ dom::Value bindings
 //
 //------------------------------------------------
 
@@ -706,9 +471,45 @@ public:
 
 } // (anon)
 
+//------------------------------------------------
+//
+// C++ dom::Value -> JS bindings
+//
+//------------------------------------------------
+
+template <class T>
+T*
+domHiddenGet(
+    duk_context* ctx, duk_idx_t idx)
+{
+    // ... [idx target] ... -> ... [idx target] ... [buffer]
+    duk_get_prop_string(ctx, idx, DUK_HIDDEN_SYMBOL("dom"));
+    // ... [idx target] ... [buffer]
+    void* data;
+    switch(duk_get_type(ctx, -1))
+    {
+    case DUK_TYPE_POINTER:
+        data = duk_get_pointer(ctx, -1);
+        break;
+    case DUK_TYPE_BUFFER:
+        data = duk_get_buffer_data(ctx, -1, nullptr);
+        break;
+    default:
+        return nullptr;
+    }
+    // ... [idx target] ... [buffer] -> ... [idx target] ...
+    duk_pop(ctx);
+    return static_cast<T*>(data);
+}
+
 static
 dom::Value
 domValue_get(Access& A, duk_idx_t idx);
+
+static
+void
+domValue_push(
+    Access& A, dom::Value const& value);
 
 void
 domFunction_push(
@@ -733,10 +534,8 @@ domFunction_push(
         // Get the original function from
         // the JS function's hidden property
         duk_push_current_function(ctx);
-        duk_get_prop_string(ctx, -1, DUK_HIDDEN_SYMBOL("dom"));
-        void* data = duk_get_buffer_data(ctx, -1, nullptr);
-        dom::Function& fn = *static_cast<dom::Function*>(data);
-        duk_pop_2(ctx);
+        auto* fn = domHiddenGet<dom::Function>(ctx, -1);
+        duk_pop(ctx);
 
         // Construct an array of dom::Value from the
         // duktape argments
@@ -748,7 +547,7 @@ domFunction_push(
         }
 
         // Call the dom::Function
-        auto exp = fn.call(args);
+        auto exp = fn->call(args);
         if (!exp)
         {
             dukM_push_string(A, exp.error().message());
@@ -776,13 +575,9 @@ domFunction_push(
     {
         // Push the function buffer to the stack
         // The object being finalized is the first argument
-        duk_get_prop_string(ctx, 0, DUK_HIDDEN_SYMBOL("dom"));
-        void* data = duk_get_buffer_data(ctx, -1, nullptr);
-        duk_pop(ctx);
-
+        auto* fn = domHiddenGet<dom::Function>(ctx, 0);
         // Destroy the dom::Function stored at data
-        auto data_as_fn_ptr = static_cast<dom::Function*>(data);
-        std::destroy_at(data_as_fn_ptr);
+        std::destroy_at(fn);
         return 0;
     }, 1);
     duk_set_finalizer(A, -2);
@@ -794,9 +589,9 @@ domFunction_push(
 
 void
 domObject_push(
-    Access& A, dom::Object const& fn)
+    Access& A, dom::Object const& obj)
 {
-    dom::ObjectImpl* ptr = fn.impl().get();
+    dom::ObjectImpl* ptr = obj.impl().get();
     auto impl = dynamic_cast<JSObjectImpl*>(ptr);
 
     // Underlying function is also a JS function
@@ -822,18 +617,9 @@ domObject_push(
     duk_push_c_function(A,
     [](duk_context* ctx) -> duk_ret_t
     {
-        // Push the object buffer to the stack
-        // The object being finalized is the first argument
-        // ... [target] ... -> ... [target] ... [buffer]
-        duk_get_prop_string(ctx, 0, DUK_HIDDEN_SYMBOL("dom"));
-        // ... [target] ... [buffer]
-        void* data = duk_get_buffer_data(ctx, -1, nullptr);
-        // ... [target] ... [buffer] -> ... [target] ...
-        duk_pop(ctx);
-
         // Destroy the dom::Object stored at data
-        auto data_as_obj_ptr = static_cast<dom::Object*>(data);
-        std::destroy_at(data_as_obj_ptr);
+        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
+        std::destroy_at(obj);
         return 0;
     }, 1);
     // ... [target] [finalizer] -> ... [target]
@@ -841,7 +627,7 @@ domObject_push(
 
     // Construct the dom::Object in the buffer
     auto data_ptr = static_cast<dom::Object*>(data);
-    std::construct_at(data_ptr, fn);
+    std::construct_at(data_ptr, obj);
 
     // Create a Proxy handler object
     // ... [target] [handler]
@@ -861,25 +647,9 @@ domObject_push(
     {
         // [target] [key] [recv]
         Access A(ctx);
-
-        // Get the original object from
-        // the JS object's hidden property
-        // [target] [key] [recv] -> [target] [key] [recv] [dom::Object*]
-        duk_get_prop_string(ctx, 0, DUK_HIDDEN_SYMBOL("dom"));
-        // [target] [key] [recv] [dom::Object*]
-        void* data = duk_get_buffer_data(ctx, -1, nullptr);
-        MRDOCS_ASSERT(data);
-        dom::Object& obj = *static_cast<dom::Object*>(data);
-        // [target] [key] [recv] [dom::Object*] -> [target] [key] [recv]
-        duk_pop(ctx);
-
-        // Get the property name
+        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
         std::string_view key = dukM_get_string(A, 1);
-
-        // Get the property value from the C++ object
-        dom::Value value = obj.get(key);
-
-        // Push the result onto the stack
+        dom::Value value = obj->get(key);
         domValue_push(A, value);
         return 1;
     }, 3);
@@ -892,24 +662,9 @@ domObject_push(
     {
         // [target] [key]
         Access A(ctx);
-
-        // Get the original object from
-        // the JS object's hidden property
-        // [target] [key] -> [target] [key] [dom::Object*]
-        duk_get_prop_string(ctx, 0, DUK_HIDDEN_SYMBOL("dom"));
-        // [target] [key] [dom::Object*]
-        void* data = duk_get_buffer_data(ctx, -1, nullptr);
-        dom::Object& obj = *static_cast<dom::Object*>(data);
-        // [target] [key] [dom::Object*] -> [target] [key]
-        duk_pop(ctx);
-
-        // Get the property name
+        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
         std::string_view key = dukM_get_string(A, 1);
-
-        // Get the property value from the C++ object
-        bool value = obj.exists(key);
-
-        // Push the result onto the stack
+        bool value = obj->exists(key);
         duk_push_boolean(A, value);
         return 1;
     }, 2);
@@ -922,28 +677,10 @@ domObject_push(
     {
         // [target] [key] [value] [recv]
         Access A(ctx);
-
-        // Get the original object from
-        // the JS object's hidden property
-        // [target] [key] [value] [recv] -> [target] [key] [value] [recv] [dom::Object*]
-        duk_get_prop_string(ctx, 0, DUK_HIDDEN_SYMBOL("dom"));
-        // [target] [key] [value] [recv] [dom::Object*]
-        void* data = duk_get_buffer_data(ctx, -1, nullptr);
-        dom::Object& obj = *static_cast<dom::Object*>(data);
-        // [target] [key] [value] [recv] [dom::Object*] -> [target] [key] [value] [recv]
-        duk_pop(ctx);
-
-        // Get the property name
+        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
         std::string_view key = dukM_get_string(A, 1);
-
-        // Get the property value
         dom::Value value = domValue_get(A, 2);
-
-        // Set the property value on the C++ object
-        obj.set(key, value);
-
-        // Push the result onto the stack
-        // true: indicate that property write was allowed
+        obj->set(key, value);
         duk_push_boolean(A, true);
         return 1;
     }, 4);
@@ -956,22 +693,12 @@ domObject_push(
     {
         // [target]
         Access A(ctx);
-
-        // Get the original object from
-        // the JS object's hidden property
-        // [target] -> [target] [dom::Object*]
-        duk_get_prop_string(ctx, 0, DUK_HIDDEN_SYMBOL("dom"));
-        // [target] [dom::Object*]
-        void* data = duk_get_buffer_data(ctx, -1, nullptr);
-        dom::Object& obj = *static_cast<dom::Object*>(data);
-        // [target] [dom::Object*] -> [target]
-        duk_pop(ctx);
-
+        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
         // Get the object keys
         duk_uarridx_t i = 0;
         // [target] -> [target] [array]
         duk_idx_t arr_idx = duk_push_array(ctx);
-        obj.visit([&](dom::String const& key, dom::Value const&)
+        obj->visit([&](dom::String const& key, dom::Value const&)
         {
             // [target] [array] -> [target] [array] [key]
             dukM_push_string(A, key);
@@ -989,32 +716,256 @@ domObject_push(
     {
         // [target] [key]
         Access A(ctx);
-
-        // Get the original object from
-        // the JS object's hidden property
-        // [target] [key] -> [target] [key] [dom::Object*]
-        // duk_get_prop_string(ctx, 0, DUK_HIDDEN_SYMBOL("dom"));
-        // [target] [key] [dom::Object*]
-        // void* data = duk_get_buffer_data(ctx, -1, nullptr);
-        // dom::Object& obj = *static_cast<dom::Object*>(data);
-        // [target] [key] [dom::Object*] -> [target] [key]
-        // duk_pop(ctx);
-
-        // Get the property name
-        // std::string_view key = dukM_get_string(A, 1);
-
-        // Delete the property value on the C++ object
-        // obj.get(key, value);
-
-        // Push the result onto the stack
-        // false: indicate that property delete was not allowed
-        duk_push_boolean(A, false);
+        auto* obj = domHiddenGet<dom::Object>(ctx, 0);
+        std::string_view key = dukM_get_string(A, 1);
+        bool const exists = obj->exists(key);
+        if (exists)
+        {
+            obj->set(key, dom::Value(dom::Kind::Undefined));
+        }
+        duk_push_boolean(A, exists);
         return 1;
     }, 2);
     // ... [target] [handler] [deleteProperty] -> ... [target] [handler]
     dukM_put_prop_string(A, -2, "deleteProperty");
 
     // ... [target] [handler] -> ... [proxy]
+    duk_push_proxy(A, 0);
+}
+
+/* Get a value in the stack as an index
+
+   If the value is a number, it is returned as an index.
+   If the value is a string, it is parsed as a number and
+   returned as an index.
+   If the value is a string, and it cannot be parsed as a
+   number, the original string is returned.
+   If the value is not a number or a string, an empty
+   string is returned.
+
+*/
+std::variant<std::size_t, std::string_view>
+domM_get_index(
+    duk_context* ctx, duk_idx_t idx)
+{
+    switch (duk_get_type(ctx, idx))
+    {
+        case DUK_TYPE_NUMBER:
+        {
+            duk_int_t i = duk_get_int(ctx, idx);
+            return static_cast<std::size_t>(i);
+        }
+        case DUK_TYPE_STRING:
+        {
+            std::string_view key = duk_get_string(ctx, idx);
+            std::size_t i;
+            auto res = std::from_chars(
+                key.data(), key.data() + key.size(), i);
+            if (res.ec != std::errc())
+            {
+                return key;
+            }
+            return i;
+        }
+        default:
+        {
+            return std::string_view();
+        }
+    }
+}
+
+void
+domArray_push(
+    Access& A, dom::Array const& arr)
+{
+    dom::ArrayImpl* ptr = arr.impl().get();
+    auto impl = dynamic_cast<JSArrayImpl*>(ptr);
+
+    // Underlying function is also a JS function
+    if (impl && A.ctx_ == impl->access().ctx_)
+    {
+        duk_dup(A, impl->idx());
+        return;
+    }
+
+    // Underlying object is a C++ dom::Array
+    // https://wiki.duktape.org/howtovirtualproperties#ecmascript-e6-proxy-subset
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+    // ... [target]
+    duk_push_array(A);
+    // ... [target] [buffer]
+    void* data = duk_push_fixed_buffer(A, sizeof(dom::Array));
+    // ... [target] [buffer] -> [target]
+    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
+    // Create a function finalizer to destroy the dom::Array
+    // from the buffer whenever the JS array is garbage
+    // collected
+    // ... [target] [finalizer]
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        // Destroy the dom::Array stored at data
+        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
+        std::destroy_at(arr);
+        return 0;
+    }, 1);
+    // ... [target] [finalizer] -> ... [target]
+    duk_set_finalizer(A, -2);
+
+    // Construct the dom::Array in the buffer
+    auto data_ptr = static_cast<dom::Array*>(data);
+    std::construct_at(data_ptr, arr);
+
+    // Create a Proxy handler object
+    // ... [target] [handler]
+    duk_push_object(A);
+
+    // Store a pointer to the dom::Array also in
+    // the handler, so it knows where to find
+    // the dom::Array
+    // ... [target] [handler] [dom::Array*]
+    duk_push_pointer(A, data_ptr);
+    // ... [target] [handler] [dom::Array*] -> ... [target] [handler]
+    dukM_put_prop_string(A, -2, DUK_HIDDEN_SYMBOL("dom"));
+
+    // ... [target] [handler] -> ... [target] [handler] [get]
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        // [target] [key] [recv]
+        Access A(ctx);
+        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
+        auto key = domM_get_index(ctx, 1);
+        if (std::holds_alternative<std::string_view>(key))
+        {
+            std::string_view key_str = std::get<std::string_view>(key);
+            if (key_str == "length")
+            {
+                duk_push_number(
+                    A, static_cast<double>(arr->size()));
+            }
+            else
+            {
+                duk_push_undefined(A);
+            }
+            return 1;
+        }
+        std::size_t key_idx = std::get<std::size_t>(key);
+        dom::Value value = arr->get(key_idx);
+        domValue_push(A, value);
+        return 1;
+    }, 3);
+    // ... [target] [handler] [get] -> ... [target] [handler]
+    dukM_put_prop_string(A, -2, "get");
+
+    // ... [target] [handler] -> ... [target] [handler] [has]
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        // [target] [key]
+        Access A(ctx);
+        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
+        auto key = domM_get_index(ctx, 1);
+        if (std::holds_alternative<std::string_view>(key))
+        {
+            std::string_view key_str = std::get<std::string_view>(key);
+            duk_push_boolean(A, key_str == "length");
+            return 1;
+        }
+        std::size_t key_idx = std::get<std::size_t>(key);
+        bool result = key_idx < arr->size();
+        duk_push_boolean(A, result);
+        return 1;
+    }, 2);
+    // ... [target] [handler] [has] -> ... [target] [handler]
+    dukM_put_prop_string(A, -2, "has");
+
+    // ... [target] [handler] -> ... [target] [handler] [set]
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        // [target] [key] [value] [recv]
+        Access A(ctx);
+        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
+        auto key = domM_get_index(ctx, 1);
+        if (std::holds_alternative<std::string_view>(key))
+        {
+            duk_push_boolean(A, false);
+            return 1;
+        }
+        std::size_t key_idx = std::get<std::size_t>(key);
+        dom::Value value = domValue_get(A, 2);
+        if (key_idx < arr->size())
+        {
+            arr->set(key_idx, value);
+        }
+        else
+        {
+            std::size_t diff = key_idx - arr->size();
+            for (std::size_t i = 0; i < diff; ++i)
+            {
+                arr->emplace_back(dom::Kind::Undefined);
+            }
+            arr->emplace_back(value);
+        }
+        duk_push_boolean(A, false);
+        return 1;
+    }, 4);
+    // ... [target] [handler] [set] -> ... [target] [handler]
+    dukM_put_prop_string(A, -2, "set");
+
+    // ... [target] [handler] -> ... [target] [handler] [ownKeys]
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        // [target]
+        Access A(ctx);
+        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
+        // Get the array keys (list of indices)
+        // [target] -> [target] [array]
+        duk_idx_t arr_idx = duk_push_array(ctx);
+        for (std::size_t i = 0; i < arr->size(); ++i)
+        {
+            // [target] [array] -> [target] [array] [key]
+            std::string key = std::to_string(i);
+            dukM_push_string(A, key);
+            // [target] [array] [key] -> [target] [array]
+            duk_put_prop_index(ctx, arr_idx, i);
+        }
+        return 1;
+    }, 1);
+    // ... [target] [handler] [ownKeys] -> ... [target] [handler]
+    dukM_put_prop_string(A, -2, "ownKeys");
+
+    // ... [target] [handler] -> ... [target] [handler] [deleteProperty]
+    duk_push_c_function(A,
+    [](duk_context* ctx) -> duk_ret_t
+    {
+        // [target] [key]
+        Access A(ctx);
+        auto* arr = domHiddenGet<dom::Array>(ctx, 0);
+        auto key = domM_get_index(ctx, 1);
+        if (std::holds_alternative<std::string_view>(key))
+        {
+            duk_push_boolean(A, false);
+            return 1;
+        }
+        std::size_t key_idx = std::get<std::size_t>(key);
+        if (key_idx < arr->size())
+        {
+            arr->set(key_idx, dom::Kind::Undefined);
+            duk_push_boolean(ctx, true);
+        }
+        else
+        {
+            duk_push_boolean(ctx, false);
+        }
+        return 1;
+    }, 2);
+    // ... [target] [handler] [deleteProperty] -> ... [target] [handler]
+    dukM_put_prop_string(A, -2, "deleteProperty");
+
+    // ... [target] [handler] -> ... [proxy array]
     duk_push_proxy(A, 0);
 }
 
@@ -1086,7 +1037,7 @@ domValue_push(
         dukM_push_string(A, value.getString());
         return;
     case dom::Kind::Array:
-        ArrayRep::push(A, value.getArray());
+        domArray_push(A, value.getArray());
         return;
     case dom::Kind::Object:
         domObject_push(A, value.getObject());
@@ -1297,7 +1248,7 @@ Value(
     Access A(*scope_);
     duk_dup(A, other.idx_);
     idx_ = duk_normalize_index(A, -1);
-    A.addref(*scope_);
+    Access::addref(*scope_);
 }
 
 Value::
@@ -1498,7 +1449,8 @@ callImpl(
     duk_dup(A, idx_);
     for (auto const& arg : args)
         domValue_push(A, arg);
-    auto result = duk_pcall(A, args.size());
+    auto const n = static_cast<duk_int_t>(args.size());
+    auto result = duk_pcall(A, n);
     if(result == DUK_EXEC_ERROR)
         return Unexpected(dukM_popError(A));
     return Access::construct<Value>(-1, *scope_);
@@ -1512,7 +1464,8 @@ callImpl(std::span<dom::Value> args) const
     duk_dup(A, idx_);
     for (auto const& arg : args)
         domValue_push(A, arg);
-    auto result = duk_pcall(A, args.size());
+    auto const n = static_cast<duk_int_t>(args.size());
+    auto result = duk_pcall(A, n);
     if(result == DUK_EXEC_ERROR)
         return Unexpected(dukM_popError(A));
     return Access::construct<Value>(-1, *scope_);
