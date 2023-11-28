@@ -81,6 +81,7 @@ adjustCommandLine(
     new_cmdline.emplace_back(
         is_clang_cl ? "/w" : "-w");
     new_cmdline.emplace_back("-fsyntax-only");
+    new_cmdline.emplace_back("-ferror-limit=0");
 
     for(const auto& def : additional_defines)
         new_cmdline.emplace_back(fmt::format("-D{}", def));
