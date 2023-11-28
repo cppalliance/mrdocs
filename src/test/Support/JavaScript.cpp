@@ -922,7 +922,7 @@ struct JavaScript_test
 
         // Back and forth from C++
         {
-            // Create C++ function
+            // Create C++ object
             Scope scope(context);
             dom::Object o1;
             o1.set("a", 1);
@@ -953,16 +953,19 @@ struct JavaScript_test
             // "deleteProperty" is not allowed
             Expected<Value> de = scope.eval("delete o.a;");
             BOOST_TEST(de);
-            BOOST_TEST(!de.value());
-            BOOST_TEST(o1.get("a") == 2);
+            BOOST_TEST(de.value());
+            BOOST_TEST(o1.get("a").isUndefined());
+            o1.set("a", 2);
+
             // "ownKeys"
             scope.eval("var z = Object.keys(o);");
             auto zexp = scope.getGlobal("z");
             BOOST_TEST(zexp);
             Value z = *zexp;
             BOOST_TEST(z.isArray());
-            // Missing functionality:
+            // Duktape missing functionality:
             // https://github.com/svaarala/duktape/issues/2153
+            // It returns an empty array instead.
             // BOOST_TEST(z.size() == 1);
             // BOOST_TEST(z.get(0).isString());
             // BOOST_TEST(z.get(0).getString() == "a");
@@ -976,6 +979,7 @@ struct JavaScript_test
             Value x2 = *exp2;
             BOOST_TEST(x2.isNumber());
             BOOST_TEST(x2.getDom() == 3);
+
             // "has"
             o1.set("b", 4);
             scope.eval("var y = 'b' in o;");
@@ -984,6 +988,7 @@ struct JavaScript_test
             Value y2 = *yexp2;
             BOOST_TEST(y2.isBoolean());
             BOOST_TEST(y2.getDom() == true);
+
             // "ownKeys"
             o1.set("c", 5);
             scope.eval("var z = Object.keys(o);");
@@ -991,8 +996,9 @@ struct JavaScript_test
             BOOST_TEST(zexp2);
             Value z2 = *zexp2;
             BOOST_TEST(z2.isArray());
-            // Missing functionality:
+            // Duktape missing functionality:
             // https://github.com/svaarala/duktape/issues/2153
+            // It returns an empty array instead.
             // BOOST_TEST(z2.size() == 3);
             // BOOST_TEST(z2.get(0).isString());
             // BOOST_TEST(z2.get(0).getString() == "a");
@@ -1015,6 +1021,184 @@ struct JavaScript_test
         }
     }
 
+    void
+    test_cpp_array()
+    {
+        Context context;
+
+        // Back and forth from JS
+        {
+            // Create JS array
+            Scope scope(context);
+            Value x = scope.eval("([1, 2, 3])").value();
+            BOOST_TEST(x.isArray());
+            dom::Array a1 = x.getArray();
+            BOOST_TEST(a1.get(0) == 1);
+
+            // Register proxy to JS array as another array
+            scope.setGlobal("a", a1);
+
+            // Get new function as JS Value
+            auto oexp = scope.getGlobal("a");
+            BOOST_TEST(oexp);
+            Value a2 = *oexp;
+            BOOST_TEST(a2.isArray());
+            BOOST_TEST(a2.get(0).getDom() == 1);
+
+            // Get new function as dom::Value
+            dom::Value o3 = a2.getDom();
+            BOOST_TEST(o3.isArray());
+            BOOST_TEST(o3.get(0) == 1);
+        }
+
+        // Back and forth from C++
+        {
+            // Create C++ array
+            Scope scope(context);
+            dom::Array a1({1, 2, 3});
+            BOOST_TEST(a1.get(0) == 1);
+
+            // Register proxy to C++ array as JS array
+            scope.setGlobal("a", a1);
+
+            // Test C++ array usage from JS
+            scope.eval("var x = a[0];");
+            auto exp = scope.getGlobal("x");
+            BOOST_TEST(exp);
+            Value x = *exp;
+            BOOST_TEST(x.isNumber());
+            BOOST_TEST(x.getDom() == 1);
+
+            scope.eval("var l = a.length;");
+            exp = scope.getGlobal("l");
+            BOOST_TEST(exp);
+            x = *exp;
+            BOOST_TEST(x.isNumber());
+            BOOST_TEST(x.getDom() == 3);
+
+            scope.eval("var u = a.field;");
+            exp = scope.getGlobal("u");
+            BOOST_TEST(exp);
+            x = *exp;
+            BOOST_TEST(x.isUndefined());
+
+            // JS changes affect C++ array via the Proxy
+            // "set"
+            scope.eval("a[0] = 2;");
+            BOOST_TEST(a1.get(0) == 2);
+            scope.eval("a[5] = 10;");
+            BOOST_TEST(a1.get(0) == 2);
+            BOOST_TEST(a1.get(1) == 2);
+            BOOST_TEST(a1.get(2) == 3);
+            BOOST_TEST(a1.get(3).isUndefined());
+            BOOST_TEST(a1.get(4).isUndefined());
+            BOOST_TEST(a1.get(5) == 10);
+            exp = scope.eval("a.field = 10;");
+            BOOST_TEST(exp);
+            BOOST_TEST(exp.value());
+
+            // "has"
+            scope.eval("var y = '0' in a;");
+            auto yexp = scope.getGlobal("y");
+            BOOST_TEST(yexp);
+            Value y = *yexp;
+            BOOST_TEST(y.isBoolean());
+            BOOST_TEST(y.getDom() == true);
+
+
+            // "deleteProperty" is not allowed
+            Expected<Value> de = scope.eval("delete a[0];");
+            BOOST_TEST(de);
+            BOOST_TEST(de.value());
+            BOOST_TEST(a1.get(0).isUndefined());
+            a1.set(0, 2);
+
+            de = scope.eval("delete a[7];");
+            BOOST_TEST(de);
+            BOOST_TEST(!de.value());
+
+            de = scope.eval("delete a.length;");
+            BOOST_TEST(de);
+            BOOST_TEST(!de.value());
+
+            // "ownKeys"
+            scope.eval("var z = Object.keys(a);");
+            auto zexp = scope.getGlobal("z");
+            BOOST_TEST(zexp);
+            Value z = *zexp;
+            BOOST_TEST(z.isArray()); // BOOST_TEST(z.isArray());
+            // Duktape missing functionality:
+            // https://github.com/svaarala/duktape/issues/2153
+            // It returns an empty array instead.
+            // BOOST_TEST(z.size() == 5);
+            // BOOST_TEST(z.get(0).isString());
+            // BOOST_TEST(z.get(0).getString() == 0);
+
+            // C++ changes affect JS array via the Proxy
+            // "set"
+            a1.set(0, 3);
+            scope.eval("var x = a[0];");
+            auto exp2 = scope.getGlobal("x");
+            BOOST_TEST(exp2);
+            Value x2 = *exp2;
+            BOOST_TEST(x2.isNumber());
+            BOOST_TEST(x2.getDom() == 3);
+
+            // "has"
+            a1.set(2, 4);
+            scope.eval("var y = 2 in a;");
+            auto yexp2 = scope.getGlobal("y");
+            BOOST_TEST(yexp2);
+            Value y2 = *yexp2;
+            BOOST_TEST(y2.isBoolean());
+            BOOST_TEST(y2.getDom() == true);
+
+            scope.eval("var y2 = 'length' in a;");
+            yexp2 = scope.getGlobal("y2");
+            BOOST_TEST(yexp2);
+            y2 = *yexp2;
+            BOOST_TEST(y2.isBoolean());
+            BOOST_TEST(y2.getDom() == true);
+
+            scope.eval("var y3 = 'field' in a;");
+            yexp2 = scope.getGlobal("y3");
+            BOOST_TEST(yexp2);
+            y2 = *yexp2;
+            BOOST_TEST(y2.isBoolean());
+            BOOST_TEST(y2.getDom() == false);
+
+            // "ownKeys"
+            a1.set(3, 5);
+            scope.eval("var z = Object.keys(a);");
+            auto zexp2 = scope.getGlobal("z");
+            BOOST_TEST(zexp2);
+            Value z2 = *zexp2;
+            BOOST_TEST(z2.isArray()); // BOOST_TEST(z2.isArray());
+            // Duktape missing functionality:
+            // https://github.com/svaarala/duktape/issues/2153
+            // It returns an empty array instead.
+            // BOOST_TEST(z2.size() == 3);
+            // BOOST_TEST(z2.get(0).isString());
+            // BOOST_TEST(z2.get(0).getString() == 0);
+            // BOOST_TEST(z2.get(1).isString());
+            // BOOST_TEST(z2.get(1).getString() == "b");
+            // BOOST_TEST(z2.get(2).isString());
+            // BOOST_TEST(z2.get(2).getString() == "c");
+
+            // Get the C++ array as a JS Value
+            auto oexp = scope.getGlobal("a");
+            BOOST_TEST(oexp);
+            Value a2 = *oexp;
+            BOOST_TEST(a2.isArray());
+            BOOST_TEST(a2.get(0).getDom() == 3);
+
+            // Get the C++ array as a dom::Value
+            dom::Value o3 = a2.getDom();
+            BOOST_TEST(o3.isArray());
+            BOOST_TEST(o3.get(0) == 3);
+        }
+    }
+
     void run()
     {
         test_context();
@@ -1022,6 +1206,7 @@ struct JavaScript_test
         test_value();
         test_cpp_function();
         test_cpp_object();
+        test_cpp_array();
     }
 };
 
