@@ -163,16 +163,6 @@ public:
     }
 
     void
-    add(
-        const SymbolID& id,
-        AccessKind baseAccess)
-    {
-        const auto& I = corpus_.get<Info>(id);
-        auto actualAccess = effectiveAccess(I.Access, baseAccess);
-        visit(I, *this, actualAccess);
-    }
-
-    void
     addFrom(
         const RecordInfo& I,
         AccessKind baseAccess)
@@ -192,13 +182,21 @@ public:
                 const RecordInfo*>(Base), actualAccess);
         }
         for(auto const& id : I.Members)
-            add(id, baseAccess);
+        {
+            const Info& member = corpus_.get(id);
+            AccessKind access = effectiveAccess(
+                member.Access, baseAccess);
+            visit(member, *this, access);
+        }
     }
 
     void addFrom(const NamespaceInfo& I)
     {
         for(auto const& id : I.Members)
-            add(id, AccessKind::None);
+        {
+            const Info& member = corpus_.get(id);
+            visit(member, *this, member.Access);
+        }
     }
 
     void operator()(
@@ -258,7 +256,17 @@ public:
         const EnumInfo& I,
         AccessKind access)
     {
-        push(&Tranche::Enums, access, I);
+        // if the enum is unnamed and unscoped,
+        // add its enumerators instead
+        if(! I.Scoped && I.Name.empty())
+        {
+            for(const SymbolID& id : I.Members)
+                visit(corpus_.get(id), *this, access);
+        }
+        else
+        {
+            push(&Tranche::Enums, access, I);
+        }
     }
 
     void operator()(
@@ -286,7 +294,7 @@ public:
         const EnumeratorInfo& I,
         AccessKind access)
     {
-        // KRYSTIAN FIXME: currently unimplemented
+        push(&Tranche::Enumerators, access, I);
     }
 };
 
