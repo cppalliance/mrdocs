@@ -60,70 +60,23 @@ Builder(
         return Error::success();
     }).maybeThrow();
 
-    // load helpers
-    js::Scope scope(ctx_);
+    // Load JavaScript helpers
     std::string helpersPath = files::appendPath(
-        config->addonsDir, "generator", "asciidoc", "helpers");
+        config->addonsDir, "generator", "html", "helpers");
     forEachFile(helpersPath, true,
-                [&](std::string_view pathName)
-    {
-        // Register JS helper function in the global object
-        constexpr std::string_view ext = ".js";
-        if (!pathName.ends_with(ext))
+        [&](std::string_view pathName)-> Expected<void>
         {
-            return Error::success();
-        }
-        auto name = files::getFileName(pathName);
-        name.remove_suffix(ext.size());
-        auto text = files::getFileText(pathName);
-        if (!text)
-        {
-            return text.error();
-        }
-        auto JSFn = scope.compile_function(*text);
-        if (!JSFn)
-        {
-            return JSFn.error();
-        }
-        scope.getGlobalObject().set(name, *JSFn);
+            // Register JS helper function in the global object
+            constexpr std::string_view ext = ".js";
+            if (!pathName.ends_with(ext))
+                return {};
+            auto name = files::getFileName(pathName);
+            name.remove_suffix(ext.size());
+            MRDOCS_TRY(auto script, files::getFileText(pathName));
+            MRDOCS_TRY(js::registerHelper(hbs_, name, ctx_, script));
+            return {};
+        }).maybeThrow();
 
-        // Register C++ helper that retrieves the helper
-        // from the global object, converts the arguments,
-        // and invokes the JS function.
-        hbs_.registerHelper(name, dom::makeVariadicInvocable(
-                                      [this, name=std::string(name)](
-                                          dom::Array const& args) -> Expected<dom::Value>
-        {
-            // Get function from global scope
-            js::Scope scope(ctx_);
-            js::Value fn = scope.getGlobalObject().get(name);
-            if (fn.isUndefined())
-            {
-                return Unexpected(Error("helper not found"));
-            }
-            if (!fn.isFunction())
-            {
-                return Unexpected(Error("helper is not a function"));
-            }
-
-            // Call function
-            std::vector<dom::Value> arg_span;
-            arg_span.reserve(args.size());
-            for (auto const& arg : args)
-            {
-                arg_span.push_back(arg);
-            }
-            auto result = fn.apply(arg_span);
-            if (!result)
-            {
-                return dom::Kind::Undefined;
-            }
-
-            // Convert result to dom::Value
-            return result->getDom();
-        }));
-        return Error::success();
-    }).maybeThrow();
     hbs_.registerHelper(
         "is_multipage",
         dom::makeInvocable([res = config->multiPage]() -> Expected<dom::Value> {

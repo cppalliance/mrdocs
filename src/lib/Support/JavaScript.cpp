@@ -12,6 +12,7 @@
 #include "lib/Support/Error.hpp"
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/JavaScript.hpp>
+#include <mrdocs/Support/Handlebars.hpp>
 #include <duktape.h>
 #include <utility>
 #include <variant>
@@ -59,42 +60,61 @@ Context(
     ++impl_->refs;
 }
 
+/* Access to the underlying duktape context in
+   Context and Scope.
+ */
 struct Access
 {
     duk_context* ctx_ = nullptr;
-    Context::Impl* impl_ = nullptr;;
+    Context::Impl* impl_ = nullptr;
 
+    // Access from an original duktape context
     explicit Access(duk_context* ctx) noexcept
         : ctx_(ctx)
     {
     }
 
+    // Access from a Context
     explicit Access(Context const& ctx) noexcept
         : ctx_(ctx.impl_->ctx)
         , impl_(ctx.impl_)
     {
     }
 
+    // Access from a Scope
     explicit Access(Scope const& scope) noexcept
         : Access(scope.ctx_)
     {
     }
 
+    // Implicit conversion to a duktape context
+    // for use with the duktape C API
     operator duk_context*() const noexcept
     {
         return ctx_;
     }
 
+    // Access to a value idx in its Scope
     static duk_idx_t idx(Value const& value) noexcept
     {
         return value.idx_;
     }
 
+    // Mark a scope as referenced by another
+    // scope or Value
+    // This is used to keep the scope alive
+    // while it is being used and to
+    // destroy it when it is no longer needed
     static void addref(Scope& scope) noexcept
     {
         ++scope.refs_;
     }
 
+    // Mark a scope as referenced by one less
+    // scope or Value
+    // This is used to keep the scope alive
+    // while it is being used and to
+    // destroy it when it is no longer needed
     static void release(Scope& scope) noexcept
     {
         if(--scope.refs_ != 0)
@@ -306,6 +326,60 @@ setGlobal(
     this->getGlobalObject().set(name, value);
 }
 
+Value
+Scope::
+pushInteger(std::int64_t value)
+{
+    Access A(*this);
+    duk_push_int(A, value);
+    return Access::construct<Value>(-1, *this);
+}
+
+Value
+Scope::
+pushDouble(double value)
+{
+    Access A(*this);
+    duk_push_number(A, value);
+    return Access::construct<Value>(-1, *this);
+}
+
+Value
+Scope::
+pushBoolean(bool value)
+{
+    Access A(*this);
+    duk_push_boolean(A, value);
+    return Access::construct<Value>(-1, *this);
+}
+
+Value
+Scope::
+pushString(std::string_view value)
+{
+    Access A(*this);
+    duk_push_lstring(A, value.data(), value.size());
+    return Access::construct<Value>(-1, *this);
+}
+
+Value
+Scope::
+pushObject()
+{
+    Access A(*this);
+    duk_push_object(A);
+    return Access::construct<Value>(-1, *this);
+}
+
+Value
+Scope::
+pushArray()
+{
+    Access A(*this);
+    duk_push_array(A);
+    return Access::construct<Value>(-1, *this);
+}
+
 //------------------------------------------------
 //
 // JS -> C++ dom::Value bindings
@@ -318,9 +392,16 @@ class JSObjectImpl : public dom::ObjectImpl
 {
     Access A_;
     duk_idx_t idx_;
+    std::shared_ptr<Scope> scope_;
 
 public:
-    ~JSObjectImpl() override = default;
+    ~JSObjectImpl() override
+    {
+        if (scope_)
+        {
+            Access::release(*scope_);
+        }
+    }
 
     JSObjectImpl(
         Scope& scope, duk_idx_t idx) noexcept
@@ -369,15 +450,33 @@ public:
     {
         return idx_;
     }
+
+    // Set a shared pointer to the Scope so that it
+    // can temporarily outlive the variable
+    void
+    setScope(std::shared_ptr<Scope> scope) noexcept
+    {
+        MRDOCS_ASSERT(scope);
+        MRDOCS_ASSERT(Access(*scope.get()).ctx_ == A_.ctx_);
+        scope_ = std::move(scope);
+        Access::addref(*scope_);
+    }
 };
 
 class JSArrayImpl : public dom::ArrayImpl
 {
     Access A_;
     duk_idx_t idx_;
+    std::shared_ptr<Scope> scope_;
 
 public:
-    ~JSArrayImpl() override = default;
+    ~JSArrayImpl() override
+    {
+        if (scope_)
+        {
+            Access::release(*scope_);
+        }
+    }
 
     JSArrayImpl(
         Scope& scope, duk_idx_t idx) noexcept
@@ -423,6 +522,17 @@ public:
     {
         return idx_;
     }
+
+    // Set a shared pointer to the Scope so that it
+    // can temporarily outlive the variable
+    void
+    setScope(std::shared_ptr<Scope> scope) noexcept
+    {
+        MRDOCS_ASSERT(scope);
+        MRDOCS_ASSERT(Access(*scope.get()).ctx_ == A_.ctx_);
+        scope_ = std::move(scope);
+        Access::addref(*scope_);
+    }
 };
 
 // A JavaScript function defined in the scope as a dom::Function
@@ -430,8 +540,16 @@ class JSFunctionImpl : public dom::FunctionImpl
 {
     Access A_;
     duk_idx_t idx_;
+    std::shared_ptr<Scope> scope_;
+
 public:
-    ~JSFunctionImpl() override = default;
+    ~JSFunctionImpl() override
+    {
+        if (scope_)
+        {
+            Access::release(*scope_);
+        }
+    }
 
     JSFunctionImpl(
         Scope& scope, duk_idx_t idx) noexcept
@@ -466,6 +584,17 @@ public:
     idx() const noexcept
     {
         return idx_;
+    }
+
+    // Set a shared pointer to the Scope so that it
+    // can temporarily outlive the variable
+    void
+    setScope(std::shared_ptr<Scope> scope) noexcept
+    {
+        MRDOCS_ASSERT(scope);
+        MRDOCS_ASSERT(Access(*scope.get()).ctx_ == A_.ctx_);
+        scope_ = std::move(scope);
+        Access::addref(*scope_);
     }
 };
 
@@ -992,15 +1121,18 @@ domValue_get(
     {
         if (duk_is_array(A, idx))
         {
-            return {dom::newArray<JSArrayImpl>(A, idx)};
+            duk_dup(A, idx);
+            return {dom::newArray<JSArrayImpl>(A, duk_get_top_index(A))};
         }
         if (duk_is_function(A, idx))
         {
-            return {dom::newFunction<JSFunctionImpl>(A, idx)};
+            duk_dup(A, idx);
+            return {dom::newFunction<JSFunctionImpl>(A, duk_get_top_index(A))};
         }
         if (duk_is_object(A, idx))
         {
-            return {dom::newObject<JSObjectImpl>(A, idx)};
+            duk_dup(A, idx);
+            return {dom::newObject<JSObjectImpl>(A, duk_get_top_index(A))};
         }
         return nullptr;
     }
@@ -1179,6 +1311,13 @@ JSArrayImpl::
 size() const
 {
     Access A(A_);
+    auto t = duk_get_type(A, idx_);
+    if (t != DUK_TYPE_OBJECT && scope_)
+    {
+        auto top = duk_get_top(A);
+        MRDOCS_ASSERT(top > 0);
+    }
+    MRDOCS_ASSERT(t == DUK_TYPE_OBJECT);
     MRDOCS_ASSERT(duk_is_array(A, idx_));
     return duk_get_length(A, idx_);
 }
@@ -1221,7 +1360,7 @@ Value::
     if( ! scope_)
         return;
     Access A(*scope_);
-    if(idx_ == duk_get_top(A) - 1)
+    if (idx_ == duk_get_top(A) - 1)
         duk_pop(A);
     Access::release(*scope_);
 }
@@ -1741,6 +1880,109 @@ operator&&(Value const& lhs, Value const& rhs)
     return rhs;
 }
 
+Expected<void, Error>
+registerHelper(
+    clang::mrdocs::Handlebars& hbs,
+    std::string_view name,
+    Context& ctx,
+    std::string_view script)
+{
+    // Register the compiled helper function in the global scope
+    constexpr auto global_helpers_key = DUK_HIDDEN_SYMBOL("MrDocsHelpers");
+    {
+        Scope s(ctx);
+        Value g = s.getGlobalObject();
+        MRDOCS_ASSERT(g.isObject());
+        if (!g.exists(global_helpers_key))
+        {
+            Value obj = s.pushObject();
+            MRDOCS_ASSERT(obj.isObject());
+            g.set(global_helpers_key, obj);
+        }
+        Value helpers = g.get(global_helpers_key);
+        MRDOCS_ASSERT(helpers.isObject());
+        MRDOCS_TRY(Value JSFn, s.compile_function(script));
+        if (!JSFn.isFunction())
+        {
+            return Unexpected(Error(fmt::format(
+                    "helper \"{}\" is not a function", name)));
+        }
+        helpers.set(name, JSFn);
+    }
+
+    // Register C++ helper that retrieves the helper
+    // from the global object, converts the arguments,
+    // and invokes the JS function.
+    hbs.registerHelper(name, dom::makeVariadicInvocable(
+        [&ctx, global_helpers_key, name=std::string(name)](
+            dom::Array const& args) -> Expected<dom::Value>
+        {
+            // Get function from global scope
+            auto s = std::make_shared<Scope>(ctx);
+            Value g = s->getGlobalObject();
+            MRDOCS_ASSERT(g.isObject());
+            MRDOCS_ASSERT(g.exists(global_helpers_key));
+            Value helpers = g.get(global_helpers_key);
+            MRDOCS_ASSERT(helpers.isObject());
+            Value fn = helpers.get(name);
+            MRDOCS_ASSERT(fn.isFunction());
+
+            // Call function
+            std::vector<dom::Value> arg_span;
+            arg_span.reserve(args.size());
+            for (auto const& arg : args)
+            {
+                arg_span.push_back(arg);
+            }
+            auto JSResult = fn.apply(arg_span);
+            if (!JSResult)
+            {
+                return dom::Kind::Undefined;
+            }
+
+            // Convert result to dom::Value
+            dom::Value result = JSResult->getDom();
+            const bool isPrimitive =
+                !result.isObject() &&
+                !result.isArray() &&
+                !result.isFunction();
+            if (isPrimitive)
+            {
+                return result;
+            }
+
+            // Non-primitive values need to keep the
+            // JS scope alive until the value is used
+            // by the Handlebars engine.
+            auto setScope = [&s](auto& result, auto TI)
+            {
+                using T = typename std::decay_t<decltype(TI)>::type;
+                auto* impl = dynamic_cast<T*>(result.impl().get());
+                MRDOCS_ASSERT(impl);
+                impl->setScope(s);
+            };
+            if (result.isObject())
+            {
+                setScope(
+                    result.getObject(),
+                    std::type_identity<JSObjectImpl>{});
+            }
+            else if (result.isArray())
+            {
+                setScope(
+                    result.getArray(),
+                    std::type_identity<JSArrayImpl>{});
+            }
+            else if (result.isFunction())
+            {
+                setScope(
+                    result.getFunction(),
+                    std::type_identity<JSFunctionImpl>{});
+            }
+            return result;
+        }));
+    return {};
+}
 
 } // js
 } // mrdocs

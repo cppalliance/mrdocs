@@ -20,6 +20,9 @@
 
 namespace clang {
 namespace mrdocs {
+
+class Handlebars;
+
 namespace js {
 
 struct Access;
@@ -213,6 +216,42 @@ public:
      */
     MRDOCS_DECL
     ~Scope();
+
+    /** Push an integer to the stack
+     */
+    MRDOCS_DECL
+    Value
+    pushInteger(std::int64_t value);
+
+    /** Push a double to the stack
+     */
+    MRDOCS_DECL
+    Value
+    pushDouble(double value);
+
+    /** Push a boolean to the stack
+     */
+    MRDOCS_DECL
+    Value
+    pushBoolean(bool value);
+
+    /** Push a string to the stack
+     */
+    MRDOCS_DECL
+    Value
+    pushString(std::string_view value);
+
+    /** Push a new object to the stack
+     */
+    MRDOCS_DECL
+    Value
+    pushObject();
+
+    /** Push a new array to the stack
+     */
+    MRDOCS_DECL
+    Value
+    pushArray();
 
     /** Compile and run a script.
 
@@ -972,6 +1011,20 @@ isFunction() const noexcept
 {
     return type() == Type::function;
 }
+
+/** Register a JavaScript helper function
+
+    This function registers a JavaScript function
+    as a helper function that can be called from
+    Handlebars templates.
+ */
+MRDOCS_DECL
+Expected<void, Error>
+registerHelper(
+    clang::mrdocs::Handlebars& hbs,
+    std::string_view name,
+    Context& ctx,
+    std::string_view script);
 
 } // js
 } // mrdocs
