@@ -44,6 +44,70 @@ forEachFile(
     bool recursive,
     AnyFileVisitor& visitor);
 
+namespace detail {
+template <class Visitor>
+struct FileVisitor : AnyFileVisitor
+{
+    Visitor& visitor_;
+
+    explicit FileVisitor(Visitor& v)
+        : visitor_(v)
+    {
+    }
+
+    Error
+    visitFile(std::string_view fileName) override
+    {
+        using R = std::invoke_result_t<Visitor, std::string_view>;
+        if (std::same_as<R, void>)
+        {
+            visitor_(fileName);
+            return Error::success();
+        }
+        else
+        {
+            return toError(visitor_(fileName));
+        }
+    }
+
+    static
+    Error
+    toError(Expected<void, Error> const& e)
+    {
+        return e ? Error::success() : e.error();
+    }
+
+    template <class T>
+    static
+    Error
+    toError(Expected<T, Error> const& e)
+    {
+        return e ? toError(e.value()) : e.error();
+    }
+
+    template <class T>
+    static
+    Error
+    toError(T const& e)
+    {
+        if constexpr (std::same_as<T, Error>)
+        {
+            return e;
+        }
+        else if constexpr (std::convertible_to<T, bool>)
+        {
+            if (e)
+                return Error::success();
+            return Error("visitor returned falsy");
+        }
+        else
+        {
+            return Error::success();
+        }
+    }
+};
+}
+
 /** Visit each file in a directory.
 */
 template<class Visitor>
@@ -53,23 +117,7 @@ forEachFile(
     bool recursive,
     Visitor&& visitor)
 {
-    struct FileVisitor : AnyFileVisitor
-    {
-        Visitor& visitor_;
-
-        explicit FileVisitor(Visitor& v)
-            : visitor_(v)
-        {
-        }
-
-        Error
-        visitFile(std::string_view fileName) override
-        {
-            return visitor_(fileName);
-        }
-    };
-
-    FileVisitor v{visitor};
+    detail::FileVisitor<Visitor> v{visitor};
     return forEachFile(dirPath, recursive,
         static_cast<AnyFileVisitor&>(v));
 }

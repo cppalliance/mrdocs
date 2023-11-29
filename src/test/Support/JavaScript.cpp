@@ -9,6 +9,7 @@
 //
 
 #include <mrdocs/Support/JavaScript.hpp>
+#include <mrdocs/Support/Handlebars.hpp>
 #include <test_suite/test_suite.hpp>
 #include <array>
 
@@ -35,6 +36,41 @@ struct JavaScript_test
         // empty scope
         {
             Scope scope(ctx);
+        }
+
+        // Push values directly
+        {
+            Scope scope(ctx);
+
+            // pushInteger(std::int64_t value);
+            Value a = scope.pushInteger(1);
+            BOOST_TEST(a.isInteger());
+            BOOST_TEST(a.getDom() == 1);
+
+            // pushDouble(double value);
+            Value b = scope.pushDouble(1.5);
+            BOOST_TEST(b.isDouble());
+            BOOST_TEST(b.getDom() == 1.5);
+
+            // pushBoolean(bool value);
+            Value c = scope.pushBoolean(true);
+            BOOST_TEST(c.isBoolean());
+            BOOST_TEST(c.getDom() == true);
+
+            // pushString(std::string_view value);
+            Value e = scope.pushString("hello world");
+            BOOST_TEST(e.isString());
+            BOOST_TEST(e.getDom() == "hello world");
+
+            // pushObject();
+            Value f = scope.pushObject();
+            BOOST_TEST(f.isObject());
+            BOOST_TEST(f.getDom().isObject());
+
+            // pushArray();
+            Value g = scope.pushArray();
+            BOOST_TEST(g.isArray());
+            BOOST_TEST(g.getDom().isArray());
         }
 
         // script
@@ -1199,6 +1235,59 @@ struct JavaScript_test
         }
     }
 
+    void
+    test_hbs_helpers()
+    {
+        Handlebars hbs;
+        js::Context ctx;
+
+        // Primitive types
+        {
+            // Number
+            js::registerHelper(hbs, "add", ctx, "function(a, b) { return a + b; }");
+            BOOST_TEST(hbs.render("{{add 1 2}}") == "3");
+            js::registerHelper(hbs, "sub", ctx, "function(a, b) { return a - b; }");
+            BOOST_TEST(hbs.render("{{sub 3 2}}") == "1");
+
+            // String
+            js::registerHelper(hbs, "concat", ctx, "function(a, b) { return a + b; }");
+            BOOST_TEST(hbs.render("{{concat 'a' 'b'}}") == "ab");
+
+            // Boolean
+            js::registerHelper(hbs, "and", ctx, "function(a, b) { return a && b; }");
+            BOOST_TEST(hbs.render("{{and true true}}") == "true");
+
+            // Undefined
+            js::registerHelper(hbs, "undef", ctx, "function() { return undefined; }");
+            BOOST_TEST(hbs.render("{{undef}}") == "");
+
+            // Null
+            js::registerHelper(hbs, "null", ctx, "function() { return null; }");
+            BOOST_TEST(hbs.render("{{null}}") == "");
+        }
+
+        // Reference types
+        {
+            // Object
+            js::registerHelper(hbs, "obj", ctx, "function() { return { a: 1 }; }");
+            BOOST_TEST(hbs.render("{{obj}}") == "[object Object]");
+
+            // Array
+            js::registerHelper(hbs, "arr", ctx, "function() { return [1, 2, 3]; }");
+            BOOST_TEST(hbs.render("{{arr}}") == "[1,2,3]");
+
+            // Function
+            js::registerHelper(hbs, "fn", ctx, "function() { return function() {}; }");
+            BOOST_TEST(hbs.render("{{fn}}") == "");
+        }
+
+        // Access helper options from JavaScript
+        {
+            js::registerHelper(hbs, "opt", ctx, "function(options) { return options.hash.a; }");
+            BOOST_TEST(hbs.render("{{opt a=1}}") == "1");
+        }
+    }
+
     void run()
     {
         test_context();
@@ -1207,6 +1296,7 @@ struct JavaScript_test
         test_cpp_function();
         test_cpp_object();
         test_cpp_array();
+        test_hbs_helpers();
     }
 };
 
