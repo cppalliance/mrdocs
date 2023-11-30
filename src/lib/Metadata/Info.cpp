@@ -45,6 +45,8 @@ toString(InfoKind kind) noexcept
         return "friend";
     case InfoKind::Enumerator:
         return "enumerator";
+    case InfoKind::Guide:
+        return "guide";
     default:
         MRDOCS_UNREACHABLE();
     }

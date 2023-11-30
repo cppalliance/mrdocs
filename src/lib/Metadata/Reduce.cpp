@@ -202,6 +202,22 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
     I.specs1.raw.value |= Other.specs1.raw.value;
 }
 
+void merge(GuideInfo& I, GuideInfo&& Other)
+{
+    MRDOCS_ASSERT(canMerge(I, Other));
+
+    if (! I.Deduced)
+        I.Deduced = std::move(Other.Deduced);
+    if (I.Params.empty())
+        I.Params = std::move(Other.Params);
+    mergeSourceInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
+    if (!I.Template)
+        I.Template = std::move(Other.Template);
+    if(I.Explicit == ExplicitKind::None)
+        I.Explicit = Other.Explicit;
+}
+
 void merge(TypedefInfo& I, TypedefInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));

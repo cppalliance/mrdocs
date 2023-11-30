@@ -2229,16 +2229,6 @@ public:
                     D->getExplicitSpecifier());
         }
 
-        //
-        // CXXDeductionGuideDecl
-        //
-        if constexpr(std::derived_from<DeclTy, CXXDeductionGuideDecl>)
-        {
-            I.specs1.explicitSpec |=
-                convertToExplicitKind(
-                    D->getExplicitSpecifier());
-        }
-
         for(const ParmVarDecl* P : D->parameters())
         {
             auto index = P->getFunctionScopeIndex();
@@ -2280,6 +2270,40 @@ public:
         // if it contains a placeholder type which is
         // deduceded as a local class type
         I.ReturnType = buildTypeInfo(RT, next_mode);
+
+        getParentNamespaces(I, D);
+    }
+
+    //------------------------------------------------
+
+    void
+    buildGuide(
+        GuideInfo& I,
+        bool created,
+        CXXDeductionGuideDecl* D)
+    {
+        bool documented = parseRawComment(I.javadoc, D);
+        addSourceLocation(I, D->getBeginLoc(), true, documented);
+
+        // deduction guides cannot be redeclared, so there is nothing to merge
+        if(! created)
+            return;
+
+        I.Name = extractName(D->getDeducedTemplate());
+
+        I.Deduced = buildTypeInfo(D->getReturnType());
+
+        for(const ParmVarDecl* P : D->parameters())
+        {
+            I.Params.emplace_back(
+                buildTypeInfo(P->getOriginalType()),
+                P->getNameAsString(),
+                // deduction guides cannot have default arguments
+                std::string());
+        }
+
+        I.Explicit = convertToExplicitKind(
+            D->getExplicitSpecifier());
 
         getParentNamespaces(I, D);
     }
@@ -2340,6 +2364,9 @@ public:
 
     // non-static data members
     void traverse(FieldDecl*);
+
+    // deduction guides
+    void traverse(CXXDeductionGuideDecl*, FunctionTemplateDecl* = nullptr);
 
     template<std::derived_from<CXXRecordDecl> CXXRecordTy>
     void traverse(CXXRecordTy*, ClassTemplateDecl* = nullptr);
@@ -2588,6 +2615,31 @@ traverse(VarTy* D,
     buildVariable(I, created, D);
 }
 
+void
+ASTVisitor::
+traverse(CXXDeductionGuideDecl* D,
+    FunctionTemplateDecl* FTD)
+{
+    AccessSpecifier access = getAccess(D);
+    if(! shouldExtract(D, access))
+        return;
+
+    SymbolID id;
+    if(! extractSymbolID(D, id))
+        return;
+
+    auto [I, created] = getOrCreateInfo<GuideInfo>(id);
+    I.Access = convertToAccessKind(access);
+
+    // D is the templated declaration if FTD is non-null
+    if(FTD)
+    {
+        auto& Template = I.Template = std::make_unique<TemplateInfo>();
+        buildTemplateParams(*Template, FTD->getTemplateParameters());
+    }
+
+    buildGuide(I, created, D);
+}
 
 template<std::derived_from<FunctionDecl> FunctionTy>
 void
@@ -2637,7 +2689,10 @@ traverse(FunctionTy* D,
         }
     }
 
-    buildFunction(I, created, D);
+    if constexpr(std::same_as<FunctionTy, CXXDeductionGuideDecl>)
+        buildGuide(I, created, D);
+    else
+        buildFunction(I, created, D);
 }
 
 template<std::derived_from<TypedefNameDecl> TypedefNameTy>

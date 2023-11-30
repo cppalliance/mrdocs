@@ -1,4 +1,4 @@
-{{#unless (contains @root.symbol.namespace symbol)~}}
+{{#unless (or (contains @root.symbol.namespace symbol) (eq @root.symbol symbol))~}}
 {{#if symbol.parent~}}
 {{>qualified-path symbol=symbol.parent nolink=nolink~}}
 {{else~}}

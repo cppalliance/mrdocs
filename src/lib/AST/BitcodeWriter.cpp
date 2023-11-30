@@ -224,6 +224,7 @@ BlockIdNameMap = []()
         {BI_FIELD_BLOCK_ID, "FieldBlock"},
         {BI_RECORD_BLOCK_ID, "RecordBlock"},
         {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
+        {BI_GUIDE_BLOCK_ID, "GuideBlock"},
         {BI_FUNCTION_PARAM_BLOCK_ID, "FunctionParamBlock"},
         {BI_JAVADOC_BLOCK_ID, "JavadocBlock"},
         {BI_JAVADOC_LIST_BLOCK_ID, "JavadocListBlock"},
@@ -268,6 +269,7 @@ RecordIDNameMap = []()
         {FUNCTION_CLASS, {"FunctionClass", &Integer32Abbrev}},
         {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
         {FUNCTION_PARAM_DEFAULT, {"Default", &StringAbbrev}},
+        {GUIDE_EXPLICIT, {"Explicit", &Integer32Abbrev}},
         {INFO_PART_ACCESS, {"InfoAccess", &Integer32Abbrev}},
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_IMPLICIT, {"InfoImplicit", &BoolAbbrev}},
@@ -410,7 +412,9 @@ RecordsByBlock{
     {BI_TYPEDEF_BLOCK_ID,
         {TYPEDEF_IS_USING}},
     // VariableInfo
-    {BI_VARIABLE_BLOCK_ID, {VARIABLE_BITS}}
+    {BI_VARIABLE_BLOCK_ID, {VARIABLE_BITS}},
+    // GuideInfo
+    {BI_GUIDE_BLOCK_ID, {GUIDE_EXPLICIT}}
 };
 
 //------------------------------------------------
@@ -840,6 +844,22 @@ emitBlock(
     emitRecord({I.specs0.raw, I.specs1.raw}, FUNCTION_BITS);
     emitRecord(I.Class, FUNCTION_CLASS);
     emitBlock(I.ReturnType);
+    for (const auto& N : I.Params)
+        emitBlock(N);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    GuideInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_GUIDE_BLOCK_ID);
+    emitInfoPart(I);
+    emitSourceInfo(I);
+    if (I.Template)
+        emitBlock(*I.Template);
+    emitRecord(I.Explicit, GUIDE_EXPLICIT);
+    emitBlock(I.Deduced);
     for (const auto& N : I.Params)
         emitBlock(N);
 }

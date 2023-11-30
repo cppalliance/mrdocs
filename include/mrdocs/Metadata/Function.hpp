@@ -63,9 +63,7 @@ enum class FunctionClass
     Constructor,
     // conversion function
     Conversion,
-    Destructor,
-    // deduction guide
-    Deduction,
+    Destructor
 };
 
 MRDOCS_DECL dom::String toString(FunctionClass kind) noexcept;

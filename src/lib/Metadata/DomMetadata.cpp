@@ -595,6 +595,7 @@ public:
             { "staticfuncs",      init(tranche->StaticFunctions, domCorpus) },
             { "variables",        init(tranche->Variables, domCorpus) },
             { "friends",          init(tranche->Friends, domCorpus) },
+            { "guides",           init(tranche->Guides, domCorpus) },
             { "overloads",        init(tranche->Overloads, domCorpus) },
             { "staticoverloads", init(tranche->StaticOverloads, domCorpus) }
             })
@@ -833,6 +834,17 @@ DomInfo<T>::construct() const
         entries.insert(entries.end(), {
             { "initializer", dom::stringOrNull(I_.Initializer.Written) }
             });
+    }
+    if constexpr(T::isGuide())
+    {
+        entries.insert(entries.end(), {
+            { "params",     dom::newArray<DomParamArray>(I_.Params, domCorpus_) },
+            { "deduced",     domCreate(I_.Deduced, domCorpus_) },
+            { "template",   domCreate(I_.Template, domCorpus_) }
+            });
+
+        if(I_.Explicit != ExplicitKind::None)
+            entries.emplace_back("explicitSpec", toString(I_.Explicit));
     }
     return dom::Object(std::move(entries));
 }

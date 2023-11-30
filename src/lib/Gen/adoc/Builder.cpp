@@ -338,6 +338,7 @@ DEFINE(FieldInfo);
 DEFINE(SpecializationInfo);
 DEFINE(FriendInfo);
 DEFINE(EnumeratorInfo);
+DEFINE(GuideInfo);
 
 } // adoc
 } // mrdocs

@@ -226,12 +226,10 @@ public:
         const FunctionInfo& I,
         AccessKind access)
     {
-        // do not inherit constructors, destructors,
-        // or deduction guides
+        // do not inherit constructors or destructors
         if(parent_.isRecord() && ! isFromParent(I) &&
             (I.Class == FunctionClass::Constructor ||
-            I.Class == FunctionClass::Destructor ||
-            I.Class == FunctionClass::Deduction))
+            I.Class == FunctionClass::Destructor))
             return;
 
         bool isStatic = I.specs0.storageClass == StorageClassKind::Static;
@@ -287,6 +285,16 @@ public:
         AccessKind access)
     {
         // KRYSTIAN FIXME: currently unimplemented
+    }
+
+    void operator()(
+        const GuideInfo& I,
+        AccessKind access)
+    {
+        // declarations of deduction guides are not inherited
+        if(parent_.isRecord() && ! isFromParent(I))
+            return;
+        push(&Tranche::Guides, access, I);
     }
 };
 

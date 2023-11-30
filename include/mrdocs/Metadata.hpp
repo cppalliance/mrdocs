@@ -23,6 +23,7 @@
 #include <mrdocs/Metadata/Field.hpp>
 #include <mrdocs/Metadata/Friend.hpp>
 #include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Metadata/Guide.hpp>
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Interface.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>

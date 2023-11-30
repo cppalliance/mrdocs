@@ -1,5 +1,7 @@
 {{#if (and (eq kind "function") (eq class "conversion"))~}}
     operator {{>declarator return nolink=nolink~}}
+{{else if (eq kind "guide")~}}
+    {{>declarator deduced nolink=nolink~}}
 {{else~}}
     {{#if (and link.ref (not nolink))}}xref:{{link.ref}}[{{name}}]{{else}}{{name}}{{/if~}}
     {{#if (or (eq template.kind "explicit") (eq template.kind "partial"))~}}

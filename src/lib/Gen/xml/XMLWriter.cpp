@@ -230,6 +230,8 @@ operator()(
         writeEnumerator(I);
     if constexpr(T::isFriend())
         writeFriend(I);
+    if constexpr(T::isGuide())
+        writeGuide(I);
 }
 
 //------------------------------------------------
@@ -337,6 +339,40 @@ writeFunction(
     writeJavadoc(I.javadoc);
 
     tags_.close(functionTagName);
+
+    closeTemplate(I.Template);
+}
+
+void
+XMLWriter::
+writeGuide(
+    GuideInfo const& I)
+{
+    openTemplate(I.Template);
+
+    bool IsExplicit = I.Explicit != ExplicitKind::None &&
+        I.Explicit != ExplicitKind::ExplicitFalse;
+
+
+    tags_.open(guideTagName, {
+        { "name", I.Name },
+        { I.Access },
+        { "explicit", "1", IsExplicit},
+        { I.id }
+        });
+
+    writeSourceInfo(I);
+
+    tags_.open(deducedTagName);
+    writeType(I.Deduced, tags_);
+    tags_.close(deducedTagName);
+
+    for(auto const& J : I.Params)
+        writeParam(J, tags_);
+
+    writeJavadoc(I.javadoc);
+
+    tags_.close(guideTagName);
 
     closeTemplate(I.Template);
 }

@@ -318,6 +318,15 @@ public:
         check(I.Namespace);
         finalize(I.javadoc);
     }
+
+    void operator()(GuideInfo& I)
+    {
+        check(I.Namespace);
+        finalize(I.javadoc);
+        finalize(I.Template);
+        finalize(I.Deduced);
+        finalize(I.Params);
+    }
 };
 
 void finalize(InfoSet& Info, SymbolLookup& Lookup)

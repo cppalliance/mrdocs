@@ -114,6 +114,7 @@ public:
     void emitBlock(BaseInfo const& I);
     void emitBlock(EnumInfo const& I);
     void emitBlock(FunctionInfo const& I);
+    void emitBlock(GuideInfo const& I);
     void emitBlock(Param const& I);
     void emitBlock(std::unique_ptr<Javadoc> const& jd);
     void emitBlock(doc::Node const& I);

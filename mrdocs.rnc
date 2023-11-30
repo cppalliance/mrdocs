@@ -74,11 +74,34 @@ grammar
             Name,
             Access?,
             ID,
-            attribute class { "constructor"|"destructor"|"conversion"|"deduction" } ?,
+            attribute class { "constructor"|"destructor"|"conversion" } ?,
             Location *,
             (
                 Attr * |
                 element return { TypeInfo } |
+                element param
+                {
+                    Name?,
+                    attribute default { text } ?,
+                    ID ?,
+                    TypeInfo
+                } * |
+                Javadoc ?
+            ) *
+        }
+
+    #---------------------------------------------
+
+    Guide =
+        element guide
+        {
+            Name,
+            Access?,
+            attribute explicit { "1" } ?,
+            ID,
+            Location *,
+            (
+                element deduced { TypeInfo } |
                 element param
                 {
                     Name?,
@@ -213,6 +236,7 @@ grammar
                 Function  |
                 Typedef   |
                 Var       |
+                Guide     |
                 Template
             )
         }
@@ -274,6 +298,7 @@ grammar
             Typedef        |
             Enum           |
             Var            |
+            Guide          |
             Template       |
             Specialization
         )*
@@ -286,6 +311,7 @@ grammar
             Enum           |
             Field          |
             Var            |
+            Guide          |
             Template       |
             Friend         |
             Specialization

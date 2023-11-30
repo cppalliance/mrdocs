@@ -61,16 +61,17 @@ class SafeNames::Impl
         static
         std::string_view
         reserved[] = {
-            "0namespace",
-            "1record",
-            "2function",
-            "3enum",
-            "4typedef",
-            "5variable",
-            "6field",
-            "7specialization",
-            "8friend",
-            "9enumeration",
+            "00namespace",
+            "01record",
+            "02function",
+            "03enum",
+            "04typedef",
+            "05variable",
+            "06field",
+            "07specialization",
+            "08friend",
+            "09enumeration",
+            "10guide",
         };
         if(I.isFunction())
         {
@@ -80,8 +81,7 @@ class SafeNames::Impl
                 "2function",
                 "2constructor",
                 "2conversion",
-                "2destructor",
-                "2deduction_guide",
+                "2destructor"
             };
             const auto& FI = static_cast<
                 const FunctionInfo&>(I);
@@ -201,6 +201,12 @@ public:
                 }
 
                 if constexpr(T::isEnumerator())
+                {
+                    MRDOCS_ASSERT(! t.Name.empty());
+                    return t.Name;
+                }
+
+                if constexpr(T::isGuide())
                 {
                     MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;

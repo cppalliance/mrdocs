@@ -141,8 +141,6 @@ toString(
         return "constructor";
     case FunctionClass::Conversion:
         return "conversion";
-    case FunctionClass::Deduction:
-        return "deduction";
     case FunctionClass::Destructor:
         return "destructor";
     default:

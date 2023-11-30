@@ -8,60 +8,52 @@
       <file path="explicit-deduct-guide.cpp" line="4" class="def"/>
     </struct>
   </template>
-  <function class="deduction" name="X" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
-    <file path="explicit-deduct-guide.cpp" line="6"/>
-    <attr id="has-trailing-return"/>
-    <attr id="explicit-spec" name="explicit" value="1"/>
-    <return>
+  <guide name="X" explicit="1" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
+    <file path="explicit-deduct-guide.cpp" line="6" class="def"/>
+    <deduced>
       <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
         <targ class="non-type" value="0"/>
       </type>
-    </return>
+    </deduced>
     <param>
       <type name="bool"/>
     </param>
-  </function>
-  <function class="deduction" name="X" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
-    <file path="explicit-deduct-guide.cpp" line="8"/>
-    <attr id="has-trailing-return"/>
-    <attr id="explicit-spec" name="explicit(true)" value="3"/>
-    <return>
+  </guide>
+  <guide name="X" explicit="1" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
+    <file path="explicit-deduct-guide.cpp" line="8" class="def"/>
+    <deduced>
       <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
         <targ class="non-type" value="0"/>
       </type>
-    </return>
+    </deduced>
     <param>
       <type name="char"/>
     </param>
-  </function>
-  <function class="deduction" name="X" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
-    <file path="explicit-deduct-guide.cpp" line="10"/>
-    <attr id="has-trailing-return"/>
-    <attr id="explicit-spec" name="explicit(false)" value="2"/>
-    <return>
+  </guide>
+  <guide name="X" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
+    <file path="explicit-deduct-guide.cpp" line="10" class="def"/>
+    <deduced>
       <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
         <targ class="non-type" value="0"/>
       </type>
-    </return>
+    </deduced>
     <param>
       <type name="int"/>
     </param>
-  </function>
+  </guide>
   <template>
     <tparam name="B" class="non-type" type="bool" default="true"/>
-    <function class="deduction" name="X" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
-      <file path="explicit-deduct-guide.cpp" line="13"/>
-      <attr id="has-trailing-return"/>
-      <attr id="explicit-spec" name="explicit(expr)" value="4"/>
-      <return>
+    <guide name="X" explicit="1" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
+      <file path="explicit-deduct-guide.cpp" line="13" class="def"/>
+      <deduced>
         <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
           <targ class="non-type" value="0"/>
         </type>
-      </return>
+      </deduced>
       <param>
         <type name="long"/>
       </param>
-    </function>
+    </guide>
   </template>
 </namespace>
 </mrdocs>

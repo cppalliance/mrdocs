@@ -1462,6 +1462,55 @@ public:
 
 //------------------------------------------------
 
+class GuideBlock
+    : public TopLevelBlock<GuideInfo>
+{
+public:
+    using TopLevelBlock::TopLevelBlock;
+
+    Error
+    parseRecord(Record const& R,
+        unsigned ID, llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case GUIDE_EXPLICIT:
+            return decodeRecord(R, I->Explicit, Blob);
+        default:
+            return TopLevelBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_TYPEINFO_BLOCK_ID:
+        {
+            TypeInfoBlock B(I->Deduced, br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_FUNCTION_PARAM_BLOCK_ID:
+        {
+            FunctionParamBlock B(I->Params.emplace_back(), br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_TEMPLATE_BLOCK_ID:
+        {
+            I->Template = std::make_unique<TemplateInfo>();
+            TemplateBlock B(*I->Template, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
 class TypedefBlock
     : public TopLevelBlock<TypedefInfo>
 {

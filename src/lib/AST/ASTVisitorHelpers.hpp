@@ -252,7 +252,6 @@ convertToFunctionClass(
     case OldKind::CXXConstructor:    return NewKind::Constructor;
     case OldKind::CXXConversion:     return NewKind::Conversion;
     case OldKind::CXXDestructor:     return NewKind::Destructor;
-    case OldKind::CXXDeductionGuide: return NewKind::Deduction;
     default:
         MRDOCS_UNREACHABLE();
     }

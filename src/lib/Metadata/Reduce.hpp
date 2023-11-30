@@ -31,6 +31,7 @@ void merge(VariableInfo& I, VariableInfo&& Other);
 void merge(SpecializationInfo& I, SpecializationInfo&& Other);
 void merge(FriendInfo& I, FriendInfo&& Other);
 void merge(EnumeratorInfo& I, EnumeratorInfo&& Other);
+void merge(GuideInfo& I, GuideInfo&& Other);
 
 //
 // This file defines the merging of different types of infos. The data in the

@@ -41,6 +41,7 @@ struct EnumeratorInfo;
 struct FieldInfo;
 struct FriendInfo;
 struct FunctionInfo;
+struct GuideInfo;
 struct Info;
 class Javadoc;
 struct Location;

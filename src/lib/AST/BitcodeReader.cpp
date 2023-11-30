@@ -119,6 +119,12 @@ getInfos()
             Infos.emplace_back(std::move(I));
             continue;
         }
+        case BI_GUIDE_BLOCK_ID:
+        {
+            MRDOCS_TRY(auto I, readInfo<GuideBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
+        }
         default:
             // return formatError("invalid top level block");
             if (llvm::Error err = Stream.SkipBlock())

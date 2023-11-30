@@ -61,6 +61,7 @@ public:
 
     void writeRecord(RecordInfo const&);
     void writeFunction(FunctionInfo const&);
+    void writeGuide(GuideInfo const&);
     void writeEnum(EnumInfo const&);
     void writeEnumerator(EnumeratorInfo const&);
     void writeFriend(FriendInfo const&);

@@ -37,6 +37,7 @@ struct VariableInfo;
 struct SpecializationInfo;
 struct FriendInfo;
 struct EnumeratorInfo;
+struct GuideInfo;
 
 /** Info variant discriminator
 */
@@ -51,7 +52,8 @@ enum class InfoKind
     Field,
     Specialization,
     Friend,
-    Enumerator
+    Enumerator,
+    Guide
 };
 
 MRDOCS_DECL dom::String toString(InfoKind kind) noexcept;
@@ -130,6 +132,7 @@ struct MRDOCS_VISIBLE
     constexpr bool isSpecialization() const noexcept { return Kind == InfoKind::Specialization; }
     constexpr bool isFriend()         const noexcept { return Kind == InfoKind::Friend; }
     constexpr bool isEnumerator()     const noexcept { return Kind == InfoKind::Enumerator; }
+    constexpr bool isGuide()          const noexcept { return Kind == InfoKind::Guide; }
 };
 
 //------------------------------------------------
@@ -157,6 +160,7 @@ struct IsInfo : Info
     static constexpr bool isSpecialization() noexcept { return K == InfoKind::Specialization; }
     static constexpr bool isFriend()         noexcept { return K == InfoKind::Friend; }
     static constexpr bool isEnumerator()     noexcept { return K == InfoKind::Enumerator; }
+    static constexpr bool isGuide()          noexcept { return K == InfoKind::Guide; }
 
 protected:
     constexpr explicit IsInfo(SymbolID ID)
@@ -203,6 +207,8 @@ visit(
         return visitor.template visit<FriendInfo>();
     case InfoKind::Enumerator:
         return visitor.template visit<EnumeratorInfo>();
+    case InfoKind::Guide:
+        return visitor.template visit<GuideInfo>();
     default:
         MRDOCS_UNREACHABLE();
     }
