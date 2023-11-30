@@ -75,6 +75,7 @@ grammar
             Access?,
             ID,
             attribute class { "constructor"|"destructor"|"conversion" } ?,
+            attribute exception-spec { text } ?,
             Location *,
             (
                 Attr * |

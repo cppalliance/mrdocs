@@ -776,6 +776,19 @@ DomInfo<T>::construct() const
             { "template",   domCreate(I_.Template, domCorpus_) },
             { "overloadedOperator", I_.specs0.overloadedOperator.get() },
             });
+
+        entries.emplace_back("exceptionSpec", toString(I_.Noexcept));
+        #if 0
+        if(I_.Noexcept.Kind != NoexceptKind::None)
+        {
+            dom::String exceptSpec = "noexcept";
+            if(! I_.Noexcept.Operand.empty())
+                exceptSpec = fmt::format(
+                    "noexcept({})",
+                    I_.Noexcept.Operand);
+            entries.emplace_back("exceptionSpec", std::move(exceptSpec));
+        }
+        #endif
     }
     if constexpr(T::isTypedef())
     {

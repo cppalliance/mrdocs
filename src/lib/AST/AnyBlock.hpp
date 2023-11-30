@@ -191,6 +191,19 @@ decodeRecord(
     return Error::success();
 }
 
+inline
+Error
+decodeRecord(
+    Record const& R,
+    NoexceptInfo& I,
+    llvm::StringRef Blob)
+{
+    I.Implicit = R[0];
+    I.Kind = static_cast<NoexceptKind>(R[1]);
+    I.Operand = Blob;
+    return Error::success();
+}
+
 //------------------------------------------------
 
 struct BitcodeReader::AnyBlock
@@ -859,7 +872,7 @@ public:
                 return Error("wrong TypeInfo kind");
             return decodeRecord(R, static_cast<
                 FunctionTypeInfo&>(*I_).RefQualifier, Blob);
-        case TYPEINFO_EXCEPTION_SPEC:
+        case TYPEINFO_NOEXCEPT:
             if(! I_->isFunction())
                 return Error("wrong TypeInfo kind");
             return decodeRecord(R, static_cast<
@@ -1312,7 +1325,6 @@ public:
     }
 };
 
-
 //------------------------------------------------
 
 template<class T>
@@ -1427,6 +1439,8 @@ public:
             return decodeRecord(R, {&I->specs0.raw, &I->specs1.raw}, Blob);
         case FUNCTION_CLASS:
             return decodeRecord(R, I->Class, Blob);
+        case FUNCTION_NOEXCEPT:
+            return decodeRecord(R, I->Noexcept, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

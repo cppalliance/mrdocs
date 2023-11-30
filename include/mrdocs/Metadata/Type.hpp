@@ -216,7 +216,7 @@ struct FunctionTypeInfo
     std::vector<std::unique_ptr<TypeInfo>> ParamTypes;
     QualifierKind CVQualifiers = QualifierKind::None;
     ReferenceKind RefQualifier = ReferenceKind::None;
-    NoexceptKind ExceptionSpec = NoexceptKind::None;
+    NoexceptInfo ExceptionSpec;
 
     TypeInfo* innerType() const noexcept override
     {

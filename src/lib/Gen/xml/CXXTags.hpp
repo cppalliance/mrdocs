@@ -253,8 +253,9 @@ writeType(
                 if(t.RefQualifier != ReferenceKind::None)
                     attrs.push({"ref-qualifier", toString(t.RefQualifier)});
 
-                if(t.ExceptionSpec != NoexceptKind::None)
-                    attrs.push({"exception-spec", toString(t.ExceptionSpec)});
+                // KRYSTIAN TODO: TypeInfo should use ExceptionInfo!
+                if(auto spec = toString(t.ExceptionSpec); ! spec.empty())
+                    attrs.push({"exception-spec", spec});
             }
 
             // ----------------------------------------------------------------

@@ -251,8 +251,8 @@ operator()(
         if(t.RefQualifier != ReferenceKind::None)
             write(' ', toString(t.RefQualifier));
 
-        if(t.ExceptionSpec != NoexceptKind::None)
-            write(' ', toString(t.ExceptionSpec));
+        if(auto spec = toString(t.ExceptionSpec); ! spec.empty())
+            write(' ', spec);
     }
 
     if(TypeInfo* inner = t.innerType())

@@ -709,9 +709,15 @@ public:
 
     //------------------------------------------------
 
-    std::string
-    getTypeAsString(
-        QualType T)
+    std::string getExprAsString(const Expr* E)
+    {
+        std::string result;
+        llvm::raw_string_ostream stream(result);
+        E->printPretty(stream, nullptr, context_.getPrintingPolicy());
+        return result;
+    }
+
+    std::string getTypeAsString(QualType T)
     {
         return T.getAsString(context_.getPrintingPolicy());
     }
@@ -970,8 +976,7 @@ public:
                     T->getRefQualifier());
                 I->CVQualifiers = convertToQualifierKind(
                     T->getMethodQuals().getFastQualifiers());
-                I->ExceptionSpec = convertToNoexceptKind(
-                    T->getExceptionSpecType());
+                buildNoexceptInfo(I->ExceptionSpec, T);
                 *std::exchange(inner, &I->ReturnType) = std::move(I);
                 qt = T->getReturnType();
                 continue;
@@ -1271,6 +1276,31 @@ public:
     }
 
     void
+    buildNoexceptInfo(
+        NoexceptInfo& I,
+        const FunctionProtoType* FPT)
+    {
+        MRDOCS_ASSERT(FPT);
+        I.Implicit = ! FPT->hasNoexceptExceptionSpec();
+        #if 0
+        // if the exception specification is unevaluated,
+        // we just consider it to be dependent
+        if(FPT->getExceptionSpecType() ==
+            ExceptionSpecificationType::EST_Unevaluated)
+            I.Kind = NoexceptKind::Dependent;
+        else
+            I.Kind = convertToNoexceptKind(FPT->canThrow());
+        #else
+        I.Kind = convertToNoexceptKind(
+            FPT->getExceptionSpecType());
+        #endif
+
+        // store the operand, if any
+        if(Expr* NoexceptExpr = FPT->getNoexceptExpr())
+            I.Operand = getExprAsString(NoexceptExpr);
+    }
+
+    void
     buildExprInfo(
         ExprInfo& I,
         const Expr* E)
@@ -1306,6 +1336,16 @@ public:
     {
         buildExprInfo(I, E);
         I.Value.emplace(getValue<T>(V));
+    }
+
+    QualType
+    getDeclaratorType(
+        const DeclaratorDecl* DD)
+    {
+        if(auto* TSI = DD->getTypeSourceInfo();
+            TSI && ! TSI->getType().isNull())
+            return TSI->getType();
+        return DD->getType();
     }
 
     std::unique_ptr<TParam>
@@ -2151,6 +2191,17 @@ public:
         addSourceLocation(I, D->getBeginLoc(),
             D->isThisDeclarationADefinition(), documented);
 
+        // KRYSTIAN TODO: move other extraction that requires
+        // a valid function type here
+        if(auto FT = getDeclaratorType(D); ! FT.isNull())
+        {
+            const auto* FPT = FT->template getAs<FunctionProtoType>();
+
+            buildNoexceptInfo(I.Noexcept, FPT);
+
+            I.specs0.hasTrailingReturn |= FPT->hasTrailingReturn();
+        }
+
         //
         // FunctionDecl
         //
@@ -2165,14 +2216,10 @@ public:
             // subsumes D->hasAttr<C11NoReturnAttr>()
             // subsumes D->getType()->getAs<FunctionType>()->getNoReturnAttr()
         I.specs0.hasOverrideAttr |= D->template hasAttr<OverrideAttr>();
-        if(auto const* FP = D->getType()->template getAs<FunctionProtoType>())
-            I.specs0.hasTrailingReturn |= FP->hasTrailingReturn();
         I.specs0.constexprKind |=
             convertToConstexprKind(
                 D->getConstexprKind());
-        I.specs0.exceptionSpec |=
-            convertToNoexceptKind(
-                D->getExceptionSpecType());
+
         I.specs0.overloadedOperator |=
             convertToOperatorKind(
                 D->getOverloadedOperator());

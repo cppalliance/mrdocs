@@ -13,6 +13,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Dom.hpp>
+#include <string>
 #include <string_view>
 
 namespace clang {
@@ -70,30 +71,31 @@ enum class ExplicitKind
 */
 enum class NoexceptKind
 {
-    None = 0,
-    // throw()
-    ThrowNone,
-    // throw(type-id-list)
-    Throw,
-    // throw(...) (microsoft extension)
-    ThrowAny,
-    // __declspec(nothrow) (microsoft extension)
-    NoThrow,
-    // noexcept-specifier, no constant-expression
-    Noexcept,
-    // noexcept-specifier, constant-expression evaluates to false
-    NoexceptFalse,
-    // noexcept-specifier, constant-expression evaluates to true
-    NoexceptTrue,
-    // noexcept-specifier, dependent constant-expression
-    NoexceptDependent,
+    /** Potentially-throwing exception specification
+    */
+    False = 0,
+    /** Non-throwing exception specification
+    */
+    True,
+    /** Dependent exception specification
+    */
+    Dependent
+};
 
-    // not evaluated yet, for special member function
-    Unevaluated,
-    // not instantiated yet
-    Uninstantiated,
-    // not parsed yet
-    Unparsed
+// KRYSTIAN FIXME: this needs to be improved (a lot)
+struct NoexceptInfo
+{
+    /** Whether a noexcept-specifier was user-written.
+    */
+    bool Implicit = true;
+
+    /** The evaluated exception specification.
+    */
+    NoexceptKind Kind = NoexceptKind::False;
+
+    /** The operand of the noexcept-specifier, if any.
+    */
+    std::string Operand;
 };
 
 /** Operator kinds
@@ -182,6 +184,21 @@ MRDOCS_DECL dom::String toString(ExplicitKind kind) noexcept;
 MRDOCS_DECL dom::String toString(NoexceptKind kind) noexcept;
 MRDOCS_DECL dom::String toString(ReferenceKind kind) noexcept;
 MRDOCS_DECL dom::String toString(StorageClassKind kind) noexcept;
+
+/** Convert NoexceptInfo to a string.
+
+    @param resolved If true, the operand is not shown when
+    the exception specification is non-dependent.
+
+    @param implicit If true, implicit exception specifications
+    are shown.
+*/
+MRDOCS_DECL
+dom::String
+toString(
+    NoexceptInfo info,
+    bool resolved = false,
+    bool implicit = false);
 
 } // mrdocs
 } // clang

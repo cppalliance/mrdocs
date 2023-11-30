@@ -19,7 +19,7 @@
 {{~#if symbol.isConst}} const{{/if~}}
 {{#if symbol.isVolatile}} volatile{{/if~}}
 {{#if symbol.refQualifier}} {{symbol.refQualifier}}{{/if~}}
-{{#if (eq symbol.exceptionSpec "noexcept")}} noexcept{{/if~}}
+{{#if symbol.exceptionSpec}} {{symbol.exceptionSpec}}{{/if~}}
 {{#if (eq symbol.class "normal")}}{{>declarator-after symbol.return}}{{/if~}}
 {{#if symbol.hasOverrideAttr}} override{{/if~}}
 {{#if symbol.isFinal}} final{{/if~}}

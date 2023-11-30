@@ -114,20 +114,43 @@ convertToNoexceptKind(
 {
     using OldKind = ExceptionSpecificationType;
     using NewKind = NoexceptKind;
+    // KRYSTIAN TODO: right now we convert pre-C++17 dynamic exception
+    // specifications to an (roughly) equivalent noexcept-specifier
     switch(spec)
     {
-    case OldKind::EST_None:              return NewKind::None;
-    case OldKind::EST_DynamicNone:       return NewKind::ThrowNone;
-    case OldKind::EST_Dynamic:           return NewKind::Throw;
-    case OldKind::EST_MSAny:             return NewKind::ThrowAny;
-    case OldKind::EST_NoThrow:           return NewKind::NoThrow;
-    case OldKind::EST_BasicNoexcept:     return NewKind::Noexcept;
-    case OldKind::EST_DependentNoexcept: return NewKind::NoexceptDependent;
-    case OldKind::EST_NoexceptFalse:     return NewKind::NoexceptFalse;
-    case OldKind::EST_NoexceptTrue:      return NewKind::NoexceptTrue;
-    case OldKind::EST_Unevaluated:       return NewKind::Unevaluated;
-    case OldKind::EST_Uninstantiated:    return NewKind::Uninstantiated;
-    case OldKind::EST_Unparsed:          return NewKind::Unparsed;
+    case OldKind::EST_None:
+    case OldKind::EST_MSAny:
+    case OldKind::EST_Unevaluated:
+    case OldKind::EST_Uninstantiated:
+    // we *shouldn't* ever encounter an unparsed exception specification,
+    // assuming that clang is working correctly...
+    case OldKind::EST_Unparsed:
+    case OldKind::EST_Dynamic:
+    case OldKind::EST_NoexceptFalse:
+        return NewKind::False;
+    case OldKind::EST_NoThrow:
+    case OldKind::EST_BasicNoexcept:
+    case OldKind::EST_NoexceptTrue:
+    case OldKind::EST_DynamicNone:
+        return NewKind::True;
+    case OldKind::EST_DependentNoexcept:
+        return NewKind::Dependent;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+NoexceptKind
+convertToNoexceptKind(
+    CanThrowResult kind)
+{
+    using OldKind = CanThrowResult;
+    using NewKind = NoexceptKind;
+    switch(kind)
+    {
+    case OldKind::CT_Can:       return NewKind::False;
+    case OldKind::CT_Cannot:    return NewKind::True;
+    case OldKind::CT_Dependent: return NewKind::Dependent;
     default:
         MRDOCS_UNREACHABLE();
     }

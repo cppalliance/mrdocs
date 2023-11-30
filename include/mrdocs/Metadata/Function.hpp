@@ -155,6 +155,8 @@ struct FunctionInfo
     FnFlags0 specs0{.raw{0}};
     FnFlags1 specs1{.raw{0}};
 
+    NoexceptInfo Noexcept;
+
     //--------------------------------------------
 
     explicit FunctionInfo(SymbolID ID) noexcept

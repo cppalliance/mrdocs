@@ -51,9 +51,8 @@
   </struct>
   <struct name="T09" id="SX7tpa77UInh7a4AsMFjfiCtoLY=">
     <file path="mem-fn.cpp" line="11" class="def"/>
-    <function name="f" id="u+MePKsNF/sYSk6UpgNS65+USGU=">
+    <function name="f" exception-spec="noexcept" id="u+MePKsNF/sYSk6UpgNS65+USGU=">
       <file path="mem-fn.cpp" line="11"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
     </function>
   </struct>
   <struct name="T10" id="TJnjDRnoO8E/5XEw8BaODsKxlwQ=">
@@ -121,30 +120,27 @@
   </struct>
   <struct name="U" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=">
     <file path="mem-fn.cpp" line="22" class="def"/>
-    <function name="f1" id="DBXd564vaQo7GHkh6XCC6HV78/I=">
+    <function name="f1" exception-spec="noexcept" id="DBXd564vaQo7GHkh6XCC6HV78/I=">
       <file path="mem-fn.cpp" line="24" class="def"/>
       <attr id="is-variadic"/>
       <attr id="has-trailing-return"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="is-const"/>
       <attr id="is-volatile"/>
     </function>
-    <function name="f2" id="II436kVwM/ZBYOf9q474VxRXK6c=">
+    <function name="f2" exception-spec="noexcept" id="II436kVwM/ZBYOf9q474VxRXK6c=">
       <file path="mem-fn.cpp" line="25" class="def"/>
       <attr id="has-trailing-return"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="storage-class" name="static" value="2"/>
       <return>
         <type name="char"/>
       </return>
     </function>
-    <function name="f3" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
+    <function name="f3" exception-spec="noexcept" id="YOkqb7VjZXBs2Rg5gWCOYGX3Tnw=">
       <file path="mem-fn.cpp" line="26"/>
       <attr id="is-virtual-as-written"/>
       <attr id="is-pure"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="is-const"/>
       <attr id="is-volatile"/>
       <return>
@@ -157,10 +153,9 @@
     <base>
       <type class="tag" id="FLgkhM3m0U3Lo2o3XLPUizWPH00=" name="U"/>
     </base>
-    <function name="f3" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
+    <function name="f3" exception-spec="noexcept" id="/C2pxLlwRMKnr6YRbVnykUArzEI=">
       <file path="mem-fn.cpp" line="31"/>
       <attr id="has-override"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="is-const"/>
       <attr id="is-volatile"/>
       <return>

@@ -17,9 +17,8 @@
         </type>
       </param>
     </function>
-    <function class="constructor" name="Explicit" id="saOH3agrCzNHcRhbXHOM0FYFxGc=">
+    <function class="constructor" name="Explicit" exception-spec="noexcept" id="saOH3agrCzNHcRhbXHOM0FYFxGc=">
       <file path="explicit-ctor.cpp" line="6"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="explicit-spec" name="explicit" value="1"/>
       <param>
         <type class="rvalue-reference">
@@ -53,9 +52,8 @@
         </type>
       </param>
     </function>
-    <function class="constructor" name="ExplicitTrue" id="iQOO8pEh0iNSnpupVwR9tCVIf8U=">
+    <function class="constructor" name="ExplicitTrue" exception-spec="noexcept" id="iQOO8pEh0iNSnpupVwR9tCVIf8U=">
       <file path="explicit-ctor.cpp" line="13"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="explicit-spec" name="explicit(true)" value="3"/>
       <param>
         <type class="rvalue-reference">
@@ -89,9 +87,8 @@
         </type>
       </param>
     </function>
-    <function class="constructor" name="ExplicitFalse" id="qXjKOO0FQ3p2vTehkEQl2kIKpFs=">
+    <function class="constructor" name="ExplicitFalse" exception-spec="noexcept" id="qXjKOO0FQ3p2vTehkEQl2kIKpFs=">
       <file path="explicit-ctor.cpp" line="20"/>
-      <attr id="exception-spec" name="noexcept" value="5"/>
       <attr id="explicit-spec" name="explicit(false)" value="2"/>
       <param>
         <type class="rvalue-reference">
@@ -127,9 +124,8 @@
           </type>
         </param>
       </function>
-      <function class="constructor" name="ExplicitExpression" id="gDoLCstIvgYYJng1jhLOLe/yz+Q=">
+      <function class="constructor" name="ExplicitExpression" exception-spec="noexcept" id="gDoLCstIvgYYJng1jhLOLe/yz+Q=">
         <file path="explicit-ctor.cpp" line="28"/>
-        <attr id="exception-spec" name="noexcept" value="5"/>
         <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <param>
           <type class="rvalue-reference">

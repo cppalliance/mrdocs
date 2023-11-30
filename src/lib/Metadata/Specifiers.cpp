@@ -70,21 +70,32 @@ dom::String toString(NoexceptKind kind) noexcept
 {
     switch(kind)
     {
-    case NoexceptKind::None:              return "";
-    case NoexceptKind::ThrowNone:         return "throw()";
-    case NoexceptKind::Throw:             return "throw";
-    case NoexceptKind::ThrowAny:          return "throw(...)";
-    case NoexceptKind::NoThrow:           return "__declspec(nothrow)";
-    case NoexceptKind::Noexcept:          return "noexcept";
-    case NoexceptKind::NoexceptFalse:     return "noexcept(false)";
-    case NoexceptKind::NoexceptTrue:      return "noexcept(true)";
-    case NoexceptKind::NoexceptDependent: return "noexcept(expr)";
-    case NoexceptKind::Unevaluated:       return "";
-    case NoexceptKind::Uninstantiated:    return "";
-    case NoexceptKind::Unparsed:          return "";
+    case NoexceptKind::False:     return "";
+    case NoexceptKind::True:      return "noexcept";
+    case NoexceptKind::Dependent: return "noexcept(...)";
     default:
         MRDOCS_UNREACHABLE();
     }
+}
+
+dom::String
+toString(
+    NoexceptInfo info,
+    bool resolved,
+    bool implicit)
+{
+    if(! implicit && info.Implicit)
+        return "";
+    if(info.Kind == NoexceptKind::Dependent &&
+        info.Operand.empty())
+        return "";
+    if(info.Kind == NoexceptKind::False &&
+        (resolved || info.Operand.empty()))
+        return "";
+    if(info.Kind == NoexceptKind::True &&
+        (resolved || info.Operand.empty()))
+        return "noexcept";
+    return fmt::format("noexcept({})", info.Operand);
 }
 
 dom::String toString(ReferenceKind kind) noexcept

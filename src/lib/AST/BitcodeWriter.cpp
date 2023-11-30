@@ -177,6 +177,26 @@ static void LocationAbbrev(
         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
 }
 
+// Assumes that the file will not have more than 65535 lines.
+static void NoexceptAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // NoexceptInfo::Implicit
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::BoolSize),
+        // NoexceptInfo::Kind
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 2),
+        // NoexceptInfo::Operand
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::StringLengthSize),
+        // 5. The string blob
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
+}
+
 //------------------------------------------------
 
 struct RecordIDDsc
@@ -235,7 +255,7 @@ BlockIdNameMap = []()
         {BI_SPECIALIZATION_BLOCK_ID, "SpecializationBlock"},
         {BI_FRIEND_BLOCK_ID, "FriendBlock"},
         {BI_ENUMERATOR_BLOCK_ID, "EnumeratorBlock"},
-        {BI_VARIABLE_BLOCK_ID, "VarBlock"}
+        {BI_VARIABLE_BLOCK_ID, "VarBlock"},
     };
     MRDOCS_ASSERT(Inits.size() == BlockIdCount);
     for (const auto& Init : Inits)
@@ -267,6 +287,7 @@ RecordIDNameMap = []()
         {FRIEND_SYMBOL, {"FriendSymbol", &SymbolIDAbbrev}},
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {FUNCTION_CLASS, {"FunctionClass", &Integer32Abbrev}},
+        {FUNCTION_NOEXCEPT, {"FunctionNoexcept", &NoexceptAbbrev}},
         {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
         {FUNCTION_PARAM_DEFAULT, {"Default", &StringAbbrev}},
         {GUIDE_EXPLICIT, {"Explicit", &Integer32Abbrev}},
@@ -307,7 +328,7 @@ RecordIDNameMap = []()
         {TYPEINFO_ID, {"TypeinfoID", &SymbolIDAbbrev}},
         {TYPEINFO_NAME, {"TypeinfoName", &StringAbbrev}},
         {TYPEINFO_CVQUAL, {"TypeinfoCV", &Integer32Abbrev}},
-        {TYPEINFO_EXCEPTION_SPEC, {"TypeinfoNoexcept", &Integer32Abbrev}},
+        {TYPEINFO_NOEXCEPT, {"TypeinfoNoexcept", &NoexceptAbbrev}},
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}}
@@ -357,7 +378,7 @@ RecordsByBlock{
         FIELD_IS_MUTABLE, FIELD_IS_BITFIELD}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
-        {FUNCTION_BITS, FUNCTION_CLASS}},
+        {FUNCTION_BITS, FUNCTION_CLASS, FUNCTION_NOEXCEPT}},
     // Param
     {BI_FUNCTION_PARAM_BLOCK_ID,
         {FUNCTION_PARAM_NAME, FUNCTION_PARAM_DEFAULT}},
@@ -401,7 +422,7 @@ RecordsByBlock{
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
         {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_ID, TYPEINFO_NAME,
-        TYPEINFO_CVQUAL, TYPEINFO_EXCEPTION_SPEC, TYPEINFO_REFQUAL}},
+        TYPEINFO_CVQUAL, TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL}},
     {BI_TYPEINFO_PARENT_BLOCK_ID,
         {}},
     {BI_TYPEINFO_CHILD_BLOCK_ID,
@@ -414,7 +435,7 @@ RecordsByBlock{
     // VariableInfo
     {BI_VARIABLE_BLOCK_ID, {VARIABLE_BITS}},
     // GuideInfo
-    {BI_GUIDE_BLOCK_ID, {GUIDE_EXPLICIT}}
+    {BI_GUIDE_BLOCK_ID, {GUIDE_EXPLICIT}},
 };
 
 //------------------------------------------------
@@ -689,6 +710,23 @@ emitRecord(
 void
 BitcodeWriter::
 emitRecord(
+    NoexceptInfo const& I, RecordID ID)
+{
+    MRDOCS_ASSERT(RecordIDNameMap[ID] && "Unknown RecordID.");
+    MRDOCS_ASSERT(RecordIDNameMap[ID].Abbrev == &NoexceptAbbrev &&
+        "Abbrev type mismatch.");
+    if (!prepRecordData(ID, true))
+        return;
+
+    Record.push_back(I.Implicit);
+    Record.push_back(to_underlying(I.Kind));
+    Record.push_back(I.Operand.size());
+    Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, I.Operand);
+}
+
+void
+BitcodeWriter::
+emitRecord(
     bool Val, RecordID ID)
 {
     MRDOCS_ASSERT(RecordIDNameMap[ID] && "Unknown RecordID.");
@@ -846,6 +884,7 @@ emitBlock(
     emitBlock(I.ReturnType);
     for (const auto& N : I.Params)
         emitBlock(N);
+    emitRecord(I.Noexcept, FUNCTION_NOEXCEPT);
 }
 
 void
@@ -988,7 +1027,7 @@ emitBlock(
                 emitBlock(P, BI_TYPEINFO_PARAM_BLOCK_ID);
 
             emitRecord(t.RefQualifier, TYPEINFO_REFQUAL);
-            emitRecord(t.ExceptionSpec, TYPEINFO_EXCEPTION_SPEC);
+            emitRecord(t.ExceptionSpec, TYPEINFO_NOEXCEPT);
         }
     });
 }

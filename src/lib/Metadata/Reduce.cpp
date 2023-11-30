@@ -200,6 +200,8 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
         I.Template = std::move(Other.Template);
     I.specs0.raw.value |= Other.specs0.raw.value;
     I.specs1.raw.value |= Other.specs1.raw.value;
+    if(I.Noexcept.Implicit)
+        I.Noexcept = std::move(Other.Noexcept);
 }
 
 void merge(GuideInfo& I, GuideInfo&& Other)

@@ -318,11 +318,15 @@ writeFunction(
 {
     openTemplate(I.Template);
 
+    auto except_spec = toString(I.Noexcept);
+
     tags_.open(functionTagName, {
         { "class", toString(I.Class),
             I.Class != FunctionClass::Normal },
         { "name", I.Name },
         { I.Access },
+        { "exception-spec", except_spec,
+            ! except_spec.empty() },
         { I.id }
         });
 
