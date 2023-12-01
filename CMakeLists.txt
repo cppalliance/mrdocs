@@ -24,7 +24,7 @@ endif()
 cmake_policy(SET CMP0111 OLD)
 project(
     MrDocs
-    VERSION 1.0.0
+    VERSION 0.0.1
     DESCRIPTION "C++ Documentation Tool"
     HOMEPAGE_URL "https://github.com/cppalliance/mrdocs"
     LANGUAGES CXX C
@@ -115,12 +115,31 @@ unset(CMAKE_FOLDER)
 # mrdocs-core
 #
 #-------------------------------------------------
+# Create include/mrdocs/Version.hpp from Version.hpp.in
+find_package(Git QUIET)
+if (GIT_FOUND)
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            OUTPUT_VARIABLE PROJECT_VERSION_BUILD
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    set(PROJECT_VERSION_BUILD "${PROJECT_VERSION_BUILD}")
+else()
+    set(PROJECT_VERSION_BUILD "")
+endif()
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdocs/Version.hpp.in
+    ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Version.hpp
+    @ONLY
+)
 
 file(
     GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS
         src/lib/*.cpp src/lib/*.hpp src/lib/*.ipp
         src/lib/*.natvis
         include/*.hpp include/*.ipp
+        ${CMAKE_CURRENT_BINARY_DIR}/src/lib/*.hpp
         include/*.natvis
         SourceFileNames.cpp)
 add_library(mrdocs-core ${LIB_SOURCES})
@@ -128,6 +147,7 @@ target_compile_features(mrdocs-core PUBLIC cxx_std_20)
 target_include_directories(mrdocs-core
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
     "${PROJECT_SOURCE_DIR}/src"
@@ -402,6 +422,12 @@ if (MRDOCS_INSTALL)
     # include
     #-------------------------------------------------
     install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdocs
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+            COMPONENT development
+            FILES_MATCHING
+            PATTERN "*.[hi]pp")
+
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs
             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
             COMPONENT development
             FILES_MATCHING
