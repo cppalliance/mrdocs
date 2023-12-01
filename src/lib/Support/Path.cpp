@@ -324,6 +324,22 @@ appendPath(
     return static_cast<std::string>(temp.str());
 }
 
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name1,
+    std::string_view name2,
+    std::string_view name3,
+    std::string_view name4)
+{
+    namespace path = llvm::sys::path;
+
+    SmallPathString temp(makeDirsy(basePath));
+    path::append(temp, name1, name2, name3, name4);
+    path::remove_dots(temp, true);
+    return static_cast<std::string>(temp.str());
+}
+
 Error
 requireDirectory(
     std::string_view pathName)
