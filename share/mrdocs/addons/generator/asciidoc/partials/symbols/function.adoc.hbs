@@ -19,10 +19,10 @@
 
 {{! TODO: == Exceptions }}
 
-{{#if symbol.return}}
+{{#if (and symbol.return (eq symbol.class "normal"))}}
 == Return Value
 
-* `{{symbol.return.name}}` {{! TODO: symbol.doc.return }}
+* `{{>declarator symbol.return}}` {{! TODO: symbol.doc.return }}
 
 {{/if}}
 
@@ -34,7 +34,7 @@
 
 {{#each symbol.params}}
 | *{{name}}*
-| `{{type.name}}`
+| `{{>declarator type}}`
 {{! TODO: symbol.doc.params.[name] }}
 
 {{/each}}
