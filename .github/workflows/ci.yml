@@ -426,7 +426,7 @@ jobs:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          limit: 150
+          limit: 1000
 
       - name: Remove branch release
         if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name)) }}
