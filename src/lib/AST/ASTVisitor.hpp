@@ -25,6 +25,7 @@ namespace mrdocs {
 */
 std::unique_ptr<tooling::FrontendActionFactory>
 makeFrontendActionFactory(
+    std::string_view argv0,
     ExecutionContext& ex,
     ConfigImpl const& config);
 

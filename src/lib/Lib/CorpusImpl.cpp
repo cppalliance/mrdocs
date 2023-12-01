@@ -113,9 +113,6 @@ build(
     #else
         InfoExecutionContext context(*config);
     #endif
-    std::unique_ptr<tooling::FrontendActionFactory> action =
-        makeFrontendActionFactory(context, *config);
-    MRDOCS_ASSERT(action);
 
     // Get a copy of the filename strings
     std::vector<std::string> files =
@@ -127,6 +124,13 @@ build(
     auto const processFile =
         [&](std::string path)
         {
+            auto args = compilations.getCompileCommands(path);
+
+            std::unique_ptr<tooling::FrontendActionFactory> action =
+                makeFrontendActionFactory(
+                    args.front().CommandLine.front(), context, *config);
+            MRDOCS_ASSERT(action);
+
             // Each thread gets an independent copy of a VFS to allow different
             // concurrent working directories.
             IntrusiveRefCntPtr<llvm::vfs::FileSystem> FS =

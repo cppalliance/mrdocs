@@ -3122,9 +3122,11 @@ struct ASTAction
     : public clang::ASTFrontendAction
 {
     ASTAction(
+        std::string_view argv0,
         ExecutionContext& ex,
         ConfigImpl const& config) noexcept
-        : ex_(ex)
+        : argv0_(argv0)
+        , ex_(ex)
         , config_(config)
     {
     }
@@ -3150,11 +3152,20 @@ struct ASTAction
         clang::CompilerInstance& Compiler,
         llvm::StringRef InFile) override
     {
+        if(Compiler.getHeaderSearchOpts().UseBuiltinIncludes &&
+            Compiler.getHeaderSearchOpts().ResourceDir.empty())
+        {
+            Compiler.getHeaderSearchOpts().ResourceDir =
+                CompilerInvocation::GetResourcesPath(
+                    argv0_.data(), nullptr);
+        }
+
         return std::make_unique<ASTVisitorConsumer>(
             config_, ex_, Compiler);
     }
 
 private:
+    std::string_view argv0_;
     ExecutionContext& ex_;
     ConfigImpl const& config_;
 };
@@ -3165,9 +3176,11 @@ struct ASTActionFactory :
     tooling::FrontendActionFactory
 {
     ASTActionFactory(
+        std::string_view argv0,
         ExecutionContext& ex,
         ConfigImpl const& config) noexcept
-        : ex_(ex)
+        : argv0_(argv0)
+        , ex_(ex)
         , config_(config)
     {
     }
@@ -3175,10 +3188,12 @@ struct ASTActionFactory :
     std::unique_ptr<FrontendAction>
     create() override
     {
-        return std::make_unique<ASTAction>(ex_, config_);
+        return std::make_unique<ASTAction>(
+            argv0_, ex_, config_);
     }
 
 private:
+    std::string_view argv0_;
     ExecutionContext& ex_;
     ConfigImpl const& config_;
 };
@@ -3189,10 +3204,11 @@ private:
 
 std::unique_ptr<tooling::FrontendActionFactory>
 makeFrontendActionFactory(
+    std::string_view argv0,
     ExecutionContext& ex,
     ConfigImpl const& config)
 {
-    return std::make_unique<ASTActionFactory>(ex, config);
+    return std::make_unique<ASTActionFactory>(argv0, ex, config);
 }
 
 } // mrdocs
