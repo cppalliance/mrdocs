@@ -436,13 +436,25 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # share
     #-------------------------------------------------
-    file(GLOB SHARE_SUBDIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/share ${CMAKE_CURRENT_SOURCE_DIR}/share/*)
+    file(GLOB SHARE_SUBDIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/*)
     foreach (dir ${SHARE_SUBDIRS})
+        if (NOT IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir})
+            continue()
+        endif()
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir}
+                DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs
+                FILES_MATCHING PATTERN "*")
+    endforeach()
+    file(GLOB ROOT_SHARE_SUBDIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/share ${CMAKE_CURRENT_SOURCE_DIR}/share/*)
+    foreach (dir ${ROOT_SHARE_SUBDIRS})
+        if (dir STREQUAL "mrdocs")
+            continue()
+        endif()
         if (NOT IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/${dir})
             continue()
         endif()
         install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/${dir}
-                DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${dir}
+                DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}
                 FILES_MATCHING PATTERN "*")
     endforeach()
 
