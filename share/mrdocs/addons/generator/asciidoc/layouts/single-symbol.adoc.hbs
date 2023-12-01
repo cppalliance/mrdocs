@@ -1,4 +1,2 @@
-{{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
-[#{{#if (is_multipage)}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}]
-
+[#{{replace (replace symbol.ref '/' '_') '.adoc' ''}}]
 {{> (concat 'symbols' '/' (lookup symbol 'kind')) symbol=symbol}}
