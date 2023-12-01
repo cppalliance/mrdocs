@@ -22,83 +22,81 @@
 namespace clang {
 namespace mrdocs {
 
-Error
+Expected<void>
 DoGenerateAction()
 {
-    auto& generators = getGenerators();
-
-    ThreadPool threadPool(toolArgs.concurrency);
-
-    // Calculate additional YAML settings from command line options.
+    // Get additional YAML settings from command line
     std::string extraYaml;
     {
         llvm::raw_string_ostream os(extraYaml);
-        if(toolArgs.ignoreMappingFailures.getValue())
+        if (toolArgs.ignoreMappingFailures.getValue())
+        {
             os << "ignore-failures: true\n";
+        }
     }
 
+    // Load YAML configuration file
     std::shared_ptr<ConfigImpl const> config;
+    ThreadPool threadPool(toolArgs.concurrency);
     {
-        // Load configuration file
-        if(toolArgs.configPath.empty())
-            return formatError("the config path argument is missing");
-        auto configFile = loadConfigFile(
+        MRDOCS_CHECK(toolArgs.configPath, "The config path argument is missing");
+        MRDOCS_TRY(auto configFile, loadConfigFile(
             toolArgs.configPath,
             toolArgs.addonsDir,
             extraYaml,
             nullptr,
-            threadPool);
-        if(! configFile)
-            return configFile.error();
-
-        config = std::move(configFile.value());
+            threadPool));
+        config = std::move(configFile);
     }
 
-
-    // Create the generator
-    auto generator = generators.find(config->settings().generate);
-    if(! generator)
-        return formatError("the Generator \"{}\" was not found",
-            config->settings().generate);
+    // Get the generator
+    MRDOCS_TRY(
+        Generator const& generator,
+        getGenerators().find(config->settings().generate),
+        formatError(
+            "the Generator \"{}\" was not found",
+            config->settings().generate));
 
     // Load the compilation database
-    if(toolArgs.inputPaths.empty())
-        return formatError("the compilation database path argument is missing");
-    if(toolArgs.inputPaths.size() > 1)
-        return formatError("got {} input paths where 1 was expected", toolArgs.inputPaths.size());
+    MRDOCS_CHECK(toolArgs.inputPaths, "The compilation database path argument is missing");
+    MRDOCS_CHECK(toolArgs.inputPaths.size() == 1,
+        formatError(
+            "got {} input paths where 1 was expected",
+            toolArgs.inputPaths.size()));
     auto compilationsPath = files::normalizePath(toolArgs.inputPaths.front());
     std::string errorMessage;
-    auto jsonCompilations = tooling::JSONCompilationDatabase::loadFromFile(
-        compilationsPath, errorMessage, tooling::JSONCommandLineSyntax::AutoDetect);
-    if(! jsonCompilations)
-        return Error(std::move(errorMessage));
+    MRDOCS_TRY_MSG(
+        auto& jsonCompilations,
+        tooling::JSONCompilationDatabase::loadFromFile(
+            compilationsPath,
+            errorMessage,
+            tooling::JSONCommandLineSyntax::AutoDetect),
+        std::move(errorMessage));
 
     // Calculate the working directory
-    auto absPath = files::makeAbsolute(compilationsPath);
-    if(! absPath)
-        return absPath.error();
-    auto workingDir = files::getParentDir(*absPath);
+    MRDOCS_TRY(auto absPath, files::makeAbsolute(compilationsPath));
+    auto workingDir = files::getParentDir(absPath);
 
-    // normalize outputPath
-    if( toolArgs.outputPath.empty())
-        return formatError("output path is empty");
+    // Normalize outputPath
+    MRDOCS_CHECK(toolArgs.outputPath, "The output path argument is missing");
     toolArgs.outputPath = files::normalizePath(
         files::makeAbsolute(toolArgs.outputPath,
             (*config)->workingDir));
 
     // Convert relative paths to absolute
     AbsoluteCompilationDatabase compilations(
-        workingDir, *jsonCompilations, config);
+        workingDir, jsonCompilations, config);
 
-    // Run the tool, this can take a while
-    auto corpus = CorpusImpl::build(
-        report::Level::info, config, compilations);
-    if(! corpus)
-        return formatError("CorpusImpl::build returned \"{}\"", corpus.error());
+    // Run the tool: this can take a while
+    MRDOCS_TRY(
+        auto corpus,
+        CorpusImpl::build(
+            report::Level::info, config, compilations));
 
-    // Run the generator.
+    // Run the generator
     report::info("Generating docs\n");
-    return generator->build(toolArgs.outputPath.getValue(), **corpus);
+    MRDOCS_TRY(generator.build(toolArgs.outputPath.getValue(), *corpus));
+    return {};
 }
 
 } // mrdocs

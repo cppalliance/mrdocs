@@ -17,59 +17,47 @@
 namespace clang {
 namespace mrdocs {
 
-Error
+Expected<void>
 setupAddonsDir(
     llvm::cl::opt<std::string>& addonsDirArg,
     char const* argv0,
     void* addressOfMain)
 {
-    namespace fs = llvm::sys::fs;
-    using Process = llvm::sys::Process;
-
-    std::string addonsDir;
-
-    // Set addons dir
-    if(! addonsDirArg.getValue().empty())
+    // Set addons dir from command line argument
+    if (!addonsDirArg.getValue().empty())
     {
-        // from command line
-        auto absPath = files::makeAbsolute(
-            addonsDirArg.getValue());
-        if(! absPath)
-            return absPath.error();
-        addonsDir = files::makeDirsy(files::normalizePath(*absPath));
-        if(auto err = files::requireDirectory(addonsDir))
-            return err;
+        MRDOCS_TRY(
+            std::string absPath,
+            files::makeAbsolute(addonsDirArg.getValue()));
+        std::string addonsDir = files::makeDirsy(
+            files::normalizePath(absPath));
+        MRDOCS_TRY(files::requireDirectory(addonsDir));
         addonsDirArg.getValue() = addonsDir;
+        return {};
     }
-    else
-    {
-        // check process working directory
-        addonsDir = fs::getMainExecutable(argv0, addressOfMain);
-        if(addonsDir.empty())
-            return Error("getMainExecutable failed");
-        addonsDir = files::makeDirsy(files::appendPath(
-            files::getParentDir(addonsDir), "addons"));
-        if(! files::requireDirectory(addonsDir).failed())
-        {
-            // from directory containing the process executable
-            addonsDirArg.getValue() = addonsDir;
-        }
-        else
-        {
-            auto addonsEnvVar = Process::GetEnv("MRDOCS_ADDONS_DIR");
-            if(! addonsEnvVar.has_value())
-                return Error("no MRDOCS_ADDONS_DIR in environment");
 
-            // from environment variable
-            addonsDir = files::makeDirsy(files::normalizePath(*addonsEnvVar));
-            if(auto err = files::requireAbsolute(addonsDir))
-                return err;
-            if(auto err = files::requireDirectory(addonsDir))
-                return err;
-            addonsDirArg.getValue() = addonsDir;
-        }
+    // Set addons dir from process working directory
+    std::string addonsDir = llvm::sys::fs::getMainExecutable(argv0, addressOfMain);
+    MRDOCS_CHECK(addonsDir, "getMainExecutable failed");
+    addonsDir = files::makeDirsy(files::appendPath(
+        files::getParentDir(addonsDir), "addons"));
+    Error err = files::requireDirectory(addonsDir);
+    if (!err.failed())
+    {
+        addonsDirArg.getValue() = addonsDir;
+        return {};
     }
-    return Error::success();
+
+    // Set addons dir from environment variable
+    MRDOCS_TRY(
+        std::string addonsEnvVar,
+        llvm::sys::Process::GetEnv("MRDOCS_ADDONS_DIR"),
+        "no MRDOCS_ADDONS_DIR in environment");
+    addonsDir = files::makeDirsy(files::normalizePath(addonsEnvVar));
+    MRDOCS_TRY(files::requireAbsolute(addonsDir));
+    MRDOCS_TRY(files::requireDirectory(addonsDir));
+    addonsDirArg.getValue() = addonsDir;
+    return {};
 }
 
 } // mrdocs

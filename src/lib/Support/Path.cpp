@@ -212,8 +212,8 @@ makeDirsy(
     namespace path = llvm::sys::path;
 
     std::string result = static_cast<std::string>(pathName);
-    if( ! result.empty() &&
-        ! path::is_separator(
+    if (!result.empty() &&
+        !path::is_separator(
             result.back(),
             path::Style::windows_slash))
     {
