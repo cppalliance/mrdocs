@@ -203,6 +203,7 @@ public:
         auto* config_impl = dynamic_cast<ConfigImpl const*>(config_);
         if (config_impl)
         {
+            if (key == "baseURL") return (*config_impl)->baseURL;
             if (key == "inaccessibleBases") return (*config_impl)->inaccessibleBases;
             if (key == "inaccessibleMembers") return (*config_impl)->inaccessibleMembers;
             if (key == "anonymousNamespaces") return (*config_impl)->anonymousNamespaces;
@@ -233,6 +234,7 @@ public:
         auto* config_impl = dynamic_cast<ConfigImpl const*>(config_);
         if (config_impl)
         {
+            if (!fn("baseURL", (*config_impl)->baseURL)) { return false; };
             if (!fn("inaccessibleBases", (*config_impl)->inaccessibleBases)) { return false; };
             if (!fn("inaccessibleMembers", (*config_impl)->inaccessibleMembers)) { return false; };
             if (!fn("anonymousNamespaces", (*config_impl)->anonymousNamespaces)) { return false; };
@@ -250,7 +252,7 @@ public:
     /** Return the number of properties in the object.
      */
     std::size_t size() const override {
-        return 8;
+        return 9;
     };
 
     /** Determine if a key exists.
@@ -263,6 +265,7 @@ public:
         auto* config_impl = dynamic_cast<ConfigImpl const*>(config_);
         if (config_impl)
         {
+            if (key == "baseURL") return true;
             if (key == "inaccessibleBases") return true;
             if (key == "inaccessibleMembers") return true;
             if (key == "anonymousNamespaces") return true;

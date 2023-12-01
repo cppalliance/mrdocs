@@ -120,6 +120,12 @@ public:
         */
         FilterNode symbolFilter;
 
+        /** The base URL for the generated documentation.
+
+            This is used to generate links to sources
+            files referenced in the documentation.
+         */
+        std::string baseURL;
     };
 
     /// @copydoc Config::settings()

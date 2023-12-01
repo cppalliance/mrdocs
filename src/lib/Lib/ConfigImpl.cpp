@@ -100,6 +100,7 @@ struct llvm::yaml::MappingTraits<SettingsImpl>
         io.mapOptional("generate",          cfg.generate);
         io.mapOptional("multipage",         cfg.multiPage);
         io.mapOptional("source-root",       cfg.sourceRoot);
+        io.mapOptional("base-url",               cfg.baseURL);
 
         io.mapOptional("input",             cfg.input);
 
@@ -196,6 +197,12 @@ ConfigImpl(
     // Source root has to be forward slash style
     settings_.sourceRoot = files::makePosixStyle(files::makeDirsy(
         files::makeAbsolute(settings_.sourceRoot, settings_.workingDir)));
+
+    // Base-URL has to be dirsy with forward slash style
+    if (!settings_.baseURL.ends_with('/'))
+    {
+        settings_.baseURL.push_back('/');
+    }
 
     // Adjust input files
     for(auto& name : inputFileIncludes_)
