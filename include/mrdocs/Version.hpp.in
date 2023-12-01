@@ -1,0 +1,30 @@
+//
+// Licensed under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+// Copyright (c) 2023 Klemens D. Morgenstern
+//
+// Official repository: https://github.com/cppalliance/mrdocs
+//
+
+#ifndef MRDOCS_VERSION_HPP
+#define MRDOCS_VERSION_HPP
+
+#include <string_view>
+
+namespace clang {
+namespace mrdocs {
+
+constexpr std::string_view project_version        = "@PROJECT_VERSION@";
+constexpr std::size_t project_version_major       = @PROJECT_VERSION_MAJOR@;
+constexpr std::size_t project_version_minor       = @PROJECT_VERSION_MINOR@;
+constexpr std::size_t project_version_patch       = @PROJECT_VERSION_PATCH@;
+constexpr std::string_view project_version_build  = "@PROJECT_VERSION_BUILD@";
+constexpr std::string_view project_name           = "@PROJECT_NAME@";
+constexpr std::string_view project_description    = "@PROJECT_DESCRIPTION@";
+
+} // mrdocs
+} // clang
+
+#endif
