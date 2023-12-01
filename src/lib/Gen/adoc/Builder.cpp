@@ -10,6 +10,7 @@
 
 #include "Builder.hpp"
 #include "lib/Support/Radix.hpp"
+#include <lib/Lib/ConfigImpl.hpp>
 #include <mrdocs/Metadata/DomMetadata.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
@@ -178,6 +179,101 @@ getRelPrefix(std::size_t depth)
     return rel_prefix;
 }
 
+class ConfigObjectImpl : public dom::ObjectImpl
+{
+    Config const* config_;
+
+public:
+    ~ConfigObjectImpl() override = default;
+
+    ConfigObjectImpl(Config const& config)
+        : config_(&config)
+    {}
+
+    char const* type_key() const noexcept override
+    {
+        return "ConfigObject";
+    }
+
+    dom::Value get(std::string_view key) const override
+    {
+        if (key == "multiPage") return (*config_)->multiPage;
+        if (key == "generate") return (*config_)->generate;
+        if (key == "workingDir") return (*config_)->workingDir;
+        auto* config_impl = dynamic_cast<ConfigImpl const*>(config_);
+        if (config_impl)
+        {
+            if (key == "inaccessibleBases") return (*config_impl)->inaccessibleBases;
+            if (key == "inaccessibleMembers") return (*config_impl)->inaccessibleMembers;
+            if (key == "anonymousNamespaces") return (*config_impl)->anonymousNamespaces;
+            if (key == "ignoreFailures") return (*config_impl)->ignoreFailures;
+            if (key == "defines") {
+                dom::Array defines;
+                for (auto& define: (*config_impl)->defines)
+                {
+                    defines.emplace_back(define);
+                }
+                return defines;
+            }
+        }
+        return {};
+    }
+
+    void set(dom::String key, dom::Value value) override
+    {
+        // Cannot set values in the config object from templates
+    }
+
+    bool
+    visit(std::function<bool(dom::String, dom::Value)> fn) const override
+    {
+        if (!fn("multiPage", (*config_)->multiPage)) { return false; };
+        if (!fn("generate", (*config_)->generate)) { return false; };
+        if (!fn("workingDir", (*config_)->workingDir)) { return false; };
+        auto* config_impl = dynamic_cast<ConfigImpl const*>(config_);
+        if (config_impl)
+        {
+            if (!fn("inaccessibleBases", (*config_impl)->inaccessibleBases)) { return false; };
+            if (!fn("inaccessibleMembers", (*config_impl)->inaccessibleMembers)) { return false; };
+            if (!fn("anonymousNamespaces", (*config_impl)->anonymousNamespaces)) { return false; };
+            if (!fn("ignoreFailures", (*config_impl)->ignoreFailures)) { return false; };
+            dom::Array defines;
+            for (auto& define: (*config_impl)->defines)
+            {
+                defines.emplace_back(define);
+            }
+            if (!fn("defines", defines)) { return false; };
+        }
+        return true;
+    }
+
+    /** Return the number of properties in the object.
+     */
+    std::size_t size() const override {
+        return 8;
+    };
+
+    /** Determine if a key exists.
+     */
+    bool exists(std::string_view key) const override
+    {
+        if (key == "multiPage") return true;
+        if (key == "generate") return true;
+        if (key == "workingDir") return true;
+        auto* config_impl = dynamic_cast<ConfigImpl const*>(config_);
+        if (config_impl)
+        {
+            if (key == "inaccessibleBases") return true;
+            if (key == "inaccessibleMembers") return true;
+            if (key == "anonymousNamespaces") return true;
+            if (key == "ignoreFailures") return true;
+            if (key == "defines") return true;
+        }
+        return false;
+    }
+};
+
+
 dom::Value
 Builder::
 createContext(
@@ -188,6 +284,8 @@ createContext(
         domCorpus.get(I.id));
     props.emplace_back("relfileprefix",
         getRelPrefix(I.Namespace.size()));
+    props.emplace_back("config",
+        dom::newObject<ConfigObjectImpl>(domCorpus->config));
     return dom::Object(std::move(props));
 }
 

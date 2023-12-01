@@ -156,8 +156,11 @@ ConfigImpl(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    if(! files::isAbsolute(workingDir))
+    // Check working dir
+    if (!files::isAbsolute(workingDir))
+    {
         formatError("working path \"{}\" is not absolute", workingDir).Throw();
+    }
     settings_.workingDir = files::makeDirsy(files::normalizePath(workingDir));
 
     // Addons directory
@@ -167,14 +170,17 @@ ConfigImpl(
         MRDOCS_ASSERT(files::isDirsy(settings_.addonsDir));
     }
 
+    // Config strings
     settings_.configYaml = configYaml;
     settings_.extraYaml = extraYaml;
 
     // Parse the YAML strings
     YamlReporter reporter;
     {
-        llvm::yaml::Input yin(settings_.configYaml,
-            &reporter, reporter);
+        llvm::yaml::Input yin(
+            settings_.configYaml,
+            &reporter,
+            reporter);
         yin.setAllowUnknownKeys(true);
         yin >> settings_;
         Error(yin.error()).maybeThrow();
@@ -187,20 +193,26 @@ ConfigImpl(
         Error(yin.error()).maybeThrow();
     }
 
-    // This has to be forward slash style
+    // Source root has to be forward slash style
     settings_.sourceRoot = files::makePosixStyle(files::makeDirsy(
         files::makeAbsolute(settings_.sourceRoot, settings_.workingDir)));
 
-    // adjust input files
+    // Adjust input files
     for(auto& name : inputFileIncludes_)
+    {
         name = files::makePosixStyle(
             files::makeAbsolute(name, settings_.workingDir));
+    }
 
-    // Parse the symbol filters
+    // Parse the filters
     for(std::string_view pattern : settings_.filters.symbols.exclude)
+    {
         parseSymbolFilter(settings_.symbolFilter, pattern, true);
+    }
     for(std::string_view pattern : settings_.filters.symbols.include)
+    {
         parseSymbolFilter(settings_.symbolFilter, pattern, false);
+    }
     settings_.symbolFilter.finalize(false, false, false);
 }
 
@@ -277,16 +289,16 @@ loadConfig(
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    auto temp = files::normalizePath(filePath);
+    std::string normFilePath = files::normalizePath(filePath);
 
-    // load the config file into a string
-    MRDOCS_TRY(auto absPath, files::makeAbsolute(temp));
-    MRDOCS_TRY(auto configYaml, files::getFileText(absPath));
+    // Load the config file into a string
+    MRDOCS_TRY(auto absConfigPath, files::makeAbsolute(normFilePath));
+    MRDOCS_TRY(auto configYaml, files::getFileText(absConfigPath));
 
-    // calculate the working directory
-    auto workingDir = files::getParentDir(absPath);
+    // Calculate the working directory
+    auto workingDir = files::getParentDir(absConfigPath);
 
-    // attempt to create the config
+    // Attempt to create the config
     try
     {
         return std::make_shared<ConfigImpl>(

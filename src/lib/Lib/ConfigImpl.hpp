@@ -31,26 +31,18 @@ class ConfigImpl
 public:
     struct SettingsImpl : Settings
     {
-        struct FileFilter
-        {
-            std::vector<std::string> include;
-        };
+        /** Extraction policy for declarations.
 
-        struct Filters
-        {
-            struct Category
-            {
-                std::vector<std::string> include;
-                std::vector<std::string> exclude;
-            };
+            This determines how declarations are extracted.
 
-            Category symbols;
-        };
-
+         */
         enum class ExtractPolicy
         {
+            /// Always extract the declaration.
             Always,
+            /// Extract the declaration if it is referenced.
             Dependency,
+            /// Never extract the declaration.
             Never
         };
 
@@ -58,39 +50,18 @@ public:
 
             This determines how declarations which are referenced by
             explicitly extracted declarations are extracted.
-
-            Given a function parameter of type `std::string`, `std::string`
-            would be extracted if this option is set to `Policy::Always`.
-        */
+         */
         ExtractPolicy referencedDeclarations = ExtractPolicy::Dependency;
 
         /** Extraction policy for anonymous namespace.
-
-            @li `ExtractPolicy::Always`: anonymous namespaces and their
-            members will always be extracted.
-
-            @li `ExtractPolicy::Dependency`: members of anonymous namespaces will only
-            be extracted via dependency.
-
-            @li `ExtractPolicy::Never`: members of anonymous namespace will
-            never be extracted, regardless of how they are referenced.
-        */
+         */
         ExtractPolicy anonymousNamespaces = ExtractPolicy::Always;
 
         /** Extraction policy for inaccessible members.
-
-            @li `ExtractPolicy::Always`: all `private` and `protected` members
-            will be extracted.
-
-            @li `ExtractPolicy::Dependency`: `private` and `protected` members will only
-            be extracted via dependency.
-
-            @li `ExtractPolicy::Never`: `private` and `protected` will never be extracted.
-        */
+         */
         ExtractPolicy inaccessibleMembers = ExtractPolicy::Always;
 
         ExtractPolicy inaccessibleBases = ExtractPolicy::Always;
-
 
         /** Additional defines passed to the compiler.
         */
@@ -111,8 +82,34 @@ public:
         */
         std::string sourceRoot;
 
+        /** Specifies files that should be filtered
+        */
+        struct FileFilter
+        {
+            /// Directories to include
+            std::vector<std::string> include;
+        };
+
+        /// @copydoc FileFilter
         FileFilter input;
 
+        /** Specifies filters for various kinds of symbols.
+        */
+        struct Filters
+        {
+            /** Specifies inclusion and exclusion patterns
+            */
+            struct Category
+            {
+                std::vector<std::string> include;
+                std::vector<std::string> exclude;
+            };
+
+            /// Specifies filter patterns for symbols
+            Category symbols;
+        };
+
+        /// @copydoc Filters
         Filters filters;
 
         /** Symbol filter root node.
@@ -125,19 +122,19 @@ public:
 
     };
 
+    /// @copydoc Config::settings()
     Settings const&
-    settings()const noexcept override
+    settings() const noexcept override
     {
         return settings_;
     }
 
+    /// @copydoc Config::settings()
     constexpr SettingsImpl const*
     operator->() const noexcept
     {
         return &settings_;
     }
-
-    //--------------------------------------------
 
 private:
     SettingsImpl settings_;
