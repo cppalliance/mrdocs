@@ -299,7 +299,7 @@ jobs:
       - name: Install mrdocs from release package
         run: |
           set -x
-          sudo find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -xzf {} -C /usr/local --strip-components=1 \;
+          sudo find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -vxzf {} -C /usr/local --strip-components=1 \;
           mrdocs --version
 
       - name: Clone Boost.URL
@@ -358,7 +358,7 @@ jobs:
               [[ $variant = multi ]] && multiline="true" || multiline="false"
               printf "$config_template\n" $format $multiline > $(pwd)/boost/libs/url/mrdocs.yml
               mkdir -p "demos/boost-url/$variant/$format"
-              mrdocs --config="$(pwd)/boost/libs/url/mrdocs.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --addons="$(pwd)/share/mrdocs/addons" --output="$(pwd)/demos/boost-url/$variant/$format"
+              mrdocs --config="$(pwd)/boost/libs/url/mrdocs.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --output="$(pwd)/demos/boost-url/$variant/$format"
             done
             asciidoctor -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done

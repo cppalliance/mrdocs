@@ -594,7 +594,7 @@ namespace detail
 
 /// Check existing expected-like type
 #    define MRDOCS_CHECK_VOID(var)                         \
-        if (!detail::failed(var)) {                        \
+        if (detail::failed(var)) {                        \
             return Unexpected(detail::error(var));         \
         }                                                  \
         void(0)

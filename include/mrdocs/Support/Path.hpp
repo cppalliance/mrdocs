@@ -282,6 +282,15 @@ appendPath(
     std::string_view name2,
     std::string_view name3);
 
+MRDOCS_DECL
+std::string
+appendPath(
+    std::string_view basePath,
+    std::string_view name1,
+    std::string_view name2,
+    std::string_view name3,
+    std::string_view name4);
+
 /** Return an error if the path is not a directory.
 */
 MRDOCS_DECL
