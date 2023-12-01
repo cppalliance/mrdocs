@@ -19,7 +19,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/PrettyStackTrace.h>
 #include <llvm/Support/Signals.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 extern int main(int argc, char const** argv);
 
@@ -27,7 +27,7 @@ namespace clang {
 namespace mrdocs {
 
 extern int DoTestAction();
-extern Error DoGenerateAction();
+extern Expected<void> DoGenerateAction();
 
 void
 print_version(llvm::raw_ostream& os)
@@ -38,29 +38,31 @@ print_version(llvm::raw_ostream& os)
        << "\n    built with LLVM " << LLVM_VERSION_STRING;
 }
 
-int mrdocs_main(int argc, char const** argv)
+int
+mrdocs_main(int argc, char const** argv)
 {
-    namespace fs = llvm::sys::fs;
-
-    // VFALCO this heap checking is too strong for
-    // a clang tool's model of what is actually a leak.
-    // debugEnableHeapChecking();
-
+    // Enable stack traces
     llvm::EnablePrettyStackTrace();
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
-    llvm::cl::SetVersionPrinter(&print_version);
 
+    // Parse command line options
+    llvm::cl::SetVersionPrinter(&print_version);
     toolArgs.hideForeignOptions();
-    if(! llvm::cl::ParseCommandLineOptions(
+    if (!llvm::cl::ParseCommandLineOptions(
             argc, argv, toolArgs.usageText))
+    {
         return EXIT_FAILURE;
+    }
 
     // Apply reportLevel
     report::setMinimumLevel(report::getLevel(
         toolArgs.reportLevel.getValue()));
 
-    if(auto err = setupAddonsDir(toolArgs.addonsDir,
-        argv[0], reinterpret_cast<void*>(&main)))
+    // Set up addons directory
+    void* addressOfMain = reinterpret_cast<void*>(&main);
+    auto exp = setupAddonsDir(
+            toolArgs.addonsDir,argv[0], addressOfMain);
+    if (!exp)
     {
         report::error(
             "{}: \"{}\"\n"
@@ -69,21 +71,27 @@ int mrdocs_main(int argc, char const** argv)
             "no valid addons location was specified on the command line, "
             "and no addons directory exists in the same directory as "
             "the executable.",
-            err, toolArgs.addonsDir);
+            exp.error(), toolArgs.addonsDir);
         return EXIT_FAILURE;
     }
 
     // Generate
-    if(auto err = DoGenerateAction())
-        report::error("Generating reference failed: {}", err.message());
-
-    if( report::results.errorCount > 0 ||
+    exp = DoGenerateAction();
+    if (!exp)
+    {
+        report::error("Generating reference failed: {}", exp.error().message());
+    }
+    if (report::results.errorCount > 0 ||
         report::results.fatalCount > 0)
+    {
         return EXIT_FAILURE;
+    }
     return EXIT_SUCCESS;
 }
 
-static void reportUnhandledException(
+static
+void
+reportUnhandledException(
     std::exception const& ex)
 {
     namespace sys = llvm::sys;
@@ -95,7 +103,8 @@ static void reportUnhandledException(
 } // mrdocs
 } // clang
 
-int main(int argc, char const** argv)
+int
+main(int argc, char const** argv)
 {
     try
     {
@@ -103,7 +112,7 @@ int main(int argc, char const** argv)
     }
     catch(clang::mrdocs::Exception const& ex)
     {
-        // thrown Exception should never get here.
+        // Thrown Exception should never get here.
         clang::mrdocs::reportUnhandledException(ex);
     }
     catch(std::exception const& ex)

@@ -20,9 +20,11 @@ namespace mrdocs {
 
 /** Set the addons directory using the argument as a hint.
 
+
+
     @return The error if any occurred.
 */
-Error
+Expected<void>
 setupAddonsDir(
     llvm::cl::opt<std::string>& addonsDirArg,
     char const* argv0,

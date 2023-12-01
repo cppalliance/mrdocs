@@ -175,6 +175,8 @@ isDirsy(
 
     @li Separators made uniform
 
+    @li Separators are replaced with the native separator
+
     @return The normalized path.
 
     @param pathName The relative or absolute path.

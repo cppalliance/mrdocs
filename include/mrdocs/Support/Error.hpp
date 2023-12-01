@@ -515,25 +515,97 @@ public:
 
 template <class E> Unexpected(E) -> Unexpected<E>;
 
+namespace detail
+{
+    template <class T>
+    constexpr
+    bool
+    failed(T const&t)
+    {
+        if constexpr (isExpected<std::decay_t<T>>)
+        {
+            return !t;
+        }
+        else if constexpr (std::same_as<std::decay_t<T>, Error>)
+        {
+            return t.failed();
+        }
+        else if constexpr (requires (T const& t0) { t0.empty(); })
+        {
+            return t.empty();
+        }
+        else if constexpr (std::constructible_from<bool, T>)
+        {
+            return !t;
+        }
+    }
+
+    template <class T>
+    constexpr
+    decltype(auto)
+    error(T const& t)
+    {
+        if constexpr (isExpected<std::decay_t<T>>)
+        {
+            return t.error();
+        }
+        else if constexpr (std::same_as<std::decay_t<T>, Error>)
+        {
+            return t;
+        }
+        else if constexpr (requires (T const& t0) { t0.empty(); })
+        {
+            return Error("Empty value");
+        }
+        else if constexpr (std::constructible_from<bool, T>)
+        {
+            return Error("Invalid value");
+        }
+    }
+}
+
 #ifndef MRDOCS_TRY
 #    define MRDOCS_MERGE_(a, b) a##b
 #    define MRDOCS_LABEL_(a)    MRDOCS_MERGE_(expected_result_, a)
 #    define MRDOCS_UNIQUE_NAME  MRDOCS_LABEL_(__LINE__)
+
+/// Try to retrive expected-like type
 #    define MRDOCS_TRY_VOID(expr)                          \
         auto MRDOCS_UNIQUE_NAME = expr;                    \
-        if (!MRDOCS_UNIQUE_NAME) {                         \
-            return Unexpected(MRDOCS_UNIQUE_NAME.error()); \
+        if (detail::failed(MRDOCS_UNIQUE_NAME)) {          \
+            return Unexpected(detail::error(MRDOCS_UNIQUE_NAME)); \
         }                                                 \
         void(0)
 #    define MRDOCS_TRY_VAR(var, expr)                      \
         auto MRDOCS_UNIQUE_NAME = expr;                    \
-        if (!MRDOCS_UNIQUE_NAME) {                         \
-            return Unexpected(MRDOCS_UNIQUE_NAME.error()); \
-        }                                                 \
+        if (detail::failed(MRDOCS_UNIQUE_NAME)) {          \
+            return Unexpected(detail::error(MRDOCS_UNIQUE_NAME)); \
+        }                                                  \
         var = *std::move(MRDOCS_UNIQUE_NAME)
-#    define GET_MACRO(_1, _2, NAME, ...) NAME
+#    define MRDOCS_TRY_MSG(var, expr, msg)                 \
+        auto MRDOCS_UNIQUE_NAME = expr;                    \
+        if (detail::failed(MRDOCS_UNIQUE_NAME)) {          \
+            return Unexpected(Error(msg));                 \
+        }                                                  \
+        var = *std::move(MRDOCS_UNIQUE_NAME)
+#    define MRDOCS_TRY_GET_MACRO(_1, _2, _3, NAME, ...) NAME
 #    define MRDOCS_TRY(...) \
-        GET_MACRO(__VA_ARGS__, MRDOCS_TRY_VAR, MRDOCS_TRY_VOID)(__VA_ARGS__)
+        MRDOCS_TRY_GET_MACRO(__VA_ARGS__, MRDOCS_TRY_MSG, MRDOCS_TRY_VAR, MRDOCS_TRY_VOID)(__VA_ARGS__)
+
+/// Check existing expected-like type
+#    define MRDOCS_CHECK_VOID(var)                         \
+        if (!detail::failed(var)) {                        \
+            return Unexpected(detail::error(var));         \
+        }                                                  \
+        void(0)
+#    define MRDOCS_CHECK_MSG(var, msg)                     \
+        if (detail::failed(var)) {                         \
+            return Unexpected(Error(msg));                 \
+        }                                                  \
+        void(0)
+#    define MRDOCS_CHECK_GET_MACRO(_1, _2, NAME, ...) NAME
+#    define MRDOCS_CHECK(...) \
+        MRDOCS_CHECK_GET_MACRO(__VA_ARGS__, MRDOCS_CHECK_MSG, MRDOCS_CHECK_VOID)(__VA_ARGS__)
 #endif
 
 
@@ -1853,6 +1925,36 @@ public:
     noexcept(std::is_nothrow_constructible_v<E, G>)
         : unex_(std::move(u).error()), has_value_(false)
     { }
+
+// The following constructors are extensions that allow
+// Expected to be constructed directly from an error type
+// if this is not ambiguous with the value type. This
+// is not part of std::expected. MRDOCS_EXPECTED_FROM_ERROR
+// can be defined to disable this behavior.
+#ifndef MRDOCS_EXPECTED_FROM_ERROR
+    template <class G = E>
+    requires
+        std::is_constructible_v<E, const G&> &&
+        (!std::is_constructible_v<T, const G&>)
+    constexpr
+    explicit(!std::is_convertible_v<const G&, E>)
+    Expected(const G& u)
+    noexcept(std::is_nothrow_constructible_v<E, const G&>)
+        : unex_(u)
+        , has_value_(false)
+    { }
+
+    template <class G = E>
+    requires
+        std::is_constructible_v<E, G> &&
+        (!std::is_constructible_v<T, G>)
+    constexpr
+    explicit(!std::is_convertible_v<G, E>)
+    Expected(G&& u)
+    noexcept(std::is_nothrow_constructible_v<E, G>)
+        : unex_(std::move(u)), has_value_(false)
+    { }
+#endif
 
     constexpr explicit
     Expected(std::in_place_t) noexcept
