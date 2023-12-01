@@ -34,6 +34,10 @@ class ThreadPool;
     A configuration is always connected to a
     particular directory from which absolute paths
     are calculated from relative paths.
+
+    The Config class is an abstract interface
+    whose concrete implementation includes
+    .
 */
 class MRDOCS_DECL
     Config
@@ -42,7 +46,8 @@ protected:
     Config() noexcept;
 
 public:
-
+    /** Settings values used to generate the Corpus and Docs
+     */
     struct Settings
     {
         /** Selected documentation generator.
@@ -115,13 +120,16 @@ public:
     ThreadPool&
     threadPool() const noexcept = 0;
 
+    /** Return the settings used to generate the Corpus and Docs.
+     */
+    virtual Settings const& settings() const noexcept = 0;
+
+    /// @copydoc settings()
     constexpr Settings const*
     operator->() const noexcept
     {
         return &settings();
     }
-
-    virtual Settings const& settings() const noexcept = 0;
 };
 
 } // mrdocs
