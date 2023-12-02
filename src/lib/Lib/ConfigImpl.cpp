@@ -199,7 +199,7 @@ ConfigImpl(
         files::makeAbsolute(settings_.sourceRoot, settings_.workingDir)));
 
     // Base-URL has to be dirsy with forward slash style
-    if (!settings_.baseURL.ends_with('/'))
+    if (!settings_.baseURL.empty() && settings_.baseURL.back() != '/')
     {
         settings_.baseURL.push_back('/');
     }
