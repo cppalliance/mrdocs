@@ -338,18 +338,19 @@ jobs:
 
       - name: Generate demos
         run: |
-          config_template=$(printf '%s\n'      \
-            "verbose: true"                    \
-            "source-root: ."                   \
-            "generate: %s"                     \
-            "multipage: %s"                    \
-            "inaccessible-members: never"      \
-            "inaccessible-bases: never"        \
-            "filters:"                         \
-            "  symbols:"                       \
-            "    exclude:"                     \
-            "      - 'boost::urls::detail'"    \
-            "      - 'boost::urls::*::detail'" \
+          config_template=$(printf '%s\n'                                      \
+            "verbose: true"                                                    \
+            "source-root: ."                                                   \
+            "base-url: 'https://github.com/boostorg/url/blob/master/include/'" \
+            "generate: %s"                                                     \
+            "multipage: %s"                                                    \
+            "inaccessible-members: never"                                      \
+            "inaccessible-bases: never"                                        \
+            "filters:"                                                         \
+            "  symbols:"                                                       \
+            "    exclude:"                                                     \
+            "      - 'boost::urls::detail'"                                    \
+            "      - 'boost::urls::*::detail'"                                 \
           )
           set -x
           for variant in single multi; do
