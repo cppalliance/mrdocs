@@ -387,7 +387,7 @@ jobs:
 
           # Copy files
           demo_dir="/var/www/mrdox.com/demos/${{ github.ref_name }}"
-          ssh ubuntu@dev-websites.cpp.al "rm -rf $demo_dir; mkdir -p $demo_dir"
+          ssh ubuntu@dev-websites.cpp.al "rm -rf $demo_dir/boost-url; mkdir -p $demo_dir/boost-url"
           chmod 755 -R $(pwd)/demos
           scp -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
