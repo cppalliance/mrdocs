@@ -360,7 +360,7 @@ jobs:
               mkdir -p "demos/boost-url/$variant/$format"
               mrdocs --config="$(pwd)/boost/libs/url/mrdocs.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --output="$(pwd)/demos/boost-url/$variant/$format"
             done
-            asciidoctor -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
+            asciidoctor -d book -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done
           tar -cjf $(pwd)/demos.tar.gz -C $(pwd)/demos --strip-components 1 .
           echo "demos_path=$(pwd)/demos.tar.gz" >> $GITHUB_ENV
