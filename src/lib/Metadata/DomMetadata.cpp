@@ -590,6 +590,7 @@ public:
             { "records",          init(tranche->Records, domCorpus) },
             { "functions",        init(tranche->Functions, domCorpus) },
             { "enums",            init(tranche->Enums, domCorpus) },
+            { "enumerators",      init(tranche->Enumerators, domCorpus) },
             { "types",            init(tranche->Types, domCorpus) },
             { "fields",           init(tranche->Fields, domCorpus) },
             { "staticfuncs",      init(tranche->StaticFunctions, domCorpus) },

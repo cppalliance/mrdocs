@@ -31,6 +31,7 @@ struct Tranche
     std::vector<SymbolID> Records;
     std::vector<SymbolID> Functions;
     std::vector<SymbolID> Enums;
+    std::vector<SymbolID> Enumerators;
     std::vector<SymbolID> Types;
     std::vector<SymbolID> Fields;
     std::vector<SymbolID> StaticFunctions;

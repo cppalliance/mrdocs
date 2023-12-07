@@ -1,6 +1,7 @@
 {{>info-list members=tranche.namespaces title="Namespaces"}}
 {{>info-list members=(concat tranche.records tranche.types) title=(concat label " " "Types")}}
 {{>info-list members=tranche.enums title=(concat label " " "Enums")}}
+{{>info-list members=tranche.enumerators title=(concat label " " "Enumerators")}}
 {{#if is-namespace}}
 {{>info-list members=tranche.overloads title="Functions"}}
 {{>info-list members=tranche.variables title="Variables"}}

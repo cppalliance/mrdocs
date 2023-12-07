@@ -41,6 +41,7 @@ public:
         cmds.emplace_back("-std=c++20");
         cmds.emplace_back("-pedantic-errors");
         cmds.emplace_back("-Werror");
+        cmds.emplace_back("-ferror-limit=0");
         cmds.emplace_back(fileName);
         cc_.emplace_back(
             parentDir,

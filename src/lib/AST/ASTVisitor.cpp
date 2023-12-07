@@ -2793,7 +2793,8 @@ traverseDecl(
 {
     MRDOCS_ASSERT(D);
 
-    if(D->isInvalidDecl() || D->isImplicit())
+    // if(D->isInvalidDecl() || D->isImplicit())
+    if(D->isImplicit())
         return;
 
     SymbolFilter::FilterScope scope(symbolFilter_);
