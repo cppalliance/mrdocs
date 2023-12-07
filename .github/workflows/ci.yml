@@ -38,7 +38,7 @@ jobs:
           standards: '>=20'
           max-standards: 1
           latest-factors: gcc
-          factors: clang # Don't include Asan because `clang/AST/Decl.h` fails
+          factors: clang asan
 
   build:
     needs: cpp-matrix
