@@ -144,8 +144,24 @@ class Finalizer
             if constexpr(requires { T.id; })
                 finalize(T.id);
 
+            if constexpr(requires { T.Name_; })
+                finalize(T.Name_);
+
             if constexpr(Ty::isSpecialization())
                 finalize(T.TemplateArgs);
+        });
+    }
+
+    void finalize(NameInfo& name)
+    {
+        visit(name, [this]<typename Ty>(Ty& T)
+        {
+            finalize(T.Prefix);
+
+            if constexpr(requires { T.TemplateArgs; })
+                finalize(T.TemplateArgs);
+
+            finalize(T.id);
         });
     }
 

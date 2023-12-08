@@ -621,6 +621,8 @@ public:
 
 //------------------------------------------------
 
+
+
 class LookupBlock
     : public BitcodeReader::AnyBlock
 {
@@ -1138,6 +1140,74 @@ public:
 
 //------------------------------------------------
 
+class NameInfoBlock
+    : public BitcodeReader::AnyBlock
+{
+protected:
+    BitcodeReader& br_;
+    std::unique_ptr<NameInfo>& I;
+
+public:
+    NameInfoBlock(
+        std::unique_ptr<NameInfo>& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I(I)
+    {
+    }
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case NAME_INFO_KIND:
+            NameKind kind{};
+            if(auto err = decodeRecord(R, kind, Blob))
+                return err;
+            if(kind == NameKind::Specialization)
+                I = std::make_unique<SpecializationNameInfo>();
+            else
+                I = std::make_unique<NameInfo>();
+            return Error::success();
+        case NAME_INFO_ID:
+            return decodeRecord(R, I->id, Blob);
+        case NAME_INFO_NAME:
+            return decodeRecord(R, I->Name, Blob);
+        default:
+            return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_NAME_INFO_ID:
+        {
+            NameInfoBlock B(I->Prefix, br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_TEMPLATE_ARG_BLOCK_ID:
+        {
+            SpecializationNameInfo* S =
+                static_cast<SpecializationNameInfo*>(I.get());
+            TemplateArgBlock B(S->TemplateArgs.emplace_back(), br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return AnyBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
 class TemplateBlock
     : public BitcodeReader::AnyBlock
 {
@@ -1264,6 +1334,19 @@ readSubBlock(unsigned ID)
             return br_.readBlock(B, ID);
         }
         return Error("wrong TypeInfo kind");
+    }
+    case BI_NAME_INFO_ID:
+    {
+        std::unique_ptr<NameInfo>* NI = nullptr;
+        visit(*I_, [&]<typename T>(T& t)
+        {
+            if constexpr(requires { t.Name_; })
+                NI = &t.Name_;
+        });
+        if(! NI)
+            return Error("wrong TypeInfo kind");
+        NameInfoBlock B(*NI, br_);
+        return br_.readBlock(B, ID);
     }
     default:
         return AnyBlock::readSubBlock(ID);

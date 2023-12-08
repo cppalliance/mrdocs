@@ -1,0 +1,8 @@
+{{#unless (or (contains @root.symbol.namespace symbol) (eq @root.symbol symbol))~}}
+{{#if prefix~}}
+{{>name-info prefix nolink=nolink~}}
+{{else~}}
+{{/if~}}
+{{#if (and symbol.ref (not nolink))}}xref:{{symbol.ref}}[{{name}}]{{else~}}
+{{name}}{{/if}}{{#if args}}{{>template-args args=args nolink=nolink}}{{/if}}::
+{{~/unless}}

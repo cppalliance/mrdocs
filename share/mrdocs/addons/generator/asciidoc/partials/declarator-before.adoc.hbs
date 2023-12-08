@@ -12,7 +12,8 @@
 {{#if cv-qualifiers~}}
     {{#if pointee-type}} {{cv-qualifiers}}{{else}}{{cv-qualifiers}} {{/if~}}
 {{/if~}}
-{{#if (and symbol (not parent-type))}}{{>qualified-path symbol=symbol.parent nolink=nolink}}{{/if~}}
+{{#if prefix~}}{{>name-info prefix nolink=nolink}}{{/if~}}
+{{!-- {{#if (and symbol (not parent-type))}}{{>qualified-path symbol=symbol.parent nolink=nolink}}{{/if~}} --~}}
 {{#if (and symbol (not nolink))~}}
     xref:{{symbol.ref}}[{{name}}]
 {{~else if name}}{{name~}}

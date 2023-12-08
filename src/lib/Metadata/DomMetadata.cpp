@@ -424,6 +424,31 @@ domCreate(
 static
 dom::Value
 domCreate(
+    std::unique_ptr<NameInfo> const& I,
+    DomCorpus const& domCorpus)
+{
+    if(! I)
+        return nullptr;
+    dom::Object::storage_type entries = {
+        { "kind", toString(I->Kind) }
+    };
+    visit(*I, [&]<typename T>(const T& t)
+    {
+        entries.emplace_back("name", t.Name);
+        entries.emplace_back("symbol", domCorpus.get(t.id));
+
+        if constexpr(requires { t.TemplateArgs; })
+            entries.emplace_back("args",
+                dom::newArray<DomTArgArray>(t.TemplateArgs, domCorpus));
+
+        entries.emplace_back("prefix", domCreate(t.Prefix, domCorpus));
+    });
+    return dom::Object(std::move(entries));
+}
+
+static
+dom::Value
+domCreate(
     std::unique_ptr<TypeInfo> const& I,
     DomCorpus const& domCorpus)
 {
@@ -437,6 +462,10 @@ domCreate(
     {
         if constexpr(requires { t.Name; })
             entries.emplace_back("name", t.Name);
+
+        if constexpr(requires { t.Name_; })
+            entries.emplace_back("prefix", 
+                domCreate(t.Name_, domCorpus));
 
         if constexpr(requires { t.id; })
             entries.emplace_back("symbol", domCorpus.get(t.id));

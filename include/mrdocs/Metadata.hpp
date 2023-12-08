@@ -27,6 +27,7 @@
 #include <mrdocs/Metadata/Info.hpp>
 #include <mrdocs/Metadata/Interface.hpp>
 #include <mrdocs/Metadata/Javadoc.hpp>
+#include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Namespace.hpp>
 #include <mrdocs/Metadata/Overloads.hpp>
 #include <mrdocs/Metadata/Record.hpp>

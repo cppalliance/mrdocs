@@ -46,6 +46,7 @@ struct Info;
 class Javadoc;
 struct Location;
 struct NamespaceInfo;
+struct NameInfo;
 struct RecordInfo;
 struct Param;
 struct SpecializationInfo;

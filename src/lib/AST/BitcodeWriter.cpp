@@ -256,6 +256,7 @@ BlockIdNameMap = []()
         {BI_FRIEND_BLOCK_ID, "FriendBlock"},
         {BI_ENUMERATOR_BLOCK_ID, "EnumeratorBlock"},
         {BI_VARIABLE_BLOCK_ID, "VarBlock"},
+        {BI_NAME_INFO_ID, "NameInfoBlock"},
     };
     MRDOCS_ASSERT(Inits.size() == BlockIdCount);
     for (const auto& Init : Inits)
@@ -305,6 +306,9 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_SYMBOLREF, {"JavadocNodeSymbol", &SymbolIDAbbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {NAMESPACE_BITS, {"NamespaceBits", &Integer32ArrayAbbrev}},
+        {NAME_INFO_KIND, {"NameKind", &Integer32Abbrev}},
+        {NAME_INFO_ID, {"NameID", &SymbolIDAbbrev}},
+        {NAME_INFO_NAME, {"NameName", &StringAbbrev}},
         {RECORD_KEY_KIND, {"KeyKind", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
@@ -436,8 +440,9 @@ RecordsByBlock{
     {BI_VARIABLE_BLOCK_ID, {VARIABLE_BITS}},
     // GuideInfo
     {BI_GUIDE_BLOCK_ID, {GUIDE_EXPLICIT}},
-};
-
+    {BI_NAME_INFO_ID, 
+        {NAME_INFO_KIND, NAME_INFO_ID, NAME_INFO_NAME}},
+    };
 //------------------------------------------------
 
 BitcodeWriter::
@@ -1029,6 +1034,12 @@ emitBlock(
             emitRecord(t.RefQualifier, TYPEINFO_REFQUAL);
             emitRecord(t.ExceptionSpec, TYPEINFO_NOEXCEPT);
         }
+        
+        if constexpr(requires { t.Name_; })
+        {
+            if(t.Name_)
+                emitBlock(*t.Name_);
+        }
     });
 }
 
@@ -1122,6 +1133,24 @@ emitBlock(
         emitBlock(targ);
     for(const auto& tparam : T.Params)
         emitBlock(tparam);
+}
+
+void 
+BitcodeWriter::
+emitBlock(NameInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_NAME_INFO_ID);
+    emitRecord(I.Kind, NAME_INFO_KIND);
+    emitRecord(I.id, NAME_INFO_ID);
+    emitRecord(I.Name, NAME_INFO_NAME);
+    if(I.Prefix)
+        emitBlock(*I.Prefix);
+    if(I.Kind == NameKind::Specialization)
+    {
+        for(const auto& targ : static_cast<
+            const SpecializationNameInfo&>(I).TemplateArgs)
+            emitBlock(targ);
+    }
 }
 
 void

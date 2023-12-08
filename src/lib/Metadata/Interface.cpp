@@ -186,7 +186,8 @@ public:
                 continue;
             const Info* Base = lookThroughTypedefs(
                 getTypeAsTag(B.Type));
-            if(! Base || ! Base->isRecord())
+            if(! Base || Base->id == I.id || 
+                ! Base->isRecord())
                 continue;
             addFrom(*static_cast<
                 const RecordInfo*>(Base), actualAccess);

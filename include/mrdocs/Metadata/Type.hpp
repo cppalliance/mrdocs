@@ -122,6 +122,8 @@ struct BuiltinTypeInfo
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     std::string Name;
+
+    std::unique_ptr<NameInfo> Name_;
 };
 
 struct TagTypeInfo
@@ -131,6 +133,8 @@ struct TagTypeInfo
     std::unique_ptr<TypeInfo> ParentType;
     std::string Name;
     SymbolID id = SymbolID::invalid;
+
+    std::unique_ptr<NameInfo> Name_;
 };
 
 struct SpecializationTypeInfo
@@ -141,6 +145,8 @@ struct SpecializationTypeInfo
     std::string Name;
     SymbolID id = SymbolID::invalid;
     std::vector<std::unique_ptr<TArg>> TemplateArgs;
+
+    std::unique_ptr<NameInfo> Name_;
 };
 
 struct DecltypeTypeInfo
