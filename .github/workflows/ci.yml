@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.5.0
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.6.2
         id: cpp-matrix
         with:
           compilers: |
@@ -118,7 +118,7 @@ jobs:
           node-version: '18'
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.5.0
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.6.2
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -126,7 +126,7 @@ jobs:
           check-latest: ${{ matrix.compiler == 'clang' }}
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.5.0
+        uses: alandefreitas/cpp-actions/package-install@v1.6.2
         id: package-install
         with:
           apt-get: ${{ matrix.install }} openjdk-11-jdk ninja-build ${{ matrix.compiler == 'clang' && 'libstdc++-12-dev' || '' }}
@@ -137,7 +137,7 @@ jobs:
           cxxflags: ${{ matrix.cxxflags }}
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.5.0
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.6.2
         with:
           cmake-version: '>=3.20'
           generator: Ninja
@@ -149,8 +149,12 @@ jobs:
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           install-prefix: .local
-          extra-args: ${{ format('-D LLVM_ROOT="{0}" -D Clang_ROOT="{0}" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON', steps.llvm-install.outputs.llvm-root || '/usr/local') }}
-          export-compile-commands: ${{ matrix.time-trace }}
+          extra-args: |
+            -D LLVM_ROOT="${{ steps.llvm-install.outputs.llvm-root || '/usr/local' }}"
+            -D Clang_ROOT="${{ steps.llvm-install.outputs.llvm-root || '/usr/local' }}"
+          export-compile-commands: true
+          run-tests: true
+          install: true
           package: ${{ matrix.is-main }}
           package-dir: packages
 
@@ -163,7 +167,7 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.5.0
+        uses: alandefreitas/cpp-actions/flamegraph@v1.6.2
         if: matrix.time-trace
         with:
           build-dir: build
@@ -281,7 +285,7 @@ jobs:
         working-directory: packages
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.5.0
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.6.2
         id: setup-cpp
         with:
           compiler: clang
@@ -289,7 +293,7 @@ jobs:
           check-latest: true
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.5.0
+        uses: alandefreitas/cpp-actions/package-install@v1.6.2
         id: package-install
         with:
           apt-get: libstdc++-12-dev asciidoctor
@@ -303,7 +307,7 @@ jobs:
           mrdocs --version
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.5.0
+        uses: alandefreitas/cpp-actions/boost-clone@v1.6.2
         id: boost-url-clone
         with:
           branch: master
@@ -422,7 +426,7 @@ jobs:
         working-directory: build
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.5.0
+        uses: alandefreitas/cpp-actions/create-changelog@v1.6.2
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
