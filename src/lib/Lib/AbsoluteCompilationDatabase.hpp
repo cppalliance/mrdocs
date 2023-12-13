@@ -43,7 +43,8 @@ public:
     AbsoluteCompilationDatabase(
         llvm::StringRef workingDir,
         CompilationDatabase const& inner,
-        std::shared_ptr<const Config> config);
+        std::shared_ptr<const Config> config,
+        std::unordered_map<std::string, std::vector<std::string>> const& includePathsByCompiler);
 
     std::vector<tooling::CompileCommand>
     getCompileCommands(
