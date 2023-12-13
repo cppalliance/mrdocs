@@ -13,35 +13,51 @@
 #include "lib/Lib/AbsoluteCompilationDatabase.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
+#include "llvm/Support/Program.h"
 #include <mrdocs/Generators.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
+
 #include <cstdlib>
 #include <unordered_map>
 
 namespace clang {
 namespace mrdocs {
 
-Expected<std::string>
-getCompilerInfo(std::string const& compiler) 
+std::optional<std::string> 
+getCompilerInfo(llvm::StringRef compiler) 
 {
-    std::string const command = compiler + " -v -E -x c++ - < /dev/null 2>&1";
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
-    
-    if ( ! pipe) 
+    llvm::SmallString<128> outputPath;
+    if (auto EC = llvm::sys::fs::createTemporaryFile("compiler-info", "txt", outputPath)) 
     {
-        return Unexpected(formatError("popen() failed for command \"{}\"", command));
+        return std::nullopt;
     }
 
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) 
+    std::optional<llvm::StringRef> redirects[] = {llvm::StringRef(), llvm::StringRef(), outputPath.str()};
+    std::vector<llvm::StringRef> args = {compiler, "-v", "-E", "-x", "c++", "-"};
+
+    llvm::ErrorOr<std::string> compilerPath = llvm::sys::findProgramByName(compiler);
+    if ( ! compilerPath) 
     {
-        result += buffer.data();
+        return std::nullopt;
     }
 
-    return result;
+    int result = llvm::sys::ExecuteAndWait(*compilerPath, args, std::nullopt, redirects);
+    if (result != 0) 
+    {
+        llvm::sys::fs::remove(outputPath);
+        return std::nullopt;
+    }
+
+    auto bufferOrError = llvm::MemoryBuffer::getFile(outputPath);
+    llvm::sys::fs::remove(outputPath);
+    if ( ! bufferOrError) 
+    {
+        return std::nullopt;
+    }
+
+    return bufferOrError.get()->getBuffer().str();
 }
 
 std::vector<std::string> 
@@ -88,7 +104,7 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb)
 
             auto const compilerOutput = getCompilerInfo(compilerPath);
             if ( ! compilerOutput) {
-                report::warn("Warning: ", compilerOutput.error());
+                report::warn("Warning: could not get compiler info for \"{}\"", compilerPath);
                 continue;
             }
             std::vector<std::string> includePaths = parseIncludePaths(*compilerOutput);
