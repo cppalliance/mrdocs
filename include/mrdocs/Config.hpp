@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Dom/Object.hpp>
 #include <functional>
 #include <memory>
 #include <string>
@@ -68,8 +69,11 @@ public:
 
         /** Full path to the working directory
 
-            The working directory is used to calculate
-            full paths from relative paths.
+            The working directory is the directory
+            of the mrdocs.yml file.
+
+            It is used to calculate full paths
+            from relative paths.
 
             This string will always be native style
             and have a trailing directory separator.
@@ -123,6 +127,14 @@ public:
     /** Return the settings used to generate the Corpus and Docs.
      */
     virtual Settings const& settings() const noexcept = 0;
+
+    /** Return a DOM object representing the configuration keys.
+
+        The object is invalidated when the configuration
+        is moved or destroyed.
+
+     */
+    virtual dom::Object const& object() const = 0;
 
     /// @copydoc settings()
     constexpr Settings const*

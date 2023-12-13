@@ -24,6 +24,14 @@
 namespace clang {
 namespace mrdocs {
 
+/* Private configuration implementation.
+
+   This class is used internally to hold the
+   configuration settings. It is not part of
+   the public API and plugins should not use
+   it.
+
+ */
 class ConfigImpl
     : public Config
     , public std::enable_shared_from_this<ConfigImpl>
@@ -142,11 +150,16 @@ public:
         return &settings_;
     }
 
+    /// @copydoc Config::object()
+    dom::Object const&
+    object() const override;
+
 private:
     SettingsImpl settings_;
     ThreadPool& threadPool_;
     llvm::SmallString<0> outputPath_;
     std::vector<std::string> inputFileIncludes_;
+    dom::Object configObj_;
 
     friend class Config;
     friend class Options;

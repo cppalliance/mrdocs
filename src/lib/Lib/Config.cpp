@@ -9,14 +9,10 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Support/Path.hpp"
+#include "mrdocs/Config.hpp"
 #include <mrdocs/Support/Error.hpp>
 #include <llvm/Config/llvm-config.h>
 #include <llvm/Support/FileSystem.h>
-#include <llvm/Support/Path.h>
-#include <llvm/Support/YAMLParser.h>
-#include <llvm/Support/YAMLTraits.h>
 
 #include <version>
 
