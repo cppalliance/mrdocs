@@ -1143,6 +1143,7 @@ public:
         switch(ID)
         {
         case NAME_INFO_KIND:
+        {
             NameKind kind{};
             if(auto err = decodeRecord(R, kind, Blob))
                 return err;
@@ -1151,6 +1152,7 @@ public:
             else
                 I = std::make_unique<NameInfo>();
             return Error::success();
+        }
         case NAME_INFO_ID:
             return decodeRecord(R, I->id, Blob);
         case NAME_INFO_NAME:
