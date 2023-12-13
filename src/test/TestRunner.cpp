@@ -105,9 +105,12 @@ handleFile(
     path::replace_extension(expectedPath, xmlGen_->fileExtension());
 
     auto workingDir = files::getParentDir(filePath);
+
+    std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
+
     // Convert relative paths to absolute
     AbsoluteCompilationDatabase compilations(
-        llvm::StringRef(workingDir), SingleFileDB(filePath), config);
+        llvm::StringRef(workingDir), SingleFileDB(filePath), config, defaultIncludePaths);
     // Build Corpus
     auto corpus = CorpusImpl::build(
         report::Level::debug, config, compilations);
