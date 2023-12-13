@@ -17,9 +17,7 @@
         <tparam name="U" class="type"/>
         <alias name="M1" id="14SKPuw/wwAUmFZKoonB8Uu8gaY=">
           <file path="implicit-instantiation-member-ref.cpp" line="9" class="def"/>
-          <type class="specialization" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0">
-            <targ class="type" type="U"/>
-          </type>
+          <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;U&gt;"/>
         </alias>
       </template>
       <template>
@@ -37,9 +35,7 @@
             <tparam name="V" class="type"/>
             <alias name="M3" id="TBl15ml95lYP4APzAuH1VpGgjgs=">
               <file path="implicit-instantiation-member-ref.cpp" line="19" class="def"/>
-              <type class="specialization" id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=" name="S2">
-                <targ class="type" type="U"/>
-              </type>
+              <type id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=" name="S0::S2&lt;U&gt;"/>
             </alias>
           </template>
           <template>
@@ -58,51 +54,47 @@
   </template>
   <alias name="A0" id="ApI0xrWYyA88AQ9a3mi+ochJbJc=">
     <file path="implicit-instantiation-member-ref.cpp" line="29" class="def"/>
-    <type class="specialization" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0">
-      <targ class="type" type="int"/>
-    </type>
+    <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;int&gt;"/>
   </alias>
   <alias name="A1" id="zbm2FwMgaOYZ1PJI3zAcR9gD1DE=">
     <file path="implicit-instantiation-member-ref.cpp" line="30" class="def"/>
-    <type class="tag" id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" parent="A0" name="M0"/>
+    <type id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" name="A0::M0"/>
   </alias>
   <alias name="A2" id="3OXyXNWdB8izo3G750A0tnTvQWI=">
     <file path="implicit-instantiation-member-ref.cpp" line="31" class="def"/>
-    <type class="tag" id="ZDBtU18GeVxVwvEXVGYg+L3hBNw=" parent="A0" name="S1"/>
+    <type id="ZDBtU18GeVxVwvEXVGYg+L3hBNw=" name="A0::S1"/>
   </alias>
   <alias name="A3" id="iQWZK9m5g9ULZNf8pmkk4AQ6Fu0=">
     <file path="implicit-instantiation-member-ref.cpp" line="32" class="def"/>
-    <type class="tag" id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" parent="S0&lt;long&gt;" name="M0"/>
+    <type id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" name="S0&lt;long&gt;::M0"/>
   </alias>
   <alias name="A4" id="DMZ09ePoW0hqt5p5Hbb7r+CUQmE=">
     <file path="implicit-instantiation-member-ref.cpp" line="33" class="def"/>
-    <type class="tag" id="ZDBtU18GeVxVwvEXVGYg+L3hBNw=" parent="S0&lt;long long&gt;" name="S1"/>
+    <type id="ZDBtU18GeVxVwvEXVGYg+L3hBNw=" name="S0&lt;long long&gt;::S1"/>
   </alias>
   <alias name="A5" id="1Z8U4eFyt2XClP+7afzwsuyeXAI=">
     <file path="implicit-instantiation-member-ref.cpp" line="35" class="def"/>
-    <type class="specialization" id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0">
-      <targ class="type" type="void"/>
-    </type>
+    <type id="P9+etXi0Ae+VNs1u8rYrHIbi6qE=" name="S0&lt;void&gt;"/>
   </alias>
   <alias name="A6" id="JkIeD9nM+5+XWFXDHaK2rwRsuXA=">
     <file path="implicit-instantiation-member-ref.cpp" line="36" class="def"/>
-    <type class="tag" id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" parent="M1&lt;short&gt;" name="M0"/>
+    <type id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" name="S0::M1&lt;short&gt;::M0"/>
   </alias>
   <alias name="A7" id="9O5BsaAyDC9AuDDe/ftxNrckbjY=">
     <file path="implicit-instantiation-member-ref.cpp" line="37" class="def"/>
-    <type class="tag" id="NnkA706kKqg/azveB/lExZwRfFI=" parent="S2&lt;bool&gt;" name="M2"/>
+    <type id="NnkA706kKqg/azveB/lExZwRfFI=" name="S0::S2&lt;bool&gt;::M2"/>
   </alias>
   <alias name="A8" id="dWFupI7cyl8N8963fZrFrd+8ue4=">
     <file path="implicit-instantiation-member-ref.cpp" line="38" class="def"/>
-    <type class="tag" id="yTyWcP0E2V/EqE8I3ZdKao74yWQ=" parent="S2&lt;int&gt;" name="S3"/>
+    <type id="yTyWcP0E2V/EqE8I3ZdKao74yWQ=" name="S0::S2&lt;int&gt;::S3"/>
   </alias>
   <alias name="A9" id="r6hRllvikhxyJUBT7eKH8Z13wfw=">
     <file path="implicit-instantiation-member-ref.cpp" line="39" class="def"/>
-    <type class="tag" id="NnkA706kKqg/azveB/lExZwRfFI=" parent="M3&lt;unsigned int&gt;" name="M2"/>
+    <type id="NnkA706kKqg/azveB/lExZwRfFI=" name="S0::S2::M3&lt;unsigned int&gt;::M2"/>
   </alias>
   <alias name="A10" id="MR2bsp5xIs+Ga5MbTUu7kt4nT9E=">
     <file path="implicit-instantiation-member-ref.cpp" line="40" class="def"/>
-    <type class="tag" id="UQy9OWWe7a9N+jVLD+r6rjr4np8=" parent="S4&lt;void&gt;" name="M4"/>
+    <type id="UQy9OWWe7a9N+jVLD+r6rjr4np8=" name="S0::S2::S4&lt;void&gt;::M4"/>
   </alias>
 </namespace>
 </mrdocs>

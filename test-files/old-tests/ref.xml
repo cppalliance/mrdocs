@@ -54,7 +54,7 @@
     <struct name="D" id="/TldxA72JGXtufh5RbJgxLW2mwU=">
       <file path="ref.cpp" line="32" class="def"/>
       <base>
-        <type class="tag" id="DJrmic0LRMkHQmpzqYXGqAbcxAc=" name="C"/>
+        <type id="DJrmic0LRMkHQmpzqYXGqAbcxAc=" name="A::C"/>
       </base>
       <function name="f4" id="BJ7/Ds7ODvX+B2GNt69Xylatb0M=">
         <file path="ref.cpp" line="34"/>
@@ -102,7 +102,7 @@
       <attr id="operator" name="comma" value="39"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -111,7 +111,7 @@
       <attr id="operator" name="call" value="42"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -120,7 +120,7 @@
       <attr id="operator" name="subs" value="43"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -129,7 +129,7 @@
       <attr id="operator" name="plus" value="5"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -142,7 +142,7 @@
       <attr id="operator" name="plus_eq" value="18"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -151,7 +151,7 @@
       <attr id="operator" name="bitand" value="11"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -160,7 +160,7 @@
       <attr id="operator" name="and" value="35"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -169,7 +169,7 @@
       <attr id="operator" name="and_eq" value="24"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -178,7 +178,7 @@
       <attr id="operator" name="bitor" value="12"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -187,7 +187,7 @@
       <attr id="operator" name="or" value="36"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -196,7 +196,7 @@
       <attr id="operator" name="or_eq" value="25"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -205,7 +205,7 @@
       <attr id="operator" name="minus" value="6"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -218,7 +218,7 @@
       <attr id="operator" name="minus_eq" value="19"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -231,7 +231,7 @@
       <attr id="operator" name="ptrmem" value="40"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -240,7 +240,7 @@
       <attr id="operator" name="lt" value="16"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -249,7 +249,7 @@
       <attr id="operator" name="lshift" value="26"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -258,7 +258,7 @@
       <attr id="operator" name="lshift_eq" value="28"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -267,7 +267,7 @@
       <attr id="operator" name="le" value="32"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -276,7 +276,7 @@
       <attr id="operator" name="3way" value="34"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -285,7 +285,7 @@
       <attr id="operator" name="gt" value="17"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -294,7 +294,7 @@
       <attr id="operator" name="rshift" value="27"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -303,7 +303,7 @@
       <attr id="operator" name="rshift_eq" value="29"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -312,7 +312,7 @@
       <attr id="operator" name="ge" value="33"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -321,7 +321,7 @@
       <attr id="operator" name="star" value="7"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -330,7 +330,7 @@
       <attr id="operator" name="star_eq" value="20"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -339,7 +339,7 @@
       <attr id="operator" name="mod" value="9"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -348,7 +348,7 @@
       <attr id="operator" name="mod_eq" value="22"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -357,7 +357,7 @@
       <attr id="operator" name="slash" value="8"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -366,7 +366,7 @@
       <attr id="operator" name="slash_eq" value="21"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -375,7 +375,7 @@
       <attr id="operator" name="xor" value="10"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -384,7 +384,7 @@
       <attr id="operator" name="xor_eq" value="23"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -393,7 +393,7 @@
       <attr id="operator" name="assign" value="15"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -402,7 +402,7 @@
       <attr id="operator" name="eq" value="30"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>
@@ -415,7 +415,7 @@
       <attr id="operator" name="not_eq" value="31"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
+          <pointee-type id="47VHAvq/9ANwJboZT8J8RwBjMLU=" name="F"/>
         </type>
       </param>
     </function>

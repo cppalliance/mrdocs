@@ -5,7 +5,7 @@
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file path="local-class.cpp" line="1" class="def"/>
     <return>
-      <type class="tag" id="OhDTqBe4/sw3kfEe1/rfVoLg//I=" name="A"/>
+      <type id="OhDTqBe4/sw3kfEe1/rfVoLg//I=" name="A"/>
     </return>
   </function>
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">

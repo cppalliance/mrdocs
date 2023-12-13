@@ -8,7 +8,7 @@
       <file path="overloaded-op-1.cpp" line="3"/>
       <attr id="operator" name="plus" value="5"/>
       <return>
-        <type class="tag" id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
+        <type id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
       </return>
     </function>
   </struct>

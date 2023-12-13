@@ -36,7 +36,7 @@
   <variable name="t" id="eFAdMVIx9F2Zyx0LmK/nCDOhmhA=">
     <file path="ns-variables.cpp" line="16"/>
     <attr id="storage-class" name="extern" value="1"/>
-    <type class="tag" id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
+    <type id="CgGNdHpW5mG/i5741WPYQDw28OQ=" name="T"/>
   </variable>
   <variable name="x0" id="LESPWJfwRpePfANf2Vm0O/W1Lfw=">
     <file path="ns-variables.cpp" line="18" class="def"/>

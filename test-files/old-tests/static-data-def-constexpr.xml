@@ -9,7 +9,7 @@
       <file path="static-data-def-constexpr.cpp" line="3"/>
       <attr id="storage-class" name="static" value="2"/>
       <attr id="constexpr-kind" name="constexpr" value="1"/>
-      <type class="tag" id="pOYGF6pLJlICuiGO0Xj0daDb/to=" name="S" cv-qualifiers="const"/>
+      <type id="pOYGF6pLJlICuiGO0Xj0daDb/to=" name="S" cv-qualifiers="const"/>
     </variable>
   </struct>
   <struct name="T" id="CgGNdHpW5mG/i5741WPYQDw28OQ=">
