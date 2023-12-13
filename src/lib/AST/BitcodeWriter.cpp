@@ -329,8 +329,6 @@ RecordIDNameMap = []()
         {TEMPLATE_PARAM_KEY_KIND,{"TParamKeyKind", &Integer32Abbrev}},
         {TYPEINFO_KIND, {"TypeinfoKind", &Integer32Abbrev}},
         {TYPEINFO_IS_PACK, {"TypeinfoIsPack", &BoolAbbrev}},
-        {TYPEINFO_ID, {"TypeinfoID", &SymbolIDAbbrev}},
-        {TYPEINFO_NAME, {"TypeinfoName", &StringAbbrev}},
         {TYPEINFO_CVQUAL, {"TypeinfoCV", &Integer32Abbrev}},
         {TYPEINFO_NOEXCEPT, {"TypeinfoNoexcept", &NoexceptAbbrev}},
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
@@ -425,8 +423,8 @@ RecordsByBlock{
         {}},
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
-        {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_ID, TYPEINFO_NAME,
-        TYPEINFO_CVQUAL, TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL}},
+        {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_CVQUAL,
+        TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL}},
     {BI_TYPEINFO_PARENT_BLOCK_ID,
         {}},
     {BI_TYPEINFO_CHILD_BLOCK_ID,
@@ -440,7 +438,7 @@ RecordsByBlock{
     {BI_VARIABLE_BLOCK_ID, {VARIABLE_BITS}},
     // GuideInfo
     {BI_GUIDE_BLOCK_ID, {GUIDE_EXPLICIT}},
-    {BI_NAME_INFO_ID, 
+    {BI_NAME_INFO_ID,
         {NAME_INFO_KIND, NAME_INFO_ID, NAME_INFO_NAME}},
     };
 //------------------------------------------------
@@ -995,18 +993,8 @@ emitBlock(
     emitRecord(TI->IsPackExpansion, TYPEINFO_IS_PACK);
     visit(*TI, [&]<typename T>(const T& t)
     {
-        if constexpr(requires { t.id; })
-            emitRecord(t.id, TYPEINFO_ID);
-        if constexpr(requires { t.Name; })
-            emitRecord(t.Name, TYPEINFO_NAME);
         if constexpr(requires { t.CVQualifiers; })
             emitRecord(t.CVQualifiers, TYPEINFO_CVQUAL);
-
-        if constexpr(T::isSpecialization())
-        {
-            for(const auto& targ : t.TemplateArgs)
-                emitBlock(targ);
-        }
 
         if constexpr(requires { t.ParentType; })
             emitBlock(t.ParentType, BI_TYPEINFO_PARENT_BLOCK_ID);
@@ -1034,11 +1022,11 @@ emitBlock(
             emitRecord(t.RefQualifier, TYPEINFO_REFQUAL);
             emitRecord(t.ExceptionSpec, TYPEINFO_NOEXCEPT);
         }
-        
-        if constexpr(requires { t.Name_; })
+
+        if constexpr(T::isNamed())
         {
-            if(t.Name_)
-                emitBlock(*t.Name_);
+            if(t.Name)
+                emitBlock(*t.Name);
         }
     });
 }
@@ -1135,7 +1123,7 @@ emitBlock(
         emitBlock(tparam);
 }
 
-void 
+void
 BitcodeWriter::
 emitBlock(NameInfo const& I)
 {

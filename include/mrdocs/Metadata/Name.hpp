@@ -26,8 +26,8 @@ enum class NameKind
     Specialization
 };
 
-MRDOCS_DECL 
-dom::String 
+MRDOCS_DECL
+dom::String
 toString(NameKind kind) noexcept;
 
 /** Represents a (possibly qualified) symbol name.
@@ -41,7 +41,7 @@ struct NameInfo
     /** The SymbolID of the named symbol, if it exists.
     */
     SymbolID id = SymbolID::invalid;
-    
+
     /** The unqualified name.
     */
     std::string Name;
@@ -49,6 +49,9 @@ struct NameInfo
     /** The parent name info, if any.
     */
     std::unique_ptr<NameInfo> Prefix;
+
+    constexpr bool isIdentifier()     const noexcept { return Kind == NameKind::Identifier; }
+    constexpr bool isSpecialization() const noexcept { return Kind == NameKind::Specialization; }
 
     constexpr
     NameInfo() noexcept
@@ -67,7 +70,7 @@ struct NameInfo
 
 /** Represents a (possibly qualified) symbol name with template arguments.
 */
-struct SpecializationNameInfo 
+struct SpecializationNameInfo
     : NameInfo
 {
     /** The template arguments.
@@ -105,6 +108,10 @@ visit(
         MRDOCS_UNREACHABLE();
     }
 }
+
+MRDOCS_DECL
+std::string
+toString(const NameInfo& N);
 
 } // mrdocs
 } // clang

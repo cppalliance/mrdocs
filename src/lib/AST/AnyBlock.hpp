@@ -806,14 +806,8 @@ public:
                 return err;
             switch(k)
             {
-            case TypeKind::Builtin:
-                I_ = std::make_unique<BuiltinTypeInfo>();
-                break;
-            case TypeKind::Tag:
-                I_ = std::make_unique<TagTypeInfo>();
-                break;
-            case TypeKind::Specialization:
-                I_ = std::make_unique<SpecializationTypeInfo>();
+            case TypeKind::Named:
+                I_ = std::make_unique<NamedTypeInfo>();
                 break;
             case TypeKind::Decltype:
                 I_ = std::make_unique<DecltypeTypeInfo>();
@@ -845,22 +839,6 @@ public:
             if(auto err = decodeRecord(R, I_->IsPackExpansion, Blob))
                 return err;
             return Error::success();
-        case TYPEINFO_ID:
-            return visit(*I_, [&]<typename T>(T& t)
-                {
-                    if constexpr(requires { t.id; })
-                        return decodeRecord(R, t.id, Blob);
-                    else
-                        return Error("wrong TypeInfo kind");
-                });
-        case TYPEINFO_NAME:
-            return visit(*I_, [&]<typename T>(T& t)
-                {
-                    if constexpr(requires { t.Name; })
-                        return decodeRecord(R, t.Name, Blob);
-                    else
-                        return Error("wrong TypeInfo kind");
-                });
         case TYPEINFO_CVQUAL:
             return visit(*I_, [&]<typename T>(T& t)
                 {
@@ -1311,14 +1289,6 @@ readSubBlock(unsigned ID)
         TypeInfoBlock B(I.ParamTypes.emplace_back(), br_);
         return br_.readBlock(B, ID);
     }
-    case BI_TEMPLATE_ARG_BLOCK_ID:
-    {
-        if(! I_->isSpecialization())
-            return Error("wrong TypeInfo kind");
-        auto& I = static_cast<SpecializationTypeInfo&>(*I_);
-        TemplateArgBlock B(I.TemplateArgs.emplace_back(), br_);
-        return br_.readBlock(B, ID);
-    }
     case BI_EXPR_BLOCK_ID:
     {
         if(I_->isArray())
@@ -1340,8 +1310,8 @@ readSubBlock(unsigned ID)
         std::unique_ptr<NameInfo>* NI = nullptr;
         visit(*I_, [&]<typename T>(T& t)
         {
-            if constexpr(requires { t.Name_; })
-                NI = &t.Name_;
+            if constexpr(requires { t.Name; })
+                NI = &t.Name;
         });
         if(! NI)
             return Error("wrong TypeInfo kind");

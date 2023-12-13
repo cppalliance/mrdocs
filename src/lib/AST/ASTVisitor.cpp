@@ -2725,6 +2725,12 @@ class TerminalTypeVisitor
     bool VisitAutoType(
         const AutoType* T)
     {
+        // KRYSTIAN TODO: we should probably add a TypeInfo
+        // to represent deduced types that also stores what
+        // it was deduced as.
+        // KRYSTIAN NOTE: we don't use isDeduced because it will
+        // return true if the type is dependent
+        // if the type has been deduced, use the deduced type
         if(QualType DT = T->getDeducedType(); ! DT.isNull())
             return Visit(DT);
         getDerived().buildTerminal(NNS_, T, Quals_, IsPack_);
@@ -2734,6 +2740,9 @@ class TerminalTypeVisitor
     bool VisitDeducedTemplateSpecializationType(
         const DeducedTemplateSpecializationType* T)
     {
+        // KRYSTIAN TODO: we should probably add a TypeInfo
+        // to represent deduced types that also stores what
+        // it was deduced as.
         if(QualType DT = T->getDeducedType(); ! DT.isNull())
             return Visit(DT);
         TemplateName TN = T->getTemplateName();
@@ -3047,10 +3056,13 @@ public:
         unsigned quals,
         bool pack)
     {
-        auto I = std::make_unique<BuiltinTypeInfo>();
+        auto I = std::make_unique<NamedTypeInfo>();
         I->CVQualifiers = convertToQualifierKind(quals);
-        I->Name = getASTVisitor().getTypeAsString(T);
-        I->Name_ = getASTVisitor().buildNameInfo(NNS);
+
+        auto Name = std::make_unique<NameInfo>();
+        Name->Name = getASTVisitor().getTypeAsString(T);
+        Name->Prefix = getASTVisitor().buildNameInfo(NNS);
+        I->Name = std::move(Name);
         *Inner = std::move(I);
         Result->IsPackExpansion = pack;
     }
@@ -3064,25 +3076,27 @@ public:
         bool pack)
     {
         ASTVisitor& V = getASTVisitor();
+        auto I = std::make_unique<NamedTypeInfo>();
+        I->CVQualifiers = convertToQualifierKind(quals);
+
         if(TArgs)
         {
-            auto I = std::make_unique<SpecializationTypeInfo>();
-            I->CVQualifiers = convertToQualifierKind(quals);
+            auto Name = std::make_unique<SpecializationNameInfo>();
             if(II)
-                I->Name = II->getName();
-            I->Name_ = V.buildNameInfo(NNS);
-            V.buildTemplateArgs(I->TemplateArgs, *TArgs);
-            *Inner = std::move(I);
+                Name->Name = II->getName();
+            Name->Prefix = getASTVisitor().buildNameInfo(NNS);
+            V.buildTemplateArgs(Name->TemplateArgs, *TArgs);
+            I->Name = std::move(Name);
         }
         else
         {
-            auto I = std::make_unique<TagTypeInfo>();
-            I->CVQualifiers = convertToQualifierKind(quals);
+            auto Name = std::make_unique<NameInfo>();
             if(II)
-                I->Name = II->getName();
-            I->Name_ = V.buildNameInfo(NNS);
-            *Inner = std::move(I);
+                Name->Name = II->getName();
+            Name->Prefix = getASTVisitor().buildNameInfo(NNS);
+            I->Name = std::move(Name);
         }
+        *Inner = std::move(I);
         Result->IsPackExpansion = pack;
     }
 
@@ -3095,34 +3109,36 @@ public:
         bool pack)
     {
         ASTVisitor& V = getASTVisitor();
-        const IdentifierInfo* II = D->getIdentifier();
+        auto I = std::make_unique<NamedTypeInfo>();
+        I->CVQualifiers = convertToQualifierKind(quals);
+
         if(TArgs)
         {
-            auto I = std::make_unique<SpecializationTypeInfo>();
-            I->CVQualifiers = convertToQualifierKind(quals);
-            if(II)
-                I->Name = II->getName();
-            V.getDependencyID(V.getInstantiatedFrom(D), I->id);
+            auto Name = std::make_unique<SpecializationNameInfo>();
+            if(const IdentifierInfo* II = D->getIdentifier())
+                Name->Name = II->getName();
+            V.getDependencyID(V.getInstantiatedFrom(D), Name->id);
             if(NNS)
-                I->Name_ = V.buildNameInfo(NNS);
+                Name->Prefix = V.buildNameInfo(NNS);
             else
-                I->Name_ = V.buildNameInfo(D);
-            V.buildTemplateArgs(I->TemplateArgs, *TArgs);
-            *Inner = std::move(I);
+                Name->Prefix = V.buildNameInfo(D);
+
+            V.buildTemplateArgs(Name->TemplateArgs, *TArgs);
+            I->Name = std::move(Name);
         }
         else
         {
-            auto I = std::make_unique<TagTypeInfo>();
-            I->CVQualifiers = convertToQualifierKind(quals);
-            if(II)
-                I->Name = II->getName();
-            V.getDependencyID(V.getInstantiatedFrom(D), I->id);
+            auto Name = std::make_unique<NameInfo>();
+            if(const IdentifierInfo* II = D->getIdentifier())
+                Name->Name = II->getName();
+            V.getDependencyID(V.getInstantiatedFrom(D), Name->id);
             if(NNS)
-                I->Name_ = V.buildNameInfo(NNS);
+                Name->Prefix = V.buildNameInfo(NNS);
             else
-                I->Name_ = V.buildNameInfo(D);
-            *Inner = std::move(I);
+                Name->Prefix = V.buildNameInfo(D);
+            I->Name = std::move(Name);
         }
+        *Inner = std::move(I);
         Result->IsPackExpansion = pack;
     }
 };

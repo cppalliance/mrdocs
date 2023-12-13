@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Type.hpp>
-#include <mrdocs/Metadata/Template.hpp>
 
 namespace clang {
 namespace mrdocs {
@@ -39,12 +39,8 @@ toString(
 {
     switch(kind)
     {
-    case TypeKind::Builtin:
-        return "builtin";
-    case TypeKind::Tag:
-        return "tag";
-    case TypeKind::Specialization:
-        return "specialization";
+    case TypeKind::Named:
+        return "named";
     case TypeKind::Decltype:
         return "decltype";
     case TypeKind::LValueReference:
@@ -62,6 +58,19 @@ toString(
     default:
         MRDOCS_UNREACHABLE();
     }
+}
+
+SymbolID
+TypeInfo::
+namedSymbol() const noexcept
+{
+    if(! isNamed())
+        return SymbolID::invalid;
+    const auto* NT = static_cast<
+        const NamedTypeInfo*>(this);
+    if(! NT->Name)
+        return SymbolID::invalid;
+    return NT->Name->id;
 }
 
 namespace {
@@ -124,7 +133,7 @@ operator()(
     if(t.IsPackExpansion)
         write("...");
 
-    if constexpr(requires { t.Name; })
+    if constexpr(T::isNamed())
     {
         if(t.CVQualifiers != QualifierKind::None)
             write(toString(t.CVQualifiers), ' ');
@@ -139,46 +148,11 @@ operator()(
         }
     }
 
-    if constexpr(requires { t.Name; })
-        write(t.Name);
-
     if constexpr(T::isDecltype())
         write("decltype(", t.Operand.Written, ')');
 
-    if constexpr(T::isSpecialization())
-    {
-        write('<');
-        if(! t.TemplateArgs.empty())
-        {
-            auto targ_writer =
-                [&]<typename U>(const U& u)
-                {
-                    if constexpr(U::isType())
-                    {
-                        if(u.Type)
-                            writeFullType(*u.Type, write);
-                    }
-                    if constexpr(U::isNonType())
-                    {
-                        write(u.Value.Written);
-                    }
-                    if constexpr(U::isTemplate())
-                    {
-                        write(u.Name);
-                    }
-                    if(u.IsPackExpansion)
-                        write("...");
-                };
-            visit(*t.TemplateArgs.front(), targ_writer);
-            for(auto first = t.TemplateArgs.begin();
-                ++first != t.TemplateArgs.end();)
-            {
-                write(", ");
-                visit(**first, targ_writer);
-            }
-        }
-        write('>');
-    }
+    if constexpr(T::isNamed())
+        write(toString(*t.Name));
 
     if constexpr(requires { t.PointeeType; })
     {

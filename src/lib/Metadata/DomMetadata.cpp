@@ -460,19 +460,9 @@ domCreate(
     };
     visit(*I, [&]<typename T>(const T& t)
     {
-        if constexpr(requires { t.Name; })
-            entries.emplace_back("name", t.Name);
-
-        if constexpr(requires { t.Name_; })
-            entries.emplace_back("prefix", 
-                domCreate(t.Name_, domCorpus));
-
-        if constexpr(requires { t.id; })
-            entries.emplace_back("symbol", domCorpus.get(t.id));
-
-        if constexpr(T::isSpecialization())
-            entries.emplace_back("args",
-                dom::newArray<DomTArgArray>(t.TemplateArgs, domCorpus));
+        if constexpr(T::isNamed())
+            entries.emplace_back("name",
+                domCreate(t.Name, domCorpus));
 
         if constexpr(T::isDecltype())
             entries.emplace_back("operand", t.Operand.Written);

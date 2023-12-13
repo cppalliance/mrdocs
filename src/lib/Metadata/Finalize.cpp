@@ -141,14 +141,8 @@ class Finalizer
             if constexpr(requires { T.ParentType; })
                 finalize(T.ParentType);
 
-            if constexpr(requires { T.id; })
-                finalize(T.id);
-
-            if constexpr(requires { T.Name_; })
-                finalize(T.Name_);
-
-            if constexpr(Ty::isSpecialization())
-                finalize(T.TemplateArgs);
+            if constexpr(Ty::isNamed())
+                finalize(T.Name);
         });
     }
 

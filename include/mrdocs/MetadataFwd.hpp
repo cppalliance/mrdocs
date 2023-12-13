@@ -50,6 +50,7 @@ struct NameInfo;
 struct RecordInfo;
 struct Param;
 struct SpecializationInfo;
+struct SpecializationNameInfo;
 struct SourceInfo;
 struct TypeInfo;
 struct TypedefInfo;

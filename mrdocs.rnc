@@ -381,7 +381,6 @@ grammar
         element (
             type |
             pointee-type |
-            pattern-type |
             element-type |
             return-type |
             param-type
@@ -389,9 +388,7 @@ grammar
         {
             attribute class
             {
-                "builtin" |
-                "tag" |
-                "specialization" |
+                "named" |
                 "decltype" |
                 "lvalue-reference" |
                 "rvalue-reference" |
@@ -409,7 +406,6 @@ grammar
             attribute exception-spec { text } ?,
             attribute bounds { text } ?,
             attribute operand { text } ?,
-            TemplateArg *,
             TypeInfo *
         }
     )
