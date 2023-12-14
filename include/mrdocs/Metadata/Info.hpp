@@ -43,22 +43,37 @@ struct GuideInfo;
 */
 enum class InfoKind
 {
+    /// The symbol is a namespace
     Namespace = 1, // for bitstream
+    /// The symbol is a record (class or struct)
     Record,
+    /// The symbol is a function
     Function,
+    /// The symbol is an enum
     Enum,
+    /// The symbol is a typedef
     Typedef,
+    /// The symbol is a variable
     Variable,
+    /// The symbol is a field
     Field,
+    /// The symbol is a template specialization
     Specialization,
+    /// The symbol is a friend declaration
     Friend,
+    /// The symbol is an enumerator
     Enumerator,
+    /// The symbol is a deduction guide
     Guide
 };
 
-MRDOCS_DECL dom::String toString(InfoKind kind) noexcept;
+/** Return the name of the InfoKind as a string.
+ */
+MRDOCS_DECL
+dom::String
+toString(InfoKind kind) noexcept;
 
-/** Common properties of all symbols
+/** Base class with common properties of all symbols
 */
 struct MRDOCS_VISIBLE
     Info
@@ -88,31 +103,39 @@ struct MRDOCS_VISIBLE
 
     /** Implicitly extracted flag.
 
-        This flag distinguishes primary `Info` from `Info` dependencies.
+        This flag distinguishes primary `Info` from its dependencies.
 
         A primary `Info` is one which was extracted during AST traversal
         because it satisfied all configured conditions to be extracted.
 
         An `Info` dependency is one which does not meet the configured
-        conditions for extraction, but was extracted due to it being used
-        by a primary `Info`.
+        conditions for extraction, but had to be extracted due to it
+        being used transitively by a primary `Info`.
     */
     bool Implicit = false;
 
-    /** In-order List of parent namespaces.
-    */
+    /** Ordered list of parent namespaces.
+     */
     std::vector<SymbolID> Namespace;
 
     /** The extracted javadoc for this declaration.
-    */
+     */
     std::unique_ptr<Javadoc> javadoc;
 
     //--------------------------------------------
 
     virtual ~Info() = default;
     Info(Info const& Other) = delete;
+
+    /** Move constructor.
+     */
     Info(Info&& Other) = default;
 
+    /** Construct an Info.
+
+        @param kind The kind of symbol
+        @param ID The unique identifier for this symbol
+    */
     explicit
     Info(
         InfoKind kind,
@@ -122,16 +145,37 @@ struct MRDOCS_VISIBLE
     {
     }
 
+    /// Determine if this symbol is a namespace.
     constexpr bool isNamespace()      const noexcept { return Kind == InfoKind::Namespace; }
+
+    /// Determine if this symbol is a record (class or struct).
     constexpr bool isRecord()         const noexcept { return Kind == InfoKind::Record; }
+
+    /// Determine if this symbol is a function.
     constexpr bool isFunction()       const noexcept { return Kind == InfoKind::Function; }
+
+    /// Determine if this symbol is an enum.
     constexpr bool isEnum()           const noexcept { return Kind == InfoKind::Enum; }
+
+    /// Determine if this symbol is a typedef.
     constexpr bool isTypedef()        const noexcept { return Kind == InfoKind::Typedef; }
+
+    /// Determine if this symbol is a variable.
     constexpr bool isVariable()       const noexcept { return Kind == InfoKind::Variable; }
+
+    /// Determine if this symbol is a field.
     constexpr bool isField()          const noexcept { return Kind == InfoKind::Field; }
+
+    /// Determine if this symbol is a template specialization.
     constexpr bool isSpecialization() const noexcept { return Kind == InfoKind::Specialization; }
+
+    /// Determine if this symbol is a friend declaration.
     constexpr bool isFriend()         const noexcept { return Kind == InfoKind::Friend; }
+
+    /// Determine if this symbol is an enumerator.
     constexpr bool isEnumerator()     const noexcept { return Kind == InfoKind::Enumerator; }
+
+    /// Determine if this symbol is a deduction guide.
     constexpr bool isGuide()          const noexcept { return Kind == InfoKind::Guide; }
 };
 
@@ -143,23 +187,47 @@ struct MRDOCS_VISIBLE
     compile-time, indicating if the most-derived
     class is a certain type.
 */
-template<InfoKind K>
+template <InfoKind K>
 struct IsInfo : Info
 {
     /** The variant discriminator constant of the most-derived class.
-    */
+
+        It only distinguishes from `Info::kind` in that it is a constant.
+
+     */
     static constexpr InfoKind kind_id = K;
 
+    /// Determine if this symbol is a namespace.
     static constexpr bool isNamespace()      noexcept { return K == InfoKind::Namespace; }
+
+    /// Determine if this symbol is a record (class or struct).
     static constexpr bool isRecord()         noexcept { return K == InfoKind::Record; }
+
+    /// Determine if this symbol is a function.
     static constexpr bool isFunction()       noexcept { return K == InfoKind::Function; }
+
+    /// Determine if this symbol is an enum.
     static constexpr bool isEnum()           noexcept { return K == InfoKind::Enum; }
+
+    /// Determine if this symbol is a typedef.
     static constexpr bool isTypedef()        noexcept { return K == InfoKind::Typedef; }
+
+    /// Determine if this symbol is a variable.
     static constexpr bool isVariable()       noexcept { return K == InfoKind::Variable; }
+
+    /// Determine if this symbol is a field.
     static constexpr bool isField()          noexcept { return K == InfoKind::Field; }
+
+    /// Determine if this symbol is a template specialization.
     static constexpr bool isSpecialization() noexcept { return K == InfoKind::Specialization; }
+
+    /// Determine if this symbol is a friend declaration.
     static constexpr bool isFriend()         noexcept { return K == InfoKind::Friend; }
+
+    /// Determine if this symbol is an enumerator.
     static constexpr bool isEnumerator()     noexcept { return K == InfoKind::Enumerator; }
+
+    /// Determine if this symbol is a deduction guide.
     static constexpr bool isGuide()          noexcept { return K == InfoKind::Guide; }
 
 protected:
@@ -169,13 +237,18 @@ protected:
     }
 };
 
-/** Invoke a function object with an Info-derived type.
+/** Invoke a function object with a type derived from Info
+
+    This function will invoke the function object `fn` with
+    a type derived from `Info` as the first argument, followed
+    by `args...`. The type of the first argument is determined
+    by the `InfoKind` of the `Info` object.
+
 */
 template<
-    class InfoTy,
+    std::derived_from<Info> InfoTy,
     class Fn,
     class... Args>
-    requires std::derived_from<InfoTy, Info>
 decltype(auto)
 visit(
     InfoTy& info,
@@ -213,6 +286,23 @@ visit(
         MRDOCS_UNREACHABLE();
     }
 }
+
+/** A concept for types that have `Info` members.
+
+    In most cases `T` is another `Info` type that
+    has a `Members` member which is a range of
+    `SymbolID` values.
+
+    However, an @ref OverloadSet is also a type that
+    contains `Info` members without being `Info` itself.
+*/
+template <class T>
+concept InfoParent = requires(T const& t) {
+    t.Members;
+    requires std::ranges::range<decltype(std::declval<T>().Members)>;
+    requires std::same_as<
+        std::ranges::range_value_t<std::decay_t<decltype(std::declval<T>().Members)>>, SymbolID>;
+};
 
 } // mrdocs
 } // clang
