@@ -21,7 +21,7 @@ namespace mrdocs {
 
 /** Access specifier.
 
-    Public is set to zero since it is the most
+    None is set to zero since it is the most
     frequently occurring access, and it is
     elided by the bitstream encoder because it
     has an all-zero bit pattern. This improves

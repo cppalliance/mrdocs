@@ -18,6 +18,28 @@
 namespace clang {
 namespace mrdocs {
 
+/** A visitor for a type
+
+    This class is used to implement the visitor
+    pattern. It stores a reference to an object
+    of type `Base`, and a function object `Fn`
+    which is called with the derived type as
+    the first argument, followed by `Args`.
+
+    The visitor is constructed with the object
+    to visit, the function object, and the
+    arguments to pass to the function object.
+
+    The method `visit` is a template which
+    accepts a derived type of `Base`. It calls
+    the function object with the derived type
+    as the first argument, followed by the
+    arguments passed to the constructor.
+
+    @tparam Base The base type of the object
+    @tparam Fn The function object type
+    @tparam Args The argument types
+ */
 template<
     typename Base,
     typename Fn,
@@ -28,7 +50,7 @@ class Visitor
     Fn&& fn_;
     std::tuple<Args&&...> args_;
 
-    template<typename Derived>
+    template <class Derived>
     decltype(auto)
     getAs()
     {
@@ -37,6 +59,12 @@ class Visitor
     }
 
 public:
+    /** Constructor
+
+        @param obj The object to visit
+        @param fn The function object to call
+        @param args The arguments to pass to the function object
+     */
     Visitor(Base&& obj, Fn&& fn, Args&&... args)
         : obj_(std::forward<Base>(obj))
         , fn_(std::forward<Fn>(fn))
@@ -44,22 +72,46 @@ public:
     {
     }
 
-    template<typename Derived>
-        requires std::derived_from<Derived,
-            std::remove_cvref_t<Base>>
+    /** Visit a derived type
+
+        This method calls the function object with
+        the derived type as the first argument,
+        followed by the arguments passed to the
+        constructor.
+
+        @tparam Derived The derived type to visit
+        @return The result of calling the function object
+     */
+    template <std::derived_from<std::remove_cvref_t<Base>> Derived>
     decltype(auto)
     visit()
     {
-        return std::apply(std::forward<Fn>(fn_), std::tuple_cat(
-            std::forward_as_tuple(getAs<Derived>()), args_));
+        return std::apply(
+            std::forward<Fn>(fn_),
+            std::tuple_cat(
+                std::forward_as_tuple(
+                    getAs<Derived>()),
+                args_));
     }
 };
 
+/** Make a visitor for a base type
+
+    The returned visitor is an object with a template
+    method `visit` which can be called with a derived
+    type of the object being visited.
+
+    The visitor stores the arguments `args` passed to
+    this function, and its method `visit` calls the
+    function `fn` with the derived type as the first
+    argument, followed by `args`.
+
+ */
 template<
-    typename BaseTy,
-    typename ObjectTy,
-    typename FnTy,
-    typename... ArgsTy>
+    class BaseTy,
+    class ObjectTy,
+    class FnTy,
+    class... ArgsTy>
 auto
 makeVisitor(
     ObjectTy&& obj,

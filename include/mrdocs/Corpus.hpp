@@ -31,17 +31,26 @@ class MRDOCS_VISIBLE
     Corpus
 {
 protected:
-
     explicit
     Corpus(
         Config const& config_) noexcept
         : config(config_)
     {
     }
-
-
-    class iterator;
 public:
+    /** The iterator type for the index of all symbols.
+
+        The iterator is a forward iterator that
+        iterates over all symbols in the index.
+        It dereferences to a reference to a
+        const @ref Info.
+
+        The logic for incrementing the iterator is
+        provided by the Corpus implementation via
+        a function that retuns the next Info in the
+        index, or nullptr if there are no more.
+    */
+    class iterator;
 
     /** Destructor.
     */
@@ -69,12 +78,6 @@ public:
     iterator
     end() const noexcept = 0;
 
-    /** Return the metadata for the global namespace.
-    */
-    MRDOCS_DECL
-    NamespaceInfo const&
-    globalNamespace() const noexcept;
-
     /** Return the Info with the matching ID, or nullptr.
     */
     MRDOCS_DECL
@@ -83,6 +86,10 @@ public:
     find(SymbolID const& id) const noexcept = 0;
 
     /** Return true if an Info with the specified symbol ID exists.
+
+        This function uses the @ref find function to locate
+        the Info with the specified symbol ID and returns
+        true if it exists, otherwise false.
     */
     bool
     exists(
@@ -93,49 +100,92 @@ public:
 
     /** Return the Info with the specified symbol ID.
 
+        This function uses the @ref find function to locate
+        the Info with the specified symbol ID. The result
+        is converted to the specified type T and returned.
+
+        The function @ref exists can be used to determine
+        if an Info with the specified symbol ID exists.
         If the id does not exist, the behavior is undefined.
+
+        If the Info is not of type T, the behavior is undefined.
     */
     template<class T = Info>
+    requires std::derived_from<T, Info>
     T const&
     get(
         SymbolID const& id) const noexcept;
 
-    //--------------------------------------------
+    /** Return the metadata for the global namespace.
 
-    // KRYSTIAN FIXME: this could just be a single
-    // overload constrained with std::derived_from<ScopeInfo>
-    template<class F, class... Args>
-    void traverse(
-        NamespaceInfo const& I,
-        F&& f, Args&&... args) const;
+        This function is equivalent to calling
+        @ref get with the symbol ID for the
+        global namespace.
+    */
+    MRDOCS_DECL
+    NamespaceInfo const&
+    globalNamespace() const noexcept;
 
-    template<class F, class... Args>
-    void traverse(
-        RecordInfo const& I,
-        F&& f, Args&&... args) const;
+    /** Visit the members of specified Info.
 
-    template<class F, class... Args>
-    void traverse(
-        EnumInfo const& I,
-        F&& f, Args&&... args) const;
+        This function invokes the specified function `f`
+        for each member of the specified Info `I`.
 
-    template<class F, class... Args>
-    void traverse(
-        SpecializationInfo const& I,
-        F&& f, Args&&... args) const;
+        For each member of `I`, the function will invoke
+        the function object `fn` with a type derived from
+        `Info` as the first argument, followed by `args...`.
 
-    template<class F, class... Args>
-    void traverse(
-        OverloadSet const& OS,
-        F&& f, Args&&... args) const;
+        The type of the first argument is determined
+        by the `InfoKind` of the `Info` object.
 
-    template<class F, class... Args>
+        @param info The Info to visit.
+        @param f The function to invoke.
+        @param args The arguments to pass to the function.
+    */
+    template <InfoParent T, class F, class... Args>
+    void
+    traverse(
+        T const& I, F&& f, Args&&... args) const
+    {
+        for (auto const& id : I.Members)
+        {
+            visit(get(id), std::forward<F>(f),
+                  std::forward<Args>(args)...);
+        }
+    }
+
+    /** Visit the function members of specified Info.
+
+        This function iterates the members of the specified
+        ScopeInfo `S`. For each member associated with a
+        function with the same name as the member, the
+        function object `f` is invoked with the member
+        as the first argument, followed by `args...`.
+
+        When there are more than one member function
+        with the same name, the function object `f` is
+        invoked with an @ref OverloadSet as the first
+        argument, followed by `args...`.
+    */
+    template <class F, class... Args>
     void traverseOverloads(
         ScopeInfo const& S,
-        F&& f, Args&&... args) const;
+        F&& f,
+        Args&&... args) const;
 
     //--------------------------------------------
 
+    /** Return the fully qualified name of the specified Info.
+
+        This function returns the fully qualified name
+        of the specified Info `I` as a string.
+
+        The `Info` parents are traversed to construct
+        the fully qualified name which is stored in
+        the string `temp`.
+
+        @return A reference to the string `temp`.
+     */
     // KRYSTIAN NOTE: temporary
     MRDOCS_DECL
     std::string&
@@ -147,6 +197,7 @@ public:
 //------------------------------------------------
 
 template<class T>
+requires std::derived_from<T, Info>
 T const&
 Corpus::
 get(
@@ -166,67 +217,7 @@ get(
     }
 }
 
-template<class F, class... Args>
-void
-Corpus::
-traverse(
-    NamespaceInfo const& I,
-    F&& f, Args&&... args) const
-{
-    for(auto const& id : I.Members)
-        visit(get(id), std::forward<F>(f),
-            std::forward<Args>(args)...);
-}
-
-template<class F, class... Args>
-void
-Corpus::
-traverse(
-    RecordInfo const& I,
-    F&& f, Args&&... args) const
-{
-    for(auto const& id : I.Members)
-        visit(get(id), std::forward<F>(f),
-            std::forward<Args>(args)...);
-}
-
-template<class F, class... Args>
-void
-Corpus::
-traverse(
-    EnumInfo const& I,
-    F&& f, Args&&... args) const
-{
-    for(auto const& id : I.Members)
-        visit(get(id), std::forward<F>(f),
-            std::forward<Args>(args)...);
-}
-
-template<class F, class... Args>
-void
-Corpus::
-traverse(
-    SpecializationInfo const& I,
-    F&& f, Args&&... args) const
-{
-    for(auto const& id : I.Members)
-        visit(get(id), std::forward<F>(f),
-            std::forward<Args>(args)...);
-}
-
-template<class F, class... Args>
-void
-Corpus::
-traverse(
-    OverloadSet const& OS,
-    F&& f, Args&&... args) const
-{
-    for(auto const& id : OS.Members)
-        visit(get(id), std::forward<F>(f),
-            std::forward<Args>(args)...);
-}
-
-template<class F, class... Args>
+template <class F, class... Args>
 void
 Corpus::
 traverseOverloads(
