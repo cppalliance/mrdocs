@@ -50,14 +50,6 @@ class Visitor
     Fn&& fn_;
     std::tuple<Args&&...> args_;
 
-    template <class Derived>
-    decltype(auto)
-    getAs()
-    {
-        return static_cast<add_cvref_from_t<
-            Base, Derived>&&>(obj_);
-    }
-
 public:
     /** Constructor
 
@@ -82,7 +74,8 @@ public:
         @tparam Derived The derived type to visit
         @return The result of calling the function object
      */
-    template <std::derived_from<std::remove_cvref_t<Base>> Derived>
+    template<std::derived_from<
+        std::remove_cvref_t<Base>> Derived>
     decltype(auto)
     visit()
     {
@@ -90,8 +83,9 @@ public:
             std::forward<Fn>(fn_),
             std::tuple_cat(
                 std::forward_as_tuple(
-                    getAs<Derived>()),
-                args_));
+                    static_cast<add_cvref_from_t<
+                        Base, Derived>&&>(obj_)),
+                std::move(args_)));
     }
 };
 
@@ -108,10 +102,10 @@ public:
 
  */
 template<
-    class BaseTy,
-    class ObjectTy,
-    class FnTy,
-    class... ArgsTy>
+    typename BaseTy,
+    typename ObjectTy,
+    typename FnTy,
+    typename... ArgsTy>
 auto
 makeVisitor(
     ObjectTy&& obj,
@@ -120,8 +114,9 @@ makeVisitor(
 {
     using VisitorTy = Visitor<
         add_cvref_from_t<ObjectTy, BaseTy>,
-        FnTy&&, ArgsTy&&...>;
-    return VisitorTy(std::forward<ObjectTy>(obj),
+        FnTy, ArgsTy...>;
+    return VisitorTy(
+        std::forward<ObjectTy>(obj),
         std::forward<FnTy>(fn),
         std::forward<ArgsTy>(args)...);
 }
