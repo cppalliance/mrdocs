@@ -513,6 +513,7 @@ visitBlockCommandComment(
 
     case CommandTraits::KCI_return:
     case CommandTraits::KCI_returns:
+    case CommandTraits::KCI_result:
     {
         doc::Returns returns;
         auto scope = enterScope(returns);
@@ -685,7 +686,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_relatesalso:
     case CommandTraits::KCI_remark:
     case CommandTraits::KCI_remarks:
-    case CommandTraits::KCI_result:
 
     case CommandTraits::KCI_retval:
     case CommandTraits::KCI_rtfinclude:
