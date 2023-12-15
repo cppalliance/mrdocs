@@ -945,6 +945,8 @@ emitBlock(
             emitRecord(J.id, JAVADOC_NODE_SYMBOLREF);
         if constexpr(requires { J.name; })
             emitRecord(J.name, JAVADOC_NODE_STRING);
+        if constexpr(requires { J.exception; })
+            emitRecord(J.exception, JAVADOC_NODE_STRING);
         if constexpr(requires { J.children; })
             emitBlock(J.children);
     });

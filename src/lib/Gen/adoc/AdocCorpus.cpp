@@ -52,6 +52,7 @@ public:
     void operator()(doc::Styled const& I);
     void operator()(doc::TParam const& I);
     void operator()(doc::Reference const& I);
+    void operator()(doc::Throws const& I);
 
     std::size_t measureLeftMargin(
         doc::List<doc::Text> const& list);
@@ -203,6 +204,13 @@ operator()(doc::Returns const& I)
 
 void
 DocVisitor::
+operator()(doc::Throws const& I)
+{
+    //dest_ += I.string;
+}
+
+void
+DocVisitor::
 operator()(doc::Text const& I)
 {
     // Asciidoc text must not have leading
@@ -338,6 +346,7 @@ public:
             maybeEmplace(list, "returns", *ov.returns);
         maybeEmplace(list, "params", ov.params);
         maybeEmplace(list, "tparams", ov.tparams);
+        maybeEmplace(list, "exceptions", ov.exceptions);
 
         return dom::Object(std::move(list));
     }

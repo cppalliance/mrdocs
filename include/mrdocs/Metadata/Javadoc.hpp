@@ -58,7 +58,8 @@ enum class Kind
     styled,
     tparam,
     reference,
-    copied
+    copied,
+    throws
 };
 
 /** A text style.
@@ -122,8 +123,12 @@ struct MRDOCS_DECL
     {
     }
 
-    bool isBlock() const noexcept;
-    bool isText() const noexcept;
+    virtual bool isBlock() const noexcept = 0;
+
+    bool isText() const noexcept
+    {
+        return ! isBlock();
+    }
 
     bool operator==(const Node&)const noexcept = default;
     virtual bool equals(const Node& other) const noexcept
@@ -156,6 +161,11 @@ struct Text : Node
         : Node(Kind::text)
         , string(std::move(string_))
     {
+    }
+
+    bool isBlock() const noexcept final override
+    {
+        return false;
     }
 
     bool operator==(const Text&) const noexcept = default;
@@ -294,6 +304,11 @@ struct MRDOCS_DECL
     Block : Node
 {
     List<Text> children;
+
+    bool isBlock() const noexcept final override
+    {
+        return true;
+    }
 
     bool empty() const noexcept
     {
@@ -549,6 +564,34 @@ struct TParam : Paragraph
     }
 };
 
+/** Documentation for a function parameter
+*/
+struct Throws : Paragraph
+{
+    String exception;
+
+    static constexpr Kind static_kind = Kind::throws;
+
+    Throws(
+        String exception_ = String(),
+        Paragraph details_ = Paragraph())
+        : Paragraph(
+            Kind::throws,
+            std::move(details_.children))
+        , exception(std::move(exception_))
+    {
+    }
+
+    bool operator==(const Throws&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Throws&>(other);
+    }
+};
+
 //------------------------------------------------
 
 template<class F, class... Args>
@@ -588,6 +631,8 @@ visit(
         return f.template operator()<Text>(std::forward<Args>(args)...);
     case Kind::tparam:
         return f.template operator()<TParam>(std::forward<Args>(args)...);
+    case Kind::throws:
+        return f.template operator()<Throws>(std::forward<Args>(args)...);
     default:
         return f.template operator()<void>(std::forward<Args>(args)...);
     }
@@ -637,6 +682,8 @@ visit(
         return visitor.template visit<Text>();
     case Kind::tparam:
         return visitor.template visit<TParam>();
+    case Kind::throws:
+        return visitor.template visit<Throws>();
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -661,6 +708,7 @@ struct Overview
     Returns const* returns = nullptr;
     std::vector<Param const*> params;
     std::vector<TParam const*> tparams;
+    std::vector<Throws const*> exceptions;
 };
 
 MRDOCS_DECL dom::String toString(Style style) noexcept;

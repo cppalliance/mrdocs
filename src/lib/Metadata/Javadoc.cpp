@@ -22,64 +22,6 @@ namespace mrdocs {
 
 namespace doc {
 
-bool
-Node::
-isBlock() const noexcept
-{
-    switch(kind)
-    {
-    case Kind::text:
-    case Kind::link:
-    case Kind::styled:
-    case Kind::reference:
-    case Kind::copied:
-        return false;
-
-    case Kind::admonition:
-    case Kind::brief:
-    case Kind::code:
-    case Kind::heading:
-    case Kind::list_item:
-    case Kind::paragraph:
-    case Kind::param:
-    case Kind::returns:
-    case Kind::tparam:
-        return true;
-
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
-bool
-Node::
-isText() const noexcept
-{
-    switch(kind)
-    {
-    case Kind::text:
-    case Kind::link:
-    case Kind::styled:
-    case Kind::reference:
-    case Kind::copied:
-        return true;
-
-    case Kind::admonition:
-    case Kind::brief:
-    case Kind::code:
-    case Kind::heading:
-    case Kind::list_item:
-    case Kind::paragraph:
-    case Kind::param:
-    case Kind::returns:
-    case Kind::tparam:
-        return false;
-
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
 Text&
 Block::
 emplace_back(
@@ -327,6 +269,10 @@ makeOverview(
         case doc::Kind::tparam:
             ov.tparams.push_back(static_cast<
                 doc::TParam const*>(it->get()));
+            break;
+        case doc::Kind::throws:
+            ov.exceptions.push_back(static_cast<
+                doc::Throws const*>(it->get()));
             break;
         default:
             if(ov.brief == it->get())

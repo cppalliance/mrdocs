@@ -396,6 +396,9 @@ public:
             case doc::Kind::tparam:
                 nodes.emplace_back(std::make_unique<doc::TParam>());
                 break;
+            case doc::Kind::throws:
+                nodes.emplace_back(std::make_unique<doc::Throws>());
+                break;
             default:
                 return formatError("unknown doc::Kind");
             }
@@ -425,6 +428,10 @@ public:
             case doc::Kind::tparam:
                 static_cast<doc::TParam*>(
                     node)->name = Blob.str();
+                return Error::success();
+            case doc::Kind::throws:
+                static_cast<doc::Throws*>(
+                    node)->exception = Blob.str();
                 return Error::success();
             default:
                 return formatError("string on wrong kind");

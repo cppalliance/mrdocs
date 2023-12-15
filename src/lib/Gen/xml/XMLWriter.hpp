@@ -96,6 +96,7 @@ public:
     void writeTParam(doc::TParam const& node);
     void writeReference(doc::Reference const& node);
     void writeCopied(doc::Copied const& node);
+    void writeThrows(doc::Throws const& node);
 };
 
 } // xml

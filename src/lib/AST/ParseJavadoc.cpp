@@ -521,7 +521,38 @@ visitBlockCommandComment(
         jd_.emplace_back(std::move(returns));
         return;
     }
+    case CommandTraits::KCI_throw:
+    case CommandTraits::KCI_throws:
+    case CommandTraits::KCI_exception:
+    {
+        doc::Throws throws;
+        auto scope = enterScope(throws);
+        visitChildren(C->getParagraph());
+        // KRYSTIAN NOTE: clang doesn't consider these commands
+        // to have any arguments, so we have to extract the exception
+        // type manually
+        if(! throws.children.empty())
+        {
+            // string will start with a non-whitespace character
+            doc::String& text =
+                throws.children.front()->string;
+            constexpr char ws[] = " \t\n\v\f\r";
+            const auto except_end = text.find_first_of(ws);
+            throws.exception = text.substr(0, except_end);
+            // find the start of the next word, ignoring whitespace
+            const auto word_start =
+                text.find_first_not_of(ws, except_end);
+            // if we ran out of string, remove this block
+            if(word_start == doc::String::npos)
+                throws.children.erase(throws.children.begin());
+            // otherwise, trim the string to exclude the argument
+            else
+                text.erase(0, word_start);
+        }
 
+        jd_.emplace_back(std::move(throws));
+        return;
+    }
     case CommandTraits::KCI_addindex:
     case CommandTraits::KCI_addtogroup:
     case CommandTraits::KCI_anchor:
@@ -576,7 +607,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_endxmlonly:
     case CommandTraits::KCI_enum:
     case CommandTraits::KCI_example:
-    case CommandTraits::KCI_exception:
     case CommandTraits::KCI_extends:
     case CommandTraits::KCI_flparen:  // @f(
     case CommandTraits::KCI_frparen:  // @f)
@@ -682,8 +712,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_subsubsection:
     case CommandTraits::KCI_tableofcontents:
     case CommandTraits::KCI_test:
-    case CommandTraits::KCI_throw:
-    case CommandTraits::KCI_throws:
     case CommandTraits::KCI_todo:
     case CommandTraits::KCI_tparam:
     case CommandTraits::KCI_typedef:
