@@ -192,21 +192,25 @@ void
 DocVisitor::
 operator()(doc::Param const& I)
 {
-    //dest_ += I.string;
 }
 
 void
 DocVisitor::
-operator()(doc::Returns const& I)
+operator()(doc::TParam const& I)
 {
-    //dest_ += I.string;
 }
 
 void
 DocVisitor::
 operator()(doc::Throws const& I)
 {
-    //dest_ += I.string;
+}
+
+void
+DocVisitor::
+operator()(doc::Returns const& I)
+{
+    (*this)(static_cast<doc::Paragraph const&>(I));
 }
 
 void
@@ -247,13 +251,6 @@ operator()(doc::Styled const& I)
 
 void
 DocVisitor::
-operator()(doc::TParam const& I)
-{
-    //dest_ += I.string;
-}
-
-void
-DocVisitor::
 operator()(doc::Reference const& I)
 {
     //dest_ += I.string;
@@ -281,6 +278,60 @@ measureLeftMargin(
             n = space;
     }
     return n;
+}
+
+static
+dom::Value
+domCreate(
+    const doc::Param& I,
+    const AdocCorpus& corpus)
+{
+    dom::Object::storage_type entries = {
+        { "name", I.name }
+    };
+    std::string s;
+    DocVisitor visitor(corpus, s);
+    visitor(static_cast<const doc::Paragraph&>(I));
+    if(! s.empty())
+        entries.emplace_back(
+            "description", std::move(s));
+    return dom::Object(std::move(entries));
+}
+
+static
+dom::Value
+domCreate(
+    const doc::TParam& I,
+    const AdocCorpus& corpus)
+{
+    dom::Object::storage_type entries = {
+        { "name", I.name }
+    };
+    std::string s;
+    DocVisitor visitor(corpus, s);
+    visitor(static_cast<const doc::Paragraph&>(I));
+    if(! s.empty())
+        entries.emplace_back(
+            "description", std::move(s));
+    return dom::Object(std::move(entries));
+}
+
+static
+dom::Value
+domCreate(
+    const doc::Throws& I,
+    const AdocCorpus& corpus)
+{
+    dom::Object::storage_type entries = {
+        { "exception", I.exception }
+    };
+    std::string s;
+    DocVisitor visitor(corpus, s);
+    visitor(static_cast<const doc::Paragraph&>(I));
+    if(! s.empty())
+        entries.emplace_back(
+            "description", std::move(s));
+    return dom::Object(std::move(entries));
 }
 
 //------------------------------------------------
@@ -330,6 +381,28 @@ public:
         }
     };
 
+    template<class T>
+    void
+    maybeEmplaceArray(
+        storage_type& list,
+        std::string_view key,
+        std::vector<T const*> const& nodes) const
+    {
+        dom::Array::storage_type elements;
+        elements.reserve(nodes.size());
+        for(auto const& elem : nodes)
+        {
+            if(! elem)
+                continue;
+            elements.emplace_back(
+                domCreate(*elem, corpus_));
+        }
+        if(elements.empty())
+            return;
+        list.emplace_back(key, dom::newArray<
+            dom::DefaultArrayImpl>(std::move(elements)));
+    };
+
     dom::Object
     construct() const override
     {
@@ -344,9 +417,9 @@ public:
         maybeEmplace(list, "description", ov.blocks);
         if(ov.returns)
             maybeEmplace(list, "returns", *ov.returns);
-        maybeEmplace(list, "params", ov.params);
-        maybeEmplace(list, "tparams", ov.tparams);
-        maybeEmplace(list, "exceptions", ov.exceptions);
+        maybeEmplaceArray(list, "params", ov.params);
+        maybeEmplaceArray(list, "tparams", ov.tparams);
+        maybeEmplaceArray(list, "exceptions", ov.exceptions);
 
         return dom::Object(std::move(list));
     }
