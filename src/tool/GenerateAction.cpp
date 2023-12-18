@@ -186,7 +186,11 @@ DoGenerateAction()
     MrDocsCompilationDatabase compilations(
         workingDir, compileCommands, config, defaultIncludePaths);
 
-    // Run the tool: this can take a while
+    // --------------------------------------------------------------
+    //
+    // Build corpus
+    //
+    // --------------------------------------------------------------
     MRDOCS_TRY(
         auto corpus,
         CorpusImpl::build(
