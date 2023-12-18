@@ -58,7 +58,6 @@ adjustCommandLine(
     std::vector<std::string> discarded_cmdline;
     llvm::opt::InputArgList args;
     StringRef driver_mode;
-
     std::vector<std::string> systemIncludePaths;
 
     if( ! cmdline.empty())
