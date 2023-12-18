@@ -24,11 +24,64 @@ namespace adoc {
 
 namespace {
 
+std::string
+escapeAdoc(
+    std::string_view str)
+{
+    std::string result;
+    result.reserve(str.size());
+    for(char ch : str)
+    {
+        switch(ch)
+        {
+        case '&':
+            result.append("&amp;");
+            break;
+        case '<':
+            result.append("&lt;");
+            break;
+        case '>':
+            result.append("&gt;");
+            break;
+        case '[':
+            result.append("&lsqb;");
+            break;
+        case ']':
+            result.append("&rsqb;");
+            break;
+        case '|':
+            result.append("&vert;");
+            break;
+        case '=':
+            result.append("&equals;");
+            break;
+        case '/':
+            result.append("&sol;");
+            break;
+        default:
+            result.push_back(ch);
+            break;
+        }
+    }
+    return result;
+}
+
 class DocVisitor
 {
     const AdocCorpus& corpus_;
     std::string& dest_;
     std::back_insert_iterator<std::string> ins_;
+
+    template<typename Fn>
+    bool
+    write(
+        const doc::Node& node,
+        Fn&& fn)
+    {
+        const auto n_before = dest_.size();
+        doc::visit(node, std::forward<Fn>(fn));
+        return dest_.size() != n_before;
+    }
 
 public:
     DocVisitor(
@@ -126,7 +179,7 @@ DocVisitor::
 operator()(
     doc::Heading const& I)
 {
-    fmt::format_to(ins_, "\n=== {}\n", I.string);
+    fmt::format_to(ins_, "\n=== {}\n", escapeAdoc(I.string));
 }
 
 // Also handles doc::Brief
@@ -135,22 +188,18 @@ DocVisitor::
 operator()(
     doc::Paragraph const& I)
 {
-    for(auto const& it : RangeFor(I.children))
+    std::span children = I.children;
+    if(children.empty())
+        return;
+    dest_.append("\n");
+    bool non_empty = write(*children.front(), *this);
+    for(auto const& child : children.subspan(1))
     {
-        auto const n = dest_.size();
-        doc::visit(*it.value, *this);
-        // detect empty text blocks
-        if(! it.last && dest_.size() > n)
-        {
-            // wrap past 80 cols
-            if(dest_.size() < 80)
-                dest_.push_back(' ');
-            else
-                dest_.append("\n");
-        }
+        if(non_empty)
+            dest_.push_back(' ');
+        non_empty = write(*child, *this);
     }
     dest_.push_back('\n');
-    // dest_.push_back('\n');
 }
 
 void
@@ -161,7 +210,7 @@ operator()(
     dest_.append("link:");
     dest_.append(I.href);
     dest_.push_back('[');
-    dest_.append(I.string);
+    dest_.append(escapeAdoc(I.string));
     dest_.push_back(']');
 }
 
@@ -170,20 +219,16 @@ DocVisitor::
 operator()(
     doc::ListItem const& I)
 {
+    std::span children = I.children;
+    if(children.empty())
+        return;
     dest_.append("\n* ");
-    for(auto const& it : RangeFor(I.children))
+    bool non_empty = write(*children.front(), *this);
+    for(auto const& child : children.subspan(1))
     {
-        auto const n = dest_.size();
-        doc::visit(*it.value, *this);
-        // detect empty text blocks
-        if(! it.last && dest_.size() > n)
-        {
-            // wrap past 80 cols
-            if(dest_.size() < 80)
-                dest_.push_back(' ');
-            else
-                dest_.append("\n");
-        }
+        if(non_empty)
+            dest_.push_back(' ');
+        non_empty = write(*child, *this);
     }
     dest_.push_back('\n');
 }
@@ -220,7 +265,7 @@ operator()(doc::Text const& I)
     // Asciidoc text must not have leading
     // else they can be rendered up as code.
     std::string_view s = trim(I.string);
-    fmt::format_to(std::back_inserter(dest_), "pass:v,q[{}]", s);
+    dest_.append(escapeAdoc(s));
 }
 
 void
@@ -253,11 +298,10 @@ void
 DocVisitor::
 operator()(doc::Reference const& I)
 {
-    //dest_ += I.string;
     if(I.id == SymbolID::invalid)
         return (*this)(static_cast<const doc::Text&>(I));
     fmt::format_to(std::back_inserter(dest_), "xref:{}[{}]",
-        corpus_.getXref(corpus_->get(I.id)), I.string);
+        corpus_.getXref(corpus_->get(I.id)), escapeAdoc(I.string));
 }
 
 std::size_t
