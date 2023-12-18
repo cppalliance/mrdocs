@@ -183,23 +183,19 @@ DoGenerateAction()
             tooling::JSONCommandLineSyntax::AutoDetect),
         std::move(errorMessage));
 
+    // Get the default include paths for each compiler
+    auto const defaultIncludePaths = getCompilersDefaultIncludeDir(compileCommands);
+
     // Custom compilation database that converts relative paths to absolute
     auto compileCommandsDir = files::getParentDir(compilationsPath);
-    AbsoluteCompilationDatabase absCompileCommands(
-            compileCommandsDir, compileCommands, config);
+    MrDocsCompilationDatabase compilationDatabase(
+            compileCommandsDir, compileCommands, config, defaultIncludePaths);
 
     // Normalize outputPath path
     MRDOCS_CHECK(toolArgs.outputPath, "The output path argument is missing");
     toolArgs.outputPath = files::normalizePath(
         files::makeAbsolute(toolArgs.outputPath,
             (*config)->workingDir));
-
-    // Get the default include paths for each compiler
-    auto const defaultIncludePaths = getCompilersDefaultIncludeDir(compileCommands);
-
-    // Convert relative paths to absolute
-    MrDocsCompilationDatabase compilations(
-        workingDir, compileCommands, config, defaultIncludePaths);
 
     // --------------------------------------------------------------
     //
@@ -209,7 +205,7 @@ DoGenerateAction()
     MRDOCS_TRY(
         auto corpus,
         CorpusImpl::build(
-            report::Level::info, config, absCompileCommands));
+            report::Level::info, config, compilationDatabase));
 
     // --------------------------------------------------------------
     //
