@@ -60,7 +60,7 @@ adjustCommandLine(
     StringRef driver_mode;
     std::vector<std::string> systemIncludePaths;
 
-    if( ! cmdline.empty())
+    if(! cmdline.empty())
     {
         if (auto it = implicitIncludeDirectories.find(cmdline[0]); it != implicitIncludeDirectories.end()) {
             systemIncludePaths = it->second;
