@@ -16,6 +16,7 @@
 #include <vector>
 #include <unordered_map>
 
+#include <clang/Tooling/CompilationDatabase.h>
 #include <llvm/ADT/StringRef.h>
 
 namespace clang {
