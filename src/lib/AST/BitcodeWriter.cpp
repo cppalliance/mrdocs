@@ -236,6 +236,7 @@ BlockIdNameMap = []()
         {BI_NAMESPACE_BLOCK_ID, "NamespaceBlock"},
         {BI_ENUM_BLOCK_ID, "EnumBlock"},
         {BI_EXPR_BLOCK_ID, "ExprBlock"},
+        {BI_BITFIELD_WIDTH_BLOCK_ID, "BitfieldWidthBlock"},
         {BI_TYPEDEF_BLOCK_ID, "TypedefBlock"},
         {BI_TYPEINFO_BLOCK_ID, "TypeInfoBlock"},
         {BI_TYPEINFO_PARENT_BLOCK_ID, "TypeInfoParentBlock"},
@@ -374,6 +375,8 @@ RecordsByBlock{
     // ExprInfo and ConstantExprInfo
     {BI_EXPR_BLOCK_ID,
         {EXPR_WRITTEN, EXPR_VALUE}},
+    {BI_BITFIELD_WIDTH_BLOCK_ID,
+        {}},
     // FieldInfo
     {BI_FIELD_BLOCK_ID,
         {FIELD_DEFAULT, FIELD_ATTRIBUTES,
@@ -854,11 +857,11 @@ emitBlock(
     emitInfoPart(F);
     emitSourceInfo(F);
     emitBlock(F.Type);
-    emitRecord(F.Default, FIELD_DEFAULT);
+    emitBlock(F.Default);
     emitRecord({F.specs.raw}, FIELD_ATTRIBUTES);
     emitRecord(F.IsMutable, FIELD_IS_MUTABLE);
     emitRecord(F.IsBitfield, FIELD_IS_BITFIELD);
-    emitBlock(F.BitfieldWidth);
+    emitBlock(F.BitfieldWidth, BI_BITFIELD_WIDTH_BLOCK_ID);
 }
 
 void
@@ -966,6 +969,18 @@ emitBlock(
         if(E.Value)
             emitRecord(*E.Value, EXPR_VALUE);
     }
+}
+
+template<typename ExprInfoTy>
+    requires std::derived_from<ExprInfoTy, ExprInfo>
+void
+BitcodeWriter::
+emitBlock(
+    ExprInfoTy const& E,
+    BlockID ID)
+{
+    StreamSubBlockGuard Block(Stream, ID);
+    emitBlock(E);
 }
 
 void
@@ -1226,6 +1241,7 @@ emitBlock(
     if(I.Template)
         emitBlock(*I.Template);
     emitBlock(I.Type);
+    emitBlock(I.Initializer);
     emitRecord({I.specs.raw}, VARIABLE_BITS);
 }
 

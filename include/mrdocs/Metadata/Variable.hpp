@@ -14,6 +14,7 @@
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/ADT/BitField.hpp>
+#include <mrdocs/Metadata/Expression.hpp>
 #include <mrdocs/Metadata/Source.hpp>
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
@@ -47,6 +48,8 @@ struct VariableInfo
     std::unique_ptr<TemplateInfo> Template;
 
     VariableFlags0 specs{.raw={0}};
+
+    ExprInfo Initializer;
 
     //--------------------------------------------
 

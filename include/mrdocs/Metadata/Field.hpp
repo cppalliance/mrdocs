@@ -48,7 +48,7 @@ struct FieldInfo
 
     /** The default member initializer, if any.
     */
-    std::string Default;
+    ExprInfo Default;
 
     // attributes (maybe_unused, no_unique_address, deprecated)
     FieldFlags specs;

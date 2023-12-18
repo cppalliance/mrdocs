@@ -778,6 +778,22 @@ public:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
     }
+
+    Error
+    readSubBlock(unsigned ID) override
+    {
+        switch(ID)
+        {
+        // if this has a BI_EXPR_BLOCK_ID child, it means
+        // that this is the child of some block which is
+        // a proxy for an EXPR_BLOCK. in such cases, just
+        // forward the result to the caller
+        case BI_EXPR_BLOCK_ID:
+            return br_.readBlock(*this, ID);
+        default:
+            return AnyBlock::readSubBlock(ID);
+        };
+    }
 };
 
 //------------------------------------------------
@@ -1694,6 +1710,11 @@ public:
     {
         switch(ID)
         {
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock B(I->Initializer, br_);
+            return br_.readBlock(B, ID);
+        }
         case BI_TYPEINFO_BLOCK_ID:
         {
             TypeInfoBlock B(I->Type, br_);
@@ -1727,8 +1748,6 @@ public:
     {
         switch(ID)
         {
-        case FIELD_DEFAULT:
-            return decodeRecord(R, I->Default, Blob);
         case FIELD_ATTRIBUTES:
             return decodeRecord(R, {&I->specs.raw}, Blob);
         case FIELD_IS_MUTABLE:
@@ -1752,6 +1771,11 @@ public:
             return br_.readBlock(B, ID);
         }
         case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock B(I->Default, br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_BITFIELD_WIDTH_BLOCK_ID:
         {
             ExprBlock B(I->BitfieldWidth, br_);
             return br_.readBlock(B, ID);

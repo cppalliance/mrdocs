@@ -138,6 +138,9 @@ public:
     template<typename ExprInfoTy>
         requires std::derived_from<ExprInfoTy, ExprInfo>
     void emitBlock(ExprInfoTy const& E);
+    template<typename ExprInfoTy>
+        requires std::derived_from<ExprInfoTy, ExprInfo>
+    void emitBlock(ExprInfoTy const& E, BlockID ID);
 
     //--------------------------------------------
 

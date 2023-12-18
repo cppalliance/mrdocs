@@ -254,7 +254,7 @@ void merge(FieldInfo& I, FieldInfo&& Other)
     mergeInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;
     I.IsMutable |= Other.IsMutable;
-    if(I.Default.empty())
+    if(I.Default.Written.empty())
         I.Default = std::move(Other.Default);
 
     I.IsBitfield |= Other.IsBitfield;
@@ -269,6 +269,8 @@ void merge(VariableInfo& I, VariableInfo&& Other)
         I.Type = std::move(Other.Type);
     if(! I.Template)
         I.Template = std::move(Other.Template);
+    if(I.Initializer.Written.empty())
+        I.Initializer = std::move(Other.Initializer);
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
     I.specs.raw.value |= Other.specs.raw.value;

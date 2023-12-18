@@ -468,7 +468,7 @@ writeField(
         { I.Access },
         { I.id },
         { "width", bit_width, I.IsBitfield },
-        { "default", I.Default, ! I.Default.empty() }
+        { "default", I.Default.Written, ! I.Default.Written.empty() }
     });
 
     writeSourceInfo(I);

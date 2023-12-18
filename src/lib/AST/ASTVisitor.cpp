@@ -1682,6 +1682,9 @@ public:
         if(D->isConstexpr())
             I.specs.constexprKind = ConstexprKind::Constexpr;
 
+        if(const Expr* E = D->getInit())
+            buildExprInfo(I.Initializer, E);
+
         if(! created)
             return;
 
@@ -1713,6 +1716,9 @@ public:
         I.Type = buildTypeInfo(D->getType());
 
         I.IsMutable = D->isMutable();
+
+        if(const Expr* E = D->getInClassInitializer())
+            buildExprInfo(I.Default, E);
 
         if(D->isBitField())
         {

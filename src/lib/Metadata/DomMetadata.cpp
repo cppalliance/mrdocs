@@ -825,14 +825,15 @@ DomInfo<T>::construct() const
             { "constexprKind",  toString(I_.specs.constexprKind.get()) },
             { "storageClass",   toString(I_.specs.storageClass.get()) },
             { "isConstinit",    I_.specs.isConstinit.get() },
-            { "isThreadLocal",  I_.specs.isThreadLocal.get() }
+            { "isThreadLocal",  I_.specs.isThreadLocal.get() },
+            { "initializer",    dom::stringOrNull(I_.Initializer.Written) },
             });
     }
     if constexpr(T::isField())
     {
         entries.insert(entries.end(), {
             { "type",               domCreate(I_.Type, domCorpus_) },
-            { "default",            dom::stringOrNull(I_.Default) },
+            { "default",            dom::stringOrNull(I_.Default.Written) },
             { "isMaybeUnused",      I_.specs.isMaybeUnused.get() },
             { "isDeprecated",       I_.specs.isDeprecated.get() },
             { "isMutable",          I_.IsMutable },
