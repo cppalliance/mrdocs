@@ -256,6 +256,7 @@ BlockIdNameMap = []()
         {BI_FRIEND_BLOCK_ID, "FriendBlock"},
         {BI_ENUMERATOR_BLOCK_ID, "EnumeratorBlock"},
         {BI_VARIABLE_BLOCK_ID, "VarBlock"},
+        {BI_NAME_INFO_ID, "NameInfoBlock"},
     };
     MRDOCS_ASSERT(Inits.size() == BlockIdCount);
     for (const auto& Init : Inits)
@@ -305,6 +306,9 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_SYMBOLREF, {"JavadocNodeSymbol", &SymbolIDAbbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {NAMESPACE_BITS, {"NamespaceBits", &Integer32ArrayAbbrev}},
+        {NAME_INFO_KIND, {"NameKind", &Integer32Abbrev}},
+        {NAME_INFO_ID, {"NameID", &SymbolIDAbbrev}},
+        {NAME_INFO_NAME, {"NameName", &StringAbbrev}},
         {RECORD_KEY_KIND, {"KeyKind", &Integer32Abbrev}},
         {RECORD_IS_TYPE_DEF, {"IsTypeDef", &BoolAbbrev}},
         {RECORD_BITS, {"Bits", &Integer32ArrayAbbrev}},
@@ -325,8 +329,6 @@ RecordIDNameMap = []()
         {TEMPLATE_PARAM_KEY_KIND,{"TParamKeyKind", &Integer32Abbrev}},
         {TYPEINFO_KIND, {"TypeinfoKind", &Integer32Abbrev}},
         {TYPEINFO_IS_PACK, {"TypeinfoIsPack", &BoolAbbrev}},
-        {TYPEINFO_ID, {"TypeinfoID", &SymbolIDAbbrev}},
-        {TYPEINFO_NAME, {"TypeinfoName", &StringAbbrev}},
         {TYPEINFO_CVQUAL, {"TypeinfoCV", &Integer32Abbrev}},
         {TYPEINFO_NOEXCEPT, {"TypeinfoNoexcept", &NoexceptAbbrev}},
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
@@ -421,8 +423,8 @@ RecordsByBlock{
         {}},
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
-        {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_ID, TYPEINFO_NAME,
-        TYPEINFO_CVQUAL, TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL}},
+        {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_CVQUAL,
+        TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL}},
     {BI_TYPEINFO_PARENT_BLOCK_ID,
         {}},
     {BI_TYPEINFO_CHILD_BLOCK_ID,
@@ -436,8 +438,9 @@ RecordsByBlock{
     {BI_VARIABLE_BLOCK_ID, {VARIABLE_BITS}},
     // GuideInfo
     {BI_GUIDE_BLOCK_ID, {GUIDE_EXPLICIT}},
-};
-
+    {BI_NAME_INFO_ID,
+        {NAME_INFO_KIND, NAME_INFO_ID, NAME_INFO_NAME}},
+    };
 //------------------------------------------------
 
 BitcodeWriter::
@@ -942,6 +945,8 @@ emitBlock(
             emitRecord(J.id, JAVADOC_NODE_SYMBOLREF);
         if constexpr(requires { J.name; })
             emitRecord(J.name, JAVADOC_NODE_STRING);
+        if constexpr(requires { J.exception; })
+            emitRecord(J.exception, JAVADOC_NODE_STRING);
         if constexpr(requires { J.children; })
             emitBlock(J.children);
     });
@@ -990,18 +995,8 @@ emitBlock(
     emitRecord(TI->IsPackExpansion, TYPEINFO_IS_PACK);
     visit(*TI, [&]<typename T>(const T& t)
     {
-        if constexpr(requires { t.id; })
-            emitRecord(t.id, TYPEINFO_ID);
-        if constexpr(requires { t.Name; })
-            emitRecord(t.Name, TYPEINFO_NAME);
         if constexpr(requires { t.CVQualifiers; })
             emitRecord(t.CVQualifiers, TYPEINFO_CVQUAL);
-
-        if constexpr(T::isSpecialization())
-        {
-            for(const auto& targ : t.TemplateArgs)
-                emitBlock(targ);
-        }
 
         if constexpr(requires { t.ParentType; })
             emitBlock(t.ParentType, BI_TYPEINFO_PARENT_BLOCK_ID);
@@ -1028,6 +1023,12 @@ emitBlock(
 
             emitRecord(t.RefQualifier, TYPEINFO_REFQUAL);
             emitRecord(t.ExceptionSpec, TYPEINFO_NOEXCEPT);
+        }
+
+        if constexpr(T::isNamed())
+        {
+            if(t.Name)
+                emitBlock(*t.Name);
         }
     });
 }
@@ -1122,6 +1123,24 @@ emitBlock(
         emitBlock(targ);
     for(const auto& tparam : T.Params)
         emitBlock(tparam);
+}
+
+void
+BitcodeWriter::
+emitBlock(NameInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_NAME_INFO_ID);
+    emitRecord(I.Kind, NAME_INFO_KIND);
+    emitRecord(I.id, NAME_INFO_ID);
+    emitRecord(I.Name, NAME_INFO_NAME);
+    if(I.Prefix)
+        emitBlock(*I.Prefix);
+    if(I.Kind == NameKind::Specialization)
+    {
+        for(const auto& targ : static_cast<
+            const SpecializationNameInfo&>(I).TemplateArgs)
+            emitBlock(targ);
+    }
 }
 
 void

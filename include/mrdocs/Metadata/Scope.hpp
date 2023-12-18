@@ -21,6 +21,14 @@ namespace clang {
 namespace mrdocs {
 
 /** Stores the members and lookups for an Info.
+
+    Members are the symbols that are directly
+    contained in the scope of the Info. For instance,
+    the members of a namespace are the symbols
+    declared in the namespace. The members of a
+    class are the symbols and functions declared
+    in the class.
+
 */
 struct ScopeInfo
 {

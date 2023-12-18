@@ -37,9 +37,7 @@ MRDOCS_DECL dom::String toString(QualifierKind kind) noexcept;
 
 enum class TypeKind
 {
-    Builtin = 1, // for bitstream
-    Tag,
-    Specialization,
+    Named = 1, // for bitstream
     Decltype,
     LValueReference,
     RValueReference,
@@ -63,9 +61,7 @@ struct TypeInfo
 
     constexpr virtual ~TypeInfo() = default;
 
-    constexpr bool isBuiltin()         const noexcept { return Kind == TypeKind::Builtin ; }
-    constexpr bool isTag()             const noexcept { return Kind == TypeKind::Tag; }
-    constexpr bool isSpecialization()  const noexcept { return Kind == TypeKind::Specialization; }
+    constexpr bool isNamed()           const noexcept { return Kind == TypeKind::Named; }
     constexpr bool isDecltype()        const noexcept { return Kind == TypeKind::Decltype; }
     constexpr bool isLValueReference() const noexcept { return Kind == TypeKind::LValueReference; }
     constexpr bool isRValueReference() const noexcept { return Kind == TypeKind::RValueReference; }
@@ -84,6 +80,10 @@ struct TypeInfo
         return nullptr;
     }
 
+    /** Return the symbol named by this type.
+    */
+    SymbolID namedSymbol() const noexcept;
+
 protected:
     constexpr
     TypeInfo(
@@ -98,9 +98,7 @@ struct IsType : TypeInfo
 {
     static constexpr TypeKind kind_id = K;
 
-    static constexpr bool isBuiltin()         noexcept { return K == TypeKind::Builtin; }
-    static constexpr bool isTag()             noexcept { return K == TypeKind::Tag; }
-    static constexpr bool isSpecialization()  noexcept { return K == TypeKind::Specialization; }
+    static constexpr bool isNamed()           noexcept { return K == TypeKind::Named; }
     static constexpr bool isDecltype()        noexcept { return K == TypeKind::Decltype; }
     static constexpr bool isLValueReference() noexcept { return K == TypeKind::LValueReference; }
     static constexpr bool isRValueReference() noexcept { return K == TypeKind::RValueReference; }
@@ -117,30 +115,11 @@ protected:
     }
 };
 
-struct BuiltinTypeInfo
-    : IsType<TypeKind::Builtin>
+struct NamedTypeInfo
+    : IsType<TypeKind::Named>
 {
     QualifierKind CVQualifiers = QualifierKind::None;
-    std::string Name;
-};
-
-struct TagTypeInfo
-    : IsType<TypeKind::Tag>
-{
-    QualifierKind CVQualifiers = QualifierKind::None;
-    std::unique_ptr<TypeInfo> ParentType;
-    std::string Name;
-    SymbolID id = SymbolID::invalid;
-};
-
-struct SpecializationTypeInfo
-    : IsType<TypeKind::Specialization>
-{
-    QualifierKind CVQualifiers = QualifierKind::None;
-    std::unique_ptr<TypeInfo> ParentType;
-    std::string Name;
-    SymbolID id = SymbolID::invalid;
-    std::vector<std::unique_ptr<TArg>> TemplateArgs;
+    std::unique_ptr<NameInfo> Name;
 };
 
 struct DecltypeTypeInfo
@@ -238,17 +217,9 @@ visit(
     add_cv_from_t<TypeTy, TypeInfo>& II = I;
     switch(I.Kind)
     {
-    case TypeKind::Builtin:
+    case TypeKind::Named:
         return f(static_cast<add_cv_from_t<
-            TypeTy, BuiltinTypeInfo>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::Tag:
-        return f(static_cast<add_cv_from_t<
-            TypeTy, TagTypeInfo>&>(II),
-                std::forward<Args>(args)...);
-    case TypeKind::Specialization:
-        return f(static_cast<add_cv_from_t<
-            TypeTy, SpecializationTypeInfo>&>(II),
+            TypeTy, NamedTypeInfo>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::Decltype:
         return f(static_cast<add_cv_from_t<

@@ -115,30 +115,13 @@ class TrancheBuilder
     }
 
     const Info*
-    getTypeAsTag(
-        const std::unique_ptr<TypeInfo>& T)
-    {
-        if(! T)
-            return nullptr;
-        SymbolID id = visit(*T, []<typename T>(const T& t)
-        {
-            if constexpr(T::isTag() || T::isSpecialization())
-                return t.id;
-            return SymbolID::invalid;
-        });
-        if(! id)
-            return nullptr;
-        return corpus_.find(id);
-    }
-
-
-    const Info*
     lookThroughTypedefs(const Info* I)
     {
         if(! I || ! I->isTypedef())
             return I;
         auto* TI = static_cast<const TypedefInfo*>(I);
-        return lookThroughTypedefs(getTypeAsTag(TI->Type));
+        return lookThroughTypedefs(
+            corpus_.find(TI->Type->namedSymbol()));
     }
 
 public:
@@ -185,8 +168,9 @@ public:
                 actualAccess == AccessKind::Private)
                 continue;
             const Info* Base = lookThroughTypedefs(
-                getTypeAsTag(B.Type));
-            if(! Base || ! Base->isRecord())
+                corpus_.find(B.Type->namedSymbol()));
+            if(! Base || Base->id == I.id ||
+                ! Base->isRecord())
                 continue;
             addFrom(*static_cast<
                 const RecordInfo*>(Base), actualAccess);

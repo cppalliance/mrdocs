@@ -1,8 +1,8 @@
 {{#if members}}
 == {{title}}
-[,cols=2]
+[cols=2,separator=¦]
 |===
-|Name |Description
+¦Name ¦Description
 {{#each (sort_by members "name")}}
 {{>info-member .}}
 {{/each}}

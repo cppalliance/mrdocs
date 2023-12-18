@@ -13,7 +13,7 @@
       <attr id="explicit-spec" name="explicit" value="1"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="bonobNKGOblPVcRjxpiPan4nYnc=" name="Explicit" cv-qualifiers="const"/>
+          <pointee-type id="bonobNKGOblPVcRjxpiPan4nYnc=" name="Explicit" cv-qualifiers="const"/>
         </type>
       </param>
     </function>
@@ -22,7 +22,7 @@
       <attr id="explicit-spec" name="explicit" value="1"/>
       <param>
         <type class="rvalue-reference">
-          <pointee-type class="tag" id="bonobNKGOblPVcRjxpiPan4nYnc=" name="Explicit"/>
+          <pointee-type id="bonobNKGOblPVcRjxpiPan4nYnc=" name="Explicit"/>
         </type>
       </param>
     </function>
@@ -48,7 +48,7 @@
       <attr id="explicit-spec" name="explicit(true)" value="3"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue" cv-qualifiers="const"/>
+          <pointee-type id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue" cv-qualifiers="const"/>
         </type>
       </param>
     </function>
@@ -57,7 +57,7 @@
       <attr id="explicit-spec" name="explicit(true)" value="3"/>
       <param>
         <type class="rvalue-reference">
-          <pointee-type class="tag" id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue"/>
+          <pointee-type id="htdCGapMsdazR1XkXoanrOCkvDE=" name="ExplicitTrue"/>
         </type>
       </param>
     </function>
@@ -83,7 +83,7 @@
       <attr id="explicit-spec" name="explicit(false)" value="2"/>
       <param>
         <type class="lvalue-reference">
-          <pointee-type class="tag" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse" cv-qualifiers="const"/>
+          <pointee-type id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse" cv-qualifiers="const"/>
         </type>
       </param>
     </function>
@@ -92,7 +92,7 @@
       <attr id="explicit-spec" name="explicit(false)" value="2"/>
       <param>
         <type class="rvalue-reference">
-          <pointee-type class="tag" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse"/>
+          <pointee-type id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=" name="ExplicitFalse"/>
         </type>
       </param>
     </function>
@@ -120,7 +120,7 @@
         <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <param>
           <type class="lvalue-reference">
-            <pointee-type class="tag" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=" name="ExplicitExpression" cv-qualifiers="const"/>
+            <pointee-type id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=" name="ExplicitExpression" cv-qualifiers="const"/>
           </type>
         </param>
       </function>
@@ -129,7 +129,7 @@
         <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <param>
           <type class="rvalue-reference">
-            <pointee-type class="tag" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=" name="ExplicitExpression"/>
+            <pointee-type id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=" name="ExplicitExpression"/>
           </type>
         </param>
       </function>

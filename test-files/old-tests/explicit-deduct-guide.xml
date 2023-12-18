@@ -11,9 +11,7 @@
   <guide name="X" explicit="1" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
     <file path="explicit-deduct-guide.cpp" line="6" class="def"/>
     <deduced>
-      <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
-        <targ class="non-type" value="0"/>
-      </type>
+      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
     </deduced>
     <param>
       <type name="bool"/>
@@ -22,9 +20,7 @@
   <guide name="X" explicit="1" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
     <file path="explicit-deduct-guide.cpp" line="8" class="def"/>
     <deduced>
-      <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
-        <targ class="non-type" value="0"/>
-      </type>
+      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
     </deduced>
     <param>
       <type name="char"/>
@@ -33,9 +29,7 @@
   <guide name="X" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
     <file path="explicit-deduct-guide.cpp" line="10" class="def"/>
     <deduced>
-      <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
-        <targ class="non-type" value="0"/>
-      </type>
+      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
     </deduced>
     <param>
       <type name="int"/>
@@ -46,9 +40,7 @@
     <guide name="X" explicit="1" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
       <file path="explicit-deduct-guide.cpp" line="13" class="def"/>
       <deduced>
-        <type class="specialization" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X">
-          <targ class="non-type" value="0"/>
-        </type>
+        <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
       </deduced>
       <param>
         <type name="long"/>

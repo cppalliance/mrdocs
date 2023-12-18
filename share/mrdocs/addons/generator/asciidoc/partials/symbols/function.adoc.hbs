@@ -17,31 +17,41 @@
 
 {{symbol.doc.description}}
 
-{{! TODO: == Exceptions }}
+{{/if}}
 
-{{#if (and symbol.return (eq symbol.class "normal"))}}
-== Return Value
+{{#if symbol.doc.exceptions}}
+== Exceptions
 
-* `{{>declarator symbol.return}}` {{! TODO: symbol.doc.return }}
+|===
+| Name | Thrown on
+
+{{#each symbol.doc.exceptions}}
+| `{{exception}}`
+| {{description}}
+{{/each}}
+|===
 
 {{/if}}
 
-{{#if symbol.params}}
+{{#if symbol.doc.returns}}
+== Return Value
+
+{{symbol.doc.returns}}
+
+{{/if}}
+
+{{#if symbol.doc.params}}
 == Parameters
 
 |===
-| Name | Type {{! TODO: | Description }}
+| Name | Description {{! TODO: | Type? }}
 
-{{#each symbol.params}}
+{{#each symbol.doc.params}}
 | *{{name}}*
-| `{{>declarator type}}`
-{{! TODO: symbol.doc.params.[name] }}
-
+| {{description}}
 {{/each}}
 |===
 
 {{/if}}
 
 {{! TODO: == See Also }}
-
-{{/if}}

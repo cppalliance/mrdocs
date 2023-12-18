@@ -26,7 +26,7 @@ namespace mrdocs {
 /** A unique identifier for a symbol.
 
     This is calculated as the SHA1 digest of the
-    USR. A USRs is a string that provide an
+    USR. A USRs is a string that provides an
     unambiguous reference to a symbol.
 */
 class SymbolID
@@ -39,44 +39,74 @@ public:
 
     constexpr SymbolID() = default;
 
-    template<typename Elem>
-    constexpr SymbolID(const Elem* src)
+    /** Construct a SymbolID from a null-terminated string.
+
+        This function constructs a SymbolID from
+        a string. The string must be exactly 20
+        characters long.
+
+        @param src The string to construct from.
+    */
+    template <std::convertible_to<value_type> Char>
+    constexpr SymbolID(const Char* src)
     {
-        for(auto& c : data_)
+        int i = 0;
+        for(value_type& c : data_)
+        {
             c = *src++;
+            ++i;
+        }
+        MRDOCS_ASSERT(i == 20);
     }
 
+    /** Return true if this is a valid SymbolID.
+     */
     explicit operator bool() const noexcept
     {
         return *this != SymbolID::invalid;
     }
 
+    /** Return the raw data for this SymbolID.
+     */
     constexpr auto data() const noexcept
     {
         return data_;
     }
 
+    /** Return the size of the SymbolID.
+
+        The size of a SymbolID is always 20.
+
+     */
     constexpr std::size_t size() const noexcept
     {
         return 20;
     }
 
+    /** Return an iterator to the first byte of the SymbolID.
+     */
     constexpr auto begin() const noexcept
     {
         return data_;
     }
 
+    /** Return an iterator to one past the last byte of the SymbolID.
+     */
     constexpr auto end() const noexcept
     {
         return data_ + size();
     }
 
+    /** Return a string view of the SymbolID.
+     */
     operator std::string_view() const noexcept
     {
-        return std::string_view(reinterpret_cast<
-            const char*>(data()), size());
+        return {reinterpret_cast<
+            const char*>(data()), size()};
     }
 
+    /** Compare two SymbolIDs with strong ordering.
+     */
     auto operator<=>(
         const SymbolID& other) const noexcept
     {
@@ -86,11 +116,13 @@ public:
             size()) <=> 0;
     }
 
+    /** Compare two SymbolIDs for equality.
+     */
     bool operator==(
         const SymbolID& other) const noexcept = default;
 
 private:
-    value_type data_[20];
+    value_type data_[20]{};
 };
 
 /** The invalid Symbol ID.

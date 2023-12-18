@@ -12,6 +12,45 @@
     </Type>
 
 <!-- Info Types -->
+    <Type Name="clang::mrdocs::Info" Inheritable="false" IncludeView="noinherit">
+	</Type>
+
+	<Type Name="clang::mrdocs::IsInfo&lt;*&gt;" Inheritable="false">
+		<Expand>
+			<ExpandedItem>(Info*)this,view(noinherit)nd</ExpandedItem>
+		</Expand>
+	</Type>
+
+    <Type Name="clang::mrdocs::Info" Inheritable="false" ExcludeView="noinherit">
+		<AlternativeType Name="clang::mrdocs::NamespaceInfo"/>
+		<AlternativeType Name="clang::mrdocs::RecordInfo"/>
+		<AlternativeType Name="clang::mrdocs::FunctionInfo"/>
+		<AlternativeType Name="clang::mrdocs::EnumInfo"/>
+		<AlternativeType Name="clang::mrdocs::TypedefInfo"/>
+		<AlternativeType Name="clang::mrdocs::VariableInfo"/>
+		<AlternativeType Name="clang::mrdocs::FieldInfo"/>
+		<AlternativeType Name="clang::mrdocs::SpecializationInfo"/>
+		<AlternativeType Name="clang::mrdocs::FriendInfo"/>
+		<AlternativeType Name="clang::mrdocs::EnumeratorInfo"/>
+		<AlternativeType Name="clang::mrdocs::GuideInfo"/>
+
+		<DisplayString>{Kind,en} {Name} (ID = {id})</DisplayString>
+
+		<Expand HideRawView="true">
+			<ExpandedItem ExcludeView="noinherit">(Info*)this,view(noinherit)nd</ExpandedItem>
+			<ExpandedItem Condition="Kind == InfoKind::Namespace">(NamespaceInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Record">(RecordInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Function">*(FunctionInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Enum">(EnumInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Typedef">(TypedefInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Variable">(VariableInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Field">(FieldInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Specialization">(SpecializationInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Friend">(FriendInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Enumerator">(EnumeratorInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Guide">(GuideInfo*)this,view(noinherit)</ExpandedItem>
+		</Expand>
+	</Type>
 
     <Type Name="clang::mrdocs::SymbolID">
         <DisplayString Condition="strncmp((char*)this, (char*)&amp;SymbolID::invalid, 20) != 0">{data_[0],nvoXb}{data_[1],nvoXb}{data_[2],nvoXb}{data_[3],nvoXb}{data_[4],nvoXb}{data_[5],nvoXb}{data_[6],nvoXb}{data_[7],nvoXb}{data_[8],nvoXb}{data_[9],nvoXb}{data_[10],nvoXb}{data_[11],nvoXb}{data_[12],nvoXb}{data_[13],nvoXb}{data_[14],nvoXb}{data_[15],nvoXb}{data_[16],nvoXb}{data_[17],nvoXb}{data_[18],nvoXb}{data_[19],nvoXb}</DisplayString>

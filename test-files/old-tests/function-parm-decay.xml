@@ -48,7 +48,7 @@
     <file path="function-parm-decay.cpp" line="23"/>
     <file path="function-parm-decay.cpp" line="24"/>
     <param>
-      <type class="tag" id="PvNOREc+JWxdkVgvSz+jC45IbGQ=" name="T"/>
+      <type id="PvNOREc+JWxdkVgvSz+jC45IbGQ=" name="T"/>
     </param>
   </function>
 </namespace>

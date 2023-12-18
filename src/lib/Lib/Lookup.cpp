@@ -111,30 +111,13 @@ adjustLookupContext(
 
 const Info*
 SymbolLookup::
-getTypeAsTag(
-    const std::unique_ptr<TypeInfo>& T)
-{
-    if(! T)
-        return nullptr;
-    SymbolID id = visit(*T, []<typename T>(const T& t)
-    {
-        if constexpr(T::isTag() || T::isSpecialization())
-            return t.id;
-        return SymbolID::invalid;
-    });
-    if(! id)
-        return nullptr;
-    return corpus_.find(id);
-}
-
-const Info*
-SymbolLookup::
 lookThroughTypedefs(const Info* I)
 {
     if(! I || ! I->isTypedef())
         return I;
     auto* TI = static_cast<const TypedefInfo*>(I);
-    return lookThroughTypedefs(getTypeAsTag(TI->Type));
+    return lookThroughTypedefs(
+        corpus_.find(TI->Type->namedSymbol()));
 }
 
 const Info*
@@ -176,7 +159,7 @@ lookupInContext(
         for(const auto& B : RI->Bases)
         {
             if(const Info* result = lookupInContext(
-                getTypeAsTag(B.Type), name, for_nns))
+                corpus_.find(B.Type->namedSymbol()), name, for_nns))
                 return result;
         }
     }

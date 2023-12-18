@@ -24,11 +24,64 @@ namespace adoc {
 
 namespace {
 
+std::string
+escapeAdoc(
+    std::string_view str)
+{
+    std::string result;
+    result.reserve(str.size());
+    for(char ch : str)
+    {
+        switch(ch)
+        {
+        case '&':
+            result.append("&amp;");
+            break;
+        case '<':
+            result.append("&lt;");
+            break;
+        case '>':
+            result.append("&gt;");
+            break;
+        case '[':
+            result.append("&lsqb;");
+            break;
+        case ']':
+            result.append("&rsqb;");
+            break;
+        case '|':
+            result.append("&vert;");
+            break;
+        case '=':
+            result.append("&equals;");
+            break;
+        case '/':
+            result.append("&sol;");
+            break;
+        default:
+            result.push_back(ch);
+            break;
+        }
+    }
+    return result;
+}
+
 class DocVisitor
 {
     const AdocCorpus& corpus_;
     std::string& dest_;
     std::back_insert_iterator<std::string> ins_;
+
+    template<typename Fn>
+    bool
+    write(
+        const doc::Node& node,
+        Fn&& fn)
+    {
+        const auto n_before = dest_.size();
+        doc::visit(node, std::forward<Fn>(fn));
+        return dest_.size() != n_before;
+    }
 
 public:
     DocVisitor(
@@ -52,6 +105,7 @@ public:
     void operator()(doc::Styled const& I);
     void operator()(doc::TParam const& I);
     void operator()(doc::Reference const& I);
+    void operator()(doc::Throws const& I);
 
     std::size_t measureLeftMargin(
         doc::List<doc::Text> const& list);
@@ -125,7 +179,7 @@ DocVisitor::
 operator()(
     doc::Heading const& I)
 {
-    fmt::format_to(ins_, "\n=== {}\n", I.string);
+    fmt::format_to(ins_, "\n=== {}\n", escapeAdoc(I.string));
 }
 
 // Also handles doc::Brief
@@ -134,22 +188,18 @@ DocVisitor::
 operator()(
     doc::Paragraph const& I)
 {
-    for(auto const& it : RangeFor(I.children))
+    std::span children = I.children;
+    if(children.empty())
+        return;
+    dest_.append("\n");
+    bool non_empty = write(*children.front(), *this);
+    for(auto const& child : children.subspan(1))
     {
-        auto const n = dest_.size();
-        doc::visit(*it.value, *this);
-        // detect empty text blocks
-        if(! it.last && dest_.size() > n)
-        {
-            // wrap past 80 cols
-            if(dest_.size() < 80)
-                dest_.push_back(' ');
-            else
-                dest_.append("\n");
-        }
+        if(non_empty)
+            dest_.push_back(' ');
+        non_empty = write(*child, *this);
     }
     dest_.push_back('\n');
-    // dest_.push_back('\n');
 }
 
 void
@@ -160,7 +210,7 @@ operator()(
     dest_.append("link:");
     dest_.append(I.href);
     dest_.push_back('[');
-    dest_.append(I.string);
+    dest_.append(escapeAdoc(I.string));
     dest_.push_back(']');
 }
 
@@ -169,20 +219,16 @@ DocVisitor::
 operator()(
     doc::ListItem const& I)
 {
+    std::span children = I.children;
+    if(children.empty())
+        return;
     dest_.append("\n* ");
-    for(auto const& it : RangeFor(I.children))
+    bool non_empty = write(*children.front(), *this);
+    for(auto const& child : children.subspan(1))
     {
-        auto const n = dest_.size();
-        doc::visit(*it.value, *this);
-        // detect empty text blocks
-        if(! it.last && dest_.size() > n)
-        {
-            // wrap past 80 cols
-            if(dest_.size() < 80)
-                dest_.push_back(' ');
-            else
-                dest_.append("\n");
-        }
+        if(non_empty)
+            dest_.push_back(' ');
+        non_empty = write(*child, *this);
     }
     dest_.push_back('\n');
 }
@@ -191,14 +237,25 @@ void
 DocVisitor::
 operator()(doc::Param const& I)
 {
-    //dest_ += I.string;
+}
+
+void
+DocVisitor::
+operator()(doc::TParam const& I)
+{
+}
+
+void
+DocVisitor::
+operator()(doc::Throws const& I)
+{
 }
 
 void
 DocVisitor::
 operator()(doc::Returns const& I)
 {
-    //dest_ += I.string;
+    (*this)(static_cast<doc::Paragraph const&>(I));
 }
 
 void
@@ -208,7 +265,7 @@ operator()(doc::Text const& I)
     // Asciidoc text must not have leading
     // else they can be rendered up as code.
     std::string_view s = trim(I.string);
-    fmt::format_to(std::back_inserter(dest_), "pass:v,q[{}]", s);
+    dest_.append(escapeAdoc(s));
 }
 
 void
@@ -239,20 +296,12 @@ operator()(doc::Styled const& I)
 
 void
 DocVisitor::
-operator()(doc::TParam const& I)
-{
-    //dest_ += I.string;
-}
-
-void
-DocVisitor::
 operator()(doc::Reference const& I)
 {
-    //dest_ += I.string;
     if(I.id == SymbolID::invalid)
         return (*this)(static_cast<const doc::Text&>(I));
     fmt::format_to(std::back_inserter(dest_), "xref:{}[{}]",
-        corpus_.getXref(corpus_->get(I.id)), I.string);
+        corpus_.getXref(corpus_->get(I.id)), escapeAdoc(I.string));
 }
 
 std::size_t
@@ -273,6 +322,60 @@ measureLeftMargin(
             n = space;
     }
     return n;
+}
+
+static
+dom::Value
+domCreate(
+    const doc::Param& I,
+    const AdocCorpus& corpus)
+{
+    dom::Object::storage_type entries = {
+        { "name", I.name }
+    };
+    std::string s;
+    DocVisitor visitor(corpus, s);
+    visitor(static_cast<const doc::Paragraph&>(I));
+    if(! s.empty())
+        entries.emplace_back(
+            "description", std::move(s));
+    return dom::Object(std::move(entries));
+}
+
+static
+dom::Value
+domCreate(
+    const doc::TParam& I,
+    const AdocCorpus& corpus)
+{
+    dom::Object::storage_type entries = {
+        { "name", I.name }
+    };
+    std::string s;
+    DocVisitor visitor(corpus, s);
+    visitor(static_cast<const doc::Paragraph&>(I));
+    if(! s.empty())
+        entries.emplace_back(
+            "description", std::move(s));
+    return dom::Object(std::move(entries));
+}
+
+static
+dom::Value
+domCreate(
+    const doc::Throws& I,
+    const AdocCorpus& corpus)
+{
+    dom::Object::storage_type entries = {
+        { "exception", I.exception }
+    };
+    std::string s;
+    DocVisitor visitor(corpus, s);
+    visitor(static_cast<const doc::Paragraph&>(I));
+    if(! s.empty())
+        entries.emplace_back(
+            "description", std::move(s));
+    return dom::Object(std::move(entries));
 }
 
 //------------------------------------------------
@@ -322,6 +425,28 @@ public:
         }
     };
 
+    template<class T>
+    void
+    maybeEmplaceArray(
+        storage_type& list,
+        std::string_view key,
+        std::vector<T const*> const& nodes) const
+    {
+        dom::Array::storage_type elements;
+        elements.reserve(nodes.size());
+        for(auto const& elem : nodes)
+        {
+            if(! elem)
+                continue;
+            elements.emplace_back(
+                domCreate(*elem, corpus_));
+        }
+        if(elements.empty())
+            return;
+        list.emplace_back(key, dom::newArray<
+            dom::DefaultArrayImpl>(std::move(elements)));
+    };
+
     dom::Object
     construct() const override
     {
@@ -336,8 +461,9 @@ public:
         maybeEmplace(list, "description", ov.blocks);
         if(ov.returns)
             maybeEmplace(list, "returns", *ov.returns);
-        maybeEmplace(list, "params", ov.params);
-        maybeEmplace(list, "tparams", ov.tparams);
+        maybeEmplaceArray(list, "params", ov.params);
+        maybeEmplaceArray(list, "tparams", ov.tparams);
+        maybeEmplaceArray(list, "exceptions", ov.exceptions);
 
         return dom::Object(std::move(list));
     }

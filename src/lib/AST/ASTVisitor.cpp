@@ -23,6 +23,7 @@
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
 #include <clang/AST/DeclVisitor.h>
+#include <clang/AST/TypeVisitor.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Index/USRGeneration.h>
 #include <clang/Lex/Lexer.h>
@@ -440,6 +441,14 @@ public:
 
     void
     getDependencyID(
+        const Decl* D,
+        SymbolID& id)
+    {
+        return getDependencyID(const_cast<Decl*>(D), id);
+    }
+
+    void
+    getDependencyID(
         Decl* D,
         SymbolID& id)
     {
@@ -484,7 +493,8 @@ public:
         while((DC = DC->getParent()));
 
         // add the adjusted declaration to the set of dependencies
-        dependencies_.insert(Outer);
+        if(! isa<NamespaceDecl, TranslationUnitDecl>(Outer))
+            dependencies_.insert(Outer);
     }
 
     //------------------------------------------------
@@ -717,513 +727,29 @@ public:
         return result;
     }
 
-    std::string getTypeAsString(QualType T)
+    std::string getTypeAsString(const Type* T)
     {
-        return T.getAsString(context_.getPrintingPolicy());
-    }
-
-    NamedDecl*
-    lookupTypedefInPrimary(
-        TypedefNameDecl* TD)
-    {
-        if(auto* R = dyn_cast<CXXRecordDecl>(
-            TD->getDeclContext()))
+        if(auto* AT = dyn_cast_if_present<AutoType>(T))
         {
-            if(CXXRecordDecl* IP = R->getTemplateInstantiationPattern())
-                R = IP;
-            if(DeclarationName TDN = TD->getDeclName();
-                R && ! TDN.isEmpty())
+            switch(AT->getKeyword())
             {
-                auto found = R->lookup(TDN);
-                MRDOCS_ASSERT(found.isSingleResult());
-                MRDOCS_ASSERT(isa<TypedefNameDecl>(found.front()) ||
-                    isa<TypeAliasTemplateDecl>(found.front()));
-                return found.front();
-            }
-        }
-        return nullptr;
-    }
-
-    template<typename TypeInfoTy>
-    std::unique_ptr<TypeInfoTy>
-    makeTypeInfo(
-        const IdentifierInfo* II,
-        unsigned quals)
-    {
-        auto I = std::make_unique<TypeInfoTy>();
-        I->CVQualifiers = convertToQualifierKind(quals);
-        if(II)
-            I->Name = II->getName();
-        return I;
-    }
-
-    template<typename TypeInfoTy>
-    std::unique_ptr<TypeInfoTy>
-    makeTypeInfo(
-        NamedDecl* N,
-        unsigned quals)
-    {
-        auto I = makeTypeInfo<TypeInfoTy>(
-            N->getIdentifier(), quals);
-
-        N = getInstantiatedFrom(N);
-        // do not generate references to implicit declarations,
-        // template template parameters, or builtin templates
-        if(! isa<TemplateTemplateParmDecl>(N) &&
-            ! isa<BuiltinTemplateDecl>(N))
-        {
-            if(auto* TD = dyn_cast<TypedefNameDecl>(N))
-            {
-                if(auto* PTD = lookupTypedefInPrimary(TD))
-                    N = PTD;
-            }
-            else if(auto* ATD = dyn_cast<TypeAliasTemplateDecl>(N))
-            {
-                if(auto* MT = ATD->getInstantiatedFromMemberTemplate())
-                    ATD = MT;
-                auto* TD = ATD->getTemplatedDecl();
-                if(auto* R = dyn_cast<CXXRecordDecl>(TD->getDeclContext()))
-                {
-                    // KRYSTIAN FIXME: this appears to not work
-                    if(auto* PATD = lookupTypedefInPrimary(TD))
-                        N = PATD;
-                }
-            }
-
-            getDependencyID(N, I->id);
-        }
-        return I;
-    }
-
-    template<
-        std::same_as<SpecializationTypeInfo> TypeInfoTy,
-        typename DeclOrName,
-        typename TArgsRange>
-    std::unique_ptr<TypeInfoTy>
-    makeTypeInfo(
-        DeclOrName&& N,
-        unsigned quals,
-        TArgsRange&& targs)
-    {
-        auto I = makeTypeInfo<TypeInfoTy>(
-            std::forward<DeclOrName>(N), quals);
-        buildTemplateArgs(I->TemplateArgs,
-            std::forward<TArgsRange>(targs));
-        return I;
-    }
-
-    void
-    buildParentTypeInfo(
-        std::unique_ptr<TypeInfo>& Parent,
-        const NestedNameSpecifier* NNS,
-        ExtractMode extract_mode)
-    {
-        if(! NNS)
-            return;
-        // extraction for parents of a terminal TypeInfo
-        // node use the same mode as that node
-        if(const auto* T = NNS->getAsType())
-        {
-            Parent = buildTypeInfo(
-                QualType(T, 0),
-                extract_mode);
-        }
-        else if(const auto* II = NNS->getAsIdentifier())
-        {
-            auto R = std::make_unique<TagTypeInfo>();
-            buildParentTypeInfo(
-                R->ParentType,
-                NNS->getPrefix(),
-                extract_mode);
-            R->Name = II->getName();
-            Parent = std::move(R);
-        }
-    }
-
-    std::unique_ptr<TypeInfo>
-    buildTypeInfo(
-        QualType qt,
-        ExtractMode extract_mode = ExtractMode::IndirectDependency)
-    {
-        // extract_mode is only used during the extraction
-        // the terminal type & its parents; the extraction of
-        // function parameters, template arguments, and the parent class
-        // of member pointers is done in ExtractMode::IndirectDependency
-        ExtractionScope scope = enterMode(extract_mode);
-
-        std::unique_ptr<TypeInfo> result;
-        std::unique_ptr<TypeInfo>* inner = &result;
-
-        // nested name specifier used for the terminal type node
-        NestedNameSpecifier* NNS = nullptr;
-
-        // whether this is a pack expansion
-        bool is_pack_expansion = false;
-
-        while(true)
-        {
-            // should never be called for a null QualType
-            MRDOCS_ASSERT(! qt.isNull());
-            const Type* type = qt.getTypePtr();
-            unsigned quals = qt.getLocalFastQualifiers();
-
-            switch(qt->getTypeClass())
-            {
-            // parenthesized types
-            case Type::Paren:
-            {
-                auto* T = cast<ParenType>(type);
-                qt = T->getInnerType().withFastQualifiers(quals);
-                continue;
-            }
-            case Type::MacroQualified:
-            {
-                auto* T = cast<MacroQualifiedType>(type);
-                qt = T->getUnderlyingType().withFastQualifiers(quals);
-                continue;
-            }
-            // type with __atribute__
-            case Type::Attributed:
-            {
-                auto* T = cast<AttributedType>(type);
-                qt = T->getModifiedType().withFastQualifiers(quals);
-                continue;
-            }
-            // adjusted and decayed types
-            case Type::Decayed:
-            case Type::Adjusted:
-            {
-                auto* T = cast<AdjustedType>(type);
-                qt = T->getOriginalType().withFastQualifiers(quals);
-                continue;
-            }
-            // using declarations
-            case Type::Using:
-            {
-                auto* T = cast<UsingType>(type);
-                // look through the using declaration and
-                // use the the type from the referenced declaration
-                qt = T->getUnderlyingType().withFastQualifiers(quals);
-                continue;
-            }
-            case Type::SubstTemplateTypeParm:
-            {
-                auto* T = cast<SubstTemplateTypeParmType>(type);
-                qt = T->getReplacementType().withFastQualifiers(quals);
-                continue;
-            }
-            // pack expansion
-            case Type::PackExpansion:
-            {
-                auto* T = cast<PackExpansionType>(type);
-                // we just use a flag to represent whether this is
-                // a pack expansion rather than a type kind
-                is_pack_expansion = true;
-                qt = T->getPattern().withFastQualifiers(quals);
-                continue;
-            }
-            // pointers
-            case Type::Pointer:
-            {
-                auto* T = cast<PointerType>(type);
-                auto I = std::make_unique<PointerTypeInfo>();
-                I->CVQualifiers = convertToQualifierKind(quals);
-                *std::exchange(inner, &I->PointeeType) = std::move(I);
-                qt = T->getPointeeType();
-                continue;
-            }
-            // references
-            case Type::LValueReference:
-            {
-                auto* T = cast<LValueReferenceType>(type);
-                auto I = std::make_unique<LValueReferenceTypeInfo>();
-                *std::exchange(inner, &I->PointeeType) = std::move(I);
-                qt = T->getPointeeType();
-                continue;
-            }
-            case Type::RValueReference:
-            {
-                auto* T = cast<RValueReferenceType>(type);
-                auto I = std::make_unique<RValueReferenceTypeInfo>();
-                *std::exchange(inner, &I->PointeeType) = std::move(I);
-                qt = T->getPointeeType();
-                continue;
-            }
-            // pointer to members
-            case Type::MemberPointer:
-            {
-                auto* T = cast<MemberPointerType>(type);
-                auto I = std::make_unique<MemberPointerTypeInfo>();
-                I->CVQualifiers = convertToQualifierKind(quals);
-                // do not set NNS because the parent type is *not*
-                // a nested-name-specifier which qualifies the pointee type
-                I->ParentType = buildTypeInfo(QualType(T->getClass(), 0));
-                *std::exchange(inner, &I->PointeeType) = std::move(I);
-                qt = T->getPointeeType();
-                continue;
-            }
-            // KRYSTIAN NOTE: we don't handle FunctionNoProto here,
-            // and it's unclear if we should. we should not encounter
-            // such types in c++ (but it might be possible?)
-            // functions
-            case Type::FunctionProto:
-            {
-                auto* T = cast<FunctionProtoType>(type);
-                auto I = std::make_unique<FunctionTypeInfo>();
-                for(QualType PT : T->getParamTypes())
-                    I->ParamTypes.emplace_back(buildTypeInfo(PT));
-                I->RefQualifier = convertToReferenceKind(
-                    T->getRefQualifier());
-                I->CVQualifiers = convertToQualifierKind(
-                    T->getMethodQuals().getFastQualifiers());
-                buildNoexceptInfo(I->ExceptionSpec, T);
-                *std::exchange(inner, &I->ReturnType) = std::move(I);
-                qt = T->getReturnType();
-                continue;
-            }
-            // KRYSTIAN FIXME: do we handle variables arrays?
-            // they can only be created within function scope
-            // arrays
-            case Type::IncompleteArray:
-            {
-                auto* T = cast<IncompleteArrayType>(type);
-                auto I = std::make_unique<ArrayTypeInfo>();
-                *std::exchange(inner, &I->ElementType) = std::move(I);
-                qt = T->getElementType();
-                continue;
-            }
-            case Type::ConstantArray:
-            {
-                auto* T = cast<ConstantArrayType>(type);
-                auto I = std::make_unique<ArrayTypeInfo>();
-                // KRYSTIAN FIXME: this is broken; cannonical
-                // constant array types never have a size expression
-                buildExprInfo(I->Bounds, T->getSizeExpr(), T->getSize());
-                *std::exchange(inner, &I->ElementType) = std::move(I);
-                qt = T->getElementType();
-                continue;
-            }
-            case Type::DependentSizedArray:
-            {
-                auto* T = cast<DependentSizedArrayType>(type);
-                auto I = std::make_unique<ArrayTypeInfo>();
-                buildExprInfo(I->Bounds, T->getSizeExpr());
-                *std::exchange(inner, &I->ElementType) = std::move(I);
-                qt = T->getElementType();
-                continue;
-            }
-
-            // ------------------------------------------------
-            // terminal TypeInfo nodes
-            case Type::Decltype:
-            {
-                auto* T = cast<DecltypeType>(type);
-                auto I = std::make_unique<DecltypeTypeInfo>();
-                buildExprInfo(I->Operand, T->getUnderlyingExpr());
-                I->CVQualifiers = convertToQualifierKind(quals);
-                *inner = std::move(I);
-                break;
-            }
-            case Type::Auto:
-            {
-                auto* T = cast<AutoType>(type);
-                QualType deduced = T->getDeducedType();
-                // KRYSTIAN NOTE: we don't use isDeduced because it will
-                // return true if the type is dependent
-                // if the type has been deduced, use the deduced type
-                if(! deduced.isNull())
-                {
-                    qt = deduced;
-                    continue;
-                }
-                // otherwise, use the placeholder type specifier
-                auto I = std::make_unique<BuiltinTypeInfo>();
-                I->Name = getTypeAsString(
-                    qt.withoutLocalFastQualifiers());
-                I->CVQualifiers = convertToQualifierKind(quals);
-                *inner = std::move(I);
-                break;
-            }
-            case Type::DeducedTemplateSpecialization:
-            {
-                auto* T = cast<DeducedTemplateSpecializationType>(type);
-                QualType deduced = T->getDeducedType();
-                // if(! T->isDeduced())
-                if(! deduced.isNull())
-                {
-                    qt = deduced;
-                    continue;
-                }
-                *inner = makeTypeInfo<TagTypeInfo>(
-                    T->getTemplateName().getAsTemplateDecl(), quals);
-                break;
-            }
-            // elaborated type specifier or
-            // type with nested name specifier
-            case Type::Elaborated:
-            {
-                auto* T = cast<ElaboratedType>(type);
-                // there should only ever be one
-                // nested-name-specifier for the terminal type
-                MRDOCS_ASSERT(! NNS || ! T->getQualifier());
-                NNS = T->getQualifier();
-                qt = T->getNamedType().withFastQualifiers(quals);
-                continue;
-            }
-            // qualified dependent name with template keyword
-            case Type::DependentTemplateSpecialization:
-            {
-                auto* T = cast<DependentTemplateSpecializationType>(type);
-                auto I = makeTypeInfo<SpecializationTypeInfo>(
-                    T->getIdentifier(), quals, T->template_arguments());
-                // there should only ever be one
-                // nested-name-specifier for the terminal type
-                MRDOCS_ASSERT(! NNS || ! T->getQualifier());
-                NNS = T->getQualifier();
-                *inner = std::move(I);
-                break;
-            }
-            // dependent typename-specifier
-            case Type::DependentName:
-            {
-                auto* T = cast<DependentNameType>(type);
-                auto I = makeTypeInfo<TagTypeInfo>(
-                    T->getIdentifier(), quals);
-                // there should only ever be one
-                // nested-name-specifier for the terminal type
-                MRDOCS_ASSERT(! NNS || ! T->getQualifier());
-                NNS = T->getQualifier();
-                *inner = std::move(I);
-                break;
-            }
-            // specialization of a class/alias template or
-            // template template parameter
-            case Type::TemplateSpecialization:
-            {
-                auto* T = cast<TemplateSpecializationType>(type);
-                auto name = T->getTemplateName();
-                MRDOCS_ASSERT(! name.isNull());
-                NamedDecl* ND = name.getAsTemplateDecl();
-                // if this is a specialization of a alias template,
-                // the canonical type will be the named type. in such cases,
-                // we will use the template name. otherwise, we use the
-                // canonical type whenever possible.
-                if(! T->isTypeAlias())
-                {
-                    auto* CT = qt.getCanonicalType().getTypePtrOrNull();
-                    if(auto* ICT = dyn_cast_or_null<InjectedClassNameType>(CT))
-                        ND = ICT->getDecl();
-                    else if(auto* RT = dyn_cast_or_null<RecordType>(CT))
-                        ND = RT->getDecl();
-                }
-                *inner = makeTypeInfo<SpecializationTypeInfo>(
-                    ND, quals, T->template_arguments());
-                break;
-            }
-            case Type::Record:
-            {
-                auto* T = cast<RecordType>(type);
-                RecordDecl* RD = T->getDecl();
-                // if this is an instantiation of a class template,
-                // create a SpecializationTypeInfo & extract the template arguments
-                if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(RD))
-                    *inner = makeTypeInfo<SpecializationTypeInfo>(
-                        CTSD, quals, CTSD->getTemplateArgs().asArray());
-                else
-                    *inner = makeTypeInfo<TagTypeInfo>(RD, quals);
-                break;
-            }
-            // enum types, as well as injected class names
-            // within a class template (or specializations thereof)
-            case Type::InjectedClassName:
-            case Type::Enum:
-            {
-                *inner = makeTypeInfo<TagTypeInfo>(
-                    type->getAsTagDecl(), quals);
-                break;
-            }
-            // typedef/alias type
-            case Type::Typedef:
-            {
-                auto* T = cast<TypedefType>(type);
-                *inner = makeTypeInfo<TagTypeInfo>(
-                    T->getDecl(), quals);
-                break;
-            }
-            case Type::TemplateTypeParm:
-            {
-                auto* T = cast<TemplateTypeParmType>(type);
-                auto I = std::make_unique<BuiltinTypeInfo>();
-                I->CVQualifiers = convertToQualifierKind(quals);
-                if(auto* D = T->getDecl())
-                {
-                    // special case for implicit template parameters
-                    // resulting from abbreviated function templates
-                    if(D->isImplicit())
-                        I->Name = "auto";
-                    else if(auto* II = D->getIdentifier())
-                        I->Name = II->getName();
-                }
-                *inner = std::move(I);
-                break;
-            }
-            // this only seems to appear when a template parameter pack
-            // from an enclosing template appears in a pack expansion which contains
-            // a template parameter pack from an inner template. this does not seem
-            // to appear when both packs are template arguments; e.g.
-            // A<sizeof...(Ts), sizeof...(Us)> will use this, but A<A<Ts, Us>...> will not
-            case Type::SubstTemplateTypeParmPack:
-            {
-                auto* T = cast<SubstTemplateTypeParmPackType>(type);
-                *inner = makeTypeInfo<BuiltinTypeInfo>(
-                    T->getIdentifier(), quals);
-                break;
-            }
-            // builtin/unhandled type
+            case AutoTypeKeyword::Auto:
+            case AutoTypeKeyword::GNUAutoType:
+                return "auto";
+            case AutoTypeKeyword::DecltypeAuto:
+                return "decltype(auto)";
             default:
-            {
-                auto I = std::make_unique<BuiltinTypeInfo>();
-                I->CVQualifiers = convertToQualifierKind(quals);
-                I->Name = getTypeAsString(
-                    qt.withoutLocalFastQualifiers());
-                *inner = std::move(I);
-                break;
+                MRDOCS_UNREACHABLE();
             }
-            }
-            // the terminal type must be BuiltinTypeInfo,
-            // TagTypeInfo, or SpecializationTypeInfo
-            MRDOCS_ASSERT(
-                (*inner)->isBuiltin() ||
-                (*inner)->isDecltype() ||
-                (*inner)->isTag() ||
-                (*inner)->isSpecialization());
-
-            // set whether the root node is a pack
-            if(result)
-                result->IsPackExpansion = is_pack_expansion;
-
-            // if there is no nested-name-specifier for
-            // the terminal type, then we are done
-            if(! NNS)
-                return result;
-
-            // KRYSTIAN FIXME: nested-name-specifier on builtin type?
-            visit(**inner, [&]<typename T>(T& t)
-            {
-                if constexpr(requires { t.ParentType; })
-                {
-                    // build the TypeInfo for the nested-name-specifier
-                    // using the same mode used for this TypeInfo
-                    buildParentTypeInfo(
-                        t.ParentType,
-                        NNS,
-                        extract_mode);
-                }
-            });
-
-            return result;
         }
-
+        if(auto* TTPT = dyn_cast_if_present<TemplateTypeParmType>(T))
+        {
+            if(TemplateTypeParmDecl* TTPD = TTPT->getDecl();
+                TTPD && TTPD->isImplicit())
+                return "auto";
+        }
+        return QualType(T, 0).getAsString(
+            context_.getPrintingPolicy());
     }
 
     /** Get the user-written `Decl` for a `Decl`
@@ -1262,6 +788,31 @@ public:
         return dyn_cast_if_present<VarDecl>(
             getInstantiatedFrom<Decl>(D));
     }
+
+    template<typename DeclTy>
+        requires std::derived_from<DeclTy, TypedefNameDecl> ||
+            std::same_as<TypeAliasTemplateDecl, std::remove_cv_t<DeclTy>>
+    TypedefNameDecl* getInstantiatedFrom(DeclTy* D)
+    {
+        return dyn_cast_if_present<TypedefNameDecl>(
+            getInstantiatedFrom<Decl>(D));
+    }
+
+    std::unique_ptr<TypeInfo>
+    buildTypeInfo(
+        QualType qt,
+        ExtractMode extract_mode = ExtractMode::IndirectDependency);
+
+    std::unique_ptr<NameInfo>
+    buildNameInfo(
+        const NestedNameSpecifier* NNS,
+        ExtractMode extract_mode = ExtractMode::IndirectDependency);
+
+    std::unique_ptr<NameInfo>
+    buildNameInfo(
+        const NamedDecl* ND,
+        ExtractMode extract_mode = ExtractMode::IndirectDependency);
+
 
     template<typename Integer>
     Integer
@@ -2876,6 +2427,17 @@ public:
         return D->getTemplatedDecl();
     }
 
+    TypedefNameDecl* VisitTypeAliasTemplateDecl(TypeAliasTemplateDecl* D)
+    {
+        if(auto* MT = D->getInstantiatedFromMemberTemplate())
+        {
+            // KRYSTIAN NOTE: we don't really need to check this
+            if(! D->isMemberSpecialization())
+                D = MT;
+        }
+        return VisitTypedefNameDecl(D->getTemplatedDecl());
+    }
+
     FunctionDecl* VisitFunctionDecl(FunctionDecl* D)
     {
         const FunctionDecl* DD = nullptr;
@@ -3001,6 +2563,26 @@ public:
         }
         return D;
     }
+
+    TypedefNameDecl* VisitTypedefNameDecl(TypedefNameDecl* D)
+    {
+        DeclContext* Context = D->getNonTransparentDeclContext();
+        if(Context->isFileContext())
+            return D;
+        DeclContext* ContextPattern =
+            cast<DeclContext>(Visit(cast<Decl>(Context)));
+        if(Context == ContextPattern)
+            return D;
+        auto lookup = ContextPattern->lookup(D->getDeclName());
+        for(NamedDecl* ND : lookup)
+        {
+            if(auto* TND = dyn_cast<TypedefNameDecl>(ND))
+                return TND;
+            if(auto* TATD = dyn_cast<TypeAliasTemplateDecl>(ND))
+                return TATD->getTemplatedDecl();
+        }
+        return D;
+    }
 };
 
 template<typename DeclTy>
@@ -3013,6 +2595,734 @@ getInstantiatedFrom(DeclTy* D)
     return cast<DeclTy>(InstantiatedFromVisitor().Visit(
         const_cast<Decl*>(static_cast<const Decl*>(D))));
 }
+
+//------------------------------------------------
+
+template<typename Derived>
+class TerminalTypeVisitor
+    : public TypeVisitor<TerminalTypeVisitor<Derived>, bool>
+{
+    friend class TerminalTypeVisitor::TypeVisitor;
+
+    ASTVisitor& Visitor_;
+
+    unsigned Quals_ = 0;
+    bool IsPack_ = false;
+    const NestedNameSpecifier* NNS_ = nullptr;
+
+    Derived& getDerived()
+    {
+        return static_cast<Derived&>(*this);
+    }
+
+    bool VisitParenType(
+        const ParenType* T)
+    {
+        return Visit(T->getInnerType());
+    }
+
+    bool VisitMacroQualified(
+        const MacroQualifiedType* T)
+    {
+        return Visit(T->getUnderlyingType());
+    }
+
+    bool VisitAttributedType(
+        const AttributedType* T)
+    {
+        return Visit(T->getModifiedType());
+    }
+
+    bool VisitAdjustedType(
+        const AdjustedType* T)
+    {
+        return Visit(T->getOriginalType());
+    }
+
+    bool VisitUsingType(
+        const UsingType* T)
+    {
+        return Visit(T->getUnderlyingType());
+    }
+
+    bool VisitSubstTemplateTypeParmType(
+        const SubstTemplateTypeParmType* T)
+    {
+        return Visit(T->getReplacementType());
+    }
+
+    // ----------------------------------------------------------------
+
+    bool VisitElaboratedType(
+        const ElaboratedType* T)
+    {
+        NNS_ = T->getQualifier();
+        return Visit(T->getNamedType());
+    }
+
+    bool VisitPackExpansionType(
+        const PackExpansionType* T)
+    {
+        IsPack_ = true;
+        return Visit(T->getPattern());
+    }
+
+    // ----------------------------------------------------------------
+
+    bool VisitPointerType(
+        const PointerType* T)
+    {
+        getDerived().buildPointer(T, std::exchange(Quals_, 0));
+        return Visit(T->getPointeeType());
+    }
+
+    bool VisitLValueReferenceType(
+        const LValueReferenceType* T)
+    {
+        getDerived().buildLValueReference(T);
+        Quals_ = 0;
+        return Visit(T->getPointeeType());
+    }
+
+    bool VisitRValueReferenceType(
+        const RValueReferenceType* T)
+    {
+        getDerived().buildRValueReference(T);
+        Quals_ = 0;
+        return Visit(T->getPointeeType());
+    }
+
+    bool VisitMemberPointerType(
+        const MemberPointerType* T)
+    {
+        getDerived().buildMemberPointer(T, std::exchange(Quals_, 0));
+        return Visit(T->getPointeeType());
+    }
+
+    bool VisitFunctionType(
+        const FunctionType* T)
+    {
+        getDerived().buildFunction(T);
+        return Visit(T->getReturnType());
+    }
+
+    bool VisitArrayType(
+        const ArrayType* T)
+    {
+        getDerived().buildArray(T);
+        return Visit(T->getElementType());
+    }
+
+    // ----------------------------------------------------------------
+
+    bool VisitDecltypeType(
+        const DecltypeType* T)
+    {
+        getDerived().buildDecltype(T, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitAutoType(
+        const AutoType* T)
+    {
+        // KRYSTIAN TODO: we should probably add a TypeInfo
+        // to represent deduced types that also stores what
+        // it was deduced as.
+        // KRYSTIAN NOTE: we don't use isDeduced because it will
+        // return true if the type is dependent
+        // if the type has been deduced, use the deduced type
+        if(QualType DT = T->getDeducedType(); ! DT.isNull())
+            return Visit(DT);
+        getDerived().buildTerminal(NNS_, T, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitDeducedTemplateSpecializationType(
+        const DeducedTemplateSpecializationType* T)
+    {
+        // KRYSTIAN TODO: we should probably add a TypeInfo
+        // to represent deduced types that also stores what
+        // it was deduced as.
+        if(QualType DT = T->getDeducedType(); ! DT.isNull())
+            return Visit(DT);
+        TemplateName TN = T->getTemplateName();
+        MRDOCS_ASSERT(! TN.isNull());
+        NamedDecl* ND = TN.getAsTemplateDecl();
+        getDerived().buildTerminal(NNS_, ND,
+            std::nullopt, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitDependentNameType(
+        const DependentNameType* T)
+    {
+        if(auto* NNS = T->getQualifier())
+            NNS_ = NNS;
+        getDerived().buildTerminal(NNS_, T->getIdentifier(),
+            std::nullopt, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitDependentTemplateSpecializationType(
+        const DependentTemplateSpecializationType* T)
+    {
+        if(auto* NNS = T->getQualifier())
+            NNS_ = NNS;
+        getDerived().buildTerminal(NNS_, T->getIdentifier(),
+            T->template_arguments(), Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitTemplateSpecializationType(
+        const TemplateSpecializationType* T)
+    {
+        TemplateName TN = T->getTemplateName();
+        MRDOCS_ASSERT(! TN.isNull());
+        NamedDecl* ND = TN.getAsTemplateDecl();
+        if(! T->isTypeAlias())
+        {
+            auto* CT = T->getCanonicalTypeInternal().getTypePtrOrNull();
+            if(auto* ICT = dyn_cast_or_null<InjectedClassNameType>(CT))
+                ND = ICT->getDecl();
+            else if(auto* RT = dyn_cast_or_null<RecordType>(CT))
+                ND = RT->getDecl();
+        }
+        getDerived().buildTerminal(NNS_, ND,
+            T->template_arguments(), Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitRecordType(
+        const RecordType* T)
+    {
+        RecordDecl* RD = T->getDecl();
+        // if this is an instantiation of a class template,
+        // create a SpecializationTypeInfo & extract the template arguments
+        std::optional<ArrayRef<TemplateArgument>> TArgs = std::nullopt;
+        if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(RD))
+            TArgs = CTSD->getTemplateArgs().asArray();
+        getDerived().buildTerminal(NNS_, RD,
+            TArgs, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitInjectedClassNameType(
+        const InjectedClassNameType* T)
+    {
+        getDerived().buildTerminal(NNS_, T->getDecl(),
+            std::nullopt, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitEnumType(
+        const EnumType* T)
+    {
+        getDerived().buildTerminal(NNS_, T->getDecl(),
+            std::nullopt, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitTypedefType(
+        const TypedefType* T)
+    {
+        getDerived().buildTerminal(NNS_, T->getDecl(),
+            std::nullopt, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitTemplateTypeParmType(
+        const TemplateTypeParmType* T)
+    {
+        const IdentifierInfo* II = nullptr;
+        if(TemplateTypeParmDecl* D = T->getDecl())
+        {
+            if(D->isImplicit())
+            {
+                // special case for implicit template parameters
+                // resulting from abbreviated function templates
+                getDerived().buildTerminal(
+                    NNS_, T, Quals_, IsPack_);
+                return true;
+            }
+            II = D->getIdentifier();
+        }
+        getDerived().buildTerminal(NNS_, II,
+            std::nullopt, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitSubstTemplateTypeParmPackType(
+        const SubstTemplateTypeParmPackType* T)
+    {
+        getDerived().buildTerminal(NNS_, T->getIdentifier(),
+            std::nullopt, Quals_, IsPack_);
+        return true;
+    }
+
+    bool VisitType(const Type* T)
+    {
+        getDerived().buildTerminal(
+            NNS_, T, Quals_, IsPack_);
+        return true;
+    }
+
+public:
+    TerminalTypeVisitor(
+        ASTVisitor& Visitor)
+        : Visitor_(Visitor)
+    {
+    }
+
+    ASTVisitor& getASTVisitor()
+    {
+        return Visitor_;
+    }
+
+    using TerminalTypeVisitor::TypeVisitor::Visit;
+
+    bool Visit(QualType QT)
+    {
+        Quals_ |= QT.getLocalFastQualifiers();
+        return Visit(QT.getTypePtrOrNull());
+    }
+
+    void
+    buildPointer
+        (const PointerType* T,
+        unsigned quals)
+    {
+    }
+
+    void
+    buildLValueReference(
+        const LValueReferenceType* T)
+    {
+    }
+
+    void
+    buildRValueReference(
+        const RValueReferenceType* T)
+    {
+    }
+
+    void
+    buildMemberPointer(
+        const MemberPointerType* T, unsigned quals)
+    {
+    }
+
+    void
+    buildArray(
+        const ArrayType* T)
+    {
+    }
+
+    void
+    buildFunction(
+        const FunctionType* T)
+    {
+    }
+
+    void
+    buildDecltype(
+        const DecltypeType* T,
+        unsigned quals,
+        bool pack)
+    {
+    }
+
+    void
+    buildTerminal(
+        const NestedNameSpecifier* NNS,
+        const Type* T,
+        unsigned quals,
+        bool pack)
+    {
+    }
+
+    void
+    buildTerminal(
+        const NestedNameSpecifier* NNS,
+        const IdentifierInfo* II,
+        std::optional<ArrayRef<TemplateArgument>> TArgs,
+        unsigned quals,
+        bool pack)
+    {
+    }
+
+    void
+    buildTerminal(
+        const NestedNameSpecifier* NNS,
+        const NamedDecl* D,
+        std::optional<ArrayRef<TemplateArgument>> TArgs,
+        unsigned quals,
+        bool pack)
+    {
+    }
+};
+
+class TypeInfoBuilder
+    : public TerminalTypeVisitor<TypeInfoBuilder>
+{
+    std::unique_ptr<TypeInfo> Result;
+    std::unique_ptr<TypeInfo>* Inner = &Result;
+
+public:
+    TypeInfoBuilder(ASTVisitor& Visitor)
+        : TerminalTypeVisitor(Visitor)
+    {
+    }
+
+    std::unique_ptr<TypeInfo> result()
+    {
+        return std::move(Result);
+    }
+
+    void buildPointer(const PointerType* T, unsigned quals)
+    {
+        auto I = std::make_unique<PointerTypeInfo>();
+        I->CVQualifiers = convertToQualifierKind(quals);
+        *std::exchange(Inner, &I->PointeeType) = std::move(I);
+    }
+
+    void buildLValueReference(const LValueReferenceType* T)
+    {
+        auto I = std::make_unique<LValueReferenceTypeInfo>();
+        *std::exchange(Inner, &I->PointeeType) = std::move(I);
+    }
+
+    void buildRValueReference(const RValueReferenceType* T)
+    {
+        auto I = std::make_unique<RValueReferenceTypeInfo>();
+        *std::exchange(Inner, &I->PointeeType) = std::move(I);
+    }
+
+    void buildMemberPointer(const MemberPointerType* T, unsigned quals)
+    {
+        auto I = std::make_unique<MemberPointerTypeInfo>();
+        I->CVQualifiers = convertToQualifierKind(quals);
+        // do not set NNS because the parent type is *not*
+        // a nested-name-specifier which qualifies the pointee type
+        I->ParentType = getASTVisitor().buildTypeInfo(
+            QualType(T->getClass(), 0));
+        *std::exchange(Inner, &I->PointeeType) = std::move(I);
+    }
+
+    void buildArray(const ArrayType* T)
+    {
+        auto I = std::make_unique<ArrayTypeInfo>();
+        if(auto* CAT = dyn_cast<ConstantArrayType>(T))
+            getASTVisitor().buildExprInfo(
+                I->Bounds, CAT->getSizeExpr(), CAT->getSize());
+        else if(auto* DAT = dyn_cast<DependentSizedArrayType>(T))
+            getASTVisitor().buildExprInfo(
+                I->Bounds, DAT->getSizeExpr());
+        *std::exchange(Inner, &I->ElementType) = std::move(I);
+    }
+
+    void buildFunction(const FunctionType* T)
+    {
+        auto* FPT = cast<FunctionProtoType>(T);
+        auto I = std::make_unique<FunctionTypeInfo>();
+        for(QualType PT : FPT->getParamTypes())
+            I->ParamTypes.emplace_back(
+                getASTVisitor().buildTypeInfo(PT));
+        I->RefQualifier = convertToReferenceKind(
+            FPT->getRefQualifier());
+        I->CVQualifiers = convertToQualifierKind(
+            FPT->getMethodQuals().getFastQualifiers());
+        getASTVisitor().buildNoexceptInfo(I->ExceptionSpec, FPT);
+        *std::exchange(Inner, &I->ReturnType) = std::move(I);
+    }
+
+    void
+    buildDecltype(
+        const DecltypeType* T,
+        unsigned quals,
+        bool pack)
+    {
+        auto I = std::make_unique<DecltypeTypeInfo>();
+        getASTVisitor().buildExprInfo(
+            I->Operand, T->getUnderlyingExpr());
+        I->CVQualifiers = convertToQualifierKind(quals);
+        *Inner = std::move(I);
+        Result->IsPackExpansion = pack;
+    }
+
+    void
+    buildTerminal(
+        const NestedNameSpecifier* NNS,
+        const Type* T,
+        unsigned quals,
+        bool pack)
+    {
+        auto I = std::make_unique<NamedTypeInfo>();
+        I->CVQualifiers = convertToQualifierKind(quals);
+
+        auto Name = std::make_unique<NameInfo>();
+        Name->Name = getASTVisitor().getTypeAsString(T);
+        Name->Prefix = getASTVisitor().buildNameInfo(NNS);
+        I->Name = std::move(Name);
+        *Inner = std::move(I);
+        Result->IsPackExpansion = pack;
+    }
+
+    void
+    buildTerminal(
+        const NestedNameSpecifier* NNS,
+        const IdentifierInfo* II,
+        std::optional<ArrayRef<TemplateArgument>> TArgs,
+        unsigned quals,
+        bool pack)
+    {
+        ASTVisitor& V = getASTVisitor();
+        auto I = std::make_unique<NamedTypeInfo>();
+        I->CVQualifiers = convertToQualifierKind(quals);
+
+        if(TArgs)
+        {
+            auto Name = std::make_unique<SpecializationNameInfo>();
+            if(II)
+                Name->Name = II->getName();
+            Name->Prefix = getASTVisitor().buildNameInfo(NNS);
+            V.buildTemplateArgs(Name->TemplateArgs, *TArgs);
+            I->Name = std::move(Name);
+        }
+        else
+        {
+            auto Name = std::make_unique<NameInfo>();
+            if(II)
+                Name->Name = II->getName();
+            Name->Prefix = getASTVisitor().buildNameInfo(NNS);
+            I->Name = std::move(Name);
+        }
+        *Inner = std::move(I);
+        Result->IsPackExpansion = pack;
+    }
+
+    void
+    buildTerminal(
+        const NestedNameSpecifier* NNS,
+        const NamedDecl* D,
+        std::optional<ArrayRef<TemplateArgument>> TArgs,
+        unsigned quals,
+        bool pack)
+    {
+        ASTVisitor& V = getASTVisitor();
+        auto I = std::make_unique<NamedTypeInfo>();
+        I->CVQualifiers = convertToQualifierKind(quals);
+
+        if(TArgs)
+        {
+            auto Name = std::make_unique<SpecializationNameInfo>();
+            if(const IdentifierInfo* II = D->getIdentifier())
+                Name->Name = II->getName();
+            V.getDependencyID(V.getInstantiatedFrom(D), Name->id);
+            if(NNS)
+                Name->Prefix = V.buildNameInfo(NNS);
+            else
+                Name->Prefix = V.buildNameInfo(D);
+
+            V.buildTemplateArgs(Name->TemplateArgs, *TArgs);
+            I->Name = std::move(Name);
+        }
+        else
+        {
+            auto Name = std::make_unique<NameInfo>();
+            if(const IdentifierInfo* II = D->getIdentifier())
+                Name->Name = II->getName();
+            V.getDependencyID(V.getInstantiatedFrom(D), Name->id);
+            if(NNS)
+                Name->Prefix = V.buildNameInfo(NNS);
+            else
+                Name->Prefix = V.buildNameInfo(D);
+            I->Name = std::move(Name);
+        }
+        *Inner = std::move(I);
+        Result->IsPackExpansion = pack;
+    }
+};
+
+std::unique_ptr<TypeInfo>
+ASTVisitor::
+buildTypeInfo(
+    QualType qt,
+    ExtractMode extract_mode)
+{
+    // extract_mode is only used during the extraction
+    // the terminal type & its parents; the extraction of
+    // function parameters, template arguments, and the parent class
+    // of member pointers is done in ExtractMode::IndirectDependency
+    ExtractionScope scope = enterMode(extract_mode);
+    // build the TypeInfo representation for the type
+    TypeInfoBuilder Builder(*this);
+    Builder.Visit(qt);
+    return Builder.result();
+}
+
+class NameInfoBuilder
+    : public TerminalTypeVisitor<NameInfoBuilder>
+{
+    std::unique_ptr<NameInfo> Result;
+
+public:
+    NameInfoBuilder(ASTVisitor& Visitor)
+        : TerminalTypeVisitor(Visitor)
+    {
+    }
+
+    std::unique_ptr<NameInfo> result()
+    {
+        return std::move(Result);
+    }
+
+    void
+    buildDecltype(
+        const DecltypeType* T,
+        unsigned quals,
+        bool pack)
+    {
+        // KRYSTIAN TODO: support decltype in names
+        // (e.g. within nested-name-specifiers).
+    }
+
+    void
+    buildTerminal(
+        const NestedNameSpecifier* NNS,
+        const Type* T,
+        unsigned quals,
+        bool pack)
+    {
+        auto I = std::make_unique<NameInfo>();
+        I->Name = getASTVisitor().getTypeAsString(T);
+        Result = std::move(I);
+        if(NNS)
+            Result->Prefix = getASTVisitor().buildNameInfo(NNS);
+    }
+
+    void
+    buildTerminal(
+        const NestedNameSpecifier* NNS,
+        const IdentifierInfo* II,
+        std::optional<ArrayRef<TemplateArgument>> TArgs,
+        unsigned quals,
+        bool pack)
+    {
+        ASTVisitor& V = getASTVisitor();
+        if(TArgs)
+        {
+            auto I = std::make_unique<SpecializationNameInfo>();
+            if(II)
+                I->Name = II->getName();
+            V.buildTemplateArgs(I->TemplateArgs, *TArgs);
+            Result = std::move(I);
+        }
+        else
+        {
+            auto I = std::make_unique<NameInfo>();
+            if(II)
+                I->Name = II->getName();
+            Result = std::move(I);
+        }
+        if(NNS)
+            Result->Prefix = V.buildNameInfo(NNS);
+    }
+
+    void
+    buildTerminal(
+        const NestedNameSpecifier* NNS,
+        const NamedDecl* D,
+        std::optional<ArrayRef<TemplateArgument>> TArgs,
+        unsigned quals,
+        bool pack)
+    {
+        ASTVisitor& V = getASTVisitor();
+        const IdentifierInfo* II = D->getIdentifier();
+        if(TArgs)
+        {
+            auto I = std::make_unique<SpecializationNameInfo>();
+            if(II)
+                I->Name = II->getName();
+            V.getDependencyID(V.getInstantiatedFrom(D), I->id);
+            V.buildTemplateArgs(I->TemplateArgs, *TArgs);
+            Result = std::move(I);
+        }
+        else
+        {
+            auto I = std::make_unique<NameInfo>();
+            if(II)
+                I->Name = II->getName();
+            V.getDependencyID(V.getInstantiatedFrom(D), I->id);
+            Result = std::move(I);
+        }
+        if(NNS)
+            Result->Prefix = V.buildNameInfo(NNS);
+        else
+            Result->Prefix = V.buildNameInfo(D);
+    }
+};
+
+std::unique_ptr<NameInfo>
+ASTVisitor::
+buildNameInfo(
+    const NestedNameSpecifier* NNS,
+    ExtractMode extract_mode)
+{
+    ExtractionScope scope = enterMode(extract_mode);
+
+    std::unique_ptr<NameInfo> I = nullptr;
+    if(! NNS)
+        return I;
+    if(const Type* T = NNS->getAsType())
+    {
+        NameInfoBuilder Builder(*this);
+        Builder.Visit(T);
+        I = Builder.result();
+    }
+    else if(const IdentifierInfo* II = NNS->getAsIdentifier())
+    {
+        I = std::make_unique<NameInfo>();
+        I->Name = II->getName();
+        I->Prefix = buildNameInfo(NNS->getPrefix(), extract_mode);
+    }
+    else if(const NamespaceDecl* ND = NNS->getAsNamespace())
+    {
+        I = std::make_unique<NameInfo>();
+        I->Name = ND->getIdentifier()->getName();
+        getDependencyID(ND, I->id);
+        I->Prefix = buildNameInfo(ND, extract_mode);
+    }
+    else if(const NamespaceAliasDecl* ND = NNS->getAsNamespaceAlias())
+    {
+        I = std::make_unique<NameInfo>();
+        I->Name = ND->getIdentifier()->getName();
+        getDependencyID(ND->getNamespace(), I->id);
+        I->Prefix = buildNameInfo(ND->getNamespace(), extract_mode);
+    }
+    return I;
+}
+
+std::unique_ptr<NameInfo>
+ASTVisitor::
+buildNameInfo(
+    const NamedDecl* ND,
+    ExtractMode extract_mode)
+{
+    if(! ND)
+        return nullptr;
+    const NamedDecl* PD = dyn_cast_if_present<
+        NamedDecl>(getParentDecl(ND));
+    if(! PD || PD->getKind() == Decl::TranslationUnit)
+        return nullptr;
+    auto I = std::make_unique<NameInfo>();
+    if(const IdentifierInfo* II = PD->getIdentifier())
+        I->Name = II->getName();
+    getDependencyID(getInstantiatedFrom(PD), I->id);
+    I->Prefix = buildNameInfo(PD, extract_mode);
+    return I;
+}
+
+//------------------------------------------------
 
 #if 0
 class ASTInstantiationCallbacks
@@ -3071,6 +3381,7 @@ class ASTInstantiationCallbacks
     }
 };
 #endif
+
 
 //------------------------------------------------
 //

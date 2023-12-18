@@ -663,6 +663,9 @@ writeNode(
     case doc::Kind::copied:
         writeCopied(static_cast<doc::Copied const&>(node));
         break;
+    case doc::Kind::throws:
+        writeThrows(static_cast<doc::Throws const&>(node));
+        break;
     default:
         // unknown kind
         MRDOCS_UNREACHABLE();
@@ -828,6 +831,18 @@ writeReturns(
     tags_.open("returns");
     writeNodes(returns.children);
     tags_.close("returns");
+}
+
+void
+XMLWriter::
+writeThrows(
+    doc::Throws const& throws)
+{
+    if(throws.empty())
+        return;
+    tags_.open("throws");
+    writeNodes(throws.children);
+    tags_.close("throws");
 }
 
 void

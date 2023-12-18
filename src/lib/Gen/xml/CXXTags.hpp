@@ -15,6 +15,7 @@
 
 #include "XMLTags.hpp"
 #include <mrdocs/Metadata/Function.hpp>
+#include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Record.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Variable.hpp>
@@ -207,14 +208,9 @@ writeType(
         {
             Attributes attrs = {
                 { "class", toString(T::kind_id),
-                    T::kind_id != TypeKind::Builtin },
+                    T::kind_id != TypeKind::Named },
                 { "is-pack", "1", t.IsPackExpansion }
             };
-
-            if constexpr(requires { t.id; })
-            {
-                attrs.push({t.id});
-            }
 
             // KRYSTIAN FIXME: parent should is a type itself
             if constexpr(requires { t.ParentType; })
@@ -223,9 +219,13 @@ writeType(
                     attrs.push({"parent", toString(*t.ParentType)});
             }
 
-            if constexpr(requires { t.Name; })
+            if constexpr(T::isNamed())
             {
-                attrs.push({"name", t.Name});
+                if(t.Name)
+                {
+                    attrs.push({t.Name->id});
+                    attrs.push({"name", toString(*t.Name)});
+                }
             }
 
             if constexpr(requires { t.CVQualifiers; })
@@ -261,19 +261,13 @@ writeType(
             // ----------------------------------------------------------------
 
             // no nested types; write as self closing tag
-            if constexpr(T::isBuiltin() || T::isTag())
+            if constexpr(T::isNamed())
             {
                 tags.write(type_tag, {}, std::move(attrs));
                 return;
             }
 
             tags.open(type_tag, std::move(attrs));
-
-            if constexpr(T::isSpecialization())
-            {
-                for(const auto& targ : t.TemplateArgs)
-                    writeTemplateArg(*targ, tags);
-            }
 
             if constexpr(requires { t.PointeeType; })
             {

@@ -121,6 +121,11 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb)
 Expected<void>
 DoGenerateAction()
 {
+    // --------------------------------------------------------------
+    //
+    // Load configuration
+    //
+    // --------------------------------------------------------------
     // Get additional YAML settings from command line
     std::string extraYaml;
     {
@@ -145,7 +150,11 @@ DoGenerateAction()
         config = std::move(configFile);
     }
 
-    // Get the generator
+    // --------------------------------------------------------------
+    //
+    // Load generator
+    //
+    // --------------------------------------------------------------
     MRDOCS_TRY(
         Generator const& generator,
         getGenerators().find(config->settings().generate),
@@ -153,13 +162,18 @@ DoGenerateAction()
             "the Generator \"{}\" was not found",
             config->settings().generate));
 
-    // Load the compilation database
+    // --------------------------------------------------------------
+    //
+    // Load the compilation database file
+    //
+    // --------------------------------------------------------------
     MRDOCS_CHECK(toolArgs.inputPaths, "The compilation database path argument is missing");
     MRDOCS_CHECK(toolArgs.inputPaths.size() == 1,
         formatError(
             "got {} input paths where 1 was expected",
             toolArgs.inputPaths.size()));
     auto compilationsPath = files::normalizePath(toolArgs.inputPaths.front());
+    MRDOCS_TRY(compilationsPath, files::makeAbsolute(compilationsPath));
     std::string errorMessage;
     MRDOCS_TRY_MSG(
         auto& compileCommands,
@@ -169,11 +183,12 @@ DoGenerateAction()
             tooling::JSONCommandLineSyntax::AutoDetect),
         std::move(errorMessage));
 
-    // Calculate the working directory
-    MRDOCS_TRY(auto absPath, files::makeAbsolute(compilationsPath));
-    auto workingDir = files::getParentDir(absPath);
+    // Custom compilation database that converts relative paths to absolute
+    auto compileCommandsDir = files::getParentDir(compilationsPath);
+    AbsoluteCompilationDatabase absCompileCommands(
+            compileCommandsDir, compileCommands, config);
 
-    // Normalize outputPath
+    // Normalize outputPath path
     MRDOCS_CHECK(toolArgs.outputPath, "The output path argument is missing");
     toolArgs.outputPath = files::normalizePath(
         files::makeAbsolute(toolArgs.outputPath,
@@ -194,9 +209,13 @@ DoGenerateAction()
     MRDOCS_TRY(
         auto corpus,
         CorpusImpl::build(
-            report::Level::info, config, compilations));
+            report::Level::info, config, absCompileCommands));
 
-    // Run the generator
+    // --------------------------------------------------------------
+    //
+    // Generate docs
+    //
+    // --------------------------------------------------------------
     report::info("Generating docs\n");
     MRDOCS_TRY(generator.build(toolArgs.outputPath.getValue(), *corpus));
     return {};

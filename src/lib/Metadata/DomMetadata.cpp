@@ -424,6 +424,31 @@ domCreate(
 static
 dom::Value
 domCreate(
+    std::unique_ptr<NameInfo> const& I,
+    DomCorpus const& domCorpus)
+{
+    if(! I)
+        return nullptr;
+    dom::Object::storage_type entries = {
+        { "kind", toString(I->Kind) }
+    };
+    visit(*I, [&]<typename T>(const T& t)
+    {
+        entries.emplace_back("name", t.Name);
+        entries.emplace_back("symbol", domCorpus.get(t.id));
+
+        if constexpr(requires { t.TemplateArgs; })
+            entries.emplace_back("args",
+                dom::newArray<DomTArgArray>(t.TemplateArgs, domCorpus));
+
+        entries.emplace_back("prefix", domCreate(t.Prefix, domCorpus));
+    });
+    return dom::Object(std::move(entries));
+}
+
+static
+dom::Value
+domCreate(
     std::unique_ptr<TypeInfo> const& I,
     DomCorpus const& domCorpus)
 {
@@ -435,15 +460,9 @@ domCreate(
     };
     visit(*I, [&]<typename T>(const T& t)
     {
-        if constexpr(requires { t.Name; })
-            entries.emplace_back("name", t.Name);
-
-        if constexpr(requires { t.id; })
-            entries.emplace_back("symbol", domCorpus.get(t.id));
-
-        if constexpr(T::isSpecialization())
-            entries.emplace_back("args",
-                dom::newArray<DomTArgArray>(t.TemplateArgs, domCorpus));
+        if constexpr(T::isNamed())
+            entries.emplace_back("name",
+                domCreate(t.Name, domCorpus));
 
         if constexpr(T::isDecltype())
             entries.emplace_back("operand", t.Operand.Written);

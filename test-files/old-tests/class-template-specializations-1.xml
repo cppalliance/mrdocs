@@ -444,253 +444,187 @@
   <struct name="R0" id="lsUGNSojS1OrjDye4KqyplKnmEY=">
     <file path="class-template-specializations-1.cpp" line="178" class="def"/>
     <base>
-      <type class="specialization" id="z/QEAP16LEoD3NlABxA6BOFpYpA=" name="S0">
-        <targ class="non-type" value="-1"/>
-      </type>
+      <type id="z/QEAP16LEoD3NlABxA6BOFpYpA=" name="S0&lt;-1&gt;"/>
     </base>
   </struct>
   <struct name="R1" id="YYlx+bpT0g8LLZjxP8HUJkX8Z0g=">
     <file path="class-template-specializations-1.cpp" line="180" class="def"/>
     <base>
-      <type class="specialization" id="vt6SAnqggizkWUqtSC5b9rVm+Qw=" name="S0">
-        <targ class="non-type" value="0"/>
-      </type>
+      <type id="vt6SAnqggizkWUqtSC5b9rVm+Qw=" name="S0&lt;0&gt;"/>
     </base>
   </struct>
   <struct name="R2" id="Pfk0q5rrybeWgcReRmbZG1bbEqc=">
     <file path="class-template-specializations-1.cpp" line="182" class="def"/>
     <base>
-      <type class="specialization" id="xONzwxGiMBJrTYA5eosi4pOC0n0=" name="S0">
-        <targ class="non-type" value="1"/>
-        <targ class="type" type="void*"/>
-      </type>
+      <type id="xONzwxGiMBJrTYA5eosi4pOC0n0=" name="S0&lt;1, void*&gt;"/>
     </base>
   </struct>
   <struct name="R3" id="4zlOJnCa8JReXoMKKektgonYNjk=">
     <file path="class-template-specializations-1.cpp" line="184" class="def"/>
     <base>
-      <type class="specialization" id="IKgocAXkFMvNmDD+p5dZpSBSRHI=" name="S0">
-        <targ class="non-type" value="1"/>
-        <targ class="type" type="int*"/>
-      </type>
+      <type id="IKgocAXkFMvNmDD+p5dZpSBSRHI=" name="S0&lt;1, int*&gt;"/>
     </base>
   </struct>
   <struct name="R4" id="dZy3vii5ynjMIL0GhdAaZunDznI=">
     <file path="class-template-specializations-1.cpp" line="186" class="def"/>
     <base>
-      <type class="tag" id="yY+X2/Fqu8ENz37/HFEJCBOSfVg=" parent="S0&lt;2&gt;" name="S1"/>
+      <type id="yY+X2/Fqu8ENz37/HFEJCBOSfVg=" name="S0&lt;2&gt;::S1"/>
     </base>
   </struct>
   <struct name="R5" id="sblGSlqZ8xD5IUQo0N0aPL4L0AQ=">
     <file path="class-template-specializations-1.cpp" line="188" class="def"/>
     <base>
-      <type class="specialization" id="96AKnFS/OwIoVISFMJoJhA0YXIU=" parent="S1" name="S2">
-        <targ class="non-type" value="-1"/>
-      </type>
+      <type id="96AKnFS/OwIoVISFMJoJhA0YXIU=" name="S0::S1::S2&lt;-1&gt;"/>
     </base>
   </struct>
   <struct name="R6" id="5zygvvE+CiPrP7pOEMCT/ejsq0M=">
     <file path="class-template-specializations-1.cpp" line="190" class="def"/>
     <base>
-      <type class="specialization" id="8snJ9gp5ca88/AsWGEnFe6Ln6RQ=" parent="S1" name="S2">
-        <targ class="non-type" value="5"/>
-      </type>
+      <type id="8snJ9gp5ca88/AsWGEnFe6Ln6RQ=" name="S0::S1::S2&lt;5&gt;"/>
     </base>
   </struct>
   <struct name="R7" id="96LOwhcPie1bYQb/+5hdjvtMZ3Y=">
     <file path="class-template-specializations-1.cpp" line="192" class="def"/>
     <base>
-      <type class="specialization" id="ZyL4aBHmvCmfq+HyxDSySKwRsdA=" parent="S1" name="S2">
-        <targ class="non-type" value="7"/>
-        <targ class="type" type="void*"/>
-      </type>
+      <type id="ZyL4aBHmvCmfq+HyxDSySKwRsdA=" name="S0::S1::S2&lt;7, void*&gt;"/>
     </base>
   </struct>
   <struct name="R8" id="O02SUS1cO7f/cv+4rcolWMgr6Qk=">
     <file path="class-template-specializations-1.cpp" line="194" class="def"/>
     <base>
-      <type class="specialization" id="eWg27/kfn86dUmPA26mcOo6kkfs=" parent="S1" name="S2">
-        <targ class="non-type" value="7"/>
-        <targ class="type" type="int*"/>
-      </type>
+      <type id="eWg27/kfn86dUmPA26mcOo6kkfs=" name="S0::S1::S2&lt;7, int*&gt;"/>
     </base>
   </struct>
   <struct name="R9" id="YRnUAYfQ4BYOxSF2Qkw3NnMX+OQ=">
     <file path="class-template-specializations-1.cpp" line="196" class="def"/>
     <base>
-      <type class="tag" id="OuyCzwMT3B0xth9oee9dTlGkXVw=" parent="S2&lt;9&gt;" name="S3"/>
+      <type id="OuyCzwMT3B0xth9oee9dTlGkXVw=" name="S0::S1::S2&lt;9&gt;::S3"/>
     </base>
   </struct>
   <struct name="R10" id="37Ll95zW61Q69eIGnUQU/KdOXdc=">
     <file path="class-template-specializations-1.cpp" line="198" class="def"/>
     <base>
-      <type class="specialization" id="jsWbJZfAfgKMXbl9GaZXHLmhL2U=" parent="S2&lt;11&gt;" name="S4">
-        <targ class="non-type" value="-1"/>
-      </type>
+      <type id="jsWbJZfAfgKMXbl9GaZXHLmhL2U=" name="S0::S1::S2&lt;11&gt;::S4&lt;-1&gt;"/>
     </base>
   </struct>
   <struct name="R11" id="KxlVqZyxd3ytKt5pMOq1MACEL0I=">
     <file path="class-template-specializations-1.cpp" line="200" class="def"/>
     <base>
-      <type class="specialization" id="yPCRvP9B34hMThomBKlaCzkFM54=" parent="S2&lt;13&gt;" name="S4">
-        <targ class="non-type" value="14"/>
-      </type>
+      <type id="yPCRvP9B34hMThomBKlaCzkFM54=" name="S0::S1::S2&lt;13&gt;::S4&lt;14&gt;"/>
     </base>
   </struct>
   <struct name="R12" id="4HX/nvJpOT6MbOcVPGC2BSJIB6I=">
     <file path="class-template-specializations-1.cpp" line="202" class="def"/>
     <base>
-      <type class="specialization" id="cV4O7e/J4xug1ZmsOQKwDVjE99M=" parent="S2&lt;16&gt;" name="S4">
-        <targ class="non-type" value="17"/>
-        <targ class="type" type="void*"/>
-      </type>
+      <type id="cV4O7e/J4xug1ZmsOQKwDVjE99M=" name="S0::S1::S2&lt;16&gt;::S4&lt;17, void*&gt;"/>
     </base>
   </struct>
   <struct name="R13" id="hNbRn1GOUhshsMWwyYhu+Mzr63Y=">
     <file path="class-template-specializations-1.cpp" line="204" class="def"/>
     <base>
-      <type class="specialization" id="J3UZDljdSJ1mGU9Js0JpA3TjVtc=" parent="S2&lt;16&gt;" name="S4">
-        <targ class="non-type" value="17"/>
-        <targ class="type" type="int*"/>
-      </type>
+      <type id="J3UZDljdSJ1mGU9Js0JpA3TjVtc=" name="S0::S1::S2&lt;16&gt;::S4&lt;17, int*&gt;"/>
     </base>
   </struct>
   <struct name="R14" id="o8fncABv2obQ8RPoe42PPkbV6EU=">
     <file path="class-template-specializations-1.cpp" line="206" class="def"/>
     <base>
-      <type class="specialization" id="camC/bDL1+gedizXtv+BQXm3/4s=" parent="S0&lt;18&gt;" name="S5">
-        <targ class="non-type" value="-1"/>
-      </type>
+      <type id="camC/bDL1+gedizXtv+BQXm3/4s=" name="S0&lt;18&gt;::S5&lt;-1&gt;"/>
     </base>
   </struct>
   <struct name="R15" id="PZ5EtWczBLNH4bOfYL5+LZhR5+o=">
     <file path="class-template-specializations-1.cpp" line="208" class="def"/>
     <base>
-      <type class="specialization" id="dO93MwJZmA5Fpzul37ZMH6F1ong=" parent="S0&lt;19&gt;" name="S5">
-        <targ class="non-type" value="20"/>
-      </type>
+      <type id="dO93MwJZmA5Fpzul37ZMH6F1ong=" name="S0&lt;19&gt;::S5&lt;20&gt;"/>
     </base>
   </struct>
   <struct name="R16" id="Njgc9ahRT2lS5tHXmWfbYbjPl/s=">
     <file path="class-template-specializations-1.cpp" line="210" class="def"/>
     <base>
-      <type class="specialization" id="umZ8gPZZ+qTWuYY3zYO/hx1XCGI=" parent="S0&lt;21&gt;" name="S5">
-        <targ class="non-type" value="22"/>
-        <targ class="type" type="void*"/>
-      </type>
+      <type id="umZ8gPZZ+qTWuYY3zYO/hx1XCGI=" name="S0&lt;21&gt;::S5&lt;22, void*&gt;"/>
     </base>
   </struct>
   <struct name="R17" id="a674CqdSc92X1x2aNro3gf/LfBY=">
     <file path="class-template-specializations-1.cpp" line="212" class="def"/>
     <base>
-      <type class="specialization" id="NnzxSBCBz0/s6OkCTTL/yDO06Go=" parent="S0&lt;21&gt;" name="S5">
-        <targ class="non-type" value="22"/>
-        <targ class="type" type="int*"/>
-      </type>
+      <type id="NnzxSBCBz0/s6OkCTTL/yDO06Go=" name="S0&lt;21&gt;::S5&lt;22, int*&gt;"/>
     </base>
   </struct>
   <struct name="R18" id="YJvTNkVKYomLYiXMPMOfXxP5Mn8=">
     <file path="class-template-specializations-1.cpp" line="214" class="def"/>
     <base>
-      <type class="tag" id="w4IHOtNv5zozrqG240cCIM/ceiU=" parent="S5&lt;24&gt;" name="S6"/>
+      <type id="w4IHOtNv5zozrqG240cCIM/ceiU=" name="S0::S5&lt;24&gt;::S6"/>
     </base>
   </struct>
   <struct name="R19" id="XKdrAB7W4NV2H0u3z4YQyk01nsY=">
     <file path="class-template-specializations-1.cpp" line="216" class="def"/>
     <base>
-      <type class="specialization" id="ExhHzwlrMNSfv2bLNPrl3Ts+Nvk=" parent="S6" name="S7">
-        <targ class="non-type" value="-1"/>
-      </type>
+      <type id="ExhHzwlrMNSfv2bLNPrl3Ts+Nvk=" name="S0::S5::S6::S7&lt;-1&gt;"/>
     </base>
   </struct>
   <struct name="R20" id="Djfh1tM7EofhMQEp2jD2W0SkCZc=">
     <file path="class-template-specializations-1.cpp" line="218" class="def"/>
     <base>
-      <type class="specialization" id="pbmVOgtPeZtTL7BQG/AM7NVsNdo=" parent="S6" name="S7">
-        <targ class="non-type" value="29"/>
-        <targ class="type" type="void*"/>
-      </type>
+      <type id="pbmVOgtPeZtTL7BQG/AM7NVsNdo=" name="S0::S5::S6::S7&lt;29, void*&gt;"/>
     </base>
   </struct>
   <struct name="R21" id="c7vedsb0RL7v2uEX7fBxP+lLDUE=">
     <file path="class-template-specializations-1.cpp" line="220" class="def"/>
     <base>
-      <type class="specialization" id="3eTbiMMR3GPY7/xRty3EmJ9bdQU=" parent="S6" name="S7">
-        <targ class="non-type" value="29"/>
-        <targ class="type" type="int*"/>
-      </type>
+      <type id="3eTbiMMR3GPY7/xRty3EmJ9bdQU=" name="S0::S5::S6::S7&lt;29, int*&gt;"/>
     </base>
   </struct>
   <struct name="R22" id="BRP738ePXtkkzTEx62BH/csijNU=">
     <file path="class-template-specializations-1.cpp" line="222" class="def"/>
     <base>
-      <type class="specialization" id="VxqDdgdkcw8E86ZiNolpXLlhyWs=" parent="S6" name="S7">
-        <targ class="non-type" value="32"/>
-      </type>
+      <type id="VxqDdgdkcw8E86ZiNolpXLlhyWs=" name="S0::S5::S6::S7&lt;32&gt;"/>
     </base>
   </struct>
   <struct name="R23" id="tZycFfC5yVQHsLOhWKHuU4W5Q08=">
     <file path="class-template-specializations-1.cpp" line="224" class="def"/>
     <base>
-      <type class="tag" id="3sBLDynoSyGl1xzXtqGZlO/q6dA=" parent="S7&lt;35&gt;" name="S8"/>
+      <type id="3sBLDynoSyGl1xzXtqGZlO/q6dA=" name="S0::S5::S6::S7&lt;35&gt;::S8"/>
     </base>
   </struct>
   <struct name="R24" id="UxsGdsG7pWSk+aJLPGSFF8Dxiao=">
     <file path="class-template-specializations-1.cpp" line="226" class="def"/>
     <base>
-      <type class="specialization" id="KChFuNDElPROHklvCtkJ+O4+io8=" parent="S7&lt;38&gt;" name="S9">
-        <targ class="non-type" value="-1"/>
-      </type>
+      <type id="KChFuNDElPROHklvCtkJ+O4+io8=" name="S0::S5::S6::S7&lt;38&gt;::S9&lt;-1&gt;"/>
     </base>
   </struct>
   <struct name="R25" id="ugC1EM88IyyB7hKO6Gk3zxb26BI=">
     <file path="class-template-specializations-1.cpp" line="228" class="def"/>
     <base>
-      <type class="specialization" id="CvFJnK9Xu7B2Fbh91NqM0+gKVEU=" parent="S7&lt;41&gt;" name="S9">
-        <targ class="non-type" value="42"/>
-        <targ class="type" type="void*"/>
-      </type>
+      <type id="CvFJnK9Xu7B2Fbh91NqM0+gKVEU=" name="S0::S5::S6::S7&lt;41&gt;::S9&lt;42, void*&gt;"/>
     </base>
   </struct>
   <struct name="R26" id="qx49JH2sKz2ucLdeyOofzjOIIys=">
     <file path="class-template-specializations-1.cpp" line="230" class="def"/>
     <base>
-      <type class="specialization" id="hwfbdkFRNunC/3V+s6HA5BwWiSQ=" parent="S7&lt;41&gt;" name="S9">
-        <targ class="non-type" value="42"/>
-        <targ class="type" type="int*"/>
-      </type>
+      <type id="hwfbdkFRNunC/3V+s6HA5BwWiSQ=" name="S0::S5::S6::S7&lt;41&gt;::S9&lt;42, int*&gt;"/>
     </base>
   </struct>
   <struct name="R27" id="spTxXazLZhY+2ttJ4SvrUE5GHuE=">
     <file path="class-template-specializations-1.cpp" line="232" class="def"/>
     <base>
-      <type class="specialization" id="8PQtbs9xGpu1L+b0VOqfLlE6TnY=" parent="S7&lt;45&gt;" name="S9">
-        <targ class="non-type" value="46"/>
-      </type>
+      <type id="8PQtbs9xGpu1L+b0VOqfLlE6TnY=" name="S0::S5::S6::S7&lt;45&gt;::S9&lt;46&gt;"/>
     </base>
   </struct>
   <struct name="R28" id="UDzu/sD/ufLi70VH15nMFblNwe4=">
     <file path="class-template-specializations-1.cpp" line="234" class="def"/>
     <base>
-      <type class="specialization" id="z/QEAP16LEoD3NlABxA6BOFpYpA=" name="S0">
-        <targ class="non-type" value="0"/>
-        <targ class="type" type="bool"/>
-      </type>
+      <type id="z/QEAP16LEoD3NlABxA6BOFpYpA=" name="S0&lt;0, bool&gt;"/>
     </base>
   </struct>
   <struct name="R29" id="IcbtOHAZTH1gFTGuVp6pyCvl3LI=">
     <file path="class-template-specializations-1.cpp" line="236" class="def"/>
     <base>
-      <type class="specialization" id="z/QEAP16LEoD3NlABxA6BOFpYpA=" name="S0">
-        <targ class="non-type" value="1"/>
-        <targ class="type" type="int"/>
-      </type>
+      <type id="z/QEAP16LEoD3NlABxA6BOFpYpA=" name="S0&lt;1, int&gt;"/>
     </base>
   </struct>
   <struct name="R30" id="lA3BybbwURKB0enRrh2rE78eLG8=">
     <file path="class-template-specializations-1.cpp" line="238" class="def"/>
     <base>
-      <type class="tag" id="2CQyWIWOAM25oQ1AdJcdT6hFqAE=" parent="S0&lt;2, bool&gt;" name="S1"/>
+      <type id="2CQyWIWOAM25oQ1AdJcdT6hFqAE=" name="S0&lt;2, bool&gt;::S1"/>
     </base>
   </struct>
   <template>
@@ -699,35 +633,26 @@
     <struct name="R31" id="a6PZj6tjiEyiL0giu8norS/dpQ0=">
       <file path="class-template-specializations-1.cpp" line="241" class="def"/>
       <base>
-        <type class="specialization" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=" parent="S1" name="S2">
-          <targ class="non-type" value="I"/>
-          <targ class="type" type="T"/>
-        </type>
+        <type id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=" name="S0::S1::S2&lt;I, T&gt;"/>
       </base>
     </struct>
   </template>
   <struct name="R32" id="pGomjfageqLgG/f9fj7sj7IVZLU=">
     <file path="class-template-specializations-1.cpp" line="243" class="def"/>
     <base>
-      <type class="specialization" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=" parent="S1" name="S2">
-        <targ class="non-type" value="5"/>
-        <targ class="type" type="bool"/>
-      </type>
+      <type id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=" name="S0::S1::S2&lt;5, bool&gt;"/>
     </base>
   </struct>
   <struct name="R33" id="BdqyL6agHf56B9/yi32jDJC7KFA=">
     <file path="class-template-specializations-1.cpp" line="245" class="def"/>
     <base>
-      <type class="specialization" id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=" parent="S1" name="S2">
-        <targ class="non-type" value="7"/>
-        <targ class="type" type="int"/>
-      </type>
+      <type id="oNfOAnUjZE7WlBGdMiNtQ9ePi8g=" name="S0::S1::S2&lt;7, int&gt;"/>
     </base>
   </struct>
   <struct name="R34" id="igYKtzFDu8lhxosToWFs69BVPuM=">
     <file path="class-template-specializations-1.cpp" line="247" class="def"/>
     <base>
-      <type class="tag" id="LjJr8jL1hFRtsFi7N5gXIU8pmt8=" parent="S2&lt;9, bool&gt;" name="S3"/>
+      <type id="LjJr8jL1hFRtsFi7N5gXIU8pmt8=" name="S0::S1::S2&lt;9, bool&gt;::S3"/>
     </base>
   </struct>
   <template>
@@ -736,29 +661,20 @@
     <struct name="R35" id="eo8jQEg9QMloSGi6GpyAeQqlpCs=">
       <file path="class-template-specializations-1.cpp" line="250" class="def"/>
       <base>
-        <type class="specialization" id="8UtqZHVItGCqKLwlXny0WJDLkDQ=" parent="S2&lt;11, bool&gt;" name="S4">
-          <targ class="non-type" value="I"/>
-          <targ class="type" type="T"/>
-        </type>
+        <type id="8UtqZHVItGCqKLwlXny0WJDLkDQ=" name="S0::S1::S2&lt;11, bool&gt;::S4&lt;I, T&gt;"/>
       </base>
     </struct>
   </template>
   <struct name="R36" id="7oxAWQBGk8SBe1Ci9NUHRp2c/wY=">
     <file path="class-template-specializations-1.cpp" line="252" class="def"/>
     <base>
-      <type class="specialization" id="8UtqZHVItGCqKLwlXny0WJDLkDQ=" parent="S2&lt;13, bool&gt;" name="S4">
-        <targ class="non-type" value="14"/>
-        <targ class="type" type="bool"/>
-      </type>
+      <type id="8UtqZHVItGCqKLwlXny0WJDLkDQ=" name="S0::S1::S2&lt;13, bool&gt;::S4&lt;14, bool&gt;"/>
     </base>
   </struct>
   <struct name="R37" id="A16UCOKGsKEteewO0ppRUQEljqY=">
     <file path="class-template-specializations-1.cpp" line="254" class="def"/>
     <base>
-      <type class="specialization" id="8UtqZHVItGCqKLwlXny0WJDLkDQ=" parent="S2&lt;16, bool&gt;" name="S4">
-        <targ class="non-type" value="17"/>
-        <targ class="type" type="int"/>
-      </type>
+      <type id="8UtqZHVItGCqKLwlXny0WJDLkDQ=" name="S0::S1::S2&lt;16, bool&gt;::S4&lt;17, int&gt;"/>
     </base>
   </struct>
   <template>
@@ -767,35 +683,26 @@
     <struct name="R38" id="re0mCvmdqf1rR547opGwiFX8hlA=">
       <file path="class-template-specializations-1.cpp" line="257" class="def"/>
       <base>
-        <type class="specialization" id="t/fAg/z+G5QClTBG74e6bR64CDI=" parent="S0&lt;18, bool&gt;" name="S5">
-          <targ class="non-type" value="I"/>
-          <targ class="type" type="T"/>
-        </type>
+        <type id="t/fAg/z+G5QClTBG74e6bR64CDI=" name="S0&lt;18, bool&gt;::S5&lt;I, T&gt;"/>
       </base>
     </struct>
   </template>
   <struct name="R39" id="oJlaNMjqQ6+iOfTaUGaWqPHPqN8=">
     <file path="class-template-specializations-1.cpp" line="259" class="def"/>
     <base>
-      <type class="specialization" id="t/fAg/z+G5QClTBG74e6bR64CDI=" parent="S0&lt;19, bool&gt;" name="S5">
-        <targ class="non-type" value="20"/>
-        <targ class="type" type="bool"/>
-      </type>
+      <type id="t/fAg/z+G5QClTBG74e6bR64CDI=" name="S0&lt;19, bool&gt;::S5&lt;20, bool&gt;"/>
     </base>
   </struct>
   <struct name="R40" id="wLXqPK2Rr/wZaTZPvL20NEBFpv8=">
     <file path="class-template-specializations-1.cpp" line="261" class="def"/>
     <base>
-      <type class="specialization" id="t/fAg/z+G5QClTBG74e6bR64CDI=" parent="S0&lt;21, bool&gt;" name="S5">
-        <targ class="non-type" value="22"/>
-        <targ class="type" type="int"/>
-      </type>
+      <type id="t/fAg/z+G5QClTBG74e6bR64CDI=" name="S0&lt;21, bool&gt;::S5&lt;22, int&gt;"/>
     </base>
   </struct>
   <struct name="R41" id="eUmJbtnqgN9sxJ1tY4V4JqqHWfM=">
     <file path="class-template-specializations-1.cpp" line="263" class="def"/>
     <base>
-      <type class="tag" id="icRp7NeoOT+m93ddn+fcm7v0hWU=" parent="S5&lt;24, bool&gt;" name="S6"/>
+      <type id="icRp7NeoOT+m93ddn+fcm7v0hWU=" name="S0::S5&lt;24, bool&gt;::S6"/>
     </base>
   </struct>
   <template>
@@ -804,35 +711,26 @@
     <struct name="R42" id="Lw0S5zz85DmfSfnw5wqcfXhtZC4=">
       <file path="class-template-specializations-1.cpp" line="266" class="def"/>
       <base>
-        <type class="specialization" id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=" parent="S6" name="S7">
-          <targ class="non-type" value="I"/>
-          <targ class="type" type="T"/>
-        </type>
+        <type id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=" name="S0::S5::S6::S7&lt;I, T&gt;"/>
       </base>
     </struct>
   </template>
   <struct name="R43" id="JJ881dCpsJGfDwaJqBVrOM+FGfc=">
     <file path="class-template-specializations-1.cpp" line="268" class="def"/>
     <base>
-      <type class="specialization" id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=" parent="S6" name="S7">
-        <targ class="non-type" value="29"/>
-        <targ class="type" type="int"/>
-      </type>
+      <type id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=" name="S0::S5::S6::S7&lt;29, int&gt;"/>
     </base>
   </struct>
   <struct name="R44" id="dLkPAIOQFX9NSi+ZbHAYUKQBB4M=">
     <file path="class-template-specializations-1.cpp" line="270" class="def"/>
     <base>
-      <type class="specialization" id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=" parent="S6" name="S7">
-        <targ class="non-type" value="32"/>
-        <targ class="type" type="bool"/>
-      </type>
+      <type id="3ZrGNdgVY0Bl8pl2wuSUdgLSht4=" name="S0::S5::S6::S7&lt;32, bool&gt;"/>
     </base>
   </struct>
   <struct name="R45" id="waLXJ0bLUTUAlFIlzxEcLUpezYY=">
     <file path="class-template-specializations-1.cpp" line="272" class="def"/>
     <base>
-      <type class="tag" id="2R/ZzEEP3phjsDdKShbY468avc4=" parent="S7&lt;35, bool&gt;" name="S8"/>
+      <type id="2R/ZzEEP3phjsDdKShbY468avc4=" name="S0::S5::S6::S7&lt;35, bool&gt;::S8"/>
     </base>
   </struct>
   <template>
@@ -841,29 +739,20 @@
     <struct name="R46" id="zpWPNwEVFZZIH8TbPFJ12fiTZ9Y=">
       <file path="class-template-specializations-1.cpp" line="275" class="def"/>
       <base>
-        <type class="specialization" id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=" parent="S7&lt;38, bool&gt;" name="S9">
-          <targ class="non-type" value="I"/>
-          <targ class="type" type="T"/>
-        </type>
+        <type id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=" name="S0::S5::S6::S7&lt;38, bool&gt;::S9&lt;I, T&gt;"/>
       </base>
     </struct>
   </template>
   <struct name="R47" id="v6xjYLdZoNOxa0pno//3eiAYYK0=">
     <file path="class-template-specializations-1.cpp" line="277" class="def"/>
     <base>
-      <type class="specialization" id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=" parent="S7&lt;41, bool&gt;" name="S9">
-        <targ class="non-type" value="42"/>
-        <targ class="type" type="int"/>
-      </type>
+      <type id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=" name="S0::S5::S6::S7&lt;41, bool&gt;::S9&lt;42, int&gt;"/>
     </base>
   </struct>
   <struct name="R48" id="0pV0D7DTQH+IJFmLMCQTWHqHg+U=">
     <file path="class-template-specializations-1.cpp" line="279" class="def"/>
     <base>
-      <type class="specialization" id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=" parent="S7&lt;45, bool&gt;" name="S9">
-        <targ class="non-type" value="46"/>
-        <targ class="type" type="bool"/>
-      </type>
+      <type id="T91uOH7uarKVQhSHZ7iIV+AOuBQ=" name="S0::S5::S6::S7&lt;45, bool&gt;::S9&lt;46, bool&gt;"/>
     </base>
   </struct>
 </namespace>

@@ -130,6 +130,7 @@ public:
     void emitBlock(FieldInfo const& I);
     void emitBlock(FriendInfo const& I);
     void emitBlock(EnumeratorInfo const& I);
+    void emitBlock(NameInfo const& I);
 
     void emitBlock(std::unique_ptr<TypeInfo> const& TI);
     void emitBlock(std::unique_ptr<TypeInfo> const& TI, BlockID ID);

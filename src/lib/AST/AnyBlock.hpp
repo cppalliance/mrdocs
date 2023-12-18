@@ -396,6 +396,9 @@ public:
             case doc::Kind::tparam:
                 nodes.emplace_back(std::make_unique<doc::TParam>());
                 break;
+            case doc::Kind::throws:
+                nodes.emplace_back(std::make_unique<doc::Throws>());
+                break;
             default:
                 return formatError("unknown doc::Kind");
             }
@@ -425,6 +428,10 @@ public:
             case doc::Kind::tparam:
                 static_cast<doc::TParam*>(
                     node)->name = Blob.str();
+                return Error::success();
+            case doc::Kind::throws:
+                static_cast<doc::Throws*>(
+                    node)->exception = Blob.str();
                 return Error::success();
             default:
                 return formatError("string on wrong kind");
@@ -621,6 +628,8 @@ public:
 
 //------------------------------------------------
 
+
+
 class LookupBlock
     : public BitcodeReader::AnyBlock
 {
@@ -804,14 +813,8 @@ public:
                 return err;
             switch(k)
             {
-            case TypeKind::Builtin:
-                I_ = std::make_unique<BuiltinTypeInfo>();
-                break;
-            case TypeKind::Tag:
-                I_ = std::make_unique<TagTypeInfo>();
-                break;
-            case TypeKind::Specialization:
-                I_ = std::make_unique<SpecializationTypeInfo>();
+            case TypeKind::Named:
+                I_ = std::make_unique<NamedTypeInfo>();
                 break;
             case TypeKind::Decltype:
                 I_ = std::make_unique<DecltypeTypeInfo>();
@@ -843,22 +846,6 @@ public:
             if(auto err = decodeRecord(R, I_->IsPackExpansion, Blob))
                 return err;
             return Error::success();
-        case TYPEINFO_ID:
-            return visit(*I_, [&]<typename T>(T& t)
-                {
-                    if constexpr(requires { t.id; })
-                        return decodeRecord(R, t.id, Blob);
-                    else
-                        return Error("wrong TypeInfo kind");
-                });
-        case TYPEINFO_NAME:
-            return visit(*I_, [&]<typename T>(T& t)
-                {
-                    if constexpr(requires { t.Name; })
-                        return decodeRecord(R, t.Name, Blob);
-                    else
-                        return Error("wrong TypeInfo kind");
-                });
         case TYPEINFO_CVQUAL:
             return visit(*I_, [&]<typename T>(T& t)
                 {
@@ -1138,6 +1125,76 @@ public:
 
 //------------------------------------------------
 
+class NameInfoBlock
+    : public BitcodeReader::AnyBlock
+{
+protected:
+    BitcodeReader& br_;
+    std::unique_ptr<NameInfo>& I;
+
+public:
+    NameInfoBlock(
+        std::unique_ptr<NameInfo>& I,
+        BitcodeReader& br) noexcept
+        : br_(br)
+        , I(I)
+    {
+    }
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case NAME_INFO_KIND:
+        {
+            NameKind kind{};
+            if(auto err = decodeRecord(R, kind, Blob))
+                return err;
+            if(kind == NameKind::Specialization)
+                I = std::make_unique<SpecializationNameInfo>();
+            else
+                I = std::make_unique<NameInfo>();
+            return Error::success();
+        }
+        case NAME_INFO_ID:
+            return decodeRecord(R, I->id, Blob);
+        case NAME_INFO_NAME:
+            return decodeRecord(R, I->Name, Blob);
+        default:
+            return AnyBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_NAME_INFO_ID:
+        {
+            NameInfoBlock B(I->Prefix, br_);
+            return br_.readBlock(B, ID);
+        }
+        case BI_TEMPLATE_ARG_BLOCK_ID:
+        {
+            SpecializationNameInfo* S =
+                static_cast<SpecializationNameInfo*>(I.get());
+            TemplateArgBlock B(S->TemplateArgs.emplace_back(), br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return AnyBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
 class TemplateBlock
     : public BitcodeReader::AnyBlock
 {
@@ -1241,14 +1298,6 @@ readSubBlock(unsigned ID)
         TypeInfoBlock B(I.ParamTypes.emplace_back(), br_);
         return br_.readBlock(B, ID);
     }
-    case BI_TEMPLATE_ARG_BLOCK_ID:
-    {
-        if(! I_->isSpecialization())
-            return Error("wrong TypeInfo kind");
-        auto& I = static_cast<SpecializationTypeInfo&>(*I_);
-        TemplateArgBlock B(I.TemplateArgs.emplace_back(), br_);
-        return br_.readBlock(B, ID);
-    }
     case BI_EXPR_BLOCK_ID:
     {
         if(I_->isArray())
@@ -1264,6 +1313,19 @@ readSubBlock(unsigned ID)
             return br_.readBlock(B, ID);
         }
         return Error("wrong TypeInfo kind");
+    }
+    case BI_NAME_INFO_ID:
+    {
+        std::unique_ptr<NameInfo>* NI = nullptr;
+        visit(*I_, [&]<typename T>(T& t)
+        {
+            if constexpr(requires { t.Name; })
+                NI = &t.Name;
+        });
+        if(! NI)
+            return Error("wrong TypeInfo kind");
+        NameInfoBlock B(*NI, br_);
+        return br_.readBlock(B, ID);
     }
     default:
         return AnyBlock::readSubBlock(ID);

@@ -330,7 +330,7 @@ grammar
 
     BlockNode = (
         Admonition | Brief | Code | Heading | ListItem |
-        Paragraph | Param | Returns | TParam )
+        Paragraph | Param | Returns | TParam | Throws )
 
     Admonition = Paragraph
     Brief = element brief { TextNode * }
@@ -345,6 +345,7 @@ grammar
         attribute class { text } ?,
         TextNode * }
     Returns = element returns { TextNode * }
+    Throws = element throws { TextNode * }
     TParam = element tparam {
         attribute name { text } ?,
         TextNode * }
@@ -381,7 +382,6 @@ grammar
         element (
             type |
             pointee-type |
-            pattern-type |
             element-type |
             return-type |
             param-type
@@ -389,9 +389,7 @@ grammar
         {
             attribute class
             {
-                "builtin" |
-                "tag" |
-                "specialization" |
+                "named" |
                 "decltype" |
                 "lvalue-reference" |
                 "rvalue-reference" |
@@ -409,7 +407,6 @@ grammar
             attribute exception-spec { text } ?,
             attribute bounds { text } ?,
             attribute operand { text } ?,
-            TemplateArg *,
             TypeInfo *
         }
     )

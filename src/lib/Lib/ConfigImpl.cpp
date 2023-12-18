@@ -139,6 +139,9 @@ parseSymbolFilter(
     root.mergePattern(parts, excluded);
 }
 
+dom::Object
+toDomObject(std::string_view configYaml);
+
 } // (anon)
 
 ConfigImpl::
@@ -174,6 +177,7 @@ ConfigImpl(
     // Config strings
     settings_.configYaml = configYaml;
     settings_.extraYaml = extraYaml;
+    configObj_ = toDomObject(settings_.configYaml);
 
     // Parse the YAML strings
     YamlReporter reporter;
@@ -336,6 +340,143 @@ loadConfigFile(
         extraYaml,
         baseConfig,
         threadPool);
+}
+
+namespace {
+dom::Value
+toDom(llvm::yaml::Node* Value);
+
+dom::Object
+toDomObject(llvm::yaml::MappingNode* Object)
+{
+    dom::Object obj;
+    for (auto &Pair : *Object)
+    {
+        auto *KeyString = dyn_cast<llvm::yaml::ScalarNode>(Pair.getKey());
+        if (!KeyString) { continue; }
+        SmallString<10> KeyStorage;
+        StringRef KeyValue = KeyString->getValue(KeyStorage);
+        llvm::yaml::Node *Value = Pair.getValue();
+        if (!Value) {
+            obj.set(KeyValue, dom::Kind::Undefined);
+            continue;
+        }
+        dom::Value value = toDom(Value);
+        obj.set(KeyValue, value);
+    }
+    return obj;
+}
+
+dom::Array
+toDomArray(llvm::yaml::SequenceNode* Array)
+{
+    dom::Array arr;
+    for (auto &Node : *Array)
+    {
+        dom::Value value = toDom(&Node);
+        arr.push_back(value);
+    }
+    return arr;
+}
+
+dom::Value
+toDomScalar(llvm::yaml::ScalarNode* Scalar)
+{
+    SmallString<10> ScalarStorage;
+    StringRef ScalarValue = Scalar->getValue(ScalarStorage);
+    StringRef RawValue = Scalar->getRawValue();
+    bool const isEscaped = RawValue.size() != ScalarValue.size();
+    if (isEscaped)
+    {
+        return ScalarValue;
+    }
+    std::int64_t integer;
+    auto res = std::from_chars(
+        ScalarValue.begin(),
+        ScalarValue.end(),
+        integer);
+    if (res.ec == std::errc())
+    {
+        return integer;
+    }
+    bool const isBool = ScalarValue == "true" || ScalarValue == "false";
+    if (isBool)
+    {
+        return ScalarValue == "true";
+    }
+    bool const isNull = ScalarValue == "null";
+    if (isNull)
+    {
+        return nullptr;
+    }
+    return ScalarValue;
+}
+
+dom::Value
+toDom(llvm::yaml::Node* Value)
+{
+    auto *ValueObject = dyn_cast<llvm::yaml::MappingNode>(Value);
+    if (ValueObject)
+    {
+        return toDomObject(ValueObject);
+    }
+    auto *ValueArray = dyn_cast<llvm::yaml::SequenceNode>(Value);
+    if (ValueArray)
+    {
+        return toDomArray(ValueArray);
+    }
+    auto *ValueString = dyn_cast<llvm::yaml::ScalarNode>(Value);
+    if (ValueString)
+    {
+        return toDomScalar(ValueString);
+    }
+    return nullptr;
+}
+
+/* Convert a YAML string to a DOM object.
+
+   YAML forbids tab characters to use as indentation so
+   only some JSON files are valid YAML.
+
+   Also instead of providing built-in support for
+   types such as `bool` or `int`, YAML uses strings
+   for everything, which the specification defines
+   as "scalar" values.
+
+   When converting a scalar to a DOM value, only
+   escaped strings are preserved as strings.
+   Unescaped strings are converted to numbers
+   if possible, and then to booleans if possible.
+   This is done to preserve compatibility with
+   JSON, allow the user to specify scalars as
+   boolean or integer values, match the original
+   intent of the author, and for scalar values
+   to interoperate with other handlebars templates.
+
+ */
+dom::Object
+toDomObject(std::string_view yaml)
+{
+    llvm::SourceMgr SM;
+    llvm::yaml::Stream YAMLStream_(yaml, SM);
+    llvm::yaml::document_iterator I = YAMLStream_.begin();
+    if (I == YAMLStream_.end())
+    {
+        return {};
+    }
+    llvm::yaml::Node *Root = I->getRoot();
+    auto *Object = dyn_cast<llvm::yaml::MappingNode>(Root);
+    if (!Object)
+    {
+        return {};
+    }
+    return toDomObject(Object);
+}
+} // (anon)
+
+dom::Object const&
+ConfigImpl::object() const {
+    return configObj_;
 }
 
 } // mrdocs
