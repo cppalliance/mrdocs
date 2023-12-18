@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_TOOL_ABSOLUTECOMPILATIONDATABASE_HPP
-#define MRDOCS_LIB_TOOL_ABSOLUTECOMPILATIONDATABASE_HPP
+#ifndef MRDOCS_LIB_TOOL_MR_DOCS_COMPILATION_DATABASE_HPP
+#define MRDOCS_LIB_TOOL_MR_DOCS_COMPILATION_DATABASE_HPP
 
 #include <mrdocs/Config.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
@@ -26,7 +26,7 @@ namespace mrdocs {
     them according to the working directory specified
     at construction.
 */
-class AbsoluteCompilationDatabase
+class MrDocsCompilationDatabase
     : public tooling::CompilationDatabase
 {
     std::vector<tooling::CompileCommand> AllCommands_;
@@ -40,7 +40,7 @@ public:
         absolute path by resolving against the specified
         working directory.
     */
-    AbsoluteCompilationDatabase(
+    MrDocsCompilationDatabase(
         llvm::StringRef workingDir,
         CompilationDatabase const& inner,
         std::shared_ptr<const Config> config,
@@ -60,5 +60,5 @@ public:
 } // mrdocs
 } // clang
 
-#endif
+#endif // MRDOCS_LIB_TOOL_MR_DOCS_COMPILATION_DATABASE_HPP
 

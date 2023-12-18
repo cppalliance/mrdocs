@@ -10,9 +10,9 @@
 //
 
 #include "ToolArgs.hpp"
-#include "lib/Lib/AbsoluteCompilationDatabase.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
+#include "lib/Lib/MrDocsCompilationDatabase.hpp"
 #include "llvm/Support/Program.h"
 #include <mrdocs/Generators.hpp>
 #include <mrdocs/Support/Error.hpp>
@@ -180,7 +180,7 @@ DoGenerateAction()
     auto const defaultIncludePaths = getCompilersDefaultIncludeDir(jsonCompilations);
 
     // Convert relative paths to absolute
-    AbsoluteCompilationDatabase compilations(
+    MrDocsCompilationDatabase compilations(
         workingDir, jsonCompilations, config, defaultIncludePaths);
 
     // Run the tool: this can take a while

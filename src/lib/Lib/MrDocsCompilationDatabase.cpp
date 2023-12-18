@@ -12,7 +12,7 @@
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/AbsoluteCompilationDatabase.hpp"
+#include "lib/Lib/MrDocsCompilationDatabase.hpp"
 #include <fmt/format.h>
 #include <clang/Basic/LangStandard.h>
 #include <clang/Driver/Driver.h>
@@ -175,8 +175,8 @@ adjustCommandLine(
     return new_cmdline;
 }
 
-AbsoluteCompilationDatabase::
-AbsoluteCompilationDatabase(
+MrDocsCompilationDatabase::
+MrDocsCompilationDatabase(
     llvm::StringRef workingDir,
     CompilationDatabase const& inner,
     std::shared_ptr<const Config> config,
@@ -240,7 +240,7 @@ AbsoluteCompilationDatabase(
 }
 
 std::vector<tooling::CompileCommand>
-AbsoluteCompilationDatabase::
+MrDocsCompilationDatabase::
 getCompileCommands(
     llvm::StringRef FilePath) const
 {
@@ -256,7 +256,7 @@ getCompileCommands(
 }
 
 std::vector<std::string>
-AbsoluteCompilationDatabase::
+MrDocsCompilationDatabase::
 getAllFiles() const
 {
     std::vector<std::string> allFiles;
@@ -267,7 +267,7 @@ getAllFiles() const
 }
 
 std::vector<tooling::CompileCommand>
-AbsoluteCompilationDatabase::
+MrDocsCompilationDatabase::
 getAllCompileCommands() const
 {
     return AllCommands_;
