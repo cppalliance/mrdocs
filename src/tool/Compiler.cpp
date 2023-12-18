@@ -9,6 +9,9 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include <optional>
+#include <string>
+#include <vector>
 #include <unordered_map>
 
 namespace clang {
