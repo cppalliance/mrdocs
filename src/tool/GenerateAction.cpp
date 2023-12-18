@@ -161,7 +161,7 @@ DoGenerateAction()
             toolArgs.inputPaths.size()));
     auto compilationsPath = files::normalizePath(toolArgs.inputPaths.front());
     std::string errorMessage;
-    MRDOCS_TRY_MSG( 
+    MRDOCS_TRY_MSG(
         auto& compileCommands,
         tooling::JSONCompilationDatabase::loadFromFile(
             compilationsPath,
