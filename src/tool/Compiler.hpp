@@ -11,9 +11,12 @@
 #ifndef MRDOCS_TOOL_COMPILER_HPP
 #define MRDOCS_TOOL_COMPILER_HPP
 
-#include <mrdocs/Support/Error.hpp>
-#include <llvm/Support/CommandLine.h>
+#include <optional>
 #include <string>
+#include <vector>
+#include <unordered_map>
+
+#include <llvm/ADT/StringRef.h>
 
 namespace clang {
 namespace mrdocs {
