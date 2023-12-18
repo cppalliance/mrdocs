@@ -11,7 +11,7 @@
       <file path="no_unique_address.cpp" line="7" class="def"/>
       <type name="int"/>
     </field>
-    <field name="e" id="h2j8f921HD+Fyaokcs4ndGM/yNk=">
+    <field name="e" id="h2j8f921HD+Fyaokcs4ndGM/yNk=" default="Empty{}">
       <file path="no_unique_address.cpp" line="8" class="def"/>
       <attr id="maybe-unused"/>
       <attr id="deprecated"/>
