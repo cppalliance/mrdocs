@@ -26,24 +26,21 @@ namespace clang {
 namespace mrdocs {
 
 std::optional<std::string> 
-getCompilerInfo(llvm::StringRef compiler) 
+getCompilerInfo(llvm::StringRef compilerPath) 
 {
+    if ( ! llvm::sys::fs::exists(compilerPath)) {
+        return std::nullopt;
+    }
+
     llvm::SmallString<128> outputPath;
     if (auto EC = llvm::sys::fs::createTemporaryFile("compiler-info", "txt", outputPath)) 
     {
         return std::nullopt;
     }
 
-    std::optional<llvm::StringRef> redirects[] = {llvm::StringRef(), llvm::StringRef(), outputPath.str()};
-    std::vector<llvm::StringRef> args = {compiler, "-v", "-E", "-x", "c++", "-"};
-
-    llvm::ErrorOr<std::string> compilerPath = llvm::sys::findProgramByName(compiler);
-    if ( ! compilerPath) 
-    {
-        return std::nullopt;
-    }
-
-    int result = llvm::sys::ExecuteAndWait(*compilerPath, args, std::nullopt, redirects);
+    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), outputPath.str()};
+    std::vector<llvm::StringRef> const args = {compilerPath, "-v", "-E", "-x", "c++", "-"};
+    int const result = llvm::sys::ExecuteAndWait(compilerPath, args, std::nullopt, redirects);
     if (result != 0) 
     {
         llvm::sys::fs::remove(outputPath);
