@@ -7,7 +7,12 @@
 {{#if (eq kind "lvalue-reference")}}&{{/if~}}
 {{#if (eq kind "rvalue-reference")}}&&{{/if~}}
 {{#if (eq kind "pointer")}}*{{/if~}}
-{{#if (eq kind "member-pointer")}}{{>declarator parent-type nolink=nolink}}::*{{/if~}}
+{{#if (eq kind "member-pointer")}}*{{/if~}}
+{{#if (and symbol (not parent-type))}}{{>qualified-path symbol=symbol.parent nolink=nolink}}{{/if~}}
+{{#if (and symbol (not nolink))~}}
+    xref:{{symbol.ref}}[{{name}}]
+{{~else if name}}{{name~}}
+{{/if~}}
 {{#if cv-qualifiers~}}
     {{#if pointee-type}} {{cv-qualifiers}}{{else}}{{cv-qualifiers}} {{/if~}}
 {{/if~}}
