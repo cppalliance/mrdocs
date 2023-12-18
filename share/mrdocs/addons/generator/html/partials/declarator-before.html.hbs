@@ -1,15 +1,15 @@
 {{#if (eq kind "builtin")~}}
-    {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
     {{name~}}
+    {{#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
 {{~else if (eq kind "tag")~}}
-    {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
     {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::{{/if~}}
     {{#if symbol}}{{>xref symbol content=name}}{{else}}{{name~}}{{/if}}
+    {{#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
 {{~else if (eq kind "specialization")~}}
-    {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
     {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::{{/if~}}
     {{#if symbol}}{{>xref symbol content=name}}{{else}}{{name~}}{{/if}}
     {{~>template-args args=args~}}
+    {{#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
 {{~else if (eq kind "lvalue-reference")~}}
     {{~>declarator-before pointee-type~}}
     {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}&
@@ -18,8 +18,8 @@
     {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}&&
 {{~else if (eq kind "pointer")~}}
     {{~>declarator-before pointee-type~}}
+    {{#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
     {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}*
-    {{~#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
 {{~else if (eq kind "member-pointer")~}}
     {{~>declarator-before pointee-type~}}
     {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}
