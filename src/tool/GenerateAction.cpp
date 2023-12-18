@@ -26,20 +26,20 @@ namespace clang {
 namespace mrdocs {
 
 std::optional<std::string> 
-getCompilerInfo(llvm::StringRef compilerPath) 
+getCompilerVerboseOutput(llvm::StringRef compilerPath) 
 {
     if ( ! llvm::sys::fs::exists(compilerPath)) {
         return std::nullopt;
     }
 
     llvm::SmallString<128> outputPath;
-    if (auto EC = llvm::sys::fs::createTemporaryFile("compiler-info", "txt", outputPath)) 
+    if (auto ec = llvm::sys::fs::createTemporaryFile("compiler-info", "txt", outputPath)) 
     {
         return std::nullopt;
     }
 
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), outputPath.str()};
-    llvm::ArrayRef<llvm::StringRef> const args = {compilerPath, "-v", "-E", "-x", "c++", "-"};
+    std::vector<llvm::StringRef> const args = {compilerPath, "-v", "-E", "-x", "c++", "-"};
     llvm::ArrayRef<llvm::StringRef> emptyEnv;
     int const result = llvm::sys::ExecuteAndWait(compilerPath, args, emptyEnv, redirects);
     if (result != 0) 
@@ -100,7 +100,12 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb)
                 continue;
             }
 
-            auto const compilerOutput = getCompilerInfo(compilerPath);
+            // Skip MSVC compiler
+            if (compilerPath.find("cl.exe") != std::string::npos) {
+                continue;
+            }   
+
+            auto const compilerOutput = getCompilerVerboseOutput(compilerPath);
             if ( ! compilerOutput) {
                 report::warn("Warning: could not get compiler info for \"{}\"", compilerPath);
                 continue;
