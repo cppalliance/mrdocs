@@ -55,7 +55,6 @@ adjustCommandLine(
     std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
 {
     std::vector<std::string> new_cmdline;
-    std::vector<std::string> discarded_cmdline;
     llvm::opt::InputArgList args;
     StringRef driver_mode;
     std::vector<std::string> systemIncludePaths;
@@ -103,10 +102,6 @@ adjustCommandLine(
 
         if(! arg)
         {
-            discarded_cmdline.insert(
-                discarded_cmdline.end(),
-                cmdline.begin() + old_idx,
-                cmdline.begin() + idx);
             continue;
         }
 
@@ -158,10 +153,6 @@ adjustCommandLine(
             // driver::options::OPT__SLASH_Tc
             ))
         {
-            discarded_cmdline.insert(
-                discarded_cmdline.end(),
-                cmdline.begin() + old_idx,
-                cmdline.begin() + idx);
             continue;
         }
 
