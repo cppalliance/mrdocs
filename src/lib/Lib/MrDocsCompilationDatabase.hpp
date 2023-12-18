@@ -33,18 +33,25 @@ class MrDocsCompilationDatabase
     llvm::StringMap<std::size_t> IndexByFile_;
 
 public:
-    /** Constructor.
-
-        This copies the contents of the source compilation
-        database. Every relative path is converted into an
-        absolute path by resolving against the specified
-        working directory.
-    */
+    /**
+     * Constructor.
+     *
+     * This copies the contents of the source compilation 
+     * database. Every relative path is converted into an 
+     * absolute path by resolving against the specified
+     * working directory.
+     *
+     * @param workingDir The working directory against which relative paths will be resolved.
+     * @param inner The source compilation database to copy.
+     * @param config The shared configuration object.
+     * @param implicitIncludeDirectories A map from compiler executable paths to their respective
+     *        implicit include directories, as determined by the system's compiler.
+     */
     MrDocsCompilationDatabase(
         llvm::StringRef workingDir,
         CompilationDatabase const& inner,
         std::shared_ptr<const Config> config,
-        std::unordered_map<std::string, std::vector<std::string>> const& includePathsByCompiler);
+        std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories);
 
     std::vector<tooling::CompileCommand>
     getCompileCommands(

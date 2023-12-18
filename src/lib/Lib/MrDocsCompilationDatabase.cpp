@@ -52,7 +52,7 @@ std::vector<std::string>
 adjustCommandLine(
     const std::vector<std::string>& cmdline,
     const std::vector<std::string>& additional_defines,
-    std::unordered_map<std::string, std::vector<std::string>> const& includePathsByCompiler)
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
 {
     std::vector<std::string> new_cmdline;
     std::vector<std::string> discarded_cmdline;
@@ -63,7 +63,7 @@ adjustCommandLine(
 
     if( ! cmdline.empty())
     {
-        if (auto it = includePathsByCompiler.find(cmdline[0]); it != includePathsByCompiler.end()) {
+        if (auto it = implicitIncludeDirectories.find(cmdline[0]); it != implicitIncludeDirectories.end()) {
             systemIncludePaths = it->second;
         }
 
@@ -180,7 +180,7 @@ MrDocsCompilationDatabase(
     llvm::StringRef workingDir,
     CompilationDatabase const& inner,
     std::shared_ptr<const Config> config,
-    std::unordered_map<std::string, std::vector<std::string>> const& includePathsByCompiler)
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -200,7 +200,7 @@ MrDocsCompilationDatabase(
         cmd.CommandLine = adjustCommandLine(
             cmd0.CommandLine,
             (*config_impl)->defines,
-            includePathsByCompiler);
+            implicitIncludeDirectories);
 
         if(path::is_absolute(cmd0.Directory))
         {
