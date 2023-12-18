@@ -162,7 +162,7 @@ DoGenerateAction()
     auto compilationsPath = files::normalizePath(toolArgs.inputPaths.front());
     std::string errorMessage;
     MRDOCS_TRY_MSG( 
-        auto& jsonCompilations,
+        auto& compileCommands,
         tooling::JSONCompilationDatabase::loadFromFile(
             compilationsPath,
             errorMessage,
@@ -180,11 +180,11 @@ DoGenerateAction()
             (*config)->workingDir));
 
     // Get the default include paths for each compiler
-    auto const defaultIncludePaths = getCompilersDefaultIncludeDir(jsonCompilations);
+    auto const defaultIncludePaths = getCompilersDefaultIncludeDir(compileCommands);
 
     // Convert relative paths to absolute
     MrDocsCompilationDatabase compilations(
-        workingDir, jsonCompilations, config, defaultIncludePaths);
+        workingDir, compileCommands, config, defaultIncludePaths);
 
     // Run the tool: this can take a while
     MRDOCS_TRY(
