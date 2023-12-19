@@ -93,11 +93,6 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb)
                 continue;
             }
 
-            // Skip MSVC compiler
-            if (compilerPath.find("cl.exe") != std::string::npos) {
-                continue;
-            }   
-
             auto const compilerOutput = getCompilerVerboseOutput(compilerPath);
             if ( ! compilerOutput) {
                 report::warn("Warning: could not get compiler info for \"{}\"", compilerPath);
