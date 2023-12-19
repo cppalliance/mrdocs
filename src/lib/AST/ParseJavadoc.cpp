@@ -109,6 +109,7 @@ class JavadocVisitor
     Diagnostics& diags_;
     doc::List<doc::Param> params_;
     doc::Block* block_ = nullptr;
+    doc::Text* last_child_ = nullptr;
     std::size_t htmlTagNesting_ = 0;
     Comment::child_iterator it_;
     Comment::child_iterator end_;
@@ -130,11 +131,13 @@ class JavadocVisitor
             , prev_(visitor.block_)
         {
             visitor_.block_ = blk;
+            visitor_.last_child_ = nullptr;
         }
 
         ~BlockScope()
         {
             visitor_.block_ = prev_;
+            visitor_.last_child_ = nullptr;
         }
     };
 
@@ -169,6 +172,39 @@ public:
 
     // helpers
     bool goodArgCount(std::size_t n, InlineCommandComment const& C);
+
+
+    template<std::derived_from<doc::Text> TextTy, typename... Args>
+    void emplaceText(bool end_with_nl, Args&&... args)
+    {
+        TextTy elem(std::forward<Args>(args)...);
+        bool can_merge = false;
+
+        if(last_child_ && last_child_->kind == elem.kind)
+        {
+            if constexpr(TextTy::static_kind == doc::Kind::text)
+                can_merge = true;
+
+            if constexpr(TextTy::static_kind == doc::Kind::styled)
+                can_merge = static_cast<doc::Styled*>(
+                    last_child_)->style == elem.style;
+        }
+
+        if(! can_merge)
+        {
+            auto new_text = std::make_unique<TextTy>(std::move(elem));
+            last_child_ = new_text.get();
+            block_->children.emplace_back(std::move(new_text));
+
+        }
+        else
+        {
+            last_child_->string.append(elem.string);
+        }
+
+        if(end_with_nl)
+            last_child_ = nullptr;
+    }
 };
 
 //------------------------------------------------
@@ -245,7 +281,6 @@ visitTextComment(
     TextComment const* C)
 {
     llvm::StringRef s = C->getText();
-
     // If this is the first text comment in the
     // paragraph then remove all the leading space.
     // Otherwise, just remove the trailing space.
@@ -256,7 +291,9 @@ visitTextComment(
 
     // Only insert non-empty text nodes
     if(! s.empty())
-        block_->emplace_back(doc::Text(ensureUTF8(s.str())));
+        emplaceText<doc::Text>(
+            C->hasTrailingNewline(),
+            ensureUTF8(s.str()));
 }
 
 void
@@ -265,6 +302,7 @@ visitHTMLStartTagComment(
     HTMLStartTagComment const* C)
 {
     MRDOCS_ASSERT(C->child_begin() == C->child_end());
+    last_child_ = nullptr;
     auto const tag = C->getTagName();
     if(tag == "a")
     {
@@ -310,9 +348,10 @@ visitHTMLStartTagComment(
                 break;
             }
         }
-        block_->emplace_back(doc::Link(
+        emplaceText<doc::Link>(
+            C->hasTrailingNewline(),
             ensureUTF8(std::move(text)),
-            ensureUTF8(std::move(href))));
+            ensureUTF8(std::move(href)));
 
         it_ += 2; // bit of a hack
     }
@@ -408,8 +447,10 @@ visitInlineCommandComment(
         if(! goodArgCount(1, *C))
             return;
         auto style = doc::Style::italic;
-        block_->emplace_back(doc::Styled(
-            C->getArgText(0).str(), style));
+        emplaceText<doc::Styled>(
+            C->hasTrailingNewline(),
+            C->getArgText(0).str(),
+            style);
         return;
     }
 
@@ -422,8 +463,10 @@ visitInlineCommandComment(
             return;
         // the referenced symbol will be resolved during
         // the finalization step once all symbol are extracted
-        block_->emplace_back(doc::Copied(
-            C->getArgText(0).str(), convertCopydoc(ID)));
+        emplaceText<doc::Copied>(
+            C->hasTrailingNewline(),
+            C->getArgText(0).str(),
+            convertCopydoc(ID));
         return;
     }
     case CommandTraits::KCI_ref:
@@ -432,8 +475,9 @@ visitInlineCommandComment(
             return;
         // the referenced symbol will be resolved during
         // the finalization step once all symbol are extracted
-        block_->emplace_back(doc::Reference(
-            C->getArgText(0).str()));
+        emplaceText<doc::Reference>(
+            C->hasTrailingNewline(),
+            C->getArgText(0).str());
         return;
     }
 
@@ -455,9 +499,14 @@ visitInlineCommandComment(
 
     doc::Style style = convertStyle(C->getRenderKind());
     if(style != doc::Style::none)
-        block_->emplace_back(doc::Styled(std::move(s), style));
+        emplaceText<doc::Styled>(
+            C->hasTrailingNewline(),
+            std::move(s),
+            style);
     else
-        block_->emplace_back(doc::Text(std::move(s)));
+        emplaceText<doc::Text>(
+            C->hasTrailingNewline(),
+            std::move(s));
 }
 
 //------------------------------------------------
@@ -892,7 +941,7 @@ JavadocVisitor::
 visitVerbatimBlockLineComment(
     VerbatimBlockLineComment const* C)
 {
-    block_->emplace_back(doc::Text(C->getText().str()));
+    emplaceText<doc::Text>(true, C->getText().str());
 }
 
 //------------------------------------------------
