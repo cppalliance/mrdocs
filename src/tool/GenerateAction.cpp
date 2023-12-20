@@ -9,14 +9,17 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
+#include "CompilerInfo.hpp"
 #include "ToolArgs.hpp"
-#include "lib/Lib/AbsoluteCompilationDatabase.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
+#include "lib/Lib/MrDocsCompilationDatabase.hpp"
+#include "llvm/Support/Program.h"
 #include <mrdocs/Generators.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
+
 #include <cstdlib>
 
 namespace clang {
@@ -87,10 +90,13 @@ DoGenerateAction()
             tooling::JSONCommandLineSyntax::AutoDetect),
         std::move(errorMessage));
 
+    // Get the default include paths for each compiler
+    auto const defaultIncludePaths = getCompilersDefaultIncludeDir(compileCommands);
+
     // Custom compilation database that converts relative paths to absolute
     auto compileCommandsDir = files::getParentDir(compilationsPath);
-    AbsoluteCompilationDatabase absCompileCommands(
-            compileCommandsDir, compileCommands, config);
+    MrDocsCompilationDatabase compilationDatabase(
+            compileCommandsDir, compileCommands, config, defaultIncludePaths);
 
     // Normalize outputPath path
     MRDOCS_CHECK(toolArgs.outputPath, "The output path argument is missing");
@@ -106,7 +112,7 @@ DoGenerateAction()
     MRDOCS_TRY(
         auto corpus,
         CorpusImpl::build(
-            report::Level::info, config, absCompileCommands));
+            report::Level::info, config, compilationDatabase));
 
     // --------------------------------------------------------------
     //

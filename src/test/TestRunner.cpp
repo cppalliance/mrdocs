@@ -12,9 +12,9 @@
 #include "TestArgs.hpp"
 #include "lib/Support/Error.hpp"
 #include "lib/Support/Path.hpp"
-#include "lib/Lib/AbsoluteCompilationDatabase.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
+#include "lib/Lib/MrDocsCompilationDatabase.hpp"
 #include "lib/Lib/SingleFileDB.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Generators.hpp>
@@ -105,9 +105,12 @@ handleFile(
     path::replace_extension(expectedPath, xmlGen_->fileExtension());
 
     auto workingDir = files::getParentDir(filePath);
+
+    std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
+
     // Convert relative paths to absolute
-    AbsoluteCompilationDatabase compilations(
-        llvm::StringRef(workingDir), SingleFileDB(filePath), config);
+    MrDocsCompilationDatabase compilations(
+        llvm::StringRef(workingDir), SingleFileDB(filePath), config, defaultIncludePaths);
     // Build Corpus
     auto corpus = CorpusImpl::build(
         report::Level::debug, config, compilations);

@@ -325,19 +325,7 @@ jobs:
               rm -rf __build__
           fi
           mkdir __build__
-          cd __build__
-          mkdir __include_dirs__
-          cd __include_dirs__
-          output_file="include_dirs.txt"
-          echo "cmake_minimum_required(VERSION 3.22)" > CMakeLists.txt
-          echo "project(get_implicit_dirs)" >> CMakeLists.txt
-          echo "file(WRITE \"${output_file}\" \"\${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES}\")" >> CMakeLists.txt
-          mkdir __build__
-          cd __build__
-          cmake -D CMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx  }} -D CMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc  }} ..
-          cd ..
-          default_includes=$(cat "$output_file")
-          cd ..
+          cd __build__          
           cmake -D BOOST_URL_BUILD_TESTS=OFF -D BOOST_URL_BUILD_EXAMPLES=OFF -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES="$default_includes" -D CMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx  }} -D CMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc  }} ..
 
       - name: Generate demos

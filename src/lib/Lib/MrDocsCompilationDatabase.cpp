@@ -12,7 +12,7 @@
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Lib/ConfigImpl.hpp"
-#include "lib/Lib/AbsoluteCompilationDatabase.hpp"
+#include "lib/Lib/MrDocsCompilationDatabase.hpp"
 #include <fmt/format.h>
 #include <clang/Basic/LangStandard.h>
 #include <clang/Driver/Driver.h>
@@ -51,14 +51,20 @@ static
 std::vector<std::string>
 adjustCommandLine(
     const std::vector<std::string>& cmdline,
-    const std::vector<std::string>& additional_defines)
+    const std::vector<std::string>& additional_defines,
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
 {
     std::vector<std::string> new_cmdline;
-    std::vector<std::string> discarded_cmdline;
     llvm::opt::InputArgList args;
     StringRef driver_mode;
+    std::vector<std::string> systemIncludePaths;
+
     if(! cmdline.empty())
     {
+        if (auto it = implicitIncludeDirectories.find(cmdline[0]); it != implicitIncludeDirectories.end()) {
+            systemIncludePaths = it->second;
+        }
+
         std::vector<const char*> raw_cmdline;
         raw_cmdline.reserve(cmdline.size());
         for(const auto& s : cmdline)
@@ -85,6 +91,9 @@ adjustCommandLine(
     for(const auto& def : additional_defines)
         new_cmdline.emplace_back(fmt::format("-D{}", def));
 
+    for (auto const& inc : systemIncludePaths)
+        new_cmdline.emplace_back(fmt::format("-I{}", inc));
+
     for(unsigned idx = 1; idx < cmdline.size();)
     {
         const unsigned old_idx = idx;
@@ -93,10 +102,6 @@ adjustCommandLine(
 
         if(! arg)
         {
-            discarded_cmdline.insert(
-                discarded_cmdline.end(),
-                cmdline.begin() + old_idx,
-                cmdline.begin() + idx);
             continue;
         }
 
@@ -148,10 +153,6 @@ adjustCommandLine(
             // driver::options::OPT__SLASH_Tc
             ))
         {
-            discarded_cmdline.insert(
-                discarded_cmdline.end(),
-                cmdline.begin() + old_idx,
-                cmdline.begin() + idx);
             continue;
         }
 
@@ -164,11 +165,12 @@ adjustCommandLine(
     return new_cmdline;
 }
 
-AbsoluteCompilationDatabase::
-AbsoluteCompilationDatabase(
+MrDocsCompilationDatabase::
+MrDocsCompilationDatabase(
     llvm::StringRef workingDir,
     CompilationDatabase const& inner,
-    std::shared_ptr<const Config> config)
+    std::shared_ptr<const Config> config,
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -187,7 +189,8 @@ AbsoluteCompilationDatabase(
         cmd.Output = cmd0.Output;
         cmd.CommandLine = adjustCommandLine(
             cmd0.CommandLine,
-            (*config_impl)->defines);
+            (*config_impl)->defines,
+            implicitIncludeDirectories);
 
         if(path::is_absolute(cmd0.Directory))
         {
@@ -227,7 +230,7 @@ AbsoluteCompilationDatabase(
 }
 
 std::vector<tooling::CompileCommand>
-AbsoluteCompilationDatabase::
+MrDocsCompilationDatabase::
 getCompileCommands(
     llvm::StringRef FilePath) const
 {
@@ -243,7 +246,7 @@ getCompileCommands(
 }
 
 std::vector<std::string>
-AbsoluteCompilationDatabase::
+MrDocsCompilationDatabase::
 getAllFiles() const
 {
     std::vector<std::string> allFiles;
@@ -254,7 +257,7 @@ getAllFiles() const
 }
 
 std::vector<tooling::CompileCommand>
-AbsoluteCompilationDatabase::
+MrDocsCompilationDatabase::
 getAllCompileCommands() const
 {
     return AllCommands_;
