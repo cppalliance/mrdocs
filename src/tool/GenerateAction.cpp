@@ -114,6 +114,12 @@ DoGenerateAction()
         CorpusImpl::build(
             report::Level::info, config, compilationDatabase));
 
+    if(corpus->empty())
+    {
+        report::warn("Corpus is empty, not generating docs");
+        return {};
+    }
+
     // --------------------------------------------------------------
     //
     // Generate docs

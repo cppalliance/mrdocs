@@ -78,6 +78,12 @@ public:
     iterator
     end() const noexcept = 0;
 
+    /** Whether the corpus contains any symbols.
+    */
+    MRDOCS_DECL
+    bool
+    empty() const noexcept;
+
     /** Return the Info with the matching ID, or nullptr.
     */
     MRDOCS_DECL

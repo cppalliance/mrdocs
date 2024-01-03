@@ -28,6 +28,13 @@ Corpus::~Corpus() noexcept = default;
 //
 //------------------------------------------------
 
+bool
+Corpus::
+empty() const noexcept
+{
+    return begin() == end();
+}
+
 /** Return the metadata for the global namespace.
 */
 NamespaceInfo const&
