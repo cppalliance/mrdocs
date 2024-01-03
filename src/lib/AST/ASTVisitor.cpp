@@ -3555,6 +3555,11 @@ struct ASTAction
         if(! CI.hasPreprocessor())
             return;
 
+        // ensure comments in system headers are retained.
+        // we may want them if e.g. a declaration was extracted
+        // as a dependency
+        CI.getLangOpts().RetainCommentsFromSystemHeaders = true;
+
         if(! CI.hasSema())
             CI.createSema(getTranslationUnitKind(), nullptr);
 
