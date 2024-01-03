@@ -22,6 +22,8 @@
 #include <llvm/Option/OptSpecifier.h>
 #include <llvm/Option/OptTable.h>
 #include <llvm/Support/FileSystem.h>
+#include <llvm/Support/Program.h>
+
 #include <llvm/Support/raw_ostream.h>
 
 namespace clang {
@@ -163,6 +165,40 @@ adjustCommandLine(
     }
 
     return new_cmdline;
+}
+
+std::optional<std::string> 
+executeCmakeExportCompileCommands(llvm::StringRef cmakePath, llvm::StringRef cmakeListsPath) 
+{
+    if ( ! llvm::sys::fs::exists(cmakePath)) {
+        return std::nullopt;
+    }    
+    if ( ! llvm::sys::fs::exists(cmakeListsPath)) {
+        return std::nullopt;
+    }
+
+    llvm::SmallString<128> stdOutPath;
+    if (auto ec = llvm::sys::fs::createTemporaryFile("stdout", "txt", stdOutPath)) 
+    {
+        return std::nullopt;
+    }
+
+    llvm::SmallString<128> stdErrPath;    
+    if (auto ec = llvm::sys::fs::createTemporaryFile("stderr", "txt", stdErrPath)) 
+    {
+        return std::nullopt;
+    }
+
+    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), stdOutPath.str(), stdErrPath.str()};
+    std::vector<llvm::StringRef> const args = {cmakePath, cmakeListsPath, "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
+    int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
+
+    if (result != 0) 
+    {
+        return std::nullopt;
+    }
+
+    return "./compile_commands.json";
 }
 
 MrDocsCompilationDatabase::

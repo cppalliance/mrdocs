@@ -74,12 +74,38 @@ DoGenerateAction()
     // Load the compilation database file
     //
     // --------------------------------------------------------------
-    MRDOCS_CHECK(toolArgs.inputPaths, "The compilation database path argument is missing");
-    MRDOCS_CHECK(toolArgs.inputPaths.size() == 1,
-        formatError(
-            "got {} input paths where 1 was expected",
-            toolArgs.inputPaths.size()));
-    auto compilationsPath = files::normalizePath(toolArgs.inputPaths.front());
+    if (detail::failed(toolArgs.inputPaths) && detail::failed(toolArgs.generateCompilationDatabase))
+    {
+        report::error("The compilation database path argument is missing or you can use --generate-compilation-database");
+        return {};
+    }
+
+    std::string inputPath;
+    if (toolArgs.generateCompilationDatabase)
+    {
+        MRDOCS_CHECK(toolArgs.cmakePath, "The cmake path argument is missing");
+        MRDOCS_CHECK(toolArgs.cmakeListsPath, "The cmake-lists path argument is missing");
+
+        auto const res = executeCmakeExportCompileCommands(toolArgs.cmakePath, toolArgs.cmakeListsPath);
+        if ( ! res)
+        {
+            report::error("Failed to generate compilation database");
+            return {};
+        } 
+        inputPath = *res;
+    }
+    else 
+    {
+        MRDOCS_CHECK(toolArgs.inputPaths, "The compilation database path argument is missing");
+        MRDOCS_CHECK(toolArgs.inputPaths.size() == 1,
+            formatError(
+                "got {} input paths where 1 was expected",
+                toolArgs.inputPaths.size()));
+
+        inputPath = toolArgs.inputPaths.front();
+    }
+
+    auto compilationsPath = files::normalizePath(inputPath);
     MRDOCS_TRY(compilationsPath, files::makeAbsolute(compilationsPath));
     std::string errorMessage;
     MRDOCS_TRY_MSG(
