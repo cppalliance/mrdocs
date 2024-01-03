@@ -40,6 +40,16 @@ class Finalizer
         if(parse_result->name.empty())
             return false;
 
+        auto is_acceptable = [&](const Info& I) -> bool
+        {
+            // if we are copying the documentation of the
+            // referenced symbol, ignore the current declaration
+            if(ref.kind == doc::Kind::copied)
+                return &I != current_;
+            // otherwise, consider the result to be acceptable
+            return true;
+        };
+
         const Info* found = nullptr;
         if(parse_result->qualified)
         {
@@ -55,12 +65,17 @@ class Finalizer
                 context = info_.find(SymbolID::global)->get();
             }
             found = lookup_.lookupQualified(
-                context, qualifier, parse_result->name);
+                context,
+                qualifier,
+                parse_result->name,
+                is_acceptable);
         }
         else
         {
             found = lookup_.lookupUnqualified(
-                current_, parse_result->name);
+                current_,
+                parse_result->name,
+                is_acceptable);
         }
 
         // prevent recursive documentation copies

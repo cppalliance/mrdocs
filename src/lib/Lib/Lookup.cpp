@@ -125,7 +125,8 @@ SymbolLookup::
 lookupInContext(
     const Info* context,
     std::string_view name,
-    bool for_nns)
+    bool for_nns,
+    LookupCallback& callback)
 {
     // if the lookup context is a typedef, we want to
     // lookup the name in the type it denotes
@@ -136,17 +137,27 @@ lookupInContext(
     // KRYSTIAN FIXME: disambiguation based on signature
     for(auto& result : table.lookup(name))
     {
-        // per [basic.lookup.qual.general] p1, when looking up a
-        // component name of a nested-name-specifier, we only consider:
-        // - namespaces,
-        // - types, and
-        // - templates whose specializations are types
-        if(! for_nns ||
-            result->isNamespace() ||
-            result->isRecord() ||
-            result->isEnum() ||
-            result->isTypedef())
-            return result;
+        if(for_nns)
+        {
+            // per [basic.lookup.qual.general] p1, when looking up a
+            // component name of a nested-name-specifier, we only consider:
+            // - namespaces,
+            // - types, and
+            // - templates whose specializations are types
+            // KRYSTIAN FIXME: should we if the result is acceptable?
+            if(result->isNamespace() ||
+                result->isRecord() ||
+                result->isEnum() ||
+                result->isTypedef())
+                return result;
+        }
+        else
+        {
+            // if we are looking up a terminal name, call the handler
+            // to determine whether the result is acceptable
+            if(callback(*result))
+                return result;
+        }
     }
 
     // if this is a record and nothing was found,
@@ -159,7 +170,8 @@ lookupInContext(
         for(const auto& B : RI->Bases)
         {
             if(const Info* result = lookupInContext(
-                corpus_.find(B.Type->namedSymbol()), name, for_nns))
+                corpus_.find(B.Type->namedSymbol()),
+                    name, for_nns, callback))
                 return result;
         }
     }
@@ -172,14 +184,16 @@ SymbolLookup::
 lookupUnqualifiedImpl(
     const Info* context,
     std::string_view name,
-    bool for_nns)
+    bool for_nns,
+    LookupCallback& callback)
 {
     if(! context)
         return nullptr;
     context = adjustLookupContext(context);
     while(context)
     {
-        if(auto result = lookupInContext(context, name, for_nns))
+        if(auto result = lookupInContext(
+            context, name, for_nns, callback))
             return result;
         if(context->Namespace.empty())
             return nullptr;
@@ -191,38 +205,31 @@ lookupUnqualifiedImpl(
 
 const Info*
 SymbolLookup::
-lookupUnqualified(
-    const Info* context,
-    std::string_view name)
-{
-    return lookupUnqualifiedImpl(
-        context, name, false);
-}
-
-const Info*
-SymbolLookup::
-lookupQualified(
+lookupQualifiedImpl(
     const Info* context,
     std::span<const std::string_view> qualifier,
-    std::string_view terminal)
+    std::string_view terminal,
+    LookupCallback& callback)
 {
     if(! context)
         return nullptr;
     if(qualifier.empty())
-        return lookupInContext(context, terminal);
+        return lookupInContext(
+            context, terminal, false, callback);
     context = lookupUnqualifiedImpl(
-        context, qualifier.front(), true);
+        context, qualifier.front(), true, callback);
     qualifier = qualifier.subspan(1);
     if(! context)
         return nullptr;
     while(! qualifier.empty())
     {
         if(! (context = lookupInContext(
-            context, qualifier.front(), true)))
+            context, qualifier.front(), true, callback)))
             return nullptr;
         qualifier = qualifier.subspan(1);
     }
-    return lookupInContext(context, terminal);
+    return lookupInContext(
+        context, terminal, false, callback);
 }
 
 } // mrdocs

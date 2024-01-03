@@ -60,6 +60,14 @@ class SymbolLookup
         const Info*,
         LookupTable> lookup_tables_;
 
+    struct LookupCallback
+    {
+        virtual bool operator()(const Info&) = 0;
+    };
+
+    template<typename Fn>
+    auto makeHandler(Fn& fn);
+
     const Info*
     adjustLookupContext(const Info* context);
 
@@ -74,27 +82,75 @@ class SymbolLookup
     lookupInContext(
         const Info* context,
         std::string_view name,
-        bool for_nns = false);
+        bool for_nns,
+        LookupCallback& callback);
 
     const Info*
     lookupUnqualifiedImpl(
         const Info* context,
         std::string_view name,
-        bool for_nns);
+        bool for_nns,
+        LookupCallback& callback);
+
+    const Info*
+    lookupQualifiedImpl(
+        const Info* context,
+        std::span<const std::string_view> qualifier,
+        std::string_view terminal,
+        LookupCallback& callback);
+
 public:
     SymbolLookup(const Corpus& corpus);
 
+    template<typename Fn>
     const Info*
     lookupUnqualified(
         const Info* context,
-        std::string_view name);
+        std::string_view name,
+        Fn&& callback)
+    {
+        auto handler = makeHandler(callback);
+        return lookupUnqualifiedImpl(
+            context, name, false, handler);
+    }
 
+    template<typename Fn>
     const Info*
     lookupQualified(
         const Info* context,
         std::span<const std::string_view> qualifier,
-        std::string_view terminal);
+        std::string_view terminal,
+        Fn&& callback)
+    {
+        auto handler = makeHandler(callback);
+        return lookupQualifiedImpl(
+            context, qualifier, terminal, handler);
+    }
 };
+
+template<typename Fn>
+auto
+SymbolLookup::
+makeHandler(Fn& fn)
+{
+    class LookupCallbackImpl
+        : public LookupCallback
+    {
+        Fn& fn_;
+
+    public:
+        LookupCallbackImpl(Fn& fn)
+            : fn_(fn)
+        {
+        }
+
+        bool operator()(const Info& I) override
+        {
+            return fn_(I);
+        }
+    };
+    return LookupCallbackImpl(fn);
+}
 
 } // mrdocs
 } // clang
