@@ -125,7 +125,7 @@ DoGenerateAction()
     auto const inputPath = generateCompilationDatabase(toolArgs.inputPaths.front());
     if ( ! inputPath)
     {
-        report::error("Failed to generate compilation database");
+        report::error("Failed to generate compilation database: {}", inputPath.error());
         return {};
     }
 
