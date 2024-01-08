@@ -1,10 +1,9 @@
 //
-// This is a derivative work. originally part of the LLVM Project.
 // Licensed under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
-// Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Fernando Pelliccioni (fpelliccioni@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -20,70 +19,33 @@ namespace mrdocs {
 
 Expected<std::string>
 getCmakePath() {
-    std::vector<std::string> paths = {
-        "/usr/bin/cmake",
-        "/usr/local/bin/cmake",
-        "/opt/homebrew/bin/cmake",
-        "/opt/homebrew/opt/cmake/bin/cmake",
-        "/usr/local/opt/cmake/bin/cmake",
-        "/usr/local/Cellar/cmake/*/bin/cmake",
-        "/usr/local/Cellar/cmake@*/*/bin/cmake",
-        "C:/Program Files/CMake/bin/cmake.exe",
-        "C:/Program Files (x86)/CMake/bin/cmake.exe"
-    };
-
-    for (auto const& path : paths) {
-        if (llvm::sys::fs::exists(path)) {
-            std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), llvm::StringRef()};
-            std::vector<llvm::StringRef> const args = {path, "--version"};
-            int const result = llvm::sys::ExecuteAndWait(path, args, std::nullopt, redirects);
-            if (result != 0) 
-            {
-                return Unexpected(Error("cmake execution failed"));
-            }
-            return path;
-        }
-    }
-    return Unexpected(Error("cmake executable not found"));
+    auto const path = llvm::sys::findProgramByName("cmake");
+    MRDOCS_CHECK(path, "CMake executable not found");
+    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), llvm::StringRef()};
+    std::vector<llvm::StringRef> const args = {*path, "--version"};
+    int const result = llvm::sys::ExecuteAndWait(*path, args, std::nullopt, redirects);
+    MRDOCS_CHECK(result == 0, "CMake execution failed");
+    return *path;
 }
 
 Expected<std::string>
-executeCmakeExportCompileCommands(llvm::StringRef cmakeListsPath) 
+executeCmakeExportCompileCommands(llvm::StringRef projectPath) 
 {
-    auto cmakePathRes = getCmakePath();
-    if (! cmakePathRes) 
-    {
-        return cmakePathRes;
-    }
-    auto cmakePath = *cmakePathRes;
+    MRDOCS_TRY(auto const cmakePath, getCmakePath());
+    MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "CMakeLists.txt not found");
 
-    if ( ! llvm::sys::fs::exists(cmakeListsPath)) 
-    {
-        return Unexpected(Error("CMakeLists.txt not found"));
-    }
+    llvm::SmallString<128> tempDir;
+    MRDOCS_CHECK(!llvm::sys::fs::createUniqueDirectory("compile_commands", tempDir), "Failed to create temporary directory");
 
-    llvm::SmallString<128> stdOutPath;
-    if (auto ec = llvm::sys::fs::createTemporaryFile("stdout", "txt", stdOutPath)) 
-    {
-        return Unexpected(Error("failed to create temporary file"));
-    }
-
-    llvm::SmallString<128> stdErrPath;    
-    if (auto ec = llvm::sys::fs::createTemporaryFile("stderr", "txt", stdErrPath)) 
-    {
-        return Unexpected(Error("failed to create temporary file"));
-    }
-
-    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), stdOutPath.str(), stdErrPath.str()};
-    std::vector<llvm::StringRef> const args = {cmakePath, cmakeListsPath, "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
+    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), llvm::StringRef()};
+    std::vector<llvm::StringRef> const args = {cmakePath, "-S", projectPath, "-B", tempDir.str(), "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
     int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
+    MRDOCS_CHECK(result == 0, "CMake execution failed");
 
-    if (result != 0) 
-    {
-        return Unexpected(Error("cmake execution failed"));
-    }
+    llvm::SmallString<128> compileCommandsPath(tempDir);
+    llvm::sys::path::append(compileCommandsPath, "compile_commands.json");
 
-    return "./compile_commands.json";
+    return compileCommandsPath.str().str();
 }
 
 } // mrdocs

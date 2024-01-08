@@ -28,33 +28,29 @@ namespace clang {
 namespace mrdocs {
 
 Expected<std::string>
-generateCompilationDatabaseIfNeeded(llvm::StringRef projectPath)
+generateCompilationDatabase(llvm::StringRef projectPath)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
     fs::file_status fileStatus;
-    if (auto ec = fs::status(projectPath, fileStatus))
-    {
-        return Unexpected(Error(ec));
-    }
+    MRDOCS_CHECK(!fs::status(projectPath, fileStatus), "Failed to get file status");
 
     if (fs::is_directory(fileStatus))
     {
         return executeCmakeExportCompileCommands(projectPath);
     }
-    else if (fs::is_regular_file(fileStatus))
+    
+    auto const fileName = files::getFileName(projectPath);
+    if (fileName == "compile_commands.json")
     {
-        auto const fileName = files::getFileName(projectPath);
-        if (fileName == "compile_commands.json")
-        {
-            return projectPath.str();
-        }
-        else if (fileName == "CMakeLists.txt")
-        {
-            return executeCmakeExportCompileCommands(files::getParentDir(projectPath));
-        }
+        return projectPath.str();
     }
+    
+    if (fileName == "CMakeLists.txt")
+    {
+        return executeCmakeExportCompileCommands(files::getParentDir(projectPath));
+    }    
     return projectPath.str();
 }
 
@@ -114,12 +110,12 @@ DoGenerateAction()
             "got {} input paths where 1 was expected",
             toolArgs.inputPaths.size()));
 
-    auto const inputPath = generateCompilationDatabaseIfNeeded(toolArgs.inputPaths.front());
+    auto const inputPath = generateCompilationDatabase(toolArgs.inputPaths.front());
     if ( ! inputPath)
     {
         report::error("Failed to generate compilation database");
         return {};
-    } 
+    }
 
     auto compilationsPath = files::normalizePath(*inputPath);
     MRDOCS_TRY(compilationsPath, files::makeAbsolute(compilationsPath));

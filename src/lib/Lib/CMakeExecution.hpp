@@ -3,7 +3,7 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
-// Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2024 Fernando Pelliccioni (fpelliccioni@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -23,7 +23,7 @@ namespace mrdocs {
  * Execute cmake to export compile_commands.json.
 */
 Expected<std::string>
-executeCmakeExportCompileCommands(llvm::StringRef cmakeListsPath);
+executeCmakeExportCompileCommands(llvm::StringRef projectPath);
 
 } // mrdocs
 } // clang
