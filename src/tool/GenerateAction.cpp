@@ -27,6 +27,18 @@
 namespace clang {
 namespace mrdocs {
 
+/**
+ * Conditionally generates a compilation database based on the provided project path.
+ *
+ * This function evaluates the project path to decide the appropriate action regarding the generation of a `compile_commands.json` file:
+ * 1. If the project path is a `compile_commands.json` file, it returns the path as-is, with no database generation.
+ * 2. If the project path is a directory, it generates the compilation database using the provided project path.
+ * 3. If the project path is a `CMakeLists.txt` file, it generates the compilation database using the parent directory of the file.
+ *
+ * @param projectPath The path to the project, which can be a directory, a `compile_commands.json` file, or a `CMakeLists.txt` file.
+ * @return An `Expected` object containing the path to the `compile_commands.json` file if the database is generated, or the provided path if it is already the `compile_commands.json` file. 
+ * Returns an `Unexpected` object in case of failure (e.g., file not found, CMake execution failure).
+ */
 Expected<std::string>
 generateCompilationDatabase(llvm::StringRef projectPath)
 {

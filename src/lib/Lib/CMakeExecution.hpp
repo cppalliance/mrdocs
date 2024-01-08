@@ -20,8 +20,15 @@ namespace clang {
 namespace mrdocs {
 
 /**
- * Execute cmake to export compile_commands.json.
-*/
+ * Executes CMake to generate the `compile_commands.json` file for a project.
+ *
+ * This function runs CMake in a temporary directory for the given project path 
+ * to create a `compile_commands.json` file. 
+ *
+ * @param projectPath The path to the project directory or the `CMakeLists.txt` file.
+ * @return An `Expected` object containing the path to the generated `compile_commands.json` file if successful.
+ *         Returns `Unexpected` if `CMakeLists.txt` is not found or if CMake execution fails.
+ */
 Expected<std::string>
 executeCmakeExportCompileCommands(llvm::StringRef projectPath);
 
