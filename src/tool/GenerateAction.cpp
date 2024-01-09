@@ -36,11 +36,12 @@ namespace mrdocs {
  * 3. If the project path is a `CMakeLists.txt` file, it generates the compilation database using the parent directory of the file.
  *
  * @param projectPath The path to the project, which can be a directory, a `compile_commands.json` file, or a `CMakeLists.txt` file.
+ * @param cmakeArgs The arguments to pass to CMake when generating the compilation database.
  * @return An `Expected` object containing the path to the `compile_commands.json` file if the database is generated, or the provided path if it is already the `compile_commands.json` file. 
  * Returns an `Unexpected` object in case of failure (e.g., file not found, CMake execution failure).
  */
 Expected<std::string>
-generateCompilationDatabase(llvm::StringRef projectPath)
+generateCompilationDatabase(llvm::StringRef projectPath, llvm::StringRef cmakeArgs)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -50,7 +51,7 @@ generateCompilationDatabase(llvm::StringRef projectPath)
 
     if (fs::is_directory(fileStatus))
     {
-        return executeCmakeExportCompileCommands(projectPath);
+        return executeCmakeExportCompileCommands(projectPath, cmakeArgs);
     }
     
     auto const fileName = files::getFileName(projectPath);
@@ -61,7 +62,7 @@ generateCompilationDatabase(llvm::StringRef projectPath)
     
     if (fileName == "CMakeLists.txt")
     {
-        return executeCmakeExportCompileCommands(files::getParentDir(projectPath));
+        return executeCmakeExportCompileCommands(files::getParentDir(projectPath), cmakeArgs);
     }    
     return projectPath.str();
 }
@@ -122,7 +123,7 @@ DoGenerateAction()
             "got {} input paths where 1 was expected",
             toolArgs.inputPaths.size()));
 
-    auto const inputPath = generateCompilationDatabase(toolArgs.inputPaths.front());
+    auto const inputPath = generateCompilationDatabase(toolArgs.inputPaths.front(), config->settings().cmake);
     if ( ! inputPath)
     {
         report::error("Failed to generate compilation database: {}", inputPath.error());

@@ -105,6 +105,8 @@ struct llvm::yaml::MappingTraits<SettingsImpl>
         io.mapOptional("input",             cfg.input);
 
         io.mapOptional("filters",           cfg.filters);
+
+        io.mapOptional("cmake",             cfg.cmake);
     }
 };
 

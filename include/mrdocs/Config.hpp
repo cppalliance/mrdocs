@@ -104,6 +104,10 @@ public:
         */
         std::string extraYaml;
 
+        /** A string holding the complete CMake arguments.
+        */
+        std::string cmake;        
+
         constexpr Settings const*
         operator->() const noexcept
         {

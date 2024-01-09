@@ -26,11 +26,12 @@ namespace mrdocs {
  * to create a `compile_commands.json` file. 
  *
  * @param projectPath The path to the project directory or the `CMakeLists.txt` file.
+ * @param cmakeArgs The arguments to pass to CMake when generating the compilation database.
  * @return An `Expected` object containing the path to the generated `compile_commands.json` file if successful.
  *         Returns `Unexpected` if `CMakeLists.txt` is not found or if CMake execution fails.
  */
 Expected<std::string>
-executeCmakeExportCompileCommands(llvm::StringRef projectPath);
+executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs);
 
 } // mrdocs
 } // clang

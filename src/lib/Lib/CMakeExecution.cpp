@@ -73,26 +73,80 @@ Expected<bool>
 cmakeDefaultGeneratorIsVisualStudio(llvm::StringRef cmakePath) 
 {
     MRDOCS_TRY(auto const defaultGenerator, getCmakeDefaultGenerator(cmakePath));
-    return defaultGenerator.find("Visual Studio") != std::string::npos;
+    return defaultGenerator.starts_with("Visual Studio");
+}
+
+std::vector<std::string>
+parseCmakeArgs(std::string const& cmakeArgsStr) 
+{
+    std::vector<std::string> parsedArgs;
+    std::string arg;
+    bool inQuotes = false;
+
+    for (char ch : cmakeArgsStr) 
+    {
+        if (ch == '"') 
+        {
+            inQuotes = !inQuotes;
+        } 
+        else if (std::isspace(ch) && !inQuotes) 
+        {
+            if ( ! arg.empty()) 
+            {
+                if (arg[0] == '-' && arg.size() == 2) 
+                    continue;
+                parsedArgs.push_back(arg);
+                arg.clear();                
+            }
+        } 
+        else 
+        {
+            arg += ch;
+        }
+    }
+
+    if ( ! arg.empty()) 
+    {
+        parsedArgs.push_back(arg);
+    }
+
+    return parsedArgs;
 }
 
 Expected<std::string>
-executeCmakeExportCompileCommands(llvm::StringRef projectPath) 
+executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs) 
 {
     MRDOCS_TRY(auto const cmakePath, getCmakePath());
     MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "CMakeLists.txt not found");
-    MRDOCS_TRY(auto const cmakeDefaultGeneratorIsVisualStudio, cmakeDefaultGeneratorIsVisualStudio(cmakePath));
 
     llvm::SmallString<128> tempDir;
     MRDOCS_CHECK(!llvm::sys::fs::createUniqueDirectory("compile_commands", tempDir), "Failed to create temporary directory");
 
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), llvm::StringRef()};
     std::vector<llvm::StringRef> args = {cmakePath, "-S", projectPath, "-B", tempDir.str(), "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
-    if (cmakeDefaultGeneratorIsVisualStudio) {
-        args.push_back("-G");
-        args.push_back("Ninja");
+
+    auto const additionalArgs = parseCmakeArgs(cmakeArgs.str());
+    bool visualStudioFound = false;
+    for (auto const& arg : additionalArgs) 
+    {
+        if (arg.starts_with("-G") && arg.find("Visual Studio", 2) != std::string::npos) 
+        {
+            args.push_back("-GNinja");
+            visualStudioFound = true;
+            continue;
+        }         
+        args.push_back(arg);
     }
-        
+
+    if ( ! visualStudioFound) 
+    {
+        MRDOCS_TRY(auto const cmakeDefaultGeneratorIsVisualStudio, cmakeDefaultGeneratorIsVisualStudio(cmakePath));
+        if (cmakeDefaultGeneratorIsVisualStudio) 
+        {
+            args.push_back("-GNinja");
+        }
+    }
+
     int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
     MRDOCS_CHECK(result == 0, "CMake execution failed");
 
