@@ -18,6 +18,8 @@
 namespace clang {
 namespace mrdocs {
 
+namespace {
+
 Expected<std::string>
 getCmakePath() {
     auto const path = llvm::sys::findProgramByName("cmake");
@@ -112,6 +114,8 @@ parseCmakeArgs(std::string const& cmakeArgsStr)
 
     return parsedArgs;
 }
+
+} // anonymous namespace
 
 Expected<std::string>
 executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs) 

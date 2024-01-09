@@ -27,6 +27,8 @@
 namespace clang {
 namespace mrdocs {
 
+namespace {
+
 /**
  * Conditionally generates a compilation database based on the provided project path.
  *
@@ -66,6 +68,8 @@ generateCompilationDatabase(llvm::StringRef projectPath, llvm::StringRef cmakeAr
     }    
     return projectPath.str();
 }
+
+} // anonymous namespace
 
 Expected<void>
 DoGenerateAction()
