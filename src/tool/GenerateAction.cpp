@@ -30,7 +30,7 @@ namespace mrdocs {
 namespace {
 
 /**
- * Conditionally generates a compilation database based on the provided project path.
+ * Conditionally generates a `compile_commands.json` file based on the provided project path.
  *
  * This function evaluates the project path to decide the appropriate action regarding the generation of a `compile_commands.json` file:
  * 1. If the project path is a `compile_commands.json` file, it returns the path as-is, with no database generation.
@@ -43,7 +43,7 @@ namespace {
  * Returns an `Unexpected` object in case of failure (e.g., file not found, CMake execution failure).
  */
 Expected<std::string>
-generateCompilationDatabase(llvm::StringRef projectPath, llvm::StringRef cmakeArgs)
+generateCompileCommandsFile(llvm::StringRef projectPath, llvm::StringRef cmakeArgs)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -127,10 +127,13 @@ DoGenerateAction()
             "got {} input paths where 1 was expected",
             toolArgs.inputPaths.size()));
 
-    auto const inputPath = generateCompilationDatabase(toolArgs.inputPaths.front(), config->settings().cmake);
+
+    std::string_view cmakeArgs = config->object().exists("cmake") ?
+        config->object().get("cmake").getString() : "";
+    auto const inputPath = generateCompileCommandsFile(toolArgs.inputPaths.front(), cmakeArgs);
     if ( ! inputPath)
     {
-        report::error("Failed to generate compilation database: {}", inputPath.error());
+        report::error("Failed to generate compile_commands.json file: {}", inputPath.error());
         return {};
     }
 

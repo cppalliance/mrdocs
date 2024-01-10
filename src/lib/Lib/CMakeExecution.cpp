@@ -84,10 +84,20 @@ parseCmakeArgs(std::string const& cmakeArgsStr)
     std::vector<std::string> parsedArgs;
     std::string arg;
     bool inQuotes = false;
+    bool escapeNextChar = false;
 
     for (char ch : cmakeArgsStr) 
     {
-        if (ch == '"') 
+        if (escapeNextChar) 
+        {
+            arg += ch;
+            escapeNextChar = false;
+        } 
+        else if (ch == '\\') 
+        {
+            escapeNextChar = true;
+        } 
+        else if (ch == '"') 
         {
             inQuotes = !inQuotes;
         } 
@@ -95,10 +105,10 @@ parseCmakeArgs(std::string const& cmakeArgsStr)
         {
             if ( ! arg.empty()) 
             {
-                if (arg[0] == '-' && arg.size() == 2) 
+                if (arg[0] == '-' && arg.size() == 2)
                     continue;
                 parsedArgs.push_back(arg);
-                arg.clear();                
+                arg.clear();
             }
         } 
         else 
@@ -120,8 +130,8 @@ parseCmakeArgs(std::string const& cmakeArgsStr)
 Expected<std::string>
 executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs) 
 {
+    MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "Project path does not exist");
     MRDOCS_TRY(auto const cmakePath, getCmakePath());
-    MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "CMakeLists.txt not found");
 
     llvm::SmallString<128> tempDir;
     MRDOCS_CHECK(!llvm::sys::fs::createUniqueDirectory("compile_commands", tempDir), "Failed to create temporary directory");
@@ -133,10 +143,14 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
     bool visualStudioFound = false;
     for (auto const& arg : additionalArgs) 
     {
-        if (arg.starts_with("-G") && arg.find("Visual Studio", 2) != std::string::npos) 
+        if (arg.starts_with("-G") && arg.find("Visual Studio", 2) != std::string::npos)
         {
             args.push_back("-GNinja");
             visualStudioFound = true;
+            continue;
+        }        
+        if (arg.starts_with("-D") && arg.find("CMAKE_EXPORT_COMPILE_COMMANDS", 2) != std::string::npos)
+        {
             continue;
         }         
         args.push_back(arg);
