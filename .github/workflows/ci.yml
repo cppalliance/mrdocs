@@ -317,17 +317,6 @@ jobs:
           modules-exclude-paths: ''
           trace-commands: true
 
-      - name: Configure Boost.URL
-        working-directory: boost/libs/url
-        run: |
-          set -x
-          if [ -d "__build__" ]; then
-              rm -rf __build__
-          fi
-          mkdir __build__
-          cd __build__          
-          cmake -D BOOST_URL_BUILD_TESTS=OFF -D BOOST_URL_BUILD_EXAMPLES=OFF -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES="$default_includes" -D CMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx  }} -D CMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc  }} ..
-
       - name: Generate demos
         run: |
           config_template=$(printf '%s\n'                                      \
@@ -338,6 +327,7 @@ jobs:
             "multipage: %s"                                                    \
             "inaccessible-members: never"                                      \
             "inaccessible-bases: never"                                        \
+            "cmake: -D BOOST_URL_BUILD_TESTS=OFF -D BOOST_URL_BUILD_EXAMPLES=OFF -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES='$default_includes' -D CMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx  }} -D CMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc  }}" \
             "filters:"                                                         \
             "  symbols:"                                                       \
             "    exclude:"                                                     \
@@ -350,7 +340,7 @@ jobs:
               [[ $variant = multi ]] && multiline="true" || multiline="false"
               printf "$config_template\n" $format $multiline > $(pwd)/boost/libs/url/mrdocs.yml
               mkdir -p "demos/boost-url/$variant/$format"
-              mrdocs --config="$(pwd)/boost/libs/url/mrdocs.yml" "$(pwd)/boost/libs/url/__build__/compile_commands.json" --output="$(pwd)/demos/boost-url/$variant/$format"
+              mrdocs --config="$(pwd)/boost/libs/url/mrdocs.yml" "$(pwd)/boost/libs/url/" --output="$(pwd)/demos/boost-url/$variant/$format"
             done
             asciidoctor -d book -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done

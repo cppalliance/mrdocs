@@ -16,7 +16,42 @@ Where `MRDOCS_ROOT` is the path of the mrdocs executable, and `MRDOCS_CONFIG` is
 We also assume `PROJECT_SOURCE_DIR` is the path to the root of your project's source code, where its main `CMakeLists.txt` file is located, and `PROJECT_BUILD_DIR` is the path to the directory where you want to generate the documentation.
 Feel free to change these variables to suit your needs.
 
-The first step to generate your documentation is to generate the `compile_commands.json` file by running `cmake` with the `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` flag.
+MrDocs simplifies the documentation generation process. Generating the `compile_commands.json` file by running `cmake` is optional. If the path to `compile_commands.json` is not provided when calling MrDocs, the tool will automatically run `cmake` for you, provided that you have CMake version >=3.13.5 installed. Parameters for cmake, such as `-D BOOST_URL_BUILD_TESTS=OFF`, should be specified in the `cmake:` key of the `mrdocs.yml` configuration file. 
+
+It is still possible, but optional, to manually generate the `compile_commands.json` file. For instructions on manually generating this file, see <<manual-compile-commands, this section>>.
+
+
+The following command will generate the documentation with the most common options:
+
+[source,bash]
+----
+cd $PROJECT_BUILD_DIR
+MRDOCS_OUTPUT=$PROJECT_BUILD_DIR/docs/reference/adoc
+$MRDOCS_ROOT/mrdocs <ProjectPath> --config=$MRDOCS_CONFIG --addons=$MRDOCS_ROOT/addons --output=$MRDOCS_OUTPUT
+----
+
+Here's a description of these options:
+
+* `<ProjectPath>`: the path to the project to document. This can be a path to a `compile_commands.json` file, a directory, or a `CMakeLists.txt` file.
+If a path to a `compile_commands.json` file is provided, MrDocs will use this file and will not call CMake. It is assumed the user has already manually run CMake.
+If a directory (not a file) is provided, it is assumed that this directory is the `ProjectPath` and contains a `CMakeLists.txt` describing the project. MrDocs will automatically run CMake to generate the `compile_commands.json`, using the parameters specified in the `mrdocs.yml` configuration file.
+If a `CMakeLists.txt` file is provided, it is assumed that the directory containing this file is the `ProjectPath`. MrDocs will automatically run CMake to generate the `compile_commands.json`, using the parameters specified in the `mrdocs.yml` configuration file.
+* `--config=$MRDOCS_CONFIG`: the path to the `mrdocs.yml` configuration file.
+This file configures which generator is used, which directory to process,
+and what symbols should be extracted.
+* `--addons=$MRDOCS_ROOT/addons`: the path to the `addons` directory.
+This directory contains the addons that are used to generate the documentation.
+Among other things, it contains the default templates for the generator.
+This option defaults to current directory if not provided.
+* `--output=$MRDOCS_ROOT/output/adoc`: the path to the output directory.
+This is where the generated documentation will be placed.
+
+MrDocs ignores non-c++ source files, so nothing more needs to be done to generate the documentation for your project.
+
+[[manual-compile-commands]]
+=== Generating the compile_commands.json Manually
+
+To generate the `compile_commands.json` file by running `cmake` with the `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` flag.
 
 [source,bash]
 ----
@@ -29,30 +64,6 @@ cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 At this step, you can also add any other flags you want to pass to `cmake`, such as `-DCMAKE_BUILD_TYPE=Release` or `-DCMAKE_CXX_COMPILER=clang++`.
 By running CMake with the `CMAKE_EXPORT_COMPILE_COMMANDS` flag, you will generate a `compile_commands.json` file in your build directory.
 This file contains all the information mrdocs needs to generate the documentation.
-
-Now let's generate the reference files.
-The following command will generate the documentation with the most common options:
-
-[source,bash]
-----
-cd $PROJECT_BUILD_DIR
-MRDOCS_OUTPUT=$PROJECT_BUILD_DIR/docs/reference/adoc
-$MRDOCS_ROOT/mrdocs $PROJECT_BUILD_DIR/compile_commands.json --config=$MRDOCS_CONFIG --addons=$MRDOCS_ROOT/addons --output=$MRDOCS_OUTPUT
-----
-
-Here's a description of these options:
-
-* `--config=$MRDOCS_CONFIG`: the path to the `mrdocs.yml` configuration file.
-This file configures which generator is used, which directory to process,
-and what symbols should be extracted.
-* `--addons=$MRDOCS_ROOT/addons`: the path to the `addons` directory.
-This directory contains the addons that are used to generate the documentation.
-Among other things, it contains the default templates for the generator.
-This option defaults to current directory if not provided.
-* `--output=$MRDOCS_ROOT/output/adoc`: the path to the output directory.
-This is where the generated documentation will be placed.
-
-MrDocs ignores non-c++ source files, so nothing more needs to be done to generate the documentation for your project.
 
 == Demos
 
