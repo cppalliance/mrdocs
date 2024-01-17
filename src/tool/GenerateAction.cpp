@@ -11,6 +11,7 @@
 
 #include "CompilerInfo.hpp"
 #include "ToolArgs.hpp"
+#include <lib/Lib/CMakeExecution.hpp>
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
 #include "lib/Lib/MrDocsCompilationDatabase.hpp"
@@ -20,10 +21,55 @@
 #include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/JSONCompilationDatabase.h>
 
+
 #include <cstdlib>
 
 namespace clang {
 namespace mrdocs {
+
+namespace {
+
+/**
+ * Conditionally generates a `compile_commands.json` file based on the provided project path.
+ *
+ * This function evaluates the project path to decide the appropriate action regarding the generation of a `compile_commands.json` file:
+ * 1. If the project path is a `compile_commands.json` file, it returns the path as-is, with no database generation.
+ * 2. If the project path is a directory, it generates the compilation database using the provided project path.
+ * 3. If the project path is a `CMakeLists.txt` file, it generates the compilation database using the parent directory of the file.
+ *
+ * @param projectPath The path to the project, which can be a directory, a `compile_commands.json` file, or a `CMakeLists.txt` file.
+ * @param cmakeArgs The arguments to pass to CMake when generating the compilation database.
+ * @return An `Expected` object containing the path to the `compile_commands.json` file if the database is generated, or the provided path if it is already the `compile_commands.json` file. 
+ * Returns an `Unexpected` object in case of failure (e.g., file not found, CMake execution failure).
+ */
+Expected<std::string>
+generateCompileCommandsFile(llvm::StringRef projectPath, llvm::StringRef cmakeArgs)
+{
+    namespace fs = llvm::sys::fs;
+    namespace path = llvm::sys::path;
+
+    fs::file_status fileStatus;
+    MRDOCS_CHECK(!fs::status(projectPath, fileStatus), "Failed to get file status");
+
+    if (fs::is_directory(fileStatus))
+    {
+        return executeCmakeExportCompileCommands(projectPath, cmakeArgs);
+    }
+    
+    auto const fileName = files::getFileName(projectPath);
+    if (fileName == "compile_commands.json")
+    {
+        return projectPath.str();
+    }
+    
+    if (fileName == "CMakeLists.txt")
+    {
+        return executeCmakeExportCompileCommands(files::getParentDir(projectPath), cmakeArgs);
+    }    
+    return projectPath.str();
+}
+
+} // anonymous namespace
 
 Expected<void>
 DoGenerateAction()
@@ -74,12 +120,24 @@ DoGenerateAction()
     // Load the compilation database file
     //
     // --------------------------------------------------------------
+    
     MRDOCS_CHECK(toolArgs.inputPaths, "The compilation database path argument is missing");
     MRDOCS_CHECK(toolArgs.inputPaths.size() == 1,
         formatError(
             "got {} input paths where 1 was expected",
             toolArgs.inputPaths.size()));
-    auto compilationsPath = files::normalizePath(toolArgs.inputPaths.front());
+
+
+    std::string_view cmakeArgs = config->object().exists("cmake") ?
+        config->object().get("cmake").getString() : "";
+    auto const inputPath = generateCompileCommandsFile(toolArgs.inputPaths.front(), cmakeArgs);
+    if ( ! inputPath)
+    {
+        report::error("Failed to generate compile_commands.json file: {}", inputPath.error());
+        return {};
+    }
+
+    auto compilationsPath = files::normalizePath(*inputPath);
     MRDOCS_TRY(compilationsPath, files::makeAbsolute(compilationsPath));
     std::string errorMessage;
     MRDOCS_TRY_MSG(
