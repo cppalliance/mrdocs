@@ -140,22 +140,6 @@ convertToNoexceptKind(
     }
 }
 
-NoexceptKind
-convertToNoexceptKind(
-    CanThrowResult kind)
-{
-    using OldKind = CanThrowResult;
-    using NewKind = NoexceptKind;
-    switch(kind)
-    {
-    case OldKind::CT_Can:       return NewKind::False;
-    case OldKind::CT_Cannot:    return NewKind::True;
-    case OldKind::CT_Dependent: return NewKind::Dependent;
-    default:
-        MRDOCS_UNREACHABLE();
-    }
-}
-
 OperatorKind
 convertToOperatorKind(
     OverloadedOperatorKind kind)
