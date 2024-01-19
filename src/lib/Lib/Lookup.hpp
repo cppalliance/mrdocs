@@ -62,6 +62,7 @@ class SymbolLookup
 
     struct LookupCallback
     {
+        virtual ~LookupCallback() = default;
         virtual bool operator()(const Info&) = 0;
     };
 
@@ -139,6 +140,8 @@ makeHandler(Fn& fn)
         Fn& fn_;
 
     public:
+        ~LookupCallbackImpl() override = default;
+
         LookupCallbackImpl(Fn& fn)
             : fn_(fn)
         {
