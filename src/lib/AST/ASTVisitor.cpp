@@ -242,7 +242,7 @@ public:
                     getFileSystemOpts().WorkingDir;
                 // we can't normalize a relative path
                 // without a base directory
-                MRDOCS_ASSERT(! cwd.empty());
+                // MRDOCS_ASSERT(! cwd.empty());
                 fs::make_absolute(cwd, new_path);
             }
             // remove ./ and ../

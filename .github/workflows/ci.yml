@@ -28,17 +28,16 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.6.2
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.2
         id: cpp-matrix
         with:
           compilers: |
             gcc 13.1
-            clang 16
+            clang 17
             msvc 14.34
-          standards: '>=20'
-          max-standards: 1
-          latest-factors: gcc
-          factors: clang # Don't include Asan because `clang/AST/Decl.h` fails
+          standards: '20'
+          latest-factors: ''
+          factors: ''
 
   build:
     needs: cpp-matrix
@@ -54,61 +53,76 @@ jobs:
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
-    container: ${{ matrix.container }}
+    container: ${{ (matrix.compiler == 'gcc' && 'ubuntu:22.04') || matrix.container }}
+    env: ${{ matrix.env }}
     permissions:
       contents: write
 
     steps:
+      - name: Install git
+        if: ${{ matrix.container }}
+        uses: alandefreitas/cpp-actions/package-install@v1.8.2
+        with:
+          apt-get: git
+
       - name: Clone MrDocs
         uses: actions/checkout@v3
+
+      - name: Setup C++
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.2
+        id: setup-cpp
+        with:
+          compiler: ${{ matrix.compiler }}
+          version: ${{ matrix.version }}
+          check-latest: ${{ matrix.compiler == 'clang' }}
+
+      - name: Install packages
+        uses: alandefreitas/cpp-actions/package-install@v1.8.2
+        id: package-install
+        with:
+          apt-get: ${{ matrix.install }} openjdk-11-jdk ninja-build pkg-config libncurses-dev
+          vcpkg: fmt duktape libxml2[tools]
+          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
+          ccflags: ${{ matrix.ccflags }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
+          cxxflags: ${{ matrix.cxxflags }}
 
       - name: Install LLVM
         id: llvm-install
         shell: bash
         run: |
           set -xe
-
-          # Determine LLVM configuration type
-          llvm_config_type="${{ matrix.build-type }}"
-          if [ "${{ runner.os }}" == "Windows" ]; then
-              llvm_runner_os="Windows"
-              # if [ "$llvm_config_type" == "Release" ]; then
-              #     llvm_config_type="RelWithDebInfo"
-              # fi
-              llvm_archive_type="7z"
-              llvm_config_type="Release"
+          config_type="Release"
+          filename="${{ runner.os }}-$config_type-29b20829.${{ ( runner.os == 'Windows' && '7z' ) || 'tar.xz' }}"
+          url="https://mrdox.com/llvm+clang/$filename"
+          
+          # Download
+          if command -v curl &> /dev/null
+          then
+              curl -L -o "$filename" "$url"
+          elif command -v wget &> /dev/null
+          then
+              wget -O "$filename" "$url"
           else
-              llvm_runner_os="Linux"
-              llvm_archive_type="tar.xz"
-              llvm_config_type="Release"
+              echo "Neither curl nor wget are available"
+              exit 1
           fi
-          llvm_commit_id=29b20829
-          llvm_archive_filename="$llvm_runner_os-$llvm_config_type-$llvm_commit_id.$llvm_archive_type"
-          llvm_url="https://github.com/cppalliance/mrdocs/releases/download/llvm-package-release/$llvm_archive_filename"
-
-          if ! curl --head --silent --fail "$llvm_url"; then
-              llvm_url="https://mrdox.com/llvm+clang/$llvm_archive_filename"
-          fi
-
-          # Download LLVM binaries
-          curl -L -o "$llvm_archive_filename" "$llvm_url"
-
-          # Install LLVM to runner.tool_cache/llvm+clang
+          
+          # Extract
           llvm_root="${{runner.tool_cache}}/llvm+clang"
           llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
           mkdir -p "$llvm_root"
-
           if [ "${{ runner.os }}" != "Windows" ]; then
-              tar -xvf "$llvm_archive_filename" -C "$llvm_root" --strip-components=1
+              tar -xvf "$filename" -C "$llvm_root" --strip-components=1
           else
-              7z x "$llvm_archive_filename"
-              cd "$llvm_config_type"
+              7z x "$filename"
+              cd "$config_type"
               mv * "$llvm_root"
               cd ..
-              rm -rf "$llvm_config_type"
+              rm -rf "$config_type"
           fi
 
-          # Export LLVM_ROOT
+          # Export
           echo "llvm_root=$llvm_root"
           echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
 
@@ -117,37 +131,18 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.6.2
-        id: setup-cpp
-        with:
-          compiler: ${{ matrix.compiler }}
-          version: ${{ matrix.version }}
-          check-latest: ${{ matrix.compiler == 'clang' }}
-
-      - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.6.2
-        id: package-install
-        with:
-          apt-get: ${{ matrix.install }} openjdk-11-jdk ninja-build ${{ matrix.compiler == 'clang' && 'libstdc++-12-dev' || '' }}
-          vcpkg: fmt duktape libxml2[tools]
-          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
-          ccflags: ${{ matrix.ccflags }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          cxxflags: ${{ matrix.cxxflags }}
-
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.6.2
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.2
         with:
           cmake-version: '>=3.20'
-          generator: Ninja
-          toolchain: ${{ steps.package-install.outputs.vcpkg-toolchain }}
-          build-type: ${{ matrix.build-type }}
           cxxstd: ${{ matrix.cxxstd }}
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
           ccflags: ${{ matrix.ccflags }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
+          generator: Ninja
+          toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain || steps.package-install.outputs.vcpkg-toolchain }}
+          build-type: ${{ matrix.build-type }}
           install-prefix: .local
           extra-args: |
             -D LLVM_ROOT="${{ steps.llvm-install.outputs.llvm-root || '/usr/local' }}"
@@ -157,6 +152,8 @@ jobs:
           install: true
           package: ${{ matrix.is-main }}
           package-dir: packages
+          package-generators: ${{ (runner.os == 'Windows' && '7Z ZIP WIX') || 'TGZ TXZ' }}
+          package-artifact: false
 
       - name: Upload GitHub Release Artifacts
         if: ${{ matrix.is-main && matrix.compiler != 'clang' }}
@@ -167,36 +164,20 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.6.2
+        uses: alandefreitas/cpp-actions/flamegraph@v1.8.2
         if: matrix.time-trace
         with:
           build-dir: build
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Codecov
-        if: ${{ matrix.coverage }}
-        run: |
-          set -x
-          # Find gcov
-          gcov_tool="gcov"
-          if command -v "gcov-${{ steps.setup-cpp.outputs.version-major }}.${{ steps.setup-cpp.outputs.version-minor }}" &> /dev/null; then
-              gcov_tool="gcov"
-          elif command -v "gcov-${{ steps.setup-cpp.outputs.version-major }}" &> /dev/null; then
-              gcov_tool="gcov-${{ steps.setup-cpp.outputs.version-major }}"
-          fi
-          lcov -c -q -o "./build/coverage.info" -d "./build" --include "$(pwd)/*" --gcov-tool "$gcov_tool"
-
-          # Upload to codecov
-          bash <(curl -s https://codecov.io/bash) -f "./build/coverage.info"
-
-          # Update summary
-          echo "# Coverage" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "[![codecov](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA/graphs/sunburst.svg)](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "$GITHUB_REF_NAME: [![codecov](https://codecov.io/github/$GITHUB_REPOSITORY/branch/$GITHUB_REF_NAME/graph/badge.svg)](https://codecov.io/github/$GITHUB_REPOSITORY/commit/$GITHUB_SHA)" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+        if: ${{ matrix.coverage}}
+        uses: codecov/codecov-action@v3.1.4
+        with:
+          directory: './build'
+          fail_ci_if_error: true
+          gcov: true
+          verbose: true
 
   docs:
     needs: build
@@ -268,6 +249,8 @@ jobs:
     name: Demos
     timeout-minutes: 120
     runs-on: ubuntu-22.04
+    container: ubuntu:23.04
+
     permissions:
       contents: write
 
@@ -285,7 +268,7 @@ jobs:
         working-directory: packages
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.6.2
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.2
         id: setup-cpp
         with:
           compiler: clang
@@ -293,21 +276,21 @@ jobs:
           check-latest: true
 
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.6.2
+        uses: alandefreitas/cpp-actions/package-install@v1.8.2
         id: package-install
         with:
-          apt-get: libstdc++-12-dev asciidoctor
+          apt-get: libstdc++-12-dev asciidoctor cmake bzip2
           cc: ${{ steps.setup-cpp.outputs.cc }}
           cxx: ${{ steps.setup-cpp.outputs.cxx }}
 
       - name: Install mrdocs from release package
         run: |
           set -x
-          sudo find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -vxzf {} -C /usr/local --strip-components=1 \;
+          find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -vxzf {} -C /usr/local --strip-components=1 \;
           mrdocs --version
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.6.2
+        uses: alandefreitas/cpp-actions/boost-clone@v1.8.2
         id: boost-url-clone
         with:
           branch: master
@@ -404,20 +387,12 @@ jobs:
         working-directory: build
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.6.2
+        uses: alandefreitas/cpp-actions/create-changelog@v1.8.2
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           limit: 150
-
-      - name: Remove branch release
-        if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name)) }}
-        uses: dev-drprasad/delete-tag-and-release@v1.0
-        with:
-          tag_name: ${{ github.ref_name }}-release
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          delete_release: true
 
       - name: Create GitHub Package Release
         if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
@@ -435,7 +410,7 @@ jobs:
         if: ${{ github.event_name == 'push' && contains(fromJSON('["master", "develop"]'), github.ref_name) }}
         with:
           keep_latest: 1
-          delete_tag_pattern: ${{ github.ref_name }}
+          delete_tag_pattern: ${{ github.ref_name || github.ref }}${{ ((!startsWith(github.ref, 'refs/tags/')) && '-release') || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
