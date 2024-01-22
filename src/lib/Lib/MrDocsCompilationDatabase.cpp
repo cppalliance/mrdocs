@@ -19,10 +19,9 @@
 #include <clang/Driver/Options.h>
 #include <clang/Driver/Types.h>
 #include <llvm/Option/ArgList.h>
-#include <llvm/Option/OptSpecifier.h>
 #include <llvm/Option/OptTable.h>
 #include <llvm/Support/FileSystem.h>
-#include <llvm/Support/raw_ostream.h>
+#include <ranges>
 
 namespace clang {
 namespace mrdocs {
@@ -48,91 +47,152 @@ optionMatchesAny(
 }
 
 static
-std::vector<std::string>
-adjustCommandLine(
-    const std::vector<std::string>& cmdline,
-    const std::vector<std::string>& additional_defines,
-    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
+bool
+isValidMrDocsOption(std::unique_ptr<llvm::opt::Arg> const &arg)
 {
-    std::vector<std::string> new_cmdline;
-    llvm::opt::InputArgList args;
-    StringRef driver_mode;
-    std::vector<std::string> systemIncludePaths;
-
-    if(! cmdline.empty())
+    // Unknown option
+    if (!arg)
     {
-        if (auto it = implicitIncludeDirectories.find(cmdline[0]); it != implicitIncludeDirectories.end()) {
-            systemIncludePaths = it->second;
-        }
-
-        std::vector<const char*> raw_cmdline;
-        raw_cmdline.reserve(cmdline.size());
-        for(const auto& s : cmdline)
-            raw_cmdline.push_back(s.c_str());
-        args = llvm::opt::InputArgList(raw_cmdline.data(),
-            raw_cmdline.data() + raw_cmdline.size());
-        driver_mode = driver::getDriverMode(
-            raw_cmdline.front(), raw_cmdline);
-        new_cmdline.push_back(cmdline.front());
+        return false;
     }
-    const llvm::opt::OptTable& opts_table =
-        clang::driver::getDriverOptTable();
 
-    bool is_clang_cl = ! cmdline.empty() &&
-        driver::IsClangCL(driver_mode);
-    llvm::opt::Visibility visibility(is_clang_cl ?
-        driver::options::CLOption :
-        driver::options::ClangOption);
-    // suppress all warnings
-    new_cmdline.emplace_back(
-        is_clang_cl ? "/w" : "-w");
-    new_cmdline.emplace_back("-fsyntax-only");
+    // Parsed argument
+    const llvm::opt::Option opt =
+        arg->getOption().getUnaliasedOption();
 
-    for(const auto& def : additional_defines)
-        new_cmdline.emplace_back(fmt::format("-D{}", def));
-
-    for (auto const& inc : systemIncludePaths)
-        new_cmdline.emplace_back(fmt::format("-I{}", inc));
-
-    for(unsigned idx = 1; idx < cmdline.size();)
-    {
-        const unsigned old_idx = idx;
-        std::unique_ptr<llvm::opt::Arg> arg =
-            opts_table.ParseOneArg(args, idx, visibility);
-
-        if(! arg)
-        {
-            continue;
-        }
-
-        const llvm::opt::Option opt =
-            arg->getOption().getUnaliasedOption();
-
-        // discard the option if it affects warnings,
-        // is ignored, or turns warnings into errors
-        if(optionMatchesAny(opt,
+    if (optionMatchesAny(opt,
             // unknown options
-            driver::options::OPT_UNKNOWN,
-            // diagnostic options
-            driver::options::OPT_Diag_Group,
-            driver::options::OPT_W_value_Group,
-            driver::options::OPT__SLASH_wd,
-            // language conformance options
-            driver::options::OPT_pedantic_Group,
-            driver::options::OPT__SLASH_permissive,
-            driver::options::OPT__SLASH_permissive_,
+             driver::options::OPT_UNKNOWN,
 
-            // ignored options
-            driver::options::OPT_cl_ignored_Group,
-            driver::options::OPT_cl_ignored_Group,
-            driver::options::OPT_clang_ignored_f_Group,
-            driver::options::OPT_clang_ignored_gcc_optimization_f_Group,
-            driver::options::OPT_clang_ignored_legacy_options_Group,
-            driver::options::OPT_clang_ignored_m_Group,
-            driver::options::OPT_flang_ignored_w_Group
+            // sanitizers
+             driver::options::OPT_fsanitize_EQ,
+             driver::options::OPT_fno_sanitize_EQ,
+             driver::options::OPT_fsanitize_recover_EQ,
+             driver::options::OPT_fno_sanitize_recover_EQ,
+             driver::options::OPT_fsanitize_trap_EQ,
+             driver::options::OPT_fno_sanitize_trap_EQ,
+             driver::options::OPT_fsanitize_address_use_after_scope,
+             driver::options::OPT_fexperimental_sanitize_metadata_ignorelist_EQ,
+             driver::options::OPT_fexperimental_sanitize_metadata_EQ_atomics,
+             driver::options::OPT_fexperimental_sanitize_metadata_EQ_covered,
+             driver::options::OPT_fexperimental_sanitize_metadata_EQ,
+             driver::options::OPT_fgpu_sanitize,
+             driver::options::OPT_fno_experimental_sanitize_metadata_EQ,
+             driver::options::OPT_fno_gpu_sanitize,
+             driver::options::OPT_fno_sanitize_address_globals_dead_stripping,
+             driver::options::OPT_fno_sanitize_address_outline_instrumentation,
+             driver::options::OPT_fno_sanitize_address_poison_custom_array_cookie,
+             driver::options::OPT_fno_sanitize_address_use_after_scope,
+             driver::options::OPT_fno_sanitize_address_use_odr_indicator,
+             driver::options::OPT__SLASH_fno_sanitize_address_vcasan_lib,
+             driver::options::OPT_anonymous_513,
+             driver::options::OPT_fno_sanitize_cfi_canonical_jump_tables,
+             driver::options::OPT_fno_sanitize_cfi_cross_dso,
+             driver::options::OPT_fno_sanitize_coverage,
+             driver::options::OPT_fno_sanitize_hwaddress_experimental_aliasing,
+             driver::options::OPT_fno_sanitize_ignorelist,
+             driver::options::OPT_fno_sanitize_link_cxx_runtime,
+             driver::options::OPT_fno_sanitize_link_runtime,
+             driver::options::OPT_fno_sanitize_memory_param_retval,
+             driver::options::OPT_fno_sanitize_memory_track_origins,
+             driver::options::OPT_fno_sanitize_memory_use_after_dtor,
+             driver::options::OPT_fno_sanitize_minimal_runtime,
+             driver::options::OPT_fno_sanitize_recover_EQ,
+             driver::options::OPT_fno_sanitize_recover,
+             driver::options::OPT_fno_sanitize_stable_abi,
+             driver::options::OPT_fno_sanitize_stats,
+             driver::options::OPT_fno_sanitize_thread_atomics,
+             driver::options::OPT_fno_sanitize_thread_func_entry_exit,
+             driver::options::OPT_fno_sanitize_thread_memory_access,
+             driver::options::OPT_fno_sanitize_trap_EQ,
+             driver::options::OPT_fno_sanitize_trap,
+             driver::options::OPT_fno_sanitize_undefined_trap_on_error,
+             driver::options::OPT_fno_sanitize_EQ,
+             driver::options::OPT_sanitize_address_destructor_EQ,
+             driver::options::OPT_fsanitize_address_field_padding,
+             driver::options::OPT_fsanitize_address_globals_dead_stripping,
+             driver::options::OPT_fsanitize_address_outline_instrumentation,
+             driver::options::OPT_fsanitize_address_poison_custom_array_cookie,
+             driver::options::OPT_sanitize_address_use_after_return_EQ,
+             driver::options::OPT__SLASH_fsanitize_address_use_after_return,
+             driver::options::OPT_fsanitize_address_use_after_scope,
+             driver::options::OPT_fsanitize_address_use_odr_indicator,
+             driver::options::OPT_anonymous_512,
+             driver::options::OPT_fsanitize_cfi_canonical_jump_tables,
+             driver::options::OPT_fsanitize_cfi_cross_dso,
+             driver::options::OPT_fsanitize_cfi_icall_normalize_integers,
+             driver::options::OPT_fsanitize_cfi_icall_generalize_pointers,
+             driver::options::OPT_fsanitize_coverage_8bit_counters,
+             driver::options::OPT_fsanitize_coverage_allowlist,
+             driver::options::OPT_fsanitize_coverage_control_flow,
+             driver::options::OPT_fsanitize_coverage_ignorelist,
+             driver::options::OPT_fsanitize_coverage_indirect_calls,
+             driver::options::OPT_fsanitize_coverage_inline_8bit_counters,
+             driver::options::OPT_fsanitize_coverage_inline_bool_flag,
+             driver::options::OPT_fsanitize_coverage_no_prune,
+             driver::options::OPT_fsanitize_coverage_pc_table,
+             driver::options::OPT_fsanitize_coverage_stack_depth,
+             driver::options::OPT_fsanitize_coverage_trace_bb,
+             driver::options::OPT_fsanitize_coverage_trace_cmp,
+             driver::options::OPT_fsanitize_coverage_trace_div,
+             driver::options::OPT_fsanitize_coverage_trace_gep,
+             driver::options::OPT_fsanitize_coverage_trace_loads,
+             driver::options::OPT_fsanitize_coverage_trace_pc_guard,
+             driver::options::OPT_fsanitize_coverage_trace_pc,
+             driver::options::OPT_fsanitize_coverage_trace_stores,
+             driver::options::OPT_fsanitize_coverage_type,
+             driver::options::OPT_fsanitize_coverage,
+             driver::options::OPT_fsanitize_hwaddress_abi_EQ,
+             driver::options::OPT_fsanitize_hwaddress_experimental_aliasing,
+             driver::options::OPT_fsanitize_ignorelist_EQ,
+             driver::options::OPT_fsanitize_link_cxx_runtime,
+             driver::options::OPT_fsanitize_link_runtime,
+             driver::options::OPT_fsanitize_memory_param_retval,
+             driver::options::OPT_fsanitize_memory_track_origins_EQ,
+             driver::options::OPT_fsanitize_memory_track_origins,
+             driver::options::OPT_fsanitize_memory_use_after_dtor,
+             driver::options::OPT_fsanitize_memtag_mode_EQ,
+             driver::options::OPT_fsanitize_minimal_runtime,
+             driver::options::OPT_fsanitize_recover_EQ,
+             driver::options::OPT_fsanitize_recover,
+             driver::options::OPT_fsanitize_stable_abi,
+             driver::options::OPT_fsanitize_stats,
+             driver::options::OPT_fsanitize_system_ignorelist_EQ,
+             driver::options::OPT_fsanitize_thread_atomics,
+             driver::options::OPT_fsanitize_thread_func_entry_exit,
+             driver::options::OPT_fsanitize_thread_memory_access,
+             driver::options::OPT_fsanitize_trap_EQ,
+             driver::options::OPT_fsanitize_trap,
+             driver::options::OPT_fsanitize_undefined_strip_path_components_EQ,
+             driver::options::OPT_fsanitize_undefined_trap_on_error,
+             driver::options::OPT__SLASH_fsanitize_EQ_address,
+             driver::options::OPT_fsanitize_EQ,
+             driver::options::OPT_shared_libsan,
+             driver::options::OPT_static_libsan,
+             driver::options::OPT_static_libsan,
+
+             // diagnostic options
+             driver::options::OPT_Diag_Group,
+             driver::options::OPT_W_value_Group,
+             driver::options::OPT__SLASH_wd,
+
+             // language conformance options
+             driver::options::OPT_pedantic_Group,
+             driver::options::OPT__SLASH_permissive,
+             driver::options::OPT__SLASH_permissive_,
+
+             // ignored options
+             driver::options::OPT_cl_ignored_Group,
+             driver::options::OPT_cl_ignored_Group,
+             driver::options::OPT_clang_ignored_f_Group,
+             driver::options::OPT_clang_ignored_gcc_optimization_f_Group,
+             driver::options::OPT_clang_ignored_legacy_options_Group,
+             driver::options::OPT_clang_ignored_m_Group,
+             driver::options::OPT_flang_ignored_w_Group
 #if 0
             // input file options
             driver::options::OPT_INPUT,
+
             // output file options
             driver::options::OPT_o,
             driver::options::OPT__SLASH_o,
@@ -151,18 +211,136 @@ adjustCommandLine(
             // driver::options::OPT__SLASH_Tp
             // driver::options::OPT__SLASH_TC
             // driver::options::OPT__SLASH_Tc
-            ))
+    ))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+static
+std::vector<std::string>
+adjustCommandLine(
+    const std::vector<std::string>& cmdline,
+    const std::vector<std::string>& additional_defines,
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
+{
+    if (cmdline.empty())
+    {
+        return cmdline;
+    }
+
+    // ------------------------------------------------------
+    // Copy the compiler path
+    // ------------------------------------------------------
+    std::string const& progName = cmdline.front();
+    std::vector<std::string> new_cmdline = {progName};
+
+    // ------------------------------------------------------
+    // Convert to InputArgList
+    // ------------------------------------------------------
+    // InputArgList is the input format for llvm functions
+    auto cmdLineCStrsView = std::views::transform(cmdline, &std::string::c_str);
+    std::vector<const char*> cmdLineCStrs(cmdLineCStrsView.begin(), cmdLineCStrsView.end());
+    llvm::opt::InputArgList args = llvm::opt::InputArgList(
+        cmdLineCStrs.data(),
+        cmdLineCStrs.data() + cmdLineCStrs.size());
+
+    // ------------------------------------------------------
+    // Get driver mode
+    // ------------------------------------------------------
+    // The driver mode distinguishes between clang/gcc and msvc
+    // command line option formats. The value is deduced from
+    // the `-drive-mode` option or from `progName`.
+    // Common values are "gcc", "g++", "cpp", "cl" and "flang".
+    StringRef driver_mode = driver::getDriverMode(progName, cmdLineCStrs);
+    // Identify if we should use "msvc/clang-cl" or "clang/gcc" format
+    // for options.
+    bool const is_clang_cl = driver::IsClangCL(driver_mode);
+
+    // ------------------------------------------------------
+    // Supress all warnings
+    // ------------------------------------------------------
+    // Add flags to ignore all warnings. Any options that
+    // affect warnings will be discarded later.
+    new_cmdline.emplace_back(is_clang_cl ? "/w" : "-w");
+    new_cmdline.emplace_back("-fsyntax-only");
+
+    // ------------------------------------------------------
+    // Add additional defines
+    // ------------------------------------------------------
+    // These are additional defines specified in the config file
+    for(const auto& def : additional_defines)
+    {
+        new_cmdline.emplace_back(fmt::format("-D{}", def));
+    }
+
+    // ------------------------------------------------------
+    // Add implicit include paths
+    // ------------------------------------------------------
+    // Implicit include paths are those which are automatically
+    // added by the compiler. These will not be defined in the
+    // compile command, so we add them here so that clang
+    // can also find these headers.
+    if (auto it = implicitIncludeDirectories.find(progName);
+        it != implicitIncludeDirectories.end()) {
+        for (auto const& inc : it->second)
+        {
+            new_cmdline.emplace_back(fmt::format("-I{}", inc));
+        }
+    }
+
+    // ------------------------------------------------------
+    // Adjust each argument in the command line
+    // ------------------------------------------------------
+    // Iterate over each argument in the command line and
+    // add it to the new command line if it is a valid
+    // Clang option. This will discard any options that
+    // affect warnings, are ignored, or turn warnings into
+    // errors.
+    const llvm::opt::OptTable& opts_table = clang::driver::getDriverOptTable();
+    llvm::opt::Visibility visibility(is_clang_cl ?
+        driver::options::CLOption : driver::options::ClangOption);
+    unsigned idx = 1;
+    while (idx < cmdline.size())
+    {
+        // Parse one argument as a Clang option
+        // ParseOneArg updates Index to the next argument to be parsed.
+        unsigned idx0 = idx;
+        std::unique_ptr<llvm::opt::Arg> arg =
+            opts_table.ParseOneArg(args, idx, visibility);
+        if (!isValidMrDocsOption(arg))
         {
             continue;
         }
-
         new_cmdline.insert(
             new_cmdline.end(),
-            cmdline.begin() + old_idx,
+            cmdline.begin() + idx0,
             cmdline.begin() + idx);
     }
 
     return new_cmdline;
+}
+
+static
+std::string
+makeAbsoluteAndNative(
+    llvm::StringRef workingDir,
+    llvm::StringRef path)
+{
+    SmallPathString temp;
+    if (llvm::sys::path::is_absolute(path))
+    {
+        llvm::sys::path::native(path, temp);
+    }
+    else
+    {
+        temp = path;
+        llvm::sys::fs::make_absolute(workingDir, temp);
+        llvm::sys::path::remove_dots(temp, true);
+    }
+    return static_cast<std::string>(temp);
 }
 
 MrDocsCompilationDatabase::
@@ -174,16 +352,16 @@ MrDocsCompilationDatabase(
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
+    using tooling::CompileCommand;
     auto config_impl = std::dynamic_pointer_cast<
         const ConfigImpl>(config);
 
-    auto allCommands = inner.getAllCompileCommands();
+    std::vector<CompileCommand> allCommands = inner.getAllCompileCommands();
     AllCommands_.reserve(allCommands.size());
     SmallPathString temp;
-    for(auto const& cmd0 : allCommands)
+    for (tooling::CompileCommand const& cmd0 : allCommands)
     {
         tooling::CompileCommand cmd;
-
         cmd.CommandLine = cmd0.CommandLine;
         cmd.Heuristic = cmd0.Heuristic;
         cmd.Output = cmd0.Output;
@@ -191,41 +369,20 @@ MrDocsCompilationDatabase(
             cmd0.CommandLine,
             (*config_impl)->defines,
             implicitIncludeDirectories);
-
-        if(path::is_absolute(cmd0.Directory))
+        cmd.Directory = makeAbsoluteAndNative(workingDir, cmd0.Directory);
+        cmd.Filename = makeAbsoluteAndNative(workingDir, cmd0.Filename);
+        if (isCXXSrcFile(cmd.Filename))
         {
-            path::native(cmd0.Directory, temp);
-            cmd.Directory = static_cast<std::string>(temp);
+            const bool emplaced = IndexByFile_.try_emplace(cmd.Filename, AllCommands_.size()).second;
+            if (emplaced)
+            {
+                AllCommands_.emplace_back(std::move(cmd));
+            }
         }
         else
         {
-            temp = cmd0.Directory;
-            fs::make_absolute(workingDir, temp);
-            path::remove_dots(temp, true);
-            cmd.Directory = static_cast<std::string>(temp);
+            report::info(fmt::format("Skipping non-C++ file: {}", cmd.Filename));
         }
-
-        if(path::is_absolute(cmd0.Filename))
-        {
-            path::native(cmd0.Filename, temp);
-            cmd.Filename = static_cast<std::string>(temp);
-        }
-        else
-        {
-            temp = cmd0.Filename;
-            fs::make_absolute(workingDir, temp);
-            path::remove_dots(temp, true);
-            cmd.Filename = static_cast<std::string>(temp);
-        }
-
-        // non-C++ input file; skip
-        if(! isCXXSrcFile(cmd.Filename))
-            continue;
-
-        std::size_t i = AllCommands_.size();
-        auto result = IndexByFile_.try_emplace(cmd.Filename, i);
-        if(result.second)
-            AllCommands_.emplace_back(std::move(cmd));
     }
 }
 

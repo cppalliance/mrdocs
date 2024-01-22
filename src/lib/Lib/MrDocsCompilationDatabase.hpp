@@ -19,12 +19,19 @@
 namespace clang {
 namespace mrdocs {
 
-/** A compilation database where all paths are absolute.
+/** A compilation database for MrDocs.
 
-    All relative paths in the compilation database
-    will be converted to absolute paths by resolving
-    them according to the working directory specified
-    at construction.
+    This class is a type of `clang::tooling::CompilationDatabase`
+    where each compile command is adjusted to match the
+    requirements of MrDocs.
+
+    - Relative paths are converted to absolute paths,
+    - Paths are converted to native format,
+    - Implicit include directories are added to the compile commands,
+    - Custom configuration macros are added to the compile commands,
+    - Non C++ files are filtered out.
+    - Warnings are disabled
+
 */
 class MrDocsCompilationDatabase
     : public tooling::CompilationDatabase
@@ -36,10 +43,9 @@ public:
     /**
      * Constructor.
      *
-     * This copies the contents of the source compilation 
-     * database. Every relative path is converted into an 
-     * absolute path by resolving against the specified
-     * working directory.
+     * This copies the contents of the source compilation
+     * database. Each compile command is adjusted to match
+     * the requirements of MrDocs.
      *
      * @param workingDir The working directory against which relative paths will be resolved.
      * @param inner The source compilation database to copy.
@@ -53,13 +59,25 @@ public:
         std::shared_ptr<const Config> config,
         std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories);
 
+    /** Get all compile commands for a file.
+
+        @return A vector of compile commands.
+    */
     std::vector<tooling::CompileCommand>
     getCompileCommands(
         llvm::StringRef FilePath) const override;
 
+    /** Get all files in the database.
+
+        @return A vector of file paths.
+    */
     std::vector<std::string>
     getAllFiles() const override;
 
+    /** Get all compile commands in the database.
+
+        @return A vector of compile commands.
+    */
     std::vector<tooling::CompileCommand>
     getAllCompileCommands() const override;
 };
