@@ -32,9 +32,9 @@ bool
 isCXXSrcFile(
     std::string_view filename)
 {
-    return driver::types::isCXX(
-        driver::types::lookupTypeForExtension(
-            llvm::sys::path::extension(filename).drop_front()));
+    StringRef ext = llvm::sys::path::extension(filename).drop_front();
+    driver::types::ID extensionId = driver::types::lookupTypeForExtension(ext);
+    return driver::types::isCXX(extensionId) || ext == "c";
 }
 
 template<typename... Opts>
