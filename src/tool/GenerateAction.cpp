@@ -51,21 +51,31 @@ generateCompileCommandsFile(llvm::StringRef projectPath, llvm::StringRef cmakeAr
     fs::file_status fileStatus;
     MRDOCS_CHECK(!fs::status(projectPath, fileStatus), "Failed to get file status");
 
+    // --------------------------------------------------------------
+    // Input path is a project directory
+    // --------------------------------------------------------------
     if (fs::is_directory(fileStatus))
     {
         return executeCmakeExportCompileCommands(projectPath, cmakeArgs);
     }
-    
+
+    // --------------------------------------------------------------
+    // Input path is a CMakeLists.txt
+    // --------------------------------------------------------------
     auto const fileName = files::getFileName(projectPath);
+    if (fileName == "CMakeLists.txt")
+    {
+        return executeCmakeExportCompileCommands(files::getParentDir(projectPath), cmakeArgs);
+    }
+
+    // --------------------------------------------------------------
+    // Input path is a compile_commands.json
+    // --------------------------------------------------------------
     if (fileName == "compile_commands.json")
     {
         return projectPath.str();
     }
-    
-    if (fileName == "CMakeLists.txt")
-    {
-        return executeCmakeExportCompileCommands(files::getParentDir(projectPath), cmakeArgs);
-    }    
+
     return projectPath.str();
 }
 
@@ -94,12 +104,14 @@ DoGenerateAction()
     ThreadPool threadPool(toolArgs.concurrency);
     {
         MRDOCS_CHECK(toolArgs.configPath, "The config path argument is missing");
-        MRDOCS_TRY(auto configFile, loadConfigFile(
-            toolArgs.configPath,
-            toolArgs.addonsDir,
-            extraYaml,
-            nullptr,
-            threadPool));
+        MRDOCS_TRY(
+            std::shared_ptr<ConfigImpl const> configFile,
+            loadConfigFile(
+                toolArgs.configPath,
+                toolArgs.addonsDir,
+                extraYaml,
+                nullptr,
+                threadPool));
         config = std::move(configFile);
     }
 
@@ -117,33 +129,39 @@ DoGenerateAction()
 
     // --------------------------------------------------------------
     //
-    // Load the compilation database file
+    // Generate compile_commands.json
     //
     // --------------------------------------------------------------
-    
     MRDOCS_CHECK(toolArgs.inputPaths, "The compilation database path argument is missing");
     MRDOCS_CHECK(toolArgs.inputPaths.size() == 1,
         formatError(
             "got {} input paths where 1 was expected",
             toolArgs.inputPaths.size()));
 
-
     std::string_view cmakeArgs = config->object().exists("cmake") ?
         config->object().get("cmake").getString() : "";
-    auto const inputPath = generateCompileCommandsFile(toolArgs.inputPaths.front(), cmakeArgs);
-    if ( ! inputPath)
+    Expected<std::string> const compileCommandsPathExp =
+        generateCompileCommandsFile(toolArgs.inputPaths.front(), cmakeArgs);
+    if (!compileCommandsPathExp)
     {
-        report::error("Failed to generate compile_commands.json file: {}", inputPath.error());
-        return {};
+        report::error(
+            "Failed to generate compile_commands.json file: {}",
+            compileCommandsPathExp.error());
+        return Unexpected(compileCommandsPathExp.error());
     }
 
-    auto compilationsPath = files::normalizePath(*inputPath);
-    MRDOCS_TRY(compilationsPath, files::makeAbsolute(compilationsPath));
+    // --------------------------------------------------------------
+    //
+    // Load the compilation database file
+    //
+    // --------------------------------------------------------------
+    std::string compileCommandsPath = files::normalizePath(*compileCommandsPathExp);
+    MRDOCS_TRY(compileCommandsPath, files::makeAbsolute(compileCommandsPath));
     std::string errorMessage;
     MRDOCS_TRY_MSG(
         auto& compileCommands,
         tooling::JSONCompilationDatabase::loadFromFile(
-            compilationsPath,
+            compileCommandsPath,
             errorMessage,
             tooling::JSONCommandLineSyntax::AutoDetect),
         std::move(errorMessage));
@@ -152,9 +170,12 @@ DoGenerateAction()
     auto const defaultIncludePaths = getCompilersDefaultIncludeDir(compileCommands);
 
     // Custom compilation database that converts relative paths to absolute
-    auto compileCommandsDir = files::getParentDir(compilationsPath);
+    auto compileCommandsDir = files::getParentDir(compileCommandsPath);
+    MRDOCS_ASSERT(files::isDirsy(compileCommandsDir));
     MrDocsCompilationDatabase compilationDatabase(
-            compileCommandsDir, compileCommands, config, defaultIncludePaths);
+        compileCommandsDir,
+        compileCommands, config,
+        defaultIncludePaths);
 
     // Normalize outputPath path
     MRDOCS_CHECK(toolArgs.outputPath, "The output path argument is missing");
@@ -172,7 +193,7 @@ DoGenerateAction()
         CorpusImpl::build(
             report::Level::info, config, compilationDatabase));
 
-    if(corpus->empty())
+    if (corpus->empty())
     {
         report::warn("Corpus is empty, not generating docs");
         return {};

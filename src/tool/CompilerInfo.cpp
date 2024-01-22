@@ -21,7 +21,8 @@ namespace mrdocs {
 std::optional<std::string> 
 getCompilerVerboseOutput(llvm::StringRef compilerPath) 
 {
-    if ( ! llvm::sys::fs::exists(compilerPath)) {
+    if ( ! llvm::sys::fs::exists(compilerPath))
+    {
         return std::nullopt;
     }
 
@@ -43,7 +44,7 @@ getCompilerVerboseOutput(llvm::StringRef compilerPath)
 
     auto bufferOrError = llvm::MemoryBuffer::getFile(outputPath);
     llvm::sys::fs::remove(outputPath);
-    if ( ! bufferOrError) 
+    if (!bufferOrError)
     {
         return std::nullopt;
     }
@@ -86,20 +87,25 @@ getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb)
     std::unordered_map<std::string, std::vector<std::string>> res;
     auto const allCommands = compDb.getAllCompileCommands();
 
-    for (auto const& cmd : allCommands) {
-        if ( ! cmd.CommandLine.empty()) {
+    for (auto const& cmd : allCommands)
+    {
+        if (!cmd.CommandLine.empty())
+        {
             auto const& compilerPath = cmd.CommandLine[0];
-            if (res.contains(compilerPath)) {
+            if (res.contains(compilerPath))
+            {
                 continue;
             }
 
+            std::vector<std::string> includePaths;
             auto const compilerOutput = getCompilerVerboseOutput(compilerPath);
-            if ( ! compilerOutput) {
-                report::warn("Warning: could not get compiler info for \"{}\"", compilerPath);
+            if (!compilerOutput)
+            {
+                res.emplace(compilerPath, includePaths);
                 continue;
             }
-            std::vector<std::string> includePaths = parseIncludePaths(*compilerOutput);
-            res.emplace(compilerPath, std::move(includePaths));                      
+            includePaths = parseIncludePaths(*compilerOutput);
+            res.emplace(compilerPath, std::move(includePaths));
         }
     }
 
