@@ -195,6 +195,76 @@ parseCmakeArgs(std::string const& cmakeArgsStr) {
     return args;
 }
 
+Expected<void>
+pushCMakeArgs(
+    std::string const& cmakePath,
+    std::vector<llvm::StringRef> &args,
+    std::vector<std::string> const& additionalArgs) {
+    bool visualStudioFound = false;
+    for (size_t i = 0; i < additionalArgs.size(); ++i)
+    {
+        auto const& arg = additionalArgs[i];
+        if (arg.starts_with("-G"))
+        {
+            if (arg.size() == 2)
+            {
+                if (i + 1 < additionalArgs.size())
+                {
+                    auto const& generatorName = additionalArgs[i + 1];
+                    if (generatorName.starts_with("Visual Studio"))
+                    {
+                        args.emplace_back("-GNinja");
+                        visualStudioFound = true;
+                        ++i;
+                        continue;
+                    }
+                }
+            } else {
+                if (arg.find("Visual Studio", 2) != std::string::npos)
+                {
+                    args.emplace_back("-GNinja");
+                    visualStudioFound = true;
+                    continue;
+                }
+            }
+        }
+
+        if (arg.starts_with("-D"))
+        {
+            if (arg.size() == 2)
+            {
+                if (i + 1 < additionalArgs.size())
+                {
+                    auto const& optionName = additionalArgs[i + 1];
+                    if (optionName.starts_with("CMAKE_EXPORT_COMPILE_COMMANDS"))
+                    {
+                        ++i;
+                        continue;
+                    }
+                }
+            } else {
+                if (arg.find("CMAKE_EXPORT_COMPILE_COMMANDS", 2) != std::string::npos)
+                {
+                    continue;
+                }
+            }
+        }
+        args.emplace_back(arg);
+    }
+
+    if (!visualStudioFound)
+    {
+        MRDOCS_TRY(
+            bool const cmakeDefaultGeneratorIsVisualStudio,
+            cmakeDefaultGeneratorIsVisualStudio(cmakePath));
+        if (cmakeDefaultGeneratorIsVisualStudio)
+        {
+            args.emplace_back("-GNinja");
+        }
+    }
+    return {};
+}
+
 } // anonymous namespace
 
 Expected<std::string>
@@ -206,79 +276,18 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
     llvm::SmallString<128> tempDir;
     MRDOCS_CHECK(!llvm::sys::fs::createUniqueDirectory("compile_commands", tempDir), "Failed to create temporary directory");
 
-    llvm::SmallString<128> errorPath;
-    MRDOCS_CHECK(!llvm::sys::fs::createTemporaryFile("cmake-error", "txt", errorPath), 
-        "Failed to create temporary file");        
+    ScopedTempFile const errorPath("cmake-error", "txt");
+    MRDOCS_CHECK(errorPath, "Failed to create temporary file");
 
-    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), errorPath.str()};
+    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), errorPath.path()};
     std::vector<llvm::StringRef> args = {cmakePath, "-S", projectPath, "-B", tempDir.str(), "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
 
     auto const additionalArgs = parseCmakeArgs(cmakeArgs.str());
-    
-    bool visualStudioFound = false;
-    for (size_t i = 0; i < additionalArgs.size(); ++i) 
-    {
-        auto const& arg = additionalArgs[i];
-        if (arg.starts_with("-G"))
-        {
-            if (arg.size() == 2) 
-            {
-                if (i + 1 < additionalArgs.size()) 
-                {
-                    auto const& generatorName = additionalArgs[i + 1];
-                    if (generatorName.starts_with("Visual Studio")) 
-                    {
-                        args.push_back("-GNinja");
-                        visualStudioFound = true;
-                        ++i;
-                        continue;
-                    }
-                }
-            } else {
-                if (arg.find("Visual Studio", 2) != std::string::npos) 
-                {
-                    args.push_back("-GNinja");
-                    visualStudioFound = true;
-                    continue;
-                }
-            }
-        }
-
-        if (arg.starts_with("-D"))
-        {
-            if (arg.size() == 2) 
-            {
-                if (i + 1 < additionalArgs.size()) 
-                {
-                    auto const& optionName = additionalArgs[i + 1];
-                    if (optionName.starts_with("CMAKE_EXPORT_COMPILE_COMMANDS")) 
-                    {
-                        ++i;
-                        continue;
-                    }
-                }
-            } else {
-                if (arg.find("CMAKE_EXPORT_COMPILE_COMMANDS", 2) != std::string::npos) 
-                {
-                    continue;
-                }
-            }
-        }         
-        args.push_back(arg);
-    }
-    
-    if ( ! visualStudioFound) 
-    {
-        MRDOCS_TRY(auto const cmakeDefaultGeneratorIsVisualStudio, cmakeDefaultGeneratorIsVisualStudio(cmakePath));
-        if (cmakeDefaultGeneratorIsVisualStudio) 
-        {
-            args.push_back("-GNinja");
-        }
-    }
+    MRDOCS_TRY(pushCMakeArgs(cmakePath, args, additionalArgs));
 
     int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
     if (result != 0) {
-        auto bufferOrError = llvm::MemoryBuffer::getFile(errorPath);
+        auto bufferOrError = llvm::MemoryBuffer::getFile(errorPath.path());
         MRDOCS_CHECK(bufferOrError, "CMake execution failed (no error output available)");
         return Unexpected(Error("CMake execution failed: \n" + bufferOrError.get()->getBuffer().str()));
     }
@@ -288,6 +297,7 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
 
     return compileCommandsPath.str().str();
 }
+
 
 } // mrdocs
 } // clang
