@@ -9,6 +9,7 @@
 //
 
 #include "lib/Lib/CMakeExecution.hpp"
+#include "lib/Support/Path.hpp"
 
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/MemoryBuffer.h>
@@ -20,9 +21,45 @@ namespace mrdocs {
 
 namespace {
 
+class ScopedTempFile
+{
+    clang::mrdocs::SmallPathString path_;
+    bool ok_ = false;
+public:
+    ~ScopedTempFile()
+    {
+        if (ok_)
+        {
+            llvm::sys::fs::remove(path_);
+        }
+    }
+
+    ScopedTempFile(llvm::StringRef prefix, llvm::StringRef ext)
+    {
+        llvm::SmallString<128> tempPath;
+        ok_ = !llvm::sys::fs::createTemporaryFile(prefix, ext, tempPath);
+        if (ok_)
+        {
+            path_ = tempPath;
+        }
+    }
+
+    operator
+    bool() const
+    {
+        return ok_;
+    }
+
+    llvm::StringRef path() const
+    {
+        return path_;
+    }
+};
+
 Expected<std::string>
-getCmakePath() {
-    auto const path = llvm::sys::findProgramByName("cmake");
+getCmakePath()
+{
+    llvm::ErrorOr<std::string> const path = llvm::sys::findProgramByName("cmake");
     MRDOCS_CHECK(path, "CMake executable not found");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), llvm::StringRef()};
     std::vector<llvm::StringRef> const args = {*path, "--version"};
@@ -34,18 +71,38 @@ getCmakePath() {
 Expected<std::string>
 executeCmakeHelp(llvm::StringRef cmakePath)
 {
-    llvm::SmallString<128> outputPath;
-    MRDOCS_CHECK(!llvm::sys::fs::createTemporaryFile("cmake-help", "txt", outputPath), 
-        "Failed to create temporary file");
-    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), outputPath.str(), llvm::StringRef()};
+    ScopedTempFile const outputPath("cmake-help", "txt");
+    MRDOCS_CHECK(outputPath, "Failed to create temporary file");
+    ScopedTempFile const errOutputPath("cmake-help-err", "txt");
+    MRDOCS_CHECK(errOutputPath, "Failed to create temporary file");
+    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), outputPath.path(), errOutputPath.path()};
     std::vector<llvm::StringRef> const args = {cmakePath, "--help"};
     llvm::ArrayRef<llvm::StringRef> emptyEnv;
     int const result = llvm::sys::ExecuteAndWait(cmakePath, args, emptyEnv, redirects);
-    MRDOCS_CHECK(result == 0, "CMake execution failed when trying to get help");
-
-    auto const bufferOrError = llvm::MemoryBuffer::getFile(outputPath);
+    if (result != 0)
+    {
+        auto const bufferOrError = llvm::MemoryBuffer::getFile(errOutputPath.path());
+        MRDOCS_CHECK(bufferOrError, "CMake execution failed (no error output available)");
+        auto const bufferOrError2 = llvm::MemoryBuffer::getFile(errOutputPath.path());
+        MRDOCS_CHECK(bufferOrError2, "CMake execution failed (no error output available)");
+        // Concatenate both outputs
+        std::string output;
+        if (bufferOrError.get()->getBuffer().str().empty())
+        {
+            output = bufferOrError2.get()->getBuffer().str();
+        }
+        else if (bufferOrError2.get()->getBuffer().str().empty())
+        {
+            output = bufferOrError.get()->getBuffer().str();
+        }
+        else
+        {
+            output = bufferOrError.get()->getBuffer().str() + "\n" + bufferOrError2.get()->getBuffer().str();
+        }
+        return Unexpected(Error("CMake --help execution failed: \n" + output));
+    }
+    auto const bufferOrError = llvm::MemoryBuffer::getFile(outputPath.path());
     MRDOCS_CHECK(bufferOrError, "Failed to read CMake help output");
-
     return bufferOrError.get()->getBuffer().str();
 }
 
