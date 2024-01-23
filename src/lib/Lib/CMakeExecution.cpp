@@ -74,8 +74,19 @@ executeCmakeHelp(llvm::StringRef cmakePath)
 Expected<std::string>
 getCmakeDefaultGenerator(llvm::StringRef cmakePath) 
 {
-    MRDOCS_TRY(auto const cmakeHelp, executeCmakeHelp(cmakePath));
+    Expected<std::string> const cmakeHelpExp = executeCmakeHelp(cmakePath);
+    if (!cmakeHelpExp) {
+        if (llvm::sys::path::extension(cmakePath) == ".exe")
+        {
+            return "Visual Studio 17 2022";
+        }
+        else
+        {
+            return "Unix Makefiles";
+        }
+    }
 
+    std::string const cmakeHelp = *std::move(cmakeHelpExp);
     std::istringstream stream(cmakeHelp);
     std::string line;
     std::string defaultGenerator;

@@ -179,12 +179,6 @@ DoGenerateAction()
         compileCommands, config,
         defaultIncludePaths);
 
-    // Normalize outputPath path
-    MRDOCS_CHECK(toolArgs.outputPath, "The output path argument is missing");
-    toolArgs.outputPath = files::normalizePath(
-        files::makeAbsolute(toolArgs.outputPath,
-            (*config)->workingDir));
-
     // --------------------------------------------------------------
     //
     // Build corpus
@@ -206,6 +200,12 @@ DoGenerateAction()
     // Generate docs
     //
     // --------------------------------------------------------------
+    // Normalize outputPath path
+    MRDOCS_CHECK(toolArgs.outputPath, "The output path argument is missing");
+    toolArgs.outputPath = files::normalizePath(
+        files::makeAbsolute(
+            toolArgs.outputPath,
+            (*config)->workingDir));
     report::info("Generating docs\n");
     MRDOCS_TRY(generator.build(toolArgs.outputPath.getValue(), *corpus));
     return {};
