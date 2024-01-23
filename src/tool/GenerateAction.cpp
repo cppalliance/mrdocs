@@ -15,6 +15,7 @@
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Lib/CorpusImpl.hpp"
 #include "lib/Lib/MrDocsCompilationDatabase.hpp"
+#include "lib/Support/Path.hpp"
 #include "llvm/Support/Program.h"
 #include <mrdocs/Generators.hpp>
 #include <mrdocs/Support/Error.hpp>
@@ -37,35 +38,35 @@ namespace {
  * 2. If the project path is a directory, it generates the compilation database using the provided project path.
  * 3. If the project path is a `CMakeLists.txt` file, it generates the compilation database using the parent directory of the file.
  *
- * @param projectPath The path to the project, which can be a directory, a `compile_commands.json` file, or a `CMakeLists.txt` file.
+ * @param inputPath The path to the project, which can be a directory, a `compile_commands.json` file, or a `CMakeLists.txt` file.
  * @param cmakeArgs The arguments to pass to CMake when generating the compilation database.
  * @return An `Expected` object containing the path to the `compile_commands.json` file if the database is generated, or the provided path if it is already the `compile_commands.json` file. 
  * Returns an `Unexpected` object in case of failure (e.g., file not found, CMake execution failure).
  */
 Expected<std::string>
-generateCompileCommandsFile(llvm::StringRef projectPath, llvm::StringRef cmakeArgs)
+generateCompileCommandsFile(llvm::StringRef inputPath, llvm::StringRef cmakeArgs, llvm::StringRef tempDir)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
     fs::file_status fileStatus;
-    MRDOCS_CHECK(!fs::status(projectPath, fileStatus), "Failed to get file status");
+    MRDOCS_CHECK(!fs::status(inputPath, fileStatus), "Failed to get file status");
 
     // --------------------------------------------------------------
     // Input path is a project directory
     // --------------------------------------------------------------
     if (fs::is_directory(fileStatus))
     {
-        return executeCmakeExportCompileCommands(projectPath, cmakeArgs);
+        return executeCmakeExportCompileCommands(inputPath, cmakeArgs, tempDir);
     }
 
     // --------------------------------------------------------------
     // Input path is a CMakeLists.txt
     // --------------------------------------------------------------
-    auto const fileName = files::getFileName(projectPath);
+    auto const fileName = files::getFileName(inputPath);
     if (fileName == "CMakeLists.txt")
     {
-        return executeCmakeExportCompileCommands(files::getParentDir(projectPath), cmakeArgs);
+        return executeCmakeExportCompileCommands(files::getParentDir(inputPath), cmakeArgs, tempDir);
     }
 
     // --------------------------------------------------------------
@@ -73,10 +74,10 @@ generateCompileCommandsFile(llvm::StringRef projectPath, llvm::StringRef cmakeAr
     // --------------------------------------------------------------
     if (fileName == "compile_commands.json")
     {
-        return projectPath.str();
+        return inputPath.str();
     }
 
-    return projectPath.str();
+    return Unexpected(Error("Input path is not a directory, a CMakeLists.txt file, or a compile_commands.json file"));
 }
 
 } // anonymous namespace
@@ -138,10 +139,11 @@ DoGenerateAction()
             "got {} input paths where 1 was expected",
             toolArgs.inputPaths.size()));
 
+    ScopedTempDirectory tempDir("mrdocs-compile-commands");
     std::string_view cmakeArgs = config->object().exists("cmake") ?
         config->object().get("cmake").getString() : "";
     Expected<std::string> const compileCommandsPathExp =
-        generateCompileCommandsFile(toolArgs.inputPaths.front(), cmakeArgs);
+        generateCompileCommandsFile(toolArgs.inputPaths.front(), cmakeArgs, tempDir.path());
     if (!compileCommandsPathExp)
     {
         report::error(

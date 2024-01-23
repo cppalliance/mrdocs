@@ -21,41 +21,6 @@ namespace mrdocs {
 
 namespace {
 
-class ScopedTempFile
-{
-    clang::mrdocs::SmallPathString path_;
-    bool ok_ = false;
-public:
-    ~ScopedTempFile()
-    {
-        if (ok_)
-        {
-            llvm::sys::fs::remove(path_);
-        }
-    }
-
-    ScopedTempFile(llvm::StringRef prefix, llvm::StringRef ext)
-    {
-        llvm::SmallString<128> tempPath;
-        ok_ = !llvm::sys::fs::createTemporaryFile(prefix, ext, tempPath);
-        if (ok_)
-        {
-            path_ = tempPath;
-        }
-    }
-
-    operator
-    bool() const
-    {
-        return ok_;
-    }
-
-    llvm::StringRef path() const
-    {
-        return path_;
-    }
-};
-
 Expected<std::string>
 getCmakePath()
 {
@@ -268,19 +233,16 @@ pushCMakeArgs(
 } // anonymous namespace
 
 Expected<std::string>
-executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs) 
+executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs, llvm::StringRef tempDir)
 {
     MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "Project path does not exist");
     MRDOCS_TRY(auto const cmakePath, getCmakePath());
-
-    llvm::SmallString<128> tempDir;
-    MRDOCS_CHECK(!llvm::sys::fs::createUniqueDirectory("compile_commands", tempDir), "Failed to create temporary directory");
 
     ScopedTempFile const errorPath("cmake-error", "txt");
     MRDOCS_CHECK(errorPath, "Failed to create temporary file");
 
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), errorPath.path()};
-    std::vector<llvm::StringRef> args = {cmakePath, "-S", projectPath, "-B", tempDir.str(), "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
+    std::vector<llvm::StringRef> args = {cmakePath, "-S", projectPath, "-B", tempDir, "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
 
     auto const additionalArgs = parseCmakeArgs(cmakeArgs.str());
     MRDOCS_TRY(pushCMakeArgs(cmakePath, args, additionalArgs));
@@ -294,6 +256,10 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
 
     llvm::SmallString<128> compileCommandsPath(tempDir);
     llvm::sys::path::append(compileCommandsPath, "compile_commands.json");
+
+    MRDOCS_CHECK(
+        llvm::sys::fs::exists(compileCommandsPath),
+        "CMake execution failed (no compile_commands.json file generated)");
 
     return compileCommandsPath.str().str();
 }
