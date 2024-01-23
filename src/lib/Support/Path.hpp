@@ -41,6 +41,85 @@ convert_to_slash(
     llvm::sys::path::Style style =
         llvm::sys::path::Style::native);
 
+/** A temporary file that is deleted when it goes out of scope.
+*/
+class ScopedTempFile
+{
+    clang::mrdocs::SmallPathString path_;
+    bool ok_ = false;
+public:
+    /** Destructor
+
+        If a file was created, it is deleted.
+
+     */
+    ~ScopedTempFile();
+
+    /** Constructor
+
+        Creates a temporary file with the given prefix and extension.
+        The file is deleted when this object goes out of scope.
+
+        The file is created in the system temporary directory with
+        the following format:
+
+        @code
+        <tempdir>/<prefix><random>.<ext>
+        @endcode
+
+        @param prefix The prefix for the temporary file name.
+        @param ext The extension for the temporary file name.
+    */
+    ScopedTempFile(llvm::StringRef prefix, llvm::StringRef ext);
+
+    /** Returns `true` if the file was created successfully.
+    */
+    operator bool() const { return ok_; }
+
+    /** Returns the path to the temporary file.
+     */
+    llvm::StringRef path() const { return path_; }
+};
+
+/** A temporary directory that is deleted when it goes out of scope.
+*/
+class ScopedTempDirectory
+{
+    clang::mrdocs::SmallPathString path_;
+    bool ok_ = false;
+public:
+    /** Destructor
+
+        If a directory was created, it is deleted.
+
+     */
+    ~ScopedTempDirectory();
+
+    /** Constructor
+
+        Creates a temporary directory with the given prefix.
+        The directory is deleted when this object goes out of scope.
+
+        The directory is created in the system temporary directory with
+        the following format:
+
+        @code
+        <tempdir>/<prefix><random>
+        @endcode
+
+        @param prefix The prefix for the temporary directory name.
+    */
+    ScopedTempDirectory(llvm::StringRef prefix);
+
+    /** Returns `true` if the directory was created successfully.
+    */
+    operator bool() const { return ok_; }
+
+    /** Returns the path to the temporary directory.
+     */
+    llvm::StringRef path() const { return path_; }
+};
+
 } // mrdocs
 } // clang
 

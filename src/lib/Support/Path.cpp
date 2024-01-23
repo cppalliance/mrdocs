@@ -401,5 +401,47 @@ createDirectory(
 
 } // files
 
+ScopedTempFile::
+~ScopedTempFile()
+{
+    if (ok_)
+    {
+        llvm::sys::fs::remove(path_);
+    }
+}
+
+ScopedTempFile::
+ScopedTempFile(
+    llvm::StringRef prefix,
+    llvm::StringRef ext)
+{
+    llvm::SmallString<128> tempPath;
+    ok_ = !llvm::sys::fs::createTemporaryFile(prefix, ext, tempPath);
+    if (ok_)
+    {
+        path_ = files::makeDirsy(path_.str());
+    }
+}
+
+ScopedTempDirectory::
+~ScopedTempDirectory() {
+    if (ok_)
+    {
+        llvm::sys::fs::remove(path_);
+    }
+}
+
+ScopedTempDirectory::
+ScopedTempDirectory(
+    llvm::StringRef prefix)
+{
+    llvm::SmallString<128> tempPath;
+    ok_ = !llvm::sys::fs::createUniqueDirectory(prefix, tempPath);
+    if (ok_)
+    {
+        path_ = tempPath;
+    }
+}
+
 } // mrdocs
 } // clang
