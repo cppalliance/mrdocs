@@ -111,63 +111,184 @@ cmakeDefaultGeneratorIsVisualStudio(llvm::StringRef cmakePath)
     return defaultGenerator.starts_with("Visual Studio");
 }
 
-std::vector<std::string> 
-parseCmakeArgs(std::string const& cmakeArgsStr) {
-    std::vector<std::string> args;
-    std::string currentArg;
-    char quoteChar = '\0';
-    bool escapeNextChar = false;
-
-    for (char ch : cmakeArgsStr) 
+Expected<std::string_view>
+parseBashIdentifier(std::string_view str)
+{
+    if (str.empty())
     {
-        if (escapeNextChar) 
+        return Unexpected(Error("Empty argument"));
+    }
+    if (str[0] != '$')
+    {
+        return Unexpected(Error("Argument does not start with '$'"));
+    }
+    if (str.size() == 1)
+    {
+        return Unexpected(Error("Argument does not contain identifier"));
+    }
+    // Check if first char matches [a-zA-Z_]
+    if (str[1] != '_' && (str[1] < 'a' || str[1] > 'z') && (str[1] < 'A' || str[1] > 'Z'))
+    {
+        return Unexpected(Error("Argument does not start with [a-zA-Z_]"));
+    }
+    // Iterate other chars including valid chars in identifier
+    std::string_view identifier = str.substr(1, 1);
+    for (size_t i = 2; i < str.size(); ++i)
+    {
+        char const ch = str[i];
+        if (ch != '_' && (ch < 'a' || ch > 'z') && (ch < 'A' || ch > 'Z') && (ch < '0' || ch > '9'))
         {
-            currentArg += ch;
-            escapeNextChar = false;
-        } 
-        else if (ch == '\\') 
+            break;
+        }
+        identifier = str.substr(1, i);
+    }
+    return identifier;
+}
+
+std::vector<std::string> 
+parseBashArgs(std::string_view str)
+{
+    std::vector<std::string> args;
+    char curQuote = '\0';
+    std::string curArg;
+
+    for (std::size_t i = 0; i < str.size(); ++i)
+    {
+        char const c = str[i];
+        bool const inQuote = curQuote != '\0';
+        bool const curIsQuote = c == '\'' || c == '"';
+        bool const curIsEscaped = i > 0 && str[i - 1] == '\\';
+        if (!inQuote)
         {
-            escapeNextChar = true;
-        } 
-        else if ((ch == '"' || ch == '\'')) 
-        {
-            if (quoteChar == '\0') 
+            if (!curIsEscaped)
             {
-                quoteChar = ch;
-            } 
-            else if (ch == quoteChar) 
-            {
-                quoteChar = '\0';
-            } 
-            else 
-            {
-                currentArg.push_back(ch);
-            }
-        } else if (std::isspace(ch)) 
-        {
-            if (quoteChar != '\0') 
-            {
-                currentArg.push_back(ch);
-            } 
-            else 
-            {
-                if ( ! currentArg.empty()) 
+                if (curIsQuote)
                 {
-                    args.push_back(currentArg);
-                    currentArg.clear();
+                    // Open quotes
+                    curQuote = c;
                 }
-            }            
-        } else 
+                else if (c == ' ')
+                {
+                    // End of argument
+                    if (!curArg.empty())
+                    {
+                        args.push_back(curArg);
+                        curArg.clear();
+                    }
+                }
+                else if (c == '$')
+                {
+                    // Expand environment variable
+                    Expected<std::string_view> id =
+                        parseBashIdentifier(str.substr(i));
+                    if (id)
+                    {
+                        std::string idStr(*id);
+                        char const* const value = std::getenv(idStr.c_str());
+                        if (value == nullptr)
+                        {
+                            curArg += c;
+                        }
+                        else
+                        {
+                            curArg += value;
+                            i += idStr.size();
+                        }
+                    }
+                    else
+                    {
+                        curArg += c;
+                    }
+                }
+                else if (c != '\\')
+                {
+                    // Add character to current argument
+                    curArg += c;
+                }
+            }
+            else
+            {
+                // Current character is escaped:
+                // add whatever it is to current argument
+                curArg += c;
+            }
+        }
+        else if (curQuote == '\"')
         {
-            currentArg += ch;
+            // In \" quotes:
+            // Preserve the literal value of all characters except for
+            // ($), (`), ("), (\), and the (!) character
+            if (!curIsEscaped)
+            {
+                if (c == curQuote)
+                {
+                    // Close quotes
+                    curQuote = '\0';
+                }
+                else if (c == '$')
+                {
+                    // Expand environment variable
+                    Expected<std::string_view> id =
+                        parseBashIdentifier(str.substr(i));
+                    if (id)
+                    {
+                        std::string idStr(*id);
+                        char const* const value = std::getenv(idStr.c_str());
+                        if (value == nullptr)
+                        {
+                            curArg += c;
+                        }
+                        else
+                        {
+                            curArg += value;
+                            i += idStr.size();
+                        }
+                    }
+                    else
+                    {
+                        curArg += c;
+                    }
+                }
+                else if (c != '\\')
+                {
+                    // Add character to current argument
+                    curArg += c;
+                }
+            }
+            else
+            {
+                // Current character is escaped:
+                // add whatever it is to current argument
+                // Chars that don't need escaping also include the slash
+                if (c != '$' && c != '`' && c != '"' && c != '\\')
+                {
+                    curArg += '\\';
+                }
+                curArg += c;
+            }
+        }
+        else if (curQuote == '\'')
+        {
+            // In \' quotes:
+            // Preserve the literal value of each character within the
+            // quotes
+            if (c != curQuote)
+            {
+                // Add character to current argument
+                curArg += c;
+            }
+            else
+            {
+                // Close quotes
+                curQuote = '\0';
+            }
         }
     }
-
-    if ( ! currentArg.empty()) 
+    // Add last argument
+    if (!curArg.empty())
     {
-        args.push_back(currentArg);
+        args.push_back(curArg);
     }
-
     return args;
 }
 
@@ -255,7 +376,7 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), errorPath.path()};
     std::vector<llvm::StringRef> args = {cmakePath, "-S", projectPath, "-B", tempDir, "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
 
-    auto const additionalArgs = parseCmakeArgs(cmakeArgs.str());
+    auto const additionalArgs = parseBashArgs(cmakeArgs.str());
     MRDOCS_TRY(pushCMakeArgs(cmakePath, args, additionalArgs));
 
     int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
