@@ -42,14 +42,13 @@ executeCmakeHelp(llvm::StringRef cmakePath)
     MRDOCS_CHECK(errOutputPath, "Failed to create temporary file");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), outputPath.path(), errOutputPath.path()};
     std::vector<llvm::StringRef> const args = {cmakePath, "--help"};
-    llvm::ArrayRef<llvm::StringRef> emptyEnv;
-    int const result = llvm::sys::ExecuteAndWait(cmakePath, args, emptyEnv, redirects);
+    int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
     if (result != 0)
     {
         auto const bufferOrError = llvm::MemoryBuffer::getFile(errOutputPath.path());
-        MRDOCS_CHECK(bufferOrError, "CMake execution failed (no error output available)");
+        MRDOCS_CHECK(bufferOrError, "CMake --help execution failed (no error output available)");
         auto const bufferOrError2 = llvm::MemoryBuffer::getFile(errOutputPath.path());
-        MRDOCS_CHECK(bufferOrError2, "CMake execution failed (no error output available)");
+        MRDOCS_CHECK(bufferOrError2, "CMake --help execution failed (no error output available)");
         // Concatenate both outputs
         std::string output;
         if (bufferOrError.get()->getBuffer().str().empty())
@@ -67,35 +66,63 @@ executeCmakeHelp(llvm::StringRef cmakePath)
         return Unexpected(Error("CMake --help execution failed: \n" + output));
     }
     auto const bufferOrError = llvm::MemoryBuffer::getFile(outputPath.path());
-    MRDOCS_CHECK(bufferOrError, "Failed to read CMake help output");
+    MRDOCS_CHECK(bufferOrError, "Failed to read CMake --help output");
+    return bufferOrError.get()->getBuffer().str();
+}
+
+
+Expected<std::string>
+executeCmakeSystemInformation(llvm::StringRef cmakePath)
+{
+    ScopedTempFile const outputPath("cmake-system-information-out", "txt");
+    MRDOCS_CHECK(outputPath, "Failed to create temporary file");
+    ScopedTempFile const errOutputPath("cmake-system-information-err", "txt");
+    MRDOCS_CHECK(errOutputPath, "Failed to create temporary file");
+    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), outputPath.path(), errOutputPath.path()};
+    std::vector<llvm::StringRef> const args = {cmakePath, "--system-information"};
+    int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
+    if (result != 0)
+    {
+        auto const bufferOrError = llvm::MemoryBuffer::getFile(errOutputPath.path());
+        MRDOCS_CHECK(bufferOrError, "CMake --system-information execution failed (no error output available)");
+        auto const bufferOrError2 = llvm::MemoryBuffer::getFile(errOutputPath.path());
+        MRDOCS_CHECK(bufferOrError2, "CMake --system-information execution failed (no error output available)");
+        // Concatenate both outputs
+        std::string output;
+        if (bufferOrError.get()->getBuffer().str().empty())
+        {
+            output = bufferOrError2.get()->getBuffer().str();
+        }
+        else if (bufferOrError2.get()->getBuffer().str().empty())
+        {
+            output = bufferOrError.get()->getBuffer().str();
+        }
+        else
+        {
+            output = bufferOrError.get()->getBuffer().str() + "\n" + bufferOrError2.get()->getBuffer().str();
+        }
+        return Unexpected(Error("CMake --help execution failed: \n" + output));
+    }
+    auto const bufferOrError = llvm::MemoryBuffer::getFile(outputPath.path());
+    MRDOCS_CHECK(bufferOrError, "Failed to read CMake --system-information output");
     return bufferOrError.get()->getBuffer().str();
 }
 
 Expected<std::string>
-getCmakeDefaultGenerator(llvm::StringRef cmakePath) 
+parseCmakeHelpOutput(std::string const& cmakeHelp)
 {
-    Expected<std::string> const cmakeHelpExp = executeCmakeHelp(cmakePath);
-    if (!cmakeHelpExp) {
-        if (llvm::sys::path::extension(cmakePath) == ".exe")
-        {
-            return "Visual Studio 17 2022";
-        }
-        else
-        {
-            return "Unix Makefiles";
-        }
-    }
-
-    std::string const cmakeHelp = *std::move(cmakeHelpExp);
     std::istringstream stream(cmakeHelp);
     std::string line;
     std::string defaultGenerator;
 
-    while (std::getline(stream, line)) {
-        if (line[0] == '*' && line[1] == ' ') {
+    while (std::getline(stream, line))
+    {
+        if (line[0] == '*' && line[1] == ' ')
+        {
             size_t const start = 2;
             size_t const end = line.find("=", start);
-            if (end == std::string::npos) {
+            if (end == std::string::npos)
+            {
                 continue;
             }
             return line.substr(start, end - start);
@@ -104,8 +131,54 @@ getCmakeDefaultGenerator(llvm::StringRef cmakePath)
     return Unexpected(Error("Default CMake generator not found"));
 }
 
+Expected<std::string>
+parseCmakeSystemInformationOutput(std::string const& cmakeSystemInformation)
+{
+    std::istringstream stream(cmakeSystemInformation);
+    std::string line;
+    std::string defaultGenerator;
+
+    while (std::getline(stream, line))
+    {
+        if (line.starts_with("CMAKE_GENERATOR \""))
+        {
+            size_t const start = 17;
+            size_t const end = line.find("\"", start);
+            if (end == std::string::npos)
+            {
+                continue;
+            }
+            return line.substr(start, end - start);
+        }
+    }
+    return Unexpected(Error("Default CMake generator not found"));
+}
+
+Expected<std::string>
+getCmakeDefaultGenerator(llvm::StringRef cmakePath)
+{
+    Expected<std::string> const cmakeHelpExp = executeCmakeHelp(cmakePath);
+    if (!cmakeHelpExp)
+    {
+        Expected<std::string> const cmakeSystemInformationExp = executeCmakeSystemInformation(cmakePath);
+        if (!cmakeSystemInformationExp)
+        {
+            if (llvm::sys::path::extension(cmakePath) == ".exe")
+            {
+                return "Visual Studio 17 2022";
+            }
+            return "Unix Makefiles";
+        }
+        std::string const cmakeSystemInformation = *std::move(cmakeSystemInformationExp);
+        return parseCmakeSystemInformationOutput(cmakeSystemInformation);
+    }
+
+    std::string const cmakeHelp = *std::move(cmakeHelpExp);
+    return parseCmakeHelpOutput(cmakeHelp);
+}
+
 Expected<bool>
-cmakeDefaultGeneratorIsVisualStudio(llvm::StringRef cmakePath) 
+cmakeDefaultGeneratorIsVisualStudio(llvm::StringRef cmakePath)
 {
     MRDOCS_TRY(auto const defaultGenerator, getCmakeDefaultGenerator(cmakePath));
     return defaultGenerator.starts_with("Visual Studio");
@@ -145,7 +218,7 @@ parseBashIdentifier(std::string_view str)
     return identifier;
 }
 
-std::vector<std::string> 
+std::vector<std::string>
 parseBashArgs(std::string_view str)
 {
     std::vector<std::string> args;
