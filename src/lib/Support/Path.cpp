@@ -419,7 +419,7 @@ ScopedTempFile(
     ok_ = !llvm::sys::fs::createTemporaryFile(prefix, ext, tempPath);
     if (ok_)
     {
-        path_ = files::makeDirsy(path_.str());
+        path_ = tempPath;
     }
 }
 
