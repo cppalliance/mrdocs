@@ -304,7 +304,6 @@ jobs:
         run: |
           set -x
           cmake --help
-          cmake --system-information
           config_template=$(printf '%s\n'                                      \
             "verbose: true"                                                    \
             "source-root: ."                                                   \
