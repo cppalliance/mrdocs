@@ -302,8 +302,6 @@ jobs:
 
       - name: Generate demos
         run: |
-          set -x
-          cmake --help
           config_template=$(printf '%s\n'                                      \
             "verbose: true"                                                    \
             "source-root: ."                                                   \
