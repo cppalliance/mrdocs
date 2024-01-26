@@ -1247,10 +1247,8 @@ emitBlock(
 
 //------------------------------------------------
 
-/** Write an Info variant to the buffer as bitcode.
-*/
 llvm::SmallString<0>
-writeBitcode(const Info& info)
+writeBitcode(Info const& info)
 {
     llvm::SmallString<0> buffer;
     llvm::BitstreamWriter stream(buffer);

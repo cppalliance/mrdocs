@@ -20,6 +20,15 @@ namespace clang {
 namespace mrdocs {
 
 /** Diagnostic information accumulated during visitation.
+
+    The Diagnostics class is used to accumulate
+    diagnostic information during visitation.
+
+    The information is accumulated in a map of
+    strings, where each string is a unique message.
+
+    Each message can be a warning or an error.
+
 */
 class Diagnostics
 {
@@ -27,67 +36,108 @@ class Diagnostics
     std::unordered_map<std::string, bool> messages_;
 
 public:
+    /** Add an error message to the diagnostics.
+
+        This function adds an error message to the
+        accumulated diagnostics.
+
+        @param s The error message to add.
+    */
     void error(std::string s)
     {
-        auto result =
-            messages_.emplace(std::move(s), true);
-        if(result.second)
+        if (messages_.emplace(std::move(s), true).second)
+        {
             ++errorCount_;
+        }
     }
 
+    /** Add a warning message to the diagnostics.
+
+        This function adds a warning message to the
+        accumulated diagnostics.
+
+        @param s The warning message to add.
+    */
     void warn(std::string s)
     {
         messages_.emplace(std::move(s), false);
     }
 
-    void reportTotals(report::Level level)
+    /** Print the accumulated diagnostics.
+
+        This function prints the accumulated diagnostics
+        to the output stream.
+
+        It will print a summary of the number of errors
+        and warnings.
+
+        @param level The level of the report.
+        @param os The output stream to write to.
+    */
+    void
+    reportTotals(report::Level level)
     {
-        if(messages_.empty())
+        if (messages_.empty())
+        {
             return;
+        }
 
         std::string s;
-        auto warnCount = messages_.size() - errorCount_;
-        if(errorCount_ > 0)
+        auto const warnCount = messages_.size() - errorCount_;
+        if (errorCount_ > 0)
         {
-            fmt::format_to(std::back_inserter(s),
-                "{} {}",
-                errorCount_, errorCount_ > 1
-                    ? "errors" : "error");
+            fmt::format_to(
+                std::back_inserter(s),
+                "{} error{}", errorCount_,
+                errorCount_ > 1 ? "s" : "");
         }
-        if(warnCount > 0)
+        if (warnCount > 0)
         {
             if(errorCount_ > 0)
-                fmt::format_to(std::back_inserter(s),
-                    " and " );
-            fmt::format_to(std::back_inserter(s),
-                "{} {}.\n",
-                warnCount, warnCount > 1
-                    ? "warnings" : "warning");
+            {
+                fmt::format_to(std::back_inserter(s), " and " );
+            }
+            fmt::format_to(
+                std::back_inserter(s),
+                "{} warning{}.\n", warnCount,
+                warnCount > 1 ? "s" : "");
         }
-        fmt::format_to(std::back_inserter(s),
-            " total.");
+        fmt::format_to(std::back_inserter(s), " total.");
         report::print(level, s);
     }
 
+    /** Merge diagnostics from another object and print new messages.
+
+        This function merges the diagnostics from
+        another object into this one.
+
+        For each new message that is added, it is printed
+        to the output stream if it's a new message.
+
+        @param other The other diagnostics to merge.
+    */
     void
     mergeAndReport(
         Diagnostics&& other)
     {
         for(auto&& m : other.messages_)
         {
-            auto result = messages_.emplace(std::move(m));
-            if(result.second)
+            auto [it, ok] = messages_.emplace(std::move(m));
+            if (ok)
             {
-                if(result.first->second)
+                auto const& [msg, is_error] = *it;
+                if (is_error)
+                {
                     ++errorCount_;
-                auto const level = result.first->second
+                }
+                auto const level = is_error
                     ? report::Level::error
                     : report::Level::warn;
-                report::print(
-                    level, result.first->first);
+                report::print(level, msg);
             }
         }
         other.messages_.clear();
+        other.errorCount_ = 0;
     }
 };
 

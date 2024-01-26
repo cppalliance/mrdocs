@@ -185,10 +185,9 @@ DoGenerateAction()
     //
     // --------------------------------------------------------------
     MRDOCS_TRY(
-        auto corpus,
+        std::unique_ptr<Corpus> corpus,
         CorpusImpl::build(
             report::Level::info, config, compilationDatabase));
-
     if (corpus->empty())
     {
         report::warn("Corpus is empty, not generating docs");

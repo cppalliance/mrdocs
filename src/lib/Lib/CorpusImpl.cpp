@@ -78,36 +78,50 @@ find(
 
 //------------------------------------------------
 
+namespace {
+template <class Rep, class Period>
+std::string
+format_duration(
+    std::chrono::duration<Rep, Period> delta)
+{
+    auto delta_ms = std::chrono::duration_cast<
+        std::chrono::milliseconds>(delta).count();
+    if (delta_ms < 1000)
+    {
+        return fmt::format("{} ms", delta_ms);
+    }
+    else
+    {
+        double const delta_s = static_cast<double>(delta_ms) / 1000.0;
+        return fmt::format("{:.02f} s", delta_s);
+    }
+}
+}
+
 mrdocs::Expected<std::unique_ptr<Corpus>>
 CorpusImpl::
 build(
     report::Level reportLevel,
-    std::shared_ptr<ConfigImpl const> config,
+    std::shared_ptr<ConfigImpl const> const& config,
     tooling::CompilationDatabase const& compilations)
 {
     using clock_type = std::chrono::steady_clock;
-    const auto format_duration =
-        [](clock_type::duration delta)
-    {
-        auto delta_ms = std::chrono::duration_cast<
-            std::chrono::milliseconds>(delta).count();
-        if(delta_ms < 1000)
-            return fmt::format("{} ms", delta_ms);
-        else
-            return fmt::format("{:.02f} s",
-                delta_ms / 1000.0);
-    };
     auto start_time = clock_type::now();
 
-    auto corpus = std::make_unique<CorpusImpl>(config);
+    // ------------------------------------------
+    // Create empty corpus
+    // ------------------------------------------
+    // The corpus will keep a reference to Config.
+    std::unique_ptr<CorpusImpl> corpus = std::make_unique<CorpusImpl>(config);
 
-    // Traverse the AST for all translation units
-    // and emit serializd bitcode into tool results.
-    // This operation happens ona thread pool.
-    report::print(reportLevel, "Extracting declarations");
-
+    // ------------------------------------------
+    // Execution context
+    // ------------------------------------------
+    // Create an execution context to store the
+    // results of the AST traversal.
+    // Any new Info objects will be added to the
+    // InfoSet in the execution context.
     #define USE_BITCODE
-
     #ifdef USE_BITCODE
         BitcodeExecutionContext context(*config);
     #else
@@ -117,13 +131,9 @@ build(
         makeFrontendActionFactory(context, *config);
     MRDOCS_ASSERT(action);
 
-    // Get a copy of the filename strings
-    std::vector<std::string> files =
-        compilations.getAllFiles();
-
-    if(files.empty())
-        return Unexpected(formatError("Compilations database is empty"));
-
+    // ------------------------------------------
+    // "Process file" task
+    // ------------------------------------------
     auto const processFile =
         [&](std::string path)
         {
@@ -144,15 +154,27 @@ build(
                 formatError("Failed to run action on {}", path).Throw();
         };
 
-    // Run the action on all files in the database
+    // ------------------------------------------
+    // Run the process file task on all files
+    // ------------------------------------------
+    // Traverse the AST for all translation units
+    // and emit serializd bitcode into tool results.
+    // This operation happens on a thread pool.
+    report::print(reportLevel, "Extracting declarations");
+
+    // Get a copy of the filename strings
+    std::vector<std::string> files = compilations.getAllFiles();
+    MRDOCS_CHECK(files, "Compilations database is empty");
     std::vector<Error> errors;
-    if(files.size() == 1)
+
+    // Run the action on all files in the database
+    if (files.size() == 1)
     {
         try
         {
             processFile(std::move(files.front()));
         }
-        catch(Exception const& ex)
+        catch (Exception const& ex)
         {
             errors.push_back(ex.error());
         }
@@ -169,16 +191,18 @@ build(
                 report::format(reportLevel,
                     "[{}/{}] \"{}\"", idx, files.size(), path);
 
-                processFile(std::move(path));
+                processFile(path);
             });
         }
         errors = taskGroup.wait();
     }
-
-    // Report warning and error totals
+    // Print diagnostics totals
     context.reportEnd(reportLevel);
 
-    if(! errors.empty())
+    // ------------------------------------------
+    // Report warning and error totals
+    // ------------------------------------------
+    if (!errors.empty())
     {
         Error err(errors);
         if(! (*config)->ignoreFailures)
@@ -207,6 +231,7 @@ build(
             "Reduced {} symbols in {}",
                 corpus->info_.size(),
                 format_duration(clock_type::now() - start_time));
+        #undef USE_BITCODE
     #else
         auto results = context.results();
         if(! results)
@@ -219,9 +244,12 @@ build(
             format_duration(clock_type::now() - start_time));
     #endif
 
+    // ------------------------------------------
+    // Finalize corpus
+    // ------------------------------------------
     auto lookup = std::make_unique<SymbolLookup>(*corpus);
-
     finalize(corpus->info_, *lookup);
+
     return corpus;
 }
 

@@ -24,11 +24,20 @@ namespace clang {
 namespace mrdocs {
 
 /** Return the serialized bitcode for a metadata node.
+
+    This function writes an Info variant to the buffer
+    as bitcode.
 */
 llvm::SmallString<0>
 writeBitcode(Info const& I);
 
 /** Return an array of Info read from a bitstream.
+
+    This function reads a bitstream and returns an array
+    of Info objects. The bitstream must have been written
+    by `writeBitcode`.
+
+    @note Each bitcode might contain multiple Info objects.
 */
 mrdocs::Expected<std::vector<std::unique_ptr<Info>>>
 readBitcode(llvm::StringRef bitcode);

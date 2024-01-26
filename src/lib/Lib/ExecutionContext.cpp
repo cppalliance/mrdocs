@@ -20,15 +20,21 @@ namespace mrdocs {
 
 namespace {
 
-// A standalone function to call to merge a vector of infos into one.
-// This assumes that all infos in the vector are of the same type, and will fail
-// if they are different.
-// Dispatch function.
+/** Merges a vector of Info objects.
+
+    This function is used to merge a vector of Info objects with the same
+    SymbolID. The function assumes that all Info objects are of the same type.
+    If they are not, the function will fail.
+
+    @param Values The vector of Info objects to merge.
+*/
 mrdocs::Expected<std::unique_ptr<Info>>
 mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
 {
     if(Values.empty() || ! Values[0])
+    {
         return Unexpected(formatError("no info values to merge"));
+    }
 
     return visit(*Values[0], [&]<typename T>(T&) mutable
         {
@@ -36,9 +42,20 @@ mergeInfos(std::vector<std::unique_ptr<Info>>& Values)
         });
 }
 
-void merge(Info& I, Info&& Other)
+/** Merges two Info objects.
+
+    This function is used to merge two Info objects with the same SymbolID.
+    The function assumes that the two Info objects are of the same type.
+    If they are not, the function will fail.
+
+    @param I The Info object to merge into.
+    @param Other The Info object to merge from.
+*/
+void
+merge(Info& I, Info&& Other)
 {
     MRDOCS_ASSERT(I.Kind == Other.Kind);
+    MRDOCS_ASSERT(I.id == Other.id);
     visit(I, [&]<typename InfoTy>(InfoTy& II) mutable
         {
             merge(II, static_cast<InfoTy&&>(Other));
@@ -67,17 +84,18 @@ report(
     #endif
 
     std::unique_lock<std::shared_mutex> write_lock(mutex_);
-    // add all new Info to the existing set. after this call,
-    // info will only contain duplicates which will require merging
+    // Add all new Info to the existing set.
     info_.merge(info);
 
-    for(auto& other : info)
+    // Merge duplicate IDs in info_.
+    for (auto& other : info)
     {
         auto it = info_.find(other->id);
         MRDOCS_ASSERT(it != info_.end());
         merge(**it, std::move(*other));
     }
 
+    // Merge diagnostics and report any new messages.
     diags_.mergeAndReport(std::move(diags));
 }
 
@@ -107,15 +125,16 @@ report(
     Diagnostics&& diags)
 {
     InfoSet info = std::move(results);
-
     std::lock_guard<std::mutex> lock(mutex_);
-    for(auto& I : info)
+    for (auto& I : info)
     {
-        auto bitcode = writeBitcode(*I);
+        llvm::SmallString<0> bitcode = writeBitcode(*I);
         auto [it, created] = bitcode_.try_emplace(I->id);
-        if(auto& codes = it->second; created ||
-            std::find(codes.begin(), codes.end(), bitcode) == codes.end())
-            codes.emplace_back(std::move(bitcode));
+        auto& bitcodes = it->second;
+        if (created || std::find(bitcodes.begin(), bitcodes.end(), bitcode) == bitcodes.end())
+        {
+            bitcodes.emplace_back(std::move(bitcode));
+        }
     }
 
     diags_.mergeAndReport(std::move(diags));
@@ -137,11 +156,13 @@ results()
         bitcode_,
         [&](auto& Group)
         {
+            auto& [id, bitcodes] = Group;
+
             // One or more Info for the same symbol ID
             std::vector<std::unique_ptr<Info>> Infos;
 
             // Each Bitcode can have multiple Infos
-            for(auto& bitcode : Group.second)
+            for(auto& bitcode : bitcodes)
             {
                 auto infos = readBitcode(bitcode);
                 std::move(
@@ -153,13 +174,15 @@ results()
             auto merged = mergeInfos(Infos);
             std::unique_ptr<Info> I = std::move(merged.value());
             MRDOCS_ASSERT(I);
-            MRDOCS_ASSERT(Group.first == I->id);
+            MRDOCS_ASSERT(id == I->id);
             std::lock_guard<std::mutex> lock(mutex_);
             result.emplace(std::move(I));
         });
 
-    if(! errors.empty())
+    if (!errors.empty())
+    {
         return Unexpected(errors);
+    }
     return result;
 }
 
