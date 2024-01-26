@@ -161,14 +161,22 @@ getCmakeDefaultGenerator(llvm::StringRef cmakePath)
     if (cmakeHelpExp)
     {
         std::string const cmakeHelp = *std::move(cmakeHelpExp);
-        return parseCmakeHelpOutput(cmakeHelp);
+        auto const r = parseCmakeHelpOutput(cmakeHelp);
+        if (r)
+        {
+            return *r;
+        }
     }
 
     Expected<std::string> const cmakeSystemInformationExp = executeCmakeSystemInformation(cmakePath);
     if (cmakeSystemInformationExp)
     {
         std::string const cmakeSystemInformation = *std::move(cmakeSystemInformationExp);
-        return parseCmakeSystemInformationOutput(cmakeSystemInformation);
+        auto const r = parseCmakeSystemInformationOutput(cmakeSystemInformation);
+        if (r)
+        {
+            return *r;
+        }
     }
 
     if (llvm::sys::path::extension(cmakePath) == ".exe")
