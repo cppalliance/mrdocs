@@ -95,7 +95,7 @@ jobs:
           config_type="Release"
           filename="${{ runner.os }}-$config_type-29b20829.${{ ( runner.os == 'Windows' && '7z' ) || 'tar.xz' }}"
           url="https://mrdox.com/llvm+clang/$filename"
-
+          
           # Download
           if command -v curl &> /dev/null
           then
@@ -107,7 +107,7 @@ jobs:
               echo "Neither curl nor wget are available"
               exit 1
           fi
-
+          
           # Extract
           llvm_root="${{runner.tool_cache}}/llvm+clang"
           llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
@@ -302,8 +302,6 @@ jobs:
 
       - name: Generate demos
         run: |
-          set -x
-          cmake --help
           config_template=$(printf '%s\n'                                      \
             "verbose: true"                                                    \
             "source-root: ."                                                   \
