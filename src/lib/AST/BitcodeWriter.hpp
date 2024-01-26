@@ -30,6 +30,19 @@
 namespace clang {
 namespace mrdocs {
 
+/** A writer for serializing the mrdocs' `Info` representation to LLVM bitcode.
+
+    This class takes in a llvm::BitstreamWriter stream and
+    emits the generated bitcode to that stream.
+
+    The function `dispatchInfoForWrite` is used to dispatch
+    the appropriate write function for the given `Info` object.
+
+    After calling `dispatchInfoForWrite`, the buffer used to
+    create the initial llvm::BitstreamWriter will be populated with
+    the serialized bitcode for the given `Info` object.
+
+ */
 class BitcodeWriter
 {
 public:
@@ -44,7 +57,23 @@ public:
     explicit
     BitcodeWriter(llvm::BitstreamWriter &Stream);
 
-    // Write a specific info to a bitcode stream.
+    /** Write a specific Info to a bitcode stream.
+
+        This function takes in an `Info` object and
+        emits the generated bitcode to the internal
+        llvm::BitstreamWriter stream.
+
+        The function will dispatch the appropriate
+        write function for the given `Info` object.
+
+        After calling `dispatchInfoForWrite`, the
+        buffer used to create the initial
+        llvm::BitstreamWriter will be populated with
+        the serialized bitcode for the given
+        `Info` object.
+
+        @param I The info to write.
+    */
     bool dispatchInfoForWrite(const Info& I);
 
     void emitHeader();

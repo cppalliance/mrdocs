@@ -26,6 +26,15 @@ namespace clang {
 namespace mrdocs {
 
 /** Implements the Corpus.
+
+    The CorpusImpl class is the implementation of the Corpus interface.
+    It is responsible for building the index of all symbols in the
+    translation units, and providing access to the symbols via the
+    iterator interface.
+
+    The CorpusImpl class is not intended to be used directly. Instead,
+    the Corpus interface can used by plugins to access the symbols.
+
 */
 class CorpusImpl : public Corpus
 {
@@ -40,14 +49,35 @@ public:
     {
     }
 
-    iterator begin() const noexcept override;
-    iterator end() const noexcept override;
+    /** Iterator to the first Info.
+    */
+    iterator
+    begin() const noexcept override;
 
+    /** Iterator to one past the last Info.
+    */
+    iterator
+    end() const noexcept override;
+
+    /** Return the Info with the specified symbol ID.
+
+        If the id does not exist, the behavior is undefined.
+    */
     Info*
     find(
         SymbolID const& id) noexcept;
 
     /** Build metadata for a set of translation units.
+
+        This is the main point of interaction between MrDocs
+        and the Clang Tooling infrastructure. The compilation
+        database is used to build the index of all symbols
+        in the translation units.
+
+        Users of the MrDocs library via plugins will
+        only have access to the Corpus interface whose
+        instance will be already populated. They will
+        not need to call this function directly.
 
         @param reportLevel Error reporting level.
         @param config A shared pointer to the configuration.
@@ -59,7 +89,7 @@ public:
     mrdocs::Expected<std::unique_ptr<Corpus>>
     build(
         report::Level reportLevel,
-        std::shared_ptr<ConfigImpl const> config,
+        std::shared_ptr<ConfigImpl const> const& config,
         tooling::CompilationDatabase const& compilations);
 
 private:

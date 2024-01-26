@@ -9,7 +9,7 @@ InfoPtrHasher::
 operator()(
     const std::unique_ptr<Info>& I) const
 {
-    // the info set should never contain nullptrs
+    // The info set should never contain nullptrs
     MRDOCS_ASSERT(I);
     return std::hash<SymbolID>()(I->id);
 }
@@ -30,7 +30,9 @@ operator()(
 {
     MRDOCS_ASSERT(a && b);
     if(a == b)
+    {
         return true;
+    }
     return a->id == b->id;
 }
 

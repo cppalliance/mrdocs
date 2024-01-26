@@ -354,7 +354,8 @@ public:
     }
 };
 
-void finalize(InfoSet& Info, SymbolLookup& Lookup)
+void
+finalize(InfoSet& Info, SymbolLookup& Lookup)
 {
     Finalizer visitor(Info, Lookup);
     for(auto& I : Info)
