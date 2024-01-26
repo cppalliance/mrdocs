@@ -158,23 +158,24 @@ Expected<std::string>
 getCmakeDefaultGenerator(llvm::StringRef cmakePath)
 {
     Expected<std::string> const cmakeHelpExp = executeCmakeHelp(cmakePath);
-    if (!cmakeHelpExp)
+    if (cmakeHelpExp)
     {
-        Expected<std::string> const cmakeSystemInformationExp = executeCmakeSystemInformation(cmakePath);
-        if (!cmakeSystemInformationExp)
-        {
-            if (llvm::sys::path::extension(cmakePath) == ".exe")
-            {
-                return "Visual Studio 17 2022";
-            }
-            return "Unix Makefiles";
-        }
+        std::string const cmakeHelp = *std::move(cmakeHelpExp);
+        return parseCmakeHelpOutput(cmakeHelp);
+    }
+
+    Expected<std::string> const cmakeSystemInformationExp = executeCmakeSystemInformation(cmakePath);
+    if (cmakeSystemInformationExp)
+    {
         std::string const cmakeSystemInformation = *std::move(cmakeSystemInformationExp);
         return parseCmakeSystemInformationOutput(cmakeSystemInformation);
     }
 
-    std::string const cmakeHelp = *std::move(cmakeHelpExp);
-    return parseCmakeHelpOutput(cmakeHelp);
+    if (llvm::sys::path::extension(cmakePath) == ".exe")
+    {
+        return "Visual Studio 17 2022";
+    }
+    return "Unix Makefiles";
 }
 
 Expected<bool>
