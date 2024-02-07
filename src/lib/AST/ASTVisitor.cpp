@@ -1785,7 +1785,7 @@ public:
                 D->getStorageClass());
 
         I.specs1.isNodiscard |= D->template hasAttr<WarnUnusedResultAttr>();
-
+        I.specs1.isExplicitObjectMemberFunction |= D->hasCXXFunctionObjectParameter();
         //
         // CXXMethodDecl
         //
