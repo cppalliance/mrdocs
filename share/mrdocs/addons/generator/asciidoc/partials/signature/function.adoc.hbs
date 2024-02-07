@@ -11,7 +11,7 @@
 {{#if (eq symbol.class "normal")}}{{>declarator-before symbol.return}}
 {{/if~}}
 {{>declarator-id symbol link=symbol.template.primary}}
-({{#if symbol.isExplicitObjectMemberFunction}}this {{/if~}}{{#each symbol.params}}{{#unless (and @first @last)}}
+({{#if symbol.isExplicitObjectMemberFunction}}this {{/if}}{{#each symbol.params}}{{#unless (and @first @last)}}
     {{/unless}}{{>declarator type decl-name=name~}}
     {{#if default}} = {{default}}{{/if~}}
     {{#unless @last}},{{/unless~}}
