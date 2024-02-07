@@ -775,6 +775,7 @@ DomInfo<T>::construct() const
         set_flag("isVolatile",         I_.specs0.isVolatile.get());
         set_flag("isFinal",            I_.specs0.isFinal.get());
         set_flag("isNodiscard",        I_.specs1.isNodiscard.get());
+        set_flag("isExplicitObjectMemberFunction", I_.specs1.isExplicitObjectMemberFunction.get());
 
         auto const set_string =
             [&](dom::String key, dom::String value)
