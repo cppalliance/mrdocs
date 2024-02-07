@@ -105,6 +105,8 @@ union FnFlags1
     BitFlag<0> isNodiscard;
 
     BitField<1, 3, ExplicitKind> explicitSpec;
+
+    BitFlag<4> isExplicitObjectMemberFunction;
 };
 
 // KRYSTIAN TODO: attributes (nodiscard, deprecated, and carries_dependency)
