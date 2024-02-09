@@ -16,6 +16,7 @@
 #include "ParseJavadoc.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Support/Debug.hpp"
+#include "lib/Support/Glob.hpp"
 #include "lib/Lib/Diagnostics.hpp"
 #include "lib/Lib/Filters.hpp"
 #include "lib/Lib/Info.hpp"
@@ -1243,7 +1244,7 @@ public:
         const Decl* D,
         AccessSpecifier access)
     {
-        if(config_->inaccessibleMembers !=
+        if (config_->inaccessibleMembers !=
             ConfigImpl::SettingsImpl::ExtractPolicy::Always)
         {
             // KRYSTIAN FIXME: this doesn't handle direct
@@ -1251,6 +1252,44 @@ public:
             if(access == AccessSpecifier::AS_private ||
                 access == AccessSpecifier::AS_protected)
                 return false;
+        }
+
+        if (!config_->input.include.empty())
+        {
+            // Get filename
+            FileInfo* file = getFileInfo(D->getBeginLoc());
+            if (!file)
+                return false;
+            std::string filename = file->full_path;
+            bool matchPrefix = std::ranges::any_of(
+                config_->input.include,
+                [&filename](const std::string& prefix)
+                {
+                    return filename.starts_with(prefix);
+                });
+            if (!matchPrefix)
+            {
+                return false;
+            }
+        }
+
+        if (!config_->input.filePatterns.empty())
+        {
+            // Get filename
+            FileInfo* file = getFileInfo(D->getBeginLoc());
+            if (!file)
+                return false;
+            std::string filename = file->full_path;
+            bool matchPattern = std::ranges::any_of(
+                config_->input.filePatterns,
+                [&filename](const std::string& pattern)
+                {
+                    return globMatch(pattern, filename);
+                });
+            if (!matchPattern)
+            {
+                return false;
+            }
         }
 
     #if 0
@@ -3433,19 +3472,20 @@ class ASTVisitorConsumer
         // so errors prior to traversal are reported
         Diagnostics diags;
 
+        // loads and caches source files into memory
         SourceManager& source = Context.getSourceManager();
         // get the name of the translation unit.
         // will be std::nullopt_t if it isn't a file
         std::optional<llvm::SmallString<128>> file_name =
             source.getNonBuiltinFilenameForID(source.getMainFileID());
         // KRYSTIAN NOTE: should we report anything here?
-        if(! file_name)
+        if (!file_name)
+        {
             return;
+        }
 
         // skip the translation unit if configured to do so
-        if(! config_.shouldVisitTU(
-            convert_to_slash(*file_name)))
-            return;
+        convert_to_slash(*file_name);
 
         ASTVisitor visitor(
             config_,
@@ -3454,7 +3494,7 @@ class ASTVisitorConsumer
             Context,
             *sema_);
 
-        // traverse the translation unit
+        // Traverse the translation unit
         visitor.build();
 
         // VFALCO If we returned from the function early
@@ -3537,6 +3577,14 @@ public:
 //
 //------------------------------------------------
 
+/** A frontend action for visiting the AST
+
+    This is used by the tooling infrastructure to create
+    an ASTAction for each translation unit.
+
+    The ASTAction is responsible for creating the ASTConsumer
+    which will be used to traverse the AST.
+*/
 struct ASTAction
     : public clang::ASTFrontendAction
 {
@@ -3548,20 +3596,37 @@ struct ASTAction
     {
     }
 
+    /** Execute the action
+
+        This is called by the tooling infrastructure to execute
+        the action for each translation unit.
+
+        The action will parse the AST with the consumer
+        that should have been previously created with
+        CreateASTConsumer.
+
+        This consumer then creates a ASTVisitor that
+        will convert the AST into a set of MrDocs Info
+        objects.
+     */
     void
     ExecuteAction() override
     {
         CompilerInstance& CI = getCompilerInstance();
-        if(! CI.hasPreprocessor())
+        if (!CI.hasPreprocessor())
+        {
             return;
+        }
 
-        // ensure comments in system headers are retained.
-        // we may want them if e.g. a declaration was extracted
+        // Ensure comments in system headers are retained.
+        // We may want them if, e.g., a declaration was extracted
         // as a dependency
         CI.getLangOpts().RetainCommentsFromSystemHeaders = true;
 
-        if(! CI.hasSema())
+        if (!CI.hasSema())
+        {
             CI.createSema(getTranslationUnitKind(), nullptr);
+        }
 
         ParseAST(
             CI.getSema(),
@@ -3569,6 +3634,19 @@ struct ASTAction
             true); // SkipFunctionBodies
     }
 
+    /** Create the object that will traverse the AST
+
+        This is called by the tooling infrastructure to create
+        an ASTConsumer for each translation unit.
+
+        This consumer creates a ASTVisitor that will convert
+        the AST into a set of our objects.
+
+        The main function of the ASTVisitorConsumer is
+        the HandleTranslationUnit function, which is called
+        to traverse the AST.
+
+     */
     std::unique_ptr<clang::ASTConsumer>
     CreateASTConsumer(
         clang::CompilerInstance& Compiler,
@@ -3585,6 +3663,11 @@ private:
 
 //------------------------------------------------
 
+/** A frontend action factory for ASTAction
+
+    This is used by the tooling infrastructure to create
+    an ASTAction for each translation unit.
+*/
 struct ASTActionFactory :
     tooling::FrontendActionFactory
 {

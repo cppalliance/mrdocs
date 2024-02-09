@@ -96,6 +96,9 @@ public:
         {
             /// Directories to include
             std::vector<std::string> include;
+
+            /// File patterns
+            std::vector<std::string> filePatterns;
         };
 
         /// @copydoc FileFilter
@@ -158,7 +161,6 @@ private:
     SettingsImpl settings_;
     ThreadPool& threadPool_;
     llvm::SmallString<0> outputPath_;
-    std::vector<std::string> inputFileIncludes_;
     dom::Object configObj_;
 
     friend class Config;
@@ -194,7 +196,7 @@ public:
         to the file being processed.
     */
     bool
-    shouldVisitTU(
+    shouldVisitSymbol(
         llvm::StringRef filePath) const noexcept;
 
     /** Returns true if the file should be visited.

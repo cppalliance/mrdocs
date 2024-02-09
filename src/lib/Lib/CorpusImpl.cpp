@@ -127,6 +127,8 @@ build(
     #else
         InfoExecutionContext context(*config);
     #endif
+    // Create an `ASTActionFactory` to create multiple
+    // `ASTAction`s that extract the AST for each translation unit.
     std::unique_ptr<tooling::FrontendActionFactory> action =
         makeFrontendActionFactory(context, *config);
     MRDOCS_ASSERT(action);
@@ -147,11 +149,13 @@ build(
             tooling::ClangTool Tool(compilations, { path },
                 std::make_shared<PCHContainerOperations>(), FS);
 
-            // suppress error messages from the tool
+            // Suppress error messages from the tool
             Tool.setPrintErrorMessage(false);
 
-            if(Tool.run(action.get()))
+            if (Tool.run(action.get()))
+            {
                 formatError("Failed to run action on {}", path).Throw();
+            }
         };
 
     // ------------------------------------------
@@ -182,8 +186,8 @@ build(
     else
     {
         TaskGroup taskGroup(config->threadPool());
-        for(std::size_t index = 0;
-            std::string& file : files)
+        std::size_t index = 0;
+        for (std::string& file : files)
         {
             taskGroup.async(
             [&, idx = ++index, path = std::move(file)]()
@@ -205,8 +209,10 @@ build(
     if (!errors.empty())
     {
         Error err(errors);
-        if(! (*config)->ignoreFailures)
+        if (!(*config)->ignoreFailures)
+        {
             return Unexpected(err);
+        }
         report::warn(
             "Warning: mapping failed because ", err);
     }
@@ -222,11 +228,7 @@ build(
         report::format(reportLevel,
             "Reducing declarations");
 
-        auto results = context.results();
-        if(! results)
-            return Unexpected(results.error());
-        corpus->info_ = std::move(results.value());
-
+        MRDOCS_TRY(corpus->info_, context.results());
         report::format(reportLevel,
             "Reduced {} symbols in {}",
                 corpus->info_.size(),
