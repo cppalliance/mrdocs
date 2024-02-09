@@ -15,6 +15,7 @@
 #include "lib/Support/Error.hpp"
 #include "lib/Support/Path.hpp"
 #include "lib/Support/Yaml.hpp"
+#include "lib/Support/Glob.hpp"
 #include <mrdocs/Support/Path.hpp>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
@@ -40,6 +41,7 @@ struct llvm::yaml::MappingTraits<
         SettingsImpl::FileFilter& f)
     {
         io.mapOptional("include", f.include);
+        io.mapOptional("file-patterns", f.filePatterns);
     }
 };
 
@@ -87,20 +89,21 @@ struct llvm::yaml::MappingTraits<SettingsImpl>
     static void mapping(IO& io,
         SettingsImpl& cfg)
     {
+        io.mapOptional("include",           cfg.ignoreFailures);
         io.mapOptional("defines",           cfg.defines);
         io.mapOptional("ignore-failures",   cfg.ignoreFailures);
 
+
         // io.mapOptional("extract",           cfg.extract);
         io.mapOptional("referenced-declarations", cfg.referencedDeclarations);
-        io.mapOptional("anonymous-namespaces", cfg.anonymousNamespaces);
-        io.mapOptional("inaccessible-members", cfg.inaccessibleMembers);
-        io.mapOptional("inaccessible-bases", cfg.inaccessibleBases);
-
+        io.mapOptional("anonymous-namespaces",    cfg.anonymousNamespaces);
+        io.mapOptional("inaccessible-members",    cfg.inaccessibleMembers);
+        io.mapOptional("inaccessible-bases",      cfg.inaccessibleBases);
 
         io.mapOptional("generate",          cfg.generate);
         io.mapOptional("multipage",         cfg.multiPage);
         io.mapOptional("source-root",       cfg.sourceRoot);
-        io.mapOptional("base-url",               cfg.baseURL);
+        io.mapOptional("base-url",          cfg.baseURL);
 
         io.mapOptional("input",             cfg.input);
 
@@ -209,7 +212,7 @@ ConfigImpl(
     }
 
     // Adjust input files
-    for(auto& name : inputFileIncludes_)
+    for (auto& name : settings_.input.include)
     {
         name = files::makePosixStyle(
             files::makeAbsolute(name, settings_.workingDir));
@@ -231,14 +234,34 @@ ConfigImpl(
 
 bool
 ConfigImpl::
-shouldVisitTU(
+shouldVisitSymbol(
     llvm::StringRef filePath) const noexcept
 {
-    if(inputFileIncludes_.empty())
+    if (settings_.input.include.empty())
+    {
         return true;
-    for(auto const& s : inputFileIncludes_)
-        if(filePath == s)
+    }
+    for (auto& p: settings_.input.include)
+    {
+        // Exact match
+        if (filePath == p)
+        {
             return true;
+        }
+        // Prefix match
+        if (filePath.startswith(p))
+        {
+            bool validPattern = std::ranges::any_of(
+                    settings_.input.filePatterns,
+                    [&](auto const &pattern) {
+                        return globMatch(pattern, filePath);
+                    });
+            if (validPattern)
+            {
+                return true;
+            }
+        }
+    }
     return false;
 }
 
