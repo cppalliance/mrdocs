@@ -255,9 +255,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Clone mrdocs
-        uses: actions/checkout@v3
-
       - uses: actions/download-artifact@v3
         with:
           name: release-packages-Linux
@@ -293,7 +290,7 @@ jobs:
         uses: alandefreitas/cpp-actions/boost-clone@v1.8.2
         id: boost-url-clone
         with:
-          branch: master
+          branch: develop
           modules: url
           boost-dir: boost
           modules-scan-paths: '"test example"'
@@ -302,28 +299,20 @@ jobs:
 
       - name: Generate demos
         run: |
-          config_template=$(printf '%s\n'                                      \
-            "verbose: true"                                                    \
-            "source-root: ."                                                   \
-            "base-url: 'https://github.com/boostorg/url/blob/master/include/'" \
-            "generate: %s"                                                     \
-            "multipage: %s"                                                    \
-            "inaccessible-members: never"                                      \
-            "inaccessible-bases: never"                                        \
-            "cmake: -D BOOST_URL_BUILD_TESTS=OFF -D BOOST_URL_BUILD_EXAMPLES=OFF -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES='$default_includes' -D CMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx  }} -D CMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc  }}" \
-            "filters:"                                                         \
-            "  symbols:"                                                       \
-            "    exclude:"                                                     \
-            "      - 'boost::urls::detail'"                                    \
-            "      - 'boost::urls::*::detail'"                                 \
-          )
           set -x
+          CXX="${{ steps.setup-cpp.outputs.cxx }}"
+          export CXX
+          CC="${{ steps.setup-cpp.outputs.cc }}"
+          export CC
+          
           for variant in single multi; do
             for format in adoc html xml; do
-              [[ $variant = multi ]] && multiline="true" || multiline="false"
-              printf "$config_template\n" $format $multiline > $(pwd)/boost/libs/url/mrdocs.yml
+              [[ $variant = multi ]] && multipage="true" || multipage="false"
+              sed -i "s/^\(\s*multipage:\s*\).*\$/\1$multipage/" $(pwd)/boost/libs/url/doc/mrdocs.yml
+              sed -i "s/^\(\s*generate:\s*\).*\$/\1$format/" $(pwd)/boost/libs/url/doc/mrdocs.yml
+              cat $(pwd)/boost/libs/url/doc/mrdocs.yml
               mkdir -p "demos/boost-url/$variant/$format"
-              mrdocs --config="$(pwd)/boost/libs/url/mrdocs.yml" "$(pwd)/boost/libs/url/" --output="$(pwd)/demos/boost-url/$variant/$format"
+              mrdocs --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" "$(pwd)/boost/libs/url/" --output="$(pwd)/demos/boost-url/$variant/$format"
             done
             asciidoctor -d book -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done
