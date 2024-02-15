@@ -354,6 +354,13 @@ public:
     }
 };
 
+/** Finalizes a set of Info.
+
+    This removes any references to SymbolIDs
+    which do not exist.
+
+    References which should always be valid are not checked.
+*/
 void
 finalize(InfoSet& Info, SymbolLookup& Lookup)
 {

@@ -23,6 +23,44 @@ namespace clang {
 namespace mrdocs {
 namespace {
 
+/** Determine the MrDocs Info type for a Clang DeclType
+ */
+template <class DeclType>
+struct MrDocsType : std::type_identity<Info> {};
+
+template <std::derived_from<CXXRecordDecl> DeclType>
+struct MrDocsType<DeclType> : std::type_identity<RecordInfo> {};
+
+template <std::derived_from<VarDecl> VarTy>
+struct MrDocsType<VarTy> : std::type_identity<VariableInfo> {};
+
+template <std::derived_from<FunctionDecl> FunctionTy>
+struct MrDocsType<FunctionTy> : std::type_identity<FunctionInfo> {};
+
+template <std::derived_from<TypedefNameDecl> TypedefNameTy>
+struct MrDocsType<TypedefNameTy> : std::type_identity<TypedefInfo> {};
+
+template <>
+struct MrDocsType<EnumDecl> : std::type_identity<EnumInfo> {};
+
+template <>
+struct MrDocsType<FieldDecl> : std::type_identity<FieldInfo> {};
+
+template <>
+struct MrDocsType<EnumConstantDecl> : std::type_identity<EnumeratorInfo> {};
+
+template <>
+struct MrDocsType<FriendDecl> : std::type_identity<FriendInfo> {};
+
+template <>
+struct MrDocsType<CXXDeductionGuideDecl> : std::type_identity<GuideInfo> {};
+
+/// @copydoc MrDocsType
+template <class DeclType>
+using MrDocsType_t = typename MrDocsType<DeclType>::type;
+
+/** Convert a Clang AccessSpecifier into a MrDocs AccessKind
+ */
 AccessKind
 convertToAccessKind(
     AccessSpecifier spec)
@@ -40,6 +78,8 @@ convertToAccessKind(
     }
 }
 
+/** Convert a Clang StorageClass into a MrDocs StorageClassKind
+ */
 StorageClassKind
 convertToStorageClassKind(
     StorageClass spec)
@@ -60,6 +100,8 @@ convertToStorageClassKind(
     }
 }
 
+/** Convert a Clang ConstexprSpecKind into a MrDocs ConstexprKind
+ */
 ConstexprKind
 convertToConstexprKind(
     ConstexprSpecKind spec)
@@ -81,6 +123,8 @@ convertToConstexprKind(
     }
 }
 
+/** Convert a Clang ExplicitSpecKind into a MrDocs ExplicitKind
+ */
 ExplicitKind
 convertToExplicitKind(
     const ExplicitSpecifier& spec)
@@ -108,6 +152,8 @@ convertToExplicitKind(
     }
 }
 
+/** Convert a Clang ExceptionSpecificationType into a MrDocs NoexceptKind
+ */
 NoexceptKind
 convertToNoexceptKind(
     ExceptionSpecificationType spec)
@@ -140,6 +186,8 @@ convertToNoexceptKind(
     }
 }
 
+/** Convert a Clang OverloadedOperatorKind into a MrDocs OperatorKind
+ */
 OperatorKind
 convertToOperatorKind(
     OverloadedOperatorKind kind)
@@ -199,6 +247,8 @@ convertToOperatorKind(
     }
 }
 
+/** Convert a Clang ReferenceKind into a MrDocs ReferenceKind
+ */
 ReferenceKind
 convertToReferenceKind(
     RefQualifierKind kind)
@@ -215,6 +265,8 @@ convertToReferenceKind(
     }
 }
 
+/** Convert a Clang TagTypeKind into a MrDocs RecordKeyKind
+ */
 RecordKeyKind
 convertToRecordKeyKind(
     TagTypeKind kind)
@@ -232,6 +284,8 @@ convertToRecordKeyKind(
     }
 }
 
+/** Convert a Clang unsigned qualifier kind into a MrDocs QualifierKind
+ */
 QualifierKind
 convertToQualifierKind(
     unsigned quals)
@@ -246,6 +300,8 @@ convertToQualifierKind(
 
 }
 
+/** Convert a Clang Decl::Kind into a MrDocs FunctionClass
+ */
 FunctionClass
 convertToFunctionClass(
     Decl::Kind kind)
@@ -266,6 +322,8 @@ convertToFunctionClass(
 
 // ----------------------------------------------------------------
 
+/** Visit a Decl and call the appropriate visitor function.
+ */
 template<
     typename DeclTy,
     typename Visitor,
@@ -312,6 +370,8 @@ DeclToKindImpl() = delete;
 
 #include <clang/AST/DeclNodes.inc>
 
+/** Get the Decl::Kind for a type DeclTy derived from Decl.
+ */
 template<typename DeclTy>
 consteval
 Decl::Kind
@@ -323,6 +383,8 @@ DeclToKind()
 
 // ----------------------------------------------------------------
 
+/** Visit a Type and call the appropriate visitor function.
+ */
 template<
     typename TypeTy,
     typename Visitor,
@@ -379,6 +441,8 @@ TypeToKind()
 
 // ----------------------------------------------------------------
 
+/** Visit a TypeLoc and call the appropriate visitor function.
+ */
 template<
     typename TypeLocTy,
     typename Visitor,
@@ -424,6 +488,8 @@ TypeLocToKindImpl() = delete;
 
 #include <clang/AST/TypeLocNodes.def>
 
+/** Get the TypeLoc::TypeLocClass for a type TypeLocTy derived from TypeLoc.
+ */
 template<typename TypeLocTy>
 consteval
 TypeLoc::TypeLocClass
