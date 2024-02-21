@@ -27,8 +27,29 @@
 namespace clang {
 namespace mrdocs {
 
-// This namespace contains all of the Javadoc
-// related types, constants, and functions.
+/** Javadoc related types and functions.
+
+    Javadoc is a documentation generator originally
+    created for the Java language from source code.
+
+    The Javadoc documentation generator tool can interpret
+    text in the "doc comments" format included
+    directly in the source code.
+
+    The same "doc comments" format has been replicated
+    and extended by documentation systems for other
+    languages, including the cross-language Doxygen
+    and the JSDoc system for JavaScript.
+
+    Because Clang can already parse and extract
+    blocks of Javadoc-style comments from source
+    code, these classes are used to represent the
+    parsed documentation in a structured form.
+
+    @see https://en.wikipedia.org/wiki/Javadoc
+    @see https://www.doxygen.nl
+
+ */
 namespace doc {
 
 struct Node;
@@ -39,6 +60,46 @@ template<typename T>
 requires std::derived_from<T, doc::Node>
 using List = std::vector<std::unique_ptr<T>>;
 
+/** The kind of a node.
+
+    This includes tags and block types.
+
+    Some of the available tags are:
+
+    @li `@author Author Name`
+    @li `{@docRoot}`
+    @li `@version version`
+    @li `@since since-text `
+    @li `@see reference`
+    @li `@param name description`
+    @li `@return description`
+    @li `@exception classname description`
+    @li `@throws classname description`
+    @li `@deprecated description`
+    @li `{@inheritDoc}`
+    @li `{@link reference}`
+    @li `{@linkplain reference}`
+    @li `{@value #STATIC_FIELD}`
+    @li `{@code literal}`
+    @li `{@literal literal}`
+    @li `{@serial literal}`
+    @li `{@serialData literal}`
+    @li `{@serialField literal}`
+
+    Doxygen also introduces a number of additional tags on top
+    of the the doc comment specification.
+
+    @see https://en.wikipedia.org/wiki/Javadoc[Javadoc - Wikipedia]
+    @see https://docs.oracle.com/javase/1.5.0/docs/tooldocs/solaris/javadoc.html[Javadoc Documentation]
+    @see https://docs.oracle.com/en/java/javase/13/docs/specs/javadoc/doc-comment-spec.html[Doc Comment Specification]
+    @see https://www.oracle.com/java/technologies/javase/javadoc-tool.html[Javadoc Tool]
+    @see https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html[How to Write Doc Comments]
+    @see https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javadoc.html[Javadoc Package]
+    @see https://web.archive.org/web/20170714215721/http://agile.csc.ncsu.edu:80/SEMaterials/tutorials/javadoc[Javadoc Tutorial]
+    @see https://en.wikipedia.org/wiki/Doxygen[Doxygen - Wikipedia]
+    @see https://www.doxygen.nl/manual/commands.html[Doxygen Special Tags]
+
+ */
 enum class Kind
 {
     // VFALCO Don't forget to update
@@ -59,7 +120,9 @@ enum class Kind
     tparam,
     reference,
     copied,
-    throws
+    throws,
+    details,
+    see
 };
 
 /** A text style.
@@ -163,7 +226,7 @@ struct Text : Node
     {
     }
 
-    bool isBlock() const noexcept final override
+    bool isBlock() const noexcept final
     {
         return false;
     }
@@ -305,7 +368,7 @@ struct MRDOCS_DECL
 {
     List<Text> children;
 
-    bool isBlock() const noexcept final override
+    bool isBlock() const noexcept final
     {
         return true;
     }
@@ -337,7 +400,7 @@ struct MRDOCS_DECL
     T& emplace_back(T&& text)
     {
         return static_cast<T&>(emplace_back(
-            std::make_unique<T>(std::move(text))));
+            std::make_unique<T>(std::forward<T>(text))));
     }
 
     void append(List<Node>&& blocks);
@@ -427,6 +490,10 @@ struct Brief : Paragraph
 };
 
 /** An admonition.
+
+    This paragraph represents an admonition, such as
+    a note, tip, important, caution, or warning.
+
 */
 struct Admonition : Paragraph
 {
@@ -452,7 +519,7 @@ struct Admonition : Paragraph
 */
 struct Code : Paragraph
 {
-    // VFALCO we can add a language (e.g. C++),
+    // VFALCO we can add a language (e.g., C++),
     //        then emit attributes in the generator.
 
     static constexpr Kind static_kind = Kind::code;
@@ -488,6 +555,48 @@ struct ListItem : Paragraph
     {
         return kind == other.kind &&
             *this == static_cast<const ListItem&>(other);
+    }
+};
+
+/** A @details paragraph
+*/
+struct Details : Paragraph
+{
+    static constexpr Kind static_kind = Kind::details;
+
+    Details()
+        : Paragraph(Kind::details)
+    {
+    }
+
+    bool operator==(const Details&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Details&>(other);
+    }
+};
+
+/** A @see paragraph
+*/
+struct See : Paragraph
+{
+    static constexpr Kind static_kind = Kind::see;
+
+    See()
+        : Paragraph(Kind::see)
+    {
+    }
+
+    bool operator==(const See&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const See&>(other);
     }
 };
 
@@ -543,6 +652,7 @@ struct Returns : Paragraph
             *this == static_cast<const Returns&>(other);
     }
 };
+
 /** Documentation for a template parameter
 */
 struct TParam : Paragraph
@@ -594,6 +704,8 @@ struct Throws : Paragraph
 
 //------------------------------------------------
 
+/** A visitor for node types.
+ */
 template<class F, class... Args>
 constexpr
 auto
@@ -633,11 +745,21 @@ visit(
         return f.template operator()<TParam>(std::forward<Args>(args)...);
     case Kind::throws:
         return f.template operator()<Throws>(std::forward<Args>(args)...);
+    case Kind::details:
+        return f.template operator()<Details>(std::forward<Args>(args)...);
+    case Kind::see:
+        return f.template operator()<See>(std::forward<Args>(args)...);
     default:
         return f.template operator()<void>(std::forward<Args>(args)...);
     }
 }
 
+/** Visit a node.
+
+    @param node The node to visit.
+    @param f The function to call for each node.
+    @param args Additional arguments to pass to the function.
+ */
 template<
     class NodeTy,
     class Fn,
@@ -684,11 +806,21 @@ visit(
         return visitor.template visit<TParam>();
     case Kind::throws:
         return visitor.template visit<Throws>();
+    case Kind::details:
+        return visitor.template visit<Details>();
+    case Kind::see:
+        return visitor.template visit<See>();
     default:
         MRDOCS_UNREACHABLE();
     }
 }
 
+/** Traverse a list of nodes.
+
+    @param list The list of nodes to traverse.
+    @param f The function to call for each node.
+    @param args Additional arguments to pass to the function.
+ */
 template<class F, class T, class... Args>
 requires std::derived_from<T, Node>
 void traverse(
@@ -810,13 +942,15 @@ public:
     std::string
     emplace_back(T&& block)
     {
-        return emplace_back(std::make_unique<T>(std::move(block)));
+        return emplace_back(std::make_unique<T>(std::forward<T>(block)));
     }
 
     /** Append blocks from another javadoc to this.
     */
     void append(Javadoc&& other);
 
+    /** Append blocks from a list to this.
+     */
     void append(doc::List<doc::Node>&& blocks);
 
 private:

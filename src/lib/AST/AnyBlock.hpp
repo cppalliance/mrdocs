@@ -399,6 +399,12 @@ public:
             case doc::Kind::throws:
                 nodes.emplace_back(std::make_unique<doc::Throws>());
                 break;
+            case doc::Kind::details:
+                nodes.emplace_back(std::make_unique<doc::Details>());
+                break;
+            case doc::Kind::see:
+                nodes.emplace_back(std::make_unique<doc::See>());
+                break;
             default:
                 return formatError("unknown doc::Kind");
             }

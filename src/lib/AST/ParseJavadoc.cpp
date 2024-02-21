@@ -29,6 +29,7 @@
 #endif
 #include <clang/Basic/SourceManager.h>
 #include <llvm/Support/JSON.h>
+#include <ranges>
 
 /*  AST Types
 
@@ -98,6 +99,12 @@ using namespace comments;
 
 //------------------------------------------------
 
+/** A visitor for extracting javadoc from comments.
+
+    This class is a visitor for extracting javadoc from
+    comments in `clang::comments::FullComment` objects.
+
+  */
 class JavadocVisitor
     : public ConstCommentVisitor<JavadocVisitor>
 {
@@ -111,13 +118,41 @@ class JavadocVisitor
     doc::Block* block_ = nullptr;
     doc::Text* last_child_ = nullptr;
     std::size_t htmlTagNesting_ = 0;
-    Comment::child_iterator it_;
-    Comment::child_iterator end_;
+    Comment::child_iterator it_{};
+    Comment::child_iterator end_{};
 
+    /** Ensure that a string is valid UTF-8.
+
+        This function checks if the specified string is valid
+        UTF-8, and if not it fixes it and returns the result.
+
+     */
     static std::string& ensureUTF8(std::string&&);
+
+    /** Visit the children of a comment.
+
+        This is a helper function that sets the current
+        iterator to the beginning of the children of the
+        specified comment, and then restores the original
+        iterator when the function returns.
+
+        The children of the comment are visited in order
+        and appended to the current block.
+
+     */
     void visitChildren(Comment const* C);
 
 
+    /** Temporarily set a block as the current block.
+
+        This sets the current block of the visitor to the
+        specified block, and restores the previous block
+        when the scope is exited.
+
+        The current block is where the visitor will
+        append new children when visiting comments.
+
+     */
     class [[nodiscard]] BlockScope
     {
         JavadocVisitor& visitor_;
@@ -141,41 +176,181 @@ class JavadocVisitor
         }
     };
 
+    /** Enter a block scope.
+
+        This function creates a `BlockScope` object associated
+        to the visitor to temporarily set the current block to
+        the specified block.
+
+        New children will be appended to the specified block
+        until the `BlockScope` object goes out of scope.
+
+        @param blk The block to set as the current block
+        @returns A `BlockScope` object that will restore
+                 the previous block when it goes out of scope
+
+     */
     BlockScope enterScope(doc::Block& blk)
     {
-        return BlockScope(*this, &blk);
+        return {*this, &blk};
     }
 
+    struct TagComponents
+    {
+        std::string tag;
+        std::string text;
+        std::size_t n_siblings;
+    };
+
 public:
+    /** Constructor
+
+        Construct a JavadocVisitor to visit the specified
+        comment and extract javadoc from it.
+
+        @param FC The full comment to visit
+        @param D The declaration to which the comment is attached
+        @param config The MrDocs configuration
+        @param diags The diagnostics sink
+
+     */
     JavadocVisitor(
         FullComment const*, Decl const*,
         Config const&, Diagnostics&);
 
+    /** Extract the javadoc from the comment.
+
+        The comment specified in the constructor is visited
+        and the javadoc is extracted. The result is returned
+        by the function.
+
+     */
     Javadoc build();
 
-    void visitComment(Comment const* C);
+    /** Visit any abstract comment.
 
-    // inline content
-    void visitTextComment(TextComment const* C);
-    void visitHTMLStartTagComment(HTMLStartTagComment const* C);
-    void visitHTMLEndTagComment(HTMLEndTagComment const* C);
-    void visitInlineCommandComment(InlineCommandComment const* C);
+        This is the base case for all comments.
+        It simply attempts to visit the children
+        of the comment.
 
-    // block content
-    void visitParagraphComment(ParagraphComment const* C);
-    void visitBlockCommandComment(BlockCommandComment const* C);
-    void visitParamCommandComment(ParamCommandComment const* C);
-    void visitTParamCommandComment(TParamCommandComment const* C);
-    void visitVerbatimBlockComment(VerbatimBlockComment const* C);
-    void visitVerbatimLineComment(VerbatimLineComment const* C);
-    void visitVerbatimBlockLineComment(VerbatimBlockLineComment const* C);
+     */
+    void
+    visitComment(Comment const* C);
 
-    // helpers
-    bool goodArgCount(std::size_t n, InlineCommandComment const& C);
+    /** Visit a plain text comment.
+     */
+    void
+    visitTextComment(TextComment const* C);
+
+    /** Visit an opening HTML tag with attributes.
+     */
+    void
+    visitHTMLStartTagComment(HTMLStartTagComment const* C);
+
+    /** Visit a closing HTML tag.
+     */
+    void
+    visitHTMLEndTagComment(HTMLEndTagComment const* C);
+
+    /** Visit a command with word-like arguments that is considered inline content.
+
+        This is a command with word-like arguments that is considered
+        inline content. The number of arguments depends on the command
+        name.
+
+        For instance, this could be something like "@ref foo",
+        where "foo" is the argument.
+
+     */
+    void
+    visitInlineCommandComment(InlineCommandComment const* C);
+
+    /** Visit a single paragraph that contains inline content.
+     */
+    void
+    visitParagraphComment(ParagraphComment const* C);
+
+    /** Visit a command that has zero or more word-like arguments
+
+       The number of word-like arguments depends on command name and
+       a paragraph as an argument (e. g., @brief).
+
+     */
+    void
+    visitBlockCommandComment(BlockCommandComment const* C);
+
+    /** Visit the doxygen @param command.
+     */
+    void
+    visitParamCommandComment(ParamCommandComment const* C);
 
 
+    /** Visit the doxygen @tparam command
+
+        The @tparam describes a template parameter.
+    */
+    void
+    visitTParamCommandComment(TParamCommandComment const* C);
+
+    /** Visit a verbatim block command (e. g., preformatted code).
+
+        Verbatim block has an opening and a closing command and contains
+        multiple lines of text (VerbatimBlockLineComment nodes).
+     */
+    void
+    visitVerbatimBlockComment(VerbatimBlockComment const* C);
+
+    /** Visit a verbatim line command.
+
+        Verbatim line has an opening command, a single line of text
+        (up to the newline after the opening command) and has no
+        closing command.
+     */
+    void
+    visitVerbatimLineComment(VerbatimLineComment const* C);
+
+    /** Visit a line of text contained in a verbatim block.
+     */
+    void
+    visitVerbatimBlockLineComment(VerbatimBlockLineComment const* C);
+
+    /** @name Helpers
+     * @{
+     */
+
+    /** Check if the number of arguments is correct for a command.
+
+        This function checks if the number of arguments
+        in the specified command is correct, and if not
+        it emits a diagnostic and returns false.
+
+        @returns `true` if the number of arguments is correct
+     */
+    bool
+    goodArgCount(std::size_t n, InlineCommandComment const& C);
+
+
+    Expected<TagComponents>
+    parseHTMLTag(HTMLStartTagComment const* C);
+
+    /** Append a text node to the current block.
+
+        This function appends a text node to the current
+        block.
+
+        If the previous child appended was of the same type,
+        the content is merged instead of creating a new node.
+
+        If the text ends with a newline, it sets the last
+        child to null to indicate the next element cannot be
+        merged.
+
+        @param end_with_nl `true` if the text ends with a newline
+        @param args The arguments to construct the text node
+     */
     template<std::derived_from<doc::Text> TextTy, typename... Args>
-    void emplaceText(bool end_with_nl, Args&&... args)
+    void
+    emplaceText(bool end_with_nl, Args&&... args)
     {
         TextTy elem(std::forward<Args>(args)...);
         bool can_merge = false;
@@ -205,6 +380,8 @@ public:
         if(end_with_nl)
             last_child_ = nullptr;
     }
+
+    /** @} */
 };
 
 //------------------------------------------------
@@ -296,65 +473,128 @@ visitTextComment(
             ensureUTF8(s.str()));
 }
 
+namespace {
+unsigned long
+nSiblingsNeededForHtmlTag(llvm::StringRef tag)
+{
+    if(tag == "br")
+        return 0;
+    return 2;
+}
+}
+
+Expected<JavadocVisitor::TagComponents>
+JavadocVisitor::
+parseHTMLTag(HTMLStartTagComment const* C)
+{
+    auto const tag = C->getTagName();
+
+    // Check if we have the enough nodes with the tag values
+    unsigned long const nSiblingsLeft = end_ - it_ - 1;
+    // AFREITAS: this needs to change for other tag types
+    unsigned long const nSiblingsNeeded = nSiblingsNeededForHtmlTag(tag);
+    if(nSiblingsLeft < nSiblingsNeeded)
+    {
+        return Unexpected(Error(fmt::format("warning: invalid HTML <{}> tag", tag.str())));
+    }
+
+    TagComponents res;
+    res.tag = tag.str();
+    res.n_siblings = nSiblingsNeeded;
+
+    bool const hasText = nSiblingsNeeded > 0;
+    if (hasText)
+    {
+        if (it_[1]->getCommentKind() != Comment::TextCommentKind)
+        {
+            return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by comment", tag.str())));
+        }
+        auto const& cText =
+            *static_cast<TextComment const*>(it_[1]);
+        res.text = cText.getText();
+    }
+
+    bool needsEndTag = nSiblingsNeeded > 1;
+    if(needsEndTag)
+    {
+        if (it_[2]->getCommentKind() != Comment::HTMLEndTagCommentKind)
+        {
+            return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by end tag", tag.str())));
+        }
+        auto const& cEndTag =
+                *static_cast<HTMLEndTagComment const*>(it_[2]);
+        if(cEndTag.getTagName() != tag)
+        {
+            return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by same end tag", tag.str())));
+        }
+    }
+
+    return res;
+}
+
 void
 JavadocVisitor::
 visitHTMLStartTagComment(
     HTMLStartTagComment const* C)
 {
     MRDOCS_ASSERT(C->child_begin() == C->child_end());
-    last_child_ = nullptr;
-    auto const tag = C->getTagName();
-    if(tag == "a")
-    {
-        PresumedLoc const loc = sm_.getPresumedLoc(C->getBeginLoc());
+    PresumedLoc const loc = sm_.getPresumedLoc(C->getBeginLoc());
+    auto filename = files::makePosixStyle(loc.getFilename());
 
-        if(end_ - it_ < 3)
+    auto getAttribute = [&C](StringRef name) -> Expected<std::string>
+    {
+        auto idxs = std::views::iota(unsigned(0), C->getNumAttrs());
+        auto attr_it = std::ranges::find_if(idxs, [&C, name](std::size_t i)
         {
-            // error
-            report::error(
-                "warning: invalid HTML <a> tag at {}({})",
-                files::makePosixStyle(loc.getFilename()),
-                loc.getLine());
+            return C->getAttr(i).Name == name;
+        });
+        if (attr_it == idxs.end())
+        {
+            return Unexpected(Error(fmt::format("warning: HTML <{}> tag has no {} attribute", C->getTagName().str(), name.str())));
+        }
+        return C->getAttr(*attr_it).Value.str();
+    };
+
+    last_child_ = nullptr;
+    auto tagComponentsExp = parseHTMLTag(C);
+    if (!tagComponentsExp)
+    {
+        Error e = tagComponentsExp.error();
+        report::error(e.message(), filename, loc.getLine());
+        return;
+    }
+    auto tagComponents = *tagComponentsExp;
+    if(tagComponents.tag == "a")
+    {
+        auto r = getAttribute("href");
+        if (!r)
+        {
+            report::error(r.error().message());
             return;
         }
-        if(it_[1]->getCommentKind() != Comment::TextCommentKind)
-        {
-            // error
-            return;
-        }
-        if(it_[2]->getCommentKind() != Comment::HTMLEndTagCommentKind)
-        {
-            // error
-            return;
-        }
-        auto const& cText =
-            *static_cast<TextComment const*>(it_[1]);
-        auto const& cEndTag =
-            *static_cast<HTMLEndTagComment const*>(it_[2]);
-        if(cEndTag.getTagName() != "a")
-        {
-            // error
-            return;
-        }
-        std::string text;
-        std::string href;
-        text = cText.getText();
-        for(std::size_t i = 0; i < C->getNumAttrs(); ++i)
-        {
-            auto const& attr = C->getAttr(i);
-            if(attr.Name == "href")
-            {
-                href = attr.Value;
-                break;
-            }
-        }
+        std::string href = *r;
         emplaceText<doc::Link>(
             C->hasTrailingNewline(),
-            ensureUTF8(std::move(text)),
+            ensureUTF8(std::move(tagComponents.text)),
             ensureUTF8(std::move(href)));
-
-        it_ += 2; // bit of a hack
     }
+    else if(tagComponents.tag == "br")
+    {
+        emplaceText<doc::Text>(true,"");
+    }
+    else if(tagComponents.tag == "em")
+    {
+        emplaceText<doc::Styled>(
+            C->hasTrailingNewline(),
+            ensureUTF8(std::move(tagComponents.text)),
+            doc::Style::italic);
+    }
+    else
+    {
+        report::warn(fmt::format("warning: unsupported HTML tag <{}>", tagComponents.tag), filename, loc.getLine());
+    }
+    // Skip the children we consumed in parseHTMLTag
+    it_ += tagComponents.n_siblings;
     --htmlTagNesting_;
 }
 
@@ -462,7 +702,7 @@ visitInlineCommandComment(
         if(! goodArgCount(1, *C))
             return;
         // the referenced symbol will be resolved during
-        // the finalization step once all symbol are extracted
+        // the finalization step once all symbols are extracted
         emplaceText<doc::Copied>(
             C->hasTrailingNewline(),
             C->getArgText(0).str(),
@@ -474,7 +714,7 @@ visitInlineCommandComment(
         if(! goodArgCount(1, *C))
             return;
         // the referenced symbol will be resolved during
-        // the finalization step once all symbol are extracted
+        // the finalization step once all symbols are extracted
         emplaceText<doc::Reference>(
             C->hasTrailingNewline(),
             C->getArgText(0).str());
@@ -603,6 +843,73 @@ visitBlockCommandComment(
         jd_.emplace_back(std::move(throws));
         return;
     }
+    case CommandTraits::KCI_note:
+    case CommandTraits::KCI_warning:
+    {
+        doc::Admonish admonish = cmd->getID() == CommandTraits::KCI_note
+            ? doc::Admonish::note
+            : doc::Admonish::warning;
+        doc::Admonition paragraph(admonish);
+        auto scope = enterScope(paragraph);
+        visitChildren(C->getParagraph());
+        jd_.emplace_back(std::move(paragraph));
+        return;
+    }
+    case CommandTraits::KCI_par:
+    {
+        // VFALCO This is legacy compatibility
+        // for Boost libraries using @par as a
+        // section heading.
+        doc::Paragraph paragraph;
+        auto scope = enterScope(paragraph);
+        visitChildren(C->getParagraph());
+        if(! paragraph.children.empty())
+        {
+            // the first TextComment is the heading text
+            doc::String text(std::move(
+                    paragraph.children.front()->string));
+
+            // VFALCO Unfortunately clang puts at least
+            // one space in front of the text, which seems
+            // incorrect.
+            auto const s = trim(text);
+            if(s.size() != text.size())
+                text = s;
+
+            doc::Heading heading(std::move(text));
+            jd_.emplace_back(std::move(heading));
+
+            // remaining TextComment, if any
+            paragraph.children.erase(paragraph.children.begin());
+            if(! paragraph.children.empty())
+                jd_.emplace_back(std::move(paragraph));
+        }
+        return;
+    }
+    case CommandTraits::KCI_li:
+    {
+        doc::ListItem paragraph;
+        auto scope = enterScope(paragraph);
+        visitChildren(C->getParagraph());
+        jd_.emplace_back(std::move(paragraph));
+        return;
+    }
+    case CommandTraits::KCI_details:
+    {
+        doc::Details paragraph;
+        auto scope = enterScope(paragraph);
+        visitChildren(C->getParagraph());
+        jd_.emplace_back(std::move(paragraph));
+        return;
+    }
+    case CommandTraits::KCI_see:
+    {
+        doc::See paragraph;
+        auto scope = enterScope(paragraph);
+        visitChildren(C->getParagraph());
+        jd_.emplace_back(std::move(paragraph));
+        return;
+    }
     case CommandTraits::KCI_addindex:
     case CommandTraits::KCI_addtogroup:
     case CommandTraits::KCI_anchor:
@@ -626,7 +933,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_def:
     case CommandTraits::KCI_defgroup:
     case CommandTraits::KCI_deprecated:
-    case CommandTraits::KCI_details:
     case CommandTraits::KCI_diafile:
     case CommandTraits::KCI_dir:
     case CommandTraits::KCI_docbookinclude:
@@ -690,7 +996,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_interface:
     case CommandTraits::KCI_latexinclude:
     case CommandTraits::KCI_latexonly:
-    case CommandTraits::KCI_li:
     case CommandTraits::KCI_line:
     //case CommandTraits::KCI_lineinfo:
     case CommandTraits::KCI_link:
@@ -705,12 +1010,10 @@ visitBlockCommandComment(
     case CommandTraits::KCI_namespace:
     case CommandTraits::KCI_noop:
     case CommandTraits::KCI_nosubgrouping:
-    case CommandTraits::KCI_note:
     case CommandTraits::KCI_overload:
     case CommandTraits::KCI_p:
     //case CommandTraits::KCI_package:
     case CommandTraits::KCI_page:
-    case CommandTraits::KCI_par:
     case CommandTraits::KCI_paragraph:
     case CommandTraits::KCI_param:
     case CommandTraits::KCI_parblock:
@@ -742,7 +1045,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_sa:
     case CommandTraits::KCI_secreflist:
     case CommandTraits::KCI_section:
-    case CommandTraits::KCI_see:
     //case CommandTraits::KCI_showdate:
     case CommandTraits::KCI_showinitializer:
     case CommandTraits::KCI_showrefby:
@@ -771,7 +1073,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_verbinclude:
     case CommandTraits::KCI_version:
     //case CommandTraits::KCI_vhdlflow:
-    case CommandTraits::KCI_warning:
     case CommandTraits::KCI_weakgroup:
     case CommandTraits::KCI_xmlinclude:
     case CommandTraits::KCI_xmlonly:
@@ -807,64 +1108,6 @@ visitBlockCommandComment(
 
     default:
         MRDOCS_UNREACHABLE();
-    }
-    if(cmd->IsReturnsCommand)
-    {
-    }
-   if(cmd->getID() == CommandTraits::KCI_note)
-    {
-        doc::Admonition paragraph(doc::Admonish::note);
-        auto scope = enterScope(paragraph);
-        visitChildren(C->getParagraph());
-        jd_.emplace_back(std::move(paragraph));
-        return;
-    }
-    if(cmd->getID() == CommandTraits::KCI_warning)
-    {
-        doc::Admonition paragraph(doc::Admonish::warning);
-        auto scope = enterScope(paragraph);
-        visitChildren(C->getParagraph());
-        jd_.emplace_back(std::move(paragraph));
-        return;
-    }
-    if(cmd->getID() == CommandTraits::KCI_par)
-    {
-        // VFALCO This is legacy compatibility
-        // for Boost libraries using @par as a
-        // section heading.
-        doc::Paragraph paragraph;
-        auto scope = enterScope(paragraph);
-        visitChildren(C->getParagraph());
-        if(! paragraph.children.empty())
-        {
-            // first TextComment is the heading text
-            doc::String text(std::move(
-                paragraph.children.front()->string));
-
-            // VFALCO Unfortunately clang puts at least
-            // one space in front of the text, which seems
-            // incorrect.
-            auto const s = trim(text);
-            if(s.size() != text.size())
-                text = s;
-
-            doc::Heading heading(std::move(text));
-            jd_.emplace_back(std::move(heading));
-
-            // remaining TextComment, if any
-            paragraph.children.erase(paragraph.children.begin());
-            if(! paragraph.children.empty())
-                jd_.emplace_back(std::move(paragraph));
-        }
-        return;
-    }
-    if(cmd->getID() == CommandTraits::KCI_li)
-    {
-        doc::ListItem paragraph;
-        auto scope = enterScope(paragraph);
-        visitChildren(C->getParagraph());
-        jd_.emplace_back(std::move(paragraph));
-        return;
     }
 }
 
