@@ -38,7 +38,16 @@ void
 initCustomCommentCommands(
     ASTContext& ctx);
 
-/** Parse a javadoc.
+/** Parse doc comments from a declaration
+
+    Parse the Javadoc from a declaration, populating the
+    Javadoc object with the parsed information.
+
+    @param jd The Javadoc object to populate
+    @param FC The full comment to parse
+    @param D The declaration to which the comment applies
+    @param config The MrDocs configuration object
+    @param diags The diagnostics object
 */
 void
 parseJavadoc(
