@@ -97,6 +97,8 @@ public:
     void writeReference(doc::Reference const& node);
     void writeCopied(doc::Copied const& node);
     void writeThrows(doc::Throws const& node);
+    void writeDetails(doc::Details const& node, llvm::StringRef tag = "");
+    void writeSee(doc::See const& node, llvm::StringRef tag = "");
 };
 
 } // xml
