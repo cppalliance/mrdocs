@@ -6,6 +6,7 @@
 //
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
@@ -497,7 +498,7 @@ parseHTMLTag(HTMLStartTagComment const* C)
         }) : it_;
     if (tagEndIt == end_)
     {
-        return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by end tag", res.tag)));
+        return Unexpected(formatError("warning: HTML <{}> tag not followed by end tag", res.tag));
     }
 
     // Check if end tag matches start tag
@@ -660,6 +661,94 @@ convertDirection(ParamCommandComment::PassDirection kind)
     }
 }
 
+/** Parse first chars of string that represent an identifier
+ */
+std::string_view
+parseIdentifier(std::string_view str)
+{
+    static constexpr auto idChars =
+        "abcdefghijklmnopqrstuvwxyz"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "0123456789"
+        "_";
+    static constexpr auto operatorChars =
+        "~!%^&*()-+=|[]{};:,.<>?/";
+    if (str.empty())
+    {
+        return {};
+    }
+
+    std::size_t p = str.find_first_not_of(idChars);
+    if (p == std::string_view::npos)
+    {
+        return str;
+    }
+
+    if (str.substr(0, p) == "operator")
+    {
+        p = str.find_first_not_of(operatorChars, p);
+        if (p == std::string_view::npos)
+        {
+            return str;
+        }
+    }
+
+    return str.substr(0, p);
+}
+
+/** Parse first chars of string that represent an identifier
+ */
+std::string_view
+parseQualifiedIdentifier(std::string_view str)
+{
+    auto str0 = str;
+    std::size_t off = 0;
+    if (str.starts_with("::"))
+    {
+        off += 2;
+        str.remove_prefix(2);
+    }
+
+    bool atIdentifier = true;
+    while (!str.empty())
+    {
+        if (atIdentifier)
+        {
+            auto idStr = parseIdentifier(str);
+            if (!idStr.empty())
+            {
+                off += idStr.size();
+                str = str.substr(idStr.size());
+                atIdentifier = false;
+            }
+            else
+            {
+                break;
+            }
+        }
+        else
+        {
+            // At delimiter
+            if (str.starts_with("::"))
+            {
+                off += 2;
+                str = str.substr(2);
+                atIdentifier = true;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    std::string_view result = str0.substr(0, off);
+    if (result.ends_with("::"))
+    {
+        result = result.substr(0, result.size() - 2);
+    }
+    return result;
+}
+
 void
 JavadocVisitor::
 visitInlineCommandComment(
@@ -672,9 +761,6 @@ visitInlineCommandComment(
     // VFALCO I'd like to know when this happens
     MRDOCS_ASSERT(cmd != nullptr);
 
-    // KRYSTIAN FIXME: the text for a copydoc/ref command
-    // should not include illegal characters
-    // (e.g. periods that occur after the symbol name)
     switch(unsigned ID = cmd->getID())
     {
     // Emphasis
@@ -699,11 +785,44 @@ visitInlineCommandComment(
     {
         if(! goodArgCount(1, *C))
             return;
+
         // the referenced symbol will be resolved during
         // the finalization step once all symbols are extracted
+        std::string const &s = C->getArgText(0).str();
+        bool const copyingFunctionDoc = s.find('(') != std::string::npos;
+        std::string ref = s;
+        if (copyingFunctionDoc)
+        {
+            // Clang parses the copydoc command breaking
+            // before the complete overload information. For instance,
+            // `@copydoc operator()(unsigned char) const` will create
+            // a node with the text `operator()(unsigned` and another
+            // with `char) const`. We need to merge these nodes.
+            std::size_t open = std::ranges::count(s, '(');
+            std::size_t close = std::ranges::count(s, ')');
+            while (open != close)
+            {
+                ++it_;
+                if (it_ == end_)
+                {
+                    break;
+                }
+                auto const* c = *it_;
+                if (c->getCommentKind() == Comment::TextCommentKind)
+                {
+                    ref += static_cast<TextComment const*>(c)->getText();
+                }
+                else
+                {
+                    break;
+                }
+                open = std::ranges::count(ref, '(');
+                close = std::ranges::count(ref, ')');
+            }
+        }
         emplaceText<doc::Copied>(
             C->hasTrailingNewline(),
-            C->getArgText(0).str(),
+            ref,
             convertCopydoc(ID));
         return;
     }
@@ -711,11 +830,30 @@ visitInlineCommandComment(
     {
         if(! goodArgCount(1, *C))
             return;
-        // the referenced symbol will be resolved during
-        // the finalization step once all symbols are extracted
-        emplaceText<doc::Reference>(
-            C->hasTrailingNewline(),
-            C->getArgText(0).str());
+        // The parsed reference often includes characters
+        // that are not valid in identifiers, so we need to
+        // clean it up.
+        // Find the first character that is not a valid C++
+        // identifier character, and truncate the string there.
+        // This potentially creates two text nodes.
+        auto const s = C->getArgText(0).str();
+        std::string_view ref = parseQualifiedIdentifier(s);
+        bool const hasExtraText = ref.size() != s.size();
+        if (!ref.empty())
+        {
+            // the referenced symbol will be resolved during
+            // the finalization step once all symbols are extracted
+            emplaceText<doc::Reference>(
+                C->hasTrailingNewline() && !hasExtraText,
+                std::string(ref));
+        }
+        // Emplace the rest of the string as doc::Text
+        if(hasExtraText)
+        {
+            emplaceText<doc::Text>(
+                C->hasTrailingNewline(),
+                s.substr(ref.size()));
+        }
         return;
     }
 

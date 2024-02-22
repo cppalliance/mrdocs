@@ -622,49 +622,55 @@ writeNode(
     switch(node.kind)
     {
     case doc::Kind::text:
-        writeText(static_cast<doc::Text const&>(node));
+        writeText(dynamic_cast<doc::Text const&>(node));
         break;
     case doc::Kind::styled:
-        writeStyledText(static_cast<doc::Styled const&>(node));
+        writeStyledText(dynamic_cast<doc::Styled const&>(node));
         break;
     case doc::Kind::heading:
-        writeHeading(static_cast<doc::Heading const&>(node));
+        writeHeading(dynamic_cast<doc::Heading const&>(node));
         break;
     case doc::Kind::paragraph:
-        writeParagraph(static_cast<doc::Paragraph const&>(node));
+        writeParagraph(dynamic_cast<doc::Paragraph const&>(node));
         break;
     case doc::Kind::link:
-        writeLink(static_cast<doc::Link const&>(node));
+        writeLink(dynamic_cast<doc::Link const&>(node));
         break;
     case doc::Kind::list_item:
-        writeListItem(static_cast<doc::ListItem const&>(node));
+        writeListItem(dynamic_cast<doc::ListItem const&>(node));
         break;
     case doc::Kind::brief:
-        writeBrief(static_cast<doc::Brief const&>(node));
+        writeBrief(dynamic_cast<doc::Brief const&>(node));
         break;
     case doc::Kind::admonition:
-        writeAdmonition(static_cast<doc::Admonition const&>(node));
+        writeAdmonition(dynamic_cast<doc::Admonition const&>(node));
         break;
     case doc::Kind::code:
-        writeCode(static_cast<doc::Code const&>(node));
+        writeCode(dynamic_cast<doc::Code const&>(node));
         break;
     case doc::Kind::param:
-        writeJParam(static_cast<doc::Param const&>(node));
+        writeJParam(dynamic_cast<doc::Param const&>(node));
         break;
     case doc::Kind::tparam:
-        writeTParam(static_cast<doc::TParam const&>(node));
+        writeTParam(dynamic_cast<doc::TParam const&>(node));
         break;
     case doc::Kind::returns:
-        writeReturns(static_cast<doc::Returns const&>(node));
+        writeReturns(dynamic_cast<doc::Returns const&>(node));
         break;
     case doc::Kind::reference:
-        writeReference(static_cast<doc::Reference const&>(node));
+        writeReference(dynamic_cast<doc::Reference const&>(node));
         break;
     case doc::Kind::copied:
-        writeCopied(static_cast<doc::Copied const&>(node));
+        writeCopied(dynamic_cast<doc::Copied const&>(node));
         break;
     case doc::Kind::throws:
-        writeThrows(static_cast<doc::Throws const&>(node));
+        writeThrows(dynamic_cast<doc::Throws const&>(node));
+        break;
+    case doc::Kind::details:
+        writeDetails(dynamic_cast<doc::Details const&>(node));
+        break;
+    case doc::Kind::see:
+        writeSee(dynamic_cast<doc::See const&>(node));
         break;
     default:
         // unknown kind
@@ -774,6 +780,30 @@ writeParagraph(
         { "class", tag, ! tag.empty() }});
     writeNodes(para.children);
     tags_.close("para");
+}
+
+void
+XMLWriter::
+writeDetails(
+    doc::Details const& para,
+    llvm::StringRef tag)
+{
+    tags_.open("details", {
+        { "class", tag, ! tag.empty() }});
+    writeNodes(para.children);
+    tags_.close("details");
+}
+
+void
+XMLWriter::
+writeSee(
+    doc::See const& para,
+    llvm::StringRef tag)
+{
+    tags_.open("see", {
+        { "class", tag, ! tag.empty() }});
+    writeNodes(para.children);
+    tags_.close("see");
 }
 
 void
