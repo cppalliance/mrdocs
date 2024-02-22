@@ -199,7 +199,7 @@ class JavadocVisitor
     {
         std::string tag;
         std::string text;
-        std::size_t n_siblings;
+        std::size_t n_siblings{0};
     };
 
 public:
@@ -473,60 +473,58 @@ visitTextComment(
             ensureUTF8(s.str()));
 }
 
-namespace {
-unsigned long
-nSiblingsNeededForHtmlTag(llvm::StringRef tag)
-{
-    if(tag == "br")
-        return 0;
-    return 2;
-}
-}
-
 Expected<JavadocVisitor::TagComponents>
 JavadocVisitor::
 parseHTMLTag(HTMLStartTagComment const* C)
 {
-    auto const tag = C->getTagName();
-
-    // Check if we have the enough nodes with the tag values
-    unsigned long const nSiblingsLeft = end_ - it_ - 1;
-    // AFREITAS: this needs to change for other tag types
-    unsigned long const nSiblingsNeeded = nSiblingsNeededForHtmlTag(tag);
-    if(nSiblingsLeft < nSiblingsNeeded)
-    {
-        return Unexpected(Error(fmt::format("warning: invalid HTML <{}> tag", tag.str())));
-    }
-
     TagComponents res;
-    res.tag = tag.str();
-    res.n_siblings = nSiblingsNeeded;
+    res.tag = C->getTagName().str();
 
-    bool const hasText = nSiblingsNeeded > 0;
-    if (hasText)
+    static constexpr std::array noEndTagTags =
+            {"br", "img", "input", "hr", "meta", "link", "base", "area", "col",
+             "command", "embed", "keygen", "param", "source", "track", "wbr"};
+    bool const requiresEndTag = std::ranges::find(noEndTagTags, res.tag) == noEndTagTags.end();
+    if (!requiresEndTag)
     {
-        if (it_[1]->getCommentKind() != Comment::TextCommentKind)
-        {
-            return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by comment", tag.str())));
-        }
-        auto const& cText =
-            *static_cast<TextComment const*>(it_[1]);
-        res.text = cText.getText();
+        return res;
     }
 
-    bool needsEndTag = nSiblingsNeeded > 1;
-    if(needsEndTag)
+    // Find Comment::HTMLEndTagCommentKind
+    auto const tagEndIt =
+        requiresEndTag ? std::ranges::find_if(it_ + 1, end_, [](Comment const* c)
+        {
+            return c->getCommentKind() == Comment::HTMLEndTagCommentKind;
+        }) : it_;
+    if (tagEndIt == end_)
     {
-        if (it_[2]->getCommentKind() != Comment::HTMLEndTagCommentKind)
-        {
-            return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by end tag", tag.str())));
-        }
-        auto const& cEndTag =
-                *static_cast<HTMLEndTagComment const*>(it_[2]);
-        if(cEndTag.getTagName() != tag)
-        {
-            return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by same end tag", tag.str())));
-        }
+        return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by end tag", res.tag)));
+    }
+
+    // Check if end tag matches start tag
+    auto const& cEndTag =
+        *static_cast<HTMLEndTagComment const*>(*tagEndIt);
+    if(cEndTag.getTagName() != res.tag)
+    {
+        return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by same end tag (</{}> found)", res.tag, cEndTag.getTagName().str())));
+    }
+
+    // Check if all the siblings are text nodes
+    bool const areAllText = std::all_of(it_ + 1, tagEndIt, [](Comment const* c)
+    {
+        return c->getCommentKind() == Comment::TextCommentKind;
+    });
+    if (!areAllText)
+    {
+        return Unexpected(Error(fmt::format("warning: HTML <{}> tag not followed by text", res.tag)));
+    }
+
+    // Extract text from all the siblings
+    res.n_siblings = std::distance(it_, tagEndIt);
+    for (auto it = std::next(it_); it != tagEndIt; ++it)
+    {
+        auto const& cText =
+            *static_cast<TextComment const*>(*it);
+        res.text += cText.getText();
     }
 
     return res;
@@ -560,7 +558,7 @@ visitHTMLStartTagComment(
     if (!tagComponentsExp)
     {
         Error e = tagComponentsExp.error();
-        report::error(e.message(), filename, loc.getLine());
+        report::error("{} at {} ({})", e.message(), filename, loc.getLine());
         return;
     }
     auto tagComponents = *tagComponentsExp;
