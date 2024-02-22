@@ -89,6 +89,13 @@ using List = std::vector<std::unique_ptr<T>>;
     Doxygen also introduces a number of additional tags on top
     of the the doc comment specification.
 
+    @note When a new tag is added, the `visit` function overloads
+    must be updated to handle the new tag. If the new object
+    contains new fields, `BitcodeWriter::emitBlock(doc::Node const& I)`
+    must include logic to serialize the new fields, and
+    `BitcodeReader::readBlock` must include logic to deserialize
+    the new fields.
+
     @see https://en.wikipedia.org/wiki/Javadoc[Javadoc - Wikipedia]
     @see https://docs.oracle.com/javase/1.5.0/docs/tooldocs/solaris/javadoc.html[Javadoc Documentation]
     @see https://docs.oracle.com/en/java/javase/13/docs/specs/javadoc/doc-comment-spec.html[Doc Comment Specification]

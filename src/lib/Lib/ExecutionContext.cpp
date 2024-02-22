@@ -4,6 +4,7 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
+// Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com)
 // Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
 // Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
@@ -14,6 +15,7 @@
 #include "lib/AST/Bitcode.hpp"
 #include "lib/Metadata/Reduce.hpp"
 #include <mrdocs/Metadata.hpp>
+#include <ranges>
 
 namespace clang {
 namespace mrdocs {
@@ -131,7 +133,7 @@ report(
         llvm::SmallString<0> bitcode = writeBitcode(*I);
         auto [it, created] = bitcode_.try_emplace(I->id);
         auto& bitcodes = it->second;
-        if (created || std::find(bitcodes.begin(), bitcodes.end(), bitcode) == bitcodes.end())
+        if (created || std::ranges::find(bitcodes, bitcode) == bitcodes.end())
         {
             bitcodes.emplace_back(std::move(bitcode));
         }
@@ -164,14 +166,20 @@ results()
             // Each Bitcode can have multiple Infos
             for(auto& bitcode : bitcodes)
             {
-                auto infos = readBitcode(bitcode);
-                std::move(
-                    infos->begin(),
-                    infos->end(),
-                    std::back_inserter(Infos));
+                Expected infos = readBitcode(bitcode);
+                if (infos.has_value())
+                {
+                    std::move(
+                        infos->begin(),
+                        infos->end(),
+                        std::back_inserter(Infos));
+                }
+                else
+                {
+                    report::error("Failed to read bitcode: {}", infos.error());
+                }
             }
-
-            auto merged = mergeInfos(Infos);
+            Expected merged = mergeInfos(Infos);
             std::unique_ptr<Info> I = std::move(merged.value());
             MRDOCS_ASSERT(I);
             MRDOCS_ASSERT(id == I->id);
