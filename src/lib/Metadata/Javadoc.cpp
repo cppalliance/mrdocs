@@ -274,6 +274,10 @@ makeOverview(
             ov.exceptions.push_back(static_cast<
                 doc::Throws const*>(it->get()));
             break;
+        case doc::Kind::see:
+            ov.sees.push_back(static_cast<
+                doc::See const*>(it->get()));
+            break;
         default:
             if(ov.brief == it->get())
                 break;

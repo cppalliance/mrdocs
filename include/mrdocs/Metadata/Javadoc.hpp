@@ -848,6 +848,7 @@ struct Overview
     std::vector<Param const*> params;
     std::vector<TParam const*> tparams;
     std::vector<Throws const*> exceptions;
+    std::vector<See const*> sees;
 };
 
 MRDOCS_DECL dom::String toString(Style style) noexcept;

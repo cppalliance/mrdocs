@@ -132,8 +132,11 @@ loadOptions(
     }
     else
     {
-        // VFALCO TODO get process executable
-        // and form a path relative to that.
+        opt.template_dir = files::makeDirsy(files::appendPath(
+            corpus.config->addonsDir,
+            "generator",
+            "asciidoc"
+        ));
     }
 
     if(! opt.template_dir.empty())
@@ -145,8 +148,11 @@ loadOptions(
     }
     else
     {
-        // VFALCO TODO get process executable
-        // and form a path relative to that.
+        opt.template_dir = files::makeDirsy(files::appendPath(
+            corpus.config->addonsDir,
+            "generator",
+            "asciidoc"
+        ));
     }
 
     return opt;
