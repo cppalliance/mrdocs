@@ -17,7 +17,8 @@
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
         "LLVM_ROOT": "$env{LLVM_ROOT}",
         "Clang_ROOT": "$env{LLVM_ROOT}",
-        "MRDOCS_BUILD_TESTS": "ON"
+        "MRDOCS_BUILD_TESTS": "ON",
+        "VCPKG_MANIFEST_FEATURES": "tests"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -56,7 +57,8 @@
       "description": "Release Config without Tests.",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "MRDOCS_BUILD_TESTS": "OFF"
+        "MRDOCS_BUILD_TESTS": "OFF",
+        "VCPKG_MANIFEST_FEATURES": ""
       }
     }
   ]
