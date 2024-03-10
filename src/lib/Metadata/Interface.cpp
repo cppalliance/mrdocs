@@ -265,6 +265,20 @@ public:
     }
 
     void operator()(
+        NamespaceAliasInfo const& I,
+        AccessKind access)
+    {
+        push(&Tranche::NamespaceAliases, access, I);
+    }
+
+    void operator()(
+        UsingInfo const& I,
+        AccessKind access)
+    {
+        push(&Tranche::Usings, access, I);
+    }
+
+    void operator()(
         const EnumeratorInfo& I,
         AccessKind access)
     {

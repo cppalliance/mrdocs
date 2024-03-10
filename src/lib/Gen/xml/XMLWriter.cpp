@@ -232,6 +232,10 @@ operator()(
         writeFriend(I);
     if constexpr(T::isGuide())
         writeGuide(I);
+    if constexpr(T::isAlias())
+        writeNamespaceAlias(I);
+    if constexpr(T::isUsing())
+        writeUsing(I);
 }
 
 //------------------------------------------------
@@ -379,6 +383,53 @@ writeGuide(
     tags_.close(guideTagName);
 
     closeTemplate(I.Template);
+}
+
+void
+XMLWriter::
+writeNamespaceAlias(
+    NamespaceAliasInfo const& I)
+{
+    tags_.open(namespaceAliasTagName, {
+        { "name", I.Name },
+        { I.Access },
+        { I.id }
+        });
+
+    writeSourceInfo(I);
+
+    writeJavadoc(I.javadoc);
+
+    Attributes attrs = {};
+
+    attrs.push({"aliasedSymbol", toString(I.AliasedSymbol)});
+
+    tags_.write("aliased", {}, attrs);
+
+    tags_.close(namespaceAliasTagName);
+}
+
+void
+XMLWriter::
+    writeUsing(UsingInfo const& I)
+{
+    tags_.open(usingTagName, {
+        { I.Access },
+        { I.id },
+        { "is-directive", "true", I.IsDirective }
+        });
+
+    writeSourceInfo(I);
+
+    writeJavadoc(I.javadoc);
+
+    for (auto const& symbol : I.UsingSymbols) {
+        Attributes attrs = {};
+        attrs.push({"id", toString(symbol)});
+        tags_.write("symbol", {}, attrs);
+    }
+
+    tags_.close(usingTagName);
 }
 
 void

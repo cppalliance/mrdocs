@@ -104,6 +104,8 @@ DEFINE(SpecializationInfo);
 DEFINE(FriendInfo);
 DEFINE(EnumeratorInfo);
 DEFINE(GuideInfo);
+DEFINE(NamespaceAliasInfo);
+DEFINE(UsingInfo);
 
 } // adoc
 } // mrdocs

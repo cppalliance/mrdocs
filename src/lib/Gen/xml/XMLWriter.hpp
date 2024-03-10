@@ -69,6 +69,8 @@ public:
     void writeTypedef(TypedefInfo const&);
     void writeVar(VariableInfo const&);
     void writeSpecialization(const SpecializationInfo&);
+    void writeNamespaceAlias(NamespaceAliasInfo const& I);
+    void writeUsing(UsingInfo const& I);
 
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);

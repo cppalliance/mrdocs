@@ -33,6 +33,8 @@
 		<AlternativeType Name="clang::mrdocs::FriendInfo"/>
 		<AlternativeType Name="clang::mrdocs::EnumeratorInfo"/>
 		<AlternativeType Name="clang::mrdocs::GuideInfo"/>
+		<AlternativeType Name="clang::mrdocs::NamespaceAliasInfo"/>
+		<AlternativeType Name="clang::mrdocs::UsingInfo"/>
 
 		<DisplayString>{Kind,en} {Name} (ID = {id})</DisplayString>
 
@@ -49,6 +51,8 @@
 		    <ExpandedItem Condition="Kind == InfoKind::Friend">(FriendInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Enumerator">(EnumeratorInfo*)this,view(noinherit)</ExpandedItem>
 		    <ExpandedItem Condition="Kind == InfoKind::Guide">(GuideInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Alias">(NamespaceAliasInfo*)this,view(noinherit)</ExpandedItem>
+		    <ExpandedItem Condition="Kind == InfoKind::Using">(UsingInfo*)this,view(noinherit)</ExpandedItem>
 		</Expand>
 	</Type>
 

@@ -1874,6 +1874,92 @@ public:
 
 //------------------------------------------------
 
+class NamespaceAliasBlock
+    : public TopLevelBlock<NamespaceAliasInfo>
+{
+public:
+    using TopLevelBlock::TopLevelBlock;
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case NAMESPACE_ALIAS_SYMBOL:
+            return decodeRecord(R, I->AliasedSymbol, Blob);
+        default:
+            return TopLevelBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    //TODO:
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        //TODO
+        // case BI_TYPEINFO_BLOCK_ID:
+        // {
+        //     TypeInfoBlock B(I->FriendType, br_);
+        //     return br_.readBlock(B, ID);
+        // }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
+class UsingBlock
+    : public TopLevelBlock<UsingInfo>
+{
+public:
+    using TopLevelBlock::TopLevelBlock;
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case USING_SYMBOL:
+            return decodeRecord(R, I->UsingSymbols, Blob);
+        case USING_IS_DIRECTIVE:
+            return decodeRecord(R, I->IsDirective, Blob);
+        default:
+            return TopLevelBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        //TODO
+        // case BI_TEMPLATE_BLOCK_ID:
+        // {
+        //     I->Template = std::make_unique<TemplateInfo>();
+        //     TemplateBlock B(*I->Template, br_);
+        //     return br_.readBlock(B, ID);
+        // }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
 class EnumeratorBlock
     : public TopLevelBlock<EnumeratorInfo>
 {
