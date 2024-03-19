@@ -53,7 +53,9 @@ jobs:
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
-    container: ${{ (matrix.compiler == 'gcc' && 'ubuntu:22.04') || matrix.container }}
+    # Typically ubuntu-23.04 for GCC, which is needed later
+    # to test if the release binaries work on ubuntu-20.04.
+    container: ${{ matrix.container }}
     env: ${{ matrix.env }}
     permissions:
       contents: write
@@ -137,9 +139,9 @@ jobs:
           cmake-version: '>=3.20'
           cxxstd: ${{ matrix.cxxstd }}
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
-          ccflags: ${{ matrix.ccflags }}
+          ccflags: ${{ matrix.ccflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libgcc -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
+          cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libgcc -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           generator: Ninja
           toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain || steps.package-install.outputs.vcpkg-toolchain }}
           build-type: ${{ matrix.build-type }}
@@ -155,6 +157,8 @@ jobs:
           package-generators: ${{ (runner.os == 'Windows' && '7Z ZIP WIX') || 'TGZ TXZ' }}
           package-artifact: false
 
+      # The artifacts will be downloaded in the next jobs to
+      # create the releases.
       - name: Upload GitHub Release Artifacts
         if: ${{ matrix.is-main && matrix.compiler != 'clang' }}
         uses: actions/upload-artifact@v3
@@ -171,7 +175,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Codecov
-        if: ${{ matrix.coverage}}
+        if: ${{ matrix.coverage }}
         uses: codecov/codecov-action@v3.1.4
         with:
           directory: './build'
@@ -187,7 +191,8 @@ jobs:
 
     name: Documentation
     timeout-minutes: 30
-    runs-on: ubuntu-22.04
+    # The Boost release tools container uses ubuntu-20.04
+    runs-on: ubuntu-20.04
     permissions:
       contents: write
 
@@ -248,8 +253,9 @@ jobs:
 
     name: Demos
     timeout-minutes: 120
+    # We run the demos with ubuntu-22.04 to ensure
+    # the binary works on earlier versions of ubuntu.
     runs-on: ubuntu-22.04
-    container: ubuntu:23.04
 
     permissions:
       contents: write
@@ -283,7 +289,7 @@ jobs:
       - name: Install mrdocs from release package
         run: |
           set -x
-          find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -vxzf {} -C /usr/local --strip-components=1 \;
+          sudo find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -vxzf {} -C /usr/local --strip-components=1 \;
           mrdocs --version
 
       - name: Clone Boost.URL
@@ -297,6 +303,9 @@ jobs:
           modules-exclude-paths: ''
           trace-commands: true
 
+      # Boost.URL has its own mrdocs.yml file. We go through the
+      # multi/single and adoc/html/xml formats and patch the
+      # mrdocs.yml file for each combination.
       - name: Generate demos
         run: |
           set -x
@@ -319,6 +328,7 @@ jobs:
           tar -cjf $(pwd)/demos.tar.gz -C $(pwd)/demos --strip-components 1 .
           echo "demos_path=$(pwd)/demos.tar.gz" >> $GITHUB_ENV
 
+      # Upload the demos as artifacts, so we can see them in PRs.
       - name: Upload demo artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -326,6 +336,7 @@ jobs:
           path: ${{ env.demos_path }}
           retention-days: 1
 
+      # Upload the demos to the website when pushing to master, develop, or creating a tag.
       - name: Update website demos
         if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
         env:
@@ -345,6 +356,10 @@ jobs:
           chmod 755 -R $(pwd)/demos
           scp -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
+  # Create releases after being able to build the demos.
+  # When the releases overwrite the `master` or `develop` releases,
+  # GitHub might attempt to create a draft release which needs to
+  # be converted to a regular release manually.
   releases:
     needs: build
     defaults:
