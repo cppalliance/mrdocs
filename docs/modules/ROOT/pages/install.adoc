@@ -7,6 +7,15 @@ Binary packages are available from our https://github.com/cppalliance/mrdocs/rel
 
 == Source
 
+The following instructions assume we are at a parent directory that's going to contain both the MrDocs and the third-party dependencies directories.
+
+[source]
+----
++ <parent-directory>
+  + mrdocs
+  + third-party
+----
+
 Clone the MrDocs repository with:
 
 [source,bash]
@@ -33,128 +42,42 @@ Fell free to install them anywhere you want and adjust the main MrDocs configura
 MrDocs uses LLVM to parse C++ code and extract documentation from it.
 It depends on a recent version of LLVM: https://github.com/llvm/llvm-project/tree/29b20829cc6ce3e6d9c3809164994c1659e0da56[29b20829]
 
-[#llvm-binaries]
-**Binaries**:
-
-Because building LLVM may take many hours to complete, we provide pre-built binaries for Windows and Linux:
-
-|===
-| | https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html[CMake Preset,window=_blank] | https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html[CMake Build,window=_blank] | Debug Info | Optimized | https://learn.microsoft.com/en-us/visualstudio/ide/understanding-build-configurations?view=vs-2022[MSVC Build,window=_blank]
-
-| 🪟 https://mrdox.com/llvm+clang/Windows-Release-29b20829.7z[`Windows-Release-29b20829.7z`]
-| 🚀 Release
-| 🚀 Release
-| ❌
-| ✅
-| 🚀 Release
-
-| 🪟 https://mrdox.com/llvm+clang/Windows-Debug-29b20829.7z[`Windows-Debug-29b20829.7z`]
-| 🐞 Debug
-| 🐞 Debug
-| ✅
-| ❌
-| 🐞 Debug
-
-| 🪟 https://mrdox.com/llvm+clang/Windows-RelWithDebInfo-29b20829.7z[`Windows-RelWithDebInfo-29b20829.7z`]
-| 🕵️‍♂️ RelWithDebInfo
-| 🕵️‍♂️ RelWithDebInfo
-| ✅
-| ✅
-| 🚀 Release
-
-| 🪟 https://mrdox.com/llvm+clang/Windows-DebWithOpt-29b20829.7z[`Windows-DebWithOpt-29b20829.7z`]
-| 🔬 DebWithOpt
-| 🐞 Debug
-| ✅
-| ✅
-| 🐞 Debug
-
-| 🐧 https://mrdox.com/llvm+clang/Linux-Release-29b20829.tar.xz[`Linux-Release-29b20829.tar.xz`]
-| 🚀 Release
-| 🚀 Release
-| ❌
-| ✅
-| N/A
-
-| 🐧 https://mrdox.com/llvm+clang/Linux-Debug-29b20829.tar.xz[`Linux-Debug-29b20829.tar.xz`]
-| 🐞 Debug
-| 🐞 Debug
-| ✅
-| ❌
-| N/A
-
-| 🐧 https://mrdox.com/llvm+clang/Linux-RelWithDebInfo-29b20829.tar.xz[`Linux-RelWithDebInfo-29b20829.tar.xz`]
-| 🕵️‍♂️ RelWithDebInfo
-| 🕵️‍♂️ RelWithDebInfo
-| ✅
-| ✅
-| N/A
-
-| 🐧 https://mrdox.com/llvm+clang/Linux-DebWithOpt-29b20829.tar.xz[`Linux-DebWithOpt-29b20829.tar.xz`]
-| 🔬 DebWithOpt
-| 🐞 Debug
-| ✅
-| ✅
-| N/A
-|===
-
-IMPORTANT: The Linux binaries are built on Ubuntu 22.04 and may not work on other distributions.
-
-You can download the binaries and uncompress them in the `./third-party/llvm+clang` directory we created in the previous step.
-
-LLVM binaries are provided in a number of preset configurations.
-Here is a brief description of each preset:
-
-- `Release`: this is the preset users will typically use.
-It is optimized for speed and does not include debug information.
-- `Debug`: this is a preset developers can use.
-It includes debug information and no optimizations.
-However, using a `Debug` build of LLVM to debug MrDocs might be too slow.
-In this case, you can link MrDocs with `RelWithDebInfo` or `DebWithOpt`.
-- `RelWithDebInfo`: this is a release build with debug information.
-It is optimized for speed and includes debug information.
-However, if you are working with Windows+MSVC, this preset has a `Release` build type at the MSVC level.
-This means you can have conflicts with MrDocs in `Debug` mode because of LLVM setting flags such as the `_ITERATOR_DEBUG_LEVEL` and `/MDd`.
-In this case, you can use `DebWithOpt` instead to avoid the conflict and subsequent workarounds.
-- `DebWithOpt`: this is a debug build with optimizations.
-It includes all the default Debug flags for LLVM, it's optimized for speed, includes debug information, and causes no conflicts with MrDocs in `Debug` mode.
-
-If you chose to use the provided binaries instead of building LLVM from source, you can skip to the <<duktape>> section.
-
 **Download**:
 
-Alternatively, if building LLVM from source, you can clone the project from the official repository:
+You can shallow-clone the project from the official repository:
 
 [source,bash]
 ----
-git clone https://github.com/llvm/llvm-project.git
+mkdir -p llvm-project
 cd llvm-project
-git checkout 29b20829cc6ce3e6d9c3809164994c1659e0da56
-cd llvm
+git init
+git remote add origin https://github.com/llvm/llvm-project.git
+git fetch --depth 1 origin 29b20829cc6ce3e6d9c3809164994c1659e0da56
+git checkout FETCH_HEAD
 ----
 
 **Configure**:
 
-There are two ways to configure LLVM: using <<llvm-configure-presets, CMake presets>> or using <<llvm-configure-cmd-line, CMake directly>>.
-
-[#llvm-configure-presets]
-_Configure with CMake Presets_
-
-We recommend using https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html[CMake presets,window=_blank] to build LLVM.
-Preset files contain a replicable set of CMake configuration values that can be used to configure a project.
-
-Instead of passing all CMake configuration values on the command line, a template for the `CMakePresets.json` and `CMakeUserPresets.json` files is provided in the repository's `third-party/llvm` directory.
-Copy these files to the `llvm-project/llvm` directory and run a command such as the following to configure LLVM:
+The `mrdocs/third-party/llvm` directory provides https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html[CMake presets,window=_blank] to build LLVM.
+We recommend using preset files as they contain a replicable set of CMake configuration values that can be used for a project.
+From `third-party/llvm-project`, you can copy the `CMakePresets.json` and `CMakeUserPresets.json` files to the `llvm-project/llvm` directory.
 
 [source,bash]
 ----
-cmake -preset=relwithdebinfo-win
+cp ../../mrdocs/third-party/llvm/CMakePresets.json ./llvm
+cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json.example ./llvm/CMakeUserPresets.json
 ----
 
-In the example above, we configure a `RelWithDebInfo` version of LLVM for MrDocs: a release build with debug information.
+Run a command such as the following to configure LLVM:
 
+[source,bash]
+----
+cd llvm
+cmake -S . -B ./build --preset=release-win
+----
+
+In the example above, we configure a `Release` version of LLVM for MrDocs.
 Choose one of the presets from `CMakePresets.json` or edit the variants in `CMakeUserPresets.json` to customize the configurations.
-The `CMakeUserPresets.json` file comes with presets for all the configurations described in the <<llvm-binaries,Binaries>> section.
 
 [NOTE]
 ====
@@ -166,48 +89,19 @@ This should give you an optimized build with all debug features and flags, such 
 In other platforms, this should give you a release somewhat equivalent to `RelWithDebInfo` optimized for debugging experience. `-Og` offers a reasonable level of optimization while maintaining fast compilation and a good debugging experience.
 ====
 
-[#llvm-configure-cmd-line]
-_Configure with Command Line Arguments_:
-
-You can also configure LLVM directly with the settings required by MrDocs:
-
-Windows (from administrator `cmd.exe`, after running `vcvars64.bat`):
-
-[source,commandline]
-----
-cmake -S llvm -B build/MSVC/RelWithDebInfo -G "Ninja" -A x64 -D LLVM_ENABLE_PROJECTS="clang" -D CMAKE_CONFIGURATION_TYPES="RelWithDebInfo" -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=../llvm+clang/RelWithDebInfo -D LLVM_ENABLE_IDE=OFF -D LLVM_ENABLE_DIA_SDK=OFF
-----
-
-Unix variants:
-
-[source,bash]
-----
-cmake -S llvm -B build/Linux/RelWithDebInfo -D LLVM_ENABLE_PROJECTS="clang" -D CMAKE_BUILD_TYPE=RelWithDebInfo -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=../llvm+clang/RelWithDebInfo
-----
-
-Unlike the <<llvm-configure-presets,CMake presets>>, this command does not a number of parameters that removes features that are not required by MrDocs, thus increasing the build time and size of the installation.
-
 **Build**:
 
 Build and install the configured version of LLVM with:
 
 [source,bash]
 ----
-cd build
-cmake --build . --config RelWithDebInfo
-cmake --install . --prefix ../../llvm+clang/RelWithDebInfo" --config RelWithDebInfo
+cmake --build ./build --config Release --parallel 4
+cmake --install ./build --prefix ../install
 ----
 
-If you prefer using the provided CMake presets, you can also use the `--preset` option for the `build` command:
+Replace 4 with the number of cores you want to use for building LLVM.
 
-[source,bash]
-----
-cd build
-cmake --build --preset=relwithdebinfo-win
-cmake --install MSVC/RelWithDebInfo --config RelWithDebInfo
-----
-
-Return from `./third-party/llvm-project/build` to the parent `third-party` directory to install other dependencies:
+Return from `./third-party/llvm-project/llvm` to the parent `third-party` directory to install other dependencies:
 
 [source,bash]
 ----

@@ -24,9 +24,6 @@ jobs:
     outputs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
     steps:
-      - name: Clone cpp-actions
-        uses: actions/checkout@v3
-
       - name: Generate Test Matrix
         uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.2
         id: cpp-matrix
@@ -59,15 +56,90 @@ jobs:
       contents: write
 
     steps:
-      - name: Install git
+      - name: Install Essential Packages
         if: ${{ matrix.container }}
+        env:
+          DEBIAN_FRONTEND: 'noninteractive'
+          TZ: 'Etc/UTC'
         uses: alandefreitas/cpp-actions/package-install@v1.8.2
         with:
-          apt-get: git
+          apt-get: git build-essential python3
 
       - name: Clone MrDocs
         uses: actions/checkout@v3
 
+      - name: Setup CMake
+        uses: alandefreitas/cpp-actions/setup-cmake@v1.8.2
+        id: setup-cmake
+        with:
+          # Clang requires clang-scan-deps to work on the latest CMake versions
+          version: ${{ matrix.compiler == 'clang' && '3.26' || '>=3.26' }}
+          check-latest: 'true'
+          update-environment: 'true'
+
+      - name: Setup Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v4
+        if: ${{ runner.os == 'Windows' }}
+
+      - name: LLVM Parameters
+        id: llvm-parameters
+        run: |
+          echo -E "llvm-hash=29b20829cc6ce3e6d9c3809164994c1659e0da56" >> $GITHUB_OUTPUT
+          echo -E "llvm-build-preset=${{ runner.os == 'Windows' && 'release-win' || 'release-unix' }}" >> $GITHUB_OUTPUT
+          cd ..
+          llvm_root=$(pwd)/third-party/llvm-project/install
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
+              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
+              echo "$llvm_root"
+          fi
+          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
+
+      - name: LLVM Binaries
+        id: llvm-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.llvm-parameters.outputs.llvm-root }}
+          key: llvm-${{ runner.os }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
+
+      - name: Install LLVM
+        id: llvm-install
+        if: steps.llvm-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          # LLVM is be installed with the default compiler
+          set -x
+          
+          # Shallow clone LLVM_HASH in ../third-party/llvm
+          cd ..
+          mkdir -p third-party/llvm-project
+          cd third-party/llvm-project
+          llvm_project_root=$(pwd)
+          git config --global init.defaultBranch master
+          git config --global advice.detachedHead false
+          git init
+          git remote add origin https://github.com/llvm/llvm-project.git
+          git fetch --depth 1 origin ${{ steps.llvm-parameters.outputs.llvm-hash }}
+          git checkout FETCH_HEAD
+        
+          # Copy presets
+          cp ../../mrdocs/third-party/llvm/CMakePresets.json ./llvm
+          cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json.example ./llvm/CMakeUserPresets.json
+          
+          # Build
+          cd llvm
+          llvm_root=$(pwd)
+          cmake --version
+          cmake -S . -B ./build --preset=${{ steps.llvm-parameters.outputs.llvm-build-preset }}
+          if [[ ${{ runner.os }} == 'Linux' ]]; then
+              cmake --build ./build --target help
+          fi          
+          N_CORES=$(nproc 2>/dev/null || echo 1)
+          cmake --build ./build --config Release --parallel $N_CORES 
+          cmake --install ./build --prefix "$llvm_project_root"/install
+           
+      # Setup C++ after installing LLVM to use the default compiler
+      # for LLVM and the specified compiler for MrDocs
       - name: Setup C++
         uses: alandefreitas/cpp-actions/setup-cpp@v1.8.2
         id: setup-cpp
@@ -87,45 +159,6 @@ jobs:
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           cxxflags: ${{ matrix.cxxflags }}
 
-      - name: Install LLVM
-        id: llvm-install
-        shell: bash
-        run: |
-          set -xe
-          config_type="Release"
-          filename="${{ runner.os }}-$config_type-29b20829.${{ ( runner.os == 'Windows' && '7z' ) || 'tar.xz' }}"
-          url="https://mrdox.com/llvm+clang/$filename"
-          
-          # Download
-          if command -v curl &> /dev/null
-          then
-              curl -L -o "$filename" "$url"
-          elif command -v wget &> /dev/null
-          then
-              wget -O "$filename" "$url"
-          else
-              echo "Neither curl nor wget are available"
-              exit 1
-          fi
-          
-          # Extract
-          llvm_root="${{runner.tool_cache}}/llvm+clang"
-          llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
-          mkdir -p "$llvm_root"
-          if [ "${{ runner.os }}" != "Windows" ]; then
-              tar -xvf "$filename" -C "$llvm_root" --strip-components=1
-          else
-              7z x "$filename"
-              cd "$config_type"
-              mv * "$llvm_root"
-              cd ..
-              rm -rf "$config_type"
-          fi
-
-          # Export
-          echo "llvm_root=$llvm_root"
-          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
-
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -137,7 +170,7 @@ jobs:
           cmake-version: '>=3.20'
           cxxstd: ${{ matrix.cxxstd }}
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
-          ccflags: ${{ matrix.ccflags }}
+          ccflags: ${{ matrix.ccflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           generator: Ninja
@@ -145,8 +178,8 @@ jobs:
           build-type: ${{ matrix.build-type }}
           install-prefix: .local
           extra-args: |
-            -D LLVM_ROOT="${{ steps.llvm-install.outputs.llvm-root || '/usr/local' }}"
-            -D Clang_ROOT="${{ steps.llvm-install.outputs.llvm-root || '/usr/local' }}"
+            -D LLVM_ROOT="${{ steps.llvm-parameters.outputs.llvm-root || '../third-party/llvm-project/install' }}"
+            -D Clang_ROOT="${{ steps.llvm-parameters.outputs.llvm-root || '../third-party/llvm-project/install' }}"
           export-compile-commands: true
           run-tests: true
           install: true
