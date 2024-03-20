@@ -37,6 +37,7 @@
         "LLVM_BUILD_TESTS": false,
         "LLVM_BUILD_DOCS": false,
         "LLVM_BUILD_EXAMPLES": false,
+        "LLVM_ENABLE_TERMINFO": false,
         "CLANG_ENABLE_ARCMT": true,
         "CLANG_ENABLE_HLSL": false,
         "CLANG_ENABLE_OBJC_REWRITER": false,
