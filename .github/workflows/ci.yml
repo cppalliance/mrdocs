@@ -271,7 +271,7 @@ jobs:
 
           # Copy files
           chmod 755 -R $(pwd)/docs/build/site
-          scp -r $(pwd)/docs/build/site/* ubuntu@dev-websites.cpp.al:/var/www/mrdox.com/
+          scp -o StrictHostKeyChecking=no -r $(pwd)/docs/build/site/* ubuntu@dev-websites.cpp.al:/var/www/mrdox.com/
 
   demos:
     needs: build
@@ -376,7 +376,7 @@ jobs:
           demo_dir="/var/www/mrdox.com/demos/${{ github.ref_name }}"
           ssh ubuntu@dev-websites.cpp.al "rm -rf $demo_dir/boost-url; mkdir -p $demo_dir/boost-url"
           chmod 755 -R $(pwd)/demos
-          scp -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
+          scp -o StrictHostKeyChecking=no -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
   releases:
     needs: build
