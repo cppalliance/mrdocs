@@ -1875,7 +1875,7 @@ public:
 //------------------------------------------------
 
 class NamespaceAliasBlock
-    : public TopLevelBlock<NamespaceAliasInfo>
+    : public TopLevelBlock<AliasInfo>
 {
 public:
     using TopLevelBlock::TopLevelBlock;

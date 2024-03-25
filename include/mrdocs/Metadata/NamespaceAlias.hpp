@@ -22,7 +22,7 @@ namespace mrdocs {
 
 /** Info for namespace aliases.
 */
-struct NamespaceAliasInfo
+struct AliasInfo
     : IsInfo<InfoKind::Alias>
     , SourceInfo
 {
@@ -32,7 +32,7 @@ struct NamespaceAliasInfo
 
     //--------------------------------------------
 
-    explicit NamespaceAliasInfo(SymbolID ID) noexcept
+    explicit AliasInfo(SymbolID ID) noexcept
         : IsInfo(ID)
     {
     }

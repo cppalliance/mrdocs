@@ -429,7 +429,7 @@ RecordsByBlock{
     // FriendInfo
 
 
-    // NamespaceAliasInfo
+    // AliasInfo
     {BI_NAMESPACE_ALIAS_BLOCK_ID,
         {NAMESPACE_ALIAS_SYMBOL}},
 
@@ -1136,7 +1136,7 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
-    NamespaceAliasInfo const& I)
+    AliasInfo const& I)
 {
     StreamSubBlockGuard Block(Stream, BI_NAMESPACE_ALIAS_BLOCK_ID);
     emitInfoPart(I);

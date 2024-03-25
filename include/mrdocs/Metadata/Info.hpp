@@ -38,7 +38,7 @@ struct SpecializationInfo;
 struct FriendInfo;
 struct EnumeratorInfo;
 struct GuideInfo;
-struct NamespaceAliasInfo;
+struct AliasInfo;
 struct UsingInfo;
 
 /** Info variant discriminator
@@ -301,7 +301,7 @@ visit(
     case InfoKind::Guide:
         return visitor.template visit<GuideInfo>();
     case InfoKind::Alias:
-        return visitor.template visit<NamespaceAliasInfo>();
+        return visitor.template visit<AliasInfo>();
     case InfoKind::Using:
         return visitor.template visit<UsingInfo>();
     default:

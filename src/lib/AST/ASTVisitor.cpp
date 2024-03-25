@@ -2137,7 +2137,7 @@ public:
 
     void
     buildNamespaceAlias(
-        NamespaceAliasInfo& I,
+        AliasInfo& I,
         bool created,
         NamespaceAliasDecl* D)
     {

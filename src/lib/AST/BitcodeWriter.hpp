@@ -160,7 +160,7 @@ public:
     void emitBlock(FriendInfo const& I);
     void emitBlock(EnumeratorInfo const& I);
     void emitBlock(NameInfo const& I);
-    void emitBlock(NamespaceAliasInfo const& I);
+    void emitBlock(AliasInfo const& I);
     void emitBlock(UsingInfo const& I);
 
     void emitBlock(std::unique_ptr<TypeInfo> const& TI);

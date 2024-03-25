@@ -338,7 +338,7 @@ public:
         finalize(I.FriendType);
     }
 
-    void operator()(NamespaceAliasInfo& I)
+    void operator()(AliasInfo& I)
     {
         check(I.Namespace);
         finalize(I.javadoc);
