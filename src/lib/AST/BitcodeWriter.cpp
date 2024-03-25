@@ -338,7 +338,7 @@ RecordIDNameMap = []()
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}},
-        {USING_SYMBOL, {"UsingSymbol", &SymbolIDAbbrev}},
+        {USING_SYMBOLS, {"UsingSymbols", &SymbolIDAbbrev}},
         {USING_IS_DIRECTIVE, {"UsingIsDirective", &BoolAbbrev}},
     };
     // MRDOCS_ASSERT(Inits.size() == RecordIDCount);
@@ -436,7 +436,7 @@ RecordsByBlock{
 
     // UsingInfo
     {BI_USING_BLOCK_ID,
-        {USING_SYMBOL, USING_IS_DIRECTIVE}},
+        {USING_SYMBOLS, USING_IS_DIRECTIVE}},
 
     // EnumeratorInfo
     {BI_ENUMERATOR_BLOCK_ID,
@@ -1152,7 +1152,7 @@ emitBlock(
     StreamSubBlockGuard Block(Stream, BI_USING_BLOCK_ID);
     emitInfoPart(I);
     emitSourceInfo(I);
-    emitRecord(I.UsingSymbols, USING_SYMBOL);
+    emitRecord(I.UsingSymbols, USING_SYMBOLS);
     emitRecord(I.IsDirective, USING_IS_DIRECTIVE);
 }
 

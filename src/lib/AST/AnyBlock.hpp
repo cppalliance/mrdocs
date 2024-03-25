@@ -1930,7 +1930,7 @@ public:
     {
         switch(ID)
         {
-        case USING_SYMBOL:
+        case USING_SYMBOLS:
             return decodeRecord(R, I->UsingSymbols, Blob);
         case USING_IS_DIRECTIVE:
             return decodeRecord(R, I->IsDirective, Blob);
