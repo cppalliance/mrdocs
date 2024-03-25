@@ -299,7 +299,7 @@ void merge(FriendInfo& I, FriendInfo&& Other)
         I.FriendType = std::move(Other.FriendType);
 }
 
-void merge(NamespaceAliasInfo& I, NamespaceAliasInfo&& Other)
+void merge(AliasInfo& I, AliasInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));
     if(! I.AliasedSymbol)

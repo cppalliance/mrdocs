@@ -388,7 +388,7 @@ writeGuide(
 void
 XMLWriter::
 writeNamespaceAlias(
-    NamespaceAliasInfo const& I)
+    AliasInfo const& I)
 {
     tags_.open(namespaceAliasTagName, {
         { "name", I.Name },

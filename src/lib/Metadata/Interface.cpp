@@ -265,7 +265,7 @@ public:
     }
 
     void operator()(
-        NamespaceAliasInfo const& I,
+        AliasInfo const& I,
         AccessKind access)
     {
         push(&Tranche::NamespaceAliases, access, I);

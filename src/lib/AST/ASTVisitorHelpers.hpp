@@ -56,7 +56,7 @@ template <>
 struct MrDocsType<CXXDeductionGuideDecl> : std::type_identity<GuideInfo> {};
 
 template <>
-struct MrDocsType<NamespaceAliasDecl> : std::type_identity<NamespaceAliasInfo> {};
+struct MrDocsType<NamespaceAliasDecl> : std::type_identity<AliasInfo> {};
 
 template <>
 struct MrDocsType<UsingDirectiveDecl> : std::type_identity<UsingInfo> {};

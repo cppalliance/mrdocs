@@ -32,7 +32,7 @@ void merge(SpecializationInfo& I, SpecializationInfo&& Other);
 void merge(FriendInfo& I, FriendInfo&& Other);
 void merge(EnumeratorInfo& I, EnumeratorInfo&& Other);
 void merge(GuideInfo& I, GuideInfo&& Other);
-void merge(NamespaceAliasInfo& I, NamespaceAliasInfo&& Other);
+void merge(AliasInfo& I, AliasInfo&& Other);
 void merge(UsingInfo& I, UsingInfo&& Other);
 
 //
