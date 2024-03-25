@@ -423,10 +423,22 @@ XMLWriter::
 
     writeJavadoc(I.javadoc);
 
-    for (auto const& symbol : I.UsingSymbols) {
+    for (auto const& symbol : I.UsingSymbols)
+    {
         Attributes attrs = {};
         attrs.push({"id", toString(symbol)});
         tags_.write("symbol", {}, attrs);
+    }
+
+    if (I.UsingName)
+    {
+        Attributes nameAttrs = {};
+        if (I.UsingName->id != SymbolID::invalid)
+        {
+            nameAttrs.push({"id", toString(I.UsingName->id)});
+        }
+        nameAttrs.push({"name", I.UsingName->Name});
+        tags_.write("name", {}, nameAttrs);
     }
 
     tags_.close(usingTagName);

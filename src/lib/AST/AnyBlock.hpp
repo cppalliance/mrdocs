@@ -1945,13 +1945,14 @@ public:
     {
         switch(ID)
         {
-        //TODO
-        // case BI_TEMPLATE_BLOCK_ID:
-        // {
-        //     I->Template = std::make_unique<TemplateInfo>();
-        //     TemplateBlock B(*I->Template, br_);
-        //     return br_.readBlock(B, ID);
-        // }
+        case BI_NAME_INFO_ID:
+        {
+            if (!I->UsingName)
+                I->UsingName = std::make_unique<NameInfo>();
+
+            NameInfoBlock B(I->UsingName, br_);
+            return br_.readBlock(B, ID);
+        }
         default:
             return TopLevelBlock::readSubBlock(ID);
         }

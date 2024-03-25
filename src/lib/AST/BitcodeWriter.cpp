@@ -338,7 +338,7 @@ RecordIDNameMap = []()
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}},
-        {USING_SYMBOLS, {"UsingSymbols", &SymbolIDAbbrev}},
+        {USING_SYMBOLS, {"UsingSymbols", &SymbolIDsAbbrev}},
         {USING_IS_DIRECTIVE, {"UsingIsDirective", &BoolAbbrev}},
     };
     // MRDOCS_ASSERT(Inits.size() == RecordIDCount);
@@ -1153,6 +1153,8 @@ emitBlock(
     emitInfoPart(I);
     emitSourceInfo(I);
     emitRecord(I.UsingSymbols, USING_SYMBOLS);
+    if (I.UsingName)
+        emitBlock(*I.UsingName);
     emitRecord(I.IsDirective, USING_IS_DIRECTIVE);
 }
 
