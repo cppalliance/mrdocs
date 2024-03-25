@@ -2154,11 +2154,12 @@ public:
         // - NamespaceDecl
         if(NamedDecl* ND = D->getAliasedNamespace())
         {
-            extractSymbolID(ND, I.AliasedSymbol);
-            // If this is a namespace alias declaration naming
-            // a previously undeclared namespace, traverse it.
-            if(ND->isFirstDecl())
-                traverseDecl(ND);
+            SymbolID id;
+            getDependencyID(ND, id);
+            if (id != SymbolID::invalid)
+            {
+                I.AliasedSymbol = id;
+            }
         }
 
         getParentNamespaces(I, D);
