@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Usage :: MrDocs</title>
+    <link rel="canonical" href="https://cppalliance.github.io/mrdocs/mrdocs/usage.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://cppalliance.github.io/mrdocs">MrDocs</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Search the docs">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="mrdocs" data-version="develop">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="index.html">MrDocs</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Home</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="install.html">Install</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="config-file.html">The Configuration File</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="commands.html">Commands</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="design-notes.html">Design Notes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="contribute.html">Contribute</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="license.html">License</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">MrDocs</span>
+    <span class="version">develop</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">MrDocs</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../index.html">master</a>
+        </li>
+        <li class="version is-current">
+          <a href="index.html">develop</a>
+        </li>
+        <li class="version">
+          <a href="../v0.0.1/index.html">v0.0.1</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">MrDocs</a></li>
+    <li><a href="usage.html">Usage</a></li>
+  </ul>
+</nav>
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">develop</button>
+  <div class="version-menu">
+    <a class="version" href="../usage.html">master</a>
+    <a class="version is-current" href="usage.html">develop</a>
+    <a class="version" href="../v0.0.1/usage.html">v0.0.1</a>
+  </div>
+</div>
+<div class="edit-this-page"><a href="https://github.com/cppalliance/mrdocs/edit/develop/docs/modules/ROOT/pages/usage.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Usage</h1>
+<div class="sect1">
+<h2 id="_mrdocs_invocation"><a class="anchor" href="#_mrdocs_invocation"></a>MrDocs invocation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For consistency, these instructions assume you have the following environment variables set:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">MRDOCS_ROOT=/path/to/mrdocs
+PROJECT_SOURCE_DIR=/path/to/your/project/source
+MRDOCS_CONFIG=$PROJECT_SOURCE_DIR/docs/mrdocs.yml
+PROJECT_BUILD_DIR=$PROJECT_SOURCE_DIR/build-docs</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Where <code>MRDOCS_ROOT</code> is the path of the mrdocs executable, and <code>MRDOCS_CONFIG</code> is the path to the <code>mrdocs.yml</code> configuration file.
+We also assume <code>PROJECT_SOURCE_DIR</code> is the path to the root of your project&#8217;s source code, where its main <code>CMakeLists.txt</code> file is located, and <code>PROJECT_BUILD_DIR</code> is the path to the directory where you want to generate the documentation.
+Feel free to change these variables to suit your needs.</p>
+</div>
+<div class="paragraph">
+<p>MrDocs simplifies the documentation generation process. Generating the <code>compile_commands.json</code> file by running <code>cmake</code> is optional. If the path to <code>compile_commands.json</code> is not provided when calling MrDocs, the tool will automatically run <code>cmake</code> for you, provided that you have CMake version &gt;=3.13.5 installed. Parameters for cmake, such as <code>-D BOOST_URL_BUILD_TESTS=OFF</code>, should be specified in the <code>cmake:</code> key of the <code>mrdocs.yml</code> configuration file.</p>
+</div>
+<div class="paragraph">
+<p>It is still possible, but optional, to manually generate the <code>compile_commands.json</code> file. For instructions on manually generating this file, see <a href="#manual-compile-commands">this section</a>.</p>
+</div>
+<div class="paragraph">
+<p>The following command will generate the documentation with the most common options:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd $PROJECT_BUILD_DIR
+MRDOCS_OUTPUT=$PROJECT_BUILD_DIR/docs/reference/adoc
+$MRDOCS_ROOT/mrdocs &lt;ProjectPath&gt; --config=$MRDOCS_CONFIG --addons=$MRDOCS_ROOT/addons --output=$MRDOCS_OUTPUT</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s a description of these options:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>&lt;ProjectPath&gt;</code>: the path to the project to document. This can be a path to a <code>compile_commands.json</code> file, a directory, or a <code>CMakeLists.txt</code> file.
+If a path to a <code>compile_commands.json</code> file is provided, MrDocs will use this file and will not call CMake. It is assumed the user has already manually run CMake.
+If a directory (not a file) is provided, it is assumed that this directory is the <code>ProjectPath</code> and contains a <code>CMakeLists.txt</code> describing the project. MrDocs will automatically run CMake to generate the <code>compile_commands.json</code>, using the parameters specified in the <code>mrdocs.yml</code> configuration file.
+If a <code>CMakeLists.txt</code> file is provided, it is assumed that the directory containing this file is the <code>ProjectPath</code>. MrDocs will automatically run CMake to generate the <code>compile_commands.json</code>, using the parameters specified in the <code>mrdocs.yml</code> configuration file.</p>
+</li>
+<li>
+<p><code>--config=$MRDOCS_CONFIG</code>: the path to the <code>mrdocs.yml</code> configuration file.
+This file configures which generator is used, which directory to process,
+and what symbols should be extracted.</p>
+</li>
+<li>
+<p><code>--addons=$MRDOCS_ROOT/addons</code>: the path to the <code>addons</code> directory.
+This directory contains the addons that are used to generate the documentation.
+Among other things, it contains the default templates for the generator.
+This option defaults to current directory if not provided.</p>
+</li>
+<li>
+<p><code>--output=$MRDOCS_ROOT/output/adoc</code>: the path to the output directory.
+This is where the generated documentation will be placed.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>MrDocs ignores non-c++ source files, so nothing more needs to be done to generate the documentation for your project.</p>
+</div>
+<div class="sect2">
+<h3 id="manual-compile-commands"><a class="anchor" href="#manual-compile-commands"></a>Generating the compile_commands.json Manually</h3>
+<div class="paragraph">
+<p>To generate the <code>compile_commands.json</code> file by running <code>cmake</code> with the <code>-DCMAKE_EXPORT_COMPILE_COMMANDS=ON</code> flag.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd $PROJECT_SOURCE_DIR
+mkdir $PROJECT_BUILD_DIR
+cd $PROJECT_BUILD_DIR
+cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At this step, you can also add any other flags you want to pass to <code>cmake</code>, such as <code>-DCMAKE_BUILD_TYPE=Release</code> or <code>-DCMAKE_CXX_COMPILER=clang++</code>.
+By running CMake with the <code>CMAKE_EXPORT_COMPILE_COMMANDS</code> flag, you will generate a <code>compile_commands.json</code> file in your build directory.
+This file contains all the information mrdocs needs to generate the documentation.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_demos"><a class="anchor" href="#_demos"></a>Demos</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A few examples of reference documentation generated with MrDocs are available in <a href="https://mrdocs.com/demos/" class="bare">https://mrdocs.com/demos/</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mrdocs_configuration_file"><a class="anchor" href="#_mrdocs_configuration_file"></a>MrDocs configuration file</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>mrdocs.yml</code> configuration file contains information about the project that is not available in the <code>compile_commands.json</code> file or from the command line.
+The most important information is the <code>source-root</code> options, which determines the root of the source tree relative to the <code>mrdocs.yml</code> file.</p>
+</div>
+<div class="paragraph">
+<p>Other options are available, such as the <code>concurrency</code> option, which determines the number of threads mrdocs will use to generate the documentation.
+This option defaults to the number of cores available on the machine.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">concurrency: 1      # number of threads to use
+source-root: ../    # source files relative to the mrdocs.yml file
+multipage: false    # generate multiple pages
+verbose: true       # print verbose output</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mrdocs_cmake_module"><a class="anchor" href="#_mrdocs_cmake_module"></a>MrDocs CMake Module</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MrDocs also provides a CMake module that can be used to generate the documentation from your project&#8217;s script.
+You can include the CMake module with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cmake hljs" data-lang="cmake">find_package(MrDocs REQUIRED)
+# ...
+include(MrDocs)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The module will define the <code>add_mrdocs</code> function, which can be used define a CMake target that generates the documentation for your project.
+The syntax is similar to other cmake functions, such as <code>add_executable</code> or <code>add_library</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cmake hljs" data-lang="cmake">set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+add_mrdocs(&lt;name&gt;
+    [EXCLUDE_FROM_ALL]
+    [CONFIG &lt;mrdocs.yml&gt;]
+    [ADDONS &lt;addons-dir&gt;]
+    [COMMENT comment]
+    [OUTPUT &lt;output-dir&gt;]
+    [&lt;source&gt;...])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The function adds a custom target called <code>&lt;name&gt;</code> which builds the documentation the source files listed in the command invocation.
+The <code>&lt;name&gt;</code> corresponds to the logical target name and must be globally unique within a project.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If <code>EXCLUDE_FROM_ALL</code> is given the corresponding property will be set on the created target.
+See documentation of the <a href="https://cmake.org/cmake/help/latest/prop_tgt/EXCLUDE_FROM_ALL.html"><code>EXCLUDE_FROM_ALL</code></a> target property for details.</p>
+</li>
+<li>
+<p>The <code>CONFIG</code> option specifies the path to the <code>mrdocs.yml</code> configuration file.
+If not specified, the function will look for the configuration file in your project directory.</p>
+</li>
+<li>
+<p>The <code>ADDONS</code> option specifies a custom path to the <code>addons</code> directory. By default, the function will use the <code>addons</code> directory in the MrDocs installation directory.</p>
+</li>
+<li>
+<p>The <code>OUTPUT</code> option specifies the path to the output directory.
+If not specified, the function will use the default output directory, which is relative to the current binary directory.
+The complete default path is constructed based on the current binary directory and the options passed to the command (such as <code>docs/adoc</code>).</p>
+</li>
+<li>
+<p>The <code>COMMENT</code> option specifies a comment that will be displayed when the target is built.
+If not specified, the comment will be generated automatically according to the input options.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>&lt;source&gt;</code> arguments specify files on which the generated documentation depends.
+The custom target will depend on these source files.
+This means if these files are created with other <code>add_custom_command()</code> command calls in the same directory, they will be brought up to date when the target is built.</p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script src="../../_/js/vendor/lunr.js"></script>
+<script src="../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../.." data-snippet-length="100" data-stylesheet="../../_/css/search.css"></script>
+<script async src="../../search-index.js"></script>
+  </body>
+</html>
