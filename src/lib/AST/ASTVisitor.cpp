@@ -50,6 +50,17 @@ namespace mrdocs {
 
 namespace {
 
+template <typename T>
+llvm::StringRef getFullyQualifiedName(T const* D)
+{
+    llvm::SmallVector<char, 128> fullNameBuffer;
+    llvm::raw_svector_ostream fullNameStream(fullNameBuffer);
+    D->getQualifier()->print(fullNameStream, D->getASTContext().getPrintingPolicy());
+    fullNameStream << D->getDeclName().getAsString();
+    return fullNameStream.str();
+}
+
+
 struct SymbolFilter
 {
     const FilterNode& root;
@@ -551,7 +562,8 @@ public:
                     return true;
             }
             usr_.append("@UDec");
-            usr_.append(UD->getNameAsString());
+            // usr_.append(UD->getNameAsString());
+            usr_.append(getFullyQualifiedName(UD));
             return false;
         }
 
@@ -561,7 +573,18 @@ public:
             if (index::generateUSRForDecl(UD, usr_))
                 return true;
             usr_.append("@UUTDec");
-            usr_.append(UD->getNameAsString());
+            // usr_.append(UD->getNameAsString());
+
+            // llvm::SmallVector<char, 128> fullNameBuffer;
+            // llvm::raw_svector_ostream fullNameStream(fullNameBuffer);
+            // UD->getQualifier()->print(fullNameStream, UD->getASTContext().getPrintingPolicy());
+            // fullNameStream << UD->getDeclName().getAsString();
+            // usr_.append(fullNameStream.str());
+            // // std::string fullName = fullNameStream.str().str();
+            // // usr_.append(fullName);
+
+            usr_.append(getFullyQualifiedName(UD));
+
             return false;
         }
 
@@ -571,7 +594,8 @@ public:
             if (index::generateUSRForDecl(UD, usr_))
                 return true;
             usr_.append("@UUV");
-            usr_.append(UD->getNameAsString());
+            // usr_.append(UD->getNameAsString());
+            usr_.append(getFullyQualifiedName(UD));
             return false;
         }
 
@@ -582,6 +606,7 @@ public:
                 return true;
             usr_.append("@UPD");
             usr_.append(UD->getNameAsString());
+            // usr_.append(getFullyQualifiedName(UD));
             return false;
         }
 
@@ -594,7 +619,8 @@ public:
             EnumDecl const* ED = UD->getEnumDecl();
             if (ED)
             {
-                usr_.append(ED->getNameAsString());
+                // usr_.append(ED->getNameAsString());
+                usr_.append(getFullyQualifiedName(ED));
             }
             return false;
         }
@@ -2192,6 +2218,10 @@ public:
             return;
 
         I.Name = extractName(D);
+        if (D->getQualifier())
+        {
+            I.Qualifier = buildNameInfo(D->getQualifier());
+        }
 
         // A NamedDecl nominated by a NamespaceAliasDecl
         // will be one of the following:
@@ -2227,25 +2257,18 @@ public:
         I.Name = extractName(D);
         I.IsDirective = true;
 
-        // A NamedDecl nominated by a UsingDirectiveDecl
-        // will be one of the following:
-        // - NamespaceDecl
-        if(NamedDecl* ND = D->getNominatedNamespace())
+        if (D->getQualifier())
+        {
+            I.Qualifier = buildNameInfo(D->getQualifier());
+        }
+
+        if (NamedDecl* ND = D->getNominatedNamespace())
         {
             SymbolID id;
             getDependencyID(ND, id);
             if (id != SymbolID::invalid)
             {
                 I.UsingSymbols.emplace_back(id);
-
-                I.UsingName = std::make_unique<NameInfo>();
-                I.UsingName->id = id;
-                I.UsingName->Name = ND->getNameAsString();
-                if (auto const* parentContext = dyn_cast<NamedDecl>(ND->getDeclContext()))
-                {
-                    I.UsingName->Prefix = std::make_unique<NameInfo>();
-                    I.UsingName->Prefix->Name = parentContext->getNameAsString();
-                }
             }
         }
         getParentNamespaces(I, D);
@@ -2268,6 +2291,7 @@ public:
 
         I.Name = extractName(D);
         I.IsDirective = false;
+        I.Qualifier = buildNameInfo(D->getQualifier());
 
         for (auto const* shadow : D->shadows())
         {
@@ -2278,15 +2302,6 @@ public:
             if (id != SymbolID::invalid)
             {
                 I.UsingSymbols.emplace_back(id);
-
-                I.UsingName = std::make_unique<NameInfo>();
-                I.UsingName->id = id;
-                I.UsingName->Name = ND->getNameAsString();
-                if (auto const* parentContext = dyn_cast<NamedDecl>(ND->getDeclContext()))
-                {
-                    I.UsingName->Prefix = std::make_unique<NameInfo>();
-                    I.UsingName->Prefix->Name = parentContext->getNameAsString();
-                }
             }
         }
         getParentNamespaces(I, D);

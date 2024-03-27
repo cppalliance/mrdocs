@@ -1895,19 +1895,18 @@ public:
         }
     }
 
-    //TODO:
     Error
     readSubBlock(
         unsigned ID) override
     {
         switch(ID)
         {
-        //TODO
-        // case BI_TYPEINFO_BLOCK_ID:
-        // {
-        //     TypeInfoBlock B(I->FriendType, br_);
-        //     return br_.readBlock(B, ID);
-        // }
+        case BI_NAME_INFO_ID:
+        {
+            I->Qualifier = std::make_unique<NameInfo>();
+            NameInfoBlock B(I->Qualifier, br_);
+            return br_.readBlock(B, ID);
+        }
         default:
             return TopLevelBlock::readSubBlock(ID);
         }
@@ -1947,10 +1946,8 @@ public:
         {
         case BI_NAME_INFO_ID:
         {
-            if (!I->UsingName)
-                I->UsingName = std::make_unique<NameInfo>();
-
-            NameInfoBlock B(I->UsingName, br_);
+            I->Qualifier = std::make_unique<NameInfo>();
+            NameInfoBlock B(I->Qualifier, br_);
             return br_.readBlock(B, ID);
         }
         default:
