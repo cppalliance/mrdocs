@@ -45,6 +45,7 @@ constexpr auto friendTagName         = "friend";
 constexpr auto functionTagName       = "function";
 constexpr auto guideTagName          = "guide";
 constexpr auto namespaceTagName      = "namespace";
+constexpr auto namespaceAliasTagName = "namespace-alias";
 constexpr auto paramTagName          = "param";
 constexpr auto returnTagName         = "return";
 constexpr auto deducedTagName        = "deduced";
@@ -55,6 +56,7 @@ constexpr auto templateTagName       = "template";
 constexpr auto tparamTagName         = "tparam";
 constexpr auto typedefTagName        = "typedef";
 constexpr auto unionTagName          = "union";
+constexpr auto usingTagName          = "using";
 constexpr auto varTagName            = "variable";
 
 inline dom::String getNameForValue(...)

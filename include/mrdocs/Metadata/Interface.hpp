@@ -37,6 +37,8 @@ struct Tranche
     std::vector<SymbolID> Variables;
     std::vector<SymbolID> Friends;
     std::vector<SymbolID> Guides;
+    std::vector<SymbolID> NamespaceAliases;
+    std::vector<SymbolID> Usings;
 
     ScopeInfo Overloads;
     ScopeInfo StaticOverloads;

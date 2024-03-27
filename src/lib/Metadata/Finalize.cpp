@@ -338,6 +338,23 @@ public:
         finalize(I.FriendType);
     }
 
+    void operator()(AliasInfo& I)
+    {
+        check(I.Namespace);
+        finalize(I.javadoc);
+        finalize(I.AliasedSymbol);
+        finalize(I.Qualifier);
+    }
+
+    void operator()(UsingInfo& I)
+    {
+        check(I.Namespace);
+        finalize(I.javadoc);
+        finalize(I.Qualifier);
+        for (auto& U : I.UsingSymbols)
+            finalize(U);
+    }
+
     void operator()(EnumeratorInfo& I)
     {
         check(I.Namespace);
