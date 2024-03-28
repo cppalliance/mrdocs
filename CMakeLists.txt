@@ -99,15 +99,17 @@ llvm_map_components_to_libnames(llvm_libs all)
 string(REGEX REPLACE " /W[0-4]" "" CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 string(REGEX REPLACE " /W[0-4]" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
-# Duktape
-set(DUKTAPE_PACKAGE_NAME duktape)
-if (WIN32)
-    set(DUKTAPE_PACKAGE_NAME Duktape)
-endif()
-find_package(${DUKTAPE_PACKAGE_NAME} REQUIRED)
-
 # fmt
 find_package(fmt REQUIRED CONFIG)
+
+# Duktape
+find_package(duktape CONFIG)
+if (NOT DUKTAPE_FOUND)
+    # Duktape doesn't nativelly support CMake.
+    # Some config script patches use the capitalized version.
+    find_package(Duktape REQUIRED CONFIG)
+endif()
+
 unset(CMAKE_FOLDER)
 
 #-------------------------------------------------
