@@ -69,7 +69,7 @@ public:
     void writeTypedef(TypedefInfo const&);
     void writeVar(VariableInfo const&);
     void writeSpecialization(const SpecializationInfo&);
-    void writeNamespaceAlias(AliasInfo const& I);
+    void writeAlias(AliasInfo const& I);
     void writeUsing(UsingInfo const& I);
 
     void writeSourceInfo(SourceInfo const& I);

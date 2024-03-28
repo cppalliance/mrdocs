@@ -45,7 +45,6 @@ constexpr auto friendTagName         = "friend";
 constexpr auto functionTagName       = "function";
 constexpr auto guideTagName          = "guide";
 constexpr auto namespaceTagName      = "namespace";
-constexpr auto namespaceAliasTagName = "namespace-alias";
 constexpr auto paramTagName          = "param";
 constexpr auto returnTagName         = "return";
 constexpr auto deducedTagName        = "deduced";

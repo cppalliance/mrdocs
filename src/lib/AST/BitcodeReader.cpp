@@ -113,9 +113,9 @@ getInfos()
             Infos.emplace_back(std::move(I));
             continue;
         }
-        case BI_NAMESPACE_ALIAS_BLOCK_ID:
+        case BI_ALIAS_BLOCK_ID:
         {
-            MRDOCS_TRY(auto I, readInfo<NamespaceAliasBlock>(ID));
+            MRDOCS_TRY(auto I, readInfo<AliasBlock>(ID));
             Infos.emplace_back(std::move(I));
             continue;
         }

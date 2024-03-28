@@ -8,8 +8,8 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_API_METADATA_NAMESPACEALIAS_HPP
-#define MRDOCS_API_METADATA_NAMESPACEALIAS_HPP
+#ifndef MRDOCS_API_METADATA_ALIAS_HPP
+#define MRDOCS_API_METADATA_ALIAS_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Metadata/Info.hpp>

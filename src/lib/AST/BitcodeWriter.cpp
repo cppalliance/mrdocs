@@ -258,7 +258,7 @@ BlockIdNameMap = []()
         {BI_ENUMERATOR_BLOCK_ID, "EnumeratorBlock"},
         {BI_VARIABLE_BLOCK_ID, "VarBlock"},
         {BI_NAME_INFO_ID, "NameInfoBlock"},
-        {BI_NAMESPACE_ALIAS_BLOCK_ID, "NamespaceAliasBlock"},
+        {BI_ALIAS_BLOCK_ID, "AliasBlock"},
         {BI_USING_BLOCK_ID, "UsingBlock"},
     };
     MRDOCS_ASSERT(Inits.size() == BlockIdCount);
@@ -279,6 +279,7 @@ RecordIDNameMap = []()
     // improvise
     static const std::vector<std::pair<RecordID, RecordIDDsc>> Inits = {
         {VERSION, {"Version", &Integer32Abbrev}},
+        {ALIAS_SYMBOL, {"AliasedSymbol", &SymbolIDAbbrev}},
         {BASE_ACCESS, {"BaseAccess", &Integer32Abbrev}},
         {BASE_IS_VIRTUAL, {"BaseIsVirtual", &BoolAbbrev}},
         {ENUM_SCOPED, {"Scoped", &BoolAbbrev}},
@@ -309,7 +310,6 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_SYMBOLREF, {"JavadocNodeSymbol", &SymbolIDAbbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {NAMESPACE_BITS, {"NamespaceBits", &Integer32ArrayAbbrev}},
-        {NAMESPACE_ALIAS_SYMBOL, {"AliasedSymbol", &SymbolIDAbbrev}},
         {NAME_INFO_KIND, {"NameKind", &Integer32Abbrev}},
         {NAME_INFO_ID, {"NameID", &SymbolIDAbbrev}},
         {NAME_INFO_NAME, {"NameName", &StringAbbrev}},
@@ -430,8 +430,8 @@ RecordsByBlock{
 
 
     // AliasInfo
-    {BI_NAMESPACE_ALIAS_BLOCK_ID,
-        {NAMESPACE_ALIAS_SYMBOL}},
+    {BI_ALIAS_BLOCK_ID,
+        {ALIAS_SYMBOL}},
 
 
     // UsingInfo
@@ -1138,10 +1138,10 @@ BitcodeWriter::
 emitBlock(
     AliasInfo const& I)
 {
-    StreamSubBlockGuard Block(Stream, BI_NAMESPACE_ALIAS_BLOCK_ID);
+    StreamSubBlockGuard Block(Stream, BI_ALIAS_BLOCK_ID);
     emitInfoPart(I);
     emitSourceInfo(I);
-    emitRecord(I.AliasedSymbol, NAMESPACE_ALIAS_SYMBOL);
+    emitRecord(I.AliasedSymbol, ALIAS_SYMBOL);
     if (I.FullyQualifiedName)
         emitBlock(*I.FullyQualifiedName);
 }

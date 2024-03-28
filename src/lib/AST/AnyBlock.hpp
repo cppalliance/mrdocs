@@ -1874,7 +1874,7 @@ public:
 
 //------------------------------------------------
 
-class NamespaceAliasBlock
+class AliasBlock
     : public TopLevelBlock<AliasInfo>
 {
 public:
@@ -1888,7 +1888,7 @@ public:
     {
         switch(ID)
         {
-        case NAMESPACE_ALIAS_SYMBOL:
+        case ALIAS_SYMBOL:
             return decodeRecord(R, I->AliasedSymbol, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
