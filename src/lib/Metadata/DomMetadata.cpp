@@ -617,7 +617,7 @@ public:
             { "guides",           init(tranche->Guides, domCorpus) },
             { "overloads",        init(tranche->Overloads, domCorpus) },
             { "staticoverloads",  init(tranche->StaticOverloads, domCorpus) },
-            { "aliases",          init(tranche->aliases, domCorpus) },
+            { "aliases",          init(tranche->Aliases, domCorpus) },
             { "usings",           init(tranche->Usings, domCorpus) }
 
             })
