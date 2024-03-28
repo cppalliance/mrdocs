@@ -3,8 +3,10 @@
 [#mrdocs-binaries]
 == Binaries
 
-Binary packages are available from our https://github.com/cppalliance/mrdocs/releases[Release Page,window="_blank"]
+Binary packages are available from our https://github.com/cppalliance/mrdocs/releases[Release Page,window="_blank"].
+Most users should use these packages.
 
+[#mrdocs-source]
 == Source
 
 The following instructions assume we are at a parent directory that's going to contain both the MrDocs and the third-party dependencies directories.
@@ -37,24 +39,230 @@ These instructions assume all dependencies are installed in the `third-party` di
 Fell free to install them anywhere you want and adjust the main MrDocs configuration command later.
 ====
 
-=== Installing LLVM
+[#install-fmt]
+=== Fmt
+
+MrDocs uses the `fmt` library for formatting strings.
+From the `third-party` directory, you can clone the `fmt` repository and install it with the following commands:
+
+[source,bash]
+----
+git clone https://github.com/fmtlib/fmt --branch 10.2.1 --depth 1 <.>
+cd fmt
+cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release -D FMT_DOC=OFF -D FMT_TEST=OFF <.>
+cmake --build ./build --config Release <.>
+cmake --install ./build --prefix ./install <.>
+cd ..
+----
+
+<.> Shallow clones the fmt repository.
+<.> Configure the fmt library with CMake, exclusing the documentation and tests.
+<.> Builds the fmt library in the `build` directory.
+<.> Installs the fmt library in the `install` directory.
+
+[IMPORTANT]
+====
+All instructions in this document assume you are using a CMake version above 3.26.
+Binaries are available at https://cmake.org/download/[CMake's official website,window="_blank"].
+====
+
+If you prefer using Vcpkg to install dependencies, you can install VcPkg and `fmt` with the following commands from the `third-party` directory:
+
+:tabs-sync-option:
+
+[tabs]
+====
+Windows PowerShell::
++
+--
+[source,bash]
+----
+git clone https://github.com/microsoft/vcpkg.git -b master <.>
+cd vcpkg
+bootstrap-vcpkg.bat <.>
+vcpkg.exe fmt --triplet x64-windows <.>
+----
+
+<.> Clones the Vcpkg repository.
+<.> Bootstraps Vcpkg.
+<.> Installs the `fmt` library.
+--
+
+Unix Variants::
++
+--
+[source,bash]
+----
+git clone https://github.com/microsoft/vcpkg.git -b master <.>
+cd vcpkg
+./bootstrap-vcpkg.sh <.>
+./vcpkg fmt <.>
+----
+
+<.> Clones the Vcpkg repository.
+<.> Bootstraps Vcpkg.
+<.> Installs the `fmt` library.
+--
+====
+
+[NOTE]
+====
+You can also install `fmt` with Vcpkg in _Manifest mode_.
+In https://learn.microsoft.com/en-us/vcpkg/users/manifests[manifest mode,windows=blank_], you declare your project's direct dependencies in a manifest file named `vcpkg.json`.
+MrDocs includes a `vcpkg.json.example` file you can duplicate or create a symlink as `vcpkg.json` to use this mode.
+This file includes all the dependencies MrDocs needs, except for LLVM.
+
+In this mode, VcPkg will create separate installed trees for each project and configuration.
+This is the recommended vcpkg mode for most users, according to the https://learn.microsoft.com/en-us/vcpkg/users/manifests[vcpkg documentation,window=blank_].
+====
+
+=== Duktape
+
+MrDocs uses the `duktape` library for JavaScript parsing.
+From the `third-party` directory, you can download the `duktape` source code from the official release:
+
+[tabs]
+====
+Windows PowerShell::
++
+--
+[source,bash]
+----
+Invoke-WebRequest -Uri "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz" -OutFile "duktape-2.7.0.tar.xz"
+----
+
+<.> Downloads the `duktape` source code.
+--
+
+Unix Variants::
++
+--
+[source,bash]
+----
+curl -LJO https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz <.>
+----
+
+<.> Downloads the `duktape` source code.
+--
+====
+
+Then patch the Duktape source code to provide CMake support.
+
+[source,bash]
+----
+tar -xf duktape-2.7.0.tar.xz <.>
+cp ../mrdocs/third-party/duktape/CMakeLists.txt ./duktape-2.7.0/CMakeLists.txt <.>
+cp ../mrdocs/third-party/duktape/duktapeConfig.cmake.in ./duktape-2.7.0/duktapeConfig.cmake.in <.>
+cd duktape-2.7.0
+----
+
+<.> Extracts the `duktape` source code.
+<.> Patches the source code with a `CMakeLists.txt` file to the `duktape-2.7.0` directory so that we can build it with CMake.
+<.> Copies the `duktapeConfig.cmake.in` file to the `duktape-2.7.0` directory so that we can install it with CMake and find it later from other CMake projects.
+
+Now adjust the `duk_config.h` file to indicate we are statically building Duktape.
+
+[tabs]
+====
+Windows PowerShell::
++
+--
+[source,bash]
+----
+$content = Get-Content -Path "src\duk_config.h"
+$content = $content -replace '#define DUK_F_DLL_BUILD', '#undef DUK_F_DLL_BUILD'
+$content | Set-Content -Path "src\duk_config.h"
+----
+
+<.> Read the content of `duk_config.h`
+<.> Replace the `DUK_F_DLL_BUILD` macro with `#undef DUK_F_DLL_BUILD`
+<.> Write the content back to the file
+--
+
+Unix Variants::
++
+--
+[source,bash]
+----
+sed -i 's/#define DUK_F_DLL_BUILD/#undef DUK_F_DLL_BUILD/g' "src/duk_config.h" <.>
+----
+
+<.> Disables the `DUK_F_DLL_BUILD` macro in the `duk_config.h` file to indicate we are statically building duktape.
+--
+====
+
+And finally install the library with CMake:
+
+[source,bash]
+----
+cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release <.>
+cmake --build ./build --config Release <.>
+cmake --install ./build --prefix ./install <.>
+----
+
+<.> Configures the `duktape` library with CMake.
+<.> Builds the `duktape` library in the `build` directory.
+<.> Installs the `duktape` library with CMake support in the `install` directory.
+
+The scripts above downloads the `duktape` source code, extracts it, and configures it with CMake.
+The CMake scripts provided by MrDocs are copied to the `duktape-2.7.0` directory to facilitate the build process with CMake and provide CMake installation scripts for other projects.
+
+If you prefer using Vcpkg to install dependencies, you can install `duktape` with the following commands from the `third-party` directory:
+
+[tabs]
+====
+Windows PowerShell::
++
+--
+[source,bash]
+----
+cd vcpkg
+vcpkg.exe duktape --triplet x64-windows <.>
+----
+
+<.> Installs the `duktape` library.
+--
+
+Unix Variants::
++
+--
+[source,bash]
+----
+cd vcpkg
+./vcpkg duktape <.>
+----
+
+<.> Installs the `duktape` library.
+--
+====
+
+NOTE: These examples assume VcPkg is already installed in the `third-party/vcpkg` directory (see the <<install-fmt>> section).
+
+=== LLVM
 
 MrDocs uses LLVM to parse C++ code and extract documentation from it.
 It depends on a recent version of LLVM: https://github.com/llvm/llvm-project/tree/29b20829cc6ce3e6d9c3809164994c1659e0da56[29b20829]
 
 **Download**:
 
-You can shallow-clone the project from the official repository:
+You can shallow-clone the project from the official repository.
+From the `third-party` directory, run the following commands:
 
 [source,bash]
 ----
-mkdir -p llvm-project
+mkdir -p llvm-project <.>
 cd llvm-project
-git init
-git remote add origin https://github.com/llvm/llvm-project.git
-git fetch --depth 1 origin 29b20829cc6ce3e6d9c3809164994c1659e0da56
-git checkout FETCH_HEAD
+git init <.>
+git remote add origin https://github.com/llvm/llvm-project.git <.>
+git fetch --depth 1 origin 29b20829cc6ce3e6d9c3809164994c1659e0da56 <.>
+git checkout FETCH_HEAD <.>
 ----
+
+<.> Create a directory for the llvm-project instead of cloning it
+<.> Initialize a git repository
+<.> Add the official LLVM repository as a remote
+<.> Fetch the commit we want to use: this allows us to shallow-clone the repository at this commit
+<.> Checkout the commit we want to use
 
 **Configure**:
 
@@ -70,11 +278,28 @@ cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json.example ./llvm/CMakeUserP
 
 Run a command such as the following to configure LLVM:
 
+[tabs]
+====
+Windows PowerShell::
++
+--
 [source,bash]
 ----
 cd llvm
 cmake -S . -B ./build --preset=release-win
 ----
+--
+
+Unix Variants::
++
+--
+[source,bash]
+----
+cd llvm
+cmake -S . -B ./build --preset=release-unix
+----
+--
+====
 
 In the example above, we configure a `Release` version of LLVM for MrDocs.
 Choose one of the presets from `CMakePresets.json` or edit the variants in `CMakeUserPresets.json` to customize the configurations.
@@ -101,88 +326,39 @@ cmake --install ./build --prefix ../install
 
 Replace 4 with the number of cores you want to use for building LLVM.
 
-Return from `./third-party/llvm-project/llvm` to the parent `third-party` directory to install other dependencies:
+Return from `./third-party/llvm-project/llvm` to the parent directory to build and install MrDocs:
 
 [source,bash]
 ----
-cd ../..
+cd ../../..
 ----
 
-=== CMake dependencies
+=== Libxml2
 
-All other dependencies provide CMake integration scripts and can be obtained from https://www.vcpkg.io/[vcpkg] or installed manually.
+Developers should also install the `libxml2` tools to parse XML files.
+This tool is used in tests.
+You can install the libxml2 tools with Vcpkg:
 
-* `fmt` >= 10
-* `duktape`
-
-For development builds, which include tests, you will also need:
-
-* `libxml2[tools]`
-
-The instructions in this documentation will use vcpkg for these.
-
-**Installing vcpkg**:
-
-If you don't have vcpkg installed, clone the repository:
-
+[tabs]
+====
+Windows PowerShell::
++
+--
 [source,bash]
 ----
-git clone https://github.com/microsoft/vcpkg.git -b master
-cd vcpkg
+vcpkg.exe libxml2[tools] --triplet x64-windows
 ----
+--
 
-and bootstrap it:
-
-Windows:
-
+Unix Variants::
++
+--
 [source,bash]
 ----
-bootstrap-vcpkg.bat
+./vcpkg libxml2[tools]
 ----
-
-Unix variants:
-
-[source,bash]
-----
-./bootstrap-vcpkg.sh
-----
-
-**Installing dependencies**:
-
-vcpkg has two operation modes with which you can install these dependencies: <<vcpkg-classic-mode,classic mode>> and <<vcpkg-manifest-mode,manifest mode>>.
-
-[#vcpkg-classic-mode]
-_Classic mode_:
-
-In vcpkg https://learn.microsoft.com/en-us/vcpkg/users/classic-mode[classic mode,window=blank_], vcpkg maintains a central installed tree inside the vcpkg instance built up by individual `vcpkg install` and `vcpkg remove` commands.
-This central set of packages can then be shared by any number of projects.
-However, each instance of vcpkg (a separate git clone) will have its own set of packages installed.
-
-To install these dependencies with vcpkg in classic mode:
-
-Windows:
-
-[source,bash]
-----
-vcpkg.exe fmt zlib libxml2[tools] --triplet x64-windows
-----
-
-Unix variants:
-
-[source,bash]
-----
-./vcpkg fmt zlib libxml2[tools]
-----
-
-[#vcpkg-manifest-mode]
-_Manifest mode_:
-
-In https://learn.microsoft.com/en-us/vcpkg/users/manifests[manifest mode,windows=blank_], you declare your project's direct dependencies in a manifest file named `vcpkg.json`.
-MrDocs includes a `vcpkg.json.example` file you can duplicate or create a symlink as `vcpkg.json` to use this mode.
-MrDocs is a CMake project that then already includes a `vcpkg.json` file, there's nothing else you need to run to install the dependencies.
-
-In this mode, vcpkg will create separate installed trees for each project and configuration.
-This is the recommended vcpkg mode for most users according to the https://learn.microsoft.com/en-us/vcpkg/users/manifests[vcpkg documentation,window=blank_].
+--
+====
 
 === MrDocs
 
@@ -202,19 +378,26 @@ _Configure with Command Line Arguments_:
 
 With the dependencies are available in `third-party`, you can configure MrDocs with:
 
-Windows:
-
+[tabs]
+====
+Windows PowerShell::
++
+--
 [source,commandline]
 ----
 cmake -S mrdocs -B build -G "Visual Studio 17 2022" -A x64 -D CMAKE_CONFIGURATION_TYPES="RelWithDebInfo" -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D LLVM_ROOT="%cd%/third-party/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="%cd%/third-party/duktape-2.7.0" -D CMAKE_TOOLCHAIN_FILE="%cd%/third-party/vcpkg/scripts/buildsystems/vcpkg.cmake"
 ----
+--
 
-Unix variants:
-
+Unix Variants::
++
+--
 [source,bash]
 ----
 cmake -S mrdocs -B build -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_EXPORT_COMPILE_COMMANDS=ON -D LLVM_ROOT="$(pwd)/third-party/llvm+clang/RelWithDebInfo" -D DUKTAPE_SOURCE_ROOT="$(pwd)/third-party/duktape-2.7.0" -D CMAKE_TOOLCHAIN_FILE="$(pwd)/third-party/vcpkg/scripts/buildsystems/vcpkg.cmake"
 ----
+--
+====
 
 [#mrdocs-configure-presets]
 _Configure with CMake Presets_:
