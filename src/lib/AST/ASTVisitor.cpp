@@ -538,7 +538,7 @@ public:
                 return true;
             }
             usr_.append("@UD");
-            usr_.append(UDD->getQualifiedNameAsString()));
+            usr_.append(UDD->getQualifiedNameAsString());
             return false;
         }
 
