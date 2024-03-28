@@ -1903,8 +1903,8 @@ public:
         {
         case BI_NAME_INFO_ID:
         {
-            I->Qualifier = std::make_unique<NameInfo>();
-            NameInfoBlock B(I->Qualifier, br_);
+            I->FullyQualifiedName = std::make_unique<NameInfo>();
+            NameInfoBlock B(I->FullyQualifiedName, br_);
             return br_.readBlock(B, ID);
         }
         default:
@@ -1931,8 +1931,8 @@ public:
         {
         case USING_SYMBOLS:
             return decodeRecord(R, I->UsingSymbols, Blob);
-        case USING_IS_DIRECTIVE:
-            return decodeRecord(R, I->IsDirective, Blob);
+        case USING_CLASS:
+            return decodeRecord(R, I->Class, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

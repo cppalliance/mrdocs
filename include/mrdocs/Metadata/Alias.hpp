@@ -29,8 +29,8 @@ struct AliasInfo
     /** Aliased symbol. */
     SymbolID AliasedSymbol = SymbolID::invalid;
 
-    /** The qualifier for the alias. */
-    std::unique_ptr<NameInfo> Qualifier;
+    /** The fully qualified name of the alias. */
+    std::unique_ptr<NameInfo> FullyQualifiedName;
 
     //--------------------------------------------
 

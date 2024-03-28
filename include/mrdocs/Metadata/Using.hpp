@@ -21,14 +21,22 @@
 namespace clang {
 namespace mrdocs {
 
+enum class UsingClass
+{
+    Normal = 0,     // using
+    Typename,       // using typename
+    Enum,           // using enum
+    Namespace       // using namespace (using directive)
+};
+
 /** Info for using declarations and directives.
  */
 struct UsingInfo
     : IsInfo<InfoKind::Using>,
     SourceInfo
 {
-    /** Indicates whether this is a using directive or a using declaration. */
-    bool IsDirective = false;
+    /** The kind of using declaration/directive. */
+    UsingClass Class;
 
     /** The symbols being "used". */
     std::vector<SymbolID> UsingSymbols;

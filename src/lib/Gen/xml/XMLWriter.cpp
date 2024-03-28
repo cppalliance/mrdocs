@@ -404,14 +404,14 @@ writeNamespaceAlias(
 
     attrs.push({"aliasedSymbol", toString(I.AliasedSymbol)});
     tags_.write("aliased", {}, attrs);
-    if (I.Qualifier)
+    if (I.FullyQualifiedName)
     {
         Attributes nameAttrs = {};
-        if (I.Qualifier->id != SymbolID::invalid)
+        if (I.FullyQualifiedName->id != SymbolID::invalid)
         {
-            nameAttrs.push({"id", toString(I.Qualifier->id)});
+            nameAttrs.push({"id", toString(I.FullyQualifiedName->id)});
         }
-        nameAttrs.push({"name", I.Qualifier->Name});
+        nameAttrs.push({"name", I.FullyQualifiedName->Name});
         tags_.write("name", {}, nameAttrs);
     }
 
@@ -422,11 +422,30 @@ void
 XMLWriter::
     writeUsing(UsingInfo const& I)
 {
+    dom::String klassStr;
+    switch (I.Class)
+    {
+    case UsingClass::Normal:
+        klassStr = "using";
+        break;
+    case UsingClass::Typename:
+        klassStr = "using typename";
+        break;
+    case UsingClass::Enum:
+        klassStr = "using enum";
+        break;
+    case UsingClass::Namespace:
+        klassStr = "using namespace";
+        break;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+
     tags_.open(usingTagName, {
         { I.Access },
         { I.id },
-        { "is-directive", "true", I.IsDirective }
-        });
+        { "class", klassStr, ! klassStr.empty() }
+    });
 
     writeSourceInfo(I);
 

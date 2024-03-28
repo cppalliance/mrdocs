@@ -339,7 +339,7 @@ RecordIDNameMap = []()
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {USING_SYMBOLS, {"UsingSymbols", &SymbolIDsAbbrev}},
-        {USING_IS_DIRECTIVE, {"UsingIsDirective", &BoolAbbrev}},
+        {USING_CLASS, {"UsingClass", &Integer32Abbrev}},
     };
     // MRDOCS_ASSERT(Inits.size() == RecordIDCount);
     for (const auto& Init : Inits)
@@ -436,7 +436,7 @@ RecordsByBlock{
 
     // UsingInfo
     {BI_USING_BLOCK_ID,
-        {USING_SYMBOLS, USING_IS_DIRECTIVE}},
+        {USING_SYMBOLS, USING_CLASS}},
 
     // EnumeratorInfo
     {BI_ENUMERATOR_BLOCK_ID,
@@ -1142,8 +1142,8 @@ emitBlock(
     emitInfoPart(I);
     emitSourceInfo(I);
     emitRecord(I.AliasedSymbol, NAMESPACE_ALIAS_SYMBOL);
-    if (I.Qualifier)
-        emitBlock(*I.Qualifier);
+    if (I.FullyQualifiedName)
+        emitBlock(*I.FullyQualifiedName);
 }
 
 void
@@ -1157,7 +1157,7 @@ emitBlock(
     emitRecord(I.UsingSymbols, USING_SYMBOLS);
     if (I.Qualifier)
         emitBlock(*I.Qualifier);
-    emitRecord(I.IsDirective, USING_IS_DIRECTIVE);
+    emitRecord(I.Class, USING_CLASS);
 }
 
 void

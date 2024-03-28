@@ -17,6 +17,7 @@
 // All headers related to
 // metadata extracted from AST
 
+#include <mrdocs/Metadata/Alias.hpp>
 #include <mrdocs/Metadata/Enum.hpp>
 #include <mrdocs/Metadata/Enumerator.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
@@ -29,7 +30,6 @@
 #include <mrdocs/Metadata/Javadoc.hpp>
 #include <mrdocs/Metadata/Name.hpp>
 #include <mrdocs/Metadata/Namespace.hpp>
-#include <mrdocs/Metadata/NamespaceAlias.hpp>
 #include <mrdocs/Metadata/Overloads.hpp>
 #include <mrdocs/Metadata/Record.hpp>
 #include <mrdocs/Metadata/Specialization.hpp>

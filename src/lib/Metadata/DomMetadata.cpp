@@ -871,9 +871,9 @@ DomInfo<T>::construct() const
         auto aliased = domCorpus_.get(I_.AliasedSymbol);
         entries.emplace_back("name", aliased.get("name"));
         entries.emplace_back("symbol", aliased);
-        if (I_.Qualifier)
+        if (I_.FullyQualifiedName)
         {
-            entries.emplace_back("name", I_.Qualifier->Name);
+            entries.emplace_back("qualifier", domCreate(I_.FullyQualifiedName, domCorpus_));
         }
     }
     if constexpr(T::isUsing())
@@ -887,7 +887,7 @@ DomInfo<T>::construct() const
 
         if (I_.Qualifier)
         {
-            entries.emplace_back("name", I_.Qualifier->Name);
+            entries.emplace_back("qualifier", domCreate(I_.Qualifier, domCorpus_));
         }
     }
     if constexpr(T::isEnumerator())
