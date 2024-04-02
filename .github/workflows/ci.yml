@@ -33,8 +33,16 @@ jobs:
             clang 17
             msvc 14.34
           standards: '20'
-          latest-factors: ''
+          # Set up a factor to build the main package on Ubuntu20.
+          # We use this factor with clang because it can be more easily installed
+          # from source on Ubuntu20.
+          # When this factor is set, we'll build the main package with our own clang-bin
+          # and libc++, which is then packaged for the release.
+          # This creates a version of MrDocs that works on Ubuntu >=20.04.
+          latest-factors: |
+            clang Ubuntu20-Release
           factors: ''
+
 
   build:
     needs: cpp-matrix
@@ -50,7 +58,7 @@ jobs:
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
-    container: ${{ (matrix.compiler == 'gcc' && 'ubuntu:22.04') || matrix.container }}
+    container: ${{ (matrix.ubuntu20-release && 'ubuntu:20.04') || matrix.container }}
     env: ${{ matrix.env }}
     permissions:
       contents: write
@@ -58,6 +66,38 @@ jobs:
     steps:
       - name: Clone MrDocs
         uses: actions/checkout@v3
+
+      - name: Parameters
+        id: parameters
+        run: |
+          set -x
+          echo -E "llvm-hash=5b959310b0fae723bd119ed8815bf1cb1a8c67d4" >> $GITHUB_OUTPUT
+          echo -E "llvm-build-preset=${{ runner.os == 'Windows' && 'release-win' || 'release-unix' }}" >> $GITHUB_OUTPUT
+          cd ..
+          llvm_root=$(pwd)/third-party/llvm-project/install
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
+              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
+              echo "$llvm_root"
+          fi
+          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
+          
+          # Clang bin will be used when building the main package
+          # This is a recent version of clang built from source on ubuntu-20.04
+          if [[ "${{ matrix.ubuntu20-release && 'true' || 'false' }}" == 'true' ]]; then
+              clang_root=$(pwd)/third-party/llvm-project/install0
+              echo -E "clang-root=$clang_root" >> $GITHUB_OUTPUT          
+              clang_bin="$clang_root"/bin/clang
+              echo -E "clang-bin=$clang_bin" >> $GITHUB_OUTPUT          
+              clangpp_bin="$clang_root/bin/clang++"
+              echo -E "clangpp-bin=$clangpp_bin" >> $GITHUB_OUTPUT
+              # https://libcxx.llvm.org//UsingLibcxx.html#using-a-custom-built-libc
+              # https://stackoverflow.com/questions/46765489/how-to-static-link-with-clang-libc
+              clang_flags=" -nostdinc++ -nostdlib++ -isystem $clang_root/include/c++/v1 -isystem $clang_root/include/x86_64-unknown-linux-gnu/c++/v1 -L $clang_root/lib/x86_64-unknown-linux-gnu -Wl,-rpath,$clang_root/lib/x86_64-unknown-linux-gnu -lc++ -lc++abi -Wno-error=unused-command-line-argument "
+              echo -E "clang-flags=$clang_flags" >> $GITHUB_OUTPUT
+              clang_static_flags=" $clang_flags -static "
+              echo -E "clang-static-flags=$clang_static_flags" >> $GITHUB_OUTPUT
+          fi
 
       - name: Setup CMake
         uses: alandefreitas/cpp-actions/setup-cmake@v1.8.2
@@ -73,6 +113,9 @@ jobs:
 
       - name: Setup C++
         uses: alandefreitas/cpp-actions/setup-cpp@v1.8.2
+        # If not matrix.ubuntu20-release because we'll use
+        # our own clang-bin otherwise
+        if: ${{ !matrix.ubuntu20-release }}
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -86,12 +129,114 @@ jobs:
           DEBIAN_FRONTEND: 'noninteractive'
           TZ: 'Etc/UTC'
         with:
-          apt-get: ${{ matrix.install }} git build-essential python3 curl openjdk-11-jdk ninja-build pkg-config libncurses-dev
+          apt-get: ${{ matrix.install }} git build-essential python3 curl openjdk-11-jdk ninja-build pkg-config libncurses-dev libxml2-utils
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
           ccflags: ${{ matrix.ccflags }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
           cxxflags: ${{ matrix.cxxflags }}
 
+      # Clang built with GCC
+      - name: Clang Binaries
+        id: clang-cache
+        if: matrix.ubuntu20-release
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.parameters.outputs.clang-root }}
+          key: clang-${{ runner.os }}-${{ matrix.compiler }}-custom-built-${{ steps.parameters.outputs.llvm-build-preset }}-${{ steps.parameters.outputs.llvm-hash }}-${{ (matrix.ubuntu20-release && 'ubuntu:20.04') || matrix.container || matrix.runs-on }}
+
+      - name: Install Clang
+        id: clang-install
+        if: matrix.ubuntu20-release && steps.clang-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          # LLVM is be installed with the default compiler
+          set -x
+          
+          # Shallow clone LLVM_HASH in ../third-party/llvm
+          cd ..
+          mkdir -p third-party/llvm-project
+          cd third-party/llvm-project
+          llvm_project_root=$(pwd)
+          git config --global init.defaultBranch master
+          git config --global advice.detachedHead false
+          git init
+          git remote add origin https://github.com/llvm/llvm-project.git
+          git fetch --depth 1 origin ${{ steps.parameters.outputs.llvm-hash }}
+          git checkout FETCH_HEAD
+          
+          # Copy presets
+          cp ../../mrdocs/third-party/llvm/CMakePresets.json ./llvm
+          cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json.example ./llvm/CMakeUserPresets.json
+          
+          # Build
+          cd llvm
+          llvm_root=$(pwd)
+          cmake --version
+          cmake -S . -B ./build0 --preset=${{ steps.parameters.outputs.llvm-build-preset }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx || 'g++' }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc || 'gcc' }} -DCMAKE_INSTALL_PREFIX="../install0" -DCMAKE_INSTALL_PREFIX="../install0" ${{ (matrix.ubuntu20-release && ' -DCMAKE_CXX_FLAGS=" -static-libstdc++ -static-libgcc " -DLLVM_INCLUDE_RUNTIMES=ON -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" -DLLVM_RUNTIME_TARGETS="default" -DLLVM_ENABLE_PROJECTS="clang"') || '' }}
+          if [[ ${{ runner.os }} == 'Linux' ]]; then
+              cmake --build ./build0 --target help
+          fi
+          N_CORES=$(nproc 2>/dev/null || echo 1)
+          cmake --build ./build0 --config Release --parallel $N_CORES
+          cmake --install ./build0
+          
+          # Build libc++ with the new clang executable
+          # https://libcxx.llvm.org/BuildingLibcxx.html#bootstrapping-build
+          cmake --build ./build0 --target runtimes --config Release --parallel $N_CORES
+          cmake --build ./build0 --target install-runtimes --config Release --parallel $N_CORES
+
+      # This is the clang library binaries we build from source to have access to
+      # clanglib for MrDocs.
+      # On Ubuntu 20.04 we use our own clang-bin with libc++ so MrDocs can also link libc++.
+      - name: LLVM Binaries
+        id: llvm-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.parameters.outputs.llvm-root }}
+          key: llvm-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.parameters.outputs.llvm-build-preset }}-${{ steps.parameters.outputs.llvm-hash }}-${{ (matrix.ubuntu20-release && 'ubuntu:20.04') || matrix.container || matrix.runs-on }}
+
+      - name: Install LLVM
+        id: llvm-install
+        if: steps.llvm-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          # LLVM is be installed with the default compiler
+          set -x
+          
+          # Shallow clone LLVM_HASH in ../third-party/llvm
+          cd ..
+          # if third-party/llvm-project doesn't exist
+          if [ ! -d third-party/llvm-project ]; then
+              mkdir -p third-party/llvm-project
+              cd third-party/llvm-project
+              llvm_project_root=$(pwd)
+              git config --global init.defaultBranch master
+              git config --global advice.detachedHead false
+              git init
+              git remote add origin https://github.com/llvm/llvm-project.git
+              git fetch --depth 1 origin ${{ steps.parameters.outputs.llvm-hash }}
+              git checkout FETCH_HEAD
+              
+              # Copy presets
+              cp ../../mrdocs/third-party/llvm/CMakePresets.json ./llvm
+              cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json.example ./llvm/CMakeUserPresets.json
+          else
+              cd third-party/llvm-project
+              llvm_project_root=$(pwd)
+          fi
+          
+          # Build
+          cd llvm
+          llvm_root=$(pwd)
+          cmake --version
+          cmake -S . -B ./build --preset=${{ steps.parameters.outputs.llvm-build-preset }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx || steps.parameters.outputs.clangpp-bin || 'g++' }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc || steps.parameters.outputs.clang-bin || 'gcc' }} -DCMAKE_INSTALL_PREFIX="../install" -DCMAKE_INSTALL_PREFIX="../install" ${{ (matrix.ubuntu20-release && format('-DCMAKE_CXX_FLAGS="{0}"', steps.parameters.outputs.clang-flags)) || '' }}
+          if [[ ${{ runner.os }} == 'Linux' ]]; then
+              cmake --build ./build --target help
+          fi
+          N_CORES=$(nproc 2>/dev/null || echo 1)
+          cmake --build ./build --config Release --parallel $N_CORES
+          cmake --install ./build
+          
       - name: Install Fmt
         id: fmt-install
         shell: bash
@@ -102,7 +247,7 @@ jobs:
           cd third-party
           git clone https://github.com/fmtlib/fmt --branch 10.2.1 --depth 1
           cd fmt
-          cmake -S . -B ./build -D FMT_DOC=OFF -D FMT_TEST=OFF -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc }}
+          cmake -S . -B ./build -D FMT_DOC=OFF -D FMT_TEST=OFF -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx || steps.parameters.outputs.clangpp-bin }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc || steps.parameters.outputs.clang-bin }} ${{ (matrix.ubuntu20-release && format('-DCMAKE_CXX_FLAGS="{0}"', steps.parameters.outputs.clang-flags)) || '' }}
           N_CORES=$(nproc 2>/dev/null || echo 1)
           cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES 
           cmake --install ./build --prefix ./install
@@ -133,7 +278,7 @@ jobs:
           else
               sed -i 's/#define DUK_F_DLL_BUILD/#undef DUK_F_DLL_BUILD/g' "src/duk_config.h"
           fi
-          cmake -S . -B ./build -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc }}
+          cmake -S . -B ./build -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx || steps.parameters.outputs.clangpp-bin }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc || steps.parameters.outputs.clang-bin }} ${{ (matrix.ubuntu20-release && format('-DCMAKE_CXX_FLAGS="{0}"', steps.parameters.outputs.clang-flags)) || '' }}
           N_CORES=$(nproc 2>/dev/null || echo 1)
           cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES 
           cmake --install ./build --prefix ./install
@@ -148,6 +293,9 @@ jobs:
 
       - name: Install Libxml2
         id: libxml2-install
+        # The package libxml2-utils is already installed on linux.
+        # We only need this step on Windows.
+        if: ${{ runner.os == 'Windows' }}
         shell: bash
         run: |
           set -x
@@ -159,7 +307,7 @@ jobs:
           git clone https://github.com/GNOME/libxml2 --branch v2.12.6 --depth 1
           cd libxml2
           
-          cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release -DLIBXML2_WITH_PROGRAMS=ON -DLIBXML2_WITH_FTP=OFF -DLIBXML2_WITH_HTTP=OFF -DLIBXML2_WITH_ICONV=OFF -DLIBXML2_WITH_LEGACY=OFF -DLIBXML2_WITH_LZMA=OFF -DLIBXML2_WITH_ZLIB=OFF -DLIBXML2_WITH_ICU=OFF -DLIBXML2_WITH_TESTS=OFF -DLIBXML2_WITH_HTML=ON -DLIBXML2_WITH_C14N=ON -DLIBXML2_WITH_CATALOG=ON -DLIBXML2_WITH_DEBUG=ON -DLIBXML2_WITH_ISO8859X=ON -DLIBXML2_WITH_MEM_DEBUG=OFF -DLIBXML2_WITH_MODULES=ON -DLIBXML2_WITH_OUTPUT=ON -DLIBXML2_WITH_PATTERN=ON -DLIBXML2_WITH_PUSH=ON -DLIBXML2_WITH_PYTHON=OFF -DLIBXML2_WITH_READER=ON -DLIBXML2_WITH_REGEXPS=ON -DLIBXML2_WITH_SAX1=ON -DLIBXML2_WITH_SCHEMAS=ON -DLIBXML2_WITH_SCHEMATRON=ON -DLIBXML2_WITH_THREADS=ON -DLIBXML2_WITH_THREAD_ALLOC=OFF -DLIBXML2_WITH_TREE=ON -DLIBXML2_WITH_VALID=ON -DLIBXML2_WITH_WRITER=ON -DLIBXML2_WITH_XINCLUDE=ON -DLIBXML2_WITH_XPATH=ON -DLIBXML2_WITH_XPTR=ON -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx || steps.parameters.outputs.clang-bin }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc || steps.parameters.outputs.clang-bin }}
+          cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release -DLIBXML2_WITH_PROGRAMS=ON -DLIBXML2_WITH_FTP=OFF -DLIBXML2_WITH_HTTP=OFF -DLIBXML2_WITH_ICONV=OFF -DLIBXML2_WITH_LEGACY=OFF -DLIBXML2_WITH_LZMA=OFF -DLIBXML2_WITH_ZLIB=OFF -DLIBXML2_WITH_ICU=OFF -DLIBXML2_WITH_TESTS=OFF -DLIBXML2_WITH_HTML=ON -DLIBXML2_WITH_C14N=ON -DLIBXML2_WITH_CATALOG=ON -DLIBXML2_WITH_DEBUG=ON -DLIBXML2_WITH_ISO8859X=ON -DLIBXML2_WITH_MEM_DEBUG=OFF -DLIBXML2_WITH_MODULES=ON -DLIBXML2_WITH_OUTPUT=ON -DLIBXML2_WITH_PATTERN=ON -DLIBXML2_WITH_PUSH=ON -DLIBXML2_WITH_PYTHON=OFF -DLIBXML2_WITH_READER=ON -DLIBXML2_WITH_REGEXPS=ON -DLIBXML2_WITH_SAX1=ON -DLIBXML2_WITH_SCHEMAS=ON -DLIBXML2_WITH_SCHEMATRON=ON -DLIBXML2_WITH_THREADS=ON -DLIBXML2_WITH_THREAD_ALLOC=OFF -DLIBXML2_WITH_TREE=ON -DLIBXML2_WITH_VALID=ON -DLIBXML2_WITH_WRITER=ON -DLIBXML2_WITH_XINCLUDE=ON -DLIBXML2_WITH_XPATH=ON -DLIBXML2_WITH_XPTR=ON -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx || steps.parameters.outputs.clangpp-bin }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc || steps.parameters.outputs.clang-bin }} ${{ (matrix.ubuntu20-release && format('-DCMAKE_CXX_FLAGS="{0}"', steps.parameters.outputs.clang-flags)) || '' }}
           N_CORES=$(nproc 2>/dev/null || echo 1)
           cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES 
           cmake --install ./build --prefix ./install
@@ -172,63 +320,6 @@ jobs:
           fi
           echo -E "libxml2-root=$libxml2_root" >> $GITHUB_OUTPUT
 
-      - name: LLVM Parameters
-        id: llvm-parameters
-        run: |
-          echo -E "llvm-hash=5b959310b0fae723bd119ed8815bf1cb1a8c67d4" >> $GITHUB_OUTPUT
-          echo -E "llvm-build-preset=${{ runner.os == 'Windows' && 'release-win' || 'release-unix' }}" >> $GITHUB_OUTPUT
-          cd ..
-          llvm_root=$(pwd)/third-party/llvm-project/install
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
-              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
-              echo "$llvm_root"
-          fi
-          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
-
-      - name: LLVM Binaries
-        id: llvm-cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.llvm-parameters.outputs.llvm-root }}
-          key: llvm-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
-
-      - name: Install LLVM
-        id: llvm-install
-        if: steps.llvm-cache.outputs.cache-hit != 'true'
-        shell: bash
-        run: |
-          # LLVM is be installed with the default compiler
-          set -x
-          
-          # Shallow clone LLVM_HASH in ../third-party/llvm
-          cd ..
-          mkdir -p third-party/llvm-project
-          cd third-party/llvm-project
-          llvm_project_root=$(pwd)
-          git config --global init.defaultBranch master
-          git config --global advice.detachedHead false
-          git init
-          git remote add origin https://github.com/llvm/llvm-project.git
-          git fetch --depth 1 origin ${{ steps.llvm-parameters.outputs.llvm-hash }}
-          git checkout FETCH_HEAD
-        
-          # Copy presets
-          cp ../../mrdocs/third-party/llvm/CMakePresets.json ./llvm
-          cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json.example ./llvm/CMakeUserPresets.json
-          
-          # Build
-          cd llvm
-          llvm_root=$(pwd)
-          cmake --version
-          cmake -S . -B ./build --preset=${{ steps.llvm-parameters.outputs.llvm-build-preset }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc }}
-          if [[ ${{ runner.os }} == 'Linux' ]]; then
-              cmake --build ./build --target help
-          fi          
-          N_CORES=$(nproc 2>/dev/null || echo 1)
-          cmake --build ./build --config Release --parallel $N_CORES 
-          cmake --install ./build --prefix "$llvm_project_root"/install
-
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -239,33 +330,39 @@ jobs:
         with:
           cmake-version: ${{ matrix.compiler == 'clang' && '3.26' || '>=3.26' }}
           cxxstd: ${{ matrix.cxxstd }}
-          cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
-          ccflags: ${{ matrix.ccflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
+          cc: ${{ steps.setup-cpp.outputs.cc || steps.parameters.outputs.clang-bin || matrix.cc }}
+          ccflags: ${{ matrix.ccflags }}${{ ( matrix.ubuntu20-release && ' -static') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
+          cxx: ${{ steps.setup-cpp.outputs.cxx || steps.parameters.outputs.clangpp-bin || matrix.cxx }}
+          cxxflags: ${{ matrix.cxxflags }} ${{ (matrix.ubuntu20-release && format('{0}', steps.parameters.outputs.clang-flags)) || '' }} ${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           generator: Ninja
           toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain || steps.package-install.outputs.vcpkg-toolchain }}
           build-type: ${{ matrix.build-type }}
           install-prefix: .local
           extra-args: |
             -D MRDOCS_BUILD_DOCS=OFF
-            -D LLVM_ROOT=${{ steps.llvm-parameters.outputs.llvm-root }}
-            -D Clang_ROOT=${{ steps.llvm-parameters.outputs.llvm-root }}
+            -D LLVM_ROOT=${{ steps.parameters.outputs.llvm-root }}
+            -D Clang_ROOT=${{ steps.parameters.outputs.llvm-root }}
             -D duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
             -D Duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
             -D fmt_ROOT=${{ steps.fmt-install.outputs.fmt-root }}
-            -D libxml2_ROOT=${{ steps.libxml2-install.outputs.libxml2-root }}
-            -D LibXml2_ROOT=${{ steps.libxml2-install.outputs.libxml2-root }}
+            ${{ steps.libxml2-install.outputs.libxml2-root && format('-D libxml2_ROOT={0}', steps.libxml2-install.outputs.libxml2-root) || '' }}
+            ${{ steps.libxml2-install.outputs.libxml2-root && format('-D LibXml2_ROOT={0}', steps.libxml2-install.outputs.libxml2-root) || '' }}
           export-compile-commands: true
           run-tests: true
           install: true
-          package: ${{ matrix.is-main }}
+          # Package the Windows+MSVC version as usual.
+          # Package the Linux version when in this special ubuntu20 mode.
+          package: ${{ matrix.compiler == 'msvc' || matrix.ubuntu20-release }}
           package-dir: packages
           package-generators: ${{ (runner.os == 'Windows' && '7Z ZIP WIX') || 'TGZ TXZ' }}
           package-artifact: false
 
+      # Upload the artifacts to the release packages.
+      # Use the minimum retention days to keep the packages
+      # for a short time. We're going to use them in the
+      # next release job.
       - name: Upload GitHub Release Artifacts
-        if: ${{ matrix.is-main && matrix.compiler != 'clang' }}
+        if: ${{ matrix.compiler == 'msvc' || matrix.ubuntu20-release }}
         uses: actions/upload-artifact@v3
         with:
           name: release-packages-${{ runner.os }}
