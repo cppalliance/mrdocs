@@ -61,10 +61,10 @@ isValidMrDocsOption(std::unique_ptr<llvm::opt::Arg> const &arg)
         arg->getOption().getUnaliasedOption();
 
     if (optionMatchesAny(opt,
-            // unknown options
+             // unknown options
              driver::options::OPT_UNKNOWN,
 
-            // sanitizers
+             // sanitizers
              driver::options::OPT_fsanitize_EQ,
              driver::options::OPT_fno_sanitize_EQ,
              driver::options::OPT_fsanitize_recover_EQ,
@@ -85,7 +85,6 @@ isValidMrDocsOption(std::unique_ptr<llvm::opt::Arg> const &arg)
              driver::options::OPT_fno_sanitize_address_use_after_scope,
              driver::options::OPT_fno_sanitize_address_use_odr_indicator,
              driver::options::OPT__SLASH_fno_sanitize_address_vcasan_lib,
-             driver::options::OPT_anonymous_513,
              driver::options::OPT_fno_sanitize_cfi_canonical_jump_tables,
              driver::options::OPT_fno_sanitize_cfi_cross_dso,
              driver::options::OPT_fno_sanitize_coverage,
@@ -117,7 +116,6 @@ isValidMrDocsOption(std::unique_ptr<llvm::opt::Arg> const &arg)
              driver::options::OPT__SLASH_fsanitize_address_use_after_return,
              driver::options::OPT_fsanitize_address_use_after_scope,
              driver::options::OPT_fsanitize_address_use_odr_indicator,
-             driver::options::OPT_anonymous_512,
              driver::options::OPT_fsanitize_cfi_canonical_jump_tables,
              driver::options::OPT_fsanitize_cfi_cross_dso,
              driver::options::OPT_fsanitize_cfi_icall_normalize_integers,

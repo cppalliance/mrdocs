@@ -278,8 +278,6 @@ public:
             // if an empty string is returned
             std::string_view file_path =
                 file->tryGetRealPathName();
-            if(file_path.empty())
-                file_path = file->getName();
             files_.emplace(file,
                 getFileInfo(search_dirs,
                     normalize_path(file_path, false),
@@ -1940,7 +1938,7 @@ public:
         {
             I.specs0.isVirtual |= D->isVirtual();
             I.specs0.isVirtualAsWritten |= D->isVirtualAsWritten();
-            I.specs0.isPure |= D->isPure();
+            I.specs0.isPure |= D->isPureVirtual();
             I.specs0.isConst |= D->isConst();
             I.specs0.isVolatile |= D->isVolatile();
             I.specs0.refQualifier |=

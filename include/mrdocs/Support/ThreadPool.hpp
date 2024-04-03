@@ -21,7 +21,7 @@
 #include <vector>
 
 namespace llvm {
-class ThreadPool;
+class StdThreadPool;
 class ThreadPoolTaskGroup;
 } // llvm
 
@@ -37,7 +37,7 @@ class TaskGroup;
 class MRDOCS_VISIBLE
     ThreadPool
 {
-    std::unique_ptr<llvm::ThreadPool> impl_;
+    std::unique_ptr<llvm::StdThreadPool> impl_;
 
     friend class TaskGroup;
 
