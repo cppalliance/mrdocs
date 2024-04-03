@@ -275,11 +275,11 @@ convertToRecordKeyKind(
     using NewKind = RecordKeyKind;
     switch(kind)
     {
-    case OldKind::TTK_Struct: return NewKind::Struct;
-    case OldKind::TTK_Class:  return NewKind::Class;
-    case OldKind::TTK_Union:  return NewKind::Union;
+    case OldKind::Struct: return NewKind::Struct;
+    case OldKind::Class:  return NewKind::Class;
+    case OldKind::Union:  return NewKind::Union;
     default:
-        // unsupported TagTypeKind
+        // unsupported TagTypeKind (Interface, or Enum)
         MRDOCS_UNREACHABLE();
     }
 }

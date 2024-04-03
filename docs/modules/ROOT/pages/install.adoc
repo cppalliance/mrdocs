@@ -295,7 +295,7 @@ NOTE: These examples assume VcPkg is already installed in the `third-party/vcpkg
 === LLVM
 
 MrDocs uses LLVM to parse C++ code and extract documentation from it.
-It depends on a recent version of LLVM: https://github.com/llvm/llvm-project/tree/29b20829cc6ce3e6d9c3809164994c1659e0da56[29b20829]
+It depends on a recent version of LLVM: https://github.com/llvm/llvm-project/tree/5b959310b0fae723bd119ed8815bf1cb1a8c67d4[5b959310]
 
 **Download**:
 
@@ -308,7 +308,7 @@ mkdir -p llvm-project <.>
 cd llvm-project
 git init <.>
 git remote add origin https://github.com/llvm/llvm-project.git <.>
-git fetch --depth 1 origin 29b20829cc6ce3e6d9c3809164994c1659e0da56 <.>
+git fetch --depth 1 origin 5b959310b0fae723bd119ed8815bf1cb1a8c67d4 <.>
 git checkout FETCH_HEAD <.>
 ----
 

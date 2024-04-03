@@ -9,7 +9,7 @@ Here are the instructions to install LLVM with the settings required by this pro
 ----
 git clone https://github.com/llvm/llvm-project.git
 cd llvm-project
-git checkout 29b20829cc6ce3e6d9c3809164994c1659e0da56
+git checkout 5b959310b0fae723bd119ed8815bf1cb1a8c67d4
 cmake -S llvm -B build -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_BUILD_TYPE=Release -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=/path/to/llvm+clang
 cd build
 cmake --build . -j <threads> --config Release

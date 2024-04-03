@@ -8,7 +8,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "lib/Support/Debug.hpp"
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <llvm/Support/Signals.h>
@@ -27,9 +26,7 @@ namespace mrdocs {
 //------------------------------------------------
 
 ThreadPool::
-~ThreadPool()
-{
-}
+~ThreadPool() = default;
 
 ThreadPool::
 ThreadPool() = default;
@@ -43,7 +40,7 @@ ThreadPool(
         llvm::ThreadPoolStrategy S;
         S.ThreadsRequested = concurrency;
         S.Limit = true;
-        impl_ = std::make_unique<llvm::ThreadPool>(S);
+        impl_ = std::make_unique<llvm::StdThreadPool>(S);
     }
 }
 
@@ -52,7 +49,7 @@ ThreadPool::
 getThreadCount() const noexcept
 {
     if(impl_)
-        return impl_->getThreadCount();
+        return impl_->getMaxConcurrency();
     return 1;
 }
 
@@ -101,7 +98,7 @@ struct TaskGroup::
 
     explicit
     Impl(
-        llvm::ThreadPool* threadPool)
+        llvm::StdThreadPool* threadPool)
         : taskGroup(threadPool
             ? std::make_unique<
                 llvm::ThreadPoolTaskGroup>(*threadPool)
@@ -111,9 +108,7 @@ struct TaskGroup::
 };
 
 TaskGroup::
-~TaskGroup()
-{
-}
+~TaskGroup() = default;
 
 TaskGroup::
 TaskGroup(

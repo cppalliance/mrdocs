@@ -494,7 +494,7 @@ parseHTMLTag(HTMLStartTagComment const* C)
     auto const tagEndIt =
         requiresEndTag ? std::ranges::find_if(it_ + 1, end_, [](Comment const* c)
         {
-            return c->getCommentKind() == Comment::HTMLEndTagCommentKind;
+            return c->getCommentKind() == CommentKind::HTMLEndTagComment;
         }) : it_;
     if (tagEndIt == end_)
     {
@@ -512,7 +512,7 @@ parseHTMLTag(HTMLStartTagComment const* C)
     // Check if all the siblings are text nodes
     bool const areAllText = std::all_of(it_ + 1, tagEndIt, [](Comment const* c)
     {
-        return c->getCommentKind() == Comment::TextCommentKind;
+        return c->getCommentKind() == CommentKind::TextComment;
     });
     if (!areAllText)
     {
@@ -625,18 +625,18 @@ convertCopydoc(unsigned id)
 
 static
 doc::Style
-convertStyle(InlineCommandComment::RenderKind kind)
+convertStyle(InlineCommandRenderKind kind)
 {
     switch(kind)
     {
-    case InlineCommandComment::RenderKind::RenderMonospaced:
+    case InlineCommandRenderKind::Monospaced:
         return doc::Style::mono;
-    case InlineCommandComment::RenderKind::RenderBold:
+    case InlineCommandRenderKind::Bold:
         return doc::Style::bold;
-    case InlineCommandComment::RenderKind::RenderEmphasized:
+    case InlineCommandRenderKind::Emphasized:
         return doc::Style::italic;
-    case InlineCommandComment::RenderKind::RenderNormal:
-    case InlineCommandComment::RenderKind::RenderAnchor:
+    case InlineCommandRenderKind::Normal:
+    case InlineCommandRenderKind::Anchor:
         return doc::Style::none;
     default:
         // unknown RenderKind
@@ -646,15 +646,15 @@ convertStyle(InlineCommandComment::RenderKind kind)
 
 static
 doc::ParamDirection
-convertDirection(ParamCommandComment::PassDirection kind)
+convertDirection(ParamCommandPassDirection kind)
 {
     switch(kind)
     {
-    case ParamCommandComment::PassDirection::In:
+    case ParamCommandPassDirection::In:
         return doc::ParamDirection::in;
-    case ParamCommandComment::PassDirection::Out:
+    case ParamCommandPassDirection::Out:
         return doc::ParamDirection::out;
-    case ParamCommandComment::PassDirection::InOut:
+    case ParamCommandPassDirection::InOut:
         return doc::ParamDirection::inout;
     default:
         MRDOCS_UNREACHABLE();
@@ -808,7 +808,7 @@ visitInlineCommandComment(
                     break;
                 }
                 auto const* c = *it_;
-                if (c->getCommentKind() == Comment::TextCommentKind)
+                if (c->getCommentKind() == CommentKind::TextComment)
                 {
                     ref += static_cast<TextComment const*>(c)->getText();
                 }
