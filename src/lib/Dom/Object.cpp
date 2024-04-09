@@ -217,6 +217,7 @@ ObjectImpl&
 LazyObjectImpl::
 obj() const
 {
+#ifdef __cpp_lib_atomic_shared_ptr
     auto impl = sp_.load();
     if(impl)
         return *impl;
@@ -225,6 +226,9 @@ obj() const
             expected, construct().impl()))
         return *sp_.load();
     return *expected;
+#else
+    return *sp_;
+#endif
 }
 
 std::size_t

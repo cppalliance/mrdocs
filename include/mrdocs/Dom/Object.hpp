@@ -432,7 +432,11 @@ private:
 class MRDOCS_DECL
     LazyObjectImpl : public ObjectImpl
 {
+#ifdef __cpp_lib_atomic_shared_ptr
     std::atomic<std::shared_ptr<ObjectImpl>> mutable sp_;
+#else
+    std::shared_ptr<ObjectImpl> mutable sp_;
+#endif
 
     using impl_type = Object::impl_type;
 
