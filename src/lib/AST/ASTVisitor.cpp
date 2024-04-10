@@ -864,7 +864,7 @@ public:
 
     std::unique_ptr<NameInfo>
     buildNameInfo(
-        const NamedDecl* ND,
+        const Decl* D,
         ExtractMode extract_mode = ExtractMode::IndirectDependency);
 
 
@@ -3428,7 +3428,7 @@ public:
             if(NNS)
                 Name->Prefix = V.buildNameInfo(NNS);
             else
-                Name->Prefix = V.buildNameInfo(D);
+                Name->Prefix = V.buildNameInfo(V.getParentDecl(D));
 
             V.buildTemplateArgs(Name->TemplateArgs, *TArgs);
             I->Name = std::move(Name);
@@ -3442,7 +3442,7 @@ public:
             if(NNS)
                 Name->Prefix = V.buildNameInfo(NNS);
             else
-                Name->Prefix = V.buildNameInfo(D);
+                Name->Prefix = V.buildNameInfo(V.getParentDecl(D));
             I->Name = std::move(Name);
         }
         *Inner = std::move(I);
@@ -3565,7 +3565,7 @@ public:
         if(NNS)
             Result->Prefix = V.buildNameInfo(NNS);
         else
-            Result->Prefix = V.buildNameInfo(D);
+            Result->Prefix = V.buildNameInfo(V.getParentDecl(D));
     }
 };
 
@@ -3597,14 +3597,17 @@ buildNameInfo(
         I = std::make_unique<NameInfo>();
         I->Name = ND->getIdentifier()->getName();
         getDependencyID(ND, I->id);
-        I->Prefix = buildNameInfo(ND, extract_mode);
+        I->Prefix = buildNameInfo(getParentDecl(ND), extract_mode);
     }
-    else if(const NamespaceAliasDecl* ND = NNS->getAsNamespaceAlias())
+    else if(const NamespaceAliasDecl* NAD = NNS->getAsNamespaceAlias())
     {
         I = std::make_unique<NameInfo>();
-        I->Name = ND->getIdentifier()->getName();
-        getDependencyID(ND->getNamespace(), I->id);
-        I->Prefix = buildNameInfo(ND->getNamespace(), extract_mode);
+        I->Name = NAD->getIdentifier()->getName();
+        const NamespaceDecl* ND = NAD->getNamespace();
+        // KRYSTIAN FIXME: this should use the SymbolID of the namespace alias
+        // once we add an Info kind to represent them
+        getDependencyID(ND, I->id);
+        I->Prefix = buildNameInfo(getParentDecl(ND), extract_mode);
     }
     return I;
 }
@@ -3612,20 +3615,17 @@ buildNameInfo(
 std::unique_ptr<NameInfo>
 ASTVisitor::
 buildNameInfo(
-    const NamedDecl* ND,
+    const Decl* D,
     ExtractMode extract_mode)
 {
-    if(! ND)
-        return nullptr;
-    const NamedDecl* PD = dyn_cast_if_present<
-        NamedDecl>(getParentDecl(ND));
-    if(! PD || PD->getKind() == Decl::TranslationUnit)
+    const auto* ND = dyn_cast_if_present<NamedDecl>(D);
+    if(! ND || ND->getKind() == Decl::TranslationUnit)
         return nullptr;
     auto I = std::make_unique<NameInfo>();
-    if(const IdentifierInfo* II = PD->getIdentifier())
+    if(const IdentifierInfo* II = ND->getIdentifier())
         I->Name = II->getName();
-    getDependencyID(getInstantiatedFrom(PD), I->id);
-    I->Prefix = buildNameInfo(PD, extract_mode);
+    getDependencyID(getInstantiatedFrom(D), I->id);
+    I->Prefix = buildNameInfo(getParentDecl(D), extract_mode);
     return I;
 }
 
