@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <namespace name="LongName" id="IjtkITsyqdEWPMXZF3lD/2/XH0s=">
+    <struct name="S1" id="ZJXGFTX+0w4vyLiZBRJM4VP5/5Y=">
+      <file path="using-2.cpp" line="2" class="def"/>
+    </struct>
+    <struct name="S2" id="AsUl1L5PkCm5NvYpI3F7g6rfMlw=">
+      <file path="using-2.cpp" line="3" class="def"/>
+    </struct>
+  </namespace>
+  <using id="G92XaEqIwVs05hrwdNXMhpeFqkU=" class="using" qualifier="LongName">
+    <file path="using-2.cpp" line="6" class="def"/>
+    <named id="ZJXGFTX+0w4vyLiZBRJM4VP5/5Y="/>
+  </using>
+  <using id="0Ljxy8EQ03btL9wIVt4SqbP1U2M=" class="using" qualifier="LongName">
+    <file path="using-2.cpp" line="7" class="def"/>
+    <named id="AsUl1L5PkCm5NvYpI3F7g6rfMlw="/>
+  </using>
+</namespace>
+</mrdocs>

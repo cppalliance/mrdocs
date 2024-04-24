@@ -232,6 +232,10 @@ operator()(
         writeFriend(I);
     if constexpr(T::isGuide())
         writeGuide(I);
+    if constexpr(T::isAlias())
+        writeAlias(I);
+    if constexpr(T::isUsing())
+        writeUsing(I);
 }
 
 //------------------------------------------------
@@ -379,6 +383,74 @@ writeGuide(
     tags_.close(guideTagName);
 
     closeTemplate(I.Template);
+}
+
+void
+XMLWriter::
+writeAlias(
+    AliasInfo const& I)
+{
+    tags_.open(aliasTagName, {
+        { "name", I.Name },
+        { I.Access },
+        { I.id }
+        });
+
+    writeSourceInfo(I);
+
+    writeJavadoc(I.javadoc);
+
+    tags_.write("aliased", {}, {
+        {"name", toString(*I.AliasedSymbol)},
+        { I.AliasedSymbol->id }
+    });
+    tags_.close(aliasTagName);
+}
+
+void
+XMLWriter::
+    writeUsing(UsingInfo const& I)
+{
+    dom::String classStr;
+    switch (I.Class)
+    {
+    case UsingClass::Normal:
+        classStr = "using";
+        break;
+    case UsingClass::Typename:
+        classStr = "using typename";
+        break;
+    case UsingClass::Enum:
+        classStr = "using enum";
+        break;
+    case UsingClass::Namespace:
+        classStr = "using namespace";
+        break;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+
+    std::string qualifierStr;
+    if (I.Qualifier)
+    {
+        qualifierStr = toString(*I.Qualifier);
+    }
+
+    tags_.open(usingTagName, {
+        { I.Access },
+        { I.id },
+        { "class", classStr, ! classStr.empty() },
+        { "qualifier", qualifierStr, !qualifierStr.empty() }
+    });
+
+    writeSourceInfo(I);
+
+    writeJavadoc(I.javadoc);
+
+    for (auto const& id : I.UsingSymbols)
+        tags_.write("named", {}, { id });
+
+    tags_.close(usingTagName);
 }
 
 void

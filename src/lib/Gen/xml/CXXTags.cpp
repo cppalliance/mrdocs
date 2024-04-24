@@ -49,6 +49,10 @@ getTagName(Info const& I) noexcept
         return friendTagName;
     case InfoKind::Enumerator:
         return enumeratorTagName;
+    case InfoKind::Alias:
+        return aliasTagName;
+    case InfoKind::Using:
+        return usingTagName;
     default:
         break;
     }

@@ -113,6 +113,19 @@ getInfos()
             Infos.emplace_back(std::move(I));
             continue;
         }
+        case BI_ALIAS_BLOCK_ID:
+        {
+            MRDOCS_TRY(auto I, readInfo<AliasBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
+        }
+        case BI_USING_BLOCK_ID:
+        {
+            MRDOCS_TRY(auto I, readInfo<UsingBlock>(ID));
+            Infos.emplace_back(std::move(I));
+            continue;
+        }
+
         case BI_ENUMERATOR_BLOCK_ID:
         {
             MRDOCS_TRY(auto I, readInfo<EnumeratorBlock>(ID));

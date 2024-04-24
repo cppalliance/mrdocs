@@ -519,6 +519,81 @@ public:
     {
         MRDOCS_ASSERT(D);
         MRDOCS_ASSERT(usr_.empty());
+
+        if (const auto* NAD = dyn_cast<NamespaceAliasDecl>(D))
+        {
+            if (index::generateUSRForDecl(cast<Decl>(NAD->getNamespace()), usr_))
+                return true;
+            usr_.append("@NA");
+            usr_.append(NAD->getNameAsString());
+            return false;
+        }
+
+        // Handling UsingDirectiveDecl
+        if (const auto* UDD = dyn_cast<UsingDirectiveDecl>(D))
+        {
+            if (index::generateUSRForDecl(UDD->getNominatedNamespace(), usr_)) {
+                return true;
+            }
+            usr_.append("@UD");
+            usr_.append(UDD->getQualifiedNameAsString());
+            return false;
+        }
+
+        // Handling UsingDecl
+        if (const auto* UD = dyn_cast<UsingDecl>(D))
+        {
+            for (const auto* shadow : UD->shadows())
+            {
+                if (index::generateUSRForDecl(shadow->getTargetDecl(), usr_))
+                    return true;
+            }
+            usr_.append("@UDec");
+            usr_.append(UD->getQualifiedNameAsString());
+            return false;
+        }
+
+        // Handling UnresolvedUsingTypenameDecl
+        if (const auto* UD = dyn_cast<UnresolvedUsingTypenameDecl>(D))
+        {
+            if (index::generateUSRForDecl(UD, usr_))
+                return true;
+            usr_.append("@UUTDec");
+            usr_.append(UD->getQualifiedNameAsString());
+            return false;
+        }
+
+        // Handling UnresolvedUsingValueDecl
+        if (const auto* UD = dyn_cast<UnresolvedUsingValueDecl>(D))
+        {
+            if (index::generateUSRForDecl(UD, usr_))
+                return true;
+            usr_.append("@UUV");
+            usr_.append(UD->getQualifiedNameAsString());
+            return false;
+        }
+
+        // Handling UsingPackDecl
+        if (const auto* UD = dyn_cast<UsingPackDecl>(D))
+        {
+            if (index::generateUSRForDecl(UD, usr_))
+                return true;
+            usr_.append("@UPD");
+            usr_.append(UD->getQualifiedNameAsString());
+            return false;
+        }
+
+        // Handling UsingEnumDecl
+        if (const auto* UD = dyn_cast<UsingEnumDecl>(D))
+        {
+            if (index::generateUSRForDecl(UD, usr_))
+                return true;
+            usr_.append("@UED");
+            EnumDecl const* ED = UD->getEnumDecl();
+            usr_.append(ED->getQualifiedNameAsString());
+            return false;
+        }
+
         // KRYSTIAN NOTE: clang doesn't currently support
         // generating USRs for friend declarations, so we
         // will improvise until I can merge a patch which
@@ -2099,6 +2174,83 @@ public:
 
     //------------------------------------------------
 
+    void
+    buildAlias(
+        AliasInfo& I,
+        bool created,
+        NamespaceAliasDecl* D)
+    {
+        bool documented = parseRawComment(I.javadoc, D);
+        addSourceLocation(I, D->getBeginLoc(), true, documented);
+
+        if(! created)
+            return;
+
+        I.Name = extractName(D);
+        I.AliasedSymbol = buildNameInfo(D->getAliasedNamespace());
+
+        getParentNamespaces(I, D);
+    }
+
+
+    //------------------------------------------------
+
+    void
+    buildUsingDirective(
+        UsingInfo& I,
+        bool created,
+        UsingDirectiveDecl* D)
+    {
+        bool documented = parseRawComment(I.javadoc, D);
+        addSourceLocation(I, D->getBeginLoc(), true, documented);
+
+        if(! created)
+            return;
+
+        I.Class = UsingClass::Namespace;
+
+        if (D->getQualifier())
+        {
+            I.Qualifier = buildNameInfo(D->getQualifier());
+        }
+
+        if (NamedDecl* ND = D->getNominatedNamespace())
+        {
+            I.Name = extractName(ND);
+            SymbolID id;
+            getDependencyID(ND, id);
+            I.UsingSymbols.emplace_back(id);
+        }
+        getParentNamespaces(I, D);
+    }
+
+
+    //------------------------------------------------
+
+    void
+    buildUsingDeclaration(
+        UsingInfo& I,
+        bool created,
+        UsingDecl* D)
+    {
+        bool documented = parseRawComment(I.javadoc, D);
+        addSourceLocation(I, D->getBeginLoc(), true, documented);
+
+        if(! created)
+            return;
+
+        I.Name = extractName(D);
+        I.Class = UsingClass::Normal;
+        I.Qualifier = buildNameInfo(D->getQualifier());
+
+        for (auto const* UDS : D->shadows())
+            getDependencyID(UDS->getTargetDecl(), I.UsingSymbols.emplace_back());
+
+        getParentNamespaces(I, D);
+    }
+
+    //------------------------------------------------
+
     /** Get the DeclType as a MrDocs Info object
 
         The function will get or create the MrDocs Info
@@ -2173,6 +2325,40 @@ public:
     */
     void
     traverse(FriendDecl*);
+
+
+    /** Traverse a namespace alias declaration
+
+        This function is called by traverseDecl to traverse
+        a namespace alias declaration.
+
+        A NamespaceAliasDecl inherits from NamedDecl.
+
+    */
+    void
+    traverse(NamespaceAliasDecl*);
+
+    /** Traverse a using directive
+
+        This function is called by traverseDecl to traverse
+        a using directive.
+
+        A UsingDirectiveDecl inherits from NamedDecl.
+
+    */
+    void
+    traverse(UsingDirectiveDecl*);
+
+    /** Traverse a using declaration
+
+        This function is called by traverseDecl to traverse
+        a using declaration.
+
+        A UsingDecl inherits from NamedDecl.
+
+    */
+    void
+    traverse(UsingDecl*);
 
     /** Traverse a member of a struct, union, or class
 
@@ -2391,6 +2577,46 @@ traverse(FriendDecl* D)
     if(! exp) { return; }
     auto [I, created] = *exp;
     buildFriend(I, created, D);
+}
+
+//------------------------------------------------
+// NamespaceAliasDecl
+
+void
+ASTVisitor::
+traverse(NamespaceAliasDecl* D)
+{
+    auto exp = getAsMrDocsInfo(D);
+    if(! exp) { return; }
+    auto [I, created] = *exp;
+    buildAlias(I, created, D);
+}
+
+//------------------------------------------------
+// UsingDirectiveDecl
+
+void
+ASTVisitor::
+traverse(UsingDirectiveDecl* D)
+{
+    auto exp = getAsMrDocsInfo(D);
+    if(! exp) { return; }
+    auto [I, created] = *exp;
+    buildUsingDirective(I, created, D);
+}
+
+
+//------------------------------------------------
+// UsingDecl
+
+void
+ASTVisitor::
+traverse(UsingDecl* D)
+{
+    auto const exp = getAsMrDocsInfo(D);
+    if(! exp) { return; }
+    auto [I, created] = *exp;
+    buildUsingDeclaration(I, created, D);
 }
 
 //------------------------------------------------

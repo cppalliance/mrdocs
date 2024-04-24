@@ -72,6 +72,8 @@ class SafeNames::Impl
             "08friend",
             "09enumeration",
             "10guide",
+            "11alias",
+            "12using",
         };
         if(I.isFunction())
         {
@@ -198,6 +200,20 @@ public:
                 if constexpr(T::isFriend())
                 {
                     return getReserved(t);
+                }
+
+                if constexpr(T::isAlias())
+                {
+                    MRDOCS_ASSERT(! t.Name.empty());
+                    return t.Name;
+                }
+
+                if constexpr(T::isUsing()) {
+                    MRDOCS_ASSERT(! t.Name.empty());
+                    if (t.Class == UsingClass::Namespace) {
+                        return getReserved(t);
+                    }
+                    return t.Name;
                 }
 
                 if constexpr(T::isEnumerator())

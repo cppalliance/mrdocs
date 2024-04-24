@@ -1,0 +1,31 @@
+{{!-- symbols/using.adoc.hbs --}}
+= Using {{#if (eq symbol.class "namespace")}}Directive: {{symbol.qualifier.name}}{{else}}Declaration: {{symbol.name}}{{/if}}
+
+{{symbol.doc.brief}}
+
+== Synopsis
+
+{{>source dcl=(primary_location symbol)}}
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{>signature/using symbol=symbol}};
+----
+
+{{#if symbol.doc.description}}
+== Description
+
+{{symbol.doc.description}}
+
+{{/if}}
+
+{{#unless (eq symbol.class "namespace")}}
+== Introduced Symbols
+
+|===
+| Name
+{{#each symbol.symbols}}
+| {{name}}
+{{/each}}
+|===
+{{/unless}}

@@ -616,7 +616,10 @@ public:
             { "friends",          init(tranche->Friends, domCorpus) },
             { "guides",           init(tranche->Guides, domCorpus) },
             { "overloads",        init(tranche->Overloads, domCorpus) },
-            { "staticoverloads", init(tranche->StaticOverloads, domCorpus) }
+            { "staticoverloads",  init(tranche->StaticOverloads, domCorpus) },
+            { "aliases",          init(tranche->Aliases, domCorpus) },
+            { "usings",           init(tranche->Usings, domCorpus) }
+
             })
         , tranche_(tranche)
         , domCorpus_(domCorpus)
@@ -861,6 +864,20 @@ DomInfo<T>::construct() const
             auto befriended = domCreate(I_.FriendType, domCorpus_);
             entries.emplace_back("name", befriended.get("name"));
             entries.emplace_back("type", befriended);
+        }
+    }
+    if constexpr(T::isAlias())
+    {
+        MRDOCS_ASSERT(I_.AliasedSymbol);
+        entries.emplace_back("aliasedSymbol", domCreate(I_.AliasedSymbol, domCorpus_));
+    }
+    if constexpr(T::isUsing())
+    {
+        entries.emplace_back("class", toString(I_.Class));
+        entries.emplace_back("symbols", dom::newArray<DomSymbolArray>(I_.UsingSymbols, domCorpus_));
+        if (I_.Qualifier)
+        {
+            entries.emplace_back("qualifier", domCreate(I_.Qualifier, domCorpus_));
         }
     }
     if constexpr(T::isEnumerator())
