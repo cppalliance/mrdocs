@@ -240,6 +240,8 @@ DEFINE(SpecializationInfo);
 DEFINE(FriendInfo);
 DEFINE(EnumeratorInfo);
 DEFINE(GuideInfo);
+DEFINE(AliasInfo);
+DEFINE(UsingInfo);
 
 } // adoc
 } // mrdocs

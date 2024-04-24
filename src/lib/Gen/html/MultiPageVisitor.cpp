@@ -72,6 +72,8 @@ DEFINE(SpecializationInfo);
 DEFINE(FriendInfo);
 DEFINE(EnumeratorInfo);
 DEFINE(GuideInfo);
+DEFINE(AliasInfo);
+DEFINE(UsingInfo);
 
 } // html
 } // mrdocs

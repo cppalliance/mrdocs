@@ -258,6 +258,8 @@ BlockIdNameMap = []()
         {BI_ENUMERATOR_BLOCK_ID, "EnumeratorBlock"},
         {BI_VARIABLE_BLOCK_ID, "VarBlock"},
         {BI_NAME_INFO_ID, "NameInfoBlock"},
+        {BI_ALIAS_BLOCK_ID, "AliasBlock"},
+        {BI_USING_BLOCK_ID, "UsingBlock"},
     };
     MRDOCS_ASSERT(Inits.size() == BlockIdCount);
     for (const auto& Init : Inits)
@@ -334,7 +336,9 @@ RecordIDNameMap = []()
         {TYPEINFO_NOEXCEPT, {"TypeinfoNoexcept", &NoexceptAbbrev}},
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
-        {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}}
+        {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}},
+        {USING_SYMBOLS, {"UsingSymbols", &SymbolIDsAbbrev}},
+        {USING_CLASS, {"UsingClass", &Integer32Abbrev}},
     };
     // MRDOCS_ASSERT(Inits.size() == RecordIDCount);
     for (const auto& Init : Inits)
@@ -421,7 +425,13 @@ RecordsByBlock{
     // FriendInfo
     {BI_FRIEND_BLOCK_ID,
         {FRIEND_SYMBOL}},
-    // FriendInfo
+    // AliasInfo
+    {BI_ALIAS_BLOCK_ID,
+        {}},
+    // UsingInfo
+    {BI_USING_BLOCK_ID,
+        {USING_SYMBOLS, USING_CLASS}},
+    // EnumeratorInfo
     {BI_ENUMERATOR_BLOCK_ID,
         {}},
     // TypeInfo
@@ -1114,6 +1124,32 @@ emitBlock(
     emitSourceInfo(I);
     emitRecord(I.FriendSymbol, FRIEND_SYMBOL);
     emitBlock(I.FriendType);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    AliasInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_ALIAS_BLOCK_ID);
+    emitInfoPart(I);
+    emitSourceInfo(I);
+    MRDOCS_ASSERT(I.AliasedSymbol);
+    emitBlock(*I.AliasedSymbol);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    UsingInfo const& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_USING_BLOCK_ID);
+    emitInfoPart(I);
+    emitSourceInfo(I);
+    emitRecord(I.Class, USING_CLASS);
+    emitRecord(I.UsingSymbols, USING_SYMBOLS);
+    if (I.Qualifier)
+        emitBlock(*I.Qualifier);
 }
 
 void

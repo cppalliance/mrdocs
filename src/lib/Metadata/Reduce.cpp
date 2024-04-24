@@ -298,6 +298,28 @@ void merge(FriendInfo& I, FriendInfo&& Other)
         I.FriendType = std::move(Other.FriendType);
 }
 
+void merge(AliasInfo& I, AliasInfo&& Other)
+{
+    MRDOCS_ASSERT(canMerge(I, Other));
+    if (! I.AliasedSymbol)
+        I.AliasedSymbol = std::move(Other.AliasedSymbol);
+    mergeSourceInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
+}
+
+void merge(UsingInfo& I, UsingInfo&& Other)
+{
+    MRDOCS_ASSERT(canMerge(I, Other));
+
+    reduceSymbolIDs(I.UsingSymbols, std::move(Other.UsingSymbols));
+    if (I.Class == UsingClass::Normal)
+        I.Class = Other.Class;
+    if (! I.Qualifier)
+        I.Qualifier = std::move(Other.Qualifier);
+    mergeSourceInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
+}
+
 void merge(EnumeratorInfo& I, EnumeratorInfo&& Other)
 {
     MRDOCS_ASSERT(canMerge(I, Other));

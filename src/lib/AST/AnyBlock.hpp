@@ -1874,6 +1874,73 @@ public:
 
 //------------------------------------------------
 
+class AliasBlock
+    : public TopLevelBlock<AliasInfo>
+{
+public:
+    using TopLevelBlock::TopLevelBlock;
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_NAME_INFO_ID:
+        {
+            NameInfoBlock B(I->AliasedSymbol, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
+class UsingBlock
+    : public TopLevelBlock<UsingInfo>
+{
+public:
+    using TopLevelBlock::TopLevelBlock;
+
+    Error
+    parseRecord(
+        Record const& R,
+        unsigned ID,
+        llvm::StringRef Blob) override
+    {
+        switch(ID)
+        {
+        case USING_SYMBOLS:
+            return decodeRecord(R, I->UsingSymbols, Blob);
+        case USING_CLASS:
+            return decodeRecord(R, I->Class, Blob);
+        default:
+            return TopLevelBlock::parseRecord(R, ID, Blob);
+        }
+    }
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_NAME_INFO_ID:
+        {
+            NameInfoBlock B(I->Qualifier, br_);
+            return br_.readBlock(B, ID);
+        }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
+    }
+};
+
+//------------------------------------------------
+
 class EnumeratorBlock
     : public TopLevelBlock<EnumeratorInfo>
 {

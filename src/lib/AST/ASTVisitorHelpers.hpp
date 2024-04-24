@@ -55,6 +55,15 @@ struct MrDocsType<FriendDecl> : std::type_identity<FriendInfo> {};
 template <>
 struct MrDocsType<CXXDeductionGuideDecl> : std::type_identity<GuideInfo> {};
 
+template <>
+struct MrDocsType<NamespaceAliasDecl> : std::type_identity<AliasInfo> {};
+
+template <>
+struct MrDocsType<UsingDirectiveDecl> : std::type_identity<UsingInfo> {};
+
+template <>
+struct MrDocsType<UsingDecl> : std::type_identity<UsingInfo> {};
+
 /// @copydoc MrDocsType
 template <class DeclType>
 using MrDocsType_t = typename MrDocsType<DeclType>::type;

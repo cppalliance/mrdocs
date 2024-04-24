@@ -27,6 +27,7 @@
 namespace clang {
 namespace mrdocs {
 
+struct AliasInfo;
 struct NamespaceInfo;
 struct RecordInfo;
 struct FunctionInfo;
@@ -38,6 +39,7 @@ struct SpecializationInfo;
 struct FriendInfo;
 struct EnumeratorInfo;
 struct GuideInfo;
+struct UsingInfo;
 
 /** Info variant discriminator
 */
@@ -64,7 +66,11 @@ enum class InfoKind
     /// The symbol is an enumerator
     Enumerator,
     /// The symbol is a deduction guide
-    Guide
+    Guide,
+    /// The symbol is a namespace alias
+    Alias,
+    /// The symbol is a using declaration and using directive
+    Using,
 };
 
 /** Return the name of the InfoKind as a string.
@@ -177,6 +183,12 @@ struct MRDOCS_VISIBLE
 
     /// Determine if this symbol is a deduction guide.
     constexpr bool isGuide()          const noexcept { return Kind == InfoKind::Guide; }
+
+    /// Determine if this symbol is a namespace alias.
+    constexpr bool isAlias()          const noexcept { return Kind == InfoKind::Alias; }
+
+    /// Determine if this symbol is a using declaration or using directive.
+    constexpr bool isUsing()          const noexcept { return Kind == InfoKind::Using; }
 };
 
 //------------------------------------------------
@@ -230,6 +242,12 @@ struct IsInfo : Info
     /// Determine if this symbol is a deduction guide.
     static constexpr bool isGuide()          noexcept { return K == InfoKind::Guide; }
 
+    /// Determine if this symbol is a namespace alias.
+    static constexpr bool isAlias()          noexcept { return K == InfoKind::Alias; }
+
+    /// Determine if this symbol is a using declaration or using directive.
+    static constexpr bool isUsing()          noexcept { return K == InfoKind::Using; }
+
 protected:
     constexpr explicit IsInfo(SymbolID ID)
         : Info(K, ID)
@@ -282,6 +300,10 @@ visit(
         return visitor.template visit<EnumeratorInfo>();
     case InfoKind::Guide:
         return visitor.template visit<GuideInfo>();
+    case InfoKind::Alias:
+        return visitor.template visit<AliasInfo>();
+    case InfoKind::Using:
+        return visitor.template visit<UsingInfo>();
     default:
         MRDOCS_UNREACHABLE();
     }

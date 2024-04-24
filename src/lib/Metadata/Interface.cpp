@@ -265,6 +265,20 @@ public:
     }
 
     void operator()(
+        AliasInfo const& I,
+        AccessKind access)
+    {
+        push(&Tranche::Aliases, access, I);
+    }
+
+    void operator()(
+        UsingInfo const& I,
+        AccessKind access)
+    {
+        push(&Tranche::Usings, access, I);
+    }
+
+    void operator()(
         const EnumeratorInfo& I,
         AccessKind access)
     {

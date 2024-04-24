@@ -17,6 +17,7 @@
 // All headers related to
 // metadata extracted from AST
 
+#include <mrdocs/Metadata/Alias.hpp>
 #include <mrdocs/Metadata/Enum.hpp>
 #include <mrdocs/Metadata/Enumerator.hpp>
 #include <mrdocs/Metadata/Expression.hpp>
@@ -37,6 +38,7 @@
 #include <mrdocs/Metadata/Template.hpp>
 #include <mrdocs/Metadata/Type.hpp>
 #include <mrdocs/Metadata/Typedef.hpp>
+#include <mrdocs/Metadata/Using.hpp>
 #include <mrdocs/Metadata/Variable.hpp>
 
 #endif

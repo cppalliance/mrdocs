@@ -35,6 +35,7 @@ enum class OperatorKind;
 enum class ReferenceKind;
 enum class StorageClassKind;
 
+struct AliasInfo;
 struct BaseInfo;
 struct EnumInfo;
 struct EnumeratorInfo;
@@ -56,6 +57,7 @@ struct TypeInfo;
 struct TypedefInfo;
 struct VariableInfo;
 struct VerbatimBlock;
+struct UsingInfo;
 
 struct ExprInfo;
 template<typename T>
