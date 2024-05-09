@@ -65,10 +65,6 @@ At this step, you can also add any other flags you want to pass to `cmake`, such
 By running CMake with the `CMAKE_EXPORT_COMPILE_COMMANDS` flag, you will generate a `compile_commands.json` file in your build directory.
 This file contains all the information mrdocs needs to generate the documentation.
 
-== Demos
-
-A few examples of reference documentation generated with MrDocs are available in https://mrdocs.com/demos/.
-
 == MrDocs configuration file
 
 The `mrdocs.yml` configuration file contains information about the project that is not available in the `compile_commands.json` file or from the command line.

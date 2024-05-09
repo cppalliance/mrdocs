@@ -1,0 +1,28 @@
+= Demos
+
+A few examples of reference documentation generated with MrDocs are available in https://mrdocs.com/demos/:
+
+|===
+|  4+| *Multi-Page* 4+| *Single-Page*
+| *Library* | *Asciidoc* | *Rendered Asciidoc* | *HTML* | *XML* | *Asciidoc* | *Rendered Asciidoc* | *HTML* | *XML*
+
+| https://github.com/boostorg/url[Boost.URL]
+| https://mrdocs.com/demos/develop/boost-url/multi/adoc/[🔗]
+| https://mrdocs.com/demos/develop/boost-url/multi/adoc-asciidoc/[🔗]
+| https://mrdocs.com/demos/develop/boost-url/multi/html/[🔗]
+| https://mrdocs.com/demos/develop/boost-url/multi/xml/[🔗]
+| https://mrdocs.com/demos/develop/boost-url/single/adoc/[🔗]
+| https://mrdocs.com/demos/develop/boost-url/single/adoc-asciidoc/[🔗]
+| https://mrdocs.com/demos/develop/boost-url/single/html/[🔗]
+| https://mrdocs.com/demos/develop/boost-url/single/xml/[🔗]
+
+| https://github.com/boostorg/scope[Boost.Scope]
+| https://mrdocs.com/demos/develop/boost-scope/multi/adoc/[🔗]
+| https://mrdocs.com/demos/develop/boost-scope/multi/adoc-asciidoc/[🔗]
+|
+|
+| https://mrdocs.com/demos/develop/boost-scope/single/adoc/[🔗]
+| https://mrdocs.com/demos/develop/boost-scope/single/adoc-asciidoc/[🔗]
+|
+|
+|===
