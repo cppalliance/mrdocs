@@ -1,4 +1,5 @@
 * xref:index.adoc[]
+* xref:demos.adoc[]
 * xref:install.adoc[]
 * xref:usage.adoc[]
 * xref:config-file.adoc[]
