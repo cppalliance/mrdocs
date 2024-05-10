@@ -6,7 +6,7 @@ Alan Freitas <alandefreitas@gmail.com>
 :page-tags: mrdocs
 :navtitle: Home
 
-image::MrDocsBanner.png[]
+image::MrDocsBanner.jpg[]
 
 Welcome to MrDocs, the ultimate solution for generating comprehensive reference documentation from your {cpp} codebase and javadoc comments. MrDocs harnesses the power of Clang/LLVM, offering a seamless and efficient way to document your {cpp} projects.
 
