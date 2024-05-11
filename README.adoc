@@ -1,4 +1,4 @@
-= Mr. Dox
+= MrDocs
 
 == Install
 
