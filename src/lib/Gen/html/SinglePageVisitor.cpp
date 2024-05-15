@@ -20,35 +20,41 @@ void
 SinglePageVisitor::
 operator()(T const& I)
 {
-    renderPage(I, numPages_++);
+    ex_.async([this, &I, page = numPages_++](Builder& builder)
+    {
+        if(auto r = builder(I))
+            writePage(*r, page);
+        else
+            r.error().Throw();
+    });
     if constexpr(
             T::isNamespace() ||
             T::isRecord() ||
-            T::isEnum() ||
-            T::isSpecialization())
-        corpus_.traverse(I, *this);
+            T::isEnum())
+    {
+        // corpus_.traverse(I, *this);
+        corpus_.traverseOverloads(I, *this);
+    }
 }
 
-// Launch a task to render the page
-// pageNumber is zero-based
-//
 void
 SinglePageVisitor::
-renderPage(
-    auto const& I,
-    std::size_t pageNumber)
+operator()(OverloadSet const& OS)
 {
-    ex_.async(
-        [this, &I, pageNumber](Builder& builder)
-        {
-            endPage(builder(I).value(), pageNumber);
-        });
+    ex_.async([this, OS, page = numPages_++](Builder& builder)
+    {
+        if(auto r = builder(OS))
+            writePage(*r, page);
+        else
+            r.error().Throw();
+        corpus_.traverse(OS, *this);
+    });
 }
 
 // pageNumber is zero-based
 void
 SinglePageVisitor::
-endPage(
+writePage(
     std::string pageText,
     std::size_t pageNumber)
 {
