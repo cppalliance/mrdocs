@@ -82,7 +82,10 @@ Builder(
         dom::makeInvocable([res = config->multiPage]() -> Expected<dom::Value> {
         return res;
     }));
+
+    helpers::registerStringHelpers(hbs_);
     helpers::registerAntoraHelpers(hbs_);
+    helpers::registerContainerHelpers(hbs_);
 }
 
 //------------------------------------------------
@@ -131,6 +134,22 @@ renderSinglePageFooter()
 
 //------------------------------------------------
 
+std::string
+Builder::
+getRelPrefix(std::size_t depth)
+{
+    std::string rel_prefix;
+    if(! depth ||! domCorpus_->config->multiPage)
+        return rel_prefix;
+    --depth;
+    rel_prefix.reserve(depth * 3);
+    while(depth--)
+        rel_prefix.append("../");
+    return rel_prefix;
+}
+
+//------------------------------------------------
+
 dom::Value
 Builder::
 createContext(
@@ -139,6 +158,20 @@ createContext(
     return dom::Object({
         { "symbol", domCorpus_.get(id) }
         });
+}
+
+dom::Value
+Builder::
+createContext(
+    OverloadSet const& OS)
+{
+    dom::Object::storage_type props;
+    props.emplace_back("symbol",
+        domCorpus_.getOverloads(OS));
+    const Info& Parent = domCorpus_->get(OS.Parent);
+    props.emplace_back("relfileprefix",
+        getRelPrefix(Parent.Namespace.size() + 1));
+    return dom::Object(std::move(props));
 }
 
 template<class T>
@@ -150,6 +183,16 @@ operator()(T const& I)
         "single-symbol.html.hbs",
         createContext(I.id));
 }
+
+Expected<std::string>
+Builder::
+operator()(OverloadSet const& OS)
+{
+    return callTemplate(
+        "overload-set.html.hbs",
+        createContext(OS));
+}
+
 
 #define DEFINE(T) template Expected<std::string> \
     Builder::operator()<T>(T const&)
