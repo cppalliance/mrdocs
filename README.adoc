@@ -32,17 +32,18 @@ cmake --install .
 
 === Doxygen:
 
-* tries to work for many languages
-* use the inferior libclang API
-* old program with lots of technical debt
-* not written by me
+* Tries to work for many languages
+* Uses the inferior libclang API
+* Old program with lots of technical debt
+* Not written by me
 
 === MrDocs:
 
-* narrow and deep focus on {cpp} only
-* uses clang's unstable libtooling API:
+* Narrow and deep focus on {cpp} only
+* Uses clang's unstable libtooling API:
 ** Understands ALL C++: if clang can compile it, MrDocs knows about it
-** This includes up to {cpp}20 and even experimental things in {cpp}23
-* brand-new program with no technical debt
-* written by me
+** This includes up to {cpp}20 and even experimental features in {cpp}23
+* Brand-new program with no technical debt
+* Written by me
+
 
