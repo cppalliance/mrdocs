@@ -619,7 +619,10 @@ convertCopydoc(unsigned id)
     case CommandTraits::KCI_copydetails:
         return doc::Parts::description;
     default:
+    {
+        report::error("error: unsupported CommandTrait id <{}>", id);
         MRDOCS_UNREACHABLE();
+    }
     }
 }
 
@@ -640,6 +643,7 @@ convertStyle(InlineCommandRenderKind kind)
         return doc::Style::none;
     default:
         // unknown RenderKind
+        report::error("error: unsupported InlineCommandRenderKind <{}>", static_cast<int>(kind));
         MRDOCS_UNREACHABLE();
     }
 }
@@ -657,6 +661,7 @@ convertDirection(ParamCommandPassDirection kind)
     case ParamCommandPassDirection::InOut:
         return doc::ParamDirection::inout;
     default:
+        report::error("error: unsupported ParamCommandPassDirection <{}>", static_cast<int>(kind));
         MRDOCS_UNREACHABLE();
     }
 }
@@ -1240,9 +1245,10 @@ visitBlockCommandComment(
     case CommandTraits::KCI_copybrief:
     case CommandTraits::KCI_copydetails:
     case CommandTraits::KCI_copydoc:
+        report::error("error: inline command {} should be handled elsewhere", cmd->Name);
         MRDOCS_UNREACHABLE();
-
     default:
+        report::error("error: unsupported block command {}", cmd->Name);
         MRDOCS_UNREACHABLE();
     }
 }
