@@ -616,19 +616,6 @@ public:
             if(! (D = FD->getFriendDecl()))
                 return true;
         }
-        // functions require their parameter types to be decayed
-        // prior to USR generator to ensure that declarations
-        // with parameter types which decay to the same type
-        // generate the same USR
-        if(const auto* FD = dyn_cast<FunctionDecl>(D))
-        {
-            // apply the type adjustments specified in [dcl.fct] p5
-            // to ensure that the USR of the corresponding function matches
-            // other declarations of the function that have parameters declared
-            // with different top-level cv-qualifiers.
-            for(ParmVarDecl* P : FD->parameters())
-                P->setType(context_.getSignatureParameterType(P->getType()));
-        }
         return index::generateUSRForDecl(D, usr_);
     }
 
