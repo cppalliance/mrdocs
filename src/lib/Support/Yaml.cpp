@@ -31,7 +31,7 @@ diag(
         break;
     case llvm::SourceMgr::DiagKind::DK_Warning:
     {
-        if(D.getMessage().startswith("unknown key "))
+        if(D.getMessage().starts_with("unknown key "))
         {
             // don't show these
             return;

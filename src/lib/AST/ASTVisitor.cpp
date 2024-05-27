@@ -1045,11 +1045,8 @@ public:
                 if(P->wasDeclaredWithTypename())
                     R->KeyKind = TParamKeyKind::Typename;
                 if(P->hasDefaultArgument())
-                {
-                    QualType QT = P->getDefaultArgument();
                     R->Default = buildTemplateArg(
-                        TemplateArgument(QT, QT.isNull(), true));
-                }
+                        P->getDefaultArgument().getArgument());
                 return R;
             }
             else if constexpr(kind == Decl::NonTypeTemplateParm)
@@ -1057,26 +1054,20 @@ public:
                 auto R = std::make_unique<NonTypeTParam>();
                 R->Type = buildTypeInfo(P->getType());
                 if(P->hasDefaultArgument())
-                {
                     R->Default = buildTemplateArg(
-                        TemplateArgument(P->getDefaultArgument(), true));
-                }
+                        P->getDefaultArgument().getArgument());
                 return R;
             }
             else if constexpr(kind == Decl::TemplateTemplateParm)
             {
                 auto R = std::make_unique<TemplateTParam>();
                 for(const NamedDecl* NP : *P->getTemplateParameters())
-                {
                     R->Params.emplace_back(
                         buildTemplateParam(NP));
-                }
 
                 if(P->hasDefaultArgument())
-                {
                     R->Default = buildTemplateArg(
                         P->getDefaultArgument().getArgument());
-                }
                 return R;
             }
             MRDOCS_UNREACHABLE();
@@ -2641,13 +2632,8 @@ traverse(
         if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
         {
             extractSymbolID(getInstantiatedFrom(CTD), Template->Primary);
-            // KRYSTIAN NOTE: when this is a partial specialization, we could use
-            // ClassTemplatePartialSpecializationDecl::getTemplateArgsAsWritten
-            MRDOCS_ASSERT(CTSD->getTypeAsWritten());
-            const TypeSourceInfo* TSI = CTSD->getTypeAsWritten();
-            buildTemplateArgs(Template->Args, TSI->getType()->getAs<
-                TemplateSpecializationType>()->template_arguments());
-
+            // extract the template arguments of the specialization
+            buildTemplateArgs(Template->Args, CTSD->getTemplateArgsAsWritten());
             // extract the template parameters if this is a partial specialization
             if(auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
                 buildTemplateParams(*I.Template, CTPSD->getTemplateParameters());
@@ -2683,16 +2669,11 @@ traverse(
         if(auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
         {
             extractSymbolID(getInstantiatedFrom(VTD), Template->Primary);
-            const ASTTemplateArgumentListInfo* Args = VTSD->getTemplateArgsInfo();
+            // extract the template arguments of the specialization
+            buildTemplateArgs(Template->Args, VTSD->getTemplateArgsAsWritten());
             // extract the template parameters if this is a partial specialization
             if(auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
-            {
-                // getTemplateArgsInfo returns nullptr for partial specializations,
-                // so we use getTemplateArgsAsWritten if this is a partial specialization
-                Args = VTPSD->getTemplateArgsAsWritten();
                 buildTemplateParams(*I.Template, VTPSD->getTemplateParameters());
-            }
-            buildTemplateArgs(Template->Args, Args);
         }
         else
         {

@@ -249,7 +249,7 @@ shouldVisitSymbol(
             return true;
         }
         // Prefix match
-        if (filePath.startswith(p))
+        if (filePath.starts_with(p))
         {
             bool validPattern = std::ranges::any_of(
                     settings_.input.filePatterns,
