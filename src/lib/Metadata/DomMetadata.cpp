@@ -875,9 +875,13 @@ DomInfo<T>::construct() const
     if constexpr(T::isUsing())
     {
         entries.emplace_back("class", toString(I_.Class));
-        entries.emplace_back("symbols", dom::newArray<DomSymbolArray>(I_.UsingSymbols, domCorpus_));
-        if (I_.Qualifier)
+        if (I_.Class == UsingClass::Namespace)
         {
+            entries.emplace_back("nominatedSymbol", domCreate(I_.Qualifier, domCorpus_));
+        }
+        else
+        {
+            entries.emplace_back("symbols", dom::newArray<DomSymbolArray>(I_.UsingSymbols, domCorpus_));
             entries.emplace_back("qualifier", domCreate(I_.Qualifier, domCorpus_));
         }
     }
