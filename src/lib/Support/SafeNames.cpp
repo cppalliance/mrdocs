@@ -209,10 +209,9 @@ public:
                 }
 
                 if constexpr(T::isUsing()) {
-                    MRDOCS_ASSERT(! t.Name.empty());
-                    if (t.Class == UsingClass::Namespace) {
+                    if (t.Class == UsingClass::Namespace)
                         return getReserved(t);
-                    }
+                    MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;
                 }
 

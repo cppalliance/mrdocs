@@ -2199,19 +2199,11 @@ public:
             return;
 
         I.Class = UsingClass::Namespace;
+        // KRYSTIAN FIXME: we treat using-directives as having no name,
+        // and we store the full name of the nominated namespace in
+        // Qualifier. we should probably rename the member accordingly
+        I.Qualifier = buildNameInfo(D->getNominatedNamespaceAsWritten());
 
-        if (D->getQualifier())
-        {
-            I.Qualifier = buildNameInfo(D->getQualifier());
-        }
-
-        if (NamedDecl* ND = D->getNominatedNamespace())
-        {
-            I.Name = extractName(ND);
-            SymbolID id;
-            getDependencyID(ND, id);
-            I.UsingSymbols.emplace_back(id);
-        }
         getParentNamespaces(I, D);
     }
 
