@@ -462,6 +462,9 @@ public:
         Decl* D,
         SymbolID& id)
     {
+        if(TemplateDecl* TD = D->getDescribedTemplate())
+            D = TD;
+
         if(D->isImplicit() ||
             isa<TemplateTemplateParmDecl>(D) ||
             isa<BuiltinTemplateDecl>(D))
@@ -501,6 +504,9 @@ public:
                 Outer = TD;
         }
         while((DC = DC->getParent()));
+
+        if(TemplateDecl* TD = Outer->getDescribedTemplate())
+            Outer = TD;
 
         // add the adjusted declaration to the set of dependencies
         if(! isa<NamespaceDecl, TranslationUnitDecl>(Outer))
