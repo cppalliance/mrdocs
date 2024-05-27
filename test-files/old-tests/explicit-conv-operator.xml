@@ -4,9 +4,8 @@
 <namespace id="//////////////////////////8=">
   <struct name="Explicit" id="bonobNKGOblPVcRjxpiPan4nYnc=">
     <file path="explicit-conv-operator.cpp" line="3" class="def"/>
-    <function class="conversion" name="operator bool" id="64zY8rVu+TzEUayzMrnV65i9nFc=">
+    <function class="conversion" name="operator bool" explicit-spec="explicit" id="64zY8rVu+TzEUayzMrnV65i9nFc=">
       <file path="explicit-conv-operator.cpp" line="4"/>
-      <attr id="explicit-spec" name="explicit" value="1"/>
       <return>
         <type name="bool"/>
       </return>
@@ -14,9 +13,8 @@
   </struct>
   <struct name="ExplicitFalse" id="Lt5u3k14Z7EBxY7Ike3h9qkJ0fo=">
     <file path="explicit-conv-operator.cpp" line="7" class="def"/>
-    <function class="conversion" name="operator bool" id="hJXOxv26Y9uxUYMMVZRsp3Wps4A=">
+    <function class="conversion" name="operator bool" explicit-spec="explicit(false)" id="hJXOxv26Y9uxUYMMVZRsp3Wps4A=">
       <file path="explicit-conv-operator.cpp" line="8"/>
-      <attr id="explicit-spec" name="explicit(false)" value="2"/>
       <return>
         <type name="bool"/>
       </return>
@@ -24,9 +22,8 @@
   </struct>
   <struct name="ExplicitTrue" id="htdCGapMsdazR1XkXoanrOCkvDE=">
     <file path="explicit-conv-operator.cpp" line="11" class="def"/>
-    <function class="conversion" name="operator bool" id="9tpZWv9eJGfWj37jmTdNTg+gp14=">
+    <function class="conversion" name="operator bool" explicit-spec="explicit(true)" id="9tpZWv9eJGfWj37jmTdNTg+gp14=">
       <file path="explicit-conv-operator.cpp" line="12"/>
-      <attr id="explicit-spec" name="explicit(true)" value="3"/>
       <return>
         <type name="bool"/>
       </return>
@@ -36,9 +33,8 @@
     <tparam name="B" class="non-type" type="bool"/>
     <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
       <file path="explicit-conv-operator.cpp" line="16" class="def"/>
-      <function class="conversion" name="operator bool" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
+      <function class="conversion" name="operator bool" explicit-spec="explicit(B)" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
         <file path="explicit-conv-operator.cpp" line="17"/>
-        <attr id="explicit-spec" name="explicit(expr)" value="4"/>
         <return>
           <type name="bool"/>
         </return>

@@ -46,7 +46,7 @@ struct GuideInfo
 
     /** The explicit-specifier, if any.
     */
-    ExplicitKind Explicit = ExplicitKind::None;
+    ExplicitInfo Explicit;
 
     //--------------------------------------------
 

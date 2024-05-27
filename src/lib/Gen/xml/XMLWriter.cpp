@@ -323,6 +323,7 @@ writeFunction(
     openTemplate(I.Template);
 
     auto except_spec = toString(I.Noexcept);
+    auto explicit_spec = toString(I.Explicit);
 
     tags_.open(functionTagName, {
         { "class", toString(I.Class),
@@ -331,6 +332,8 @@ writeFunction(
         { I.Access },
         { "exception-spec", except_spec,
             ! except_spec.empty() },
+        { "explicit-spec", explicit_spec,
+            ! explicit_spec.empty() },
         { I.id }
         });
 
@@ -358,14 +361,13 @@ writeGuide(
 {
     openTemplate(I.Template);
 
-    bool IsExplicit = I.Explicit != ExplicitKind::None &&
-        I.Explicit != ExplicitKind::ExplicitFalse;
-
+    auto explicit_spec = toString(I.Explicit);
 
     tags_.open(guideTagName, {
         { "name", I.Name },
         { I.Access },
-        { "explicit", "1", IsExplicit},
+        { "explicit-spec", explicit_spec,
+            ! explicit_spec.empty() },
         { I.id }
         });
 

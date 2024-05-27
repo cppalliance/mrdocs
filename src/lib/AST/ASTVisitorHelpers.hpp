@@ -143,19 +143,16 @@ convertToExplicitKind(
 
     // no explicit-specifier
     if(! spec.isSpecified())
-        return NewKind::None;
+        return NewKind::False;
 
     switch(spec.getKind())
     {
     case OldKind::ResolvedFalse:
-        return NewKind::ExplicitFalse;
+        return NewKind::False;
     case OldKind::ResolvedTrue:
-        if(spec.getExpr())
-            return NewKind::ExplicitTrue;
-        // explicit-specifier without constant-expression
-        return NewKind::Explicit;
+        return NewKind::True;
     case OldKind::Unresolved:
-        return NewKind::ExplicitUnresolved;
+        return NewKind::Dependent;
     default:
         MRDOCS_UNREACHABLE();
     }

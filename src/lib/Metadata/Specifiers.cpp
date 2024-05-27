@@ -56,11 +56,9 @@ dom::String toString(ExplicitKind kind) noexcept
 {
     switch(kind)
     {
-    case ExplicitKind::None:               return "";
-    case ExplicitKind::Explicit:           return "explicit";
-    case ExplicitKind::ExplicitFalse:      return "explicit(false)";
-    case ExplicitKind::ExplicitTrue:       return "explicit(true)";
-    case ExplicitKind::ExplicitUnresolved: return "explicit(expr)";
+    case ExplicitKind::False:     return "";
+    case ExplicitKind::True:      return "explicit";
+    case ExplicitKind::Dependent: return "explicit(...)";
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -80,7 +78,7 @@ dom::String toString(NoexceptKind kind) noexcept
 
 dom::String
 toString(
-    NoexceptInfo info,
+    const NoexceptInfo& info,
     bool resolved,
     bool implicit)
 {
@@ -96,6 +94,26 @@ toString(
         (resolved || info.Operand.empty()))
         return "noexcept";
     return fmt::format("noexcept({})", info.Operand);
+}
+
+dom::String
+toString(
+    const ExplicitInfo& info,
+    bool resolved,
+    bool implicit)
+{
+    if(! implicit && info.Implicit)
+        return "";
+    if(info.Kind == ExplicitKind::Dependent &&
+        info.Operand.empty())
+        return "";
+    if(info.Kind == ExplicitKind::False &&
+        (resolved || info.Operand.empty()))
+        return "";
+    if(info.Kind == ExplicitKind::True &&
+        (resolved || info.Operand.empty()))
+        return "explicit";
+    return fmt::format("explicit({})", info.Operand);
 }
 
 dom::String toString(ReferenceKind kind) noexcept

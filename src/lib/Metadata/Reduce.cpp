@@ -202,6 +202,8 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
     I.specs1.raw.value |= Other.specs1.raw.value;
     if(I.Noexcept.Implicit)
         I.Noexcept = std::move(Other.Noexcept);
+    if(I.Explicit.Implicit)
+        I.Explicit = std::move(Other.Explicit);
 }
 
 void merge(GuideInfo& I, GuideInfo&& Other)
@@ -216,8 +218,8 @@ void merge(GuideInfo& I, GuideInfo&& Other)
     mergeInfo(I, std::move(Other));
     if (!I.Template)
         I.Template = std::move(Other.Template);
-    if(I.Explicit == ExplicitKind::None)
-        I.Explicit = Other.Explicit;
+    if(I.Explicit.Implicit)
+        I.Explicit = std::move(Other.Explicit);
 }
 
 void merge(TypedefInfo& I, TypedefInfo&& Other)

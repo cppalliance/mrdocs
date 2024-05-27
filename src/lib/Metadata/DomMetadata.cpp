@@ -791,7 +791,6 @@ DomInfo<T>::construct() const
         set_string("exceptionSpec", toString(I_.specs0.exceptionSpec.get()));
         set_string("storageClass",  toString(I_.specs0.storageClass.get()));
         set_string("refQualifier",  toString(I_.specs0.refQualifier.get()));
-        set_string("explicitSpec",  toString(I_.specs1.explicitSpec.get()));
 
         entries.insert(entries.end(), {
             { "class",      toString(I_.Class) },
@@ -802,6 +801,7 @@ DomInfo<T>::construct() const
             });
 
         entries.emplace_back("exceptionSpec", toString(I_.Noexcept));
+        entries.emplace_back("explicitSpec",  toString(I_.Explicit));
         #if 0
         if(I_.Noexcept.Kind != NoexceptKind::None)
         {
@@ -895,8 +895,7 @@ DomInfo<T>::construct() const
             { "template",   domCreate(I_.Template, domCorpus_) }
             });
 
-        if(I_.Explicit != ExplicitKind::None)
-            entries.emplace_back("explicitSpec", toString(I_.Explicit));
+        entries.emplace_back("explicitSpec", toString(I_.Explicit));
     }
     return dom::Object(std::move(entries));
 }

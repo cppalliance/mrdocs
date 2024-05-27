@@ -197,6 +197,25 @@ static void NoexceptAbbrev(
         llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
 }
 
+static void ExplicitAbbrev(
+    std::shared_ptr<llvm::BitCodeAbbrev>& Abbrev)
+{
+    AbbrevGen(Abbrev, {
+        // ExplicitInfo::Implicit
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::BoolSize),
+        // ExplicitInfo::Kind
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed, 2),
+        // ExplicitInfo::Operand
+        llvm::BitCodeAbbrevOp(
+            llvm::BitCodeAbbrevOp::Fixed,
+            BitCodeConstants::StringLengthSize),
+        // 5. The string blob
+        llvm::BitCodeAbbrevOp(llvm::BitCodeAbbrevOp::Blob) });
+}
+
 //------------------------------------------------
 
 struct RecordIDDsc
@@ -292,9 +311,10 @@ RecordIDNameMap = []()
         {FUNCTION_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {FUNCTION_CLASS, {"FunctionClass", &Integer32Abbrev}},
         {FUNCTION_NOEXCEPT, {"FunctionNoexcept", &NoexceptAbbrev}},
+        {FUNCTION_EXPLICIT, {"FunctionExplicit", &ExplicitAbbrev}},
         {FUNCTION_PARAM_NAME, {"Name", &StringAbbrev}},
         {FUNCTION_PARAM_DEFAULT, {"Default", &StringAbbrev}},
-        {GUIDE_EXPLICIT, {"Explicit", &Integer32Abbrev}},
+        {GUIDE_EXPLICIT, {"GuideExplicit", &ExplicitAbbrev}},
         {INFO_PART_ACCESS, {"InfoAccess", &Integer32Abbrev}},
         {INFO_PART_ID, {"InfoID", &SymbolIDAbbrev}},
         {INFO_PART_IMPLICIT, {"InfoImplicit", &BoolAbbrev}},
@@ -388,7 +408,8 @@ RecordsByBlock{
         FIELD_IS_MUTABLE, FIELD_IS_BITFIELD}},
     // FunctionInfo
     {BI_FUNCTION_BLOCK_ID,
-        {FUNCTION_BITS, FUNCTION_CLASS, FUNCTION_NOEXCEPT}},
+        {FUNCTION_BITS, FUNCTION_CLASS, FUNCTION_NOEXCEPT,
+        FUNCTION_EXPLICIT}},
     // Param
     {BI_FUNCTION_PARAM_BLOCK_ID,
         {FUNCTION_PARAM_NAME, FUNCTION_PARAM_DEFAULT}},
@@ -744,6 +765,23 @@ emitRecord(
 void
 BitcodeWriter::
 emitRecord(
+    ExplicitInfo const& I, RecordID ID)
+{
+    MRDOCS_ASSERT(RecordIDNameMap[ID] && "Unknown RecordID.");
+    MRDOCS_ASSERT(RecordIDNameMap[ID].Abbrev == &ExplicitAbbrev &&
+        "Abbrev type mismatch.");
+    if (!prepRecordData(ID, true))
+        return;
+
+    Record.push_back(I.Implicit);
+    Record.push_back(to_underlying(I.Kind));
+    Record.push_back(I.Operand.size());
+    Stream.EmitRecordWithBlob(Abbrevs.get(ID), Record, I.Operand);
+}
+
+void
+BitcodeWriter::
+emitRecord(
     bool Val, RecordID ID)
 {
     MRDOCS_ASSERT(RecordIDNameMap[ID] && "Unknown RecordID.");
@@ -902,6 +940,7 @@ emitBlock(
     for (const auto& N : I.Params)
         emitBlock(N);
     emitRecord(I.Noexcept, FUNCTION_NOEXCEPT);
+    emitRecord(I.Explicit, FUNCTION_EXPLICIT);
 }
 
 void

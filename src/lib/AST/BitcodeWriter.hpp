@@ -108,6 +108,7 @@ public:
     void emitRecord(llvm::StringRef Str, RecordID ID);
     void emitRecord(Location const& Loc, RecordID ID);
     void emitRecord(NoexceptInfo const& I, RecordID ID);
+    void emitRecord(ExplicitInfo const& I, RecordID ID);
     void emitRecord(bool Value, RecordID ID);
     void emitRecord(std::initializer_list<BitFieldFullValue> values, RecordID ID);
 

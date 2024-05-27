@@ -169,7 +169,6 @@ inline void write(FnFlags1 const& bits, XMLTags& tags)
 {
     BitFieldWriter<FnFlags1> fw(bits, tags);
 
-    fw.write(&FnFlags1::explicitSpec,      "explicit-spec");
     fw.write(&FnFlags1::isNodiscard,       "nodiscard");
     fw.write(&FnFlags1::isExplicitObjectMemberFunction, "is-explicit-object-member-function");
 }

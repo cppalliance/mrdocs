@@ -974,6 +974,19 @@ public:
     }
 
     void
+    buildExplicitInfo(
+        ExplicitInfo& I,
+        const ExplicitSpecifier& ES)
+    {
+        I.Implicit = ! ES.isSpecified();
+        I.Kind = convertToExplicitKind(ES);
+
+        // store the operand, if any
+        if(const Expr* ExplicitExpr = ES.getExpr())
+            I.Operand = getExprAsString(ExplicitExpr);
+    }
+
+    void
     buildExprInfo(
         ExprInfo& I,
         const Expr* E)
@@ -2032,9 +2045,7 @@ public:
         //
         if constexpr(std::derived_from<DeclTy, CXXConstructorDecl>)
         {
-            I.specs1.explicitSpec |=
-                convertToExplicitKind(
-                    D->getExplicitSpecifier());
+            buildExplicitInfo(I.Explicit, D->getExplicitSpecifier());
         }
 
         //
@@ -2042,9 +2053,7 @@ public:
         //
         if constexpr(std::derived_from<DeclTy, CXXConversionDecl>)
         {
-            I.specs1.explicitSpec |=
-                convertToExplicitKind(
-                    D->getExplicitSpecifier());
+            buildExplicitInfo(I.Explicit, D->getExplicitSpecifier());
         }
 
         for(const ParmVarDecl* P : D->parameters())
@@ -2120,8 +2129,7 @@ public:
                 std::string());
         }
 
-        I.Explicit = convertToExplicitKind(
-            D->getExplicitSpecifier());
+        buildExplicitInfo(I.Explicit, D->getExplicitSpecifier());
 
         getParentNamespaces(I, D);
     }

@@ -204,6 +204,19 @@ decodeRecord(
     return Error::success();
 }
 
+inline
+Error
+decodeRecord(
+    Record const& R,
+    ExplicitInfo& I,
+    llvm::StringRef Blob)
+{
+    I.Implicit = R[0];
+    I.Kind = static_cast<ExplicitKind>(R[1]);
+    I.Operand = Blob;
+    return Error::success();
+}
+
 //------------------------------------------------
 
 struct BitcodeReader::AnyBlock
@@ -1530,6 +1543,8 @@ public:
             return decodeRecord(R, I->Class, Blob);
         case FUNCTION_NOEXCEPT:
             return decodeRecord(R, I->Noexcept, Blob);
+        case FUNCTION_EXPLICIT:
+            return decodeRecord(R, I->Explicit, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

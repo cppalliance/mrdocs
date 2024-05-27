@@ -77,6 +77,7 @@ grammar
             ID,
             attribute class { "constructor"|"destructor"|"conversion" } ?,
             attribute exception-spec { text } ?,
+            attribute explicit-spec { text } ?,
             Location *,
             (
                 Attr * |
@@ -99,7 +100,7 @@ grammar
         {
             Name,
             Access?,
-            attribute explicit { "1" } ?,
+            attribute explicit-spec { text } ?,
             ID,
             Location *,
             (

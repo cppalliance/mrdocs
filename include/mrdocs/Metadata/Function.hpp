@@ -104,8 +104,6 @@ union FnFlags1
 
     BitFlag<0> isNodiscard;
 
-    BitField<1, 3, ExplicitKind> explicitSpec;
-
     BitFlag<4> isExplicitObjectMemberFunction;
 };
 
@@ -158,6 +156,8 @@ struct FunctionInfo
     FnFlags1 specs1{.raw{0}};
 
     NoexceptInfo Noexcept;
+
+    ExplicitInfo Explicit;
 
     //--------------------------------------------
 

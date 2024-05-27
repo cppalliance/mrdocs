@@ -55,16 +55,31 @@ enum class ConstexprKind
 */
 enum class ExplicitKind
 {
-    // no explicit-specifier present
-    None = 0,
-    // explicit-specifier, no constant-expression
-    Explicit,
-    // explicit-specifier, constant-expression evaluates to false
-    ExplicitFalse,
-    // explicit-specifier, constant-expression evaluates to true
-    ExplicitTrue,
-    // explicit-specifier, unresolved
-    ExplicitUnresolved
+    /** No explicit-specifier or explicit-specifier evaluated to false
+    */
+    False = 0,
+    /** explicit-specifier evaluates to true
+    */
+    True,
+    /** Dependent explicit-specifier
+    */
+    Dependent
+};
+
+// KRYSTIAN FIXME: this needs to be improved (a lot)
+struct ExplicitInfo
+{
+    /** Whether an explicit-specifier was user-written.
+    */
+    bool Implicit = true;
+
+    /** The evaluated exception specification.
+    */
+    ExplicitKind Kind = ExplicitKind::False;
+
+    /** The operand of the explicit-specifier, if any.
+    */
+    std::string Operand;
 };
 
 /** Exception specification kinds
@@ -196,7 +211,21 @@ MRDOCS_DECL dom::String toString(StorageClassKind kind) noexcept;
 MRDOCS_DECL
 dom::String
 toString(
-    NoexceptInfo info,
+    const NoexceptInfo& info,
+    bool resolved = false,
+    bool implicit = false);
+
+/** Convert ExplicitInfo to a string.
+
+    @param resolved If true, the operand is not shown when
+    the explicit-specifier is non-dependent.
+
+    @param implicit If true, implicit explicit-specifiers are shown.
+*/
+MRDOCS_DECL
+dom::String
+toString(
+    const ExplicitInfo& info,
     bool resolved = false,
     bool implicit = false);
 
