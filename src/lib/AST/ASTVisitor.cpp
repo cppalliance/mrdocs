@@ -1835,8 +1835,13 @@ public:
 
         I.Name = extractName(D);
 
+        // When a symbol has a dependency on a typedef, we also
+        // consider the symbol to have a dependency on the aliased
+        // type. Therefore, we propagate the current dependency mode
+        // when building the TypeInfo for the aliased type
         I.Type = buildTypeInfo(
-            D->getUnderlyingType());
+            D->getUnderlyingType(),
+            currentMode());
 
     #if 0
         if(I.Type.Name.empty())

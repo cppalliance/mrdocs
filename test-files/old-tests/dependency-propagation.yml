@@ -1,0 +1,5 @@
+filters:
+  symbols:
+    exclude:
+      - 'N'
+referenced-declarations: dependency
