@@ -432,12 +432,13 @@ grammar
                 "pointer" |
                 "member-pointer" |
                 "array" |
-                "function" |
-                "pack"
+                "function"
             } ?,
             ID ?,
             Name ?,
             attribute parent { text } ?,
+            attribute is-pack { "1" } ?,
+            attribute is-variadic { "1" } ?,
             attribute cv-qualifiers { "const"|"volatile"|"const volatile" } ?,
             attribute ref-qualifier { "&"|"&&" } ?,
             attribute exception-spec { text } ?,

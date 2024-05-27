@@ -196,6 +196,7 @@ struct FunctionTypeInfo
     QualifierKind CVQualifiers = QualifierKind::None;
     ReferenceKind RefQualifier = ReferenceKind::None;
     NoexceptInfo ExceptionSpec;
+    bool IsVariadic = false;
 
     TypeInfo* innerType() const noexcept override
     {

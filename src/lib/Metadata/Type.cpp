@@ -217,6 +217,14 @@ operator()(
                 writeFullType(**first, write);
             }
         }
+
+        if(t.IsVariadic)
+        {
+            if(! t.ParamTypes.empty())
+                write(", ");
+            write("...");
+        }
+
         write(')');
 
         if(t.CVQualifiers != QualifierKind::None)

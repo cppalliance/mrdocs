@@ -500,6 +500,7 @@ domCreate(
                 toString(t.ExceptionSpec));
             entries.emplace_back("ref-qualifier",
                 toString(t.RefQualifier));
+            entries.emplace_back("is-variadic", t.IsVariadic);
         }
     });
     return dom::Object(std::move(entries));
