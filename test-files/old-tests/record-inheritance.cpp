@@ -19,3 +19,6 @@ class C6 : virtual C1 {};
 class C7 : public C5, public C6 {};
 
 struct S5 : private S0, protected S1 {};
+
+template<typename... Ts>
+struct S6 : Ts... { };

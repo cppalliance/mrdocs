@@ -1758,13 +1758,18 @@ public:
                         access == AccessSpecifier::AS_protected)
                         continue;
                 }
-
+                // the extraction of the base type is
+                // performed in direct dependency mode
+                auto BaseType = buildTypeInfo(
+                    B.getType(),
+                    ExtractMode::DirectDependency);
+                // CXXBaseSpecifier::getEllipsisLoc indicates whether the
+                // base was a pack expansion; a PackExpansionType is not built
+                // for base-specifiers
+                if(BaseType && B.getEllipsisLoc().isValid())
+                    BaseType->IsPackExpansion = true;
                 I.Bases.emplace_back(
-                    // the extraction of the base type is
-                    // performed in direct dependency mode
-                    buildTypeInfo(
-                        B.getType(),
-                        ExtractMode::DirectDependency),
+                    std::move(BaseType),
                     convertToAccessKind(access),
                     B.isVirtual());
             }
