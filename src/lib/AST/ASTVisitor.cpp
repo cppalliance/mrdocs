@@ -3550,6 +3550,7 @@ public:
             FPT->getRefQualifier());
         I->CVQualifiers = convertToQualifierKind(
             FPT->getMethodQuals().getFastQualifiers());
+        I->IsVariadic = FPT->isVariadic();
         getASTVisitor().buildNoexceptInfo(I->ExceptionSpec, FPT);
         *std::exchange(Inner, &I->ReturnType) = std::move(I);
     }

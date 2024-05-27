@@ -335,6 +335,7 @@ RecordIDNameMap = []()
         {TYPEINFO_CVQUAL, {"TypeinfoCV", &Integer32Abbrev}},
         {TYPEINFO_NOEXCEPT, {"TypeinfoNoexcept", &NoexceptAbbrev}},
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
+        {TYPEINFO_IS_VARIADIC, {"TypeinfoIsVariadic", &BoolAbbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {USING_SYMBOLS, {"UsingSymbols", &SymbolIDsAbbrev}},
@@ -437,7 +438,7 @@ RecordsByBlock{
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
         {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_CVQUAL,
-        TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL}},
+        TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL, TYPEINFO_IS_VARIADIC}},
     {BI_TYPEINFO_PARENT_BLOCK_ID,
         {}},
     {BI_TYPEINFO_CHILD_BLOCK_ID,
@@ -1048,6 +1049,7 @@ emitBlock(
 
             emitRecord(t.RefQualifier, TYPEINFO_REFQUAL);
             emitRecord(t.ExceptionSpec, TYPEINFO_NOEXCEPT);
+            emitRecord(t.IsVariadic, TYPEINFO_IS_VARIADIC);
         }
 
         if constexpr(T::isNamed())

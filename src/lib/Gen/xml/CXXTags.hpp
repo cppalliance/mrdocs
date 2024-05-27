@@ -252,6 +252,9 @@ writeType(
 
             if constexpr(T::isFunction())
             {
+                if(t.IsVariadic)
+                    attrs.push({"is-variadic", "1"});
+
                 if(t.RefQualifier != ReferenceKind::None)
                     attrs.push({"ref-qualifier", toString(t.RefQualifier)});
 

@@ -886,6 +886,11 @@ public:
                 return Error("wrong TypeInfo kind");
             return decodeRecord(R, static_cast<
                 FunctionTypeInfo&>(*I_).ExceptionSpec, Blob);
+        case TYPEINFO_IS_VARIADIC:
+            if(! I_->isFunction())
+                return Error("wrong TypeInfo kind");
+            return decodeRecord(R, static_cast<
+                FunctionTypeInfo&>(*I_).IsVariadic, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
