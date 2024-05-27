@@ -1,0 +1,23 @@
+{{!-- alias --}}
+<div id="{{symbol.id}}">
+    <div>
+        <h2>{{symbol.name}}</h2>
+        {{{symbol.doc.brief}}}
+    </div>
+    <div>
+        <h3>Synopsis</h3>
+        <div>
+            <code>
+                namespace {{symbol.name}} = {{>name-info symbol.aliasedSymbol}}
+                ;
+            </code>
+        </div>
+        <div>{{>source symbol.loc}}</div>
+    </div>
+    {{#if symbol.doc.description}}
+        <div>
+            <h3>Description</h3>
+            {{{symbol.doc.description}}}
+        </div>
+    {{/if}}
+</div>
