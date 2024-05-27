@@ -29,7 +29,7 @@ class SinglePageVisitor
     ExecutorGroup<Builder>& ex_;
     Corpus const& corpus_;
     std::ostream& os_;
-    std::size_t numPages_ = 0; 
+    std::size_t numPages_ = 0;
     std::mutex mutex_;
     std::size_t topPage_ = 0;
     std::vector<std::optional<
@@ -48,8 +48,9 @@ public:
 
     template<class T>
     void operator()(T const& I);
+    void operator()(OverloadSet const& OS);
     void renderPage(auto const& I, std::size_t pageNumber);
-    void endPage(std::string pageText, std::size_t pageNumber);
+    void writePage(std::string pageText, std::size_t pageNumber);
 };
 
 } // html

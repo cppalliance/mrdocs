@@ -1,0 +1,45 @@
+{{!-- using --}}
+<div id="{{symbol.id}}">
+    <div>
+        <h2>Using {{#if (eq symbol.class "namespace")}}Directive: {{symbol.qualifier.name}}{{else}}Declaration: {{symbol.name}}{{/if}}</h2>
+        {{{symbol.doc.brief}}}
+    </div>
+    <div>
+        <h3>Synopsis</h3>
+        <div>
+            <code>
+                {{#if (eq symbol.class "namespace")}}
+                    using namespace {{#if symbol.qualifier}}{{>name-info symbol.qualifier}}::{{/if}}{{symbol.name}};
+                {{else}}
+                    using {{#if (eq symbol.class "typename")}}typename {{/if}}{{#if (eq symbol.class "enum")}}enum {{/if}}{{#if symbol.qualifier}}{{>name-info symbol.qualifier}}::{{/if}}{{symbol.name}};
+                {{/if}}
+            </code>
+        </div>
+        <div>{{>source symbol.loc}}</div>
+    </div>
+    {{#if symbol.doc.description}}
+        <div>
+            <h3>Description</h3>
+            {{{symbol.doc.description}}}
+        </div>
+    {{/if}}
+    {{#unless (eq symbol.class "namespace")}}
+        <div>
+            <h3>Introduced Symbols</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each symbol.symbols}}
+                        <tr>
+                            <td>{{name}}</td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    {{/unless}}
+</div>
