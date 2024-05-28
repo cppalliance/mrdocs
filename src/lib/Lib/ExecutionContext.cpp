@@ -166,7 +166,8 @@ results()
             // Each Bitcode can have multiple Infos
             for(auto& bitcode : bitcodes)
             {
-                Expected infos = readBitcode(bitcode);
+                Expected<std::vector<std::unique_ptr<Info>>> infos =
+                    readBitcode(bitcode);
                 if (infos.has_value())
                 {
                     std::move(
@@ -179,7 +180,7 @@ results()
                     report::error("Failed to read bitcode: {}", infos.error());
                 }
             }
-            Expected merged = mergeInfos(Infos);
+            Expected<std::unique_ptr<Info>> merged = mergeInfos(Infos);
             std::unique_ptr<Info> I = std::move(merged.value());
             MRDOCS_ASSERT(I);
             MRDOCS_ASSERT(id == I->id);
