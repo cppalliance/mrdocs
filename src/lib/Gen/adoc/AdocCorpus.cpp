@@ -418,7 +418,7 @@ public:
         doc::visit(I, visitor);
         if(! s.empty())
             list.emplace_back(key, std::move(s));
-    };
+    }
 
     template<class T>
     void
@@ -435,7 +435,7 @@ public:
         {
             list.emplace_back(key, std::move(s));
         }
-    };
+    }
 
     template<class T>
     void
@@ -457,7 +457,7 @@ public:
             return;
         list.emplace_back(key, dom::newArray<
             dom::DefaultArrayImpl>(std::move(elements)));
-    };
+    }
 
     dom::Object
     construct() const override

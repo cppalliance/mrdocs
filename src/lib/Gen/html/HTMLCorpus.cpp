@@ -286,7 +286,7 @@ public:
         doc::visit(I, visitor);
         if(! s.empty())
             list.emplace_back(key, std::move(s));
-    };
+    }
 
     template<class T>
     void
@@ -303,7 +303,7 @@ public:
         {
             list.emplace_back(key, std::move(s));
         }
-    };
+    }
 
     dom::Object
     construct() const override
