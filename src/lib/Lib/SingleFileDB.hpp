@@ -54,7 +54,7 @@ public:
     getCompileCommands(
         llvm::StringRef FilePath) const override
     {
-        if(! FilePath.equals(cc_.front().Filename))
+        if (FilePath != cc_.front().Filename)
             return {};
         return { cc_.front() };
     }
