@@ -431,9 +431,10 @@ jobs:
       - name: Upload demo artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: demos
+          name: demos${{ contains(fromJSON('["master", "develop"]'), github.ref_name) || format('-{0}', github.ref_name) || '' }}
           path: ${{ env.demos_path }}
-          retention-days: 1
+          # develop and master are retained for longer so that they can be compared
+          retention-days: ${{ contains(fromJSON('["master", "develop"]'), github.ref_name) || '30' || '1' }}
 
       - name: Update website demos
         if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
@@ -453,6 +454,77 @@ jobs:
           ssh ubuntu@dev-websites.cpp.al "rm -rf $demo_dir/boost-url; mkdir -p $demo_dir/boost-url"
           chmod 755 -R $(pwd)/demos
           scp -o StrictHostKeyChecking=no -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
+
+      - name: Download previous demos
+        if: startsWith(github.ref, 'refs/tags/')
+        id: download-prev-demos
+        uses: actions/download-artifact@v3
+        with:
+          name: demos-develop
+          path: demos-previous
+
+      - name: Compare demos
+        if: startsWith(github.ref, 'refs/tags/') && steps.download-prev-demos.outputs.cache-hit == 'true'
+        id: compare-demos
+        run: |
+          set -x
+          
+          # Define URLs and directories
+          LOCAL_DEMOS_DIR="./demos/"
+          PREV_DEMOS_DIR="./demos-previous/"
+          DIFF_DIR="./demos-diff/"
+          
+          # Create directories if they don't exist
+          mkdir -p $PREV_DEMOS_DIR $DIFF_DIR
+          
+          # Iterate over the previous files and compare them with the corresponding local files
+          find $PREV_DEMOS_DIR -type f | while read previous_file; do
+              # Derive the corresponding local file path
+              local_file="${LOCAL_DEMOS_DIR}${previous_file#$PREV_DEMOS_DIR}"
+              diff_output="$DIFF_DIR${previous_file#$PREV_DEMOS_DIR}"
+              if [[ -f $local_file ]]; then
+                  mkdir -p "$(dirname "$diff_output")"
+                  diff "$previous_file" "$local_file" > "$diff_output"
+                  if [[ ! -s $diff_output ]]; then
+                      rm "$diff_output"
+                  fi
+              else
+                  echo "LOCAL FILE $local_file DOES NOT EXITS." > "$diff_output"
+                  echo "PREVIOUS CONTENT OF THE FILE WAS:" >> "$diff_output"
+                  cat "$previous_file" >> "$diff_output"
+              fi
+          done
+          
+          # Iterate over the local files to find new files
+          find $LOCAL_DEMOS_DIR -type f | while read local_file; do
+              previous_file="${PREV_DEMOS_DIR}${local_file#$LOCAL_DEMOS_DIR}"
+              diff_output="$DIFF_DIR${local_file#$LOCAL_DEMOS_DIR}"
+              if [[ ! -f $previous_file ]]; then
+                  echo "PREVIOUS $previous_file DOES NOT EXIST." > "$diff_output"
+                  echo "IT HAS BEEN INCLUDED IN THIS VERSION." >> "$diff_output"
+                  echo "NEW CONTENT OF THE FILE IS:" >> "$diff_output"
+              fi
+          done
+          
+          # Check if the diff directory is empty
+          if [[ -z $(ls -A $DIFF_DIR) ]]; then
+              echo "No differences found."
+              # Store this as an output for the next step
+              echo "diff=false" >> $GITHUB_OUTPUT
+          else
+              # Calculate number of files in the diff directory
+              N_FILES=$(find $DIFF_DIR -type f | wc -l)
+              echo "Differences found in $N_FILES output files."
+              echo "diff=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload diff artifacts
+        if: startsWith(github.ref, 'refs/tags/') && steps.download-prev-demos.outputs.cache-hit == 'true' && steps.compare-demos.outputs.diff == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: demos-diff
+          path: demos-diff
+          retention-days: 30
 
   releases:
     needs: build
