@@ -44,3 +44,15 @@
         {{>info-list tranche.staticdata}}
     </div>
 {{/if}}
+{{#if tranche.aliases}}
+    <div>
+        <h3>{{label}} Aliases</h3>
+        {{>info-list tranche.aliases}}
+    </div>
+{{/if}}
+{{#if tranche.usings}}
+    <div>
+        <h3>{{label}} Usings Declarations/Directives</h3>
+        {{>info-list tranche.usings}}
+    </div>
+{{/if}}

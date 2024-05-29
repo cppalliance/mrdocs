@@ -1,33 +1,16 @@
-{{#if (eq kind "builtin")~}}
-    {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
-    {{name~}}
-{{~else if (eq kind "tag")~}}
-    {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
-    {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::{{/if~}}
-    {{#if symbol}}{{>xref symbol content=name}}{{else}}{{name~}}{{/if}}
-{{~else if (eq kind "specialization")~}}
-    {{#if cv-qualifiers}}{{cv-qualifiers}} {{/if~}}
-    {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::{{/if~}}
-    {{#if symbol}}{{>xref symbol content=name}}{{else}}{{name~}}{{/if}}
-    {{~>template-args args=args~}}
-{{~else if (eq kind "lvalue-reference")~}}
-    {{~>declarator-before pointee-type~}}
-    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}&
-{{~else if (eq kind "rvalue-reference")~}}
-    {{~>declarator-before pointee-type~}}
-    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}&&
-{{~else if (eq kind "pointer")~}}
-    {{~>declarator-before pointee-type~}}
-    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}*
-    {{~#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
-{{~else if (eq kind "member-pointer")~}}
-    {{~>declarator-before pointee-type~}}
-    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))~}}({{~/if~}}
-    {{#if parent-type~}}{{>declarator parent-type decl-name="" decl-name-targs=""}}::*{{/if~}}
-    {{#if cv-qualifiers}} {{cv-qualifiers}}{{/if~}}
-{{~else if (eq kind "array")~}}
-    {{~>declarator-before element-type~}}
-{{~else if (eq kind "function")~}}
-    {{~>declarator-before return-type~}}
+{{#if pointee-type~}}
+    {{~>declarator-before pointee-type nolink=nolink~}}
+    {{#if (or (eq pointee-type.kind "array") (eq pointee-type.kind "function"))}}({{/if~}}
+{{~/if~}}
+{{#if element-type~}}{{~>declarator-before element-type nolink=nolink~}}{{/if~}}
+{{#if return-type~}}{{~>declarator-before return-type nolink=nolink~}}{{/if~}}
+{{#if (eq kind "lvalue-reference")}}&{{/if~}}
+{{#if (eq kind "rvalue-reference")}}&&{{/if~}}
+{{#if (eq kind "pointer")}}*{{/if~}}
+{{#if (eq kind "member-pointer")}}{{>declarator parent-type nolink=nolink}}::*{{/if~}}
+{{#if cv-qualifiers~}}
+    {{#if pointee-type}} {{cv-qualifiers}}{{else}}{{cv-qualifiers}} {{/if~}}
 {{/if~}}
-{{~#if is-pack}}...{{/if~}}
+{{#if (eq kind "decltype")}}decltype({{operand}}){{/if~}}
+{{#if (eq kind "named")}}{{>name-info name nolink=nolink}}{{/if~}}
+{{#if is-pack~}}...{{/if}}

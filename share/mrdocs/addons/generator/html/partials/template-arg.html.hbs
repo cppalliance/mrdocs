@@ -1,8 +1,8 @@
 {{#if (eq kind "type")~}}
-{{~>declarator type decl-name=""~}}
+{{~>declarator type nolink=nolink~}}
 {{else if (eq kind "non-type")~}}
 {{~value~}}
 {{else if (eq kind "template")~}}
-{{#if template}}{{>xref id=template content=name~}}{{else~}}{{name~}}{{/if~}}
+{{#if (and template (not nolink))}}xref:{{template.ref}}[{{name~}}]{{else~}}{{name~}}{{/if~}}
 {{/if~}}
 {{~#if is-pack}}...{{/if~}}

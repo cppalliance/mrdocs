@@ -1,4 +1,6 @@
+{{#if members}}
 <div>
+    <h3>{{title}}</h3>
     <table>
         <colgroup>
             <col style="width: 50%;">
@@ -11,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            {{#each .}}
+            {{#each (sort_by members "name")}}
             <tr>
                 <td>{{>xref id=id content=name}}</td>
                 <td>{{{doc.brief}}}</td>
@@ -20,3 +22,4 @@
         </tbody>
     </table>
 </div>
+{{/if}}
