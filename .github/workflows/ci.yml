@@ -240,9 +240,9 @@ jobs:
           cmake-version: ${{ matrix.compiler == 'clang' && '3.26' || '>=3.26' }}
           cxxstd: ${{ matrix.cxxstd }}
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
-          ccflags: ${{ matrix.ccflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
+          ccflags: ${{ matrix.ccflags }}${{ ( matrix.compiler == 'gcc' && ' -static') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
-          cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static-libstdc++') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
+          cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           generator: Ninja
           toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain || steps.package-install.outputs.vcpkg-toolchain }}
           build-type: ${{ matrix.build-type }}
@@ -357,7 +357,9 @@ jobs:
 
     name: Demos
     timeout-minutes: 120
-    runs-on: ubuntu-22.04
+    # We purposefully use an older version of Ubuntu to
+    # ensure compatibility with the oldest supported version
+    runs-on: ubuntu-20.04
     container: ubuntu:23.04
 
     permissions:
