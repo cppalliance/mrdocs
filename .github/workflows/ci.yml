@@ -50,7 +50,7 @@ jobs:
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.runs-on }}
-    container: ${{ (matrix.compiler == 'gcc' && 'ubuntu:22.04') || matrix.container }}
+    container: ${{ matrix.container }}
     env: ${{ matrix.env }}
     permissions:
       contents: write
@@ -86,7 +86,7 @@ jobs:
           DEBIAN_FRONTEND: 'noninteractive'
           TZ: 'Etc/UTC'
         with:
-          apt-get: ${{ matrix.install }} git build-essential python3 curl openjdk-11-jdk ninja-build pkg-config libncurses-dev
+          apt-get: ${{ matrix.install }} git build-essential python3 curl openjdk-11-jdk ninja-build pkg-config libncurses-dev libxml2-utils libxml2-dev
           cc: ${{ steps.setup-cpp.outputs.cc || matrix.cc }}
           ccflags: ${{ matrix.ccflags }}
           cxx: ${{ steps.setup-cpp.outputs.cxx || matrix.cxx }}
@@ -148,6 +148,7 @@ jobs:
 
       - name: Install Libxml2
         id: libxml2-install
+        if: matrix.compiler == 'msvc'
         shell: bash
         run: |
           set -x
@@ -254,8 +255,8 @@ jobs:
             -D duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
             -D Duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
             -D fmt_ROOT=${{ steps.fmt-install.outputs.fmt-root }}
-            -D libxml2_ROOT=${{ steps.libxml2-install.outputs.libxml2-root }}
-            -D LibXml2_ROOT=${{ steps.libxml2-install.outputs.libxml2-root }}
+            ${{ (steps.libxml2-install.outputs.libxml2-root && format('-D libxml2_ROOT={0}', steps.libxml2-install.outputs.libxml2-root)) || '' }}  
+            ${{ (steps.libxml2-install.outputs.libxml2-root && format('-D LibXml2_ROOT={0}', steps.libxml2-install.outputs.libxml2-root)) || '' }}
           export-compile-commands: true
           run-tests: true
           install: true
