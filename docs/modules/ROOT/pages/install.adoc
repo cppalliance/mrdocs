@@ -128,7 +128,7 @@ Windows PowerShell::
 --
 [source,bash]
 ----
-Invoke-WebRequest -Uri "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz" -OutFile "duktape-2.7.0.tar.xz"
+Invoke-WebRequest -Uri "https://github.com/svaarala/duktape/releases/download/v2.7.0/duktape-2.7.0.tar.xz" -OutFile "duktape-2.7.0.tar.xz" <.>
 ----
 
 <.> Downloads the `duktape` source code.
@@ -169,9 +169,9 @@ Windows PowerShell::
 --
 [source,bash]
 ----
-$content = Get-Content -Path "src\duk_config.h"
-$content = $content -replace '#define DUK_F_DLL_BUILD', '#undef DUK_F_DLL_BUILD'
-$content | Set-Content -Path "src\duk_config.h"
+$content = Get-Content -Path "src\duk_config.h" <.>
+$content = $content -replace '#define DUK_F_DLL_BUILD', '#undef DUK_F_DLL_BUILD' <.>
+$content | Set-Content -Path "src\duk_config.h" <.>
 ----
 
 <.> Read the content of `duk_config.h`
