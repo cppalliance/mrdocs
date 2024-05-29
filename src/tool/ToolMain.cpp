@@ -35,7 +35,8 @@ print_version(llvm::raw_ostream& os)
     os << project_name
        << "\n    " << project_description
        << "\n    version: " << project_version
-       << "\n    built with LLVM " << LLVM_VERSION_STRING;
+       << "\n    built with LLVM " << LLVM_VERSION_STRING
+       << "\n";
 }
 
 int
@@ -60,7 +61,15 @@ mrdocs_main(int argc, char const** argv)
         toolArgs.reportLevel.getValue()));
 
     // Set up addons directory
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpedantic"
+// error: ISO C++ forbids taking address of function ‘::main’
+#endif
     void* addressOfMain = reinterpret_cast<void*>(&main);
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
     auto exp = setupAddonsDir(
             toolArgs.addonsDir,argv[0], addressOfMain);
     if (!exp)
