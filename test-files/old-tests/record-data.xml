@@ -82,7 +82,7 @@
       </field>
       <field name="x3" id="nnQtR7SV1kLSZgMv0quXSh0M8/A=">
         <file path="record-data.cpp" line="41" class="def"/>
-        <type id="nkW23Ykh9wywIjUzLqEQlHf8R5k=" name="X::Q"/>
+        <type id="nkW23Ykh9wywIjUzLqEQlHf8R5k=" name="Q"/>
       </field>
       <bitfield name="x4" id="iixsM8X5M740uqb1jSRUfUuvNo0=" width="I + 4">
         <file path="record-data.cpp" line="43" class="def"/>

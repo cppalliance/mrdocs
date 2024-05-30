@@ -54,7 +54,7 @@
     <struct name="D" id="/TldxA72JGXtufh5RbJgxLW2mwU=">
       <file path="ref.cpp" line="32" class="def"/>
       <base>
-        <type id="DJrmic0LRMkHQmpzqYXGqAbcxAc=" name="A::C"/>
+        <type id="DJrmic0LRMkHQmpzqYXGqAbcxAc=" name="C"/>
       </base>
       <function name="f4" id="BJ7/Ds7ODvX+B2GNt69Xylatb0M=">
         <file path="ref.cpp" line="34"/>

@@ -2180,7 +2180,14 @@ public:
             return;
 
         I.Name = extractName(D);
-        I.AliasedSymbol = buildNameInfo(D->getAliasedNamespace());
+        auto& Underlying = I.AliasedSymbol =
+            std::make_unique<NameInfo>();
+
+        NamedDecl* Aliased = D->getAliasedNamespace();
+        Underlying->Name = Aliased->getIdentifier()->getName();
+        getDependencyID(Aliased, Underlying->id);
+        if(NestedNameSpecifier* NNS = D->getQualifier())
+            Underlying->Prefix = buildNameInfo(NNS);
 
         getParentNamespaces(I, D);
     }
@@ -3074,7 +3081,7 @@ class TerminalTypeVisitor
 
     unsigned Quals_ = 0;
     bool IsPack_ = false;
-    const NestedNameSpecifier* NNS_ = nullptr;
+    const NestedNameSpecifier* NNS_;
 
     Derived& getDerived()
     {
@@ -3361,8 +3368,10 @@ class TerminalTypeVisitor
 
 public:
     TerminalTypeVisitor(
-        ASTVisitor& Visitor)
+        ASTVisitor& Visitor,
+        const NestedNameSpecifier* NNS = nullptr)
         : Visitor_(Visitor)
+        , NNS_(NNS)
     {
     }
 
@@ -3462,10 +3471,7 @@ class TypeInfoBuilder
     std::unique_ptr<TypeInfo>* Inner = &Result;
 
 public:
-    TypeInfoBuilder(ASTVisitor& Visitor)
-        : TerminalTypeVisitor(Visitor)
-    {
-    }
+    using TerminalTypeVisitor::TerminalTypeVisitor;
 
     std::unique_ptr<TypeInfo> result()
     {
@@ -3615,8 +3621,6 @@ public:
             V.getDependencyID(V.getInstantiatedFrom(D), Name->id);
             if(NNS)
                 Name->Prefix = V.buildNameInfo(NNS);
-            else
-                Name->Prefix = V.buildNameInfo(V.getParentDecl(D));
 
             V.buildTemplateArgs(Name->TemplateArgs, *TArgs);
             I->Name = std::move(Name);
@@ -3629,8 +3633,6 @@ public:
             V.getDependencyID(V.getInstantiatedFrom(D), Name->id);
             if(NNS)
                 Name->Prefix = V.buildNameInfo(NNS);
-            else
-                Name->Prefix = V.buildNameInfo(V.getParentDecl(D));
             I->Name = std::move(Name);
         }
         *Inner = std::move(I);
@@ -3661,10 +3663,7 @@ class NameInfoBuilder
     std::unique_ptr<NameInfo> Result;
 
 public:
-    NameInfoBuilder(ASTVisitor& Visitor)
-        : TerminalTypeVisitor(Visitor)
-    {
-    }
+    using TerminalTypeVisitor::TerminalTypeVisitor;
 
     std::unique_ptr<NameInfo> result()
     {
@@ -3752,8 +3751,6 @@ public:
         }
         if(NNS)
             Result->Prefix = V.buildNameInfo(NNS);
-        else
-            Result->Prefix = V.buildNameInfo(V.getParentDecl(D));
     }
 };
 
@@ -3770,7 +3767,7 @@ buildNameInfo(
         return I;
     if(const Type* T = NNS->getAsType())
     {
-        NameInfoBuilder Builder(*this);
+        NameInfoBuilder Builder(*this, NNS->getPrefix());
         Builder.Visit(T);
         I = Builder.result();
     }
@@ -3785,17 +3782,14 @@ buildNameInfo(
         I = std::make_unique<NameInfo>();
         I->Name = ND->getIdentifier()->getName();
         getDependencyID(ND, I->id);
-        I->Prefix = buildNameInfo(getParentDecl(ND), extract_mode);
+        I->Prefix = buildNameInfo(NNS->getPrefix(), extract_mode);
     }
     else if(const NamespaceAliasDecl* NAD = NNS->getAsNamespaceAlias())
     {
         I = std::make_unique<NameInfo>();
         I->Name = NAD->getIdentifier()->getName();
-        const NamespaceDecl* ND = NAD->getNamespace();
-        // KRYSTIAN FIXME: this should use the SymbolID of the namespace alias
-        // once we add an Info kind to represent them
-        getDependencyID(ND, I->id);
-        I->Prefix = buildNameInfo(getParentDecl(ND), extract_mode);
+        getDependencyID(NAD, I->id);
+        I->Prefix = buildNameInfo(NNS->getPrefix(), extract_mode);
     }
     return I;
 }

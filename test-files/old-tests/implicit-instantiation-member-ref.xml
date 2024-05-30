@@ -35,7 +35,7 @@
             <tparam name="V" class="type"/>
             <alias name="M3" id="TBl15ml95lYP4APzAuH1VpGgjgs=">
               <file path="implicit-instantiation-member-ref.cpp" line="19" class="def"/>
-              <type id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=" name="S0::S2&lt;U&gt;"/>
+              <type id="gxI8lOzHEX5mX3u/0hCHnvUY1OM=" name="S2&lt;U&gt;"/>
             </alias>
           </template>
           <template>
@@ -78,23 +78,23 @@
   </alias>
   <alias name="A6" id="JkIeD9nM+5+XWFXDHaK2rwRsuXA=">
     <file path="implicit-instantiation-member-ref.cpp" line="36" class="def"/>
-    <type id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" name="S0::M1&lt;short&gt;::M0"/>
+    <type id="aBQMz/OqX2QEHy4Cqfjgby4lSi4=" name="A5::M1&lt;short&gt;::M0"/>
   </alias>
   <alias name="A7" id="9O5BsaAyDC9AuDDe/ftxNrckbjY=">
     <file path="implicit-instantiation-member-ref.cpp" line="37" class="def"/>
-    <type id="NnkA706kKqg/azveB/lExZwRfFI=" name="S0::S2&lt;bool&gt;::M2"/>
+    <type id="NnkA706kKqg/azveB/lExZwRfFI=" name="A5::S2&lt;bool&gt;::M2"/>
   </alias>
   <alias name="A8" id="dWFupI7cyl8N8963fZrFrd+8ue4=">
     <file path="implicit-instantiation-member-ref.cpp" line="38" class="def"/>
-    <type id="yTyWcP0E2V/EqE8I3ZdKao74yWQ=" name="S0::S2&lt;int&gt;::S3"/>
+    <type id="yTyWcP0E2V/EqE8I3ZdKao74yWQ=" name="A5::S2&lt;int&gt;::S3"/>
   </alias>
   <alias name="A9" id="r6hRllvikhxyJUBT7eKH8Z13wfw=">
     <file path="implicit-instantiation-member-ref.cpp" line="39" class="def"/>
-    <type id="NnkA706kKqg/azveB/lExZwRfFI=" name="S0::S2::M3&lt;unsigned int&gt;::M2"/>
+    <type id="NnkA706kKqg/azveB/lExZwRfFI=" name="A5::S2&lt;char&gt;::M3&lt;int&gt;::M3&lt;unsigned int&gt;::M2"/>
   </alias>
   <alias name="A10" id="MR2bsp5xIs+Ga5MbTUu7kt4nT9E=">
     <file path="implicit-instantiation-member-ref.cpp" line="40" class="def"/>
-    <type id="UQy9OWWe7a9N+jVLD+r6rjr4np8=" name="S0::S2::S4&lt;void&gt;::M4"/>
+    <type id="UQy9OWWe7a9N+jVLD+r6rjr4np8=" name="A5::S2&lt;float&gt;::M3&lt;double&gt;::M3&lt;long double&gt;::S4&lt;void&gt;::M4"/>
   </alias>
 </namespace>
 </mrdocs>
