@@ -1,0 +1,48 @@
+{{!-- enum --}}
+<div id="{{symbol.id}}">
+    <div>
+        <h2>{{#if symbol.name}}Enum {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed enum{{/if}}</h2>
+        {{{symbol.doc.brief}}}
+    </div>
+
+    <div>
+        <h3>Synopsis</h3>
+        <div>
+            <code>
+                {{>source dcl=(primary_location symbol)}}
+            </code>
+        </div>
+        <pre class="source-code cpp">
+            {{>signature/enum symbol=symbol}};
+        </pre>
+    </div>
+
+    {{#if symbol.members}}
+    <div>
+        <h3>Members</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each symbol.members}}
+                <tr>
+                    <td><a href="#{{ref}}">{{>declarator-id . nolink=true}}</a></td>
+                    <td>{{{doc.brief}}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    {{/if}}
+
+    {{#if symbol.doc.description}}
+    <div>
+        <h3>Description</h3>
+        {{{symbol.doc.description}}}
+    </div>
+    {{/if}}
+</div>

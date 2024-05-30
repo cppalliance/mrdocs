@@ -1,0 +1,8 @@
+¦xref:{{ref}}[`{{>declarator-id . nolink=true}}`] ¦
+{{#if (ne kind "overload")~}}
+    {{~doc.brief}}
+{{else~}}
+    {{#each (unique (pluck (pluck members "doc") "brief"))~}}
+        {{.}}
+    {{/each~}}
+{{/if}}

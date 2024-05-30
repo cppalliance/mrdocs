@@ -1,0 +1,43 @@
+{{!-- record --}}
+<div id="{{symbol.id}}">
+    <div>
+        <h2>{{#if symbol.name}}Class {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else}}Unnamed class{{/if}}</h2>
+        {{{symbol.doc.brief}}}
+    </div>
+
+    <div>
+        <h3>Synopsis</h3>
+        <div>
+            <code>
+                {{>source dcl=(primary_location symbol)}}
+            </code>
+        </div>
+        <pre class="source-code cpp">
+            {{>signature/record symbol=symbol}};
+        </pre>
+    </div>
+
+    {{#with symbol.interface}}
+    <div>
+        {{> tranche tranche=public label="" is-namespace=false}}
+        {{> tranche tranche=protected label="Protected" is-namespace=false}}
+        {{> tranche tranche=private label="Private" is-namespace=false}}
+    </div>
+    {{/with}}
+
+    {{#if symbol.doc.description}}
+    <div>
+        <h3>Description</h3>
+        {{{symbol.doc.description}}}
+    </div>
+    {{/if}}
+
+    {{#if symbol.doc.see}}
+    <div>
+        <h3>See Also</h3>
+        {{#each symbol.doc.see}}
+        <p>{{.}}</p>
+        {{/each}}
+    </div>
+    {{/if}}
+</div>

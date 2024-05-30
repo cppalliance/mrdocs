@@ -36,12 +36,15 @@ class Builder
     js::Context ctx_;
     Handlebars hbs_;
 
+    std::string getRelPrefix(std::size_t depth);
+
 public:
     Builder(
         DomCorpus const& domCorpus,
         Options const& options);
 
     dom::Value createContext(SymbolID const& id);
+    dom::Value createContext(OverloadSet const& OS);
 
     Expected<std::string>
     callTemplate(
@@ -54,6 +57,9 @@ public:
     template<class T>
     Expected<std::string>
     operator()(T const&);
+
+    Expected<std::string>
+    operator()(OverloadSet const& OS);
 };
 
 } // html

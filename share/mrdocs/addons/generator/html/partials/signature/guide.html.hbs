@@ -1,0 +1,8 @@
+{{#if symbol.template}}{{>template-head symbol.template}}
+{{/if~}}
+{{>declarator-id symbol}}
+({{#each symbol.params}}{{#unless (and @first @last)}}
+    {{/unless}}{{>declarator type decl-name=name~}}
+    {{#if default}} = {{default}}{{/if~}}
+    {{#unless @last}},{{/unless~}}
+{{/each~}}) -> {{>declarator symbol.deduced}}
