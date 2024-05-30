@@ -163,6 +163,8 @@ void merge(NamespaceInfo& I, NamespaceInfo&& Other)
     I.specs.raw.value |= Other.specs.raw.value;
     mergeScopeInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
+    reduceSymbolIDs(I.UsingDirectives,
+        std::move(Other.UsingDirectives));
 }
 
 void merge(RecordInfo& I, RecordInfo&& Other)

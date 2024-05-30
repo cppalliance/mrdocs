@@ -35,6 +35,7 @@ grammar
             attribute is-inline { "1" }?,
             attribute is-anonymous { "1" }?,
             Javadoc?,
+            element using-directive { ID } *,
             Scope
         }
 
@@ -238,7 +239,7 @@ grammar
             ID,
             Location *,
             Javadoc ?,
-            attribute class { "using" | "using typename" | "using enum" | "using namespace" },
+            attribute class { "using" | "using typename" | "using enum" },
             attribute qualifier { text } ?,
             element named { ID } *
         }

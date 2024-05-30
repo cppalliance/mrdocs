@@ -37,6 +37,10 @@ struct NamespaceInfo
 {
     NamespaceFlags specs;
 
+    /** Namespaces nominated by using-directives.
+    */
+    std::vector<SymbolID> UsingDirectives;
+
     //--------------------------------------------
 
     explicit NamespaceInfo(SymbolID ID) noexcept

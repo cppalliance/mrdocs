@@ -69,7 +69,7 @@ enum class InfoKind
     Guide,
     /// The symbol is a namespace alias
     Alias,
-    /// The symbol is a using declaration and using directive
+    /// The symbol is a using declaration
     Using,
 };
 
@@ -187,7 +187,7 @@ struct MRDOCS_VISIBLE
     /// Determine if this symbol is a namespace alias.
     constexpr bool isAlias()          const noexcept { return Kind == InfoKind::Alias; }
 
-    /// Determine if this symbol is a using declaration or using directive.
+    /// Determine if this symbol is a using declaration.
     constexpr bool isUsing()          const noexcept { return Kind == InfoKind::Using; }
 };
 
@@ -245,7 +245,7 @@ struct IsInfo : Info
     /// Determine if this symbol is a namespace alias.
     static constexpr bool isAlias()          noexcept { return K == InfoKind::Alias; }
 
-    /// Determine if this symbol is a using declaration or using directive.
+    /// Determine if this symbol is a using declaration.
     static constexpr bool isUsing()          noexcept { return K == InfoKind::Using; }
 
 protected:

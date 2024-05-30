@@ -208,11 +208,9 @@ public:
                     return t.Name;
                 }
 
-                if constexpr(T::isUsing()) {
+                if constexpr(T::isUsing())
+                {
                     MRDOCS_ASSERT(! t.Name.empty());
-                    if (t.Class == UsingClass::Namespace) {
-                        return getReserved(t);
-                    }
                     return t.Name;
                 }
 

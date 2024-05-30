@@ -1,5 +1,1 @@
-{{#if (eq symbol.class "namespace")}}
-using namespace {{#if symbol.qualifier}}{{>name-info symbol.qualifier}}::{{/if}}{{symbol.name}}
-{{else}}
-using {{#if (eq symbol.class "typename")}}typename {{/if}}{{#if (eq symbol.class "enum")}}enum {{/if}}{{#if symbol.qualifier}}{{>name-info symbol.qualifier}}::{{/if}}{{symbol.name}}
-{{/if}}
+using {{#if (eq symbol.class "typename")}}typename {{/if}}{{#if (eq symbol.class "enum")}}enum {{/if}}{{#if symbol.qualifier}}{{>name-info symbol.qualifier}}::{{/if}}{{symbol.name~}}

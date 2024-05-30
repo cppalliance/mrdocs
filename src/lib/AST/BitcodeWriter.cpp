@@ -329,6 +329,7 @@ RecordIDNameMap = []()
         {JAVADOC_NODE_SYMBOLREF, {"JavadocNodeSymbol", &SymbolIDAbbrev}},
         {JAVADOC_PARAM_DIRECTION, {"JavadocParamDirection", &Integer32Abbrev}},
         {NAMESPACE_BITS, {"NamespaceBits", &Integer32ArrayAbbrev}},
+        {NAMESPACE_USING_DIRECTIVES, {"NamespaceUsingDirectives", &SymbolIDsAbbrev}},
         {NAME_INFO_KIND, {"NameKind", &Integer32Abbrev}},
         {NAME_INFO_ID, {"NameID", &SymbolIDAbbrev}},
         {NAME_INFO_NAME, {"NameName", &StringAbbrev}},
@@ -426,7 +427,7 @@ RecordsByBlock{
         JAVADOC_NODE_PART, JAVADOC_NODE_SYMBOLREF}},
     // NamespaceInfo
     {BI_NAMESPACE_BLOCK_ID,
-        {NAMESPACE_BITS}},
+        {NAMESPACE_BITS, NAMESPACE_USING_DIRECTIVES}},
     // RecordInfo
     {BI_RECORD_BLOCK_ID,
         {RECORD_KEY_KIND, RECORD_IS_TYPE_DEF, RECORD_BITS}},
@@ -1108,6 +1109,7 @@ emitBlock(
     emitInfoPart(I);
     emitScopeInfo(I);
     emitRecord({I.specs.raw}, NAMESPACE_BITS);
+    emitRecord(I.UsingDirectives, NAMESPACE_USING_DIRECTIVES);
 }
 
 void

@@ -274,6 +274,7 @@ public:
         check(I.Namespace);
         check(I.Members);
         finalize(I.javadoc);
+        finalize(I.UsingDirectives);
         // finalize(I.Specializations);
     }
 

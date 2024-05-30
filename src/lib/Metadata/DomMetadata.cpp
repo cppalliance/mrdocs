@@ -737,6 +737,8 @@ DomInfo<T>::construct() const
             std::make_shared<Tranche>(
                 makeTranche(I_, *domCorpus_)),
             domCorpus_));
+        entries.emplace_back("usingDirectives", dom::newArray<DomSymbolArray>(
+            I_.UsingDirectives, domCorpus_));
     }
     if constexpr(T::isRecord())
     {
@@ -875,11 +877,8 @@ DomInfo<T>::construct() const
     if constexpr(T::isUsing())
     {
         entries.emplace_back("class", toString(I_.Class));
-        entries.emplace_back("symbols", dom::newArray<DomSymbolArray>(I_.UsingSymbols, domCorpus_));
-        if (I_.Qualifier)
-        {
-            entries.emplace_back("qualifier", domCreate(I_.Qualifier, domCorpus_));
-        }
+        entries.emplace_back("shadows", dom::newArray<DomSymbolArray>(I_.UsingSymbols, domCorpus_));
+        entries.emplace_back("qualifier", domCreate(I_.Qualifier, domCorpus_));
     }
     if constexpr(T::isEnumerator())
     {

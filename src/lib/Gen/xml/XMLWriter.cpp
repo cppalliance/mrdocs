@@ -209,6 +209,8 @@ operator()(
             { "is-inline", "1", I.specs.isInline}
             });
         writeJavadoc(I.javadoc);
+        for(const SymbolID& id : I.UsingDirectives)
+            tags_.write("using-directive", {}, { { id } });
         corpus_.traverse(I, *this);
         tags_.close(namespaceTagName);
     }
@@ -424,9 +426,6 @@ XMLWriter::
         break;
     case UsingClass::Enum:
         classStr = "using enum";
-        break;
-    case UsingClass::Namespace:
-        classStr = "using namespace";
         break;
     default:
         MRDOCS_UNREACHABLE();

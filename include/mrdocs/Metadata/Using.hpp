@@ -26,7 +26,6 @@ enum class UsingClass
     Normal = 0,     // using
     Typename,       // using typename
     Enum,           // using enum
-    Namespace       // using namespace (using directive)
 };
 
 static constexpr
@@ -38,24 +37,26 @@ toString(UsingClass const& value)
     case UsingClass::Normal:    return "normal";
     case UsingClass::Typename:  return "typename";
     case UsingClass::Enum:      return "enum";
-    case UsingClass::Namespace: return "namespace";
     }
     return "unknown";
 }
 
-/** Info for using declarations and directives.
+/** Info for using declarations.
  */
 struct UsingInfo
     : IsInfo<InfoKind::Using>,
     SourceInfo
 {
-    /** The kind of using declaration/directive. */
+    /** The kind of using declaration.
+    */
     UsingClass Class = UsingClass::Normal;
 
-    /** The symbols being "used". */
+    /** The symbols being "used".
+    */
     std::vector<SymbolID> UsingSymbols;
 
-    /** The qualifier for a using declaration/directive. */
+    /** The qualifier for a using declaration.
+    */
     std::unique_ptr<NameInfo> Qualifier;
 
     //--------------------------------------------

@@ -1467,6 +1467,8 @@ public:
         {
         case NAMESPACE_BITS:
             return decodeRecord(R, {&I->specs.raw}, Blob);
+        case NAMESPACE_USING_DIRECTIVES:
+            return decodeRecord(R, I->UsingDirectives, Blob);
         default:
             return TopLevelBlock::parseRecord(R, ID, Blob);
         }

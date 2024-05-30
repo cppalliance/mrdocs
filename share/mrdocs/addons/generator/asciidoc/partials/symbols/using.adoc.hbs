@@ -1,5 +1,5 @@
 {{!-- symbols/using.adoc.hbs --}}
-= Using {{#if (eq symbol.class "namespace")}}Directive: {{symbol.qualifier.name}}{{else}}Declaration: {{symbol.name}}{{/if}}
+= Using Declaration {{symbol.name}}
 
 {{symbol.doc.brief}}
 
@@ -19,13 +19,14 @@
 
 {{/if}}
 
-{{#unless (eq symbol.class "namespace")}}
+{{#if symbol.shadows}}
 == Introduced Symbols
 
 |===
 | Name
-{{#each symbol.symbols}}
+{{#each symbol.shadows}}
 | {{name}}
 {{/each}}
 |===
-{{/unless}}
+
+{{/if}}

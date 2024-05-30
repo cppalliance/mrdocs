@@ -436,6 +436,8 @@ public:
     std::pair<InfoTy&, bool>
     getOrCreateInfo(const SymbolID& id)
     {
+        assert(id != SymbolID::invalid &&
+            "creating symbol with invalid SymbolID?");
         Info* info = getInfo(id);
         bool created = ! info;
         if(! info)
@@ -532,17 +534,6 @@ public:
                 return true;
             usr_.append("@NA");
             usr_.append(NAD->getNameAsString());
-            return false;
-        }
-
-        // Handling UsingDirectiveDecl
-        if (const auto* UDD = dyn_cast<UsingDirectiveDecl>(D))
-        {
-            if (index::generateUSRForDecl(UDD->getNominatedNamespace(), usr_)) {
-                return true;
-            }
-            usr_.append("@UD");
-            usr_.append(UDD->getQualifiedNameAsString());
             return false;
         }
 
@@ -2194,39 +2185,6 @@ public:
         getParentNamespaces(I, D);
     }
 
-
-    //------------------------------------------------
-
-    void
-    buildUsingDirective(
-        UsingInfo& I,
-        bool created,
-        UsingDirectiveDecl* D)
-    {
-        bool documented = parseRawComment(I.javadoc, D);
-        addSourceLocation(I, D->getBeginLoc(), true, documented);
-
-        if(! created)
-            return;
-
-        I.Class = UsingClass::Namespace;
-
-        if (D->getQualifier())
-        {
-            I.Qualifier = buildNameInfo(D->getQualifier());
-        }
-
-        if (NamedDecl* ND = D->getNominatedNamespace())
-        {
-            I.Name = extractName(ND);
-            SymbolID id;
-            getDependencyID(ND, id);
-            I.UsingSymbols.emplace_back(id);
-        }
-        getParentNamespaces(I, D);
-    }
-
-
     //------------------------------------------------
 
     void
@@ -2601,12 +2559,23 @@ void
 ASTVisitor::
 traverse(UsingDirectiveDecl* D)
 {
-    auto exp = getAsMrDocsInfo(D);
-    if(! exp) { return; }
-    auto [I, created] = *exp;
-    buildUsingDirective(I, created, D);
-}
+    if(! shouldExtract(D, getAccess(D)))
+        return;
 
+    Decl* PD = getParentDecl(D);
+    // only extract using-directives in namespace scope
+    if(! cast<DeclContext>(PD)->isFileContext())
+        return;
+
+    if(Info* PI = getInfo(extractSymbolID(PD)))
+    {
+        assert(PI->isNamespace());
+        NamespaceInfo* NI = static_cast<NamespaceInfo*>(PI);
+        getDependencyID(
+            D->getNominatedNamespaceAsWritten(),
+            NI->UsingDirectives.emplace_back());
+    }
+}
 
 //------------------------------------------------
 // UsingDecl
