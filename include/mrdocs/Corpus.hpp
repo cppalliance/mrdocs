@@ -234,23 +234,12 @@ traverseOverloads(
     {
         const Info& member = get(id);
         const auto& lookup = S.Lookups.at(member.Name);
-        auto first_func = std::ranges::find_if(
-            lookup, [this](const SymbolID& elem)
-            {
-            #if 0
-                const Info& I = get(elem);
-                return I.isFunction() || I.isGuide();
-            #else
-                return get(elem).isFunction();
-            #endif
-            });
-        if(lookup.size() == 1 ||
-            first_func == lookup.end())
+        if (lookup.size() <= 1)
         {
             visit(member, std::forward<F>(f),
                 std::forward<Args>(args)...);
         }
-        else if(*first_func == id)
+        else if(lookup.front() == id)
         {
             OverloadSet overloads(member.Name,
                 member.Namespace.front(),

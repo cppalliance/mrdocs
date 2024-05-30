@@ -1,5 +1,5 @@
 {{!-- symbols/using.adoc.hbs --}}
-= Using {{#if (eq symbol.class "namespace")}}Directive: {{symbol.qualifier.name}}{{else}}Declaration: {{symbol.name}}{{/if}}
+= Using {{#if (eq symbol.class "namespace")}}Directive{{else}}Declaration {{symbol.name}}{{/if}}
 
 {{symbol.doc.brief}}
 
