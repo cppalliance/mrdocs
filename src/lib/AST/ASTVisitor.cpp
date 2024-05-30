@@ -2455,6 +2455,85 @@ public:
     */
     void
     traverseContext(DeclContext* DC);
+
+
+    bool
+    isInSpecialNamespace(
+        const Decl* D,
+        std::string_view Namespace)
+    {
+        if(! D || Namespace.empty())
+            return false;
+        const DeclContext* DC = isa<DeclContext>(D) ?
+            dyn_cast<DeclContext>(D) : D->getDeclContext();
+        for(; DC; DC = DC->getParent())
+        {
+            const NamespaceDecl* ND = dyn_cast<NamespaceDecl>(DC);
+            if(! ND)
+                continue;
+            if(ND->getQualifiedNameAsString() == Namespace)
+                return true;
+        }
+        return false;
+    }
+
+    bool
+    isInSpecialNamespace(
+        const NestedNameSpecifier* NNS,
+        std::string_view Namespace)
+    {
+        const NamedDecl* ND = nullptr;
+        while(NNS)
+        {
+            if(ND = NNS->getAsNamespace())
+                break;
+            if(ND = NNS->getAsNamespaceAlias())
+                break;
+            NNS = NNS->getPrefix();
+        }
+        return ND && isInSpecialNamespace(ND, Namespace);
+    }
+
+    bool
+    checkSpecialNamespace(
+        std::unique_ptr<NameInfo>& I,
+        const NestedNameSpecifier* NNS,
+        const Decl* D)
+    {
+        if(isInSpecialNamespace(NNS, config_->seeBelow) ||
+            isInSpecialNamespace(D, config_->seeBelow))
+        {
+            I = std::make_unique<NameInfo>();
+            I->Name = "see-below";
+            return true;
+        }
+
+        if(isInSpecialNamespace(NNS, config_->implementationDefined) ||
+            isInSpecialNamespace(D, config_->implementationDefined))
+        {
+            I = std::make_unique<NameInfo>();
+            I->Name = "implementation-defined";
+            return true;
+        }
+        return false;
+    }
+
+    bool
+    checkSpecialNamespace(
+        std::unique_ptr<TypeInfo>& I,
+        const NestedNameSpecifier* NNS,
+        const Decl* D)
+    {
+        std::unique_ptr<NameInfo> Name;
+        if(checkSpecialNamespace(Name, NNS, D))
+        {
+            auto T = std::make_unique<NamedTypeInfo>();
+            T->Name = std::move(Name);
+            I = std::move(T);
+            return true;
+        }
+        return false;
+    }
 };
 
 //------------------------------------------------
@@ -3557,6 +3636,9 @@ public:
         unsigned quals,
         bool pack)
     {
+        if(getASTVisitor().checkSpecialNamespace(*Inner, NNS, nullptr))
+            return;
+
         auto I = std::make_unique<NamedTypeInfo>();
         I->CVQualifiers = convertToQualifierKind(quals);
 
@@ -3577,6 +3659,9 @@ public:
         bool pack)
     {
         ASTVisitor& V = getASTVisitor();
+        if(V.checkSpecialNamespace(*Inner, NNS, nullptr))
+            return;
+
         auto I = std::make_unique<NamedTypeInfo>();
         I->CVQualifiers = convertToQualifierKind(quals);
 
@@ -3610,6 +3695,9 @@ public:
         bool pack)
     {
         ASTVisitor& V = getASTVisitor();
+        if(V.checkSpecialNamespace(*Inner, NNS, D))
+            return;
+
         auto I = std::make_unique<NamedTypeInfo>();
         I->CVQualifiers = convertToQualifierKind(quals);
 
@@ -3687,6 +3775,9 @@ public:
         unsigned quals,
         bool pack)
     {
+        if(getASTVisitor().checkSpecialNamespace(Result, NNS, nullptr))
+            return;
+
         auto I = std::make_unique<NameInfo>();
         I->Name = getASTVisitor().getTypeAsString(T);
         Result = std::move(I);
@@ -3703,6 +3794,9 @@ public:
         bool pack)
     {
         ASTVisitor& V = getASTVisitor();
+        if(V.checkSpecialNamespace(Result, NNS, nullptr))
+            return;
+
         if(TArgs)
         {
             auto I = std::make_unique<SpecializationNameInfo>();
@@ -3731,6 +3825,9 @@ public:
         bool pack)
     {
         ASTVisitor& V = getASTVisitor();
+        if(V.checkSpecialNamespace(Result, NNS, D))
+            return;
+
         const IdentifierInfo* II = D->getIdentifier();
         if(TArgs)
         {
@@ -3765,6 +3862,10 @@ buildNameInfo(
     std::unique_ptr<NameInfo> I = nullptr;
     if(! NNS)
         return I;
+
+    if(checkSpecialNamespace(I, NNS, nullptr))
+        return I;
+
     if(const Type* T = NNS->getAsType())
     {
         NameInfoBuilder Builder(*this, NNS->getPrefix());
@@ -3804,6 +3905,8 @@ buildNameInfo(
     if(! ND || ND->getKind() == Decl::TranslationUnit)
         return nullptr;
     auto I = std::make_unique<NameInfo>();
+    if(checkSpecialNamespace(I, nullptr, ND))
+        return I;
     if(const IdentifierInfo* II = ND->getIdentifier())
         I->Name = II->getName();
     getDependencyID(getInstantiatedFrom(D), I->id);
