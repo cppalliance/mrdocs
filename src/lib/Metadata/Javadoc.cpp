@@ -278,6 +278,14 @@ makeOverview(
             ov.sees.push_back(static_cast<
                 doc::See const*>(it->get()));
             break;
+        case doc::Kind::precondition:
+            ov.preconditions.push_back(static_cast<
+                doc::Precondition const*>(it->get()));
+            break;
+        case doc::Kind::postcondition:
+            ov.postconditions.push_back(static_cast<
+                doc::Postcondition const*>(it->get()));
+            break;
         default:
             if(ov.brief == it->get())
                 break;

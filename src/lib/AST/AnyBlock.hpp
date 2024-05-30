@@ -418,6 +418,12 @@ public:
             case doc::Kind::see:
                 nodes.emplace_back(std::make_unique<doc::See>());
                 break;
+            case doc::Kind::precondition:
+                nodes.emplace_back(std::make_unique<doc::Precondition>());
+                break;
+            case doc::Kind::postcondition:
+                nodes.emplace_back(std::make_unique<doc::Postcondition>());
+                break;
             default:
                 return formatError("unknown doc::Kind");
             }

@@ -54,6 +54,24 @@
 
 {{/if}}
 
+{{#if symbol.doc.preconditions}}
+== Preconditions
+
+{{#each symbol.doc.preconditions}}
+{{.}}
+{{/each}}
+
+{{/if}}
+
+{{#if symbol.doc.postconditions}}
+== Postconditions
+
+{{#each symbol.doc.postconditions}}
+{{.}}
+{{/each}}
+
+{{/if}}
+
 {{#if symbol.doc.see}}
 == See Also
 

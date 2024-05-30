@@ -129,7 +129,9 @@ enum class Kind
     copied,
     throws,
     details,
-    see
+    see,
+    precondition,
+    postcondition
 };
 
 /** A text style.
@@ -709,6 +711,50 @@ struct Throws : Paragraph
     }
 };
 
+struct Precondition : Paragraph
+{
+    static constexpr Kind static_kind = Kind::precondition;
+
+    Precondition(
+        Paragraph details_ = Paragraph())
+        : Paragraph(
+            Kind::precondition,
+            std::move(details_.children))
+    {
+    }
+
+    bool operator==(const Precondition&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Precondition&>(other);
+    }
+};
+
+struct Postcondition : Paragraph
+{
+    static constexpr Kind static_kind = Kind::postcondition;
+
+    Postcondition(
+        Paragraph details_ = Paragraph())
+        : Paragraph(
+            Kind::postcondition,
+            std::move(details_.children))
+    {
+    }
+
+    bool operator==(const Postcondition&)
+        const noexcept = default;
+
+    bool equals(const Node& other) const noexcept override
+    {
+        return kind == other.kind &&
+            *this == static_cast<const Postcondition&>(other);
+    }
+};
+
 //------------------------------------------------
 
 /** A visitor for node types.
@@ -756,6 +802,10 @@ visit(
         return f.template operator()<Details>(std::forward<Args>(args)...);
     case Kind::see:
         return f.template operator()<See>(std::forward<Args>(args)...);
+    case Kind::precondition:
+        return f.template operator()<Precondition>(std::forward<Args>(args)...);
+    case Kind::postcondition:
+        return f.template operator()<Postcondition>(std::forward<Args>(args)...);
     default:
         return f.template operator()<void>(std::forward<Args>(args)...);
     }
@@ -817,6 +867,10 @@ visit(
         return visitor.template visit<Details>();
     case Kind::see:
         return visitor.template visit<See>();
+    case Kind::precondition:
+        return visitor.template visit<Precondition>();
+    case Kind::postcondition:
+        return visitor.template visit<Postcondition>();
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -849,6 +903,8 @@ struct Overview
     std::vector<TParam const*> tparams;
     std::vector<Throws const*> exceptions;
     std::vector<See const*> sees;
+    std::vector<Precondition const*> preconditions;
+    std::vector<Postcondition const*> postconditions;
 };
 
 MRDOCS_DECL dom::String toString(Style style) noexcept;

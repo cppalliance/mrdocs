@@ -390,6 +390,30 @@ domCreate(
     return s;
 }
 
+static
+dom::Value
+domCreate(
+    const doc::Precondition& I,
+    const AdocCorpus& corpus)
+{
+    std::string s;
+    DocVisitor visitor(corpus, s);
+    visitor(static_cast<const doc::Precondition&>(I));
+    return s;
+}
+
+static
+dom::Value
+domCreate(
+    const doc::Postcondition& I,
+    const AdocCorpus& corpus)
+{
+    std::string s;
+    DocVisitor visitor(corpus, s);
+    visitor(static_cast<const doc::Postcondition&>(I));
+    return s;
+}
+
 //------------------------------------------------
 
 class DomJavadoc : public dom::LazyObjectImpl
@@ -477,6 +501,8 @@ public:
         maybeEmplaceArray(list, "tparams", ov.tparams);
         maybeEmplaceArray(list, "exceptions", ov.exceptions);
         maybeEmplaceArray(list, "see", ov.sees);
+        maybeEmplaceArray(list, "preconditions", ov.preconditions);
+        maybeEmplaceArray(list, "postconditions", ov.postconditions);
 
         return dom::Object(std::move(list));
     }

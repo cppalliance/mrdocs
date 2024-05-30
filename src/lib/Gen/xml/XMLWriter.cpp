@@ -745,6 +745,12 @@ writeNode(
     case doc::Kind::see:
         writeSee(dynamic_cast<doc::See const&>(node));
         break;
+    case doc::Kind::precondition:
+        writePrecondition(dynamic_cast<doc::Precondition const&>(node));
+        break;
+    case doc::Kind::postcondition:
+        writePostcondition(dynamic_cast<doc::Postcondition const&>(node));
+        break;
     default:
         // unknown kind
         MRDOCS_UNREACHABLE();
@@ -877,6 +883,26 @@ writeSee(
         { "class", tag, ! tag.empty() }});
     writeNodes(para.children);
     tags_.close("see");
+}
+
+void
+XMLWriter::
+writePrecondition(
+    doc::Precondition const& para)
+{
+    tags_.open("pre", {});
+    writeNodes(para.children);
+    tags_.close("pre");
+}
+
+void
+XMLWriter::
+writePostcondition(
+    doc::Postcondition const& para)
+{
+    tags_.open("post", {});
+    writeNodes(para.children);
+    tags_.close("post");
 }
 
 void

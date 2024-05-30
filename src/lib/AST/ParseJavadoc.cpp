@@ -1051,6 +1051,23 @@ visitBlockCommandComment(
         jd_.emplace_back(std::move(paragraph));
         return;
     }
+    case CommandTraits::KCI_pre:
+    {
+        doc::Precondition paragraph;
+        auto scope = enterScope(paragraph);
+        visitChildren(C->getParagraph());
+        jd_.emplace_back(std::move(paragraph));
+        return;
+    }
+    case CommandTraits::KCI_post:
+    {
+        doc::Postcondition paragraph;
+        auto scope = enterScope(paragraph);
+        visitChildren(C->getParagraph());
+        jd_.emplace_back(std::move(paragraph));
+        return;
+    }
+
     case CommandTraits::KCI_addindex:
     case CommandTraits::KCI_addtogroup:
     case CommandTraits::KCI_anchor:
@@ -1158,8 +1175,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_paragraph:
     case CommandTraits::KCI_param:
     case CommandTraits::KCI_parblock:
-    case CommandTraits::KCI_post:
-    case CommandTraits::KCI_pre:
     case CommandTraits::KCI_private:
     case CommandTraits::KCI_privatesection:
     case CommandTraits::KCI_property:
