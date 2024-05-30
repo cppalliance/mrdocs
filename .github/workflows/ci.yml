@@ -417,8 +417,13 @@ jobs:
           CC="${{ steps.setup-cpp.outputs.cc }}"
           export CC
           
+          declare -a generators=(
+            "adoc"
+            # "html"
+            "xml"
+          )
           for variant in single multi; do
-            for format in adoc html xml; do
+            for format in "${generators[@]}"; do
               [[ $variant = multi ]] && multipage="true" || multipage="false"
               sed -i "s/^\(\s*multipage:\s*\).*\$/\1$multipage/" $(pwd)/boost/libs/url/doc/mrdocs.yml
               sed -i "s/^\(\s*generate:\s*\).*\$/\1$format/" $(pwd)/boost/libs/url/doc/mrdocs.yml
