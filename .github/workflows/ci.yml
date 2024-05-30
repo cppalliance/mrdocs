@@ -450,7 +450,9 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           # Add SSH key
+          set -x
           mkdir -p /home/runner/.ssh
+          chmod 600 /home/runner/.ssh/known_hosts
           ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
           echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
           chmod 600 /home/runner/.ssh/github_actions
@@ -459,7 +461,7 @@ jobs:
 
           # Copy files
           demo_dir="/var/www/mrdox.com/demos/${{ github.ref_name }}"
-          ssh ubuntu@dev-websites.cpp.al "rm -rf $demo_dir/boost-url; mkdir -p $demo_dir/boost-url"
+          ssh -o StrictHostKeyChecking=no ubuntu@dev-websites.cpp.al "rm -rf $demo_dir/boost-url; mkdir -p $demo_dir/boost-url"
           chmod 755 -R $(pwd)/demos
           scp -o StrictHostKeyChecking=no -r $(pwd)/demos/* ubuntu@dev-websites.cpp.al:$demo_dir/
 
