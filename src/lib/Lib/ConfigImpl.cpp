@@ -108,6 +108,9 @@ struct llvm::yaml::MappingTraits<SettingsImpl>
         io.mapOptional("input",             cfg.input);
 
         io.mapOptional("filters",           cfg.filters);
+
+        io.mapOptional("see-below", cfg.seeBelow);
+        io.mapOptional("implementation-defined", cfg.implementationDefined);
     }
 };
 

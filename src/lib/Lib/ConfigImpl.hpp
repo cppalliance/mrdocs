@@ -137,6 +137,14 @@ public:
             files referenced in the documentation.
          */
         std::string baseURL;
+
+        /** Namespace for symbols rendered as "see-below".
+        */
+        std::string seeBelow;
+
+        /** Namespace for symbols rendered as "implementation-defined".
+        */
+        std::string implementationDefined;
     };
 
     /// @copydoc Config::settings()
