@@ -368,7 +368,8 @@ grammar
 
     BlockNode = (
         Admonition | Brief | Code | Heading | ListItem |
-        Paragraph | Param | Returns | TParam | Throws )
+        Paragraph | Param | Returns | TParam | Throws |
+        See | Precondition | Postcondition)
 
     Admonition = Paragraph
     Brief = element brief { TextNode * }
@@ -387,6 +388,12 @@ grammar
     TParam = element tparam {
         attribute name { text } ?,
         TextNode * }
+    See = element see {
+        attribute class { text } ?,
+        TextNode * }
+    Precondition = element pre { TextNode * }
+    Postcondition = element post { TextNode * }
+
 
     TextNode = ( Link | Styled | Text | Reference | Copied )
 
