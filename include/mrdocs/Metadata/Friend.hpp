@@ -23,7 +23,7 @@ namespace mrdocs {
 /** Info for friend declarations.
 */
 struct FriendInfo
-    : IsInfo<InfoKind::Friend>
+    : InfoCommonBase<InfoKind::Friend>
     , SourceInfo
 {
     /** Befriended symbol.
@@ -37,7 +37,7 @@ struct FriendInfo
     //--------------------------------------------
 
     explicit FriendInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

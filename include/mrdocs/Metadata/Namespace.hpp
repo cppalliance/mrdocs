@@ -32,7 +32,7 @@ union NamespaceFlags
 /** Describes a namespace.
 */
 struct NamespaceInfo
-    : IsInfo<InfoKind::Namespace>
+    : InfoCommonBase<InfoKind::Namespace>
     , ScopeInfo
 {
     NamespaceFlags specs;
@@ -44,7 +44,7 @@ struct NamespaceInfo
     //--------------------------------------------
 
     explicit NamespaceInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

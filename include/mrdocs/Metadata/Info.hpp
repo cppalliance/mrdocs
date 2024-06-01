@@ -27,50 +27,18 @@
 namespace clang {
 namespace mrdocs {
 
-struct AliasInfo;
-struct NamespaceInfo;
-struct RecordInfo;
-struct FunctionInfo;
-struct EnumInfo;
-struct FieldInfo;
-struct TypedefInfo;
-struct VariableInfo;
-struct SpecializationInfo;
-struct FriendInfo;
-struct EnumeratorInfo;
-struct GuideInfo;
-struct UsingInfo;
+/* Forward declarations
+ */
+#define INFO_PASCAL(Type) struct Type##Info;
+#include <mrdocs/Metadata/InfoNodes.inc>
 
 /** Info variant discriminator
 */
 enum class InfoKind
 {
-    /// The symbol is a namespace
-    Namespace = 1, // for bitstream
-    /// The symbol is a record (class or struct)
-    Record,
-    /// The symbol is a function
-    Function,
-    /// The symbol is an enum
-    Enum,
-    /// The symbol is a typedef
-    Typedef,
-    /// The symbol is a variable
-    Variable,
-    /// The symbol is a field
-    Field,
-    /// The symbol is a template specialization
-    Specialization,
-    /// The symbol is a friend declaration
-    Friend,
-    /// The symbol is an enumerator
-    Enumerator,
-    /// The symbol is a deduction guide
-    Guide,
-    /// The symbol is a namespace alias
-    Alias,
-    /// The symbol is a using declaration
-    Using,
+    None = 0,
+    #define INFO_PASCAL(Type) Type,
+    #include <mrdocs/Metadata/InfoNodes.inc>
 };
 
 /** Return the name of the InfoKind as a string.
@@ -151,44 +119,8 @@ struct MRDOCS_VISIBLE
     {
     }
 
-    /// Determine if this symbol is a namespace.
-    constexpr bool isNamespace()      const noexcept { return Kind == InfoKind::Namespace; }
-
-    /// Determine if this symbol is a record (class or struct).
-    constexpr bool isRecord()         const noexcept { return Kind == InfoKind::Record; }
-
-    /// Determine if this symbol is a function.
-    constexpr bool isFunction()       const noexcept { return Kind == InfoKind::Function; }
-
-    /// Determine if this symbol is an enum.
-    constexpr bool isEnum()           const noexcept { return Kind == InfoKind::Enum; }
-
-    /// Determine if this symbol is a typedef.
-    constexpr bool isTypedef()        const noexcept { return Kind == InfoKind::Typedef; }
-
-    /// Determine if this symbol is a variable.
-    constexpr bool isVariable()       const noexcept { return Kind == InfoKind::Variable; }
-
-    /// Determine if this symbol is a field.
-    constexpr bool isField()          const noexcept { return Kind == InfoKind::Field; }
-
-    /// Determine if this symbol is a template specialization.
-    constexpr bool isSpecialization() const noexcept { return Kind == InfoKind::Specialization; }
-
-    /// Determine if this symbol is a friend declaration.
-    constexpr bool isFriend()         const noexcept { return Kind == InfoKind::Friend; }
-
-    /// Determine if this symbol is an enumerator.
-    constexpr bool isEnumerator()     const noexcept { return Kind == InfoKind::Enumerator; }
-
-    /// Determine if this symbol is a deduction guide.
-    constexpr bool isGuide()          const noexcept { return Kind == InfoKind::Guide; }
-
-    /// Determine if this symbol is a namespace alias.
-    constexpr bool isAlias()          const noexcept { return Kind == InfoKind::Alias; }
-
-    /// Determine if this symbol is a using declaration.
-    constexpr bool isUsing()          const noexcept { return Kind == InfoKind::Using; }
+    #define INFO_PASCAL(Type) constexpr bool is##Type() const noexcept { return Kind == InfoKind::Type; }
+    #include <mrdocs/Metadata/InfoNodes.inc>
 };
 
 //------------------------------------------------
@@ -200,7 +132,7 @@ struct MRDOCS_VISIBLE
     class is a certain type.
 */
 template <InfoKind K>
-struct IsInfo : Info
+struct InfoCommonBase : Info
 {
     /** The variant discriminator constant of the most-derived class.
 
@@ -209,47 +141,12 @@ struct IsInfo : Info
      */
     static constexpr InfoKind kind_id = K;
 
-    /// Determine if this symbol is a namespace.
-    static constexpr bool isNamespace()      noexcept { return K == InfoKind::Namespace; }
-
-    /// Determine if this symbol is a record (class or struct).
-    static constexpr bool isRecord()         noexcept { return K == InfoKind::Record; }
-
-    /// Determine if this symbol is a function.
-    static constexpr bool isFunction()       noexcept { return K == InfoKind::Function; }
-
-    /// Determine if this symbol is an enum.
-    static constexpr bool isEnum()           noexcept { return K == InfoKind::Enum; }
-
-    /// Determine if this symbol is a typedef.
-    static constexpr bool isTypedef()        noexcept { return K == InfoKind::Typedef; }
-
-    /// Determine if this symbol is a variable.
-    static constexpr bool isVariable()       noexcept { return K == InfoKind::Variable; }
-
-    /// Determine if this symbol is a field.
-    static constexpr bool isField()          noexcept { return K == InfoKind::Field; }
-
-    /// Determine if this symbol is a template specialization.
-    static constexpr bool isSpecialization() noexcept { return K == InfoKind::Specialization; }
-
-    /// Determine if this symbol is a friend declaration.
-    static constexpr bool isFriend()         noexcept { return K == InfoKind::Friend; }
-
-    /// Determine if this symbol is an enumerator.
-    static constexpr bool isEnumerator()     noexcept { return K == InfoKind::Enumerator; }
-
-    /// Determine if this symbol is a deduction guide.
-    static constexpr bool isGuide()          noexcept { return K == InfoKind::Guide; }
-
-    /// Determine if this symbol is a namespace alias.
-    static constexpr bool isAlias()          noexcept { return K == InfoKind::Alias; }
-
-    /// Determine if this symbol is a using declaration.
-    static constexpr bool isUsing()          noexcept { return K == InfoKind::Using; }
+    #define INFO_PASCAL(Kind) \
+    static constexpr bool is##Kind() noexcept { return K == InfoKind::Kind; }
+    #include <mrdocs/Metadata/InfoNodes.inc>
 
 protected:
-    constexpr explicit IsInfo(SymbolID ID)
+    constexpr explicit InfoCommonBase(SymbolID ID)
         : Info(K, ID)
     {
     }
@@ -262,7 +159,11 @@ protected:
     by `args...`. The type of the first argument is determined
     by the `InfoKind` of the `Info` object.
 
-*/
+    @param info The Info object to visit
+    @param fn The function object to call
+    @param args Additional arguments to pass to the function object
+    @return The result of calling the function object with the derived type
+ */
 template<
     std::derived_from<Info> InfoTy,
     class Fn,
@@ -278,32 +179,10 @@ visit(
         std::forward<Args>(args)...);
     switch(info.Kind)
     {
-    case InfoKind::Namespace:
-        return visitor.template visit<NamespaceInfo>();
-    case InfoKind::Record:
-        return visitor.template visit<RecordInfo>();
-    case InfoKind::Function:
-        return visitor.template visit<FunctionInfo>();
-    case InfoKind::Enum:
-        return visitor.template visit<EnumInfo>();
-    case InfoKind::Typedef:
-        return visitor.template visit<TypedefInfo>();
-    case InfoKind::Variable:
-        return visitor.template visit<VariableInfo>();
-    case InfoKind::Field:
-        return visitor.template visit<FieldInfo>();
-    case InfoKind::Specialization:
-        return visitor.template visit<SpecializationInfo>();
-    case InfoKind::Friend:
-        return visitor.template visit<FriendInfo>();
-    case InfoKind::Enumerator:
-        return visitor.template visit<EnumeratorInfo>();
-    case InfoKind::Guide:
-        return visitor.template visit<GuideInfo>();
-    case InfoKind::Alias:
-        return visitor.template visit<AliasInfo>();
-    case InfoKind::Using:
-        return visitor.template visit<UsingInfo>();
+    #define INFO_PASCAL(Type) \
+    case InfoKind::Type: \
+        return visitor.template visit<Type##Info>();
+    #include <mrdocs/Metadata/InfoNodes.inc>
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -320,10 +199,8 @@ visit(
 */
 template <class T>
 concept InfoParent = requires(T const& t) {
-    t.Members;
-    requires std::ranges::range<decltype(std::declval<T>().Members)>;
-    requires std::same_as<
-        std::ranges::range_value_t<std::decay_t<decltype(std::declval<T>().Members)>>, SymbolID>;
+    { t.Members } -> std::ranges::range;
+    requires std::convertible_to<std::ranges::range_value_t<decltype(t.Members)>, SymbolID const&>;
 };
 
 } // mrdocs

@@ -44,7 +44,7 @@ toString(UsingClass const& value)
 /** Info for using declarations.
  */
 struct UsingInfo
-    : IsInfo<InfoKind::Using>,
+    : InfoCommonBase<InfoKind::Using>,
     SourceInfo
 {
     /** The kind of using declaration.
@@ -62,7 +62,7 @@ struct UsingInfo
     //--------------------------------------------
 
     explicit UsingInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

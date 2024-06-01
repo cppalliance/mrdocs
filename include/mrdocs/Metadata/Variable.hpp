@@ -39,7 +39,7 @@ union VariableFlags0
     scope, and static variables at class scope.
 */
 struct VariableInfo
-    : IsInfo<InfoKind::Variable>
+    : InfoCommonBase<InfoKind::Variable>
     , SourceInfo
 {
     /** The type of the variable */
@@ -54,7 +54,7 @@ struct VariableInfo
     //--------------------------------------------
 
     explicit VariableInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

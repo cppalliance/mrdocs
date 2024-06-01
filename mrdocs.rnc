@@ -181,7 +181,7 @@ grammar
 
     #---------------------------------------------
 
-    Var =
+    Variable =
         element variable
         {
             Name,
@@ -270,7 +270,7 @@ grammar
                 Record    |
                 Function  |
                 Typedef   |
-                Var       |
+                Variable  |
                 Guide     |
                 Template
             )
@@ -332,7 +332,7 @@ grammar
             Function       |
             Typedef        |
             Enum           |
-            Var            |
+            Variable       |
             Guide          |
             Template       |
             Alias          |
@@ -347,7 +347,7 @@ grammar
             Typedef        |
             Enum           |
             Field          |
-            Var            |
+            Variable       |
             Guide          |
             Template       |
             Friend         |

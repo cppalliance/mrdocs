@@ -140,7 +140,7 @@ struct Param
 // TODO: Expand to allow for documenting templating and default args.
 // Info for functions.
 struct FunctionInfo
-    : IsInfo<InfoKind::Function>
+    : InfoCommonBase<InfoKind::Function>
     , SourceInfo
 {
     std::unique_ptr<TypeInfo> ReturnType; // Info about the return type of this function.
@@ -162,7 +162,7 @@ struct FunctionInfo
     //--------------------------------------------
 
     explicit FunctionInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

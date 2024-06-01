@@ -606,21 +606,13 @@ public:
         std::shared_ptr<Tranche> const& tranche,
         DomCorpus const& domCorpus) noexcept
         : dom::DefaultObjectImpl({
-            { "namespaces",       init(tranche->Namespaces, domCorpus) },
-            { "records",          init(tranche->Records, domCorpus) },
-            { "functions",        init(tranche->Functions, domCorpus) },
-            { "enums",            init(tranche->Enums, domCorpus) },
+            #define INFO_PLURAL_AND_LC_PLURAL(Plural, LC_Plural) \
+            { #LC_Plural, init(tranche->Plural, domCorpus) },
+            #include <mrdocs/Metadata/InfoNodes.inc>
             { "types",            init(tranche->Types, domCorpus) },
-            { "fields",           init(tranche->Fields, domCorpus) },
             { "staticfuncs",      init(tranche->StaticFunctions, domCorpus) },
-            { "variables",        init(tranche->Variables, domCorpus) },
-            { "friends",          init(tranche->Friends, domCorpus) },
-            { "guides",           init(tranche->Guides, domCorpus) },
             { "overloads",        init(tranche->Overloads, domCorpus) },
             { "staticoverloads",  init(tranche->StaticOverloads, domCorpus) },
-            { "aliases",          init(tranche->Aliases, domCorpus) },
-            { "usings",           init(tranche->Usings, domCorpus) }
-
             })
         , tranche_(tranche)
         , domCorpus_(domCorpus)

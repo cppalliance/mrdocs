@@ -27,7 +27,7 @@ namespace mrdocs {
 /** Info for deduction guides.
 */
 struct GuideInfo
-    : IsInfo<InfoKind::Guide>
+    : InfoCommonBase<InfoKind::Guide>
     , SourceInfo
 {
     /** The pattern for the deduced specialization.
@@ -51,7 +51,7 @@ struct GuideInfo
     //--------------------------------------------
 
     explicit GuideInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

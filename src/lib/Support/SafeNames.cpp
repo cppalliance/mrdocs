@@ -58,7 +58,7 @@ class SafeNames::Impl
         // all valid c++ identifiers begin with
         // an underscore or alphabetic character,
         // so a numeric prefix ensures no conflicts
-        static
+        static constexpr
         std::string_view
         reserved[] = {
             "00namespace",
@@ -70,7 +70,7 @@ class SafeNames::Impl
             "06field",
             "07specialization",
             "08friend",
-            "09enumeration",
+            "09enumerator",
             "10guide",
             "11alias",
             "12using",
@@ -185,9 +185,10 @@ public:
                 if constexpr(T::isFunction())
                 {
                     if(t.Class != FunctionClass::Normal ||
-                        t.specs0.overloadedOperator.get() != OperatorKind::None)
+                        t.specs0.overloadedOperator.get() != OperatorKind::None ||
+                        t.Name.empty())
                         return getReserved(t);
-                    MRDOCS_ASSERT(! t.Name.empty());
+                    MRDOCS_ASSERT(!t.Name.empty());
                     return t.Name;
                 }
 

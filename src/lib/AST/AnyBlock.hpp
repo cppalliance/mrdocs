@@ -1719,7 +1719,7 @@ public:
 
 //------------------------------------------------
 
-class VarBlock
+class VariableBlock
     : public TopLevelBlock<VariableInfo>
 {
 public:

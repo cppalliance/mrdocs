@@ -15,7 +15,7 @@
     <Type Name="clang::mrdocs::Info" Inheritable="false" IncludeView="noinherit">
 	</Type>
 
-	<Type Name="clang::mrdocs::IsInfo&lt;*&gt;" Inheritable="false">
+	<Type Name="clang::mrdocs::InfoCommonBase&lt;*&gt;" Inheritable="false">
 		<Expand>
 			<ExpandedItem>(Info*)this,view(noinherit)nd</ExpandedItem>
 		</Expand>

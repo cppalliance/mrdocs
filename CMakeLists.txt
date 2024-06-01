@@ -140,7 +140,7 @@ file(
     GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS
         src/lib/*.cpp src/lib/*.hpp src/lib/*.ipp
         src/lib/*.natvis
-        include/*.hpp include/*.ipp
+        include/*.hpp include/*.inc include/*.ipp
         ${CMAKE_CURRENT_BINARY_DIR}/src/lib/*.hpp
         include/*.natvis
         SourceFileNames.cpp)
@@ -334,7 +334,7 @@ if (MRDOCS_BUILD_DOCS)
     if (MRDOCS_GENERATE_REFERENCE)
         include(share/cmake/MrDocs.cmake)
         set(MRDOCS_REFERENCE_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/docs/reference)
-        file(GLOB_RECURSE REFERENCE_SOURCES CONFIGURE_DEPENDS include/*.hpp)
+        file(GLOB_RECURSE REFERENCE_SOURCES CONFIGURE_DEPENDS include/*.hpp include/*.inc)
         set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
         add_mrdocs(generate_reference
                 CONFIG docs/mrdocs.yml
@@ -428,6 +428,12 @@ if (MRDOCS_INSTALL)
             COMPONENT development
             FILES_MATCHING
             PATTERN "*.[hi]pp")
+
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdocs
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+            COMPONENT development
+            FILES_MATCHING
+            PATTERN "*.inc")
 
     install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs
             DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}

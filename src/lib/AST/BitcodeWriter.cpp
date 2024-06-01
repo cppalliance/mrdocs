@@ -247,38 +247,34 @@ BlockIdNameMap = []()
     // improvise
     static const std::vector<std::pair<BlockID, const char* const>> Inits = {
         {BI_VERSION_BLOCK_ID, "VersionBlock"},
-        {BI_BASE_BLOCK_ID, "BaseBlock"},
+
         {BI_INFO_PART_ID, "InfoPart"},
         {BI_SOURCE_INFO_ID, "SourceInfoBlock"},
         {BI_SCOPE_INFO_ID, "ScopeInfoBlock"},
+
+        {BI_NAME_INFO_ID, "NameInfoBlock"},
         {BI_LOOKUP_INFO_ID, "LookupInfoBlock"},
-        {BI_NAMESPACE_BLOCK_ID, "NamespaceBlock"},
-        {BI_ENUM_BLOCK_ID, "EnumBlock"},
+        {BI_BASE_BLOCK_ID, "BaseBlock"},
         {BI_EXPR_BLOCK_ID, "ExprBlock"},
         {BI_BITFIELD_WIDTH_BLOCK_ID, "BitfieldWidthBlock"},
-        {BI_TYPEDEF_BLOCK_ID, "TypedefBlock"},
+        {BI_FUNCTION_PARAM_BLOCK_ID, "FunctionParamBlock"},
+
+        {BI_JAVADOC_BLOCK_ID, "JavadocBlock"},
+        {BI_JAVADOC_LIST_BLOCK_ID, "JavadocListBlock"},
+        {BI_JAVADOC_NODE_BLOCK_ID, "JavadocNodeBlock"},
+
+        #define INFO_PASCAL_AND_UC(Type, UC_Type) \
+        {BI_##UC_Type##_BLOCK_ID, #Type "Block"},
+        #include <mrdocs/Metadata/InfoNodes.inc>
+
+        {BI_TEMPLATE_ARG_BLOCK_ID, "TemplateArgBlock"},
+        {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
+        {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"},
+
         {BI_TYPEINFO_BLOCK_ID, "TypeInfoBlock"},
         {BI_TYPEINFO_PARENT_BLOCK_ID, "TypeInfoParentBlock"},
         {BI_TYPEINFO_CHILD_BLOCK_ID, "TypeInfoChildBlock"},
         {BI_TYPEINFO_PARAM_BLOCK_ID, "TypeInfoParamBlock"},
-        {BI_FIELD_BLOCK_ID, "FieldBlock"},
-        {BI_RECORD_BLOCK_ID, "RecordBlock"},
-        {BI_FUNCTION_BLOCK_ID, "FunctionBlock"},
-        {BI_GUIDE_BLOCK_ID, "GuideBlock"},
-        {BI_FUNCTION_PARAM_BLOCK_ID, "FunctionParamBlock"},
-        {BI_JAVADOC_BLOCK_ID, "JavadocBlock"},
-        {BI_JAVADOC_LIST_BLOCK_ID, "JavadocListBlock"},
-        {BI_JAVADOC_NODE_BLOCK_ID, "JavadocNodeBlock"},
-        {BI_TEMPLATE_ARG_BLOCK_ID, "TemplateArgBlock"},
-        {BI_TEMPLATE_BLOCK_ID, "TemplateBlock"},
-        {BI_TEMPLATE_PARAM_BLOCK_ID, "TemplateParamBlock"},
-        {BI_SPECIALIZATION_BLOCK_ID, "SpecializationBlock"},
-        {BI_FRIEND_BLOCK_ID, "FriendBlock"},
-        {BI_ENUMERATOR_BLOCK_ID, "EnumeratorBlock"},
-        {BI_VARIABLE_BLOCK_ID, "VarBlock"},
-        {BI_NAME_INFO_ID, "NameInfoBlock"},
-        {BI_ALIAS_BLOCK_ID, "AliasBlock"},
-        {BI_USING_BLOCK_ID, "UsingBlock"},
     };
     MRDOCS_ASSERT(Inits.size() == BlockIdCount);
     for (const auto& Init : Inits)

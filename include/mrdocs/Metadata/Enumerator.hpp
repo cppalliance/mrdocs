@@ -24,7 +24,7 @@ namespace mrdocs {
 /** Info for enumerators.
 */
 struct EnumeratorInfo
-    : IsInfo<InfoKind::Enumerator>
+    : InfoCommonBase<InfoKind::Enumerator>
     , SourceInfo
 {
     /** The initializer expression, if any
@@ -34,7 +34,7 @@ struct EnumeratorInfo
     //--------------------------------------------
 
     explicit EnumeratorInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

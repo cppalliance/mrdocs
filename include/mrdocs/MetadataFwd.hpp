@@ -35,29 +35,20 @@ enum class OperatorKind;
 enum class ReferenceKind;
 enum class StorageClassKind;
 
-struct AliasInfo;
+#define INFO_PASCAL(Type) \
+struct Type##Info;
+#include <mrdocs/Metadata/InfoNodes.inc>
+
 struct BaseInfo;
-struct EnumInfo;
-struct EnumeratorInfo;
-struct FieldInfo;
-struct FriendInfo;
-struct FunctionInfo;
-struct GuideInfo;
 struct Info;
 class Javadoc;
 struct Location;
-struct NamespaceInfo;
 struct NameInfo;
-struct RecordInfo;
 struct Param;
-struct SpecializationInfo;
 struct SpecializationNameInfo;
 struct SourceInfo;
 struct TypeInfo;
-struct TypedefInfo;
-struct VariableInfo;
 struct VerbatimBlock;
-struct UsingInfo;
 
 struct ExprInfo;
 template<typename T>

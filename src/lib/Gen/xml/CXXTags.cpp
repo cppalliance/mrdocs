@@ -17,12 +17,26 @@ namespace mrdocs {
 namespace xml {
 
 llvm::StringRef
+getDefaultTagName(Info const& I) noexcept
+{
+    switch(I.Kind)
+    {
+#define INFO_PASCAL_AND_LC(Type, LCType) \
+    case InfoKind::Type: \
+        return LCType##TagName;
+#include <mrdocs/Metadata/InfoNodes.inc>
+    default:
+        break;
+    }
+    MRDOCS_UNREACHABLE();
+}
+
+
+llvm::StringRef
 getTagName(Info const& I) noexcept
 {
     switch(I.Kind)
     {
-    case InfoKind::Namespace:
-        return namespaceTagName;
     case InfoKind::Record:
         switch(static_cast<RecordInfo const&>(I).KeyKind)
         {
@@ -33,28 +47,13 @@ getTagName(Info const& I) noexcept
             break;
         }
         break;
-    case InfoKind::Function:
-        return functionTagName;
     case InfoKind::Typedef:
         if(static_cast<TypedefInfo const&>(I).IsUsing)
             return aliasTagName;
         else
             return typedefTagName;
-        break;
-    case InfoKind::Enum:
-        return enumTagName;
-    case InfoKind::Variable:
-        return varTagName;
-    case InfoKind::Friend:
-        return friendTagName;
-    case InfoKind::Enumerator:
-        return enumeratorTagName;
-    case InfoKind::Alias:
-        return aliasTagName;
-    case InfoKind::Using:
-        return usingTagName;
     default:
-        break;
+        return getDefaultTagName(I);
     }
     MRDOCS_UNREACHABLE();
 }
