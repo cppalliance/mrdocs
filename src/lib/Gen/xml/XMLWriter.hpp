@@ -59,18 +59,8 @@ public:
     template<class T>
     void operator()(T const&);
 
-    void writeRecord(RecordInfo const&);
-    void writeFunction(FunctionInfo const&);
-    void writeGuide(GuideInfo const&);
-    void writeEnum(EnumInfo const&);
-    void writeEnumerator(EnumeratorInfo const&);
-    void writeFriend(FriendInfo const&);
-    void writeField(FieldInfo const&);
-    void writeTypedef(TypedefInfo const&);
-    void writeVar(VariableInfo const&);
-    void writeSpecialization(const SpecializationInfo&);
-    void writeAlias(AliasInfo const& I);
-    void writeUsing(UsingInfo const& I);
+#define INFO_PASCAL(Type) void write##Type(Type##Info const&);
+#include <mrdocs/Metadata/InfoNodes.inc>
 
     void writeSourceInfo(SourceInfo const& I);
     void writeLocation(Location const& loc, bool def = false);

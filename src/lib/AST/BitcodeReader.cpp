@@ -58,86 +58,14 @@ getInfos()
             continue;
         }
         // Top level Info blocks
-        case BI_NAMESPACE_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<NamespaceBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
+        #define INFO_PASCAL_AND_UC(Type, TypeUC)              \
+        case BI_##TypeUC##_BLOCK_ID:                          \
+        {                                                     \
+            MRDOCS_TRY(auto I, readInfo<Type##Block>(ID));    \
+            Infos.emplace_back(std::move(I));                 \
+            continue;                                         \
         }
-        case BI_RECORD_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<RecordBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-        case BI_FUNCTION_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<FunctionBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-        case BI_TYPEDEF_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<TypedefBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-        case BI_ENUM_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<EnumBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-        case BI_VARIABLE_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<VarBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-        case BI_FIELD_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<FieldBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-
-        case BI_SPECIALIZATION_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<SpecializationBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-        case BI_FRIEND_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<FriendBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-        case BI_ALIAS_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<AliasBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-        case BI_USING_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<UsingBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-
-        case BI_ENUMERATOR_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<EnumeratorBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
-        case BI_GUIDE_BLOCK_ID:
-        {
-            MRDOCS_TRY(auto I, readInfo<GuideBlock>(ID));
-            Infos.emplace_back(std::move(I));
-            continue;
-        }
+        #include <mrdocs/Metadata/InfoNodes.inc>
         default:
             // return formatError("invalid top level block");
             if (llvm::Error err = Stream.SkipBlock())

@@ -23,7 +23,7 @@ namespace mrdocs {
 /** Info for namespace aliases.
 */
 struct AliasInfo
-    : IsInfo<InfoKind::Alias>
+    : InfoCommonBase<InfoKind::Alias>
     , SourceInfo
 {
     /** The aliased symbol. */
@@ -32,7 +32,7 @@ struct AliasInfo
     //--------------------------------------------
 
     explicit AliasInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

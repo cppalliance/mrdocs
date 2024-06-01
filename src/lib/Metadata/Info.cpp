@@ -25,32 +25,9 @@ toString(InfoKind kind) noexcept
 {
     switch(kind)
     {
-    case InfoKind::Namespace:
-        return "namespace";
-    case InfoKind::Record:
-        return "record";
-    case InfoKind::Field:
-        return "field";
-    case InfoKind::Function:
-        return "function";
-    case InfoKind::Enum:
-        return "enum";
-    case InfoKind::Typedef:
-        return "typedef";
-    case InfoKind::Variable:
-        return "variable";
-    case InfoKind::Specialization:
-        return "specialization";
-    case InfoKind::Friend:
-        return "friend";
-    case InfoKind::Enumerator:
-        return "enumerator";
-    case InfoKind::Guide:
-        return "guide";
-    case InfoKind::Alias:
-        return "alias";
-    case InfoKind::Using:
-        return "using";
+#define INFO_PASCAL_AND_LC(Type, LCType) \
+    case InfoKind::Type: return #LCType;
+#include <mrdocs/Metadata/InfoNodes.inc>
     default:
         MRDOCS_UNREACHABLE();
     }

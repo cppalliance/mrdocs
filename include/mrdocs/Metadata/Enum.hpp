@@ -29,7 +29,7 @@ namespace mrdocs {
 // TODO: Expand to allow for documenting templating.
 // Info for types.
 struct EnumInfo
-    : IsInfo<InfoKind::Enum>
+    : InfoCommonBase<InfoKind::Enum>
     , SourceInfo
     , ScopeInfo
 {
@@ -44,7 +44,7 @@ struct EnumInfo
     //--------------------------------------------
 
     explicit EnumInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

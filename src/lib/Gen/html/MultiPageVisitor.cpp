@@ -61,19 +61,8 @@ renderPage(
 #define DEFINE(T) template void \
     MultiPageVisitor::operator()<T>(T const&)
 
-DEFINE(NamespaceInfo);
-DEFINE(RecordInfo);
-DEFINE(FunctionInfo);
-DEFINE(EnumInfo);
-DEFINE(TypedefInfo);
-DEFINE(VariableInfo);
-DEFINE(FieldInfo);
-DEFINE(SpecializationInfo);
-DEFINE(FriendInfo);
-DEFINE(EnumeratorInfo);
-DEFINE(GuideInfo);
-DEFINE(AliasInfo);
-DEFINE(UsingInfo);
+#define INFO_PASCAL(Type) DEFINE(Type##Info);
+#include <mrdocs/Metadata/InfoNodes.inc>
 
 } // html
 } // mrdocs

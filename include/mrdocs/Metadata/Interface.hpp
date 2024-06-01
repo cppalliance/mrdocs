@@ -27,18 +27,11 @@ namespace mrdocs {
 */
 struct Tranche
 {
-    std::vector<SymbolID> Namespaces;
-    std::vector<SymbolID> Records;
-    std::vector<SymbolID> Functions;
-    std::vector<SymbolID> Enums;
+    #define INFO_PLURAL(Type) std::vector<SymbolID> Type;
+    #include <mrdocs/Metadata/InfoNodes.inc>
+
     std::vector<SymbolID> Types;
-    std::vector<SymbolID> Fields;
     std::vector<SymbolID> StaticFunctions;
-    std::vector<SymbolID> Variables;
-    std::vector<SymbolID> Friends;
-    std::vector<SymbolID> Guides;
-    std::vector<SymbolID> Aliases;
-    std::vector<SymbolID> Usings;
 
     ScopeInfo Overloads;
     ScopeInfo StaticOverloads;

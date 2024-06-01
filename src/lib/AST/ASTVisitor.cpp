@@ -2195,7 +2195,7 @@ public:
     //------------------------------------------------
 
     void
-    buildUsingDeclaration(
+    buildUsing(
         UsingInfo& I,
         bool created,
         UsingDecl* D)
@@ -2231,7 +2231,7 @@ public:
         std::pair<
             MrDocsType_t<DeclType>&,
             bool>>
-    getAsMrDocsInfo(DeclType* D)
+    upsertMrDocsInfoFor(DeclType* D)
     {
         AccessSpecifier access = getAccess(D);
         MRDOCS_CHECK_MSG(
@@ -2579,7 +2579,7 @@ void
 ASTVisitor::
 traverse(EnumDecl* D)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
     buildEnum(I, created, D);
@@ -2593,7 +2593,7 @@ void
 ASTVisitor::
 traverse(FieldDecl* D)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
     buildField(I, created, D);
@@ -2606,7 +2606,7 @@ void
 ASTVisitor::
 traverse(EnumConstantDecl* D)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
     buildEnumerator(I, created, D);
@@ -2619,7 +2619,7 @@ void
 ASTVisitor::
 traverse(FriendDecl* D)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
     buildFriend(I, created, D);
@@ -2632,7 +2632,7 @@ void
 ASTVisitor::
 traverse(NamespaceAliasDecl* D)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
     buildAlias(I, created, D);
@@ -2670,10 +2670,10 @@ void
 ASTVisitor::
 traverse(UsingDecl* D)
 {
-    auto const exp = getAsMrDocsInfo(D);
+    auto const exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
-    buildUsingDeclaration(I, created, D);
+    buildUsing(I, created, D);
 }
 
 //------------------------------------------------
@@ -2685,7 +2685,7 @@ traverse(
     CXXRecordTy* D,
     ClassTemplateDecl* CTD)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
 
@@ -2722,7 +2722,7 @@ traverse(
     VarTy* D,
     VarTemplateDecl* VTD)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
 
@@ -2757,7 +2757,7 @@ traverse(
     CXXDeductionGuideDecl* D,
     FunctionTemplateDecl* FTD)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
 
@@ -2778,7 +2778,7 @@ traverse(
     FunctionTy* D,
     FunctionTemplateDecl* FTD)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
 
@@ -2826,7 +2826,7 @@ traverse(
     TypedefNameTy* D,
     TypeAliasTemplateDecl* ATD)
 {
-    auto exp = getAsMrDocsInfo(D);
+    auto exp = upsertMrDocsInfoFor(D);
     if(! exp) { return; }
     auto [I, created] = *exp;
 

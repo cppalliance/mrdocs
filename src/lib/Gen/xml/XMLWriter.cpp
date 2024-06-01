@@ -200,47 +200,29 @@ XMLWriter::
 operator()(
     T const& I)
 {
-    if constexpr(T::isNamespace())
-    {
-        tags_.open(namespaceTagName, {
-            { "name", I.Name, ! I.Name.empty() },
-            { I.id },
-            { "is-anonymous", "1", I.specs.isAnonymous},
-            { "is-inline", "1", I.specs.isInline}
-            });
-        writeJavadoc(I.javadoc);
-        for(const SymbolID& id : I.UsingDirectives)
-            tags_.write("using-directive", {}, { { id } });
-        corpus_.traverse(I, *this);
-        tags_.close(namespaceTagName);
-    }
-    if constexpr(T::isRecord())
-        writeRecord(I);
-    if constexpr(T::isFunction())
-        writeFunction(I);
-    if constexpr(T::isEnum())
-        writeEnum(I);
-    if constexpr(T::isTypedef())
-        writeTypedef(I);
-    if constexpr(T::isField())
-        writeField(I);
-    if constexpr(T::isVariable())
-        writeVar(I);
-    if constexpr(T::isSpecialization())
-        writeSpecialization(I);
-    if constexpr(T::isEnumerator())
-        writeEnumerator(I);
-    if constexpr(T::isFriend())
-        writeFriend(I);
-    if constexpr(T::isGuide())
-        writeGuide(I);
-    if constexpr(T::isAlias())
-        writeAlias(I);
-    if constexpr(T::isUsing())
-        writeUsing(I);
+    #define INFO_PASCAL(Type) if constexpr(T::is##Type()) write##Type(I);
+    #include <mrdocs/Metadata/InfoNodes.inc>
 }
 
 //------------------------------------------------
+
+void
+XMLWriter::
+writeNamespace(
+    NamespaceInfo const& I)
+{
+    tags_.open(namespaceTagName, {
+        { "name", I.Name, ! I.Name.empty() },
+        { I.id },
+        { "is-anonymous", "1", I.specs.isAnonymous},
+        { "is-inline", "1", I.specs.isInline}
+    });
+    writeJavadoc(I.javadoc);
+    for(const SymbolID& id : I.UsingDirectives)
+        tags_.write("using-directive", {}, { { id } });
+    corpus_.traverse(I, *this);
+    tags_.close(namespaceTagName);
+}
 
 void
 XMLWriter::
@@ -562,7 +544,7 @@ writeField(
 
 void
 XMLWriter::
-writeVar(
+writeVariable(
     VariableInfo const& I)
 {
     openTemplate(I.Template);

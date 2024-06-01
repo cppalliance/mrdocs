@@ -24,7 +24,7 @@ namespace mrdocs {
 
 // Info for typedef and using statements.
 struct TypedefInfo
-    : IsInfo<InfoKind::Typedef>
+    : InfoCommonBase<InfoKind::Typedef>
     , SourceInfo
 {
     std::unique_ptr<TypeInfo> Type;
@@ -40,7 +40,7 @@ struct TypedefInfo
     //--------------------------------------------
 
     explicit TypedefInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

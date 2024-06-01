@@ -24,6 +24,21 @@ namespace mrdocs {
 namespace {
 
 /** Determine the MrDocs Info type for a Clang DeclType
+
+    This trait associates a Clang Decl type with the corresponding
+    MrDocs Info type, when there is a direct correspondence.
+
+    This is used to determine what type of Info object to create
+    and return when @ref ASTVisitor::upsertMrDocsInfoFor is called
+    to create or update an Info object for a Decl.
+
+    Not all Info types have a direct correspondence with a Decl type.
+    In this case, the objects are created and updated by the visitor
+    at other steps in the traversal.
+
+    When there's no direct correspondence, this trait returns
+    the base Info type.
+
  */
 template <class DeclType>
 struct MrDocsType : std::type_identity<Info> {};
@@ -60,6 +75,9 @@ struct MrDocsType<NamespaceAliasDecl> : std::type_identity<AliasInfo> {};
 
 template <>
 struct MrDocsType<UsingDecl> : std::type_identity<UsingInfo> {};
+
+template <>
+struct MrDocsType<NamespaceDecl> : std::type_identity<NamespaceInfo>{};
 
 /// @copydoc MrDocsType
 template <class DeclType>

@@ -581,6 +581,12 @@ jobs:
           chmod +x .github/compare_templates.sh
           .github/compare_templates.sh
 
+      - name: Check info nodes
+        run: |
+          set -x
+          chmod +x .github/check_info_nodes.sh
+          .github/check_info_nodes_support.sh
+
       - name: Create GitHub Package Release
         if: ${{ github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/')) }}
         uses: softprops/action-gh-release@v1

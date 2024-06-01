@@ -23,7 +23,7 @@ namespace mrdocs {
 /** Specialization info for members of implicit instantiations
 */
 struct SpecializationInfo
-    : IsInfo<InfoKind::Specialization>
+    : InfoCommonBase<InfoKind::Specialization>
     , ScopeInfo
 {
     /** The template arguments the parent template is specialized for */
@@ -33,7 +33,7 @@ struct SpecializationInfo
     SymbolID Primary = SymbolID::invalid;
 
     explicit SpecializationInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

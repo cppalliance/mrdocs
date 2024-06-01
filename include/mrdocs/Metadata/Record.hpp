@@ -70,7 +70,7 @@ MRDOCS_DECL dom::String toString(RecordKeyKind kind) noexcept;
 /** Metadata for struct, class, or union.
 */
 struct RecordInfo
-    : IsInfo<InfoKind::Record>
+    : InfoCommonBase<InfoKind::Record>
     , SourceInfo
     , ScopeInfo
 {
@@ -97,7 +97,7 @@ struct RecordInfo
     //--------------------------------------------
 
     explicit RecordInfo(SymbolID ID) noexcept
-        : IsInfo(ID)
+        : InfoCommonBase(ID)
     {
     }
 };

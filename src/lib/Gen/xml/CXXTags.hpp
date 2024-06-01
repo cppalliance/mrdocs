@@ -31,31 +31,25 @@ namespace clang {
 namespace mrdocs {
 namespace xml {
 
+#define INFO_PASCAL_AND_LC(Type, LCType) \
+constexpr auto LCType##TagName = #LCType;
+#include <mrdocs/Metadata/InfoNodes.inc>
+
 constexpr auto accessTagName         = "access";
-constexpr auto aliasTagName          = "alias";
 constexpr auto attributeTagName      = "attr";
 constexpr auto baseTagName           = "base";
 constexpr auto bitfieldTagName       = "bitfield";
 constexpr auto classTagName          = "class";
 constexpr auto dataMemberTagName     = "field";
 constexpr auto javadocTagName        = "doc";
-constexpr auto enumTagName           = "enum";
-constexpr auto enumeratorTagName     = "enumerator";
-constexpr auto friendTagName         = "friend";
-constexpr auto functionTagName       = "function";
-constexpr auto guideTagName          = "guide";
-constexpr auto namespaceTagName      = "namespace";
 constexpr auto paramTagName          = "param";
 constexpr auto returnTagName         = "return";
 constexpr auto deducedTagName        = "deduced";
 constexpr auto structTagName         = "struct";
-constexpr auto specializationTagName = "specialization";
 constexpr auto targTagName           = "targ";
 constexpr auto templateTagName       = "template";
 constexpr auto tparamTagName         = "tparam";
-constexpr auto typedefTagName        = "typedef";
 constexpr auto unionTagName          = "union";
-constexpr auto usingTagName          = "using";
 constexpr auto varTagName            = "variable";
 
 inline dom::String getNameForValue(...)
