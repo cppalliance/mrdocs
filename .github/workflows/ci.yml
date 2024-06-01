@@ -341,6 +341,7 @@ jobs:
           # Add SSH key
           mkdir -p /home/runner/.ssh
           ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
+          chmod 600 /home/runner/.ssh/known_hosts
           echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
           chmod 600 /home/runner/.ssh/github_actions
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
@@ -452,8 +453,8 @@ jobs:
           # Add SSH key
           set -x
           mkdir -p /home/runner/.ssh
-          chmod 600 /home/runner/.ssh/known_hosts
           ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
+          chmod 600 /home/runner/.ssh/known_hosts
           echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
           chmod 600 /home/runner/.ssh/github_actions
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
