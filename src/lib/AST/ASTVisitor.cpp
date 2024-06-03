@@ -2485,9 +2485,9 @@ public:
         const NamedDecl* ND = nullptr;
         while(NNS)
         {
-            if(ND = NNS->getAsNamespace())
+            if((ND = NNS->getAsNamespace()))
                 break;
-            if(ND = NNS->getAsNamespaceAlias())
+            if((ND = NNS->getAsNamespaceAlias()))
                 break;
             NNS = NNS->getPrefix();
         }
