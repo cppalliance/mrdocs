@@ -768,6 +768,15 @@ visitInlineCommandComment(
 
     switch(unsigned ID = cmd->getID())
     {
+    // Newline
+    case CommandTraits::KCI_n:
+    {
+        if(! goodArgCount(0, *C))
+            return;
+        last_child_ = nullptr;
+        emplaceText<doc::Text>(true, "\n");
+        return;
+    }
     // Emphasis
     case CommandTraits::KCI_a:
     case CommandTraits::KCI_e:
@@ -1163,7 +1172,6 @@ visitBlockCommandComment(
     case CommandTraits::KCI_memberof:
     case CommandTraits::KCI_msc:
     case CommandTraits::KCI_mscfile:
-    case CommandTraits::KCI_n:
     case CommandTraits::KCI_name:
     case CommandTraits::KCI_namespace:
     case CommandTraits::KCI_noop:
@@ -1257,6 +1265,7 @@ visitBlockCommandComment(
     case CommandTraits::KCI_a:
     case CommandTraits::KCI_e:
     case CommandTraits::KCI_em:
+    case CommandTraits::KCI_n:
     case CommandTraits::KCI_copybrief:
     case CommandTraits::KCI_copydetails:
     case CommandTraits::KCI_copydoc:

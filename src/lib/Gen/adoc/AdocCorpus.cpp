@@ -196,7 +196,7 @@ operator()(
     for(auto const& child : children.subspan(1))
     {
         if(non_empty)
-            dest_.push_back(' ');
+            dest_.push_back('\n');
         non_empty = write(*child, *this);
     }
     dest_.push_back('\n');
@@ -227,7 +227,7 @@ operator()(
     for(auto const& child : children.subspan(1))
     {
         if(non_empty)
-            dest_.push_back(' ');
+            dest_.push_back('\n');
         non_empty = write(*child, *this);
     }
     dest_.push_back('\n');
@@ -265,6 +265,9 @@ operator()(doc::Text const& I)
     // Asciidoc text must not have leading
     // else they can be rendered up as code.
     std::string_view s = trim(I.string);
+    // Render empty lines as paragraph delimiters.
+    if(s.empty())
+        s = "\n";
     dest_.append(escapeAdoc(s));
 }
 
