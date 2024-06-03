@@ -99,6 +99,7 @@ COMMON_OPTION (verbose                 , verbose                 , True if more 
 COMMON_OPTION (report                  , report                  , The minimum reporting level: 0 to 4)
 COMMON_OPTION (ignoreMapErrors         , ignore-map-errors       , Continue if files are not mapped correctly)
 COMMON_OPTION (ignoreFailures          , ignore-failures         , Whether AST visitation failures should not stop the program)
+COMMON_OPTION (detectSfinae            , detect-sfinae           , Whether to detect the SFINAE idiom)
 
 #ifdef INCLUDE_OPTION_OBJECTS
 #undef INCLUDE_OPTION_OBJECTS

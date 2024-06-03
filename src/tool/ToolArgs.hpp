@@ -144,6 +144,9 @@ public:
      */
     llvm::cl::list<std::string> implementationDefined;
 
+    /** Whether to detect the SFINAE idiom.
+     */
+    llvm::cl::opt<bool> detectSfinae;
 
     /// Apply the command line options to the settings
     Expected<void>

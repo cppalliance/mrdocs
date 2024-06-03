@@ -1456,6 +1456,318 @@ public:
     #endif
     }
 
+    const NonTypeTemplateParmDecl*
+    getNTTPFromExpr(
+        const Expr* E,
+        unsigned Depth)
+    {
+        while(true)
+        {
+            if(const auto* ICE = dyn_cast<ImplicitCastExpr>(E))
+            {
+                E = ICE->getSubExpr();
+                continue;
+            }
+            if(const auto* CE = dyn_cast<ConstantExpr>(E))
+            {
+                E = CE->getSubExpr();
+                continue;
+            }
+            if(const auto* SNTTPE = dyn_cast<SubstNonTypeTemplateParmExpr>(E))
+            {
+                E = SNTTPE->getReplacement();
+                continue;
+            }
+            if(const auto* CCE = dyn_cast<CXXConstructExpr>(E);
+                CCE && CCE->getParenOrBraceRange().isInvalid())
+            {
+                // look through implicit copy construction from an lvalue of the same type
+                E = CCE->getArg(0);
+                continue;
+            }
+            break;
+        }
+
+        const auto* DRE = dyn_cast<DeclRefExpr>(E);
+        if(! DRE)
+            return nullptr;
+
+        const auto* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(DRE->getDecl());
+        if(! NTTPD || NTTPD->getDepth() != Depth)
+            return nullptr;
+
+        return NTTPD;
+    }
+
+    std::optional<TemplateArgument>
+    tryGetTemplateArgument(
+        TemplateParameterList* Parameters,
+        ArrayRef<TemplateArgument> Arguments,
+        unsigned Index)
+    {
+        if(Index == -1)
+            return std::nullopt;
+        if(Index < Arguments.size())
+            return Arguments[Index];
+        if(Parameters && Index < Parameters->size())
+        {
+            NamedDecl* ND = Parameters->getParam(Index);
+            if(auto* TTPD = dyn_cast<TemplateTypeParmDecl>(ND);
+                TTPD && TTPD->hasDefaultArgument())
+            {
+                return TTPD->getDefaultArgument().getArgument();
+            }
+            if(auto* NTTPD = dyn_cast<NonTypeTemplateParmDecl>(ND);
+                NTTPD && NTTPD->hasDefaultArgument())
+            {
+                return NTTPD->getDefaultArgument().getArgument();
+            }
+        }
+        return std::nullopt;
+    }
+
+    std::optional<std::tuple<TemplateParameterList*, llvm::SmallBitVector, unsigned>>
+    isSFINAETemplate(
+        TemplateDecl* TD,
+        const IdentifierInfo* Member)
+    {
+        if(! TD)
+            return std::nullopt;
+
+        auto FindParam = [this](
+            ArrayRef<TemplateArgument> Arguments,
+            const TemplateArgument& Arg) -> unsigned
+        {
+            if(Arg.getKind() != TemplateArgument::Type)
+                return -1;
+            auto Found = std::ranges::find_if(Arguments, [&](const TemplateArgument& Other)
+            {
+                if(Other.getKind() != TemplateArgument::Type)
+                    return false;
+                return context_.hasSameType(Other.getAsType(), Arg.getAsType());
+            });
+            return Found != Arguments.end() ? Found - Arguments.data() : -1;
+        };
+
+        if(auto* ATD = dyn_cast<TypeAliasTemplateDecl>(TD))
+        {
+            auto Underlying = ATD->getTemplatedDecl()->getUnderlyingType();
+            auto sfinae_info = getSFINAETemplate(Underlying, !Member);
+            if(! sfinae_info)
+                return std::nullopt;
+            if(Member)
+                sfinae_info->Member = Member;
+            auto sfinae_result = isSFINAETemplate(
+                sfinae_info->Template, sfinae_info->Member);
+            if(! sfinae_result)
+                return std::nullopt;
+            auto [template_params, controlling_params, param_idx] = *sfinae_result;
+            auto param_arg = tryGetTemplateArgument(
+                template_params, sfinae_info->Arguments, param_idx);
+            if(! param_arg)
+                return std::nullopt;
+            unsigned ParamIdx = FindParam(ATD->getInjectedTemplateArgs(), *param_arg);
+            return std::make_tuple(ATD->getTemplateParameters(), std::move(controlling_params), ParamIdx);
+        }
+
+        auto* CTD = dyn_cast<ClassTemplateDecl>(TD);
+        if(! CTD)
+            return std::nullopt;
+
+        auto PrimaryArgs = CTD->getInjectedTemplateArgs();
+        llvm::SmallBitVector ControllingParams(PrimaryArgs.size());
+
+        QualType MemberType;
+        unsigned ParamIdx = -1;
+        auto IsMismatch = [&](CXXRecordDecl* RD, ArrayRef<TemplateArgument> Args)
+        {
+            if(! RD->hasDefinition())
+              return false;
+            auto MemberLookup = RD->lookup(Member);
+            QualType CurrentType;
+            if(MemberLookup.empty())
+            {
+                if(! RD->getNumBases())
+                    return false;
+                for(auto& Base : RD->bases())
+                {
+                    auto sfinae_info = getSFINAETemplate(Base.getType(), false);
+                    if(! sfinae_info)
+                    {
+                        // if the base is an opaque dependent type, we can't determine
+                        // whether it's a SFINAE type
+                        if(Base.getType()->isDependentType())
+                            return true;
+                        continue;
+                    }
+                    auto sfinae_result = isSFINAETemplate(
+                        sfinae_info->Template, Member);
+                    if(! sfinae_result)
+                        return true;
+
+                    auto [template_params, controlling_params, param_idx] = *sfinae_result;
+                    auto param_arg = tryGetTemplateArgument(
+                        template_params, sfinae_info->Arguments, param_idx);
+                    if(! param_arg)
+                        return true;
+                    auto CurrentTypeFromBase = param_arg->getAsType();
+                    if(CurrentType.isNull())
+                        CurrentType = CurrentTypeFromBase;
+                    else if(! context_.hasSameType(CurrentType, CurrentTypeFromBase))
+                        return true;
+                }
+                // didn't find a base that defines the specified member
+                if(CurrentType.isNull())
+                    return false;
+            }
+            else
+            {
+                // ambiguous lookup
+                if(! MemberLookup.isSingleResult())
+                    return true;
+                if(auto* TND = dyn_cast<TypedefNameDecl>(MemberLookup.front()))
+                    CurrentType = TND->getUnderlyingType();
+                else
+                    // the specialization has a member with the right name,
+                    // but it isn't an alias declaration/typedef declaration...
+                    return true;
+            }
+
+            #if 0
+            if(! CurrentType->isDependentType())
+                return ! context_.hasSameType(MemberType, CurrentType);
+
+            auto FoundIdx = FindParam(Args, TemplateArgument(CurrentType));
+            if(ParamIdx != -1 && FoundIdx != ParamIdx)
+                return true;
+
+            ParamIdx = FoundIdx;
+            #endif
+
+            if(CurrentType->isDependentType())
+            {
+                auto FoundIdx = FindParam(Args, TemplateArgument(CurrentType));
+                if(FoundIdx == -1 || FoundIdx >= PrimaryArgs.size())
+                    return true;
+                ParamIdx = FoundIdx;
+                TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
+                assert(MappedPrimary.getKind() == TemplateArgument::Type);
+                CurrentType = MappedPrimary.getAsType();
+            }
+
+            if(MemberType.isNull())
+                MemberType = CurrentType;
+
+            return ! context_.hasSameType(MemberType, CurrentType);
+        };
+
+        if (IsMismatch(CTD->getTemplatedDecl(), PrimaryArgs))
+            return std::nullopt;
+
+        for(auto* CTSD : CTD->specializations())
+        {
+            if(CTSD->isExplicitSpecialization() &&
+                IsMismatch(CTSD, CTSD->getTemplateArgs().asArray()))
+                return std::nullopt;
+        }
+
+        SmallVector<ClassTemplatePartialSpecializationDecl*> PartialSpecs;
+        CTD->getPartialSpecializations(PartialSpecs);
+
+        for(auto* CTPSD : PartialSpecs)
+        {
+            auto PartialArgs = CTPSD->getTemplateArgs().asArray();
+            if(IsMismatch(CTPSD, PartialArgs))
+                return std::nullopt;
+            for(std::size_t I = 0; I < PartialArgs.size(); ++I)
+            {
+                TemplateArgument Arg = PartialArgs[I];
+                switch(Arg.getKind())
+                {
+                case TemplateArgument::Integral:
+                case TemplateArgument::Declaration:
+                case TemplateArgument::StructuralValue:
+                case TemplateArgument::NullPtr:
+                    break;
+                case TemplateArgument::Expression:
+                    if(getNTTPFromExpr(
+                        Arg.getAsExpr(),
+                        CTPSD->getTemplateDepth() - 1))
+                        continue;
+                    break;
+                default:
+                    continue;
+                }
+                ControllingParams.set(I);
+                //.getAsExpr()
+            }
+        }
+
+        return std::make_tuple(CTD->getTemplateParameters(), std::move(ControllingParams), ParamIdx);
+    }
+
+    struct SFINAEInfo
+    {
+        TemplateDecl* Template = nullptr;
+        const IdentifierInfo* Member = nullptr;
+        ArrayRef<TemplateArgument> Arguments;
+    };
+
+    std::optional<SFINAEInfo>
+    getSFINAETemplate(QualType T, bool AllowDependentNames)
+    {
+        assert(!T.isNull());
+        SFINAEInfo SFINAE;
+        if(auto* ET = T->getAs<ElaboratedType>())
+            T = ET->getNamedType();
+
+        if(auto* DNT = T->getAsAdjusted<DependentNameType>();
+            DNT && AllowDependentNames)
+        {
+            SFINAE.Member = DNT->getIdentifier();
+            T = QualType(DNT->getQualifier()->getAsType(), 0);
+        }
+
+        if(auto* TST = T->getAsAdjusted<TemplateSpecializationType>())
+        {
+            SFINAE.Template = TST->getTemplateName().getAsTemplateDecl();
+            SFINAE.Arguments = TST->template_arguments();
+            return SFINAE;
+        }
+        return std::nullopt;
+    }
+
+    std::optional<std::pair<QualType, std::vector<TemplateArgument>>>
+    isSFINAEType(QualType T)
+    {
+        auto sfinae_info = getSFINAETemplate(T, true);
+        if(! sfinae_info)
+            return std::nullopt;
+
+        auto sfinae_result = isSFINAETemplate(
+            sfinae_info->Template, sfinae_info->Member);
+
+        if(! sfinae_result)
+            return std::nullopt;
+
+        auto [template_params, controlling_params, param_idx] = *sfinae_result;
+
+        auto Args = sfinae_info->Arguments;
+        auto param_arg = tryGetTemplateArgument(
+            template_params, Args, param_idx);
+        if(! param_arg)
+            return std::nullopt;
+
+        std::vector<TemplateArgument> ControllingArgs;
+        for(std::size_t I = 0; I < Args.size(); ++I)
+        {
+            if(controlling_params[I])
+                ControllingArgs.emplace_back(Args[I]);
+        }
+
+        return std::make_pair(param_arg->getAsType(), std::move(ControllingArgs));
+    }
+
     std::string
     extractName(
         const NamedDecl* D)
@@ -3752,6 +4064,13 @@ buildTypeInfo(
     ExtractionScope scope = enterMode(extract_mode);
     // build the TypeInfo representation for the type
     TypeInfoBuilder Builder(*this);
+
+    if(config_->detectSfinae)
+    {
+      if(auto SFINAE = isSFINAEType(qt); SFINAE.has_value())
+          qt = SFINAE->first.withFastQualifiers(qt.getLocalFastQualifiers());
+    }
+
     Builder.Visit(qt);
     return Builder.result();
 }

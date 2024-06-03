@@ -67,6 +67,7 @@ EXAMPLES:
 , filters(filtersCat)
 , seeBelow(llvm::cl::cat(filtersCat))
 , implementationDefined(llvm::cl::cat(filtersCat))
+, detectSfinae(llvm::cl::cat(extraCat))
 {}
 
 ToolArgs::

@@ -207,6 +207,10 @@ public:
          */
         std::vector<std::string> implementationDefined;
 
+        /** Whether to detect the SFINAE idiom.
+         */
+        bool detectSfinae = true;
+
         constexpr Settings const*
         operator->() const noexcept
         {
