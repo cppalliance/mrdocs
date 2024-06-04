@@ -3674,6 +3674,17 @@ registerAntoraHelpers(Handlebars& hbs)
     hbs.registerHelper("year", dom::makeInvocable(year_fn));
 }
 
+void
+registerLogicalHelpers(Handlebars& hbs)
+{
+    hbs.registerHelper("and", dom::makeVariadicInvocable(and_fn));
+    hbs.registerHelper("eq", dom::makeVariadicInvocable(eq_fn));
+    hbs.registerHelper("ne", dom::makeVariadicInvocable(ne_fn));
+    hbs.registerHelper("not", dom::makeVariadicInvocable(not_fn));
+    hbs.registerHelper("or", dom::makeVariadicInvocable(or_fn));
+    hbs.registerHelper("select", dom::makeInvocable(select_fn));
+}
+
 bool
 and_fn(dom::Array const& args)
 {
@@ -3747,6 +3758,16 @@ increment_fn(dom::Value const& value)
         return value + 1;
     }
     return 1;
+}
+
+dom::Value
+select_fn(
+    dom::Value condition,
+    dom::Value result_true,
+    dom::Value result_false)
+{
+    return isEmpty(condition) ?
+        result_false : result_true;
 }
 
 dom::Value

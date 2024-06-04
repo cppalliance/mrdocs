@@ -1044,6 +1044,17 @@ MRDOCS_DECL
 void
 registerAntoraHelpers(Handlebars& hbs);
 
+/** Register logical helpers into a Handlebars instance
+
+    This function registers a number of common helpers that perform
+    logical operations.
+
+    @param hbs The Handlebars instance to register the helpers into
+ */
+MRDOCS_DECL
+void
+registerLogicalHelpers(Handlebars& hbs);
+
 /** Register string helpers into a Handlebars instance
 
     This function registers a number of common helpers that operate on
@@ -1129,6 +1140,18 @@ ne_fn(dom::Array const& args);
 MRDOCS_DECL
 bool
 not_fn(dom::Array const& arg);
+
+/** "select" helper function
+ *
+ *  The "select" helper returns the second argument if the first argument is
+ *  truthy, and the third argument otherwise.
+ */
+MRDOCS_DECL
+dom::Value
+select_fn(
+    dom::Value condition,
+    dom::Value result_true,
+    dom::Value result_false);
 
 /** "increment" helper function
  *
