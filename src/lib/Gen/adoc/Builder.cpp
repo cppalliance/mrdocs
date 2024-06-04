@@ -119,6 +119,7 @@ Builder(
 
     helpers::registerStringHelpers(hbs_);
     helpers::registerAntoraHelpers(hbs_);
+    helpers::registerLogicalHelpers(hbs_);
     helpers::registerContainerHelpers(hbs_);
 }
 

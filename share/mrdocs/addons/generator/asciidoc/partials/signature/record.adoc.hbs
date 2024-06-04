@@ -1,6 +1,6 @@
 {{#if symbol.template}}{{>template-head symbol.template}}
 {{/if~}}
-{{#if isFriend}}friend {{/if}}{{symbol.tag}} {{>declarator-id symbol link=symbol.template.primary~}}
+{{#if isFriend}}friend {{/if}}{{symbol.tag}} {{>declarator-id symbol link=(select link link symbol.template.primary)~}}
 {{#unless symbol.bases~}}
 {{else if isFriend~}}
 {{else}}
