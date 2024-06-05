@@ -186,6 +186,21 @@ std::string
 normalizePath(
     std::string_view pathName);
 
+/** Return a normalized directory.
+
+    This function returns a new directory path based on
+    applying the changes defined by @ref normalizePath
+    and @ref makeDirsy.
+
+    @return The normalized path.
+
+    @param pathName The relative or absolute path.
+*/
+MRDOCS_DECL
+std::string
+normalizeDir(
+    std::string_view pathName);
+
 /** Return the parent directory.
 
     If the parent directory is defined, the returned
@@ -296,6 +311,20 @@ appendPath(
 MRDOCS_DECL
 Error
 requireDirectory(
+    std::string_view pathName);
+
+/** Determine if a path is a directory.
+*/
+MRDOCS_DECL
+bool
+isDirectory(
+    std::string_view pathName);
+
+/** Determine if a path is a directory.
+*/
+MRDOCS_DECL
+bool
+exists(
     std::string_view pathName);
 
 /** Return the relevant suffix of a source file path.

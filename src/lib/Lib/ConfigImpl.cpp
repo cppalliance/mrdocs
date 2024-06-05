@@ -17,112 +17,13 @@
 #include "lib/Support/Yaml.hpp"
 #include "lib/Support/Glob.hpp"
 #include <mrdocs/Support/Path.hpp>
+#include <utility>
 #include <clang/Tooling/AllTUsExecution.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
-
-//------------------------------------------------
-//
-// YAML
-//
-//------------------------------------------------
-
-using ConfigImpl = clang::mrdocs::ConfigImpl;
-using SettingsImpl = ConfigImpl::SettingsImpl;
-
-template<>
-struct llvm::yaml::MappingTraits<
-    SettingsImpl::FileFilter>
-{
-    static void mapping(IO& io,
-        SettingsImpl::FileFilter& f)
-    {
-        io.mapOptional("include", f.include);
-        io.mapOptional("file-patterns", f.filePatterns);
-    }
-};
-
-template<>
-struct llvm::yaml::ScalarEnumerationTraits<
-    SettingsImpl::ExtractPolicy>
-{
-    using Policy = SettingsImpl::ExtractPolicy;
-
-    static void enumeration(IO& io,
-        Policy& value)
-    {
-        io.enumCase(value, "always", Policy::Always);
-        io.enumCase(value, "dependency", Policy::Dependency);
-        io.enumCase(value, "never", Policy::Never);
-    }
-};
-
-template<>
-struct llvm::yaml::MappingTraits<
-    SettingsImpl::Filters::Category>
-{
-    static void mapping(IO &io,
-        SettingsImpl::Filters::Category& f)
-    {
-        io.mapOptional("include", f.include);
-        io.mapOptional("exclude", f.exclude);
-    }
-};
-
-template<>
-struct llvm::yaml::MappingTraits<
-    SettingsImpl::Filters>
-{
-    static void mapping(IO &io,
-        SettingsImpl::Filters& f)
-    {
-        io.mapOptional("symbols", f.symbols);
-    }
-};
-
-template<>
-struct llvm::yaml::MappingTraits<SettingsImpl>
-{
-    static void mapping(IO& io,
-        SettingsImpl& cfg)
-    {
-        io.mapOptional("include",           cfg.ignoreFailures);
-        io.mapOptional("defines",           cfg.defines);
-        io.mapOptional("ignore-failures",   cfg.ignoreFailures);
-
-
-        // io.mapOptional("extract",           cfg.extract);
-        io.mapOptional("referenced-declarations", cfg.referencedDeclarations);
-        io.mapOptional("anonymous-namespaces",    cfg.anonymousNamespaces);
-        io.mapOptional("inaccessible-members",    cfg.inaccessibleMembers);
-        io.mapOptional("inaccessible-bases",      cfg.inaccessibleBases);
-
-        io.mapOptional("generate",          cfg.generate);
-        io.mapOptional("multipage",         cfg.multiPage);
-        io.mapOptional("source-root",       cfg.sourceRoot);
-        io.mapOptional("base-url",          cfg.baseURL);
-
-        io.mapOptional("input",             cfg.input);
-
-        io.mapOptional("filters",           cfg.filters);
-
-        // KRYSTIAN FIXME: This should really be done with mapping traits.
-        std::vector<std::string> seeBelow;
-        io.mapOptional("see-below", seeBelow);
-        for(std::string_view pattern : seeBelow)
-            cfg.seeBelow.emplace_back(pattern);
-
-        std::vector<std::string> implementationDefined;
-        io.mapOptional("implementation-defined", implementationDefined);
-        for(std::string_view pattern : implementationDefined)
-            cfg.implementationDefined.emplace_back(pattern);
-    }
-};
-
-//------------------------------------------------
 
 namespace clang {
 namespace mrdocs {
@@ -160,61 +61,42 @@ toDomObject(std::string_view configYaml);
 
 ConfigImpl::
 ConfigImpl(
-    llvm::StringRef workingDir,
-    llvm::StringRef addonsDir,
-    llvm::StringRef configYaml,
-    llvm::StringRef extraYaml,
+    Config::Settings const& publicSettings,
     std::shared_ptr<ConfigImpl const> baseConfig,
     ThreadPool& threadPool)
     : threadPool_(threadPool)
 {
-    if(baseConfig)
-        settings_ = baseConfig->settings_;
-
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    // Check working dir
-    if (!files::isAbsolute(workingDir))
+    // Copy the settings
+    if(baseConfig)
     {
-        formatError("working path \"{}\" is not absolute", workingDir).Throw();
+        settings_ = baseConfig->settings_;
     }
-    settings_.workingDir = files::makeDirsy(files::normalizePath(workingDir));
+    dynamic_cast<Config::Settings&>(settings_) = publicSettings;
+
+    // Check config dir
+    if (!files::isAbsolute(settings_.configDir))
+    {
+        formatError("Config path \"{}\" is not absolute", settings_.configDir).Throw();
+    }
+    settings_.configDir = files::makeDirsy(files::normalizePath(settings_.configDir));
 
     // Addons directory
+    settings_.addons = files::makeAbsolute(publicSettings.addons).value();
+    files::requireDirectory(settings_.addons).maybeThrow();
+    if (!files::isDirsy(settings_.addons))
     {
-        settings_.addonsDir = files::makeAbsolute(addonsDir).value();
-        files::requireDirectory(settings_.addonsDir).maybeThrow();
-        MRDOCS_ASSERT(files::isDirsy(settings_.addonsDir));
+        formatError("Addons path \"{}\" is not a directory", settings_.addons).Throw();
     }
 
     // Config strings
-    settings_.configYaml = configYaml;
-    settings_.extraYaml = extraYaml;
     configObj_ = toDomObject(settings_.configYaml);
-
-    // Parse the YAML strings
-    YamlReporter reporter;
-    {
-        llvm::yaml::Input yin(
-            settings_.configYaml,
-            &reporter,
-            reporter);
-        yin.setAllowUnknownKeys(true);
-        yin >> settings_;
-        Error(yin.error()).maybeThrow();
-    }
-    {
-        llvm::yaml::Input yin(settings_.extraYaml,
-            &reporter, reporter);
-        yin.setAllowUnknownKeys(true);
-        yin >> settings_;
-        Error(yin.error()).maybeThrow();
-    }
 
     // Source root has to be forward slash style
     settings_.sourceRoot = files::makePosixStyle(files::makeDirsy(
-        files::makeAbsolute(settings_.sourceRoot, settings_.workingDir)));
+        files::makeAbsolute(settings_.sourceRoot, settings_.configDir)));
 
     // Base-URL has to be dirsy with forward slash style
     if (!settings_.baseURL.empty() && settings_.baseURL.back() != '/')
@@ -226,7 +108,7 @@ ConfigImpl(
     for (auto& name : settings_.input.include)
     {
         name = files::makePosixStyle(
-            files::makeAbsolute(name, settings_.workingDir));
+            files::makeAbsolute(name, settings_.configDir));
     }
 
     // Parse the filters
@@ -234,6 +116,11 @@ ConfigImpl(
         parseSymbolFilter(settings_.symbolFilter, pattern, true);
     for(std::string_view pattern : settings_.filters.symbols.include)
         parseSymbolFilter(settings_.symbolFilter, pattern, false);
+    for(std::string_view pattern: settings_.seeBelow)
+        settings_.seeBelowFilter.emplace_back(pattern);
+    for(std::string_view pattern: settings_.implementationDefined)
+        settings_.implementationDefinedFilter.emplace_back(pattern);
+
     settings_.symbolFilter.finalize(false, false, false);
 }
 
@@ -284,7 +171,7 @@ shouldExtractFromFile(
     if(! files::isAbsolute(filePath))
     {
         temp = files::makePosixStyle(
-            files::makeAbsolute(filePath, settings_.workingDir));
+            files::makeAbsolute(filePath, settings_.configDir));
     }
     else
     {
@@ -304,16 +191,13 @@ shouldExtractFromFile(
 
 Expected<std::shared_ptr<ConfigImpl const>>
 createConfig(
-    std::string_view workingDir,
-    std::string_view addonsDir,
+    std::string_view configDir,
+    Config::Settings const& publicSettings,
     std::string_view configYaml,
     ThreadPool& threadPool)
 {
     return std::make_shared<ConfigImpl>(
-        workingDir,
-        addonsDir,
-        configYaml,
-        "",
+        publicSettings,
         nullptr,
         threadPool);
 }
@@ -321,32 +205,18 @@ createConfig(
 static
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfig(
-    std::string_view filePath,
-    std::string_view addonsDir,
-    std::string_view extraYaml,
+    Config::Settings const& publicSettings,
     std::shared_ptr<ConfigImpl const> const& baseConfig,
     ThreadPool& threadPool)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
-
-    std::string normFilePath = files::normalizePath(filePath);
-
-    // Load the config file into a string
-    MRDOCS_TRY(auto absConfigPath, files::makeAbsolute(normFilePath));
-    MRDOCS_TRY(auto configYaml, files::getFileText(absConfigPath));
-
-    // Calculate the working directory
-    auto workingDir = files::getParentDir(absConfigPath);
-
-    // Attempt to create the config
+    MRDOCS_CHECK(files::isAbsolute(publicSettings.config));
+    MRDOCS_CHECK(files::isAbsolute(publicSettings.configDir));
     try
     {
         return std::make_shared<ConfigImpl>(
-            workingDir,
-            addonsDir,
-            configYaml,
-            extraYaml,
+            publicSettings,
             baseConfig,
             threadPool);
     }
@@ -358,16 +228,12 @@ loadConfig(
 
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
-    std::string_view configFilePath,
-    std::string_view addonsDir,
-    std::string_view extraYaml,
-    std::shared_ptr<ConfigImpl const> baseConfig,
+    Config::Settings const& publicSettings,
+    std::shared_ptr<ConfigImpl const> const& baseConfig,
     ThreadPool& threadPool)
 {
     return loadConfig(
-        configFilePath,
-        addonsDir,
-        extraYaml,
+        publicSettings,
         baseConfig,
         threadPool);
 }

@@ -20,15 +20,12 @@ namespace mrdocs {
 
 /** Set the addons directory using the argument as a hint.
 
-
-
     @return The error if any occurred.
 */
 Expected<void>
 setupAddonsDir(
-    llvm::cl::opt<std::string>& addonsDirArg,
-    char const* argv0,
-    void* addressOfMain);
+    std::string& addonsDirArg,
+    std::string_view execPath);
 
 } // mrdocs
 } // clang

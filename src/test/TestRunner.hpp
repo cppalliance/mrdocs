@@ -58,11 +58,13 @@ class TestRunner
         llvm::StringRef filePath,
         llvm::StringRef contents);
 
-    void handleFile(
+    void
+    handleFile(
         llvm::StringRef filePath,
         std::shared_ptr<ConfigImpl const> config);
 
-    void handleDir(
+    void
+    handleDir(
         std::string dirPath,
         std::shared_ptr<ConfigImpl const> config);
 

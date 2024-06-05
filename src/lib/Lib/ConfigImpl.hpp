@@ -39,90 +39,6 @@ class ConfigImpl
 public:
     struct SettingsImpl : Settings
     {
-        /** Extraction policy for declarations.
-
-            This determines how declarations are extracted.
-
-         */
-        enum class ExtractPolicy
-        {
-            /// Always extract the declaration.
-            Always,
-            /// Extract the declaration if it is referenced.
-            Dependency,
-            /// Never extract the declaration.
-            Never
-        };
-
-        /** Extraction policy for references to external declarations.
-
-            This determines how declarations which are referenced by
-            explicitly extracted declarations are extracted.
-         */
-        ExtractPolicy referencedDeclarations = ExtractPolicy::Dependency;
-
-        /** Extraction policy for anonymous namespace.
-         */
-        ExtractPolicy anonymousNamespaces = ExtractPolicy::Always;
-
-        /** Extraction policy for inaccessible members.
-         */
-        ExtractPolicy inaccessibleMembers = ExtractPolicy::Always;
-
-        ExtractPolicy inaccessibleBases = ExtractPolicy::Always;
-
-        /** Additional defines passed to the compiler.
-        */
-        std::vector<std::string> defines;
-
-        /** `true` if AST visitation failures should not stop the program.
-
-            @code
-            ignore-failures: true
-            @endcode
-        */
-        bool ignoreFailures = false;
-
-        /** The full path to the source root directory.
-
-            The returned path will always be POSIX
-            style and have a trailing separator.
-        */
-        std::string sourceRoot;
-
-        /** Specifies files that should be filtered
-        */
-        struct FileFilter
-        {
-            /// Directories to include
-            std::vector<std::string> include;
-
-            /// File patterns
-            std::vector<std::string> filePatterns;
-        };
-
-        /// @copydoc FileFilter
-        FileFilter input;
-
-        /** Specifies filters for various kinds of symbols.
-        */
-        struct Filters
-        {
-            /** Specifies inclusion and exclusion patterns
-            */
-            struct Category
-            {
-                std::vector<std::string> include;
-                std::vector<std::string> exclude;
-            };
-
-            /// Specifies filter patterns for symbols
-            Category symbols;
-        };
-
-        /// @copydoc Filters
-        Filters filters;
-
         /** Symbol filter root node.
 
             Root node of a preparsed tree of FilterNodes
@@ -131,20 +47,13 @@ public:
         */
         FilterNode symbolFilter;
 
-        /** The base URL for the generated documentation.
-
-            This is used to generate links to sources
-            files referenced in the documentation.
-         */
-        std::string baseURL;
-
         /** Namespaces for symbols rendered as "see-below".
-        */
-        std::vector<FilterPattern> seeBelow;
+         */
+        std::vector<FilterPattern> seeBelowFilter;
 
         /** Namespaces for symbols rendered as "implementation-defined".
-        */
-        std::vector<FilterPattern> implementationDefined;
+         */
+        std::vector<FilterPattern> implementationDefinedFilter;
     };
 
     /// @copydoc Config::settings()
@@ -179,10 +88,7 @@ private:
 
 public:
     ConfigImpl(
-        llvm::StringRef workingDir,
-        llvm::StringRef addonsDir,
-        llvm::StringRef configYaml,
-        llvm::StringRef extraYaml,
+        Config::Settings const& publicSettings,
         std::shared_ptr<ConfigImpl const> baseConfig,
         ThreadPool& threadPool);
 
@@ -239,8 +145,7 @@ public:
     loadConfigFile(
         std::string_view filePath,
         std::string_view addonsDir,
-        std::string_view extraYaml,
-        std::shared_ptr<ConfigImpl const>,
+        std::shared_ptr<ConfigImpl const> const&,
         ThreadPool& threadPool);
 };
 
@@ -336,10 +241,8 @@ createConfig(
 MRDOCS_DECL
 Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
-    std::string_view filePath,
-    std::string_view addonsDir,
-    std::string_view extraYaml,
-    std::shared_ptr<ConfigImpl const> baseConfig,
+    Config::Settings const& publicSettings,
+    std::shared_ptr<ConfigImpl const> const& baseConfig,
     ThreadPool& threadPool);
 
 } // mrdocs

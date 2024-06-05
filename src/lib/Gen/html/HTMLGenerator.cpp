@@ -59,7 +59,7 @@ build(
     std::string_view outputPath,
     Corpus const& corpus) const
 {
-    if(! corpus.config->multiPage)
+    if(! corpus.config->multipage)
         return Generator::build(outputPath, corpus);
 
     HTMLCorpus domCorpus(corpus);

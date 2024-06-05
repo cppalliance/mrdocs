@@ -447,7 +447,7 @@ pushCMakeArgs(
 } // anonymous namespace
 
 Expected<std::string>
-executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs, llvm::StringRef tempDir)
+executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef cmakeArgs, llvm::StringRef buildDir)
 {
     MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "Project path does not exist");
     MRDOCS_TRY(auto const cmakePath, getCmakePath());
@@ -456,7 +456,7 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
     MRDOCS_CHECK(errorPath, "Failed to create temporary file");
 
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), errorPath.path()};
-    std::vector<llvm::StringRef> args = {cmakePath, "-S", projectPath, "-B", tempDir, "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
+    std::vector<llvm::StringRef> args = {cmakePath, "-S", projectPath, "-B", buildDir, "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
 
     auto const additionalArgs = parseBashArgs(cmakeArgs.str());
     MRDOCS_TRY(pushCMakeArgs(cmakePath, args, additionalArgs));
@@ -468,7 +468,7 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
         return Unexpected(Error("CMake execution failed: \n" + bufferOrError.get()->getBuffer().str()));
     }
 
-    llvm::SmallString<128> compileCommandsPath(tempDir);
+    llvm::SmallString<128> compileCommandsPath(buildDir);
     llvm::sys::path::append(compileCommandsPath, "compile_commands.json");
 
     MRDOCS_CHECK(
