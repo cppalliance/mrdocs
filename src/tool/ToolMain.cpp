@@ -9,7 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "Addons.hpp"
 #include "ToolArgs.hpp"
 #include "lib/Support/Debug.hpp"
 #include "lib/Support/Error.hpp"
@@ -26,8 +25,13 @@ extern int main(int argc, char const** argv);
 namespace clang {
 namespace mrdocs {
 
-extern int DoTestAction();
-extern Expected<void> DoGenerateAction();
+extern
+int
+DoTestAction();
+
+extern
+Expected<void>
+DoGenerateAction(std::string_view execPath, char const** argv);
 
 void
 print_version(llvm::raw_ostream& os)
@@ -51,14 +55,14 @@ mrdocs_main(int argc, char const** argv)
     llvm::cl::SetVersionPrinter(&print_version);
     toolArgs.hideForeignOptions();
     if (!llvm::cl::ParseCommandLineOptions(
-            argc, argv, toolArgs.usageText))
+        argc, argv, toolArgs.usageText))
     {
         return EXIT_FAILURE;
     }
 
-    // Apply reportLevel
+    // Apply report level
     report::setMinimumLevel(report::getLevel(
-        toolArgs.reportLevel.getValue()));
+        toolArgs.report.getValue()));
 
     // Set up addons directory
 #ifdef __GNUC__
@@ -70,23 +74,10 @@ mrdocs_main(int argc, char const** argv)
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif
-    auto exp = setupAddonsDir(
-            toolArgs.addonsDir,argv[0], addressOfMain);
-    if (!exp)
-    {
-        report::error(
-            "{}: \"{}\"\n"
-            "Could not locate the addons directory because "
-            "the MRDOCS_ADDONS_DIR environment variable is not set, "
-            "no valid addons location was specified on the command line, "
-            "and no addons directory exists in the same directory as "
-            "the executable.",
-            exp.error(), toolArgs.addonsDir);
-        return EXIT_FAILURE;
-    }
+    std::string execPath = llvm::sys::fs::getMainExecutable(argv[0], addressOfMain);
 
     // Generate
-    exp = DoGenerateAction();
+    auto exp = DoGenerateAction(execPath, argv);
     if (!exp)
     {
         report::error("Generating reference failed: {}", exp.error().message());

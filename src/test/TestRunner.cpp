@@ -83,12 +83,15 @@ handleFile(
         if(ft.value() != files::FileType::regular)
             return report::error("{}: \"{}\"",
                 Error("not a regular file"), configPath);
+        Config::Settings publicSettings = config->settings();
+        publicSettings.config = configPath;
+        publicSettings.configDir = files::getParentDir(filePath);
+        publicSettings.configYaml = files::getFileText(publicSettings.config).value();
+        loadConfig(publicSettings, publicSettings.configYaml).value();
         auto configFile = loadConfigFile(
-            configPath,
-                "",
-                "",
-                config,
-                threadPool_);
+            publicSettings,
+            config,
+            threadPool_);
         if(! configFile)
             return report::error("{}: \"{}\"",
                 configPath, configFile.error());
@@ -104,13 +107,13 @@ handleFile(
     SmallPathString expectedPath = filePath;
     path::replace_extension(expectedPath, xmlGen_->fileExtension());
 
-    auto workingDir = files::getParentDir(filePath);
+    auto parentDir = files::getParentDir(filePath);
 
     std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
 
     // Convert relative paths to absolute
     MrDocsCompilationDatabase compilations(
-        llvm::StringRef(workingDir), SingleFileDB(filePath), config, defaultIncludePaths);
+        llvm::StringRef(parentDir), SingleFileDB(filePath), config, defaultIncludePaths);
     // Build Corpus
     auto corpus = CorpusImpl::build(
         report::Level::debug, config, compilations);
@@ -161,6 +164,11 @@ handleFile(
             // mismatch
             report::error("{}: \"{}\"",
                 Error("incorrect results"), filePath);
+            auto res = test_suite::diffStrings(
+                expectedXml->getBuffer(), generatedXml);
+            report::error("{} lines added", res.added);
+            report::error("{} lines removed", res.removed);
+            report::error("Diff:\n{}", res.diff);
 
             if(testArgs.badOption.getValue())
             {
@@ -208,6 +216,54 @@ handleFile(
     }
 }
 
+namespace {
+    Expected<void>
+    loadTestDirConfig(
+        std::string const& dirPath,
+        std::shared_ptr<ConfigImpl const>& config,
+        ThreadPool& threadPool)
+    {
+        namespace fs = llvm::sys::fs;
+        namespace path = llvm::sys::path;
+
+        auto configPath = files::appendPath(dirPath, "mrdocs.yml");
+        auto ft = files::getFileType(configPath);
+        if(! ft)
+        {
+            report::error("{}: \"{}\"", ft.error(), configPath);
+            return ft.error();
+        }
+        if(ft.value() == files::FileType::regular)
+        {
+            Config::Settings publicSettings;
+            publicSettings.config = configPath;
+            publicSettings.configDir = dirPath;
+            publicSettings.configYaml = files::getFileText(publicSettings.config).value();
+            loadConfig(publicSettings, publicSettings.configYaml).value();
+            publicSettings.sourceRoot = files::makeAbsolute(
+                publicSettings.sourceRoot,
+                publicSettings.configDir);
+            auto configFile = loadConfigFile(
+                publicSettings,
+                config,
+                threadPool);
+            if(! configFile)
+            {
+                report::error("{}: \"{}\"", configPath, configFile.error());
+                return configFile.error();
+            }
+
+            config = configFile.value();
+        }
+        else if(ft.value() != files::FileType::not_found)
+        {
+            report::error("{}: \"{}\"", Error("not a regular file"), configPath);
+            return Error("not a regular file");
+        }
+        return {};
+    }
+}
+
 void
 TestRunner::
 handleDir(
@@ -221,63 +277,34 @@ handleDir(
 
     results.numberOfDirs++;
 
-    // Set up directory iterator
+    // Load a directory-wide config file
+    if (auto e = loadTestDirConfig(dirPath, config, threadPool_); !e)
+        return;
+    if(! config)
+        return report::error("missing configuration: \"{}\"", dirPath);
+
+    // Visit each file in the directory
     std::error_code ec;
     fs::directory_iterator const end{};
     fs::directory_iterator iter(dirPath, ec, false);
     if(ec)
         return report::error("{}: \"{}\"", dirPath, Error(ec));
-
-    // Check for a directory-wide config
-    {
-        auto configPath = files::appendPath(dirPath, "mrdocs.yml");
-        auto ft = files::getFileType(configPath);
-        if(! ft)
-            return report::error("{}: \"{}\"",
-                ft.error(), configPath);
-        if(ft.value() == files::FileType::regular)
-        {
-            auto configFile = loadConfigFile(
-                configPath,
-                "",
-                "",
-                config,
-                threadPool_);
-            if(! configFile)
-                return report::error("{}: \"{}\"",
-                    configPath, configFile.error());
-            config = configFile.value();
-        }
-        else if(ft.value() != files::FileType::not_found)
-        {
-            return report::error("{}: \"{}\"",
-                Error("not a regular file"), configPath);
-        }
-    }
-
-    if(! config)
-        return report::error("missing configuration: \"{}\"", dirPath);
-
-    // Visit each item in the directory
     while(iter != end)
     {
-        if(iter->type() == fs::file_type::directory_file)
+        auto const& entry = *iter;
+        if(entry.type() == fs::file_type::directory_file)
         {
-            handleDir(iter->path(), config);
+            handleDir(entry.path(), config);
         }
         else if(
-            iter->type() == fs::file_type::regular_file &&
-            path::extension(iter->path()).equals_insensitive(".cpp"))
+            entry.type() == fs::file_type::regular_file &&
+            path::extension(entry.path()).equals_insensitive(".cpp"))
         {
             threadPool_.async(
-                [this, config, filePath = SmallPathString(iter->path())]
+                [this, config, filePath = SmallPathString(entry.path())]
                 {
                     handleFile(filePath, config);
                 });
-        }
-        else
-        {
-            // we don't handle this type
         }
         iter.increment(ec);
         if(ec)
@@ -326,10 +353,13 @@ checkPath(
                     ft.error(), configPath);
             if(ft.value() == files::FileType::regular)
             {
+                Config::Settings publicSettings;
+                publicSettings.config = configPath;
+                publicSettings.configDir = files::getParentDir(inputPath);
+                publicSettings.configYaml = files::getFileText(publicSettings.config).value();
+                loadConfig(publicSettings, publicSettings.configYaml).value();
                 auto configFile = loadConfigFile(
-                    configPath,
-                    "",
-                    "",
+                    publicSettings,
                     config,
                     threadPool_);
                 if(! configFile)

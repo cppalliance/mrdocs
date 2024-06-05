@@ -111,29 +111,17 @@ loadOptions(
             return Unexpected(Error(ec));
     }
 
-    // extra
-    {
-        llvm::yaml::Input yin(
-            corpus.config->extraYaml,
-                &reporter, reporter);
-        yin.setAllowUnknownKeys(true);
-        yin >> opt;
-        if(auto ec = yin.error())
-            return Unexpected(Error(ec));
-    }
-
     // adjust relative paths
-
     if(! opt.template_dir.empty())
     {
         opt.template_dir = files::makeAbsolute(
             opt.template_dir,
-            corpus.config->workingDir);
+            corpus.config->configDir);
     }
     else
     {
         opt.template_dir = files::makeDirsy(files::appendPath(
-            corpus.config->addonsDir,
+            corpus.config->addons,
             "generator",
             "asciidoc"
         ));
@@ -144,12 +132,12 @@ loadOptions(
         opt.template_dir = files::makeDirsy(
             files::makeAbsolute(
                 opt.template_dir,
-                corpus.config->workingDir));
+                corpus.config->configDir));
     }
     else
     {
         opt.template_dir = files::makeDirsy(files::appendPath(
-            corpus.config->addonsDir,
+            corpus.config->addons,
             "generator",
             "asciidoc"
         ));

@@ -40,7 +40,7 @@ Builder(
 
     // load partials
     std::string partialsPath = files::appendPath(
-        config->addonsDir, "generator", "html", "partials");
+        config->addons, "generator", "html", "partials");
     forEachFile(partialsPath, true,
         [&](std::string_view pathName) -> Error
         {
@@ -62,7 +62,7 @@ Builder(
 
     // Load JavaScript helpers
     std::string helpersPath = files::appendPath(
-        config->addonsDir, "generator", "html", "helpers");
+        config->addons, "generator", "html", "helpers");
     forEachFile(helpersPath, true,
         [&](std::string_view pathName)-> Expected<void>
         {
@@ -78,7 +78,7 @@ Builder(
 
     hbs_.registerHelper(
         "is_multipage",
-        dom::makeInvocable([res = config->multiPage]() -> Expected<dom::Value> {
+        dom::makeInvocable([res = config->multipage]() -> Expected<dom::Value> {
         return res;
     }));
 
@@ -138,7 +138,7 @@ callTemplate(
 
 
     auto Handlebars = scope.getGlobal("Handlebars");
-    auto layoutDir = files::appendPath(config->addonsDir,
+    auto layoutDir = files::appendPath(config->addons,
             "generator", "html", "layouts");
     auto pathName = files::appendPath(layoutDir, name);
     MRDOCS_TRY(auto fileText, files::getFileText(pathName));
@@ -174,7 +174,7 @@ Builder::
 getRelPrefix(std::size_t depth)
 {
     std::string rel_prefix;
-    if(! depth ||! domCorpus_->config->multiPage)
+    if(! depth ||! domCorpus_->config->multipage)
         return rel_prefix;
     --depth;
     rel_prefix.reserve(depth * 3);

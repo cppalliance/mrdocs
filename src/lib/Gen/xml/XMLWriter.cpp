@@ -132,15 +132,6 @@ build()
         if(auto ec = yin.error())
             return Error(ec);
     }
-    {
-        llvm::yaml::Input yin(
-            corpus_.config->extraYaml,
-                &reporter, reporter);
-        yin.setAllowUnknownKeys(true);
-        yin >> options_;
-        if(auto ec = yin.error())
-            return Error(ec);
-    }
 
     if(options_.prolog)
         os_ <<

@@ -152,8 +152,8 @@ isDirsy(
     if(pathName.empty())
         return false;
     if(! path::is_separator(
-        pathName.back(),
-            path::Style::native))
+           pathName.back(),
+           path::Style::native))
         return false;
     return true;
 }
@@ -163,10 +163,16 @@ normalizePath(
     std::string_view pathName)
 {
     namespace path = llvm::sys::path;
-
     SmallPathString result(pathName);
     path::remove_dots(result, true);
     return static_cast<std::string>(result.str());
+}
+
+std::string
+normalizeDir(
+    std::string_view pathName)
+{
+    return makeDirsy(normalizePath(pathName));
 }
 
 std::string
@@ -212,13 +218,14 @@ makeDirsy(
     namespace path = llvm::sys::path;
 
     std::string result = static_cast<std::string>(pathName);
-    if (!result.empty() &&
-        !path::is_separator(
-            result.back(),
-            path::Style::windows_slash))
+    if (!result.empty())
     {
-        auto const sep = path::get_separator(path::Style::native);
-        result.push_back(sep.front());
+        const char c = result.back();
+        if (!path::is_separator(c, path::Style::windows_slash))
+        {
+            auto const sep = path::get_separator(path::Style::native);
+            result.push_back(sep.front());
+        }
     }
     return result;
 }
@@ -352,6 +359,30 @@ requireDirectory(
     if(fileStatus.type() != fs::file_type::directory_file)
         return formatError("\"{}\" is not a directory", pathName);
     return Error::success();
+}
+
+bool
+isDirectory(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if(auto ec = fs::status(pathName, fileStatus))
+        return false;
+    if(fileStatus.type() != fs::file_type::directory_file)
+        return false;
+    return true;
+}
+
+bool
+exists(
+    std::string_view pathName)
+{
+    namespace fs = llvm::sys::fs;
+    fs::file_status fileStatus;
+    if(auto ec = fs::status(pathName, fileStatus))
+        return false;
+    return exists(fileStatus);
 }
 
 std::string_view

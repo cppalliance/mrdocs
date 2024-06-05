@@ -253,7 +253,7 @@ public:
             return std::string(new_path);
         };
 
-        std::string source_root = normalize_path(
+        std::string sourceRoot = normalize_path(
             config_->sourceRoot, true);
         std::vector<std::pair<std::string, FileKind>> search_dirs;
 
@@ -281,7 +281,7 @@ public:
             files_.emplace(file,
                 getFileInfo(search_dirs,
                     normalize_path(file_path, false),
-                    source_root));
+                    sourceRoot));
         };
 
         // build the file info for the main file
@@ -299,7 +299,7 @@ public:
         std::span<const std::pair<
             std::string, FileKind>> search_dirs,
         std::string_view file_path,
-        std::string_view source_root)
+        std::string_view sourceRoot)
     {
         using namespace llvm::sys;
         FileInfo file_info(file_path);
@@ -340,22 +340,22 @@ public:
             return false;
         };
 
-        bool in_source_root = check_dir(
-            source_root, FileKind::Source);
+        bool in_sourceRoot = check_dir(
+            sourceRoot, FileKind::Source);
 
-        // only use a source_root relative path if we
+        // only use a sourceRoot relative path if we
         // don't find anything in the include search directories
         bool any_match = false;
         for(const auto& [dir_path, kind] : search_dirs)
             any_match |= check_dir(dir_path, kind);
 
         // KRYSTIAN TODO: if we don't find any matches,
-        // make the path relative to source_root and return it
+        // make the path relative to sourceRoot and return it
         static_cast<void>(any_match);
 
         // override the file kind if
-        // the file was found in source_root
-        if(in_source_root)
+        // the file was found in sourceRoot
+        if(in_sourceRoot)
             file_info.kind = FileKind::Source;
 
         file_info.short_path.remove_prefix(best_length);
@@ -2500,16 +2500,16 @@ public:
         const NestedNameSpecifier* NNS,
         const Decl* D)
     {
-        if(isInSpecialNamespace(NNS, config_->seeBelow) ||
-            isInSpecialNamespace(D, config_->seeBelow))
+        if(isInSpecialNamespace(NNS, config_->seeBelowFilter) ||
+            isInSpecialNamespace(D, config_->seeBelowFilter))
         {
             I = std::make_unique<NameInfo>();
             I->Name = "see-below";
             return true;
         }
 
-        if(isInSpecialNamespace(NNS, config_->implementationDefined) ||
-            isInSpecialNamespace(D, config_->implementationDefined))
+        if(isInSpecialNamespace(NNS, config_->implementationDefinedFilter) ||
+            isInSpecialNamespace(D, config_->implementationDefinedFilter))
         {
             I = std::make_unique<NameInfo>();
             I->Name = "implementation-defined";

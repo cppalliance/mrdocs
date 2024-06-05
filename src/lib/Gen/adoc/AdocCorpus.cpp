@@ -549,8 +549,8 @@ std::string
 AdocCorpus::
 getXref(Info const& I) const
 {
-    bool multipage = getCorpus().config->multiPage;
-    // use '/' as the seperator for multi-page, and '-' for single-page
+    bool multipage = getCorpus().config->multipage;
+    // use '/' as the seperator for multipage, and '-' for single-page
     std::string xref = names_.getQualified(
         I.id, multipage ? '/' : '-');
     // add the file extension if in multipage mode
@@ -563,8 +563,8 @@ std::string
 AdocCorpus::
 getXref(OverloadSet const& os) const
 {
-    bool multipage = getCorpus().config->multiPage;
-    // use '/' as the seperator for multi-page, and '-' for single-page
+    bool multipage = getCorpus().config->multipage;
+    // use '/' as the seperator for multipage, and '-' for single-page
     std::string xref = names_.getQualified(
         os, multipage ? '/' : '-');
     // add the file extension if in multipage mode

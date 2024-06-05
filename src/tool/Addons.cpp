@@ -19,20 +19,12 @@ namespace mrdocs {
 
 Expected<void>
 setupAddonsDir(
-    llvm::cl::opt<std::string>& addonsDirArg,
-    char const* argv0,
-    void* addressOfMain)
+    std::string& addonsDirArg,
+    std::string_view execPath)
 {
-    // Set addons dir from command line argument
-    if (!addonsDirArg.getValue().empty())
+    if (!addonsDirArg.empty())
     {
-        MRDOCS_TRY(
-            std::string absPath,
-            files::makeAbsolute(addonsDirArg.getValue()));
-        std::string addonsDir = files::makeDirsy(
-            files::normalizePath(absPath));
-        MRDOCS_TRY(files::requireDirectory(addonsDir));
-        addonsDirArg.getValue() = addonsDir;
+        // Already set from mrdocs.yml or command line
         return {};
     }
 
@@ -44,19 +36,18 @@ setupAddonsDir(
         std::string addonsDir = files::makeDirsy(files::normalizePath(*addonsEnvVar));
         MRDOCS_TRY(files::requireAbsolute(addonsDir));
         MRDOCS_TRY(files::requireDirectory(addonsDir));
-        addonsDirArg.getValue() = addonsDir;
+        addonsDirArg = addonsDir;
         return {};
     }
 
     // Set addons dir from process working directory
-    std::string execPath = llvm::sys::fs::getMainExecutable(argv0, addressOfMain);
     MRDOCS_CHECK(execPath, "getMainExecutable failed");
     std::string binDir = files::getParentDir(execPath);
     std::string addonsDir = files::makeDirsy(files::appendPath(
             binDir, "..", "share", "mrdocs", "addons"));
     Error err = files::requireDirectory(addonsDir);
     MRDOCS_CHECK(err);
-    addonsDirArg.getValue() = addonsDir;
+    addonsDirArg = addonsDir;
     return {};
 }
 
