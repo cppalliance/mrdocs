@@ -1,5 +1,5 @@
 {{!-- record --}}
-= {{#if symbol.name}}Class {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed class{{/if}}
+= {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed class{{/if}}
 
 {{symbol.doc.brief}}
 

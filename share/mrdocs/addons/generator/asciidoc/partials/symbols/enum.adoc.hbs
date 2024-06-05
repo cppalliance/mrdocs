@@ -1,5 +1,5 @@
 {{!-- enum --}}
-= {{#if symbol.name}}Enum {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed enum{{/if}}
+= {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed enum{{/if}}
 
 {{symbol.doc.brief}}
 

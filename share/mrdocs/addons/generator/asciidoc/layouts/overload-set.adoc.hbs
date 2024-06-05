@@ -1,7 +1,7 @@
 {{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
 [#{{#if (is_multipage)}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}]
 
-= {{#if symbol.name}}Overload set {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
+= {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
 
 == Members
 
