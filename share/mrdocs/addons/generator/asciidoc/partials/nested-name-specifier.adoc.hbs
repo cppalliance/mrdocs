@@ -4,5 +4,6 @@
 {{else~}}
 {{/if~}}
 {{!-- {{#if symbol.name}}xref:{{symbol.ref}}[{{symbol.name}}]::{{/if~}} --}}
-{{#if symbol.name}}{{symbol.name}}::{{/if~}}
+{{!-- {{#if symbol.name}}{{symbol.name}}::{{/if~}} --}}
+{{#if symbol.name}}{{>declarator-id symbol link=symbol}}::{{/if~}}
 {{/if}}

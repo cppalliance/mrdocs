@@ -1,5 +1,5 @@
 {{!-- friend --}}
-= Friend {{#if symbol.symbol}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}
+= Friend {{#if symbol.symbol}}{{>nested-name-specifier symbol=symbol.symbol.parent includeNamespace=true}}{{symbol.symbol.name}}{{else}}{{symbol.type.name}}{{/if}}
 
 {{symbol.doc.brief}}
 

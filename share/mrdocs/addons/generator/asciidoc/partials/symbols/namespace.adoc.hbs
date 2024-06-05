@@ -1,5 +1,5 @@
 {{!-- namespace --}}
-= {{#if symbol.name}}Namespace {{>nested-name-specifier symbol=symbol.parent}}{{symbol.name}}{{else if symbol.parent}}Unnamed namespace{{else}}Global namespace{{/if}}
+= {{#if symbol.name}}Namespace {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else if symbol.parent}}Unnamed namespace{{else}}Global namespace{{/if}}
 
 {{> tranche tranche=symbol.interface label="" is-namespace=true}}
 
