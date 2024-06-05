@@ -8,6 +8,8 @@
 {{/if~}}
 {{#if symbol.isVirtual}}virtual
 {{/if~}}
+{{#if symbol.explicitSpec}}{{symbol.explicitSpec}}
+{{/if~}}
 {{#if (eq symbol.class "normal")}}{{>declarator-before symbol.return}}
 {{/if~}}
 {{>declarator-id symbol link=(select link link symbol.template.primary)}}
