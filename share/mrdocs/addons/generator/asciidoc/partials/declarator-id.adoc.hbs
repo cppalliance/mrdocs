@@ -3,7 +3,7 @@
 {{else if (eq kind "guide")~}}
     {{>declarator deduced nolink=nolink~}}
 {{else~}}
-    {{#if (and link.ref (not nolink))}}xref:{{link.ref}}[{{name}}]{{else}}{{name}}{{/if~}}
+    {{#if (and link.ref (not nolink))}}xref:{{link.ref}}[pass:[{{name}}]]{{else}}{{name}}{{/if~}}
     {{#if (or (eq template.kind "explicit") (eq template.kind "partial"))~}}
         {{>template-args args=template.args nolink=nolink~}}
     {{/if~}}
