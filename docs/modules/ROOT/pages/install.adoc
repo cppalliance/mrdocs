@@ -1,13 +1,15 @@
 = Install
 
 [#mrdocs-binaries]
-== Binaries
+== Binary Packages
 
 Binary packages are available from our https://github.com/cppalliance/mrdocs/releases[Release Page,window="_blank"].
 Most users should use these packages.
 
+mrdocs-releases::[]
+
 [#mrdocs-source]
-== Source
+== Install from Source
 
 The following instructions assume we are at a parent directory that's going to contain both the MrDocs and the third-party dependencies directories.
 

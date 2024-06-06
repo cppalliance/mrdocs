@@ -83,4 +83,5 @@ asciidoc:
   extensions:
     - '@asciidoctor/tabs'
     - ./extensions/mrdocs-demos.js
+    - ./extensions/mrdocs-releases.js
 
