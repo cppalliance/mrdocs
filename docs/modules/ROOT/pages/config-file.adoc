@@ -1,93 +1,294 @@
 = The Configuration File
 
+MrDocs uses a configuration file to control how the documentation is generated.
+The file is used to specify options such as the generator to use, additional compilation options, and filters.
+
+Here's an example of a configuration file:
+
+[source,yaml]
+--------
+include::partial$mrdocs-example.yml[]
+--------
+
+The xref:usage.adoc[Usage] page provides a detailed explanation of what to combine options from the configuration file and the command line.
+The <<config-options-reference>> section provides a detailed explanation of the options available.
+
+== Build Options
+
+A number of options can be used to specify with which compile options MrDocs should be run.
+
+[source,yaml]
+----
+source-root: ..
+compilation-database: ../CMakeLists.txt
+cmake: '-D MRDOCS_BUILD=ON'
+defines: 'MRDOCS_BUILD'
+----
+
+The compile options primarily come from the `compilation-database` file.
+When this file is generated from a `CMakeLists.txt` script, the `cmake` option can be used to specify additional options to pass to CMake.
+
+Additionally, the `defines` option can be used to specify preprocessor definitions that should be used when generating the documentation.
+These definitions are included in all targets of the compilation database.
+
+== Generators
+
+MrDocs supports multiple output formats that can be specified via the `generate` option:
+
+|===
+|Format |Description
+
+|`adoc`
+|AsciiDoc format.
+
+|`html`
+|HTML format.
+
+|`xml`
+|XML format.
+|===
+
+* Asciidoc is a text-based format that is easy to read and write.
+It can also be converted to other formats such as HTML and Markdown.
+
+* HTML can be generated directly with the `html` format.
+
+* XML is a structured format that can be used in tests or as an intermediary format for other tools.
+
+The `generate` option can be used to specify the output format:
+
+[source,yaml]
+----
+# ...
+generate: adoc
+# ...
+----
+
+=== Generator Templates
+
+MrDocs attempts to support various alternatives for customizing the output format and style without complex workflows to post-process XML output.
+For the Asciidoc and HTML generators, the desired customization can usually be achieved by modifying the templates used to generate the output.
+
+In the root of the installation directory, you will find the `share/mrdocs/addons/generator` directory.
+This directory contains the templates used to generate the documentation with the markup formats.
+Users can create a copy of these files and provide their own `addons` directory via the `addons` option.
+This allows users to customize the output format to their needs.
+
+[source,yaml]
+----
+addons: /path/to/custom/addons
+----
+
+One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph.
+If symbol `A` refers to symbol `B`, some properties of symbol `B` are likely to be required in the documentation of `A`.
+All templates and generators can access a reference to `B` by searching the symbol tree or simply by accessing the elements `A` refers to.
+
+// === Generator Plugins
+
+== Filters
+
+=== Symbol Filters
+
+Not all symbols in a project may be relevant to the documentation.
+MrDocs provides a way to filter out symbols based on their names.
+
 [,yaml]
 ----
-generate: # <.>
-concurrency: # <.>
-defines: # <.>
-ignore-failures: # <.>
-input:
-  include: # <.>
-multipage: # <.>
-source-root: # <.>
-filters: # <.>
-referenced-declarations: # <.>
-anonymous-namespaces: # <.>
-inaccessible-members: # <.>
-inaccessible-bases: # <.>
+filters:
+  symbols: # <.>
+    exclude: # <.>
+    include: # <.>
 ----
-<.> Optional `generate` key
-<.> Optional `concurrency` key
-<.> Optional `defines` key
-<.> Optional `ignore-failures` key
+
+<.> Optional `symbols` key
+<.> Optional `exclude` key
 <.> Optional `include` key
-<.> Optional `multipage` key
-<.> Optional `source-root` key
-<.> Optional `filters` key
-<.> Optional `referenced-declarations` key
-<.> Optional `anonymous-namespaces` key
-<.> Optional `inaccessible-members` key
-<.> Optional `inaccessible-bases` key
 
-== Available configuration keys
+Symbol filter patterns are specified using (optionally) qualified names, and may contain wildcards:
 
-[cols="3,6,1"]
+[,yaml]
+----
+filters:
+  symbols:
+    exclude:
+      - 'A::B'
+      - 'A::f*'
+----
+
+If a symbol matches a pattern in the exclude list, that symbol and its members will not be extracted:
+
+[,yaml]
+----
+filters:
+  symbols:
+    exclude:
+      - 'A'
+----
+
+[,cpp]
+----
+// ok, does not match any excluded pattern
+void f0();
+
+namespace A // matches the pattern 'A', will not be extracted
+{
+    // enclosing namespace matches an excluded pattern:
+    // the symbol will not be extracted
+    void f1();
+}
+----
+
+The `filters.symbols.include` key can be used to override the exclude list for specific symbols.
+A symbol which matches an included pattern and an excluded pattern will be extracted.
+
+This permits fine-grained control of extraction for individual members of a class or namespace:
+
+[,yaml]
+----
+filters:
+  symbols:
+    exclude:
+      - 'A'
+    include:
+      - 'A::g*'
+----
+
+[,cpp]
+----
+namespace A
+{
+    // enclosing namespace matches an excluded pattern, will not be extracted
+    void f0();
+
+    // ok, matches the pattern 'A::g*' which overrides the exclude list
+    void g0();
+}
+----
+
+In order for a filter pattern to match a symbol, it must consist of simple identifiers that match the name as written in its declaration: namespace aliases, typedef-names, and `decltype` specifiers naming the symbol cannot be used.
+
+NOTE: Specifying include patterns is only useful when the pattern would match a subset of symbols matched by an exclude pattern.
+An include pattern without a subsuming exclude pattern will be ignored.
+
+=== File Filters
+
+Symbols can also be filtered based on the files they are declared in.
+This can be useful for excluding files that exclusively contain implementation details or test code.
+
+[,yaml]
+----
+input:
+  include:
+      - ../include  # <.>
+  file-patterns:
+      - *.hpp       # <.>
+----
+
+<.> A list of directories to include.
+Only symbols defined in these files will be extracted.
+<.> A list of file patterns to include.
+Only symbols defined in files matching these patterns will be extracted.
+
+=== Private Symbols
+
+The `implementation-detail` and `see-below` options can be used to designate namespaces as implementation detail namespaces.
+
+[,yaml]
+----
+implementation-detail: 'impl'
+see-below: 'see_below'
+----
+
+If a namespace is designated as an implementation detail namespace, all symbols within that namespace will be marked as implementation details in the documentation.
+
+[,cpp]
+----
+namespace impl
+{
+    class A {};
+}
+
+/// @brief A foo function
+A foo();
+----
+
+The `impl` namespace is designated as an implementation detail namespace, so all symbols within it will be marked as implementation details in the documentation.
+This means the symbol `A` would not be documented and the function `foo` could be documented as follows:
+
+[,cpp]
+----
+/* implementation detail */ foo();
+----
+
+On the other hand, if a namespace is designated as a `see_below` namespace, all symbols within that namespace will be marked as "see below" in the documentation.
+
+[,cpp]
+----
+namespace see_below
+{
+    class B {};
+}
+----
+
+In the documentation, the symbol `B` would be marked as "see-below" and could be documented as:
+
+[,cpp]
+----
+class B { /* see below */ };
+----
+
+[#config-options-reference]
+== Reference
+
+=== Command Line Options
+
+The following options can be used to control the general behavior of MrDocs and can only be provided via the command line:
+
+[c-preprocessor]
+====
+
+[cols="1,2"]
 |===
-|Keys |Description |Required
+| Name | Description
 
-|concurrency
-|The generator to use. Supported generators are
-`adoc`, `html`, and `xml`. Defaults to `adoc`.
-|No
-
-|concurrency
-|The amount of parallelism desired. 0 to use
-the hardware-suggested concurrency.
-|No
-
-|defines
-|Additional preprocessor directives in the form "NAME=VALUE".
-|No
-
-|ignore-failures
-|Whether to ignore failures during symbol extraction. `true` or `false`.
-|No
-
-|include
-|The amount of parallelism desired. 0 to use
-the hardware-suggested concurrency.
-|No
-
-|multipage
-|Whether to emit the reference as a set of files or just one file. `true` or `false`.
-|No
-
-|source-root
-|The absolute or relative path to the directory containing the
-input file hierarchy.
-|No
-
-|filters
-|Patterns specifying symbols which should be included/excluded.
-See xref:filters[specifying filters] for details.
-|No
-
-|referenced-declarations
-|When to extract external declarations referenced by symbols.
-Unconditionally extracted when `always`, never extracted when `never`,
-and only extracted when used as a base class/deduced local class return type
-when set to `dependency`.
-|No
-
-|anonymous-namespaces
-|Whether to extract anonymous namespaces. `always` or `never`.
-|No
-
-|inaccessible-members
-|Whether to extract private/protected members. `always` or `never`.
-|No
-
-|inaccessible-bases
-|Whether to extract private/protected bases. `always` or `never`.
+#define CMDLINE_OPTION(Name, Kebab, Desc) | `pass:[Kebab]` | Desc
+include::partial$ConfigOptions.inc[]
 
 |===
+====
+
+* Any argument provided to MrDocs without a key is treated as one path in `inputs`.
+These can be paths to the configuration file `config`, the `compilation-database` (compilation database or build scripts), or the `source-root` directory.
+See the <<common-options>> section for more information on these options.
+
+* The `config` option can be used to explicitly specify a configuration file.
+Any path in `inputs` whose filename is `mrdocs.yml` will also be used as the configuration file.
+If no configuration file is provided via `inputs` or `config`, MrDocs will attempt to find `mrdocs.yml` in the current directory.
+
+[IMPORTANT]
+====
+The `config` path is interpreted relative to the current working directory by MrDocs.
+All other path options are interpreted relative to the `mrdocs.yml` configuration file.
+====
+
+[#common-options]
+=== Common Options
+
+The following options can be defined both in the configuration file and on the command line, where the command line options always take precedence.
+
+[c-preprocessor]
+====
+
+|===
+| Name | Description
+
+#define COMMON_OPTION(Name, Kebab, Desc) | `pass:[Kebab]` | Desc
+include::partial$ConfigOptions.inc[]
+
+|===
+====
+
+// == Custom commands / Command Aliases
+// ALIASES += sideeffect="\par Side Effects:^^"
+// ALIASES += l{1}="\ref \1"
+// See \l{SomeClass} for more information.
