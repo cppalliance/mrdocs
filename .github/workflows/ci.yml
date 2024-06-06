@@ -423,14 +423,20 @@ jobs:
             # "html"
             "xml"
           )
+          
           for variant in single multi; do
-            for format in "${generators[@]}"; do
+            for generator in "${generators[@]}"; do
               [[ $variant = multi ]] && multipage="true" || multipage="false"
-              sed -i "s/^\(\s*multipage:\s*\).*\$/\1$multipage/" $(pwd)/boost/libs/url/doc/mrdocs.yml
-              sed -i "s/^\(\s*generate:\s*\).*\$/\1$format/" $(pwd)/boost/libs/url/doc/mrdocs.yml
-              cat $(pwd)/boost/libs/url/doc/mrdocs.yml
-              mkdir -p "demos/boost-url/$variant/$format"
-              mrdocs --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" "$(pwd)/boost/libs/url/" --output="$(pwd)/demos/boost-url/$variant/$format"
+              # Override with cmd line option
+              mrdocs \
+                --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" \
+                "../CMakeLists.txt" \ 
+                --output="$(pwd)/demos/boost-url/$variant/$generator" \
+                --multipage=$multipage \
+                --generate="$$generator"
+                
+              # Print number of files (recursive) in the output directory
+              echo "Number of files in demos/boost-url/$variant/$format: $(find demos/boost-url/$variant/$format -type f | wc -l)"
             done
             asciidoctor -d book -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done
