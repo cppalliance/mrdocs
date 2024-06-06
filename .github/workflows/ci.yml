@@ -420,7 +420,7 @@ jobs:
           
           declare -a generators=(
             "adoc"
-            # "html"
+            "html"
             "xml"
           )
           
