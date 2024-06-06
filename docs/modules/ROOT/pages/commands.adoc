@@ -1,14 +1,99 @@
 = Commands
 
-These are the Doxygen-style "@" commands recognized by MrDocs:
+The code should be documented with the https://docs.oracle.com/en/java/javase/13/docs/specs/javadoc/doc-comment-spec.html[Doc Comment,window=_blank] format, also informally known as "javadoc" format or Doxygen-style comments.
 
-== Italics / Emphasis
-[]
-----
-@a   [word]
-@e   [word]
-@em  [word]
+In its most basic form, these are usually comment blocks between `pass:[/**]` and `pass:[*/]` placed above a class, function, or field declaration:
 
-<em>[text]</em>
+[source,c++]
 ----
+/** The main information about a person
+
+    This class represents a person with
+    a name and an age. This is the
+    information about a person that
+    we need to store in our system.
+ */
+struct person
+{
+    std::string name;
+    int age;
+}
+
+/** A function to greet a person
+
+    This function takes a person and
+    prints a greeting message.
+
+    @param p The person to greet
+ */
+void greet(person const& p);
+----
+
+A common alternative is to use `pass:[///]`, especially for single-line comments:
+
+[source,c++]
+----
+/// A constant representing the number of hours in a day
+static constexpr int hours_in_day = 24;
+----
+
+Both the class and the function above have doc comments with a brief sentence and a detailed description.
+Most doc comments will contain these two sections, which could also be explicitly marked with `@brief` and `@details` commands.
+
+Doc comments can also contain a number of special commands such as `@param` that are used to document the parameters of a function.
+
+== Style
+
+The following commands can be used to format the text in the doc comments:
+
+|===
+| Command | Description
+| `@a`    | Formats the text in italics
+| `@e`    | Formats the text in italics
+| `@em`    | Formats the text in italics
+| `@b`    | Formats the text in bold
+| `@strong`    | Formats the text in bold
+|
+|===
+
+// == Documentation at other places
+// @class, @struct, @union, @enum, @fn, @var, @def, @typedef, @file, @namespace...
+
+// == Lists
+// - <ul><li><ol> / @arg / @li / # / 1.2.3... / [ ] / [x]
+
+// == Grouping
+// === Topics
+// @defgroup / @addtogroup / @ingroup / @weakgroup
+// === Member groups
+// @name
+// === Subpaging
+// @page / @mainpage
+
+// == Formulas
+// @f
+
+// == Tables
+// <table><tr><th><td> / Markdown format
+
+// == Graphs
+// @callgraph, @hidecallgraph, @callergraph, @hidecallergraph
+
+// == Link generation
+// === Webpages
+// <a href=""></a>
+// === Symbols
+// @ref / any string with at least one non-lower case character
+// === Files
+// @ref / any string containing '.'
+// === Functions
+// <functionName>"("<argument-list>")"
+// <functionName>"()"
+// "::"<functionName>
+// (<className>"::")n<functionName>"("<argument-list>")"
+// (<className>"::")n<functionName>"("<argument-list>")"<modifiers>
+// (<className>"::")n<functionName>"()"
+// (<className>"::")n<functionName>
+// === Links to external documentation
+// Tagfiles + @ref
 
