@@ -1,132 +1,210 @@
-= Usage
-
-== MrDocs invocation
-
-For consistency, these instructions assume you have the following environment variables set:
-
-[source,bash]
-----
-MRDOCS_ROOT=/path/to/mrdocs
-PROJECT_SOURCE_DIR=/path/to/your/project/source
-MRDOCS_CONFIG=$PROJECT_SOURCE_DIR/docs/mrdocs.yml
-PROJECT_BUILD_DIR=$PROJECT_SOURCE_DIR/build-docs
-----
-
-Where `MRDOCS_ROOT` is the path of the mrdocs executable, and `MRDOCS_CONFIG` is the path to the `mrdocs.yml` configuration file.
-We also assume `PROJECT_SOURCE_DIR` is the path to the root of your project's source code, where its main `CMakeLists.txt` file is located, and `PROJECT_BUILD_DIR` is the path to the directory where you want to generate the documentation.
-Feel free to change these variables to suit your needs.
-
-MrDocs simplifies the documentation generation process. Generating the `compile_commands.json` file by running `cmake` is optional. If the path to `compile_commands.json` is not provided when calling MrDocs, the tool will automatically run `cmake` for you, provided that you have CMake version >=3.13.5 installed. Parameters for cmake, such as `-D BOOST_URL_BUILD_TESTS=OFF`, should be specified in the `cmake:` key of the `mrdocs.yml` configuration file. 
-
-It is still possible, but optional, to manually generate the `compile_commands.json` file. For instructions on manually generating this file, see <<manual-compile-commands, this section>>.
-
-
-The following command will generate the documentation with the most common options:
-
-[source,bash]
-----
-cd $PROJECT_BUILD_DIR
-MRDOCS_OUTPUT=$PROJECT_BUILD_DIR/docs/reference/adoc
-$MRDOCS_ROOT/mrdocs <ProjectPath> --config=$MRDOCS_CONFIG --addons=$MRDOCS_ROOT/addons --output=$MRDOCS_OUTPUT
-----
-
-Here's a description of these options:
-
-* `<ProjectPath>`: the path to the project to document. This can be a path to a `compile_commands.json` file, a directory, or a `CMakeLists.txt` file.
-If a path to a `compile_commands.json` file is provided, MrDocs will use this file and will not call CMake. It is assumed the user has already manually run CMake.
-If a directory (not a file) is provided, it is assumed that this directory is the `ProjectPath` and contains a `CMakeLists.txt` describing the project. MrDocs will automatically run CMake to generate the `compile_commands.json`, using the parameters specified in the `mrdocs.yml` configuration file.
-If a `CMakeLists.txt` file is provided, it is assumed that the directory containing this file is the `ProjectPath`. MrDocs will automatically run CMake to generate the `compile_commands.json`, using the parameters specified in the `mrdocs.yml` configuration file.
-* `--config=$MRDOCS_CONFIG`: the path to the `mrdocs.yml` configuration file.
-This file configures which generator is used, which directory to process,
-and what symbols should be extracted.
-* `--addons=$MRDOCS_ROOT/addons`: the path to the `addons` directory.
-This directory contains the addons that are used to generate the documentation.
-Among other things, it contains the default templates for the generator.
-This option defaults to current directory if not provided.
-* `--output=$MRDOCS_ROOT/output/adoc`: the path to the output directory.
-This is where the generated documentation will be placed.
-
-MrDocs ignores non-c++ source files, so nothing more needs to be done to generate the documentation for your project.
-
-[[manual-compile-commands]]
-=== Generating the compile_commands.json Manually
-
-To generate the `compile_commands.json` file by running `cmake` with the `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON` flag.
-
-[source,bash]
-----
-cd $PROJECT_SOURCE_DIR
-mkdir $PROJECT_BUILD_DIR
-cd $PROJECT_BUILD_DIR
-cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-----
-
-At this step, you can also add any other flags you want to pass to `cmake`, such as `-DCMAKE_BUILD_TYPE=Release` or `-DCMAKE_CXX_COMPILER=clang++`.
-By running CMake with the `CMAKE_EXPORT_COMPILE_COMMANDS` flag, you will generate a `compile_commands.json` file in your build directory.
-This file contains all the information mrdocs needs to generate the documentation.
+= Basic Usage
 
 == MrDocs configuration file
 
-The `mrdocs.yml` configuration file contains information about the project that is not available in the `compile_commands.json` file or from the command line.
-The most important information is the `source-root` options, which determines the root of the source tree relative to the `mrdocs.yml` file.
+The `mrdocs.yml` configuration file contains information about the project.
+If you're used to Doxygen, this file is similar to the `Doxyfile` configuration file.
 
-Other options are available, such as the `concurrency` option, which determines the number of threads mrdocs will use to generate the documentation.
-This option defaults to the number of cores available on the machine.
+Here is an example of a `mrdocs.yml` file:
+
+[source,yaml]
+--------
+include::partial$mrdocs-example.yml[]
+--------
+
+In many projects, it is common to have the documentation in a `docs` directory, which can also contain this configuration file.
+
+[source]
+----
++ <project-directory>
+  + docs
+    + mrdocs.yml
+    + ...
+  + include
+  + src
+  + test
+  + ...
+----
+
+The most important information is the `source-root` option, which determines the root of the source tree relative to the `mrdocs.yml` file.
+
+The list of all available options can be found in the xref:config-file.adoc[] page.
+
+== MrDocs invocation
+
+NOTE: For consistency, these instructions assume you have the `mrdocs` executable in PATH.
+
+=== Basic invocation
+
+You can invoke MrDocs from the command line with the following command:
+
+[source,bash]
+----
+mrdocs path/to/mrdocs.yml
+----
+
+If you are at the path of the `mrdocs.yml` file, you can simply run:
+
+[source,bash]
+----
+mrdocs
+----
+
+You can also specify other commands to MrDocs directly from the command line to set or override options from the `mrdocs.yml` file (See all options in xref:config-file.adoc[] page).
+
+[source,bash]
+----
+mrdocs path/to/mrdocs.yml --output=../docs/reference
+----
+
+NOTE: Except for the path to the `mrdocs.yml` file, all other relative paths are made absolute relative to the `mrdocs.yml` file.
+
+=== Compilation databases
+
+One way to simplify the documentation generation process is by using a `compile_commands.json` file generated by CMake to determine the source files to process and their compile options.
+This file is generated by the CMake configuration step when the `CMAKE_EXPORT_COMPILE_COMMANDS` option is set to `ON`.
+
+[source,bash]
+----
+cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+----
+
+At this step, you can also add any other flags you want to pass to `cmake`, such as `-DCMAKE_BUILD_TYPE=Release` or `-DCMAKE_CXX_COMPILER=clang++`.
+
+NOTE: If you are using the Visual Studio generator, you might need to switch to the Ninja generator to generate the `compile_commands.json` file.
+
+This will generate a `compile_commands.json` file in the `build` directory containing all commands needed to compile your project.
+This file can be used by MrDocs to determine the source files to process and their compile options.
+
+[source,bash]
+----
+mrdocs --compilation-database=../build/compile_commands.json --output=../docs/reference
+----
+
+MrDocs will go through all the source files listed in the `compile_commands.json` file and generate the documentation for them.
+
+WARNING: When MrDocs goes through the commands in the compilation database, it will go through the same targets as the compiler.
+Only symbols present in these targets will be documented.
+In the case of header-only libraries, the symbols will be documented only if they are included in one of these targets.
+
+=== CMake integration
+
+It's common to have different configurations for the documentation generation than for the project build.
+This means CMake is often being run just to generate a custom `compile_commands.json` for the documentation.
+Also, the `compile_commands.json` file is a configuration artifact, which means it often lacks a stable location that can be referenced in the `mrdocs.yml` configuration file.
+
+Thus, the pattern of using a `compile_commands.json` file generated by CMake is so common that MrDocs provides a CMake module to simplify the process.
+You can let MrDocs generate the `compile_commands.json` file for you by providing the path to the `CMakeLists.txt` file of your project.
+
+[source,bash]
+----
+mrdocs --compilation-database=../CMakeLists.txt --output=../docs/reference
+----
+
+By providing your `CMakeLists.txt` file as the reference for you compilation database, MrDocs will automatically run CMake to generate the `compile_commands.json` file in a temporary directory.
+Not only this simplifies the usage but also ensures that the stable compilation database file can be used in the `mrdocs.yml` configuration file.
+
+NOTE: MrDocs does not bundle CMake.
+If you want to use this feature, you need to have CMake installed on your system and available in PATH.
+
+Parameters for cmake, such as `-D BUILDING_TEST=OFF -D MRDOCS_BUILD=ON` can also be specified with the `cmake` option in configuration file.
+MrDocs will always append the `CMAKE_EXPORT_COMPILE_COMMANDS=ON` flag to the cmake command.
+
+=== MrDocs Builds
+
+In many projects, a common pattern is to define a special build configuration for the documentation generation such that:
+
+1. Tests, examples, and auxiliary targets excluded
+2. All header-only files are included in targets
+3. Unnecessary sources files are excluded from targets
+
+This can usually be achieved by defining a custom target in the `CMakeLists.txt` with a single source file that includes all the necessary header files.
+
+[source,cmake]
+----
+if (MY_PROJECT_MRDOCS_BUILD)
+    # Glob all header files
+    set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/include")
+    file(GLOB_RECURSE HEADER_FILES "${INCLUDE_DIR}/*.hpp")
+
+    # Create a temporary source file that includes all header files
+    set(TEMP_CPP_FILE "${CMAKE_CURRENT_BINARY_DIR}/all_headers.cpp")
+    file(WRITE ${OUTPUT_FILE} "// This file is generated automatically by CMake\n\n")
+    foreach(HEADER_FILE ${HEADER_FILES_LIST})
+        file(APPEND ${OUTPUT_FILE} "#include \"${HEADER_FILE}\"\n")
+    endforeach()
+
+    # Create a custom target for MrDocs
+    add_library(my_project_mrdocs_target ${TEMP_CPP_FILE})
+
+    # Set any other target properties here
+    target_include_directories(my_project_mrdocs_target PRIVATE ${INCLUDE_DIR})
+    target_link_libraries(my_project_mrdocs_target PRIVATE an_external_library)
+
+    # Don't create any other targets
+    return()
+endif()
+----
+
+To use this target, you can run CMake with the `MY_PROJECT_MRDOCS_BUILD` flag set to `ON`:
+
+[source,bash]
+----
+mrdocs --cmake="-D MY_PROJECT_MRDOCS_BUILD=ON" --compilation-database=../CMakeLists.txt --output=..\docs\reference
+----
+
+Because these paths and options are stable, you can specify them in the `mrdocs.yml` configuration file.
 
 [source,yaml]
 ----
-concurrency: 1      # number of threads to use
-source-root: ../    # source files relative to the mrdocs.yml file
-multipage: false    # generate multiple pages
-verbose: true       # print verbose output
+cmake: "-D MY_PROJECT_MRDOCS_BUILD=ON"
+compilation-database: ../CMakeLists.txt
+output: ../docs/reference
 ----
 
-== MrDocs CMake Module
+== Extracting Documentation
 
-MrDocs also provides a CMake module that can be used to generate the documentation from your project's script.
-You can include the CMake module with:
+Unlike other documentation generators, MrDocs only works with valid {cpp} code.
+Instead of partially preprocessing the source files and inferring symbols from potentially ill-formed code, MrDocs relies on the compilation database and Clang to preprocess the source files.
 
-[source,cmake]
+Thus, for each common {cpp} construct, MrDocs provides commands or options to identify and extract the relevant information as intended by the user.
+For instance, a common ill-formed Doxygen pattern to specify a class as an implementation detail is:
+
+[source,c++]
 ----
-find_package(MrDocs REQUIRED)
+#ifdef DOCS
+__implementation_defined__
+#else
+impl::f_return_t
+#endif
+f();
+----
+
+In this pattern, the user wants to document the function `f` as `__implementation_defined__ f();` because the library contract is that the user should not rely on a specific return type here.
+However, this ill-formed pattern is problematic:
+
+* `__implementation_defined__` is not a valid symbol so the code is ill-formed
+* `impl::f_return_t` doesn't express the intent of the user for the documentation
+* the developer has to effectively maintain two versions of the code
+* the original source code becomes more and more unreadable
+
+Instead, when using MrDocs, the same function could be documented as:
+
+[source,c++]
+----
+impl::f_return_t f();
+----
+
+And the user can specify that `impl` as a namespace for implementation details in the configuration file:
+
+[source,yaml]
+----
 # ...
-include(MrDocs)
+implementation-detail: impl
+# ...
 ----
 
-The module will define the `add_mrdocs` function, which can be used define a CMake target that generates the documentation for your project.
-The syntax is similar to other cmake functions, such as `add_executable` or `add_library`:
+The xref:commands.adoc[] and xref:config-file.adoc[] pages contain a list of all available commands and options to identify and extract the relevant information as intended by the user.
 
-[source,cmake]
-----
-set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
-add_mrdocs(<name>
-    [EXCLUDE_FROM_ALL]
-    [CONFIG <mrdocs.yml>]
-    [ADDONS <addons-dir>]
-    [COMMENT comment]
-    [OUTPUT <output-dir>]
-    [<source>...])
-----
-
-The function adds a custom target called `<name>` which builds the documentation the source files listed in the command invocation.
-The `<name>` corresponds to the logical target name and must be globally unique within a project.
-
-* If `EXCLUDE_FROM_ALL` is given the corresponding property will be set on the created target.
-See documentation of the https://cmake.org/cmake/help/latest/prop_tgt/EXCLUDE_FROM_ALL.html[`EXCLUDE_FROM_ALL`] target property for details.
-
-* The `CONFIG` option specifies the path to the `mrdocs.yml` configuration file.
-If not specified, the function will look for the configuration file in your project directory.
-
-* The `ADDONS` option specifies a custom path to the `addons` directory. By default, the function will use the `addons` directory in the MrDocs installation directory.
-
-* The `OUTPUT` option specifies the path to the output directory.
-If not specified, the function will use the default output directory, which is relative to the current binary directory.
-The complete default path is constructed based on the current binary directory and the options passed to the command (such as `docs/adoc`).
-
-* The `COMMENT` option specifies a comment that will be displayed when the target is built.
-If not specified, the comment will be generated automatically according to the input options.
-
-The `<source>` arguments specify files on which the generated documentation depends.
-The custom target will depend on these source files.
-This means if these files are created with other `add_custom_command()` command calls in the same directory, they will be brought up to date when the target is built.
-
+MrDocs provides multiple mechanisms are provided to specify special {cpp} patterns, such as the example above.
+For each common {cpp} construct that would require macros and two versions of the code, MrDocs provides commands to identify the construct and extract the relevant information as intented by the user.

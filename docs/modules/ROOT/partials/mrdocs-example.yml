@@ -1,4 +1,3 @@
-verbose: true
-source-root: ..
+source-root: ../include
 multipage: false
 generate: adoc
