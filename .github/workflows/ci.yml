@@ -246,7 +246,7 @@ jobs:
           cxxflags: ${{ matrix.cxxflags }}${{ ( matrix.compiler == 'gcc' && ' -static') || '' }}${{ ( matrix.asan && ' -static-libasan') || '' }}${{ ( matrix.tsan && ' -static-libtsan') || '' }}
           generator: Ninja
           toolchain: ${{ steps.package-install.outputs.vcpkg_toolchain || steps.package-install.outputs.vcpkg-toolchain }}
-          build-type: ${{ matrix.build-type }}
+          build-type: RelWithDebInfo
           install-prefix: .local
           extra-args: |
             -D MRDOCS_BUILD_DOCS=OFF
