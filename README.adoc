@@ -1,49 +1,8 @@
 = MrDocs
 
-== Install
+image::docs/modules/ROOT/images/MrDocsBanner.jpg[Mr. Docs Documentation,link=https://www.mrdocs.com]
 
-This library depends on a recent version of LLVM.
-Here are the instructions to install LLVM with the settings required by this project.
+Visit the Mr. Docs Documentation website at https://www.mrdocs.com.
 
-[source,bash]
-----
-git clone https://github.com/llvm/llvm-project.git
-cd llvm-project
-git checkout 7a28a5b3fee6c78ad59af79a3d03c00db153c49f
-cmake -S llvm -B build -D LLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -D CMAKE_BUILD_TYPE=Release -D LLVM_ENABLE_RTTI=ON -D CMAKE_INSTALL_PREFIX=/path/to/llvm+clang
-cd build
-cmake --build . -j <threads> --config Release
-cmake --install .
-----
-
-Once LLVM is available in `/path/to/llvm+clang`, you can build and install mrdocs with:
-
-[source,bash]
-----
-git clone https://github.com/cppalliance/mrdocs
-cd mrdocs
-cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D LLVM_ROOT=/path/to/llvm+clang -D Clang_ROOT=/path/to/llvm+clang
-cd build
-cmake --build . -j <threads>
-cmake --install .
-----
-
-== Comparison
-
-=== Doxygen:
-
-* Tries to work for many languages
-* Uses the inferior libclang API
-* Old program with lots of technical debt
-* Not written by me
-
-=== MrDocs:
-
-* Narrow and deep focus on {cpp} only
-* Uses clang's unstable libtooling API:
-** Understands ALL C++: if clang can compile it, MrDocs knows about it
-** This includes up to {cpp}20 and even experimental features in {cpp}23
-* Brand-new program with no technical debt
-* Written by me
 
 
