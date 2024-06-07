@@ -138,13 +138,13 @@ public:
          */
         std::string baseURL;
 
-        /** Namespace for symbols rendered as "see-below".
+        /** Namespaces for symbols rendered as "see-below".
         */
-        std::string seeBelow;
+        std::vector<FilterPattern> seeBelow;
 
-        /** Namespace for symbols rendered as "implementation-defined".
+        /** Namespaces for symbols rendered as "implementation-defined".
         */
-        std::string implementationDefined;
+        std::vector<FilterPattern> implementationDefined;
     };
 
     /// @copydoc Config::settings()

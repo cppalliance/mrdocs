@@ -2456,13 +2456,12 @@ public:
     void
     traverseContext(DeclContext* DC);
 
-
     bool
     isInSpecialNamespace(
         const Decl* D,
-        std::string_view Namespace)
+        std::span<const FilterPattern> Patterns)
     {
-        if(! D || Namespace.empty())
+        if(! D || Patterns.empty())
             return false;
         const DeclContext* DC = isa<DeclContext>(D) ?
             dyn_cast<DeclContext>(D) : D->getDeclContext();
@@ -2471,8 +2470,9 @@ public:
             const NamespaceDecl* ND = dyn_cast<NamespaceDecl>(DC);
             if(! ND)
                 continue;
-            if(ND->getQualifiedNameAsString() == Namespace)
-                return true;
+            for(const auto& Pattern : Patterns)
+                if(Pattern.matches(ND->getQualifiedNameAsString()))
+                    return true;
         }
         return false;
     }
@@ -2480,7 +2480,7 @@ public:
     bool
     isInSpecialNamespace(
         const NestedNameSpecifier* NNS,
-        std::string_view Namespace)
+        std::span<const FilterPattern> Patterns)
     {
         const NamedDecl* ND = nullptr;
         while(NNS)
@@ -2491,7 +2491,7 @@ public:
                 break;
             NNS = NNS->getPrefix();
         }
-        return ND && isInSpecialNamespace(ND, Namespace);
+        return ND && isInSpecialNamespace(ND, Patterns);
     }
 
     bool

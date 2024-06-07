@@ -109,8 +109,16 @@ struct llvm::yaml::MappingTraits<SettingsImpl>
 
         io.mapOptional("filters",           cfg.filters);
 
-        io.mapOptional("see-below", cfg.seeBelow);
-        io.mapOptional("implementation-defined", cfg.implementationDefined);
+        // KRYSTIAN FIXME: This should really be done with mapping traits.
+        std::vector<std::string> seeBelow;
+        io.mapOptional("see-below", seeBelow);
+        for(std::string_view pattern : seeBelow)
+            cfg.seeBelow.emplace_back(pattern);
+
+        std::vector<std::string> implementationDefined;
+        io.mapOptional("implementation-defined", implementationDefined);
+        for(std::string_view pattern : implementationDefined)
+            cfg.implementationDefined.emplace_back(pattern);
     }
 };
 
@@ -223,13 +231,9 @@ ConfigImpl(
 
     // Parse the filters
     for(std::string_view pattern : settings_.filters.symbols.exclude)
-    {
         parseSymbolFilter(settings_.symbolFilter, pattern, true);
-    }
     for(std::string_view pattern : settings_.filters.symbols.include)
-    {
         parseSymbolFilter(settings_.symbolFilter, pattern, false);
-    }
     settings_.symbolFilter.finalize(false, false, false);
 }
 
