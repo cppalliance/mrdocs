@@ -23,7 +23,7 @@
 namespace test_suite {
 // Diff two strings and return the result as a string with additional stats
 DiffStringsResult
-diffStrings(std::string_view str1, std::string_view str2, std::size_t context_size = 3)
+diffStrings(std::string_view str1, std::string_view str2, std::size_t context_size)
 {
     static constexpr auto splitLines =
         [](std::string_view text, std::vector<std::string_view> &lines)
@@ -280,9 +280,12 @@ BOOST_TEST_DIFF(
         DiffStringsResult diff = diffStrings(expected_contents, rendered_contents);
         if (diff.added > 0 || diff.removed > 0)
         {
-            std::ofstream out((std::string(error_output_path)));
-            BOOST_TEST(out);
-            out << rendered_contents;
+            if (!error_output_path.empty())
+            {
+                std::ofstream out((std::string(error_output_path)));
+                BOOST_TEST(out);
+                out << rendered_contents;
+            }
 #ifdef MRDOCS_TEST_HAS_FMT
             fmt::println("DIFF:\n=====================\n{}\n=====================", diff.diff);
 #else
