@@ -37,6 +37,13 @@ struct DiffStringsResult
     int unmodified{0};
 };
 
+/// Diff two strings and return the result as a string with additional stats
+DiffStringsResult
+diffStrings(
+    std::string_view str1,
+    std::string_view str2,
+    std::size_t context_size = 3);
+
 /** Perform a diff between two strings and check if they are equal
 
     This function is used to compare the contents of a file with the expected
@@ -65,7 +72,7 @@ BOOST_TEST_DIFF(
     std::string_view expected_contents,
     std::string_view expected_contents_path,
     std::string_view rendered_contents,
-    std::string_view error_output_path);
+    std::string_view error_output_path = {});
 
 }
 

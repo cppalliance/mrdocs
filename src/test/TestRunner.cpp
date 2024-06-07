@@ -16,6 +16,7 @@
 #include "lib/Lib/CorpusImpl.hpp"
 #include "lib/Lib/MrDocsCompilationDatabase.hpp"
 #include "lib/Lib/SingleFileDB.hpp"
+#include "test_suite/diff.hpp"
 #include <mrdocs/Config.hpp>
 #include <mrdocs/Generators.hpp>
 #include <mrdocs/Platform.hpp>
