@@ -283,17 +283,15 @@ if (MRDOCS_BUILD_TESTS)
         target_compile_options(mrdocs-test PRIVATE -Wno-covered-switch-default)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
-    add_custom_command(
-            # if we run tests, we need the addons in the right place.
-            TARGET mrdocs-test
-            POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy
-                    ${CMAKE_SOURCE_DIR}/share/mrdocs/addons
-                    ${CMAKE_BINARY_DIR}/addons
-            BYPRODUCTS ${CMAKE_BINARY_DIR}/addons
-            DEPENDS ${CMAKE_SOURCE_DIR}/share/mrdocs/addons
-    )
-    add_test(NAME mrdocs-test COMMAND mrdocs-test --action test "${PROJECT_SOURCE_DIR}/test-files/old-tests")
+    add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
+    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons")
+    foreach (action IN ITEMS create update)
+        add_custom_target(
+            mrdocs-${action}-test-fixtures
+            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+            DEPENDS mrdocs-test
+        )
+    endforeach ()
 
     #-------------------------------------------------
     # XML lint

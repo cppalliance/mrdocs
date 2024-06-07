@@ -357,6 +357,14 @@ checkPath(
                 publicSettings.config = configPath;
                 publicSettings.configDir = files::getParentDir(inputPath);
                 publicSettings.configYaml = files::getFileText(publicSettings.config).value();
+                if (testArgs.addons.getValue() != "")
+                {
+                    publicSettings.addons = files::normalizeDir(testArgs.addons.getValue());
+                }
+                else
+                {
+                    report::warn("No addons directory specified to mrdocs tests");
+                }
                 loadConfig(publicSettings, publicSettings.configYaml).value();
                 auto configFile = loadConfigFile(
                     publicSettings,
