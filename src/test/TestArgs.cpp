@@ -75,6 +75,11 @@ EXAMPLES:
     llvm::cl::Sink,
     llvm::cl::desc("A list of directories and/or .cpp files to test."),
     llvm::cl::cat(commonCat))
+
+, addons(
+    "addons",
+    llvm::cl::desc("The directory with the addons."),
+    llvm::cl::cat(commonCat))
 {
 }
 
