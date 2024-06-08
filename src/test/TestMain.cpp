@@ -71,6 +71,7 @@ int test_main(int argc, char const* const* argv)
 
     llvm::EnablePrettyStackTrace();
     llvm::sys::PrintStackTraceOnErrorSignal(argv[0]);
+    llvm::setBugReportMsg("PLEASE submit a bug report to https://github.com/cppalliance/mrdocs/issues/ and include the crash backtrace.\n");
 
     testArgs.hideForeignOptions();
     if(! llvm::cl::ParseCommandLineOptions(
