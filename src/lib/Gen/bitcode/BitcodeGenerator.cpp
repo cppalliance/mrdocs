@@ -11,7 +11,7 @@
 
 #include "BitcodeGenerator.hpp"
 #include "lib/Support/Error.hpp"
-#include "lib/Support/SafeNames.hpp"
+#include "lib/Support/LegibleNames.hpp"
 #include "lib/AST/Bitcode.hpp"
 #include <mrdocs/Support/ThreadPool.hpp>
 #include <mrdocs/Metadata.hpp>
@@ -26,7 +26,7 @@ class MultiFileBuilder
 {
     Corpus const& corpus_;
     std::string_view outputPath_;
-    SafeNames names_;
+    LegibleNames names_;
     TaskGroup taskGroup_;
 
 public:

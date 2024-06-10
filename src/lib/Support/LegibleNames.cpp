@@ -10,7 +10,7 @@
 //
 
 #include "lib/Support/Radix.hpp"
-#include "lib/Support/SafeNames.hpp"
+#include "lib/Support/LegibleNames.hpp"
 #include "lib/Support/Validate.hpp"
 #include "lib/Support/Debug.hpp"
 #include <mrdocs/Corpus.hpp>
@@ -26,17 +26,17 @@
 namespace clang {
 namespace mrdocs {
 
-class SafeNames::Impl
+class LegibleNames::Impl
 {
     Corpus const& corpus_;
 
     // name used for the global namespace
     std::string global_ns_;
 
-    // store all info required to generate a safename
-    struct SafeNameInfo
+    // store all info required to generate a legible name
+    struct LegibleNameInfo
     {
-        // safename without disambiguation characters
+        // legible name without disambiguation characters
         std::string_view unqualified;
         // number of characters from the SymbolID string
         // required to uniquely identify this symbol
@@ -45,12 +45,12 @@ class SafeNames::Impl
         std::string id_str;
     };
 
-    std::unordered_map<SymbolID, SafeNameInfo> map_;
+    std::unordered_map<SymbolID, LegibleNameInfo> map_;
 
     // maps unqualified names to all symbols
     // with that name within the current scope
     std::unordered_multimap<std::string_view,
-        SafeNameInfo*> disambiguation_map_;
+        LegibleNameInfo*> disambiguation_map_;
 
     std::string_view
     getReserved(const Info& I)
@@ -236,12 +236,12 @@ public:
     #define MINIMAL_SUFFIX
 
     void
-    buildSafeMember(
+    buildLegibleMember(
         const Info& I,
         std::string_view name)
     {
         // generate the unqualified name and SymbolID string
-        SafeNameInfo& info = map_.emplace(I.id, SafeNameInfo(
+        LegibleNameInfo& info = map_.emplace(I.id, LegibleNameInfo(
             name, 0, toBase16(I.id, true))).first->second;
         // if there are other symbols with the same name, then disambiguation
         // is required. iterate over the other symbols with the same unqualified name,
@@ -313,9 +313,9 @@ public:
             corpus_.globalNamespace();
         // treat the global namespace as-if its "name"
         // is in the same scope as its members
-        buildSafeMember(global, global_ns_);
+        buildLegibleMember(global, global_ns_);
         visit(global, *this);
-        // after generating safenames for every symbol,
+        // after generating legible names for every symbol,
         // set the number of disambiguation characters
         // used for the global namespace to zero
         map_.at(global.id).disambig_chars = 0;
@@ -327,7 +327,7 @@ public:
         traverse(I, [this](const SymbolID& id)
             {
                 if(const Info* M = corpus_.find(id))
-                    buildSafeMember(*M, getUnqualified(*M));
+                    buildLegibleMember(*M, getUnqualified(*M));
             });
         // clear the disambiguation map after visiting the members,
         // then build disambiguation information for each member
@@ -340,7 +340,7 @@ public:
     }
 
     void
-    getSafeUnqualified(
+    getLegibleUnqualified(
         std::string& result,
         const SymbolID& id)
     {
@@ -365,7 +365,7 @@ public:
     }
 
     void
-    getSafeQualified(
+    getLegibleQualified(
         std::string& result,
         const SymbolID& id,
         char delim)
@@ -378,18 +378,18 @@ public:
                 std::views::reverse |
                 std::views::drop(1))
             {
-                getSafeUnqualified(result, parent);
+                getLegibleUnqualified(result, parent);
                 result.push_back(delim);
             }
         }
-        getSafeUnqualified(result, id);
+        getLegibleUnqualified(result, id);
     }
 };
 
 //------------------------------------------------
 
-SafeNames::
-SafeNames(
+LegibleNames::
+LegibleNames(
     Corpus const& corpus,
     bool enabled)
 {
@@ -397,23 +397,23 @@ SafeNames(
         impl_ = std::make_unique<Impl>(corpus, "index");
 }
 
-SafeNames::
-~SafeNames() noexcept = default;
+LegibleNames::
+~LegibleNames() noexcept = default;
 
 std::string
-SafeNames::
+LegibleNames::
 getUnqualified(
     SymbolID const& id) const
 {
     if(! impl_)
         return toBase16(id);
     std::string result;
-    impl_->getSafeUnqualified(result, id);
+    impl_->getLegibleUnqualified(result, id);
     return result;
 }
 
 std::string
-SafeNames::
+LegibleNames::
 getUnqualified(
     OverloadSet const& os) const
 {
@@ -424,7 +424,7 @@ getUnqualified(
 }
 
 std::string
-SafeNames::
+LegibleNames::
 getQualified(
     SymbolID const& id,
     char delim) const
@@ -432,12 +432,12 @@ getQualified(
     if(! impl_)
         return toBase16(id);
     std::string result;
-    impl_->getSafeQualified(result, id, delim);
+    impl_->getLegibleQualified(result, id, delim);
     return result;
 }
 
 std::string
-SafeNames::
+LegibleNames::
 getQualified(
     OverloadSet const& os,
     char delim) const
@@ -447,12 +447,12 @@ getQualified(
     std::string result;
     if(os.Parent != SymbolID::global)
     {
-        impl_->getSafeQualified(result, os.Parent, delim);
+        impl_->getLegibleQualified(result, os.Parent, delim);
         result.push_back(delim);
     }
-    // the safename for an overload set is the unqualified
-    // safe name of its members, without any disambiguation characters.
-    // members of an overload set use the same safe name regardless of
+    // the legible name for an overload set is the unqualified
+    // legible name of its members, without any disambiguation characters.
+    // members of an overload set use the same legible name regardless of
     // whether they belong to an overload set
     result.append(impl_->getUnqualified(
         os.Members.front()));

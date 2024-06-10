@@ -3,13 +3,13 @@
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
-// Copyright (c) 2023 Vinnie Falco (vinnie.falco@gmail.com)
+// Copyright (c) 2023 Krystian Stasiowski (sdkrystian@gmail.com)
 //
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#ifndef MRDOCS_LIB_SUPPORT_SAFENAMES_HPP
-#define MRDOCS_LIB_SUPPORT_SAFENAMES_HPP
+#ifndef MRDOCS_LIB_SUPPORT_LEGIBLENAMES_HPP
+#define MRDOCS_LIB_SUPPORT_LEGIBLENAMES_HPP
 
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/MetadataFwd.hpp>
@@ -19,16 +19,16 @@
 namespace clang {
 namespace mrdocs {
 
-/** A table mapping symbolIDs to safe names.
+/** A table mapping symbolIDs to legible names.
 
-    A safe name for a symbol is case-insensitive
+    A legible name for a symbol is case-insensitive
     unique and only contains characters which are
     valid for both filenames and URL paths. For
     filenames this includes only the subset of
     characters valid for Windows, OSX, and Linux
     type filesystems.
 */
-class SafeNames
+class LegibleNames
 {
     class Impl;
 
@@ -38,13 +38,13 @@ public:
     /** Constructor.
 
         Upon construction, the entire table of
-        safe names is built from the corpus.
+        legible names is built from the corpus.
     */
-    SafeNames(
+    LegibleNames(
         Corpus const& corpus,
         bool enabled);
 
-    ~SafeNames() noexcept;
+    ~LegibleNames() noexcept;
 
     std::string
     getUnqualified(

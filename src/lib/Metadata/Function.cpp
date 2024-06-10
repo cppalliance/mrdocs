@@ -22,7 +22,7 @@ namespace {
 struct Item
 {
     char const* name;
-    char const* safe_name;
+    char const* legible_name;
     char const* short_name;
     OperatorKind kind;
 };
@@ -122,7 +122,7 @@ getSafeOperatorName(
     bool include_keyword) noexcept
 {
     MRDOCS_ASSERT(Table[to_underlying(kind)].kind == kind);
-    std::string_view full = Table[to_underlying(kind)].safe_name;
+    std::string_view full = Table[to_underlying(kind)].legible_name;
     if(include_keyword || kind == OperatorKind::None)
         return full;
     // remove "operator_"

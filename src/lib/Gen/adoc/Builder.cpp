@@ -170,7 +170,7 @@ Builder::
 getRelPrefix(std::size_t depth)
 {
     std::string rel_prefix;
-    if(! depth || ! domCorpus.options.safe_names ||
+    if(! depth || ! domCorpus.options.legible_names ||
         ! domCorpus->config->multipage)
         return rel_prefix;
     --depth;

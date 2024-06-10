@@ -12,7 +12,7 @@
 #define MRDOCS_LIB_GEN_ADOC_ADOCCORPUS_HPP
 
 #include <mrdocs/Platform.hpp>
-#include "lib/Support/SafeNames.hpp"
+#include "lib/Support/LegibleNames.hpp"
 #include "Options.hpp"
 #include <mrdocs/Metadata/DomMetadata.hpp>
 #include <optional>
@@ -25,14 +25,14 @@ class AdocCorpus : public DomCorpus
 {
 public:
     Options options;
-    SafeNames names_;
+    LegibleNames names_;
 
     AdocCorpus(
         Corpus const& corpus,
         Options&& opts)
         : DomCorpus(corpus)
         , options(std::move(opts))
-        , names_(corpus, options.safe_names)
+        , names_(corpus, options.legible_names)
     {
     }
 

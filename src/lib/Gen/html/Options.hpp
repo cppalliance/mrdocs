@@ -25,7 +25,7 @@ namespace html {
 */
 struct Options
 {
-    bool safe_names = false;
+    bool legible_names = false;
     std::string template_dir;
 };
 

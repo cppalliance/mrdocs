@@ -10,7 +10,7 @@
 //
 
 #include "lib/Support/Radix.hpp"
-#include "lib/Support/SafeNames.hpp"
+#include "lib/Support/LegibleNames.hpp"
 #include <mrdocs/Metadata.hpp>
 #include <mrdocs/Metadata/DomMetadata.hpp>
 #include <llvm/ADT/StringMap.h>

@@ -15,7 +15,7 @@
 #include "lib/Lib/ConfigImpl.hpp"
 #include "lib/Support/Yaml.hpp"
 #include "lib/Support/Radix.hpp"
-#include "lib/Support/SafeNames.hpp"
+#include "lib/Support/LegibleNames.hpp"
 #include <mrdocs/Platform.hpp>
 #include <llvm/Support/YAMLParser.h>
 #include <llvm/Support/YAMLTraits.h>
@@ -68,7 +68,7 @@ struct llvm::yaml::MappingTraits<
         auto& opt= opt_.opt;
         io.mapOptional("index",  opt.index);
         io.mapOptional("prolog", opt.prolog);
-        io.mapOptional("safe-names", opt.safe_names);
+        io.mapOptional("legible-names", opt.legible_names);
     }
 };
 
@@ -139,7 +139,7 @@ build()
             "<mrdocs xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n"
             "       xsi:noNamespaceSchemaLocation=\"https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc\">\n";
 
-    if(options_.index || options_.safe_names)
+    if(options_.index || options_.legible_names)
         writeIndex();
 
     visit(corpus_.globalNamespace(), *this);
@@ -159,14 +159,14 @@ writeIndex()
     std::string temp;
     temp.reserve(256);
     tags_.open("symbols");
-    if(options_.safe_names)
+    if(options_.legible_names)
     {
-        SafeNames names(corpus_, true);
+        LegibleNames names(corpus_, true);
         for(auto& I : corpus_)
         {
-            auto safe_name = names.getUnqualified(I.id);
+            auto legible_name = names.getUnqualified(I.id);
             tags_.write("symbol", {}, {
-                { "safe", safe_name },
+                { "legible", legible_name },
                 { "name", corpus_.getFullyQualifiedName(I, temp) },
                 { "tag", toString(I.Kind) },
                 { I.id } });
