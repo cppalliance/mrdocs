@@ -191,6 +191,8 @@ createContext(
     props.emplace_back("relfileprefix",
         getRelPrefix(I.Namespace.size()));
     props.emplace_back("config", domCorpus->config.object());
+    props.emplace_back("sectionref",
+        domCorpus.names_.getQualified(I.id, '-'));
     return dom::Object(std::move(props));
 }
 
@@ -205,6 +207,8 @@ createContext(
     const Info& Parent = domCorpus->get(OS.Parent);
     props.emplace_back("relfileprefix",
         getRelPrefix(Parent.Namespace.size() + 1));
+    props.emplace_back("sectionref",
+        domCorpus.names_.getQualified(OS, '-'));
     return dom::Object(std::move(props));
 }
 

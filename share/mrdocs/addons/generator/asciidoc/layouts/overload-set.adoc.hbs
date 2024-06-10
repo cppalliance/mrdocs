@@ -1,5 +1,5 @@
 {{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
-[#{{#if (is_multipage)}}{{symbol.id}}{{else}}{{symbol.ref}}{{/if}}]
+[#{{sectionref}}]
 
 = {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
 
