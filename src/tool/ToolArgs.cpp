@@ -55,6 +55,10 @@ EXAMPLES:
 , addons(llvm::cl::cat(generatorCat))
 , multipage(llvm::cl::init(true), llvm::cl::cat(generatorCat))
 , baseURL(llvm::cl::cat(generatorCat))
+, verbose(llvm::cl::cat(extraCat))
+, report(llvm::cl::init(1), llvm::cl::cat(extraCat))
+, ignoreMapErrors(llvm::cl::cat(extraCat))
+, ignoreFailures(llvm::cl::cat(extraCat))
 , referencedDeclarations(llvm::cl::init("dependency"), llvm::cl::cat(filtersCat))
 , anonymousNamespaces(llvm::cl::init("always"), llvm::cl::cat(filtersCat))
 , inaccessibleMembers(llvm::cl::init("always"), llvm::cl::cat(filtersCat))
@@ -63,10 +67,6 @@ EXAMPLES:
 , filters(filtersCat)
 , seeBelow(llvm::cl::cat(filtersCat))
 , implementationDefined(llvm::cl::cat(filtersCat))
-, verbose(llvm::cl::cat(extraCat))
-, report(llvm::cl::init(1), llvm::cl::cat(extraCat))
-, ignoreMapErrors(llvm::cl::cat(extraCat))
-, ignoreFailures(llvm::cl::cat(extraCat))
 {}
 
 ToolArgs::
