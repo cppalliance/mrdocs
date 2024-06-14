@@ -255,12 +255,13 @@ apply(
         auto absPath = files::makeAbsolute(cmdLineInput, s.configDir);
         if (files::isDirectory(cmdLineInput))
         {
-            s.sourceRoot = files::normalizeDir(files::makeAbsolute(cmdLineInput, s.configDir));
+            s.sourceRoot = cmdLineInput;
             continue;
         }
         // Input category is unknown
         report::warn("Ignoring unknown input path: {}", cmdLineInput);
     }
+    s.sourceRoot = files::normalizeDir(files::makeAbsolute(s.sourceRoot, s.configDir));
 
     // Set compilation database from source root
     if (s.compilationDatabase.empty() && !s.sourceRoot.empty())
