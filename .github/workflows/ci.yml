@@ -450,15 +450,7 @@ jobs:
           for variant in single multi; do
             for generator in "${generators[@]}"; do
               [[ $variant = multi ]] && multipage="true" || multipage="false"
-              # Override with cmd line option
-              mrdocs \
-                --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" \
-                "../CMakeLists.txt" \ 
-                --output="$(pwd)/demos/boost-url/$variant/$generator" \
-                --multipage=$multipage \
-                --generate="$$generator"
-                
-              # Print number of files (recursive) in the output directory
+              mrdocs --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" "../CMakeLists.txt" --output="$(pwd)/demos/boost-url/$variant/$generator" --multipage=$multipage --generate="$generator"
               echo "Number of files in demos/boost-url/$variant/$format: $(find demos/boost-url/$variant/$format -type f | wc -l)"
             done
             asciidoctor -d book -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
@@ -613,7 +605,7 @@ jobs:
       - name: Check info nodes
         run: |
           set -x
-          chmod +x .github/check_info_nodes.sh
+          chmod +x .github/check_info_nodes_support.sh
           .github/check_info_nodes_support.sh
 
       - name: Create GitHub Package Release
