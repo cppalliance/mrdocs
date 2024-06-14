@@ -46,9 +46,6 @@ public:
 
     // ------------------------------------------------
     // Common options
-    /// Path to the Addons directory
-    llvm::cl::opt<std::string> addons;
-
     /// Path to the source root directory
     llvm::cl::opt<std::string> sourceRoot;
 
@@ -67,6 +64,9 @@ public:
 
     /// Documentation generator. Supported generators are: adoc, html, xml
     llvm::cl::opt<std::string> generate;
+
+    /// Path to the Addons directory
+    llvm::cl::opt<std::string> addons;
 
     /// True if output should consist of multiple files)
     llvm::cl::opt<bool> multipage;
