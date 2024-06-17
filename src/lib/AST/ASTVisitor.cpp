@@ -374,6 +374,9 @@ public:
         // dependencies will be tracked, but not extracted
         traverseDecl(context_.getTranslationUnitDecl());
 
+        // This is to ensure that the global namespace is always present
+        getOrCreateInfo<NamespaceInfo>(SymbolID::global);
+
         // if dependency extraction is disabled, we are done
         if(config_->referencedDeclarations ==
             ConfigImpl::SettingsImpl::ExtractPolicy::Never)
