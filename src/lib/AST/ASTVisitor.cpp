@@ -1025,69 +1025,75 @@ public:
         return DD->getType();
     }
 
-    std::unique_ptr<TParam>
+    void
     buildTemplateParam(
+        std::unique_ptr<TParam>& I,
         const NamedDecl* N)
     {
-        auto TP = visit(N, [&]<typename DeclTy>(
-            const DeclTy* P) ->
-                std::unique_ptr<TParam>
+        visit(N, [&]<typename DeclTy>(const DeclTy* P)
         {
             constexpr Decl::Kind kind =
                 DeclToKind<DeclTy>();
 
             if constexpr(kind == Decl::TemplateTypeParm)
             {
-                auto R = std::make_unique<TypeTParam>();
+                if(! I)
+                    I = std::make_unique<TypeTParam>();
+                auto* R = static_cast<TypeTParam*>(I.get());
                 if(P->wasDeclaredWithTypename())
                     R->KeyKind = TParamKeyKind::Typename;
-                if(P->hasDefaultArgument())
+                if(P->hasDefaultArgument() && !R->Default)
                     R->Default = buildTemplateArg(
                         P->getDefaultArgument().getArgument());
-                return R;
+                return;
             }
             else if constexpr(kind == Decl::NonTypeTemplateParm)
             {
-                auto R = std::make_unique<NonTypeTParam>();
+                if(! I)
+                    I = std::make_unique<NonTypeTParam>();
+                auto* R = static_cast<NonTypeTParam*>(I.get());
                 R->Type = buildTypeInfo(P->getType());
-                if(P->hasDefaultArgument())
+                if(P->hasDefaultArgument() && !R->Default)
                     R->Default = buildTemplateArg(
                         P->getDefaultArgument().getArgument());
-                return R;
+                return;
             }
             else if constexpr(kind == Decl::TemplateTemplateParm)
             {
-                auto R = std::make_unique<TemplateTParam>();
-                for(const NamedDecl* NP : *P->getTemplateParameters())
-                    R->Params.emplace_back(
-                        buildTemplateParam(NP));
-
-                if(P->hasDefaultArgument())
+                if(! I)
+                    I = std::make_unique<TemplateTParam>();
+                auto* R = static_cast<TemplateTParam*>(I.get());
+                if(R->Params.empty())
+                {
+                    for(const NamedDecl* NP : *P->getTemplateParameters())
+                        buildTemplateParam(R->Params.emplace_back(), NP);
+                }
+                if(P->hasDefaultArgument() && !R->Default)
                     R->Default = buildTemplateArg(
                         P->getDefaultArgument().getArgument());
-                return R;
+                return;
             }
             MRDOCS_UNREACHABLE();
         });
 
-        TP->Name = extractName(N);
+        if(I->Name.empty())
+            I->Name = extractName(N);
         // KRYSTIAN NOTE: Decl::isParameterPack
         // returns true for function parameter packs
-        TP->IsParameterPack =
+        I->IsParameterPack =
             N->isTemplateParameterPack();
-
-        return TP;
     }
 
     void
     buildTemplateParams(
-        TemplateInfo& I,
+        TemplateInfo& TI,
         const TemplateParameterList* TPL)
     {
-        for(const NamedDecl* ND : *TPL)
+        for(std::size_t I = 0; I < TPL->size(); ++I)
         {
-            I.Params.emplace_back(
-                buildTemplateParam(ND));
+            auto& PI = I < TI.Params.size() ?
+                TI.Params[I] : TI.Params.emplace_back();
+            buildTemplateParam(PI, TPL->getParam(I));
         }
     }
 
@@ -2049,15 +2055,12 @@ public:
 
         for(const ParmVarDecl* P : D->parameters())
         {
-            auto index = P->getFunctionScopeIndex();
-            Param& param = index < I.Params.size() ?
-                I.Params[index] : I.Params.emplace_back();
-            // KRYSTIAN NOTE: it's not clear what the correct thing
-            // to do here is. this will use the longest name seen
-            // in any redeclaration
-            if(std::string_view name = P->getName();
-                name.size() > param.Name.size())
-                param.Name = name;
+            Param& param = created ?
+                I.Params.emplace_back() :
+                I.Params[P->getFunctionScopeIndex()];
+
+            if(param.Name.empty())
+                param.Name = P->getName();
 
             if(! param.Type)
                 param.Type = buildTypeInfo(P->getOriginalType());
@@ -2693,13 +2696,14 @@ traverse(
     // explicit specialization, and the described template otherwise
     if(CTD)
     {
-        auto& Template = I.Template = std::make_unique<TemplateInfo>();
+        if(! I.Template)
+            I.Template = std::make_unique<TemplateInfo>();
         // if D is a partial/explicit specialization, extract the template arguments
         if(auto* CTSD = dyn_cast<ClassTemplateSpecializationDecl>(D))
         {
-            extractSymbolID(getInstantiatedFrom(CTD), Template->Primary);
+            extractSymbolID(getInstantiatedFrom(CTD), I.Template->Primary);
             // extract the template arguments of the specialization
-            buildTemplateArgs(Template->Args, CTSD->getTemplateArgsAsWritten());
+            buildTemplateArgs(I.Template->Args, CTSD->getTemplateArgsAsWritten());
             // extract the template parameters if this is a partial specialization
             if(auto* CTPSD = dyn_cast<ClassTemplatePartialSpecializationDecl>(D))
                 buildTemplateParams(*I.Template, CTPSD->getTemplateParameters());
@@ -2730,13 +2734,14 @@ traverse(
     // explicit specialization, and the described template otherwise
     if(VTD)
     {
-        auto& Template = I.Template = std::make_unique<TemplateInfo>();
+        if(! I.Template)
+            I.Template = std::make_unique<TemplateInfo>();
         // if D is a partial/explicit specialization, extract the template arguments
         if(auto* VTSD = dyn_cast<VarTemplateSpecializationDecl>(D))
         {
-            extractSymbolID(getInstantiatedFrom(VTD), Template->Primary);
+            extractSymbolID(getInstantiatedFrom(VTD), I.Template->Primary);
             // extract the template arguments of the specialization
-            buildTemplateArgs(Template->Args, VTSD->getTemplateArgsAsWritten());
+            buildTemplateArgs(I.Template->Args, VTSD->getTemplateArgsAsWritten());
             // extract the template parameters if this is a partial specialization
             if(auto* VTPSD = dyn_cast<VarTemplatePartialSpecializationDecl>(D))
                 buildTemplateParams(*I.Template, VTPSD->getTemplateParameters());
@@ -2764,8 +2769,9 @@ traverse(
     // D is the templated declaration if FTD is non-null
     if(FTD)
     {
-        auto& Template = I.Template = std::make_unique<TemplateInfo>();
-        buildTemplateParams(*Template, FTD->getTemplateParameters());
+        if(! I.Template)
+            I.Template = std::make_unique<TemplateInfo>();
+        buildTemplateParams(*I.Template, FTD->getTemplateParameters());
     }
 
     buildGuide(I, created, D);
@@ -2785,17 +2791,18 @@ traverse(
     // D is the templated declaration if FTD is non-null
     if(FTD || D->isFunctionTemplateSpecialization())
     {
-        auto& Template = I.Template = std::make_unique<TemplateInfo>();
+        if(! I.Template)
+            I.Template = std::make_unique<TemplateInfo>();
 
         if(auto* FTSI = D->getTemplateSpecializationInfo())
         {
             extractSymbolID(getInstantiatedFrom(
-                FTSI->getTemplate()), Template->Primary);
+                FTSI->getTemplate()), I.Template->Primary);
             // TemplateArguments is used instead of TemplateArgumentsAsWritten
             // because explicit specializations of function templates may have
             // template arguments deduced from their return type and parameters
             if(auto* Args = FTSI->TemplateArguments)
-                buildTemplateArgs(Template->Args, Args->asArray());
+                buildTemplateArgs(I.Template->Args, Args->asArray());
         }
         else if(auto* DFTSI = D->getDependentSpecializationInfo())
         {
@@ -2803,13 +2810,13 @@ traverse(
             // a single candidate primary template.
             if(auto Candidates = DFTSI->getCandidates(); Candidates.size() == 1)
                 extractSymbolID(getInstantiatedFrom(
-                    Candidates.front()), Template->Primary);
+                    Candidates.front()), I.Template->Primary);
             if(auto* Args = DFTSI->TemplateArgumentsAsWritten)
-                buildTemplateArgs(Template->Args, Args);
+                buildTemplateArgs(I.Template->Args, Args);
         }
         else
         {
-            buildTemplateParams(*Template, FTD->getTemplateParameters());
+            buildTemplateParams(*I.Template, FTD->getTemplateParameters());
         }
     }
 
@@ -2835,7 +2842,8 @@ traverse(
 
     if(ATD)
     {
-        I.Template = std::make_unique<TemplateInfo>();
+        if(! I.Template)
+            I.Template = std::make_unique<TemplateInfo>();
         buildTemplateParams(*I.Template,
             ATD->getTemplateParameters());
     }
