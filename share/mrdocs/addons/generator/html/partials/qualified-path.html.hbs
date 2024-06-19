@@ -1,0 +1,13 @@
+{{#unless (or (contains @root.symbol.namespace symbol) (eq @root.symbol symbol))~}}
+    {{#if symbol.parent~}}
+        {{>qualified-path symbol=symbol.parent nolink=nolink~}}
+    {{else~}}
+    {{/if~}}
+    {{#if symbol.name}}
+        {{#if (not nolink)}}
+            <a href="#{{symbol.ref}}">{{symbol.name}}</a>
+        {{else}}
+            {{symbol.name}}
+        {{/if}}::
+    {{/if~}}
+{{/unless}}
