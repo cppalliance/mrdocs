@@ -958,6 +958,18 @@ visitBlockCommandComment(
         auto scope = enterScope(returns);
         // Scope scope(returns, block_);
         visitChildren(C->getParagraph());
+
+        auto itr = std::ranges::find_if(
+            jd_.getBlocks(),
+            [&](const std::unique_ptr<doc::Block> & b)
+        {
+            return b->kind != doc::Kind::returns;
+        });
+        if (itr != jd_.getBlocks().end())
+        {
+            report::warn("{}: Duplicate @returns statement", C->getBeginLoc().printToString(sm_));
+        }
+
         jd_.emplace_back(std::move(returns));
         return;
     }
@@ -1298,6 +1310,24 @@ visitParamCommandComment(
 
     auto scope = enterScope(param);
     visitChildren(C->getParagraph());
+
+    auto itr = std::ranges::find_if(
+        jd_.getBlocks(),
+        [&](const std::unique_ptr<doc::Block> & b)
+    {
+        if (b->kind != doc::Kind::param)
+            return false;
+        auto p = dynamic_cast<const doc::Param*>(b.get());
+        MRDOCS_ASSERT(p != nullptr);
+        return p->name == param.name;
+    });
+    if (itr != jd_.getBlocks().end())
+    {
+        report::warn(
+            "{}: Duplicate @param for argument {}",
+            C->getBeginLoc().printToString(sm_), param.name);
+    }
+
     // We want the node even if it is empty
     jd_.emplace_back(std::move(param));
 }
@@ -1320,6 +1350,24 @@ visitTParamCommandComment(
     }
     auto scope = enterScope(tparam);
     visitChildren(C->getParagraph());
+
+    auto itr = std::ranges::find_if(
+        jd_.getBlocks(),
+        [&](const std::unique_ptr<doc::Block> & b)
+    {
+        if (b->kind != doc::Kind::tparam)
+            return false;
+        auto tp = dynamic_cast<const doc::TParam*>(b.get());
+        MRDOCS_ASSERT(tp != nullptr);
+        return tp->name == tparam.name;
+    });
+    if (itr != jd_.getBlocks().end())
+    {
+        report::warn(
+            "{}: Duplicate @tparam for argument {}",
+            C->getBeginLoc().printToString(sm_), tparam.name);
+    }
+
     // We want the node even if it is empty
     jd_.emplace_back(std::move(tparam));
 }
