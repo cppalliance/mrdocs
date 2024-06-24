@@ -225,7 +225,7 @@ The documentation is written in AsciiDoc and can be built using the Antora tool.
 ** `docs/modules/`—The documentation asciidoc files
 ** `docs/extensions`—Antora extensions for the documentation
 
-=== `third-party/`—Helpers for third-party libraries
+==== `third-party/`—Helpers for third-party libraries
 
 This directory contains build scripts and configuration files for third-party libraries.
 
