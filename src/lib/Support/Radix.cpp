@@ -117,8 +117,7 @@ private:
 
 static constexpr char baseFNDigits[] =
     "0123456789"
-    "abcdefghijklmnopqrstuvwxyz"
-    "()_-,";
+    "abcdefghijklmnopqrstuvwxyz";
 
 static constexpr std::size_t baseFN = sizeof(baseFNDigits) - 1;
 
