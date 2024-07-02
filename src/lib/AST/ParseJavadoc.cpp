@@ -954,22 +954,21 @@ visitBlockCommandComment(
     case CommandTraits::KCI_returns:
     case CommandTraits::KCI_result:
     {
-        doc::Returns returns;
-        auto scope = enterScope(returns);
-        // Scope scope(returns, block_);
-        visitChildren(C->getParagraph());
-
         auto itr = std::ranges::find_if(
             jd_.getBlocks(),
             [&](const std::unique_ptr<doc::Block> & b)
         {
-            return b->kind != doc::Kind::returns;
+            return b->kind == doc::Kind::returns;
         });
         if (itr != jd_.getBlocks().end())
         {
             report::warn("{}: Duplicate @returns statement", C->getBeginLoc().printToString(sm_));
         }
 
+        doc::Returns returns;
+        auto scope = enterScope(returns);
+        // Scope scope(returns, block_);
+        visitChildren(C->getParagraph());
         jd_.emplace_back(std::move(returns));
         return;
     }
