@@ -24,7 +24,7 @@ endif()
 cmake_policy(SET CMP0111 OLD)
 project(
     MrDocs
-    VERSION 0.0.1
+    VERSION 0.0.2
     DESCRIPTION "C++ Documentation Tool"
     HOMEPAGE_URL "https://github.com/cppalliance/mrdocs"
     LANGUAGES CXX C
