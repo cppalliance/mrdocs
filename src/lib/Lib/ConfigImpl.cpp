@@ -63,7 +63,8 @@ ConfigImpl::
 ConfigImpl(
     Config::Settings const& publicSettings,
     std::shared_ptr<ConfigImpl const> baseConfig,
-    ThreadPool& threadPool)
+    ThreadPool& threadPool,
+    std::string_view execPath)
     : threadPool_(threadPool)
 {
     namespace fs = llvm::sys::fs;
@@ -82,6 +83,27 @@ ConfigImpl(
         formatError("Config path \"{}\" is not absolute", settings_.configDir).Throw();
     }
     settings_.configDir = files::makeDirsy(files::normalizePath(settings_.configDir));
+
+    if (settings_.libCxxPaths.empty())
+    {
+        // Set LibC++ path from process working directory
+        std::string binDir = files::getParentDir(execPath);
+        std::string libCxxDir = files::makeDirsy(files::appendPath(
+                binDir, "..", "include", "libcxx"));
+        Error err = files::requireDirectory(libCxxDir);
+        if (err)
+        {
+            formatError("Cannot find LibC++ include directory in \"{}\"", libCxxDir).Throw();
+        }
+        settings_.libCxxPaths.push_back(libCxxDir);
+    }
+    else
+    {
+        for (auto& path : settings_.libCxxPaths)
+        {
+            path = files::makeDirsy(files::normalizePath(path));
+        }
+    }
 
     // Addons directory
     settings_.addons = files::makeAbsolute(publicSettings.addons).value();
@@ -194,12 +216,14 @@ createConfig(
     std::string_view configDir,
     Config::Settings const& publicSettings,
     std::string_view configYaml,
-    ThreadPool& threadPool)
+    ThreadPool& threadPool,
+    std::string_view execPath)
 {
     return std::make_shared<ConfigImpl>(
         publicSettings,
         nullptr,
-        threadPool);
+        threadPool,
+        execPath);
 }
 
 static
@@ -207,7 +231,8 @@ Expected<std::shared_ptr<ConfigImpl const>>
 loadConfig(
     Config::Settings const& publicSettings,
     std::shared_ptr<ConfigImpl const> const& baseConfig,
-    ThreadPool& threadPool)
+    ThreadPool& threadPool,
+    std::string_view execPath)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -218,7 +243,8 @@ loadConfig(
         return std::make_shared<ConfigImpl>(
             publicSettings,
             baseConfig,
-            threadPool);
+            threadPool,
+            execPath);
     }
     catch(Exception const& ex)
     {
@@ -230,12 +256,14 @@ Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
     Config::Settings const& publicSettings,
     std::shared_ptr<ConfigImpl const> const& baseConfig,
-    ThreadPool& threadPool)
+    ThreadPool& threadPool,
+    std::string_view execPath)
 {
     return loadConfig(
         publicSettings,
         baseConfig,
-        threadPool);
+        threadPool,
+        execPath);
 }
 
 namespace {

@@ -90,7 +90,8 @@ public:
     ConfigImpl(
         Config::Settings const& publicSettings,
         std::shared_ptr<ConfigImpl const> baseConfig,
-        ThreadPool& threadPool);
+        ThreadPool& threadPool,
+        std::string_view execPath);
 
     ThreadPool&
     threadPool() const noexcept override
@@ -138,7 +139,8 @@ public:
         std::string_view workingDir,
         std::string_view addonsDir,
         std::string_view configYaml,
-        ThreadPool& threadPool);
+        ThreadPool& threadPool,
+        std::string_view execPath);
 
     friend
     Expected<std::shared_ptr<ConfigImpl const>>
@@ -146,7 +148,8 @@ public:
         std::string_view filePath,
         std::string_view addonsDir,
         std::shared_ptr<ConfigImpl const> const&,
-        ThreadPool& threadPool);
+        ThreadPool& threadPool,
+        std::string_view execPath);
 };
 
 //------------------------------------------------
@@ -195,7 +198,8 @@ createConfig(
     std::string_view workingDir,
     std::string_view addonsDir,
     std::string_view configYaml,
-    ThreadPool& threadPool);
+    ThreadPool& threadPool,
+    std::string_view execPath);
 
 /** Create a configuration by loading a YAML file.
 
@@ -243,7 +247,8 @@ Expected<std::shared_ptr<ConfigImpl const>>
 loadConfigFile(
     Config::Settings const& publicSettings,
     std::shared_ptr<ConfigImpl const> const& baseConfig,
-    ThreadPool& threadPool);
+    ThreadPool& threadPool,
+    std::string_view execPath);
 
 } // mrdocs
 } // clang

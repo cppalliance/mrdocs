@@ -222,7 +222,7 @@ std::vector<std::string>
 adjustCommandLine(
     const std::vector<std::string>& cmdline,
     const std::vector<std::string>& additional_defines,
-    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
+    std::vector<std::string> const& libCxxIncludeDirs)
 {
     if (cmdline.empty())
     {
@@ -275,18 +275,17 @@ adjustCommandLine(
     }
 
     // ------------------------------------------------------
-    // Add implicit include paths
+    // Add flags to ignore standard includes
     // ------------------------------------------------------
-    // Implicit include paths are those which are automatically
-    // added by the compiler. These will not be defined in the
-    // compile command, so we add them here so that clang
-    // can also find these headers.
-    if (auto it = implicitIncludeDirectories.find(progName);
-        it != implicitIncludeDirectories.end()) {
-        for (auto const& inc : it->second)
-        {
-            new_cmdline.emplace_back(fmt::format("-I{}", inc));
-        }
+    new_cmdline.emplace_back("-nostdinc++");
+    new_cmdline.emplace_back("-nostdlib++");
+
+    // ------------------------------------------------------
+    // Add LibC++ include directories
+    // ------------------------------------------------------
+    for (auto const& inc : libCxxIncludeDirs)
+    {
+        new_cmdline.emplace_back(fmt::format("-isystem {}", inc));
     }
 
     // ------------------------------------------------------
@@ -345,8 +344,7 @@ MrDocsCompilationDatabase::
 MrDocsCompilationDatabase(
     llvm::StringRef workingDir,
     CompilationDatabase const& inner,
-    std::shared_ptr<const Config> config,
-    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
+    std::shared_ptr<const Config> config)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -366,7 +364,7 @@ MrDocsCompilationDatabase(
         cmd.CommandLine = adjustCommandLine(
             cmd0.CommandLine,
             (*config_impl)->defines,
-            implicitIncludeDirectories);
+            (*config_impl)->libCxxPaths);
         cmd.Directory = makeAbsoluteAndNative(workingDir, cmd0.Directory);
         cmd.Filename = makeAbsoluteAndNative(workingDir, cmd0.Filename);
         if (isCXXSrcFile(cmd.Filename))

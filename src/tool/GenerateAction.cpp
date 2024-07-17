@@ -40,7 +40,7 @@ namespace {
  *
  * @param inputPath The path to the project, which can be a directory, a `compile_commands.json` file, or a `CMakeLists.txt` file.
  * @param cmakeArgs The arguments to pass to CMake when generating the compilation database.
- * @return An `Expected` object containing the path to the `compile_commands.json` file if the database is generated, or the provided path if it is already the `compile_commands.json` file. 
+ * @return An `Expected` object containing the path to the `compile_commands.json` file if the database is generated, or the provided path if it is already the `compile_commands.json` file.
  * Returns an `Unexpected` object in case of failure (e.g., file not found, CMake execution failure).
  */
 Expected<std::string>
@@ -97,7 +97,7 @@ DoGenerateAction(std::string_view execPath, char const** argv)
     ThreadPool threadPool(toolArgs.concurrency);
     MRDOCS_TRY(
         std::shared_ptr<ConfigImpl const> config,
-        loadConfigFile(publicSettings, nullptr, threadPool));
+        loadConfigFile(publicSettings, nullptr, threadPool, execPath));
 
     // --------------------------------------------------------------
     //
@@ -151,13 +151,11 @@ DoGenerateAction(std::string_view execPath, char const** argv)
         std::move(errorMessage));
 
     // Custom compilation database that converts relative paths to absolute
-    auto const defaultIncludePaths = getCompilersDefaultIncludeDir(compileCommands);
     auto compileCommandsDir = files::getParentDir(compileCommandsPath);
     MRDOCS_ASSERT(files::isDirsy(compileCommandsDir));
     MrDocsCompilationDatabase compilationDatabase(
         compileCommandsDir,
-        compileCommands, config,
-        defaultIncludePaths);
+        compileCommands, config);
 
     // --------------------------------------------------------------
     //
