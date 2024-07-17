@@ -90,6 +90,7 @@ handleFile(
         publicSettings.config = configPath;
         publicSettings.configDir = files::getParentDir(filePath);
         publicSettings.configYaml = files::getFileText(publicSettings.config).value();
+        publicSettings.libCxxPaths = testArgs.libCxxPaths;
         loadConfig(publicSettings, publicSettings.configYaml).value();
         auto configFile = loadConfigFile(
             publicSettings,
@@ -241,6 +242,7 @@ namespace {
             publicSettings.config = configPath;
             publicSettings.configDir = dirPath;
             publicSettings.configYaml = files::getFileText(publicSettings.config).value();
+            publicSettings.libCxxPaths = testArgs.libCxxPaths;
             loadConfig(publicSettings, publicSettings.configYaml).value();
             publicSettings.sourceRoot = files::makeAbsolute(
                 publicSettings.sourceRoot,
@@ -362,6 +364,7 @@ checkPath(
                 publicSettings.config = configPath;
                 publicSettings.configDir = files::getParentDir(inputPath);
                 publicSettings.configYaml = files::getFileText(publicSettings.config).value();
+                publicSettings.libCxxPaths = testArgs.libCxxPaths;
                 if (testArgs.addons.getValue() != "")
                 {
                     publicSettings.addons = files::normalizeDir(testArgs.addons.getValue());

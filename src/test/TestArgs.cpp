@@ -80,9 +80,9 @@ EXAMPLES:
     "addons",
     llvm::cl::desc("The directory with the addons."),
     llvm::cl::cat(commonCat))
+
 , libCxxPaths(
-    "libcxx",
-    llvm::cl::Sink,
+    "libcxx-paths",
     llvm::cl::desc("A list of directories with the LibC++ standard library."),
     llvm::cl::cat(commonCat))
 {
