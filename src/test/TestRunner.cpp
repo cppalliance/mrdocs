@@ -94,7 +94,8 @@ handleFile(
         auto configFile = loadConfigFile(
             publicSettings,
             config,
-            threadPool_);
+            threadPool_,
+            "");
         if(! configFile)
             return report::error("{}: \"{}\"",
                 configPath, configFile.error());
@@ -112,11 +113,9 @@ handleFile(
 
     auto parentDir = files::getParentDir(filePath);
 
-    std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
-
     // Convert relative paths to absolute
     MrDocsCompilationDatabase compilations(
-        llvm::StringRef(parentDir), SingleFileDB(filePath), config, defaultIncludePaths);
+        llvm::StringRef(parentDir), SingleFileDB(filePath), config);
     // Build Corpus
     auto corpus = CorpusImpl::build(
         report::Level::debug, config, compilations);
@@ -249,7 +248,8 @@ namespace {
             auto configFile = loadConfigFile(
                 publicSettings,
                 config,
-                threadPool);
+                threadPool,
+                "");
             if(! configFile)
             {
                 report::error("{}: \"{}\"", configPath, configFile.error());
@@ -374,7 +374,8 @@ checkPath(
                 auto configFile = loadConfigFile(
                     publicSettings,
                     config,
-                    threadPool_);
+                    threadPool_,
+                    "");
                 if(! configFile)
                     return report::error("{}: \"{}\"",
                         configPath, configFile.error());

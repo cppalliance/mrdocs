@@ -104,6 +104,9 @@ public:
         /// from CMakeLists.txt
         std::string cmake;
 
+        /// LibC++ include paths
+        std::vector<std::string> libCxxPaths;
+
         /// Additional defines passed to the compiler
         std::vector<std::string> defines;
 

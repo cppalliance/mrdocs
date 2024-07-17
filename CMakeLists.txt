@@ -284,11 +284,11 @@ if (MRDOCS_BUILD_TESTS)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
-    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons")
+    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${CMAKE_SOURCE_DIR}/share/libcxx")
     foreach (action IN ITEMS create update)
         add_custom_target(
             mrdocs-${action}-test-fixtures
-            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${CMAKE_SOURCE_DIR}/share/libcxx"
             DEPENDS mrdocs-test
         )
     endforeach ()

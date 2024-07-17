@@ -50,14 +50,12 @@ public:
      * @param workingDir The working directory against which relative paths will be resolved.
      * @param inner The source compilation database to copy.
      * @param config The shared configuration object.
-     * @param implicitIncludeDirectories A map from compiler executable paths to their respective
-     *        implicit include directories, as determined by the system's compiler.
+     * @param LibC++ include directories.
      */
     MrDocsCompilationDatabase(
         llvm::StringRef workingDir,
         CompilationDatabase const& inner,
-        std::shared_ptr<const Config> config,
-        std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories);
+        std::shared_ptr<const Config> config);
 
     /** Get all compile commands for a file.
 
