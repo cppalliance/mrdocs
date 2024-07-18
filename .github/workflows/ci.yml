@@ -188,12 +188,19 @@ jobs:
           fi
           echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
 
+      # - name: LLVM Binaries
+      #   id: llvm-cache
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ${{ steps.llvm-parameters.outputs.llvm-root }}
+      #     key: llvm-libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
+
       - name: LLVM Binaries
         id: llvm-cache
         uses: actions/cache@v4
         with:
           path: ${{ steps.llvm-parameters.outputs.llvm-root }}
-          key: llvm-libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
+          key: llvm-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
 
       - name: Install LLVM
         id: llvm-install
@@ -255,17 +262,65 @@ jobs:
 
           pwd
 
-          CXX="$llvm_project_root/install/bin/clang++"
-          CC="$llvm_project_root/install/bin/clang"
+          export CXX="$llvm_project_root/install/bin/clang++"
+          export CC="$llvm_project_root/install/bin/clang"
+
+
 
           echo $$llvm_project_root
           echo $CXX
           echo $CC
 
+          $CC --version
+          $CXX --version
+
           cd $llvm_project_root
 
-          rm -rf build-libcxx
-          mkdir build-libcxx
+          # rm -rf build-libcxx
+          # mkdir build-libcxx
+          cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
+          ninja -C build-libcxx cxx cxxabi unwind                                                        # Build
+          ninja -C build-libcxx check-cxx check-cxxabi check-unwind                                      # Test
+          ninja -C build-libcxx install-cxx install-cxxabi install-unwind
+
+      - name: Install LibC++
+        id: libcxx-install
+        # if: steps.llvm-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          # LLVM is be installed with the default compiler
+          set -x
+
+          # Shallow clone LLVM_HASH in ../third-party/llvm
+          cd ..
+          mkdir -p third-party/llvm-project
+          cd third-party/llvm-project
+          llvm_project_root=$(pwd)
+          git config --global init.defaultBranch master
+          git config --global advice.detachedHead false
+          git init
+          git remote add origin https://github.com/llvm/llvm-project.git
+          git fetch --depth 1 origin ${{ steps.llvm-parameters.outputs.llvm-hash }}
+          git checkout FETCH_HEAD
+
+          pwd
+
+          export CXX="$llvm_project_root/install/bin/clang++"
+          export CC="$llvm_project_root/install/bin/clang"
+
+
+
+          echo $$llvm_project_root
+          echo $CXX
+          echo $CC
+
+          $CC --version
+          $CXX --version
+
+          cd $llvm_project_root
+
+          # rm -rf build-libcxx
+          # mkdir build-libcxx
           cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
           ninja -C build-libcxx cxx cxxabi unwind                                                        # Build
           ninja -C build-libcxx check-cxx check-cxxabi check-unwind                                      # Test
