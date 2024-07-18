@@ -193,7 +193,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.llvm-parameters.outputs.llvm-root }}
-          key: llvm-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
+          key: llvm-libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
 
       - name: Install LLVM
         id: llvm-install
