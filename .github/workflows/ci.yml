@@ -263,6 +263,7 @@ jobs:
       - name: Install LibC++
         id: libcxx-install
         # if: steps.llvm-cache.outputs.cache-hit != 'true'
+        if: runner.os != 'Windows'
         shell: bash
         run: |
           # LLVM is be installed with the default compiler
@@ -296,16 +297,16 @@ jobs:
 
           # rm -rf build-libcxx
           # mkdir build-libcxx
-          if [ ${{ runner.os }} != 'Windows' ]; then
+          # if [ ${{ runner.os }} != 'Windows' ]; then
             cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
             ninja -C build-libcxx cxx cxxabi unwind                                                        # Build
             # ninja -C build-libcxx check-cxx check-cxxabi check-unwind                                      # Test
             ninja -C build-libcxx install-cxx install-cxxabi install-unwind
-          else
-            cmake -G "Visual Studio 16 2019" -S runtimes -B build-libcxx -T "ClangCL" -DLLVM_ENABLE_RUNTIMES=libcxx -DLIBCXX_ENABLE_SHARED=YES -DLIBCXX_ENABLE_STATIC=NO -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
-            cmake --build build-libcxx
-            cmake --install build-libcxx
-          fi
+          # else
+          #   cmake -G "Visual Studio 16 2019" -S runtimes -B build-libcxx -T "ClangCL" -DLLVM_ENABLE_RUNTIMES=libcxx -DLIBCXX_ENABLE_SHARED=YES -DLIBCXX_ENABLE_STATIC=NO -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
+          #   cmake --build build-libcxx
+          #   cmake --install build-libcxx
+          # fi
 
       - name: Install Node.js
         uses: actions/setup-node@v3
