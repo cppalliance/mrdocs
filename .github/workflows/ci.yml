@@ -255,11 +255,14 @@ jobs:
 
           pwd
 
-          CXX="../install/bin/clang++"
-          CC="../install/bin/clang"
+          CXX="$llvm_project_root/install/bin/clang++"
+          CC="$llvm_project_root/install/bin/clang"
 
+          echo $$llvm_project_root
           echo $CXX
           echo $CC
+
+          cd $llvm_project_root
 
           rm -rf build-libcxx
           mkdir build-libcxx
