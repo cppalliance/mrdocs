@@ -269,8 +269,7 @@ jobs:
 
       - name: Install LibC++
         id: libcxx-install
-        if: steps.libcxx-cache.outputs.cache-hit != 'true'
-        if: runner.os != 'Windows'
+        if: ${{ runner.os != 'Windows' && steps.libcxx-cache.outputs.cache-hit != 'true'}}
         shell: bash
         run: |
           # LLVM is be installed with the default compiler
