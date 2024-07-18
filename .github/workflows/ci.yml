@@ -260,9 +260,16 @@ jobs:
           fi
           cmake --install ./build --prefix "$llvm_project_root"/install
 
+      - name: LibC++ Binaries
+        id: libcxx-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.llvm-parameters.outputs.llvm-root }}
+          key: libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
+
       - name: Install LibC++
         id: libcxx-install
-        # if: steps.llvm-cache.outputs.cache-hit != 'true'
+        if: steps.libcxx-cache.outputs.cache-hit != 'true'
         if: runner.os != 'Windows'
         shell: bash
         run: |
