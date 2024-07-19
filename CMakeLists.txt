@@ -92,6 +92,13 @@ elseif (LLVM_ROOT)
 endif()
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
+
+message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
+message(STATUS "Found Clang ${CLANG_PACKAGE_VERSION}")
+message(STATUS "Using ClangConfig.cmake in: ${CLANG_DIR}")
+message(STATUS "LLVM_ROOT: ${LLVM_ROOT}")
+
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(HandleLLVMOptions)
 add_definitions(${LLVM_DEFINITIONS})
@@ -284,11 +291,11 @@ if (MRDOCS_BUILD_TESTS)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
-    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${CMAKE_SOURCE_DIR}/share/libcxx")
+    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${CMAKE_SOURCE_DIR}/third-party/llvm-project/install-libcxx")
     foreach (action IN ITEMS create update)
         add_custom_target(
             mrdocs-${action}-test-fixtures
-            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${CMAKE_SOURCE_DIR}/share/libcxx"
+            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${CMAKE_SOURCE_DIR}/third-party/llvm-project/install-libcxx"
             DEPENDS mrdocs-test
         )
     endforeach ()
