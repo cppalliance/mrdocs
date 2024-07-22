@@ -86,9 +86,8 @@ ConfigImpl(
 
     report::error("settings_.libCxxPaths.size() = {}", settings_.libCxxPaths.size());
 
-    // if (settings_.libCxxPaths.empty())
-    // {
-        // std::vector<std::string> libCxxPaths;
+    if (settings_.libCxxPaths.empty())
+    {
         // Set LibC++ path from process working directory
         std::string binDir = files::getParentDir(execPath);
         std::string libCxxDir = files::makeDirsy(files::appendPath(
@@ -99,15 +98,15 @@ ConfigImpl(
             formatError("Cannot find LibC++ include directory in \"{}\"", libCxxDir).Throw();
         }
         settings_.libCxxPaths.push_back(libCxxDir);
-        // libCxxPaths.push_back(libCxxDir);
-    // }
-    // else
-    // {
-    //     for (auto& path : settings_.libCxxPaths)
-    //     {
-    //         path = files::makeDirsy(files::normalizePath(path));
-    //     }
-    // }
+    }
+    else
+    {
+        for (auto& path : settings_.libCxxPaths)
+        {
+            path = files::makeDirsy(files::normalizePath(path));
+        }
+        report::error("settings_.libCxxPaths[0] = {}", settings_.libCxxPaths[0]);
+    }
 
     // Addons directory
     settings_.addons = files::makeAbsolute(publicSettings.addons).value();
