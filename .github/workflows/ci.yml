@@ -502,6 +502,12 @@ jobs:
           set -x
           find packages -name 'MrDocs-*-Linux.tar.gz' -exec tar -vxzf {} -C /usr/local --strip-components=1 \;
           mrdocs --version
+          ls /usr/local/share/
+          echo "----------------------------------------"
+          ls /usr/local/share/mrdocs/
+          echo "----------------------------------------"
+          ls /usr/local/share/mrdocs/libcxx/
+          echo "----------------------------------------"
 
       - name: Clone Boost.URL
         uses: alandefreitas/cpp-actions/boost-clone@v1.8.2
