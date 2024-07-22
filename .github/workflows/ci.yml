@@ -299,6 +299,7 @@ jobs:
 
       - name: Check LibC++ Installation
         id: libcxx-check
+        if: ${{ runner.os != 'Windows' }}
         shell: bash
         run: |
           set -x
