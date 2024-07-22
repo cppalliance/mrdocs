@@ -99,6 +99,13 @@ message(STATUS "Found Clang ${CLANG_PACKAGE_VERSION}")
 message(STATUS "Using ClangConfig.cmake in: ${CLANG_DIR}")
 message(STATUS "LLVM_ROOT: ${LLVM_ROOT}")
 
+if (LLVM_ROOT)
+    # LLVM_ROOT: /__w/mrdocs/third-party/llvm-project/install
+    set(LIBCXX_DIR "${LLVM_ROOT}/../install-libcxx/include")
+endif()
+
+message(STATUS "LIBCXX_DIR: ${LIBCXX_DIR}")
+
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(HandleLLVMOptions)
 add_definitions(${LLVM_DEFINITIONS})
@@ -291,11 +298,11 @@ if (MRDOCS_BUILD_TESTS)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
-    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${CMAKE_SOURCE_DIR}/third-party/llvm-project/install-libcxx")
+    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${LIBCXX_DIR}")
     foreach (action IN ITEMS create update)
         add_custom_target(
             mrdocs-${action}-test-fixtures
-            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${CMAKE_SOURCE_DIR}/third-party/llvm-project/install-libcxx"
+            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --libcxx-paths="${LIBCXX_DIR}"
             DEPENDS mrdocs-test
         )
     endforeach ()
@@ -333,6 +340,12 @@ endif()
 #-------------------------------------------------
 
 if (MRDOCS_BUILD_DOCS)
+    set(MRDOCS_SHARE_LIBCXX_DIR "${CMAKE_CURRENT_BINARY_DIR}/../share/mrdocs/libcxx")
+    message(STATUS "Copying libc++ headers to ${MRDOCS_SHARE_LIBCXX_DIR}")
+    file(MAKE_DIRECTORY ${MRDOCS_SHARE_LIBCXX_DIR})
+    file(COPY ${LIBCXX_DIR}/ DESTINATION ${MRDOCS_SHARE_LIBCXX_DIR})
+
+
     #-------------------------------------------------
     # Reference
     #-------------------------------------------------

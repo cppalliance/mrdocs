@@ -50,7 +50,7 @@ EXAMPLES:
 , output(llvm::cl::cat(pathsCat))
 , compilationDatabase(llvm::cl::cat(pathsCat))
 , cmake(llvm::cl::cat(buildOptsCat))
-, libCxxPaths(llvm::cl::cat(buildOptsCat))
+// , libCxxPaths(llvm::cl::cat(buildOptsCat))
 , defines(llvm::cl::cat(buildOptsCat))
 , generate(llvm::cl::init("adoc"), llvm::cl::cat(generatorCat))
 , addons(llvm::cl::cat(generatorCat))

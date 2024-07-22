@@ -68,7 +68,7 @@ COMMON_OPTION (compilationDatabase     , compilation-database    , Path to the c
 
 // Build options
 COMMON_OPTION (cmake                   , cmake                   , CMake arguments when generating the compilation database from CMakeLists.txt)
-COMMON_OPTION (libCxxPaths             , libcxx-paths            , LibC++ include paths)
+// COMMON_OPTION (libCxxPaths             , libcxx-paths            , LibC++ include paths)
 COMMON_OPTION (defines                 , defines                 , Additional defines passed to the compiler)
 
 // Generators

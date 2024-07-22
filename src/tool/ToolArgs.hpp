@@ -59,8 +59,8 @@ public:
     /// from CMakeLists.txt
     llvm::cl::opt<std::string> cmake;
 
-    /// Paths to the LibC++ standard library
-    llvm::cl::list<std::string> libCxxPaths;
+    // /// Paths to the LibC++ standard library
+    // llvm::cl::list<std::string> libCxxPaths;
 
     /// Additional defines passed to the compiler
     llvm::cl::list<std::string> defines;
