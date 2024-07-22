@@ -313,7 +313,7 @@ jobs:
           cmake -G Ninja \
                 -S runtimes \
                 -B build-libcxx \
-                -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi"
+                -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
                 -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx" \
                 -DLIBCXXABI_USE_LLVM_UNWINDER=OFF
 
