@@ -84,8 +84,6 @@ ConfigImpl(
     }
     settings_.configDir = files::makeDirsy(files::normalizePath(settings_.configDir));
 
-    // report::error("settings_.libCxxPaths.size() = {}", settings_.libCxxPaths.size());
-
     if (settings_.libCxxPaths.empty())
     {
         // Set LibC++ path from process working directory
@@ -105,7 +103,6 @@ ConfigImpl(
         {
             path = files::makeDirsy(files::normalizePath(path));
         }
-        // report::error("settings_.libCxxPaths[0] = {}", settings_.libCxxPaths[0]);
     }
 
     // Addons directory

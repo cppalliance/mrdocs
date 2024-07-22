@@ -462,11 +462,15 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # share
     #-------------------------------------------------
+    message(STATUS "Copying libc++ headers from ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs to ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs")
     file(GLOB SHARE_SUBDIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/*)
     foreach (dir ${SHARE_SUBDIRS})
+        message(STATUS "dir: ${dir}")
         if (NOT IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir})
+            message(STATUS "not a directory")
             continue()
         endif()
+        message(STATUS "installing ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir} to ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs")
         install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir}
                 DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs
                 FILES_MATCHING PATTERN "*")
