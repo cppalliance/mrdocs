@@ -91,7 +91,7 @@ handleFile(
         publicSettings.configDir = files::getParentDir(filePath);
         publicSettings.configYaml = files::getFileText(publicSettings.config).value();
 
-        report::error("testArgs.libCxxPaths.size() = {}", testArgs.libCxxPaths.size());
+        // report::info("testArgs.libCxxPaths.size() = {}", testArgs.libCxxPaths.size());
 
         publicSettings.libCxxPaths = testArgs.libCxxPaths;
         loadConfig(publicSettings, publicSettings.configYaml).value();
