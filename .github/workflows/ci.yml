@@ -301,9 +301,9 @@ jobs:
           # ninja -C build-libcxx cxx cxxabi
           # ninja -C build-libcxx install-cxx install-cxxabi
 
-          cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
-          ninja -C build-libcxx cxx
-          ninja -C build-libcxx install-cxx
+          # cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
+          # ninja -C build-libcxx cxx
+          # ninja -C build-libcxx install-cxx
 
           cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
           ninja -C build-libcxx cxx
