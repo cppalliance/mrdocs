@@ -289,34 +289,35 @@ jobs:
           git fetch --depth 1 origin ${{ steps.llvm-parameters.outputs.llvm-hash }}
           git checkout FETCH_HEAD
 
-          # if [ ${{ runner.os }} != 'Windows' ]; then
-            export CXX="$llvm_project_root/install/bin/clang++"
-            export CC="$llvm_project_root/install/bin/clang"
-          # fi
+          export CXX="$llvm_project_root/install/bin/clang++"
+          export CC="$llvm_project_root/install/bin/clang"
 
           cd $llvm_project_root
 
-          cmake -G Ninja \
-                -S runtimes \
-                -B build-libcxx \
-                -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
-                -DCMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx" \
-                -DLIBCXXABI_USE_LLVM_UNWINDER=OFF \
-                -DLIBCXXABI_ENABLE_SHARED=OFF \
-                -DLIBCXXABI_ENABLE_STATIC=ON \
-                -DLIBCXX_NO_VCRUNTIME=ON \
-                -DCMAKE_CXX_FLAGS="-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__"
+          if [ ${{ runner.os }} != 'Windows' ]; then
+            cmake -G Ninja  \
+                  -S runtimes  \
+                  -B build-libcxx  \
+                  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind"  \
+                  -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
 
-          ninja -C build-libcxx cxx
-          ninja -C build-libcxx install-cxx
-
-
-          # cmake -G Ninja -S runtimes -B build                                               ^
-          #         -DCMAKE_C_COMPILER=clang-cl                                                 ^
-          #         -DCMAKE_CXX_COMPILER=clang-cl                                               ^
-          #         -DLLVM_ENABLE_RUNTIMES=libcxx
-          # > ninja -C build cxx
-          # > ninja -C build check-cxx
+            ninja -C build-libcxx cxx cxxabi unwind
+            ninja -C build-libcxx install-cxx install-cxxabi install-unwind
+          else
+            cmake -G Ninja \
+                  -S runtimes \
+                  -B build-libcxx \
+                  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
+                  -DCMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx" \
+                  -DLIBCXXABI_USE_LLVM_UNWINDER=OFF \
+                  -DLIBCXXABI_ENABLE_SHARED=OFF \
+                  -DLIBCXXABI_ENABLE_STATIC=ON \
+                  -DLIBCXX_ENABLE_SHARED=OFF \
+                  -DLIBCXX_NO_VCRUNTIME=ON \
+                  -DCMAKE_CXX_FLAGS="-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__"
+            ninja -C build-libcxx cxx
+            ninja -C build-libcxx install-cxx
+          fi
 
           ls $llvm_project_root/install-libcxx
 
