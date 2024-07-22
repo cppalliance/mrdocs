@@ -84,6 +84,8 @@ ConfigImpl(
     }
     settings_.configDir = files::makeDirsy(files::normalizePath(settings_.configDir));
 
+    report::error("settings_.libCxxPaths.size() = {}", settings_.libCxxPaths.size());
+
     // if (settings_.libCxxPaths.empty())
     // {
         // std::vector<std::string> libCxxPaths;
