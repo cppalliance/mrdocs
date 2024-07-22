@@ -188,6 +188,14 @@ jobs:
           fi
           echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
 
+          libcxx_root=$(pwd)/third-party/llvm-project/install-libcxx
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              libcxx_root=$(echo "$libcxx_root" | sed 's/\\/\//g')
+              libcxx_root=$(echo $libcxx_root | sed 's|^/d/|D:/|')
+              echo "$libcxx_root"
+          fi
+          echo -E "libcxx-root=$libcxx_root" >> $GITHUB_OUTPUT
+
       - name: LLVM Binaries
         id: llvm-cache
         uses: actions/cache@v4
@@ -257,8 +265,8 @@ jobs:
         id: libcxx-cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.llvm-parameters.outputs.llvm-root }}
-          key: libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
+          path: ${{ steps.llvm-parameters.outputs.libcxx-root }}
+          key: libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
 
       - name: Install LibC++
         id: libcxx-install
@@ -296,15 +304,19 @@ jobs:
           set -x
           echo ${{ steps.llvm-parameters.outputs.llvm-root }}
           echo "-------------------"
+          echo ${{ steps.llvm-parameters.outputs.libcxx-root }}
+
+
           ls ${{ steps.llvm-parameters.outputs.llvm-root }}
           echo "-------------------"
           ls ${{ steps.llvm-parameters.outputs.llvm-root }}/../
           echo "-------------------"
 
-          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/../install
+          ls ${{ steps.llvm-parameters.outputs.libcxx-root }}
           echo "-------------------"
-          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/../install-libcxx
+          ls ${{ steps.llvm-parameters.outputs.libcxx-root }}/../
           echo "-------------------"
+
 
       - name: Install Node.js
         uses: actions/setup-node@v3
