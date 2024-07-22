@@ -294,18 +294,16 @@ jobs:
         shell: bash
         run: |
           set -x
-          export LLVM_ROOT_2=${{ steps.llvm-parameters.outputs.llvm-root }}
-          echo $LLVM_ROOT_2
           echo ${{ steps.llvm-parameters.outputs.llvm-root }}
-          echo "-------------------"
-          ls $LLVM_ROOT_2
           echo "-------------------"
           ls ${{ steps.llvm-parameters.outputs.llvm-root }}
           echo "-------------------"
-
-          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/install
+          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/../
           echo "-------------------"
-          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/install-libcxx
+
+          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/../install
+          echo "-------------------"
+          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/../install-libcxx
           echo "-------------------"
 
       - name: Install Node.js
