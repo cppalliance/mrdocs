@@ -100,8 +100,7 @@ message(STATUS "Using ClangConfig.cmake in: ${CLANG_DIR}")
 message(STATUS "LLVM_ROOT: ${LLVM_ROOT}")
 
 if (LLVM_ROOT)
-    # LLVM_ROOT: /__w/mrdocs/third-party/llvm-project/install
-    set(LIBCXX_DIR "${LLVM_ROOT}/../install-libcxx/include")
+    set(LIBCXX_DIR "${LLVM_ROOT}/../install-libcxx/include/c++/v1/")
 endif()
 
 message(STATUS "LIBCXX_DIR: ${LIBCXX_DIR}")
