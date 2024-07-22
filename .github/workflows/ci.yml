@@ -323,23 +323,14 @@ jobs:
 
       - name: Check LibC++ Installation
         id: libcxx-check
-        if: ${{ runner.os != 'Windows' }}
         shell: bash
         run: |
           set -x
-          echo ${{ steps.llvm-parameters.outputs.llvm-root }}
-          echo "-------------------"
           echo ${{ steps.llvm-parameters.outputs.libcxx-root }}
-
-
-          ls ${{ steps.llvm-parameters.outputs.llvm-root }}
           echo "-------------------"
-          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/../
-          echo "-------------------"
-
           ls ${{ steps.llvm-parameters.outputs.libcxx-root }}
           echo "-------------------"
-          ls ${{ steps.llvm-parameters.outputs.libcxx-root }}/../
+          ls ${{ steps.llvm-parameters.outputs.libcxx-root }}/include
           echo "-------------------"
 
 
@@ -536,6 +527,16 @@ jobs:
             "html"
             "xml"
           )
+
+          echo "----------------------------------------"
+          pwd
+          echo "----------------------------------------"
+          echo $(pwd)
+          echo "----------------------------------------"
+          ls
+          echo "----------------------------------------"
+          ls ..
+          echo "----------------------------------------"
 
           for variant in single multi; do
             for generator in "${generators[@]}"; do
