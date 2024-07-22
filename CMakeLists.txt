@@ -335,17 +335,23 @@ endif()
 
 #-------------------------------------------------
 #
+# Copy libc++ headers
+#
+#-------------------------------------------------
+
+set(MRDOCS_SHARE_LIBCXX_DIR "${CMAKE_CURRENT_BINARY_DIR}/../share/mrdocs/libcxx")
+message(STATUS "Copying libc++ headers to ${MRDOCS_SHARE_LIBCXX_DIR}")
+file(MAKE_DIRECTORY ${MRDOCS_SHARE_LIBCXX_DIR})
+file(COPY ${LIBCXX_DIR}/ DESTINATION ${MRDOCS_SHARE_LIBCXX_DIR})
+
+
+#-------------------------------------------------
+#
 # Docs
 #
 #-------------------------------------------------
 
 if (MRDOCS_BUILD_DOCS)
-    set(MRDOCS_SHARE_LIBCXX_DIR "${CMAKE_CURRENT_BINARY_DIR}/../share/mrdocs/libcxx")
-    message(STATUS "Copying libc++ headers to ${MRDOCS_SHARE_LIBCXX_DIR}")
-    file(MAKE_DIRECTORY ${MRDOCS_SHARE_LIBCXX_DIR})
-    file(COPY ${LIBCXX_DIR}/ DESTINATION ${MRDOCS_SHARE_LIBCXX_DIR})
-
-
     #-------------------------------------------------
     # Reference
     #-------------------------------------------------
