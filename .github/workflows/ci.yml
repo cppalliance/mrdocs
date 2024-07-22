@@ -315,7 +315,9 @@ jobs:
                 -B build-libcxx \
                 -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
                 -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx" \
-                -DLIBCXXABI_USE_LLVM_UNWINDER=OFF
+                -DLIBCXXABI_USE_LLVM_UNWINDER=OFF \
+                -DLIBCXXABI_ENABLE_SHARED=OFF \
+                -DLIBCXXABI_ENABLE_STATIC=ON
 
           ninja -C build-libcxx cxx
           ninja -C build-libcxx install-cxx
