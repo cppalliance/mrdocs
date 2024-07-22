@@ -289,26 +289,12 @@ jobs:
           git fetch --depth 1 origin ${{ steps.llvm-parameters.outputs.llvm-hash }}
           git checkout FETCH_HEAD
 
-          export CXX="$llvm_project_root/install/bin/clang++"
-          export CC="$llvm_project_root/install/bin/clang"
+          if [ ${{ runner.os }} != 'Windows' ]; then
+            export CXX="$llvm_project_root/install/bin/clang++"
+            export CC="$llvm_project_root/install/bin/clang"
+          fi
 
           cd $llvm_project_root
-
-          # cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
-          # ninja -C build-libcxx cxx cxxabi unwind
-          # ninja -C build-libcxx install-cxx install-cxxabi install-unwind
-
-          # cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
-          # ninja -C build-libcxx cxx cxxabi
-          # ninja -C build-libcxx install-cxx install-cxxabi
-
-          # cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
-          # ninja -C build-libcxx cxx
-          # ninja -C build-libcxx install-cxx
-
-          # cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
-          # ninja -C build-libcxx cxx
-          # ninja -C build-libcxx install-cxx
 
           cmake -G Ninja \
                 -S runtimes \
