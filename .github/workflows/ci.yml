@@ -188,13 +188,6 @@ jobs:
           fi
           echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
 
-      # - name: LLVM Binaries
-      #   id: llvm-cache
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: ${{ steps.llvm-parameters.outputs.llvm-root }}
-      #     key: llvm-libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
-
       - name: LLVM Binaries
         id: llvm-cache
         uses: actions/cache@v4
@@ -293,6 +286,27 @@ jobs:
           cmake -G Ninja -S runtimes -B build-libcxx -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx"
           ninja -C build-libcxx cxx cxxabi unwind
           ninja -C build-libcxx install-cxx install-cxxabi install-unwind
+
+          ls $llvm_project_root/install-libcxx
+
+      - name: Check LibC++ Installation
+        id: libcxx-check
+        shell: bash
+        run: |
+          set -x
+          export LLVM_ROOT_2=${{ steps.llvm-parameters.outputs.llvm-root }}
+          echo $LLVM_ROOT_2
+          echo ${{ steps.llvm-parameters.outputs.llvm-root }}
+          echo "-------------------"
+          ls $LLVM_ROOT_2
+          echo "-------------------"
+          ls ${{ steps.llvm-parameters.outputs.llvm-root }}
+          echo "-------------------"
+
+          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/install
+          echo "-------------------"
+          ls ${{ steps.llvm-parameters.outputs.llvm-root }}/install-libcxx
+          echo "-------------------"
 
       - name: Install Node.js
         uses: actions/setup-node@v3
