@@ -300,10 +300,11 @@ jobs:
                 -S runtimes \
                 -B build-libcxx \
                 -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
-                -D CMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx" \
+                -DCMAKE_INSTALL_PREFIX="$llvm_project_root/install-libcxx" \
                 -DLIBCXXABI_USE_LLVM_UNWINDER=OFF \
                 -DLIBCXXABI_ENABLE_SHARED=OFF \
-                -DLIBCXXABI_ENABLE_STATIC=ON
+                -DLIBCXXABI_ENABLE_STATIC=ON \
+                -DCMAKE_CXX_FLAGS="-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__"
 
           ninja -C build-libcxx cxx
           ninja -C build-libcxx install-cxx
