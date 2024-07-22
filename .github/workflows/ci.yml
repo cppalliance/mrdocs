@@ -289,10 +289,10 @@ jobs:
           git fetch --depth 1 origin ${{ steps.llvm-parameters.outputs.llvm-hash }}
           git checkout FETCH_HEAD
 
-          if [ ${{ runner.os }} != 'Windows' ]; then
+          # if [ ${{ runner.os }} != 'Windows' ]; then
             export CXX="$llvm_project_root/install/bin/clang++"
             export CC="$llvm_project_root/install/bin/clang"
-          fi
+          # fi
 
           cd $llvm_project_root
 
