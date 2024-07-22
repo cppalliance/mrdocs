@@ -90,7 +90,7 @@ ConfigImpl(
         // Set LibC++ path from process working directory
         std::string binDir = files::getParentDir(execPath);
         std::string libCxxDir = files::makeDirsy(files::appendPath(
-                binDir, "..", "include", "libcxx"));
+                binDir, "..", "share", "mrdocs", "libcxx"));
         Error err = files::requireDirectory(libCxxDir);
         if (err)
         {
