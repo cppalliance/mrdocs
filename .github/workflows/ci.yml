@@ -267,7 +267,7 @@ jobs:
         with:
           path: ${{ steps.llvm-parameters.outputs.libcxx-root }}
           # key: libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
-          key: libcxx-${{ steps.llvm-parameters.outputs.llvm-hash }}
+          key: libcxx-universal-${{ steps.llvm-parameters.outputs.llvm-hash }}
           enableCrossOsArchive: true
 
       - name: Install LibC++
