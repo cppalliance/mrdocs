@@ -516,9 +516,14 @@ jobs:
           echo 'int main() {}' >> main.cpp
 
           echo "------------------------------------"
+          pwd
+          echo "------------------------------------"
           $CXX main.cpp
           echo "------------------------------------"
           $CXX -nostdinc++ -nostdlib++ -isystem /usr/local/share/mrdocs/libcxx/ main.cpp
+          echo "------------------------------------"
+          # $CXX -w -fsyntax-only -nostdinc++ -nostdlib++ -isystem /usr/local/share/mrdocs/libcxx/ -DBOOST_URL_MRDOCS -DBOOST_URL_NO_LIB=1 -DBOOST_URL_NO_SSE2 -DBOOST_URL_SOURCE -DBOOST_URL_STATIC_LINK=1 -I/__w/mrdocs/mrdocs/boost/libs/url/include -I/__w/mrdocs/mrdocs/boost/libs/align/include -I/__w/mrdocs/mrdocs/boost/libs/assert/include -I/__w/mrdocs/mrdocs/boost/libs/config/include -I/__w/mrdocs/mrdocs/boost/libs/core/include -I/__w/mrdocs/mrdocs/boost/libs/static_assert/include -I/__w/mrdocs/mrdocs/boost/libs/throw_exception/include -I/__w/mrdocs/mrdocs/boost/libs/mp11/include -I/__w/mrdocs/mrdocs/boost/libs/optional/include -I/__w/mrdocs/mrdocs/boost/libs/move/include -I/__w/mrdocs/mrdocs/boost/libs/predef/include -I/__w/mrdocs/mrdocs/boost/libs/type_traits/include -I/__w/mrdocs/mrdocs/boost/libs/utility/include -I/__w/mrdocs/mrdocs/boost/libs/io/include -I/__w/mrdocs/mrdocs/boost/libs/preprocessor/include -I/__w/mrdocs/mrdocs/boost/libs/system/include -I/__w/mrdocs/mrdocs/boost/libs/variant2/include -I/__w/mrdocs/mrdocs/boost/libs/winapi/include -std=gnu++20 -o CMakeFiles/boost_url_mrdocs.dir/mrdocs.cpp.o -c /tmp/mrdocs-5ffb98/build/mrdocs.cpp
+          $CXX -w -fsyntax-only -nostdinc++ -nostdlib++ -isystem /usr/local/share/mrdocs/libcxx/ -DBOOST_URL_MRDOCS -DBOOST_URL_NO_LIB=1 -DBOOST_URL_NO_SSE2 -DBOOST_URL_SOURCE -DBOOST_URL_STATIC_LINK=1 -I/__w/mrdocs/mrdocs/boost/libs/url/include -I/__w/mrdocs/mrdocs/boost/libs/align/include -I/__w/mrdocs/mrdocs/boost/libs/assert/include -I/__w/mrdocs/mrdocs/boost/libs/config/include -I/__w/mrdocs/mrdocs/boost/libs/core/include -I/__w/mrdocs/mrdocs/boost/libs/static_assert/include -I/__w/mrdocs/mrdocs/boost/libs/throw_exception/include -I/__w/mrdocs/mrdocs/boost/libs/mp11/include -I/__w/mrdocs/mrdocs/boost/libs/optional/include -I/__w/mrdocs/mrdocs/boost/libs/move/include -I/__w/mrdocs/mrdocs/boost/libs/predef/include -I/__w/mrdocs/mrdocs/boost/libs/type_traits/include -I/__w/mrdocs/mrdocs/boost/libs/utility/include -I/__w/mrdocs/mrdocs/boost/libs/io/include -I/__w/mrdocs/mrdocs/boost/libs/preprocessor/include -I/__w/mrdocs/mrdocs/boost/libs/system/include -I/__w/mrdocs/mrdocs/boost/libs/variant2/include -I/__w/mrdocs/mrdocs/boost/libs/winapi/include -std=gnu++20 -o main.cpp.o -c main.cpp
           echo "------------------------------------"
 
       - name: Generate demos
