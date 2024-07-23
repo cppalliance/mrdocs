@@ -93,17 +93,9 @@ endif()
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
 
-message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
-message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
-message(STATUS "Found Clang ${CLANG_PACKAGE_VERSION}")
-message(STATUS "Using ClangConfig.cmake in: ${CLANG_DIR}")
-message(STATUS "LLVM_ROOT: ${LLVM_ROOT}")
-
 if (LLVM_ROOT)
     set(LIBCXX_DIR "${LLVM_ROOT}/../install-libcxx/include/c++/v1/")
 endif()
-
-message(STATUS "LIBCXX_DIR: ${LIBCXX_DIR}")
 
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(HandleLLVMOptions)
@@ -467,15 +459,11 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # share
     #-------------------------------------------------
-    message(STATUS "Copying libc++ headers from ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs to ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs")
     file(GLOB SHARE_SUBDIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/*)
     foreach (dir ${SHARE_SUBDIRS})
-        message(STATUS "dir: ${dir}")
         if (NOT IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir})
-            message(STATUS "not a directory")
             continue()
         endif()
-        message(STATUS "installing ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir} to ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs")
         install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir}
                 DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs
                 FILES_MATCHING PATTERN "*")

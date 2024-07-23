@@ -266,13 +266,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.llvm-parameters.outputs.libcxx-root }}
-          # key: libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
-          key: libcxx-universal-${{ steps.llvm-parameters.outputs.llvm-hash }}
-          enableCrossOsArchive: true
+          key: libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
 
       - name: Install LibC++
         id: libcxx-install
-        # if: ${{ runner.os != 'Windows' && steps.libcxx-cache.outputs.cache-hit != 'true'}}
         if: ${{ steps.libcxx-cache.outputs.cache-hit != 'true'}}
         shell: bash
         run: |
@@ -320,19 +317,6 @@ jobs:
           fi
 
           ls $llvm_project_root/install-libcxx
-
-      - name: Check LibC++ Installation
-        id: libcxx-check
-        shell: bash
-        run: |
-          set -x
-          echo ${{ steps.llvm-parameters.outputs.libcxx-root }}
-          echo "-------------------"
-          ls ${{ steps.llvm-parameters.outputs.libcxx-root }}
-          echo "-------------------"
-          ls ${{ steps.llvm-parameters.outputs.libcxx-root }}/include
-          echo "-------------------"
-
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -533,16 +517,6 @@ jobs:
             "html"
             "xml"
           )
-
-          echo "----------------------------------------"
-          pwd
-          echo "----------------------------------------"
-          echo $(pwd)
-          echo "----------------------------------------"
-          ls
-          echo "----------------------------------------"
-          ls ..
-          echo "----------------------------------------"
 
           for variant in single multi; do
             for generator in "${generators[@]}"; do

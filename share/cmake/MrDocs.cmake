@@ -159,7 +159,6 @@ function(add_mrdocs MRDOCS_TARGET_NAME)
     message(STATUS "MrDocs: Generating documentation for ${CMAKE_PROJECT_NAME} in ${MRDOCS_TARGET_OUTPUT}")
     set(MRDOCS_CMD_LINE_OPTIONS --config=${MRDOCS_TARGET_CONFIG} ${MRDOCS_COMPILE_COMMANDS}
             --addons=${MRDOCS_TARGET_ADDONS} --output=${MRDOCS_TARGET_OUTPUT})
-            # --libcxx-paths=${MRDOCS_LIBCXX_PATHS}
     string(REPLACE ";" " " MRDOCS_WS_CMD_LINE_OPTIONS "${MRDOCS_CMD_LINE_OPTIONS}")
     message(STATUS "mrdocs ${MRDOCS_WS_CMD_LINE_OPTIONS}")
     add_custom_target(
