@@ -513,7 +513,7 @@ jobs:
           export CC
 
           echo '#include <cstddef>'        > main.cpp
-          echo '#include <boost/url.cpp>' >> main.cpp
+          echo '#include <boost/url.hpp>' >> main.cpp
           echo 'int main() {}'            >> main.cpp
 
           echo "------------------------------------"
