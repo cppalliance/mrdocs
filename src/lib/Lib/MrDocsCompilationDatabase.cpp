@@ -372,6 +372,7 @@ MrDocsCompilationDatabase(
         for (auto const& arg : cmd.CommandLine)
         {
             fullCommand += arg;
+            fullCommand += ' ';
         }
         report::info("***** Command: {}", fullCommand);
 
