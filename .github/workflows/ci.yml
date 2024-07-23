@@ -504,6 +504,23 @@ jobs:
           modules-exclude-paths: ''
           trace-commands: true
 
+      - name: Test LibC++
+        run: |
+          set -x
+          CXX="${{ steps.setup-cpp.outputs.cxx }}"
+          export CXX
+          CC="${{ steps.setup-cpp.outputs.cc }}"
+          export CC
+
+          echo '#include <cstddef>' > main.cpp
+          echo 'int main() {}' >> main.cpp
+
+          echo "------------------------------------"
+          $CXX main.cpp
+          echo "------------------------------------"
+          $CXX -nostdinc++ -nostdlib++ -isystem /usr/local/share/mrdocs/libcxx/ main.cpp
+          echo "------------------------------------"
+
       - name: Generate demos
         run: |
           set -x
