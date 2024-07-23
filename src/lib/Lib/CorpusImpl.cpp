@@ -171,6 +171,18 @@ build(
     MRDOCS_CHECK(files, "Compilations database is empty");
     std::vector<Error> errors;
 
+    auto const cmds = compilations.getAllCompileCommands();
+    for (auto const& cmd : cmds)
+    {
+        std::string cmdStr;
+        for (auto const& arg : cmd.CommandLine)
+        {
+            cmdStr += arg;
+            cmdStr += ' ';
+        }
+        report::info("Command: {}", cmdStr);
+    }
+
     // Run the action on all files in the database
     if (files.size() == 1)
     {
