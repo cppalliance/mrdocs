@@ -334,5 +334,16 @@ void merge(EnumeratorInfo& I, EnumeratorInfo&& Other)
     mergeInfo(I, std::move(Other));
 }
 
+void merge(ConceptInfo& I, ConceptInfo&& Other)
+{
+    MRDOCS_ASSERT(canMerge(I, Other));
+    if(I.Constraint.Written.empty())
+        I.Constraint = std::move(Other.Constraint);
+    mergeSourceInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
+    if (! I.Template)
+        I.Template = std::move(Other.Template);
+}
+
 } // mrdocs
 } // clang

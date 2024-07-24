@@ -374,6 +374,13 @@ public:
         finalize(I.Deduced);
         finalize(I.Params);
     }
+
+    void operator()(ConceptInfo& I)
+    {
+        check(I.Namespace);
+        finalize(I.javadoc);
+        finalize(I.Template);
+    }
 };
 
 /** Finalizes a set of Info.

@@ -77,6 +77,7 @@ INFO(Enumerator,     Enumerators,     ENUMERATOR,     enumerator,     enumerator
 INFO(Guide,          Guides,          GUIDE,          guide,          guides,          The symbol is a deduction guide)
 INFO(Alias,          Aliases,         ALIAS,          alias,          aliases,         The symbol is a namespace alias)
 INFO(Using,          Usings,          USING,          using,          usings,          The symbol is a using declaration)
+INFO(Concept,        Concepts,        CONCEPT,        concept,        concepts,        The symbol is a concept)
 
 #ifdef INFO_PASCAL
 #undef INFO_PASCAL

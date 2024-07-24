@@ -364,6 +364,29 @@ writeGuide(
 
 void
 XMLWriter::
+writeConcept(
+    ConceptInfo const& I)
+{
+    openTemplate(I.Template);
+
+    tags_.open(conceptTagName, {
+        { "name", I.Name },
+        { I.Access },
+        { I.id },
+        { "constraint", I.Constraint.Written },
+        });
+
+    writeSourceInfo(I);
+
+    writeJavadoc(I.javadoc);
+
+    tags_.close(conceptTagName);
+
+    closeTemplate(I.Template);
+}
+
+void
+XMLWriter::
 writeAlias(
     AliasInfo const& I)
 {

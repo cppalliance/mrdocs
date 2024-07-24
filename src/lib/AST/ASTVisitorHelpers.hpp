@@ -79,6 +79,9 @@ struct MrDocsType<UsingDecl> : std::type_identity<UsingInfo> {};
 template <>
 struct MrDocsType<NamespaceDecl> : std::type_identity<NamespaceInfo>{};
 
+template <>
+struct MrDocsType<ConceptDecl> : std::type_identity<ConceptInfo>{};
+
 /// @copydoc MrDocsType
 template <class DeclType>
 using MrDocsType_t = typename MrDocsType<DeclType>::type;

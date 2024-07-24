@@ -2060,6 +2060,37 @@ readSubBlock(
     return AnyBlock::readSubBlock(ID);
 }
 
+//------------------------------------------------
+
+class ConceptBlock
+    : public TopLevelBlock<ConceptInfo>
+{
+public:
+    using TopLevelBlock::TopLevelBlock;
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock E(I->Constraint, br_);
+            return br_.readBlock(E, ID);
+        }
+        case BI_TEMPLATE_BLOCK_ID:
+        {
+            I->Template = std::make_unique<TemplateInfo>();
+            TemplateBlock T(*I->Template, br_);
+            return br_.readBlock(T, ID);
+        }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
+    }
+};
+
 } // mrdocs
 } // clang
 

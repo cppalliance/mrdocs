@@ -453,6 +453,9 @@ RecordsByBlock{
     // EnumeratorInfo
     {BI_ENUMERATOR_BLOCK_ID,
         {}},
+    // ConceptInfo
+    {BI_CONCEPT_BLOCK_ID,
+        {}},
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
         {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_CVQUAL,
@@ -1201,6 +1204,18 @@ emitBlock(
     emitInfoPart(I);
     emitSourceInfo(I);
     emitBlock(I.Initializer);
+}
+
+void
+BitcodeWriter::
+emitBlock(
+    const ConceptInfo& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_CONCEPT_BLOCK_ID);
+    emitInfoPart(I);
+    emitSourceInfo(I);
+    emitBlock(*I.Template);
+    emitBlock(I.Constraint);
 }
 
 void

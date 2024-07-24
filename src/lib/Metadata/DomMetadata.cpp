@@ -891,6 +891,13 @@ DomInfo<T>::construct() const
 
         entries.emplace_back("explicitSpec", toString(I_.Explicit));
     }
+    if constexpr(T::isConcept())
+    {
+        entries.insert(entries.end(), {
+            { "template",       domCreate(I_.Template, domCorpus_) },
+            { "constraint",     dom::stringOrNull(I_.Constraint.Written) }
+            });
+    }
     return dom::Object(std::move(entries));
 }
 

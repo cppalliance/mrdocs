@@ -246,6 +246,19 @@ grammar
 
     #---------------------------------------------
 
+    Concept =
+        element concept
+        {
+            Access ?,
+            ID,
+            Location *,
+            Javadoc ?,
+            attribute constraint { text },
+            element named { ID } *
+        }
+
+    #---------------------------------------------
+
     Symbol =
     (
         attribute Tag { text },
@@ -272,6 +285,7 @@ grammar
                 Typedef   |
                 Variable  |
                 Guide     |
+                Concept   |
                 Template
             )
         }
@@ -337,6 +351,7 @@ grammar
             Template       |
             Alias          |
             Using          |
+            Concept        |
             Specialization
         )*
 

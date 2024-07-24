@@ -622,10 +622,13 @@ public:
             return true;
 
         const auto* Described = dyn_cast_if_present<TemplateDecl>(D);
-        if(auto* TD = D->getDescribedTemplate())
-            Described = TD;
-        const auto* Templated =
-            Described ? Described->getTemplatedDecl() : D;
+        const auto* Templated = D;
+        if(auto* DT = D->getDescribedTemplate())
+        {
+            Described = DT;
+            if (auto* TD = DT->getTemplatedDecl())
+                Templated = TD;
+        }
 
         if(Described)
         {
@@ -2570,6 +2573,24 @@ public:
         getParentNamespaces(I, D);
     }
 
+    void
+    buildConcept(
+        ConceptInfo& I,
+        bool created,
+        ConceptDecl* D)
+    {
+        bool documented = parseRawComment(I.javadoc, D);
+        addSourceLocation(I, D->getBeginLoc(), true, documented);
+
+        if(! created)
+            return;
+
+        I.Name = extractName(D);
+        buildExprInfo(I.Constraint, D->getConstraintExpr());
+
+        getParentNamespaces(I, D);
+    }
+
     //------------------------------------------------
 
     /** Get the DeclType as a MrDocs Info object
@@ -2691,6 +2712,14 @@ public:
      */
     void
     traverse(FieldDecl*);
+
+    /** Traverse a concept definition
+
+        This function is called by traverseDecl to traverse a
+        C++ concept definition.
+    */
+    void
+    traverse(ConceptDecl*);
 
     /** Traverse a deduction guide
 
@@ -2951,6 +2980,22 @@ traverse(FieldDecl* D)
     if(! exp) { return; }
     auto [I, created] = *exp;
     buildField(I, created, D);
+}
+//------------------------------------------------
+// ConceptDecl
+
+void
+ASTVisitor::
+traverse(ConceptDecl* D)
+{
+    auto exp = upsertMrDocsInfoFor(D);
+    if(! exp) { return; }
+    auto [I, created] = *exp;
+
+    if(! I.Template)
+        I.Template = std::make_unique<TemplateInfo>();
+    buildTemplateParams(*I.Template, D->getTemplateParameters());
+    buildConcept(I, created, D);
 }
 
 //------------------------------------------------
