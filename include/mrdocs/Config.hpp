@@ -104,6 +104,9 @@ public:
         /// from CMakeLists.txt
         std::string cmake;
 
+        /// True if the compiler has to use just the system's standard library
+        bool useSystemStandardLib = false;
+
         /// LibC++ include paths (private option, not exposed to the user)
         std::vector<std::string> libCxxPaths;
 

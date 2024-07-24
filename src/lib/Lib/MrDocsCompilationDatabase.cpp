@@ -222,7 +222,9 @@ std::vector<std::string>
 adjustCommandLine(
     const std::vector<std::string>& cmdline,
     const std::vector<std::string>& additional_defines,
-    std::vector<std::string> const& libCxxIncludeDirs)
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
+    std::vector<std::string> const& libCxxIncludeDirs,
+    bool useSystemStandardLib)
 {
     if (cmdline.empty())
     {
@@ -274,19 +276,37 @@ adjustCommandLine(
         new_cmdline.emplace_back(fmt::format("-D{}", def));
     }
 
-    // ------------------------------------------------------
-    // Add flags to ignore standard includes
-    // ------------------------------------------------------
-    new_cmdline.emplace_back("-nostdinc++");
-    new_cmdline.emplace_back("-nostdlib++");
-
-    // ------------------------------------------------------
-    // Add LibC++ include directories
-    // ------------------------------------------------------
-    for (auto const& inc : libCxxIncludeDirs)
+    if (useSystemStandardLib)
     {
-        new_cmdline.emplace_back(fmt::format("-isystem {}", inc));
+        // ------------------------------------------------------
+        // Add implicit include paths
+        // ------------------------------------------------------
+        // Implicit include paths are those which are automatically
+        // added by the compiler. These will not be defined in the
+        // compile command, so we add them here so that clang
+        // can also find these headers.
+        if (auto it = implicitIncludeDirectories.find(progName);
+            it != implicitIncludeDirectories.end()) {
+            for (auto const& inc : it->second)
+            {
+                new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+            }
+        }
     }
+    else
+    {
+        // ------------------------------------------------------
+        // Add LibC++ and Clang include directories
+        // ------------------------------------------------------
+
+        for (auto const& inc : libCxxIncludeDirs)
+        {
+            new_cmdline.emplace_back(fmt::format("-stdlib++-isystem{}", inc));
+        }
+    }
+
+    new_cmdline.emplace_back("-v");
+    new_cmdline.emplace_back("-###");
 
     // ------------------------------------------------------
     // Adjust each argument in the command line
@@ -344,7 +364,8 @@ MrDocsCompilationDatabase::
 MrDocsCompilationDatabase(
     llvm::StringRef workingDir,
     CompilationDatabase const& inner,
-    std::shared_ptr<const Config> config)
+    std::shared_ptr<const Config> config,
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
@@ -364,7 +385,9 @@ MrDocsCompilationDatabase(
         cmd.CommandLine = adjustCommandLine(
             cmd0.CommandLine,
             (*config_impl)->defines,
-            (*config_impl)->libCxxPaths);
+            implicitIncludeDirectories,
+            (*config_impl)->libCxxPaths,
+            (*config_impl)->useSystemStandardLib);
         cmd.Directory = makeAbsoluteAndNative(workingDir, cmd0.Directory);
         cmd.Filename = makeAbsoluteAndNative(workingDir, cmd0.Filename);
 

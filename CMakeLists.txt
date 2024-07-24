@@ -95,6 +95,7 @@ find_package(Clang REQUIRED CONFIG)
 
 if (LLVM_ROOT)
     set(LIBCXX_DIR "${LLVM_ROOT}/../install-libcxx/include/c++/v1/")
+    set(CLANG_19_DIR "${LLVM_ROOT}/lib/clang/19/include/")
 endif()
 
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
@@ -326,7 +327,7 @@ endif()
 
 #-------------------------------------------------
 #
-# Copy libc++ headers
+# Copy libc++ and clang headers
 #
 #-------------------------------------------------
 
@@ -335,6 +336,10 @@ message(STATUS "Copying libc++ headers to ${MRDOCS_SHARE_LIBCXX_DIR}")
 file(MAKE_DIRECTORY ${MRDOCS_SHARE_LIBCXX_DIR})
 file(COPY ${LIBCXX_DIR}/ DESTINATION ${MRDOCS_SHARE_LIBCXX_DIR})
 
+set(MRDOCS_SHARE_CLANG_DIR "${CMAKE_CURRENT_BINARY_DIR}/../share/mrdocs/clang")
+message(STATUS "Copying clang headers to ${MRDOCS_SHARE_CLANG_DIR}")
+file(MAKE_DIRECTORY ${MRDOCS_SHARE_CLANG_DIR})
+file(COPY ${CLANG_19_DIR}/ DESTINATION ${MRDOCS_SHARE_CLANG_DIR})
 
 #-------------------------------------------------
 #

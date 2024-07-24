@@ -55,7 +55,8 @@ public:
     MrDocsCompilationDatabase(
         llvm::StringRef workingDir,
         CompilationDatabase const& inner,
-        std::shared_ptr<const Config> config);
+        std::shared_ptr<const Config> config,
+        std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories);
 
     /** Get all compile commands for a file.
 

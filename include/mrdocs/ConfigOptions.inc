@@ -69,6 +69,7 @@ COMMON_OPTION (compilationDatabase     , compilation-database    , Path to the c
 // Build options
 COMMON_OPTION (cmake                   , cmake                   , CMake arguments when generating the compilation database from CMakeLists.txt)
 COMMON_OPTION (defines                 , defines                 , Additional defines passed to the compiler)
+COMMON_OPTION (useSystemStandardLib    , use-system-standard-lib , True if the compiler has to use just the system standard library)
 
 // Generators
 COMMON_OPTION (generate                , generate                , Documentation generator. Supported generators are: adoc/html/xml)

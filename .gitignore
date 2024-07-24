@@ -12,3 +12,4 @@
 docs/node_modules
 docs/build
 share/mrdocs/libcxx/
+share/mrdocs/clang/

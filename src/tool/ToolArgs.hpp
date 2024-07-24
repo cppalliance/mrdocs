@@ -59,6 +59,9 @@ public:
     /// from CMakeLists.txt
     llvm::cl::opt<std::string> cmake;
 
+    /// True if the compiler has to use just the system's standard library
+    llvm::cl::opt<bool> useSystemStandardLib;
+
     /// Additional defines passed to the compiler
     llvm::cl::list<std::string> defines;
 

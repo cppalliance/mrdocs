@@ -151,11 +151,13 @@ DoGenerateAction(std::string_view execPath, char const** argv)
         std::move(errorMessage));
 
     // Custom compilation database that converts relative paths to absolute
+    auto const defaultIncludePaths = getCompilersDefaultIncludeDir(compileCommands);
     auto compileCommandsDir = files::getParentDir(compileCommandsPath);
     MRDOCS_ASSERT(files::isDirsy(compileCommandsDir));
     MrDocsCompilationDatabase compilationDatabase(
         compileCommandsDir,
-        compileCommands, config);
+        compileCommands, config,
+        defaultIncludePaths);
 
     // --------------------------------------------------------------
     //
