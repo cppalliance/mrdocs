@@ -305,9 +305,6 @@ adjustCommandLine(
         }
     }
 
-    new_cmdline.emplace_back("-v");
-    new_cmdline.emplace_back("-###");
-
     // ------------------------------------------------------
     // Adjust each argument in the command line
     // ------------------------------------------------------
