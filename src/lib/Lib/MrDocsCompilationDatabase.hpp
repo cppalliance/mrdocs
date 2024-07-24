@@ -50,7 +50,8 @@ public:
      * @param workingDir The working directory against which relative paths will be resolved.
      * @param inner The source compilation database to copy.
      * @param config The shared configuration object.
-     * @param LibC++ include directories.
+     * @param implicitIncludeDirectories A map from compiler executable paths to their respective
+     *        implicit include directories, as determined by the system's compiler.
      */
     MrDocsCompilationDatabase(
         llvm::StringRef workingDir,

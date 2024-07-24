@@ -390,15 +390,6 @@ MrDocsCompilationDatabase(
             (*config_impl)->useSystemStandardLib);
         cmd.Directory = makeAbsoluteAndNative(workingDir, cmd0.Directory);
         cmd.Filename = makeAbsoluteAndNative(workingDir, cmd0.Filename);
-
-        std::string fullCommand;
-        for (auto const& arg : cmd.CommandLine)
-        {
-            fullCommand += arg;
-            fullCommand += ' ';
-        }
-        report::info("***** Command: {}", fullCommand);
-
         if (isCXXSrcFile(cmd.Filename))
         {
             const bool emplaced = IndexByFile_.try_emplace(cmd.Filename, AllCommands_.size()).second;
