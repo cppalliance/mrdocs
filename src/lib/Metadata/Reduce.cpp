@@ -206,6 +206,7 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
         I.Noexcept = std::move(Other.Noexcept);
     if(I.Explicit.Implicit)
         I.Explicit = std::move(Other.Explicit);
+    mergeExprInfo(I.Requires, std::move(Other.Requires));
 }
 
 void merge(GuideInfo& I, GuideInfo&& Other)

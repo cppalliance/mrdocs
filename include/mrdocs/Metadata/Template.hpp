@@ -284,6 +284,10 @@ struct TemplateInfo
     std::vector<std::unique_ptr<TParam>> Params;
     std::vector<std::unique_ptr<TArg>> Args;
 
+    /** The requires-clause for the template parameter list, if any.
+    */
+    ExprInfo Requires;
+
     /** Primary template ID for partial and explicit specializations.
     */
     SymbolID Primary = SymbolID::invalid;

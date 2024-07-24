@@ -1288,6 +1288,11 @@ public:
                 I_.Params.emplace_back(), br_);
             return br_.readBlock(P, ID);
         }
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock E(I_.Requires, br_);
+            return br_.readBlock(E, ID);
+        }
         default:
             return AnyBlock::readSubBlock(ID);
         }
@@ -1579,6 +1584,11 @@ public:
             I->Template = std::make_unique<TemplateInfo>();
             TemplateBlock B(*I->Template, br_);
             return br_.readBlock(B, ID);
+        }
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock E(I->Requires, br_);
+            return br_.readBlock(E, ID);
         }
         default:
             return TopLevelBlock::readSubBlock(ID);

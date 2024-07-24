@@ -415,7 +415,8 @@ domCreate(
         { "kind", toString(I->specializationKind()) },
         { "primary", domCorpus.get(I->Primary) },
         { "params", dom::newArray<DomTParamArray>( I->Params, domCorpus) },
-        { "args", dom::newArray<DomTArgArray>(I->Args, domCorpus) }
+        { "args", dom::newArray<DomTArgArray>(I->Args, domCorpus) },
+        { "requires", dom::stringOrNull(I->Requires.Written) }
         });
 }
 
@@ -796,6 +797,8 @@ DomInfo<T>::construct() const
 
         entries.emplace_back("exceptionSpec", toString(I_.Noexcept));
         entries.emplace_back("explicitSpec",  toString(I_.Explicit));
+        entries.emplace_back("requires",      dom::stringOrNull(I_.Requires.Written));
+
         #if 0
         if(I_.Noexcept.Kind != NoexceptKind::None)
         {

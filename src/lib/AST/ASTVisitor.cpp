@@ -24,6 +24,7 @@
 #include <clang/AST/AST.h>
 #include <clang/AST/Attr.h>
 #include <clang/AST/DeclVisitor.h>
+#include <clang/AST/ODRHash.h>
 #include <clang/AST/TypeVisitor.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Index/USRGeneration.h>
@@ -616,7 +617,37 @@ public:
             if(! (D = FD->getFriendDecl()))
                 return true;
         }
-        return index::generateUSRForDecl(D, usr_);
+
+        if (index::generateUSRForDecl(D, usr_))
+            return true;
+
+        const auto* Described = dyn_cast_if_present<TemplateDecl>(D);
+        if(auto* TD = D->getDescribedTemplate())
+            Described = TD;
+        const auto* Templated =
+            Described ? Described->getTemplatedDecl() : D;
+
+        if(Described)
+        {
+            const TemplateParameterList* TPL = Described->getTemplateParameters();
+            ODRHash Hash;
+            Hash.AddTemplateParameterList(TPL);
+            if(const auto* RC = TPL->getRequiresClause())
+                Hash.AddStmt(RC);
+            usr_.append("@TPL#");
+            usr_.append(llvm::itostr(Hash.CalculateHash()));
+        }
+
+        if(auto* FD = dyn_cast<FunctionDecl>(Templated);
+            FD && FD->getTrailingRequiresClause())
+        {
+            ODRHash Hash;
+            Hash.AddStmt(FD->getTrailingRequiresClause());
+            usr_.append("@TRC#");
+            usr_.append(llvm::itostr(Hash.CalculateHash()));
+        }
+
+        return false;
     }
 
     /** Extracts the symbol ID for a declaration.
@@ -1098,6 +1129,8 @@ public:
                 TI.Params[I] : TI.Params.emplace_back();
             buildTemplateParam(PI, TPL->getParam(I));
         }
+        if(auto* RC = TPL->getRequiresClause())
+            buildExprInfo(TI.Requires, RC);
     }
 
     std::unique_ptr<TArg>
@@ -2406,6 +2439,9 @@ public:
         // if it contains a placeholder type which is
         // deduceded as a local class type
         I.ReturnType = buildTypeInfo(RT, next_mode);
+
+        if(auto* TRC = D->getTrailingRequiresClause())
+            buildExprInfo(I.Requires, TRC);
 
         getParentNamespaces(I, D);
     }

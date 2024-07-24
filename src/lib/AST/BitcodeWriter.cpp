@@ -938,6 +938,7 @@ emitBlock(
         emitBlock(N);
     emitRecord(I.Noexcept, FUNCTION_NOEXCEPT);
     emitRecord(I.Explicit, FUNCTION_EXPLICIT);
+    emitBlock(I.Requires);
 }
 
 void
@@ -1209,6 +1210,7 @@ emitBlock(
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_BLOCK_ID);
     emitRecord(T.Primary, TEMPLATE_PRIMARY_USR);
+    emitBlock(T.Requires);
     for(const auto& targ : T.Args)
         emitBlock(targ);
     for(const auto& tparam : T.Params)
