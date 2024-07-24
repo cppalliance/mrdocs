@@ -159,6 +159,8 @@ struct FunctionInfo
 
     ExplicitInfo Explicit;
 
+    ExprInfo Requires;
+
     //--------------------------------------------
 
     explicit FunctionInfo(SymbolID ID) noexcept

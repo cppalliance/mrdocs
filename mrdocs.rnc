@@ -79,6 +79,7 @@ grammar
             attribute class { "constructor"|"destructor"|"conversion" } ?,
             attribute exception-spec { text } ?,
             attribute explicit-spec { text } ?,
+            attribute requires { text } ?,
             Location *,
             (
                 Attr * |
@@ -246,6 +247,19 @@ grammar
 
     #---------------------------------------------
 
+    Concept =
+        element concept
+        {
+            Name,
+            Access ?,
+            ID,
+            Location *,
+            Javadoc ?,
+            attribute constraint { text }
+        }
+
+    #---------------------------------------------
+
     Symbol =
     (
         attribute Tag { text },
@@ -263,6 +277,7 @@ grammar
         element template
         {
             attribute class { "explicit"|"partial" } ?,
+            attribute requires { text } ?,
             ID ?,
             TemplateParam *,
             TemplateArg *,
@@ -272,6 +287,7 @@ grammar
                 Typedef   |
                 Variable  |
                 Guide     |
+                Concept   |
                 Template
             )
         }
@@ -337,6 +353,7 @@ grammar
             Template       |
             Alias          |
             Using          |
+            Concept        |
             Specialization
         )*
 
@@ -436,6 +453,7 @@ grammar
             {
                 "named" |
                 "decltype" |
+                "auto" |
                 "lvalue-reference" |
                 "rvalue-reference" |
                 "pointer" |
@@ -453,6 +471,8 @@ grammar
             attribute exception-spec { text } ?,
             attribute bounds { text } ?,
             attribute operand { text } ?,
+            attribute constraint { text } ?,
+            attribute keyword { text } ?,
             TypeInfo *
         }
     )

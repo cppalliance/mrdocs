@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mrdocs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="https://github.com/cppalliance/mrdocs/raw/develop/mrdocs.rnc">
+<namespace id="//////////////////////////8=">
+  <template>
+    <tparam name="T" class="type"/>
+    <concept name="C" id="Bzh2Bz1ZBW0d6sKvxtXunIUU31k=" constraint="sizeof(T) == sizeof(int)">
+      <file path="concept.cpp" line="1" class="def"/>
+    </concept>
+  </template>
+  <template>
+    <tparam name="T" class="type"/>
+    <function name="f" id="PmhXjCXUJYVnj/a7NhfjjSesyp0=">
+      <file path="concept.cpp" line="5"/>
+    </function>
+  </template>
+  <variable name="x" id="ujOvtFFNPf6akih2fga4S9j6Y9M=">
+    <file path="concept.cpp" line="7" class="def"/>
+    <type class="auto" keyword="auto" constraint="C">
+    </type>
+  </variable>
+</namespace>
+</mrdocs>

@@ -309,6 +309,8 @@ writeFunction(
             ! except_spec.empty() },
         { "explicit-spec", explicit_spec,
             ! explicit_spec.empty() },
+        { "requires", I.Requires.Written,
+            ! I.Requires.Written.empty() },
         { I.id }
         });
 
@@ -358,6 +360,29 @@ writeGuide(
     writeJavadoc(I.javadoc);
 
     tags_.close(guideTagName);
+
+    closeTemplate(I.Template);
+}
+
+void
+XMLWriter::
+writeConcept(
+    ConceptInfo const& I)
+{
+    openTemplate(I.Template);
+
+    tags_.open(conceptTagName, {
+        { "name", I.Name },
+        { I.Access },
+        { I.id },
+        { "constraint", I.Constraint.Written },
+        });
+
+    writeSourceInfo(I);
+
+    writeJavadoc(I.javadoc);
+
+    tags_.close(conceptTagName);
 
     closeTemplate(I.Template);
 }
@@ -597,6 +622,8 @@ openTemplate(
     tags_.open(templateTagName, {
         {"class", toString(I->specializationKind()),
             I->specializationKind() != TemplateSpecKind::Primary},
+        {"requires", I->Requires.Written,
+            ! I->Requires.Written.empty()},
         {I->Primary}
     });
 

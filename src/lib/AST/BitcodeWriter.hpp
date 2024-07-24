@@ -163,6 +163,7 @@ public:
     void emitBlock(NameInfo const& I);
     void emitBlock(AliasInfo const& I);
     void emitBlock(UsingInfo const& I);
+    void emitBlock(ConceptInfo const& I);
 
     void emitBlock(std::unique_ptr<TypeInfo> const& TI);
     void emitBlock(std::unique_ptr<TypeInfo> const& TI, BlockID ID);

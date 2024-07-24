@@ -1,0 +1,30 @@
+{{!-- concept --}}
+= {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
+
+{{symbol.doc.brief}}
+
+== Synopsis
+
+{{>source dcl=(primary_location symbol)}}
+
+[source,cpp,subs="verbatim,macros,-callouts"]
+----
+{{>signature/concept symbol=symbol}};
+----
+
+{{#if symbol.doc.description}}
+== Description
+
+{{symbol.doc.description}}
+
+{{/if}}
+
+{{#if symbol.doc.see}}
+== See Also
+
+{{#each symbol.doc.see}}
+{{.}}
+
+{{/each}}
+
+{{/if}}

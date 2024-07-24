@@ -294,6 +294,13 @@ public:
             return;
         push(&Tranche::Guides, access, I);
     }
+
+    void operator()(
+        ConceptInfo const& I,
+        AccessKind access)
+    {
+        push(&Tranche::Concepts, access, I);
+    }
 };
 
 void
