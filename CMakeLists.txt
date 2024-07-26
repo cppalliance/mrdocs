@@ -442,27 +442,16 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # share
     #-------------------------------------------------
-    file(GLOB SHARE_SUBDIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/*)
-    foreach (dir ${SHARE_SUBDIRS})
-        if (NOT IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir})
-            continue()
-        endif()
-        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${dir}
+    foreach (share_mrdocs_dir addons)
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${share_mrdocs_dir}
                 DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs
                 FILES_MATCHING PATTERN "*")
-    endforeach()
-    file(GLOB ROOT_SHARE_SUBDIRS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/share ${CMAKE_CURRENT_SOURCE_DIR}/share/*)
-    foreach (dir ${ROOT_SHARE_SUBDIRS})
-        if (dir STREQUAL "mrdocs")
-            continue()
-        endif()
-        if (NOT IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/${dir})
-            continue()
-        endif()
-        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/${dir}
-                DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}
+    endforeach ()
+    foreach (share_dir cmake gdb)
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/${share_dir}
+                DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs
                 FILES_MATCHING PATTERN "*")
-    endforeach()
+    endforeach ()
 
     #-------------------------------------------------
     # doc
