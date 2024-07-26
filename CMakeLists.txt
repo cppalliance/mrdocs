@@ -92,6 +92,12 @@ elseif (LLVM_ROOT)
 endif()
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
+
+if (LLVM_ROOT)
+    set(LIBCXX_DIR "${LLVM_ROOT}/include/c++/v1/")
+    set(CLANG_STDLIB_INCLUDE_DIR "${LLVM_ROOT}/lib/clang/${Clang_VERSION_MAJOR}/include/")
+endif()
+
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(HandleLLVMOptions)
 add_definitions(${LLVM_DEFINITIONS})
@@ -284,11 +290,11 @@ if (MRDOCS_BUILD_TESTS)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
-    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons")
+    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --system-includes="${LIBCXX_DIR}")
     foreach (action IN ITEMS create update)
         add_custom_target(
             mrdocs-${action}-test-fixtures
-            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons" --system-includes="${LIBCXX_DIR}"
             DEPENDS mrdocs-test
         )
     endforeach ()
@@ -442,6 +448,13 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # share
     #-------------------------------------------------
+    install(DIRECTORY ${LIBCXX_DIR}
+            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/libcxx
+            FILES_MATCHING PATTERN "*")
+    install(DIRECTORY ${CLANG_STDLIB_INCLUDE_DIR}
+            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/clang
+            FILES_MATCHING PATTERN "*")
+                
     foreach (share_mrdocs_dir addons)
         install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${share_mrdocs_dir}
                 DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs

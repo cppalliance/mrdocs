@@ -10,6 +10,7 @@
 
 #include "ToolArgs.hpp"
 #include "Addons.hpp"
+#include "StdLib.hpp"
 #include <lib/Support/Path.hpp>
 #include <cstddef>
 #include <vector>
@@ -50,6 +51,9 @@ EXAMPLES:
 , output(llvm::cl::cat(pathsCat))
 , compilationDatabase(llvm::cl::cat(pathsCat))
 , cmake(llvm::cl::cat(buildOptsCat))
+, useSystemStdLib(llvm::cl::init(false), llvm::cl::cat(buildOptsCat))
+, systemIncludes(llvm::cl::cat(buildOptsCat))
+, includes(llvm::cl::cat(buildOptsCat))
 , defines(llvm::cl::cat(buildOptsCat))
 , generate(llvm::cl::init("adoc"), llvm::cl::cat(generatorCat))
 , addons(llvm::cl::cat(generatorCat))
@@ -293,6 +297,17 @@ apply(
                 "the executable.",
                 exp.error(), toolArgs.addons);
         }
+    }
+
+    auto const exp = setupStdLibDirs(s.systemIncludes, execPath);
+    if (!exp)
+    {
+        return formatError(
+            "{}:\n"
+            "Could not locate the standard library directories because "
+            "the directories ../share/mrdocs/libcxx and ../share/mrdocs/clang "
+            "do not exist.",
+            exp.error());
     }
 
     // Make all common relative paths relative to the config file and

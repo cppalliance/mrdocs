@@ -47,6 +47,8 @@ public:
     llvm::cl::opt<bool>         unitOption;
     llvm::cl::list<std::string> inputPaths;
     llvm::cl::opt<std::string>  addons;
+    llvm::cl::list<std::string> systemIncludes;
+    llvm::cl::list<std::string> includes;
 
     // Hide all options that don't belong to us
     void hideForeignOptions();

@@ -57,7 +57,8 @@ for (let panel of data.panels) {
 
     // Create a CMakeLists.txt file for the snippet
     const cmakeListsPath = path.join(absSnippetsDir, 'CMakeLists.txt')
-    fs.writeFileSync(cmakeListsPath, `cmake_minimum_required(VERSION 3.13)\nproject(${sourceBasename})\nadd_executable(${sourceBasename} ${panel.source})\n`)
+    const cmakeListsContent = `cmake_minimum_required(VERSION 3.13)\nproject(${sourceBasename})\nadd_executable(${sourceBasename} ${panel.source})\n`
+    fs.writeFileSync(cmakeListsPath, cmakeListsContent)
 
     // Run mrdocs to generate documentation
     const mrdocsConfig = path.join(absSnippetsDir, 'mrdocs.yml')
@@ -65,6 +66,7 @@ for (let panel of data.panels) {
     const mrdocsOutput = path.join(absSnippetsDir, 'output')
     const command = `${mrdocsExecutable} --config=${mrdocsConfig} ${mrdocsInput} --output=${mrdocsOutput} --multipage=true --generate=adoc`
     console.log(`Running command: ${command}`)
+    console.log(`for: ${cmakeListsContent}`)
     execSync(command, {encoding: 'utf8'});
 
     // Look for documentation file somewhere in the output directory
