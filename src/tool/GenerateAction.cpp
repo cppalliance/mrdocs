@@ -9,7 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "Addons.hpp"
 #include "CompilerInfo.hpp"
 #include "ToolArgs.hpp"
 #include <lib/Lib/CMakeExecution.hpp>

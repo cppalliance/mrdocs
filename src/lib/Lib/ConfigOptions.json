@@ -79,6 +79,28 @@
         "details": "Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.",
         "type": "list<string>",
         "default": []
+      },
+      {
+        "name": "use-system-stdlib",
+        "brief": "Use the system standard library",
+        "details": "True if the compiler has to use just the system standard library. When set to true, the compiler uses the system standard library instead of the standard library provided by the compiler.",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "system-includes",
+        "brief": "Standard Library include paths",
+        "details": "Standard Library include paths.",
+        "type": "list<path>",
+        "default": ["<mrdocs-root>/share/mrdocs/libcxx", "<mrdocs-root>/share/mrdocs/clang"],
+        "relativeto": "<config-dir>"
+      },
+      {
+        "name": "includes",
+        "brief": "Additional include paths",
+        "details": "Additional include paths.",
+        "type": "list<path>",
+        "default": []
       }
     ]
   },

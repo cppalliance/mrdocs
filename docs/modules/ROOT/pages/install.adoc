@@ -382,12 +382,102 @@ cmake --install ./build --prefix ../install
 
 Replace 4 with the number of cores you want to use for building LLVM.
 
-Return from `./third-party/llvm-project/llvm` to the parent directory to build and install MrDocs:
+Return from `./third-party/llvm-project/llvm` to the LLVM project directory:
 
 [source,bash]
 ----
-cd ../../..
+cd ../..
 ----
+
+=== LibC++
+
+In addition to LLVM, MrDocs requires a deterministic version of the C++ standard library (LibC++) to ensure consistent behavior across various environments. This step is crucial for replicating specific compiler and library configurations.
+
+**Download**:
+
+Continue using the same LLVM project directory.
+
+**Configure**:
+
+Configure and build LibC++ using the existing structure:
+
+[source,bash]
+----
+export CXX="./install/bin/clang++"
+export CC="./install/bin/clang"
+----
+
+Run a command such as the following to configure LLVM:
+
+[tabs]
+====
+Windows PowerShell::
++
+--
+[source,bash]
+----
+cmake -G Ninja \
+  -S runtimes \
+  -B build-libcxx \
+  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
+  -DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
+  -DLIBCXXABI_USE_LLVM_UNWINDER=OFF \
+  -DLIBCXXABI_ENABLE_SHARED=OFF \
+  -DLIBCXXABI_ENABLE_STATIC=ON \
+  -DLIBCXX_ENABLE_SHARED=OFF \
+  -DLIBCXX_NO_VCRUNTIME=ON \
+  -DCMAKE_CXX_FLAGS="-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__"
+----
+--
+
+Unix Variants::
++
+--
+[source,bash]
+----
+cmake -G Ninja  \
+  -S runtimes  \
+  -B build-libcxx  \
+  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind"  \
+  -DCMAKE_INSTALL_PREFIX="$(pwd)/install"
+----
+--
+====
+
+**Build**:
+
+Build and install the configured version of LibC++ with:
+
+[tabs]
+====
+Windows PowerShell::
++
+--
+[source,bash]
+----
+ninja -C build-libcxx cxx
+ninja -C build-libcxx install-cxx
+----
+--
+
+Unix Variants::
++
+--
+[source,bash]
+----
+ninja -C build-libcxx cxx cxxabi unwind
+ninja -C build-libcxx install-cxx install-cxxabi install-unwind  
+----
+--
+====
+
+Return from `./third-party/llvm-project` to the parent directory to build and install MrDocs:
+
+[source,bash]
+----
+cd ../..
+----
+
 
 === MrDocs
 

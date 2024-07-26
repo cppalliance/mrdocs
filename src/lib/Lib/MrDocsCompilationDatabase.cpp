@@ -245,7 +245,10 @@ adjustCommandLine(
     llvm::StringRef workingDir,
     const std::vector<std::string>& cmdline,
     const std::vector<std::string>& additional_defines,
-    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
+    std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories,
+    std::vector<std::string> const& systemIncludes,
+    std::vector<std::string> const& includes,
+    bool useSystemStdLib)
 {
     if (cmdline.empty())
     {
@@ -297,19 +300,42 @@ adjustCommandLine(
         new_cmdline.emplace_back(fmt::format("-D{}", def));
     }
 
-    // ------------------------------------------------------
-    // Add implicit include paths
-    // ------------------------------------------------------
-    // Implicit include paths are those which are automatically
-    // added by the compiler. These will not be defined in the
-    // compile command, so we add them here so that clang
-    // can also find these headers.
-    if (auto it = implicitIncludeDirectories.find(progName);
-        it != implicitIncludeDirectories.end()) {
-        for (auto const& inc : it->second)
-        {
-            new_cmdline.emplace_back(fmt::format("-I{}", inc));
+    if (useSystemStdLib)
+    {
+        // ------------------------------------------------------
+        // Add implicit include paths
+        // ------------------------------------------------------
+        // Implicit include paths are those which are automatically
+        // added by the compiler. These will not be defined in the
+        // compile command, so we add them here so that clang
+        // can also find these headers.
+        if (auto const it = implicitIncludeDirectories.find(progName);
+            it != implicitIncludeDirectories.end()) {
+            for (auto const& inc : it->second)
+            {
+                new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+            }
         }
+    }
+    else
+    {
+        // ------------------------------------------------------
+        // Add standard library include directories
+        // ------------------------------------------------------
+        for (auto const& inc : systemIncludes)
+        {
+            new_cmdline.emplace_back(fmt::format("-isystem{}", inc));
+        }
+        new_cmdline.emplace_back("-nostdinc++");
+        new_cmdline.emplace_back("-nostdlib++");
+    }
+
+    // ------------------------------------------------------
+    // Add additional include directories
+    // ------------------------------------------------------
+    for (auto const& inc : includes)
+    {
+        new_cmdline.emplace_back(fmt::format("-I{}", inc));
     }
 
     // ------------------------------------------------------
@@ -390,7 +416,10 @@ MrDocsCompilationDatabase(
             workingDir,
             cmd0.CommandLine,
             (*config_impl)->defines,
-            implicitIncludeDirectories);
+            implicitIncludeDirectories,
+            (*config_impl)->systemIncludes,
+            (*config_impl)->includes,
+            (*config_impl)->useSystemStdlib);
         cmd.Directory = makeAbsoluteAndNative(workingDir, cmd0.Directory);
         cmd.Filename = makeAbsoluteAndNative(workingDir, cmd0.Filename);
         if (isCXXSrcFile(cmd.Filename))
