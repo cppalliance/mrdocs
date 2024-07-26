@@ -82,8 +82,12 @@ parseIncludePaths(std::string const& compilerOutput)
 }
 
 std::unordered_map<std::string, std::vector<std::string>> 
-getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb) 
+getCompilersDefaultIncludeDir(clang::tooling::CompilationDatabase const& compDb, bool useSystemStdlib) 
 {
+    if (!useSystemStdlib)
+    {
+        return {};
+    }
     std::unordered_map<std::string, std::vector<std::string>> res;
     auto const allCommands = compDb.getAllCompileCommands();
 

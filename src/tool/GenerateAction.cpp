@@ -9,7 +9,6 @@
 // Official repository: https://github.com/cppalliance/mrdocs
 //
 
-#include "Addons.hpp"
 #include "CompilerInfo.hpp"
 #include "ToolArgs.hpp"
 #include <lib/Lib/CMakeExecution.hpp>
@@ -171,7 +170,7 @@ DoGenerateAction(
 
     // Custom compilation database that applies settings from the configuration
     auto const defaultIncludePaths = getCompilersDefaultIncludeDir(
-        jsonDatabase);
+        jsonDatabase, (*config)->useSystemStdlib);
     auto compileCommandsDir = files::getParentDir(compileCommandsPath);
     MrDocsCompilationDatabase compilationDatabase(
         compileCommandsDir,
