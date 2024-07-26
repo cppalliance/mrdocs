@@ -79,8 +79,8 @@ antora:
   extensions:
     - require: '@sntke/antora-mermaid-extension' # <1>
       mermaid_library_url: https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs # <2>
-      script_stem: header-scripts # <3>
-      mermaid_initialize_options: # <4>
+      script_stem: header-scripts
+      mermaid_initialize_options:
         start_on_load: true
     - require: '@antora/lunr-extension' # https://gitlab.com/antora/antora-lunr-extension
       index_latest_only: true

@@ -1,0 +1,162 @@
+{{!                                                               }}
+{{!  Licensed under the Apache License v2.0 with LLVM Exceptions. }}
+{{!  See https://llvm.org/LICENSE.txt for license information.    }}
+{{!  SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception      }}
+{{!                                                               }}
+{{!  Copyright (c) 2024 Alan de Freitas (alandefreitas@gmail.com) }}
+{{!                                                               }}
+{{!  Official repository: https://github.com/cppalliance/mrdocs   }}
+{{!                                                               }}
+{{!  Adapted from: github.com/nathanclevenger/pico-landing-page   }}
+{{!                                                               }}
+<html lang="en" data-theme="dark" data-webp="true">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#11191f">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="msapplication-TileColor" content="#11191f">
+    <meta name="application-name" content="{{ page.title }}">
+    <title>{{ page.title }}</title>
+    <meta name="description" content="{{ page.description }}">
+    <link rel="canonical" href="{{ site.url }}">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="{{ page.title }}">
+    <meta property="og:description" content="{{ page.description }}">
+    <meta property="og:url" content="{{ site.url }}">
+    <meta property="og:site_name" content="{{ page.title }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="{{ site.url }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="container-fluid">
+    <ul>
+        <li><strong style="margin-left: 10px">{{ page.title }}</strong></li>
+    </ul>
+    <ul>
+        {{#each navbar}}
+            <li><a href="{{ href }}" class="secondary">{{ title }}</a></li>
+        {{/each}}
+        <li>
+            <a href="{{ site.github.url }}" class="contrast" aria-label="{{ site.title}} GitHub repository">
+                <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 496 512" height="16px">
+                    <path fill="currentColor"
+                          d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
+                </svg>
+            </a>
+        </li>
+    </ul>
+</nav>
+<header>
+    <div class="container">
+        <h1>{{ title }}</h1>
+        <p>{{ description }}</p>
+        <p><a href="docs/" role="button" class="secondary" aria-label="Documentation">Get started</a> <a
+                href="https://github.com/picocss/pico/archive/refs/heads/master.zip" role="button"
+                class="contrast outline" aria-label="Download">Download</a></p>
+        <p><code><small>{{ banner.description }}</small></code></p>
+    </div>
+</header>
+<main>
+    <!-- <section id="demo" aria-label="Demo">
+      <div class="container">
+        <article data-theme="light" aria-label="Rendered demo" style="--height:264px;">
+          <div id="render">
+            <form onsubmit="event.preventDefault()"><input type="date" placeholder="First name" class="fadeIn"><button class="fadeIn demo-last-child" type="button">Next</button></form>
+          </div>
+          <pre><code id="code" data-typeit-id="9870177">&lt;<b>form</b>&gt;<br>  &lt;<b>i</b><b>n</b><b>p</b><b>u</b><b>t</b> <i>type</i>=<u>"date<span class="ti-cursor disabled" style="display: inline; color: rgb(115, 130, 140); font: 14px / 21px Menlo, Consolas, &quot;Roboto Mono&quot;, &quot;Ubuntu Monospace&quot;, &quot;Noto Mono&quot;, &quot;Oxygen Mono&quot;, &quot;Liberation Mono&quot;, monospace, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;; margin: 0px -6.21484px 0px -2.21484px;">|</span>"</u>&gt;<br>  &lt;<b>b</b><b>u</b><b>t</b><b>t</b><b>o</b><b>n</b> <i>type</i>=<u>"submit"</u>&gt;Next&lt;/<b>b</b><b>u</b><b>t</b><b>t</b><b>o</b><b>n</b>&gt;<br>&lt;/<b>form</b>&gt;</code></pre>
+        </article>
+      </div>
+    </section> -->
+    <section id="principles">
+        <div class="container">
+            <hgroup>
+                <h2>{{ banner.header }}</h2>
+                <h3>{{ banner.subheader }}</h3>
+            </hgroup>
+            <div class="grid">
+                {{#each features}}
+                    <div>
+                        <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 640 512" height="16px">
+                            <path fill="currentColor"
+                                  d="M278.9 511.5l-61-17.7c-6.4-1.8-10-8.5-8.2-14.9L346.2 8.7c1.8-6.4 8.5-10 14.9-8.2l61 17.7c6.4 1.8 10 8.5 8.2 14.9L293.8 503.3c-1.9 6.4-8.5 10.1-14.9 8.2zm-114-112.2l43.5-46.4c4.6-4.9 4.3-12.7-.8-17.2L117 256l90.6-79.7c5.1-4.5 5.5-12.3.8-17.2l-43.5-46.4c-4.5-4.8-12.1-5.1-17-.5L3.8 247.2c-5.1 4.7-5.1 12.8 0 17.5l144.1 135.1c4.9 4.6 12.5 4.4 17-.5zm327.2.6l144.1-135.1c5.1-4.7 5.1-12.8 0-17.5L492.1 112.1c-4.8-4.5-12.4-4.3-17 .5L431.6 159c-4.6 4.9-4.3 12.7.8 17.2L523 256l-90.6 79.7c-5.1 4.5-5.5 12.3-.8 17.2l43.5 46.4c4.5 4.9 12.1 5.1 17 .6z"></path>
+                        </svg>
+                        <h4>{{ title }}</h4>
+                        <p>{{ description }}</p>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </section>
+    <section id="examples" data-theme="light">
+        <div class="container">
+            <hgroup>
+                <h2>Examples</h2>
+                <h3>Examples to discover MrDocs in action.</h3>
+            </hgroup>
+            <div class="grid">
+                {{#each examples}}
+                    <div>
+                        <a href="{{ url }}">
+                            <small>{{ title }}</small>
+                            <div class="example preview">
+                                <div class="desktop"></div>
+                                <div class="mobile"></div>
+                            </div>
+                        </a>
+                        <p><small>{{ description }}</small></p>
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+    </section>
+    <section id="features">
+        <div class="container">
+            <hgroup>
+                <h2>More Code, Fewer Workarounds</h2>
+                <h3>MrDocs let's you keep the code simple and maintainable.</h3>
+            </hgroup>
+            {{#each panels}}
+                <div class="snippet-documentation-panel">
+                    <ul class="check">
+                        <li>{{ description }}</li>
+                    </ul>
+                    <div class="panel-container">
+                        <div class="snippet-panel">
+                            <pre><code>{{{ snippet }}}</code></pre>
+                        </div>
+                        <div class="documentation-panel">
+                            {{{ documentation }}}
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </section>
+    <section id="star" data-theme="light" aria-label="Star MrDocs on GitHub">
+        <div class="container">
+            <p>Give us a Star on GitHub:
+                <iframe src="https://ghbtns.com/github-btn.html?user=cppalliance&amp;repo=mrdocs&amp;type=star&amp;count=true&amp;size=large"
+                        frameborder="0" scrolling="0" width="160" height="30" title="GitHub"></iframe>
+            </p>
+        </div>
+    </section>
+</main>
+<footer>
+    <div class="container">
+        <ul>
+            {{#each navbar}}
+                <li><a href="{{ href }}" class="contrast">{{ title }}</a></li>
+            {{/each}}
+            <li><a href="https://github.com/cppalliance/mrdocs" class="contrast">GitHub</a></li>
+        </ul>
+    </div>
+</footer>
+</html>

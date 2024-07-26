@@ -1,0 +1,22 @@
+{
+  "name": "mrdocs-website",
+  "version": "1.0.0",
+  "description": "Website for MrDocs",
+  "main": "render.js",
+  "scripts": {
+    "start": "node render.js"
+  },
+  "keywords": [
+    "documentation",
+    "mrdocs",
+    "website"
+  ],
+  "author": "Alan de Freitas",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "asciidoctor": "^3.0.4",
+    "cheerio": "^1.0.0-rc.12",
+    "handlebars": "^4.7.8",
+    "highlight.js": "^11.10.0"
+  }
+}

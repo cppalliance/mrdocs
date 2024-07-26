@@ -1,0 +1,106 @@
+{
+  "title": "MrDocs",
+  "description": "MrDocs is a C++ documentation generator for your projects.",
+  "page": {
+    "title": "MrDocs",
+    "description": "MrDocs is a C++ documentation generator for your projects."
+  },
+  "site": {
+    "url": "https://www.mrdocs.com",
+    "github": {
+      "url": "https://www.github.com/cppalliance/mrdocs"
+    }
+  },
+  "navbar": [
+    {
+      "title": "Examples",
+      "href": "#examples"
+    },
+    {
+      "title": "Features",
+      "href": "#features"
+    },
+    {
+      "title": "Docs",
+      "href": "./docs/"
+    }
+  ],
+  "banner": {
+    "description": "No workarounds: A tool that fully understands C++",
+    "header": "Simple code, simple documentation",
+    "subheader": "MrDocs understands C++ so you can focus on keeping the code simple."
+  },
+  "features": [
+    {
+      "title": "Single Source of Truth",
+      "description": "Mr. Docs takes a specially formatted comment, called a Javadoc, which precedes a C++ declaration and renders it to form a reference as part of documentation."
+    },
+    {
+      "title": "It understands C++",
+      "description": "Mr. Docs understands C++: Overload sets, private APIs, Concepts and constraints, unspecified return types, aliases, constants, SFINAE, hidden base classes, niebloids, and coroutines."
+    },
+    {
+      "title": "Multiple output formats",
+      "description": "Choose from multiple output formats: Asciidoc, HTML, or XML."
+    },
+    {
+      "title": "Customizable",
+      "description": "Mr. Docs is highly customizable. You can change the output format, the theme, and even the way the documentation is generated."
+    }
+  ],
+  "examples": [
+    {
+      "title": "Boost.URL",
+      "description": "Boost.URL Antora documentation.",
+      "url": "https://852.urlantora.prtest2.cppalliance.org/site/url/reference.html"
+    },
+    {
+      "title": "Boost.URL",
+      "description": "Boost.URL multi-page Asciidoc documentation.",
+      "url": "https://mrdocs.com/demos/develop/boost-url/multi/adoc/index.adoc"
+    },
+    {
+      "title": "Boost.URL",
+      "description": "Boost.URL single-page Asciidoc documentation.",
+      "url": "https://mrdocs.com/demos/develop/boost-url/single/adoc/reference.adoc"
+    },
+    {
+      "title": "Boost.URL",
+      "description": "Boost.URL single-page HTML documentation.",
+      "url": "https://mrdocs.com/demos/develop/boost-url/single/html/reference.html"
+    },
+    {
+      "title": "Boost.URL",
+      "description": "Boost.URL XML documentation.",
+      "url": "https://mrdocs.com/demos/develop/boost-url/multi/xml/reference.xml"
+    },
+    {
+      "title": "Boost.Scope",
+      "description": "Boost.Scope multi-page Asciidoc documentation.",
+      "url": "https://mrdocs.com/demos/develop/boost-scope/multi/adoc/index.adoc"
+    },
+    {
+      "title": "Boost.Scope",
+      "description": "Boost.Scope single-page Asciidoc documentation.",
+      "url": "https://mrdocs.com/demos/develop/boost-scope/single/adoc-asciidoc/reference.html"
+    }
+  ],
+  "panels": [
+    {
+      "description": "MrDocs understands C++ features such as attributes and noexcept functions.",
+      "source": "terminate.cpp"
+    },
+    {
+      "description": "Specially formatted comments are rendered to form a reference as part of documentation.",
+      "source": "distance.cpp"
+    },
+    {
+      "description": "Special directives are used to describe details about the symbols.",
+      "source": "is_prime.cpp"
+    },
+    {
+      "description": "It understands concepts, constraints and SFINAE.",
+      "source": "sqrt.cpp"
+    }
+  ]
+}
