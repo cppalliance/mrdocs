@@ -4,7 +4,7 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
-    <struct name="A" id="KtZkMq/fLAbkUtqWQglhsvKmYxU=">
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <file path="static-data-def.cpp" line="2" class="def"/>
       <variable name="v0" id="rW6h+mCfZLROHlYzwXFIUPN6oSE=">
         <file path="static-data-def.cpp" line="21" class="def"/>

@@ -92,7 +92,7 @@
   </struct>
   <template>
     <tparam name="Ts" class="type"/>
-    <struct name="S6" id="g+m0kIb78VFTErWknHBw9P8gDtg=">
+    <struct name="S6" id="dt7vZMcsOL5ylokCpCZgvCsG/po=">
       <file path="record-inheritance.cpp" line="24" class="def"/>
       <base>
         <type is-pack="1" name="Ts"/>

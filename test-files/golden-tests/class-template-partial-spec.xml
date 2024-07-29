@@ -4,16 +4,16 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
-    <struct name="A" id="KtZkMq/fLAbkUtqWQglhsvKmYxU=">
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <file path="class-template-partial-spec.cpp" line="2" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <tparam name="V" class="type"/>
-        <struct name="B" id="Ph5GAzDdD1dYWDQewyS+hNIC2tY=">
+        <struct name="B" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
           <file path="class-template-partial-spec.cpp" line="5" class="def"/>
         </struct>
       </template>
-      <template class="partial" id="Ph5GAzDdD1dYWDQewyS+hNIC2tY=">
+      <template class="partial" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
         <tparam name="U" class="type"/>
         <targ class="type" type="U*"/>
         <targ class="type" type="T"/>
@@ -21,7 +21,7 @@
           <file path="class-template-partial-spec.cpp" line="8" class="def"/>
         </struct>
       </template>
-      <template class="explicit" id="Ph5GAzDdD1dYWDQewyS+hNIC2tY=">
+      <template class="explicit" id="oAtKB0INIy/QCSdQExvcQwsaZJA=">
         <targ class="type" type="T"/>
         <targ class="type" type="long"/>
         <struct name="B" id="RB9DBMAJDxjxuRQCinQOVPFSNek=">

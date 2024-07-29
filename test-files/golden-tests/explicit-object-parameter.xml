@@ -6,7 +6,7 @@
     <file path="explicit-object-parameter.cpp" line="1" class="def"/>
     <template>
       <tparam name="Self" class="type"/>
-      <function name="value" id="ugraAd4pJfR/ED63KCr4Mm6ynl4=">
+      <function name="value" id="XLLL4h9bZlRyA4AQMlfVPCuwMoU=">
         <file path="explicit-object-parameter.cpp" line="4"/>
         <attr id="constexpr-kind" name="constexpr" value="1"/>
         <attr id="is-explicit-object-member-function"/>
@@ -24,7 +24,7 @@
     </template>
     <template>
       <tparam name="Self" class="type"/>
-      <function name="value" id="6mlAEAw31Pgc7Q/vrG2YWUxYh8M=">
+      <function name="value" id="aOpxAmSvyM7g6X3lLAJG5i3CTZA=">
         <file path="explicit-object-parameter.cpp" line="7"/>
         <attr id="constexpr-kind" name="constexpr" value="1"/>
         <attr id="is-explicit-object-member-function"/>

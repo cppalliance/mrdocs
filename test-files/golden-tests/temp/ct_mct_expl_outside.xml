@@ -4,11 +4,11 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
-    <struct name="A" id="KtZkMq/fLAbkUtqWQglhsvKmYxU=">
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <file path="temp/ct_mct_expl_outside.cpp" line="2" class="def"/>
       <template>
         <tparam name="U" class="type"/>
-        <struct name="B" id="uCdtFEyKcLxGhbR3x9+edZlpuCo=">
+        <struct name="B" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
           <file path="temp/ct_mct_expl_outside.cpp" line="5" class="def"/>
           <function name="f" id="E/7hys/9wYX9YmsaiN5VHroNb8A=">
             <file path="temp/ct_mct_expl_outside.cpp" line="5" class="def"/>
@@ -17,9 +17,9 @@
       </template>
     </struct>
   </template>
-  <specialization id="AKwlChAOi+0ttIAPsD7uitS+gk0=" primary="KtZkMq/fLAbkUtqWQglhsvKmYxU=">
+  <specialization id="AKwlChAOi+0ttIAPsD7uitS+gk0=" primary="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
     <targ class="type" type="int"/>
-    <template class="explicit" id="uCdtFEyKcLxGhbR3x9+edZlpuCo=">
+    <template class="explicit" id="dKDSVrZun8skBV/NUCmJyCUOvJA=">
       <targ class="type" type="int"/>
       <struct name="B" id="IMS2etMN5nj/r7pRC8mVNme6K+o=">
         <file path="temp/ct_mct_expl_outside.cpp" line="10" class="def"/>

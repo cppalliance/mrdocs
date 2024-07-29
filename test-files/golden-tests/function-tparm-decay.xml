@@ -4,73 +4,28 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="x" class="non-type" type="int"/>
-    <function name="f" id="rkccucbbSkEY2yaPGbfDuUXSOtc=">
+    <function name="f" id="eqMdBnxdb22zO3kokXFKlz9ktqg=">
       <file path="function-tparm-decay.cpp" line="4"/>
-    </function>
-  </template>
-  <template>
-    <tparam name="x" class="non-type" type="int"/>
-    <function name="f" id="cD7rxH4LgUh5PT4P+0XE8bMlyYM=">
       <file path="function-tparm-decay.cpp" line="6"/>
-    </function>
-  </template>
-  <template>
-    <tparam name="x" class="non-type" type="int"/>
-    <function name="f" id="SNTAy1qBZChFPjTsCGmBYKPw0ek=">
       <file path="function-tparm-decay.cpp" line="8"/>
-    </function>
-  </template>
-  <template>
-    <tparam name="x" class="non-type" type="int"/>
-    <function name="f" id="/ksrr35NZeClgPTHe7yYzKDPiLg=">
       <file path="function-tparm-decay.cpp" line="10"/>
     </function>
   </template>
   <template>
-    <tparam name="x" class="non-type" type="int*"/>
-    <function name="g" id="Ejwc3ElKBbRRy/jA6yREDPppYvA=">
-      <file path="function-tparm-decay.cpp" line="13"/>
-    </function>
-  </template>
-  <template>
-    <tparam name="x" class="non-type" type="int*"/>
-    <function name="g" id="msfE/2NezHw0zGzXY0Bv8x/eX1U=">
-      <file path="function-tparm-decay.cpp" line="15"/>
-    </function>
-  </template>
-  <template>
-    <tparam name="x" class="non-type" type="int[]"/>
-    <function name="g" id="cIpYMBo4rX8yDC8vHwGMO650nDk=">
-      <file path="function-tparm-decay.cpp" line="17"/>
-    </function>
-  </template>
-  <template>
     <tparam name="x" class="non-type" type="int[4]"/>
-    <function name="g" id="a9XjhJtZMY3/GepQ0StW/P5qdW8=">
+    <function name="g" id="WsEgNgLbqe3a0eM5Bqsuf58XoH0=">
+      <file path="function-tparm-decay.cpp" line="13"/>
+      <file path="function-tparm-decay.cpp" line="15"/>
+      <file path="function-tparm-decay.cpp" line="17"/>
       <file path="function-tparm-decay.cpp" line="19"/>
     </function>
   </template>
   <template>
-    <tparam name="x" class="non-type" type="int(bool)"/>
-    <function name="h" id="L010OmFh3EO//KcAJ+gMt1lQTkI=">
-      <file path="function-tparm-decay.cpp" line="22"/>
-    </function>
-  </template>
-  <template>
-    <tparam name="x" class="non-type" type="int(const bool)"/>
-    <function name="h" id="mFmWbB9pwLt8VT1Jha4nqlrNcjQ=">
-      <file path="function-tparm-decay.cpp" line="24"/>
-    </function>
-  </template>
-  <template>
-    <tparam name="x" class="non-type" type="int(*)(bool)"/>
-    <function name="h" id="cGSSQzU0yWmdf0Blvo8XJ8JGuF0=">
-      <file path="function-tparm-decay.cpp" line="26"/>
-    </function>
-  </template>
-  <template>
     <tparam name="x" class="non-type" type="int(*)(const bool)"/>
-    <function name="h" id="koOUeyrVQdrHoE3PliqkYpptwfc=">
+    <function name="h" id="TjNHTu8/auH8QPVcgjW7FUo2dFM=">
+      <file path="function-tparm-decay.cpp" line="22"/>
+      <file path="function-tparm-decay.cpp" line="24"/>
+      <file path="function-tparm-decay.cpp" line="26"/>
       <file path="function-tparm-decay.cpp" line="28"/>
     </function>
   </template>
@@ -83,26 +38,11 @@
     <type name="int" cv-qualifiers="const"/>
   </alias>
   <template>
-    <tparam class="non-type" type="T"/>
-    <function name="i" id="thQqedOmPYTCksgS9wCeXT9T0ZY=">
+    <tparam class="non-type" type="int"/>
+    <function name="i" id="2woLp3PdyOT/I0DFMkY8OAli5YM=">
       <file path="function-tparm-decay.cpp" line="34"/>
-    </function>
-  </template>
-  <template>
-    <tparam class="non-type" type="int"/>
-    <function name="i" id="IWULMcMyeuLLCo4D7LvMIfZe+Kk=">
       <file path="function-tparm-decay.cpp" line="36"/>
-    </function>
-  </template>
-  <template>
-    <tparam class="non-type" type="T"/>
-    <function name="i" id="iCCTW9qBlvrkgjqKgWPUtJRxF6M=">
       <file path="function-tparm-decay.cpp" line="38"/>
-    </function>
-  </template>
-  <template>
-    <tparam class="non-type" type="int"/>
-    <function name="i" id="HsgtUpAK1J9RG63rH8iWhdlqXE4=">
       <file path="function-tparm-decay.cpp" line="40"/>
     </function>
   </template>

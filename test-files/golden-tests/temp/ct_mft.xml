@@ -4,11 +4,11 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
-    <struct name="A" id="KtZkMq/fLAbkUtqWQglhsvKmYxU=">
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <file path="temp/ct_mft.cpp" line="2" class="def"/>
       <template>
         <tparam name="U" class="type"/>
-        <function name="f" id="lZR2poLjT8xY30+nd4RPJ31mi8A=">
+        <function name="f" id="fycIFVnUjGsczEihLemEC7pcV4w=">
           <file path="temp/ct_mft.cpp" line="5" class="def"/>
         </function>
       </template>

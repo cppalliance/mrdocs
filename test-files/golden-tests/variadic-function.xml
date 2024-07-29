@@ -29,7 +29,7 @@
   <template>
     <tparam name="A" class="type" default="void(...)"/>
     <tparam name="B" class="type" default="void(int, ...)"/>
-    <struct name="C" id="l1LhIhdonQdWPDobuTmuoJCzX0I=">
+    <struct name="C" id="8nYw0KA23eAszqSOs0wOXAD1DYQ=">
       <file path="variadic-function.cpp" line="10"/>
     </struct>
   </template>

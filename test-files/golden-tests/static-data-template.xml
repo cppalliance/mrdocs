@@ -4,19 +4,19 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
-    <struct name="A" id="KtZkMq/fLAbkUtqWQglhsvKmYxU=">
+    <struct name="A" id="5tUSuMtQqtYE49jBjSYSWp0DJAM=">
       <file path="static-data-template.cpp" line="2" class="def"/>
       <template>
         <tparam name="U" class="type"/>
         <tparam name="V" class="type"/>
-        <variable name="x" id="OB6PeDvmJcdvNuhQPk1Wm7aNxeE=">
+        <variable name="x" id="7L90lvoKPW80F2cnMs0e05abtuk=">
           <file path="static-data-template.cpp" line="5" class="def"/>
           <attr id="storage-class" name="static" value="2"/>
           <attr id="constexpr-kind" name="constexpr" value="1"/>
           <type name="T" cv-qualifiers="const"/>
         </variable>
       </template>
-      <template class="partial" id="OB6PeDvmJcdvNuhQPk1Wm7aNxeE=">
+      <template class="partial" id="7L90lvoKPW80F2cnMs0e05abtuk=">
         <tparam name="U" class="type"/>
         <targ class="type" type="U*"/>
         <targ class="type" type="T"/>
@@ -27,7 +27,7 @@
           <type name="T" cv-qualifiers="const"/>
         </variable>
       </template>
-      <template class="explicit" id="OB6PeDvmJcdvNuhQPk1Wm7aNxeE=">
+      <template class="explicit" id="7L90lvoKPW80F2cnMs0e05abtuk=">
         <targ class="type" type="T"/>
         <targ class="type" type="long"/>
         <variable name="x" id="eKdgKT44WwfN7UkQXGEqVJssIPM=">
