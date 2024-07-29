@@ -153,6 +153,7 @@ public:
         FileInfo> files_;
 
     llvm::SmallString<128> usr_;
+    ODRHash odr_hash_;
 
     SymbolFilter symbolFilter_;
 
@@ -633,21 +634,21 @@ public:
         if(Described)
         {
             const TemplateParameterList* TPL = Described->getTemplateParameters();
-            ODRHash Hash;
-            Hash.AddTemplateParameterList(TPL);
+            odr_hash_.AddTemplateParameterList(TPL);
             if(const auto* RC = TPL->getRequiresClause())
-                Hash.AddStmt(RC);
+                odr_hash_.AddStmt(RC);
             usr_.append("@TPL#");
-            usr_.append(llvm::itostr(Hash.CalculateHash()));
+            usr_.append(llvm::itostr(odr_hash_.CalculateHash()));
+            odr_hash_.clear();
         }
 
         if(auto* FD = dyn_cast<FunctionDecl>(Templated);
             FD && FD->getTrailingRequiresClause())
         {
-            ODRHash Hash;
-            Hash.AddStmt(FD->getTrailingRequiresClause());
+            odr_hash_.AddStmt(FD->getTrailingRequiresClause());
             usr_.append("@TRC#");
-            usr_.append(llvm::itostr(Hash.CalculateHash()));
+            usr_.append(llvm::itostr(odr_hash_.CalculateHash()));
+            odr_hash_.clear();
         }
 
         return false;
