@@ -6,14 +6,14 @@
     <file path="temp/c_mct_expl_outside.cpp" line="1" class="def"/>
     <template>
       <tparam name="T" class="type"/>
-      <struct name="B" id="TqGFMDXDQ6ddt946aVDeyhY9Ij8=">
+      <struct name="B" id="egCXL3TW3bs+UhHNfiwJ0bndV1E=">
         <file path="temp/c_mct_expl_outside.cpp" line="4" class="def"/>
         <function name="f" id="GOVvMTuIkLp/PqUkD5z7Bvf4+FQ=">
           <file path="temp/c_mct_expl_outside.cpp" line="4" class="def"/>
         </function>
       </struct>
     </template>
-    <template class="explicit" id="TqGFMDXDQ6ddt946aVDeyhY9Ij8=">
+    <template class="explicit" id="egCXL3TW3bs+UhHNfiwJ0bndV1E=">
       <targ class="type" type="int"/>
       <struct name="B" id="FxMFFVpoV2/LOOndnkQ2gu3w69U=">
         <file path="temp/c_mct_expl_outside.cpp" line="9" class="def"/>

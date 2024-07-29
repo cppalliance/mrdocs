@@ -31,7 +31,7 @@
   </struct>
   <template>
     <tparam name="B" class="non-type" type="bool"/>
-    <struct name="ExplicitExpression" id="ztb0u1Q4SVBUQ0roTOM7MFlUt/o=">
+    <struct name="ExplicitExpression" id="CgbSvR6FzWIet4WS2dBpxxE1okg=">
       <file path="explicit-conv-operator.cpp" line="16" class="def"/>
       <function class="conversion" name="operator bool" explicit-spec="explicit(B)" id="q6N8XkMK9WWWGKNQnlx/o2E1EYc=">
         <file path="explicit-conv-operator.cpp" line="17"/>

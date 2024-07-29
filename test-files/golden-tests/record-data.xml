@@ -60,7 +60,7 @@
   <template>
     <tparam name="P" class="type"/>
     <tparam name="I" class="non-type" type="int"/>
-    <struct name="X" id="XSI9u4gB6ZYb6pWxN29K8+iKza4=">
+    <struct name="X" id="Y4jV4m1N8w2THY7z9ozDF5T//r8=">
       <file path="record-data.cpp" line="34" class="def"/>
       <alias name="Q" id="nkW23Ykh9wywIjUzLqEQlHf8R5k=">
         <file path="record-data.cpp" line="36" class="def"/>

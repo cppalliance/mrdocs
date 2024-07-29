@@ -4,19 +4,19 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam name="T" class="type"/>
-    <variable name="A" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
+    <variable name="A" id="aU1k9HUQ3eawaNidFEOdUY9z//M=">
       <file path="var-template.cpp" line="2" class="def"/>
       <type name="unsigned int"/>
     </variable>
   </template>
-  <template class="explicit" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
+  <template class="explicit" id="aU1k9HUQ3eawaNidFEOdUY9z//M=">
     <targ class="type" type="void"/>
     <variable name="A" id="jrW9aLj8cqTteNoZmH97vOW7csQ=">
       <file path="var-template.cpp" line="4" class="def"/>
       <type name="unsigned int"/>
     </variable>
   </template>
-  <template class="partial" id="hGK5kng8FRozz2kCeW+NWHngZKE=">
+  <template class="partial" id="aU1k9HUQ3eawaNidFEOdUY9z//M=">
     <tparam name="T" class="type"/>
     <targ class="type" type="T&amp;"/>
     <variable name="A" id="FsEwA9OFNGH4A/cxXIoOOa+ZQg8=">
@@ -28,13 +28,13 @@
     <file path="var-template.cpp" line="10" class="def"/>
     <template>
       <tparam name="T" class="type"/>
-      <variable name="C" id="629jUQifhGrj15iClsD5BexWpWQ=">
+      <variable name="C" id="dl2/Uxb8meC/zCdpit1pdhkWqMs=">
         <file path="var-template.cpp" line="13" class="def"/>
         <attr id="storage-class" name="static" value="2"/>
         <type name="unsigned int"/>
       </variable>
     </template>
-    <template class="explicit" id="629jUQifhGrj15iClsD5BexWpWQ=">
+    <template class="explicit" id="dl2/Uxb8meC/zCdpit1pdhkWqMs=">
       <targ class="type" type="int"/>
       <variable name="C" id="Wtlw7VEK38lEEBeqNoDOjTkJE+U=">
         <file path="var-template.cpp" line="15" class="def"/>
@@ -42,7 +42,7 @@
         <type name="unsigned int"/>
       </variable>
     </template>
-    <template class="partial" id="629jUQifhGrj15iClsD5BexWpWQ=">
+    <template class="partial" id="dl2/Uxb8meC/zCdpit1pdhkWqMs=">
       <tparam name="T" class="type"/>
       <targ class="type" type="T*"/>
       <variable name="C" id="wvoZkG3eTMaiFAf971AFdvmHCDE=">

@@ -8,7 +8,7 @@
   <template>
     <tparam name="T" class="type"/>
     <tparam name="U" class="type"/>
-    <struct name="B" id="swBEqeWAJoaWVKty+1lCoYUK04A=">
+    <struct name="B" id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=">
       <file path="type-resolution.cpp" line="4" class="def"/>
     </struct>
   </template>
@@ -18,13 +18,13 @@
   </alias>
   <alias name="D" id="LXTs1uTCF/vevZU29QYVICehLFQ=">
     <file path="type-resolution.cpp" line="8" class="def"/>
-    <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
+    <type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;"/>
   </alias>
   <template>
     <tparam name="T" class="type"/>
-    <alias name="E" id="ikh/cWe22atB10u7UsOKS5W39CA=">
+    <alias name="E" id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=">
       <file path="type-resolution.cpp" line="11" class="def"/>
-      <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;T, long&gt;"/>
+      <type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;T, long&gt;"/>
     </alias>
   </template>
   <function name="f0" id="NmPMV0MWNFJUjfSOLHtzdbgpFoQ=">
@@ -178,20 +178,20 @@
   <function name="h0" id="E5y/fD9iZ0MCXYoHtunBFFWTWhg=">
     <file path="type-resolution.cpp" line="33"/>
     <param>
-      <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
+      <type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;"/>
     </param>
   </function>
   <function name="h1" id="BI0JWw00VfmJGJLhcVYpoks79MI=">
     <file path="type-resolution.cpp" line="34"/>
     <param>
-      <type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
+      <type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
     </param>
   </function>
   <function name="h2" id="ysfWNk4t2HuUA1jfw595fkiD1PA=">
     <file path="type-resolution.cpp" line="35"/>
     <param>
       <type class="lvalue-reference">
-        <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
+        <pointee-type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;"/>
       </type>
     </param>
   </function>
@@ -199,7 +199,7 @@
     <file path="type-resolution.cpp" line="36"/>
     <param>
       <type class="lvalue-reference">
-        <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
+        <pointee-type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
       </type>
     </param>
   </function>
@@ -207,7 +207,7 @@
     <file path="type-resolution.cpp" line="37"/>
     <param>
       <type class="pointer">
-        <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
+        <pointee-type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;"/>
       </type>
     </param>
   </function>
@@ -215,7 +215,7 @@
     <file path="type-resolution.cpp" line="38"/>
     <param>
       <type class="pointer">
-        <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
+        <pointee-type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
       </type>
     </param>
   </function>
@@ -224,7 +224,7 @@
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
-          <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;"/>
+          <pointee-type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;"/>
         </pointee-type>
       </type>
     </param>
@@ -234,7 +234,7 @@
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
-          <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
+          <pointee-type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
         </pointee-type>
       </type>
     </param>
@@ -244,7 +244,7 @@
     <param>
       <type class="pointer">
         <pointee-type class="pointer" cv-qualifiers="const">
-          <pointee-type id="swBEqeWAJoaWVKty+1lCoYUK04A=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
+          <pointee-type id="V2F3V3ndy3KN5ckfyM+G5qAoHXI=" name="B&lt;short, long&gt;" cv-qualifiers="const"/>
         </pointee-type>
       </type>
     </param>
@@ -326,20 +326,20 @@
   <function name="j0" id="iegBG/1Lpr/GF9vznbapPd8d6Ws=">
     <file path="type-resolution.cpp" line="53"/>
     <param>
-      <type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
+      <type id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=" name="E&lt;short&gt;"/>
     </param>
   </function>
   <function name="j1" id="al+9zRjNTBZZcU69a8iMD6KngWA=">
     <file path="type-resolution.cpp" line="54"/>
     <param>
-      <type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
+      <type id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
     </param>
   </function>
   <function name="j2" id="2cJI8v0G+GfLxlnF+d0p52Lt9zE=">
     <file path="type-resolution.cpp" line="55"/>
     <param>
       <type class="lvalue-reference">
-        <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
+        <pointee-type id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=" name="E&lt;short&gt;"/>
       </type>
     </param>
   </function>
@@ -347,7 +347,7 @@
     <file path="type-resolution.cpp" line="56"/>
     <param>
       <type class="lvalue-reference">
-        <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
+        <pointee-type id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
       </type>
     </param>
   </function>
@@ -355,7 +355,7 @@
     <file path="type-resolution.cpp" line="57"/>
     <param>
       <type class="pointer">
-        <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
+        <pointee-type id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=" name="E&lt;short&gt;"/>
       </type>
     </param>
   </function>
@@ -363,7 +363,7 @@
     <file path="type-resolution.cpp" line="58"/>
     <param>
       <type class="pointer">
-        <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
+        <pointee-type id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
       </type>
     </param>
   </function>
@@ -372,7 +372,7 @@
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
-          <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;"/>
+          <pointee-type id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=" name="E&lt;short&gt;"/>
         </pointee-type>
       </type>
     </param>
@@ -382,7 +382,7 @@
     <param>
       <type class="pointer">
         <pointee-type class="pointer">
-          <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
+          <pointee-type id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
         </pointee-type>
       </type>
     </param>
@@ -392,7 +392,7 @@
     <param>
       <type class="pointer">
         <pointee-type class="pointer" cv-qualifiers="const">
-          <pointee-type id="ikh/cWe22atB10u7UsOKS5W39CA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
+          <pointee-type id="gcyR+iWkEOJU+0TJ0AxJJgXweBA=" name="E&lt;short&gt;" cv-qualifiers="const"/>
         </pointee-type>
       </type>
     </param>

@@ -72,7 +72,7 @@
   </function>
   <template>
     <tparam name="T" class="type"/>
-    <function name="h0" id="GUlieEk6E+t8qLpALj3XrWv0CGw=">
+    <function name="h0" id="+SJWE1R0BjjiOnjAXlrIPhLxqOk=">
       <file path="duplicate-jdoc.cpp" line="30" class="def"/>
       <doc>
         <para>
@@ -89,7 +89,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <function name="h1" id="q8fclJU+n2M3XqifIjVL9vT9fKQ=">
+    <function name="h1" id="lWRV/O3N4b/GtmdSEVyf6S2XvF8=">
       <file path="duplicate-jdoc.cpp" line="37" class="def"/>
       <doc>
         <para>

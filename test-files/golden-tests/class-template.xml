@@ -7,7 +7,7 @@
   </struct>
   <template>
     <tparam name="T" class="type"/>
-    <struct name="C0" id="sv7ww7qclY8KsvAbFHXaKZnSO80=">
+    <struct name="C0" id="SUVGI1Hm6+ozf/iUuem8HfWiCGs=">
       <file path="class-template.cpp" line="4" class="def"/>
       <field name="w" id="ySFHEWJe6/b1dbtjDC2IAvT2vmU=">
         <file path="class-template.cpp" line="6" class="def"/>
@@ -38,7 +38,7 @@
     </field>
     <template>
       <tparam name="T" class="type"/>
-      <struct name="N1" id="F1Cyqn/faLYbjTU4RfGsepUiiZw=">
+      <struct name="N1" id="1xc16tjd8JiWBoVuNUFMJBWmAD8=">
         <file path="class-template.cpp" line="21" class="def"/>
         <field name="x" id="bQCgblScrSKOxQMVJxT7vFw9W4I=">
           <file path="class-template.cpp" line="23" class="def"/>
@@ -57,7 +57,7 @@
   </struct>
   <template>
     <tparam name="T" class="type"/>
-    <struct name="C2" id="IIPz8Fm6nqKoYQpeJ/kvZaWvtI8=">
+    <struct name="C2" id="DgD264oYIupd2hgl9GZUynYR1T8=">
       <file path="class-template.cpp" line="30" class="def"/>
       <field name="v" id="rvAO5HvzEvS8z9PgbRoqkyTi+1c=">
         <file path="class-template.cpp" line="32" class="def"/>
@@ -65,7 +65,7 @@
       </field>
       <template>
         <tparam name="U" class="type"/>
-        <struct name="N2" id="xljI5oOqNOhyyR4QzmKvFB3nEfw=">
+        <struct name="N2" id="+TpsP2YhX8Lnrakbqt34QQpjfsk=">
           <file path="class-template.cpp" line="35" class="def"/>
           <field name="w" id="bLX5mthqXMHAtLNEc87RKLQSUyU=">
             <file path="class-template.cpp" line="37" class="def"/>
@@ -89,7 +89,7 @@
   </template>
   <template>
     <tparam name="T" class="type"/>
-    <struct name="C3" id="x60FzYL65XgZZRrxrZuC5jemrwQ=">
+    <struct name="C3" id="Yjm843EXApUIHbjQ7SemdPPEnCE=">
       <file path="class-template.cpp" line="48" class="def"/>
       <file path="class-template.cpp" line="45"/>
       <field name="v" id="28J+g16kE2M7qwnrP4yzW4hHlIg=">

@@ -4,14 +4,14 @@
 <namespace id="//////////////////////////8=">
   <template>
     <tparam class="non-type" type="int"/>
-    <struct name="X" id="7wllQWhGGsbbeoZVa3gh4d7bcq8=">
+    <struct name="X" id="8yeSmnTDkcfFra3bBpdA4cdqkwE=">
       <file path="explicit-deduct-guide.cpp" line="4" class="def"/>
     </struct>
   </template>
   <guide name="X" explicit-spec="explicit" id="2IF4pOfGcA57GQDlE3PJgs7yeUs=">
     <file path="explicit-deduct-guide.cpp" line="6" class="def"/>
     <deduced>
-      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
+      <type id="8yeSmnTDkcfFra3bBpdA4cdqkwE=" name="X&lt;0&gt;"/>
     </deduced>
     <param>
       <type name="bool"/>
@@ -20,7 +20,7 @@
   <guide name="X" explicit-spec="explicit(true)" id="AtQyLakD3CjcM24GabAbHMNgVU4=">
     <file path="explicit-deduct-guide.cpp" line="8" class="def"/>
     <deduced>
-      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
+      <type id="8yeSmnTDkcfFra3bBpdA4cdqkwE=" name="X&lt;0&gt;"/>
     </deduced>
     <param>
       <type name="char"/>
@@ -29,7 +29,7 @@
   <guide name="X" explicit-spec="explicit(false)" id="tkYkUU6H8cbFpCU7yBuvBLkT6dg=">
     <file path="explicit-deduct-guide.cpp" line="10" class="def"/>
     <deduced>
-      <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
+      <type id="8yeSmnTDkcfFra3bBpdA4cdqkwE=" name="X&lt;0&gt;"/>
     </deduced>
     <param>
       <type name="int"/>
@@ -37,10 +37,10 @@
   </guide>
   <template>
     <tparam name="B" class="non-type" type="bool" default="true"/>
-    <guide name="X" explicit-spec="explicit(B)" id="YS/v8XQ/9ShQ2spNAh5EY33PN7s=">
+    <guide name="X" explicit-spec="explicit(B)" id="P2JFI8s6YRz38ZsRq/Xw/Vd3MJE=">
       <file path="explicit-deduct-guide.cpp" line="13" class="def"/>
       <deduced>
-        <type id="7wllQWhGGsbbeoZVa3gh4d7bcq8=" name="X&lt;0&gt;"/>
+        <type id="8yeSmnTDkcfFra3bBpdA4cdqkwE=" name="X&lt;0&gt;"/>
       </deduced>
       <param>
         <type name="long"/>
