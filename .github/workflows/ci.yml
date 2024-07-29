@@ -176,8 +176,8 @@ jobs:
       - name: LLVM Parameters
         id: llvm-parameters
         run: |
-          echo -E "llvm-hash=7a28a5b3fee6c78ad59af79a3d03c00db153c49f" >> $GITHUB_OUTPUT
-          echo -E "llvm-id=7a28a5b3" >> $GITHUB_OUTPUT
+          echo -E "llvm-hash=e1065370aaacb1b1cb48e77d37d376bf024f4a39" >> $GITHUB_OUTPUT
+          echo -E "llvm-id=e1065370" >> $GITHUB_OUTPUT
           echo -E "llvm-build-preset=${{ runner.os == 'Windows' && 'release-win' || 'release-unix' }}" >> $GITHUB_OUTPUT
           cd ..
           llvm_root=$(pwd)/third-party/llvm-project/install

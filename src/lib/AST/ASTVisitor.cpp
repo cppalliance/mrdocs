@@ -4430,7 +4430,7 @@ class ASTVisitorConsumer
     void HandleTagDeclRequiredDefinition(const TagDecl*) override { }
     void HandleInterestingDecl(DeclGroupRef) override { }
     void CompleteTentativeDefinition(VarDecl*) override { }
-    void CompleteExternalDeclaration(VarDecl*) override { }
+    void CompleteExternalDeclaration(DeclaratorDecl*) override { }
     void AssignInheritanceModel(CXXRecordDecl*) override { }
     void HandleVTable(CXXRecordDecl*) override { }
     void HandleImplicitImportDecl(ImportDecl*) override { }
