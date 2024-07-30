@@ -1505,7 +1505,7 @@ public:
         ArrayRef<TemplateArgument> Arguments,
         unsigned Index)
     {
-        if(Index == -1)
+        if(Index == static_cast<unsigned>(-1))
             return std::nullopt;
         if(Index < Arguments.size())
             return Arguments[Index];
@@ -1647,7 +1647,7 @@ public:
             if(CurrentType->isDependentType())
             {
                 auto FoundIdx = FindParam(Args, TemplateArgument(CurrentType));
-                if(FoundIdx == -1 || FoundIdx >= PrimaryArgs.size())
+                if(FoundIdx == static_cast<decltype(FoundIdx)>(-1) || FoundIdx >= PrimaryArgs.size())
                     return true;
                 ParamIdx = FoundIdx;
                 TemplateArgument MappedPrimary = PrimaryArgs[FoundIdx];
