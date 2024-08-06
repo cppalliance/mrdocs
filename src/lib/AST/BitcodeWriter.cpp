@@ -1086,7 +1086,7 @@ emitBlock(
         if constexpr(T::isAuto())
         {
             emitRecord(t.Keyword, TYPEINFO_AUTO_KEYWORD);
-            if(t.Constraint);
+            if(t.Constraint)
                 emitBlock(*t.Constraint);
         }
 
