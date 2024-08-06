@@ -75,7 +75,8 @@
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file path="static-data-def.cpp" line="36" class="def"/>
     <return>
-      <type name="int"/>
+      <type class="auto" keyword="auto">
+      </type>
     </return>
   </function>
 </namespace>

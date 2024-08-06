@@ -5,7 +5,8 @@
   <function name="f" id="s6nsa+zVhpzzrN+yUVPP5rvdXqs=">
     <file path="local-class.cpp" line="1" class="def"/>
     <return>
-      <type id="OhDTqBe4/sw3kfEe1/rfVoLg//I=" name="A"/>
+      <type class="auto" keyword="auto">
+      </type>
     </return>
   </function>
   <struct name="B" id="3JsK1DO0O+wZhv+0meptQrbs3fY=">
@@ -14,12 +15,6 @@
       <type class="decltype" operand="f()">
       </type>
     </base>
-  </struct>
-  <struct name="A" id="OhDTqBe4/sw3kfEe1/rfVoLg//I=">
-    <file path="local-class.cpp" line="1" class="def"/>
-    <function name="g" id="3q6bOh6HrO+T0TeZ36BHKWeZRv4=">
-      <file path="local-class.cpp" line="1"/>
-    </function>
   </struct>
 </namespace>
 </mrdocs>
