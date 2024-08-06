@@ -344,6 +344,26 @@ convertToFunctionClass(
     }
 }
 
+/** Convert a Clang AutoTypeKeyword into a MrDocs AutoKind
+ */
+AutoKind
+convertToAutoKind(
+    AutoTypeKeyword kind)
+{
+    using OldKind = AutoTypeKeyword;
+    using NewKind = AutoKind;
+    switch(kind)
+    {
+    case OldKind::Auto:
+    case OldKind::GNUAutoType:
+      return NewKind::Auto;
+    case OldKind::DecltypeAuto:
+      return NewKind::DecltypeAuto;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
 // ----------------------------------------------------------------
 
 /** Visit a Decl and call the appropriate visitor function.

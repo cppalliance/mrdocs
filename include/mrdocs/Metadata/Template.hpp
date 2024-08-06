@@ -207,6 +207,9 @@ struct TypeTParam
 {
     /** Keyword (class/typename) the parameter uses */
     TParamKeyKind KeyKind = TParamKeyKind::Class;
+
+    /** The type-constraint for the parameter, if any. */
+    std::unique_ptr<NameInfo> Constraint;
 };
 
 struct NonTypeTParam

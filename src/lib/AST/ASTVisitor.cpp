@@ -697,7 +697,6 @@ public:
                 odr_hash_.AddStmt(RC);
                 usr_.append("@TPL#");
                 usr_.append(llvm::itostr(odr_hash_.CalculateHash()));
-                llvm::outs() << usr_ << '\n';
                 odr_hash_.clear();
             }
         }
@@ -713,7 +712,6 @@ public:
             odr_hash_.AddStmt(RC);
             usr_.append("@TRC#");
             usr_.append(llvm::itostr(odr_hash_.CalculateHash()));
-            llvm::outs() << usr_ << '\n';
             odr_hash_.clear();
         }
 
@@ -1025,9 +1023,27 @@ public:
         const NestedNameSpecifier* NNS,
         ExtractMode extract_mode = ExtractMode::IndirectDependency);
 
+    #if 0
     std::unique_ptr<NameInfo>
     buildNameInfo(
         const Decl* D,
+        ExtractMode extract_mode = ExtractMode::IndirectDependency);
+    #endif
+
+    template<typename TArgRange = ArrayRef<TemplateArgument>>
+    std::unique_ptr<NameInfo>
+    buildNameInfo(
+        DeclarationName Name,
+        std::optional<TArgRange> TArgs = std::nullopt,
+        const NestedNameSpecifier* NNS = nullptr,
+        ExtractMode extract_mode = ExtractMode::IndirectDependency);
+
+    template<typename TArgRange = ArrayRef<TemplateArgument>>
+    std::unique_ptr<NameInfo>
+    buildNameInfo(
+        const Decl* D,
+        std::optional<TArgRange> TArgs = std::nullopt,
+        const NestedNameSpecifier* NNS = nullptr,
         ExtractMode extract_mode = ExtractMode::IndirectDependency);
 
 
@@ -1149,6 +1165,15 @@ public:
                 if(P->hasDefaultArgument() && !R->Default)
                     R->Default = buildTemplateArg(
                         P->getDefaultArgument().getArgument());
+                if(const TypeConstraint* TC = P->getTypeConstraint())
+                {
+                    const NestedNameSpecifier* NNS =
+                        TC->getNestedNameSpecifierLoc().getNestedNameSpecifier();
+                    std::optional<const ASTTemplateArgumentListInfo*> TArgs;
+                    if(TC->hasExplicitTemplateArgs())
+                        TArgs.emplace(TC->getTemplateArgsAsWritten());
+                    R->Constraint = buildNameInfo(TC->getNamedConcept(), TArgs, NNS);
+                }
                 return;
             }
             else if constexpr(kind == Decl::NonTypeTemplateParm)
@@ -1871,12 +1896,11 @@ public:
         return std::make_pair(param_arg->getAsType(), std::move(ControllingArgs));
     }
 
-    std::string
-    extractName(
-        const NamedDecl* D)
+    std::string extractName(DeclarationName N)
     {
         std::string result;
-        DeclarationName N = D->getDeclName();
+        if(N.isEmpty())
+          return result;
         switch(N.getNameKind())
         {
         case DeclarationName::Identifier:
@@ -1896,14 +1920,11 @@ public:
             break;
         case DeclarationName::CXXConversionFunctionName:
         {
-            MRDOCS_ASSERT(isa<CXXConversionDecl>(D));
-            const auto* CD = cast<CXXConversionDecl>(D);
             result.append("operator ");
             // KRYSTIAN FIXME: we *really* should not be
             // converting types to strings like this
             result.append(toString(
-                *buildTypeInfo(
-                    CD->getReturnType())));
+                *buildTypeInfo(N.getCXXNameType())));
             break;
         }
         case DeclarationName::CXXOperatorName:
@@ -1926,16 +1947,19 @@ public:
         return result;
     }
 
+    std::string extractName(const NamedDecl* D)
+    {
+        return extractName(D->getDeclName());
+    }
+
     //------------------------------------------------
 
-    const Decl*
-    getParentDecl(const Decl* D)
+    const Decl* getParentDecl(const Decl* D)
     {
         return getParentDecl(const_cast<Decl*>(D));
     }
 
-    Decl*
-    getParentDecl(Decl* D)
+    Decl* getParentDecl(Decl* D)
     {
         while((D = cast_if_present<
             Decl>(D->getDeclContext())))
@@ -3764,15 +3788,14 @@ class TerminalTypeVisitor
     VisitAutoType(
         const AutoType* T)
     {
-        // KRYSTIAN TODO: we should probably add a TypeInfo
-        // to represent deduced types that also stores what
-        // it was deduced as.
+        #if 0
         // KRYSTIAN NOTE: we don't use isDeduced because it will
         // return true if the type is dependent
         // if the type has been deduced, use the deduced type
         if(QualType DT = T->getDeducedType(); ! DT.isNull())
             return Visit(DT);
-        getDerived().buildTerminal(NNS_, T, Quals_, IsPack_);
+        #endif
+        getDerived().buildAuto(T, Quals_, IsPack_);
         return true;
     }
 
@@ -3985,6 +4008,14 @@ public:
     }
 
     void
+    buildAuto(
+        const AutoType* T,
+        unsigned quals,
+        bool pack)
+    {
+    }
+
+    void
     buildTerminal(
         const NestedNameSpecifier* NNS,
         const Type* T,
@@ -4096,6 +4127,30 @@ public:
         getASTVisitor().buildExprInfo(
             I->Operand, T->getUnderlyingExpr());
         I->CVQualifiers = convertToQualifierKind(quals);
+        *Inner = std::move(I);
+        Result->IsPackExpansion = pack;
+    }
+
+    void
+    buildAuto(
+        const AutoType* T,
+        unsigned quals,
+        bool pack)
+    {
+        auto I = std::make_unique<AutoTypeInfo>();
+        I->CVQualifiers = convertToQualifierKind(quals);
+        I->Keyword = convertToAutoKind(T->getKeyword());
+        if(T->isConstrained())
+        {
+            std::optional<ArrayRef<TemplateArgument>> TArgs;
+            if(auto Args = T->getTypeConstraintArguments();
+                ! Args.empty())
+                TArgs.emplace(Args);
+            I->Constraint = getASTVisitor().buildNameInfo(
+                T->getTypeConstraintConcept(), TArgs);
+            // Constraint->Prefix = getASTVisitor().buildNameInfo(
+            //     cast<Decl>(CD->getDeclContext()));
+        }
         *Inner = std::move(I);
         Result->IsPackExpansion = pack;
     }
@@ -4373,6 +4428,7 @@ buildNameInfo(
     return I;
 }
 
+#if 0
 std::unique_ptr<NameInfo>
 ASTVisitor::
 buildNameInfo(
@@ -4389,6 +4445,55 @@ buildNameInfo(
         I->Name = II->getName();
     getDependencyID(getInstantiatedFrom(D), I->id);
     I->Prefix = buildNameInfo(getParentDecl(D), extract_mode);
+    return I;
+}
+#endif
+
+template<typename TArgRange>
+std::unique_ptr<NameInfo>
+ASTVisitor::
+buildNameInfo(
+    DeclarationName Name,
+    std::optional<TArgRange> TArgs,
+    const NestedNameSpecifier* NNS,
+    ExtractMode extract_mode)
+{
+    if(Name.isEmpty())
+        return nullptr;
+    std::unique_ptr<NameInfo> I = nullptr;
+    if(TArgs)
+    {
+        auto Specialization = std::make_unique<SpecializationNameInfo>();
+        buildTemplateArgs(Specialization->TemplateArgs, *TArgs);
+        I = std::move(Specialization);
+    }
+    else
+    {
+        I = std::make_unique<NameInfo>();
+    }
+    I->Name = extractName(Name);
+    if(NNS)
+        I->Prefix = buildNameInfo(NNS, extract_mode);
+    return I;
+}
+
+template<typename TArgRange>
+std::unique_ptr<NameInfo>
+ASTVisitor::
+buildNameInfo(
+    const Decl* D,
+    std::optional<TArgRange> TArgs,
+    const NestedNameSpecifier* NNS,
+    ExtractMode extract_mode)
+{
+    const auto* ND = dyn_cast_if_present<NamedDecl>(D);
+    if(! ND)
+        return nullptr;
+    auto I = buildNameInfo(ND->getDeclName(),
+        std::move(TArgs), NNS, extract_mode);
+    if(! I)
+        return nullptr;
+    getDependencyID(getInstantiatedFrom(D), I->id);
     return I;
 }
 

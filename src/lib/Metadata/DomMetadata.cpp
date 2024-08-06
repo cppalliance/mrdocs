@@ -269,6 +269,8 @@ static dom::Value domCreate(
     std::unique_ptr<TParam> const&, DomCorpus const&);
 static dom::Value domCreate(
     std::unique_ptr<TemplateInfo> const& I, DomCorpus const&);
+static dom::Value domCreate(
+    std::unique_ptr<NameInfo> const& I, DomCorpus const&);
 
 //------------------------------------------------
 
@@ -387,6 +389,9 @@ domCreate(
             {
                 entries.emplace_back("key",
                     toString(t.KeyKind));
+                if(t.Constraint)
+                    entries.emplace_back("constraint",
+                        domCreate(t.Constraint, domCorpus));
             }
             if constexpr(T::isNonType())
             {
@@ -467,6 +472,15 @@ domCreate(
 
         if constexpr(T::isDecltype())
             entries.emplace_back("operand", t.Operand.Written);
+
+        if constexpr(T::isAuto())
+        {
+            entries.emplace_back("keyword",
+                toString(t.Keyword));
+            if(t.Constraint)
+                entries.emplace_back("constraint",
+                    domCreate(t.Constraint, domCorpus));
+        }
 
         if constexpr(requires { t.CVQualifiers; })
             entries.emplace_back("cv-qualifiers",

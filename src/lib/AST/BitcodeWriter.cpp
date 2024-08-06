@@ -353,6 +353,7 @@ RecordIDNameMap = []()
         {TYPEINFO_NOEXCEPT, {"TypeinfoNoexcept", &NoexceptAbbrev}},
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
         {TYPEINFO_IS_VARIADIC, {"TypeinfoIsVariadic", &BoolAbbrev}},
+        {TYPEINFO_AUTO_KEYWORD, {"TypeinfoAutoKeyword", &Integer32Abbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {USING_SYMBOLS, {"UsingSymbols", &SymbolIDsAbbrev}},
@@ -459,7 +460,8 @@ RecordsByBlock{
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
         {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_CVQUAL,
-        TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL, TYPEINFO_IS_VARIADIC}},
+        TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL, TYPEINFO_IS_VARIADIC,
+        TYPEINFO_AUTO_KEYWORD}},
     {BI_TYPEINFO_PARENT_BLOCK_ID,
         {}},
     {BI_TYPEINFO_CHILD_BLOCK_ID,
@@ -1081,6 +1083,13 @@ emitBlock(
             emitBlock(t.Operand);
         }
 
+        if constexpr(T::isAuto())
+        {
+            emitRecord(t.Keyword, TYPEINFO_AUTO_KEYWORD);
+            if(t.Constraint);
+                emitBlock(*t.Constraint);
+        }
+
         if constexpr(T::isFunction())
         {
             emitBlock(t.ReturnType, BI_TYPEINFO_CHILD_BLOCK_ID);
@@ -1268,6 +1277,8 @@ emitBlock(
         if constexpr(T::isType())
         {
             emitRecord(P.KeyKind, TEMPLATE_PARAM_KEY_KIND);
+            if(P.Constraint)
+              emitBlock(*P.Constraint);
         }
         if constexpr(T::isNonType())
         {
