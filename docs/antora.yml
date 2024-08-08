@@ -1,5 +1,7 @@
 name: mrdocs
 title: MrDocs
+# use the git refname (branch or tag name) in which the component
+# version descriptor is stored as the version
 version: true
 start_page: index.adoc
 asciidoc:
