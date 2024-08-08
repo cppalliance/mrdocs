@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>The Configuration File :: MrDocs</title>
+  <link rel="canonical" href="https://www.mrdocs.com/mrdocs/develop/config-file.html">
+  <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article">
+    <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true});</script><header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.mrdocs.com/doc/mrdocs/">
+          <span class="logo-text">Mr. Docs</span>
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">MrDocs</a>
+          <div class="navbar-dropdown">
+          </div>
+        </div>
+        <!--
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        -->
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" target="blank_"
+              href="https://github.com/cppalliance/site-docs/issues/new/choose">Report an Issue</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+    <div class="body">
+  <div class="card nav-container" data-component="mrdocs" data-version="develop">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">MrDocs</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class="" data-depth="1">
+            <a class="nav-link" href="index.html">Home</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="demos.html">Demos</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="install.html">Installation</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="usage.html">Getting Started</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="commands.html">Documenting the Code</a>
+        </li>
+              <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="config-file.html">The Configuration File</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="design-notes.html">Design Notes</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="contribute.html">Contributor&#8217;s Guide</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="license.html">License</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+  <div class="content">
+        <aside class="card toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+      <article class="card doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">MrDocs</a></li>
+    <li><a href="config-file.html">The Configuration File</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="commands.html"><img src="../../_/img/arrow-left.svg" alt="Previous: Documenting the Code"></a>
+      <a accesskey="p" href="index.html"><img src="../../_/img/home.svg" alt="Home: "></a>
+    <a accesskey="p" href="design-notes.html"><img src="../../_/img/arrow-right.svg" alt="Next: Design Notes"></a>
+</div>
+</div>
+    <h1 class="page">The Configuration File</h1>
+  <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>MrDocs uses a configuration file to control how the documentation is generated.
+The file is used to specify options such as the generator to use, additional compilation options, and filters.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s an example of a configuration file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">source-root: ../include
+multipage: false
+generate: adoc</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <a href="usage.html" class="xref page">Usage</a> page provides a detailed explanation of what to combine options from the configuration file and the command line.
+The <a href="#config-options-reference">Reference</a> section provides a detailed explanation of the options available.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_build_options"><a class="anchor" href="#_build_options"></a>Build Options</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A number of options can be used to specify with which compile options MrDocs should be run.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">source-root: ..
+compilation-database: ../CMakeLists.txt
+cmake: '-D MRDOCS_BUILD=ON'
+defines: 'MRDOCS_BUILD'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The compile options primarily come from the <code>compilation-database</code> file.
+When this file is generated from a <code>CMakeLists.txt</code> script, the <code>cmake</code> option can be used to specify additional options to pass to CMake.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, the <code>defines</code> option can be used to specify preprocessor definitions that should be used when generating the documentation.
+These definitions are included in all targets of the compilation database.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generators"><a class="anchor" href="#_generators"></a>Generators</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MrDocs supports multiple output formats that can be specified via the <code>generate</code> option:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Format</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>adoc</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AsciiDoc format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>html</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HTML format.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>xml</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XML format.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="ulist">
+<ul>
+<li>
+<p>Asciidoc is a text-based format that is easy to read and write.
+It can also be converted to other formats such as HTML and Markdown.</p>
+</li>
+<li>
+<p>HTML can be generated directly with the <code>html</code> format.</p>
+</li>
+<li>
+<p>XML is a structured format that can be used in tests or as an intermediary format for other tools.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>generate</code> option can be used to specify the output format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># ...
+generate: adoc
+# ...</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_generator_templates"><a class="anchor" href="#_generator_templates"></a>Generator Templates</h3>
+<div class="paragraph">
+<p>MrDocs attempts to support various alternatives for customizing the output format and style without complex workflows to post-process XML output.
+For the Asciidoc and HTML generators, the desired customization can usually be achieved by modifying the templates used to generate the output.</p>
+</div>
+<div class="paragraph">
+<p>In the root of the installation directory, you will find the <code>share/mrdocs/addons/generator</code> directory.
+This directory contains the templates used to generate the documentation with the markup formats.
+Users can create a copy of these files and provide their own <code>addons</code> directory via the <code>addons</code> option.
+This allows users to customize the output format to their needs.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">addons: /path/to/custom/addons</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>One advantage of custom templates over post-processing XML files is the ability to access symbols as a graph.
+If symbol <code>A</code> refers to symbol <code>B</code>, some properties of symbol <code>B</code> are likely to be required in the documentation of <code>A</code>.
+All templates and generators can access a reference to <code>B</code> by searching the symbol tree or simply by accessing the elements <code>A</code> refers to.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_filters"><a class="anchor" href="#_filters"></a>Filters</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_symbol_filters"><a class="anchor" href="#_symbol_filters"></a>Symbol Filters</h3>
+<div class="paragraph">
+<p>Not all symbols in a project may be relevant to the documentation.
+MrDocs provides a way to filter out symbols based on their names.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">filters:
+  symbols: <i class="conum" data-value="1"></i><b>(1)</b>
+    exclude: <i class="conum" data-value="2"></i><b>(2)</b>
+    include: <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Optional <code>symbols</code> key</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Optional <code>exclude</code> key</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Optional <code>include</code> key</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Symbol filter patterns are specified using (optionally) qualified names, and may contain wildcards:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">filters:
+  symbols:
+    exclude:
+      - 'A::B'
+      - 'A::f*'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If a symbol matches a pattern in the exclude list, that symbol and its members will not be extracted:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">filters:
+  symbols:
+    exclude:
+      - 'A'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">// ok, does not match any excluded pattern
+void f0();
+
+namespace A // matches the pattern 'A', will not be extracted
+{
+    // enclosing namespace matches an excluded pattern:
+    // the symbol will not be extracted
+    void f1();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>filters.symbols.include</code> key can be used to override the exclude list for specific symbols.
+A symbol which matches an included pattern and an excluded pattern will be extracted.</p>
+</div>
+<div class="paragraph">
+<p>This permits fine-grained control of extraction for individual members of a class or namespace:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">filters:
+  symbols:
+    exclude:
+      - 'A'
+    include:
+      - 'A::g*'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">namespace A
+{
+    // enclosing namespace matches an excluded pattern, will not be extracted
+    void f0();
+
+    // ok, matches the pattern 'A::g*' which overrides the exclude list
+    void g0();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order for a filter pattern to match a symbol, it must consist of simple identifiers that match the name as written in its declaration: namespace aliases, typedef-names, and <code>decltype</code> specifiers naming the symbol cannot be used.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Specifying include patterns is only useful when the pattern would match a subset of symbols matched by an exclude pattern.
+An include pattern without a subsuming exclude pattern will be ignored.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_file_filters"><a class="anchor" href="#_file_filters"></a>File Filters</h3>
+<div class="paragraph">
+<p>Symbols can also be filtered based on the files they are declared in.
+This can be useful for excluding files that exclusively contain implementation details or test code.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">input:
+  include:
+      - ../include  <i class="conum" data-value="1"></i><b>(1)</b>
+  file-patterns:
+      - *.hpp       <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>A list of directories to include.
+Only symbols defined in these files will be extracted.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>A list of file patterns to include.
+Only symbols defined in files matching these patterns will be extracted.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_private_symbols"><a class="anchor" href="#_private_symbols"></a>Private Symbols</h3>
+<div class="paragraph">
+<p>The <code>implementation-detail</code> and <code>see-below</code> options can be used to designate namespaces as implementation detail namespaces.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">implementation-detail: 'impl'
+see-below: 'see_below'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If a namespace is designated as an implementation detail namespace, all symbols within that namespace will be marked as implementation details in the documentation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">namespace impl
+{
+    class A {};
+}
+
+/// @brief A foo function
+A foo();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>impl</code> namespace is designated as an implementation detail namespace, so all symbols within it will be marked as implementation details in the documentation.
+This means the symbol <code>A</code> would not be documented and the function <code>foo</code> could be documented as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">/* implementation detail */ foo();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>On the other hand, if a namespace is designated as a <code>see_below</code> namespace, all symbols within that namespace will be marked as "see below" in the documentation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">namespace see_below
+{
+    class B {};
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the documentation, the symbol <code>B</code> would be marked as "see-below" and could be documented as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-cpp hljs" data-lang="cpp">class B { /* see below */ };</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="config-options-reference"><a class="anchor" href="#config-options-reference"></a>Reference</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_command_line_options"><a class="anchor" href="#_command_line_options"></a>Command Line Options</h3>
+<div class="paragraph">
+<p>The following options can be used to control the general behavior of MrDocs and can only be provided via the command line:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> inputs                  </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration or compilation database files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> config                  </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Configuration file: mrdocs.yml</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> concurrency             </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The desired level of concurrency: 0 for hardware-suggested</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Any argument provided to MrDocs without a key is treated as one path in <code>inputs</code>.
+These can be paths to the configuration file <code>config</code>, the <code>compilation-database</code> (compilation database or build scripts), or the <code>source-root</code> directory.
+See the <a href="#common-options">Common Options</a> section for more information on these options.</p>
+</li>
+<li>
+<p>The <code>config</code> option can be used to explicitly specify a configuration file.
+Any path in <code>inputs</code> whose filename is <code>mrdocs.yml</code> will also be used as the configuration file.
+If no configuration file is provided via <code>inputs</code> or <code>config</code>, MrDocs will attempt to find <code>mrdocs.yml</code> in the current directory.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>config</code> path is interpreted relative to the current working directory by MrDocs.
+All other path options are interpreted relative to the <code>mrdocs.yml</code> configuration file.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="common-options"><a class="anchor" href="#common-options"></a>Common Options</h3>
+<div class="paragraph">
+<p>The following options can be defined both in the configuration file and on the command line, where the command line options always take precedence.</p>
+</div>
+<div class="openblock">
+<div class="content">
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> source-root             </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path to the root directory of the source code</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> output                  </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directory or file for generating output</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> compilation-database    </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path to the compilation database or a build script to generate it</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> cmake                   </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CMake arguments when generating the compilation database from CMakeLists.txt</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> defines                 </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Additional defines passed to the compiler</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> generate                </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Documentation generator. Supported generators are: adoc/html/xml</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> addons                  </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path to the Addons directory</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> multipage               </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True if output should consist of multiple files</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> base-url                </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Base URL for links to source code</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> referenced-declarations </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Extraction policy for references to external declarations</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> anonymous-namespaces    </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Extraction policy for anonymous namespace</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> inaccessible-members    </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Extraction policy for inaccessible members</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> inaccessible-bases      </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Extraction policy for inaccessible bases</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> see-below               </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Namespace for symbols rendered as "see-below"</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> implementation-defined  </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Namespace for symbols rendered as "implementation-defined"</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> input.include           </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Input directories to include</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> input.file-patterns     </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Input file patterns</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> filters.symbols.include </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies symbol inclusion patterns</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> filters.symbols.exclude </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specifies symbol exclusion patterns</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> verbose                 </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True if more information should be output to the console</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> report                  </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum reporting level: 0 to 4</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> ignore-map-errors       </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Continue if files are not mapped correctly</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> ignore-failures         </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether AST visitation failures should not stop the program</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code> detect-sfinae           </code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether to detect the SFINAE idiom</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/cppalliance/mrdocs/edit/develop/docs/modules/ROOT/pages/config-file.adoc">Edit this Page</a>
+      </div>
+  </article>
+  </div>
+</main>
+</div>
+    <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+  </body>
+</html>

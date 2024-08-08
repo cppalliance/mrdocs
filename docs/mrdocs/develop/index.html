@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MrDocs :: MrDocs</title>
+  <link rel="canonical" href="https://www.mrdocs.com/mrdocs/develop/index.html">
+  <meta name="description" content="MrDocs: A Clang/LLVM tool for building reference documentation from C++ code and javadoc comments.">
+  <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <link rel="stylesheet" href="../../_/css/vendor/tabs.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article">
+    <script type="module">import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs'; mermaid.initialize({"startOnLoad":true});</script><header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.mrdocs.com/doc/mrdocs/">
+          <span class="logo-text">Mr. Docs</span>
+      </a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">MrDocs</a>
+          <div class="navbar-dropdown">
+          </div>
+        </div>
+        <!--
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        -->
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" target="blank_"
+              href="https://github.com/cppalliance/site-docs/issues/new/choose">Report an Issue</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+    <div class="body">
+  <div class="card nav-container" data-component="mrdocs" data-version="develop">
+  <aside class="nav">
+    <button class="nav-close"></button>
+    <div class="panels">
+      <div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+      <h3 class="title"><a href="index.html">MrDocs</a></h3>
+      <ul class="nav-list">
+        <ul class="nav-list">
+        <li class=" is-current-page" data-depth="1">
+            <a class="nav-link" href="index.html">Home</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="demos.html">Demos</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="install.html">Installation</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="usage.html">Getting Started</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="commands.html">Documenting the Code</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="config-file.html">The Configuration File</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="design-notes.html">Design Notes</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="contribute.html">Contributor&#8217;s Guide</a>
+        </li>
+              <li class="" data-depth="1">
+            <a class="nav-link" href="license.html">License</a>
+        </li>
+        </ul>
+  </ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+  <div class="content">
+        <aside class="card toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+      <article class="card doc max-width-reset">
+  <div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">MrDocs</a></li>
+    <li><a href="index.html">Home</a></li>
+  </ul>
+</nav>
+<div class="spirit-nav">
+    <a accesskey="p" href="demos.html"><img src="../../_/img/arrow-right.svg" alt="Next: Demos"></a>
+</div>
+</div>
+    <h1 class="page">MrDocs</h1>
+  <div class="imageblock">
+<div class="content">
+<img src="_images/MrDocsBanner.jpg" alt="MrDocsBanner">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Automating C&#43;&#43; reference documentation significantly enhances usability by providing a navigable API and ensuring a single, up-to-date source of truth with minimal effort.</p>
+</li>
+<li>
+<p>However, documenting C&#43;&#43; poses significant challenges due to discrepancies between the codebase and the public API. Doxygen remains a popular tool, yet it is suboptimal for C&#43;&#43; as it fails to fully comprehend C&#43;&#43; constructs and requires many transformation steps, including the incorporation of many macros within the C&#43;&#43; code. These macros maintain well-formed and ill-formed versions of the code, undermining the goal of unifying the source of truth.</p>
+</li>
+<li>
+<p>Existing solutions frequently need better maintenance or usability issues, prompting users to revert to Doxygen.</p>
+</li>
+<li>
+<p>An ideal solution would inherently understand C&#43;&#43; constructs, be actively maintained, and offer diverse options for customizing the output format.</p>
+</li>
+<li>
+<p>MrDocs embodies these qualities. Supported by full-time developers from the C&#43;&#43; Alliance, MrDocs inherently comprehends C&#43;&#43; constructs without the need for macros and provides various output formats, customizable templates, and plugin support, ensuring it meets the demands of comprehensive and efficient documentation.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://github.com/cppalliance/mrdocs/actions/workflows/ci.yml/badge.svg" alt="badge">
+</div>
+</div>
+  <div class="edit-this-page">
+      <a href="https://github.com/cppalliance/mrdocs/edit/develop/docs/modules/ROOT/pages/index.adoc">Edit this Page</a>
+      </div>
+  </article>
+  </div>
+</main>
+</div>
+    <script id="site-script" src="../../_/js/site.js" data-ui-root-path="../../_"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+<script async src="../../_/js/vendor/tabs.js" data-sync-storage-key="preferred-tab"></script>
+  </body>
+</html>
