@@ -2,81 +2,37 @@
 # npx antora --fetch antora-playbook.yml
 site:
   title: MrDocs
-  url: https://cppalliance.github.io/mrdocs/
+  url: https://www.mrdocs.com/
   start_page: mrdocs::index.adoc
   robots: allow
   keys:
     repo_url: 'https://github.com/cppalliance/mrdocs'
 
 content:
-  branches: [ master, develop ]
+  # "HEAD" for author mode, [ develop, master ] for published versions
+  branches: ${branchesarray}
   tags: [ v* ]
   edit_url: 'https://github.com/cppalliance/mrdocs/edit/{refname}/{path}'
   sources:
-    - url: https://github.com/cppalliance/mrdocs.git
+    # The component URL is relative to the playbook file, since the only component
+    # is hosted on the same repository as the playbook.
+    # This allows the same playbook to be used for author mode with the
+    # "HEAD" branch.
+    - url: ..
       start_path: docs
       edit_url: 'https://github.com/cppalliance/mrdocs/edit/{refname}/{path}'
+      worktrees: true
 
 ui:
   bundle:
-    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    url: 'https://github.com/boostorg/website-v2-docs/releases/download/ui-develop/ui-bundle.zip'
     snapshot: true
-  supplemental_files:
-    - path: css/vendor/tabs.css
-      contents: ./node_modules/@asciidoctor/tabs/dist/css/tabs.css
-    - path: js/vendor/tabs.js
-      contents: ./node_modules/@asciidoctor/tabs/dist/js/tabs.js
-    - path: partials/footer-scripts.hbs
-      contents: |
-        <script id="site-script" src="{{{uiRootPath}}}/js/site.js" data-ui-root-path="{{{uiRootPath}}}"></script>
-        <script async src="{{{uiRootPath}}}/js/vendor/highlight.js"></script>
-        <script async src="{{{uiRootPath}}}/js/vendor/tabs.js"></script>
-        {{#if env.SITE_SEARCH_PROVIDER}}
-        {{> search-scripts}}
-        {{/if}}
-    - path: partials/footer-content.hbs
-      contents: |
-        <footer class="footer">
-          <p>This page was built using Antora.</p>
-        </footer>
-    - path: partials/head-styles.hbs
-      contents: |
-        <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
-        <link rel="stylesheet" href="{{{uiRootPath}}}/css/vendor/tabs.css">
-    - path: partials/header-content.hbs
-      contents: |
-        <header class="header">
-          <nav class="navbar">
-            <div class="navbar-brand">
-              <a class="navbar-item" href="{{{or site.url siteRootPath}}}">{{site.title}}</a>
-              {{#if env.SITE_SEARCH_PROVIDER}}
-              <div class="navbar-item search hide-for-print">
-                <div id="search-field" class="field">
-                  <input id="search-input" type="text" placeholder="Search the docs"{{#if page.home}} autofocus{{/if}}>
-                </div>
-              </div>
-              {{/if}}
-              <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
-                <span></span>
-                <span></span>
-                <span></span>
-              </button>
-            </div>
-            <div id="topbar-nav" class="navbar-menu">
-              <div class="navbar-end">
-                <a class="navbar-item" href="https://github.com/cppalliance/mrdocs/">GitHub</a>
-                <div class="navbar-item">
-                  <span class="control">
-                    <a class="button is-primary" href="https://github.com/cppalliance/mrdocs/releases">Download</a>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </nav>
-        </header>
 
 antora:
   extensions:
+    - require: '@alandefreitas/antora-playbook-macros-extension'
+      macros:
+        branchesarray: [ develop, master ]
     - require: '@sntke/antora-mermaid-extension' # <1>
       mermaid_library_url: https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs # <2>
       script_stem: header-scripts
@@ -84,7 +40,12 @@ antora:
         start_on_load: true
     - require: '@antora/lunr-extension' # https://gitlab.com/antora/antora-lunr-extension
       index_latest_only: true
+
 asciidoc:
+  attributes:
+    logo-img: ''
+    logo-text: 'Mr. Docs'
+    icon-img: ''
   extensions:
     - '@asciidoctor/tabs'
     - ./extensions/mrdocs-demos.js
