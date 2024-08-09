@@ -400,18 +400,17 @@ jobs:
           
           declare -a generators=(
             "adoc"
-            "html"
             "xml"
           )
           
           # Generate the demos for each variant and generator
           for variant in single multi; do
             for generator in "${generators[@]}"; do
+              [[ $generator = xml && $variant = multi ]] && continue
               [[ $variant = multi ]] && multipage="true" || multipage="false"
               mrdocs --config="$(pwd)/boost/libs/url/doc/mrdocs.yml" "../CMakeLists.txt" --output="$(pwd)/demos/boost-url/$variant/$generator" --multipage=$multipage --generate="$generator"
               echo "Number of files in demos/boost-url/$variant/$format: $(find demos/boost-url/$variant/$format -type f | wc -l)"
             done
-            asciidoctor -d book -R "$(pwd)/demos/boost-url/$variant/adoc" -D "$(pwd)/demos/boost-url/$variant/adoc-asciidoc" "$(pwd)/demos/boost-url/$variant/adoc/**/*.adoc"
           done
           
           # Compress demos for the artifact

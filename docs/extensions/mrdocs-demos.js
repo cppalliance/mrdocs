@@ -16,7 +16,7 @@ function getSubdirectoriesSync(url) {
         let urlPath = new URL(url).pathname;
         let cacheFilenamePath = urlPath.replace(/[^a-zA-Z0-9]/g, '') + '.json';
         let cachePath = `${__dirname}/../build/requests/${cacheFilenamePath}`;
-        fs.mkdirSync(`${__dirname}/../build/requests/`, { recursive: true });
+        fs.mkdirSync(`${__dirname}/../build/requests/`, {recursive: true});
         const readFromCacheFile = fs.existsSync(cachePath) && fs.statSync(cachePath).mtime > new Date(Date.now() - 1000 * 60 * 60 * 24);
         const data =
             readFromCacheFile ?
@@ -143,20 +143,56 @@ module.exports = function (registry) {
                     }
                 }
 
-                text += `| ${versionPageTypes.map(pageType => `${versionFormats.length}+| *${humanizePageType(pageType)}*`).join(' ')}\n`;
-                let formatColumns = versionFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
-                text += `| *Library* | ${formatColumns} | ${formatColumns}\n\n`;
+                // Remove HTML and Rendered Asciidoc from the list of formats
+                // - The HTML generator is unmaintained
+                // - The raw Asciidoc is already rendered by the mrdocs.com server as HTML
+                versionFormats = versionFormats.filter(format => format !== 'html' && format !== 'adoc-asciidoc');
+                let multipageFormats = versionFormats.filter(format => format !== 'xml');
+
+                let versionFormatColumns = versionFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
+                let multipageFormatColumns = multipageFormats.map(format => `*${humanizeFormat(format)}*`).join(' | ');
+
+                // Multicells for the page format taking as many formats as possible for that page type
+                const toPageTypeCell = pageType => `${(pageType === 'multi' ? multipageFormats : versionFormats).length}+| *${humanizePageType(pageType)}*`;
+                text += `| ${versionPageTypes.map(toPageTypeCell).join(' ')}\n`;
+
+                text += `| *Library* | ${multipageFormatColumns} | ${versionFormatColumns}\n\n`;
                 for (const library of versionLibraries) {
                     text += `| ${libraryLink(library)}`
                     for (const pageType of versionPageTypes) {
-                        for (const format of versionFormats) {
+                        const pageTypeFormats = pageType === 'multi' ? multipageFormats : versionFormats;
+                        for (const format of pageTypeFormats) {
                             const demoDir = finalDemoDirs.find(
                                 demoDir => demoDir.version === version &&
-                                           demoDir.library === library &&
-                                           demoDir.pageType === pageType &&
-                                           demoDir.format === format);
+                                    demoDir.library === library &&
+                                    demoDir.pageType === pageType &&
+                                    demoDir.format === format);
                             if (demoDir) {
-                                text += `| ${demoDir.url}[🔗,window=_blank]`
+                                const demoUrlWithSuffix = demoDir.url + (() => {
+                                    if (format === 'xml')
+                                    {
+                                        return '/reference.xml';
+                                    }
+                                    if (format === 'adoc')
+                                    {
+                                        if (pageType === 'multi')
+                                        {
+                                            return '/index.adoc'
+                                        }
+                                        else {
+                                            return '/reference.adoc'
+                                        }
+                                    }
+                                    return '';
+                                })()
+                                if (['adoc', 'xml'].includes(format)) {
+                                    const adoc_icon = 'https://avatars.githubusercontent.com/u/3137042?s=200&v=4'
+                                    const code_file_icon = 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/file-code.svg'
+                                    const icon = format === 'adoc' ? adoc_icon : code_file_icon
+                                    text += `| image:${icon}[${humanizeLibrary(library)} reference in ${humanizeFormat(format)} format,width=16,height=16,link=${demoUrlWithSuffix},window=_blank]`
+                                } else {
+                                    text += `| ${demoUrlWithSuffix}[🔗,window=_blank]`
+                                }
                             } else {
                                 text += `|     `
                             }
