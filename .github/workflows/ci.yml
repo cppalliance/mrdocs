@@ -228,29 +228,7 @@ jobs:
               cmake --build ./build --target help
           fi          
           N_CORES=$(nproc 2>/dev/null || echo 1)
-          if [ ${{ runner.os }} != 'Windows' ]; then
-              cmake --build ./build --config Release --parallel $N_CORES
-          else
-              # Allow build step to fail
-              set +e
-              cmake --build ./build --config Release --parallel $N_CORES
-              exit_code=$?
-              set -e
-              if [ $exit_code -ne 0 ]; then
-                  echo "Could not build LLVM in CI. Fetching pre-built binaries from mrdocs.com."
-                  cd ..
-                  llvm_archive_filename="Windows-Release-${{ steps.llvm-parameters.outputs.llvm-id }}.7z"
-                  llvm_url="https://mrdocs.com/llvm+clang/$llvm_archive_filename"
-                  curl -L -o "$llvm_archive_filename" "$llvm_url"
-                  7z x "$llvm_archive_filename"
-                  cd "Release"
-                  mkdir -p "$llvm_project_root"/install
-                  mv * "$llvm_project_root"/install
-                  cd ..
-                  rm -rf "Release"
-                  exit 0
-              fi
-          fi
+          cmake --build ./build --config Release --parallel $N_CORES
           cmake --install ./build --prefix "$llvm_project_root"/install
 
       - name: Install Node.js
