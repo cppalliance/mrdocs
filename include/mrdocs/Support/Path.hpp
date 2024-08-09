@@ -211,6 +211,17 @@ std::string
 getParentDir(
     std::string_view pathName);
 
+/** Return the parent directory.
+
+    If the parent directory is defined, the returned
+    path will always have a trailing separator.
+*/
+MRDOCS_DECL
+std::string
+getParentDir(
+    std::string_view pathName,
+    unsigned levels);
+
 /** Return the filename part of the path.
 */
 MRDOCS_DECL
@@ -323,6 +334,7 @@ isDirectory(
 /** Determine if a path is a directory.
 */
 MRDOCS_DECL
+
 bool
 exists(
     std::string_view pathName);
@@ -346,6 +358,24 @@ Error
 createDirectory(
     std::string_view pathName);
 
+/** Checks if the given path starts with the specified prefix.
+
+    This function compares the beginning of the `pathName` with the `prefix`.
+    It returns true if `pathName` starts with `prefix`. The comparison is case-sensitive.
+
+    Unlike a direct string comparison, this function also accepts differences in the slashes used to separate paths.
+    Therefore, it returns true even when the slashes used in `pathName` and `prefix` are not the same.
+    The function accepts both forward slashes ("/") and backslashes ("\").
+
+    @param pathName A string view representing the path to be checked.
+    @param prefix A string view representing the prefix to be checked against the path.
+    @return A boolean value. Returns true if `pathName` starts with `prefix`, false otherwise.
+ */
+MRDOCS_DECL
+bool
+startsWith(
+    std::string_view pathName,
+    std::string_view prefix);
 } // files
 
 } // mrdocs

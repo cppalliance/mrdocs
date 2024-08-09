@@ -110,6 +110,12 @@ if (NOT DUKTAPE_FOUND)
     find_package(duktape REQUIRED CONFIG)
 endif()
 
+# python
+find_program(PYTHON_EXECUTABLE python3 python)
+if (NOT PYTHON_EXECUTABLE)
+    message(FATAL_ERROR "Python is needed to configure mrdocs")
+endif()
+
 unset(CMAKE_FOLDER)
 
 #-------------------------------------------------
@@ -136,14 +142,48 @@ configure_file(
     @ONLY
 )
 
+# Config files for mrdocs-core
+add_custom_command(
+    COMMAND
+        ${PYTHON_EXECUTABLE}
+        ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-config-info.py
+        src/lib/Lib/ConfigOptions.json
+        ${CMAKE_CURRENT_BINARY_DIR}
+    VERBATIM
+    DEPENDS
+        ${CMAKE_CURRENT_SOURCE_DIR}/util/generate-config-info.py
+        src/lib/Lib/ConfigOptions.json
+    OUTPUT
+        ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/PublicSettings.hpp
+        ${CMAKE_CURRENT_BINARY_DIR}/src/lib/Lib/PublicSettings.cpp
+        ${CMAKE_CURRENT_BINARY_DIR}/src/tool/PublicToolArgs.hpp
+        ${CMAKE_CURRENT_BINARY_DIR}/src/tool/PublicToolArgs.cpp
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Generating Config Source Files"
+)
+
+
+# Main library
 file(
     GLOB_RECURSE LIB_SOURCES  CONFIGURE_DEPENDS
-        src/lib/*.cpp src/lib/*.hpp src/lib/*.ipp
+        # Public
+        include/*.hpp
+        include/*.inc
+        include/*.ipp
+        # Private
+        src/lib/*.cpp
+        src/lib/*.hpp
+        src/lib/*.ipp
         src/lib/*.natvis
-        include/*.hpp include/*.inc include/*.ipp
-        ${CMAKE_CURRENT_BINARY_DIR}/src/lib/*.hpp
+        # Natvis
         include/*.natvis
-        SourceFileNames.cpp)
+        SourceFileNames.cpp
+)
+list(APPEND LIB_SOURCES
+    ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/Version.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs/PublicSettings.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/src/lib/Lib/PublicSettings.cpp
+)
 add_library(mrdocs-core ${LIB_SOURCES})
 target_compile_features(mrdocs-core PUBLIC cxx_std_20)
 target_include_directories(mrdocs-core
@@ -153,7 +193,7 @@ target_include_directories(mrdocs-core
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
     PRIVATE
     "${PROJECT_SOURCE_DIR}/src"
-    "${PROJECT_SOURCE_DIR}/include")
+    "${PROJECT_BINARY_DIR}/src")
 target_compile_definitions(
     mrdocs-core
     PUBLIC
@@ -162,7 +202,7 @@ target_compile_definitions(
     -DMRDOCS_TOOL
 )
 
-# Deps
+# Dependencies
 target_include_directories(mrdocs-core SYSTEM PUBLIC ${LLVM_INCLUDE_DIRS})
 target_include_directories(mrdocs-core SYSTEM PUBLIC ${CLANG_INCLUDE_DIRS})
 target_link_libraries(mrdocs-core PUBLIC fmt::fmt)
@@ -174,7 +214,7 @@ if (CLANG_SIMPLE_LIBS)
     target_link_libraries(mrdocs-core PUBLIC LLVM clang clang-cpp)
 else()
     target_link_libraries(mrdocs-core
-            PUBLIC
+        PUBLIC
             clangAST
             clangBasic
             clangFrontend
@@ -232,7 +272,13 @@ endif ()
 #
 #-------------------------------------------------
 
-file(GLOB_RECURSE TOOL_SOURCES  CONFIGURE_DEPENDS src/tool/*.cpp src/tool/*.hpp)
+file(GLOB_RECURSE TOOL_SOURCES CONFIGURE_DEPENDS
+        src/tool/*.cpp
+        src/tool/*.hpp)
+list(APPEND TOOL_SOURCES
+        ${CMAKE_CURRENT_BINARY_DIR}/src/tool/PublicToolArgs.hpp
+        ${CMAKE_CURRENT_BINARY_DIR}/src/tool/PublicToolArgs.cpp)
+
 add_executable(mrdocs ${TOOL_SOURCES})
 target_compile_definitions(mrdocs PRIVATE -DMRDOCS_TOOL)
 
@@ -243,6 +289,7 @@ target_include_directories(mrdocs
     PRIVATE
     "${PROJECT_SOURCE_DIR}/include"
     "${PROJECT_SOURCE_DIR}/src"
+    "${PROJECT_BINARY_DIR}/src"
 )
 
 target_compile_definitions(mrdocs PRIVATE -DMRDOCS_TOOL)
@@ -284,11 +331,22 @@ if (MRDOCS_BUILD_TESTS)
     endif ()
     target_compile_definitions(mrdocs-test PRIVATE -DMRDOCS_TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test-files")
     add_test(NAME mrdocs-unit-tests COMMAND mrdocs-test --unit=true)
-    add_test(NAME mrdocs-golden-tests COMMAND mrdocs-test --unit=false --action=test "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons")
+    add_test(NAME mrdocs-golden-tests
+        COMMAND
+            mrdocs-test
+            --unit=false
+            --action=test
+            "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
+            --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons")
     foreach (action IN ITEMS create update)
         add_custom_target(
             mrdocs-${action}-test-fixtures
-            COMMAND mrdocs-test --unit=false --action=${action} "${PROJECT_SOURCE_DIR}/test-files/golden-tests" --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+            COMMAND
+                mrdocs-test
+                --unit=false
+                --action=${action}
+                "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
+                --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
             DEPENDS mrdocs-test
         )
     endforeach ()
@@ -421,23 +479,15 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # include
     #-------------------------------------------------
-    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdocs
-            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-            COMPONENT development
-            FILES_MATCHING
-            PATTERN "*.[hi]pp")
-
-    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdocs
-            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-            COMPONENT development
-            FILES_MATCHING
-            PATTERN "*.inc")
-
-    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs
-            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-            COMPONENT development
-            FILES_MATCHING
-            PATTERN "*.[hi]pp")
+    foreach(MRDOCS_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include/mrdocs ${CMAKE_CURRENT_BINARY_DIR}/include/mrdocs)
+        foreach(MRDOCS_FILE_PATTERN "*.hpp" "*.ipp" "*.inc")
+            install(DIRECTORY ${MRDOCS_INCLUDE_DIR}
+                    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+                    COMPONENT development
+                    FILES_MATCHING
+                    PATTERN ${MRDOCS_FILE_PATTERN})
+        endforeach()
+    endforeach()
 
     #-------------------------------------------------
     # share

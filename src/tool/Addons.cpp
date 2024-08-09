@@ -33,7 +33,7 @@ setupAddonsDir(
     if (addonsEnvVar)
     {
         MRDOCS_CHECK(*addonsEnvVar, "MRDOCS_ADDONS_DIR is empty");
-        std::string addonsDir = files::makeDirsy(files::normalizePath(*addonsEnvVar));
+        std::string addonsDir = files::normalizePath(*addonsEnvVar);
         MRDOCS_TRY(files::requireAbsolute(addonsDir));
         MRDOCS_TRY(files::requireDirectory(addonsDir));
         addonsDirArg = addonsDir;
@@ -43,8 +43,8 @@ setupAddonsDir(
     // Set addons dir from process working directory
     MRDOCS_CHECK(execPath, "getMainExecutable failed");
     std::string binDir = files::getParentDir(execPath);
-    std::string addonsDir = files::makeDirsy(files::appendPath(
-            binDir, "..", "share", "mrdocs", "addons"));
+    std::string addonsDir = files::appendPath(
+            binDir, "..", "share", "mrdocs", "addons");
     Error err = files::requireDirectory(addonsDir);
     MRDOCS_CHECK(err);
     addonsDirArg = addonsDir;

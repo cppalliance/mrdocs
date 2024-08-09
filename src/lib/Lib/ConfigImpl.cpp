@@ -60,69 +60,9 @@ toDomObject(std::string_view configYaml);
 } // (anon)
 
 ConfigImpl::
-ConfigImpl(
-    Config::Settings const& publicSettings,
-    std::shared_ptr<ConfigImpl const> baseConfig,
-    ThreadPool& threadPool)
+ConfigImpl(access_token, ThreadPool& threadPool)
     : threadPool_(threadPool)
-{
-    namespace fs = llvm::sys::fs;
-    namespace path = llvm::sys::path;
-
-    // Copy the settings
-    if(baseConfig)
-    {
-        settings_ = baseConfig->settings_;
-    }
-    dynamic_cast<Config::Settings&>(settings_) = publicSettings;
-
-    // Check config dir
-    if (!files::isAbsolute(settings_.configDir))
-    {
-        formatError("Config path \"{}\" is not absolute", settings_.configDir).Throw();
-    }
-    settings_.configDir = files::makeDirsy(files::normalizePath(settings_.configDir));
-
-    // Addons directory
-    settings_.addons = files::makeAbsolute(publicSettings.addons).value();
-    files::requireDirectory(settings_.addons).maybeThrow();
-    if (!files::isDirsy(settings_.addons))
-    {
-        formatError("Addons path \"{}\" is not a directory", settings_.addons).Throw();
-    }
-
-    // Config strings
-    configObj_ = toDomObject(settings_.configYaml);
-
-    // Source root has to be forward slash style
-    settings_.sourceRoot = files::makePosixStyle(files::makeDirsy(
-        files::makeAbsolute(settings_.sourceRoot, settings_.configDir)));
-
-    // Base-URL has to be dirsy with forward slash style
-    if (!settings_.baseURL.empty() && settings_.baseURL.back() != '/')
-    {
-        settings_.baseURL.push_back('/');
-    }
-
-    // Adjust input files
-    for (auto& name : settings_.input.include)
-    {
-        name = files::makePosixStyle(
-            files::makeAbsolute(name, settings_.configDir));
-    }
-
-    // Parse the filters
-    for(std::string_view pattern : settings_.filters.symbols.exclude)
-        parseSymbolFilter(settings_.symbolFilter, pattern, true);
-    for(std::string_view pattern : settings_.filters.symbols.include)
-        parseSymbolFilter(settings_.symbolFilter, pattern, false);
-    for(std::string_view pattern: settings_.seeBelow)
-        settings_.seeBelowFilter.emplace_back(pattern);
-    for(std::string_view pattern: settings_.implementationDefined)
-        settings_.implementationDefinedFilter.emplace_back(pattern);
-
-    settings_.symbolFilter.finalize(false, false, false);
-}
+{}
 
 //------------------------------------------------
 
@@ -190,52 +130,40 @@ shouldExtractFromFile(
 //------------------------------------------------
 
 Expected<std::shared_ptr<ConfigImpl const>>
-createConfig(
-    std::string_view configDir,
+ConfigImpl::
+load(
     Config::Settings const& publicSettings,
-    std::string_view configYaml,
+    Config::Settings::ReferenceDirectories const& dirs,
     ThreadPool& threadPool)
 {
-    return std::make_shared<ConfigImpl>(
-        publicSettings,
-        nullptr,
-        threadPool);
-}
+    std::shared_ptr<ConfigImpl> c =
+        std::make_shared<ConfigImpl>(access_token{}, threadPool);
+    MRDOCS_ASSERT(c);
 
-static
-Expected<std::shared_ptr<ConfigImpl const>>
-loadConfig(
-    Config::Settings const& publicSettings,
-    std::shared_ptr<ConfigImpl const> const& baseConfig,
-    ThreadPool& threadPool)
-{
-    namespace fs = llvm::sys::fs;
-    namespace path = llvm::sys::path;
-    MRDOCS_CHECK(files::isAbsolute(publicSettings.config));
-    MRDOCS_CHECK(files::isAbsolute(publicSettings.configDir));
-    try
-    {
-        return std::make_shared<ConfigImpl>(
-            publicSettings,
-            baseConfig,
-            threadPool);
-    }
-    catch(Exception const& ex)
-    {
-        return Unexpected(ex.error());
-    }
-}
+    // Validate and copy input settings
+    SettingsImpl& s = c->settings_;
+    dynamic_cast<Config::Settings&>(s) = publicSettings;
+    MRDOCS_TRY(Config::Settings::load(s, "", dirs));
+    s.configYaml = publicSettings.configYaml;
 
-Expected<std::shared_ptr<ConfigImpl const>>
-loadConfigFile(
-    Config::Settings const& publicSettings,
-    std::shared_ptr<ConfigImpl const> const& baseConfig,
-    ThreadPool& threadPool)
-{
-    return loadConfig(
-        publicSettings,
-        baseConfig,
-        threadPool);
+    // Config strings
+    c->configObj_ = toDomObject(s.configYaml);
+
+    // Parse the filters
+    for(std::string_view pattern : s.filters.symbols.exclude)
+        parseSymbolFilter(s.symbolFilter, pattern, true);
+    for(std::string_view pattern : s.filters.symbols.include)
+        parseSymbolFilter(s.symbolFilter, pattern, false);
+
+    // Parse the see-below and implementation-defined filters
+    for(std::string_view pattern: s.seeBelow)
+        s.seeBelowFilter.emplace_back(pattern);
+    for(std::string_view pattern: s.implementationDefined)
+        s.implementationDefinedFilter.emplace_back(pattern);
+
+    s.symbolFilter.finalize(false, false, false);
+
+    return c;
 }
 
 namespace {

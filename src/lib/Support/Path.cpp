@@ -53,7 +53,7 @@ forEachFile(
     {
         if(it->type() == fs::file_type::directory_file)
         {
-            auto s = files::makeDirsy(it->path());
+            auto s = it->path();
             auto err = visitor.visitFile(s);
             if(err)
                 return err;
@@ -172,17 +172,27 @@ std::string
 normalizeDir(
     std::string_view pathName)
 {
-    return makeDirsy(normalizePath(pathName));
+    return normalizePath(pathName);
 }
 
 std::string
 getParentDir(
     std::string_view pathName)
 {
-    namespace path = llvm::sys::path;
+    return llvm::sys::path::parent_path(pathName).str();
+}
 
-    auto result = path::parent_path(pathName).str();
-    return makeDirsy(result);
+std::string
+getParentDir(
+    std::string_view pathName,
+    unsigned levels)
+{
+    std::string res(pathName);
+    for (unsigned i = 0; i < levels; ++i)
+    {
+        res = getParentDir(res);
+    }
+    return res;
 }
 
 std::string_view
@@ -250,8 +260,6 @@ makeAbsolute(
 {
     namespace path = llvm::sys::path;
 
-    MRDOCS_ASSERT(isDirsy(workingDir));
-
     if(! path::is_absolute(pathName))
     {
         SmallPathString result(workingDir);
@@ -295,8 +303,7 @@ appendPath(
     std::string_view name)
 {
     namespace path = llvm::sys::path;
-
-    SmallPathString temp(makeDirsy(basePath));
+    SmallPathString temp(basePath);
     path::append(temp, name);
     path::remove_dots(temp, true);
     return static_cast<std::string>(temp.str());
@@ -310,7 +317,7 @@ appendPath(
 {
     namespace path = llvm::sys::path;
 
-    SmallPathString temp(makeDirsy(basePath));
+    SmallPathString temp(basePath);
     path::append(temp, name1, name2);
     path::remove_dots(temp, true);
     return static_cast<std::string>(temp.str());
@@ -325,7 +332,7 @@ appendPath(
 {
     namespace path = llvm::sys::path;
 
-    SmallPathString temp(makeDirsy(basePath));
+    SmallPathString temp(basePath);
     path::append(temp, name1, name2, name3);
     path::remove_dots(temp, true);
     return static_cast<std::string>(temp.str());
@@ -341,7 +348,7 @@ appendPath(
 {
     namespace path = llvm::sys::path;
 
-    SmallPathString temp(makeDirsy(basePath));
+    SmallPathString temp(basePath);
     path::append(temp, name1, name2, name3, name4);
     path::remove_dots(temp, true);
     return static_cast<std::string>(temp.str());
@@ -430,6 +437,29 @@ createDirectory(
     return Error::success();
 }
 
+bool
+startsWith(
+    std::string_view pathName,
+    std::string_view prefix)
+{
+    auto itPath = pathName.begin();
+    auto itPrefix = prefix.begin();
+    while (itPath != pathName.end() && itPrefix != prefix.end()) {
+        if (*itPath != *itPrefix) {
+            char pathChar = (*itPath == '\\') ? '/' : *itPath;
+            char prefixChar = (*itPrefix == '\\') ? '/' : *itPrefix;
+            if (pathChar != prefixChar)
+            {
+                return false;
+            }
+        }
+        ++itPath;
+        ++itPrefix;
+    }
+    // Have we consumed the whole prefix?
+    return itPrefix == prefix.end();
+}
+
 } // files
 
 ScopedTempFile::
@@ -473,6 +503,7 @@ ScopedTempDirectory(
         path_ = tempPath;
     }
 }
+
 
 } // mrdocs
 } // clang

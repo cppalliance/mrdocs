@@ -15,6 +15,7 @@
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
 #include <mrdocs/Dom/Object.hpp>
+#include <mrdocs/PublicSettings.hpp>
 #include "lib/Support/YamlFwd.hpp"
 #include <functional>
 #include <memory>
@@ -59,10 +60,56 @@ protected:
 public:
     /** Settings values used to generate the Corpus and Docs
      */
-    struct Settings
+    struct Settings : public PublicSettings
     {
+        using ReferenceDirectories = PublicSettings::ReferenceDirectories;
+
+        /**
+         * @brief Loads the public configuration settings from the specified YAML file.
+         *
+         * This function takes a YAML file and a set of reference directories as input.
+         * It parses the YAML file and loads the configuration settings into a Config::Settings object.
+         * The reference directories are used to resolve any relative paths in the configuration settings.
+         *
+         * @param configYaml A string view representing the YAML file containing the configuration settings.
+         * @param dirs A constant reference to a PublicSettings::ReferenceDirectories object containing the reference directories.
+         * @return An Expected object containing a Config::Settings object if the YAML file was successfully parsed and the configuration settings were loaded, or an error otherwise.
+         */
+        static
+        Expected<void>
+        load(
+            Config::Settings &s,
+            std::string_view configYaml,
+            ReferenceDirectories const& dirs);
+
+        /**
+         * @brief Loads the public configuration settings from the specified file.
+         *
+         * This function takes a file path and a set of reference directories as input.
+         * It reads the file and loads the configuration settings into a Config::Settings object.
+         * The reference directories are used to resolve any relative paths in the configuration settings.
+         *
+         * @param s A reference to a Config::Settings object where the configuration settings will be loaded.
+         * @param filePath A string view representing the file path of the configuration settings.
+         * @param dirs A constant reference to a PublicSettings::ReferenceDirectories object containing the reference directories.
+         * @return An Expected object containing void if the file was successfully read and the configuration settings were loaded, or an error otherwise.
+         */
+        static Expected<void>
+        load_file(
+            Config::Settings &s,
+            std::string_view configPath,
+            ReferenceDirectories const& dirs);
+
+        /** @copydoc PublicSettings::normalize
+         */
+        Expected<void>
+        normalize(ReferenceDirectories const& dirs);
+
         //--------------------------------------------
-        // Command line options
+        // Preprocessed options
+        //
+        // Options derived from the PublicSettings that
+        // are reused often.
 
         /** Full path to the config file directory
 
@@ -77,139 +124,26 @@ public:
         */
         std::string configDir;
 
-        /** A string holding the complete configuration YAML.
-         */
-        std::string config = "./mrdocs.yml";
+        /** Full path to the mrdocs root directory
+
+            This is the directory containing the
+            mrdocs executable and the shared files.
+
+            This string will always be native style
+            and have a trailing directory separator.
+        */
+        std::string mrdocsRootDir;
+
+        /** Full path to the current working directory
+
+            This string will always be native style
+            and have a trailing directory separator.
+        */
+        std::string cwdDir = ".";
 
         /** A string holding the complete configuration YAML.
          */
         std::string configYaml;
-
-
-        // -------------------------------------------
-        // Public config options
-        /// Path to the Addons directory
-        std::string addons;
-
-        /// Path to the source root directory
-        std::string sourceRoot;
-
-        /// Directory or file for generating output
-        std::string output;
-
-        /// Path to the compilation database or build script
-        std::string compilationDatabase;
-
-        /// CMake arguments when generating the compilation database
-        /// from CMakeLists.txt
-        std::string cmake;
-
-        /// Additional defines passed to the compiler
-        std::vector<std::string> defines;
-
-        /// Documentation generator. Supported generators are: adoc, html, xml
-        std::string generate = "adoc";
-
-        /// True if output should consist of multiple files)
-        bool multipage = false;
-
-        /** The base URL for the generated documentation.
-
-            This is used to generate links to source
-            files referenced in the documentation.
-          */
-        std::string baseURL;
-
-        /// True if more information should be output to the console)
-        bool verbose = false;
-
-        /// The minimum reporting level: 0 to 4
-        unsigned report = 1;
-
-        /// Continue if files are not mapped correctly)
-        bool ignoreMapErrors = true;
-
-        /// Whether AST visitation failures should not stop the program)
-        bool ignoreFailures = false;
-
-        /** Extraction policy for declarations.
-
-            This determines how declarations are extracted.
-
-         */
-        enum class ExtractPolicy
-        {
-            /// Always extract the declaration.
-            Always,
-            /// Extract the declaration if it is referenced.
-            Dependency,
-            /// Never extract the declaration.
-            Never
-        };
-
-        /** Extraction policy for references to external declarations.
-
-            This determines how declarations which are referenced by
-            explicitly extracted declarations are extracted.
-         */
-        ExtractPolicy referencedDeclarations = ExtractPolicy::Dependency;
-
-        /** Extraction policy for anonymous namespace.
-         */
-        ExtractPolicy anonymousNamespaces = ExtractPolicy::Always;
-
-        /** Extraction policy for inaccessible members.
-         */
-        ExtractPolicy inaccessibleMembers = ExtractPolicy::Always;
-
-        /** Extraction policy for inaccessible bases.
-         */
-        ExtractPolicy inaccessibleBases = ExtractPolicy::Always;
-
-        /** Specifies patterns that should be filtered
-         */
-        struct FileFilter
-        {
-            /// Directories to include
-            std::vector<std::string> include;
-
-            /// File patterns
-            std::vector<std::string> filePatterns;
-        };
-
-        /// @copydoc FileFilter
-        FileFilter input;
-
-        /** Specifies filters for various kinds of symbols.
-         */
-        struct Filters
-        {
-            /** Specifies inclusion and exclusion patterns
-             */
-            struct Category
-            {
-                std::vector<std::string> include;
-                std::vector<std::string> exclude;
-            };
-
-            /// Specifies filter patterns for symbols
-            Category symbols;
-        };
-
-        /// @copydoc Filters
-        Filters filters;
-
-        /** Namespaces for symbols rendered as "see-below".
-         */
-        std::vector<std::string> seeBelow;
-
-        /** Namespaces for symbols rendered as "implementation-defined".
-         */
-        std::vector<std::string> implementationDefined;
-
-        /** Whether to detect the SFINAE idiom.
-         */
-        bool detectSfinae = true;
 
         constexpr Settings const*
         operator->() const noexcept
@@ -254,39 +188,6 @@ public:
         return &settings();
     }
 };
-
-/** Load the public configuration settings from the specified YAML file.
- */
-MRDOCS_DECL
-Expected<void>
-loadConfig(Config::Settings& s, std::string_view configYaml);
-
-namespace detail
-{
-    template <class T>
-    concept DefinesAllCmdLineOptions = requires (T const& t)
-    {
-        #define CMDLINE_OPTION(Name, Kebab, Desc) t.Name;
-        #include <mrdocs/ConfigOptions.inc>
-    };
-
-    template <class T>
-    concept DefinesAllCommonOptions = requires (T const& t)
-    {
-        #define COMMON_OPTION(Name, Kebab, Desc) t.Name;
-        #include <mrdocs/ConfigOptions.inc>
-    };
-
-    template <class T>
-    concept DefinesAllOptions =
-        DefinesAllCmdLineOptions<T> &&
-        DefinesAllCommonOptions<T>;
-}
-
-// This static assertion checks that required options are defined
-// in the Config::Settings class. If this assertion fails, it means that
-// the Config::Settings class is missing some required options.
-static_assert(detail::DefinesAllCommonOptions<Config::Settings>);
 
 } // mrdocs
 } // clang
