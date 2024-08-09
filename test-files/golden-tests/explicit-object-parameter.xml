@@ -12,7 +12,8 @@
         <attr id="is-explicit-object-member-function"/>
         <return>
           <type class="rvalue-reference">
-            <pointee-type name="auto"/>
+            <pointee-type class="auto" keyword="auto">
+            </pointee-type>
           </type>
         </return>
         <param name="self">
@@ -30,7 +31,8 @@
         <attr id="is-explicit-object-member-function"/>
         <return>
           <type class="rvalue-reference">
-            <pointee-type name="auto"/>
+            <pointee-type class="auto" keyword="auto">
+            </pointee-type>
           </type>
         </return>
         <param name="self">

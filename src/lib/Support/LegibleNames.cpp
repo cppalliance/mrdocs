@@ -74,6 +74,7 @@ class LegibleNames::Impl
             "10guide",
             "11alias",
             "12using",
+            "13concept",
         };
         if(I.isFunction())
         {
@@ -222,6 +223,12 @@ public:
                 }
 
                 if constexpr(T::isGuide())
+                {
+                    MRDOCS_ASSERT(! t.Name.empty());
+                    return t.Name;
+                }
+
+                if constexpr(T::isConcept())
                 {
                     MRDOCS_ASSERT(! t.Name.empty());
                     return t.Name;

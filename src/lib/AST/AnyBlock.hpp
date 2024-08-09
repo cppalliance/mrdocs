@@ -860,6 +860,9 @@ public:
             case TypeKind::Decltype:
                 I_ = std::make_unique<DecltypeTypeInfo>();
                 break;
+            case TypeKind::Auto:
+                I_ = std::make_unique<AutoTypeInfo>();
+                break;
             case TypeKind::LValueReference:
                 I_ = std::make_unique<LValueReferenceTypeInfo>();
                 break;
@@ -910,6 +913,11 @@ public:
                 return Error("wrong TypeInfo kind");
             return decodeRecord(R, static_cast<
                 FunctionTypeInfo&>(*I_).IsVariadic, Blob);
+        case TYPEINFO_AUTO_KEYWORD:
+            if(! I_->isAuto())
+                return Error("wrong TypeInfo kind");
+            return decodeRecord(R, static_cast<
+                AutoTypeInfo&>(*I_).Keyword, Blob);
         default:
             return AnyBlock::parseRecord(R, ID, Blob);
         }
@@ -1136,37 +1144,7 @@ public:
     }
 
     Error
-    readSubBlock(
-        unsigned ID) override
-    {
-        switch(ID)
-        {
-        case BI_TEMPLATE_PARAM_BLOCK_ID:
-        {
-            if(! I_->isTemplate())
-                return formatError("only TemplateTParam may have template parameters");
-            TemplateParamBlock B(
-                static_cast<TemplateTParam&>(
-                    *I_.get()).Params.emplace_back(), br_);
-            return br_.readBlock(B, ID);
-        }
-        case BI_TEMPLATE_ARG_BLOCK_ID:
-        {
-            TemplateArgBlock B(I_->Default, br_);
-            return br_.readBlock(B, ID);
-        }
-        case BI_TYPEINFO_BLOCK_ID:
-        {
-            if(! I_->isNonType())
-                return formatError("only NonTypeTParams may have a type");
-            TypeInfoBlock B(static_cast<
-                NonTypeTParam&>(*I_.get()).Type, br_);
-            return br_.readBlock(B, ID);
-        }
-        default:
-            return AnyBlock::readSubBlock(ID);
-        }
-    }
+    readSubBlock(unsigned ID) override;
 };
 
 //------------------------------------------------
@@ -1239,6 +1217,48 @@ public:
     }
 };
 
+Error
+TemplateParamBlock::
+readSubBlock(
+    unsigned ID)
+{
+    switch(ID)
+    {
+    case BI_TEMPLATE_PARAM_BLOCK_ID:
+    {
+        if(! I_->isTemplate())
+            return formatError("only TemplateTParam may have template parameters");
+        TemplateParamBlock B(
+            static_cast<TemplateTParam&>(
+                *I_.get()).Params.emplace_back(), br_);
+        return br_.readBlock(B, ID);
+    }
+    case BI_TEMPLATE_ARG_BLOCK_ID:
+    {
+        TemplateArgBlock B(I_->Default, br_);
+        return br_.readBlock(B, ID);
+    }
+    case BI_TYPEINFO_BLOCK_ID:
+    {
+        if(! I_->isNonType())
+            return formatError("only NonTypeTParams may have a type");
+        TypeInfoBlock B(static_cast<
+            NonTypeTParam&>(*I_.get()).Type, br_);
+        return br_.readBlock(B, ID);
+    }
+    case BI_NAME_INFO_ID:
+    {
+        if(! I_->isType())
+            return formatError("only TypeTypeTParams may have a type constraint");
+        NameInfoBlock B(static_cast<
+            TypeTParam&>(*I_.get()).Constraint, br_);
+        return br_.readBlock(B, ID);
+    }
+    default:
+        return AnyBlock::readSubBlock(ID);
+    }
+}
+
 //------------------------------------------------
 
 class TemplateBlock
@@ -1287,6 +1307,11 @@ public:
             TemplateParamBlock P(
                 I_.Params.emplace_back(), br_);
             return br_.readBlock(P, ID);
+        }
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock E(I_.Requires, br_);
+            return br_.readBlock(E, ID);
         }
         default:
             return AnyBlock::readSubBlock(ID);
@@ -1367,6 +1392,8 @@ readSubBlock(unsigned ID)
         {
             if constexpr(requires { t.Name; })
                 NI = &t.Name;
+            if constexpr(requires { t.Constraint; })
+                NI = &t.Constraint;
         });
         if(! NI)
             return Error("wrong TypeInfo kind");
@@ -1579,6 +1606,11 @@ public:
             I->Template = std::make_unique<TemplateInfo>();
             TemplateBlock B(*I->Template, br_);
             return br_.readBlock(B, ID);
+        }
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock E(I->Requires, br_);
+            return br_.readBlock(E, ID);
         }
         default:
             return TopLevelBlock::readSubBlock(ID);
@@ -2049,6 +2081,37 @@ readSubBlock(
     }
     return AnyBlock::readSubBlock(ID);
 }
+
+//------------------------------------------------
+
+class ConceptBlock
+    : public TopLevelBlock<ConceptInfo>
+{
+public:
+    using TopLevelBlock::TopLevelBlock;
+
+    Error
+    readSubBlock(
+        unsigned ID) override
+    {
+        switch(ID)
+        {
+        case BI_EXPR_BLOCK_ID:
+        {
+            ExprBlock E(I->Constraint, br_);
+            return br_.readBlock(E, ID);
+        }
+        case BI_TEMPLATE_BLOCK_ID:
+        {
+            I->Template = std::make_unique<TemplateInfo>();
+            TemplateBlock T(*I->Template, br_);
+            return br_.readBlock(T, ID);
+        }
+        default:
+            return TopLevelBlock::readSubBlock(ID);
+        }
+    }
+};
 
 } // mrdocs
 } // clang

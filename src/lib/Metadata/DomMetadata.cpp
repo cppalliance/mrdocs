@@ -269,6 +269,8 @@ static dom::Value domCreate(
     std::unique_ptr<TParam> const&, DomCorpus const&);
 static dom::Value domCreate(
     std::unique_ptr<TemplateInfo> const& I, DomCorpus const&);
+static dom::Value domCreate(
+    std::unique_ptr<NameInfo> const& I, DomCorpus const&);
 
 //------------------------------------------------
 
@@ -387,6 +389,9 @@ domCreate(
             {
                 entries.emplace_back("key",
                     toString(t.KeyKind));
+                if(t.Constraint)
+                    entries.emplace_back("constraint",
+                        domCreate(t.Constraint, domCorpus));
             }
             if constexpr(T::isNonType())
             {
@@ -415,7 +420,8 @@ domCreate(
         { "kind", toString(I->specializationKind()) },
         { "primary", domCorpus.get(I->Primary) },
         { "params", dom::newArray<DomTParamArray>( I->Params, domCorpus) },
-        { "args", dom::newArray<DomTArgArray>(I->Args, domCorpus) }
+        { "args", dom::newArray<DomTArgArray>(I->Args, domCorpus) },
+        { "requires", dom::stringOrNull(I->Requires.Written) }
         });
 }
 
@@ -466,6 +472,15 @@ domCreate(
 
         if constexpr(T::isDecltype())
             entries.emplace_back("operand", t.Operand.Written);
+
+        if constexpr(T::isAuto())
+        {
+            entries.emplace_back("keyword",
+                toString(t.Keyword));
+            if(t.Constraint)
+                entries.emplace_back("constraint",
+                    domCreate(t.Constraint, domCorpus));
+        }
 
         if constexpr(requires { t.CVQualifiers; })
             entries.emplace_back("cv-qualifiers",
@@ -796,6 +811,8 @@ DomInfo<T>::construct() const
 
         entries.emplace_back("exceptionSpec", toString(I_.Noexcept));
         entries.emplace_back("explicitSpec",  toString(I_.Explicit));
+        entries.emplace_back("requires",      dom::stringOrNull(I_.Requires.Written));
+
         #if 0
         if(I_.Noexcept.Kind != NoexceptKind::None)
         {
@@ -887,6 +904,13 @@ DomInfo<T>::construct() const
             });
 
         entries.emplace_back("explicitSpec", toString(I_.Explicit));
+    }
+    if constexpr(T::isConcept())
+    {
+        entries.insert(entries.end(), {
+            { "template",       domCreate(I_.Template, domCorpus_) },
+            { "constraint",     dom::stringOrNull(I_.Constraint.Written) }
+            });
     }
     return dom::Object(std::move(entries));
 }

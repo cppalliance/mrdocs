@@ -79,6 +79,9 @@ struct MrDocsType<UsingDecl> : std::type_identity<UsingInfo> {};
 template <>
 struct MrDocsType<NamespaceDecl> : std::type_identity<NamespaceInfo>{};
 
+template <>
+struct MrDocsType<ConceptDecl> : std::type_identity<ConceptInfo>{};
+
 /// @copydoc MrDocsType
 template <class DeclType>
 using MrDocsType_t = typename MrDocsType<DeclType>::type;
@@ -336,6 +339,26 @@ convertToFunctionClass(
     case OldKind::CXXConstructor:    return NewKind::Constructor;
     case OldKind::CXXConversion:     return NewKind::Conversion;
     case OldKind::CXXDestructor:     return NewKind::Destructor;
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+/** Convert a Clang AutoTypeKeyword into a MrDocs AutoKind
+ */
+AutoKind
+convertToAutoKind(
+    AutoTypeKeyword kind)
+{
+    using OldKind = AutoTypeKeyword;
+    using NewKind = AutoKind;
+    switch(kind)
+    {
+    case OldKind::Auto:
+    case OldKind::GNUAutoType:
+      return NewKind::Auto;
+    case OldKind::DecltypeAuto:
+      return NewKind::DecltypeAuto;
     default:
         MRDOCS_UNREACHABLE();
     }

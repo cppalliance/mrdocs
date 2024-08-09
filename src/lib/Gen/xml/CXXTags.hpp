@@ -243,6 +243,13 @@ writeType(
                 attrs.push({"operand", t.Operand.Written});
             }
 
+            if constexpr(T::isAuto())
+            {
+                attrs.push({"keyword", toString(t.Keyword)});
+                if(t.Constraint)
+                    attrs.push({"constraint", toString(*t.Constraint)});
+            }
+
             if constexpr(T::isFunction())
             {
                 if(t.IsVariadic)

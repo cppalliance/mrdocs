@@ -353,6 +353,7 @@ RecordIDNameMap = []()
         {TYPEINFO_NOEXCEPT, {"TypeinfoNoexcept", &NoexceptAbbrev}},
         {TYPEINFO_REFQUAL, {"TypeinfoRefqual", &Integer32Abbrev}},
         {TYPEINFO_IS_VARIADIC, {"TypeinfoIsVariadic", &BoolAbbrev}},
+        {TYPEINFO_AUTO_KEYWORD, {"TypeinfoAutoKeyword", &Integer32Abbrev}},
         {TYPEDEF_IS_USING, {"IsUsing", &BoolAbbrev}},
         {VARIABLE_BITS, {"Bits", &Integer32ArrayAbbrev}},
         {USING_SYMBOLS, {"UsingSymbols", &SymbolIDsAbbrev}},
@@ -453,10 +454,14 @@ RecordsByBlock{
     // EnumeratorInfo
     {BI_ENUMERATOR_BLOCK_ID,
         {}},
+    // ConceptInfo
+    {BI_CONCEPT_BLOCK_ID,
+        {}},
     // TypeInfo
     {BI_TYPEINFO_BLOCK_ID,
         {TYPEINFO_KIND, TYPEINFO_IS_PACK, TYPEINFO_CVQUAL,
-        TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL, TYPEINFO_IS_VARIADIC}},
+        TYPEINFO_NOEXCEPT, TYPEINFO_REFQUAL, TYPEINFO_IS_VARIADIC,
+        TYPEINFO_AUTO_KEYWORD}},
     {BI_TYPEINFO_PARENT_BLOCK_ID,
         {}},
     {BI_TYPEINFO_CHILD_BLOCK_ID,
@@ -938,6 +943,7 @@ emitBlock(
         emitBlock(N);
     emitRecord(I.Noexcept, FUNCTION_NOEXCEPT);
     emitRecord(I.Explicit, FUNCTION_EXPLICIT);
+    emitBlock(I.Requires);
 }
 
 void
@@ -1077,6 +1083,13 @@ emitBlock(
             emitBlock(t.Operand);
         }
 
+        if constexpr(T::isAuto())
+        {
+            emitRecord(t.Keyword, TYPEINFO_AUTO_KEYWORD);
+            if(t.Constraint)
+                emitBlock(*t.Constraint);
+        }
+
         if constexpr(T::isFunction())
         {
             emitBlock(t.ReturnType, BI_TYPEINFO_CHILD_BLOCK_ID);
@@ -1205,10 +1218,23 @@ emitBlock(
 void
 BitcodeWriter::
 emitBlock(
+    const ConceptInfo& I)
+{
+    StreamSubBlockGuard Block(Stream, BI_CONCEPT_BLOCK_ID);
+    emitInfoPart(I);
+    emitSourceInfo(I);
+    emitBlock(*I.Template);
+    emitBlock(I.Constraint);
+}
+
+void
+BitcodeWriter::
+emitBlock(
     const TemplateInfo& T)
 {
     StreamSubBlockGuard Block(Stream, BI_TEMPLATE_BLOCK_ID);
     emitRecord(T.Primary, TEMPLATE_PRIMARY_USR);
+    emitBlock(T.Requires);
     for(const auto& targ : T.Args)
         emitBlock(targ);
     for(const auto& tparam : T.Params)
@@ -1251,6 +1277,8 @@ emitBlock(
         if constexpr(T::isType())
         {
             emitRecord(P.KeyKind, TEMPLATE_PARAM_KEY_KIND);
+            if(P.Constraint)
+              emitBlock(*P.Constraint);
         }
         if constexpr(T::isNonType())
         {

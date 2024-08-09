@@ -23,6 +23,7 @@
 {{#if symbol.refQualifier}} {{symbol.refQualifier}}{{/if~}}
 {{#if symbol.exceptionSpec}} {{symbol.exceptionSpec}}{{/if~}}
 {{#if (eq symbol.class "normal")}}{{>declarator-after symbol.return}}{{/if~}}
+{{#if symbol.requires}} requires {{symbol.requires}}{{/if~}}
 {{#if symbol.hasOverrideAttr}} override{{/if~}}
 {{#if symbol.isFinal}} final{{/if~}}
 {{#if symbol.isPure}} = 0{{/if~}}

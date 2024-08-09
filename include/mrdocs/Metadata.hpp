@@ -18,6 +18,7 @@
 // metadata extracted from AST
 
 #include <mrdocs/Metadata/Alias.hpp>
+#include <mrdocs/Metadata/Concept.hpp>
 #include <mrdocs/Metadata/Enum.hpp>
 #include <mrdocs/Metadata/Enumerator.hpp>
 #include <mrdocs/Metadata/Expression.hpp>

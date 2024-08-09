@@ -206,6 +206,7 @@ void merge(FunctionInfo& I, FunctionInfo&& Other)
         I.Noexcept = std::move(Other.Noexcept);
     if(I.Explicit.Implicit)
         I.Explicit = std::move(Other.Explicit);
+    mergeExprInfo(I.Requires, std::move(Other.Requires));
 }
 
 void merge(GuideInfo& I, GuideInfo&& Other)
@@ -331,6 +332,17 @@ void merge(EnumeratorInfo& I, EnumeratorInfo&& Other)
         I.Initializer = std::move(Other.Initializer);
     mergeSourceInfo(I, std::move(Other));
     mergeInfo(I, std::move(Other));
+}
+
+void merge(ConceptInfo& I, ConceptInfo&& Other)
+{
+    MRDOCS_ASSERT(canMerge(I, Other));
+    if(I.Constraint.Written.empty())
+        I.Constraint = std::move(Other.Constraint);
+    mergeSourceInfo(I, std::move(Other));
+    mergeInfo(I, std::move(Other));
+    if (! I.Template)
+        I.Template = std::move(Other.Template);
 }
 
 } // mrdocs
