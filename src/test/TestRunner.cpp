@@ -21,16 +21,13 @@
 #include <mrdocs/Generators.hpp>
 #include <mrdocs/Platform.hpp>
 #include <mrdocs/Support/Error.hpp>
-#include <mrdocs/Support/ThreadPool.hpp>
 #include <llvm/Support/CommandLine.h>
 #include <llvm/Support/FileSystem.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/Program.h>
 #include <llvm/Support/Signals.h>
 #include <atomic>
-#include <iomanip>
 #include <iostream>
-#include <chrono>
 
 namespace clang {
 namespace mrdocs {
@@ -64,57 +61,47 @@ void
 TestRunner::
 handleFile(
     llvm::StringRef filePath,
-    std::shared_ptr<ConfigImpl const> config)
+    Config::Settings const& dirSettings)
 {
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
     MRDOCS_ASSERT(path::extension(filePath).compare_insensitive(".cpp") == 0);
 
-    // Check file-specific config
-    auto configPath = files::withExtension(filePath, "yml");
-    auto ft = files::getFileType(configPath);
-    if(! ft)
+    // Check the fource file
+    auto ft = files::getFileType(filePath);
+    if (ft.value() == files::FileType::not_found) {
         return report::error("{}: \"{}\"",
-            ft.error(), configPath);
-
-    // if(! config)
-    if (ft.value() != files::FileType::not_found)
-    {
-        if(ft.value() != files::FileType::regular)
-            return report::error("{}: \"{}\"",
-                Error("not a regular file"), configPath);
-        Config::Settings publicSettings = config->settings();
-        publicSettings.config = configPath;
-        publicSettings.configDir = files::getParentDir(filePath);
-        publicSettings.configYaml = files::getFileText(publicSettings.config).value();
-        loadConfig(publicSettings, publicSettings.configYaml).value();
-        auto configFile = loadConfigFile(
-            publicSettings,
-            config,
-            threadPool_);
-        if(! configFile)
-            return report::error("{}: \"{}\"",
-                configPath, configFile.error());
-        config = configFile.value();
+            Error("file not found"), filePath);
     }
-    if(! config)
+    if(ft.value() != files::FileType::regular) {
         return report::error("{}: \"{}\"",
-            Error("missing config"), filePath);
+             Error("not a regular file"), filePath);
+    }
 
-    SmallPathString dirPath = filePath;
-    path::remove_filename(dirPath);
+    // File-specific config
+    Config::Settings fileSettings = dirSettings;
+    auto configPath = files::withExtension(filePath, "yml");
+    if (files::exists(configPath)) {
+        Config::Settings::load_file(fileSettings, configPath, dirs_).value();
+        fileSettings.normalize(dirs_);
+    }
 
+
+    // Config Implementation
+    std::shared_ptr<ConfigImpl const> config =
+        ConfigImpl::load(fileSettings, dirs_, threadPool_).value();
+
+    // Path with the expected XML results
     SmallPathString expectedPath = filePath;
     path::replace_extension(expectedPath, xmlGen_->fileExtension());
 
+    // Create an adjusted MrDocsDatabase
     auto parentDir = files::getParentDir(filePath);
-
     std::unordered_map<std::string, std::vector<std::string>> defaultIncludePaths;
-
-    // Convert relative paths to absolute
     MrDocsCompilationDatabase compilations(
         llvm::StringRef(parentDir), SingleFileDB(filePath), config, defaultIncludePaths);
+
     // Build Corpus
     auto corpus = CorpusImpl::build(
         report::Level::debug, config, compilations);
@@ -136,6 +123,7 @@ handleFile(
             return report::error("{}: \"{}\"", fileResult.getError(), expectedPath);
     }
 
+    // Analyse results
     if(! expectedXml)
     {
         if(testArgs.action == Action::test)
@@ -217,74 +205,18 @@ handleFile(
     }
 }
 
-namespace {
-    Expected<void>
-    loadTestDirConfig(
-        std::string const& dirPath,
-        std::shared_ptr<ConfigImpl const>& config,
-        ThreadPool& threadPool)
-    {
-        namespace fs = llvm::sys::fs;
-        namespace path = llvm::sys::path;
-
-        auto configPath = files::appendPath(dirPath, "mrdocs.yml");
-        auto ft = files::getFileType(configPath);
-        if(! ft)
-        {
-            report::error("{}: \"{}\"", ft.error(), configPath);
-            return ft.error();
-        }
-        if(ft.value() == files::FileType::regular)
-        {
-            Config::Settings publicSettings;
-            publicSettings.config = configPath;
-            publicSettings.configDir = dirPath;
-            publicSettings.configYaml = files::getFileText(publicSettings.config).value();
-            loadConfig(publicSettings, publicSettings.configYaml).value();
-            publicSettings.sourceRoot = files::makeAbsolute(
-                publicSettings.sourceRoot,
-                publicSettings.configDir);
-            auto configFile = loadConfigFile(
-                publicSettings,
-                config,
-                threadPool);
-            if(! configFile)
-            {
-                report::error("{}: \"{}\"", configPath, configFile.error());
-                return configFile.error();
-            }
-
-            config = configFile.value();
-        }
-        else if(ft.value() != files::FileType::not_found)
-        {
-            report::error("{}: \"{}\"", Error("not a regular file"), configPath);
-            return Error("not a regular file");
-        }
-        return {};
-    }
-}
-
 void
 TestRunner::
 handleDir(
     std::string dirPath,
-    std::shared_ptr<ConfigImpl const> config)
+    Config::Settings const& dirSettings)
 {
     report::debug("Visiting directory: \"{}\"", dirPath);
 
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
-    dirPath = files::makeDirsy(dirPath);
-
     results.numberOfDirs++;
-
-    // Load a directory-wide config file
-    if (auto e = loadTestDirConfig(dirPath, config, threadPool_); !e)
-        return;
-    if(! config)
-        return report::error("missing configuration: \"{}\"", dirPath);
 
     // Visit each file in the directory
     std::error_code ec;
@@ -297,16 +229,24 @@ handleDir(
         auto const& entry = *iter;
         if(entry.type() == fs::file_type::directory_file)
         {
-            handleDir(entry.path(), config);
+            // Check for a subdirectory-wide config
+            Config::Settings subdirSettings = dirSettings;
+            std::string const& configPath = files::appendPath(
+                files::appendPath(dirPath, entry.path()), "mrdocs.yml");
+            if (files::exists(configPath)) {
+                Config::Settings::load_file(subdirSettings, configPath, dirs_).value();
+                subdirSettings.normalize(dirs_);
+            }
+            handleDir(entry.path(), subdirSettings);
         }
         else if(
             entry.type() == fs::file_type::regular_file &&
             path::extension(entry.path()).equals_insensitive(".cpp"))
         {
             threadPool_.async(
-                [this, config, filePath = SmallPathString(entry.path())]
+                [this, dirSettings, filePath = SmallPathString(entry.path())]
                 {
-                    handleFile(filePath, config);
+                    handleFile(filePath, dirSettings);
                 });
         }
         iter.increment(ec);
@@ -326,11 +266,32 @@ checkPath(
 
     inputPath = files::normalizePath(inputPath);
 
+    // Set the reference directories for the test
+    dirs_.configDir = inputPath;
+    dirs_.cwd = dirs_.configDir;
+    if (testArgs.addons.getValue() != "")
+    {
+        dirs_.mrdocsRoot = files::getParentDir(files::normalizePath(testArgs.addons.getValue()), 3);
+    }
+    else
+    {
+        report::warn("No addons directory specified to mrdocs tests");
+    }
+
     // See if inputPath references a file or directory
     auto fileType = files::getFileType(inputPath);
     if(! fileType)
         return report::error("{}: \"{}\"",
             fileType.error(), inputPath);
+
+    // Check for a directory-wide config
+    Config::Settings dirSettings;
+    dirSettings.sourceRoot = files::appendPath(inputPath, ".");
+    std::string const& configPath = files::appendPath(inputPath, "mrdocs.yml");
+    if (files::exists(configPath)) {
+        Config::Settings::load_file(dirSettings, configPath, dirs_).value();
+        dirSettings.normalize(dirs_);
+    }
 
     switch(fileType.value())
     {
@@ -344,48 +305,7 @@ checkPath(
                 err, inputPath);
         }
 
-        std::shared_ptr<ConfigImpl const> config;
-
-        // Check for a directory-wide config
-        {
-            auto configPath = files::appendPath(
-                files::getParentDir(inputPath), "mrdocs.yml");
-            auto ft = files::getFileType(configPath);
-            if(! ft)
-                return report::error("{}: \"{}\"",
-                    ft.error(), configPath);
-            if(ft.value() == files::FileType::regular)
-            {
-                Config::Settings publicSettings;
-                publicSettings.config = configPath;
-                publicSettings.configDir = files::getParentDir(inputPath);
-                publicSettings.configYaml = files::getFileText(publicSettings.config).value();
-                if (testArgs.addons.getValue() != "")
-                {
-                    publicSettings.addons = files::normalizeDir(testArgs.addons.getValue());
-                }
-                else
-                {
-                    report::warn("No addons directory specified to mrdocs tests");
-                }
-                loadConfig(publicSettings, publicSettings.configYaml).value();
-                auto configFile = loadConfigFile(
-                    publicSettings,
-                    config,
-                    threadPool_);
-                if(! configFile)
-                    return report::error("{}: \"{}\"",
-                        configPath, configFile.error());
-                config = configFile.value();
-            }
-            else if(ft.value() != files::FileType::not_found)
-            {
-                return report::error("{}: \"{}\"",
-                    Error("not a regular file"), configPath);
-            }
-        }
-
-        handleFile(inputPath, config);
+        handleFile(inputPath, dirSettings);
         threadPool_.wait();
         return;
     }
@@ -393,7 +313,7 @@ checkPath(
     case files::FileType::directory:
     {
         // Iterate this directory and all its children
-        handleDir(files::makeDirsy(inputPath), nullptr);
+        handleDir(inputPath, dirSettings);
         threadPool_.wait();
         return;
     }

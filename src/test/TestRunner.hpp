@@ -53,6 +53,7 @@ class TestRunner
     ThreadPool threadPool_;
     llvm::ErrorOr<std::string> diffCmdPath_;
     Generator const* xmlGen_;
+    Config::Settings::ReferenceDirectories dirs_;
 
     Error writeFile(
         llvm::StringRef filePath,
@@ -61,12 +62,12 @@ class TestRunner
     void
     handleFile(
         llvm::StringRef filePath,
-        std::shared_ptr<ConfigImpl const> config);
+        Config::Settings const& dirSettings);
 
     void
     handleDir(
         std::string dirPath,
-        std::shared_ptr<ConfigImpl const> config);
+        Config::Settings const& dirSettings);
 
 public:
     TestResults results;

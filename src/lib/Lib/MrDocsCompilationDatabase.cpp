@@ -48,7 +48,9 @@ optionMatchesAny(
 
 static
 bool
-isValidMrDocsOption(std::unique_ptr<llvm::opt::Arg> const &arg)
+isValidMrDocsOption(
+    llvm::StringRef workingDir,
+    std::unique_ptr<llvm::opt::Arg> const &arg)
 {
     // Unknown option
     if (!arg)
@@ -214,12 +216,33 @@ isValidMrDocsOption(std::unique_ptr<llvm::opt::Arg> const &arg)
         return false;
     }
 
+    // Unknown module files
+    // Some versions of CMake include unexisting module files in the compile
+    // commands file with the Clang toolchain.
+    if (opt.getName() == "<input>")
+    {
+        auto& argv = *arg;
+        std::string_view path = argv.getValue();
+        bool const isCMakePath = path.starts_with("@CMakeFiles\\") || path.starts_with("@CMakeFiles/");
+        bool const isModulePath = path.ends_with(".obj.modmap");
+        if (isCMakePath && isModulePath)
+        {
+            constexpr std::size_t nChars = sizeof("@CMakeFiles/") - 1;
+            std::string_view relPath = path.substr(nChars);
+            auto moduleFile = files::appendPath(workingDir, "CMakeFiles", relPath);
+            if (!files::exists(moduleFile))
+            {
+                return false;
+            }
+        }
+    }
     return true;
 }
 
 static
 std::vector<std::string>
 adjustCommandLine(
+    llvm::StringRef workingDir,
     const std::vector<std::string>& cmdline,
     const std::vector<std::string>& additional_defines,
     std::unordered_map<std::string, std::vector<std::string>> const& implicitIncludeDirectories)
@@ -308,7 +331,7 @@ adjustCommandLine(
         unsigned idx0 = idx;
         std::unique_ptr<llvm::opt::Arg> arg =
             opts_table.ParseOneArg(args, idx, visibility);
-        if (!isValidMrDocsOption(arg))
+        if (!isValidMrDocsOption(workingDir, arg))
         {
             continue;
         }
@@ -364,6 +387,7 @@ MrDocsCompilationDatabase(
         cmd.Heuristic = cmd0.Heuristic;
         cmd.Output = cmd0.Output;
         cmd.CommandLine = adjustCommandLine(
+            workingDir,
             cmd0.CommandLine,
             (*config_impl)->defines,
             implicitIncludeDirectories);

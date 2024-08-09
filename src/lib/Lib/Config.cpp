@@ -10,76 +10,10 @@
 //
 
 #include "mrdocs/Config.hpp"
-#include "lib/Support/Yaml.hpp"
 #include <mrdocs/Support/Error.hpp>
+#include <mrdocs/Support/Path.hpp>
 #include <llvm/Support/FileSystem.h>
-#include <llvm/Support/YAMLTraits.h>
 #include <ranges>
-
-template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdocs::Config::Settings::FileFilter>
-{
-    static void mapping(IO& io,
-        clang::mrdocs::Config::Settings::FileFilter& f)
-    {
-        io.mapOptional("include", f.include);
-        io.mapOptional("file-patterns", f.filePatterns);
-    }
-};
-
-template<>
-struct llvm::yaml::ScalarEnumerationTraits<
-    clang::mrdocs::Config::Settings::ExtractPolicy>
-{
-    using Policy = clang::mrdocs::Config::Settings::ExtractPolicy;
-
-    static void enumeration(IO& io,
-        Policy& value)
-    {
-        io.enumCase(value, "always", Policy::Always);
-        io.enumCase(value, "dependency", Policy::Dependency);
-        io.enumCase(value, "never", Policy::Never);
-    }
-};
-
-template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdocs::Config::Settings::Filters::Category>
-{
-    static void mapping(IO &io,
-        clang::mrdocs::Config::Settings::Filters::Category& f)
-    {
-        io.mapOptional("include", f.include);
-        io.mapOptional("exclude", f.exclude);
-    }
-};
-
-template<>
-struct llvm::yaml::MappingTraits<
-    clang::mrdocs::Config::Settings::Filters>
-{
-    static void mapping(IO &io,
-        clang::mrdocs::Config::Settings::Filters& f)
-    {
-        io.mapOptional("symbols", f.symbols);
-    }
-};
-
-
-template<>
-struct llvm::yaml::MappingTraits<clang::mrdocs::Config::Settings>
-{
-    static void mapping(
-        IO& io,
-        clang::mrdocs::Config::Settings& s)
-    {
-        #define INCLUDE_OPTION_OBJECTS
-        #define CMDLINE_OPTION(Name, Kebab, Desc)
-        #define COMMON_OPTION(Name, Kebab, Desc) io.mapOptional(#Kebab, s.Name);
-        #include <mrdocs/ConfigOptions.inc>
-    }
-};
 
 namespace clang {
 namespace mrdocs {
@@ -93,22 +27,65 @@ Config::
 ~Config() noexcept = default;
 
 Expected<void>
-loadConfig(Config::Settings& s, std::string_view configYaml)
+Config::Settings::
+load(
+    Config::Settings &s,
+    std::string_view configYaml,
+    ReferenceDirectories const& dirs)
 {
-    YamlReporter reporter;
+    MRDOCS_TRY(PublicSettings::load(s, configYaml));
+    s.configDir = dirs.configDir;
+    s.mrdocsRootDir = dirs.mrdocsRoot;
+    s.cwdDir = dirs.cwd;
+    s.configYaml = configYaml;
+    return {};
+}
+
+Expected<void>
+Config::Settings::
+load_file(
+    Config::Settings &s,
+    std::string_view configPath,
+    ReferenceDirectories const& dirs)
+{
+    auto ft = files::getFileType(configPath);
+    if(! ft)
     {
-        llvm::yaml::Input yin(
-            configYaml,
-            &reporter,
-            reporter);
-        yin.setAllowUnknownKeys(true);
-        yin >> s;
-        Error e(yin.error());
-        if (e.failed())
-        {
-            return Unexpected(e);
-        }
+        return formatError(
+            "Config file does not exist: \"{}\"", ft.error(), configPath);
     }
+
+    if (ft.value() == files::FileType::regular)
+    {
+        s.config = configPath;
+        std::string configYaml = files::getFileText(s.config).value();
+        Config::Settings::load(s, configYaml, dirs).value();
+    }
+    else if(ft.value() != files::FileType::not_found)
+    {
+        return formatError(
+            "Config file is not regular file: \"{}\"", configPath);
+    }
+
+    return {};
+}
+
+Expected<void>
+Config::Settings::
+normalize(ReferenceDirectories const& dirs)
+{
+    auto exp = PublicSettings::normalize(*this, dirs);
+    if (!exp)
+    {
+        return exp.error();
+    }
+
+    // Base-URL has to be dirsy with forward slash style
+    if (!baseUrl.empty() && baseUrl.back() != '/')
+    {
+        baseUrl.push_back('/');
+    }
+
     return {};
 }
 

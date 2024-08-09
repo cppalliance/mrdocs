@@ -31,7 +31,10 @@ DoTestAction();
 
 extern
 Expected<void>
-DoGenerateAction(std::string_view execPath, char const** argv);
+DoGenerateAction(
+    std::string const& configPath,
+    Config::Settings::ReferenceDirectories const& dirs,
+    char const** argv);
 
 void
 print_version(llvm::raw_ostream& os)
@@ -41,6 +44,50 @@ print_version(llvm::raw_ostream& os)
        << "\n    version: " << project_version
        << "\n    built with LLVM " << LLVM_VERSION_STRING
        << "\n";
+}
+
+Expected<std::pair<std::string, Config::Settings::ReferenceDirectories>>
+getReferenceDirectories(std::string const& execPath)
+{
+    Config::Settings::ReferenceDirectories dirs;
+    dirs.mrdocsRoot = files::getParentDir(execPath, 2);
+    llvm::SmallVector<char, 256> cwd;
+    if (auto ec = llvm::sys::fs::current_path(cwd); ec)
+    {
+        return Unexpected(formatError("Unable to determine current working directory: {}", ec.message()));
+    }
+    dirs.cwd = std::string(cwd.data(), cwd.size());
+    std::string configPath;
+    if (toolArgs.config.getValue() != "")
+    {
+        configPath = toolArgs.config.getValue();
+    }
+    else
+    {
+        llvm::cl::list<std::string>& inputs = toolArgs.inputs;
+        for (auto& input: inputs)
+        {
+            if (files::getFileName(input) == "mrdocs.yml")
+            {
+                configPath = input;
+                break;
+            }
+        }
+    }
+    if (configPath.empty())
+    {
+        if (files::exists("./mrdocs.yml"))
+        {
+            configPath = "./mrdocs.yml";
+        }
+    }
+    if (configPath.empty())
+    {
+        return Unexpected(formatError("The config path is missing"));
+    }
+    configPath = files::makeAbsolute(configPath, dirs.cwd);
+    dirs.configDir = files::getParentDir(configPath);
+    return std::make_pair(configPath, dirs);
 }
 
 int
@@ -76,8 +123,16 @@ mrdocs_main(int argc, char const** argv)
 #endif
     std::string execPath = llvm::sys::fs::getMainExecutable(argv[0], addressOfMain);
 
+    auto res = getReferenceDirectories(execPath);
+    if (!res)
+    {
+        report::fatal("Failed to determine reference directories: {}", res.error().message());
+        return EXIT_FAILURE;
+    }
+    auto [configPath, dirs] = *res;
+
     // Generate
-    auto exp = DoGenerateAction(execPath, argv);
+    auto exp = DoGenerateAction(configPath, dirs, argv);
     if (!exp)
     {
         report::error("Generating reference failed: {}", exp.error().message());

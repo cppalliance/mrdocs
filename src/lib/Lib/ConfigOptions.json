@@ -1,0 +1,301 @@
+[
+  {
+    "category": "Command Line Options",
+    "command-line-only": true,
+    "brief": "Options that can only be provided via the command line",
+    "details": "The following options can be used to control the general behavior of MrDocs and can only be provided via the command line. These include options to specify inputs and the configuration file, which cannot be set on the configuration file itself.",
+    "options": [
+      {
+        "name": "inputs",
+        "command-line-only": true,
+        "brief": "Configuration or compilation database files",
+        "details": "The inputs are configuration files or compilation database files that are used to generate the documentation. These inputs can be configuration files or compilation database files. When the input ends with `mrdocs.yml`, it is interpreted as a configuration file, the file is read and the options are used to generate the documentation as if it was provided to the `config` option. When the input ends with `compilation_database.json` or `CMakeLists.txt`, it is interpreted as a compilation database file, the file is read and the compiler flags are used to generate the documentation as if it was provided to the `compilation-database` option.",
+        "type": "list<path>",
+        "default": [],
+        "command-line-sink": true,
+        "filename-mapping": {
+          "mrdocs.yml": "config",
+          "compile_commands.json": "compilationDatabase",
+          "CMakeLists.txt": "compilationDatabase"
+        }
+      },
+      {
+        "name": "config",
+        "command-line-only": true,
+        "brief": "MrDocs configuration file",
+        "details": "The configuration file is a YAML file that contains the options used to generate the documentation. The configuration file is read and the options are used to generate the documentation. The configuration file can be used to specify the source code, the output directory, the compilation database, the generator, and the filters.",
+        "type": "file-path",
+        "default": "<cwd>/mrdocs.yml",
+        "relativeto": "<cwd>",
+        "required": true
+      }
+    ]
+  },
+  {
+    "category": "Paths",
+    "brief": "Paths to the source code and output directories",
+    "options": [
+      {
+        "name": "source-root",
+        "brief": "Path to the root directory of the source code",
+        "type": "dir-path",
+        "default": "<config-dir>",
+        "relativeto": "<config-dir>"
+      },
+      {
+        "name": "output",
+        "brief": "Directory or file for generating output",
+        "details": "Multipage generators expect a directory. Single page generators expect a file or a directory where the file will be created. If the directory does not exist, it will be created.",
+        "type": "path",
+        "default": "<config-dir>/reference-output",
+        "relativeto": "<config-dir>",
+        "must-exist": false
+      },
+      {
+        "name": "compilation-database",
+        "brief": "Path to the compilation database",
+        "details": "Path to the compilation database or a build script to generate it. The compilation database is a JSON file that contains the compiler commands used to build the source code. The compilation database is used to extract the compiler flags and the source files used to build the source code and extract symbols. This option also accepts the path to a build script such as CMakeLists.txt to be used to generate the compilation database. In this case, MrDocs will look for CMake in `PATH` or in `CMAKE_ROOT` and run the script to generate the compilation database file.",
+        "type": "file-path",
+        "default": "",
+        "relativeto": "<config-dir>"
+      }
+    ]
+  },
+  {
+    "category": "Build options",
+    "brief": "Options for building the source code",
+    "details": "When MrDocs is responsible to running the build scripts and generating the compilation database, these options are used to build the source code.",
+    "options": [
+      {
+        "name": "cmake",
+        "brief": "CMake arguments when generating the compilation database from CMakeLists.txt",
+        "details": "When the compilation-database option is a CMakeLists.txt file, these arguments are passed to the cmake command to generate the compilation_database.json.",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "defines",
+        "brief": "Additional defines passed to the compiler",
+        "details": "Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.",
+        "type": "list<string>",
+        "default": []
+      }
+    ]
+  },
+  {
+    "category": "Generators",
+    "brief": "Generators to create the documentation and their options",
+    "options": [
+      {
+        "name": "generate",
+        "brief": "Generator used to create the documentation",
+        "type": "enum",
+        "values": [
+          "adoc",
+          "html",
+          "xml"
+        ],
+        "default": "adoc"
+      },
+      {
+        "name": "multipage",
+        "brief": "Generate a multipage documentation",
+        "details": "Generates a multipage documentation. The output directory must be a directory. This option acts as a hint to the generator to create a multipage documentation. Whether the hint is followed or not depends on the generator.",
+        "type": "bool",
+        "default": true
+      },
+      {
+        "name": "base-url",
+        "brief": "Base URL for links to source code",
+        "details": "Base URL for links to source code. The base URL is used to create links to the source code in the documentation. The base URL is combined with the path to the source file to create the link.",
+        "type": "string",
+        "default": ""
+      },
+      {
+        "name": "addons",
+        "brief": "Path to the Addons directory",
+        "details": "Path to the Addons directory. The Addons directory contains the template files used by generators to create the documentation. When a custom Addons directory is not specified, the default templates are used. The default templates are located at the `share/mrdocs/addons` directory of the MrDocs installation. Users can create custom templates by copying the default templates to a custom directory and specifying the custom directory using this option.",
+        "type": "path",
+        "default": "<mrdocs-root>/share/mrdocs/addons",
+        "relativeto": "<config-dir>"
+      }
+    ]
+  },
+  {
+    "category": "Filters",
+    "brief": "Filters to include or exclude files and symbols from the documentation",
+    "options": [
+      {
+        "name": "referenced-declarations",
+        "brief": "Extraction policy for references to external declarations",
+        "details": "Determine whether external declarations should be extracted when they are referenced in the source code. When set to `always`, external declarations are always extracted. When set to `dependency`, external declarations are extracted only if they are referenced by the source code. When set to `never`, external declarations are never extracted.",
+        "type": "enum",
+        "values": [
+          "always",
+          "dependency",
+          "never"
+        ],
+        "default": "dependency"
+      },
+      {
+        "name": "anonymous-namespaces",
+        "brief": "Extraction policy for anonymous namespaces",
+        "details": "Determine whether symbols in anonymous namespaces should be extracted. When set to `always`, symbols in anonymous namespaces are always extracted. When set to `dependency`, symbols in anonymous namespaces are extracted only if they are referenced by the source code. When set to `never`, symbols in anonymous namespaces are never extracted.",
+        "type": "enum",
+        "values": [
+          "always",
+          "dependency",
+          "never"
+        ],
+        "default": "always"
+      },
+      {
+        "name": "inaccessible-members",
+        "brief": "Extraction policy for inaccessible members",
+        "details": "Determine whether inaccessible members should be extracted. When set to `always`, inaccessible members are always extracted. When set to `dependency`, inaccessible members are extracted only if they are referenced by the source code. When set to `never`, inaccessible members are never extracted.",
+        "type": "enum",
+        "values": [
+          "always",
+          "dependency",
+          "never"
+        ],
+        "default": "always"
+      },
+      {
+        "name": "inaccessible-bases",
+        "brief": "Extraction policy for inaccessible base classes",
+        "details": "Determine whether inaccessible base classes should be extracted. When set to `always`, inaccessible base classes are always extracted. When set to `dependency`, inaccessible base classes are extracted only if they are referenced by the source code. When set to `never`, inaccessible base classes are never extracted.",
+        "type": "enum",
+        "values": [
+          "always",
+          "dependency",
+          "never"
+        ],
+        "default": "always"
+      },
+      {
+        "name": "see-below",
+        "brief": "Namespaces for symbols rendered as \"see-below\"",
+        "details": "Namespaces for symbols rendered as \"see-below\". Symbols in these namespaces are not extracted and are rendered as \"see-below\" in the documentation. This option is used to exclude symbols from the documentation that are considered part of the private API of the project.",
+        "type": "list<string>",
+        "default": []
+      },
+      {
+        "name": "implementation-defined",
+        "brief": "Namespaces for symbols rendered as \"implementation-defined\"",
+        "details": "Namespaces for symbols rendered as \"implementation-defined\". Symbols in these namespaces are not extracted and are rendered as \"implementation-defined\" in the documentation. This option is used to exclude symbols from the documentation that are considered part of the private API of the project.",
+        "type": "list<string>",
+        "default": []
+      },
+      {
+        "name": "input",
+        "brief": "Include files to extract",
+        "details": "Include files to extract. Only the files listed in this option are extracted. The paths are relative to the mrdocs configuration file.",
+        "options": [
+          {
+            "name": "include",
+            "brief": "Input directories to include",
+            "details": "Input directories to include. Only the files in these directories are extracted. The paths are relative to the mrdocs configuration file.",
+            "type": "list<path>",
+            "must-exist": false,
+            "default": []
+          },
+          {
+            "name": "file-patterns",
+            "brief": "File patterns to include",
+            "details": "File patterns to include. Only the files that match these patterns are extracted. The patterns are relative to the input directories.",
+            "type": "list<string>",
+            "default": []
+          }
+        ]
+      },
+      {
+        "name": "filters",
+        "brief": "Filters",
+        "options": [
+          {
+            "name": "symbols",
+            "brief": "Symbol filters",
+            "details": "Symbol filters. Symbols that match these filters are extracted. The filters are applied to the fully qualified name of the symbol.",
+            "options": [
+              {
+                "name": "include",
+                "brief": "Specifies symbol inclusion patterns",
+                "details": "Specifies symbol inclusion patterns. Symbols that match these patterns are extracted. The patterns are applied to the fully qualified name of the symbol.",
+                "type": "list<string>",
+                "default": []
+              },
+              {
+                "name": "exclude",
+                "brief": "Specifies symbol exclusion patterns",
+                "details": "Specifies symbol exclusion patterns. Symbols that match these patterns are not extracted. The patterns are applied to the fully qualified name of the symbol.",
+                "type": "list<string>",
+                "default": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "Metadata",
+    "brief": "Metadata and C++ constructs to extract",
+    "options": [
+      {
+        "name": "detect-sfinae",
+        "brief": "Detect SFINAE expressions",
+        "details": "When set to true, MrDocs detects SFINAE expressions in the source code and extracts them as part of the documentation. Expressions such as `std::enable_if<...>` are detected, removed, and documented as a requirement.",
+        "type": "bool",
+        "default": true
+      }
+    ]
+  },
+  {
+    "category": "Miscellaneous",
+    "brief": "Miscellaneous options",
+    "options": [
+      {
+        "name": "concurrency",
+        "command-line-only": true,
+        "brief": "Number of threads to use",
+        "details": "The desired level of concurrency: 0 for hardware-suggested.",
+        "type": "unsigned",
+        "default": 0,
+        "value-mapping": {
+          "0": "std::thread::hardware_concurrency()"
+        }
+      },
+      {
+        "name": "verbose",
+        "brief": "Verbose output",
+        "details": "Verbose output. When set to true, MrDocs outputs additional information during the generation of the documentation.",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "report",
+        "brief": "The minimum reporting level: 0 to 4",
+        "details": "The reporting level determines the amount of information displayed during the generation of the documentation. The levels are: 0 - no output, 1 - errors only, 2 - errors and warnings, 3 - errors, warnings, and information, 4 - errors, warnings, information, and debug information.",
+        "type": "unsigned",
+        "default": 1,
+        "min-value": 0,
+        "max-value": 4
+      },
+      {
+        "name": "ignore-map-errors",
+        "brief": "Continue if files are not mapped correctly",
+        "details": "When set to true, MrDocs continues to generate the documentation even if some files are not mapped correctly. Files are not mapped correctly when the source file is not found or the compilation database does not contain the compiler flags for the source file.",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "ignore-failures",
+        "brief": "Whether AST visitation failures should not stop the program",
+        "details": "When set to true, MrDocs continues to generate the documentation even if there are AST visitation failures. AST visitation failures occur when the source code contains constructs that are not supported by MrDocs.",
+        "type": "bool",
+        "default": false
+      }
+    ]
+  }
+]

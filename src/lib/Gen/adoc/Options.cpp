@@ -120,27 +120,26 @@ loadOptions(
     }
     else
     {
-        opt.template_dir = files::makeDirsy(files::appendPath(
+        opt.template_dir = files::appendPath(
             corpus.config->addons,
             "generator",
             "asciidoc"
-        ));
+        );
     }
 
     if(! opt.template_dir.empty())
     {
-        opt.template_dir = files::makeDirsy(
-            files::makeAbsolute(
+        opt.template_dir = files::makeAbsolute(
                 opt.template_dir,
-                corpus.config->configDir));
+                corpus.config->configDir);
     }
     else
     {
-        opt.template_dir = files::makeDirsy(files::appendPath(
+        opt.template_dir = files::appendPath(
             corpus.config->addons,
             "generator",
             "asciidoc"
-        ));
+        );
     }
 
     return opt;

@@ -285,13 +285,9 @@ public:
         Preprocessor& PP = sema_.getPreprocessor();
         HeaderSearch& HS = PP.getHeaderSearchInfo();
 
-        auto normalize_path = [&](
-            std::string_view old_path,
-            bool remove_filename)
+        auto normalize_path = [&](std::string_view old_path)
         {
             llvm::SmallString<128> new_path(old_path);
-            if(remove_filename)
-                path::remove_filename(new_path);
             // KRYSTIAN FIXME: use FileManager::makeAbsolutePath?
             if(! path::is_absolute(new_path))
             {
@@ -309,8 +305,7 @@ public:
             return std::string(new_path);
         };
 
-        std::string sourceRoot = normalize_path(
-            config_->sourceRoot, true);
+        std::string sourceRoot = normalize_path(config_->sourceRoot);
         std::vector<std::pair<std::string, FileKind>> search_dirs;
 
         search_dirs.reserve(HS.search_dir_size());
@@ -323,7 +318,7 @@ public:
                 continue;
             // store the normalized path
             search_dirs.emplace_back(
-                normalize_path(DR->getName(), false),
+                normalize_path(DR->getName()),
                 DL.isSystemHeaderDirectory() ?
                     FileKind::System : FileKind::Other);
         }
@@ -336,7 +331,7 @@ public:
                 file->tryGetRealPathName();
             files_.emplace(file,
                 getFileInfo(search_dirs,
-                    normalize_path(file_path, false),
+                    normalize_path(file_path),
                     sourceRoot));
         };
 
@@ -1542,7 +1537,7 @@ public:
                 config_->input.include,
                 [&filename](const std::string& prefix)
                 {
-                    return filename.starts_with(prefix);
+                    return files::startsWith(filename, prefix);
                 });
             if (!matchPrefix)
             {
