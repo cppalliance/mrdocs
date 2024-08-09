@@ -104,6 +104,15 @@ public:
         /// from CMakeLists.txt
         std::string cmake;
 
+        /// True if the compiler has to use just the system's standard library
+        bool useSystemStdLib = false;
+
+        /// Standard Library include paths
+        std::vector<std::string> systemIncludes;
+
+        /// Additional include paths
+        std::vector<std::string> includes;
+
         /// Additional defines passed to the compiler
         std::vector<std::string> defines;
 

@@ -12,6 +12,7 @@
 #include "lib/Lib/Info.hpp"
 #include "lib/Support/NameParser.hpp"
 #include <mrdocs/Metadata.hpp>
+#include <algorithm>
 #include <ranges>
 #include <span>
 
