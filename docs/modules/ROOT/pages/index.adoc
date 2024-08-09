@@ -6,7 +6,7 @@ Alan Freitas <alandefreitas@gmail.com>
 :page-tags: mrdocs
 :navtitle: Home
 
-image::MrDocsBanner.jpg[]
+image::MrDocsBanner.jpg[link=https://www.mrdocs.com]
 
 - Automating {cpp} reference documentation significantly enhances usability by providing a navigable API and ensuring a single, up-to-date source of truth with minimal effort.
 - However, documenting {cpp} poses significant challenges due to discrepancies between the codebase and the public API. Doxygen remains a popular tool, yet it is suboptimal for {cpp} as it fails to fully comprehend {cpp} constructs and requires many transformation steps, including the incorporation of many macros within the {cpp} code. These macros maintain well-formed and ill-formed versions of the code, undermining the goal of unifying the source of truth.
