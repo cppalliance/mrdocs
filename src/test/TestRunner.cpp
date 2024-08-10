@@ -66,8 +66,6 @@ handleFile(
     llvm::StringRef filePath,
     std::shared_ptr<ConfigImpl const> config)
 {
-    fmt::println("handleFile: {}", filePath);
-
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
 
@@ -273,7 +271,7 @@ handleDir(
     std::string dirPath,
     std::shared_ptr<ConfigImpl const> config)
 {
-    fmt::println("handleDir: {}", dirPath);
+    report::debug("Visiting directory: \"{}\"", dirPath);
 
     namespace fs = llvm::sys::fs;
     namespace path = llvm::sys::path;
