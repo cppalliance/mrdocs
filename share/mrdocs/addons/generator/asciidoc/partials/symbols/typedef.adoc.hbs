@@ -1,9 +1,9 @@
 {{!-- typedef --}}
-= {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
+={{#unless is_multipage}}={{/unless}} {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
 
 {{symbol.doc.brief}}
 
-== Synopsis
+=={{#unless is_multipage}}={{/unless}} Synopsis
 
 {{>source dcl=(primary_location symbol)}}
 
@@ -13,14 +13,14 @@
 ----
 
 {{#if symbol.doc.description}}
-== Description
+=={{#unless is_multipage}}={{/unless}} Description
 
 {{symbol.doc.description}}
 
 {{/if}}
 
 {{#if symbol.doc.see}}
-== See Also
+=={{#unless is_multipage}}={{/unless}} See Also
 
 {{#each symbol.doc.see}}
 {{.}}

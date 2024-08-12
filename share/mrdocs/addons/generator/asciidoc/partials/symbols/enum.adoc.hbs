@@ -1,9 +1,9 @@
 {{!-- enum --}}
-= {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed enum{{/if}}
+={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed enum{{/if}}
 
 {{symbol.doc.brief}}
 
-== Synopsis
+=={{#unless is_multipage}}={{/unless}} Synopsis
 
 {{>source dcl=(primary_location symbol)}}
 
@@ -13,7 +13,7 @@
 ----
 
 {{#if symbol.members}}
-== Members
+=={{#unless is_multipage}}={{/unless}} Members
 [,cols=2]
 |===
 |Name |Description
@@ -24,13 +24,13 @@
 {{/if}}
 
 {{#if symbol.doc.description}}
-== Description
+=={{#unless is_multipage}}={{/unless}} Description
 
 {{symbol.doc.description}}
 {{/if}}
 
 {{#if symbol.doc.see}}
-== See Also
+=={{#unless is_multipage}}={{/unless}} See Also
 
 {{#each symbol.doc.see}}
 {{.}}
