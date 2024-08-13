@@ -1,7 +1,7 @@
 {{#if relfileprefix}}:relfileprefix: {{relfileprefix}}{{/if}}
 [#{{sectionref}}]
 
-= {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
+={{#unless is_multipage}}={{/unless}} {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
 
 {{#if symbol.members.[0]}}
   
@@ -11,7 +11,7 @@
 
 {{/if}}
 
-== Synopsis
+=={{#unless is_multipage}}={{/unless}} Synopsis
   
 {{#each symbol.members as | member |}}
 
@@ -22,14 +22,14 @@
 {{/each}}
   
 {{#if symbol.members.[0].doc.description}}
-== Description
+=={{#unless is_multipage}}={{/unless}} Description
 
 {{symbol.members.[0].doc.description}}
 {{/if}}
 
 {{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
 {{#if (ne (len allExceptions) 0)}}
-== Exceptions
+=={{#unless is_multipage}}={{/unless}} Exceptions
 
 |===
 | Name | Thrown on
@@ -43,7 +43,7 @@
 {{/with}}
 
 {{#if symbol.members.[0].doc.returns}}
-== Return Value
+=={{#unless is_multipage}}={{/unless}} Return Value
 
 {{symbol.members.[0].doc.returns}}
 
@@ -51,7 +51,7 @@
 
 {{#with (flattenUnique symbol.members "doc.params" "name") as |allParams|}}
 {{#if (ne (len allParams) 0)}}
-== Parameters
+=={{#unless is_multipage}}={{/unless}} Parameters
 
 |===
 | Name | Description {{! TODO: | Type? }}
@@ -65,7 +65,7 @@
 {{/with}}
 
 {{#if symbol.members.[0].doc.preconditions}}
-== Preconditions
+=={{#unless is_multipage}}={{/unless}} Preconditions
 
 {{#each symbol.members.[0].doc.preconditions}}
 {{.}}
@@ -74,7 +74,7 @@
 {{/if}}
 
 {{#if symbol.members.[0].doc.postconditions}}
-== Postconditions
+=={{#unless is_multipage}}={{/unless}} Postconditions
 
 {{#each symbol.members.[0].doc.postconditions}}
 {{.}}
@@ -83,7 +83,7 @@
 {{/if}}
 
 {{#if symbol.members.[0].doc.see}}
-== See Also
+=={{#unless is_multipage}}={{/unless}} See Also
 
 {{#each symbol.members.[0].doc.see}}
 {{.}}

@@ -1,9 +1,9 @@
 {{!-- function --}}
-= {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
+={{#unless is_multipage}}={{/unless}} {{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}
 
 {{symbol.doc.brief}}
 
-== Synopsis
+=={{#unless is_multipage}}={{/unless}} Synopsis
 
 {{>source dcl=(primary_location symbol)}}
 
@@ -13,14 +13,14 @@
 ----
 
 {{#if symbol.doc.description}}
-== Description
+=={{#unless is_multipage}}={{/unless}} Description
 
 {{symbol.doc.description}}
 
 {{/if}}
 
 {{#if symbol.doc.exceptions}}
-== Exceptions
+=={{#unless is_multipage}}={{/unless}} Exceptions
 
 |===
 | Name | Thrown on
@@ -34,14 +34,14 @@
 {{/if}}
 
 {{#if symbol.doc.returns}}
-== Return Value
+=={{#unless is_multipage}}={{/unless}} Return Value
 
 {{symbol.doc.returns}}
 
 {{/if}}
 
 {{#if symbol.doc.params}}
-== Parameters
+=={{#unless is_multipage}}={{/unless}} Parameters
 
 |===
 | Name | Description {{! TODO: | Type? }}
@@ -55,7 +55,7 @@
 {{/if}}
 
 {{#if symbol.doc.preconditions}}
-== Preconditions
+=={{#unless is_multipage}}={{/unless}} Preconditions
 
 {{#each symbol.doc.preconditions}}
 {{.}}
@@ -64,7 +64,7 @@
 {{/if}}
 
 {{#if symbol.doc.postconditions}}
-== Postconditions
+=={{#unless is_multipage}}={{/unless}} Postconditions
 
 {{#each symbol.doc.postconditions}}
 {{.}}
@@ -73,7 +73,7 @@
 {{/if}}
 
 {{#if symbol.doc.see}}
-== See Also
+=={{#unless is_multipage}}={{/unless}} See Also
 
 {{#each symbol.doc.see}}
 {{.}}
