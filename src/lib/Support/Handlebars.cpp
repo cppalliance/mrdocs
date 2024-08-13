@@ -5695,6 +5695,39 @@ registerStringHelpers(Handlebars& hbs)
     }));
 }
 
+std::vector<std::string> 
+parseKeyPath(std::string const& keyPath)
+{
+    std::vector<std::string> keys;
+    std::istringstream iss(keyPath);
+    std::string token;
+
+    while (std::getline(iss, token, '.'))
+    {
+        keys.push_back(token);
+    }
+
+    return keys;
+}
+
+dom::Value
+getNestedValue(dom::Value const& obj, std::vector<std::string> const& keys)
+{
+    dom::Value current = obj;
+    for (auto const& key : keys)
+    {
+        if (current.isObject() && current.getObject().exists(key))
+        {
+            current = current.getObject().get(key);
+        }
+        else
+        {
+            return dom::Value();
+        }
+    }
+    return current;
+}
+
 void
 registerContainerHelpers(Handlebars& hbs)
 {
@@ -6405,6 +6438,90 @@ registerContainerHelpers(Handlebars& hbs)
     }));
 
     hbs.registerHelper("concat", dom::makeInvocable(concat_fn));
+
+    static auto flatten_fn = dom::makeInvocable([](dom::Value const& collection, dom::Value const& key) -> dom::Value
+    {
+        dom::Array result;
+
+        if (!collection.isArray())
+        {
+            return result;
+        }
+
+        std::string const keyPath(key.getString());
+        auto const keys = parseKeyPath(keyPath);
+
+        auto const& arr = collection.getArray();
+        for (auto const& item : arr)
+        {
+            dom::Value const innerCollection = getNestedValue(item, keys);
+            if (innerCollection.isArray())
+            {
+                auto const& innerArray = innerCollection.getArray();
+                for (auto const& innerItem : innerArray)
+                {
+                    result.emplace_back(innerItem);
+                }
+            }
+        }
+
+        return result;
+    });
+
+    hbs.registerHelper("flatten", flatten_fn); 
+
+    static auto flattenUnique_fn = dom::makeInvocable([](dom::Value const& collection, dom::Value const& key, dom::Value const& uniqueKey) -> dom::Value
+    {
+        dom::Array result;
+        std::unordered_set<std::string> seen;
+
+        if (!collection.isArray())
+        {
+            return result;
+        }
+
+        if (key.empty() || uniqueKey.empty())
+        {
+            return result;
+        }
+
+        if (!key.isString() || !uniqueKey.isString())
+        {
+            return result;
+        }
+
+        std::string const keyPath(key.getString());
+        auto const keys = parseKeyPath(keyPath);
+        std::string const uniqueKeyPath(uniqueKey.getString());
+        auto const uniqueKeys = parseKeyPath(uniqueKeyPath);
+
+        auto const& arr = collection.getArray();
+        for (auto const& item : arr)
+        {
+            dom::Value const innerCollection = getNestedValue(item, keys);
+            if (innerCollection.isArray())
+            {
+                auto const& innerArray = innerCollection.getArray();
+                for (auto const& innerItem : innerArray)
+                {
+                    dom::Value const uniqueValue = getNestedValue(innerItem, uniqueKeys);
+                    if (uniqueValue.isString())
+                    {
+                        std::string uniqueStr(uniqueValue.getString());
+                        if (seen.find(uniqueStr) == seen.end())
+                        {
+                            seen.insert(uniqueStr);
+                            result.emplace_back(innerItem);
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    });
+
+    hbs.registerHelper("flattenUnique", flattenUnique_fn);      
 }
 
 } // helpers

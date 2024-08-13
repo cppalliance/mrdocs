@@ -3,16 +3,91 @@
 
 = {{#if symbol.name}}{{>nested-name-specifier symbol=symbol.parent includeNamespace=true}}{{symbol.name}}{{else}}Unnamed overload set{{/if}}
 
-== Members
+{{#if symbol.members.[0]}}
+  
+{{#if symbol.members.[0].doc.brief}}
 
+{{symbol.members.[0].doc.brief}}
+
+{{/if}}
+
+== Synopsis
+  
 {{#each symbol.members as | member |}}
-
-{{member.doc.brief}}
 
 [source,cpp,subs="verbatim,macros,-callouts"]
 ----
 {{> (concat 'signature' '/' (lookup member 'kind')) symbol=member link=member}};
-  xref:{{ref}}[pass:c,q,m[*_» more..._*]]
 ----
-
 {{/each}}
+  
+{{#if symbol.members.[0].doc.description}}
+== Description
+
+{{symbol.members.[0].doc.description}}
+{{/if}}
+
+{{#with (flattenUnique symbol.members "doc.exceptions" "exception") as |allExceptions|}}
+{{#if (ne (len allExceptions) 0)}}
+== Exceptions
+
+|===
+| Name | Thrown on
+
+{{#each allExceptions as |exception|}}
+| `{{exception.exception}}`
+| {{exception.description}}
+{{/each}}
+|===
+{{/if}}
+{{/with}}
+
+{{#if symbol.members.[0].doc.returns}}
+== Return Value
+
+{{symbol.members.[0].doc.returns}}
+
+{{/if}}
+
+{{#with (flattenUnique symbol.members "doc.params" "name") as |allParams|}}
+{{#if (ne (len allParams) 0)}}
+== Parameters
+
+|===
+| Name | Description {{! TODO: | Type? }}
+
+{{#each allParams as |param|}}
+| *{{param.name}}*
+| {{param.description}}
+{{/each}}
+|===
+{{/if}}
+{{/with}}
+
+{{#if symbol.members.[0].doc.preconditions}}
+== Preconditions
+
+{{#each symbol.members.[0].doc.preconditions}}
+{{.}}
+{{/each}}
+
+{{/if}}
+
+{{#if symbol.members.[0].doc.postconditions}}
+== Postconditions
+
+{{#each symbol.members.[0].doc.postconditions}}
+{{.}}
+{{/each}}
+
+{{/if}}
+
+{{#if symbol.members.[0].doc.see}}
+== See Also
+
+{{#each symbol.members.[0].doc.see}}
+{{.}}
+{{/each}}
+{{/if}}
+
+{{/if}}
