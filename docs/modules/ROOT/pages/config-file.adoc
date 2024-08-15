@@ -240,55 +240,9 @@ class B { /* see below */ };
 [#config-options-reference]
 == Reference
 
-=== Command Line Options
-
-The following options can be used to control the general behavior of MrDocs and can only be provided via the command line:
-
-[c-preprocessor]
-====
-
-[cols="1,2"]
-|===
-| Name | Description
-
-#define CMDLINE_OPTION(Name, Kebab, Desc) | `pass:[Kebab]` | Desc
-include::partial$ConfigOptions.inc[]
-
-|===
-====
-
-* Any argument provided to MrDocs without a key is treated as one path in `inputs`.
-These can be paths to the configuration file `config`, the `compilation-database` (compilation database or build scripts), or the `source-root` directory.
-See the <<common-options>> section for more information on these options.
-
-* The `config` option can be used to explicitly specify a configuration file.
-Any path in `inputs` whose filename is `mrdocs.yml` will also be used as the configuration file.
-If no configuration file is provided via `inputs` or `config`, MrDocs will attempt to find `mrdocs.yml` in the current directory.
-
-[IMPORTANT]
-====
-The `config` path is interpreted relative to the current working directory by MrDocs.
-All other path options are interpreted relative to the `mrdocs.yml` configuration file.
-====
-
-[#common-options]
-=== Common Options
-
 The following options can be defined both in the configuration file and on the command line, where the command line options always take precedence.
 
-[c-preprocessor]
+[config-options-reference,level=3]
 ====
-
-|===
-| Name | Description
-
-#define COMMON_OPTION(Name, Kebab, Desc) | `pass:[Kebab]` | Desc
-include::partial$ConfigOptions.inc[]
-
-|===
+include::partial$ConfigOptions.json[]
 ====
-
-// == Custom commands / Command Aliases
-// ALIASES += sideeffect="\par Side Effects:^^"
-// ALIASES += l{1}="\ref \1"
-// See \l{SomeClass} for more information.
