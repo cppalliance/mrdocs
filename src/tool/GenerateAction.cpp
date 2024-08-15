@@ -67,7 +67,9 @@ generateCompileCommandsFile(llvm::StringRef inputPath, llvm::StringRef cmakeArgs
     auto const fileName = files::getFileName(inputPath);
     if (fileName == "CMakeLists.txt")
     {
-        return executeCmakeExportCompileCommands(files::getParentDir(inputPath), cmakeArgs, buildDir);
+        std::string cmakeSourceDir = files::getParentDir(inputPath);
+        return executeCmakeExportCompileCommands(
+            cmakeSourceDir, cmakeArgs, buildDir);
     }
 
     // --------------------------------------------------------------
@@ -85,7 +87,10 @@ generateCompileCommandsFile(llvm::StringRef inputPath, llvm::StringRef cmakeArgs
 
 
 Expected<void>
-DoGenerateAction(std::string_view execPath, char const** argv)
+DoGenerateAction(
+    std::string const& configPath,
+    Config::Settings::ReferenceDirectories const& dirs,
+    char const** argv)
 {
     // --------------------------------------------------------------
     //
@@ -93,39 +98,48 @@ DoGenerateAction(std::string_view execPath, char const** argv)
     //
     // --------------------------------------------------------------
     Config::Settings publicSettings;
-    MRDOCS_TRY(toolArgs.apply(publicSettings, execPath, argv));
-    ThreadPool threadPool(toolArgs.concurrency);
+    MRDOCS_TRY(Config::Settings::load_file(publicSettings, configPath, dirs));
+    MRDOCS_TRY(toolArgs.apply(publicSettings, dirs, argv));
+    MRDOCS_TRY(publicSettings.normalize(dirs));
+    ThreadPool threadPool(publicSettings.concurrency);
     MRDOCS_TRY(
         std::shared_ptr<ConfigImpl const> config,
-        loadConfigFile(publicSettings, nullptr, threadPool));
+        ConfigImpl::load(publicSettings, dirs, threadPool));
 
     // --------------------------------------------------------------
     //
     // Load generator
     //
     // --------------------------------------------------------------
-    auto const& settings = config->settings();
+    auto& settings = config->settings();
     MRDOCS_TRY(
         Generator const& generator,
-        getGenerators().find(settings.generate),
+        getGenerators().find(to_string(settings.generate)),
         formatError(
             "the Generator \"{}\" was not found",
-            config->settings().generate));
+            to_string(config->settings().generate)));
 
     // --------------------------------------------------------------
     //
     // Find or generate the compile_commands.json
     //
     // --------------------------------------------------------------
+    std::string compilationDatabasePath = settings.compilationDatabase;
+    if (compilationDatabasePath.empty())
+    {
+        std::string c = files::appendPath(settings.sourceRoot, "CMakeLists.txt");
+        if (files::exists(c)) {
+            compilationDatabasePath = c;
+        }
+    }
     MRDOCS_CHECK(
-        settings.compilationDatabase,
+        compilationDatabasePath,
         "The compilation database path argument is missing");
     ScopedTempDirectory tempDir("mrdocs");
+    std::string buildPath = files::appendPath(tempDir.path(), "build");
     Expected<std::string> const compileCommandsPathExp =
         generateCompileCommandsFile(
-            settings.compilationDatabase,
-            settings.cmake,
-            files::appendPath(tempDir.path(), "build"));
+            compilationDatabasePath, settings.cmake, buildPath);
     if (!compileCommandsPathExp)
     {
         report::error(
@@ -142,21 +156,27 @@ DoGenerateAction(std::string_view execPath, char const** argv)
     std::string compileCommandsPath = files::normalizePath(*compileCommandsPathExp);
     MRDOCS_TRY(compileCommandsPath, files::makeAbsolute(compileCommandsPath));
     std::string errorMessage;
-    MRDOCS_TRY_MSG(
-        auto& compileCommands,
+    std::unique_ptr<clang::tooling::JSONCompilationDatabase>
+        jsonDatabasePtr =
         tooling::JSONCompilationDatabase::loadFromFile(
             compileCommandsPath,
             errorMessage,
-            tooling::JSONCommandLineSyntax::AutoDetect),
-        std::move(errorMessage));
+            tooling::JSONCommandLineSyntax::AutoDetect);
+    if (!jsonDatabasePtr)
+    {
+        return Unexpected(formatError(
+            "Failed to load compilation database: {}", errorMessage));
+    }
+    clang::tooling::JSONCompilationDatabase& jsonDatabase = *jsonDatabasePtr;
 
-    // Custom compilation database that converts relative paths to absolute
-    auto const defaultIncludePaths = getCompilersDefaultIncludeDir(compileCommands);
+    // Custom compilation database that applies settings from the configuration
+    auto const defaultIncludePaths = getCompilersDefaultIncludeDir(
+        jsonDatabase);
     auto compileCommandsDir = files::getParentDir(compileCommandsPath);
-    MRDOCS_ASSERT(files::isDirsy(compileCommandsDir));
     MrDocsCompilationDatabase compilationDatabase(
         compileCommandsDir,
-        compileCommands, config,
+        jsonDatabase,
+        config,
         defaultIncludePaths);
 
     // --------------------------------------------------------------
@@ -187,6 +207,13 @@ DoGenerateAction(std::string_view execPath, char const** argv)
             (*config)->configDir));
     report::info("Generating docs\n");
     MRDOCS_TRY(generator.build(absOutput, *corpus));
+
+    // --------------------------------------------------------------
+    //
+    // Clean temp files
+    //
+    // --------------------------------------------------------------
+
     return {};
 }
 

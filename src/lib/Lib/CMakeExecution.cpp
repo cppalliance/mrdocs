@@ -24,7 +24,16 @@ namespace {
 Expected<std::string>
 getCmakePath()
 {
-    llvm::ErrorOr<std::string> const path = llvm::sys::findProgramByName("cmake");
+    llvm::ErrorOr<std::string> path = llvm::sys::findProgramByName("cmake");
+    if (!path)
+    {
+        char const* const cmakeRootPath = std::getenv("CMAKE_ROOT");
+        if (cmakeRootPath != nullptr)
+        {
+            std::string cmakeBinPath = files::appendPath(cmakeRootPath, "bin");
+            path = llvm::sys::findProgramByName("cmake", {cmakeBinPath, cmakeRootPath});
+        }
+    }
     MRDOCS_CHECK(path, "CMake executable not found");
     std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), llvm::StringRef()};
     std::vector<llvm::StringRef> const args = {*path, "--version"};
@@ -452,10 +461,7 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
     MRDOCS_CHECK(llvm::sys::fs::exists(projectPath), "Project path does not exist");
     MRDOCS_TRY(auto const cmakePath, getCmakePath());
 
-    ScopedTempFile const errorPath("cmake-error", "txt");
-    MRDOCS_CHECK(errorPath, "Failed to create temporary file");
-
-    std::optional<llvm::StringRef> const redirects[] = {llvm::StringRef(), llvm::StringRef(), errorPath.path()};
+    std::array<std::optional<llvm::StringRef>, 3> const redirects = {std::nullopt, std::nullopt, std::nullopt};
     std::vector<llvm::StringRef> args = {cmakePath, "-S", projectPath, "-B", buildDir, "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"};
 
     auto const additionalArgs = parseBashArgs(cmakeArgs.str());
@@ -463,9 +469,7 @@ executeCmakeExportCompileCommands(llvm::StringRef projectPath, llvm::StringRef c
 
     int const result = llvm::sys::ExecuteAndWait(cmakePath, args, std::nullopt, redirects);
     if (result != 0) {
-        auto bufferOrError = llvm::MemoryBuffer::getFile(errorPath.path());
-        MRDOCS_CHECK(bufferOrError, "CMake execution failed (no error output available)");
-        return Unexpected(Error("CMake execution failed: \n" + bufferOrError.get()->getBuffer().str()));
+        return Unexpected(Error("CMake execution failed"));
     }
 
     llvm::SmallString<128> compileCommandsPath(buildDir);
