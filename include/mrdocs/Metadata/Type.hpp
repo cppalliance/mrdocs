@@ -26,7 +26,7 @@
 namespace clang {
 namespace mrdocs {
 
-enum QualifierKind : int
+enum QualifierKind
 {
     None,
     Const,
@@ -39,6 +39,7 @@ enum class TypeKind
 {
     Named = 1, // for bitstream
     Decltype,
+    Auto,
     LValueReference,
     RValueReference,
     Pointer,
@@ -48,6 +49,14 @@ enum class TypeKind
 };
 
 MRDOCS_DECL dom::String toString(TypeKind kind) noexcept;
+
+enum class AutoKind
+{
+    Auto,
+    DecltypeAuto
+};
+
+MRDOCS_DECL dom::String toString(AutoKind kind) noexcept;
 
 struct TypeInfo
 {
@@ -63,6 +72,7 @@ struct TypeInfo
 
     constexpr bool isNamed()           const noexcept { return Kind == TypeKind::Named; }
     constexpr bool isDecltype()        const noexcept { return Kind == TypeKind::Decltype; }
+    constexpr bool isAuto()            const noexcept { return Kind == TypeKind::Auto; }
     constexpr bool isLValueReference() const noexcept { return Kind == TypeKind::LValueReference; }
     constexpr bool isRValueReference() const noexcept { return Kind == TypeKind::RValueReference; }
     constexpr bool isPointer()         const noexcept { return Kind == TypeKind::Pointer; }
@@ -100,6 +110,7 @@ struct IsType : TypeInfo
 
     static constexpr bool isNamed()           noexcept { return K == TypeKind::Named; }
     static constexpr bool isDecltype()        noexcept { return K == TypeKind::Decltype; }
+    static constexpr bool isAuto()            noexcept { return K == TypeKind::Auto; }
     static constexpr bool isLValueReference() noexcept { return K == TypeKind::LValueReference; }
     static constexpr bool isRValueReference() noexcept { return K == TypeKind::RValueReference; }
     static constexpr bool isPointer()         noexcept { return K == TypeKind::Pointer; }
@@ -127,6 +138,14 @@ struct DecltypeTypeInfo
 {
     QualifierKind CVQualifiers = QualifierKind::None;
     ExprInfo Operand;
+};
+
+struct AutoTypeInfo
+    : IsType<TypeKind::Auto>
+{
+    QualifierKind CVQualifiers = QualifierKind::None;
+    AutoKind Keyword = AutoKind::Auto;
+    std::unique_ptr<NameInfo> Constraint;
 };
 
 struct LValueReferenceTypeInfo
@@ -225,6 +244,10 @@ visit(
     case TypeKind::Decltype:
         return f(static_cast<add_cv_from_t<
             TypeTy, DecltypeTypeInfo>&>(II),
+                std::forward<Args>(args)...);
+    case TypeKind::Auto:
+        return f(static_cast<add_cv_from_t<
+            TypeTy, AutoTypeInfo>&>(II),
                 std::forward<Args>(args)...);
     case TypeKind::LValueReference:
         return f(static_cast<add_cv_from_t<

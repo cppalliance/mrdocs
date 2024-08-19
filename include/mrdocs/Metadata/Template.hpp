@@ -207,6 +207,9 @@ struct TypeTParam
 {
     /** Keyword (class/typename) the parameter uses */
     TParamKeyKind KeyKind = TParamKeyKind::Class;
+
+    /** The type-constraint for the parameter, if any. */
+    std::unique_ptr<NameInfo> Constraint;
 };
 
 struct NonTypeTParam
@@ -283,6 +286,10 @@ struct TemplateInfo
     */
     std::vector<std::unique_ptr<TParam>> Params;
     std::vector<std::unique_ptr<TArg>> Args;
+
+    /** The requires-clause for the template parameter list, if any.
+    */
+    ExprInfo Requires;
 
     /** Primary template ID for partial and explicit specializations.
     */

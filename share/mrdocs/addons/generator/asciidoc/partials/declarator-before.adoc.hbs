@@ -5,6 +5,7 @@
 {{#if element-type~}}{{~>declarator-before element-type nolink=nolink~}}{{/if~}}
 {{#if return-type~}}{{~>declarator-before return-type nolink=nolink~}}{{/if~}}
 {{#if (eq kind "named")}}{{>name-info name nolink=nolink}}{{/if~}}
+{{#if (eq kind "auto")}}{{#if constraint}}{{>name-info constraint nolink=nolink}} {{/if~}}{{keyword}}{{/if~}}
 {{#if cv-qualifiers~}}
     {{#if pointee-type}} {{cv-qualifiers}}{{else}} {{cv-qualifiers}}{{/if~}}
 {{/if~}}

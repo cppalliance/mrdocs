@@ -43,6 +43,8 @@ toString(
         return "named";
     case TypeKind::Decltype:
         return "decltype";
+    case TypeKind::Auto:
+        return "auto";
     case TypeKind::LValueReference:
         return "lvalue-reference";
     case TypeKind::RValueReference:
@@ -55,6 +57,21 @@ toString(
         return "array";
     case TypeKind::Function:
         return "function";
+    default:
+        MRDOCS_UNREACHABLE();
+    }
+}
+
+dom::String
+toString(
+    AutoKind kind) noexcept
+{
+    switch(kind)
+    {
+    case AutoKind::Auto:
+        return "auto";
+    case AutoKind::DecltypeAuto:
+        return "decltype(auto)";
     default:
         MRDOCS_UNREACHABLE();
     }
@@ -150,6 +167,23 @@ operator()(
 
     if constexpr(T::isDecltype())
         write("decltype(", t.Operand.Written, ')');
+
+    if constexpr(T::isAuto())
+    {
+        if(t.Constraint)
+            write(toString(*t.Constraint), ' ');
+        switch(t.Keyword)
+        {
+        case AutoKind::Auto:
+            write("auto");
+            break;
+        case AutoKind::DecltypeAuto:
+            write("decltype(auto)");
+            break;
+        default:
+            MRDOCS_UNREACHABLE();
+        }
+    }
 
     if constexpr(T::isNamed())
         write(toString(*t.Name));

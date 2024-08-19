@@ -122,6 +122,9 @@ class Finalizer
 
         visit(param, [this]<typename Ty>(Ty& P)
         {
+            if constexpr(Ty::isType())
+                finalize(P.Constraint);
+
             if constexpr(Ty::isNonType())
                 finalize(P.Type);
 
@@ -158,6 +161,9 @@ class Finalizer
 
             if constexpr(Ty::isNamed())
                 finalize(T.Name);
+
+            if constexpr(Ty::isAuto())
+                finalize(T.Constraint);
         });
     }
 
@@ -373,6 +379,13 @@ public:
         finalize(I.Template);
         finalize(I.Deduced);
         finalize(I.Params);
+    }
+
+    void operator()(ConceptInfo& I)
+    {
+        check(I.Namespace);
+        finalize(I.javadoc);
+        finalize(I.Template);
     }
 };
 
