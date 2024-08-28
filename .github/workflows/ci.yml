@@ -104,9 +104,9 @@ jobs:
           cd fmt
           cmake -S . -B ./build -D FMT_DOC=OFF -D FMT_TEST=OFF -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc }}
           N_CORES=$(nproc 2>/dev/null || echo 1)
-          cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES 
+          cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES
           cmake --install ./build --prefix ./install
-          
+
           fmt_root=$(pwd)/install
           if [[ ${{ runner.os }} == 'Windows' ]]; then
               fmt_root=$(echo "$fmt_root" | sed 's/\\/\//g')
@@ -135,9 +135,9 @@ jobs:
           fi
           cmake -S . -B ./build -DCMAKE_BUILD_TYPE=${{ matrix.build-type }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc }}
           N_CORES=$(nproc 2>/dev/null || echo 1)
-          cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES 
+          cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES
           cmake --install ./build --prefix ./install
-          
+
           duktape_root=$(pwd)/install
           if [[ ${{ runner.os }} == 'Windows' ]]; then
               duktape_root=$(echo "$duktape_root" | sed 's/\\/\//g')
@@ -159,12 +159,12 @@ jobs:
           git config --global advice.detachedHead false
           git clone https://github.com/GNOME/libxml2 --branch v2.12.6 --depth 1
           cd libxml2
-          
+
           cmake -S . -B ./build -DCMAKE_BUILD_TYPE=Release -DLIBXML2_WITH_PROGRAMS=ON -DLIBXML2_WITH_FTP=OFF -DLIBXML2_WITH_HTTP=OFF -DLIBXML2_WITH_ICONV=OFF -DLIBXML2_WITH_LEGACY=OFF -DLIBXML2_WITH_LZMA=OFF -DLIBXML2_WITH_ZLIB=OFF -DLIBXML2_WITH_ICU=OFF -DLIBXML2_WITH_TESTS=OFF -DLIBXML2_WITH_HTML=ON -DLIBXML2_WITH_C14N=ON -DLIBXML2_WITH_CATALOG=ON -DLIBXML2_WITH_DEBUG=ON -DLIBXML2_WITH_ISO8859X=ON -DLIBXML2_WITH_MEM_DEBUG=OFF -DLIBXML2_WITH_MODULES=ON -DLIBXML2_WITH_OUTPUT=ON -DLIBXML2_WITH_PATTERN=ON -DLIBXML2_WITH_PUSH=ON -DLIBXML2_WITH_PYTHON=OFF -DLIBXML2_WITH_READER=ON -DLIBXML2_WITH_REGEXPS=ON -DLIBXML2_WITH_SAX1=ON -DLIBXML2_WITH_SCHEMAS=ON -DLIBXML2_WITH_SCHEMATRON=ON -DLIBXML2_WITH_THREADS=ON -DLIBXML2_WITH_THREAD_ALLOC=OFF -DLIBXML2_WITH_TREE=ON -DLIBXML2_WITH_VALID=ON -DLIBXML2_WITH_WRITER=ON -DLIBXML2_WITH_XINCLUDE=ON -DLIBXML2_WITH_XPATH=ON -DLIBXML2_WITH_XPTR=ON -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx || steps.parameters.outputs.clang-bin }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc || steps.parameters.outputs.clang-bin }}
           N_CORES=$(nproc 2>/dev/null || echo 1)
-          cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES 
+          cmake --build ./build --config ${{ matrix.build-type }} --parallel $N_CORES
           cmake --install ./build --prefix ./install
-          
+
           libxml2_root=$(pwd)/install
           if [[ ${{ runner.os }} == 'Windows' ]]; then
               libxml2_root=$(echo "$libxml2_root" | sed 's/\\/\//g')
@@ -193,7 +193,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.llvm-parameters.outputs.llvm-root }}
-          key: llvm-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
+          key: llvm-libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
 
       - name: Install LLVM
         id: llvm-install
@@ -202,7 +202,7 @@ jobs:
         run: |
           # LLVM is be installed with the default compiler
           set -x
-          
+
           # Shallow clone LLVM_HASH in ../third-party/llvm
           cd ..
           mkdir -p third-party/llvm-project
@@ -218,7 +218,7 @@ jobs:
           # Copy presets
           cp ../../mrdocs/third-party/llvm/CMakePresets.json ./llvm
           cp ../../mrdocs/third-party/llvm/CMakeUserPresets.json.example ./llvm/CMakeUserPresets.json
-          
+
           # Build
           cd llvm
           llvm_root=$(pwd)
@@ -226,10 +226,47 @@ jobs:
           cmake -S . -B ./build --preset=${{ steps.llvm-parameters.outputs.llvm-build-preset }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc }}
           if [[ ${{ runner.os }} == 'Linux' ]]; then
               cmake --build ./build --target help
-          fi          
+          fi
           N_CORES=$(nproc 2>/dev/null || echo 1)
           cmake --build ./build --config Release --parallel $N_CORES
           cmake --install ./build --prefix "$llvm_project_root"/install
+
+      - name: Install LibC++
+        id: libcxx-install
+        if: steps.llvm-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -x
+          cd ../third-party/llvm-project
+          llvm_project_root=$(pwd)
+
+          export CXX="$llvm_project_root/install/bin/clang++"
+          export CC="$llvm_project_root/install/bin/clang"
+
+          if [[ ${{ runner.os }} != 'Windows' ]]; then
+            cmake -G Ninja  \
+                  -S runtimes  \
+                  -B build-libcxx  \
+                  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind"  \
+                  -DCMAKE_INSTALL_PREFIX="$llvm_project_root/install"
+
+            ninja -C build-libcxx cxx cxxabi unwind
+            ninja -C build-libcxx install-cxx install-cxxabi install-unwind
+          else
+            cmake -G Ninja \
+                  -S runtimes \
+                  -B build-libcxx \
+                  -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi" \
+                  -DCMAKE_INSTALL_PREFIX="$llvm_project_root/install" \
+                  -DLIBCXXABI_USE_LLVM_UNWINDER=OFF \
+                  -DLIBCXXABI_ENABLE_SHARED=OFF \
+                  -DLIBCXXABI_ENABLE_STATIC=ON \
+                  -DLIBCXX_ENABLE_SHARED=OFF \
+                  -DLIBCXX_NO_VCRUNTIME=ON \
+                  -DCMAKE_CXX_FLAGS="-D__ORDER_LITTLE_ENDIAN__=1234 -D__ORDER_BIG_ENDIAN__=4321 -D__BYTE_ORDER__=__ORDER_LITTLE_ENDIAN__"
+            ninja -C build-libcxx cxx
+            ninja -C build-libcxx install-cxx
+          fi
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -256,7 +293,7 @@ jobs:
             -D duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
             -D Duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
             -D fmt_ROOT=${{ steps.fmt-install.outputs.fmt-root }}
-            ${{ (steps.libxml2-install.outputs.libxml2-root && format('-D libxml2_ROOT={0}', steps.libxml2-install.outputs.libxml2-root)) || '' }}  
+            ${{ (steps.libxml2-install.outputs.libxml2-root && format('-D libxml2_ROOT={0}', steps.libxml2-install.outputs.libxml2-root)) || '' }}
             ${{ (steps.libxml2-install.outputs.libxml2-root && format('-D LibXml2_ROOT={0}', steps.libxml2-install.outputs.libxml2-root)) || '' }}
           export-compile-commands: true
           run-tests: true
@@ -296,27 +333,17 @@ jobs:
       run:
         shell: bash
     name: Releases
-    timeout-minutes: 30
-    runs-on: ubuntu-20.04
-    container: ubuntu:23.04
+    timeout-minutes: 30 
+    runs-on: ubuntu-latest
+    container: ubuntu:20.04
     permissions:
       contents: write
     steps:
-      - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.4
-        id: setup-cpp
-        with:
-          compiler: clang
-          version: 16
-          check-latest: true
-
       - name: Install packages
         uses: alandefreitas/cpp-actions/package-install@v1.8.4
         id: package-install
         with:
-          apt-get: libstdc++-12-dev asciidoctor cmake bzip2 git
-          cc: ${{ steps.setup-cpp.outputs.cc }}
-          cxx: ${{ steps.setup-cpp.outputs.cxx }}
+          apt-get: build-essential asciidoctor cmake bzip2 git
 
       - name: Clone mrdocs
         uses: actions/checkout@v4
@@ -344,8 +371,6 @@ jobs:
           mrdocs --version
           MRDOCS_ROOT=/usr/local
           echo -e "MRDOCS_ROOT=$MRDOCS_ROOT" >> $GITHUB_ENV
-          CXX=/usr/bin/clang-16
-          echo -e "CXX=$CXX" >> $GITHUB_ENV
 
       - name: Clone Boost.URL
         uses: alandefreitas/cpp-actions/boost-clone@v1.8.4
@@ -398,11 +423,6 @@ jobs:
 
       - name: Generate Demos
         run: |
-          CXX="${{ steps.setup-cpp.outputs.cxx }}"
-          export CXX
-          CC="${{ steps.setup-cpp.outputs.cc }}"
-          export CC
-          
           declare -a generators=(
             "adoc"
             "xml"
@@ -443,15 +463,15 @@ jobs:
         id: compare-demos
         run: |
           set -x
-          
+
           # Define URLs and directories
           LOCAL_DEMOS_DIR="./demos/"
           PREV_DEMOS_DIR="./demos-previous/"
           DIFF_DIR="./demos-diff/"
-          
+
           # Create directories if they don't exist
           mkdir -p $PREV_DEMOS_DIR $DIFF_DIR
-          
+
           # Iterate over the previous files and compare them with the corresponding local files
           find $PREV_DEMOS_DIR -type f | while read previous_file; do
               # Derive the corresponding local file path
@@ -469,7 +489,7 @@ jobs:
                   cat "$previous_file" >> "$diff_output"
               fi
           done
-          
+
           # Iterate over the local files to find new files
           find $LOCAL_DEMOS_DIR -type f | while read local_file; do
               previous_file="${PREV_DEMOS_DIR}${local_file#$LOCAL_DEMOS_DIR}"
@@ -480,7 +500,7 @@ jobs:
                   echo "NEW CONTENT OF THE FILE IS:" >> "$diff_output"
               fi
           done
-          
+
           # Check if the diff directory is empty
           if [[ -z $(ls -A $DIFF_DIR) ]]; then
               echo "No differences found."

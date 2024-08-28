@@ -499,6 +499,15 @@ def remove_reference_dir_from_path(path):
     return path
 
 
+def get_reference_dir_from_path(path):
+    if path.startswith('<'):
+        closing_bracket = path.find('>')
+        if closing_bracket == -1:
+            raise ValueError(f'Invalid default value {path} for option')
+        return path[1:closing_bracket]
+    return None
+
+
 def option_validation_snippet(option):
     camel_name = to_camel_case(option['name'])
     contents = ''
@@ -510,6 +519,7 @@ def option_validation_snippet(option):
         path_is_relativeto_dir = option['relativeto']
         if path_is_relativeto_dir.startswith('<') and path_is_relativeto_dir.endswith('>'):
             path_is_relativeto_dir = path_is_relativeto_dir[1:-1]
+
         default_is_relativeto_dir = path_is_relativeto_dir
         if 'default' in option and isinstance(option['default'], str):
             first_path_seg_is_reference = option['default'].startswith('<')
@@ -520,6 +530,7 @@ def option_validation_snippet(option):
                 default_is_relativeto_dir = option['default'][1:closing_bracket]
         else:
             default_is_relativeto_dir = 'cwd'
+
     same_base_paths = default_is_relativeto_dir == path_is_relativeto_dir
 
     validation_contents = ''
@@ -644,16 +655,18 @@ def option_validation_snippet(option):
                 validation_contents += f'}}\n'
         else:
             if option['default']:
-                validation_contents += f'// s.{camel_name} paths are not required. The default value is "{option["default"]}"\n'
+                validation_contents += f'// s.{camel_name} paths are not required.\n'
+                validation_contents += f'// The default value is "{option["default"]}"\n'
                 validation_contents += f'if (s.{camel_name}.empty())\n'
                 validation_contents += f'{{\n'
-                validation_contents += f'    s.{camel_name} = {{'
+                validation_contents += f'    s.{camel_name} = {{\n'
                 is_first = True
                 for default_path in option['default']:
                     if not is_first:
-                        validation_contents += ', '
-                    validation_contents += f'"        files::makeAbsolute("{remove_reference_dir_from_path(default_path)}", dirs.{to_camel_case(default_is_relativeto_dir)}")'
+                        validation_contents += ',\n'
+                    validation_contents += f'        files::makeAbsolute("{remove_reference_dir_from_path(default_path)}", dirs.{to_camel_case(get_reference_dir_from_path(default_path))})'
                     is_first = False
+                validation_contents += '\n'
                 validation_contents += '    };\n'
                 validation_contents += f'}}\n'
                 validation_contents += f'else\n'

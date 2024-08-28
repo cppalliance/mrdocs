@@ -9,7 +9,6 @@
 //
 
 #include "ToolArgs.hpp"
-#include "Addons.hpp"
 #include <lib/Support/Path.hpp>
 #include <cstddef>
 #include <vector>

@@ -80,6 +80,16 @@ EXAMPLES:
     "addons",
     llvm::cl::desc("The directory with the addons."),
     llvm::cl::cat(commonCat))
+
+, systemIncludes(
+    "system-includes",
+    llvm::cl::desc("A list of paths to the system headers."),
+    llvm::cl::cat(commonCat))
+
+, includes(
+    "includes",
+    llvm::cl::desc("A list of paths to additional include directories."),
+    llvm::cl::cat(commonCat))    
 {
 }
 

@@ -79,6 +79,35 @@
         "details": "Additional defines passed to the compiler when building the source code. These defines are added to the compilation database regardless of the strategy to generate it.",
         "type": "list<string>",
         "default": []
+      },
+      {
+        "name": "use-system-stdlib",
+        "brief": "Use the system standard library",
+        "details": "True if the compiler has to use just the system standard library. When set to true, the compiler uses the system standard library instead of the standard library provided by the compiler.",
+        "type": "bool",
+        "default": false
+      },
+      {
+        "name": "stdlib-includes",
+        "brief": "Standard Library include paths",
+        "details": "Standard Library include paths. These paths are used to replace the standard library paths provided by the compiler.",
+        "type": "list<path>",
+        "default": ["<mrdocs-root>/share/mrdocs/libcxx", "<mrdocs-root>/share/mrdocs/clang"],
+        "relativeto": "<config-dir>"
+      },
+      {
+        "name": "system-includes",
+        "brief": "System include paths",
+        "details": "System include paths. These paths are used to add directories to the system include search path. The system include search path is used to search for system headers. The system headers are headers that are provided by the system and are not part of the project. The system headers are used to provide the standard library headers and other system headers. The system headers are not part of the project and are not checked for warnings and errors.",
+        "type": "list<path>",
+        "default": []
+      },
+      {
+        "name": "includes",
+        "brief": "Include paths",
+        "details": "Include paths. These paths are used to add directories to the include search path. The include search path is used to search for headers. The headers are used to provide declarations and definitions of symbols. The headers are part of the project and are checked for warnings and errors.",
+        "type": "list<path>",
+        "default": []
       }
     ]
   },

@@ -92,6 +92,12 @@ elseif (LLVM_ROOT)
 endif()
 find_package(LLVM REQUIRED CONFIG)
 find_package(Clang REQUIRED CONFIG)
+
+if (LLVM_ROOT)
+    set(LIBCXX_DIR "${LLVM_ROOT}/include/c++/v1/")
+    set(STDLIB_INCLUDE_DIR "${LLVM_ROOT}/lib/clang/${Clang_VERSION_MAJOR}/include/")
+endif()
+
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(HandleLLVMOptions)
 add_definitions(${LLVM_DEFINITIONS})
@@ -337,7 +343,9 @@ if (MRDOCS_BUILD_TESTS)
             --unit=false
             --action=test
             "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
-            --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons")
+            --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+            --system-includes="${LIBCXX_DIR}" 
+            --system-includes="${STDLIB_INCLUDE_DIR}")
     foreach (action IN ITEMS create update)
         add_custom_target(
             mrdocs-${action}-test-fixtures
@@ -347,6 +355,8 @@ if (MRDOCS_BUILD_TESTS)
                 --action=${action}
                 "${PROJECT_SOURCE_DIR}/test-files/golden-tests"
                 --addons="${CMAKE_SOURCE_DIR}/share/mrdocs/addons"
+                --system-includes="${LIBCXX_DIR}"
+                --system-includes="${STDLIB_INCLUDE_DIR}"
             DEPENDS mrdocs-test
         )
     endforeach ()
@@ -492,6 +502,13 @@ if (MRDOCS_INSTALL)
     #-------------------------------------------------
     # share
     #-------------------------------------------------
+    install(DIRECTORY ${LIBCXX_DIR}
+            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/libcxx
+            FILES_MATCHING PATTERN "*")
+    install(DIRECTORY ${STDLIB_INCLUDE_DIR}
+            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs/clang
+            FILES_MATCHING PATTERN "*")
+                
     foreach (share_mrdocs_dir addons)
         install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/share/mrdocs/${share_mrdocs_dir}
                 DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mrdocs
