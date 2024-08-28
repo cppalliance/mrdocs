@@ -176,9 +176,13 @@ jobs:
       - name: LLVM Parameters
         id: llvm-parameters
         run: |
-          echo -E "llvm-hash=e1065370aaacb1b1cb48e77d37d376bf024f4a39" >> $GITHUB_OUTPUT
-          echo -E "llvm-id=e1065370" >> $GITHUB_OUTPUT
-          echo -E "llvm-build-preset=${{ runner.os == 'Windows' && 'release-win' || 'release-unix' }}" >> $GITHUB_OUTPUT
+          llvm_hash=e1065370aaacb1b1cb48e77d37d376bf024f4a39
+          echo -E "llvm-hash=$llvm_hash" >> $GITHUB_OUTPUT
+          llvm_id=$(echo $llvm_hash | cut -c1-7)
+          echo -E "llvm-id=$llvm_id" >> $GITHUB_OUTPUT
+          llvm_build_preset=${{ runner.os == 'Windows' && 'release-win' || 'release-unix' }}
+          echo -E "llvm-build-preset=$llvm_build_preset" >> $GITHUB_OUTPUT
+          echo -E "llvm-cache-key=llvm-libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-$llvm_build_preset-$llvm_hash" >> $GITHUB_OUTPUT
           cd ..
           llvm_root=$(pwd)/third-party/llvm-project/install
           if [[ ${{ runner.os }} == 'Windows' ]]; then
@@ -193,7 +197,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.llvm-parameters.outputs.llvm-root }}
-          key: llvm-libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-${{ steps.llvm-parameters.outputs.llvm-build-preset }}-${{ steps.llvm-parameters.outputs.llvm-hash }}
+          key: ${{ steps.llvm-parameters.outputs.llvm-cache-key }}
 
       - name: Install LLVM
         id: llvm-install
@@ -333,7 +337,7 @@ jobs:
       run:
         shell: bash
     name: Releases
-    timeout-minutes: 30 
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     container: ubuntu:20.04
     permissions:
@@ -596,4 +600,119 @@ jobs:
           delete_tag_pattern: ${{ github.ref_name || github.ref }}${{ ((!startsWith(github.ref, 'refs/tags/')) && '-release') || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  llvm-releases:
+    needs: build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.cpp-matrix.outputs.matrix) }}
+
+    defaults:
+      run:
+        shell: bash
+
+    name: ${{ matrix.name }}-LLVM-Release
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
+    env: ${{ matrix.env }}
+    permissions:
+      contents: write
+
+    steps:
+      - name: Install packages
+        uses: alandefreitas/cpp-actions/package-install@v1.8.4
+        id: package-install
+        with:
+          apt-get: build-essential asciidoctor cmake bzip2 git
+
+      - name: LLVM Parameters
+        id: llvm-parameters
+        run: |
+          llvm_hash=e1065370aaacb1b1cb48e77d37d376bf024f4a39
+          echo -E "llvm-hash=$llvm_hash" >> $GITHUB_OUTPUT
+          llvm_id=$(echo $llvm_hash | cut -c1-7)
+          echo -E "llvm-id=$llvm_id" >> $GITHUB_OUTPUT
+          llvm_build_preset=${{ runner.os == 'Windows' && 'release-win' || 'release-unix' }}
+          echo -E "llvm-build-preset=$llvm_build_preset" >> $GITHUB_OUTPUT
+          echo -E "llvm-cache-key=llvm-libcxx-${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.version }}-$llvm_build_preset-$llvm_hash" >> $GITHUB_OUTPUT
+          llvm_archive_basename=llvm-${{ runner.os }}-$llvm_id
+          echo -E "llvm-archive-basename=$llvm_archive_basename" >> $GITHUB_OUTPUT
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              llvm_archive_extension=7z
+          else
+              llvm_archive_extension=tar.bz2
+          fi
+          echo -E "llvm-archive-extension=$llvm_archive_extension" >> $GITHUB_OUTPUT
+          llvm_archive_filename=$llvm_archive_basename.$llvm_archive_extension
+          echo -E "llvm-archive-filename=$llvm_archive_filename" >> $GITHUB_OUTPUT
+
+          cd ..
+          llvm_root=$(pwd)/third-party/llvm-project/install
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
+              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
+              echo "$llvm_root"
+          fi
+          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
+
+      - name: Check website releases
+        id: website-releases
+        run: |
+          set -x
+          archive_url="https://mrdocs.com/llvm+clang/${{ steps.llvm-parameters.outputs.llvm-archive-filename }}"
+          http_status=$(curl -s -o /dev/null -w "%{http_code}" "$archive_url")
+          if [ "$http_status" -eq 200 ]; then
+              exists="true"
+          else
+              exists="false"
+          fi
+          echo "exists=$exists" >> $GITHUB_OUTPUT
+
+      - name: LLVM Binaries
+        id: llvm-cache
+        if: steps.website-releases.outputs.exists != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.llvm-parameters.outputs.llvm-root }}
+          key: ${{ steps.llvm-parameters.outputs.llvm-cache-key }}
+
+      - name: Compress LLVM
+        id: llvm-upload
+        if: steps.llvm-cache.outputs.cache-hit == 'true'
+        shell: bash
+        run: |
+          # LLVM is be installed with the default compiler
+          set -x
+          
+          # Compress the LLVM installation
+          cd ../third-party/llvm-project
+          
+          # Use 7z on windows
+          if [[ ${{ runner.os }} == 'Windows' ]]; then
+              7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on ${{ steps.llvm-parameters.outputs.llvm-archive-filename }} install
+          else
+              tar -cjf ${{ steps.llvm-parameters.outputs.llvm-archive-filename }} -C install .
+          fi
+
+      - name: Publish website
+        if: steps.llvm-cache.outputs.cache-hit == 'true' && github.event_name == 'push' && (contains(fromJSON('["master", "develop"]'), github.ref_name) || startsWith(github.ref, 'refs/tags/'))
+        working-directory: ../third-party/llvm-project
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          # Add SSH key
+          mkdir -p /home/runner/.ssh
+          ssh-keyscan dev-websites.cpp.al >> /home/runner/.ssh/known_hosts
+          chmod 600 /home/runner/.ssh/known_hosts
+          echo "${{ secrets.DEV_WEBSITES_SSH_KEY }}" > /home/runner/.ssh/github_actions
+          chmod 600 /home/runner/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add /home/runner/.ssh/github_actions
+
+          # Remove previous demos associated with this tag
+          llvm_dir="/var/www/mrdox.com/llvm+clang"
+          chmod 755 -R ${{ steps.llvm-parameters.outputs.llvm-archive-filename }}
+          scp -o StrictHostKeyChecking=no $(pwd)/${{ steps.llvm-parameters.outputs.llvm-archive-filename }} ubuntu@dev-websites.cpp.al:$llvm_dir/
 
