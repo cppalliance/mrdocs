@@ -625,7 +625,7 @@ jobs:
         uses: alandefreitas/cpp-actions/package-install@v1.8.4
         id: package-install
         with:
-          apt-get: build-essential asciidoctor cmake bzip2 git
+          apt-get: build-essential asciidoctor cmake bzip2 git curl
 
       - name: LLVM Parameters
         id: llvm-parameters
