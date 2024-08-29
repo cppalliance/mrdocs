@@ -36,7 +36,7 @@ set_target_properties(duktape PROPERTIES VERSION ${duktape_VERSION})
 set_target_properties(duktape PROPERTIES SOVERSION ${duktape_MAJOR_VERSION})
 
 if (BUILD_SHARED_LIBS)
-    target_compile_definitions(duktape PRIVATE -DDUK_F_DLL_BUILD)
+    target_compile_definitions(duktape PRIVATE DUK_F_DLL_BUILD)
 endif ()
 
 install(TARGETS duktape
