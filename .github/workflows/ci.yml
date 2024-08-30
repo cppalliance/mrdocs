@@ -23,9 +23,13 @@ jobs:
     name: Generate Test Matrix
     outputs:
       matrix: ${{ steps.cpp-matrix.outputs.matrix }}
+      llvm-matrix: ${{ steps.llvm-matrix.outputs.llvm-matrix }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Generate Test Matrix
-        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.4
+        uses: alandefreitas/cpp-actions/cpp-matrix@v1.8.5
         id: cpp-matrix
         with:
           compilers: |
@@ -45,6 +49,26 @@ jobs:
             msvc Optimized-Debug: /Ob1 /O2 /Zi
           cxxflags: |
             msvc Optimized-Debug: /Ob1 /O2 /Zi
+          extra-values: |
+            llvm-hash: e1065370aaacb1b1cb48e77d37d376bf024f4a39
+            llvm-id: {{ substr llvm-hash 0 7 }}
+            llvm-build-preset-prefix: {{#if optimized-debug}}debwithopt{{else}}{{lowercase build-type}}{{/if}}
+            llvm-build-preset-suffix: {{#if (ieq os 'windows') }}win{{else}}unix{{/if}}
+            llvm-build-preset: {{ llvm-build-preset-prefix }}-{{ llvm-build-preset-suffix }}
+            llvm-compiler-key: {{ compiler }}-{{ version }}
+            llvm-cache-key: llvm-libcxx-{{ lowercase os }}-{{ llvm-compiler-key }}-{{ llvm-build-preset-prefix }}-{{ llvm-hash }}
+            llvm-root: ../third-party/llvm-project/install
+            llvm-archive-basename: llvm-{{ os }}-{{ llvm-build-preset-prefix }}-{{ llvm-id }}
+            llvm-archive-extension: {{#if (ieq os 'windows') }}7z{{else}}tar.bz2{{/if}}
+            llvm-archive-filename: {{ llvm-archive-basename }}.{{ llvm-archive-extension }}
+          output-file: matrix.json
+
+      - name: Generate LLVM Test Matrix
+        id: llvm-matrix
+        run: |
+          set -x
+          npm install @actions/core
+          node .github/llvm-matrix.js
 
   build:
     needs: cpp-matrix
@@ -70,7 +94,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup CMake
-        uses: alandefreitas/cpp-actions/setup-cmake@v1.8.4
+        uses: alandefreitas/cpp-actions/setup-cmake@v1.8.5
         id: setup-cmake
         with:
           version: ${{ matrix.compiler == 'clang' && '3.26' || '>=3.26' }}
@@ -82,7 +106,7 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
 
       - name: Setup C++
-        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.4
+        uses: alandefreitas/cpp-actions/setup-cpp@v1.8.5
         id: setup-cpp
         with:
           compiler: ${{ matrix.compiler }}
@@ -90,7 +114,7 @@ jobs:
           check-latest: ${{ matrix.compiler == 'clang' }}
 
       - name: Install System Packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.4
+        uses: alandefreitas/cpp-actions/package-install@v1.8.5
         id: package-install
         env:
           DEBIAN_FRONTEND: 'noninteractive'
@@ -225,50 +249,12 @@ jobs:
           fi
           echo -E "libxml2-root=$libxml2_root" >> $GITHUB_OUTPUT
 
-      - name: LLVM Parameters
-        id: llvm-parameters
-        run: |
-          llvm_hash=e1065370aaacb1b1cb48e77d37d376bf024f4a39
-          echo -E "llvm-hash=$llvm_hash" >> $GITHUB_OUTPUT
-          llvm_id=$(echo $llvm_hash | cut -c1-7)
-          echo -E "llvm-id=$llvm_id" >> $GITHUB_OUTPUT
-          llvm_build_preset=${{ runner.os == 'Windows' && 'relwithdebinfo-win' || 'release-unix' }}
-          if [[ ${{ matrix.optimized-debug }} == 'true' ]]; then
-              llvm_build_preset=debwithopt-
-          else
-              if [[ ${{ runner.os }} == 'Windows' ]]; then
-                  llvm_build_preset=relwithdebinfo-
-              else
-                  llvm_build_preset=release-
-              fi
-          fi
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              llvm_build_preset+=win
-          else
-              llvm_build_preset+=unix
-          fi
-          echo -E "llvm-build-preset=$llvm_build_preset" >> $GITHUB_OUTPUT
-          compiler_and_version=${{ matrix.compiler }}-${{ matrix.version }}
-          workflow_factor=
-          if [[ ${{ matrix.build-type }} == 'Debug' ]]; then
-              workflow_factor=-debug
-          fi
-          echo -E "llvm-cache-key=llvm-libcxx-${{ runner.os }}-$compiler_and_version$workflow_factor-$llvm_build_preset-$llvm_hash" >> $GITHUB_OUTPUT
-          cd ..
-          llvm_root=$(pwd)/third-party/llvm-project/install
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
-              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
-              echo "$llvm_root"
-          fi
-          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
-
       - name: LLVM Binaries
         id: llvm-cache
         uses: actions/cache@v4
         with:
-          path: ${{ steps.llvm-parameters.outputs.llvm-root }}
-          key: ${{ steps.llvm-parameters.outputs.llvm-cache-key }}
+          path: ${{ matrix.llvm-root }}
+          key: ${{ matrix.llvm-cache-key }}
 
       - name: Install LLVM
         id: llvm-install
@@ -287,7 +273,7 @@ jobs:
           git config --global advice.detachedHead false
           git init
           git remote add origin https://github.com/llvm/llvm-project.git
-          git fetch --depth 1 origin ${{ steps.llvm-parameters.outputs.llvm-hash }}
+          git fetch --depth 1 origin ${{ matrix.llvm-hash }}
           git checkout FETCH_HEAD
           
           # Copy presets
@@ -298,7 +284,7 @@ jobs:
           cd llvm
           llvm_root=$(pwd)
           cmake --version
-          cmake -S . -B ./build --preset=${{ steps.llvm-parameters.outputs.llvm-build-preset }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc }}
+          cmake -S . -B ./build --preset=${{ matrix.llvm-build-preset }} -DCMAKE_CXX_COMPILER=${{ steps.setup-cpp.outputs.cxx }} -DCMAKE_C_COMPILER=${{ steps.setup-cpp.outputs.cc }}
           if [[ ${{ runner.os }} == 'Linux' ]]; then
               cmake --build ./build --target help
           fi
@@ -349,7 +335,7 @@ jobs:
           node-version: '18'
 
       - name: CMake Workflow
-        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.4
+        uses: alandefreitas/cpp-actions/cmake-workflow@v1.8.5
         with:
           cmake-version: ${{ matrix.compiler == 'clang' && '3.26' || '>=3.26' }}
           cxxstd: ${{ matrix.cxxstd }}
@@ -363,8 +349,8 @@ jobs:
           install-prefix: .local
           extra-args: |
             -D MRDOCS_BUILD_DOCS=OFF
-            -D LLVM_ROOT=${{ steps.llvm-parameters.outputs.llvm-root }}
-            -D Clang_ROOT=${{ steps.llvm-parameters.outputs.llvm-root }}
+            -D LLVM_ROOT=${{ matrix.llvm-root }}
+            -D Clang_ROOT=${{ matrix.llvm-root }}
             -D duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
             -D Duktape_ROOT=${{ steps.duktape-install.outputs.duktape-root }}
             -D fmt_ROOT=${{ steps.fmt-install.outputs.fmt-root }}
@@ -387,7 +373,7 @@ jobs:
           retention-days: 1
 
       - name: FlameGraph
-        uses: alandefreitas/cpp-actions/flamegraph@v1.8.4
+        uses: alandefreitas/cpp-actions/flamegraph@v1.8.5
         if: matrix.time-trace
         with:
           build-dir: build
@@ -415,7 +401,7 @@ jobs:
       contents: write
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.4
+        uses: alandefreitas/cpp-actions/package-install@v1.8.5
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git
@@ -448,7 +434,7 @@ jobs:
           echo -e "MRDOCS_ROOT=$MRDOCS_ROOT" >> $GITHUB_ENV
 
       - name: Clone Boost.URL
-        uses: alandefreitas/cpp-actions/boost-clone@v1.8.4
+        uses: alandefreitas/cpp-actions/boost-clone@v1.8.5
         id: boost-url-clone
         with:
           branch: develop
@@ -638,7 +624,7 @@ jobs:
           git config --global --add safe.directory "$(pwd)"
 
       - name: Create changelog
-        uses: alandefreitas/cpp-actions/create-changelog@v1.8.4
+        uses: alandefreitas/cpp-actions/create-changelog@v1.8.5
         with:
           output-path: CHANGELOG.md
           thank-non-regular: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -678,7 +664,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(needs.cpp-matrix.outputs.matrix) }}
+        include: ${{ fromJSON(needs.cpp-matrix.outputs.llvm-matrix) }}
 
     defaults:
       run:
@@ -693,66 +679,17 @@ jobs:
 
     steps:
       - name: Install packages
-        uses: alandefreitas/cpp-actions/package-install@v1.8.4
+        uses: alandefreitas/cpp-actions/package-install@v1.8.5
         id: package-install
         with:
           apt-get: build-essential asciidoctor cmake bzip2 git curl
-
-      - name: LLVM Parameters
-        id: llvm-parameters
-        run: |
-          llvm_hash=e1065370aaacb1b1cb48e77d37d376bf024f4a39
-          echo -E "llvm-hash=$llvm_hash" >> $GITHUB_OUTPUT
-          llvm_id=$(echo $llvm_hash | cut -c1-7)
-          echo -E "llvm-id=$llvm_id" >> $GITHUB_OUTPUT
-          llvm_build_preset=${{ runner.os == 'Windows' && 'relwithdebinfo-win' || 'release-unix' }}
-          if [[ ${{ matrix.optimized-debug }} == 'true' ]]; then
-              llvm_build_preset=debwithopt-
-          else
-              if [[ ${{ runner.os }} == 'Windows' ]]; then
-                  llvm_build_preset=relwithdebinfo-
-              else
-                  llvm_build_preset=release-
-              fi
-          fi
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              llvm_build_preset+=win
-          else
-              llvm_build_preset+=unix
-          fi          
-          echo -E "llvm-build-preset=$llvm_build_preset" >> $GITHUB_OUTPUT
-          compiler_and_version=${{ matrix.compiler }}-${{ matrix.version }}
-          workflow_factor=
-          if [[ ${{ matrix.build-type }} == 'Debug' ]]; then
-              workflow_factor=-debug
-          fi
-          echo -E "llvm-cache-key=llvm-libcxx-${{ runner.os }}-$compiler_and_version$workflow_factor-$llvm_build_preset-$llvm_hash" >> $GITHUB_OUTPUT
-          llvm_archive_basename=llvm-${{ runner.os }}-$llvm_id
-          echo -E "llvm-archive-basename=$llvm_archive_basename" >> $GITHUB_OUTPUT
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              llvm_archive_extension=7z
-          else
-              llvm_archive_extension=tar.bz2
-          fi
-          echo -E "llvm-archive-extension=$llvm_archive_extension" >> $GITHUB_OUTPUT
-          llvm_archive_filename=$llvm_archive_basename.$llvm_archive_extension
-          echo -E "llvm-archive-filename=$llvm_archive_filename" >> $GITHUB_OUTPUT
-
-          cd ..
-          llvm_root=$(pwd)/third-party/llvm-project/install
-          if [[ ${{ runner.os }} == 'Windows' ]]; then
-              llvm_root=$(echo "$llvm_root" | sed 's/\\/\//g')
-              llvm_root=$(echo $llvm_root | sed 's|^/d/|D:/|')
-              echo "$llvm_root"
-          fi
-          echo -E "llvm-root=$llvm_root" >> $GITHUB_OUTPUT
 
       - name: Check website releases
         id: website-releases
         run: |
           set -x
-          archive_url="https://mrdocs.com/llvm+clang/${{ steps.llvm-parameters.outputs.llvm-archive-filename }}"
-          http_status=$(curl -s -o /dev/null -w "%{http_code}" "$archive_url")
+          archive_url="https://mrdocs.com/llvm+clang/${{ matrix.llvm-archive-filename }}"
+          http_status=$(curl -s -o /dev/null -w "%{http_code}" -I "$archive_url")
           if [ "$http_status" -eq 200 ]; then
               exists="true"
           else
@@ -765,8 +702,8 @@ jobs:
         if: steps.website-releases.outputs.exists != 'true'
         uses: actions/cache@v4
         with:
-          path: ${{ steps.llvm-parameters.outputs.llvm-root }}
-          key: ${{ steps.llvm-parameters.outputs.llvm-cache-key }}
+          path: ${{ matrix.llvm-root }}
+          key: ${{ matrix.llvm-cache-key }}
 
       - name: Compress LLVM
         id: llvm-upload
@@ -781,9 +718,9 @@ jobs:
           
           # Use 7z on windows
           if [[ ${{ runner.os }} == 'Windows' ]]; then
-              7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on ${{ steps.llvm-parameters.outputs.llvm-archive-filename }} install
+              7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=32m -ms=on ${{ matrix.llvm-archive-filename }} install
           else
-              tar -cjf ${{ steps.llvm-parameters.outputs.llvm-archive-filename }} -C install .
+              tar -cjf ${{ matrix.llvm-archive-filename }} -C install .
           fi
 
       - name: Publish LLVM on website
@@ -803,6 +740,6 @@ jobs:
 
           # Remove previous demos associated with this tag
           llvm_dir="/var/www/mrdox.com/llvm+clang"
-          chmod 755 -R ${{ steps.llvm-parameters.outputs.llvm-archive-filename }}
-          scp -o StrictHostKeyChecking=no $(pwd)/${{ steps.llvm-parameters.outputs.llvm-archive-filename }} ubuntu@dev-websites.cpp.al:$llvm_dir/
+          chmod 755 -R ${{ matrix.llvm-archive-filename }}
+          scp -o StrictHostKeyChecking=no $(pwd)/${{ matrix.llvm-archive-filename }} ubuntu@dev-websites.cpp.al:$llvm_dir/
 
